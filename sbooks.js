@@ -1042,8 +1042,8 @@ function sbookGetStableId(elt)
   // fdjtLog("Scrolling to %o with id %s/%s",target,info.id,target.id);
   if ((info) && (info.id) && (!(info.id.search(/TMPID/)==0)))
     return info.id;
-  else if ((target.id) && (!(target.id.search(/TMPID/)==0)))
-    return target.id;
+  else if ((elt.id) && (!(elt.id.search(/TMPID/)==0)))
+    return elt.id;
   else return false;
 }
 
