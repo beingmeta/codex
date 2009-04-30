@@ -8,6 +8,8 @@ var sbook_debug=false;
 var sbook_debug_hud=false;
 // Whether to debug search
 var sbook_debug_search=false;
+// Whether we're debugging locations
+var sbook_debug_locations=false;
 // Rules for building the TOC.  These can be extended.
 var sbook_headlevels=
   {"H1": 1,"H2": 2,"H3": 3,"H4": 4,"H5": 5};
@@ -285,14 +287,17 @@ function sbookBuildTOC()
   var i=0; while (i<children.length) {
     var child=children[i++];
     // Location tracking and TOC building
-    if (child.nodeType==Node.TEXT_NODE)
-      location=location+child.nodeValue.length;
+    if (child.nodeType==Node.TEXT_NODE) {
+      var width=child.nodeValue.length;
+      child.sbookloc=location+width/2;
+      location=location+width;}
     else if (child.nodeType!=Node.ELEMENT_NODE)
       child.sbook_head=curhead;
     else if (level=sbookHeadLevel(child)) {
       var head=child;
       var headinfo=sbook_needinfo(head);
       var headid=fdjtGuessAnchor(head);
+      child.sbookloc=location;
       if (headid) sbook_hashmap[headid]=head;
       else headid=fdjtForceId(head)
       if (debug_toc_build)
@@ -350,8 +355,13 @@ function sbookBuildTOC()
       curhead=head; curinfo=headinfo; curlevel=level;
       location=location+fdjtFlatWidth(child);}
     else {
-      location=location+fdjtFlatWidth(child);
-      child.sbook_head=curhead;}}
+      var width=fdjtFlatWidth(child);
+      child.sbookloc=location+width/2;
+      location=location+width;
+      child.sbook_head=curhead;}
+    if ((sbook_debug_locations) && (child.sbookloc) &&
+	(child.setAttribute))
+      child.setAttribute("sbookloc",child.sbookloc);}
   var scan=curhead, scaninfo=curinfo;
   while (scan) {
     scaninfo.ends_at=location;
@@ -745,30 +755,44 @@ function sbook_title_path(head)
 function _sbook_generate_spanbar(head,headinfo,child)
 {
   var spanbar=fdjtDiv("spanbar");
+  var spans=fdjtDiv("spans");
   var start=headinfo.starts_at;
   var end=headinfo.ends_at;
   var len=end-start;
   var subsections=headinfo.sub;
+  var sectnum=0;
+  spanbar.starts=start; spanbar.ends=end;
   if ((!(subsections)) || (subsections.length===0))
     return false;
+  var progress=fdjtDiv("progressbox","\u00A0");
+  fdjtAppend(spanbar,spans);
+  fdjtAppend(spans,progress);
+  progress.style.left="0%";
   var i=0; while (i<subsections.length) {
-    var odd=((i%2)==1);
     var subsection=subsections[i++];
     var spaninfo=subsection.sbookinfo;
-    var spanlen=spaninfo.ends_at-spaninfo.starts_at;
+    var spanstart; var spanend; var spanlen;
+    if ((sectnum===0) && ((spaninfo.starts_at-start)>20)) {
+      spanstart=start;  spanend=spaninfo.starts_at;
+      spaninfo=headinfo; subsection=head;
+      i--; sectnum++;}
+    else {
+      spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
+      sectnum++;}
+    var spanlen=spanend-spanstart;
     var span=fdjtDiv("sbookhudspan","\u00A0");
     var width=100*(spanlen/len)+"%";
+    var odd=((sectnum%2)==1);
     if (odd) span.setAttribute("odd",i-1);
     span.style.width=width;
     span.title=spaninfo.title+
       " ("+spaninfo.starts_at+"+"+(spaninfo.ends_at-spaninfo.starts_at)+")";
     span.headelt=subsection;
-    // span.onclick=sbook_spanelt_onclick;
     if (subsection===child) {
       span.style.color='orange';
       span.style.backgroundColor='orange';
       span.style.borderColor='orange';}
-    fdjtAppend(spanbar,span);}
+    fdjtAppend(spans,span);}
   return spanbar;
 }
 
@@ -778,9 +802,14 @@ function _sbook_generate_subsections_div(subsections,start,end)
     return false;
   var subsections_div=fdjtDiv("subsections");
   var spanbar=fdjtDiv("spanbar");
+  var spans=fdjtDiv("spans");
   var sectlist=fdjtDiv("sectlist");
   var len=end-start;
   var char_count=0; var size_base=70; var at_first=true;
+  spanbar.starts=start; spanbar.ends=end;
+  var progress=fdjtDiv("progressbox","\u00A0");
+  fdjtAppend(spanbar,spans);
+  fdjtAppend(spans,progress);
   var i=0; while (i<subsections.length) {
     var subsect=subsections[i++];
     var subsect_info=subsect.sbookinfo;
@@ -803,7 +832,7 @@ function _sbook_generate_subsections_div(subsections,start,end)
     if (at_first) at_first=false;
     else fdjtInsertBefore(namespan," \u00B7 ");
     // span.onclick=sbook_spanelt_onclick;
-    fdjtAppend(spanbar,span);}
+    fdjtAppend(spans,span);}
   if (subsections.length>1)
     fdjtAppend(subsections_div,spanbar,"\n",sectlist);
   else fdjtAppend(subsections_div,sectlist);
@@ -923,6 +952,29 @@ function sbookSetHead(head)
     sbook_head=head;}
 }
 
+var sbook_location=false;
+
+function sbookSetLocation(location)
+{
+  if (sbook_location===location) return;
+  if (sbook_debug_locations)
+    fdjtLog("Setting location to %o",location);
+  var spanbars=$$(".spanbar",$("SBOOKHUD"));
+  var i=0; while (i<spanbars.length) {
+    var spanbar=spanbars[i++];
+    var width=spanbar.ends-spanbar.starts;
+    var ratio=(location-spanbar.starts)/width;
+    if (sbook_debug_locations)
+      fdjtTrace("ratio for %o is %o [%o,%o,%o]",
+		spanbar,ratio,spanbar.starts,location,spanbar.ends);
+    if ((ratio>=0) && (ratio<=1)) {
+      var progressbox=$$(".progressbox",spanbar);
+      fdjtTrace("Setting left of %o to %o",progressbox,ratio*100);
+      if (progressbox.length>0)
+	progressbox[0].style.left=(ratio*100)+"%";}}
+  sbook_location=location;
+}
+
 /* Tracking the current section */
 
 function sbookUpdateHUD(evt)
@@ -1009,6 +1061,7 @@ function sbookGetStableId(elt)
 function sbookScrollTo(elt)
 {
   fdjtScrollTo(elt,sbookGetStableId(elt));
+  if (elt.sbookloc) sbookSetLocation(elt.sbookloc);
 }
 
 function sbookHUD_onclick(evt)
@@ -1118,6 +1171,7 @@ function sbookHUD_Top()
     target=document.body;
   if (target!=document.body) target.scrollIntoView();
   sbookSetHead(target);
+  if (target.sbookloc) sbookSetLocation(target.sbookloc);
   // window.location=window.location;
 }
 
@@ -1137,13 +1191,15 @@ function sbook_onmouseover(evt)
   /* If you're not, go back to the saved scroll location */
   if (fdjtScrollRestore()) return;
   /* if ((sbook_hudup) && (!(sbookHUD_forced))) return; */
-  if (fdjtIsVisible(sbook_head)) return;
   while (target)
     if (target.sbook_head) break;
     else if (target.parentNode===document.body) break;
     else target=target.parentNode;
   if (target===null) return;
   if (target===sbookHUD) return;
+  if ((target) && (target.sbookloc))
+    sbookSetLocation(target.sbookloc);
+  if (fdjtIsVisible(sbook_head)) return;
   if (target!=sbook_focus_elt) {
     var tags=sbook_get_tags(target);
     if ((tags.length>0) &&
