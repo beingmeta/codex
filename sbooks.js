@@ -965,11 +965,10 @@ function sbookSetLocation(location)
     var width=spanbar.ends-spanbar.starts;
     var ratio=(location-spanbar.starts)/width;
     if (sbook_debug_locations)
-      fdjtTrace("ratio for %o is %o [%o,%o,%o]",
-		spanbar,ratio,spanbar.starts,location,spanbar.ends);
+      fdjtLog("ratio for %o is %o [%o,%o,%o]",
+	      spanbar,ratio,spanbar.starts,location,spanbar.ends);
     if ((ratio>=0) && (ratio<=1)) {
       var progressbox=$$(".progressbox",spanbar);
-      fdjtTrace("Setting left of %o to %o",progressbox,ratio*100);
       if (progressbox.length>0)
 	progressbox[0].style.left=(ratio*100)+"%";}}
   sbook_location=location;
