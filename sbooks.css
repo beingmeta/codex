@@ -183,6 +183,10 @@ div.sbooksearch div.searchresults a.searchresult span.dterm {
     font-size: 75%;}
 div.sbooksearch div.searchresults a.searchresult span.head {
     font-size: 75%;}
+div.sbooksearch div.searchresults a.searchresult span.head {
+    font-size: 75%;}
+div.sbooksearch div.searchresults a.searchresult span.headhead {
+    color: blue; font-weight: bold;}
 
 
 /* Mode controls */

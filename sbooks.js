@@ -7,7 +7,7 @@ var sbook_debug=false;
 // Whether to debug the HUD
 var sbook_debug_hud=false;
 // Whether to debug search
-var sbook_debug_search=true;
+var sbook_debug_search=false;
 // Rules for building the TOC.  These can be extended.
 var sbook_headlevels=
   {"H1": 1,"H2": 2,"H3": 3,"H4": 4,"H5": 5};
@@ -23,6 +23,9 @@ var sbook_use_spanbars=true;
 var sbook_list_subsections=true;
 // Whether the HUD is up
 var sbook_hudup=false;
+// Whether the HUD was 'forced down' (by a user action)
+// This makes it harder to come back up automatically
+var sbook_hud_suppressed=false;
 // Electro highlights
 var sbook_electric_spanbars=false;
 // Whether the HUD state was forced
@@ -589,18 +592,17 @@ function sbookSetQuery(query,scored)
     fdjtLog("Current query is now %o",result);
   if (result._refiners) {
     var completions=sbookQueryCloud(result);
-    fdjtTrace("cloud=%o",completions);
     fdjtSetCompletions("SBOOKSEARCHCOMPLETIONS",completions);
     fdjtComplete($("SBOOKSEARCHTEXT"));}
   var results_div=fdjtDiv("searchresults");
   results_div.onclick=_sbookSearchResults_onclick;
   results_div.onmouseover=_sbookSearchResults_onmouseover;
   results_div.onmouseout=_sbookSearchResults_onmouseout;
-  sbookShowQueryResults(result,results_div);
+  sbookShowSearchResults(result,results_div);
   fdjtReplace($("SBOOKSEARCHRESULTS"),results_div);
 }
 
-function sbookShowQueryResults(result,results_div)
+function sbookShowSearchResults(result,results_div)
 {
   var results=result._results;
   if (results.length===0) {
@@ -616,7 +618,6 @@ function sbookShowQueryResults(result,results_div)
     if (!(elt)) continue;
     var anchor=fdjtAnchor("#"+elt_id);
     anchor.className="searchresult";
-    anchor.sbookelt=elt;
     var tags=elt.tags;
     var head=(((elt.sbookinfo) && (elt.sbookinfo.level)) ? (elt) :
 	      (elt.sbook_head));
@@ -628,7 +629,7 @@ function sbookShowQueryResults(result,results_div)
       if (j===1) 
 	fdjtAppend(anchor,fdjtSpan("dterm",tag));
       else fdjtAppend(anchor," \u00b7 ",fdjtSpan("dterm",tag));}
-    var headspan=fdjtSpan("head",info.title);
+    var headspan=fdjtSpan("searchresulthead",info.title);
     var curspan=headspan;
     j=heads.length-1; while (j>=0) {
       var h=heads[j--]; var hinfo=h.sbookinfo;
@@ -636,6 +637,7 @@ function sbookShowQueryResults(result,results_div)
       var newspan=fdjtSpan("head",hinfo.title);
       fdjtAppend(curspan," \\ ",newspan);
       curspan=newspan;}
+    curspan.sbookelt=elt; fdjtAddClass(curspan,"headhead");
     fdjtAppend(anchor," ",headspan);
     if (i===1)
       fdjtAppend(results_div,anchor);
@@ -656,7 +658,7 @@ function _sbookSearchResults_onmouseover(evt)
 {
   var target=evt.target;
   while (target)
-    if (target.className==="searchresult") break;
+    if (target.sbookelt) break;
     else target=target.parentNode;
   if (!(target)) return;
   fdjtScrollPreview(target.sbookelt);
@@ -667,7 +669,7 @@ function _sbookSearchResults_onmouseout(evt)
 {
   var target=evt.target;
   while (target)
-    if (target.className==="searchresult") break;
+    if (target.sbookelt) break;
     else target=target.parentNode;
   if (!(target)) return;
   fdjtScrollRestore();
@@ -717,7 +719,6 @@ function sbookQueryCloud(query)
     for (dterm in refiners) {
       var score=refiners[dterm];
       if (score>max_score) max_score=score;}
-    fdjtTrace("Max score=%o",max_score);
     var dterms=refiners._results;
     i=0; while (i<dterms.length) {
       var dterm=dterms[i++];
@@ -1014,7 +1015,7 @@ function sbookHUDHighlight(secthead)
 
 /* Handlers */
 
-function sbookHUDLive(flag)
+function sbookHUDLive(flag,forced)
 {
   if (flag===sbook_hudup)
     // Check that the body class agrees with the variable
@@ -1025,11 +1026,13 @@ function sbookHUDLive(flag)
   if (sbookHUD)
     if (flag) {
       sbook_hudup=true;
+      if (forced) sbook_hud_suppressed=false;
       fdjtAddClass(document.body,"hudup");
       document.body.setAttribute("HUDUP","yes");
       sbookHUD.focus();}
     else {
       sbook_hudup=false;
+      if (forced) sbook_hud_suppressed=true;
       fdjtDropClass(document.body,"hudup");
       document.body.removeAttribute("HUDUP");
       sbookHUD.blur();
@@ -1063,7 +1066,7 @@ function sbookHUD_onclick(evt)
   sbookScrollTo(target.headelt);
   // fdjtTmpLog("onclick sub=%o",info.sub);
   if (!((info.sub) && (info.sub.length>1))) {
-    sbookHUDLive(false);}
+    sbookHUDLive(false,true);}
 }
 
 function sbookHUD_hide()
@@ -1084,6 +1087,7 @@ function sbookHUD_unhighlight(elt_arg)
 
 function sbookHUD_onmouseover(evt)
 {
+  if (sbook_hud_suppressed) return;
   if (sbookHUD_hider) {
     clearTimeout(sbookHUD_hider);
     sbookHUD_hider=false;}
@@ -1112,6 +1116,7 @@ function sbookHUD_onmouseout(evt)
     if (rtarget===sbookHUD) return;
     else if (rtarget===document.body) break;
     else rtarget=rtarget.parentNode;
+  sbook_hud_suppressed=false;
   sbookHUD_hider=setTimeout(sbookHUD_hide,300);
 }
 
@@ -1400,7 +1405,7 @@ function sbook_onkeypress(evt)
 {
   if (!(evt.keyCode)) return;
   if (evt.keyCode===sbook_hudkey) {
-    if (sbook_hudup) sbookHUDLive(false);
+    if (sbook_hudup) sbookHUDLive(false,true);
     else sbookHUDLive(true);
     return false;}
   var target=evt.target;
