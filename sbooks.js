@@ -45,11 +45,11 @@ var sbook_local_toc=false;
 // This is the TOC in which this document is embedded (NYI)
 var sbook_context_toc={};
 // This is a table mapping tags (dterms) to elements (or IDs)
-var sbook_index={};
+var sbook_index={_all: []};
 // This is a table mapping prime (focal) tags (dterms) to elements (or IDs)
-var sbook_pindex={};
+var sbook_pindex={_all: []};
 // This is the 'extended index' which maps genls (dterms) to elements (or IDs)
-var sbook_xindex={};
+var sbook_xindex={_all: []};
 // This is a straight 'keyword' index mapping keywords to elements (or IDs)
 var sbook_word_index={};
 // This is a table mapping tags (typically, hopefully, dterms) to URIs
@@ -165,11 +165,11 @@ function _sbook_get_current_entry()
   else return this.value;
 }
 
-// This is actuall redefined below to help out with search
+// This is actually redefined below to help out with search
 function _sbook_replace_current_entry(value)
 {
   var endsemi=this.value.lastIndexOf(';');
-  if (endsemi>0)
+  if ((endsemi>0) && (endsemi<(this.value.length-1)))
     this.value=this.value.slice(0,endsemi)+";"+value;
   else this.value=value+';';
 }
@@ -247,69 +247,6 @@ var sbook_tags2words={};
 var sbook_words2tags={};
 var sbook_genls={};
 var sbook_glosses={};
-
-function sbook_add_value(info,key,value)
-{
-  var cur=info[key];
-  if (!(cur))
-    info[key]=new Array(value);
-  else if (cur.indexOf(value)<0)
-    cur.push(value);
-}
-
-function sbook_add_tag(elt,tag,info)
-{
-  if (!(info))
-    info=sbook_getinfo(elt);
-  var cur=info.tags;
-  if ((cur) && (cur instanceof Array))
-    cur.push(tag);
-  else info.tags=new Array(tag);
-  var refs=sbook_index[tag];
-  if (!(refs))
-    sbook_index[tag]=new Array(elt);
-  else refs.push(elt);
-  if (tag.indexOf(':')>0) {
-    var base=tag.slice(0,tag.indexOf(':'));
-    var genl=tag.slice(1+tag.indexOf(':'));
-    sbook_add_value(sbook_words2tags,base,tag);
-    sbook_add_value(sbook_tags2words,tag,base);
-    sbook_add_value(sbook_genls,tag,genl);}
-  var genls=sbook_genls[tag];
-  if (genls instanceof Array) {
-    var i=0; while (i<genls.length) {
-      var g=genls[i++];
-      var xrefs=sbook_xindex[g];
-      if (!(xrefs))
-	sbook_xindex[g]=new Array(elt);
-      else xrefs.push(elt);}}
-}
-
-/*
-function sbook_add_tags(elt,tags,info)
-{
-  if (!(info))
-    info=sbook_needinfo(elt);
-  if (tags.indexOf(';')>0) {
-    var tagvec=tags.split(";");
-    var i=0; while (i<tagvec.length)
-	       sbook_add_tags(elt,tagvec[i++],info);}
-  else if (tags.indexOf('@')>=0) {
-    var atpos=tags.indexOf('@');
-    sbook_add_tag(elt,tags.slice(atpos),info);
-    if (atpos>0) sbook_add_tags(elt,tags.slice(0,atpos),info);}
-  else if (tags.indexOf('|')>0) {
-    var barpos=tags.indexOf('|');
-    var tag=tags.slice(0,barpos);
-    sbook_add_tags(elt,tag,info);
-    var words=tags.slice(barpos+1).split("|");
-    var i=0; while (i<words.length) {
-      var word=words[i++];
-      sbook_add_value(sbook_word2tags,tag,word);
-      sbook_add_value(sbook_tags2words,word,tag);}}
-  else sbook_add_tag(elt,tags,info);
-}
-*/
 
 function sbook_get_tags(elt)
 {
@@ -589,7 +526,7 @@ function sbookSetQuery(query,scored)
   var result=sbookQuery(query);
   sbook_query=result;
   if (sbook_debug_search)
-    fdjtLog("Current query is now %o",result);
+    fdjtLog("Current query is now %o: %o",result._query,result);
   if (result._refiners) {
     var completions=sbookQueryCloud(result);
     fdjtSetCompletions("SBOOKSEARCHCOMPLETIONS",completions);
@@ -618,6 +555,13 @@ function sbookShowSearchResults(result,results_div)
     if (!(elt)) continue;
     var anchor=fdjtAnchor("#"+elt_id);
     anchor.className="searchresult";
+    if (result[elt_id]) /* If you have a score, use it */
+    {
+      var scorespan=fdjtSpan("score");
+      var score=result[elt_id]; var k=0;
+      // fdjtTrace("Score for %s is %o",elt_id,result[elt_id]);
+      while (k<score) {fdjtAppend(scorespan,"*"); k++;}
+      fdjtAppend(anchor,scorespan);}
     var tags=elt.tags;
     var head=(((elt.sbookinfo) && (elt.sbookinfo.level)) ? (elt) :
 	      (elt.sbook_head));
@@ -681,9 +625,12 @@ function _sbookSearchResults_onmouseout(evt)
 //  query.
 function _sbook_replace_current_entry(value)
 {
-  var endsemi=this.value.lastIndexOf(';');
+  var curval=this.value;
+  var endsemi=curval.lastIndexOf(';');
   if (endsemi>0)
-    this.value=this.value.slice(0,endsemi)+";"+value;
+    if (endsemi<(curval.length-1))
+      this.value=curval.slice(0,endsemi)+";"+value+';';
+    else this.value=curval+value+";";
   else this.value=value+';';
   sbookSetQuery(this.value,true);
 }
@@ -697,6 +644,7 @@ function sbookDTermCompletion(dterm)
   if (knowde) {
     if (knowde.gloss) span.title=knowde.gloss;
     span.key=knowde.terms.concat(knowde.hooks);
+    // fdjtTrace("span.key for %s (%o) is %o",dterm,knowde,span.key);
     span.value=knowde.dterm;}
   else span.key=dterm;
   return span;
@@ -741,19 +689,27 @@ function sbookFullCloud()
     var completions=fdjtDiv("completions");
     var tagscores={}; var alltags=[];
     completions.onclick=fdjtComplete_onclick;
-    for (tag in sbook_index) {
+    var book_tags=sbook_index._all;
+    // The scores here are used to determine sizes in the cloud
+    // A regular index reference counts as 1 and a prime reference counts
+    //  as one more.
+    var i=0; while (i<book_tags.length) {
+      var tag=book_tags[i++];
       var score=sbook_index[tag].length+
 	((sbook_pindex[tag]) ? (sbook_pindex[tag].length) : (0));
       if (tagscores[tag]) tagscores[tag]=tagscores[tag]+score;
       else tagscores[tag]=score;
       alltags.push(tag);}
-    for (tag in sbook_xindex) {
-      var score=sbook_xindex[tag].length+
-	((sbook_pindex[tag]) ? (sbook_pindex[tag].length) : (0));
-      score=Math.ceil(Math.log(score));
-      if (tagscores[tag]) tagscores[tag]=tagscores[tag]+score;
-      else tagscores[tag]=score;
-      alltags.push(tag);}
+    // We also use generalizations (sbook_xindex) in the search
+    // but use the log of the number of references, rather than
+    // the direct count.
+    var book_xtags=sbook_xindex._all;
+    i=0; while (i<book_xtags.length) {
+      var tag=book_xtags[i++];
+      var score=Math.ceil(Math.log(sbook_xindex[tag].length));
+      if (tagscores[tag])
+	tagscores[tag]=tagscores[tag]+score;
+      else tagscores[tag]=score;}
     var max_score=0;
     var i=0; while (i<alltags.length) {
       var score=tagscores[alltags[i++]];
@@ -1109,13 +1065,20 @@ function sbookHUD_onmouseout(evt)
 {
   var rtarget=evt.relatedTarget;
   if (!(rtarget)) return;
-  else if (rtarget.ownerDocument!=document) {
+  try {
+    if (rtarget.ownerDocument!=document) {
+      sbookHUD_hider=setTimeout(sbookHUD_hide,300);
+      return;}
+    // We'll get an error if we go out of the document,
+    // in which case we probably want to hide anyway
+    while (rtarget)
+      if (rtarget===sbookHUD) return;
+      else if (rtarget===document.body) break;
+      else rtarget=rtarget.parentNode;}
+  catch (e) {
+    sbook_hud_suppressed=false;
     sbookHUD_hider=setTimeout(sbookHUD_hide,300);
     return;}
-  while (rtarget)
-    if (rtarget===sbookHUD) return;
-    else if (rtarget===document.body) break;
-    else rtarget=rtarget.parentNode;
   sbook_hud_suppressed=false;
   sbookHUD_hider=setTimeout(sbookHUD_hide,300);
 }
@@ -1312,7 +1275,9 @@ function sbookAddTag(elt,knowde,prime)
 	      (fdjtForceId(elt)));
   var dterm=((typeof knowde === "string") ? (knowde) : (knowde.id));
   if (sbook_index[dterm]) sbook_index[dterm].push(elt_id);
-  else sbook_index[dterm]=new Array(elt_id);
+  else {
+    sbook_index[dterm]=new Array(elt_id);
+    sbook_index._all.push(dterm);}
   if (elt.tags) elt.tags.push(dterm);
   else elt.tags=new Array(dterm);
   if (prime) {
@@ -1325,7 +1290,9 @@ function sbookAddTag(elt,knowde,prime)
       var g=genls[i++]; var geterm=g.dterm;
       if (sbook_xindex[gdterm])
 	sbook_xindex[gdterm].push(elt_id);
-      else sbook_xindex[gdterm]=new Array(elt_id);}}
+      else {
+	sbook_xindex._all.push(gdterm);
+	sbook_xindex[gdterm]=new Array(elt_id);}}}
 }
 
 function sbookHandleTagSpec(elt,tagspec)

@@ -1,6 +1,6 @@
 div.sbookhud {
   position: fixed; bottom: 0px; left: 0px;
-  width: 100%; max-height: 50px;
+  width: 100%; max-height: 50px; min-height: 40px;
   font-family: sans,sans-serif; font-size: 24px;
   background-color: gray; color: silver;
   overflow: hidden; z-index: 125; opacity: 0.70;}
@@ -159,7 +159,7 @@ div.sbooksearch div.query {min-height: 3ex;}
 div.sbooksearch div.results {min-height: 2ex;}
 
 div.sbooksearch span.dterm { 
-  background-color: lightblue; 
+  background-color: lightblue; color: black;
   padding: 4px; padding-top: 2px; padding-bottom: 2px;
   -khtml-border-radius: 8px; 
   -webkit-border-radius: 8px; 
@@ -179,6 +179,8 @@ div.sbooksearch div.searchresults a.searchresult {
   text-decoration: none; margin-top: 4px; margin-bottom: 4px;
   border-bottom: dotted orange 1px; padding-bottom: 3px;
   color: black; text-align: left;}
+div.sbooksearch div.searchresults a.searchresult span.score {
+  color: gold; float: right;}
 div.sbooksearch div.searchresults a.searchresult span.dterm {
     font-size: 75%;}
 div.sbooksearch div.searchresults a.searchresult span.head {
