@@ -9,7 +9,7 @@ body.hudup[mode~=preview] div.sbookhud {
   opacity: 0.4;}
 body.tophud div.sbookhud { top: 0px; opacity: 0.2;}
 
-.sbook_preview { color: red; }
+.previewing { color: red; }
 
 div#SBOOKHUD {}
 
@@ -119,7 +119,6 @@ div#SBOOKHUD div.spanbar div.sbookhudspan:hover {
   border-top: dotted orange 2px; border-bottom: dotted orange 2px; }
 div#SBOOKHUD div.spanbar div.sbookhudspan.cohighlight { 
   background-color: yellow; border-color: yellow;}
-
 
 div#SBOOKHEAD0 div.spanbar { width: 33%; margin-left: 33%; margin-right: 33%;}
 div#SBOOKHEAD1 div.spanbar { width: 33%; margin-left: 33%; margin-right: 33%;}
