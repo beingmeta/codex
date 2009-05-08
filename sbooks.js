@@ -1362,6 +1362,18 @@ function sbookHUD_SocialMode(evt)
 
 }
 
+function sbookHUD_SocialMode(evt)
+{
+  alert('Sorry, the webechoes server is currently being upgraded.');
+  fdjtToggleClass(document.body,"social","mode");
+  if (evt) {
+    evt.preventDefault();
+    evt.cancelBubble=true;}
+  if ((evt) && (evt.target)) evt.target.blur();
+  $("SBOOKSOCIALBUTTON").blur();
+
+}
+
 function sbookHUD_SearchMode(evt)
 {
   if (fdjtHasClass(document.body,"search","mode"))  {
