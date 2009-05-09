@@ -208,6 +208,8 @@ div.sbooksearch span.dterm {
 div.sbooksearch span.dterm span.disambig {color: red;}
 div.sbooksearch div.completions { display: block; line-height: 200%;}
 
+body.hudup div.completions { display: block;}
+
 div.sbooksearch div.searchresults { 
   width: 50%; margin-left: 25%; text-align: left;
   font-size: 75%; margin-top: 6px; margin-bottom: 8px;}
