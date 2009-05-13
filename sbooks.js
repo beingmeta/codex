@@ -38,7 +38,7 @@ var sbook_debug=false;
 // Whether to debug the HUD
 var sbook_debug_hud=false;
 // Whether to debug search
-var sbook_debug_search=false;
+var sbook_debug_search=true;
 // Whether we're debugging locations
 var sbook_debug_locations=false;
 // Rules for building the TOC.  These can be extended.
@@ -123,7 +123,7 @@ function createSBOOKHUD()
   var hud=$("SBOOKHUD");
   if (hud) return hud;
   else {
-    hud=fdjtDiv(); hud.id="SBOOKHUD"; hud.className="sbookhud";
+    sbookHUD=hud=fdjtDiv(); hud.id="SBOOKHUD"; hud.className="sbookhud";
     var prevarrow=
       fdjtAnchor("Javascript:sbookHUD_Prev();",
 		 fdjtImage(sbook_graphics_root+"LeftTriangle32.png"));
@@ -168,7 +168,6 @@ function createSBOOKHUD()
     fdjtAppend(hud,prevarrow,showechoes,dosearch,nextarrow,
 	       toc,echoes,localsearch,echosearch);
     fdjtPrepend(document.body,hud);}
-  sbookHUD=hud;
 }
 
 function _sbook_createHUDSearch()
@@ -179,12 +178,12 @@ function _sbook_createHUDSearch()
   var input=fdjtInput("TEXT","QTEXT","",null);
   var messages=fdjtDiv("messages");
   var completions=sbookFullCloud();
-  var results=fdjtDiv("searchresults"," ");
+  var results=fdjtDiv("sbooksearchresults"," ");
   input.setAttribute("COMPLETEOPTS","nocase prefix");
-  input.fdjt_complete=completions;
+  input.completions_elt=completions;
   completions.input_elt=input;
-  input.onfocus=fdjtComplete_show;
-  input.onkeypress=fdjtComplete_onkeypress;
+  input.onkeypress=sbookSearch_onkeypress;
+  input.onfocus=sbookSearch_onfocus;
   input.getCompletionText=_sbook_get_current_entry;
   input.handleCompletion=_sbook_replace_current_entry;
   // This causes a timing problem
@@ -198,8 +197,10 @@ function _sbook_createHUDSearch()
   controls.id="SBOOKSEARCHCONTROLS";  
   results.id="SBOOKSEARCHRESULTS";
   input.id="SBOOKSEARCHTEXT";
-  fdjtAppend(controls,input,messages,completions);
-  fdjtAppend(outer,context,controls,results);
+  if (sbookHUD_at_top)
+    fdjtAppend(controls,input,messages,completions);
+  else fdjtAppend(controls,completions,messages,input);
+  fdjtAppend(outer,results,context,controls);
   return outer;
 }
 
@@ -429,8 +430,10 @@ var sbook_fuzzy_queries=false;
 function sbook_lookup_term(term,table)
 {
   if (term==="") return [];
+  // This covers the term cache
   else if (table) return table[term];
   else if (term[0]==='\'') {
+    // This covers literal searches, which can take a while
     var items=sbook_word_index[term];
     if (items) return items;
     var slashpos=term.indexOf('/');
@@ -449,6 +452,7 @@ function sbook_lookup_term(term,table)
       var items=fdjtSearchContent(document.body,term);
       sbook_word_index[term]=items;
       return items;}}
+  // This returns the info from the index
   else return sbook_index[term]||[];
 }
 
@@ -456,31 +460,43 @@ function sbookDoSearch(query,results)
 {
   var base=false;
   var simple=(!(results._scored));
+  // A query is an array of terms.  In a simple query,
+  // the results are simply all elements which are tagged
+  // with all of the query terms.  In a linear scored query,
+  // a score is based on how many of the query terms are matched,
+  // possibly with weights based on the basis of the match.
   var i=0; while (i<query.length) {
     var term=query[i++];
     var items=sbook_lookup_term(term);
     if (sbook_debug_search)
-      fdjtLog("Query element %s has %d items: %o",
-	      term,items.length,items);
+      fdjtLog("Query element '%s' matches %d items",
+	      term,items.length);
     if (items.length>0) {
       if (simple)
+	// Simple queries just do an intersection
 	if (base) base=fdjtIntersect(base,items);
 	else base=items;
-      else if (base) {
+      else if (!(base)) {
+	// Scored queries require a match in the first query
+	// element.  Scoring is still under design, but in
+	// this iteration, simple matches count for one,
+	// and prime matches count for one more.
+	base=items;
+	var j=0; while (j<items.length) {
+	  var elt=items[j++]; results[elt]=1;}
+	var prime=sbook_lookup_term(term,sbook_pindex)||[];
+	j=0; while (j<prime.length) {
+	  var elt=prime[j++]; if (results[elt]) results[elt]++;}}
+      else {
+	// This is exactly the same as above, except we only count
+	//  if the item is already in the result table.
 	var j=0; while (j<items.length)
 		   if (results[items[j]]) results[items[j++]]++;
 		   else j++;
 	var prime=sbook_lookup_term(term,sbook_pindex)||[];
 	j=0; while (j<prime.length) {
 	  var elt=prime[j++];
-	  if (results[elt]) results[elt]++;}}
-      else {
-	base=items;
-	var j=0; while (j<items.length) {
-	  var elt=items[j++]; results[elt]=1;}
-	var prime=sbook_lookup_term(term,sbook_pindex)||[];
-	j=0; while (j<prime.length) {
-	  var elt=prime[j++]; if (results[elt]) results[elt]++;}}}
+	  if (results[elt]) results[elt]++;}}}
     else if (results._deadwood) results._deadwood.push(term);
     else {}}
   results._results=base;
@@ -489,6 +505,8 @@ function sbookDoSearch(query,results)
 
 function sbookGetRefiners(results)
 {
+  // This gets terms which can refine this search, particularly
+  // terms which occur in most of the results.
   if (results._refiners) return results._refiners;
   var query=results._query;
   var rvec=((results instanceof Array) ? (results) : (results._results));
@@ -496,22 +514,29 @@ function sbookGetRefiners(results)
   var refiners={}; var alltags=[];
   var i=0; while (i<rvec.length) {
     var item=rvec[i++];
-    var item_score=((scored) ? (results[item]) : (1));
+    var item_score=((scored) ? ((results[item])||1) : (1));
     if (typeof item === "string") item=document.getElementById(item);
     if ((item) && (item.tags)) {
       var tags=item.tags; var j=0; while (j<tags.length) {
 	var tag=tags[j++];
+	// If the tag is already part of the query, we ignore it.
 	if (query.indexOf(tag)>=0) {}
-	else if (refiners[tag])
-	  refiners[tag]=refiners[tag]+item_score;
-	else {
+	// If the tag is already a refiner, we increase its score.
+	else if (!(refiners[tag])) {
+	  // If the tag isn't a refiner, we initialize its score
+	  // and add it to the list of all the tags we've found
 	  alltags.push(tag);
-	  refiners[tag]=item_score;}}}}
+	  refiners[tag]=item_score;}
+	else refiners[tag]=refiners[tag]+item_score;}}}
   results._refiners=refiners;
+  alltags.sort(function(x,y) {
+      if (refiners[x]>refiners[y]) return -1;
+      else if (refiners[x]===refiners[y]) return 0;
+      else return 1;});
   refiners._results=alltags;
-  if (sbook_debug_search)
+  if (false) /* sbook_debug_search */
     fdjtLog("Refiners for %o are (%o) %o",
-	    results._query,refiners,refiners._results);
+	    results._query,refiners,alltags);
   return refiners;
 }
 
@@ -545,9 +570,10 @@ var sbook_scored_queries={};
 
 function sbookQuery(query,init)
 {
-  if (typeof query === "string") query=sbookStringToQuery(query);
+  if (typeof query === "string")
+    query=sbookStringToQuery(query);
   // Look up in the cache.
-  var scored=((init) ? ((init.scored)||false) : (true));
+  var scored=((init) ? ((init.scored)||false) : (false));
   var qstring=sbookQueryToString(query);
   var result=
     ((scored) ? (sbook_scored_queries) : (sbook_cached_queries))[qstring];
@@ -563,7 +589,10 @@ function sbookQuery(query,init)
   if (result._refiners) {}
   else if (result._results.length>1)
     sbookGetRefiners(result,query);
-  else result._refiners=[];
+  else {
+    result._refiners={};
+    result._refiners._results=[];
+    result._cloud=sbook_full_cloud;}
   if (scored) sbook_scored_queries[qstring]=result;
   else sbook_cached_queries[qstring]=result;
   return result;
@@ -572,44 +601,70 @@ function sbookQuery(query,init)
 /* Global query information */
 
 // This is the current query
-var sbook_query=[];
+var sbook_query=false;
 
 function sbookSetQuery(query,scored)
 {
+  if ((sbook_query) &&
+      ((sbook_query._query)===query) &&
+      ((scored||false)===(sbook_query._scored)))
+    return sbook_query;
   var result=sbookQuery(query);
   sbook_query=result;
   if (sbook_debug_search)
-    fdjtLog("Current query is now %o: %o",result._query,result);
+    fdjtLog("Current query is now %o: %o/%o",
+	    result._query,result,result._refiners);
   if (result._refiners) {
     var completions=sbookQueryCloud(result);
     fdjtSetCompletions("SBOOKSEARCHCOMPLETIONS",completions);
     fdjtComplete($("SBOOKSEARCHTEXT"));}
-  var results_div=fdjtDiv("searchresults");
+  return result;
+}
+
+function sbookUpdateQuery(input_elt)
+{
+  var q=sbookStringToQuery(input_elt.value);
+  if ((q)!==(sbook_query._query))
+    sbookSetQuery(q,false);
+}
+
+function sbookShowSearch(result)
+{
+  if (!(result)) result=sbook_query;
+  var results_div=fdjtDiv("sbooksearchresults");
   results_div.onclick=_sbookSearchResults_onclick;
   results_div.onmouseover=_sbookSearchResults_onmouseover;
   results_div.onmouseout=_sbookSearchResults_onmouseout;
   sbookShowSearchResults(result,results_div);
   fdjtReplace($("SBOOKSEARCHRESULTS"),results_div);
+  results_div.id="SBOOKSEARCHRESULTS";
 }
+
+var sbook_eye_icon="http://static.beingmeta.com/graphics/EyeIcon25.png";
 
 function sbookShowSearchResults(result,results_div)
 {
-  var results=result._results;
-  if (results.length===0) {
-    fdjtAppend(results_div,fdjtDiv("sorry","There were no results"));
-    return;}
-  else if (results.length===1)
-    fdjtAppend(results_div,fdjtDiv("count","There is one result"));
-  else fdjtAppend
-	 (results_div,
-	  fdjtDiv("count","There are ",results.length," results"));
+  var results=result._results; var head_div;
+  if (results.length===0) 
+    head_div=fdjtDiv("sorry");
+  else head_div=fdjtDiv("count");
+  var query=result._query;
+  var j=0; while (j<query.length) 
+	     fdjtAppend(head_div,fdjtSpan("dterm",query[j++])," ");
+  if (results===0)
+    fdjtAppend(head_div,"There were no results");
+  else if (results===1)
+    fdjtAppend(head_div,"There is one result");
+  else fdjtAppend(head_div,"There are ",results.length," results");
+  fdjtAppend(results_div,head_div);
   var i=0; while (i<results.length) {
     var elt_id=results[i++]; var elt=$(elt_id);
     if (!(elt)) continue;
     var anchor=fdjtAnchor("#"+elt_id);
     anchor.className="searchresult";
-    if (result[elt_id]) /* If you have a score, use it */
-    {
+    var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)");
+    fdjtAppend(anchor,eye); eye.sbookelt=elt;
+    if (result[elt_id]) { /* If you have a score, use it */
       var scorespan=fdjtSpan("score");
       var score=result[elt_id]; var k=0;
       // fdjtTrace("Score for %s is %o",elt_id,result[elt_id]);
@@ -621,12 +676,7 @@ function sbookShowSearchResults(result,results_div)
     if (head===document.body) continue;
     var info=head.sbookinfo;
     var heads=info.sbook_heads;
-    var j=0; var first=true; while (j<tags.length) {
-      var tag=tags[j++];
-      if (j===1) 
-	fdjtAppend(anchor,fdjtSpan("dterm",tag));
-      else fdjtAppend(anchor," \u00b7 ",fdjtSpan("dterm",tag));}
-    var headspan=fdjtSpan("searchresulthead",info.title);
+    var headspan=fdjtDiv("searchresulthead",info.title);
     var curspan=headspan;
     j=heads.length-1; while (j>=0) {
       var h=heads[j--]; var hinfo=h.sbookinfo;
@@ -634,8 +684,13 @@ function sbookShowSearchResults(result,results_div)
       var newspan=fdjtSpan("head",hinfo.title);
       fdjtAppend(curspan," \\ ",newspan);
       curspan=newspan;}
-    curspan.sbookelt=elt; fdjtAddClass(curspan,"headhead");
+    // fdjtAddClass(curspan,"headhead");
     fdjtAppend(anchor," ",headspan);
+    var j=0; var first=true; while (j<tags.length) {
+      var tag=tags[j++];
+      if (j===1) 
+	fdjtAppend(anchor,fdjtSpan("dterm",tag));
+      else fdjtAppend(anchor," \u00b7 ",fdjtSpan("dterm",tag));}
     if (i===1)
       fdjtAppend(results_div,anchor);
     else fdjtAppend(results_div,"\n",anchor);}
@@ -647,7 +702,10 @@ function _sbookSearchResults_onclick(evt)
   while (target)
     if (target.className==="searchresult") {
       fdjtScrollDiscard();
-      sbookHUDLive(false); return;}
+      fdjtDropClass(document.body,"results","mode");
+      fdjtDropClass(document.body,"search","mode");
+      sbookHUDLive(false);
+      return;}
     else target=target.parentNode;
 }
 
@@ -658,8 +716,13 @@ function _sbookSearchResults_onmouseover(evt)
     if (target.sbookelt) break;
     else target=target.parentNode;
   if (!(target)) return;
-  fdjtScrollPreview(target.sbookelt);
+  // fdjtTrace("Scrolling to %o",target.sbookelt);
+  var sbookelt=target.sbookelt;
+  if (sbookelt) 
+    fdjtScrollPreview(sbookelt,sbookelt.sbook_head);
   fdjtAddClass(document.body,"preview","mode");
+  evt.preventDefault();
+  evt.cancelBubble=true;
 }
 
 function _sbookSearchResults_onmouseout(evt)
@@ -672,6 +735,34 @@ function _sbookSearchResults_onmouseout(evt)
   fdjtScrollRestore();
   fdjtDropClass(document.body,"preview","mode");
   target.style.opacity='inherit';
+}
+
+var _sbookSearchKeyPress_delay=false;
+
+function sbookSearch_onkeypress(evt)
+{
+  var ch=evt.charCode, kc=evt.keyCode;
+  var target=evt.target;
+  if (kc===13) {
+    sbookShowSearch(false);
+    $("SBOOKSEARCHTEXT").blur();
+    $("SBOOKSEARCHRESULTS").focus();
+    fdjtAddClass(document.body,"results","mode");
+    return false;}
+  else {
+    if (_sbookSearchKeyPress_delay)
+      clearTimeout(_sbookSearchKeyPress_delay);
+    _sbookSearchKeyPress_delay=
+      setTimeout(function(){sbookUpdateQuery(target);},500);
+    return fdjtComplete_onkeypress(evt);}
+}
+
+function sbookSearch_onfocus(evt)
+{
+  var ch=evt.charCode, kc=evt.keyCode;
+  fdjtDropClass(document.body,"results","mode");
+  sbookSetQuery(sbookStringToQuery(evt.target.value));
+  return fdjtComplete_show(evt);
 }
 
 // This is a version of the function above which changes the current
@@ -710,17 +801,18 @@ function sbookQueryCloud(query)
     var empty_elt=fdjtDiv("completions");
     return empty_elt;}
   else {
-    if (sbook_debug_search)
-      fdjtLog("Generating completions for %o",query);
+    // fdjtLog("Generating completions for %o, r=%o/%o",
+    //	    query,query._refiners,query._refiners._results);
     var completions=fdjtDiv("completions");
-    completions.onclick=fdjtComplete_onclick;
-    var refiners=query._refiners;
     var results=query._results;
+    var refiners=query._refiners;
+    var dterms=query._refiners._results;
     var i=0; var max_score=0;
     for (dterm in refiners) {
       var score=refiners[dterm];
       if (score>max_score) max_score=score;}
-    var dterms=refiners._results;
+    completions.onclick=fdjtComplete_onclick;
+    // fdjtTrace("refiners=%o, dterms=%o",refiners,dterms);
     i=0; while (i<dterms.length) {
       var dterm=dterms[i++];
       var span=sbookDTermCompletion(dterm);
@@ -728,8 +820,7 @@ function sbookQueryCloud(query)
       span.style.fontSize=relsize+"%";
       fdjtAppend(completions,span,"\n");}
     query._cloud=completions;
-    if (sbook_debug_search)
-      fdjtLog("Generated completions for %o: %o",query,completions);
+    // fdjtTrace("Generated completions for %o: %o",query,completions);
     return completions;}
 }
 
@@ -1101,8 +1192,12 @@ function sbookGetStableId(elt)
 
 function sbookScrollTo(elt)
 {
-  fdjtScrollTo(elt,sbookGetStableId(elt));
   if (elt.sbookloc) sbookSetLocation(elt.sbookloc);
+  if (fdjtHasAttrib(elt,"toclevel")) 
+    fdjtSetHead(elt);
+  else if (elt.sbook_head)
+    fdjtSetHead(elt.sbook_head);
+  fdjtScrollTo(elt,sbookGetStableId(elt),elt.sbook_head);
 }
 
 function sbookHUD_onclick(evt)
@@ -1232,13 +1327,15 @@ var sbook_track_window=25;
 function sbook_onmouseover(evt)
 {
   var target=evt.target;
-  /* fdjtLog("sbook_mouseover clientY=%o, tophud=%o, hudheight=%o, hudoff=%o",
-             evt.clientY,sbookHUD_at_top,sbookHUD.offsetHeight,
-             sbookHUD.offsetTop); */
+  /*
+  fdjtTrace("sbook_mouseover clientY=%o, tophud=%o, hudheight=%o, hudoff=%o",
+	    evt.clientY,sbookHUD_at_top,sbookHUD.offsetHeight,
+	    sbookHUD.offsetTop);
+  */
   /* If you're over the HUD, don't do anything. */
   if ((sbookHUD_at_top) ? (evt.clientY<sbookHUD.offsetHeight) :
-      (evt.clientY>sbookHUD.offsetTop))
-    return;
+      (evt.clientY>sbookHUD.offsetTop)) {
+    return;}
   /* If you're not, go back to the saved scroll location */
   if (fdjtScrollRestore()) return;
   /* Now, we try to find a top level element to sort out whether
@@ -1407,6 +1504,7 @@ function sbookHUD_SearchMode(evt)
   if ((evt) && (evt.target)) evt.target.blur();
   $("SBOOKSEARCHBUTTON").blur();
   if (fdjtHasClass(document.body,"search","mode"))  {
+    fdjtDropClass(document.body,"results","mode");
     fdjtDropClass(document.body,"search","mode");}
   else {
     fdjtDropClass(document.body,"social","mode");

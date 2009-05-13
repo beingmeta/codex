@@ -35,8 +35,11 @@ div.sbookhud {
   font-family: sans,sans-serif; font-size: 24px;
   background-color: gray; color: silver;
   overflow: hidden; z-index: 125; opacity: 0.70;}
-body.hudup div.sbookhud { max-height: inherit; opacity: 0.9;}
+body.hudup div.sbookhud { max-height: inherit; opacity: 0.7;}
 body.hudup[mode~=preview] div.sbookhud { 
+  opacity: 0.4;}
+body.hudup[mode~=results][mode~=preview] div.sbooksearch
+   div.sbooksearchresults#SBOOKSEARCHRESULTS { 
   opacity: 0.4;}
 body.tophud div.sbookhud { top: 0px; opacity: 0.2;}
 
@@ -192,8 +195,7 @@ div.sbooksearch div.controls input[type="TEXT"] {
 div.sbooksearch div.controls div.completions { 
   font-size: 12px; font-family: sans,sans-serif; 
   width: 50%; margin-left: 25%; text-align: left;
-  max-height: 60px; padding-top: 5px;}
-div.sbooksearch div.controls div.completions { }
+  padding-top: 5px; }
 div.sbooksearch div.cues {min-height: 1ex;}
 div.sbooksearch div.query {min-height: 3ex;}
 div.sbooksearch div.results {min-height: 2ex;}
@@ -210,28 +212,39 @@ div.sbooksearch div.completions { display: block; line-height: 200%;}
 
 body.hudup div.completions { display: block;}
 
-div.sbooksearch div.searchresults { 
-  width: 50%; margin-left: 25%; text-align: left;
-  font-size: 75%; margin-top: 6px; margin-bottom: 8px;}
-div.sbooksearch div.searchresults div.count {
+div.sbooksearchresults { 
+  margin-top: 6px; margin-bottom: 8px;
+  text-align: left; font-size: 75%; 
+  display: none; overflow: auto;}
+body.hudup[mode~="results"] div.sbooksearch
+   div.sbooksearchresults { display: block;}
+body[mode~="results"]
+  div.sbooksearch div.controls div.completions { display: none;}
+body[mode~="results"]
+  div.sbooksearch div.controls div.completions.open { display: none;}
+
+div.sbooksearchresults div.count {
   text-align: right; color: orange; font-weight: bold;
   padding-top: 3px; border-top: solid orange 3px;}
-div.sbooksearch div.searchresults a.searchresult { 
+div.sbooksearchresults a.searchresult { 
   display: block; white-space: wrap; clear: both;
-  text-decoration: none; margin-top: 4px; margin-bottom: 4px;
+  text-decoration: none; 
+  margin-top: 4px; margin-bottom: 4px;
+  margin-left: 10%; margin-right: 10%;
   border-bottom: dotted orange 1px; padding-bottom: 3px;
   color: black; text-align: left;}
-div.sbooksearch div.searchresults a.searchresult span.score {
+div.sbooksearchresults a.searchresult img.eye { 
+  font-weight: bold; color: blue; float: right;}
+div.sbooksearchresults a.searchresult span.score {
   color: gold; float: right;}
-div.sbooksearch div.searchresults a.searchresult span.dterm {
+div.sbooksearchresults a.searchresult span.dterm {
     font-size: 75%;}
-div.sbooksearch div.searchresults a.searchresult span.head {
+div.sbooksearchresults a.searchresult span.head {
     font-size: 75%;}
-div.sbooksearch div.searchresults a.searchresult span.head {
+div.sbooksearchresults a.searchresult span.head {
     font-size: 75%;}
-div.sbooksearch div.searchresults a.searchresult span.headhead {
+div.sbooksearchresults a.searchresult span.headhead {
     color: blue; font-weight: bold;}
-
 
 /* Mode controls */
 
@@ -256,6 +269,16 @@ body[hudup][mode~="social"] div#SBOOKHUD div.sbooksocial {
   display: block; height: 200px;}
 body[mode~="social"][mode~="search"] div#SBOOKHUD div.sbooksocial { 
   display: none;}
+
+div#SBOOKSEARCHRESULTS { 
+ padding: 0px; margin: 0px;
+ padding-left: 70px; padding-right: 70px; 
+ position: fixed; 
+ bottom: 40px; right: 0px; left: 0px;
+ z-index: 150; opacity: 0.90;
+ background-color: gray;
+ max-height: 75%;
+ overflow: auto;}
 
 /* SBOOK formatting */
 
