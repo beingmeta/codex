@@ -38,7 +38,7 @@ var sbook_debug=false;
 // Whether to debug the HUD
 var sbook_debug_hud=false;
 // Whether to debug search
-var sbook_debug_search=true;
+var sbook_debug_search=false;
 // Whether we're debugging locations
 var sbook_debug_locations=false;
 // Rules for building the TOC.  These can be extended.
@@ -185,7 +185,7 @@ function _sbook_createHUDSearch()
   input.onkeypress=sbookSearch_onkeypress;
   input.onfocus=sbookSearch_onfocus;
   input.getCompletionText=_sbook_get_current_entry;
-  input.handleCompletion=_sbook_replace_current_entry;
+  input.oncomplete=_sbook_replace_current_entry;
   // This causes a timing problem
   // input.onblur=fdjtComplete_hide;
   input.setAttribute("AUTOCOMPLETE","off");
@@ -212,7 +212,8 @@ function _sbook_get_current_entry()
 }
 
 // This is actually redefined below to help out with search
-function _sbook_replace_current_entry(value)
+// !!!!!!!! THIS FUNCTION IS REDEFINED LATER !!!!!!!!!!! 
+function _sbook_replace_current_entry(elt,value)
 {
   var endsemi=this.value.lastIndexOf(';');
   if ((endsemi>0) && (endsemi<(this.value.length-1)))
@@ -767,7 +768,7 @@ function sbookSearch_onfocus(evt)
 
 // This is a version of the function above which changes the current
 //  query.
-function _sbook_replace_current_entry(value)
+function _sbook_replace_current_entry(elt,value)
 {
   var curval=this.value;
   var endsemi=curval.lastIndexOf(';');
