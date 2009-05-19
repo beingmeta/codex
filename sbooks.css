@@ -44,6 +44,8 @@ body.hudup[mode~=results][mode~=preview] div.sbooksearch
 body.tophud div.sbookhud { top: 0px; opacity: 0.2;}
 
 .previewing { color: red; }
+p.previewing { color: red; }
+div.previewing { color: red; }
 
 div#SBOOKHUD {}
 

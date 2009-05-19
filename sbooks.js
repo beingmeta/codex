@@ -38,9 +38,9 @@ var sbook_debug=false;
 // Whether to debug the HUD
 var sbook_debug_hud=false;
 // Whether to debug search
-var sbook_debug_search=false;
+var sbook_debug_search=true;
 // Whether we're debugging locations
-var sbook_debug_locations=true;
+var sbook_debug_locations=false;
 // Rules for building the TOC.  These can be extended.
 var sbook_headlevels=
   {"H1": 1,"H2": 2,"H3": 3,"H4": 4,"H5": 5};
@@ -101,6 +101,9 @@ var sbook_scrolled=false;
 var sbook_webechoes_root="http://webechoes.net/";
 // Whether to switch headings on all mouseovers
 var sbook_close_tracking=true;
+// If a search has fewer than this many results,
+//  it just displays them
+var sbook_search_gotlucky=4;
 
 // What to use as the podspot image URI.  This 'image' 
 //  really invokes a script to pick or generate a
@@ -170,6 +173,8 @@ function createSBOOKHUD()
     fdjtAppend(hud,prevarrow,showechoes,dosearch,nextarrow,
 	       toc,echoes,localsearch,echosearch);
     fdjtPrepend(document.body,hud);}
+  sbook_empty_cloud=
+    fdjtDiv("completions",fdjtSpan("count","no query refinements"));
 }
 
 function _sbook_createHUDSearch()
@@ -578,9 +583,9 @@ function sbookStringToQuery(string)
 {
   if (typeof string === "string") {
     var lastsemi=string.lastIndexOf(';');
-    if (lastsemi)
+    if (lastsemi>0)
       return string.slice(0,lastsemi).split(';');
-    else return new Array(string);}
+    else return [];}
   else return string;
 }
 
@@ -609,6 +614,11 @@ function sbookQuery(query,init)
   // Construct the results object
   if (init) result=init; result={};
   result._scored=scored; result._query=query; result._results=[]; 
+  if (query.length===0) {
+    result._refiners={};
+    result._refiners._results=[];
+    result._cloud=sbook_full_cloud;
+    return result;}
   // Do the search
   sbookDoSearch(query,result);
   if (sbook_debug_search)
@@ -620,7 +630,14 @@ function sbookQuery(query,init)
   else {
     result._refiners={};
     result._refiners._results=[];
-    result._cloud=sbook_full_cloud;}
+    result._cloud=sbook_empty_cloud;}
+  if (sbook_debug_search)
+    fdjtLog("query %o yielded %d results: %o",
+	    query,result._results.length,result._results);
+  if (sbook_debug_search)
+    fdjtLog("query %o yielded %d refiners: %o",
+	    query,result._refiners._results.length,
+	    result._refiners._results);
   if (scored) sbook_scored_queries[qstring]=result;
   else sbook_cached_queries[qstring]=result;
   return result;
@@ -679,9 +696,9 @@ function sbookShowSearchResults(result,results_div)
   var query=result._query;
   var j=0; while (j<query.length) 
 	     fdjtAppend(head_div,fdjtSpan("dterm",query[j++])," ");
-  if (results===0)
+  if (results.length===0)
     fdjtAppend(head_div,"There were no results");
-  else if (results===1)
+  else if (results.length===1)
     fdjtAppend(head_div,"There is one result");
   else fdjtAppend(head_div,"There are ",results.length," results");
   fdjtAppend(results_div,head_div);
@@ -805,6 +822,13 @@ function _sbook_replace_current_entry(elt,value)
     else this.value=curval+value+";";
   else this.value=value+';';
   sbookSetQuery(this.value,true);
+  if ((sbook_search_gotlucky) && 
+      (sbook_query._results.length>0) &&
+      (sbook_query._results.length<sbook_search_gotlucky)) {
+    sbookShowSearch(false);
+    $("SBOOKSEARCHTEXT").blur();
+    $("SBOOKSEARCHRESULTS").focus();
+    fdjtAddClass(document.body,"results","mode");}
 }
 
 /* Getting query cloud */
@@ -829,18 +853,23 @@ function sbookQueryCloud(query)
     var empty_elt=fdjtDiv("completions");
     return empty_elt;}
   else {
-    // fdjtLog("Generating completions for %o, r=%o/%o",
-    //	    query,query._refiners,query._refiners._results);
+    /* 
+    fdjtLog("Generating completions for %o, r=%o/%o",
+    	    query,query._refiners,query._refiners._results);
+    */
     var completions=fdjtDiv("completions");
     var results=query._results;
     var refiners=query._refiners;
     var dterms=query._refiners._results;
+    var n_refiners=dterms.length;
     var i=0; var max_score=0;
     for (dterm in refiners) {
       var score=refiners[dterm];
       if (score>max_score) max_score=score;}
     completions.onclick=fdjtComplete_onclick;
     // fdjtTrace("refiners=%o, dterms=%o",refiners,dterms);
+    fdjtAppend(completions,fdjtSpan
+	       ("count",n_refiners,((n_refiners==1)?" refiner":" refiners")));
     i=0; while (i<dterms.length) {
       var dterm=dterms[i++];
       var span=sbookDTermCompletion(dterm);
@@ -853,6 +882,7 @@ function sbookQueryCloud(query)
 }
 
 var sbook_full_cloud=false;
+var sbook_empty_cloud=false;
 
 function sbookFullCloud()
 {
