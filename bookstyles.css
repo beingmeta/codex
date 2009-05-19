@@ -1,0 +1,88 @@
+body.sbook {
+  background-color: ivory;}
+body.sbook h1#TITLEPAGE { 
+  background-color: lightgray;
+  font-size: 36px; text-align: center; width: 100%;
+  page-break-after: always;
+  border: 0px;}
+body.sbook h1.titlepage { 
+  background-color: lightgray;
+  font-size: 36px; text-align: center; width: 100%;
+  page-break-after: always;
+  border: 0px;}
+body.sbook h1 { page-break-before: always; }
+body.sbook h1.titlepage div { width: 90%; margin-left: 5%; margin-right: 5%;}
+body.sbook h1.titlepage div.title { text-align: center; font-weight: bold;}
+body.sbook h1.titlepage div.author { 
+  text-align: center; font-style: italic; font-weight: normal;
+  font-size: 80%;}
+body.sbook h1.titlepage div.editor { 
+  text-align: center; font-style: normal; font-weight: normal;
+  font-size: 80%;}
+body.sbook h1.titlepage div.sbookinfo { 
+  font-family: sans,sans-serif;
+  font-size: 18px; margin-top: 128px;
+  text-align: center; font-variant: small-caps;}
+body.sbook h1.titlepage .frontpiece { 
+  padding: 3em; margin: 3em;
+  font-size: 18px; }
+body.sbook h1.titlepage img.frontpiece {
+  width: 50%;}
+body.sbook h1.titlepage .frontpiece img {
+  width: 50%;}
+
+body.sbook .frontpiece div.poem {
+  margin: 0px; border: none; font-weight: normal;}
+body.sbook .frontpiece div.poem div.stanza {
+  margin: 0px;}
+
+/* Poetry */
+
+body.verse {
+  margin-left: auto; margin-right: auto;}
+
+body.verse div.part {
+  margin-top: 6em; border-top: solid black 2em; padding-top: 2em;}
+
+/* These are part headings */
+body.verse h1 { text-align: center;}
+div.poem { 
+  margin: 7%; 
+  padding: 3%; padding-top: 2%;
+  border-top: solid gray 3px;}
+
+div.poem p.sig {
+  text-align: right; font-weight: normal; font-style: italic;
+  margin-top: 8px;}
+
+/* These are poem titles */
+body.verse h2 { 
+  margin-left: 10%; text-align: left;}
+body.verse div.stanza { 
+  margin-left: 10%; text-align: left;}
+
+p.verse {
+  text-align: left; margin-left: 10%;
+  margin-top: 2px; margin-bottom: 2px;
+  text-indent: -3em; }
+div.stanza { 
+  text-align: left; margin-left: 10%;
+  margin-top: .75em; margin-bottom: .75em;}
+div.stanza p {
+  text-align: left; margin-left: 10%;
+  margin-top: 2px; margin-bottom: 2px;
+  text-indent: -3em; }
+
+/* Prose */
+
+p.prose {
+  text-indent: 3em;}
+body.prose p {
+  text-indent: 3em;}
+
+/* BCV
+    stands for BOOK/CHAPTER/VERSE, a structured used in many
+    sacred texts. */
+p.bcv {}
+body.bcv p {}
+.bcv span.v { padding-right: 2em;}

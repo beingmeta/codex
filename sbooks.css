@@ -282,28 +282,6 @@ div#SBOOKSEARCHRESULTS {
 
 /* SBOOK formatting */
 
-body.sbook {
-  background-color: ivory;}
-body.sbook h1#TITLEPAGE { 
-  background-color: lightgray;
-  font-size: 64px; text-align: center; width: 100%;
-  page-break-after: always;}
-body.sbook h1 { page-break-before: always; }
-body.sbook h1#TITLEPAGE div { width: 90%; margin-left: 5%; margin-right: 5%;}
-body.sbook h1#TITLEPAGE div.title { text-align: center; font-weight: bold;}
-body.sbook h1#TITLEPAGE div.author { 
-  text-align: center; font-style: italic; font-weight: normal;}
-body.sbook h1#TITLEPAGE div.sbookinfo { 
-  font-family: sans,sans-serif;
-  font-size: 18px; margin-top: 128px;
-  text-align: center; font-variant: small-caps;}
-body.sbook h1#TITLEPAGE .frontpiece { 
-  margin-top: 16px; margin-bottom: 16px;}
-body.sbook h1#TITLEPAGE img.frontpiece {
-  width: 50%;}
-body.sbook h1#TITLEPAGE .frontpiece img {
-  width: 50%;}
-
 body[hudup] iframe div.commentors { display: none;}
 body iframe div.commentors { display: block;}
 
