@@ -136,9 +136,11 @@ div#SBOOKTOC div.subsections a.cohighlight {
 div#SBOOKHUD div.spanbar {
   position: relative;
   text-align: center; clear: both;
-  opacity: 0.5; margin: 0px; padding: 0px;
+  opacity: 0.5; margin: 0px; padding: 0px; border: 0px;
   background-color: transparent; height: 5px; font-size: 1px;}
-div#SBOOKHUD div.spanbar div.spans { position: relative;}
+div#SBOOKHUD div.spanbar div.spans { 
+  position: relative;
+  margin: 0px; padding: 0px; border: 0px;}
 div#SBOOKHUD div.spanbar div.sbookhudspan {
   background-color: blue; clear: none; float: left;
   margin: 0px; padding: 0px; border: 0px;
@@ -157,13 +159,15 @@ div#SBOOKHUD div.spanbar div.sbookhudspan.cohighlight {
 div#SBOOKHEAD0 div.spanbar { width: 33%; margin-left: 33%; margin-right: 33%;}
 div#SBOOKHEAD1 div.spanbar { width: 33%; margin-left: 33%; margin-right: 33%;}
 div#SBOOKHEAD2 div.spanbar { width: 50%; margin-left: 25%; margin-right: 25%;}
-div#SBOOKHEAD3 div.spanbar { width: 75%; margin-left: 12%; margin-right: 12%;}
+div#SBOOKHEAD3 div.spanbar { 
+  width: 75%; margin-left: 12.5%; margin-right: 12.5%;}
 
 div#SBOOKHUD div.spanbar div.spans { width: 100%;}
 
 div#SBOOKHUD div.spanbar div.progressbox { 
   width: 3px; height: 16px; background-color: red;
-  position: absolute; z-index: 200;}
+  position: absolute; z-index: 200; 
+  margin: 0px; padding: 0px;}
 
 div#SBOOKHUD div.sbooksocial { 
   padding-left: 70px; padding-right: 70px; text-align: center;
@@ -285,3 +289,9 @@ div#SBOOKSEARCHRESULTS {
 body[hudup] iframe div.commentors { display: none;}
 body iframe div.commentors { display: block;}
 
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

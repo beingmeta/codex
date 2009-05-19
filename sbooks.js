@@ -23,7 +23,7 @@
     Other uses may be allowed based on prior agreement with
       beingmeta, inc.  Inquiries can be addressed to:
 
-       licensing@biz.beingmeta.com
+       licensing@beingmeta.com
 
    Enjoy!
 
@@ -40,7 +40,7 @@ var sbook_debug_hud=false;
 // Whether to debug search
 var sbook_debug_search=false;
 // Whether we're debugging locations
-var sbook_debug_locations=false;
+var sbook_debug_locations=true;
 // Rules for building the TOC.  These can be extended.
 var sbook_headlevels=
   {"H1": 1,"H2": 2,"H3": 3,"H4": 4,"H5": 5};
@@ -99,6 +99,8 @@ var sbook_sync_echo_icon=true;
 var sbook_scrolled=false;
 // Where to go for your webechoes
 var sbook_webechoes_root="http://webechoes.net/";
+// Whether to switch headings on all mouseovers
+var sbook_close_tracking=true;
 
 // What to use as the podspot image URI.  This 'image' 
 //  really invokes a script to pick or generate a
@@ -426,14 +428,19 @@ function sbook_toc_builder(child,tocstate)
     tocstate.location=tocstate.location+fdjtFlatWidth(child);}
   else {
     var width=fdjtFlatWidth(child);
-    child.sbookloc=tocstate.location+width/2;
+    var loc=tocstate.location+width/2;
     tocstate.location=tocstate.location+width;
-    child.sbook_head=curhead;
     if ((child.tagName) && (child.tagName==="DIV")) {
       var children=child.childNodes;
       if (children) {
 	var i=0; while (i<children.length)
-		   sbook_toc_builder(children[i++],tocstate);}}}
+		   sbook_toc_builder(children[i++],tocstate);}
+      if (fdjtHasContent(child)) {
+	child.sbook_head=curhead;
+	child.sbookloc=loc;}}
+    else {
+      child.sbookloc=loc;
+      child.sbook_head=curhead;}}
   if ((sbook_debug_locations) && (child.sbookloc) &&
       (child.setAttribute))
     child.setAttribute("sbookloc",child.sbookloc);
@@ -914,8 +921,8 @@ function _sbook_generate_spanbar(head,headinfo,child)
   var start=headinfo.starts_at;
   var end=headinfo.ends_at;
   var len=end-start;
-  var subsections=headinfo.sub;
-  var sectnum=0;
+  var subsections=headinfo.sub; var last_info;
+  var sectnum=0; var percent=0;
   spanbar.starts=start; spanbar.ends=end;
   if ((!(subsections)) || (subsections.length===0))
     return false;
@@ -934,21 +941,37 @@ function _sbook_generate_spanbar(head,headinfo,child)
     else {
       spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
       sectnum++;}
-    var spanlen=spanend-spanstart;
-    var span=fdjtDiv("sbookhudspan","\u00A0");
-    var width=100*(spanlen/len)+"%";
-    var odd=((sectnum%2)==1);
-    if (odd) span.setAttribute("odd",i-1);
-    span.style.width=width;
-    span.title=spaninfo.title+
-      " ("+spaninfo.starts_at+"+"+(spaninfo.ends_at-spaninfo.starts_at)+")";
-    span.headelt=subsection;
+    var span=_sbook_generate_span
+      (sectnum,subsection,spaninfo.title,spanstart,spanend,len);
+    /*
+    span.setAttribute("startpercent",percent);
+    percent=percent+(Math.round(10000*((spanend-spanstart)/len))/100);
+    span.setAttribute("endpercent",percent);
+    */
     if (subsection===child) {
       span.style.color='orange';
       span.style.backgroundColor='orange';
       span.style.borderColor='orange';}
-    fdjtAppend(spans,span);}
+    fdjtAppend(spans,span);
+    last_info=spaninfo;}
+  if ((end-last_info.ends_at)>20) {
+    var span=_sbook_generate_span
+      (sectnum,head,headinfo.title,last_info.ends_at,end,len);
+    fdjtAppend(spanbar,span);}    
   return spanbar;
+}
+
+function _sbook_generate_span(sectnum,subsection,title,spanstart,spanend,len)
+{
+  var spanlen=spanend-spanstart;
+  var span=fdjtDiv("sbookhudspan","\u00A0");
+  var width=(Math.round(10000*(spanlen/len))/100)+"%";
+  var odd=((sectnum%2)==1);
+  if (odd) span.setAttribute("odd",sectnum);
+  span.style.width=width;
+  span.title=title+" ("+spanstart+"+"+(spanend-spanstart)+")";
+  span.headelt=subsection;
+  return span;
 }
 
 function _sbook_generate_subsections_div(subsections,start,end)
@@ -1119,12 +1142,13 @@ function sbookSetLocation(location)
     var width=spanbar.ends-spanbar.starts;
     var ratio=(location-spanbar.starts)/width;
     if (sbook_debug_locations)
-      fdjtLog("ratio for %o is %o [%o,%o,%o]",
-	      spanbar,ratio,spanbar.starts,location,spanbar.ends);
+      fdjtLog("ratio for %o[%d] is %o [%o,%o,%o]",
+	      spanbar,spanbar.childNodes[0].childNodes.length,
+	      ratio,spanbar.starts,location,spanbar.ends);
     if ((ratio>=0) && (ratio<=1)) {
       var progressbox=$$(".progressbox",spanbar);
       if (progressbox.length>0)
-	progressbox[0].style.left=(ratio*100)+"%";}}
+	progressbox[0].style.left=((Math.round(ratio*10000))/100)+"%";}}
   sbook_location=location;
 }
 
@@ -1349,14 +1373,20 @@ function sbook_onmouseover(evt)
 {
   var target=evt.target;
   /*
-  fdjtTrace("sbook_mouseover clientY=%o, tophud=%o, hudheight=%o, hudoff=%o",
-	    evt.clientY,sbookHUD_at_top,sbookHUD.offsetHeight,
+  fdjtTrace("sbook_mouseover clientY=%o, screenY=%o, tophud=%o, hudheight=%o, hudoff=%o",
+	    evt.clientY,evt.screenY,sbookHUD_at_top,sbookHUD.offsetHeight,
 	    sbookHUD.offsetTop);
   */
+  if (sbook_hudup) return;
   /* If you're over the HUD, don't do anything. */
-  if ((sbookHUD_at_top) ? (evt.clientY<sbookHUD.offsetHeight) :
-      (evt.clientY>sbookHUD.offsetTop)) {
+  else if (fdjtHasParent(evt.target,sbookHUD))
+    return;
+  /*     THis didn't seem to work portably. */
+  /*
+    if ((sbookHUD_at_top) ? (evt.clientY<sbookHUD.offsetHeight) :
+    (evt.clientY>sbookHUD.offsetTop)) {
     return;}
+  */
   /* If you're not, go back to the saved scroll location */
   if (fdjtScrollRestore()) return;
   /* Now, we try to find a top level element to sort out whether
@@ -1375,13 +1405,12 @@ function sbook_onmouseover(evt)
     else return;}
   while (target)
     if (target.sbook_head) break;
+    else if (target.sbookinfo) break;
     else if (target.parentNode===document.body) break;
     else target=target.parentNode;
   if (target===null) return;
   if (target===sbookHUD) return;
-  if (fdjtIsVisible(sbook_head)) return;
-  if ((target) && (target.sbookloc))
-    sbookSetLocation(target.sbookloc);
+  if ((!(sbook_close_tracking)) && (fdjtIsVisible(sbook_head))) return;
   if (target!=sbook_focus_elt) {
     var tags=sbook_get_tags(target);
     if ((tags.length>0) &&
@@ -1402,6 +1431,8 @@ function sbook_onmouseover(evt)
     sbookSetHead(target);
   else if (target.sbook_head)
     sbookSetHead(target.sbook_head);
+  if ((target) && (target.sbookloc))
+    sbookSetLocation(target.sbookloc);
 }
 
 function sbook_onclick(evt)
@@ -1689,3 +1720,8 @@ function sbookSetup(evt)
 
 fdjtLoadMessage("Loaded sbooks module");
 
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
