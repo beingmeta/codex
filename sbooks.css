@@ -84,7 +84,6 @@ body.tophud a#SBOOKNEXT { top: 0px;}
 body.tophud a#SBOOKPREV { top: 0px;}
 body.tophud a#SBOOKSOCIAL { top: 0px;}
 body.tophud a#SBOOKSEARCH { top: 0px;}
-body.tophud a#SBOOKECHOSEARCH { top: 0px;}
 
 body.hudup p { opacity: 0.4; }
 body.hudup h1 { opacity: 0.4; }
@@ -180,14 +179,6 @@ div#SBOOKHUD div.sbooksocial iframe {
   padding-left: 70px; padding-right: 70px; 
   width: 75%; border: 0px; height: 100%;}
 
-div#SBOOKHUD div.sbookechosearch { 
-  padding-left: 70px; padding-right: 70px; text-align: center;
-  padding: 0px; margin: 0px;
-  display: none; width: 100%;}
-div#SBOOKHUD div.sbookechosearch iframe { 
-  padding-left: 70px; padding-right: 70px; 
-  width: 75%; border: 0px;}
-
 div#SBOOKHUD div#SBOOKSEARCH { 
   padding-left: 70px; padding-right: 70px; text-align: center;
   padding: 0px; margin: 0px;
@@ -198,13 +189,22 @@ div#SBOOKHUD div#SBOOKSEARCH {
 div.sbooksearch div.controls input[type="TEXT"] { 
   font-size: 16px; font-family: sans,sans-serif; 
   width: 50%;}
+div.sbooksearch div.controls div.messages { 
+  color: black; background-color: white;
+  font-family: sans,sans-serif; 
+  margin-left: 25%; width: 50%;}
+div.sbooksearch div.controls div.messages span.count { 
+  font-weight: bold;}
 div.sbooksearch div.controls div.completions { 
   font-size: 12px; font-family: sans,sans-serif; 
   width: 50%; margin-left: 25%; text-align: left;
   padding-top: 5px; }
-div.sbooksearch div.cues {min-height: 1ex;}
-div.sbooksearch div.query {min-height: 3ex;}
+div.sbooksearch div.cues {}
+div.sbooksearch div.query {}
 div.sbooksearch div.results {min-height: 2ex;}
+
+body[mode~="results"] div.sbooksearch div.controls div.messages { 
+  display: none;}
 
 div.sbooksearch span.dterm { 
   background-color: lightblue; color: black;
@@ -256,25 +256,18 @@ div.sbooksearchresults a.searchresult span.headhead {
 
 div#SBOOKHUD div.sbooksocial { display: none;}
 div#SBOOKHUD div.sbooksearch { display: none;}
-div#SBOOKHUD div.sbookechosearch { display: none;}
 
+/* When you have a mode, you're not in toc mode */
 body[mode] div.sbooktoc { display: none;}
-body[mode~="search"] div.sbooktoc { display: none;}
 
+body[mode~="search"] div#SBOOKHUD div#SBOOKSEARCH { 
+  display: block;}
+body[mode~="social"] div#SBOOKHUD div#SBOOKSOCIAL { 
+  display: block;}
+body[hudup][mode~="social"] div#SBOOKHUD div#SBOOKSOCIAL { 
+  display: block;}
 body[hudup][mode~="search"] div#SBOOKHUD div#SBOOKSEARCH { 
   display: block;}
-body[mode~="social"][mode~="search"] div#SBOOKHUD div#SBOOKSEARCH { 
-  display: none;}
-body[mode~="social"][mode~="search"] div#SBOOKHUD div#SBOOKSOCIAL { 
-  display: none;}
-body[hudup][mode~="social"][mode~="search"] div#SBOOKHUD div#SBOOKECHOSEARCH { 
-  display: block;}
-body[mode~="social"] div#SBOOKHUD div.sbooksocial { 
-  height: 60px; display: block;}
-body[hudup][mode~="social"] div#SBOOKHUD div.sbooksocial { 
-  display: block; height: 200px;}
-body[mode~="social"][mode~="search"] div#SBOOKHUD div.sbooksocial { 
-  display: none;}
 
 div#SBOOKSEARCHRESULTS { 
  padding: 0px; margin: 0px;
