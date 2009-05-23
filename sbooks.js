@@ -8,7 +8,7 @@
    For more information on knowlets, visit www.knowlets.net
    For more information about beingmeta, visit www.beingmeta.com
 
-   This library uses on the FDJT (www.fdjt.org) toolkit.
+   This library uses the FDJT (www.fdjt.org) toolkit.
 
    This program comes with absolutely NO WARRANTY, including implied
    warranties of merchantability or fitness for any particular
@@ -200,7 +200,7 @@ function _sbook_createHUDSearch()
   results.id="SBOOKSEARCHRESULTS";
   input.id="SBOOKSEARCHTEXT";
   fdjtAppend(messages,
-	     "terms: ",fdjtId(fdjtSpan("count","0"),"TERMCOUNT"),
+	     // "terms: ",fdjtId(fdjtSpan("count","0"),"TERMCOUNT"),
 	     // May eventually add concept count here for semantic search
 	     "; refiners: ",fdjtId(fdjtSpan("count","0"),"REFINECOUNT"),
 	     "; completions: ",fdjtId(fdjtSpan("count","0"),"COMPLETIONCOUNT"),
@@ -656,9 +656,8 @@ function sbookSetQuery(query,scored)
       ((scored||false)===(sbook_query._scored)))
     return sbook_query;
   var result=sbookQuery(query);
-  sbook_query=result;
-  fdjtReplace("TERMCOUNT",
-	      fdjtSpan("count",new String(result._query.length)));
+  sbook_query=result; query=result._query;
+  // fdjtReplace("TERMCOUNT",fdjtSpan("count",new String(query.length)));
   fdjtReplace("RESULTCOUNT",
 	      fdjtSpan("count",new String(result._results.length)));
   if (sbook_debug_search)
@@ -869,32 +868,43 @@ function sbookQueryCloud(query)
     var empty_elt=fdjtDiv("completions");
     return empty_elt;}
   else {
-    /* 
-    fdjtLog("Generating completions for %o, r=%o/%o",
-    	    query,query._refiners,query._refiners._results);
-    */
-    var completions=fdjtDiv("completions");
-    var results=query._results;
-    var refiners=query._refiners;
-    var dterms=query._refiners._results;
-    var n_refiners=dterms.length;
-    var i=0; var max_score=0;
-    for (dterm in refiners) {
-      var score=refiners[dterm];
-      if (score>max_score) max_score=score;}
-    completions.onclick=fdjtComplete_onclick;
-    // fdjtTrace("refiners=%o, dterms=%o",refiners,dterms);
-    fdjtAppend(completions,fdjtSpan
-	       ("count",n_refiners,((n_refiners==1)?" refiner":" refiners")));
-    i=0; while (i<dterms.length) {
-      var dterm=dterms[i++];
-      var span=sbookDTermCompletion(dterm);
-      var relsize=75+(Math.ceil(75*(refiners[dterm]/max_score)));
-      span.style.fontSize=relsize+"%";
-      fdjtAppend(completions,span,"\n");}
+    var completions=sbookMakeCloud
+      (query._refiners._results,query.refiners);
     query._cloud=completions;
     // fdjtTrace("Generated completions for %o: %o",query,completions);
     return completions;}
+}
+
+function sbookMakeCloud(dterms,scores)
+{
+  var completions=fdjtDiv("completions");
+  var n_terms=dterms.length;
+  var i=0; var max_score=0;
+  if (scores) {
+    var i=0; while (i<dterms.length) {
+      var score=scores[dterms[i++]];
+      if ((score) && (score>max_score)) max_score=score;}}
+  var copied=((scores) ? ([].concat(dterms)) : (dterms));
+  copied.sort(function (x,y) {
+      if (scores[x]===scores[y]) return 0;
+      else if (scores[x])
+	if (scores[y])
+	  if (scores[x]>scores[y]) return -1;
+	  else return 1;
+	else return -1;
+      else if (scores[y])
+	return 1;
+      else return 0;});
+  completions.onclick=fdjtComplete_onclick;
+  i=0; while (i<dterms.length) {
+    var dterm=dterms[i++];
+    var span=sbookDTermCompletion(dterm);
+    if ((scores) && (scores[dterm])) {
+      var score=scores[dterm];
+      var relsize=75+(Math.ceil(75*(score/max_score)));
+      span.style.fontSize=relsize+"%";}
+    fdjtAppend(completions,span,"\n");}
+  return completions;
 }
 
 var sbook_full_cloud=false;
@@ -904,9 +914,7 @@ function sbookFullCloud()
 {
   if (sbook_full_cloud) return sbook_full_cloud;
   else {
-    var completions=fdjtDiv("completions");
     var tagscores={}; var alltags=[];
-    completions.onclick=fdjtComplete_onclick;
     var book_tags=sbook_index._all;
     // The scores here are used to determine sizes in the cloud
     // A regular index reference counts as 1 and a prime reference counts
@@ -932,14 +940,7 @@ function sbookFullCloud()
     var i=0; while (i<alltags.length) {
       var score=tagscores[alltags[i++]];
       if (score>max_score) max_score=score;}
-    alltags.sort();
-    i=0; while (i<alltags.length) {
-      var dterm=alltags[i++];
-      var span=sbookDTermCompletion(dterm);
-      var relsize=75+(Math.ceil(75*(tagscores[dterm]/max_score)));
-      span.style.fontSize=relsize+"%";
-      fdjtAppend(completions,span,"\n");}
-    sbook_all_tags=alltags;
+    var completions=sbookMakeCloud(alltags,scores);
     sbook_full_cloud=completions;
     return completions;}
 }
@@ -1515,7 +1516,7 @@ function sbook_onscroll(evt)
 }
 
 /* Scrolling by moving sideways */
-/* Currently (not enabled) */
+/* Currently not enabled */
 
 var _sbook_mousex_down=false;
 
