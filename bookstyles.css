@@ -71,7 +71,7 @@ div.stanza {
 div.stanza p {
   text-align: left; margin-left: 10%;
   margin-top: 2px; margin-bottom: 2px;
-  text-indent: -3em; }
+  text-indent: -10%; }
 
 /* Prose */
 
@@ -86,3 +86,10 @@ body.prose p {
 p.bcv {}
 body.bcv p {}
 .bcv span.v { padding-right: 2em;}
+
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

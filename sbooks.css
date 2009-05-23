@@ -180,7 +180,9 @@ div#SBOOKHUD div.sbooksocial iframe {
   width: 75%; border: 0px; height: 100%;}
 
 div#SBOOKHUD div#SBOOKSEARCH { 
+  position: fixed; bottom: 0px; max-height: 75%;
   padding-left: 70px; padding-right: 70px; text-align: center;
+  opacity: 0.90; background-color: gray;
   padding: 0px; margin: 0px;
   display: none; width: 100%;}
 
@@ -198,7 +200,7 @@ div.sbooksearch div.controls div.messages span.count {
 div.sbooksearch div.controls div.completions { 
   font-size: 12px; font-family: sans,sans-serif; 
   width: 50%; margin-left: 25%; text-align: left;
-  padding-top: 5px; }
+  padding-top: 5px; overflow: auto;}
 div.sbooksearch div.cues {}
 div.sbooksearch div.query {}
 div.sbooksearch div.results {min-height: 2ex;}
@@ -207,12 +209,22 @@ body[mode~="results"] div.sbooksearch div.controls div.messages {
   display: none;}
 
 div.sbooksearch span.dterm { 
-  background-color: lightblue; color: black;
-  padding: 4px; padding-top: 2px; padding-bottom: 2px;
-  -khtml-border-radius: 8px; 
-  -webkit-border-radius: 8px; 
-  -moz-border-radius: 8px;
-  border-radius: 8px;}
+  background-color: yellow; color: black;
+  padding: 2px; padding-left: 5px; margin-right: 3px;
+  /*
+  -khtml-border-radius: 3px; 
+  -webkit-border-radius: 3px; 
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  */
+  -khtml-border-top-left-radius: 6px; 
+  -khtml-border-top-left-radius: 6px; 
+  -moz-border-radius-topleft: 6px; 
+  border-top-left-radius: 6px; 
+  -khtml-border-bottom-left-radius: 6px; 
+  -khtml-border-bottom-left-radius: 6px; 
+  -moz-border-radius-bottomleft: 6px;
+  border-bottom-left-radius: 6px;}
 div.sbooksearch span.dterm span.disambig {color: red;}
 div.sbooksearch div.completions { display: block; line-height: 200%;}
 
