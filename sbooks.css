@@ -200,7 +200,12 @@ div.sbooksearch div.controls div.messages span.count {
 div.sbooksearch div.controls div.completions { 
   font-size: 12px; font-family: sans,sans-serif; 
   width: 50%; margin-left: 25%; text-align: left;
-  padding-top: 5px; overflow: auto;}
+  padding-top: 5px; overflow: auto; max-height: 50%;}
+div.sbooksearch div.controls div.completions span.counts { 
+  float: right; color: red; font-weight: bold;
+  background-color: black;
+  padding: 3px; padding-top: 0px; padding-bottom: 0px;
+  -moz-border-radius: 3px;}
 div.sbooksearch div.cues {}
 div.sbooksearch div.query {}
 div.sbooksearch div.results {min-height: 2ex;}
@@ -263,6 +268,8 @@ div.sbooksearchresults a.searchresult span.head {
     font-size: 75%;}
 div.sbooksearchresults a.searchresult span.headhead {
     color: blue; font-weight: bold;}
+div.sbooksearchresults a.searchresult span.controller {
+    font-weight: bold; color: white;}
 
 /* Mode controls */
 

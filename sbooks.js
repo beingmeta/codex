@@ -38,7 +38,7 @@ var sbook_debug=false;
 // Whether to debug the HUD
 var sbook_debug_hud=false;
 // Whether to debug search
-var sbook_debug_search=false;
+var sbook_debug_search=true;
 // Whether we're debugging locations
 var sbook_debug_locations=false;
 // Rules for building the TOC.  These can be extended.
@@ -90,6 +90,8 @@ var sbook_dindex={_all: []};
 var sbook_word_index={};
 // This is an array of all tags
 var sbook_all_tags=[];
+// This is a count of all tagged elements
+var sbook_tagged_count=0;
 // This is a table mapping tags (typically, hopefully, dterms) to URIs
 var sbook_context_index={};
 // Whether to build the index
@@ -109,6 +111,8 @@ var sbook_close_tracking=true;
 // If a search has fewer than this many results,
 //  it just displays them
 var sbook_search_gotlucky=4;
+// Whether to display verbose tool tips
+var sbook_noisy_tooltips=false;
 
 // What to use as the podspot image URI.  This 'image' 
 //  really invokes a script to pick or generate a
@@ -526,7 +530,7 @@ function sbookGetRefiners(results)
   if (results._refiners) return results._refiners;
   var query=results._query;
   var rvec=(results._results);
-  var refiners={}; var alltags=[];
+  var refiners={}; var freqs={}; var alltags=[];
   var i=0; while (i<rvec.length) {
     var item=rvec[i++];
     var item_score=results[item];
@@ -541,12 +545,17 @@ function sbookGetRefiners(results)
 	  // If the tag isn't a refiner, we initialize its score
 	  // and add it to the list of all the tags we've found
 	  alltags.push(tag);
+	  freqs[tag]=1;
 	  refiners[tag]=item_score;}
-	else refiners[tag]=refiners[tag]+item_score;}}}
+	else {
+	  freqs[tag]=freqs[tag]+1;
+	  refiners[tag]=refiners[tag]+item_score;}}}}
+  freqs._count=rvec.length;
+  refiners._freqs=freqs;
   results._refiners=refiners;
   alltags.sort(function(x,y) {
-      if (refiners[x]>refiners[y]) return -1;
-      else if (refiners[x]===refiners[y]) return 0;
+      if (freqs[x]>freqs[y]) return -1;
+      else if (freqs[x]===freqs[y]) return 0;
       else return 1;});
   refiners._results=alltags;
   if (false) /* sbook_debug_search */
@@ -699,25 +708,46 @@ function sbookShowSearchResults(result,results_div)
       fdjtAppend(anchor,scorespan);}
     var tags=elt.tags;
     var head=(((elt.sbookinfo) && (elt.sbookinfo.level)) ? (elt) :
-	      (elt.sbook_head));
-    if (head===document.body) continue;
+	      ((elt.sbook_head)||(elt)));
+    if (head===document.body) head=elt;
     var info=head.sbookinfo;
-    var heads=info.sbook_heads;
-    var headspan=fdjtDiv("searchresulthead",info.title);
-    var curspan=headspan;
-    j=heads.length-1; while (j>=0) {
-      var h=heads[j--]; var hinfo=h.sbookinfo;
-      if (h===document.body) continue;
-      var newspan=fdjtSpan("head",hinfo.title);
-      fdjtAppend(curspan," \\ ",newspan);
-      curspan=newspan;}
-    // fdjtAddClass(curspan,"headhead");
-    fdjtAppend(anchor," ",headspan);
+    var heads=((info) ? (info.sbook_heads) : []);
+    if (info) {
+      var headspan=fdjtDiv("searchresulthead",info.title);
+      var curspan=headspan;
+      j=heads.length-1; while (j>=0) {
+	var h=heads[j--]; var hinfo=h.sbookinfo;
+	if (h===document.body) continue;
+	var newspan=fdjtSpan("head",hinfo.title);
+	fdjtAppend(curspan," \\ ",newspan);
+	curspan=newspan;}
+      // fdjtAddClass(curspan,"headhead");
+      fdjtAppend(anchor," ",headspan);}
+    else {
+      var headtext="One result";
+      if (elt.title) headtext=elt.title;
+      else if (elt.id) headtext=elt.id;
+      else {
+	var text=fdjtTextify(elt);
+	if (text.length<50) headtext=text;}
+      fdjtAppend(anchor," ",fdjtDiv("searchresulthead",headtext));}
+    var tagspan=anchor;
     var j=0; var first=true; while (j<tags.length) {
       var tag=tags[j++];
       if (j===1) 
-	fdjtAppend(anchor,fdjtSpan("dterm",tag));
-      else fdjtAppend(anchor," \u00b7 ",fdjtSpan("dterm",tag));}
+	fdjtAppend(tagspan,fdjtSpan("dterm",tag));
+      else if ((j===7) &&
+	       (tagspan===anchor) &&
+	       (tags.length>10)) {
+	var controller=fdjtSpan("controller","...",tags.length-6,"+ ...");
+	tagspan=fdjtSpan("moretags");
+	tagspan.style.display='none';
+	controller.title=("click to toggle more tags");
+	controller.onclick=fdjtShowHide_onclick;
+	controller.clicktotoggle=new Array(tagspan);
+	fdjtAppend(anchor," ",controller," ",tagspan);
+	j--;}
+      else fdjtAppend(tagspan," \u00b7 ",fdjtSpan("dterm",tag));}
     if (i===1)
       fdjtAppend(results_div,anchor);
     else fdjtAppend(results_div,"\n",anchor);}
@@ -818,22 +848,26 @@ function _sbook_replace_current_entry(elt,value)
 
 /* Getting query cloud */
 
-function sbookDTermCompletion(dterm,count)
+function sbookDTermCompletion(dterm,title)
 {
   var knowde=Knowde(dterm);
   var span=fdjtSpan("completion",((knowde)||(dterm)).toHTML("\u00b7"));
-  if (!(count))
+  if (!(title))
     if (sbook_index[dterm])
-      count=sbook_index[dterm].length;
-    else count=0;
+      title=sbook_index[dterm].length+" items";
+    else title=false;
   if (knowde) {
     if (knowde.gloss)
-      span.title=count+" items; "+knowde.gloss;
-    else span.title=count+" items";
+      if (title)
+	span.title=title+": "+knowde.gloss;
+      else span.title=knowde.gloss;
+    else span.title=title;
     span.key=knowde.terms.concat(knowde.hooks);
     // fdjtTrace("span.key for %s (%o) is %o",dterm,knowde,span.key);
     span.value=knowde.dterm;}
-  else span.key=dterm;
+  else {
+    span.key=dterm;
+    if (title) span.title=title;}
   return span;
 }
 
@@ -845,13 +879,22 @@ function sbookQueryCloud(query)
     return empty_elt;}
   else {
     var completions=sbookMakeCloud
-      (query._refiners._results,query._refiners);
+      (query._refiners._results,query._refiners,
+       query._refiners._freqs);
+    fdjtPrepend(completions,
+		fdjtSpan("counts",
+			 query._results.length,
+			 ((query._results.length==1) ?
+			  " result; " : " results; "),
+			 query._refiners._results.length,
+			 ((query._refiners._results.length==1) ?
+			  " dterm" : " dterms")));
     query._cloud=completions;
     // fdjtTrace("Generated completions for %o: %o",query,completions);
     return completions;}
 }
 
-function sbookMakeCloud(dterms,scores)
+function sbookMakeCloud(dterms,scores,freqs)
 {
   var completions=fdjtDiv("completions");
   var n_terms=dterms.length;
@@ -861,24 +904,44 @@ function sbookMakeCloud(dterms,scores)
       var score=scores[dterms[i++]];
       if ((score) && (score>max_score)) max_score=score;}}
   var copied=((scores) ? ([].concat(dterms)) : (dterms));
-  copied.sort(function (x,y) {
-      if (scores[x]===scores[y]) return 0;
-      else if (scores[x])
-	if (scores[y])
-	  if (scores[x]>scores[y]) return -1;
+  if (freqs)
+    copied.sort(function (x,y) {
+	var xfreq=((freqs[x])?(freqs[x]):(0));
+	var yfreq=((freqs[y])?(freqs[y]):(0));
+	if (xfreq==yfreq)
+	  if (x.length>y.length) return -1;
+	  else if (x.length===y.length) return 0;
 	  else return 1;
-	else return -1;
-      else if (scores[y])
-	return 1;
-      else return 0;});
+	else if (xfreq>yfreq) return -1;
+	else return 1;});
+  else copied.sort(function (x,y) {
+      var xlen=((sbook_index[x])?(sbook_index[x].length):(0));
+      var ylen=((sbook_index[y])?(sbook_index[y].length):(0));
+      if (xlen==ylen)
+	if (x.length>y.length) return -1;
+	else if (x.length===y.length) return 0;
+	else return 1;
+      else if (xlen>ylen) return -1;
+      else return 1;});
   completions.onclick=fdjtComplete_onclick;
-  i=0; while (i<dterms.length) {
-    var dterm=dterms[i++];
+  i=0; while (i<copied.length) {
+    var dterm=copied[i++];
     var count=((sbook_index[dterm]) ? (sbook_index[dterm].length) : (0));
-    var span=sbookDTermCompletion(dterm,count);
+    var freq=((freqs)?(freqs[dterm]||0):(0));
+    var score=((scores) ?(scores[dterm]||false) : (false));
+    var title=
+      ((sbook_noisy_tooltips) ?
+       (((score)?("s="+score+"; "):"")+freq+"/"+count+" items") :
+       (freq+((freq==1) ? " item" : " items")));
+    var relfreq=((freqs) ?
+		 ((freq/freqs._count)-(count/sbook_tagged_count))
+		 : (0.5));
+    var span=sbookDTermCompletion(dterm,title);
     if ((scores) && (scores[dterm])) {
-      var score=scores[dterm];
-      var relsize=75+(Math.ceil(100*(score/max_score)));
+      var relsize=
+	Math.ceil((75+(Math.ceil(50*(score/max_score)))+
+		   (Math.ceil(50*(relfreq))))
+		  *((dterm.length>8) ? (2/Math.log(dterm.length)) : (1)));
       span.style.fontSize=relsize+"%";}
     fdjtAppend(completions,span,"\n");}
   return completions;
@@ -898,21 +961,18 @@ function sbookFullCloud()
     //  as one more.
     var i=0; while (i<book_tags.length) {
       var tag=book_tags[i++];
-      var score=sbook_index[tag].length+
+      var score=Math.ceil(Math.log(sbook_index[tag].length))+
+	((sbook_dindex[tag]) ? (sbook_dindex[tag].length) : (0))+
 	((sbook_pindex[tag]) ? (sbook_pindex[tag].length) : (0));
       if (tagscores[tag]) tagscores[tag]=tagscores[tag]+score;
       else tagscores[tag]=score;
       alltags.push(tag);}
-    // We also use generalizations (sbook_dindex) in the search
-    // but use the log of the number of references, rather than
-    // the direct count.
-    var book_xtags=sbook_dindex._all;
-    i=0; while (i<book_xtags.length) {
-      var tag=book_xtags[i++];
-      var score=Math.ceil(Math.log(sbook_dindex[tag].length));
-      if (tagscores[tag])
-	tagscores[tag]=tagscores[tag]+score;
-      else tagscores[tag]=score;}
+    alltags.sort(function (x,y) {
+	var xlen=((sbook_index[x])?(sbook_index[x].length):(0));
+	var ylen=((sbook_index[y])?(sbook_index[y].length):(0));
+	if (xlen==ylen) return 0;
+	else if (xlen>ylen) return -1;
+	else return 1;})
     var max_score=0;
     var i=0; while (i<alltags.length) {
       var score=tagscores[alltags[i++]];
@@ -1686,6 +1746,7 @@ function setupTags()
       else container=container.parentNode;}
     if (container) sbookAddTag(container,dterm);}
   var done=new Date();
+  sbook_tagged_count=elt_count;
   fdjtLog("Got %d tags from %d elements in %f secs, %s now has %d dterms",
 	  tag_count,elt_count,(done.getTime()-start.getTime())/1000,
 	  knowlet.name,knowlet.alldterms.length);
