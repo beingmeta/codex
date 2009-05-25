@@ -1642,26 +1642,29 @@ function sbookHUD_SearchMode(evt)
 
 /* Tag setup */
 
-function sbookAddTag(elt,tag,prime)
+function sbookAddTag(elt,tag,prime,checkdup)
 {
   var elt_id=(((elt.sbookinfo) && (elt.sbookinfo.headid)) ||
 	      (fdjtForceId(elt)));
   var dterm=((typeof tag === "string") ? (tag) : (tag.id));
-  if (sbook_index[dterm])
-    sbook_index[dterm].push(elt_id);
+  if (sbook_index.hasOwnProperty(dterm)) {
+    if ((!(checkdup)) || (sbook_index[dterm].indexOf(elt_id)<0))
+      sbook_index[dterm].push(elt_id);}
   else {
     sbook_index[dterm]=new Array(elt_id);
     sbook_index._all.push(dterm);}
-  if (sbook_dindex[dterm])
-    sbook_dindex[dterm].push(elt_id);
+  if (sbook_dindex.hasOwnProperty(dterm)) {
+    if ((!(checkdup)) || (sbook_dindex[dterm].indexOf(elt_id)<0))
+      sbook_dindex[dterm].push(elt_id);}
   else {
     sbook_dindex[dterm]=new Array(elt_id);
     sbook_dindex._all.push(dterm);}
   if (elt.tags) elt.tags.push(dterm);
   else elt.tags=new Array(dterm);
   if (prime) {
-    if (sbook_pindex[dterm])
-      sbook_pindex[dterm].push(elt_id);
+    if (sbook_pindex.hasOwnProperty(dterm)) {
+      if ((!(checkdup)) || (sbook_pndex[dterm].indexOf(elt_id)<0))
+	sbook_pindex[dterm].push(elt_id);}
     else sbook_pindex[dterm]=new Array(elt_id);
     if (elt.ptags) elt.ptags.push(dterm);
     else elt.ptags=new Array(dterm);}
