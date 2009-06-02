@@ -203,6 +203,7 @@ function _sbook_createHUDSearch()
   input.setAttribute("AUTOCOMPLETE","off");
   input.setAttribute("COMPLETIONS","SBOOKSEARCHCOMPLETIONS");
   input.setAttribute("COMPLETECHARS"," \t;");
+  input.setAttribute("MAXCOMPLETE","20");  
   completions.id="SBOOKSEARCHCOMPLETIONS";
   context.id="SBOOKSEARCHCUES";
   messages.id="SBOOKSEARCHMESSAGES";
@@ -442,7 +443,7 @@ function sbook_toc_builder(child,tocstate)
       if (children) {
 	var i=0; while (i<children.length)
 		   sbook_toc_builder(children[i++],tocstate);}
-      if (fdjtHasContent(child)) {
+      if ((fdjtHasContent(child)) || (fdjtHasAttrib(child,'tags'))) {
 	child.sbook_head=curhead;
 	child.sbookloc=loc;}}
     else {
@@ -1438,6 +1439,26 @@ function sbookHUD_onmouseover(evt)
   evt.preventDefault();
 }
 
+function sbookHUD_onmouseover(evt)
+{
+  if (sbook_hud_suppressed) return;
+  if (sbookHUD_hider) {
+    clearTimeout(sbookHUD_hider);
+    sbookHUD_hider=false;}
+  sbookHUDLive(true);
+  var target=sbook_get_headelt(evt.target);
+  if (target===null) return;
+  var head=target.headelt;
+  sbookHUDHighlight(head);
+  var hud=$("SBOOKHUD");
+  if (head) {
+    if (sbookHUD_at_top)
+      fdjtScrollPreview(head,-hud.offsetHeight);
+    else fdjtScrollPreview(head);}
+  evt.cancelBubble=true;
+  evt.preventDefault();
+}
+
 function sbookHUD_onmouseout(evt)
 {
   var rtarget=evt.relatedTarget;
@@ -1649,6 +1670,7 @@ function sbook_podspot_uri(uri,hash,title,tribes)
   fdjtTrace("Getting podspot for %s",uri);
   if ((hash) && (hashpos>=0))
     uri=uri.slice(0,hashpos)+'#'+hash;
+  else uri=uri+'#'+hash;
   var href=sbook_webechoes_root+"podspot.fdcgi?"+
     "IFRAME=yes&PODSPOT=yes&DIALOG=yes";
   if (uri) href=href+"&URI="+encodeURIComponent(uri);

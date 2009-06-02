@@ -314,10 +314,10 @@ body[mode~="social"] div#SBOOKHUD div#SBOOKECHOES {
 body[hudup][mode~="social"] div#SBOOKHUD div#SBOOKECHOES { 
   display: block; height: inherit;}
 body[hudup][mode~="search"] div#SBOOKHUD div#SBOOKSEARCH { 
-  display: block;}
+  display: block; height: inherit;}
 
 div#SBOOKSEARCHRESULTS { 
- padding: 0px; margin: 0px;
+ padding: 0px; margin: 0px; height: 75%;
  padding-left: 70px; padding-right: 70px; 
  position: fixed; 
  bottom: 40px; right: 0px; left: 0px;
