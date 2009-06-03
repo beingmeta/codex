@@ -183,21 +183,23 @@ div#SBOOKHUD div.sbookechoes iframe {
   width: 75%; border: 0px; height: 100%;}
 
 div#SBOOKHUD div#SBOOKSEARCH { 
-  position: fixed; bottom: 0px; max-height: 75%;
+  position: fixed; bottom: 0px; max-height: 50px;
   padding-left: 70px; padding-right: 70px; text-align: center;
   background-color: gray; width: 100%;
   padding: 0px; margin: 0px;
   left: 0px;
   display: none;}
+body.hudup div#SBOOKHUD div#SBOOKSEARCH {  max-height: 75%; }
 body.tophud div#SBOOKHUD div#SBOOKSEARCH { top: 0px; bottom: inherit;}
 
 div#SBOOKHUD div#SBOOKECHOES { 
-  position: fixed; bottom: 0px; max-height: 75%;
+  position: fixed; bottom: 0px; max-height: 50px;
   padding-left: 70px; padding-right: 70px; text-align: center;
   background-color: gray; width: 100%;
   padding: 0px; margin: 0px;
   left: 0px;
   display: none;}
+body.hudup div#SBOOKHUD div#SBOOKECHOES { max-height: 75%;}
 body.tophud div#SBOOKHUD div#SBOOKECHOES { top: 0px; bottom: inherit;}
 
 /* The search dialog */

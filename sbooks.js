@@ -40,7 +40,7 @@ var sbook_debug_hud=false;
 // Whether to debug search
 var sbook_trace_search=0;
 // Whether to debug clouds
-var sbook_trace_clouds=0;
+var sbook_trace_clouds=1;
 // Whether we're debugging locations
 var sbook_debug_locations=false;
 // Rules for building the TOC.  These can be extended.
@@ -711,6 +711,7 @@ var sbook_eye_icon="http://static.beingmeta.com/graphics/EyeIcon25.png";
 function sbookShowSearchResults(result,results_div)
 {
   var results=result._results; var head_div;
+  var refiners=result._refiners;
   if (results.length===0) 
     head_div=fdjtDiv("sorry");
   else head_div=fdjtDiv("count");
@@ -737,6 +738,16 @@ function sbookShowSearchResults(result,results_div)
       while (k<score) {fdjtAppend(scorespan,"*"); k++;}
       fdjtAppend(anchor,scorespan);}
     var tags=elt.tags;
+    if (refiners)
+      tags.sort(function(t1,t2) {
+	  var s1=refiners[t1]; var s2=refiners[t2];
+	  if ((s1) && (s2))
+	    if (s1>s2) return -1;
+	    else if (s1===s2) return 0;
+	    else return -1;
+	  else if (s1) return -1;
+	  else if (s2) return 1;
+	  else return 0;});
     var head=(((elt.sbookinfo) && (elt.sbookinfo.level)) ? (elt) :
 	      ((elt.sbook_head)||(elt)));
     if (head===document.body) head=elt;
@@ -765,11 +776,11 @@ function sbookShowSearchResults(result,results_div)
     var j=0; var first=true; while (j<tags.length) {
       var tag=tags[j++];
       if (j===1) 
-	fdjtAppend(tagspan,fdjtSpan("dterm",tag));
+	fdjtAppend(tagspan,knoDTermSpan(tag));
       else if ((j===7) &&
 	       (tagspan===anchor) &&
 	       (tags.length>10)) {
-	var controller=fdjtSpan("controller","...",tags.length-6,"+ ...");
+	var controller=fdjtSpan("controller","...",tags.length-6,"+...");
 	tagspan=fdjtSpan("moretags");
 	tagspan.style.display='none';
 	controller.title=("click to toggle more tags");
@@ -777,7 +788,7 @@ function sbookShowSearchResults(result,results_div)
 	controller.clicktotoggle=new Array(tagspan);
 	fdjtAppend(anchor," ",controller," ",tagspan);
 	j--;}
-      else fdjtAppend(tagspan," \u00b7 ",fdjtSpan("dterm",tag));}
+      else fdjtAppend(tagspan," \u00b7 ",knoDTermSpan(tag));}
     if (i===1)
       fdjtAppend(results_div,anchor);
     else fdjtAppend(results_div,"\n",anchor);}
@@ -896,7 +907,13 @@ function _sbook_replace_current_entry(elt,value)
 function sbookDTermCompletion(dterm,title)
 {
   var knowde=Knowde(dterm);
-  var span=fdjtSpan("completion",((knowde)||(dterm)).toHTML("\u00b7"));
+  if (!(knowde))
+    fdjtLog("Couldn't get knowlet references from %o",dterm);
+  else if (!(knowde.dterm)) {
+    fdjtLog("Got bogus dterm reference for %s: %o",dterm,knowde);
+    knowde=false;}
+  var span=((knowde) ? (fdjtSpan("completion",knowde.toHTML("\u00b7"))) :
+	    (fdjtSpan("completion",fdjtSpan("dterm","\u00b7",dterm))));
   if (!(title))
     if (sbook_index[dterm])
       title=sbook_index[dterm].length+" items";
@@ -956,7 +973,7 @@ function sbookMakeCloud(dterms,scores,freqs)
     var i=0; while (i<dterms.length) {
       var score=scores[dterms[i++]];
       if ((score) && (score>max_score)) max_score=score;}}
-  var copied=((scores) ? ([].concat(dterms)) : (dterms));
+  var copied=[].concat(dterms);
   if (freqs)
     copied.sort(function (x,y) {
 	var xfreq=((freqs[x])?(freqs[x]):(0));
@@ -1726,12 +1743,19 @@ function sbookHUD_SearchMode(evt)
 
 /* Tag setup */
 
+var sbook_trace_tagging=false;
+
 function sbookAddTag(elt,tag,prime,checkdup)
 {
   var elt_id=(((elt.sbookinfo) && (elt.sbookinfo.headid)) ||
 	      (fdjtForceId(elt)));
-  var dterm=((typeof tag === "string") ? (tag) : (tag.id));
-  if (sbook_index.hasOwnProperty(dterm)) {
+  var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
+  if (sbook_trace_tagging) 
+    fdjtLog("Tagging #%s with %s/%o",elt.id,dterm,tag);
+  if (!(dterm)) {
+    fdjtWarn("Couldn't get dterm for %o",tag);
+    return;}
+  else if (sbook_index.hasOwnProperty(dterm)) {
     if ((!(checkdup)) || (sbook_index[dterm].indexOf(elt_id)<0))
       sbook_index[dterm].push(elt_id);}
   else {
@@ -1754,13 +1778,17 @@ function sbookAddTag(elt,tag,prime,checkdup)
     else elt.ptags=new Array(dterm);}
   if (!(typeof tag==="string")) {
     // Assume its a DTERM object
-    var genls=knowde.allgenls; var i=0; while (i<genls.length) {
-      var g=genls[i++]; var gdterm=g.dterm;
-      if (sbook_index[gdterm])
-	sbook_index[gdterm].push(elt_id);
-      else {
-	sbook_index._all.push(gdterm);
-	sbook_index[gdterm]=new Array(elt_id);}}}
+    var genls=tag.allGenls;
+    if (sbook_trace_tagging)
+      fdjtLog("Tagging #%s with genls of %o=%o",elt.id,tag,genls);
+    if (genls) {
+      var i=0; while (i<genls.length) {
+	var g=genls[i++]; var gdterm=g.dterm;
+	if (sbook_index.hasOwnProperty(gdterm))
+	  sbook_index[gdterm].push(elt_id);
+	else {
+	  sbook_index._all.push(gdterm);
+	  sbook_index[gdterm]=new Array(elt_id);}}}}
 }
 
 function sbookHandleTagSpec(elt,tagspec)
@@ -1773,12 +1801,13 @@ function sbookHandleTagSpec(elt,tagspec)
     var j=0; while (j<tagentries.length) {
       var tagentry=tagentries[j++];
       if (tagentry==="") continue;
-      var knowde; var prime=false;
+      var knowde=false; var prime=false;
       if (tagentry[0]==='*') {
 	knowde=knowlet.handleSubjectEntry(tagentry.slice(1));
 	prime=true;}
       else knowde=knowlet.handleSubjectEntry(tagentry);
-      sbookAddTag(elt,knowde.dterm,prime);}}
+      // fdjtTrace("adding tag %o to %s",knowde,elt.id);
+      sbookAddTag(elt,knowde,prime);}}
   else {
     var entries=tagspec.split(';'); var prime=false;
     tag_count=tag_count+entries.length;
