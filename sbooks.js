@@ -128,6 +128,11 @@ function sbook_echoes_icon(uri)
     ((uri) ? ("?URI="+encodeURIComponent(uri)) : "");
 }
 
+function sbookScrollOffset()
+{
+  return ((sbookHUD_at_top)&&(-(sbookHUD.offsetHeight+20)))
+}
+
 // This can also be "echoes" or "search" to indicate which
 // main element is active
 var sbook_mode="toc";
@@ -193,9 +198,9 @@ function _sbook_createHUDSearch()
   input.setAttribute("COMPLETEOPTS","nocase prefix");
   input.completions_elt=completions;
   completions.input_elt=input;
-  input.onkeypress=sbookSearch_onkeypress;
-  input.onfocus=sbookSearch_onfocus;
-  input.onblur=sbookSearch_onblur;
+  input.onkeypress=sbookSearchInput_onkeypress;
+  input.onfocus=sbookSearchInput_onfocus;
+  input.onblur=sbookSearchInput_onblur;
   input.getCompletionText=_sbook_get_current_entry;
   input.oncomplete=_sbook_replace_current_entry;
   // This causes a timing problem
@@ -816,8 +821,8 @@ function _sbookSearchResults_onmouseover(evt)
   if (!(target)) return;
   // fdjtTrace("Scrolling to %o",target.sbookelt);
   var sbookelt=target.sbookelt;
-  if (sbookelt) 
-    fdjtScrollPreview(sbookelt,sbookelt.sbook_head);
+  if (sbookelt)
+    fdjtScrollPreview(sbookelt,sbookelt.sbook_head,sbookScrollOffset());
   fdjtAddClass(document.body,"preview","mode");
   evt.preventDefault();
   evt.cancelBubble=true;
@@ -837,7 +842,7 @@ function _sbookSearchResults_onmouseout(evt)
 
 var _sbookSearchKeyPress_delay=false;
 
-function sbookSearch_onkeypress(evt)
+function sbookSearchInput_onkeypress(evt)
 {
   var ch=evt.charCode, kc=evt.keyCode;
   var target=evt.target;
@@ -861,7 +866,7 @@ function sbookSearch_onkeypress(evt)
   else return fdjtComplete_onkeypress(evt);
 }
 
-function sbookSearch_onfocus(evt)
+function sbookSearchInput_onfocus(evt)
 {
   var ch=evt.charCode, kc=evt.keyCode;
   sbook_search_focus=true;
@@ -870,7 +875,7 @@ function sbookSearch_onfocus(evt)
   return fdjtComplete_show(evt);
 }
 
-function sbookSearch_onblur(evt)
+function sbookSearchInput_onblur(evt)
 {
   sbook_search_focus=false;
 }
@@ -1448,10 +1453,7 @@ function sbookHUD_onmouseover(evt)
   var head=target.headelt;
   sbookHUDHighlight(head);
   var hud=$("SBOOKHUD");
-  if (head) {
-    if (sbookHUD_at_top)
-      fdjtScrollPreview(head,-hud.offsetHeight);
-    else fdjtScrollPreview(head);}
+  if (head) fdjtScrollPreview(head,false,sbookScrollOffset());
   evt.cancelBubble=true;
   evt.preventDefault();
 }
@@ -1468,10 +1470,7 @@ function sbookHUD_onmouseover(evt)
   var head=target.headelt;
   sbookHUDHighlight(head);
   var hud=$("SBOOKHUD");
-  if (head) {
-    if (sbookHUD_at_top)
-      fdjtScrollPreview(head,-hud.offsetHeight);
-    else fdjtScrollPreview(head);}
+  if (head) fdjtScrollPreview(head,false,sbookScrollOffset());
   evt.cancelBubble=true;
   evt.preventDefault();
 }
