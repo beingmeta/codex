@@ -40,7 +40,7 @@ var sbook_debug_hud=false;
 // Whether to debug search
 var sbook_trace_search=0;
 // Whether to debug clouds
-var sbook_trace_clouds=1;
+var sbook_trace_clouds=0;
 // Whether we're debugging locations
 var sbook_debug_locations=false;
 // Rules for building the TOC.  These can be extended.
@@ -900,6 +900,7 @@ function _sbook_replace_current_entry(elt,value)
   if ((sbook_search_gotlucky) && 
       (sbook_query._results.length>0) &&
       (sbook_query._results.length<=sbook_search_gotlucky)) {
+    // fdjtTrace("Search got lucky: %o",sbook_query);
     sbookShowSearch(false);
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
@@ -917,8 +918,9 @@ function sbookDTermCompletion(dterm,title)
   else if (!(knowde.dterm)) {
     fdjtLog("Got bogus dterm reference for %s: %o",dterm,knowde);
     knowde=false;}
-  var span=((knowde) ? (fdjtSpan("completion",knowde.toHTML("\u00b7"))) :
-	    (fdjtSpan("completion",fdjtSpan("dterm","\u00b7",dterm))));
+  var dterm_node=((knowde) ? (knowde.toHTML()) : (fdjtSpan("dterm",dterm)));
+  var span=fdjtSpan("completion",dterm_node);
+  fdjtPrepend(dterm_node,"\u00b7");
   if (!(title))
     if (sbook_index[dterm])
       title=sbook_index[dterm].length+" items";
@@ -929,15 +931,28 @@ function sbookDTermCompletion(dterm,title)
 	span.title=title+": "+knowde.gloss;
       else span.title=knowde.gloss;
     else span.title=title;
-    span.key=knowde.terms.concat(knowde.hooks);
-    // fdjtTrace("span.key for %s (%o) is %o",dterm,knowde,span.key);
-    // This is helpful for debugging
-    span.setAttribute("dterm",dterm);
-    span.value=knowde.dterm;}
+    /* Now add variation elements */
+    var variations=[];
+    var i=0; var terms=knowde.terms;
+    while (i<terms.length) {
+      var term=terms[i++];
+      var vary=fdjtSpan("variation","(",term,")");
+      vary.key=term;
+      variations.push(vary);}
+    i=0; terms=knowde.hooks;
+    while (i<terms.length) {
+      var term=terms[i++];
+      var vary=fdjtSpan("variation","(",term,")");
+      vary.key=term;
+      variations.push(vary);}
+    fdjtAppend(span,variations);
+    span.key=knowde.dterm;
+    span.value=knowde.dterm;
+    span.setAttribute("dterm",knowde.dterm);}
   else {
     // This is helpful for debugging
     span.setAttribute("dterm",dterm);
-    span.key=dterm;
+    span.key=dterm; span.value=dterm;
     if (title) span.title=title;}
   return span;
 }
