@@ -920,7 +920,7 @@ function sbookDTermCompletion(dterm,title)
     knowde=false;}
   var dterm_node=((knowde) ? (knowde.toHTML()) : (fdjtSpan("dterm",dterm)));
   var span=fdjtSpan("completion",dterm_node);
-  fdjtPrepend(dterm_node,"\u00b7");
+  fdjtPrepend(dterm_node,fdjtSpan("bigpunct","\u00b7"));
   if (!(title))
     if (sbook_index[dterm])
       title=sbook_index[dterm].length+" items";
