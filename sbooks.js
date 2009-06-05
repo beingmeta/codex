@@ -854,7 +854,7 @@ function sbookSearchInput_onkeypress(evt)
     fdjtAddClass(document.body,"results","mode");
     sbookHUDLive(true);
     return false;}
-  else if (ch===59) {
+  else if (ch===59) { /* That is, semicolon */
     fdjtForceComplete(evt.target);
     evt.preventDefault(); evt.cancelBubble=true;}
   else if (true) {
@@ -919,7 +919,7 @@ function sbookDTermCompletion(dterm,title)
     fdjtLog("Got bogus dterm reference for %s: %o",dterm,knowde);
     knowde=false;}
   var dterm_node=((knowde) ? (knowde.toHTML()) : (fdjtSpan("dterm",dterm)));
-  var span=fdjtSpan("completion",dterm_node);
+  var span=fdjtSpan("completion");
   fdjtPrepend(dterm_node,fdjtSpan("bigpunct","\u00b7"));
   if (!(title))
     if (sbook_index[dterm])
@@ -936,16 +936,20 @@ function sbookDTermCompletion(dterm,title)
     var i=0; var terms=knowde.terms;
     while (i<terms.length) {
       var term=terms[i++];
-      var vary=fdjtSpan("variation","(",term,")");
+      // var vary=fdjtSpan("variation","(",term,")");
+      var vary=fdjtSpan("variation",term,"=");
       vary.key=term;
-      variations.push(vary);}
+      variations.push(vary);
+      variations.push(" ");}
     i=0; terms=knowde.hooks;
     while (i<terms.length) {
       var term=terms[i++];
-      var vary=fdjtSpan("variation","(",term,")");
+      // var vary=fdjtSpan("variation","(",term,")");
+      var vary=fdjtSpan("variation",term,"=");
       vary.key=term;
-      variations.push(vary);}
-    fdjtAppend(span,variations);
+      variations.push(vary);
+      variations.push(" ");}
+    fdjtAppend(span,variations,dterm_node);
     span.key=knowde.dterm;
     span.value=knowde.dterm;
     span.setAttribute("dterm",knowde.dterm);}

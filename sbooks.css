@@ -249,10 +249,14 @@ div.sbooksearch span.dterm {
   -webkit-border-bottom-left-radius: 6px; 
   -moz-border-radius-bottomleft: 6px;
   border-bottom-left-radius: 6px;}
+div.sbooksearch span.dterm span.bigpunct {
+  font-size: 200%; font-weight: bold; line-height: 50%;}
 div.sbooksearch div.completions.showall span.dterm {display: inline;}
 div.sbooksearch div.completions.showall span.dterm.singleton {display: none;}
 div.sbooksearch span.dterm span.disambig {color: red;}
 div.sbooksearch div.completions { line-height: 200%;}
+div.sbooksearch div.completions .completion .variation { 
+  font-size: 95%; color: orange;}
 
 body div.completions { 
   display: none;}
