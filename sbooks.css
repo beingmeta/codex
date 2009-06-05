@@ -256,7 +256,7 @@ div.sbooksearch div.completions.showall span.dterm.singleton {display: none;}
 div.sbooksearch span.dterm span.disambig {color: red;}
 div.sbooksearch div.completions { line-height: 200%;}
 div.sbooksearch div.completions .completion .variation { 
-  font-size: 95%; color: orange;}
+  font-size: 100%; color: white;}
 
 body div.completions { 
   display: none;}

@@ -198,6 +198,7 @@ function _sbook_createHUDSearch()
   input.setAttribute("COMPLETEOPTS","nocase prefix");
   input.completions_elt=completions;
   completions.input_elt=input;
+  input.onkeydown=fdjtComplete_onkey;
   input.onkeypress=sbookSearchInput_onkeypress;
   input.onfocus=sbookSearchInput_onfocus;
   input.onblur=sbookSearchInput_onblur;
@@ -842,12 +843,28 @@ function _sbookSearchResults_onmouseout(evt)
 
 var _sbookSearchKeyPress_delay=false;
 
+function sbookForceComplete(input_elt)
+{
+  var completions=fdjtComplete(input_elt);
+  var forced=false;
+  if (completions.exactheads.length)
+    forced=completions.exactheads[0];
+  else if (completions.heads.length)
+    forced=completions.heads[0];
+  else if (completions.exact.length)
+    forced=completions.exact[0];
+  else if (completions.length)
+    forced=completions[0];
+  else {}
+  fdjtHandleCompletion(input_elt,forced,false);
+}
+
 function sbookSearchInput_onkeypress(evt)
 {
-  var ch=evt.charCode, kc=evt.keyCode;
+  var ch=evt.charCode; var kc=evt.keyCode;
   var target=evt.target;
   if (kc===13) {
-    fdjtForceComplete(target);
+    sbookForceComplete(target);
     sbookShowSearch(false);
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
@@ -855,15 +872,15 @@ function sbookSearchInput_onkeypress(evt)
     sbookHUDLive(true);
     return false;}
   else if (ch===59) { /* That is, semicolon */
-    fdjtForceComplete(evt.target);
+    sbookForceComplete(evt.target);
     evt.preventDefault(); evt.cancelBubble=true;}
   else if (true) {
     if (_sbookSearchKeyPress_delay) 
       clearTimeout(_sbookSearchKeyPress_delay);
     _sbookSearchKeyPress_delay=
       setTimeout(function(){sbookUpdateQuery(target);},500);
-    return fdjtComplete_onkeypress(evt);}
-  else return fdjtComplete_onkeypress(evt);
+    return fdjtComplete_onkey(evt);}
+  else return fdjtComplete_onkey(evt);
 }
 
 function sbookSearchInput_onfocus(evt)
