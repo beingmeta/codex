@@ -286,7 +286,7 @@ div.sbooksearchresults div.count {
   text-align: right; color: orange; font-weight: bold;
   padding-top: 3px; border-top: solid orange 3px;}
 div.sbooksearchresults a.searchresult { 
-  display: block; white-space: wrap; clear: both;
+  display: block; white-space: normal; clear: both;
   text-decoration: none; 
   margin-top: 4px; margin-bottom: 4px;
   margin-left: 10%; margin-right: 10%;

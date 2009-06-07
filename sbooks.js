@@ -185,6 +185,8 @@ function createSBOOKHUD()
     fdjtPrepend(document.body,hud);}
 }
 
+/* Search UI */
+
 function _sbook_createHUDSearch()
 {
   var outer=fdjtDiv("sbooksearch"," ");
@@ -458,6 +460,134 @@ function sbook_toc_builder(child,tocstate)
   if ((sbook_debug_locations) && (child.sbookloc) &&
       (child.setAttribute))
     child.setAttribute("sbookloc",child.sbookloc);
+}
+
+
+/* Tag setup */
+
+var sbook_trace_tagging=false;
+
+function sbookAddTag(elt,tag,prime,checkdup)
+{
+  var elt_id=(((elt.sbookinfo) && (elt.sbookinfo.headid)) ||
+	      (fdjtForceId(elt)));
+  var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
+  if (sbook_trace_tagging) 
+    fdjtLog("Tagging #%s with %s/%o",elt.id,dterm,tag);
+  if (!(dterm)) {
+    fdjtWarn("Couldn't get dterm for %o",tag);
+    return;}
+  else if (sbook_index.hasOwnProperty(dterm)) {
+    if ((!(checkdup)) || (sbook_index[dterm].indexOf(elt_id)<0))
+      sbook_index[dterm].push(elt_id);}
+  else {
+    sbook_index[dterm]=new Array(elt_id);
+    sbook_index._all.push(dterm);}
+  if (sbook_dindex.hasOwnProperty(dterm)) {
+    if ((!(checkdup)) || (sbook_dindex[dterm].indexOf(elt_id)<0))
+      sbook_dindex[dterm].push(elt_id);}
+  else {
+    sbook_dindex[dterm]=new Array(elt_id);
+    sbook_dindex._all.push(dterm);}
+  if (elt.tags) elt.tags.push(dterm);
+  else elt.tags=new Array(dterm);
+  if (prime) {
+    if (sbook_pindex.hasOwnProperty(dterm)) {
+      if ((!(checkdup)) || (sbook_pndex[dterm].indexOf(elt_id)<0))
+	sbook_pindex[dterm].push(elt_id);}
+    else sbook_pindex[dterm]=new Array(elt_id);
+    if (elt.ptags) elt.ptags.push(dterm);
+    else elt.ptags=new Array(dterm);}
+  if (!(typeof tag==="string")) {
+    // Assume its a DTERM object
+    var genls=tag.allGenls;
+    if (sbook_trace_tagging)
+      fdjtLog("Tagging #%s with genls of %o=%o",elt.id,tag,genls);
+    if (genls) {
+      var i=0; while (i<genls.length) {
+	var g=genls[i++]; var gdterm=g.dterm;
+	if (sbook_index.hasOwnProperty(gdterm))
+	  sbook_index[gdterm].push(elt_id);
+	else {
+	  sbook_index._all.push(gdterm);
+	  sbook_index[gdterm]=new Array(elt_id);}}}}
+}
+
+function sbookHandleTagSpec(elt,tagspec)
+{
+  var tag_count=0;
+  tagspec=fdjtUnEntify(tagspec);
+  if (knowlet) {
+    var tagentries=knowlet.segmentString(tagspec,';');
+    tag_count=tag_count+tagentries.length;
+    var j=0; while (j<tagentries.length) {
+      var tagentry=tagentries[j++];
+      if (tagentry==="") continue;
+      var knowde=false; var prime=false;
+      if (tagentry[0]==='*') {
+	knowde=knowlet.handleSubjectEntry(tagentry.slice(1));
+	prime=true;}
+      else knowde=knowlet.handleSubjectEntry(tagentry);
+      // fdjtTrace("adding tag %o to %s",knowde,elt.id);
+      sbookAddTag(elt,knowde,prime);}}
+  else {
+    var entries=tagspec.split(';'); var prime=false;
+    tag_count=tag_count+entries.length;
+    var i=0; while (i<entries.length) {
+      var j=0; var clauses=entries[i++].split(';');
+      if (clauses[0][0]==='*') {
+	prime=true; clauses[0]=clauses[0].slice(1);}
+      while (j<clauses.length) {
+	var clause=clauses[j++];
+	if (clause==="") {}
+	else if (clause.search(/\w/)===0)
+	  sbookAddTag(elt,clause,false);
+	else if (clause[0]==='^')
+	  sbookAddTag(elt,clause.slice(1),false);
+	else {}}}}
+  return tag_count;
+}
+
+function setupTags()
+{
+  var start=new Date();
+  var elt_count=0; var tag_count=0;
+  if (typeof knowletHTMLSetup != "undefined") {
+    knowletHTMLSetup();
+    fdjtLog("Set up default knowlet %s, initially %d dterms",
+	    knowlet.name,knowlet.alldterms.length);}
+  var tagged_elts=fdjtGetChildrenByAttrib(document.body,"TAGS");
+  elt_count=elt_count+tagged_elts.length;
+  var i=0; while (i<tagged_elts.length) {
+    var elt=tagged_elts[i++];
+    var tagspec=elt.getAttribute("TAGS");
+    tag_count=tag_count+sbookHandleTagSpec(elt,tagspec);}
+  tagged_elts=fdjtGetChildrenByAttrib(document.body,"TAG");
+  elt_count=elt_count+tagged_elts.length;
+  var i=0; while (i<tagged_elts.length) {
+    var elt=tagged_elts[i++];
+    var tagspec=elt.getAttribute('TAG');
+    var dterm;
+    if (knowlet) 
+      dterm=knowlet.handleEntry(tagspec);
+    else {
+      var start;
+      var end=tagspec.indexOf(';');
+      if (tagspec.search(/\w/)===0) start=0;
+      else start=1;
+      dterm=tagspec.slice(start,end);}
+    tag_count++;
+    elt.dterm=dterm; elt.setAttribute("dterm",dterm);
+    var container=elt.parentNode;
+    while (container) {
+      if (container.id) break;
+      else container=container.parentNode;}
+    if (container) sbookAddTag(container,dterm);}
+  var done=new Date();
+  sbook_tagged_count=elt_count;
+  fdjtLog("Got %d tags from %d elements in %f secs, %s now has %d dterms",
+	  tag_count,elt_count,(done.getTime()-start.getTime())/1000,
+	  knowlet.name,knowlet.alldterms.length);
 }
 
 /* Search functions */
@@ -1589,11 +1719,6 @@ var sbook_track_window=25;
 function sbook_onmouseover(evt)
 {
   var target=evt.target;
-  /*
-  fdjtTrace("sbook_mouseover clientY=%o, screenY=%o, tophud=%o, hudheight=%o, hudoff=%o",
-	    evt.clientY,evt.screenY,sbookHUD_at_top,sbookHUD.offsetHeight,
-	    sbookHUD.offsetTop);
-  */
   if (sbook_hudup) return;
   /* If you're over the HUD, don't do anything. */
   else if (fdjtHasParent(evt.target,sbookHUD))
@@ -1775,133 +1900,6 @@ function sbookHUD_SearchMode(evt)
     fdjtDropClass(document.body,"social","mode");
     fdjtAddClass(document.body,"search","mode");
     $("SBOOKSEARCHTEXT").focus();}
-}
-
-/* Tag setup */
-
-var sbook_trace_tagging=false;
-
-function sbookAddTag(elt,tag,prime,checkdup)
-{
-  var elt_id=(((elt.sbookinfo) && (elt.sbookinfo.headid)) ||
-	      (fdjtForceId(elt)));
-  var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
-  if (sbook_trace_tagging) 
-    fdjtLog("Tagging #%s with %s/%o",elt.id,dterm,tag);
-  if (!(dterm)) {
-    fdjtWarn("Couldn't get dterm for %o",tag);
-    return;}
-  else if (sbook_index.hasOwnProperty(dterm)) {
-    if ((!(checkdup)) || (sbook_index[dterm].indexOf(elt_id)<0))
-      sbook_index[dterm].push(elt_id);}
-  else {
-    sbook_index[dterm]=new Array(elt_id);
-    sbook_index._all.push(dterm);}
-  if (sbook_dindex.hasOwnProperty(dterm)) {
-    if ((!(checkdup)) || (sbook_dindex[dterm].indexOf(elt_id)<0))
-      sbook_dindex[dterm].push(elt_id);}
-  else {
-    sbook_dindex[dterm]=new Array(elt_id);
-    sbook_dindex._all.push(dterm);}
-  if (elt.tags) elt.tags.push(dterm);
-  else elt.tags=new Array(dterm);
-  if (prime) {
-    if (sbook_pindex.hasOwnProperty(dterm)) {
-      if ((!(checkdup)) || (sbook_pndex[dterm].indexOf(elt_id)<0))
-	sbook_pindex[dterm].push(elt_id);}
-    else sbook_pindex[dterm]=new Array(elt_id);
-    if (elt.ptags) elt.ptags.push(dterm);
-    else elt.ptags=new Array(dterm);}
-  if (!(typeof tag==="string")) {
-    // Assume its a DTERM object
-    var genls=tag.allGenls;
-    if (sbook_trace_tagging)
-      fdjtLog("Tagging #%s with genls of %o=%o",elt.id,tag,genls);
-    if (genls) {
-      var i=0; while (i<genls.length) {
-	var g=genls[i++]; var gdterm=g.dterm;
-	if (sbook_index.hasOwnProperty(gdterm))
-	  sbook_index[gdterm].push(elt_id);
-	else {
-	  sbook_index._all.push(gdterm);
-	  sbook_index[gdterm]=new Array(elt_id);}}}}
-}
-
-function sbookHandleTagSpec(elt,tagspec)
-{
-  var tag_count=0;
-  tagspec=fdjtUnEntify(tagspec);
-  if (knowlet) {
-    var tagentries=knowlet.segmentString(tagspec,';');
-    tag_count=tag_count+tagentries.length;
-    var j=0; while (j<tagentries.length) {
-      var tagentry=tagentries[j++];
-      if (tagentry==="") continue;
-      var knowde=false; var prime=false;
-      if (tagentry[0]==='*') {
-	knowde=knowlet.handleSubjectEntry(tagentry.slice(1));
-	prime=true;}
-      else knowde=knowlet.handleSubjectEntry(tagentry);
-      // fdjtTrace("adding tag %o to %s",knowde,elt.id);
-      sbookAddTag(elt,knowde,prime);}}
-  else {
-    var entries=tagspec.split(';'); var prime=false;
-    tag_count=tag_count+entries.length;
-    var i=0; while (i<entries.length) {
-      var j=0; var clauses=entries[i++].split(';');
-      if (clauses[0][0]==='*') {
-	prime=true; clauses[0]=clauses[0].slice(1);}
-      while (j<clauses.length) {
-	var clause=clauses[j++];
-	if (clause==="") {}
-	else if (clause.search(/\w/)===0)
-	  sbookAddTag(elt,clause,false);
-	else if (clause[0]==='^')
-	  sbookAddTag(elt,clause.slice(1),false);
-	else {}}}}
-  return tag_count;
-}
-
-function setupTags()
-{
-  var start=new Date();
-  var elt_count=0; var tag_count=0;
-  if (typeof knowletHTMLSetup != "undefined") {
-    knowletHTMLSetup();
-    fdjtLog("Set up default knowlet %s, initially %d dterms",
-	    knowlet.name,knowlet.alldterms.length);}
-  var tagged_elts=fdjtGetChildrenByAttrib(document.body,"TAGS");
-  elt_count=elt_count+tagged_elts.length;
-  var i=0; while (i<tagged_elts.length) {
-    var elt=tagged_elts[i++];
-    var tagspec=elt.getAttribute("TAGS");
-    tag_count=tag_count+sbookHandleTagSpec(elt,tagspec);}
-  tagged_elts=fdjtGetChildrenByAttrib(document.body,"TAG");
-  elt_count=elt_count+tagged_elts.length;
-  var i=0; while (i<tagged_elts.length) {
-    var elt=tagged_elts[i++];
-    var tagspec=elt.getAttribute('TAG');
-    var dterm;
-    if (knowlet) 
-      dterm=knowlet.handleEntry(tagspec);
-    else {
-      var start;
-      var end=tagspec.indexOf(';');
-      if (tagspec.search(/\w/)===0) start=0;
-      else start=1;
-      dterm=tagspec.slice(start,end);}
-    tag_count++;
-    elt.dterm=dterm; elt.setAttribute("dterm",dterm);
-    var container=elt.parentNode;
-    while (container) {
-      if (container.id) break;
-      else container=container.parentNode;}
-    if (container) sbookAddTag(container,dterm);}
-  var done=new Date();
-  sbook_tagged_count=elt_count;
-  fdjtLog("Got %d tags from %d elements in %f secs, %s now has %d dterms",
-	  tag_count,elt_count,(done.getTime()-start.getTime())/1000,
-	  knowlet.name,knowlet.alldterms.length);
 }
 
 /* Default keystrokes */
