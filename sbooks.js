@@ -847,6 +847,7 @@ function sbookForceComplete(input_elt)
 {
   var completions=fdjtComplete(input_elt);
   var forced=false;
+  if (completions.string==="") return;
   if (completions.exactheads.length)
     forced=completions.exactheads[0];
   else if (completions.heads.length)
@@ -937,7 +938,8 @@ function sbookDTermCompletion(dterm,title)
     knowde=false;}
   var dterm_node=((knowde) ? (knowde.toHTML()) : (fdjtSpan("dterm",dterm)));
   var span=fdjtSpan("completion");
-  fdjtPrepend(dterm_node,fdjtSpan("bigpunct","\u00b7"));
+  // Adds the cute hole to the vaugely tag shaped textform
+  // fdjtPrepend(dterm_node,fdjtSpan("bigpunct","\u00b7"));
   if (!(title))
     if (sbook_index[dterm])
       title=sbook_index[dterm].length+" items";
@@ -954,15 +956,14 @@ function sbookDTermCompletion(dterm,title)
     while (i<terms.length) {
       var term=terms[i++];
       // var vary=fdjtSpan("variation","(",term,")");
-      var vary=fdjtSpan("variation",term,"=");
+      var vary=fdjtSpan("variation",term);
       vary.key=term;
       variations.push(vary);
       variations.push(" ");}
     i=0; terms=knowde.hooks;
     while (i<terms.length) {
       var term=terms[i++];
-      // var vary=fdjtSpan("variation","(",term,")");
-      var vary=fdjtSpan("variation",term,"=");
+      var vary=fdjtSpan("variation",term);
       vary.key=term;
       variations.push(vary);
       variations.push(" ");}
