@@ -195,7 +195,7 @@ function _sbook_createHUDSearch()
   var completions=sbook_empty_cloud=
     fdjtDiv("completions",fdjtSpan("count","no query refinements"));
   var results=fdjtDiv("sbooksearchresults"," ");
-  input.setAttribute("COMPLETEOPTS","nocase prefix");
+  input.setAttribute("COMPLETEOPTS","nocase prefix showempty");
   input.completions_elt=completions;
   completions.input_elt=input;
   input.onkeydown=fdjtComplete_onkey;
