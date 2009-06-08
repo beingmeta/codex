@@ -320,7 +320,7 @@ body[mode~="search"] div#SBOOKHUD div#SBOOKSEARCH {
 body[mode~="social"] div#SBOOKHUD div#SBOOKECHOES { 
   display: block;}
 body[hudup][mode~="social"] div#SBOOKHUD div#SBOOKECHOES { 
-  display: block; height: inherit;}
+  display: block; height: inherit;} 
 body[hudup][mode~="search"] div#SBOOKHUD div#SBOOKSEARCH { 
   display: block; height: inherit;}
 
@@ -336,6 +336,35 @@ body.tophud div#SBOOKSEARCHRESULTS {
  top: 40px; bottom: inherit;}
 div.sbooksearch div.controls div.completions {
  max-height: 300px;}
+
+/* The Echoes HUD */
+
+/*
+div#SBOOKHUD div#SBOOKECHOES { 
+  position: fixed; bottom: 0px; max-height: 50px;
+  padding-left: 70px; padding-right: 70px; text-align: center;
+  background-color: gray; width: 100%;
+  padding: 0px; margin: 0px;
+  left: 0px;
+  display: none;}
+
+div#SBOOKHUD[mode~=social] div#SBOOKECHOES {
+    display: block;}
+
+div.sbookechoes div.userbar {}
+div.sbookechoes img.addbutton { float: left;}
+div.sbookechoes div.users { margin-left: 50px; overflow-x: auto;}
+div.sbookechoes div.entries { overflow-y: scroll;}
+div.sbookechoes div.entries div.entry {}
+div.sbookechoes div.entries div.entry div.userblock { 
+  float: left; width: 40px;}
+div.sbookechoes div.entries div.entry div.echoinfo {
+  margin-left: 50px;}
+div.sbookechoes div.entries div.entry div.echoinfo div.msg {
+  }
+div.sbookechoes div.entries div.entry div.echoinfo div.excerpt {
+  }
+*/
 
 /* SBOOK formatting */
 
