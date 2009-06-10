@@ -32,14 +32,17 @@ function sbookShowSearchResults(result,results_div)
     if (!(elt)) continue;
     var anchor=fdjtAnchor("#"+elt_id);
     anchor.className="searchresult";
+    var info=fdjtSpan("info");
     var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)");
-    fdjtAppend(anchor,eye); eye.sbookelt=elt;
     if (result[elt_id]) { /* If you have a score, use it */
       var scorespan=fdjtSpan("score");
       var score=result[elt_id]; var k=0;
       // fdjtTrace("Score for %s is %o",elt_id,result[elt_id]);
       while (k<score) {fdjtAppend(scorespan,"*"); k++;}
-      fdjtAppend(anchor,scorespan);}
+      fdjtAppend(info,scorespan);}
+    fdjtAppend(info,eye); eye.sbookelt=elt;
+    fdjtAppend(anchor,info);
+    anchor.searchresult=elt;
     var tags=elt.tags;
     if (refiners)
       tags.sort(function(t1,t2) {
@@ -103,9 +106,11 @@ function _sbookSearchResults_onclick(evt)
   while (target)
     if (target.className==="searchresult") {
       fdjtScrollDiscard();
-      fdjtDropClass(document.body,"results","mode");
-      fdjtDropClass(document.body,"search","mode");
-      sbookHUDLive(false);
+      sbookSetHUD(false);
+      if (target.searchresult) {
+	sbookScrollTo(target.searchresult);
+	evt.preventDefault(); evt.cancelBubble=true;}
+      else evt.cancelBubble=true;
       return;}
     else target=target.parentNode;
 }
@@ -117,10 +122,9 @@ function _sbookSearchResults_onmouseover(evt)
     if (target.sbookelt) break;
     else target=target.parentNode;
   if (!(target)) return;
-  // fdjtTrace("Scrolling to %o",target.sbookelt);
+  fdjtTrace("Scrolling to %o",target.sbookelt);
   var sbookelt=target.sbookelt;
-  if (sbookelt)
-    fdjtScrollPreview(sbookelt,sbookelt.sbook_head,sbookScrollOffset());
+  sbookPreview(sbookelt);
   fdjtAddClass(document.body,"preview","mode");
   evt.preventDefault();
   evt.cancelBubble=true;
@@ -134,7 +138,7 @@ function _sbookSearchResults_onmouseout(evt)
     else target=target.parentNode;
   if (!(target)) return;
   fdjtScrollRestore();
-  fdjtDropClass(document.body,"preview","mode");
+  fdjtDropClass(document.body,"preview");
   target.style.opacity='inherit';
 }
 
@@ -167,7 +171,7 @@ function sbookSearchInput_onkeypress(evt)
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
     fdjtAddClass(document.body,"results","mode");
-    sbookHUDLive(true);
+    sbookSetHUD("search",true);
     return false;}
   else if (ch===59) { /* That is, semicolon */
     sbookForceComplete(evt.target);
@@ -220,7 +224,7 @@ function _sbook_replace_current_entry(elt,value)
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
     fdjtAddClass(document.body,"results","mode");
-    sbookHUDLive(true);}
+    sbookSetHUD("search");}
 }
 
 /* Getting query cloud */
@@ -335,7 +339,10 @@ function sbookMakeCloud(dterms,scores,freqs)
 	else return 1;
       else if (xlen>ylen) return -1;
       else return 1;});
-  completions.onclick=fdjtComplete_onclick;
+  completions.onclick=function (evt) {
+    fdjtComplete_onclick(evt);
+    evt.preventDefault(); evt.cancelBubble=true;
+    return false;}
   i=0; while (i<copied.length) {
     var dterm=copied[i++];
     var count=((sbook_index[dterm]) ? (sbook_index[dterm].length) : (0));
@@ -401,9 +408,9 @@ function sbookFullCloud()
 
 /* Search UI */
 
-function _sbook_createHUDSearch()
+function createSBOOKHUDsearch()
 {
-  var outer=fdjtDiv("sbooksearch"," ");
+  var outer=fdjtDiv("#SBOOKSEARCH.sbooksearch"," ");
   var context=fdjtDiv("context"," ");
   var controls=fdjtDiv("controls");
   var input=fdjtInput("TEXT","QTEXT","",null);
@@ -435,7 +442,9 @@ function _sbook_createHUDSearch()
   if (sbookHUD_at_top)
     fdjtAppend(controls,input,messages,completions);
   else fdjtAppend(controls,input,messages,completions);
-  fdjtAppend(outer,results,context,controls);
+  fdjtAppend(outer,context,controls,results);
+  fdjtTrace("search HUD %o with class=%o and id=%o",
+	    outer,outer.className,outer.id);
   return outer;
 }
 
@@ -446,13 +455,4 @@ function _sbook_get_current_entry()
   else return this.value;
 }
 
-// This is actually redefined below to help out with search
-// !!!!!!!! THIS FUNCTION IS REDEFINED LATER !!!!!!!!!!! 
-function _sbook_replace_current_entry(elt,value)
-{
-  var endsemi=this.value.lastIndexOf(';');
-  if ((endsemi>0) && (endsemi<(this.value.length-1)))
-    this.value=this.value.slice(0,endsemi)+";"+value;
-  else this.value=value+';';
-}
 
