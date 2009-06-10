@@ -1,5 +1,8 @@
 /* -*- Mode: Javascript; -*- */
 
+var sbooks_nav_id="$Id: domutils.js 40 2009-04-30 13:31:58Z haase $";
+var sbooks_nav_version=parseInt("$Revision: 40 $".slice(10,-1));
+
 /* Copyright (C) 2009 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
     large structured documents (sBooks).
