@@ -29,6 +29,28 @@
 
 */
 
+/* New design for web-based version:
+
+    In normal mode, HUD consists of four icons in the four corners
+     of the browser window.  The icons are for nav, search, echoes,
+     and ping.  There aren't any next->prev buttons 
+    Only one function mode is active at any time.
+    Orthogonal to the four function modes (or five, if you count normal),
+     there are display modes:
+      * minimized (just icons)
+      * hover (top strip appears, low opacity)
+      * hudup (higher opacity, full height)
+    Mouseover the top goes into hover mode (there are keystrokes too)
+    Click on the top toggles in and out of hudup mode
+    Click on an icon goes into that function mode and into hover,
+     double click goes into hudup
+
+    All these attributes are managed in the classes of the HUD.
+
+    Preview mode gets toggled on the body and diminishes the HUD's
+     opacity.
+*/
+
 /* Overall design for web-based version:
     The interface is implemented as an overlay on the content which
      is normally out of the way.  The overlay has top and bottom components
