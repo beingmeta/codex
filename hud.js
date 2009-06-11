@@ -36,10 +36,8 @@ var sbooks_hud_version=parseInt("$Revision: 40 $".slice(10,-1));
 var sbookHUD=false;
 // Whether the HUD is up
 var sbook_hudup=false;
-
-// Whether the HUD was 'forced down' (by a user action)
-// This makes it harder to come back up automatically
-var sbookHUD_suppressed=false;
+// The selected HUD function
+var sbook_hudfcn=false;
 // Whether the HUD state was forced
 var sbookHUD_forced=false;
 
@@ -56,193 +54,91 @@ function createSBOOKHUD()
   var hud=$("SBOOKHUD");
   if (hud) return hud;
   else {
-    var tophud=createSBOOKHUDtop();
-    var bottomhud=createSBOOKHUDbottom();
-    var hud=fdjtDiv("#SBOOKHUD",tophud,bottomhud);
+    hud=fdjtDiv
+      ("#SBOOKHUD",
+       sbookMode("SBOOKTOCBUTTON","CompassIcon32x32.png","toc",
+		 _("navigate this sBook")),
+       sbookMode("SBOOKSEARCHBUTTON","SearchIcon32.png","search",
+		 _("search this sBook")),
+       sbookMode("SBOOKECHOESBUTTON",sbook_echoes_icon(window.location.href),
+		 "echoes",_("see remarks and overdocs")),
+       sbookMode("SBOOKPINGBUTTON","remarkballoon32x32.png","ping",
+		 "add your own remark"));
+    fdjtAppend(hud,
+	       fdjtDiv("#SBOOKTOC"),
+	       createSBOOKHUDsearch(),
+	       createSBOOKHUDsocial(),
+	       createSBOOKHUDping());
+
+    hud.onclick=sbookHUD_onclick;
+    /*
+    hud.onmouseover=sbookHUD_onmouseover;
+    hud.onmouseout=sbookHUD_onmouseout;
+    */
+
     sbookHUD=hud;
     fdjtPrepend(document.body,hud);
     return hud;}
 }
 
-function createSBOOKHUDtop()
-{
-  var tophud=fdjtDiv
-    ("#SBOOKTOPHUD",
-     sbookBUTTON("SBOOKPREV","LeftTriangle32.png",
-		 "Javascript:sbookHUD_Prev();",false),
-     sbookBUTTON("SBOOKNAVBUTTON","CompassIcon32x32.png",
-		 "Javascript:sbookHUD_NavMode();",sbookHUD_NavMode),
-     fdjtDiv("#SBOOKTOC"),
-     createSBOOKHUDsearch(),
-     sbookBUTTON("SBOOKSEARCHBUTTON","SearchIcon32.png",
-		 "Javascript:sbookHUD_SearchMode();",sbookHUD_SearchMode),
-     sbookBUTTON("SBOOKNEXT","RightTriangle32.png",
-		 "Javascript:sbookHUD_Next();"));
-  tophud.onmouseover=sbookHUD_onmouseover;
-  tophud.onmouseout=sbookHUD_onmouseout;
-  tophud.onclick=function(evt) {sbookSetHUD("top");}
-  return tophud;
-}
-
- function createSBOOKHUDbottom()
-{
-  var bottomhud=fdjtDiv
-    ("#SBOOKBOTTOMHUD",
-     sbookBUTTON("SBOOKPREVECHO","LeftTriangle32.png",
-		 "Javascript:sbookHUD_PrevEcho();"),
-     sbookBUTTON("SBOOKECHOBUTTON",sbook_echoes_icon(window.location.href),
-		 "Javascript:sbookHUD_EchoMode();",sbookHUD_EchoMode),
-     createSBOOKHUDsocial(),
-     createSBOOKHUDping(),
-     sbookBUTTON("SBOOKPINGBUTTON","remarkballoon32x32.png",
-		 "Javascript:sbookHUD_PingMode();",sbookHUD_PingMode),
-     sbookBUTTON("SBOOKNEXTECHO","RightTriangle32.png",
-		 "Javascript:sbookHUD_NextEcho();"));
-  bottomhud.onmouseover=sbookHUD_onmouseover;
-  bottomhud.onmouseout=sbookHUD_onmouseout;
-  bottomhud.onclick=function(evt) {sbookSetHUD("bottom");}
-  return bottomhud;
-}
-
-function sbookBUTTON(id,graphic,anchor,clickfn)
+function sbookMode(id,graphic,mode,title)
 {
   var imgsrc=
     (((graphic.search("http")===0) || (graphic.search("/")===0)) ? (graphic) :
      (sbook_graphics_root+"/"+graphic));
-  var elt=fdjtAnchor(anchor,fdjtImage(imgsrc,false,id));
-  elt.id=id; elt.className="button";
-  if (clickfn) elt.onclick=clickfn;
-  return elt;
-} 
+  // Use ID as ALT text
+  var img=fdjtImage(imgsrc,false,id);
+  img.id=id; img.className="button";
+  img.onclick=function(evt) {
+    sbookModeButton_onclick(evt,mode);}
+  if (title) img.title=title;
+  return img;
+}
 
 /* Mode controls */
 
-var sbookHUD_modepat=/(hudhover)|(hudtopdown)|(hudbottomup)/g;
-var sbookHUD_modes=["bottom","top","nav","search","echoes","ping"];
-var sbookHUD_lastmode="nav";
+var sbookHUD_displaypat=/(hudhover)|(hudup)/g;
 
-function sbookSetHUD(flag,forced)
-{
-  // fdjtTrace("Setting HUD to %o/%o",flag,forced);
-  if (!(flag)) {
-    fdjtDropClass(document.body,sbookHUD_modepat);
-    sbookHUD.blur(); document.body.focus();
-    if (forced) {
-      sbookHUD_forced=false;
-      sbookHUD_suppressed=true;}
-    sbook_hudup=false;}
-  else {
-    var body=document.body;
-    if ((typeof flag !== "string") ||
-	(sbookHUD_modes.indexOf(flag)<0))
-      flag=sbookHUD_lastmode;
-    sbookHUD_lastmode=flag;
-    if ((flag==="top") || (flag==="nav") || (flag==="search"))
-      fdjtSwapClass(body,sbookHUD_modepat,"hudtopdown");
-    else fdjtSwapClass(body,sbookHUD_modepat,"hudbottomup");
-    if (flag==="nav") fdjtDropClass(body,"search","mode");
-    else if (flag==="search") fdjtAddClass(body,"search","mode");
-    else if (flag==="echoes") fdjtDropClass(body,"ping","mode");
-    else if (flag==="ping") fdjtAddClass(body,"ping","mode");
-    else {}
-    // fdjtTrace("body.class=%o, body.mode=%o",body.className,body.getAttribute("mode"));
-    if (forced) {
-      sbookHUD_forced=true;
-      sbookHUD_suppressed=false;}
-    sbook_hudup=true;}
-}
-
-
-function sbookHUD_NavMode(evt)
-{
-  sbookSetHUD("nav");
-  fdjtDropClass(document.body,"preview");
-  $("SBOOKNAVBUTTON").blur();
-  if (evt) {
-    evt.preventDefault();
-    evt.cancelBubble=true;}
-  return false;
-}
-
-function sbookHUD_SearchMode(evt)
-{
-  if (evt) {
-    evt.preventDefault();
-    evt.cancelBubble=true;}
-  if ((fdjtHasClass(document.body,"hudtopdown")) &&
-      (fdjtHasClass(document.body,"search","mode"))) {
-    $("SBOOKSEARCHBUTTON").blur();
-    fdjtDropClass(document.body,"search","mode");
-    return;}
-  sbookSetHUD("search");
-  fdjtDropClass(document.body,"preview");
-  $("SBOOKSEARCHBUTTON").blur();
-  $("SBOOKSEARCHTEXT").focus();
-  return false;
-  /*
-  if (evt) {
-    evt.preventDefault();}
-  if ((evt) && (evt.target)) evt.target.blur();
-  if (!(sbook_full_cloud)) {
-    var full_cloud=sbookFullCloud();
-    var input_elt=$("SBOOKSEARCHTEXT");
-    if ((input_elt.value) && (input_elt.value.length===0))
-      fdjtSetCompletions("SBOOKSEARCHCOMPLETIONS",full_cloud);}
-  if (fdjtHasClass(document.body,"search","mode"))  {
-    fdjtDropClass(document.body,"results","mode");
-    fdjtDropClass(document.body,"social","mode");
-    fdjtDropClass(document.body,"search","mode");}
-  else {
-    fdjtDropClass(document.body,"social","mode");
-    fdjtAddClass(document.body,"search","mode");
-    $("SBOOKSEARCHTEXT").focus();}
-  */
-}
-
-var sbook_pingsrc=false;
-
-function sbookHUD_PingMode(evt)
+function sbookSetHUD(display,fcn,forced)
 {
   var body=document.body;
-  if (evt) {
-    evt.preventDefault();
-    evt.cancelBubble=true;}
-  if ((fdjtHasClass(body,"hudbottomup")) &&
-      (fdjtHasClass(document.body,"ping","mode"))) {
-    $("SBOOKPINGBUTTON").blur();
-    fdjtDropClass(document.body,"ping","mode");
-    return;}
-  sbookSetHUD("ping",true);
-  fdjtDropClass(document.body,"preview");
-  $("SBOOKPINGBUTTON").blur();
-  var newsrc=sbook_podspot_uri(sbook_base,window.location.hash,document.title,false);
-  if (sbook_pingsrc!==newsrc) {
-    sbook_pingsrc=newsrc;
-    $("SBOOKPING").src=newsrc;}
-  return false;
-  /* 
-  if (sbook_echo_head != sbook_head) {
-    if (sbook_echoes_iframe)
-      sbook_echoes_iframe.src=
-	sbook_podspot_uri(location.href,sbookGetStableId(sbook_head),
-			  sbook_title_path(sbook_head),sbook_tribes);
-    sbook_echo_head=sbook_head;}
-  fdjtToggleClass(document.body,"social","mode");
-  fdjtDropClass(document.body,"search","mode");
-  if (evt) {
-    evt.preventDefault();
-    evt.cancelBubble=true;}
-  if ((evt) && (evt.target)) evt.target.blur();
-  $("SBOOKECHOESBUTTON").blur();
+  /*
+  fdjtTrace("sbookSetHUD %s/%s/%o: body=%s, hud=%s",
+	    display,fcn,forced,body.className,sbookHUD.className);
+  */
+  if (display)
+    if (display===true)
+      fdjtSwapClass(body,sbookHUD_displaypat,"hudup");
+    else fdjtSwapClass(body,sbookHUD_displaypat,display);
+  else fdjtDropClass(body,sbookHUD_displaypat);
+  if (fcn) {
+    var oldfcn=sbookHUD.className;
+    if ((display) && (fcn!==oldfcn)) {
+      var hudelt=fdjtGetChildrenByClassName(fcn);
+      if ((hudelt) && (hudelt.length>0)) hudelt[0].focus();}
+    sbook_hudfcn=fcn;
+    sbookHUD.className=fcn;}
+  if (forced) sbook_hud_forced=true;
+  else sbook_hud_forced=false;
+  if (fdjtHasClass(body,"hudup")) sbook_hudup=true;
+  else sbook_hudup=false;
+  /*
+  fdjtTrace("sbookSetHUD %s/%s/%o: body=%s, hud=%s",
+	    display,fcn,forced,body.className,sbookHUD.className);
   */
 }
 
-function sbookHUD_EchoMode(evt)
+function sbookModeButton_onclick(evt,mode)
 {
-  sbookSetHUD("echoes");
-  fdjtDropClass(document.body,"preview");
-  $("SBOOKECHOBUTTON").blur();
+  var body=document.body;
+  fdjtTrace("mode button click %o %o",evt,mode);
+  if (sbookHUD.className===mode)
+    if (sbook_hudup) sbookSetHUD(false);
+    else sbookSetHUD(true);
+  else sbookSetHUD(true,mode,true);
+  fdjtDropClass(body,"preview");
   if (evt) {
+    evt.target.blur();
     evt.preventDefault();
     evt.cancelBubble=true;}
   return false;
@@ -300,6 +196,19 @@ function sbookHUD_onmouseout(evt)
     fdjtDelayHandler(100,sbookHUD_onhover,false,sbookHUD);
 }
 
+function sbookHUD_onclick(evt)
+{
+  var target=evt.target;
+  while (target)
+    if ((target.tagName==="A") || (target.tagName==="INPUT") ||
+	(target.onclick) || (target.hasAttribute("onclick")))
+      return;
+    else target=target.parentNode;
+  if (sbook_hudup)
+    sbookSetHUD(false);
+  else sbookSetHUD(true);
+}
+
 function sbookGetStableId(elt)
 {
   var info=sbook_getinfo(elt);
@@ -315,7 +224,6 @@ function sbookGetStableId(elt)
 
 function sbookTOC_onmouseover(evt)
 {
-  if (sbookHUD_suppressed) return;
   if (!(sbook_hudup)) return;
   var target=sbook_get_headelt(evt.target);
   if (target===null) return;

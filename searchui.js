@@ -36,7 +36,7 @@ var sbooks_searchui_version=parseInt("$Revision: 40 $".slice(10,-1));
 function sbookShowSearch(result)
 {
   if (!(result)) result=sbook_query;
-  var results_div=fdjtDiv("sbooksearchresults");
+  var results_div=fdjtDiv("results hudcontent");
   results_div.onclick=_sbookSearchResults_onclick;
   results_div.onmouseover=_sbookSearchResults_onmouseover;
   results_div.onmouseout=_sbookSearchResults_onmouseout;
@@ -453,6 +453,7 @@ function createSBOOKHUDsearch()
   var completions=sbook_empty_cloud=
     fdjtDiv("completions",fdjtSpan("count","no query refinements"));
   var results=fdjtDiv("sbooksearchresults"," ");
+  fdjtAddClass(outer,"hud");
   input.setAttribute("COMPLETEOPTS","nocase prefix showempty");
   input.completions_elt=completions;
   completions.input_elt=input;

@@ -386,12 +386,6 @@ function sbookSetHead(head)
     var info=head.sbookinfo;
     var navhud=createSBOOKHUDnav(head,info);
     /* Set NAV titles */
-    if ((info) && (info.next) &&
-	(info.next.sbookinfo) && (info.next.sbookinfo.title)) 
-      $("SBOOKNEXT").title=info.next.sbookinfo.title;
-    if ((info) && (info.prev) &&
-	(info.prev.sbookinfo) && (info.prev.sbookinfo.title)) 
-      $("SBOOKPREV").title=info.prev.sbookinfo.title;
     if (sbook_sync_echo_icon)
       try {
 	var stable_id=sbookGetStableId(head);
@@ -400,7 +394,7 @@ function sbookSetHead(head)
 	var new_uri=((hashpos>0) ? (uri.slice(0,hashpos)+'#'+stable_id) :
 		     (uri+'#'+stable_id));
 	var image_uri=sbook_echoes_icon(new_uri);
-	var podspot_img=$("SBOOKECHOBUTTON");
+	var podspot_img=$("SBOOKECHOESBUTTON");
 	if (podspot_img.src!==image_uri)
 	  podspot_img.src=image_uri;}
       catch (e) {

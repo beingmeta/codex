@@ -181,7 +181,7 @@ function createSBOOKHUDnav(head,info)
   var id=fdjtForceId(head);
   if (sbook_debug)
     fdjtLog('Generating TOC from from %o/%s (%o)',head,id,info);
-  var new_toc=fdjtDiv("sbooktoc");
+  var new_toc=fdjtDiv("sbooktoc hud");
   new_toc.onclick=sbookTOC_onclick;
   new_toc.onmouseover=sbookTOC_onmouseover;
   new_toc.onmouseout=sbookTOC_onmouseout;
