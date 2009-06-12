@@ -634,6 +634,7 @@ function sbookSetup(evt)
   if (fdjtHasClass(document.body,"tophud"))
     sbookHUD_at_top=true;
   sbookBuildTOC();
+  importSocialData();
   createSBOOKHUD();
   sbookHUD_Init();
   sbook_base=getsbookbase();
@@ -644,7 +645,6 @@ function sbookSetup(evt)
   if (knoHTMLSetup) knoHTMLSetup();
   setupTags();
   sbookFullCloud();
-  importSocialData();
   /* _sbook_createHUDSocial(); */
   _sbook_setup=true;
 }

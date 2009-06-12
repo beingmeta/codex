@@ -36,7 +36,7 @@ var sbooks_searchui_version=parseInt("$Revision: 40 $".slice(10,-1));
 function sbookShowSearch(result)
 {
   if (!(result)) result=sbook_query;
-  var results_div=fdjtDiv("results hudcontent");
+  var results_div=fdjtDiv("results");
   results_div.onclick=_sbookSearchResults_onclick;
   results_div.onmouseover=_sbookSearchResults_onmouseover;
   results_div.onmouseout=_sbookSearchResults_onmouseout;
@@ -205,7 +205,7 @@ function sbookSearchInput_onkeypress(evt)
     sbookShowSearch(false);
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
-    fdjtAddClass(document.body,"results","mode");
+    fdjtAddClass(document.body,"hudresults");
     sbookSetHUD("search",true);
     return false;}
   else if (ch===59) { /* That is, semicolon */
@@ -224,7 +224,7 @@ function sbookSearchInput_onfocus(evt)
 {
   var ch=evt.charCode, kc=evt.keyCode;
   sbook_search_focus=true;
-  fdjtDropClass(document.body,"results","mode");
+  fdjtDropClass(document.body,"hudresults");
   sbookSetQuery(sbookStringToQuery(evt.target.value));
   return fdjtComplete_show(evt);
 }
@@ -258,8 +258,8 @@ function _sbook_replace_current_entry(elt,value)
     sbookShowSearch(false);
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
-    fdjtAddClass(document.body,"results","mode");
-    sbookSetHUD("search");}
+    fdjtAddClass(document.body,"hudresults");
+    sbookSetHUD(true,"search");}
 }
 
 /* Getting query cloud */
@@ -481,6 +481,9 @@ function createSBOOKHUDsearch()
   fdjtAppend(outer,context,controls,results);
   fdjtTrace("search HUD %o with class=%o and id=%o",
 	    outer,outer.className,outer.id);
+  outer.onfocus=function(evt) {
+    if (!(fdjtHasClass(document.body,"hudresults")))
+      input.focus();};
   return outer;
 }
 
@@ -490,5 +493,4 @@ function _sbook_get_current_entry()
   if (endsemi) return this.value.slice(endsemi+1);
   else return this.value;
 }
-
 

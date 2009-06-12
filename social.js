@@ -127,17 +127,16 @@ function _sbook_social_setfocus(id)
 
 function createSBOOKHUDsocial()
 {
-  var outer=fdjtDiv("sbookechoes"," ");
+  var outer=fdjtDiv(".sbookechoes.hud"," ");
   var topbar=fdjtDiv("topbar");
-  var addbutton=fdjtImage
-    ("http://static.beingmeta.com/graphics/remarkballoon50x50.png",
-     "addbutton","add");
   var imagebar=fdjtDiv("imagebar");
-  fdjtAppend(topbar,addbutton,imagebar);
+  fdjtAppend(topbar,imagebar);
   var entries=fdjtDiv("echoes");  
+  fdjtTrace("sbook_allechoes=%o",sbook_allechoes);
   var i=0; while (i<sbook_allechoes.length) {
     var echo=sbook_allechoes[i++];
     var echo_elt=sbookEchoToEntry(echo);
+    fdjtTrace("adding %o to %o",echo_elt,entries);
     fdjtAppend(entries,echo_elt,"\n");}
   i=0; while (i<social_oids.length) {
     var oid=social_oids[i++];
@@ -173,12 +172,20 @@ function sbookEchoToEntry(echo)
 
 function createSBOOKHUDping()
 {
-  var iframe=fdjtNewElement("iframe","#SBOOKPING");
+  var wrapper=fdjtDiv("#SBOOKPING.sbookping.hud");
+  var iframe=fdjtNewElement("iframe","#SBOOKPINGFRAME");
   iframe.src="";
   iframe.hspace=0; iframe.vspace=0;
   iframe.marginHeight=0; iframe.marginWidth=0;
   iframe.border=0; iframe.frameBorder=0;
-  return iframe;
+  fdjtAppend(wrapper,iframe);
+  wrapper.onfocus=function (evt){
+    iframe.src=
+    sbook_podspot_uri(sbook_base,
+		      sbook_head.id,
+		      sbook_head.title||document.title||"",
+		      false);};
+  return wrapper
 }
 
 /* Invoking the iframe */
@@ -192,7 +199,7 @@ function sbook_podspot_uri(uri,hash,title,tribes)
   if ((hash) && (hashpos>=0))
     uri=uri.slice(0,hashpos)+'#'+hash;
   else if (hash) uri=uri+'#'+hash;
-  var href=sbook_webechoes_root+"podspot.fdcgi?"+
+  var href=sbook_webechoes_root+"sbooks/podspot.fdcgi?"+
     "IFRAME=yes&PODSPOT=yes&DIALOG=yes";
   if (uri) href=href+"&URI="+encodeURIComponent(uri);
   if (title) href=href+"&TITLE="+encodeURIComponent(title);
