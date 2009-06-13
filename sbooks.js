@@ -386,6 +386,7 @@ function sbookSetHead(head)
     var info=head.sbookinfo;
     var navhud=createSBOOKHUDnav(head,info);
     /* Set NAV titles */
+    /*
     if (sbook_sync_echo_icon)
       try {
 	var stable_id=sbookGetStableId(head);
@@ -399,13 +400,14 @@ function sbookSetHead(head)
 	  podspot_img.src=image_uri;}
       catch (e) {
 	fdjtLog("Unexpected error with podspot: %o",e);}
+    */
     // fdjtTrace("Replacing TOC with %o",navhud);
     fdjtReplace("SBOOKTOC",navhud);
     window.title=document.title+" // "+info.title;
     // window.location="#"+newid;
     sbook_head=head;}
-  if ($("SBOOKECHOES"))
-    $("SBOOKECHOES").setFocus(sbook_head.id);
+  if (sbookHUDechoes)
+    sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));
 }
 
 var sbook_location=false;
@@ -495,8 +497,7 @@ function sbook_onmouseover(evt)
     else if (target.sbookinfo) break;
     else if (target.parentNode===document.body) break;
     else target=target.parentNode;
-  if (target===null) return;
-  if (target===sbookHUD) return;
+  if ((!target) || (target===sbookHUD)) return;
   if ((!(sbook_close_tracking)) && (fdjtIsVisible(sbook_head))) return;
   if (target!=sbook_focus_elt) {
     var tags=sbook_get_tags(target);
@@ -512,8 +513,8 @@ function sbook_onmouseover(evt)
 	i++;}
       tagdiv.id="SBOOKSEARCHCUES";
       fdjtReplace(old,tagdiv);
-      sbook_focus_elt=target;
-      sbook_focus_tags=tags;}}
+      sbook_focus_tags=tags;}
+    sbook_focus_elt=target;}
   if ((target.sbookinfo) && (target.sbookinfo.level))
     sbookSetHead(target);
   else if (target.sbook_head)
@@ -522,14 +523,37 @@ function sbook_onmouseover(evt)
     sbookSetLocation(target.sbookloc);
 }
 
+function sbook_onkeydown(evt)
+{
+  // fdjtTrace("keydown %o %o",evt,evt.keyCode);
+  if (!(sbook_hudup))
+    if (evt.keyCode===16)  {
+      fdjtAddClass(document.body,"hudhover");
+      evt.preventDefault(); evt.cancelBubble=true;}
+}
+
+function sbook_onkeyup(evt)
+{
+  // fdjtTrace("keyup %o %o",evt,evt.keyCode);
+  if (!(sbook_hudup))
+    if (evt.keyCode===16) {
+      fdjtDropClass(document.body,"hudhover");
+      evt.preventDefault(); evt.cancelBubble=true;}
+}
+
 function sbook_onclick(evt)
 {
   var target=evt.target;
   while (target)
     if (target===sbookHUD) return;
     else target=target.parentNode;
-  // fdjtTrace("sbook_onclick %o,%o,%o",evt,evt.target,target);
-  sbookSetHUD(false);
+  if (evt.shiftKey) {
+    if (sbook_hudup)
+      sbookSetHUD(false);
+    else sbookSetHUD(true);
+    evt.cancelBubble=true; evt.preventDefault();
+    return;}
+  else sbookSetHUD(false);
   target=evt.target;
   /* If you're not, go back to the saved scroll location */
   if (fdjtScrollRestore()) return;
@@ -623,6 +647,19 @@ function sbook_onkeypress(evt)
   */
 }
 
+function getsbookbase()
+{
+  var base=fdjtGetMeta("SBOOKBASE");
+  if (base) return base;
+  var base_elts=fdjtGetChildrenByTagName("BASE");
+  if ((base_elts) && (base_elts.length>0))
+    return base_elt[0].href;
+  var uri=document.location.href;
+  var hashpos=uri.indexOf("#");
+  if (hashpos>0) return uri.slice(0,hashpos);
+  else return uri;
+}
+
 /* Initialization */
 
 var _sbook_setup=false;
@@ -637,11 +674,15 @@ function sbookSetup(evt)
   importSocialData();
   createSBOOKHUD();
   sbookHUD_Init();
+  sbookHUD.className="toc";
   sbook_base=getsbookbase();
   document.body.onmouseover=sbook_onmouseover;
-  document.body.onclick=sbook_onclick;
+  // document.body.onclick=sbook_onclick;
+  window.onclick=sbook_onclick;
   window.onscroll=sbook_onscroll;
   window.onkeypress=sbook_onkeypress;
+  document.body.onkeydown=sbook_onkeydown;
+  document.body.onkeyup=sbook_onkeyup;
   if (knoHTMLSetup) knoHTMLSetup();
   setupTags();
   sbookFullCloud();
@@ -649,22 +690,9 @@ function sbookSetup(evt)
   _sbook_setup=true;
 }
 
-function getsbookbase()
-{
-  var base=fdjtGetMeta("SBOOKBASE");
-  if (base) return base;
-  var base_elts=fdjtGetChildrenByTagName("BASE");
-  if ((base_elts) && (base_elts.length>0))
-    return base_elt[0].href;
-  var uri=document.location.href;
-  var hashpos=uri.indexOf("#");
-  if (hashpos>0) return uri.slice(0,hashpos);
-  else return uri;
-}
-
-
 fdjtLoadMessage("Loaded sbooks module");
-fdjtTrace("Working off of moby")
+//fdjtTrace("Working off of moby")
+fdjtTrace("Working off of localhost")
 
 /* Emacs local variables
 ;;;  Local variables: ***

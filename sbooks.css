@@ -49,6 +49,19 @@
 
     Preview mode gets toggled on the body and diminishes the HUD's
      opacity.
+
+    More tweaks, after experimentation:
+     SBOOECHOES is a top level element, as is SBOOKSOCIAL (the user bar)
+     sbookSetEchoes does selective display on echoes
+     SBOOKSOCIAL consists of a row of users with an "everyone"
+      button on the left and a ping/remark button on the right.
+      Clicking on a user/tribe brings up the echoes element and limits
+       it to that user/tribe.
+     In TOC mode, the space of users are people who have said things
+      below the current article.
+     In SEARCH mode, the space of users are people involved in the
+      current search results
+
 */
 
 /* Display/opacity rules */
@@ -68,26 +81,35 @@ div#SBOOKHUD div.results {
   position: fixed; top: 50px; z-index: 100;
   left: 10%; right: 10%; width: 80%; 
   background-color: gray; opacity: 0.05;
-  overflow: auto; 
+  overflow: auto; height: 75%;
   margin: 0px; padding: 6px; padding-top: 0px;
   display: none;}
-body.hudup div#SBOOKHUD div.results { opacity: 0.9;}
-body.hudresults div#SBOOKHUD div.results { display: block; }
+div#SBOOKHUD div.echoes {
+  position: fixed; bottom: 40px; margin-top: 50px; z-index: 100;
+  background-color: gray; opacity: 0.05;
+  left: 10%;; right: 10%; width: 80%;
+  overflow: auto; margin: 0px; padding: 6px;
+  display: none;}
+body.hudechoes div#SBOOKHUD div.echoes { display: block; opacity: 0.95;}
+body.hudresults div#SBOOKHUD div.results { display: block; opacity: 0.95;}
+body.hudresults div#SBOOKHUD div.hud { display: block; opacity: 0.95;}
 
 div#SBOOKHUD div.hud { opacity: 0.05; }
-div#SBOOKHUD div.hud:hover { opacity: 0.4; }
-body.hudup div#SBOOKHUD div.hud { opacity: 0.9; max-height: inherit;}
-body.hudup div#SBOOKHUD div.results { opacity: 0.9;}
+body.hudup div#SBOOKHUD div.hud { opacity: 0.95; max-height: inherit;}
+body.hudhover div#SBOOKHUD div.hud { opacity: 0.80;  max-height: inherit;}
+body.hudup div#SBOOKHUD div.results { opacity: 1.0;}
+body.hudup.preview div#SBOOKHUD div.hud { opacity: 0.1; max-height: inherit;}
+body.hudup.preview div#SBOOKHUD div.results { opacity: 0.1; }
 
 div#SBOOKHUD #SBOOKTOC {display: none;}
 div#SBOOKHUD .sbooksearch {display: none;}
 div#SBOOKHUD .sbookechoes {display: none;}
 div#SBOOKHUD .sbookping {display: none;}
 
-div#SBOOKHUD.toc #SBOOKTOC {display: block; opacity: 1.0;}
-div#SBOOKHUD.search .sbooksearch {display: block; opacity: 1.0;}
-div#SBOOKHUD.echoes .sbookechoes {display: block; opacity: 1.0;}
-div#SBOOKHUD.ping .sbookping {display: block; opacity: 1.0;}
+div#SBOOKHUD.toc #SBOOKTOC {display: block; }
+div#SBOOKHUD.search .sbooksearch {display: block; }
+div#SBOOKHUD.echoes .sbookechoes {display: block; }
+div#SBOOKHUD.ping .sbookping {display: block; }
 
 div#SBOOKHUD img#SBOOKTOCBUTTON.button {
   position: fixed; left: 0px; top: 0px;}
@@ -98,16 +120,47 @@ div#SBOOKHUD img#SBOOKECHOESBUTTON.button {
 div#SBOOKHUD img#SBOOKPINGBUTTON.button {
   position: fixed; right: 0px; bottom: 0px;}
 
-div#SOCIALBAR { 
-  height: 50px; position: fixed; bottom: 0px; min-width: 200px;}
+div#SBOOKSOCIAL {
+  position: fixed; bottom: 0px; left: 15%;; right: 15%;
+  -khtml-border-top-left-radius: 6px; 
+  -webkit-border-top-left-radius: 6px; 
+  -moz-border-radius-topleft: 6px; 
+  border-top-left-radius: 6px; 
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px; 
+  background-color: gray;}
+
+div.echoes div.echo { display: none;}
+div.echoes div.echo[displayed='yes'] { display: block;}
+div.echoes.focused div.echo[displayed='yes'] { display: none;}
+div.echoes.focused div.echo[displayed='yes'][focus='yes'] { display: block;}
+
+div.socialbar { 
+  height: 40px;
+  padding-right: 40px; padding-left: 40px; 
+  overflow-x: auto; overflow-y: hidden;} 
+div.socialbar img { cursor: pointer;}
+/* This forces the browser to scale the image, which isn't ideal */
+div.socialbar img.social { display: none; width: 32px; height: 32px;} 
+div.socialbar img.social[displayed='yes']  {display: inline;}
+div.socialbar img.everyone {
+  position: absolute; left: 0px;}
+div.socialbar img.ping {position: absolute; right: 0px;}
+
+div#SBOOKHUD div.socialbar { opacity: 0.30;}
+div#SBOOKHUD div.socialbar:hover { opacity: 0.85;}
+body.hudup div#SBOOKHUD div.socialbar { opacity: 0.85;}
+body.hudhover div#SBOOKHUD div.socialbar { opacity: 0.85;}
+body.hudresults div#SBOOKHUD div.socialbar { opacity: 0.85;}
+body.hudechoes div#SBOOKHUD div.socialbar { opacity: 0.85;}
 
 /* Individual sub content */
 
 div.sbookhud {}
 div.sbookhud div.content {
   width: 100%; padding-left: 15%; padding-right: 15%;}
-
-div.socialbar { max-height: 50px; overflow: auto;}
 
 div#SBOOKHUD div#SOCIALHUD {
   position: fixed; bottom: 0px;
@@ -169,6 +222,25 @@ div.sbooktoc div.spanbar div.sbookhudspan:hover {
   border-top: dotted orange 2px; border-bottom: dotted orange 2px; }
 div.sbooktoc div.spanbar div.sbookhudspan.cohighlight { 
   background-color: yellow; border-color: yellow;}
+
+div.sbooktoc div.echoes { 
+  margin-left: 10%; margin-right: 10%;
+  border-top: purple solid 3px;}
+div.sbooktoc div.echoes div.echo { 
+  padding-right: 5%; padding-left: 5%;}
+div.sbooktoc div.echoes.showall div.echo { display: block;}
+
+div#SBOOKHUD div#SOCIALTOC { 
+  position: fixed; bottom: 0px; left: 10%; right: 10%;
+  padding: 0px; margin: 0px; text-align: center;
+  background-color: gray;
+  overflow-y: hidden; overflow-x: auto; max-height: 60px;
+  opacity: 0.05; display: none;}
+
+div#SBOOKHUD.toc div#SOCIALTOC { display: block;}
+body.hudup div#SBOOKHUD div#SOCIALTOC { opacity: 0.95;}
+body.hudhover div#SBOOKHUD div#SOCIALTOC { opacity: 0.80;}
+
 
 div#SBOOKHEAD0 div.spanbar { width: 33%; margin-left: 33%; margin-right: 33%;}
 div#SBOOKHEAD1 div.spanbar { width: 33%; margin-left: 33%; margin-right: 33%;}
@@ -260,13 +332,13 @@ div.sbooksearch div.results div.count {
   padding-top: 3px; }
 div.sbooksearch div.results a.searchresult { 
   display: block; white-space: normal; clear: both;
-  text-decoration: none; 
+  text-decoration: none;  font-size: 75%;
   margin-top: 4px; margin-bottom: 4px;
   margin-left: 10%; margin-right: 10%;
   border-bottom: dotted orange 1px; padding-bottom: 3px;
   color: black; text-align: left;}
 div.sbooksearch div.results a.searchresult .info { 
-  width: 100px; float: left; text-align: right;} /* float: right; */
+  float: right;}
 div.sbooksearch div.results a.searchresult .info img.eye { 
   font-weight: bold; color: blue;}
 div.sbooksearch div.results a.searchresult .info span.score {
@@ -280,11 +352,7 @@ div.sbooksearch div.results a.searchresult span.headhead {
 div.sbooksearch div.results a.searchresult span.controller {
     font-weight: bold; color: white;}
 
-body.tophudup { display: black;}
-
 /* Echoes stuff */
-
-div.socialbar { height: 50px;}
 
 div#SBOOKHUD div.sbookechoes { }
 div#SBOOKHUD div.sbookechoes div.echoes { 
@@ -314,13 +382,12 @@ div.sbookechoes div.echoes div.echo div.echoinfo div.msg {
 div.sbookechoes div.echoes div.echo div.echoinfo div.excerpt {
   }
 
-/* Pinging */
+/* Podspot iframes */
 
-div#SBOOKPING iframe { 
-  position: absolute; 
-  top: 50px; left: 15%; right: 15%; width: 70%; min-height: 200px;}
-div#SBOOKHUD div#SBOOKPING {
-  overflow: visible; }
+iframe.podspot {
+    position: absolute; right: 64px; width: 80%; z-index 100; 
+    opacity: .90; background-color: ivory; 
+    max-height: 300px;}
 
 /* Still unclassified */
 

@@ -32,33 +32,173 @@ var sbooks_social_version=parseInt("$Revision: 40 $".slice(10,-1));
 
 */
 
+/* Global variables */
+
+// The echoes element
+var sbookHUDechoes=false;
+// The user/tribe bar
+var sbookHUDsocial=false;
+
+// 'Database' elements
+var sbook_allechoes=[];
 var social_oids=[];
 var social_info={};
-var sbook_allechoes=[];
 var sbook_echoes_by_pingid={};
 var sbook_echoes_by_user={};
 var sbook_echoes_by_tags={};
 var sbook_echoes_by_tribe={};
 var sbook_echoes_by_id={};
 
+/* Social UI components */
+
+function createSBOOKHUDsocial()
+{
+  if (sbookHUDechoes) return sbookHUDechoes;
+  var ping_button=
+    fdjtImage("http://static.beingmeta.com/graphics/remarkballoon32x25.png",
+	      "button ping","add");
+  var everyone_button=
+    fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
+	      "button everyone","everyone");
+  var socialbar=
+    fdjtDiv("#SBOOKSOCIAL.socialbar"," ",everyone_button,ping_button);
+  var echoeshud=fdjtDiv("#SBOOKECHOES.echoes"," ");
+  var socialelts=[]; var echoelts=[];
+  var i=0; while (i<sbook_allechoes.length) {
+    var echo=sbook_allechoes[i++];
+    var echo_elt=sbookEchoToEntry(echo);
+    echoelts.push(echo_elt);
+    fdjtAppend(echoeshud,echo_elt,"\n");}
+  i=0; while (i<social_oids.length) {
+    var oid=social_oids[i++];
+    var info=social_info[oid];
+    var img=fdjtImage(info.squarepic,"social",info.name);
+    img.oid=oid; img.name=info.name;
+    if (info.summary) img.title=info.summary;
+    else img.title=info.name;
+    socialelts.push(img);
+    fdjtAppend(socialbar,img);}
+  everyone_button.onclick=function(evt) {
+    evt.target.blur();
+    sbookSetEchoFocus(false);
+    if (fdjtHasClass(document.body,"hudechoes"))
+      sbookSetHUD("hudup");
+    else sbookSetHUD("hudechoes");};
+  socialbar.onclick=function(evt) {
+    evt.target.blur();
+    if (evt.target.oid) {
+      sbookSetEchoFocus(evt.target.oid);
+      sbookSetHUD("hudechoes");}};
+  ping_button.onclick=function(evt) {
+    var iframe;
+    evt.target.blur();
+    if ((sbook_focus_elt) &&
+	(sbook_focus_elt.podspot) &&
+	(sbook_focus_elt.podspot.iframe))
+      iframe=sbook_focus_elt.podspot.iframe;
+    else if ((sbook_focus_elt) &&
+	     (sbook_focus_elt.podspot))
+      iframe=sbook_focus_elt.podspot.openIFrame();
+    else {
+      var elt=((sbook_head)||(document.body));
+      var podspot=add_podspot(elt,true);
+      iframe=podspot.iframe;};};
+
+  sbookHUDsocial=socialbar;
+  sbookHUDechoes=echoeshud;
+  echoeshud.echoelts=echoelts;
+  echoeshud.socialelts=socialelts;
+  return new Array(sbookHUDechoes,sbookHUDsocial);
+}
+
+function sbookSetEchoes(echoes)
+{
+  // fdjtTrace("sbookSetEchoes %o",echoes);
+  var pingids=[]; var social=[]; var seen={};
+  var i=0; while (i<echoes.length) {
+    var echo=echoes[i++]; var user=echo.user;
+    if (echo.pingid) pingids.push(echo.pingid);
+    if (!(seen[user])) {social.push(user); seen[user]=user;}
+    if (echo.tribes) {
+      var j=0; var tribes=echo.tribes;
+      while (j<tribes.length) {
+	var tribe=tribes[j++];
+	if (!(seen[tribe])) {social.push(tribe); seen[tribe]=tribe;}}}}
+  var echoelts=sbookHUDechoes.echoelts;
+  i=0; while (i<echoelts.length) {
+    var echoelt=echoelts[i++];
+    if ((echoelt.pingid) && (pingids.indexOf(echoelt.pingid)>=0)) 
+      echoelt.setAttribute("displayed","yes");
+    else echoelt.setAttribute("displayed","no");}
+  var socialelts=sbookHUDechoes.socialelts;
+  i=0; while (i<socialelts.length) {
+    var socialelt=socialelts[i++];
+    if (social.indexOf(socialelt.oid)>=0)
+      socialelt.setAttribute("displayed","yes");
+    else socialelt.setAttribute("displayed","no");}
+}
+
+function sbookSetEchoFocus(userortribe)
+{
+  // fdjtTrace("sbookSetEchoFocus %o",userortribe);
+  if (userortribe) {
+    var echoelts=sbookHUDechoes.echoelts;
+    i=0; while (i<echoelts.length) {
+      var echoelt=echoelts[i++];
+      if (echoelt.user===userortribe)
+	echoelt.setAttribute("focus","yes");
+      else if ((echoelt.tribes) &&
+	       (echoelt.tribes.indexOf(userortribe)>=0)) 
+	echoelt.setAttribute("focus","yes");
+      else echoelt.setAttribute("focus","no");}}
+  else {
+    var echoelts=sbookHUDechoes.echoelts;
+    i=0; while (i<echoelts.length) 
+	   echoelts[i++].removeAttribute("focus");}
+}
+
+function sbookEchoToEntry(echo)
+{
+  var user=echo.user;
+  var userinfo=social_info[user];
+  var usrimg=fdjtImage(userinfo.squarepic,"userpic",userinfo.name);
+  var userblock=fdjtDiv("userblock",usrimg);
+  var icons=fdjtSpan("icons");
+  var head=fdjtDiv("head");
+  var core=fdjtDiv("core",
+		   ((echo.msg) && (fdjtDiv("msg",echo.msg))),
+		   ((echo.excerpt) && (fdjtDiv("excerpt",echo.excerpt))));
+  var msg=((echo.msg) ? fdjtDiv("msg",echo.msg) : false);
+  var excerpt=((echo.excerpt) ? fdjtDiv("excerpt",echo.excerpt) : false);
+  var echoinfo=fdjtDiv("echoinfo",msg,excerpt);
+  var entry=fdjtDiv("echo",userblock,echoinfo);
+  entry.uri=echo.uri; entry.tags=echo.tags; entry.fragid=echo.fragid;
+  if (echo.tribes) entry.tribes=echo.tribes;
+  entry.user=user; entry.pingid=echo.pingid;
+  return entry;
+}
+
+/* The Echoes/Social Database */
+
 function importSocialData(data)
 {
   if (!(data))
     if (typeof sbook_echoes_data === "undefined") {
-      fdjtLog("No social data available");
+      fdjtWarn("No social data available");
       return;}
     else data=sbook_echoes_data;
   var info=data['%info'];
   if ((info) && (info.length)) {
     var i=0; while (i<info.length) {
       var item=info[i++];
-      fdjtLog("item=%o oid=%o",item,item.oid);
       if (!(social_info[item.oid])) social_oids.push(item.oid);
       social_info[item.oid]=item;}}
   var ids=data['%ids'];
   if ((ids) && (ids.length)) {
     var i=0; while (i<ids.length) {
       var id=ids[i++];
+      var element=$(id);
+      if (element) add_podspot(element);
       var entries=data[id];
       var j=0; while (j<entries.length) {
 	var entry=entries[j++];
@@ -100,74 +240,15 @@ function importSocialData(data)
       else return 1;});
 }
 
-function _sbook_social_setfocus(id)
+function sbookGetEchoesUnder(id)
 {
-  var tags=[]; var seen={};
-  var echoes=(this.echoes)||
-    (this.echoes=fdjtGetChildrenByClassName(this,"echo"));
-  var i=0; while (i<echoes.length) {
-    var echo=echoes[i++]; var fragid=echo.fragid;
-    if ((fragid.search(id)===0)||(id.search(fragid)===0))  {
-      var tags=echo.tags; var j=0; while (j<tags.length) {
-	var tag=tags[j++]; if (!(seen[tag])) {
-	  tags.push(tag); seen[tag]=tag;}}
-      var tribes=echo.tribes; j=0; while (j<tribes.length) {
-	var tribe=tribes[j++]; seen[tribe]=tribe;}
-      var user=echo.user; seen[user]=user;
-      echo.setAttribute('displayed','yes');}
-    else echo.setAttribute('displayed','no');}
-  var imagebar=fdjtGetChildrenByClassName(this,"imagebar")[0];
-  var images=fdjtGetChildrenByTagName(imagebar,"IMG");
-  var j=0; while (j<images.length) {
-    var image=images[j++];
-    if (seen[image.oid]) 
-      image.setAttribute("displayed","yes");
-    else image.setAttribute("displayed","no");}
-}
-
-function createSBOOKHUDsocial()
-{
-  var outer=fdjtDiv(".sbookechoes.hud"," ");
-  var topbar=fdjtDiv("topbar");
-  var imagebar=fdjtDiv("imagebar");
-  fdjtAppend(topbar,imagebar);
-  var entries=fdjtDiv("echoes");  
-  fdjtTrace("sbook_allechoes=%o",sbook_allechoes);
+  var results=[];
   var i=0; while (i<sbook_allechoes.length) {
     var echo=sbook_allechoes[i++];
-    var echo_elt=sbookEchoToEntry(echo);
-    fdjtTrace("adding %o to %o",echo_elt,entries);
-    fdjtAppend(entries,echo_elt,"\n");}
-  i=0; while (i<social_oids.length) {
-    var oid=social_oids[i++];
-    var info=social_info[oid];
-    var img=fdjtImage(info.squarepic,"user",info.name);
-    img.oid=oid; img.name=info.name;
-    fdjtAppend(imagebar,img);}
-  fdjtAppend(outer,topbar,entries);
-  outer.id="SBOOKECHOES";
-  outer.setFocus=_sbook_social_setfocus;
-  return outer;
-}
-
-function sbookEchoToEntry(echo)
-{
-  var user=echo.user;
-  var userinfo=social_info[user];
-  var usrimg=fdjtImage(userinfo.squarepic,"userpic",userinfo.name);
-  var userblock=fdjtDiv("userblock",usrimg);
-  var icons=fdjtSpan("icons");
-  var head=fdjtDiv("head");
-  var core=fdjtDiv("core",
-		   ((echo.msg) && (fdjtDiv("msg",echo.msg))),
-		   ((echo.excerpt) && (fdjtDiv("excerpt",echo.excerpt))));
-  var msg=((echo.msg) ? fdjtDiv("msg",echo.msg) : false);
-  var excerpt=((echo.excerpt) ? fdjtDiv("excerpt",echo.excerpt) : false);
-  var echoinfo=fdjtDiv("echoinfo",msg,excerpt);
-  var entry=fdjtDiv("echo",userblock,echoinfo);
-  entry.uri=echo.uri; entry.tags=echo.tags; entry.fragid=echo.fragid;
-  entry.tribes=echo.tribes;
-  return entry;
+    var fragid=echo.fragid;
+    if (fragid.search(id)===0) results.push(echo);}
+  // fdjtTrace("Got %d echoes under %s",results.length,id);
+  return results;
 }
 
 function createSBOOKHUDping()
@@ -186,6 +267,82 @@ function createSBOOKHUDping()
 		      sbook_head.title||document.title||"",
 		      false);};
   return wrapper
+}
+
+/* Displaying podspots */
+
+function add_podspot(target,open)
+{
+  var iframe_elt=null;
+  var id=((target) ? ((target.id) ? (target.id) : (target.name)) : (null));
+  var anchor=document.createElement("a");
+  var img=document.createElement('img');
+  var title=target.getAttribute('title');
+  if (!(title))
+    if (sbook_head)
+      title=sbook_title_path(sbook_head);
+    else title=false;
+  var tribes=target.getAttribute('tribes');
+  if (!(tribes)) tribes=[];
+  if (typeof tribes === "string") tribes=tribes.split(';');
+  else if ((tribes) && (tribes instanceof Array)) {}
+  else tribes=[];
+  var pclass=target.getAttribute('podspot_class');
+  if (pclass==null) pclass=window.podspot_class;
+  var iclass=target.getAttribute('podspot_iclass');
+  if (iclass==null) iclass=window.podspot_iclass;
+  var ptarget=target.getAttribute('podspot_target');
+  if (ptarget==null) ptarget=window.podspot_target;
+  if (ptarget==null) ptarget="_new";
+  var base=target.getAttribute('podspot_base');
+  if (base==null) base=window.podspot_base;
+  var psize=target.getAttribute('podspot_size');
+  if (psize==null) psize=window.podspot_size;
+  var pstyle=target.getAttribute('podspot_style');
+  if (pstyle==null) pstyle=window.podspot_style;
+  var istyle=target.getAttribute('podspot_istyle');
+  if (istyle==null) istyle=window.podspot_istyle;
+  var base_uri="http://webechoes.net/sbooks/podspot.fdcgi?PODSPOT=yes";
+  /* var base_uri="http://webechoes.net/app/ping?POPUP=yes"; */
+  var href=base_uri+
+    ((id) ? "&FRAG="+id : "")+
+    ((title) ? "&TITLE="+title : "");
+  var i=0; while (i<tribes.length) href=href+"&POD="+tribes[i++];
+  if (window.getSelection())
+    href=href+"&EXCERPT="+encodeURIComponent(window.getSelection());
+  if (pclass==null) pclass="podspot";
+  if (base==null) base="darkpodspot";
+  if (psize==null) psize="32";
+  if (ptarget==null) ptarget="overlay";
+  anchor.href=href; anchor.className=pclass; 
+  anchor.openIFrame=function() {
+    if (anchor.iframe) return anchor.iframe;
+    var iframe=document.createElement('iframe');
+    iframe_elt=document.createElement('div');
+    iframe.className="podspot";
+    iframe.src=href+"&IFRAME=yes&DIALOG=yes";
+    iframe.height="no";
+    iframe_elt.appendChild(iframe);
+    console.log('appending iframe to '+target);
+    target.appendChild(iframe_elt);
+    anchor.iframe=iframe;
+    return iframe;}
+  if (open) anchor.iframe=anchor.openIFrame();
+  anchor.onclick=function() {
+    if (iframe_elt)
+      if (iframe_elt.style.display=='none')
+	iframe_elt.style.display='block';
+      else iframe_elt.style.display='none';
+    else anchor.openIFrame();
+    anchor.blur();
+    return false;};
+  if (pstyle!=null) anchor.setAttribute('style',pstyle);
+  img.src="http://webechoes.net/podspots/"+base+"_"+psize+"x"+psize+".png"
+    +((id) ? ("?FRAG="+id) : "");
+  img.className='podspot'; img.alt='podspot'; img.border=0; 
+  anchor.appendChild(img);
+  target.appendChild(anchor);
+  return anchor;
 }
 
 /* Invoking the iframe */

@@ -59,23 +59,17 @@ function createSBOOKHUD()
        sbookMode("SBOOKTOCBUTTON","CompassIcon32x32.png","toc",
 		 _("navigate this sBook")),
        sbookMode("SBOOKSEARCHBUTTON","SearchIcon32.png","search",
-		 _("search this sBook")),
-       sbookMode("SBOOKECHOESBUTTON",sbook_echoes_icon(window.location.href),
-		 "echoes",_("see remarks and overdocs")),
-       sbookMode("SBOOKPINGBUTTON","remarkballoon32x32.png","ping",
-		 "add your own remark"));
+		 _("search this sBook")));
     fdjtAppend(hud,
 	       fdjtDiv("#SBOOKTOC"),
 	       createSBOOKHUDsearch(),
-	       createSBOOKHUDsocial(),
-	       createSBOOKHUDping());
+	       createSBOOKHUDsocial());
 
     hud.onclick=sbookHUD_onclick;
     /*
     hud.onmouseover=sbookHUD_onmouseover;
     hud.onmouseout=sbookHUD_onmouseout;
     */
-
     sbookHUD=hud;
     fdjtPrepend(document.body,hud);
     return hud;}
@@ -97,7 +91,7 @@ function sbookMode(id,graphic,mode,title)
 
 /* Mode controls */
 
-var sbookHUD_displaypat=/(hudhover)|(hudup)/g;
+var sbookHUD_displaypat=/(hudhover)|(hudup)|(hudresults)|(hudechoes)/g;
 
 function sbookSetHUD(display,fcn,forced)
 {
@@ -149,13 +143,20 @@ function sbookModeButton_onclick(evt,mode)
   return false;
 }
 
+function sbookPreviewOffset()
+{
+  if (sbook_hudup) {
+    var fcn=sbookHUD.className;
+    var elt=fdjtGetChildrenByClassName(sbookHUD,"sbook"+fcn);
+    if ((elt) && (elt.length>0))
+      return elt[0].offsetHeight||60;
+    else return 60;}
+  else return 60;
+}
+
 function sbookPreview(elt,nomode)
 {
-  var offset=
-    ((fdjtHasClass(document.body,"hudtopdown")) ?
-     ($("SBOOKTOPHUD").offsetHeight) :
-     (fdjtHasClass(document.body,"hudbottomup")) ?
-     ($("SBOOKTOPHUD").offsetXPos) : (60));
+  var offset=sbookPreviewOffset();
   if (elt) fdjtScrollPreview(elt,false,-offset);
   if (!(nomode)) fdjtAddClass(document.body,"preview");
 }
@@ -175,30 +176,30 @@ function sbook_echoes_icon(uri)
 function sbookHUD_onhover(hover)
 {
   if (sbook_hudup) return;
+  fdjtTrace("sbookHUD_onhover");
   if (hover)
     fdjtAddClass(document.body,"hudhover");
-  else fdjtDropClass(document.body,"hudhover");
+  else {
+    fdjtDropClass(document.body,"hudhover");
+    if (sbook_hudup) sbookSetHUD(false);}
 }
 
 function sbookHUD_onmouseover(evt)
 {
-  if (sbook_hudup) {
-    if (document.body.hudhide) clearTimeout(document.body.hudhide);
-    return;}
+  if (sbook_hudup) return;
+  fdjtTrace("sbookHUD_onmouseover");
   if (evt.target)
-    fdjtDelayHandler(100,sbookHUD_onhover,true,sbookHUD);
+    fdjtDelayHandler(100,sbookHUD_onhover,true,sbookHUD,"hudhover");
   evt.cancelBubble=true;
 }
 
 function sbookHUD_onmouseout(evt)
 {
   var target=evt.target;
-  if (sbook_hudup)
-    if (sbookHUD_forced) return;
-    else document.body.hudhide=
-	   setTimeout(function(evt) { sbookSetHUD(false); },100);
-  else if (evt.target)
-    fdjtDelayHandler(100,sbookHUD_onhover,false,sbookHUD);
+  if (evt.target)
+    if (sbook_hudup)
+      fdjtDelayHandler(100,sbookHUD_onhover,false,sbookHUD,"hudhover");
+    else fdjtDelayHandler(100,sbookHUD_onhover,false,sbookHUD,"hudhover");
 }
 
 function sbookHUD_onclick(evt)
@@ -211,7 +212,7 @@ function sbookHUD_onclick(evt)
     else target=target.parentNode;
   if (sbook_hudup)
     sbookSetHUD(false);
-  else sbookSetHUD(true);
+  else sbookSetHUD(true,false,true);
 }
 
 function sbookGetStableId(elt)
@@ -302,8 +303,11 @@ function sbookTOC_onclick(evt)
 {
   var target=sbook_get_headelt(evt.target);
   if (target===null) return;
-  if (!(sbook_hudup)) {
-    sbookSetHUD("top",true);
+  if ((!(sbook_hudup)) && ((evt.ctrlKey)||(evt.altKey)||(evt.shiftKey))) {
+    sbookSetHUD(true);
+    return;}
+  else if ((!(target.headelt)) && (!(sbook_hudup))) {
+    sbookSetHUD(true);
     return;}
   evt.preventDefault();
   evt.cancelBubble=true;
@@ -366,3 +370,8 @@ function sbookHUD_Init()
   // window.location=window.location;
 }
 
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

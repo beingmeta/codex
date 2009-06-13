@@ -215,3 +215,10 @@ function createSBOOKHUDnav(head,info)
       fdjtAppend(new_toc,subsections_div);}
   return new_toc;
 }
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
+

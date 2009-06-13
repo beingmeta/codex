@@ -381,3 +381,8 @@ function sbookQuery(query,init)
   return result;
 }
 
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

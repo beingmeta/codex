@@ -202,11 +202,10 @@ function sbookSearchInput_onkeypress(evt)
   var target=evt.target;
   if (kc===13) {
     sbookForceComplete(target);
-    sbookShowSearch(false);
+    sbookShowSearch(sbook_query);
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
-    fdjtAddClass(document.body,"hudresults");
-    sbookSetHUD("search",true);
+    sbookSetHUD("hudresults","search");
     return false;}
   else if (ch===59) { /* That is, semicolon */
     sbookForceComplete(evt.target);
@@ -224,7 +223,7 @@ function sbookSearchInput_onfocus(evt)
 {
   var ch=evt.charCode, kc=evt.keyCode;
   sbook_search_focus=true;
-  fdjtDropClass(document.body,"hudresults");
+  sbookSetHUD(true);
   sbookSetQuery(sbookStringToQuery(evt.target.value));
   return fdjtComplete_show(evt);
 }
@@ -258,8 +257,8 @@ function _sbook_replace_current_entry(elt,value)
     sbookShowSearch(false);
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
-    fdjtAddClass(document.body,"hudresults");
-    sbookSetHUD(true,"search");}
+    sbookSetHUD(true,"search");
+    fdjtAddClass(document.body,"hudresults");}
 }
 
 /* Getting query cloud */
@@ -452,7 +451,7 @@ function createSBOOKHUDsearch()
   var messages=fdjtDiv("messages");
   var completions=sbook_empty_cloud=
     fdjtDiv("completions",fdjtSpan("count","no query refinements"));
-  var results=fdjtDiv("sbooksearchresults"," ");
+  var results=fdjtDiv("results"," ");
   fdjtAddClass(outer,"hud");
   input.setAttribute("COMPLETEOPTS","nocase prefix showempty");
   input.completions_elt=completions;
@@ -494,3 +493,8 @@ function _sbook_get_current_entry()
   else return this.value;
 }
 
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
