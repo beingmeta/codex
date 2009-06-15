@@ -229,6 +229,7 @@ function sbookEchoIcons(echo,extra)
 function sbookEchoTags(tags)
 {
   var topics=fdjtDiv("topics");
+  if (typeof tags === "string") tags=new Array(tags);
   var i=0; while (i<tags.length) {
     if (i>0)
       fdjtAppend(topics,"\u00b7",knoDTermSpan(tags[i++]));
@@ -376,10 +377,9 @@ function add_podspot(target,open)
     if (typeof tribes === "string") tribes=tribes.split(';');
     else if ((tribes) && (tribes instanceof Array)) {}
     else tribes=[];
-    if (typeof tags === "string") tribes=tags.split(';');
+    if (typeof tags === "string") tags=tags.split(';');
     else if ((tags) && (tags instanceof Array)) {}
     else tags=[];
-    fdjtTrace("target=%o tags=%o",target,tags);
     var pclass=target.getAttribute('podspot_class');
     if (pclass==null) pclass=window.podspot_class;
     var iclass=target.getAttribute('podspot_iclass');
@@ -417,7 +417,6 @@ function add_podspot(target,open)
       iframe.src=href+"&IFRAME=yes&DIALOG=yes";
       iframe.height="no";
       iframe_elt.appendChild(iframe);
-      console.log('appending iframe to '+target);
       target.appendChild(iframe_elt);
       anchor.iframe=iframe;
       return iframe;}
@@ -463,7 +462,7 @@ var sbook_tribes=false;
 function sbook_podspot_uri(uri,hash,title,tribes)
 {
   var hashpos=uri.indexOf('#');
-  fdjtTrace("Getting podspot for %s",uri);
+  // fdjtTrace("Getting podspot for %s",uri);
   if ((hash) && (hashpos>=0))
     uri=uri.slice(0,hashpos)+'#'+hash;
   else if (hash) uri=uri+'#'+hash;

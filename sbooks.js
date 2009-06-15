@@ -669,6 +669,7 @@ function sbookSetup()
 {
   if (_sbook_setup) return;
   if (!((fdjt_setup_started))) fdjtSetup();
+  if (_sbook_setup) return;
   sbookBuildTOC();
   importSocialData();
   createSBOOKHUD();
