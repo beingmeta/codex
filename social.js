@@ -53,6 +53,8 @@ var sbook_echo_remark_icon=
   "http://static.beingmeta.com/graphics/remarkballoon16x13.png";
 var sbook_echo_more_icon=
   "http://static.beingmeta.com/graphics/Asterisk16x16.png";
+var sbook_echo_eye_icon=
+  "http://static.beingmeta.com/graphics/EyeIcon20x16.png";
 
 /* Social UI components */
 
@@ -170,36 +172,53 @@ function sbookEchoToEntry(echo)
   var userblock=fdjtDiv("userblock",usrimg);
   var icons=fdjtSpan("icons");
   var topics=fdjtDiv("topics");
-  var head=fdjtDiv("head",
-		   (sbookEchoIcons(echo)),
-		   ((echo.msg) && (fdjtDiv("msg",echo.msg))));
+  var extra=sbookEchoExtras(echo);
+  var anchortext=
+    (echo.msg)||((echo.excerpt) && ("'"+echo.excerpt+"'"))||(echo.title);
+  var anchor=fdjtAnchorC("#"+echo.fragid,"msg",anchortext||"????")
+  var head=fdjtDiv("head",(sbookEchoIcons(echo,extra)),anchor);
   var core=fdjtDiv("core",
 		   ((echo.excerpt) && (fdjtDiv("excerpt",echo.excerpt))),
 		   ((echo.tags) && (sbookEchoTags(echo.tags))));
-  var extra=sbookEchoExtras(echo);
   var excerpt=((echo.excerpt) ? fdjtDiv("excerpt",echo.excerpt) : false);
   var entry=fdjtDiv("echo",userblock,head,core,extra);
+  var target=$(echo.fragid);
+  anchor.onclick=function(evt) {
+    evt.target.blur(); sbookScrollTo(target);
+    evt.cancelBubble=true; evt.preventDefault();}
   entry.uri=echo.uri; entry.tags=echo.tags; entry.fragid=echo.fragid;
   if (echo.tribes) entry.tribes=echo.tribes;
   entry.user=user; entry.pingid=echo.pingid;
   return entry;
 }
 
-function sbookEchoIcons(echo)
+function sbookEchoIcons(echo,extra)
 {
-  var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)");
-  var comment=fdjtImage(sbook_echo_remark_icon,"comment","+");
-  var showmore=fdjtImage(sbook_echo_more_icon,"more","*");
-  var age=fdjtSpan("age",echo.pingid+"/"+echo.tstamp);
+  var eye=fdjtImage(sbook_echo_eye_icon,"eye","(\u00b7)");
+  var comment=fdjtImage(sbook_echo_remark_icon,".button.relayb","+");
+  var showmore=((extra) &&
+		fdjtImage(sbook_echo_more_icon,".button.extrab","*"));
+  var age=fdjtAnchorC("http://webechoes.net/echo/"+echo.pingid,
+		      "age",fdjtIntervalString(fdjtTick()-echo.tstamp)," ago");
+  age.target="_blank";
   var targetid=echo.fragid; var target=$(targetid);
-  eye.onmouseover=function(evt){
-    fdjtDelayHandler(300,sbookPreview,target,"preview");};
-  eye.onmouseout=function(evt){
-    fdjtDelayHandler(300,sbookStopPreview,target,"preview");};
+  if (!(target)) eye=false;
+  else {
+    eye.title=_("previewing: move mouse to restore");
+    eye.onclick=function(evt){
+      sbookScrollTo(target);
+      evt.preventDefault(); evt.cancelBubble=true;};
+    eye.onmouseover=function(evt){
+      fdjtDelayHandler(300,sbookPreview,target,document.body,"preview");};
+    eye.onmouseout=function(evt){
+      fdjtDelayHandler(300,sbookStopPreview,target,document.body,"preview");};}
   comment.title=_("Add your own response");
-  comment.onclick=function(evt){}; 
+  comment.onclick=function(evt){
+    sbookSetHUD(false);
+    add_podspot(target,true);}; 
   showmore.title=_("See more information");
-  showmore.onclick=function(evt){}; 
+  showmore.onclick=function(evt){
+    fdjtToggleClass($P('.echo',evt.target),'extras','shown',true);}; 
   return fdjtSpan("icons",age,showmore,comment,eye);
 }
 
@@ -215,7 +234,15 @@ function sbookEchoTags(tags)
 
 function sbookEchoExtras(echo)
 {
-  return false;
+  var details=false; var xrefs=false;
+  if (echo.details) details=fdjtDiv("details",echo.details);
+  if (echo.xrefs) {
+    var uris=echo.xrefs; xrefs=[];
+    var i=0; while (i<uris.length) 
+	       xrefs.push(fdjtAnchor(uris[i++],"xref"));}
+  if ((details) || (xrefs))
+    return fdjtDiv("extras",details,xrefs);
+  else return false;
 }
 
 /* The Echoes/Social Database */
@@ -313,76 +340,86 @@ function createSBOOKHUDping()
 
 function add_podspot(target,open)
 {
-  var iframe_elt=null;
-  var id=((target) ? ((target.id) ? (target.id) : (target.name)) : (null));
-  var anchor=document.createElement("a");
-  var img=document.createElement('img');
-  var title=target.getAttribute('title');
-  if (!(title))
-    if (sbook_head)
-      title=sbook_title_path(sbook_head);
-    else title=false;
-  var tribes=target.getAttribute('tribes');
-  if (!(tribes)) tribes=[];
-  if (typeof tribes === "string") tribes=tribes.split(';');
-  else if ((tribes) && (tribes instanceof Array)) {}
-  else tribes=[];
-  var pclass=target.getAttribute('podspot_class');
-  if (pclass==null) pclass=window.podspot_class;
-  var iclass=target.getAttribute('podspot_iclass');
-  if (iclass==null) iclass=window.podspot_iclass;
-  var ptarget=target.getAttribute('podspot_target');
-  if (ptarget==null) ptarget=window.podspot_target;
-  if (ptarget==null) ptarget="_new";
-  var base=target.getAttribute('podspot_base');
-  if (base==null) base=window.podspot_base;
-  var psize=target.getAttribute('podspot_size');
-  if (psize==null) psize=window.podspot_size;
-  var pstyle=target.getAttribute('podspot_style');
-  if (pstyle==null) pstyle=window.podspot_style;
-  var istyle=target.getAttribute('podspot_istyle');
-  if (istyle==null) istyle=window.podspot_istyle;
-  var base_uri="http://webechoes.net/sbooks/podspot.fdcgi?PODSPOT=yes";
-  /* var base_uri="http://webechoes.net/app/ping?POPUP=yes"; */
-  var href=base_uri+
-    ((id) ? "&FRAG="+id : "")+
-    ((title) ? "&TITLE="+title : "");
-  var i=0; while (i<tribes.length) href=href+"&POD="+tribes[i++];
-  if (window.getSelection())
-    href=href+"&EXCERPT="+encodeURIComponent(window.getSelection());
-  if (pclass==null) pclass="podspot";
-  if (base==null) base="darkpodspot";
-  if (psize==null) psize="32";
-  if (ptarget==null) ptarget="overlay";
-  anchor.href=href; anchor.className=pclass; 
-  anchor.openIFrame=function() {
-    if (anchor.iframe) return anchor.iframe;
-    var iframe=document.createElement('iframe');
-    iframe_elt=document.createElement('div');
-    iframe.className="podspot";
-    iframe.src=href+"&IFRAME=yes&DIALOG=yes";
-    iframe.height="no";
-    iframe_elt.appendChild(iframe);
-    console.log('appending iframe to '+target);
-    target.appendChild(iframe_elt);
-    anchor.iframe=iframe;
-    return iframe;}
-  if (open) anchor.iframe=anchor.openIFrame();
-  anchor.onclick=function() {
-    if (iframe_elt)
-      if (iframe_elt.style.display=='none')
-	iframe_elt.style.display='block';
-      else iframe_elt.style.display='none';
-    else anchor.openIFrame();
-    anchor.blur();
-    return false;};
-  if (pstyle!=null) anchor.setAttribute('style',pstyle);
-  img.src="http://webechoes.net/podspots/"+base+"_"+psize+"x"+psize+".png"
-    +((id) ? ("?FRAG="+id) : "");
-  img.className='podspot'; img.alt='podspot'; img.border=0; 
-  anchor.appendChild(img);
-  target.appendChild(anchor);
-  return anchor;
+  if (target.podspot) {
+    if (open) {
+      target.podspot.openIFrame();
+      target.podspot.iframe.style.display='block';
+      return target;}
+    else return target.podspot;}
+  else {
+    var iframe_elt=null;
+    var id=target.id;
+    var anchor=document.createElement("a");
+    var img=document.createElement('img');
+    var title=target.getAttribute('title');
+    var tribes=target.getAttribute('tribes');
+    target.podspot=anchor;
+    if (!(title)) {
+      var head_info=
+	sbook_getinfo(target)||
+	sbook_getinfo(sbook_get_headelt(target));
+      if ((head_info) && (head_info.title))
+	title=head_info.title;}
+    if (!(tribes)) tribes=[];
+    if (typeof tribes === "string") tribes=tribes.split(';');
+    else if ((tribes) && (tribes instanceof Array)) {}
+    else tribes=[];
+    var pclass=target.getAttribute('podspot_class');
+    if (pclass==null) pclass=window.podspot_class;
+    var iclass=target.getAttribute('podspot_iclass');
+    if (iclass==null) iclass=window.podspot_iclass;
+    var ptarget=target.getAttribute('podspot_target');
+    if (ptarget==null) ptarget=window.podspot_target;
+    if (ptarget==null) ptarget="_new";
+    var base=target.getAttribute('podspot_base');
+    if (base==null) base=window.podspot_base;
+    var psize=target.getAttribute('podspot_size');
+    if (psize==null) psize=window.podspot_size;
+    var pstyle=target.getAttribute('podspot_style');
+    if (pstyle==null) pstyle=window.podspot_style;
+    var istyle=target.getAttribute('podspot_istyle');
+    if (istyle==null) istyle=window.podspot_istyle;
+    var base_uri="http://webechoes.net/sbooks/podspot.fdcgi?PODSPOT=yes";
+    /* var base_uri="http://webechoes.net/app/ping?POPUP=yes"; */
+    var href=base_uri+
+      ((id) ? "&FRAG="+id : "")+
+      ((title) ? "&TITLE="+title : "");
+    var i=0; while (i<tribes.length) href=href+"&POD="+tribes[i++];
+    if (window.getSelection())
+      href=href+"&EXCERPT="+encodeURIComponent(window.getSelection());
+    if (pclass==null) pclass="podspot";
+    if (base==null) base="darkpodspot";
+    if (psize==null) psize="32";
+    if (ptarget==null) ptarget="overlay";
+    anchor.href=href; anchor.className=pclass; 
+    anchor.openIFrame=function() {
+      if (anchor.iframe) return anchor.iframe;
+      var iframe=document.createElement('iframe');
+      iframe_elt=document.createElement('div');
+      iframe.className="podspot";
+      iframe.src=href+"&IFRAME=yes&DIALOG=yes";
+      iframe.height="no";
+      iframe_elt.appendChild(iframe);
+      console.log('appending iframe to '+target);
+      target.appendChild(iframe_elt);
+      anchor.iframe=iframe;
+      return iframe;}
+    if (open) anchor.iframe=anchor.openIFrame();
+    anchor.onclick=function() {
+      if (iframe_elt)
+	if (iframe_elt.style.display=='none')
+	  iframe_elt.style.display='block';
+	else iframe_elt.style.display='none';
+      else anchor.openIFrame();
+      anchor.blur();
+      return false;};
+    if (pstyle!=null) anchor.setAttribute('style',pstyle);
+    img.src="http://webechoes.net/podspots/"+base+"_"+psize+"x"+psize+".png"
+      +((id) ? ("?FRAG="+id) : "");
+    img.className='podspot'; img.alt='podspot'; img.border=0; 
+    anchor.appendChild(img);
+    target.appendChild(anchor);
+    return anchor;}
 }
 
 /* Invoking the iframe */
