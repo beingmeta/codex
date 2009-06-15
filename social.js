@@ -46,6 +46,7 @@ var social_info={};
 var sbook_echoes_by_pingid={};
 var sbook_echoes_by_user={};
 var sbook_echoes_by_tags={};
+var sbook_echoes_by_xtags={};
 var sbook_echoes_by_tribe={};
 var sbook_echoes_by_id={};
 
@@ -120,7 +121,7 @@ function createSBOOKHUDsocial()
 
 function sbookSetEchoes(echoes)
 {
-  // fdjtTrace("sbookSetEchoes %o",echoes);
+  fdjtTrace("sbookSetEchoes %o",echoes);
   var pingids=[]; var social=[]; var seen={};
   var i=0; while (i<echoes.length) {
     var echo=echoes[i++]; var user=echo.user;
@@ -206,8 +207,10 @@ function sbookEchoIcons(echo,extra)
   else {
     eye.title=_("previewing: move mouse to restore");
     eye.onclick=function(evt){
-      sbookScrollTo(target);
-      evt.preventDefault(); evt.cancelBubble=true;};
+      if (document.body.preview) clearTimeout(document.body.preview);
+      sbookStopPreview(target); sbookScrollTo(target);
+      evt.preventDefault(); evt.cancelBubble=true;
+      sbookSetHUD(false);};
     eye.onmouseover=function(evt){
       fdjtDelayHandler(300,sbookPreview,target,document.body,"preview");};
     eye.onmouseout=function(evt){
@@ -281,8 +284,14 @@ function importSocialData(data)
 	if (entry.tags) {
 	  var tags=entry.tags;
 	  var k=0; while (k<tags.length) {
-	    var tag=tags[k++];
+	    var tag=tags[k++]; 
 	    if (item!=entry) fdjtAdd(item,'tags',tag,true);
+	    if (knowlet) {
+	      var knowde=knowlet.handleSubjectEntry(tag);
+	      fdjtAdd(sbook_echoes_by_xtag,knowde.dterm,item);
+	      var l=0; var genls=knowde.allGenls;
+	      while (l<genls.length) {
+		fdjtAdd(sbook_echoes_by_xtag,genls[l++].dterm,item);}}
 	    fdjtAdd(sbook_echoes_by_tag,tag,item);}}
 	else item.tags=[];
 	if (entry.tribes) {
@@ -421,6 +430,23 @@ function add_podspot(target,open)
     target.appendChild(anchor);
     return anchor;}
 }
+
+/* Searching echoes */
+
+function sbook_search_echoes(query)
+{
+  var i=0; var results=false;
+  while (i<query.length) {
+    var q=query[i++];
+    var echoes=sbook_echoes_by_tags[q]||(false);
+    if (echoes)
+      if (results)
+	results=fdjtIntersect(results,echoes);
+      else results=echoes;
+    else {}}
+  return results||[];
+}
+
 
 /* Invoking the iframe */
 

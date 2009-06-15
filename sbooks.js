@@ -333,6 +333,7 @@ function sbookSetQuery(query,scored)
   if (result._qstring!==sbookQueryBase($("SBOOKSEARCHTEXT").value)) 
     $("SBOOKSEARCHTEXT").value=result._qstring;
   sbook_query=result; query=result._query;
+  sbookSetEchoes(sbook_search_echoes(query));
   if (sbook_trace_search>1)
     fdjtLog("Current query is now %o: %o/%o",
 	    result._query,result,result._refiners);

@@ -213,6 +213,9 @@ function createSBOOKHUDnav(head,info)
       var subsections_div=
 	_sbook_generate_subsections_div(info.sub,info.starts_at,info.ends_at);
       fdjtAppend(new_toc,subsections_div);}
+  new_toc.onfocus=function(evt) {
+    if (sbookHUDechoes)
+      sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));}
   return new_toc;
 }
 

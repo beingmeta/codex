@@ -290,7 +290,7 @@ function sbookTOC_onmouseout(evt)
   if (!(rtarget)) return;
   try {
     if (rtarget.ownerDocument!=document) {
-      sbookHUD_hider=setTimeout(sbookHUD_hide,300);
+      fdjtDelayHandler(300,sbookSetHUD,false,document,"hidehud");
       return;}
     // We'll get an error if we go out of the document,
     // in which case we probably want to hide anyway
@@ -299,10 +299,10 @@ function sbookTOC_onmouseout(evt)
       else if (rtarget===document.body) break;
       else rtarget=rtarget.parentNode;}
   catch (e) {
-    sbook_hud_suppressed=false;
-    sbookHUD_hider=setTimeout(sbookHUD_hide,300);
+    sbook_hud_forced=false;
+    fdjtDelayHandler(300,sbookSetHUD,false,document,"hidehud");
     return;}
-  sbook_hud_suppressed=false;
+  sbook_hud_forced=false;
 }
 
 function sbookTOC_onclick(evt)
