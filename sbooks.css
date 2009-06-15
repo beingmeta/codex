@@ -340,7 +340,7 @@ div.sbooksearch div.results a.searchresult {
 div.sbooksearch div.results a.searchresult .info { 
   float: right;}
 div.sbooksearch div.results a.searchresult .info img.eye { 
-  font-weight: bold; color: blue;}
+  font-weight: bold; color: blue; border: none;}
 div.sbooksearch div.results a.searchresult .info span.score {
   color: gold;}
 div.sbooksearch div.results a.searchresult span.dterm {

@@ -161,6 +161,12 @@ function sbookPreview(elt,nomode)
   if (!(nomode)) fdjtAddClass(document.body,"preview");
 }
 
+function sbookStopPreview(elt)
+{
+  fdjtScrollRestore();
+  fdjtDropClass(document.body,"preview");
+}
+
 // What to use as the podspot image URI.  This 'image' 
 //  really invokes a script to pick or generate a
 //  image for the current user and document.

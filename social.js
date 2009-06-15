@@ -49,6 +49,11 @@ var sbook_echoes_by_tags={};
 var sbook_echoes_by_tribe={};
 var sbook_echoes_by_id={};
 
+var sbook_echo_remark_icon=
+  "http://static.beingmeta.com/graphics/remarkballoon16x13.png";
+var sbook_echo_more_icon=
+  "http://static.beingmeta.com/graphics/Asterisk16x16.png";
+
 /* Social UI components */
 
 function createSBOOKHUDsocial()
@@ -164,18 +169,53 @@ function sbookEchoToEntry(echo)
   var usrimg=fdjtImage(userinfo.squarepic,"userpic",userinfo.name);
   var userblock=fdjtDiv("userblock",usrimg);
   var icons=fdjtSpan("icons");
-  var head=fdjtDiv("head");
+  var topics=fdjtDiv("topics");
+  var head=fdjtDiv("head",
+		   (sbookEchoIcons(echo)),
+		   ((echo.msg) && (fdjtDiv("msg",echo.msg))));
   var core=fdjtDiv("core",
-		   ((echo.msg) && (fdjtDiv("msg",echo.msg))),
-		   ((echo.excerpt) && (fdjtDiv("excerpt",echo.excerpt))));
-  var msg=((echo.msg) ? fdjtDiv("msg",echo.msg) : false);
+		   ((echo.excerpt) && (fdjtDiv("excerpt",echo.excerpt))),
+		   ((echo.tags) && (sbookEchoTags(echo.tags))));
+  var extra=sbookEchoExtras(echo);
   var excerpt=((echo.excerpt) ? fdjtDiv("excerpt",echo.excerpt) : false);
-  var echoinfo=fdjtDiv("echoinfo",msg,excerpt);
-  var entry=fdjtDiv("echo",userblock,echoinfo);
+  var entry=fdjtDiv("echo",userblock,head,core,extra);
   entry.uri=echo.uri; entry.tags=echo.tags; entry.fragid=echo.fragid;
   if (echo.tribes) entry.tribes=echo.tribes;
   entry.user=user; entry.pingid=echo.pingid;
   return entry;
+}
+
+function sbookEchoIcons(echo)
+{
+  var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)");
+  var comment=fdjtImage(sbook_echo_remark_icon,"comment","+");
+  var showmore=fdjtImage(sbook_echo_more_icon,"more","*");
+  var age=fdjtSpan("age",echo.pingid+"/"+echo.tstamp);
+  var targetid=echo.fragid; var target=$(targetid);
+  eye.onmouseover=function(evt){
+    fdjtDelayHandler(300,sbookPreview,target,"preview");};
+  eye.onmouseout=function(evt){
+    fdjtDelayHandler(300,sbookStopPreview,target,"preview");};
+  comment.title=_("Add your own response");
+  comment.onclick=function(evt){}; 
+  showmore.title=_("See more information");
+  showmore.onclick=function(evt){}; 
+  return fdjtSpan("icons",age,showmore,comment,eye);
+}
+
+function sbookEchoTags(tags)
+{
+  var topics=fdjtDiv("topics");
+  var i=0; while (i<tags.length) {
+    if (i>0)
+      fdjtAppend(topics,"\u00b7",knoDTermSpan(tags[i++]));
+    else fdjtAppend(topics,knoDTermSpan(tags[i++]));}
+  return topics;
+}
+
+function sbookEchoExtras(echo)
+{
+  return false;
 }
 
 /* The Echoes/Social Database */

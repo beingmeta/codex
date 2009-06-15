@@ -157,7 +157,7 @@ function _sbookSearchResults_onmouseover(evt)
     if (target.sbookelt) break;
     else target=target.parentNode;
   if (!(target)) return;
-  fdjtTrace("Scrolling to %o",target.sbookelt);
+  // fdjtTrace("Scrolling to %o",target.sbookelt);
   var sbookelt=target.sbookelt;
   sbookPreview(sbookelt);
   fdjtAddClass(document.body,"preview","mode");
@@ -478,8 +478,7 @@ function createSBOOKHUDsearch()
     fdjtAppend(controls,input,messages,completions);
   else fdjtAppend(controls,input,messages,completions);
   fdjtAppend(outer,context,controls,results);
-  fdjtTrace("search HUD %o with class=%o and id=%o",
-	    outer,outer.className,outer.id);
+  // fdjtTrace("search HUD %o with class=%o and id=%o",outer,outer.className,outer.id);
   outer.onfocus=function(evt) {
     if (!(fdjtHasClass(document.body,"hudresults")))
       input.focus();};
