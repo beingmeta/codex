@@ -130,7 +130,7 @@ function sbookSetHUD(display,fcn,forced)
 function sbookModeButton_onclick(evt,mode)
 {
   var body=document.body;
-  fdjtTrace("mode button click %o %o",evt,mode);
+  // fdjtTrace("mode button click %o %o",evt,mode);
   if (sbookHUD.className===mode)
     if (sbook_hudup) sbookSetHUD(false);
     else sbookSetHUD(true);

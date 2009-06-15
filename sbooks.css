@@ -334,6 +334,8 @@ div.sbooksearch div.completions.showall span.dterm {display: inline;}
 div.sbooksearch div.completions.showall span.dterm.singleton {display: none;}
 div.sbooksearch span.dterm span.disambig {color: red;}
 div.sbooksearch div.completions { line-height: 200%;}
+div.sbooksearch div.completions .completion.prime { 
+  font-size: 200%; font-weight: bold;}
 div.sbooksearch div.completions .completion .variation { 
   font-size: 115%; color: white;}
 div.sbooksearch div.completions .completion .dterm { 

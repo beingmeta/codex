@@ -121,7 +121,7 @@ function createSBOOKHUDsocial()
 
 function sbookSetEchoes(echoes)
 {
-  fdjtTrace("sbookSetEchoes %o",echoes);
+  // fdjtTrace("sbookSetEchoes %o",echoes);
   var pingids=[]; var social=[]; var seen={};
   var i=0; while (i<echoes.length) {
     var echo=echoes[i++]; var user=echo.user;

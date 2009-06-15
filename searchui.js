@@ -261,6 +261,22 @@ function _sbook_replace_current_entry(elt,value)
     fdjtAddClass(document.body,"hudresults");}
 }
 
+function _sbook_note_completions(completions)
+{
+  var forced=false;
+  if (completions.exactheads.length)
+    forced=completions.exactheads[0];
+  else if (completions.heads.length)
+    forced=completions.heads[0];
+  else if (completions.exact.length)
+    forced=completions.exact[0];
+  else if (completions.length)
+    forced=completions[0];
+  else {}
+  if (forced) 
+    fdjtRadioSelect(forced,this.completions,"completion","prime");
+}
+
 /* Getting query cloud */
 
 function sbookDTermCompletion(dterm,title)
@@ -453,6 +469,7 @@ function createSBOOKHUDsearch()
     fdjtDiv("completions",fdjtSpan("count","no query refinements"));
   var results=fdjtDiv("results"," ");
   fdjtAddClass(outer,"hud");
+
   input.setAttribute("COMPLETEOPTS","nocase prefix showempty");
   input.completions_elt=completions;
   completions.input_elt=input;
@@ -462,6 +479,8 @@ function createSBOOKHUDsearch()
   input.onblur=sbookSearchInput_onblur;
   input.getCompletionText=_sbook_get_current_entry;
   input.oncomplete=_sbook_replace_current_entry;
+  input.noteCompletions=_sbook_note_completions;
+
   // This causes a timing problem
   // input.onblur=fdjtComplete_hide;
   input.setAttribute("AUTOCOMPLETE","off");

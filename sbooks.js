@@ -682,8 +682,8 @@ function sbookSetup(evt)
   window.onclick=sbook_onclick;
   window.onscroll=sbook_onscroll;
   window.onkeypress=sbook_onkeypress;
-  document.body.onkeydown=sbook_onkeydown;
-  document.body.onkeyup=sbook_onkeyup;
+  window.onkeydown=sbook_onkeydown;
+  window.onkeyup=sbook_onkeyup;
   if (knoHTMLSetup) knoHTMLSetup();
   setupTags();
   sbookFullCloud();
