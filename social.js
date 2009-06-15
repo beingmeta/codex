@@ -45,8 +45,8 @@ var social_oids=[];
 var social_info={};
 var sbook_echoes_by_pingid={};
 var sbook_echoes_by_user={};
-var sbook_echoes_by_tags={};
-var sbook_echoes_by_xtags={};
+var sbook_echoes_by_tag={};
+var sbook_echoes_by_xtag={};
 var sbook_echoes_by_tribe={};
 var sbook_echoes_by_id={};
 
@@ -110,6 +110,7 @@ function createSBOOKHUDsocial()
     else {
       var elt=((sbook_head)||(document.body));
       var podspot=add_podspot(elt,true);
+      elt.podspot=podspot;
       iframe=podspot.iframe;};};
 
   sbookHUDsocial=socialbar;
@@ -362,6 +363,7 @@ function add_podspot(target,open)
     var img=document.createElement('img');
     var title=target.getAttribute('title');
     var tribes=target.getAttribute('tribes');
+    var tags=target.tags||target.getAttribute('tags')||[];
     target.podspot=anchor;
     if (!(title)) {
       var head_info=
@@ -370,9 +372,14 @@ function add_podspot(target,open)
       if ((head_info) && (head_info.title))
 	title=head_info.title;}
     if (!(tribes)) tribes=[];
+    if (!(tags)) tags=[];
     if (typeof tribes === "string") tribes=tribes.split(';');
     else if ((tribes) && (tribes instanceof Array)) {}
     else tribes=[];
+    if (typeof tags === "string") tribes=tags.split(';');
+    else if ((tags) && (tags instanceof Array)) {}
+    else tags=[];
+    fdjtTrace("target=%o tags=%o",target,tags);
     var pclass=target.getAttribute('podspot_class');
     if (pclass==null) pclass=window.podspot_class;
     var iclass=target.getAttribute('podspot_iclass');
@@ -393,9 +400,8 @@ function add_podspot(target,open)
     var href=base_uri+
       ((id) ? "&FRAG="+id : "")+
       ((title) ? "&TITLE="+title : "");
-    var i=0; while (i<tribes.length) href=href+"&POD="+tribes[i++];
-    if (window.getSelection())
-      href=href+"&EXCERPT="+encodeURIComponent(window.getSelection());
+    var i=0; while (i<tribes.length) href=href+"&TRIBES="+tribes[i++];
+    i=0; while (i<tags.length) href=href+"&TAGCUE="+tags[i++];
     if (pclass==null) pclass="podspot";
     if (base==null) base="darkpodspot";
     if (psize==null) psize="32";
@@ -404,6 +410,8 @@ function add_podspot(target,open)
     anchor.openIFrame=function() {
       if (anchor.iframe) return anchor.iframe;
       var iframe=document.createElement('iframe');
+      if (window.getSelection())
+	href=href+"&EXCERPT="+encodeURIComponent(window.getSelection());
       iframe_elt=document.createElement('div');
       iframe.className="podspot";
       iframe.src=href+"&IFRAME=yes&DIALOG=yes";
@@ -438,7 +446,7 @@ function sbook_search_echoes(query)
   var i=0; var results=false;
   while (i<query.length) {
     var q=query[i++];
-    var echoes=sbook_echoes_by_tags[q]||(false);
+    var echoes=sbook_echoes_by_tag[q]||(false);
     if (echoes)
       if (results)
 	results=fdjtIntersect(results,echoes);
@@ -467,10 +475,10 @@ function sbook_podspot_uri(uri,hash,title,tribes)
     if ((typeof tribes === "string") && (tribes.indexOf(';')>0))
       tribes=tribes.split(';');
     if (typeof tribes === "string")
-      href=href+"&TRIBE="+encodeURIComponent(tribes);
+      href=href+"&TRIBES="+encodeURIComponent(tribes);
     else if ((typeof tribes === "object") && (tribes instanceof Array)) {
       var i=0; while (i<tribes.length) 
-		 href=href+"&TRIBE="+encodeURIComponent(tribes[i++]);}
+		 href=href+"&TRIBES="+encodeURIComponent(tribes[i++]);}
     else fdjtWarn("Weird TRIBES argument for podspot %o",tribes);}
   return href;
 }
