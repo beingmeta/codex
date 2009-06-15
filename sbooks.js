@@ -665,12 +665,10 @@ function getsbookbase()
 
 var _sbook_setup=false;
 
-function sbookSetup(evt)
+function sbookSetup()
 {
   if (_sbook_setup) return;
-  fdjtSetup();
-  if (fdjtHasClass(document.body,"tophud"))
-    sbookHUD_at_top=true;
+  if (!((fdjt_setup_started))) fdjtSetup();
   sbookBuildTOC();
   importSocialData();
   createSBOOKHUD();
@@ -691,9 +689,11 @@ function sbookSetup(evt)
   _sbook_setup=true;
 }
 
+fdjtAddSetup(sbookSetup);
+
 fdjtLoadMessage("Loaded sbooks module");
 //fdjtTrace("Working off of moby")
-fdjtTrace("Working off of localhost")
+//fdjtTrace("Working off of localhost")
 
 /* Emacs local variables
 ;;;  Local variables: ***
