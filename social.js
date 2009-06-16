@@ -100,13 +100,13 @@ function createSBOOKHUDsocial()
   ping_button.onclick=function(evt) {
     var iframe;
     evt.target.blur();
-    if ((sbook_focus_elt) &&
-	(sbook_focus_elt.podspot) &&
-	(sbook_focus_elt.podspot.iframe))
-      iframe=sbook_focus_elt.podspot.iframe;
-    else if ((sbook_focus_elt) &&
-	     (sbook_focus_elt.podspot))
-      iframe=sbook_focus_elt.podspot.openIFrame();
+    if ((sbook_focus) &&
+	(sbook_focus.podspot) &&
+	(sbook_focus.podspot.iframe))
+      iframe=sbook_focus.podspot.iframe;
+    else if ((sbook_focus) &&
+	     (sbook_focus.podspot))
+      iframe=sbook_focus.podspot.openIFrame();
     else {
       var elt=((sbook_head)||(document.body));
       var podspot=add_podspot(elt,true);

@@ -286,6 +286,10 @@ function sbookTOCHighlight(secthead)
 
 function sbookTOC_onmouseout(evt)
 {
+  fdjtScrollRestore();
+  fdjtDropClass(document.body,"preview");
+  evt.cancelBubble=true;
+  evt.preventDefault();
   var rtarget=evt.relatedTarget;
   if (!(rtarget)) return;
   try {

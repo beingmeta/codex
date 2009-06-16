@@ -36,11 +36,6 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 
 /* Indices and tags */
 
-var sbook_tags2words={};
-var sbook_words2tags={};
-var sbook_genls={};
-var sbook_glosses={};
-
 function sbook_get_tags(elt)
 {
   var info=sbook_getinfo(elt);
@@ -114,26 +109,33 @@ function sbookHandleTagSpec(elt,tagspec)
     var j=0; while (j<tagentries.length) {
       var tagentry=tagentries[j++];
       if (tagentry==="") continue;
-      var knowde=false; var prime=false;
+      var knowde=false; var prime=false; var auto=false;
       if (tagentry[0]==='*') {
 	knowde=knowlet.handleSubjectEntry(tagentry.slice(1));
 	prime=true;}
+      else if (tagentry[0]==='~') {
+	knowde=knowlet.handleSubjectEntry(tagentry.slice(1));
+	auto=true;}
       else knowde=knowlet.handleSubjectEntry(tagentry);
       // fdjtTrace("adding tag %o to %s",knowde,elt.id);
       sbookAddTag(elt,knowde,prime);}}
   else {
-    var entries=tagspec.split(';'); var prime=false;
+    var entries=tagspec.split(';'); var prime=false; var auto=false;
     tag_count=tag_count+entries.length;
     var i=0; while (i<entries.length) {
-      var j=0; var clauses=entries[i++].split(';');
+      var j=0; var clauses=entries[i++].split('|');
       if (clauses[0][0]==='*') {
 	prime=true; clauses[0]=clauses[0].slice(1);}
+      else if (clauses[0][0]==='~') {
+	auto=true; clauses[0]=clauses[0].slice(1);}
       while (j<clauses.length) {
 	var clause=clauses[j++];
 	if (clause==="") {}
 	else if (clause.search(/\w/)===0)
+	  /* Synonym */
 	  sbookAddTag(elt,clause,false);
 	else if (clause[0]==='^')
+	  /* Genl */
 	  sbookAddTag(elt,clause.slice(1),false);
 	else {}}}}
   return tag_count;
