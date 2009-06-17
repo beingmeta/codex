@@ -615,37 +615,67 @@ function sbook_onscroll(evt)
 function sbook_onkeydown(evt)
 {
   // fdjtTrace("keydown %o %o",evt,evt.keyCode);
-  if (!(sbook_hudup))
-    if (evt.keyCode===16)  {
-      fdjtAddClass(document.body,"hudhover");
-      evt.preventDefault(); evt.cancelBubble=true;}
-}
-
-function sbook_onkeyup(evt)
-{
-  // fdjtTrace("keyup %o %o",evt,evt.keyCode);
-  if (!(sbook_hudup))
-    if (evt.keyCode===16) {
-      fdjtDropClass(document.body,"hudhover");
-      evt.preventDefault(); evt.cancelBubble=true;}
-}
-
-function sbook_onkeypress(evt)
-{
   var target=evt.target;
-  // fdjtTrace("%o: kc=%o cc=%o",evt,evt.keyCode,evt.charCode);
-  if (evt.keyCode===27) { /* Escape */
-    if (sbook_hudup) {
-      sbookSetHUD(false);
-      $("SBOOKSEARCHTEXT").blur();}
-    else sbookSetHUD(true);}
   while (target)
     if ((target.tagName==="INPUT") ||
 	(target.tagName==="TEXTAREA") ||
 	(target.className==="sbooknokeys"))
       return true;
     else target=target.parentNode;
-  if (evt.keyCode===36) {
+  if (!(sbook_hudup))
+    if (evt.keyCode===16)  
+      fdjtAddClass(document.body,"hudhover");
+}
+
+function sbook_onkeyup(evt)
+{
+  // fdjtTrace("keyup %o %o",evt,evt.keyCode);
+  var target=evt.target;
+  while (target)
+    if ((target.tagName==="INPUT") ||
+	(target.tagName==="TEXTAREA") ||
+	(target.className==="sbooknokeys"))
+      return true;
+    else target=target.parentNode;
+  if (!(sbook_hudup))
+    if (evt.keyCode===16) 
+      fdjtDropClass(document.body,"hudhover");
+}
+
+function sbook_textinputp(target)
+{
+  while (target)
+    if ((target.tagName==="INPUT") ||
+	(target.tagName==="TEXTAREA") ||
+	(target.className==="sbooknokeys") ||
+	((target.onkeypress) && (target.onkeypress!=sbook_onkeypress)))
+      return true;
+    else target=target.parentNode;
+  return false;
+}
+
+function sbook_onkeypress(evt)
+{
+  // fdjtTrace("%o: kc=%o cc=%o",evt,evt.keyCode,evt.charCode);
+  var target=evt.target;
+  if (evt.keyCode===27) { /* Escape works anywhere */
+    if (sbook_hudup) {
+      sbookSetHUD(false);
+      $("SBOOKSEARCHTEXT").blur();}
+    else sbookSetHUD(true);}
+  /* Make sure you're not inputting text or doing anything
+     else on keypresses*/
+  if (sbook_textinputp(target)) return true;
+  /* Space */
+  else if (evt.keyCode===40) { 
+    var info=sbook_head.sbookinfo;
+    if (info.sub.length) sbookScrollTo(info.sub[0]);}
+  /* Backspace or Delete */
+  else if ((evt.keyCode===73) || (evt.keyCode===105)) {
+    window.scrollBy(0,-window.innerHeight);
+    sbookSetFocus(sbookGetXYFocus());}
+  /* UP arrow */
+  else if (evt.keyCode===36) {
     sbookScrollTo(sbook_head);}
   else if (evt.keyCode===37) {
     var info=sbook_head.sbookinfo;
@@ -656,9 +686,6 @@ function sbook_onkeypress(evt)
   else if (evt.keyCode===39) {
     var info=sbook_head.sbookinfo;
     if (info.next) sbookScrollTo(info.next);}
-  else if (evt.keyCode===40) {
-    var info=sbook_head.sbookinfo;
-    if (info.sub.length) sbookScrollTo(info.sub[0]);}
   else if (evt.charCode===32) {
     window.scrollBy(0,window.innerHeight);
     sbookSetFocus(sbookGetXYFocus());}
@@ -670,16 +697,11 @@ function sbook_onkeypress(evt)
   else if ((evt.charCode===116)||(evt.charCode===84)) {
     sbookSetHUD("hudup","toc");
     $("SBOOKSEARCHTEXT").focus();}
-  else if ((evt.keyCode===73) || (evt.keyCode===105)) {
-    /* Backspace or deleted */
-    window.scrollBy(0,-window.innerHeight);
-    sbookSetFocus(sbookGetXYFocus());}
   else if ((evt.keyCode===8) || (evt.keyCode===46)) {
     /* Backspace or deleted */
     window.scrollBy(0,-window.innerHeight);
     sbookSetFocus(sbookGetXYFocus());}
-  evt.preventDefault();}
-      
+}
 
 function sbook_onclick(evt)
 {
