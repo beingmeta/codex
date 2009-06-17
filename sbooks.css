@@ -104,6 +104,10 @@ body.hudechoes.preview div#SBOOKHUD
   div.echoes { display: block; opacity: 0.10;}
 body.hudresults div#SBOOKHUD div.results { display: block; opacity: 0.95;}
 body.hudresults div#SBOOKHUD div.hud { display: block; opacity: 0.95;}
+body.hudresults.preview div#SBOOKHUD
+  div.results { display: block; opacity: 0.10;}
+body.hudresults.preview div#SBOOKHUD
+  div.hud { display: block; opacity: 0.10;}
 
 div#SBOOKHUD div.hud { opacity: 0.05; }
 body.hudup div#SBOOKHUD div.hud { opacity: 0.95; max-height: inherit;}
@@ -275,7 +279,10 @@ body.hudup.hudresults div#SBOOKHUD
   div.sbooksearch div.controls div.completions { display: none;}
 body.hudup.hudresults div#SBOOKHUD
   div.sbooksearch div.controls div.completions.open { display: none;}
-div.sbooksearch div.controls div.completions { max-height: 300px;}
+div.sbooksearch div.controls div.completions {
+   max-height: 300px; width: 99%;}
+div.sbooksearch div.controls div.completions .completion {
+   margin: 0px; padding: 0px;}
 
 /* Search classes */
 
@@ -319,7 +326,8 @@ body[mode~="results"] div.sbooksearch div.controls div.messages {
 
 div.sbooksearch span.dterm { 
   background-color: yellow; color: black;
-  padding: 2px; padding-left: 5px; margin-right: 3px;
+  padding: 2px; padding-left: 5px;  margin: 0px;
+  padding-right: 3px; margin-right: 3px;
   -khtml-border-top-left-radius: 6px; 
   -webkit-border-top-left-radius: 6px; 
   -moz-border-radius-topleft: 6px; 
