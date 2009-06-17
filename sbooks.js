@@ -511,7 +511,8 @@ var sbook_track_window=25;
 
 function sbookSetFocus(target)
 {
-  if (target===sbook_focus) return target;
+  if (!(target)) return null;
+  else if (target===sbook_focus) return target;
   var tags=sbook_get_tags(target);
   if ((tags.length>0) &&
       (tags != sbook_focus_tags)) {
@@ -527,11 +528,12 @@ function sbookSetFocus(target)
     fdjtReplace(old,tagdiv);
     sbook_focus_tags=tags;}
   sbook_focus=target;
-  var head=(((target.sbookinfo) && (target.sbookinfo.level)) ?
-	    (target) : (target.sbook_head));
-  if (sbook_head!=head) sbookSetHead(head);
-  if ((target) && (target.sbookloc))
-    sbookSetLocation(target.sbookloc);
+  if (target) {
+    var head=(((target.sbookinfo) && (target.sbookinfo.level)) ?
+	      (target) : (target.sbook_head));
+    if ((head) && (sbook_head!=head)) sbookSetHead(head);
+    if ((target) && (target.sbookloc))
+      sbookSetLocation(target.sbookloc);}
 }
 
 function sbookGetXYFocus(xoff,yoff)

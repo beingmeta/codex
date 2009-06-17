@@ -116,11 +116,6 @@ function sbookSetHUD(display,fcn,forced)
   else sbook_hud_forced=false;
   if (fdjtHasClass(body,"hudup")) sbook_hudup=true;
   else sbook_hudup=false;
-  if (display) {
-    var head_elt=fdjtGetChildrenByClassName(sbookHUD,"sbook"+fcn);
-    if ((head_elt) && (head_elt.length>0)) {
-      head_elt[0].focus();
-      if (head_elt[0].onfocus) head_elt[0].onfocus(false);}}
   /*
   fdjtTrace("sbookSetHUD %s/%s/%o: body=%s, hud=%s",
 	    display,fcn,forced,body.className,sbookHUD.className);
@@ -140,6 +135,10 @@ function sbookModeButton_onclick(evt,mode)
     evt.target.blur();
     evt.preventDefault();
     evt.cancelBubble=true;}
+  var head_elt=fdjtGetChildrenByClassName(sbookHUD,"sbook"+mode);
+  if ((head_elt) && (head_elt.length>0)) {
+    head_elt[0].focus();
+    if (head_elt[0].onfocus) head_elt[0].onfocus(false);}
   return false;
 }
 

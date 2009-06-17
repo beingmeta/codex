@@ -160,7 +160,7 @@ function _sbookSearchResults_onmouseover(evt)
   // fdjtTrace("Scrolling to %o",target.sbookelt);
   var sbookelt=target.sbookelt;
   sbookPreview(sbookelt);
-  fdjtAddClass(document.body,"preview","mode");
+  fdjtAddClass(document.body,"preview");
   evt.preventDefault();
   evt.cancelBubble=true;
 }
@@ -203,9 +203,9 @@ function sbookSearchInput_onkeypress(evt)
   if (kc===13) {
     sbookForceComplete(target);
     sbookShowSearch(sbook_query);
+    sbookSetHUD("hudresults","search");
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
-    sbookSetHUD("hudresults","search");
     return false;}
   else if (ch===59) { /* That is, semicolon */
     sbookForceComplete(evt.target);

@@ -81,7 +81,7 @@ div#SBOOKHUD div.results {
   position: fixed; top: 50px; z-index: 100;
   left: 10%; right: 10%; width: 80%; 
   background-color: gray; opacity: 0.05;
-  overflow: auto; height: 75%;
+  overflow: auto; max-height: 75%;
   margin: 0px; padding: 6px; padding-top: 0px;
   display: none;}
 div#SBOOKHUD div.echoes {
