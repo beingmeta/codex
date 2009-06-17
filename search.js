@@ -53,50 +53,27 @@ function sbook_get_tags(elt)
 
 var sbook_trace_tagging=false;
 
-function sbookAddTag(elt,tag,prime,checkdup)
+function sbookAddTag(elt,tag,prime,contextual,unique,kno)
 {
+  if (!(kno)) kno=knowlet;
   var elt_id=(((elt.sbookinfo) && (elt.sbookinfo.headid)) ||
 	      (fdjtForceId(elt)));
+  if ((kno) && (typeof tag === "string"))
+    tag=kno.handleSubjectEntry(tag);
   var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
+  if (elt.hasOwnProperty('tags'))
+    if (elt.tags.indexOf(dterm)<0) elt.tags.push(dterm);
+    else return;
+  else elt.tags=new Array(dterm);
   if (sbook_trace_tagging) 
     fdjtLog("Tagging #%s with %s/%o",elt.id,dterm,tag);
-  if (!(dterm)) {
-    fdjtWarn("Couldn't get dterm for %o",tag);
-    return;}
-  else if (sbook_index.hasOwnProperty(dterm)) {
-    if ((!(checkdup)) || (sbook_index[dterm].indexOf(elt_id)<0))
-      sbook_index[dterm].push(elt_id);}
-  else {
-    sbook_index[dterm]=new Array(elt_id);
-    sbook_index._all.push(dterm);}
-  if (sbook_dindex.hasOwnProperty(dterm)) {
-    if ((!(checkdup)) || (sbook_dindex[dterm].indexOf(elt_id)<0))
-      sbook_dindex[dterm].push(elt_id);}
-  else {
-    sbook_dindex[dterm]=new Array(elt_id);
-    sbook_dindex._all.push(dterm);}
-  if (elt.tags) elt.tags.push(dterm);
-  else elt.tags=new Array(dterm);
-  if (prime) {
-    if (sbook_pindex.hasOwnProperty(dterm)) {
-      if ((!(checkdup)) || (sbook_pndex[dterm].indexOf(elt_id)<0))
-	sbook_pindex[dterm].push(elt_id);}
-    else sbook_pindex[dterm]=new Array(elt_id);
-    if (elt.ptags) elt.ptags.push(dterm);
-    else elt.ptags=new Array(dterm);}
-  if (!(typeof tag==="string")) {
-    // Assume its a DTERM object
-    var genls=tag.allGenls;
-    if (sbook_trace_tagging)
-      fdjtLog("Tagging #%s with genls of %o=%o",elt.id,tag,genls);
-    if (genls) {
-      var i=0; while (i<genls.length) {
-	var g=genls[i++]; var gdterm=g.dterm;
-	if (sbook_index.hasOwnProperty(gdterm))
-	  sbook_index[gdterm].push(elt_id);
-	else {
-	  sbook_index._all.push(gdterm);
-	  sbook_index[gdterm]=new Array(elt_id);}}}}
+  /* knoIndexTag returns true if the value wasn't identified as a duplicate */
+  knoIndexTag(sbook_index,tag,elt_id,false,(!(unique)));
+  knoIndexTag(sbook_direct_index,tag,elt_id,true,(!(unique)));
+  if (prime)
+    knoIndexTag(sbook_prime_index,tag,elt_id,true,(!(unique)));
+  if (contextual)
+    knoIndexTag(sbook_contextual_index,tag,elt_id,true,(!(unique)));
 }
 
 function sbookHandleTagSpec(elt,tagspec)
@@ -251,8 +228,8 @@ function sbookDoSearch(query,results)
   var j=0; while (j<base.length) results[base[j++]]=1;
   var i=0; while (i<query.length) {
     var qelt=query[i++];
-    var prime=sbook_lookup_term(qelt,sbook_pindex)||[];
-    var direct=sbook_lookup_term(qelt,sbook_dindex)||[];
+    var prime=sbook_lookup_term(qelt,sbook_prime_index)||[];
+    var direct=sbook_lookup_term(qelt,sbook_direct_index)||[];
     var k=0; while (k<prime.length) {
       var elt=prime[k++]; var score;
       if (score=results[elt]) results[elt]=score+1;}

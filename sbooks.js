@@ -88,6 +88,13 @@ var sbook_context_toc={};
 //   sbook_dindex is reserved for actual tags.
 var sbook_index={_all: []};
 // This is a table mapping prime (focal) tags (dterms) to elements (or IDs)
+var sbook_prime_index={_all: []};
+// This is the 'direct index' of dterms which are explicitly referenced
+var sbook_direct_index={_all: []};
+// This is the contextual index of items where the tag comes from the context
+var sbook_contextual_index={_all: []};
+
+// This is a table mapping prime (focal) tags (dterms) to elements (or IDs)
 var sbook_pindex={_all: []};
 // This is the 'extended index' which maps genls (dterms) to elements (or IDs)
 var sbook_dindex={_all: []};
@@ -206,15 +213,18 @@ var debug_toc_build=false;
 var trace_toc_build=false;
 var _sbook_toc_built=false;
 
-function sbookBuildTOC()
+var _total_tagged_count=0; var _total_tag_count=0;
+
+function sbookBuildMetadata()
 {
   var start=new Date();
   if (_sbook_toc_built) return;
-  fdjtLog('Starting to build TOC');
+  fdjtLog('Starting to build metadata');
   var body=document.body, children=body.childNodes, level=false;
   var bodyinfo=new Object();
-  var tocstate={curlevel: 0,idserial:0,location: 0};
+  var tocstate={curlevel: 0,idserial:0,location: 0,tagstack: []};
   tocstate.curhead=body; tocstate.curinfo=bodyinfo;
+  tocstate.knowlet=knowlet;
   // Location is an indication of distance into the document
   var location=0;
   body.sbookinfo=bodyinfo; bodyinfo.starts_at=0;
@@ -236,9 +246,109 @@ function sbookBuildTOC()
       else if (x.Yoff===y.Yoff) return 0;
       else return 1;});
   var done=new Date();
-  fdjtLog('Done building TOC in %f secs',
+  fdjtLog('Done building metadata in %f secs',
 	  (done.getTime()-start.getTime())/1000);
+  fdjtLog("Got %d tags from %d elements in %f secs, %s now has %d dterms",
+	  _total_tag_count,_total_tagged_count,
+	  (done.getTime()-start.getTime())/1000,
+	  knowlet.name,knowlet.alldterms.length);
   _sbook_toc_build=true;
+}
+
+function _sbook_transplant_content(content)
+{
+  var transplanted=[];
+  var i=0; var j=0;
+  while (i<content.length) {
+    var transplant=fdjtTransplant(content[i++]);
+    if (transplant) transplanted[j++]=transplant;}
+  return transplanted;
+}
+function _sbook_get_title(head)
+{
+  var title=fdjtCacheAttrib(head,title);
+  if (!(title))
+    return fdjtTextify(head,true);
+  else if (typeof title === "string")
+    if (title==="") return false;
+    else return title;
+  else return fdjtTextify(title,true);
+}
+
+function _sbook_build_head(head,tocstate,level,curhead,curinfo,curlevel)
+{
+  var headinfo=sbook_needinfo(head);
+  var headid=fdjtGuessAnchor(head);
+  /* Update global tables, arrays */
+  sbook_compute_offsets(head);
+  sbook_nodes.push(head);
+  head.sbookloc=tocstate.location;
+  if (headid) sbook_hashmap[headid]=head;
+  else headid=fdjtForceId(head);
+  if (debug_toc_build)
+    fdjtLog("Found head item %o under %o at level %d w/id=#%s ",
+	    head,curhead,level,headid);
+  /* Iniitalize the headinfo */
+  head.sbookinfo=headinfo;
+  headinfo.starts_at=tocstate.location;
+  headinfo.elt=head; headinfo.level=level;
+  headinfo.sub=new Array(); headinfo.id=headid;
+  headinfo.content=_sbook_transplant_content(head.childNodes);
+  headinfo.title=_sbook_get_title(head);
+  headinfo.next=false; headinfo.prev=false;
+  if (level>curlevel) {
+    /* This is the simple case where we are a subhead
+       of the current head. */
+    headinfo.sbook_head=curhead;
+    if (!(curinfo.intro_ends_at))
+      curinfo.intro_ends_at=tocstate.location;
+    curinfo.sub.push(head);}
+  else {
+    /* We're not a subhead, so we're popping up at least one level. */
+    var scan=curhead;
+    var scaninfo=curinfo;
+    var scanlevel=curinfo.level;
+    /* Climb the stack of headers, closing off entries and setting up
+       prev/next pointers where needed. */
+    while (scaninfo) {
+      if (debug_toc_build) /* debug_toc_build */
+	fdjtLog("Finding head: scan=%o, info=%o, sbook_head=%o, cmp=%o",
+		scan,scaninfo,scanlevel,scaninfo.sbook_head,
+		(scanlevel<level));
+      if (scanlevel<level) break;
+      if (level===scanlevel) {
+	headinfo.prev=scan;
+	scaninfo.next=head;}
+      scaninfo.ends_at=tocstate.location;
+      var next=scaninfo.sbook_head;
+      var nextinfo=sbook_getinfo(next);
+      if ((nextinfo) && (nextinfo.sbook_head)) {
+	scan=next; scaninfo=nextinfo; scanlevel=nextinfo.level;
+	tocstate.tagstack.pop();}
+      else {
+	scan=document.body;
+	scaninfo=sbook_getinfo(scan);
+	scanlevel=0;
+	break;}}
+    if (debug_toc_build)
+      fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
+	      scan,scaninfo,scaninfo.level,scaninfo.sbook_head);
+    /* We've found the head for this item. */
+    headinfo.sbook_head=scan;} /* scaninfo.sub.push(head); handled below */
+  /* Add yourself to your children's subsections */
+  var sup=headinfo.sbook_head;
+  var supinfo=sbook_getinfo(sup);
+  var newheads=new Array();
+  newheads=newheads.concat(supinfo.sbook_heads); newheads.push(sup);
+  headinfo.sbook_heads=newheads;
+  if ((trace_toc_build) || (debug_toc_build))
+    fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
+	    tocstate.location,head,headinfo,headinfo.sbook_head);
+  /* Update the toc state */
+  tocstate.curhead=head;
+  tocstate.curinfo=headinfo;
+  tocstate.curlevel=level;
+  tocstate.location=tocstate.location+fdjtFlatWidth(head);  
 }
 
 function sbook_toc_builder(child,tocstate)
@@ -248,6 +358,7 @@ function sbook_toc_builder(child,tocstate)
   var curhead=tocstate.curhead;
   var curinfo=tocstate.curinfo;
   var curlevel=tocstate.curlevel;
+  var level=0;
   // Location tracking and TOC building
   if (child.nodeType==Node.TEXT_NODE) {
     var width=child.nodeValue.length;
@@ -255,80 +366,8 @@ function sbook_toc_builder(child,tocstate)
     tocstate.location=tocstate.location+width;}
   else if (child.nodeType!=Node.ELEMENT_NODE)
     child.sbook_head=curhead;
-  else if (level=sbookHeadLevel(child)) {
-    var head=child;
-    var headinfo=sbook_needinfo(head);
-    var headid=fdjtGuessAnchor(head);
-    sbook_compute_offsets(head);
-    sbook_nodes.push(head);
-    child.sbookloc=tocstate.location;
-    if (headid) sbook_hashmap[headid]=head;
-    else headid=fdjtForceId(head)
-	   if (debug_toc_build)
-	     fdjtLog("Found head item %o under %o at level %d w/id=#%s ",
-		     head,curhead,level,headid);
-    head.sbookinfo=headinfo;
-    headinfo.starts_at=tocstate.location;
-    headinfo.elt=head; headinfo.level=level;
-    headinfo.sub=new Array(); headinfo.id=headid;
-    {
-      var content=child.childNodes;
-      var transplanted=[];
-      var i=0; var j=0;
-      while (i<content.length) {
-	var transplant=fdjtTransplant(content[i++]);
-	if (transplant) transplanted[j++]=transplant;}
-      headinfo.content=transplanted;}
-    if ((typeof head.title === "string") &&
-	(head.title != ""))
-      headinfo.title=head.title;
-    else headinfo.title=fdjtTextify(head,true);
-    headinfo.next=false; headinfo.prev=false;
-    if (level>curlevel) {
-      headinfo.sbook_head=curhead;
-      if (!(curinfo.intro_ends_at))
-	curinfo.intro_ends_at=tocstate.location;
-      curinfo.sub.push(head);}
-    else {
-      var scan=curhead;
-      var scaninfo=curinfo;
-      var scanlevel=curinfo.level;
-      while (scaninfo) {
-	if (debug_toc_build) /* debug_toc_build */
-	  fdjtLog("Finding head: scan=%o, info=%o, sbook_head=%o, cmp=%o",
-		  scan,scaninfo,scanlevel,scaninfo.sbook_head,
-		  (scanlevel<level));
-	if (scanlevel<level) break;
-	if (level===scanlevel) {
-	  headinfo.prev=scan;
-	  scaninfo.next=head;}
-	scaninfo.ends_at=tocstate.location;
-	var next=scaninfo.sbook_head;
-	var nextinfo=sbook_getinfo(next);
-	if ((nextinfo) && (nextinfo.sbook_head)) {
-	  scan=next; scaninfo=nextinfo; scanlevel=nextinfo.level;}
-	else {
-	  scan=document.body;
-	  scaninfo=sbook_getinfo(scan);
-	  scanlevel=0;
-	  break;}}
-      if (debug_toc_build)
-	fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
-		scan,scaninfo,scaninfo.level,scaninfo.sbook_head);
-      headinfo.sbook_head=scan;
-      scaninfo.sub.push(head);}
-    var sup=headinfo.sbook_head;
-    var supinfo=sbook_getinfo(sup);
-    var newheads=new Array();
-    newheads=newheads.concat(supinfo.sbook_heads); newheads.push(sup);
-    headinfo.sbook_heads=newheads;
-    if ((trace_toc_build) || (debug_toc_build))
-      fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
-	      tocstate.location,head,headinfo,headinfo.sbook_head);
-    tocstate.curhead=head;
-    tocstate.curinfo=headinfo;
-    tocstate.curlevel=level;
-    tocstate.location=tocstate.location+fdjtFlatWidth(child);}
+  else if (level=sbookHeadLevel(child)) 
+    _sbook_build_head(child,tocstate,level,curhead,curinfo,curlevel);
   else {
     var width=fdjtFlatWidth(child);
     var loc=tocstate.location+width/2;
@@ -342,7 +381,7 @@ function sbook_toc_builder(child,tocstate)
       if ((fdjtHasContent(child)) || (fdjtHasAttrib(child,'tags'))) {
 	child.sbook_head=curhead;
 	child.sbookloc=loc;}
-      /* If none of the includes nodes marked their location,
+      /* If none of the included nodes marked their location,
 	 mark the DIV's location. */
       if (sbook_nodes.length===nodeslength) {
 	sbook_compute_offsets(child);
@@ -352,6 +391,25 @@ function sbook_toc_builder(child,tocstate)
       sbook_nodes.push(child);
       child.sbookloc=loc;
       child.sbook_head=curhead;}}
+  if ((child.getAttribute) && (child.getAttribute("TAGS"))) {
+    var tagstring=child.getAttribute("TAGS");
+    var tags=((knowlet) ?
+	      (knowlet.segmentString(fdjtUnEntify(tagstring),';')) :
+	      (fdjtSemiSplit(fdjtUnEntify(tagstring))));
+    var knowdes=[];
+    var i=0; while (i<tags.length) {
+      var tag=tags[i++]; var knowde=tag;
+      _total_tag_count++;
+      if (tag.length===0) continue;
+      if (knowlet)
+	knowde=knowlet.handleSubjectEntry
+	  (((tag[0]==="*") || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
+      knowdes.push(knowde);
+      sbookAddTag(child,knowde,(tag[0]==="*"),false,true,tocstate.knowlet);
+      if (level) tocstate.tagstack.push([]);}
+    _total_tagged_count++;}
+  else if (level) tocstate.tagstack.push([]);
+  else {}
   if ((sbook_debug_locations) && (child.sbookloc) &&
       (child.setAttribute))
     child.setAttribute("sbookloc",child.sbookloc);
@@ -771,7 +829,8 @@ function sbookSetup()
   if (_sbook_setup) return;
   if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
-  sbookBuildTOC();
+  if (knoHTMLSetup) knoHTMLSetup();
+  sbookBuildMetadata();
   importSocialData();
   createSBOOKHUD();
   sbookHUD_Init();
@@ -785,8 +844,6 @@ function sbookSetup()
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
-  if (knoHTMLSetup) knoHTMLSetup();
-  setupTags();
   sbookFullCloud();
   /* _sbook_createHUDSocial(); */
   _sbook_setup=true;
