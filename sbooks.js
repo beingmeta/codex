@@ -502,6 +502,7 @@ function sbookScrollTo(elt)
 
 var sbook_focus=false;
 var sbook_click_focus=false;
+var sbook_click_focus_time=false;
 var sbook_focus_tags=false;
 var sbook_last_x=false;
 var sbook_last_y=false;
@@ -661,6 +662,8 @@ function sbook_onkeypress(evt)
   else if (evt.charCode===32) {
     window.scrollBy(0,window.innerHeight);
     sbookSetFocus(sbookGetXYFocus());}
+  else if (evt.charCode===43) {
+    sbook_open_ping();}
   else if ((evt.charCode===105) || (evt.charCode===84)) {
     sbookSetHUD("hudup","search");
     $("SBOOKSEARCHTEXT").focus();}
@@ -696,6 +699,7 @@ function sbook_onclick(evt)
   if (fdjtScrollRestore()) return;
   while (target)
     if (target.sbook_head) break;
+    else if (target.Xoff) break;
     else if (target.parentNode===document.body) break;
     else target=target.parentNode;
   if (target===null) return;
@@ -705,6 +709,7 @@ function sbook_onclick(evt)
   else if (target.sbook_head)
     sbookSetHead(target.sbook_head);
   sbook_click_focus=target;
+  sbook_click_focus_time=fdjtTick();
 }
 
 /* Scrolling by moving sideways */

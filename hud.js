@@ -135,11 +135,12 @@ function sbookModeButton_onclick(evt,mode)
     evt.target.blur();
     evt.preventDefault();
     evt.cancelBubble=true;}
-  var head_elt=fdjtGetChildrenByClassName(sbookHUD,"sbook"+mode);
-  if ((head_elt) && (head_elt.length>0)) {
-    head_elt[0].focus();
-    if (head_elt[0].onfocus) head_elt[0].onfocus(false);}
-  return false;
+  if (sbook_hudup) {
+    var head_elt=fdjtGetChildrenByClassName(sbookHUD,"sbook"+mode);
+    if ((head_elt) && (head_elt.length>0)) {
+      head_elt[0].focus();
+      if (head_elt[0].onfocus) head_elt[0].onfocus(false);}
+    return false;}
 }
 
 function sbookPreviewOffset()
