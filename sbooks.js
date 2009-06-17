@@ -680,7 +680,12 @@ function sbook_onscroll(evt)
 function sbook_onkeydown(evt)
 {
   // fdjtTrace("keydown %o %o",evt,evt.keyCode);
-  var target=evt.target;
+  if (evt.keyCode===27) { /* Escape works anywhere */
+    if (sbook_hudup) {
+      sbookSetHUD(false);
+      $("SBOOKSEARCHTEXT").blur();}
+    else sbookSetHUD(true);
+    return;}  var target=evt.target;
   while (target)
     if ((target.tagName==="INPUT") ||
 	(target.tagName==="TEXTAREA") ||
@@ -711,11 +716,6 @@ function sbook_onkeypress(evt)
 {
   // fdjtTrace("%o: kc=%o cc=%o",evt,evt.keyCode,evt.charCode);
   var target=evt.target;
-  if (evt.keyCode===27) { /* Escape works anywhere */
-    if (sbook_hudup) {
-      sbookSetHUD(false);
-      $("SBOOKSEARCHTEXT").blur();}
-    else sbookSetHUD(true);}
   /* Make sure you're not inputting text or doing anything
      else on keypresses*/
   if (fdjtIsTextInput(target)) return true;

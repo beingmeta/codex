@@ -75,6 +75,7 @@ div#SBOOKHUD div.hud {
   overflow: hidden; text-align: center; 
   font-family: sans,sans-serif; font-size: 150%;
   display: none;}
+div#SBOOKHUD a { color: lightblue;}
 div#SBOOKHUD img.button { opacity: 0.5; z-index: 200;}
 /* For scrollable results */
 div#SBOOKHUD div.results {
@@ -215,8 +216,6 @@ div.sbooktoc div.subsections a {
     /* white-space: nowrap;  */
     display: inline; width: inherit; font-size: 50%;
     clear: none;}
-div.sbooktoc div.subsections a.cohighlight {
-    color: yellow;}
 div.sbooktoc div.subsections a.cohighlight {
     color: yellow;}
 
