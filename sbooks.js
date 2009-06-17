@@ -340,7 +340,8 @@ function _sbook_build_head(head,tocstate,level,curhead,curinfo,curlevel)
       fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
 	      scan,scaninfo,scaninfo.level,scaninfo.sbook_head);
     /* We've found the head for this item. */
-    headinfo.sbook_head=scan;} /* scaninfo.sub.push(head); handled below */
+    headinfo.sbook_head=scan;
+    scaninfo.sub.push(head);} /* handled below */
   /* Add yourself to your children's subsections */
   var sup=headinfo.sbook_head;
   var supinfo=sbook_getinfo(sup);
