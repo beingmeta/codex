@@ -642,18 +642,6 @@ function sbook_onkeyup(evt)
       fdjtDropClass(document.body,"hudhover");
 }
 
-function sbook_textinputp(target)
-{
-  while (target)
-    if ((target.tagName==="INPUT") ||
-	(target.tagName==="TEXTAREA") ||
-	(target.className==="sbooknokeys") ||
-	((target.onkeypress) && (target.onkeypress!=sbook_onkeypress)))
-      return true;
-    else target=target.parentNode;
-  return false;
-}
-
 function sbook_onkeypress(evt)
 {
   // fdjtTrace("%o: kc=%o cc=%o",evt,evt.keyCode,evt.charCode);
@@ -665,42 +653,38 @@ function sbook_onkeypress(evt)
     else sbookSetHUD(true);}
   /* Make sure you're not inputting text or doing anything
      else on keypresses*/
-  if (sbook_textinputp(target)) return true;
-  /* Space */
-  else if (evt.keyCode===40) { 
+  if (fdjtIsTextInput(target)) return true;
+  else if (evt.keyCode===40) {   /* Space */
     var info=sbook_head.sbookinfo;
     if (info.sub.length) sbookScrollTo(info.sub[0]);}
   /* Backspace or Delete */
   else if ((evt.keyCode===73) || (evt.keyCode===105)) {
     window.scrollBy(0,-window.innerHeight);
     sbookSetFocus(sbookGetXYFocus());}
-  /* UP arrow */
-  else if (evt.keyCode===36) {
+  else if (evt.keyCode===36) { /* Home */
     sbookScrollTo(sbook_head);}
-  else if (evt.keyCode===37) {
+  else if (evt.keyCode===37) { /* LEFT arrow */
     var info=sbook_head.sbookinfo;
     if (info.prev) sbookScrollTo(info.prev);}
-  else if (evt.keyCode===38) {
+  else if (evt.keyCode===38) { /* UP arrow */
     var info=sbook_head.sbookinfo;
     if (info.sbook_head) sbookScrollTo(info.sbook_head);}
-  else if (evt.keyCode===39) {
+  else if (evt.keyCode===39) { /* RIGHT arrow */
     var info=sbook_head.sbookinfo;
     if (info.next) sbookScrollTo(info.next);}
-  else if (evt.charCode===32) {
-    window.scrollBy(0,window.innerHeight);
-    sbookSetFocus(sbookGetXYFocus());}
-  else if (evt.charCode===43) {
+  else if (evt.charCode===43) { /* + sign */
     sbook_open_ping();}
-  else if ((evt.charCode===105) || (evt.charCode===84)) {
+  else if ((evt.charCode===105) || (evt.charCode===84)) { /* S or s */
     sbookSetHUD("hudup","search");
     $("SBOOKSEARCHTEXT").focus();}
-  else if ((evt.charCode===116)||(evt.charCode===84)) {
+  else if ((evt.charCode===116)||(evt.charCode===84)) { /* T or t */
     sbookSetHUD("hudup","toc");
     $("SBOOKSEARCHTEXT").focus();}
-  else if ((evt.keyCode===8) || (evt.keyCode===46)) {
-    /* Backspace or deleted */
+  else if ((evt.keyCode===8) || (evt.keyCode===46)) { /* Backspace or Delete */
     window.scrollBy(0,-window.innerHeight);
     sbookSetFocus(sbookGetXYFocus());}
+  else return;
+  evt.preventDefault();
 }
 
 function sbook_onclick(evt)
@@ -714,7 +698,7 @@ function sbook_onclick(evt)
       sbookSetHUD(false);
     else sbookSetHUD(true);
     evt.cancelBubble=true; evt.preventDefault();
-    return;}
+    return false;}
   else sbookSetHUD(false);
   target=evt.target;
   /* If you're not, go back to the saved scroll location */
