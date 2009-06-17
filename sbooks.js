@@ -49,6 +49,8 @@ var sbook_trace_clouds=0;
 var sbook_debug_locations=false;
 // This is a list of all the terminal content nodes
 var sbook_nodes=[];
+// This is a list of the identified heads
+var sbook_heads=[];
 
 // Nonbreakable space, all handy
 var sbook_nbsp="\u00A0";
@@ -219,7 +221,7 @@ function sbookBuildMetadata()
 {
   var start=new Date();
   if (_sbook_toc_built) return;
-  fdjtLog('Starting to build metadata');
+  fdjtLog('Starting to build metadata from DOM');
   var body=document.body, children=body.childNodes, level=false;
   var bodyinfo=new Object();
   var tocstate={curlevel: 0,idserial:0,location: 0,tagstack: []};
@@ -232,25 +234,28 @@ function sbookBuildMetadata()
   bodyinfo.sbook_head=false; bodyinfo.sbook_heads=new Array();
   if (!(body.id)) body.id="TMPIDBODY";
   bodyinfo.id=body.id;
+  /* Build the metadata */
   var i=0; while (i<children.length) {
     var child=children[i++];
     sbook_toc_builder(child,tocstate);} 
   var scan=tocstate.curhead, scaninfo=tocstate.curinfo;
+  /* Close off all of the open spans in the TOC */
   while (scan) {
     scaninfo.ends_at=tocstate.location;
     scan=scaninfo.sbook_head;
     if (!(scan)) scan=false;
     if (scan) scaninfo=scan.sbookinfo;}
+  /* Sort the nodes by their offset in the document */
   sbook_nodes.sort(function(x,y) {
       if (x.Yoff<y.Yoff) return -1;
       else if (x.Yoff===y.Yoff) return 0;
       else return 1;});
   var done=new Date();
-  fdjtLog('Done building metadata in %f secs',
-	  (done.getTime()-start.getTime())/1000);
-  fdjtLog("Got %d tags from %d elements in %f secs, %s now has %d dterms",
-	  _total_tag_count,_total_tagged_count,
+  fdjtLog('Finished gather metadata in %f secs over %d/%d heads/nodes',
 	  (done.getTime()-start.getTime())/1000,
+	  sbook_heads.length,sbook_nodes.length);
+  fdjtLog("Found %d tags over %d elements: %s now has %d dterms",
+	  _total_tag_count,_total_tagged_count,
 	  knowlet.name,knowlet.alldterms.length);
   _sbook_toc_build=true;
 }
@@ -282,6 +287,7 @@ function _sbook_build_head(head,tocstate,level,curhead,curinfo,curlevel)
   /* Update global tables, arrays */
   sbook_compute_offsets(head);
   sbook_nodes.push(head);
+  sbook_heads.push(head);
   head.sbookloc=tocstate.location;
   if (headid) sbook_hashmap[headid]=head;
   else headid=fdjtForceId(head);
@@ -712,6 +718,7 @@ function sbook_onkeypress(evt)
   /* Make sure you're not inputting text or doing anything
      else on keypresses*/
   if (fdjtIsTextInput(target)) return true;
+  else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.keyCode===40) {   /* Space */
     var info=sbook_head.sbookinfo;
     if (info.sub.length) sbookScrollTo(info.sub[0]);}
