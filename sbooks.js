@@ -418,7 +418,7 @@ function sbook_toc_builder(child,tocstate)
     i=0; while (i<tagstack.length) {
       var ctags=tagstack[i++];
       var j=0; while (j<ctags.length)  {
-	sbookAddTag(child,ctags[j++],false.true,true,tocstate.knowlet);}}
+	sbookAddTag(child,ctags[j++],false,true,true,tocstate.knowlet);}}
     if (level>0) tocstate.tagstack.push(knowdes);
     _total_tagged_count++;}
   else if (level) tocstate.tagstack.push([]);
