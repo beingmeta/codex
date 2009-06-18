@@ -403,23 +403,25 @@ function sbook_toc_builder(child,tocstate)
     var tags=((knowlet) ?
 	      (knowlet.segmentString(fdjtUnEntify(tagstring),';')) :
 	      (fdjtSemiSplit(fdjtUnEntify(tagstring))));
-    var knowdes=[];
+    var knowdes=[]; var prime_knowdes=[];
     var i=0; while (i<tags.length) {
       var tag=tags[i++]; var knowde;
+      var prime=(tag[0]==="*");
       _total_tag_count++;
       if (tag.length===0) continue;
       else if (knowlet)
 	knowde=knowlet.handleSubjectEntry
 	  (((tag[0]==="*") || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
-      else knowde=(((tag[0]==="*") || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
+      else knowde=(((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
       knowdes.push(knowde);
-      sbookAddTag(child,knowde,(tag[0]==="*"),false,true,tocstate.knowlet);}
+      if ((prime) && (level>0)) prime_knowdes.push(knowde);
+      sbookAddTag(child,knowde,prime,false,true,tocstate.knowlet);}
     var tagstack=tocstate.tagstack;
     i=0; while (i<tagstack.length) {
       var ctags=tagstack[i++];
       var j=0; while (j<ctags.length)  {
 	sbookAddTag(child,ctags[j++],false,true,true,tocstate.knowlet);}}
-    if (level>0) tocstate.tagstack.push(knowdes);
+    if (level>0) tocstate.tagstack.push(prime_knowdes);
     _total_tagged_count++;}
   else if (level) tocstate.tagstack.push([]);
   else {}
@@ -866,15 +868,22 @@ function sbookSetup()
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
   var hud_init_done=new Date();
-  sbookFullCloud();
-  var cloud_done=new Date();
-  /* _sbook_createHUDSocial(); */
-  fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,
-			    "fdjt",fdjt_done,"knowlets",knowlets_done,
-			    "metadata",metadata_done,"social",social_done,
-			    "hud",hud_done,"hudinit",hud_init_done,
-			    "cloud",cloud_done));
-  _sbook_setup=true;
+  if ((hud_init_done.getTime()-_sbook_setup_start.getTime())>5000) {
+    fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,
+			      "fdjt",fdjt_done,"knowlets",knowlets_done,
+			      "metadata",metadata_done,"social",social_done,
+			      "hud",hud_done,"hudinit",hud_init_done));
+    _sbook_setup=true;;}
+  else {
+    sbookFullCloud();
+    var cloud_done=new Date();
+    /* _sbook_createHUDSocial(); */
+    fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,
+			      "fdjt",fdjt_done,"knowlets",knowlets_done,
+			      "metadata",metadata_done,"social",social_done,
+			      "hud",hud_done,"hudinit",hud_init_done,
+			      "cloud",cloud_done));
+    _sbook_setup=true;}
 }
 
 fdjtAddSetup(sbookSetup);
