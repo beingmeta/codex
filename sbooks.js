@@ -140,7 +140,7 @@ function sbookScrollOffset()
 
 function sbookHeadLevel(elt)
 {
-  if (fdjtHasAttrib(elt,"toclevel")) {
+  if (elt.getAttribute("toclevel")) {
     var tl=elt.getAttribute("toclevel");
     if (typeof tl === "number") return tl;
     else if ((tl==="no") || (tl==="none"))
@@ -217,11 +217,11 @@ var _sbook_toc_built=false;
 
 var _total_tagged_count=0; var _total_tag_count=0;
 
-function sbookBuildMetadata()
+function sbookGatherMetadata()
 {
   var start=new Date();
   if (_sbook_toc_built) return;
-  fdjtLog('Starting to build metadata from DOM');
+  fdjtLog('Starting to gather metadata from DOM');
   var body=document.body, children=body.childNodes, level=false;
   var bodyinfo=new Object();
   var tocstate={curlevel: 0,idserial:0,location: 0,tagstack: []};
@@ -251,7 +251,7 @@ function sbookBuildMetadata()
       else if (x.Yoff===y.Yoff) return 0;
       else return 1;});
   var done=new Date();
-  fdjtLog('Finished gather metadata in %f secs over %d/%d heads/nodes',
+  fdjtLog('Finished gathering metadata in %f secs over %d/%d heads/nodes',
 	  (done.getTime()-start.getTime())/1000,
 	  sbook_heads.length,sbook_nodes.length);
   fdjtLog("Found %d tags over %d elements: %s now has %d dterms",
@@ -279,8 +279,8 @@ function _sbook_get_title(head)
     else return title;
   else return fdjtTextify(title,true);
 }
-
-function _sbook_build_head(head,tocstate,level,curhead,curinfo,curlevel)
+ 
+function _sbook_process_head(head,tocstate,level,curhead,curinfo,curlevel)
 {
   var headinfo=sbook_needinfo(head);
   var headid=fdjtGuessAnchor(head);
@@ -290,7 +290,7 @@ function _sbook_build_head(head,tocstate,level,curhead,curinfo,curlevel)
   sbook_heads.push(head);
   head.sbookloc=tocstate.location;
   if (headid) sbook_hashmap[headid]=head;
-  else headid=fdjtForceId(head);
+  else headid=(head.id)||fdjtForceId(head);
   if (debug_toc_build)
     fdjtLog("Found head item %o under %o at level %d w/id=#%s ",
 	    head,curhead,level,headid);
@@ -326,11 +326,11 @@ function _sbook_build_head(head,tocstate,level,curhead,curinfo,curlevel)
 	headinfo.prev=scan;
 	scaninfo.next=head;}
       scaninfo.ends_at=tocstate.location;
+      tocstate.tagstack.pop();
       var next=scaninfo.sbook_head;
       var nextinfo=sbook_getinfo(next);
       if ((nextinfo) && (nextinfo.sbook_head)) {
-	scan=next; scaninfo=nextinfo; scanlevel=nextinfo.level;
-	tocstate.tagstack.pop();}
+	scan=next; scaninfo=nextinfo; scanlevel=nextinfo.level;}
       else {
 	scan=document.body;
 	scaninfo=sbook_getinfo(scan);
@@ -367,14 +367,14 @@ function sbook_toc_builder(child,tocstate)
   var curlevel=tocstate.curlevel;
   var level=0;
   // Location tracking and TOC building
-  if (child.nodeType==Node.TEXT_NODE) {
+  if (child.nodeType===Node.TEXT_NODE) {
     var width=child.nodeValue.length;
     child.sbookloc=tocstate.location+width/2;
     tocstate.location=tocstate.location+width;}
-  else if (child.nodeType!=Node.ELEMENT_NODE)
+  else if (child.nodeType!==Node.ELEMENT_NODE)
     child.sbook_head=curhead;
   else if (level=sbookHeadLevel(child)) 
-    _sbook_build_head(child,tocstate,level,curhead,curinfo,curlevel);
+    _sbook_process_head(child,tocstate,level,curhead,curinfo,curlevel);
   else {
     var width=fdjtFlatWidth(child);
     var loc=tocstate.location+width/2;
@@ -385,7 +385,7 @@ function sbook_toc_builder(child,tocstate)
       if (children) {
 	var i=0; while (i<children.length)
 		   sbook_toc_builder(children[i++],tocstate);}
-      if ((fdjtHasContent(child)) || (fdjtHasAttrib(child,'tags'))) {
+      if ((fdjtHasContent(child)) || (child.getAttribute('TAGS'))) {
 	child.sbook_head=curhead;
 	child.sbookloc=loc;}
       /* If none of the included nodes marked their location,
@@ -405,15 +405,21 @@ function sbook_toc_builder(child,tocstate)
 	      (fdjtSemiSplit(fdjtUnEntify(tagstring))));
     var knowdes=[];
     var i=0; while (i<tags.length) {
-      var tag=tags[i++]; var knowde=tag;
+      var tag=tags[i++]; var knowde;
       _total_tag_count++;
       if (tag.length===0) continue;
-      if (knowlet)
+      else if (knowlet)
 	knowde=knowlet.handleSubjectEntry
 	  (((tag[0]==="*") || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
+      else knowde=(((tag[0]==="*") || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
       knowdes.push(knowde);
-      sbookAddTag(child,knowde,(tag[0]==="*"),false,true,tocstate.knowlet);
-      if (level) tocstate.tagstack.push([]);}
+      sbookAddTag(child,knowde,(tag[0]==="*"),false,true,tocstate.knowlet);}
+    var tagstack=tocstate.tagstack;
+    i=0; while (i<tagstack.length) {
+      var ctags=tagstack[i++];
+      var j=0; while (j<ctags.length) {
+	sbookAddTag(child,ctags[j++],false.true,true,tocstate.knowlet);}}
+    if (level>0) tocstate.tagstack.push(knowdes);
     _total_tagged_count++;}
   else if (level) tocstate.tagstack.push([]);
   else {}
@@ -556,7 +562,7 @@ function sbookUpdateHUD(evt)
 function sbookScrollTo(elt)
 {
   if (elt.sbookloc) sbookSetLocation(elt.sbookloc);
-  if (fdjtHasAttrib(elt,"toclevel")) 
+  if (elt.getAttribute("toclevel"))
     sbookSetHead(elt);
   else if (elt.sbook_head)
     sbookSetHead(elt.sbook_head);
@@ -831,16 +837,23 @@ function getsbookbase()
 /* Initialization */
 
 var _sbook_setup=false;
+var _sbook_setup_start=false;
 
 function sbookSetup()
 {
   if (_sbook_setup) return;
+  if (!(_sbook_setup_start)) _sbook_setup_start=new Date();
   if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
+  var fdjt_done=new Date();
   if (knoHTMLSetup) knoHTMLSetup();
-  sbookBuildMetadata();
+  var knowlets_done=new Date();
+  sbookGatherMetadata();
+  var metadata_done=new Date();
   importSocialData();
+  var social_done=new Date();
   createSBOOKHUD();
+  var hud_done=new Date();
   sbookHUD_Init();
   sbookHUD.className="toc";
   sbook_base=getsbookbase();
@@ -852,8 +865,15 @@ function sbookSetup()
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
+  var hud_init_done=new Date();
   sbookFullCloud();
+  var cloud_done=new Date();
   /* _sbook_createHUDSocial(); */
+  fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,
+			    "fdjt",fdjt_done,"knowlets",knowlets_done,
+			    "metadata",metadata_done,"social",social_done,
+			    "hud",hud_done,"hudinit",hud_init_done,
+			    "cloud",cloud_done));
   _sbook_setup=true;
 }
 

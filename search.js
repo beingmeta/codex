@@ -57,7 +57,7 @@ function sbookAddTag(elt,tag,prime,contextual,unique,kno)
 {
   if (!(kno)) kno=knowlet;
   var elt_id=(((elt.sbookinfo) && (elt.sbookinfo.headid)) ||
-	      (fdjtForceId(elt)));
+	      (elt.id) || (fdjtForceId(elt)));
   if ((kno) && (typeof tag === "string"))
     tag=kno.handleSubjectEntry(tag);
   var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
