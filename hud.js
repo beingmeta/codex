@@ -312,6 +312,7 @@ function sbookTOC_onmouseout(evt)
 function sbookTOC_onclick(evt)
 {
   var target=sbook_get_headelt(evt.target);
+  fdjtScrollDiscard();
   if (target===null) return;
   if ((!(sbook_hudup)) && ((evt.ctrlKey)||(evt.altKey)||(evt.shiftKey))) {
     sbookSetHUD(true);

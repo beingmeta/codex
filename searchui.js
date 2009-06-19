@@ -145,7 +145,9 @@ function _sbookSearchResults_onclick(evt)
       if (target.searchresult) {
 	sbookScrollTo(target.searchresult);
 	evt.preventDefault(); evt.cancelBubble=true;}
-      else evt.cancelBubble=true;
+      else {
+	evt.preventDefault(); 
+	evt.cancelBubble=true;}
       return;}
     else target=target.parentNode;
 }

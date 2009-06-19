@@ -192,22 +192,6 @@ function sbook_get_headelt(target)
   return target;
 }
 
-function sbook_compute_offsets(node)
-{
-  if (!(node)) return node;
-  else if (node.Xoff) return node;
-  else {
-    var parent=sbook_compute_offsets(node.offsetParent);
-    if (parent) {
-      var xoff=((node.offsetLeft)||(0))+parent.Xoff;
-      var yoff=((node.offsetTop)||(0))+parent.Yoff;
-      node.Xoff=xoff; node.Yoff=yoff;
-      return node;}
-    else {
-      node.Xoff=node.offsetLeft; node.Yoff=node.offsetTop;
-      return node;}}
-}
-
 
 /* Building the TOC */
 
@@ -285,7 +269,7 @@ function _sbook_process_head(head,tocstate,level,curhead,curinfo,curlevel)
   var headinfo=sbook_needinfo(head);
   var headid=fdjtGuessAnchor(head);
   /* Update global tables, arrays */
-  sbook_compute_offsets(head);
+  fdjtComputeOffsets(head);
   sbook_nodes.push(head);
   sbook_heads.push(head);
   head.sbookloc=tocstate.location;
@@ -391,10 +375,10 @@ function sbook_toc_builder(child,tocstate)
       /* If none of the included nodes marked their location,
 	 mark the DIV's location. */
       if (sbook_nodes.length===nodeslength) {
-	sbook_compute_offsets(child);
+	fdjtComputeOffsets(child);
 	sbook_nodes.push(child);}}
     else {
-      sbook_compute_offsets(child);
+      fdjtComputeOffsets(child);
       sbook_nodes.push(child);
       child.sbookloc=loc;
       child.sbook_head=curhead;}}
