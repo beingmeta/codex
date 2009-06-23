@@ -811,6 +811,8 @@ function getsbookbase()
 {
   var base=fdjtGetMeta("SBOOKBASE");
   if (base) return base;
+  base=fdjtGetMeta("REFURI");
+  if (base) return base;
   var base_elts=fdjtGetChildrenByTagName("BASE");
   if ((base_elts) && (base_elts.length>0))
     return base_elt[0].href;
