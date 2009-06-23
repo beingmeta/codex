@@ -387,7 +387,8 @@ function add_podspot(target,open)
     /* var base_uri="http://webechoes.net/app/ping?POPUP=yes"; */
     var href=base_uri+
       ((id) ? "&FRAG="+id : "")+
-      ((title) ? "&TITLE="+title : "");
+      ((sbook_base) ? ("&URI="+encodeURIComponent(sbook_base)) : "")+
+      ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var i=0; while (i<tribes.length) href=href+"&TRIBES="+tribes[i++];
     i=0; while (i<tags.length) href=href+"&TAGCUE="+tags[i++];
     if (pclass==null) pclass="podspot";
