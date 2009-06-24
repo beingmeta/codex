@@ -99,8 +99,8 @@ function createSBOOKHUDsocial()
       sbookSetHUD("hudechoes");}};
   ping_button.onclick=function(evt) {
     evt.target.blur();
-    sbook_open_ping();};
-
+    sbook_open_ping();
+    evt.cancelBubble=true; evt.preventDefault();};
   sbookHUDsocial=socialbar;
   sbookHUDechoes=echoeshud;
   echoeshud.echoelts=echoelts;
@@ -124,15 +124,20 @@ function sbookSetEchoes(echoes)
   var echoelts=sbookHUDechoes.echoelts;
   i=0; while (i<echoelts.length) {
     var echoelt=echoelts[i++];
-    if ((echoelt.pingid) && (pingids.indexOf(echoelt.pingid)>=0)) 
+    if ((echoelt.pingid) && (pingids.indexOf(echoelt.pingid)>=0))
       echoelt.setAttribute("displayed","yes");
     else echoelt.setAttribute("displayed","no");}
+  var social_count=0;
   var socialelts=sbookHUDechoes.socialelts;
   i=0; while (i<socialelts.length) {
     var socialelt=socialelts[i++];
-    if (social.indexOf(socialelt.oid)>=0)
+    if (social.indexOf(socialelt.oid)>=0) {
       socialelt.setAttribute("displayed","yes");
+      social_count++;}
     else socialelt.setAttribute("displayed","no");}
+  if (social_count)
+    fdjtSwapClass(sbookHUDsocial,"empty","filled");
+  else fdjtSwapClass(sbookHUDsocial,"filled","empty");
 }
 
 function sbookSetEchoFocus(userortribe)
@@ -244,7 +249,7 @@ function importSocialData(data)
 {
   if (!(data))
     if (typeof sbook_echoes_data === "undefined") {
-      fdjtWarn("No social data available");
+      fdjtLog("No social data available");
       return;}
     else data=sbook_echoes_data;
   var info=data['%info'];
@@ -359,7 +364,7 @@ function add_podspot(target,open)
 	sbook_getinfo(target)||
 	sbook_getinfo(sbook_get_headelt(target));
       if ((head_info) && (head_info.title))
-	title=head_info.title;}
+	title=sbook_get_titlepath(head_info);}
     if (!(tribes)) tribes=[];
     if (!(tags)) tags=[];
     if (typeof tribes === "string") tribes=tribes.split(';');
@@ -425,6 +430,22 @@ function add_podspot(target,open)
     anchor.appendChild(img);
     target.appendChild(anchor);
     return anchor;}
+}
+
+function sbook_get_titlepath(info,embedded)
+{
+  if (!(info))
+    if (document.title)
+      if (embedded)
+	return " // "+document.title;
+      else return "";
+    else return "";
+  else {
+    var next=((info.sbook_head) && ((info.sbook_head.sbookinfo)||false));
+    if (info.title)
+      return ((embedded) ? (" // ") : (""))+info.title+
+	sbook_get_titlepath(next,true);
+    else return sbook_get_titlepath(next,embedded);}
 }
 
 /* Searching echoes */

@@ -32,10 +32,17 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-// This is the current head
+// This is the current head element
 var sbook_head=false;
 // This is the base URI for this document
 var sbook_base=false;
+
+// Whether the HUD is up
+var sbook_hudup=false;
+// Whether preview mode is engaged
+var sbook_preview=false; 
+// Whether preview mode is engaged
+var sbook_overhud=false; 
 
 // Whether to debug generally
 var sbook_debug=false;
@@ -134,6 +141,14 @@ var sbook_noisy_tooltips=false;
 function sbookScrollOffset()
 {
   return ((sbookHUD_at_top)&&(-(sbookHUD.offsetHeight+20)))
+}
+
+function sbook_trace_handler(handler,evt)
+{
+  /*
+  fdjtLog("%s %o: hudup=%o, preview=%o, overhud=%o",
+	  handler,evt,sbook_hudup,sbook_preview,sbook_overhud);
+  */
 }
 
 /* Basic SBOOK functions */
@@ -481,6 +496,7 @@ function sbookSetHead(head)
     return;}
   else {
     var info=head.sbookinfo;
+    sbook_trace_handler("sbookSetHead",head);
     var navhud=createSBOOKHUDnav(head,info);
     /* Set NAV titles */
     /*
@@ -532,19 +548,6 @@ function sbookSetLocation(location)
 
 /* Tracking the current section */
 
-function sbookUpdateHUD(evt)
-{
-  var target=evt.target, body=document.body;
-  while (target)
-    if (target.parentNode===body) break;
-    else target=target.parentNode;
-  if (target===null) return;
-  else if (target===body) return;
-  else if (target.sbookinfo)
-    sbookSetHead(target);
-  else sbookSetHead(target.sbook_head);
-}
-
 function sbookScrollTo(elt)
 {
   if (elt.sbookloc) sbookSetLocation(elt.sbookloc);
@@ -567,10 +570,17 @@ var sbook_focus_delay=100;
 
 var sbook_track_window=25;
 
-function sbookSetFocus(target)
+function sbookSetFocus(target,force)
 {
   if (!(target)) return null;
   else if (target===sbook_focus) return target;
+  sbook_trace_handler("sbookSetFocus",target);
+  if ((!(force)) && (sbook_focus) &&
+      (sbook_focus.getAttribute("toclevel")) &&
+      (fdjtIsVisible(sbook_focus)))
+    /* If the new focus is still visible and
+       a heading,*/
+    return sbook_focus;
   var tags=sbook_get_tags(target);
   if ((tags.length>0) &&
       (tags != sbook_focus_tags)) {
@@ -585,6 +595,7 @@ function sbookSetFocus(target)
     tagdiv.id="SBOOKSEARCHCUES";
     fdjtReplace(old,tagdiv);
     sbook_focus_tags=tags;}
+  // fdjtTrace("Set sbook focus to %o",target);
   sbook_focus=target;
   if (target) {
     var head=(((target.sbookinfo) && (target.sbookinfo.level)) ?
@@ -615,20 +626,21 @@ function sbookGetXYFocus(xoff,yoff)
 
 function sbook_onmouseover(evt)
 {
-  var target=evt.target;
+  sbook_trace_handler("sbook_onmouseover",evt);
   /* If you're previewing, ignore mouse action */
-  if (_fdjt_saved_scroll) return;
-  /* If you're over the HUD, don't do anything */
-  if (fdjtHasParent(evt.target,sbookHUD)) return;
+  if ((sbook_preview) || (sbook_overhud)) return;
+  /* Get the target */
+  var target=evt.target;
   /* If you have a saved scroll location, just restore it. */
-  if (fdjtScrollRestore()) return;
+  // This shouldn't be neccessary if the HUD mouseout handlers do their thing
+  // if (fdjtScrollRestore()) return;
   /* Now, we try to find a top level element */
   while (target)
     if (target.sbook_head) break;
     else if (target.sbookinfo) break;
     else if (target.parentNode===document.body) break;
     else target=target.parentNode;
-  /* These are top level elements which aren't much use */
+  /* These are top level elements which aren't much use as heads or foci */
   if ((target===null) || (target===document.body) ||
       (!((target) && ((target.Xoff) || (target.Yoff)))))
     target=sbookGetXYFocus
@@ -639,9 +651,10 @@ function sbook_onmouseover(evt)
 
 function sbook_onmousemove(evt)
 {
+  // sbook_trace_handler("sbook_onmousemove",evt);
   var target=evt.target;
   /* If you're previewing, ignore mouse action */
-  if (_fdjt_saved_scroll) return;
+  if ((sbook_preview) || (sbook_overhud)) return;
   /* Save mouse positions */
   sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
   /* Now, we try to find a top level element to sort out whether
@@ -660,8 +673,9 @@ function sbook_onmousemove(evt)
 
 function sbook_onscroll(evt)
 {
+  sbook_trace_handler("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
-  if (_fdjt_saved_scroll) return;
+  if ((sbook_preview) || (sbook_overhud)) return;
   var xoff=window.scrollX+sbook_last_x;
   var yoff=window.scrollY+sbook_last_y;
   var target=sbookGetXYFocus(xoff,yoff);
@@ -671,7 +685,7 @@ function sbook_onscroll(evt)
 
 function sbook_onkeydown(evt)
 {
-  // fdjtTrace("keydown %o %o",evt,evt.keyCode);
+  sbook_trace_handler("sbook_onkeydown",evt);
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_hudup) {
       sbookSetHUD(false);
@@ -691,7 +705,7 @@ function sbook_onkeydown(evt)
 
 function sbook_onkeyup(evt)
 {
-  // fdjtTrace("keyup %o %o",evt,evt.keyCode);
+  sbook_trace_handler("sbook_onkeyup",evt);
   var target=evt.target;
   while (target)
     if ((target.tagName==="INPUT") ||
@@ -706,7 +720,7 @@ function sbook_onkeyup(evt)
 
 function sbook_onkeypress(evt)
 {
-  // fdjtTrace("%o: kc=%o cc=%o",evt,evt.keyCode,evt.charCode);
+  sbook_trace_handler("sbook_onkeypress",evt);
   var target=evt.target;
   /* Make sure you're not inputting text or doing anything
      else on keypresses*/
@@ -747,7 +761,9 @@ function sbook_onkeypress(evt)
 
 function sbook_onclick(evt)
 {
+  sbook_trace_handler("sbook_onclick",evt);
   var target=evt.target;
+  if (sbook_overhud) return true;
   while (target)
     if (target===sbookHUD) return;
     else target=target.parentNode;
@@ -772,6 +788,7 @@ function sbook_onclick(evt)
     sbookSetHead(target);
   else if (target.sbook_head)
     sbookSetHead(target.sbook_head);
+  // fdjtTrace("Set click focus to %o",target);
   sbook_click_focus=target;
   sbook_click_focus_time=fdjtTick();
 }
@@ -847,9 +864,9 @@ function sbookSetup()
   sbook_base=getsbookbase();
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;
+  // window.onscroll=sbook_onscroll;
   // document.body.onclick=sbook_onclick;
   window.onclick=sbook_onclick;
-  window.onscroll=sbook_onscroll;
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;

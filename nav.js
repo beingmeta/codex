@@ -134,8 +134,8 @@ function _sbook_generate_subsections_div(subsections,start,end)
   if (subsections.length>1)
     fdjtAppend(subsections_div,spanbar,"\n",sectlist);
   else fdjtAppend(subsections_div,sectlist);
-  subsections_div.onmouseover=fdjtCoHi_onmouseover;
-  subsections_div.onmouseout=fdjtCoHi_onmouseover;
+  // subsections_div.onmouseover=fdjtCoHi_onmouseover;
+  // subsections_div.onmouseout=fdjtCoHi_onmouseout;
   return subsections_div;
 }
 
@@ -185,6 +185,7 @@ function createSBOOKHUDnav(head,info)
   new_toc.onclick=sbookTOC_onclick;
   new_toc.onmouseover=sbookTOC_onmouseover;
   new_toc.onmouseout=sbookTOC_onmouseout;
+  // new_toc.onmousemove=sbookTOC_onmousemove;
   if (sbook_debug_hud)
     fdjtLog("Adding supersections %o",info.sbook_heads);
   var supersections_div=fdjtDiv("supersections");

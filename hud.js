@@ -34,8 +34,6 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 // This is the HUD top element
 var sbookHUD=false;
-// Whether the HUD is up
-var sbook_hudup=false;
 // The selected HUD function
 var sbook_hudfcn=false;
 // Whether the HUD state was forced
@@ -43,11 +41,9 @@ var sbookHUD_forced=false;
 
 // The keycode for bringing the HUD up and down
 var sbook_hudkey=27;
-// Whether we are previewing a section
-var sbook_saved_scrollx=false, sbook_saved_scrolly=false;
 
 // Where graphics can be found
-var sbook_graphics_root="/static/graphics/";
+var sbook_graphics_root="http://static.beingmeta.com/graphics/";
 
 function createSBOOKHUD()
 {
@@ -66,10 +62,6 @@ function createSBOOKHUD()
 	       createSBOOKHUDsocial());
 
     hud.onclick=sbookHUD_onclick;
-    /*
-    hud.onmouseover=sbookHUD_onmouseover;
-    hud.onmouseout=sbookHUD_onmouseout;
-    */
     sbookHUD=hud;
     fdjtPrepend(document.body,hud);
     return hud;}
@@ -156,15 +148,18 @@ function sbookPreviewOffset()
 
 function sbookPreview(elt,nomode)
 {
+  sbook_trace_handler("sbookPreview",elt);
   var offset=sbookPreviewOffset();
+  sbook_preview=true;
   if (elt) fdjtScrollPreview(elt,false,-offset);
   if (!(nomode)) fdjtAddClass(document.body,"preview");
 }
 
-function sbookStopPreview(elt)
+function sbookStopPreview()
 {
   fdjtScrollRestore();
   fdjtDropClass(document.body,"preview");
+  sbook_preview=false;
 }
 
 // What to use as the podspot image URI.  This 'image' 
@@ -182,7 +177,7 @@ function sbook_echoes_icon(uri)
 function sbookHUD_onhover(hover)
 {
   if (sbook_hudup) return;
-  fdjtTrace("sbookHUD_onhover");
+  sbook_trace_handler("sbookHUD_onhover",hover);
   if (hover)
     fdjtAddClass(document.body,"hudhover");
   else {
@@ -192,24 +187,24 @@ function sbookHUD_onhover(hover)
 
 function sbookHUD_onmouseover(evt)
 {
+  sbook_trace_handler("sbookHUD_onmouseover",evt);
+  sbook_overhud=true;
   if (sbook_hudup) return;
-  fdjtTrace("sbookHUD_onmouseover");
   if (evt.target)
     fdjtDelayHandler(100,sbookHUD_onhover,true,sbookHUD,"hudhover");
-  evt.cancelBubble=true;
 }
 
 function sbookHUD_onmouseout(evt)
 {
+  sbook_trace_handler("sbookHUD_onmouseout",evt);
   var target=evt.target;
   if (evt.target)
-    if (sbook_hudup)
-      fdjtDelayHandler(100,sbookHUD_onhover,false,sbookHUD,"hudhover");
-    else fdjtDelayHandler(100,sbookHUD_onhover,false,sbookHUD,"hudhover");
+    fdjtDelayHandler(100,sbookHUD_onhover,false,sbookHUD,"hudhover");
 }
 
 function sbookHUD_onclick(evt)
 {
+  sbook_trace_handler("sbookHUD_onclick",evt);
   var target=evt.target;
   while (target)
     if ((target.tagName==="A") || (target.tagName==="INPUT") ||
@@ -236,21 +231,42 @@ function sbookGetStableId(elt)
 
 function sbookTOC_onmouseover(evt)
 {
-  if (!(sbook_hudup)) return;
+  sbook_trace_handler("sbookTOC_onmouseover",evt);
   var target=sbook_get_headelt(evt.target);
+  sbookHUD_onmouseover(evt);
+  fdjtCoHi_onmouseover(evt);
+  evt.cancelBubble=true;
+  evt.preventDefault();
   if (target===null) return;
   var head=target.headelt;
   if (head) sbookPreview(head,true);
-  evt.cancelBubble=true;
-  evt.preventDefault();
 }
 
 function sbookTOC_onmouseout(evt)
 {
-  fdjtScrollRestore();
-  fdjtDropClass(document.body,"preview");
+  sbook_trace_handler("sbookTOC_onmouseout",evt);
+  fdjtCoHi_onmouseout(evt);
+  sbookHUD_onmouseout(evt);
+  sbookStopPreview();
   evt.cancelBubble=true;
   evt.preventDefault();
+  var rtarget=evt.relatedTarget;
+  if (!(rtarget)) return;
+  try {
+    if (rtarget.ownerDocument!=document) {
+      fdjtDelayHandler(300,sbookSetHUD,false,document,"hidehud");
+      return;}
+    // We'll get an error if we go out of the document,
+    // in which case we probably want to hide anyway
+    while (rtarget)
+      if (rtarget===sbookHUD) return;
+      else if (rtarget===document.body) break;
+      else rtarget=rtarget.parentNode;}
+  catch (e) {
+    sbook_hud_forced=false;
+    fdjtDelayHandler(300,sbookSetHUD,false,document,"hidehud");
+    return;}
+  sbook_hud_forced=false;
 }
 
 var sbookTOCHighlighted=false;
@@ -284,40 +300,13 @@ function sbookTOCHighlight(secthead)
   sbookTOCHighlights=highlights;
 }
 
-function sbookTOC_onmouseout(evt)
-{
-  fdjtScrollRestore();
-  fdjtDropClass(document.body,"preview");
-  evt.cancelBubble=true;
-  evt.preventDefault();
-  var rtarget=evt.relatedTarget;
-  if (!(rtarget)) return;
-  try {
-    if (rtarget.ownerDocument!=document) {
-      fdjtDelayHandler(300,sbookSetHUD,false,document,"hidehud");
-      return;}
-    // We'll get an error if we go out of the document,
-    // in which case we probably want to hide anyway
-    while (rtarget)
-      if (rtarget===sbookHUD) return;
-      else if (rtarget===document.body) break;
-      else rtarget=rtarget.parentNode;}
-  catch (e) {
-    sbook_hud_forced=false;
-    fdjtDelayHandler(300,sbookSetHUD,false,document,"hidehud");
-    return;}
-  sbook_hud_forced=false;
-}
-
 function sbookTOC_onclick(evt)
 {
+  sbook_trace_handler("sbookTOC_onclick",evt);
   var target=sbook_get_headelt(evt.target);
   fdjtScrollDiscard();
   if (target===null) return;
-  if ((!(sbook_hudup)) && ((evt.ctrlKey)||(evt.altKey)||(evt.shiftKey))) {
-    sbookSetHUD(true);
-    return;}
-  else if ((!(target.headelt)) && (!(sbook_hudup))) {
+  if ((!(target.headelt)) && (!(sbook_hudup))) {
     sbookSetHUD(true);
     return;}
   evt.preventDefault();
@@ -373,6 +362,8 @@ function sbookHUD_Init()
     if ((hash[0]==='#') && (hash.length>1))
       target=sbook_hashmap[hash.slice(1)];
     else target=sbook_hashmap[hash];}
+  if (target) {
+    sbook_focus=target; sbook_click_focus=target;}
   if (!(target))
     target=document.body;
   if (target!=document.body) target.scrollIntoView();

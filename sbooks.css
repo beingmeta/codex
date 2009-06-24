@@ -75,7 +75,7 @@ div#SBOOKHUD div.hud {
   overflow: hidden; text-align: center; 
   font-family: sans,sans-serif; font-size: 150%;
   display: none;}
-div#SBOOKHUD a { color: lightblue;}
+/* div#SBOOKHUD a { color: lightblue;} */
 div#SBOOKHUD img.button { opacity: 0.5; z-index: 200;}
 /* For scrollable results */
 div#SBOOKHUD div.results {
@@ -111,6 +111,7 @@ body.hudresults.preview div#SBOOKHUD
   div.hud { display: block; opacity: 0.10;}
 
 div#SBOOKHUD div.hud { opacity: 0.05; }
+div#SBOOKHUD div.hud:hover { opacity: 0.85; }
 body.hudup div#SBOOKHUD div.hud { opacity: 0.95; max-height: inherit;}
 body.hudhover div#SBOOKHUD div.hud { opacity: 0.80;  max-height: inherit;}
 body.hudup div#SBOOKHUD div.results { opacity: 1.0;}
@@ -168,7 +169,8 @@ div.socialbar img.everyone {
   position: absolute; left: 0px;}
 div.socialbar img.ping {position: absolute; right: 0px;}
 
-div#SBOOKHUD div.socialbar { opacity: 0.30; z-index: 150;}
+div#SBOOKHUD div.socialbar { opacity: 0.05; z-index: 150;}
+div#SBOOKHUD div.socialbar.filled { opacity: 0.50; z-index: 150;}
 div#SBOOKHUD div.socialbar:hover { opacity: 0.85; }
 body.hudup div#SBOOKHUD div.socialbar { opacity: 0.85; }
 body.hudhover div#SBOOKHUD div.socialbar { opacity: 0.85;}
@@ -424,7 +426,6 @@ div.sectionname { clear: both;}
 
 body[hudup] iframe div.commentors { display: none;}
 body iframe div.commentors { display: block;}
-
 
 /* Emacs local variables
 ;;;  Local variables: ***
