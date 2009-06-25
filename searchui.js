@@ -39,7 +39,7 @@ function sbookShowSearch(result)
   var results_div=fdjtDiv("results");
   results_div.onclick=_sbookSearchResults_onclick;
   results_div.onmouseover=_sbookSearchResults_onmouseover;
-  results_div.onmouseout=_sbookSearchResults_onmouseout;
+  // results_div.onmouseout=_sbookSearchResults_onmouseout;
   sbookShowSearchResults(result,results_div);
   fdjtReplace("SBOOKSEARCHRESULTS",results_div);
 }
@@ -66,7 +66,7 @@ function sbookShowSearchResults(result,results_div)
     var elt_id=results[i++]; var elt=$(elt_id);
     if (!(elt)) continue;
     var anchor=fdjtAnchor("#"+elt_id);
-    anchor.className="searchresult";
+    anchor.className="searchresult"; anchor.sbookelt=elt;
     var info=fdjtSpan("info");
     var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)");
     if (result[elt_id]) { /* If you have a score, use it */
@@ -75,7 +75,9 @@ function sbookShowSearchResults(result,results_div)
       // fdjtTrace("Score for %s is %o",elt_id,result[elt_id]);
       while (k<score) {fdjtAppend(scorespan,"*"); k++;}
       fdjtAppend(info,scorespan);}
-    fdjtAppend(info,eye); eye.sbookelt=elt;
+    eye.onmouseover=sbookPreview_onmouseover;
+    eye.onmouseout=sbookPreview_onmouseout;
+    fdjtAppend(info,eye);
     fdjtAppend(anchor,info);
     anchor.searchresult=elt;
     var tags=elt.tags;
@@ -157,26 +159,14 @@ function _sbookSearchResults_onmouseover(evt)
   var target=evt.target;
   while (target)
     if (target.sbookelt) break;
+    else if (target.className==="eye") {
+      iseye=true; target=target.parentNode;}
     else target=target.parentNode;
   if (!(target)) return;
-  // fdjtTrace("Scrolling to %o",target.sbookelt);
   var sbookelt=target.sbookelt;
-  sbookPreview(sbookelt);
-  fdjtAddClass(document.body,"preview");
+  sbookPreview(sbookelt,true);
   evt.preventDefault();
   evt.cancelBubble=true;
-}
-
-function _sbookSearchResults_onmouseout(evt)
-{
-  var target=evt.target;
-  while (target)
-    if (target.sbookelt) break;
-    else target=target.parentNode;
-  if (!(target)) return;
-  fdjtScrollRestore();
-  fdjtDropClass(document.body,"preview");
-  target.style.opacity='inherit';
 }
 
 var _sbookSearchKeyPress_delay=false;
@@ -205,7 +195,7 @@ function sbookSearchInput_onkeypress(evt)
   if (kc===13) {
     sbookForceComplete(target);
     sbookShowSearch(sbook_query);
-    sbookSetHUD("hudresults","search");
+    sbookSetHUD(true,"searchresults");
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
     return false;}
@@ -259,8 +249,7 @@ function _sbook_replace_current_entry(elt,value)
     sbookShowSearch(false);
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSEARCHRESULTS").focus();
-    sbookSetHUD(true,"search");
-    fdjtAddClass(document.body,"hudresults");}
+    sbookSetHUD(true,"searchresults");}
 }
 
 function _sbook_note_completions(completions)
@@ -501,7 +490,7 @@ function createSBOOKHUDsearch()
   fdjtAppend(outer,context,controls,results);
   // fdjtTrace("search HUD %o with class=%o and id=%o",outer,outer.className,outer.id);
   outer.onfocus=function(evt) {
-    if (!(fdjtHasClass(document.body,"hudresults")))
+    if (!(fdjtHasClass(sbookHUD,"searchresults")))
       input.focus();};
   return outer;
 }

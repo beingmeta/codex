@@ -89,14 +89,14 @@ function createSBOOKHUDsocial()
   everyone_button.onclick=function(evt) {
     evt.target.blur();
     sbookSetEchoFocus(false);
-    if (fdjtHasClass(document.body,"hudechoes"))
-      sbookSetHUD("hudup");
-    else sbookSetHUD("hudechoes");};
+    sbookSetHUD(true,"echoes");
+    evt.cancelBubble=true;};
   socialbar.onclick=function(evt) {
     evt.target.blur();
     if (evt.target.oid) {
       sbookSetEchoFocus(evt.target.oid);
-      sbookSetHUD("hudechoes");}};
+      sbookSetHUD(true,"echoes");
+      evt.cancelBubble=true;}};
   ping_button.onclick=function(evt) {
     evt.target.blur();
     sbook_open_ping();
@@ -178,6 +178,11 @@ function sbookEchoToEntry(echo)
   var excerpt=((echo.excerpt) ? fdjtDiv("excerpt",echo.excerpt) : false);
   var entry=fdjtDiv("echo",userblock,head,core,extra);
   var target=$(echo.fragid);
+  entry.onmouseover=function(evt) {
+    sbookPreview(target,true);};
+  entry.onmouseout=function(evt) {
+    fdjtScrollRestore();
+    window.setTimeout("sbook_preview=false;",100);};
   anchor.onclick=function(evt) {
     evt.target.blur(); sbookScrollTo(target);
     evt.cancelBubble=true; evt.preventDefault();}
@@ -206,9 +211,9 @@ function sbookEchoIcons(echo,extra)
       evt.preventDefault(); evt.cancelBubble=true;
       sbookSetHUD(false);};
     eye.onmouseover=function(evt){
-      fdjtDelayHandler(300,sbookPreview,target,document.body,"preview");};
+      fdjtDelayHandler(300,sbookSetPreview,true,document.body,"preview");};
     eye.onmouseout=function(evt){
-      fdjtDelayHandler(300,sbookStopPreview,target,document.body,"preview");};}
+      fdjtDelayHandler(300,sbookSetPreview,false,document.body,"preview");};}
   comment.title=_("Add your own response");
   comment.onclick=function(evt){
     sbookSetHUD(false);

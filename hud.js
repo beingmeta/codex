@@ -62,6 +62,8 @@ function createSBOOKHUD()
 	       createSBOOKHUDsocial());
 
     hud.onclick=sbookHUD_onclick;
+    hud.onmouseover=sbookHUD_onmouseover;
+    hud.onmouseout=sbookHUD_onmouseout;
     sbookHUD=hud;
     fdjtPrepend(document.body,hud);
     return hud;}
@@ -83,11 +85,13 @@ function sbookMode(id,graphic,mode,title)
 
 /* Mode controls */
 
-var sbookHUD_displaypat=/(hudhover)|(hudup)|(hudresults)|(hudechoes)/g;
+var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudechoes)/g;
 
 function sbookSetHUD(display,fcn,forced)
 {
   var body=document.body;
+  // Clear any saved state (even if shift is still down)
+  sbook_hudstate=false;
   /*
   fdjtTrace("sbookSetHUD %s/%s/%o: body=%s, hud=%s",
 	    display,fcn,forced,body.className,sbookHUD.className);
@@ -148,18 +152,34 @@ function sbookPreviewOffset()
 
 function sbookPreview(elt,nomode)
 {
-  sbook_trace_handler("sbookPreview",elt);
+  // sbook_trace_handler("sbookPreview",elt);
   var offset=sbookPreviewOffset();
   sbook_preview=true;
   if (elt) fdjtScrollPreview(elt,false,-offset);
   if (!(nomode)) fdjtAddClass(document.body,"preview");
 }
 
+function sbookPreview_onmouseover(evt)
+{
+  fdjtAddClass(document.body,"preview");
+}
+
+function sbookPreview_onmouseout(evt)
+{
+  fdjtDropClass(document.body,"preview");
+}
+
+function sbookSetPreview(flag)
+{
+  if (flag) fdjtAddClass(document.body,"preview");
+  else fdjtDropClass(document.body,"preview");
+}
+
 function sbookStopPreview()
 {
   fdjtScrollRestore();
   fdjtDropClass(document.body,"preview");
-  sbook_preview=false;
+  window.setTimeout("sbook_preview=false;",100);
 }
 
 // What to use as the podspot image URI.  This 'image' 
@@ -174,37 +194,21 @@ function sbook_echoes_icon(uri)
 
 /* Handlers */
 
-function sbookHUD_onhover(hover)
-{
-  if (sbook_hudup) return;
-  sbook_trace_handler("sbookHUD_onhover",hover);
-  if (hover)
-    fdjtAddClass(document.body,"hudhover");
-  else {
-    fdjtDropClass(document.body,"hudhover");
-    if (sbook_hudup) sbookSetHUD(false);}
-}
-
 function sbookHUD_onmouseover(evt)
 {
-  sbook_trace_handler("sbookHUD_onmouseover",evt);
+  // sbook_trace_handler("sbookHUD_onmouseover",evt);
   sbook_overhud=true;
-  if (sbook_hudup) return;
-  if (evt.target)
-    fdjtDelayHandler(100,sbookHUD_onhover,true,sbookHUD,"hudhover");
 }
 
 function sbookHUD_onmouseout(evt)
 {
-  sbook_trace_handler("sbookHUD_onmouseout",evt);
-  var target=evt.target;
-  if (evt.target)
-    fdjtDelayHandler(100,sbookHUD_onhover,false,sbookHUD,"hudhover");
+  // sbook_trace_handler("sbookHUD_onmouseout",evt);
+  sbook_overhud=false;
 }
 
 function sbookHUD_onclick(evt)
 {
-  sbook_trace_handler("sbookHUD_onclick",evt);
+  // sbook_trace_handler("sbookHUD_onclick",evt);
   var target=evt.target;
   while (target)
     if ((target.tagName==="A") || (target.tagName==="INPUT") ||
@@ -231,7 +235,7 @@ function sbookGetStableId(elt)
 
 function sbookTOC_onmouseover(evt)
 {
-  sbook_trace_handler("sbookTOC_onmouseover",evt);
+  // sbook_trace_handler("sbookTOC_onmouseover",evt);
   var target=sbook_get_headelt(evt.target);
   sbookHUD_onmouseover(evt);
   fdjtCoHi_onmouseover(evt);
@@ -244,7 +248,7 @@ function sbookTOC_onmouseover(evt)
 
 function sbookTOC_onmouseout(evt)
 {
-  sbook_trace_handler("sbookTOC_onmouseout",evt);
+  // sbook_trace_handler("sbookTOC_onmouseout",evt);
   fdjtCoHi_onmouseout(evt);
   sbookHUD_onmouseout(evt);
   sbookStopPreview();
@@ -302,7 +306,7 @@ function sbookTOCHighlight(secthead)
 
 function sbookTOC_onclick(evt)
 {
-  sbook_trace_handler("sbookTOC_onclick",evt);
+  // sbook_trace_handler("sbookTOC_onclick",evt);
   var target=sbook_get_headelt(evt.target);
   fdjtScrollDiscard();
   if (target===null) return;
