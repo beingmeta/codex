@@ -722,7 +722,7 @@ function sbook_onkeyup(evt)
 
 function sbook_onkeypress(evt)
 {
-  sbook_trace_handler("sbook_onkeypress",evt);
+  // sbook_trace_handler("sbook_onkeypress",evt);
   var target=evt.target;
   /* Make sure you're not inputting text or doing anything
      else on keypresses*/

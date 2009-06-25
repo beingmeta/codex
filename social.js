@@ -353,6 +353,8 @@ function add_podspot(target,open)
     if (open) {
       target.podspot.openIFrame();
       target.podspot.iframe.style.display='block';
+      fdjtScrollIntoView(target,50);
+      fdjtScrollIntoView(target.podspot.iframe);
       return target;}
     else return target.podspot;}
   else {
@@ -378,21 +380,10 @@ function add_podspot(target,open)
     if (typeof tags === "string") tags=tags.split(';');
     else if ((tags) && (tags instanceof Array)) {}
     else tags=[];
-    var pclass=target.getAttribute('podspot_class');
-    if (pclass==null) pclass=window.podspot_class;
-    var iclass=target.getAttribute('podspot_iclass');
-    if (iclass==null) iclass=window.podspot_iclass;
-    var ptarget=target.getAttribute('podspot_target');
-    if (ptarget==null) ptarget=window.podspot_target;
-    if (ptarget==null) ptarget="_new";
     var base=target.getAttribute('podspot_base');
     if (base==null) base=window.podspot_base;
     var psize=target.getAttribute('podspot_size');
     if (psize==null) psize=window.podspot_size;
-    var pstyle=target.getAttribute('podspot_style');
-    if (pstyle==null) pstyle=window.podspot_style;
-    var istyle=target.getAttribute('podspot_istyle');
-    if (istyle==null) istyle=window.podspot_istyle;
     var base_uri="http://webechoes.net/sbooks/podspot.fdcgi?PODSPOT=yes";
     /* var base_uri="http://webechoes.net/app/ping?POPUP=yes"; */
     var href=base_uri+
@@ -401,11 +392,9 @@ function add_podspot(target,open)
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var i=0; while (i<tribes.length) href=href+"&TRIBES="+tribes[i++];
     i=0; while (i<tags.length) href=href+"&TAGCUE="+tags[i++];
-    if (pclass==null) pclass="podspot";
     if (base==null) base="darkpodspot";
     if (psize==null) psize="32";
-    if (ptarget==null) ptarget="overlay";
-    anchor.href=href; anchor.className=pclass; 
+    anchor.href=href; anchor.className="podspoticon"; 
     anchor.openIFrame=function() {
       if (anchor.iframe) return anchor.iframe;
       var iframe=document.createElement('iframe');
@@ -420,18 +409,20 @@ function add_podspot(target,open)
       anchor.iframe=iframe;
       return iframe;}
     if (open) anchor.iframe=anchor.openIFrame();
-    anchor.onclick=function() {
+    anchor.onclick=function(evt) {
       if (iframe_elt)
 	if (iframe_elt.style.display=='none')
 	  iframe_elt.style.display='block';
 	else iframe_elt.style.display='none';
       else anchor.openIFrame();
+      if (iframe_elt.style.display!='none') {
+	fdjtScrollIntoView(target,50);
+	fdjtScrollIntoView(target.podspot.iframe);}
       anchor.blur();
       return false;};
-    if (pstyle!=null) anchor.setAttribute('style',pstyle);
     img.src="http://webechoes.net/podspots/"+base+"_"+psize+"x"+psize+".png"
       +((id) ? ("?FRAG="+id) : "");
-    img.className='podspot'; img.alt='podspot'; img.border=0; 
+    img.alt='podspot'; img.border=0; 
     anchor.appendChild(img);
     target.appendChild(anchor);
     return anchor;}

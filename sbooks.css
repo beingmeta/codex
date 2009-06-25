@@ -73,6 +73,7 @@ p.sbookclickfocus { text-decoration: underline;}
 
 /* Display/opacity rules */
 
+div#SBOOKHUD div.hud:hover { opacity: 0.6;}
 div#SBOOKHUD div.hud {
   position: fixed; 
   top: 0px; left: 0px; right: 0px; width: 100%; z-index: 140;
@@ -139,10 +140,10 @@ div#SBOOKHUD .sbooksearch {display: none;}
 div#SBOOKHUD .sbookechoes {display: none;}
 div#SBOOKHUD .sbookping {display: none;}
 
-body.hudup div#SBOOKHUD.toc #SBOOKTOC {display: block; }
-body.hudup div#SBOOKHUD.search .sbooksearch {display: block; }
-body.hudup div#SBOOKHUD.echoes .echoes {display: block; }
-body.hudup div#SBOOKHUD.ping .sbookping {display: block; }
+body div#SBOOKHUD.toc #SBOOKTOC {display: block; }
+body div#SBOOKHUD.search .sbooksearch {display: block; }
+body div#SBOOKHUD.echoes .echoes {display: block; }
+body div#SBOOKHUD.ping .sbookping {display: block; }
 
 div#SBOOKHUD img#SBOOKTOCBUTTON.button {
   position: fixed; left: 0px; top: 0px;}
@@ -423,6 +424,10 @@ div.sbookechoes div.echoes div.echo div.echoinfo div.excerpt {
   }
 
 /* Podspot iframes */
+
+a.podspoticon {
+  border: 0px; position: absolute; right: 5px; text-align: right;}
+a.podspoticon img { border: 0px;}
 
 iframe.podspot {
     position: absolute; right: 64px; width: 80%; z-index 100; 

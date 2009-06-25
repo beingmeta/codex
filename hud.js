@@ -310,7 +310,8 @@ function sbookTOC_onclick(evt)
   var target=sbook_get_headelt(evt.target);
   fdjtScrollDiscard();
   if (target===null) return;
-  if ((!(target.headelt)) && (!(sbook_hudup))) {
+  if ((!(target.headelt)) &&
+      (!(sbook_hudup))) {
     sbookSetHUD(true);
     return;}
   evt.preventDefault();
