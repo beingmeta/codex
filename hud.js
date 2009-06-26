@@ -343,14 +343,6 @@ function sbookTOC_onclick(evt)
 
 /* Other stuff */
 
-function sbookHUD_unhighlight(elt_arg)
-{
-  var elt=((elt_arg) || sbookHUD_highlighted_elt);
-  if (elt) {
-    var alt=((elt._sbook_span_elt) || (elt._sbook_name_elt) || (false));
-    fdbDropClass(elt,"highlighted");}
-}
-
 function sbookHUD_Next(evt)
 {
   var curinfo=sbook_head.sbookinfo;
