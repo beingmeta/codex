@@ -79,6 +79,9 @@ function sbookMode(id,graphic,mode,title)
   img.id=id; img.className="button";
   img.onclick=function(evt) {
     sbookModeButton_onclick(evt,mode);}
+  img.onmouseover=function(evt) {
+    sbookModeButton_onmouseover(evt,mode);};
+  img.onmouseout=sbookModeButton_onmouseout;
   if (title) img.title=title;
   return img;
 }
@@ -91,11 +94,8 @@ function sbookSetHUD(display,fcn,forced)
 {
   var body=document.body;
   // Clear any saved state (even if shift is still down)
-  sbook_hudstate=false;
-  /*
-  fdjtTrace("sbookSetHUD %s/%s/%o: body=%s, hud=%s",
-	    display,fcn,forced,body.className,sbookHUD.className);
-  */
+  sbook_hudstate=false; sbook_hudfnstate=false;
+  // fdjtTrace("sbookSetHUD %s/%s/%o",display,fcn,forced);
   if (display)
     if (display===true)
       fdjtSwapClass(body,sbookHUD_displaypat,"hudup");
@@ -137,6 +137,27 @@ function sbookModeButton_onclick(evt,mode)
       head_elt[0].focus();
       if (head_elt[0].onfocus) head_elt[0].onfocus(false);}
     return false;}
+}
+
+function sbookModeButton_onmouseover(evt,mode)
+{
+  if (evt.shiftKey) return;
+  if (!(sbook_hudup)) {
+    fdjtAddClass(document.body,"hudup");
+    sbook_hudstate=((sbook_hudup) ? "up" : "down");}
+  sbook_hudfnstate=sbookHUD.className;
+  sbookHUD.className=mode;
+}
+
+function sbookModeButton_onmouseout(evt)
+{
+  if (evt.shiftKey) return;
+  if ((sbook_hudstate) && (sbook_hudstate!=="up"))
+    fdjtDropClass(document.body,"hudup");
+  sbook_hudstate=false;
+  if (sbook_hudfnstate) {
+    sbookHUD.className=sbook_hudfnstate;
+    sbook_hudfnstate=false;}
 }
 
 function sbookPreviewOffset()
@@ -239,8 +260,8 @@ function sbookTOC_onmouseover(evt)
   var target=sbook_get_headelt(evt.target);
   sbookHUD_onmouseover(evt);
   fdjtCoHi_onmouseover(evt);
-  evt.cancelBubble=true;
-  evt.preventDefault();
+  // evt.cancelBubble=true;
+  // evt.preventDefault();
   if (target===null) return;
   var head=target.headelt;
   if (head) sbookPreview(head,true);
@@ -252,8 +273,8 @@ function sbookTOC_onmouseout(evt)
   fdjtCoHi_onmouseout(evt);
   sbookHUD_onmouseout(evt);
   sbookStopPreview();
-  evt.cancelBubble=true;
-  evt.preventDefault();
+  // evt.cancelBubble=true;
+  // evt.preventDefault();
   var rtarget=evt.relatedTarget;
   if (!(rtarget)) return;
   try {
@@ -310,10 +331,6 @@ function sbookTOC_onclick(evt)
   var target=sbook_get_headelt(evt.target);
   fdjtScrollDiscard();
   if (target===null) return;
-  if ((!(target.headelt)) &&
-      (!(sbook_hudup))) {
-    sbookSetHUD(true);
-    return;}
   evt.preventDefault();
   evt.cancelBubble=true;
   sbookSetHead(target.headelt);

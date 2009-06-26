@@ -46,8 +46,9 @@ var sbook_hudup=false;
 var sbook_preview=false; 
 // Whether preview mode is engaged
 var sbook_overhud=false; 
-// The hudstate saved by Shift
+// The hudstate saved by Shift (or other temporary measures)
 var sbook_hudstate=false;
+var sbook_hudfnstate=false;
 
 // Whether to debug generally
 var sbook_debug=false;

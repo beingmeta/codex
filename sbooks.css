@@ -69,6 +69,7 @@
 .sbookhead { text-decoration: underline;}
 body.sbookhead { text-decoration: none;}
 p.sbookfocus { opacity: 0.9;}
+/* p.sbookfocus:hover { color: red;} */
 p.sbookclickfocus { text-decoration: underline;}
 
 /* Display/opacity rules */

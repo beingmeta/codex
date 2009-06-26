@@ -39,7 +39,7 @@ function sbookShowSearch(result)
   var results_div=fdjtDiv("results");
   results_div.onclick=_sbookSearchResults_onclick;
   results_div.onmouseover=_sbookSearchResults_onmouseover;
-  // results_div.onmouseout=_sbookSearchResults_onmouseout;
+  results_div.onmouseout=_sbookSearchResults_onmouseout;
   sbookShowSearchResults(result,results_div);
   fdjtReplace("SBOOKSEARCHRESULTS",results_div);
 }
@@ -159,14 +159,15 @@ function _sbookSearchResults_onmouseover(evt)
   var target=evt.target;
   while (target)
     if (target.sbookelt) break;
-    else if (target.className==="eye") {
-      iseye=true; target=target.parentNode;}
     else target=target.parentNode;
   if (!(target)) return;
   var sbookelt=target.sbookelt;
   sbookPreview(sbookelt,true);
-  evt.preventDefault();
-  evt.cancelBubble=true;
+}
+
+function _sbookSearchResults_onmouseout(evt)
+{
+  sbookStopPreview();
 }
 
 var _sbookSearchKeyPress_delay=false;
@@ -215,7 +216,7 @@ function sbookSearchInput_onfocus(evt)
 {
   var ch=evt.charCode, kc=evt.keyCode;
   sbook_search_focus=true;
-  sbookSetHUD(true);
+  sbookSetHUD(true,"search");
   sbookSetQuery(sbookStringToQuery(evt.target.value));
   return fdjtComplete_show(evt);
 }
