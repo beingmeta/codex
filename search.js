@@ -58,7 +58,8 @@ function sbookAddTag(elt,tag,prime,contextual,unique,kno)
   if (!(kno)) kno=knowlet;
   var elt_id=(((elt.sbookinfo) && (elt.sbookinfo.headid)) ||
 	      (elt.id) || (fdjtForceId(elt)));
-  if ((kno) && (typeof tag === "string"))
+  if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
+  else if ((kno) && (typeof tag === "string"))
     tag=kno.handleSubjectEntry(tag);
   var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
   if (elt.hasOwnProperty('tags'))
@@ -67,13 +68,20 @@ function sbookAddTag(elt,tag,prime,contextual,unique,kno)
   else elt.tags=new Array(dterm);
   if (sbook_trace_tagging) 
     fdjtLog("Tagging #%s with %s/%o",elt.id,dterm,tag);
+  if ((typeof tag === "string") && (tag[0]==="\u00A7")) {
+    fdjtAdd(sbook_index,tag,elt_id,(!(unique)));
+    fdjtAdd(sbook_prime_index,tag,elt_id,(!(unique)));
+    if (contextual)
+      fdjtAdd(sbook_contextual_index,tag,elt_id,(!(unique)));
+    else fdjtAdd(sbook_direct_index,tag,elt_id,(!(unique)));
+    return;}
   /* knoIndexTag returns true if the value wasn't identified as a duplicate */
   knoIndexTag(sbook_index,tag,elt_id,false,(!(unique)));
-  knoIndexTag(sbook_direct_index,tag,elt_id,true,(!(unique)));
   if (prime)
     knoIndexTag(sbook_prime_index,tag,elt_id,true,(!(unique)));
   if (contextual)
     knoIndexTag(sbook_contextual_index,tag,elt_id,true,(!(unique)));
+  else knoIndexTag(sbook_direct_index,tag,elt_id,true,(!(unique)));
 }
 
 function sbookHandleTagSpec(elt,tagspec)

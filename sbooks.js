@@ -44,7 +44,7 @@ var sbook_focus=false;
 var sbook_hudup=false;
 // Whether preview mode is engaged
 var sbook_preview=false; 
-// Whether preview mode is engaged
+// Whether the mouse is over a HUD region
 var sbook_overhud=false; 
 // The hudstate saved by Shift (or other temporary measures)
 var sbook_hudstate=false;
@@ -70,7 +70,7 @@ var sbook_nbsp="\u00A0";
 
 // Rules for building the TOC.  These can be extended.
 var sbook_headlevels=
-  {"H1": 1,"H2": 2,"H3": 3,"H4": 4,"H5": 5};
+  {"H1": 1,"H2": 2,"H3": 3,"H4": 4,"H5": 5, "H6": 6, "H7": 7};
 // This table maps IDs or NAMEs to elements.  This is different
 //  from just their XML ids, because elements that have no ID by
 //  a nearby named anchor will appear in this table.
@@ -109,8 +109,6 @@ var sbook_direct_index={_all: []};
 // This is the contextual index of items where the tag comes from the context
 var sbook_contextual_index={_all: []};
 
-// This is a table mapping prime (focal) tags (dterms) to elements (or IDs)
-var sbook_pindex={_all: []};
 // This is the 'extended index' which maps genls (dterms) to elements (or IDs)
 var sbook_dindex={_all: []};
 // This is a straight 'keyword' index mapping keywords to elements (or IDs)
@@ -412,20 +410,24 @@ function sbook_toc_builder(child,tocstate)
       sbook_nodes.push(child);
       child.sbookloc=loc;
       child.sbook_head=curhead;}}
+  var childinfo=child.sbookinfo;
+  var headtag=(((childinfo) && (childinfo.title)) &&
+	       ("\u00A7"+childinfo.title));
   if ((child.getAttribute) && (child.getAttribute("TAGS"))) {
     var tagstring=child.getAttribute("TAGS");
-    var tags=((knowlet) ?
-	      (knowlet.segmentString(fdjtUnEntify(tagstring),';')) :
-	      (fdjtSemiSplit(fdjtUnEntify(tagstring))));
+    var tags=fdjtSemiSplit(fdjtUnEntify(tagstring));
     var knowdes=[]; var prime_knowdes=[];
+    if (headtag) {
+      knowdes.push(headtag); prime_knowdes.push(headtag);
+      sbookAddTag(child,headtag,true,false,true,tocstate.knowlet);}
     var i=0; while (i<tags.length) {
-      var tag=tags[i++]; var knowde;
+      var tag=tags[i++]; var knowde=false;
       var prime=(tag[0]==="*");
-      _total_tag_count++;
       if (tag.length===0) continue;
-      else if (knowlet)
+      _total_tag_count++;
+      if ((knowlet) && (tag.indexOf('|')>=0))
 	knowde=knowlet.handleSubjectEntry
-	  (((tag[0]==="*") || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
+	  (((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
       else knowde=(((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
       knowdes.push(knowde);
       if ((prime) && (level>0)) prime_knowdes.push(knowde);
@@ -435,9 +437,12 @@ function sbook_toc_builder(child,tocstate)
       var ctags=tagstack[i++];
       var j=0; while (j<ctags.length)  {
 	sbookAddTag(child,ctags[j++],false,true,true,tocstate.knowlet);}}
-    if (level>0) tocstate.tagstack.push(prime_knowdes);
+    if (level>0) {
+      tocstate.tagstack.push(prime_knowdes);}
     _total_tagged_count++;}
-  else if (level) tocstate.tagstack.push([]);
+  else if ((level) && (level>0)) {
+    if (headtag) tocstate.tagstack.push(new Array(headtag));
+    else tocstate.tagstack.push([]);}
   else {}
   if ((sbook_debug_locations) && (child.sbookloc) &&
       (child.setAttribute))

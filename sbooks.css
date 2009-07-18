@@ -299,8 +299,10 @@ body.hudup div#SBOOKHUD.searchresults
   div.sbooksearch div.controls div.completions.open { display: none;}
 div.sbooksearch div.controls div.completions {
    max-height: 300px; width: 99%;}
+/*
 div.sbooksearch div.controls div.completions .completion {
    margin: 0px; padding: 0px;}
+*/
 
 /* Search classes */
 
@@ -342,6 +344,14 @@ div.sbooksearch div.results {min-height: 2ex;}
 body[mode~="results"] div.sbooksearch div.controls div.messages { 
   display: none;}
 
+div.sbooksearch span.completion.sectname {
+  font-weight: bold; font-style: italic; 
+  background-color: ivory; color: purple;
+  padding: 3px; margin: 0px; margin-left: 3px; margin-right: 3px; 
+  -khtml-border-radius: 6px; 
+  -webkit-border-radius: 6px; 
+  -moz-border-radius: 6px; 
+  border-radius: 6px;}
 div.sbooksearch span.dterm { 
   background-color: yellow; color: black;
   padding: 2px; padding-left: 5px;  margin: 0px;

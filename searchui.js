@@ -273,6 +273,10 @@ function _sbook_note_completions(completions)
 
 function sbookDTermCompletion(dterm,title)
 {
+  if ((typeof dterm === "string") && (dterm[0]==="\u00A7")) {
+    var span=fdjtSpan("completion sectname",dterm);
+    span.key=dterm; span.value=dterm; span.anymatch=true;
+    return span;}
   var knowde=Knowde(dterm);
   if (!(knowde))
     fdjtLog("Couldn't get knowlet references from %o",dterm);
@@ -428,8 +432,8 @@ function sbookFullCloud()
     var i=0; while (i<book_tags.length) {
       var tag=book_tags[i++];
       var score=Math.ceil(Math.log(sbook_index[tag].length))+
-	((sbook_dindex[tag]) ? (sbook_dindex[tag].length) : (0))+
-	((sbook_pindex[tag]) ? (sbook_pindex[tag].length) : (0));
+	((sbook_direct_index[tag]) ? (sbook_direct_index[tag].length) : (0))+
+	((sbook_prime_index[tag]) ? (sbook_prime_index[tag].length) : (0));
       if (tagscores[tag]) tagscores[tag]=tagscores[tag]+score;
       else tagscores[tag]=score;
       tagfreqs[tag]=((sbook_index[tag])?(sbook_index[tag].length):(0))
