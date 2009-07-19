@@ -58,7 +58,7 @@ function createSBOOKHUD()
 		 _("search this sBook")));
     fdjtAppend(hud,
 	       fdjtDiv("#SBOOKTOC"),
-	       createSBOOKHUDsearch(),
+	       fdjtWidthId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
 	       createSBOOKHUDsocial());
 
     hud.onclick=sbookHUD_onclick;

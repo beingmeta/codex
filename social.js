@@ -355,7 +355,7 @@ function add_podspot(target,open)
       target.podspot.iframe.style.display='block';
       fdjtScrollIntoView(target,50);
       fdjtScrollIntoView(target.podspot.iframe);
-      return target;}
+      return target.podspot;}
     else return target.podspot;}
   else {
     var iframe_elt=null;
@@ -408,7 +408,6 @@ function add_podspot(target,open)
       target.appendChild(iframe_elt);
       anchor.iframe=iframe;
       return iframe;}
-    if (open) anchor.iframe=anchor.openIFrame();
     anchor.onclick=function(evt) {
       if (iframe_elt)
 	if (iframe_elt.style.display=='none')
@@ -425,6 +424,7 @@ function add_podspot(target,open)
     img.alt='podspot'; img.border=0; 
     anchor.appendChild(img);
     target.appendChild(anchor);
+    if (open) anchor.iframe=anchor.openIFrame();
     return anchor;}
 }
 
@@ -462,23 +462,17 @@ function sbook_search_echoes(query)
 
 function sbook_open_ping()
 {
-  var iframe; var focus;
-  if ((sbook_click_focus) &&
-      ((sbook_click_focus_time+60)<(fdjtTick())))
-    focus=sbook_click_focus;
-  else focus=sbook_focus;
-  if ((sbook_focus) &&
-      (sbook_focus.podspot) &&
-      (sbook_focus.podspot.iframe))
+  var iframe; var focus=sbook_focus;
+  if ((focus) && (focus.podspot) &&
+      (focus.podspot.iframe))
     iframe=sbook_focus.podspot.iframe;
-  else if ((sbook_focus) &&
-	   (sbook_focus.podspot))
-    iframe=sbook_focus.podspot.openIFrame();
+  else if ((focus) && (focus.podspot))
+    iframe=focus.podspot.openIFrame();
   else {
-    var elt=((sbook_head)||(document.body));
-    var podspot=add_podspot(elt,true);
-    elt.podspot=podspot;
+    var podspot=add_podspot(focus,true);
+    focus.podspot=podspot;
     iframe=podspot.iframe;};
+  return iframe;
 }
 
 /* Invoking the iframe */

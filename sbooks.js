@@ -32,6 +32,15 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
+function test_unique_push(array,val)
+{
+  var loc=-1;
+  if ((loc=array.indexOf(val))<0) array.push(val);
+  else {
+    fdjtWarn("Duplicate value %o at %o",val,loc);
+    array.push(val);}
+}
+
 // This is the base URI for this document
 var sbook_base=false;
 
@@ -259,8 +268,17 @@ function sbookGatherMetadata()
     if (scan) scaninfo=scan.sbookinfo;}
   /* Sort the nodes by their offset in the document */
   sbook_nodes.sort(function(x,y) {
-      if (x.Yoff<y.Yoff) return -1;
-      else if (x.Yoff===y.Yoff) return 0;
+      if (!(x.Xoff)) {
+	fdjtWarn("Bad sbook node %o",x);
+	return 0;}
+      else if (!(y.Xoff)) {
+	fdjtWarn("Bad sbook node %o",y);
+	return 0;}
+      else if (x.Yoff<y.Yoff) return -1;
+      else if (x.Yoff===y.Yoff)
+	if (x.Xoff<y.Xoff) return -1;
+	else if (x.Xoff===y.Xoff) return 0;
+	else return 1;
       else return 1;});
   var done=new Date();
   fdjtLog('Finished gathering metadata in %f secs over %d/%d heads/nodes',
@@ -298,6 +316,7 @@ function _sbook_process_head(head,tocstate,level,curhead,curinfo,curlevel)
   var headid=fdjtGuessAnchor(head);
   /* Update global tables, arrays */
   fdjtComputeOffsets(head);
+  // test_unique_push(sbook_nodes,head);
   sbook_nodes.push(head);
   sbook_heads.push(head);
   head.sbookloc=tocstate.location;
@@ -404,10 +423,16 @@ function sbook_toc_builder(child,tocstate)
 	 mark the DIV's location. */
       if (sbook_nodes.length===nodeslength) {
 	fdjtComputeOffsets(child);
-	sbook_nodes.push(child);}}
+	if (child.Xoff)
+	  // test_unique_push(sbook_nodes,child);
+	  sbook_nodes.push(child);
+      }}
     else {
       fdjtComputeOffsets(child);
-      sbook_nodes.push(child);
+      if (child.Xoff)
+	// test_unique_push(sbook_nodes,child);
+	sbook_nodes.push(child);
+
       child.sbookloc=loc;
       child.sbook_head=curhead;}}
   var childinfo=child.sbookinfo;
@@ -668,8 +693,6 @@ function sbookScrollTo(elt,cxt)
 
 /* Tracking position within the document. */
 
-var sbook_click_focus=false;
-var sbook_click_focus_time=false;
 var sbook_focus_tags=false;
 var sbook_last_x=false;
 var sbook_last_y=false;
@@ -878,23 +901,7 @@ function sbook_onclick(evt)
   if (target===null) return;
   if (target===sbookHUD) return;
   sbookSetFocus(target,true);
-  if (sbook_click_focus===target) {
-    fdjtDropClass(sbook_click_focus,"sbookclickfocus");
-    sbook_click_focus=false;
-    return false;}
-  if (sbook_click_focus) {
-    fdjtDropClass(sbook_click_focus,"sbookclickfocus");
-    sbook_click_focus=false;}
-  fdjtAddClass(target,"sbookclickfocus");
-  sbook_click_focus=target;
-  sbook_click_focus_time=fdjtTick();
-}
-
-function sbook_ondblclick(evt)
-{
-  sbook_onclick(evt);
-  add_podspot(sbook_click_focus,true);
-  evt.preventDefault(); evt.cancelBubble=true;
+  sbook_open_ping();
 }
 
 /* Default keystrokes */
@@ -941,7 +948,6 @@ function sbookSetup()
   window.onmousemove=sbook_onmousemove;
   // window.onscroll=sbook_onscroll;
   window.onclick=sbook_onclick;
-  window.ondblclick=sbook_ondblclick;
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
@@ -953,7 +959,7 @@ function sbookSetup()
 			      "hud",hud_done,"hudinit",hud_init_done));
     _sbook_setup=true;;}
   else {
-    sbookFullCloud();
+    // sbookFullCloud();
     var cloud_done=new Date();
     /* _sbook_createHUDSocial(); */
     fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,

@@ -456,7 +456,7 @@ function sbookFullCloud()
 
 function createSBOOKHUDsearch()
 {
-  var outer=fdjtDiv("#SBOOKSEARCH.sbooksearch"," ");
+  var outer=fdjtDiv("sbooksearch"," ");
   var context=fdjtDiv("context"," ");
   var controls=fdjtDiv("controls");
   var input=fdjtInput("TEXT","QTEXT","",null);
