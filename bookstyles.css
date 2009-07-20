@@ -23,13 +23,10 @@ body.sbook h1.titlepage div.sbookinfo {
   font-family: sans,sans-serif;
   font-size: 18px; margin-top: 128px;
   text-align: center; font-variant: small-caps;}
-body.sbook h1.titlepage .frontpiece { 
-  padding: 3em; margin: 3em;
-  font-size: 18px; }
-body.sbook h1.titlepage img.frontpiece {
-  width: 50%;}
+body.sbook h1.titlepage div.frontpiece { 
+  text-align: center;}
 body.sbook h1.titlepage .frontpiece img {
-  width: 50%;}
+  border: none; width: 50%;}
 
 body.sbook .frontpiece div.poem {
   margin: 0px; border: none; font-weight: normal;}

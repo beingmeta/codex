@@ -34,21 +34,6 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 */
 
 
-/* Indices and tags */
-
-function sbook_get_tags(elt)
-{
-  var info=sbook_getinfo(elt);
-  var tagvec=new Array();
-  while (info) {
-    if ((info.tags) && (info.tags.length>0))
-      tagvec=tagvec.concat(info.tags);
-    elt=info.sbook_head;
-    info=sbook_getinfo(elt);}
-  return tagvec;
-}
-
-
 /* Tag setup */
 
 var sbook_trace_tagging=false;
@@ -56,32 +41,35 @@ var sbook_trace_tagging=false;
 function sbookAddTag(elt,tag,prime,contextual,unique,kno)
 {
   if (!(kno)) kno=knowlet;
-  var elt_id=(((elt.sbookinfo) && (elt.sbookinfo.headid)) ||
-	      (elt.id) || (fdjtForceId(elt)));
   if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
   else if ((kno) && (typeof tag === "string"))
-    tag=kno.handleSubjectEntry(tag);
+    tag=KnowDef(tag,kno);
+  // Force a sortkey
+  if (!(elt.sortkey))
+    if (elt.id) elt.sortkey=elt.id;
+    else if (elt.sortKey) elt.sortkey=elt.sortKey();
+    else elt.sortkey=elt.toString();
   var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
   if (elt.hasOwnProperty('tags'))
     if (elt.tags.indexOf(dterm)<0) elt.tags.push(dterm);
     else return;
   else elt.tags=new Array(dterm);
   if (sbook_trace_tagging) 
-    fdjtLog("Tagging #%s with %s/%o",elt.id,dterm,tag);
+    fdjtLog("Tagging %o#%s with %s/%o",elt,elt.id,dterm,tag);
+  /* This is for tags which indicate sections */
   if ((typeof tag === "string") && (tag[0]==="\u00A7")) {
-    fdjtAdd(sbook_index,tag,elt_id,(!(unique)));
-    fdjtAdd(sbook_prime_index,tag,elt_id,(!(unique)));
-    if (contextual)
-      fdjtAdd(sbook_contextual_index,tag,elt_id,(!(unique)));
-    else fdjtAdd(sbook_direct_index,tag,elt_id,(!(unique)));
+    fdjtAdd(sbook_index,tag,elt,(!(unique)));
+    fdjtAdd(sbook_prime_index,tag,elt,(!(unique)));
+    if (!(contextual))
+      fdjtAdd(sbook_direct_index,tag,elt,(!(unique)));
     return;}
   /* knoIndexTag returns true if the value wasn't identified as a duplicate */
-  knoIndexTag(sbook_index,tag,elt_id,false,(!(unique)));
+  knoIndexTag(sbook_index,tag,elt,kno_wgenls,(!(unique)));
+  knoIndexTag(sbook_dterm_index,tag,elt,kno_wogenls,(!(unique)));
   if (prime)
-    knoIndexTag(sbook_prime_index,tag,elt_id,true,(!(unique)));
-  if (contextual)
-    knoIndexTag(sbook_contextual_index,tag,elt_id,true,(!(unique)));
-  else knoIndexTag(sbook_direct_index,tag,elt_id,true,(!(unique)));
+    knoIndexTag(sbook_prime_index,tag,elt,kno_wogenls,(!(unique)));
+  if (!(contextual))
+    knoIndexTag(sbook_direct_index,tag,elt,kno_wogenls,(!(unique)));
 }
 
 function sbookHandleTagSpec(elt,tagspec)
@@ -233,17 +221,20 @@ function sbookDoSearch(query,results)
 	// element.
 	base=items;}}}
   // Initialize scores for all of results
-  var j=0; while (j<base.length) results[base[j++]]=1;
+  var j=0; while (j<base.length) results[base[j++].sortkey]=1;
   var i=0; while (i<query.length) {
     var qelt=query[i++];
     var prime=sbook_lookup_term(qelt,sbook_prime_index)||[];
     var direct=sbook_lookup_term(qelt,sbook_direct_index)||[];
     var k=0; while (k<prime.length) {
-      var elt=prime[k++]; var score;
-      if (score=results[elt]) results[elt]=score+1;}
+      var score;
+      var elt=prime[k++]; var sortkey=elt.sortkey;
+      if (score=results[sortkey])
+	results[sortkey]=score+1;}
     var k=0; while (k<direct.length) {
-      var elt=direct[k++]; var score;
-      if (score=results[elt]) results[elt]=score+1;}}
+      var score;
+      var elt=direct[k++]; var sortkey=elt.sortkey;
+      if (score=results[sortkey]) results[sortkey]=score+1;}}
   results._results=base;
   return results;
 }
@@ -258,7 +249,7 @@ function sbookGetRefiners(results)
   var refiners={}; var freqs={}; var alltags=[];
   var i=0; while (i<rvec.length) {
     var item=rvec[i++];
-    var item_score=results[item];
+    var item_score=results[item.sortkey];
     if (typeof item === "string") item=document.getElementById(item);
     if ((item) && (item.tags)) {
       var tags=item.tags; var j=0; while (j<tags.length) {

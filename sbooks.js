@@ -115,11 +115,9 @@ var sbook_index={_all: []};
 var sbook_prime_index={_all: []};
 // This is the 'direct index' of dterms which are explicitly referenced
 var sbook_direct_index={_all: []};
-// This is the contextual index of items where the tag comes from the context
-var sbook_contextual_index={_all: []};
+// This is the index of dterms/tags to items that don't include genls
+var sbook_dterm_index={_all: []};
 
-// This is the 'extended index' which maps genls (dterms) to elements (or IDs)
-var sbook_dindex={_all: []};
 // This is a straight 'keyword' index mapping keywords to elements (or IDs)
 // This is actually just a cache of searches which are done on demand
 var sbook_word_index={};
@@ -586,7 +584,7 @@ function sbookSetQuery(query,scored)
   if (result._qstring!==sbookQueryBase($("SBOOKSEARCHTEXT").value)) 
     $("SBOOKSEARCHTEXT").value=result._qstring;
   sbook_query=result; query=result._query;
-  sbookSetEchoes(sbook_search_echoes(query));
+  // sbookSetEchoes(sbook_search_echoes(query));
   if (sbook_trace_search>1)
     fdjtLog("Current query is now %o: %o/%o",
 	    result._query,result,result._refiners);
@@ -639,9 +637,11 @@ function sbookSetHead(head)
   else {
     var info=head.sbookinfo;
     sbook_trace_focus("sbookSetHead",head);
+    /* 
     var navhud=createSBOOKHUDnav(head,info);
     fdjtReplace("SBOOKTOC",navhud);
     window.title=info.title+" ("+document.title+")";
+    */
     // This may cause it to scroll, so we don't do it here.
     // window.location="#"+newid;
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
@@ -681,7 +681,8 @@ function sbookScrollTo(elt,cxt)
   fdjtClearPreview();
   if (elt.sbookloc) sbookSetLocation(elt.sbookloc);
   sbookSetFocus(elt);
-  if ((elt.getAttribute("toclevel")) ||
+  if ((elt.getAttribute) &&
+      (elt.getAttribute("toclevel")) ||
       ((elt.sbookinfo) && (elt.sbookinfo.level)))
     sbookSetHead(elt);
   else if (elt.sbook_head)
@@ -705,21 +706,7 @@ function sbookSetFocus(target,force)
   sbook_trace_focus("sbookSetFocus",target);
   if (!(target)) return null;
   if (target!==sbook_focus) {
-    if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);
-    /* If the previous focus is still visible, don't change the focus */
-    var tags=sbook_get_tags(target);
-    if ((tags.length>0) && (tags != sbook_focus_tags)) {
-      var old=$("SBOOKSEARCHCUES");
-      var tagdiv=fdjtDiv("cues");
-      var i=0; while (i<tags.length) {
-	var span=fdjtSpan("tag",tags[i]);
-	if (i>0) 
-	  fdjtAppend(tagdiv," . ",span);
-	else fdjtAppend(tagdiv,span);
-	i++;}
-      tagdiv.id="SBOOKSEARCHCUES";
-      fdjtReplace(old,tagdiv);
-      sbook_focus_tags=tags;}}
+    if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
   if ((force)||(target!==sbook_focus)) {
     var head=((target) &&
 	      (((target.sbookinfo) && (target.sbookinfo.level)) ?
@@ -814,7 +801,7 @@ function sbook_onscroll(evt)
 
 function sbook_onkeydown(evt)
 {
-  sbook_trace_handler("sbook_onkeydown",evt);
+  // sbook_trace_handler("sbook_onkeydown",evt);
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_hudup) {
       sbookSetHUD(false);
@@ -901,6 +888,12 @@ function sbook_onclick(evt)
   if (target===null) return;
   if (target===sbookHUD) return;
   sbookSetFocus(target,true);
+}
+
+function sbook_ondblclick(evt)
+{
+  if (sbook_overhud) return true;
+  sbook_onclick(evt);
   sbook_open_ping();
 }
 
@@ -948,6 +941,7 @@ function sbookSetup()
   window.onmousemove=sbook_onmousemove;
   // window.onscroll=sbook_onscroll;
   window.onclick=sbook_onclick;
+  window.ondblclick=sbook_ondblclick;
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
@@ -959,7 +953,7 @@ function sbookSetup()
 			      "hud",hud_done,"hudinit",hud_init_done));
     _sbook_setup=true;;}
   else {
-    // sbookFullCloud();
+    sbookFullCloud();
     var cloud_done=new Date();
     /* _sbook_createHUDSocial(); */
     fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,

@@ -279,20 +279,14 @@ function importSocialData(data)
 	  sbook_allechoes.push(entry);
 	  sbook_echoes_by_pingid[pingid]=entry;
 	  item=entry;}
+	item.sortkey=pingid;
 	item.fragid=id;
 	fdjtAdd(sbook_echoes_by_id,id,item);
-	if (entry.tags) {
-	  var tags=entry.tags;
+	if (entry.taginfo) {
+	  var tags=entry.taginfo;
 	  var k=0; while (k<tags.length) {
-	    var tag=tags[k++]; 
-	    if (item!=entry) fdjtAdd(item,'tags',tag,true);
-	    if (knowlet) {
-	      var knowde=knowlet.handleSubjectEntry(tag);
-	      fdjtAdd(sbook_echoes_by_xtag,knowde.dterm,item);
-	      var l=0; var genls=knowde.allGenls;
-	      while (l<genls.length) {
-		fdjtAdd(sbook_echoes_by_xtag,genls[l++].dterm,item);}}
-	    fdjtAdd(sbook_echoes_by_tag,tag,item);}}
+	    var tag=tags[k++];
+	    sbookAddTag(item,tag,true,false,true,false);}}
 	else item.tags=[];
 	if (entry.tribes) {
 	  var tribes=entry.tribes;
@@ -345,6 +339,20 @@ function createSBOOKHUDping()
   return wrapper
 }
 
+function gather_tags(elt,results)
+{
+  if (!(results)) results=[];
+  var tags=elt.tags;
+  if ((tags) && (tags.length>0)) {
+    var i=0; while (i<tags.length) results.push(tags[i++]);}
+  if (elt.parentNode) gather_tags(elt.parentNode,results);
+  if (elt.sbook_head) {
+    var head=elt.sbook_head; var htags=head.tags;
+    if ((htags) && (htags.length>0)) {
+      var i=0; while (i<htags.length) results.push(htags[i++]);}}
+  return results;
+}
+
 /* Displaying podspots */
 
 function add_podspot(target,open)
@@ -353,8 +361,7 @@ function add_podspot(target,open)
     if (open) {
       target.podspot.openIFrame();
       target.podspot.iframe.style.display='block';
-      fdjtScrollIntoView(target,50);
-      fdjtScrollIntoView(target.podspot.iframe);
+      fdjtScrollTo(target.podspot.iframe,target.id,target);
       return target.podspot;}
     else return target.podspot;}
   else {
@@ -364,7 +371,7 @@ function add_podspot(target,open)
     var img=document.createElement('img');
     var title=target.getAttribute('title');
     var tribes=target.getAttribute('tribes');
-    var tags=target.tags||target.getAttribute('tags')||[];
+    var tags=gather_tags(target);
     target.podspot=anchor;
     if (!(title)) {
       var head_info=
@@ -392,7 +399,7 @@ function add_podspot(target,open)
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var i=0; while (i<tribes.length) href=href+"&TRIBES="+tribes[i++];
     i=0; while (i<tags.length) href=href+"&TAGCUE="+tags[i++];
-    if (base==null) base="darkpodspot";
+    if (base==null) base="sBooksWE";
     if (psize==null) psize="32";
     anchor.href=href; anchor.className="podspoticon"; 
     anchor.openIFrame=function() {
@@ -405,7 +412,8 @@ function add_podspot(target,open)
       iframe.src=href+"&IFRAME=yes&DIALOG=yes";
       iframe.height="no";
       iframe_elt.appendChild(iframe);
-      target.appendChild(iframe_elt);
+      fdjtAppend(target,iframe_elt);
+      // target.appendChild(iframe_elt);
       anchor.iframe=iframe;
       return iframe;}
     anchor.onclick=function(evt) {
@@ -415,15 +423,14 @@ function add_podspot(target,open)
 	else iframe_elt.style.display='none';
       else anchor.openIFrame();
       if (iframe_elt.style.display!='none') {
-	fdjtScrollIntoView(target,50);
-	fdjtScrollIntoView(target.podspot.iframe);}
+	fdjtScrollTo(target.podspot.iframe,id,target);}
       anchor.blur();
       return false;};
     img.src="http://webechoes.net/podspots/"+base+"_"+psize+"x"+psize+".png"
       +((id) ? ("?FRAG="+id) : "");
     img.alt='podspot'; img.border=0; 
     anchor.appendChild(img);
-    target.appendChild(anchor);
+    fdjtPrepend(target,anchor);
     if (open) anchor.iframe=anchor.openIFrame();
     return anchor;}
 }
@@ -479,7 +486,7 @@ function sbook_open_ping()
 
 var sbook_echo_head=false;
 var sbook_tribes=false;
-function sbook_podspot_uri(uri,hash,title,tribes)
+function sbook_podspot_uri(uri,hash,title,tribes,tags)
 {
   var hashpos=uri.indexOf('#');
   // fdjtTrace("Getting podspot for %s",uri);
@@ -499,6 +506,8 @@ function sbook_podspot_uri(uri,hash,title,tribes)
       var i=0; while (i<tribes.length) 
 		 href=href+"&TRIBES="+encodeURIComponent(tribes[i++]);}
     else fdjtWarn("Weird TRIBES argument for podspot %o",tribes);}
+  if (tags) {
+    var i=0; while (i<tags.length) href=href+"&TAG="+tags[i++];}
   return href;
 }
 

@@ -51,16 +51,7 @@ function createSBOOKHUD()
   if (hud) return hud;
   else {
     hud=fdjtDiv
-      ("#SBOOKHUD",
-       sbookMode("SBOOKTOCBUTTON","CompassIcon32x32.png","toc",
-		 _("navigate this sBook")),
-       sbookMode("SBOOKSEARCHBUTTON","SearchIcon32.png","search",
-		 _("search this sBook")));
-    fdjtAppend(hud,
-	       fdjtDiv("#SBOOKTOC"),
-	       fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
-	       createSBOOKHUDsocial());
-
+      ("#SBOOKHUD",fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"));
     hud.onclick=sbookHUD_onclick;
     hud.onmouseover=sbookHUD_onmouseover;
     hud.onmouseout=sbookHUD_onmouseout;
@@ -182,11 +173,19 @@ function sbookPreview(elt,nomode)
 
 function sbookPreview_onmouseover(evt)
 {
+  var target=evt.target;
+  while (target)
+    if (target.sbookelt) break;
+    else target=target.parentNode;
+  if (!(target)) return;
+  var sbookelt=target.sbookelt;
+  sbookPreview(sbookelt,true);
   fdjtAddClass(document.body,"preview");
 }
 
 function sbookPreview_onmouseout(evt)
 {
+  sbookStopPreview();
   fdjtDropClass(document.body,"preview");
 }
 
@@ -278,7 +277,7 @@ function sbookTOC_onmouseout(evt)
   var rtarget=evt.relatedTarget;
   if (!(rtarget)) return;
   try {
-    if (rtarget.ownerDocument!=document) {
+    if (rtarget.ownerDocument!==document) {
       fdjtDelayHandler(300,sbookSetHUD,false,document,"hidehud");
       return;}
     // We'll get an error if we go out of the document,
