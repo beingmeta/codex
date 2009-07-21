@@ -637,11 +637,9 @@ function sbookSetHead(head)
   else {
     var info=head.sbookinfo;
     sbook_trace_focus("sbookSetHead",head);
-    /* 
     var navhud=createSBOOKHUDnav(head,info);
     fdjtReplace("SBOOKTOC",navhud);
     window.title=info.title+" ("+document.title+")";
-    */
     // This may cause it to scroll, so we don't do it here.
     // window.location="#"+newid;
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
@@ -688,7 +686,7 @@ function sbookScrollTo(elt,cxt)
   else if (elt.sbook_head)
     sbookSetHead(elt.sbook_head);
   if ((!cxt) || (elt===cxt))
-    fdjtScrollTo(elt,sbookGetStableId(elt),false);
+    fdjtScrollTo(elt,sbookGetStableId(elt),false,40);
   else fdjtScrollTo(elt,sbookGetStableId(elt),cxt);
 }
 
@@ -935,7 +933,6 @@ function sbookSetup()
   createSBOOKHUD();
   var hud_done=new Date();
   sbookHUD_Init();
-  sbookHUD.className="toc";
   sbook_base=getsbookbase();
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;

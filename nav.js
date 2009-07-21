@@ -47,14 +47,16 @@ function _sbook_generate_spanbar(head,headinfo,child)
   if ((!(subsections)) || (subsections.length===0))
     return false;
   var progress=fdjtDiv("progressbox","\u00A0");
+  var range=false; // fdjtDiv("rangebox","\u00A0");
   fdjtAppend(spanbar,spans);
-  fdjtAppend(spans,progress);
+  fdjtAppend(spans,range,progress);
   progress.style.left="0%";
+  if (range) range.style.left="0%";
   var i=0; while (i<subsections.length) {
     var subsection=subsections[i++];
     var spaninfo=subsection.sbookinfo;
     var spanstart; var spanend; var spanlen;
-    if ((sectnum===0) && ((spaninfo.starts_at-start)>20)) {
+    if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
       spanstart=start;  spanend=spaninfo.starts_at;
       spaninfo=headinfo; subsection=head;
       i--; sectnum++;}
@@ -150,15 +152,17 @@ function _sbook_add_head(toc,head,headinfo,spanp)
   var new_elt, content_elt;
   if (spanp) {
     new_elt=fdjtAnchor("#"+headinfo.id);
+    new_elt.headelt=head;
     new_elt.className='sbookhudsect';
     content_elt=new_elt;}
   else {
     var spanbar=_sbook_generate_spanbar(parent,pinfo,head);
-    content_elt=fdjtDiv("sectname",fdjtAnchor("#"+headinfo.id));
+    var anchor=fdjtAnchor("#"+headinfo.id);
+    anchor.headelt=head;
+    content_elt=fdjtDiv("sectname",anchor);
     new_elt=fdjtDiv('sbookhudsect');
     fdjtAppend(new_elt,spanbar,content_elt);}
   new_elt.id=sectid;
-  new_elt.headelt=head;
   if (head===document.body) {
     if (document.title)
       fdjtAppend(content_elt,document.title);
@@ -216,6 +220,40 @@ function createSBOOKHUDnav(head,info)
   new_toc.onfocus=function(evt) {
     if (sbookHUDechoes)
       sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));}
+  return new_toc;
+}
+
+function createSBOOKHUDnav_new(head,info)
+{
+  var id=fdjtForceId(head);
+  if (sbook_debug)
+    fdjtLog('Generating TOC from from %o/%s (%o)',head,id,info);
+  var head2=
+    ((head.sbookinfo) &&
+     (((head.sbookinfo.sub) && (head.sbookinfo.sub.length>0))
+      ? (head)
+      : ((head.sbookinfo.sbook_head)||(false))));
+  var head2info=((head2)&&(head2.sbookinfo));
+  var tocbar=_sbook_generate_spanbar(document.body,document.body.sbookinfo);
+  var locbar=((head2) && (_sbook_generate_spanbar(head2,head2info)));
+  var new_toc=fdjtDiv("sbooktoc hud",tocbar,locbar);
+  new_toc.onclick=sbookTOC_onclick;
+  new_toc.onmouseover=sbookTOC_onmouseover;
+  new_toc.onmouseout=sbookTOC_onmouseout;
+  new_toc.onfocus=function(evt) {
+    if (sbookHUDechoes)
+      sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));}
+  /*
+  if (head2) {
+    var starts=head2info.starts_at; var ends=head2info.ends_at;
+    var docsize=
+      document.body.sbookinfo.ends_at-document.body.sbookinfo.starts_at;
+    var ratio=(starts/docsize);
+    var size=(ends-starts)/docsize;
+    var range1=$$(".rangebox",tocbar)[0];
+    range1.style.left=((Math.round(ratio*10000))/100)+"%";
+    range1.style.width=((Math.round(size*10000))/100)+"%";}
+  */
   return new_toc;
 }
 
