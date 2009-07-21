@@ -197,6 +197,7 @@ function sbook_lookup_term(term,table)
 function sbookDoSearch(query,results)
 {
   var base=false;
+  var sources=[];
   var simple=(!(results._fuzzy));
   // A query is an array of terms.  In a simple query,
   // the results are simply all elements which are tagged
@@ -220,8 +221,21 @@ function sbookDoSearch(query,results)
 	// Fuzzy queries only require a match in the first query
 	// element.
 	base=items;}}}
+  // Apply any social filters
+  // Trying different approach
+  // base=sbook_limit_search(base,(query._sources)||(sbook_sources));
   // Initialize scores for all of results
-  var j=0; while (j<base.length) results[base[j++].sortkey]=1;
+  var j=0; while (j<base.length) {
+    var elt=base[j++];
+    if (elt.pingid) {
+      var user=elt.user; var tribes=elt.tribes;
+      if (sources.indexOf(user)<0) sources.push(user);
+      if (tribes) {
+	var k=0; while (k<tribes.length) {
+	  var tribe=tribes[k++];
+	  if (sources.indexOf(tribe)<0) sources.push(tribe);}}}
+    results[elt.sortkey]=1;}
+  results._sources=sources;
   var i=0; while (i<query.length) {
     var qelt=query[i++];
     var prime=sbook_lookup_term(qelt,sbook_prime_index)||[];

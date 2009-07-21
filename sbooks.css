@@ -31,37 +31,33 @@
 
 /* New design for web-based version:
 
-    In normal mode, HUD consists of four icons in the four corners
-     of the browser window.  The icons are for nav, search, echoes,
-     and ping.  There aren't any next->prev buttons 
-    Only one function mode is active at any time.
-    Orthogonal to the four function modes (or five, if you count normal),
-     there are display modes:
-      * minimized (just icons)
-      * hover (top strip appears, low opacity)
-      * hudup (higher opacity, full height)
-    Mouseover the top goes into hover mode (there are keystrokes too)
-    Click on the top toggles in and out of hudup mode
-    Click on an icon goes into that function mode and into hover,
-     double click goes into hudup
+   4 HUDs:
+     A top TOC bar
+     A bottom search bar
+     A left-hand social bar
+     A central 'results' HUD
+   all 'underneath' a master HUD: SBOOKHUD
 
-    All these attributes are managed in the classes of the HUD.
+   A generic .hud class and individually ID'd DIV's for all 4 HUDs.
+   The javascript will often replace the TOC and RESULTS hud
 
-    Preview mode gets toggled on the body and diminishes the HUD's
-     opacity.
+   In addition, podspots and iframes are overlays providing interactions
+    with webechoes.
+   
+   The app has a mode, stored as a class on SBOOKHUD, which may be toc,
+    searching, or browsing.  Non-selected HUDs are always collapsed.  The
+    search and TOC HUDs are ghostly in collapsed form.  The results HUD
+    is invisible when not selected.  When the results HUD is selected, the
+    TOC hud is replaced with LOCATION bar indicating position within the
+    book of a result. 
 
-    More tweaks, after experimentation:
-     SBOOECHOES is a top level element, as is SBOOKSOCIAL (the user bar)
-     sbookSetEchoes does selective display on echoes
-     SBOOKSOCIAL consists of a row of users with an "everyone"
-      button on the left and a ping/remark button on the right.
-      Clicking on a user/tribe brings up the echoes element and limits
-       it to that user/tribe.
-     In TOC mode, the space of users are people who have said things
-      below the current article.
-     In SEARCH mode, the space of users are people involved in the
-      current search results
-
+   Two other modes, preview and hudup, are stored as classes on BODY.
+    * hudup makes all the HUD's more opaque and is controlled by
+       the esc and shift keys
+    * preview is for looking at the content summarized in the
+       results HUD.  In preview mode, the TOC disappears, the search
+        and social bars are visible but more ghostly.  The top has
+        a 
 */
 
 /* Highlight rules */
@@ -88,7 +84,6 @@ div#SBOOKHUD div.hud#SBOOKTOC {
   top: 0px; left: 75px; right: 75px; z-index: 140;
   max-height: 40px; min-height: 30px;
   margin: 0px; padding: 0px;
-  border-left: solid black 2px; border-right: solid black 2px;
   display: block;
   -khtml-border-bottom-left-radius: 6px; 
   -webkit-border-bottom-left-radius: 6px; 
@@ -98,6 +93,7 @@ div#SBOOKHUD div.hud#SBOOKTOC {
   -webkit-border-bottom-right-radius: 6px; 
   -moz-border-radius-bottomright: 6px; 
   border-bottom-right-radius: 6px;}
+
 div#SBOOKHUD div.hud#SBOOKSEARCH {
   position: fixed; 
   bottom: 0px; left: 75px; right: 75px; z-index: 140;
@@ -111,7 +107,42 @@ div#SBOOKHUD div.hud#SBOOKSEARCH {
   -webkit-border-top-right-radius: 6px; 
   -moz-border-radius-topright: 6px; 
   border-top-right-radius: 6px;}
+
+div#SBOOKHUD div.hud#SBOOKECHOBAR {
+  position: fixed; display: block;
+  bottom: 40px; top: 40px; left: 0px; width: 40px;
+  margin: 0px; padding: 0px; min-height: 80px;
+  -khtml-border-bottom-right-radius: 6px; 
+  -webkit-border-bottom-right-radius: 6px; 
+  -moz-border-radius-bottomright: 6px; 
+  border-bottom-right-radius: 6px; 
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px;}
+
+div#SBOOKHUD div.hud#SBOOKSEARCH div.echobar {
+  position: fixed; display: none;
+  bottom: 40px; top: 40px; left: 0px; width: 40px;
+  margin: 0px; padding: 0px; min-height: 80px;
+  border-right: solid orange 2px;
+  -khtml-border-bottom-right-radius: 6px; 
+  -webkit-border-bottom-right-radius: 6px; 
+  -moz-border-radius-bottomright: 6px; 
+  border-bottom-right-radius: 6px; 
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px;}
+div#SBOOKHUD.searching div.hud#SBOOKSEARCH div.echobar {
+  opacity: 0.9;}
+div#SBOOKHUD.searching div.hud#SBOOKSEARCH div.echobar {
+  display: block;}
+div#SBOOKHUD.searching div.hud#SBOOKECHOBAR {
+  display: none;}
+
 /* For scrollable results */
+
 div#SBOOKHUD div#SBOOKRESULTS {
   position: fixed; bottom: 34px;
   left: 75px; right: 75px;
@@ -126,14 +157,35 @@ div#SBOOKHUD div#SBOOKRESULTS {
   -webkit-border-top-right-radius: 6px; 
   -moz-border-radius-topright: 6px; 
   border-top-right-radius: 6px;}
+
+div#SBOOKHUD div.hud#SBOOKTOP {
+  position: fixed;
+  top: 0px; left: 75px; right: 75px; z-index: 140;
+  max-height: 15px; min-height: 15px;
+  margin: 0px; padding: 0px;
+  display: none;}
+
+/* There are three HUD UI modes: toc, searching, browsing */
+
 div#SBOOKHUD.toc div.hud#SBOOKTOC div.supersections {
   display: block;}
 div#SBOOKHUD.toc div.hud#SBOOKTOC div.subsections {
   display: block;}
 div#SBOOKHUD.toc div.hud#SBOOKTOC {
   max-height: inherit;}
+
 div#SBOOKHUD.searching div.hud#SBOOKSEARCH {
   max-height: inherit; opacity: 0.9;}
+div#SBOOKHUD.searching div.hud#SBOOKRESULTS {
+  display: none;}
+
+div#SBOOKHUD.browsing div#SBOOKRESULTS {
+ display: block; opacity: 0.9;}
+body.preview div#SBOOKHUD.browsing div#SBOOKRESULTS { 
+ opacity: 0.1; }
+div#SBOOKHUD.browsing div#SBOOKTOC { display: none; }
+div#SBOOKHUD.browsing div#SBOOKTOP { display: block; opacity: 0.4;}
+div#SBOOKHUD.browsing div#SBOOKTOP:hover { display: block; opacity: 0.8;}
 div#SBOOKHUD.browsing div.hud#SBOOKSEARCH {
   max-height: 30px; opacity: 0.9;
   -khtml-border-top-left-radius: 0px; 
@@ -152,8 +204,6 @@ div#SBOOKHUD div#SBOOKSEARCH.sbooksearch {
   text-align: left;}
 div.sbooksearch div.query input[TYPE='TEXT'] {
   width: 100%; clear: both;}
-
-body.preview div#SBOOKHUD div#SBOOKRESULTS { opacity: 0.1; }
 
 div#SBOOKHUD #SBOOKTOC {display: none;}
 div#SBOOKHUD .sbooksearch {display: none;}
@@ -185,25 +235,22 @@ div.echoes.focused div.echo[displayed='yes'][focus='yes'] { display: block;}
 div.echo div.head span.icons img { float: none; padding-left: 5px;}
 div.echo div.head span.icons .age { color: orange;}
 
-div.socialbar { 
-  height: 40px;
-  padding-right: 40px; padding-left: 40px; 
-  overflow-x: auto; overflow-y: hidden;} 
-div.socialbar img { cursor: pointer;}
+div.echobar { 
+  overflow-y: auto; overflow-x: hidden;} 
+div.echobar img { cursor: pointer;}
 /* This forces the browser to scale the image, which isn't ideal */
-div.socialbar img.social { display: none; width: 32px; height: 32px;} 
-div.socialbar img.social[displayed='yes']  {display: inline;}
-div.socialbar img.everyone {
-  position: absolute; left: 0px;}
-div.socialbar img.ping {position: absolute; right: 0px;}
+div.echobar img.social { width: 32px; height: 32px;} 
+div.echobar.limited img.social  {display: none;}
+div.echobar.limited img.social[displayed='yes']  {display: inline;}
+div.echobar img.social[displayed='yes']  {display: inline;}
 
-div#SBOOKHUD div.socialbar { opacity: 0.1; z-index: 150;}
-div#SBOOKHUD div.socialbar.filled { opacity: 0.50; z-index: 150;}
-div#SBOOKHUD div.socialbar:hover { opacity: 0.85; }
-body div#SBOOKHUD.search div.socialbar:hover { opacity: 0.85;}
-body div#SBOOKHUD.toc div.socialbar:hover { opacity: 0.85;}
-body div#SBOOKHUD.browsing div.socialbar { opacity: 0.05;}
-body.hudechoes div#SBOOKHUD div.socialbar { opacity: 0.85;}
+div#SBOOKHUD div.echobar { opacity: 0.1; z-index: 150;}
+div#SBOOKHUD div.echobar.filled { opacity: 0.50; z-index: 150;}
+div#SBOOKHUD div.echobar:hover { opacity: 0.85; }
+body div#SBOOKHUD.search div.echobar:hover { opacity: 0.85;}
+body div#SBOOKHUD.toc div.echobar:hover { opacity: 0.85;}
+body div#SBOOKHUD.browsing div.echobar { opacity: 0.05;}
+body.hudechoes div#SBOOKHUD div.echobar { opacity: 0.85;}
 
 /* Individual sub content */
 
@@ -246,28 +293,28 @@ div.sbooktoc div.subsections a {
 div.sbooktoc div.subsections a.cohighlight {
     color: yellow;}
 
-div.sbooktoc div.spanbar {
+div.spanbar {
   position: relative;
   text-align: center; clear: both;
   opacity: 0.5; margin: 0px; padding: 0px; border: 0px;
   background-color: transparent; height: 14px; font-size: 3px;
   border-bottom: solid black 2px;}
-div.sbooktoc div.spanbar div.spans { 
+div.spanbar div.spans { 
   position: relative;
   margin: 0px; padding: 0px; border: 0px;}
-div.sbooktoc div.spanbar div.sbookhudspan {
+div.spanbar div.sbookhudspan {
   background-color: blue; clear: none; float: left;
   margin: 0px; padding: 0px; border: 0px;
   border-top: solid blue 2px; border-bottom: solid blue 2px;
   height: 10px; }
-div.sbooktoc div.spanbar div.sbookhudspan[odd] {
+div.spanbar div.sbookhudspan[odd] {
   background-color: silver;
   border-top: solid silver 2px; border-bottom: solid silver 2px;}
-div.sbooktoc div.spanbar div.sbookhudspan:hover { 
+div.spanbar div.sbookhudspan:hover { 
   border-top: dotted red 2px; border-bottom: dotted red 2px; }
-div.sbooktoc div.spanbar div.sbookhudspan[odd]:hover {
+div.spanbar div.sbookhudspan[odd]:hover {
   border-top: dotted red 2px; border-bottom: dotted red 2px; }
-div.sbooktoc div.spanbar div.sbookhudspan.cohighlight { 
+div.spanbar div.sbookhudspan.cohighlight { 
   background-color: yellow; border-color: yellow;}
 
 div.sbooktoc div.echoes { 
@@ -292,15 +339,15 @@ div#SBOOKHEAD2 div.spanbar { width: 50%; margin-left: 25%; margin-right: 25%;}
 div#SBOOKHEAD3 div.spanbar { 
   width: 75%; margin-left: 12.5%; margin-right: 12.5%;}
 
-div.sbooktoc div.spanbar { padding: 0px; margin: 0px;}
-div.sbooktoc div.spanbar div.spans { 
+div.spanbar { padding: 0px; margin: 0px;}
+div.spanbar div.spans { 
   width: 100%; height: 10px; padding: 0px; margin: 0px;}
 
-div.sbooktoc div.spanbar div.progressbox { 
+div.spanbar div.progressbox { 
   width: 3px; height: 15px; background-color: red;
   position: absolute; z-index: 200; 
   margin: 0px; padding: 0px;}
-div.sbooktoc div.spanbar div.rangebox { 
+div.spanbar div.rangebox { 
   height: 13px; /* border: orange solid 2px; */
   background-color: red; opacity: 0.5;
   position: absolute; z-index: 200; 
@@ -308,8 +355,6 @@ div.sbooktoc div.spanbar div.rangebox {
 
 /* Search rules */
 
-div#SBOOKHUD.browsing div#SBOOKRESULTS {
- display: block; opacity: 0.9;}
 div#SBOOKHUD.browsing
   div.sbooksearch .completions { display: none;}
 div#SBOOKHUD.browsing
@@ -370,6 +415,18 @@ div.sbooksearch span.dterm {
   -webkit-border-bottom-left-radius: 6px; 
   -moz-border-radius-bottomleft: 6px;
   border-bottom-left-radius: 6px;}
+div.sbookresults span.dterm { 
+  background-color: yellow; color: black;
+  padding: 2px; padding-left: 5px;  margin: 0px;
+  padding-right: 3px; margin-right: 3px;
+  -khtml-border-top-left-radius: 6px; 
+  -webkit-border-top-left-radius: 6px; 
+  -moz-border-radius-topleft: 6px; 
+  border-top-left-radius: 6px; 
+  -khtml-border-bottom-left-radius: 6px; 
+  -webkit-border-bottom-left-radius: 6px; 
+  -moz-border-radius-bottomleft: 6px;
+  border-bottom-left-radius: 6px;}
 div.sbooksearch span.dterm span.bigpunct {
   font-size: 200%; font-weight: bold; line-height: 50%;}
 div.sbooksearch .completions.showall span.dterm {display: inline;}
@@ -398,6 +455,7 @@ div.sbookresults a.searchresult {
   margin-left: 50px; margin-right: 50px; 
   border-bottom: dotted orange 1px; padding-bottom: 3px;
   color: black; text-align: left;}
+div.sbookresults a.searchresult.hidden { display: none;}
 div.sbookresults a.searchresult .info { 
   float: right;}
 div.sbookresults a.searchresult div.info { 

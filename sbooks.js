@@ -32,14 +32,12 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-function test_unique_push(array,val)
-{
-  var loc=-1;
-  if ((loc=array.indexOf(val))<0) array.push(val);
-  else {
-    fdjtWarn("Duplicate value %o at %o",val,loc);
-    array.push(val);}
-}
+// When defined, this is a precomputed TOC for this file (NYI)
+var sbook_local_toc=false;
+// This is the TOC in which this document is embedded (NYI)
+var sbook_context_toc={};
+// Where to go for your webechoes
+var sbook_webechoes_root="http://webechoes.net/";
 
 // This is the base URI for this document
 var sbook_base=false;
@@ -48,6 +46,11 @@ var sbook_base=false;
 var sbook_head=false;
 // This is the 'focus element' approximately under the mouse.
 var sbook_focus=false;
+// This is the current query
+var sbook_query=false;
+// Which sources to search.  False to exclude echoes, true to include
+//  all echoes, and an array to include selected echoes
+var sbook_sources=true;
 
 // Whether the HUD is up
 var sbook_hudup=false;
@@ -59,6 +62,51 @@ var sbook_overhud=false;
 var sbook_hudstate=false;
 var sbook_hudfnstate=false;
 
+// This is a list of all the terminal content nodes
+var sbook_nodes=[];
+// This is a list of the identified heads
+var sbook_heads=[];
+// This table maps IDs or NAMEs to elements.  This is different
+//  from just their XML ids, because elements that have no ID by
+//  a nearby named anchor will appear in this table.
+var sbook_hashmap={};
+
+// This is a table mapping tags (dterms) to elements (or IDs)
+//  Note that this includes the genls of actual tags; the index
+//   sbook_dindex is reserved for actual tags.
+var sbook_index={_all: []};
+// This is a table mapping prime (focal) tags (dterms) to elements (or IDs)
+var sbook_prime_index={_all: []};
+// This is the 'direct index' of dterms which are explicitly referenced
+var sbook_direct_index={_all: []};
+// This is the index of dterms/tags to items that don't include genls
+var sbook_dterm_index={_all: []};
+// This is a straight 'keyword' index mapping keywords to elements (or IDs)
+// This is actually just a cache of searches which are done on demand
+var sbook_word_index={};
+// This is an array of all tags
+var sbook_all_tags=[];
+
+// Rules for building the TOC.  These can be extended.
+var sbook_headlevels=
+  {"H1": 1,"H2": 2,"H3": 3,"H4": 4,"H5": 5, "H6": 6, "H7": 7};
+// Whether to build the index
+var sbook_build_index=true;
+// This is a count of all tagged elements
+var sbook_tagged_count=0;
+// An array of element selectors which contain tags
+var sbook_tag_tags=[];
+
+// Use spanbars in the HUD
+var sbook_use_spanbars=true;
+// Show subsections too
+var sbook_list_subsections=true;
+// Electro highlights
+var sbook_electric_spanbars=false;
+
+// Nonbreakable space, all handy
+var sbook_nbsp="\u00A0";
+
 // Whether to debug generally
 var sbook_debug=false;
 // Whether to debug the HUD
@@ -69,32 +117,6 @@ var sbook_trace_search=0;
 var sbook_trace_clouds=0;
 // Whether we're debugging locations
 var sbook_debug_locations=false;
-// This is a list of all the terminal content nodes
-var sbook_nodes=[];
-// This is a list of the identified heads
-var sbook_heads=[];
-
-// Nonbreakable space, all handy
-var sbook_nbsp="\u00A0";
-
-// Rules for building the TOC.  These can be extended.
-var sbook_headlevels=
-  {"H1": 1,"H2": 2,"H3": 3,"H4": 4,"H5": 5, "H6": 6, "H7": 7};
-// This table maps IDs or NAMEs to elements.  This is different
-//  from just their XML ids, because elements that have no ID by
-//  a nearby named anchor will appear in this table.
-var sbook_hashmap={};
-// Use spanbars in the HUD
-var sbook_use_spanbars=true;
-// Show subsections too
-var sbook_list_subsections=true;
-// Electro highlights
-var sbook_electric_spanbars=false;
-
-// When defined, this is a precomputed TOC for this file (NYI)
-var sbook_local_toc=false;
-// This is the TOC in which this document is embedded (NYI)
-var sbook_context_toc={};
 
 // Flavors of tags
 //  prime: humanly indicated as important to an item
@@ -107,38 +129,8 @@ var sbook_context_toc={};
 //  of the tagged items, but the information above is used in
 //  scoring the results.
 
-// This is a table mapping tags (dterms) to elements (or IDs)
-//  Note that this includes the genls of actual tags; the index
-//   sbook_dindex is reserved for actual tags.
-var sbook_index={_all: []};
-// This is a table mapping prime (focal) tags (dterms) to elements (or IDs)
-var sbook_prime_index={_all: []};
-// This is the 'direct index' of dterms which are explicitly referenced
-var sbook_direct_index={_all: []};
-// This is the index of dterms/tags to items that don't include genls
-var sbook_dterm_index={_all: []};
-
-// This is a straight 'keyword' index mapping keywords to elements (or IDs)
-// This is actually just a cache of searches which are done on demand
-var sbook_word_index={};
-// This is an array of all tags
-var sbook_all_tags=[];
-// This is a count of all tagged elements
-var sbook_tagged_count=0;
-// This is a table mapping tags (typically, hopefully, dterms) to URIs
-var sbook_context_index={};
-// Whether to build the index
-var sbook_build_index=true;
-// An array of element selectors which contain tags
-var sbook_tag_tags=[];
-// Whether the HUD is at the top or the bottom
-var sbookHUD_at_top=false;
-// Whether to sync the echoes icon
-var sbook_sync_echo_icon=true;
 // Whether the page has been scrolled
 var sbook_scrolled=false;
-// Where to go for your webechoes
-var sbook_webechoes_root="http://webechoes.net/";
 // Whether to switch headings on all mouseovers
 var sbook_close_tracking=true;
 // If a search has fewer than this many results,
@@ -148,11 +140,6 @@ var sbook_search_gotlucky=5;
 var sbook_search_focus=false;
 // Whether to display verbose tool tips
 var sbook_noisy_tooltips=false;
-
-function sbookScrollOffset()
-{
-  return ((sbookHUD_at_top)&&(-(sbookHUD.offsetHeight+20)))
-}
 
 function sbook_trace_handler(handler,evt)
 {
@@ -314,7 +301,6 @@ function _sbook_process_head(head,tocstate,level,curhead,curinfo,curlevel)
   var headid=fdjtGuessAnchor(head);
   /* Update global tables, arrays */
   fdjtComputeOffsets(head);
-  // test_unique_push(sbook_nodes,head);
   sbook_nodes.push(head);
   sbook_heads.push(head);
   head.sbookloc=tocstate.location;
@@ -422,13 +408,11 @@ function sbook_toc_builder(child,tocstate)
       if (sbook_nodes.length===nodeslength) {
 	fdjtComputeOffsets(child);
 	if (child.Xoff)
-	  // test_unique_push(sbook_nodes,child);
 	  sbook_nodes.push(child);
       }}
     else {
       fdjtComputeOffsets(child);
       if (child.Xoff)
-	// test_unique_push(sbook_nodes,child);
 	sbook_nodes.push(child);
 
       child.sbookloc=loc;
@@ -571,9 +555,6 @@ function sbookHUD_Prev(evt)
 
 /* Global query information */
 
-// This is the current query
-var sbook_query=false;
-
 function sbookSetQuery(query,scored)
 {
   if ((sbook_query) &&
@@ -598,6 +579,8 @@ function sbookSetQuery(query,scored)
       fdjtLog("Setting completions to %o",completions);
     fdjtSetCompletions("SBOOKSEARCHCOMPLETIONS",completions);
     var ncompletions=fdjtComplete($("SBOOKSEARCHTEXT")).length;}
+  fdjtReplace("SBOOKSEARCHECHOBAR",
+	      sbookCreateEchoBar(".echobar.hud",result._sources||[]));
   return result;
 }
 

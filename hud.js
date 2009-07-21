@@ -50,9 +50,11 @@ function createSBOOKHUD()
   var hud=$("SBOOKHUD");
   if (hud) return hud;
   else {
+    var echobar=sbookCreateEchoBar("#SBOOKECHOBAR.echobar.hud");
     hud=fdjtDiv
       ("#SBOOKHUD",
-       fdjtDiv("#SBOOKTOC.sbooktoc.hud"),
+       fdjtDiv("#SBOOKTOP.hud",_sbook_generate_spanbar(document.body)),
+       echobar,fdjtDiv("#SBOOKTOC.sbooktoc.hud"),
        fdjtDiv("#SBOOKRESULTS.sbookresults.hud"),
        fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"));
     hud.onclick=sbookHUD_onclick;
@@ -60,6 +62,10 @@ function createSBOOKHUD()
     hud.onmouseout=sbookHUD_onmouseout;
     sbookHUD=hud;
     fdjtPrepend(document.body,hud);
+    echobar.onclick=function(evt) {
+      fdjtReplace("SBOOKRESULTS",sbookAllEchoesResult());
+      sbookHUDMode("browsing");
+      sbookEchoBar_onclick(evt);};
     return hud;}
 }
 
@@ -120,6 +126,13 @@ function sbookPreview(elt,nomode)
   // sbook_trace_handler("sbookPreview",elt);
   var offset=sbookPreviewOffset();
   sbook_preview=true;
+  var topbar=$("SBOOKTOP");
+  var spanbar=$$(".spanbar",topbar)[0];
+  if (spanbar) {
+    var progress=$$(".progressbox",topbar)[0];
+    var width=spanbar.ends-spanbar.starts;
+    var ratio=(elt.sbookloc-spanbar.starts)/width;
+    progress.style.left=((Math.round(ratio*10000))/100)+"%";}
   if (elt) fdjtScrollPreview(elt,false,-offset);
   if (!(nomode)) fdjtAddClass(document.body,"preview");
 }
@@ -130,19 +143,11 @@ function sbookPreviewNoMode(elt)
 
 function sbookPreview_onmouseover(evt)
 {
-  var target=evt.target;
-  while (target)
-    if (target.sbookelt) break;
-    else target=target.parentNode;
-  if (!(target)) return;
-  var sbookelt=target.sbookelt;
-  sbookPreview(sbookelt,true);
   fdjtAddClass(document.body,"preview");
 }
 
 function sbookPreview_onmouseout(evt)
 {
-  sbookStopPreview();
   fdjtDropClass(document.body,"preview");
 }
 
@@ -227,16 +232,13 @@ function sbookTOC_onmouseout(evt)
   fdjtDelayHandler(250,sbookStopPreview,false,document.body,"previewing");
   var rtarget=evt.relatedTarget;
   if (!(rtarget)) return;
-  try {
-    // We'll get an error if we go out of the document,
-    // in which case we probably want to hide anyway
-    while (rtarget)
-      if (rtarget===sbookHUD) return;
-      else if (rtarget===document.body) break;
-      else if (rtarget===window) break;
-      else if (rtarget===document) break;
-      else rtarget=rtarget.parentNode;}
-  catch (e) {}
+  while (rtarget)
+    if (rtarget===sbookHUD) return;
+    else if (rtarget===document.body) break;
+    else if (rtarget===window) break;
+    else if (rtarget===document) break;
+    else try {rtarget=rtarget.parentNode;}
+      catch (e) {break;}
   sbook_hud_forced=false;
 }
 

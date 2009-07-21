@@ -38,8 +38,8 @@ function sbookShowSearch(result)
   if (!(result)) result=sbook_query;
   var results_div=fdjtDiv(".sbookresults.hud");
   results_div.onclick=_sbookResults_onclick;
-  // results_div.onmouseover=_sbookResults_onmouseover;
-  // results_div.onmouseout=_sbookResults_onmouseout;
+  results_div.onmouseover=_sbookResults_onmouseover;
+  results_div.onmouseout=_sbookResults_onmouseout;
   sbookShowSearchResults(result,results_div);
   fdjtReplace("SBOOKRESULTS",results_div);
 }
@@ -77,7 +77,7 @@ function sbookShowSearchResults(result,results_div)
 function sbookSearchResult(elt,result)
 {
   var key=elt.sortkey;
-  var refiners=result._refiners;
+  var refiners=((result) && (result._refiners));
   var elt_id=(elt.id||elt.fragid);
   if (!(elt)) return false;
   var anchor=fdjtAnchor("#"+elt_id);
@@ -85,9 +85,10 @@ function sbookSearchResult(elt,result)
     anchor.className="searchresult echo";
   else anchor.className="searchresult";
   anchor.sbookelt=$(elt_id);
+  if (elt.pingid) anchor.sbookecho=elt;
   var info=fdjtSpan("info");
   var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)");
-  if (result[elt_id]) { /* If you have a score, use it */
+  if ((result) && (result[elt_id])) { /* If you have a score, use it */
     var scorespan=fdjtSpan("score");
     var score=result[key]; var k=0;
     // fdjtTrace("Score for %s is %o",elt_id,result[elt_id]);
@@ -498,6 +499,7 @@ function createSBOOKHUDsearch()
   var input=fdjtInput("TEXT","QTEXT","",null);
   var completions=sbook_empty_cloud=
     fdjtDiv("completions",fdjtSpan("count","no query refinements"));
+  var echobar=sbookCreateEchoBar("#SBOOKSEARCHECHOBAR.echobar.hud");
   
   input.setAttribute("COMPLETEOPTS","nocase prefix showempty");
   input.completions_elt=completions;
@@ -520,7 +522,8 @@ function createSBOOKHUDsearch()
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=
     fdjtDiv(".sbooksearch.hud",
-	    fdjtDiv("query",completions,input));
+	    fdjtDiv("query",completions,input),
+	    echobar);
   sbooksearch.onmouseover=sbookHUD_onmouseover;
   sbooksearch.onmouseout=sbookHUD_onmouseout;
   return sbooksearch;

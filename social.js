@@ -59,6 +59,60 @@ var sbook_echo_eye_icon=
 
 /* Social UI components */
 
+var sbook_allechoes_result=false;
+
+function sbookAllEchoesResult()
+{
+  if (sbook_allechoes_result) return sbook_allechoes_result;
+  var results_div=fdjtDiv(".sbookresults.hud");
+  var i=0;
+  while (i<sbook_allechoes.length) {
+    var result=sbookSearchResult(sbook_allechoes[i++]);
+    fdjtAppend(results_div,result);}
+  sbook_allechoes_result=results_div;
+  results_div.onclick=_sbookResults_onclick;
+  results_div.onmouseover=_sbookResults_onmouseover;
+  results_div.onmouseout=_sbookResults_onmouseout;
+  return results_div;
+}
+
+function sbookSelectEchoes(results_div,sources,native)
+{
+  if (typeof native === "undefined")
+    native=((sources===false) || (sources.length===0));
+  var children=results_div.childNodes;
+  var i=0; while (i<children.length) {
+    var child=children[i++];
+    if (child.nodeType===1)
+      if (child.sbookecho)
+	if (sources===true)
+	  fdjtDropClass(child,"hidden");
+	else if (!(sources))
+	  fdjtAddClass(child,"hidden");
+	else {
+	  var echo=child.sbookecho;
+	  if (sources.indexOf(echo.user))
+	    fdjtDropClass(child,"hidden");
+	  else if (fdjtOverlaps(echo.tribes,sources))
+	    fdjtDropClass(child,"hidden");
+	  else fdjtAddClass(child,"hidden");}
+      else if (native) fdjtDropClass(child,"hidden");
+      else fdjtAddClass(child,"hidden");}
+}
+
+function sbookEchoBar_onclick(evt)
+{
+  var target=evt.target;
+  var echobar=$P(".echobar",target);
+  if (!(echobar)) return;
+  var sources=echobar.sbooksources||[];
+  if (sources.indexOf(target.user))
+    sources=sources.splice(sources.indexOf(target.user),1);
+  else sources.push(target.user);
+  echobar.sbooksources=sources;
+  sbookSelectEchoes($("SBOOKRESULTS"),sources);
+}
+
 function createSBOOKHUDsocial()
 {
   if (sbookHUDechoes) return sbookHUDechoes;
@@ -106,6 +160,42 @@ function createSBOOKHUDsocial()
   echoeshud.echoelts=echoelts;
   echoeshud.socialelts=socialelts;
   return new Array(sbookHUDechoes,sbookHUDsocial);
+}
+
+function sbookCreateEchoBar(classinfo,oids)
+{
+  if (!(oids)) oids=social_oids;
+  if (!(classinfo)) classinfo="echobar";
+  var ping_button=
+    fdjtImage("http://static.beingmeta.com/graphics/remarkballoon32x25.png",
+	      "button ping","add");
+  var everyone_button=
+    fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
+	      "button everyone","everyone");
+  var echobar=fdjtDiv(classinfo," ",everyone_button);
+  var socialelts=[]; var echoelts=[];
+  var i=0; while (i<oids.length) {
+    var oid=oids[i++];
+    var info=social_info[oid];
+    var img=fdjtImage(info.squarepic,"social",info.name);
+    img.oid=oid; img.name=info.name;
+    if (info.summary) img.title=info.summary;
+    else img.title=info.name;
+    socialelts.push(img);
+    fdjtAppend(echobar,img);}
+  everyone_button.onclick=function(evt) {
+    evt.target.blur();
+    sbookSetEchoFocus(false);
+    sbookSetHUD(true,"echoes");
+    evt.cancelBubble=true;};
+  echobar.onclick=sbookEchoBar_onclick;
+  ping_button.onclick=function(evt) {
+    evt.target.blur();
+    sbook_open_ping();
+    evt.cancelBubble=true; evt.preventDefault();};
+  // Don't include it for now
+  // fdjtAppend(echobar,ping_button);
+  return echobar;
 }
 
 function sbookSetEchoes(echoes)

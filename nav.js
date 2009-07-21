@@ -36,6 +36,8 @@ var sbooks_nav_version=parseInt("$Revision$".slice(10,-1));
 
 function _sbook_generate_spanbar(head,headinfo,child)
 {
+  if (!(headinfo)) headinfo=head.sbookinfo;
+  if (!(child)) child=false;
   var spanbar=fdjtDiv("spanbar");
   var spans=fdjtDiv("spans");
   var start=headinfo.starts_at;
@@ -156,7 +158,7 @@ function _sbook_add_head(toc,head,headinfo,spanp)
     new_elt.className='sbookhudsect';
     content_elt=new_elt;}
   else {
-    var spanbar=_sbook_generate_spanbar(parent,pinfo,head);
+    var spanbar=((parent) && (_sbook_generate_spanbar(parent,pinfo,head)));
     var anchor=fdjtAnchor("#"+headinfo.id);
     anchor.headelt=head;
     content_elt=fdjtDiv("sectname",anchor);
