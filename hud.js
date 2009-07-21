@@ -53,6 +53,7 @@ function createSBOOKHUD()
     hud=fdjtDiv
       ("#SBOOKHUD",
        fdjtDiv("#SBOOKTOC.sbooktoc.hud"),
+       fdjtDiv("#SBOOKRESULTS.sbookresults.hud"),
        fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"));
     hud.onclick=sbookHUD_onclick;
     hud.onmouseover=sbookHUD_onmouseover;
@@ -87,87 +88,24 @@ var sbookHUDMode_pat=/(searching)|(browsing)|(toc)/g;
 
 function sbookHUDMode(mode)
 {
-  if (mode)
-    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
-  else fdjtDropClass(sbookHUD,sbookHUDMode_pat);
+  if (mode) {
+    sbook_hudup=mode;
+    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
+  else {
+    sbook_hudup=false;
+    fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
 }
 function sbookHUDToggle(mode)
 {
-  if (fdjtHasClass(sbookHUD,mode))
-    fdjtDropClass(sbookHUD,sbookHUDMode_pat);
-  else if (mode)
-    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
-  else fdjtDropClass(sbookHUD,sbookHUDMode_pat);
-}
-
-function sbookSetHUD(display,fcn,forced)
-{
-  var body=document.body;
-  // Clear any saved state (even if shift is still down)
-  sbook_hudstate=false; sbook_hudfnstate=false;
-  // fdjtTrace("sbookSetHUD %s/%s/%o",display,fcn,forced);
-  if (display)
-    if (display===true)
-      fdjtSwapClass(body,sbookHUD_displaypat,"hudup");
-    else fdjtSwapClass(body,sbookHUD_displaypat,display);
-  else fdjtDropClass(body,sbookHUD_displaypat);
-  if (fcn) {
-    var oldfcn=sbookHUD.className;
-    if ((display) && (fcn!==oldfcn)) {
-      var hudelt=fdjtGetChildrenByClassName(fcn);
-      if ((hudelt) && (hudelt.length>0)) hudelt[0].focus();}
-    sbook_hudfcn=fcn;
-    sbookHUD.className=fcn;}
-  if (forced) sbook_hud_forced=true;
-  else sbook_hud_forced=false;
-  if (fdjtHasClass(body,"hudup")) sbook_hudup=true;
-  else sbook_hudup=false;
-  /*
-  fdjtTrace("sbookSetHUD %s/%s/%o: body=%s, hud=%s",
-	    display,fcn,forced,body.className,sbookHUD.className);
-  */
-}
-
-function sbookModeButton_onclick(evt,mode)
-{
-  var body=document.body;
-  // fdjtTrace("mode button click %o %o",evt,mode);
-  if (sbookHUD.className===mode)
-    if (sbook_hudup) sbookSetHUD(false);
-    else sbookSetHUD(true);
-  else sbookSetHUD(true,mode,true);
-  fdjtDropClass(body,"preview");
-  if (evt) {
-    evt.target.blur();
-    evt.preventDefault();
-    evt.cancelBubble=true;}
-  if (sbook_hudup) {
-    var head_elt=fdjtGetChildrenByClassName(sbookHUD,"sbook"+mode);
-    if ((head_elt) && (head_elt.length>0)) {
-      head_elt[0].focus();
-      if (head_elt[0].onfocus) head_elt[0].onfocus(false);}
-    return false;}
-}
-
-function sbookModeButton_onmouseover(evt,mode)
-{
-  if (evt.shiftKey) return;
-  if (!(sbook_hudup)) {
-    fdjtAddClass(document.body,"hudup");
-    sbook_hudstate=((sbook_hudup) ? "up" : "down");}
-  sbook_hudfnstate=sbookHUD.className;
-  sbookHUD.className=mode;
-}
-
-function sbookModeButton_onmouseout(evt)
-{
-  if (evt.shiftKey) return;
-  if ((sbook_hudstate) && (sbook_hudstate!=="up"))
-    fdjtDropClass(document.body,"hudup");
-  sbook_hudstate=false;
-  if (sbook_hudfnstate) {
-    sbookHUD.className=sbook_hudfnstate;
-    sbook_hudfnstate=false;}
+  if (fdjtHasClass(sbookHUD,mode)) {
+    sbook_hudup=false;
+    fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
+  else if (mode) {
+    sbook_hudup=mode;
+    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
+  else {
+    sbook_hudup=false;
+    fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
 }
 
 function sbookPreviewOffset()
@@ -247,16 +185,12 @@ function sbookHUD_onmouseout(evt)
 
 function sbookHUD_onclick(evt)
 {
-  // sbook_trace_handler("sbookHUD_onclick",evt);
   var target=evt.target;
   while (target)
     if ((target.tagName==="A") || (target.tagName==="INPUT") ||
 	(target.onclick) || (target.hasAttribute("onclick")))
       return;
     else target=target.parentNode;
-  if (sbook_hudup)
-    sbookSetHUD(false);
-  else sbookSetHUD(true,false,true);
 }
 
 function sbookGetStableId(elt)
@@ -302,10 +236,7 @@ function sbookTOC_onmouseout(evt)
       else if (rtarget===window) break;
       else if (rtarget===document) break;
       else rtarget=rtarget.parentNode;}
-  catch (e) {
-    sbook_hud_forced=false;
-    fdjtDelayHandler(300,sbookSetHUD,false,document,"hidehud");
-    return;}
+  catch (e) {}
   sbook_hud_forced=false;
 }
 
@@ -361,31 +292,45 @@ function sbookTOC_onclick(evt)
   return false;
 }
 
+/* Results handlers */
+
+function _sbookResults_onclick(evt)
+{
+  var target=evt.target;
+  while (target)
+    if (target.className==="searchresult") {
+      fdjtScrollDiscard();
+      sbookHUD.className=null;
+      if (target.searchresult) {
+	var elt=target.searchresult;
+	var head=elt.sbook_head;
+	if (head) sbookScrollTo(elt,head);
+	else sbookScrollTo(elt);
+	evt.preventDefault(); evt.cancelBubble=true;}
+      else {
+	evt.preventDefault(); 
+	evt.cancelBubble=true;}
+      return;}
+    else target=target.parentNode;
+}
+
+function _sbookResults_onmouseover(evt)
+{
+  var target=evt.target;
+  while (target)
+    if (target.sbookelt) break;
+    else target=target.parentNode;
+  if (!(target)) return;
+  var sbookelt=target.sbookelt;
+  sbookPreview(sbookelt,true);
+}
+
+function _sbookResults_onmouseout(evt)
+{
+  sbookStopPreview();
+}
+
 /* Other stuff */
-
-function sbookHUD_Next(evt)
-{
-  var curinfo=sbook_head.sbookinfo;
-  var goto=curinfo.next;
-  if (!(goto)) goto=curinfo.sbook_head.sbookinfo.next;
-  if (goto) {
-    sbookSetHead(goto);
-    sbookScrollTo(goto);}
-  if (evt) evt.cancelBubble=true;
-  sbookSetHUD(false);
-}
-
-function sbookHUD_Prev(evt)
-{
-  var curinfo=sbook_head.sbookinfo;
-  var goto=curinfo.prev;
-  if (!(goto)) goto=curinfo.sbook_head.sbookinfo.prev;
-  if (goto) {
-    sbookSetHead(goto);
-    sbookScrollTo(goto);}
-  if (evt) evt.cancelBubble=true;
-  sbookSetHUD(false);
-}
 
 /* This initializes the HUD state to the initial location with the
    document, using the hash value if there is one. */ 

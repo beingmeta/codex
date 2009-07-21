@@ -552,7 +552,7 @@ function sbookHUD_Next(evt)
     sbookSetHead(goto);
     sbookScrollTo(goto);}
   if (evt) evt.cancelBubble=true;
-  sbookSetHUD(false);
+  sbookHUDMode(false);
 }
 
 function sbookHUD_Prev(evt)
@@ -564,7 +564,7 @@ function sbookHUD_Prev(evt)
     sbookSetHead(goto);
     sbookScrollTo(goto);}
   if (evt) evt.cancelBubble=true;
-  sbookSetHUD(false);
+  sbookHUDMode(false);
 }
 
 
@@ -802,9 +802,11 @@ function sbook_onkeydown(evt)
   // sbook_trace_handler("sbook_onkeydown",evt);
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_hudup) {
-      sbookSetHUD(false);
+      sbookHUDMode(false);
+      fdjtDropClass(document.body,"hudup");
+      sbookStopPreview();
       $("SBOOKSEARCHTEXT").blur();}
-    else sbookSetHUD(true);
+    else fdjtAddClass(document.body,"hudup");
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput(evt.target)) return true;
@@ -829,17 +831,11 @@ function sbook_onkeydown(evt)
   else if (evt.keyCode===107) { /* + sign */
     sbook_open_ping();}
   else if (evt.keyCode===83) {  /* S or s */
-    if ((sbook_hudup) && (sbookHUD.className==="search")) {
-      sbookSetHUD(false); evt.preventDefault();
-      return;}
-    sbookSetHUD("hudup","search");
+    sbookHUDMode("searching");
     $("SBOOKSEARCHTEXT").focus();
     evt.preventDefault();}
   else if (evt.keyCode===84) { /* T or t */
-    if ((sbook_hudup) && (sbookHUD.className==="toc")) {
-      sbookSetHUD(false); evt.preventDefault();
-      return;}
-    sbookSetHUD("hudup","toc");
+    sbookHUDMode("toc");
     $("SBOOKSEARCHTEXT").blur();
     evt.preventDefault();}
   else return;
@@ -871,11 +867,7 @@ function sbook_onclick(evt)
 {
   // sbook_trace_handler("sbook_onclick",evt);
   if (sbook_overhud) return true;
-  if (evt.shiftKey) {
-    if (sbook_hudup)
-      sbookSetHUD(false);
-    else sbookSetHUD(true);}
-  else sbookSetHUD(false);
+  sbookHUDMode(false);
   var target=evt.target;
   while (target)
     if (target.sbook_head) break;

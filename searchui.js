@@ -36,12 +36,12 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 function sbookShowSearch(result)
 {
   if (!(result)) result=sbook_query;
-  var results_div=fdjtDiv("results");
-  results_div.onclick=_sbookSearchResults_onclick;
-  // results_div.onmouseover=_sbookSearchResults_onmouseover;
-  // results_div.onmouseout=_sbookSearchResults_onmouseout;
+  var results_div=fdjtDiv(".sbookresults.hud");
+  results_div.onclick=_sbookResults_onclick;
+  // results_div.onmouseover=_sbookResults_onmouseover;
+  // results_div.onmouseout=_sbookResults_onmouseout;
   sbookShowSearchResults(result,results_div);
-  fdjtReplace("SBOOKSEARCHRESULTS",results_div);
+  fdjtReplace("SBOOKRESULTS",results_div);
 }
 
 var sbook_eye_icon="http://static.beingmeta.com/graphics/EyeIcon25.png";
@@ -208,42 +208,6 @@ function sbookEchoSearchResult(entry,echo)
   entry.user=user; entry.pingid=echo.pingid;
 }
 
-function _sbookSearchResults_onclick(evt)
-{
-  var target=evt.target;
-  while (target)
-    if (target.className==="searchresult") {
-      fdjtScrollDiscard();
-      sbookHUD.className=null;
-      if (target.searchresult) {
-	var elt=target.searchresult;
-	var head=elt.sbook_head;
-	if (head) sbookScrollTo(elt,head);
-	else sbookScrollTo(elt);
-	evt.preventDefault(); evt.cancelBubble=true;}
-      else {
-	evt.preventDefault(); 
-	evt.cancelBubble=true;}
-      return;}
-    else target=target.parentNode;
-}
-
-function _sbookSearchResults_onmouseover(evt)
-{
-  var target=evt.target;
-  while (target)
-    if (target.sbookelt) break;
-    else target=target.parentNode;
-  if (!(target)) return;
-  var sbookelt=target.sbookelt;
-  sbookPreview(sbookelt,true);
-}
-
-function _sbookSearchResults_onmouseout(evt)
-{
-  sbookStopPreview();
-}
-
 var _sbookSearchKeyPress_delay=false;
 
 function sbookForceComplete(input_elt)
@@ -272,7 +236,7 @@ function sbookSearchInput_onkeypress(evt)
     sbookShowSearch(sbook_query);
     sbookHUDMode("browsing");
     $("SBOOKSEARCHTEXT").blur();
-    $("SBOOKSEARCHRESULTS").focus();
+    $("SBOOKRESULTS").focus();
     return false;}
   else if (ch===59) { /* That is, semicolon */
     sbookForceComplete(evt.target);
@@ -556,7 +520,6 @@ function createSBOOKHUDsearch()
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=
     fdjtDiv(".sbooksearch.hud",
-	    fdjtDiv("#SBOOKSEARCHRESULTS.results"),
 	    fdjtDiv("query",completions,input));
   sbooksearch.onmouseover=sbookHUD_onmouseover;
   sbooksearch.onmouseout=sbookHUD_onmouseout;

@@ -69,38 +69,23 @@
 .sbookhead { text-decoration: underline;}
 .sbookfocus:hover { text-decoration: underline;}
 body.sbookhead { text-decoration: none;}
-/* p.sbookfocus { opacity: 0.9;} */
 
 p.sbookclickfocus { text-decoration: underline;}
 
 /* Display/opacity rules */
 
 div#SBOOKHUD div.hud {
-  background-color: gray; opacity: 0.2; z-index: 100;
+  background-color: gray; opacity: 0.1; z-index: 100;
   overflow: hidden; text-align: center; 
   font-family: sans,sans-serif;
   display: none;}
-div#SBOOKHUD div.hud { opacity: 0.05; }
 div#SBOOKHUD div.hud:hover { opacity: 0.9;}
 body.hudup div#SBOOKHUD div.hud { opacity: 0.5;}
 body.hudup div#SBOOKHUD div.hud:hover { opacity: 0.9;}
 
-div#SBOOKHUD div.hud#SBOOKSEARCH {
-  position: fixed; 
-  bottom: 0px; left: 50px; right: 50px; z-index: 140;
-  margin: 0px; padding: 0px; min-height: 25px;
-  display: block; padding-bottom: 2px; padding-top: 2px;
-  -khtml-border-top-left-radius: 6px; 
-  -webkit-border-top-left-radius: 6px; 
-  -moz-border-radius-topleft: 6px; 
-  border-top-left-radius: 6px; 
-  -khtml-border-top-right-radius: 6px; 
-  -webkit-border-top-right-radius: 6px; 
-  -moz-border-radius-topright: 6px; 
-  border-top-right-radius: 6px;}
 div#SBOOKHUD div.hud#SBOOKTOC {
   position: fixed;
-  top: 0px; left: 50px; right: 50px; z-index: 140;
+  top: 0px; left: 75px; right: 75px; z-index: 140;
   max-height: 40px; min-height: 30px;
   margin: 0px; padding: 0px;
   border-left: solid black 2px; border-right: solid black 2px;
@@ -113,6 +98,34 @@ div#SBOOKHUD div.hud#SBOOKTOC {
   -webkit-border-bottom-right-radius: 6px; 
   -moz-border-radius-bottomright: 6px; 
   border-bottom-right-radius: 6px;}
+div#SBOOKHUD div.hud#SBOOKSEARCH {
+  position: fixed; 
+  bottom: 0px; left: 75px; right: 75px; z-index: 140;
+  margin: 0px; padding: 0px; min-height: 30px;
+  display: block; padding-bottom: 2px; padding-top: 2px;
+  -khtml-border-top-left-radius: 6px; 
+  -webkit-border-top-left-radius: 6px; 
+  -moz-border-radius-topleft: 6px; 
+  border-top-left-radius: 6px; 
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px;}
+/* For scrollable results */
+div#SBOOKHUD div#SBOOKRESULTS {
+  position: fixed; bottom: 34px;
+  left: 75px; right: 75px;
+  background-color: gray; opacity: 0.1; z-index: 250;
+  overflow: auto; max-height: 75%;
+  margin: 0px; padding: 6px; padding-top: 0px;
+  -khtml-border-top-left-radius: 6px; 
+  -webkit-border-top-left-radius: 6px; 
+  -moz-border-radius-topleft: 6px; 
+  border-top-left-radius: 6px; 
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px;}
 div#SBOOKHUD.toc div.hud#SBOOKTOC div.supersections {
   display: block;}
 div#SBOOKHUD.toc div.hud#SBOOKTOC div.subsections {
@@ -121,47 +134,26 @@ div#SBOOKHUD.toc div.hud#SBOOKTOC {
   max-height: inherit;}
 div#SBOOKHUD.searching div.hud#SBOOKSEARCH {
   max-height: inherit; opacity: 0.9;}
+div#SBOOKHUD.browsing div.hud#SBOOKSEARCH {
+  max-height: 30px; opacity: 0.9;
+  -khtml-border-top-left-radius: 0px; 
+  -webkit-border-top-left-radius: 0px; 
+  -moz-border-radius-topleft: 0px; 
+  border-top-left-radius: 0px; 
+  -khtml-border-top-right-radius: 0px; 
+  -webkit-border-top-right-radius: 0px; 
+  -moz-border-radius-topright: 0px; 
+  border-top-right-radius: 0px;}
+
 /* div#SBOOKHUD a { color: lightblue;} */
 div#SBOOKHUD img.button { opacity: 0.5; z-index: 200;}
-/* For scrollable results */
-div#SBOOKHUD div.results {
-  position: fixed; bottom: 25px;
-  left: 50px; right: 50px;
-  background-color: gray; opacity: 0.05; z-index: 250;
-  overflow: auto; max-height: 75%;
-  margin: 0px; padding: 6px; padding-top: 0px;
-  display: none;}
-div#SBOOKHUD div.echoes {
-  position: fixed; bottom: 0px; margin-top: 50px;
-  background-color: gray; opacity: 0.05; z-index: 250;
-  left: 10%;; right: 10%; width: 80%;
-  overflow: auto; margin: 0px; padding: 6px;
-  padding-bottom: 50px;
-  -khtml-border-top-left-radius: 6px; 
-  -webkit-border-top-left-radius: 6px; 
-  -moz-border-radius-topleft: 6px; 
-  border-top-left-radius: 6px; 
-  -khtml-border-top-right-radius: 6px; 
-  -webkit-border-top-right-radius: 6px; 
-  -moz-border-radius-topright: 6px; 
-  border-top-right-radius: 6px; 
-  display: none;}
-
-body.hudechoes div.echoes { }
-body.hudechoes.preview div#SBOOKHUD 
-  div.echoes { display: block; opacity: 0.10;}
-body.hudresults.preview div#SBOOKHUD
-  div.results { display: block; opacity: 0.10;}
-body.hudresults.preview div#SBOOKHUD
-  div.hud { display: block; opacity: 0.10;}
-
 
 div#SBOOKHUD div#SBOOKSEARCH.sbooksearch {
   text-align: left;}
 div.sbooksearch div.query input[TYPE='TEXT'] {
   width: 100%; clear: both;}
 
-body.preview div#SBOOKHUD div#SBOOKSEARCH div.results { opacity: 0.1; }
+body.preview div#SBOOKHUD div#SBOOKRESULTS { opacity: 0.1; }
 
 div#SBOOKHUD #SBOOKTOC {display: none;}
 div#SBOOKHUD .sbooksearch {display: none;}
@@ -205,7 +197,7 @@ div.socialbar img.everyone {
   position: absolute; left: 0px;}
 div.socialbar img.ping {position: absolute; right: 0px;}
 
-div#SBOOKHUD div.socialbar { opacity: 0.05; z-index: 150;}
+div#SBOOKHUD div.socialbar { opacity: 0.1; z-index: 150;}
 div#SBOOKHUD div.socialbar.filled { opacity: 0.50; z-index: 150;}
 div#SBOOKHUD div.socialbar:hover { opacity: 0.85; }
 body div#SBOOKHUD.search div.socialbar:hover { opacity: 0.85;}
@@ -316,8 +308,8 @@ div.sbooktoc div.spanbar div.rangebox {
 
 /* Search rules */
 
-div#SBOOKHUD.browsing div.sbooksearch div.results {
- display: block; opacity: 1.00;}
+div#SBOOKHUD.browsing div#SBOOKRESULTS {
+ display: block; opacity: 0.9;}
 div#SBOOKHUD.browsing
   div.sbooksearch .completions { display: none;}
 div#SBOOKHUD.browsing
@@ -357,10 +349,6 @@ div.sbooksearch .completions span.counts {
   border-radius: 3px;}
 div.sbooksearch div.cues {}
 div.sbooksearch div.query {}
-div.sbooksearch div.results {min-height: 2ex;}
-
-body[mode~="results"] div.sbooksearch div.controls div.messages { 
-  display: none;}
 
 div.sbooksearch span.completion.sectname {
   font-weight: bold; font-style: italic; 
@@ -398,33 +386,33 @@ div.sbooksearch .completions .completion .variation {
 div.sbooksearch .completions .completion .dterm { 
   font-size: 95%;}
 
-div.sbooksearch div.results {
+div.sbookresults {
   border-top: solid orange 3px;}
-div.sbooksearch div.results div.count {
+div.sbookresults div.count {
   text-align: right; color: orange; font-weight: bold;
   padding-top: 3px; }
-div.sbooksearch div.results a.searchresult { 
+div.sbookresults a.searchresult { 
   display: block; white-space: normal; clear: both;
   text-decoration: none;  font-size: 75%;
   margin-top: 4px; margin-bottom: 4px;
   margin-left: 50px; margin-right: 50px; 
   border-bottom: dotted orange 1px; padding-bottom: 3px;
   color: black; text-align: left;}
-div.sbooksearch div.results a.searchresult .info { 
+div.sbookresults a.searchresult .info { 
   float: right;}
-div.sbooksearch div.results a.searchresult div.info { 
+div.sbookresults a.searchresult div.info { 
   float: right; width: 40px;}
-div.sbooksearch div.results a.searchresult .info img.eye { 
+div.sbookresults a.searchresult .info img.eye { 
   font-weight: bold; color: blue; border: none;}
-div.sbooksearch div.results a.searchresult .info span.score {
+div.sbookresults a.searchresult .info span.score {
   color: gold; display: none;}
-div.sbooksearch div.results a.searchresult span.dterm {
+div.sbookresults a.searchresult span.dterm {
     font-size: 75%;}
-div.sbooksearch div.results a.searchresult span.head {
+div.sbookresults a.searchresult span.head {
     font-size: 75%;}
-div.sbooksearch div.results a.searchresult span.headhead {
+div.sbookresults a.searchresult span.headhead {
     color: blue; font-weight: bold;}
-div.sbooksearch div.results a.searchresult span.controller {
+div.sbookresults a.searchresult span.controller {
     font-weight: bold; color: white;}
 a.searchresult span.msg { font-weight: bold; font-size: 110%;}
 a.searchresult img.userpic { float: left; margin-right: 3px;}
