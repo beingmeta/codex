@@ -37,9 +37,9 @@ function sbookShowSearch(result)
 {
   if (!(result)) result=sbook_query;
   var results_div=fdjtDiv(".sbookresults.hud");
-  results_div.onclick=_sbookResults_onclick;
-  results_div.onmouseover=_sbookResults_onmouseover;
-  results_div.onmouseout=_sbookResults_onmouseout;
+  results_div.onclick=sbookResults_onclick;
+  results_div.onmouseover=sbookResults_onmouseover;
+  results_div.onmouseout=sbookResults_onmouseout;
   sbookShowSearchResults(result,results_div);
   fdjtReplace("SBOOKRESULTS",results_div);
 }
@@ -72,6 +72,7 @@ function sbookShowSearchResults(result,results_div)
     else if (i===1)
       fdjtAppend(results_div,anchor);
     else fdjtAppend(results_div,"\n",anchor);}
+  results_div.sbookresult=result;
 }
 
 function sbookSearchResult(elt,result)
@@ -79,6 +80,7 @@ function sbookSearchResult(elt,result)
   var key=elt.sortkey;
   var refiners=((result) && (result._refiners));
   var elt_id=(elt.id||elt.fragid);
+  var target=$(elt_id);
   if (!(elt)) return false;
   var anchor=fdjtAnchor("#"+elt_id);
   if (elt.pingid)
@@ -98,7 +100,7 @@ function sbookSearchResult(elt,result)
   eye.onmouseout=sbookPreview_onmouseout;
   fdjtAppend(info,eye);
   fdjtAppend(anchor,info);
-  anchor.searchresult=elt;
+  anchor.searchresult=target;
   var tags=elt.tags;
   if (refiners)
     tags.sort(function(t1,t2) {
@@ -125,6 +127,9 @@ function sbookSearchResult(elt,result)
 		       "age",fdjtTickDate(elt.tstamp)))
 	: (fdjtAnchorC("http://webechoes.net/echo/"+elt.pingid,
 		       "age",fdjtIntervalString(interval)," ago"))));
+    if (agespan) {
+      agespan.target="webechoes";
+      agespan.title="browse this echo";}
     fdjtAppend(anchor,usrimg,
 	       ((elt.detail)&&(_sbookDetailsButton())),((elt.detail)&&" "),
 	       agespan,((elt.tstamp)&&" "),
@@ -499,7 +504,6 @@ function createSBOOKHUDsearch()
   var input=fdjtInput("TEXT","QTEXT","",null);
   var completions=sbook_empty_cloud=
     fdjtDiv("completions",fdjtSpan("count","no query refinements"));
-  var echobar=sbookCreateEchoBar("#SBOOKSEARCHECHOBAR.echobar.hud");
   
   input.setAttribute("COMPLETEOPTS","nocase prefix showempty");
   input.completions_elt=completions;
@@ -522,8 +526,7 @@ function createSBOOKHUDsearch()
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=
     fdjtDiv(".sbooksearch.hud",
-	    fdjtDiv("query",completions,input),
-	    echobar);
+	    fdjtDiv("query",completions,input));
   sbooksearch.onmouseover=sbookHUD_onmouseover;
   sbooksearch.onmouseout=sbookHUD_onmouseout;
   return sbooksearch;

@@ -51,21 +51,20 @@ function createSBOOKHUD()
   if (hud) return hud;
   else {
     var echobar=sbookCreateEchoBar("#SBOOKECHOBAR.echobar.hud");
+    var echoes=sbookAllEchoesDiv();
     hud=fdjtDiv
       ("#SBOOKHUD",
        fdjtDiv("#SBOOKTOP.hud",_sbook_generate_spanbar(document.body)),
-       echobar,fdjtDiv("#SBOOKTOC.sbooktoc.hud"),
+       fdjtDiv("#SBOOKTOC.sbooktoc.hud"),
        fdjtDiv("#SBOOKRESULTS.sbookresults.hud"),
-       fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"));
+       fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
+       echobar,echoes);
     hud.onclick=sbookHUD_onclick;
     hud.onmouseover=sbookHUD_onmouseover;
     hud.onmouseout=sbookHUD_onmouseout;
     sbookHUD=hud;
     fdjtPrepend(document.body,hud);
-    echobar.onclick=function(evt) {
-      fdjtReplace("SBOOKRESULTS",sbookAllEchoesResult());
-      sbookHUDMode("browsing");
-      sbookEchoBar_onclick(evt);};
+    echobar.onclick=sbookEchoBar_onclick;
     return hud;}
 }
 
@@ -90,10 +89,11 @@ function sbookMode(id,graphic,mode,title)
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudechoes)/g;
 
-var sbookHUDMode_pat=/(searching)|(browsing)|(toc)/g;
+var sbookHUDMode_pat=/(searching)|(browsing)|(toc)|(echoes)/g;
 
 function sbookHUDMode(mode)
 {
+  // fdjtTrace("setting hud mode to %o from %o",mode,sbook_hudup);
   if (mode) {
     sbook_hudup=mode;
     fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
@@ -277,18 +277,17 @@ function sbookTOC_onclick(evt)
 {
   // sbook_trace_handler("sbookTOC_onclick",evt);
   var target=sbook_get_headelt(evt.target);
-  fdjtTrace("sbookTOC_onclick evt=%o target=%o he=%o",
-	    evt,target,((target)&&(target.headelt)));
-  if (target===null) {
+  var headelt=((target)&&(target.headelt));
+  if (headelt===null) {
     sbookHUDToggle("toc");
     return;}
   fdjtScrollDiscard();
-  if (target===null) return;
+  if (headelt===null) return;
   evt.preventDefault();
   evt.cancelBubble=true;
-  sbookSetHead(target.headelt);
-  var info=sbook_getinfo(target.headelt);
-  sbookScrollTo(target.headelt);
+  sbookSetHead(headelt);
+  var info=sbook_getinfo(headelt);
+  sbookScrollTo(headelt);
   if (!((info.sub) && ((info.sub.length)>2)))
     sbookHUDMode(false);
   return false;
@@ -296,13 +295,12 @@ function sbookTOC_onclick(evt)
 
 /* Results handlers */
 
-function _sbookResults_onclick(evt)
+function sbookResults_onclick(evt)
 {
   var target=evt.target;
   while (target)
-    if (target.className==="searchresult") {
+    if (fdjtHasClass(target,"searchresult")) {
       fdjtScrollDiscard();
-      sbookHUD.className=null;
       if (target.searchresult) {
 	var elt=target.searchresult;
 	var head=elt.sbook_head;
@@ -312,11 +310,12 @@ function _sbookResults_onclick(evt)
       else {
 	evt.preventDefault(); 
 	evt.cancelBubble=true;}
+      sbookHUDMode(false);
       return;}
     else target=target.parentNode;
 }
 
-function _sbookResults_onmouseover(evt)
+function sbookResults_onmouseover(evt)
 {
   var target=evt.target;
   while (target)
@@ -327,7 +326,7 @@ function _sbookResults_onmouseover(evt)
   sbookPreview(sbookelt,true);
 }
 
-function _sbookResults_onmouseout(evt)
+function sbookResults_onmouseout(evt)
 {
   sbookStopPreview();
 }

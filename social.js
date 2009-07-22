@@ -59,20 +59,18 @@ var sbook_echo_eye_icon=
 
 /* Social UI components */
 
-var sbook_allechoes_result=false;
 
-function sbookAllEchoesResult()
+function sbookAllEchoesDiv()
 {
-  if (sbook_allechoes_result) return sbook_allechoes_result;
-  var results_div=fdjtDiv(".sbookresults.hud");
+  var results_div=fdjtDiv("#SBOOKECHOES.sbookresults.hud");
   var i=0;
   while (i<sbook_allechoes.length) {
     var result=sbookSearchResult(sbook_allechoes[i++]);
     fdjtAppend(results_div,result);}
   sbook_allechoes_result=results_div;
-  results_div.onclick=_sbookResults_onclick;
-  results_div.onmouseover=_sbookResults_onmouseover;
-  results_div.onmouseout=_sbookResults_onmouseout;
+  results_div.onclick=sbookResults_onclick;
+  results_div.onmouseover=sbookResults_onmouseover;
+  results_div.onmouseout=sbookResults_onmouseout;
   return results_div;
 }
 
@@ -91,7 +89,7 @@ function sbookSelectEchoes(results_div,sources,native)
 	  fdjtAddClass(child,"hidden");
 	else {
 	  var echo=child.sbookecho;
-	  if (sources.indexOf(echo.user))
+	  if (sources.indexOf(echo.user)>=0)
 	    fdjtDropClass(child,"hidden");
 	  else if (fdjtOverlaps(echo.tribes,sources))
 	    fdjtDropClass(child,"hidden");
@@ -104,13 +102,40 @@ function sbookEchoBar_onclick(evt)
 {
   var target=evt.target;
   var echobar=$P(".echobar",target);
-  if (!(echobar)) return;
-  var sources=echobar.sbooksources||[];
-  if (sources.indexOf(target.user))
-    sources=sources.splice(sources.indexOf(target.user),1);
-  else sources.push(target.user);
+  var sources=((echobar) && (echobar.sbooksources))||[];
+  if (!(echobar)) return; /* Warning? */
+  if (sources.indexOf(target.oid)>=0) {
+    sources.splice(sources.indexOf(target.oid),1);
+    fdjtDropClass(target,"selected");}
+  else {
+    fdjtAddClass(target,"selected");
+    sources.push(target.oid);}
   echobar.sbooksources=sources;
-  sbookSelectEchoes($("SBOOKRESULTS"),sources);
+  if (!(sbook_hudup)) {
+    sbookSelectEchoes($("SBOOKECHOES"),sources);
+    sbookHUDMode("echoes");}
+  else if (sbook_hudup==="echoes")
+    sbookSelectEchoes($("SBOOKECHOES"),sources);
+  else if (sbook_hudup==="browsing") 
+    sbookSelectEchoes($("SBOOKRESULTS"),sources);
+  else if (sbook_hudup==="searching") {
+    sbookShowSearch(sbook_query);
+    sbookSelectEchoes($("SBOOKRESULTS"),sources);
+    sbookHUDMode("browsing");}
+  else sbookSelectEchoes($("SBOOKRESULTS"),sources);
+  evt.preventDefault(); evt.cancelBubble=true;
+}
+
+function sbookSetSources(echobar,sources)
+{
+  var children=echobar.childNodes;
+  var i=0; while (i<children.length) {
+    var child=children[i++];
+    if (child.nodeType===1) {
+      if ((sources.indexOf(child.oid)>=0) ||
+	  (fdjtOverlaps(sources,child.oid)))
+	fdjtAddClass(child,"sourced");
+      else fdjtDropClass(child,"sourced");}}
 }
 
 function createSBOOKHUDsocial()
@@ -185,8 +210,7 @@ function sbookCreateEchoBar(classinfo,oids)
     fdjtAppend(echobar,img);}
   everyone_button.onclick=function(evt) {
     evt.target.blur();
-    sbookSetEchoFocus(false);
-    sbookSetHUD(true,"echoes");
+    sbookHUDMode("echoes");
     evt.cancelBubble=true;};
   echobar.onclick=sbookEchoBar_onclick;
   ping_button.onclick=function(evt) {

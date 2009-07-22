@@ -159,11 +159,11 @@ function _sbook_add_head(toc,head,headinfo,spanp)
     content_elt=new_elt;}
   else {
     var spanbar=((parent) && (_sbook_generate_spanbar(parent,pinfo,head)));
-    var anchor=fdjtAnchor("#"+headinfo.id);
-    anchor.headelt=head;
-    content_elt=fdjtDiv("sectname",anchor);
+    content_elt=fdjtSpan("sectname");
+    var anchor=fdjtAnchor("#"+headinfo.id,content_elt);
+    content_elt.headelt=head;
     new_elt=fdjtDiv('sbookhudsect');
-    fdjtAppend(new_elt,spanbar,content_elt);}
+    fdjtAppend(new_elt,spanbar,anchor);}
   new_elt.id=sectid;
   if (head===document.body) {
     if (document.title)

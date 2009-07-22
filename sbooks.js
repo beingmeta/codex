@@ -579,8 +579,7 @@ function sbookSetQuery(query,scored)
       fdjtLog("Setting completions to %o",completions);
     fdjtSetCompletions("SBOOKSEARCHCOMPLETIONS",completions);
     var ncompletions=fdjtComplete($("SBOOKSEARCHTEXT")).length;}
-  fdjtReplace("SBOOKSEARCHECHOBAR",
-	      sbookCreateEchoBar(".echobar.hud",result._sources||[]));
+  sbookSetSources($("SBOOKECHOBAR"),result._sources||[]);
   return result;
 }
 
