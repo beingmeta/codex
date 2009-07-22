@@ -111,14 +111,14 @@ function sbookEchoBar_onclick(evt)
     fdjtAddClass(target,"selected");
     sources.push(target.oid);}
   echobar.sbooksources=sources;
-  if (!(sbook_hudup)) {
+  if (!(sbook_mode)) {
     sbookSelectEchoes($("SBOOKECHOES"),sources);
     sbookHUDMode("echoes");}
-  else if (sbook_hudup==="echoes")
+  else if (sbook_mode==="echoes")
     sbookSelectEchoes($("SBOOKECHOES"),sources);
-  else if (sbook_hudup==="browsing") 
+  else if (sbook_mode==="browsing") 
     sbookSelectEchoes($("SBOOKRESULTS"),sources);
-  else if (sbook_hudup==="searching") {
+  else if (sbook_mode==="searching") {
     sbookShowSearch(sbook_query);
     sbookSelectEchoes($("SBOOKRESULTS"),sources);
     sbookHUDMode("browsing");}

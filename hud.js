@@ -34,13 +34,6 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 // This is the HUD top element
 var sbookHUD=false;
-// The selected HUD function
-var sbook_hudfcn=false;
-// Whether the HUD state was forced
-var sbookHUD_forced=false;
-
-// The keycode for bringing the HUD up and down
-var sbook_hudkey=27;
 
 // Where graphics can be found
 var sbook_graphics_root="http://static.beingmeta.com/graphics/";
@@ -85,6 +78,31 @@ function sbookMode(id,graphic,mode,title)
   return img;
 }
 
+/* Determines how far below the top edge to naturally scroll.
+   This ties to avoid the HUD, in case it is up. */
+function sbookDisplayOffset()
+{
+  var toc=$("SBOOKTOC");
+  if (toc) return -(toc.offsetHeight||60);
+  else return -60;
+}
+
+function sbookScrollTo(elt,cxt)
+{
+  fdjtClearPreview();
+  if (elt.sbookloc) sbookSetLocation(elt.sbookloc);
+  sbookSetFocus(elt);
+  if ((elt.getAttribute) &&
+      (elt.getAttribute("toclevel")) ||
+      ((elt.sbookinfo) && (elt.sbookinfo.level)))
+    sbookSetHead(elt);
+  else if (elt.sbook_head)
+    sbookSetHead(elt.sbook_head);
+  if ((!cxt) || (elt===cxt))
+    fdjtScrollTo(elt,sbookGetStableId(elt),false,true,sbookDisplayOffset());
+  else fdjtScrollTo(elt,sbookGetStableId(elt),cxt,true,sbookDisplayOffset());
+}
+
 /* Mode controls */
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudechoes)/g;
@@ -93,38 +111,31 @@ var sbookHUDMode_pat=/(searching)|(browsing)|(toc)|(echoes)/g;
 
 function sbookHUDMode(mode)
 {
-  // fdjtTrace("setting hud mode to %o from %o",mode,sbook_hudup);
+  fdjtTrace("setting hud mode to %o from %o",mode,sbook_mode);
   if (mode) {
-    sbook_hudup=mode;
+    sbook_mode=mode;
     fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
   else {
-    sbook_hudup=false;
+    sbook_mode=false;
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
 }
 function sbookHUDToggle(mode)
 {
   if (fdjtHasClass(sbookHUD,mode)) {
-    sbook_hudup=false;
+    sbook_mode=false;
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
   else if (mode) {
-    sbook_hudup=mode;
+    sbook_mode=mode;
     fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
   else {
-    sbook_hudup=false;
+    sbook_mode=false;
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
-}
-
-function sbookPreviewOffset()
-{
-  var toc=$("SBOOKTOC");
-  if (toc) return toc.offsetHeight||60;
-  else return 60;
 }
 
 function sbookPreview(elt,nomode)
 {
   // sbook_trace_handler("sbookPreview",elt);
-  var offset=sbookPreviewOffset();
+  var offset=sbookDisplayOffset();
   sbook_preview=true;
   var topbar=$("SBOOKTOP");
   var spanbar=$$(".spanbar",topbar)[0];
@@ -133,7 +144,7 @@ function sbookPreview(elt,nomode)
     var width=spanbar.ends-spanbar.starts;
     var ratio=(elt.sbookloc-spanbar.starts)/width;
     progress.style.left=((Math.round(ratio*10000))/100)+"%";}
-  if (elt) fdjtScrollPreview(elt,false,-offset);
+  if (elt) fdjtScrollPreview(elt,false,offset);
   if (!(nomode)) fdjtAddClass(document.body,"preview");
 }
 function sbookPreviewNoMode(elt)

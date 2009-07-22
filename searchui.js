@@ -237,7 +237,7 @@ function sbookSearchInput_onkeypress(evt)
 {
   var ch=evt.charCode; var kc=evt.keyCode;
   var target=evt.target;
-  if (kc===13) {
+  if ((kc===13)||(ch===13)) {
     sbookForceComplete(target);
     sbookShowSearch(sbook_query);
     sbookHUDMode("browsing");
@@ -254,6 +254,20 @@ function sbookSearchInput_onkeypress(evt)
       setTimeout(function(){sbookUpdateQuery(target);},500);
     return fdjtComplete_onkey(evt);}
   else return fdjtComplete_onkey(evt);
+}
+
+function sbookSearchInput_onkeyup(evt)
+{
+  var target=evt.target;
+  var kc=evt.keyCode;
+  if (kc===13) {
+    sbookForceComplete(target);
+    sbookShowSearch(sbook_query);
+    sbookHUDMode("browsing");
+    $("SBOOKSEARCHTEXT").blur();
+    $("SBOOKRESULTS").focus();
+    evt.preventDefault(); evt.cancelBubble=true;
+    return false;}
 }
 
 function sbookSearchInput_onfocus(evt)
@@ -510,6 +524,7 @@ function createSBOOKHUDsearch()
   completions.input_elt=input;
   input.onkeydown=fdjtComplete_onkey;
   input.onkeypress=sbookSearchInput_onkeypress;
+  input.onkeyup=sbookSearchInput_onkeyup;
   input.onfocus=sbookSearchInput_onfocus;
   input.onblur=sbookSearchInput_onblur;
   input.getCompletionText=_sbook_get_current_entry;

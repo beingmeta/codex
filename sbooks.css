@@ -63,7 +63,8 @@
 /* Highlight rules */
 
 .sbookhead { text-decoration: underline;}
-.sbookfocus:hover { text-decoration: underline;}
+p { border-right: solid transparent 2px; padding-right: 4px;}
+p.sbookfocus:hover { border-right: solid blue 2px;}
 body.sbookhead { text-decoration: none;}
 
 p.sbookclickfocus { text-decoration: underline;}

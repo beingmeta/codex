@@ -53,7 +53,7 @@ var sbook_query=false;
 var sbook_sources=true;
 
 // Whether the HUD is up
-var sbook_hudup=false;
+var sbook_mode=false;
 // Whether preview mode is engaged
 var sbook_preview=false; 
 // Whether the mouse is over a HUD region
@@ -145,7 +145,7 @@ function sbook_trace_handler(handler,evt)
 {
   fdjtLog
     ("%s %o: hudup=%o, preview=%o, overhud=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
-     handler,evt,sbook_hudup,sbook_preview,sbook_overhud,
+     handler,evt,sbook_mode,sbook_preview,sbook_overhud,
      sbook_hudstate,sbook_head,sbook_focus);
 }
 
@@ -153,7 +153,7 @@ function sbook_trace_focus(handler,evt)
 {
   /*
   fdjtLog("%s %o: hudup=%o, preview=%o, overhud=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
-	  handler,evt,sbook_hudup,sbook_preview,sbook_overhud,
+	  handler,evt,sbook_mode,sbook_preview,sbook_overhud,
 	  sbook_hudstate,sbook_head,sbook_focus);
   */
 }
@@ -551,8 +551,6 @@ function sbookHUD_Prev(evt)
   sbookHUDMode(false);
 }
 
-
-
 /* Global query information */
 
 function sbookSetQuery(query,scored)
@@ -622,10 +620,11 @@ function sbookSetHead(head)
     var navhud=createSBOOKHUDnav(head,info);
     fdjtReplace("SBOOKTOC",navhud);
     window.title=info.title+" ("+document.title+")";
-    // This may cause it to scroll, so we don't do it here.
-    // window.location="#"+newid;
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
+    if (!(sbook_mode)) {
+      navhud.style.opacity=0.9;
+      setTimeout(function() {navhud.style.opacity=null;},2500);}
     sbook_head=head;}
   if (sbookHUDechoes)
     sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));
@@ -652,24 +651,6 @@ function sbookSetLocation(location)
       if (progressbox.length>0)
 	progressbox[0].style.left=((Math.round(ratio*10000))/100)+"%";}}
   sbook_location=location;
-}
-
-/* Tracking the current section */
-
-function sbookScrollTo(elt,cxt)
-{
-  fdjtClearPreview();
-  if (elt.sbookloc) sbookSetLocation(elt.sbookloc);
-  sbookSetFocus(elt);
-  if ((elt.getAttribute) &&
-      (elt.getAttribute("toclevel")) ||
-      ((elt.sbookinfo) && (elt.sbookinfo.level)))
-    sbookSetHead(elt);
-  else if (elt.sbook_head)
-    sbookSetHead(elt.sbook_head);
-  if ((!cxt) || (elt===cxt))
-    fdjtScrollTo(elt,sbookGetStableId(elt),false,40);
-  else fdjtScrollTo(elt,sbookGetStableId(elt),cxt);
 }
 
 /* Tracking position within the document. */
@@ -783,18 +764,21 @@ function sbook_onkeydown(evt)
 {
   // sbook_trace_handler("sbook_onkeydown",evt);
   if (evt.keyCode===27) { /* Escape works anywhere */
-    if (sbook_hudup) {
+    if (sbook_mode) {
       sbookHUDMode(false);
       fdjtDropClass(document.body,"hudup");
       sbookStopPreview();
       $("SBOOKSEARCHTEXT").blur();}
-    else fdjtAddClass(document.body,"hudup");
+    else {
+      fdjtAddClass(document.body,"hudup");
+      sbook_mode=true;}
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput(evt.target)) return true;
   else if (evt.keyCode===16) {
-    sbook_hudstate=((sbook_hudup) ? "up" : "down"); 
-    if (sbook_hudup) fdjtDropClass(document.body,"hudup");
+    if (sbook_mode) {
+      fdjtDropClass(document.body,"hudup");
+      fdjtDropClass(sbookHUD,sbook_mode);}
     else fdjtAddClass(document.body,"hudup");}
   else if (evt.keyCode===32) /* Space char */
     sbookNextPage(evt);
@@ -828,12 +812,12 @@ function sbook_onkeyup(evt)
   // sbook_trace_handler("sbook_onkeyup",evt);
   if (fdjtIsTextInput(evt.target)) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
-  else if ((evt.keyCode===16) && (sbook_hudstate)) {
-    if (sbook_hudstate==="up")
-      fdjtAddClass(document.body,"hudup");
+  else if (evt.keyCode===16) {
+    if (sbook_mode) 
+      if (sbook_mode===true)
+	fdjtAddClass(document.body,"hudup");
+      else fdjtAddClass(sbookHUD,sbook_mode);
     else fdjtDropClass(document.body,"hudup");
-    sbook_hudstate=false;}
-  else {
     evt.cancelBubble=true; evt.preventDefault();}
 }
 
