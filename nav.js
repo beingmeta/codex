@@ -72,10 +72,7 @@ function _sbook_generate_spanbar(head,headinfo,child)
     percent=percent+(Math.round(10000*((spanend-spanstart)/len))/100);
     span.setAttribute("endpercent",percent);
     */
-    if (subsection===child) {
-      span.style.color='orange';
-      span.style.backgroundColor='orange';
-      span.style.borderColor='orange';}
+    if (subsection===child) fdjtAddClass(span,"current");
     fdjtAppend(spans,span);
     last_info=spaninfo;}
   if ((end-last_info.ends_at)>20) {
@@ -92,6 +89,7 @@ function _sbook_generate_span(sectnum,subsection,title,spanstart,spanend,len)
   var width=(Math.floor(10000*(spanlen/len))/100)+"%";
   var odd=((sectnum%2)==1);
   if (odd) span.setAttribute("odd",sectnum);
+  else span.setAttribute("even",sectnum);
   span.style.width=width;
   span.title=title+" ("+spanstart+"+"+(spanend-spanstart)+")";
   span.headelt=subsection;
@@ -126,7 +124,12 @@ function _sbook_generate_subsections_div(subsections,start,end)
     var width=100*(spanlen/len)+"%";
     namespan.fdjt_cohi=span;
     span.fdjt_cohi=namespan;
-    if (odd) span.setAttribute("odd",i-1);
+    if (odd) {
+      span.setAttribute("odd",i-1);
+      namespan.setAttribute("odd",i-1);}
+    else {
+      span.setAttribute("even",i-1);
+      namespan.setAttribute("even",i-1);}
     span.style.width=width;
     span.title=info.title+
       " ("+info.starts_at+"+"+(info.ends_at-info.starts_at)+")";

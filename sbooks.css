@@ -261,14 +261,16 @@ div#SBOOKHUD div#SOCIALHUD {
 div.sbooktoc div.supersections { display: none;}
 div.sbooktoc div.subsections { display: none;}
 
+div.sbooktoc .sectname { color: yellow;}
+div.sbooktoc #SBOOKHEAD0 .sectname { color: white;}
 div.sbooktoc a { 
   text-decoration: none; color: blue;}
 div.sbooktoc div.sbookhudsect {
   width: 100%; text-align: center; clear: both; }
 div.sbooktoc div.sbookhudsect div.sectname {
-  clear: both; } /* display: block;  */
+  clear: both;} /* display: block;  */
 div.sbooktoc div.supersection div.sectname {
-  clear: both; } /* display: block; */
+  clear: both;} /* display: block; */
 div.sbooktoc a:visited { color: blue; }
 div.sbooktoc div.subsections a {color: blue;}
 
@@ -282,9 +284,13 @@ div.sbooktoc div.subsections div.sectlist {
   clear: both;}
 div.sbooktoc div.subsections a {
     /* white-space: nowrap;  */
-    display: inline; width: inherit; font-size: 50%;
+    display: inline; width: inherit;
     clear: none;}
-div.sbooktoc div.subsections a.cohighlight {
+div.sbooktoc div.subsections a.sbookhudsect.cohighlight {
+    color: yellow;}
+div.sbooktoc div.subsections a.sbookhudsect[odd] {
+    color: silver;}
+div.sbooktoc div.subsections a.sbookhudsect.cohighlight[odd] {
     color: yellow;}
 
 div.spanbar {
@@ -304,6 +310,11 @@ div.spanbar div.sbookhudspan {
 div.spanbar div.sbookhudspan[odd] {
   background-color: silver;
   border-top: solid silver 2px; border-bottom: solid silver 2px;}
+div.spanbar div.sbookhudspan[even] {
+  background-color: blue;
+  border-top: solid blue 2px; border-bottom: solid blue 2px;}
+div.spanbar div.sbookhudspan.current {
+    color: yellow; background-color: yellow; border-color: yellow;}
 div.spanbar div.sbookhudspan:hover { 
   border-top: dotted red 2px; border-bottom: dotted red 2px; }
 div.spanbar div.sbookhudspan[odd]:hover {
