@@ -132,11 +132,8 @@ function sbookHUDToggle(mode)
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
 }
 
-function sbookPreview(elt,nomode)
+function sbookPreviewLocation(elt)
 {
-  // sbook_trace_handler("sbookPreview",elt);
-  var offset=sbookDisplayOffset();
-  sbook_preview=true;
   var topbar=$("SBOOKTOP");
   var spanbar=$$(".spanbar",topbar)[0];
   if (spanbar) {
@@ -144,6 +141,15 @@ function sbookPreview(elt,nomode)
     var width=spanbar.ends-spanbar.starts;
     var ratio=(elt.sbookloc-spanbar.starts)/width;
     progress.style.left=((Math.round(ratio*10000))/100)+"%";}
+}
+
+function sbookPreview(elt,nomode)
+{
+  // sbook_trace_handler("sbookPreview",elt);
+  if (elt===false) return sbookStopPreview();
+  var offset=sbookDisplayOffset();
+  sbook_preview=true;
+  sbookPreviewLocation(elt);
   if (elt) fdjtScrollPreview(elt,false,offset);
   if (!(nomode)) fdjtAddClass(document.body,"preview");
 }
@@ -154,12 +160,41 @@ function sbookPreviewNoMode(elt)
 
 function sbookPreview_onmouseover(evt)
 {
-  fdjtAddClass(document.body,"preview");
+  var target=evt.target; var ref;
+  while (target)
+    if (target.sbook_ref) break;
+    else if (target.getAttribute("PREVIEW")) break;
+    else target=target.parentNode;
+  if (!(target)) return;
+  else if (typeof target.sbook_ref === "string")
+    ref=$(target.sbook_ref);
+  else if (target.sbook_ref)
+    ref=target.sbook_ref;
+  else ref=$(target.getAttribute("PREVIEW"));
+  if (!(ref)) return;
+  fdjtDelayHandler(300,sbookPreview,ref,document.body,"preview");
 }
 
 function sbookPreview_onmouseout(evt)
 {
-  fdjtDropClass(document.body,"preview");
+  fdjtDelayHandler(300,sbookPreview,false,document.body,"preview");
+}
+
+function sbookPreview_onclick(evt)
+{
+  var target=evt.target; var ref;
+  while (target)
+    if (target.sbook_ref) break;
+    else if (target.getAttribute("PREVIEW")) break;
+    else target=target.parentNode;
+  if (!(target)) return;
+  else if (typeof target.sbook_ref === "string")
+    ref=$(target.sbook_ref);
+  else if (target.sbook_ref)
+    ref=target.sbook_ref;
+  else ref=$(target.getAttribute("PREVIEW"));
+  if (!(ref)) return;
+  sbookScrollTo(ref);
 }
 
 function sbookSetPreview(flag)
@@ -229,7 +264,7 @@ function sbookTOC_onmouseover(evt)
   sbookHUD_onmouseover(evt);
   fdjtCoHi_onmouseover(evt);
   if (target===null) return;
-  var head=target.headelt;
+  var head=target.sbook_ref;
   if (head)
     fdjtDelayHandler(250,sbookPreviewNoMode,head,
 		     document.body,"previewing");
@@ -272,12 +307,12 @@ function sbookTOCHighlight(secthead)
   var spanelts=fdjtGetChildrenByClassName(sbookHUD,"sbookhudspan");
   var i=0; while (i<sections.length) {
     var sect=sections[i++];
-    if (sect.headelt===secthead) {
+    if (sectsbook_ref===secthead) {
       sect.style.color='orange';
       highlights.push(sect);}}
   i=0; while (i<spanelts.length) {
     var sect=spanelts[i++];
-    if (sect.headelt===secthead) {
+    if (sectsbook_ref===secthead) {
       sect.style.backgroundColor='orange';
       highlights.push(sect);}}
   sbookTOCHighlighted=secthead;
@@ -288,7 +323,7 @@ function sbookTOC_onclick(evt)
 {
   // sbook_trace_handler("sbookTOC_onclick",evt);
   var target=sbook_get_headelt(evt.target);
-  var headelt=((target)&&(target.headelt));
+  var headelt=((target)&&(target.sbook_ref));
   if (headelt===null) {
     sbookHUDToggle("toc");
     return;}
@@ -310,7 +345,7 @@ function sbookResults_onclick(evt)
 {
   var target=evt.target;
   while (target)
-    if (fdjtHasClass(target,"searchresult")) {
+    if (fdjtHasClass(target,"result")) {
       fdjtScrollDiscard();
       if (target.searchresult) {
 	var elt=target.searchresult;
@@ -330,16 +365,10 @@ function sbookResults_onmouseover(evt)
 {
   var target=evt.target;
   while (target)
-    if (target.sbookelt) break;
+    if (target.sbook_ref) break;
     else target=target.parentNode;
   if (!(target)) return;
-  var sbookelt=target.sbookelt;
-  sbookPreview(sbookelt,true);
-}
-
-function sbookResults_onmouseout(evt)
-{
-  sbookStopPreview();
+  sbookPreviewLocation(target.sbook_ref);
 }
 
 /* Other stuff */

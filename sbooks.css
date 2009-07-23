@@ -352,6 +352,10 @@ div.spanbar div.rangebox {
   position: absolute; z-index: 200; 
   margin: 0px; padding: 0px; border: 0px;}
 
+div.tocblock {}
+div.tocblock div.tochead { text-align: left; vertical-align: middle;}
+div.tocblock div.tochead img { vertical-align: middle;}
+
 /* Search rules */
 
 div#SBOOKHUD.browsing
@@ -447,37 +451,41 @@ div.sbookresults {
 div.sbookresults div.count {
   text-align: right; color: orange; font-weight: bold;
   padding-top: 3px; }
-div.sbookresults a.searchresult { 
-  display: block; white-space: normal; clear: both;
+div.sbookresults .result { 
+  white-space: normal; clear: both;
   text-decoration: none;  font-size: 75%;
   margin-top: 4px; margin-bottom: 4px;
   margin-left: 50px; margin-right: 50px; 
   border-bottom: dotted orange 1px; padding-bottom: 3px;
   color: black; text-align: left;}
-div.sbookresults a.searchresult.hidden { display: none;}
-div.sbookresults a.searchresult .info { 
+div.sbookresults a.result { display: block;}
+div.sbookresults .result.hidden { display: none;}
+div.sbookresults .result .info { 
   float: right;}
-div.sbookresults a.searchresult div.info { 
+div.sbookresults .result div.info { 
   float: right; width: 40px;}
-div.sbookresults a.searchresult .info img.eye { 
+div.sbookresults .result img.eye { 
+  float: right; cursor: pointer;
   font-weight: bold; color: blue; border: none;}
-div.sbookresults a.searchresult .info span.score {
+div.sbookresults .result .info span.score {
   color: gold; display: none;}
-div.sbookresults a.searchresult span.dterm {
+div.sbookresults .result span.dterm {
     font-size: 75%;}
-div.sbookresults a.searchresult span.head {
+div.sbookresults .result span.head {
     font-size: 75%;}
-div.sbookresults a.searchresult span.headhead {
+div.sbookresults .result span.headhead {
     color: blue; font-weight: bold;}
-div.sbookresults a.searchresult span.controller {
+div.sbookresults .result span.controller {
     font-weight: bold; color: white;}
-a.searchresult span.msg { font-weight: bold; font-size: 110%;}
-a.searchresult img.userpic { float: left; margin-right: 3px;}
-a.searchresult .age { float: right; color: orange;}
-a.searchresult img.detailsbutton { 
+.result span.msg { font-weight: bold; font-size: 110%;}
+.result img.userpic { float: left; margin-right: 3px;}
+.result a.age { 
+  float: right; color: orange; margin-left: 6px;
+  text-decoration: none;}
+.result img.detailsbutton { 
   float: right; border: none;
   margin-right: 3px; margin-left: 3px;}
-div.sbookresults a.searchresult a.agespan {
+div.sbookresults .result a.agespan {
     text-decoration: none;}
 
 span.excerpt { font-size: 120%; color: white;}
@@ -510,6 +518,9 @@ iframe.podspot {
 .previewing { color: red; }
 p.previewing { color: red; }
 div.previewing { color: red; }
+.moretags { cursor: pointer;}
+.completions .counts { cursor: pointer;}
+
 
 div.sectionname { clear: both;}
 

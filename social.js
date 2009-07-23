@@ -63,14 +63,10 @@ var sbook_echo_eye_icon=
 function sbookAllEchoesDiv()
 {
   var results_div=fdjtDiv("#SBOOKECHOES.sbookresults.hud");
-  var i=0;
-  while (i<sbook_allechoes.length) {
-    var result=sbookSearchResult(sbook_allechoes[i++]);
-    fdjtAppend(results_div,result);}
+  sbookShowResults(sbook_allechoes,results_div,false);
   sbook_allechoes_result=results_div;
   results_div.onclick=sbookResults_onclick;
   results_div.onmouseover=sbookResults_onmouseover;
-  results_div.onmouseout=sbookResults_onmouseout;
   return results_div;
 }
 
@@ -78,24 +74,23 @@ function sbookSelectEchoes(results_div,sources,native)
 {
   if (typeof native === "undefined")
     native=((sources===false) || (sources.length===0));
-  var children=results_div.childNodes;
+  var children=$$(".result",results_div);
   var i=0; while (i<children.length) {
     var child=children[i++];
-    if (child.nodeType===1)
-      if (child.sbookecho)
-	if (sources===true)
+    if (child.sbookecho)
+      if (sources===true)
+	fdjtDropClass(child,"hidden");
+      else if (!(sources))
+	fdjtAddClass(child,"hidden");
+      else {
+	var echo=child.sbookecho;
+	if (sources.indexOf(echo.user)>=0)
 	  fdjtDropClass(child,"hidden");
-	else if (!(sources))
-	  fdjtAddClass(child,"hidden");
-	else {
-	  var echo=child.sbookecho;
-	  if (sources.indexOf(echo.user)>=0)
-	    fdjtDropClass(child,"hidden");
-	  else if (fdjtOverlaps(echo.tribes,sources))
-	    fdjtDropClass(child,"hidden");
-	  else fdjtAddClass(child,"hidden");}
-      else if (native) fdjtDropClass(child,"hidden");
-      else fdjtAddClass(child,"hidden");}
+	else if (fdjtOverlaps(echo.tribes,sources))
+	  fdjtDropClass(child,"hidden");
+	else fdjtAddClass(child,"hidden");}
+    else if (native) fdjtDropClass(child,"hidden");
+    else fdjtAddClass(child,"hidden");}
 }
 
 function sbookEchoBar_onclick(evt)

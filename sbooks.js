@@ -206,10 +206,19 @@ function sbook_needinfo(elt)
   else return elt.sbookinfo;
 }
 
+function sbook_toc_head(target)
+{
+  while (target)
+    if (target.sbookinfo) return target;
+    else if (target.sbook_head) return target.sbook_head;
+    else target=target.parentNode;
+  return target;
+}
+
 function sbook_get_headelt(target)
 {
   while (target)
-    if (target.headelt) break;
+    if (target.sbook_ref) break;
     else target=target.parentNode;
   return target;
 }
@@ -595,7 +604,7 @@ function sbook_title_path(head)
   var info=sbook_getinfo(head);
   if (info.title) {
     var title=info.title;
-    var scan=sbook_getinfo(info.elt.headelt);
+    var scan=sbook_getinfo(info.eltsbook_ref);
     while (scan) {
       if (scan.title) title=title+" // "+scan.title;
       scan=sbook_getinfo(scan.elt.headlet);}

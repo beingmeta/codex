@@ -92,7 +92,7 @@ function _sbook_generate_span(sectnum,subsection,title,spanstart,spanend,len)
   else span.setAttribute("even",sectnum);
   span.style.width=width;
   span.title=title+" ("+spanstart+"+"+(spanend-spanstart)+")";
-  span.headelt=subsection;
+  spansbook_ref=subsection;
   return span;
 }
 
@@ -133,7 +133,7 @@ function _sbook_generate_subsections_div(subsections,start,end)
     span.style.width=width;
     span.title=info.title+
       " ("+info.starts_at+"+"+(info.ends_at-info.starts_at)+")";
-    span.headelt=subsection;
+    spansbook_ref=subsection;
     if (at_first) at_first=false;
     else fdjtInsertBefore(namespan," \u00B7 ");
     // span.onclick=sbook_spanelt_onclick;
@@ -157,14 +157,14 @@ function _sbook_add_head(toc,head,headinfo,spanp)
   var new_elt, content_elt;
   if (spanp) {
     new_elt=fdjtAnchor("#"+headinfo.id);
-    new_elt.headelt=head;
+    new_eltsbook_ref=head;
     new_elt.className='sbookhudsect';
     content_elt=new_elt;}
   else {
     var spanbar=((parent) && (_sbook_generate_spanbar(parent,pinfo,head)));
     content_elt=fdjtSpan("sectname");
     var anchor=fdjtAnchor("#"+headinfo.id,content_elt);
-    content_elt.headelt=head;
+    content_eltsbook_ref=head;
     new_elt=fdjtDiv('sbookhudsect');
     fdjtAppend(new_elt,spanbar,anchor);}
   new_elt.id=sectid;
@@ -260,6 +260,35 @@ function createSBOOKHUDnav_new(head,info)
     range1.style.width=((Math.round(size*10000))/100)+"%";}
   */
   return new_toc;
+}
+
+/* Generates a descriptive entry about a head for some context */
+function sbookTOCHead(head,eltspec)
+{
+  if (head.sbookinfo) {
+    var info=head.sbookinfo;
+    var heads=((info) ? (info.sbook_heads) : []);
+    var headspan=((eltspec) ? (fdjtNewElt(eltspec,info.title)) :
+		  (fdjtDiv("tochead",info.title)));
+    var curspan=headspan;
+    fdjtTrace("sbookTOCHead head=%o info=%o heads=%o",head,info,heads);
+    j=heads.length-1; while (j>=0) {
+      var h=heads[j--]; var hinfo=h.sbookinfo;
+      var newspan=fdjtSpan("head",hinfo.title);
+      fdjtAppend(curspan," \\ ",newspan);
+      curspan=newspan;}
+    return headspan;}
+  else {
+    var headtext="";
+    if (head.title) headtext=head.title;
+    else if (head.id) headtext=head.id;
+    else {
+      var text=fdjtTextify(result,true);
+      if (text.length>50) headtext=text.slice(50);
+      else headtext=text;}
+    if (eltspect)
+      return fdjtElt(eltspec,headtext);
+    else return headtext;}
 }
 
 /* Emacs local variables
