@@ -604,7 +604,7 @@ function sbook_title_path(head)
   var info=sbook_getinfo(head);
   if (info.title) {
     var title=info.title;
-    var scan=sbook_getinfo(info.eltsbook_ref);
+    var scan=sbook_getinfo(info.elt.sbook_ref);
     while (scan) {
       if (scan.title) title=title+" // "+scan.title;
       scan=sbook_getinfo(scan.elt.headlet);}

@@ -92,7 +92,7 @@ function _sbook_generate_span(sectnum,subsection,title,spanstart,spanend,len)
   else span.setAttribute("even",sectnum);
   span.style.width=width;
   span.title=title+" ("+spanstart+"+"+(spanend-spanstart)+")";
-  spansbook_ref=subsection;
+  span.sbook_ref=subsection;
   return span;
 }
 
@@ -133,7 +133,7 @@ function _sbook_generate_subsections_div(subsections,start,end)
     span.style.width=width;
     span.title=info.title+
       " ("+info.starts_at+"+"+(info.ends_at-info.starts_at)+")";
-    spansbook_ref=subsection;
+    span.sbook_ref=subsection;
     if (at_first) at_first=false;
     else fdjtInsertBefore(namespan," \u00B7 ");
     // span.onclick=sbook_spanelt_onclick;
@@ -157,14 +157,14 @@ function _sbook_add_head(toc,head,headinfo,spanp)
   var new_elt, content_elt;
   if (spanp) {
     new_elt=fdjtAnchor("#"+headinfo.id);
-    new_eltsbook_ref=head;
+    new_elt.sbook_ref=head;
     new_elt.className='sbookhudsect';
     content_elt=new_elt;}
   else {
     var spanbar=((parent) && (_sbook_generate_spanbar(parent,pinfo,head)));
     content_elt=fdjtSpan("sectname");
     var anchor=fdjtAnchor("#"+headinfo.id,content_elt);
-    content_eltsbook_ref=head;
+    content_elt.sbook_ref=head;
     new_elt=fdjtDiv('sbookhudsect');
     fdjtAppend(new_elt,spanbar,anchor);}
   new_elt.id=sectid;

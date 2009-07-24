@@ -62,35 +62,59 @@ var sbook_echo_eye_icon=
 
 function sbookAllEchoesDiv()
 {
-  var results_div=fdjtDiv("#SBOOKECHOES.sbookresults.hud");
-  sbookShowResults(sbook_allechoes,results_div,false);
-  sbook_allechoes_result=results_div;
-  results_div.onclick=sbookResults_onclick;
-  results_div.onmouseover=sbookResults_onmouseover;
+  var results_div=fdjtDiv("#SBOOKECHOES.sbooksummaries.hud");
+  sbookShowSummaries(sbook_allechoes,results_div,false);
+  sbookEchoesHUD=results_div;
+  results_div.onclick=sbookSummary_onclick;
+  results_div.onmouseover=sbookSummary_onmouseover;
   return results_div;
 }
 
-function sbookSelectEchoes(results_div,sources,native)
+function sbookTestEcho(echo,sources,idroot)
+{
+  return
+    (((sources===true) ||
+      ((sources.indexOf) && (sources.indexOf(echo.user)>=0)) ||
+      ((sources.indexOf) && (echo.tribes) &&
+       (fdjtOverlaps(echo.tribes,sources)))) &&
+     ((!(idroot)) ||
+      ((echo.fragid) && (echo.fragid.search(idroot)===0))));
+}
+
+function sbookSelectEchoes(results_div,sources,native,idroot)
 {
   if (typeof native === "undefined")
     native=((sources===false) || (sources.length===0));
-  var children=$$(".result",results_div);
-  var i=0; while (i<children.length) {
-    var child=children[i++];
-    if (child.sbookecho)
-      if (sources===true)
-	fdjtDropClass(child,"hidden");
-      else if (!(sources))
-	fdjtAddClass(child,"hidden");
-      else {
-	var echo=child.sbookecho;
-	if (sources.indexOf(echo.user)>=0)
-	  fdjtDropClass(child,"hidden");
-	else if (fdjtOverlaps(echo.tribes,sources))
-	  fdjtDropClass(child,"hidden");
-	else fdjtAddClass(child,"hidden");}
-    else if (native) fdjtDropClass(child,"hidden");
-    else fdjtAddClass(child,"hidden");}
+  var blocks=$$(".tocblock",results_div);
+  var i=0; while (i<blocks.length) {
+    var block=blocks[i++];
+    var summaries=$$(".summary",block);
+    var j=0; while (j<summaries.length) {
+      var summary=summaries[j++]; var empty=true;
+      var echo=summary.sbookecho;
+      if (echo)
+	if (((sources===true) ||
+	     ((sources.indexOf) && (sources.indexOf(echo.user)>=0)) ||
+	     ((sources.indexOf) && (echo.tribes) &&
+	      (fdjtOverlaps(echo.tribes,sources)))) &&
+	    ((!(idroot)) ||
+	     ((echo.fragid) && (echo.fragid.search(idroot)===0)))) {
+	  fdjtDropClass(summary,"hidden"); empty=false;}
+	else fdjtAddClass(summary,"hidden");
+      else if (native) {
+	fdjtDropClass(summary,"hidden"); empty=false;}
+      else fdjtAddClass(summary,"hidden");
+      if (empty) fdjtAddClass(block,"hidden");
+      else fdjtDropClass(block,"hidden");}}
+}
+
+function sbookGetSourcesUnder(idroot)
+{
+  var users=[];
+  var i=0; while (i<sbook_allechoes.length) {
+    var echo=sbook_allechoes[i++];
+    users.push(echo.user);}
+  return users;
 }
 
 function sbookEchoBar_onclick(evt)
@@ -99,12 +123,14 @@ function sbookEchoBar_onclick(evt)
   var echobar=$P(".echobar",target);
   var sources=((echobar) && (echobar.sbooksources))||[];
   if (!(echobar)) return; /* Warning? */
-  if (sources.indexOf(target.oid)>=0) {
-    sources.splice(sources.indexOf(target.oid),1);
-    fdjtDropClass(target,"selected");}
-  else {
-    fdjtAddClass(target,"selected");
-    sources.push(target.oid);}
+  if (evt.shiftKey) 
+    if (sources.indexOf(target.oid)>=0) {
+      sources.splice(sources.indexOf(target.oid),1);
+      fdjtDropClass(target,"selected");}
+    else {
+      fdjtAddClass(target,"selected");
+      sources.push(target.oid);}
+  else sources=new Array(target.oid);
   echobar.sbooksources=sources;
   if (!(sbook_mode)) {
     sbookSelectEchoes($("SBOOKECHOES"),sources);
@@ -112,12 +138,12 @@ function sbookEchoBar_onclick(evt)
   else if (sbook_mode==="echoes")
     sbookSelectEchoes($("SBOOKECHOES"),sources);
   else if (sbook_mode==="browsing") 
-    sbookSelectEchoes($("SBOOKRESULTS"),sources);
+    sbookSelectEchoes($("SBOOKSUMMARIES"),sources);
   else if (sbook_mode==="searching") {
     sbookShowSearch(sbook_query);
-    sbookSelectEchoes($("SBOOKRESULTS"),sources);
+    sbookSelectEchoes($("SBOOKSUMMARIES"),sources);
     sbookHUDMode("browsing");}
-  else sbookSelectEchoes($("SBOOKRESULTS"),sources);
+  else sbookSelectEchoes($("SBOOKSUMMARIES"),sources);
   evt.preventDefault(); evt.cancelBubble=true;
 }
 
@@ -131,55 +157,6 @@ function sbookSetSources(echobar,sources)
 	  (fdjtOverlaps(sources,child.oid)))
 	fdjtAddClass(child,"sourced");
       else fdjtDropClass(child,"sourced");}}
-}
-
-function createSBOOKHUDsocial()
-{
-  if (sbookHUDechoes) return sbookHUDechoes;
-  var ping_button=
-    fdjtImage("http://static.beingmeta.com/graphics/remarkballoon32x25.png",
-	      "button ping","add");
-  var everyone_button=
-    fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
-	      "button everyone","everyone");
-  var socialbar=
-    fdjtDiv("#SBOOKSOCIAL.socialbar"," ",everyone_button,ping_button);
-  var echoeshud=fdjtDiv("#SBOOKECHOES.echoes"," ");
-  var socialelts=[]; var echoelts=[];
-  var i=0; while (i<sbook_allechoes.length) {
-    var echo=sbook_allechoes[i++];
-    var echo_elt=sbookEchoToEntry(echo);
-    echoelts.push(echo_elt);
-    fdjtAppend(echoeshud,echo_elt,"\n");}
-  i=0; while (i<social_oids.length) {
-    var oid=social_oids[i++];
-    var info=social_info[oid];
-    var img=fdjtImage(info.squarepic,"social",info.name);
-    img.oid=oid; img.name=info.name;
-    if (info.summary) img.title=info.summary;
-    else img.title=info.name;
-    socialelts.push(img);
-    fdjtAppend(socialbar,img);}
-  everyone_button.onclick=function(evt) {
-    evt.target.blur();
-    sbookSetEchoFocus(false);
-    sbookSetHUD(true,"echoes");
-    evt.cancelBubble=true;};
-  socialbar.onclick=function(evt) {
-    evt.target.blur();
-    if (evt.target.oid) {
-      sbookSetEchoFocus(evt.target.oid);
-      sbookSetHUD(true,"echoes");
-      evt.cancelBubble=true;}};
-  ping_button.onclick=function(evt) {
-    evt.target.blur();
-    sbook_open_ping();
-    evt.cancelBubble=true; evt.preventDefault();};
-  sbookHUDsocial=socialbar;
-  sbookHUDechoes=echoeshud;
-  echoeshud.echoelts=echoelts;
-  echoeshud.socialelts=socialelts;
-  return new Array(sbookHUDechoes,sbookHUDsocial);
 }
 
 function sbookCreateEchoBar(classinfo,oids)
@@ -204,7 +181,11 @@ function sbookCreateEchoBar(classinfo,oids)
     socialelts.push(img);
     fdjtAppend(echobar,img);}
   everyone_button.onclick=function(evt) {
-    evt.target.blur();
+    if (sbook_mode==="echoes") {
+      sbookHUDMode(false); return;}
+    var sources=true;
+    echobar.sbooksources=sources;
+    sbookSelectEchoes($("SBOOKECHOES"),sources);
     sbookHUDMode("echoes");
     evt.cancelBubble=true;};
   echobar.onclick=sbookEchoBar_onclick;
@@ -466,82 +447,35 @@ function gather_tags(elt,results)
 
 function add_podspot(target,open)
 {
-  if (target.podspot) {
-    if (open) {
-      target.podspot.openIFrame();
-      target.podspot.iframe.style.display='block';
-      fdjtScrollTo(target.podspot.iframe,target.id,target);
-      return target.podspot;}
-    else return target.podspot;}
-  else {
-    var iframe_elt=null;
-    var id=target.id;
-    var anchor=document.createElement("a");
-    var img=document.createElement('img');
-    var title=target.getAttribute('title');
-    var tribes=target.getAttribute('tribes');
-    var tags=gather_tags(target);
-    target.podspot=anchor;
-    if (!(title)) {
-      var head_info=
-	sbook_getinfo(target)||
-	sbook_getinfo(sbook_get_headelt(target));
-      if ((head_info) && (head_info.title))
-	title=sbook_get_titlepath(head_info);}
-    if (!(tribes)) tribes=[];
-    if (!(tags)) tags=[];
-    if (typeof tribes === "string") tribes=tribes.split(';');
-    else if ((tribes) && (tribes instanceof Array)) {}
-    else tribes=[];
-    if (typeof tags === "string") tags=tags.split(';');
-    else if ((tags) && (tags instanceof Array)) {}
-    else tags=[];
-    var base=target.getAttribute('podspot_base');
-    if (base==null) base=window.podspot_base;
-    var psize=target.getAttribute('podspot_size');
-    if (psize==null) psize=window.podspot_size;
-    var base_uri="http://webechoes.net/sbooks/podspot.fdcgi?PODSPOT=yes";
-    /* var base_uri="http://webechoes.net/app/ping?POPUP=yes"; */
-    var href=base_uri+
-      ((id) ? "&FRAG="+id : "")+
-      ((sbook_base) ? ("&URI="+encodeURIComponent(sbook_base)) : "")+
-      ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
-    var i=0; while (i<tribes.length) href=href+"&TRIBES="+tribes[i++];
-    i=0; while (i<tags.length) href=href+"&TAGCUE="+tags[i++];
-    if (base==null) base="sBooksWE";
-    if (psize==null) psize="32";
-    anchor.href=href; anchor.className="podspoticon"; 
-    anchor.openIFrame=function() {
-      if (anchor.iframe) return anchor.iframe;
-      var iframe=document.createElement('iframe');
-      if (window.getSelection())
-	href=href+"&EXCERPT="+encodeURIComponent(window.getSelection());
-      iframe_elt=document.createElement('div');
-      iframe.className="podspot";
-      iframe.src=href+"&IFRAME=yes&DIALOG=yes";
-      iframe.height="no";
-      iframe_elt.appendChild(iframe);
-      fdjtAppend(target,iframe_elt);
-      // target.appendChild(iframe_elt);
-      anchor.iframe=iframe;
-      return iframe;}
-    anchor.onclick=function(evt) {
-      if (iframe_elt)
-	if (iframe_elt.style.display=='none')
-	  iframe_elt.style.display='block';
-	else iframe_elt.style.display='none';
-      else anchor.openIFrame();
-      if (iframe_elt.style.display!='none') {
-	fdjtScrollTo(target.podspot.iframe,id,target);}
-      anchor.blur();
-      return false;};
-    img.src="http://webechoes.net/podspots/"+base+"_"+psize+"x"+psize+".png"
-      +((id) ? ("?FRAG="+id) : "");
-    img.alt='podspot'; img.border=0; 
-    anchor.appendChild(img);
-    fdjtPrepend(target,anchor);
-    if (open) anchor.iframe=anchor.openIFrame();
-    return anchor;}
+  if (target.podspot) return target.pospot;
+  var id=target.id;
+  var title=target.getAttribute('title');
+  var tribes=target.getAttribute('tribes')||[];
+  var tags=gather_tags(target);
+  var href="http://webechoes.net/qricon.fdcgi?"+
+    "URI="+encodeURIComponent(sbook_base)+
+    ((id)?("&FRAG="+id):"")+
+    ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
+  var i=0; while (i<tribes.length) href=href+"&TRIBES="+tribes[i++];
+  i=0; while (i<tags.length) href=href+"&TAGCUE="+tags[i++];
+  var sources=sbookGetSourcesUnder(id);
+  var imgsrc="http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png";
+  if ((sources.length===1) &&
+      (social_info[sources[0]].squarepic))
+    imgsrc=social_info[sources[0]].squarepic||imgsrc;
+  var podspot=fdjtSpan
+    ("podspot",fdjtImage(href,"qricon"),fdjtImage(imgsrc,"podimg","podspot"));
+  podspot.onclick=function(evt){
+    if (sbook_mode==="echoes") {
+      sbookHUDMode(false); return;}
+    if (evt.shiftKey)
+      sbookSelectEchoes(sbookEchoesHUD,$("SBOOKECHOBAR").sbooksources,false,id);
+    else sbookSelectEchoes(sbookEchoesHUD,true,false,id);
+    sbookHUDMode("echoes");
+    evt.preventDefault(); evt.cancelBubble=true;};
+  target.podspot=podspot;
+  fdjtPrepend(target,podspot);
+  return podspot;
 }
 
 function sbook_get_titlepath(info,embedded)
@@ -602,7 +536,7 @@ function sbook_podspot_uri(uri,hash,title,tribes,tags)
   if ((hash) && (hashpos>=0))
     uri=uri.slice(0,hashpos)+'#'+hash;
   else if (hash) uri=uri+'#'+hash;
-  var href=sbook_webechoes_root+"sbooks/podspot.fdcgi?"+
+  var href=sbook_webechoes_root+"qricon.fdcgi?"+
     "IFRAME=yes&PODSPOT=yes&DIALOG=yes";
   if (uri) href=href+"&URI="+encodeURIComponent(uri);
   if (title) href=href+"&TITLE="+encodeURIComponent(title);

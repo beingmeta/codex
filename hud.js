@@ -34,6 +34,10 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 // This is the HUD top element
 var sbookHUD=false;
+// This is the HUD where all echoes are displayed
+var sbookEchoesHUD=false;
+// This is the HUD for tag searching
+var sbookSearchHUD=false;
 
 // Where graphics can be found
 var sbook_graphics_root="http://static.beingmeta.com/graphics/";
@@ -49,7 +53,7 @@ function createSBOOKHUD()
       ("#SBOOKHUD",
        fdjtDiv("#SBOOKTOP.hud",_sbook_generate_spanbar(document.body)),
        fdjtDiv("#SBOOKTOC.sbooktoc.hud"),
-       fdjtDiv("#SBOOKRESULTS.sbookresults.hud"),
+       fdjtDiv("#SBOOKSUMMARIES.sbookresults.hud"),
        fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
        echobar,echoes);
     hud.onclick=sbookHUD_onclick;
@@ -337,38 +341,6 @@ function sbookTOC_onclick(evt)
   if (!((info.sub) && ((info.sub.length)>2)))
     sbookHUDMode(false);
   return false;
-}
-
-/* Results handlers */
-
-function sbookResults_onclick(evt)
-{
-  var target=evt.target;
-  while (target)
-    if (fdjtHasClass(target,"result")) {
-      fdjtScrollDiscard();
-      if (target.searchresult) {
-	var elt=target.searchresult;
-	var head=elt.sbook_head;
-	if (head) sbookScrollTo(elt,head);
-	else sbookScrollTo(elt);
-	evt.preventDefault(); evt.cancelBubble=true;}
-      else {
-	evt.preventDefault(); 
-	evt.cancelBubble=true;}
-      sbookHUDMode(false);
-      return;}
-    else target=target.parentNode;
-}
-
-function sbookResults_onmouseover(evt)
-{
-  var target=evt.target;
-  while (target)
-    if (target.sbook_ref) break;
-    else target=target.parentNode;
-  if (!(target)) return;
-  sbookPreviewLocation(target.sbook_ref);
 }
 
 /* Other stuff */

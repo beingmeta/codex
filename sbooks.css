@@ -143,7 +143,7 @@ div#SBOOKHUD.browsing div.hud#SBOOKECHOBAR img.social.sourced {
 
 /* For scrollable results */
 
-div#SBOOKHUD div#SBOOKRESULTS {
+div#SBOOKHUD div#SBOOKSUMMARIES {
   position: fixed; bottom: 34px;
   left: 75px; right: 75px;
   background-color: gray; opacity: 0.1; z-index: 250;
@@ -192,12 +192,12 @@ div#SBOOKHUD.toc div.hud#SBOOKTOC {
 
 div#SBOOKHUD.searching div.hud#SBOOKSEARCH {
   max-height: inherit; opacity: 0.9;}
-div#SBOOKHUD.searching div.hud#SBOOKRESULTS {
+div#SBOOKHUD.searching div.hud#SBOOKSUMMARIES {
   display: none;}
 
-div#SBOOKHUD.browsing div#SBOOKRESULTS {
+div#SBOOKHUD.browsing div#SBOOKSUMMARIES {
  display: block; opacity: 0.9;}
-body.preview div#SBOOKHUD.browsing div#SBOOKRESULTS { 
+body.preview div#SBOOKHUD.browsing div#SBOOKSUMMARIES { 
  opacity: 0.1; }
 div#SBOOKHUD.browsing div#SBOOKTOC { display: none; }
 div#SBOOKHUD.browsing div#SBOOKTOP { display: block; opacity: 0.4;}
@@ -354,6 +354,8 @@ div.spanbar div.rangebox {
 
 div.tocblock {}
 div.tocblock div.tochead { text-align: left; vertical-align: middle;}
+div.tocblock div.tochead span.extra {
+  font-weight: bold; font-style: italic; font-size: 110%; color: gold;}
 div.tocblock div.tochead img { vertical-align: middle;}
 
 /* Search rules */
@@ -418,7 +420,7 @@ div.sbooksearch span.dterm {
   -webkit-border-bottom-left-radius: 6px; 
   -moz-border-radius-bottomleft: 6px;
   border-bottom-left-radius: 6px;}
-div.sbookresults span.dterm { 
+div.sbooksummaries span.dterm { 
   background-color: yellow; color: black;
   padding: 2px; padding-left: 5px;  margin: 0px;
   padding-right: 3px; margin-right: 3px;
@@ -446,46 +448,47 @@ div.sbooksearch .completions .completion .variation {
 div.sbooksearch .completions .completion .dterm { 
   font-size: 95%;}
 
-div.sbookresults {
+div.sbooksummaries {
   border-top: solid orange 3px;}
-div.sbookresults div.count {
+div.sbooksummaries div.count {
   text-align: right; color: orange; font-weight: bold;
   padding-top: 3px; }
-div.sbookresults .result { 
+div.sbooksummaries .summary { 
   white-space: normal; clear: both;
   text-decoration: none;  font-size: 75%;
   margin-top: 4px; margin-bottom: 4px;
   margin-left: 50px; margin-right: 50px; 
   border-bottom: dotted orange 1px; padding-bottom: 3px;
   color: black; text-align: left;}
-div.sbookresults a.result { display: block;}
-div.sbookresults .result.hidden { display: none;}
-div.sbookresults .result .info { 
+div.sbooksummaries a.summary { display: block;}
+div.sbooksummaries .tocblock.hidden { display: none;}
+div.sbooksummaries .summary.hidden { display: none;}
+div.sbooksummaries .summary .info { 
   float: right;}
-div.sbookresults .result div.info { 
+div.sbooksummaries .summary div.info { 
   float: right; width: 40px;}
-div.sbookresults .result img.eye { 
+div.sbooksummaries .summary img.eye { 
   float: right; cursor: pointer;
   font-weight: bold; color: blue; border: none;}
-div.sbookresults .result .info span.score {
+div.sbooksummaries .summary .info span.score {
   color: gold; display: none;}
-div.sbookresults .result span.dterm {
+div.sbooksummaries .summary span.dterm {
     font-size: 75%;}
-div.sbookresults .result span.head {
+div.sbooksummaries .summary span.head {
     font-size: 75%;}
-div.sbookresults .result span.headhead {
+div.sbooksummaries .summary span.headhead {
     color: blue; font-weight: bold;}
-div.sbookresults .result span.controller {
+div.sbooksummaries .summary span.controller {
     font-weight: bold; color: white;}
-.result span.msg { font-weight: bold; font-size: 110%;}
-.result img.userpic { float: left; margin-right: 3px;}
-.result a.age { 
+.summary span.msg { font-weight: bold; font-size: 110%;}
+.summary img.userpic { float: left; margin-right: 3px;}
+.summary a.age { 
   float: right; color: orange; margin-left: 6px;
   text-decoration: none;}
-.result img.detailsbutton { 
+.summary img.detailsbutton { 
   float: right; border: none;
   margin-right: 3px; margin-left: 3px;}
-div.sbookresults .result a.agespan {
+div.sbooksummaries .summary a.agespan {
     text-decoration: none;}
 
 span.excerpt { font-size: 120%; color: white;}
@@ -512,6 +515,12 @@ img.ping.button#ROVER {
 iframe.podspot {
     position: absolute; right: 64px; width: 80%; z-index 100; 
     opacity: 0.95; background-color: ivory; min-height: 450;}
+
+span.podspot {
+  position: absolute; right: 5px; text-align: right;
+  background-color: lightgray; opacity: 0.75;
+  border: solid transparent 1px;}
+span.podspot img.qricon { display: none;}
 
 /* Still unclassified */
 
