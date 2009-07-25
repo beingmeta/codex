@@ -55,6 +55,7 @@ function createSBOOKHUD()
        fdjtDiv("#SBOOKTOC.sbooktoc.hud"),
        fdjtDiv("#SBOOKSUMMARIES.sbookresults.hud"),
        fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
+       fdjtWithId(sbookCreatePingHUD(),"SBOOKPING"),
        echobar,echoes);
     hud.onclick=sbookHUD_onclick;
     hud.onmouseover=sbookHUD_onmouseover;

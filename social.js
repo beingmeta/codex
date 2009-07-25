@@ -338,6 +338,20 @@ function sbookEchoExtras(echo)
   else return false;
 }
 
+/* Making the PING hud */
+
+function sbookCreatePingHUD()
+{
+  var uri=fdjtInput("HIDDEN","URI",sbook_base);
+  var title=fdjtInput("HIDDEN","TITLE","");
+  var excerpt=fdjtInput("HIDDEN","EXCERPT","");
+  var msg=fdjtInput("TEXT","MSG","");
+  var form=fdjtNewElement("FORM","pingform",uri,title,excerpt,msg);
+  form.action="http://webechoes.net/ping.fdcgi";
+  form.target="_new";
+  return fdjtDiv(".ping.hud",form);
+}
+
 /* The Echoes/Social Database */
 
 function importSocialData(data)
