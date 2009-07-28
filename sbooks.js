@@ -295,15 +295,16 @@ function _sbook_transplant_content(content)
 }
 function _sbook_get_title(head)
 {
-  var title=fdjtCacheAttrib(head,title);
+  var title=head.title;
   if (!(title))
     return fdjtTextify(head,true);
-  else if (typeof title === "string")
-    if (title==="") return false;
-    else return title;
+  else if (typeof title === "string") {
+    var std=fdjtStdSpace(title);
+    if (std==="") return false;
+    else return std;}
   else return fdjtTextify(title,true);
 }
- 
+
 function _sbook_process_head(head,tocstate,level,curhead,curinfo,curlevel)
 {
   var headinfo=sbook_needinfo(head);

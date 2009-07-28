@@ -112,7 +112,7 @@ function sbookScrollTo(elt,cxt)
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudechoes)/g;
 
-var sbookHUDMode_pat=/(searching)|(browsing)|(toc)|(echoes)/g;
+var sbookHUDMode_pat=/(searching)|(browsing)|(toc)|(echoes)|(ping)/g;
 
 function sbookHUDMode(mode)
 {

@@ -63,8 +63,13 @@
 /* Highlight rules */
 
 .sbookhead { text-decoration: underline;}
+/*
 p { border-right: solid transparent 2px; padding-right: 4px;}
 p.sbookfocus:hover { border-right: solid blue 2px;}
+*/
+p { border-left: solid transparent 2px; padding-left: 4px;}
+p.sbookfocus:hover { border-left: solid blue 2px; }
+body.ping p.sbookfocus { border-left: solid blue 2px;}
 body.sbookhead { text-decoration: none;}
 
 p.sbookclickfocus { text-decoration: underline;}
@@ -155,6 +160,53 @@ div#SBOOKHUD.browsing div.hud#SBOOKECHOBAR img.social {
 div#SBOOKHUD.browsing div.hud#SBOOKECHOBAR img.social.sourced {
   display: block;}
 
+div#SBOOKHUD div.hud#SBOOKECHOBAR img.button.ping {
+  position: absolute; left: 2px; bottom: 0px;}
+
+div#SBOOKHUD.ping form.pingform div.completions { display: block;}
+div#SBOOKHUD form.pingform div.excerpt { display: none;}
+div#SBOOKHUD form.pingform div.detail { display: none;}
+div#SBOOKHUD form.pingform div.xrefs { display: none;}
+div#SBOOKHUD form.pingform div { 
+  text-align: right; margin-left: 5%; margin-right: 5%;}
+div#SBOOKHUD form.pingform div.head { 
+  text-align: right; width: 100%; margin-left: 0px; margin-right: 0px;
+  font-weight: bold; font-family: sans,sans-serif; font-size: 150%;
+  clear: both;}
+
+div#SBOOKHUD form.pingform div textarea { 
+  width: 100%; min-height: 80px;}
+div#SBOOKHUD form.pingform div.controls { 
+  text-align: left;}
+div#SBOOKHUD form.pingform div.tags { 
+  text-align: left;}
+div#SBOOKHUD form.pingform div.xrefs { 
+  height: 80px; text-align: right;}
+div#SBOOKHUD form.pingform div.xrefs input[type='TEXT'][name="XREF"] { 
+  width: 90%; display: block;}
+div#SBOOKHUD form.pingform div.xrefs div.xref { 
+  width: 90%; display: block; text-align: left; margin-left: 0px;}
+
+div#SBOOKHUD form.pingform div.xrefs { display: none;}
+
+div#SBOOKHUD form.pingform.detail div.tags { display: none;}
+div#SBOOKHUD form.pingform.detail div.detail {display: block;}
+
+div#SBOOKHUD form.pingform.excerpt div.tags { display: none;}
+div#SBOOKHUD form.pingform.excerpt div.excerpt { display: block;}
+
+div#SBOOKHUD form.pingform.xrefs div.tags { display: none;}
+div#SBOOKHUD form.pingform.xrefs div.xrefs { display: block;}
+
+div.ping div.controls input[TYPE='TEXT'][name='MSG'] { 
+  width: 80%; margin-right: 64px; clear: left;}
+div.ping div.controls span.buttons {
+  float: right; clear: right;}
+
+div#SBOOKHUD form.pingform div.tags span.head {
+  float: left; font-weight: bold; margin-left: 10px;}
+div#SBOOKHUD form.pingform div.tags input[type='TEXT'] {
+  float: right; margin-right: 10px; width: 25%;}
 
 /* For scrollable results */
 
@@ -199,11 +251,6 @@ div#SBOOKHUD div.hud#SBOOKTOP {
   margin: 0px; padding: 0px;
   display: none;}
 
-/* PING */
-
-div.ping input[TYPE='TEXT'] { 
-  width: 80%; margin-left: 10%; margin-right: 10%;}
-
 /* There are three HUD UI modes: toc, searching, browsing */
 
 div#SBOOKHUD.toc div.hud#SBOOKTOC div.supersections {
@@ -240,6 +287,12 @@ div#SBOOKHUD.echoes div#SBOOKTOC { display: none; }
 div#SBOOKHUD.echoes div#SBOOKTOP { display: block; opacity: 0.7;}
 div#SBOOKHUD.echoes div#SBOOKECHOBAR { opacity: 0.7;}
 
+div#SBOOKHUD.ping div#SBOOKPING {display: block; }
+div#SBOOKHUD.ping div#SBOOKSEARCH {display: none; }
+div#SBOOKHUD.ping div.hud#SBOOKPING {
+  max-height: inherit; opacity: 0.9;}
+
+
 /* div#SBOOKHUD a { color: lightblue;} */
 div#SBOOKHUD img.button { opacity: 0.5; z-index: 200;}
 
@@ -256,7 +309,6 @@ div#SBOOKHUD .sbookping {display: none;}
 body div#SBOOKHUD.toc #SBOOKTOC {display: block; }
 body div#SBOOKHUD.search .sbooksearch {display: block; }
 body div#SBOOKHUD.echoes .echoes {display: block; }
-body div#SBOOKHUD.ping .sbookping {display: block; }
 
 div#SBOOKSOCIAL {
   position: fixed; bottom: 0px; left: 15%; right: 15%;
@@ -519,8 +571,9 @@ span.excerpt span.content { font-size: 80%; color: white; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 
-div.detail { display: none; color: ivory; clear: both;}
-.showdetail div.detail { display: block;}
+div.sbooksummaries .summary div.detail { 
+  display: none; color: ivory; clear: both;}
+div.sbooksummaries .showdetail div.detail { display: block;}
 
 /* Podspot iframes */
 
@@ -552,7 +605,6 @@ p.previewing { color: red; }
 div.previewing { color: red; }
 .moretags { cursor: pointer;}
 .completions .counts { cursor: pointer;}
-
 
 div.sectionname { clear: both;}
 
