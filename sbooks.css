@@ -167,6 +167,12 @@ div#SBOOKHUD.ping form.pingform div.completions { display: block;}
 div#SBOOKHUD form.pingform div.excerpt { display: none;}
 div#SBOOKHUD form.pingform div.detail { display: none;}
 div#SBOOKHUD form.pingform div.xrefs { display: none;}
+div#SBOOKHUD form.pingform div.tags { display: none;}
+div#SBOOKHUD form.pingform.tags div.tags { display: block;}
+div#SBOOKHUD form.pingform.detail div.detail {display: block;}
+div#SBOOKHUD form.pingform.excerpt div.excerpt { display: block;}
+div#SBOOKHUD form.pingform.xrefs div.xrefs { display: block;}
+
 div#SBOOKHUD form.pingform div { 
   text-align: right; margin-left: 5%; margin-right: 5%;}
 div#SBOOKHUD form.pingform div.head { 
@@ -177,7 +183,7 @@ div#SBOOKHUD form.pingform div.head {
 div#SBOOKHUD form.pingform div textarea { 
   width: 100%; min-height: 80px;}
 div#SBOOKHUD form.pingform div.controls { 
-  text-align: left;}
+  text-align: left; clear: both;}
 div#SBOOKHUD form.pingform div.tags { 
   text-align: left;}
 div#SBOOKHUD form.pingform div.xrefs { 
@@ -187,21 +193,23 @@ div#SBOOKHUD form.pingform div.xrefs input[type='TEXT'][name="XREF"] {
 div#SBOOKHUD form.pingform div.xrefs div.xref { 
   width: 90%; display: block; text-align: left; margin-left: 0px;}
 
-div#SBOOKHUD form.pingform div.xrefs { display: none;}
 
-div#SBOOKHUD form.pingform.detail div.tags { display: none;}
-div#SBOOKHUD form.pingform.detail div.detail {display: block;}
+div#SBOOKHUD.ping form.pingform div.tribebar { 
+  text-align: left; clear: both;}
+div#SBOOKHUD.ping form.pingform div.tribebar
+  select[NAME='tribe'] { width: 50%;}
 
-div#SBOOKHUD form.pingform.excerpt div.tags { display: none;}
-div#SBOOKHUD form.pingform.excerpt div.excerpt { display: block;}
-
-div#SBOOKHUD form.pingform.xrefs div.tags { display: none;}
-div#SBOOKHUD form.pingform.xrefs div.xrefs { display: block;}
+div#SBOOKHUD.ping form.pingform div.tribebar
+  select[NAME='status'] { float: right;}
+div#SBOOKHUD.ping form.pingform div.tribebar
+  span.checkspan { float: right;}
 
 div.ping div.controls input[TYPE='TEXT'][name='MSG'] { 
-  width: 80%; margin-right: 64px; clear: left;}
+  width: 80%; clear: left;}
 div.ping div.controls span.buttons {
   float: right; clear: right;}
+div.ping div.controls span.buttons input[type="SUBMIT"] {
+  padding: 2px;}
 
 div#SBOOKHUD form.pingform div.tags span.head {
   float: left; font-weight: bold; margin-left: 10px;}

@@ -116,7 +116,6 @@ var sbookHUDMode_pat=/(searching)|(browsing)|(toc)|(echoes)|(ping)/g;
 
 function sbookHUDMode(mode)
 {
-  fdjtTrace("setting hud mode to %o from %o",mode,sbook_mode);
   if (mode) {
     sbook_mode=mode;
     fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}

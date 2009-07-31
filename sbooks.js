@@ -676,8 +676,14 @@ function sbookSetFocus(target,force)
 {
   sbook_trace_focus("sbookSetFocus",target);
   if (!(target)) return null;
+  // Can't set the focus to something without an ID.
+  if (!(target.id)) return null;
+  // And don't tag the HUD either
+  if (fdjtHasParent(target,sbookHUD)) return null;
+  // If the target has changed, update the location
   if (target!==sbook_focus) {
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
+  // Using [force] will do recomputation even if the focus hasn't changed
   if ((force)||(target!==sbook_focus)) {
     var head=((target) &&
 	      (((target.sbookinfo) && (target.sbookinfo.level)) ?

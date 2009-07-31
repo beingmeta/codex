@@ -42,6 +42,7 @@ var sbookHUDsocial=false;
 // 'Database' elements
 var sbook_allechoes=[];
 var social_oids=[];
+var tribal_oids=[];
 var social_info={};
 var sbook_echoes_by_pingid={};
 var sbook_echoes_by_user={};
@@ -58,7 +59,6 @@ var sbook_echo_eye_icon=
   "http://static.beingmeta.com/graphics/EyeIcon20x16.png";
 
 /* Social UI components */
-
 
 function sbookAllEchoesDiv()
 {
@@ -174,7 +174,7 @@ function sbookCreateEchoBar(classinfo,oids)
   var i=0; while (i<oids.length) {
     var oid=oids[i++];
     var info=social_info[oid];
-    var img=fdjtImage(info.squarepic,"social",info.name);
+    var img=fdjtImage(info.pic,"social",info.name);
     img.oid=oid; img.name=info.name;
     if (info.summary) img.title=info.summary;
     else img.title=info.name;
@@ -259,7 +259,7 @@ function sbookEchoToEntry(echo)
 {
   var user=echo.user;
   var userinfo=social_info[user];
-  var usrimg=fdjtImage(userinfo.squarepic,"userpic",userinfo.name);
+  var usrimg=fdjtImage(userinfo.pic,"userpic",userinfo.name);
   var userblock=fdjtDiv("userblock",usrimg);
   var icons=fdjtSpan("icons");
   var topics=fdjtDiv("topics");
@@ -363,11 +363,11 @@ function sbookCreatePingHUD()
   var xrefs_elt=fdjtDiv("xrefs",
 			fdjtDiv("head","External references"),
 			xrefs_input);
-  var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform",
+  var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform.tags",
 			  id_elt,uri_elt,title_elt,pingid_elt,
+			  tags_elt,details_elt,excerpt_elt,xrefs_elt,
 			  fdjtDiv("controls",sbookPingControls(),msg),
-			  tags_elt,tribes_elt,details_elt,excerpt_elt,
-			  xrefs_elt);
+			  sbookSelectTribe());
   msg.prompt="What do you think?";
   details_input.prompt="Enter detailed comments";
   excerpt_input.prompt="Add an excerpt";
@@ -376,10 +376,34 @@ function sbookCreatePingHUD()
     return fdjtMultiText_onkeypress(evt,'div');};
   msg.onfocus=sbookPing_onfocus;
   form.action="http://webechoes.net/ping.fdcgi";
-  form.target="_new";
+  form.target="sbookping";
   fdjtAutoPrompt_setup(form);
   // form.onsubmit=sbookPing_onsubmit;
   return fdjtDiv(".ping.hud",form);
+}
+
+function sbookSelectTribe()
+{
+  var nochoice_option=fdjtNewElement("OPTION",false,"FOR: Just my friends");
+  var select_elt=fdjtNewElement("SELECT",false,nochoice_option);
+  select_elt.name="TRIBE";
+  nochoice_option.value=":{}";
+  var i=0; while (i<tribal_oids.length) {
+    var tribe=tribal_oids[i++]; var info=social_info[tribe];
+    var option=fdjtNewElement("OPTION",false,info.name);
+    option.value=tribe; option.title=info.gloss;
+    fdjtAppend(select_elt,option);}
+  var friendly_option=fdjtNewElement("OPTION",false,"family");
+  var public_option=fdjtNewElement("OPTION",false,"public");
+  var private_option=fdjtNewElement("OPTION",false,"private");
+  var status_elt=
+    fdjtNewElement("SELECT",false,friendly_option,public_option,private_option);
+  status_elt.name='status';
+  friendly_option.value=':FRIENDLY'; friendly_option.selected=true;
+  private_option.value=':PRIVATE'; public_option.value=':PUBLIC'; 
+  var post_elt=fdjtSpan("checkspan",fdjtCheckbox("POST","yes",true),"post");
+  post_elt.title="add this comment to my news feeds";
+  return fdjtDiv("tribebar",select_elt,status_elt,post_elt);
 }
 
 var sbook_ping_target=false;
@@ -451,24 +475,25 @@ var pingmode_pat=/(detail)|(excerpt)|(xrefs)/g;
 
 function sbookPingControls()
 {
-  var go_button=
-    fdjtNewElement("BUTTON",".gobutton",
-		   fdjtImage(sbook_graphics_root+"remarkballoon24x19.png",
-			     "button","go"));
+  var go_button=fdjtInput("SUBMIT","ACTION","GO");
+  var tags_button=
+    fdjtImage(sbook_graphics_root+"TagIcon24.png","button","tgs");
   var details_button=
     fdjtImage(sbook_graphics_root+"detailsicon16x16.png","button","details");
   var excerpt_button=
     fdjtImage(sbook_graphics_root+"scissorsicon16x16.png","button","excerpt");
   var xrefs_button=
     fdjtImage(sbook_graphics_root+"outlink16x16.png","button","xrefs");
+  tags_button.title="add descriptive tags";
+  tags_button.onclick=sbookPingMode_onclick_handler("tags");
   details_button.title="add extended comments";
   details_button.onclick=sbookPingMode_onclick_handler("detail");
   details_button.title="add/edit excerpt";
   excerpt_button.onclick=sbookPingMode_onclick_handler("excerpt");
   details_button.title="add/edit external references";
   xrefs_button.onclick=sbookPingMode_onclick_handler("xrefs");
-  go_button.name="ACTION"; go_button.value="SAVE";
-  return fdjtSpan("buttons",details_button,excerpt_button,xrefs_button,
+  return fdjtSpan("buttons",
+		  tags_button,details_button,excerpt_button,xrefs_button,
 		  go_button);
 }
 
@@ -502,11 +527,10 @@ function sbookTagCheckspan(tag,checked,varname)
   return checkspan;
 }
 
-fdjt_trace_completion=true;
-
 function sbookPing_onfocus(evt)
 {
-  sbookPingHUDSetup(evt.target);
+  sbookHUDMode("ping");
+  sbookPingHUDSetup(false);
   fdjtAutoPrompt_onfocus(evt);
 }
 
@@ -525,6 +549,12 @@ function importSocialData(data)
       var item=info[i++];
       if (!(social_info[item.oid])) social_oids.push(item.oid);
       social_info[item.oid]=item;}}
+  var tribes=data['%tribes'];
+  if ((tribes) && (tribes.length)) {
+    var i=0; while (i<tribes.length) {
+      var item=tribes[i++];
+      social_info[item.oid]=item;
+      tribal_oids.push(item.oid);}}
   var ids=data['%ids'];
   if ((ids) && (ids.length)) {
     var i=0; while (i<ids.length) {
@@ -648,8 +678,8 @@ function add_podspot(target,open)
   var sources=sbookGetSourcesUnder(id);
   var imgsrc="http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png";
   if ((sources.length===1) &&
-      (social_info[sources[0]].squarepic))
-    imgsrc=social_info[sources[0]].squarepic||imgsrc;
+      (social_info[sources[0]].pic))
+    imgsrc=social_info[sources[0]].pic||imgsrc;
   var podspot=fdjtSpan
     ("podspot",fdjtImage(href,"qricon"),fdjtImage(imgsrc,"podimg","podspot"));
   podspot.onclick=function(evt){
