@@ -48,15 +48,13 @@ function createSBOOKHUD()
   if (hud) return hud;
   else {
     var echobar=sbookCreateEchoBar("#SBOOKECHOBAR.echobar.hud");
-    var echoes=sbookAllEchoesDiv();
     hud=fdjtDiv
       ("#SBOOKHUD",
        fdjtDiv("#SBOOKTOP.hud",_sbook_generate_spanbar(document.body)),
        fdjtDiv("#SBOOKTOC.sbooktoc.hud"),
-       fdjtDiv("#SBOOKSUMMARIES.sbookresults.hud"),
        fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
        fdjtWithId(sbookCreatePingHUD(),"SBOOKPING"),
-       echobar,echoes);
+       echobar);
     hud.onclick=sbookHUD_onclick;
     hud.onmouseover=sbookHUD_onmouseover;
     hud.onmouseout=sbookHUD_onmouseout;

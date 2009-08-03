@@ -62,7 +62,7 @@ var sbook_echo_eye_icon=
 
 function sbookAllEchoesDiv()
 {
-  var results_div=fdjtDiv("#SBOOKECHOES.sbooksummaries.hud");
+  var results_div=fdjtDiv("#SBOOKECHOES.sbooksummaries");
   sbookShowSummaries(sbook_allechoes,results_div,false);
   sbookEchoesHUD=results_div;
   results_div.onclick=sbookSummary_onclick;
@@ -200,7 +200,7 @@ function sbookCreateEchoBar(classinfo,oids)
     evt.target.blur();
     evt.cancelBubble=true;
     evt.preventDefault();};
-  fdjtAppend(echobar,ping_button);
+  fdjtAppend(echobar,ping_button,sbookAllEchoesDiv());
   return echobar;
 }
 
@@ -365,9 +365,9 @@ function sbookCreatePingHUD()
 			xrefs_input);
   var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform.tags",
 			  id_elt,uri_elt,title_elt,pingid_elt,
-			  tags_elt,details_elt,excerpt_elt,xrefs_elt,
 			  fdjtDiv("controls",sbookPingControls(),msg),
-			  sbookSelectTribe());
+			  sbookSelectTribe(),
+			  tags_elt,details_elt,excerpt_elt,xrefs_elt);
   msg.prompt="What do you think?";
   details_input.prompt="Enter detailed comments";
   excerpt_input.prompt="Add an excerpt";
@@ -379,7 +379,7 @@ function sbookCreatePingHUD()
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);
   // form.onsubmit=sbookPing_onsubmit;
-  return fdjtDiv(".ping.hud",form);
+  return fdjtDiv(".ping.hud.tophud",form);
 }
 
 function sbookSelectTribe()
@@ -403,7 +403,7 @@ function sbookSelectTribe()
   private_option.value=':PRIVATE'; public_option.value=':PUBLIC'; 
   var post_elt=fdjtSpan("checkspan",fdjtCheckbox("POST","yes",true),"post");
   post_elt.title="add this comment to my news feeds";
-  return fdjtDiv("tribebar",select_elt,status_elt,post_elt);
+  return fdjtDiv("tribebar",post_elt,status_elt,select_elt);
 }
 
 var sbook_ping_target=false;
@@ -471,7 +471,7 @@ function sbookPingMode_onclick_handler(mode)
     else fdjtSwapClass(pingbox,pingmode_pat,mode);};
 }
 
-var pingmode_pat=/(detail)|(excerpt)|(xrefs)/g;
+var pingmode_pat=/(tags)|(detail)|(excerpt)|(xrefs)/g;
 
 function sbookPingControls()
 {
@@ -499,10 +499,11 @@ function sbookPingControls()
 
 function sbookPingTags()
 {
-  var div=fdjtDiv(".tags",input,fdjtSpan("head","TAGS"));
+  var div=fdjtDiv(".tags",fdjtDiv("head","TAGS"));
   div.onclick=fdjtCheckSpan_onclick;
   return div;
-  // This is for if we're doing completion over the tags
+  /*
+  // This is for if we're doing completion over the 
   fdjtAddClass(div,"completions");
   var input=fdjtInput("TEXT","TAGTERM","");
   input.onkeypress=fdjtComplete_onkey;
@@ -512,6 +513,7 @@ function sbookPingTags()
     FDJT_COMPLETE_OPTIONS|FDJT_COMPLETE_ANYWHERE|
     FDJT_COMPLETE_CLOUD|FDJT_COMPLETE_SHOWEMPTY;
   return div;
+  */
 }
 
 function sbookTagCheckspan(tag,checked,varname)

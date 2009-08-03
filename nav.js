@@ -139,7 +139,7 @@ function _sbook_generate_subsections_div(subsections,start,end)
     // span.onclick=sbook_spanelt_onclick;
     fdjtAppend(spans,span);}
   if (subsections.length>1)
-    fdjtAppend(subsections_div,spanbar,"\n",sectlist);
+    fdjtAppend(subsections_div,"\n",sectlist,spanbar);
   else fdjtAppend(subsections_div,sectlist);
   // subsections_div.onmouseover=fdjtCoHi_onmouseover;
   // subsections_div.onmouseout=fdjtCoHi_onmouseout;
@@ -149,9 +149,8 @@ function _sbook_generate_subsections_div(subsections,start,end)
 function _sbook_add_head(toc,head,headinfo,spanp)
 {
   var level=headinfo.level;
-  var sectid="SBOOKHEAD"+level;
-  var secthead=document.getElementById(sectid);
   var content=headinfo.content;
+  var sectid="SBOOKHEAD"+level;
   var parent=headinfo.sbook_head;
   var pinfo=sbook_getinfo(parent);
   var new_elt, content_elt;
@@ -166,7 +165,7 @@ function _sbook_add_head(toc,head,headinfo,spanp)
     var anchor=fdjtAnchor("#"+headinfo.id,content_elt);
     content_elt.sbook_ref=head;
     new_elt=fdjtDiv('sbookhudsect');
-    fdjtAppend(new_elt,spanbar,anchor);}
+    fdjtAppend(new_elt,anchor,spanbar);}
   new_elt.id=sectid;
   if (head===document.body) {
     if (document.title)
@@ -189,25 +188,30 @@ function createSBOOKHUDnav(head,info)
   var id=fdjtForceId(head);
   if (sbook_debug)
     fdjtLog('Generating TOC from from %o/%s (%o)',head,id,info);
-  var new_toc=fdjtDiv("sbooktoc hud");
+  var new_toc=fdjtDiv("sbooktoc hud bothud");
   new_toc.onclick=sbookTOC_onclick;
   new_toc.onmouseover=sbookTOC_onmouseover;
   new_toc.onmouseout=sbookTOC_onmouseout;
   // new_toc.onmousemove=sbookTOC_onmousemove;
   if (sbook_debug_hud)
     fdjtLog("Adding supersections %o",info.sbook_heads);
+  if ((info.sub) && (info.sub.length>0))
+    if ((sbook_list_subsections) || (!(sbook_use_spanbars))) {
+      var subsections_div=
+	_sbook_generate_subsections_div(info.sub,info.starts_at,info.ends_at);
+      fdjtAppend(new_toc,subsections_div);}
   var supersections_div=fdjtDiv("supersections");
   var supersections=info.sbook_heads;
-  var i=0; while (i<supersections.length) {
-    var supersection=supersections[i++];
+  var i=supersections.length-1; while (i>=0) {
+    var supersection=supersections[i];
     var relchild=((i<supersections.length) ? (supersections[i]) : (head));
     var head_elt=
       _sbook_add_head(supersections_div,
 		      supersection,
 		      supersection.sbookinfo,
 		      false);
-    if (head_elt) head_elt.className="supersection";}
-  fdjtAppend(new_toc,supersections_div);
+    if (head_elt) head_elt.className="supersection";
+    i--;}
   if (sbook_debug_hud)
     fdjtLog("Adding main elt %o %o",head,info);
   var sect_elt=_sbook_add_head(new_toc,head,info,false);
@@ -217,11 +221,7 @@ function createSBOOKHUDnav(head,info)
       sect_elt.style.fontSize="75%";}
   if (sbook_debug_hud)
     fdjtLog("Adding subsections %o",info.sub);
-  if ((info.sub) && (info.sub.length>0))
-    if ((sbook_list_subsections) || (!(sbook_use_spanbars))) {
-      var subsections_div=
-	_sbook_generate_subsections_div(info.sub,info.starts_at,info.ends_at);
-      fdjtAppend(new_toc,subsections_div);}
+  fdjtAppend(new_toc,supersections_div);
   new_toc.onfocus=function(evt) {
     if (sbookHUDechoes)
       sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));}
