@@ -47,20 +47,49 @@ function createSBOOKHUD()
   var hud=$("SBOOKHUD");
   if (hud) return hud;
   else {
-    var echobar=sbookCreateEchoBar("#SBOOKECHOBAR.echobar.hud");
+    var index_button=
+      fdjtImage(sbook_graphics_root+"SearchIcon40x40.png","hudbutton","index");
+    var toc_button=
+      fdjtImage(sbook_graphics_root+"CompassIcon40x40.png","hudbutton","toc");
+    var echobar=sbookCreateEchoBar("#SBOOKECHOES.echobar.hudblock.hud");
     hud=fdjtDiv
-      ("#SBOOKHUD",
-       fdjtDiv("#SBOOKTOP.hud",_sbook_generate_spanbar(document.body)),
-       fdjtDiv("#SBOOKTOC.sbooktoc.hud"),
+      ("#SBOOKHUD",index_button,toc_button,
+       fdjtDiv("#SBOOKLOC.hudblock.hud",_sbook_generate_spanbar(document.body)),
+       fdjtDiv("#SBOOKTOC.sbooktoc.hudblock.hud"),
        fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
        fdjtWithId(sbookCreatePingHUD(),"SBOOKPING"),
        echobar);
+
+    index_button.onclick=function(evt){
+      if ((sbook_mode==="searching") || (sbook_mode==="browsing")) {
+	sbookHUDMode(false);
+	fdjtDropClass("SBOOKSEARCH","hover");
+	$("SBOOKSEARCHTEXT").blur();}
+      else {
+	sbookHUDMode("searching");
+	$("SBOOKSEARCHTEXT").focus();}};
+    index_button.onmouseover=function(evt) {
+      fdjtAddClass("SBOOKSEARCH","hover");};
+    index_button.onmouseout=function(evt) {
+      fdjtDropClass("SBOOKSEARCH","hover");};
+
+    toc_button.onclick=function(evt){
+      if (sbook_mode==="toc") {
+	sbookHUDMode(false);
+	fdjtDropClass("SBOOKTOC","hover");}
+      else sbookHUDMode("toc");}
+    toc_button.onmouseover=function(evt) {
+      fdjtAddClass("SBOOKTOC","hover");};
+    toc_button.onmouseout=function(evt) {
+      fdjtDropClass("SBOOKTOC","hover");};
+
     hud.onclick=sbookHUD_onclick;
     hud.onmouseover=sbookHUD_onmouseover;
     hud.onmouseout=sbookHUD_onmouseout;
+
     sbookHUD=hud;
     fdjtPrepend(document.body,hud);
-    echobar.onclick=sbookEchoBar_onclick;
+    $("SBOOKECHOES").onclick=sbookEchoBar_onclick;
     return hud;}
 }
 
@@ -85,9 +114,12 @@ function sbookMode(id,graphic,mode,title)
    This ties to avoid the HUD, in case it is up. */
 function sbookDisplayOffset()
 {
+  return 0;
+  /*
   var toc=$("SBOOKTOC");
   if (toc) return -(toc.offsetHeight||60);
   else return -60;
+  */
 }
 
 function sbookScrollTo(elt,cxt)
@@ -145,14 +177,33 @@ function sbookPreviewLocation(elt)
     progress.style.left=((Math.round(ratio*10000))/100)+"%";}
 }
 
+function sbookHUDHover_onmouseover(evt)
+{
+  if (sbook_mode) return;
+  fdjtAddClass(document.body,"hudhover");
+}
+
+function sbookHUDHover_onmouseout(evt)
+{
+  fdjtDropClass(document.body,"hudhover");
+}
+
 function sbookPreview(elt,nomode)
 {
+  var cxt=false;
   // sbook_trace_handler("sbookPreview",elt);
   if (elt===false) return sbookStopPreview();
+  /* No longer needed with TOC at the bottom */
   var offset=sbookDisplayOffset();
   sbook_preview=true;
   sbookPreviewLocation(elt);
-  if (elt) fdjtScrollPreview(elt,false,offset);
+  if ((elt.getAttribute) &&
+      (elt.getAttribute("toclevel")) ||
+      ((elt.sbookinfo) && (elt.sbookinfo.level)))
+    cxt=false;
+  else if (elt.sbook_head)
+    cxt=elt.sbook_head;
+  if (elt) fdjtScrollPreview(elt,cxt,offset);
   if (!(nomode)) fdjtAddClass(document.body,"preview");
 }
 function sbookPreviewNoMode(elt)

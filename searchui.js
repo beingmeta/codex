@@ -36,7 +36,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 function sbookShowSearch(result)
 {
   if (!(result)) result=sbook_query;
-  var results_div=fdjtDiv(".sbooksummaries");
+  var results_div=fdjtDiv(".sbooksummaries.hud");
   results_div.onclick=sbookSummary_onclick;
   results_div.onmouseover=sbookSummary_onmouseover;
   sbookShowSearchSummaries(result,results_div);
@@ -395,9 +395,9 @@ function createSBOOKHUDsearch()
   completions.id="SBOOKSEARCHCOMPLETIONS";
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=
-    fdjtDiv(".sbooksearch.hud.tophud",
+    fdjtDiv(".sbooksearch.hudblock.hud",
 	    fdjtDiv("query",input,completions),
-	    fdjtDiv("#SBOOKSUMMARIES.sbookresults"));
+	    fdjtDiv("#SBOOKSUMMARIES.sbookresults.hud"));
   sbooksearch.onmouseover=sbookHUD_onmouseover;
   sbooksearch.onmouseout=sbookHUD_onmouseout;
   return sbooksearch;

@@ -155,7 +155,7 @@ function sbookShowSummary(summary,query,notoc)
   if (summary.pingid) {
     var user=summary.user;
     var userinfo=social_info[user];
-    var usrimg=fdjtImage(userinfo.squarepic,"userpic",userinfo.name);
+    var usrimg=fdjtImage(userinfo.pic,"userpic",userinfo.name);
     var interval=((summary.tstamp) ? (fdjtTick()-summary.tstamp) : (-1));
     var agespan=
       ((interval>0)&&

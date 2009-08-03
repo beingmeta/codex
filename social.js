@@ -62,7 +62,7 @@ var sbook_echo_eye_icon=
 
 function sbookAllEchoesDiv()
 {
-  var results_div=fdjtDiv("#SBOOKECHOES.sbooksummaries");
+  var results_div=fdjtDiv("#SBOOKALLECHOES.sbooksummaries.hud");
   sbookShowSummaries(sbook_allechoes,results_div,false);
   sbookEchoesHUD=results_div;
   results_div.onclick=sbookSummary_onclick;
@@ -123,20 +123,22 @@ function sbookEchoBar_onclick(evt)
   var echobar=$P(".echobar",target);
   var sources=((echobar) && (echobar.sbooksources))||[];
   if (!(echobar)) return; /* Warning? */
-  if (evt.shiftKey) 
-    if (sources.indexOf(target.oid)>=0) {
-      sources.splice(sources.indexOf(target.oid),1);
-      fdjtDropClass(target,"selected");}
-    else {
-      fdjtAddClass(target,"selected");
-      sources.push(target.oid);}
-  else sources=new Array(target.oid);
-  echobar.sbooksources=sources;
+  if (target.oid) {
+    if (evt.shiftKey) 
+      if (sources.indexOf(target.oid)>=0) {
+	sources.splice(sources.indexOf(target.oid),1);
+	fdjtDropClass(target,"selected");}
+      else {
+	fdjtAddClass(target,"selected");
+	sources.push(target.oid);}
+    else sources=new Array(target.oid);
+    echobar.sbooksources=sources;}
+  if (sources.length===0) sources=true;
   if (!(sbook_mode)) {
-    sbookSelectEchoes($("SBOOKECHOES"),sources);
+    sbookSelectEchoes($("SBOOKALLECHOES"),sources);
     sbookHUDMode("echoes");}
   else if (sbook_mode==="echoes")
-    sbookSelectEchoes($("SBOOKECHOES"),sources);
+    sbookSelectEchoes($("SBOOKALLECHOES"),sources);
   else if (sbook_mode==="browsing") 
     sbookSelectEchoes($("SBOOKSUMMARIES"),sources);
   else if (sbook_mode==="searching") {
@@ -162,7 +164,7 @@ function sbookSetSources(echobar,sources)
 function sbookCreateEchoBar(classinfo,oids)
 {
   if (!(oids)) oids=social_oids;
-  if (!(classinfo)) classinfo="echobar";
+  if (!(classinfo)) classinfo=".echobar.hudblock.hud";
   var ping_button=
     fdjtImage("http://static.beingmeta.com/graphics/remarkballoon32x25.png",
 	      "button ping","add a comment");
@@ -181,15 +183,11 @@ function sbookCreateEchoBar(classinfo,oids)
     socialelts.push(img);
     fdjtAppend(echobar,img);}
   everyone_button.onclick=function(evt) {
-    if ((sbook_mode==="echoes")||(sbook_mode==="ping")) {
+    if (sbook_mode==="echoes") {
       sbookHUDMode(false);
       evt.cancelBubble=true;
       return;}
-    var sources=true;
-    echobar.sbooksources=sources;
-    sbookSelectEchoes($("SBOOKECHOES"),sources);
-    sbookHUDMode("echoes");
-    evt.cancelBubble=true;};
+    echobar.sbooksources=true;};
   echobar.onclick=sbookEchoBar_onclick;
   ping_button.id="SBOOKPINGBUTTON";
   ping_button.onclick=function(evt) {
@@ -351,18 +349,28 @@ function sbookCreatePingHUD()
   var msg=fdjtInput("TEXT","MSG","",".autoprompt#SBOOKPINGINPUT");
   var id_elt=fdjtInput("HIDDEN","FRAGID","","#SBOOKPINGFRAGID");
   var uri_elt=fdjtInput("HIDDEN","URI","","#SBOOKPINGURI");
-  var tags_elt=fdjtDiv(".tags#SBOOKPINGTAGS");
   var title_elt=fdjtInput("HIDDEN","TITLE","","#SBOOKPINGTITLE");
   var pingid_elt=fdjtInput("HIDDEN","PINGID","","#SBOOKPINGID");
   var tribes_elt=fdjtDiv(".tribes#SBOOKPINGTRIBES");
+  var tags_elt=sbookPingHUDTags();
   var details_input=fdjtNewElement("TEXTAREA",".autoprompt#SBOOKPINGDETAILS");
-  var details_elt=fdjtDiv("detail",fdjtDiv("head","Detail"),details_input);
-  var excerpt_input=fdjtNewElement("TEXTAREA",".autoprompt#SBOOKPINGEXCERPT");
-  var excerpt_elt=fdjtDiv("excerpt",fdjtDiv("head","Excerpt"),excerpt_input);
+  var details_elt=
+    fdjtDiv(".detail.pingtab",
+	    fdjtImage(sbook_graphics_root+"detailsicon32x32.png","head",
+		      "details"),
+	    fdjtDiv("content",details_input));
+  var excerpt_input=
+    fdjtNewElement("TEXTAREA",".autoprompt#SBOOKPINGEXCERPT");
+  var excerpt_elt=
+    fdjtDiv(".excerpt.pingtab",
+	    fdjtImage(sbook_graphics_root+"scissorsicon32x32.png","head",
+		      "excerpt"),
+	    fdjtDiv("content",excerpt_input));
   var xrefs_input=fdjtInput("TEXT","XREF","","xref");
-  var xrefs_elt=fdjtDiv("xrefs",
-			fdjtDiv("head","External references"),
-			xrefs_input);
+  var xrefs_elt=
+    fdjtDiv(".xrefs.pingtab",
+	    fdjtImage(sbook_graphics_root+"outlink32x32.png","head","REFS"),
+	    fdjtDiv("content",xrefs_input));
   var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform.tags",
 			  id_elt,uri_elt,title_elt,pingid_elt,
 			  fdjtDiv("controls",sbookPingControls(),msg),
@@ -379,7 +387,7 @@ function sbookCreatePingHUD()
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);
   // form.onsubmit=sbookPing_onsubmit;
-  return fdjtDiv(".ping.hud.tophud",form);
+  return fdjtDiv(".ping.hudblock.hud",form);
 }
 
 function sbookSelectTribe()
@@ -428,7 +436,7 @@ function sbookPingHUDSetup(origin)
     $("SBOOKPINGID").value=(origin.pingid);
   else $("SBOOKPINGID").value="";
   var seen_tags=[];
-  var tags_elt=sbookPingTags();
+  var tags_elt=fdjtSpan();
   {var i=0; while (i<sbook_allechoes.length) 
 	      if (sbook_allechoes[i].fragid===target.id) {
 		var echo=sbook_allechoes[i++];
@@ -468,7 +476,9 @@ function sbookPingMode_onclick_handler(mode)
     var pingbox=$P(".pingform",evt.target);
     if (fdjtHasClass(pingbox,mode))
       fdjtDropClass(pingbox,mode);
-    else fdjtSwapClass(pingbox,pingmode_pat,mode);};
+    else if (fdjtHasClass(pingbox,pingmode_pat))
+      fdjtSwapClass(pingbox,pingmode_pat,mode);
+    else fdjtAddClass(pingbox,mode);};
 }
 
 var pingmode_pat=/(tags)|(detail)|(excerpt)|(xrefs)/g;
@@ -477,43 +487,44 @@ function sbookPingControls()
 {
   var go_button=fdjtInput("SUBMIT","ACTION","GO");
   var tags_button=
-    fdjtImage(sbook_graphics_root+"TagIcon24.png","button","tgs");
+    fdjtImage(sbook_graphics_root+"TagIcon16x16.png","button","tags",
+	      "add or edit descriptive tags");
   var details_button=
-    fdjtImage(sbook_graphics_root+"detailsicon16x16.png","button","details");
+    fdjtImage(sbook_graphics_root+"detailsicon16x16.png","button","detail",
+	      "add extended comments");
   var excerpt_button=
-    fdjtImage(sbook_graphics_root+"scissorsicon16x16.png","button","excerpt");
+    fdjtImage(sbook_graphics_root+"scissorsicon16x16.png","button","excerpt",
+	      "add or edit an excerpt");
   var xrefs_button=
-    fdjtImage(sbook_graphics_root+"outlink16x16.png","button","xrefs");
-  tags_button.title="add descriptive tags";
+    fdjtImage(sbook_graphics_root+"outlink16x16.png","button","xrefs",
+	      "add or edit external references");
   tags_button.onclick=sbookPingMode_onclick_handler("tags");
-  details_button.title="add extended comments";
   details_button.onclick=sbookPingMode_onclick_handler("detail");
-  details_button.title="add/edit excerpt";
   excerpt_button.onclick=sbookPingMode_onclick_handler("excerpt");
-  details_button.title="add/edit external references";
   xrefs_button.onclick=sbookPingMode_onclick_handler("xrefs");
   return fdjtSpan("buttons",
 		  tags_button,details_button,excerpt_button,xrefs_button,
 		  go_button);
 }
 
-function sbookPingTags()
+function sbookPingHUDTags()
 {
-  var div=fdjtDiv(".tags",fdjtDiv("head","TAGS"));
-  div.onclick=fdjtCheckSpan_onclick;
-  return div;
-  /*
+  var completions=fdjtSpan("completions");
+  var input=fdjtInput("TEXT","TAGTERM","")
+  var content=fdjtDiv
+    (".content",input,fdjtSpan("#SBOOKPINGTAGS"),completions);
+  var div=fdjtDiv(".tags.pingtab",
+		  fdjtImage(sbook_graphics_root+"TagIcon32x32.png",
+			    "head","tags","descriptive tags"),
+		  content);
   // This is for if we're doing completion over the 
-  fdjtAddClass(div,"completions");
-  var input=fdjtInput("TEXT","TAGTERM","");
   input.onkeypress=fdjtComplete_onkey;
-  input.completions_elt=div;
-  div.input_elt=input;
+  input.completions_elt=completions;
+  completions.input_elt=input;
   input.completeopts=
     FDJT_COMPLETE_OPTIONS|FDJT_COMPLETE_ANYWHERE|
     FDJT_COMPLETE_CLOUD|FDJT_COMPLETE_SHOWEMPTY;
   return div;
-  */
 }
 
 function sbookTagCheckspan(tag,checked,varname)
@@ -617,7 +628,7 @@ function sbookGetEchoesUnder(id)
 
 function createSBOOKHUDping()
 {
-  var wrapper=fdjtDiv("#SBOOKPING.sbookping.hud");
+  var wrapper=fdjtDiv("#SBOOKPING.sbookping.hudblock.hud");
   var iframe=fdjtNewElement("iframe","#SBOOKPINGFRAME");
   iframe.src="";
   iframe.hspace=0; iframe.vspace=0;
@@ -688,7 +699,7 @@ function add_podspot(target,open)
     if (sbook_mode==="echoes") {
       sbookHUDMode(false); return;}
     if (evt.shiftKey)
-      sbookSelectEchoes(sbookEchoesHUD,$("SBOOKECHOBAR").sbooksources,false,id);
+      sbookSelectEchoes(sbookEchoesHUD,$("SBOOKECHOES").sbooksources,false,id);
     else sbookSelectEchoes(sbookEchoesHUD,true,false,id);
     sbookHUDMode("echoes");
     evt.preventDefault(); evt.cancelBubble=true;};

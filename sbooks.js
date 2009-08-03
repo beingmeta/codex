@@ -587,7 +587,7 @@ function sbookSetQuery(query,scored)
       fdjtLog("Setting completions to %o",completions);
     fdjtSetCompletions("SBOOKSEARCHCOMPLETIONS",completions);
     var ncompletions=fdjtComplete($("SBOOKSEARCHTEXT")).length;}
-  sbookSetSources($("SBOOKECHOBAR"),result._sources||[]);
+  sbookSetSources($("SBOOKECHOES"),result._sources||[]);
   return result;
 }
 
