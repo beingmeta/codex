@@ -371,6 +371,7 @@ function sbookCreatePingHUD()
     fdjtDiv(".xrefs.pingtab",
 	    fdjtImage(sbook_graphics_root+"outlink32x32.png","head","REFS"),
 	    fdjtDiv("content",xrefs_input));
+  // Specifying the .tags class causes the tags tab to be open by default
   var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform.tags",
 			  id_elt,uri_elt,title_elt,pingid_elt,
 			  fdjtDiv("controls",sbookPingControls(),msg),
@@ -436,7 +437,7 @@ function sbookPingHUDSetup(origin)
     $("SBOOKPINGID").value=(origin.pingid);
   else $("SBOOKPINGID").value="";
   var seen_tags=[];
-  var tags_elt=fdjtSpan();
+  var tags_elt=fdjtSpan(".tagcues");
   {var i=0; while (i<sbook_allechoes.length) 
 	      if (sbook_allechoes[i].fragid===target.id) {
 		var echo=sbook_allechoes[i++];
@@ -445,26 +446,13 @@ function sbookPingHUDSetup(origin)
 		    var tag=tags[j++];
 		    if (seen_tags.indexOf(tag)<0) {
 		      seen_tags.push(tag);
-		      fdjtAppend(tags_elt,sbookTagCheckspan(tag,false)," ");}}}}
+		      fdjtAppend(tags_elt,knoCompletion(tag)," ");}}}}
 	      else i++;}
   var tags=gather_tags(sbook_focus);
   var k=0; while (k<tags.length) {
     var tag=tags[k++];
     if (seen_tags.indexOf(tag)<0) {
-      seen_tags.push(tag);
-      fdjtAppend(tags_elt,sbookTagCheckspan(tag,false)," ");}}
-  /* Insert all the user's tags */
-  {var i=0; while (i<sbook_allechoes.length) 
-	      if (sbook_allechoes[i].fragid===target.id) {
-		var echo=sbook_allechoes[i++];
-		if (echo.user===sbook_user) {
-		  var tags=echo.tags; var j=0; while (j<tags.length) {
-		    var tag=tags[j++];
-		    if (seen_tags.indexOf(tag)<0) {
-		      seen_tags.push(tag);
-		      fdjtAppend(tags_elt,sbookTagCheckspan(tag,false)," ");}}}}
-	      else i++;}
-  tags_elt.onclick=fdjtCheckSpan_onclick;
+      seen_tags.push(tag); fdjtAppend(tags_elt,knoCompletion(tag,false)," ");}}
   fdjtReplace("SBOOKPINGTAGS",tags_elt);
   // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);
   // fdjtComplete(tags_elt.input_elt);
@@ -509,22 +497,17 @@ function sbookPingControls()
 
 function sbookPingHUDTags()
 {
-  var completions=fdjtSpan("completions");
-  var input=fdjtInput("TEXT","TAGTERM","")
-  var content=fdjtDiv
-    (".content",input,fdjtSpan("#SBOOKPINGTAGS"),completions);
-  var div=fdjtDiv(".tags.pingtab",
-		  fdjtImage(sbook_graphics_root+"TagIcon32x32.png",
-			    "head","tags","descriptive tags"),
-		  content);
-  // This is for if we're doing completion over the 
-  input.onkeypress=fdjtComplete_onkey;
-  input.completions_elt=completions;
-  completions.input_elt=input;
-  input.completeopts=
-    FDJT_COMPLETE_OPTIONS|FDJT_COMPLETE_ANYWHERE|
-    FDJT_COMPLETE_CLOUD|FDJT_COMPLETE_SHOWEMPTY;
-  return div;
+  var all_knowdes=[];
+  var all_tags=sbook_index._all;
+  var i=0; while (i<all_tags.length) {
+    var tag=all_tags[i++];
+    var knowde=((knowlet) && (knowlet.KnowdeProbe(tag)));
+    all_knowdes.push(knowde||tag);}
+  return fdjtDiv
+    (".tags.pingtab",
+     fdjtImage(sbook_graphics_root+"TagIcon32x32.png","head","TAGS"),
+     fdjtDiv("content",knoTagTool("TAGS","span.tagcues#SBOOKPINGTAGS",[],
+				  false,all_knowdes)));
 }
 
 function sbookTagCheckspan(tag,checked,varname)

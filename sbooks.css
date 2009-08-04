@@ -258,8 +258,12 @@ div.ping div.controls span.buttons img.button {
 div.ping div.controls span.buttons input[type="SUBMIT"] {
   padding: 2px;}
 
-div#SBOOKHUD form.pingform div.tags input[type='TEXT'] {
-  float: right; margin-right: 10px; width: 25%;}
+div#SBOOKHUD form.pingform div.tags div.tagtool div.tagpicks {
+  min-height: 1.5ex;}
+div#SBOOKHUD form.pingform div.tags div.tagtool input[type='TEXT'] {
+  width: 100%; clear: both;}
+div#SBOOKHUD form.pingform div.tags div.tagtool div {
+  text-align: left;}
 
 /* For scrollable results */
 
