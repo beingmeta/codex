@@ -141,17 +141,18 @@ function sbookScrollTo(elt,cxt)
 /* Mode controls */
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudechoes)/g;
-
 var sbookHUDMode_pat=/(searching)|(browsing)|(toc)|(echoes)|(ping)/g;
 
 function sbookHUDMode(mode)
 {
   if (mode) {
     sbook_mode=mode;
-    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
+    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
+    fdjtSwapClass(document.body,sbookHUDMode_pat,mode);}
   else {
     sbook_mode=false;
-    fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
+    fdjtDropClass(sbookHUD,sbookHUDMode_pat);
+    fdjtDropClass(document.body,sbookHUDMode_pat);}
 }
 function sbookHUDToggle(mode)
 {

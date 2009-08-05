@@ -113,7 +113,8 @@ function sbookGetSourcesUnder(idroot)
   var users=[];
   var i=0; while (i<sbook_allechoes.length) {
     var echo=sbook_allechoes[i++];
-    users.push(echo.user);}
+    if (echo.fragid.search(idroot)===0)
+      if (users.indexOf(echo.user)<0) users.push(echo.user);}
   return users;
 }
 
@@ -122,6 +123,7 @@ function sbookEchoBar_onclick(evt)
   var target=evt.target;
   var echobar=$P(".echobar",target);
   var sources=((echobar) && (echobar.sbooksources))||[];
+  var changed=false;
   if (!(echobar)) return; /* Warning? */
   if (target.oid) {
     if (evt.shiftKey) 
@@ -131,21 +133,29 @@ function sbookEchoBar_onclick(evt)
       else {
 	fdjtAddClass(target,"selected");
 	sources.push(target.oid);}
-    else sources=new Array(target.oid);
-    echobar.sbooksources=sources;}
+    else sources=new Array(target.oid);}
+  if (((sources)&&(!(echobar.sbooksources)))||
+      (echobar.sbooksources!==sources)) {
+    changed=true; echobar.sbooksources=sources;}
   if (sources.length===0) sources=true;
   if (!(sbook_mode)) {
     sbookSelectEchoes($("SBOOKALLECHOES"),sources);
     sbookHUDMode("echoes");}
+  else if ((sbook_mode==="echoes") && (!(changed)))
+    sbookHUDMode(false);
   else if (sbook_mode==="echoes")
     sbookSelectEchoes($("SBOOKALLECHOES"),sources);
   else if (sbook_mode==="browsing") 
     sbookSelectEchoes($("SBOOKSUMMARIES"),sources);
-  else if (sbook_mode==="searching") {
+  else if ((sbook_mode==="searching")&&
+	   (sbook_query)&&(sbook_query._query)&&
+	   (sbook_query._query>0)) {
     sbookShowSearch(sbook_query);
     sbookSelectEchoes($("SBOOKSUMMARIES"),sources);
     sbookHUDMode("browsing");}
-  else sbookSelectEchoes($("SBOOKSUMMARIES"),sources);
+  else {
+    sbookSelectEchoes($("SBOOKALLECHOES"),sources);
+    sbookHUDMode("echoes");}
   evt.preventDefault(); evt.cancelBubble=true;
 }
 
@@ -288,7 +298,8 @@ function sbookEchoToEntry(echo)
 
 function sbookEchoIcons(echo,extra)
 {
-  var eye=fdjtImage(sbook_echo_eye_icon,"eye","(\u00b7)");
+  var eye=fdjtImage(sbook_echo_eye_icon,"eye","(\u00b7)",
+		    "previewing: move mouse to restore");
   var comment=fdjtImage(sbook_echo_remark_icon,".button.relayb","+");
   var showmore=((extra) &&
 		fdjtImage(sbook_echo_more_icon,".button.extrab","*"));
@@ -377,6 +388,7 @@ function sbookCreatePingHUD()
 			  fdjtDiv("controls",sbookPingControls(),msg),
 			  sbookSelectTribe(),
 			  tags_elt,details_elt,excerpt_elt,xrefs_elt);
+  form.setAttribute("accept-charset","UTF-8");
   msg.prompt="What do you think?";
   details_input.prompt="Enter detailed comments";
   excerpt_input.prompt="Add an excerpt";
@@ -445,8 +457,9 @@ function sbookPingHUDSetup(origin)
 		  var tags=echo.tags; var j=0; while (j<tags.length) {
 		    var tag=tags[j++];
 		    if (seen_tags.indexOf(tag)<0) {
-		      seen_tags.push(tag);
-		      fdjtAppend(tags_elt,knoCompletion(tag)," ");}}}}
+		      var completion=knoCompletion(tag); seen_tags.push(tag);
+		      completion.setAttribute("showonempty","yes");
+		      fdjtAppend(tags_elt,completion," ");}}}}
 	      else i++;}
   var tags=gather_tags(sbook_focus);
   var k=0; while (k<tags.length) {
@@ -497,17 +510,11 @@ function sbookPingControls()
 
 function sbookPingHUDTags()
 {
-  var all_knowdes=[];
-  var all_tags=sbook_index._all;
-  var i=0; while (i<all_tags.length) {
-    var tag=all_tags[i++];
-    var knowde=((knowlet) && (knowlet.KnowdeProbe(tag)));
-    all_knowdes.push(knowde||tag);}
   return fdjtDiv
     (".tags.pingtab",
      fdjtImage(sbook_graphics_root+"TagIcon32x32.png","head","TAGS"),
      fdjtDiv("content",knoTagTool("TAGS","span.tagcues#SBOOKPINGTAGS",[],
-				  false,all_knowdes)));
+				  false,sbook_index)));
 }
 
 function sbookTagCheckspan(tag,checked,varname)
@@ -555,8 +562,6 @@ function importSocialData(data)
   if ((ids) && (ids.length)) {
     var i=0; while (i<ids.length) {
       var id=ids[i++];
-      var element=$(id);
-      if (element) add_podspot(element);
       var entries=data[id];
       var j=0; while (j<entries.length) {
 	var entry=entries[j++];
@@ -588,7 +593,8 @@ function importSocialData(data)
 	  fdjtAdd(sbook_echoes_by_user,user,item);}
 	if ((entry.uri) && (item!=entry)) item.uri=entry.uri;
 	if ((entry.msg) && (item!=entry)) item.msg=entry.msg;
-	if ((entry.excerpt) && (item!=entry)) item.excerpt=entry.excerpt;}}}
+	if ((entry.excerpt) && (item!=entry)) item.excerpt=entry.excerpt;}
+      var element=$(id); if (element) add_podspot(element);}}
     sbook_allechoes.sort(function(x,y) {
       if ((x.fragid)<(y.fragid)) return -1;
       else if ((x.fragid)==(y.fragid))

@@ -32,7 +32,9 @@
 /* Highlight rules */
 
 .sbookhead { text-decoration: underline;}
-body .sbookhead { text-decoration: none;}
+body.sbookhead { text-decoration: none;}
+
+body.ping .sbookfocus { color: red;}
 
 /*
 p { border-left: solid transparent 2px; padding-left: 4px;}
@@ -264,6 +266,10 @@ div#SBOOKHUD form.pingform div.tags div.tagtool input[type='TEXT'] {
   width: 100%; clear: both;}
 div#SBOOKHUD form.pingform div.tags div.tagtool div {
   text-align: left;}
+div#SBOOKHUD form.pingform div.tags div.tagtool .tagcues {
+  font-weight: bold; font-size: 150%;}
+div#SBOOKHUD form.pingform div.tags div.tagtool .tagverse {
+  font-weight: bold; font-size: 85%;}
 
 /* For scrollable results */
 
@@ -300,9 +306,6 @@ div#SBOOKHUD.echoes div#SBOOKALLECHOES {
   display: block;}
 body.preview div#SBOOKHUD.echoes div#SBOOKALLECHOES {
   display: block; }
-div#SBOOKHUD.echoes div#SBOOKSEARCH { display: none;}
-div#SBOOKHUD.echoes div#SBOOKPING {
-  display: block;}
 
 div#SBOOKHUD div.hud#SBOOKLOC {
   position: fixed;
@@ -625,7 +628,7 @@ div.sbooksummaries .showdetail div.detail { display: block;}
 
 a.podspoticon {
   position: absolute; right: 5px; text-align: right;
-  background-color: lightgray;
+  background-color: gray;
   border: solid transparent 1px;}
 .sbookfocus a.podspoticon {
   border: solid black 1px;}
@@ -640,9 +643,16 @@ iframe.podspot {
 
 span.podspot {
   position: absolute; right: 5px; text-align: right;
-  background-color: lightgray; opacity: 0.75;
-  border: solid transparent 1px;}
+  background-color: gray; opacity: 0.5; width: 32px; height: 32px;
+  border: solid transparent 2px;}
+span.podspot img { width: 32px; height: 32px;}
+.sbookfocus span.podspot { border: solid blue 2px;}
+
 span.podspot img.qricon { display: none;}
+span.podspot:hover { opacity: 0.9;}
+body.ping span.podspot { opacity: 0.9;}
+body.echoes span.podspot { opacity: 0.9;}
+body.preview span.podspot { opacity: 0.9;}
 
 /* Still unclassified */
 

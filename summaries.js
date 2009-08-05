@@ -60,7 +60,8 @@ function _sbook_sort_summaries(x,y)
 function sbookSummaryHead(target,head,eltspec,extra)
 {
   var head=sbook_toc_head(target);
-  var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)");
+  var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)",
+		    _("previewing: move mouse to restore"));
   if (typeof extra === "undefined")
     if (target===head) extra="\u00A7";
     else extra="\u00B6";
@@ -175,7 +176,8 @@ function sbookShowSummary(summary,query,notoc)
   if ((head) && (!(notoc)))
     fdjtAppend(sumdiv,sbookSummaryHead(target));
   else {
-    var eye=fdjtImage(sbook_small_eye_icon,"eye","(\u00b7)");
+    var eye=fdjtImage(sbook_small_eye_icon,"eye","(\u00b7)",
+		    _("previewing: move mouse to restore"));
     eye.onmouseover=sbookPreview_onmouseover;
     eye.onmouseout=sbookPreview_onmouseout;
     eye.onclick=sbookSummary_onclick;
@@ -191,7 +193,7 @@ function sbookShowSummary(summary,query,notoc)
   var j=0; var first=true; while (j<tags.length) {
     var tag=tags[j++];
     if (j===1) 
-      fdjtAppend(tagspan,knoDTermSpan(tag));
+      fdjtAppend(tagspan,knoSpan(tag));
     else if ((j===7) &&
 	     (tagspan===sumdiv) &&
 	     (tags.length>10)) {
@@ -204,8 +206,8 @@ function sbookShowSummary(summary,query,notoc)
       controller.onclick=fdjtShowHide_onclick;
       controller.clicktotoggle=new Array(tagspan);
       fdjtAppend(sumdiv," ",controller," ",tagspan);
-      fdjtAppend(tagspan,knoDTermSpan(tag));}
-    else fdjtAppend(tagspan," \u00b7 ",knoDTermSpan(tag));}
+      fdjtAppend(tagspan,knoSpan(tag));}
+    else fdjtAppend(tagspan," \u00b7 ",knoSpan(tag));}
   if (summary.detail) 
     fdjtAppend(sumdiv,fdjtDiv("detail",summary.detail));
   return sumdiv;
