@@ -46,6 +46,9 @@ var sbook_base=false;
 var sbook_head=false;
 // This is the 'focus element' approximately under the mouse.
 var sbook_focus=false;
+// This is the 'clicked focus element' which is preferred for
+// pinging
+var sbook_click_focus=false;
 // This is the current query
 var sbook_query=false;
 // Which sources to search.  False to exclude echoes, true to include
@@ -672,7 +675,7 @@ var sbook_focus_delay=100;
 
 var sbook_track_window=25;
 
-function sbookSetFocus(target,force)
+function sbookSetFocus(target,force,onclick)
 {
   sbook_trace_focus("sbookSetFocus",target);
   if (!(target)) return null;
@@ -680,6 +683,17 @@ function sbookSetFocus(target,force)
   if (!(target.id)) return null;
   // And don't tag the HUD either
   if (fdjtHasParent(target,sbookHUD)) return null;
+  // And don't change the focus if you're pinging
+  if (sbook_mode==="ping") return;
+  // The click focus is preferred for pinging
+  if (onclick) {
+    if (sbook_click_focus===target) {
+      fdjtDropClass(target,"sbookclickfocus");
+      sbook_click_focus=false;}
+    else {
+      if (sbook_click_focus) fdjtDropClass(target,"sbookclickfocus");
+      sbook_click_focus=target;
+      fdjtAddClass(target,"sbookclickfocus");}}
   // If the target has changed, update the location
   if (target!==sbook_focus) {
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
@@ -859,14 +873,14 @@ function sbook_onclick(evt)
   // sbook_trace_handler("sbook_onclick/focus",target);
   if (target===null) return;
   if (target===sbookHUD) return;
-  sbookSetFocus(target,true);
+  sbookSetFocus(target,true,true);
 }
 
 function sbook_ondblclick(evt)
 {
   if (sbook_overhud) return true;
   sbook_onclick(evt);
-  sbook_open_ping();
+  sbookHUDMode("ping");
 }
 
 /* Default keystrokes */

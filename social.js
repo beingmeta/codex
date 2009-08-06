@@ -118,6 +118,17 @@ function sbookGetSourcesUnder(idroot)
   return users;
 }
 
+function sbookVectorEqual(v1,v2)
+{
+  if (v1.length===v2.length) {
+    var i=0; while (i<v1.length)
+	       if (v1[i]!==v2[i]) return false;
+	       else i++;
+    return true;}
+  else return false;
+    
+}
+
 function sbookEchoBar_onclick(evt)
 {
   var target=evt.target;
@@ -135,7 +146,7 @@ function sbookEchoBar_onclick(evt)
 	sources.push(target.oid);}
     else sources=new Array(target.oid);}
   if (((sources)&&(!(echobar.sbooksources)))||
-      (echobar.sbooksources!==sources)) {
+      (!(sbookVectorEqual(echobar.sbooksources,sources)))) {
     changed=true; echobar.sbooksources=sources;}
   if (sources.length===0) sources=true;
   if (!(sbook_mode)) {
@@ -399,8 +410,16 @@ function sbookCreatePingHUD()
   form.action="http://webechoes.net/ping.fdcgi";
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);
-  // form.onsubmit=sbookPing_onsubmit;
+  form.onsubmit=sbookPing_onsubmit;
   return fdjtDiv(".ping.hudblock.hud",form);
+}
+
+function sbookPing_onsubmit(evt)
+{
+  fdjtAutoPrompt_cleanup();
+  $("SBOOKPINGFORM").setAttribute('submitted','yes');
+  // This is the wrong thing, but it works for now
+  window.setTimeout(function() { $("SBOOKPINGFORM").reset();},3000);
 }
 
 function sbookSelectTribe()
@@ -432,11 +451,17 @@ var sbook_ping_target=false;
 function sbookPingHUDSetup(origin)
 {
   var target;
-  if (!(origin)) target=origin=sbook_focus;
+  if (!(origin))
+    if (sbook_click_focus)
+      target=origin=sbook_click_focus;
+    else {
+      target=origin=sbook_focus;}
   else if (origin.fragid)
     target=$(origin.fragid);
   else target=origin;
   if (sbook_ping_target===target) return;
+  sbook_click_focus=target;
+  fdjtAddClass(sbook_click_focus,"sbookclickfocus");
   sbook_ping_target=target;
   var info=((target) &&
 	    ((target.sbookinfo)||
@@ -486,7 +511,7 @@ var pingmode_pat=/(tags)|(detail)|(excerpt)|(xrefs)/g;
 
 function sbookPingControls()
 {
-  var go_button=fdjtInput("SUBMIT","ACTION","GO");
+  var go_button=fdjtInput("SUBMIT","ACTION","OK");
   var tags_button=
     fdjtImage(sbook_graphics_root+"TagIcon16x16.png","button","tags",
 	      "add or edit descriptive tags");

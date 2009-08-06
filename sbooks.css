@@ -34,7 +34,7 @@
 .sbookhead { text-decoration: underline;}
 body.sbookhead { text-decoration: none;}
 
-body.ping .sbookfocus { color: red;}
+.sbookclickfocus { color: red;}
 
 /*
 p { border-left: solid transparent 2px; padding-left: 4px;}
@@ -178,6 +178,8 @@ div#SBOOKHUD div.hud#SBOOKECHOES {
 div#SBOOKHUD .hud#SBOOKECHOES img.social { 
   width: 34px; height: 34px;
   border: solid transparent 2px;} 
+div#SBOOKHUD .hud#SBOOKECHOES img.social:hover { 
+  border: solid blue 2px;} 
 div#SBOOKHUD .hud#SBOOKECHOES img.social.sourced { 
   border: dotted blue 2px;} 
 div#SBOOKHUD .hud#SBOOKECHOES img.social.sourced.selected { 
