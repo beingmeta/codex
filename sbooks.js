@@ -900,6 +900,17 @@ function getsbookbase()
   else return uri;
 }
 
+function sbook_geturi(id,base)
+{
+  if (typeof id !== "string") id=id.id;
+  if (!(base)) base=sbook_base;
+  if ((id)&&(base)) {
+    var hashpos=base.indexOf('#');
+    if (hashpos<0) return base+"#"+id;
+    else return base.slice(0,hashpos)+"#"+id;}
+  else return false;
+}
+
 /* Initialization */
 
 var _sbook_setup=false;

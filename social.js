@@ -466,15 +466,19 @@ function sbookPingHUDSetup(origin)
   var info=((target) &&
 	    ((target.sbookinfo)||
 	     ((target.sbook_head) && (target.sbook_head.sbookinfo))));
-  $("SBOOKPINGURI").value=sbook_base;
-  $("SBOOKPINGFRAGID").value=target.id;
+  $("SBOOKPINGURI").value=sbook_geturi(target);
   $("SBOOKPINGTITLE").value=
     (origin.title)||(target.title)||(sbook_get_titlepath(info));
   if (origin.pingid)
     $("SBOOKPINGID").value=(origin.pingid);
   else $("SBOOKPINGID").value="";
+  fdjtTrace("pingid=%o uri=%o title=%o",
+	    origin.pingid,sbook_geturi(target),
+	    (origin.title)||(target.title)||(sbook_get_titlepath(info)));
   var seen_tags=[];
   var tags_elt=fdjtSpan(".tagcues");
+  {var excerpt=window.getSelection();
+    if (excerpt) $("SBOOKPINGEXCERPT").value=excerpt;}
   {var i=0; while (i<sbook_allechoes.length) 
 	      if (sbook_allechoes[i].fragid===target.id) {
 		var echo=sbook_allechoes[i++];

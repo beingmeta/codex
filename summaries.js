@@ -134,7 +134,6 @@ function sbookShowSummary(summary,query,notoc)
   if ((query) && (query[target_id])) { /* If you have a score, use it */
     var scorespan=fdjtSpan("score");
     var score=query[key]; var k=0;
-    // fdjtTrace("Score for %s is %o",target_id,query[target_id]);
     while (k<score) {fdjtAppend(scorespan,"*"); k++;}
     fdjtAppend(info,scorespan);}
   fdjtAppend(sumdiv,info);
