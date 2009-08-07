@@ -121,6 +121,7 @@ function sbookSearchInput_onkeyup(evt)
 function sbookSearchInput_onfocus(evt)
 {
   var ch=evt.charCode, kc=evt.keyCode;
+  fdjtAutoPrompt_onfocus(evt);
   sbook_search_focus=true;
   sbookHUDMode("searching");
   sbookSetQuery(sbookStringToQuery(evt.target.value));
@@ -130,6 +131,7 @@ function sbookSearchInput_onfocus(evt)
 function sbookSearchInput_onblur(evt)
 {
   // fdjtDropClass(sbookHUD,"searching");
+  fdjtAutoPrompt_onblur(evt);
   sbook_search_focus=false;
 }
 
@@ -374,8 +376,10 @@ function createSBOOKHUDsearch()
   var completions=sbook_empty_cloud=
     fdjtDiv("completions",fdjtSpan("count","no query refinements"));
   
+  fdjtAddClass(input,"autoprompt");
   input.setAttribute("COMPLETEOPTS","nocase prefix showempty");
   input.completions_elt=completions;
+  input.prompt="Enter tags (or click on completions)";
   completions.input_elt=input;
   input.onkeydown=fdjtComplete_onkey;
   input.onkeypress=sbookSearchInput_onkeypress;
@@ -400,6 +404,7 @@ function createSBOOKHUDsearch()
 	    fdjtDiv("#SBOOKSUMMARIES.sbookresults.hud"));
   sbooksearch.onmouseover=sbookHUD_onmouseover;
   sbooksearch.onmouseout=sbookHUD_onmouseout;
+  fdjtAutoPrompt_setup(sbooksearch);
   return sbooksearch;
 }
 

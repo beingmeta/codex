@@ -212,9 +212,12 @@ function sbookCreateEchoBar(classinfo,oids)
   echobar.onclick=sbookEchoBar_onclick;
   ping_button.id="SBOOKPINGBUTTON";
   ping_button.onclick=function(evt) {
-    if (sbook_mode==="ping")
+    if (sbook_mode==="ping") {
       sbookHUDMode(false);
-    else sbookHUDMode("ping");
+      return;}
+    sbookHUDMode("ping");
+    sbookPingHUDSetup(false);
+    fdjtAutoPrompt_onfocus(evt);
     $("SBOOKPINGINPUT").focus();
     evt.target.blur();
     evt.cancelBubble=true;

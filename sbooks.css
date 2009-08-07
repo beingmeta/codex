@@ -51,6 +51,10 @@ div.hudblock {
   overflow: hidden; text-align: center; 
   font-family: sans,sans-serif;
   display: none;}
+body.hudup div#SBOOKHUD div.hudblock { opacity: 0.9;}
+body.hudup div#SBOOKHUD div.hudblock:hover { opacity: 0.9;}
+body.hudup div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.9;}
+
 
 img.hudbutton { 
   opacity: 0.2; z-index: 200;
@@ -58,6 +62,7 @@ img.hudbutton {
   background-color: gray; padding-right: 4px;
   font-family: sans,sans-serif;}
 img.hudbutton:hover { opacity: 0.9;}
+body.hudup img.hudbutton { opacity: 0.9;}
 
 img.hudbutton[alt='toc'] { 
   -khtml-border-top-right-radius: 6px; 
@@ -73,7 +78,6 @@ img.hudbutton[alt='index'] {
 div#SBOOKHUD.searching img.hudbutton[alt='index'] { opacity: 0.9;}
 div#SBOOKHUD.browsing img.hudbutton[alt='index'] { opacity: 0.9;}
 
-
 div#SBOOKHUD div.hudblock:hover { opacity: 0.9;}
 div#SBOOKHUD div.hudblock.hover { opacity: 0.9;}
 /* This is a little more visible by default */
@@ -81,10 +85,6 @@ div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.2;}
 div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.9;}
 
 div#SBOOKHUD div.sbooksearch.hover div.completions { display: block;}
-
-body.hudup div#SBOOKHUD div.hudblock { opacity: 0.9;}
-body.hudup div#SBOOKHUD div.hudblock:hover { opacity: 0.9;}
-
 
 div#SBOOKHUD div.hudblock#SBOOKTOC { display: block;}
 div#SBOOKHUD div.hudblock#SBOOKECHOES { display: block;}
@@ -454,6 +454,8 @@ div.spanbar div.sbookhudspan.current {
 div.spanbar div.sbookhudspan:hover { 
   border-bottom: dotted red 2px; border-top: dotted red 2px; }
 div.spanbar div.sbookhudspan[odd]:hover {
+  border-bottom: dotted red 2px; border-top: dotted red 2px; }
+div.spanbar div.sbookhudspan[even]:hover {
   border-bottom: dotted red 2px; border-top: dotted red 2px; }
 div.spanbar div.sbookhudspan.cohighlight { 
   background-color: yellow; border-color: yellow;}

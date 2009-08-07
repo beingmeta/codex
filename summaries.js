@@ -65,7 +65,7 @@ function sbookSummaryHead(target,head,eltspec,extra)
   if (typeof extra === "undefined")
     if (target===head) extra="\u00A7";
     else extra="\u00B6";
-  var basespan=fdjtSpan(false,eye,((extra)&&(fdjtSpan("extra",extra))));
+  var basespan=fdjtSpan(false,((extra)&&(fdjtSpan("extra",extra))),eye);
   if (head.sbookinfo) {
     var info=head.sbookinfo;
     if (info.title) fdjtAppend(basespan,info.title);

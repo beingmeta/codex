@@ -691,7 +691,8 @@ function sbookSetFocus(target,force,onclick)
       fdjtDropClass(target,"sbookclickfocus");
       sbook_click_focus=false;}
     else {
-      if (sbook_click_focus) fdjtDropClass(target,"sbookclickfocus");
+      if (sbook_click_focus)
+	fdjtDropClass(sbook_click_focus,"sbookclickfocus");
       sbook_click_focus=target;
       fdjtAddClass(target,"sbookclickfocus");}}
   // If the target has changed, update the location
@@ -824,16 +825,6 @@ function sbook_onkeydown(evt)
     if (up) sbookScrollTo(up);}
   else if (evt.keyCode===39)  /* RIGHT arrow */
     sbookPrevSection(evt);
-  else if (evt.keyCode===107) { /* + sign */
-    sbook_open_ping();}
-  else if (evt.keyCode===83) {  /* S or s */
-    sbookHUDMode("searching");
-    $("SBOOKSEARCHTEXT").focus();
-    evt.preventDefault();}
-  else if (evt.keyCode===84) { /* T or t */
-    sbookHUDMode("toc");
-    $("SBOOKSEARCHTEXT").blur();
-    evt.preventDefault();}
   else return;
 }
 
@@ -853,8 +844,31 @@ function sbook_onkeyup(evt)
 
 function sbook_onkeypress(evt)
 {
+  // sbook_trace_handler("sbook_onkeypress",evt);
   if (fdjtIsTextInput(evt.target)) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
+  else if (evt.charCode===43) { /* + sign */
+    sbookPingHUDSetup(false);
+    sbookHUDMode("ping");
+    $("SBOOKPINGINPUT").focus();
+    evt.target.blur();
+    evt.cancelBubble=true;
+    evt.preventDefault();}
+  /* ?, F, f, S or s */
+  else if ((evt.charCode===63) ||
+	   (evt.charCode===115) || (evt.charCode===83) ||
+	   (evt.charCode===102) || (evt.charCode===70)) {
+    if (sbook_mode==="searching") sbookHUDMode(false);
+    else {
+      sbookHUDMode("searching"); $("SBOOKSEARCHTEXT").focus();}
+    evt.preventDefault();}
+  /* T or t or N or n */
+  else if ((evt.charCode===78) || (evt.charCode===84) ||
+	   (evt.charCode===110) || (evt.charCode===116)) { 
+    if (sbook_mode==="toc") sbookHUDMode(false);
+    else {
+      sbookHUDMode("toc"); $("SBOOKSEARCHTEXT").blur();}
+    evt.preventDefault();}
   else {
     evt.cancelBubble=true; evt.preventDefault();}
 }
