@@ -941,7 +941,7 @@ function sbookSetup()
   var knowlets_done=new Date();
   sbookGatherMetadata();
   var metadata_done=new Date();
-  importSocialData();
+  sbookImportEchoes();
   var social_done=new Date();
   createSBOOKHUD();
   var hud_done=new Date();
