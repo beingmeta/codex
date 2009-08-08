@@ -408,6 +408,7 @@ function sbookCreatePingHUD()
 			  sbookSelectTribe(),
 			  tags_elt,details_elt,excerpt_elt,xrefs_elt);
   form.setAttribute("accept-charset","UTF-8");
+  form.ajaxuri="/echoes/ajaxping.fdcgi";
   msg.prompt="What do you think?";
   details_input.prompt="Enter detailed comments";
   excerpt_input.prompt="Add an excerpt";
