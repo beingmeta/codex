@@ -414,15 +414,26 @@ function sbookCreatePingHUD()
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);
   form.onsubmit=sbookPing_onsubmit;
+  form.oncallback=sbookPing_oncallback;
   return fdjtDiv(".ping.hudblock.hud",form);
 }
 
 function sbookPing_onsubmit(evt)
 {
+  var form=$("SBOOKPINGFORM");
   fdjtAutoPrompt_cleanup();
-  $("SBOOKPINGFORM").setAttribute('submitted','yes');
-  // This is the wrong thing, but it works for now
-  window.setTimeout(function() { $("SBOOKPINGFORM").reset();},3000);
+  fdjtAddClass(form,"submitting");
+  if (fdjtFormSubmit(form)) {
+    evt.preventDefault();
+    return;}
+  window.setTimeout(function() {$("SBOOKPINGFORM").reset();},3000);
+}
+
+function sbookPing_oncallback(req,form)
+{
+  fdjtTrace("sbookPing_oncallback %o %o",req,form);
+  fdjtDropClass($("SBOOKPINGFORM"),"submitting");
+  $("SBOOKPINGFORM").reset();
 }
 
 function sbookSelectTribe()
