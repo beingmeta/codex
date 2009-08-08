@@ -396,9 +396,14 @@ function sbookCreatePingHUD()
     fdjtDiv(".xrefs.pingtab",
 	    fdjtImage(sbook_graphics_root+"outlink32x32.png","head","REFS"),
 	    fdjtDiv("content",xrefs_input));
+  var messages_elt=
+    fdjtDiv("messages",
+	    fdjtDiv(".message.pinging","pinging...."),
+	    fdjtDiv(".message.echoing","echoing!"));
   // Specifying the .tags class causes the tags tab to be open by default
   var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform.tags",
 			  id_elt,uri_elt,title_elt,pingid_elt,
+			  messages_elt,
 			  fdjtDiv("controls",sbookPingControls(),msg),
 			  sbookSelectTribe(),
 			  tags_elt,details_elt,excerpt_elt,xrefs_elt);
@@ -413,27 +418,11 @@ function sbookCreatePingHUD()
   form.action="http://webechoes.net/ping.fdcgi";
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);
-  form.onsubmit=sbookPing_onsubmit;
-  form.oncallback=sbookPing_oncallback;
+  form.windowopts="width=500,height=400";
+  form.onsubmit=fdjtForm_onsubmit;
+  form.oncallback=function(req) {
+    form.reset();}
   return fdjtDiv(".ping.hudblock.hud",form);
-}
-
-function sbookPing_onsubmit(evt)
-{
-  var form=$("SBOOKPINGFORM");
-  fdjtAutoPrompt_cleanup();
-  fdjtAddClass(form,"submitting");
-  if (fdjtFormSubmit(form)) {
-    evt.preventDefault();
-    return;}
-  window.setTimeout(function() {$("SBOOKPINGFORM").reset();},3000);
-}
-
-function sbookPing_oncallback(req,form)
-{
-  fdjtTrace("sbookPing_oncallback %o %o",req,form);
-  fdjtDropClass($("SBOOKPINGFORM"),"submitting");
-  $("SBOOKPINGFORM").reset();
 }
 
 function sbookSelectTribe()

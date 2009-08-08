@@ -198,6 +198,8 @@ div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.social.sourced {
 div#SBOOKHUD div.hud#SBOOKECHOES img.button.ping {
   position: absolute; left: 2px; bottom: 0px;}
 
+form.pingform div.messages div.message { display: none;}
+form.pingform.submitting div.messages div.pinging { display: block;}
 div#SBOOKHUD.ping form.pingform div.completions { display: block;}
 div#SBOOKHUD form.pingform div.excerpt { display: none;}
 div#SBOOKHUD form.pingform div.detail { display: none;}
