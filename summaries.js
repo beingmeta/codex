@@ -39,6 +39,9 @@ var sbook_small_eye_icon=
   "http://static.beingmeta.com/graphics/EyeIcon13x10.png";
 var sbook_details_icon=
   "http://static.beingmeta.com/graphics/detailsicon16x16.png";
+var sbook_small_remark_icon=
+  "http://static.beingmeta.com/graphics/remarkballoon16x13.png";
+
 
 function _sbook_sort_summaries(x,y)
 {
@@ -87,9 +90,10 @@ function sbookSummaryHead(target,head,eltspec,extra)
   eye.onmouseout=sbookPreview_onmouseout;
   basespan.onclick=sbookSummary_onclick;
   basespan.sbook_ref=target;
-  if (eltspec)
-    fdjtNewElt(eltspec,basespan);
-  else return fdjtDiv("tochead",basespan);
+  var tocblock=((eltspec)?(fdjtNewElt(eltspec,basespan)):
+		(fdjtDiv("tochead",basespan)));
+  tocblock.blocktarget=target;
+  return tocblock;
 }
 
 function sbookShowSummaries(summaries,summary_div,query)
@@ -106,10 +110,46 @@ function sbookShowSummaries(summaries,summary_div,query)
       var head=sbook_toc_head(target);
       var blockhead=sbookSummaryHead(target,head);
       var block=fdjtDiv("tocblock",blockhead);
+      block.blocktarget=target;
       fdjtAppend(summary_div,block);
       curblock=block; curtarget=target;}
     fdjtAppend(curblock,sbookShowSummary(summary,query,true));}
   return summary_div;
+}
+
+function sbookAddSummary(summary,summary_div,query)
+{
+  var curtarget=false; var curblock=false;
+  var target_id=((summary.id)||(summary.fragid)||false);
+  var target=((target_id)&&($(target_id)));
+  if (!target) return;
+  var head=sbook_toc_head(target);
+  var children=summary_div.childNodes; var placed=false;
+  var sum_div=sbookShowSummary(summary,query,true);
+  var i=0; while (i<children.length) {
+    var child=children[i++];
+    if (child.nodeType!==1) continue;
+    var block_target=child.blocktarget;
+    if (!(block_target)) continue;
+    if (block_target===target) {
+      fdjtTrace("Found exact match for %o at %o (under %o) at %o",
+		summary,target,head,child);
+      fdjtAppend(child,sum_div);
+      placed=true;
+      break;}
+    else if (block_target.id>target_id) {
+      fdjtTrace("Found insertion point for %o at %o (under %o) at %o",
+		summary,target,head,child);
+      var blockhead=sbookSummaryHead(target,head);
+      var block=fdjtDiv("tocblock",blockhead,sum_div);
+      fdjtInsertBefore(child,block);
+      placed=true;
+      break;}}
+  if (!(placed)) {
+    var blockhead=sbookSummaryHead(target,head);
+    var block=fdjtDiv("tocblock",blockhead,sum_div);
+    fdjtAppend(summary_div,sum_div);}
+  return;
 }
 
 /* Showing a single summary */
@@ -127,9 +167,9 @@ function sbookShowSummary(summary,query,notoc)
   var target_id=((typeof summary === "string") ? (summary) :
 		 (summary.id||summary.fragid));
   var target=$(target_id);
-  var sumdiv=fdjtDiv((summary.pingid) ? "summary echo" : "summary");
+  var sumdiv=fdjtDiv((summary.echo) ? "summary echo" : "summary");
   if (target) sumdiv.sbook_ref=target;
-  if (summary.pingid) sumdiv.sbookecho=summary;
+  if (summary.echo) sumdiv.sbookecho=summary;
   var info=fdjtSpan("info");
   if ((query) && (query[target_id])) { /* If you have a score, use it */
     var scorespan=fdjtSpan("score");
@@ -152,7 +192,7 @@ function sbookShowSummary(summary,query,notoc)
   var head=(((target.sbookinfo) && (target.sbookinfo.level)) ? (target) :
 	    ((target.sbook_head)||(target)));
   if (head===document.body) head=target;
-  if (summary.pingid) {
+  if (summary.echo) {
     var user=summary.user;
     var userinfo=social_info[user];
     var usrimg=fdjtImage(userinfo.pic,"userpic",userinfo.name);
@@ -160,9 +200,9 @@ function sbookShowSummary(summary,query,notoc)
     var agespan=
       ((interval>0)&&
        ((interval>(3*24*3600)) 
-	? (fdjtAnchorC("http://webechoes.net/echo/"+summary.pingid,
+	? (fdjtAnchorC("http://webechoes.net/echo/"+summary.echo,
 		       "age",fdjtTickDate(summary.tstamp)))
-	: (fdjtAnchorC("http://webechoes.net/echo/"+summary.pingid,
+	: (fdjtAnchorC("http://webechoes.net/echo/"+summary.echo,
 		       "age",fdjtIntervalString(interval)," ago"))));
     agespan.onclick=function(evt) {
       evt.cancelBubble=true;};
@@ -172,6 +212,13 @@ function sbookShowSummary(summary,query,notoc)
     fdjtAppend(sumdiv,usrimg,
 	       ((summary.detail)&&(_sbookDetailsButton())),((summary.detail)&&" "),
 	       agespan);}
+  var relay_button=
+    fdjtImage(sbook_small_remark_icon,"remarkbutton","ping",
+	      _("click to relay or respond"));
+  relay_button.onclick=function(evt){
+    sbook_ping(target,(summary.echo)||(false));
+    evt.preventDefault(); evt.cancelBubble=true;};
+  fdjtAppend(sumdiv,relay_button);
   if ((head) && (!(notoc)))
     fdjtAppend(sumdiv,sbookSummaryHead(target));
   else {
@@ -183,7 +230,7 @@ function sbookShowSummary(summary,query,notoc)
     eye.sbook_ref=target;
     fdjtAppend(sumdiv,eye);}
 
-  if (summary.pingid)
+  if (summary.echo)
     fdjtAppend(sumdiv,
 	       ((summary.msg)&&(fdjtSpan("msg",summary.msg))),((summary.msg)&&" "),
 	       ((summary.excerpt)&&(_sbookExcerptSpan(summary.excerpt))),
@@ -209,6 +256,7 @@ function sbookShowSummary(summary,query,notoc)
     else fdjtAppend(tagspan," \u00b7 ",knoSpan(tag));}
   if (summary.detail) 
     fdjtAppend(sumdiv,fdjtDiv("detail",summary.detail));
+  if (summary.echo) sumdiv.echo=summary.echo;
   return sumdiv;
 }
 

@@ -199,7 +199,18 @@ div#SBOOKHUD div.hud#SBOOKECHOES img.button.ping {
   position: absolute; left: 2px; bottom: 0px;}
 
 form.pingform div.messages div.message { display: none;}
+form.pingform div.messages div.message { 
+  text-align: center; font-size: 150%;  font-weight: bold;
+  background-color: yellow; color: black; opacity: 0.75;
+  margin-left: 25%; margin-right: 25%;
+  margin-bottom: 5px; margin-top: 5px;
+  -khtml-border-radius: 12px; 
+  -webkit-border-radius: 12px; 
+  -moz-border-radius: 12px;
+  border-radius: 12px;}
+form.pingform div.messages div.message.echoing { font-style: italic;} 
 form.pingform.submitting div.messages div.pinging { display: block;}
+form.pingform.echoing div.messages div.echoing { display: block;}
 div#SBOOKHUD.ping form.pingform div.completions { display: block;}
 div#SBOOKHUD form.pingform div.excerpt { display: none;}
 div#SBOOKHUD form.pingform div.detail { display: none;}
@@ -598,7 +609,7 @@ div.sbooksummaries .summary .info {
 div.sbooksummaries .summary div.info { 
   float: right; width: 40px;}
 div.sbooksummaries .summary img.eye { 
-  float: right; cursor: pointer;
+  float: right; cursor: crosshair;
   font-weight: bold; color: gold; border: none;}
 div.sbooksummaries .summary .info span.score {
   color: gold; display: none;}
@@ -616,6 +627,9 @@ div.sbooksummaries .summary span.controller {
   float: right; color: orange; margin-left: 6px;
   text-decoration: none;}
 .summary img.detailsbutton { 
+  float: right; border: none;
+  margin-right: 3px; margin-left: 3px;}
+.summary img.remarkbutton { 
   float: right; border: none;
   margin-right: 3px; margin-left: 3px;}
 div.sbooksummaries .summary a.agespan {
