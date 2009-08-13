@@ -441,7 +441,9 @@ function sbookCreatePingHUD()
 	form.reset();
 	sbookHUDMode(false);},
       1500);};
-  return fdjtDiv(".ping.hudblock.hud",form);
+  return fdjtDiv(".ping.hudblock.hud",
+		 fdjtImage(sbook_graphics_root+"remarkballoon24x19.png","floatright",""),
+		 form);
 }
 
 function sbookSelectTribe()

@@ -35,6 +35,9 @@
 body.sbookhead { text-decoration: none;}
 
 .sbookclickfocus { color: red;}
+body.sbookclickfocus { color: inherit;}
+
+.floatright { float: right; margin-right: 3px;}
 
 /*
 p { border-left: solid transparent 2px; padding-left: 4px;}
@@ -124,7 +127,7 @@ body.preview div#SBOOKHUD.ping div.hudblock#SBOOKPING { opacity: 0.05;}
 div#SBOOKHUD div.hud#SBOOKTOC {
   position: fixed; bottom: 0px; left: 75px; right: 75px; z-index: 140;
   max-height: 40px; min-height: 30px; 
-  margin: 0px; padding: 0px; padding-top: 5px;
+  margin: 0px; padding: 0px; 
   display: block;
   -khtml-border-top-left-radius: 6px; 
   -webkit-border-top-left-radius: 6px; 
@@ -243,7 +246,7 @@ div#SBOOKHUD form.pingform div.pingtab div.content {
 div#SBOOKHUD form.pingform div textarea { 
   width: 98%; margin-left: 0px; min-height: 80px;}
 div#SBOOKHUD form.pingform div.controls { 
-  text-align: left; clear: both;}
+  text-align: left;}
 div#SBOOKHUD form.pingform div.tags { 
   text-align: left;}
 div#SBOOKHUD form.pingform div.xrefs { 
@@ -448,8 +451,7 @@ div.spanbar {
   position: relative;
   text-align: center; clear: both;
   margin: 0px; padding: 0px; border: 0px; /* opacity: 0.5;  */
-  height: 14px; font-size: 3px;
-  border-top: solid black 2px;}
+  height: 14px; font-size: 3px;} /*   border-top: solid black 2px; */
 div.spanbar div.spans { 
   position: relative;
   margin: 0px; padding: 0px; border: 0px;}
@@ -489,6 +491,8 @@ div.spanbar { padding: 0px; margin: 0px;}
 div.spanbar div.spans { 
   width: 100%; height: 10px; padding: 0px; margin: 0px;}
 
+body.preview div.spanbar div.progressbox { background-color: orange;}
+body.preview div.spanbar div.rangebox { background-color: orange;}
 div.spanbar div.progressbox { 
   width: 3px; height: 15px; background-color: red;
   position: absolute; z-index: 200; 
