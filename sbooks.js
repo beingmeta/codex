@@ -762,7 +762,7 @@ function sbook_onmousemove(evt)
   // sbook_trace_handler("sbook_onmousemove",evt);
   var target=evt.target;
   /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_overhud) || (sbook_hudstate)) return;
+  if ((sbook_preview) || (sbook_mode) || (sbook_mode) || (sbook_overhud) || (sbook_hudstate)) return;
   /* Save mouse positions */
   sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
   /* Now, we try to find a top level element to sort out whether
@@ -783,7 +783,7 @@ function sbook_onscroll(evt)
 {
   // sbook_trace_handler("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_overhud)) return;
+  if ((sbook_preview) || (sbook_mode) || (sbook_overhud)) return;
   var xoff=window.scrollX+sbook_last_x;
   var yoff=window.scrollY+sbook_last_y;
   var target=sbookGetXYFocus(xoff,yoff);

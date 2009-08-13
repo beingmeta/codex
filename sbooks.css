@@ -411,6 +411,8 @@ div.sbooktoc div.supersections { display: none;}
 div.sbooktoc div.subsections { display: none;}
 
 div.sbooktoc .sectname { color: yellow;}
+div.sbooktoc .focus .sectname { font-weight: bold;}
+div#SBOOKHUD.toc div.sbooktoc .focus .sectname { font-size: 125%;}
 div.sbooktoc #SBOOKHEAD0 .sectname { color: white;}
 div.sbooktoc a { 
   text-decoration: none; color: blue;}
@@ -477,6 +479,10 @@ div#SBOOKHEAD0 div.spanbar { width: 50%; margin-left: 25%; margin-right: 25%;}
 div#SBOOKHEAD1 div.spanbar { width: 60%; margin-left: 20%; margin-right: 20%;}
 div#SBOOKHEAD2 div.spanbar { width: 70%; margin-left: 15%; margin-right: 15%;}
 div#SBOOKHEAD3 div.spanbar { 
+  width: 80%; margin-left: 10%; margin-right: 10%;}
+div#SBOOKHEAD4 div.spanbar { 
+  width: 80%; margin-left: 10%; margin-right: 10%;}
+div#SBOOKHEAD5 div.spanbar { 
   width: 80%; margin-left: 10%; margin-right: 10%;}
 
 div.spanbar { padding: 0px; margin: 0px;}
