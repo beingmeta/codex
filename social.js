@@ -195,6 +195,10 @@ function sbookCreateEchoBar(classinfo,oids)
   var everyone_button=
     fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
 	      "button everyone","everyone");
+  var login_button=
+    fdjtAnchor("http://webechoes.net/",
+	       fdjtImage(sbook_graphics_root+"sBooksWE_0_32x32.png","button login","login"));
+  login_button.title="Log in to see notes from your friends and community";
   var echobar=fdjtDiv(classinfo," ",everyone_button);
   var socialelts=[]; var echoelts=[];
   var i=0; while (i<oids.length) {

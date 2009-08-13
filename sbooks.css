@@ -198,6 +198,13 @@ div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.social {
 div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.social.sourced {
   display: block;}
 
+body.nosbookuser div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.button {
+  display: none;}
+div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.button.login {
+  display: none;}
+body.nosbookuser div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.button.login {
+  display: block;}
+
 div#SBOOKHUD div.hud#SBOOKECHOES img.button.ping {
   position: absolute; left: 2px; bottom: 0px;}
 

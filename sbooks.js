@@ -944,6 +944,7 @@ function sbookSetup()
   sbookImportEchoes();
   var social_done=new Date();
   createSBOOKHUD();
+  if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
   var hud_done=new Date();
   sbookHUD_Init();
   sbook_base=getsbookbase();
