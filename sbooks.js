@@ -154,11 +154,9 @@ function sbook_trace_handler(handler,evt)
 
 function sbook_trace_focus(handler,evt)
 {
-  /*
   fdjtLog("%s %o: hudup=%o, preview=%o, overhud=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
 	  handler,evt,sbook_mode,sbook_preview,sbook_overhud,
 	  sbook_hudstate,sbook_head,sbook_focus);
-  */
 }
 
 /* Basic SBOOK functions */
@@ -680,7 +678,13 @@ function sbookSetFocus(target,force,onclick)
   sbook_trace_focus("sbookSetFocus",target);
   if (!(target)) return null;
   // Can't set the focus to something without an ID.
-  if (!(target.id)) return null;
+  var head=target.sbook_head;
+  while (target)
+    if (target.id) break;
+    else if (target.sbook_head!==head) {
+      target=head; break;}
+    else target=target.parentNode;
+  if (!(target)) return;
   // And don't tag the HUD either
   if (fdjtHasParent(target,sbookHUD)) return null;
   // And don't change the focus if you're pinging
@@ -875,20 +879,28 @@ function sbook_onkeypress(evt)
 
 function sbook_onclick(evt)
 {
-  // sbook_trace_handler("sbook_onclick",evt);
+  sbook_trace_handler("sbook_onclick",evt);
   if (sbook_overhud) return true;
   sbookHUDMode(false);
-  var target=evt.target;
+  var target=evt.target; var head;
   while (target)
-    if (target.sbook_head) break;
-    else if (target.Xoff) break;
-    else if (target.parentNode===document.body) break;
+    if (target.sbook_head) {head=target.sbook_head; break;}
+    else if ((target.sbookinfo) && (target.sbookinfo.level)) {
+      head=target; break;}
     else target=target.parentNode;
-  // sbook_trace_handler("sbook_onclick/focus",target);
-  if (target===null) return;
-  if (target===sbookHUD) return;
-  sbookSetFocus(target,true,true);
-}
+  if (!(target)) return;
+  else if (target===sbookHUD) return;
+  if ((sbook_click_focus) && (fdjtHasParent(target,sbook_click_focus))) {
+    var parent=sbook_click_focus.parentNode;
+    if ((parent.id) &&
+	((parent.sbook_head)===(sbook_click_focus.sbook_head)) &&
+	(fdjtIsVisible(parent)))
+      sbookSetFocus(parent,true,true);
+    else {
+      fdjtDropClass(sbook_click_focus,"sbookclickfocus");
+      sbook_click_focus=false;}}
+  else sbookSetFocus(target,true,true);
+}    
 
 function sbook_ondblclick(evt)
 {
