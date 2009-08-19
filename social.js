@@ -240,60 +240,6 @@ function sbookCreateEchoBar(classinfo,oids)
   return echobar;
 }
 
-/*
-function sbookSetEchoes(echoes)
-{
-  // fdjtTrace("sbookSetEchoes %o",echoes);
-  var pingids=[]; var social=[]; var seen={};
-  var i=0; while (i<echoes.length) {
-    var echo=echoes[i++]; var user=echo.user;
-    if (echo.pingid) pingids.push(echo.pingid);
-    if (!(seen[user])) {social.push(user); seen[user]=user;}
-    if (echo.tribes) {
-      var j=0; var tribes=echo.tribes;
-      while (j<tribes.length) {
-	var tribe=tribes[j++];
-	if (!(seen[tribe])) {social.push(tribe); seen[tribe]=tribe;}}}}
-  var echoelts=sbookHUDechoes.echoelts;
-  i=0; while (i<echoelts.length) {
-    var echoelt=echoelts[i++];
-    if ((echoelt.pingid) && (pingids.indexOf(echoelt.pingid)>=0))
-      echoelt.setAttribute("displayed","yes");
-    else echoelt.setAttribute("displayed","no");}
-  var social_count=0;
-  var socialelts=sbookHUDechoes.socialelts;
-  i=0; while (i<socialelts.length) {
-    var socialelt=socialelts[i++];
-    if (social.indexOf(socialelt.oid)>=0) {
-      socialelt.setAttribute("displayed","yes");
-      social_count++;}
-    else socialelt.setAttribute("displayed","no");}
-  if (social_count)
-    fdjtSwapClass(sbookHUDsocial,"empty","filled");
-  else fdjtSwapClass(sbookHUDsocial,"filled","empty");
-}
-*/
- /*
-function sbookSetEchoFocus(userortribe)
-{
-  // fdjtTrace("sbookSetEchoFocus %o",userortribe);
-  if (userortribe) {
-    var echoelts=sbookHUDechoes.echoelts;
-    i=0; while (i<echoelts.length) {
-      var echoelt=echoelts[i++];
-      if (echoelt.user===userortribe)
-	echoelt.setAttribute("focus","yes");
-      else if ((echoelt.tribes) &&
-	       (echoelt.tribes.indexOf(userortribe)>=0)) 
-	echoelt.setAttribute("focus","yes");
-      else echoelt.setAttribute("focus","no");}}
-  else {
-    var echoelts=sbookHUDechoes.echoelts;
-    i=0; while (i<echoelts.length) 
-	   echoelts[i++].removeAttribute("focus");}
-}
- */
-
 function sbookEchoToEntry(echo)
 {
   var user=echo.user;
@@ -607,7 +553,10 @@ function sbookImportEchoes(data)
     if (typeof sbook_echoes_data === "undefined") {
       fdjtLog("No social data available");
       return;}
-    else data=sbook_echoes_data;
+    else {
+      if (typeof sbook_tribes !== "undefined")
+	sbookImportTribes(sbook_tribal_info);
+      data=sbook_echoes_data;}
   // fdjtTrace("Importing echo data %o",data);
   var date=data['%date'];
   var info=data['%info'];
@@ -616,12 +565,6 @@ function sbookImportEchoes(data)
       var item=info[i++];
       if (!(social_info[item.oid])) social_oids.push(item.oid);
       social_info[item.oid]=item;}}
-  var tribes=data['%tribes'];
-  if ((tribes) && (tribes.length)) {
-    var i=0; while (i<tribes.length) {
-      var item=tribes[i++];
-      social_info[item.oid]=item;
-      tribal_oids.push(item.oid);}}
   var ids=data['%ids'];
   // fdjtTrace("Importing echoes for %o ids",ids.length);
   if ((ids) && (ids.length)) {
@@ -651,6 +594,15 @@ function sbookImportEchoes(data)
       fdjtTrace("Generated echobar entry %o from %o",img,info);
       fdjtAppend(sbook_echobar,img);}
     sbook_echobar._social_oid_length=oids.length;}
+}
+
+function sbookImportTribes(tribes)
+{
+  if ((tribes) && (tribes.length)) {
+    var i=0; while (i<tribes.length) {
+      var item=tribes[i++];
+      social_info[item.oid]=item;
+      tribal_oids.push(item.oid);}}
 }
 
 function sbook_add_echo(id,entry)
@@ -781,6 +733,10 @@ function add_podspot(target,open)
       sbookSelectEchoes(sbookEchoesHUD,$("SBOOKECHOES").sbooksources,false,id);
     else sbookSelectEchoes(sbookEchoesHUD,true,false,id);
     sbookHUDMode("echoes");};
+  podspot.onmouseover=function(evt){
+    fdjtAddClass(target,"sbooklivespot");};
+  podspot.onmouseout=function(evt){
+    fdjtDropClass(target,"sbooklivespot");};
   target.podspot=podspot;
   fdjtPrepend(target,podspot);
   return podspot;

@@ -279,7 +279,7 @@ div#SBOOKHUD form.pingform div.tribebar
 div.ping div.controls input[TYPE='TEXT'][name='MSG'] { 
   width: 75%; clear: left; font-size: 14px;}
 div.ping div.controls span.buttons {
-  float: right; clear: right;}
+  float: right;}
 div.ping div.controls span.buttons img.button {
   border: solid transparent 2px; padding-bottom: 2px;}
 div.ping div.controls span.buttons input[type="SUBMIT"] {
@@ -663,6 +663,8 @@ div.sbooksummaries .showdetail div.detail { display: block;}
 
 /* Podspot iframes */
 
+.sbooklivespot { color: blue;}
+
 a.podspoticon {
   position: absolute; right: 5px; text-align: right;
   background-color: gray;
@@ -670,9 +672,6 @@ a.podspoticon {
 .sbookfocus a.podspoticon {
   border: solid black 1px;}
 a.podspoticon img { border: 0px;}
-
-img.ping.button#ROVER {
-  position: absolute; right: 0px;}
 
 iframe.podspot {
     position: absolute; right: 64px; width: 80%; z-index 100; 

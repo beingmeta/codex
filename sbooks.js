@@ -41,6 +41,8 @@ var sbook_webechoes_root="http://webechoes.net/";
 
 // This is the base URI for this document
 var sbook_base=false;
+// This is the sbook ping AJAX ping uri
+var sbook_ping_uri="/echoes/ajaxping.fdcgi";
 
 // This is the current head element
 var sbook_head=false;
@@ -405,33 +407,18 @@ function sbook_toc_builder(child,tocstate)
     var width=fdjtFlatWidth(child);
     var loc=tocstate.location+width/2;
     tocstate.location=tocstate.location+width;
-    if ((child.tagName) && (child.tagName==="DIV")) {
-      var children=child.childNodes;
-      var nodeslength=sbook_nodes.length;
-      if (children) {
-	var i=0; while (i<children.length)
-		   sbook_toc_builder(children[i++],tocstate);}
-      if ((fdjtHasContent(child)) || (child.getAttribute('TAGS'))) {
-	child.sbook_head=curhead;
-	child.sbookloc=loc;}
-      /* If none of the included nodes marked their location,
-	 mark the DIV's location. */
-      if (sbook_nodes.length===nodeslength) {
-	fdjtComputeOffsets(child);
-	if (child.Xoff)
-	  sbook_nodes.push(child);
-      }}
-    else {
+    if (child.id) {
       fdjtComputeOffsets(child);
-      if (child.Xoff)
-	sbook_nodes.push(child);
-
+      if (child.Xoff) sbook_nodes.push(child);
       child.sbookloc=loc;
-      child.sbook_head=curhead;}}
-  var childinfo=child.sbookinfo;
-  var headtag=(((childinfo) && (childinfo.title)) &&
-	       ("\u00A7"+childinfo.title));
-  if ((child.getAttribute) && (child.getAttribute("TAGS"))) {
+      child.sbook_head=curhead;}
+    if (child.childNodes) {
+      var children=child.childNodes;
+      var i=0; while (i<children.length)
+		 sbook_toc_builder(children[i++],tocstate);}}
+  var headtag=(((child.sbookinfo) && (child.sbookinfo.title)) &&
+	       ("\u00A7"+child.sbookinfo.title));
+  if ((child.id) && (child.getAttribute) && (child.getAttribute("TAGS"))) {
     var tagstring=child.getAttribute("TAGS");
     var tags=fdjtSemiSplit(fdjtUnEntify(tagstring));
     var knowdes=[]; var prime_knowdes=[];
@@ -878,7 +865,7 @@ function sbook_onkeypress(evt)
 
 function sbook_onclick(evt)
 {
-  sbook_trace_handler("sbook_onclick",evt);
+  // sbook_trace_handler("sbook_onclick",evt);
   if (sbook_overhud) return true;
   sbookHUDMode(false);
   var target=evt.target; var head;
@@ -948,6 +935,9 @@ function sbookSetup()
   if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
   var fdjt_done=new Date();
+  sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX");
+  if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
+    sbook_ajax_uri=false;
   if (knoHTMLSetup) knoHTMLSetup();
   var knowlets_done=new Date();
   sbookGatherMetadata();
