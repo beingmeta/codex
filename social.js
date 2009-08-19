@@ -433,16 +433,16 @@ function sbookPingHUDSetup(origin)
 {
   var target;
   if (!(origin))
-    if (sbook_click_focus)
-      target=origin=sbook_click_focus;
+    if (sbook_ping_focus)
+      target=origin=sbook_ping_focus;
     else {
       target=origin=sbook_focus;}
   else if (origin.fragid)
     target=$(origin.fragid);
   else target=origin;
   if (sbook_ping_target===target) return;
-  sbook_click_focus=target;
-  fdjtAddClass(sbook_click_focus,"sbookclickfocus");
+  sbook_ping_focus=target;
+  fdjtAddClass(sbook_ping_focus,"sbookpingfocus");
   sbook_ping_target=target;
   var info=((target) &&
 	    ((target.sbookinfo)||
@@ -703,6 +703,21 @@ function gather_tribes(elt,results)
 
 /* Displaying podspots */
 
+function sbookAddPingButton(target)
+{
+  if (target.pingbutton) return target.pingbutton;
+  fdjtTrace("adding ping button to %o",target);
+  var imgsrc=sbook_graphics_root+"remarkballoon32x32.png";
+  var button=fdjtImage(imgsrc,"pingbutton","ping");
+  button.onclick=function(evt){
+    evt.preventDefault(); evt.cancelBubble=true;
+    sbook_ping(target,false);};
+  target.pingbutton=button;
+  fdjtPrepend(target,button);
+  fdjtTrace("added ping button %o to %o",button,target);
+  return button;
+}
+
 function add_podspot(target,open)
 {
   if (target.podspot) return target.pospot;
@@ -717,12 +732,18 @@ function add_podspot(target,open)
   var i=0; while (i<tribes.length) href=href+"&TRIBES="+tribes[i++];
   i=0; while (i<tags.length) href=href+"&TAGCUE="+tags[i++];
   var sources=sbookGetSourcesUnder(id);
-  var imgsrc="http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png";
+  var imgsrc=sbook_graphics_root+"sBooksWE_2_32x32.png";
+  var pingimgsrc=sbook_graphics_root+"remarkballoon32x32.png";
+  var button=fdjtImage(pingimgsrc,"pingbutton","ping");
+  button.onclick=function(evt){
+    evt.preventDefault(); evt.cancelBubble=true;
+    sbook_ping(target,false);};
+  target.pingbutton=button;
   if ((sources.length===1) &&
       (social_info[sources[0]].pic))
     imgsrc=social_info[sources[0]].pic||imgsrc;
   var podspot=fdjtSpan
-    ("podspot",fdjtImage(href,"qricon"),fdjtImage(imgsrc,"podimg","podspot"));
+    ("podspot",fdjtImage(href,"qricon"),fdjtImage(imgsrc,"podimg","podspot"),button);
   podspot.onclick=function(evt){
     evt.preventDefault(); evt.cancelBubble=true;
     if ((sbook_mode==="echoes") &&

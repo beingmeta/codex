@@ -405,7 +405,7 @@ function sbookHUD_Init()
       target=sbook_hashmap[hash.slice(1)];
     else target=sbook_hashmap[hash];}
   if (target) {
-    sbook_focus=target; sbook_click_focus=target;}
+    sbook_focus=target; sbook_ping_focus=target;}
   if (!(target))
     target=document.body;
   if (target!=document.body) target.scrollIntoView();

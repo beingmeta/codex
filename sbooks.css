@@ -34,8 +34,8 @@
 .sbookhead { text-decoration: underline;}
 body.sbookhead { text-decoration: none;}
 
-.sbookclickfocus { color: red;}
-body.sbookclickfocus { color: inherit;}
+.sbookpingfocus { color: blue;}
+body.sbookpingfocus { color: inherit;}
 
 .floatright { float: right; margin-right: 3px;}
 
@@ -689,6 +689,14 @@ span.podspot:hover { opacity: 0.9;}
 body.ping span.podspot { opacity: 0.9;}
 body.echoes span.podspot { opacity: 0.9;}
 body.preview span.podspot { opacity: 0.9;}
+
+img.pingbutton {
+  position: absolute; right: 5px; text-align: right;
+  border: solid transparent 1px; background-color: lightblue;
+  display: none;}
+span.podspot img.pingbutton { position: static; margin-top: 2px;}
+.sbookpingfocus img.pingbutton {
+  display: block;}
 
 /* Still unclassified */
 

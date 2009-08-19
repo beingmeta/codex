@@ -50,7 +50,7 @@ var sbook_head=false;
 var sbook_focus=false;
 // This is the 'clicked focus element' which is preferred for
 // pinging
-var sbook_click_focus=false;
+var sbook_ping_focus=false;
 // This is the current query
 var sbook_query=false;
 // Which sources to search.  False to exclude echoes, true to include
@@ -673,19 +673,19 @@ function sbookSetFocus(target,force,onclick)
     else target=target.parentNode;
   if (!(target)) return;
   // And don't tag the HUD either
-  if (fdjtHasParent(target,sbookHUD)) return null;
+  if (fdjtHasParent(target,sbookHUD)) return;
   // And don't change the focus if you're pinging
   if (sbook_mode==="ping") return;
-  // The click focus is preferred for pinging
   if (onclick) {
-    if (sbook_click_focus===target) {
-      fdjtDropClass(target,"sbookclickfocus");
-      sbook_click_focus=false;}
+    if (sbook_ping_focus===target) {
+      fdjtDropClass(target,"sbookpingfocus");
+      sbook_ping_focus=false;}
     else {
-      if (sbook_click_focus)
-	fdjtDropClass(sbook_click_focus,"sbookclickfocus");
-      sbook_click_focus=target;
-      fdjtAddClass(target,"sbookclickfocus");}}
+      if (sbook_ping_focus)
+	fdjtDropClass(sbook_ping_focus,"sbookpingfocus");
+      sbook_ping_focus=target;
+      if (!(target.pingbutton)) sbookAddPingButton(target);
+      fdjtAddClass(target,"sbookpingfocus");}}
   // If the target has changed, update the location
   if (target!==sbook_focus) {
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
@@ -876,16 +876,17 @@ function sbook_onclick(evt)
     else target=target.parentNode;
   if (!(target)) return;
   else if (target===sbookHUD) return;
-  if ((sbook_click_focus) && (fdjtHasParent(target,sbook_click_focus))) {
-    var parent=sbook_click_focus.parentNode;
+  if ((sbook_ping_focus) && (fdjtHasParent(target,sbook_ping_focus))) {
+    var parent=sbook_ping_focus.parentNode;
     if ((parent.id) &&
-	((parent.sbook_head)===(sbook_click_focus.sbook_head)) &&
+	((parent.sbook_head)===(sbook_ping_focus.sbook_head)) &&
 	(fdjtIsVisible(parent)))
       sbookSetFocus(parent,true,true);
     else {
-      fdjtDropClass(sbook_click_focus,"sbookclickfocus");
-      sbook_click_focus=false;}}
-  else sbookSetFocus(target,true,true);
+      fdjtDropClass(sbook_ping_focus,"sbookpingfocus");
+      sbook_ping_focus=false;}}
+  else {
+    sbookSetFocus(target,true,true);}
 }    
 
 function sbook_ondblclick(evt)
