@@ -447,9 +447,10 @@ function sbook_toc_builder(child,tocstate)
 	knowde=knowlet.handleSubjectEntry
 	  (((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
       else knowde=(((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
-      knowdes.push(knowde);
-      if ((prime) && (level>0)) prime_knowdes.push(knowde);
-      sbookAddTag(child,knowde,prime,false,true,tocstate.knowlet);}
+      if (knowde) {
+	knowdes.push(knowde);
+	if ((prime) && (level>0)) prime_knowdes.push(knowde);
+	sbookAddTag(child,knowde,prime,false,true,tocstate.knowlet);}}
     var tagstack=tocstate.tagstack;
     i=0; while (i<tagstack.length) {
       var ctags=tagstack[i++];
@@ -627,7 +628,7 @@ function sbookSetHead(head)
     return;}
   else {
     var info=head.sbookinfo;
-    sbook_trace_focus("sbookSetHead",head);
+    // sbook_trace_focus("sbookSetHead",head);
     var navhud=createSBOOKHUDnav(head,info);
     fdjtReplace("SBOOKTOC",navhud);
     window.title=info.title+" ("+document.title+")";
@@ -637,8 +638,7 @@ function sbookSetHead(head)
       navhud.style.opacity=0.9;
       setTimeout(function() {navhud.style.opacity=null;},2500);}
     sbook_head=head;}
-  if (sbookHUDechoes)
-    sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));
+  // if (sbookHUDechoes) sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));
 }
 
 var sbook_location=false;
@@ -675,7 +675,7 @@ var sbook_track_window=25;
 
 function sbookSetFocus(target,force,onclick)
 {
-  sbook_trace_focus("sbookSetFocus",target);
+  // sbook_trace_focus("sbookSetFocus",target);
   if (!(target)) return null;
   // Can't set the focus to something without an ID.
   var head=target.sbook_head;
@@ -711,7 +711,6 @@ function sbookSetFocus(target,force,onclick)
     if ((head) && (sbook_head!=head))
       if ((force) || (!(fdjtIsVisible(sbook_head))))
 	sbookSetHead(head);
-      else sbook_trace_focus("sbookSetHead/deferred",head);
     if (sbook_focus) fdjtDropClass(sbook_focus,"sbookfocus");
     sbook_focus=target;
     fdjtAddClass(target,"sbookfocus");}

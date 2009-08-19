@@ -228,9 +228,10 @@ function createSBOOKHUDnav(head,info)
       var subsections_div=
 	_sbook_generate_subsections_div(head,info.sub,info.starts_at,info.ends_at);
       fdjtAppend(new_toc,subsections_div);}
+  /*
   new_toc.onfocus=function(evt) {
-    if (sbookHUDechoes)
-      sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));}
+    if (sbookHUDechoes) sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));}
+  */
   return new_toc;
 }
 
@@ -251,9 +252,11 @@ function createSBOOKHUDnav_new(head,info)
   new_toc.onclick=sbookTOC_onclick;
   new_toc.onmouseover=sbookTOC_onmouseover;
   new_toc.onmouseout=sbookTOC_onmouseout;
+  /*
   new_toc.onfocus=function(evt) {
     if (sbookHUDechoes)
       sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));}
+  */
   /*
   if (head2) {
     var starts=head2info.starts_at; var ends=head2info.ends_at;

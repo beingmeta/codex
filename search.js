@@ -43,7 +43,7 @@ function sbookAddTag(elt,tag,prime,contextual,unique,kno)
   if (!(kno)) kno=knowlet;
   if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
   else if ((kno) && (typeof tag === "string"))
-    tag=KnowDef(tag,kno);
+    tag=(KnowDef(tag,kno))||(tag);
   // Force a sortkey
   if (!(elt.sortkey))
     if (elt.id) elt.sortkey=elt.id;
@@ -90,8 +90,9 @@ function sbookHandleTagSpec(elt,tagspec)
 	knowde=knowlet.handleSubjectEntry(tagentry.slice(1));
 	auto=true;}
       else knowde=knowlet.handleSubjectEntry(tagentry);
+      if (knowde) {
       // fdjtTrace("adding tag %o to %s",knowde,elt.id);
-      sbookAddTag(elt,knowde,prime);}}
+	sbookAddTag(elt,knowde,prime);}}}
   else {
     var entries=tagspec.split(';'); var prime=false; var auto=false;
     tag_count=tag_count+entries.length;

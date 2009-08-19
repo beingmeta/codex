@@ -132,14 +132,10 @@ function sbookAddSummary(summary,summary_div,query)
     var block_target=child.blocktarget;
     if (!(block_target)) continue;
     if (block_target===target) {
-      fdjtTrace("Found exact match for %o at %o (under %o) at %o",
-		summary,target,head,child);
       fdjtAppend(child,sum_div);
       placed=true;
       break;}
     else if (block_target.id>target_id) {
-      fdjtTrace("Found insertion point for %o at %o (under %o) at %o",
-		summary,target,head,child);
       var blockhead=sbookSummaryHead(target,head);
       var block=fdjtDiv("tocblock",blockhead,sum_div);
       fdjtInsertBefore(child,block);

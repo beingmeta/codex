@@ -53,6 +53,7 @@ var sbook_echoes_by_tribe={};
 var sbook_echoes_by_id={};
 
 var sbook_echoes_target=false;
+var sbook_echobar=false;
 
 var sbook_echo_remark_icon=
   "http://static.beingmeta.com/graphics/remarkballoon16x13.png";
@@ -210,6 +211,7 @@ function sbookCreateEchoBar(classinfo,oids)
     else img.title=info.name;
     socialelts.push(img);
     fdjtAppend(echobar,img);}
+  echobar._social_oid_length=oids.length;
   everyone_button.onclick=function(evt) {
     if (sbook_mode==="echoes") {
       sbookHUDMode(false);
@@ -233,9 +235,12 @@ function sbookCreateEchoBar(classinfo,oids)
     evt.cancelBubble=true;
     evt.preventDefault();};
   fdjtAppend(echobar,ping_button,sbookAllEchoesDiv());
+  echobar.socialelts=socialelts;
+  sbook_echobar=echobar;
   return echobar;
 }
 
+/*
 function sbookSetEchoes(echoes)
 {
   // fdjtTrace("sbookSetEchoes %o",echoes);
@@ -267,7 +272,8 @@ function sbookSetEchoes(echoes)
     fdjtSwapClass(sbookHUDsocial,"empty","filled");
   else fdjtSwapClass(sbookHUDsocial,"filled","empty");
 }
-
+*/
+ /*
 function sbookSetEchoFocus(userortribe)
 {
   // fdjtTrace("sbookSetEchoFocus %o",userortribe);
@@ -286,6 +292,7 @@ function sbookSetEchoFocus(userortribe)
     i=0; while (i<echoelts.length) 
 	   echoelts[i++].removeAttribute("focus");}
 }
+ */
 
 function sbookEchoToEntry(echo)
 {
@@ -632,6 +639,18 @@ function sbookImportEchoes(data)
 	else if ((x.tstamp)===(y.tstamp)) return 0;
 	else return 1;
       else return 1;});
+  if (sbook_echobar) {
+    var oids=social_oids;
+    var i=((sbook_echobar._social_oid_length)||(0));
+    while (i<oids.length) {
+      var oid=oids[i++]; var info=social_info[oid];
+      var img=fdjtImage(info.pic,"social",info.name);
+      img.oid=oid; img.name=info.name;
+      if (info.summary) img.title=info.summary;
+      else img.title=info.name;
+      fdjtTrace("Generated echobar entry %o from %o",img,info);
+      fdjtAppend(sbook_echobar,img);}
+    sbook_echobar._social_oid_length=oids.length;}
 }
 
 function sbook_add_echo(id,entry)
