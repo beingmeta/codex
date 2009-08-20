@@ -39,12 +39,6 @@ body.sbookpingfocus { color: inherit;}
 
 .floatright { float: right; margin-right: 3px;}
 
-/*
-p { border-left: solid transparent 2px; padding-left: 4px;}
-p.sbookfocus:hover { border-left: solid blue 2px; }
-body.ping p.sbookfocus { border-left: solid blue 2px;}
-*/
-
 /* Display/opacity rules */
 
 div.hud {
@@ -57,7 +51,6 @@ div.hudblock {
 body.hudup div#SBOOKHUD div.hudblock { opacity: 0.9;}
 body.hudup div#SBOOKHUD div.hudblock:hover { opacity: 0.9;}
 body.hudup div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.9;}
-
 
 img.hudbutton { 
   opacity: 0.2; z-index: 200;
@@ -677,26 +670,37 @@ iframe.podspot {
     position: absolute; right: 64px; width: 80%; z-index 100; 
     opacity: 0.95; background-color: ivory; min-height: 450;}
 
-span.podspot {
-  position: absolute; right: 5px; text-align: right;
-  background-color: gray; opacity: 0.5; width: 32px; height: 32px;
-  border: solid transparent 2px;}
-span.podspot img { width: 32px; height: 32px;}
-.sbookfocus span.podspot { border: solid blue 2px;}
+img.pingbutton {
+  position: absolute; right: 0px; text-align: right;
+  margin: 0px; padding: 0px; text-indent: 0px; 
+  border: solid transparent 2px;
+  opacity: 0.5;
+  display: none;}
+.sbookpingfocus img.pingbutton { display: inherit;}
 
-span.podspot img.qricon { display: none;}
+span.podspot {
+  position: absolute; right: 0px; text-align: right;
+  margin: 0px; padding: 0px; text-indent: 0px; 
+  border: solid transparent 2px;
+  opacity: 0.5;}
+.sbookfocus span.podspot { border: solid blue 2px; opacity: 0.75;}
+span.podspot img { width: 32px; height: 32px;}
+
 span.podspot:hover { opacity: 0.9;}
 body.ping span.podspot { opacity: 0.9;}
 body.echoes span.podspot { opacity: 0.9;}
 body.preview span.podspot { opacity: 0.9;}
 
-img.pingbutton {
-  position: absolute; right: 5px; text-align: right;
-  border: solid transparent 1px; background-color: lightblue;
-  display: none;}
-span.podspot img.pingbutton { position: static; margin-top: 2px;}
-.sbookpingfocus img.pingbutton {
-  display: block;}
+span.podspot img.pingbutton {
+  position: static; background-color: lightblue; display: none;
+  border: solid transparent 0px;}
+span.podspot img.qricon { display: none;}
+span.podspot img.pingbutton { display: none;}
+.sbookpingfocus span.podspot { opacity: 0.8; border: transparent;}
+.sbookpingfocus span.podspot img.pingbutton { 
+  display: inline;}
+@media print span.podspot img.qricon { display: inline;}
+@media print .sbookpingfocus span.podspot img.pingbutton { display: none;}
 
 /* Still unclassified */
 

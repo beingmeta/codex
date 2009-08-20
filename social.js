@@ -743,7 +743,7 @@ function add_podspot(target,open)
       (social_info[sources[0]].pic))
     imgsrc=social_info[sources[0]].pic||imgsrc;
   var podspot=fdjtSpan
-    ("podspot",fdjtImage(href,"qricon"),fdjtImage(imgsrc,"podimg","podspot"),button);
+    ("podspot",fdjtImage(href,"qricon"),button,fdjtImage(imgsrc,"podimg","podspot"));
   podspot.onclick=function(evt){
     evt.preventDefault(); evt.cancelBubble=true;
     if ((sbook_mode==="echoes") &&
