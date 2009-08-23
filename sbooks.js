@@ -621,6 +621,7 @@ function sbookSetHead(head)
     window.title=info.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
+    sbookSetLocation(sbook_location);
     if (!(sbook_mode)) {
       navhud.style.opacity=0.9;
       setTimeout(function() {navhud.style.opacity=null;},2500);}
@@ -657,6 +658,7 @@ var sbook_focus_tags=false;
 var sbook_last_x=false;
 var sbook_last_y=false;
 var sbook_focus_delay=100;
+var sbook_fickle_head=true;
 
 var sbook_track_window=25;
 
@@ -696,7 +698,7 @@ function sbookSetFocus(target,force,onclick)
 	       (target) : (target.sbook_head)));
     /* Only set the head if the old head isn't visible anymore.  */
     if ((head) && (sbook_head!=head))
-      if ((force) || (!(fdjtIsVisible(sbook_head))))
+      if ((force) || (sbook_fickle_head) || (!(fdjtIsVisible(sbook_head))))
 	sbookSetHead(head);
     if (sbook_focus) fdjtDropClass(sbook_focus,"sbookfocus");
     sbook_focus=target;
@@ -952,7 +954,7 @@ function sbookSetup()
   sbook_base=getsbookbase();
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;
-  // window.onscroll=sbook_onscroll;
+  window.onscroll=sbook_onscroll;
   window.onclick=sbook_onclick;
   window.ondblclick=sbook_ondblclick;
   window.onkeypress=sbook_onkeypress;

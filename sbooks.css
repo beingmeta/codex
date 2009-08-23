@@ -190,12 +190,14 @@ div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.social {
   display: none;}
 div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.social.sourced {
   display: block;}
+div#SBOOKHUD  img.button.login { display: none;}
 
-body.nosbookuser div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.button {
+
+body.nosbookuser div#SBOOKHUD div.hud#SBOOKECHOES img.button {
   display: none;}
 div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.button.login {
   display: none;}
-body.nosbookuser div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.button.login {
+body.nosbookuser div#SBOOKHUD img.button.login {
   display: block;}
 
 div#SBOOKHUD div.hud#SBOOKECHOES img.button.ping {

@@ -85,10 +85,10 @@ function sbookTestEcho(echo,sources,idroot)
       ((echo.fragid) && (echo.fragid.search(idroot)===0))));
 }
 
-function sbookSelectEchoes(results_div,sources,native,idroot)
+function sbookSelectEchoes(results_div,sources,justlocal,idroot)
 {
-  if (typeof native === "undefined")
-    native=((sources===false) || (sources.length===0));
+  if (typeof justlocal === "undefined")
+    justlocal=((sources===false) || (sources.length===0));
   var blocks=$$(".tocblock",results_div);
   var i=0; while (i<blocks.length) {
     var block=blocks[i++];  var empty=true;
@@ -105,7 +105,7 @@ function sbookSelectEchoes(results_div,sources,native,idroot)
 	     ((echo.fragid) && (echo.fragid.search(idroot)===0)))) {
 	  fdjtDropClass(summary,"hidden"); empty=false;}
 	else fdjtAddClass(summary,"hidden");
-      else if (native) {
+      else if (justlocal) {
 	fdjtDropClass(summary,"hidden"); empty=false;}
       else fdjtAddClass(summary,"hidden");}
     if (empty) fdjtAddClass(block,"hidden");
@@ -198,9 +198,18 @@ function sbookCreateEchoBar(classinfo,oids)
 	      "button everyone","everyone");
   var login_button=
     fdjtAnchor("http://webechoes.net/",
-	       fdjtImage(sbook_graphics_root+"sBooksWE_0_32x32.png","button login","login"));
-  login_button.title="Log in to see notes from your friends and community";
-  var echobar=fdjtDiv(classinfo," ",everyone_button);
+	       fdjtImage(sbook_graphics_root+"sBooksWE_0_32x32.png","button login"));
+  login_button.title="Please click to login for access to social notes and tags";
+  login_button.target="_blank";
+  login_button.onclick=function(evt) {
+    login_button.title="Click to reload this page once you've logged in";
+    setTimeout(function(){
+	login_button.href=document.location;
+	login_button.target="_self";},
+      10000);
+    evt.cancelBubble=true;};
+
+  var echobar=fdjtDiv(classinfo," ",everyone_button,login_button);
   var socialelts=[]; var echoelts=[];
   var i=0; while (i<oids.length) {
     var oid=oids[i++];
