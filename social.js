@@ -210,7 +210,7 @@ function sbookCreateEchoBar(classinfo,oids)
     fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
 	      "button everyone","everyone");
   var fb_login=sbookCreateLoginButton
-    ("http://sbooks.net/fb/login",
+    ("http://sbooks.net/fb",
      "facebook_32.png",
      "see comments and notes from your Facebook friends and groups");
   var ms_login=sbookCreateLoginButton
