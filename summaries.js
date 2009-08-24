@@ -71,21 +71,21 @@ function sbookSummaryHead(target,head,eltspec,extra)
   var basespan=fdjtSpan(false,((extra)&&(fdjtSpan("extra",extra))),eye);
   if (head.sbookinfo) {
     var info=head.sbookinfo;
-    if (info.title) fdjtAppend(basespan,info.title);
+    if (info.title) fdjtAppend(basespan,fdjtSpan("headtext",info.title));
     var heads=((info) ? (info.sbook_heads) : []);
     var curspan=basespan;
     j=heads.length-1; while (j>=0) {
       var h=heads[j--]; var hinfo=h.sbookinfo;
-      var newspan=fdjtSpan("head",hinfo.title);
+      var newspan=fdjtSpan("head",fdjtSpan("headtext",hinfo.title));
       fdjtAppend(curspan," \\ ",newspan);
       curspan=newspan;}}
   else {
-    if (head.title) fdjtAppend(basespan,head.title);
-    else if (head.id) fdjtAppend(basespan,head.id);
+    if (head.title) fdjtAppend(basespan,fdjtSpan("headtext",head.title));
+    else if (head.id) fdjtAppend(basespan,fdjtSpan("headtext",head.id));
     else {
       var text=fdjtTextify(summary,true);
-      if (text.length>50) fdjtAppend(basespan,text.slice(50));
-      else fdjtAppend(basespan,text);}}
+      if (text.length>50) fdjtAppend(basespan,text.slice);
+      else fdjtAppend(basespan,fdjtSpan("headtext",text));}}
   eye.onmouseover=sbookPreview_onmouseover;
   eye.onmouseout=sbookPreview_onmouseout;
   basespan.onclick=sbookSummary_onclick;

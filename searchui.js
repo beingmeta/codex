@@ -394,7 +394,7 @@ function createSBOOKHUDsearch()
   // input.onblur=fdjtComplete_hide;
   input.setAttribute("AUTOCOMPLETE","off");
   input.setAttribute("COMPLETIONS","SBOOKSEARCHCOMPLETIONS");
-  input.setAttribute("COMPLETECHARS"," \t;");
+  input.setAttribute("ENTERCHARS",";");
   input.setAttribute("MAXCOMPLETE","20");  
   completions.id="SBOOKSEARCHCOMPLETIONS";
   input.id="SBOOKSEARCHTEXT";

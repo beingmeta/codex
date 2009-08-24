@@ -512,7 +512,10 @@ div.spanbar div.rangebox {
   margin: 0px; padding: 0px; border: 0px;}
 
 div.tocblock {}
-div.tocblock div.tochead { text-align: left; vertical-align: middle;}
+div.tocblock div.tochead { 
+  text-align: left; vertical-align: middle; 
+  margin-left: 45px; text-indent: -45px;}
+div.tocblock div.tochead span.headtext { white-space: nowrap;}
 div.tocblock div.tochead span.extra {
   font-weight: bold; font-style: italic; font-size: 110%; color: gold;}
 div.tocblock div.tochead img { vertical-align: middle;}
