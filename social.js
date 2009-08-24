@@ -135,6 +135,7 @@ function sbookVectorEqual(v1,v2)
 
 function sbookEchoBar_onclick(evt)
 {
+  if (!(sbook_user)) return;
   var target=evt.target;
   var echobar=$P(".echobar",target);
   var sources=((echobar) && (echobar.sbooksources))||[];
@@ -186,6 +187,18 @@ function sbookSetSources(echobar,sources)
       else fdjtDropClass(child,"sourced");}}
 }
 
+function sbookCreateLoginButton(uri,image,title)
+{
+  var login_button=
+    fdjtAnchor(((uri)?(uri+"?NEXT="+encodeURIComponent(window.location)):
+		"javascript:alert('sorry, not yet implemented'); return false;"),
+	       fdjtImage(sbook_graphics_root+image,"button"));
+  fdjtAddClass(login_button,"login");
+  if (!(uri)) fdjtAddClass(login_button,"disabled");
+  login_button.title=((uri)?(title):("(coming soon) "+title));
+  return login_button;
+}
+
 function sbookCreateEchoBar(classinfo,oids)
 {
   if (!(oids)) oids=social_oids;
@@ -196,20 +209,20 @@ function sbookCreateEchoBar(classinfo,oids)
   var everyone_button=
     fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
 	      "button everyone","everyone");
-  var login_button=
-    fdjtAnchor("http://webechoes.net/",
-	       fdjtImage(sbook_graphics_root+"sBooksWE_0_32x32.png","button login"));
-  login_button.title="Please click to login for access to social notes and tags";
-  login_button.target="_blank";
-  login_button.onclick=function(evt) {
-    login_button.title="Click to reload this page once you've logged in";
-    setTimeout(function(){
-	login_button.href=document.location;
-	login_button.target="_self";},
-      10000);
-    evt.cancelBubble=true;};
-
-  var echobar=fdjtDiv(classinfo," ",everyone_button,login_button);
+  var fb_login=sbookCreateLoginButton
+    ("http://sbooks.net/fb/login",
+     "facebook_32.png",
+     "see comments and notes from your Facebook friends and groups");
+  var ms_login=sbookCreateLoginButton
+    (false,
+     "myspacelogo32x32.png",
+     "see comments and notes from your MySpace friends and groups");
+  var li_login=sbookCreateLoginButton
+    (false,
+     "linkedinlogo32x32.png",
+     "see comments and notes from your LinkedIn friends and groups");
+  var echobar=fdjtDiv(classinfo," ",everyone_button,
+		      fb_login,ms_login,li_login);
   var socialelts=[]; var echoelts=[];
   var i=0; while (i<oids.length) {
     var oid=oids[i++];
@@ -227,7 +240,8 @@ function sbookCreateEchoBar(classinfo,oids)
       evt.cancelBubble=true;
       return;}
     echobar.sbooksources=true;};
-  echobar.onclick=sbookEchoBar_onclick;
+  if (sbook_user)
+    echobar.onclick=sbookEchoBar_onclick;
   ping_button.id="SBOOKPINGBUTTON";
   ping_button.onclick=function(evt) {
     if (sbook_mode==="ping") {

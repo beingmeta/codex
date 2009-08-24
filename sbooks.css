@@ -190,15 +190,21 @@ div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.social {
   display: none;}
 div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.social.sourced {
   display: block;}
-div#SBOOKHUD  img.button.login { display: none;}
 
+#SBOOKECHOES a.login { 
+  display: none;
+  margin-bottom: 4px; margin-left: 2px;}
+#SBOOKECHOES a.login img.button { 
+  border: solid transparent 2px;}
+#SBOOKECHOES a.login:hover img { border: solid blue 2px;}
+#SBOOKECHOES a.login.disabled { opacity: 0.5;}
 
-body.nosbookuser div#SBOOKHUD div.hud#SBOOKECHOES img.button {
-  display: none;}
-div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.button.login {
-  display: none;}
-body.nosbookuser div#SBOOKHUD img.button.login {
+body.nosbookuser div#SBOOKHUD div.hud#SBOOKECHOES a.login {
   display: block;}
+body.nosbookuser a.login { display: inherit;}
+body.nosbookuser #SBOOKECHOES img.button {display: none;}
+body.nosbookuser #SBOOKECHOES a.login img.button {
+  display: inherit;}
 
 div#SBOOKHUD div.hud#SBOOKECHOES img.button.ping {
   position: absolute; left: 2px; bottom: 0px;}
