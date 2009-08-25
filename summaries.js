@@ -262,7 +262,7 @@ function _sbookExcerptSpan(excerpt)
   var ellipsis=fdjtSpan("ellipsis","...");
   var container=fdjtSpan("excerpt","\u201c",content,ellipsis,"\u201d");
   container.onclick=function(evt) {
-    var parent=$P(".summary",evt.target);
+    var parent=$P(".summary",$T(evt));
     if (parent) {
       fdjtToggleClass(parent,"showexcerpt");
       evt.preventDefault(); evt.cancelBubble=true;}};
@@ -273,9 +273,9 @@ function _sbookDetailsButton(excerpt)
 {
   var img=fdjtImage(sbook_details_icon,"detailsbutton","details");
   img.onclick=function(evt) {
-    var anchor=$P(".summary",evt.target);
+    var anchor=$P(".summary",$T(evt));
     if (anchor) fdjtToggleClass(anchor,"showdetail");
-    evt.target.blur(); if (anchor) anchor.blur();
+    $T(evt).blur(); if (anchor) anchor.blur();
     evt.preventDefault(); evt.cancelBubble=true;
     return false;};
   img.title=_("show/hide details");
@@ -286,7 +286,7 @@ function _sbookDetailsButton(excerpt)
 
 function sbookSummary_onclick(evt)
 {
-  var target=evt.target;
+  var target=$T(evt);
   while (target)
     if (target.sbook_ref) {
       fdjtScrollDiscard();
@@ -302,7 +302,7 @@ function sbookSummary_onclick(evt)
 
 function sbookSummary_onmouseover(evt)
 {
-  var target=evt.target;
+  var target=$T(evt);
   while (target)
     if (target.sbook_ref) break;
     else target=target.parentNode;

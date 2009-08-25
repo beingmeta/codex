@@ -730,7 +730,7 @@ function sbook_onmouseover(evt)
   /* If you're previewing, ignore mouse action */
   if ((sbook_preview) || (sbook_overhud) || (sbook_hudstate)) return;
   /* Get the target */
-  var target=evt.target;
+  var target=$T(evt);
   /* If you have a saved scroll location, just restore it. */
   // This shouldn't be neccessary if the HUD mouseout handlers do their thing
   // if (fdjtScrollRestore()) return;
@@ -752,7 +752,7 @@ function sbook_onmouseover(evt)
 function sbook_onmousemove(evt)
 {
   // sbook_trace_handler("sbook_onmousemove",evt);
-  var target=evt.target;
+  var target=$T(evt);
   /* If you're previewing, ignore mouse action */
   if ((sbook_preview) || (sbook_mode) || (sbook_mode) || (sbook_overhud) || (sbook_hudstate)) return;
   /* Save mouse positions */
@@ -797,7 +797,7 @@ function sbook_onkeydown(evt)
       sbook_mode=true;}
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
-  else if (fdjtIsTextInput(evt.target)) return true;
+  else if (fdjtIsTextInput($T(evt))) return true;
   else if (evt.keyCode===16) {
     if (sbook_mode) {
       fdjtDropClass(document.body,"hudup");
@@ -823,7 +823,7 @@ function sbook_onkeydown(evt)
 function sbook_onkeyup(evt)
 {
   // sbook_trace_handler("sbook_onkeyup",evt);
-  if (fdjtIsTextInput(evt.target)) return true;
+  if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.keyCode===16) {
     if (sbook_mode) 
@@ -837,13 +837,13 @@ function sbook_onkeyup(evt)
 function sbook_onkeypress(evt)
 {
   // sbook_trace_handler("sbook_onkeypress",evt);
-  if (fdjtIsTextInput(evt.target)) return true;
+  if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.charCode===43) { /* + sign */
     sbookPingHUDSetup(false);
     sbookHUDMode("ping");
     $("SBOOKPINGINPUT").focus();
-    evt.target.blur();
+    $T(evt).blur();
     evt.cancelBubble=true;
     evt.preventDefault();}
   /* ?, F, f, S or s */
@@ -870,7 +870,7 @@ function sbook_onclick(evt)
   // sbook_trace_handler("sbook_onclick",evt);
   if (sbook_overhud) return true;
   sbookHUDMode(false);
-  var target=evt.target; var head;
+  var target=$T(evt); var head;
   while (target)
     if (target.sbook_head) {head=target.sbook_head; break;}
     else if ((target.sbookinfo) && (target.sbookinfo.level)) {

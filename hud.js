@@ -214,7 +214,7 @@ function sbookPreviewNoMode(elt)
 
 function sbookPreview_onmouseover(evt)
 {
-  var target=evt.target; var ref;
+  var target=$T(evt); var ref;
   while (target)
     if (target.sbook_ref) break;
     else if (target.getAttribute("PREVIEW")) break;
@@ -236,7 +236,7 @@ function sbookPreview_onmouseout(evt)
 
 function sbookPreview_onclick(evt)
 {
-  var target=evt.target; var ref;
+  var target=$T(evt); var ref;
   while (target)
     if (target.sbook_ref) break;
     else if (target.getAttribute("PREVIEW")) break;
@@ -290,7 +290,7 @@ function sbookHUD_onmouseout(evt)
 
 function sbookHUD_onclick(evt)
 {
-  var target=evt.target;
+  var target=$T(evt);
   while (target)
     if ((target.tagName==="A") || (target.tagName==="INPUT") ||
 	(target.onclick) || (target.hasAttribute("onclick")))
@@ -314,7 +314,7 @@ function sbookGetStableId(elt)
 function sbookTOC_onmouseover(evt)
 {
   // sbook_trace_handler("sbookTOC_onmouseover",evt);
-  var target=sbook_get_headelt(evt.target);
+  var target=sbook_get_headelt($T(evt));
   sbookHUD_onmouseover(evt);
   fdjtCoHi_onmouseover(evt);
   if (target===null) return;
@@ -376,7 +376,7 @@ function sbookTOCHighlight(secthead)
 function sbookTOC_onclick(evt)
 {
   // sbook_trace_handler("sbookTOC_onclick",evt);
-  var target=sbook_get_headelt(evt.target);
+  var target=sbook_get_headelt($T(evt));
   var headelt=((target)&&(target.sbook_ref));
   if (headelt===null) {
     sbookHUDToggle("toc");

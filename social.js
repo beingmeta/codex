@@ -136,7 +136,7 @@ function sbookVectorEqual(v1,v2)
 function sbookEchoBar_onclick(evt)
 {
   if (!(sbook_user)) return;
-  var target=evt.target;
+  var target=$T(evt);
   var echobar=$P(".echobar",target);
   var sources=((echobar) && (echobar.sbooksources))||[];
   var changed=false;
@@ -246,7 +246,7 @@ function sbookCreateEchoBar(classinfo,oids)
   ping_button.onclick=function(evt) {
     if (sbook_mode==="ping") {
       sbookHUDMode(false);
-      evt.target.blur();
+      $T(evt).blur();
       evt.cancelBubble=true;
       evt.preventDefault();
       return;}
@@ -254,7 +254,7 @@ function sbookCreateEchoBar(classinfo,oids)
     sbookPingHUDSetup(false);
     fdjtAutoPrompt_onfocus(evt);
     $("SBOOKPINGINPUT").focus();
-    evt.target.blur();
+    $T(evt).blur();
     evt.cancelBubble=true;
     evt.preventDefault();};
   fdjtAppend(echobar,ping_button,sbookAllEchoesDiv());
@@ -288,7 +288,7 @@ function sbookEchoToEntry(echo)
     fdjtScrollRestore();
     window.setTimeout("sbook_preview=false;",100);};
   anchor.onclick=function(evt) {
-    evt.target.blur(); sbookScrollTo(target);
+    $T(evt).blur(); sbookScrollTo(target);
     evt.cancelBubble=true; evt.preventDefault();}
   entry.uri=echo.uri; entry.tags=echo.tags; entry.fragid=echo.fragid;
   if (echo.tribes) entry.tribes=echo.tribes;
@@ -325,7 +325,7 @@ function sbookEchoIcons(echo,extra)
     add_podspot(target,true);}; 
   showmore.title=_("See more information");
   showmore.onclick=function(evt){
-    fdjtToggleClass($P('.echo',evt.target),'extras','shown',true);}; 
+    fdjtToggleClass($P('.echo',$T(evt)),'extras','shown',true);}; 
   return fdjtSpan("icons",age,showmore,comment,eye);
 }
 
@@ -505,7 +505,7 @@ function sbookPingHUDSetup(origin)
 function sbookPingMode_onclick_handler(mode)
 {
   return function(evt) {
-    var pingbox=$P(".pingform",evt.target);
+    var pingbox=$P(".pingform",$T(evt));
     if (fdjtHasClass(pingbox,mode))
       fdjtDropClass(pingbox,mode);
     else if (fdjtHasClass(pingbox,pingmode_pat))
