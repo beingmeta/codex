@@ -395,11 +395,12 @@ function sbook_toc_builder(child,tocstate)
   var curlevel=tocstate.curlevel;
   var level=0;
   // Location tracking and TOC building
-  if (child.nodeType===Node.TEXT_NODE) {
+  if (child.nodeType===3) {
     var width=child.nodeValue.length;
-    child.sbookloc=tocstate.location+width/2;
+    // Don't bother doing this (doesn't work in IE anyway)
+    // child.sbookloc=tocstate.location+width/2;
     tocstate.location=tocstate.location+width;}
-  else if (child.nodeType!==Node.ELEMENT_NODE)
+  else if (child.nodeType!==1)
     child.sbook_head=curhead;
   else if (level=sbookHeadLevel(child)) 
     _sbook_process_head(child,tocstate,level,curhead,curinfo,curlevel);
@@ -707,9 +708,11 @@ function sbookSetFocus(target,force,onclick)
 
 function sbookGetXYFocus(xoff,yoff)
 {
+  var scrollx=window.scrollX||document.body.scrollLeft;
+  var scrolly=window.scrollY||document.body.scrollLeft;
   if (!(xoff)) {
-    xoff=sbook_last_x+window.scrollX;
-    yoff=sbook_last_y+window.scrollY;}
+    xoff=sbook_last_x+scrollx;
+    yoff=sbook_last_y+scrolly;}
   var nodes=sbook_nodes;
   var bot=0; var top=nodes.length-1; var mid=Math.floor(top/2);
   var node=nodes[mid]; var next=nodes[mid+1]; var target=false;
@@ -740,11 +743,12 @@ function sbook_onmouseover(evt)
     else if (target.sbookinfo) break;
     else if (target.parentNode===document.body) break;
     else target=target.parentNode;
+  var scrollx=window.scrollX||document.body.scrollLeft;
+  var scrolly=window.scrollY||document.body.scrollLeft;
   /* These are top level elements which aren't much use as heads or foci */
   if ((target===null) || (target===document.body) ||
       (!((target) && ((target.Xoff) || (target.Yoff)))))
-    target=sbookGetXYFocus
-      (window.scrollX+evt.clientX,window.scrollY+evt.clientY);
+    target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY);
   fdjtDelayHandler
     (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");
 }
@@ -766,7 +770,9 @@ function sbook_onmousemove(evt)
     else target=target.parentNode;
   /* These are all cases which onmouseover will handle */
   if ((target) && ((target.Xoff) || (target.Yoff))) return;
-  target=sbookGetXYFocus(window.scrollX+evt.clientX,window.scrollY+evt.clientY);
+  var scrollx=window.scrollX||document.body.scrollLeft;
+  var scrolly=window.scrollY||document.body.scrollLeft;
+  target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY);
   fdjtDelayHandler
     (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");
 }
@@ -776,8 +782,10 @@ function sbook_onscroll(evt)
   // sbook_trace_handler("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
   if ((sbook_preview) || (sbook_mode) || (sbook_overhud)) return;
-  var xoff=window.scrollX+sbook_last_x;
-  var yoff=window.scrollY+sbook_last_y;
+  var scrollx=window.scrollX||document.body.scrollLeft;
+  var scrolly=window.scrollY||document.body.scrollLeft;
+  var xoff=scrollx+sbook_last_x;
+  var yoff=scrolly+sbook_last_y;
   var target=sbookGetXYFocus(xoff,yoff);
   fdjtDelayHandler
     (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");

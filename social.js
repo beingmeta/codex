@@ -78,7 +78,8 @@ function sbookTestEcho(echo,sources,idroot)
 {
   return
     (((sources===true) ||
-      ((sources.indexOf) && (sources.indexOf(echo.user)>=0)) ||
+      ((sources.indexOf) ? (sources.indexOf(echo.user)>=0) :
+       ((sources instanceof Array) && (fdjtIndexOf(sources,echo.user)>=0))) ||
       ((sources.indexOf) && (echo.tribes) &&
        (fdjtOverlaps(echo.tribes,sources)))) &&
      ((!(idroot)) ||
@@ -98,7 +99,9 @@ function sbookSelectEchoes(results_div,sources,justlocal,idroot)
       var echo=summary.sbookecho;
       if (echo)
 	if (((sources===true) ||
-	     ((sources.indexOf) && (sources.indexOf(echo.user)>=0)) ||
+	     ((sources.indexOf) ? (sources.indexOf(echo.user)>=0)  :
+	      ((sources instanceof Array) &&
+	       (fdjtIndexOf(sources,echo.user)>=0))) ||
 	     ((sources.indexOf) && (echo.tribes) &&
 	      (fdjtOverlaps(echo.tribes,sources)))) &&
 	    ((!(idroot)) ||
@@ -118,7 +121,7 @@ function sbookGetSourcesUnder(idroot)
   var i=0; while (i<sbook_allechoes.length) {
     var echo=sbook_allechoes[i++];
     if (echo.fragid.search(idroot)===0)
-      if (users.indexOf(echo.user)<0) users.push(echo.user);}
+      if (fdjtIndexOf(users.indexOf,echo.user)<0) users.push(echo.user);}
   return users;
 }
 
@@ -143,8 +146,8 @@ function sbookEchoBar_onclick(evt)
   if (!(echobar)) return; /* Warning? */
   if (target.oid) {
     if (evt.shiftKey) 
-      if (sources.indexOf(target.oid)>=0) {
-	sources.splice(sources.indexOf(target.oid),1);
+      if (fdjtIndexOf(sources,target.oid)>=0) {
+	sources.splice(fdjtIndexOf(sources,target.oid),1);
 	fdjtDropClass(target,"selected");}
       else {
 	fdjtAddClass(target,"selected");
@@ -181,7 +184,7 @@ function sbookSetSources(echobar,sources)
   var i=0; while (i<children.length) {
     var child=children[i++];
     if (child.nodeType===1) {
-      if ((sources.indexOf(child.oid)>=0) ||
+      if ((fdjtIndexOf(sources,child.oid)>=0) ||
 	  (fdjtOverlaps(sources,child.oid)))
 	fdjtAddClass(child,"sourced");
       else fdjtDropClass(child,"sourced");}}
@@ -487,7 +490,7 @@ function sbookPingHUDSetup(origin)
 		if (echo.tags) {
 		  var tags=echo.tags; var j=0; while (j<tags.length) {
 		    var tag=tags[j++];
-		    if (seen_tags.indexOf(tag)<0) {
+		    if (fdjtIndexOf(seen_tags,tag)<0) {
 		      var completion=knoCompletion(tag); seen_tags.push(tag);
 		      completion.setAttribute("showonempty","yes");
 		      fdjtAppend(tags_elt,completion," ");}}}}
@@ -495,7 +498,7 @@ function sbookPingHUDSetup(origin)
   var tags=gather_tags(sbook_focus);
   var k=0; while (k<tags.length) {
     var tag=tags[k++];
-    if (seen_tags.indexOf(tag)<0) {
+    if (fdjtIndexOf(seen_tags,tag)<0) {
       seen_tags.push(tag); fdjtAppend(tags_elt,knoCompletion(tag,false)," ");}}
   fdjtReplace("SBOOKPINGTAGS",tags_elt);
   // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);

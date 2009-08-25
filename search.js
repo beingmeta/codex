@@ -50,8 +50,8 @@ function sbookAddTag(elt,tag,prime,contextual,unique,kno)
     else if (elt.sortKey) elt.sortkey=elt.sortKey();
     else elt.sortkey=elt.toString();
   var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
-  if (elt.hasOwnProperty('tags'))
-    if (elt.tags.indexOf(dterm)<0) elt.tags.push(dterm);
+  if ((elt.hasOwnProperty) && (elt.hasOwnProperty('tags')))
+    if (fdjtIndexOf(elt.tags,dterm)<0) elt.tags.push(dterm);
     else return;
   else elt.tags=new Array(dterm);
   if (sbook_trace_tagging) 
@@ -230,11 +230,11 @@ function sbookDoSearch(query,results)
     var elt=base[j++];
     if (elt.pingid) {
       var user=elt.user; var tribes=elt.tribes;
-      if (sources.indexOf(user)<0) sources.push(user);
+      if (fdjtIndexOf(sources,user)<0) sources.push(user);
       if (tribes) {
 	var k=0; while (k<tribes.length) {
 	  var tribe=tribes[k++];
-	  if (sources.indexOf(tribe)<0) sources.push(tribe);}}}
+	  if (fdjtIndexOf(sources,tribe)<0) sources.push(tribe);}}}
     results[elt.sortkey]=1;}
   results._sources=sources;
   var i=0; while (i<query.length) {
@@ -270,7 +270,7 @@ function sbookGetRefiners(results)
       var tags=item.tags; var j=0; while (j<tags.length) {
 	var tag=tags[j++];
 	// If the tag is already part of the query, we ignore it.
-	if (query.indexOf(tag)>=0) {}
+	if (fdjtIndexOf(query,tag)>=0) {}
 	// If the tag is already a refiner, we increase its score.
 	else if (!(refiners[tag])) {
 	  // If the tag isn't a refiner, we initialize its score
