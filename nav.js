@@ -127,6 +127,7 @@ function _sbook_generate_subsections_div(head,subsections,start,end)
     var span=fdjtDiv("sbookhudspan","\u00A0");
     var namespan=_sbook_add_head(sectlist,subsection,info,true);
     var width=100*(spanlen/len)+"%";
+    if (!(namespan)) continue;
     namespan.fdjt_cohi=span;
     span.fdjt_cohi=namespan;
     if (odd) {
@@ -154,7 +155,7 @@ function _sbook_generate_subsections_div(head,subsections,start,end)
 function _sbook_add_head(toc,head,headinfo,spanp)
 {
   var level=headinfo.level;
-  var content=headinfo.content;
+  var content=(headinfo.toctitle)||headinfo.content;
   var sectid="SBOOKHEAD"+level;
   var parent=headinfo.sbook_head;
   var pinfo=sbook_getinfo(parent);
@@ -179,6 +180,8 @@ function _sbook_add_head(toc,head,headinfo,spanp)
   else if (!(content)) {
     // fdjtLog("No content for %o info=%o",head,headinfo);
     return null;}
+  else if (typeof content === 'string')
+    content_elt.appendChild(fdjtSpan("sbooktoctitle",content));
   else {
     var i=0; while (i<content.length) {
       var node=content[i++].cloneNode(true);

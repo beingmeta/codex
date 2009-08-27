@@ -298,7 +298,10 @@ function _sbook_transplant_content(content)
 }
 function _sbook_get_title(head)
 {
-  var title=head.title;
+  var title=
+    (head.toctitle)||
+    (fdjtCacheAttrib(head,"toctitle"))||
+    (head.title);
   if (!(title))
     return fdjtTextify(head,true);
   else if (typeof title === "string") {
@@ -329,6 +332,7 @@ function _sbook_process_head(head,tocstate,level,curhead,curinfo,curlevel)
   headinfo.sub=new Array(); headinfo.id=headid;
   headinfo.content=_sbook_transplant_content(head.childNodes);
   headinfo.title=_sbook_get_title(head);
+  headinfo.toctitle=head.getAttribute('toctitle');
   headinfo.next=false; headinfo.prev=false;
   if (level>curlevel) {
     /* This is the simple case where we are a subhead
@@ -408,7 +412,7 @@ function sbook_toc_builder(child,tocstate)
     var width=fdjtFlatWidth(child);
     var loc=tocstate.location+width/2;
     tocstate.location=tocstate.location+width;
-    if (child.id) {
+    if (true) { /*  (child.id) */
       fdjtComputeOffsets(child);
       if (child.Xoff) sbook_nodes.push(child);
       child.sbookloc=loc;
@@ -594,11 +598,10 @@ function sbook_title_path(head)
 {
   var info=sbook_getinfo(head);
   if (info.title) {
-    var title=info.title;
     var scan=sbook_getinfo(info.elt.sbook_ref);
     while (scan) {
       if (scan.title) title=title+" // "+scan.title;
-      scan=sbook_getinfo(scan.elt.headlet);}
+      scan=sbook_getinfo(scan.elt.sbook_head);}
     return title;}
   else return null;
 }
@@ -934,6 +937,47 @@ function sbook_geturi(id,base)
   else return false;
 }
 
+/* Getting metadata */
+
+function sbookGetSettings()
+{
+  var h1=fdjtGetMeta("SBOOKHEAD1");
+  if (h1) {
+    var rules=fdjtSemiSplit(h1);
+    var i=0; while (i<rules.length) {
+      sbook_headlevels[rules[i++]]=1;}}
+  var h2=fdjtGetMeta("SBOOKHEAD2");
+  if (h2) {
+    var rules=fdjtSemiSplit(h2);
+    var i=0; while (i<rules.length) {
+      sbook_headlevels[rules[i++]]=2;}}
+  var h3=fdjtGetMeta("SBOOKHEAD3");
+  if (h3) {
+    var rules=fdjtSemiSplit(h3);
+    var i=0; while (i<rules.length) {
+      sbook_headlevels[rules[i++]]=3;}}
+  var h4=fdjtGetMeta("SBOOKHEAD4");
+  if (h4) {
+    var rules=fdjtSemiSplit(h4);
+    var i=0; while (i<rules.length) {
+      sbook_headlevels[rules[i++]]=4;}}
+  var h5=fdjtGetMeta("SBOOKHEAD5");
+  if (h5) {
+    var rules=fdjtSemiSplit(h5);
+    var i=0; while (i<rules.length) {
+      sbook_headlevels[rules[i++]]=5;}}
+  var h6=fdjtGetMeta("SBOOKHEAD6");
+  if (h6) {
+    var rules=fdjtSemiSplit(h6);
+    var i=0; while (i<rules.length) {
+      sbook_headlevels[rules[i++]]=6;}}
+  var h7=fdjtGetMeta("SBOOKHEAD7");
+  if (h7) {
+    var rules=fdjtSemiSplit(h7);
+    var i=0; while (i<rules.length) {
+      sbook_headlevels[rules[i++]]=7;}}
+}
+
 /* Initialization */
 
 var _sbook_setup=false;
@@ -946,6 +990,7 @@ function sbookSetup()
   if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
   var fdjt_done=new Date();
+  sbookGetSettings();
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX");
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;

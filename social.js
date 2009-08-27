@@ -617,7 +617,7 @@ function sbookImportEchoes(data)
       img.oid=oid; img.name=info.name;
       if (info.summary) img.title=info.summary;
       else img.title=info.name;
-      fdjtTrace("Generated echobar entry %o from %o",img,info);
+      // fdjtTrace("Generated echobar entry %o from %o",img,info);
       fdjtAppend(sbook_echobar,img);}
     sbook_echobar._social_oid_length=oids.length;}
 }
@@ -732,7 +732,7 @@ function gather_tribes(elt,results)
 function sbookAddPingButton(target)
 {
   if (target.pingbutton) return target.pingbutton;
-  fdjtTrace("adding ping button to %o",target);
+  // fdjtTrace("adding ping button to %o",target);
   var imgsrc=sbook_graphics_root+"remarkballoon32x32.png";
   var button=fdjtImage(imgsrc,"pingbutton","ping");
   button.onclick=function(evt){
@@ -740,7 +740,7 @@ function sbookAddPingButton(target)
     sbook_ping(target,false);};
   target.pingbutton=button;
   fdjtPrepend(target,button);
-  fdjtTrace("added ping button %o to %o",button,target);
+  // fdjtTrace("added ping button %o to %o",button,target);
   return button;
 }
 

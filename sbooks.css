@@ -34,7 +34,9 @@
 .sbookhead { text-decoration: underline;}
 body.sbookhead { text-decoration: none;}
 
-.sbookpingfocus { color: blue;}
+.sbookfocus { color: blue;}
+.sbookpingfocus { color: darkblue;}
+body.sbookfocus { color: inherit;}
 body.sbookpingfocus { color: inherit;}
 
 .floatright { float: right; margin-right: 3px;}
