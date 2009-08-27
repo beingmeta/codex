@@ -1,0 +1,39 @@
+blockquote { margin-left: 3em;}
+div.sectblock { margin-left: 1em; margin-right: 1em;}
+div.parablock { margin-left: 3em; text-indent: -2em;}
+div.continuation { margin-left: 1em; margin-right: 1em;}
+div.header {}
+
+div.header span.enum { padding-right: 8px;}
+
+div.sectblock div.header { font-weight: bold;}
+div.sectblock.division > div.header { text-align: center; font-size: 175%;}
+div.sectblock.title > div.header { text-align: center; font-size: 150%;}
+div.sectblock.subtitle > div.header { text-align: center; font-size: 130%;}
+div.sectblock.division > div.header span.enum:after { content: '. ';}
+div.sectblock.title > div.header span.enum:after { content: '. ';}
+div.sectblock.subtitle > div.header span.enum:after { content: '. ';}
+
+div.parablock span.header span.enum { 
+  position: relative; right: 2px;}
+div.parablock span.header { 
+  font-weight: bold;}
+div.parablock span.header:after { 
+  content: '. ';}
+
+span.term { font-weight: bold; font-style: italic;}
+span.enum { font-weight: bold;}
+span.commitee-name { font-weight: bold; font-variant: smallcaps;}
+span.cosponsor { font-style: italic; font-variant: smallcaps;}
+
+body.housebill { margin-left: 10%; margin-right: 10%;}
+
+div.congress { float: left; text-align: left; clear: left;}
+div.session { float: right; text-align: right; clear: right;}
+div.legis-num { font-weight: bold; text-align: center; font-size: 200%;}
+div.current-chamber { text-align: center; font-size: 150%;}
+div.action-date { text-align: center; font-size: 125%;}
+
+div.legis-type { font-weight: bold; text-align: center; font-size: 200%;}
+div.official-title { 
+  text-align: center; font-size: 150%;}

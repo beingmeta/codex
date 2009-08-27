@@ -1,0 +1,26 @@
+body {
+ /* font-family: sans,sans-serif;  */
+ width: 30em; font-size: 16px;
+ margin-left: auto; margin-right: auto;}
+span.poetry {
+  display: block; margin-left: 3em; text-indent: -2em;
+  margin-bottom: 8px;
+  line-height: 100%;}
+span.poetry.level1 { }
+span.poetry.level1 span.poetry.level1 { margin-left: 0em;}
+span.poetry.level2 { margin-left: 5em;}
+span.poetry.level3 { margin-left: 7em;}
+
+span.poetry span.versemark { font-size: 75%;}
+span.poetry span.versemark:before { content: '(';}
+span.poetry span.versemark:after { content: ') ';}
+span.poetry span.verse:before { content: '';}
+
+span.verse:before { content: ' // '; font-weight: bold;}
+span.verse:first-child:before { content: '';}
+span.verse[versenum=1]:before { content: '';}
+span.verse[versenum=1]:first-child:before { content: '';}
+
+span.versemark { font-weight: bold;}
+span.footnote {
+  font-weight: bold; color: green; vertical-align: super; font-size: 75%;}
