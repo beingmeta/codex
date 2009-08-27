@@ -43,6 +43,8 @@ var sbook_webechoes_root="http://webechoes.net/";
 var sbook_base=false;
 // This is the sbook ping AJAX ping uri
 var sbook_ping_uri="/echoes/ajaxping.fdcgi";
+// This is the deepest TOC level to show for navigation
+var sbook_tocmax=false;
 
 // This is the current head element
 var sbook_head=false;
@@ -423,13 +425,14 @@ function sbook_toc_builder(child,tocstate)
 		 sbook_toc_builder(children[i++],tocstate);}}
   var headtag=(((child.sbookinfo) && (child.sbookinfo.title)) &&
 	       ("\u00A7"+child.sbookinfo.title));
+  if (headtag)
+    sbookAddTag(child,headtag,true,false,true,tocstate.knowlet);
   if ((child.id) && (child.getAttribute) && (child.getAttribute("TAGS"))) {
     var tagstring=child.getAttribute("TAGS");
     var tags=fdjtSemiSplit(fdjtUnEntify(tagstring));
     var knowdes=[]; var prime_knowdes=[];
     if (headtag) {
-      knowdes.push(headtag); prime_knowdes.push(headtag);
-      sbookAddTag(child,headtag,true,false,true,tocstate.knowlet);}
+      knowdes.push(headtag); prime_knowdes.push(headtag);}
     var i=0; while (i<tags.length) {
       var tag=tags[i++]; var knowde=false;
       var prime=(tag[0]==="*");
@@ -618,7 +621,7 @@ function sbookSetHead(head)
     if (sbook_debug) fdjtLog("Redundant SetHead");
     return;}
   else {
-    var info=head.sbookinfo;
+    var info=sbook_getinfo(head);
     // sbook_trace_focus("sbookSetHead",head);
     var navhud=createSBOOKHUDnav(head,info);
     fdjtReplace("SBOOKTOC",navhud);
@@ -976,6 +979,8 @@ function sbookGetSettings()
     var rules=fdjtSemiSplit(h7);
     var i=0; while (i<rules.length) {
       sbook_headlevels[rules[i++]]=7;}}
+  var tocmax=fdjtGetMeta("SBOOKTOCMAX");
+  if (tocmax) sbook_tocmax=parseInt(tocmax);
 }
 
 /* Initialization */

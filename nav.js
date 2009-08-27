@@ -193,6 +193,9 @@ function _sbook_add_head(toc,head,headinfo,spanp)
 
 function createSBOOKHUDnav(head,info)
 {
+  if (sbook_tocmax)
+    while (info.level>sbook_tocmax) {
+      head=info.sbook_head; info=sbook_getinfo(head);}
   var id=fdjtForceId(head);
   if (sbook_debug)
     fdjtLog('Generating TOC from from %o/%s (%o)',head,id,info);
@@ -283,7 +286,6 @@ function sbookTOCHead(head,eltspec)
     var headspan=((eltspec) ? (fdjtNewElt(eltspec,info.title)) :
 		  (fdjtDiv("tochead",info.title)));
     var curspan=headspan;
-    fdjtTrace("sbookTOCHead head=%o info=%o heads=%o",head,info,heads);
     j=heads.length-1; while (j>=0) {
       var h=heads[j--]; var hinfo=h.sbookinfo;
       var newspan=fdjtSpan("head",hinfo.title);
