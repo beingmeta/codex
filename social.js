@@ -366,7 +366,7 @@ function sbookCreatePingHUD()
   msg.onfocus=sbookPing_onfocus;
   var id_elt=fdjtInput("HIDDEN","FRAGID","","#SBOOKPINGFRAGID");
   var uri_elt=fdjtInput("HIDDEN","URI","","#SBOOKPINGURI");
-  var src_elt=fdjtInput("HIDDEN","URI","","#SBOOKPINGSRC");
+  var src_elt=fdjtInput("HIDDEN","SRC","","#SBOOKPINGSRC");
   var title_elt=fdjtInput("HIDDEN","TITLE","","#SBOOKPINGTITLE");
   var relay_elt=fdjtInput("HIDDEN","RELAY","","#SBOOKPINGRELAY");
   var sync_input=
@@ -405,7 +405,7 @@ function sbookCreatePingHUD()
 	    fdjtDiv(".message.echoing","echoing!"));
   // Specifying the .tags class causes the tags tab to be open by default
   var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform.tags",
-			  id_elt,uri_elt,title_elt,relay_elt,user_elt,
+			  id_elt,uri_elt,src_elt,title_elt,relay_elt,user_elt,
 			  sync_input,messages_elt,
 			  fdjtDiv("controls",sbookPingControls(),msg),
 			  sbookSelectTribe(),
@@ -461,16 +461,12 @@ function sbookPingHUDSetup(origin)
 {
   var target;
   if (!(origin))
-    if (sbook_ping_focus)
-      target=origin=sbook_ping_focus;
-    else {
-      target=origin=sbook_focus;}
+    target=origin=sbook_focus;
   else if (origin.fragid)
     target=$(origin.fragid);
   else target=origin;
   if (sbook_ping_target===target) return;
-  sbook_ping_focus=target;
-  fdjtAddClass(sbook_ping_focus,"sbookpingfocus");
+  fdjtAddClass(sbook_focus,"sbookpingfocus");
   sbook_ping_target=target;
   var info=((target) &&
 	    ((target.sbookinfo)||
@@ -480,6 +476,11 @@ function sbookPingHUDSetup(origin)
   $("SBOOKPINGSYNC").value=sbook_echo_syncstamp;
   $("SBOOKPINGTITLE").value=
     (origin.title)||(target.title)||(sbook_get_titlepath(info));
+  fdjtTrace("PingSetup origin=%o target=%o uri=%o src=%o sync=%o title=%o",
+	    origin,target,$("SBOOKPINGURI").value,
+	    $("SBOOKPINGSRC").value,
+	    $("SBOOKPINGSYNC").value,
+	    $("SBOOKPINGTITLE").value);
   if (origin.echo)
     $("SBOOKPINGRELAY").value=(origin.echo);
   else $("SBOOKPINGRELAY").value="";
@@ -828,6 +829,7 @@ function sbook_search_echoes(query)
 
 function sbook_ping(target,echo)
 {
+  fdjtTrace("sbook_ping target=%o",target);
   if (sbook_ping_target!==target) {
     $("SBOOKPINGFORM").reset();
     sbookPingHUDSetup(target);}

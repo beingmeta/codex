@@ -56,9 +56,6 @@ var sbook_tocmax=false;
 var sbook_head=false;
 // This is the 'focus element' approximately under the mouse.
 var sbook_focus=false;
-// This is the 'clicked focus element' which is preferred for
-// pinging
-var sbook_ping_focus=false;
 // This is the current query
 var sbook_query=false;
 // Which sources to search.  False to exclude echoes, true to include
@@ -675,7 +672,7 @@ var sbook_fickle_head=true;
 
 var sbook_track_window=25;
 
-function sbookSetFocus(target,force,onclick)
+function sbookSetFocus(target,force)
 {
   // sbook_trace_focus("sbookSetFocus",target);
   if (!(target)) return null;
@@ -692,16 +689,6 @@ function sbookSetFocus(target,force,onclick)
   if (fdjtHasParent(target,sbookHUD)) return;
   // And don't change the focus if you're pinging
   if (sbook_mode==="ping") return;
-  if (onclick) {
-    if (sbook_ping_focus===target) {
-      fdjtDropClass(target,"sbookpingfocus");
-      sbook_ping_focus=false;}
-    else {
-      if (sbook_ping_focus)
-	fdjtDropClass(sbook_ping_focus,"sbookpingfocus");
-      sbook_ping_focus=target;
-      if (!(target.pingbutton)) sbookAddPingButton(target);
-      fdjtAddClass(target,"sbookpingfocus");}}
   // If the target has changed, update the location
   if (target!==sbook_focus) {
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
@@ -899,18 +886,9 @@ function sbook_onclick(evt)
     else target=target.parentNode;
   if (!(target)) return;
   else if (target===sbookHUD) return;
-  if ((sbook_ping_focus) && (fdjtHasParent(target,sbook_ping_focus))) {
-    var parent=sbook_ping_focus.parentNode;
-    if ((parent.id) &&
-	((parent.sbook_head)===(sbook_ping_focus.sbook_head)) &&
-	(fdjtIsVisible(parent)))
-      sbookSetFocus(parent,true,true);
-    else {
-      fdjtDropClass(sbook_ping_focus,"sbookpingfocus");
-      sbook_ping_focus=false;}}
-  else {
-    sbookSetFocus(target,true,true);}
-}    
+  if (fdjtHasParent(target,sbook_focus)) 
+    sbook_ping(target);
+}
 
 function sbook_ondblclick(evt)
 {
@@ -954,12 +932,17 @@ function sbook_geturi(id,base)
 
 function sbook_getsrc(elt)
 {
+  var id=false; var src=sbook_src;
   if (typeof elt !== "string") elt=$(elt);
   if (!(elt)) return null;
   while (elt)
-    if (elt.getAttribute("SBOOKSRC")) return elt.getAttribute("SBOOKSRC");
+    if ((elt.getAttribute) && (elt.getAttribute("SBOOKSRC"))) {
+      src=elt.getAttribute("SBOOKSRC"); break;}
+    else if ((!(id)) && (elt.id)) {
+      id=elt.id; elt=elt.parentNode;}
     else elt=elt.parentNode;
-  return sbook_src;
+  if (id) return src+"#"+id;
+  else return src;
 }
 
 /* Getting metadata */
