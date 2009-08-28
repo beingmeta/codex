@@ -117,7 +117,11 @@ body.bible span.poetry.level1 span.poetry.level1 { margin-left: 0em;}
 body.bible span.poetry.level2 { margin-left: 5em;}
 body.bible span.poetry.level3 { margin-left: 7em;}
 
-body.bible span.poetry span.versemark { font-size: 75%;}
+body.bible span.verse span.versemark + span.poetry.level1 { 
+  margin-left: 0px; display: inline;}
+
+body.bible span.poetry span.versemark {
+  font-family: sans,sans-serif; font-size: 75%;}
 body.bible span.poetry span.versemark:before { content: '(';}
 body.bible span.poetry span.versemark:after { content: ') ';}
 body.bible span.poetry span.verse:before { content: '';}
