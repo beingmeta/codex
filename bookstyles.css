@@ -1,5 +1,6 @@
 body.sbook {
   margin-top: 64px; margin-bottom: 64px;
+  margin-left: 64px; margin-right: 64px;
   background-color: ivory;}
 body.sbook h1#TITLEPAGE { 
   background-color: lightgray;
