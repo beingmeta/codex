@@ -110,9 +110,8 @@ body.bible {
  margin-left: auto; margin-right: auto;}
 body.bible span.poetry {
   display: block; margin-left: 3em; text-indent: -2em;
-  margin-bottom: 8px;
   line-height: 100%;}
-body.bible span.poetry.level1 { }
+body.bible span.poetry.level1 { margin-top: 5px;}
 body.bible span.poetry.level1 span.poetry.level1 { margin-left: 0em;}
 body.bible span.poetry.level2 { margin-left: 5em;}
 body.bible span.poetry.level3 { margin-left: 7em;}

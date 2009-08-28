@@ -31,7 +31,7 @@
 
 /* Highlight rules */
 
-.sbookhead { text-decoration: underline;}
+.sbookhead { text-decoration: overline;}
 body.sbookhead { text-decoration: none;}
 
 .sbookfocus { color: blue;}
@@ -79,7 +79,7 @@ div#SBOOKHUD.browsing img.hudbutton[alt='index'] { opacity: 0.9;}
 div#SBOOKHUD div.hudblock:hover { opacity: 0.9;}
 div#SBOOKHUD div.hudblock.hover { opacity: 0.9;}
 /* This is a little more visible by default */
-div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.2;}
+div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.1;}
 div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.9;}
 
 div#SBOOKHUD div.sbooksearch.hover div.completions { display: block;}
