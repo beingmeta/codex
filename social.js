@@ -366,6 +366,7 @@ function sbookCreatePingHUD()
   msg.onfocus=sbookPing_onfocus;
   var id_elt=fdjtInput("HIDDEN","FRAGID","","#SBOOKPINGFRAGID");
   var uri_elt=fdjtInput("HIDDEN","URI","","#SBOOKPINGURI");
+  var src_elt=fdjtInput("HIDDEN","URI","","#SBOOKPINGSRC");
   var title_elt=fdjtInput("HIDDEN","TITLE","","#SBOOKPINGTITLE");
   var relay_elt=fdjtInput("HIDDEN","RELAY","","#SBOOKPINGRELAY");
   var sync_input=
@@ -475,6 +476,7 @@ function sbookPingHUDSetup(origin)
 	    ((target.sbookinfo)||
 	     ((target.sbook_head) && (target.sbook_head.sbookinfo))));
   $("SBOOKPINGURI").value=sbook_geturi(target);
+  $("SBOOKPINGSRC").value=sbook_getsrc(target);
   $("SBOOKPINGSYNC").value=sbook_echo_syncstamp;
   $("SBOOKPINGTITLE").value=
     (origin.title)||(target.title)||(sbook_get_titlepath(info));

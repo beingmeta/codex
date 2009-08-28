@@ -39,8 +39,14 @@ var sbook_context_toc={};
 // Where to go for your webechoes
 var sbook_webechoes_root="http://webechoes.net/";
 
-// This is the base URI for this document
+// This is the base URI for this document, also known as the REFURI
+// All stored references to this document use this REFURI, even if the
+//  document is split across several files
 var sbook_base=false;
+// This is the 'source' URI for this document.  When a document is
+//  split into multiple files/URIs, this is the URI where it is read
+//  from.
+var sbook_src=false;
 // This is the sbook ping AJAX ping uri
 var sbook_ping_uri="/echoes/ajaxping.fdcgi";
 // This is the deepest TOC level to show for navigation
@@ -930,6 +936,11 @@ function getsbookbase()
   else return uri;
 }
 
+function getsbooksrc()
+{
+  return fdjtGetMeta("SBOOKSRC")||getsbookbase();
+}
+
 function sbook_geturi(id,base)
 {
   if (typeof id !== "string") id=id.id;
@@ -939,6 +950,16 @@ function sbook_geturi(id,base)
     if (hashpos<0) return base+"#"+id;
     else return base.slice(0,hashpos)+"#"+id;}
   else return false;
+}
+
+function sbook_getsrc(elt)
+{
+  if (typeof elt !== "string") elt=$(elt);
+  if (!(elt)) return null;
+  while (elt)
+    if (elt.getAttribute("SBOOKSRC")) return elt.getAttribute("SBOOKSRC");
+    else elt=elt.parentNode;
+  return sbook_src;
 }
 
 /* Getting metadata */
@@ -1011,6 +1032,7 @@ function sbookSetup()
   var hud_done=new Date();
   sbookHUD_Init();
   sbook_base=getsbookbase();
+  sbook_src=getsbooksrc();
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;
   window.onscroll=sbook_onscroll;
