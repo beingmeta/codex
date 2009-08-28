@@ -121,7 +121,8 @@ function sbookGetSourcesUnder(idroot)
   var i=0; while (i<sbook_allechoes.length) {
     var echo=sbook_allechoes[i++];
     if (echo.fragid.search(idroot)===0)
-      if (fdjtIndexOf(users.indexOf,echo.user)<0) users.push(echo.user);}
+      if (fdjtIndexOf(users,echo.user)<0)
+	users.push(echo.user);}
   return users;
 }
 
@@ -760,11 +761,13 @@ function add_podspot(target,open)
   var sources=sbookGetSourcesUnder(id);
   var imgsrc=sbook_graphics_root+"sBooksWE_2_32x32.png";
   var pingimgsrc=sbook_graphics_root+"remarkballoon32x32.png";
-  var button=fdjtImage(pingimgsrc,"pingbutton","ping");
-  button.onclick=function(evt){
-    evt.preventDefault(); evt.cancelBubble=true;
-    sbook_ping(target,false);};
-  target.pingbutton=button;
+  var button=target.pingbutton;
+  if (!(button)) {
+    button=fdjtImage(pingimgsrc,"pingbutton","ping");
+    button.onclick=function(evt){
+      evt.preventDefault(); evt.cancelBubble=true;
+      sbook_ping(target,false);};
+    target.pingbutton=button;}
   if ((sources.length===1) &&
       (social_info[sources[0]].pic))
     imgsrc=social_info[sources[0]].pic||imgsrc;

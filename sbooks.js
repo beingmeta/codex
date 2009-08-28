@@ -681,6 +681,7 @@ function sbookSetFocus(target,force,onclick)
       target=head; break;}
     else target=target.parentNode;
   if (!(target)) return;
+  else if (!(fdjtIsVisible(target,true))) return;
   // And don't tag the HUD either
   if (fdjtHasParent(target,sbookHUD)) return;
   // And don't change the focus if you're pinging

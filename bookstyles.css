@@ -1,4 +1,5 @@
 body.sbook {
+  margin-top: 64px; margin-bottom: 64px;
   background-color: ivory;}
 body.sbook h1#TITLEPAGE { 
   background-color: lightgray;
@@ -9,12 +10,22 @@ body.sbook h1.titlepage {
   background-color: lightgray;
   font-size: 36px; text-align: center; width: 100%;
   page-break-after: always;
+  padding: 1em;
   border: 0px;}
 body.sbook h1 { page-break-before: always; }
 body.sbook h1.titlepage div { width: 90%; margin-left: 5%; margin-right: 5%;}
+body.sbook h1.titlepage div.pubinfo { 
+  font-variant: smallcaps;
+  background-color: ivory; font-size: 50%; padding: 4px;
+  width: 90%; margin-left: 5%; margin-right: 5%;
+  margin-bottom: 12px; margin-top: 12px;}
 body.sbook h1.titlepage div.title { text-align: center; font-weight: bold;}
-body.sbook h1.titlepage div.author { 
+body.sbook h1.titlepage div.subtitle { 
   text-align: center; font-style: italic; font-weight: normal;
+  font-size: 50%;}
+body.sbook h1.titlepage div.author { 
+  text-align: center; font-style: italic; 
+  margin-top: 1em; margin-bottom: 1em;
   font-size: 80%;}
 body.sbook h1.titlepage div.editor { 
   text-align: center; font-style: normal; font-weight: normal;
@@ -27,6 +38,12 @@ body.sbook h1.titlepage div.frontpiece {
   text-align: center;}
 body.sbook h1.titlepage .frontpiece img {
   border: none; width: 50%;}
+h1.titlepage.sbookhead { text-decoration: none;}
+h1.titlepage.sbookfocus { color: inherit;}
+h1.titlepage.sbookpingfocus { text-decoration: inherit; color: inherit;}
+
+body.sbook h1.titlepage div.poem { 
+  border: solid 3px black; margin: 6px; font-size: 50%;}
 
 body.sbook .frontpiece div.poem {
   margin: 0px; border: none; font-weight: normal;}
@@ -84,6 +101,35 @@ p.bcv {}
 body.bcv p {}
 .bcv span.v { padding-right: 2em;}
 
+
+/* */
+
+body.bible {
+ /* font-family: sans,sans-serif;  */
+ width: 30em; font-size: 16px;
+ margin-left: auto; margin-right: auto;}
+body.bible span.poetry {
+  display: block; margin-left: 3em; text-indent: -2em;
+  margin-bottom: 8px;
+  line-height: 100%;}
+body.bible span.poetry.level1 { }
+body.bible span.poetry.level1 span.poetry.level1 { margin-left: 0em;}
+body.bible span.poetry.level2 { margin-left: 5em;}
+body.bible span.poetry.level3 { margin-left: 7em;}
+
+body.bible span.poetry span.versemark { font-size: 75%;}
+body.bible span.poetry span.versemark:before { content: '(';}
+body.bible span.poetry span.versemark:after { content: ') ';}
+body.bible span.poetry span.verse:before { content: '';}
+
+body.bible span.verse:before { content: ' // '; font-weight: bold;}
+body.bible span.verse:first-child:before { content: '';}
+body.bible span.verse[versenum=1]:before { content: '';}
+body.bible span.verse[versenum=1]:first-child:before { content: '';}
+
+body.bible span.versemark { font-weight: bold;}
+body.bible span.footnote {
+  font-weight: bold; color: green; vertical-align: super; font-size: 75%;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
