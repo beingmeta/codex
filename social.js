@@ -210,6 +210,11 @@ function sbookCreateEchoBar(classinfo,oids)
   var ping_button=
     fdjtImage("http://static.beingmeta.com/graphics/remarkballoon32x25.png",
 	      "button ping","add a comment");
+  var facebook_button=
+    ((window.name==="iframe_canvas")&&
+     (fdjtAnchor("http://apps.facebook.com/sbooksapp/",
+		 fdjtImage(sbook_graphics_root+"facebook_32.png","button",
+			  "fbapp"))));
   var everyone_button=
     fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
 	      "button everyone","everyone");
@@ -246,6 +251,10 @@ function sbookCreateEchoBar(classinfo,oids)
     echobar.sbooksources=true;};
   if (sbook_user)
     echobar.onclick=sbookEchoBar_onclick;
+  if (facebook_button) {
+    facebook_button.target="_parent";
+    facebook_button.onclick=function(evt){
+      evt.cancelBubble=true;};}
   ping_button.id="SBOOKPINGBUTTON";
   ping_button.onclick=function(evt) {
     if (sbook_mode==="ping") {
@@ -261,7 +270,7 @@ function sbookCreateEchoBar(classinfo,oids)
     $T(evt).blur();
     evt.cancelBubble=true;
     evt.preventDefault();};
-  fdjtAppend(echobar,ping_button,sbookAllEchoesDiv());
+  fdjtAppend(echobar,facebook_button,ping_button,sbookAllEchoesDiv());
   echobar.socialelts=socialelts;
   sbook_echobar=echobar;
   return echobar;
