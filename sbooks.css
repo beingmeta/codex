@@ -717,6 +717,11 @@ span.podspot img.pingbutton { display: none;}
 @media print span.podspot img.qricon { display: inline;}
 @media print .sbookpingfocus span.podspot img.pingbutton { display: none;}
 
+/* For going to ebooks forms */
+
+div.sbooktoc { font-size: 150%;}
+div.sbooktocblock { margin-left: 2em; font-size: 80%;}
+
 /* Still unclassified */
 
 .previewing { color: red; }
@@ -736,65 +741,4 @@ body iframe div.commentors { display: block;}
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
 ;;;  End: ***
-*/
-/*
-div.echoes div.echo { display: none;}
-div.echoes div.echo[displayed='yes'] { display: block;}
-div.echoes.focused div.echo[displayed='yes'] { display: none;}
-div.echoes.focused div.echo[displayed='yes'][focus='yes'] { display: block;}
-
-div.echo div.head span.icons img { float: none; padding-left: 5px;}
-div.echo div.head span.icons .age { color: orange;}
-
-div.sbooktoc div.echoes { 
-  margin-left: 10%; margin-right: 10%;
-  border-bottom: purple solid 3px;}
-div.sbooktoc div.echoes div.echo { 
-  padding-right: 5%; padding-left: 5%;}
-div.sbooktoc div.echoes.showall div.echo { display: block;}
-
-div#SBOOKHUD div.sbookechoes { }
-div#SBOOKHUD div.sbookechoes div.echoes { 
-  margin-bottom: 50px; margin-left: 15%; margin-right: 15%; width: 70%;}
-
-div.sbookechoes div.bottombar {
-   width: 60%; margin-left: 20%; margin-right: 20%;}
-div.sbookechoes div.bottombar img { width: 32px; height: 32px;}
-
-div.sbookechoes {
-  width: 75%; margin-left: 12.5%; margin-right: 12.5%;
-  text-align: left;}
-div.sbookechoes div.bottombar { width: 100%;}
-div.sbookechoes div.bottombar div.imagebar img[displayed='yes'] { display: inline;}
-div.sbookechoes div.bottombar div.imagebar img[displayed='no'] { display: none;}
-div.sbookechoes img.addbutton { float: left;}
-div.sbookechoes div.imagebar { margin-left: 50px; overflow-x: auto;}
-div.sbookechoes div.echoes { overflow-y: auto;}
-div.sbookechoes div.echoes div.echo {
-   clear: both; width: 100%;}
-div.sbookechoes div.echoes div.echo div.userblock { 
-  float: left; width: 50px;}
-div.sbookechoes div.echoes div.echo div.echoinfo {
-  margin-left: 50px;}
-div.sbookechoes div.echoes div.echo div.echoinfo div.msg {
-  }
-div.sbookechoes div.echoes div.echo div.echoinfo div.excerpt {
-  }
-
-div.echobar { 
-  overflow-y: auto; overflow-x: hidden;} 
-div.echobar img { cursor: pointer;}
-
-div.echobar img.social { width: 32px; height: 32px;} 
-div.echobar.limited img.social  {display: none;}
-div.echobar.limited img.social[displayed='yes']  {display: inline;}
-div.echobar img.social[displayed='yes']  {display: inline;}
-
-div#SBOOKHUD div.echobar { opacity: 0.1; z-index: 150;}
-div#SBOOKHUD div.echobar.filled { opacity: 0.50; z-index: 150;}
-div#SBOOKHUD div.echobar:hover { opacity: 0.85; }
-body div#SBOOKHUD.search div.echobar:hover { opacity: 0.85;}
-body div#SBOOKHUD.toc div.echobar:hover { opacity: 0.85;}
-
-
 */
