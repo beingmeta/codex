@@ -41,6 +41,8 @@ body.sbookpingfocus { color: inherit;}
 
 .floatright { float: right; margin-right: 3px;}
 
+a img { border: transparent;}
+
 /* Display/opacity rules */
 
 div.hud {
@@ -200,6 +202,7 @@ div#SBOOKHUD.browsing div.hud#SBOOKECHOES img.social.sourced {
   border: solid transparent 2px;}
 #SBOOKECHOES a.login:hover img { border: solid blue 2px;}
 #SBOOKECHOES a.login.disabled { opacity: 0.5;}
+#SBOOKECHOES img.button { margin-left: 3px;}
 
 body.nosbookuser div#SBOOKHUD div.hud#SBOOKECHOES a.login {
   display: block;}
@@ -682,7 +685,7 @@ a.podspoticon {
 a.podspoticon img { border: 0px;}
 
 iframe.podspot {
-    position: absolute; right: 64px; width: 80%; z-index 100; 
+    position: absolute; right: 64px; width: 80%; z-index: 100; 
     opacity: 0.95; background-color: ivory; min-height: 450;}
 
 img.pingbutton {
@@ -714,8 +717,9 @@ span.podspot img.pingbutton { display: none;}
 .sbookpingfocus span.podspot { opacity: 0.8; border: transparent;}
 .sbookpingfocus span.podspot img.pingbutton { 
   display: inline;}
-@media print span.podspot img.qricon { display: inline;}
-@media print .sbookpingfocus span.podspot img.pingbutton { display: none;}
+@media print {
+  span.podspot img.qricon { display: inline;}
+  .sbookpingfocus span.podspot img.pingbutton { display: none;}}
 
 /* For going to ebooks forms */
 

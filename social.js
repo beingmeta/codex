@@ -219,7 +219,7 @@ function sbookCreateEchoBar(classinfo,oids)
     fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
 	      "button everyone","everyone");
   var fb_login=sbookCreateLoginButton
-    ("http://sbooks.net/fb",
+    ("http://sbooks.net/fb/auth",
      "facebook_32.png",
      "see comments and notes from your Facebook friends and groups");
   var ms_login=sbookCreateLoginButton
@@ -270,7 +270,8 @@ function sbookCreateEchoBar(classinfo,oids)
     $T(evt).blur();
     evt.cancelBubble=true;
     evt.preventDefault();};
-  fdjtAppend(echobar,facebook_button,ping_button,sbookAllEchoesDiv());
+  // fdjtAppend(echobar,facebook_button,ping_button,sbookAllEchoesDiv());
+  fdjtAppend(echobar,facebook_button,sbookAllEchoesDiv());
   echobar.socialelts=socialelts;
   sbook_echobar=echobar;
   return echobar;

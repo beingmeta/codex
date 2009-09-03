@@ -128,8 +128,8 @@ body.bible span.poetry span.verse:before { content: '';}
 
 body.bible span.verse:before { content: ' // '; font-weight: bold;}
 body.bible span.verse:first-child:before { content: '';}
-body.bible span.verse[versenum=1]:before { content: '';}
-body.bible span.verse[versenum=1]:first-child:before { content: '';}
+body.bible span[versenum='1'].verse:before { content: '';}
+body.bible span[versenum='1'].verse:first-child:before { content: '';}
 
 body.bible span.versemark { font-weight: bold;}
 body.bible span.footnote {
