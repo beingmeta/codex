@@ -255,22 +255,6 @@ function sbookCreateEchoBar(classinfo,oids)
     facebook_button.target="_parent";
     facebook_button.onclick=function(evt){
       evt.cancelBubble=true;};}
-  ping_button.id="SBOOKPINGBUTTON";
-  ping_button.onclick=function(evt) {
-    if (sbook_mode==="ping") {
-      sbookHUDMode(false);
-      $T(evt).blur();
-      evt.cancelBubble=true;
-      evt.preventDefault();
-      return;}
-    sbookHUDMode("ping");
-    sbookPingHUDSetup(false);
-    fdjtAutoPrompt_onfocus(evt);
-    $("SBOOKPINGINPUT").focus();
-    $T(evt).blur();
-    evt.cancelBubble=true;
-    evt.preventDefault();};
-  // fdjtAppend(echobar,facebook_button,ping_button,sbookAllEchoesDiv());
   fdjtAppend(echobar,facebook_button,sbookAllEchoesDiv());
   echobar.socialelts=socialelts;
   sbook_echobar=echobar;
@@ -335,8 +319,11 @@ function sbookEchoIcons(echo,extra)
       fdjtDelayHandler(300,sbookSetPreview,false,document.body,"preview");};}
   comment.title=_("Add your own response");
   comment.onclick=function(evt){
+    // fdjtTrace("Starting a relay of %o (%o)",echo,echo.msg);
     sbookSetHUD(false);
-    add_podspot(target,true);}; 
+    add_podspot(target,true);
+    $("SBOOKPINGRELAY").value=echo;
+    $("SBOOKPINGINPUT").value=echo.msg;}; 
   showmore.title=_("See more information");
   showmore.onclick=function(evt){
     fdjtToggleClass($P('.echo',$T(evt)),'extras','shown',true);}; 
@@ -371,6 +358,7 @@ function sbookEchoExtras(echo)
 
 function sbookCreatePingHUD()
 {
+  var relay_block=fdjtDiv(".sbookrelayblock#SBOOKPINGRELAYBLOCK");
   var msg=fdjtInput("TEXT","MSG","",".autoprompt#SBOOKPINGINPUT");
   msg.prompt="What do you think?";
   msg.onfocus=sbookPing_onfocus;
@@ -414,12 +402,13 @@ function sbookCreatePingHUD()
 	    fdjtDiv(".message.pinging","pinging...."),
 	    fdjtDiv(".message.echoing","echoing!"));
   // Specifying the .tags class causes the tags tab to be open by default
-  var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform.tags",
+  var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform",
 			  id_elt,uri_elt,src_elt,title_elt,relay_elt,user_elt,
 			  sync_input,messages_elt,
+			  relay_block,
 			  fdjtDiv("controls",sbookPingControls(),msg),
-			  sbookSelectTribe(),
-			  tags_elt,detail_elt,excerpt_elt,xrefs_elt);
+			  tags_elt,detail_elt,excerpt_elt,xrefs_elt,
+			  sbookSelectTribe());
   form.setAttribute("accept-charset","UTF-8");
   form.ajaxuri="/echoes/ajaxping.fdcgi";
   form.action="http://webechoes.net/ping.fdcgi";
@@ -436,33 +425,76 @@ function sbookCreatePingHUD()
 	form.reset();
 	sbookHUDMode(false);},
       1500);};
-  return fdjtDiv(".ping.hudblock.hud",
-		 fdjtImage(sbook_graphics_root+"remarkballoon24x19.png","floatright",""),
-		 form);
+  return fdjtDiv
+    (".ping.hudblock.hud",
+     fdjtImage(sbook_graphics_root+"remarkballoon24x19.png","floatright",""),
+     form);
 }
 
 function sbookSelectTribe()
 {
-  var nochoice_option=fdjtNewElement("OPTION",false,"FOR: Just my friends");
-  var select_elt=fdjtNewElement("SELECT",false,nochoice_option);
+  var notribe_private_option=
+    fdjtNewElement("OPTION",".privatepost#SBOOKPINGNOTRIBEPRIVATE",
+		   "FOR: Just me");
+  notribe_private_option.value=":{}"; notribe_private_option.selected=false;
+  var notribe_friendly_option=
+    fdjtNewElement("OPTION",".friendlypost#SBOOKPINGNOTRIBEFRIENDLY",
+		   "FOR: Just my friends");
+  notribe_friendly_option.value=":{}"; notribe_friendly_option.selected=false;
+  var notribe_option=notribe_friendly_option;
+  notribe_option.selected=true;
+  var select_elt=fdjtNewElement("SELECT",false,notribe_option);
   select_elt.name="TRIBE";
-  nochoice_option.value=":{}";
+  select_elt.notribe_private_option=notribe_private_option;
+  select_elt.notribe_friendly_option=notribe_friendly_option;
+  select_elt.notribe_option=notribe_option;
+  select_elt.value=":{}";
   var i=0; while (i<tribal_oids.length) {
     var tribe=tribal_oids[i++]; var info=social_info[tribe];
     var option=fdjtNewElement("OPTION",false,info.name);
-    option.value=tribe; option.title=info.gloss;
+    option.value=tribe; if (info.gloss) option.title=info.gloss;
     fdjtAppend(select_elt,option);}
-  var friendly_option=fdjtNewElement("OPTION",false,"family");
-  var public_option=fdjtNewElement("OPTION",false,"public");
-  var private_option=fdjtNewElement("OPTION",false,"private");
-  var status_elt=
-    fdjtNewElement("SELECT",false,friendly_option,public_option,private_option);
-  status_elt.name='status';
+  var friendly_option=fdjtNewElement("OPTION",false,"friendly");
   friendly_option.value=':FRIENDLY'; friendly_option.selected=true;
-  private_option.value=':PRIVATE'; public_option.value=':PUBLIC'; 
-  var post_elt=fdjtSpan("checkspan",fdjtCheckbox("POST","yes",true),"post");
-  post_elt.title="add this comment to my news feeds";
-  return fdjtDiv("tribebar",post_elt,status_elt,select_elt);
+  //  var public_option=fdjtNewElement("OPTION",false,"public");
+  // public_option.value=':PUBLIC'; 
+  var private_option=fdjtNewElement("OPTION","#SBOOKPINGPRIVATE","private");
+  private_option.value=':PRIVATE'; 
+  var status_elt=
+    fdjtNewElement("SELECT",false,friendly_option, //public_option,
+		   private_option);
+  status_elt.name='status';
+  status_elt.onchange=function(evt){
+    if ((notribe_option)===(notribe_friendly_option)) {
+      var selected=(notribe_option.selected);
+      notribe_option.selected=false;
+      fdjtReplace(notribe_option,notribe_private_option);
+      notribe_option=notribe_private_option;
+      notribe_option.selected=selected;
+      select_elt.notribe_option=notribe_option;}
+    else {
+      var selected=(notribe_option.selected);
+      notribe_option.selected=false;
+      fdjtReplace(notribe_option,notribe_friendly_option);
+      notribe_option=notribe_friendly_option;
+      notribe_option.selected=selected;
+      select_elt.notribe_option=notribe_option;}
+    fdjtRedisplay(select_elt);}
+  var post_elt;
+  if (!(sbook_user_canpost)) {
+    var redx=fdjtSpan("redx","x");
+    post_elt=fdjtAnchor("http://sbooks.net/fb/settings/prefs",redx,"post");
+    post_elt.className="nopost";
+    post_elt.title='Edit your settings to enable posting';}
+  else {
+    var checkbox=fdjtCheckbox("PUSH","yes",true);
+    post_elt=fdjtSpan("checkspan",checkbox,"post");
+    checkbox.id="PUSHCHECKBOX";
+    checkbox.checked=false; checkbox.defaultChecked=false;
+    post_elt.onclick=fdjtCheckSpan_onclick;
+    post_elt.title="add this comment to my social news feeds";}
+  return fdjtDiv("#SBOOKPINGTRIBEBAR.tribebar",
+		 post_elt,status_elt,select_elt);
 }
 
 var sbook_ping_target=false;
@@ -492,7 +524,8 @@ function sbookPingHUDSetup(origin)
   var seen_tags=[];
   var tags_elt=fdjtSpan(".tagcues");
   {var excerpt=window.getSelection();
-    if (excerpt) $("SBOOKPINGEXCERPT").value=excerpt;}
+    if (excerpt) $("SBOOKPINGEXCERPT").value=excerpt;
+    $("SBOOKPINGEXCERPT").removeAttribute("isempty");}
   {var i=0; while (i<sbook_allechoes.length) 
 	      if (sbook_allechoes[i].fragid===target.id) {
 		var echo=sbook_allechoes[i++];
@@ -510,6 +543,7 @@ function sbookPingHUDSetup(origin)
     if (fdjtIndexOf(seen_tags,tag)<0) {
       seen_tags.push(tag); fdjtAppend(tags_elt,knoCompletion(tag,false)," ");}}
   fdjtReplace("SBOOKPINGTAGS",tags_elt);
+  fdjtAutoPrompt_setup($("SBOOKPING"));
   // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);
   // fdjtComplete(tags_elt.input_elt);
 }
@@ -738,21 +772,6 @@ function gather_tribes(elt,results)
 
 /* Displaying podspots */
 
-function sbookAddPingButton(target)
-{
-  if (target.pingbutton) return target.pingbutton;
-  // fdjtTrace("adding ping button to %o",target);
-  var imgsrc=sbook_graphics_root+"remarkballoon32x32.png";
-  var button=fdjtImage(imgsrc,"pingbutton","ping");
-  button.onclick=function(evt){
-    evt.preventDefault(); evt.cancelBubble=true;
-    sbook_ping(target,false);};
-  target.pingbutton=button;
-  fdjtPrepend(target,button);
-  // fdjtTrace("added ping button %o to %o",button,target);
-  return button;
-}
-
 function add_podspot(target,open)
 {
   if (target.podspot) return target.pospot;
@@ -769,18 +788,11 @@ function add_podspot(target,open)
   var sources=sbookGetSourcesUnder(id);
   var imgsrc=sbook_graphics_root+"sBooksWE_2_32x32.png";
   var pingimgsrc=sbook_graphics_root+"remarkballoon32x32.png";
-  var button=target.pingbutton;
-  if (!(button)) {
-    button=fdjtImage(pingimgsrc,"pingbutton","ping");
-    button.onclick=function(evt){
-      evt.preventDefault(); evt.cancelBubble=true;
-      sbook_ping(target,false);};
-    target.pingbutton=button;}
   if ((sources.length===1) &&
       (social_info[sources[0]].pic))
     imgsrc=social_info[sources[0]].pic||imgsrc;
   var podspot=fdjtSpan
-    ("podspot",fdjtImage(href,"qricon"),button,fdjtImage(imgsrc,"podimg","podspot"));
+    ("podspot",fdjtImage(href,"qricon"),fdjtImage(imgsrc,"podimg","podspot"));
   podspot.onclick=function(evt){
     evt.preventDefault(); evt.cancelBubble=true;
     if ((sbook_mode==="echoes") &&
@@ -837,7 +849,16 @@ function sbook_ping(target,echo)
   if (sbook_ping_target!==target) {
     $("SBOOKPINGFORM").reset();
     sbookPingHUDSetup(target);}
-  if (echo) $("SBOOKPINGRELAY").value=echo;
+  if (echo) {
+    if (echo.echo) $("SBOOKPINGRELAY").value=echo.echo;
+    if (echo.user) {
+      var userinfo=social_info[echo.user];
+      var echoblock=
+	fdjtDiv("sbookrelayblock","Relayed from ",
+		fdjtSpan("user",userinfo.name),
+		((echo.msg)&&(": ")),
+		((echo.msg)?(fdjtSpan("msg",echo.msg)):(false)));
+      fdjtReplace("SBOOKPINGRELAYBLOCK",echoblock);}}
   sbookHUDMode("ping");
   $("SBOOKPINGINPUT").focus();
 }

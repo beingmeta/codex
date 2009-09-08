@@ -250,7 +250,8 @@ div#SBOOKHUD form.pingform.xrefs img.button[alt='xrefs'] {
 div#SBOOKHUD form.pingform { 
   text-align: right; margin-left: 5%; margin-right: 5%;}
 div#SBOOKHUD form.pingform div.pingtab { 
-  border-top: solid blue 2px; padding-top: 4px;
+  padding-top: 4px; border-top: solid blue 2px; 
+  padding-bottom: 4px; border-bottom: solid blue 2px; 
   clear: both; width: 100%;}
 div#SBOOKHUD form.pingform div.pingtab img.head { 
   float: right;}
@@ -279,10 +280,29 @@ div#SBOOKHUD form.pingform div.tribebar {
 div#SBOOKHUD form.pingform div.tribebar
   select[NAME='TRIBE'] { width: 50%; max-width: 50%; clear: none;}
 
+div#SBOOKPINGTRIBEBAR { }
+
+div.sbookrelayblock {
+  text-align: left; font-weight: bold;}
+div.sbookrelayblock span.user {
+  font-style: italic; color: orange;}
+div.sbookrelayblock span.msg {
+  font-style: italic; font-weight: normal;}
+
+/* // Apparently, you can't hide an OPTION with CSS
+div#SBOOKPINGTRIBEBAR select option.privatepost { 
+  display: none;}
+div#SBOOKPINGTRIBEBAR.private select option.privatepost { display: inherit;}
+div#SBOOKPINGTRIBEBAR.private select option.friendlypost { 
+  display: none;}
+*/
+
 div#SBOOKHUD form.pingform div.tribebar
   select[NAME='status'] { float: right; clear: none;}
 div#SBOOKHUD form.pingform div.tribebar
   span.checkspan { float: right;}
+div#SBOOKHUD form.pingform div.tribebar a.nopost {
+  font-size: 16px; margin-left: 4px; float: right; text-decoration: none;}
 
 div.ping div.controls input[TYPE='TEXT'][name='MSG'] { 
   width: 75%; clear: left; font-size: 14px;}
@@ -492,6 +512,9 @@ div.spanbar div.sbookhudspan[even]:hover {
 div.spanbar div.sbookhudspan.cohighlight { 
   background-color: yellow; border-color: yellow;}
 
+div#SBOOKHUD div.spanbar { width: 90%; margin-left: 5%; margin-right: 5%;}
+
+/*
 div#SBOOKHEAD0 div.spanbar { width: 50%; margin-left: 25%; margin-right: 25%;}
 div#SBOOKHEAD1 div.spanbar { width: 60%; margin-left: 20%; margin-right: 20%;}
 div#SBOOKHEAD2 div.spanbar { width: 70%; margin-left: 15%; margin-right: 15%;}
@@ -501,6 +524,7 @@ div#SBOOKHEAD4 div.spanbar {
   width: 80%; margin-left: 10%; margin-right: 10%;}
 div#SBOOKHEAD5 div.spanbar { 
   width: 80%; margin-left: 10%; margin-right: 10%;}
+*/
 
 div.spanbar { padding: 0px; margin: 0px;}
 div.spanbar div.spans { 
@@ -735,6 +759,8 @@ div.previewing { color: red; }
 .completions .counts { cursor: pointer;}
 
 div.sectionname { clear: both;}
+
+span.redx { font-weight: bold; color: red; vertical-align: middle;}
 
 /* SBOOK formatting */
 

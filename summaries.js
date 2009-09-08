@@ -212,7 +212,7 @@ function sbookShowSummary(summary,query,notoc)
     fdjtImage(sbook_small_remark_icon,"remarkbutton","ping",
 	      _("click to relay or respond"));
   relay_button.onclick=function(evt){
-    sbook_ping(target,(summary.echo)||(false));
+    sbook_ping(target,summary);
     evt.preventDefault(); evt.cancelBubble=true;};
   fdjtAppend(sumdiv,relay_button);
   if ((head) && (!(notoc)))

@@ -38,6 +38,8 @@ var sbook_local_toc=false;
 var sbook_context_toc={};
 // Where to go for your webechoes
 var sbook_webechoes_root="http://webechoes.net/";
+// This is the sbook user, which we're careful not to overrid
+var sbook_user=((typeof sbook_user === "undefined")?(false):(sbook_user));
 
 // This is the base URI for this document, also known as the REFURI
 // All stored references to this document use this REFURI, even if the
