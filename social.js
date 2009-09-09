@@ -433,53 +433,23 @@ function sbookCreatePingHUD()
 
 function sbookSelectTribe()
 {
-  var notribe_private_option=
-    fdjtNewElement("OPTION",".privatepost#SBOOKPINGNOTRIBEPRIVATE",
-		   "FOR: Just me");
-  notribe_private_option.value=":{}"; notribe_private_option.selected=false;
-  var notribe_friendly_option=
-    fdjtNewElement("OPTION",".friendlypost#SBOOKPINGNOTRIBEFRIENDLY",
-		   "FOR: Just my friends");
-  notribe_friendly_option.value=":{}"; notribe_friendly_option.selected=false;
-  var notribe_option=notribe_friendly_option;
-  notribe_option.selected=true;
+  var friendly_option=fdjtNewElement("OPTION",false,"friends");
+  friendly_option.value='friendstoo'; friendly_option.selected=true;
+  var private_option=fdjtNewElement("OPTION",false,"private");
+  private_option.value='nofriends';
+  var notribe_option=
+    fdjtNewElement("OPTION",false,"No additional tribe");
+  notribe_option.value=":{}"; notribe_option.selected=true;
   var select_elt=fdjtNewElement("SELECT",false,notribe_option);
-  select_elt.name="TRIBE";
-  select_elt.notribe_private_option=notribe_private_option;
-  select_elt.notribe_friendly_option=notribe_friendly_option;
-  select_elt.notribe_option=notribe_option;
-  select_elt.value=":{}";
+  select_elt.name="TRIBE"; select_elt.value=":{}";
   var i=0; while (i<tribal_oids.length) {
     var tribe=tribal_oids[i++]; var info=social_info[tribe];
     var option=fdjtNewElement("OPTION",false,info.name);
     option.value=tribe; if (info.gloss) option.title=info.gloss;
     fdjtAppend(select_elt,option);}
-  var friendly_option=fdjtNewElement("OPTION",false,"friendly");
-  friendly_option.value=':FRIENDLY'; friendly_option.selected=true;
-  //  var public_option=fdjtNewElement("OPTION",false,"public");
-  // public_option.value=':PUBLIC'; 
-  var private_option=fdjtNewElement("OPTION","#SBOOKPINGPRIVATE","private");
-  private_option.value=':PRIVATE'; 
-  var status_elt=
-    fdjtNewElement("SELECT",false,friendly_option, //public_option,
-		   private_option);
-  status_elt.name='status';
-  status_elt.onchange=function(evt){
-    if ((notribe_option)===(notribe_friendly_option)) {
-      var selected=(notribe_option.selected);
-      notribe_option.selected=false;
-      fdjtReplace(notribe_option,notribe_private_option);
-      notribe_option=notribe_private_option;
-      notribe_option.selected=selected;
-      select_elt.notribe_option=notribe_option;}
-    else {
-      var selected=(notribe_option.selected);
-      notribe_option.selected=false;
-      fdjtReplace(notribe_option,notribe_friendly_option);
-      notribe_option=notribe_friendly_option;
-      notribe_option.selected=selected;
-      select_elt.notribe_option=notribe_option;}
-    fdjtRedisplay(select_elt);}
+  var exposure_elt=
+    fdjtNewElement("SELECT",false,friendly_option,private_option);
+  exposure_elt.name='exposure';
   var post_elt;
   if (!(sbook_user_canpost)) {
     var redx=fdjtSpan("redx","x");
@@ -494,7 +464,7 @@ function sbookSelectTribe()
     post_elt.onclick=fdjtCheckSpan_onclick;
     post_elt.title="add this comment to my social news feeds";}
   return fdjtDiv("#SBOOKPINGTRIBEBAR.tribebar",
-		 post_elt,status_elt,select_elt);
+		 post_elt,exposure_elt,select_elt);
 }
 
 var sbook_ping_target=false;
