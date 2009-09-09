@@ -400,8 +400,7 @@ function createSBOOKHUDsearch()
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=
     fdjtDiv(".sbooksearch.hudblock.hud",
-	    fdjtImage(sbook_graphics_root+"SearchIcon24x24.png","floatright",""),
-	    fdjtDiv("query",input,completions),
+	    fdjtDiv("query",fdjtDiv("input",input),completions),
 	    fdjtDiv("#SBOOKSUMMARIES.sbookresults.hud"));
   sbooksearch.onmouseover=sbookHUD_onmouseover;
   sbooksearch.onmouseout=sbookHUD_onmouseout;

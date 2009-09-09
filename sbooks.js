@@ -40,6 +40,9 @@ var sbook_context_toc={};
 var sbook_webechoes_root="http://webechoes.net/";
 // This is the sbook user, which we're careful not to overrid
 var sbook_user=((typeof sbook_user === "undefined")?(false):(sbook_user));
+// This is the picture to use for the user
+var sbook_user_img=
+  ((typeof sbook_user_img === "undefined")?(false):(sbook_user_img));
 
 // This is the base URI for this document, also known as the REFURI
 // All stored references to this document use this REFURI, even if the
@@ -572,8 +575,9 @@ function sbookSetQuery(query,scored)
       ((scored||false)===(sbook_query._scored)))
     return sbook_query;
   var result=sbookQuery(query);
-  if (result._qstring!==sbookQueryBase($("SBOOKSEARCHTEXT").value)) 
+  if (result._qstring!==sbookQueryBase($("SBOOKSEARCHTEXT").value)) {
     $("SBOOKSEARCHTEXT").value=result._qstring;
+    $("SBOOKSEARCHTEXT").removeAttribute('isempty');}
   sbook_query=result; query=result._query;
   // sbookSetEchoes(sbook_search_echoes(query));
   if (sbook_trace_search>1)
@@ -879,7 +883,10 @@ function sbook_onclick(evt)
 {
   // sbook_trace_handler("sbook_onclick",evt);
   if (sbook_overhud) return true;
-  sbookHUDMode(false);
+  if (sbook_mode) {
+    sbookHUDMode(false);
+    return;}
+  else sbookHUDMode(false);
   var target=$T(evt); var head;
   while (target)
     if (target.sbook_head) {head=target.sbook_head; break;}

@@ -40,6 +40,7 @@ body.sbookfocus { color: inherit;}
 body.sbookpingfocus { color: inherit;}
 
 .floatright { float: right; margin-right: 3px;}
+.floatleft { float: left; margin-left: 3px;}
 
 a img { border: transparent;}
 
@@ -69,14 +70,17 @@ img.hudbutton[alt='toc'] {
   -webkit-border-top-right-radius: 6px; 
   -moz-border-radius-topright: 6px; 
   border-top-right-radius: 6px; bottom: 0px;}
-div#SBOOKHUD.toc img.hudbutton[alt='toc'] { opacity: 0.9;}
+div#SBOOKHUD.toc img.hudbutton[alt='toc'] { 
+  left: 75px; opacity: 0.9;}
 img.hudbutton[alt='index'] { 
   -khtml-border-bottom-right-radius: 6px; 
   -webkit-border-bottom-right-radius: 6px; 
   -moz-border-radius-bottomright: 6px; 
   border-bottom-right-radius: 6px; top: 0px; }
-div#SBOOKHUD.searching img.hudbutton[alt='index'] { opacity: 0.9;}
-div#SBOOKHUD.browsing img.hudbutton[alt='index'] { opacity: 0.9;}
+div#SBOOKHUD.searching img.hudbutton[alt='index'] { 
+  left: 75px; opacity: 0.9;}
+div#SBOOKHUD.browsing img.hudbutton[alt='index'] { 
+  left: 75px; opacity: 0.9;}
 
 div#SBOOKHUD div.hudblock:hover { opacity: 0.9;}
 div#SBOOKHUD div.hudblock.hover { opacity: 0.9;}
@@ -174,7 +178,8 @@ div#SBOOKHUD div.hud#SBOOKECHOES {
   -khtml-border-bottom-right-radius: 6px; 
   -webkit-border-bottom-right-radius: 6px; 
   -moz-border-radius-bottomright: 6px;
-  border-bottom-right-radius: 6px;}
+  border-bottom-right-radius: 6px;
+  overflow-y: auto;}
 div#SBOOKHUD .hud#SBOOKECHOES img.social { 
   width: 34px; height: 34px;
   border: solid transparent 2px;} 
@@ -248,7 +253,7 @@ div#SBOOKHUD form.pingform.xrefs img.button[alt='xrefs'] {
   border-bottom: solid blue 2px;}
 
 div#SBOOKHUD form.pingform { 
-  text-align: right; margin-left: 5%; margin-right: 5%;}
+  text-align: right; margin-left: 60px; margin-right: 10px;}
 div#SBOOKHUD form.pingform div.pingtab { 
   padding-top: 4px; border-top: solid blue 2px; 
   padding-bottom: 4px; border-bottom: solid blue 2px; 
@@ -566,7 +571,7 @@ div.sbooksearch .completions {
    max-height: 300px; width: 100%;}
 
 div#SBOOKHUD div.hud#SBOOKSEARCH div.query {
-   margin-left: 5%; margin-right: 5%;}
+   margin-left: 50px; margin-right: 10px;}
 
 /* Search classes */
 

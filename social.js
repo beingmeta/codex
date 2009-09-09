@@ -427,7 +427,9 @@ function sbookCreatePingHUD()
       1500);};
   return fdjtDiv
     (".ping.hudblock.hud",
-     fdjtImage(sbook_graphics_root+"remarkballoon24x19.png","floatright",""),
+     fdjtImage((sbook_user_img)||
+	       (sbook_graphics_root+"remarkballoon50x50.png"),
+	       "floatleft",""),
      form);
 }
 
