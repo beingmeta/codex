@@ -372,6 +372,7 @@ function sbookFullCloud()
 
 function createSBOOKHUDsearch()
 {
+  var cues=fdjtDiv(".cues#SBOOKSEARCHCUES");
   var input=fdjtInput("TEXT","QTEXT","",null);
   var completions=sbook_empty_cloud=
     fdjtDiv("completions",fdjtSpan("count","no query refinements"));
@@ -400,8 +401,9 @@ function createSBOOKHUDsearch()
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=
     fdjtDiv(".sbooksearch.hudblock.hud",
-	    fdjtDiv("query",fdjtDiv("input",input),completions),
-	    fdjtDiv("#SBOOKSUMMARIES.sbookresults.hud"));
+	    fdjtDiv("#SBOOKSUMMARIES.sbookresults.hud"),
+	    fdjtDiv("query",completions,fdjtDiv("input",input)),
+	    cues);
   sbooksearch.onmouseover=sbookHUD_onmouseover;
   sbooksearch.onmouseout=sbookHUD_onmouseout;
   fdjtAutoPrompt_setup(sbooksearch);

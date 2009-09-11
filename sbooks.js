@@ -697,6 +697,24 @@ function sbookSetFocus(target,force)
   if (sbook_mode==="ping") return;
   // If the target has changed, update the location
   if (target!==sbook_focus) {
+    /*
+    var tags=(target.tags)||fdjtCacheAttrib(target,"tags",fdjtSplitSemi);
+    var tagdiv=fdjtDiv(".tags.cues");
+    tagdiv.onclick=function(evt) {
+      var target=$T(evt);
+      var term=(target.sectname)||(tag.getAttribute("dterm"));
+      var textinput=$("SBOOKQUERYTEXT");
+      var qval=textinput.value;
+      var newq=(qval+';'+term;).replace(";;",";");
+      sbookSetQuery(newq,false);};
+    var i=0; while (i<tags.length) {
+      var tag=tags[i++];
+      if ((typeof tag === "string") && (tag[0]==="\u00A7")) {
+	var span=fdjtSpan("sectname",tag); span.sectname=tag;
+	fdjtAppend(tagdiv,span," ");}
+      else fdjtAppend(tagdiv,knoSpan(tag)," ");}
+    fdjtReplace("SBOOKSEARCHCUES",tagdiv);
+    */
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
   // Using [force] will do recomputation even if the focus hasn't changed
   if ((force)||(target!==sbook_focus)) {

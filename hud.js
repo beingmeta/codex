@@ -58,6 +58,7 @@ function createSBOOKHUD()
        fdjtDiv("#SBOOKTOC.sbooktoc.hudblock.hud"),
        fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
        fdjtWithId(sbookCreatePingHUD(),"SBOOKPING"),
+       sbookHelpHUD(),
        echobar);
 
     index_button.onclick=function(evt){
@@ -114,12 +115,9 @@ function sbookMode(id,graphic,mode,title)
    This ties to avoid the HUD, in case it is up. */
 function sbookDisplayOffset()
 {
-  return 0;
-  /*
   var toc=$("SBOOKTOC");
-  if (toc) return -(toc.offsetHeight||60);
+  if (toc) return -((toc.offsetHeight||60)+15);
   else return -60;
-  */
 }
 
 function sbookScrollTo(elt,cxt)
@@ -141,7 +139,7 @@ function sbookScrollTo(elt,cxt)
 /* Mode controls */
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudechoes)/g;
-var sbookHUDMode_pat=/(searching)|(browsing)|(toc)|(echoes)|(ping)/g;
+var sbookHUDMode_pat=/(help)|(searching)|(browsing)|(toc)|(echoes)|(ping)/g;
 
 function sbookHUDMode(mode)
 {
@@ -391,6 +389,92 @@ function sbookTOC_onclick(evt)
   if (!((info.sub) && ((info.sub.length)>2)))
     sbookHUDMode(false);
   return false;
+}
+
+/* The Help HUD */
+
+var sbook_helptext=
+  "<h1>Welcome to sBooks!</h1><h2>the best thing since sliced paper</h2><p>\
+The sBook HUD (Heads-Up Display) is divided into four \
+elements:</p><ul> <li>the <span class='hudref' \
+hudref='SBOOKECHOES'>Meta HUD</span>, on the \
+left, </li> <li>the <span class='hudref' hudref='SBOOKTOC'>TOC \
+HUD</span> (Table Of Contents) on the \
+top</li> <li>the <span class='hudref' hudref='SBOOKSEARCH'>Index \
+HUD</span> on the bottom, and</li> <li>individual <strong>note \
+icons</strong> in the <span class='hudref' hudref='SBOOKMARGIN'>right \
+hand margin</span>.</li></ul>\
+<p>These HUDs are <strong>automatically updated</strong> as you read the document:\
+moving the <strong>mouse \
+over</strong> a HUD makes it more visible and <strong>clicking</strong> expands the \
+displayed information and makes it persistent <strong>until you click \
+again</strong>.<br/>\
+You can <strong>make (and share) notes</strong> in your sBook by clicking on \
+a passage or heading.  Providing you're logged into sBooks (and Facebook), \
+you can then a brief comment together with tags, longer details, excerpts, \
+or cross references.</p>\
+<p><strong>Preview icons</strong> (<img src='http://static.beingmeta.com/graphics/EyeIcon19x15.png'/>) \
+appear throughout the HUD: moving the \
+mouse over these icons <strong>temporarily previews</strong> the \
+content, scrolling to the referenced segment of the document and dimming the \
+HUD.  Clicking at this point goes to the displayed content while \
+moving the mouse away returns to the preceding location and returns to \
+the HUD.</p>\
+<p>In the <span class='hudref' hudref='SBOOKTOC'>TOC \
+HUD</span>, the sections above the current location are arranged from \
+top to bottom and the alternating horizontal bars indicate the positions \
+and lengths of earlier and later sections at each level.  Moving the mouse over \
+a segment <strong>previews</strong> that section of the book and clicking jumps \
+to that location.</p>\
+<p>In the <span class='hudref' hudref='SBOOKSEARCH'>Index \
+HUD</span>, you can search the book using tags assigned to sections \
+or paragraphs by either the content authors, your friends, or any \
+subscribed metadocs.  As you type tags, possible completions \
+appear in a cloud of tags above your input; clicking in this cloud adds that \
+tag to your search.  At any point, the cloud of tags reflects only the elements \
+matched by the current search, so the cloud gets smaller and smaller as you add \
+tags.  When you hit <tt>Enter</tt> (or when there are few enough results), all the \
+matching results are displayed for your examination.</p>";
+
+var sbook_helphud_highlight=false;
+var sbook_helphud_display=false;
+var sbook_helphud_opacity=false;
+
+function sbookHelpHighlight(hudelt)
+{
+  fdjtTrace("Highlighting hud elt %o",hudelt);
+  if (hudelt===sbook_helphud_highlight) return;
+  if (sbook_helphud_highlight) {
+    sbook_helphud_highlight.style.display=sbook_helphud_display;
+    sbook_helphud_highlight.style.opacity=sbook_helphud_opacity;
+    sbook_helphud_highlight=false;
+    sbook_helphud_opacity=false;
+    sbook_helphud_display=false;}
+  if (hudelt) {
+    sbook_helphud_highlight=hudelt;
+    sbook_helphud_display=hudelt.style.display;
+    sbook_helphud_opacity=hudelt.style.opacity;
+    hudelt.style.display='block';
+    hudelt.style.opacity=0.9;}
+}
+
+function sbookHelpHUD()
+{
+  var div=fdjtDiv("#SBOOKHELP");
+  div.onmouseover=function(evt){
+    var target=$T(evt);
+    while (target)
+      if ((target.getAttribute) &&
+	  (target.getAttribute('hudref'))) break;
+      else target=target.parentNode;
+    if ((target) && (target.getAttribute('hudref'))) {
+      var hudelt=$(target.getAttribute('hudref'));
+      sbookHelpHighlight(hudelt);}};
+  div.onmouseout=function(evt){
+    var target=$T(evt);
+    sbookHelpHighlight(false);};
+  div.innerHTML=sbook_helptext;
+  return div;
 }
 
 /* Other stuff */

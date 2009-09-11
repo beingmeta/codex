@@ -207,9 +207,9 @@ function sbookCreateEchoBar(classinfo,oids)
 {
   if (!(oids)) oids=social_oids;
   if (!(classinfo)) classinfo=".echobar.hudblock.hud";
-  var ping_button=
-    fdjtImage("http://static.beingmeta.com/graphics/remarkballoon32x25.png",
-	      "button ping","add a comment");
+  var help_button=
+    fdjtImage("http://static.beingmeta.com/graphics/HelpIcon40x40.png",
+	      "button help","?");
   var facebook_button=
     ((window.name==="iframe_canvas")&&
      (fdjtAnchor("http://apps.facebook.com/sbooksapp/",
@@ -255,7 +255,11 @@ function sbookCreateEchoBar(classinfo,oids)
     facebook_button.target="_parent";
     facebook_button.onclick=function(evt){
       evt.cancelBubble=true;};}
-  fdjtAppend(echobar,facebook_button,sbookAllEchoesDiv());
+  help_button.title="help";
+  help_button.onclick=function(evt) {
+    sbookHUDToggle("help");
+    evt.cancelBubble=true;}
+  fdjtAppend(echobar,facebook_button,help_button,sbookAllEchoesDiv());
   echobar.socialelts=socialelts;
   sbook_echobar=echobar;
   return echobar;
@@ -403,12 +407,12 @@ function sbookCreatePingHUD()
 	    fdjtDiv(".message.echoing","echoing!"));
   // Specifying the .tags class causes the tags tab to be open by default
   var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform",
-			  id_elt,uri_elt,src_elt,title_elt,relay_elt,user_elt,
-			  sync_input,messages_elt,
-			  relay_block,
+			  id_elt,uri_elt,src_elt,title_elt,relay_elt,
+			  sync_input,user_elt,
+			  messages_elt,relay_block,
 			  fdjtDiv("controls",sbookPingControls(),msg),
-			  tags_elt,detail_elt,excerpt_elt,xrefs_elt,
-			  sbookSelectTribe());
+			  sbookSelectTribe(),
+			  tags_elt,detail_elt,excerpt_elt,xrefs_elt);
   form.setAttribute("accept-charset","UTF-8");
   form.ajaxuri="/echoes/ajaxping.fdcgi";
   form.action="http://webechoes.net/ping.fdcgi";
