@@ -37,7 +37,7 @@ var sbook_local_toc=false;
 // This is the TOC in which this document is embedded (NYI)
 var sbook_context_toc={};
 // Where to go for your webechoes
-var sbook_webechoes_root="http://webechoes.net/";
+var sbook_webechoes_root="http://echoes.sbooks.net/echoes/";
 // This is the sbook user, which we're careful not to overrid
 var sbook_user=((typeof sbook_user === "undefined")?(false):(sbook_user));
 // This is the picture to use for the user

@@ -325,7 +325,7 @@ function sbookEchoIcons(echo,extra)
   var comment=fdjtImage(sbook_echo_remark_icon,".button.relayb","+");
   var showmore=((extra) &&
 		fdjtImage(sbook_echo_more_icon,".button.extrab","*"));
-  var age=fdjtAnchorC("http://webechoes.net/echo/"+echo.pingid,
+  var age=fdjtAnchorC("http://echoes.sbooks.net/echo/"+echo.pingid,
 		      "age",fdjtIntervalString(fdjtTick()-echo.tstamp)," ago");
   age.target="_blank";
   var targetid=echo.fragid; var target=$(targetid);
@@ -435,7 +435,7 @@ function sbookCreatePingHUD()
 			  tags_elt,detail_elt,excerpt_elt,xrefs_elt);
   form.setAttribute("accept-charset","UTF-8");
   form.ajaxuri="/echoes/ajaxping.fdcgi";
-  form.action="http://webechoes.net/ping.fdcgi";
+  form.action="http://echoes.sbooks.net/echoes/ping.fdcgi";
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);
   form.windowopts="width=500,height=400";
@@ -782,7 +782,7 @@ function add_podspot(target,open)
   var title=target.getAttribute('title');
   var tribes=target.getAttribute('tribes')||[];
   var tags=gather_tags(target);
-  var href="http://webechoes.net/qricon.fdcgi?"+
+  var href="http://echoes.sbooks.net/echoes/qricon.fdcgi?"+
     "URI="+encodeURIComponent(sbook_base)+
     ((id)?("&FRAG="+id):"")+
     ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");

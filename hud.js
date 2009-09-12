@@ -405,11 +405,10 @@ left, </li> <li>the <span class='hudref' hudref='SBOOKSEARCH'>Index \
 HUD</span> on the bottom, and</li> <li>individual <strong>note \
 icons</strong> in the <span class='hudref' hudref='SBOOKRIGHTMARGIN'>right \
 hand margin</span>.</li></ul>\
-<p>These HUDs are <strong>automatically updated</strong> as you read the document:\
-moving the <strong>mouse \
-over</strong> a HUD makes it more visible and <strong>clicking</strong> expands the \
-displayed information and makes it persistent <strong>until you click \
-again</strong>.<br/>\
+<p>These HUDs are <strong>automatically updated</strong> as you read the \
+document: moving the <strong>mouse over</strong> a HUD makes it more visible \
+and <strong>clicking</strong> expands the displayed information and \
+makes it persistent <strong>until you click again</strong>.<br/>\
 You can <strong>make (and share) notes</strong> in your sBook by clicking on \
 a passage or heading.  Providing you're logged into sBooks (and Facebook), \
 you can then a brief comment together with tags, longer details, excerpts, \
