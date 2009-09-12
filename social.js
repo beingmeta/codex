@@ -291,6 +291,7 @@ function sbookEchoToEntry(echo)
   var icons=fdjtSpan("icons");
   var topics=fdjtDiv("topics");
   var extra=sbookEchoExtras(echo);
+  var altpic=echo.altpic||false;
   var anchortext=
     (echo.msg)||((echo.excerpt) && ("'"+echo.excerpt+"'"))||(echo.title);
   var anchor=fdjtAnchorC("#"+echo.fragid,"msg",anchortext||"????")
@@ -312,6 +313,8 @@ function sbookEchoToEntry(echo)
   entry.uri=echo.uri; entry.tags=echo.tags; entry.fragid=echo.fragid;
   if (echo.tribes) entry.tribes=echo.tribes;
   entry.user=user; entry.pingid=echo.pingid;
+  if (altpic) entry.pic=altpic;
+  if (echo.nopodspot) entry.nopodspot=true;
   return entry;
 }
 
@@ -633,12 +636,16 @@ function sbookImportEchoes(data)
     var i=0; while (i<ids.length) {
       var id=ids[i++];
       var entries=data[id];
+      var need_podspot=false;
       var j=0; while (j<entries.length) {
 	var entry=entries[j++];
 	var elt=document.getElementById(id);
 	var echo=sbook_add_echo(id,entry);
+	if (!(entry.nopodspot)) need_podspot=true;
 	if (elt) echo.location=elt.sbookloc;}
-      var element=$(id); if (element) add_podspot(element);}}
+      var element=$(id);
+      if ((need_podspot) && (element))
+	add_podspot(element);}}
   sbook_allechoes.sort(function(x,y) {
       if ((x.fragid)<(y.fragid)) return -1;
       else if ((x.fragid)==(y.fragid))

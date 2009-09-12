@@ -191,7 +191,7 @@ function sbookShowSummary(summary,query,notoc)
   if (summary.echo) {
     var user=summary.user;
     var userinfo=social_info[user];
-    var usrimg=fdjtImage(userinfo.pic,"userpic",userinfo.name);
+    var usrimg=fdjtImage((summary.pic)||(summary.echo.pic)||(userinfo.pic),"userpic",userinfo.name);
     var interval=((summary.tstamp) ? (fdjtTick()-summary.tstamp) : (-1));
     var agespan=
       ((interval>0)&&
