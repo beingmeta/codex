@@ -58,6 +58,7 @@ function createSBOOKHUD()
        fdjtDiv("#SBOOKTOC.sbooktoc.hudblock.hud"),
        fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
        fdjtWithId(sbookCreatePingHUD(),"SBOOKPING"),
+       fdjtDiv("#SBOOKRIGHTMARGIN.hud"),
        sbookHelpHUD(),
        echobar);
 
@@ -394,15 +395,15 @@ function sbookTOC_onclick(evt)
 /* The Help HUD */
 
 var sbook_helptext=
-  "<h1>Welcome to sBooks!</h1><h2>the best thing since sliced paper</h2><p>\
+  "<div class='helphelp left'>Type 'H' to show/hide this page</div>\<div class='helphelp right'>Type 'H' to show/hide this page</div>\
+<h1>Welcome to sBooks! <div class='motto'>possibly the best thing since sliced paper</span></h1>\
 The sBook HUD (Heads-Up Display) is divided into four \
-elements:</p><ul> <li>the <span class='hudref' \
-hudref='SBOOKECHOES'>Meta HUD</span>, on the \
-left, </li> <li>the <span class='hudref' hudref='SBOOKTOC'>TOC \
-HUD</span> (Table Of Contents) on the \
-top</li> <li>the <span class='hudref' hudref='SBOOKSEARCH'>Index \
+elements:</p><ul> <li>the <span class='hudref' hudref='SBOOKTOC'>TOC \
+HUD</span> (Table Of Contents) on the top</li> \
+<li>the <span class='hudref' hudref='SBOOKECHOES'>Meta HUD</span>, on the \
+left, </li> <li>the <span class='hudref' hudref='SBOOKSEARCH'>Index \
 HUD</span> on the bottom, and</li> <li>individual <strong>note \
-icons</strong> in the <span class='hudref' hudref='SBOOKMARGIN'>right \
+icons</strong> in the <span class='hudref' hudref='SBOOKRIGHTMARGIN'>right \
 hand margin</span>.</li></ul>\
 <p>These HUDs are <strong>automatically updated</strong> as you read the document:\
 moving the <strong>mouse \
@@ -427,14 +428,11 @@ and lengths of earlier and later sections at each level.  Moving the mouse over 
 a segment <strong>previews</strong> that section of the book and clicking jumps \
 to that location.</p>\
 <p>In the <span class='hudref' hudref='SBOOKSEARCH'>Index \
-HUD</span>, you can search the book using tags assigned to sections \
-or paragraphs by either the content authors, your friends, or any \
-subscribed metadocs.  As you type tags, possible completions \
-appear in a cloud of tags above your input; clicking in this cloud adds that \
-tag to your search.  At any point, the cloud of tags reflects only the elements \
-matched by the current search, so the cloud gets smaller and smaller as you add \
-tags.  When you hit <tt>Enter</tt> (or when there are few enough results), all the \
-matching results are displayed for your examination.</p>";
+HUD</span>, you can search the book using <strong>tags</strong> assigned to content \
+(automatically or manually) by the content authors, your friends, or any \
+subscribed metadocs.  The Index HUD displays results or <strong>refinements</strong> \
+(additional tags to narrow your search) based on a combination of tags, offering a <strong> \
+completion cloud</strong> based on the tags you've already specified.</p>"
 
 var sbook_helphud_highlight=false;
 var sbook_helphud_display=false;
@@ -442,7 +440,7 @@ var sbook_helphud_opacity=false;
 
 function sbookHelpHighlight(hudelt)
 {
-  fdjtTrace("Highlighting hud elt %o",hudelt);
+  // fdjtTrace("Highlighting hud elt %o",hudelt);
   if (hudelt===sbook_helphud_highlight) return;
   if (sbook_helphud_highlight) {
     sbook_helphud_highlight.style.display=sbook_helphud_display;

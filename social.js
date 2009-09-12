@@ -176,6 +176,7 @@ function sbookEchoBar_onclick(evt)
   else {
     sbookSelectEchoes($("SBOOKALLECHOES"),sources);
     sbookHUDMode("echoes");}
+  if (sbook_focus) sbookScrollEchoes(sbook_focus);
   evt.preventDefault(); evt.cancelBubble=true;
 }
 
@@ -189,6 +190,22 @@ function sbookSetSources(echobar,sources)
 	  (fdjtOverlaps(sources,child.oid)))
 	fdjtAddClass(child,"sourced");
       else fdjtDropClass(child,"sourced");}}
+}
+
+function sbookScrollEchoes(elt)
+{
+  if (elt.sbookloc) {
+    var targetloc=elt.sbookloc;
+    var allechoes=$("SBOOKALLECHOES");
+    var children=allechoes.childNodes;
+    /* We do this linearly because it's fast enough and simpler */
+    var i=0; while (i<children.length) {
+      var child=children[i++];
+      if (child.nodeType===1) {
+	if ((child.blocktarget) &&
+	    (child.blocktarget.sbookloc>=targetloc)) {
+	  if (child.scrollIntoView) child.scrollIntoView();
+	  return;}}}}
 }
 
 function sbookCreateLoginButton(uri,image,title)
@@ -618,7 +635,9 @@ function sbookImportEchoes(data)
       var entries=data[id];
       var j=0; while (j<entries.length) {
 	var entry=entries[j++];
-	sbook_add_echo(id,entry);}
+	var elt=document.getElementById(id);
+	var echo=sbook_add_echo(id,entry);
+	if (elt) echo.location=elt.sbookloc;}
       var element=$(id); if (element) add_podspot(element);}}
   sbook_allechoes.sort(function(x,y) {
       if ((x.fragid)<(y.fragid)) return -1;
@@ -686,6 +705,7 @@ function sbook_add_echo(id,entry)
   if ($("SBOOKALLECHOES")) {
     var allechoes_div=$("SBOOKALLECHOES");
     sbookAddSummary(item,$("SBOOKALLECHOES"),false);}
+  return item;
 }
 
 function sbookGetEchoesUnder(id)
@@ -768,7 +788,7 @@ function add_podspot(target,open)
       (social_info[sources[0]].pic))
     imgsrc=social_info[sources[0]].pic||imgsrc;
   var podspot=fdjtSpan
-    ("podspot",fdjtImage(href,"qricon"),fdjtImage(imgsrc,"podimg","podspot"));
+    ("podspot",fdjtImage(href,"qricon"),fdjtImage(imgsrc,"podimg","comments"));
   podspot.onclick=function(evt){
     evt.preventDefault(); evt.cancelBubble=true;
     if ((sbook_mode==="echoes") &&

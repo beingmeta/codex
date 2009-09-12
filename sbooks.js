@@ -694,27 +694,36 @@ function sbookSetFocus(target,force)
   // And don't tag the HUD either
   if (fdjtHasParent(target,sbookHUD)) return;
   // And don't change the focus if you're pinging
-  if (sbook_mode==="ping") return;
+  // if (sbook_mode==="ping") return;
+  // Don't change the focus if you're in a mode
+  if (sbook_mode) return;
   // If the target has changed, update the location
   if (target!==sbook_focus) {
-    /*
-    var tags=(target.tags)||fdjtCacheAttrib(target,"tags",fdjtSplitSemi);
+    var taghud=$("SBOOKSEARCH");
+    var tags=target.tags;
     var tagdiv=fdjtDiv(".tags.cues");
     tagdiv.onclick=function(evt) {
       var target=$T(evt);
-      var term=(target.sectname)||(tag.getAttribute("dterm"));
-      var textinput=$("SBOOKQUERYTEXT");
-      var qval=textinput.value;
-      var newq=(qval+';'+term;).replace(";;",";");
-      sbookSetQuery(newq,false);};
-    var i=0; while (i<tags.length) {
-      var tag=tags[i++];
-      if ((typeof tag === "string") && (tag[0]==="\u00A7")) {
-	var span=fdjtSpan("sectname",tag); span.sectname=tag;
-	fdjtAppend(tagdiv,span," ");}
-      else fdjtAppend(tagdiv,knoSpan(tag)," ");}
+      var term=((target.sectname)||
+		((target.getAttribute) && (target.getAttribute("dterm"))));
+      var textinput=$("SBOOKSEARCHTEXT");
+      var qval=((textinput.getAttribute("isempty"))? ("") : (textinput.value||""));
+      var qlength=qval.length;
+      if (qlength===0)
+	sbookSetQuery(term+';',false);
+      else if (qval[qlength-1]===';')
+	sbookSetQuery(qval+term+';',false);
+      else sbookSetQuery(term+';'+qval,false);
+      sbookHUDMode("searching");};
+    if (tags) {
+      var i=0; while (i<tags.length) {
+	var tag=tags[i++];
+	if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
+	else fdjtAppend(tagdiv,knoSpan(tag)," ");}}
     fdjtReplace("SBOOKSEARCHCUES",tagdiv);
-    */
+    if (!(sbook_mode)) {
+      taghud.style.opacity=0.9;
+      setTimeout(function() {taghud.style.opacity=null;},2500);}
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
   // Using [force] will do recomputation even if the focus hasn't changed
   if ((force)||(target!==sbook_focus)) {
@@ -893,6 +902,12 @@ function sbook_onkeypress(evt)
     else {
       sbookHUDMode("toc"); $("SBOOKSEARCHTEXT").blur();}
     evt.preventDefault();}
+  /* H or h */
+  else if ((evt.charCode===104) || (evt.charCode===72)) { 
+    if (sbook_mode==="help") sbookHUDMode(false);
+    else {
+      sbookHUDMode("help"); $("SBOOKSEARCHTEXT").blur();}
+    evt.preventDefault();}
   else {
     evt.cancelBubble=true; evt.preventDefault();}
 }
@@ -1015,6 +1030,33 @@ function sbookGetSettings()
   if (tocmax) sbook_tocmax=parseInt(tocmax);
 }
 
+/* The Help Splash */
+
+var sbook_keep_help=false;
+
+function _sbookHelpSplash()
+{
+  if (fdjtGetCookie("SB/HELPSPLASH")) {
+    var helptext=$("SBOOKHELP");
+    var interval=fdjtGetCookie("SB/HELPSPLASH",true);
+    var stopped=false;
+    helptext.onclick=function(evt) { sbook_keep_help=true;};
+    if (interval===0) sbookHUDMode(false);
+    else {
+      sbookHUDMode("help");
+      setTimeout(function(){
+	  if ((sbook_mode==='help') && (!(sbook_keep_help))) {
+	    helptext.onclick=false;
+	    sbookHUDMode(false);}},
+	interval);}}
+  else {
+    var helpsplash=fdjtGetMeta("SBOOKHELPSPLASH");
+    if (helpsplash) helpsplash=JSON.parse(helpsplash);
+    else helpsplash=3000;
+    fdjtSetCookie("SB/HELPSPLASH",helpsplash);
+    sbookHUDMode("help");}
+}
+
 /* Initialization */
 
 var _sbook_setup=false;
@@ -1031,6 +1073,7 @@ function sbookSetup()
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX");
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
+  sbookHUDMode("help");
   if (knoHTMLSetup) knoHTMLSetup();
   var knowlets_done=new Date();
   sbookGatherMetadata();
@@ -1043,6 +1086,7 @@ function sbookSetup()
   sbookHUD_Init();
   sbook_base=getsbookbase();
   sbook_src=getsbooksrc();
+  _sbookHelpSplash();
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;
   window.onscroll=sbook_onscroll;

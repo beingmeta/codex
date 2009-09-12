@@ -260,7 +260,7 @@ function sbookQueryCloud(query)
       sbookShowSearch(query);
       sbookHUDMode("browsing");
       $("SBOOKSEARCHTEXT").blur();
-      $("SBOOKRSUMMARIES").focus();
+      $("SBOOKSUMMARIES").focus();
       evt.preventDefault(); evt.cancelBubble=true;};
     fdjtPrepend(completions,counts);
     query._cloud=completions;
