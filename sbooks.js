@@ -58,6 +58,7 @@ var sbook_base=false;
 var sbook_src=false;
 // This is the sbook ping AJAX ping uri
 var sbook_ping_uri="/echoes/ajaxping.fdcgi";
+/* var sbook_ping_uri=false; */
 // This is the deepest TOC level to show for navigation
 var sbook_tocmax=false;
 
@@ -536,14 +537,16 @@ function sbookNextPage(evt)
 {
   window.scrollBy(0,window.innerHeight);
   setTimeout("sbookSetFocus(sbookGetXYFocus())",100);
-  evt.preventDefault(); evt.cancelBubble=true;
+  if (evt.preventDefault) evt.preventDefault();
+  evt.cancelBubble=true;
 }
 
 function sbookPrevPage(evt)
 {
   window.scrollBy(0,-window.innerHeight);
   setTimeout("sbookSetFocus(sbookGetXYFocus())",100);
-  evt.preventDefault(); evt.cancelBubble=true;
+  if (evt.preventDefault) evt.preventDefault();
+  evt.cancelBubble=true;
 }
 
 function sbookHUD_Next(evt)
@@ -643,8 +646,8 @@ function sbookSetHead(head)
     fdjtAddClass(head,"sbookhead");
     sbookSetLocation(sbook_location);
     if (!(sbook_mode)) {
-      navhud.style.opacity=0.9;
-      setTimeout(function() {navhud.style.opacity=null;},2500);}
+      navhud.style.opacity=0.5;
+      setTimeout(function() {navhud.style.opacity=null;},1500);}
     sbook_head=head;}
   // if (sbookHUDechoes) sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));
 }
@@ -726,8 +729,8 @@ function sbookSetFocus(target,force)
 	else fdjtAppend(tagdiv,knoSpan(tag)," ");}}
     fdjtReplace("SBOOKSEARCHCUES",tagdiv);
     if (!(sbook_mode)) {
-      taghud.style.opacity=0.9;
-      setTimeout(function() {taghud.style.opacity=null;},2500);}
+      taghud.style.opacity=0.5;
+      setTimeout(function() {taghud.style.opacity=null;},2000);}
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
   // Using [force] will do recomputation even if the focus hasn't changed
   if ((force)||(target!==sbook_focus)) {
@@ -1073,25 +1076,8 @@ var sbook_keep_help=false;
 
 function _sbookHelpSplash()
 {
-  if (fdjtGetCookie("SB/HELPSPLASH")) {
-    var helptext=$("SBOOKHELP");
-    var interval=fdjtGetCookie("SB/HELPSPLASH",true);
-    var stopped=false;
-    helptext.onclick=function(evt) { sbook_keep_help=true;};
-    if (interval===0) sbookHUDMode(false);
-    else {
-      sbookHUDMode("help");
-      setTimeout(function(){
-	  if ((sbook_mode==='help') && (!(sbook_keep_help))) {
-	    helptext.onclick=false;
-	    sbookHUDMode(false);}},
-	interval);}}
-  else {
-    var helpsplash=fdjtGetMeta("SBOOKHELPSPLASH");
-    if (helpsplash) helpsplash=JSON.parse(helpsplash);
-    else helpsplash=3000;
-    fdjtSetCookie("SB/HELPSPLASH",helpsplash);
-    sbookHUDMode("help");}
+  if (fdjtGetCookie("sbookhidehelp")) {}
+  else sbookHUDMode("help");
 }
 
 /* Initialization */

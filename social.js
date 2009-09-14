@@ -434,7 +434,7 @@ function sbookCreatePingHUD()
 			  sbookSelectTribe(),
 			  tags_elt,detail_elt,excerpt_elt,xrefs_elt);
   form.setAttribute("accept-charset","UTF-8");
-  form.ajaxuri="/echoes/ajaxping.fdcgi";
+  form.ajaxuri=sbook_ping_uri;
   form.action="http://echoes.sbooks.net/echoes/ping.fdcgi";
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);

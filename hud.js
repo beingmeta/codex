@@ -395,7 +395,9 @@ function sbookTOC_onclick(evt)
 /* The Help HUD */
 
 var sbook_helptext=
-  "<div class='helphelp left'>Type 'H' to show/hide this page</div>\<div class='helphelp right'>Type 'H' to show/hide this page</div>\
+  "<div class='helphelp left'>Type 'H' to show/hide this page</div>\
+<div class='helphelp right'>\
+<input type='CHECKBOX' name='SBOOKHIDEHELP' class='helphider' VALUE='yes'>Hide this help on startup</div>\
 <h1>Welcome to sBooks! <div class='motto'>possibly the best thing since sliced paper</span></h1>\
 The sBook HUD (Heads-Up Display) is divided into four \
 elements:</p><ul> <li>the <span class='hudref' hudref='SBOOKTOC'>TOC \
@@ -471,6 +473,15 @@ function sbookHelpHUD()
     var target=$T(evt);
     sbookHelpHighlight(false);};
   div.innerHTML=sbook_helptext;
+  var hidehelp=fdjtGetChildrenByClassName(div,'helphider')[0];
+  var dohidehelp=fdjtGetCookie("sbookhidehelp");
+  if (dohidehelp) hidehelp.checked=true;
+  else hidehelp.checked=false;
+  hidehelp.onchange=function(evt){
+    fdjtTrace("change on %o: %o checked=%o",hidehelp,evt,hidehelp.checked);
+    if (hidehelp.checked)
+      fdjtSetCookie("sbookhidehelp",true,false,"/",document.location.host);
+    else fdjtClearCookie("sbookhidehelp","/",document.location.host);};
   return div;
 }
 

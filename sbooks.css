@@ -848,8 +848,8 @@ img.sbookqricon { display: none;}
 
 /* For going to ebooks forms */
 
-div.sbooktoc { font-size: 150%;}
-div.sbooktocblock { margin-left: 2em; font-size: 80%;}
+div.sbookebooktoc { font-size: 150%;}
+div.sbookebooktocblock { margin-left: 2em; font-size: 80%;}
 
 /* Still unclassified */
 
