@@ -44,6 +44,11 @@ body.sbookpingfocus { color: inherit;}
 
 a img { border: transparent;}
 
+span.altabstime { display: none;}
+@media print {
+  span.altabstime { display: inline;}
+  span.altreltime { display: none;}};
+
 /* No HUD when printing */
 
 @media print {
@@ -172,8 +177,8 @@ div#SBOOKHUD div.hud#SBOOKTOC {
 
 div#SBOOKHUD div.hud#SBOOKPING {
   position: fixed; top: 75px; 
-  left: 54px; right: 75px; z-index: 250;
   overflow: auto;
+  left: 54px; right: 75px; z-index: 250;
   margin: 0px; height: auto; min-height: auto;
   padding: 6px; padding-left: 0px; padding-bottom: 0px;
   -khtml-border-top-right-radius: 6px; 

@@ -325,7 +325,7 @@ function sbookEchoIcons(echo,extra)
   var comment=fdjtImage(sbook_echo_remark_icon,".button.relayb","+");
   var showmore=((extra) &&
 		fdjtImage(sbook_echo_more_icon,".button.extrab","*"));
-  var age=fdjtAnchorC("http://echoes.sbooks.net/echo/"+echo.pingid,
+  var age=fdjtAnchorC("http://echoes.sbooks.net/ref/"+echo.pingid,
 		      "age",fdjtIntervalString(fdjtTick()-echo.tstamp)," ago");
   age.target="_blank";
   var targetid=echo.fragid; var target=$(targetid);
