@@ -43,6 +43,10 @@ var sbook_user=((typeof sbook_user === "undefined")?(false):(sbook_user));
 // This is the picture to use for the user
 var sbook_user_img=
   ((typeof sbook_user_img === "undefined")?(false):(sbook_user_img));
+// Whether to embed qricons with podspots
+var sbook_podspot_qricons=false;
+// Whether to tag headings with qricons
+var sbook_heading_qricons=true;
 
 // This is the base URI for this document, also known as the REFURI
 // All stored references to this document use this REFURI, even if the
@@ -987,6 +991,22 @@ function sbook_getsrc(elt)
   else return src;
 }
 
+function sbook_get_titlepath(info,embedded)
+{
+  if (!(info))
+    if (document.title)
+      if (embedded)
+	return " // "+document.title;
+      else return "";
+    else return "";
+  else {
+    var next=((info.sbook_head) && ((info.sbook_head.sbookinfo)||false));
+    if (info.title)
+      return ((embedded) ? (" // ") : (""))+info.title+
+	sbook_get_titlepath(next,true);
+    else return sbook_get_titlepath(next,embedded);}
+}
+
 /* Getting metadata */
 
 function sbookGetSettings()
@@ -1028,6 +1048,23 @@ function sbookGetSettings()
       sbook_headlevels[rules[i++]]=7;}}
   var tocmax=fdjtGetMeta("SBOOKTOCMAX");
   if (tocmax) sbook_tocmax=parseInt(tocmax);
+}
+
+/* Adding qricons */
+
+function sbookAddQRIcons()
+{
+  var i=0;
+  while (i<sbook_heads.length) {
+    var head=sbook_heads[i++];
+    var id=head.id;
+    var title=(head.sbookinfo)&&sbook_get_titlepath(head.sbookinfo);
+    var qrhref="http://echoes.sbooks.net/echoes/qricon.fdcgi?"+
+      "URI="+encodeURIComponent(sbook_src||sbook_base)+
+      ((id)?("&FRAG="+head.id):"")+
+      ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
+    var qricon=fdjtImage(qrhref,"sbookqricon");
+    fdjtPrepend(head,qricon);}
 }
 
 /* The Help Splash */
@@ -1082,6 +1119,7 @@ function sbookSetup()
   var social_done=new Date();
   createSBOOKHUD();
   if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
+  if (sbook_heading_qricons) sbookAddQRIcons();
   var hud_done=new Date();
   sbookHUD_Init();
   sbook_base=getsbookbase();

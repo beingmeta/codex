@@ -196,14 +196,14 @@ function sbookShowSummary(summary,query,notoc)
     var agespan=
       ((interval>0)&&
        ((interval>(3*24*3600)) 
-	? (fdjtAnchorC("http://webechoes.net/echo/"+summary.echo,
+	? (fdjtAnchorC("http://echoes.sbooks.net/echo/"+summary.pingid,
 		       "age",fdjtTickDate(summary.tstamp)))
-	: (fdjtAnchorC("http://webechoes.net/echo/"+summary.echo,
+	: (fdjtAnchorC("http://echoes.sbooks.net/echo/"+summary.pingid,
 		       "age",fdjtIntervalString(interval)," ago"))));
     agespan.onclick=function(evt) {
       evt.cancelBubble=true;};
     if (agespan) {
-      agespan.target="webechoes";
+      agespan.target="sbookechoes";
       agespan.title="browse this echo";}
     fdjtAppend(sumdiv,usrimg,
 	       ((summary.detail)&&(_sbookDetailsButton())),((summary.detail)&&" "),

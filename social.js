@@ -226,7 +226,7 @@ function sbookCreateEchoBar(classinfo,oids)
   if (!(classinfo)) classinfo=".echobar.hudblock.hud";
   var help_button=
     fdjtImage("http://static.beingmeta.com/graphics/HelpIcon40x40.png",
-	      "button help","?");
+	      ".button.help","?");
   var facebook_button=
     ((window.name==="iframe_canvas")&&
      (fdjtAnchor("http://apps.facebook.com/sbooksapp/",
@@ -234,7 +234,7 @@ function sbookCreateEchoBar(classinfo,oids)
 			  "fbapp"))));
   var everyone_button=
     fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
-	      "button everyone","everyone");
+	      ".button.everyone","everyone");
   var fb_login=sbookCreateLoginButton
     ("http://sbooks.net/fb/auth",
      "facebook_32.png",
@@ -247,8 +247,8 @@ function sbookCreateEchoBar(classinfo,oids)
     (false,
      "linkedinlogo32x32.png",
      "see comments and notes from your LinkedIn friends and groups");
-  var echobar=fdjtDiv(classinfo," ",everyone_button,
-		      fb_login,ms_login,li_login);
+  var echobar=fdjtDiv(classinfo," ",everyone_button,fb_login,ms_login,li_login);
+  var echosources=fdjtDiv("echosources");
   var socialelts=[]; var echoelts=[];
   var i=0; while (i<oids.length) {
     var oid=oids[i++];
@@ -258,7 +258,7 @@ function sbookCreateEchoBar(classinfo,oids)
     if (info.summary) img.title=info.summary;
     else img.title=info.name;
     socialelts.push(img);
-    fdjtAppend(echobar,img);}
+    fdjtAppend(echosources,img);}
   echobar._social_oid_length=oids.length;
   everyone_button.onclick=function(evt) {
     if (sbook_mode==="echoes") {
@@ -276,7 +276,7 @@ function sbookCreateEchoBar(classinfo,oids)
   help_button.onclick=function(evt) {
     sbookHUDToggle("help");
     evt.cancelBubble=true;}
-  fdjtAppend(echobar,facebook_button,help_button,sbookAllEchoesDiv());
+  fdjtAppend(echobar,echosources,sbookAllEchoesDiv(),help_button);
   echobar.socialelts=socialelts;
   sbook_echobar=echobar;
   return echobar;
@@ -782,20 +782,13 @@ function add_podspot(target,open)
   var title=target.getAttribute('title');
   var tribes=target.getAttribute('tribes')||[];
   var tags=gather_tags(target);
-  var href="http://echoes.sbooks.net/echoes/qricon.fdcgi?"+
-    "URI="+encodeURIComponent(sbook_base)+
-    ((id)?("&FRAG="+id):"")+
-    ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
-  var i=0; while (i<tribes.length) href=href+"&TRIBES="+tribes[i++];
-  i=0; while (i<tags.length) href=href+"&TAGCUE="+tags[i++];
   var sources=sbookGetSourcesUnder(id);
   var imgsrc=sbook_graphics_root+"sBooksWE_2_32x32.png";
   var pingimgsrc=sbook_graphics_root+"remarkballoon32x32.png";
   if ((sources.length===1) &&
       (social_info[sources[0]].pic))
     imgsrc=social_info[sources[0]].pic||imgsrc;
-  var podspot=fdjtSpan
-    ("podspot",fdjtImage(href,"qricon"),fdjtImage(imgsrc,"podimg","comments"));
+  var podspot=fdjtSpan("podspot",fdjtImage(imgsrc,"podimg","comments"));
   podspot.onclick=function(evt){
     evt.preventDefault(); evt.cancelBubble=true;
     if ((sbook_mode==="echoes") &&
@@ -811,6 +804,14 @@ function add_podspot(target,open)
   podspot.onmouseout=function(evt){
     fdjtDropClass(target,"sbooklivespot");};
   target.podspot=podspot;
+  if (sbook_podspot_qricons) {
+    var qrhref="http://echoes.sbooks.net/echoes/qricon.fdcgi?"+
+      "URI="+encodeURIComponent(sbook_base)+
+      ((id)?("&FRAG="+id):"")+
+      ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
+    var i=0; while (i<tribes.length) qrhref=qrhref+"&TRIBES="+tribes[i++];
+    i=0; while (i<tags.length) qrhref=qrhref+"&TAGCUE="+tags[i++];
+    fdjtPrepend(target,fdjtImage(qrhref,"sbookqricon"));}
   fdjtPrepend(target,podspot);
   return podspot;
 }

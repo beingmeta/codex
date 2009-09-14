@@ -44,6 +44,13 @@ body.sbookpingfocus { color: inherit;}
 
 a img { border: transparent;}
 
+/* No HUD when printing */
+
+@media print {
+    div#SBOOKHUD { display: none;}
+/*    div.hud { display: none;} */
+}
+
 /* Display/opacity rules */
 
 div.hud {
@@ -101,7 +108,7 @@ div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.9;}
 
 div#SBOOKHUD div.hudblock#SBOOKTOC { display: block;}
 div#SBOOKHUD div.hudblock#SBOOKECHOES { display: block;}
-div#SBOOKHUD div.hudblock#SBOOKSEARCH { display: block;}
+div#SBOOKHUD div.hudblock#SBOOKSEARCH { display: block;}}
 
 div#SBOOKHUD.toc div.hudblock#SBOOKTOC { 
   opacity: 0.9; max-height: inherit;}
@@ -165,7 +172,7 @@ div#SBOOKHUD div.hud#SBOOKTOC {
 
 div#SBOOKHUD div.hud#SBOOKPING {
   position: fixed; top: 75px; 
-  left: 44px; right: 75px; z-index: 250;
+  left: 54px; right: 75px; z-index: 250;
   overflow: auto;
   margin: 0px; height: auto; min-height: auto;
   padding: 6px; padding-left: 0px; padding-bottom: 0px;
@@ -192,10 +199,10 @@ div#SBOOKHUD div.hud#SBOOKPING {
 */
 div#SBOOKHUD div.hud#SBOOKPING span.dterm { color: yellow;}
 div#SBOOKHUD div.hud#SBOOKECHOES {
-  position: fixed; display: block;
-  top: 75px; bottom: 75px; left: 0px; width: 40px;
+  position: fixed; display: block; 
+  top: 75px; bottom: 75px; left: 0px; width: 50px;
   margin: 0px; padding: 2px; min-height: 80px;
-  text-align: center;
+  text-align: left;
   -khtml-border-top-right-radius: 6px; 
   -webkit-border-top-right-radius: 6px; 
   -moz-border-radius-topright: 6px; 
@@ -203,8 +210,11 @@ div#SBOOKHUD div.hud#SBOOKECHOES {
   -khtml-border-bottom-right-radius: 6px; 
   -webkit-border-bottom-right-radius: 6px; 
   -moz-border-radius-bottomright: 6px;
-  border-bottom-right-radius: 6px;
-  overflow-y: auto;}
+  border-bottom-right-radius: 6px;}
+div#SBOOKHUD div.hud#SBOOKECHOES div.echosources {
+  position: fixed; display: block; text-align: left;
+  top: 110px; bottom: 110px; left: 2px; width: 50px;
+  overflow-y: auto; overflow-x: hidden;}
 div#SBOOKHUD .hud#SBOOKECHOES img.social { 
   width: 34px; height: 34px;
   border: solid transparent 2px;} 
@@ -241,10 +251,11 @@ body.nosbookuser #SBOOKECHOES img.button {display: none;}
 body.nosbookuser #SBOOKECHOES a.login img.button {
   display: inherit;}
 
+div#SBOOKHUD div.hud#SBOOKECHOES { }
 div#SBOOKHUD div.hud#SBOOKECHOES img.button.ping {
   position: absolute; left: 2px; bottom: 0px;}
 div#SBOOKHUD div.hud#SBOOKECHOES img.button.help {
-  position: absolute; left: 0px; bottom: 0px;}
+  position: absolute; left: 0px; bottom: 0px; vertical-align: bottom;}
 div#SBOOKHUD div.hud#SBOOKECHOES img.button[alt='fbapp'] {
   position: absolute; left: 2px; bottom: 32px;}
 
@@ -308,7 +319,7 @@ div#SBOOKHUD.ping form.pingform div.head {
   padding-top: 4px; margin-top: 2px; border-top: silver solid 2px;}
 
 div#SBOOKHUD form.pingform div.tribebar { 
-  text-align: left; clear: both; margin-bottom: 4px; margin-top: 3px;}
+  text-align: left; clear: right; margin-bottom: 4px; margin-top: 3px;}
 div#SBOOKHUD form.pingform div.tribebar
   select[NAME='TRIBE'] { width: 50%; max-width: 50%; clear: none;}
 
@@ -374,7 +385,7 @@ div#SBOOKHUD div#SBOOKSUMMARIES {
 
 div#SBOOKHUD div#SBOOKALLECHOES {
   position: fixed; top: 75px; bottom: 75px;
-  left: 44px; right: 75px; z-index: 250;
+  left: 54px; right: 75px; z-index: 250;
   overflow: auto;
   margin: 0px; height: auto; min-height: auto;
   padding: 6px; padding-left: 0px; padding-bottom: 0px;
@@ -821,13 +832,13 @@ body.preview span.podspot { opacity: 0.9;}
 span.podspot img.pingbutton {
   position: static; background-color: lightblue; display: none;
   border: solid transparent 0px;}
-span.podspot img.qricon { display: none;}
 span.podspot img.pingbutton { display: none;}
 .sbookpingfocus span.podspot { opacity: 0.8; border: transparent;}
 .sbookpingfocus span.podspot img.pingbutton { 
   display: inline;}
+img.sbookqricon { display: none;}
 @media print {
-  span.podspot img.qricon { display: inline;}
+  img.sbookqricon { display: block; float: right;}
   .sbookpingfocus span.podspot img.pingbutton { display: none;}}
 
 /* For going to ebooks forms */
