@@ -31,7 +31,8 @@
 
 /* Highlight rules */
 
-.sbookhead { text-decoration: overline;}
+h1.sbookhead, h2.sbookhead, h3.sbookhead, h4.sbookhead { text-decoration: overline;}
+.sbookhead[toclevel=1], .sbookhead[toclevel=2], .sbookhead[toclevel=3], .sbookhead[toclevel=4] { text-decoration: overline;}
 body.sbookhead { text-decoration: none;}
 
 .sbookfocus { color: blue;}
