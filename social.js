@@ -211,7 +211,9 @@ function sbookScrollEchoes(elt)
 function sbookCreateLoginButton(uri,image,title)
 {
   var login_button=
-    fdjtAnchor(((uri)?(uri+"?NEXT="+encodeURIComponent(window.location)):
+    fdjtAnchor(((uri)?
+		(uri+"?NEXT="+
+		 encodeURIComponent("http://sbooks.net/app/read?URI="+encodeURIComponent(window.location.href))):
 		"javascript:alert('sorry, not yet implemented'); return false;"),
 	       fdjtImage(sbook_graphics_root+image,"button"));
   fdjtAddClass(login_button,"login");

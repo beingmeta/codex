@@ -68,7 +68,7 @@ div.hudblock {
   display: none;}
 body.hudup div#SBOOKHUD div.hudblock { opacity: 0.9;}
 body.hudup div#SBOOKHUD div.hudblock:hover { opacity: 0.9;}
-body.hudup div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.9;}
+body.hudup div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.75;}
 
 img.hudbutton { 
   opacity: 0.2; z-index: 200;
@@ -220,7 +220,8 @@ div#SBOOKHUD div.hud#SBOOKECHOES {
 div#SBOOKHUD div.hud#SBOOKECHOES div.echosources {
   position: fixed; display: block; text-align: left;
   top: 110px; bottom: 110px; left: 2px; width: 50px;
-  overflow-y: auto; overflow-x: hidden;}
+  overflow-y: auto; overflow-x: hidden;
+  opacity: 0.80;}
 div#SBOOKHUD .hud#SBOOKECHOES img.social { 
   width: 34px; height: 34px;
   border: solid transparent 2px;} 

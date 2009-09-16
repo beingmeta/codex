@@ -46,7 +46,7 @@ var sbook_user_img=
 // Whether to embed qricons with podspots
 var sbook_podspot_qricons=false;
 // Whether to tag headings with qricons
-var sbook_heading_qricons=true;
+var sbook_heading_qricons=false;
 
 // This is the base URI for this document, also known as the REFURI
 // All stored references to this document use this REFURI, even if the
