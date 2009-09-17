@@ -39,6 +39,8 @@ var sbook_small_eye_icon=
   "http://static.beingmeta.com/graphics/EyeIcon13x10.png";
 var sbook_details_icon=
   "http://static.beingmeta.com/graphics/detailsicon16x16.png";
+var sbook_outlink_icon=
+  "http://static.beingmeta.com/graphics/outlink16x16.png";
 var sbook_small_remark_icon=
   "http://static.beingmeta.com/graphics/remarkballoon16x13.png";
 
@@ -209,8 +211,9 @@ function sbookShowSummary(summary,query,notoc)
       agespan.target="sbookechoes";
       agespan.title="browse this echo";}
     fdjtAppend(sumdiv,usrimg,
+	       agespan,
 	       ((summary.detail)&&(_sbookDetailsButton())),((summary.detail)&&" "),
-	       agespan);}
+	       ((summary.xrefs)&&(_sbookXrefsButton())));}
   var relay_button=
     fdjtImage(sbook_small_remark_icon,"remarkbutton","ping",
 	      _("click to relay or respond"));
@@ -255,6 +258,16 @@ function sbookShowSummary(summary,query,notoc)
     else fdjtAppend(tagspan," \u00b7 ",knoSpan(tag));}
   if (summary.detail) 
     fdjtAppend(sumdiv,fdjtDiv("detail",summary.detail));
+  if ((summary.xrefs) && (summary.xrefs.length>0))  {
+    var xrefsdiv=fdjtDiv("xrefs");
+    var xrefs=summary.xrefs;
+    var i=0; while (i<xrefs.length) {
+      var xref=xrefs[i++];
+      var anchor=fdjtAnchor(xref,xref);
+      anchor.target='_blank';
+      anchor.onclick=function(evt) { evt.cancelBubble=true;};
+      fdjtAppend(xrefsdiv,anchor);}
+    fdjtAppend(sumdiv,xrefsdiv);}
   if (summary.echo) sumdiv.echo=summary.echo;
   return sumdiv;
 }
@@ -282,6 +295,19 @@ function _sbookDetailsButton(excerpt)
     evt.preventDefault(); evt.cancelBubble=true;
     return false;};
   img.title=_("show/hide details");
+  return img;
+}
+
+function _sbookXrefsButton(excerpt)
+{
+  var img=fdjtImage(sbook_outlink_icon,"xrefsbutton","xrefs");
+  img.onclick=function(evt) {
+    var anchor=$P(".summary",$T(evt));
+    if (anchor) fdjtToggleClass(anchor,"showxrefs");
+    $T(evt).blur(); if (anchor) anchor.blur();
+    evt.preventDefault(); evt.cancelBubble=true;
+    return false;};
+  img.title=_("show/hide web references");
   return img;
 }
 

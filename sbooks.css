@@ -317,7 +317,7 @@ div#SBOOKHUD form.pingform div.tags {
   text-align: left;}
 div#SBOOKHUD form.pingform div.xrefs { 
   height: 80px; text-align: right;}
-div#SBOOKHUD form.pingform div.xrefs input[type='TEXT'][name="XREF"] { 
+div#SBOOKHUD form.pingform div.xrefs input[type='TEXT'][name="XREFS"] { 
   width: 98%; margin-left: 0px; display: block; }
 div#SBOOKHUD form.pingform div.xrefs div.xref { 
   width: 100%; display: block; text-align: left; }
@@ -516,10 +516,10 @@ div#SBOOKHUD.help div#SBOOKHELP {
 div#SBOOKHUD div#SBOOKHELP span.hudref {
   font-weight: bold; color: blue; cursor: pointer;}
 div#SBOOKHUD div#SBOOKHELP strong {
-  font-weight: bold; color: orange;}
+  font-weight: bold; color: yellow;}
 div#SBOOKHUD div#SBOOKHELP h1 { text-align: center;}
 div#SBOOKHUD div#SBOOKHELP h1 div.motto {
-  font-weight: normal; font-style: italic; font-size: 50%; color: orange;}
+  font-weight: normal; font-style: italic; font-size: 50%; color: yellow;}
 
 div#SBOOKRIGHTMARGIN {
  position: fixed; 
@@ -784,6 +784,9 @@ div.sbooksummaries .summary span.controller {
 .summary img.detailsbutton { 
   float: right; border: none;
   margin-right: 3px; margin-left: 3px;}
+.summary img.xrefsbutton { 
+  float: right; border: none;
+  margin-right: 3px; margin-left: 3px;}
 .summary img.remarkbutton { 
   float: right; border: none;
   margin-right: 3px; margin-left: 3px;}
@@ -798,6 +801,9 @@ span.excerpt span.content { font-size: 80%; color: white; display: none;}
 div.sbooksummaries .summary div.detail { 
   display: none; color: ivory; clear: both;}
 div.sbooksummaries .showdetail div.detail { display: block;}
+div.sbooksummaries div.xrefs { display: none;}
+div.sbooksummaries .showxrefs div.xrefs { display: block;}
+div.sbooksummaries div.xrefs a { display: block;}
 
 /* Podspot iframes */
 

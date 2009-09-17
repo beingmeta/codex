@@ -416,7 +416,7 @@ function sbookCreatePingHUD()
 	    fdjtDiv("content",excerpt_input));
   excerpt_input.name="EXCERPT";
   excerpt_input.prompt="Add an excerpt";
-  var xrefs_input=fdjtInput("TEXT","XREF","","xref");
+  var xrefs_input=fdjtInput("TEXT","XREFS","","xref");
   var xrefs_elt=
     fdjtDiv(".xrefs.pingtab",
 	    fdjtImage(sbook_graphics_root+"outlink32x32.png","head","REFS"),
@@ -708,6 +708,7 @@ function sbook_add_echo(id,entry)
     fdjtAdd(sbook_echoes_by_user,user,item);}
   var tstamp=entry.tstamp;
   if (tstamp>sbook_echo_syncstamp) sbook_echo_syncstamp=tstamp;
+  if ((entry.xrefs) && (item!=entry)) item.xrefs=entry.xrefs;
   if ((entry.uri) && (item!=entry)) item.uri=entry.uri;
   if ((entry.msg) && (item!=entry)) item.msg=entry.msg;
   if ((entry.excerpt) && (item!=entry)) item.excerpt=entry.excerpt;
