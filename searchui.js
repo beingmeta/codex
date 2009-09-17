@@ -174,8 +174,11 @@ function _sbook_note_completions(completions)
   else if (completions.length)
     forced=completions[0];
   else {}
-  if (forced) 
-    fdjtRadioSelect(forced,this.completions,"completion","prime");
+  if (forced) {
+    if (this.forced_elt)
+      fdjtDropClass(this.forced_elt,"prime");
+    this.forced_elt=forced;
+    fdjtAddClass(forced,"prime");}
 }
 
 /* Getting query cloud */
@@ -382,7 +385,6 @@ function createSBOOKHUDsearch()
   input.completions_elt=completions;
   input.prompt="Enter tags (or click on completions)";
   completions.input_elt=input;
-  input.onkeydown=fdjtComplete_onkey;
   input.onkeypress=sbookSearchInput_onkeypress;
   input.onkeyup=sbookSearchInput_onkeyup;
   input.onfocus=sbookSearchInput_onfocus;
