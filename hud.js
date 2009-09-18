@@ -394,47 +394,6 @@ function sbookTOC_onclick(evt)
 
 /* The Help HUD */
 
-var sbook_helptext=
-  "<div class='helphelp left'>Type 'H' to show/hide this page</div>\
-<div class='helphelp right'>\
-<input type='CHECKBOX' name='SBOOKHIDEHELP' class='helphider' VALUE='yes'>Hide this help on startup</div>\
-<h1>Welcome to sBooks! <div class='motto'>possibly the best thing since sliced paper</span></h1>\
-The sBook HUD (Heads-Up Display) is divided into four \
-elements:</p><ul> <li>the <span class='hudref' hudref='SBOOKTOC'>TOC \
-HUD</span> (Table Of Contents) on the top</li> \
-<li>the <span class='hudref' hudref='SBOOKECHOES'>Meta HUD</span>, on the \
-left, </li> <li>the <span class='hudref' hudref='SBOOKSEARCH'>Index \
-HUD</span> on the bottom, and</li> <li>individual <strong>note \
-icons</strong> in the <span class='hudref' hudref='SBOOKRIGHTMARGIN'>right \
-hand margin</span>.</li></ul>\
-<p>These HUDs are <strong>automatically updated</strong> as you read the \
-document: moving the <strong>mouse over</strong> a HUD makes it more visible \
-and <strong>clicking</strong> expands the displayed information and \
-makes it persistent <strong>until you click again</strong>.<br/>\
-You can <strong>make (and share) notes</strong> in your sBook by clicking on \
-a passage or heading.  Providing you're logged into sBooks (and Facebook), \
-you can then a brief comment together with tags, longer details, excerpts, \
-or cross references.</p>\
-<p><strong>Preview icons</strong> (<img src='http://static.beingmeta.com/graphics/EyeIcon19x15.png'/>) \
-appear throughout the HUD: moving the \
-mouse over these icons <strong>temporarily previews</strong> the \
-content, scrolling to the referenced segment of the document and dimming the \
-HUD.  Clicking at this point goes to the displayed content while \
-moving the mouse away returns to the preceding location and returns to \
-the HUD.</p>\
-<p>In the <span class='hudref' hudref='SBOOKTOC'>TOC \
-HUD</span>, the sections above the current location are arranged from \
-top to bottom and the alternating horizontal bars indicate the positions \
-and lengths of earlier and later sections at each level.  Moving the mouse over \
-a segment <strong>previews</strong> that section of the book and clicking jumps \
-to that location.</p>\
-<p>In the <span class='hudref' hudref='SBOOKSEARCH'>Index \
-HUD</span>, you can search the book using <strong>tags</strong> assigned to content \
-(automatically or manually) by the content authors, your friends, or any \
-subscribed metadocs.  The Index HUD displays results or <strong>refinements</strong> \
-(additional tags to narrow your search) based on a combination of tags, offering a <strong> \
-completion cloud</strong> based on the tags you've already specified.</p>"
-
 var sbook_helphud_highlight=false;
 var sbook_helphud_display=false;
 var sbook_helphud_opacity=false;
@@ -496,12 +455,20 @@ function sbookHUD_Init()
     if ((hash[0]==='#') && (hash.length>1))
       target=sbook_hashmap[hash.slice(1)];
     else target=sbook_hashmap[hash];}
+  else if (window.scrollY) {
+    var scrollx=window.scrollX||document.body.scrollLeft;
+    var scrolly=window.scrollY||document.body.scrollLeft;
+    var xoff=scrollx+sbook_last_x;
+    var yoff=scrolly+sbook_last_y;
+    var scroll_target=sbookGetXYFocus(xoff,yoff);
+    if (scroll_target) target=scroll_target;}
   if (target) {
     sbook_focus=target; sbook_ping_focus=target;}
   if (!(target))
     target=document.body;
-  if (target!=document.body) target.scrollIntoView();
-  sbookSetHead(target);
+  if (target!=document.body) {
+    target.scrollIntoView();
+    sbookSetFocus(target)}
   if (target.sbookloc) sbookSetLocation(target.sbookloc);
   // window.location=window.location;
 }

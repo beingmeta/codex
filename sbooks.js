@@ -81,6 +81,8 @@ var sbook_overhud=false;
 // The hudstate saved by Shift (or other temporary measures)
 var sbook_hudstate=false;
 var sbook_hudfnstate=false;
+// Whether to do progress flashes
+var sbook_flash_progress=true;
 
 // This is a list of all the terminal content nodes
 var sbook_nodes=[];
@@ -135,6 +137,8 @@ var sbook_debug_hud=false;
 var sbook_trace_search=0;
 // Whether to debug clouds
 var sbook_trace_clouds=0;
+// Whether to trace focus
+var sbook_debug_focus=false;
 // Whether we're debugging locations
 var sbook_debug_locations=false;
 
@@ -638,16 +642,16 @@ function sbookSetHead(head)
     return;}
   else {
     var info=sbook_getinfo(head);
-    // sbook_trace_focus("sbookSetHead",head);
+    if (sbook_debug_focus) sbook_trace_focus("sbookSetHead",head);
     var navhud=createSBOOKHUDnav(head,info);
     fdjtReplace("SBOOKTOC",navhud);
     window.title=info.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
     sbookSetLocation(sbook_location);
-    if (!(sbook_mode)) {
+    if ((sbook_flash_progress)&&(!(sbook_mode))) {
       navhud.style.opacity=0.5;
-      setTimeout(function() {navhud.style.opacity=null;},1500);}
+      setTimeout(function() {navhud.style.opacity=null;},2500);}
     sbook_head=head;}
   // if (sbookHUDechoes) sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));
 }
@@ -687,7 +691,6 @@ var sbook_track_window=25;
 
 function sbookSetFocus(target,force)
 {
-  // sbook_trace_focus("sbookSetFocus",target);
   if (!(target)) return null;
   // Can't set the focus to something without an ID.
   var head=target.sbook_head;
@@ -728,15 +731,16 @@ function sbookSetFocus(target,force)
 	if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
 	else fdjtAppend(tagdiv,knoSpan(tag)," ");}}
     fdjtReplace("SBOOKSEARCHCUES",tagdiv);
-    if (!(sbook_mode)) {
+    if ((sbook_flash_progress)&&(!(sbook_mode))) {
       taghud.style.opacity=0.5;
-      setTimeout(function() {taghud.style.opacity=null;},2000);}
+      setTimeout(function() {taghud.style.opacity=null;},2500);}
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
   // Using [force] will do recomputation even if the focus hasn't changed
   if ((force)||(target!==sbook_focus)) {
     var head=((target) &&
 	      (((target.sbookinfo) && (target.sbookinfo.level)) ?
 	       (target) : (target.sbook_head)));
+    if (sbook_debug_focus) sbook_trace_focus("sbookSetFocus",target);
     /* Only set the head if the old head isn't visible anymore.  */
     if ((head) && (sbook_head!=head))
       if ((force) || (sbook_fickle_head) || (!(fdjtIsVisible(sbook_head))))
@@ -779,8 +783,7 @@ function sbook_onmouseover(evt)
   // if (fdjtScrollRestore()) return;
   /* Now, we try to find a top level element */
   while (target)
-    if (target.sbook_head) break;
-    else if (target.sbookinfo) break;
+    if (target.id) break;
     else if (target.parentNode===document.body) break;
     else target=target.parentNode;
   var scrollx=window.scrollX||document.body.scrollLeft;
@@ -847,7 +850,9 @@ function sbook_onkeydown(evt)
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput($T(evt))) return true;
   else if (evt.keyCode===16) {
-    if (sbook_mode) {
+    if (sbook_mode==="help")
+      fdjtAddClass(document.body,"hudup");
+    else if (sbook_mode) {
       fdjtDropClass(document.body,"hudup");
       fdjtDropClass(sbookHUD,sbook_mode);}
     else fdjtAddClass(document.body,"hudup");}
@@ -874,7 +879,9 @@ function sbook_onkeyup(evt)
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.keyCode===16) {
-    if (sbook_mode) 
+    if (sbook_mode==="help")
+      fdjtDropClass(document.body,"hudup");
+    else if (sbook_mode) 
       if (sbook_mode===true)
 	fdjtAddClass(document.body,"hudup");
       else fdjtAddClass(sbookHUD,sbook_mode);
@@ -927,6 +934,30 @@ function sbook_onclick(evt)
     sbookHUDMode(false);
     return;}
   else sbookHUDMode(false);
+  var target=$T(evt); var head;
+  while (target)
+    if (target.sbook_head) {head=target.sbook_head; break;}
+    else if ((target.sbookinfo) && (target.sbookinfo.level)) {
+      head=target; break;}
+    else target=target.parentNode;
+  if (!(target)) return;
+  else if (target===sbookHUD) return;
+  if (fdjtHasParent(target,sbook_focus)) 
+    sbook_ping(target);
+}
+
+function sbook_onmouseup(evt)
+{
+  if (sbook_overhud) return true;
+  else if (sbook_mode==='ping') {
+    var excerpt=window.getSelection();
+    if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
+      $("SBOOKPINGEXCERPT").value=excerpt;
+    return;}
+  else if (sbook_mode) {
+    sbookHUDMode(false);
+    return;}
+  else if (!(evt.ctrlKey)) return;
   var target=$T(evt); var head;
   while (target)
     if (target.sbook_head) {head=target.sbook_head; break;}
@@ -1051,6 +1082,9 @@ function sbookGetSettings()
       sbook_headlevels[rules[i++]]=7;}}
   var tocmax=fdjtGetMeta("SBOOKTOCMAX");
   if (tocmax) sbook_tocmax=parseInt(tocmax);
+  if ((fdjtGetCookie("SBOOKNOFLASH"))||
+      ((fdjtGetMeta("SBOOKNOFLASH"))))
+    sbook_flash_progress=false;
 }
 
 /* Adding qricons */
@@ -1096,7 +1130,6 @@ function sbookSetup()
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX");
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
-  sbookHUDMode("help");
   if (knoHTMLSetup) knoHTMLSetup();
   var knowlets_done=new Date();
   sbookGatherMetadata();
@@ -1107,10 +1140,11 @@ function sbookSetup()
   if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
   if (sbook_heading_qricons) sbookAddQRIcons();
   var hud_done=new Date();
-  sbookHUD_Init();
   sbook_base=getsbookbase();
   sbook_src=getsbooksrc();
+  sbookHUD_Init();
   _sbookHelpSplash();
+  window.onmouseup=sbook_onmouseup;
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;
   window.onscroll=sbook_onscroll;

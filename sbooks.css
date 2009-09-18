@@ -67,8 +67,10 @@ div.hudblock {
   font-family: sans,sans-serif;
   display: none;}
 body.hudup div#SBOOKHUD div.hudblock { opacity: 0.9;}
+body.hudup div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.9;}
 body.hudup div#SBOOKHUD div.hudblock:hover { opacity: 0.9;}
-body.hudup div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.75;}
+/* body div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.75;} */
+body.hudup div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.9;}
 
 img.hudbutton { 
   opacity: 0.2; z-index: 200;
@@ -106,7 +108,8 @@ body.preview div#SBOOKHUD.searching img.hudbutton[alt='index'] {
 body.preview div#SBOOKHUD.browsing img.hudbutton[alt='index'] { 
   left: 0px; opacity: 0.1;}
 
-div#SBOOKHUD div.hudblock:hover { opacity: 0.9;}
+/* Hudblocks don't normally go visible when you're over them */
+/* div#SBOOKHUD div.hudblock:hover { opacity: 0.9;} */
 div#SBOOKHUD div.hudblock.hover { opacity: 0.9;}
 /* This is a little more visible by default */
 div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.1;}
@@ -517,6 +520,8 @@ div#SBOOKHUD div#SBOOKHELP span.hudref {
   font-weight: bold; color: blue; cursor: pointer;}
 div#SBOOKHUD div#SBOOKHELP strong {
   font-weight: bold; color: yellow;}
+div#SBOOKHUD div#SBOOKHELP em {
+  font-style: italic; color: yellow;}
 div#SBOOKHUD div#SBOOKHELP h1 { text-align: center;}
 div#SBOOKHUD div#SBOOKHELP h1 div.motto {
   font-weight: normal; font-style: italic; font-size: 50%; color: yellow;}

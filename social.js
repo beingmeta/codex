@@ -505,7 +505,11 @@ function sbookPingHUDSetup(origin)
   else if (origin.fragid)
     target=$(origin.fragid);
   else target=origin;
-  if (sbook_ping_target===target) return;
+  if (sbook_ping_target===target) {
+    var excerpt=window.getSelection();
+    if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
+      $("SBOOKPINGEXCERPT").value=excerpt;
+    return;}
   fdjtAddClass(sbook_focus,"sbookpingfocus");
   sbook_ping_target=target;
   var info=((target) &&
@@ -522,7 +526,9 @@ function sbookPingHUDSetup(origin)
   var seen_tags=[];
   var tags_elt=fdjtSpan(".tagcues");
   {var excerpt=window.getSelection();
-    if (excerpt) $("SBOOKPINGEXCERPT").value=excerpt;
+    fdjtTrace("excerpt=%o",excerpt);
+    if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
+      $("SBOOKPINGEXCERPT").value=excerpt;
     $("SBOOKPINGEXCERPT").removeAttribute("isempty");}
   {var i=0; while (i<sbook_allechoes.length) 
 	      if (sbook_allechoes[i].fragid===target.id) {
