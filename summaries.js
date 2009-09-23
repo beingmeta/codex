@@ -146,7 +146,7 @@ function sbookAddSummary(summary,summary_div,query)
   if (!(placed)) {
     var blockhead=sbookSummaryHead(target,head);
     var block=fdjtDiv("tocblock",blockhead,sum_div);
-    fdjtAppend(summary_div,sum_div);}
+    fdjtAppend(summary_div,block);}
   return;
 }
 
