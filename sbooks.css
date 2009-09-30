@@ -861,8 +861,9 @@ img.sbookqricon { display: none;}
 
 /* For going to ebooks forms */
 
-div.sbookebooktoc { font-size: 150%;}
-div.sbookebooktocblock { margin-left: 2em; font-size: 80%;}
+div.sbooktoc { font-size: 150%;}
+div.sbooktocblock { margin-left: 2em; font-size: 80%;}
+a.addecho { display: block; text-align: center; width: 100%;}
 
 /* Still unclassified */
 
