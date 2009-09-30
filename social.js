@@ -139,7 +139,7 @@ function sbookVectorEqual(v1,v2)
 
 function sbookEchoBar_onclick(evt)
 {
-  if (!(sbook_user)) return;
+  // if (!(sbook_user)) return;
   var target=$T(evt);
   var echobar=$P(".echobar",target);
   var sources=((echobar) && (echobar.sbooksources))||[];
@@ -249,7 +249,8 @@ function sbookCreateEchoBar(classinfo,oids)
     (false,
      "linkedinlogo32x32.png",
      "see comments and notes from your LinkedIn friends and groups");
-  var echobar=fdjtDiv(classinfo," ",everyone_button,fb_login,ms_login,li_login);
+  // var echobar=fdjtDiv(classinfo," ",everyone_button,fb_login,ms_login,li_login);
+  var echobar=fdjtDiv(classinfo," ",everyone_button,fb_login);
   var echosources=fdjtDiv("echosources");
   var socialelts=[]; var echoelts=[];
   var i=0; while (i<oids.length) {
@@ -268,8 +269,7 @@ function sbookCreateEchoBar(classinfo,oids)
       evt.cancelBubble=true;
       return;}
     echobar.sbooksources=true;};
-  if (sbook_user)
-    echobar.onclick=sbookEchoBar_onclick;
+  echobar.onclick=sbookEchoBar_onclick;
   if (facebook_button) {
     facebook_button.target="_parent";
     facebook_button.onclick=function(evt){
@@ -407,6 +407,14 @@ function sbookCreatePingHUD()
 	    fdjtDiv("content",detail_input));
   detail_input.name="DETAIL";
   detail_input.prompt="Enter detailed comments";
+  var need_login=
+    ((sbook_user)?(false):
+     (fdjtDiv("needlogin",
+	      "You most login (",
+	      sbookCreateLoginButton
+	      ("http://sbooks.net/fb/auth",
+	       "facebook_32.png","login through facebook"),
+	      ") to make comments")));
   var excerpt_input=
     fdjtNewElement("TEXTAREA",".autoprompt#SBOOKPINGEXCERPT");
   var excerpt_elt=
@@ -441,7 +449,8 @@ function sbookCreatePingHUD()
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);
   form.windowopts="width=500,height=400";
-  form.onsubmit=fdjtForm_onsubmit;
+  form.onsubmit=
+    ((sbook_user)?(fdjtForm_onsubmit):(sbookNoUserSubmit));
   form.oncallback=function(req) {
     sbookImportEchoes(JSON.parse(req.responseText));
     fdjtDropClass("SBOOKPINGFORM","submitting");
@@ -453,10 +462,17 @@ function sbookCreatePingHUD()
       1500);};
   return fdjtDiv
     (".ping.hudblock.hud",
+     need_login,
      fdjtImage((sbook_user_img)||
 	       (sbook_graphics_root+"remarkballoon50x50.png"),
 	       "floatleft",""),
      form);
+}
+
+function sbookNoUserSubmit(evt)
+{
+  alert('You must be logged in to make a comment');
+  evt.cancelBubble=true; evt.preventDefault();
 }
 
 function sbookSelectTribe()

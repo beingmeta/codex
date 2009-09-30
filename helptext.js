@@ -1,7 +1,7 @@
 var sbook_helptext=
-  "<div class='helphelp left' style='cursor: pointer;' title='click to hide' onclick='sbookHUDMode(false); return false;'>Click or type 'h' to toggle this help</div>\
+  "<div class='helphelp left' style='cursor: pointer;' title='click to hide' onclick='sbookHUDMode(false); return false;'><img src='http://static.beingmeta.com/graphics/redx16x16.png' alt='x' style='color: red;'/>Type 'h' to toggle this help</div>\
 <div class='helphelp right'>\
-<input type='CHECKBOX' name='SBOOKHIDEHELP' class='helphider' VALUE='yes'>Hide this help on startup</div>\
+Hide this help on startup<input type='CHECKBOX' name='SBOOKHIDEHELP' class='helphider' VALUE='yes'></div>\
 <h1>Welcome to sBooks! <div class='motto'>&ldquo;possibly the best thing since sliced paper&rdquo;</div></h1>\
 <p>The sBooks <strong>ambient UI</strong> uses an overlay or HUD (heads up \
 display) to provide <em>context and interaction</em>.  <strong>Hold the \
