@@ -815,9 +815,11 @@ function add_podspot(target,open)
     imgsrc=social_info[sources[0]].pic||imgsrc;
   var podspot=fdjtSpan("podspot",fdjtImage(imgsrc,"podimg","comments"));
   podspot.onclick=function(evt){
+    fdjtTrace("in podspot on click target=%o podspot=%o",target,podspot);
     evt.preventDefault(); evt.cancelBubble=true;
     if ((sbook_mode==="echoes") &&
 	(sbook_echoes_target===target)) {
+      fdjtTrace("Closing hud");
       sbookHUDMode(false); return;}
     sbook_echoes_target=target;
     if (evt.shiftKey)

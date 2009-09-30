@@ -144,14 +144,15 @@ var sbookHUDMode_pat=/(help)|(searching)|(browsing)|(toc)|(echoes)|(ping)/g;
 
 function sbookHUDMode(mode)
 {
+  fdjtTrace("sbookHUDMode %o, cur=%o dbc=%o",
+	    mode,sbook_mode,document.body.className);
   if (mode) {
     sbook_mode=mode;
-    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
-    fdjtSwapClass(document.body,sbookHUDMode_pat,mode);}
+    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
   else {
     sbook_mode=false;
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);
-    fdjtDropClass(document.body,sbookHUDMode_pat);}
+    fdjtDropClass(document.body,"hudup");}
 }
 function sbookHUDToggle(mode)
 {
@@ -294,7 +295,12 @@ function sbookHUD_onclick(evt)
     if ((target.tagName==="A") || (target.tagName==="INPUT") ||
 	(target.onclick) || (target.hasAttribute("onclick")))
       return;
+    else if (target.id==="SBOOKTOC") {
+      sbookHUDMode("toc"); target=target.parentNode;}
+    else if (target.id==="SBOOKSEARCH") {
+      sbookHUDMode("searching"); target=target.parentNode;}
     else target=target.parentNode;
+  if (evt.shiftKey) evt.preventDefault();
 }
 
 function sbookGetStableId(elt)

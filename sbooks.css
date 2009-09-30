@@ -117,7 +117,7 @@ div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.9;}
 
 div#SBOOKHUD div.hudblock#SBOOKTOC { display: block;}
 div#SBOOKHUD div.hudblock#SBOOKECHOES { display: block;}
-div#SBOOKHUD div.hudblock#SBOOKSEARCH { display: block;}}
+div#SBOOKHUD div.hudblock#SBOOKSEARCH { display: block;}
 
 div#SBOOKHUD.toc div.hudblock#SBOOKTOC { 
   opacity: 0.9; max-height: inherit;}

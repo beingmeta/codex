@@ -776,6 +776,7 @@ function sbook_onmouseover(evt)
   // sbook_trace_handler("sbook_onmouseover",evt);
   /* If you're previewing, ignore mouse action */
   if ((sbook_preview) || (sbook_overhud) || (sbook_hudstate)) return;
+  if (fdjtHasClass(document.body,"hudup")) return;
   /* Get the target */
   var target=$T(evt);
   /* If you have a saved scroll location, just restore it. */
@@ -802,6 +803,7 @@ function sbook_onmousemove(evt)
   var target=$T(evt);
   /* If you're previewing, ignore mouse action */
   if ((sbook_preview) || (sbook_mode) || (sbook_mode) || (sbook_overhud) || (sbook_hudstate)) return;
+  if (fdjtHasClass(document.body,"hudup")) return;
   /* Save mouse positions */
   sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
   /* Now, we try to find a top level element to sort out whether
@@ -825,6 +827,7 @@ function sbook_onscroll(evt)
   // sbook_trace_handler("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
   if ((sbook_preview) || (sbook_mode) || (sbook_overhud)) return;
+  if (fdjtHasClass(document.body,"hudup")) return;
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
   var xoff=scrollx+sbook_last_x;
@@ -928,10 +931,12 @@ function sbook_onkeypress(evt)
 
 function sbook_onclick(evt)
 {
-  // sbook_trace_handler("sbook_onclick",evt);
+  sbook_trace_handler("sbook_onclick",evt);
+  fdjtTrace("sbook_onclick %o",evt);
   if (sbook_overhud) return true;
   if (sbook_mode) {
     sbookHUDMode(false);
+    evt.preventDefault();
     return;}
   else sbookHUDMode(false);
   var target=$T(evt); var head;
@@ -954,13 +959,14 @@ function sbook_onmouseup(evt)
     if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
       $("SBOOKPINGEXCERPT").value=excerpt;
     return;}
-  else if (sbook_mode) {
-    sbookHUDMode(false);
-    return;}
   else if (!(evt.ctrlKey)) return;
   var target=$T(evt); var head;
   while (target)
     if (target.sbook_head) {head=target.sbook_head; break;}
+    else if ((target.onclick) || (target.getAttribute("ONCLICK")) ||
+	     (target.tagName==='A') ||  (target.tagName==='INPUT') ||
+	     (target.tagName==='TEXTAREA'))
+      return;
     else if ((target.sbookinfo) && (target.sbookinfo.level)) {
       head=target; break;}
     else target=target.parentNode;
