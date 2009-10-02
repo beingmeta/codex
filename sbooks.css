@@ -265,7 +265,7 @@ div#SBOOKHUD div.hud#SBOOKECHOES { }
 div#SBOOKHUD div.hud#SBOOKECHOES img.button.ping {
   position: absolute; left: 2px; bottom: 0px;}
 div#SBOOKHUD div.hud#SBOOKECHOES img.button.help {
-  position: absolute; left: 0px; bottom: 0px; vertical-align: bottom;}
+  position: absolute; left: 3px; bottom: 3px; vertical-align: bottom;}
 div#SBOOKHUD div.hud#SBOOKECHOES img.button[alt='fbapp'] {
   position: absolute; left: 2px; bottom: 32px;}
 
@@ -526,7 +526,10 @@ div#SBOOKHUD div#SBOOKHELP div.helphelp.left img {
   width: 12px; height: 12px; }
 
 div#SBOOKHUD.help div#SBOOKHELP {
-  display: block; opacity: 0.9;}
+  display: block; opacity: 0.9; 
+  padding-left: 5%; padding-right: 5%;}
+div#SBOOKHUD.help div#SBOOKHELP p {
+  width: 50em; padding-left: auto; padding-right: auto;}
 
 div#SBOOKHUD div#SBOOKHELP span.hudref {
   font-weight: bold; color: blue; cursor: pointer;}
@@ -534,8 +537,10 @@ div#SBOOKHUD div#SBOOKHELP strong {
   font-weight: bold; color: yellow;}
 div#SBOOKHUD div#SBOOKHELP em {
   font-style: italic; color: yellow;}
-div#SBOOKHUD div#SBOOKHELP h1 { text-align: center;}
-div#SBOOKHUD div#SBOOKHELP h1 div.motto {
+div#SBOOKHUD div#SBOOKHELP div.sbookh1 { 
+  font-size: 200%; font-weight: bold;
+  text-align: center;}
+div#SBOOKHUD div#SBOOKHELP div.sbookh1 div.motto {
   font-weight: normal; font-style: italic; font-size: 50%; color: yellow;}
 
 div#SBOOKRIGHTMARGIN {
