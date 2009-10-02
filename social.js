@@ -219,6 +219,7 @@ function sbookCreateLoginButton(uri,image,title)
   fdjtAddClass(login_button,"login");
   if (!(uri)) fdjtAddClass(login_button,"disabled");
   login_button.title=((uri)?(title):("(coming soon) "+title));
+  login_button.onclick=function(evt){evt.cancelBubble=true;};
   return login_button;
 }
 

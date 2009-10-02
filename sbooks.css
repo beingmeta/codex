@@ -798,6 +798,11 @@ div.sbooksummaries .summary span.controller {
 .summary a.age { 
   float: right; color: orange; margin-left: 6px;
   text-decoration: none;}
+.summary a.deletebutton { 
+  float: right; color: orange; margin-left: 6px;
+  text-decoration: none;}
+.summary a.deletebutton img { 
+  width: 12px; height: 12px;}
 .summary img.detailsbutton { 
   float: right; border: none;
   margin-right: 3px; margin-left: 3px;}

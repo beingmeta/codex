@@ -43,6 +43,8 @@ var sbook_outlink_icon=
   "http://static.beingmeta.com/graphics/outlink16x16.png";
 var sbook_small_remark_icon=
   "http://static.beingmeta.com/graphics/remarkballoon16x13.png";
+var sbook_delete_icon=
+  "http://static.beingmeta.com/graphics/redx16x16.png";
 
 
 function _sbook_sort_summaries(x,y)
@@ -195,6 +197,12 @@ function sbookShowSummary(summary,query,notoc)
     var userinfo=social_info[user];
     var usrimg=fdjtImage((summary.pic)||(summary.echo.pic)||(userinfo.pic),"userpic",userinfo.name);
     var interval=((summary.tstamp) ? (fdjtTick()-summary.tstamp) : (-1));
+    var delete_icon=
+      ((user===sbook_user)&&(fdjtImage(sbook_delete_icon,false,"x")));
+    var delete_button=
+      ((delete_icon)&&
+       (fdjtAnchorC("http://echoes.sbooks.net/delete/"+summary.pingid,
+		    ".deletebutton",delete_icon)));
     var agespan=
       ((interval>0)&&
        ((interval>(3*24*3600)) 
@@ -205,15 +213,23 @@ function sbookShowSummary(summary,query,notoc)
 		       fdjtSpan("altreltime",fdjtIntervalString(interval)),
 		       fdjtSpan("altabstime",fdjtTickDate(summary.tstamp)),
 		       " ago"))));
-    agespan.onclick=function(evt) {
-      evt.cancelBubble=true;};
     if (agespan) {
+      agespan.onclick=function(evt) {
+	evt.cancelBubble=true;};
       agespan.target="sbookechoes";
-      agespan.title="browse this echo";}
-    fdjtAppend(sumdiv,usrimg,
-	       agespan,
-	       ((summary.detail)&&(_sbookDetailsButton())),((summary.detail)&&" "),
-	       ((summary.xrefs)&&(_sbookXrefsButton())));}
+      agespan.title="browse this note/echo";}
+    if (delete_button) {
+      delete_button.onclick=function(evt) {
+	evt.cancelBubble=true;};
+      delete_button.target="_blank";
+      delete_icon.title="delete this note/echo";
+      delete_button.title="delete this note/echo";}
+      
+    fdjtAppend
+      (sumdiv,usrimg,
+       agespan,delete_button,
+       ((summary.detail)&&(_sbookDetailsButton())),((summary.detail)&&" "),
+       ((summary.xrefs)&&(_sbookXrefsButton())));}
   var relay_button=
     fdjtImage(sbook_small_remark_icon,"remarkbutton","ping",
 	      _("click to relay or respond"));
@@ -225,7 +241,7 @@ function sbookShowSummary(summary,query,notoc)
     fdjtAppend(sumdiv,sbookSummaryHead(target));
   else {
     var eye=fdjtImage(sbook_small_eye_icon,"eye","(\u00b7)",
-		    _("previewing: move mouse to restore"));
+		      _("previewing: move mouse to restore"));
     eye.onmouseover=sbookPreview_onmouseover;
     eye.onmouseout=sbookPreview_onmouseout;
     eye.onclick=sbookSummary_onclick;

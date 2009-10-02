@@ -40,6 +40,9 @@ var sbook_context_toc={};
 var sbook_webechoes_root="http://echoes.sbooks.net/echoes/";
 // This is the sbook user, which we're careful not to overrid
 var sbook_user=((typeof sbook_user === "undefined")?(false):(sbook_user));
+// Whether the user has enabled feed posting
+var sbook_user_canpost=
+  ((typeof sbook_user_canpost === "undefined")?(false):(sbook_user_canpost));
 // This is the picture to use for the user
 var sbook_user_img=
   ((typeof sbook_user_img === "undefined")?(false):(sbook_user_img));
@@ -132,7 +135,9 @@ var sbook_nbsp="\u00A0";
 // Whether to debug generally
 var sbook_debug=false;
 // Whether to debug the HUD
-var sbook_debug_hud=false;
+var sbook_trace_hud=false;
+// Whether to debug the NAV/TOC HUD
+var sbook_trace_nav_hud=false;
 // Whether to debug search
 var sbook_trace_search=0;
 // Whether to debug clouds
@@ -931,8 +936,7 @@ function sbook_onkeypress(evt)
 
 function sbook_onclick(evt)
 {
-  sbook_trace_handler("sbook_onclick",evt);
-  fdjtTrace("sbook_onclick %o",evt);
+  // sbook_trace_handler("sbook_onclick",evt);
   if (sbook_overhud) return true;
   if (sbook_mode) {
     sbookHUDMode(false);

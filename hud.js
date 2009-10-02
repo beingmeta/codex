@@ -144,7 +144,8 @@ var sbookHUDMode_pat=/(help)|(searching)|(browsing)|(toc)|(echoes)|(ping)/g;
 
 function sbookHUDMode(mode)
 {
-  fdjtTrace("sbookHUDMode %o, cur=%o dbc=%o",
+  if (sbook_trace_hud)
+    fdjtLog("sbookHUDMode %o, cur=%o dbc=%o",
 	    mode,sbook_mode,document.body.className);
   if (mode) {
     sbook_mode=mode;

@@ -197,14 +197,14 @@ function createSBOOKHUDnav(head,info)
     while (info.level>sbook_tocmax) {
       head=info.sbook_head; info=sbook_getinfo(head);}
   var id=fdjtForceId(head);
-  if (sbook_debug)
+  if (sbook_trace_hud)
     fdjtLog('Generating TOC from from %o/%s (%o)',head,id,info);
   var new_toc=fdjtDiv(".sbooktoc.hudblock.hud");
   new_toc.onclick=sbookTOC_onclick;
   new_toc.onmouseover=sbookTOC_onmouseover;
   new_toc.onmouseout=sbookTOC_onmouseout;
   // new_toc.onmousemove=sbookTOC_onmousemove;
-  if (sbook_debug_hud)
+  if (sbook_trace_nav_hud)
     fdjtLog("Adding supersections %o",info.sbook_heads);
   var supersections_div=fdjtDiv("supersections");
   var supersections=info.sbook_heads;
@@ -218,7 +218,7 @@ function createSBOOKHUDnav(head,info)
 		      false);
     if (head_elt) head_elt.className="supersection";
     i++;}
-  if (sbook_debug_hud)
+  if (sbook_trace_nav_hud)
     fdjtLog("Adding main elt %o %o",head,info);
   fdjtAppend(new_toc,supersections_div);
   var sect_elt=_sbook_add_head(new_toc,head,info,false);
@@ -227,7 +227,7 @@ function createSBOOKHUDnav(head,info)
     fdjtAddClass(sect_elt,"focus");
     if ((info.title) && (info.title.length>60))
       sect_elt.style.fontSize="75%";}
-  if (sbook_debug_hud)
+  if (sbook_trace_nav_hud)
     fdjtLog("Adding subsections %o",info.sub);
   if ((info.sub) && (info.sub.length>0))
     if ((sbook_list_subsections) || (!(sbook_use_spanbars))) {
@@ -244,7 +244,7 @@ function createSBOOKHUDnav(head,info)
 function createSBOOKHUDnav_new(head,info)
 {
   var id=fdjtForceId(head);
-  if (sbook_debug)
+  if (sbook_trace_hud)
     fdjtLog('Generating TOC from from %o/%s (%o)',head,id,info);
   var head2=
     ((head.sbookinfo) &&
