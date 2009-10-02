@@ -86,6 +86,8 @@ var sbook_hudstate=false;
 var sbook_hudfnstate=false;
 // Whether to do progress flashes
 var sbook_flash_progress=true;
+// Whether to startup with the help screen
+var sbook_help_on_startup=false;
 
 // This is a list of all the terminal content nodes
 var sbook_nodes=[];
@@ -1095,6 +1097,8 @@ function sbookGetSettings()
   if ((fdjtGetCookie("SBOOKNOFLASH"))||
       ((fdjtGetMeta("SBOOKNOFLASH"))))
     sbook_flash_progress=false;
+  var sbookhelp=fdjtGetMeta("SBOOKHELP");
+  if (sbookhelp) sbook_help_on_startup=true;
 }
 
 /* Adding qricons */
@@ -1121,7 +1125,8 @@ var sbook_keep_help=false;
 function _sbookHelpSplash()
 {
   if (fdjtGetCookie("sbookhidehelp")) {}
-  else sbookHUDMode("help");
+  else if (sbook_help_on_startup)
+    sbookHUDMode("help");
 }
 
 /* Initialization */

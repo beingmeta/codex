@@ -92,6 +92,7 @@ function createSBOOKHUD()
     sbookHUD=hud;
     fdjtPrepend(document.body,hud);
     $("SBOOKECHOES").onclick=sbookEchoBar_onclick;
+    $("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
     return hud;}
 }
 
