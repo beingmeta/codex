@@ -69,6 +69,8 @@ var sbook_tocmax=false;
 var sbook_head=false;
 // This is the 'focus element' approximately under the mouse.
 var sbook_focus=false;
+// This is the rule for determining the sbook focus
+var sbook_focus_rules=false;
 // This is the current query
 var sbook_query=false;
 // Which sources to search.  False to exclude echoes, true to include
@@ -702,9 +704,9 @@ function sbookSetFocus(target,force)
   // Can't set the focus to something without an ID.
   var head=target.sbook_head;
   while (target)
-    if (target.id) break;
-    else if (target.sbook_head!==head) {
+    if (target.sbook_head!==head) {
       target=head; break;}
+    else if (target.id) break;
     else target=target.parentNode;
   if (!(target)) return;
   else if (!(fdjtIsVisible(target,true))) return;
@@ -948,6 +950,8 @@ function sbook_onclick(evt)
   var target=$T(evt); var head;
   while (target)
     if (target.sbook_head) {head=target.sbook_head; break;}
+    else if ((target.tagName==='A') || (target.tagName==='INPUT'))
+      return;
     else if ((target.sbookinfo) && (target.sbookinfo.level)) {
       head=target; break;}
     else target=target.parentNode;
@@ -993,9 +997,11 @@ function sbook_ondblclick(evt)
 
 function getsbookbase()
 {
-  var base=fdjtGetMeta("SBOOKBASE");
+  var base=fdjtGetMeta("SBOOKBASE",true);
   if (base) return base;
-  base=fdjtGetMeta("REFURI");
+  base=fdjtGetMeta("REFURI",true);
+  if (base) return base;
+  base=fdjtGetLink("canonical",true);
   if (base) return base;
   var base_elts=fdjtGetChildrenByTagName("BASE");
   if ((base_elts) && (base_elts.length>0))
@@ -1008,12 +1014,18 @@ function getsbookbase()
 
 function getsbooksrc()
 {
-  return fdjtGetMeta("SBOOKSRC")||getsbookbase();
+  return fdjtGetMeta("SBOOKSRC",true)||getsbookbase();
 }
 
-function sbook_geturi(id,base)
+function sbook_geturi(target,base)
 {
-  if (typeof id !== "string") id=id.id;
+  var id=target.id;
+  if (!(base)) {
+    var scan=target;
+    while (scan)
+      if (scan.getAttribute("REFURI")) {
+	base=scan.getAttribute("REFURI"); break;}
+      else scan=scan.parentNode;}
   if (!(base)) base=sbook_base;
   if ((id)&&(base)) {
     var hashpos=base.indexOf('#');
@@ -1057,47 +1069,47 @@ function sbook_get_titlepath(info,embedded)
 
 function sbookGetSettings()
 {
-  var h1=fdjtGetMeta("SBOOKHEAD1");
+  var h1=fdjtGetMeta("SBOOKHEAD1",true);
   if (h1) {
     var rules=fdjtSemiSplit(h1);
     var i=0; while (i<rules.length) {
       sbook_headlevels[rules[i++]]=1;}}
-  var h2=fdjtGetMeta("SBOOKHEAD2");
+  var h2=fdjtGetMeta("SBOOKHEAD2",true);
   if (h2) {
     var rules=fdjtSemiSplit(h2);
     var i=0; while (i<rules.length) {
       sbook_headlevels[rules[i++]]=2;}}
-  var h3=fdjtGetMeta("SBOOKHEAD3");
+  var h3=fdjtGetMeta("SBOOKHEAD3",true);
   if (h3) {
     var rules=fdjtSemiSplit(h3);
     var i=0; while (i<rules.length) {
       sbook_headlevels[rules[i++]]=3;}}
-  var h4=fdjtGetMeta("SBOOKHEAD4");
+  var h4=fdjtGetMeta("SBOOKHEAD4",true);
   if (h4) {
     var rules=fdjtSemiSplit(h4);
     var i=0; while (i<rules.length) {
       sbook_headlevels[rules[i++]]=4;}}
-  var h5=fdjtGetMeta("SBOOKHEAD5");
+  var h5=fdjtGetMeta("SBOOKHEAD5",true);
   if (h5) {
     var rules=fdjtSemiSplit(h5);
     var i=0; while (i<rules.length) {
       sbook_headlevels[rules[i++]]=5;}}
-  var h6=fdjtGetMeta("SBOOKHEAD6");
+  var h6=fdjtGetMeta("SBOOKHEAD6",true);
   if (h6) {
     var rules=fdjtSemiSplit(h6);
     var i=0; while (i<rules.length) {
       sbook_headlevels[rules[i++]]=6;}}
-  var h7=fdjtGetMeta("SBOOKHEAD7");
+  var h7=fdjtGetMeta("SBOOKHEAD7",true);
   if (h7) {
     var rules=fdjtSemiSplit(h7);
     var i=0; while (i<rules.length) {
       sbook_headlevels[rules[i++]]=7;}}
-  var tocmax=fdjtGetMeta("SBOOKTOCMAX");
+  var tocmax=fdjtGetMeta("SBOOKTOCMAX",true);
   if (tocmax) sbook_tocmax=parseInt(tocmax);
   if ((fdjtGetCookie("SBOOKNOFLASH"))||
-      ((fdjtGetMeta("SBOOKNOFLASH"))))
+      ((fdjtGetMeta("SBOOKNOFLASH",true))))
     sbook_flash_progress=false;
-  var sbookhelp=fdjtGetMeta("SBOOKHELP");
+  var sbookhelp=fdjtGetMeta("SBOOKHELP",true);
   if (sbookhelp) sbook_help_on_startup=true;
 }
 
@@ -1142,7 +1154,7 @@ function sbookSetup()
   if (_sbook_setup) return;
   var fdjt_done=new Date();
   sbookGetSettings();
-  sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX");
+  sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
   if (knoHTMLSetup) knoHTMLSetup();
@@ -1168,6 +1180,8 @@ function sbookSetup()
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
+  if (!(document.body.title))
+    document.body.title='shift for HUD, click to comment';
   var hud_init_done=new Date();
   if ((hud_init_done.getTime()-_sbook_setup_start.getTime())>5000) {
     fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,

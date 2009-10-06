@@ -527,6 +527,8 @@ function sbookPingHUDSetup(origin)
     if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
       $("SBOOKPINGEXCERPT").value=excerpt;
     return;}
+  if (sbook_ping_target)
+    fdjtDropClass(sbook_ping_target,"sbookpingfocus");
   fdjtAddClass(sbook_focus,"sbookpingfocus");
   sbook_ping_target=target;
   var info=((target) &&

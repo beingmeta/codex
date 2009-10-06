@@ -82,11 +82,16 @@ p.verse {
   text-indent: -3em; }
 div.stanza { 
   text-align: left; margin-left: 10%;
-  margin-top: .75em; margin-bottom: .75em;}
+  margin-top: 0px; margin-bottom: 0px;
+  border: transparent solid 1px;
+  padding-top: .75em; padding-bottom: .75em;}
 div.stanza p {
   text-align: left; margin-left: 10%;
   margin-top: 2px; margin-bottom: 2px;
   text-indent: -10%; }
+
+body.hudup div.stanza.sbookfocus {
+  border-color: blue;}
 
 /* Prose */
 
