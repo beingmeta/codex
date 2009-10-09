@@ -1023,7 +1023,8 @@ function sbook_geturi(target,base)
   if (!(base)) {
     var scan=target;
     while (scan)
-      if (scan.getAttribute("REFURI")) {
+      if ((scan.getAttribute) &&
+	  (scan.getAttribute("REFURI"))) {
 	base=scan.getAttribute("REFURI"); break;}
       else scan=scan.parentNode;}
   if (!(base)) base=sbook_base;
