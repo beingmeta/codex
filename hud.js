@@ -57,7 +57,6 @@ function createSBOOKHUD()
        fdjtDiv("#SBOOKLOC.hudblock.hud",_sbook_generate_spanbar(document.body)),
        fdjtDiv("#SBOOKTOC.sbooktoc.hudblock.hud"),
        fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
-       fdjtWithId(sbookCreatePingHUD(),"SBOOKPING"),
        fdjtDiv("#SBOOKRIGHTMARGIN.hud"),
        sbookHelpHUD(),
        echobar);
@@ -474,10 +473,10 @@ function sbookHUD_Init()
     sbook_focus=target; sbook_ping_focus=target;}
   if (!(target))
     target=document.body;
-  if (target!=document.body) {
+  if (target!==document.body) {
     target.scrollIntoView();
     sbookSetFocus(target)}
-  if (target.sbookloc) sbookSetLocation(target.sbookloc);
+  fdjtTrace("at init target=%o loc=%o",target,target.sbookloc);
   // window.location=window.location;
 }
 

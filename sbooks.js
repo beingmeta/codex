@@ -125,6 +125,8 @@ var sbook_build_index=true;
 var sbook_tagged_count=0;
 // An array of element selectors which contain tags
 var sbook_tag_tags=[];
+// An array of element selectors which shouldn't be tagged/taggable
+var sbook_notags=[];
 
 // Use spanbars in the HUD
 var sbook_use_spanbars=true;
@@ -182,10 +184,10 @@ function sbook_trace_handler(handler,evt)
      sbook_hudstate,sbook_head,sbook_focus);
 }
 
-function sbook_trace_focus(handler,evt)
+function sbook_trace_focus(handler,target,evt)
 {
-  fdjtLog("%s %o: hudup=%o, preview=%o, overhud=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
-	  handler,evt,sbook_mode,sbook_preview,sbook_overhud,
+  fdjtLog("%s %o [@%o] on %o: hudup=%o, preview=%o, overhud=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
+	  handler,target,target.sbookloc,evt,sbook_mode,sbook_preview,sbook_overhud,
 	  sbook_hudstate,sbook_head,sbook_focus);
 }
 
@@ -667,9 +669,9 @@ function sbookSetHead(head)
 
 var sbook_location=false;
 
-function sbookSetLocation(location)
+function sbookSetLocation(location,force)
 {
-  if (sbook_location===location) return;
+  if ((!(force)) && (sbook_location===location)) return;
   if (sbook_debug_locations)
     fdjtLog("Setting location to %o",location);
   var spanbars=$$(".spanbar",$("SBOOKHUD"));
@@ -683,8 +685,8 @@ function sbookSetLocation(location)
 	      ratio,spanbar.starts,location,spanbar.ends);
     if ((ratio>=0) && (ratio<=1)) {
       var progressbox=$$(".progressbox",spanbar);
-      if (progressbox.length>0)
-	progressbox[0].style.left=((Math.round(ratio*10000))/100)+"%";}}
+      if (progressbox.length>0) {
+	progressbox[0].style.left=((Math.round(ratio*10000))/100)+"%";}}}
   sbook_location=location;
 }
 
@@ -706,6 +708,8 @@ function sbookSetFocus(target,force)
   while (target)
     if (target.sbook_head!==head) {
       target=head; break;}
+    else if ((sbook_notags)&&(fdjtElementMatches(target,sbook_notags)))
+      target=target.parentNode;
     else if (target.id) break;
     else target=target.parentNode;
   if (!(target)) return;
@@ -756,7 +760,8 @@ function sbookSetFocus(target,force)
 	sbookSetHead(head);
     if (sbook_focus) fdjtDropClass(sbook_focus,"sbookfocus");
     sbook_focus=target;
-    fdjtAddClass(target,"sbookfocus");}
+    fdjtAddClass(target,"sbookfocus");
+    if (target.sbookloc) sbookSetLocation(target.sbookloc,true);}
 }
 
 function sbookGetXYFocus(xoff,yoff)
@@ -1110,6 +1115,11 @@ function sbookGetSettings()
   if ((fdjtGetCookie("SBOOKNOFLASH"))||
       ((fdjtGetMeta("SBOOKNOFLASH",true))))
     sbook_flash_progress=false;
+  var notag=fdjtGetMeta("SBOOKNOTAG",true);
+  if (notag) {
+    var rules=fdjtSemiSplit(notag);
+    var i=0; while (i<rules.length) {
+      sbook_notags.push(rules[i++]);}}
   var sbookhelp=fdjtGetMeta("SBOOKHELP",true);
   if (sbookhelp) sbook_help_on_startup=true;
 }

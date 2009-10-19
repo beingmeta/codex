@@ -2,7 +2,7 @@ var sbook_helptext=
   "<div class='helphelp left' style='cursor: pointer;' title='click to hide' onclick='sbookHUDMode(false); return false;'><img src='http://static.beingmeta.com/graphics/redx16x16.png' alt='x' style='color: red;'/>Type 'h' to toggle this help</div>\
 <div class='helphelp right'>\
 Hide this help on startup<input type='CHECKBOX' name='SBOOKHIDEHELP' class='helphider' VALUE='yes' id='SBOOKHIDEHELP'></div>\
-<div class='sbookh1'>Welcome to sBooks! <div class='motto'>&ldquo;possibly the best thing since sliced paper&rdquo;</div></div>\
+<div class='helpbody'><div class='sbookh1'>Welcome to sBooks! <div class='motto'>&ldquo;possibly the best thing since sliced paper&rdquo;</div></div>\
 <p>The sBooks translucent <strong>HUD</strong> (heads up \
 display) provides <em>context and interaction</em> for the book's content.  \
 The sBooks <strong>display HUD</strong> is available anywhere but is normally invisible or light gray.  Holding down the<strong>shift key</strong> \
@@ -50,7 +50,7 @@ tags</em> and a <em>result count</em> based on the complete tags you've typed so
 The <strong>cloud of tags</strong> is ordered by <em>frequency</em> among the <em>current search results</em>.  \
 Clicking a tag adds that tag to the search; clicking the <strong>results count</strong> displays the results.  From the \
 keyboard, typing <em>Enter</em> or semicolon picks the most <strong>prominent completion</strong> or (if there's \
-no additional text) <em>Enter</em> shows the results.</p>";
+no additional text) <em>Enter</em> shows the results.</p></div>";
 
 
 /* Emacs local variables

@@ -259,8 +259,7 @@ function sbookCreateEchoBar(classinfo,oids)
     var info=social_info[oid];
     var img=fdjtImage(info.pic,"social",info.name);
     img.oid=oid; img.name=info.name;
-    if (info.summary) img.title=info.summary;
-    else img.title=info.name;
+    img.title=info.name;
     socialelts.push(img);
     fdjtAppend(echosources,img);}
   echobar._social_oid_length=oids.length;
@@ -279,7 +278,9 @@ function sbookCreateEchoBar(classinfo,oids)
   help_button.onclick=function(evt) {
     sbookHUDToggle("help");
     evt.cancelBubble=true;}
-  fdjtAppend(echobar,echosources,sbookAllEchoesDiv(),help_button);
+  var allechoes=sbookAllEchoesDiv();
+  fdjtPrepend(allechoes,fdjtWithId(sbookCreatePingHUD(),"SBOOKPING"));
+  fdjtAppend(echobar,echosources,allechoes,help_button);
   echobar.socialelts=socialelts;
   sbook_echobar=echobar;
   return echobar;
@@ -462,7 +463,7 @@ function sbookCreatePingHUD()
 	sbookHUDMode(false);},
       1500);};
   return fdjtDiv
-    (".ping.hudblock.hud",
+    (".ping", /* .hudblock.hud */
      need_login,
      fdjtImage((sbook_user_img)||
 	       (sbook_graphics_root+"remarkballoon50x50.png"),
@@ -545,7 +546,6 @@ function sbookPingHUDSetup(origin)
   var seen_tags=[];
   var tags_elt=fdjtSpan(".tagcues");
   {var excerpt=window.getSelection();
-    fdjtTrace("excerpt=%o",excerpt);
     if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
       $("SBOOKPINGEXCERPT").value=excerpt;
     $("SBOOKPINGEXCERPT").removeAttribute("isempty");}
@@ -567,6 +567,7 @@ function sbookPingHUDSetup(origin)
       seen_tags.push(tag); fdjtAppend(tags_elt,knoCompletion(tag,false)," ");}}
   fdjtReplace("SBOOKPINGTAGS",tags_elt);
   fdjtAutoPrompt_setup($("SBOOKPING"));
+  sbookSelectEchoes(sbookEchoesHUD,true,false,target.id);
   // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);
   // fdjtComplete(tags_elt.input_elt);
 }

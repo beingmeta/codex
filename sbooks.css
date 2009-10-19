@@ -180,32 +180,8 @@ div#SBOOKHUD div.hud#SBOOKTOC {
   border-bottom-right-radius: 6px;}
 
 div#SBOOKHUD div.hud#SBOOKPING {
-  position: fixed; top: 75px; 
-  overflow: auto;
-  left: 54px; right: 75px; z-index: 250;
-  margin: 0px; height: auto; min-height: auto;
-  padding: 6px; padding-left: 0px; padding-bottom: 0px;
-  -khtml-border-top-right-radius: 6px; 
-  -webkit-border-top-right-radius: 6px; 
-  -moz-border-radius-topright: 6px; 
-  border-top-right-radius: 6px; 
-  display: none;}
+  margin-bottom: 8px;}
 
-/*
-div#SBOOKHUD div.hud#SBOOKPING {
-  position: fixed; bottom: 0px; left: 75px; right: 75px; z-index: 140;
-  margin: 0px; padding: 0px; min-height: 30px;
-  display: block; padding-top: 2px; padding-bottom: 2px;
-  -khtml-border-top-left-radius: 6px; 
-  -webkit-border-top-left-radius: 6px; 
-  -moz-border-radius-topleft: 6px; 
-  border-top-left-radius: 6px; 
-  -khtml-border-top-right-radius: 6px; 
-  -webkit-border-top-right-radius: 6px; 
-  -moz-border-radius-topright: 6px; 
-  border-top-right-radius: 6px;
-  display: none;}
-*/
 div#SBOOKHUD div.hud#SBOOKPING span.dterm { color: yellow;}
 div#SBOOKHUD div.hud#SBOOKECHOES {
   position: fixed; display: block; 
@@ -418,6 +394,8 @@ div#SBOOKHUD div#SBOOKALLECHOES {
   display: none;}
 div#SBOOKHUD.echoes div#SBOOKALLECHOES {
   display: block;}
+div#SBOOKHUD.ping div#SBOOKALLECHOES {
+  display: block;}
 body.preview div#SBOOKHUD.echoes div#SBOOKALLECHOES {
   display: block; }
 
@@ -528,8 +506,12 @@ div#SBOOKHUD div#SBOOKHELP div.helphelp.left img {
 div#SBOOKHUD.help div#SBOOKHELP {
   display: block; opacity: 0.9; 
   padding-left: 5%; padding-right: 5%;}
+/*
 div#SBOOKHUD.help div#SBOOKHELP p {
   width: 50em; padding-left: auto; padding-right: auto;}
+*/
+div#SBOOKHUD.help div#SBOOKHELP div.helpbody {
+  width: 50em; margin-left: auto; margin-right: auto;}
 
 div#SBOOKHUD div#SBOOKHELP span.hudref {
   font-weight: bold; color: blue; cursor: pointer;}
@@ -607,18 +589,18 @@ div.spanbar div.spans {
   position: relative;
   margin: 0px; padding: 0px; border: 0px;}
 div.spanbar div.sbookhudspan {
-  background-color: blue; clear: none; float: left;
+  background-color: silver; clear: none; float: left;
   margin: 0px; padding: 0px; border: 0px;
   border-bottom: solid blue 2px; border-top: solid blue 2px;
   height: 10px; }
-div.spanbar div.sbookhudspan[odd] {
-  background-color: silver;
-  border-bottom: solid silver 2px; border-top: solid silver 2px;}
-div.spanbar div.sbookhudspan[even] {
-  background-color: blue;
-  border-bottom: solid blue 2px; border-top: solid blue 2px;}
+div.spanbar div.sbookhudspan div.brick {
+  border: 0px; padding: 0px;
+  border-right: solid black 1px; border-left: solid black 1px;
+  height: 100%;}
+div.spanbar div.sbookhudspan[odd] {}
+div.spanbar div.sbookhudspan[even] {}
 div.spanbar div.sbookhudspan.current {
-    color: yellow; background-color: yellow; border-color: yellow;}
+    color: yellow; background-color: yellow;}
 div.spanbar div.sbookhudspan:hover { 
   border-bottom: dotted red 2px; border-top: dotted red 2px; }
 div.spanbar div.sbookhudspan[odd]:hover {
@@ -626,7 +608,7 @@ div.spanbar div.sbookhudspan[odd]:hover {
 div.spanbar div.sbookhudspan[even]:hover {
   border-bottom: dotted red 2px; border-top: dotted red 2px; }
 div.spanbar div.sbookhudspan.cohighlight { 
-  background-color: yellow; border-color: yellow;}
+  background-color: yellow;}
 
 div#SBOOKHUD div.spanbar { width: 90%; margin-left: 5%; margin-right: 5%;}
 

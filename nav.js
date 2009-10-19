@@ -85,13 +85,13 @@ function _sbook_generate_spanbar(head,headinfo,child)
 function _sbook_generate_span(sectnum,subsection,title,spanstart,spanend,len)
 {
   var spanlen=spanend-spanstart;
-  var span=fdjtDiv("sbookhudspan","\u00A0");
+  var span=fdjtDiv("sbookhudspan",fdjtDiv("brick","\u00A0"));
   var width=(Math.floor(10000*(spanlen/len))/100)+"%";
   var odd=((sectnum%2)==1);
   if (odd) span.setAttribute("odd",sectnum);
   else span.setAttribute("even",sectnum);
   span.style.width=width;
-  span.title=title+" ("+spanstart+"+"+(spanend-spanstart)+")";
+  span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
   span.sbook_ref=subsection;
   return span;
 }
