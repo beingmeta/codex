@@ -206,8 +206,8 @@ function sbookDTermCompletion(dterm,title)
   if (knowde) {
     if (knowde.gloss)
       if (title)
-	span.title=title+": "+knowde.gloss;
-      else span.title=knowde.gloss;
+	span.title=title+": "+fdjtStripMarkup(knowde.gloss);
+      else span.title=fdjtStripMarkup(knowde.gloss);
     else span.title=title;
     /* Now add variation elements */
     var variations=[];

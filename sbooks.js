@@ -1157,6 +1157,8 @@ function _sbookHelpSplash()
 var _sbook_setup=false;
 var _sbook_setup_start=false;
 
+document.domain="sbooks.net";
+
 function sbookSetup()
 {
   if (_sbook_setup) return;
@@ -1164,6 +1166,7 @@ function sbookSetup()
   if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
   var fdjt_done=new Date();
+  sbook_ping_uri="https://sbooks.net/echoes/ajaxping.fdcgi";
   sbookGetSettings();
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
