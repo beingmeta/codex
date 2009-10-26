@@ -141,6 +141,7 @@ function sbookEchoBar_onclick(evt)
 {
   // if (!(sbook_user)) return;
   var target=$T(evt);
+  if ($P(".sbooksummaries",target)) return;
   var echobar=$P(".echobar",target);
   var sources=((echobar) && (echobar.sbooksources))||[];
   var changed=false;
@@ -450,7 +451,7 @@ function sbookCreatePingHUD()
   form.action="http://echoes.sbooks.net/echoes/ping.fdcgi";
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);
-  form.windowopts="width=500,height=400";
+  // form.windowopts="width=500,height=400";
   form.onsubmit=
     ((sbook_user)?(fdjtForm_onsubmit):(sbookNoUserSubmit));
   form.oncallback=function(req) {

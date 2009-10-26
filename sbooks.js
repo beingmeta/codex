@@ -37,7 +37,7 @@ var sbook_local_toc=false;
 // This is the TOC in which this document is embedded (NYI)
 var sbook_context_toc={};
 // Where to go for your webechoes
-var sbook_webechoes_root="http://echoes.sbooks.net/echoes/";
+var sbook_webechoes_root="http://sbooks.net/echoes/";
 // This is the sbook user, which we're careful not to overrid
 var sbook_user=((typeof sbook_user === "undefined")?(false):(sbook_user));
 // Whether the user has enabled feed posting
@@ -1157,8 +1157,6 @@ function _sbookHelpSplash()
 var _sbook_setup=false;
 var _sbook_setup_start=false;
 
-document.domain="sbooks.net";
-
 function sbookSetup()
 {
   if (_sbook_setup) return;
@@ -1166,7 +1164,6 @@ function sbookSetup()
   if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
   var fdjt_done=new Date();
-  sbook_ping_uri="https://sbooks.net/echoes/ajaxping.fdcgi";
   sbookGetSettings();
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))

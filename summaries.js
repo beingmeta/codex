@@ -342,6 +342,10 @@ function sbookSummary_onclick(evt)
       evt.preventDefault(); evt.cancelBubble=true;
       sbookHUDMode(false);
       return false;}
+    else if ((target.tagName==='INPUT') ||
+	     (target.tagName==='TEXTAREA') ||
+	     ((target.tagName==='A') && (target.href)))
+      return;
     else target=target.parentNode;
 }
 

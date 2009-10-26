@@ -140,7 +140,7 @@ div#SBOOKHUD.echoes div.hudblock#SBOOKTOC {
   display: none;}
 
 div#SBOOKHUD.ping div.hudblock#SBOOKPING { 
-  opacity: 0.9;}
+  opacity: 0.9; z-index: 200;}
 
 body.preview div#SBOOKHUD.toc div.hudblock#SBOOKTOC { opacity: 0.05;}
 body.preview div#SBOOKHUD.searching div.hudblock#SBOOKSEARCH { opacity: 0.05;}
