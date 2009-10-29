@@ -188,9 +188,9 @@ var sbook_noisy_tooltips=false;
 function sbook_trace_handler(handler,evt)
 {
   fdjtLog
-    ("%s %o: hudup=%o, preview=%o, overhud=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
+    ("%s %o: hudup=%o, preview=%o, overhud=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o, ping_focus=%o",
      handler,evt,sbook_mode,sbook_preview,sbook_overhud,
-     sbook_hudstate,sbook_head,sbook_focus);
+     sbook_hudstate,sbook_head,sbook_focus,sbook_ping_focus);
 }
 
 function sbook_trace_focus(handler,target,evt)
