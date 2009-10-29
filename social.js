@@ -448,6 +448,7 @@ function sbookCreatePingHUD()
 			  tags_elt,detail_elt,excerpt_elt,xrefs_elt);
   form.setAttribute("accept-charset","UTF-8");
   form.ajaxuri=sbook_ping_uri;
+  form.jsonpuri=sbook_jsonping_uri;
   form.action="http://echoes.sbooks.net/echoes/ping.fdcgi";
   form.target="sbookping";
   fdjtAutoPrompt_setup(form);
@@ -455,6 +456,7 @@ function sbookCreatePingHUD()
   form.onsubmit=
     ((sbook_user)?(fdjtForm_onsubmit):(sbookNoUserSubmit));
   form.oncallback=function(req) {
+    fdjtTrace("Got callback from PING %o",req);
     sbookImportEchoes(JSON.parse(req.responseText));
     fdjtDropClass("SBOOKPINGFORM","submitting");
     fdjtAddClass("SBOOKPINGFORM","echoing");
@@ -470,6 +472,18 @@ function sbookCreatePingHUD()
 	       (sbook_graphics_root+"remarkballoon50x50.png"),
 	       "floatleft",""),
      form);
+}
+
+function sbookNewEchoes(echoes)
+{
+  sbookImportEchoes(echoes);
+  fdjtDropClass("SBOOKPINGFORM","submitting");
+  fdjtAddClass("SBOOKPINGFORM","echoing");
+  setTimeout(function() {
+      fdjtDropClass("SBOOKPINGFORM","echoing");
+      $("SBOOKPINGFORM").reset();
+      sbookHUDMode(false);},
+    1500);
 }
 
 function sbookNoUserSubmit(evt)

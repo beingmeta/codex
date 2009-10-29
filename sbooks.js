@@ -59,11 +59,20 @@ var sbook_base=false;
 //  split into multiple files/URIs, this is the URI where it is read
 //  from.
 var sbook_src=false;
-// This is the sbook ping AJAX ping uri
+// This is the AJAX sbook ping uri
 var sbook_ping_uri="/echoes/ajaxping.fdcgi";
+// This is the JSONP sbook ping uri
+var sbook_jsonping_uri="http://echoes.sbooks.net/echoes/jsonping.fdcgi";
 /* var sbook_ping_uri=false; */
 // This is the deepest TOC level to show for navigation
 var sbook_tocmax=false;
+// This is the hostname for the sbookserver.
+var sbook_server=false;
+// This is an array for looking up sbook servers.
+var sbook_servers=[["library.sbooks.net","library.sbooks.net"],[/.sbooks.net$/g,"echoes.sbooks.net"]];
+//var sbook_servers=[];
+// This (when needed) is the iframe bridge for sBooks requests
+var sbook_ibridge=false;
 
 // This is the current head element
 var sbook_head=false;
@@ -1122,6 +1131,67 @@ function sbookGetSettings()
       sbook_notags.push(rules[i++]);}}
   var sbookhelp=fdjtGetMeta("SBOOKHELP",true);
   if (sbookhelp) sbook_help_on_startup=true;
+  var sbooksrv=fdjtGetMeta("SBOOKSERVER",true);
+  if (sbooksrv) sbook_server=sbooksrv;
+  else if (fdjtGetCookie["SBOOKSERVER"])
+    sbook_server=fdjtGetCookie["SBOOKSERVER"];
+  else sbook_server=sbookLookupServer(document.domain);
+}
+
+function sbookLookupServer(string)
+{
+  var i=0;
+  while (i<sbook_servers.length) 
+    if (sbook_servers[i][0]===string)
+      return sbook_servers[i][1];
+    else if (string.search(sbook_servers[i][0])>=0)
+      return sbook_servers[i][1];
+    else if ((sbook_servers[i][0].call) &&
+	     (sbook_servers[i][0].call(string)))
+      return sbook_servers[i][1];
+    else i++;
+  return false;
+}
+
+function sbookSetupEchoServer()
+{
+  var domain=document.domain;
+  if ((sbook_server) && (domain===sbook_server))
+    return;
+  else if (sbook_server) {
+    var common_suffix=fdjtCommonSuffix(sbook_server,domain,'.');
+    if (common_suffix) {
+      if (common_suffix.indexOf('.')>0) {
+	var iframe=fdjtNewElement("iframe");
+	document.domain=common_suffix;
+	iframe.style.display='none';
+	iframe.id="SBOOKIBRIDGE";
+	iframe.src='http://'+sbook_server+'/echoes/ibridge.fdcgi?DOMAIN='+common_suffix;
+	document.body.appendChild(iframe);}}}
+}
+
+function sbookSetIBridge(window)
+{
+  sbook_ibridge=window;
+  if ($("SBOOKPINGFORM"))
+    $("SBOOKPINGFORM").ajaxbridge=window;
+}
+
+function _sbook_domain_match(x,y)
+{
+  if (x.length===y.length) return (x===y);
+  else {
+    var i=0; var len=((x.length<y.length)?(x.length):(y.length));
+    while (i<len)
+      if (x[i]===y[i]) i++;
+      else return false;
+    if (x.length>i)
+      if (x[i+1]==='.') return true;
+      else return false;
+    else if (y.length>i)
+      if (y[i+1]==='.') return true;
+      else return false;
+    else return false;}
 }
 
 /* Adding qricons */
@@ -1210,6 +1280,7 @@ function sbookSetup()
 			      "hud",hud_done,"hudinit",hud_init_done,
 			      "cloud",cloud_done));
     _sbook_setup=true;}
+  sbookSetupEchoServer();
 }
 
 fdjtAddSetup(sbookSetup);
