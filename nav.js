@@ -119,12 +119,15 @@ function _sbook_generate_subsections_div(head,subsections,start,end)
     var subsection=subsections[i++];
     var info=subsection.sbookinfo;
     var spanlen=info.ends_at-info.starts_at;
-    if ((sectnum===0) && ((info.starts_at-start)>0)) {
+    if ((sectnum===0) &&
+	(((info.head_ends_at) && (info.intro_ends_at)) ?
+	 (info.intro_ends_at>info.head_ends_at) :
+	 (info.starts_at>start))) {
       spanlen=info.starts_at-start;
       subsection=head; info=head.sbookinfo;
       i--; sectnum++;}
     else sectnum++;
-    var span=fdjtDiv("sbookhudspan","\u00A0");
+    var span=fdjtDiv("sbookhudspan",fdjtDiv("brick","\u00A0"));
     var namespan=_sbook_add_head(sectlist,subsection,info,true);
     var width=100*(spanlen/len)+"%";
     if (!(namespan)) continue;
@@ -238,6 +241,7 @@ function createSBOOKHUDnav(head,info)
   new_toc.onfocus=function(evt) {
     if (sbookHUDechoes) sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));}
   */
+  new_toc.title='move to preview; click to go';
   return new_toc;
 }
 

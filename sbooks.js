@@ -69,7 +69,7 @@ var sbook_tocmax=false;
 // This is the hostname for the sbookserver.
 var sbook_server=false;
 // This is an array for looking up sbook servers.
-var sbook_servers=[["library.sbooks.net","library.sbooks.net"],[/.sbooks.net$/g,"echoes.sbooks.net"]];
+var sbook_servers=[[/.sbooks.net$/g,"echoes.sbooks.net"]];
 //var sbook_servers=[];
 // This (when needed) is the iframe bridge for sBooks requests
 var sbook_ibridge=false;
@@ -78,6 +78,8 @@ var sbook_ibridge=false;
 var sbook_head=false;
 // This is the 'focus element' approximately under the mouse.
 var sbook_focus=false;
+// This is the last explicit target of a jump or ping.
+var sbook_target=false;
 // This is the rule for determining the sbook focus
 var sbook_focus_rules=false;
 // This is the current query
@@ -188,15 +190,15 @@ var sbook_noisy_tooltips=false;
 function sbook_trace_handler(handler,evt)
 {
   fdjtLog
-    ("%s %o: hudup=%o, preview=%o, overhud=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o, ping_focus=%o",
-     handler,evt,sbook_mode,sbook_preview,sbook_overhud,
-     sbook_hudstate,sbook_head,sbook_focus,sbook_ping_focus);
+    ("%s %o: hudup=%o, preview=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
+     handler,evt,sbook_mode,sbook_preview,
+     sbook_hudstate,sbook_head,sbook_focus);
 }
 
 function sbook_trace_focus(handler,target,evt)
 {
-  fdjtLog("%s %o [@%o] on %o: hudup=%o, preview=%o, overhud=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
-	  handler,target,target.sbookloc,evt,sbook_mode,sbook_preview,sbook_overhud,
+  fdjtLog("%s %o [@%o] on %o: hudup=%o, preview=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
+	  handler,target,target.sbookloc,evt,sbook_mode,sbook_preview,
 	  sbook_hudstate,sbook_head,sbook_focus);
 }
 
@@ -426,6 +428,8 @@ function _sbook_process_head(head,tocstate,level,curhead,curinfo,curlevel)
   tocstate.curhead=head;
   tocstate.curinfo=headinfo;
   tocstate.curlevel=level;
+  if (headinfo)
+    headinfo.head_ends_at=tocstate.location+fdjtFlatWidth(head);
   tocstate.location=tocstate.location+fdjtFlatWidth(head);  
 }
 
@@ -442,14 +446,15 @@ function sbook_toc_builder(child,tocstate)
     var width=child.nodeValue.length;
     // Don't bother doing this (doesn't work in IE anyway)
     // child.sbookloc=tocstate.location+width/2;
-    tocstate.location=tocstate.location+width;}
+    if (!(fdjtIsEmptyString(child.nodeValue)))
+      tocstate.location=tocstate.location+width;}
   else if (child.nodeType!==1)
     child.sbook_head=curhead;
   else if (level=sbookHeadLevel(child)) 
     _sbook_process_head(child,tocstate,level,curhead,curinfo,curlevel);
   else {
     var width=fdjtFlatWidth(child);
-    var loc=tocstate.location+width/2;
+    var loc=tocstate.location;
     tocstate.location=tocstate.location+width;
     if (true) { /*  (child.id) */
       fdjtComputeOffsets(child);
@@ -773,6 +778,24 @@ function sbookSetFocus(target,force)
     if (target.sbookloc) sbookSetLocation(target.sbookloc,true);}
 }
 
+function sbookSetTarget(target)
+{
+  if (sbook_target) {
+    fdjtDropClass(sbook_target,"sbooktarget");
+    sbook_target=false;}
+  if (target) {
+    fdjtAddClass(sbook_target,"sbooktarget");
+    sbook_target=target;}
+}
+
+
+function sbookCheckTarget()
+{
+  if ((sbook_target) && (!(fdjtIsVisible(sbook_target)))) {
+    fdjtDropClass(sbook_target,"sbooktarget");
+    sbook_target=false;}
+}
+
 function sbookGetXYFocus(xoff,yoff)
 {
   var scrollx=window.scrollX||document.body.scrollLeft;
@@ -798,8 +821,9 @@ function sbook_onmouseover(evt)
 {
   // sbook_trace_handler("sbook_onmouseover",evt);
   /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_overhud) || (sbook_hudstate)) return;
+  if ((sbook_preview) || (sbook_hudstate)) return;
   if (fdjtHasClass(document.body,"hudup")) return;
+  if (sbook_target) sbookCheckTarget();
   /* Get the target */
   var target=$T(evt);
   /* If you have a saved scroll location, just restore it. */
@@ -823,9 +847,10 @@ function sbook_onmouseover(evt)
 function sbook_onmousemove(evt)
 {
   // sbook_trace_handler("sbook_onmousemove",evt);
+  if (sbook_target) sbookCheckTarget();
   var target=$T(evt);
   /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_mode) || (sbook_mode) || (sbook_overhud) || (sbook_hudstate)) return;
+  if ((sbook_preview) || (sbook_mode) || (sbook_mode) || (sbook_hudstate)) return;
   if (fdjtHasClass(document.body,"hudup")) return;
   /* Save mouse positions */
   sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
@@ -849,8 +874,9 @@ function sbook_onscroll(evt)
 {
   // sbook_trace_handler("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_mode) || (sbook_overhud)) return;
+  if ((sbook_preview) || (sbook_mode)) return;
   if (fdjtHasClass(document.body,"hudup")) return;
+  if (sbook_target) sbookCheckTarget();
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
   var xoff=scrollx+sbook_last_x;
@@ -955,13 +981,14 @@ function sbook_onkeypress(evt)
 function sbook_onclick(evt)
 {
   // sbook_trace_handler("sbook_onclick",evt);
-  if (sbook_overhud) return true;
   if (sbook_mode) {
     sbookHUDMode(false);
     evt.preventDefault();
     return;}
   else sbookHUDMode(false);
   var target=$T(evt); var head;
+  // Should do something smarter here
+  if (evt.button===2) return;
   while (target)
     if (target.sbook_head) {head=target.sbook_head; break;}
     else if ((target.tagName==='A') || (target.tagName==='INPUT'))
@@ -977,8 +1004,7 @@ function sbook_onclick(evt)
 
 function sbook_onmouseup(evt)
 {
-  if (sbook_overhud) return true;
-  else if (sbook_mode==='ping') {
+  if (sbook_mode==='ping') {
     var excerpt=window.getSelection();
     if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
       $("SBOOKPINGEXCERPT").value=excerpt;
@@ -1002,7 +1028,6 @@ function sbook_onmouseup(evt)
 
 function sbook_ondblclick(evt)
 {
-  if (sbook_overhud) return true;
   sbook_onclick(evt);
   sbookHUDMode("ping");
 }

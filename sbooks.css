@@ -35,10 +35,12 @@ h1.sbookhead, h2.sbookhead, h3.sbookhead, h4.sbookhead { text-decoration: overli
 .sbookhead[toclevel=1], .sbookhead[toclevel=2], .sbookhead[toclevel=3], .sbookhead[toclevel=4] { text-decoration: overline;}
 body.sbookhead { text-decoration: none;}
 
+/* This is essentially where the mouse is */
 .sbookfocus { color: blue;}
-.sbookpingfocus { color: darkblue;}
+/* This is the last explicit target of a jump or ping */
+.sbooktarget { color: darkblue;}
 body.sbookfocus { color: inherit;}
-body.sbookpingfocus { color: inherit;}
+body.sbooktarget { color: inherit;}
 
 .floatright { float: right; margin-right: 3px;}
 .floatleft { float: left; margin-left: 3px;}
@@ -574,11 +576,10 @@ div.sbooktoc div.subsections a {
     display: inline; width: inherit; font-weight: bold; font-size: 90%;
     clear: none;}
 div.sbooktoc div.subsections a.sbookhudsect.cohighlight {
-    color: yellow;}
-div.sbooktoc div.subsections a.sbookhudsect[odd] {
-    color: #D0D0D0;}
+    color: orange;}
+/* div.sbooktoc div.subsections a.sbookhudsect[odd] {color: #D0D0D0;} */
 div.sbooktoc div.subsections a.sbookhudsect.cohighlight[odd] {
-    color: yellow;}
+    color: orange;}
 
 div.spanbar {
   position: relative;
@@ -590,8 +591,9 @@ div.spanbar div.spans {
   margin: 0px; padding: 0px; border: 0px;}
 div.spanbar div.sbookhudspan {
   background-color: silver; clear: none; float: left;
-  margin: 0px; padding: 0px; border: 0px;
-  border-bottom: solid blue 2px; border-top: solid blue 2px;
+  margin: 0px; padding: 0px;
+  border: 0px;
+  border-top: solid blue 2px; border-bottom: solid blue 2px;
   height: 10px; }
 div.spanbar div.sbookhudspan div.brick {
   border: 0px; padding: 0px;
@@ -608,7 +610,7 @@ div.spanbar div.sbookhudspan[odd]:hover {
 div.spanbar div.sbookhudspan[even]:hover {
   border-bottom: dotted red 2px; border-top: dotted red 2px; }
 div.spanbar div.sbookhudspan.cohighlight { 
-  background-color: yellow;}
+  background-color: orange;}
 
 div#SBOOKHUD div.spanbar { width: 90%; margin-left: 5%; margin-right: 5%;}
 
@@ -836,7 +838,7 @@ img.pingbutton {
   border: solid transparent 2px;
   opacity: 0.5;
   display: none;}
-.sbookpingfocus img.pingbutton { display: inherit;}
+.sbooktarget img.pingbutton { display: inherit;}
 
 span.podspot {
   position: absolute; right: 0px; text-align: right;
@@ -855,13 +857,13 @@ span.podspot img.pingbutton {
   position: static; background-color: lightblue; display: none;
   border: solid transparent 0px;}
 span.podspot img.pingbutton { display: none;}
-.sbookpingfocus span.podspot { opacity: 0.8; border: transparent;}
-.sbookpingfocus span.podspot img.pingbutton { 
+.sbooktarget span.podspot { opacity: 0.8; border: transparent;}
+.sbooktarget span.podspot img.pingbutton { 
   display: inline;}
 img.sbookqricon { display: none;}
 @media print {
   img.sbookqricon { display: block; float: right;}
-  .sbookpingfocus span.podspot img.pingbutton { display: none;}}
+  .sbooktarget span.podspot img.pingbutton { display: none;}}
 
 /* For going to ebooks forms */
 

@@ -61,6 +61,7 @@ function createSBOOKHUD()
        sbookHelpHUD(),
        echobar);
 
+    hud.title="";
     index_button.onclick=function(evt){
       if ((sbook_mode==="searching") || (sbook_mode==="browsing")) {
 	sbookHUDMode(false);
@@ -280,13 +281,11 @@ function sbook_echoes_icon(uri)
 function sbookHUD_onmouseover(evt)
 {
   // sbook_trace_handler("sbookHUD_onmouseover",evt);
-  sbook_overhud=true;
 }
 
 function sbookHUD_onmouseout(evt)
 {
   // sbook_trace_handler("sbookHUD_onmouseout",evt);
-  sbook_overhud=false;
 }
 
 function sbookHUD_onclick(evt)
@@ -388,7 +387,6 @@ function sbookTOC_onclick(evt)
     sbookHUDToggle("toc");
     return;}
   fdjtScrollDiscard();
-  if (headelt===null) return;
   evt.preventDefault();
   evt.cancelBubble=true;
   sbookSetHead(headelt);
@@ -396,6 +394,7 @@ function sbookTOC_onclick(evt)
   sbookScrollTo(headelt);
   if (!((info.sub) && ((info.sub.length)>2)))
     sbookHUDMode(false);
+  sbookSetTarget(target);
   return false;
 }
 
@@ -469,14 +468,14 @@ function sbookHUD_Init()
     var yoff=scrolly+sbook_last_y;
     var scroll_target=sbookGetXYFocus(xoff,yoff);
     if (scroll_target) target=scroll_target;}
-  if (target) {
-    sbook_focus=target; sbook_ping_focus=target;}
+  sbookSetTarget(target);
   if (!(target))
     target=document.body;
   if (target!==document.body) {
     target.scrollIntoView();
     sbookSetFocus(target)}
-  fdjtTrace("at init target=%o loc=%o",target,target.sbookloc);
+  // fdjtTrace("at init target=%o loc=%o",target,target.sbookloc);
+  // This forces it to reload in some browsers, so don't do it
   // window.location=window.location;
 }
 

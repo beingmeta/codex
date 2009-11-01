@@ -181,6 +181,11 @@ function sbookEchoBar_onclick(evt)
   evt.preventDefault(); evt.cancelBubble=true;
 }
 
+function sbookPingForm_onclick(evt)
+{
+  evt.cancelBubble=true;
+}
+
 function sbookSetSources(echobar,sources)
 {
   var children=echobar.childNodes;
@@ -451,6 +456,7 @@ function sbookCreatePingHUD()
   form.jsonpuri=sbook_jsonping_uri;
   form.action="http://echoes.sbooks.net/echoes/ping.fdcgi";
   form.target="sbookping";
+  form.onclick=sbookPingForm_onclick;
   fdjtAutoPrompt_setup(form);
   // form.windowopts="width=500,height=400";
   form.onsubmit=
@@ -527,8 +533,6 @@ function sbookSelectTribe()
 		 post_elt,exposure_elt,select_elt);
 }
 
-var sbook_ping_target=false;
-
 function sbookPingHUDSetup(origin)
 {
   var target;
@@ -537,15 +541,12 @@ function sbookPingHUDSetup(origin)
   else if (origin.fragid)
     target=$(origin.fragid);
   else target=origin;
-  if (sbook_ping_target===target) {
+  if (sbook_target===target) {
     var excerpt=window.getSelection();
     if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
       $("SBOOKPINGEXCERPT").value=excerpt;
     return;}
-  if (sbook_ping_target)
-    fdjtDropClass(sbook_ping_target,"sbookpingfocus");
-  fdjtAddClass(sbook_focus,"sbookpingfocus");
-  sbook_ping_target=target;
+  sbookSetTarget(target);
   var info=((target) &&
 	    ((target.sbookinfo)||
 	     ((target.sbook_head) && (target.sbook_head.sbookinfo))));
@@ -893,7 +894,7 @@ function sbook_search_echoes(query)
 
 function sbook_ping(target,echo)
 {
-  if (sbook_ping_target!==target) {
+  if (sbook_target!==target) {
     $("SBOOKPINGFORM").reset();
     sbookPingHUDSetup(target);}
   if (echo) {
