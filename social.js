@@ -91,6 +91,9 @@ function sbookSelectEchoes(results_div,sources,justlocal,idroot)
   if (typeof justlocal === "undefined")
     justlocal=((sources===false) || (sources.length===0));
   var blocks=$$(".tocblock",results_div);
+  if (idroot)
+    fdjtAddClass(results_div,"targeted");
+  else fdjtDropClass(results_div,"targeted");
   var i=0; while (i<blocks.length) {
     var block=blocks[i++];  var empty=true;
     var summaries=$$(".summary",block);
@@ -547,6 +550,10 @@ function sbookPingHUDSetup(origin)
       $("SBOOKPINGEXCERPT").value=excerpt;
     return;}
   sbookSetTarget(target);
+  if ((target.title) && (target.title!=='live comment')) {
+    target.sbookoldtitle=target.title;
+    target.title='live comment: '+target.title;}
+  else target.title='live comment';
   var info=((target) &&
 	    ((target.sbookinfo)||
 	     ((target.sbook_head) && (target.sbook_head.sbookinfo))));

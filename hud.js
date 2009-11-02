@@ -69,7 +69,8 @@ function createSBOOKHUD()
 	$("SBOOKSEARCHTEXT").blur();}
       else {
 	sbookHUDMode("searching");
-	$("SBOOKSEARCHTEXT").focus();}};
+	$("SBOOKSEARCHTEXT").focus();
+	evt.cancelBubble=true;}};
     index_button.onmouseover=function(evt) {
       fdjtAddClass("SBOOKSEARCH","hover");};
     index_button.onmouseout=function(evt) {
@@ -79,7 +80,8 @@ function createSBOOKHUD()
       if (sbook_mode==="toc") {
 	sbookHUDMode(false);
 	fdjtDropClass("SBOOKTOC","hover");}
-      else sbookHUDMode("toc");}
+      else sbookHUDMode("toc");
+      evt.cancelBubble=true;}
     toc_button.onmouseover=function(evt) {
       fdjtAddClass("SBOOKTOC","hover");};
     toc_button.onmouseout=function(evt) {
@@ -154,7 +156,7 @@ function sbookHUDMode(mode)
   else {
     sbook_mode=false;
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);
-    fdjtDropClass(document.body,"hudup");}
+    fdjtDropClass(sbookHUD,"hudup");}
 }
 function sbookHUDToggle(mode)
 {
@@ -281,25 +283,32 @@ function sbook_echoes_icon(uri)
 function sbookHUD_onmouseover(evt)
 {
   // sbook_trace_handler("sbookHUD_onmouseover",evt);
+  if (sbook_mode) evt.cancelBubble=true;
 }
 
 function sbookHUD_onmouseout(evt)
 {
   // sbook_trace_handler("sbookHUD_onmouseout",evt);
+  if (sbook_mode) evt.cancelBubble=true;
 }
 
 function sbookHUD_onclick(evt)
 {
+  // sbook_trace_handler("sbookHUD_onclick",evt);
   var target=$T(evt);
   while (target)
-    if ((target.tagName==="A") || (target.tagName==="INPUT") ||
-	(target.onclick) || (target.hasAttribute("onclick")))
-      return;
-    else if (target.id==="SBOOKTOC") {
+    if ((sbook_mode) &&
+	((target.tagName==="A") || (target.tagName==="INPUT") ||
+	 (target.onclick) || (target.hasAttribute("onclick")))) {
+      evt.cancelBubble=true;
+      return;}
+    else if ((target.id==="SBOOKTOC")&&(evt.shiftKey)) {
       sbookHUDMode("toc"); target=target.parentNode;}
-    else if (target.id==="SBOOKSEARCH") {
+    else if ((target.id==="SBOOKSEARCH")&&(evt.shiftKey)) {
       sbookHUDMode("searching"); target=target.parentNode;}
     else target=target.parentNode;
+  evt.cancelBubble=true;
+  fdjtTrace("In HUD click, evt.shiftkey=%o",evt.shiftKey);
   if (evt.shiftKey) evt.preventDefault();
 }
 
@@ -320,6 +329,7 @@ function sbookTOC_onmouseover(evt)
 {
   // sbook_trace_handler("sbookTOC_onmouseover",evt);
   var target=sbook_get_headelt($T(evt));
+  if (!((sbook_mode)||(fdjtHasClass(sbookHUD,"hudup")))) return;
   sbookHUD_onmouseover(evt);
   fdjtCoHi_onmouseover(evt);
   if (target===null) return;
@@ -394,7 +404,7 @@ function sbookTOC_onclick(evt)
   sbookScrollTo(headelt);
   if (!((info.sub) && ((info.sub.length)>2)))
     sbookHUDMode(false);
-  sbookSetTarget(target);
+  sbookSetTarget(headelt);
   return false;
 }
 

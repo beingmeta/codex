@@ -92,11 +92,6 @@ var sbook_sources=true;
 var sbook_mode=false;
 // Whether preview mode is engaged
 var sbook_preview=false; 
-// Whether the mouse is over a HUD region
-var sbook_overhud=false; 
-// The hudstate saved by Shift (or other temporary measures)
-var sbook_hudstate=false;
-var sbook_hudfnstate=false;
 // Whether to do progress flashes
 var sbook_flash_progress=true;
 // Whether to startup with the help screen
@@ -152,7 +147,7 @@ var sbook_nbsp="\u00A0";
 // Whether to debug generally
 var sbook_debug=false;
 // Whether to debug the HUD
-var sbook_trace_hud=false;
+var sbook_trace_hud=true;
 // Whether to debug the NAV/TOC HUD
 var sbook_trace_nav_hud=false;
 // Whether to debug search
@@ -190,16 +185,15 @@ var sbook_noisy_tooltips=false;
 function sbook_trace_handler(handler,evt)
 {
   fdjtLog
-    ("%s %o: hudup=%o, preview=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
-     handler,evt,sbook_mode,sbook_preview,
-     sbook_hudstate,sbook_head,sbook_focus);
+    ("%s %o: hudup=%o, preview=%o, head=%o, focus=%o",
+     handler,evt,sbook_mode,sbook_preview,sbook_head,sbook_focus);
 }
 
 function sbook_trace_focus(handler,target,evt)
 {
-  fdjtLog("%s %o [@%o] on %o: hudup=%o, preview=%o, hudstate=%o, sbook_head=%o, sbook_focus=%o",
-	  handler,target,target.sbookloc,evt,sbook_mode,sbook_preview,
-	  sbook_hudstate,sbook_head,sbook_focus);
+  fdjtLog("%s %o [@%o] on %o: mode=%o, preview=%o, head=%o, focus=%o, target=%o",
+	  handler,target,target.sbookloc,evt,
+	  sbook_mode,sbook_preview,sbook_head,sbook_focus,sbook_target);
 }
 
 /* Basic SBOOK functions */
@@ -718,6 +712,7 @@ function sbookSetFocus(target,force)
 {
   if (!(target)) return null;
   // Can't set the focus to something without an ID.
+  if (sbook_debug_focus) sbook_trace_focus("sbookSetFocus",target);
   var head=target.sbook_head;
   while (target)
     if (target.sbook_head!==head) {
@@ -731,9 +726,7 @@ function sbookSetFocus(target,force)
   // And don't tag the HUD either
   if (fdjtHasParent(target,sbookHUD)) return;
   // And don't change the focus if you're pinging
-  // if (sbook_mode==="ping") return;
-  // Don't change the focus if you're in a mode
-  if (sbook_mode) return;
+  if (sbook_mode==="ping") return;
   // If the target has changed, update the location
   if (target!==sbook_focus) {
     var taghud=$("SBOOKSEARCH");
@@ -773,18 +766,26 @@ function sbookSetFocus(target,force)
       if ((force) || (sbook_fickle_head) || (!(fdjtIsVisible(sbook_head))))
 	sbookSetHead(head);
     if (sbook_focus) fdjtDropClass(sbook_focus,"sbookfocus");
-    sbook_focus=target;
+    if ((sbook_focus) && (sbook_focus._sbookoldtitle))
+      sbook_focus.title=sbook_focus._sbookoldtitle;
+    if (target.title) {
+      target._sbookoldtitle=target.title;
+      target.title='click to comment, shift for context: '+target.title;}
+   sbook_focus=target;
     fdjtAddClass(target,"sbookfocus");
     if (target.sbookloc) sbookSetLocation(target.sbookloc,true);}
 }
 
 function sbookSetTarget(target)
 {
+  if (sbook_debug_focus) sbook_trace_focus("sbookSetTarget",target);
   if (sbook_target) {
     fdjtDropClass(sbook_target,"sbooktarget");
+    if (sbook_target.sbookoldtitle) sbook_target.title=sbook_target.sbookoldtitle;
+    else sbook_target.title=null;
     sbook_target=false;}
   if (target) {
-    fdjtAddClass(sbook_target,"sbooktarget");
+    fdjtAddClass(target,"sbooktarget");
     sbook_target=target;}
 }
 
@@ -821,8 +822,8 @@ function sbook_onmouseover(evt)
 {
   // sbook_trace_handler("sbook_onmouseover",evt);
   /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_hudstate)) return;
-  if (fdjtHasClass(document.body,"hudup")) return;
+  if (sbook_preview) return;
+  if (fdjtHasClass(sbookHUD,"hudup")) return;
   if (sbook_target) sbookCheckTarget();
   /* Get the target */
   var target=$T(evt);
@@ -850,8 +851,8 @@ function sbook_onmousemove(evt)
   if (sbook_target) sbookCheckTarget();
   var target=$T(evt);
   /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_mode) || (sbook_mode) || (sbook_hudstate)) return;
-  if (fdjtHasClass(document.body,"hudup")) return;
+  if ((sbook_preview) || (sbook_mode) || (sbook_mode)) return;
+  if (fdjtHasClass(sbookHUD,"hudup")) return;
   /* Save mouse positions */
   sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
   /* Now, we try to find a top level element to sort out whether
@@ -875,7 +876,7 @@ function sbook_onscroll(evt)
   // sbook_trace_handler("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
   if ((sbook_preview) || (sbook_mode)) return;
-  if (fdjtHasClass(document.body,"hudup")) return;
+  if (fdjtHasClass(sbookHUD,"hudup")) return;
   if (sbook_target) sbookCheckTarget();
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
@@ -888,26 +889,21 @@ function sbook_onscroll(evt)
 
 function sbook_onkeydown(evt)
 {
-  // sbook_trace_handler("sbook_onkeydown",evt);
+  sbook_trace_handler("sbook_onkeydown",evt);
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_mode) {
       sbookHUDMode(false);
-      fdjtDropClass(document.body,"hudup");
+      fdjtDropClass(sbookHUD,"hudup");
       sbookStopPreview();
       $("SBOOKSEARCHTEXT").blur();}
     else {
-      fdjtAddClass(document.body,"hudup");
+      fdjtAddClass(sbookHUD,"hudup");
       sbook_mode=true;}
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput($T(evt))) return true;
-  else if (evt.keyCode===16) {
-    if (sbook_mode==="help")
-      fdjtAddClass(document.body,"hudup");
-    else if (sbook_mode) {
-      fdjtDropClass(document.body,"hudup");
-      fdjtDropClass(sbookHUD,sbook_mode);}
-    else fdjtAddClass(document.body,"hudup");}
+  else if (evt.keyCode===16)
+    fdjtAddClass(sbookHUD,"hudup");
   else if (evt.keyCode===32) /* Space char */
     sbookNextPage(evt);
   /* Backspace or Delete */
@@ -931,13 +927,7 @@ function sbook_onkeyup(evt)
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.keyCode===16) {
-    if (sbook_mode==="help")
-      fdjtDropClass(document.body,"hudup");
-    else if (sbook_mode) 
-      if (sbook_mode===true)
-	fdjtAddClass(document.body,"hudup");
-      else fdjtAddClass(sbookHUD,sbook_mode);
-    else fdjtDropClass(document.body,"hudup");
+    fdjtDropClass(sbookHUD,"hudup");
     evt.cancelBubble=true; evt.preventDefault();}
 }
 
@@ -980,7 +970,7 @@ function sbook_onkeypress(evt)
 
 function sbook_onclick(evt)
 {
-  // sbook_trace_handler("sbook_onclick",evt);
+  sbook_trace_handler("sbook_onclick",evt);
   if (sbook_mode) {
     sbookHUDMode(false);
     evt.preventDefault();
@@ -1286,8 +1276,6 @@ function sbookSetup()
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
-  if (!(document.body.title))
-    document.body.title='shift for HUD, click to comment';
   var hud_init_done=new Date();
   if ((hud_init_done.getTime()-_sbook_setup_start.getTime())>5000) {
     fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,
