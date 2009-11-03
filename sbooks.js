@@ -147,7 +147,7 @@ var sbook_nbsp="\u00A0";
 // Whether to debug generally
 var sbook_debug=false;
 // Whether to debug the HUD
-var sbook_trace_hud=true;
+var sbook_trace_hud=false;
 // Whether to debug the NAV/TOC HUD
 var sbook_trace_nav_hud=false;
 // Whether to debug search
@@ -158,6 +158,8 @@ var sbook_trace_clouds=0;
 var sbook_debug_focus=false;
 // Whether we're debugging locations
 var sbook_debug_locations=false;
+// Whether we're debugging server interaction
+var sbook_debug_network=0;
 
 // Flavors of tags
 //  prime: humanly indicated as important to an item
@@ -889,7 +891,7 @@ function sbook_onscroll(evt)
 
 function sbook_onkeydown(evt)
 {
-  sbook_trace_handler("sbook_onkeydown",evt);
+  // sbook_trace_handler("sbook_onkeydown",evt);
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_mode) {
       sbookHUDMode(false);
@@ -970,7 +972,7 @@ function sbook_onkeypress(evt)
 
 function sbook_onclick(evt)
 {
-  sbook_trace_handler("sbook_onclick",evt);
+  // sbook_trace_handler("sbook_onclick",evt);
   if (sbook_mode) {
     sbookHUDMode(false);
     evt.preventDefault();

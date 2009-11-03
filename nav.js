@@ -200,7 +200,7 @@ function createSBOOKHUDnav(head,info)
     while (info.level>sbook_tocmax) {
       head=info.sbook_head; info=sbook_getinfo(head);}
   var id=fdjtForceId(head);
-  if (sbook_trace_hud)
+  if (sbook_trace_nav_hud)
     fdjtLog('Generating TOC from from %o/%s (%o)',head,id,info);
   var new_toc=fdjtDiv(".sbooktoc.hudblock.hud");
   new_toc.onclick=sbookTOC_onclick;
@@ -248,7 +248,7 @@ function createSBOOKHUDnav(head,info)
 function createSBOOKHUDnav_new(head,info)
 {
   var id=fdjtForceId(head);
-  if (sbook_trace_hud)
+  if (sbook_trace_nav_hud)
     fdjtLog('Generating TOC from from %o/%s (%o)',head,id,info);
   var head2=
     ((head.sbookinfo) &&
