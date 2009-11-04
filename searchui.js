@@ -69,11 +69,7 @@ function sbookForceComplete(input_elt)
   var completions=fdjtComplete(input_elt);
   var forced=false;
   if (completions.string==="") return;
-  if (completions.exactheads.length)
-    forced=completions.exactheads[0];
-  else if (completions.heads.length)
-    forced=completions.heads[0];
-  else if (completions.exact.length)
+  if (completions.exact.length)
     forced=completions.exact[0];
   else if (completions.length)
     forced=completions[0];
@@ -238,6 +234,8 @@ function sbookDTermCompletion(dterm,title)
   return span;
 }
 
+var sbook_show_refiners=25;
+
 function sbookQueryCloud(query)
 {
   if (query._cloud) return query._cloud;
@@ -251,23 +249,45 @@ function sbookQueryCloud(query)
     var completions=sbookMakeCloud
       (query._refiners._results,query._refiners,
        query._refiners._freqs);
-    var counts=
-      fdjtSpan("counts",
+    var result_counts=
+      fdjtSpan("resultcounts",
 	       query._results.length,
 	       ((query._results.length==1) ?
-		" result; " : " results; "),
+		" result; " : " results; "));
+    var refiner_counts=
+      fdjtSpan("refinercounts",
 	       query._refiners._results.length,
 	       ((query._refiners._results.length==1) ?
 		" term" : " terms"));
-    counts.onclick=function(evt){
+    var counts=fdjtSpan("counts",result_counts,refiner_counts);
+    var n_refiners=query._refiners._results.length;
+    var hide_some=(n_refiners>sbook_show_refiners);
+    var msg1=
+      fdjtDiv(".noinputmsg",((hide_some)?"Displaying some of ":"There are "),
+	      n_refiners," possible refining terms; ",
+	      "start typing to see completions.");
+    var msg2=fdjtDiv(".nocompletemsg","There are no ",((n_refiners)&&("more"))," completions.");
+    result_counts.onclick=function(evt){
       sbookShowSearch(query);
       sbookHUDMode("browsing");
       $("SBOOKSEARCHTEXT").blur();
       $("SBOOKSUMMARIES").focus();
       evt.preventDefault(); evt.cancelBubble=true;};
-    fdjtPrepend(completions,counts);
+    result_counts.title='click to see results; click in the input box to return here';
+    refiner_counts.onclick=function(evt){
+      fdjtToggleClass(completions,"showempty");
+      evt.preventDefault(); evt.cancelBubble=true;};
+    refiner_counts.title='click to show more/less';
+    fdjtPrepend(completions,counts,msg1,msg2);
     query._cloud=completions;
+    if (hide_some) {
+      var cues=$$(".cue",completions);
+      if (!((cues)&&(cues.length))) {
+	var compelts=$$(".completion",completions);
+	var i=0; while (i<sbook_show_refiners) fdjtAddClass(compelts[i++],"cue");}}
+    else fdjtAddClass(completions,"showempty");
     // fdjtTrace("Generated completions for %o: %o",query,completions);
+    fdjtInitCompletions(completions);
     return completions;}
 }
 
@@ -368,6 +388,11 @@ function sbookFullCloud()
       if (score>max_score) max_score=score;}
     var completions=sbookMakeCloud(alltags,tagscores,tagfreqs);
     sbook_full_cloud=completions;
+    var cues=fdjtGetChildrenByClassName(completions,"cue");
+    if (!((cues)&&(cues.length))) {
+      var celts=fdjtGetChildrenByClassName(completions,"completion");
+      var j=0; while ((j<sbook_show_refiners)&&(j<celts.length)) {
+	fdjtAddClass(celts[j++],"cue");}}
     return completions;}
 }
 
