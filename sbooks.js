@@ -69,8 +69,8 @@ var sbook_tocmax=false;
 // This is the hostname for the sbookserver.
 var sbook_server=false;
 // This is an array for looking up sbook servers.
-var sbook_servers=[[/.sbooks.net$/g,"echoes.sbooks.net"]];
-//var sbook_servers=[];
+//var sbook_servers=[[/.sbooks.net$/g,"echoes.sbooks.net"]];
+var sbook_servers=[];
 // This (when needed) is the iframe bridge for sBooks requests
 var sbook_ibridge=false;
 
@@ -1178,20 +1178,17 @@ function sbookSetupEchoServer()
     return;
   else if (sbook_server) {
     var common_suffix=fdjtCommonSuffix(sbook_server,domain,'.');
-    fdjtTrace("Setting up access to gloss server",
-	      domain,sbook_server,common_suffix,document.domain);
     if (common_suffix) {
       if (common_suffix.indexOf('.')>0) {
-	document.domain=common_suffix;
+	if (sbook_debug_network)
+	  fdjtTrace("Setting up access to gloss server %o from %o through %o",
+		    sbook_server,domain,common_suffix);
 	var iframe=fdjtNewElement("iframe");
-	fdjtTrace("Given domain %s and server %s set document.domain to %s/%s",
-		  domain,sbook_server,common_suffix,document.domain);
 	iframe.style.display='none';
 	iframe.id="SBOOKIBRIDGE";
 	iframe.onload=function() {
-	  fdjtTrace("Setting ibridge to %o (%o)",iframe.contentWindow,iframe);
-	  sbookSetIBridge(iframe.contentWindow);
-	};
+	  document.domain=common_suffix;
+	  sbookSetIBridge(iframe.contentWindow);};
       	iframe.src=
 	  // 'http://'+sbook_server+'/echoes/ibridge.html';
 	  'http://'+sbook_server+'/echoes/ibridge.fdcgi?DOMAIN='+common_suffix;

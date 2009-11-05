@@ -95,7 +95,9 @@ function sbookSearchInput_onkeypress(evt)
     if (_sbookSearchKeyPress_delay) 
       clearTimeout(_sbookSearchKeyPress_delay);
     _sbookSearchKeyPress_delay=
-      setTimeout(function(){sbookUpdateQuery(target);},500);
+      setTimeout(function(){
+	  sbookUpdateQuery(target);},
+	500);
     return fdjtComplete_onkey(evt);}
   else return fdjtComplete_onkey(evt);
 }
@@ -112,6 +114,9 @@ function sbookSearchInput_onkeyup(evt)
     $("SBOOKSUMMARIES").focus();
     evt.preventDefault(); evt.cancelBubble=true;
     return false;}
+  else if ((kc===8)||(kc===9)) {
+    sbookUpdateQuery(target);
+    return fdjtComplete_onkey(evt);}
 }
 
 function sbookSearchInput_onfocus(evt)
