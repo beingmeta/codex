@@ -69,8 +69,8 @@ var sbook_tocmax=false;
 // This is the hostname for the sbookserver.
 var sbook_server=false;
 // This is an array for looking up sbook servers.
-//var sbook_servers=[[/.sbooks.net$/g,"echoes.sbooks.net"]];
-var sbook_servers=[];
+var sbook_servers=[[/.sbooks.net$/g,"echoes.sbooks.net"]];
+//var sbook_servers=[];
 // This (when needed) is the iframe bridge for sBooks requests
 var sbook_ibridge=false;
 

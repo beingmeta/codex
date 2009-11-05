@@ -396,6 +396,7 @@ function sbookTOC_onclick(evt)
   if (headelt===null) {
     sbookHUDToggle("toc");
     return;}
+  sbook_preview=false;
   fdjtScrollDiscard();
   evt.preventDefault();
   evt.cancelBubble=true;
