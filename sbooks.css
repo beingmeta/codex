@@ -117,9 +117,11 @@ div#SBOOKHUD div.hudblock.hover { opacity: 0.9;}
 div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.1;}
 div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.9;}
 
-div#SBOOKHUD div.hudblock#SBOOKTOC { display: block;}
 div#SBOOKHUD div.hudblock#SBOOKECHOES { display: block;}
-div#SBOOKHUD div.hudblock#SBOOKSEARCH { display: block;}
+div#SBOOKHUD div.hudblock.hover#SBOOKTOC { display: block;}
+div#SBOOKHUD.hudup div.hudblock#SBOOKTOC { display: block;}
+div#SBOOKHUD div.hudblock.hover#SBOOKSEARCH { display: block;}
+div#SBOOKHUD.hudup div.hudblock#SBOOKSEARCH { display: block;}
 
 div#SBOOKHUD.ping div.hudblock#SBOOKTOC { display: none;}
 div#SBOOKHUD.ping div.hudblock#SBOOKSEARCH { display: none;}
@@ -174,7 +176,7 @@ div#SBOOKHUD div.hud#SBOOKSEARCH {
 div#SBOOKHUD div.hud#SBOOKTOC {
   position: fixed; top: 0px; left: 75px; right: 75px; z-index: 140; 
   margin: 0px; padding: 0px; min-height: 30px;
-  display: block; padding-top: 2px; padding-bottom: 5px;
+  padding-top: 2px; padding-bottom: 5px;
   -khtml-border-bottom-left-radius: 6px; 
   -webkit-border-bottom-left-radius: 6px; 
   -moz-border-radius-bottomleft: 6px; 

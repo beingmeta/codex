@@ -94,6 +94,8 @@ var sbook_mode=false;
 var sbook_preview=false; 
 // Whether to do progress flashes
 var sbook_flash_progress=true;
+// Whether to do progress flashes
+var sbook_body_tooltips=true;
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
 
@@ -121,6 +123,8 @@ var sbook_dterm_index={_all: []};
 var sbook_word_index={};
 // This is an array of all tags
 var sbook_all_tags=[];
+// Whether the index is a hybrid of strings and DOM nodes
+var sbook_hybrid_index=false;
 
 // Rules for building the TOC.  These can be extended.
 var sbook_headlevels=
@@ -465,37 +469,38 @@ function sbook_toc_builder(child,tocstate)
 	       ("\u00A7"+child.sbookinfo.title));
   if (headtag)
     sbookAddTag(child,headtag,true,false,true,tocstate.knowlet);
-  if ((child.id) && (child.getAttribute) && (child.getAttribute("TAGS"))) {
-    var tagstring=child.getAttribute("TAGS");
-    var tags=fdjtSemiSplit(fdjtUnEntify(tagstring));
-    var knowdes=[]; var prime_knowdes=[];
-    if (headtag) {
-      knowdes.push(headtag); prime_knowdes.push(headtag);}
-    var i=0; while (i<tags.length) {
-      var tag=tags[i++]; var knowde=false;
-      var prime=(tag[0]==="*");
-      if (tag.length===0) continue;
-      _total_tag_count++;
-      if ((knowlet) && (tag.indexOf('|')>=0))
-	knowde=knowlet.handleSubjectEntry
-	  (((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
-      else knowde=(((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
-      if (knowde) {
-	knowdes.push(knowde);
-	if ((prime) && (level>0)) prime_knowdes.push(knowde);
-	sbookAddTag(child,knowde,prime,false,true,tocstate.knowlet);}}
-    var tagstack=tocstate.tagstack;
-    i=0; while (i<tagstack.length) {
-      var ctags=tagstack[i++];
-      var j=0; while (j<ctags.length)  {
-	sbookAddTag(child,ctags[j++],false,true,true,tocstate.knowlet);}}
-    if (level>0) {
-      tocstate.tagstack.push(prime_knowdes);}
-    _total_tagged_count++;}
-  else if ((level) && (level>0)) {
-    if (headtag) tocstate.tagstack.push(new Array(headtag));
-    else tocstate.tagstack.push([]);}
-  else {}
+  if (sbook_build_index) 
+    if ((child.id) && (child.getAttribute) && (child.getAttribute("TAGS"))) {
+      var tagstring=child.getAttribute("TAGS");
+      var tags=fdjtSemiSplit(fdjtUnEntify(tagstring));
+      var knowdes=[]; var prime_knowdes=[];
+      if (headtag) {
+	knowdes.push(headtag); prime_knowdes.push(headtag);}
+      var i=0; while (i<tags.length) {
+	var tag=tags[i++]; var knowde=false;
+	var prime=(tag[0]==="*");
+	if (tag.length===0) continue;
+	_total_tag_count++;
+	if ((knowlet) && (tag.indexOf('|')>=0))
+	  knowde=knowlet.handleSubjectEntry
+	    (((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
+	else knowde=(((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
+	if (knowde) {
+	  knowdes.push(knowde);
+	  if ((prime) && (level>0)) prime_knowdes.push(knowde);
+	  sbookAddTag(child,knowde,prime,false,true,tocstate.knowlet);}}
+      var tagstack=tocstate.tagstack;
+      i=0; while (i<tagstack.length) {
+	var ctags=tagstack[i++];
+	var j=0; while (j<ctags.length)  {
+	  sbookAddTag(child,ctags[j++],false,true,true,tocstate.knowlet);}}
+      if (level>0) {
+	tocstate.tagstack.push(prime_knowdes);}
+      _total_tagged_count++;}
+    else if ((level) && (level>0)) {
+      if (headtag) tocstate.tagstack.push(new Array(headtag));
+      else tocstate.tagstack.push([]);}
+    else {}
   if ((sbook_debug_locations) && (child.sbookloc) &&
       (child.setAttribute))
     child.setAttribute("sbookloc",child.sbookloc);
@@ -753,8 +758,9 @@ function sbookSetFocus(target,force)
 	if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
 	else fdjtAppend(tagdiv,knoSpan(tag)," ");}}
     fdjtReplace("SBOOKSEARCHCUES",tagdiv);
+    // var otitle=target.title;
     if ((sbook_flash_progress)&&(!(sbook_mode))) {
-      taghud.style.opacity=0.5;
+      taghud.style.opacity=0.8;
       setTimeout(function() {taghud.style.opacity=null;},2500);}
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
   // Using [force] will do recomputation even if the focus hasn't changed
@@ -768,12 +774,14 @@ function sbookSetFocus(target,force)
       if ((force) || (sbook_fickle_head) || (!(fdjtIsVisible(sbook_head))))
 	sbookSetHead(head);
     if (sbook_focus) fdjtDropClass(sbook_focus,"sbookfocus");
-    if ((sbook_focus) && (sbook_focus._sbookoldtitle))
-      sbook_focus.title=sbook_focus._sbookoldtitle;
-    if (target.title) {
-      target._sbookoldtitle=target.title;
-      target.title='click to comment, shift for context: '+target.title;}
-   sbook_focus=target;
+    if (sbook_body_tooltips) {
+      if (sbook_focus)
+	sbook_focus.title=(sbook_focus._sbookoldtitle)||null;
+      if (target.title) {
+	target._sbookoldtitle=target.title;
+	target.title='click to comment, shift for context HUD: '+target.title;}
+      else target.title='click to comment, shift for context HUD';}
+    sbook_focus=target;
     fdjtAddClass(target,"sbookfocus");
     if (target.sbookloc) sbookSetLocation(target.sbookloc,true);}
 }

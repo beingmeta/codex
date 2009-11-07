@@ -170,7 +170,13 @@ function sbook_lookup_term(term,table)
 {
   if (term==="") return [];
   // This covers the term cache
-  else if (table) return table[term];
+  else if (table) 
+    if ((sbook_hybrid_index) && (table._hybrid)) {
+      var v=table[term];
+      if (!(v)) return [];
+      else if (v._idsresolved) return v;
+      else return sbookResolveIDs(v);}
+    else return table[term]||[];
   else if (term[0]==='\'') {
     // This covers literal searches, which can take a while
     var items=sbook_word_index[term];
@@ -192,7 +198,25 @@ function sbook_lookup_term(term,table)
       sbook_word_index[term]=items;
       return items;}}
   // This returns the info from the index
+  else if (sbook_hybrid_index) {
+    var v=sbook_index[term];
+    if (!(v)) return [];
+    else if (v._idsresolved) return v;
+    else return sbookResolveIDs(v);}
   else return sbook_index[term]||[];
+}
+
+function sbookResolveIDs(v)
+{
+  if (v._idsresolved) return v;
+  else {
+    var i=0; while (i<v.length) {
+      var e=v[i];
+      if (typeof e === 'string')
+	v[i]=document.getElementById(e)||e;
+      i++;}
+    v._idsresolved=true;
+    return v;}
 }
 
 function sbookDoSearch(query,results)

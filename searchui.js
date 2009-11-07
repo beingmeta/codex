@@ -300,8 +300,8 @@ function sbookMakeCloud(dterms,scores,freqs)
 {
   var start=new Date();
   if (sbook_trace_clouds)
-    fdjtLog("Making cloud based on %d dterms using scores=%o and freqs=%o",
-	    dterms.length,scores,freqs);
+    fdjtLog("[%f] Making cloud based on %d dterms using scores=%o and freqs=%o",
+	    fdjtElapsedTime(),dterms.length,scores,freqs);
   var completions=fdjtDiv("completions");
   var n_terms=dterms.length;
   var i=0; var max_score=0;
@@ -356,8 +356,8 @@ function sbookMakeCloud(dterms,scores,freqs)
     fdjtAppend(completions,span,"\n");}
   var end=new Date();
   if (sbook_trace_clouds)
-    fdjtLog("Made cloud for %d dterms in %f seconds",
-	    dterms.length,(end.getTime()-start.getTime())/1000);
+    fdjtLog("[%f] Made cloud for %d dterms in %f seconds",
+	    fdjtElapsedTime(),dterms.length,(end.getTime()-start.getTime())/1000);
   return completions;
 }
 
@@ -370,6 +370,8 @@ function sbookFullCloud()
   else {
     var tagscores={}; var tagfreqs={}; var alltags=[];
     var book_tags=sbook_index._all;
+    if (sbook_trace_clouds)
+      fdjtLog("[%f] Making full cloud over %d tags",fdjtElapsedTime(),book_tags.length);
     // The scores here are used to determine sizes in the cloud
     // A regular index reference counts as 1 and a prime reference counts
     //  as one more.
@@ -411,7 +413,7 @@ function createSBOOKHUDsearch()
     fdjtDiv("completions",fdjtSpan("count","no query refinements"));
   
   fdjtAddClass(input,"autoprompt");
-  input.setAttribute("COMPLETEOPTS","nocase prefix showempty");
+  input.setAttribute("COMPLETEOPTS","anywhere cloud");
   input.completions_elt=completions;
   input.prompt="Enter tags (or click on completions)";
   completions.input_elt=input;
