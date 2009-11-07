@@ -706,17 +706,17 @@ function sbookImportEchoes(data)
   if ((ids) && (ids.length)) {
     var i=0; while (i<ids.length) {
       var id=ids[i++];
+      var element=$(id);
+      // Skip references to IDs which don't exist
+      if (!(element)) continue;
       var entries=data[id];
       var need_podspot=false;
       var j=0; while (j<entries.length) {
 	var entry=entries[j++];
-	var elt=document.getElementById(id);
 	var echo=sbook_add_echo(id,entry);
 	if (!(entry.nopodspot)) need_podspot=true;
-	if (elt) echo.location=elt.sbookloc;}
-      var element=$(id);
-      if ((need_podspot) && (element))
-	add_podspot(element);}}
+	if (element.sbookloc) echo.location=element.sbookloc;}
+      if (need_podspot) add_podspot(element);}}
   sbook_allechoes.sort(function(x,y) {
       if ((x.fragid)<(y.fragid)) return -1;
       else if ((x.fragid)==(y.fragid))
@@ -809,7 +809,7 @@ function createSBOOKHUDping()
   fdjtAppend(wrapper,iframe);
   wrapper.onfocus=function (evt){
     iframe.src=
-    sbook_podspot_uri(sbook_base,
+    sbook_podspot_uri(sbook_refuri,
 		      sbook_head.id,
 		      sbook_head.title||document.title||"",
 		      false);};
@@ -878,7 +878,7 @@ function add_podspot(target,open)
   target.podspot=podspot;
   if (sbook_podspot_qricons) {
     var qrhref="http://echoes.sbooks.net/echoes/qricon.fdcgi?"+
-      "URI="+encodeURIComponent(sbook_base)+
+      "URI="+encodeURIComponent(sbook_refuri)+
       ((id)?("&FRAG="+id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var i=0; while (i<tribes.length) qrhref=qrhref+"&TRIBES="+tribes[i++];

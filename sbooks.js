@@ -54,11 +54,14 @@ var sbook_heading_qricons=false;
 // This is the base URI for this document, also known as the REFURI
 // All stored references to this document use this REFURI, even if the
 //  document is split across several files
-var sbook_base=false;
+var sbook_refuri=false;
 // This is the 'source' URI for this document.  When a document is
 //  split into multiple files/URIs, this is the URI where it is read
 //  from.
 var sbook_src=false;
+// This is the base ID for fragment/element identifiers in this
+// document.
+var sbook_baseid=false;
 // This is the AJAX sbook ping uri
 var sbook_ping_uri="/echoes/ajaxping.fdcgi";
 // This is the JSONP sbook ping uri
@@ -71,6 +74,8 @@ var sbook_server=false;
 // This is an array for looking up sbook servers.
 var sbook_servers=[[/.sbooks.net$/g,"echoes.sbooks.net"]];
 //var sbook_servers=[];
+// This is the default server
+var sbook_default_server="echoes.sbooks.net";
 // This (when needed) is the iframe bridge for sBooks requests
 var sbook_ibridge=false;
 
@@ -1034,7 +1039,7 @@ function sbook_ondblclick(evt)
 
 /* Default keystrokes */
 
-function getsbookbase()
+function getsbookrefuri()
 {
   var base=fdjtGetMeta("SBOOKBASE",true);
   if (base) return base;
@@ -1047,13 +1052,24 @@ function getsbookbase()
     return base_elt[0].href;
   var uri=document.location.href;
   var hashpos=uri.indexOf("#");
-  if (hashpos>0) return uri.slice(0,hashpos);
+  if (hashpos>0) {
+    if (!(sbook_baseid)) sbook_baseid=uri.slice(hashpos+1);
+    return uri.slice(0,hashpos);}
   else return uri;
+}
+
+function getsbookbaseid()
+{
+  var baseid=fdjtGetMeta("SBOOKID",true);
+  if ((!(baseid))||(typeof baseid !== 'string')||
+      (baseid.length===0) || (baseid[0]===':'))
+    return false;
+  else return baseid;
 }
 
 function getsbooksrc()
 {
-  return fdjtGetMeta("SBOOKSRC",true)||getsbookbase();
+  return fdjtGetMeta("SBOOKSRC",true)||getsbookrefuri();
 }
 
 function sbook_geturi(target,base)
@@ -1066,7 +1082,7 @@ function sbook_geturi(target,base)
 	  (scan.getAttribute("REFURI"))) {
 	base=scan.getAttribute("REFURI"); break;}
       else scan=scan.parentNode;}
-  if (!(base)) base=sbook_base;
+  if (!(base)) base=sbook_refuri;
   if ((id)&&(base)) {
     var hashpos=base.indexOf('#');
     if (hashpos<0) return base+"#"+id;
@@ -1162,6 +1178,10 @@ function sbookGetSettings()
   else if (fdjtGetCookie["SBOOKSERVER"])
     sbook_server=fdjtGetCookie["SBOOKSERVER"];
   else sbook_server=sbookLookupServer(document.domain);
+  if (!(sbook_server)) sbook_server=sbook_default_server;
+  sbook_baseid=getsbookbaseid();
+  sbook_refuri=getsbookrefuri();
+  sbook_src=getsbooksrc();
 }
 
 function sbookLookupServer(string)
@@ -1237,7 +1257,7 @@ function sbookAddQRIcons()
     var id=head.id;
     var title=(head.sbookinfo)&&sbook_get_titlepath(head.sbookinfo);
     var qrhref="http://echoes.sbooks.net/echoes/qricon.fdcgi?"+
-      "URI="+encodeURIComponent(sbook_src||sbook_base)+
+      "URI="+encodeURIComponent(sbook_src||sbook_refuri)+
       ((id)?("&FRAG="+head.id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var qricon=fdjtImage(qrhref,"sbookqricon");
@@ -1275,15 +1295,17 @@ function sbookSetup()
   var knowlets_done=new Date();
   sbookGatherMetadata();
   var metadata_done=new Date();
-  sbookImportEchoes();
-  var social_done=new Date();
-  sbookSetupEchoServer();
+  if (sbook_user) sbookSocialSetup();
+  else {
+    var uri="http://"+sbook_server+"/echoes/echoes.js?URI="+
+      ((sbook_baseid) ?
+       (encodeURIComponent(sbook_refuri+"#"+sbook_baseid)) :
+       (encodeURIComponent(sbook_refuri)));
+    var script_elt=fdjtNewElement("SCRIPT");
+    script_elt.language="javascript"; script_elt.src=uri;
+    document.body.appendChild(script_elt);}
   createSBOOKHUD();
-  if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
-  if (sbook_heading_qricons) sbookAddQRIcons();
   var hud_done=new Date();
-  sbook_base=getsbookbase();
-  sbook_src=getsbooksrc();
   sbookHUD_Init();
   _sbookHelpSplash();
   window.onmouseup=sbook_onmouseup;
@@ -1299,7 +1321,7 @@ function sbookSetup()
   if ((hud_init_done.getTime()-_sbook_setup_start.getTime())>5000) {
     fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,
 			      "fdjt",fdjt_done,"knowlets",knowlets_done,
-			      "metadata",metadata_done,"social",social_done,
+			      "metadata",metadata_done,
 			      "hud",hud_done,"hudinit",hud_init_done));
     _sbook_setup=true;;}
   else {
@@ -1308,10 +1330,24 @@ function sbookSetup()
     /* _sbook_createHUDSocial(); */
     fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,
 			      "fdjt",fdjt_done,"knowlets",knowlets_done,
-			      "metadata",metadata_done,"social",social_done,
+			      "metadata",metadata_done,
 			      "hud",hud_done,"hudinit",hud_init_done,
 			      "cloud",cloud_done));
     _sbook_setup=true;}
+}
+
+var _sbook_social_setup=false;
+
+function sbookSocialSetup()
+{
+  if (_sbook_social_setup) return;
+  fdjtLog("[%f] Starting social setup",fdjtElapsedTime());
+  sbookImportEchoes();
+  sbookSetupEchoServer();
+  if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
+  if (sbook_heading_qricons) sbookAddQRIcons();
+  fdjtLog("[%f] Done with social setup",fdjtElapsedTime());
+  _sbook_social_setup=true;
 }
 
 fdjtAddSetup(sbookSetup);
