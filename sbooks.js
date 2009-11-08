@@ -1341,12 +1341,10 @@ var _sbook_social_setup=false;
 function sbookSocialSetup()
 {
   if (_sbook_social_setup) return;
-  fdjtLog("[%f] Starting social setup",fdjtElapsedTime());
   sbookImportEchoes();
   sbookSetupEchoServer();
   if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
   if (sbook_heading_qricons) sbookAddQRIcons();
-  fdjtLog("[%f] Done with social setup",fdjtElapsedTime());
   _sbook_social_setup=true;
 }
 
