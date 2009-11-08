@@ -263,15 +263,6 @@ function sbookCreateEchoBar(classinfo,oids)
   var echobar=fdjtDiv(classinfo," ",everyone_button,fb_login);
   var echosources=fdjtDiv("echosources");
   var socialelts=[]; var echoelts=[];
-  var i=0; while (i<oids.length) {
-    var oid=oids[i++];
-    var info=social_info[oid];
-    var img=fdjtImage(info.pic,"social",info.name);
-    img.oid=oid; img.name=info.name;
-    img.title=info.name;
-    socialelts.push(img);
-    fdjtAppend(echosources,img);}
-  echobar._social_oid_length=oids.length;
   everyone_button.onclick=function(evt) {
     if (sbook_mode==="echoes") {
       sbookHUDMode(false);
@@ -292,6 +283,7 @@ function sbookCreateEchoBar(classinfo,oids)
   fdjtAppend(echobar,echosources,allechoes,help_button);
   echobar.socialelts=socialelts;
   sbook_echobar=echobar;
+  sbookUpdateEchoBar();
   return echobar;
 }
 
@@ -724,18 +716,27 @@ function sbookImportEchoes(data)
 	else if ((x.tstamp)===(y.tstamp)) return 0;
 	else return 1;
       else return 1;});
-  if (sbook_echobar) {
-    var oids=social_oids;
-    var i=((sbook_echobar._social_oid_length)||(0));
-    while (i<oids.length) {
-      var oid=oids[i++]; var info=social_info[oid];
-      var img=fdjtImage(info.pic,"social",info.name);
-      img.oid=oid; img.name=info.name;
-      if (info.summary) img.title=info.summary;
-      else img.title=info.name;
-      // fdjtTrace("Generated echobar entry %o from %o",img,info);
-      fdjtAppend(sbook_echobar,img);}
-    sbook_echobar._social_oid_length=oids.length;}
+  if (sbook_echobar) sbookUpdateEchoBar();
+}
+
+function sbookUpdateEchoBar()
+{
+  var oids=sbook_echobar._social_oids; var newoids=[];
+  if (!(oids)) sbook_echobar._social_oids=oids=[];
+  for (var user in sbook_echoes_by_user) {
+    if ((social_info[user]) && (oids.indexOf(user)<0))
+      oids.push(user); newoids.push(user);}
+  for (var tribe in sbook_echoes_by_tribe) {
+    if ((social_info[tribe]) && (oids.indexOf(tribe)<0))
+      oids.push(tribe); newoids.push(user);}
+  var i=0; while (i<newoids.length) {
+    var oid=newoids[i++]; var info=social_info[oid];
+    var img=fdjtImage(info.pic,"social",info.name);
+    img.oid=oid; img.name=info.name;
+    if (info.summary) img.title=info.summary;
+    else img.title=info.name;
+    // fdjtTrace("Generated echobar entry %o from %o",img,info);
+    fdjtAppend(sbook_echobar,img);}
 }
 
 function sbookImportTribes(tribes)

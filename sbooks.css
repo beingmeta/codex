@@ -368,9 +368,9 @@ div#SBOOKHUD form.pingform div.tags div.tagtool .tagcues {
 div#SBOOKHUD form.pingform div.tags div.tagtool .tagverse {
   font-weight: bold; font-size: 85%;}
 
-div#SBOOKHUD div#SBOOKALLECHOES form.pingform { display: none;}
-div#SBOOKHUD.ping div#SBOOKALLECHOES form.pingform { display: block;}
-div#SBOOKHUD div#SBOOKALLECHOES.targeted form.pingform { display: block;}
+div#SBOOKHUD div#SBOOKALLECHOES div#SBOOKPING { display: none;}
+div#SBOOKHUD.ping div#SBOOKALLECHOES div#SBOOKPING { display: block;}
+div#SBOOKHUD div#SBOOKALLECHOES.targeted div#SBOOKPING { display: block;}
 
 /* For scrollable results */
 
@@ -882,9 +882,9 @@ a.addecho { display: block; text-align: center; width: 100%;}
 
 /* Still unclassified */
 
-.previewing { color: orange; }
-p.previewing { color: orange; }
-div.previewing { color: orange; }
+.previewing { color: red; }
+p.previewing { color: red; }
+div.previewing { color: red; }
 .moretags { cursor: pointer;}
 .completions .counts { cursor: pointer;}
 
