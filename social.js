@@ -42,8 +42,7 @@ var sbookHUDsocial=false;
 // 'Database' elements
 var sbook_allechoes=[];
 var sbook_echo_syncstamp=false;
-var social_oids=[];
-var tribal_oids=[];
+var sbook_conversants=[];
 var social_info={};
 var sbook_echoes_by_pingid={};
 var sbook_echoes_by_user={};
@@ -54,6 +53,7 @@ var sbook_echoes_by_id={};
 
 var sbook_echoes_target=false;
 var sbook_echobar=false;
+var sbook_echo_sources=false;
 
 var sbook_echo_remark_icon=
   "http://static.beingmeta.com/graphics/remarkballoon16x13.png";
@@ -103,6 +103,7 @@ function sbookSelectEchoes(results_div,sources,justlocal,idroot)
       if (echo)
 	if (((sources===true) ||
 	     ((sources.indexOf) ? (sources.indexOf(echo.user)>=0)  :
+	      // Handle the fact that Javascript arrays may not have indexOf
 	      ((sources instanceof Array) &&
 	       (fdjtIndexOf(sources,echo.user)>=0))) ||
 	     ((sources.indexOf) && (echo.tribes) &&
@@ -184,11 +185,6 @@ function sbookEchoBar_onclick(evt)
   evt.preventDefault(); evt.cancelBubble=true;
 }
 
-function sbookPingForm_onclick(evt)
-{
-  evt.cancelBubble=true;
-}
-
 function sbookSetSources(echobar,sources)
 {
   var children=echobar.childNodes;
@@ -234,7 +230,7 @@ function sbookCreateLoginButton(uri,image,title)
 
 function sbookCreateEchoBar(classinfo,oids)
 {
-  if (!(oids)) oids=social_oids;
+  if (!(oids)) oids=sbook_conversants;
   if (!(classinfo)) classinfo=".echobar.hudblock.hud";
   var help_button=
     fdjtImage("http://static.beingmeta.com/graphics/HelpIcon40x40.png",
@@ -283,6 +279,7 @@ function sbookCreateEchoBar(classinfo,oids)
   fdjtAppend(echobar,echosources,allechoes,help_button);
   echobar.socialelts=socialelts;
   sbook_echobar=echobar;
+  sbook_echo_sources=echosources;
   sbookUpdateEchoBar();
   return echobar;
 }
@@ -383,296 +380,6 @@ function sbookEchoExtras(echo)
   else return false;
 }
 
-/* Making the PING hud */
-
-function sbookCreatePingHUD()
-{
-  var relay_block=fdjtDiv(".sbookrelayblock#SBOOKPINGRELAYBLOCK");
-  var msg=fdjtInput("TEXT","MSG","",".autoprompt#SBOOKPINGINPUT");
-  // Bind lexically, for the closure below, just in case
-  var win=window;
-  msg.prompt="What do you think?";
-  msg.onfocus=sbookPing_onfocus;
-  var id_elt=fdjtInput("HIDDEN","FRAGID","","#SBOOKPINGFRAGID");
-  var uri_elt=fdjtInput("HIDDEN","URI","","#SBOOKPINGURI");
-  var src_elt=fdjtInput("HIDDEN","SRC","","#SBOOKPINGSRC");
-  var title_elt=fdjtInput("HIDDEN","TITLE","","#SBOOKPINGTITLE");
-  var relay_elt=fdjtInput("HIDDEN","RELAY","","#SBOOKPINGRELAY");
-  var sync_input=
-    fdjtInput("HIDDEN","SYNC","","#SBOOKPINGSYNC");
-  var user_elt=(sbook_user)&&
-    fdjtInput("HIDDEN","WE/USER",sbook_user,"#SBOOKPINGUSER");
-  var tribes_elt=fdjtDiv(".tribes#SBOOKPINGTRIBES");
-  var tags_elt=sbookPingHUDTags();
-  var detail_input=fdjtNewElement("TEXTAREA",".autoprompt#SBOOKPINGDETAIL");
-  var detail_elt=
-    fdjtDiv(".detail.pingtab",
-	    fdjtImage(sbook_graphics_root+"detailsicon32x32.png","head",
-		      "details"),
-	    fdjtDiv("content",detail_input));
-  detail_input.name="DETAIL";
-  detail_input.prompt="Enter detailed comments";
-  var need_login=
-    ((sbook_user)?(false):
-     (fdjtDiv("needlogin",
-	      "You most login (",
-	      sbookCreateLoginButton
-	      ("http://sbooks.net/fb/auth",
-	       "facebook_32.png","login through facebook"),
-	      ") to make comments")));
-  var excerpt_input=
-    fdjtNewElement("TEXTAREA",".autoprompt#SBOOKPINGEXCERPT");
-  var excerpt_elt=
-    fdjtDiv(".excerpt.pingtab",
-	    fdjtImage(sbook_graphics_root+"scissorsicon32x32.png","head",
-		      "excerpt"),
-	    fdjtDiv("content",excerpt_input));
-  excerpt_input.name="EXCERPT";
-  excerpt_input.prompt="Add an excerpt";
-  var xrefs_input=fdjtInput("TEXT","XREFS","","xref");
-  var xrefs_elt=
-    fdjtDiv(".xrefs.pingtab",
-	    fdjtImage(sbook_graphics_root+"outlink32x32.png","head","REFS"),
-	    fdjtDiv("content",xrefs_input));
-  xrefs_input.onkeypress=function(evt) {
-    return fdjtMultiText_onkeypress(evt,'div');};
-  var messages_elt=
-    fdjtDiv("messages",
-	    fdjtDiv(".message.pinging","pinging...."),
-	    fdjtDiv(".message.echoing","echoing!"));
-  // Specifying the .tags class causes the tags tab to be open by default
-  var form=fdjtNewElement("FORM","#SBOOKPINGFORM.pingform",
-			  id_elt,uri_elt,src_elt,title_elt,relay_elt,
-			  sync_input,user_elt,
-			  messages_elt,relay_block,
-			  fdjtDiv("controls",sbookPingControls(),msg),
-			  sbookSelectTribe(),
-			  tags_elt,detail_elt,excerpt_elt,xrefs_elt);
-  form.setAttribute("accept-charset","UTF-8");
-  form.ajaxuri=sbook_ping_uri;
-  form.jsonpuri=sbook_jsonping_uri;
-  form.synchronous=true;
-  form.action="http://echoes.sbooks.net/echoes/ping.fdcgi";
-  form.target="sbookping";
-  form.onclick=sbookPingForm_onclick;
-  fdjtAutoPrompt_setup(form);
-  // form.windowopts="width=500,height=400";
-  form.onsubmit=
-    ((sbook_user)?(fdjtForm_onsubmit):(sbookNoUserSubmit));
-  form.oncallback=function(req) {
-    if (sbook_debug_network)
-      fdjtLog("Got AJAX echo response %o from %o",req,sbook_ping_uri);
-    sbookImportEchoes(JSON.parse(req.responseText));
-    fdjtDropClass(form,"submitting");
-    /*
-    fdjtAddClass("SBOOKPINGFORM","echoing");
-    setTimeout(function() {
-	fdjtDropClass("SBOOKPINGFORM","echoing");
-	form.reset();
-	sbookHUDMode(false);},
-      1500);
-    */
-    form.reset(); win.sbookHUDMode(false);};
-  return fdjtDiv
-    (".ping", /* .hudblock.hud */
-     need_login,
-     fdjtImage((sbook_user_img)||
-	       (sbook_graphics_root+"remarkballoon50x50.png"),
-	       "floatleft",""),
-     form);
-}
-
-function sbookNewEchoes(echoes,winarg)
-{
-  /* For when called from the iframe bridge */
-  var win=winarg||window;
-  sbookImportEchoes(echoes);
-  var form=win.document.getElementById("SBOOKPINGFORM");
-  fdjtDropClass(form,"submitting");
-  // fdjtAddClass("SBOOKPINGFORM","echoing");
-  /*
-  setTimeout(function() {
-      fdjtDropClass("SBOOKPINGFORM","echoing");
-      $("SBOOKPINGFORM").reset();
-      sbookHUDMode(false);},
-    1500);
-  */
-  form.reset();
-  win.sbookHUDMode(false);
-}
-
-function sbookJSONPechoes(echoes)
-{
-  if (sbook_debug_network) fdjtLog("Got new echoes (probably) from JSONP call");
-  sbookNewEchoes(echoes);
-}
-
-function sbookNoUserSubmit(evt)
-{
-  alert('You must be logged in to make a comment');
-  evt.cancelBubble=true; evt.preventDefault();
-}
-
-function sbookSelectTribe()
-{
-  var friendly_option=fdjtNewElement("OPTION",false,"friends");
-  friendly_option.value='friendstoo'; friendly_option.selected=true;
-  var private_option=fdjtNewElement("OPTION",false,"private");
-  private_option.value='nofriends';
-  var notribe_option=
-    fdjtNewElement("OPTION",false,"No additional tribe");
-  notribe_option.value=":{}"; notribe_option.selected=true;
-  var select_elt=fdjtNewElement("SELECT",false,notribe_option);
-  select_elt.name="TRIBE"; select_elt.value=":{}";
-  var i=0; while (i<tribal_oids.length) {
-    var tribe=tribal_oids[i++]; var info=social_info[tribe];
-    var option=fdjtNewElement("OPTION",false,info.name);
-    option.value=tribe; if (info.gloss) option.title=info.gloss;
-    fdjtAppend(select_elt,option);}
-  var exposure_elt=
-    fdjtNewElement("SELECT",false,friendly_option,private_option);
-  exposure_elt.name='exposure';
-  var post_elt;
-  if (!(sbook_user_canpost)) {
-    var redx=fdjtSpan("redx","x");
-    post_elt=fdjtAnchor("http://sbooks.net/fb/settings/prefs",redx,"post");
-    post_elt.className="nopost";
-    post_elt.title='Edit your settings to enable posting';}
-  else {
-    var checkbox=fdjtCheckbox("PUSH","yes",true);
-    post_elt=fdjtSpan("checkspan",checkbox,"post");
-    checkbox.id="PUSHCHECKBOX";
-    checkbox.checked=false; checkbox.defaultChecked=false;
-    post_elt.onclick=fdjtCheckSpan_onclick;
-    post_elt.title="add this comment to my social news feeds";}
-  return fdjtDiv("#SBOOKPINGTRIBEBAR.tribebar",
-		 post_elt,exposure_elt,select_elt);
-}
-
-function sbookPingHUDSetup(origin)
-{
-  var target;
-  if (!(origin))
-    target=origin=sbook_focus;
-  else if (origin.fragid)
-    target=$(origin.fragid);
-  else target=origin;
-  if (sbook_target===target) {
-    var excerpt=window.getSelection();
-    if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
-      $("SBOOKPINGEXCERPT").value=excerpt;
-    return;}
-  sbookSetTarget(target);
-  if ((target.title) && (target.title!=='live comment')) {
-    target.sbookoldtitle=target.title;
-    target.title='live comment: '+target.title;}
-  else target.title='live comment';
-  var info=((target) &&
-	    ((target.sbookinfo)||
-	     ((target.sbook_head) && (target.sbook_head.sbookinfo))));
-  $("SBOOKPINGURI").value=sbook_geturi(target);
-  $("SBOOKPINGSRC").value=sbook_getsrc(target);
-  $("SBOOKPINGSYNC").value=sbook_echo_syncstamp;
-  $("SBOOKPINGTITLE").value=
-    (origin.title)||(target.title)||(sbook_get_titlepath(info));
-  if (origin.echo)
-    $("SBOOKPINGRELAY").value=(origin.echo);
-  else $("SBOOKPINGRELAY").value="";
-  var seen_tags=[];
-  var tags_elt=fdjtSpan(".tagcues");
-  {var excerpt=window.getSelection();
-    if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
-      $("SBOOKPINGEXCERPT").value=excerpt;
-    $("SBOOKPINGEXCERPT").removeAttribute("isempty");}
-  {var i=0; while (i<sbook_allechoes.length) 
-	      if (sbook_allechoes[i].fragid===target.id) {
-		var echo=sbook_allechoes[i++];
-		if (echo.tags) {
-		  var tags=echo.tags; var j=0; while (j<tags.length) {
-		    var tag=tags[j++];
-		    if (fdjtIndexOf(seen_tags,tag)<0) {
-		      var completion=knoCompletion(tag); seen_tags.push(tag);
-		      completion.setAttribute("showonempty","yes");
-		      fdjtAppend(tags_elt,completion," ");}}}}
-	      else i++;}
-  var tags=gather_tags(sbook_focus);
-  var k=0; while (k<tags.length) {
-    var tag=tags[k++];
-    if (fdjtIndexOf(seen_tags,tag)<0) {
-      seen_tags.push(tag); fdjtAppend(tags_elt,knoCompletion(tag,false)," ");}}
-  fdjtReplace("SBOOKPINGTAGS",tags_elt);
-  fdjtAutoPrompt_setup($("SBOOKPING"));
-  sbookSelectEchoes(sbookEchoesHUD,true,false,target.id);
-  // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);
-  // fdjtComplete(tags_elt.input_elt);
-}
-
-function sbookPingMode_onclick_handler(mode)
-{
-  return function(evt) {
-    var pingbox=$P(".pingform",$T(evt));
-    if (fdjtHasClass(pingbox,mode))
-      fdjtDropClass(pingbox,mode);
-    else if (fdjtHasClass(pingbox,pingmode_pat))
-      fdjtSwapClass(pingbox,pingmode_pat,mode);
-    else fdjtAddClass(pingbox,mode);};
-}
-
-var pingmode_pat=/(tags)|(detail)|(excerpt)|(xrefs)/g;
-
-function sbookPingControls()
-{
-  var go_button=fdjtInput("SUBMIT","ACTION","OK");
-  var tags_button=
-    fdjtImage(sbook_graphics_root+"TagIcon16x16.png","button","tags",
-	      "add or edit descriptive tags");
-  var detail_button=
-    fdjtImage(sbook_graphics_root+"detailsicon16x16.png","button","detail",
-	      "add extended comments");
-  var excerpt_button=
-    fdjtImage(sbook_graphics_root+"scissorsicon16x16.png","button","excerpt",
-	      "add or edit an excerpt");
-  var xrefs_button=
-    fdjtImage(sbook_graphics_root+"outlink16x16.png","button","xrefs",
-	      "add or edit external references");
-  tags_button.onclick=sbookPingMode_onclick_handler("tags");
-  detail_button.onclick=sbookPingMode_onclick_handler("detail");
-  excerpt_button.onclick=sbookPingMode_onclick_handler("excerpt");
-  xrefs_button.onclick=sbookPingMode_onclick_handler("xrefs");
-  return fdjtSpan("buttons",
-		  tags_button,detail_button,excerpt_button,xrefs_button,
-		  go_button);
-}
-
-function sbookPingHUDTags()
-{
-  return fdjtDiv
-    (".tags.pingtab",
-     fdjtImage(sbook_graphics_root+"TagIcon32x32.png","head","TAGS"),
-     fdjtDiv("content",knoTagTool("TAGS","span.tagcues#SBOOKPINGTAGS",[],
-				  false,sbook_index)));
-}
-
-function sbookTagCheckspan(tag,checked,varname)
-{
-  if (!varname) varname="TAG";
-  var checkbox=fdjtInput("CHECKBOX",varname,tag);
-  var checkspan=fdjtSpan(".checkspan.completion",checkbox,knoDTermSpan(tag));
-  checkspan.key=tag;
-  if (checked) {
-    checkspan.setAttribute("ischecked","yes");
-    checkbox.checked=true;}
-  else {checkbox.checked=false;}
-  return checkspan;
-}
-
-function sbookPing_onfocus(evt)
-{
-  sbookHUDMode("ping");
-  sbookPingHUDSetup(false);
-  fdjtAutoPrompt_onfocus(evt);
-}
-
 /* The Echoes/Social Database */
 
 function sbookImportEchoes(data)
@@ -681,16 +388,13 @@ function sbookImportEchoes(data)
     if (typeof sbook_echoes_data === "undefined") {
       fdjtLog("No social data available");
       return;}
-    else {
-      if (typeof sbook_tribes !== "undefined")
-	sbookImportTribes(sbook_tribal_info);
-      data=sbook_echoes_data;}
+    else data=sbook_echoes_data;
   var date=data['%date'];
   var info=data['%info'];
   if ((info) && (info.length)) {
     var i=0; while (i<info.length) {
       var item=info[i++];
-      if (!(social_info[item.oid])) social_oids.push(item.oid);
+      if (!(social_info[item.oid])) sbook_conversants.push(item.oid);
       social_info[item.oid]=item;}}
   var ids=data['%ids'];
   if (sbook_debug_network)
@@ -721,8 +425,8 @@ function sbookImportEchoes(data)
 
 function sbookUpdateEchoBar()
 {
-  var oids=sbook_echobar._social_oids; var newoids=[];
-  if (!(oids)) sbook_echobar._social_oids=oids=[];
+  var oids=sbook_echobar._sbook_conversants; var newoids=[];
+  if (!(oids)) sbook_echobar._sbook_conversants=oids=[];
   for (var user in sbook_echoes_by_user) {
     if ((social_info[user]) && (oids.indexOf(user)<0))
       oids.push(user); newoids.push(user);}
@@ -735,17 +439,15 @@ function sbookUpdateEchoBar()
     img.oid=oid; img.name=info.name;
     if (info.summary) img.title=info.summary;
     else img.title=info.name;
-    // fdjtTrace("Generated echobar entry %o from %o",img,info);
-    fdjtAppend(sbook_echobar,img);}
+    fdjtAppend(sbook_echo_sources,img);}
 }
 
-function sbookImportTribes(tribes)
+function sbookImportSocialInfo(info)
 {
-  if ((tribes) && (tribes.length)) {
-    var i=0; while (i<tribes.length) {
-      var item=tribes[i++];
-      social_info[item.oid]=item;
-      tribal_oids.push(item.oid);}}
+  if ((info) && (info.length)) {
+    var i=0; while (i<info.length) {
+      var item=info[i++];
+      social_info[item.oid]=item;}}
 }
 
 function sbook_add_echo(id,entry)
@@ -823,7 +525,8 @@ function gather_tags(elt,results)
   var tags=elt.tags;
   if ((tags) && (tags.length>0)) {
     var i=0; while (i<tags.length) results.push(tags[i++]);}
-  if (elt.parentNode) gather_tags(elt.parentNode,results);
+  // don't do this for now
+  // if (elt.parentNode) gather_tags(elt.parentNode,results);
   if (elt.sbook_head) {
     var head=elt.sbook_head; var htags=head.tags;
     if ((htags) && (htags.length>0)) {

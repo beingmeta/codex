@@ -72,6 +72,17 @@ function sbookAddTag(elt,tag,prime,contextual,unique,kno)
     knoIndexTag(sbook_direct_index,tag,elt,kno_wogenls,(!(unique)));
 }
 
+function sbookNewTag(tag,kno)
+{
+  if (!(kno)) kno=knowlet;
+  if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
+  else if ((kno) && (typeof tag === "string"))
+    tag=(KnowDef(tag,kno))||(tag);
+  // Force a sortkey
+  var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
+  return dterm;
+}
+
 function sbookHandleTagSpec(elt,tagspec)
 {
   var tag_count=0;

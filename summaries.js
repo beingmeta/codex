@@ -203,6 +203,12 @@ function sbookShowSummary(summary,query,notoc)
       ((delete_icon)&&
        (fdjtAnchorC("http://echoes.sbooks.net/delete/"+summary.pingid,
 		    ".deletebutton",delete_icon)));
+    var relay_button=
+      fdjtImage(sbook_small_remark_icon,"remarkbutton","ping",
+		_("click to relay or respond"));
+    relay_button.onclick=function(evt){
+      sbook_ping(target,summary);
+      evt.preventDefault(); evt.cancelBubble=true;};
     var agespan=
       ((interval>0)&&
        ((interval>(3*24*3600)) 
@@ -224,19 +230,12 @@ function sbookShowSummary(summary,query,notoc)
       delete_button.target="_blank";
       delete_icon.title="delete this note/echo";
       delete_button.title="delete this note/echo";}
-      
     fdjtAppend
       (sumdiv,usrimg,
-       agespan,delete_button,
+       relay_button,delete_button,
        ((summary.detail)&&(_sbookDetailsButton())),((summary.detail)&&" "),
-       ((summary.xrefs)&&(_sbookXrefsButton())));}
-  var relay_button=
-    fdjtImage(sbook_small_remark_icon,"remarkbutton","ping",
-	      _("click to relay or respond"));
-  relay_button.onclick=function(evt){
-    sbook_ping(target,summary);
-    evt.preventDefault(); evt.cancelBubble=true;};
-  fdjtAppend(sumdiv,relay_button);
+       ((summary.xrefs)&&(_sbookXrefsButton())),
+       agespan);}
   if ((head) && (!(notoc)))
     fdjtAppend(sumdiv,sbookSummaryHead(target));
   else {

@@ -265,7 +265,7 @@ form.pingform div.messages div.message {
 form.pingform div.messages div.message.echoing { font-style: italic;} 
 form.pingform.submitting div.messages div.pinging { display: block;}
 form.pingform.echoing div.messages div.echoing { display: block;}
-div#SBOOKHUD.ping form.pingform div.completions { display: block;}
+div#SBOOKHUD.ping form.pingform div.completions { display: none;}
 div#SBOOKHUD form.pingform div.excerpt { display: none;}
 div#SBOOKHUD form.pingform div.detail { display: none;}
 div#SBOOKHUD form.pingform div.xrefs { display: none;}
@@ -333,20 +333,129 @@ div#SBOOKPINGTRIBEBAR.private select option.friendlypost {
   display: none;}
 */
 
+div.needlogin { display: none;}
+body.nosbookuser div.needlogin { display: block;}
+
+form.ping div.messages div.message { display: none;}
+form.ping div.messages div.message { 
+  text-align: center; font-size: 150%;  font-weight: bold;
+  background-color: yellow; color: black; opacity: 0.75;
+  margin-left: 25%; margin-right: 25%;
+  margin-bottom: 5px; margin-top: 5px;
+  -khtml-border-radius: 12px; 
+  -webkit-border-radius: 12px; 
+  -moz-border-radius: 12px;
+  border-radius: 12px;}
+form.ping div.messages div.message.echoing { font-style: italic;} 
+form.ping.submitting div.messages div.pinging { display: block;}
+form.ping.echoing div.messages div.echoing { display: block;}
+div#SBOOKHUD form.ping div.excerpt { display: none;}
+div#SBOOKHUD form.ping div.detail { display: none;}
+div#SBOOKHUD form.ping div.xrefs { display: none;}
+div#SBOOKHUD form.ping.detail div.detail {display: block;}
+div#SBOOKHUD form.ping.detail img.button[alt='detail'] {
+  border-bottom: solid blue 2px;}
+div#SBOOKHUD form.ping.excerpt div.excerpt { display: block;}
+div#SBOOKHUD form.ping.excerpt img.button[alt='excerpt'] { 
+  border-bottom: solid blue 2px;}
+div#SBOOKHUD form.ping.xrefs div.xrefs { display: block;}
+div#SBOOKHUD form.ping.xrefs img.button[alt='xrefs'] { 
+  border-bottom: solid blue 2px;}
+
+div#SBOOKHUD form.ping { 
+  text-align: right; margin-left: 60px; margin-right: 10px;
+  margin-bottom: 6px;}
+
+div#SBOOKHUD form.ping div.extras {
+  text-align: left; vertical-align: top;}
+div#SBOOKHUD form.ping div.extras span.buttons {
+  float: right;}
+div#SBOOKHUD form.ping div.extras img.head { 
+  float: left;}
+
+div#SBOOKHUD form.ping div.completions {
+  text-align: left;}
+
+div#SBOOKHUD form.ping[mode='tag'] div.completions { display: block;}
+div#SBOOKHUD form.ping[mode='tag'] img.button[alt='tags'] { 
+  border-bottom: solid blue 2px;}
+div#SBOOKHUD form.ping[mode='detail'] div.detail {display: block;}
+div#SBOOKHUD form.ping[mode='detail'] img.button[alt='detail'] {
+  border-bottom: solid blue 2px;}
+div#SBOOKHUD form.ping[mode='excerpt'] div.excerpt { display: block;}
+div#SBOOKHUD form.ping[mode='excerpt'] img.button[alt='excerpt'] { 
+  border-bottom: solid blue 2px;}
+div#SBOOKHUD form.ping[mode='xrefs'] div.xrefs { display: block;}
+div#SBOOKHUD form.ping[mode='xrefs'] img.button[alt='xrefs'] { 
+  border-bottom: solid blue 2px;}
+
+div#SBOOKHUD form.ping div.blockelt { 
+  text-align: left;}
+div#SBOOKHUD form.ping div.blockelt input[TYPE='SUBMIT'] { 
+  float: right;}
+div#SBOOKHUD form.ping div.blockelt span.checkspan { 
+  color: yellow; font-weight: normal;}
+div#SBOOKHUD form.ping div.blockelt span.checkspan[ischecked] { 
+  color: yellow; font-weight: bold; font-size: 125%;}
+div#SBOOKHUD form.ping div.blockelt span.tagcues { 
+  font-size: 80%;}
+
+div#SBOOKHUD form.ping div.pingtab { 
+  padding-top: 4px; border-top: solid blue 2px; 
+  padding-bottom: 4px; border-bottom: solid blue 2px; 
+  clear: both; width: 100%;}
+div#SBOOKHUD form.ping div.pingtab#SBOOKPINGCOMPLETIONS {
+  border-top: none;}
+div#SBOOKHUD form.ping div.pingtab img.head { 
+  float: left;}
+div#SBOOKHUD form.ping div.pingtab div.content { 
+  padding-right: 0px; text-align: left;
+  margin-left: 40px;}
+
+div#SBOOKHUD form.ping div.pingtab .checkspan[ischecked] { 
+  font-size: 150%;}
+
+div#SBOOKHUD form.ping div textarea { 
+  width: 98%; margin-left: 0px; min-height: 80px;}
+div#SBOOKHUD form.ping div.controls { 
+  text-align: left;}
+div#SBOOKHUD form.ping div.tags { 
+  text-align: left;}
+div#SBOOKHUD form.ping div.xrefs { 
+  height: 80px; text-align: right;}
+div#SBOOKHUD form.ping div.xrefs input[type='TEXT'][name="XREFS"] { 
+  width: 98%; margin-left: 0px; display: block; }
+div#SBOOKHUD form.ping div.xrefs div.xref { 
+  width: 100%; display: block; text-align: left; }
+
+div#SBOOKHUD.ping form.ping div.head { 
+  padding-top: 4px; margin-top: 2px; border-top: silver solid 2px;}
+
+div#SBOOKHUD form.ping div.tribebar { 
+  text-align: left; clear: right; margin-bottom: 4px; margin-top: 3px;}
+div#SBOOKHUD form.ping div.tribebar
+  select[NAME='TRIBE'] { width: 50%; max-width: 50%; clear: none;}
+
 div#SBOOKHUD div#SBOOKPING div.needlogin {
   font-size: 150%;}
 div#SBOOKHUD div#SBOOKPING div.needlogin a.login {
   display: inline;}
 body.nosbookuser div#SBOOKHUD div#SBOOKPING div.needlogin a.login {
   display: inline;}
-div#SBOOKHUD form.pingform div.tribebar
+div#SBOOKHUD form.ping div.tribebar
   select[NAME='status'] { float: right; clear: none;}
-div#SBOOKHUD form.pingform div.tribebar
+div#SBOOKHUD form.ping div.tribebar
   span.checkspan { float: right;}
-div#SBOOKHUD form.pingform div.tribebar a.nopost {
+div#SBOOKHUD form.ping div.tribebar a.nopost {
   font-size: 16px; margin-left: 4px; float: right; 
   color: pink; font-weight: bold;
   text-decoration: line-through;}
+
+div#SBOOKPING div.msg { width: 100%;}
+div#SBOOKPING input[TYPE='TEXT'][name='MSG'] {
+  width: 100%;}
+div#SBOOKPING div.tags input[TYPE='SUBMIT'] {
+  float: right;}
 
 div.ping div.controls input[TYPE='TEXT'][name='MSG'] { 
   width: 75%; clear: left; font-size: 14px;}
@@ -719,6 +828,7 @@ div.sbooksearch span.sectname {
   -webkit-border-radius: 6px; 
   -moz-border-radius: 6px; 
   border-radius: 6px;}
+/*
 div.sbooksearch span.dterm { 
   background-color: yellow; color: black;
   padding: 2px; padding-left: 5px;  margin: 0px;
@@ -743,6 +853,15 @@ div.sbooksummaries span.dterm {
   -webkit-border-top-left-radius: 6px; 
   -moz-border-radius-topleft: 6px;
   border-top-left-radius: 6px;}
+*/
+div.sbooksearch span.dterm {
+    color: yellow; font-weight: bold;}
+div.sbooksummaries span.dterm {
+    color: yellow; font-weight: bold;}
+div.sbooksearch span.dterm span.variation {
+    color: white; font-style: italic; font-weight: bold;}
+div.sbooksummaries span.dterm span.variation {
+    color: white; font-style: italic; font-weight: bold;}
 div.sbooksearch span.dterm span.bigpunct {
   font-size: 200%; font-weight: bold; line-height: 50%;}
 div.sbooksearch .completions.showall span.dterm {display: inline;}

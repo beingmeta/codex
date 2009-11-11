@@ -46,10 +46,25 @@ var sbook_user_canpost=
 // This is the picture to use for the user
 var sbook_user_img=
   ((typeof sbook_user_img === "undefined")?(false):(sbook_user_img));
+// These are the friends of the user
+var sbook_friends=
+  ((typeof sbook_friends === "undefined")?[]:(sbook_friends));
+// These are the 'tribes' (associated groups) of the user
+var sbook_tribes=
+  ((typeof sbook_tribes === "undefined")?[]:(sbook_tribes));
+// These are a set of common group/user tags for this particular user.
+var sbook_user_dist=
+  ((typeof sbook_user_dist === "undefined")?[]:(sbook_user_dist));
 // Whether to embed qricons with podspots
 var sbook_podspot_qricons=false;
 // Whether to tag headings with qricons
 var sbook_heading_qricons=false;
+// Imported social info
+var sbook_social_info=
+  ((typeof sbook_social_info === 'undefined')?(false):(sbook_social_info));
+// Imported echo information
+var sbook_echoes_data=
+  ((typeof sbook_echoes_data === 'undefined')?(false):(sbook_echoes_data));
 
 // This is the base URI for this document, also known as the REFURI
 // All stored references to this document use this REFURI, even if the
@@ -85,6 +100,8 @@ var sbook_head=false;
 var sbook_focus=false;
 // This is the last explicit target of a jump or ping.
 var sbook_target=false;
+// This is the target for which the current PING form has been setup
+var sbook_ping_target=false;
 // This is the rule for determining the sbook focus
 var sbook_focus_rules=false;
 // This is the current query
@@ -1295,12 +1312,18 @@ function sbookSetup()
   var knowlets_done=new Date();
   sbookGatherMetadata();
   var metadata_done=new Date();
-  if (sbook_user) sbookSocialSetup();
+  if (sbook_echoes_data) sbookEchoSetup();
   else {
     var uri="http://"+sbook_server+"/echoes/echoes.js?URI="+
       ((sbook_baseid) ?
        (encodeURIComponent(sbook_refuri+"#"+sbook_baseid)) :
        (encodeURIComponent(sbook_refuri)));
+    var script_elt=fdjtNewElement("SCRIPT");
+    script_elt.language="javascript"; script_elt.src=uri;
+    document.body.appendChild(script_elt);}
+  if (sbook_social_info) sbookSocialSetup();
+  else {
+    var uri="http://"+sbook_server+"/echoes/social.js";
     var script_elt=fdjtNewElement("SCRIPT");
     script_elt.language="javascript"; script_elt.src=uri;
     document.body.appendChild(script_elt);}
@@ -1336,16 +1359,55 @@ function sbookSetup()
     _sbook_setup=true;}
 }
 
+var _sbook_user_setup=false;
+var _sbook_echo_setup=false;
 var _sbook_social_setup=false;
 
-function sbookSocialSetup()
+function sbookEchoSetup()
 {
-  if (_sbook_social_setup) return;
+  sbookUserSetup();
+  if (_sbook_echo_setup) return;
   sbookImportEchoes();
   sbookSetupEchoServer();
   if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
   if (sbook_heading_qricons) sbookAddQRIcons();
+  _sbook_echo_setup=true;
+}
+
+function sbookSocialSetup()
+{
+  sbookUserSetup();
+  if (_sbook_social_setup) return;
+  if (typeof sbook_tribes !== "undefined")
+    sbookImportSocialInfo(sbook_social_info);
+  var completions=$("SBOOKPINGCOMPLETIONS");
+  if (sbook_friends) {
+    var i=0; while (i<sbook_friends.length) 
+	       sbookAddConversant(completions,sbook_friends[i++]);}
+  if (sbook_tribes) {
+    var i=0; while (i<sbook_tribes.length) {
+      sbookAddConversant(completions,sbook_tribes[i++]);}}
+  if (sbook_user_dist) {
+    var i=0; while (i<sbook_user_dist.length) {
+      fdjtAddClass
+	(sbookAddConversant(completions,sbook_user_dist[i++]),
+	 "cue");}}
   _sbook_social_setup=true;
+}
+
+function sbookUserSetup()
+{
+  if (_sbook_user_setup) return;
+  if (!(sbook_user)) {
+    fdjtAddClass(document.body,"nosbookuser");
+    return;}
+  fdjtDropClass(document.body,"nosbookuser");  
+  if ($("SBOOKPINGUSER")) $("SBOOKPINGUSER").value=sbook_user;
+  if ($("SBOOKPINGFORM"))
+    $("SBOOKPINGFORM").onsubmit=fdjtForm_onsubmit;
+  if (($("SBOOKUSERIMG"))&&(sbook_user_img))
+    $("SBOOKUSERIMG").src=sbook_user_img;
+  _sbook_user_setup=true;
 }
 
 fdjtAddSetup(sbookSetup);
