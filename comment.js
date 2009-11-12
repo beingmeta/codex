@@ -165,6 +165,13 @@ function sbookPingHUDSetup(origin)
   if (origin.echo)
     $("SBOOKPINGRELAY").value=(origin.echo);
   else $("SBOOKPINGRELAY").value="";
+  if ((origin) && (origin.echo)) {
+    if (origin.echo.dist) {
+      var dist=origin.echo.dist;
+      var i=0; while (i<dist.length) {}};
+    if (origin.echo.tags) {
+      var tags=origin.echo.tags;
+      var i=0; while (i<tags.length) {}};}
   var seen_tags=[];
   var tags_elt=fdjtSpan(".tagcues");
   {var excerpt=window.getSelection();
@@ -210,7 +217,7 @@ function sbookExtrasElement()
   taginput.completeopts=
     FDJT_COMPLETE_OPTIONS|FDJT_COMPLETE_ANYWHERE|
     FDJT_COMPLETE_CLOUD;
-  taginput.onkeyup=sbookPingTag_onkey;
+  taginput.onkeyup=sbookPingTag_onkeyup;
   taginput.onkeypress=fdjtComplete_onkey;
   taginput.oncomplete=_sbook_tags_oncomplete;
   taginput.enterchars=[-13,59];
@@ -387,19 +394,6 @@ function _sbook_tags_oncomplete(elt)
     completions.input_elt.value="";
 }
 
-function sbookPingTag_keypress(evt)
-{
-  var target=$T(evt);
-  var kc=evt.charCode;
-  if ((kc===13)||(kc===59)) {
-    if (fdjtForceComplete(target)) {
-      evt.preventDefault(); evt.cancelBubble=true;
-      return false;}
-    else {
-      
-    }}
-}
-
 function sbookPingTag_onkeyup(evt)
 {
   var target=$T(evt);
@@ -420,7 +414,11 @@ function sbookPingTag_onkeyup(evt)
       evt.cancelBubble=true;
       if (prefix) evt.target.value=prefix;}}
   else if (kc===13) {
-    fdjtForceComplete(target);
+    if (!(fdjtForceComplete(target))) {
+      var curval=target.value;
+      var knospan=knoCheckCompletion("TAGS",curval,true);
+      fdjtPrepend($("SBOOKPINGCOMPLETIONS"),knospan);
+      target.value="";}
     evt.preventDefault(); evt.cancelBubble=true;
     return false;}
   else if ((kc===8)||(kc===9)) {
