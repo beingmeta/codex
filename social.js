@@ -45,10 +45,10 @@ var sbook_echo_syncstamp=false;
 var sbook_conversants=[];
 var social_info={};
 var sbook_echoes_by_pingid={};
-var sbook_echoes_by_user={};
-var sbook_echoes_by_tag={};
+var sbook_echoes_by_user={_all:[]};
+var sbook_echoes_by_tag={_all:[]};
 var sbook_echoes_by_xtag={};
-var sbook_echoes_by_tribe={};
+var sbook_echoes_by_tribe={_all:[]};
 var sbook_echoes_by_id={};
 
 var sbook_echoes_target=false;
@@ -394,7 +394,8 @@ function sbookImportEchoes(data)
   if ((info) && (info.length)) {
     var i=0; while (i<info.length) {
       var item=info[i++];
-      if (!(social_info[item.oid])) sbook_conversants.push(item.oid);
+      if (!(social_info[item.oid]))
+	fdjtInsert(sbook_conversants,item.oid);
       social_info[item.oid]=item;}}
   var ids=data['%ids'];
   if (sbook_debug_network)
@@ -425,14 +426,19 @@ function sbookImportEchoes(data)
 
 function sbookUpdateEchoBar()
 {
-  var oids=sbook_echobar._sbook_conversants; var newoids=[];
-  if (!(oids)) sbook_echobar._sbook_conversants=oids=[];
-  for (var user in sbook_echoes_by_user) {
-    if ((social_info[user]) && (oids.indexOf(user)<0))
-      oids.push(user); newoids.push(user);}
-  for (var tribe in sbook_echoes_by_tribe) {
-    if ((social_info[tribe]) && (oids.indexOf(tribe)<0))
-      oids.push(tribe); newoids.push(user);}
+  var oids=sbook_echobar._sbook_conversants; var newoids=new Array();
+  if (!(oids)) {
+    oids=[]; sbook_echobar._sbook_conversants=oids;}
+  var users=sbook_echoes_by_user._all;
+  var tribes=sbook_echoes_by_tribe._all;
+  var i=0; while (i<users.length) {
+    var user=users[i++];
+    if ((social_info[user]) && (fdjtIndexOf(oids,user)<0)) {
+      oids.push(user); newoids.push(user);}}
+  i=0; while (i<tribes.length) {
+    var tribe=tribes[i++];
+    if ((social_info[tribe]) && (fdjtIndexOf(oids,tribe)<0)) {
+      oids.push(tribe); newoids.push(tribe);}}
   var i=0; while (i<newoids.length) {
     var oid=newoids[i++]; var info=social_info[oid];
     var img=fdjtImage(info.pic,"social",info.name);
@@ -629,16 +635,19 @@ function sbook_ping(target,echo)
   if (sbook_target!==target) {
     $("SBOOKPINGFORM").reset();
     sbookPingHUDSetup(target);}
-  if (echo) {
-    if (echo.echo) $("SBOOKPINGRELAY").value=echo.echo;
-    if (echo.user) {
-      var userinfo=social_info[echo.user];
-      var echoblock=
-	fdjtDiv("sbookrelayblock","Relayed from ",
-		fdjtSpan("user",userinfo.name),
-		((echo.msg)&&(": ")),
-		((echo.msg)?(fdjtSpan("msg",echo.msg)):(false)));
-      fdjtReplace("SBOOKPINGRELAYBLOCK",echoblock);}}
+  if (echo)
+    if (echo.user===sbook_user)
+      sbookPingHUDSetup(echo);
+    else {
+      if (echo.echo) $("SBOOKPINGRELAY").value=echo.echo;
+      if (echo.user) {
+	var userinfo=social_info[echo.user];
+	var echoblock=
+	  fdjtDiv("sbookrelayblock","Relayed from ",
+		  fdjtSpan("user",userinfo.name),
+		  ((echo.msg)&&(": ")),
+		  ((echo.msg)?(fdjtSpan("msg",echo.msg)):(false)));
+	fdjtReplace("SBOOKPINGRELAYBLOCK",echoblock);}}
   sbookHUDMode("ping");
   $("SBOOKPINGINPUT").focus();
 }

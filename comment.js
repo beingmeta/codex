@@ -50,6 +50,7 @@ function sbookCreatePingHUD()
   var src_elt=fdjtInput("HIDDEN","SRC","","#SBOOKPINGSRC");
   var title_elt=fdjtInput("HIDDEN","TITLE","","#SBOOKPINGTITLE");
   var relay_elt=fdjtInput("HIDDEN","RELAY","","#SBOOKPINGRELAY");
+  var echo_elt=fdjtInput("HIDDEN","ECHO","","#SBOOKPINGECHO");
   var sync_input=
     fdjtInput("HIDDEN","SYNC","","#SBOOKPINGSYNC");
   var user_elt=fdjtInput("HIDDEN","WE/USER",sbook_user,"#SBOOKPINGUSER");
@@ -92,7 +93,7 @@ function sbookCreatePingHUD()
 	    fdjtDiv(".message.echoing","echoing!"));
   // Specifying the .tags class causes the tags tab to be open by default 
  var form=fdjtNewElement("FORM","#SBOOKPINGFORM.ping",
-			 id_elt,uri_elt,src_elt,title_elt,relay_elt,
+			 id_elt,uri_elt,src_elt,title_elt,relay_elt,echo_elt,
 			 sync_input,user_elt,
 			 messages_elt,relay_block,
 			 fdjtDiv("#PINGMSG",msg),
@@ -123,7 +124,9 @@ function sbookCreatePingHUD()
 	sbookHUDMode(false);},
       1500);
     */
-    form.reset(); win.sbookHUDMode(false);};
+    form.reset();
+    fdjtCheckSpan_setup($("SBOOKPINGCOMPLETIONS"));
+    win.sbookHUDMode(false);};
   return fdjtDiv
     (".ping", /* .hudblock.hud */
      need_login,
@@ -163,15 +166,34 @@ function sbookPingHUDSetup(origin)
   $("SBOOKPINGTITLE").value=
     (origin.title)||(target.title)||(sbook_get_titlepath(info));
   if (origin.echo)
-    $("SBOOKPINGRELAY").value=(origin.echo);
-  else $("SBOOKPINGRELAY").value="";
+    if (origin.echo.user===sbook_user) {
+      $("SBOOKPINGRELAY").value="";
+      $("SBOOKPINGECHO").value=(origin.echo);}
+    else {
+      $("SBOOKPINGRELAY").value=(origin.echo);
+      $("SBOOKPINGECHO").value="";}
+  else {
+    $("SBOOKPINGRELAY").value="";
+    $("SBOOKPINGECHO").value="";}
   if ((origin) && (origin.echo)) {
-    if (origin.echo.dist) {
-      var dist=origin.echo.dist;
-      var i=0; while (i<dist.length) {}};
-    if (origin.echo.tags) {
-      var tags=origin.echo.tags;
-      var i=0; while (i<tags.length) {}};}
+    var completions_elt=$("SBOOKPINGCOMPLETIONS");
+    var completions=completions_elt.allcompletions;
+    var dist=origin.echo.dist||[];
+    var tags=origin.echo.tags||[];
+    var newchecked=[];
+    var i=0; while (i<completions.length) {
+      var val=completions[i].value;
+      if (dist.indexOf(val)>=0) newchecked.push(completions[i++]);
+      else if (tags.indexOf(val)>=0) newchecked.push(completions[i++]);
+      else i++;}
+    var cur=completions._ischecked||[];
+    i=0; while (i<newchecked.length) {
+      var n=newchecked[i++];
+      if (cur.indexOf(n)<0) fdjtCheckSpan_update(n,true);}
+    i=0; while (i<cur.length) {
+      var c=cur[i++];
+      if (cur.indexOf(n)<0) fdjtCheckSpan_update(n,false);}
+    completions._ischecked=newchecked;}
   var seen_tags=[];
   var tags_elt=fdjtSpan(".tagcues");
   {var excerpt=window.getSelection();
@@ -443,6 +465,7 @@ function sbookNewEchoes(echoes,winarg)
     1500);
   */
   form.reset();
+  fdjtCheckSpan_setup($("SBOOKPINGCOMPLETIONS"));
   win.sbookHUDMode(false);
 }
 

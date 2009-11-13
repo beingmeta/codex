@@ -890,6 +890,8 @@ div.sbooksummaries .summary {
   margin-left: 50px; margin-right: 50px; 
   border-top: dotted orange 1px; padding-top: 3px;
   color: black; text-align: left;}
+div.sbooksummaries .summary span.tribe { 
+  color: darkblue; font-weight: bold; font-style: italic;}
 div.sbooksummaries a.summary { display: block;}
 div.sbooksummaries .tocblock.hidden { display: none;}
 div.sbooksummaries .summary.hidden { display: none;}
