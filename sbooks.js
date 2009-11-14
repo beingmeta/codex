@@ -796,13 +796,6 @@ function sbookSetFocus(target,force)
       if ((force) || (sbook_fickle_head) || (!(fdjtIsVisible(sbook_head))))
 	sbookSetHead(head);
     if (sbook_focus) fdjtDropClass(sbook_focus,"sbookfocus");
-    if (sbook_body_tooltips) {
-      if (sbook_focus)
-	sbook_focus.title=(sbook_focus._sbookoldtitle)||null;
-      if (target.title) {
-	target._sbookoldtitle=target.title;
-	target.title='click to comment, shift for context HUD: '+target.title;}
-      else target.title='click to comment, shift for context HUD';}
     sbook_focus=target;
     fdjtAddClass(target,"sbookfocus");
     if (target.sbookloc) sbookSetLocation(target.sbookloc,true);}
@@ -813,8 +806,6 @@ function sbookSetTarget(target)
   if (sbook_debug_focus) sbook_trace_focus("sbookSetTarget",target);
   if (sbook_target) {
     fdjtDropClass(sbook_target,"sbooktarget");
-    if (sbook_target.sbookoldtitle) sbook_target.title=sbook_target.sbookoldtitle;
-    else sbook_target.title=null;
     sbook_target=false;}
   if (target) {
     fdjtAddClass(target,"sbooktarget");
@@ -1392,6 +1383,8 @@ function sbookSocialSetup()
       fdjtAddClass
 	(sbookAddConversant(completions,sbook_user_dist[i++]),
 	 "cue");}}
+  if (sbook_user_canpost) {
+    fdjtDropClass(document.body,"sbookcantpost");}
   _sbook_social_setup=true;
 }
 

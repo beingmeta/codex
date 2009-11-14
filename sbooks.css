@@ -244,6 +244,11 @@ body.nosbookuser #SBOOKECHOES img.button {display: none;}
 body.nosbookuser #SBOOKECHOES a.login img.button {
   display: inherit;}
 
+body #SBOOKCANTPOST { display: none; color: white;}
+body.sbookcantpost #SBOOKCANTPOST { 
+  display: inline; color: red; text-decoration: line-through;}
+body.sbookcantpost #SBOOKCANPOST { display: none;}
+
 div#SBOOKHUD div.hud#SBOOKECHOES { }
 div#SBOOKHUD div.hud#SBOOKECHOES img.button.ping {
   position: absolute; left: 2px; bottom: 0px;}

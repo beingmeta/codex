@@ -151,10 +151,6 @@ function sbookPingHUDSetup(origin)
       $("SBOOKPINGEXCERPT").value=excerpt;
     return;}
   sbookSetTarget(target);
-  if ((target.title) && (target.title!=='live comment')) {
-    target.sbookoldtitle=target.title;
-    target.title='live comment: '+target.title;}
-  else target.title='live comment';
   sbook_ping_target=target;
   var info=((target) &&
 	    ((target.sbookinfo)||
@@ -164,7 +160,7 @@ function sbookPingHUDSetup(origin)
   $("SBOOKPINGSRC").value=sbook_getsrc(target);
   $("SBOOKPINGSYNC").value=sbook_echo_syncstamp;
   $("SBOOKPINGTITLE").value=
-    (origin.title)||(target.title)||(sbook_get_titlepath(info));
+    (origin.title)||(target.getAttribute("title"))||(sbook_get_titlepath(info));
   if (origin.echo)
     if (origin.echo.user===sbook_user) {
       $("SBOOKPINGRELAY").value="";
@@ -257,7 +253,6 @@ function sbookExtrasElement()
 function sbookPingControls()
 {
   var save_button=fdjtInput("SUBMIT","ACTION","save");
-  var post_button=fdjtInput("SUBMIT","ACTION","post");
   var tags_button=
     fdjtImage(sbook_graphics_root+"TagIcon16x16.png","button","tags",
 	      "add or edit descriptive tags");
@@ -274,15 +269,24 @@ function sbookPingControls()
   detail_button.onclick=sbookPingMode_onclick_handler("detail");
   excerpt_button.onclick=sbookPingMode_onclick_handler("excerpt");
   xrefs_button.onclick=sbookPingMode_onclick_handler("xrefs");
-  if (!(sbook_user_canpost)) {
-    post_button.disabled=true;
-    post_button.title='you need to enable posting for your account';}
-  else {
-    post_button.title='post this comment to configured feeds';}
   return fdjtSpan("buttons",
 		  tags_button,detail_button,excerpt_button,xrefs_button,
 		  sbookExposureElement(),
-		  save_button,post_button);
+		  sbookPostElements(),
+		  save_button);
+}
+
+function sbookPostElements()
+{
+  var check1=fdjtInput("CHECKBOX","PUSH","yes",false);
+  var check2=fdjtInput("CHECKBOX","PUSH","yes",false);
+  check2.disabled=true;
+  var span1=fdjtSpan(".checkspan#SBOOKCANPOST","post",check1);
+  var span2=fdjtSpan(".checkspan","post",check2);
+  span1.onclick=fdjtCheckSpan_onclick;
+  var a1=fdjtAnchor("http://sbooks.net/fb/settings/prefs",span2);
+  a1.id="SBOOKCANTPOST";
+  return new Array(span1,a1);
 }
 
 function sbookExposureElement()
@@ -344,6 +348,16 @@ function sbookAddConversant(completions,c,seen,checked,init)
   if (seen[c]) return seen[c];
   var cinfo=social_info[c];
   var cspan=sbookCompletionCheckspan("DIST",c,checked||false,cinfo.name);
+  if (cinfo.postable) {
+    var thumbtack=
+      fdjtImage("http://static.beingmeta.com/graphics/thumbtack19x15.png",
+		false,"@","postable");
+    fdjtPrepend(cspan,thumbtack);}
+  else if (cinfo.mailable) {
+    var envelope=
+      fdjtImage("http://static.beingmeta.com/graphics/envelope19x15.png",
+		false,"@","mailable");
+    fdjtPrepend(cspan,envelope);}
   cspan.key=cinfo.name; cspan.value=c;
   seen[c]=cspan;
   // If the completions have a parent, we've already run the init, so
@@ -473,29 +487,6 @@ function sbookJSONPechoes(echoes)
 {
   if (sbook_debug_network) fdjtLog("Got new echoes (probably) from JSONP call");
   sbookNewEchoes(echoes);
-}
-
-
-/* Dead code */
-
-function sbookSelectTribe()
-{
-  var friendly_option=fdjtNewElement("OPTION",false,"friends");
-  friendly_option.value='friendstoo'; friendly_option.selected=true;
-  var private_option=fdjtNewElement("OPTION",false,"private");
-  private_option.value='nofriends';
-  var notribe_option=
-    fdjtNewElement("OPTION",false,"No additional tribe");
-  notribe_option.value=":{}"; notribe_option.selected=true;
-  var select_elt=fdjtNewElement("SELECT",false,notribe_option);
-  select_elt.name="TRIBE"; select_elt.value=":{}";
-  /*
-  var i=0; while (i<tribal_oids.length) {
-    var tribe=tribal_oids[i++]; var info=social_info[tribe];
-    var option=fdjtNewElement("OPTION",false,info.name);
-    option.value=tribe; if (info.gloss) option.title=info.gloss;
-    fdjtAppend(select_elt,option);}
-  */
 }
 
 /* Emacs local variables
