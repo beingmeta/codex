@@ -856,6 +856,8 @@ function sbook_onmouseover(evt)
   /* Now, we try to find a top level element */
   while (target)
     if (target.id) break;
+    else if (target.sbook_head) {
+      target=target.sbook_head; break;}
     else if (target.parentNode===document.body) break;
     else target=target.parentNode;
   var scrollx=window.scrollX||document.body.scrollLeft;
