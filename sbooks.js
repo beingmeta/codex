@@ -213,8 +213,9 @@ var sbook_noisy_tooltips=false;
 function sbook_trace_handler(handler,evt)
 {
   fdjtLog
-    ("%s %o: hudup=%o, preview=%o, head=%o, focus=%o",
-     handler,evt,sbook_mode,sbook_preview,sbook_head,sbook_focus);
+    ("[%f] %s %o: hudup=%o, preview=%o, head=%o, focus=%o",
+     fdjtElapsedTime(),handler,evt,
+     sbook_mode,sbook_preview,sbook_head,sbook_focus);
 }
 
 function sbook_trace_focus(handler,target,evt)

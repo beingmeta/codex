@@ -52,12 +52,18 @@ function sbookShowSearchSummaries(result,results_div)
   else head_div=fdjtDiv("count");
   var query=result._query;
   var j=0; while (j<query.length) 
-	     fdjtAppend(head_div,fdjtSpan("dterm",query[j++])," ");
+	     fdjtAppend(head_div,((j>0)&&(" \u00b7 ")),
+			fdjtSpan("dterm",query[j++]));
+  var results_sum;
   if (results.length===0)
-    fdjtAppend(head_div,"There were no results");
+    results_sum=fdjtSpan(false," \u2192 ","no results");
   else if (results.length===1)
-    fdjtAppend(head_div,"There is one result");
-  else fdjtAppend(head_div,"There are ",results.length," results");
+    results_sum=fdjtSpan(false," \u2192 ","one result");
+  else results_sum=fdjtSpan(false," \u2192 ",results.length," results");
+  // When the dterm has RTL content (say Hebrew), it may mess up
+  //  the display of the results list, so we explicitly set the direction.
+  results_sum.dir='ltr';
+  fdjtAppend(head_div,results_sum);
   fdjtAppend(results_div,head_div);
   sbookShowSummaries(results,results_div,result);
 }
@@ -91,15 +97,8 @@ function sbookSearchInput_onkeypress(evt)
   else if (ch===59) { /* That is, semicolon */
     sbookForceComplete($T(evt));
     evt.preventDefault(); evt.cancelBubble=true;}
-  else if (true) {
-    if (_sbookSearchKeyPress_delay) 
-      clearTimeout(_sbookSearchKeyPress_delay);
-    _sbookSearchKeyPress_delay=
-      setTimeout(function(){
-	  sbookUpdateQuery(target);},
-	500);
+  else {
     return fdjtComplete_onkey(evt);}
-  else return fdjtComplete_onkey(evt);
 }
 
 function sbookSearchInput_onkeyup(evt)
@@ -187,8 +186,13 @@ function _sbook_note_completions(completions)
 function sbookDTermCompletion(dterm,title)
 {
   if ((typeof dterm === "string") && (dterm[0]==="\u00A7")) {
-    var span=fdjtSpan("completion sectname",dterm);
+    var showname=dterm;
+    if (showname.length>17) {
+      showname=showname.slice(0.17)+"...";
+      title=dterm;}
+    var span=fdjtSpan("completion",fdjtSpan("sectname",showname));
     span.key=dterm; span.value=dterm; span.anymatch=true;
+    if (title) span.title=title;
     return span;}
   var knowde=Knowde(dterm);
   if (!(knowde))
@@ -354,6 +358,17 @@ function sbookMakeCloud(dterms,scores,freqs)
 		  *((dterm.length>8) ? (2/Math.log(dterm.length)) : (1)));
       span.style.fontSize=relsize+"%";}
     fdjtAppend(completions,span,"\n");}
+  /*
+  var showall=fdjtSpan("showall","show completions");
+  var hideall=fdjtSpan("hideall","hide completions");
+  showall.onclick=fdjtComplete_toggleshowall;
+  hideall.onclick=fdjtComplete_toggleshowall;
+  */
+  var maxmsg=fdjtDiv("maxcompletemsg",
+		     "There are a lot ",
+		     "(",fdjtSpan("completioncount","really"),")",
+		     " of completions.  ");
+  fdjtPrepend(completions,maxmsg);
   var end=new Date();
   if (sbook_trace_clouds)
     fdjtLog("[%f] Made cloud for %d dterms in %f seconds",
@@ -430,7 +445,7 @@ function createSBOOKHUDsearch()
   input.setAttribute("AUTOCOMPLETE","off");
   input.setAttribute("COMPLETIONS","SBOOKSEARCHCOMPLETIONS");
   input.setAttribute("ENTERCHARS",";");
-  input.setAttribute("MAXCOMPLETE","20");  
+  input.setAttribute("MAXCOMPLETE","45");  
   completions.id="SBOOKSEARCHCOMPLETIONS";
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=

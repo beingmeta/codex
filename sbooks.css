@@ -31,6 +31,8 @@
 
 /* Highlight rules */
 
+@charset "utf-8";
+
 h1.sbookhead, h2.sbookhead, h3.sbookhead, h4.sbookhead { text-decoration: overline;}
 .sbookhead[toclevel=1], .sbookhead[toclevel=2], .sbookhead[toclevel=3], .sbookhead[toclevel=4] { text-decoration: overline;}
 body.sbookhead { text-decoration: none;}
@@ -844,6 +846,10 @@ div.sbooksearch .completions span.counts {
 div.sbooksearch div.cues {}
 div.sbooksearch div.query {}
 
+div.sbooksearch .completions .completion:after { 
+  content: "·"; font-size: 200%; font-weight: bold; 
+  color: purple; vertical-align: middle;}
+
 div.sbooksearch span.sectname {
   font-weight: bold; font-style: italic; 
   background-color: ivory; color: purple;
@@ -894,7 +900,7 @@ div.sbooksearch span.dterm span.disambig {color: red;}
 div.sbooksearch .completions { line-height: 200%;}
 div.sbooksearch .completions .completion.prime { 
   font-size: 200%; font-weight: bold;}
-div.sbooksearch .completions .completion.sectname { 
+div.sbooksearch .completions .completion .sectname { 
   white-space: nowrap;}
 
 div.sbooksearch .completions .completion .variation { 

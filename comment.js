@@ -336,9 +336,14 @@ function sbookCompletionsElement()
   var i=0; while (i<alltags.length) {
     var tag=alltags[i++];
     if ((tag.length>0)&&(tag[0]==="\u00A7")) continue;
-    fdjtAppend(completions,
-	       knoCheckCompletion("TAGS",Knowde(tag),false)," ");}
+    var tagnode=knoCheckCompletion("TAGS",Knowde(tag),false);
+    fdjtAppend(completions, tagnode," ");}
   fdjtInitCompletions(completions,false,_sbook_tag_completeopts);
+  var maxmsg=fdjtDiv("maxcompletemsg",
+		     "There are a lot ",
+		     "(",fdjtSpan("completioncount","really"),")",
+		     " of completions.  ");
+  fdjtPrepend(completions,maxmsg);
   return completions;
 }
 
