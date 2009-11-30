@@ -380,7 +380,7 @@ function sbookCreateHelpHUD(eltspec)
 
 function sbookCreateNavHUD(eltspec)
 {
-  var toc_div=sbookTOCDiv(sbook_getinfo(sbook_root));
+  var toc_div=sbookTOCDiv(sbook_getinfo(sbook_root),0);
   var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
   div.onmouseover=sbookTOC_onmouseover;
   div.onmouseout=sbookTOC_onmouseout;

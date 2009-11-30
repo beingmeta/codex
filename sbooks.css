@@ -37,7 +37,9 @@ h1.sbookhead, h2.sbookhead, h3.sbookhead, h4.sbookhead { text-decoration: overli
 .sbookhead[toclevel=1], .sbookhead[toclevel=2], .sbookhead[toclevel=3], .sbookhead[toclevel=4] { text-decoration: overline;}
 body.sbookhead { text-decoration: none;}
 
-/* This is essentially where the mouse is */
+/* This is essentially where the mouse is (as tracked) */
+.sbookfocus { cursor: text;}
+
 /* This is the last explicit target of a jump or ping */
 .sbooktarget { color: darkblue;}
 body.sbookfocus { color: inherit;}
@@ -707,45 +709,11 @@ div#SBOOKHUD div#SOCIALHUD {
 
 /* TOC classes */
 
-/* 
-div.sbooktoc div.supersections { display: none;}
-div.sbooktoc div.subsections { display: none;}
-
-div.sbooktoc .sectname { color: yellow;}
-div.sbooktoc .focus .sectname { font-weight: bold;}
-div#SBOOKHUD.toc div.sbooktoc .focus .sectname { font-size: 125%;}
-div.sbooktoc #SBOOKHEAD0 .sectname { color: white;}
-div.sbooktoc a { 
-  text-decoration: none; color: blue;}
-div.sbooktoc div.sbookhudsect {
-  width: 100%; text-align: center; clear: both; }
-div.sbooktoc div.sbookhudsect div.sectname {
-  clear: both;}
-div.sbooktoc div.supersection div.sectname {
-  clear: both;}
-div.sbooktoc a:visited { color: blue; }
-div.sbooktoc div.subsections a {color: blue;}
-
-div.sbooktoc div.supersections a { font-size: 85%; }
-
-div.sbooktoc div.subsections { 
-  clear: both; font-size: 80%; margin-left: 15%; margin-right: 15%;}
-div.sbooktoc div.subsections div.spanbar {
-  width: 100%; clear: both;}
-div.sbooktoc div.subsections div.sectlist {
-  clear: both;}
-div.sbooktoc div.subsections a {
-    display: inline; width: inherit; font-weight: bold; font-size: 90%;
-    clear: none;}
-div.sbooktoc div.subsections a.sbookhudsect.cohighlight {
-    color: orange;}
-div.sbooktoc div.subsections a.sbookhudsect.cohighlight[odd] {
-    color: orange;}
-
-*/
-
 div.sbooktoc { display: none;}
+
 div.sbooktoc.live { display: block;}
+div.sbooktoc.live div.head { display: block;}
+
 div.sbooktoc.live div.sbooktoc { display: none;}
 div.sbooktoc.live div.sbooktoc.live { display: block;}
 
@@ -756,6 +724,20 @@ div.sbooktoc.cur div.sub { display: block;}
 div.sbooktoc .sectname.cohi { color: orange;}
 div.sbooktoc .sectname { color: blue; cursor: pointer;}
 div.sbooktoc div.sub a.sectname { font-size: 80%; white-space: nowrap;}
+
+div#SBOOKHUD div.sbooktoc div.head { display: none;}
+div#SBOOKHUD div.sbooktoc div.spanbar { display: none;}
+
+div#SBOOKHUD div.sbooktoc.toc0 div.spanbar { display: block;}
+div#SBOOKHUD div.sbooktoc.cur div.spanbar { display: block;}
+div#SBOOKHUD div.sbooktoc.cur div.head { display: block;}
+
+div#SBOOKHUD.toc div.sbooktoc div.head { display: block;}
+div#SBOOKHUD.toc div.sbooktoc div.spanbar { display: block;}
+div#SBOOKHUD.toc div.sbooktoc.cur div.sub { display: block;}
+
+div#SBOOKHUD.hudup div.sbooktoc { margin-left: 10%; margin-right: 10%;}
+div#SBOOKHUD.hudup div.sbooktoc.toc0 { margin-left: 0px; margin-right: 0px;}
 
 
 div.spanbar {

@@ -50,7 +50,7 @@ var sbooks_nav_version=parseInt("$Revision$".slice(10,-1));
 
 /* Building the DIV */
 
-function sbookTOCDiv(headinfo,classname)
+function sbookTOCDiv(headinfo,depth,classname)
 {
   var head=fdjtNewElt("A.sectname",headinfo.title);
   var toc=fdjtDiv(classname||"sbooktoc",
@@ -59,9 +59,10 @@ function sbookTOCDiv(headinfo,classname)
 		  sbookTOCDivSubsections(headinfo));
   var tocid="SBOOKTOC4"+headinfo.id;
   var sub=headinfo.sub;
+  if (!(depth)) depth=0;
   head.name="SBR"+headinfo.id;
   head.sbook_ref=headinfo.id;
-  if (headinfo.level) fdjtAddClass(toc,"toc"+headinfo.level);
+  fdjtAddClass(toc,"toc"+depth);
   headinfo.tocid=tocid;
   if (!(toc.id)) {
     headinfo.tocid=tocid;
@@ -70,7 +71,7 @@ function sbookTOCDiv(headinfo,classname)
   if ((!(sub)) || (!(sub.length))) return toc;
   var i=0; var n=sub.length;
   while (i<n)
-    fdjtAppend(toc,sbookTOCDiv(sub[i++]));
+    fdjtAppend(toc,sbookTOCDiv(sub[i++],depth+1));
   return toc;
 }
 
@@ -151,3 +152,8 @@ function _sbook_generate_span(sectnum,subsection,title,spanstart,spanend,len,nam
   return span;
 }
 
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

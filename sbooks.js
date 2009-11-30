@@ -866,81 +866,10 @@ function sbookGetXYFocus(xoff,yoff)
   return node;
 }
 
-function sbook_onmouseover(evt)
-{
-  // sbook_trace_handler("sbook_onmouseover",evt);
-  /* If you're previewing, ignore mouse action */
-  if (sbook_preview) return;
-  if (fdjtHasClass(sbookHUD,"hudup")) return;
-  if (sbook_target) sbookCheckTarget();
-  /* Get the target */
-  var target=$T(evt);
-  /* If you have a saved scroll location, just restore it. */
-  // This shouldn't be neccessary if the HUD mouseout handlers do their thing
-  // if (fdjtScrollRestore()) return;
-  /* Now, we try to find a top level element */
-  if (fdjtHasParent(target,sbookHUD)) return;
-  while (target)
-    if (target.id) break;
-    else if (target.sbook_headid) break;
-    else if (target.parentNode===sbook_root) break;
-    else target=target.parentNode;
-  var scrollx=window.scrollX||document.body.scrollLeft;
-  var scrolly=window.scrollY||document.body.scrollLeft;
-  /* These are top level elements which aren't much use as heads or foci */
-  if ((target===null) || (target===sbook_root) ||
-      (!((target) && ((target.Xoff) || (target.Yoff))))) 
-    target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY);
-  fdjtDelayHandler
-    (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");
-}
-
-
-function sbook_onmousemove(evt)
-{
-  // sbook_trace_handler("sbook_onmousemove",evt);
-  if (sbook_target) sbookCheckTarget();
-  var target=$T(evt);
-  /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_mode) || (sbook_mode)) return;
-  if (fdjtHasClass(sbookHUD,"hudup")) return;
-  /* Save mouse positions */
-  sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
-  /* Now, we try to find a top level element to sort out whether
-     we need to update the location or section head. */
-  while (target)
-    if (target.sbook_head) break;
-    else if (target.sbookinfo) break;
-    else if (target.parentNode===document.body) break;
-    else target=target.parentNode;
-  /* These are all cases which onmouseover will handle */
-  if ((target) && ((target.Xoff) || (target.Yoff))) return;
-  var scrollx=window.scrollX||document.body.scrollLeft;
-  var scrolly=window.scrollY||document.body.scrollLeft;
-  target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY);
-  fdjtDelayHandler
-    (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");
-}
-
-function sbook_onscroll(evt)
-{
-  // sbook_trace_handler("sbook_onscroll",evt);
-  /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_mode)) return;
-  if (fdjtHasClass(sbookHUD,"hudup")) return;
-  if (sbook_target) sbookCheckTarget();
-  var scrollx=window.scrollX||document.body.scrollLeft;
-  var scrolly=window.scrollY||document.body.scrollLeft;
-  var xoff=scrollx+sbook_last_x;
-  var yoff=scrolly+sbook_last_y;
-  var target=sbookGetXYFocus(xoff,yoff);
-  fdjtDelayHandler
-    (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");
-}
+/* Keyboard handlers */
 
 function sbook_onkeydown(evt)
 {
-  // sbook_trace_handler("sbook_onkeydown",evt);
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_mode) {
       sbookHUDMode(false);
@@ -953,8 +882,10 @@ function sbook_onkeydown(evt)
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput($T(evt))) return true;
-  else if (evt.keyCode===16)
-    fdjtAddClass(sbookHUD,"hudup");
+  else if (evt.keyCode===16) {
+    if (sbook_mode)
+      fdjtDropClass(sbookHUD,sbook_mode);
+    else fdjtAddClass(sbookHUD,"hudup");}
   else if (evt.keyCode===32) /* Space char */
     sbookNextPage(evt);
   /* Backspace or Delete */
@@ -974,11 +905,11 @@ function sbook_onkeydown(evt)
 
 function sbook_onkeyup(evt)
 {
-  // sbook_trace_handler("sbook_onkeyup",evt);
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.keyCode===16) {
     fdjtDropClass(sbookHUD,"hudup");
+    if (sbook_mode) fdjtAddClass(sbookHUD,sbook_mode);
     evt.cancelBubble=true; evt.preventDefault();}
 }
 
@@ -1019,11 +950,86 @@ function sbook_onkeypress(evt)
     evt.cancelBubble=true; evt.preventDefault();}
 }
 
+/* Mouse handlers */
+
 var sbook_start_select=false;
 
 function sbook_clear_select()
 {
   sbook_start_select=false;
+}
+
+function sbook_onmouseover(evt)
+{
+  // sbook_trace_handler("sbook_onmouseover",evt);
+  /* If you're previewing, ignore mouse action */
+  if (sbook_preview) return;
+  if (fdjtHasClass(sbookHUD,"hudup")) return;
+  if (sbook_target) sbookCheckTarget();
+  /* Get the target */
+  var target=$T(evt);
+  /* If you have a saved scroll location, just restore it. */
+  // This shouldn't be neccessary if the HUD mouseout handlers do their thing
+  // if (fdjtScrollRestore()) return;
+  /* Now, we try to find a top level element */
+  if (fdjtHasParent(target,sbookHUD)) return;
+  while (target)
+    if (target.id) break;
+    else if (target.sbook_headid) break;
+    else if (target.parentNode===sbook_root) break;
+    else target=target.parentNode;
+  var scrollx=window.scrollX||document.body.scrollLeft;
+  var scrolly=window.scrollY||document.body.scrollLeft;
+  /* These are top level elements which aren't much use as heads or foci */
+  if ((target===null) || (target===sbook_root) ||
+      (!((target) && ((target.Xoff) || (target.Yoff))))) 
+    target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY);
+  fdjtDelayHandler
+    (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");
+}
+
+
+function sbook_onmousemove(evt)
+{
+  // sbook_trace_handler("sbook_onmousemove",evt);
+  if (sbook_start_select) return;
+  if (sbook_target) sbookCheckTarget();
+  var target=$T(evt);
+  /* If you're previewing, ignore mouse action */
+  if ((sbook_preview) || (sbook_mode) || (sbook_mode)) return;
+  if (fdjtHasClass(sbookHUD,"hudup")) return;
+  /* Save mouse positions */
+  sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
+  /* Now, we try to find a top level element to sort out whether
+     we need to update the location or section head. */
+  while (target)
+    if (target.sbook_head) break;
+    else if (target.sbookinfo) break;
+    else if (target.parentNode===document.body) break;
+    else target=target.parentNode;
+  /* These are all cases which onmouseover will handle */
+  if ((target) && ((target.Xoff) || (target.Yoff))) return;
+  var scrollx=window.scrollX||document.body.scrollLeft;
+  var scrolly=window.scrollY||document.body.scrollLeft;
+  target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY);
+  fdjtDelayHandler
+    (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");
+}
+
+function sbook_onscroll(evt)
+{
+  // sbook_trace_handler("sbook_onscroll",evt);
+  /* If you're previewing, ignore mouse action */
+  if ((sbook_preview) || (sbook_mode)) return;
+  if (fdjtHasClass(sbookHUD,"hudup")) return;
+  if (sbook_target) sbookCheckTarget();
+  var scrollx=window.scrollX||document.body.scrollLeft;
+  var scrolly=window.scrollY||document.body.scrollLeft;
+  var xoff=scrollx+sbook_last_x;
+  var yoff=scrolly+sbook_last_y;
+  var target=sbookGetXYFocus(xoff,yoff);
+  fdjtDelayHandler
+    (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");
 }
 
 function sbook_onmousedown(evt)
