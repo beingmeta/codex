@@ -73,13 +73,13 @@ function sbookSummaryHead(target,head,eltspec,extra)
     if (target===head) extra="\u00A7";
     else extra="\u00B6";
   var basespan=fdjtSpan(false,((extra)&&(fdjtSpan("extra",extra))),eye);
-  if (head.sbookinfo) {
-    var info=head.sbookinfo;
+  var info;
+  if (info=sbook_getinfo(head)) {
     if (info.title) fdjtAppend(basespan,fdjtSpan("headtext",info.title));
     var heads=((info) ? (info.sbook_heads) : []);
     var curspan=basespan;
     j=heads.length-1; while (j>=0) {
-      var h=heads[j--]; var hinfo=h.sbookinfo;
+      var hinfo=heads[j--];
       var newspan=fdjtSpan("head",fdjtSpan("headtext",hinfo.title));
       fdjtAppend(curspan," \\ ",newspan);
       curspan=newspan;}}
@@ -190,8 +190,8 @@ function sbookShowSummary(summary,query,notoc)
 	else if (s1) return -1;
 	else if (s2) return 1;
 	else return 0;});
-  var head=(((target.sbookinfo) && (target.sbookinfo.level)) ? (target) :
-	    ((target.sbook_head)||(target)));
+  var head=((target.sbooklevel) ? (target) :
+	    ((sbook_toc_head(target))||(target)));
   if (head===document.body) head=target;
   if (summary.echo) {
     var user=summary.user;

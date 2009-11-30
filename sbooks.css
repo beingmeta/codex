@@ -356,7 +356,17 @@ form.ping div.messages div.message {
 form.ping div.messages div.message.echoing { font-style: italic;} 
 form.ping.submitting div.messages div.pinging { display: block;}
 form.ping.echoing div.messages div.echoing { display: block;}
-div#SBOOKHUD form.ping div.excerpt { display: none;}
+
+div#SBOOKHUD form.ping div.excerpt div.text { 
+ margin-left: 40px; margin-right: 40px;}
+div#SBOOKHUD form.ping div.excerpt { 
+ text-align: center; font-style: italic; font-size: 80%;
+ max-width: 60em; margin-left: auto; margin-right: auto;}
+div#SBOOKHUD form.ping div.excerpt span.lq { 
+ font-weight: bold; font-size: 200%; float: left; }
+div#SBOOKHUD form.ping div.excerpt span.rq { 
+ font-weight: bold; font-size: 200%; float: right; }
+
 div#SBOOKHUD form.ping div.detail { display: none;}
 div#SBOOKHUD form.ping div.xrefs { display: none;}
 div#SBOOKHUD form.ping.detail div.detail {display: block;}
@@ -374,11 +384,18 @@ div#SBOOKHUD form.ping {
   margin-bottom: 6px;}
 
 div#SBOOKHUD form.ping div.extras {
-  text-align: left; vertical-align: top;}
+  font-size: 10px; text-align: left; vertical-align: top;}
+div#SBOOKHUD form.ping div.extras select {
+  vertical-align: top;}
+div#SBOOKHUD form.ping div.extras input[TYPE='SUBMIT'] {
+  vertical-align: top; font-weight: bold;}
 div#SBOOKHUD form.ping div.extras span.buttons {
   float: right;}
 div#SBOOKHUD form.ping div.extras img.head { 
   float: left;}
+div#SBOOKHUD form.ping div.extras input[TYPE='TEXT'] {
+  width: 18em; font-size: 12px;}
+
 
 div#SBOOKHUD form.ping div.completions {
   text-align: left;}
@@ -689,6 +706,7 @@ div#SBOOKHUD div#SOCIALHUD {
 
 /* TOC classes */
 
+/* 
 div.sbooktoc div.supersections { display: none;}
 div.sbooktoc div.subsections { display: none;}
 
@@ -701,9 +719,9 @@ div.sbooktoc a {
 div.sbooktoc div.sbookhudsect {
   width: 100%; text-align: center; clear: both; }
 div.sbooktoc div.sbookhudsect div.sectname {
-  clear: both;} /* display: block;  */
+  clear: both;}
 div.sbooktoc div.supersection div.sectname {
-  clear: both;} /* display: block; */
+  clear: both;}
 div.sbooktoc a:visited { color: blue; }
 div.sbooktoc div.subsections a {color: blue;}
 
@@ -716,14 +734,28 @@ div.sbooktoc div.subsections div.spanbar {
 div.sbooktoc div.subsections div.sectlist {
   clear: both;}
 div.sbooktoc div.subsections a {
-    /* white-space: nowrap;  */
     display: inline; width: inherit; font-weight: bold; font-size: 90%;
     clear: none;}
 div.sbooktoc div.subsections a.sbookhudsect.cohighlight {
     color: orange;}
-/* div.sbooktoc div.subsections a.sbookhudsect[odd] {color: #D0D0D0;} */
 div.sbooktoc div.subsections a.sbookhudsect.cohighlight[odd] {
     color: orange;}
+
+*/
+
+div.sbooktoc { display: none;}
+div.sbooktoc.live { display: block;}
+div.sbooktoc.live div.sbooktoc { display: none;}
+div.sbooktoc.live div.sbooktoc.live { display: block;}
+
+div.sbooktoc div.sub { display: none; margin-left: 20px; margin-right: 20px;}
+div.sbooktoc.cur div.head { font-size: 125%;}
+div.sbooktoc.cur div.sub { display: block;}
+
+div.sbooktoc .sectname.cohi { color: orange;}
+div.sbooktoc .sectname { color: blue; cursor: pointer;}
+div.sbooktoc div.sub a.sectname { font-size: 80%; white-space: nowrap;}
+
 
 div.spanbar {
   position: relative;
@@ -743,6 +775,13 @@ div.spanbar div.sbookhudspan div.brick {
   border: 0px; padding: 0px;
   border-right: solid black 1px; border-left: solid black 1px;
   height: 100%;}
+div.spanbar div.sbookhudspan a.brick {
+  display: block;
+  border: 0px; padding: 0px;
+  border-right: solid black 1px; border-left: solid black 1px;
+  height: 100%;}
+div.spanbar div.sbookhudspan a.brick.cohi {
+  background-color: orange;}
 div.spanbar div.sbookhudspan[odd] {}
 div.spanbar div.sbookhudspan[even] {}
 div.spanbar div.sbookhudspan.current {
@@ -1027,15 +1066,15 @@ img.sbookqricon { display: none;}
 
 /* For going to ebooks forms */
 
-div.sbooktoc { font-size: 150%;}
-div.sbooktocblock { margin-left: 2em; font-size: 80%;}
+body.tocinline div.sbooktoc { font-size: 150%;}
+body.tocinline div.sbooktocblock { margin-left: 2em; font-size: 80%;}
 a.addecho { display: block; text-align: center; width: 100%;}
 
 /* Still unclassified */
 
-.previewing { color: red; }
-p.previewing { color: red; }
-div.previewing { color: red; }
+.previewing { color: orange; }
+p.previewing { color: orange; }
+div.previewing { color: orange; }
 .moretags { cursor: pointer;}
 .completions .counts { cursor: pointer;}
 

@@ -94,6 +94,8 @@ var sbook_default_server="echoes.sbooks.net";
 // This (when needed) is the iframe bridge for sBooks requests
 var sbook_ibridge=false;
 
+// This is the content root
+var sbook_root=false;
 // This is the current head element
 var sbook_head=false;
 // This is the 'focus element' approximately under the mouse.
@@ -175,7 +177,7 @@ var sbook_debug=false;
 // Whether to debug the HUD
 var sbook_trace_hud=false;
 // Whether to debug the NAV/TOC HUD
-var sbook_trace_nav_hud=false;
+var sbook_trace_nav_hud=true;
 // Whether to debug search
 var sbook_trace_search=0;
 // Whether to debug clouds
@@ -227,6 +229,9 @@ function sbook_trace_focus(handler,target,evt)
 
 /* Basic SBOOK functions */
 
+// Array of sbook info, mapping from _fdjtid to objects
+var sbook_info=[];
+
 function sbookHeadLevel(elt)
 {
   if (elt.getAttribute("toclevel")) {
@@ -254,9 +259,9 @@ function sbook_getinfo(elt)
     var real_elt=$(elt);
     if (real_elt) return sbook_getinfo(real_elt);
     else return false;}
-  else if (!(elt.sbookinfo))
-    return false;
-  else return elt.sbookinfo;
+  else if (elt._sbookid)
+    return sbook_info[(elt._sbookid)]||false;
+  else return false;
 }
 
 function sbook_needinfo(elt)
@@ -266,23 +271,28 @@ function sbook_needinfo(elt)
     var real_elt=$(elt);
     if (real_elt) return sbook_needinfo(real_elt);
     else return false;}
-  else if (!(elt.sbookinfo)) {
-    var info=new Object();
-    elt.sbookinfo=info;
-    return info;}
-  else return elt.sbookinfo;
+  else if (elt._sbookid)
+    return sbook_info[elt._sbookid];
+  else {
+    var id=elt._fdjtid||fdjtObjID(elt);
+    elt._sbookid=id;
+    return (sbook_info[id])||(sbook_info[id]={});}
 }
 
 function sbook_toc_head(target)
 {
   while (target)
-    if (target.sbookinfo) return target;
-    else if (target.sbook_head) return target.sbook_head;
+    if (target._sbookid) return target;
     else target=target.parentNode;
-  return target;
+  var info=sbook_info[target._sbookid];
+  while (info)
+    if (info.headlevel>0)
+      return document.getElementById(info.id);
+    else info=info.sbook_head;
+  return false;
 }
 
-function sbook_get_headelt(target)
+function sbook_get_reftarget(target)
 {
   while (target)
     if (target.sbook_ref) break;
@@ -304,29 +314,31 @@ function sbookGatherMetadata()
   var start=new Date();
   if (_sbook_toc_built) return;
   fdjtLog('Starting to gather metadata from DOM');
-  var body=document.body, children=body.childNodes, level=false;
-  var bodyinfo=new Object();
+  var root=((sbook_root)||document.getElementById("SBOOKROOT"));
+  if (!(root)) root=document.body;
+  sbook_root=root;
+  var children=root.childNodes, level=false;
+  var rootinfo=sbook_needinfo(root);
   var tocstate={curlevel: 0,idserial:0,location: 0,tagstack: []};
-  tocstate.curhead=body; tocstate.curinfo=bodyinfo;
+  tocstate.curhead=root; tocstate.curinfo=rootinfo;
   tocstate.knowlet=knowlet;
   // Location is an indication of distance into the document
   var location=0;
-  body.sbookinfo=bodyinfo; bodyinfo.starts_at=0;
-  bodyinfo.level=0; bodyinfo.sub=new Array();
-  bodyinfo.sbook_head=false; bodyinfo.sbook_heads=new Array();
-  if (!(body.id)) body.id="TMPIDBODY";
-  bodyinfo.id=body.id;
+  rootinfo.title=root.title||document.title;
+  rootinfo.starts_at=0;
+  rootinfo.level=0; rootinfo.sub=new Array();
+  rootinfo.sbook_head=false; rootinfo.sbook_heads=new Array();
+  if (!(root.id)) body.id="SBOOKROOT";
+  rootinfo.id=root.id;
   /* Build the metadata */
   var i=0; while (i<children.length) {
     var child=children[i++];
     sbook_toc_builder(child,tocstate);} 
-  var scan=tocstate.curhead, scaninfo=tocstate.curinfo;
+  var scaninfo=tocstate.curinfo;
   /* Close off all of the open spans in the TOC */
-  while (scan) {
+  while (scaninfo) {
     scaninfo.ends_at=tocstate.location;
-    scan=scaninfo.sbook_head;
-    if (!(scan)) scan=false;
-    if (scan) scaninfo=scan.sbookinfo;}
+    scaninfo=scaninfo.sbook_head;}
   /* Sort the nodes by their offset in the document */
   sbook_nodes.sort(function(x,y) {
       if (!(x.Xoff)) {
@@ -384,27 +396,26 @@ function _sbook_process_head(head,tocstate,level,curhead,curinfo,curlevel)
   sbook_nodes.push(head);
   sbook_heads.push(head);
   head.sbookloc=tocstate.location;
+  head.sbooklevel=level;
   if (headid) sbook_hashmap[headid]=head;
   else headid=(head.id)||fdjtForceId(head);
   if (debug_toc_build)
     fdjtLog("Found head item %o under %o at level %d w/id=#%s ",
 	    head,curhead,level,headid);
   /* Iniitalize the headinfo */
-  head.sbookinfo=headinfo;
   headinfo.starts_at=tocstate.location;
   headinfo.elt=head; headinfo.level=level;
   headinfo.sub=new Array(); headinfo.id=headid;
-  headinfo.content=_sbook_transplant_content(head.childNodes);
   headinfo.title=_sbook_get_title(head);
   headinfo.toctitle=head.getAttribute('toctitle');
   headinfo.next=false; headinfo.prev=false;
   if (level>curlevel) {
     /* This is the simple case where we are a subhead
        of the current head. */
-    headinfo.sbook_head=curhead;
+    headinfo.sbook_head=curinfo;
     if (!(curinfo.intro_ends_at))
       curinfo.intro_ends_at=tocstate.location;
-    curinfo.sub.push(head);}
+    curinfo.sub.push(headinfo);}
   else {
     /* We're not a subhead, so we're popping up at least one level. */
     var scan=curhead;
@@ -420,29 +431,26 @@ function _sbook_process_head(head,tocstate,level,curhead,curinfo,curlevel)
       if (scanlevel<level) break;
       if (level===scanlevel) {
 	headinfo.prev=scan;
-	scaninfo.next=head;}
+	scaninfo.next=headinfo;}
       scaninfo.ends_at=tocstate.location;
       tocstate.tagstack.pop();
-      var next=scaninfo.sbook_head;
-      var nextinfo=sbook_getinfo(next);
-      if ((nextinfo) && (nextinfo.sbook_head)) {
-	scan=next; scaninfo=nextinfo; scanlevel=nextinfo.level;}
+      var nextinfo=scaninfo.sbook_head;
+      if (nextinfo) {
+	scaninfo=nextinfo; scanlevel=nextinfo.level;}
       else {
-	scan=document.body;
-	scaninfo=sbook_getinfo(scan);
+	scaninfo=sbook_getinfo(root);
 	scanlevel=0;
 	break;}}
     if (debug_toc_build)
       fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
 	      scan,scaninfo,scaninfo.level,scaninfo.sbook_head);
     /* We've found the head for this item. */
-    headinfo.sbook_head=scan;
-    scaninfo.sub.push(head);} /* handled below */
+    headinfo.sbook_head=scaninfo;
+    scaninfo.sub.push(headinfo);} /* handled below */
   /* Add yourself to your children's subsections */
-  var sup=headinfo.sbook_head;
-  var supinfo=sbook_getinfo(sup);
+  var supinfo=headinfo.sbook_head;
   var newheads=new Array();
-  newheads=newheads.concat(supinfo.sbook_heads); newheads.push(sup);
+  newheads=newheads.concat(supinfo.sbook_heads); newheads.push(supinfo);
   headinfo.sbook_heads=newheads;
   if ((trace_toc_build) || (debug_toc_build))
     fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
@@ -479,17 +487,16 @@ function sbook_toc_builder(child,tocstate)
     var width=fdjtFlatWidth(child);
     var loc=tocstate.location;
     tocstate.location=tocstate.location+width;
-    if (true) { /*  (child.id) */
-      fdjtComputeOffsets(child);
-      if (child.Xoff) sbook_nodes.push(child);
-      child.sbookloc=loc;
-      child.sbook_head=curhead;}
+    fdjtComputeOffsets(child);
+    child.sbookloc=loc;
+    child.sbook_headid=curhead.id;
     if (child.childNodes) {
       var children=child.childNodes;
       var i=0; while (i<children.length)
 		 sbook_toc_builder(children[i++],tocstate);}}
-  var headtag=(((child.sbookinfo) && (child.sbookinfo.title)) &&
-	       ("\u00A7"+child.sbookinfo.title));
+  var info=sbook_getinfo(child);
+  // Tagging
+  var headtag=((info.title) && ("\u00A7"+info.title));
   if (headtag)
     sbookAddTag(child,headtag,true,false,true,tocstate.knowlet);
   if (sbook_build_index) 
@@ -524,16 +531,18 @@ function sbook_toc_builder(child,tocstate)
       if (headtag) tocstate.tagstack.push(new Array(headtag));
       else tocstate.tagstack.push([]);}
     else {}
-  if ((sbook_debug_locations) && (child.sbookloc) &&
-      (child.setAttribute))
+  // Setting this attribute can help with debugging
+  if ((sbook_debug_locations) && (child.sbookloc) && (child.setAttribute))
     child.setAttribute("sbookloc",child.sbookloc);
 }
+
+/* Processing tags */
 
 /* Getting the 'next' node */
 
 function sbookNext(elt)
 {
-  var info=elt.sbookinfo;
+  var info=sbook_getinfo(elt);
   if ((info.sub) && (info.sub.length>0))
     return info.sub[0];
   else if (info.next) return info.next;
@@ -542,31 +551,32 @@ function sbookNext(elt)
 
 function sbookNextUp(elt)
 {
-  var head=elt.sbookinfo.sbook_head;
-  while (head) {
-    var info=head.sbookinfo;
+  var info=sbook_getinfo(elt).sbook_head;
+  while (info) {
     if (info.next) return info.next;
-    head=info.sbook_head;}
+    info=info.sbook_head;}
   return head;
 }
 
 function sbookPrev(elt)
 {
-  var info=elt.sbookinfo;
+  var info=sbook_getinfo(elt);
   if (!(info)) return false;
   else if (info.prev) {
-    elt=info.prev; info=elt.sbookinfo;
+    info=info.prev;
     if ((info.sub) && (info.sub.length>0))
       return info.sub[info.sub.length-1];
-    else return elt;}
-  else if (info.sbook_head) return info.sbook_head;
+    else return document.getElementById(info.id);}
+  else if (info.sbook_head)
+    return document.getElementById(info.sbook_head.id);
   else return false;
 }
 
 function sbookUp(elt)
 {
-  var info=elt.sbookinfo;
-  if ((info) && (info.sbook_head)) return info.sbook_head;
+  var info=sbook_getinfo(elt);
+  if ((info) && (info.sbook_head))
+    return document.getElementById(info.sbook_head.id);
   else return false;
 }
 
@@ -602,29 +612,6 @@ function sbookPrevPage(evt)
   evt.cancelBubble=true;
 }
 
-function sbookHUD_Next(evt)
-{
-  var curinfo=sbook_head.sbookinfo;
-  var goto=curinfo.next;
-  if (!(goto)) goto=curinfo.sbook_head.sbookinfo.next;
-  if (goto) {
-    sbookSetHead(goto);
-    sbookScrollTo(goto);}
-  if (evt) evt.cancelBubble=true;
-  sbookHUDMode(false);
-}
-
-function sbookHUD_Prev(evt)
-{
-  var curinfo=sbook_head.sbookinfo;
-  var goto=curinfo.prev;
-  if (!(goto)) goto=curinfo.sbook_head.sbookinfo.prev;
-  if (goto) {
-    sbookSetHead(goto);
-    sbookScrollTo(goto);}
-  if (evt) evt.cancelBubble=true;
-  sbookHUDMode(false);
-}
 
 /* Global query information */
 
@@ -666,6 +653,38 @@ function sbookUpdateQuery(input_elt)
 
 /* Accessing the TOC */
 
+function sbookTOCDisplay(head)
+{
+  if (sbook_head===head) return;
+  else if (sbook_head) {
+    // Hide the current head
+    var tohide=[];
+    var info=sbook_getinfo(sbook_head);
+    var base_elt=document.getElementById(info.tocid);
+    while (info) {
+      var tocelt=document.getElementById(info.tocid);
+      tohide.push(tocelt);
+      info=info.sbook_head;
+      tocelt=document.getElementById(info.tocid);}
+    var n=tohide.length-1;
+    // Go backwards to accomodate some redisplayers
+    while (n>=0) fdjtDropClass(tohide[n--],"live");
+    fdjtDropClass(base_elt,"cur");
+    sbook_head=false;}
+  if (!(head)) return;
+  var info=sbook_getinfo(head);
+  var base_elt=document.getElementById(info.tocid);
+  var toshow=[];
+  while (info) {
+    var tocelt=document.getElementById(info.tocid);
+    toshow.push(tocelt);
+    info=info.sbook_head;}
+  var n=toshow.length-1;
+  // Go backwards to accomodate some redisplayers
+  while (n>=0) fdjtAddClass(toshow[n--],"live");
+  fdjtAddClass(base_elt,"cur");
+}
+
 function sbook_title_path(head)
 {
   var info=sbook_getinfo(head);
@@ -680,7 +699,7 @@ function sbook_title_path(head)
 
 function sbookSetHead(head)
 {
-  if (head===null) head=document.body;
+  if (head===null) head=sbook_root;
   else if (typeof head === "string") {
     var probe=$(head);
     if (!(probe)) probe=sbook_hashmap[head];
@@ -690,17 +709,13 @@ function sbookSetHead(head)
     if (sbook_debug) fdjtLog("Redundant SetHead");
     return;}
   else {
-    var info=sbook_getinfo(head);
+    var headinfo=sbook_getinfo(head);
     if (sbook_debug_focus) sbook_trace_focus("sbookSetHead",head);
-    var navhud=createSBOOKHUDnav(head,info);
-    fdjtReplace("SBOOKTOC",navhud);
-    window.title=info.title+" ("+document.title+")";
+    sbookTOCDisplay(head);
+    window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
     sbookSetLocation(sbook_location);
-    if ((sbook_flash_progress)&&(!(sbook_mode))) {
-      navhud.style.opacity=0.5;
-      setTimeout(function() {navhud.style.opacity=null;},2500);}
     sbook_head=head;}
   // if (sbookHUDechoes) sbookSetEchoes(sbookGetEchoesUnder(sbook_head.id));
 }
@@ -743,9 +758,9 @@ function sbookSetFocus(target,force)
   if (!(target)) return null;
   // Can't set the focus to something without an ID.
   if (sbook_debug_focus) sbook_trace_focus("sbookSetFocus",target);
-  var head=target.sbook_head;
-  while (target)
-    if (target.sbook_head!==head) {
+  var headid=target.sbook_headid;
+  while (target) 
+    if (target.sbook_headid!==headid) {
       target=head; break;}
     else if ((sbook_notags)&&(fdjtElementMatches(target,sbook_notags)))
       target=target.parentNode;
@@ -788,9 +803,7 @@ function sbookSetFocus(target,force)
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
   // Using [force] will do recomputation even if the focus hasn't changed
   if ((force)||(target!==sbook_focus)) {
-    var head=((target) &&
-	      (((target.sbookinfo) && (target.sbookinfo.level)) ?
-	       (target) : (target.sbook_head)));
+    var head=((target) && ((target.sbooklevel) ? (target) : (sbook_toc_head(target))));
     if (sbook_debug_focus) sbook_trace_focus("sbookSetFocus",target);
     /* Only set the head if the old head isn't visible anymore.  */
     if ((head) && (sbook_head!=head))
@@ -855,21 +868,22 @@ function sbook_onmouseover(evt)
   // This shouldn't be neccessary if the HUD mouseout handlers do their thing
   // if (fdjtScrollRestore()) return;
   /* Now, we try to find a top level element */
+  if (fdjtHasParent(target,sbookHUD)) return;
   while (target)
     if (target.id) break;
-    else if (target.sbook_head) {
-      target=target.sbook_head; break;}
-    else if (target.parentNode===document.body) break;
+    else if (target.sbook_headid) break;
+    else if (target.parentNode===sbook_root) break;
     else target=target.parentNode;
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
   /* These are top level elements which aren't much use as heads or foci */
-  if ((target===null) || (target===document.body) ||
-      (!((target) && ((target.Xoff) || (target.Yoff)))))
+  if ((target===null) || (target===sbook_root) ||
+      (!((target) && ((target.Xoff) || (target.Yoff))))) 
     target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY);
   fdjtDelayHandler
     (sbook_focus_delay,sbookSetFocus,target,document.body,"setfocus");
 }
+
 
 function sbook_onmousemove(evt)
 {
@@ -1006,7 +1020,9 @@ function sbook_onclick(evt)
   // Should do something smarter here
   if (evt.button===2) return;
   while (target)
-    if (target.sbook_head) {head=target.sbook_head; break;}
+    if (target.sbook_headid) {
+      head=document.getElementById(target.sbook_headid);
+      break;}
     else if ((target.tagName==='A') || (target.tagName==='INPUT'))
       return;
     else if ((target.sbookinfo) && (target.sbookinfo.level)) {

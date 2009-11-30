@@ -45,15 +45,12 @@ function sbookAddTag(elt,tag,prime,contextual,unique,kno)
   else if ((kno) && (typeof tag === "string"))
     tag=(KnowDef(tag,kno))||(tag);
   // Force a sortkey
-  if (!(elt.sortkey))
-    if (elt.id) elt.sortkey=elt.id;
-    else if (elt.sortKey) elt.sortkey=elt.sortKey();
-    else elt.sortkey=elt.toString();
+  var info=sbook_getinfo(elt);
   var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
-  if ((elt.hasOwnProperty) && (elt.hasOwnProperty('tags')))
-    if (fdjtIndexOf(elt.tags,dterm)<0) elt.tags.push(dterm);
+  if (info.tags)
+    if (fdjtIndexOf(info.tags,dterm)<0) info.tags.push(dterm);
     else return;
-  else elt.tags=new Array(dterm);
+  else info.tags=new Array(dterm);
   if (sbook_trace_tagging) 
     fdjtLog("Tagging %o#%s with %s/%o",elt,elt.id,dterm,tag);
   /* This is for tags which indicate sections */

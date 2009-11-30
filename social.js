@@ -607,7 +607,7 @@ function sbook_get_titlepath(info,embedded)
       else return "";
     else return "";
   else {
-    var next=((info.sbook_head) && ((info.sbook_head.sbookinfo)||false));
+    var next=(info.sbook_head)||false;
     if (info.title)
       return ((embedded) ? (" // ") : (""))+info.title+
 	sbook_get_titlepath(next,true);
