@@ -190,6 +190,8 @@ var sbook_debug_selection=false;
 var sbook_debug_locations=false;
 // Whether we're debugging server interaction
 var sbook_debug_network=0;
+// Whether to debug startup
+var sbook_debug_startup=0;
 
 // Flavors of tags
 //  prime: humanly indicated as important to an item
@@ -324,7 +326,8 @@ function sbookGatherMetadata()
 {
   var start=new Date();
   if (_sbook_toc_built) return;
-  fdjtLog('Starting to gather metadata from DOM');
+  if (sbook_debug_startup>0)
+    fdjtLog("[%fs] Starting to gather metadata from DOM",fdjtET());
   var root=((sbook_root)||document.getElementById("SBOOKROOT"));
   if (!(root)) root=document.body;
   sbook_root=root;
@@ -365,11 +368,12 @@ function sbookGatherMetadata()
 	else return 1;
       else return 1;});
   var done=new Date();
-  fdjtLog('Finished gathering metadata in %f secs over %d/%d heads/nodes',
-	  (done.getTime()-start.getTime())/1000,
-	  sbook_heads.length,sbook_nodes.length);
-  fdjtLog("Found %d tags over %d elements: %s now has %d dterms",
-	  _total_tag_count,_total_tagged_count,
+  if (sbook_debug_startup>0)
+    fdjtLog('Finished gathering metadata in %f secs over %d/%d heads/nodes',
+	    (done.getTime()-start.getTime())/1000,
+	    sbook_heads.length,sbook_nodes.length);
+  fdjtLog("[%fs] Found %d tags over %d elements: %s now has %d dterms",
+	  fdjtET(),_total_tag_count,_total_tagged_count,
 	  knowlet.name,knowlet.alldterms.length);
   _sbook_toc_build=true;
 }
@@ -890,7 +894,7 @@ function sbook_onkeydown(evt)
     sbookNextPage(evt);
   /* Backspace or Delete */
   else if ((evt.keyCode===8) || (evt.keyCode===45))
-    sbookPrevPage();
+    sbookPrevPage(evt);
   else if (evt.keyCode===36) { /* Home */
     sbookScrollTo(sbook_head);}
   else if (evt.keyCode===37) /* LEFT arrow */
@@ -1061,7 +1065,8 @@ function sbook_onmouseup(evt)
       sbookSetPingExcerpt(text);
       sbook_start_select=false;
       return;}
-    else if (text)
+    else if (text) {
+      sbookSetPingExcerpt(text);
       if (target===sbook_start_select) {}
       else {
 	var scan=target;
@@ -1069,12 +1074,15 @@ function sbook_onmouseup(evt)
 	  if (!(scan.id)) scan=scan.parentNode;
 	  else if (fdjtHasParent(sbook_start_select,scan)) {
 	    target=scan; break;}
-	  else scan=scan.parentNode;}
+	  else scan=scan.parentNode;}}
     else target=false;
+    fdjtTrace("onmouseup, target is %o",target);
     if (target) {
       evt.cancelBubble=true; evt.preventDefault();
       sbook_ping(target);}}
-  fdjtDelayHandler(100,sbook_clear_select,sbook_root);
+  if (sbook_start_select)
+    // We delay so that sbook_onclick doesn't do anything rash
+    fdjtDelayHandler(100,sbook_clear_select,sbook_root);
 }
 
 function sbook_onclick(evt)
@@ -1338,11 +1346,11 @@ function sbookAddQRIcons()
 
 /* The Help Splash */
 
-var sbook_keep_help=false;
-
 function _sbookHelpSplash()
 {
-  if (fdjtGetCookie("sbookhidehelp")) {}
+  var cookie=fdjtGetCookie("sbookhidehelp");
+  if (cookie==='no') sbookHUDMode("help");
+  else if (cookie) {}
   else if (sbook_help_on_startup)
     sbookHUDMode("help");
 }
@@ -1398,20 +1406,24 @@ function sbookSetup()
   window.onkeyup=sbook_onkeyup;
   var hud_init_done=new Date();
   if ((hud_init_done.getTime()-_sbook_setup_start.getTime())>5000) {
-    fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,
-			      "fdjt",fdjt_done,"knowlets",knowlets_done,
-			      "metadata",metadata_done,
-			      "hud",hud_done,"hudinit",hud_init_done));
+    fdjtLog("[%fs] %s",
+	    fdjtET(),
+	    fdjtRunTimes("sbookSetup",_sbook_setup_start,
+			 "fdjt",fdjt_done,"knowlets",knowlets_done,
+			 "metadata",metadata_done,
+			 "hud",hud_done,"hudinit",hud_init_done));
     _sbook_setup=true;;}
   else {
     sbookFullCloud();
     var cloud_done=new Date();
     /* _sbook_createHUDSocial(); */
-    fdjtLog("%s",fdjtRunTimes("sbookSetup",_sbook_setup_start,
-			      "fdjt",fdjt_done,"knowlets",knowlets_done,
-			      "metadata",metadata_done,
-			      "hud",hud_done,"hudinit",hud_init_done,
-			      "cloud",cloud_done));
+    fdjtLog("[%fs] %s",
+	    fdjtET(),
+	    fdjtRunTimes("sbookSetup",_sbook_setup_start,
+			 "fdjt",fdjt_done,"knowlets",knowlets_done,
+			 "metadata",metadata_done,
+			 "hud",hud_done,"hudinit",hud_init_done,
+			 "cloud",cloud_done));
     _sbook_setup=true;}
 }
 

@@ -264,7 +264,6 @@ function sbookHUD_onclick(evt)
       sbookHUDMode("searching"); target=target.parentNode;}
     else target=target.parentNode;
   evt.cancelBubble=true;
-  fdjtTrace("In HUD click, evt.shiftkey=%o",evt.shiftKey);
   if (evt.shiftKey) evt.preventDefault();
 }
 
@@ -319,16 +318,22 @@ function sbookCreateHelpHUD(eltspec)
     var target=$T(evt);
     sbookHelpHighlight(false);};
   div.innerHTML=sbook_helptext;
-  var hidehelp=fdjtGetChildrenByClassName(div,'helphider')[0];
+  fdjtDelayHandler(1500,sbookUpdateHelpHider,false,sbook_root);
+  return div;
+}
+
+function sbookUpdateHelpHider()
+{
+  var hidehelp=$("SBOOKHIDEHELP");
   var dohidehelp=fdjtGetCookie("sbookhidehelp");
-  if (dohidehelp) hidehelp.checked=true;
+  if (dohidehelp==='no') hidehelp.checked=false;
+  else if (dohidehelp) hidehelp.checked=true;
   else hidehelp.checked=false;
   hidehelp.onchange=function(evt){
-    fdjtTrace("change on %o: %o checked=%o",hidehelp,evt,hidehelp.checked);
+    // fdjtTrace("change on %o: %o checked=%o",hidehelp,evt,hidehelp.checked);
     if (hidehelp.checked)
-      fdjtSetCookie("sbookhidehelp",true,false,"/",document.location.host);
-    else fdjtClearCookie("sbookhidehelp","/",document.location.host);};
-  return div;
+      fdjtSetCookie("sbookhidehelp",true,false,"/"); /* document.location.host */
+    else fdjtSetCookie("sbookhidehelp","no",false,"/");};
 }
 
 /* The TOC head */
