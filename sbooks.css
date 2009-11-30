@@ -38,7 +38,6 @@ h1.sbookhead, h2.sbookhead, h3.sbookhead, h4.sbookhead { text-decoration: overli
 body.sbookhead { text-decoration: none;}
 
 /* This is essentially where the mouse is */
-.sbookfocus { color: blue;}
 /* This is the last explicit target of a jump or ping */
 .sbooktarget { color: darkblue;}
 body.sbookfocus { color: inherit;}
@@ -361,7 +360,7 @@ div#SBOOKHUD form.ping div.excerpt div.text {
  margin-left: 40px; margin-right: 40px;}
 div#SBOOKHUD form.ping div.excerpt { 
  text-align: center; font-style: italic; font-size: 80%;
- max-width: 60em; margin-left: auto; margin-right: auto;}
+ margin-left: 5%; margin-right: 5%;}
 div#SBOOKHUD form.ping div.excerpt span.lq { 
  font-weight: bold; font-size: 200%; float: left; }
 div#SBOOKHUD form.ping div.excerpt span.rq { 
@@ -386,15 +385,17 @@ div#SBOOKHUD form.ping {
 div#SBOOKHUD form.ping div.extras {
   font-size: 10px; text-align: left; vertical-align: top;}
 div#SBOOKHUD form.ping div.extras select {
-  vertical-align: top;}
+  vertical-align: top; font-size: 10px;}
 div#SBOOKHUD form.ping div.extras input[TYPE='SUBMIT'] {
   vertical-align: top; font-weight: bold;}
 div#SBOOKHUD form.ping div.extras span.buttons {
   float: right;}
 div#SBOOKHUD form.ping div.extras img.head { 
   float: left;}
-div#SBOOKHUD form.ping div.extras input[TYPE='TEXT'] {
-  width: 18em; font-size: 12px;}
+div#SBOOKHUD form.ping div.extras div.taginput {
+  margin-right: 280px;}
+div#SBOOKHUD form.ping div.extras div.taginput input[TYPE='TEXT'] {
+  width: 100%; font-size: 12px;}
 
 
 div#SBOOKHUD form.ping div.completions {

@@ -184,6 +184,8 @@ var sbook_trace_search=0;
 var sbook_trace_clouds=0;
 // Whether to trace focus
 var sbook_debug_focus=false;
+// Whether to trace selection
+var sbook_debug_selection=false;
 // Whether we're debugging locations
 var sbook_debug_locations=false;
 // Whether we're debugging server interaction
@@ -276,19 +278,28 @@ function sbook_needinfo(elt)
   else {
     var id=elt._fdjtid||fdjtObjID(elt);
     elt._sbookid=id;
-    return (sbook_info[id])||(sbook_info[id]={});}
+    var info=sbook_info[id];
+    if (info) return info;
+    info={}; info._sbookid=id;
+    sbook_info[id]=info;
+    return info;}
 }
 
-function sbook_toc_head(target)
+function sbook_get_head(target)
 {
   while (target)
-    if (target._sbookid) return target;
+    if (target.sbook_headid) 
+      return document.getElementById(target.sbook_headid);
     else target=target.parentNode;
-  var info=sbook_info[target._sbookid];
-  while (info)
-    if (info.headlevel>0)
-      return document.getElementById(info.id);
-    else info=info.sbook_head;
+  return false;
+}
+
+function sbook_get_focus(target)
+{
+  while (target)
+    if (target.id) 
+      return target;
+    else target=target.parentNode;
   return false;
 }
 
@@ -803,7 +814,7 @@ function sbookSetFocus(target,force)
     if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
   // Using [force] will do recomputation even if the focus hasn't changed
   if ((force)||(target!==sbook_focus)) {
-    var head=((target) && ((target.sbooklevel) ? (target) : (sbook_toc_head(target))));
+    var head=((target) && ((target.sbooklevel) ? (target) : (sbook_get_head(target))));
     if (sbook_debug_focus) sbook_trace_focus("sbookSetFocus",target);
     /* Only set the head if the old head isn't visible anymore.  */
     if ((head) && (sbook_head!=head))
@@ -1008,53 +1019,81 @@ function sbook_onkeypress(evt)
     evt.cancelBubble=true; evt.preventDefault();}
 }
 
-function sbook_onclick(evt)
+var sbook_start_select=false;
+
+function sbook_clear_select()
 {
-  // sbook_trace_handler("sbook_onclick",evt);
-  if (sbook_mode) {
-    sbookHUDMode(false);
-    evt.preventDefault();
-    return;}
-  else sbookHUDMode(false);
-  var target=$T(evt); var head;
-  // Should do something smarter here
-  if (evt.button===2) return;
-  while (target)
-    if (target.sbook_headid) {
-      head=document.getElementById(target.sbook_headid);
-      break;}
-    else if ((target.tagName==='A') || (target.tagName==='INPUT'))
-      return;
-    else if ((target.sbookinfo) && (target.sbookinfo.level)) {
-      head=target; break;}
-    else target=target.parentNode;
-  if (!(target)) return;
-  else if (target===sbookHUD) return;
-  if (fdjtHasParent(target,sbook_focus)) 
-    sbook_ping(target);
+  sbook_start_select=false;
+}
+
+function sbook_onmousedown(evt)
+{
+  if (evt.button>1) return;
+  // sbook_trace_handler("sbook_onmousedown",evt);
+  sbook_start_select=sbook_get_focus($T(evt));
+  if (sbook_debug_selection)
+    fdjtLog("[%fs] Set sbook_start_select to %o from %o on %o",
+	    fdjtET(),sbook_start_select,$T(evt),evt);
 }
 
 function sbook_onmouseup(evt)
 {
-  if (sbook_mode==='ping') {
-    var excerpt=window.getSelection();
-    if ((excerpt)&&(!(fdjtIsEmptyString(excerpt))))
-      $("SBOOKPINGEXCERPT").value=excerpt;
+  // sbook_trace_handler("sbook_onmouseup",evt);
+  if (evt.button>1) {
+    sbook_start_select=false;
     return;}
-  else if (!(evt.ctrlKey)) return;
-  var target=$T(evt); var head;
-  while (target)
-    if (target.sbook_head) {head=target.sbook_head; break;}
-    else if ((target.onclick) || (target.getAttribute("ONCLICK")) ||
-	     (target.tagName==='A') ||  (target.tagName==='INPUT') ||
-	     (target.tagName==='TEXTAREA'))
+  if (sbook_start_select) {
+    var target=sbook_get_focus($T(evt));
+    var text=fdjtSelectedText();
+    if (sbook_debug_selection)
+      fdjtLog("[%fs] Mouseup %o at %o, started from %o, text=%o",
+	      fdjtET(),evt,target,sbook_start_select,text);
+    if (!(text)) {
+      sbook_start_select=false;
+      return;}
+    if (sbook_mode==='ping') {
+      sbookSetPingExcerpt(text);
+      sbook_start_select=false;
+      return;}
+    else if (text)
+      if (target===sbook_start_select) {}
+      else {
+	var scan=target;
+	while (scan)
+	  if (!(scan.id)) scan=scan.parentNode;
+	  else if (fdjtHasParent(sbook_start_select,scan)) {
+	    target=scan; break;}
+	  else scan=scan.parentNode;}
+    else target=false;
+    if (target) {
+      evt.cancelBubble=true; evt.preventDefault();
+      sbook_ping(target);}}
+  fdjtDelayHandler(100,sbook_clear_select,sbook_root);
+}
+
+function sbook_onclick(evt)
+{
+  // sbook_trace_handler("sbook_onclick",evt);
+  var target=$T(evt); var scan=target;
+  if (evt.button>1) return;
+  while (scan)
+    if ((scan==sbook_root)||(scan===window)) break;
+    else if ((scan.onclick) || 
+	     (scan.tagName==='A') ||  (scan.tagName==='INPUT') ||
+	     (scan.tagName==='TEXTAREA') ||
+	     ((scan.getAttribute) && (scan.getAttribute("ONCLICK"))))
       return;
-    else if ((target.sbookinfo) && (target.sbookinfo.level)) {
-      head=target; break;}
-    else target=target.parentNode;
-  if (!(target)) return;
-  else if (target===sbookHUD) return;
-  if (fdjtHasParent(target,sbook_focus)) 
+    else scan=scan.parentNode;
+  if (sbook_start_select) return;
+  else if (sbook_mode) {
+    sbookHUDMode(false);
+    evt.preventDefault();
+    return;}
+  else if ((target===sbook_ping_target) ||
+	   (fdjtHasParent(target,sbook_ping_target))) {
+    sbook_ping(sbook_ping_target);
+    return;}
+  else if ((evt.ctrlKey)&&(target)&&(target.id))
     sbook_ping(target);
 }
 
@@ -1236,8 +1275,8 @@ function sbookSetupEchoServer()
     if (common_suffix) {
       if (common_suffix.indexOf('.')>0) {
 	if (sbook_debug_network)
-	  fdjtTrace("Setting up access to gloss server %o from %o through %o",
-		    sbook_server,domain,common_suffix);
+	  fdjtLog("[%fs] Setting up access to gloss server %o from %o through %o",
+		  fdjtET(),sbook_server,domain,common_suffix);
 	var iframe=fdjtNewElement("iframe");
 	iframe.style.display='none';
 	iframe.id="SBOOKIBRIDGE";
@@ -1342,6 +1381,7 @@ function sbookSetup()
   sbookHUD_Init();
   _sbookHelpSplash();
   window.onmouseup=sbook_onmouseup;
+  window.onmousedown=sbook_onmousedown;
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;
   window.onscroll=sbook_onscroll;

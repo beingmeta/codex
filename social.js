@@ -465,7 +465,7 @@ function sbook_add_echo(id,entry)
     sbook_allechoes.push(entry);
     sbook_echoes_by_pingid[pingid]=entry;
     item=entry;}
-  item.sortkey=pingid;
+  item._fdjtid=8000000+pingid;
   item.fragid=id;
   fdjtAdd(sbook_echoes_by_id,id,item);
   if (entry.taginfo) {

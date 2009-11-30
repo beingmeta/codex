@@ -66,7 +66,7 @@ function _sbook_sort_summaries(x,y)
 
 function sbookSummaryHead(target,head,eltspec,extra)
 {
-  var head=sbook_toc_head(target);
+  var head=sbook_get_head(target);
   var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)",
 		    _("previewing: move mouse to restore"));
   if (typeof extra === "undefined")
@@ -111,7 +111,7 @@ function sbookShowSummaries(summaries,summary_div,query)
     var target=((target_id)&&($(target_id)));
     if (!target) continue;
     if (target!==curtarget) {
-      var head=sbook_toc_head(target);
+      var head=sbook_get_head(target);
       var blockhead=sbookSummaryHead(target,head);
       var block=fdjtDiv("tocblock",blockhead);
       block.blocktarget=target;
@@ -127,7 +127,7 @@ function sbookAddSummary(summary,summary_div,query)
   var target_id=((summary.id)||(summary.fragid)||false);
   var target=((target_id)&&($(target_id)));
   if (!target) return;
-  var head=sbook_toc_head(target);
+  var head=sbook_get_head(target);
   var children=summary_div.childNodes; var placed=false;
   var sum_div=sbookShowSummary(summary,query,true);
   var i=0; while (i<children.length) {
@@ -191,7 +191,7 @@ function sbookShowSummary(summary,query,notoc)
 	else if (s2) return 1;
 	else return 0;});
   var head=((target.sbooklevel) ? (target) :
-	    ((sbook_toc_head(target))||(target)));
+	    ((sbook_get_head(target))||(target)));
   if (head===document.body) head=target;
   if (summary.echo) {
     var user=summary.user;

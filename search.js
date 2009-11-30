@@ -44,8 +44,8 @@ function sbookAddTag(elt,tag,prime,contextual,unique,kno)
   if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
   else if ((kno) && (typeof tag === "string"))
     tag=(KnowDef(tag,kno))||(tag);
-  // Force a sortkey
-  var info=sbook_getinfo(elt);
+  // Force a _fdjtid
+  var info=sbook_needinfo(elt);
   var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
   if (info.tags)
     if (fdjtIndexOf(info.tags,dterm)<0) info.tags.push(dterm);
@@ -267,7 +267,7 @@ function sbookDoSearch(query,results)
 	var k=0; while (k<tribes.length) {
 	  var tribe=tribes[k++];
 	  if (fdjtIndexOf(sources,tribe)<0) sources.push(tribe);}}}
-    results[elt.sortkey]=1;}
+    results[elt._fdjtid]=1;}
   results._sources=sources;
   var i=0; while (i<query.length) {
     var qelt=query[i++];
@@ -275,12 +275,12 @@ function sbookDoSearch(query,results)
     var direct=sbook_lookup_term(qelt,sbook_direct_index)||[];
     var k=0; while (k<prime.length) {
       var score;
-      var elt=prime[k++]; var sortkey=elt.sortkey;
+      var elt=prime[k++]; var sortkey=elt._fdjtid;
       if (score=results[sortkey])
 	results[sortkey]=score+1;}
     var k=0; while (k<direct.length) {
       var score;
-      var elt=direct[k++]; var sortkey=elt.sortkey;
+      var elt=direct[k++]; var sortkey=elt._fdjtid;
       if (score=results[sortkey]) results[sortkey]=score+1;}}
   results._results=base;
   return results;
@@ -296,10 +296,11 @@ function sbookGetRefiners(results)
   var refiners={}; var freqs={}; var alltags=[];
   var i=0; while (i<rvec.length) {
     var item=rvec[i++];
-    var item_score=results[item.sortkey];
+    var item_score=results[item._fdjtid];
     if (typeof item === "string") item=document.getElementById(item);
-    if ((item) && (item.tags)) {
-      var tags=item.tags; var j=0; while (j<tags.length) {
+    var info=((item)&&(sbook_needinfo(item)));
+    if ((info) && (info.tags)) {
+      var tags=info.tags; var j=0; while (j<tags.length) {
 	var tag=tags[j++];
 	// If the tag is already part of the query, we ignore it.
 	if (fdjtIndexOf(query,tag)>=0) {}

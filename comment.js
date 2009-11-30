@@ -134,21 +134,13 @@ function sbooksXRefs_onkeypress(evt)
   return fdjtMultiText_onkeypress(evt,'div');
 }
 
-function sbookGetSelectedText()
-{
-  var sel=window.getSelection();
-  if ((sel)&&(sel.toString)) {
-    var str=sel.toString();
-    if ((str)&&(!(fdjtIsEmptyString(str)))) return str;}
-  return false;
-}
-
 function sbookSetPingExcerpt(target)
 {
   var excerpt=
     ((typeof target === 'string') ? (target) :
-     ((target.excerpt)||(sbookGetSelectedText())||
-      (fdjtTextify(target))));
+     ((target.excerpt)||(fdjtSelectedText())||
+      // Don't textify headers
+      ((!(target.sbooklevel))&&(fdjtTextify(target,true)))));
   var input=$("SBOOKPINGEXCERPT");
   fdjtReplace("SBOOKSHOWEXCERPT",fdjtDiv("excerpt",excerpt));
   if (excerpt) {
@@ -172,7 +164,7 @@ function sbookPingHUDSetup(origin)
     target=$(origin.fragid);
   else target=origin;
   if (sbook_ping_target===target) {
-    var seltext=sbookGetSelectedText();
+    var seltext=fdjtSelectedText();
     if (sbook_target!==target) sbookSetTarget(target);
     if (seltext) sbookSetPingExcerpt(seltext);
     return;}
@@ -265,7 +257,7 @@ function sbookExtrasElement()
   taginput.enterchars=[-13,59];
   taginput.onfocus=sbookPingTagInput_onfocus;
   taginput.onblur=fdjtAutoPrompt_onblur;
-  return fdjtDiv(".extras",controls,false,taginput);
+  return fdjtDiv(".extras",controls,false,fdjtDiv("taginput",taginput));
 }
 
 function sbookPingTagInput_onfocus(evt)
