@@ -183,15 +183,15 @@ var sbook_trace_search=0;
 // Whether to debug clouds
 var sbook_trace_clouds=0;
 // Whether to trace focus
-var sbook_debug_focus=false;
+var sbook_trace_focus=false;
 // Whether to trace selection
-var sbook_debug_selection=false;
+var sbook_trace_selection=false;
 // Whether we're debugging locations
-var sbook_debug_locations=false;
+var sbook_trace_locations=false;
 // Whether we're debugging server interaction
-var sbook_debug_network=0;
+var sbook_trace_network=0;
 // Whether to debug startup
-var sbook_debug_startup=0;
+var sbook_trace_startup=0;
 
 // Flavors of tags
 //  prime: humanly indicated as important to an item
@@ -326,7 +326,7 @@ function sbookGatherMetadata()
 {
   var start=new Date();
   if (_sbook_toc_built) return;
-  if (sbook_debug_startup>0)
+  if (sbook_trace_startup>0)
     fdjtLog("[%fs] Starting to gather metadata from DOM",fdjtET());
   var root=((sbook_root)||document.getElementById("SBOOKROOT"));
   if (!(root)) root=document.body;
@@ -368,7 +368,7 @@ function sbookGatherMetadata()
 	else return 1;
       else return 1;});
   var done=new Date();
-  if (sbook_debug_startup>0)
+  if (sbook_trace_startup>0)
     fdjtLog('Finished gathering metadata in %f secs over %d/%d heads/nodes',
 	    (done.getTime()-start.getTime())/1000,
 	    sbook_heads.length,sbook_nodes.length);
@@ -547,7 +547,7 @@ function sbook_toc_builder(child,tocstate)
       else tocstate.tagstack.push([]);}
     else {}
   // Setting this attribute can help with debugging
-  if ((sbook_debug_locations) && (child.sbookloc) && (child.setAttribute))
+  if ((sbook_trace_locations) && (child.sbookloc) && (child.setAttribute))
     child.setAttribute("sbookloc",child.sbookloc);
 }
 
@@ -725,7 +725,7 @@ function sbookSetHead(head)
     return;}
   else {
     var headinfo=sbook_getinfo(head);
-    if (sbook_debug_focus) sbook_trace_focus("sbookSetHead",head);
+    if (sbook_trace_focus) sbook_trace_focus("sbookSetHead",head);
     sbookTOCDisplay(head);
     window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
@@ -740,14 +740,14 @@ var sbook_location=false;
 function sbookSetLocation(location,force)
 {
   if ((!(force)) && (sbook_location===location)) return;
-  if (sbook_debug_locations)
+  if (sbook_trace_locations)
     fdjtLog("Setting location to %o",location);
   var spanbars=$$(".spanbar",$("SBOOKHUD"));
   var i=0; while (i<spanbars.length) {
     var spanbar=spanbars[i++];
     var width=spanbar.ends-spanbar.starts;
     var ratio=(location-spanbar.starts)/width;
-    if (sbook_debug_locations)
+    if (sbook_trace_locations)
       fdjtLog("ratio for %o[%d] is %o [%o,%o,%o]",
 	      spanbar,spanbar.childNodes[0].childNodes.length,
 	      ratio,spanbar.starts,location,spanbar.ends);
@@ -772,7 +772,7 @@ function sbookSetFocus(target,force)
 {
   if (!(target)) return null;
   // Can't set the focus to something without an ID.
-  if (sbook_debug_focus) sbook_trace_focus("sbookSetFocus",target);
+  if (sbook_trace_focus) sbook_trace_focus("sbookSetFocus",target);
   var headid=target.sbook_headid;
   while (target) 
     if (target.sbook_headid!==headid) {
@@ -819,7 +819,7 @@ function sbookSetFocus(target,force)
   // Using [force] will do recomputation even if the focus hasn't changed
   if ((force)||(target!==sbook_focus)) {
     var head=((target) && ((target.sbooklevel) ? (target) : (sbook_get_head(target))));
-    if (sbook_debug_focus) sbook_trace_focus("sbookSetFocus",target);
+    if (sbook_trace_focus) sbook_trace_focus("sbookSetFocus",target);
     /* Only set the head if the old head isn't visible anymore.  */
     if ((head) && (sbook_head!=head))
       if ((force) || (sbook_fickle_head) || (!(fdjtIsVisible(sbook_head))))
@@ -832,7 +832,7 @@ function sbookSetFocus(target,force)
 
 function sbookSetTarget(target)
 {
-  if (sbook_debug_focus) sbook_trace_focus("sbookSetTarget",target);
+  if (sbook_trace_focus) sbook_trace_focus("sbookSetTarget",target);
   if (sbook_target) {
     fdjtDropClass(sbook_target,"sbooktarget");
     sbook_target=false;}
@@ -1038,10 +1038,10 @@ function sbook_onscroll(evt)
 
 function sbook_onmousedown(evt)
 {
-  if (evt.button>1) return;
+  if ((evt.button>1)&&(evt.ctrlKey)) return;
   // sbook_trace_handler("sbook_onmousedown",evt);
   sbook_start_select=sbook_get_focus($T(evt));
-  if (sbook_debug_selection)
+  if (sbook_trace_selection)
     fdjtLog("[%fs] Set sbook_start_select to %o from %o on %o",
 	    fdjtET(),sbook_start_select,$T(evt),evt);
 }
@@ -1055,7 +1055,7 @@ function sbook_onmouseup(evt)
   if (sbook_start_select) {
     var target=sbook_get_focus($T(evt));
     var text=fdjtSelectedText();
-    if (sbook_debug_selection)
+    if (sbook_trace_selection)
       fdjtLog("[%fs] Mouseup %o at %o, started from %o, text=%o",
 	      fdjtET(),evt,target,sbook_start_select,text);
     if (!(text)) {
@@ -1288,7 +1288,7 @@ function sbookSetupEchoServer()
     var common_suffix=fdjtCommonSuffix(sbook_server,domain,'.');
     if (common_suffix) {
       if (common_suffix.indexOf('.')>0) {
-	if (sbook_debug_network)
+	if (sbook_trace_network)
 	  fdjtLog("[%fs] Setting up access to gloss server %o from %o through %o",
 		  fdjtET(),sbook_server,domain,common_suffix);
 	var iframe=fdjtNewElement("iframe");

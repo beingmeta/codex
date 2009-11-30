@@ -398,7 +398,7 @@ function sbookImportEchoes(data)
 	fdjtInsert(sbook_conversants,item.oid);
       social_info[item.oid]=item;}}
   var ids=data['%ids'];
-  if (sbook_debug_network)
+  if (sbook_trace_network)
     fdjtLog("Importing echo data %o for %d ids: %o",data,ids.length,ids);
   if ((ids) && (ids.length)) {
     var i=0; while (i<ids.length) {

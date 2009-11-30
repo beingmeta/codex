@@ -105,7 +105,7 @@ function sbookCreatePingHUD()
   form.onsubmit=
     ((sbook_user)?(fdjtForm_onsubmit):(sbookNoUserSubmit));
   form.oncallback=function(req) {
-    if (sbook_debug_network)
+    if (sbook_trace_network)
       fdjtLog("Got AJAX echo response %o from %o",req,sbook_ping_uri);
     sbookImportEchoes(JSON.parse(req.responseText));
     fdjtDropClass(form,"submitting");
@@ -507,7 +507,7 @@ function sbookNewEchoes(echoes,winarg)
 
 function sbookJSONPechoes(echoes)
 {
-  if (sbook_debug_network) fdjtLog("Got new echoes (probably) from JSONP call");
+  if (sbook_trace_network) fdjtLog("Got new echoes (probably) from JSONP call");
   sbookNewEchoes(echoes);
 }
 
