@@ -63,30 +63,13 @@ function createSBOOKHUD()
        sbookCreateHelpHUD(),
        echobar);
     hud.title="";
-    index_button.onclick=function(evt){
-      if ((sbook_mode==="searching") || (sbook_mode==="browsing")) {
-	sbookHUDMode(false);
-	fdjtDropClass("SBOOKSEARCH","hover");
-	$("SBOOKSEARCHTEXT").blur();}
-      else {
-	sbookHUDMode("searching");
-	$("SBOOKSEARCHTEXT").focus();
-	evt.cancelBubble=true;}};
-    index_button.onmouseover=function(evt) {
-      fdjtAddClass("SBOOKSEARCH","hover");};
-    index_button.onmouseout=function(evt) {
-      fdjtDropClass("SBOOKSEARCH","hover");};
+    index_button.onclick=sbookIndexButton_onclick;
+    index_button.onmouseover=fdjtClassAdder("SBOOKSEARCH","hover");
+    index_button.onmouseout=fdjtClassDropper("SBOOKSEARCH","hover");
 
-    toc_button.onclick=function(evt){
-      if (sbook_mode==="toc") {
-	sbookHUDMode(false);
-	fdjtDropClass("SBOOKTOC","hover");}
-      else sbookHUDMode("toc");
-      evt.cancelBubble=true;}
-    toc_button.onmouseover=function(evt) {
-      fdjtAddClass("SBOOKTOC","hover");};
-    toc_button.onmouseout=function(evt) {
-      fdjtDropClass("SBOOKTOC","hover");};
+    toc_button.onclick=sbookTOCButton_onclick;
+    toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
+    toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
 
     hud.onclick=sbookHUD_onclick;
     hud.onmouseover=sbookHUD_onmouseover;
@@ -97,23 +80,6 @@ function createSBOOKHUD()
     $("SBOOKECHOES").onclick=sbookEchoBar_onclick;
     $("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
     return hud;}
-}
-
-function sbookMode(id,graphic,mode,title)
-{
-  var imgsrc=
-    (((graphic.search("http")===0) || (graphic.search("/")===0)) ? (graphic) :
-     (sbook_graphics_root+"/"+graphic));
-  // Use ID as ALT text
-  var img=fdjtImage(imgsrc,false,id);
-  img.id=id; img.className="button";
-  img.onclick=function(evt) {
-    sbookModeButton_onclick(evt,mode);}
-  img.onmouseover=function(evt) {
-    sbookModeButton_onmouseover(evt,mode);};
-  img.onmouseout=sbookModeButton_onmouseout;
-  if (title) img.title=title;
-  return img;
 }
 
 /* Determines how far below the top edge to naturally scroll.
@@ -181,17 +147,6 @@ function sbookPreviewLocation(elt)
     var width=spanbar.ends-spanbar.starts;
     var ratio=(elt.sbookloc-spanbar.starts)/width;
     progress.style.left=((Math.round(ratio*10000))/100)+"%";}
-}
-
-function sbookHUDHover_onmouseover(evt)
-{
-  if (sbook_mode) return;
-  fdjtAddClass(document.body,"hudhover");
-}
-
-function sbookHUDHover_onmouseout(evt)
-{
-  fdjtDropClass(document.body,"hudhover");
 }
 
 function sbookPreview(elt,nomode)
@@ -440,6 +395,29 @@ function sbookTOC_onclick(evt)
     sbookHUDMode(false);
   sbookSetTarget(headelt);
   return false;
+}
+
+/* Button methods */
+
+function sbookIndexButton_onclick(evt)
+{
+  if ((sbook_mode==="searching") || (sbook_mode==="browsing")) {
+    sbookHUDMode(false);
+    fdjtDropClass("SBOOKSEARCH","hover");
+    $("SBOOKSEARCHTEXT").blur();}
+  else {
+    sbookHUDMode("searching");
+    $("SBOOKSEARCHTEXT").focus();
+    evt.cancelBubble=true;}
+}
+
+function sbookTOCButton_onclick(evt)
+{
+  if (sbook_mode==="toc") {
+    sbookHUDMode(false);
+    fdjtDropClass("SBOOKTOC","hover");}
+  else sbookHUDMode("toc");
+  evt.cancelBubble=true;
 }
 
 /* Other stuff */
