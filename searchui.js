@@ -85,6 +85,7 @@ function sbookForceComplete(input_elt)
 
 function sbookSearchInput_onkeypress(evt)
 {
+  evt=evt||event||null;
   var ch=evt.charCode; var kc=evt.keyCode;
   var target=$T(evt);
   if ((kc===13)||(ch===13)) {
@@ -96,13 +97,15 @@ function sbookSearchInput_onkeypress(evt)
     return false;}
   else if (ch===59) { /* That is, semicolon */
     sbookForceComplete($T(evt));
-    evt.preventDefault(); evt.cancelBubble=true;}
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
+    evt.cancelBubble=true;}
   else {
     return fdjtComplete_onkey(evt);}
 }
 
 function sbookSearchInput_onkeyup(evt)
 {
+  evt=evt||event||null;
   var target=$T(evt);
   var kc=evt.keyCode;
   if (kc===13) {
@@ -111,7 +114,8 @@ function sbookSearchInput_onkeyup(evt)
     sbookHUDMode("browsing");
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSUMMARIES").focus();
-    evt.preventDefault(); evt.cancelBubble=true;
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
+    evt.cancelBubble=true;
     return false;}
   else if ((kc===8)||(kc===9)) {
     sbookUpdateQuery(target);
@@ -120,6 +124,7 @@ function sbookSearchInput_onkeyup(evt)
 
 function sbookSearchInput_onfocus(evt)
 {
+  evt=evt||event||null;
   var ch=evt.charCode, kc=evt.keyCode;
   fdjtAutoPrompt_onfocus(evt);
   sbook_search_focus=true;
@@ -130,6 +135,7 @@ function sbookSearchInput_onfocus(evt)
 
 function sbookSearchInput_onblur(evt)
 {
+  evt=evt||event||null;
   // fdjtDropClass(sbookHUD,"searching");
   fdjtAutoPrompt_onblur(evt);
   sbook_search_focus=false;
@@ -277,15 +283,19 @@ function sbookQueryCloud(query)
 	      "start typing to see completions.");
     var msg2=fdjtDiv(".nocompletemsg","There are no ",((n_refiners)&&("more"))," completions.");
     result_counts.onclick=function(evt){
+      evt=evt||event||null;
       sbookShowSearch(query);
       sbookHUDMode("browsing");
       $("SBOOKSEARCHTEXT").blur();
       $("SBOOKSUMMARIES").focus();
-      evt.preventDefault(); evt.cancelBubble=true;};
+      if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
+      evt.cancelBubble=true;};
     result_counts.title='click to see results; click in the input box to return here';
     refiner_counts.onclick=function(evt){
+      evt=evt||event||null;
       fdjtToggleClass(completions,"showempty");
-      evt.preventDefault(); evt.cancelBubble=true;};
+      if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
+      evt.cancelBubble=true;};
     refiner_counts.title='click to show more/less';
     fdjtPrepend(completions,counts,msg1,msg2);
     query._cloud=completions;
@@ -335,7 +345,8 @@ function sbookMakeCloud(dterms,scores,freqs)
       else return 1;});
   completions.onclick=function (evt) {
     fdjtComplete_onclick(evt);
-    evt.preventDefault(); evt.cancelBubble=true;
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
+    evt.cancelBubble=true;
     return false;}
   i=0; while (i<copied.length) {
     var dterm=copied[i++];

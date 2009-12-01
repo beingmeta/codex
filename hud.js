@@ -174,6 +174,7 @@ function sbookPreviewNoMode(elt)
 
 function sbookPreview_onmouseover(evt)
 {
+  evt=evt||event||null;
   var target=$T(evt); var ref;
   while (target)
     if (target.sbook_ref) break;
@@ -191,11 +192,13 @@ function sbookPreview_onmouseover(evt)
 
 function sbookPreview_onmouseout(evt)
 {
+  evt=evt||event||null;
   fdjtDelayHandler(300,sbookPreview,false,document.body,"preview");
 }
 
 function sbookPreview_onclick(evt)
 {
+  evt=evt||event||null;
   var target=$T(evt); var ref;
   while (target)
     if (target.sbook_ref) break;
@@ -238,18 +241,21 @@ function sbook_echoes_icon(uri)
 
 function sbookHUD_onmouseover(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbookHUD_onmouseover",evt);
   if (sbook_mode) evt.cancelBubble=true;
 }
 
 function sbookHUD_onmouseout(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbookHUD_onmouseout",evt);
   if (sbook_mode) evt.cancelBubble=true;
 }
 
 function sbookHUD_onclick(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbookHUD_onclick",evt);
   var target=$T(evt);
   while (target)
@@ -264,7 +270,9 @@ function sbookHUD_onclick(evt)
       sbookHUDMode("searching"); target=target.parentNode;}
     else target=target.parentNode;
   evt.cancelBubble=true;
-  if (evt.shiftKey) evt.preventDefault();
+  if (evt.shiftKey)
+    if (evt.preventDefault) evt.preventDefault();
+    else evt.returnValue=false;
 }
 
 function sbookGetStableId(elt)
@@ -351,6 +359,7 @@ function sbookCreateNavHUD(eltspec)
 
 function sbookTOC_onmouseover(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbookTOC_onmouseover",evt);
   var target=sbook_get_reftarget($T(evt));
   if (!((sbook_mode)||(fdjtHasClass(sbookHUD,"hudup")))) return;
@@ -365,6 +374,7 @@ function sbookTOC_onmouseover(evt)
 
 function sbookTOC_onmouseout(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbookTOC_onmouseout",evt);
   sbookHUD_onmouseout(evt);
   fdjtCoHi_onmouseout(evt);
@@ -383,6 +393,7 @@ function sbookTOC_onmouseout(evt)
 
 function sbookTOC_onclick(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbookTOC_onclick",evt);
   var target=sbook_get_reftarget($T(evt));
   var headelt=((target)&&(document.getElementById(target.sbook_ref)));
@@ -391,7 +402,7 @@ function sbookTOC_onclick(evt)
     return;}
   sbook_preview=false;
   fdjtScrollDiscard();
-  evt.preventDefault();
+  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
   evt.cancelBubble=true;
   sbookSetHead(headelt);
   var info=sbook_getinfo(headelt);
@@ -406,6 +417,7 @@ function sbookTOC_onclick(evt)
 
 function sbookIndexButton_onclick(evt)
 {
+  evt=evt||event||null;
   if ((sbook_mode==="searching") || (sbook_mode==="browsing")) {
     sbookHUDMode(false);
     fdjtDropClass("SBOOKSEARCH","hover");
@@ -418,6 +430,7 @@ function sbookIndexButton_onclick(evt)
 
 function sbookTOCButton_onclick(evt)
 {
+  evt=evt||event||null;
   if (sbook_mode==="toc") {
     sbookHUDMode(false);
     fdjtDropClass("SBOOKTOC","hover");}

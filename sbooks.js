@@ -390,9 +390,7 @@ function _sbook_transplant_content(content)
 function _sbook_get_title(head)
 {
   var title=
-    (head.toctitle)||
-    (fdjtCacheAttrib(head,"toctitle"))||
-    (head.title);
+    (head.toctitle)||(head.getAttribute('toctitle'))||(head.title);
   if (!(title))
     return fdjtTextify(head,true);
   else if (typeof title === "string") {
@@ -613,17 +611,19 @@ function sbookPrevSection(evt)
 
 function sbookNextPage(evt)
 {
+  evt=evt||event||null;
   window.scrollBy(0,window.innerHeight);
   setTimeout("sbookSetFocus(sbookGetXYFocus())",100);
-  if (evt.preventDefault) evt.preventDefault();
+  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
   evt.cancelBubble=true;
 }
 
 function sbookPrevPage(evt)
 {
+  evt=evt||event||null;
   window.scrollBy(0,-window.innerHeight);
   setTimeout("sbookSetFocus(sbookGetXYFocus())",100);
-  if (evt.preventDefault) evt.preventDefault();
+  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
   evt.cancelBubble=true;
 }
 
@@ -874,6 +874,7 @@ function sbookGetXYFocus(xoff,yoff)
 
 function sbook_onkeydown(evt)
 {
+  evt=evt||event||null;
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_mode) {
       sbookHUDMode(false);
@@ -909,16 +910,19 @@ function sbook_onkeydown(evt)
 
 function sbook_onkeyup(evt)
 {
+  evt=evt||event||null;
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.keyCode===16) {
     fdjtDropClass(sbookHUD,"hudup");
     if (sbook_mode) fdjtAddClass(sbookHUD,sbook_mode);
-    evt.cancelBubble=true; evt.preventDefault();}
+    evt.cancelBubble=true;
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
 }
 
 function sbook_onkeypress(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbook_onkeypress",evt);
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
@@ -928,7 +932,7 @@ function sbook_onkeypress(evt)
     $("SBOOKPINGINPUT").focus();
     $T(evt).blur();
     evt.cancelBubble=true;
-    evt.preventDefault();}
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   /* ?, F, f, S or s */
   else if ((evt.charCode===63) ||
 	   (evt.charCode===115) || (evt.charCode===83) ||
@@ -936,22 +940,23 @@ function sbook_onkeypress(evt)
     if (sbook_mode==="searching") sbookHUDMode(false);
     else {
       sbookHUDMode("searching"); $("SBOOKSEARCHTEXT").focus();}
-    evt.preventDefault();}
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   /* T or t or N or n */
   else if ((evt.charCode===78) || (evt.charCode===84) ||
 	   (evt.charCode===110) || (evt.charCode===116)) { 
     if (sbook_mode==="toc") sbookHUDMode(false);
     else {
       sbookHUDMode("toc"); $("SBOOKSEARCHTEXT").blur();}
-    evt.preventDefault();}
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   /* H or h */
   else if ((evt.charCode===104) || (evt.charCode===72)) { 
     if (sbook_mode==="help") sbookHUDMode(false);
     else {
       sbookHUDMode("help"); $("SBOOKSEARCHTEXT").blur();}
-    evt.preventDefault();}
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   else {
-    evt.cancelBubble=true; evt.preventDefault();}
+    evt.cancelBubble=true;
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
 }
 
 /* Mouse handlers */
@@ -965,6 +970,7 @@ function sbook_clear_select()
 
 function sbook_onmouseover(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbook_onmouseover",evt);
   /* If you're previewing, ignore mouse action */
   if (sbook_preview) return;
@@ -995,6 +1001,7 @@ function sbook_onmouseover(evt)
 
 function sbook_onmousemove(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbook_onmousemove",evt);
   if (sbook_start_select) return;
   if (sbook_target) sbookCheckTarget();
@@ -1022,6 +1029,7 @@ function sbook_onmousemove(evt)
 
 function sbook_onscroll(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
   if ((sbook_preview) || (sbook_mode)) return;
@@ -1038,6 +1046,7 @@ function sbook_onscroll(evt)
 
 function sbook_onmousedown(evt)
 {
+  evt=evt||event||null;
   if ((evt.button>1)&&(evt.ctrlKey)) return;
   // sbook_trace_handler("sbook_onmousedown",evt);
   sbook_start_select=sbook_get_focus($T(evt));
@@ -1048,6 +1057,7 @@ function sbook_onmousedown(evt)
 
 function sbook_onmouseup(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbook_onmouseup",evt);
   if (evt.button>1) {
     sbook_start_select=false;
@@ -1078,7 +1088,8 @@ function sbook_onmouseup(evt)
     else target=false;
     fdjtTrace("onmouseup, target is %o",target);
     if (target) {
-      evt.cancelBubble=true; evt.preventDefault();
+      evt.cancelBubble=true;
+      if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
       sbook_ping(target);}}
   if (sbook_start_select)
     // We delay so that sbook_onclick doesn't do anything rash
@@ -1087,6 +1098,7 @@ function sbook_onmouseup(evt)
 
 function sbook_onclick(evt)
 {
+  evt=evt||event||null;
   // sbook_trace_handler("sbook_onclick",evt);
   var target=$T(evt); var scan=target;
   if (evt.button>1) return;
@@ -1101,7 +1113,7 @@ function sbook_onclick(evt)
   if (sbook_start_select) return;
   else if (sbook_mode) {
     sbookHUDMode(false);
-    evt.preventDefault();
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
     return;}
   else if ((target===sbook_ping_target) ||
 	   (fdjtHasParent(target,sbook_ping_target))) {
@@ -1113,6 +1125,7 @@ function sbook_onclick(evt)
 
 function sbook_ondblclick(evt)
 {
+  evt=evt||event||null;
   sbook_onclick(evt);
   sbookHUDMode("ping");
 }

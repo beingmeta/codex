@@ -143,6 +143,7 @@ function sbookVectorEqual(v1,v2)
 
 function sbookEchoBar_onclick(evt)
 {
+  evt=evt||event||null;
   // if (!(sbook_user)) return;
   var target=$T(evt);
   if ($P(".sbooksummaries",target)) return;
@@ -182,7 +183,8 @@ function sbookEchoBar_onclick(evt)
     sbookSelectEchoes($("SBOOKALLECHOES"),sources);
     sbookHUDMode("echoes");}
   if (sbook_focus) sbookScrollEchoes(sbook_focus);
-  evt.preventDefault(); evt.cancelBubble=true;
+  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
+  evt.cancelBubble=true;
 }
 
 function sbookSetSources(echobar,sources)
@@ -224,8 +226,14 @@ function sbookCreateLoginButton(uri,image,title)
   fdjtAddClass(login_button,"login");
   if (!(uri)) fdjtAddClass(login_button,"disabled");
   login_button.title=((uri)?(title):("(coming soon) "+title));
-  login_button.onclick=function(evt){evt.cancelBubble=true;};
+  login_button.onclick=sbookLoginButton_onclick;
   return login_button;
+}
+
+function sbookLoginButton_onclick(evt)
+{
+  evt=evt||event||null;
+  evt.cancelBubble=true;
 }
 
 function sbookCreateEchoBar(classinfo,oids)
@@ -259,21 +267,13 @@ function sbookCreateEchoBar(classinfo,oids)
   var echobar=fdjtDiv(classinfo," ",everyone_button,fb_login);
   var echosources=fdjtDiv("echosources");
   var socialelts=[]; var echoelts=[];
-  everyone_button.onclick=function(evt) {
-    if (sbook_mode==="echoes") {
-      sbookHUDMode(false);
-      evt.cancelBubble=true;
-      return;}
-    echobar.sbooksources=true;};
+  everyone_button.onclick=sbookEveryoneButton_onclick;
   echobar.onclick=sbookEchoBar_onclick;
   if (facebook_button) {
     facebook_button.target="_parent";
-    facebook_button.onclick=function(evt){
-      evt.cancelBubble=true;};}
+    facebook_button.onclick=fdjtCancelBubble;}
   help_button.title="help";
-  help_button.onclick=function(evt) {
-    sbookHUDToggle("help");
-    evt.cancelBubble=true;}
+  help_button.onclick=sbookHelpButton_onclick;
   var allechoes=sbookAllEchoesDiv();
   fdjtPrepend(allechoes,fdjtWithId(sbookCreatePingHUD(),"SBOOKPING"));
   fdjtAppend(echobar,echosources,allechoes,help_button);
@@ -282,6 +282,23 @@ function sbookCreateEchoBar(classinfo,oids)
   sbook_echo_sources=echosources;
   sbookUpdateEchoBar();
   return echobar;
+}
+
+function sbookHelpButton_onclick(evt)
+{
+  evt=evt||event||null;
+  sbookHUDToggle("help");
+  evt.cancelBubble=true;
+}
+
+function sbookEveryoneButton_onclick(evt)
+{
+  evt=evt||event||null;
+  if (sbook_mode==="echoes") {
+    sbookHUDMode(false);
+    evt.cancelBubble=true;
+    return;}
+  echobar.sbooksources=true;
 }
 
 function sbookEchoToEntry(echo)
@@ -305,13 +322,17 @@ function sbookEchoToEntry(echo)
   var entry=fdjtDiv("echo",userblock,head,core,extra);
   var target=$(echo.fragid);
   entry.onmouseover=function(evt) {
+    evt=evt||event||null;
     sbookPreview(target,true);};
   entry.onmouseout=function(evt) {
+    evt=evt||event||null;
     fdjtScrollRestore();
     window.setTimeout("sbook_preview=false;",100);};
   anchor.onclick=function(evt) {
+    evt=evt||event||null;
     $T(evt).blur(); sbookScrollTo(target);
-    evt.cancelBubble=true; evt.preventDefault();}
+    evt.cancelBubble=true;
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   entry.uri=echo.uri; entry.tags=echo.tags; entry.fragid=echo.fragid;
   if (echo.tribes) entry.tribes=echo.tribes;
   entry.user=user; entry.pingid=echo.pingid;
@@ -335,16 +356,21 @@ function sbookEchoIcons(echo,extra)
   else {
     eye.title=_("previewing: move mouse to restore");
     eye.onclick=function(evt){
+      evt=evt||event||null;
       if (document.body.preview) clearTimeout(document.body.preview);
       sbookStopPreview(target); sbookScrollTo(target);
-      evt.preventDefault(); evt.cancelBubble=true;
+      if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
+      evt.cancelBubble=true;
       sbookSetHUD(false);};
     eye.onmouseover=function(evt){
+      evt=evt||event||null;
       fdjtDelayHandler(300,sbookSetPreview,true,document.body,"preview");};
     eye.onmouseout=function(evt){
+      evt=evt||event||null;
       fdjtDelayHandler(300,sbookSetPreview,false,document.body,"preview");};}
   comment.title=_("Add your own response");
   comment.onclick=function(evt){
+    evt=evt||event||null;
     // fdjtTrace("Starting a relay of %o (%o)",echo,echo.msg);
     sbookSetHUD(false);
     add_podspot(target,true);
@@ -352,6 +378,7 @@ function sbookEchoIcons(echo,extra)
     $("SBOOKPINGINPUT").value=echo.msg;}; 
   showmore.title=_("See more information");
   showmore.onclick=function(evt){
+    evt=evt||event||null;
     fdjtToggleClass($P('.echo',$T(evt)),'extras','shown',true);}; 
   return fdjtSpan("icons",age,showmore,comment,eye);
 }
@@ -572,7 +599,9 @@ function add_podspot(target,open)
     imgsrc=social_info[sources[0]].pic||imgsrc;
   var podspot=fdjtSpan("podspot",fdjtImage(imgsrc,"podimg","comments"));
   podspot.onclick=function(evt){
-    evt.preventDefault(); evt.cancelBubble=true;
+    evt=evt||event||null;
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
+    evt.cancelBubble=true;
     if ((sbook_mode==="echoes") &&
 	(sbook_echoes_target===target)) {
       sbookHUDMode(false); return;}
@@ -582,8 +611,10 @@ function add_podspot(target,open)
     else sbookSelectEchoes(sbookEchoesHUD,true,false,id);
     sbookHUDMode("echoes");};
   podspot.onmouseover=function(evt){
+    evt=evt||event||null;
     fdjtAddClass(target,"sbooklivespot");};
   podspot.onmouseout=function(evt){
+    evt=evt||event||null;
     fdjtDropClass(target,"sbooklivespot");};
   target.podspot=podspot;
   if (sbook_podspot_qricons) {
