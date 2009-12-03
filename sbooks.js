@@ -342,7 +342,7 @@ function sbookGatherMetadata()
   rootinfo.starts_at=0;
   rootinfo.level=0; rootinfo.sub=new Array();
   rootinfo.sbook_head=false; rootinfo.sbook_heads=new Array();
-  if (!(root.id)) body.id="SBOOKROOT";
+  if (!(root.id)) root.id="SBOOKROOT";
   rootinfo.id=root.id;
   /* Build the metadata */
   var i=0; while (i<children.length) {
