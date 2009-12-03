@@ -50,9 +50,9 @@ function createSBOOKHUD()
   if (hud) return hud;
   else {
     var index_button=
-      fdjtImage(sbook_graphics_root+"SearchIcon40x40.png","hudbutton","index");
+      fdjtImage(sbook_graphics_root+"TagSearch40x40.png","hudbutton","index","tag search");
     var toc_button=
-      fdjtImage(sbook_graphics_root+"CompassIcon40x40.png","hudbutton","toc");
+      fdjtImage(sbook_graphics_root+"CompassIcon40x40.png","hudbutton","toc","navigate table of contents");
     var echobar=sbookCreateEchoBar("#SBOOKECHOES.echobar.hudblock.hud");
     hud=fdjtDiv
       ("#SBOOKHUD",index_button,toc_button,

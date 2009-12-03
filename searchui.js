@@ -194,11 +194,13 @@ function sbookDTermCompletion(dterm,title)
   if ((typeof dterm === "string") && (dterm[0]==="\u00A7")) {
     var showname=dterm;
     if (showname.length>17) {
-      showname=showname.slice(0.17)+"...";
+      showname=showname.slice(0,17)+"...";
       title=dterm;}
     var span=fdjtSpan("completion",fdjtSpan("sectname",showname));
     span.key=dterm; span.value=dterm; span.anymatch=true;
-    if (title) span.title=title;
+    if (title)
+      span.title="("+sbook_index[dterm].length+" items) "+title;
+    else span.title=sbook_index[dterm].length+" items";
     return span;}
   var knowde=Knowde(dterm);
   if (!(knowde))

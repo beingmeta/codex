@@ -881,8 +881,8 @@ div.sbooksearch .completions .completion:after {
   color: purple; vertical-align: middle;}
 
 div.sbooksearch span.sectname {
-  font-weight: bold; font-style: italic; 
-  background-color: ivory; color: purple;
+  font-weight: bold; font-style: italic;  font-size: 80%;
+  background-color: ivory; color: purple; max-width: 25%;
   padding: 3px; margin: 0px; margin-left: 3px; margin-right: 3px; 
   -khtml-border-radius: 6px; 
   -webkit-border-radius: 6px; 
