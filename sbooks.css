@@ -718,6 +718,14 @@ div#SBOOKHUD div#SOCIALHUD {
 /* TOC classes */
 
 div.sbooktoc { display: none;}
+div.sbooktoc div.head { 
+  background-image: url(http://static.beingmeta.com/graphics/silverbrick.png);
+  background-position: 100% 0%;
+  margin-left: 5%; margin-right: 5%;}
+div.sbooktoc div.head img.progressbar { 
+  position: absolute; left: 0px; 
+  width: 0%; height: 2ex;
+  opacity: .50; z-index: 150;}
 
 div.sbooktoc.live { display: block;}
 div.sbooktoc.live div.head { display: block;}
@@ -746,7 +754,6 @@ div#SBOOKHUD.toc div.sbooktoc.cur div.sub { display: block;}
 
 div#SBOOKHUD.hudup div.sbooktoc { margin-left: 10%; margin-right: 10%;}
 div#SBOOKHUD.hudup div.sbooktoc.toc0 { margin-left: 0px; margin-right: 0px;}
-
 
 div.spanbar {
   position: relative;

@@ -52,6 +52,9 @@ var sbooks_nav_version=parseInt("$Revision$".slice(10,-1));
 
 function sbookTOCDiv(headinfo,depth,classname)
 {
+  var progressbar=
+    fdjtImage('http://static.beingmeta.com/graphics/silverbrick.png',
+	      'progressbar');
   var head=fdjtNewElt("A.sectname",headinfo.title);
   var toc=fdjtDiv(classname||"sbooktoc",
 		  fdjtDiv("head",head),
@@ -62,6 +65,8 @@ function sbookTOCDiv(headinfo,depth,classname)
   if (!(depth)) depth=0;
   head.name="SBR"+headinfo.id;
   head.sbook_ref=headinfo.id;
+  toc.sbook_start=headinfo.starts_at;
+  toc.sbook_end=headinfo.ends_at;
   fdjtAddClass(toc,"toc"+depth);
   headinfo.tocid=tocid;
   if (!(toc.id)) {

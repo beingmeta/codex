@@ -668,7 +668,7 @@ function sbookUpdateQuery(input_elt)
 
 /* Accessing the TOC */
 
-function sbookTOCDisplay(head)
+function sbookTOCDisplay(head,loc)
 {
   if (sbook_head===head) return;
   else if (sbook_head) {
@@ -682,7 +682,7 @@ function sbookTOCDisplay(head)
       info=info.sbook_head;
       tocelt=document.getElementById(info.tocid);}
     var n=tohide.length-1;
-    // Go backwards to accomodate some redisplayers
+    // Go backwards (up) to potentially accomodate some redisplayers
     while (n>=0) fdjtDropClass(tohide[n--],"live");
     fdjtDropClass(base_elt,"cur");
     sbook_head=false;}
@@ -696,7 +696,20 @@ function sbookTOCDisplay(head)
     info=info.sbook_head;}
   var n=toshow.length-1;
   // Go backwards to accomodate some redisplayers
-  while (n>=0) fdjtAddClass(toshow[n--],"live");
+  if (loc)
+    while (n>=0) {
+      var entry=toshow[n--];
+      var start=entry.sbook_start; var end=entry.sbook_end;
+      var progress=((loc-start)*80)/(end-start);
+      var head=fdjtGetFirstChild(entry,".head");
+      fdjtTrace("Loc=%o start=%o end=%o progress=%o cur bpos=%o",
+		loc,start,end,progress,head.style.backgroundPosition);
+      if ((progress>0) && (progress<100))
+	head.style.backgroundPosition=((progress)+10)+"%"+" 0%";
+      else head.style.backgroundPosition=null;
+      head.style.backgroundImage="http://static.beingmeta.com/graphics/silverbrick.png";
+      fdjtAddClass(entry,"live");}
+  else while (n>=0) fdjtAddClass(toshow[n--],"live");
   fdjtAddClass(base_elt,"cur");
 }
 
@@ -726,7 +739,7 @@ function sbookSetHead(head)
   else {
     var headinfo=sbook_getinfo(head);
     if (sbook_trace_focus) sbook_trace_focus("sbookSetHead",head);
-    sbookTOCDisplay(head);
+    sbookTOCDisplay(head,sbook_location);
     window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
