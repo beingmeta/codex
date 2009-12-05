@@ -668,7 +668,7 @@ function sbookUpdateQuery(input_elt)
 
 /* Accessing the TOC */
 
-function sbookTOCDisplay(head,loc)
+function sbookTOCDisplay(head)
 {
   if (sbook_head===head) return;
   else if (sbook_head) {
@@ -696,20 +696,7 @@ function sbookTOCDisplay(head,loc)
     info=info.sbook_head;}
   var n=toshow.length-1;
   // Go backwards to accomodate some redisplayers
-  if (loc)
-    while (n>=0) {
-      var entry=toshow[n--];
-      var start=entry.sbook_start; var end=entry.sbook_end;
-      var progress=((loc-start)*80)/(end-start);
-      var head=fdjtGetFirstChild(entry,".head");
-      fdjtTrace("Loc=%o start=%o end=%o progress=%o cur bpos=%o",
-		loc,start,end,progress,head.style.backgroundPosition);
-      if ((progress>0) && (progress<100))
-	head.style.backgroundPosition=((progress)+10)+"%"+" 0%";
-      else head.style.backgroundPosition=null;
-      head.style.backgroundImage="http://static.beingmeta.com/graphics/silverbrick.png";
-      fdjtAddClass(entry,"live");}
-  else while (n>=0) fdjtAddClass(toshow[n--],"live");
+  while (n>=0) fdjtAddClass(toshow[n--],"live");
   fdjtAddClass(base_elt,"cur");
 }
 
@@ -755,13 +742,25 @@ function sbookSetLocation(location,force)
   if ((!(force)) && (sbook_location===location)) return;
   if (sbook_trace_locations)
     fdjtLog("Setting location to %o",location);
+  var info=sbook_getinfo(sbook_head);
+  while (info) {
+    var tocelt=document.getElementById(info.tocid);
+    var start=tocelt.sbook_start; var end=tocelt.sbook_end;
+    var progress=((location-start)*80)/(end-start);
+    var bar=fdjtGetFirstChild(tocelt,".progressbar");
+    if (sbook_trace_locations)
+      fdjtLog("For tocbar %o loc=%o start=%o end=%o progress=%o",
+	      bar,location,start,end,progress);
+    if ((bar)&& (progress>0) && (progress<100))
+      bar.style.width=((progress)+10)+"%";
+    info=info.sbook_head;}
   var spanbars=$$(".spanbar",$("SBOOKHUD"));
   var i=0; while (i<spanbars.length) {
     var spanbar=spanbars[i++];
     var width=spanbar.ends-spanbar.starts;
     var ratio=(location-spanbar.starts)/width;
     if (sbook_trace_locations)
-      fdjtLog("ratio for %o[%d] is %o [%o,%o,%o]",
+      fdjtLog("ratio for spanbar %o[%d] is %o [%o,%o,%o]",
 	      spanbar,spanbar.childNodes[0].childNodes.length,
 	      ratio,spanbar.starts,location,spanbar.ends);
     if ((ratio>=0) && (ratio<=1)) {
@@ -837,10 +836,15 @@ function sbookSetFocus(target,force)
     if ((head) && (sbook_head!=head))
       if ((force) || (sbook_fickle_head) || (!(fdjtIsVisible(sbook_head))))
 	sbookSetHead(head);
-    if (sbook_focus) fdjtDropClass(sbook_focus,"sbookfocus");
+    var old_focus=sbook_focus;
     sbook_focus=target;
     fdjtAddClass(target,"sbookfocus");
-    if (target.sbookloc) sbookSetLocation(target.sbookloc,true);}
+    if ((old_focus)&&(old_focus!==target))
+      fdjtDropClass(old_focus,"sbookfocus");
+    if (target.sbookloc)
+      if (!((old_focus) && (fdjtHasParent(old_focus,target)))) {
+	sbookSetLocation(target.sbookloc,true);}
+      }
 }
 
 function sbookSetTarget(target)

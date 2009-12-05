@@ -55,9 +55,10 @@ function sbookTOCDiv(headinfo,depth,classname)
   var progressbar=
     fdjtImage('http://static.beingmeta.com/graphics/silverbrick.png',
 	      'progressbar');
+  var progressbar=fdjtNewElt("HR.progressbar");
   var head=fdjtNewElt("A.sectname",headinfo.title);
   var toc=fdjtDiv(classname||"sbooktoc",
-		  fdjtDiv("head",head),
+		  fdjtDiv("head",progressbar,head),
 		  _sbook_generate_spanbar(headinfo),
 		  sbookTOCDivSubsections(headinfo));
   var tocid="SBOOKTOC4"+headinfo.id;
