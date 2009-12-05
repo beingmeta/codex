@@ -901,6 +901,8 @@ function sbook_onkeydown(evt)
       fdjtAddClass(sbookHUD,"hudup");
       sbook_mode=true;}
     return;}
+  if (evt.keyCode===17) {
+    fdjtAddClass(document.body,"ctrldown");}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput($T(evt))) return true;
   else if (evt.keyCode===16) {
@@ -927,6 +929,8 @@ function sbook_onkeydown(evt)
 function sbook_onkeyup(evt)
 {
   evt=evt||event||null;
+  if (evt.keyCode===17) {
+    fdjtDropClass(document.body,"ctrldown");}
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.keyCode===16) {

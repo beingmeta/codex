@@ -40,6 +40,8 @@ body.sbookhead { text-decoration: none;}
 /* This is essentially where the mouse is (as tracked) */
 .sbookfocus { cursor: text;}
 
+body.ctrldown .sbookfocus { color: blue; }
+
 /* This is the last explicit target of a jump or ping */
 .sbooktarget { color: darkblue;}
 body.sbookfocus { color: inherit;}
