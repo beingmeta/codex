@@ -727,7 +727,7 @@ div.sbooktoc div.head .progressbar {
   color: lightblue; background-color: lightblue;
   padding: 0px; margin: 0px;
   position: absolute;  left: 0px; height: 100%;
-  z-index: 150; opacity: 0.5;}
+  z-index: -100; opacity: 0.5;}
 
 div.sbooktoc.live { display: block;}
 div.sbooktoc.live div.head { display: block;}
@@ -739,7 +739,7 @@ div.sbooktoc div.sub { display: none; margin-left: 20px; margin-right: 20px;}
 div.sbooktoc.cur div.head { font-size: 125%;}
 div.sbooktoc.cur div.sub { display: block;}
 
-div.sbooktoc .sectname.cohi { color: orange;}
+div.sbooktoc .sectname.cohi { color: yellow;}
 div.sbooktoc .sectname { color: blue; cursor: pointer;}
 div.sbooktoc div.sub a.sectname { font-size: 80%; white-space: nowrap;}
 
@@ -753,8 +753,6 @@ div#SBOOKHUD div.sbooktoc.cur div.head { display: block;}
 div#SBOOKHUD.toc div.sbooktoc div.head { display: block;}
 div#SBOOKHUD.toc div.sbooktoc div.spanbar { display: block;}
 div#SBOOKHUD.toc div.sbooktoc.cur div.sub { display: block;}
-
-div#SBOOKHUD.hudup div.sbooktoc { margin-left: 10%; margin-right: 10%;}
 
 div.spanbar {
   position: relative;
@@ -780,7 +778,7 @@ div.spanbar div.sbookhudspan a.brick {
   border-right: solid black 1px; border-left: solid black 1px;
   height: 100%;}
 div.spanbar div.sbookhudspan a.brick.cohi {
-  background-color: orange;}
+  background-color: yellow;}
 div.spanbar div.sbookhudspan[odd] {}
 div.spanbar div.sbookhudspan[even] {}
 div.spanbar div.sbookhudspan.current {
@@ -792,7 +790,7 @@ div.spanbar div.sbookhudspan[odd]:hover {
 div.spanbar div.sbookhudspan[even]:hover {
   border-bottom: dotted red 2px; border-top: dotted red 2px; }
 div.spanbar div.sbookhudspan.cohighlight { 
-  background-color: orange;}
+  background-color: yellow;}
 div#SBOOKHUD div.sbooktoc { 
   width: 94%; margin-left: 3%; margin-right: 3%;}
 
@@ -812,8 +810,8 @@ div.spanbar { padding: 0px; margin: 0px;}
 div.spanbar div.spans { 
   width: 100%; height: 10px; padding: 0px; margin: 0px;}
 
-body.preview div.spanbar div.progressbox { background-color: orange;}
-body.preview div.spanbar div.rangebox { background-color: orange;}
+body.preview div.spanbar div.progressbox { background-color: red;}
+body.preview div.spanbar div.rangebox { background-color: red;}
 div.spanbar div.progressbox { 
   width: 3px; height: 15px; background-color: red;
   position: absolute; z-index: 200; 

@@ -826,8 +826,7 @@ function sbookSetFocus(target,force)
     // var otitle=target.title;
     if ((sbook_flash_progress)&&(!(sbook_mode))) {
       taghud.style.opacity=0.8;
-      setTimeout(function() {taghud.style.opacity=null;},2500);}
-    if ((target) && (target.sbookloc)) sbookSetLocation(target.sbookloc);}
+      setTimeout(function() {taghud.style.opacity=null;},2500);}}
   // Using [force] will do recomputation even if the focus hasn't changed
   if ((force)||(target!==sbook_focus)) {
     var head=((target) && ((target.sbooklevel) ? (target) : (sbook_get_head(target))));
@@ -842,9 +841,9 @@ function sbookSetFocus(target,force)
     if ((old_focus)&&(old_focus!==target))
       fdjtDropClass(old_focus,"sbookfocus");
     if (target.sbookloc)
-      if (!((old_focus) && (fdjtHasParent(old_focus,target)))) {
-	sbookSetLocation(target.sbookloc,true);}
-      }
+      if (!((old_focus) && (fdjtHasParent(old_focus,target)))) 
+	sbookSetLocation(target.sbookloc,true);
+  }
 }
 
 function sbookSetTarget(target)
