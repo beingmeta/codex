@@ -73,19 +73,16 @@ div.hudblock {
   overflow: hidden; text-align: center; 
   font-family: sans,sans-serif;
   display: none;}
-div#SBOOKHUD.hudup div.hudblock { opacity: 0.9;}
-div#SBOOKHUD.hudup div.hudblock#SBOOKECHOES { opacity: 0.9;}
-div#SBOOKHUD.hudup div.hudblock:hover { opacity: 0.9;}
-/* body div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.75;} */
-div#SBOOKHUD.hudup div.hudblock#SBOOKECHOES:hover { opacity: 0.9;}
+div#SBOOKHUD.hudup div.hudblock { opacity: 0.8;}
+div#SBOOKHUD div.hudblock:hover { opacity: 0.8;}
 
 img.hudbutton { 
   opacity: 0.2; z-index: 200;
   position: fixed; left: 0px;
   background-color: gray; padding-right: 4px;
   font-family: sans,sans-serif;}
-img.hudbutton:hover { opacity: 0.9;}
-div#SBOOKHUD.hudup img.hudbutton { opacity: 0.9;}
+img.hudbutton:hover { opacity: 0.5;}
+div#SBOOKHUD.hudup img.hudbutton { opacity: 0.5;}
 
 img.hudbutton[alt='index'] { 
   -khtml-border-top-right-radius: 6px; 
@@ -116,11 +113,8 @@ body.preview div#SBOOKHUD.browsing img.hudbutton[alt='index'] {
   left: 0px; opacity: 0.1;}
 
 /* Hudblocks don't normally go visible when you're over them */
-/* div#SBOOKHUD div.hudblock:hover { opacity: 0.9;} */
-div#SBOOKHUD div.hudblock.hover { opacity: 0.9;}
-/* This is a little more visible by default */
 div#SBOOKHUD div.hudblock#SBOOKECHOES { opacity: 0.1;}
-div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.9;}
+div#SBOOKHUD div.hudblock#SBOOKECHOES:hover { opacity: 0.8;}
 
 div#SBOOKHUD div.hudblock#SBOOKECHOES { display: block;}
 div#SBOOKHUD div.hudblock.hover#SBOOKTOC { display: block;}
@@ -211,8 +205,7 @@ div#SBOOKHUD div.hud#SBOOKECHOES {
 div#SBOOKHUD div.hud#SBOOKECHOES div.echosources {
   position: fixed; display: block; text-align: left;
   top: 115px; bottom: 115px; left: 2px; width: 50px;
-  overflow-y: auto; overflow-x: hidden;
-  opacity: 0.80;}
+  overflow-y: auto; overflow-x: hidden;}
 div#SBOOKHUD .hud#SBOOKECHOES img.social { 
   width: 34px; height: 34px;
   border: solid transparent 2px;} 
