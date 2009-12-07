@@ -802,7 +802,8 @@ function sbookSetFocus(target,force)
   // If the target has changed, update the location
   if (target!==sbook_focus) {
     var taghud=$("SBOOKSEARCH");
-    var tags=target.tags;
+    var info=sbook_getinfo(target);
+    var tags=((info)&&(info.tags));
     var tagdiv=fdjtDiv(".tags.cues");
     tagdiv.onclick=function(evt) {
       var target=$T(evt);
@@ -821,7 +822,8 @@ function sbookSetFocus(target,force)
       var i=0; while (i<tags.length) {
 	var tag=tags[i++];
 	if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
-	else fdjtAppend(tagdiv,knoSpan(tag)," ");}}
+	else if (i===1) fdjtAppend(tagdiv,knoSpan(tag)," ");
+	else fdjtAppend(tagdiv,"\u00B7 ",knoSpan(tag)," ");}}
     fdjtReplace("SBOOKSEARCHCUES",tagdiv);
     // var otitle=target.title;
     if ((sbook_flash_progress)&&(!(sbook_mode))) {
