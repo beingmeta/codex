@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_comment_id="$Id: social.js 4489 2009-11-08 00:41:06Z haase $";
-var sbooks_comment_version=parseInt("$Revision: 4489 $".slice(10,-1));
+var sbooks_comment_id="$Id$";
+var sbooks_comment_version=parseInt("$Revision$".slice(10,-1));
 
 /* This file implements comment dialogs */
 
