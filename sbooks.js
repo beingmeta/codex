@@ -1074,7 +1074,7 @@ function sbook_onmouseup(evt)
 {
   evt=evt||event||null;
   // sbook_trace_handler("sbook_onmouseup",evt);
-  if (evt.button>1) {
+  if ((evt.button>1)||(fdjtHasParent($T(evt),sbookHUD))) {
     sbook_start_select=false;
     return;}
   if (sbook_start_select) {
