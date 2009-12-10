@@ -297,8 +297,8 @@ function sbookPostElements()
   var check1=fdjtInput("CHECKBOX","PUSH","yes",false);
   var check2=fdjtInput("CHECKBOX","PUSH","yes",false);
   check2.disabled=true;
-  var span1=fdjtSpan(".checkspan#SBOOKCANPOST","post",check1);
-  var span2=fdjtSpan(".checkspan","post",check2);
+  var span1=fdjtSpan(".checkspan#SBOOKCANPOST","push",check1);
+  var span2=fdjtSpan(".checkspan","push",check2);
   span1.onclick=fdjtCheckSpan_onclick;
   var a1=fdjtAnchor("http://sbooks.net/fb/settings/prefs",span2);
   a1.id="SBOOKCANTPOST";
