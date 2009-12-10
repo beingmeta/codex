@@ -805,19 +805,7 @@ function sbookSetFocus(target,force)
     var info=sbook_getinfo(target);
     var tags=((info)&&(info.tags));
     var tagdiv=fdjtDiv(".tags.cues");
-    tagdiv.onclick=function(evt) {
-      var target=$T(evt);
-      var term=((target.sectname)||
-		((target.getAttribute) && (target.getAttribute("dterm"))));
-      var textinput=$("SBOOKSEARCHTEXT");
-      var qval=((textinput.getAttribute("isempty"))? ("") : (textinput.value||""));
-      var qlength=qval.length;
-      if (qlength===0)
-	sbookSetQuery(term+';',false);
-      else if (qval[qlength-1]===';')
-	sbookSetQuery(qval+term+';',false);
-      else sbookSetQuery(term+';'+qval,false);
-      sbookHUDMode("searching");};
+    tagdiv.onclick=sbook_tagdiv_onclick;
     if (tags) {
       var i=0; while (i<tags.length) {
 	var tag=tags[i++];
@@ -893,6 +881,9 @@ function sbookGetXYFocus(xoff,yoff)
 function sbook_onkeydown(evt)
 {
   evt=evt||event||null;
+  // sbook_trace_handler("sbook_onkeydown",evt);
+  if (evt.keyCode===17) /* Control */
+    fdjtAddClass(document.body,"ctrldown");
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_mode) {
       sbookHUDMode(false);
@@ -903,14 +894,13 @@ function sbook_onkeydown(evt)
       fdjtAddClass(sbookHUD,"hudup");
       sbook_mode=true;}
     return;}
-  if (evt.keyCode===17) {
-    fdjtAddClass(document.body,"ctrldown");}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput($T(evt))) return true;
   else if (evt.keyCode===16) {
-    if (sbook_mode)
+    if (sbook_mode) 
       fdjtDropClass(sbookHUD,sbook_mode);
-    else fdjtAddClass(sbookHUD,"hudup");}
+    else {
+      fdjtAddClass(sbookHUD,"hudup");}}
   else if (evt.keyCode===32) /* Space char */
     sbookNextPage(evt);
   /* Backspace or Delete */
@@ -931,12 +921,15 @@ function sbook_onkeydown(evt)
 function sbook_onkeyup(evt)
 {
   evt=evt||event||null;
-  if (evt.keyCode===17) {
-    fdjtDropClass(document.body,"ctrldown");}
-  if (fdjtIsTextInput($T(evt))) return true;
+  // sbook_trace_handler("sbook_onkeyup",evt);
+  if (evt.keyCode===17) { /* Control */
+    fdjtDropClass(document.body,"ctrldown");
+    return true;}
+  else if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.keyCode===16) {
     fdjtDropClass(sbookHUD,"hudup");
+    fdjtDropClass(document.body,"hudup");
     if (sbook_mode) fdjtAddClass(sbookHUD,sbook_mode);
     evt.cancelBubble=true;
     if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
@@ -1108,11 +1101,7 @@ function sbook_onmouseup(evt)
 	    target=scan; break;}
 	  else scan=scan.parentNode;}}
     else target=false;
-    fdjtTrace("onmouseup, target is %o",target);
-    if (target) {
-      evt.cancelBubble=true;
-      if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
-      sbook_ping(target);}}
+    if (target) {sbook_ping(target);}}
   if (sbook_start_select)
     // We delay so that sbook_onclick doesn't do anything rash
     fdjtDelayHandler(100,sbook_clear_select,sbook_root);
@@ -1126,6 +1115,7 @@ function sbook_onclick(evt)
   if (evt.button>1) return;
   while (scan)
     if ((scan==sbook_root)||(scan===window)) break;
+    else if (scan.id) {target=scan; break;}
     else if ((scan.onclick) || 
 	     (scan.tagName==='A') ||  (scan.tagName==='INPUT') ||
 	     (scan.tagName==='TEXTAREA') ||
@@ -1141,7 +1131,7 @@ function sbook_onclick(evt)
 	   (fdjtHasParent(target,sbook_ping_target))) {
     sbook_ping(sbook_ping_target);
     return;}
-  else if ((evt.ctrlKey)&&(target)&&(target.id))
+  else if ((evt.ctrlKey)&& (target)&&(target.id))
     sbook_ping(target);
 }
 
@@ -1150,6 +1140,22 @@ function sbook_ondblclick(evt)
   evt=evt||event||null;
   sbook_onclick(evt);
   sbookHUDMode("ping");
+}
+
+function sbook_tagdiv_onclick(evt)
+{
+  var target=$T(evt);
+  var term=((target.sectname)||
+	    ((target.getAttribute) && (target.getAttribute("dterm"))));
+  var textinput=$("SBOOKSEARCHTEXT");
+  var qval=((textinput.getAttribute("isempty"))? ("") : (textinput.value||""));
+  var qlength=qval.length;
+  if (qlength===0)
+    sbookSetQuery(term+';',false);
+  else if (qval[qlength-1]===';')
+    sbookSetQuery(qval+term+';',false);
+  else sbookSetQuery(term+';'+qval,false);
+  sbookHUDMode("searching");
 }
 
 /* Default keystrokes */

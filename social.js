@@ -298,7 +298,7 @@ function sbookEveryoneButton_onclick(evt)
     sbookHUDMode(false);
     evt.cancelBubble=true;
     return;}
-  echobar.sbooksources=true;
+  sbook_echobar.sbooksources=true;
 }
 
 function sbookEchoToEntry(echo)
