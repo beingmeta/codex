@@ -894,7 +894,7 @@ function sbookSetTarget(target)
     sbook_target=false;}
   if (!(target)) return;
   else if (sbookInUI(target)) {}
-  else if ((target!==sbook_root)||(target!==document.body)) {}
+  else if ((target===sbook_root)||(target===document.body)) {}
   else {
     fdjtAddClass(target,"sbooktarget");
     sbook_target=target;}

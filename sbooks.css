@@ -40,10 +40,10 @@ h3.sbookhead, h4.sbookhead { text-decoration: overline;}
 body.sbookhead { text-decoration: none;}
 
 /* This is essentially where the mouse is (as tracked) */
-.sbookfocus { cursor: text;}
+.sbookfocus { cursor: pointer; color: blue;}
 
 /* This is the last explicit target of a jump or mark */
-.sbookfocuslock { color: blue; text-decoration: overline;}
+.sbookfocuslock { text-decoration: overline;}
 .sbookfocuslock:hover { color: darkblue;}
 
 .sbooktarget { color: darkblue;}

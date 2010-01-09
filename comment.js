@@ -46,11 +46,9 @@ function sbookMarkHUDSetup(origin,excerpt)
   if (sbook_target===target) {
     /* If the target is just unchanged, just update selected text as excerpt */
     var seltext=fdjtSelectedText();
-    if (sbook_target!==target) sbookSetTarget(target);
     if (seltext) sbookSetMarkExcerpt(seltext);
     return;}
   sbookSetTarget(target);
-  sbook_target=target;
   if (excerpt) sbookSetMarkExcerpt(excerpt);
   else sbookSetMarkExcerpt(target);
   var info=((target) &&
@@ -117,7 +115,6 @@ function sbookMarkHUDSetup(origin,excerpt)
   var k=0; while (k<tags.length) {
     var tag=tags[k++];
     if (fdjtIndexOf(tagcues,tag)<0) tagcues.push(tag);}
-  fdjtTrace("tagcues are %o",tagcues);
   fdjtSetCompletionCues($("SBOOKMARKCLOUD"),tagcues);
   fdjtAutoPrompt_setup($("SBOOKMARK"));
   sbookSelectSummaries(sbookGlossesHUD,true,false,target.id);
@@ -537,6 +534,7 @@ function sbookMarkTag_onkeyup(evt)
 function sbook_mark(target,gloss)
 {
   if (sbook_target!==target) {
+    sbookSetTarget(target);
     $("SBOOKMARKFORM").reset();
     sbook_focus=target;
     sbookMarkHUDSetup(target,gloss);}

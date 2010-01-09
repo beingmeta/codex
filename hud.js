@@ -444,7 +444,6 @@ function sbookHUD_Init()
     var yoff=scrolly+sbook_last_y;
     var scroll_target=sbookGetXYFocus(xoff,yoff);
     if (scroll_target) target=scroll_target;}
-  sbookSetTarget(target);
   if (!(target)) target=sbook_root;
   if ((target!==sbook_root)||(target!==document.body)) {
     target.scrollIntoView();
