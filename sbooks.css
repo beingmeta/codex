@@ -690,7 +690,7 @@ div.sbooktoc div.head {
   position: relative; margin: 0px; padding: 0px; border: 0px;
   left: 0px; width: 100%;
   display: none;}
-div.sbooktoc div.head a.sectname { display: block;}
+div.sbooktoc div.head a.sectname { display: block; color: yellow;}
 div.sbooktoc div.head .progressbar { 
   color: lightblue; background-color: lightblue;
   padding: 0px; margin: 0px;
@@ -707,9 +707,10 @@ div.sbooktoc div.sub { display: none; margin-left: 20px; margin-right: 20px;}
 div.sbooktoc.cur div.head { font-size: 125%;}
 div.sbooktoc.cur div.sub { display: block;}
 
-div.sbooktoc .sectname.cohi { color: yellow;}
-div.sbooktoc .sectname { color: blue; cursor: pointer;}
-div.sbooktoc div.sub a.sectname { font-size: 80%; white-space: nowrap;}
+div.sbooktoc .sectname.cohi { color: orange;}
+div.sbooktoc .sectname { color: yellow; cursor: pointer;}
+div.sbooktoc div.sub a.sectname { 
+  color: yellow; font-size: 80%; white-space: nowrap;}
 
 div#SBOOKHUD div.sbooktoc div.head { display: none;}
 div#SBOOKHUD div.sbooktoc div.spanbar { display: none;}
