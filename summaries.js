@@ -66,7 +66,7 @@ function _sbook_sort_summaries(x,y)
 
 function sbookSummaryHead(target,head,eltspec,extra)
 {
-  var head=sbook_get_head(target);
+  var head=sbookGetHead(target);
   var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)",
 		    _("previewing: move mouse to restore"));
   if (typeof extra === "undefined")
@@ -111,13 +111,13 @@ function sbookShowSummaries(summaries,summary_div,query)
     var target=((target_id)&&($(target_id)));
     if (!target) continue;
     if (target!==curtarget) {
-      var head=sbook_get_head(target);
+      var head=sbookGetHead(target);
       var blockhead=sbookSummaryHead(target,head);
       var block=fdjtDiv("tocblock",blockhead);
       block.blocktarget=target;
       fdjtAppend(summary_div,block);
       curblock=block; curtarget=target;}
-    fdjtAppend(curblock,sbookShowSummary(summary,query,true));}
+    fdjtAppend(curblock,sbookSummaryDiv(summary,query,true));}
   return summary_div;
 }
 
@@ -127,9 +127,9 @@ function sbookAddSummary(summary,summary_div,query)
   var target_id=((summary.id)||(summary.fragid)||false);
   var target=((target_id)&&($(target_id)));
   if (!target) return;
-  var head=sbook_get_head(target);
+  var head=sbookGetHead(target);
   var children=summary_div.childNodes; var placed=false;
-  var sum_div=sbookShowSummary(summary,query,true);
+  var sum_div=sbookSummaryDiv(summary,query,true);
   var i=0; while (i<children.length) {
     var child=children[i++];
     if (child.nodeType!==1) continue;
@@ -155,31 +155,40 @@ function sbookAddSummary(summary,summary_div,query)
 /* Showing a single summary */
 
 
-// Gets a DOM element from a search summary (section or echo)
+// Gets a DOM element from a search summary (section or gloss)
 // QUERY is the query which generated this summary (could be false)
 // NOTOC indicates whether to include location information in the
 //  displayed information.  This is true if the context somehow
 //  provides that information
-function sbookShowSummary(summary,query,notoc)
+function sbookItemInfo(item)
 {
-  var key=summary.sortkey;
+  if (typeof item === 'string')
+    if (item[0]===':') return sbookOIDRef(item);
+    else sbook_info[item];
+  else if (item.oid) return item;
+  else if (item._fdjtid)
+    return sbook_info[item._fdjtid]||false;
+  else return false;
+}
+
+function sbookSummaryDiv(item,query,showhead)
+{
+  var info=sbookItemInfo(item);
+  var key=info._fdjtid; var target_id=(info.id); var oid=info.oid;
   var refiners=((query) && (query._refiners));
-  var target_id=((typeof summary === "string") ? (summary) :
-		 (summary.id||summary.fragid));
   var target=$(target_id);
-  var sumdiv=fdjtDiv((summary.echo) ? "summary echo" : "summary");
-  if (target) sumdiv.sbook_ref=target;
-  if (summary.echo) sumdiv.sbookecho=summary;
-  var info=fdjtSpan("info");
-  if ((query) && (query[target_id])) { /* If you have a score, use it */
+  var sumdiv=fdjtDiv(((info.glossid) ? "summary gloss" : "summary"),
+		     sbookPreviewIcon(target));
+  if (target_id) sumdiv.sbook_ref=target_id;
+  if (oid) sumdiv.sbook_oid=oid;
+  var infospan=fdjtSpan("info");
+  if ((query) && (query[key])) { /* If you have a score, use it */
     var scorespan=fdjtSpan("score");
     var score=query[key]; var k=0;
     while (k<score) {fdjtAppend(scorespan,"*"); k++;}
-    fdjtAppend(info,scorespan);}
-  fdjtAppend(sumdiv,info);
-  sumdiv.searchsummary=target;
-  var tags=summary.tags||[];
-  var dist=summary.tribes||[];
+    fdjtAppend(infospan,scorespan);}
+  fdjtAppend(sumdiv,infospan);
+  var tags=info.tags||[];
   if (refiners)
     tags.sort(function(t1,t2) {
 	var s1=refiners[t1]; var s2=refiners[t2];
@@ -191,77 +200,16 @@ function sbookShowSummary(summary,query,notoc)
 	else if (s2) return 1;
 	else return 0;});
   var head=((target.sbooklevel) ? (target) :
-	    ((sbook_get_head(target))||(target)));
+	    ((sbookGetHead(target))||(target)));
   if (head===document.body) head=target;
-  if (summary.echo) {
-    var user=summary.user;
-    var userinfo=social_info[user];
-    var usrimg=fdjtImage((summary.pic)||(summary.echo.pic)||(userinfo.pic),"userpic",userinfo.name);
-    var interval=((summary.tstamp) ? (fdjtTick()-summary.tstamp) : (-1));
-    var delete_icon=
-      ((user===sbook_user)&&(fdjtImage(sbook_delete_icon,false,"x")));
-    var delete_button=
-      ((delete_icon)&&
-       (fdjtAnchorC("http://echoes.sbooks.net/delete/"+summary.pingid,
-		    ".deletebutton",delete_icon)));
-    var agespan=
-      ((interval>0)&&
-       ((interval>(3*24*3600)) 
-	? (fdjtAnchorC("http://echoes.sbooks.net/ref/"+summary.pingid,
-		       "age",fdjtTickDate(summary.tstamp)))
-	: (fdjtAnchorC("http://echoes.sbooks.net/ref/"+summary.pingid,
-		       "age",
-		       fdjtSpan("altreltime",fdjtIntervalString(interval)),
-		       fdjtSpan("altabstime",fdjtTickDate(summary.tstamp)),
-		       " ago"))));
-    if (agespan) {
-      agespan.onclick=function(evt) {
-	evt.cancelBubble=true;};
-      agespan.target="sbookechoes";
-      agespan.title="browse this note/echo";}
-    if (delete_button) {
-      delete_button.onclick=function(evt) {
-	evt.cancelBubble=true;};
-      delete_button.target="_blank";
-      delete_icon.title="delete this note/echo";
-      delete_button.title="delete this note/echo";}
-    var relay_button;
-    if (user===sbook_user) {
-      relay_button=
-	fdjtImage(sbook_small_remark_icon,"remarkbutton","ping",
-		  _("click to edit your comment"));
-      relay_button.onclick=function(evt){
-	sbook_ping(target,summary);
-	evt.preventDefault(); evt.cancelBubble=true;};}
-    else {
-      relay_button=
-	fdjtImage(sbook_small_remark_icon,"remarkbutton","ping",
-		  _("click to relay or respond"));
-      relay_button.onclick=function(evt){
-	sbook_ping(target,summary);
-	evt.preventDefault(); evt.cancelBubble=true;};}
-    fdjtAppend
-      (sumdiv,usrimg,
-       relay_button,delete_button,
-       ((summary.detail)&&(_sbookDetailsButton())),((summary.detail)&&" "),
-       ((summary.xrefs)&&(_sbookXrefsButton())),
-       agespan);}
-  if ((head) && (!(notoc)))
-    fdjtAppend(sumdiv,sbookSummaryHead(target));
-  else {
-    var eye=fdjtImage(sbook_small_eye_icon,"eye","(\u00b7)",
-		      _("previewing: move mouse to restore"));
-    eye.onmouseover=sbookPreview_onmouseover;
-    eye.onmouseout=sbookPreview_onmouseout;
-    eye.onclick=sbookSummary_onclick;
-    eye.sbook_ref=target;
-    fdjtAppend(sumdiv,eye);}
-
-  if (summary.echo)
+  if (info.glossid) sbookMarkInfo(sumdiv,info);
+  if (info.glossid)
     fdjtAppend(sumdiv,
-	       ((summary.msg)&&(fdjtSpan("msg",summary.msg))),((summary.msg)&&" "),
-	       ((summary.excerpt)&&(_sbookExcerptSpan(summary.excerpt))),
-	       ((summary.excerpt)&&" "));
+	       ((item.msg)&&(fdjtSpan("msg",item.msg))),((item.msg)&&" "),
+	       ((item.excerpt)&&(sbookExcerptSpan(item.excerpt))));
+  else {
+    var contentspan=fdjtSpan("content");
+    fdjtAppend(sumdiv,contentspan);}
   var tagspan=sumdiv;
   if ((tags)&&(tags.length>0)) fdjtAppend(sumdiv," // ");
   var j=0; var first=true; while (j<tags.length) {
@@ -282,54 +230,69 @@ function sbookShowSummary(summary,query,notoc)
       fdjtAppend(sumdiv," ",controller," ",tagspan);
       fdjtAppend(tagspan,knoSpan(tag));}
     else fdjtAppend(tagspan," \u00b7 ",knoSpan(tag));}
-  var distspan=sumdiv;
-  if ((dist)&&(dist.length>0)) fdjtAppend(sumdiv," // ");
-  var j=0; var first=true; while (j<dist.length) {
-    var d=dist[j++];
-    if (j===1) 
-      fdjtAppend(distspan,sbookTribeSpan(d));
-    else if ((j===4) &&
-	     (distspan===sumdiv) &&
-	     (dist.length>7)) {
-      var controller=fdjtSpan("controller",
-			      "\u00b7\u00b7\u00b7",tags.length-6,
-			      "+\u00b7\u00b7\u00b7");
-      distspan=fdjtSpan("moretags");
-      distspan.style.display='none';
-      controller.title=("click to toggle more targets");
-      controller.onclick=fdjtShowHide_onclick;
-      controller.clicktotoggle=new Array(distspan);
-      fdjtAppend(sumdiv," ",controller," ",distspan);
-      fdjtAppend(distspan,sbookTribeSpan(d));}
-    else fdjtAppend(distspan," \u00b7 ",sbookTribeSpan(d));}
-  if (summary.detail) 
-    fdjtAppend(sumdiv,fdjtDiv("detail",summary.detail));
-  if ((summary.xrefs) && (summary.xrefs.length>0))  {
+  if (info.detail) 
+    fdjtAppend(sumdiv,fdjtDiv("detail",item.detail));
+  if ((info.xrefs) && (info.xrefs.length>0))  {
     var xrefsdiv=fdjtDiv("xrefs");
-    var xrefs=summary.xrefs;
+    var xrefs=info.xrefs;
     var i=0; while (i<xrefs.length) {
       var xref=xrefs[i++];
       var anchor=fdjtAnchor(xref,xref);
       anchor.target='_blank';
-      anchor.onclick=function(evt) { evt.cancelBubble=true;};
+      anchor.onclick=fdjtCancelBubble;
       fdjtAppend(xrefsdiv,anchor);}
     fdjtAppend(sumdiv,xrefsdiv);}
-  if (summary.echo) sumdiv.echo=summary.echo;
   return sumdiv;
 }
 
-function sbookTribeSpan(dist)
+function sbookMarkInfo(sumdiv,info)
 {
-  var info=social_info[dist];
-  if (info) {
-    var span=fdjtSpan("tribe",info.name);
-    if (info.gloss) span.title=info.gloss;
-    else if (info.summary) span.title=info.summary;
-    return span;}
-  else return fdjtSpan("tribe",dist);
+  var user=info.user;
+  var feed=info.feed||false;
+  var userinfo=fdjtOIDs[user];
+  var feedinfo=fdjtOIDs[feed];
+  var img=((info.pic)&&(fdjtImage((info.pic),"glosspic",userinfo.name)))||
+    ((userinfo.pic)&&(fdjtImage((userinfo.pic),"userpic",userinfo.name)));
+  var interval=((info.tstamp) ? (fdjtTick()-info.tstamp) : (-1));
+  var delete_button=
+    ((user===sbook_user)&&
+     (fdjtAnchorC("http://glosses.sbooks.net/glosses/delete?GLOSS="+info.oid,
+		  ".deletebutton",fdjtImage(sbook_delete_icon,false,"x"))));
+  var agespan=
+    ((interval>0)&&
+     ((interval>(5*24*3600)) 
+      ? (fdjtAnchorC("http://glosses.sbooks.net/glosses/browse/"+info.glossid,
+		     "age",fdjtTickDate(info.tstamp)))
+      : (fdjtAnchorC("http://glosses.sbooks.net/glosses/browse/"+info.glossid,
+		     "age",
+		     fdjtSpan("altreltime",fdjtIntervalString(interval)),
+		     fdjtSpan("altabstime",fdjtTickDate(info.tstamp)),
+		     " ago"))));
+  if (agespan) {
+    agespan.onclick=fdjtCancelBubble;
+    agespan.target="sbookglosses";
+    agespan.title="browse this note/gloss";}
+  if (delete_button) {
+    delete_button.onclick=fdjtCancelBubble;
+    delete_button.target="_blank";
+    delete_button.title="delete this note/gloss";}
+  var relay_button;
+  if (user===sbook_user) 
+    relay_button=
+      fdjtImage(sbook_small_remark_icon,"remarkbutton","mark",
+		_("click to edit your comment"));
+  else relay_button=
+	 fdjtImage(sbook_small_remark_icon,"remarkbutton","mark",
+		   _("click to relay or respond"));
+  relay_button.onclick=sbookRelay_onclick;
+  fdjtAppend
+    (sumdiv,img,relay_button,delete_button,
+     ((info.detail)&&(sbookDetailsButton())),((info.detail)&&" "),
+     ((info.xrefs)&&(sbookXRefsButton())),((info.xrefs)&&" "),
+     agespan);
 }
 
-function _sbookExcerptSpan(excerpt)
+function sbookExcerptSpan(excerpt)
 {
   var content=fdjtSpan("content",excerpt);
   var ellipsis=fdjtSpan("ellipsis","...");
@@ -342,7 +305,20 @@ function _sbookExcerptSpan(excerpt)
   return container;
 }
 
-function _sbookDetailsButton(excerpt)
+function sbookPreviewIcon(target,icon,alt)
+{
+  var eye=fdjtImage(icon||sbook_small_eye_icon,
+		    "preview",
+		    alt||"(\u00b7)",
+		    _("previewing: move mouse to restore"));
+  eye.onmouseover=sbookPreview_onmouseover;
+  eye.onmouseout=sbookPreview_onmouseout;
+  eye.onclick=sbookSummary_onclick;
+  eye.sbook_ref=target.id;
+  return eye;
+}
+
+function sbookDetailsButton(excerpt)
 {
   var img=fdjtImage(sbook_details_icon,"detailsbutton","details");
   img.onclick=function(evt) {
@@ -355,7 +331,7 @@ function _sbookDetailsButton(excerpt)
   return img;
 }
 
-function _sbookXrefsButton(excerpt)
+function sbookXRefsButton(excerpt)
 {
   var img=fdjtImage(sbook_outlink_icon,"xrefsbutton","xrefs");
   img.onclick=function(evt) {
@@ -368,6 +344,46 @@ function _sbookXrefsButton(excerpt)
   return img;
 }
 
+function sbookRelay_onclick(evt)
+{
+  var target=evt.target;
+  while (target)
+    if (target.sbook_ref) break;
+    else target=target.parentNode;
+  if (!(target)) return;
+  if (target.sbook_oid)
+    sbook_mark($(target.sbook_ref),fdjtOIDs[target.sbook_oid]||false);
+  else sbook_mark($(target.sbook_ref),false);
+  evt.preventDefault(); evt.cancelBubble=true;
+}
+
+/* Selecting a subset of glosses to display */
+
+function sbookSelectSummaries(results_div,sources,idroot)
+{
+  var blocks=$$(".tocblock",results_div);
+  if ((idroot)||(sources))
+    fdjtAddClass(results_div,"targeted");
+  else fdjtDropClass(results_div,"targeted");
+  var i=0; while (i<blocks.length) {
+    var block=blocks[i++];  var empty=true;
+    var summaries=$$(".summary",block);
+    var j=0; while (j<summaries.length) {
+      var summary=summaries[j++];
+      var gloss=(summary.sbook_oid)&&fdjtOIDs[summary.sbook_oid];
+      if ((sources)&&(!(gloss)))
+	fdtjAddClass(summary,"hidden");
+      else if (((!(idroot))||(gloss.id.search(idroot)===0)) &&
+	       ((!(sources))||
+		(fdjtContains(sources,gloss.user))||
+		(fdjtContains(sources,gloss.feed)))) {
+	fdjtDropClass(summary,"hidden"); empty=false;}
+      else fdjtAddClass(summary,"hidden");}
+    if (empty) fdjtAddClass(block,"hidden");
+    else fdjtDropClass(block,"hidden");}
+  if (sbook_focus) sbookScrollGlosses(results_div,sbook_focus);
+}
+
 /* Results handlers */
 
 function sbookSummary_onclick(evt)
@@ -376,8 +392,8 @@ function sbookSummary_onclick(evt)
   while (target)
     if (target.sbook_ref) {
       fdjtScrollDiscard();
-      var elt=target.sbook_ref;
-      var head=elt.sbook_head;
+      var elt=$(target.sbook_ref);
+      var head=$(elt.sbook_head);
       if (head) sbookScrollTo(elt,head);
       else sbookScrollTo(elt);
       evt.preventDefault(); evt.cancelBubble=true;
@@ -392,12 +408,6 @@ function sbookSummary_onclick(evt)
 
 function sbookSummary_onmouseover(evt)
 {
-  var target=$T(evt);
-  while (target)
-    if (target.sbook_ref) break;
-    else target=target.parentNode;
-  if (!(target)) return;
-  sbookPreviewLocation(target.sbook_ref);
 }
 
 /* Emacs local variables

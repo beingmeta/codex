@@ -34,8 +34,8 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 // This is the HUD top element
 var sbookHUD=false;
-// This is the HUD where all echoes are displayed
-var sbookEchoesHUD=false;
+// This is the HUD where all glosses are displayed
+var sbookGlossesHUD=false;
 // This is the HUD for tag searching
 var sbookSearchHUD=false;
 // This is the TOC HUD for navigation
@@ -49,68 +49,66 @@ function createSBOOKHUD()
   var hud=$("SBOOKHUD");
   if (hud) return hud;
   else {
-    var index_button=
-      fdjtImage(sbook_graphics_root+"TagSearch40x40.png","hudbutton","index","tag search");
-    var toc_button=
-      fdjtImage(sbook_graphics_root+"CompassIcon40x40.png","hudbutton","toc","navigate table of contents");
-    var echobar=sbookCreateEchoBar("#SBOOKECHOES.echobar.hudblock.hud");
     hud=fdjtDiv
-      ("#SBOOKHUD",index_button,toc_button,
-       fdjtDiv("#SBOOKLOC.hudblock.hud",_sbook_generate_spanbar(document.body)),
-       sbookCreateNavHUD(),
-       fdjtWithId(createSBOOKHUDsearch(),"SBOOKSEARCH"),
+      ("#SBOOKHUD.hud",
+       fdjtDiv("#SBOOKTOC.hudblock.hud"),
+       fdjtDiv("#SBOOKLOC.hudblock.hud"),
+       fdjtDiv("#SBOOKFEEDS.hudblock.hud"),
+       fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
+       fdjtDiv("#SBOOKSEARCH.hudblock.hud"),
        fdjtDiv("#SBOOKRIGHTMARGIN.hud"),
-       sbookCreateHelpHUD(),
-       echobar);
+       sbookCreateHelpHUD());
+
     hud.title="";
-    index_button.onclick=sbookIndexButton_onclick;
-    index_button.onmouseover=fdjtClassAdder("SBOOKSEARCH","hover");
-    index_button.onmouseout=fdjtClassDropper("SBOOKSEARCH","hover");
-
-    toc_button.onclick=sbookTOCButton_onclick;
-    toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
-    toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
-
     hud.onclick=sbookHUD_onclick;
     hud.onmouseover=sbookHUD_onmouseover;
     hud.onmouseout=sbookHUD_onmouseout;
 
     sbookHUD=hud;
+
     fdjtPrepend(document.body,hud);
-    $("SBOOKECHOES").onclick=sbookEchoBar_onclick;
-    $("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
+
+    if (sbook_head) sbookSetHead(sbook_head);
+
     return hud;}
 }
 
-/* Determines how far below the top edge to naturally scroll.
-   This ties to avoid the HUD, in case it is up. */
-function sbookDisplayOffset()
+function sbookInitNavHUD()
 {
-  var toc=$("SBOOKTOC");
-  if (toc) return -((toc.offsetHeight||60)+15);
-  else return -60;
+  fdjtAppend("SBOOKLOC",_sbook_generate_spanbar(document.body));
+  fdjtReplace("SBOOKTOC",sbookCreateNavHUD());
+  var toc_button=
+    fdjtImage(sbook_graphics_root+"CompassIcon40x40.png","hudbutton","toc",
+	      "navigate table of contents");
+  toc_button.onclick=sbookTOCButton_onclick;
+  toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
+  toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
+  fdjtPrepend(sbookHUD,toc_button);
 }
 
-function sbookScrollTo(elt,cxt)
+function sbookInitSocialHUD()
 {
-  fdjtClearPreview();
-  if (elt.sbookloc) sbookSetLocation(elt.sbookloc);
-  sbookSetFocus(elt);
-  if ((elt.getAttribute) &&
-      (elt.getAttribute("toclevel")) ||
-      ((elt.sbookinfo) && (elt.sbookinfo.level)))
-    sbookSetHead(elt);
-  else if (elt.sbook_head)
-    sbookSetHead(elt.sbook_head);
-  if ((!cxt) || (elt===cxt))
-    fdjtScrollTo(elt,sbookGetStableId(elt),false,true,sbookDisplayOffset());
-  else fdjtScrollTo(elt,sbookGetStableId(elt),cxt,true,sbookDisplayOffset());
+  fdjtReplace("SBOOKGLOSSES",sbookCreateGlossesHUD());
+  fdjtReplace("SBOOKFEEDS",sbookCreateFeedHUD());
 }
+
+function sbookInitSearchHUD()
+{
+  fdjtReplace("SBOOKSEARCH",sbookCreateSearchHUD());
+  var index_button=
+    fdjtImage(sbook_graphics_root+"TagSearch40x40.png","hudbutton","index",
+	      "search the content using semantic tags");
+  index_button.onclick=sbookIndexButton_onclick;
+  index_button.onmouseover=fdjtClassAdder("SBOOKSEARCH","hover");
+  index_button.onmouseout=fdjtClassDropper("SBOOKSEARCH","hover");
+  fdjtPrepend(sbookHUD,index_button);
+}
+
 
 /* Mode controls */
 
-var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudechoes)/g;
-var sbookHUDMode_pat=/(help)|(searching)|(browsing)|(toc)|(echoes)|(ping)/g;
+var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
+var sbookHUDMode_pat=/(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)/g;
 
 function sbookHUDMode(mode)
 {
@@ -119,10 +117,12 @@ function sbookHUDMode(mode)
 	    mode,sbook_mode,document.body.className);
   if (mode) {
     sbook_mode=mode;
+    // fdjtAddClass(document.body,"hudup");
     fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
   else {
     sbook_mode=false;
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);
+    // fdjtDropClass(document.body,"hudup");
     fdjtDropClass(sbookHUD,"hudup");}
 }
 function sbookHUDToggle(mode)
@@ -152,7 +152,7 @@ function sbookPreviewLocation(elt)
 function sbookPreview(elt,nomode)
 {
   var cxt=false;
-  // sbook_trace_handler("sbookPreview",elt);
+  // sbook_trace("sbookPreview",elt);
   if (elt===false) return sbookStopPreview();
   /* No longer needed with TOC at the bottom */
   var offset=sbookDisplayOffset();
@@ -227,13 +227,13 @@ function sbookStopPreview(ignored)
   window.setTimeout("sbook_preview=false;",100);
 }
 
-// What to use as the podspot image URI.  This 'image' 
+// What to use as the glossmark image URI.  This 'image' 
 //  really invokes a script to pick or generate a
 //  image for the current user and document.
-var sbook_podspot_img="sBooksWE_32x32.png";
-function sbook_echoes_icon(uri)
+var sbook_glossmark_img="sBooksWE_32x32.png";
+function sbook_glosses_icon(uri)
 {
-  return sbook_webechoes_root+"podspots/"+sbook_podspot_img+
+  return sbook_webglosses_root+"glossmarks/"+sbook_glossmark_img+
     ((uri) ? ("?URI="+encodeURIComponent(uri)) : "");
 }
 
@@ -242,21 +242,21 @@ function sbook_echoes_icon(uri)
 function sbookHUD_onmouseover(evt)
 {
   evt=evt||event||null;
-  // sbook_trace_handler("sbookHUD_onmouseover",evt);
+  // sbook_trace("sbookHUD_onmouseover",evt);
   if (sbook_mode) evt.cancelBubble=true;
 }
 
 function sbookHUD_onmouseout(evt)
 {
   evt=evt||event||null;
-  // sbook_trace_handler("sbookHUD_onmouseout",evt);
+  // sbook_trace("sbookHUD_onmouseout",evt);
   if (sbook_mode) evt.cancelBubble=true;
 }
 
 function sbookHUD_onclick(evt)
 {
   evt=evt||event||null;
-  // sbook_trace_handler("sbookHUD_onclick",evt);
+  // sbook_trace("sbookHUD_onclick",evt);
   var target=$T(evt);
   while (target)
     if ((sbook_mode) &&
@@ -312,7 +312,7 @@ function sbookHelpHighlight(hudelt)
 
 function sbookCreateHelpHUD(eltspec)
 {
-  var div=fdjtDiv(eltspec||"#SBOOKHELP");
+  var div=fdjtDiv(eltspec||"#SBOOKAPP");
   div.onmouseover=function(evt){
     var target=$T(evt);
     while (target)
@@ -346,27 +346,16 @@ function sbookUpdateHelpHider()
 
 /* The TOC head */
 
-function sbookCreateNavHUD(eltspec)
-{
-  var toc_div=sbookTOCDiv(sbook_getinfo(sbook_root),0);
-  var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
-  div.onmouseover=sbookTOC_onmouseover;
-  div.onmouseout=sbookTOC_onmouseout;
-  div.onclick=sbookTOC_onclick;
-  if (!(eltspec)) sbookNavHUD=div;
-  return div;
-}
-
 function sbookTOC_onmouseover(evt)
 {
   evt=evt||event||null;
-  // sbook_trace_handler("sbookTOC_onmouseover",evt);
-  var target=sbook_get_reftarget($T(evt));
+  // sbook_trace("sbookTOC_onmouseover",evt);
+  var target=sbookGetRef($T(evt));
   if (!((sbook_mode)||(fdjtHasClass(sbookHUD,"hudup")))) return;
   sbookHUD_onmouseover(evt);
   fdjtCoHi_onmouseover(evt);
   if (target===null) return;
-  var head=document.getElementById(target.sbook_ref);
+  var head=sbookGetHead(target);
   if (head)
     fdjtDelayHandler(250,sbookPreviewNoMode,head,
 		     document.body,"previewing");
@@ -375,7 +364,7 @@ function sbookTOC_onmouseover(evt)
 function sbookTOC_onmouseout(evt)
 {
   evt=evt||event||null;
-  // sbook_trace_handler("sbookTOC_onmouseout",evt);
+  // sbook_trace("sbookTOC_onmouseout",evt);
   sbookHUD_onmouseout(evt);
   fdjtCoHi_onmouseout(evt);
   fdjtDelayHandler(250,sbookStopPreview,false,document.body,"previewing");
@@ -394,22 +383,21 @@ function sbookTOC_onmouseout(evt)
 function sbookTOC_onclick(evt)
 {
   evt=evt||event||null;
-  // sbook_trace_handler("sbookTOC_onclick",evt);
-  var target=sbook_get_reftarget($T(evt));
-  var headelt=((target)&&(document.getElementById(target.sbook_ref)));
-  if (headelt===null) {
+  // sbook_trace("sbookTOC_onclick",evt);
+  var target=sbookGetRef($T(evt));
+  if (target===null) {
     sbookHUDToggle("toc");
     return;}
   sbook_preview=false;
   fdjtScrollDiscard();
   if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
   evt.cancelBubble=true;
-  sbookSetHead(headelt);
-  var info=sbook_getinfo(headelt);
-  sbookScrollTo(headelt);
+  sbookSetHead(target);
+  var info=sbook_getinfo(target);
+  sbookScrollTo(target);
   if (!((info.sub) && ((info.sub.length)>2)))
     sbookHUDMode(false);
-  sbookSetTarget(headelt);
+  sbookSetTarget(target);
   return false;
 }
 
@@ -451,17 +439,16 @@ function sbookHUD_Init()
     else target=sbook_hashmap[hash];}
   else if (window.scrollY) {
     var scrollx=window.scrollX||document.body.scrollLeft;
-    var scrolly=window.scrollY||document.body.scrollLeft;
+    var scrolly=window.scrollY||document.body.scrollTop;
     var xoff=scrollx+sbook_last_x;
     var yoff=scrolly+sbook_last_y;
     var scroll_target=sbookGetXYFocus(xoff,yoff);
     if (scroll_target) target=scroll_target;}
   sbookSetTarget(target);
-  if (!(target))
-    target=sbook_root;
-  if (target!==document.body) {
+  if (!(target)) target=sbook_root;
+  if ((target!==sbook_root)||(target!==document.body)) {
     target.scrollIntoView();
-    sbookSetFocus(target)}
+    sbookTrackFocus(target)}
   // fdjtTrace("at init target=%o loc=%o",target,target.sbookloc);
   // This forces it to reload in some browsers, so don't do it
   // window.location=window.location;

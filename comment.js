@@ -35,35 +35,140 @@ var sbooks_comment_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-/* Making the PING hud */
+/* Setting up the Mark hud for a particular target */
 
-function sbookCreatePingHUD()
+function sbookMarkHUDSetup(origin,excerpt)
 {
-  var relay_block=fdjtDiv(".sbookrelayblock#SBOOKPINGRELAYBLOCK");
-  var msg=fdjtInput("TEXT","MSG","",".autoprompt#SBOOKPINGINPUT");
+  var target;
+  if (!(origin)) target=origin=sbook_focus;
+  else if (origin.oid) target=$(origin.id);
+  else target=origin;
+  if (sbook_target===target) {
+    /* If the target is just unchanged, just update selected text as excerpt */
+    var seltext=fdjtSelectedText();
+    if (sbook_target!==target) sbookSetTarget(target);
+    if (seltext) sbookSetMarkExcerpt(seltext);
+    return;}
+  sbookSetTarget(target);
+  sbook_target=target;
+  if (excerpt) sbookSetMarkExcerpt(excerpt);
+  else sbookSetMarkExcerpt(target);
+  var info=((target) &&
+	    ((sbook_getinfo(target)) ||
+	     (sbook_getinfo(sbookGetHead(target)))));
+  // Get information about the origin if it's a gloss
+  //  If it's the user's gloss, we set it.  Otherwise,
+  //   we set the relay field
+  var glossinfo=((origin)&&(origin.oid)&&fdjtOIDs[origin.oid]);
+  if (glossinfo)
+    if (glossinfo.user===sbook_user) {
+      $("SBOOKMARKOID").value=origin.oid;
+      $("SBOOKMARKRELAY").value=glossinfo.relay||null;}
+    else {
+      $("SBOOKMARKOID").value=null;
+      $("SBOOKMARKRELAY").value=origin.oid;}
+  $("SBOOKMARKFORM").setAttribute('mode','tag');
+  $("SBOOKMARKREFURI").value=fdjtStripSuffix(sbook_getrefuri(target));
+  $("SBOOKMARKFRAGID").value=target.id;
+  $("SBOOKMARKSOURCE").value=sbook_getsrc(target);
+  $("SBOOKMARKSYNC").value=sbook_gloss_syncstamp;
+  $("SBOOKMARKTITLE").value=
+    (origin.title)||(target.getAttribute("title"))||(sbook_get_titlepath(info));
+  if (origin.oid) $("SBOOKMARKRELAY").value=origin.oid;
+  else $("SBOOKMARKRELAY").value=null;
+  var completions_elt=$("SBOOKMARKCLOUD");
+  var completions=completions_elt.allcompletions;
+  // Uncheck all the completions
+  if (completions._ischecked) {
+    var cur=completions._ischecked;
+    i=0; while (i<cur.length) {
+      var c=cur[i++]; fdjtCheckSpan_update(c,false);}}
+  if (glossinfo) {
+    var newchecked=[];
+    var i=0; while (i<completions.length) {
+      var c=completions[i++];
+      var val=c.value;
+      if (tags.indexOf(val)>=0) {
+	newchecked.push[c];
+	fdjtCheckSpan_update(c,true);}}
+    completions._ischecked=newchecked;}
+  var seen_tags=[];
+  var tags_elt=fdjtSpan(".tagcues");
+  $("SBOOKMARKTAGINPUT").value="";
+  /* Figure out the tagcues */
+  var tagcues=[];
+  /* Get tags from the item and the items above it */
+  {var scan=target; while (scan) {
+      var glosses=sbook_glosses_by_id[scan.id];
+      var info=sbook_getinfo(scan);
+      /* Get the tags from the content */
+      if ((info)&&(info.tags)&&(info.tags.length)) {
+	var tags=info.tags; var i=0; var lim=tags.length;
+	while (i<lim) fdjtInsert(tagcues,tags[i++]);}
+      /* Get anyone else's tags for this item or its heads */
+      if ((glosses) && (glosses.length)) {
+	var i=0; var lim=glosses.length;
+	while (i<lim) {
+	  var tags=glosses[i++].tags;
+	  var j=0; var jlim=tags.length;
+	  while (j<jlim) fdjtInsert(tagcues,tags[j++]);}}
+      scan=$(scan.sbook_headid);}}
+  var tags=gather_tags(sbook_focus);
+  var k=0; while (k<tags.length) {
+    var tag=tags[k++];
+    if (fdjtIndexOf(tagcues,tag)<0) tagcues.push(tag);}
+  fdjtTrace("tagcues are %o",tagcues);
+  fdjtSetCompletionCues($("SBOOKMARKCLOUD"),tagcues);
+  fdjtAutoPrompt_setup($("SBOOKMARK"));
+  sbookSelectSummaries(sbookGlossesHUD,true,false,target.id);
+  fdjtComplete($("SBOOKMARKTAGINPUT"));
+  fdjtRedisplay($("SBOOKMARKFORM"));
+  // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);
+  // fdjtComplete(tags_elt.input_elt);
+}
+
+/* Making the MARK hud */
+
+function sbookCreateMarkHUD(classinfo)
+{
   // Bind lexically, for the closure below, just in case
   var win=window;
-  msg.prompt="What do you think?";
-  msg.onfocus=sbookPing_onfocus;
-  var id_elt=fdjtInput("HIDDEN","FRAGID","","#SBOOKPINGFRAGID");
-  var uri_elt=fdjtInput("HIDDEN","URI","","#SBOOKPINGURI");
-  var src_elt=fdjtInput("HIDDEN","SRC","","#SBOOKPINGSRC");
-  var title_elt=fdjtInput("HIDDEN","TITLE","","#SBOOKPINGTITLE");
-  var relay_elt=fdjtInput("HIDDEN","RELAY","","#SBOOKPINGRELAY");
-  var echo_elt=fdjtInput("HIDDEN","ECHO","","#SBOOKPINGECHO");
-  var excerpt_elt=fdjtInput("HIDDEN","EXCERPT","","#SBOOKPINGEXCERPT");
-  var sync_input=
-    fdjtInput("HIDDEN","SYNC","","#SBOOKPINGSYNC");
-  var user_elt=fdjtInput("HIDDEN","WE/USER",sbook_user,"#SBOOKPINGUSER");
-  msg.setAttribute("autocomplete","off");
-  var detail_input=fdjtNewElement("TEXTAREA",".autoprompt#SBOOKPINGDETAIL");
+  /* Hidden elements */
+  var id_elt=fdjtInput("HIDDEN","FRAGID","","#SBOOKMARKFRAGID");
+  var oid_elt=fdjtInput("HIDDEN","OID",null,"#SBOOKMARKOID");
+  var uri_elt=fdjtInput("HIDDEN","REFURI","","#SBOOKMARKREFURI");
+  var title_elt=fdjtInput("HIDDEN","TITLE","","#SBOOKMARKTITLE");
+  var relay_elt=fdjtInput("HIDDEN","RELAY","","#SBOOKMARKRELAY");
+  var source_elt=fdjtInput("HIDDEN","SOURCE","","#SBOOKMARKSOURCE");
+  var excerpt_elt=fdjtInput("HIDDEN","EXCERPT","","#SBOOKMARKEXCERPT");
+  var sync_input=fdjtInput("HIDDEN","SYNC","","#SBOOKMARKSYNC");
+  var user_elt=fdjtInput("HIDDEN","USER",sbook_user,"#SBOOKMARKUSER");
+
+  var image_uri=(sbook_user_img)||(sbook_graphics_root+"remarkballoon50x50.png");
+  
+  var relay_block=fdjtDiv(".sbookrelayblock#SBOOKMARKRELAYBLOCK");
+  var msg_input=fdjtInput("TEXT","MSG","",".autoprompt#SBOOKMARKINPUT");
+  msg_input.setAttribute("autocomplete","off");
+  msg_input.setAttribute("colspan","2");
+  msg_input.prompt="What do you think?";
+  msg_input.onfocus=sbookMark_onfocus;
+
+  var detail_input=fdjtNewElement("TEXTAREA",".autoprompt#SBOOKMARKDETAIL");
   var detail_elt=
-    fdjtDiv(".detail.pingtab",
-	    fdjtImage(sbook_graphics_root+"detailsicon32x32.png","head",
-		      "details"),
+    fdjtDiv(".detail.marktab",
+	    // fdjtImage(sbook_graphics_root+"detailsicon32x32.png","head","details"),
 	    fdjtDiv("content",detail_input));
   detail_input.name="DETAIL";
   detail_input.prompt="Enter detailed comments";
+
+  var xrefs_input=fdjtInput("TEXT","XREFS","",".xref.autoprompt");
+  xrefs_input.setAttribute("prompt","enter external URLs");
+  var xrefs_elt=
+    fdjtDiv(".xrefs.marktab",
+	    // fdjtImage(sbook_graphics_root+"outlink32x32.png","head","REFS"),
+	    fdjtDiv("content",xrefs_input));
+  xrefs_input.onkeypress=sbooksXRefs_onkeypress;
+
   var need_login=
     ((sbook_user)?(false):
      (fdjtDiv("needlogin",
@@ -72,207 +177,122 @@ function sbookCreatePingHUD()
 	      ("http://sbooks.net/fb/auth",
 	       "facebook_32.png","login through facebook"),
 	      ") to make comments")));
-  var xrefs_input=fdjtInput("TEXT","XREFS","",".xref.autoprompt");
-  xrefs_input.setAttribute("prompt","enter external URLs");
-  var xrefs_elt=
-    fdjtDiv(".xrefs.pingtab",
-	    fdjtImage(sbook_graphics_root+"outlink32x32.png","head","REFS"),
-	    fdjtDiv("content",xrefs_input));
-  xrefs_input.onkeypress=sbooksXRefs_onkeypress;
-  var messages_elt=
-    fdjtDiv("messages",
-	    fdjtDiv(".message.pinging","pinging...."),
-	    fdjtDiv(".message.echoing","echoing!"));
+  var messages_elt=fdjtDiv("messages");
+  
+  var privy=fdjtInput("CHECKBOX","private","yes");
+  privy.checked=false; privy.title="private: don't share this with my personal circle";
+  privy.id="SBOOKMARKPRIVATE";
+  var metastuff=
+    fdjtDiv("metastuff",
+	    sbookMarkTagInput(),
+	    fdjtDiv("controls",
+		    fdjtInput("SUBMIT","ACTION","Save","#SBOOKMARKSAVEACTION",
+			      "Save (mark) this gloss to the server"),
+		    fdjtInput("SUBMIT","ACTION","Push","#SBOOKMARKPUSHACTION",
+			      "Save this gloss and publish it to any enabled feeds/walls/etc"),
+		    privy,sbookMarkPickFeed()));
+  var grid=
+    fdjtDiv("markform",
+	    fdjtDiv("lhs",fdjtImage(image_uri),
+		    fdjtDiv("controls",sbookMarkControls()),
+		    fdjtImage(sbook_graphics_root+"detailsicon32x32.png","head","detail"),
+		    fdjtImage(sbook_graphics_root+"outlink48x48.png","head","xrefs"),
+		    fdjtImage(sbook_graphics_root+"TagIcon32x32.png","head","tags")),
+	    fdjtDiv("msg",msg_input),
+	    metastuff,
+	    sbookMarkCloud(),detail_elt,xrefs_elt);
+  
   // Specifying the .tags class causes the tags tab to be open by default 
-  var form=fdjtNewElement("FORM","#SBOOKPINGFORM.ping",
-			  id_elt,uri_elt,src_elt,title_elt,relay_elt,echo_elt,
-			  sync_input,user_elt,excerpt_elt,
-			  messages_elt,relay_block,
-			  fdjtDiv("#SBOOKSHOWEXCERPT.excerpt"),
-			  fdjtDiv("#PINGMSG",msg),
-			  sbookExtrasElement(),
-			  sbookCompletionsElement(),
-			  detail_elt,xrefs_elt);
+  var form=fdjtElt("FORM#SBOOKMARKFORM.mark",
+		   fdjtDiv("hidden",id_elt,uri_elt,source_elt,title_elt,
+			   excerpt_elt,relay_elt,oid_elt,sync_input,user_elt),
+		   fdjtDiv("#SBOOKSHOWEXCERPT.excerpt"),relay_block,
+		   grid);
   form.setAttribute("accept-charset","UTF-8");
-  form.ajaxuri=sbook_ping_uri;
+  form.ajaxuri=sbook_mark_uri;
   form.jsonpuri=sbook_jsonping_uri;
   form.synchronous=true;
-  form.action="http://"+sbook_server+"/echoes/ping.fdcgi";
+  form.action="http://"+sbook_server+"/glosses/glossmark.fdcgi";
   form.target="sbookping";
-  form.onclick=sbookPingForm_onclick;
-  fdjtAutoPrompt_setup(form);
+  form.onclick=sbookMarkForm_onclick;
+  fdjtCheckSpan_setup(metastuff);
+  fdjtAutoPrompt_setup(grid);
   // form.windowopts="width=500,height=400";
   form.onsubmit=
     ((sbook_user)?(fdjtForm_onsubmit):(sbookNoUserSubmit));
   form.oncallback=function(req) {
     if (sbook_trace_network)
-      fdjtLog("Got AJAX echo response %o from %o",req,sbook_ping_uri);
-    sbookImportEchoes(JSON.parse(req.responseText));
+      fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
+    sbookImportGlosses(JSON.parse(req.responseText));
     fdjtDropClass(form,"submitting");
-    /*
-      fdjtAddClass("SBOOKPINGFORM","echoing");
-      setTimeout(function() {
-      fdjtDropClass("SBOOKPINGFORM","echoing");
-      form.reset();
-      sbookHUDMode(false);},
-      1500);
-    */
+    /* Turn off the focus lock */
+    sbookSetTarget(false);
+    sbookLockFocus(false);
     form.reset();
-    fdjtCheckSpan_setup($("SBOOKPINGCOMPLETIONS"));
-    win.sbookHUDMode(false);};
-  return fdjtDiv
-    (".ping", /* .hudblock.hud */
-     need_login,
-     fdjtImage((sbook_user_img)||
-	       (sbook_graphics_root+"remarkballoon50x50.png"),
-	       "#SBOOKUSERIMG.floatleft",""),
-     form);
+    fdjtCheckSpan_setup($("SBOOKMARKCLOUD"));
+   win.sbookHUDMode(false);};
+  return fdjtDiv(classinfo||".mark",need_login,messages_elt,form);
 }
 
-function sbooksXRefs_onkeypress(evt)
-{
-  return fdjtMultiText_onkeypress(evt,'div');
-}
-
-function sbookSetPingExcerpt(target)
-{
-  var excerpt=
-    ((typeof target === 'string') ? (target) :
-     ((target.excerpt)||(fdjtSelectedText())||
-      // Don't textify headers
-      ((!(target.sbooklevel))&&(fdjtTextify(target,true)))));
-  var input=$("SBOOKPINGEXCERPT");
-  fdjtReplace("SBOOKSHOWEXCERPT",fdjtDiv("excerpt",excerpt));
-  if (excerpt) {
-    excerpt=fdjtStringTrim(excerpt);
-    $("SBOOKPINGEXCERPT").value=excerpt;
-    fdjtReplace("SBOOKSHOWEXCERPT",
-		fdjtDiv("excerpt",
-			fdjtSpan("lq","\u201c"),fdjtSpan("rq","\u201d"),
-			fdjtDiv("text",excerpt.replace(/\n+/g," \u2016 "))));}
-  else {
-    $("SBOOKPINGEXCERPT").value="";
-    fdjtReplace("SBOOKSHOWEXCERPT",fdjtDiv("excerpt"));}
-}
-
-function sbookPingHUDSetup(origin)
-{
-  var target;
-  if (!(origin))
-    target=origin=sbook_focus;
-  else if (origin.fragid)
-    target=$(origin.fragid);
-  else target=origin;
-  if (sbook_ping_target===target) {
-    var seltext=fdjtSelectedText();
-    if (sbook_target!==target) sbookSetTarget(target);
-    if (seltext) sbookSetPingExcerpt(seltext);
-    return;}
-  sbookSetTarget(target);
-  sbook_ping_target=target;
-  sbookSetPingExcerpt(target);
-  var info=((target) &&
-	    (((target._sbookid) && (sbook_getinfo(target))) ||
-	     ((target.sbookheadid) && ($$(target.sbookheadid)))));
-  $("SBOOKPINGFORM").setAttribute('mode','tag');
-  $("SBOOKPINGURI").value=sbook_geturi(target);
-  $("SBOOKPINGSRC").value=sbook_getsrc(target);
-  $("SBOOKPINGSYNC").value=sbook_echo_syncstamp;
-  $("SBOOKPINGTITLE").value=
-    (origin.title)||(target.getAttribute("title"))||(sbook_get_titlepath(info));
-  if (origin.echo)
-    if (origin.echo.user===sbook_user) {
-      $("SBOOKPINGRELAY").value="";
-      $("SBOOKPINGECHO").value=(origin.echo);}
-    else {
-      $("SBOOKPINGRELAY").value=(origin.echo);
-      $("SBOOKPINGECHO").value="";}
-  else {
-    $("SBOOKPINGRELAY").value="";
-    $("SBOOKPINGECHO").value="";}
-  if ((origin) && (origin.echo)) {
-    var completions_elt=$("SBOOKPINGCOMPLETIONS");
-    var completions=completions_elt.allcompletions;
-    var dist=origin.echo.dist||[];
-    var tags=origin.echo.tags||[];
-    var newchecked=[];
-    var i=0; while (i<completions.length) {
-      var val=completions[i].value;
-      if (dist.indexOf(val)>=0) newchecked.push(completions[i++]);
-      else if (tags.indexOf(val)>=0) newchecked.push(completions[i++]);
-      else i++;}
-    var cur=completions._ischecked||[];
-    i=0; while (i<newchecked.length) {
-      var n=newchecked[i++];
-      if (cur.indexOf(n)<0) fdjtCheckSpan_update(n,true);}
-    i=0; while (i<cur.length) {
-      var c=cur[i++];
-      if (cur.indexOf(n)<0) fdjtCheckSpan_update(n,false);}
-    completions._ischecked=newchecked;}
-  var seen_tags=[];
-  var tags_elt=fdjtSpan(".tagcues");
-  $("SBOOKPINGTAGINPUT").value="";
-  var seen_tags=[];
-  /* Get the tags from all the echoes */
-  {var i=0; while (i<sbook_allechoes.length) 
-	      if (sbook_allechoes[i].fragid===target.id) {
-		var echo=sbook_allechoes[i++];
-		if (echo.tags) {
-		  var tags=echo.tags; var j=0; while (j<tags.length) {
-		    var tag=tags[j++];
-		    if (fdjtIndexOf(seen_tags,tag)<0) seen_tags.push(tag);}}}
-	      else i++;}
-  /* Get the tags from the content */
-  var tags=gather_tags(sbook_focus);
-  var k=0; while (k<tags.length) {
-    var tag=tags[k++];
-    if (fdjtIndexOf(seen_tags,tag)<0) seen_tags.push(tag);}
-  fdjtSetCompletionCues($("SBOOKPINGCOMPLETIONS"),seen_tags);
-  fdjtAutoPrompt_setup($("SBOOKPING"));
-  sbookSelectEchoes(sbookEchoesHUD,true,false,target.id);
-  fdjtComplete($("SBOOKPINGTAGINPUT"));
-  fdjtRedisplay($("SBOOKPINGFORM"));
-  // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);
-  // fdjtComplete(tags_elt.input_elt);
-}
-
-/* sbook extras */
+/* Mark form design elements */
 
 var pingmode_pat=/(detail)|(excerpt)|(xrefs)/g;
 
-function sbookExtrasElement()
+function sbookMarkTagInput()
 {
-  var controls=sbookPingControls();
-  var taginput=fdjtInput("TEXT","TAGS","","#SBOOKPINGTAGINPUT.autoprompt");
-  var tagicon_uri=sbook_graphics_root+"TagIcon32x32.png";
-  taginput.setAttribute("COMPLETIONS","SBOOKPINGCOMPLETIONS");
+  var taginput=fdjtInput("TEXT","TAGS","","#SBOOKMARKTAGINPUT.autoprompt");
+  taginput.setAttribute("COMPLETIONS","SBOOKMARKCLOUD");
   taginput.setAttribute("PROMPT","enter tags, groups, or friends");
   taginput.setAttribute("autocomplete","off");
   taginput.completeopts=
     FDJT_COMPLETE_OPTIONS|FDJT_COMPLETE_ANYWORD|
     FDJT_COMPLETE_CLOUD;
-  taginput.onkeyup=sbookPingTag_onkeyup;
+  taginput.onkeyup=sbookMarkTag_onkeyup;
   taginput.onkeypress=fdjtComplete_onkey;
   taginput.oncomplete=_sbook_tags_oncomplete;
   taginput.enterchars=[-13,59];
-  taginput.onfocus=sbookPingTagInput_onfocus;
+  taginput.onfocus=sbookMarkTagInput_onfocus;
   taginput.onblur=fdjtAutoPrompt_onblur;
-  return fdjtDiv(".extras",controls,false,fdjtDiv("taginput",taginput));
+  return fdjtDiv("taginput",taginput);
 }
 
-function sbookPingTagInput_onfocus(evt)
+function sbookMarkPickFeed()
 {
-  var target=$T(evt);
-  var pingform=$P("form.ping",target);
-  if (pingform) {
-    pingform.setAttribute("mode","tag");
-    fdjtRedisplay(pingform);}
-  fdjtComplete_onfocus(evt);
+  var private_option=fdjtElt("OPTION","Just me");
+  var friendly_option=fdjtElt("OPTION#SBOOKFRIENDLYOPTION","My friends (personal circle)");
+  var pickfeed=fdjtElt("SELECT",private_option,friendly_option);
+  pickfeed.name='FEED';
+  private_option.value=":{}";
+  friendly_option.value=sbook_user;
+  friendly_option.selected=true; friendly_option.defaultSelected=true;
+  var i=0; var len=sbook_feeds.length;
+  while (i<len) {
+    var feed=sbook_feeds[i++]; var info=fdjtOIDs[feed];
+    var option1=fdjtElt("OPTION",info.name); option1.value=feed;
+    var option2=fdjtElt("OPTION","(friends+)"+info.name); option2.value="+"+feed;
+    fdjtAppend(pickfeed,option1,option2);}
+  pickfeed.onchange=sbookMarkFeed_onchange;
+  pickfeed.title="The primary 'audience' for this gloss";
+  return pickfeed;
 }
 
-function sbookPingControls()
+function sbookMarkFeed_onchange(evt)
 {
-  var save_button=fdjtInput("SUBMIT","ACTION","OK");
+  var checkspan=$("SBOOKMARKPRIVATE");
+  var feeds=evt.target;
+  var newfeed=evt.target.value;
+  var info=fdjtOIDs[newfeed];
+  var checkstate;
+  if (newfeed===':{}') checkstate=true;
+  else if (newfeed===sbook_user) checkstate=false;
+  else if ((info)&&(info.private)) checkstate=true;
+  else checkstate=false;
+  if (checkspan.tagName==='INPUT') checkspan.checked=checkstate;
+  else fdjtCheckSpan_update(checkspan,checkstate);
+}
+
+function sbookMarkControls()
+{
   var tags_button=
     fdjtImage(sbook_graphics_root+"TagIcon16x16.png","button","tags",
 	      "add or edit descriptive tags");
@@ -282,17 +302,13 @@ function sbookPingControls()
   var xrefs_button=
     fdjtImage(sbook_graphics_root+"outlink16x16.png","button","xrefs",
 	      "add or edit external references");
-  tags_button.onclick=sbookPingMode_onclick_handler("tag");
-  detail_button.onclick=sbookPingMode_onclick_handler("detail");
-  xrefs_button.onclick=sbookPingMode_onclick_handler("xrefs");
-  return fdjtSpan("buttons",
-		  tags_button,detail_button,xrefs_button,
-		  sbookExposureElement(),
-		  sbookPostElements(),
-		  save_button);
+  tags_button.onclick=sbookMarkMode_onclick_handler("tag");
+  detail_button.onclick=sbookMarkMode_onclick_handler("detail");
+  xrefs_button.onclick=sbookMarkMode_onclick_handler("xrefs");
+  return new Array(xrefs_button,detail_button,tags_button);
 }
 
-function sbookPostElements()
+function sbookMarkPush()
 {
   var check1=fdjtInput("CHECKBOX","PUSH","yes",false);
   var check2=fdjtInput("CHECKBOX","PUSH","yes",false);
@@ -305,37 +321,23 @@ function sbookPostElements()
   return new Array(span1,a1);
 }
 
-function sbookExposureElement()
+function sbookMarkOK()
 {
-  var friendly_option=fdjtNewElement("OPTION",false,"friends");
-  friendly_option.value='friendstoo'; friendly_option.selected=true;
-  friendly_option.title='share this with my friends and any tribes I tag';
-  var justfriends_option=fdjtNewElement("OPTION",false,"just friends");
-  justfriends_option.title='just share this with my friends';
-  justfriends_option.value='justfriends';
-  var nofriends_option=fdjtNewElement("OPTION",false,"no friends");
-  nofriends_option.value='nofriends';
-  nofriends_option.title="just share this with the tribes or people I tag";
-  var private_option=fdjtNewElement("OPTION",false,"private");
-  private_option.title="don't share this anyone else";
-  private_option.value='private';
-  var exposure_elt=
-    fdjtNewElement("SELECT",false,
-		   friendly_option,justfriends_option,
-		   nofriends_option,private_option);
-  exposure_elt.name='exposure';
-  return exposure_elt;
+  return fdjtInput("SUBMIT","ACTION","OK");
 }
+
+
+/* The completions element */
 
 var _sbook_tag_completeopts=
   FDJT_COMPLETE_OPTIONS|FDJT_COMPLETE_ANYWORD|
   FDJT_COMPLETE_CLOUD;
 
-function sbookCompletionsElement()
+function sbookMarkCloud()
 {
   var seen={};
   var completions=
-    fdjtDiv(".completions.checkspans.pingtab#SBOOKPINGCOMPLETIONS");
+    fdjtDiv(".completions.checkspans.marktab#SBOOKMARKCLOUD");
   completions._seen=seen;
   completions.onclick=fdjtCheckSpan_onclick;
   var i=0; while (i<sbook_conversants.length) {
@@ -351,7 +353,19 @@ function sbookCompletionsElement()
   var alltags=sbook_index._all;
   var i=0; while (i<alltags.length) {
     var tag=alltags[i++];
-    if ((tag.length>0)&&(tag[0]==="\u00A7")) continue;
+    // We skip long sectional tags
+    if ((typeof tag === "string") && (tag[0]==="\u00A7")) {
+      var showname=tag; var title;
+      if (showname.length>17) {
+	showname=showname.slice(0,17)+"...";
+	title=tag;}
+      var sectnode=fdjtSpan(".completion.checkspan",
+			    fdjtInput("CHECKBOX","TAGS",tag),
+			    fdjtSpan("sectname",showname));
+      if (title) sectnode.title=title;
+      sectnode.key=tag; sectnode.value=tag;
+      fdjtAppend(completions,sectnode," ");
+      continue;}
     var tagnode=knoCheckCompletion("TAGS",Knowde(tag),false);
     fdjtAppend(completions, tagnode," ");}
   fdjtInitCompletions(completions,false,_sbook_tag_completeopts);
@@ -367,7 +381,7 @@ function sbookAddConversant(completions,c,seen,checked,init)
 {
   if (!(seen)) seen=completions._seen;
   if (seen[c]) return seen[c];
-  var cinfo=social_info[c];
+  var cinfo=sbook_oids[c];
   var icon=false;
   if (cinfo.postable) 
     icon=fdjtImage("http://static.beingmeta.com/graphics/thumbtack19x15.png",
@@ -395,8 +409,8 @@ function sbookCompletionCheckspan(varname,value,checked,key)
   if (arguments.length>4)
     fdjtAddElements(checkspan,arguments,4);
   else fdjtAppend(checkspan,key);
-  if ((social_info[value]) && (social_info[value].summary))
-    checkspan.title=social_info[value].gloss;
+  if ((sbook_oids[value]) && (sbook_oids[value].summary))
+    checkspan.title=sbook_oids[value].gloss;
   if (checked) {
     checkspan.setAttribute("ischecked","yes");
     checkbox.checked=true;}
@@ -404,12 +418,47 @@ function sbookCompletionCheckspan(varname,value,checked,key)
   return checkspan;
 }
 
+function sbooksXRefs_onkeypress(evt)
+{
+  return fdjtMultiText_onkeypress(evt,'div');
+}
+
+function sbookSetMarkExcerpt(target)
+{
+  var excerpt=
+    ((typeof target === 'string') ? (target) :
+     ((target.excerpt)||(fdjtSelectedText())||
+      // Don't textify headers
+      ((!(target.sbooklevel))&&(fdjtTextify(target,true)))));
+  var input=$("SBOOKMARKEXCERPT");
+  if (excerpt) {
+    excerpt=fdjtStringTrim(excerpt);
+    input.value=excerpt;
+    fdjtReplace("SBOOKSHOWEXCERPT",
+		fdjtDiv("excerpt",
+			fdjtSpan("lq","\u201c"),fdjtSpan("rq","\u201d"),
+			fdjtDiv("text",excerpt.replace(/\n+/g," \u2016 "))));}
+  else {
+    input.value="";
+    fdjtReplace("SBOOKSHOWEXCERPT",fdjtDiv("noexcerpt"));}
+}
+
 /* Handlers */
 
-function sbookPingMode_onclick_handler(mode)
+function sbookMarkTagInput_onfocus(evt)
+{
+  var target=$T(evt);
+  var markform=$P("form.mark",target);
+  if (markform) {
+    markform.setAttribute("mode","tag");
+    fdjtRedisplay(markform);}
+  fdjtComplete_onfocus(evt);
+}
+
+function sbookMarkMode_onclick_handler(mode)
 {
   return function(evt) {
-    var pingbox=$P("FORM.ping",$T(evt));
+    var pingbox=$P("FORM.mark",$T(evt));
     var curmode=pingbox.getAttribute('mode');
     if (mode)
       if (mode===curmode)
@@ -417,15 +466,15 @@ function sbookPingMode_onclick_handler(mode)
       else pingbox.setAttribute('mode',mode);
     else pingbox.removeAttribute('mode');
     if (mode) {
-      var inputid="SBOOKPING"+mode.toUpperCase();
+      var inputid="SBOOKMARK"+mode.toUpperCase();
       if ($(inputid)) $(inputid).focus();}
     pingbox.className=pingbox.className;}
 }
 
-function sbookPing_onfocus(evt)
+function sbookMark_onfocus(evt)
 {
-  sbookHUDMode("ping");
-  sbookPingHUDSetup(false);
+  sbookHUDMode("mark");
+  sbookMarkHUDSetup(false);
   fdjtAutoPrompt_onfocus(evt);
 }
 
@@ -435,7 +484,7 @@ function sbookNoUserSubmit(evt)
   evt.cancelBubble=true; evt.preventDefault();
 }
 
-function sbookPingForm_onclick(evt)
+function sbookMarkForm_onclick(evt)
 {
   evt.cancelBubble=true;
 }
@@ -451,7 +500,7 @@ function _sbook_tags_oncomplete(elt)
     fdjtAutoPrompt_setup(elt);}
 }
 
-function sbookPingTag_onkeyup(evt)
+function sbookMarkTag_onkeyup(evt)
 {
   var target=$T(evt);
   var kc=evt.keyCode;
@@ -475,7 +524,7 @@ function sbookPingTag_onkeyup(evt)
     if (!(fdjtForceComplete(target))) {
       var curval=target.value;
       var knospan=knoCheckCompletion("TAGS",curval,true);
-      fdjtPrepend($("SBOOKPINGCOMPLETIONS"),knospan);
+      fdjtPrepend($("SBOOKMARKCLOUD"),knospan);
       target.value="";}
     evt.preventDefault(); evt.cancelBubble=true;
     return false;}
@@ -483,32 +532,46 @@ function sbookPingTag_onkeyup(evt)
     setTimeout(function(evt){fdjtComplete(target);},100);}
 }
 
-/* Callbacks */
+/* Mark functions */
 
-function sbookNewEchoes(echoes,winarg)
+function sbook_mark(target,gloss)
 {
-  /* For when called from the iframe bridge */
-  var win=winarg||window;
-  sbookImportEchoes(echoes);
-  var form=win.document.getElementById("SBOOKPINGFORM");
-  fdjtDropClass(form,"submitting");
-  // fdjtAddClass("SBOOKPINGFORM","echoing");
-  /*
-  setTimeout(function() {
-      fdjtDropClass("SBOOKPINGFORM","echoing");
-      $("SBOOKPINGFORM").reset();
-      sbookHUDMode(false);},
-    1500);
-  */
-  form.reset();
-  fdjtCheckSpan_setup($("SBOOKPINGCOMPLETIONS"));
-  win.sbookHUDMode(false);
+  if (sbook_target!==target) {
+    $("SBOOKMARKFORM").reset();
+    sbook_focus=target;
+    sbookMarkHUDSetup(target,gloss);}
+  if ((gloss)&&(gloss.user))
+    if (gloss.user===sbook_user)
+      sbookMarkHUDSetup(gloss);
+    else {
+      if (gloss.gloss) $("SBOOKMARKRELAY").value=gloss.gloss;
+      if (gloss.user) {
+	var userinfo=sbook_oids[gloss.user];
+	var glossblock=
+	  fdjtDiv("sbookrelayblock","Relayed from ",
+		  fdjtSpan("user",userinfo.name),
+		  ((gloss.msg)&&(": ")),
+		  ((gloss.msg)?(fdjtSpan("msg",gloss.msg)):(false)));
+	fdjtReplace("SBOOKMARKRELAYBLOCK",glossblock);}}
+  sbookSelectSummaries(sbookGlossesHUD,false,target.id);
+  fdjtAddClass(sbookHUD,"targeted");
+  sbookHUDMode("mark");
+  $("SBOOKMARKINPUT").focus();
 }
 
-function sbookJSONPechoes(echoes)
+function sbook_open_mark()
 {
-  if (sbook_trace_network) fdjtLog("Got new echoes (probably) from JSONP call");
-  sbookNewEchoes(echoes);
+  var iframe; var focus=sbook_focus;
+  if ((focus) && (focus.glossmark) &&
+      (focus.glossmark.iframe))
+    iframe=sbook_focus.glossmark.iframe;
+  else if ((focus) && (focus.glossmark))
+    iframe=focus.glossmark.openIFrame();
+  else {
+    var glossmark=add_glossmark(focus,true);
+    focus.glossmark=glossmark;
+    iframe=glossmark.iframe;};
+  return iframe;
 }
 
 /* Emacs local variables

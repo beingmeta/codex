@@ -433,7 +433,7 @@ function sbookFullCloud()
 
 /* Search UI */
 
-function createSBOOKHUDsearch()
+function sbookCreateSearchHUD(classinfo)
 {
   var cues=fdjtDiv(".cues#SBOOKSEARCHCUES");
   var input=fdjtInput("TEXT","QTEXT","",null);
@@ -462,7 +462,7 @@ function createSBOOKHUDsearch()
   completions.id="SBOOKSEARCHCOMPLETIONS";
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=
-    fdjtDiv(".sbooksearch.hudblock.hud",
+    fdjtDiv(classinfo||".sbooksearch.hudblock.hud#SBOOKSEARCH",
 	    fdjtDiv("#SBOOKSUMMARIES.sbookresults.hud"),
 	    fdjtDiv("query",completions,fdjtDiv("input",input)),
 	    cues);

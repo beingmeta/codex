@@ -48,6 +48,19 @@ var sbooks_nav_version=parseInt("$Revision$".slice(10,-1));
      
 */
 
+/* Creating the HUD */
+
+function sbookCreateNavHUD(eltspec)
+{
+  var toc_div=sbookTOCDiv(sbook_getinfo(sbook_root),0);
+  var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
+  div.onmouseover=sbookTOC_onmouseover;
+  div.onmouseout=sbookTOC_onmouseout;
+  div.onclick=sbookTOC_onclick;
+  if (!(eltspec)) sbookNavHUD=div;
+  return div;
+}
+
 /* Building the DIV */
 
 function sbookTOCDiv(headinfo,depth,classname)

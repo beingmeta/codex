@@ -2,18 +2,26 @@
   <img src='http://static.beingmeta.com/graphics/redx16x16.png' alt='x' style='color: red;'/>'H' to toggle this help</div>
 <div class='helphelp right'>
   Hide on startup<input type='CHECKBOX' name='SBOOKHIDEHELP' class='helphider' VALUE='yes' id='SBOOKHIDEHELP'></div>
-<div class='helpbody'>
+<div style='position: absolute; top: 0px; height: 110%;'> </div>
+
+<div class='tabbar' onclick='fdjtTab_onclick(event);'>
+<span class='tab' contentid='APPHELP' shown='shown'>Help</span>
+<span class='tab' contentid='APPLOGIN'>Login</span>
+<span class='tab' contentid='APPGLOSSES'>Glosses</span>
+</div>
+<div class='tabcontent helpbody' id='APPHELP' shown='shown'>
 <div class='sbookh1'>Welcome to sBooks!
   <div class='motto'>&ldquo;possibly the best thing since sliced paper&rdquo;</div>
 </div>
 
 <div class='fasthelp'>
 <span class='keydef'><span class='key'>H</span> to toggle help; </span>
-<span class='keydef'><span class='key'>Shift</span> to show/hide HUD; </span>
 <span class='keydef'><span class='key'>T</span>for TOC; <span class='key'>S</span> to search;</span>
 <span class='keydef'><span class='key'>Space</span>/<span class='key'>Backspace</span> to page;</span>
 <br/>
-<span class='keydef'><span class='key'>shift-click</span>, or <span class='key'>(ctrl)Select Text</span> to make/share/post notes;</span>
+<span class='keydef'><span class='key'>Shift</span> or <span class='key'>Escape</span> to show or hide HUD (briefly or persistently); </span>
+<br/>
+<span class='keydef'><span class='key'>Click</span> to fix the focus; <span class='key'>Click Again</span> to add a comment.
 </div>
 
 <p>This sBooks translucent <strong>HUD</strong> (heads up display)
@@ -26,8 +34,8 @@ divided into four elements:</p>
 <ul>
   <li>the <span class='hudref' hudref='SBOOKTOC'>TOC HUD</span> on the
       top <strong>for navigation</strong></li>
-  <li>the <span class='hudref' hudref='SBOOKECHOES'>Meta HUD</span>,
-      on the left, <strong>to browse comments</strong> </li>
+  <li>the <span class='hudref' hudref='SBOOKGLOSSES'>Meta HUD</span>,
+      on the left, <strong>to browse glosses</strong> </li>
   <li>the <span class='hudref' hudref='SBOOKSEARCH'>Index HUD</span>
       on the bottom <strong>to search tags</strong>, and</li>
   <li>individual <strong>note icons</strong> in
@@ -79,4 +87,12 @@ The <strong>cloud of tags</strong> is ordered by <em>frequency</em> among the <e
 Clicking a tag adds that tag to the search; clicking the <strong>results count</strong> displays the results.  From the 
 keyboard, typing <em>Enter</em> or semicolon picks the most <strong>prominent completion</strong> or (if there's 
 no additional text) <em>Enter</em> shows the results.</p>
+</div>
+<div class='tabcontent' id='APPLOGIN'>
+This is the place to identify yourself or associate various identities
+with sBooks.
+</div>
+<div class='tabcontent' id='APPGLOSSES'>
+This is the place to expose, hide, join, subscribe, etc to metadocs
+and reading circles.
 </div>

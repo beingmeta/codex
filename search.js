@@ -260,7 +260,7 @@ function sbookDoSearch(query,results)
   // Initialize scores for all of results
   var j=0; while (j<base.length) {
     var elt=base[j++];
-    if (elt.pingid) {
+    if (elt.glossid) {
       var user=elt.user; var tribes=elt.tribes;
       if (fdjtIndexOf(sources,user)<0) sources.push(user);
       if (tribes) {
