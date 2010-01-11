@@ -125,7 +125,7 @@ function sbookEveryoneButton_onclick(evt)
     else if ((sbook_mode==="searching")||(sbook_mode==="browsing"))
       sbookSelectSummaries($("SBOOKSUMMARIES"));
     else sbookHUDMode("glosses");}
-  else if (sbook_mode==='glosses') sbookMode(false);
+  else if (sbook_mode==='glosses') sbookHUDMode(false);
   else sbookHUDMode("glosses");
   fdjtDropClass(sbookHUD,"targeted");
   evt.cancelBubble=true;
@@ -142,6 +142,17 @@ function sbookFeeds_onclick(evt)
   if (!(target.oid)) return;
   var info=fdjtOIDs[target.oid];
   var icon=$("SBOOKFEEDICON"+info.humid);
+  if ((icon)&&(fdjtHasClass(icon,"selected"))&&
+      (sbook_sources.length===1)) {
+    // If you're clicking a selected icon and there's only one,
+    //  then just toggle the HUD off
+    fdjtDropClass(icon,"selected");
+    sbook_sources=[];
+    sbookHUDMode(false);
+    evt.cancelBubble=true;
+    if (evt.preventDefault) evt.preventDefault();
+    else evt.returnValue=false;      
+    return false;}
   if (!(sbook_sources)) {
     fdjtAddClass(icon,"selected");
     sbook_sources=new Array(target.oid);}
@@ -258,9 +269,6 @@ function sbookGlossmark(target,open)
   if (target) fdjtPrepend(target,glossmark);
   return glossmark;
 }
-
-sbook_focus_marker=sbookGlossmark(false);
-sbook_focus_marker.id="SBOOKFOCUSMARKER";
 
 function sbookGlossmark_onclick(evt)
 {

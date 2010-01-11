@@ -6,8 +6,11 @@
 
 <div class='tabbar' onclick='fdjtTab_onclick(event);'>
 <span class='tab' contentid='APPHELP' shown='shown'>Help</span>
-<span class='tab' contentid='APPLOGIN'>Login</span>
+<span class='tab' contentid='APPLOGIN' id='LOGINTAB'>Login</span>
 <span class='tab' contentid='APPGLOSSES'>Glosses</span>
+<a href='http://sbooks.net/app/logout'
+   class='tab' id='SBOOKLOGOUT' contentid='APPGLOSSES'>
+  Logout</a>
 </div>
 <div class='tabcontent helpbody' id='APPHELP' shown='shown'>
 <div class='sbookh1'>Welcome to sBooks!
@@ -89,8 +92,67 @@ keyboard, typing <em>Enter</em> or semicolon picks the most <strong>prominent co
 no additional text) <em>Enter</em> shows the results.</p>
 </div>
 <div class='tabcontent' id='APPLOGIN'>
-This is the place to identify yourself or associate various identities
-with sBooks.
+<div class='logindoc'>
+<p>In order to save and share your glosses as well as viewing the
+glosses of friends and colleagues, we need to identify you.
+Rather than introducing another password to remember or
+registration process to slog through, we
+use <a href='http://www.openid.net/'>OpenID</a> and related
+technologies to let log into sBooks through other sites that you
+already use.  You can login below using any of a variety of sites
+or methods.</p>
+</div>
+
+<form action='https://sbooks.net/auth' onsubmit='fdjtAutoPrompt_cleanup();'>
+<table class='login' rowspacing='6'>
+<tr>
+<th>Login using</th>
+<td class='oneclick'>
+  <a href='https://sbooks.net/app/auth/facebook'>
+    <img src='http://static.beingmeta.com/graphics/facebook32x32.png' alt='Facebook'/></a>
+  <a href='https://sbooks.net/app/auth?endpoint=https://open.login.yahooapis.com/openid/op/auth' class='loginbutton'>
+    <img src='http://openid.net/images/get-logos/yahoo.png' alt='Yahoo!'/></a>
+  <a href='https://sbooks.net/app/auth?endpoint=https://www.google.com/accounts/o8/id' class='loginbutton'>
+    <img src='http://openid.net/images/get-logos/google.png' alt='Google'/></a>
+</th>
+</tr>
+<tr><th class='username'>or username<br/>@</th>
+  <td class='userlogin'>
+    <input type='TEXT' name='USERNAME' value='' class='autoprompt'
+           prompt='Enter a username and select the corresponding site'/>
+    <br/>
+    <div class='doc' id='USERNAMEDOC' style='display: none;'>
+    Some sites provide OpenID login based on your user name.  Enter your
+    username and click the button for the appropriate site.  You'll go to
+    that site, log in, and return to sBooks.
+    </div>
+    <button type='SUBMIT' name='PROVIDER' value='aol.com'>
+      <img src='http://openid.net/images/get-logos/aol.png' alt='aol'/>
+    </button>
+    <button type='SUBMIT' name='PROVIDER' value='myid.net'>
+      <img src='http://openid.net/images/get-logos/myidnet.png' alt='myid'/>
+    </button>
+    <button type='SUBMIT' name='PROVIDER' value='flickr.com'>
+      <img src='http://openid.net/images/get-logos/flickr.png' alt='flickr'/>
+    </button>
+    <button type='SUBMIT' name='PROVIDER' value='myopenid.com'>
+      <img src='http://openid.net/images/get-logos/myopenid.png' alt='myopenid'/>
+    </button>
+    <button type='SUBMIT' name='PROVIDER' value='wordpress.com'>
+      <img src='http://openid.net/images/get-logos/wordpress.png' alt='wordpress'/>
+    </button>
+    <button type='SUBMIT' name='PROVIDER' value='pip.verisignlabs.com'>
+      <img src='http://openid.net/images/get-logos/verisign.png' alt='vidoop'/>
+    </button>
+  </td>
+  <td><img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?' class='helpicon' title='Some sites provide OpenID login based on your user name.  Enter your username and click the button for the appropriate site.  You&#39;ll go to that site, log in, and return to sBooks.'/></td>
+</tr>
+
+<tr>
+<th><img src='http://static.beingmeta.com/graphics/openid-logo-small.png' alt='OpenID' style=' height: 64px;'/></th><td><input type='TEXT' name='OPENID' value='' class='autoprompt' prompt='Enter your OpenID (a url)'/><br/><input type='SUBMIT' name='ACTION' value='Use OpenID'/></td><td><img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?' class='helpicon' title='OpenID enables you to use a variety of services, usually free, to identify yourself and provide some limited personal information.'/></td>
+</tr>
+</table>
+</form>
 </div>
 <div class='tabcontent' id='APPGLOSSES'>
 This is the place to expose, hide, join, subscribe, etc to metadocs

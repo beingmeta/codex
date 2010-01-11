@@ -49,14 +49,18 @@ function createSBOOKHUD()
   var hud=$("SBOOKHUD");
   if (hud) return hud;
   else {
+    var help_button=
+      fdjtImage("http://static.beingmeta.com/graphics/HelpIcon40x40.png",
+		".button.help","?","help");
+    help_button.onclick=sbookHelpButton_onclick;
     hud=fdjtDiv
       ("#SBOOKHUD.hud",
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
-       fdjtDiv("#SBOOKLOC.hudblock.hud"),
-       fdjtDiv("#SBOOKFEEDS.hudblock.hud"),
+       fdjtDiv("#SBOOKFEEDS.hudblock.hud",help_button),
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
        fdjtDiv("#SBOOKSEARCH.hudblock.hud"),
        fdjtDiv("#SBOOKRIGHTMARGIN.hud"),
+       fdjtDiv("#SBOOKTAGS.hudblock.hud.tags"),
        sbookCreateHelpHUD());
 
     hud.title="";
@@ -108,7 +112,8 @@ function sbookInitSearchHUD()
 /* Mode controls */
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
-var sbookHUDMode_pat=/(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)/g;
+var sbookHUDMode_pat=
+  /(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
 
 function sbookHUDMode(mode)
 {
@@ -116,14 +121,14 @@ function sbookHUDMode(mode)
     fdjtLog("sbookHUDMode %o, cur=%o dbc=%o",
 	    mode,sbook_mode,document.body.className);
   if (mode) {
+    if (mode===true) mode="minimal";
     sbook_mode=mode;
-    // fdjtAddClass(document.body,"hudup");
+    fdjtAddClass(document.body,"hudup");
     fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
   else {
     sbook_mode=false;
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);
-    // fdjtDropClass(document.body,"hudup");
-    fdjtDropClass(sbookHUD,"hudup");}
+    fdjtDropClass(document.body,"hudup");}
 }
 function sbookHUDToggle(mode)
 {
@@ -326,11 +331,11 @@ function sbookCreateHelpHUD(eltspec)
     var target=$T(evt);
     sbookHelpHighlight(false);};
   div.innerHTML=sbook_helptext;
-  fdjtDelayHandler(1500,sbookUpdateHelpHider,false,sbook_root);
+  fdjtDelayHandler(1500,sbookUpdateAppHUD,false,sbook_root);
   return div;
 }
 
-function sbookUpdateHelpHider()
+function sbookUpdateAppHUD()
 {
   var hidehelp=$("SBOOKHIDEHELP");
   var dohidehelp=fdjtGetCookie("sbookhidehelp");
@@ -342,6 +347,7 @@ function sbookUpdateHelpHider()
     if (hidehelp.checked)
       fdjtSetCookie("sbookhidehelp",true,false,"/"); /* document.location.host */
     else fdjtSetCookie("sbookhidehelp","no",false,"/");};
+  fdjtAutoPrompt_setup($("SBOOKAPP"));
 }
 
 /* The TOC head */
@@ -351,7 +357,7 @@ function sbookTOC_onmouseover(evt)
   evt=evt||event||null;
   // sbook_trace("sbookTOC_onmouseover",evt);
   var target=sbookGetRef($T(evt));
-  if (!((sbook_mode)||(fdjtHasClass(sbookHUD,"hudup")))) return;
+  if (!((sbook_mode)||(fdjtHasClass(document.body,"hudup")))) return;
   sbookHUD_onmouseover(evt);
   fdjtCoHi_onmouseover(evt);
   if (target===null) return;

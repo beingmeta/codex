@@ -393,11 +393,8 @@ function sbookSummary_onclick(evt)
     if (target.sbook_ref) {
       fdjtScrollDiscard();
       var elt=$(target.sbook_ref);
-      var head=$(elt.sbook_head);
-      if (head) sbookScrollTo(elt,head);
-      else sbookScrollTo(elt);
+      sbookGoTo(elt);
       evt.preventDefault(); evt.cancelBubble=true;
-      sbookHUDMode(false);
       return false;}
     else if ((target.tagName==='INPUT') ||
 	     (target.tagName==='TEXTAREA') ||

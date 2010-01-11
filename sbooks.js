@@ -32,105 +32,20 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
+/* Source metadata */
+
 // When defined, this is a precomputed TOC for this file (NYI)
 var sbook_local_toc=false;
 // This is the TOC in which this document is embedded (NYI)
 var sbook_context_toc={};
-// Where to go for your glosses
-var sbook_glosses_root="https://sbooks.net/glosses/";
-// This is the sbook user, which we're careful not to overrid
-var sbook_user=((typeof sbook_user === "undefined")?(false):(sbook_user));
-// This is the picture to use for the user
-var sbook_user_img=
-  ((typeof sbook_user_img === "undefined")?(false):(sbook_user_img));
-// Whether the user has enabled feed posting
-var sbook_user_canpost=
-  ((typeof sbook_user_canpost === "undefined")?(false):(sbook_user_canpost));
-// These are the friends of the user
-var sbook_friends=
-  ((typeof sbook_friends === "undefined")?[]:(sbook_friends));
-// These are the 'tribes' (associated groups) of the user
-var sbook_tribes=
-  ((typeof sbook_tribes === "undefined")?[]:(sbook_tribes));
-// These are a set of common group/user tags for this particular user.
-var sbook_user_dist=
-  ((typeof sbook_user_dist === "undefined")?[]:(sbook_user_dist));
-// Whether to embed qricons with glossmarks
-var sbook_glossmark_qricons=false;
-// Whether to tag headings with qricons
-var sbook_heading_qricons=false;
 // Imported social info
 var sbook_social_info=
   ((typeof sbook_social_info === 'undefined')?(false):(sbook_social_info));
 // Imported gloss information
 var sbook_gloss_data=
   ((typeof sbook_gloss_data === 'undefined')?(false):(sbook_gloss_data));
-// Map of OIDs ':@x/y' to tables
-var sbook_oids={};
-// Array of sbook info, mapping from _fdjtid to objects
-var sbook_info=[];
-// Array of sbook info, mapping from element IDs objects
-var sbook_idinfo=[];
 
-// This is the base URI for this document, also known as the REFURI
-// All stored references to this document use this REFURI, even if the
-//  document is split across several files
-var sbook_refuri=false;
-// This is the 'source' URI for this document.  When a document is
-//  split into multiple files/URIs, this is the URI where it is read
-//  from.
-var sbook_src=false;
-// This is the base ID for fragment/element identifiers in this
-// document.
-var sbook_baseid=false;
-// This is the AJAX sbook mark uri
-var sbook_mark_uri="/glosses/glossmark.fdcgi?AJAX=yes";
-// This is the JSONP sbook mark uri
-var sbook_jsonping_uri="https://glosses.sbooks.net/glosses/glossmark.fdcgi?JSONP=yes";
-/* var sbook_mark_uri=false; */
-// This is the deepest TOC level to show for navigation
-var sbook_tocmax=false;
-// This is the hostname for the sbookserver.
-var sbook_server=false;
-// This is an array for looking up sbook servers.
-var sbook_servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
-//var sbook_servers=[];
-// This is the default server
-var sbook_default_server="glosses.sbooks.net";
-// This (when needed) is the iframe bridge for sBooks requests
-var sbook_ibridge=false;
-
-// This is the content root
-var sbook_root=false;
-// This is the current head element
-var sbook_head=false;
-// This is the 'focus element' approximately under the mouse.
-var sbook_focus=false;
-// Whether the focus is 'locked', disabling automatic tracking
-var sbook_locked_focus=false;
-// This is the last explicit target of a jump or mark.
-var sbook_target=false;
-// This is the rule for determining the sbook focus
-var sbook_focus_rules=false;
-// This (when not false) is an object which tracks the focus,
-//  being prepended to the focus whenever it changes
-var sbook_focus_marker=false;
-// This is the current query
-var sbook_query=false;
-// Which sources to search.  False to exclude glosses, true to include
-//  all glosses, and an array to include selected glosses
-var sbook_sources=true;
-
-// Whether the HUD is up
-var sbook_mode=false;
-// Whether preview mode is engaged
-var sbook_preview=false; 
-// Whether to do progress flashes
-var sbook_flash_progress=true;
-// Whether to do progress flashes
-var sbook_body_tooltips=true;
-// Whether to startup with the help screen
-var sbook_help_on_startup=false;
+/* Derived metadata */
 
 // This is a list of all the terminal content nodes
 var sbook_nodes=[];
@@ -140,6 +55,12 @@ var sbook_heads=[];
 //  from just their XML ids, because elements that have no ID by
 //  a nearby named anchor will appear in this table.
 var sbook_hashmap={};
+// Array of sbook info, mapping from _fdjtid to objects
+var sbook_info=[];
+// Array of sbook info, mapping from element IDs objects
+var sbook_idinfo={};
+
+/* Tag indices */
 
 // This is a table mapping tags (dterms) to elements (or IDs)
 //  Note that this includes the genls of actual tags; the index
@@ -159,6 +80,104 @@ var sbook_all_tags=[];
 // Whether the index is a hybrid of strings and DOM nodes
 var sbook_hybrid_index=false;
 
+/* Network connection settings */
+
+// Where to go for your glosses
+var sbook_glosses_root="https://sbooks.net/glosses/";
+// This is the AJAX sbook mark uri
+var sbook_mark_uri="/glosses/glossmark.fdcgi?AJAX=yes";
+// This is the JSONP sbook mark uri
+var sbook_jsonping_uri="https://glosses.sbooks.net/glosses/glossmark.fdcgi?JSONP=yes";
+// This is the hostname for the sbookserver.
+var sbook_server=false;
+// This is an array for looking up sbook servers.
+var sbook_servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
+//var sbook_servers=[];
+// This is the default server
+var sbook_default_server="glosses.sbooks.net";
+// This (when needed) is the iframe bridge for sBooks requests
+var sbook_ibridge=false;
+
+/* User information */
+
+// This is the sbook user, which we're careful not to override
+var sbook_user=((typeof sbook_user === "undefined")?(false):(sbook_user));
+// This is the picture to use for the user
+var sbook_user_img=
+  ((typeof sbook_user_img === "undefined")?(false):(sbook_user_img));
+// Whether the user has enabled feed posting
+var sbook_user_canpost=
+  ((typeof sbook_user_canpost === "undefined")?(false):(sbook_user_canpost));
+// These are the friends of the user
+var sbook_friends=
+  ((typeof sbook_friends === "undefined")?[]:(sbook_friends));
+// These are the 'tribes' (associated groups) of the user
+var sbook_tribes=
+  ((typeof sbook_tribes === "undefined")?[]:(sbook_tribes));
+// These are a set of common group/user tags for this particular user.
+var sbook_user_dist=
+  ((typeof sbook_user_dist === "undefined")?[]:(sbook_user_dist));
+
+/* Defining information for the document */
+
+// This is the base URI for this document, also known as the REFURI
+// All stored references to this document use this REFURI, even if the
+//  document is split across several files
+var sbook_refuri=false;
+// This is the 'source' URI for this document.  When a document is
+//  split into multiple files/URIs, this is the URI where it is read
+//  from.
+var sbook_src=false;
+// This is the base ID for fragment/element identifiers in this
+// document.
+var sbook_baseid=false;
+// Controls on excerpts
+var sbook_max_excerpt=false;
+// This is mostly a kludge to ignore selections which are really just clicks
+var sbook_min_excerpt=5;
+
+/* UI State information */
+
+// Whether the HUD is up
+var sbook_mode=false;
+// Whether preview mode is engaged
+var sbook_preview=false; 
+// This is the content root
+var sbook_root=false;
+// This is the current head element
+var sbook_head=false;
+// This is the 'focus element' approximately under the mouse.
+var sbook_focus=false;
+// Whether the focus is 'locked', disabling automatic tracking
+var sbook_locked_focus=false;
+// This is the last explicit target of a jump or mark.
+var sbook_target=false;
+// This is the rule for determining the sbook focus
+var sbook_focus_rules=false;
+// This is the current query
+var sbook_query=false;
+// Which sources to search.  False to exclude glosses, true to include
+//  all glosses, and an array to include selected glosses
+var sbook_sources=true;
+// Whether the page has been scrolled
+var sbook_scrolled=false;
+// Whether to switch headings on all mouseovers
+var sbook_close_tracking=true;
+// If a search has fewer than this many results,
+//  it just displays them
+var sbook_search_gotlucky=5;
+//  Whether the the search input has the focus
+var sbook_search_focus=false;
+// Whether to display verbose tool tips
+var sbook_noisy_tooltips=false;
+
+// Whether to startup with the help screen
+var sbook_help_on_startup=false;
+// How long to flash HUD elements when they change (milliseconds)
+var sbook_hud_flash=1500;
+
+/* Control of initial document scan */
+
 // Rules for building the TOC.  These can be extended.
 var sbook_headlevels=
   {"H1": 1,"H2": 2,"H3": 3,"H4": 4,"H5": 5, "H6": 6, "H7": 7};
@@ -170,7 +189,12 @@ var sbook_tagged_count=0;
 var sbook_tag_tags=[];
 // An array of element selectors which shouldn't be tagged/taggable
 var sbook_notags=[];
-
+// This is the deepest TOC level to show for navigation
+var sbook_tocmax=false;
+// Whether to embed qricons with glossmarks
+var sbook_glossmark_qricons=false;
+// Whether to tag headings with qricons
+var sbook_heading_qricons=false;
 // Use spanbars in the HUD
 var sbook_use_spanbars=true;
 // Show subsections too
@@ -178,8 +202,7 @@ var sbook_list_subsections=true;
 // Electro highlights
 var sbook_electric_spanbars=false;
 
-// Nonbreakable space, all handy
-var sbook_nbsp="\u00A0";
+/* Debugging flags */
 
 // Whether to debug generally
 var sbook_debug=false;
@@ -212,18 +235,6 @@ var sbook_trace_startup=0;
 // The core search algorithm computes a simple intersection
 //  of the tagged items, but the information above is used in
 //  scoring the results.
-
-// Whether the page has been scrolled
-var sbook_scrolled=false;
-// Whether to switch headings on all mouseovers
-var sbook_close_tracking=true;
-// If a search has fewer than this many results,
-//  it just displays them
-var sbook_search_gotlucky=5;
-//  Whether the the search input has the focus
-var sbook_search_focus=false;
-// Whether to display verbose tool tips
-var sbook_noisy_tooltips=false;
 
 function sbook_trace(handler,cxt)
 {
@@ -743,6 +754,7 @@ function sbookSetHead(head)
     var headinfo=sbook_getinfo(head);
     if (sbook_trace_focus) sbook_trace("sbookSetHead",head);
     sbookTOCDisplay(head,sbook_location);
+    if (sbook_hud_flash) fdjtFlash("SBOOKTOC",sbook_hud_flash,"flash");
     window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
@@ -799,10 +811,9 @@ function sbookSetFocus(target)
 {
   // If the target has changed, update the location
   if (target!==sbook_focus) {
-    var taghud=$("SBOOKSEARCH");
     var info=sbook_getinfo(target);
     var tags=((info)&&(info.tags));
-    var tagdiv=fdjtDiv(".tags.cues");
+    var tagdiv=fdjtDiv(".hudblock.hud.tags");
     tagdiv.onclick=sbook_tagdiv_onclick;
     if (tags) {
       var i=0; while (i<tags.length) {
@@ -810,13 +821,9 @@ function sbookSetFocus(target)
 	if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
 	else if (i===1) fdjtAppend(tagdiv,knoSpan(tag)," ");
 	else fdjtAppend(tagdiv,"\u00B7 ",knoSpan(tag)," ");}}
-    fdjtReplace("SBOOKSEARCHCUES",tagdiv);
-    // var otitle=target.title;
-    if ((sbook_flash_progress)&&(!(sbook_mode))) {
-      taghud.style.opacity=0.8;
-      setTimeout(function() {taghud.style.opacity=null;},2500);}}
+    fdjtReplace("SBOOKTAGS",tagdiv);
+    if (sbook_hud_flash) fdjtFlash("SBOOKTAGS",sbook_hud_flash,"flash");}
   if (!(target)) {
-    if (sbook_focus_marker) fdjtRemove(sbook_focus_marker);
     if (old_focus) fdjtDropClass(old_focus,"sbookfocus");
     if ((old_focus)&&(old_focus===sbook_locked_focus))
       sbookLockFocus(false);}
@@ -830,11 +837,6 @@ function sbookSetFocus(target)
     var old_focus=sbook_focus;
     sbook_focus=target;
     fdjtAddClass(target,"sbookfocus");
-    if (sbook_focus_marker) {
-      fdjtRemove(sbook_focus_marker);
-      if (target.glossmarkid) 
-	fdjtPrepend($(target.glossmarkid),sbook_focus_marker);
-      else fdjtPrepend(target,sbook_focus_marker);}
     if ((old_focus)&&(old_focus!==target)) {
       fdjtDropClass(old_focus,"sbookfocus");
       fdjtDropClass(old_focus,"sbookfocuslock");}
@@ -940,7 +942,10 @@ function sbookGoTo(target)
   if ((target.id)&&(!(sbookInUI(target)))) {
     sbookSetTarget(target);
     window.location.hash=target.id;}
-  sbookScrollTo(target);
+  var head=((target.sbook_head)&&($(target.sbook_head)));
+  if (head) sbookScrollTo(target,head);
+  else sbookScrollTo(target);
+  sbookHUDMode(false);
 }
 
 /* Keyboard handlers */
@@ -952,20 +957,21 @@ function sbook_onkeydown(evt)
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_mode) {
       sbookHUDMode(false);
-      fdjtDropClass(sbookHUD,"hudup");
+      fdjtDropClass(document.body,"hudup");
       sbookStopPreview();
       $("SBOOKSEARCHTEXT").blur();}
     else {
-      fdjtAddClass(sbookHUD,"hudup");
+      fdjtAddClass(document.body,"hudup");
       sbook_mode=true;}
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput($T(evt))) return true;
   else if (evt.keyCode===16) {
-    if (sbook_mode) 
-      fdjtDropClass(sbookHUD,sbook_mode);
+    if (sbook_mode) {
+      fdjtDropClass(document.body,"hudup");
+      fdjtDropClass(sbookHUD,sbook_mode);}
     else {
-      fdjtAddClass(sbookHUD,"hudup");}}
+      fdjtAddClass(document.body,"hudup");}}
   else if (evt.keyCode===32) /* Space char */
     sbookNextPage(evt);
   /* Backspace or Delete */
@@ -990,7 +996,6 @@ function sbook_onkeyup(evt)
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (evt.keyCode===16) {
-    fdjtDropClass(sbookHUD,"hudup");
     fdjtDropClass(document.body,"hudup");
     if (sbook_mode) fdjtAddClass(sbookHUD,sbook_mode);
     evt.cancelBubble=true;
@@ -1074,7 +1079,6 @@ function sbook_onmouseover(evt)
   // sbook_trace("sbook_onmouseover",evt);
   /* If you're previewing, ignore mouse action */
   if (sbook_preview) return;
-  if (fdjtHasClass(sbookHUD,"hudup")) return;
   if (sbook_target) sbookCheckTarget();
   /* Get the target */
   var target=$T(evt);
@@ -1107,7 +1111,7 @@ function sbook_onmousemove(evt)
   var target=$T(evt);
   /* If you're previewing, ignore mouse action */
   if ((sbook_preview) || (sbook_mode) || (sbook_mode)) return;
-  if (fdjtHasClass(sbookHUD,"hudup")) return;
+  if (fdjtHasClass(document.body,"hudup")) return;
   /* Save mouse positions */
   sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
   /* Now, we try to find a top level element to sort out whether
@@ -1131,8 +1135,8 @@ function sbook_onscroll(evt)
   evt=evt||event||null;
   // sbook_trace("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_mode)) return;
-  if (fdjtHasClass(sbookHUD,"hudup")) return;
+  if ((sbook_mode)&&(typeof sbook_mode === 'string')) return;
+  if (sbook_preview) return;
   if (sbook_target) sbookCheckTarget();
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
@@ -1172,8 +1176,9 @@ function sbook_onclick(evt)
   evt=evt||event||null;
   // sbook_trace("sbook_onclick",evt);
   var target=$T(evt); var scan=target;
-  var locked_focus=((sbook_locked_focus)&&($(sbook_locked_focus)));
   if (evt.button>1) return;
+  // We make sure that we're not overriding any elements that
+  //  might interpret the click for themselves
   while (scan)
     if ((scan==sbook_root)||(scan===window)) return;
     else if (scan.id) {target=scan; break;}
@@ -1184,27 +1189,16 @@ function sbook_onclick(evt)
       return;
     else scan=scan.parentNode;
   if ((sbook_mode)||(!(scan))) {
-    sbookLockFocus(false);
-    sbookSetTarget(false);
+    // This just toggles the HUD off
     sbookHUDMode(false);
-    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
+    if (evt.preventDefault) evt.preventDefault();
+    else evt.returnValue=false;
     return;}
   else if (!(scan.id)) return;
-  else if (locked_focus)
-    if (locked_focus===scan) // sbook_mark(scan);
-      sbookLockFocus(false);
-    else if ((fdjtHasParent(scan,locked_focus))||
-	     (fdjtHasParent(locked_focus,scan))) {
-      sbookLockFocus(false); sbookLockFocus(scan);}
-    else {
-      sbookLockFocus(false);
-      if (scan.id) sbookSetFocus(scan);
-      else sbookSetFocus(false);}
-  else if (evt.ctrlKey) sbook_mark(scan);
-  else if (scan.id) sbookLockFocus(scan.id);
-  else return;
-  if (evt.preventDefault) evt.preventDefault();
-  else evt.returnValue=false;
+  else {
+    if (evt.preventDefault) evt.preventDefault();
+    else evt.returnValue=false;
+    sbook_mark(scan);}
 }
 
 function sbook_ondblclick(evt)
@@ -1344,7 +1338,8 @@ function sbookGetSettings()
   if (tocmax) sbook_tocmax=parseInt(tocmax);
   if ((fdjtGetCookie("SBOOKNOFLASH"))||
       ((fdjtGetMeta("SBOOKNOFLASH",true))))
-    sbook_flash_progress=false;
+    sbook_hud_flash=0;
+  sbook_max_excerpt=fdjtGetMeta("SBOOKMAXEXCERPT",false)
   var notag=fdjtGetMeta("SBOOKNOTAG",true);
   if (notag) {
     var rules=fdjtSemiSplit(notag);
@@ -1397,7 +1392,7 @@ function sbookSetupGlossServer()
 	  document.domain=common_suffix;
 	  sbookSetIBridge(iframe.contentWindow);};
       	iframe.src=
-	  'https://'+sbook_server+'/glosses/ibridge.fdcgi?DOMAIN='+common_suffix;
+	  'http://'+sbook_server+'/glosses/ibridge.fdcgi?DOMAIN='+common_suffix;
 	document.body.appendChild(iframe);}}}
 }
 

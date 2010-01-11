@@ -43,12 +43,15 @@ function sbookMarkHUDSetup(origin,excerpt)
   if (!(origin)) target=origin=sbook_focus;
   else if (origin.oid) target=$(origin.id);
   else target=origin;
+  fdjtTrace("origin=%o target=%o excerpt=%o",origin,target,excerpt);
   if (sbook_target===target) {
     /* If the target is just unchanged, just update selected text as excerpt */
     var seltext=fdjtSelectedText();
     if (seltext) sbookSetMarkExcerpt(seltext);
     return;}
+  fdjtTrace("setting target %o",target);
   sbookSetTarget(target);
+  fdjtTrace("Setting excerpt");
   if (excerpt) sbookSetMarkExcerpt(excerpt);
   else sbookSetMarkExcerpt(target);
   var info=((target) &&
@@ -378,7 +381,7 @@ function sbookAddConversant(completions,c,seen,checked,init)
 {
   if (!(seen)) seen=completions._seen;
   if (seen[c]) return seen[c];
-  var cinfo=sbook_oids[c];
+  var cinfo=fdjtOIDs[c];
   var icon=false;
   if (cinfo.postable) 
     icon=fdjtImage("http://static.beingmeta.com/graphics/thumbtack19x15.png",
@@ -406,8 +409,8 @@ function sbookCompletionCheckspan(varname,value,checked,key)
   if (arguments.length>4)
     fdjtAddElements(checkspan,arguments,4);
   else fdjtAppend(checkspan,key);
-  if ((sbook_oids[value]) && (sbook_oids[value].summary))
-    checkspan.title=sbook_oids[value].gloss;
+  if ((fdjtOIDs[value]) && (fdjtOIDs[value].summary))
+    checkspan.title=fdjtOIDs[value].gloss;
   if (checked) {
     checkspan.setAttribute("ischecked","yes");
     checkbox.checked=true;}
@@ -427,7 +430,14 @@ function sbookSetMarkExcerpt(target)
      ((target.excerpt)||(fdjtSelectedText())||
       // Don't textify headers
       ((!(target.sbooklevel))&&(fdjtTextify(target,true)))));
+  fdjtTrace("adding excerpt target=%o excerpt=%o t.excerpt=%o t.sbl=%o",
+	    target,excerpt,target.excerpt,target.sbooklevel);
   var input=$("SBOOKMARKEXCERPT");
+  var use_excerpt=excerpt;
+  if ((excerpt)&&(excerpt.length<sbook_min_excerpt))
+    excerpt=fdjtTextify(target,true);
+  else if ((excerpt)&&(sbook_max_excerpt)&&(excerpt.length>sbook_max_excerpt))
+    excerpt=excerpt.slice(0,sbook_max_excerpt);
   if (excerpt) {
     excerpt=fdjtStringTrim(excerpt);
     input.value=excerpt;
@@ -534,17 +544,16 @@ function sbookMarkTag_onkeyup(evt)
 function sbook_mark(target,gloss)
 {
   if (sbook_target!==target) {
-    sbookSetTarget(target);
     $("SBOOKMARKFORM").reset();
-    sbook_focus=target;
-    sbookMarkHUDSetup(target,gloss);}
+    if (gloss) sbookMarkHUDSetup(gloss);
+    else sbookMarkHUDSetup(target);}
   if ((gloss)&&(gloss.user))
     if (gloss.user===sbook_user)
       sbookMarkHUDSetup(gloss);
     else {
       if (gloss.gloss) $("SBOOKMARKRELAY").value=gloss.gloss;
       if (gloss.user) {
-	var userinfo=sbook_oids[gloss.user];
+	var userinfo=fdjtOIDs[gloss.user];
 	var glossblock=
 	  fdjtDiv("sbookrelayblock","Relayed from ",
 		  fdjtSpan("user",userinfo.name),
@@ -555,21 +564,6 @@ function sbook_mark(target,gloss)
   fdjtAddClass(sbookHUD,"targeted");
   sbookHUDMode("mark");
   $("SBOOKMARKINPUT").focus();
-}
-
-function sbook_open_mark()
-{
-  var iframe; var focus=sbook_focus;
-  if ((focus) && (focus.glossmark) &&
-      (focus.glossmark.iframe))
-    iframe=sbook_focus.glossmark.iframe;
-  else if ((focus) && (focus.glossmark))
-    iframe=focus.glossmark.openIFrame();
-  else {
-    var glossmark=add_glossmark(focus,true);
-    focus.glossmark=glossmark;
-    iframe=glossmark.iframe;};
-  return iframe;
 }
 
 /* Emacs local variables

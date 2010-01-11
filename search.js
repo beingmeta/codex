@@ -205,12 +205,12 @@ function sbook_lookup_term(term,table)
       var items=fdjtSearchContent(document.body,term);
       sbook_word_index[term]=items;
       return items;}}
-  // This returns the info from the index
   else if (sbook_hybrid_index) {
     var v=sbook_index[term];
     if (!(v)) return [];
     else if (v._idsresolved) return v;
     else return sbookResolveIDs(v);}
+  // This returns the info from the index
   else return sbook_index[term]||[];
 }
 
