@@ -971,6 +971,7 @@ function sbook_onkeydown(evt)
       fdjtDropClass(document.body,"hudup");
       fdjtDropClass(sbookHUD,sbook_mode);}
     else {
+      fdjtSwapClass(sbookHUD,sbookHUDMode_pat,"minimal");
       fdjtAddClass(document.body,"hudup");}}
   else if (evt.keyCode===32) /* Space char */
     sbookNextPage(evt);
@@ -1164,11 +1165,10 @@ function sbook_onmouseup(evt)
   // sbook_trace("sbook_onmouseup",evt);
   if ((evt.button>1)||(fdjtHasParent($T(evt),sbookHUD))) {
     return;}
-  if ((sbook_locked_focus)||(sbook_mode==="mark")) {
-    var text=fdjtSelectedText();
-    if (sbook_mode==="mark") 
-      sbookSetMarkExcerpt(text);
-    else sbook_mark($(sbook_locked_focus),text);}
+  var text=fdjtSelectedText();
+  if (sbook_mode==="mark") 
+    sbookSetMarkExcerpt(text);
+  else sbook_mark($(sbook_locked_focus),text);
 }
 
 function sbook_onclick(evt)
@@ -1487,7 +1487,7 @@ function sbookSetup()
   sbookHUD_Init();
   var hud_init_done=new Date();
   // This catches the tail end of selects
-  // window.onmouseup=sbook_onmouseup;
+  window.onmouseup=sbook_onmouseup;
   // window.onmousedown=sbook_onmousedown;
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;

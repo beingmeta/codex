@@ -726,10 +726,11 @@ div.sbooktoc div.sub { display: none; margin-left: 20px; margin-right: 20px;}
 div.sbooktoc.cur div.head { font-size: 125%;}
 div.sbooktoc.cur div.sub { display: block;}
 
-div.sbooktoc .sectname.cohi { color: orange;}
-div.sbooktoc .sectname { color: yellow; cursor: pointer;}
+div.sbooktoc .sectname.cohi { color: ivory;}
+div.sbooktoc .sectname { color: ivory; cursor: pointer;}
 div.sbooktoc div.sub a.sectname { 
   color: yellow; font-size: 80%; white-space: nowrap;}
+div.sbooktoc div.sub a.sectname.cohi { color: ivory; }
 
 div#SBOOKHUD div.sbooktoc div.head { display: none;}
 div#SBOOKHUD div.sbooktoc div.spanbar { display: none;}
@@ -766,7 +767,7 @@ div.spanbar div.sbookhudspan a.brick {
   border-right: solid black 1px; border-left: solid black 1px;
   height: 100%;}
 div.spanbar div.sbookhudspan a.brick.cohi {
-  background-color: yellow;}
+  background-color: ivory;}
 div.spanbar div.sbookhudspan[odd] {}
 div.spanbar div.sbookhudspan[even] {}
 div.spanbar div.sbookhudspan.current {
@@ -777,8 +778,6 @@ div.spanbar div.sbookhudspan[odd]:hover {
   border-bottom: dotted red 2px; border-top: dotted red 2px; }
 div.spanbar div.sbookhudspan[even]:hover {
   border-bottom: dotted red 2px; border-top: dotted red 2px; }
-div.spanbar div.sbookhudspan.cohighlight { 
-  background-color: yellow;}
 div#SBOOKHUD div.sbooktoc { 
   width: 94%; margin-left: 3%; margin-right: 3%;}
 

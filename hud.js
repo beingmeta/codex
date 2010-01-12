@@ -356,63 +356,6 @@ function sbookUpdateAppHUD()
   fdjtAnchorSubmit_setup($("SBOOKAPP"));
 }
 
-/* The TOC head */
-
-function sbookTOC_onmouseover(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbookTOC_onmouseover",evt);
-  var target=sbookGetRef($T(evt));
-  if (!((sbook_mode)||(fdjtHasClass(document.body,"hudup")))) return;
-  sbookHUD_onmouseover(evt);
-  fdjtCoHi_onmouseover(evt);
-  if (target===null) return;
-  var head=sbookGetHead(target);
-  if (head)
-    fdjtDelayHandler(250,sbookPreviewNoMode,head,
-		     document.body,"previewing");
-}
-
-function sbookTOC_onmouseout(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbookTOC_onmouseout",evt);
-  sbookHUD_onmouseout(evt);
-  fdjtCoHi_onmouseout(evt);
-  fdjtDelayHandler(250,sbookStopPreview,false,document.body,"previewing");
-  var rtarget=evt.relatedTarget;
-  if (!(rtarget)) return;
-  while (rtarget)
-    if (rtarget===sbookHUD) return;
-    else if (rtarget===document.body) break;
-    else if (rtarget===window) break;
-    else if (rtarget===document) break;
-    else try {rtarget=rtarget.parentNode;}
-      catch (e) {break;}
-  sbook_hud_forced=false;
-}
-
-function sbookTOC_onclick(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbookTOC_onclick",evt);
-  var target=sbookGetRef($T(evt));
-  if (target===null) {
-    sbookHUDToggle("toc");
-    return;}
-  sbook_preview=false;
-  fdjtScrollDiscard();
-  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
-  evt.cancelBubble=true;
-  sbookSetHead(target);
-  var info=sbook_getinfo(target);
-  sbookScrollTo(target);
-  if (!((info.sub) && ((info.sub.length)>2)))
-    sbookHUDMode(false);
-  sbookSetTarget(target);
-  return false;
-}
-
 /* Button methods */
 
 function sbookIndexButton_onclick(evt)
