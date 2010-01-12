@@ -333,7 +333,7 @@ function sbookCreateAppHUD(eltspec)
   div.onmouseout=function(evt){
     var target=$T(evt);
     sbookHelpHighlight(false);};
-  div.innerHTML=sbook_helptext;
+  div.innerHTML=sbook_apptext;
   fdjtDelayHandler(1500,sbookUpdateAppHUD,false,sbook_root);
   return div;
 }
