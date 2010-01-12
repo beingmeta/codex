@@ -79,18 +79,24 @@ function sbookCreateFeedHUD(classinfo,feeds)
   if (!(classinfo)) classinfo=".feeds.hudblock.hud#SBOOKFEEDS";
   var help_button=
     fdjtImage("http://static.beingmeta.com/graphics/HelpIcon40x40.png",
-	      ".button.help","?","help");
+	      ".button.help","?","app");
+  var login_button=
+    fdjtImage("http://static.beingmeta.com/graphics/sbookslogo40x40.png",
+	      ".button.login","?","login");
   var everyone_button=
     fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
 	      ".button.everyone","everyone");
   var feedicons=fdjtDiv("#SBOOKFEEDICONS.feedicons");
   var socialelts=[]; var glosselts=[];
   everyone_button.onclick=sbookEveryoneButton_onclick;
+  login_button.onclick=sbookLoginButton_onclick;
   feedicons.onclick=sbookFeeds_onclick;
   help_button.onclick=sbookHelpButton_onclick;
   var i=0; var n=feeds.length;
   while (i<n) sbookAddFeedIcon(fdjtOIDs[feeds[i++]]);
-  sbookFeedHUD=fdjtDiv(classinfo," ",everyone_button,feedicons,help_button);
+  sbookFeedHUD=fdjtDiv(classinfo," ",
+		       login_button,everyone_button,
+		       feedicons,help_button);
   return sbookFeedHUD;
 }
 
@@ -103,13 +109,6 @@ function sbookAddFeedIcon(info)
   icon.oid=info.oid; icon.id="SBOOKFEEDICON"+humid;
   fdjtAppend("SBOOKFEEDICONS"," ",icon);
   return icon;
-}
-
-function sbookHelpButton_onclick(evt)
-{
-  evt=evt||event||null;
-  sbookHUDToggle("help");
-  evt.cancelBubble=true;
 }
 
 function sbookEveryoneButton_onclick(evt)
@@ -148,12 +147,16 @@ function sbookFeeds_onclick(evt)
     //  then just toggle the HUD off
     fdjtDropClass(icon,"selected");
     sbook_sources=[];
-    sbookHUDMode(false);
     evt.cancelBubble=true;
     if (evt.preventDefault) evt.preventDefault();
-    else evt.returnValue=false;      
+    else evt.returnValue=false;
+    if (sbook_mode==='glosses')
+      sbookSelectSummaries($("SBOOKGLOSSES"),false);
+    else if ((sbook_mode==='searching')||(sbook_mode==='browsing'))
+      sbookSelectSummaries($("SBOOKSUMMARIES"),false);
+    sbookHUDMode(false);
     return false;}
-  if (!(sbook_sources)) {
+  else if (!(sbook_sources)) {
     fdjtAddClass(icon,"selected");
     sbook_sources=new Array(target.oid);}
   else if ((evt.shiftKey)||(evt.ctrlKey))
@@ -306,29 +309,6 @@ function sbookGlossmark_onmouseout(evt)
   evt=evt||event||null;
   var target=sbookGetRef(evt.target)||sbookGetFocus(evt.target);
   fdjtDropClass(target,"sbooklivespot");
-}
-
-/* Login stuff */
-
-function sbookCreateLoginButton(uri,image,title)
-{
-  var login_button=
-    fdjtAnchor(((uri)?
-		(uri+"?NEXT="+
-		 encodeURIComponent("http://sbooks.net/app/read?URI="+encodeURIComponent(window.location.href))):
-		"javascript:alert('sorry, not yet implemented'); return false;"),
-	       fdjtImage(sbook_graphics_root+image,"button"));
-  fdjtAddClass(login_button,"login");
-  if (!(uri)) fdjtAddClass(login_button,"disabled");
-  login_button.title=((uri)?(title):("(coming soon) "+title));
-  login_button.onclick=sbookLoginButton_onclick;
-  return login_button;
-}
-
-function sbookLoginButton_onclick(evt)
-{
-  evt=evt||event||null;
-  evt.cancelBubble=true;
 }
 
 function createSBOOKHUDping()

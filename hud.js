@@ -52,16 +52,20 @@ function createSBOOKHUD()
     var help_button=
       fdjtImage("http://static.beingmeta.com/graphics/HelpIcon40x40.png",
 		".button.help","?","help");
+    var login_button=
+      fdjtImage("http://static.beingmeta.com/graphics/sbookslogo40x40.png",
+		".button.login","?","login");
     help_button.onclick=sbookHelpButton_onclick;
+    login_button.onclick=sbookLoginButton_onclick;
     hud=fdjtDiv
       ("#SBOOKHUD.hud",
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
-       fdjtDiv("#SBOOKFEEDS.hudblock.hud",help_button),
+       fdjtDiv("#SBOOKFEEDS.hudblock.hud",login_button,help_button),
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
        fdjtDiv("#SBOOKSEARCH.hudblock.hud"),
        fdjtDiv("#SBOOKRIGHTMARGIN.hud"),
        fdjtDiv("#SBOOKTAGS.hudblock.hud.tags"),
-       sbookCreateHelpHUD());
+       sbookCreateAppHUD());
 
     hud.title="";
     hud.onclick=sbookHUD_onclick;
@@ -79,7 +83,6 @@ function createSBOOKHUD()
 
 function sbookInitNavHUD()
 {
-  fdjtAppend("SBOOKLOC",_sbook_generate_spanbar(document.body));
   fdjtReplace("SBOOKTOC",sbookCreateNavHUD());
   var toc_button=
     fdjtImage(sbook_graphics_root+"CompassIcon40x40.png","hudbutton","toc",
@@ -113,7 +116,7 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
+  /(app)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
 
 function sbookHUDMode(mode)
 {
@@ -291,7 +294,7 @@ function sbookGetStableId(elt)
   else return false;
 }
 
-/* The Help HUD */
+/* The APP HUD */
 
 var sbook_helphud_highlight=false;
 var sbook_helphud_display=false;
@@ -315,7 +318,7 @@ function sbookHelpHighlight(hudelt)
     hudelt.style.opacity=0.9;}
 }
 
-function sbookCreateHelpHUD(eltspec)
+function sbookCreateAppHUD(eltspec)
 {
   var div=fdjtDiv(eltspec||"#SBOOKAPP");
   div.onmouseover=function(evt){
@@ -339,15 +342,18 @@ function sbookUpdateAppHUD()
 {
   var hidehelp=$("SBOOKHIDEHELP");
   var dohidehelp=fdjtGetCookie("sbookhidehelp");
-  if (dohidehelp==='no') hidehelp.checked=false;
+  if (!(hidehelp)) {}
+  else if (dohidehelp==='no') hidehelp.checked=false;
   else if (dohidehelp) hidehelp.checked=true;
   else hidehelp.checked=false;
-  hidehelp.onchange=function(evt){
-    // fdjtTrace("change on %o: %o checked=%o",hidehelp,evt,hidehelp.checked);
-    if (hidehelp.checked)
-      fdjtSetCookie("sbookhidehelp",true,false,"/"); /* document.location.host */
-    else fdjtSetCookie("sbookhidehelp","no",false,"/");};
+  if (hidehelp)
+    hidehelp.onchange=function(evt){
+      // fdjtTrace("change on %o: %o checked=%o",hidehelp,evt,hidehelp.checked);
+      if (hidehelp.checked)
+	fdjtSetCookie("sbookhidehelp",true,false,"/"); /* document.location.host */
+      else fdjtSetCookie("sbookhidehelp","no",false,"/");};
   fdjtAutoPrompt_setup($("SBOOKAPP"));
+  fdjtAnchorSubmit_setup($("SBOOKAPP"));
 }
 
 /* The TOC head */
@@ -429,6 +435,30 @@ function sbookTOCButton_onclick(evt)
     sbookHUDMode(false);
     fdjtDropClass("SBOOKTOC","hover");}
   else sbookHUDMode("toc");
+  evt.cancelBubble=true;
+}
+
+function sbookHelpButton_onclick(evt)
+{
+  if ((sbook_mode==="app")&&
+      (fdjtSelectedTab("SBOOKTABS")==="APPHELP")) {
+    sbookHUDMode(false);
+    return;}
+  evt=evt||event||null;
+  sbookHUDMode("app");
+  fdjtSelectTab('SBOOKTABS','APPHELP');
+  evt.cancelBubble=true;
+}
+
+function sbookLoginButton_onclick(evt)
+{
+  if ((sbook_mode==="app")&&
+      (fdjtSelectedTab("SBOOKTABS")==="APPLOGIN")) {
+    sbookHUDMode(false);
+    return;}
+  evt=evt||event||null;
+  sbookHUDMode("app");
+  fdjtSelectTab('SBOOKTABS','APPLOGIN');
   evt.cancelBubble=true;
 }
 

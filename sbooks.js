@@ -1032,9 +1032,9 @@ function sbook_onkeypress(evt)
     if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   /* H or h */
   else if ((evt.charCode===104) || (evt.charCode===72)) { 
-    if (sbook_mode==="help") sbookHUDMode(false);
+    if (sbook_mode==="app") sbookHUDMode(false);
     else {
-      sbookHUDMode("help"); $("SBOOKSEARCHTEXT").blur();}
+      sbookHUDMode("app"); $("SBOOKSEARCHTEXT").blur();}
     if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   else {
     evt.cancelBubble=true;
@@ -1441,10 +1441,10 @@ function sbookAddQRIcons()
 function _sbookHelpSplash()
 {
   var cookie=fdjtGetCookie("sbookhidehelp");
-  if (cookie==='no') sbookHUDMode("help");
+  if (cookie==='no') sbookHUDMode("app");
   else if (cookie) {}
   else if (sbook_help_on_startup)
-    sbookHUDMode("help");
+    sbookHUDMode("app");
 }
 
 /* Initialization */
@@ -1461,12 +1461,13 @@ function sbookSetup()
   var fdjt_done=new Date();
   sbookGetSettings();
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
-  createSBOOKHUD(); sbookHUDMode("help");
+  createSBOOKHUD(); sbookHUDMode("app");
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
   if (knoHTMLSetup) knoHTMLSetup();
   var knowlets_done=new Date();
-  $("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
+  if ($("SBOOKHIDEHELP"))
+    $("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
   sbookGatherMetadata();
   sbookInitNavHUD();
   var metadata_done=new Date();
@@ -1509,7 +1510,6 @@ function sbookSetup()
   else {
     sbookFullCloud();
     var cloud_done=new Date();
-    /* _sbook_createHUDSocial(); */
     fdjtLog("[%fs] %s",
 	    fdjtET(),
 	    fdjtRunTimes("sbookSetup",_sbook_setup_start,

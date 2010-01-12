@@ -225,7 +225,6 @@ div#SBOOKHUD.glosses.targeted div.hud#SBOOKFEEDS {
   -moz-border-radius-bottomright: 6px;
   border-bottom-right-radius: 6px;}
 
-    
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
   width: 34px; height: 34px;
   border: solid transparent 2px;} 
@@ -247,6 +246,12 @@ div#SBOOKHUD.browsing div.hud#SBOOKFEEDS img.feed {
   display: none;}
 div#SBOOKHUD.browsing div.hud#SBOOKFEEDS img.feed.shown {
   display: block;}
+
+div#SBOOKHUD div#SBOOKFEEDS img.button.login { display: none;}
+body.nosbookuser div#SBOOKHUD div#SBOOKFEEDS img.button.everyone {
+  display: none;}
+body.nosbookuser div#SBOOKHUD div#SBOOKFEEDS img.button.login {
+  display: inline;}
 
 #SBOOKFEEDS a.login { 
   display: none;
@@ -345,20 +350,20 @@ div#SBOOKHUD div#SBOOKAPP div.helphelp.left img {
   border: solid black 1px; padding: 1px;
   width: 12px; height: 12px; }
 
-div#SBOOKHUD.help div#SBOOKAPP {
+div#SBOOKHUD.app div#SBOOKAPP {
   display: block; opacity: 0.9; 
   padding-left: 5%; padding-right: 5%;}
 
-div#SBOOKHUD.help div#SBOOKAPP div.helpbody {
+div#SBOOKHUD.app div#SBOOKAPP div.helpbody {
   max-width: 50em; margin-left: auto; margin-right: auto;
   margin-top: 18px;}
-div#SBOOKHUD.help div#SBOOKAPP div.helpbody div.fasthelp {
+div#SBOOKHUD.app div#SBOOKAPP div.helpbody div.fasthelp {
   margin-top: 5px; color: black; text-align: center; font-weight: bold;
   padding: 3px; border: solid white 1px; color: yellow;
   font-size: 80%;}
-div#SBOOKHUD.help div#SBOOKAPP div.helpbody div.fasthelp span.key {
+div#SBOOKHUD.app div#SBOOKAPP div.helpbody div.fasthelp span.key {
   font-weight: bold; color: white; font-size: 125%; font-variant: small-caps;}
-div#SBOOKHUD.help div#SBOOKAPP div.helpbody div.fasthelp span.keydef {
+div#SBOOKHUD.app div#SBOOKAPP div.helpbody div.fasthelp span.keydef {
   white-space: nowrap;}
 
 div#SBOOKHUD div#SBOOKAPP span.hudref {
@@ -403,7 +408,6 @@ body.preview img.hudbutton { opacity: 0.05;}
 
 /* HUD Layout */
 
-
 div#SBOOKHUD div.hud#SBOOKMARK {
   margin-bottom: 8px;}
 
@@ -412,7 +416,7 @@ body.nosbookuser span.tab#LOGINTAB { display: inline;}
 body.nosbookuser .tab#SBOOKLOGOUT { display: none;}
 body span.tab#LOGINTAB { display: none;}
 
-body.nosbookuser div#SBOOKHUD div.hud#SBOOKFEEDS a.login {
+body.nosbookuser div#SBOOKHUD div.hud#SBOOKFEEDS img.button.login {
   display: block;}
 body.nosbookuser a.login { display: inherit;}
 body.nosbookuser #SBOOKFEEDS img.button {display: none;}
@@ -1065,17 +1069,15 @@ table.login {}
 table.login th {text-align: right; vertical-align: top; font-size: 125%;}
 table.login td {text-align: left; vertical-align: top;}
 table.login td.oneclick a { float: left; margin-right: 3px;}
-table.login td.oneclick a.loginbutton {
-    background-color: white; padding: 4px; padding-bottom: 1px;
-    border: solid blue 3px;
-    -khtml-border-radius: 6px; 
-    -webkit-border-radius: 6px; 
-    -moz-border-radius: 6px; 
-    border-radius: 6px;}
-table.login td.oneclick a.loginbutton img { height: 16px;}
-table.login BUTTON { padding: 1px;}
-table.login td BUTTON { padding: 1px; }
-table.login td BUTTON img { height: 32px;}
+table.login td.oneclick a.login {
+  background-color: white; padding: 0px;}
+table.login td.oneclick a.login img {
+  margin: 0px; border: 0px; padding: 0px;}
+table.login td.oneclick a.login[value='facebook'] {
+  background-color: inherit;}
+table.login a.button { padding: 1px;}
+table.login td a.button { padding: 1px; }
+table.login td a.button img { height: 32px;}
 table.login td input[TYPE='TEXT'] { }
 table.login td input[TYPE='TEXT'][NAME='USERNAME'] { width: 100%;}
 table.login td input[TYPE='TEXT'][NAME='LOCALNAME'] { 

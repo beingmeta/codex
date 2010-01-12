@@ -566,6 +566,23 @@ function sbook_mark(target,gloss)
   $("SBOOKMARKINPUT").focus();
 }
 
+/* Creating login button */
+
+function sbookCreateLoginButton(uri,image,title)
+{
+  var login_button=
+    fdjtAnchor(((uri)?
+		(uri+"?NEXT="+
+		 encodeURIComponent("http://sbooks.net/app/read?URI="+encodeURIComponent(window.location.href))):
+		"javascript:alert('sorry, not yet implemented'); return false;"),
+	       fdjtImage(sbook_graphics_root+image,"button"));
+  fdjtAddClass(login_button,"login");
+  if (!(uri)) fdjtAddClass(login_button,"disabled");
+  login_button.title=((uri)?(title):("(coming soon) "+title));
+  login_button.onclick=sbookLoginButton_onclick;
+  return login_button;
+}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
