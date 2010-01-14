@@ -160,7 +160,8 @@ function sbookNewGlosses(glosses,winarg)
 
 function sbookJSONPglosses(glosses)
 {
-  if (sbook_trace_network) fdjtLog("Got new glosses (probably) from JSONP call");
+  if (sbook_trace_network)
+    fdjtLog("Got new glosses (probably) from JSONP call");
   sbookNewGlosses(glosses);
 }
 

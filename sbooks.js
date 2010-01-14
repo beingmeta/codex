@@ -135,6 +135,8 @@ var sbook_baseid=false;
 var sbook_max_excerpt=false;
 // This is mostly a kludge to ignore selections which are really just clicks
 var sbook_min_excerpt=5;
+// This is the unique DOC identifier used by myCopy social DRM.
+var sbook_mycopyid=false; 
 
 /* UI State information */
 
@@ -1356,6 +1358,7 @@ function sbookGetSettings()
   sbook_baseid=getsbookbaseid();
   sbook_refuri=getsbookrefuri();
   sbook_src=getsbooksrc();
+  sbook_mycopyid=fdjtGetMeta("SBOOKMYCOPY",false);
 }
 
 function sbookLookupServer(string)
@@ -1477,7 +1480,8 @@ function sbookSetup()
     var uri="https://"+sbook_server+"/glosses/glosses.fdcgi?URI="+
       ((sbook_baseid) ?
        (encodeURIComponent(refuri+"#"+sbook_baseid)) :
-       (encodeURIComponent(refuri)));
+       (encodeURIComponent(refuri)))+
+      ((sbook_mycopyid)?("&MYCOPY="+encodeURIComponent(sbook_mycopyid)):(""));
     var script_elt=fdjtNewElement("SCRIPT");
     script_elt.language="javascript"; script_elt.src=uri;
     document.body.appendChild(script_elt);}
