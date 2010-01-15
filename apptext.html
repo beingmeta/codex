@@ -6,15 +6,16 @@
 -->
 <div style='position: absolute; top: 0px; height: 110%;'> </div>
 
-<div class='tabbar' onclick='fdjtTab_onclick(event);' id='SBOOKTABS'>
-<span class='tab' contentid='APPHELP' shown='shown'>Help</span>
-<span class='tab' contentid='APPLOGIN' id='LOGINTAB'>Login</span>
-<span class='tab' contentid='APPGLOSSES'>Glosses</span>
+<div class='tabbar' id='SBOOKTABS'>
+<span class='tab' contentid='APPHELP' onclick="sbookHUDMode('help');">Help</span>
+<span class='tab' contentid='APPFEEDS' onclick="sbookHUDMode('feeds');">Feeds</span>
+<span class='tab' contentid='APPSETTINGS' onclick="sbookHUDMode('settings');">Settings</span>
+<span class='tab' contentid='APPLOGIN' onclick="sbookHUDMode('login');">Login</span>
 <a href='http://sbooks.net/app/logout'
    class='tab' id='SBOOKLOGOUT' contentid='APPGLOSSES'>
   Logout</a>
 </div>
-<div class='tabcontent helpbody' id='APPHELP' shown='shown'>
+<div class='tabcontent helpbody' id='APPHELP'>
 <div class='sbookh1'>Welcome to sBooks!
   <div class='motto'>&ldquo;possibly the best thing since sliced paper&rdquo;</div>
 </div>
@@ -209,7 +210,11 @@ or methods.</p>
 </table>
 </form>
 </div>
-<div class='tabcontent' id='APPGLOSSES'>
+<div class='tabcontent' id='APPFEEDS'>
+This is the place to expose, hide, join, subscribe, etc to metadocs
+and reading circles.
+</div>
+<div class='tabcontent' id='APPSETTINGS'>
 This is the place to expose, hide, join, subscribe, etc to metadocs
 and reading circles.
 </div>

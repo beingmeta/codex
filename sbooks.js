@@ -1035,9 +1035,9 @@ function sbook_onkeypress(evt)
     if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   /* H or h */
   else if ((evt.charCode===104) || (evt.charCode===72)) { 
-    if (sbook_mode==="app") sbookHUDMode(false);
+    if (sbook_mode==="help") sbookHUDMode(false);
     else {
-      sbookHUDMode("app"); $("SBOOKSEARCHTEXT").blur();}
+      sbookHUDMode("help"); $("SBOOKSEARCHTEXT").blur();}
     if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   else {
     evt.cancelBubble=true;
@@ -1168,15 +1168,17 @@ function sbook_onmouseup(evt)
   if ((evt.button>1)||(fdjtHasParent($T(evt),sbookHUD))) {
     return;}
   var text=fdjtSelectedText();
-  if (sbook_mode==="mark") 
-    sbookSetMarkExcerpt(text);
-  else sbook_mark($(sbook_locked_focus),text);
+  if ((text)&&(text.length>sbook_min_excerpt)) {
+    if (sbook_target) sbookSetMarkExcerpt(text);
+    else sbook_mark($(sbook_target),text);
+    if (evt.preventDefault) evt.preventDefault();
+    else evt.returnValue=false;}
 }
 
 function sbook_onclick(evt)
 {
   evt=evt||event||null;
-  // sbook_trace("sbook_onclick",evt);
+  sbook_trace("sbook_onclick",evt);
   var target=$T(evt); var scan=target;
   if (evt.button>1) return;
   // We make sure that we're not overriding any elements that
@@ -1190,17 +1192,19 @@ function sbook_onclick(evt)
 	     ((scan.getAttribute) && (scan.getAttribute("ONCLICK"))))
       return;
     else scan=scan.parentNode;
+  fdjtTrace("target=%o scan=%o mode=%o",target,scan,sbook_mode);
   if ((sbook_mode)||(!(scan))) {
     // This just toggles the HUD off
     sbookHUDMode(false);
     if (evt.preventDefault) evt.preventDefault();
     else evt.returnValue=false;
     return;}
-  else if (!(scan.id)) return;
+  else if ((!(target))||(!(target.id))) return;
   else {
     if (evt.preventDefault) evt.preventDefault();
     else evt.returnValue=false;
-    sbook_mark(scan);}
+    fdjtTrace("marking %o",target);
+    sbook_mark(target);}
 }
 
 function sbook_ondblclick(evt)
@@ -1444,10 +1448,9 @@ function sbookAddQRIcons()
 function _sbookHelpSplash()
 {
   var cookie=fdjtGetCookie("sbookhidehelp");
-  if (cookie==='no') sbookHUDMode("app");
+  if (cookie==='no') sbookHUDMode("help");
   else if (cookie) {}
-  else if (sbook_help_on_startup)
-    sbookHUDMode("app");
+  else if (sbook_help_on_startup) sbookHUDMode("help");
 }
 
 /* Initialization */
@@ -1464,7 +1467,7 @@ function sbookSetup()
   var fdjt_done=new Date();
   sbookGetSettings();
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
-  createSBOOKHUD(); sbookHUDMode("app");
+  createSBOOKHUD(); sbookHUDMode("help");
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
   if (knoHTMLSetup) knoHTMLSetup();

@@ -116,7 +116,7 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(app)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
+  /(login)|(settings)|(feeds)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
 
 function sbookHUDMode(mode)
 {
@@ -383,25 +383,16 @@ function sbookTOCButton_onclick(evt)
 
 function sbookHelpButton_onclick(evt)
 {
-  if ((sbook_mode==="app")&&
-      (fdjtSelectedTab("SBOOKTABS")==="APPHELP")) {
-    sbookHUDMode(false);
-    return;}
-  evt=evt||event||null;
-  sbookHUDMode("app");
-  fdjtSelectTab('SBOOKTABS','APPHELP');
+  if (sbook_mode==="help") sbookHUDMode(false);
+  else sbookHUDMode("help");
   evt.cancelBubble=true;
 }
 
 function sbookLoginButton_onclick(evt)
 {
-  if ((sbook_mode==="app")&&
-      (fdjtSelectedTab("SBOOKTABS")==="APPLOGIN")) {
-    sbookHUDMode(false);
-    return;}
   evt=evt||event||null;
-  sbookHUDMode("app");
-  fdjtSelectTab('SBOOKTABS','APPLOGIN');
+  if (sbook_mode==="login") sbookHUDMode(false);
+  else sbookHUDMode("login");
   evt.cancelBubble=true;
 }
 

@@ -335,7 +335,8 @@ div#SBOOKHUD div#SBOOKAPP {
   -moz-border-radius: 6px; 
   border-radius: 6px; 
   background-color: gray; color: ivory;
-  padding: 20px; padding-top: 4px;
+  padding-left: 5%; padding-right: 5%;
+  padding-bottom: 12px; padding-top: 4px;
   display: none;}
 div#SBOOKHUD div#SBOOKAPP div.tabbar {
     text-align: center; font-size: 125%;}
@@ -350,32 +351,51 @@ div#SBOOKHUD div#SBOOKAPP div.helphelp.left img {
   border: solid black 1px; padding: 1px;
   width: 12px; height: 12px; }
 
-div#SBOOKHUD.app div#SBOOKAPP {
-  display: block; opacity: 0.9; 
-  padding-left: 5%; padding-right: 5%;}
+div#SBOOKHUD.help div#SBOOKAPP {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.login div#SBOOKAPP {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.settings div#SBOOKAPP {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.feeds div#SBOOKAPP {
+  display: block; opacity: 0.9; }
 
-div#SBOOKHUD.app div#SBOOKAPP div.helpbody {
+div#SBOOKHUD.help div#SBOOKAPP div.tabcontent#APPHELP { display: block;}
+div#SBOOKHUD.login div#SBOOKAPP div.tabcontent#APPLOGIN { display: block;}
+div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS { display: block;}
+div#SBOOKHUD.feeds div#SBOOKAPP div.tabcontent#APPFEEDS { display: block;}
+
+div#SBOOKHUD.help div#SBOOKAPP span.tab[contentid='APPHELP'] {
+    border-bottom: none;}
+div#SBOOKHUD.login div#SBOOKAPP span.tab[contentid='APPLOGIN'] {
+    border-bottom: none;}
+div#SBOOKHUD.settings div#SBOOKAPP span.tab[contentid='APPSETTINGS'] {
+    border-bottom: none;}
+div#SBOOKHUD.feeds div#SBOOKAPP span.tab[contentid='APPFEEDS'] {
+    border-bottom: none;}
+
+div#SBOOKAPP div.helpbody {
   max-width: 50em; margin-left: auto; margin-right: auto;
   margin-top: 18px;}
-div#SBOOKHUD.app div#SBOOKAPP div.helpbody div.fasthelp {
+div#SBOOKAPP div.helpbody div.fasthelp {
   margin-top: 5px; color: black; text-align: center; font-weight: bold;
   padding: 3px; border: solid white 1px; color: yellow;
   font-size: 80%;}
-div#SBOOKHUD.app div#SBOOKAPP div.helpbody div.fasthelp span.key {
+div#SBOOKAPP div.helpbody div.fasthelp span.key {
   font-weight: bold; color: white; font-size: 125%; font-variant: small-caps;}
-div#SBOOKHUD.app div#SBOOKAPP div.helpbody div.fasthelp span.keydef {
+div#SBOOKAPP div.helpbody div.fasthelp span.keydef {
   white-space: nowrap;}
 
-div#SBOOKHUD div#SBOOKAPP span.hudref {
+div#SBOOKAPP div.helpbody span.hudref {
   font-weight: bold; color: blue; cursor: pointer;}
-div#SBOOKHUD div#SBOOKAPP strong {
+div#SBOOKAPP div.helpbody strong {
   font-weight: bold; color: yellow;}
-div#SBOOKHUD div#SBOOKAPP em {
+div#SBOOKAPP div.helpbody em {
   font-style: italic; color: yellow;}
-div#SBOOKHUD div#SBOOKAPP div.sbookh1 { 
+div#SBOOKAPP div.helpbody div.sbookh1 { 
   font-size: 200%; font-weight: bold;
   text-align: center;}
-div#SBOOKHUD div#SBOOKAPP div.sbookh1 div.motto {
+div#SBOOKAPP div.helpbody div.sbookh1 div.motto {
   font-weight: normal; font-style: italic; font-size: 50%; color: yellow;}
 
 /* Minimal mode */
@@ -444,8 +464,17 @@ div.sbookrelayblock span.user {
 div.sbookrelayblock span.msg {
   font-style: italic; font-weight: normal;}
 
-div.needlogin { display: none;}
-body.nosbookuser div.needlogin { display: block;}
+div#SBOOKHUD div#SBOOKMARK div.needlogin { display: none;}
+body.nosbookuser div#SBOOKHUD div#SBOOKMARK div.needlogin {
+    display: block; margin-bottom: 8px;}
+div#SBOOKHUD div#SBOOKMARK div.needlogin span.loginbutton { 
+  color: blue; background-color: white; padding: 3px;
+  border: solid blue 2px;
+  -khtml-border-radius: 6px; 
+  -webkit-border-radius: 6px; 
+  -moz-border-radius: 6px; 
+  border-radius: 6px;}
+
 
 form.mark div.messages div.message { display: none;}
 form.mark div.messages div.message { 
@@ -1069,9 +1098,9 @@ table.login th {text-align: right; vertical-align: top; font-size: 125%;}
 table.login td {text-align: left; vertical-align: top;}
 table.login td.oneclick a { float: left; margin-right: 3px;}
 table.login td.oneclick a.login {
-  background-color: white; padding: 0px;}
+  background-color: white; padding: 0px; margin-right: 8px;}
 table.login td.oneclick a.login img {
-  margin: 0px; border: 0px; padding: 0px;}
+  margin: 0px; border: 0px; padding: 0px; height: 32px;}
 table.login td.oneclick a.login[value='facebook'] {
   background-color: inherit;}
 table.login a.button { padding: 1px;}

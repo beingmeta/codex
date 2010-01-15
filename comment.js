@@ -43,15 +43,12 @@ function sbookMarkHUDSetup(origin,excerpt)
   if (!(origin)) target=origin=sbook_focus;
   else if (origin.oid) target=$(origin.id);
   else target=origin;
-  fdjtTrace("origin=%o target=%o excerpt=%o",origin,target,excerpt);
   if (sbook_target===target) {
     /* If the target is just unchanged, just update selected text as excerpt */
     var seltext=fdjtSelectedText();
     if (seltext) sbookSetMarkExcerpt(seltext);
     return;}
-  fdjtTrace("setting target %o",target);
   sbookSetTarget(target);
-  fdjtTrace("Setting excerpt");
   if (excerpt) sbookSetMarkExcerpt(excerpt);
   else sbookSetMarkExcerpt(target);
   var info=((target) &&
@@ -169,14 +166,13 @@ function sbookCreateMarkHUD(classinfo)
 	    fdjtDiv("content",xrefs_input));
   xrefs_input.onkeypress=sbooksXRefs_onkeypress;
 
+  var login_button=((sbook_user)?(false):(fdjtSpan("loginbutton","login")));
+  if (login_button) {
+    login_button.title="click to login to sBooks";
+    login_button.onclick=sbookLoginButton_onclick;}
   var need_login=
-    ((sbook_user)?(false):
-     (fdjtDiv("needlogin",
-	      "You most login (",
-	      sbookCreateLoginButton
-	      ("http://sbooks.net/fb/auth",
-	       "facebook_32.png","login through facebook"),
-	      ") to make comments")));
+    ((login_button)&&
+     (fdjtDiv("needlogin","You must ",login_button," to add your own glosses")));
   var messages_elt=fdjtDiv("messages");
   
   var privy=fdjtInput("CHECKBOX","private","yes");
@@ -430,8 +426,6 @@ function sbookSetMarkExcerpt(target)
      ((target.excerpt)||(fdjtSelectedText())||
       // Don't textify headers
       ((!(target.sbooklevel))&&(fdjtTextify(target,true)))));
-  fdjtTrace("adding excerpt target=%o excerpt=%o t.excerpt=%o t.sbl=%o",
-	    target,excerpt,target.excerpt,target.sbooklevel);
   var input=$("SBOOKMARKEXCERPT");
   var use_excerpt=excerpt;
   if ((excerpt)&&(excerpt.length<sbook_min_excerpt))
