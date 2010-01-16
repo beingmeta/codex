@@ -150,8 +150,6 @@ var sbook_root=false;
 var sbook_head=false;
 // This is the 'focus element' approximately under the mouse.
 var sbook_focus=false;
-// Whether the focus is 'locked', disabling automatic tracking
-var sbook_locked_focus=false;
 // This is the last explicit target of a jump or mark.
 var sbook_target=false;
 // This is the rule for determining the sbook focus
@@ -242,17 +240,17 @@ function sbook_trace(handler,cxt)
 {
   if (cxt.target)
     fdjtLog
-      ("[%f] %s %o in %o: mode%s=%o, focus%s=%o, head=%o",
+      ("[%f] %s %o in %o: mode%s=%o, focus%s=%o, target=%o, head=%o",
        fdjtElapsedTime(),handler,cxt,cxt.target,
        ((sbook_preview)?("(preview)"):""),sbook_mode,
-       ((sbook_locked_focus)?("(locked)"):""),
-       sbook_focus,sbook_head);
+       ((sbook_target)?("(targeted)"):""),
+       sbook_focus,sbook_target,sbook_head);
   else fdjtLog
-	 ("[%f] %s %o: mode%s=%o, focus%s=%o, head=%o",
+	 ("[%f] %s %o: mode%s=%o, focus%s=%o, target=%o, head=%o",
 	  fdjtElapsedTime(),handler,cxt,
 	  ((sbook_preview)?("(preview)"):""),sbook_mode,
-	  ((sbook_locked_focus)?("(locked)"):""),
-	  sbook_focus,sbook_head);
+	  ((sbook_target)?("(targeted)"):""),
+	  sbook_focus,sbook_target,sbook_head);
 
 }
 
@@ -580,83 +578,6 @@ function sbook_toc_builder(child,tocstate)
     child.setAttribute("sbookloc",child.sbookloc);
 }
 
-/* Getting the 'next' node */
-
-function sbookNext(elt)
-{
-  var info=sbook_getinfo(elt);
-  if ((info.sub) && (info.sub.length>0))
-    return info.sub[0];
-  else if (info.next) return info.next;
-  else return sbookNextUp(elt);
-}
-
-function sbookNextUp(elt)
-{
-  var info=sbook_getinfo(elt).sbook_head;
-  while (info) {
-    if (info.next) return info.next;
-    info=info.sbook_head;}
-  return head;
-}
-
-function sbookPrev(elt)
-{
-  var info=sbook_getinfo(elt);
-  if (!(info)) return false;
-  else if (info.prev) {
-    info=info.prev;
-    if ((info.sub) && (info.sub.length>0))
-      return info.sub[info.sub.length-1];
-    else return document.getElementById(info.id);}
-  else if (info.sbook_head)
-    return document.getElementById(info.sbook_head.id);
-  else return false;
-}
-
-function sbookUp(elt)
-{
-  var info=sbook_getinfo(elt);
-  if ((info) && (info.sbook_head))
-    return document.getElementById(info.sbook_head.id);
-  else return false;
-}
-
-/* Section/page navigation */
-
-function sbookNextSection(evt)
-{
-  var prev=((evt.ctrlKey) ? (sbookUp(sbook_head)) :
-	    (sbookPrev(sbook_head)));
-  if (prev) sbookGoTo(prev);
-}
-
-function sbookPrevSection(evt)
-{
-    var next=((evt.ctrlKey) ? (sbookNextUp(sbook_head)) :
-	      (sbookNext(sbook_head)));
-    if (next) sbookGoTo(next);
-}
-
-function sbookNextPage(evt)
-{
-  evt=evt||event||null;
-  window.scrollBy(0,window.innerHeight);
-  setTimeout("sbookTrackFocus(sbookGetXYFocus())",100);
-  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
-  evt.cancelBubble=true;
-}
-
-function sbookPrevPage(evt)
-{
-  evt=evt||event||null;
-  window.scrollBy(0,-window.innerHeight);
-  setTimeout("sbookTrackFocus(sbookGetXYFocus())",100);
-  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
-  evt.cancelBubble=true;
-}
-
-
 /* Global query information */
 
 function sbookSetQuery(query,scored)
@@ -826,9 +747,7 @@ function sbookSetFocus(target)
     fdjtReplace("SBOOKTAGS",tagdiv);
     if (sbook_hud_flash) fdjtFlash("SBOOKTAGS",sbook_hud_flash,"flash");}
   if (!(target)) {
-    if (old_focus) fdjtDropClass(old_focus,"sbookfocus");
-    if ((old_focus)&&(old_focus===sbook_locked_focus))
-      sbookLockFocus(false);}
+    if (old_focus) fdjtDropClass(old_focus,"sbookfocus");}
   else if (target!==sbook_focus) {
     var head=((target) &&
 	      ((target.sbooklevel) ? (target) :
@@ -848,28 +767,13 @@ function sbookSetFocus(target)
   }
 }
 
-function sbookLockFocus(target)
-{
-  if (sbook_trace_focus) sbook_trace("sbookLockFocus",target);
-  if (target) {
-    sbookSetFocus(target);
-    fdjtAddClass(target,"sbookfocuslock");
-    sbook_locked_focus=target;}
-  else {
-    if (sbook_locked_focus)
-      fdjtDropClass(target,"sbookfocuslock");
-    sbook_locked_focus=false;}
-}
-
 function sbookTrackFocus(target)
 {
   // Lots of reasons *not* to track the focus
   if (!(target)) return null;
   else if (sbook_mode==="mark") return;
-  else if ((sbook_locked_focus)&&(fdjtIsVisible($(sbook_locked_focus))))
+  else if ((sbook_target)&&(fdjtIsVisible($(sbook_target))))
     return;
-  // [???] If the focus is locked, but not visible, clear it
-  else if (sbook_locked_focus) sbookLockFocus(false);
   // All the direct reasons not to track the focus are false,
   // so we try to find the actual focus element
   if (sbook_trace_focus) sbook_trace("sbookTrackFocus",target);
@@ -1138,7 +1042,6 @@ function sbook_onscroll(evt)
   evt=evt||event||null;
   // sbook_trace("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
-  if ((sbook_mode)&&(typeof sbook_mode === 'string')) return;
   if (sbook_preview) return;
   if (sbook_target) sbookCheckTarget();
   var scrollx=window.scrollX||document.body.scrollLeft;
@@ -1148,70 +1051,6 @@ function sbook_onscroll(evt)
   var target=sbookGetXYFocus(xoff,yoff);
   fdjtDelayHandler
     (sbook_focus_delay,sbookTrackFocus,target,document.body,"setfocus");
-}
-
-function sbook_onmousedown(evt)
-{
-  evt=evt||event||null;
-  if ((evt.button>1)&&(evt.ctrlKey)) return;
-  // sbook_trace("sbook_onmousedown",evt);
-  sbook_start_select=sbookGetFocus($T(evt));
-  if (sbook_trace_selection)
-    fdjtLog("[%fs] Set sbook_start_select to %o from %o on %o",
-	    fdjtET(),sbook_start_select,$T(evt),evt);
-}
-
-function sbook_onmouseup(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbook_onmouseup",evt);
-  if ((evt.button>1)||(fdjtHasParent($T(evt),sbookHUD))) {
-    return;}
-  var text=fdjtSelectedText();
-  if ((text)&&(text.length>sbook_min_excerpt)) {
-    if (sbook_target) sbookSetMarkExcerpt(text);
-    else sbook_mark($(sbook_target),text);
-    if (evt.preventDefault) evt.preventDefault();
-    else evt.returnValue=false;}
-}
-
-function sbook_onclick(evt)
-{
-  evt=evt||event||null;
-  sbook_trace("sbook_onclick",evt);
-  var target=$T(evt); var scan=target;
-  if (evt.button>1) return;
-  // We make sure that we're not overriding any elements that
-  //  might interpret the click for themselves
-  while (scan)
-    if ((scan==sbook_root)||(scan===window)) return;
-    else if (scan.id) {target=scan; break;}
-    else if ((scan.onclick) || 
-	     (scan.tagName==='A') ||  (scan.tagName==='INPUT') ||
-	     (scan.tagName==='TEXTAREA') ||
-	     ((scan.getAttribute) && (scan.getAttribute("ONCLICK"))))
-      return;
-    else scan=scan.parentNode;
-  fdjtTrace("target=%o scan=%o mode=%o",target,scan,sbook_mode);
-  if ((sbook_mode)||(!(scan))) {
-    // This just toggles the HUD off
-    sbookHUDMode(false);
-    if (evt.preventDefault) evt.preventDefault();
-    else evt.returnValue=false;
-    return;}
-  else if ((!(target))||(!(target.id))) return;
-  else {
-    if (evt.preventDefault) evt.preventDefault();
-    else evt.returnValue=false;
-    fdjtTrace("marking %o",target);
-    sbook_mark(target);}
-}
-
-function sbook_ondblclick(evt)
-{
-  evt=evt||event||null;
-  sbook_onclick(evt);
-  return;
 }
 
 function sbook_tagdiv_onclick(evt)
@@ -1453,6 +1292,13 @@ function _sbookHelpSplash()
   else if (sbook_help_on_startup) sbookHUDMode("help");
 }
 
+/* Applying settings */
+
+function sbookApplySettings()
+{
+  sbookTabletMode($("TABLETMODE").checked);
+}
+
 /* Initialization */
 
 var _sbook_setup=false;
@@ -1465,6 +1311,8 @@ function sbookSetup()
   if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
   var fdjt_done=new Date();
+  fdjtAppend(document.body,fdjtDiv("bottomleading"," "));
+  fdjtPrepend(document.body,fdjtDiv("topleading"," "));  
   sbookGetSettings();
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
   createSBOOKHUD(); sbookHUDMode("help");
@@ -1493,13 +1341,12 @@ function sbookSetup()
   var hud_done=new Date();
   sbookHUD_Init();
   var hud_init_done=new Date();
-  // This catches the tail end of selects
-  window.onmouseup=sbook_onmouseup;
-  // window.onmousedown=sbook_onmousedown;
+  // window.onmouseup=sbook_onmouseup;
+  window.onmousedown=sbook_onmousedown;
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;
   window.onscroll=sbook_onscroll;
-  window.onclick=sbook_onclick;
+  // window.onclick=sbook_onclick;
   window.ondblclick=sbook_ondblclick;
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;

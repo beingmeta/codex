@@ -22,11 +22,11 @@
 
 <div class='fasthelp'>
 <span class='keydef'><span class='key'>H</span> to toggle this help; </span>
-<span class='keydef'><span class='key'>Shift</span> to see context; </span>
-<span class='keydef'><span class='key'>Click</span> to make a comment;</span>
-<br/>
 <span class='keydef'><span class='key'>N</span> to navigate;</span>
 <span class='keydef'><span class='key'>S</span> to search;</span>
+<br/>
+<span class='keydef'><span class='key'>Shift</span> or <span class='key'>Click</span> for context;
+<span class='key'>Click again</span> to gloss (comment);</span>
 <span class='keydef'><span class='key'>Select</span> text to excerpt;</span>
 <br/>
 <span class='keydef'><span class='key'>Space</span>/<span class='key'>Backspace</span> to move by page;</span>
@@ -214,9 +214,11 @@ or methods.</p>
 This is the place to expose, hide, join, subscribe, etc to metadocs
 and reading circles.
 </div>
-<div class='tabcontent' id='APPSETTINGS'>
-This is the place to expose, hide, join, subscribe, etc to metadocs
-and reading circles.
+<div class='tabcontent' id='APPSETTINGS' onclick='fdjtCheckSpan_onclick(event);'>
+<p><span class='checkspan' onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
+   <input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>
+   Enable tablet mode</span></p>
+<div class='buttons'></div>
 </div>
 <!--
 /* Emacs local variables

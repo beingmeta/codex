@@ -35,22 +35,31 @@ var sbooks_comment_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
+// This is the target for which the mark HUD has been set
+var sbook_mark_target=false;
+var sbook_trace_gloss=true;
+
 /* Setting up the Mark hud for a particular target */
 
-function sbookMarkHUDSetup(origin,excerpt)
+function sbookMarkHUDSetup(target,origin,excerpt)
 {
-  var target;
-  if (!(origin)) target=origin=sbook_focus;
-  else if (origin.oid) target=$(origin.id);
-  else target=origin;
-  if (sbook_target===target) {
-    /* If the target is just unchanged, just update selected text as excerpt */
-    var seltext=fdjtSelectedText();
-    if (seltext) sbookSetMarkExcerpt(seltext);
+  if (!(target))
+    if ((origin)&&(origin.id))
+      target=$(origin.id);
+    else target=sbook_target||sbook_focus;
+  if (!(excerpt)) excerpt=fdjtSelectedText();
+  if (sbook_trace_gloss)
+    fdjtLog("Setting up gloss HUD for %o from %o st=%o sf=%o excerpt=%o",
+	    target,origin,sbook_target,sbook_focus,excerpt);
+  if (sbook_mark_target===target) {
+    /* If the HUD is already, initialized for the target, just update the excerpt */
+    if (sbook_trace_gloss)
+      fdjtLog("Just updating gloss HUD with excerpt %o",excerpt);
+    if ((excerpt)&&(excerpt.length>sbook_min_excerpt))
+      sbookSetMarkExcerpt(excerpt);
     return;}
-  sbookSetTarget(target);
-  if (excerpt) sbookSetMarkExcerpt(excerpt);
-  else sbookSetMarkExcerpt(target);
+  else sbookSetTarget(target);
+  sbook_mark_target=target;
   var info=((target) &&
 	    ((sbook_getinfo(target)) ||
 	     (sbook_getinfo(sbookGetHead(target)))));
@@ -115,6 +124,10 @@ function sbookMarkHUDSetup(origin,excerpt)
   var k=0; while (k<tags.length) {
     var tag=tags[k++];
     if (fdjtIndexOf(tagcues,tag)<0) tagcues.push(tag);}
+  // Set the selected text as an excerpt
+  fdjtLog("Setting excerpt to %o",excerpt);
+  if ((excerpt)&&(excerpt.length>sbook_min_excerpt)) 
+    sbookSetMarkExcerpt(excerpt);
   fdjtSetCompletionCues($("SBOOKMARKCLOUD"),tagcues);
   fdjtAutoPrompt_setup($("SBOOKMARK"));
   sbookSelectSummaries(sbookGlossesHUD,true,false,target.id);
@@ -223,7 +236,6 @@ function sbookCreateMarkHUD(classinfo)
     fdjtDropClass(form,"submitting");
     /* Turn off the focus lock */
     sbookSetTarget(false);
-    sbookLockFocus(false);
     form.reset();
     fdjtCheckSpan_setup($("SBOOKMARKCLOUD"));
    win.sbookHUDMode(false);};
@@ -419,13 +431,8 @@ function sbooksXRefs_onkeypress(evt)
   return fdjtMultiText_onkeypress(evt,'div');
 }
 
-function sbookSetMarkExcerpt(target)
+function sbookSetMarkExcerpt(excerpt)
 {
-  var excerpt=
-    ((typeof target === 'string') ? (target) :
-     ((target.excerpt)||(fdjtSelectedText())||
-      // Don't textify headers
-      ((!(target.sbooklevel))&&(fdjtTextify(target,true)))));
   var input=$("SBOOKMARKEXCERPT");
   var use_excerpt=excerpt;
   if ((excerpt)&&(excerpt.length<sbook_min_excerpt))
@@ -535,16 +542,15 @@ function sbookMarkTag_onkeyup(evt)
 
 /* Mark functions */
 
-function sbook_mark(target,gloss)
+function sbook_mark(target,gloss,excerpt)
 {
-  if (sbook_target!==target) {
-    $("SBOOKMARKFORM").reset();
-    if (gloss) sbookMarkHUDSetup(gloss);
-    else sbookMarkHUDSetup(target);}
+  if (sbook_mark_target!==target) {$("SBOOKMARKFORM").reset();}
   if ((gloss)&&(gloss.user))
+    // Handle relays and edits
     if (gloss.user===sbook_user)
-      sbookMarkHUDSetup(gloss);
+      sbookMarkHUDSetup(target,gloss||false,excerpt||false);
     else {
+      sbookMarkHUDSetup(target,false,excerpt||false);
       if (gloss.gloss) $("SBOOKMARKRELAY").value=gloss.gloss;
       if (gloss.user) {
 	var userinfo=fdjtOIDs[gloss.user];
@@ -554,6 +560,7 @@ function sbook_mark(target,gloss)
 		  ((gloss.msg)&&(": ")),
 		  ((gloss.msg)?(fdjtSpan("msg",gloss.msg)):(false)));
 	fdjtReplace("SBOOKMARKRELAYBLOCK",glossblock);}}
+  else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
   sbookSelectSummaries(sbookGlossesHUD,false,target.id);
   fdjtAddClass(sbookHUD,"targeted");
   sbookHUDMode("mark");
@@ -581,4 +588,5 @@ function sbookCreateLoginButton(uri,image,title)
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
 ;;;  End: ***
-*/
+*
+/

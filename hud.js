@@ -57,6 +57,18 @@ function createSBOOKHUD()
 		".button.login","?","login");
     help_button.onclick=sbookHelpButton_onclick;
     login_button.onclick=sbookLoginButton_onclick;
+    var next_button=
+      fdjtImage("http://static.beingmeta.com/graphics/PageRight40x40.png",
+		".hudbutton","next","hold to move forward by pages");
+    next_button.onmousedown=sbookNextPrev_startit;
+    next_button.onmouseup=sbookNextPrev_stopit;
+    next_button.onmouseout=sbookNextPrev_stopit;
+    var prev_button=
+      fdjtImage("http://static.beingmeta.com/graphics/PageLeft40x40.png",
+		".hudbutton","prev","hold to move backward by pages");
+    prev_button.onmousedown=sbookNextPrev_startit;
+    prev_button.onmouseup=sbookNextPrev_stopit;
+    prev_button.onmouseout=sbookNextPrev_stopit;
     hud=fdjtDiv
       ("#SBOOKHUD.hud",
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
@@ -65,7 +77,8 @@ function createSBOOKHUD()
        fdjtDiv("#SBOOKSEARCH.hudblock.hud"),
        fdjtDiv("#SBOOKRIGHTMARGIN.hud"),
        fdjtDiv("#SBOOKTAGS.hudblock.hud.tags"),
-       sbookCreateAppHUD());
+       sbookCreateAppHUD(),
+       prev_button,next_button);
 
     hud.title="";
     hud.onclick=sbookHUD_onclick;

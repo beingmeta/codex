@@ -82,7 +82,7 @@ div#SBOOKHUD div.hudblock:hover { opacity: 0.8;}
 
 img.hudbutton { 
   opacity: 0.2; z-index: 200;
-  position: fixed; left: 0px;
+  position: fixed;
   background-color: gray; padding-right: 4px;
   font-family: sans,sans-serif;}
 img.hudbutton:hover { opacity: 0.5;}
@@ -111,10 +111,11 @@ div#SBOOKHUD div.hudblock.hover#SBOOKTOC { display: block;}
 div#SBOOKHUD div.hudblock.flash#SBOOKTOC { opacity: 0.8; display: block;}
 
 img.hudbutton[alt='toc'] { 
+  top: 0px; left: 0px;
   -khtml-border-bottom-right-radius: 6px; 
   -webkit-border-bottom-right-radius: 6px; 
   -moz-border-radius-bottomright: 6px; 
-  border-bottom-right-radius: 6px; top: 0px; }
+  border-bottom-right-radius: 6px;}
 div#SBOOKHUD.toc img.hudbutton[alt='toc'] { 
   left: 75px; opacity: 0.9; width: 25px; height: 25px;}
 
@@ -140,14 +141,15 @@ div#SBOOKHUD.browsing div.hudblock#SBOOKSEARCH {
   display: block; height: 50px; opacity: 0.9;}
 
 img.hudbutton[alt='index'] { 
-  -khtml-border-top-right-radius: 6px; 
-  -webkit-border-top-right-radius: 6px; 
-  -moz-border-radius-topright: 6px; 
-  border-top-right-radius: 6px; bottom: 0px;}
+  top: 0px; right: 0px;
+  -khtml-border-bottom-left-radius: 6px; 
+  -webkit-border-bottom-left-radius: 6px; 
+  -moz-border-radius-bottomleft: 6px; 
+  border-bottom-left-radius: 6px;}
 div#SBOOKHUD.searching img.hudbutton[alt='index'] { 
-  top: 0px; left: 75px; opacity: 0.9; width: 25px; height: 25px;}
+  top: 0px; right: 75px; opacity: 0.9; width: 25px; height: 25px;}
 div#SBOOKHUD.browsing img.hudbutton[alt='index'] { 
-  top: 0px; left: 75px; opacity: 0.9; width: 25px; height: 25px;}
+  top: 0px; right: 75px; opacity: 0.9; width: 25px; height: 25px;}
 
 /* The summaries (search results) HUD */
 
@@ -187,6 +189,22 @@ div#SBOOKHUD div.hud#SBOOKTAGS {
   border-top-right-radius: 6px;
   display: none;}
 div#SBOOKHUD div.hudblock.flash#SBOOKTAGS { opacity: 0.8; display: block;}
+
+/* Paging buttons */
+
+img.hudbutton[alt='next'] { 
+  bottom: 0px; right: 0px;
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px;}
+
+img.hudbutton[alt='prev'] { 
+  bottom: 0px; left: 0px;
+  -khtml-border-top-left-radius: 6px; 
+  -webkit-border-top-left-radius: 6px; 
+  -moz-border-radius-topleft: 6px; 
+  border-top-left-radius: 6px;}
 
 /* The Feeds HUD */
 
@@ -274,11 +292,11 @@ div#SBOOKHUD.glosses div.hudblock#SBOOKFEEDS {
 /* The Glosses HUD */
 
 div#SBOOKHUD div#SBOOKGLOSSES {
-  position: fixed; top: 75px; bottom: 75px;
+  position: fixed; top: 75px; /* bottom: 75px;*/
   left: 50px; right: 100px; z-index: 250;
   overflow: auto;
   margin: 0px; height: auto; min-height: auto;
-  padding: 6px; padding-top: 6px; padding-bottom: 0px;
+  padding: 6px; padding-top: 6px; padding-bottom: 12px;
   border: solid blue 2px;
   -khtml-border-top-right-radius: 6px; 
   -webkit-border-top-right-radius: 6px; 
@@ -786,6 +804,8 @@ div.spanbar div.sbookhudspan {
   border: 0px;
   border-top: solid blue 2px; border-bottom: solid blue 2px;
   height: 10px; }
+/* Make span bars finger-fat in tablet mode */
+body.tablet div.spanbar div.sbookhudspan { height: 20px;}
 div.spanbar div.sbookhudspan div.brick {
   border: 0px; padding: 0px;
   border-right: solid black 1px; border-left: solid black 1px;
@@ -1126,6 +1146,17 @@ table.login a img { border: none;}
 table.login td.userlogin { vertical-align: top;}
 table.login td.userlogin button { padding: 2px;}
 table.login td.userlogin img { vertical-align: top; height: 16px;}
+
+/* Special display stuff */
+
+body.tablet {
+  overflow: hidden;}
+body div.topleading { height: 50px; width: 100%;}
+body div.bottomleading { height: 50px; width: 100%;}
+
+.sbookpage { page-break-before: always;}
+.sbookkeep { page-break-inside: avoid;}
+
 
 /* Emacs local variables
 ;;;  Local variables: ***

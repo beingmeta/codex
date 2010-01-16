@@ -287,7 +287,6 @@ function sbookGlossmark_onclick(evt)
     sbookSelectSummaries(sbookGlossesHUD,sbook_sources,target.id);
   else sbookSelectSummaries(sbookGlossesHUD,false,target.id);
   fdjtAddClass(sbookHUD,"targeted");
-  sbookLockFocus(target);
   sbookSetTarget(target);
   sbook_glossmark=$P(".glossmark",evt.target);
   sbookMarkHUDSetup(target);
