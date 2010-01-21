@@ -3,7 +3,9 @@
 body.sbook {
   margin-top: 64px; margin-bottom: 64px;
   margin-left: 64px; margin-right: 64px;
+  overflow-x: hidden;
   background-color: ivory;}
+body.sbook div.frontpiece img { width: 80%;}
 body.sbook h1#TITLEPAGE { 
   background-color: lightgray;
   font-size: 36px; text-align: center; width: 100%;

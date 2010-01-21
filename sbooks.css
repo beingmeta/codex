@@ -265,12 +265,6 @@ div#SBOOKHUD.browsing div.hud#SBOOKFEEDS img.feed {
 div#SBOOKHUD.browsing div.hud#SBOOKFEEDS img.feed.shown {
   display: block;}
 
-div#SBOOKHUD div#SBOOKFEEDS img.button.login { display: none;}
-body.nosbookuser div#SBOOKHUD div#SBOOKFEEDS img.button.everyone {
-  display: none;}
-body.nosbookuser div#SBOOKHUD div#SBOOKFEEDS img.button.login {
-  display: inline;}
-
 #SBOOKFEEDS a.login { 
   display: none;
   margin-bottom: 4px; margin-left: 2px;}
@@ -292,7 +286,7 @@ div#SBOOKHUD.glosses div.hudblock#SBOOKFEEDS {
 /* The Glosses HUD */
 
 div#SBOOKHUD div#SBOOKGLOSSES {
-  position: fixed; top: 75px; /* bottom: 75px;*/
+  position: fixed; top: 75px; bottom: 75px;
   left: 50px; right: 100px; z-index: 250;
   overflow: auto;
   margin: 0px; height: auto; min-height: auto;
@@ -342,7 +336,6 @@ div#SBOOKHUD.targeted div#SBOOKGLOSSES {
 
 /* The App HUD */
 
-
 div#SBOOKHUD div#SBOOKAPP {
   position: fixed; top: 60px; bottom: 50px;
   left: 74px; right: 75px; z-index: 250;
@@ -375,13 +368,13 @@ div#SBOOKHUD.login div#SBOOKAPP {
   display: block; opacity: 0.9; }
 div#SBOOKHUD.settings div#SBOOKAPP {
   display: block; opacity: 0.9; }
-div#SBOOKHUD.feeds div#SBOOKAPP {
+div#SBOOKHUD.social div#SBOOKAPP {
   display: block; opacity: 0.9; }
 
 div#SBOOKHUD.help div#SBOOKAPP div.tabcontent#APPHELP { display: block;}
 div#SBOOKHUD.login div#SBOOKAPP div.tabcontent#APPLOGIN { display: block;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS { display: block;}
-div#SBOOKHUD.feeds div#SBOOKAPP div.tabcontent#APPFEEDS { display: block;}
+div#SBOOKHUD.social div#SBOOKAPP div.tabcontent#APPSOCIAL { display: block;}
 
 div#SBOOKHUD.help div#SBOOKAPP span.tab[contentid='APPHELP'] {
     border-bottom: none;}
@@ -389,8 +382,15 @@ div#SBOOKHUD.login div#SBOOKAPP span.tab[contentid='APPLOGIN'] {
     border-bottom: none;}
 div#SBOOKHUD.settings div#SBOOKAPP span.tab[contentid='APPSETTINGS'] {
     border-bottom: none;}
-div#SBOOKHUD.feeds div#SBOOKAPP span.tab[contentid='APPFEEDS'] {
+div#SBOOKHUD.social div#SBOOKAPP span.tab[contentid='APPSOCIAL'] {
     border-bottom: none;}
+div#SBOOKHUD div#SBOOKAPP div#APPSOCIAL iframe {
+  border-width: solid transparent 3px;
+  -khtml-border-radius: 9px; 
+  -webkit-border-radius: 9px; 
+  -moz-border-radius: 9px; 
+  border-radius: 9px; 
+  width: 100%; height: 80%;}
 
 div#SBOOKAPP div.helpbody {
   max-width: 50em; margin-left: auto; margin-right: auto;
@@ -450,17 +450,24 @@ div#SBOOKHUD div.hud#SBOOKMARK {
   margin-bottom: 8px;}
 
 div#SBOOKHUD div.hud#SBOOKMARK span.dterm { color: yellow;}
-body.nosbookuser span.tab#LOGINTAB { display: inline;}
 body.nosbookuser .tab#SBOOKLOGOUT { display: none;}
-body span.tab#LOGINTAB { display: none;}
 
+body span.tab[CONTENTID='APPLOGIN'] { display: none;}
+body.nosbookuser span.tab[CONTENTID='APPLOGIN'] { display: inline;}
+
+div#SBOOKHUD div.hud#SBOOKFEEDS img.button.app {
+  display: block;}
+div#SBOOKHUD div.hud#SBOOKFEEDS img.button.login {
+  display: none;}
 body.nosbookuser div#SBOOKHUD div.hud#SBOOKFEEDS img.button.login {
   display: block;}
-body.nosbookuser a.login { display: inherit;}
-body.nosbookuser #SBOOKFEEDS img.button {display: none;}
-body.nosbookuser #SBOOKFEEDS img.button.help {display: inline;}
-body.nosbookuser #SBOOKFEEDS a.login img.button {
-  display: inherit;}
+body.nosbookuser div#SBOOKHUD div.hud#SBOOKFEEDS img.button.app {
+  display: none;}
+
+div#SBOOKHUD div#SBOOKFEEDS img.button.everyone {
+  position: absolute; bottom: 3px; left: 3px; vertical-align: bottom;}
+body.nosbookuser div#SBOOKHUD div#SBOOKFEEDS img.button.everyone {
+  display: none;}
 
 body #SBOOKCANTPOST { display: none; color: white;}
 body.sbookcantpost #SBOOKCANTPOST { 
@@ -468,8 +475,10 @@ body.sbookcantpost #SBOOKCANTPOST {
 body.sbookcantpost #SBOOKCANPOST { display: none;}
 
 div#SBOOKHUD div.hud#SBOOKFEEDS { }
+
 div#SBOOKHUD div.hud#SBOOKFEEDS img.button.mark {
   position: absolute; left: 2px; bottom: 0px;}
+
 div#SBOOKHUD div.hud#SBOOKFEEDS img.button.help {
   position: absolute; left: 3px; bottom: 3px; vertical-align: bottom;}
 div#SBOOKHUD div.hud#SBOOKFEEDS img.button[alt='fbapp'] {

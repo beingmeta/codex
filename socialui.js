@@ -32,12 +32,6 @@ var sbooks_social_version=parseInt("$Revision: 4605 $".slice(10,-1));
 
 */
 
-var sbook_feeds=false;
-// When not false, this is an array of feeds which are actually displayed
-// This may be the case, for example, when browsing a search result whose
-//  contributors are a subset of all the feeds/users.
-var sbook_feeds_shown=false;
-// These are feeds which are actually used as sources
 var sbook_sources=false;
 var sbook_glosses_target=false;
 var sbookGlossesHUD=false;
@@ -77,9 +71,9 @@ function sbookCreateFeedHUD(classinfo,feeds)
   if (sbookFeedHUD) return sbookFeedHUD;
   if (!(feeds)) feeds=sbook_conversants;
   if (!(classinfo)) classinfo=".feeds.hudblock.hud#SBOOKFEEDS";
-  var help_button=
-    fdjtImage("http://static.beingmeta.com/graphics/HelpIcon40x40.png",
-	      ".button.help","?","app");
+  var app_button=
+    fdjtImage("http://static.beingmeta.com/graphics/sbookslogo40x40.png",
+	      ".button.app","?","app");
   var login_button=
     fdjtImage("http://static.beingmeta.com/graphics/sbookslogo40x40.png",
 	      ".button.login","?","login");
@@ -91,12 +85,12 @@ function sbookCreateFeedHUD(classinfo,feeds)
   everyone_button.onclick=sbookEveryoneButton_onclick;
   login_button.onclick=sbookLoginButton_onclick;
   feedicons.onclick=sbookFeeds_onclick;
-  help_button.onclick=sbookHelpButton_onclick;
+  app_button.onclick=sbookAppButton_onclick;
   var i=0; var n=feeds.length;
   while (i<n) sbookAddFeedIcon(fdjtOIDs[feeds[i++]]);
   sbookFeedHUD=fdjtDiv(classinfo," ",
-		       login_button,everyone_button,
-		       feedicons,help_button);
+		       login_button,app_button,
+		       feedicons,everyone_button);
   return sbookFeedHUD;
 }
 

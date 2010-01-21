@@ -54,7 +54,12 @@ function sbook_onmousedown(evt)
   sbook_mousedown_tick=fdjtTick();
   var target=$T(evt);
   // Ignore clicks on text fields, anchors, inputs, etc
-  if (fdjtIsClickactive(target)) return;
+  if (fdjtHasParent(target,sbookHUD)) return;
+  else if (sbook_mode) {
+    sbookHUDMode(false);
+    return;}
+  else if (fdjtIsClickactive(target)) return;
+  else {}
   var focus=sbookGetFocus(target);
   if (!(focus)) return;
   if (sbook_target)
@@ -120,7 +125,7 @@ function sbook_onmouseup(evt)
 function sbook_onclick(evt)
 {
   evt=evt||event||null;
-  // sbook_trace("sbook_onclick",evt);
+  sbook_trace("sbook_onclick",evt);
   var target=$T(evt); var scan=target;
   if (evt.button>1) return;
   // Don't override anchors, input, etc

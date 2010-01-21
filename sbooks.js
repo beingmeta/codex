@@ -44,6 +44,9 @@ var sbook_social_info=
 // Imported gloss information
 var sbook_gloss_data=
   ((typeof sbook_gloss_data === 'undefined')?(false):(sbook_gloss_data));
+// Imported gloss information
+var sbook_user_feeds=
+  ((typeof sbook_user_feeds === 'undefined')?(false):(sbook_user_feeds));
 
 /* Derived metadata */
 
@@ -117,6 +120,9 @@ var sbook_tribes=
 // These are a set of common group/user tags for this particular user.
 var sbook_user_dist=
   ((typeof sbook_user_dist === "undefined")?[]:(sbook_user_dist));
+// These are the feeds that the user can write
+var sbook_feeds=
+  ((typeof sbook_feeds === "undefined")?[]:(sbook_feeds));
 
 /* Defining information for the document */
 
@@ -1286,10 +1292,14 @@ function sbookAddQRIcons()
 
 function _sbookHelpSplash()
 {
-  var cookie=fdjtGetCookie("sbookhidehelp");
-  if (cookie==='no') sbookHUDMode("help");
-  else if (cookie) {}
-  else if (sbook_help_on_startup) sbookHUDMode("help");
+  if ((document.location.search)&&
+      (document.location.search.length>0))
+    sbookHUDMode("social");
+  else {
+    var cookie=fdjtGetCookie("sbookhidehelp");
+    if (cookie==='no') sbookHUDMode("help");
+    else if (cookie) {}
+    else if (sbook_help_on_startup) sbookHUDMode("help");}
 }
 
 /* Applying settings */
@@ -1315,7 +1325,12 @@ function sbookSetup()
   fdjtPrepend(document.body,fdjtDiv("topleading"," "));  
   sbookGetSettings();
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
-  createSBOOKHUD(); sbookHUDMode("help");
+  createSBOOKHUD();
+  if ((document.location.search)&&
+      (document.location.search.length>0)) {
+    sbookSetupAppFrame();
+    sbookHUDMode("social");}
+  else sbookHUDMode("help");
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
   if (knoHTMLSetup) knoHTMLSetup();
@@ -1390,7 +1405,33 @@ function sbookGlossesSetup()
       $("SBOOKFRIENDLYOPTION").value=sbook_user;
     else $("SBOOKFRIENDLYOPTION").value=null;
   if (sbook_heading_qricons) sbookAddQRIcons();
+  if (sbook_user) sbookImportFeeds();
   _sbook_gloss_setup=true;
+}
+
+function sbookImportFeeds(arg)
+{
+  var invite_options=$("SBOOKINVITEOPTIONS");
+  var mark_options=$("SBOOKMARKOPTIONS");
+  var feeds=((arg)?((arg.oid)?(new Array(arg)):(arg)):sbook_user_feeds);
+  fdjtTrace("sbookImportFeeds %o",feeds);
+  var i=0; var n=feeds.length;
+  while (i<n) {
+    var info=feeds[i++];
+    if (!(info.oid)) continue;
+    else if (fdjtContains(sbook_feeds,info.oid)) {}
+    else {
+      var named="("+info.kind.slice(1)+") "+info.name;
+      sbook_feeds.push(info.oid);
+      var invite_option=fdjtElt("OPTION",named);
+      invite_option.title=info.about;
+      invite_option.value=info.oid;
+      fdjtAppend(invite_options,invite_option);
+      var mark_option=fdjtElt("OPTION",named);
+      mark_option.title=info.about;
+      mark_option.value=info.oid;
+      fdjtAppend(mark_options,mark_option);}
+    fdjtImportOID(info);}
 }
 
 function sbookSocialSetup()
@@ -1429,6 +1470,18 @@ function sbookUserSetup()
   if (($("SBOOKUSERIMG"))&&(sbook_user_img))
     $("SBOOKUSERIMG").src=sbook_user_img;
   _sbook_user_setup=true;
+}
+
+function sbookSetupAppFrame()
+{
+  if ((document.location.search)&&
+      (document.location.search.length>0))
+    $("APPFRAME").src="https://"+sbook_server+
+      "/glosses/appframe.fdcgi"+document.location.search+
+      "&REFURI="+encodeURIComponent(sbook_refuri);
+  else $("APPFRAME").src="https://"+sbook_server+
+	 "/glosses/appframe.fdcgi?REFURI="+
+	 encodeURIComponent(sbook_refuri);
 }
 
 fdjtAddSetup(sbookSetup);

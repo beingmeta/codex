@@ -1,0 +1,66 @@
+body {font-family: sans,sans-serif;}
+
+h2 { text-align: right;}
+div.appblock { clear: both; margin-bottom: 4px;}
+div.appblock input[TYPE='TEXT'] { padding-left: 5px;}
+div.appblock input[NAME='EMAIL'] { width: 30em;}
+div.appblock div.label { 
+  float: left; width: 10em; text-align: right;}
+div.appblock div.content {
+    margin-left: 10em; margin-right: 1em;
+    padding-left: 1em; padding-right: 1em;}
+div.appblock div.content INPUT[TYPE='TEXT'] { width: 100%;}
+div.appblock div.content div.details { display: none;}
+div.appblock.expanded { margin-bottom: 18px;}
+div.appblock.expanded div.content div.details { display: block;}
+div.appblock div.content div.details textarea { 
+  width: 100%; min-height: 100px;}
+
+div.appblock div.checkspan {clear: left;}
+div.appblock div.checkspan input[TYPE='TEXT'] {display: none;}
+div.appblock div.checkspan input.fullfield[TYPE='TEXT'] {display: none;}
+div.appblock div.checkspan.ischecked input[TYPE='TEXT'] {display: inline;}
+
+div.appblock span.checkspan { }
+div.appblock .checkspan span.note { font-weight: bold; font-size: 80%;}
+
+div.appblock div.content .price {float: right;}
+div.appblock div.content .price input[type='text'] { width: inherit;}
+div.appblock span.kind {
+    font-style: italic; font-weight: bold; 
+    font-size: 75%; float: right;}
+
+div.appblock#INVITEBLOCK div.inputs { margin-left: 10em;}
+div.appblock#INVITEBLOCK input[TYPE='TEXT'] { width: 100%;}
+div.appblock#INVITEBLOCK SELECT { width: 100%;}
+
+div.appblock.create {}
+div.appblock.create div.form { 
+  position: absolute; left: 10em; right: 1em;}
+
+div.appblock div.details input.fullfield {
+    clear: both; display: block;
+    margin-left: 5%; margin-right: 5%; width: 90%;}
+
+
+div.appblock.buttons { text-align: center;}
+div.appblock.buttons form { display: inline; clear: none;}
+
+body.feedform h1 { 
+  text-align: center; height: 50px;
+  margin-left: 50px; margin-right: 50px;}
+body.feedform h1 img { border: 0px;}
+body.feedform h1 .floatright { float: right;}
+body.feedform h1 .floatleft { float: left;}
+
+body.sbookapp { margin-left: 5%; margin-right: 5%; background-color: ivory;}
+.floatleft img { margin-right: 4px;}
+img.floatleft { margin-right: 4px;}
+.floatright img { margin-left: 4px;}
+img.floatright { margin-left: 4px;}
+
+body.sbookapp div.pagehead {
+  font-size: 150%; min-height: 70px; text-align: center;
+  padding-left: 50px; padding-right: 50px;}
+
+

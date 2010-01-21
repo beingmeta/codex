@@ -7,12 +7,15 @@
 <div style='position: absolute; top: 0px; height: 110%;'> </div>
 
 <div class='tabbar' id='SBOOKTABS'>
-<span class='tab' contentid='APPHELP' onclick="sbookHUDMode('help');">Help</span>
-<span class='tab' contentid='APPFEEDS' onclick="sbookHUDMode('feeds');">Feeds</span>
-<span class='tab' contentid='APPSETTINGS' onclick="sbookHUDMode('settings');">Settings</span>
-<span class='tab' contentid='APPLOGIN' onclick="sbookHUDMode('login');">Login</span>
-<a href='http://sbooks.net/app/logout'
-   class='tab' id='SBOOKLOGOUT' contentid='APPGLOSSES'>
+<span class='tab' contentid='APPHELP' onclick='sbookHUDMode("help");'>
+  Help</span>
+<span class='tab' contentid='APPSOCIAL' onclick='sbookHUDMode("social");'>
+ Social</span>
+<span class='tab' contentid='APPSETTINGS' onclick='sbookHUDMode("settings");'>
+ Settings</span>
+<span class='tab' contentid='APPLOGIN' onclick='sbookHUDMode("login");'>
+  Login</span>
+<a href='http://sbooks.net/app/logout' class='tab' id='SBOOKLOGOUT'>
   Logout</a>
 </div>
 <div class='tabcontent helpbody' id='APPHELP'>
@@ -210,16 +213,17 @@ or methods.</p>
 </table>
 </form>
 </div>
-<div class='tabcontent' id='APPFEEDS'>
-This is the place to expose, hide, join, subscribe, etc to metadocs
-and reading circles.
-</div>
-<div class='tabcontent' id='APPSETTINGS' onclick='fdjtCheckSpan_onclick(event);'>
+<div class='tabcontent' id='APPSETTINGS'
+     onclick='fdjtCheckSpan_onclick(event);'>
 <p><span class='checkspan' onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
    <input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>
    Enable tablet mode</span></p>
 <div class='buttons'></div>
 </div>
+<div class='tabcontent' id='APPSOCIAL'>
+<iframe id='APPFRAME' frameborder='0'/>
+</div>
+
 <!--
 /* Emacs local variables
 ;;;  Local variables: ***

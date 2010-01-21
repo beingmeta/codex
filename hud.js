@@ -41,6 +41,11 @@ var sbookSearchHUD=false;
 // This is the TOC HUD for navigation
 var sbookNavHUD=false;
 
+// This is the last active 'app' tab
+var sbook_last_app="help";
+// This is the regex for all sbook apps
+var sbook_apps=["help","login","social","settings"];
+
 // Where graphics can be found
 var sbook_graphics_root="http://static.beingmeta.com/graphics/";
 
@@ -129,7 +134,7 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(login)|(settings)|(feeds)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
+  /(login)|(settings)|(social)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
 
 function sbookHUDMode(mode)
 {
@@ -138,7 +143,10 @@ function sbookHUDMode(mode)
 	    mode,sbook_mode,document.body.className);
   if (mode) {
     if (mode===true) mode="minimal";
+    if ((mode==="social")&&(!($("APPFRAME").src)))
+      sbookSetupAppFrame();
     sbook_mode=mode;
+    if (fdjtContains(sbook_apps,mode)) sbook_last_app=mode;
     fdjtAddClass(document.body,"hudup");
     fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
   else {
@@ -277,13 +285,13 @@ function sbookHUD_onmouseout(evt)
 function sbookHUD_onclick(evt)
 {
   evt=evt||event||null;
-  // sbook_trace("sbookHUD_onclick",evt);
+  sbook_trace("sbookHUD_onclick",evt);
   var target=$T(evt);
   while (target)
     if ((sbook_mode) &&
 	((target.tagName==="A") || (target.tagName==="INPUT") ||
 	 (target.onclick) || (target.hasAttribute("onclick")))) {
-      evt.cancelBubble=true;
+      // evt.cancelBubble=true;
       return;}
     else if ((target.id==="SBOOKTOC")&&(evt.shiftKey)) {
       sbookHUDMode("toc"); target=target.parentNode;}
@@ -367,6 +375,13 @@ function sbookUpdateAppHUD()
       else fdjtSetCookie("sbookhidehelp","no",false,"/");};
   fdjtAutoPrompt_setup($("SBOOKAPP"));
   fdjtAnchorSubmit_setup($("SBOOKAPP"));
+  var refuris=document.getElementsByName("REFURI");
+  if (refuris) {
+    var i=0; var len=refuris.length;
+    while (i<len)
+      if (refuris[i].value==='fillin')
+	refuris[i++].value=sbook_refuri;
+      else i++;}
 }
 
 /* Button methods */
@@ -398,6 +413,16 @@ function sbookHelpButton_onclick(evt)
 {
   if (sbook_mode==="help") sbookHUDMode(false);
   else sbookHUDMode("help");
+  evt.cancelBubble=true;
+}
+
+function sbookAppButton_onclick(evt)
+{
+  if (sbook_mode)
+    if (fdjtContains(sbook_apps,sbook_mode))
+      sbookHUDMode(false);
+    else sbookHUDMode(sbook_last_app);
+  else sbookHUDMode(sbook_last_app);
   evt.cancelBubble=true;
 }
 

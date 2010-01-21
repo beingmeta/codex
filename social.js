@@ -88,7 +88,6 @@ function sbookImportGlosses(data)
 	else if ((x.tstamp)===(y.tstamp)) return 0;
 	else return 1;
       else return 1;});
-  if (sbook_feeds) sbookUpdateFeeds();
 }
 
 

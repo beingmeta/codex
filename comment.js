@@ -37,7 +37,7 @@ var sbooks_comment_version=parseInt("$Revision$".slice(10,-1));
 
 // This is the target for which the mark HUD has been set
 var sbook_mark_target=false;
-var sbook_trace_gloss=true;
+var sbook_trace_gloss=false;
 
 /* Setting up the Mark hud for a particular target */
 
@@ -52,7 +52,8 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     fdjtLog("Setting up gloss HUD for %o from %o st=%o sf=%o excerpt=%o",
 	    target,origin,sbook_target,sbook_focus,excerpt);
   if (sbook_mark_target===target) {
-    /* If the HUD is already, initialized for the target, just update the excerpt */
+    /* If the HUD is already, initialized for the target, just update
+       the excerpt */
     if (sbook_trace_gloss)
       fdjtLog("Just updating gloss HUD with excerpt %o",excerpt);
     if ((excerpt)&&(excerpt.length>sbook_min_excerpt))
@@ -267,18 +268,15 @@ function sbookMarkTagInput()
 function sbookMarkPickFeed()
 {
   var private_option=fdjtElt("OPTION","Just me");
-  var friendly_option=fdjtElt("OPTION#SBOOKFRIENDLYOPTION","My friends (personal circle)");
-  var pickfeed=fdjtElt("SELECT",private_option,friendly_option);
+  var friendly_option=
+    fdjtElt("OPTION#SBOOKFRIENDLYOPTION","My friends (personal circle)");
+  var pickfeed=fdjtElt
+    ("SELECT#SBOOKMARKOPTIONS",private_option,friendly_option);
   pickfeed.name='FEED';
   private_option.value=":{}";
   friendly_option.value=sbook_user;
   friendly_option.selected=true; friendly_option.defaultSelected=true;
   var i=0; var len=sbook_feeds.length;
-  while (i<len) {
-    var feed=sbook_feeds[i++]; var info=fdjtOIDs[feed];
-    var option1=fdjtElt("OPTION",info.name); option1.value=feed;
-    var option2=fdjtElt("OPTION","(friends+)"+info.name); option2.value="+"+feed;
-    fdjtAppend(pickfeed,option1,option2);}
   pickfeed.onchange=sbookMarkFeed_onchange;
   pickfeed.title="The primary 'audience' for this gloss";
   return pickfeed;
