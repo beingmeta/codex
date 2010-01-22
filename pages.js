@@ -94,7 +94,7 @@ function sbookPrevSection(evt)
 function sbookNextPage(evt)
 {
   evt=evt||event||null;
-  window.scrollBy(0,window.innerHeight);
+  window.scrollBy(0,window.innerHeight-100);
   setTimeout("sbookTrackFocus(sbookGetXYFocus())",100);
   if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
   evt.cancelBubble=true;
@@ -103,7 +103,7 @@ function sbookNextPage(evt)
 function sbookPrevPage(evt)
 {
   evt=evt||event||null;
-  window.scrollBy(0,-window.innerHeight);
+  window.scrollBy(0,-(window.innerHeight-100));
   setTimeout("sbookTrackFocus(sbookGetXYFocus())",100);
   if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
   evt.cancelBubble=true;
@@ -117,8 +117,8 @@ function sbookNextPrev_startit(evt)
   evt=evt||event;
   var target=$T(evt);
   if (advance_timer) clearInterval(advance_timer);
-  if (target.alt) sbookForward(); else sbookBackward();
-  if (target.alt==='next') 
+  if (target.alt==='>>') sbookForward(); else sbookBackward();
+  if (target.alt==='>>')
     advance_timer=setInterval(sbookForward,advance_interval);
   else advance_timer=setInterval(sbookBackward,advance_interval);
 }
@@ -130,12 +130,30 @@ function sbookNextPrev_stopit(evt)
 
 function sbookForward()
 {
-  window.scrollBy(0,window.innerHeight);
+  if (!(sbook_smart_paging)) {
+    window.scrollBy(0,(window.innerHeight)-80);
+    return;}
+  var next=sbookNextHead(sbook_head);
+  var deltahead=((next)?(((sbook_head.Yoff)-window.scrollY)):(0));
+  var deltanext=((next)?(((next.Yoff)-window.scrollY)):(0));
+  var deltapage=(window.innerHeight);
+  var halfpage=(window.innerHeight)/2;
+  /*
+  fdjtTrace("heady=%o nexty=%o scrolly=%o",
+	    sbook_head.Yoff,((next)&&(next.Yoff)),window.scrollY);
+  fdjtTrace("head=%o next=%o dhead=%o dnext=%o dpage=%o",
+	    sbook_head,next,deltahead,deltanext,deltapage);
+  */
+  if ((deltahead>40)&&(deltahead<deltapage))
+    window.scrollBy(0,deltahead-40);
+  else if ((deltanext>40)&&(deltanext<deltapage)) /* &&(deltanext>halfpage) */
+    window.scrollBy(0,deltanext-40);
+  else window.scrollBy(0,deltapage-20);
 }
 
 function sbookBackward()
 {
-  window.scrollBy(0,-window.innerHeight);
+  window.scrollBy(0,-(window.innerHeight-20));
 }
 
 

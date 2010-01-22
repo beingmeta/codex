@@ -180,7 +180,7 @@ var sbook_noisy_tooltips=false;
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
 // How long to flash HUD elements when they change (milliseconds)
-var sbook_hud_flash=1500;
+var sbook_hud_flash=1000;
 
 /* Control of initial document scan */
 
@@ -207,6 +207,8 @@ var sbook_use_spanbars=true;
 var sbook_list_subsections=true;
 // Electro highlights
 var sbook_electric_spanbars=false;
+// Whether to do smart paging
+var sbook_smart_paging=true;
 
 /* Debugging flags */
 
@@ -368,7 +370,8 @@ function sbookGatherMetadata()
   sbook_root=root;
   var children=root.childNodes, level=false;
   var rootinfo=sbook_needinfo(root);
-  var tocstate={curlevel: 0,idserial:0,location: 0,tagstack: []};
+  var tocstate=
+    {curlevel: 0,idserial:0,location: 0,tagstack: [],page: false};
   tocstate.curhead=root; tocstate.curinfo=rootinfo;
   tocstate.knowlet=knowlet;
   // Location is an indication of distance into the document
@@ -542,6 +545,7 @@ function sbook_toc_builder(child,tocstate)
       var children=child.childNodes;
       var i=0; while (i<children.length)
 		 sbook_toc_builder(children[i++],tocstate);}}
+
   var info=sbook_getinfo(child);
   // Tagging
   var headtag=((info.title) && ("\u00A7"+info.title));
@@ -727,6 +731,30 @@ function sbookSetLocation(location,force)
   sbook_location=location;
 }
 
+/* Next and previous heads */
+
+function sbookNextHead(head)
+{
+  var info=sbook_getinfo(head);
+  if ((info.sub)&&(info.sub.length>0))
+    return $(info.sub[0].id);
+  else if (info.next)
+    return $(info.next.id);
+  else if ((info.sbook_head)&&(info.sbook_head.next))
+    return $(info.sbook_head.next.id);
+  else return false;
+}
+
+function sbookPrevHead(head)
+{
+  var info=sbook_getinfo(head);
+  if (info.prev)
+    return $(info.prev.id);
+  else if (info.sbook_head)
+    return $(info.sbook_head.id);
+  else return false;
+}
+
 /* Tracking position within the document. */
 
 var sbook_focus_tags=false;
@@ -886,10 +914,10 @@ function sbook_onkeydown(evt)
       fdjtSwapClass(sbookHUD,sbookHUDMode_pat,"minimal");
       fdjtAddClass(document.body,"hudup");}}
   else if (evt.keyCode===32) /* Space char */
-    sbookNextPage(evt);
+    sbookForward();
   /* Backspace or Delete */
   else if ((evt.keyCode===8) || (evt.keyCode===45))
-    sbookPrevPage(evt);
+    sbookBackward();
   else if (evt.keyCode===36) { /* Home */
     sbookScrollTo(sbook_head);}
   else if (evt.keyCode===37) /* LEFT arrow */
@@ -954,15 +982,6 @@ function sbook_onkeypress(evt)
     if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
 }
 
-/* Selection hacks */
-
-var sbook_start_select=false;
-
-function sbook_clear_select()
-{
-  sbook_start_select=false;
-}
-
 /* Mouse handlers */
 
 function sbookGetXYFocus(xoff,yoff)
@@ -1019,7 +1038,6 @@ function sbook_onmousemove(evt)
 {
   evt=evt||event||null;
   // sbook_trace("sbook_onmousemove",evt);
-  if (sbook_start_select) return;
   if (sbook_target) sbookCheckTarget();
   var target=$T(evt);
   /* If you're previewing, ignore mouse action */
