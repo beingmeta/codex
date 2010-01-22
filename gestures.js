@@ -125,7 +125,7 @@ function sbook_onmouseup(evt)
 function sbook_onclick(evt)
 {
   evt=evt||event||null;
-  sbook_trace("sbook_onclick",evt);
+  // sbook_trace("sbook_onclick",evt);
   var target=$T(evt); var scan=target;
   if (evt.button>1) return;
   // Don't override anchors, input, etc
