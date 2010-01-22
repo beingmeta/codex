@@ -133,7 +133,7 @@ function sbookForward()
   if (!(sbook_smart_paging)) {
     window.scrollBy(0,(window.innerHeight)-80);
     return;}
-  var focus=sbookGetXYFocus(window.scrollX,window.scrollY);
+  var focus=sbookGetXYFocus(window.scrollX+100,window.scrollY+10);
   var head=sbookGetHead(focus);
   if (!(fdjtIsVisible(head))) head=sbookNextHead(head);
   var next=sbookNextHead(head);
@@ -141,13 +141,12 @@ function sbookForward()
   var deltanext=((next)?(((next.Yoff)-window.scrollY)):(0));
   var deltapage=(window.innerHeight);
   var halfpage=(window.innerHeight)/2;
-  /*
-  fdjtTrace("heady=%o nexty=%o scrolly=%o",
-	    head.Yoff,((next)&&(next.Yoff)),window.scrollY);
-  fdjtTrace("head=%o<%s> next=%o<%s> dhead=%o dnext=%o dpage=%o",
-	    head,fdjtTextify(head),next,fdjtTextify(next),
-	    deltahead,deltanext,deltapage);
-  */
+  if (sbook_trace_paging) {
+    fdjtTrace("heady=%o nexty=%o scrolly=%o",
+	      head.Yoff,((next)&&(next.Yoff)),window.scrollY);
+    fdjtTrace("focus=%o head=%o<%s> next=%o<%s> dhead=%o dnext=%o dpage=%o",
+	      focus,head,fdjtTextify(head),next,fdjtTextify(next),
+	      deltahead,deltanext,deltapage);}
   if ((deltahead>100)&&(deltahead<deltapage))
     window.scrollBy(0,deltahead-40);
   else if ((deltanext>100)&&(deltanext<deltapage)) /* &&(deltanext>halfpage) */

@@ -232,6 +232,8 @@ var sbook_trace_locations=false;
 var sbook_trace_network=0;
 // Whether to debug startup
 var sbook_trace_startup=0;
+// Whether to trace paging
+var sbook_trace_paging=false;
 
 // Flavors of tags
 //  prime: humanly indicated as important to an item
@@ -996,13 +998,15 @@ function sbookGetXYFocus(xoff,yoff)
   var bot=0; var top=nodes.length-1; var mid=Math.floor(top/2);
   var node=nodes[mid]; var next=nodes[mid+1]; var target=false;
   while ((node) && (next) &&
-	 ((!(((node.Yoff)<yoff) && ((next.Yoff)>yoff))))) {
+	 ((!(((node.Yoff)<=yoff) && ((next.Yoff)>=yoff))))) {
     if (node.Yoff===yoff) break;
     if (yoff<node.Yoff) top=mid-1;
     else if (yoff>node.Yoff) bot=mid+1;
     else {}
     mid=bot+Math.floor((top-bot)/2);
     node=nodes[mid]; next=nodes[mid+1];}
+  if ((next)&&(node.Yoff<yoff)&&((next.Yoff-yoff)<(yoff-node.Yoff)))
+    node=next;
   return node;
 }
 
