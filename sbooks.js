@@ -645,6 +645,7 @@ function sbookTOCDisplay(head)
     // Go backwards (up) to potentially accomodate some redisplayers
     while (n>=0) fdjtDropClass(tohide[n--],"live");
     fdjtDropClass(base_elt,"cur");
+    fdjtDropClass(sbook_head,"sbookhead");
     sbook_head=false;}
   if (!(head)) return;
   var info=sbook_getinfo(head);

@@ -133,20 +133,24 @@ function sbookForward()
   if (!(sbook_smart_paging)) {
     window.scrollBy(0,(window.innerHeight)-80);
     return;}
-  var next=sbookNextHead(sbook_head);
-  var deltahead=((next)?(((sbook_head.Yoff)-window.scrollY)):(0));
+  var focus=sbookGetXYFocus(window.scrollX,window.scrollY);
+  var head=sbookGetHead(focus);
+  if (!(fdjtIsVisible(head))) head=sbookNextHead(head);
+  var next=sbookNextHead(head);
+  var deltahead=((head)?(((head.Yoff)-window.scrollY)):(0));
   var deltanext=((next)?(((next.Yoff)-window.scrollY)):(0));
   var deltapage=(window.innerHeight);
   var halfpage=(window.innerHeight)/2;
   /*
   fdjtTrace("heady=%o nexty=%o scrolly=%o",
-	    sbook_head.Yoff,((next)&&(next.Yoff)),window.scrollY);
-  fdjtTrace("head=%o next=%o dhead=%o dnext=%o dpage=%o",
-	    sbook_head,next,deltahead,deltanext,deltapage);
+	    head.Yoff,((next)&&(next.Yoff)),window.scrollY);
+  fdjtTrace("head=%o<%s> next=%o<%s> dhead=%o dnext=%o dpage=%o",
+	    head,fdjtTextify(head),next,fdjtTextify(next),
+	    deltahead,deltanext,deltapage);
   */
-  if ((deltahead>40)&&(deltahead<deltapage))
+  if ((deltahead>100)&&(deltahead<deltapage))
     window.scrollBy(0,deltahead-40);
-  else if ((deltanext>40)&&(deltanext<deltapage)) /* &&(deltanext>halfpage) */
+  else if ((deltanext>100)&&(deltanext<deltapage)) /* &&(deltanext>halfpage) */
     window.scrollBy(0,deltanext-40);
   else window.scrollBy(0,deltapage-20);
 }
