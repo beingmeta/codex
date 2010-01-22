@@ -908,7 +908,7 @@ div.sbooksearch div.tags.cues .section {
   background-color: white; color:purple;}
 
 div#SBOOKHUD div.hud#SBOOKSEARCH div.query {
-   margin-left: 50px; margin-right: 10px;}
+   margin-left: 15px; margin-right: 45px;}
 
 div#SBOOKHUD div.hud#SBOOKSEARCH div#SBOOKTAGS {}
 div#SBOOKHUD div.hud#SBOOKSEARCH div#SBOOKTAGS.flash {

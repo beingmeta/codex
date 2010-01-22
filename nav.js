@@ -218,9 +218,9 @@ function sbookTOC_onclick(evt)
   evt.cancelBubble=true;
   sbookSetHead(target);
   var info=sbook_getinfo(target);
-  sbookScrollTo(target);
   if (!((info.sub) && ((info.sub.length)>2)))
     sbookHUDMode(false);
+  sbookScrollTo(target);
   sbookSetTarget(target);
   return false;
 }

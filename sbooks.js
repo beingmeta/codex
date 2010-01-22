@@ -871,9 +871,12 @@ function sbookCheckTarget()
    This ties to avoid the HUD, in case it is up. */
 function sbookDisplayOffset()
 {
-  var toc=$("SBOOKTOC");
-  if (toc) return -((toc.offsetHeight||60)+15);
-  else return -60;
+  var toc;
+  if (sbook_mode)
+    if (toc=$("SBOOKTOC"))
+      return -((toc.offsetHeight||50)+15);
+    else return -60;
+  else return -40;
 }
 
 function sbookScrollTo(elt,cxt)
