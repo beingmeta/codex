@@ -133,18 +133,18 @@ function _sbook_generate_spanbar(headinfo)
   var i=0; while (i<subsections.length) {
     var spaninfo=subsections[i++];
     var subsection=document.getElementById(spaninfo.id);
-    var spanstart; var spanend; var spanlen;
+    var spanstart; var spanend; var spanlen; var addname=true;
     if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
       /* Add 'fake section' for the precursor of the first actual section */
       spanstart=start;  spanend=spaninfo.starts_at;
       spaninfo=headinfo; subsection=document.getElementById(headinfo.id);
-      i--; sectnum++;}
+      i--; sectnum++; addname=false;}
     else {
       spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
       sectnum++;}
     var span=_sbook_generate_span
       (sectnum,subsection,spaninfo.title,spanstart,spanend,len,
-       "SBR"+subsection.id);
+       ((addname)&&("SBR"+subsection.id)));
     fdjtAppend(spans,span);
     last_info=spaninfo;}
   if ((end-last_info.ends_at)>0) {

@@ -263,7 +263,9 @@ function sbookGlossmark(target,open)
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var i=0; while (i<tags.length) qrhref=qrhref+"&TAGCUE="+tags[i++];
     fdjtPrepend(target,fdjtImage(qrhref,"sbookqricon"));}
-  if (target) fdjtPrepend(target,glossmark);
+  if (target) {
+    fdjtAddClass(target,"glossed");
+    fdjtPrepend(target,glossmark);}
   return glossmark;
 }
 

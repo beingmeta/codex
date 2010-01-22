@@ -152,6 +152,7 @@ function sbookHUDMode(mode)
     fdjtAddClass(document.body,"hudup");
     fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
   else {
+    sbook_last_mode=sbook_mode;
     sbook_mode=false;
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);
     fdjtDropClass(document.body,"hudup");}

@@ -79,15 +79,15 @@ div.hudblock {
   display: none;}
 body.hudup div#SBOOKHUD div.hudblock { opacity: 0.8;}
 div#SBOOKHUD div.hudblock:hover { opacity: 0.5;}
-div#SBOOKHUD.minimal div.hudblock { opacity: 0.5;}
+body.hudup div#SBOOKHUD.minimal div.hudblock { opacity: 0.8;}
 
 img.hudbutton { 
   opacity: 0.2; z-index: 200;
   position: fixed;
   background-color: gray; padding-right: 4px;
   font-family: sans,sans-serif;}
-img.hudbutton:hover { opacity: 0.5;}
-body.hudup div#SBOOKHUD img.hudbutton { opacity: 0.5;}
+img.hudbutton:hover { opacity: 0.8;}
+body.hudup div#SBOOKHUD img.hudbutton { opacity: 0.8;}
 
 div#SBOOKHUD div.hudblock.hover { opacity: 0.8;}
 
@@ -110,6 +110,7 @@ body div#SBOOKHUD.toc div.hudblock#SBOOKTOC {
   display: block; opacity: 0.9; max-height: inherit;}
 div#SBOOKHUD div.hudblock.hover#SBOOKTOC { display: block;}
 div#SBOOKHUD div.hudblock.flash#SBOOKTOC { opacity: 0.8; display: block;}
+div#SBOOKHUD div.hudblock.flash#SBOOKTOC .sectname { display: none;}
 
 img.hudbutton[alt='toc'] { 
   top: 0px; left: 0px;
@@ -211,8 +212,8 @@ img.hudbutton[alt='<<'] {
 
 div#SBOOKHUD div.hud#SBOOKFEEDS {
   position: fixed; display: block; 
-  top: 75px; bottom: 75px; left: 0px; width: 50px;
-  margin: 0px; min-height: 80px;
+  top: 75px; left: 0px; width: 50px; height: 50px;
+  margin: 0px; 
   text-align: left;
   border: solid blue 2px; border-left: none;
   -khtml-border-top-right-radius: 6px; 
@@ -223,6 +224,12 @@ div#SBOOKHUD div.hud#SBOOKFEEDS {
   -webkit-border-bottom-right-radius: 6px; 
   -moz-border-radius-bottomright: 6px;
   border-bottom-right-radius: 6px;}
+body.hudup div#SBOOKHUD div.hud#SBOOKFEEDS { 
+  height: auto; bottom: 75px; }
+div#SBOOKHUD div.hud#SBOOKFEEDS:hover { 
+  height: auto; bottom: 75px; }
+div#SBOOKHUD div.hud#SBOOKFEEDS.flash { 
+  height: auto; bottom: 75px; }
 div#SBOOKHUD.glosses div.hud#SBOOKFEEDS {
   border-right: none;
   -khtml-border-top-right-radius: 0px; 
@@ -245,8 +252,12 @@ div#SBOOKHUD.glosses.targeted div.hud#SBOOKFEEDS {
   border-bottom-right-radius: 6px;}
 
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
-  width: 34px; height: 34px;
+  width: 34px; height: 34px; display: none;
   border: solid transparent 2px;} 
+body.hudup div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
+  display: inline;} 
+div#SBOOKHUD .hud#SBOOKFEEDS:hover img.feed { 
+  display: inline;} 
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed:hover { 
   border: dotted blue 2px;} 
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed.selected { 
@@ -278,6 +289,7 @@ div#SBOOKHUD.browsing div.hud#SBOOKFEEDS img.feed.shown {
 /* Hudblocks don't normally go visible when you're over them */
 div#SBOOKHUD div.hudblock#SBOOKFEEDS { opacity: 0.1;}
 div#SBOOKHUD div.hudblock#SBOOKFEEDS:hover { opacity: 0.8;}
+body.hudup div#SBOOKHUD div.hudblock#SBOOKFEEDS { opacity: 0.8;}
 
 div#SBOOKHUD div.hudblock#SBOOKFEEDS { display: block;}
 
@@ -350,6 +362,10 @@ div#SBOOKHUD div#SBOOKAPP {
   padding-left: 5%; padding-right: 5%;
   padding-bottom: 12px; padding-top: 4px;
   display: none;}
+div#SBOOKHUD div#SBOOKAPP a { 
+  color: lightblue; text-decoration: none; font-weight: bold;}
+div#SBOOKHUD div#SBOOKAPP a:visited { color: lightblue;}
+div#SBOOKHUD div#SBOOKAPP a:hover { text-decoration: underline;}
 div#SBOOKHUD div#SBOOKAPP div.tabbar {
     text-align: center; font-size: 125%;}
 div#SBOOKHUD div#SBOOKAPP div.helphelp {
@@ -766,10 +782,9 @@ div.sbooktoc div.head {
   position: relative; margin: 0px; padding: 0px; border: 0px;
   left: 0px; width: 100%;
   display: none;}
-div.sbooktoc div.head a.sectname { display: block; color: yellow;}
 div.sbooktoc div.head .progressbar { 
   color: lightblue; background-color: lightblue;
-  padding: 0px; margin: 0px;
+  padding: 0px; margin: 0px; border-right: solid red 3px;
   position: absolute;  left: 0px; height: 100%;
   z-index: -100; opacity: 0.5;}
 
@@ -827,6 +842,8 @@ div.spanbar div.sbookhudspan a.brick {
   height: 100%;}
 div.spanbar div.sbookhudspan a.brick.cohi {
   background-color: ivory;}
+div.spanbar div.sbookhudspan .brick.live {
+  background-color: yellow;}
 div.spanbar div.sbookhudspan[odd] {}
 div.spanbar div.sbookhudspan[even] {}
 div.spanbar div.sbookhudspan.current {

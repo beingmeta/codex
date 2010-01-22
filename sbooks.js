@@ -148,6 +148,8 @@ var sbook_mycopyid=false;
 
 // Whether the HUD is up
 var sbook_mode=false;
+// This is the last mode which was active
+var sbook_last_mode="minimal";
 // Whether preview mode is engaged
 var sbook_preview=false; 
 // This is the content root
@@ -180,7 +182,7 @@ var sbook_noisy_tooltips=false;
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
 // How long to flash HUD elements when they change (milliseconds)
-var sbook_hud_flash=1000;
+var sbook_hud_flash=2000;
 
 /* Control of initial document scan */
 
@@ -634,13 +636,18 @@ function sbookTOCDisplay(head)
 {
   if (sbook_head===head) return;
   else if (sbook_head) {
-    // Hide the current head
+    // Hide the current head and its (TOC) parents
     var tohide=[];
     var info=sbook_getinfo(sbook_head);
     var base_elt=document.getElementById(info.tocid);
     while (info) {
       var tocelt=document.getElementById(info.tocid);
       tohide.push(tocelt);
+      var dispelts=document.getElementsByName("SBR"+info.id);
+      if (dispelts) {
+	var i=0; var n=dispelts.length;
+	while (i<n) tohide.push(dispelts[i++]);}
+      // Get TOC parent
       info=info.sbook_head;
       tocelt=document.getElementById(info.tocid);}
     var n=tohide.length-1;
@@ -656,6 +663,10 @@ function sbookTOCDisplay(head)
   while (info) {
     var tocelt=document.getElementById(info.tocid);
     toshow.push(tocelt);
+    var dispelts=document.getElementsByName("SBR"+info.id);
+    if (dispelts) {
+      var i=0; var n=dispelts.length;
+      while (i<n) toshow.push(dispelts[i++]);}
     info=info.sbook_head;}
   var n=toshow.length-1;
   // Go backwards to accomodate some redisplayers
@@ -690,7 +701,8 @@ function sbookSetHead(head)
     var headinfo=sbook_getinfo(head);
     if (sbook_trace_focus) sbook_trace("sbookSetHead",head);
     sbookTOCDisplay(head,sbook_location);
-    if (sbook_hud_flash) fdjtFlash("SBOOKTOC",sbook_hud_flash,"flash");
+    if ((sbook_hud_flash)&&(!(sbook_mode)))
+      fdjtFlash("SBOOKTOC",sbook_hud_flash,"flash");
     window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
@@ -782,7 +794,8 @@ function sbookSetFocus(target)
 	else if (i===1) fdjtAppend(tagdiv,knoSpan(tag)," ");
 	else fdjtAppend(tagdiv,"\u00B7 ",knoSpan(tag)," ");}}
     fdjtReplace("SBOOKTAGS",tagdiv);
-    if (sbook_hud_flash) fdjtFlash("SBOOKTAGS",sbook_hud_flash,"flash");}
+    if ((sbook_hud_flash)&&(!(sbook_mode)))
+      fdjtFlash("SBOOKTAGS",sbook_hud_flash,"flash");}
   if (!(target)) {
     if (old_focus) fdjtDropClass(old_focus,"sbookfocus");}
   else if (target!==sbook_focus) {
@@ -904,8 +917,7 @@ function sbook_onkeydown(evt)
       sbookStopPreview();
       $("SBOOKSEARCHTEXT").blur();}
     else {
-      fdjtAddClass(document.body,"hudup");
-      sbook_mode=true;}
+      sbookHUDMode("minimal");}
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput($T(evt))) return true;
@@ -1005,7 +1017,9 @@ function sbookGetXYFocus(xoff,yoff)
     else {}
     mid=bot+Math.floor((top-bot)/2);
     node=nodes[mid]; next=nodes[mid+1];}
-  if ((next)&&(node.Yoff<yoff)&&((next.Yoff-yoff)<(yoff-node.Yoff)))
+  if ((node)&&(next)&&(!(fdjtIsVisible(node)))&&
+      ((next.Yoff-yoff)<100))
+    // pick next node
     node=next;
   return node;
 }

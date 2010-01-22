@@ -78,39 +78,15 @@ function sbook_onmouseup(evt)
   evt=evt||event||null;
   var target=$T(evt);
   var focus=sbookGetFocus(target);
-  sbook_trace("sbook_onmouseup",evt);
+  // sbook_trace("sbook_onmouseup",evt);
   if ((evt.button>1)||(!(focus))||fdjtIsClickactive(target)) {
     sbook_mousedown_x=false;
     sbook_mousedown_y=false;
     sbook_mousedown_tick=false;
-    return;}  target=sbookGetFocus(target);
-  if ((sbook_gestures)&&(sbook_mousedown_tick)) {
-    var x=evt.screenX; var y=evt.screenY; var tick=fdjtTick();
-    var dx=x-sbook_mousedown_x; var dy=y-sbook_mousedown_y;
-    var dt=tick-sbook_mousedown_tick;
-    if (sbook_trace_gestures) 
-      fdjtTrace("x=%o y=%o tick=%o dx=%o dy=%o dt=%o",
-		x,y,tick,dx,dy,dt);
-    if ((dt>sbook_gesture_min)&&(dt<sbook_gesture_max)) {
-      var absdx=((dx<0)?(-dx):(dx)); var absdy=((dy<0)?(-dy):(dy));
-      var horizontal=((dx>sbook_gq)?(1):(dx<-sbook_gq)?(-1):(0));
-      var vertical=((dy>sbook_gq)?(1):(dy<-sbook_gq)?(-1):(0));
-      if (sbook_trace_gestures)
-	fdjtTrace("absdx=%o absdy=%o v=%o h=%o",
-		  absdx,absdy,vertical,horizontal);
-      if ((horizontal===0)&&(vertical===0)) sbook_mark($T(evt));
-      else if (absdy<(3*sbook_gq))
-	if (horizontal>0) sbookNextPage();
-	else if (horizontal<0) sbookPrevPage();
-	else {}
-      else if (absdx<(3*sbook_gq))
-	if (vertical>0) sbookNextSection();
-	else if (vertical<0) sbookPrevSection();
-	else {}
-      else {}
-      evt.cancelBubble=true;
-      if (evt.preventDefault) evt.preventDefault();
-      else evt.returnValue=false;}}
+    return;}
+  else target=sbookGetFocus(target);
+  if ((sbook_gestures)&&(sbook_mousedown_tick))
+    sbookHandleGestures(evt);
   else {
     var text=fdjtSelectedText();
     if ((text)&&(text.length>sbook_min_excerpt)) {
@@ -118,6 +94,36 @@ function sbook_onmouseup(evt)
       else sbook_mark($T(evt),text);}
     else if (sbook_gesture) sbook_mark($T(evt));
     else return;
+    if (evt.preventDefault) evt.preventDefault();
+    else evt.returnValue=false;}
+}
+
+function sbookHandleGestures(evt)
+{
+  var x=evt.screenX; var y=evt.screenY; var tick=fdjtTick();
+  var dx=x-sbook_mousedown_x; var dy=y-sbook_mousedown_y;
+  var dt=tick-sbook_mousedown_tick;
+  if (sbook_trace_gestures) 
+    fdjtTrace("x=%o y=%o tick=%o dx=%o dy=%o dt=%o",
+	      x,y,tick,dx,dy,dt);
+  if ((dt>sbook_gesture_min)&&(dt<sbook_gesture_max)) {
+    var absdx=((dx<0)?(-dx):(dx)); var absdy=((dy<0)?(-dy):(dy));
+    var horizontal=((dx>sbook_gq)?(1):(dx<-sbook_gq)?(-1):(0));
+    var vertical=((dy>sbook_gq)?(1):(dy<-sbook_gq)?(-1):(0));
+    if (sbook_trace_gestures)
+      fdjtTrace("absdx=%o absdy=%o v=%o h=%o",
+		absdx,absdy,vertical,horizontal);
+    if ((horizontal===0)&&(vertical===0)) sbook_mark($T(evt));
+    else if (absdy<(3*sbook_gq))
+      if (horizontal>0) sbookNextPage();
+      else if (horizontal<0) sbookPrevPage();
+      else {}
+    else if (absdx<(3*sbook_gq))
+      if (vertical>0) sbookNextSection();
+      else if (vertical<0) sbookPrevSection();
+      else {}
+    else {}
+    evt.cancelBubble=true;
     if (evt.preventDefault) evt.preventDefault();
     else evt.returnValue=false;}
 }
