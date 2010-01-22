@@ -2,23 +2,22 @@
 
 body.sbook {
   margin-top: 64px; margin-bottom: 64px;
-  margin-left: 64px; margin-right: 64px;
-  overflow-x: hidden;
   background-color: ivory;}
-body.sbook div.frontpiece img { width: 80%;}
-body.sbook h1#TITLEPAGE { 
-  background-color: lightgray;
-  font-size: 36px; text-align: center; width: 100%;
-  page-break-after: always;
-  border: 0px;}
+/*
+body.sbook div.title { display: none;}
+body.sbook div.frontpiece { display: none;}
+body.sbook div.sbookinfo { display: none;}
+body.sbook div.author { display: none;}
+body.sbook h1.titlepage span.glossmark { display: none;}
+*/
+body.sbook div.frontpiece img {
+  margin-left: 10%; margin-right: 10%; width: auto;}
+body.sbook h1 { margin-left: 5%; margin-right: 5%;}
 body.sbook h1.titlepage { 
   background-color: lightgray;
-  font-size: 36px; text-align: center; width: 100%;
-  page-break-after: always;
-  padding: 1em;
-  border: 0px;}
+  font-size: 36px; text-align: center;
+  page-break-after: always;}
 body.sbook h1 { page-break-before: always; }
-body.sbook h1.titlepage div { width: 90%; margin-left: 5%; margin-right: 5%;}
 body.sbook h1.titlepage div.pubinfo { 
   font-variant: smallcaps;
   background-color: ivory; font-size: 50%; padding: 4px;
@@ -66,8 +65,7 @@ body.verse div.part {
 /* These are part headings */
 body.verse h1 { text-align: center;}
 div.poem { 
-  margin: 7%; 
-  padding: 3%; padding-top: 2%;
+  margin: 2em; padding: 1em;
   border-top: solid gray 3px;}
 
 div.poem p.sig {
