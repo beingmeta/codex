@@ -68,14 +68,14 @@ function createSBOOKHUD()
     next_button.onmousedown=sbookNextPrev_startit;
     next_button.onmouseup=sbookNextPrev_stopit;
     next_button.onmouseout=sbookNextPrev_stopit;
-    next_button.onclick=fdjtCancelBubble;
+    next_button.onclick=fdjtCancelEvent;
     var prev_button=
       fdjtImage("http://static.beingmeta.com/graphics/PageLeft40x40.png",
 		".hudbutton","<<","hold to move backward by pages");
     prev_button.onmousedown=sbookNextPrev_startit;
     prev_button.onmouseup=sbookNextPrev_stopit;
     prev_button.onmouseout=sbookNextPrev_stopit;
-    prev_button.onclick=fdjtCancelBubble;
+    prev_button.onclick=fdjtCancelEvent;
     hud=fdjtDiv
       ("#SBOOKHUD.hud",
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
