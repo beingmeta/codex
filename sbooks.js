@@ -263,7 +263,6 @@ function sbook_trace(handler,cxt)
 	  ((sbook_preview)?("(preview)"):""),sbook_mode,
 	  ((sbook_target)?("(targeted)"):""),
 	  sbook_focus,sbook_target,sbook_head);
-
 }
 
 /* Basic SBOOK functions */
@@ -917,7 +916,9 @@ function sbook_onkeydown(evt)
       sbookStopPreview();
       $("SBOOKSEARCHTEXT").blur();}
     else {
-      sbookHUDMode("minimal");}
+      if ((sbook_mark_target)&&(fdjtIsVisible(sbook_mark_target)))
+	sbookHUDMode("mark");
+      else sbookHUDMode("minimal");}
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput($T(evt))) return true;
@@ -1451,7 +1452,6 @@ function sbookImportFeeds(arg)
   var invite_options=$("SBOOKINVITEOPTIONS");
   var mark_options=$("SBOOKMARKOPTIONS");
   var feeds=((arg)?((arg.oid)?(new Array(arg)):(arg)):sbook_user_feeds);
-  fdjtTrace("sbookImportFeeds %o",feeds);
   var i=0; var n=feeds.length;
   while (i<n) {
     var info=feeds[i++];
@@ -1504,8 +1504,8 @@ function sbookUserSetup()
   if ($("SBOOKMARKUSER")) $("SBOOKMARKUSER").value=sbook_user;
   if ($("SBOOKMARKFORM"))
     $("SBOOKMARKFORM").onsubmit=fdjtForm_onsubmit;
-  if (($("SBOOKUSERIMG"))&&(sbook_user_img))
-    $("SBOOKUSERIMG").src=sbook_user_img;
+  if ((sbook_user_img)&&($("SBOOKMARKIMAGE")))
+    $("SBOOKMARKIMAGE").src=sbook_user_img;
   _sbook_user_setup=true;
 }
 

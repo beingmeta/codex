@@ -90,7 +90,6 @@ function sbookImportGlosses(data)
       else return 1;});
 }
 
-
 function sbook_add_gloss(id,entry)
 {
   var item=fdjtImportOID(entry);

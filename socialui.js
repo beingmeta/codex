@@ -277,7 +277,9 @@ function sbookGlossmark_onclick(evt)
   var target=sbookGetRef(evt.target)||sbookGetFocus(evt.target.parentNode);
   if ((sbook_mode==="glosses") &&
       (sbook_glosses_target===target)) {
-    sbookHUDMode(false); return;}
+    fdjtCancelEvent(evt);
+    sbookHUDMode(false);
+    return;}
   sbook_glosses_target=target;
   if ((evt.shiftKey)||(evt.ctrlKey))
     sbookSelectSummaries(sbookGlossesHUD,sbook_sources,target.id);
@@ -287,9 +289,8 @@ function sbookGlossmark_onclick(evt)
   sbook_glossmark=$P(".glossmark",evt.target);
   sbookMarkHUDSetup(target);
   sbookHUDMode("glosses");
-  evt.cancelBubble=true;
   fdjtSetScroll(false,75,sbook_glossmark);
-  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;  
+  fdjtCancelEvent(evt);
 }
 
 function sbookGlossmark_onmouseover(evt)

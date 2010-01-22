@@ -47,7 +47,6 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     if ((origin)&&(origin.id))
       target=$(origin.id);
     else target=sbook_target||sbook_focus;
-  if (!(excerpt)) excerpt=fdjtSelectedText();
   if (sbook_trace_gloss)
     fdjtLog("Setting up gloss HUD for %o from %o st=%o sf=%o excerpt=%o",
 	    target,origin,sbook_target,sbook_focus,excerpt);
@@ -75,14 +74,17 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     else {
       $("SBOOKMARKOID").value=null;
       $("SBOOKMARKRELAY").value=origin.oid;}
-  $("SBOOKMARKFORM").setAttribute('mode','tag');
+  // $("SBOOKMARKFORM").setAttribute('mode','tag');
   $("SBOOKMARKREFURI").value=fdjtStripSuffix(sbook_getrefuri(target));
   $("SBOOKMARKFRAGID").value=target.id;
   $("SBOOKMARKSOURCE").value=sbook_getsrc(target);
   $("SBOOKMARKSYNC").value=sbook_gloss_syncstamp;
   $("SBOOKMARKTITLE").value=
-    (origin.title)||(target.getAttribute("title"))||(sbook_get_titlepath(info));
-  if (origin.oid) $("SBOOKMARKRELAY").value=origin.oid;
+    ((origin)&&(origin.title))||
+    ((target)&&(target.getAttribute("title")))||
+    (sbook_get_titlepath(info))||"";
+  if ((origin)&&(origin.oid))
+    $("SBOOKMARKRELAY").value=origin.oid;
   else $("SBOOKMARKRELAY").value=null;
   var completions_elt=$("SBOOKMARKCLOUD");
   var completions=completions_elt.allcompletions;
@@ -126,12 +128,11 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     var tag=tags[k++];
     if (fdjtIndexOf(tagcues,tag)<0) tagcues.push(tag);}
   // Set the selected text as an excerpt
-  fdjtLog("Setting excerpt to %o",excerpt);
   if ((excerpt)&&(excerpt.length>sbook_min_excerpt)) 
     sbookSetMarkExcerpt(excerpt);
   fdjtSetCompletionCues($("SBOOKMARKCLOUD"),tagcues);
   fdjtAutoPrompt_setup($("SBOOKMARK"));
-  sbookSelectSummaries(sbookGlossesHUD,true,false,target.id);
+  sbookSelectSummaries(sbookGlossesHUD,false,target.id);
   fdjtComplete($("SBOOKMARKTAGINPUT"));
   fdjtRedisplay($("SBOOKMARKFORM"));
   // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);
@@ -139,6 +140,8 @@ function sbookMarkHUDSetup(target,origin,excerpt)
 }
 
 /* Making the MARK hud */
+
+function sbgr(x) { return sbook_graphics_root+x;}
 
 function sbookCreateMarkHUD(classinfo)
 {
@@ -155,7 +158,7 @@ function sbookCreateMarkHUD(classinfo)
   var sync_input=fdjtInput("HIDDEN","SYNC","","#SBOOKMARKSYNC");
   var user_elt=fdjtInput("HIDDEN","USER",sbook_user,"#SBOOKMARKUSER");
 
-  var image_uri=(sbook_user_img)||(sbook_graphics_root+"remarkballoon50x50.png");
+  var image_uri=(sbook_user_img)||(sbgr("remarkballoon50x50.png"));
   
   var relay_block=fdjtDiv(".sbookrelayblock#SBOOKMARKRELAYBLOCK");
   var msg_input=fdjtInput("TEXT","MSG","",".autoprompt#SBOOKMARKINPUT");
@@ -167,7 +170,7 @@ function sbookCreateMarkHUD(classinfo)
   var detail_input=fdjtNewElement("TEXTAREA",".autoprompt#SBOOKMARKDETAIL");
   var detail_elt=
     fdjtDiv(".detail.marktab",
-	    // fdjtImage(sbook_graphics_root+"detailsicon32x32.png","head","details"),
+	    // fdjtImage(sbgr("detailsicon32x32.png"),"head","details"),
 	    fdjtDiv("content",detail_input));
   detail_input.name="DETAIL";
   detail_input.prompt="Enter detailed comments";
@@ -176,7 +179,7 @@ function sbookCreateMarkHUD(classinfo)
   xrefs_input.setAttribute("prompt","enter external URLs");
   var xrefs_elt=
     fdjtDiv(".xrefs.marktab",
-	    // fdjtImage(sbook_graphics_root+"outlink32x32.png","head","REFS"),
+	    // fdjtImage(sbgr("outlink32x32.png"),"head","REFS"),
 	    fdjtDiv("content",xrefs_input));
   xrefs_input.onkeypress=sbooksXRefs_onkeypress;
 
@@ -190,11 +193,13 @@ function sbookCreateMarkHUD(classinfo)
   var messages_elt=fdjtDiv("messages");
   
   var privy=fdjtInput("CHECKBOX","private","yes");
-  privy.checked=false; privy.title="private: don't share this with my personal circle";
+  var privyspan=fdjtSpan("checkspan",privy,"private");
+  privy.checked=false;
   privy.id="SBOOKMARKPRIVATE";
+  privyspan.title="private: don't share this with my personal circle";
+  privyspan.onclick=fdjtCheckSpan_onclick;
   var metastuff=
     fdjtDiv("metastuff",
-	    sbookMarkTagInput(),
 	    fdjtDiv("controls",
 		    fdjtInput("SUBMIT","ACTION","Save","#SBOOKMARKSAVEACTION",
 			      "Save (mark) this gloss to the server"),
@@ -203,11 +208,11 @@ function sbookCreateMarkHUD(classinfo)
 		    privy,sbookMarkPickFeed()));
   var grid=
     fdjtDiv("markform",
-	    fdjtDiv("lhs",fdjtImage(image_uri),
+	    fdjtDiv("lhs",fdjtImage(image_uri,"#SBOOKMARKIMAGE"),
 		    fdjtDiv("controls",sbookMarkControls()),
-		    fdjtImage(sbook_graphics_root+"detailsicon32x32.png","head","detail"),
-		    fdjtImage(sbook_graphics_root+"outlink48x48.png","head","xrefs"),
-		    fdjtImage(sbook_graphics_root+"TagIcon32x32.png","head","tags")),
+		    fdjtImage(sbgr("detailsicon32x32.png"),"head","detail"),
+		    fdjtImage(sbgr("outlink48x48.png"),"head","xrefs"),
+		    fdjtImage(sbgr("TagIcon32x32.png"),"head","tags")),
 	    fdjtDiv("msg",msg_input),
 	    metastuff,
 	    sbookMarkCloud(),detail_elt,xrefs_elt);
@@ -300,13 +305,13 @@ function sbookMarkFeed_onchange(evt)
 function sbookMarkControls()
 {
   var tags_button=
-    fdjtImage(sbook_graphics_root+"TagIcon16x16.png","button","tags",
+    fdjtImage(sbgr("TagIcon16x16.png"),"button","tags",
 	      "add or edit descriptive tags");
   var detail_button=
-    fdjtImage(sbook_graphics_root+"detailsicon16x16.png","button","detail",
+    fdjtImage(sbgr("detailsicon16x16.png"),"button","detail",
 	      "add extended comments");
   var xrefs_button=
-    fdjtImage(sbook_graphics_root+"outlink16x16.png","button","xrefs",
+    fdjtImage(sbgr("outlink16x16.png"),"button","xrefs",
 	      "add or edit external references");
   tags_button.onclick=sbookMarkMode_onclick_handler("tag");
   detail_button.onclick=sbookMarkMode_onclick_handler("detail");
@@ -342,8 +347,7 @@ var _sbook_tag_completeopts=
 function sbookMarkCloud()
 {
   var seen={};
-  var completions=
-    fdjtDiv(".completions.checkspans.marktab#SBOOKMARKCLOUD");
+  var completions=fdjtDiv(".completions.checkspans#SBOOKMARKCLOUD");
   completions._seen=seen;
   completions.onclick=fdjtCheckSpan_onclick;
   var i=0; while (i<sbook_conversants.length) {
@@ -380,7 +384,7 @@ function sbookMarkCloud()
 		     "(",fdjtSpan("completioncount","really"),")",
 		     " of completions.  ");
   fdjtPrepend(completions,maxmsg);
-  return completions;
+  return fdjtDiv(".marktab.tags",sbookMarkTagInput(),completions);
 }
 
 function sbookAddConversant(completions,c,seen,checked,init)
@@ -456,7 +460,7 @@ function sbookMarkTagInput_onfocus(evt)
   var target=$T(evt);
   var markform=$P("form.mark",target);
   if (markform) {
-    markform.setAttribute("mode","tag");
+    // markform.setAttribute("mode","tag");
     fdjtRedisplay(markform);}
   fdjtComplete_onfocus(evt);
 }
@@ -574,7 +578,7 @@ function sbookCreateLoginButton(uri,image,title)
 		(uri+"?NEXT="+
 		 encodeURIComponent("http://sbooks.net/app/read?URI="+encodeURIComponent(window.location.href))):
 		"javascript:alert('sorry, not yet implemented'); return false;"),
-	       fdjtImage(sbook_graphics_root+image,"button"));
+	       fdjtImage(sbgr(image),"button"));
   fdjtAddClass(login_button,"login");
   if (!(uri)) fdjtAddClass(login_button,"disabled");
   login_button.title=((uri)?(title):("(coming soon) "+title));

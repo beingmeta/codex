@@ -143,14 +143,16 @@ function sbookHUDMode(mode)
   if (sbook_trace_hud)
     fdjtLog("sbookHUDMode %o, cur=%o dbc=%o",
 	    mode,sbook_mode,document.body.className);
-  if (mode) {
-    if (mode===true) mode="minimal";
-    if ((mode==="social")&&(!($("APPFRAME").src)))
-      sbookSetupAppFrame();
-    sbook_mode=mode;
-    if (fdjtContains(sbook_apps,mode)) sbook_last_app=mode;
-    fdjtAddClass(document.body,"hudup");
-    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
+  if (mode)
+    if (mode===sbook_mode) {}
+    else {
+      if (mode===true) mode="minimal";
+      if ((mode==="social")&&(!($("APPFRAME").src)))
+	sbookSetupAppFrame();
+      sbook_mode=mode;
+      if (fdjtContains(sbook_apps,mode)) sbook_last_app=mode;
+      fdjtAddClass(document.body,"hudup");
+      fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
   else {
     sbook_last_mode=sbook_mode;
     sbook_mode=false;

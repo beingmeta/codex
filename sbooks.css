@@ -315,7 +315,11 @@ div#SBOOKHUD div#SBOOKGLOSSES {
   border-bottom-right-radius: 6px;
   display: none;}
 div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK {
-  padding-bottom: 4px; border-bottom: solid blue 8px; margin-bottom: 4px;}
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+  border-bottom: solid blue 8px; }
+div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK div.markform {
+  min-height: 70px;}
 
 div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK { display: none;}
 div#SBOOKHUD.mark div#SBOOKGLOSSES div#SBOOKMARK { display: block;}
@@ -549,12 +553,13 @@ div#SBOOKHUD form.mark div.markform div.metastuff span.checkspan {
   font-style: italic; font-size: 80%; float: right;}
 div#SBOOKHUD form.mark div.markform div.metastuff input#SBOOKMARKPRIVATE[NAME='private'] {float: right;}
 div#SBOOKHUD form.mark div.markform div.metastuff input[TYPE='SUBMIT'] { float: right;}
-div#SBOOKHUD form.mark div.markform div.metastuff select { float: right; max-width: 12em;}
+div#SBOOKHUD form.mark div.markform div.metastuff select {
+  max-width: 12em;}
 div#SBOOKHUD form.mark div.markform div.metastuff img.button { float: right; }
 
 div#SBOOKHUD form.mark div.markform div.metastuff div.taginput { 
   float: left; width: 50%;}
-div#SBOOKHUD form.mark div.markform div.metastuff div.taginput input[TYPE='TEXT'] {
+div#SBOOKHUD form.mark div.markform div.taginput input[TYPE='TEXT'] {
   width: 100%;}
 
 div#SBOOKHUD form.mark div.markform div.marktab {
@@ -575,22 +580,7 @@ div#SBOOKHUD form.mark div.excerpt span.rq {
  font-weight: bold; font-size: 200%; float: right; }
 
 div#SBOOKHUD form.mark { clear: both;}
-
-div#SBOOKHUD form.mark div.detail { display: none;}
-div#SBOOKHUD form.mark div.xrefs { display: none;}
-div#SBOOKHUD form.mark.detail div.detail {display: block;}
-div#SBOOKHUD form.mark.detail img.button[alt='detail'] {
-  border-bottom: solid blue 2px;}
-div#SBOOKHUD form.mark.excerpt div.excerpt { display: block;}
-div#SBOOKHUD form.mark.excerpt img.button[alt='excerpt'] { 
-  border-bottom: solid blue 2px;}
-div#SBOOKHUD form.mark.xrefs div.xrefs { display: block;}
-div#SBOOKHUD form.mark.xrefs img.button[alt='xrefs'] { 
-  border-bottom: solid blue 2px;}
-
-div#SBOOKHUD form.mark[mode='detail'] div.markform div.lhs img.head[alt='detail'] { display: inline;}
-div#SBOOKHUD form.mark[mode='xrefs'] div.markform div.lhs img.head[alt='xrefs'] { display: inline;}
-div#SBOOKHUD form.mark[mode='tag'] div.markform div.lhs img.head[alt='tags'] { display: inline;}
+div#SBOOKHUD form.mark div.marktab { display: none;}
 
 table.grid {border-collapse: collapse;}
 table.grid td {padding: 0px; margin:0px; border: 0px; vertical-align: top;}
@@ -607,18 +597,29 @@ div#SBOOKHUD form.mark table.grid td input[TYPE='TEXT'] {
 div#SBOOKHUD form.mark div.completions {
   text-align: left;}
 
-div#SBOOKHUD form.mark[mode='tag'] div.completions { display: block;}
+div#SBOOKHUD form.mark[mode='tag'] div.tags { display: block;}
 div#SBOOKHUD form.mark[mode='tag'] img.button[alt='tags'] { 
   border-bottom: solid blue 2px;}
+div#SBOOKHUD form.mark[mode='tag']
+  div.markform div.lhs img.head[alt='tags'] { display: inline;}
+
 div#SBOOKHUD form.mark[mode='detail'] div.detail {display: block;}
 div#SBOOKHUD form.mark[mode='detail'] img.button[alt='detail'] {
   border-bottom: solid blue 2px;}
+div#SBOOKHUD form.mark[mode='detail']
+  div.markform div.lhs img.head[alt='detail'] { display: inline;}
+
 div#SBOOKHUD form.mark[mode='excerpt'] div.excerpt { display: block;}
 div#SBOOKHUD form.mark[mode='excerpt'] img.button[alt='excerpt'] { 
   border-bottom: solid blue 2px;}
+div#SBOOKHUD form.mark[mode='excerpt']
+  div.markform div.lhs img.head[alt='excerpt'] { display: inline;}
+
 div#SBOOKHUD form.mark[mode='xrefs'] div.xrefs { display: block;}
 div#SBOOKHUD form.mark[mode='xrefs'] img.button[alt='xrefs'] { 
   border-bottom: solid blue 2px;}
+div#SBOOKHUD form.mark[mode='xrefs']
+  div.markform div.lhs img.head[alt='xrefs'] { display: inline;}
 
 div#SBOOKHUD form.mark div.blockelt { 
   text-align: left;}
@@ -740,6 +741,10 @@ div#SBOOKHUD.glosses div#SBOOKLOC { display: block; }
 div#SBOOKHUD.glosses div#SBOOKGLOSSES { opacity: 0.9;}
 div#SBOOKHUD.mark div#SBOOKGLOSSES {
   opacity: 0.9;}
+body.preview div#SBOOKHUD.glosses div#SBOOKGLOSSES { opacity: 0.05;}
+body.preview div#SBOOKHUD.mark div#SBOOKGLOSSES {
+  opacity: 0.05;}
+
 
 div#SBOOKHUD.mark div#SBOOKMARK {display: block; }
 div#SBOOKHUD.mark div#SBOOKSEARCH {display: none; }
@@ -991,12 +996,13 @@ div.sbooksummaries .summary {
   text-decoration: none;  font-size: 75%;
   margin-bottom: 4px; margin-top: 4px;
   padding-bottom: 4px; padding-bottom: 4px;
-  margin-left: 50px; margin-right: 50px; 
+  margin-left: 50px; /* margin-right: 50px;  */
   border-top: dotted orange 1px; padding-top: 3px;
   color: black; text-align: left;}
 div.sbooksummaries .summary span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
 div.sbooksummaries a.summary { display: block;}
+div.sbooksummaries.targeted .tocblock .tochead {display:none;}
 div.sbooksummaries .tocblock.hidden { display: none;}
 div.sbooksummaries .summary.hidden { display: none;}
 div.sbooksummaries .summary .info { 
@@ -1019,8 +1025,10 @@ div.sbooksummaries .summary span.controller {
 .summary span.msg { font-weight: bold; font-size: 110%;}
 .summary img.userpic { float: left; margin-right: 3px;}
 .summary a.age { 
-  float: right; color: orange; margin-left: 6px;
-  text-decoration: none;}
+  float: right; clear: right; color: orange;
+  display: block; width: 4em; font-size: 80%;
+  padding: 0px; margin: 0px; margin-left: 3px;
+  text-align: right; text-decoration: none;}
 .summary a.deletebutton { 
   float: right; color: orange; margin-left: 6px;
   text-decoration: none;}

@@ -53,11 +53,15 @@ function sbook_onmousedown(evt)
   sbook_mousedown_y=evt.screenY;
   sbook_mousedown_tick=fdjtTick();
   var target=$T(evt);
-  // Ignore clicks on text fields, anchors, inputs, etc
+  // Ignores clicks on the HUD
   if (fdjtHasParent(target,sbookHUD)) return;
+  else if ((sbookInUI(target))||
+	   (sbookInUI(target.parentNode)))
+    return;
   else if ((sbook_mode)&&(sbook_mode!=="minimal")) {
     sbookHUDMode(false);
     return;}
+  // Ignore clicks on text fields, anchors, inputs, etc
   else if (fdjtIsClickactive(target)) return;
   else {}
   var focus=sbookGetFocus(target);

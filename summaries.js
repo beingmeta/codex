@@ -377,7 +377,8 @@ function sbookSelectSummaries(results_div,sources,idroot)
 	       ((!(sources))||
 		(fdjtContains(sources,gloss.user))||
 		(fdjtContains(sources,gloss.feed)))) {
-	fdjtDropClass(summary,"hidden"); empty=false;}
+	fdjtDropClass(summary,"hidden");
+	empty=false;}
       else fdjtAddClass(summary,"hidden");}
     if (empty) fdjtAddClass(block,"hidden");
     else fdjtDropClass(block,"hidden");}
