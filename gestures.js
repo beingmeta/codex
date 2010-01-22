@@ -55,7 +55,7 @@ function sbook_onmousedown(evt)
   var target=$T(evt);
   // Ignore clicks on text fields, anchors, inputs, etc
   if (fdjtHasParent(target,sbookHUD)) return;
-  else if (sbook_mode) {
+  else if ((sbook_mode)&&(sbook_mode!=="minimal")) {
     sbookHUDMode(false);
     return;}
   else if (fdjtIsClickactive(target)) return;
