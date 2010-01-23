@@ -885,10 +885,11 @@ div.spanbar div.progressbox {
   position: absolute; z-index: 200; 
   margin: 0px; padding: 0px;}
 div.spanbar div.rangebox { 
-  height: 13px; /* border: orange solid 2px; */
-  background-color: red; /* opacity: 0.5; */
+  height: 15px; background-color: red;
   position: absolute; z-index: 200; 
   margin: 0px; padding: 0px; border: 0px;}
+body.tablet div.spanbar div.progressbox { height: 25px;}
+body.tablet div.spanbar div.rangebox { height: 25px;}
 
 div.tocblock { clear: both; margin-top: 5px; margin-left: 8px;}
 div.tocblock div.tochead { 
