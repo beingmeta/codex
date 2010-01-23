@@ -342,7 +342,9 @@ function sbookGetFocus(target)
     if (fdjtHasClass(target,sbookUIclasses)) found=false;
     else if ((!(found))&&(target.id)) found=target;
     target=target.parentNode;}
-  return found;
+  if ((found===sbook_root)||(found===document.body))
+    return false;
+  else return found;
 }
 
 function sbookGetRef(target)

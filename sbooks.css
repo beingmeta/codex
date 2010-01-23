@@ -757,9 +757,21 @@ div#SBOOKHUD #SBOOKMARK img.button { vertical-align: top;}
 
 div#SBOOKHUD div#SBOOKSEARCH.sbooksearch {
   text-align: left;}
+div#SBOOKHUD div#SBOOKSEARCH.sbooksearch div.input {
+  position: relative; height: 16px;
+  right: 0px; left: 0px;}
+div#SBOOKHUD div#SBOOKSEARCH.sbooksearch div.spacer {
+  height: 24px; margin-top: 4px;}
+div#SBOOKHUD div#SBOOKSEARCH.sbooksearch div.input input[TYPE='TEXT'] {
+  width: 100%;}
+div#SBOOKHUD div#SBOOKSEARCH.sbooksearch div.input img.clearinput {
+  position: absolute; right: 0px; top: 5px;
+  color: black; vertical-align: middle;}
+
+/*
 div.sbooksearch div.query input[TYPE='TEXT'] {
   width: 100%; clear: both;}
-
+*/
 body div#SBOOKHUD.search .sbooksearch {display: block; }
 body div#SBOOKHUD.glosses .glosses {display: block; }
 
@@ -916,6 +928,10 @@ div#SBOOKHUD div.hud#SBOOKSEARCH div#SBOOKTAGS.flash {
 
 /* Search classes */
 
+div#SBOOKHUD div.sbooksearch { padding-top: 6px;}
+div#SBOOKHUD div.sbooksearch div.helptext { 
+  margin-left: 15px; color: ivory;
+  padding-top: 3px; padding-bottom: 3px;}
 div#SBOOKHUD div.sbooksearch div.query { display: none;}
 div#SBOOKHUD div.sbooksearch .completions { display: none;}
 div#SBOOKHUD div.sbooksearch .completions.open { display: none;}

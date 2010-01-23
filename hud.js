@@ -290,7 +290,7 @@ function sbookHUD_onmouseout(evt)
 function sbookHUD_onclick(evt)
 {
   evt=evt||event||null;
-  sbook_trace("sbookHUD_onclick",evt);
+  // sbook_trace("sbookHUD_onclick",evt);
   var target=$T(evt);
   while (target)
     if ((sbook_mode) &&
