@@ -212,9 +212,8 @@ img.hudbutton[alt='<<'] {
 
 div#SBOOKHUD div.hud#SBOOKFEEDS {
   position: fixed; display: block; 
-  top: 75px; left: 0px; width: 50px; height: 50px;
-  margin: 0px; 
-  text-align: left;
+  top: 75px; left: 0px; width: 50px;
+  bottom: 75px; margin: 0px; text-align: left;
   border: solid blue 2px; border-left: none;
   -khtml-border-top-right-radius: 6px; 
   -webkit-border-top-right-radius: 6px; 
@@ -224,12 +223,16 @@ div#SBOOKHUD div.hud#SBOOKFEEDS {
   -webkit-border-bottom-right-radius: 6px; 
   -moz-border-radius-bottomright: 6px;
   border-bottom-right-radius: 6px;}
-body.hudup div#SBOOKHUD div.hud#SBOOKFEEDS { 
+
+body.hidefeeds div#SBOOKHUD div.hud#SBOOKFEEDS { 
+  height: 50px; bottom: auto;}
+body.hidefeeds.hudup div#SBOOKHUD div.hud#SBOOKFEEDS { 
   height: auto; bottom: 75px; }
-div#SBOOKHUD div.hud#SBOOKFEEDS:hover { 
+body.hidefeeds div#SBOOKHUD div.hud#SBOOKFEEDS:hover { 
   height: auto; bottom: 75px; }
-div#SBOOKHUD div.hud#SBOOKFEEDS.flash { 
+body.hidefeeds div#SBOOKHUD div.hud#SBOOKFEEDS.flash { 
   height: auto; bottom: 75px; }
+
 div#SBOOKHUD.glosses div.hud#SBOOKFEEDS {
   border-right: none;
   -khtml-border-top-right-radius: 0px; 
@@ -251,13 +254,15 @@ div#SBOOKHUD.glosses.targeted div.hud#SBOOKFEEDS {
   -moz-border-radius-bottomright: 6px;
   border-bottom-right-radius: 6px;}
 
+body.hidefeeds div#SBOOKHUD .hud#SBOOKFEEDS img.feed { display: none;}
+body.hidefeeds.hudup div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
+  display: inline;} 
+body.hidefeeds div#SBOOKHUD .hud#SBOOKFEEDS:hover img.feed { 
+  display: inline;} 
+
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
-  width: 34px; height: 34px; display: none;
+  width: 34px; height: 34px;
   border: solid transparent 2px;} 
-body.hudup div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
-  display: inline;} 
-div#SBOOKHUD .hud#SBOOKFEEDS:hover img.feed { 
-  display: inline;} 
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed:hover { 
   border: dotted blue 2px;} 
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed.selected { 
@@ -425,6 +430,11 @@ div#SBOOKAPP div.helpbody div.fasthelp span.key {
 div#SBOOKAPP div.helpbody div.fasthelp span.keydef {
   white-space: nowrap;}
 
+div#SBOOKAPP div.helpbody span.fortablet { display: none;}
+div#SBOOKAPP div.helpbody span.forbrowser { display: inline;}
+body.tablet div#SBOOKAPP div.helpbody span.fortablet { display: inline;}
+body.tablet div#SBOOKAPP div.helpbody span.forbrowser { display: none;}
+
 div#SBOOKAPP div.helpbody span.hudref {
   font-weight: bold; color: blue; cursor: pointer;}
 div#SBOOKAPP div.helpbody strong {
@@ -436,6 +446,7 @@ div#SBOOKAPP div.helpbody div.sbookh1 {
   text-align: center;}
 div#SBOOKAPP div.helpbody div.sbookh1 div.motto {
   font-weight: normal; font-style: italic; font-size: 50%; color: yellow;}
+
 
 /* Minimal mode */
 

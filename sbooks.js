@@ -178,6 +178,14 @@ var sbook_search_gotlucky=5;
 var sbook_search_focus=false;
 // Whether to display verbose tool tips
 var sbook_noisy_tooltips=false;
+// Whether the UI is tablet based
+var sbook_istablet=false;
+// Whether the UI should use a 2 phase selection
+var sbook_2phase_select=false;
+// Whether the UI should just use onclick for selection
+var sbook_simple_select=false;
+// Whether to do gesture recognition
+var sbook_gestures=false;
 
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
@@ -236,6 +244,8 @@ var sbook_trace_network=0;
 var sbook_trace_startup=0;
 // Whether to trace paging
 var sbook_trace_paging=false;
+// Whether to trace gesture recognition
+var sbook_trace_gestures=false;
 
 // Flavors of tags
 //  prime: humanly indicated as important to an item
@@ -321,9 +331,17 @@ function sbook_needinfo(elt)
 
 var sbookUIclasses=/(\bhud\b)|(\bglossmark\b)/;
 
-function sbookInUI(elt)
+function sbookIsUIElement(elt)
 {
   return fdjtHasClass(elt,sbookUIclasses);
+}
+
+function sbookInUI(elt)
+{
+  if (fdjtHasParent(elt,sbookHUD)) return true;
+  else while (elt)
+	 if (fdjtHasClass(elt,sbookUIclasses)) return true;
+	 else elt=elt.parentNode;
 }
 
 function sbookGetHead(target)
@@ -1399,13 +1417,16 @@ function sbookSetup()
   var hud_done=new Date();
   sbookHUD_Init();
   var hud_init_done=new Date();
-  // window.onmouseup=sbook_onmouseup;
-  window.onmousedown=sbook_onmousedown;
+  // These are for mouse tracking
   window.onmouseover=sbook_onmouseover;
   window.onmousemove=sbook_onmousemove;
   window.onscroll=sbook_onscroll;
-  // window.onclick=sbook_onclick;
+  // These are for gesture recognition and adding glosses
+  window.onmouseup=sbook_onmouseup;
+  window.onmousedown=sbook_onmousedown;
+  window.onclick=sbook_onclick;
   window.ondblclick=sbook_ondblclick;
+  // For command keys
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
