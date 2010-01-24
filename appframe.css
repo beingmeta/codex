@@ -63,4 +63,30 @@ body.sbookapp div.pagehead {
   font-size: 150%; min-height: 70px; text-align: center;
   padding-left: 50px; padding-right: 50px;}
 
+/* The preferences table */
 
+table.preferences th { 
+  text-align: right; vertical-align: top;}
+table.preferences td { 
+  text-align: left; vertical-align: top;}
+table.preferences td input[TYPE='text'] { 
+  width: 100%;}
+table.preferences td textarea { 
+  width: 100%; height: 60px;}
+table.preferences td textarea:focus { 
+  width: 100%; height: 120px;}
+table.preferences img#MYPIC { width: 50px; height: 50px;}
+table.preferences input[TYPE='TEXT'][NAME='OPENIDS'] {
+  background-image: url(http://static.beingmeta.com/graphics/openid-login-bg.gif);
+  background-position-x: right;
+  background-repeat: no-repeat;}
+table.preferences img[ALT='OpenID'] {
+  height: 25px;}
+
+div.appblock#IDENTITYBLOCK form#IDFORM { display: none;}
+div.appblock#IDENTITYBLOCK div.message {
+    display: block; font-style: italic;}
+div.appblock#IDENTITYBLOCK.expanded form#IDFORM { display: block;}
+div.appblock#IDENTITYBLOCK.expanded div.message { display: none;}
+div.appblock#IDENTITYBLOCK button { border: outset;}
+div.appblock#IDENTITYBLOCK.expanded button { border: inset;}

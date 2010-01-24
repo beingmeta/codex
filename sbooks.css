@@ -397,6 +397,8 @@ div#SBOOKHUD.settings div#SBOOKAPP {
 div#SBOOKHUD.social div#SBOOKAPP {
   display: block; opacity: 0.9; }
 
+div#SBOOKHUD div#SBOOKAPP div.tabcontent {
+    height: 100%;}
 div#SBOOKHUD.help div#SBOOKAPP div.tabcontent#APPHELP { display: block;}
 div#SBOOKHUD.login div#SBOOKAPP div.tabcontent#APPLOGIN { display: block;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS { display: block;}
