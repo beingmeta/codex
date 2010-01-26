@@ -76,14 +76,14 @@ function sbook_onmousedown(evt)
   // Further determination requires the event target
   var target=$T(evt);
   // Ignores clicks on the HUD
-  if (sbookInUI(target)) return;
+  if (!(sbook_2phase_select)) return;
+  else if (sbookInUI(target)) return;
   // If the HUD is up, clicks on the content just hide the HUD
   else if ((sbook_mode)&&(sbook_mode!=="minimal")) {
     sbookHUDMode(false);
     return;}
   // Ignore clicks on text fields, anchors, inputs, etc
   else if (fdjtIsClickactive(target)) return;
-  else if (!(sbook_2phase_select)) return;
   var focus=sbookGetFocus(target);
   if (!(focus)) return;
   if (sbook_target)
@@ -116,8 +116,9 @@ function sbook_onmouseup(evt)
   // This click on the content just hides the HUD
   if ((sbook_mode)&&(sbook_mode!=="minimal")) {
     sbookHUDMode(false);
+    fdjtCancelEvent(evt);
     return;}
-  if ((sbook_gestures)&&(sbook_mousedown_tick))
+  else if ((sbook_gestures)&&(sbook_mousedown_tick))
     sbookHandleGestures(evt);
   else if (sbook_2phase_select)
     sbookSetTarget(focus);
@@ -129,6 +130,7 @@ function sbook_onmouseup(evt)
 
 function sbook_onclick(evt)
 {
+  // Non-simple select is handled by onmousedown and onmouseup
   if (!(sbook_simple_select)) return;
   evt=evt||event||null;
   if (evt.button>1) return;

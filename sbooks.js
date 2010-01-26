@@ -1168,7 +1168,12 @@ function getsbookbaseid()
 
 function getsbooksrc()
 {
-  return fdjtGetMeta("SBOOKSRC",true)||getsbookrefuri();
+  var meta=fdjtGetMeta("SBOOKSRC",true);
+  if (meta) return meta;
+  var locref=document.location.href;
+  var qstart=locref.indexOf('?');
+  if (qstart>0) return locref.slice(0,qstart);
+  else return locref;
 }
 
 function sbook_getrefuri(target)
@@ -1188,7 +1193,7 @@ function sbook_getsrc(elt)
     if ((elt.getAttribute) && (elt.getAttribute("SBOOKSRC")))
       return elt.getAttribute("SBOOKSRC");
     else elt=elt.parentNode;
-  return document.location.href;
+  return getsbooksrc();
 }
 
 function sbook_get_titlepath(info,embedded)
@@ -1537,18 +1542,14 @@ function sbookUserSetup()
 
 function sbookSetupAppFrame()
 {
+  var query=document.location.search||"?";
   var refuri=fdjtStripSuffix(sbook_refuri);
-  if ((document.location.search)&&
-      (document.location.search.length>0))
-    if (document.location.search.search("REFURI=")<0)
-      $("APPFRAME").src="https://"+sbook_server+
-	"/glosses/appframe.fdcgi"+document.location.search+
-	"&REFURI="+encodeURIComponent(refuri);
-    else $("APPFRAME").src="https://"+sbook_server+
-	   "/glosses/appframe.fdcgi"+document.location.search;
-  else $("APPFRAME").src="https://"+sbook_server+
-	 "/glosses/appframe.fdcgi?REFURI="+
-	 encodeURIComponent(refuri);
+  var appuri="https://"+sbook_server+"/glosses/appframe.fdcgi"+query;
+  if (query.search("REFURI=")<0)
+    appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
+  if (query.search("SRCURI=")<0)
+    appuri=appuri+"&SRCURI="+sbook_src;
+  $("APPFRAME").src=appuri;
 }
 
 fdjtAddSetup(sbookSetup);

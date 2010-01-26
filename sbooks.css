@@ -555,12 +555,14 @@ div#SBOOKHUD form.mark div.markform div.lhs {
   max-width: 50px; width: 50px; float: left; text-align: right;}
 div#SBOOKHUD form.mark div.markform div.lhs img.head { 
   width: 48px; height: 48px; display: none;}
+div#SBOOKHUD form.mark div.markform div.lhs img.userpic { 
+  width: 48px;}
 div#SBOOKHUD form.mark div.markform div.msg {
-  clear: right; margin-left: 70px;}
+  clear: right; margin-left: 60px;}
 div#SBOOKHUD form.mark div.markform div.msg INPUT { width: 100%;}
 
 div#SBOOKHUD form.mark div.markform div.metastuff {
-  clear: right; margin-left: 70px; text-align: right; min-height: 16px;}
+  clear: right; margin-left: 60px; text-align: right; min-height: 16px;}
 div#SBOOKHUD form.mark div.markform div.metastuff span.checkspan { 
   font-style: italic; font-size: 80%; float: right;}
 div#SBOOKHUD form.mark div.markform div.metastuff input#SBOOKMARKPRIVATE[NAME='private'] {float: right;}
@@ -576,7 +578,7 @@ div#SBOOKHUD form.mark div.markform div.taginput input[TYPE='TEXT'] {
 
 div#SBOOKHUD form.mark div.markform div.marktab {
   clear: right; text-align: left; 
-  margin-left: 70px; margin-right: 5px; width: inherit;
+  margin-left: 60px; margin-right: 5px; width: inherit;
   min-height: 48px;}
 
 div#SBOOKHUD form.mark div.excerpt { color: yellow;}
@@ -693,27 +695,6 @@ div#SBOOKMARK div.msg {}
 div#SBOOKMARK input[TYPE='TEXT'] { width: auto;}
 div#SBOOKMARK div.tags input[TYPE='SUBMIT'] {
   float: right;}
-
-div.mark div.controls input[TYPE='TEXT'][name='MSG'] { 
-  width: 75%; clear: left; font-size: 14px;}
-div.mark div.controls span.buttons {
-  float: right;}
-div.mark div.controls span.buttons img.button {
-  border: solid transparent 2px; padding-bottom: 2px;}
-div.mark div.controls span.buttons input[type="SUBMIT"] {
-  padding: 2px;}
-
-div#SBOOKHUD form.markform div.tags div.tagtool div.tagpicks {
-  min-height: 1.5ex;}
-div#SBOOKHUD form.markform div.tags div.tagtool input[type='TEXT'] {
-  width: 100%; clear: both;}
-div#SBOOKHUD form.markform div.tags div.tagtool div {
-  text-align: left;}
-div#SBOOKHUD form.markform div.tags div.tagtool .tagcues {
-  font-weight: bold; font-size: 150%;}
-div#SBOOKHUD form.markform div.tags div.tagtool .tagverse {
-  font-weight: bold; font-size: 85%;}
-
 
 /* For scrollable results */
 
@@ -1052,7 +1033,7 @@ div.sbooksummaries .summary span.headhead {
 div.sbooksummaries .summary span.controller {
     font-weight: bold; color: white;}
 .summary span.msg { font-weight: bold; font-size: 110%;}
-.summary img.userpic { float: left; margin-right: 3px; max-height: 50px;}
+.summary img.userpic { float: left; margin-right: 3px; width: 50px;}
 .summary a.age { 
   float: right; clear: right; color: yellow;
   display: block; width: 4em; font-size: 80%;

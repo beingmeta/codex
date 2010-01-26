@@ -208,7 +208,7 @@ function sbookCreateMarkHUD(classinfo)
 		    privy,sbookMarkPickFeed()));
   var grid=
     fdjtDiv("markform",
-	    fdjtDiv("lhs",fdjtImage(image_uri,"#SBOOKMARKIMAGE"),
+	    fdjtDiv("lhs",fdjtImage(image_uri,"#SBOOKMARKIMAGE.userpic"),
 		    fdjtDiv("controls",sbookMarkControls()),
 		    fdjtImage(sbgr("detailsicon32x32.png"),"head","detail"),
 		    fdjtImage(sbgr("outlink48x48.png"),"head","xrefs"),

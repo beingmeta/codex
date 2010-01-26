@@ -151,6 +151,8 @@ function sbookHUDMode(mode)
     if (mode===sbook_mode) {}
     else {
       if (mode===true) mode="minimal";
+      if (typeof mode !== 'string') 
+	throw new Error('mode arg not a string');
       if ((mode==="social")&&(!($("APPFRAME").src)))
 	sbookSetupAppFrame();
       sbook_mode=mode;
