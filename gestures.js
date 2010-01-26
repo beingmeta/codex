@@ -71,7 +71,6 @@ function sbook_onmousedown(evt)
   sbook_mousedown_y=evt.screenY;
   sbook_mousedown_tick=fdjtTick();
   if (sbook_simple_select) return;
-  if (!(sbook_2phase_select)) return;
   // When to ignore the mouse event
   if ((evt.button>1)||(evt.ctrlKey)) return;
   // Further determination requires the event target
@@ -84,7 +83,7 @@ function sbook_onmousedown(evt)
     return;}
   // Ignore clicks on text fields, anchors, inputs, etc
   else if (fdjtIsClickactive(target)) return;
-  else {}
+  else if (!(sbook_2phase_select)) return;
   var focus=sbookGetFocus(target);
   if (!(focus)) return;
   if (sbook_target)

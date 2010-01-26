@@ -261,7 +261,7 @@ body.hidefeeds div#SBOOKHUD .hud#SBOOKFEEDS:hover img.feed {
   display: inline;} 
 
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
-  width: 34px; height: 34px;
+  width: 34px;
   border: solid transparent 2px;} 
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed:hover { 
   border: dotted blue 2px;} 
@@ -417,8 +417,7 @@ div#SBOOKHUD div#SBOOKAPP div#APPSOCIAL iframe {
   -khtml-border-radius: 9px; 
   -webkit-border-radius: 9px; 
   -moz-border-radius: 9px; 
-  border-radius: 9px; 
-  width: 100%; height: 80%;}
+  border-radius: 9px;}
 
 div#SBOOKAPP div.helpbody {
   max-width: 50em; margin-left: auto; margin-right: auto;
@@ -1053,9 +1052,9 @@ div.sbooksummaries .summary span.headhead {
 div.sbooksummaries .summary span.controller {
     font-weight: bold; color: white;}
 .summary span.msg { font-weight: bold; font-size: 110%;}
-.summary img.userpic { float: left; margin-right: 3px;}
+.summary img.userpic { float: left; margin-right: 3px; max-height: 50px;}
 .summary a.age { 
-  float: right; clear: right; color: orange;
+  float: right; clear: right; color: yellow;
   display: block; width: 4em; font-size: 80%;
   padding: 0px; margin: 0px; margin-left: 3px;
   text-align: right; text-decoration: none;}
@@ -1119,22 +1118,15 @@ span.glossmark {
   opacity: 0.5;}
 .sbookfocus span.glossmark { border: solid blue 2px; opacity: 0.75;}
 span.glossmark img { 
-  width: 32px; height: 32px;
-  vertical-align: middle; text-align: center;}
+  width: 32px; vertical-align: middle; text-align: center;}
 
-span.glossmark span.glossmark#SBOOKFOCUSMARKER img {
-   width: 16px; height: 16px; float: right; z-index: 120;}
-span.glossmark#SBOOKFOCUSMARKER {
-  z-index: 50; border: transparent;}
-.sbookfocuslock span.glossmark#SBOOKFOCUSMARKER {
-  z-index: 50; border: darkblue;}
 .sbookfocuslock span.glossmark {
   z-index: 50; border: darkblue; opacity: 0.8;}
 
 .sbooktarget { text-decoration: underline; }
 .sbooktarget span.glossmark { border: solid blue 2px; opacity: 0.9; border: gray; z-index: 300;}
 .sbooktarget span.glossmark:hover { opacity: 0.9;}
-.sbooktarget span.glossmark img { width: 50px; height: 50px;}
+.sbooktarget span.glossmark img { width: 50px; }
 
 span.glossmark:hover { opacity: 0.9;}
 body.mark span.glossmark { opacity: 0.9;}

@@ -5,9 +5,10 @@ div.appblock { clear: both; margin-bottom: 4px;}
 div.appblock input[TYPE='TEXT'] { padding-left: 5px;}
 div.appblock input[NAME='EMAIL'] { width: 30em;}
 div.appblock div.label { 
-  float: left; width: 10em; text-align: right;}
+  float: left; width: 7em; text-align: right; vertical-align: top;
+  font-weight: bold;}
 div.appblock div.content {
-    margin-left: 10em; margin-right: 1em;
+    margin-left: 7em; margin-right: 1em;
     padding-left: 1em; padding-right: 1em;}
 div.appblock div.content INPUT[TYPE='TEXT'] { width: 100%;}
 div.appblock div.content div.details { display: none;}
@@ -46,14 +47,14 @@ div.appblock div.details input.fullfield {
 div.appblock.buttons { text-align: center;}
 div.appblock.buttons form { display: inline; clear: none;}
 
-body.feedform h1 { 
+body.sbookapp { margin-left: 5%; margin-right: 5%; background-color: ivory;}
+body.sbookapp h1 {
   text-align: center; height: 50px;
   margin-left: 50px; margin-right: 50px;}
-body.feedform h1 img { border: 0px;}
-body.feedform h1 .floatright { float: right;}
-body.feedform h1 .floatleft { float: left;}
+body.sbookapp h1 img { border: 0px;}
+body.sbookapp h1 .floatright { float: right;}
+body.sbookapp h1 .floatleft { float: left;}
 
-body.sbookapp { margin-left: 5%; margin-right: 5%; background-color: ivory;}
 .floatleft img { margin-right: 4px;}
 img.floatleft { margin-right: 4px;}
 .floatright img { margin-left: 4px;}
@@ -62,6 +63,9 @@ img.floatright { margin-left: 4px;}
 body.sbookapp div.pagehead {
   font-size: 150%; min-height: 70px; text-align: center;
   padding-left: 50px; padding-right: 50px;}
+
+body.sbookapp div.pagehead .message {color: red;}
+body.sbookapp div.pagehead div.message {font-size: 14px;}
 
 /* The preferences table */
 
@@ -75,7 +79,7 @@ table.preferences td textarea {
   width: 100%; height: 60px;}
 table.preferences td textarea:focus { 
   width: 100%; height: 120px;}
-table.preferences img#MYPIC { width: 50px; height: 50px;}
+table.preferences img#MYPIC { height: 50px;}
 table.preferences input[TYPE='TEXT'][NAME='OPENIDS'] {
   background-image: url(http://static.beingmeta.com/graphics/openid-login-bg.gif);
   background-position-x: right;

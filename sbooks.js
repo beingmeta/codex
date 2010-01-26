@@ -1537,14 +1537,18 @@ function sbookUserSetup()
 
 function sbookSetupAppFrame()
 {
+  var refuri=fdjtStripSuffix(sbook_refuri);
   if ((document.location.search)&&
       (document.location.search.length>0))
-    $("APPFRAME").src="https://"+sbook_server+
-      "/glosses/appframe.fdcgi"+document.location.search+
-      "&REFURI="+encodeURIComponent(sbook_refuri);
+    if (document.location.search.search("REFURI=")<0)
+      $("APPFRAME").src="https://"+sbook_server+
+	"/glosses/appframe.fdcgi"+document.location.search+
+	"&REFURI="+encodeURIComponent(refuri);
+    else $("APPFRAME").src="https://"+sbook_server+
+	   "/glosses/appframe.fdcgi"+document.location.search;
   else $("APPFRAME").src="https://"+sbook_server+
 	 "/glosses/appframe.fdcgi?REFURI="+
-	 encodeURIComponent(sbook_refuri);
+	 encodeURIComponent(refuri);
 }
 
 fdjtAddSetup(sbookSetup);

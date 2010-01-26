@@ -88,9 +88,13 @@ function createSBOOKHUD()
        prev_button,next_button);
 
     hud.title="";
+
     hud.onclick=sbookHUD_onclick;
     hud.onmouseover=sbookHUD_onmouseover;
     hud.onmouseout=sbookHUD_onmouseout;
+
+    hud.onclick=hud.onmouseover=hud.onmouseout=fdjtCancelBubble;
+    hud.onmousedown=hud.onmouseup=fdjtCancelBubble;
 
     sbookHUD=hud;
 

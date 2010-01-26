@@ -288,7 +288,8 @@ function sbookMarkInfo(sumdiv,info)
   fdjtAppend
     (sumdiv,img,relay_button,delete_button,
      ((info.detail)&&(sbookDetailsButton())),((info.detail)&&" "),
-     ((info.xrefs)&&(sbookXRefsButton())),((info.xrefs)&&" "),
+     ((info.xrefs)&&(info.xrefs.length>0)&&(sbookXRefsButton())),
+     ((info.xrefs)&&(info.xrefs.length>0)&&" "),
      agespan);
 }
 
@@ -373,7 +374,7 @@ function sbookSelectSummaries(results_div,sources,idroot)
       var gloss=(summary.sbook_oid)&&fdjtOIDs[summary.sbook_oid];
       if ((sources)&&(!(gloss)))
 	fdtjAddClass(summary,"hidden");
-      else if (((!(idroot))||(gloss.id.search(idroot)===0)) &&
+      else if (((!(idroot))||(gloss.id===idroot)) &&
 	       ((!(sources))||
 		(fdjtContains(sources,gloss.user))||
 		(fdjtContains(sources,gloss.feed)))) {
