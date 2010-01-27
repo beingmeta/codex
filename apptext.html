@@ -1,11 +1,10 @@
-<!--
-<div class='helphelp left' style='cursor: pointer;' title='click to hide' onclick='sbookHUDMode(false); return false;'>
-  <img src='http://static.beingmeta.com/graphics/redx16x16.png' alt='x' style='color: red;'/>'H' to toggle this help</div>
-<div class='helphelp right'>
-  Hide on startup<input type='CHECKBOX' name='SBOOKHIDEHELP' class='helphider' VALUE='yes' id='SBOOKHIDEHELP'></div>
--->
 <div style='position: absolute; top: 0px; height: 110%;'> </div>
-
+<a id='SBOOKAPPTOP' href='javascript:sbookHUDMode("login")'
+     title='click to login'>
+<span id='SBOOKUSERNAME' class='username'>Not logged in</span>
+<img id='SBOOKUSERPIC' class='userpic'
+  src='http://static.beingmeta.com/graphics/sbooksperson32x32.png'/>
+</a>
 <div class='tabbar' id='SBOOKTABS'>
 <span class='tab' contentid='APPHELP' onclick='sbookHUDMode("help");'>
   Help</span>
@@ -246,7 +245,12 @@ or methods.</p>
      onclick='fdjtCheckSpan_onclick(event);'>
 <p><span class='checkspan' onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
    <input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>
-   Enable tablet mode</span></p>
+   Enable tablet mode</span>
+   <span class='explanation'>(no scrollbars and more discriminating
+   gesture/click interpretation)</span></p>
+<p><span class='checkspan' onchange="javascript:sbookNoHUDFlash($('HUDFLASHING').checked);">
+   <input TYPE='checkbox' NAME='HUDFLASH' VALUE='yes' ID='HUDFLASHING'/>
+   Don't flash the HUD</span> <span class='explanation'>when meta information (headings, tags, etc) changes</span></p>
 <div class='buttons'></div>
 </div>
 <div class='tabcontent' id='APPSOCIAL'>

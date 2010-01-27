@@ -55,6 +55,9 @@ body.sbookapp h1 img { border: 0px;}
 body.sbookapp h1 .floatright { float: right;}
 body.sbookapp h1 .floatleft { float: left;}
 
+body.sbookapp.embedded { 
+  background-color: lightblue;}
+
 .floatleft img { margin-right: 4px;}
 img.floatleft { margin-right: 4px;}
 .floatright img { margin-left: 4px;}

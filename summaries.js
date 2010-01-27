@@ -60,7 +60,7 @@ function _sbook_sort_summaries(x,y)
 function sbookFeedPic(info)
 {
   if (info.pic) return info.pic;
-  var kind=info.icon;
+  var kind=info.kind;
   if (kind===':PERSON')
     return sbicon("sbooksperson40x40.png");
   else if (kind===':CIRCLE')
@@ -266,7 +266,7 @@ function sbookMarkInfo(sumdiv,info)
   var feedinfo=fdjtOIDs[feed];
   var img=((info.pic)&&(fdjtImage((info.pic),"glosspic",userinfo.name)))||
     ((userinfo.pic)&&(fdjtImage((userinfo.pic),"userpic",userinfo.name)))||
-    (sbookFeedImage(feedinfo));
+    (sbookFeedImage(feedinfo))||(sbookFeedImage(userinfo));
   var interval=((info.tstamp) ? (fdjtTick()-info.tstamp) : (-1));
   var delete_button=
     ((user===sbook_user)&&

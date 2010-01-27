@@ -376,17 +376,18 @@ div#SBOOKHUD div#SBOOKAPP a {
 div#SBOOKHUD div#SBOOKAPP a:visited { color: lightblue;}
 div#SBOOKHUD div#SBOOKAPP a:hover { text-decoration: underline;}
 div#SBOOKHUD div#SBOOKAPP div.tabbar {
-    text-align: center; font-size: 125%;}
-div#SBOOKHUD div#SBOOKAPP div.helphelp {
-  position: absolute; top: 0px; padding-right: 6px;
-  font-family: sans; font-size: 16px; font-weight: bold;
-  color: yellow;}
-div#SBOOKHUD div#SBOOKAPP div.helphelp.right { right: 0px;}
-div#SBOOKHUD div#SBOOKAPP div.helphelp.left { left: 0px;}
-div#SBOOKHUD div#SBOOKAPP div.helphelp.left img { 
-  margin-left: 2px; margin-top: 2px; margin-right: 3px;
-  border: solid black 1px; padding: 1px;
-  width: 12px; height: 12px; }
+    text-align: center; font-size: 125%; z-index: 300;}
+div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP {
+  position: absolute; top: 0px; left: 0px; right: 0px; z-index: 225;
+  display: block;}
+div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERNAME {
+  position: absolute; top: 3px; left: 3px; z-index: 250;
+  padding-left: 4px;}
+div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
+  position: absolute; top: 3px; right: 3px; z-index: 250;
+  height: 40px;}
+div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC:hover {
+  height: auto;} 
 
 div#SBOOKHUD.help div#SBOOKAPP {
   display: block; opacity: 0.9; }
@@ -448,6 +449,8 @@ div#SBOOKAPP div.helpbody div.sbookh1 {
 div#SBOOKAPP div.helpbody div.sbookh1 div.motto {
   font-weight: normal; font-style: italic; font-size: 50%; color: yellow;}
 
+div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
+  span.explanation { font-style: italic; }
 
 /* Minimal mode */
 

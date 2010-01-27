@@ -109,6 +109,9 @@ function sbicon(name,suffix) { return sbook_graphics_root+name+(suffix||"");}
 
 // This is the sbook user, which we're careful not to override
 var sbook_user=((typeof sbook_user === "undefined")?(false):(sbook_user));
+// This is a javascript object with information about the user
+var sbook_user_data=
+  ((typeof sbook_user_data === "undefined")?(false):(sbook_user_data));
 // This is the picture to use for the user
 var sbook_user_img=
   ((typeof sbook_user_img === "undefined")?(false):(sbook_user_img));
@@ -239,7 +242,7 @@ var sbook_trace_search=0;
 // Whether to debug clouds
 var sbook_trace_clouds=0;
 // Whether to trace focus
-var sbook_trace_focus=true;
+var sbook_trace_focus=false;
 // Whether to trace selection
 var sbook_trace_selection=false;
 // Whether we're debugging locations
@@ -1551,12 +1554,25 @@ function sbookUserSetup()
   if (!(sbook_user)) {
     fdjtAddClass(document.body,"nosbookuser");
     return;}
+  if ((sbook_user_data)&&(sbook_user_data.oid))
+    fdjtImportOID(sbook_user_data);
   fdjtDropClass(document.body,"nosbookuser");  
+  var userinfo=fdjtOIDs[sbook_user];
+  var username=userinfo.name;
+  if ((!(sbook_user_img))&&(userinfo.pic))
+    sbook_user_img=userinfo.pic;
+  fdjtReplace("SBOOKUSERNAME",fdjtSpan("username",username));
   if ($("SBOOKMARKUSER")) $("SBOOKMARKUSER").value=sbook_user;
   if ($("SBOOKMARKFORM"))
     $("SBOOKMARKFORM").onsubmit=fdjtForm_onsubmit;
-  if ((sbook_user_img)&&($("SBOOKMARKIMAGE")))
-    $("SBOOKMARKIMAGE").src=sbook_user_img;
+  if (sbook_user_img) {
+    if ($("SBOOKMARKIMAGE")) $("SBOOKMARKIMAGE").src=sbook_user_img;
+    if ($("SBOOKUSERPIC")) $("SBOOKUSERPIC").src=sbook_user_img;}
+  if ($("SBOOKAPPTOP")) {
+    var apptop=$("SBOOKAPPTOP");
+    apptop.target='_blank';
+    apptop.title='click to edit your personal information';
+    apptop.href='http://www.sbooks.net/admin/id.fdcgi';}
   _sbook_user_setup=true;
 }
 

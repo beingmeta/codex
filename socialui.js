@@ -89,6 +89,7 @@ function sbookAddFeedIcon(info)
   var humid=info.humid;
   var icon=$("SBOOKFEEDICON"+humid);
   if (icon) return icon;
+  if (!(info.name)) return;
   var pic=info.pic; var kind=info.kind;
   if (pic) {}
   else if (kind===':PERSON')
@@ -99,7 +100,8 @@ function sbookAddFeedIcon(info)
     pic=sbicon("sbooksmetadoc40x40.png");
   else pic=sbook;
   icon=fdjtImage
-    (pic,".button.feed",info.name|info.kind,"click to see glosses");
+    (pic,".button.feed",info.name|info.kind,
+     ("click to see glosses for "+info.name));
   icon.oid=info.oid; icon.id="SBOOKFEEDICON"+humid;
   fdjtAppend("SBOOKFEEDICONS"," ",icon);
   return icon;

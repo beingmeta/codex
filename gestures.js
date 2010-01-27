@@ -206,6 +206,13 @@ function sbookTabletMode(flag)
     fdjtDropClass(document.body,"tablet");}
 }
 
+function sbookNoHUDFlash(flag)
+{
+  fdjtTrace("sbooknohudflash %o",flag);
+  if (flag) sbook_hud_flash=false;
+  else sbook_hud_flash=2000;
+}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
