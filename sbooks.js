@@ -101,6 +101,10 @@ var sbook_default_server="glosses.sbooks.net";
 // This (when needed) is the iframe bridge for sBooks requests
 var sbook_ibridge=false;
 
+// There be icons here!
+var sbook_graphics_root="http://static.beingmeta.com/graphics/";
+function sbicon(name,suffix) { return sbook_graphics_root+name+(suffix||"");}
+
 /* User information */
 
 // This is the sbook user, which we're careful not to override
@@ -154,6 +158,8 @@ var sbook_last_mode="minimal";
 var sbook_preview=false; 
 // This is the content root
 var sbook_root=false;
+// This is where the content starts
+var sbook_start=false;
 // This is the current head element
 var sbook_head=false;
 // This is the 'focus element' approximately under the mouse.
@@ -233,7 +239,7 @@ var sbook_trace_search=0;
 // Whether to debug clouds
 var sbook_trace_clouds=0;
 // Whether to trace focus
-var sbook_trace_focus=false;
+var sbook_trace_focus=true;
 // Whether to trace selection
 var sbook_trace_selection=false;
 // Whether we're debugging locations
@@ -555,20 +561,19 @@ function sbook_toc_builder(child,tocstate)
       tocstate.location=tocstate.location+width;}
   else if (child.nodeType!==1)
     child.sbook_head=curhead;
+  else if (sbookInUI(child)) return;
   else if (level=sbookHeadLevel(child)) 
     _sbook_process_head(child,tocstate,level,curhead,curinfo,curlevel);
   else {
-    var width=fdjtFlatWidth(child);
     var loc=tocstate.location;
-    tocstate.location=tocstate.location+width;
     fdjtComputeOffsets(child);
     child.sbookloc=loc;
     child.sbook_headid=curhead.id;
+    tocstate.location=loc+fdjtTagWidth(child);
     if (child.childNodes) {
       var children=child.childNodes;
       var i=0; while (i<children.length)
 		 sbook_toc_builder(children[i++],tocstate);}}
-
   var info=sbook_getinfo(child);
   // Tagging
   var headtag=((info.title) && ("\u00A7"+info.title));
@@ -823,7 +828,7 @@ function sbookSetFocus(target)
 	       (sbookGetHead(target))));
     if (sbook_trace_focus) sbook_trace("sbookSetFocus",target);
     /* Only set the head if the old head isn't visible anymore.  */
-    if ((head) && (sbook_head!=head)) sbookSetHead(head);
+    if ((head) && (sbook_head!==head)) sbookSetHead(head);
     var old_focus=sbook_focus;
     sbook_focus=target;
     fdjtAddClass(target,"sbookfocus");
@@ -1274,6 +1279,21 @@ function sbookGetSettings()
   sbook_refuri=getsbookrefuri();
   sbook_src=getsbooksrc();
   sbook_mycopyid=fdjtGetMeta("SBOOKMYCOPY",false);
+  if (!(sbook_root))
+    if (fdjtGetMeta("SBOOKROOT"))
+      sbook_root=$(fdjtGetMeta("SBOOKROOT"));
+    else sbook_root=document.body;
+  if (!(sbook_start))
+    if (fdjtGetMeta("SBOOKSTART"))
+      sbook_start=$(fdjtGetMeta("SBOOKSTART"));
+    else if ($("SBOOKSTART"))
+      sbook_start=$("SBOOKSTART");
+    else {
+      var titlepage=$("SBOOKTITLE")||$("TITLEPAGE");
+      while (titlepage)
+	if (fdjtNextElement(titlepage)) {
+	  sbook_start=fdjtNextElement(titlepage); break;}
+	else titlepage=titlepage.parentNode;}
 }
 
 function sbookLookupServer(string)

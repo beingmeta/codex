@@ -40,13 +40,6 @@ var sbookFeedHUD=false;
 // The highlighted glossmark
 var sbook_glossmark=false;
 
-var sbook_gloss_remark_icon=
-  "http://static.beingmeta.com/graphics/remarkballoon16x13.png";
-var sbook_gloss_more_icon=
-  "http://static.beingmeta.com/graphics/Asterisk16x16.png";
-var sbook_gloss_eye_icon=
-  "http://static.beingmeta.com/graphics/EyeIcon20x16.png";
-
 // The glosses element
 var sbookHUDglosses=false;
 // The user/tribe bar
@@ -72,14 +65,11 @@ function sbookCreateFeedHUD(classinfo,feeds)
   if (!(feeds)) feeds=sbook_conversants;
   if (!(classinfo)) classinfo=".feeds.hudblock.hud#SBOOKFEEDS";
   var app_button=
-    fdjtImage("http://static.beingmeta.com/graphics/sbookslogo40x40.png",
-	      ".button.app","?","app");
+    fdjtImage(sbicon("sbookslogo40x40.png"),".button.app","?","app");
   var login_button=
-    fdjtImage("http://static.beingmeta.com/graphics/sbookslogo40x40.png",
-	      ".button.login","?","login");
+    fdjtImage(sbicon("sbookslogo40x40.png"),".button.login","?","login");
   var everyone_button=
-    fdjtImage("http://static.beingmeta.com/graphics/sBooksWE_2_32x32.png",
-	      ".button.everyone","everyone");
+    fdjtImage(sbicon("sBooksWE_2_32x32.png"),".button.everyone","everyone");
   var feedicons=fdjtDiv("#SBOOKFEEDICONS.feedicons");
   var socialelts=[]; var glosselts=[];
   everyone_button.onclick=sbookEveryoneButton_onclick;
@@ -99,7 +89,17 @@ function sbookAddFeedIcon(info)
   var humid=info.humid;
   var icon=$("SBOOKFEEDICON"+humid);
   if (icon) return icon;
-  else icon=fdjtImage(info.pic,".button.feed",info.name,"click to see glosses");
+  var pic=info.pic; var kind=info.kind;
+  if (pic) {}
+  else if (kind===':PERSON')
+    pic=sbicon("sbooksperson40x40.png");
+  else if (kind===':CIRCLE')
+    pic=sbicon("sbookscircle40x40.png");
+  else if (kind===':METADOC')
+    pic=sbicon("sbooksmetadoc40x40.png");
+  else pic=sbook;
+  icon=fdjtImage
+    (pic,".button.feed",info.name|info.kind,"click to see glosses");
   icon.oid=info.oid; icon.id="SBOOKFEEDICON"+humid;
   fdjtAppend("SBOOKFEEDICONS"," ",icon);
   return icon;
@@ -244,8 +244,8 @@ function sbookGlossmark(target,open)
   var title=((target)&&(target.getAttribute('title')));
   var tags=((target)?(gather_tags(target)):[]);
   var sources=((id)?(sbookGetSourcesUnder(id)):[]);
-  var imgsrc=((target)?(sbook_graphics_root+"sBooksWE_2_32x32.png"):
-	      (sbook_graphics_root+"remarkballoon32x32.png"));
+  var imgsrc=((target)?(sbicon("sBooksWE_2_32x32.png")):
+	      (sbicon("remarkballoon32x32.png")));
   // By default the glossmark image is the user when unique
   if (sources.length===1) imgsrc=(fdjtOIDs[sources[0]].pic)||imgsrc;
   var glossmark=fdjtSpan

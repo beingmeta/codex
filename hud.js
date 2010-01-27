@@ -46,9 +46,6 @@ var sbook_last_app="help";
 // This is the regex for all sbook apps
 var sbook_apps=["help","login","social","settings"];
 
-// Where graphics can be found
-var sbook_graphics_root="http://static.beingmeta.com/graphics/";
-
 function createSBOOKHUD()
 {
   var hud=$("SBOOKHUD");
@@ -102,6 +99,8 @@ function createSBOOKHUD()
 
     if (sbook_head) sbookSetHead(sbook_head);
 
+    hud.setAttribute("flatwidth","0");
+
     return hud;}
 }
 
@@ -109,7 +108,7 @@ function sbookInitNavHUD()
 {
   fdjtReplace("SBOOKTOC",sbookCreateNavHUD());
   var toc_button=
-    fdjtImage(sbook_graphics_root+"CompassIcon40x40.png","hudbutton","toc",
+    fdjtImage(sbicon("CompassIcon40x40.png"),"hudbutton","toc",
 	      "navigate table of contents");
   toc_button.onclick=sbookTOCButton_onclick;
   toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
@@ -127,7 +126,7 @@ function sbookInitSearchHUD()
 {
   fdjtReplace("SBOOKSEARCH",sbookCreateSearchHUD());
   var index_button=
-    fdjtImage(sbook_graphics_root+"TagSearch40x40.png","hudbutton","index",
+    fdjtImage(sbicon("TagSearch40x40.png"),"hudbutton","index",
 	      "search the content using semantic tags");
   index_button.onclick=sbookIndexButton_onclick;
   index_button.onmouseover=fdjtClassAdder("SBOOKSEARCH","hover");
@@ -466,10 +465,8 @@ function sbookHUD_Init()
   if (!(target)) target=sbook_root;
   if ((target!==sbook_root)||(target!==document.body)) {
     target.scrollIntoView();
-    sbookTrackFocus(target)}
-  // fdjtTrace("at init target=%o loc=%o",target,target.sbookloc);
-  // This forces it to reload in some browsers, so don't do it
-  // window.location=window.location;
+    sbookTrackFocus(target);}
+  else sbookSetFocus(sbook_start||sbook_root);
 }
 
 /* Emacs local variables

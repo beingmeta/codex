@@ -33,19 +33,12 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-var sbook_eye_icon=
-  "http://static.beingmeta.com/graphics/EyeIcon25.png";
-var sbook_small_eye_icon=
-  "http://static.beingmeta.com/graphics/EyeIcon13x10.png";
-var sbook_details_icon=
-  "http://static.beingmeta.com/graphics/detailsicon16x16.png";
-var sbook_outlink_icon=
-  "http://static.beingmeta.com/graphics/outlink16x16.png";
-var sbook_small_remark_icon=
-  "http://static.beingmeta.com/graphics/remarkballoon16x13.png";
-var sbook_delete_icon=
-  "http://static.beingmeta.com/graphics/redx16x16.png";
-
+var sbook_eye_icon="EyeIcon25.png";
+var sbook_small_eye_icon="EyeIcon13x10.png";
+var sbook_details_icon="detailsicon16x16.png";
+var sbook_outlink_icon="outlink16x16.png";
+var sbook_small_remark_icon="remarkballoon16x13.png";
+var sbook_delete_icon="redx16x16.png";
 
 function _sbook_sort_summaries(x,y)
 {
@@ -64,10 +57,30 @@ function _sbook_sort_summaries(x,y)
   else return 0;
 }
 
+function sbookFeedPic(info)
+{
+  if (info.pic) return info.pic;
+  var kind=info.icon;
+  if (kind===':PERSON')
+    return sbicon("sbooksperson40x40.png");
+  else if (kind===':CIRCLE')
+    return sbicon("sbookscircle40x40.png");
+  else if (kind===':METADOC')
+    return sbicon("sbooksmetadoc40x40.png");
+  else return false;
+}
+
+function sbookFeedImage(info)
+{
+  var pic=sbookFeedPic(info);
+  if (pic) return fdjtImage(pic,"feedpic",info.name);
+  else return false;
+}
+
 function sbookSummaryHead(target,head,eltspec,extra)
 {
   var head=sbookGetHead(target);
-  var eye=fdjtImage(sbook_eye_icon,"eye","(\u00b7)",
+  var eye=fdjtImage(sbicon(sbook_eye_icon),"eye","(\u00b7)",
 		    _("previewing: move mouse to restore"));
   if (typeof extra === "undefined")
     if (target===head) extra="\u00A7";
@@ -252,12 +265,14 @@ function sbookMarkInfo(sumdiv,info)
   var userinfo=fdjtOIDs[user];
   var feedinfo=fdjtOIDs[feed];
   var img=((info.pic)&&(fdjtImage((info.pic),"glosspic",userinfo.name)))||
-    ((userinfo.pic)&&(fdjtImage((userinfo.pic),"userpic",userinfo.name)));
+    ((userinfo.pic)&&(fdjtImage((userinfo.pic),"userpic",userinfo.name)))||
+    (sbookFeedImage(feedinfo));
   var interval=((info.tstamp) ? (fdjtTick()-info.tstamp) : (-1));
   var delete_button=
     ((user===sbook_user)&&
      (fdjtAnchorC("http://glosses.sbooks.net/glosses/delete?GLOSS="+info.oid,
-		  ".deletebutton",fdjtImage(sbook_delete_icon,false,"x"))));
+		  ".deletebutton",
+		  fdjtImage(sbicon(sbook_delete_icon),false,"x"))));
   var agespan=
     ((interval>0)&&
      ((interval>(5*24*3600)) 
@@ -279,10 +294,10 @@ function sbookMarkInfo(sumdiv,info)
   var relay_button;
   if (user===sbook_user) 
     relay_button=
-      fdjtImage(sbook_small_remark_icon,"remarkbutton","mark",
+      fdjtImage(sbicon(sbook_small_remark_icon),"remarkbutton","mark",
 		_("click to edit your comment"));
   else relay_button=
-	 fdjtImage(sbook_small_remark_icon,"remarkbutton","mark",
+	 fdjtImage(sbicon(sbook_small_remark_icon),"remarkbutton","mark",
 		   _("click to relay or respond"));
   relay_button.onclick=sbookRelay_onclick;
   fdjtAppend
@@ -308,7 +323,7 @@ function sbookExcerptSpan(excerpt)
 
 function sbookPreviewIcon(target,icon,alt)
 {
-  var eye=fdjtImage(icon||sbook_small_eye_icon,
+  var eye=fdjtImage(sbicon(icon||sbook_small_eye_icon),
 		    "preview",
 		    alt||"(\u00b7)",
 		    _("previewing: move mouse to restore"));
@@ -321,7 +336,7 @@ function sbookPreviewIcon(target,icon,alt)
 
 function sbookDetailsButton(excerpt)
 {
-  var img=fdjtImage(sbook_details_icon,"detailsbutton","details");
+  var img=fdjtImage(sbicon(sbook_details_icon),"detailsbutton","details");
   img.onclick=function(evt) {
     var anchor=$P(".summary",$T(evt));
     if (anchor) fdjtToggleClass(anchor,"showdetail");
@@ -334,7 +349,7 @@ function sbookDetailsButton(excerpt)
 
 function sbookXRefsButton(excerpt)
 {
-  var img=fdjtImage(sbook_outlink_icon,"xrefsbutton","xrefs");
+  var img=fdjtImage(sbicon(sbook_outlink_icon),"xrefsbutton","xrefs");
   img.onclick=function(evt) {
     var anchor=$P(".summary",$T(evt));
     if (anchor) fdjtToggleClass(anchor,"showxrefs");

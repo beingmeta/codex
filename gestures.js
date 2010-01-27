@@ -107,8 +107,7 @@ function sbook_onmouseup(evt)
       (sbook_simple_select)||
       (sbook_2phase_select)||
       (fdjtIsClickactive(target))||
-      (sbookInUI(target))||
-      (!(focus=sbookGetFocus(target)))) {
+      (sbookInUI(target))) {
     sbook_mousedown_x=false;
     sbook_mousedown_y=false;
     sbook_mousedown_tick=false;
@@ -117,6 +116,11 @@ function sbook_onmouseup(evt)
   if ((sbook_mode)&&(sbook_mode!=="minimal")) {
     sbookHUDMode(false);
     fdjtCancelEvent(evt);
+    return;}
+  else if (!(focus=sbookGetFocus(target))) {
+    sbook_mousedown_x=false;
+    sbook_mousedown_y=false;
+    sbook_mousedown_tick=false;
     return;}
   else if ((sbook_gestures)&&(sbook_mousedown_tick))
     sbookHandleGestures(evt);
