@@ -903,8 +903,7 @@ function sbookSetFocus(target)
     sbook_focus=target;
     fdjtAddClass(target,"sbookfocus");
     if ((old_focus)&&(old_focus!==target)) {
-      fdjtDropClass(old_focus,"sbookfocus");
-      fdjtDropClass(old_focus,"sbookfocuslock");}
+      fdjtDropClass(old_focus,"sbookfocus");}
     if (target.sbookloc)
       if (!((old_focus) && (fdjtHasParent(old_focus,target)))) 
 	sbookSetLocation(target.sbookloc,true);

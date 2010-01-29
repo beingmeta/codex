@@ -246,12 +246,14 @@ function sbookGlossmark(target,open)
   var title=((target)&&(target.getAttribute('title')));
   var tags=((target)?(gather_tags(target)):[]);
   var sources=((id)?(sbookGetSourcesUnder(id)):[]);
-  var imgsrc=((target)?(sbicon("sBooksWE_2_32x32.png")):
+  var imgsrc=((target)?(sbicon("sbookspeople32x32.png")):
 	      (sbicon("remarkballoon32x32.png")));
   // By default the glossmark image is the user when unique
   if (sources.length===1) imgsrc=(fdjtOIDs[sources[0]].pic)||imgsrc;
   var glossmark=fdjtSpan
-    ("glossmark",fdjtImage(imgsrc,"podimg","comments"));
+    ("glossmark",
+     fdjtImage(imgsrc,"big","comments"),
+     fdjtImage(sbicon("sbicon16x16.png"),"tiny","+"));
   glossmark.onclick=sbookGlossmark_onclick;
   glossmark.onmouseover=sbookGlossmark_onmouseover;
   glossmark.onmouseout=sbookGlossmark_onmouseout;

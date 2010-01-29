@@ -43,9 +43,6 @@ body.sbookhead { text-decoration: none;}
 body.hudup .sbookfocus { cursor: pointer; color: blue;}
 
 /* This is the last explicit target of a jump or mark */
-.sbookfocuslock { text-decoration: overline;}
-.sbookfocuslock:hover { color: darkblue;}
-
 .sbooktarget { color: darkblue;}
 body.sbookfocus { color: inherit;}
 body.sbooktarget { color: inherit;}
@@ -1100,12 +1097,33 @@ span.glossmark {
   margin: 0px; padding: 0px; text-indent: 0px; 
   border: solid transparent 2px;
   opacity: 0.5;}
-.sbookfocus span.glossmark { border: solid blue 2px; opacity: 0.75;}
-span.glossmark img { 
-  width: 32px; vertical-align: middle; text-align: center;}
+span.glossmark img {
+    position: relative; right: 0px; max-width: 50px;
+   vertical-align: top; text-align: right;}
+span.glossmark img.tiny { display: none; width: auto;}
+.sbookfocus span.glossmark { opacity: 0.75;}
+.sbookfocus span.glossmark img.big { border: solid blue 2px; }
+.sbookfocus span.glossmark img.tiny { border: none; }
 
-.sbookfocuslock span.glossmark {
-  z-index: 50; border: darkblue; opacity: 0.8;}
+span.glossmark img.big { width: 32px;}
+/*
+span.glossmark img.big { width: 16px;}
+span.glossmark:hover img.big { width: 32px;}
+*/
+
+/*
+span.glossmark img.tiny { display: block;}
+span.glossmark img.big { 
+  width: 32px; vertical-align: top; text-align: center;
+  display: none;}
+span.glossmark img.tiny { 
+  vertical-align: top; text-align: center;}
+span.glossmark:hover img.big { display: block;}
+span.glossmark:hover img.tiny { display: none;}
+*/
+
+span.glossmark:hover img.big { display: block;}
+span.glossmark:hover img.tiny { display: none;}
 
 .sbooktarget { text-decoration: underline; }
 .sbooktarget span.glossmark { border: solid blue 2px; opacity: 0.9; border: gray; z-index: 300;}

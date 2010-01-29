@@ -100,7 +100,7 @@ function sbookSummaryHead(target,head,eltspec,extra)
     if (head.title) fdjtAppend(basespan,fdjtSpan("headtext",head.title));
     else if (head.id) fdjtAppend(basespan,fdjtSpan("headtext",head.id));
     else {
-      var text=fdjtTextify(summary,true);
+      var text=fdjtTextify(target,true);
       if (text.length>50) fdjtAppend(basespan,text.slice);
       else fdjtAppend(basespan,fdjtSpan("headtext",text));}}
   eye.onmouseover=sbookPreview_onmouseover;
