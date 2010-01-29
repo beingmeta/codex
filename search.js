@@ -407,6 +407,50 @@ function sbookQuery(query,init)
   return result;
 }
 
+/* Inline knowlets */
+
+function sbookHandleInlineKnowlets(scanstate)
+{
+  var kno=((scanstate.knowlet)||knowlet);
+  var taggings=scanstate.taggings;
+  var i=0; var n=taggings.length; while (i<n) {
+    var tags=taggings[i++].tags;
+    var j=0; var ntags=tags.length;
+    while (j<ntags)
+      if (tags[j].indexOf('|')) kno.handleSubjectEntry(tags[j++]);
+      else j++;}
+}
+
+function sbookIndexTags(scanstate)
+{
+  var taggings=scanstate.taggings;
+  var i=0; var n=taggings.length; while (i<n) {
+    var tagging=taggings[i++];
+    var elt=tagging.elt;
+    var tags=tagging.tags; var tagstack=tagging.ctags;
+    var knowdes=[]; var prime_knowdes=[];
+    var j=0; var ntags=tags.length;
+    while (j<ntags) {
+      var tag=tags[j++]; var knowde=false;
+      var prime=(tag[0]==="*");
+      if (tag.length===0) continue;
+      _total_tag_count++;
+      if ((knowlet) && (tag.indexOf('|')>=0))
+	knowde=knowlet.handleSubjectEntry
+	  (((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
+      else knowde=(((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
+      if (knowde) {
+	knowdes.push(knowde);
+	if ((prime) && (level>0)) prime_knowdes.push(knowde);
+	sbookAddTag(elt,knowde,prime,false,true,scanstate.knowlet);}}
+    j=0; ntags=tagstack.length; while (j<ntags) {
+      var ctags=tagstack[j++];
+      var k=0; var nctags=ctags.length;
+      while (k<ctags.length)  {
+	sbookAddTag(elt,ctags[k++],false,true,true,scanstate.knowlet);}}
+    _total_tagged_count++;}
+}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

@@ -50,7 +50,7 @@ var sbook_user_feeds=
 
 /* Derived metadata */
 
-// This is a list of all the terminal content nodes
+// This is a list of content nodes
 var sbook_nodes=[];
 // This is a list of the identified heads
 var sbook_heads=[];
@@ -241,6 +241,8 @@ var sbook_smart_paging=true;
 var sbook_debug=false;
 // Whether to debug the HUD
 var sbook_trace_hud=false;
+// Whether to trace mode changes
+var sbook_trace_mode=false;
 // Whether to debug the NAV/TOC HUD
 var sbook_trace_nav_hud=false;
 // Whether to debug search
@@ -400,7 +402,7 @@ var _total_tagged_count=0; var _total_tag_count=0;
 function sbookGatherMetadata()
 {
   var start=new Date();
-  if (_sbook_toc_built) return;
+  if (_sbook_toc_built) return false;
   if (sbook_trace_startup>0)
     fdjtLog("[%fs] Starting to gather metadata from DOM",fdjtET());
   var root=((sbook_root)||
@@ -410,7 +412,8 @@ function sbookGatherMetadata()
   var children=root.childNodes, level=false;
   var rootinfo=sbook_needinfo(root);
   var scanstate=
-    {curlevel: 0,idserial:0,location: 0,tagstack: [],page: false,
+    {curlevel: 0,idserial:0,location: 0,
+     tagstack: [],taggings: [],
      idstate: {prefix: false,count: 0},
      idstack: [{prefix: false,count: 0}]};
   scanstate.idstate.prefix=sbook_baseid;
@@ -449,14 +452,16 @@ function sbookGatherMetadata()
 	else return 1;
       else return 1;});
   var done=new Date();
-  if (sbook_trace_startup>0)
-    fdjtLog('Finished gathering metadata in %f secs over %d/%d heads/nodes',
-	    (done.getTime()-start.getTime())/1000,
-	    sbook_heads.length,sbook_nodes.length);
+  fdjtLog('[%fs] Finished gathering metadata in %f secs over %d/%d heads/nodes',
+	  fdjtET(),(done.getTime()-start.getTime())/1000,
+	  sbook_heads.length,sbook_nodes.length);
+  /* 
   fdjtLog("[%fs] Found %d tags over %d elements: %s now has %d dterms",
 	  fdjtET(),_total_tag_count,_total_tagged_count,
 	  knowlet.name,knowlet.alldterms.length);
-  _sbook_toc_build=true;
+  */
+  _sbook_toc_built=true;
+  return scanstate;
 }
 
 function _sbook_transplant_content(content)
@@ -537,7 +542,6 @@ function _sbook_process_head(head,scanstate,level,curhead,curinfo,curlevel)
   var headid=_sbook_setid(head,scanstate,level,curlevel);
   /* Update global tables, arrays */
   fdjtComputeOffsets(head);
-  sbook_nodes.push(head);
   sbook_heads.push(head);
   head.sbookloc=scanstate.location;
   head.sbooklevel=level;
@@ -575,7 +579,7 @@ function _sbook_process_head(head,scanstate,level,curhead,curinfo,curlevel)
 	headinfo.prev=scan;
 	scaninfo.next=headinfo;}
       scaninfo.ends_at=scanstate.location;
-      scanstate.tagstack.pop();
+      scanstate.tagstack=scanstate.tagstack.slice(0,-1);
       var nextinfo=scaninfo.sbook_head;
       if (nextinfo) {
 	scaninfo=nextinfo; scanlevel=nextinfo.level;}
@@ -626,15 +630,16 @@ function sbook_scanner(child,scanstate,skiptoc)
   else if (sbookInUI(child)) return;
   else if (fdjtElementMatches(child,sbook_ignored)) return;
   else if (level=sbookHeadLevel(child))
-    if (skiptoc) {}
+    if (skiptoc) sbook_nodes.push(child);
     else _sbook_process_head
 	   (child,scanstate,level,curhead,curinfo,curlevel);
-  else if (skiptoc) {}
+  else if (skiptoc) sbook_nodes.push(child);
   else if ((fdjtIsBlockElt(child))||
 	   (fdjtElementMatches(child,sbook_idify))) {
     var loc=scanstate.location;
     var eltid=_sbook_setid(child,scanstate,level,curlevel);
     skiptoc=skiptoc||(fdjtElementMatches(child,sbook_terminals));
+    sbook_nodes.push(child);
     fdjtComputeOffsets(child);
     child.sbookloc=loc;
     child.sbook_headid=curhead.id;
@@ -647,39 +652,26 @@ function sbook_scanner(child,scanstate,skiptoc)
   var info=sbook_getinfo(child);
   // Tagging
   var headtag=((info.title) && ("\u00A7"+info.title));
-  if (headtag)
-    sbookAddTag(child,headtag,true,false,true,scanstate.knowlet);
+  if (headtag) {
+    sbookAddTag(child,headtag,true,false,true,scanstate.knowlet);}
   if (sbook_build_index) 
     if ((child.id) && (child.getAttribute) && (child.getAttribute("TAGS"))) {
       var tagstring=child.getAttribute("TAGS");
       var tags=fdjtSemiSplit(fdjtUnEntify(tagstring));
-      var knowdes=[]; var prime_knowdes=[];
-      if (headtag) {
-	knowdes.push(headtag); prime_knowdes.push(headtag);}
-      var i=0; while (i<tags.length) {
-	var tag=tags[i++]; var knowde=false;
-	var prime=(tag[0]==="*");
-	if (tag.length===0) continue;
-	_total_tag_count++;
-	if ((knowlet) && (tag.indexOf('|')>=0))
-	  knowde=knowlet.handleSubjectEntry
-	    (((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
-	else knowde=(((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
-	if (knowde) {
-	  knowdes.push(knowde);
-	  if ((prime) && (level>0)) prime_knowdes.push(knowde);
-	  sbookAddTag(child,knowde,prime,false,true,scanstate.knowlet);}}
-      var tagstack=scanstate.tagstack;
-      i=0; while (i<tagstack.length) {
-	var ctags=tagstack[i++];
-	var j=0; while (j<ctags.length)  {
-	  sbookAddTag(child,ctags[j++],false,true,true,scanstate.knowlet);}}
+      var tagging={};
+      tagging.elt=child; tagging.tags=tags;
+      tagging.ctags=scanstate.tagstack;
+      scanstate.taggings.push(tagging);
       if (level>0) {
-	scanstate.tagstack.push(prime_knowdes);}
-      _total_tagged_count++;}
-    else if ((level) && (level>0)) {
-      if (headtag) scanstate.tagstack.push(new Array(headtag));
-      else scanstate.tagstack.push([]);}
+	var ctags=[]; if (headtag) ctags.push(headtag);
+	var i=0; var len=tags.length; while (i<len) {
+	  if (tags[i][0]==='*') {
+	    var tag=tags[i++];
+	    var barpos=tag.indexOf('|');
+	    if (barpos<0) ctags.push(tag.slice(1));
+	    else ctags.push(tag.slice(1,barpos));}
+	  else i++;}
+	scanstate.tagstack.push(ctags);}}
     else {}
   // Setting this attribute can help with debugging
   if ((sbook_trace_locations) && (child.sbookloc) && (child.setAttribute))
@@ -1468,7 +1460,7 @@ function sbookAddQRIcons()
 
 /* The Help Splash */
 
-function _sbookHelpSplash()
+function _sbookHUDSplash()
 {
   if ((document.location.search)&&
       (document.location.search.length>0))
@@ -1477,7 +1469,8 @@ function _sbookHelpSplash()
     var cookie=fdjtGetCookie("sbookhidehelp");
     if (cookie==='no') sbookHUDMode("help");
     else if (cookie) {}
-    else if (sbook_help_on_startup) sbookHUDMode("help");}
+    else if (sbook_help_on_startup) sbookHUDMode("help");
+    else sbookHUDMode(false);}
 }
 
 /* Applying settings */
@@ -1511,15 +1504,23 @@ function sbookSetup()
   else sbookHUDMode("help");
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));
+  var scanstate=sbookGatherMetadata();
+  sbookInitNavHUD();
+  var scan_done=new Date();
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Processing knowledge sources"));
   if (knoHTMLSetup) knoHTMLSetup();
+  if (scanstate) sbookHandleInlineKnowlets(scanstate);
   var knowlets_done=new Date();
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Indexing tags"));
+  if (scanstate) sbookIndexTags(scanstate);
+  var tags_done=new Date();
   if ($("SBOOKHIDEHELP"))
     $("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
-  sbookGatherMetadata();
-  sbookInitNavHUD();
-  var metadata_done=new Date();
-  if (sbook_gloss_data) sbookGlossesSetup();
+  if (sbook_gloss_data) {sbookGlossesSetup();}
   else {
+    fdjtReplace("SBOOKSTARTUP",
+		fdjtDiv("message","Loading glosses..."));
     var refuri=fdjtStripSuffix(sbook_refuri);
     var uri="https://"+sbook_server+"/glosses/glosses.fdcgi?URI="+
       ((sbook_baseid) ?
@@ -1529,8 +1530,6 @@ function sbookSetup()
     var script_elt=fdjtNewElement("SCRIPT");
     script_elt.language="javascript"; script_elt.src=uri;
     document.body.appendChild(script_elt);}
-  sbookInitSocialHUD();
-  sbookInitSearchHUD();
   var hud_done=new Date();
   sbookHUD_Init();
   var hud_init_done=new Date();
@@ -1547,27 +1546,8 @@ function sbookSetup()
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
-  sbookHUDMode(false);
-  _sbookHelpSplash();
-  if ((hud_init_done.getTime()-_sbook_setup_start.getTime())>5000) {
-    fdjtLog("[%fs] %s",
-	    fdjtET(),
-	    fdjtRunTimes("sbookSetup",_sbook_setup_start,
-			 "fdjt",fdjt_done,"knowlets",knowlets_done,
-			 "metadata",metadata_done,
-			 "hud",hud_done,"hudinit",hud_init_done));
-    _sbook_setup=true;;}
-  else {
-    sbookFullCloud();
-    var cloud_done=new Date();
-    fdjtLog("[%fs] %s",
-	    fdjtET(),
-	    fdjtRunTimes("sbookSetup",_sbook_setup_start,
-			 "fdjt",fdjt_done,"knowlets",knowlets_done,
-			 "metadata",metadata_done,
-			 "hud",hud_done,"hudinit",hud_init_done,
-			 "cloud",cloud_done));
-    _sbook_setup=true;}
+  // sbookFullCloud();
+  _sbook_setup=true;
 }
 
 var _sbook_user_setup=false;
@@ -1578,6 +1558,9 @@ function sbookGlossesSetup()
 {
   sbookUserSetup();
   if (_sbook_gloss_setup) return;
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Importing glosses..."));
+  sbookInitSocialHUD();
+  sbookInitSearchHUD();
   sbookImportGlosses();
   sbookSetupGlossServer();
   if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
@@ -1585,8 +1568,13 @@ function sbookGlossesSetup()
     if (sbook_user)
       $("SBOOKFRIENDLYOPTION").value=sbook_user;
     else $("SBOOKFRIENDLYOPTION").value=null;
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Adding print icons..."));
   if (sbook_heading_qricons) sbookAddQRIcons();
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Importing personal feeds..."));
   if (sbook_user) sbookImportFeeds();
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message",""));
+  // fdjtTrace("[%fs] Done with glosses setup",fdjtET());
+  _sbookHUDSplash();
   _sbook_gloss_setup=true;
 }
 

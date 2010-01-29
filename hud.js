@@ -143,9 +143,9 @@ var sbookHUDMode_pat=
 
 function sbookHUDMode(mode)
 {
-  if (sbook_trace_hud)
-    fdjtLog("sbookHUDMode %o, cur=%o dbc=%o",
-	    mode,sbook_mode,document.body.className);
+  if (sbook_trace_mode)
+    fdjtLog("[%fs] sbookHUDMode %o, cur=%o dbc=%o",
+	    fdjtET(),mode,sbook_mode,document.body.className);
   if (mode)
     if (mode===sbook_mode) {}
     else {

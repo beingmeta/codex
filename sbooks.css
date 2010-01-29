@@ -386,6 +386,9 @@ div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC:hover {
   height: auto;} 
 
+div#SBOOKHUD div#SBOOKAPP div.message {
+  text-align: center; color: orange; font-weight: bold;}
+
 div#SBOOKHUD.help div#SBOOKAPP {
   display: block; opacity: 0.9; }
 div#SBOOKHUD.login div#SBOOKAPP {
