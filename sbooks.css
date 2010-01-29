@@ -1192,8 +1192,8 @@ table.login td.userlogin img { vertical-align: top; height: 16px;}
 
 body { }
 body.tablet { overflow: hidden;}
-body div.topleading { height: 50px; width: 100%;}
-body div.bottomleading { height: 50px; width: 100%;}
+body div.leading.top { height: 50px; width: 100%;}
+body div.leading.bottom { height: 50px; width: 100%;}
 
 .sbookpage { page-break-before: always;}
 .sbookkeep { page-break-inside: avoid;}
