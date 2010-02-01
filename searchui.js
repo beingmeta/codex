@@ -275,7 +275,7 @@ function sbookQueryCloud(query)
       fdjtSpan("refinercounts",
 	       query._refiners._results.length,
 	       ((query._refiners._results.length==1) ?
-		" term" : " terms"));
+		" refiner" : " refiners"));
     var counts=fdjtSpan("counts",result_counts,refiner_counts);
     var n_refiners=query._refiners._results.length;
     var hide_some=(n_refiners>sbook_show_refiners);
@@ -407,31 +407,9 @@ function sbookFullCloud()
 {
   if (sbook_full_cloud) return sbook_full_cloud;
   else {
-    var tagscores={}; var tagfreqs={}; var alltags=[];
-    var book_tags=sbook_index._all;
-    if (sbook_trace_clouds)
-      fdjtLog("[%f] Making full cloud over %d tags",fdjtElapsedTime(),book_tags.length);
-    // The scores here are used to determine sizes in the cloud
-    // A regular index reference counts as 1 and a prime reference counts
-    //  as one more.
-    var i=0; while (i<book_tags.length) {
-      var tag=book_tags[i++];
-      var score=Math.ceil(Math.log(sbook_index[tag].length))+
-	((sbook_direct_index[tag]) ? (sbook_direct_index[tag].length) : (0))+
-	((sbook_prime_index[tag]) ? (sbook_prime_index[tag].length) : (0));
-      if (tagscores[tag]) tagscores[tag]=tagscores[tag]+score;
-      else tagscores[tag]=score;
-      tagfreqs[tag]=((sbook_index[tag])?(sbook_index[tag].length):(0))
-      alltags.push(tag);}
-    alltags.sort(function (x,y) {
-	var xlen=tagfreqs[x]; var ylen=tagfreqs[y];
-	if (xlen==ylen) return 0;
-	else if (xlen>ylen) return -1;
-	else return 1;});
-    var max_score=0;
-    var i=0; while (i<alltags.length) {
-      var score=tagscores[alltags[i++]];
-      if (score>max_score) max_score=score;}
+    var tagscores=sbookTagScores();
+    var alltags=tagscores._all;
+    var tagfreqs=tagscores._freq;
     var completions=sbookMakeCloud(alltags,tagscores,tagfreqs);
     sbook_full_cloud=completions;
     var cues=fdjtGetChildrenByClassName(completions,"cue");
@@ -448,8 +426,7 @@ function sbookCreateSearchHUD(classinfo)
 {
   var input_help=fdjtDiv
     (".helptext#SBOOKQUERYHELP",
-     "Enter tags (separated by semicolons) with completion; ",
-     "click the result count to see results ");
+     "Enter tags (separated by semicolons) with completion");
   var input=fdjtInput("TEXT","QTEXT","",null);
   var clear_input=
     fdjtImage(sbook_graphics_root+"xbox16x16.png","clearinput","x");

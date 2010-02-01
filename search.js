@@ -451,6 +451,43 @@ function sbookIndexTags(scanstate)
     _total_tagged_count++;}
 }
 
+/* Processing tags when all done */
+
+var sbook_tagscores=false;
+
+function sbookTagScores()
+{
+  if (sbook_tagscores) return sbook_tagscores;
+  var tagscores={}; var tagfreqs={}; var alltags=[];
+  var book_tags=sbook_index._all;
+  if (sbook_trace_clouds)
+    fdjtLog("[%f] Making full cloud over %d tags",fdjtElapsedTime(),book_tags.length);
+  // The scores here are used to determine sizes in the cloud
+  // A regular index reference counts as 1 and a prime reference counts
+  //  as one more.
+  var i=0; while (i<book_tags.length) {
+    var tag=book_tags[i++];
+    var score=Math.ceil(Math.log(sbook_index[tag].length))+
+      ((sbook_direct_index[tag]) ? (sbook_direct_index[tag].length) : (0))+
+      ((sbook_prime_index[tag]) ? (sbook_prime_index[tag].length) : (0));
+    if (tagscores[tag]) tagscores[tag]=tagscores[tag]+score;
+    else tagscores[tag]=score;
+    tagfreqs[tag]=((sbook_index[tag])?(sbook_index[tag].length):(0))
+      alltags.push(tag);}
+  alltags.sort(function (x,y) {
+      var xlen=tagfreqs[x]; var ylen=tagfreqs[y];
+      if (xlen==ylen) return 0;
+      else if (xlen>ylen) return -1;
+      else return 1;});
+  var max_score=0;
+  var i=0; while (i<alltags.length) {
+    var score=tagscores[alltags[i++]];
+    if (score>max_score) max_score=score;}
+  tagscores._all=alltags; tagscores._freq=tagfreqs;
+  sbook_tagscores=tagscores;
+  return tagscores;
+}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

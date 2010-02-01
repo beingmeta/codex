@@ -92,7 +92,8 @@ function sbookSummaryHead(target,head,eltspec,extra)
     var heads=((info) ? (info.sbook_heads) : []);
     var curspan=basespan;
     j=heads.length-1; while (j>=0) {
-      var hinfo=heads[j--];
+      var hinfo=heads[j--]; var elt=$(hinfo.id);
+      if ((elt===sbook_root)||(elt===document.body)) continue;
       var newspan=fdjtSpan("head",fdjtSpan("headtext",hinfo.title));
       fdjtAppend(curspan," \\ ",newspan);
       curspan=newspan;}}

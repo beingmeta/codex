@@ -129,8 +129,8 @@ function sbookInitSearchHUD()
     fdjtImage(sbicon("TagSearch40x40.png"),"hudbutton","index",
 	      "search the content using semantic tags");
   index_button.onclick=sbookIndexButton_onclick;
-  index_button.onmouseover=fdjtClassAdder("SBOOKSEARCH","hover");
-  index_button.onmouseout=fdjtClassDropper("SBOOKSEARCH","hover");
+  index_button.onmouseover=fdjtClassAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
+  index_button.onmouseout=fdjtClassDropper("#SBOOKSEARCH#SBOOKTAGS","hover");
   fdjtPrepend(sbookHUD,index_button);
 }
 
@@ -462,7 +462,11 @@ function sbookHUD_Init()
     var yoff=scrolly+sbook_last_y;
     var scroll_target=sbookGetXYFocus(xoff,yoff);
     if (scroll_target) target=scroll_target;}
-  if (!(target)) target=sbook_root;
+  if (!(target)) {
+    var focusid=fdjtGetCookie("sbookfocus");
+    if ((focusid)&&($(focusid)))
+      target=$(focusid);
+    else target=sbook_root;}
   if ((target!==sbook_root)||(target!==document.body)) {
     target.scrollIntoView();
     sbookTrackFocus(target);}

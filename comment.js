@@ -74,7 +74,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     else {
       $("SBOOKMARKOID").value=null;
       $("SBOOKMARKRELAY").value=origin.oid;}
-  // $("SBOOKMARKFORM").setAttribute('mode','tag');
+  $("SBOOKMARKFORM").setAttribute('mode','tag');
   $("SBOOKMARKREFURI").value=fdjtStripSuffix(sbook_getrefuri(target));
   $("SBOOKMARKFRAGID").value=target.id;
   $("SBOOKMARKSOURCE").value=sbook_getsrc(target);
@@ -198,12 +198,12 @@ function sbookCreateMarkHUD(classinfo)
   privyspan.onclick=fdjtCheckSpan_onclick;
   var metastuff=
     fdjtDiv("metastuff",
-	    fdjtDiv("controls",
+	    fdjtDiv("controls",sbookMarkPickFeed(),privyspan),
+	    fdjtDiv("buttons",
 		    fdjtInput("SUBMIT","ACTION","Save","#SBOOKMARKSAVEACTION",
 			      "Save (mark) this gloss to the server"),
-		    fdjtInput("SUBMIT","ACTION","Push","#SBOOKMARKPUSHACTION",
-			      "Save this gloss and publish it to any enabled feeds/walls/etc"),
-		    privy,sbookMarkPickFeed()));
+		    " ",fdjtInput("SUBMIT","ACTION","Push","#SBOOKMARKPUSHACTION",
+				  "Save this gloss and publish it to any enabled feeds/walls/etc")));
   var grid=
     fdjtDiv("markform",
 	    fdjtDiv("lhs",fdjtImage(image_uri,"#SBOOKMARKIMAGE.userpic"),
@@ -212,11 +212,10 @@ function sbookCreateMarkHUD(classinfo)
 		    fdjtImage(sbicon("outlink48x48.png"),"head","xrefs"),
 		    fdjtImage(sbicon("TagIcon32x32.png"),"head","tags")),
 	    fdjtDiv("msg",msg_input),
-	    metastuff,
-	    sbookMarkCloud(),detail_elt,xrefs_elt);
+	    metastuff,sbookMarkTagTab(),detail_elt,xrefs_elt);
   
-  // Specifying the .tags class causes the tags tab to be open by default 
-  var form=fdjtElt("FORM#SBOOKMARKFORM.mark",
+  // Specifying the .tag class causes the tags tab to be open by default 
+  var form=fdjtElt("FORM#SBOOKMARKFORM.mark.tag",
 		   fdjtDiv("hidden",id_elt,uri_elt,source_elt,title_elt,
 			   excerpt_elt,relay_elt,oid_elt,sync_input,user_elt),
 		   fdjtDiv("#SBOOKSHOWEXCERPT.excerpt"),relay_block,
@@ -314,7 +313,7 @@ function sbookMarkControls()
   tags_button.onclick=sbookMarkMode_onclick_handler("tag");
   detail_button.onclick=sbookMarkMode_onclick_handler("detail");
   xrefs_button.onclick=sbookMarkMode_onclick_handler("xrefs");
-  return new Array(xrefs_button,detail_button,tags_button);
+  return new Array(tags_button,detail_button,xrefs_button);
 }
 
 function sbookMarkPush()
@@ -342,26 +341,30 @@ var _sbook_tag_completeopts=
   FDJT_COMPLETE_OPTIONS|FDJT_COMPLETE_ANYWORD|
   FDJT_COMPLETE_CLOUD;
 
-function sbookMarkCloud()
+function sbookMarkTagTab()
 {
   var seen={};
   var completions=fdjtDiv(".completions.checkspans#SBOOKMARKCLOUD");
+  return fdjtDiv(".marktab.tags",sbookMarkTagInput(),completions);
+}
+
+function sbookMarkCloud()
+{
+  var seen={};
+  var completions=fdjtDiv(".completions.checkspans");
   completions._seen=seen;
-  completions.onclick=fdjtCheckSpan_onclick;
-  var i=0; while (i<sbook_conversants.length) {
-    var c=sbook_conversants[i++];
-    fdjtAddClass(sbookAddConversant(completions,c),"cue");}
-  var i=0; while (i<sbook_user_dist.length) {
-    var c=sbook_user_dist[i++];
-    fdjtAddClass(sbookAddConversant(completions,c),"cue");}
-  var i=0; while (i<sbook_friends.length)
-	     sbookAddConversant(completions,sbook_friends[i++]);
-  var i=0; while (i<sbook_tribes.length)
-	     sbookAddConversant(completions,sbook_tribes[i++]);
-  var alltags=sbook_index._all;
+  completions.onclick=sbookMarkCloud_onclick;
+  var tagscores=sbookTagScores();
+  var alltags=tagscores._all;
   var i=0; while (i<alltags.length) {
     var tag=alltags[i++];
-    // We skip long sectional tags
+    // We elide sectional tags
+    if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
+    var tagnode=knoCheckCompletion("TAGS",Knowde(tag),false);
+    fdjtAppend(completions, tagnode," ");}
+  var i=0; while (i<alltags.length) {
+    var tag=alltags[i++];
+    // We elide sectional tags
     if ((typeof tag === "string") && (tag[0]==="\u00A7")) {
       var showname=tag; var title;
       if (showname.length>17) {
@@ -373,16 +376,35 @@ function sbookMarkCloud()
       if (title) sectnode.title=title;
       sectnode.key=tag; sectnode.value=tag;
       fdjtAppend(completions,sectnode," ");
-      continue;}
-    var tagnode=knoCheckCompletion("TAGS",Knowde(tag),false);
-    fdjtAppend(completions, tagnode," ");}
+      continue;}}
+  var i=0; while (i<sbook_conversants.length) {
+    var c=sbook_conversants[i++];
+    fdjtAddClass(sbookAddConversant(completions,c),"cue");}
+  var i=0; while (i<sbook_user_dist.length) {
+    var c=sbook_user_dist[i++];
+    fdjtAddClass(sbookAddConversant(completions,c),"cue");}
+  var i=0; while (i<sbook_friends.length)
+	     sbookAddConversant(completions,sbook_friends[i++]);
+  var i=0; while (i<sbook_tribes.length)
+	     sbookAddConversant(completions,sbook_tribes[i++]);
+  if (sbook_friends) {
+    var i=0; while (i<sbook_friends.length) 
+	       sbookAddConversant(completions,sbook_friends[i++]);}
   fdjtInitCompletions(completions,false,_sbook_tag_completeopts);
   var maxmsg=fdjtDiv("maxcompletemsg",
 		     "There are a lot ",
 		     "(",fdjtSpan("completioncount","really"),")",
 		     " of completions.  ");
   fdjtPrepend(completions,maxmsg);
-  return fdjtDiv(".marktab.tags",sbookMarkTagInput(),completions);
+  return completions;
+}
+
+function sbookMarkCloud_onclick(evt)
+{
+  var target=$P(".checkspan",$T(evt));
+  fdjtCheckSpan_onclick(evt);
+  if (target.getAttribute("ischecked"))
+    $("SBOOKMARKTAGINPUT").value='';
 }
 
 function sbookAddConversant(completions,c,seen,checked,init)

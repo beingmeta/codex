@@ -892,6 +892,7 @@ function sbookSetFocus(target)
     /* Only set the head if the old head isn't visible anymore.  */
     if ((head) && (sbook_head!==head)) sbookSetHead(head);
     var old_focus=sbook_focus;
+    // fdjtSetCookie("sbookfocus",target.id);
     sbook_focus=target;
     fdjtAddClass(target,"sbookfocus");
     if ((old_focus)&&(old_focus!==target)) {
@@ -1562,6 +1563,12 @@ function sbookGlossesSetup()
   sbookInitSocialHUD();
   sbookInitSearchHUD();
   sbookImportGlosses();
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Analyzing tag frequencies..."));
+  sbookTagScores();
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Setting up search cloud..."));
+  sbookFullCloud();
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Setting up glossing cloud..."));
+  fdjtReplace("SBOOKMARKCLOUD",sbookMarkCloud());
   sbookSetupGlossServer();
   if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
   if ($("SBOOKFRIENDLYOPTION"))
@@ -1608,18 +1615,6 @@ function sbookSocialSetup()
   if (_sbook_social_setup) return;
   if (typeof sbook_tribes !== "undefined")
     sbookImportSocialInfo(sbook_social_info);
-  var completions=$("SBOOKMARKCLOUD");
-  if (sbook_friends) {
-    var i=0; while (i<sbook_friends.length) 
-	       sbookAddConversant(completions,sbook_friends[i++]);}
-  if (sbook_tribes) {
-    var i=0; while (i<sbook_tribes.length) {
-      sbookAddConversant(completions,sbook_tribes[i++]);}}
-  if (sbook_user_dist) {
-    var i=0; while (i<sbook_user_dist.length) {
-      fdjtAddClass
-	(sbookAddConversant(completions,sbook_user_dist[i++]),
-	 "cue");}}
   if (sbook_user_canpost) {
     fdjtDropClass(document.body,"sbookcantpost");}
   _sbook_social_setup=true;
