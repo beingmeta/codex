@@ -92,9 +92,6 @@ div.stanza p {
   margin-top: 2px; margin-bottom: 2px;
   text-indent: -10%; }
 
-body.hudup div.stanza.sbookfocus {
-  border-color: blue;}
-
 /* Prose */
 
 p.prose {

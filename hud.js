@@ -444,35 +444,6 @@ function sbookLoginButton_onclick(evt)
   evt.cancelBubble=true;
 }
 
-/* Other stuff */
-
-/* This initializes the HUD state to the initial location with the
-   document, using the hash value if there is one. */ 
-function sbookHUD_Init()
-{
-  var hash=window.location.hash, target=sbook_root;
-  if ((typeof hash === "string") && (hash.length>0)) {
-    if ((hash[0]==='#') && (hash.length>1))
-      target=sbook_hashmap[hash.slice(1)];
-    else target=sbook_hashmap[hash];}
-  else if (window.scrollY) {
-    var scrollx=window.scrollX||document.body.scrollLeft;
-    var scrolly=window.scrollY||document.body.scrollTop;
-    var xoff=scrollx+sbook_last_x;
-    var yoff=scrolly+sbook_last_y;
-    var scroll_target=sbookGetXYFocus(xoff,yoff);
-    if (scroll_target) target=scroll_target;}
-  if (!(target)) {
-    var focusid=fdjtGetCookie("sbookfocus");
-    if ((focusid)&&($(focusid)))
-      target=$(focusid);
-    else target=sbook_root;}
-  if ((target!==sbook_root)||(target!==document.body)) {
-    target.scrollIntoView();
-    sbookTrackFocus(target);}
-  else sbookSetFocus(sbook_start||sbook_root);
-}
-
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

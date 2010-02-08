@@ -203,7 +203,7 @@ img.hudbutton[alt='>>'] {
   -moz-border-radius-topright: 6px; 
   border-top-right-radius: 6px;}
 img.hudbutton[alt='>>'] { display: none;}
-body.tablet img.hudbutton[alt='>>'] { display: block;}
+body.tablet img.hudbutton[alt='>>'] { display: block; }
 
 img.hudbutton[alt='<<'] { 
   bottom: 0px; left: 0px;
@@ -212,7 +212,7 @@ img.hudbutton[alt='<<'] {
   -moz-border-radius-topleft: 6px; 
   border-top-left-radius: 6px;}
 img.hudbutton[alt='<<'] { display: none;}
-body.tablet img.hudbutton[alt='<<'] { display: block;}
+body.tablet img.hudbutton[alt='<<'] { display: block; }
 
 /* The Feeds HUD */
 
@@ -1116,16 +1116,18 @@ span.glossmark {
   position: absolute; right: 0px; text-align: right;
   margin: 0px; padding: 0px; text-indent: 0px; 
   border: solid transparent 2px;
+  width: 32px; height: 32px;
   opacity: 0.5;}
 span.glossmark img {
-    position: relative; right: 0px; max-width: 50px;
+   position: relative; right: 0px;
+   max-width: 100%; max-height: 100%;
    vertical-align: top; text-align: right;}
 span.glossmark img.tiny { display: none; width: auto;}
 .sbookfocus span.glossmark { opacity: 0.75;}
 .sbookfocus span.glossmark img.big { border: solid blue 2px; }
 .sbookfocus span.glossmark img.tiny { border: none; }
 
-span.glossmark img.big { width: 32px;}
+span.glossmark img.big { }
 /*
 span.glossmark img.big { width: 16px;}
 span.glossmark:hover img.big { width: 32px;}
@@ -1146,9 +1148,11 @@ span.glossmark:hover img.big { display: block;}
 span.glossmark:hover img.tiny { display: none;}
 
 .sbooktarget { text-decoration: underline; }
-.sbooktarget span.glossmark { border: solid blue 2px; opacity: 0.9; border: gray; z-index: 300;}
+.sbooktarget span.glossmark {
+    border: solid blue 2px; opacity: 0.9; border: gray; z-index: 300;
+    height: 50px; width: 50px;}
 .sbooktarget span.glossmark:hover { opacity: 0.9;}
-.sbooktarget span.glossmark img { width: 50px; }
+.sbooktarget span.glossmark img { }
 
 span.glossmark:hover { opacity: 0.9;}
 body.mark span.glossmark { opacity: 0.9;}
@@ -1230,6 +1234,7 @@ table.login td.userlogin img { vertical-align: top; height: 16px;}
 
 body { }
 body.tablet { overflow: hidden;}
+body.tablet img.hudbutton { width: 50px; height: 50px;}
 body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
 

@@ -198,11 +198,13 @@ function sbookTabletMode(flag)
     sbook_2phase_select=true;
     sbook_istablet=true;
     sbook_gestures=false;
+    fdjtSetCookie("sbooktablet","yes",false,"/");
     fdjtAddClass(document.body,"tablet");}
   else {
     sbook_2phase_select=false;
     sbook_istablet=false;
     sbook_gestures=false;
+    fdjtClearCookie("sbooktablet","/");
     fdjtDropClass(document.body,"tablet");}
 }
 
