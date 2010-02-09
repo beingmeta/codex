@@ -187,10 +187,6 @@ var sbook_search_focus=false;
 var sbook_noisy_tooltips=false;
 // Whether the UI is tablet based
 var sbook_istablet=false;
-// Whether the UI should use a 2 phase selection
-var sbook_2phase_select=false;
-// Whether the UI should just use onclick for selection
-var sbook_simple_select=false;
 // Whether to do gesture recognition
 var sbook_gestures=false;
 
@@ -533,15 +529,21 @@ function _sbook_setid(elt,scanstate,level,curlevel)
 {
   var eltid=elt.id;
   if ((eltid)&&(sbook_hashmap[eltid])) eltid=false;
+  var sbookid=elt.getAttribute("SBOOKID");
+  var tocidstring=elt.getAttribute("TOCIDS");
+  var tocids=((tocidstring)?(tocidstring.split(';')):([]));
+  if (!(sbookid)) {}
+  else if (eltid===sbookid) {}
+  else if (eltid) {fdjtAdd(tocids,eltid); eltid=sbookid;}
+  else eltid=sbookid;
   if (sbook_autoid) {
-    var tocidstring=elt.getAttribute("SBOOKIDS");
-    var tocids=((tocidstring)?(tocidstring.split(';')):([]));
     var tocid=_sbook_getid(elt,scanstate,level,curlevel);
     if (!(eltid)) eltid=tocid;
     else if (tocid!==eltid) {
-      tocids.push(tocid); elt.tocids=tocids;}
-    var i=0; while (i<tocids.length) sbook_hashmap[tocids[i++]]=elt;}
-  if (!(elt.id)) elt.id=eltid;
+      tocids.push(tocid); elt.tocids=tocids;}}
+  var i=0; while (i<tocids.length) sbook_hashmap[tocids[i++]]=elt;
+  if (sbookid) elt.id=eltid;
+  else if (!(elt.id)) elt.id=eltid;
   sbook_hashmap[eltid]=elt;  
   return eltid;
 }
@@ -1578,9 +1580,9 @@ function sbookSetup()
   window.onmousemove=sbook_onmousemove;
   window.onscroll=sbook_onscroll;
   // These are for gesture recognition and adding glosses
-  window.onmouseup=sbook_onmouseup;
   window.onmousedown=sbook_onmousedown;
-  window.onclick=sbook_onclick;
+  // window.onmouseup=sbook_onmouseup;
+  // window.onclick=sbook_onclick;
   window.ondblclick=sbook_ondblclick;
   // For command keys
   window.onkeypress=sbook_onkeypress;

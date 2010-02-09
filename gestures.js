@@ -70,33 +70,90 @@ function sbook_onmousedown(evt)
   sbook_mousedown_x=evt.screenX;
   sbook_mousedown_y=evt.screenY;
   sbook_mousedown_tick=fdjtTick();
-  if (sbook_simple_select) return;
-  // When to ignore the mouse event
-  if ((evt.button>1)||(evt.ctrlKey)) return;
-  // Further determination requires the event target
+  if (evt.button>1) return;
   var target=$T(evt);
   // Ignores clicks on the HUD
-  if (!(sbook_2phase_select)) return;
-  else if (sbookInUI(target)) return;
+  if (sbookInUI(target)) return;
   // If the HUD is up, clicks on the content just hide the HUD
   else if ((sbook_mode)&&(sbook_mode!=="minimal")) {
     sbookHUDMode(false);
     return;}
   // Ignore clicks on text fields, anchors, inputs, etc
   else if (fdjtIsClickactive(target)) return;
-  var focus=sbookGetFocus(target);
-  if (!(focus)) return;
-  if (sbook_target)
-    if (sbook_target===focus)
-      sbook_mark(focus,false,fdjtSelectedText());
-    else {
-      sbookSetTarget(focus);
-      sbookHUDMode(false);}
+  else if (fdjtHasParent(target,sbook_target)) {
+    sbook_mark(sbook_target,false,fdjtSelectedText());
+    fdjtCancelEvent();
+    return;}
   else {
+    var focus=sbookGetFocus(target,evt.ctrlKey);
     sbookSetTarget(focus);
     sbookHUDMode("minimal");}
 }
 
+function sbook_ondblclick(evt)
+{
+  evt=evt||event||null;
+  var target=sbookGetFocus($T(evt),evt.ctrlKey);
+  if (target) {
+    sbookSetTarget(target);
+    sbook_mark(target,false,fdjtSelectedText());
+    return;}
+}
+
+function sbookHandleGestures(evt)
+{
+  var x=evt.screenX; var y=evt.screenY; var tick=fdjtTick();
+  var dx=x-sbook_mousedown_x; var dy=y-sbook_mousedown_y;
+  var dt=tick-sbook_mousedown_tick;
+  if (sbook_trace_gestures) 
+    fdjtTrace("x=%o y=%o tick=%o dx=%o dy=%o dt=%o",
+	      x,y,tick,dx,dy,dt);
+  if ((dt>sbook_gesture_min)&&(dt<sbook_gesture_max)) {
+    var absdx=((dx<0)?(-dx):(dx)); var absdy=((dy<0)?(-dy):(dy));
+    var horizontal=((dx>sbook_gq)?(1):(dx<-sbook_gq)?(-1):(0));
+    var vertical=((dy>sbook_gq)?(1):(dy<-sbook_gq)?(-1):(0));
+    if (sbook_trace_gestures)
+      fdjtTrace("absdx=%o absdy=%o v=%o h=%o",
+		absdx,absdy,vertical,horizontal);
+    if ((horizontal===0)&&(vertical===0)) sbook_mark($T(evt));
+    else if (absdy<(3*sbook_gq))
+      if (horizontal>0) sbookNextPage(evt);
+      else if (horizontal<0) sbookPrevPage(evt);
+      else {}
+    else if (absdx<(3*sbook_gq))
+      if (vertical>0) sbookNextSection(evt);
+      else if (vertical<0) sbookPrevSection(evt);
+      else {}
+    else {}
+    fdjtCancelEvent(evt);}
+}
+
+function sbookTabletMode(flag)
+{
+  if (flag) {
+    sbook_2phase_select=true;
+    sbook_istablet=true;
+    sbook_gestures=false;
+    fdjtSetCookie("sbooktablet","yes",false,"/");
+    fdjtAddClass(document.body,"tablet");}
+  else {
+    sbook_2phase_select=false;
+    sbook_istablet=false;
+    sbook_gestures=false;
+    fdjtClearCookie("sbooktablet","/");
+    fdjtDropClass(document.body,"tablet");}
+}
+
+function sbookNoHUDFlash(flag)
+{
+  fdjtTrace("sbooknohudflash %o",flag);
+  if (flag) sbook_hud_flash=false;
+  else sbook_hud_flash=2000;
+}
+
+/* Dead (sleeping?) code */
+
+/*
 function sbook_onmouseup(evt)
 {
   evt=evt||event||null;
@@ -156,64 +213,7 @@ function sbook_onclick(evt)
     sbook_mark(focus);
     fdjtCancelEvent(evt);}
 }
-
-function sbook_ondblclick(evt)
-{
-  evt=evt||event||null;
-  sbook_onclick(evt);
-  return;
-}
-
-function sbookHandleGestures(evt)
-{
-  var x=evt.screenX; var y=evt.screenY; var tick=fdjtTick();
-  var dx=x-sbook_mousedown_x; var dy=y-sbook_mousedown_y;
-  var dt=tick-sbook_mousedown_tick;
-  if (sbook_trace_gestures) 
-    fdjtTrace("x=%o y=%o tick=%o dx=%o dy=%o dt=%o",
-	      x,y,tick,dx,dy,dt);
-  if ((dt>sbook_gesture_min)&&(dt<sbook_gesture_max)) {
-    var absdx=((dx<0)?(-dx):(dx)); var absdy=((dy<0)?(-dy):(dy));
-    var horizontal=((dx>sbook_gq)?(1):(dx<-sbook_gq)?(-1):(0));
-    var vertical=((dy>sbook_gq)?(1):(dy<-sbook_gq)?(-1):(0));
-    if (sbook_trace_gestures)
-      fdjtTrace("absdx=%o absdy=%o v=%o h=%o",
-		absdx,absdy,vertical,horizontal);
-    if ((horizontal===0)&&(vertical===0)) sbook_mark($T(evt));
-    else if (absdy<(3*sbook_gq))
-      if (horizontal>0) sbookNextPage(evt);
-      else if (horizontal<0) sbookPrevPage(evt);
-      else {}
-    else if (absdx<(3*sbook_gq))
-      if (vertical>0) sbookNextSection(evt);
-      else if (vertical<0) sbookPrevSection(evt);
-      else {}
-    else {}
-    fdjtCancelEvent(evt);}
-}
-
-function sbookTabletMode(flag)
-{
-  if (flag) {
-    sbook_2phase_select=true;
-    sbook_istablet=true;
-    sbook_gestures=false;
-    fdjtSetCookie("sbooktablet","yes",false,"/");
-    fdjtAddClass(document.body,"tablet");}
-  else {
-    sbook_2phase_select=false;
-    sbook_istablet=false;
-    sbook_gestures=false;
-    fdjtClearCookie("sbooktablet","/");
-    fdjtDropClass(document.body,"tablet");}
-}
-
-function sbookNoHUDFlash(flag)
-{
-  fdjtTrace("sbooknohudflash %o",flag);
-  if (flag) sbook_hud_flash=false;
-  else sbook_hud_flash=2000;
-}
+*/
 
 /* Emacs local variables
 ;;;  Local variables: ***
