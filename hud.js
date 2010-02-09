@@ -155,6 +155,7 @@ function sbookHUDMode(mode)
       if ((mode==="social")&&(!($("APPFRAME").src)))
 	sbookSetupAppFrame();
       sbook_mode=mode;
+      sbook_last_mode=mode;
       if (fdjtContains(sbook_apps,mode)) sbook_last_app=mode;
       fdjtAddClass(document.body,"hudup");
       fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}

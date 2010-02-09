@@ -70,7 +70,7 @@ function sbook_onmousedown(evt)
   sbook_mousedown_x=evt.screenX;
   sbook_mousedown_y=evt.screenY;
   sbook_mousedown_tick=fdjtTick();
-  if (evt.button>1) return;
+  if ((evt.button>1)||(evt.ctrlKey)) return;
   var target=$T(evt);
   // Ignores clicks on the HUD
   if (sbookInUI(target)) return;
@@ -85,15 +85,19 @@ function sbook_onmousedown(evt)
     fdjtCancelEvent();
     return;}
   else {
-    var focus=sbookGetFocus(target,evt.ctrlKey);
-    sbookSetTarget(focus);
-    sbookHUDMode("minimal");}
+    var focus=sbookGetFocus(target,evt.altKey);
+    if (focus) {
+      sbookSetTarget(focus);
+      sbookHUDMode("minimal");}
+    else {
+      sbookSetTarget(false);
+      sbookHUDMode(false);}}
 }
 
 function sbook_ondblclick(evt)
 {
   evt=evt||event||null;
-  var target=sbookGetFocus($T(evt),evt.ctrlKey);
+  var target=sbookGetFocus($T(evt),evt.altKey);
   if (target) {
     sbookSetTarget(target);
     sbook_mark(target,false,fdjtSelectedText());

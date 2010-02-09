@@ -1013,10 +1013,12 @@ function sbook_onkeydown(evt)
   // sbook_trace("sbook_onkeydown",evt);
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_mode) {
+      sbook_last_mode=sbook_mode;
       sbookHUDMode(false);
       fdjtDropClass(document.body,"hudup");
       sbookStopPreview();
       $("SBOOKSEARCHTEXT").blur();}
+    else if (sbook_last_mode) sbookHUDMode(sbook_last_mode);
     else {
       if ((sbook_mark_target)&&(fdjtIsVisible(sbook_mark_target)))
 	sbookHUDMode("mark");
