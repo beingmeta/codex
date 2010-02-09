@@ -463,7 +463,14 @@ div#SBOOKAPP div.helpbody div.sbookh1 div.motto {
   font-weight: normal; font-style: italic; font-size: 50%; color: yellow;}
 
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
-  span.explanation { font-style: italic; }
+     div.setting span.checkspan {
+  font-size: 150%; color: orange;}
+div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
+     div.setting span.checkspan input[type='CHECKBOX'] {
+  width: 2em; height: 2em; background-color: orange;}
+div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
+     div.setting div.explanation { 
+  font-style: italic; clear: both; margin-left: 3em;}
 
 /* Minimal mode */
 
@@ -568,7 +575,7 @@ div#SBOOKHUD form.mark div.markform { }
 div#SBOOKHUD form.mark div.markform div.lhs {
   max-width: 50px; width: 50px; float: left; text-align: right;}
 div#SBOOKHUD form.mark div.markform div.lhs img.head { 
-  width: 48px; height: 48px; display: none;}
+  width: 32px; height: 32px; display: none;}
 div#SBOOKHUD form.mark div.markform div.lhs img.userpic { 
   width: 48px;}
 div#SBOOKHUD form.mark div.markform div.msg {

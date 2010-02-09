@@ -1493,6 +1493,7 @@ function sbookApplySettings()
 {
   sbookTabletMode($("TABLETMODE").checked);
   sbookSparseMode($("SBOOKSPARSE").checked);
+  sbookSmartPaging($("SBOOKSMARTPAGE").checked);
 }
 
 /* Other stuff */
@@ -1552,6 +1553,9 @@ function sbookSetup()
   if (fdjtGetCookie("sbooksparse")==="yes") {
     $("SBOOKSPARSE").checked=true;
     sbookSparseMode(true);}
+  if (fdjtGetCookie("sbooksmartpage")==="yes") {
+    $("SBOOKSMARTPAGE").checked=true;
+    sbookSmartPaging(true);}
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));

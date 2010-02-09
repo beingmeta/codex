@@ -160,6 +160,16 @@ function sbookBackward()
 }
 
 
+function sbookSmartPaging(flag)
+{
+  if (flag) {
+    sbook_smart_paging=true;
+    fdjtSetCookie("sbooksmartpage","yes",false,"/");}
+  else {
+    sbook_smart_paging=false;
+    fdjtClearCookie("sbooksmartpage","/");}
+}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

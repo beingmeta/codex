@@ -457,9 +457,7 @@ function sbookRightEdge_onclick(evt)
     sbookHUDMode(false);
     fdjtCancelEvent(evt);}
   if (sbook_edge_taps) {
-    if (evt.ctrlKey)
-      sbookForward(true);
-    else sbookForward(true);
+    sbookForward();
     fdjtCancelEvent(evt);}
 }
 
