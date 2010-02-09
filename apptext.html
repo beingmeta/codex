@@ -28,10 +28,9 @@
 <span class='keydef'><span class='key'>N</span> to navigate;</span>
 <span class='keydef'><span class='key'>S</span> to search;</span>
 <br/>
-<span class='keydef'><span class='key'>Shift</span> or <span class='key'>Click</span> for context;</span>
+<span class='keydef'><span class='key'>Shift</span> or <span class='key'>Tap</span> to show context;</span>
 <span class='keydef'>
-<span class='key'>Click again</span> to gloss (share a note);</span>
-<span class='keydef'><span class='key'>Select</span> text to excerpt;</span>
+<span class='key'>Tap again</span> to gloss (share a note);</span>
 <br/>
 <span class='keydef'><span class='key'>Space</span>/<span class='key'>Backspace</span> to move by page;</span>
 <span class='keydef'><span class='key'>Escape</span> to display or hide the HUD. </span>
@@ -67,7 +66,7 @@ probably using right now) enables you to get help, configure sBooks,
 identify yourself, adjust the interface, and engage socially by
 inviting friends to share comments, joining or starting reading
 circles, publishing or subscribing to metadocs, and more.  You can
-activate the application HUD by clicking on the sBooks icon on the
+activate the application HUD by tapping/clicking on the sBooks icon on the
 left of the page.</p>
 
 <p><strong>Reading.</strong> Read the document as you would normally,
@@ -80,15 +79,15 @@ indicate a <strong>gloss</strong> (comments, tags, references) added
 by a friend, associate, or subscription.  Clicking on the icon
 displays the indicated glosses and allows you to add your own.</p>
 
-<p>You can also <strong>add your own gloss</strong> by simply clicking
-twice on the text (once to target, again to activate).  A gloss
-typically includes a short note (<em>&ldquo;What do you
-think&rdquo;</em>) together with tags, extended comments, or external
-references.  You can also specify who can see your gloss: your
-friends, reading circles you're a part of, subscribers to metadocs you
-are publishing, or just yourself.</p>
+<p>You can also <strong>add your own gloss</strong> by simply
+tapping/clicking twice on the text (once to target, again to
+activate).  A gloss typically includes a short note (<em>&ldquo;What
+do you think&rdquo;</em>) together with tags, extended comments, or
+external references.  You can also specify who can see your gloss:
+your friends, reading circles you're a part of, subscribers to
+metadocs you are publishing, or just yourself.</p>
 
-<p><strong>Navigating.</strong> Type 'N' or click the compass in the
+<p><strong>Navigating.</strong> Type 'N' or touch the compass in the
 upper left corner to bring the Navigation HUD at the top of the
 screen.  The Navigation HUD is a dynamic "Table of Contents"
 consisting of a series of stripes reflecting levels in the document.
@@ -100,7 +99,7 @@ in the named section.</p>
 <p>As you <strong>move your pointer</strong> over elements of the TOC,
 the corresponding part of the document will be
 <strong>previewed</strong>; moving the pointer away previews different
-content or returns to the current location; clicking jumps to the
+content or returns to the current location; tapping jumps to the
 previewed content.  The preview function allows you to 'flip through'
 the book by simply moving the pointer over the displayed contents
 .</p>
@@ -249,6 +248,9 @@ or methods.</p>
 <p><span class='checkspan' onchange="javascript:sbookNoHUDFlash($('HUDFLASHING').checked);">
    <input TYPE='checkbox' NAME='HUDFLASH' VALUE='yes' ID='HUDFLASHING'/>
    Don't flash the HUD</span> <span class='explanation'>when meta information (headings, tags, etc) changes</span></p>
+<p><span class='checkspan' onchange="javascript:sbookSparseMode($('SBOOKSPARSE').checked);">
+   <input TYPE='checkbox' NAME='SPARSEBOOK' VALUE='yes' ID='SBOOKSPARSE'/>
+   Minimize HUD display </span> <span class='explanation'>while simply reading the text</span></p>
 <div class='buttons'></div>
 </div>
 <div class='tabcontent' id='APPSOCIAL'>

@@ -128,9 +128,9 @@ function sbookNextPrev_stopit(evt)
   clearInterval(advance_timer);
 }
 
-function sbookForward()
+function sbookForward(simple)
 {
-  if (!(sbook_smart_paging)) {
+  if ((simple)||(!(sbook_smart_paging))) {
     window.scrollBy(0,(window.innerHeight)-80);
     return;}
   var focus=sbookGetXYFocus(window.scrollX+100,window.scrollY+10);

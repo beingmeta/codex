@@ -189,6 +189,8 @@ var sbook_noisy_tooltips=false;
 var sbook_istablet=false;
 // Whether to do gesture recognition
 var sbook_gestures=false;
+// Whether to handle edge taps/clicks
+var sbook_edge_taps=false;
 
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
@@ -1490,6 +1492,7 @@ function _sbookHUDSplash()
 function sbookApplySettings()
 {
   sbookTabletMode($("TABLETMODE").checked);
+  sbookSparseMode($("SBOOKSPARSE").checked);
 }
 
 /* Other stuff */
@@ -1546,6 +1549,9 @@ function sbookSetup()
   if (fdjtGetCookie("sbooktablet")==="yes") {
     $("TABLETMODE").checked=true;
     sbookTabletMode(true);}
+  if (fdjtGetCookie("sbooksparse")==="yes") {
+    $("SBOOKSPARSE").checked=true;
+    sbookSparseMode(true);}
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));

@@ -70,8 +70,8 @@ function sbookCreateFeedHUD(classinfo,feeds)
   var login_button=
     fdjtImage(sbicon("sbooksconnecticon40x40.png"),".button.login","?","login");
   var everyone_button=
-    fdjtImage(sbicon("sBooksWE_2_32x32.png"),".button.everyone","everyone");
-  var feedicons=fdjtDiv("#SBOOKFEEDICONS.feedicons");
+    fdjtImage(sbicon("sBooksWE_2_32x32.png"),".button.everyone#SBOOKEVERYONE","everyone");
+  var feedicons=fdjtDiv("#SBOOKFEEDICONS.feedicons",everyone_button);
   var socialelts=[]; var glosselts=[];
   everyone_button.onclick=sbookEveryoneButton_onclick;
   login_button.onclick=sbookLoginButton_onclick;
@@ -81,7 +81,8 @@ function sbookCreateFeedHUD(classinfo,feeds)
   while (i<n) sbookAddFeedIcon(fdjtOIDs[feeds[i++]]);
   sbookFeedHUD=fdjtDiv(classinfo," ",
 		       login_button,app_button,
-		       feedicons,everyone_button);
+		       feedicons);
+  sbookFeedHUD.onclick=sbookLeftEdge_onclick;
   return sbookFeedHUD;
 }
 
@@ -104,7 +105,7 @@ function sbookAddFeedIcon(info)
     (pic,".button.feed",info.name|info.kind,
      ("click to see glosses for "+info.name));
   icon.oid=info.oid; icon.id="SBOOKFEEDICON"+humid;
-  fdjtAppend("SBOOKFEEDICONS"," ",icon);
+  fdjtInsertBefore("SBOOKEVERYONE"," ",icon);
   return icon;
 }
 
@@ -138,6 +139,8 @@ function sbookFeeds_onclick(evt)
   if (!(target.oid)) return;
   var info=fdjtOIDs[target.oid];
   var icon=$("SBOOKFEEDICON"+info.humid);
+  fdjtTrace("info=%o",info);
+  if (!(info)) return;
   if ((icon)&&(fdjtHasClass(icon,"selected"))&&
       (sbook_sources.length===1)) {
     // If you're clicking a selected icon and there's only one,

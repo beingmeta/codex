@@ -73,13 +73,19 @@ function createSBOOKHUD()
     prev_button.onmouseup=sbookNextPrev_stopit;
     prev_button.onmouseout=sbookNextPrev_stopit;
     prev_button.onclick=fdjtCancelEvent;
+    var leftedge=fdjtDiv("#SBOOKLEFTEDGE.hud");
+    leftedge.title='tap/click to go back';
+    leftedge.onclick=sbookLeftEdge_onclick;
+    var rightedge=fdjtDiv("#SBOOKRIGHTEDGE.hud");
+    rightedge.title='tap/click to go forward';
+    rightedge.onclick=sbookRightEdge_onclick;
     hud=fdjtDiv
       ("#SBOOKHUD.hud",
+       leftedge,rightedge,
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
        fdjtDiv("#SBOOKFEEDS.hudblock.hud",login_button,help_button),
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
        fdjtDiv("#SBOOKSEARCH.hudblock.hud"),
-       fdjtDiv("#SBOOKRIGHTMARGIN.hud"),
        fdjtDiv("#SBOOKTAGS.hudblock.hud.tags"),
        sbookCreateAppHUD(),
        prev_button,next_button);
@@ -443,6 +449,22 @@ function sbookLoginButton_onclick(evt)
   if (sbook_mode==="login") sbookHUDMode(false);
   else sbookHUDMode("login");
   evt.cancelBubble=true;
+}
+
+function sbookRightEdge_onclick(evt)
+{
+  if (sbook_edge_taps) {
+    if (evt.ctrlKey)
+      sbookForward(true);
+    else sbookForward(true)
+    fdjtCancelEvent(evt);}
+}
+
+function sbookLeftEdge_onclick(evt)
+{
+  if (sbook_edge_taps) {
+    sbookBackward();
+    fdjtCancelEvent(evt);}
 }
 
 /* Emacs local variables

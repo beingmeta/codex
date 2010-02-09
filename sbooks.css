@@ -219,7 +219,7 @@ body.tablet img.hudbutton[alt='<<'] { display: block; }
 
 div#SBOOKHUD div.hud#SBOOKFEEDS {
   position: fixed; display: block; 
-  top: 75px; left: 0px; width: 50px;
+  top: 75px; left: 0px; width: 50px; z-index: 150;
   bottom: 75px; margin: 0px; text-align: left;
   border: none;
   -khtml-border-top-right-radius: 6px; 
@@ -233,13 +233,13 @@ div#SBOOKHUD div.hud#SBOOKFEEDS {
   background-color: transparent;}
 div#SBOOKHUD div.hud#SBOOKFEEDS:hover {} 
 
-body.hidefeeds div#SBOOKHUD div.hud#SBOOKFEEDS { 
+body.sparsebook div#SBOOKHUD div.hud#SBOOKFEEDS { 
   height: 50px; bottom: auto;}
-body.hidefeeds.hudup div#SBOOKHUD div.hud#SBOOKFEEDS { 
+body.sparsebook.hudup div#SBOOKHUD div.hud#SBOOKFEEDS { 
   height: auto; bottom: 75px; }
-body.hidefeeds div#SBOOKHUD div.hud#SBOOKFEEDS:hover { 
+body.sparsebook div#SBOOKHUD div.hud#SBOOKFEEDS:hover { 
   height: auto; bottom: 75px; }
-body.hidefeeds div#SBOOKHUD div.hud#SBOOKFEEDS.flash { 
+body.sparsebook div#SBOOKHUD div.hud#SBOOKFEEDS.flash { 
   height: auto; bottom: 75px; }
 
 div#SBOOKHUD.glosses div.hud#SBOOKFEEDS {
@@ -263,10 +263,12 @@ div#SBOOKHUD.glosses.targeted div.hud#SBOOKFEEDS {
   -moz-border-radius-bottomright: 6px;
   border-bottom-right-radius: 6px;}
 
-body.hidefeeds div#SBOOKHUD .hud#SBOOKFEEDS img.feed { display: none;}
-body.hidefeeds.hudup div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
+div#SBOOKHUD .hud#SBOOKFEEDS img.feed { z-index: 150;}
+
+body.sparsebook div#SBOOKHUD .hud#SBOOKFEEDS img.feed { display: none;}
+body.sparsebook.hudup div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
   display: inline;} 
-body.hidefeeds div#SBOOKHUD .hud#SBOOKFEEDS:hover img.feed { 
+body.sparsebook div#SBOOKHUD .hud#SBOOKFEEDS:hover img.feed { 
   display: inline;} 
 
 div#SBOOKHUD .hud#SBOOKFEEDS img.feed { 
@@ -301,7 +303,7 @@ div#SBOOKHUD.browsing div.hud#SBOOKFEEDS img.feed.shown {
 #SBOOKFEEDS img.button { margin-left: 3px;}
 
 /* Hudblocks don't normally go visible when you're over them */
-div#SBOOKHUD div.hudblock#SBOOKFEEDS { opacity: 0.1;}
+div#SBOOKHUD div.hudblock#SBOOKFEEDS { opacity: 0.2;}
 div#SBOOKHUD div.hudblock#SBOOKFEEDS:hover { opacity: 0.8;}
 body.hudup div#SBOOKHUD div.hudblock#SBOOKFEEDS { opacity: 0.8;}
 
@@ -511,8 +513,6 @@ body.nosbookuser div#SBOOKHUD div.hud#SBOOKFEEDS img.button.login {
 body.nosbookuser div#SBOOKHUD div.hud#SBOOKFEEDS img.button.app {
   display: none;}
 
-div#SBOOKHUD div#SBOOKFEEDS img.button.everyone {
-  position: absolute; bottom: 3px; left: 3px; vertical-align: bottom;}
 body.nosbookuser div#SBOOKHUD div#SBOOKFEEDS img.button.everyone {
   display: none;}
 
@@ -784,12 +784,24 @@ div.sbooksearch div.query input[TYPE='TEXT'] {
 body div#SBOOKHUD.search .sbooksearch {display: block; }
 body div#SBOOKHUD.glosses .glosses {display: block; }
 
-/* sBook HELP */
-div#SBOOKRIGHTMARGIN {
- position: fixed; 
- right: 0px; width: 50px; top: 0px; bottom: 0px;
- z-index: 200; display: none;}
+/* Margins */
+div#SBOOKHUD div#SBOOKRIGHTEDGE {
+ position: fixed;
+ width: 50px; height: 100%;
+ right: 0px; top: 0px; bottom: 0px;
+ z-index: 100; opacity: 0.03;
+ display: none;}
+div#SBOOKHUD div#SBOOKLEFTEDGE {
+ position: fixed;
+ width: 50px; height: 100%; 
+ left: 0px; top: 0px; bottom: 0px;
+ z-index: 100; opacity: 0.03;
+ display: none;}
+body.tablet div#SBOOKHUD div#SBOOKLEFTEDGE { display: block;}
+body.tablet div#SBOOKHUD div#SBOOKRIGHTEDGE { display: block;}
 
+/* div#SBOOKHUD div#SBOOKLEFTEDGE:hover { opacity: 0.5;} 
+   div#SBOOKHUD div#SBOOKRIGHTEDGE:hover { opacity: 0.5;}  */
 
 /* Individual sub content */
 
@@ -1115,7 +1127,8 @@ span.glossmark {
   position: absolute; right: 0px; text-align: right;
   margin: 0px; padding: 0px; text-indent: 0px; 
   border: solid transparent 2px;
-  width: 32px; height: 32px;
+  width: 32px; height: 32px; z-index: 200;
+  border-right: 0px;
   opacity: 0.5;}
 span.glossmark img {
    position: relative; right: 0px;
@@ -1123,10 +1136,16 @@ span.glossmark img {
    vertical-align: top; text-align: right;}
 span.glossmark img.tiny { display: none; width: auto;}
 .sbookfocus span.glossmark { opacity: 0.75;}
-.sbookfocus span.glossmark img.big { border: solid blue 2px; }
+.sbookfocus span.glossmark img.big { }
 .sbookfocus span.glossmark img.tiny { border: none; }
 
-span.glossmark img.big { }
+body.sparsebook span.glossmark { width: 32px; height: 32px; }
+body.sparsebook span.glossmark img.big { display: none;}
+body.sparsebook span.glossmark img.tiny { display: inline;}
+body.sparsebook span.glossmark:hover { }
+body.sparsebook span.glossmark:hover img.big { display: inline;}
+body.sparsebook span.glossmark:hover img.tiny { display: none;}
+
 /*
 span.glossmark img.big { width: 16px;}
 span.glossmark:hover img.big { width: 32px;}
