@@ -453,15 +453,21 @@ function sbookLoginButton_onclick(evt)
 
 function sbookRightEdge_onclick(evt)
 {
+  if ((sbook_mode)&&(sbook_mode!=="minimal")) {
+    sbookHUDMode(false);
+    fdjtCancelEvent(evt);}
   if (sbook_edge_taps) {
     if (evt.ctrlKey)
       sbookForward(true);
-    else sbookForward(true)
+    else sbookForward(true);
     fdjtCancelEvent(evt);}
 }
 
 function sbookLeftEdge_onclick(evt)
 {
+  if ((sbook_mode)&&(sbook_mode!=="minimal")) {
+    sbookHUDMode(false);
+    fdjtCancelEvent(evt);}
   if (sbook_edge_taps) {
     sbookBackward();
     fdjtCancelEvent(evt);}
