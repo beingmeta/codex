@@ -87,7 +87,8 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     $("SBOOKMARKRELAY").value=origin.oid;
   else $("SBOOKMARKRELAY").value=null;
   var completions_elt=$("SBOOKMARKCLOUD");
-  var completions=completions_elt.allcompletions;
+  var cinfo=fdjtEltInfo(completions_elt);
+  var completions=cinfo.allcompletions;
   // Uncheck all the completions
   if (completions._ischecked) {
     var cur=completions._ischecked;
