@@ -201,7 +201,11 @@ function sbookPreview(elt,nomode,offset)
   // sbook_trace("sbookPreview",elt);
   if (elt===false) return sbookStopPreview();
   /* No longer needed with TOC at the bottom */
-  if (!(offset)) offset=sbookDisplayOffset();
+  if (!(offset))
+    if (elt.sbook_ref) {
+      offset=elt.preview_off||sbookDisplayOffset();
+      elt=elt.sbook_ref;}
+    else offset=sbookDisplayOffset();
   sbook_preview=true;
   sbookPreviewLocation(elt);
   if ((elt.getAttribute) &&
@@ -259,6 +263,16 @@ function sbookPreview_onmouseover(evt)
     ref=target.sbook_ref;
   else ref=$(target.getAttribute("PREVIEW"));
   if (!(ref)) return;
+  var refheight=ref.offsetHeight;
+  var winheight=window.innerHeight;
+  if ((evt.clientY)&&(refheight)&&(winheight)) {
+    var refarg={}; refarg.sbook_ref=ref;
+    if ((winheight-(evt.clientY+64))>refheight)  {
+      refarg.preview_off=-(evt.clientY+64);
+      ref=refarg;}
+    else if (evt.clientY>refheight) {
+      refarg.preview_off=refheight-evt.clientY;
+      ref=refarg;}}
   fdjtDelayHandler(300,sbookPreview,ref,document.body,"preview");
 }
 

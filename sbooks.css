@@ -88,12 +88,12 @@ img.hudbutton:hover { opacity: 0.8;}
 body.hudup div#SBOOKHUD img.hudbutton { opacity: 0.8;}
 
 img.previewicon {
-    font-weight: bold; color: gold; 
+    font-weight: bold; color: gold;
     cursor: url(http://static.beingmeta.com/graphics/binocularscursor64x64.png),
             url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
             crosshair; 
-    background-color: lightgray; 
-    border: dotted white 2px;
+    background-color: silver; 
+    border: dotted ivory 2px;
     border-radius: 6px;
     -khtml-border-radius: 0px; 
     -webkit-border-radius: 0px; 
