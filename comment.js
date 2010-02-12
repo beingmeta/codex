@@ -506,6 +506,7 @@ function sbookMark_onfocus(evt)
   sbookHUDMode("mark");
   sbookMarkHUDSetup(false);
   fdjtAutoPrompt_onfocus(evt);
+  fdjtDropClass("SBOOKMARKFORM","closed");
 }
 
 function sbookNoUserSubmit(evt)
@@ -583,9 +584,9 @@ function sbook_mark(target,gloss,excerpt)
 		  ((gloss.msg)?(fdjtSpan("msg",gloss.msg)):(false)));
 	fdjtReplace("SBOOKMARKRELAYBLOCK",glossblock);}}
   else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
-  sbookSelectSummaries(sbookGlossesHUD,false,target.id);
-  fdjtAddClass(sbookHUD,"onepassage");
-  sbookHUDMode("mark");
+  // sbookSelectSummaries(sbookGlossesHUD,false,target.id);
+  // fdjtAddClass(sbookHUD,"onepassage");
+  // sbookHUDMode("mark");
   $("SBOOKMARKINPUT").focus();
 }
 

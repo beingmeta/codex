@@ -296,9 +296,11 @@ function sbookGlossmark_onclick(evt)
   sbookSetTarget(target);
   sbook_glossmark=$P(".glossmark",evt.target);
   sbookMarkHUDSetup(target);
-  $("SBOOKMARKFORM").removeAttribute('mode');
+  // $("SBOOKMARKFORM").removeAttribute('mode');
+  fdjtAddClass($("SBOOKMARKFORM"),"closed");
+  fdjtAppend("SBOOKGLOSSES",$("SBOOKMARK"));
   sbookHUDMode("glosses");
-  fdjtSetScroll(false,75,sbook_glossmark);
+  // fdjtSetScroll(false,75,sbook_glossmark);
   fdjtCancelEvent(evt);
 }
 

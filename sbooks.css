@@ -343,10 +343,11 @@ div#SBOOKHUD div#SBOOKGLOSSES {
   border-bottom-right-radius: 6px;
   display: none;}
 div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK {
-  margin-bottom: 4px;
-  border-bottom: solid blue 8px; }
+    margin-top: 6px; border-top: dashed blue 3px; padding-top: 8px;}
 div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK div.markform {
   min-height: 60px;}
+div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK form.mark.closed div.markform {
+  min-height: inherit;}
 
 div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK { display: none;}
 div#SBOOKHUD.mark div#SBOOKGLOSSES div#SBOOKMARK { display: block;}
@@ -583,132 +584,135 @@ form.mark div.messages div.message.glossing { font-style: italic;}
 form.mark.submitting div.messages div.pinging { display: block;}
 form.mark.glossing div.messages div.glossing { display: block;}
 
-div#SBOOKHUD form.mark div.markform { }
-div#SBOOKHUD form.mark div.markform div.lhs {
+form.mark div.markform { }
+form.mark div.markform div.lhs {
   max-width: 50px; width: 50px; float: left; text-align: right;}
-div#SBOOKHUD form.mark div.markform div.lhs img.head { 
+form.mark div.markform div.lhs img.head { 
   width: 32px; height: 32px; display: none;}
-div#SBOOKHUD form.mark div.markform div.lhs img.userpic { 
+form.mark div.markform div.lhs img.userpic { 
   width: 48px;}
-div#SBOOKHUD form.mark div.markform div.msg {
+form.mark div.markform div.msg {
   clear: right; margin-left: 60px;}
-div#SBOOKHUD form.mark div.markform div.msg INPUT { width: 100%;}
+form.mark div.markform div.msg INPUT { width: 100%;}
 
-div#SBOOKHUD form.mark div.markform div.metastuff {
+form.mark div.markform div.metastuff {
   clear: right; margin-left: 60px; text-align: right; min-height: 16px;}
-div#SBOOKHUD form.mark div.markform div.metastuff span.checkspan { 
+form.mark div.markform div.metastuff span.checkspan { 
   font-style: italic; font-size: 60%;}
-div#SBOOKHUD form.mark div.markform div.metastuff span.checkspan input[type='checkbox'] { 
+form.mark div.markform div.metastuff span.checkspan input[type='checkbox'] { 
   margin: 1px;}
-div#SBOOKHUD form.mark div.markform div.metastuff input[TYPE='SUBMIT'] {
+form.mark div.markform div.metastuff input[TYPE='SUBMIT'] {
     float: right; padding: 1px; margin: 1px; margin-bottom: 3px; font-size: 80%; font-weight: bold;}
-div#SBOOKHUD form.mark div.markform div.metastuff div.controls { float: left;}
-div#SBOOKHUD form.mark div.markform div.metastuff div.buttons { float: right;}
-div#SBOOKHUD form.mark div.markform div.metastuff div.controls select { max-width: 100%;}
-div#SBOOKHUD form.mark div.markform div.metastuff img.button { float: right; }
+form.mark div.markform div.metastuff div.controls { float: left;}
+form.mark div.markform div.metastuff div.buttons { float: right;}
+form.mark div.markform div.metastuff div.controls select { max-width: 100%;}
+form.mark div.markform div.metastuff img.button { float: right; }
 
-div#SBOOKHUD form.mark div.markform div.metastuff div.taginput { 
+form.mark.closed div.markform div.metastuff { display: none;}
+form.mark.closed[mode] div.markform div.marktab { display: none;}
+form.mark.closed[mode] div.markform div.lhs img.head { display: none;}
+form.mark.closed[mode] div.markform div.lhs img.head[alt] { display: none;}
+form.mark.closed div.markform div.lhs img.head[alt] { display: none;}
+form.mark.closed div.markform div.lhs div.controls { display: none;}
+
+form.mark div.markform div.metastuff div.taginput { 
   float: left; width: 50%;}
-div#SBOOKHUD form.mark div.markform div.taginput input[TYPE='TEXT'] {
+form.mark div.markform div.taginput input[TYPE='TEXT'] {
   width: 100%;}
 
-div#SBOOKHUD form.mark div.markform div.marktab {
+form.mark div.markform div.marktab {
   clear: right; text-align: left; 
   margin-left: 60px; margin-right: 5px; width: inherit;
   min-height: 48px;}
 
-div#SBOOKHUD form.mark div.excerpt { color: yellow;}
-div#SBOOKHUD form.mark div.excerpt div.text { 
+form.mark div.excerpt { color: yellow;}
+form.mark div.excerpt div.text { 
  margin-left: 40px; margin-right: 40px; min-height: 2ex;}
-div#SBOOKHUD form.mark div.excerpt { 
+form.mark div.excerpt { 
  text-align: center; font-style: italic; font-size: 80%;
  margin-left: 5%; margin-right: 5%;
  clear: both;}
-div#SBOOKHUD form.mark div.excerpt span.lq { 
+form.mark div.excerpt span.lq { 
  font-weight: bold; font-size: 200%; float: left; }
-div#SBOOKHUD form.mark div.excerpt span.rq { 
+form.mark div.excerpt span.rq { 
  font-weight: bold; font-size: 200%; float: right; }
 
-div#SBOOKHUD form.mark { clear: both;}
-div#SBOOKHUD form.mark div.marktab { display: none;}
+form.mark { clear: both;}
+form.mark div.marktab { display: none;}
 
-table.grid {border-collapse: collapse;}
-table.grid td {padding: 0px; margin:0px; border: 0px; vertical-align: top;}
-table.grid th {padding: 0px; margin:0px; border: 0px; vertical-align: top;}
-
-div#SBOOKHUD form.mark { 
+form.mark { 
   text-align: right; margin-left: 10px; margin-right: 10px;}
-div#SBOOKHUD form.mark table.grid { 
+form.mark table.grid { 
   width: 100%;}
-div#SBOOKHUD form.mark table.grid td input[TYPE='TEXT'] { 
+form.mark table.grid td input[TYPE='TEXT'] { 
   width: 100%; font-size: 12px;}
 
-div#SBOOKHUD form.mark div.completions {
+form.mark div.completions {
   text-align: left;}
 
-div#SBOOKHUD form.mark[mode='tag'] div.tags { display: block;}
-div#SBOOKHUD form.mark[mode='tag'] img.button[alt='tags'] { 
+form.mark[mode='tag'] div.tags { display: block;}
+form.mark[mode='tag'] img.button[alt='tags'] { 
   border-bottom: solid blue 3px;}
-div#SBOOKHUD form.mark[mode='tag']
+form.mark[mode='tag']
   div.markform div.lhs img.head[alt='tags'] { display: inline;}
 
-div#SBOOKHUD form.mark[mode='detail'] div.detail {display: block;}
-div#SBOOKHUD form.mark[mode='detail'] img.button[alt='detail'] {
+form.mark[mode='detail'] div.detail {display: block;}
+form.mark[mode='detail'] img.button[alt='detail'] {
   border-bottom: solid blue 3px;}
-div#SBOOKHUD form.mark[mode='detail']
+form.mark[mode='detail']
   div.markform div.lhs img.head[alt='detail'] { display: inline;}
 
-div#SBOOKHUD form.mark[mode='excerpt'] div.excerpt { display: block;}
-div#SBOOKHUD form.mark[mode='excerpt'] img.button[alt='excerpt'] { 
+form.mark[mode='excerpt'] div.excerpt { display: block;}
+form.mark[mode='excerpt'] img.button[alt='excerpt'] { 
   border-bottom: solid blue 3px;}
-div#SBOOKHUD form.mark[mode='excerpt']
+form.mark[mode='excerpt']
   div.markform div.lhs img.head[alt='excerpt'] { display: inline;}
 
-div#SBOOKHUD form.mark[mode='xrefs'] div.xrefs { display: block;}
-div#SBOOKHUD form.mark[mode='xrefs'] img.button[alt='xrefs'] { 
+form.mark[mode='xrefs'] div.xrefs { display: block;}
+form.mark[mode='xrefs'] img.button[alt='xrefs'] { 
   border-bottom: solid blue 3px;}
-div#SBOOKHUD form.mark[mode='xrefs']
+form.mark[mode='xrefs']
   div.markform div.lhs img.head[alt='xrefs'] { display: inline;}
 
-div#SBOOKHUD form.mark div.blockelt { 
+form.mark div.blockelt { 
   text-align: left;}
-div#SBOOKHUD form.mark div.blockelt input[TYPE='SUBMIT'] { 
+form.mark div.blockelt input[TYPE='SUBMIT'] { 
   float: right;}
-div#SBOOKHUD form.mark div.blockelt span.checkspan { 
+form.mark div.blockelt span.checkspan { 
   color: yellow; font-weight: normal;}
-div#SBOOKHUD form.mark div.blockelt span.checkspan[ischecked] { 
+form.mark div.blockelt span.checkspan[ischecked] { 
   color: yellow; font-weight: bold; font-size: 125%;}
-div#SBOOKHUD form.mark div.blockelt span.tagcues { 
+form.mark div.blockelt span.tagcues { 
   font-size: 80%;}
 
-div#SBOOKHUD form.mark div.marktab { 
+form.mark div.marktab { 
   padding-top: 4px; padding-bottom: 4px; clear: both; width: 100%;}
-div#SBOOKHUD form.mark div.marktab div.content { 
+form.mark div.marktab div.content { 
   padding-right: 0px; text-align: left;}
 
-div#SBOOKHUD form.mark div.marktab .checkspan[ischecked] { 
+form.mark div.marktab .checkspan[ischecked] { 
   font-size: 150%; font-weight: bold;}
 
-div#SBOOKHUD form.mark div textarea { 
+form.mark div textarea { 
   width: 100%; margin-left: 0px; min-height: 80px;}
-div#SBOOKHUD form.mark div.controls { 
+form.mark div.controls { 
   text-align: left;}
-div#SBOOKHUD form.mark div.tags { 
+form.mark div.tags { 
   text-align: left;}
-div#SBOOKHUD form.mark div.xrefs { 
+form.mark div.xrefs { 
   height: 80px; text-align: right;}
-div#SBOOKHUD form.mark div.xrefs input[type='TEXT'][name="XREFS"] { 
+form.mark div.xrefs input[type='TEXT'][name="XREFS"] { 
   width: 90%; margin-left: 0px; display: block; 
   vertical-align: top;}
-div#SBOOKHUD form.mark div.xrefs div.xref { 
+form.mark div.xrefs div.xref { 
   width: 90%; display: block; text-align: left; }
 
 div#SBOOKHUD.mark form.mark div.head { 
   padding-top: 4px; margin-top: 2px; border-top: silver solid 2px;}
 
-div#SBOOKHUD form.mark div.tribebar { 
+form.mark div.tribebar { 
   text-align: left; clear: right; margin-bottom: 4px; margin-top: 3px;}
-div#SBOOKHUD form.mark div.tribebar
+form.mark div.tribebar
   select[NAME='TRIBE'] { width: 50%; max-width: 50%; clear: none;}
 
 div#SBOOKHUD div#SBOOKMARK div.needlogin {
@@ -717,19 +721,14 @@ div#SBOOKHUD div#SBOOKMARK div.needlogin a.login {
   display: inline;}
 body.nosbookuser div#SBOOKHUD div#SBOOKMARK div.needlogin a.login {
   display: inline;}
-div#SBOOKHUD form.mark div.tribebar
+form.mark div.tribebar
   select[NAME='status'] { float: right; clear: none;}
-div#SBOOKHUD form.mark div.tribebar
+form.mark div.tribebar
   span.checkspan { float: right;}
-div#SBOOKHUD form.mark div.tribebar a.nopost {
+form.mark div.tribebar a.nopost {
   font-size: 16px; margin-left: 4px; float: right; 
   color: pink; font-weight: bold;
   text-decoration: line-through;}
-
-div#SBOOKMARK div.msg {}
-div#SBOOKMARK input[TYPE='TEXT'] { width: auto;}
-div#SBOOKMARK div.tags input[TYPE='SUBMIT'] {
-  float: right;}
 
 /* For scrollable results */
 
@@ -1072,6 +1071,7 @@ div.sbooksummaries a.summary { display: block;}
 div.sbooksummaries.onepassage .tocblock .tochead {display:none;}
 div.sbooksummaries .tocblock.hidden { display: none;}
 div.sbooksummaries .summary.hidden { display: none;}
+div.sbooksummaries .summary.gloss { min-height: 50px;}
 div.sbooksummaries .summary .info { 
   float: right;}
 div.sbooksummaries .summary div.info { 
