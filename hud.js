@@ -153,6 +153,7 @@ function sbookHUDMode(mode)
   if (sbook_trace_mode)
     fdjtLog("[%fs] sbookHUDMode %o, cur=%o dbc=%o",
 	    fdjtET(),mode,sbook_mode,document.body.className);
+  if (sbook_preview) sbookStopPreview();
   if (mode)
     if (mode===sbook_mode) {}
     else {
