@@ -537,7 +537,7 @@ body.preview img.hudbutton { opacity: 0.05;}
 div#SBOOKHUD div.hud#SBOOKMARK {
   margin-bottom: 8px;}
 
-div#SBOOKHUD div.hud#SBOOKMARK span.dterm { color: yellow;}
+div#SBOOKHUD span.dterm { color: yellow;}
 body.nosbookuser .tab#SBOOKLOGOUT { display: none;}
 
 body span.tab[CONTENTID='APPLOGIN'] { display: none;}
@@ -1180,7 +1180,7 @@ span.glossmark img {
    position: relative; right: 0px;
    max-width: 100%; max-height: 100%;
    vertical-align: top; text-align: right;}
-span.glossmark img.tiny { display: none; width: auto;}
+span.glossmark img.tiny { display: none; }
 .sbookfocus span.glossmark { opacity: 0.75;}
 .sbookfocus span.glossmark img.big { }
 .sbookfocus span.glossmark img.tiny { border: none; }
