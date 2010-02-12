@@ -419,17 +419,22 @@ div#SBOOKHUD div#SBOOKAPP a:visited { color: lightblue;}
 div#SBOOKHUD div#SBOOKAPP a:hover { text-decoration: underline;}
 div#SBOOKHUD div#SBOOKAPP div.tabbar {
     text-align: center; font-size: 125%; z-index: 300;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP {
+div#SBOOKHUD div#SBOOKAPP a#SBOOKAPPTOP {
   position: absolute; top: 0px; left: 0px; right: 0px; z-index: 225;
-  display: block;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERNAME {
-  position: absolute; top: 3px; left: 3px; z-index: 250;
+  display: block; text-decoration: none;}
+div#SBOOKHUD div#SBOOKAPP a#SBOOKAPPTOP:hover { text-decoration: none;}
+div#SBOOKHUD div#SBOOKAPP a#SBOOKAPPTOP #SBOOKIBELONGTO {
+  font-family: times,serif; font-variant: small-caps; color: white;
+  position: absolute; top: 3px; left: 3px; z-index: 250; font-size: 80%;
   padding-left: 4px;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
+div#SBOOKHUD div#SBOOKAPP a#SBOOKAPPTOP #SBOOKIBELONGTO #SBOOKUSERNAME {
+  font-family: helvetica,arial,sans; font-variant: normal; font-size: 125%;
+  color: lightblue;}
+div#SBOOKHUD div#SBOOKAPP a#SBOOKAPPTOP #SBOOKIBELONGTO #SBOOKUSERNAME:hover {
+  text-decoration: underline;}
+div#SBOOKHUD div#SBOOKAPP a#SBOOKAPPTOP #SBOOKUSERPIC {
   position: absolute; top: 3px; right: 3px; z-index: 250;
   height: 40px;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC:hover {
-  height: auto;} 
 
 div#SBOOKHUD div#SBOOKAPP div.message {
   text-align: center; color: orange; font-weight: bold;}
