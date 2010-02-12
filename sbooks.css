@@ -1,4 +1,4 @@
-/* -*- Mode: CSS; -*- */
+* -*- Mode: CSS; -*- */
 
 /* Copyright (C) 2009 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
@@ -324,6 +324,25 @@ div#SBOOKHUD div.hudblock#SBOOKFEEDS { display: block;}
 div#SBOOKHUD.glosses div.hudblock#SBOOKFEEDS { 
   opacity: 0.9;}
 
+/* The Bookmark HUD */
+
+div#SBOOKHUD div#SBOOKMARKHUD {
+  position: fixed;
+  right: 0px; top: 75px; left: 75px;
+  z-index: 300; overflow: auto;
+  margin: 0px; padding: 3px;
+  border: inset black 4px; border-right: none;
+  -khtml-border-top-left-radius: 6px; 
+  -webkit-border-top-left-radius: 6px; 
+  -moz-border-radius-topleft: 6px; 
+  border-top-left-radius: 6px; 
+  -khtml-border-bottom-left-radius: 6px;
+  -webkit-border-bottom-left-radius: 6px; 
+  -moz-border-radius-bottomleft: 6px; 
+  border-bottom-left-radius: 6px;
+  display: none;}
+div#SBOOKHUD.mark div#SBOOKMARKHUD { display: block; opacity: 0.9;}
+
 /* The Glosses HUD */
 
 div#SBOOKHUD div#SBOOKGLOSSES {
@@ -343,7 +362,9 @@ div#SBOOKHUD div#SBOOKGLOSSES {
   border-bottom-right-radius: 6px;
   display: none;}
 div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK {
-    margin-top: 6px; border-top: dashed blue 3px; padding-top: 8px;}
+    margin-top: 6px; border-top: dashed blue 3px; padding-top: 8px;
+    /* Unindent */
+    margin-left: -12px;}
 div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK div.markform {
   min-height: 60px;}
 div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK form.mark.closed div.markform {
@@ -354,8 +375,6 @@ div#SBOOKHUD.mark div#SBOOKGLOSSES div#SBOOKMARK { display: block;}
 div#SBOOKHUD div#SBOOKGLOSSES.onepassage div#SBOOKMARK { display: block;}
 div#SBOOKHUD.glosses div#SBOOKGLOSSES {
   display: block; border-left: none;}
-div#SBOOKHUD.mark div#SBOOKGLOSSES {
-  display: block;}
 body.preview div#SBOOKHUD.glosses div#SBOOKGLOSSES {
   display: block; }
 
@@ -494,9 +513,9 @@ body.hudup div#SBOOKHUD.minimal div.hudblock#SBOOKTAGS { display: block;}
 
 div#SBOOKHUD.mark div.hudblock#SBOOKTOC { display: none;}
 div#SBOOKHUD.mark div.hudblock#SBOOKSEARCH { display: none;}
+div#SBOOKHUD.mark div.hudblock#SBOOKGLOSSES { display: none;}
 
-div#SBOOKHUD.mark div.hudblock#SBOOKMARK { 
-  opacity: 0.9; z-index: 200;}
+div#SBOOKMARK {}
 
 /* Preview rules */
 
@@ -603,9 +622,9 @@ form.mark div.markform div.metastuff span.checkspan input[type='checkbox'] {
   margin: 1px;}
 form.mark div.markform div.metastuff input[TYPE='SUBMIT'] {
     float: right; padding: 1px; margin: 1px; margin-bottom: 3px; font-size: 80%; font-weight: bold;}
-form.mark div.markform div.metastuff div.controls { float: left;}
+form.mark div.markform div.metastuff div.controls { float: left; max-width: 70%;}
 form.mark div.markform div.metastuff div.buttons { float: right;}
-form.mark div.markform div.metastuff div.controls select { max-width: 100%;}
+form.mark div.markform div.metastuff div.controls select { max-width: 80%;}
 form.mark div.markform div.metastuff img.button { float: right; }
 
 form.mark.closed div.markform div.metastuff { display: none;}
@@ -1019,6 +1038,7 @@ div.sbooksearch span.sectname {
 div.sbooksummaries div#SBOOKMARKCLOUD .dterm { font-weight: normal;}
 div#SBOOKMARKCLOUD.completions { display: block;}
 div#SBOOKMARKCLOUD span.sectname {
+  white-space: nowrap;
   font-weight: bold; font-style: italic;  font-size: 70%;
   background-color: ivory; color: purple; max-width: 25%;
   padding: 0px; padding-left: 3px; padding-right: 3px; 
@@ -1171,22 +1191,6 @@ body.sparsebook span.glossmark img.tiny { display: inline;}
 body.sparsebook span.glossmark:hover { }
 body.sparsebook span.glossmark:hover img.big { display: inline;}
 body.sparsebook span.glossmark:hover img.tiny { display: none;}
-
-/*
-span.glossmark img.big { width: 16px;}
-span.glossmark:hover img.big { width: 32px;}
-*/
-
-/*
-span.glossmark img.tiny { display: block;}
-span.glossmark img.big { 
-  width: 32px; vertical-align: top; text-align: center;
-  display: none;}
-span.glossmark img.tiny { 
-  vertical-align: top; text-align: center;}
-span.glossmark:hover img.big { display: block;}
-span.glossmark:hover img.tiny { display: none;}
-*/
 
 span.glossmark:hover img.big { display: block;}
 span.glossmark:hover img.tiny { display: none;}

@@ -87,6 +87,7 @@ function createSBOOKHUD()
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
        fdjtDiv("#SBOOKSEARCH.hudblock.hud"),
        fdjtDiv("#SBOOKTAGS.hudblock.hud.tags"),
+       fdjtDiv("#SBOOKMARKHUD.hudblock.hud"),
        sbookCreateAppHUD(),
        prev_button,next_button);
 

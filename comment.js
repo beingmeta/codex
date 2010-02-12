@@ -242,6 +242,8 @@ function sbookCreateMarkHUD(classinfo)
     form.reset();
     fdjtCheckSpan_setup($("SBOOKMARKCLOUD"));
    win.sbookHUDMode(false);};
+  // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
+  // hideicon.onclick="fdjtAddClass('SBOOKMARK','hidden')"; 
   return fdjtDiv(classinfo||".mark",need_login,messages_elt,form);
 }
 
@@ -503,7 +505,6 @@ function sbookMarkMode_onclick_handler(mode)
 
 function sbookMark_onfocus(evt)
 {
-  sbookHUDMode("mark");
   sbookMarkHUDSetup(false);
   fdjtAutoPrompt_onfocus(evt);
   fdjtDropClass("SBOOKMARKFORM","closed");
@@ -584,9 +585,11 @@ function sbook_mark(target,gloss,excerpt)
 		  ((gloss.msg)?(fdjtSpan("msg",gloss.msg)):(false)));
 	fdjtReplace("SBOOKMARKRELAYBLOCK",glossblock);}}
   else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
+  var markhud=$("SBOOKMARKHUD");
+  fdjtAppend("SBOOKMARKHUD",$("SBOOKMARK"));
+  sbookHUDMode("mark");
   // sbookSelectSummaries(sbookGlossesHUD,false,target.id);
   // fdjtAddClass(sbookHUD,"onepassage");
-  // sbookHUDMode("mark");
   $("SBOOKMARKINPUT").focus();
 }
 
