@@ -124,7 +124,7 @@ function sbookEveryoneButton_onclick(evt)
     else sbookHUDMode("glosses");}
   else if (sbook_mode==='glosses') sbookHUDMode(false);
   else sbookHUDMode("glosses");
-  fdjtDropClass(sbookHUD,"targeted");
+  fdjtDropClass(sbookHUD,"onepassage");
   evt.cancelBubble=true;
   if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;  
 }
@@ -190,7 +190,7 @@ function sbookFeeds_onclick(evt)
   else {
     sbookSelectSummaries($("SBOOKGLOSSES"),sbook_sources);
     sbookHUDMode("glosses");}
-  fdjtDropClass(sbookHUD,"targeted");
+  fdjtDropClass(sbookGlossesHUD,"onepassage");
   if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
   evt.cancelBubble=true;
 }
@@ -292,7 +292,7 @@ function sbookGlossmark_onclick(evt)
   if ((evt.shiftKey)||(evt.ctrlKey))
     sbookSelectSummaries(sbookGlossesHUD,sbook_sources,target.id);
   else sbookSelectSummaries(sbookGlossesHUD,false,target.id);
-  fdjtAddClass(sbookHUD,"targeted");
+  fdjtAddClass(sbookGlossesHUD,"onepassage");
   sbookSetTarget(target);
   sbook_glossmark=$P(".glossmark",evt.target);
   sbookMarkHUDSetup(target);

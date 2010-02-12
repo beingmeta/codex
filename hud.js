@@ -195,13 +195,13 @@ function sbookPreviewLocation(elt)
     progress.style.left=((Math.round(ratio*10000))/100)+"%";}
 }
 
-function sbookPreview(elt,nomode)
+function sbookPreview(elt,nomode,offset)
 {
   var cxt=false;
   // sbook_trace("sbookPreview",elt);
   if (elt===false) return sbookStopPreview();
   /* No longer needed with TOC at the bottom */
-  var offset=sbookDisplayOffset();
+  if (!(offset)) offset=sbookDisplayOffset();
   sbook_preview=true;
   sbookPreviewLocation(elt);
   if ((elt.getAttribute) &&
@@ -218,10 +218,36 @@ function sbookPreviewNoMode(elt)
   return sbookPreview(elt,true);
 }
 
+function sbookSetPreview(flag)
+{
+  if (flag) fdjtAddClass(document.body,"preview");
+  else fdjtDropClass(document.body,"preview");
+}
+
+function sbookStartPreview(evt)
+{
+  fdjtCancelEvent(evt);
+  var ref=sbookGetRef($T(evt));
+  if (ref) sbookPreview(ref);
+}
+
+
+function sbookStopPreview(evt)
+{
+  if (evt) fdjtCancelEvent(evt);
+  fdjtDropClass(document.body,"preview");
+  fdjtScrollRestore();
+  window.setTimeout("sbook_preview=false;",100);
+}
+
+/* Preview handlers */
+
 function sbookPreview_onmouseover(evt)
 {
   evt=evt||event||null;
   var target=$T(evt); var ref;
+  if (sbook_accessible) return;
+  if ((sbook_tablet)&&(evt.button!==1)) return;
   while (target)
     if (target.sbook_ref) break;
     else if (target.getAttribute("PREVIEW")) break;
@@ -239,12 +265,15 @@ function sbookPreview_onmouseover(evt)
 function sbookPreview_onmouseout(evt)
 {
   evt=evt||event||null;
-  fdjtDelayHandler(300,sbookPreview,false,document.body,"preview");
+  if (sbook_preview)
+    fdjtDelayHandler(300,sbookPreview,false,document.body,"preview");
 }
 
 function sbookPreview_onclick(evt)
 {
   evt=evt||event||null;
+  // If we're not being accessible, this is handled by mousedown
+  if (!(sbook_accessible)) return;
   var target=$T(evt); var ref;
   while (target)
     if (target.sbook_ref) break;
@@ -260,17 +289,19 @@ function sbookPreview_onclick(evt)
   sbookScrollTo(ref);
 }
 
-function sbookSetPreview(flag)
+function sbookPreview_onmousedown(evt)
 {
-  if (flag) fdjtAddClass(document.body,"preview");
-  else fdjtDropClass(document.body,"preview");
+  if (sbook_accessible) return;
+  else if ((evt.button>1)||(evt.ctrlKey)||(evt.shiftKey)) return;
+  if (sbook_preview) sbookStopPreview(evt);
+  else sbookStartPreview(evt);
 }
 
-function sbookStopPreview(ignored)
+function sbookPreview_onmouseup(evt)
 {
-  fdjtScrollRestore();
-  fdjtDropClass(document.body,"preview");
-  window.setTimeout("sbook_preview=false;",100);
+  if (sbook_accessible) return;
+  if ((evt.button>1)||(evt.ctrlKey)||(evt.shiftKey)) return;
+  sbookStopPreview(evt);
 }
 
 // What to use as the glossmark image URI.  This 'image' 

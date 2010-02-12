@@ -74,6 +74,9 @@ function sbook_onmousedown(evt)
   var target=$T(evt);
   // Ignores clicks on the HUD
   if (sbookInUI(target)) return;
+  else if (sbook_preview) {
+    sbookStopPreview(evt);
+    return;}
   // If the HUD is up, clicks on the content just hide the HUD
   else if ((sbook_mode)&&(sbook_mode!=="minimal")) {
     sbookHUDMode(false);
@@ -136,13 +139,13 @@ function sbookTabletMode(flag)
 {
   if (flag) {
     sbook_edge_taps=true;
-    sbook_istablet=true;
+    sbook_tablet=true;
     sbook_gestures=false;
     fdjtSetCookie("sbooktablet","yes",false,"/");
     fdjtAddClass(document.body,"tablet");}
   else {
     sbook_edge_taps=false;
-    sbook_istablet=false;
+    sbook_tablet=false;
     sbook_gestures=false;
     fdjtClearCookie("sbooktablet","/");
     fdjtDropClass(document.body,"tablet");}

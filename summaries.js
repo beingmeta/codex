@@ -34,6 +34,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 */
 
 var sbook_eye_icon="EyeIcon25.png";
+var sbook_preview_icon="binoculars24x24.png";
 var sbook_small_eye_icon="EyeIcon13x10.png";
 var sbook_details_icon="detailsicon16x16.png";
 var sbook_outlink_icon="outlink16x16.png";
@@ -80,12 +81,11 @@ function sbookFeedImage(info)
 function sbookSummaryHead(target,head,eltspec,extra)
 {
   var head=sbookGetHead(target);
-  var eye=fdjtImage(sbicon(sbook_eye_icon),"eye","(\u00b7)",
-		    _("previewing: move mouse to restore"));
+  var preview=sbookPreviewIcon(target);
   if (typeof extra === "undefined")
     if (target===head) extra="\u00A7";
     else extra="\u00B6";
-  var basespan=fdjtSpan(false,((extra)&&(fdjtSpan("extra",extra))),eye);
+  var basespan=fdjtSpan(false,preview,((extra)&&(fdjtSpan("extra",extra))));
   var info;
   if (info=sbook_getinfo(head)) {
     if (info.title) fdjtAppend(basespan,fdjtSpan("headtext",info.title));
@@ -104,10 +104,14 @@ function sbookSummaryHead(target,head,eltspec,extra)
       var text=fdjtTextify(target,true);
       if (text.length>50) fdjtAppend(basespan,text.slice);
       else fdjtAppend(basespan,fdjtSpan("headtext",text));}}
-  eye.onmouseover=sbookPreview_onmouseover;
-  eye.onmouseout=sbookPreview_onmouseout;
+  preview.onmousedown=sbookStartPreview;
+  preview.onmouseup=sbookStopPreview;
+  preview.onmouseout=sbookStopPreview;
+  preview.onclick=fdjtCancelEvent;
+  preview.title='preview';
   basespan.onclick=sbookSummary_onclick;
   basespan.sbook_ref=target;
+  basespan.title='press/click to go';
   var tocblock=((eltspec)?(fdjtNewElt(eltspec,basespan)):
 		(fdjtDiv("tochead",basespan)));
   tocblock.blocktarget=target;
@@ -324,15 +328,17 @@ function sbookExcerptSpan(excerpt)
 
 function sbookPreviewIcon(target,icon,alt)
 {
-  var eye=fdjtImage(sbicon(icon||sbook_small_eye_icon),
-		    "preview",
-		    alt||"(\u00b7)",
-		    _("previewing: move mouse to restore"));
-  eye.onmouseover=sbookPreview_onmouseover;
-  eye.onmouseout=sbookPreview_onmouseout;
-  eye.onclick=sbookSummary_onclick;
-  eye.sbook_ref=target.id;
-  return eye;
+  var preview=
+    fdjtImage(sbicon(sbook_preview_icon),"previewicon",
+	      alt||"see",_("preview"));
+  preview.onmousedown=sbookPreview_onmousedown;
+  preview.onmouseover=sbookPreview_onmouseover;
+  preview.onmouseout=sbookPreview_onmouseout;
+  preview.onmouseup=sbookPreview_onmouseup;
+  preview.onclick=sbookPreview_onclick;
+  preview.sbook_ref=target.id;
+  preview.title='press to preview';
+  return preview;
 }
 
 function sbookDetailsButton(excerpt)
@@ -379,9 +385,6 @@ function sbookRelay_onclick(evt)
 function sbookSelectSummaries(results_div,sources,idroot)
 {
   var blocks=$$(".tocblock",results_div);
-  if ((idroot)||(sources))
-    fdjtAddClass(results_div,"targeted");
-  else fdjtDropClass(results_div,"targeted");
   var i=0; while (i<blocks.length) {
     var block=blocks[i++];  var empty=true;
     var summaries=$$(".summary",block);

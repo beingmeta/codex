@@ -584,7 +584,7 @@ function sbook_mark(target,gloss,excerpt)
 	fdjtReplace("SBOOKMARKRELAYBLOCK",glossblock);}}
   else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
   sbookSelectSummaries(sbookGlossesHUD,false,target.id);
-  fdjtAddClass(sbookHUD,"targeted");
+  fdjtAddClass(sbookHUD,"onepassage");
   sbookHUDMode("mark");
   $("SBOOKMARKINPUT").focus();
 }

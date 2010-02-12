@@ -186,11 +186,13 @@ var sbook_search_focus=false;
 // Whether to display verbose tool tips
 var sbook_noisy_tooltips=false;
 // Whether the UI is tablet based
-var sbook_istablet=false;
+var sbook_tablet=false;
 // Whether to do gesture recognition
 var sbook_gestures=false;
 // Whether to handle edge taps/clicks
 var sbook_edge_taps=false;
+// Modifies some gestures to be more accessible
+var sbook_accessible=false;
 
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
@@ -1018,7 +1020,7 @@ function sbook_onkeydown(evt)
       sbook_last_mode=sbook_mode;
       sbookHUDMode(false);
       fdjtDropClass(document.body,"hudup");
-      sbookStopPreview();
+      sbookStopPreview(evt);
       $("SBOOKSEARCHTEXT").blur();}
     else if (sbook_last_mode) sbookHUDMode(sbook_last_mode);
     else {
