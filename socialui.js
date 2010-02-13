@@ -65,8 +65,7 @@ function sbookCreateFeedHUD(classinfo,feeds)
   if (!(feeds)) feeds=sbook_conversants;
   if (!(classinfo)) classinfo=".feeds.hudblock.hud#SBOOKFEEDS";
   var app_button=
-    fdjtImage(sbicon("sbooksappicon40x40.png"),
-	      ".button.app","?","help/social/identity app");
+    fdjtImage(sbicon("sbooksappicon40x40.png"),".button.app","?","Help, settings, etc");
   var login_button=
     fdjtImage(sbicon("sbooksconnecticon40x40.png"),".button.login","?","login");
   var everyone_button=

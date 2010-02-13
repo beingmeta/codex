@@ -804,7 +804,7 @@ function sbookSetHead(head)
     if (sbook_trace_focus) sbook_trace("sbookSetHead",head);
     sbookTOCDisplay(head,sbook_location);
     if ((sbook_hud_flash)&&(!(sbook_mode)))
-      fdjtFlash("SBOOKTOC",sbook_hud_flash,"flash");
+      sbookHUDFlash("toc",sbook_hud_flash);
     window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
@@ -1150,7 +1150,7 @@ function sbook_onmouseover(evt)
   if ((target===null) || (target===sbook_root) ||
       (!((target) && ((target.Xoff) || (target.Yoff))))) 
     target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY,evt.ctrlKey);
-  fdjtDelayHandler
+  fdjtDelay
     (sbook_focus_delay,sbookTrackFocus,target,document.body,"setfocus");
 }
 
@@ -1177,7 +1177,7 @@ function sbook_onmousemove(evt)
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
   target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY,evt.ctrlKey);
-  fdjtDelayHandler
+  fdjtDelay
     (sbook_focus_delay,sbookTrackFocus,target,document.body,"setfocus");
 }
 
@@ -1193,7 +1193,7 @@ function sbook_onscroll(evt)
   var xoff=scrollx+sbook_last_x;
   var yoff=scrolly+sbook_last_y;
   var target=sbookGetXYFocus(xoff,yoff,evt.ctrlKey);
-  fdjtDelayHandler
+  fdjtDelay
     (sbook_focus_delay,sbookTrackFocus,target,document.body,"setfocus");
 }
 
@@ -1538,6 +1538,8 @@ function sbookSetup()
   if (!(_sbook_setup_start)) _sbook_setup_start=new Date();
   if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
+  if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
+  else fdjtAddClass(document.body,"nosbookuser");
   var fdjt_done=new Date();
   fdjtAppend(document.body,fdjtDiv("leading bottom"," "));
   fdjtPrepend(document.body,fdjtDiv("leading top"," "));  
@@ -1595,7 +1597,7 @@ function sbookSetup()
   window.onscroll=sbook_onscroll;
   // These are for gesture recognition and adding glosses
   window.onmousedown=sbook_onmousedown;
-  // window.onmouseup=sbook_onmouseup;
+  window.onmouseup=sbook_onmouseup;
   // window.onclick=sbook_onclick;
   window.ondblclick=sbook_ondblclick;
   // For command keys
@@ -1625,7 +1627,7 @@ function sbookGlossesSetup()
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Setting up glossing cloud..."));
   fdjtReplace("SBOOKMARKCLOUD",sbookMarkCloud());
   sbookSetupGlossServer();
-  if (!(sbook_user)) fdjtAddClass(document.body,"nosbookuser");
+  if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
   if ($("SBOOKFRIENDLYOPTION"))
     if (sbook_user)
       $("SBOOKFRIENDLYOPTION").value=sbook_user;
@@ -1683,7 +1685,7 @@ function sbookUserSetup()
     return;}
   if ((sbook_user_data)&&(sbook_user_data.oid))
     fdjtImportOID(sbook_user_data);
-  fdjtDropClass(document.body,"nosbookuser");  
+  if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
   var userinfo=fdjtOIDs[sbook_user];
   var username=userinfo.name;
   if ((!(sbook_user_img))&&(userinfo.pic))

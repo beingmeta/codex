@@ -91,10 +91,15 @@ function sbook_onmousedown(evt)
     var focus=sbookGetFocus(target,evt.altKey);
     if (focus) {
       sbookSetTarget(focus);
-      sbookHUDMode("minimal");}
+      sbookHUDFlash("minimal");}
     else {
       sbookSetTarget(false);
       sbookHUDMode(false);}}
+}
+function sbook_onmouseup(evt)
+{
+  evt=evt||event||null;
+  sbookHUDFlash(false,1000);
 }
 
 function sbook_ondblclick(evt)

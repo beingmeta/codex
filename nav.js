@@ -182,7 +182,7 @@ function sbookTOC_onmouseover(evt)
   sbookHUD_onmouseover(evt);
   fdjtCoHi_onmouseover(evt);
   if (target===null) return;
-  fdjtDelayHandler(250,sbookPreviewNoMode,target,document.body,"previewing");
+  fdjtDelay(250,sbookPreviewNoMode,target,document.body,"previewing");
 }
 
 function sbookTOC_onmouseout(evt)
@@ -191,7 +191,7 @@ function sbookTOC_onmouseout(evt)
   // sbook_trace("sbookTOC_onmouseout",evt);
   sbookHUD_onmouseout(evt);
   fdjtCoHi_onmouseout(evt);
-  fdjtDelayHandler(250,sbookStopPreview,false,document.body,"previewing");
+  fdjtDelay(250,sbookStopPreview,false,document.body,"previewing");
   var rtarget=evt.relatedTarget;
   if (!(rtarget)) return;
   while (rtarget)

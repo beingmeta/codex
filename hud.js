@@ -186,6 +186,24 @@ function sbookHUDToggle(mode)
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
 }
 
+function sbookHUDFlash(mode,usecs)
+{
+  fdjtTrace("[%f] sbookHUDFlash %s cur=%s usecs=%o",fdjtET(),mode,sbook_mode,usecs);
+  if (mode) {
+    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
+    fdjtAddClass(document.body,"hudup");
+    if (usecs) fdjtDelay(usecs,sbookHUDFlash,false,sbookHUD,"flash");}
+  else if (usecs)
+    fdjtDelay(usecs,sbookHUDFlash,false,sbookHUD,"flash");
+  else if (sbook_mode)
+    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,sbook_mode);
+  else {
+    fdjtDropClass(sbookHUD,sbookHUDMode_pat);
+    fdjtDropClass(document.body,"hudup");}
+}
+
+/* Previewing */
+
 function sbookPreviewLocation(elt)
 {
   var topbar=$("SBOOKTOP");
@@ -275,14 +293,14 @@ function sbookPreview_onmouseover(evt)
     else if (evt.clientY>refheight) {
       refarg.preview_off=refheight-evt.clientY;
       ref=refarg;}}
-  fdjtDelayHandler(300,sbookPreview,ref,document.body,"preview");
+  fdjtDelay(300,sbookPreview,ref,document.body,"preview");
 }
 
 function sbookPreview_onmouseout(evt)
 {
   evt=evt||event||null;
   if (sbook_preview)
-    fdjtDelayHandler(300,sbookPreview,false,document.body,"preview");
+    fdjtDelay(300,sbookPreview,false,document.body,"preview");
 }
 
 function sbookPreview_onclick(evt)
@@ -419,7 +437,7 @@ function sbookCreateAppHUD(eltspec)
     var target=$T(evt);
     sbookHelpHighlight(false);};
   div.innerHTML=sbook_apptext;
-  fdjtDelayHandler(1500,sbookUpdateAppHUD,false,sbook_root);
+  fdjtDelay(1500,sbookUpdateAppHUD,false,sbook_root);
   return div;
 }
 
