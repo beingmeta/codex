@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_pages_id="$Id$";
-var sbooks_pages_version=parseInt("$Revision$".slice(10,-1));
+var sbooks_pagination_id="$Id$";
+var sbooks_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
