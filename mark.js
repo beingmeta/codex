@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_comment_id="$Id$";
-var sbooks_comment_version=parseInt("$Revision$".slice(10,-1));
+var sbooks_glossmark_id="$Id$";
+var sbooks_glossmark_version=parseInt("$Revision$".slice(10,-1));
 
 /* This file implements comment dialogs */
 

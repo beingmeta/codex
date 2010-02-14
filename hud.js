@@ -188,7 +188,6 @@ function sbookHUDToggle(mode)
 
 function sbookHUDFlash(mode,usecs)
 {
-  fdjtTrace("[%f] sbookHUDFlash %s cur=%s usecs=%o",fdjtET(),mode,sbook_mode,usecs);
   if (mode) {
     fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
     fdjtAddClass(document.body,"hudup");

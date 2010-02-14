@@ -263,10 +263,10 @@ or methods.</p>
   </div>
 </div>
 <div class='setting'>
-  <span class='checkspan' onchange="javascript:sbookSmartPaging($('SBOOKSMARTPAGE').checked);">
-   <input TYPE='checkbox' NAME='SMARTPAGE' VALUE='yes' ID='SBOOKSMARTPAGE'/>Smart Paging</span>
+  <span class='checkspan' onchange="javascript:sbookPageView((!($('SBOOKNOPAGEVIEW').checked)));">
+   <input TYPE='checkbox' NAME='PAGEVIEW' VALUE='no' ID='SBOOKNOPAGEVIEW'/>Disable Page view</span>
   <div class='explanation'>
-  Advance to the next heading or next page, whichever is closer.
+  Don't do dynamic pagination when displaying pages
   </div>
 </div>
 <div class='buttons'></div>

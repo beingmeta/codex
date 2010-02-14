@@ -232,10 +232,19 @@ var sbook_use_spanbars=true;
 var sbook_list_subsections=true;
 // Electro highlights
 var sbook_electric_spanbars=false;
-// Whether to do smart paging
-var sbook_smart_paging=true;
 // Focus rules
 var sbook_focus_rules=[];
+// Whether to do dynamic pagination
+var sbook_pageview=true;
+
+/* Some layout information */
+var sbook_top_margin_px=40;
+var sbook_bottom_margin_px=40;
+var sbook_pageheads=false;
+var sbook_tocmajor=1;
+var sbook_pageblocks=false;
+var sbook_avoid_pagehead=false;
+var sbook_avoid_pagefoot=false;
 
 /* Debugging flags */
 
@@ -348,7 +357,7 @@ function sbook_needinfo(elt)
 
 /* Access functions */
 
-var sbookUIclasses=/(\bhud\b)|(\bglossmark\b)|(\bleading\b)/;
+var sbookUIclasses=/(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bsbookmargin\b)/;
 
 function sbookIsUIElement(elt)
 {
@@ -665,6 +674,7 @@ function sbook_scanner(child,scanstate,skiptoc)
       var i=0; while (i<children.length)
 		 sbook_scanner(children[i++],scanstate,skiptoc);}}
   else {}
+  if (level) child.toclevel=level;
   var info=sbook_getinfo(child);
   // Tagging
   var headtag=((info.title) && ("\u00A7"+info.title));
@@ -803,8 +813,6 @@ function sbookSetHead(head)
     var headinfo=sbook_getinfo(head);
     if (sbook_trace_focus) sbook_trace("sbookSetHead",head);
     sbookTOCDisplay(head,sbook_location);
-    if ((sbook_hud_flash)&&(!(sbook_mode)))
-      sbookHUDFlash("toc",sbook_hud_flash);
     window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
@@ -996,6 +1004,7 @@ function sbookScrollTo(elt,cxt)
   if ((!cxt) || (elt===cxt))
     fdjtScrollTo(elt,sbookGetStableId(elt),false,true,sbookDisplayOffset());
   else fdjtScrollTo(elt,sbookGetStableId(elt),cxt,true,sbookDisplayOffset());
+  if (sbook_pageview) sbookFramePage();
 }
 
 function sbookGoTo(target)
@@ -1007,6 +1016,8 @@ function sbookGoTo(target)
   if (head) sbookScrollTo(target,head);
   else sbookScrollTo(target);
   sbookHUDMode(false);
+  if ((sbook_hud_flash)&&(!(sbook_mode)))
+    sbookHUDFlash("minimal",sbook_hud_flash);
 }
 
 /* Keyboard handlers */
@@ -1356,6 +1367,32 @@ function sbookGetSettings()
     var selectors=fdjtSemiSplit(terminal_rules);
     var i=0; while (i<selectors.length) {
       sbook_terminals.push(fdjtParseSelector(selectors[i++]));}}
+  var tocmajor=fdjtGetMeta("SBOOKTOCMAJOR",true);
+  if (tocmajor) sbook_tocmajor=parseInt(tocmajor);
+  var sbook_pagehead_rules=fdjtGetMeta("SBOOKPAGEHEADS",true);
+  if (sbook_pagehead_rules) {
+    var selectors=fdjtSemiSplit(terminal_rules);
+    sbook_pageheads=[];
+    var i=0; while (i<selectors.length) {
+      sbook_pageheads.push(fdjtParseSelector(selectors[i++]));}}
+  var sbook_pageblock_rules=fdjtGetMeta("SBOOKPAGEBLOCKS",true);
+  if (sbook_pageblock_rules) {
+    var selectors=fdjtSemiSplit(terminal_rules);
+    sbook_pageblocks=[];
+    var i=0; while (i<selectors.length) {
+      sbook_pageblocks.push(fdjtParseSelector(selectors[i++]));}}
+  var sbook_nobefore_rules=fdjtGetMeta("SBOOKAVOIDTOP",true);
+  if (sbook_nobefore_rules) {
+    var selectors=fdjtSemiSplit(sbook_nobefore_rules);
+    sbook_avoid_pagehead=[];
+    var i=0; while (i<selectors.length) {
+      sbook_avoid_pagehead.push(fdjtParseSelector(selectors[i++]));}}
+  var sbook_noafter_rules=fdjtGetMeta("SBOOKAVOIDBOTTOM",true);
+  if (sbook_noafter_rules) {
+    var selectors=fdjtSemiSplit(sbook_noafter_rules);
+    sbook_avoid_pagefoot=[];
+    var i=0; while (i<selectors.length) {
+      sbook_avoid_pagefoot.push(fdjtParseSelector(selectors[i++]));}}
   var tocmax=fdjtGetMeta("SBOOKTOCMAX",true);
   if (tocmax) sbook_tocmax=parseInt(tocmax);
   if ((fdjtGetCookie("SBOOKNOFLASH"))||
@@ -1394,6 +1431,7 @@ function sbookGetSettings()
 	if (fdjtNextElement(titlepage)) {
 	  sbook_start=fdjtNextElement(titlepage); break;}
 	else titlepage=titlepage.parentNode;}
+
 }
 
 function sbookLookupServer(string)
@@ -1525,6 +1563,7 @@ function sbookInitLocation()
     target.scrollIntoView();
     sbookTrackFocus(target);}
   else sbookSetFocus(sbook_start||sbook_root);
+  if (sbook_pageview) sbookFramePage();
 }
 
 /* Initialization */
@@ -1541,9 +1580,8 @@ function sbookSetup()
   if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
   else fdjtAddClass(document.body,"nosbookuser");
   var fdjt_done=new Date();
-  fdjtAppend(document.body,fdjtDiv("leading bottom"," "));
-  fdjtPrepend(document.body,fdjtDiv("leading top"," "));  
   sbookGetSettings();
+  sbookPageSetup();
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
   createSBOOKHUD();
   if ((document.location.search)&&
@@ -1557,9 +1595,11 @@ function sbookSetup()
   if (fdjtGetCookie("sbooksparse")==="yes") {
     $("SBOOKSPARSE").checked=true;
     sbookSparseMode(true);}
-  if (fdjtGetCookie("sbooksmartpage")==="yes") {
-    $("SBOOKSMARTPAGE").checked=true;
-    sbookSmartPaging(true);}
+  if (fdjtGetCookie("sbookpageview")==="no")
+    sbookPageView(false);
+  else if (fdjtGetCookie("sbookpageview")==="yes") 
+    sbookPageView(true);
+  else sbookPageView(sbook_pageview);
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));
