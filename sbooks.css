@@ -41,12 +41,14 @@ h3.sbookhead, h4.sbookhead { text-decoration: overline;}
 */
 body.sbookhead { text-decoration: none;}
 
-/* This is essentially where the mouse is (as tracked) */
-body.hudup .sbookfocus { cursor: pointer; color: blue;}
+/* This is tracks the mouse */
+.sbookfocus { cursor: pointer; }
+body.hudup .sbookfocus { color: blue;}
 
 /* This is the last explicit target of a jump or mark */
-.sbooktarget { color: darkblue;}
-body.hudup .sbookfocus.sbooktarget { color: darkblue;}
+.sbooktarget { color: red; cursor: crosshair;}
+body.hudup .sbookfocus.sbooktarget { color: red;}
+
 body.sbookfocus { color: inherit;}
 body.sbooktarget { color: inherit;}
 
@@ -1164,22 +1166,6 @@ div.sbooksummaries div.xrefs { display: none;}
 div.sbooksummaries .showxrefs div.xrefs { display: block;}
 div.sbooksummaries div.xrefs a { display: block;}
 
-/* Glossmark iframes */
-
-.sbooklivespot { color: blue;}
-
-a.glossmarkicon {
-  position: absolute; right: 5px; text-align: right;
-  background-color: gray;
-  border: solid transparent 1px;}
-.sbookfocus a.glossmarkicon {
-  border: solid black 1px;}
-a.glossmarkicon img { border: 0px;}
-
-iframe.glossmark {
-    position: absolute; right: 64px; width: 80%; z-index: 100; 
-    opacity: 0.95; background-color: ivory; min-height: 450;}
-
 img.markbutton {
   position: absolute; right: 0px; text-align: right;
   margin: 0px; padding: 0px; text-indent: 0px; 
@@ -1200,7 +1186,9 @@ span.glossmark img {
    max-width: 100%; max-height: 100%;
    vertical-align: top; text-align: right;}
 span.glossmark img.tiny { display: none; }
-.sbookfocus span.glossmark { opacity: 0.75;}
+.sbookfocus span.glossmark { opacity: 0.75; border-top: solid blue 2px;}
+.sbooktarget.sbookfocus span.glossmark {
+    opacity: 0.9; border-top: solid red 2px;}
 .sbookfocus span.glossmark img.big { }
 .sbookfocus span.glossmark img.tiny { border: none; }
 
@@ -1216,8 +1204,7 @@ span.glossmark:hover img.tiny { display: none;}
 
 .sbooktarget { }
 .sbooktarget span.glossmark {
-    border: solid blue 2px; opacity: 0.9; border: gray; z-index: 300;
-    height: 50px; width: 50px;}
+    border-top: solid red 2px; opacity: 0.9; z-index: 300;}
 .sbooktarget span.glossmark:hover { opacity: 0.9;}
 .sbooktarget span.glossmark img { }
 
@@ -1230,7 +1217,7 @@ span.glossmark img.markbutton {
   position: static; background-color: lightblue; display: none;
   border: solid transparent 0px;}
 span.glossmark img.markbutton { display: none;}
-.sbooktarget span.glossmark { opacity: 0.8; border: transparent;}
+.sbooktarget span.glossmark { opacity: 0.8; }
 .sbooktarget span.glossmark img.markbutton { 
   display: inline;}
 img.sbookqricon { display: none;}
@@ -1319,4 +1306,5 @@ body div.sbookmargin#SBOOKBOTTOMMARGIN {bottom: 0; left: 0; right: 0;}
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
 ;;;  End: ***
-*/
+*
+/

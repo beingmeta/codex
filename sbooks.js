@@ -167,8 +167,12 @@ var sbook_start=false;
 var sbook_head=false;
 // This is the 'focus element' approximately under the mouse.
 var sbook_focus=false;
+// This is the saved title for the current focus
+var sbook_focus_title=false;
 // This is the last explicit target of a jump or mark.
 var sbook_target=false;
+// This is the saved title for the current target
+var sbook_target_title=false;
 // This is the current query
 var sbook_query=false;
 // Which sources to search.  False to exclude glosses, true to include
@@ -241,6 +245,7 @@ var sbook_pageview=true;
 var sbook_top_margin_px=40;
 var sbook_bottom_margin_px=40;
 var sbook_pageheads=false;
+var sbook_pagefeet=false;
 var sbook_tocmajor=1;
 var sbook_pageblocks=false;
 var sbook_avoid_pagehead=false;
@@ -375,7 +380,8 @@ function sbookInUI(elt)
 function sbookGetHead(target)
 {
   while (target)
-    if (target.sbook_headid) 
+    if (target.toclevel) return target;
+    else if (target.sbook_headid) 
       return document.getElementById(target.sbook_headid);
     else target=target.parentNode;
   return false;
@@ -458,11 +464,11 @@ function sbookGatherMetadata()
     scaninfo=scaninfo.sbook_head;}
   /* Sort the nodes by their offset in the document */
   sbook_nodes.sort(function(x,y) {
-      if (!(x.Xoff)) {
-	fdjtWarn("Bad sbook node %o",x);
+      if ((!(x.Xoff))&&(x.Xoff!==0)) {
+	fdjtWarn("Bad sbook node (xoff=%o) %o",x.Xoff,x);
 	return 0;}
-      else if (!(y.Xoff)) {
-	fdjtWarn("Bad sbook node %o",y);
+      else if ((!(y.Xoff))&&(y.Xoff!==0)) {
+	fdjtWarn("Bad sbook node (xoff=%o) %o",y.Xoff,y);
 	return 0;}
       else if (x.Yoff<y.Yoff) return -1;
       else if (x.Yoff===y.Yoff)
@@ -566,7 +572,6 @@ function _sbook_process_head(head,scanstate,level,curhead,curinfo,curlevel)
   var headinfo=sbook_needinfo(head);
   var headid=_sbook_setid(head,scanstate,level,curlevel);
   /* Update global tables, arrays */
-  fdjtComputeOffsets(head);
   sbook_heads.push(head);
   head.sbookloc=scanstate.location;
   head.sbooklevel=level;
@@ -654,18 +659,21 @@ function sbook_scanner(child,scanstate,skiptoc)
     child.sbook_head=curhead;
   else if (sbookInUI(child)) return;
   else if (fdjtElementMatches(child,sbook_ignored)) return;
-  else if (level=sbookHeadLevel(child))
+  else if (level=sbookHeadLevel(child)) {
+    fdjtComputeOffsets(child);
     if (skiptoc) sbook_nodes.push(child);
     else _sbook_process_head
-	   (child,scanstate,level,curhead,curinfo,curlevel);
-  else if (skiptoc) sbook_nodes.push(child);
+	   (child,scanstate,level,curhead,curinfo,curlevel);}
+  else if (skiptoc) {
+    fdjtComputeOffsets(child);
+    sbook_nodes.push(child);}
   else if ((fdjtIsBlockElt(child))||
 	   (fdjtElementMatches(child,sbook_idify))) {
     var loc=scanstate.location;
     var eltid=_sbook_setid(child,scanstate,level,curlevel);
     skiptoc=skiptoc||(fdjtElementMatches(child,sbook_terminals));
-    sbook_nodes.push(child);
     fdjtComputeOffsets(child);
+    sbook_nodes.push(child);
     child.sbookloc=loc;
     child.sbook_headid=curhead.id;
     scanstate.location=loc+fdjtTagWidth(child);
@@ -921,6 +929,8 @@ function sbookSetFocus(target)
     fdjtAddClass(target,"sbookfocus");
     if ((old_focus)&&(old_focus!==target)) {
       fdjtDropClass(old_focus,"sbookfocus");}
+    if (sbook_mode==="glosses")
+      sbookScrollGlosses(sbook_focus);
     if (target.sbookloc)
       if (!((old_focus) && (fdjtHasParent(old_focus,target)))) 
 	sbookSetLocation(target.sbookloc,true);
@@ -958,20 +968,24 @@ function sbookSetTarget(target)
   if (sbook_trace_focus) sbook_trace("sbookSetTarget",target);
   if (target===sbook_target) return;
   if (sbook_target) {
+    if (sbook_target_title) sbook_target.title=sbook_target_title;
     fdjtDropClass(sbook_target,"sbooktarget");
-    sbook_target=false;}
+    sbook_target=false; sbook_target_title=false;}
   if (!(target)) return;
   else if (sbookInUI(target)) {}
   else if ((target===sbook_root)||(target===document.body)) {}
   else {
     fdjtAddClass(target,"sbooktarget");
-    sbook_target=target;}
+    sbook_target=target;
+    if (target.title) sbook_target_title=target.title;
+    target.title=_('click to add a gloss');}
 }
-
 
 function sbookCheckTarget()
 {
-  if ((sbook_target) && (!(fdjtIsVisible(sbook_target)))) {
+  if ((sbook_target) && (!(fdjtIsVisible(sbook_target,true)))) {
+    if (sbook_trace_focus)
+      sbook_trace("sbookCheckTarget(clear)",sbook_target);
     fdjtDropClass(sbook_target,"sbooktarget");
     sbook_target=false;}
 }
@@ -1027,11 +1041,12 @@ function sbook_onkeydown(evt)
   evt=evt||event||null;
   // sbook_trace("sbook_onkeydown",evt);
   if (evt.keyCode===27) { /* Escape works anywhere */
-    if (sbook_mode) {
+    if ((sbook_mode)||(sbook_target)) {
       sbook_last_mode=sbook_mode;
       sbookHUDMode(false);
       fdjtDropClass(document.body,"hudup");
       sbookStopPreview(evt);
+      sbookSetTarget(false);
       $("SBOOKSEARCHTEXT").blur();}
     else if (sbook_last_mode) sbookHUDMode(sbook_last_mode);
     else {
@@ -1041,7 +1056,7 @@ function sbook_onkeydown(evt)
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (fdjtIsTextInput($T(evt))) return true;
-  else if (evt.keyCode===16) {
+  else if (evt.keyCode===16) { /* Shift key */
     if (sbook_mode) {
       fdjtDropClass(document.body,"hudup");
       fdjtDropClass(sbookHUD,sbook_mode);}
@@ -1071,11 +1086,16 @@ function sbook_onkeyup(evt)
   // sbook_trace("sbook_onkeyup",evt);
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
+  else if (evt.keyCode===13) {
+    if (sbook_target) sbook_mark(sbook_target);
+    else if (sbook_focus) {
+      sbookSetTarget(sbook_focus);
+      sbook_mark(sbook_focus);}
+    fdjtCancelEvent(evt);}
   else if (evt.keyCode===16) {
     fdjtDropClass(document.body,"hudup");
     if (sbook_mode) fdjtAddClass(sbookHUD,sbook_mode);
-    evt.cancelBubble=true;
-    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
+    fdjtCancelEvent(evt);}
 }
 
 function sbook_onkeypress(evt)
@@ -1111,6 +1131,12 @@ function sbook_onkeypress(evt)
     if (sbook_mode==="help") sbookHUDMode(false);
     else {
       sbookHUDMode("help"); $("SBOOKSEARCHTEXT").blur();}
+    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
+  /* G or g */
+  else if ((evt.charCode===103) || (evt.charCode===71)) { 
+    if (sbook_mode==="glosses") sbookHUDMode(false);
+    else {
+      sbookHUDMode("glosses");}
     if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;}
   else {
     evt.cancelBubble=true;
@@ -1371,13 +1397,19 @@ function sbookGetSettings()
   if (tocmajor) sbook_tocmajor=parseInt(tocmajor);
   var sbook_pagehead_rules=fdjtGetMeta("SBOOKPAGEHEADS",true);
   if (sbook_pagehead_rules) {
-    var selectors=fdjtSemiSplit(terminal_rules);
+    var selectors=fdjtSemiSplit(sbook_pagehead_rules);
     sbook_pageheads=[];
     var i=0; while (i<selectors.length) {
       sbook_pageheads.push(fdjtParseSelector(selectors[i++]));}}
+  var sbook_pagefoot_rules=fdjtGetMeta("SBOOKPAGEFEET",true);
+  if (sbook_pagefoot_rules) {
+    var selectors=fdjtSemiSplit(sbook_pagefoot_rules);
+    sbook_pagefeet=[];
+    var i=0; while (i<selectors.length) {
+      sbook_pagefeet.push(fdjtParseSelector(selectors[i++]));}}
   var sbook_pageblock_rules=fdjtGetMeta("SBOOKPAGEBLOCKS",true);
   if (sbook_pageblock_rules) {
-    var selectors=fdjtSemiSplit(terminal_rules);
+    var selectors=fdjtSemiSplit(sbook_pageblock_rules);
     sbook_pageblocks=[];
     var i=0; while (i<selectors.length) {
       sbook_pageblocks.push(fdjtParseSelector(selectors[i++]));}}

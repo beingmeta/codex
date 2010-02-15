@@ -81,7 +81,7 @@ function createSBOOKHUD()
     rightedge.onclick=sbookRightEdge_onclick;
     hud=fdjtDiv
       ("#SBOOKHUD.hud",
-       leftedge,rightedge,
+       // leftedge,rightedge,
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
        fdjtDiv("#SBOOKFEEDS.hudblock.hud",login_button,help_button),
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
@@ -166,7 +166,9 @@ function sbookHUDMode(mode)
       sbook_last_mode=mode;
       if (fdjtContains(sbook_apps,mode)) sbook_last_app=mode;
       fdjtAddClass(document.body,"hudup");
-      fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
+      fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
+      if ((mode==="glosses")&&(sbook_focus))
+	sbookScrollGlosses(sbook_focus);}
   else {
     sbook_last_mode=sbook_mode;
     sbook_mode=false;
@@ -199,6 +201,11 @@ function sbookHUDFlash(mode,usecs)
   else {
     fdjtDropClass(sbookHUD,sbookHUDMode_pat);
     fdjtDropClass(document.body,"hudup");}
+}
+
+function sbookDropHUD()
+{
+  return sbookHUDMode(false);
 }
 
 /* Previewing */

@@ -138,7 +138,6 @@ function sbookFeeds_onclick(evt)
   if (!(target.oid)) return;
   var info=fdjtOIDs[target.oid];
   var icon=$("SBOOKFEEDICON"+info.humid);
-  fdjtTrace("info=%o",info);
   if (!(info)) return;
   if ((icon)&&(fdjtHasClass(icon,"selected"))&&
       (sbook_sources.length===1)) {
@@ -213,16 +212,17 @@ function sbookScrollGlosses(elt,glosses)
     if (!(glosses)) glosses=$("SBOOKGLOSSES");
     var children=glosses.childNodes;
     /* We do this linearly because it's fast enough and simpler */
-    var i=0; while (i<children.length) {
+    var i=0; var len=children.length; while (i<len) {
       var child=children[i++];
       if (child.nodeType===1) {
-	if ((child.blocktarget) &&
-	    (!(fdjtHasClass(child,"hidden"))) &&
-	    (child.blocktarget.sbookloc>=targetloc)) {
-	  fdjtScrollIntoView(child);
+	if ((child.blockloc) &&
+	    (child.blockloc>=targetloc) &&
+	    (child.offsetHeight>0)) {
+	  fdjtTrace("Scrolling glosses to #%d/%d %o target=%o loc=%o",
+		    i-1,len,child,targetloc,child.blockloc);
+	  if (child.scrollIntoView) child.scrollIntoView();
 	  return;}}}}
 }
-
 
 function gather_tags(elt,results)
 {

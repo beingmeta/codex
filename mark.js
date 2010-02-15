@@ -232,7 +232,7 @@ function sbookCreateMarkHUD(classinfo)
   fdjtAutoPrompt_setup(grid);
   // form.windowopts="width=500,height=400";
   form.onsubmit=
-    ((sbook_user)?(fdjtForm_onsubmit):(sbookNoUserSubmit));
+    ((sbook_user)?(sbookMark_onsubmit):(sbookNoUserSubmit));
   form.oncallback=function(req) {
     if (sbook_trace_network)
       fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
@@ -246,6 +246,18 @@ function sbookCreateMarkHUD(classinfo)
   // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
   // hideicon.onclick="fdjtAddClass('SBOOKMARK','hidden')"; 
   return fdjtDiv(classinfo||".mark",need_login,messages_elt,form);
+}
+
+function sbookMark_onsubmit(evt)
+{
+  if (($("SBOOKMARKINPUT").value)==="") {
+    var id=$("SBOOKMARKFRAGID").value;
+    var elt=$(id);
+    var text=fdjtStdSpace(fdjtTextify(elt));
+    fdjtTrace("Initializing text to %o from %o",text,elt);
+    $("SBOOKMARKINPUT").value=
+      ((text.length>60)?((text.slice(0,60))+"..."):(text));}
+  return fdjtForm_onsubmit(evt);
 }
 
 /* Mark form design elements */

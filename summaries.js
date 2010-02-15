@@ -52,7 +52,15 @@ function _sbook_sort_summaries(x,y)
       else if (x.tstamp) return -1;
       else if (y.tstamp) return 1;
       else return 0;
-    else if (xid<yid) return -1; else return 1;
+    else {
+      var xelt=document.getElementById(xid);
+      var xloc=((xelt)&&(xelt.sbookloc));
+      var yelt=document.getElementById(yid);
+      var yloc=((yelt)&&(yelt.sbookloc));
+      if ((xloc)&&(yloc))
+	if (xloc<yloc) return -1; else return 1;
+      else if (xloc) return -1;
+      else return -1;}
   else if (xid) return -1;
   else if (yid) return 1;
   else return 0;
@@ -110,20 +118,18 @@ function sbookSummaryHead(target,head,eltspec,extra)
   preview.onclick=fdjtCancelEvent;
   preview.title='preview';
   basespan.onclick=sbookSummary_onclick;
-  basespan.sbook_ref=target;
+  basespan.sbook_ref=target.id;
   basespan.title='press/click to go';
   var tocblock=((eltspec)?(fdjtNewElt(eltspec,basespan)):
 		(fdjtDiv("tochead",basespan)));
-  tocblock.blocktarget=target;
   return tocblock;
 }
 
 function sbookShowSummaries(summaries,summary_div,query)
 {
-  var todisplay=[].concat(summaries);
+  var todisplay=[].concat(summaries).sort(_sbook_sort_summaries);
   var curtarget=false; var curblock=false;
-  todisplay.sort(_sbook_sort_summaries);
-  i=0; while (i<todisplay.length) {
+  var i=0; var len=todisplay.length; while (i<len) {
     var summary=todisplay[i++];
     var target_id=((summary.id)||(summary.fragid)||false);
     var target=((target_id)&&($(target_id)));
@@ -132,8 +138,11 @@ function sbookShowSummaries(summaries,summary_div,query)
       var head=sbookGetHead(target);
       var blockhead=sbookSummaryHead(target,head);
       var block=fdjtDiv("tocblock",blockhead);
-      block.blocktarget=target;
+      block.blockloc=target.sbookloc;
+      block.blockid=target.id;
       fdjtAppend(summary_div,block);
+      fdjtTrace("Adding new block %o l=%o id=%o",
+		block.target.sbookloc,target.id);
       curblock=block; curtarget=target;}
     fdjtAppend(curblock,sbookSummaryDiv(summary,query,true));}
   return summary_div;
@@ -145,27 +154,32 @@ function sbookAddSummary(summary,summary_div,query)
   var target_id=((summary.id)||(summary.fragid)||false);
   var target=((target_id)&&($(target_id)));
   if (!target) return;
+  var targetloc=target.sbookloc;
   var head=sbookGetHead(target);
   var children=summary_div.childNodes; var placed=false;
   var sum_div=sbookSummaryDiv(summary,query,true);
   var i=0; while (i<children.length) {
     var child=children[i++];
     if (child.nodeType!==1) continue;
+    if (!(child.blockloc)) continue;
     var block_target=child.blocktarget;
-    if (!(block_target)) continue;
-    if (block_target===target) {
+    if (child.blockid===target_id) {
       fdjtAppend(child,sum_div);
       placed=true;
       break;}
-    else if (block_target.id>target_id) {
+    else if (child.blockloc>targetloc) {
       var blockhead=sbookSummaryHead(target,head);
       var block=fdjtDiv("tocblock",blockhead,sum_div);
+      block.blockloc=target.sbookloc;
+      block.blockid=target.id;
       fdjtInsertBefore(child,block);
       placed=true;
       break;}}
   if (!(placed)) {
     var blockhead=sbookSummaryHead(target,head);
     var block=fdjtDiv("tocblock",blockhead,sum_div);
+    block.blockloc=target.sbookloc;
+    block.blockid=target.id;
     fdjtAppend(summary_div,block);}
   return;
 }

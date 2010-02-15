@@ -92,14 +92,27 @@ function sbookIsPageHead(elt)
   return ((elt)&&
 	  ((fdjtHasClass(elt,"pagehead"))||
 	   ((elt.toclevel)&&(sbook_tocmajor)&&(elt.toclevel<=sbook_tocmajor))||
-	   ((sbook_pageheads)&&(fdjtElementMatches(elt,sbook_pageheads)))));
+	   ((sbook_pageheads)&&(fdjtElementMatches(elt,sbook_pageheads)))||
+	   ((window.getComputedStyle)&&
+	    (window.getComputedStyle(elt).pageBreakBefore==='always'))));
+}
+
+function sbookIsPageFoot(elt)
+{
+  return ((elt)&&
+	  ((fdjtHasClass(elt,"pagefoot"))||
+	   ((sbook_pagefeet)&&(fdjtElementMatches(elt,sbook_pagefeet)))||
+	   ((window.getComputedStyle)&&
+	    (window.getComputedStyle(elt).pageBreakAfter==='always'))));
 }
 
 function sbookIsPageBlock(elt)
 {
   return ((elt)&&
 	  ((fdjtHasClass(elt,"pageblock"))||
-	   ((sbook_pageblocks)&&(fdjtElementMatches(elt,sbook_pageblocks)))));
+	   ((sbook_pageblocks)&&(fdjtElementMatches(elt,sbook_pageblocks)))||
+	   ((window.getComputedStyle)&&
+	    (window.getComputedStyle(elt).pageBreakInside==='avoid'))));
 }
 
 function sbookAvoidPageHead(elt)
@@ -140,6 +153,7 @@ function sbookFramePage(elt)
     nextoff=fdjtGetOffset(next);
     if (nextoff.top>bottom) break;
     else if ((sbookIsPageHead(next))||
+	     ((foot)&&(sbookIsPageFoot(foot)))||
 	     ((next.toclevel)&&((bottom-nextoff.top)<sbook_bottom_margin_px))||
 	     ((sbookIsPageBlock(next))&&(nextoff.bottom>bottom))) {
       // Always break on page heads, tocheads at the bottom, and page blocks
@@ -342,13 +356,30 @@ function sbookPageView(flag)
 
 /* Setting up the page layout */
 
+function sbookMakeMargin(spec)
+{
+  var div=fdjtDiv(spec);
+  div.onmouseover=fdjtCancelEvent;
+  div.onmouseout=fdjtCancelEvent;
+  div.onmousedown=fdjtCancelEvent;
+  div.onmouseup=fdjtCancelEvent;
+  div.onclick=sbookDropHUD;
+  return div;
+}
+
 function sbookPageSetup()
 {
-  fdjtPrepend(document.body,
-	      fdjtDiv(".sbookmargin#SBOOKTOPMARGIN"," "),
-	      fdjtDiv(".sbookmargin#SBOOKBOTTOMMARGIN"," "));
+  var pagehead=sbookMakeMargin(".sbookmargin#SBOOKTOPMARGIN"," ");
+  var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKBOTTOMMARGIN"," ");
+  fdjtPrepend(document.body,pagehead,pagefoot);
   fdjtPrepend(document.body,fdjtDiv("leading top"," "));  
   fdjtAppend(document.body,fdjtDiv("leading bottom"," "));
+  if (window.getComputedStyle) {
+    var bodystyle=window.getComputedStyle(document.body);
+    var bgcolor=((bodystyle)&&(bodystyle.backgroundColor));
+    if (bgcolor) {
+      pagehead.style.backgroundColor=bgcolor;
+      pagefoot.style.backgroundColor=bgcolor;}}
 }
 
 /* Dead code */
