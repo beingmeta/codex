@@ -34,7 +34,10 @@ var sbooks_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbook_pagebreak=false;
 var sbook_nextpage=false;
+
 var sbook_trace_pagination=false;
+var sbook_trace_framepage=false;
+
 
 function sbookForward(simple)
 {
@@ -151,11 +154,15 @@ function sbookFramePage(elt)
      the last/overlapping item, the previous and the next. */
   while (next) {
     nextoff=fdjtGetOffset(next);
+    if (sbook_trace_framepage) 
+      fdjtLog("sbookFramePage %o %o %o",next.id,nextoff,next);
     if (nextoff.top>bottom) break;
-    else if ((sbookIsPageHead(next))||
-	     ((foot)&&(sbookIsPageFoot(foot)))||
-	     ((next.toclevel)&&((bottom-nextoff.top)<sbook_bottom_margin_px))||
-	     ((sbookIsPageBlock(next))&&(nextoff.bottom>bottom))) {
+    else if (((nextoff.top-top)>20)&&
+	     ((sbookIsPageHead(next))||
+	      ((foot)&&(sbookIsPageFoot(foot)))||
+	      ((next.toclevel)&&
+	       ((bottom-nextoff.bottom)<sbook_bottom_margin_px))||
+	      ((sbookIsPageBlock(next))&&(nextoff.bottom>bottom)))) {
       // Always break on page heads, tocheads at the bottom, and page blocks
       //  which don't fit.
       if ((nextoff.top-top)<20)  // Too hard
@@ -199,15 +206,20 @@ function _sbookIsContentBlock(node)
 {
   if (node.nodeType===1)
     if (sbookInUI(node)) return false;
+    else if (!(fdjtIsBlockElt(node))) return false;
     else if (node.childNodes) {
       var children=node.childNodes;
       var i=0; var len=children.length;
       while (i<len) {
 	var child=children[i++];
-	if (child.nodeType===1) return false;
-	else if ((child.nodeType===3)&&(fdjtIsEmptyString(child.nodeValue))) continue;
-	else return true;}
-      return true;}
+	if (child.nodeType===1)
+	  if (node.offsetX) return false;
+	  else return true;
+	else if (child.nodeType===3)
+	  if (fdjtIsEmptyString(child.nodeValue)) continue;
+	  else return true;
+	else continue;}
+      return false;}
     else return true;
   else return false;
 }

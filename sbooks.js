@@ -239,9 +239,12 @@ var sbook_electric_spanbars=false;
 // Focus rules
 var sbook_focus_rules=[];
 // Whether to do dynamic pagination
-var sbook_pageview=true;
+var sbook_pageview=false;
 
 /* Some layout information */
+var sbook_pages=[];
+var sbook_pageinfo=[];
+
 var sbook_top_margin_px=40;
 var sbook_bottom_margin_px=40;
 var sbook_pageheads=false;
@@ -658,7 +661,10 @@ function sbook_scanner(child,scanstate,skiptoc)
   else if (child.nodeType!==1)
     child.sbook_head=curhead;
   else if (sbookInUI(child)) return;
-  else if (fdjtElementMatches(child,sbook_ignored)) return;
+  else if (fdjtElementMatches(child,sbook_ignored)) {
+    fdjtComputeOffsets(child);
+    sbook_nodes.push(child);
+    return;}
   else if (level=sbookHeadLevel(child)) {
     fdjtComputeOffsets(child);
     if (skiptoc) sbook_nodes.push(child);
@@ -1459,6 +1465,9 @@ function sbookGetSettings()
       sbook_start=$("SBOOKSTART");
     else {
       var titlepage=$("SBOOKTITLE")||$("TITLEPAGE");
+      if (titlepage) {
+	fdjtComputeOffsets(titlepage);
+	sbook_nodes.push(titlepage);}
       while (titlepage)
 	if (fdjtNextElement(titlepage)) {
 	  sbook_start=fdjtNextElement(titlepage); break;}

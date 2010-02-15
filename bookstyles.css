@@ -1,11 +1,7 @@
 @charset "UTF-8";
 
 body.sbook {
-  width: 60em; margin-left: auto; margin-right: auto;
-  margin-top: 64px; margin-bottom: 64px;
   background-color: ivory;}
-body.sbook p { width: 60em; max-width: 60em;}
-
 /*
 body.sbook div.title { display: none;}
 body.sbook div.frontpiece { display: none;}
@@ -13,8 +9,8 @@ body.sbook div.sbookinfo { display: none;}
 body.sbook div.author { display: none;}
 body.sbook h1.titlepage span.glossmark { display: none;}
 */
-
-body.sbook div.frontpiece img {max-width: 30em;}
+body.sbook div.frontpiece img {
+  margin-left: 10%; margin-right: 10%; width: auto;}
 body.sbook h1 { margin-left: 5%; margin-right: 5%;}
 body.sbook h1.titlepage { 
   background-color: lightgray;
@@ -44,7 +40,7 @@ body.sbook h1.titlepage div.sbookinfo {
 body.sbook h1.titlepage div.frontpiece { 
   text-align: center;}
 body.sbook h1.titlepage .frontpiece img {
-  border: none; width: 50%; max-width: 30em; }
+  border: none; width: 50%;}
 h1.titlepage.sbookhead { text-decoration: none;}
 h1.titlepage.sbookfocus { color: inherit;}
 h1.titlepage.sbookpingfocus { text-decoration: inherit; color: inherit;}
@@ -68,7 +64,8 @@ body.verse div.part {
 /* These are part headings */
 body.verse h1 { text-align: center;}
 div.poem { 
-  padding: 1em;
+  page-break-before: always;
+  margin: 2em; padding: 1em;
   border-top: solid gray 3px;}
 
 div.poem p.sig {
@@ -79,7 +76,8 @@ div.poem p.sig {
 body.verse h2 { 
   margin-left: 10%; text-align: left;}
 body.verse div.stanza { 
-  margin-left: 10%; width: 80em; text-align: left;}
+  page-break-inside: avoid;
+  margin-left: 10%; text-align: left;}
 
 p.verse {
   text-align: left; margin-left: 10%;
