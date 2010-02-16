@@ -414,12 +414,13 @@ function sbookUpdatePagination()
     (sbook_top_margin_px+sbook_bottom_margin_px);
   var pages=[]; var pageinfo=[];
   var focus=sbook_focus;
-  fdjtLog("[%f] Updating pagination for pagesize=%o",fdjtET(),pagesize);
+  fdjtLog("[%f] Starting document pagination with pagesize=%o",
+	  fdjtET(),pagesize);
   _sbook_paginate(pagesize,pages,pageinfo);
   sbook_pages=pages;
   sbook_pageinfo=pageinfo;
   sbook_pagesize=pagesize;
-  fdjtLog("[%f] Paginated %d pages with pagesize=%o",
+  fdjtLog("[%f] Finished paginating %d pages (pagesize=%o)",
 	  fdjtET(),pages.length,pagesize);
   if (focus)
     sbookGoToPage(sbookGetPage(focus));
