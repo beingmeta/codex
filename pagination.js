@@ -117,7 +117,8 @@ function _sbook_paginate(pagesize,pages,info,start)
       pagehead=scan; overlap=scan;}
     else {}
     if (pagehead) {
-      pageinfo.bottom=off.top; pageinfo.overlap=overlap;
+      pageinfo.bottom=off.top;
+      pageinfo.overlap=overlap;
       if (off.top>pagelim) pageinfo.oversize=true;
       pageinfo={}; pageinfo.top=off.top; pageinfo.first=pagehead;
       pages.push(off.top); info.push(pageinfo);
@@ -153,15 +154,15 @@ function _sbookIsContentBlock(node)
 
 /* Framing a page */
 
-function sbookGoToPage(pagenum)
+function sbookGoToPage(pagenum,pageoff)
 {
-  var off=sbook_pages[pagenum];
+  var off=sbook_pages[pagenum]+(pageoff||0);
   var info=sbook_pageinfo[pagenum];
   window.scrollTo(0,off-sbook_top_margin_px);
-  var height=(window.scrollY+window.innerHeight)-info.bottom;
-  if (info.oversize)
+  var footheight=(window.scrollY+window.innerHeight)-info.bottom;
+  if (footheight<0)
     $("SBOOKBOTTOMMARGIN").style.height=null;
-  else $("SBOOKBOTTOMMARGIN").style.height=height+'px';
+  else $("SBOOKBOTTOMMARGIN").style.height=footheight+'px';
   sbook_pagenum=pagenum;
   sbookSetFocus(info.first);
 }
@@ -192,11 +193,12 @@ function sbookForward()
     else {
       var info=sbook_pageinfo[sbook_pagenum];
       var pagebottom=window.scrollY+sbook_pagesize+sbook_top_margin_px;
-      if ((info.oversize)&&(pagebottom<=info.bottom))
-	window.scrollBy(0,sbook_pagesize);
+      if (pagebottom<info.bottom)
+	sbookGoToPage(sbook_pagenum,pagebottom-info.top);
       else if (sbook_pagenum===sbook_pages.length) {}
       else {
-	sbook_pagenum++; sbookGoToPage(sbook_pagenum);}}}
+	sbook_pagenum++;
+	sbookGoToPage(sbook_pagenum);}}}
   else window.scrollBy(0,sbook_pagesize);
 }
 
@@ -352,6 +354,7 @@ function sbookPageView(flag)
     sbook_pageview=true;
     $("SBOOKNOPAGEVIEW").checked=false;
     fdjtSetCookie("sbookpageview","yes",false,"/");
+    fdjtAddClass(document.body,"sbookpageview");
     fdjtDropClass(document.body,"sbookscroll");
     sbookGoToPage(sbookGetPage(sbook_focus||sbook_root));}
   else {
@@ -359,6 +362,7 @@ function sbookPageView(flag)
     sbook_nextpage=false; sbook_pagebreak=false;
     $("SBOOKNOPAGEVIEW").checked=true;
     fdjtAddClass(document.body,"sbookscroll");
+    fdjtDropClass(document.body,"sbookpageview");
     fdjtSetCookie("sbookpageview","no",false,"/");}
 }
 
