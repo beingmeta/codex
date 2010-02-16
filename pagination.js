@@ -36,6 +36,7 @@ var sbook_pagenum=-1;
 var sbook_pagesize=-1;
 var sbook_pages=[];
 var sbook_pageinfo=[];
+var sbook_pagescroll=false;
 
 var sbook_top_margin_px=40;
 var sbook_bottom_margin_px=40;
@@ -165,6 +166,8 @@ function sbookGoToPage(pagenum,pageoff)
   else $("SBOOKBOTTOMMARGIN").style.height=footheight+'px';
   sbook_pagenum=pagenum;
   sbookSetFocus(info.first);
+  sbook_pagescroll=window.scrollY;
+  fdjtAddClass(document.body,"sbookpageview");
 }
 
 function sbookGetPage(arg)
@@ -191,6 +194,7 @@ function sbookForward()
       if (pagenum<(sbook_pages.length-1)) sbook_pagenum=pagenum+1;
       sbookGoToPage(sbook_pagenum);}
     else {
+      if (sbook_pagescroll!==window.scrollY) sbookGoTo
       var info=sbook_pageinfo[sbook_pagenum];
       var pagebottom=window.scrollY+sbook_pagesize+sbook_top_margin_px;
       if (pagebottom<info.bottom)
@@ -212,6 +216,7 @@ function sbookBackward()
       if (pagenum>=1) sbook_pagenum=pagenum-1;
       sbookGoToPage(sbook_pagenum);}
     else {
+      if (sbook_pagescroll!==window.scrollY) sbookGoTo
       var info=sbook_pageinfo[sbook_pagenum];
       var pagetop=window.scrollY+sbook_top_margin_px;
       if ((info.oversize)&&(info.top<pagetop))
@@ -352,7 +357,7 @@ function sbookPageView(flag)
 {
   if (flag) {
     sbook_pageview=true;
-    $("SBOOKNOPAGEVIEW").checked=false;
+    $("SBOOKPAGEVIEW").checked=true;
     fdjtSetCookie("sbookpageview","yes",false,"/");
     fdjtAddClass(document.body,"sbookpageview");
     fdjtDropClass(document.body,"sbookscroll");
@@ -360,7 +365,7 @@ function sbookPageView(flag)
   else {
     sbook_pageview=false;
     sbook_nextpage=false; sbook_pagebreak=false;
-    $("SBOOKNOPAGEVIEW").checked=true;
+    $("SBOOKPAGEVIEW").checked=false;
     fdjtAddClass(document.body,"sbookscroll");
     fdjtDropClass(document.body,"sbookpageview");
     fdjtSetCookie("sbookpageview","no",false,"/");}
@@ -420,25 +425,6 @@ function sbookUpdatePagination()
     sbookGoToPage(sbookGetPage(focus));
   else sbookGoToPage(sbookGetPage(window.scrollY));
 }
-
-/* Dead code */
-
-/*
-  var deltapage=(window.innerHeight)-(sbook_top_margin_px+sbook_top_margin_px+10);
-  var top=window.scrollY+sbook_top_margin_px+20;
-  var bottom=window.scrollY+window.innerHeight-sbook_bottom_margin_px;
-  var focus=sbookGetXYFocus(window.scrollX+100,window.scrollY+sbook_top_margin_px+5);
-  var head=sbookNextHead(sbookGetHead(focus));
-  while ((head)&&(head.Yoff<bottom))
-    if (head.Yoff>top) {
-      var deltahead=((head)?(((head.Yoff)-(window.scrollY+sbook_top_margin_px))):(0));
-      window.scrollBy(0,deltahead);
-      return;}
-    else head=sbookNextHead(head);
-  window.scrollBy(0,(window.innerHeight)-(sbook_top_margin_px+sbook_top_margin_px));
-  return;
-
- */
 
 /* Emacs local variables
 ;;;  Local variables: ***

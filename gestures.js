@@ -159,9 +159,13 @@ function sbookTabletMode(flag)
 function sbookSparseMode(flag)
 {
   if (flag) {
+    sbook_sparse=true;
+    $("SBOOKSPARSE").checked=true;
     fdjtSetCookie("sbooksparse","yes",false,"/");
     fdjtAddClass(document.body,"sparsebook");}
   else {
+    sbook_sparse=false;
+    $("SBOOKSPARSE").checked=false;
     fdjtClearCookie("sbooksparse","/");
     fdjtDropClass(document.body,"sparsebook");}
 }

@@ -1293,22 +1293,14 @@ body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
 body div.sbookmargin {
     position: fixed; height: 40px; background-color: white;
-    z-index: 50; opacity: 0.99;}
+    z-index: 50; opacity: 0.99;
+    display: none;}
 body.tablet div.sbookmargin { height: 50px;}
 body div#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
 body div.sbookmargin#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
 body div.sbookmargin#SBOOKBOTTOMMARGIN {bottom: 0; left: 0; right: 0;}
-
-body div#SBOOKTOPMASK {
-  position: absolute; left: 0; right: 0; top: 0;
-  z-index 50; opacity: 0.99;
-  display: none;}
-body div#SBOOKBOTMASK {
-  position: absolute; left: 0; right: 0; bottom: 0;
-  z-index 50; opacity: 0.99;
-  display: none;}
-body.sbookpageview div#SBOOKTOPMASK { display: block;}
-body.sbookpageview div#SBOOKBOTMASK { display: block;}
+body.sbookscrollview div.sbookmargin { display: none;}
+body.sbookpageview div.sbookmargin { display: block;}
 
 .sbookpage { page-break-before: always;}
 .sbookkeep { page-break-inside: avoid;}

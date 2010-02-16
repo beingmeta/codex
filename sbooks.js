@@ -240,6 +240,8 @@ var sbook_electric_spanbars=false;
 var sbook_focus_rules=[];
 // Whether to do pagination
 var sbook_pageview=true;
+// Whether to be sparse
+var sbook_sparse=false;
 
 /* Some layout information */
 var sbook_pageheads=false;
@@ -1226,6 +1228,7 @@ function sbook_onscroll(evt)
   /* If you're previewing, ignore mouse action */
   if (sbook_preview) return;
   if (sbook_target) sbookCheckTarget();
+  if (sbook_pageview) fdjtDropClass(document.body,"sbookpageview");
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
   var xoff=scrollx+sbook_last_x;
@@ -1339,6 +1342,42 @@ function sbook_get_titlepath(info,embedded)
 
 function sbookGetSettings()
 {
+  sbookGetScanSettings();
+  sbookGetPageSettings();
+  sbook_max_excerpt=fdjtGetMeta("SBOOKMAXEXCERPT",false)
+  var sbooksrv=fdjtGetMeta("SBOOKSERVER",true);
+  if (sbooksrv) sbook_server=sbooksrv;
+  else if (fdjtGetCookie["SBOOKSERVER"])
+    sbook_server=fdjtGetCookie["SBOOKSERVER"];
+  else sbook_server=sbookLookupServer(document.domain);
+  if (!(sbook_server)) sbook_server=sbook_default_server;
+  sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
+  sbook_mycopyid=fdjtGetMeta("SBOOKMYCOPY",false);
+}
+
+function sbookGetScanSettings()
+{
+  sbook_refuri=getsbookrefuri();
+  sbook_baseid=getsbookbaseid()||"SBOOK";
+  sbook_docuri=sbook_getdocuri();
+  if (!(sbook_root))
+    if (fdjtGetMeta("SBOOKROOT"))
+      sbook_root=$(fdjtGetMeta("SBOOKROOT"));
+    else sbook_root=document.body;
+  if (!(sbook_start))
+    if (fdjtGetMeta("SBOOKSTART"))
+      sbook_start=$(fdjtGetMeta("SBOOKSTART"));
+    else if ($("SBOOKSTART"))
+      sbook_start=$("SBOOKSTART");
+    else {
+      var titlepage=$("SBOOKTITLE")||$("TITLEPAGE");
+      if (titlepage) {
+	fdjtComputeOffsets(titlepage);
+	sbook_nodes.push(titlepage);}
+      while (titlepage)
+	if (fdjtNextElement(titlepage)) {
+	  sbook_start=fdjtNextElement(titlepage); break;}
+	else titlepage=titlepage.parentNode;}
   var h1=fdjtGetMeta("SBOOKHEAD1",true);
   if (h1) {
     var rules=fdjtSemiSplit(h1);
@@ -1394,6 +1433,51 @@ function sbookGetSettings()
     var selectors=fdjtSemiSplit(terminal_rules);
     var i=0; while (i<selectors.length) {
       sbook_terminals.push(fdjtParseSelector(selectors[i++]));}}
+  var notag=fdjtGetMeta("SBOOKNOTAG",true);
+  if (notag) {
+    var rules=fdjtSemiSplit(notag);
+    var i=0; while (i<rules.length) {
+      sbook_notags.push(rules[i++]);}}
+}
+
+function sbookGetAppSettings()
+{
+  var appsettings=fdjtGetMeta("SBOOKDISPLAY");
+  if (appsettings)
+    appsettings=fdjtSplitSemi(appsettings);
+  else appsettings=[];
+  if ((fdjtGetCookie("sbooknoflash"))||
+      (fdjtContains(appsettings,"noflash")))
+    sbook_hud_flash=0;
+  if (fdjtGetCookie("sbookpageview")==="yes")
+    sbook_pageview=true;
+  else if (fdjtGetCookie("sbookpageview")==="no")
+    sbook_pageview=false;
+  else if (fdjtContains(appsettings,"paged"))
+    sbook_pageview=true;
+  else if (fdjtContains(appsettings,"scroll"))
+    sbook_pageview=false;
+  else if (fdjtHasClass(document.body,"sbookpageview"))
+    sbook_pageview=true;
+  else if (fdjtHasClass(document.body,"sbookscrollview"))
+    sbook_pageview=false;
+  else {}
+  if (fdjtGetCookie("sbooksparse")==="yes")
+    sbook_sparse=true;
+  else if (fdjtGetCookie("sbooksparse")==="no")
+    sbook_sparse=false;
+  else if (fdjtContains(appsettings,"sparse"))
+    sbook_sparse=true;
+  else if (fdjtHasClass(document.body,"sparsebook"))
+    sbook_sparse=true;
+  var tocmax=fdjtGetMeta("SBOOKTOCMAX",true);
+  if (tocmax) sbook_tocmax=parseInt(tocmax);
+  var sbookhelp=fdjtGetMeta("SBOOKHELP",true);
+  if (sbookhelp) sbook_help_on_startup=true;
+}
+
+function sbookGetPageSettings()
+{
   var tocmajor=fdjtGetMeta("SBOOKTOCMAJOR",true);
   if (tocmajor) sbook_tocmajor=parseInt(tocmajor);
   var sbook_pagehead_rules=fdjtGetMeta("SBOOKPAGEHEADS",true);
@@ -1426,49 +1510,6 @@ function sbookGetSettings()
     sbook_avoid_pagefoot=[];
     var i=0; while (i<selectors.length) {
       sbook_avoid_pagefoot.push(fdjtParseSelector(selectors[i++]));}}
-  var tocmax=fdjtGetMeta("SBOOKTOCMAX",true);
-  if (tocmax) sbook_tocmax=parseInt(tocmax);
-  if ((fdjtGetCookie("SBOOKNOFLASH"))||
-      ((fdjtGetMeta("SBOOKNOFLASH",true))))
-    sbook_hud_flash=0;
-  sbook_max_excerpt=fdjtGetMeta("SBOOKMAXEXCERPT",false)
-  var notag=fdjtGetMeta("SBOOKNOTAG",true);
-  if (notag) {
-    var rules=fdjtSemiSplit(notag);
-    var i=0; while (i<rules.length) {
-      sbook_notags.push(rules[i++]);}}
-  var sbookhelp=fdjtGetMeta("SBOOKHELP",true);
-  if (sbookhelp) sbook_help_on_startup=true;
-  var sbooksrv=fdjtGetMeta("SBOOKSERVER",true);
-  if (sbooksrv) sbook_server=sbooksrv;
-  else if (fdjtGetCookie["SBOOKSERVER"])
-    sbook_server=fdjtGetCookie["SBOOKSERVER"];
-  else sbook_server=sbookLookupServer(document.domain);
-  if (!(sbook_server)) sbook_server=sbook_default_server;
-  sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
-  sbook_baseid=getsbookbaseid()||"SBOOK";
-  sbook_refuri=getsbookrefuri();
-  sbook_docuri=sbook_getdocuri();
-  sbook_mycopyid=fdjtGetMeta("SBOOKMYCOPY",false);
-  if (!(sbook_root))
-    if (fdjtGetMeta("SBOOKROOT"))
-      sbook_root=$(fdjtGetMeta("SBOOKROOT"));
-    else sbook_root=document.body;
-  if (!(sbook_start))
-    if (fdjtGetMeta("SBOOKSTART"))
-      sbook_start=$(fdjtGetMeta("SBOOKSTART"));
-    else if ($("SBOOKSTART"))
-      sbook_start=$("SBOOKSTART");
-    else {
-      var titlepage=$("SBOOKTITLE")||$("TITLEPAGE");
-      if (titlepage) {
-	fdjtComputeOffsets(titlepage);
-	sbook_nodes.push(titlepage);}
-      while (titlepage)
-	if (fdjtNextElement(titlepage)) {
-	  sbook_start=fdjtNextElement(titlepage); break;}
-	else titlepage=titlepage.parentNode;}
-
 }
 
 function sbookLookupServer(string)
@@ -1570,7 +1611,7 @@ function sbookApplySettings()
 {
   sbookTabletMode($("TABLETMODE").checked);
   sbookSparseMode($("SBOOKSPARSE").checked);
-  sbookSmartPaging($("SBOOKSMARTPAGE").checked);
+  sbookPageView($("SBOOKPAGEVIEW").checked);
 }
 
 /* Other stuff */
@@ -1619,6 +1660,7 @@ function sbookSetup()
   var fdjt_done=new Date();
   sbookGetSettings();
   createSBOOKHUD();
+  sbookGetAppSettings();
   sbookPageSetup();
   if ((document.location.search)&&
       (document.location.search.length>0)) {
@@ -1628,16 +1670,10 @@ function sbookSetup()
   if (fdjtGetCookie("sbooktablet")==="yes") {
     $("TABLETMODE").checked=true;
     sbookTabletMode(true);}
-  if (fdjtGetCookie("sbooksparse")==="yes") {
-    $("SBOOKSPARSE").checked=true;
-    sbookSparseMode(true);}
-  if (fdjtGetCookie("sbookpageview")==="no")
-    sbookPageView(false);
-  else if (fdjtGetCookie("sbookpageview")==="yes") 
-    sbookPageView(true);
-  else sbookPageView(sbook_pageview);
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
+  sbookPageView(sbook_pageview);
+  sbookSparseMode(sbook_sparse);
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));
   var scanstate=sbookGatherMetadata();
   sbookInitNavHUD();
