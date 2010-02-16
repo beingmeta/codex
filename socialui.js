@@ -273,6 +273,7 @@ function sbookGlossmark(target,open)
   if (target) {
     fdjtAddClass(target,"glossed");
     fdjtPrepend(target,glossmark);}
+  glossmark.sbookui=true;
   return glossmark;
 }
 

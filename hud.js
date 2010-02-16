@@ -81,7 +81,7 @@ function createSBOOKHUD()
     rightedge.onclick=sbookRightEdge_onclick;
     hud=fdjtDiv
       ("#SBOOKHUD.hud",
-       // leftedge,rightedge,
+       leftedge,rightedge,
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
        fdjtDiv("#SBOOKFEEDS.hudblock.hud",login_button,help_button),
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
@@ -101,6 +101,8 @@ function createSBOOKHUD()
     hud.onmousedown=hud.onmouseup=fdjtCancelBubble;
 
     sbookHUD=hud;
+
+    hud.sbookui=true;
 
     fdjtPrepend(document.body,hud);
 

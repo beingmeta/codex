@@ -238,15 +238,10 @@ var sbook_list_subsections=true;
 var sbook_electric_spanbars=false;
 // Focus rules
 var sbook_focus_rules=[];
-// Whether to do dynamic pagination
-var sbook_pageview=false;
+// Whether to do pagination
+var sbook_pageview=true;
 
 /* Some layout information */
-var sbook_pages=[];
-var sbook_pageinfo=[];
-
-var sbook_top_margin_px=40;
-var sbook_bottom_margin_px=40;
 var sbook_pageheads=false;
 var sbook_pagefeet=false;
 var sbook_tocmajor=1;
@@ -1450,6 +1445,7 @@ function sbookGetSettings()
     sbook_server=fdjtGetCookie["SBOOKSERVER"];
   else sbook_server=sbookLookupServer(document.domain);
   if (!(sbook_server)) sbook_server=sbook_default_server;
+  sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
   sbook_baseid=getsbookbaseid()||"SBOOK";
   sbook_refuri=getsbookrefuri();
   sbook_docuri=sbook_getdocuri();
@@ -1604,7 +1600,7 @@ function sbookInitLocation()
     target.scrollIntoView();
     sbookTrackFocus(target);}
   else sbookSetFocus(sbook_start||sbook_root);
-  if (sbook_pageview) sbookFramePage();
+  if (sbook_pageview) sbookGoToPage(sbookGetPage(sbook_focus));
 }
 
 /* Initialization */
@@ -1622,9 +1618,8 @@ function sbookSetup()
   else fdjtAddClass(document.body,"nosbookuser");
   var fdjt_done=new Date();
   sbookGetSettings();
-  sbookPageSetup();
-  sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
   createSBOOKHUD();
+  sbookPageSetup();
   if ((document.location.search)&&
       (document.location.search.length>0)) {
     sbookSetupAppFrame();
