@@ -1672,12 +1672,13 @@ function sbookSetup()
     sbookTabletMode(true);}
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
-  sbookPageView(sbook_pageview);
-  sbookSparseMode(sbook_sparse);
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));
   var scanstate=sbookGatherMetadata();
   sbookInitNavHUD();
   var scan_done=new Date();
+  if (sbook_pageview) sbookUpdatePagination();
+  sbookPageView(sbook_pageview);
+  sbookSparseMode(sbook_sparse);
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Processing knowledge sources"));
   if (knoHTMLSetup) knoHTMLSetup();
   if (scanstate) sbookHandleInlineKnowlets(scanstate);
