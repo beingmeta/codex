@@ -84,6 +84,7 @@ p.verse {
   margin-top: 2px; margin-bottom: 2px;
   text-indent: -3em; }
 div.stanza { 
+  page-break-inside: avoid;
   text-align: left; margin-left: 10%;
   margin-top: 0px; margin-bottom: 0px;
   border: transparent solid 1px;

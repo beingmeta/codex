@@ -1021,7 +1021,7 @@ function sbookScrollTo(elt,cxt)
   if ((!cxt) || (elt===cxt))
     fdjtScrollTo(elt,sbookGetStableId(elt),false,true,sbookDisplayOffset());
   else fdjtScrollTo(elt,sbookGetStableId(elt),cxt,true,sbookDisplayOffset());
-  if (sbook_pageview) sbookFramePage();
+  if (sbook_pageview) sbookGoToPage(sbookGetPage(elt));
 }
 
 function sbookGoTo(target)
@@ -1228,7 +1228,7 @@ function sbook_onscroll(evt)
   /* If you're previewing, ignore mouse action */
   if (sbook_preview) return;
   if (sbook_target) sbookCheckTarget();
-  if (sbook_pageview) fdjtDropClass(document.body,"sbookpageview");
+  // if (sbook_pageview) fdjtDropClass(document.body,"sbookpageview");
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
   var xoff=scrollx+sbook_last_x;
