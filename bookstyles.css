@@ -58,8 +58,8 @@ body.sbook .frontpiece div.poem div.stanza {
 body.verse {
   margin-left: auto; margin-right: auto;}
 
-body.verse div.part {
-  margin-top: 6em; border-top: solid black 2em; padding-top: 2em;}
+body.verse div.part { margin-top: 6em; padding-top: 2em;}
+body.verse div.part h1[toclevel='1'] { border-top: solid black 2em; }
 
 /* These are part headings */
 body.verse h1 { text-align: center;}

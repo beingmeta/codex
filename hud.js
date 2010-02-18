@@ -212,6 +212,22 @@ function sbookDropHUD()
 
 /* Previewing */
 
+function sbookPreviewIcon(target,icon,alt)
+{
+  var preview=
+    fdjtImage(sbicon(sbook_preview_icon),"previewicon",
+	      alt||"see",_("preview"));
+  preview.onmousedown=sbookPreview_onmousedown;
+  // preview.onmouseover=sbookPreview_onmouseover;
+  preview.onmouseout=sbookPreview_onmouseout;
+  preview.onmouseup=sbookPreview_onmouseup;
+  // preview.onclick=sbookPreview_onclick;
+  preview.onclick=fdjtCancelEvent;
+  preview.sbook_ref=target.id;
+  preview.title='press to preview';
+  return preview;
+}
+
 function sbookPreviewLocation(elt)
 {
   var topbar=$("SBOOKTOP");
@@ -315,7 +331,9 @@ function sbookPreview_onclick(evt)
 {
   evt=evt||event||null;
   // If we're not being accessible, this is handled by mousedown
-  if (!(sbook_accessible)) return;
+  if (!(sbook_accessible)) {
+    fdjtCancelEvent(evt);
+    return false;}
   var target=$T(evt); var ref;
   while (target)
     if (target.sbook_ref) break;
@@ -331,18 +349,24 @@ function sbookPreview_onclick(evt)
   sbookScrollTo(ref);
 }
 
+var sbook_preview_start=false;
+
 function sbookPreview_onmousedown(evt)
 {
   if (sbook_accessible) return;
   else if ((evt.button>1)||(evt.ctrlKey)||(evt.shiftKey)) return;
-  if (sbook_preview) sbookStopPreview(evt);
-  else sbookStartPreview(evt);
+  if (sbook_preview) {
+    sbookStopPreview(evt);
+    sbook_preview_start=false;}
+  else {
+    sbookStartPreview(evt);
+    sbook_preview_start=fdjtET();}
 }
 
 function sbookPreview_onmouseup(evt)
 {
-  if (sbook_accessible) return;
   if ((evt.button>1)||(evt.ctrlKey)||(evt.shiftKey)) return;
+  fdjtCancelEvent(evt);
   sbookStopPreview(evt);
 }
 

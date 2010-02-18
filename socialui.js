@@ -116,16 +116,17 @@ function sbookEveryoneButton_onclick(evt)
     var i=0; var n=feeds.length;
     while (i<n) fdjtDropClass(feeds[i++],"selected");
     sbook_sources=false;
-    if (sbook_mode==="glosses") 
-      sbookSelectSummaries($("SBOOKGLOSSES"));
+    if (sbook_mode==="glosses") {
+      sbookSelectSources($("SBOOKGLOSSES"));
+      sbookSelectTargets($("SBOOKGLOSSES"));
+      sbookScrollGlosses(sbook_focus);}
     else if ((sbook_mode==="searching")||(sbook_mode==="browsing"))
-      sbookSelectSummaries($("SBOOKSUMMARIES"));
+      sbookSelectSources($("SBOOKSUMMARIES"));
     else sbookHUDMode("glosses");}
   else if (sbook_mode==='glosses') sbookHUDMode(false);
   else sbookHUDMode("glosses");
   fdjtDropClass(sbookHUD,"onepassage");
-  evt.cancelBubble=true;
-  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;  
+  fdjtCancelEvent(evt);
 }
 
 function sbookFeeds_onclick(evt)
@@ -140,19 +141,18 @@ function sbookFeeds_onclick(evt)
   var icon=$("SBOOKFEEDICON"+info.humid);
   if (!(info)) return;
   if ((icon)&&(fdjtHasClass(icon,"selected"))&&
-      (sbook_sources.length===1)) {
-    // If you're clicking a selected icon and there's only one,
-    //  then just toggle the HUD off
-    fdjtDropClass(icon,"selected");
-    sbook_sources=[];
-    evt.cancelBubble=true;
-    if (evt.preventDefault) evt.preventDefault();
-    else evt.returnValue=false;
-    if (sbook_mode==='glosses')
-      sbookSelectSummaries($("SBOOKGLOSSES"),false);
-    else if ((sbook_mode==='searching')||(sbook_mode==='browsing'))
-      sbookSelectSummaries($("SBOOKSUMMARIES"),false);
-    sbookHUDMode(false);
+      (sbook_sources.length===1)&&
+      (!((evt.shiftKey)||(evt.ctrlKey)))) {
+    if ((sbook_mode==='glosses')||
+	(sbook_mode==='searching')||
+	(sbook_mode==='browsing')) 
+      sbookHUDMode(false);
+    else if ((sbook_last_mode==='glosses')||
+	     (sbook_last_mode==='searching')||
+	     (sbook_last_mode==='browsing'))
+      sbookHUDMode(sbook_last_mode);
+    else sbookHUDMode("glosses");
+    fdjtCancelEvent(evt);
     return false;}
   else if (!(sbook_sources)) {
     fdjtAddClass(icon,"selected");
@@ -173,24 +173,29 @@ function sbookFeeds_onclick(evt)
     sbook_sources=new Array(target.oid);}
   if ((sbook_sources) && (sbook_sources.length===0)) sources=false;
   if (!(sbook_mode)) {
-    sbookSelectSummaries($("SBOOKGLOSSES"),sbook_sources);
+    sbookSelectSources($("SBOOKGLOSSES"),sbook_sources);
+    sbookSelectTargets($("SBOOKGLOSSES"));
+    sbookScrollGlosses(sbook_focus);
     sbookHUDMode("glosses");}
-  else if (sbook_mode==="glosses")
-    sbookSelectSummaries($("SBOOKGLOSSES"),sbook_sources);
+  else if (sbook_mode==="glosses") {
+    sbookSelectSources($("SBOOKGLOSSES"),sbook_sources);
+    sbookSelectTargets($("SBOOKGLOSSES"));
+    sbookScrollGlosses(sbook_focus);}
   else if (sbook_mode==="browsing") 
-    sbookSelectSummaries($("SBOOKSUMMARIES"),sbook_sources);
+    sbookSelectSources($("SBOOKSUMMARIES"),sbook_sources);
   else if ((sbook_mode==="searching")&&
 	   (sbook_query)&&(sbook_query._query)&&
 	   (sbook_query._query>0)) {
     sbookShowSearch(sbook_query);
-    sbookSelectSummaries($("SBOOKSUMMARIES"),sbook_sources);
+    sbookSelectSources($("SBOOKSUMMARIES"),sbook_sources);
     sbookHUDMode("browsing");}
   else {
-    sbookSelectSummaries($("SBOOKGLOSSES"),sbook_sources);
+    sbookSelectSources($("SBOOKGLOSSES"),sbook_sources);
+    sbookSelectTargets($("SBOOKGLOSSES"));
+    sbookScrollGlosses(sbook_focus);
     sbookHUDMode("glosses");}
   fdjtDropClass(sbookGlossesHUD,"onepassage");
-  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
-  evt.cancelBubble=true;
+  fdjtCancelEvent(evt);
 }
 
 function sbookSetSources(feeds,sources)
@@ -218,9 +223,8 @@ function sbookScrollGlosses(elt,glosses)
 	if ((child.blockloc) &&
 	    (child.blockloc>=targetloc) &&
 	    (child.offsetHeight>0)) {
-	  fdjtTrace("Scrolling glosses to #%d/%d %o target=%o loc=%o",
-		    i-1,len,child,targetloc,child.blockloc);
-	  if (child.scrollIntoView) child.scrollIntoView();
+	  var off=fdjtGetOffset(child,false,glosses);
+	  glosses.scrollTop=off.top;
 	  return;}}}}
 }
 
@@ -289,9 +293,12 @@ function sbookGlossmark_onclick(evt)
     sbookHUDMode(false);
     return;}
   sbook_glosses_target=target;
-  if ((evt.shiftKey)||(evt.ctrlKey))
-    sbookSelectSummaries(sbookGlossesHUD,sbook_sources,target.id);
-  else sbookSelectSummaries(sbookGlossesHUD,false,target.id);
+  if ((evt.shiftKey)||(evt.ctrlKey)) {
+    sbookSelectSources(sbookGlossesHUD,sbook_sources);
+    sbookSelectTargets(sbookGlossesHUD,target.id);}
+  else {
+    sbookSelectSources(sbookGlossesHUD);
+    sbookSelectTargets(sbookGlossesHUD,target.id);}
   fdjtAddClass(sbookGlossesHUD,"onepassage");
   sbookSetTarget(target);
   sbook_glossmark=$P(".glossmark",evt.target);

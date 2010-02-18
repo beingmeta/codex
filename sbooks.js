@@ -1018,10 +1018,10 @@ function sbookScrollTo(elt,cxt)
     sbookSetHead(elt);
   else if (elt.sbook_head)
     sbookSetHead(elt.sbook_head);
-  if ((!cxt) || (elt===cxt))
+  if (sbook_pageview) sbookGoToPage(sbookGetPage(elt));
+  else if ((!cxt) || (elt===cxt))
     fdjtScrollTo(elt,sbookGetStableId(elt),false,true,sbookDisplayOffset());
   else fdjtScrollTo(elt,sbookGetStableId(elt),cxt,true,sbookDisplayOffset());
-  if (sbook_pageview) sbookGoToPage(sbookGetPage(elt));
 }
 
 function sbookGoTo(target)
@@ -1625,6 +1625,11 @@ function sbookInitLocation()
     if ((hash[0]==='#') && (hash.length>1))
       target=sbook_hashmap[hash.slice(1)];
     else target=sbook_hashmap[hash];}
+  else if (fdjtGetCookie("sbookfocus")) {
+    var focusid=fdjtGetCookie("sbookfocus");
+    if ((focusid)&&($(focusid)))
+      target=$(focusid);
+    else target=sbook_root;}
   else if (window.scrollY) {
     var scrollx=window.scrollX||document.body.scrollLeft;
     var scrolly=window.scrollY||document.body.scrollTop;
@@ -1632,16 +1637,12 @@ function sbookInitLocation()
     var yoff=scrolly+sbook_last_y;
     var scroll_target=sbookGetXYFocus(xoff,yoff);
     if (scroll_target) target=scroll_target;}
-  if (!(target)) {
-    var focusid=fdjtGetCookie("sbookfocus");
-    if ((focusid)&&($(focusid)))
-      target=$(focusid);
-    else target=sbook_root;}
-  if ((target!==sbook_root)||(target!==document.body)) {
+  if (sbook_pageview)
+    if (target) sbookGoToPage(sbookGetPage(target));
+    else sbookGoToPage(sbookGetPage(sbook_start));
+  else if ((target!==sbook_root)||(target!==document.body)) 
     target.scrollIntoView();
-    sbookTrackFocus(target);}
-  else sbookSetFocus(sbook_start||sbook_root);
-  if (sbook_pageview) sbookGoToPage(sbookGetPage(sbook_focus));
+  sbookTrackFocus(target||sbook_start||sbook_root);
 }
 
 /* Initialization */

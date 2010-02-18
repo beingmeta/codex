@@ -133,7 +133,8 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     sbookSetMarkExcerpt(excerpt);
   fdjtSetCompletionCues($("SBOOKMARKCLOUD"),tagcues);
   fdjtAutoPrompt_setup($("SBOOKMARK"));
-  sbookSelectSummaries(sbookGlossesHUD,false,target.id);
+  sbookSelectSources(sbookGlossesHUD);
+  sbookSelectTargets(sbookGlossesHUD,target.id);
   fdjtComplete($("SBOOKMARKTAGINPUT"));
   fdjtRedisplay($("SBOOKMARKFORM"));
   // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);
@@ -601,8 +602,6 @@ function sbook_mark(target,gloss,excerpt)
   var markhud=$("SBOOKMARKHUD");
   fdjtAppend("SBOOKMARKHUD",$("SBOOKMARK"));
   sbookHUDMode("mark");
-  // sbookSelectSummaries(sbookGlossesHUD,false,target.id);
-  // fdjtAddClass(sbookHUD,"onepassage");
   $("SBOOKMARKINPUT").focus();
 }
 

@@ -47,6 +47,7 @@ body.hudup .sbookfocus { color: blue;}
 
 /* This is the last explicit target of a jump or mark */
 .sbooktarget { color: red; cursor: crosshair;}
+.sbooktarget .glossmark { color: red; cursor: pointer;}
 body.hudup .sbookfocus.sbooktarget { color: red;}
 
 body.sbookfocus { color: inherit;}
@@ -261,6 +262,9 @@ body.sparsebook div#SBOOKHUD div.hud#SBOOKFEEDS.flash {
   height: auto; bottom: 75px; }
 
 div#SBOOKHUD.glosses div.hud#SBOOKFEEDS {
+  background-color: gray; opacity: 0.9;
+  border-top: solid blue 2px;
+  border-bottom: solid blue 2px;
   border-right: none;
   -khtml-border-top-right-radius: 0px; 
   -webkit-border-top-right-radius: 0px; 
@@ -324,6 +328,7 @@ div#SBOOKHUD.browsing div.hud#SBOOKFEEDS img.feed.shown {
 div#SBOOKHUD div.hudblock#SBOOKFEEDS { opacity: 0.2;}
 div#SBOOKHUD div.hudblock#SBOOKFEEDS:hover { opacity: 0.8;}
 body.hudup div#SBOOKHUD div.hudblock#SBOOKFEEDS { opacity: 0.8;}
+body.hudup div#SBOOKHUD.glosses div.hudblock#SBOOKFEEDS { opacity: 0.9;}
 
 div#SBOOKHUD div.hudblock#SBOOKFEEDS { display: block;}
 
@@ -1106,12 +1111,27 @@ div.sbooksummaries .summary {
   color: black; text-align: left;}
 div.sbooksummaries div.tocblock  .summary { margin-left: 10px;}
 div.sbooksummaries.onepassage div.tocblock  .summary { margin-left: 2px;}
+
+/* Display rules */
+div.sbooksummaries.sourced .tocblock { display: none;}
+div.sbooksummaries.sourced .summary { display: none;}
+div.sbooksummaries.sourced div.tocblock.sourced { display: block;}
+div.sbooksummaries.sourced div.summary.sourced { display: block;}
+div.sbooksummaries.targeted .tocblock { display: none;}
+div.sbooksummaries.targeted .summary { display: none;}
+div.sbooksummaries.targeted div.tocblock.targeted { display: block;}
+div.sbooksummaries.targeted div.summary.targeted { display: block;}
+div.sbooksummaries.sourced.targeted .tocblock { display: none;}
+div.sbooksummaries.sourced.targeted .summary { display: none;}
+div.sbooksummaries.sourced.targeted div.tocblock.sourced.targeted {
+    display: block;}
+div.sbooksummaries.sourced.targeted div.summary.sourced.targeted {
+    display: block;}
+
 div.sbooksummaries .summary span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
 div.sbooksummaries a.summary { display: block;}
 div.sbooksummaries.onepassage .tocblock .tochead {display:none;}
-div.sbooksummaries .tocblock.hidden { display: none;}
-div.sbooksummaries .summary.hidden { display: none;}
 div.sbooksummaries .summary.gloss { min-height: 50px;}
 div.sbooksummaries .summary .info { 
   float: right;}
@@ -1293,7 +1313,7 @@ body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
 body div.sbookmargin {
     position: fixed; height: 40px; background-color: white;
-    z-index: 50; opacity: 0.8;
+    z-index: 50; opacity: 0.99;
     display: none;}
 body.tablet div.sbookmargin { height: 50px;}
 body div#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
@@ -1301,6 +1321,7 @@ body div.sbookmargin#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
 body div.sbookmargin#SBOOKBOTTOMMARGIN {bottom: 0; left: 0; right: 0;}
 body.sbookscrollview div.sbookmargin { display: none;}
 body.sbookpageview div.sbookmargin { display: block;}
+body.preview div.sbookmargin { display: none;}
 
 .sbookpage { page-break-before: always;}
 .sbookkeep { page-break-inside: avoid;}
