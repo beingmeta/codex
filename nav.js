@@ -182,7 +182,7 @@ function sbookTOC_onmouseover(evt)
   sbookHUD_onmouseover(evt);
   fdjtCoHi_onmouseover(evt);
   if (target===null) return;
-  fdjtDelay(250,sbookPreviewNoMode,target,document.body,"previewing");
+  fdjtDelay(250,sbookPreview,target,document.body,"previewing");
 }
 
 function sbookTOC_onmouseout(evt)

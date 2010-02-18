@@ -239,7 +239,7 @@ function sbookPreviewLocation(elt)
     progress.style.left=((Math.round(ratio*10000))/100)+"%";}
 }
 
-function sbookPreview(elt,nomode,offset)
+function sbookPreview(elt,offset)
 {
   var cxt=false;
   // sbook_trace("sbookPreview",elt);
@@ -259,11 +259,6 @@ function sbookPreview(elt,nomode,offset)
   else if (elt.sbook_head)
     cxt=elt.sbook_head;
   if (elt) fdjtScrollPreview(elt,cxt,offset);
-  if (!(nomode)) fdjtAddClass(document.body,"preview");
-}
-function sbookPreviewNoMode(elt)
-{
-  return sbookPreview(elt,true);
 }
 
 function sbookSetPreview(flag)
