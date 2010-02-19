@@ -980,6 +980,9 @@ function sbookSetTarget(target)
   else {
     fdjtAddClass(target,"sbooktarget");
     sbook_target=target;
+    if (target.id) {
+      window.location.hash=target.id;
+      if (sbook_pageview) sbookGoToPage(sbookGetPage(target));}
     if (target.title) sbook_target_title=target.title;
     target.title=_('click to add a gloss');}
 }
@@ -1026,9 +1029,8 @@ function sbookScrollTo(elt,cxt)
 
 function sbookGoTo(target)
 {
-  if ((target.id)&&(!(sbookInUI(target)))) {
+  if ((target.id)&&(!(sbookInUI(target)))) 
     sbookSetTarget(target);
-    window.location.hash=target.id;}
   var head=((target.sbook_head)&&($(target.sbook_head)));
   if (head) sbookScrollTo(target,head);
   else sbookScrollTo(target);

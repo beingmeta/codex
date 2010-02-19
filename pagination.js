@@ -53,8 +53,7 @@ var sbook_trace_paging=false;
 function sbookIsPageHead(elt)
 {
   return ((elt)&&
-	  ((fdjtHasClass(elt,"pagehead"))||
-	   ((elt.toclevel||0)&&
+	  (((elt.toclevel||0)&&
 	    (sbook_tocmajor)&&
 	    (elt.toclevel<=sbook_tocmajor))||
 	   ((sbook_pageheads)&&(fdjtElementMatches(elt,sbook_pageheads)))||
@@ -65,8 +64,7 @@ function sbookIsPageHead(elt)
 function sbookIsPageFoot(elt)
 { 
   return ((elt)&&
-	  ((fdjtHasClass(elt,"pagefoot"))||
-	   ((sbook_pagefeet)&&(fdjtElementMatches(elt,sbook_pagefeet)))||
+	  (((sbook_pagefeet)&&(fdjtElementMatches(elt,sbook_pagefeet)))||
 	   ((window.getComputedStyle)&&
 	    (window.getComputedStyle(elt,null).pageBreakAfter==='always'))));
 }
@@ -74,8 +72,7 @@ function sbookIsPageFoot(elt)
 function sbookIsPageBlock(elt)
 {
   return ((elt)&&
-	  ((fdjtHasClass(elt,"pageblock"))||
-	   ((sbook_pageblocks)&&(fdjtElementMatches(elt,sbook_pageblocks)))||
+	  (((sbook_pageblocks)&&(fdjtElementMatches(elt,sbook_pageblocks)))||
 	   ((window.getComputedStyle)&&
 	    (window.getComputedStyle(elt,null).pageBreakInside==='avoid'))));
 }
@@ -83,15 +80,20 @@ function sbookIsPageBlock(elt)
 function sbookAvoidPageHead(elt)
 {
   return ((elt)&&
-	  ((fdjtHasClass(elt,"nobreakbefore"))||
-	   ((sbook_avoid_pagehead)&&(fdjtElementMatches(elt,sbook_avoid_pagehead)))));
+	  (((sbook_avoid_pagehead)&&
+	    (fdjtElementMatches(elt,sbook_avoid_pagehead)))||
+	   ((window.getComputedStyle)&&
+	    (window.getComputedStyle(elt,null).pageBreakBefore==='avoid'))));
 }
 
 function sbookAvoidPageFoot(elt)
 {
   return ((elt)&&
 	  ((elt.toclevel)||(fdjtHasClass(elt,"nobreakafter"))||
-	   ((sbook_avoid_pagefoot)&&(fdjtElementMatches(elt,sbook_avoid_pagefoot)))));
+	   ((sbook_avoid_pagefoot)&&
+	    (fdjtElementMatches(elt,sbook_avoid_pagefoot)))||
+	   ((window.getComputedStyle)&&
+	    (window.getComputedStyle(elt,null).pageBreakAfter==='avoid'))));
 }
 
 /* Pagination loop */
@@ -104,8 +106,7 @@ function sbookPaginate(pagesize,start)
   var scan=start; var info=fdjtGetOffset(scan);
   var pagetop=info.top; var pagelim=pagetop+pagesize;
   var fudge=sbook_bottom_margin_px/4;
-  fdjtLog("[%f] Starting pagination with pagesize=%o at #%s=%o",
-	  fdjtET(),pagesize,start.id,start);
+  var start=fdjtET();
   var curpage={}; var newpage=false; var nodecount=1;
   curpage.pagenum=pages.length;
   curpage.top=pagetop;
@@ -201,12 +202,15 @@ function sbookPaginate(pagesize,start)
       scan=_sbookScanPageContent(scan);
       if (scan) info=fdjtGetOffset(scan);}
     nodecount++;}
-  fdjtLog("[%f] Finished initial pagination of %d nodes into %d pages",
-	  fdjtET(),nodecount,pages.length);
+  var done1=fdjtET();
   var i=0; var len=pages.length;
   while (i<len) sbookAdjustPage(pages,pageinfo,i++);
-  fdjtLog("[%f] Finished paginating %d nodes into %d pages",
-	  fdjtET(),nodecount,pages.length);
+  var done2=fdjtET();
+  fdjtLog("[%f] Paginated %d nodes into %d pages with pagesize=%d in %s=%s+%s",
+	  fdjtET(),nodecount,pages.length,pagesize,
+	  fdjtShortIntervalString(done2-start),
+	  fdjtShortIntervalString(done1-start),
+	  fdjtShortIntervalString(done2-done1));
   return result;
 }
 
@@ -360,10 +364,14 @@ function sbookSplitNode(textnode)
   var words=text.split(/\b/);
   var span=fdjtSpan("sbookpageprobe");
   var i=0; var len=words.length;
-  while (i<len)
-    if (fdjtIsEmptyString(words[i]))
-      span.appendChild(document.createTextNode(words[i++]));
-    else fdjtAppend(span,fdjtSpan(false,words[i++]));
+  while (i<len) {
+    var word=words[i++];
+    var textnode=document.createTextNode(word);
+    if (word.search(/\S/)>=0) {
+      var wordspan=document.createElement("span");
+      span.appendChild(textnode);
+      span.appendChild(wordspan);}
+    else span.appendChild(textnode);}
   return span;
 }
 
