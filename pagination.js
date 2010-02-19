@@ -44,7 +44,7 @@ var sbook_pagescroll=false;
 var sbook_top_margin_px=40;
 var sbook_bottom_margin_px=40;
 
-var sbook_debug_pagination=false;
+var sbook_debug_pagination=true;
 var sbook_trace_pagination=0;
 var sbook_trace_paging=false;
 
@@ -98,11 +98,12 @@ function sbookAvoidPageFoot(elt)
 
 function sbookPaginate(pagesize,start)
 {
-  if (!(start)) start=sbook_root||document.body;
+  if (!(start)) start=_sbookScanPageContent(sbook_root||document.body);
   var result={}; var pages=[]; var pageinfo=[];
   result.pages=pages; result.info=pageinfo;
   var scan=start; var info=fdjtGetOffset(scan);
   var pagetop=info.top; var pagelim=pagetop+pagesize;
+  var fudge=sbook_bottom_margin_px/4;
   fdjtLog("[%f] Starting pagination with pagesize=%o at #%s=%o",
 	  fdjtET(),pagesize,start.id,start);
   var curpage={}; var newpage=false; var nodecount=1;
@@ -115,37 +116,61 @@ function sbookPaginate(pagesize,start)
   while (scan) {
     var newinfo=false; var next=false; var nextinfo=false;
     var splitblock=false; var forcebottom=false;
+    var dbginfo=((sbook_debug_pagination)&&
+		 ("P#"+curpage.pagenum+
+		  "["+pagetop+","+pagelim+
+		  "/"+pagesize+"/"+fudge+"] "));
+    if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info));
     if (sbook_trace_pagination>1) _sbookTracePagination("SCAN",scan,info);
     if (sbookIsPageHead(scan)) newpage=scan;
-    else if (info.top>pagelim) newpage=scan;
+    else if (info.top>pagelim)
+      if (sbookAvoidPageHead(scan)) {}
+      else newpage=scan;
     else if (info.bottom<pagelim)
+      // Don't even think about it
       if (sbookAvoidPageHead(scan)) {}
       else if (next=_sbookScanPageContent(scan)) {
+	// Probe ahead to the next node
 	nextinfo=fdjtGetOffset(next);
-	if ((nextinfo.bottom>pagelim)&&(sbookAvoidPageHead(next)))
-	  if ((pagelim-info.top)<pagesize/4) newpage=scan;
+	if (dbginfo)
+	  dbginfo=dbginfo+" ... N"+_sbookPageNodeInfo(next,nextinfo);
+	if ((scan.toclevel)||(sbookAvoidPageFoot(scan)))
+	  if ((next.toclevel)||(sbookAvoidPageFoot(next)))
+	    if ((nextinfo.bottom+(fudge*2))<pagelim) {}
+	    else newpage=scan;
+	  else if ((nextinfo.bottom)<pagelim) {}
+	  else if ((nextinfo.top+(fudge*2))<pagelim) {}
+	  else newpage=scan;
+	// Avoid putting the next item at the head of the next page
+	else if ((nextinfo.bottom>pagelim)&&(sbookAvoidPageHead(next)))
+	  // The next item is short enough that we'll just extend the margin
+	  if ((nextinfo.bottom-pagelim)<(fudge*2)) {}
+	  else if ((pagelim-info.top)<pagesize/4)
+	    // If we start a new page, we'll only create 1/4 page of whitespace
+	    newpage=scan;
 	  else {
+	    // We'll need to split the current item
 	    newpage=splitblock=scan;
 	    curpage.bottom=info.bottom-pagesize/5;}
-	else if ((nextinfo.bottom>(pagelim-sbook_bottom_margin_px))&&
-		 ((scan.toclevel)||(sbookAvoidPageFoot(scan))))
-	  newpage=scan;
-	else {
-	  curpage.bottom=info.bottom; curpage.last=scan;}}
+	// Keep going
+	else {}}
       else {}
     else if (sbookIsPageBlock(scan)) newpage=scan;
-    else if ((pagelim-info.top)<sbook_bottom_margin_px) newpage=scan;
-    else if ((info.bottom-pagelim)<(sbook_bottom_margin_px/2)) {
-      curpage=info.bottom;}
+    else if ((pagelim-info.top)<(fudge*2)) newpage=scan;
+    else if ((info.bottom-pagelim)<(fudge*2)) {
+      // Grow the page
+      curpage.bottom=pagelim=info.bottom;}
     else if (fdjtHasText(scan)) {
       newpage=splitblock=scan;
       curpage.bottom=pagelim;}
     else {}
+    if (!(newpage)) {
+      curpage.bottom=info.bottom;
+      curpage.last=scan;}
+    if ((newpage)&&(dbginfo))
+      dbginfo=dbginfo+" np"+((splitblock)?"/split":"");
     if ((newpage)&&(!(newinfo))) newinfo=info;
-    if (sbook_debug_pagination) 
-      scan.setAttribute
-	("sbpageinfo",
-	 _sbookPaginationInfo(scan,info,newpage,splitblock));
+    if (dbginfo) scan.setAttribute("sbookpagedbg",dbginfo);
     if (newpage) {
       if (splitblock) {
 	curpage.last=splitblock;
@@ -176,6 +201,10 @@ function sbookPaginate(pagesize,start)
       scan=_sbookScanPageContent(scan);
       if (scan) info=fdjtGetOffset(scan);}
     nodecount++;}
+  fdjtLog("[%f] Finished initial pagination of %d nodes into %d pages",
+	  fdjtET(),nodecount,pages.length);
+  var i=0; var len=pages.length;
+  while (i<len) sbookAdjustPage(pages,pageinfo,i++);
   fdjtLog("[%f] Finished paginating %d nodes into %d pages",
 	  fdjtET(),nodecount,pages.length);
   return result;
@@ -236,6 +265,106 @@ function _sbookPaginationInfo(elt,info,newpage,splitblock)
     ((fdjtHasText(elt))?"/ht":"")+
     " ["+info.top+","+info.bottom+"]"+
     ((newpage)?((newpage!==elt)?("ph="+newpage.id):""):"");
+}
+
+function _sbookPageNodeInfo(elt,info)
+{
+  return "["+info.top+","+info.bottom+"/"+info.height+"] t"+
+    (elt.toclevel||0)+
+    ((sbookIsPageHead(elt))?"/ph":"")+
+    ((sbookIsPageBlock(elt))?"/pb":"")+
+    ((sbookAvoidPageHead(elt))?"/ah":"")+
+    ((sbookAvoidPageFoot(elt))?"/af":"")+
+    ((fdjtHasText(elt))?"/ht":"");
+}
+
+/* Adjusting pages */
+
+/* This adjusts the offset of a page and its successor to avoid widows */
+
+function sbookAdjustPage(pages,pageinfo,num)
+{
+  var info=pageinfo[num];
+  // Not neccessary
+  if (!(info.bottomedge)) {
+    // fdjtTrace("No problem with page #%d",num);
+    return;}
+  var nextinfo=pageinfo[num+1];
+  var edge=info.bottom;
+  if (sbook_trace_pagination)
+    fdjtTrace("Adjusting page #%d relative to %d",num,edge);
+  if (edge!==nextinfo.top) {
+    fdjtWarn("Weird page %o",info);
+    return;}
+  var newedge=false; var lastbottom=0;
+  var node=info.bottomedge;
+  var nodeinfo=fdjtGetOffset(node);
+  if (nodeinfo.bottom<(edge+(sbook_bottom_margin_px/3))) {
+    newedge=nodeinfo.bottom;}
+  else {
+    var children=node.childNodes;
+    var len=children.length;
+    var i=0; while (i<len) {
+      var child=children[i];
+      if (child.nodeType===1) {
+	var offinfo=fdjtGetOffset(child);
+	if (offinfo.bottom>lastbottom) lastbottom=offinfo.bottom;
+	if ((offinfo.top<edge)&&(offinfo.bottom>=edge)) {
+	  newedge=offinfo.top; break;}
+	else i++;}
+      else if (child.nodeType===3) {
+	var chunk=fdjtSpan(false,child.nodeValue);
+	node.replaceChild(chunk,child);
+	// fdjtTrace("Placed chunk");
+	var offinfo=fdjtGetOffset(chunk);
+	if ((offinfo.top>=edge)&&(lastbottom)) {
+	  newedge=lastbottom; break;}
+	else if ((offinfo.top<edge)&&(offinfo.bottom>=edge)) {
+	  var split=sbookSplitNode(child);
+	  node.replaceChild(split,chunk);
+	  // fdjtTrace("Placed split");
+	  var words=split.childNodes;
+	  var j=words.length-1;
+	  while (j>=0) {
+	    var word=words[j--];
+	    if (word.nodeType!==1) continue;
+	    var wordoff=fdjtGetOffset(word);
+	    if (wordoff.bottom<edge) {
+	      if (!(newedge)) newedge=wordoff.bottom;
+	      break;}
+	    else if (wordoff.top<edge) {
+	      if (newedge)
+		if (wordoff.top<newedge) newedge=wordoff.top;
+		else {}
+	      else newedge=wordoff.top;}}
+	  node.replaceChild(child,split);
+	  if (newedge) break;
+	  else i++;}
+	else {
+	  node.replaceChild(child,chunk);
+	  i++;}}
+      else i++;}}
+  if (newedge) {
+    if (sbook_trace_pagination)
+      fdjtTrace("Moving bottom for page #%d from %d to %o",
+		num,info.bottom,newedge+2);
+    info.bottom=newedge+2; nextinfo.top=newedge+2;
+    pages[num+1]=nextinfo.top;
+    return true;}
+  else return false;
+}
+
+function sbookSplitNode(textnode)
+{
+  var text=textnode.nodeValue;
+  var words=text.split(/\b/);
+  var span=fdjtSpan("sbookpageprobe");
+  var i=0; var len=words.length;
+  while (i<len)
+    if (fdjtIsEmptyString(words[i]))
+      span.appendChild(document.createTextNode(words[i++]));
+    else fdjtAppend(span,fdjtSpan(false,words[i++]));
+  return span;
 }
 
 /* Framing a page */
@@ -304,7 +433,7 @@ function sbookForward()
       if (sbook_pagescroll!==window.scrollY)
 	sbookGoToPage(sbook_curpage,sbook_curoff);
       var info=sbook_pageinfo[sbook_curpage];
-      var pagebottom=window.scrollY+window.innerHeight-sbook_curbottom;
+      var pagebottom=window.scrollY+window.innerHeight;
       if (pagebottom<info.bottom)
 	sbookGoToPage(sbook_curpage,pagebottom-info.top);
       else if (sbook_curpage===sbook_pages.length) {}
@@ -513,10 +642,10 @@ function sbookPageSetup()
     pagehead.style.backgroundColor=bgcolor;
     pagefoot.style.backgroundColor=bgcolor;}
   pagehead.style.display='block'; pagefoot.style.display='block';
-  sbook_top_margin_px=pagehead.offsetHeight+8;
-  sbook_bottom_margin_px=pagefoot.offsetHeight+8;
+  sbook_top_margin_px=pagehead.offsetHeight;
+  sbook_bottom_margin_px=pagefoot.offsetHeight;
   pagehead.style.display=null; pagefoot.style.display=null;
-  pagehead.sbookui=true; pagehead.sbookui=true;
+  pagehead.sbookui=true; pagefoot.sbookui=true;
 }
 
 function sbookUpdatePagination()

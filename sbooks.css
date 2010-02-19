@@ -1316,7 +1316,8 @@ body div.sbookmargin {
 body.tablet div.sbookmargin { height: 50px;}
 body div#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
 body div.sbookmargin#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
-body div.sbookmargin#SBOOKBOTTOMMARGIN {bottom: 0; left: 0; right: 0;}
+body div.sbookmargin#SBOOKBOTTOMMARGIN {
+  bottom: 0; left: 0; right: 0; height: 75px;}
 body.sbookscrollview div.sbookmargin { display: none;}
 body.sbookpageview div.sbookmargin { display: block;}
 body.preview div.sbookmargin { display: none;}
@@ -1324,6 +1325,8 @@ body.sbookpageview.preview div.sbookmargin { display: none;}
 
 .sbookpage { page-break-before: always;}
 .sbookkeep { page-break-inside: avoid;}
+
+span.sbookpageprobe span { vertical-align: bottom; }
 
 /* Emacs local variables
 ;;;  Local variables: ***
