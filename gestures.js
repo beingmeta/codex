@@ -85,7 +85,7 @@ function sbook_onmousedown(evt)
   else if (fdjtIsClickactive(target)) return;
   else if (fdjtHasParent(target,sbook_target)) {
     sbook_mark(sbook_target,false,fdjtSelectedText());
-    fdjtCancelEvent();
+    fdjtCancelEvent(evt);
     return;}
   else {
     var focus=sbookGetFocus(target,evt.altKey);

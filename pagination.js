@@ -44,7 +44,7 @@ var sbook_pagescroll=false;
 var sbook_top_margin_px=40;
 var sbook_bottom_margin_px=40;
 
-var sbook_debug_pagination=true;
+var sbook_debug_pagination=false;
 var sbook_trace_pagination=0;
 var sbook_trace_paging=false;
 
@@ -197,6 +197,8 @@ function sbookPaginate(pagesize,start)
     else {
       if (info.bottom<=pagelim) curpage.bottom=info.bottom;
       curpage.last=scan;}
+    if (!(curpage.focus))
+      if (fdjtElementMatches(scan,sbook_focus_rules)) curpage.focus=scan;
     if (next) {scan=next; info=nextinfo;}
     else {
       scan=_sbookScanPageContent(scan);
@@ -223,10 +225,12 @@ function _sbookScanPageContent(scan)
   else if ((sbookIsPageHead(next))||(sbookIsPageBlock(next))) {}
   else if ((next.childNodes)&&(next.childNodes.length>0)) {
     var children=next.childNodes;
-    if (children[0].nodeType===1) next=children[0];
+    if ((children[0].nodeType===1)&&(_sbookIsContentBlock(children[0])))
+      next=children[0];
     else if ((children[0].nodeType===3)&&
 	     (fdjtIsEmptyString(children[0].nodeValue))&&
-	     (children.length>1)&&(children[1].nodeType===1))
+	     (children.length>1)&&(children[1].nodeType===1)&&
+	     (_sbookIsContentBlock(children[1])))
       next=children[1];}
   if ((next)&&(sbook_debug_pagination)) {
     if (next.id) scan.setAttribute("sbookpagenext",next.id);
@@ -407,7 +411,8 @@ function sbookGoToPage(pagenum,pageoff)
   sbook_curpage=pagenum;
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
-  sbookSetFocus(info.first);
+  if ((sbook_focus)&&(!(fdjtIsVisible(sbook_focus))))
+    sbookSetFocus(info.focus||info.first);
   sbook_pagescroll=window.scrollY+sbook_top_margin_px;
   // Add class if it's temporarily gone
   fdjtAddClass(document.body,"sbookpageview");

@@ -2,26 +2,13 @@
 
 body.sbook {
   background-color: ivory;}
-/*
-body.sbook div.title { display: none;}
-body.sbook div.frontpiece { display: none;}
-body.sbook div.sbookinfo { display: none;}
-body.sbook div.author { display: none;}
-body.sbook h1.titlepage span.glossmark { display: none;}
-*/
-body.sbook div.frontpiece img {
-  margin-left: 10%; margin-right: 10%; width: auto;}
+
 body.sbook h1 { margin-left: 5%; margin-right: 5%;}
 body.sbook h1.titlepage { 
   background-color: lightgray;
   font-size: 36px; text-align: center;
   page-break-after: always;}
 body.sbook h1 { page-break-before: always; }
-body.sbook h1.titlepage div.pubinfo { 
-  font-variant: smallcaps;
-  background-color: ivory; font-size: 50%; padding: 4px;
-  width: 90%; margin-left: 5%; margin-right: 5%;
-  margin-bottom: 12px; margin-top: 12px;}
 body.sbook h1.titlepage div.title { text-align: center; font-weight: bold;}
 body.sbook h1.titlepage div.subtitle { 
   text-align: center; font-style: italic; font-weight: normal;
@@ -33,14 +20,19 @@ body.sbook h1.titlepage div.author {
 body.sbook h1.titlepage div.editor { 
   text-align: center; font-style: normal; font-weight: normal;
   font-size: 80%;}
+body.sbook h1.titlepage div.pubinfo { 
+  font-variant: smallcaps;
+  background-color: ivory; font-size: 50%; padding: 4px;
+  width: 90%; margin-left: 5%; margin-right: 5%;
+  margin-bottom: 12px; margin-top: 12px;}
 body.sbook h1.titlepage div.sbookinfo { 
   font-family: sans,sans-serif;
   font-size: 18px; margin-top: 128px;
   text-align: center; font-variant: small-caps;}
 body.sbook h1.titlepage div.frontpiece { 
   text-align: center;}
-body.sbook h1.titlepage .frontpiece img {
-  border: none; width: 50%;}
+body.sbook h1.titlepage .frontpiece img { border: none; }
+
 h1.titlepage.sbookhead { text-decoration: none;}
 h1.titlepage.sbookfocus { color: inherit;}
 h1.titlepage.sbookpingfocus { text-decoration: inherit; color: inherit;}

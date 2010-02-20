@@ -45,8 +45,8 @@ var sbook_social_info=
 var sbook_gloss_data=
   ((typeof sbook_gloss_data === 'undefined')?(false):(sbook_gloss_data));
 // Imported gloss information
-var sbook_user_feeds=
-  ((typeof sbook_user_feeds === 'undefined')?(false):(sbook_user_feeds));
+var sbook_user_overlays=
+  ((typeof sbook_user_overlays === 'undefined')?(false):(sbook_user_overlays));
 
 /* Derived metadata */
 
@@ -127,9 +127,9 @@ var sbook_tribes=
 // These are a set of common group/user tags for this particular user.
 var sbook_user_dist=
   ((typeof sbook_user_dist === "undefined")?[]:(sbook_user_dist));
-// These are the feeds that the user can write
-var sbook_feeds=
-  ((typeof sbook_feeds === "undefined")?[]:(sbook_feeds));
+// These are the overlays that the user can write
+var sbook_overlays=
+  ((typeof sbook_overlays === "undefined")?[]:(sbook_overlays));
 
 /* Defining information for the document */
 
@@ -215,7 +215,8 @@ var sbook_ignored=[];
 // These are selectors for non-block elements which get IDs
 var sbook_idify=[];
 // Whether or not to assign IDs automatically based on structure
-var sbook_autoid=true;
+// Ideally, this is done by the publisher using automatic tools
+var sbook_autoid=false;
 // Whether to build the index
 var sbook_build_index=true;
 // This is a count of all tagged elements
@@ -266,7 +267,7 @@ var sbook_trace_search=0;
 // Whether to debug clouds
 var sbook_trace_clouds=0;
 // Whether to trace focus
-var sbook_trace_focus=false;
+var sbook_trace_focus=true;
 // Whether to trace selection
 var sbook_trace_selection=false;
 // Whether we're debugging locations
@@ -373,8 +374,10 @@ function sbookInUI(elt)
 {
   if (fdjtHasParent(elt,sbookHUD)) return true;
   else while (elt)
-	 if (fdjtHasClass(elt,sbookUIclasses)) return true;
+	 if (elt.sbookui) return true;
+	 else if (fdjtHasClass(elt,sbookUIclasses)) return true;
 	 else elt=elt.parentNode;
+  return false;
 }
 
 function sbookGetHead(target)
@@ -940,7 +943,7 @@ function sbookSetFocus(target)
   }
 }
 
-function sbookTrackFocus(target)
+function sbookTrackFocus(target,fine)
 {
   // Lots of reasons *not* to track the focus
   if (!(target)) return null;
@@ -1192,6 +1195,9 @@ function sbook_onmouseover(evt)
   if ((target===null) || (target===sbook_root) ||
       (!((target) && ((target.Xoff) || (target.Yoff))))) 
     target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY,evt.ctrlKey);
+  // Don't raise the focus to parents unless the control key down
+  if ((sbook_focus)&&(fdjtHasParent(sbook_focus,target)))
+    if (!(evt.ctrlKey)) return;
   fdjtDelay
     (sbook_focus_delay,sbookTrackFocus,target,document.body,"setfocus");
 }
@@ -1219,6 +1225,9 @@ function sbook_onmousemove(evt)
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
   target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY,evt.ctrlKey);
+  // Don't raise the focus to parents unless the control key down
+  if ((sbook_focus)&&(fdjtHasParent(sbook_focus,target)))
+    if (!(evt.ctrlKey)) return;
   fdjtDelay
     (sbook_focus_delay,sbookTrackFocus,target,document.body,"setfocus");
 }
@@ -1236,6 +1245,9 @@ function sbook_onscroll(evt)
   var xoff=scrollx+sbook_last_x;
   var yoff=scrolly+sbook_last_y;
   var target=sbookGetXYFocus(xoff,yoff,evt.ctrlKey);
+  // Don't raise the focus to parents unless the control key down
+  if ((sbook_focus)&&(fdjtHasParent(sbook_focus,target)))
+    if (!(evt.ctrlKey)) return;
   fdjtDelay
     (sbook_focus_delay,sbookTrackFocus,target,document.body,"setfocus");
 }
@@ -1440,6 +1452,11 @@ function sbookGetScanSettings()
     var rules=fdjtSemiSplit(notag);
     var i=0; while (i<rules.length) {
       sbook_notags.push(rules[i++]);}}
+  if (fdjtGetMeta("SBOOKAUTOID"))
+    sbook_autoid=true;
+  else if ($(sbook_baseid))
+    sbook_autoid=false;
+  else sbook_autoid=true;
 }
 
 function sbookGetAppSettings()
@@ -1675,13 +1692,14 @@ function sbookSetup()
     sbookTabletMode(true);}
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));
   var scanstate=sbookGatherMetadata();
   sbookInitNavHUD();
   var scan_done=new Date();
+  sbookSparseMode(sbook_sparse);
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Determining page layout"));
   if (sbook_pageview) sbookUpdatePagination();
   sbookPageView(sbook_pageview);
-  sbookSparseMode(sbook_sparse);
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Processing knowledge sources"));
   if (knoHTMLSetup) knoHTMLSetup();
   if (scanstate) sbookHandleInlineKnowlets(scanstate);
@@ -1750,27 +1768,27 @@ function sbookGlossesSetup()
     else $("SBOOKFRIENDLYOPTION").value=null;
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Adding print icons..."));
   if (sbook_heading_qricons) sbookAddQRIcons();
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Importing personal feeds..."));
-  if (sbook_user) sbookImportFeeds();
+  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Importing personal overlays..."));
+  if (sbook_user) sbookImportOverlays();
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message",""));
   // fdjtTrace("[%fs] Done with glosses setup",fdjtET());
   _sbookHUDSplash();
   _sbook_gloss_setup=true;
 }
 
-function sbookImportFeeds(arg)
+function sbookImportOverlays(arg)
 {
   var invite_options=$("SBOOKINVITEOPTIONS");
   var mark_options=$("SBOOKMARKOPTIONS");
-  var feeds=((arg)?((arg.oid)?(new Array(arg)):(arg)):sbook_user_feeds);
-  var i=0; var n=feeds.length;
+  var overlays=((arg)?((arg.oid)?(new Array(arg)):(arg)):sbook_user_overlays);
+  var i=0; var n=overlays.length;
   while (i<n) {
-    var info=feeds[i++];
+    var info=overlays[i++];
     if (!(info.oid)) continue;
-    else if (fdjtContains(sbook_feeds,info.oid)) {}
+    else if (fdjtContains(sbook_overlays,info.oid)) {}
     else {
       var named="("+info.kind.slice(1)+") "+info.name;
-      sbook_feeds.push(info.oid);
+      sbook_overlays.push(info.oid);
       var invite_option=fdjtElt("OPTION",named);
       invite_option.title=info.about;
       invite_option.value=info.oid;

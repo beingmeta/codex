@@ -66,7 +66,14 @@ function _sbook_sort_summaries(x,y)
   else return 0;
 }
 
-function sbookFeedPic(info)
+function sbookSourceIcon(info)
+{
+  var pic=_sbookSourceImage(info);
+  if (pic) return fdjtImage(pic,"feedpic",info.name);
+  else return false;
+}
+
+function _sbookSourceImage(info)
 {
   if (info.pic) return info.pic;
   var kind=info.kind;
@@ -74,15 +81,8 @@ function sbookFeedPic(info)
     return sbicon("sbooksperson40x40.png");
   else if (kind===':CIRCLE')
     return sbicon("sbookscircle40x40.png");
-  else if (kind===':METADOC')
-    return sbicon("sbooksmetadoc40x40.png");
-  else return false;
-}
-
-function sbookFeedImage(info)
-{
-  var pic=sbookFeedPic(info);
-  if (pic) return fdjtImage(pic,"feedpic",info.name);
+  else if (kind===':OVERDOC')
+    return sbicon("sbooksoverdoc40x40.png");
   else return false;
 }
 
@@ -278,7 +278,7 @@ function sbookMarkInfo(sumdiv,info)
   var feedinfo=fdjtOIDs[feed];
   var img=((info.pic)&&(fdjtImage((info.pic),"glosspic",userinfo.name)))||
     ((userinfo.pic)&&(fdjtImage((userinfo.pic),"userpic",userinfo.name)))||
-    (sbookFeedImage(feedinfo))||(sbookFeedImage(userinfo));
+    (sbookSourceIcon(feedinfo))||(sbookSourceIcon(userinfo));
   var interval=((info.tstamp) ? (fdjtTick()-info.tstamp) : (-1));
   var delete_button=
     ((user===sbook_user)&&

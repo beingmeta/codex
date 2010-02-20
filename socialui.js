@@ -35,7 +35,7 @@ var sbooks_social_version=parseInt("$Revision: 4605 $".slice(10,-1));
 var sbook_sources=false;
 var sbook_glosses_target=false;
 var sbookGlossesHUD=false;
-var sbookFeedHUD=false;
+var sbookSourceHUD=false;
 
 // The highlighted glossmark
 var sbook_glossmark=false;
@@ -59,36 +59,36 @@ function sbookCreateGlossesHUD(classinfo)
   return sbookGlossesHUD;
 }
 
-function sbookCreateFeedHUD(classinfo,feeds)
+function sbookCreateSourceHUD(classinfo,overlays)
 {
-  if (sbookFeedHUD) return sbookFeedHUD;
-  if (!(feeds)) feeds=sbook_conversants;
-  if (!(classinfo)) classinfo=".feeds.hudblock.hud#SBOOKFEEDS";
+  if (sbookSourceHUD) return sbookSourceHUD;
+  if (!(overlays)) overlays=sbook_conversants;
+  if (!(classinfo)) classinfo=".overlays.hudblock.hud#SBOOKSOURCES";
   var app_button=
     fdjtImage(sbicon("sbooksappicon40x40.png"),".button.app","?","Help, settings, etc");
   var login_button=
     fdjtImage(sbicon("sbooksconnecticon40x40.png"),".button.login","?","login");
   var everyone_button=
     fdjtImage(sbicon("sBooksWE_2_32x32.png"),".button.everyone#SBOOKEVERYONE","everyone");
-  var feedicons=fdjtDiv("#SBOOKFEEDICONS.feedicons",everyone_button);
+  var sourceicons=fdjtDiv("#SBOOKSOURCEICONS.sourceicons",everyone_button);
   var socialelts=[]; var glosselts=[];
   everyone_button.onclick=sbookEveryoneButton_onclick;
   login_button.onclick=sbookLoginButton_onclick;
-  feedicons.onclick=sbookFeeds_onclick;
+  sourceicons.onclick=sbookOverlays_onclick;
   app_button.onclick=sbookAppButton_onclick;
-  var i=0; var n=feeds.length;
-  while (i<n) sbookAddFeedIcon(fdjtOIDs[feeds[i++]]);
-  sbookFeedHUD=fdjtDiv(classinfo," ",
+  var i=0; var n=overlays.length;
+  while (i<n) sbookAddSourceIcon(fdjtOIDs[overlays[i++]]);
+  sbookSourceHUD=fdjtDiv(classinfo," ",
 		       login_button,app_button,
-		       feedicons);
-  sbookFeedHUD.onclick=sbookLeftEdge_onclick;
-  return sbookFeedHUD;
+		       sourceicons);
+  sbookSourceHUD.onclick=sbookLeftEdge_onclick;
+  return sbookSourceHUD;
 }
 
-function sbookAddFeedIcon(info)
+function sbookAddSourceIcon(info)
 {
   var humid=info.humid;
-  var icon=$("SBOOKFEEDICON"+humid);
+  var icon=$("SBOOKSOURCEICON"+humid);
   if (icon) return icon;
   if (!(info.name)) return;
   var pic=info.pic; var kind=info.kind;
@@ -97,13 +97,13 @@ function sbookAddFeedIcon(info)
     pic=sbicon("sbooksperson40x40.png");
   else if (kind===':CIRCLE')
     pic=sbicon("sbookscircle40x40.png");
-  else if (kind===':METADOC')
-    pic=sbicon("sbooksmetadoc40x40.png");
+  else if (kind===':OVERDOC')
+    pic=sbicon("sbooksoverdoc40x40.png");
   else pic=sbook;
   icon=fdjtImage
-    (pic,".button.feed",info.name|info.kind,
+    (pic,".button.source",info.name|info.kind,
      ("click to see glosses for "+info.name));
-  icon.oid=info.oid; icon.id="SBOOKFEEDICON"+humid;
+  icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
   fdjtInsertBefore("SBOOKEVERYONE"," ",icon);
   return icon;
 }
@@ -112,9 +112,9 @@ function sbookEveryoneButton_onclick(evt)
 {
   evt=evt||event||null;
   if (sbook_sources) {
-    var feeds=$$(".feed",sbookFeedHUD);
-    var i=0; var n=feeds.length;
-    while (i<n) fdjtDropClass(feeds[i++],"selected");
+    var overlays=$$(".source",sbookSourceHUD);
+    var i=0; var n=overlays.length;
+    while (i<n) fdjtDropClass(overlays[i++],"selected");
     sbook_sources=false;
     if (sbook_mode==="glosses") {
       sbookSelectSources($("SBOOKGLOSSES"));
@@ -129,16 +129,16 @@ function sbookEveryoneButton_onclick(evt)
   fdjtCancelEvent(evt);
 }
 
-function sbookFeeds_onclick(evt)
+function sbookOverlays_onclick(evt)
 {
   evt=evt||event||null;
   // if (!(sbook_user)) return;
   var target=$T(evt);
-  var feeds=$P(".feedicons",target);
-  if (!(feeds)) return; /* Warning? */
+  var overlays=$P(".sourceicons",target);
+  if (!(overlays)) return; /* Warning? */
   if (!(target.oid)) return;
   var info=fdjtOIDs[target.oid];
-  var icon=$("SBOOKFEEDICON"+info.humid);
+  var icon=$("SBOOKSOURCEICON"+info.humid);
   if (!(info)) return;
   if ((icon)&&(fdjtHasClass(icon,"selected"))&&
       (sbook_sources.length===1)&&
@@ -166,9 +166,9 @@ function sbookFeeds_onclick(evt)
       sbook_sources.push(target.oid);}
   else {
     if (sbook_sources) {
-      var feedicons=$$(".feed",feeds);
-      var i=0; var len=feedicons.length;
-      while (i<len) fdjtDropClass(feedicons[i++],"selected");}
+      var sourceicons=$$(".source",overlays);
+      var i=0; var len=sourceicons.length;
+      while (i<len) fdjtDropClass(sourceicons[i++],"selected");}
     fdjtAddClass(icon,"selected");
     sbook_sources=new Array(target.oid);}
   if ((sbook_sources) && (sbook_sources.length===0)) sources=false;
@@ -198,9 +198,9 @@ function sbookFeeds_onclick(evt)
   fdjtCancelEvent(evt);
 }
 
-function sbookSetSources(feeds,sources)
+function sbookSetSources(overlays,sources)
 {
-  var children=feeds.childNodes;
+  var children=overlays.childNodes;
   var i=0; while (i<children.length) {
     var child=children[i++];
     if (child.nodeType===1) {
@@ -262,6 +262,7 @@ function sbookGlossmark(target,open)
      fdjtImage(imgsrc,"big","comments"),
      fdjtImage(sbicon("sbicon16x16.png"),"tiny","+"));
   glossmark.onclick=sbookGlossmark_onclick;
+  glossmark.onmousedown=fdjtCancelEvent;
   glossmark.onmouseover=sbookGlossmark_onmouseover;
   glossmark.onmouseout=sbookGlossmark_onmouseout;
   if (id) {
@@ -284,8 +285,6 @@ function sbookGlossmark(target,open)
 function sbookGlossmark_onclick(evt)
 {
   evt=evt||event||null;
-  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
-  evt.cancelBubble=true;
   var target=sbookGetRef(evt.target)||sbookGetFocus(evt.target.parentNode);
   if ((sbook_mode==="glosses") &&
       (sbook_glosses_target===target)) {

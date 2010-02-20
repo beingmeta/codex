@@ -62,7 +62,7 @@ function sbookImportGlosses(data)
       var item=info[i++]; var slots=fdjtImportOID(item);
       if (!(slots.conversant)) {
 	fdjtInsert(sbook_conversants,slots.oid);
-	sbookAddFeedIcon(slots);
+	sbookAddSourceIcon(slots);
 	slots.conversant=true;}}}
   var ids=data['%ids'];
   if (sbook_trace_network)
@@ -99,8 +99,8 @@ function sbook_add_gloss(id,entry)
     sbook_allglosses.push(entry);
     item.pushed=true;}
   fdjtAdd(sbook_glosses_by_id,id,item);
-  if (entry.taginfo) {
-    var tags=entry.taginfo;
+  if (entry.tags) {
+    var tags=entry.tags;
     var k=0; while (k<tags.length) {
       var tag=tags[k++];
       sbookAddTag(item,tag,true,false,true,false);}}

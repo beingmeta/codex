@@ -83,7 +83,7 @@ function createSBOOKHUD()
       ("#SBOOKHUD.hud",
        leftedge,rightedge,
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
-       fdjtDiv("#SBOOKFEEDS.hudblock.hud",login_button,help_button),
+       fdjtDiv("#SBOOKSOURCES.hudblock.hud",login_button,help_button),
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
        fdjtDiv("#SBOOKSEARCH.hudblock.hud"),
        fdjtDiv("#SBOOKTAGS.hudblock.hud.tags"),
@@ -128,7 +128,7 @@ function sbookInitNavHUD()
 function sbookInitSocialHUD()
 {
   fdjtReplace("SBOOKGLOSSES",sbookCreateGlossesHUD());
-  fdjtReplace("SBOOKFEEDS",sbookCreateFeedHUD());
+  fdjtReplace("SBOOKSOURCES",sbookCreateSourceHUD());
 }
 
 function sbookInitSearchHUD()

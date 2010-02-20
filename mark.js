@@ -205,7 +205,7 @@ function sbookCreateMarkHUD(classinfo)
 		    fdjtInput("SUBMIT","ACTION","Save","#SBOOKMARKSAVEACTION",
 			      "Save (mark) this gloss to the server"),
 		    " ",fdjtInput("SUBMIT","ACTION","Push","#SBOOKMARKPUSHACTION",
-				  "Save this gloss and publish it to any enabled feeds/walls/etc")));
+				  "Save this gloss and publish it to any enabled overlays/walls/etc")));
   var grid=
     fdjtDiv("markform",
 	    fdjtDiv("lhs",fdjtImage(image_uri,"#SBOOKMARKIMAGE.userpic"),
@@ -294,7 +294,7 @@ function sbookMarkPickFeed()
   private_option.value=":{}";
   friendly_option.value=sbook_user;
   friendly_option.selected=true; friendly_option.defaultSelected=true;
-  var i=0; var len=sbook_feeds.length;
+  var i=0; var len=sbook_overlays.length;
   pickfeed.onchange=sbookMarkFeed_onchange;
   pickfeed.title="The primary 'audience' for this gloss";
   return pickfeed;
@@ -303,7 +303,7 @@ function sbookMarkPickFeed()
 function sbookMarkFeed_onchange(evt)
 {
   var checkspan=$("SBOOKMARKPRIVATE");
-  var feeds=evt.target;
+  var overlays=evt.target;
   var newfeed=evt.target.value;
   var info=fdjtOIDs[newfeed];
   var checkstate;

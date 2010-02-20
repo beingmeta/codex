@@ -280,9 +280,8 @@ function sbookQueryCloud(query)
     var n_refiners=query._refiners._results.length;
     var hide_some=(n_refiners>sbook_show_refiners);
     var msg1=
-      fdjtDiv(".noinputmsg",((hide_some)?"Displaying some of ":"There are "),
-	      n_refiners," possible refining terms; ",
-	      "start typing to see completions");
+      fdjtDiv(".noinputmsg",((hide_some)?"Some of ":"There are "),
+	      n_refiners," possible refining terms");
     var msg2=fdjtDiv(".nocompletemsg","There are no ",((n_refiners)&&("more"))," completions");
     result_counts.onclick=function(evt){
       evt=evt||event||null;
