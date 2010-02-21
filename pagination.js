@@ -124,10 +124,10 @@ function sbookPaginate(pagesize,start)
     if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info));
     if (sbook_trace_pagination>1) _sbookTracePagination("SCAN",scan,info);
     if (sbookIsPageHead(scan)) newpage=scan;
-    else if (info.top>pagelim)
-      if (sbookAvoidPageHead(scan)) {}
+    else if (info.top>pagelim) // We're completely off the page
+      if (sbookAvoidPageHead(scan)) {} // tough
       else newpage=scan;
-    else if (info.bottom<pagelim)
+    else if (info.bottom<pagelim) // We're completely on the page
       // Don't even think about it
       if (sbookAvoidPageHead(scan)) {}
       else if (next=_sbookScanPageContent(scan)) {
@@ -137,15 +137,15 @@ function sbookPaginate(pagesize,start)
 	  dbginfo=dbginfo+" ... N"+_sbookPageNodeInfo(next,nextinfo);
 	if ((scan.toclevel)||(sbookAvoidPageFoot(scan)))
 	  if ((next.toclevel)||(sbookAvoidPageFoot(next)))
-	    if ((nextinfo.bottom+(fudge*2))<pagelim) {}
+	    if ((nextinfo.bottom+fudge)<pagelim) {}
 	    else newpage=scan;
 	  else if ((nextinfo.bottom)<pagelim) {}
-	  else if ((nextinfo.top+(fudge*2))<pagelim) {}
+	  else if ((nextinfo.top+fudge)<pagelim) {}
 	  else newpage=scan;
 	// Avoid putting the next item at the head of the next page
 	else if ((nextinfo.bottom>pagelim)&&(sbookAvoidPageHead(next)))
 	  // The next item is short enough that we'll just extend the margin
-	  if ((nextinfo.bottom-pagelim)<(fudge*2)) {}
+	  if ((nextinfo.bottom-pagelim)<fudge) {}
 	  else if ((pagelim-info.top)<pagesize/4)
 	    // If we start a new page, we'll only create 1/4 page of whitespace
 	    newpage=scan;
@@ -156,11 +156,15 @@ function sbookPaginate(pagesize,start)
 	// Keep going
 	else {}}
       else {}
+    /* We're straddling the bottom of the page */
     else if (sbookIsPageBlock(scan)) newpage=scan;
-    else if ((pagelim-info.top)<(fudge*2)) newpage=scan;
-    else if ((info.bottom-pagelim)<(fudge*2)) {
+    else if (sbookAvoidPageFoot(scan)) newpage=scan;
+    else if (sbookAvoidPageHead(scan))
       // Grow the page
-      curpage.bottom=pagelim=info.bottom;}
+      curpage.bottom=pagelim=info.bottom;
+    else if ((pagelim-info.top)<fudge)
+      // Start a new page if this item starts near the bottom
+      newpage=scan;
     else if (fdjtHasText(scan)) {
       newpage=splitblock=scan;
       curpage.bottom=pagelim;}
@@ -206,7 +210,7 @@ function sbookPaginate(pagesize,start)
     nodecount++;}
   var done1=fdjtET();
   var i=0; var len=pages.length;
-  while (i<len) sbookAdjustPage(pages,pageinfo,i++);
+  // while (i<len) sbookAdjustPage(pages,pageinfo,i++);
   var done2=fdjtET();
   fdjtLog("[%f] Paginated %d nodes into %d pages with pagesize=%d in %s=%s+%s",
 	  fdjtET(),nodecount,pages.length,pagesize,
@@ -345,6 +349,8 @@ function sbookAdjustPage(pages,pageinfo,num)
 		if (wordoff.top<newedge) newedge=wordoff.top;
 		else {}
 	      else newedge=wordoff.top;}}
+	  // Remove this line if you want to debug the adjustment
+	  //  It keeps the temporary spans in place for DOM inspection
 	  node.replaceChild(child,split);
 	  if (newedge) break;
 	  else i++;}
@@ -373,7 +379,7 @@ function sbookSplitNode(textnode)
     var textnode=document.createTextNode(word);
     if (word.search(/\S/)>=0) {
       var wordspan=document.createElement("span");
-      span.appendChild(textnode);
+      wordspan.appendChild(textnode);
       span.appendChild(wordspan);}
     else span.appendChild(textnode);}
   return span;

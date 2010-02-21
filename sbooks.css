@@ -1337,7 +1337,7 @@ body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
 body div.sbookmargin {
     position: fixed; height: 40px; background-color: white;
-    z-index: 75; opacity: 0.99;
+    z-index: 75; opacity: 0.75;
     display: none;}
 body.tablet div.sbookmargin { height: 50px;}
 body div#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
