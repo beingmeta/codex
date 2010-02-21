@@ -455,6 +455,8 @@ function sbookSummary_onmouseout(evt)
 function sbookSummary_onmousedown(evt)
 {
   evt=evt||event||null;
+  var target=$T(evt);
+  if (fdjtIsClickactive(target)) return;
   sbook_preview_mousedown=fdjtTime();
   var ref=sbookGetRef($T(evt));
   fdjtDelay(sbook_preview_delay,sbookPreview,ref,document.body,"preview");
@@ -463,28 +465,25 @@ function sbookSummary_onmousedown(evt)
 function sbookSummary_onmouseup(evt)
 {
   evt=evt||event||null;
+  var down=sbook_preview_mousedown;
+  sbook_preview_mousedown=false;
   if (evt.ctrlKey) return;
-  sbookPreview(false);
   if (document.body.preview) {
     clearTimeout(document.body.preview);
     document.body.preview=false;}
-}
-
-function sbookSummary_onclick(evt)
-{
-  var target=$T(evt); var down=sbook_preview_mousedown;
-  sbook_preview_mousedown=false;
-  if ((sbook_preview_target)&&(down))
-    if ((fdjtTime()-down)>sbook_preview_clickmax) {
-      fdjtCancelEvent(evt);
-      return;}
-  if (fdjtIsClickactive(target)) return;
-  else {
+  sbookPreview(false);
+  if ((fdjtTime()-down)<sbook_preview_clickmax) {
     var ref=sbookGetRef($T(evt));
     fdjtScrollDiscard();
     sbookGoTo(ref);
     fdjtCancelEvent(evt);
     return false;}
+}
+
+function sbookSummary_onclick(evt)
+{
+  var target=$T(evt);
+  fdjtCancelEvent(evt);
 }
 
 function sbookSetupSummaryDiv(div)
