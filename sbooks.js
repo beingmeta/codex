@@ -952,7 +952,7 @@ function sbookTrackFocus(target,fine)
 {
   // Lots of reasons *not* to track the focus
   if (!(target)) return null;
-  else if (sbook_mode!=="minimal") return;
+  else if ((sbook_mode)&&(sbook_mode!=="minimal")) return;
   else if ((sbook_target)&&(fdjtIsVisible($(sbook_target))))
     return;
   // All the direct reasons not to track the focus are false,
