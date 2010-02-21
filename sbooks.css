@@ -33,6 +33,18 @@
 
 @charset "utf-8";
 
+@media print {
+  span.altabstime { display: inline;}
+  span.altreltime { display: none;}
+}
+@media print {
+    div#SBOOKHUD { display: none;}
+    body.hudup div#SBOOKHUD { display: none;}
+    body.sbookpageview div.sbookmargin { display: none;}
+    body.sbookpageview div.leading { display: none;}
+
+}
+
 /*
 h1.sbookhead, h2.sbookhead { text-decoration: overline;}
 h3.sbookhead, h4.sbookhead { text-decoration: overline;}
@@ -59,17 +71,6 @@ body.sbooktarget { color: inherit;}
 a img { border: transparent;}
 
 span.altabstime { display: none;}
-@media print {
-  span.altabstime { display: inline;}
-  span.altreltime { display: none;}};
-
-/* No HUD when printing */
-
-@media print {
-    div#SBOOKHUD { display: none;}
-}
-
-div#SBOOKHUD {}
 
 /* Generic HUD Display/opacity rules */
 
@@ -125,7 +126,8 @@ body div#SBOOKHUD.toc div.hudblock#SBOOKTOC {
   display: block; opacity: 0.9; max-height: inherit;
   border: solid lightblue 4px; border-top: none;}
 div#SBOOKHUD div.hudblock.hover#SBOOKTOC { display: block;}
-div#SBOOKHUD div.hudblock.flash#SBOOKTOC { opacity: 0.8; display: block; max-height: 50px;}
+div#SBOOKHUD div.hudblock.flash#SBOOKTOC {
+    opacity: 0.8; display: block; max-height: 50px;}
 div#SBOOKHUD div.hudblock.flash#SBOOKTOC .sectname { display: none;}
 
 img.hudbutton[alt='toc'] { 
@@ -179,7 +181,8 @@ div#SBOOKHUD.browsing img.hudbutton[alt='index'] {
 
 div#SBOOKHUD div.hud#SBOOKSEARCH.hover {
   display: block; opacity: 0.7; max-height: inherit;}
-div#SBOOKHUD div.hud#SBOOKSEARCH.hover div.query { display: block; height: inherit;}
+div#SBOOKHUD div.hud#SBOOKSEARCH.hover div.query {
+    display: block; height: inherit;}
 div#SBOOKHUD div.hud#SBOOKSEARCH.hover div.completions { display: block;}
 
 /* The summaries (search results) HUD */
@@ -219,7 +222,8 @@ div#SBOOKHUD div.hud#SBOOKTAGS {
   -moz-border-radius-topright: 6px; 
   border-top-right-radius: 6px;
   display: none;}
-div#SBOOKHUD div.hudblock.flash#SBOOKTAGS { opacity: 0.9; display: block; max-height: 50px;}
+div#SBOOKHUD div.hudblock.flash#SBOOKTAGS {
+    opacity: 0.9; display: block; max-height: 50px;}
 
 /* Paging buttons */
 
@@ -359,7 +363,8 @@ div#SBOOKHUD div#SBOOKMARKHUD {
   -moz-border-radius-bottomleft: 6px; 
   border-bottom-left-radius: 6px;
   display: none;}
-div#SBOOKHUD.mark div#SBOOKMARKHUD { display: block; opacity: 0.9;}
+div#SBOOKHUD.mark div#SBOOKMARKHUD {
+    display: block; opacity: 0.9;}
 
 /* The Glosses HUD */
 
@@ -453,8 +458,10 @@ div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
   position: absolute; top: 0px; right: 0px; height: 40px;
   border-bottom: solid gold 2px; border-left: solid gold 2px;
   background-color: gold;}
-body.nosbookuser div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC { display: none;}
-body.sbookuser div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC { display: block;}
+body.nosbookuser div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
+    display: none;}
+body.sbookuser div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
+    display: block;}
 
 div#SBOOKHUD div#SBOOKAPP div.message {
   margin-top: 24px;  text-align: center; color: gold;
@@ -504,6 +511,8 @@ div#SBOOKAPP div.helpbody div.fasthelp span.key {
   font-weight: bold; color: white; font-size: 125%; font-variant: small-caps;}
 div#SBOOKAPP div.helpbody div.fasthelp span.keydef {
   white-space: nowrap;}
+div#SBOOKAPP div.helpbody div.fasthelp th { color: gold;}
+div#SBOOKAPP div.helpbody div.fasthelp strong { color: gold;}
 
 div#SBOOKAPP div.helpbody span.fortablet { display: none;}
 div#SBOOKAPP div.helpbody span.forbrowser { display: inline;}
@@ -534,8 +543,10 @@ div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
 
 /* Minimal mode */
 
-body.hudup div#SBOOKHUD.minimal div.hudblock#SBOOKTOC { display: block; max-height: 50px;}
-body.hudup div#SBOOKHUD.minimal div.hudblock#SBOOKTAGS { display: block; max-height: 50px;}
+body.hudup div#SBOOKHUD.minimal div.hudblock#SBOOKTOC {
+    display: block; max-height: 50px;}
+body.hudup div#SBOOKHUD.minimal div.hudblock#SBOOKTAGS {
+    display: block; max-height: 50px;}
 
 /* Make TOC bars smaller */
 div#SBOOKHUD.minimal div.spanbar { height: 6px;}
@@ -560,7 +571,7 @@ body.preview div#SBOOKHUD.searching img.hudbutton[alt='index'] {
 body.preview div#SBOOKHUD.browsing img.hudbutton[alt='index'] { 
   left: 0px; opacity: 0.1;}
 
-body.preview div#SBOOKHUD.toc div.hudblock#SBOOKTOC { opacity: 0.5;}
+body.preview div#SBOOKHUD.toc div.hudblock#SBOOKTOC { opacity: 0.8;}
 body.preview div#SBOOKHUD.searching div.hudblock#SBOOKSEARCH { opacity: 0.05;}
 body.preview div#SBOOKHUD.browsing div.hudblock#SBOOKSEARCH { opacity: 0.05;}
 body.preview div#SBOOKHUD.glosses div.hudblock#SBOOKGLOSSES { opacity: 0.05;}
@@ -1016,7 +1027,7 @@ div.sbooksearch div.tags.cues .section {
   background-color: white; color:purple;}
 
 div#SBOOKHUD div.hud#SBOOKSEARCH div.query {
-   margin-left: 15px; margin-right: 45px;}
+   margin-left: 15px; margin-right: 15px;}
 
 /* Search classes */
 
@@ -1077,26 +1088,26 @@ div#SBOOKMARKCLOUD span.sectname {
 
 div.sbooksearch span.dterm {
     color: gold; font-weight: bold;}
-div.sbooksummaries span.dterm {
+span.dterm {
     color: gold; font-weight: bold;}
-div.sbooksearch span.dterm span.variation {
+span.dterm span.variation {
     color: white; font-style: italic; font-weight: bold;}
-div.sbooksummaries span.dterm span.variation {
+span.dterm span.variation {
     color: white; font-style: italic; font-weight: bold;}
-div.sbooksearch span.dterm span.bigpunct {
+span.dterm span.bigpunct {
   font-size: 200%; font-weight: bold; line-height: 50%;}
-div.sbooksearch .completions.showall span.dterm {display: inline;}
-div.sbooksearch .completions.showall span.dterm.singleton {display: none;}
-div.sbooksearch span.dterm span.disambig {color: red;}
-div.sbooksearch .completions { line-height: 200%;}
-div.sbooksearch .completions .completion.prime { 
+.completions.showall span.dterm {display: inline;}
+.completions.showall span.dterm.singleton {display: none;}
+span.dterm span.disambig {color: red;}
+.completions { line-height: 200%;}
+.completions .completion.prime { 
   font-size: 200%; font-weight: bold;}
-div.sbooksearch .completions .completion .sectname { 
+.completions .completion .sectname { 
   white-space: nowrap;}
 
-div.sbooksearch .completions .completion .variation { 
+.completions .completion .variation { 
   font-size: 115%; color: white;}
-div.sbooksearch .completions .completion .dterm { 
+.completions .completion .dterm { 
   font-size: 95%;}
 
 div.sbooksummaries {}
@@ -1338,5 +1349,4 @@ span.sbookpageprobe span { vertical-align: bottom; }
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
 ;;;  End: ***
-*
-/
+*/

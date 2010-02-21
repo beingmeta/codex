@@ -37,8 +37,7 @@ function sbookShowSearch(result)
 {
   if (!(result)) result=sbook_query;
   var results_div=fdjtDiv(".sbooksummaries.hud");
-  results_div.onclick=sbookSummary_onclick;
-  results_div.onmouseover=sbookSummary_onmouseover;
+  sbookSetupSummaryDiv(results_div);
   sbookShowSearchSummaries(result,results_div);
   fdjtReplace("SBOOKSUMMARIES",results_div);
 }
@@ -94,6 +93,7 @@ function sbookSearchInput_onkeypress(evt)
     sbookHUDMode("browsing");
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSUMMARIES").focus();
+    fdjtCancelEvent(evt);
     return false;}
   else if (ch===59) { /* That is, semicolon */
     sbookForceComplete($T(evt));
@@ -103,6 +103,7 @@ function sbookSearchInput_onkeypress(evt)
     return fdjtComplete_onkey(evt);}
 }
 
+/*
 function sbookSearchInput_onkeyup(evt)
 {
   evt=evt||event||null;
@@ -114,13 +115,13 @@ function sbookSearchInput_onkeyup(evt)
     sbookHUDMode("browsing");
     $("SBOOKSEARCHTEXT").blur();
     $("SBOOKSUMMARIES").focus();
-    if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
-    evt.cancelBubble=true;
+    fdjtCancelEvent(evt);
     return false;}
   else if ((kc===8)||(kc===9)) {
     sbookUpdateQuery(target);
     return fdjtComplete_onkey(evt);}
 }
+*/
 
 function sbookSearchInput_onfocus(evt)
 {
@@ -425,7 +426,8 @@ function sbookCreateSearchHUD(classinfo)
 {
   var input_help=fdjtDiv
     (".helptext#SBOOKQUERYHELP",
-     "Enter tags (separated by semicolons) with completion");
+     "Enter ",fdjtElt("TT","tag1;tag2;etc"),
+     " or click on completions in the search cloud");
   var input=fdjtInput("TEXT","QTEXT","",null);
   var clear_input=
     fdjtImage(sbook_graphics_root+"xbox16x16.png","clearinput","x");
@@ -439,7 +441,6 @@ function sbookCreateSearchHUD(classinfo)
   input.setAttribute("HELPTEXT","SBOOKQUERYHELP");
   completions.input_elt=input;
   input.onkeypress=sbookSearchInput_onkeypress;
-  input.onkeyup=sbookSearchInput_onkeyup;
   input.onfocus=sbookSearchInput_onfocus;
   input.onblur=sbookSearchInput_onblur;
   input.getCompletionText=_sbook_get_current_entry;

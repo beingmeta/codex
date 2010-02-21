@@ -44,7 +44,7 @@ var sbookNavHUD=false;
 // This is the last active 'app' tab
 var sbook_last_app="help";
 // This is the regex for all sbook apps
-var sbook_apps=["help","login","social","settings"];
+var sbook_apps=["help","login","connect","settings"];
 
 function createSBOOKHUD()
 {
@@ -148,7 +148,7 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(login)|(settings)|(social)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
+  /(login)|(settings)|(connect)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
 
 function sbookHUDMode(mode)
 {
@@ -162,7 +162,7 @@ function sbookHUDMode(mode)
       if (mode===true) mode="minimal";
       if (typeof mode !== 'string') 
 	throw new Error('mode arg not a string');
-      if ((mode==="social")&&(!($("APPFRAME").src)))
+      if ((mode==="connect")&&(!($("APPFRAME").src)))
 	sbookSetupAppFrame();
       sbook_mode=mode;
       sbook_last_mode=mode;
@@ -208,161 +208,6 @@ function sbookHUDFlash(mode,usecs)
 function sbookDropHUD()
 {
   return sbookHUDMode(false);
-}
-
-/* Previewing */
-
-function sbookPreviewIcon(target,icon,alt)
-{
-  var preview=
-    fdjtImage(sbicon(sbook_preview_icon),"previewicon",
-	      alt||"see",_("preview"));
-  preview.onmousedown=sbookPreview_onmousedown;
-  // preview.onmouseover=sbookPreview_onmouseover;
-  preview.onmouseout=sbookPreview_onmouseout;
-  preview.onmouseup=sbookPreview_onmouseup;
-  // preview.onclick=sbookPreview_onclick;
-  preview.onclick=fdjtCancelEvent;
-  preview.sbook_ref=target.id;
-  preview.title='press to preview';
-  return preview;
-}
-
-function sbookPreviewLocation(elt)
-{
-  var topbar=$("SBOOKTOP");
-  var spanbar=$$(".spanbar",topbar)[0];
-  if (spanbar) {
-    var progress=$$(".progressbox",topbar)[0];
-    var width=spanbar.ends-spanbar.starts;
-    var ratio=(elt.sbookloc-spanbar.starts)/width;
-    progress.style.left=((Math.round(ratio*10000))/100)+"%";}
-}
-
-function sbookPreview(elt,offset)
-{
-  var cxt=false;
-  // sbook_trace("sbookPreview",elt);
-  if (elt===false) return sbookStopPreview();
-  /* No longer needed with TOC at the bottom */
-  if (!(offset))
-    if (elt.sbook_ref) {
-      offset=elt.preview_off||sbookDisplayOffset();
-      elt=elt.sbook_ref;}
-    else offset=sbookDisplayOffset();
-  sbook_preview=true;
-  sbookPreviewLocation(elt);
-  if ((elt.getAttribute) &&
-      (elt.getAttribute("toclevel")) ||
-      ((elt.sbookinfo) && (elt.sbookinfo.level)))
-    cxt=false;
-  else if (elt.sbook_head)
-    cxt=elt.sbook_head;
-  if (elt) fdjtScrollPreview(elt,cxt,offset);
-}
-
-function sbookSetPreview(flag)
-{
-  if (flag) fdjtAddClass(document.body,"preview");
-  else fdjtDropClass(document.body,"preview");
-}
-
-function sbookStartPreview(evt)
-{
-  fdjtCancelEvent(evt);
-  var ref=sbookGetRef($T(evt));
-  if (ref) sbookPreview(ref);
-}
-
-
-function sbookStopPreview(evt)
-{
-  if (evt) fdjtCancelEvent(evt);
-  fdjtDropClass(document.body,"preview");
-  fdjtScrollRestore();
-  window.setTimeout("sbook_preview=false;",100);
-}
-
-/* Preview handlers */
-
-function sbookPreview_onmouseover(evt)
-{
-  evt=evt||event||null;
-  var target=$T(evt); var ref;
-  if (sbook_accessible) return;
-  if ((sbook_tablet)&&(evt.button!==1)) return;
-  while (target)
-    if (target.sbook_ref) break;
-    else if (target.getAttribute("PREVIEW")) break;
-    else target=target.parentNode;
-  if (!(target)) return;
-  else if (typeof target.sbook_ref === "string")
-    ref=$(target.sbook_ref);
-  else if (target.sbook_ref)
-    ref=target.sbook_ref;
-  else ref=$(target.getAttribute("PREVIEW"));
-  if (!(ref)) return;
-  var refheight=ref.offsetHeight;
-  var winheight=window.innerHeight;
-  if ((evt.clientY)&&(refheight)&&(winheight)) {
-    var refarg={}; refarg.sbook_ref=ref;
-    if ((winheight-(evt.clientY+64))>refheight)  {
-      refarg.preview_off=-(evt.clientY+64);
-      ref=refarg;}
-    else if (evt.clientY>refheight) {
-      refarg.preview_off=refheight-evt.clientY;
-      ref=refarg;}}
-  fdjtDelay(300,sbookPreview,ref,document.body,"preview");
-}
-
-function sbookPreview_onmouseout(evt)
-{
-  evt=evt||event||null;
-  if (sbook_preview)
-    fdjtDelay(300,sbookPreview,false,document.body,"preview");
-}
-
-function sbookPreview_onclick(evt)
-{
-  evt=evt||event||null;
-  // If we're not being accessible, this is handled by mousedown
-  if (!(sbook_accessible)) {
-    fdjtCancelEvent(evt);
-    return false;}
-  var target=$T(evt); var ref;
-  while (target)
-    if (target.sbook_ref) break;
-    else if (target.getAttribute("PREVIEW")) break;
-    else target=target.parentNode;
-  if (!(target)) return;
-  else if (typeof target.sbook_ref === "string")
-    ref=$(target.sbook_ref);
-  else if (target.sbook_ref)
-    ref=target.sbook_ref;
-  else ref=$(target.getAttribute("PREVIEW"));
-  if (!(ref)) return;
-  sbookScrollTo(ref);
-}
-
-var sbook_preview_start=false;
-
-function sbookPreview_onmousedown(evt)
-{
-  if (sbook_accessible) return;
-  else if ((evt.button>1)||(evt.ctrlKey)||(evt.shiftKey)) return;
-  if (sbook_preview) {
-    sbookStopPreview(evt);
-    sbook_preview_start=false;}
-  else {
-    sbookStartPreview(evt);
-    sbook_preview_start=fdjtET();}
-}
-
-function sbookPreview_onmouseup(evt)
-{
-  if ((evt.button>1)||(evt.ctrlKey)||(evt.shiftKey)) return;
-  fdjtCancelEvent(evt);
-  sbookStopPreview(evt);
 }
 
 // What to use as the glossmark image URI.  This 'image' 
@@ -491,6 +336,51 @@ function sbookUpdateAppHUD()
       if (refuris[i].value==='fillin')
 	refuris[i++].value=sbook_refuri;
       else i++;}
+}
+
+/* Previewing */
+
+function sbookPreview(elt,offset)
+{
+  var cxt=false;
+  // sbook_trace("sbookPreview",elt);
+  if (!(elt)) return sbookStopPreview();
+  /* No longer needed with TOC at the bottom */
+  if (!(offset))
+    if (elt.sbook_ref) {
+      offset=elt.preview_off||sbookDisplayOffset();
+      elt=elt.sbook_ref;}
+    else offset=sbookDisplayOffset();
+  fdjtAddClass(document.body,"preview");
+  sbook_preview=true;
+  if ((elt.getAttribute) &&
+      (elt.getAttribute("toclevel")) ||
+      ((elt.sbookinfo) && (elt.sbookinfo.level)))
+    cxt=false;
+  else if (elt.sbook_head)
+    cxt=elt.sbook_head;
+  if (elt) fdjtScrollPreview(elt,cxt,offset);
+}
+
+function sbookSetPreview(flag)
+{
+  if (flag) fdjtAddClass(document.body,"preview");
+  else fdjtDropClass(document.body,"preview");
+}
+
+function sbookStartPreview(evt)
+{
+  fdjtCancelEvent(evt);
+  var ref=sbookGetRef($T(evt));
+  if (ref) sbookPreview(ref);
+}
+
+function sbookStopPreview(evt)
+{
+  if (evt) fdjtCancelEvent(evt);
+  fdjtDropClass(document.body,"preview");
+  fdjtScrollRestore();
+  window.setTimeout("sbook_preview=false;",100);
 }
 
 /* Button methods */

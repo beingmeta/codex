@@ -1,9 +1,9 @@
 <div style='position: absolute; top: 0px; height: 110%;'> </div>
 <a id='SBOOKAPPTOP' title='click to login' href='javascript:sbookHUDMode('login');'>
 <span id='SBOOKIBELONGTO'>This sBook Belongs To:</span>
-<div id='SBOOKUSERNAME' class='username'>(not logged in)</div>
 <img id='SBOOKUSERPIC' class='userpic'
   src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'/>
+<div id='SBOOKUSERNAME' class='username'>(not logged in)</div>
 </a>
 <div class='message' id='SBOOKSTARTUP'></div>
 <div class='tabbar' id='SBOOKTABS'>
@@ -14,7 +14,7 @@
 <span class='tab' contentid='APPSETTINGS' onclick='sbookHUDMode("settings");'>
  Settings</span>
 <span class='tab' contentid='APPLOGIN' onclick='sbookHUDMode("login");'>
-  Connect</span>
+  Login</span>
 <a href='http://sbooks.net/app/logout' class='tab' id='SBOOKLOGOUT'>
   Logout</a>
 </div>
@@ -24,17 +24,28 @@
 </div>
 
 <div class='fasthelp'>
-<span class='keydef'><span class='key'>H</span> to toggle this help; </span>
-<span class='keydef'><span class='key'>N</span> to navigate;</span>
-<span class='keydef'><span class='key'>S</span> to search;</span>
-<br/>
-<span class='keydef'><span class='key'>Shift</span> or <span class='key'>Tap</span> to show context;</span>
-<span class='keydef'>
-<span class='key'>Tap again</span> to gloss (share a note);</span>
-<br/>
-<span class='keydef'><span class='key'>Space</span>/<span class='key'>Backspace</span> to move by page;</span>
-<span class='keydef'><span class='key'>Escape</span> to display or hide the HUD. </span>
-<br/>
+<table class='fdjt'>
+<tr><th>Press</th>
+  <td>
+    <span class='keydef'><span class='key'>H</span>elp</span>, 
+    <span class='keydef'><span class='key'>T</span>oC (map)</span>,
+    <span class='keydef'><span class='key'>F</span>ind (search)</span>,
+    <span class='keydef'><span class='key'>S</span>ettings</span>,
+    <span class='keydef'><span class='key'>C</span>onnect</span>,
+    <span class='keydef'><span class='key'>Escape</span> to toggle
+      the HUD.</span></td></tr>
+<tr><th>Click</th>
+  <td>
+<span class='keydef'><span class='key'>once</span> for context, <span class='key'>again</span> to add/share a gloss;</span></td></tr>
+<tr><th>Forward</th><td><span class='key'>Space</span>, <span class='key'>N</span>, <span class='key'>Page
+Down</span>, or tap the <span class='key'>right margin</span</td></tr>
+<tr><th>Backward</th><td><span class='key'>Backspace</span>, <span class='key'>P</span>, <span class='key'>Page
+Up</span>, or tap the <span class='key'>left margin</span></td></tr>
+<tr><th>Hold</th> <td>
+<span class='key'>Shift</span> to temporarily show/hide the HUD,
+<span class='key'>Control</span> or the <span class='key'>mouse</span>
+to <strong>preview the context</strong> of a gloss or result.</td></tr>
+</table>
 </div>
 
 <p>This sBooks translucent <strong>HUD</strong> (heads up display)
@@ -112,14 +123,12 @@ in the vertical bar on the left hand side of the screen.
 Clicking the 'everyone' icon at the bottom displays all glosses in the
 order of the document.</p>
 
-<p>Glosses are organized by where they occur and moving the pointer
-over preview icons
-(<img src='http://static.beingmeta.com/graphics/EyeIcon19x15.png'/>)
-temporarily previews the glossed passage; moving the pointer away,
-returns to the list of glosses; clicking jumps to the previewed
-passage.</p>
+<p>Glosses are organized by where they occur and clicking on a gloss
+jumps to that location where the gloss was added; pressing
+the <strong>control</strong> key or holding the mouse button
+temporarily previews that location.</p>
 
-<p><strong>Searching.</strong>  Type 'S' or click the icon in the
+<p><strong>Searching.</strong>  Type 'F' or click the icon in the
 upper right corner to bring up the search HUD (again at the top of the
 screen).  Search in sBooks uses <em>semantic tags</em> which are based
 on interconnected 'concepts' rather than keywords.  This means, for
@@ -154,11 +163,9 @@ assigns; icons will display more extended text
 (<img src='http://static.beingmeta.com/graphics/detailsicon16x16.png'/>)
 or cross references
 (<img src='http://static.beingmeta.com/graphics/outlink16x16.png'/>)
-when available.  Preview icons
-(<img src='http://static.beingmeta.com/graphics/EyeIcon19x15.png'/>)
-work as everywhere else: move over to preview, move out to return, and
-click to go to the previewed passage.</p>
-
+when available.  As with glosses, clicking on a search result goes to
+the location; holding down the control key or mouse button previews
+its content.</p>
 
 </div>
 <div class='tabcontent' id='APPLOGIN'>

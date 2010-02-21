@@ -53,9 +53,8 @@ function sbookCreateGlossesHUD(classinfo)
   sbookGlossesHUD=
     fdjtDiv(classinfo||"#SBOOKGLOSSES.sbooksummaries.hudblock.hud",
 	    sbookCreateMarkHUD("#SBOOKMARK"));
+  sbookSetupSummaryDiv(sbookGlossesHUD);
   sbookShowSummaries(sbook_allglosses,sbookGlossesHUD,false);
-  sbookGlossesHUD.onclick=sbookSummary_onclick;
-  sbookGlossesHUD.onmouseover=sbookSummary_onmouseover;
   return sbookGlossesHUD;
 }
 

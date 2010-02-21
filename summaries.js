@@ -89,7 +89,7 @@ function _sbookSourceImage(info)
 function sbookSummaryHead(target,head,eltspec,extra)
 {
   var head=sbookGetHead(target);
-  var preview=sbookPreviewIcon(target);
+  var preview=false; // sbookPreviewIcon(target);
   if (typeof extra === "undefined")
     if (target===head) extra="\u00A7";
     else extra="\u00B6";
@@ -112,11 +112,10 @@ function sbookSummaryHead(target,head,eltspec,extra)
       var text=fdjtTextify(target,true);
       if (text.length>50) fdjtAppend(basespan,text.slice);
       else fdjtAppend(basespan,fdjtSpan("headtext",text));}}
-  basespan.onclick=sbookSummary_onclick;
-  basespan.sbook_ref=target.id;
   basespan.title='press/click to go';
   var tocblock=((eltspec)?(fdjtNewElt(eltspec,basespan)):
 		(fdjtDiv("tochead",basespan)));
+  tocblock.sbook_ref=target.id;
   return tocblock;
 }
 
@@ -134,7 +133,7 @@ function sbookShowSummaries(summaries,summary_div,query)
       var blockhead=sbookSummaryHead(target,head);
       var block=fdjtDiv("tocblock",blockhead);
       block.blockloc=target.sbookloc;
-      block.blockid=target.id;
+      block.sbook_ref=block.blockid=target.id;
       fdjtAppend(summary_div,block);
       curblock=block; curtarget=target;}
     fdjtAppend(curblock,sbookSummaryDiv(summary,query,true));}
@@ -164,7 +163,7 @@ function sbookAddSummary(summary,summary_div,query)
       var blockhead=sbookSummaryHead(target,head);
       var block=fdjtDiv("tocblock",blockhead,sum_div);
       block.blockloc=target.sbookloc;
-      block.blockid=target.id;
+      block.sbook_ref=block.blockid=target.id;
       fdjtInsertBefore(child,block);
       placed=true;
       break;}}
@@ -172,7 +171,7 @@ function sbookAddSummary(summary,summary_div,query)
     var blockhead=sbookSummaryHead(target,head);
     var block=fdjtDiv("tocblock",blockhead,sum_div);
     block.blockloc=target.sbookloc;
-    block.blockid=target.id;
+    block.sbook_ref=block.blockid=target.id;
     fdjtAppend(summary_div,block);}
   return;
 }
@@ -203,7 +202,7 @@ function sbookSummaryDiv(item,query,showhead)
   var refiners=((query) && (query._refiners));
   var target=$(target_id);
   var sumdiv=fdjtDiv(((info.glossid) ? "summary gloss" : "summary"),
-		     sbookPreviewIcon(target));
+		     false);
   if (target_id) sumdiv.sbook_ref=target_id;
   if (oid) sumdiv.sbook_oid=oid;
   var infospan=fdjtSpan("info");
@@ -426,25 +425,77 @@ function sbookSelectTargets(results_div,ids)
 
 /* Results handlers */
 
-function sbookSummary_onclick(evt)
-{
-  var target=$T(evt);
-  while (target)
-    if (target.sbook_ref) {
-      fdjtScrollDiscard();
-      var elt=$(target.sbook_ref);
-      sbookGoTo(elt);
-      evt.preventDefault(); evt.cancelBubble=true;
-      return false;}
-    else if ((target.tagName==='INPUT') ||
-	     (target.tagName==='TEXTAREA') ||
-	     ((target.tagName==='A') && (target.href)))
-      return;
-    else target=target.parentNode;
-}
+/* Preview handlers */
+
+var sbook_preview_delay=500;
+var sbook_preview_clickmax=1500;
+var sbook_preview_hysteresis=1000;
 
 function sbookSummary_onmouseover(evt)
 {
+  evt=evt||event||null;
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  sbook_preview_target=ref;
+  if (evt.ctrlKey) sbookPreview(ref);
+}
+
+function sbookSummary_onmouseout(evt)
+{
+  evt=evt||event||null;
+  var destination=((evt.relatedTarget)||(evt.toElement));
+  var ref=((destination)&&(sbookGetRef(destination)));
+  if (ref===sbook_preview_target) return;
+  else sbook_preview_target=false;
+  if (sbook_preview)
+    fdjtDelay(sbook_preview_hysteresis,
+	      sbookPreview,false,document.body,"preview");
+}
+
+function sbookSummary_onmousedown(evt)
+{
+  evt=evt||event||null;
+  sbook_preview_mousedown=fdjtTime();
+  var ref=sbookGetRef($T(evt));
+  fdjtDelay(sbook_preview_delay,sbookPreview,ref,document.body,"preview");
+}
+
+function sbookSummary_onmouseup(evt)
+{
+  evt=evt||event||null;
+  if (evt.ctrlKey) return;
+  sbookPreview(false);
+  if (document.body.preview) {
+    clearTimeout(document.body.preview);
+    document.body.preview=false;}
+}
+
+function sbookSummary_onclick(evt)
+{
+  var target=$T(evt); var down=sbook_preview_mousedown;
+  sbook_preview_mousedown=false;
+  if ((sbook_preview_target)&&(down))
+    if ((fdjtTime()-down)>sbook_preview_clickmax) {
+      fdjtCancelEvent(evt);
+      return;}
+  if (fdjtIsClickactive(target)) return;
+  else {
+    var ref=sbookGetRef($T(evt));
+    fdjtScrollDiscard();
+    sbookGoTo(ref);
+    fdjtCancelEvent(evt);
+    return false;}
+}
+
+function sbookSetupSummaryDiv(div)
+{
+  div.onmouseover=sbookSummary_onmouseover;
+  div.onmouseout=sbookSummary_onmouseout;
+  div.onmousedown=sbookSummary_onmousedown;
+  div.onmouseup=sbookSummary_onmouseup;
+  div.onclick=sbookSummary_onclick;
+  if (!(div.title))
+    div.title="hold mouse or control for preview; click to jump";
 }
 
 /* Emacs local variables
