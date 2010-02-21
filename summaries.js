@@ -436,8 +436,21 @@ function sbookSummary_onmouseover(evt)
   evt=evt||event||null;
   var target=$T(evt);
   var ref=sbookGetRef(target);
+  if (ref===sbook_preview_target) return;
   sbook_preview_target=ref;
-  if (evt.ctrlKey) sbookPreview(ref);
+  if ((ref)&&((evt.ctrlKey)||(evt.button)))
+    sbookPreview(ref);
+}
+
+function sbookSummary_onmousemove(evt)
+{
+  evt=evt||event||null;
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (ref===sbook_preview_target) return;
+  sbook_preview_target=ref;
+  if ((ref)&&((evt.ctrlKey)||(evt.button)))
+    sbookPreview(ref);
 }
 
 function sbookSummary_onmouseout(evt)
@@ -447,9 +460,6 @@ function sbookSummary_onmouseout(evt)
   var ref=((destination)&&(sbookGetRef(destination)));
   if (ref===sbook_preview_target) return;
   else sbook_preview_target=false;
-  if (sbook_preview)
-    fdjtDelay(sbook_preview_hysteresis,
-	      sbookPreview,false,document.body,"preview");
 }
 
 function sbookSummary_onmousedown(evt)
@@ -457,6 +467,7 @@ function sbookSummary_onmousedown(evt)
   evt=evt||event||null;
   var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
+  fdjtCancelEvent(evt);
   sbook_preview_mousedown=fdjtTime();
   var ref=sbookGetRef($T(evt));
   fdjtDelay(sbook_preview_delay,sbookPreview,ref,document.body,"preview");
@@ -472,7 +483,7 @@ function sbookSummary_onmouseup(evt)
     clearTimeout(document.body.preview);
     document.body.preview=false;}
   sbookPreview(false);
-  if ((fdjtTime()-down)<sbook_preview_clickmax) {
+  if ((ref)&&((fdjtTime()-down)<sbook_preview_clickmax)) {
     var ref=sbookGetRef($T(evt));
     fdjtScrollDiscard();
     sbookGoTo(ref);
@@ -490,6 +501,7 @@ function sbookSetupSummaryDiv(div)
 {
   div.onmouseover=sbookSummary_onmouseover;
   div.onmouseout=sbookSummary_onmouseout;
+  div.onmousemove=sbookSummary_onmousemove;
   div.onmousedown=sbookSummary_onmousedown;
   div.onmouseup=sbookSummary_onmouseup;
   div.onclick=sbookSummary_onclick;

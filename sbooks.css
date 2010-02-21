@@ -1000,7 +1000,7 @@ div.tocblock div.tochead {
   text-align: left; vertical-align: middle; 
   margin-left: 45px; text-indent: -45px;}
 div.tocblock div.tochead span.headtext {
-    white-space: nowrap; cursor: pointer;}
+    white-space: nowrap;}
 div.tocblock div.tochead span.extra {
   font-weight: bold; font-style: italic; font-size: 110%; color: gold;}
 div.tocblock div.tochead img.previewicon {
@@ -1110,7 +1110,7 @@ span.dterm span.disambig {color: red;}
 .completions .completion .dterm { 
   font-size: 95%;}
 
-div.sbooksummaries {}
+div.sbooksummaries { cursor: pointer;}
 div.sbooksummaries div.count {
   text-align: right; color: orange; font-weight: bold;
   padding-bottom: 3px; }
@@ -1123,6 +1123,15 @@ div.sbooksummaries .summary {
   color: black; text-align: left;}
 div.sbooksummaries div.tocblock  .summary { margin-left: 10px;}
 div.sbooksummaries.onepassage div.tocblock  .summary { margin-left: 2px;}
+
+body.preview div.sbooksummaries {
+  cursor: url(http://static.beingmeta.com/graphics/binocularscursor64x64.png),
+          url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
+          crosshair;}
+body.preview {
+  cursor: url(http://static.beingmeta.com/graphics/binocularscursor64x64.png),
+          url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
+          crosshair;}
 
 /* Display rules */
 div.sbooksummaries.sourced .tocblock { display: none;}
