@@ -1337,13 +1337,13 @@ body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
 body div.sbookmargin {
     position: fixed; height: 40px; background-color: white;
-    z-index: 75; opacity: 0.75;
+    z-index: 75; opacity: 0.99;
     display: none;}
 body.tablet div.sbookmargin { height: 50px;}
 body div#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
 body div.sbookmargin#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
 body div.sbookmargin#SBOOKBOTTOMMARGIN {
-  bottom: 0; left: 0; right: 0; height: 75px;}
+  bottom: 0; left: 0; right: 0;}
 body.sbookscrollview div.sbookmargin { display: none;}
 body.sbookpageview div.sbookmargin { display: block;}
 body.preview div.sbookmargin { display: none;}

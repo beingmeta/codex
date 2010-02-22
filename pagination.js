@@ -44,7 +44,7 @@ var sbook_pagescroll=false;
 var sbook_top_margin_px=40;
 var sbook_bottom_margin_px=40;
 
-var sbook_debug_pagination=false;
+var sbook_debug_pagination=true;
 var sbook_trace_pagination=0;
 var sbook_trace_paging=false;
 
@@ -124,51 +124,67 @@ function sbookPaginate(pagesize,start)
     if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info));
     if (sbook_trace_pagination>1) _sbookTracePagination("SCAN",scan,info);
     if (sbookIsPageHead(scan)) newpage=scan;
-    else if (info.top>pagelim) // We're completely off the page
-      if (sbookAvoidPageHead(scan)) {} // tough
+    else if (info.top>pagelim)
+      // Yuck, we're completely off the page
+      if (((sbookAvoidPageHead(scan))||(sbookIsPageFoot(scan)))&&
+	  (info.bottom<pagelim+sbook_bottom_margin_px))
+	// If there's space, stay on this page, otherwise, tough
+	if (info.bottom<(pagelim-sbook_bottom_margin_px)) {}
+	else newpage=scan;
       else newpage=scan;
-    else if (info.bottom<pagelim) // We're completely on the page
-      // Don't even think about it
-      if (sbookAvoidPageHead(scan)) {}
-      else if (next=_sbookScanPageContent(scan)) {
-	// Probe ahead to the next node
-	nextinfo=fdjtGetOffset(next);
-	if (dbginfo)
-	  dbginfo=dbginfo+" ... N"+_sbookPageNodeInfo(next,nextinfo);
-	if ((scan.toclevel)||(sbookAvoidPageFoot(scan)))
-	  if ((next.toclevel)||(sbookAvoidPageFoot(next)))
-	    if ((nextinfo.bottom+fudge)<pagelim) {}
-	    else newpage=scan;
-	  else if ((nextinfo.bottom)<pagelim) {}
-	  else if ((nextinfo.top+fudge)<pagelim) {}
-	  else newpage=scan;
-	// Avoid putting the next item at the head of the next page
-	else if ((nextinfo.bottom>pagelim)&&(sbookAvoidPageHead(next)))
-	  // The next item is short enough that we'll just extend the margin
-	  if ((nextinfo.bottom-pagelim)<fudge) {}
-	  else if ((pagelim-info.top)<pagesize/4)
-	    // If we start a new page, we'll only create 1/4 page of whitespace
-	    newpage=scan;
-	  else {
-	    // We'll need to split the current item
-	    newpage=splitblock=scan;
-	    curpage.bottom=info.bottom-pagesize/5;}
-	// Keep going
-	else {}}
-      else {}
-    /* We're straddling the bottom of the page */
-    else if (sbookIsPageBlock(scan)) newpage=scan;
-    else if (sbookAvoidPageFoot(scan)) newpage=scan;
-    else if (sbookAvoidPageHead(scan))
-      // Grow the page
-      curpage.bottom=pagelim=info.bottom;
-    else if ((pagelim-info.top)<fudge)
-      // Start a new page if this item starts near the bottom
+    else if (info.bottom>pagelim)
+      /* We're straddling the bottom of the page */
+      if (sbookIsPageBlock(scan)) newpage=scan;
+      else if ((scan.toclevel)||(sbookAvoidPageFoot(scan)))
+	newpage=scan;
+      else if (((sbookAvoidPageHead(scan))||(sbookIsPageFoot(scan))))
+	if (info.bottom<pagelim+sbook_bottom_margin_px)
+	  // If we can, keep it on this page
+	  curpage.bottom=pagelim=info.bottom;
+	else curpage.bottom=pagelim;
+      else if ((pagelim-info.top)<(pagesize/4))
+	newpage=scan;
+      else if (!(fdjtHasText(scan))) {}
+      else {
+	newpage=splitblock=scan;
+	curpage.bottom=pagelim=pagelim-sbook_bottom_margin_px;}
+    // We're completely on the page
+    else if (sbookAvoidPageHead(scan)) {}
+    else if (sbookIsPageFoot(scan)) {
+      curpage.bottom=scan.bottom;
+      newpage=_sbookScanPageContent(scan);}
+    else if (((scan.toclevel)||(sbookAvoidPageFoot(scan)))&&
+	     ((pagelim-info.top)<(pagesize/3)))
+      // Bad feet close to the bottom get pushed right away
       newpage=scan;
-    else if (fdjtHasText(scan)) {
-      newpage=splitblock=scan;
-      curpage.bottom=pagelim;}
-    else {}
+    else if (next=_sbookScanPageContent(scan)) {
+      // Look ahead to see if we should page break anyway
+      nextinfo=fdjtGetOffset(next);
+      if (dbginfo)
+	dbginfo=dbginfo+" ... N"+_sbookPageNodeInfo(next,nextinfo);
+      if ((nextinfo.top<pagelim)&&(nextinfo.bottom>pagelim)&&
+	  (sbookIsPageBlock(next))&&(sbookAvoidPageFoot(scan)))
+	// If the current node is a bad foot and the next node is
+	// straddling but needs to keep together, break now
+	newpage=scan;
+      else if (((pagelim-nextinfo.bottom)<sbook_bottom_margin_px)&&
+	       ((next.toclevel)||(sbookAvoidPageFoot(next))))
+	// If the next node is a bad foot and close to the bottom,
+	// break now
+	newpage=scan;
+      else if (((next.toclevel)||(sbookAvoidPageFoot(next)))&&
+	       ((scan.toclevel)||(sbookAvoidPageFoot(scan)))&&
+	       ((pagelim-info.top)<pagesize/2))
+	// Double heads/non feet cause a page break when they're more
+	// than halfway down
+	newpage=scan;
+      else if ((nextinfo.bottom>(pagelim+fudge))&&
+	       ((pagelim-nextinfo.top)<sbook_bottom_margin_px)&&
+	       (sbookAvoidPageHead(next)))
+	// If the next node is a bad straddle head and starts close to
+	// the bottom, break now
+	newpage=scan;
+      else {}}
     if (!(newpage)) {
       curpage.bottom=info.bottom;
       curpage.last=scan;}
@@ -196,8 +212,7 @@ function sbookPaginate(pagesize,start)
       if (splitblock) curpage.topedge=splitblock;
       pagetop=curpage.top; pagelim=pagetop+pagesize;
       pages.push(pagetop); pageinfo.push(curpage);
-      scan=newpage;
-      newpage=false;}
+      scan=newpage; splitblock=false; newpage=false;}
     else {
       if (info.bottom<=pagelim) curpage.bottom=info.bottom;
       curpage.last=scan;}
@@ -210,7 +225,7 @@ function sbookPaginate(pagesize,start)
     nodecount++;}
   var done1=fdjtET();
   var i=0; var len=pages.length;
-  // while (i<len) sbookAdjustPage(pages,pageinfo,i++);
+  while (i<len) sbookAdjustPage(pages,pageinfo,i++);
   var done2=fdjtET();
   fdjtLog("[%f] Paginated %d nodes into %d pages with pagesize=%d in %s=%s+%s",
 	  fdjtET(),nodecount,pages.length,pagesize,

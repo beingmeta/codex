@@ -1267,7 +1267,7 @@ function sbook_tagdiv_onclick(evt)
 function getsbookrefuri()
 {
   // Explicit REFURI is just returned
-  var refuri=fdjtGetMeta("REFURI",true);
+  var refuri=fdjtGetLink("REFURI",true)||fdjtGetMeta("REFURI",true);
   if (refuri) return refuri;
   // No explicit value, try to figure one out
   // First, try the CANONICAL link
@@ -1281,14 +1281,18 @@ function getsbookrefuri()
   if (!(refuri)) refuri=document.location.href;
   // For anything but explicit REFURI, strip off the fragment ID and
   // the type suffix; if the 
-  var hashpos=uri.indexOf("#");
-  if (hashpos>0) uri=uri.slice(0,hashpos);
+  var hashpos=refuri.indexOf("#");
+  if (hashpos>0) refuri=refuri.slice(0,hashpos);
   // Strip the type suffix (be clever to avoid in-path dots)
-  var lastdot=uri.rindexOf('.');
-  var lastslash=uri.rindexOf('/');
+  var lastdot=refuri.length-1;
+  while (lastdot>=0)
+    if (refuri[lastdot]==='.') break; else lastdot--;
+  var lastslash=refuri.length-1;
+  while (lastslash>=0)
+    if (refuri[lastslash]==='/') break; else lastslash--;
   if ((lastdot>0)&&(lastdot>lastslash))
-    uri=uri.slice(0,lastdot);
-  return uri;
+    refuri=refuri.slice(0,lastdot);
+  return refuri;
 }
 
 function getsbookbaseid()
@@ -1475,6 +1479,8 @@ function sbookGetAppSettings()
   else if (fdjtHasClass(document.body,"sbookscrollview"))
     sbook_pageview=false;
   else {}
+  if (fdjtGetCookie("sbooktablet")==="yes") 
+    sbook_table=true;
   if (fdjtGetCookie("sbooksparse")==="yes")
     sbook_sparse=true;
   else if (fdjtGetCookie("sbooksparse")==="no")
@@ -1681,9 +1687,6 @@ function sbookSetup()
     sbookSetupAppFrame();
     sbookHUDMode("social");}
   else sbookHUDMode("help");
-  if (fdjtGetCookie("sbooktablet")==="yes") {
-    $("TABLETMODE").checked=true;
-    sbookTabletMode(true);}
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));
@@ -1691,6 +1694,7 @@ function sbookSetup()
   sbookInitNavHUD();
   var scan_done=new Date();
   sbookSparseMode(sbook_sparse);
+  sbookTabletMode(sbook_tablet);
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Determining page layout"));
   if (sbook_pageview) sbookUpdatePagination();
   sbookPageView(sbook_pageview);
