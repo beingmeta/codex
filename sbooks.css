@@ -158,11 +158,11 @@ div#SBOOKHUD div.hud#SBOOKSEARCH {
   display: none;}
 
 div#SBOOKHUD.searching div.hudblock#SBOOKSEARCH { 
-  display: block; min-height: 50px; opacity: 0.9; max-height: inherit;}
+  display: block; min-height: 50px; opacity: 0.95; max-height: inherit;}
 div#SBOOKHUD.searching div.hudblock#SBOOKTAGS { 
-  display: block; min-height: 50px; opacity: 0.9; max-height: inherit;}
+  display: block; min-height: 50px; opacity: 0.95; max-height: inherit;}
 div#SBOOKHUD.browsing div.hudblock#SBOOKSEARCH { 
-  display: block; height: 50px; opacity: 0.9;}
+  display: block; height: 50px; opacity: 0.95;}
 
 img.hudbutton[alt='index'] { 
   top: 0px; right: 0px;
@@ -1310,6 +1310,7 @@ body iframe div.commentors { display: block;}
 
 table.login {}
 table.login th {text-align: right; vertical-align: top; font-size: 125%;}
+table.login th.or {font-size: 150%; color: gold;}
 table.login td {text-align: left; vertical-align: top;}
 table.login td.oneclick a { float: left; margin-right: 3px;}
 table.login td.oneclick a.login {

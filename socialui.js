@@ -66,7 +66,8 @@ function sbookCreateSourceHUD(classinfo,overlays)
   var app_button=
     fdjtImage(sbicon("sbooksappicon40x40.png"),".button.app","?","Help, settings, etc");
   var login_button=
-    fdjtImage(sbicon("sbooksconnecticon40x40.png"),".button.login","?","login");
+    fdjtImage(sbicon("sbooksconnecticon40x40.png"),".button.login","?",
+	      "click to login");
   var everyone_button=
     fdjtImage(sbicon("sBooksWE_2_32x32.png"),".button.everyone#SBOOKEVERYONE","everyone");
   var sourceicons=fdjtDiv("#SBOOKSOURCEICONS.sourceicons",everyone_button);

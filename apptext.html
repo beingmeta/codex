@@ -184,7 +184,7 @@ or methods.</p>
       onsubmit='fdjtAutoPrompt_cleanup();'>
 <table class='login' rowspacing='6'>
 <tr>
-<th>Using</th>
+<th/><th>Using</th>
 <td class='oneclick'>
   <a href='https://sbooks.net/auth.fdcgi?facebook=login' class='fdjtsubmit login'
      title='login using Facebook'>
@@ -202,8 +202,10 @@ or methods.</p>
     </a>
 </td>
 </tr>
-<tr><th class='username'><span class='or'>or</span>
-&nbsp;username<br/><span style='font-size: 300%;'>@</span></th>
+<tr>
+  <th class='or'>or</th>
+  <th class='username'>
+    &nbsp;username<br/><span style='font-size: 300%;'>@</span></th>
   <td class='userlogin'>
     <input type='TEXT' name='USERNAME' value='' class='autoprompt'
            prompt='Enter a username and select the corresponding site'/>
@@ -214,34 +216,35 @@ or methods.</p>
     that site, log in, and return to sBooks.
     </div>
     <button type='SUBMIT' name='PROVIDER' value='aol.com'>
-      <img src='http://openid.net/images/get-logos/aol.png' alt='aol'/>
+      <img src='http://static.beingmeta.com/graphics/logos/aol.png' alt='aol'/>
     </button>
     <button type='SUBMIT' name='PROVIDER' value='myid.net'>
-      <img src='http://openid.net/images/get-logos/myidnet.png' alt='myid'/>
+      <img src='http://static.beingmeta.com/graphics/logos/myidnet.png' alt='myid'/>
     </button>
     <button type='SUBMIT' name='PROVIDER' value='flickr.com'>
-      <img src='http://openid.net/images/get-logos/flickr.png' alt='flickr'/>
+      <img src='http://static.beingmeta.com/graphics/logos/flickr.png' alt='flickr'/>
     </button>
     <button type='SUBMIT' name='PROVIDER' value='myopenid.com'>
-      <img src='http://openid.net/images/get-logos/myopenid.png' alt='myopenid'/>
+      <img src='http://static.beingmeta.com/graphics/logos/myopenid.png' alt='myopenid'/>
     </button>
     <button type='SUBMIT' name='PROVIDER' value='wordpress.com'>
-      <img src='http://openid.net/images/get-logos/wordpress.png' alt='wordpress'/>
+      <img src='http://static.beingmeta.com/graphics/logos/wordpress.png' alt='wordpress'/>
     </button>
     <button type='SUBMIT' name='PROVIDER' value='pip.verisignlabs.com'>
-      <img src='http://openid.net/images/get-logos/verisign.png' alt='vidoop'/>
+      <img src='http://static.beingmeta.com/graphics/logos/verisign.png' alt='vidoop'/>
     </button>
   </td>
   <td><img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?' class='helpicon' title='Some sites provide OpenID login based on your user name.  Enter your username and click the button for the appropriate site.  You&#39;ll go to that site, log in, and return to sBooks.'/></td>
 </tr>
 <tr>
-<th><span class='or'>or</span>
-  <img src='http://static.beingmeta.com/graphics/openid-logo-small.png' alt='OpenID' style=' height: 32px;'/></th>
-<td><input type='TEXT' name='OPENID' value='' class='autoprompt' prompt='Enter your OpenID (a url)'/><br/>
-  <input type='SUBMIT' name='ACTION' value='Use OpenID'/>
-  <a href='http://openid.net/get-an-openid/'>Get an OpenID</a>
-</td>
-<td><img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?' class='helpicon' title='OpenID enables you to use a variety of services, usually free, to identify yourself and provide some limited personal information.'/></td>
+  <th class='or'>or</th>
+  <th>
+    <img src='http://static.beingmeta.com/graphics/openid-logo-small.png' alt='OpenID' style=' height: 32px;'/></th>
+  <td><input type='TEXT' name='OPENID' value='' class='autoprompt' prompt='Enter your OpenID (a url)'/><br/>
+    <input type='SUBMIT' name='ACTION' value='Use OpenID'/>
+    <a href='http://openid.net/get-an-openid/'>Get an OpenID</a>
+  </td>
+  <td><img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?' class='helpicon' title='OpenID enables you to use a variety of services, usually free, to identify yourself and provide some limited personal information.'/></td>
 </tr>
 </table>
 </form>
