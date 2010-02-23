@@ -44,7 +44,7 @@ var sbook_pagescroll=false;
 var sbook_top_margin_px=40;
 var sbook_bottom_margin_px=40;
 
-var sbook_debug_pagination=true;
+var sbook_debug_pagination=false;
 var sbook_trace_pagination=0;
 var sbook_trace_paging=false;
 

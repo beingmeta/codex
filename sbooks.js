@@ -681,7 +681,7 @@ function sbook_scanner(child,scanstate,skiptoc)
   else if (skiptoc) {
     fdjtComputeOffsets(child);
     sbook_nodes.push(child);}
-  else if ((fdjtIsBlockElt(child))||
+  else if (((fdjtIsBlockElt(child))&&(fdjtHasContent(child)))||
 	   (fdjtElementMatches(child,sbook_idify))) {
     var loc=scanstate.location;
     var eltid=_sbook_setid(child,scanstate,level,curlevel);
