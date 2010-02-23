@@ -6,7 +6,8 @@ body.sbook {
 body.sbook h1 { margin-left: 5%; margin-right: 5%;}
 body.sbook h1.titlepage { 
   background-color: lightgray;
-  font-size: 36px; text-align: center;
+  font-size: 32px; text-align: center;
+  page-break-inside: avoid;
   page-break-after: always;}
 body.sbook h1 { page-break-before: always; }
 body.sbook h1.titlepage div.title { text-align: center; font-weight: bold;}
@@ -21,11 +22,13 @@ body.sbook h1.titlepage div.editor {
   text-align: center; font-style: normal; font-weight: normal;
   font-size: 80%;}
 body.sbook h1.titlepage div.pubinfo { 
+  position: relative; bottom: 0px;
   font-variant: smallcaps;
   background-color: ivory; font-size: 50%; padding: 4px;
   width: 90%; margin-left: 5%; margin-right: 5%;
   margin-bottom: 12px; margin-top: 12px;}
 body.sbook h1.titlepage div.sbookinfo { 
+  position: relative; bottom: 0px;
   font-family: sans,sans-serif;
   font-size: 18px; margin-top: 128px;
   text-align: center; font-variant: small-caps;}

@@ -112,18 +112,19 @@ function sbookPaginate(pagesize,start)
   curpage.top=pagetop;
   curpage.first=start; curpage.last=start;
   pages.push(pagetop); pageinfo.push(curpage);
-  scan=_sbookScanPageContent(scan);
   if (scan) info=fdjtGetOffset(scan);
   while (scan) {
     var newinfo=false; var next=false; var nextinfo=false;
     var splitblock=false; var forcebottom=false;
+    var skipchildren=false;
     var dbginfo=((sbook_debug_pagination)&&
 		 ("P#"+curpage.pagenum+
 		  "["+pagetop+","+pagelim+
 		  "/"+pagesize+"/"+fudge+"] "));
     if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info));
     if (sbook_trace_pagination>1) _sbookTracePagination("SCAN",scan,info);
-    if (sbookIsPageHead(scan)) newpage=scan;
+    if ((sbookIsPageHead(scan))&&(info.top>pagetop))
+      newpage=scan;
     else if (info.top>pagelim)
       // Yuck, we're completely off the page
       if (((sbookAvoidPageHead(scan))||(sbookIsPageFoot(scan)))&&
@@ -134,7 +135,14 @@ function sbookPaginate(pagesize,start)
       else newpage=scan;
     else if (info.bottom>pagelim)
       /* We're straddling the bottom of the page */
-      if (sbookIsPageBlock(scan)) newpage=scan;
+      if (sbookIsPageBlock(scan))
+	if (curpage.top<info.top) newpage=scan;
+	else {
+	  fdjtTrace("Big block, punting inside");
+	  skipchildren=true;
+	  curpage.bottom=info.bottom;
+	  curpage.oversize=true;
+	  curpage.last=scan;}
       else if ((scan.toclevel)||(sbookAvoidPageFoot(scan)))
 	newpage=scan;
       else if (((sbookAvoidPageHead(scan))||(sbookIsPageFoot(scan))))
@@ -220,7 +228,7 @@ function sbookPaginate(pagesize,start)
       if (fdjtElementMatches(scan,sbook_focus_rules)) curpage.focus=scan;
     if (next) {scan=next; info=nextinfo;}
     else {
-      scan=_sbookScanPageContent(scan);
+      scan=_sbookScanPageContent(scan,skipchildren);
       if (scan) info=fdjtGetOffset(scan);}
     nodecount++;}
   var done1=fdjtET();
@@ -237,9 +245,11 @@ function sbookPaginate(pagesize,start)
 
 var sbook_content_nodes=['IMG','BR','HR'];
 
-function _sbookScanPageContent(scan)
+function _sbookScanPageContent(scan,skipchildren)
 {
-  var next=fdjtForwardNode(scan,_sbookIsContentBlock);
+  var next=((skipchildren)?
+	    (fdjtNextNode(scan,_sbookIsContentBlock)):
+	    (fdjtForwardNode(scan,_sbookIsContentBlock)));
   if (!(next)) {}
   else if ((sbookIsPageHead(next))||(sbookIsPageBlock(next))) {}
   else if ((next.childNodes)&&(next.childNodes.length>0)) {
@@ -424,7 +434,7 @@ function sbookGoToPage(pagenum,pageoff)
   window.scrollTo(0,(off-sbook_top_margin_px));
   var footheight=(window.scrollY+window.innerHeight)-info.bottom;
   if (footheight<0) {
-    $("SBOOKBOTTOMMARGIN").style.height=null;
+    $("SBOOKBOTTOMMARGIN").style.height=0;
     sbook_curbottom=sbook_bottom_margin_px;}
   else {
     $("SBOOKBOTTOMMARGIN").style.height=footheight+'px';

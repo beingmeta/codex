@@ -540,6 +540,15 @@ div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
      div.setting div.explanation { 
   font-style: italic; clear: both; margin-left: 3em;}
+div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
+     div.setting span.button {
+	 float: right; cursor: pointer; 
+	 background-color: orange; color: white; font-weight: bold;
+	 padding: 4px; border: solid orange 2px;
+	 border-radius: 6px;
+	 -khtml-border-radius: 6px; 
+	 -webkit-border-radius: 6px; 
+	 -moz-border-radius: 6px;}
 
 /* Minimal mode */
 
@@ -905,6 +914,11 @@ div.sbooktoc div.head .progressbar {
   position: absolute;  left: 0px; height: 100%;
   z-index: -100; opacity: 0.5;}
 
+body.preview div.sbooktoc.live { display: none;}
+body.preview div.sbooktoc.live div.sbooktoc.live { display: none;}
+body.preview div.sbooktoc.live:hover { display: block;}
+body.preview div.sbooktoc.live:hover div.sbooktoc.live { display: none;}
+body.preview div.sbooktoc.live:hover div.sbooktoc.live:hover { display: block;}
 div.sbooktoc.live { display: block;}
 div.sbooktoc.live div.head { display: block;}
 
@@ -1333,6 +1347,9 @@ table.login td.userlogin img { vertical-align: top; height: 16px;}
 body { }
 body.tablet { overflow: hidden;}
 body.tablet img.hudbutton { width: 50px; height: 50px;}
+body.tablet span.glossmark { width: 50px; height: 50px;}
+body.tablet span.glossmark { width: 50px; height: 50px;}
+
 body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
 body div.sbookmargin {

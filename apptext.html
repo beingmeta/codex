@@ -250,32 +250,35 @@ or methods.</p>
      onclick='fdjtCheckSpan_onclick(event);'>
 <div class='setting'>
   <span class='checkspan' onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
-   <input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>Tablet Mode</span>
-   <div class='explanation'>no scrollbars, advance by tapping left and right edges, more discriminating
-     gesture interpretation
+   <input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>
+   tablet mode</span>
+   <div class='explanation'>
+     no scrollbars, advance by tapping left and right edges
    </div>
 </div>
 <div class='setting'>
   <span class='checkspan'
    onchange="javascript:sbookNoHUDFlash($('HUDFLASHING').checked);">
-   <input TYPE='checkbox' NAME='HUDFLASH' VALUE='yes' ID='HUDFLASHING'/>Don't Flash the HUD</span>
-  <div class='explanation'>when focus or section changes
-   while moving through the document
+   <input TYPE='checkbox' NAME='HUDFLASH' VALUE='yes' ID='HUDFLASHING'/>
+   don't flash the HUD</span>
+  <div class='explanation'>
+    when information changes while moving through the document
   </div>
 </div>
 <div class='setting'>
   <span class='checkspan' onchange="javascript:sbookSparseMode($('SBOOKSPARSE').checked);">
-   <input TYPE='checkbox' NAME='SPARSEBOOK' VALUE='yes' ID='SBOOKSPARSE'/>Minimize the HUD</span>
+   <input TYPE='checkbox' NAME='SPARSEBOOK' VALUE='yes' ID='SBOOKSPARSE'/>
+   minimize the HUD</span>
   <div class='explanation'>when simply reading the text, reducing both the
     feed display on the left and the glossmark icons on the right (mouseover to expand either)
   </div>
 </div>
 <div class='setting'>
+  <span class='button' onclick='fdjtDelay(500,sbookUpdatePagination,false);'>
+    repaginate</span>
   <span class='checkspan' onchange="javascript:sbookPageView((!($('SBOOKPAGEVIEW').checked)));">
-   <input TYPE='checkbox' NAME='PAGEVIEW' VALUE='yes' ID='SBOOKPAGEVIEW'/>Enable page based reading</span>
-  <div class='explanation'>
-  breaking the document into page-sized chunks for viewing.
-  </div>
+   <input TYPE='checkbox' NAME='PAGEVIEW' VALUE='yes' ID='SBOOKPAGEVIEW'/>
+   divide content into pages</span>
 </div>
 <div class='buttons'></div>
 </div>
