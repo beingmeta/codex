@@ -15,7 +15,7 @@
  Settings</span>
 <span class='tab' contentid='APPLOGIN' onclick='sbookHUDMode("login");'>
   Login</span>
-<a href='http://sbooks.net/app/logout' class='tab' id='SBOOKLOGOUT'>
+<a href='http://sbooks.net/logout.fdcgi' class='tab' id='SBOOKLOGOUT'>
   Logout</a>
 </div>
 <div class='tabcontent helpbody' id='APPHELP'>
@@ -180,29 +180,30 @@ already use.  You can login below using any of a variety of sites
 or methods.</p>
 </div>
 
-<form action='https://sbooks.net/app/xauth'
+<form action='https://sbooks.net/auth.fdcgi'
       onsubmit='fdjtAutoPrompt_cleanup();'>
 <table class='login' rowspacing='6'>
 <tr>
-<th>Login using</th>
+<th>Using</th>
 <td class='oneclick'>
-  <a name='APPMINOR' value='facebook' class='fdjtsubmit login'
-     title='login using your Facebook account'>
+  <a href='https://sbooks.net/auth.fdcgi?facebook=login' class='fdjtsubmit login'
+     title='login using Facebook'>
     <img src='http://static.beingmeta.com/graphics/facebook32x32.png' alt='Facebook'/>
     </a>
-  <a name='ENDPOINT' class='fdjtsubmit login'
-     value='https://open.login.yahooapis.com/openid/op/auth'
+  <a href='https://sbooks.net/auth.fdcgi?endpoint=https://open.login.yahooapis.com/openid/op/auth'
+     class='fdjtsubmit login'
      title='login using Yahoo!'>
     <img src='http://static.beingmeta.com/graphics/yyahoo.png' alt='Yahoo!'/>
     </a>
-  <a name='ENDPOINT' class='fdjtsubmit login'
-     value='https://www.google.com/accounts/o8/id'
-     title='login using your Google account'>
+  <a href='https://sbooks.net/auth.fdcgi?endpoint=https://www.google.com/accounts/o8/id'
+     class='fdjtsubmit login'
+     title='login using Google'>
     <img src='http://static.beingmeta.com/graphics/ggoogle.png' alt='Google'/>
     </a>
-</th>
+</td>
 </tr>
-<tr><th class='username'>or username<br/>@</th>
+<tr><th class='username'><span class='or'>or</span>
+&nbsp;username<br/><span style='font-size: 300%;'>@</span></th>
   <td class='userlogin'>
     <input type='TEXT' name='USERNAME' value='' class='autoprompt'
            prompt='Enter a username and select the corresponding site'/>
@@ -233,9 +234,9 @@ or methods.</p>
   </td>
   <td><img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?' class='helpicon' title='Some sites provide OpenID login based on your user name.  Enter your username and click the button for the appropriate site.  You&#39;ll go to that site, log in, and return to sBooks.'/></td>
 </tr>
-
 <tr>
-<th><img src='http://static.beingmeta.com/graphics/openid-logo-small.png' alt='OpenID' style=' height: 32px;'/></th>
+<th><span class='or'>or</span>
+  <img src='http://static.beingmeta.com/graphics/openid-logo-small.png' alt='OpenID' style=' height: 32px;'/></th>
 <td><input type='TEXT' name='OPENID' value='' class='autoprompt' prompt='Enter your OpenID (a url)'/><br/>
   <input type='SUBMIT' name='ACTION' value='Use OpenID'/>
   <a href='http://openid.net/get-an-openid/'>Get an OpenID</a>

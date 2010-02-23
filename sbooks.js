@@ -534,7 +534,6 @@ function _sbook_getid(elt,scanstate,level,curlevel)
 	if (curlevel) 
 	  newhead.prefix=curhead.prefix+"h"+fdjtPadNum(curhead.count,4);
 	else newhead.prefix=curhead.prefix;
-	curlevel++;
 	newhead.count=0;
 	scanstate.idstack.push(newhead);
 	headstate=curhead=newhead;

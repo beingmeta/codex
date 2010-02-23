@@ -133,6 +133,58 @@ body.bible span.versemark { font-weight: bold;}
 body.bible span.footnote {
   font-weight: bold; color: green; vertical-align: super; font-size: 75%;}
 
+/* Essays */
+
+body.essay {
+  font-family: helvetica,arial,sans,sans-serif;
+  max-width: 40em; margin-left: auto; margin-right: auto;}
+
+body.essay h1 { text-align: center;}
+body.essay h1 a { text-decoration: none;}
+body.essay h1 a:hover { text-decoration: underline;}
+body.essay h1 a:visited { color: blue;}
+body.essay h1 div.author {
+    font-size: 50%; }
+body.essay h1 div.pubinfo {
+    font-size: 50%; font-weight: normal; font-variant: small-caps;}
+body.essay h1 div.toplinks {
+    margin-left: auto; margin-right: auto; border-top: solid blue 1px;
+    text-align: center; font-size: 14px;}
+body.essay h1 div.toplinks a {
+    padding-right: 6px; padding-left: 6px;
+    text-decoration: none; color: blue;}
+body.essay h1 div.toplinks a:visited { color: blue;}
+body.essay h1 div.toplinks a:hover { text-decoration: underline;}
+
+body.essay h2 { text-align: left;}
+body.essay li { page-break-inside: avoid;}
+
+a.rightimage { float: right; width: 20%;}
+a.rightimage img { border: none; width: 100%;}
+a.leftimage { float: left; width: 20%;}
+a.leftimage img { border: none; width: 100%;}
+
+a.blockimage {
+    page-break-inside: avoid; page-break-before: avoid;
+    clear: both; width: 100%; display: block;}
+a.blockimage img { border: none; width: 100%;}
+img.blockimage { border: none; width: 100%;}
+
+/*
+body.essay div.toplinks a {
+    padding-left: 1em; padding-right: 1em;
+    margin-left: 2em; margin-right: 2em;
+    border: solid blue 2px; border-top: none;
+    -khtml-bottom-left-border-radius: 4px; 
+    -webkit-bottom-left-border-radius: 4px; 
+    -moz-border-radius-bottomleft: 4px; 
+    border-bottom-left-radius: 4px;
+    -khtml-bottom-right-border-radius: 4px; 
+    -webkit-bottom-right-border-radius: 4px; 
+    -moz-border-radius-bottomright: 4px; 
+    border-bottom-right-radius: 4px;}
+*/
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
