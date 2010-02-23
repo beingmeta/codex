@@ -318,8 +318,12 @@ function sbook_trace(handler,cxt)
 
 function sbookHeadLevel(elt)
 {
-  if (elt.getAttribute("toclevel")) {
-    var tl=elt.getAttribute("toclevel");
+  var tl=
+    elt.getAttribute("toclevel")||
+    elt.getAttribute("data-toclevel")||
+    ((elt.getAtttributeNS)&&
+     (elt.getAtttributeNS("http://sbooks.net/","toclevel")));
+  if (tl) {
     if (typeof tl === "number") return tl;
     else if ((tl==="no") || (tl==="none"))
       return false;
