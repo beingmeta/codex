@@ -557,6 +557,8 @@ function _sbook_getid(elt,scanstate,level,curlevel)
 
 function _sbook_setid(elt,scanstate,level,curlevel)
 {
+  if (!((fdjtHasContent(elt))||(fdjtElementMatches(elt,sbook_idify))))
+    return;
   var eltid=elt.id;
   if ((eltid)&&(sbook_hashmap[eltid])) eltid=false;
   var sbookid=elt.getAttribute("SBOOKID");
@@ -662,8 +664,6 @@ function sbook_scanner(child,scanstate,skiptoc)
   // Location tracking and TOC building
   if (child.nodeType===3) {
     var width=child.nodeValue.length;
-    // Don't bother doing this (doesn't work in IE anyway)
-    // child.sbookloc=scanstate.location+width/2;
     if (!(fdjtIsEmptyString(child.nodeValue)))
       scanstate.location=scanstate.location+width;}
   else if (child.nodeType!==1)
@@ -681,7 +681,7 @@ function sbook_scanner(child,scanstate,skiptoc)
   else if (skiptoc) {
     fdjtComputeOffsets(child);
     sbook_nodes.push(child);}
-  else if (((fdjtIsBlockElt(child))&&(fdjtHasContent(child)))||
+  else if ((fdjtIsBlockElt(child))||
 	   (fdjtElementMatches(child,sbook_idify))) {
     var loc=scanstate.location;
     var eltid=_sbook_setid(child,scanstate,level,curlevel);
