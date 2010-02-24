@@ -301,17 +301,17 @@ function sbook_trace(handler,cxt)
 {
   if (cxt.target)
     fdjtLog
-      ("[%f] %s %o in %o: mode%s=%o, focus%s=%o, target=%o, head=%o",
+      ("[%f] %s %o in %o: mode%s=%o, focus%s=%o, target=%o, head=%o preview=%o",
        fdjtElapsedTime(),handler,cxt,cxt.target,
        ((sbook_preview)?("(preview)"):""),sbook_mode,
        ((sbook_target)?("(targeted)"):""),
-       sbook_focus,sbook_target,sbook_head);
+       sbook_focus,sbook_target,sbook_head,sbook_preview);
   else fdjtLog
-	 ("[%f] %s %o: mode%s=%o, focus%s=%o, target=%o, head=%o",
+	 ("[%f] %s %o: mode%s=%o, focus%s=%o, target=%o, head=%o preview=%o",
 	  fdjtElapsedTime(),handler,cxt,
 	  ((sbook_preview)?("(preview)"):""),sbook_mode,
 	  ((sbook_target)?("(targeted)"):""),
-	  sbook_focus,sbook_target,sbook_head);
+	  sbook_focus,sbook_target,sbook_head,sbook_preview);
 }
 
 /* Basic SBOOK functions */
@@ -333,11 +333,20 @@ function sbookHeadLevel(elt)
     if ((typeof tl === "number") && (tl>=0))
       return tl;
     else return false;}
-  else {
-    var tl=fdjtLookupElement(sbook_headlevels,elt);
-    if (typeof tl === "number") return tl;
-    else if (typeof tl === "function") return tl(elt);
-    else return false;}
+  var classname=elt.className;
+  if ((classname)&&(classname.search(/\bsbook/)>=0))
+    if (classname.search(/\bsbooknothead\b/)>=0) return false;
+    else if (classname.search(/\bsbookignore\b/)>=0) return false;
+    else if (classname.search(/\bsbook\d\b/)>=0) {
+      var start=classname.search(/\bsbook\d\b/);
+      var end=classname.indexOf(' ',start);
+      if (end<0)
+	return parseInt(classname.slice(start+5));
+      else return parseInt(classname.slice(start+5,end));}
+  var computed=fdjtLookupElement(sbook_headlevels,elt);
+  if (typeof computed === "number") return computed;
+  else if (typeof computed === "function") return computed(elt);
+  else return false;
 }
 
 function sbook_getinfo(elt)
@@ -381,7 +390,8 @@ function sbookIsUIElement(elt)
 
 function sbookInUI(elt)
 {
-  if (fdjtHasParent(elt,sbookHUD)) return true;
+  if (elt.sbookui) return true;
+  else if (fdjtHasParent(elt,sbookHUD)) return true;
   else while (elt)
 	 if (elt.sbookui) return true;
 	 else if (fdjtHasClass(elt,sbookUIclasses)) return true;
@@ -402,7 +412,8 @@ function sbookGetHead(target)
 function sbookGetFocus(target,closest)
 {
   var first=false;
-  if (sbookInUI(target)) return false;
+  if (!(target)) return false;
+  else if (sbookInUI(target)) return false;
   else if ((!(sbook_focus_rules))||(sbook_focus_rules.length===0))
     while (target) {
       if (target.id) 
@@ -412,6 +423,8 @@ function sbookGetFocus(target,closest)
   else while (target) {
       if (target.id)
 	if (closest) return target;
+	else if (fdjtHasClass(target,"sbookfoci"))
+	  return target;
 	else if (fdjtElementMatches(target,sbook_focus_rules))
 	  return target;
 	else if (!(first)) first=target;
@@ -468,7 +481,8 @@ function sbookGatherMetadata()
   /* Build the metadata */
   var i=0; while (i<children.length) {
     var child=children[i++];
-    sbook_scanner(child,scanstate);} 
+    if (!(child.sbookui))
+      sbook_scanner(child,scanstate);} 
   var scaninfo=scanstate.curinfo;
   /* Close off all of the open spans in the TOC */
   while (scaninfo) {
@@ -523,15 +537,17 @@ function _sbook_get_title(head)
   else return fdjtTextify(title,true);
 }
 
-function _sbook_getid(elt,scanstate,level,curlevel)
+function _sbook_getid(elt,scanstate,level)
 {
   if (!(level)) {
     var idstate=scanstate.idstate; idstate.count++;
     return idstate.prefix+"p"+fdjtPadNum(idstate.count,4);}
   else {
     var headstate; var idstate={};
+    var curlevel=scanstate.idstack.length;
     if (level>curlevel) {
-      var curhead=scanstate.idstack[curlevel];
+      // Add new heading levels if neccessary
+      var curhead=scanstate.idstack[curlevel-1];
       while (level>curlevel) {
 	var newhead={};
 	// Level 0 has only one node, so we don't need to count up
@@ -542,12 +558,10 @@ function _sbook_getid(elt,scanstate,level,curlevel)
 	scanstate.idstack.push(newhead);
 	headstate=curhead=newhead;
 	curlevel++;}}
-    else if (level<curlevel) {
-      headstate=scanstate.idstate=scanstate.idstack[level];
-      scanstate.idstack=scanstate.idstack.slice(0,level+1);}
-    else if (curlevel===0)
-      headstate=scanstate.idstate;
-    else headstate=scanstate.idstack[level];
+    else {
+      headstate=scanstate.idstack[level-1];
+      scanstate.idstack=scanstate.idstack.slice(0,level+1);
+      curlevel=level;}
     headstate.count++;
     var headid=headstate.prefix+"h"+fdjtPadNum(headstate.count,4);
     idstate.prefix=headid; idstate.count=0;
@@ -557,27 +571,21 @@ function _sbook_getid(elt,scanstate,level,curlevel)
 
 function _sbook_setid(elt,scanstate,level,curlevel)
 {
-  if (!((fdjtHasContent(elt))||(fdjtElementMatches(elt,sbook_idify))))
-    return;
-  var eltid=elt.id;
-  if ((eltid)&&(sbook_hashmap[eltid])) eltid=false;
-  var sbookid=elt.getAttribute("SBOOKID");
-  var tocidstring=elt.getAttribute("TOCIDS");
-  var tocids=((tocidstring)?(tocidstring.split(';')):([]));
-  if (!(sbookid)) {}
-  else if (eltid===sbookid) {}
-  else if (eltid) {fdjtAdd(tocids,eltid); eltid=sbookid;}
-  else eltid=sbookid;
-  if (sbook_autoid) {
+  /* This doesn't currently handle the addition of conflicting IDs */
+  if (elt.getAttribute("SBOOKIDS")) {
+    var tocidstring=elt.getAttribute("SBOOKIDS");
+    var tocids=((tocidstring)?(tocidstring.split(';')):([]));
+    var i=0; while (i<tocids.length) sbook_hashmap[tocids[i++]]=elt;}
+  if (elt.id) return elt.id;
+  else if (!((fdjtHasContent(elt))||
+	     (fdjtHasClass(elt,"sbookidify"))||
+	     (fdjtElementMatches(elt,sbook_idify))))
+    return false;
+  else if (sbook_autoid) {
     var tocid=_sbook_getid(elt,scanstate,level,curlevel);
-    if (!(eltid)) eltid=tocid;
-    else if (tocid!==eltid) {
-      tocids.push(tocid); elt.tocids=tocids;}}
-  var i=0; while (i<tocids.length) sbook_hashmap[tocids[i++]]=elt;
-  if (sbookid) elt.id=eltid;
-  else if (!(elt.id)) elt.id=eltid;
-  sbook_hashmap[eltid]=elt;  
-  return eltid;
+    elt.id=tocid; sbook_hashmap[tocid]=elt;  
+    return tocid;}
+  else return false;
 }
 
 function _sbook_process_head(head,scanstate,level,curhead,curinfo,curlevel)
@@ -669,7 +677,8 @@ function sbook_scanner(child,scanstate,skiptoc)
   else if (child.nodeType!==1)
     child.sbook_head=curhead;
   else if (sbookInUI(child)) return;
-  else if (fdjtElementMatches(child,sbook_ignored)) {
+  else if ((fdjtHasClass(child,"sbookignore"))||
+	   (fdjtElementMatches(child,sbook_ignored))) {
     fdjtComputeOffsets(child);
     sbook_nodes.push(child);
     return;}
@@ -682,10 +691,13 @@ function sbook_scanner(child,scanstate,skiptoc)
     fdjtComputeOffsets(child);
     sbook_nodes.push(child);}
   else if ((fdjtIsBlockElt(child))||
+	   (fdjtHasClass(child,"sbookidify"))||
 	   (fdjtElementMatches(child,sbook_idify))) {
     var loc=scanstate.location;
     var eltid=_sbook_setid(child,scanstate,level,curlevel);
-    skiptoc=skiptoc||(fdjtElementMatches(child,sbook_terminals));
+    skiptoc=skiptoc||
+      (fdjtHasClass(child,"sbookterminal"))||
+      (fdjtElementMatches(child,sbook_terminals));
     fdjtComputeOffsets(child);
     sbook_nodes.push(child);
     child.sbookloc=loc;
@@ -697,30 +709,34 @@ function sbook_scanner(child,scanstate,skiptoc)
 		 sbook_scanner(children[i++],scanstate,skiptoc);}}
   else {}
   if (level) child.toclevel=level;
-  var info=sbook_getinfo(child);
   // Tagging
-  var headtag=((info.title) && ("\u00A7"+info.title));
+  var info=sbook_getinfo(child);
+  var headtag=((info)&&((info.title) && ("\u00A7"+info.title)));
+  var tagstring;
   if (headtag) {
     sbookAddTag(child,headtag,true,false,true,scanstate.knowlet);}
-  if (sbook_build_index) 
-    if ((child.id) && (child.getAttribute) && (child.getAttribute("TAGS"))) {
-      var tagstring=child.getAttribute("TAGS");
-      var tags=fdjtSemiSplit(fdjtUnEntify(tagstring));
-      var tagging={};
-      tagging.elt=child; tagging.tags=tags;
-      tagging.ctags=scanstate.tagstack;
-      scanstate.taggings.push(tagging);
-      if (level>0) {
-	var ctags=[]; if (headtag) ctags.push(headtag);
-	var i=0; var len=tags.length; while (i<len) {
-	  if (tags[i][0]==='*') {
-	    var tag=tags[i++];
-	    var barpos=tag.indexOf('|');
-	    if (barpos<0) ctags.push(tag.slice(1));
-	    else ctags.push(tag.slice(1,barpos));}
-	  else i++;}
-	scanstate.tagstack.push(ctags);}}
-    else {}
+  if ((sbook_build_index)&&(child.id)&&(child.getAttribute)&&
+      (tagstring=
+       ((child.getAttribute("tags"))||
+	(child.getAttribute("data-tags"))||
+	((child.getAttributeNS)&&
+	 (child.getAttribute("tags","http://sbooks.net/")))))) { 
+    var tags=fdjtSemiSplit(fdjtUnEntify(tagstring));
+    var tagging={};
+    tagging.elt=child; tagging.tags=tags;
+    tagging.ctags=scanstate.tagstack;
+    scanstate.taggings.push(tagging);
+    if (level>0) {
+      var ctags=[]; if (headtag) ctags.push(headtag);
+      var i=0; var len=tags.length; while (i<len) {
+	if (tags[i][0]==='*') {
+	  var tag=tags[i++];
+	  var barpos=tag.indexOf('|');
+	  if (barpos<0) ctags.push(tag.slice(1));
+	  else ctags.push(tag.slice(1,barpos));}
+	else i++;}
+      scanstate.tagstack.push(ctags);}}
+  else {}
   // Setting this attribute can help with debugging
   if ((sbook_trace_locations) && (child.sbookloc) && (child.setAttribute))
     child.setAttribute("sbookloc",child.sbookloc);
@@ -1045,6 +1061,7 @@ function sbookGoTo(target)
   var head=((target.sbook_head)&&($(target.sbook_head)));
   if (head) sbookScrollTo(target,head);
   else sbookScrollTo(target);
+  sbookPreview(false);
   sbookHUDMode(false);
   if ((sbook_hud_flash)&&(!(sbook_mode)))
     sbookHUDFlash("minimal",sbook_hud_flash);
@@ -1707,6 +1724,7 @@ function sbookSetup()
   var knowlets_done=new Date();
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Indexing tags"));
   if (scanstate) sbookIndexTags(scanstate);
+  sbookIndexTechnoratiTags(knowlet);
   var tags_done=new Date();
   if ($("SBOOKHIDEHELP"))
     $("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));

@@ -72,6 +72,8 @@ a img { border: transparent;}
 
 span.altabstime { display: none;}
 
+body.preview .previewing { color: red;}
+
 /* Generic HUD Display/opacity rules */
 
 div.hud {

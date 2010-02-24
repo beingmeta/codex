@@ -123,6 +123,8 @@ function sbookHandleTagSpec(elt,tagspec)
   return tag_count;
 }
 
+/*
+
 var sbook_taginfo={eltcount: 0,tagcount: 0};
 
 function setupTags()
@@ -134,6 +136,7 @@ function setupTags()
     fdjtLog("[%f] Set up default knowlet %s, initially %d dterms",
 	    fdjtET(),knowlet.name,knowlet.alldterms.length);}
   tag_scanner(document.body,false,knowlet);
+  var anchors=document.getElementsByTagName('A');
   fdjtLog("[%f] Got %d tags from %d elements in %f secs, %s now has %d dterms",
 	  fdjtET(),sbook_taginfo.tagcount,sbook_taginfo.eltcount,
 	  (done.getTime()-start.getTime())/1000,
@@ -142,6 +145,8 @@ function setupTags()
 
 function tag_scanner(elt,cxt,kno)
 {
+  fdjtTrace("tag_scanner elt=%o cxt=%o",elt,cxt);
+  sbook_taginfo.eltcount++;
   var tags=
     elt.getAttribute("tags")||
     // for validating when in HTML5
@@ -164,7 +169,15 @@ function tag_scanner(elt,cxt,kno)
     else dterm=fdjtStdSpace(tagref);
     elt.dterm=dterm; elt.setAttribute("dterm",dterm);
     if (cxt) sbookAddTag(cxt,dterm);}
-  sbook_taginfo.eltcount++;
+  if ((elt.tagName==='A')&&(elt.rel==='tag')&&(elt.href)) {
+    var href=elt.href;
+    fdjtTrace("Found technorati tag");
+    var tagstart=((href)&&(href.search(/[^/]$/)));
+    if ((tagstart)&&(tagstart>=0)) {
+      var tag=href.slice(tagstart);
+      var dterm=((kno)?(kno.handleEntry(tag)):(fdjtStdSpace(tag)));
+      sbookAddTag(elt,dterm);
+      if (cxt) sbookAddTag(cxt,dterm);}}
   var children=elt.childNodes;
   if (children) {
     var newcxt=((elt.id)?(elt):(cxt));
@@ -174,6 +187,8 @@ function tag_scanner(elt,cxt,kno)
 	tag_scanner(children[i++],kno,newcxt);
       else i++;}
 }
+
+*/
 
 /* Search functions */
 
@@ -459,6 +474,26 @@ function sbookIndexTags(scanstate)
       while (k<ctags.length)  {
 	sbookAddTag(elt,ctags[k++],false,true,true,scanstate.knowlet);}}
     _total_tagged_count++;}
+}
+
+function sbookIndexTechnoratiTags(kno)
+{
+  if (!(kno)) kno=knowlet;
+  var anchors=document.getElementsByTagName("A");
+  if (!(anchors)) return;
+  var i=0; var len=anchors.length;
+  while (i<len)
+    if (anchors[i].rel==='tag') {
+      var elt=anchors[i++];
+      var href=elt.href;
+      var cxt=elt;
+      while (cxt) if (cxt.id) break; else cxt=cxt.parentNode;
+      if (!((href)&&(cxt))) return;
+      var tagstart=(href.search(/[^/]+$/));
+      var tag=((tagstart<0)?(href):href.slice(tagstart));
+      var dterm=((kno)?(kno.handleEntry(tag)):(fdjtStdSpace(tag)));
+      sbookAddTag(cxt,dterm);}
+    else i++;
 }
 
 /* Processing tags when all done */

@@ -112,7 +112,7 @@ function sbookSummaryHead(target,head,eltspec,extra)
       var text=fdjtTextify(target,true);
       if (text.length>50) fdjtAppend(basespan,text.slice);
       else fdjtAppend(basespan,fdjtSpan("headtext",text));}}
-  basespan.title='press/click to go';
+  basespan.title='click to go/hold mouse or control key for preview/';
   var tocblock=((eltspec)?(fdjtNewElt(eltspec,basespan)):
 		(fdjtDiv("tochead",basespan)));
   tocblock.sbook_ref=target.id;

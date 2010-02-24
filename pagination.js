@@ -254,7 +254,7 @@ function sbookPaginate(pagesize,start)
 function sbookNodeInfo(node)
 {
   var info=fdjtGetOffset(node);
-  var fontsize=getComputedStyle(node).fontSize;
+  var fontsize=getComputedStyle(node,null).fontSize;
   if ((fontsize)&&(typeof fontsize === 'string'))
     fontsize=parseInt(fontsize.slice(0,fontsize.length-2));
   info.fontsize=(fontsize||12);

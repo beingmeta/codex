@@ -177,6 +177,7 @@ function sbookTOC_onmouseover(evt)
 {
   evt=evt||event||null;
   // sbook_trace("sbookTOC_onmouseover",evt);
+  if (!(sbook_mode)) return;
   var target=sbookGetRef($T(evt));
   if (!((sbook_mode)||(fdjtHasClass(document.body,"hudup")))) return;
   sbookHUD_onmouseover(evt);
@@ -212,16 +213,11 @@ function sbookTOC_onclick(evt)
   if (target===null) {
     sbookHUDToggle("toc");
     return;}
-  sbook_preview=false;
-  fdjtScrollDiscard();
-  if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
-  evt.cancelBubble=true;
+  sbookStopPreview(evt);
   sbookSetHead(target);
   var info=sbook_getinfo(target);
-  if (!((info.sub) && ((info.sub.length)>2)))
-    sbookHUDMode(false);
-  sbookScrollTo(target);
   sbookSetTarget(target);
+  sbookGoTo(target);
   return false;
 }
 

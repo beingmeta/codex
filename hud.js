@@ -343,16 +343,27 @@ function sbookUpdateAppHUD()
 function sbookPreview(elt,offset)
 {
   var cxt=false;
-  // sbook_trace("sbookPreview",elt);
-  if (!(elt)) return sbookStopPreview();
-  /* No longer needed with TOC at the bottom */
+  sbook_trace("sbookPreview",elt);
+  if (!(elt)) {
+    if (sbook_preview) {
+      fdjtDropClass(document.body,"preview");
+      fdjtScrollRestore();
+      fdjtDropClass(sbook_preview,"previewing");
+      sbook_preview=false;}
+    else fdjtDropClass(document.body,"preview");
+    return;}
+  if (sbook_preview)
+    fdjtDropClass(sbook_preview,"previewing");
+  if ((elt===sbook_root)||(elt===document.body))
+    return;
   if (!(offset))
     if (elt.sbook_ref) {
       offset=elt.preview_off||sbookDisplayOffset();
       elt=elt.sbook_ref;}
     else offset=sbookDisplayOffset();
   fdjtAddClass(document.body,"preview");
-  sbook_preview=true;
+  fdjtAddClass(elt,"previewing");
+  sbook_preview=elt;
   if ((elt.getAttribute) &&
       (elt.getAttribute("toclevel")) ||
       ((elt.sbookinfo) && (elt.sbookinfo.level)))
@@ -360,12 +371,6 @@ function sbookPreview(elt,offset)
   else if (elt.sbook_head)
     cxt=elt.sbook_head;
   if (elt) fdjtScrollPreview(elt,cxt,offset);
-}
-
-function sbookSetPreview(flag)
-{
-  if (flag) fdjtAddClass(document.body,"preview");
-  else fdjtDropClass(document.body,"preview");
 }
 
 function sbookStartPreview(evt)
@@ -378,9 +383,7 @@ function sbookStartPreview(evt)
 function sbookStopPreview(evt)
 {
   if (evt) fdjtCancelEvent(evt);
-  fdjtDropClass(document.body,"preview");
-  fdjtScrollRestore();
-  window.setTimeout("sbook_preview=false;",100);
+  window.setTimeout("sbookPreview(false);",100);
 }
 
 /* Button methods */
