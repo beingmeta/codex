@@ -46,7 +46,7 @@ var sbook_bottom_px=40;
 var sbook_widow_limit=3;
 var sbook_orphan_limit=3;
 
-var sbook_debug_pagination=false;
+var sbook_debug_pagination=true;
 var sbook_trace_pagination=0;
 var sbook_trace_paging=false;
 
@@ -180,11 +180,6 @@ function sbookPaginate(pagesize,start)
 	  (sbookIsPageBlock(next))&&(sbookAvoidPageFoot(scan)))
 	// If the current node is a bad foot and the next node is
 	// straddling but needs to keep together, break now
-	newpage=scan;
-      else if (((pagelim-nextinfo.bottom)<sbook_bottom_px)&&
-	       ((next.toclevel)||(sbookAvoidPageFoot(next))))
-	// If the next node is a bad foot and close to the bottom,
-	// break now
 	newpage=scan;
       else if (((next.toclevel)||(sbookAvoidPageFoot(next)))&&
 	       ((scan.toclevel)||(sbookAvoidPageFoot(scan)))&&
