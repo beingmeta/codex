@@ -195,7 +195,7 @@ function sbookPaginate(pagesize,start)
       else if (sbookAvoidPageHead(next))
 	// If the next node is a bad head, ignore, break or split
 	if (nextinfo.bottom<(pagelim+fudge)) {} // enough space
-	else if ((pagelim-info.top)<widowthresh) newpage=scan;
+ 	else if ((pagelim-info.top)<widowthresh) newpage=scan;
 	else newpage=splitblock=scan;
       else {}}
     if (!(newpage)) {

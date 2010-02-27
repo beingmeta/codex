@@ -450,8 +450,10 @@ div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP {
   padding-top: 3px; padding-bottom: 2px; background-color: gold;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP:hover { text-decoration: none;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKIBELONGTO {
-  position: absolute; top: 3px; left: 5px;
+  position: absolute; top: 0px; left: 2px;
   font-family: times,serif; font-variant: small-caps; color: black;}
+div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKIBELONGTO .closebutton {
+  color: black; font-weight: bold; border: none; vertical-align: text-bottom;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERNAME {
   font-family: helvetica,arial,sans; font-variant: normal; color: blue;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKIBELONGTO #SBOOKUSERNAME:hover {
