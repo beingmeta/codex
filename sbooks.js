@@ -86,11 +86,11 @@ var sbook_hybrid_index=false;
 /* Network connection settings */
 
 // Where to go for your glosses
-var sbook_glosses_root="https://app.sbooks.net/glosses/";
+var sbook_glosses_root="https://app.sbooks.net/sbook/";
 // This is the AJAX sbook mark uri
-var sbook_mark_uri="/glosses/glossmark.fdcgi?AJAX=yes";
+var sbook_mark_uri="/sbook/glossmark.fdcgi?AJAX=yes";
 // This is the JSONP sbook mark uri
-var sbook_jsonping_uri="https://apps.sbooks.net/glosses/glossmark.fdcgi?JSONP=yes";
+var sbook_jsonping_uri="https://apps.sbooks.net/sbook/glossmark.fdcgi?JSONP=yes";
 // This is the hostname for the sbookserver.
 var sbook_server=false;
 // This is an array for looking up sbook servers.
@@ -1585,7 +1585,7 @@ function sbookSetupGlossServer()
 	  document.domain=common_suffix;
 	  sbookSetIBridge(iframe.contentWindow);};
       	iframe.src=
-	  'http://'+sbook_server+'/glosses/ibridge.fdcgi?DOMAIN='+common_suffix;
+	  'http://'+sbook_server+'/sbook/ibridge.fdcgi?DOMAIN='+common_suffix;
 	document.body.appendChild(iframe);}}}
 }
 
@@ -1621,7 +1621,7 @@ function sbookAddQRIcons()
     var head=sbook_heads[i++];
     var id=head.id;
     var title=(head.sbookinfo)&&sbook_get_titlepath(head.sbookinfo);
-    var qrhref="https://glosses.sbooks.net/glosses/qricon.fdcgi?"+
+    var qrhref="https://"+sbook_server+"/sbook/qricon.fdcgi?"+
       "URI="+encodeURIComponent(sbook_docuri||sbook_refuri)+
       ((id)?("&FRAG="+head.id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
@@ -1733,7 +1733,7 @@ function sbookSetup()
     fdjtReplace("SBOOKSTARTUP",
 		fdjtDiv("message","Loading glosses..."));
     var refuri=fdjtStripSuffix(sbook_refuri);
-    var uri="https://"+sbook_server+"/glosses/glosses.fdcgi?URI="+
+    var uri="https://"+sbook_server+"/sbook/glosses.fdcgi?URI="+
       ((sbook_baseid) ?
        (encodeURIComponent(refuri+"#"+sbook_baseid)) :
        (encodeURIComponent(refuri)))+
@@ -1862,11 +1862,13 @@ function sbookSetupAppFrame()
 {
   var query=document.location.search||"?";
   var refuri=fdjtStripSuffix(sbook_refuri);
-  var appuri="https://"+sbook_server+"/glosses/appframe.fdcgi"+query;
+  var appuri="https://"+sbook_server+"/sbook/manage.fdcgi"+query;
   if (query.search("REFURI=")<0)
     appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
   if (query.search("DOCURI=")<0)
-    appuri=appuri+"&DOCURI="+sbook_docuri;
+    appuri=appuri+"&DOCURI="+encodeURIComponent(sbook_docuri);
+  if (document.title)
+    appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);
   $("APPFRAME").src=appuri;
 }
 

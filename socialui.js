@@ -269,7 +269,7 @@ function sbookGlossmark(target,open)
     target.glossmarkid=glossmark.id="SBOOK_GLOSSMARK_"+id;
     glossmark.sbook_ref=id;}
   if ((target)&&(sbook_glossmark_qricons)) {
-    var qrhref="http://glosses.sbooks.net/glosses/qricon.fdcgi?"+
+    var qrhref="http://"+sbook_server+"/sbook/qricon.fdcgi?"+
       "URI="+encodeURIComponent(sbook_refuri)+
       ((id)?("&FRAG="+id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");

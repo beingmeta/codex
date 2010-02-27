@@ -281,15 +281,15 @@ function sbookMarkInfo(sumdiv,info)
   var interval=((info.tstamp) ? (fdjtTick()-info.tstamp) : (-1));
   var delete_button=
     ((user===sbook_user)&&
-     (fdjtAnchorC("http://glosses.sbooks.net/glosses/delete?GLOSS="+info.oid,
+     (fdjtAnchorC("http://"+sbook_server+"/sbook/delete?GLOSS="+info.oid,
 		  ".deletebutton",
 		  fdjtImage(sbicon(sbook_delete_icon),false,"x"))));
   var agespan=
     ((interval>0)&&
      ((interval>(5*24*3600)) 
-      ? (fdjtAnchorC("http://glosses.sbooks.net/glosses/browse/"+info.glossid,
+      ? (fdjtAnchorC("http://"+sbook_server+"/sbook/browse/"+info.glossid,
 		     "age",fdjtTickDate(info.tstamp)))
-      : (fdjtAnchorC("http://glosses.sbooks.net/glosses/browse/"+info.glossid,
+      : (fdjtAnchorC("http://"+sbook_server+"/sbook/browse/"+info.glossid,
 		     "age",
 		     fdjtSpan("altreltime",fdjtIntervalString(interval)),
 		     fdjtSpan("altabstime",fdjtTickDate(info.tstamp)),

@@ -226,7 +226,7 @@ function sbookCreateMarkHUD(classinfo)
   form.ajaxuri=sbook_mark_uri;
   form.jsonpuri=sbook_jsonping_uri;
   form.synchronous=true;
-  form.action="http://"+sbook_server+"/glosses/glossmark.fdcgi";
+  form.action="http://"+sbook_server+"/sbook/glossmark.fdcgi";
   form.target="sbookping";
   form.onclick=sbookMarkForm_onclick;
   fdjtCheckSpan_setup(metastuff);
