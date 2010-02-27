@@ -46,7 +46,7 @@ var sbook_bottom_px=40;
 var sbook_widow_limit=3;
 var sbook_orphan_limit=3;
 
-var sbook_debug_pagination=true;
+var sbook_debug_pagination=false;
 var sbook_trace_pagination=0;
 var sbook_trace_paging=false;
 
@@ -111,7 +111,7 @@ function sbookPaginate(pagesize,start)
   var start=fdjtET();
   var curpage={}; var newpage=false; var nodecount=1;
   curpage.pagenum=pages.length;
-  curpage.top=pagetop;
+  curpage.top=pagetop; curpage.limit=pagelim;
   curpage.first=start; curpage.last=start;
   pages.push(pagetop); pageinfo.push(curpage);
   while (scan) {
@@ -124,7 +124,7 @@ function sbookPaginate(pagesize,start)
 		 ("P#"+curpage.pagenum+
 		  "["+pagetop+","+pagelim+
 		  "/"+pagesize+"/"+widowthresh+","+orphanthresh+"] "));
-    if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info));
+    if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info,curpage));
     if (sbook_trace_pagination>1) _sbookTracePagination("SCAN",scan,info);
     if ((sbookIsPageHead(scan))&&(info.top>pagetop))
       newpage=scan;
@@ -151,17 +151,18 @@ function sbookPaginate(pagesize,start)
       else if (((sbookAvoidPageHead(scan))||(sbookIsPageFoot(scan))))
 	if (info.bottom<pagelim+sbook_bottom_px)
 	  // If we can, keep it on this page
-	  curpage.bottom=pagelim=info.bottom;
+	  curpage.bottom=info.bottom;
 	else curpage.bottom=pagelim;
       else if (!(fdjtHasText(scan))) {}
       else if ((pagelim-info.top)<widowthresh)
 	newpage=scan;
       else if ((info.bottom-pagelim)<orphanthresh) {
 	newpage=splitblock=scan;
-	curpage.bottom=pagelim=info.bottom-orphanthresh;}
+	curpage.bottom=info.bottom-orphanthresh;}
       else {
 	newpage=splitblock=scan;
-	curpage.bottom=pagelim=pagelim;}
+	curpage.bottom=pagelim;}
+    // End of straddling code
     // We're completely on the page
     else if (sbookAvoidPageHead(scan)) {}
     else if (sbookIsPageFoot(scan)) {
@@ -175,24 +176,27 @@ function sbookPaginate(pagesize,start)
       // Look ahead to see if we should page break anyway
       nextinfo=sbookNodeInfo(next);
       if (dbginfo)
-	dbginfo=dbginfo+" ... N"+_sbookPageNodeInfo(next,nextinfo);
-      if ((nextinfo.top<pagelim)&&(nextinfo.bottom>pagelim)&&
-	  (sbookIsPageBlock(next))&&(sbookAvoidPageFoot(scan)))
-	// If the current node is a bad foot and the next node is
-	// straddling but needs to keep together, break now
-	newpage=scan;
-      else if (((next.toclevel)||(sbookAvoidPageFoot(next)))&&
-	       ((scan.toclevel)||(sbookAvoidPageFoot(scan)))&&
-	       ((pagelim-info.top)<pagesize/2))
-	// Double heads/non feet cause a page break when they're more
-	// than halfway down
-	newpage=scan;
-      else if ((nextinfo.bottom>(pagelim+fudge))&&
-	       ((pagelim-nextinfo.top)<sbook_bottom_px)&&
-	       (sbookAvoidPageHead(next)))
-	// If the next node is a bad straddle head and starts close to
-	// the bottom, break now
-	newpage=scan;
+	dbginfo=dbginfo+" ... N"+_sbookPageNodeInfo(next,nextinfo,curpage);
+      if ((scan.toclevel)||(sbookAvoidPageFoot(scan)))
+	if (sbookIsPageHead(next)) newpage=scan;
+	else if ((nextinfo.top<pagelim)&&
+		 (nextinfo.bottom>pagelim)&&
+		 (sbookIsPageBlock(next)))
+	  newpage=scan;
+	else if (((next.toclevel)||(sbookAvoidPageFoot(next)))&&
+		 ((pagelim-info.top)<pagesize/2))
+	  // Double heads/non feet cause a page break when they're more
+	  // than halfway down
+	  newpage=scan;
+	else if ((pagelim-next.top)<widowthresh)
+	  // If the next node is likely to be pushed off, keep it
+	  newpage=scan;
+	else {}
+      else if (sbookAvoidPageHead(next))
+	// If the next node is a bad head, ignore, break or split
+	if (nextinfo.bottom<(pagelim+fudge)) {} // enough space
+	else if ((pagelim-info.top)<widowthresh) newpage=scan;
+	else newpage=splitblock=scan;
       else {}}
     if (!(newpage)) {
       curpage.bottom=info.bottom;
@@ -221,7 +225,8 @@ function sbookPaginate(pagesize,start)
       if (newinfo.height>pagesize) curpage.oversize=true;
       curpage.first=newpage; curpage.last=newpage;
       if (splitblock) curpage.topedge=splitblock;
-      pagetop=curpage.top; pagelim=pagetop+pagesize;
+      pagetop=curpage.top;
+      curpage.limit=pagelim=pagetop+pagesize;
       pages.push(pagetop); pageinfo.push(curpage);
       scan=newpage; splitblock=false; newpage=false;}
     else {
@@ -280,11 +285,19 @@ function _sbookScanPageContent(scan,skipchildren)
   return next;
 }
 
+var sbook_block_tags=
+  {"IMG": true, "HR": true, "P": true, "DIV": true,"UL": true,"BLOCKQUOTE":true};
+
 function _sbookIsContentBlock(node)
 {
+  var styleinfo;
   if (node.nodeType===1)
     if (node.sbookui) return false;
-    else if ((node.tagName==='IMG')||(node.tagName==='HR')) return true;
+    else if (sbook_block_tags[node.tagName]) return true;
+    else if ((window.getComputedStyle)&&(styleinfo=window.getComputedStyle(node))) {
+      if (styleinfo.position!=='static') return false;
+      else if (styleinfo.display==='block') return true;
+      else return false;}
     else if (fdjtDisplayStyle(node)==="inline") return false;
     else return true;
   else return false;
@@ -320,10 +333,15 @@ function _sbookPaginationInfo(elt,info,newpage,splitblock)
     ((newpage)?((newpage!==elt)?("ph="+newpage.id):""):"");
 }
 
-function _sbookPageNodeInfo(elt,info)
+function _sbookPageNodeInfo(elt,info,curpage)
 {
-  return "["+info.top+","+info.bottom+"/"+info.height+"] t"+
-    (elt.toclevel||0)+
+  return "["+info.top+","+info.bottom+"/"+info.height+"] "+
+    (((info.top<curpage.top)&&(info.bottom>curpage.limit))?"around":
+     ((info.top>=curpage.top)&&(info.bottom<=curpage.limit))?"inside":
+     ((info.top<curpage.top)&&(info.bottom>=curpage.top))?"topedge":
+     ((info.top<=curpage.limit)&&(info.bottom>curpage.limit))?"botedge":
+     "weird")+
+    "/t"+(elt.toclevel||0)+
     ((sbookIsPageHead(elt))?"/ph":"")+
     ((sbookIsPageBlock(elt))?"/pb":"")+
     ((sbookAvoidPageHead(elt))?"/ah":"")+
