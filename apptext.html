@@ -7,12 +7,12 @@
 </a>
 <div class='message' id='SBOOKSTARTUP'></div>
 <div class='tabbar' id='SBOOKTABS'>
-<span class='tab' contentid='APPHELP' onclick='sbookHUDMode("help");'>
+<span class='tab' contentid='APPHELP' onclick='sbookHUDMode("help");' title='how to use this sBook'>
   Help</span>
-<span class='tab' contentid='APPCONNECT' onclick='sbookHUDMode("connect");'>
- Connect</span>
-<span class='tab' contentid='APPSETTINGS' onclick='sbookHUDMode("settings");'>
+<span class='tab' contentid='APPSETTINGS' onclick='sbookHUDMode("settings");' title='alter appearance and interaction'>
  Settings</span>
+<span class='tab' contentid='APPMANAGE' onclick='sbookHUDMode("manage");' title='manage how sBooks enhances your sBook'>
+ Manage</span>
 <span class='tab' contentid='APPLOGIN' onclick='sbookHUDMode("login");'>
   Login</span>
 <a href='http://sbooks.net/logout.fdcgi' class='tab' id='SBOOKLOGOUT'>
@@ -25,6 +25,9 @@
 
 <div class='fasthelp'>
 <table class='fdjt'>
+<tr><th>Click</th>
+  <td>
+<span class='keydef'><span class='key'>once</span> to see context, <span class='key'>again</span> to add/share a gloss;</span></td></tr>
 <tr><th>Keys</th>
   <td>
     <span class='keydef'><span class='key'>H</span>elp</span>, 
@@ -34,17 +37,14 @@
     <span class='keydef'><span class='key'>C</span>onnect</span>,
     <span class='keydef'><span class='key'>Escape</span> to toggle
       the HUD.</span></td></tr>
-<tr><th>Click</th>
-  <td>
-<span class='keydef'><span class='key'>once</span> for context, <span class='key'>again</span> to add/share a gloss;</span></td></tr>
+<tr><th>Hold</th> <td><span class='key'>Shift</span> to temporarily show/hide the overlay.</td></tr>
 <tr><th>Forward</th><td><span class='key'>Space</span>, <span class='key'>N</span>, <span class='key'>Page
 Down</span>, or tap the <span class='key'>right margin</span</td></tr>
 <tr><th>Backward</th><td><span class='key'>Backspace</span>, <span class='key'>P</span>, <span class='key'>Page
 Up</span>, or tap the <span class='key'>left margin</span></td></tr>
-<tr><th>Hold</th> <td>
-<span class='key'>Shift</span> to temporarily show/hide the HUD,
-<span class='key'>Control</span> or the <span class='key'>mouse</span>
-to <strong>preview the context</strong> of a gloss or result.</td></tr>
+<tr><th>Preview</th> <td>a reference by <strong>holding down</strong>
+    the <span class='key'>mouse button</span> or <span class='key'>Control key</span>.
+</td></tr>
 </table>
 </div>
 
@@ -285,7 +285,7 @@ or methods.</p>
 </div>
 <div class='buttons'></div>
 </div>
-<div class='tabcontent' id='APPCONNECT'>
+<div class='tabcontent' id='APPMANAGE'>
 <iframe id='APPFRAME' frameborder='0' scrolling='auto'
    height='80%' width='100%'/>
 </div>

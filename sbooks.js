@@ -1140,7 +1140,7 @@ var sbook_modechars={
  116: "toc",84: "toc",
  104: "help",72: "help",
  103: "glosses",71: "glosses",
- 67: "connect", 99: "connect"};
+ 67: "manage", 99: "manage"};
 
 function sbook_onkeypress(evt)
 {

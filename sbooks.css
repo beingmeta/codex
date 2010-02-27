@@ -477,7 +477,7 @@ div#SBOOKHUD.login div#SBOOKAPP {
   display: block; opacity: 0.9; }
 div#SBOOKHUD.settings div#SBOOKAPP {
   display: block; opacity: 0.9; }
-div#SBOOKHUD.connect div#SBOOKAPP {
+div#SBOOKHUD.manage div#SBOOKAPP {
   display: block; opacity: 0.9; }
 
 div#SBOOKHUD div#SBOOKAPP div.tabcontent {
@@ -485,7 +485,7 @@ div#SBOOKHUD div#SBOOKAPP div.tabcontent {
 div#SBOOKHUD.help div#SBOOKAPP div.tabcontent#APPHELP { display: block;}
 div#SBOOKHUD.login div#SBOOKAPP div.tabcontent#APPLOGIN { display: block;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS { display: block;}
-div#SBOOKHUD.connect div#SBOOKAPP div.tabcontent#APPCONNECT { display: block;}
+div#SBOOKHUD.manage div#SBOOKAPP div.tabcontent#APPMANAGE { display: block;}
 
 div#SBOOKHUD.help div#SBOOKAPP span.tab[contentid='APPHELP'] {
     border-bottom: none;}
@@ -493,9 +493,9 @@ div#SBOOKHUD.login div#SBOOKAPP span.tab[contentid='APPLOGIN'] {
     border-bottom: none;}
 div#SBOOKHUD.settings div#SBOOKAPP span.tab[contentid='APPSETTINGS'] {
     border-bottom: none;}
-div#SBOOKHUD.connect div#SBOOKAPP span.tab[contentid='APPCONNECT'] {
+div#SBOOKHUD.manage div#SBOOKAPP span.tab[contentid='APPMANAGE'] {
     border-bottom: none;}
-div#SBOOKHUD div#SBOOKAPP div#APPCONNECT iframe {
+div#SBOOKHUD div#SBOOKAPP div#APPMANAGE iframe {
   border-width: solid transparent 3px;
   -khtml-border-radius: 9px; 
   -webkit-border-radius: 9px; 
