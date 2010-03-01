@@ -294,7 +294,7 @@ function _sbookIsContentBlock(node)
   if (node.nodeType===1)
     if (node.sbookui) return false;
     else if (sbook_block_tags[node.tagName]) return true;
-    else if ((window.getComputedStyle)&&(styleinfo=window.getComputedStyle(node))) {
+    else if ((window.getComputedStyle)&&(styleinfo=window.getComputedStyle(node,null))) {
       if (styleinfo.position!=='static') return false;
       else if (styleinfo.display==='block') return true;
       else return false;}

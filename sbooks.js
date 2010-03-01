@@ -337,12 +337,12 @@ function sbookHeadLevel(elt)
   if ((classname)&&(classname.search(/\bsbook/)>=0))
     if (classname.search(/\bsbooknothead\b/)>=0) return false;
     else if (classname.search(/\bsbookignore\b/)>=0) return false;
-    else if (classname.search(/\bsbook\d\b/)>=0) {
-      var start=classname.search(/\bsbook\d\b/);
+    else if (classname.search(/\bsbookhead\d\b/)>=0) {
+      var start=classname.search(/\bsbookhead\d\b/);
       var end=classname.indexOf(' ',start);
       if (end<0)
-	return parseInt(classname.slice(start+5));
-      else return parseInt(classname.slice(start+5,end));}
+	return parseInt(classname.slice(start+9));
+      else return parseInt(classname.slice(start+9,end));}
   var computed=fdjtLookupElement(sbook_headlevels,elt);
   if (typeof computed === "number") return computed;
   else if (typeof computed === "function") return computed(elt);
