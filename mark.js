@@ -75,13 +75,13 @@ function sbookMarkHUDSetup(target,origin,excerpt)
       $("SBOOKMARKOID").value=null;
       $("SBOOKMARKRELAY").value=origin.oid;}
   $("SBOOKMARKFORM").setAttribute('mode','tag');
-  $("SBOOKMARKREFURI").value=fdjtStripSuffix(sbook_getrefuri(target));
+  $("SBOOKMARKREFURI").value=sbook_getrefuri(target);
   $("SBOOKMARKFRAGID").value=target.id;
   $("SBOOKMARKSOURCE").value=sbook_getsrc(target);
   $("SBOOKMARKSYNC").value=sbook_gloss_syncstamp;
   $("SBOOKMARKTITLE").value=
     ((origin)&&(origin.title))||
-    ((target)&&(target.getAttribute("title")))||
+    ((target)&&(target===sbook_target)&&(sbook_target_title))||
     (sbook_get_titlepath(info))||"";
   if ((origin)&&(origin.oid))
     $("SBOOKMARKRELAY").value=origin.oid;

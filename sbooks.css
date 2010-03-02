@@ -1104,28 +1104,26 @@ div#SBOOKMARKCLOUD span.sectname {
   -moz-border-radius: 6px; 
   border-radius: 6px;}
 
-div.sbooksearch span.dterm {
+div#SBOOKHUD span.dterm {
     color: gold; font-weight: bold;}
-span.dterm {
-    color: gold; font-weight: bold;}
-span.dterm span.variation {
+div#SBOOKHUD span.dterm span.variation {
     color: white; font-style: italic; font-weight: bold;}
-span.dterm span.variation {
+div#SBOOKHUD span.dterm span.variation {
     color: white; font-style: italic; font-weight: bold;}
-span.dterm span.bigpunct {
+div#SBOOKHUD span.dterm span.bigpunct {
   font-size: 200%; font-weight: bold; line-height: 50%;}
-.completions.showall span.dterm {display: inline;}
-.completions.showall span.dterm.singleton {display: none;}
-span.dterm span.disambig {color: red;}
-.completions { line-height: 200%;}
-.completions .completion.prime { 
+div#SBOOKHUD .completions.showall span.dterm {display: inline;}
+div#SBOOKHUD .completions.showall span.dterm.singleton {display: none;}
+div#SBOOKHUD span.dterm span.disambig {color: red;}
+div#SBOOKHUD .completions { line-height: 200%;}
+div#SBOOKHUD .completions .completion.prime { 
   font-size: 200%; font-weight: bold;}
-.completions .completion .sectname { 
+div#SBOOKHUD .completions .completion .sectname { 
   white-space: nowrap;}
 
-.completions .completion .variation { 
+div#SBOOKHUD .completions .completion .variation { 
   font-size: 115%; color: white;}
-.completions .completion .dterm { 
+div#SBOOKHUD .completions .completion .dterm { 
   font-size: 95%;}
 
 div.sbooksummaries { cursor: pointer;}
@@ -1139,6 +1137,12 @@ div.sbooksummaries .summary {
   padding-bottom: 4px; padding-bottom: 4px;
   border-top: dotted orange 1px; padding-top: 3px;
   color: black; text-align: left;}
+div.sbooksummaries .summary a.ref {
+  display: block; font-weight: normal;}
+div.sbooksummaries .summary a.ref span.title {
+  font-family: sans,sans-serif;}
+div.sbooksummaries .summary a.ref span.uri {
+  font-family: courier,fixed;}
 div.sbooksummaries div.tocblock  .summary { margin-left: 10px;}
 div.sbooksummaries.onepassage div.tocblock  .summary { margin-left: 2px;}
 

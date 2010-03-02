@@ -1303,15 +1303,6 @@ function getsbookrefuri()
   // the type suffix; if the 
   var hashpos=refuri.indexOf("#");
   if (hashpos>0) refuri=refuri.slice(0,hashpos);
-  // Strip the type suffix (be clever to avoid in-path dots)
-  var lastdot=refuri.length-1;
-  while (lastdot>=0)
-    if (refuri[lastdot]==='.') break; else lastdot--;
-  var lastslash=refuri.length-1;
-  while (lastslash>=0)
-    if (refuri[lastslash]==='/') break; else lastslash--;
-  if ((lastdot>0)&&(lastdot>lastslash))
-    refuri=refuri.slice(0,lastdot);
   return refuri;
 }
 
@@ -1363,7 +1354,7 @@ function sbook_get_titlepath(info,embedded)
       else return "";
     else return "";
   else {
-    var next=((info.sbook_head) && ((info.sbook_head.sbookinfo)||false));
+    var next=(info.sbook_head)||false;
     if (info.title)
       return ((embedded) ? (" // ") : (""))+info.title+
 	sbook_get_titlepath(next,true);
@@ -1732,7 +1723,7 @@ function sbookSetup()
   else {
     fdjtReplace("SBOOKSTARTUP",
 		fdjtDiv("message","Loading glosses..."));
-    var refuri=fdjtStripSuffix(sbook_refuri);
+    var refuri=sbook_refuri;
     var uri="https://"+sbook_server+"/sbook/glosses.fdcgi?URI="+
       ((sbook_baseid) ?
        (encodeURIComponent(refuri+"#"+sbook_baseid)) :
@@ -1861,7 +1852,7 @@ function sbookUserSetup()
 function sbookSetupAppFrame()
 {
   var query=document.location.search||"?";
-  var refuri=fdjtStripSuffix(sbook_refuri);
+  var refuri=sbook_refuri;
   var appuri="https://"+sbook_server+"/sbook/manage.fdcgi"+query;
   if (query.search("REFURI=")<0)
     appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
