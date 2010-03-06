@@ -157,6 +157,8 @@ function sbookCreateMarkHUD(classinfo)
   var excerpt_elt=fdjtInput("HIDDEN","EXCERPT","","#SBOOKMARKEXCERPT");
   var sync_input=fdjtInput("HIDDEN","SYNC","","#SBOOKMARKSYNC");
   var user_elt=fdjtInput("HIDDEN","USER",sbook_user,"#SBOOKMARKUSER");
+  var doctitle_elt=
+    ((document.title)&&(fdjtInput("HIDDEN","DOCTITLE",document.title)));
 
   var image_uri=(sbook_user_img)||(sbicon("remarkballoon50x50.png"));
   
@@ -219,7 +221,8 @@ function sbookCreateMarkHUD(classinfo)
   // Specifying the .tag class causes the tags tab to be open by default 
   var form=fdjtElt("FORM#SBOOKMARKFORM.mark.tag",
 		   fdjtDiv("hidden",id_elt,uri_elt,source_elt,title_elt,
-			   excerpt_elt,relay_elt,oid_elt,sync_input,user_elt),
+			   excerpt_elt,relay_elt,oid_elt,sync_input,user_elt,
+			   doctitle_elt),
 		   fdjtDiv("#SBOOKSHOWEXCERPT.excerpt"),relay_block,
 		   grid);
   form.setAttribute("accept-charset","UTF-8");

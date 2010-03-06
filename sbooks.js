@@ -1858,8 +1858,8 @@ function sbookSetupAppFrame()
     appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
   if (query.search("DOCURI=")<0)
     appuri=appuri+"&DOCURI="+encodeURIComponent(sbook_docuri);
-  if (document.title)
-    appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);
+  if (document.title) {
+    appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
   $("APPFRAME").src=appuri;
 }
 
