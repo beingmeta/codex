@@ -142,6 +142,7 @@ function sbookHandleGestures(evt)
 
 function sbookTabletMode(flag)
 {
+  var oldflag=sbook_tablet;
   if (flag) {
     sbook_edge_taps=true;
     sbook_tablet=true;
@@ -154,6 +155,7 @@ function sbookTabletMode(flag)
     sbook_gestures=false;
     fdjtClearCookie("sbooktablet","/");
     fdjtDropClass(document.body,"tablet");}
+  if (oldflag!==flag) sbookUpdatePagination();
 }
 
 function sbookSparseMode(flag)
