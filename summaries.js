@@ -434,28 +434,35 @@ var sbook_preview_hysteresis=1000;
 function sbookSummary_onmouseover(evt)
 {
   evt=evt||event||null;
+  // sbook_trace("summary_mouseover",evt);
   var target=$T(evt);
   var ref=sbookGetRef(target);
   if (ref===sbook_preview_target) return;
   sbook_preview_target=ref;
-  if ((ref)&&((evt.ctrlKey)||(evt.button)))
+  if ((sbook_preview)&&(!((evt.ctrlKey)||(evt.button))))
+    sbookSummaryPreview(false);
+  else if ((ref)&&((evt.ctrlKey)||(evt.button)))
     sbookPreview(ref);
 }
 
 function sbookSummary_onmousemove(evt)
 {
   evt=evt||event||null;
+  // sbook_trace("summary_mousemove",evt);
   var target=$T(evt);
   var ref=sbookGetRef(target);
   if (ref===sbook_preview_target) return;
   sbook_preview_target=ref;
-  if ((ref)&&((evt.ctrlKey)||(evt.button)))
-    sbookPreview(ref);
+  if ((sbook_preview)&&(!((evt.ctrlKey)||(evt.button))))
+    sbookSummaryPreview(false);
+  else if ((ref)&&(evt.ctrlKey))
+    sbookSummaryPreview(ref);
 }
 
 function sbookSummary_onmouseout(evt)
 {
   evt=evt||event||null;
+  // sbook_trace("summary_mouseout",evt);
   var destination=((evt.relatedTarget)||(evt.toElement));
   var ref=((destination)&&(sbookGetRef(destination)));
   if (ref===sbook_preview_target) return;
@@ -465,24 +472,32 @@ function sbookSummary_onmouseout(evt)
 function sbookSummary_onmousedown(evt)
 {
   evt=evt||event||null;
+  sbook_trace("summary_mousedown",evt);
   var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
   fdjtCancelEvent(evt);
   sbook_preview_mousedown=fdjtTime();
   var ref=sbookGetRef($T(evt));
-  fdjtDelay(sbook_preview_delay,sbookPreview,ref,document.body,"preview");
+  if (ref) sbookSummaryPreview(ref);
+}
+
+function sbookSummaryPreview(ref)
+{
+  sbookPreview(ref);
 }
 
 function sbookSummary_onmouseup(evt)
 {
   evt=evt||event||null;
+  sbook_trace("summary_mouseup",evt);
   var down=sbook_preview_mousedown;
   sbook_preview_mousedown=false;
   if (evt.ctrlKey) return;
   if (document.body.preview) {
     clearTimeout(document.body.preview);
     document.body.preview=false;}
-  sbookPreview(false);
+  sbookSummaryPreview(false);
+  var ref=sbookGetRef($T(evt));
   if ((ref)&&((fdjtTime()-down)<sbook_preview_clickmax)) {
     var ref=sbookGetRef($T(evt));
     fdjtScrollDiscard();

@@ -343,15 +343,18 @@ function sbookUpdateAppHUD()
 function sbookPreview(elt,offset)
 {
   var cxt=false;
-  sbook_trace("sbookPreview",elt);
-  if (!(elt)) {
+  // sbook_trace("sbookPreview",elt);
+  if (!(elt)) 
     if (sbook_preview) {
       fdjtDropClass(document.body,"preview");
-      fdjtScrollRestore();
       fdjtDropClass(sbook_preview,"previewing");
-      sbook_preview=false;}
-    else fdjtDropClass(document.body,"preview");
-    return;}
+      fdjtScrollRestore();
+      sbook_preview=false;
+      return;}
+    else {
+      fdjtDropClass(document.body,"preview");
+      fdjtScrollRestore();
+      return;}
   if (sbook_preview)
     fdjtDropClass(sbook_preview,"previewing");
   if ((elt===sbook_root)||(elt===document.body))
