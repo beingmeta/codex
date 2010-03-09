@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_social_id="$Id: social.js 4605 2009-12-10 15:37:28Z haase $";
-var sbooks_social_version=parseInt("$Revision: 4605 $".slice(10,-1));
+var sbooks_social_id="$Id$";
+var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
