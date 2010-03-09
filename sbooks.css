@@ -97,15 +97,17 @@ body.hudup div#SBOOKHUD img.hudbutton { opacity: 0.8;}
 
 img.previewicon {
     font-weight: bold; color: gold;
-    cursor: url(http://static.beingmeta.com/graphics/binocularscursor64x64.png),
-            url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
-            crosshair; 
+    cursor: pointer;
     background-color: silver; 
     border: dotted ivory 2px;
     border-radius: 6px;
     -khtml-border-radius: 6px; 
     -webkit-border-radius: 6px; 
     -moz-border-radius: 6px;}
+.preview img.previewicon {
+    cursor: url(http://static.beingmeta.com/graphics/binocularscursor64x64.png),
+            url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
+            crosshair;}
 
 div#SBOOKHUD div.hudblock.hover { opacity: 0.8;}
 
@@ -372,7 +374,7 @@ div#SBOOKHUD.mark div#SBOOKMARKHUD {
 
 div#SBOOKHUD div#SBOOKGLOSSES {
   position: fixed; top: 75px; bottom: 75px;
-  left: 50px; right: 100px; z-index: 200;
+  left: 50px; right: 50px; z-index: 200;
   overflow: auto;
   margin: 0px; height: auto; min-height: auto;
   padding: 6px; padding-top: 6px; padding-bottom: 12px;
@@ -1028,19 +1030,23 @@ body.tablet div#SBOOKHUD.toc div.spanbar div.progressbox { height: 25px;}
 body.tablet div#SBOOKHUD.toc div.spanbar div.rangebox { height: 25px;}
 
 div.tocblock {
-    clear: both; margin-top: 5px;
-    border-top: solid orange 2px;
-    padding-top: 2px;}
+    clear: both;
+    margin-top: 2px; padding-top: 2px;
+    border-top: solid gold 2px;}
 .onepassage div.tocblock { border: none; padding-left: 2px;}
 div.tocblock div.tochead { 
   text-align: left; vertical-align: middle; 
-  margin-left: 45px; text-indent: -45px;}
+  margin-left: 30px; text-indent: -30px;}
+div.tocblock div.tochead span.spacer {
+    font-size: 125%; font-weight: bold; font-style: italic;}
+div.tocblock div.tochead span.paratext {
+    color: gold; font-style: italic;}
+div.tocblock div.tochead span.head {
+    font-size: 90%;}
 div.tocblock div.tochead span.headtext {
-    white-space: nowrap;}
-div.tocblock div.tochead span.extra {
-  font-weight: bold; font-style: italic; font-size: 110%; color: gold;}
+    white-space: nowrap; font-size: 90%;}
 div.tocblock div.tochead img.previewicon {
-    vertical-align: top; margin-right: 3px;}
+    vertical-align: middle; margin-right: 3px; width: 16px; height: 16px;}
 
 /* Search rules */
 
@@ -1213,25 +1219,20 @@ div.sbooksummaries .summary span.controller {
     font-weight: bold; color: white;}
 .summary span.msg { font-weight: bold; font-size: 110%;}
 .summary img.userpic { float: left; margin-right: 3px; width: 50px;}
+.summary img.detailsbutton { border: none; }
+.summary img.xrefsbutton { border: none;}
+.summary .glossinfo {
+    float: right; clear: right; display: block;
+    padding: 0px; margin: 0px; margin-left: 3px;
+    text-align: right; width: 4em;}
 .summary a.age { 
-  float: right; clear: right; color: yellow;
-  display: block; width: 4em; font-size: 80%;
-  padding: 0px; margin: 0px; margin-left: 3px;
-  text-align: right; text-decoration: none;}
+  color: yellow; clear: right;
+  font-size: 80%; text-decoration: none;}
 .summary a.deletebutton { 
-  float: right; color: orange; margin-left: 6px;
-  text-decoration: none;}
+  color: orange; text-decoration: none;}
 .summary a.deletebutton img { 
   width: 12px; height: 12px;}
-.summary img.detailsbutton { 
-  float: right; border: none;
-  margin-right: 3px; margin-left: 3px;}
-.summary img.xrefsbutton { 
-  float: right; border: none;
-  margin-right: 3px; margin-left: 3px;}
-.summary img.remarkbutton { 
-  float: right; border: none;
-  margin-right: 3px; margin-left: 3px;}
+.summary img.remarkbutton { }
 div.sbooksummaries .summary a.agespan {
     text-decoration: none;}
 

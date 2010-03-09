@@ -440,6 +440,13 @@ function sbookGetRef(target)
   return (target)&&($(target.sbook_ref));
 }
 
+function sbookGetTitle(target)
+{
+  if (target===sbook_target)
+    return sbook_target_title;
+  else return (target.title)||false;
+}
+
 
 /* Building the TOC */
 

@@ -34,7 +34,6 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 */
 
 var sbook_eye_icon="EyeIcon25.png";
-var sbook_preview_icon="binoculars24x24.png";
 var sbook_small_eye_icon="EyeIcon13x10.png";
 var sbook_details_icon="detailsicon16x16.png";
 var sbook_outlink_icon="outlink16x16.png";
@@ -88,33 +87,40 @@ function _sbookSourceImage(info)
 
 function sbookSummaryHead(target,head,eltspec,extra)
 {
+  var title=sbookGetTitle(target);
   var head=sbookGetHead(target);
-  var preview=false; // sbookPreviewIcon(target);
-  if (typeof extra === "undefined")
-    if (target===head) extra="\u00A7";
-    else extra="\u00B6";
-  var basespan=fdjtSpan(false,preview,((extra)&&(fdjtSpan("extra",extra))));
+  var preview=sbookPreviewIcon();
+  var basespan=fdjtSpan(false);
+  if (target!==head)
+    if (title) 
+      fdjtAppend
+	(basespan,fdjtSpan("paratext",fdjtSpan("spacer","\u00B6"),title));
+    else {
+      var text=fdjtTextify(target);
+      if ((text)&&(text.length>0)) {
+	title=text.replace(/\n\n+/g,"\n");
+	var extract=((title.length<40)?(title):((title.slice(0,40))+"\u22ef "));
+	var paratext=fdjtSpan("paratext",fdjtSpan("spacer","\u00B6"),extract);
+	fdjtAppend(basespan,paratext," ");}}
   var info;
   if (info=sbook_getinfo(head)) {
-    if (info.title) fdjtAppend(basespan,fdjtSpan("headtext",info.title));
+    if (info.title)
+      fdjtAppend(basespan,fdjtSpan("headtext",fdjtSpan("spacer","\u00A7"),
+				   info.title));
     var heads=((info) ? (info.sbook_heads) : []);
     var curspan=basespan;
     j=heads.length-1; while (j>=0) {
       var hinfo=heads[j--]; var elt=$(hinfo.id);
       if ((elt===sbook_root)||(elt===document.body)) continue;
-      var newspan=fdjtSpan("head",fdjtSpan("headtext",hinfo.title));
-      fdjtAppend(curspan," \\ ",newspan);
+      var newspan=fdjtSpan("head",
+			   fdjtSpan("headtext",fdjtSpan("spacer","\u00A7"),
+				    hinfo.title));
+      fdjtAppend(curspan," \u22ef ",newspan);
       curspan=newspan;}}
-  else {
-    if (head.title) fdjtAppend(basespan,fdjtSpan("headtext",head.title));
-    else if (head.id) fdjtAppend(basespan,fdjtSpan("headtext",head.id));
-    else {
-      var text=fdjtTextify(target,true);
-      if (text.length>50) fdjtAppend(basespan,text.slice);
-      else fdjtAppend(basespan,fdjtSpan("headtext",text));}}
   basespan.title='click to go/hold mouse or control key for preview/';
-  var tocblock=((eltspec)?(fdjtNewElt(eltspec,basespan)):
-		(fdjtDiv("tochead",basespan)));
+  var tocblock=((eltspec)?(fdjtNewElt(eltspec,preview,basespan)):
+		(fdjtDiv("tochead",preview,basespan)));
+  tocblock.title=title;
   tocblock.sbook_ref=target.id;
   return tocblock;
 }
@@ -229,6 +235,7 @@ function sbookSummaryDiv(item,query)
   if (info.glossid) sbookMarkInfo(sumdiv,info);
   if (info.glossid)
     fdjtAppend(sumdiv,
+	       (sbookDetailsButton(info)),(sbookXRefsButton(info)),
 	       ((item.msg)&&(fdjtSpan("msg",item.msg))),((item.msg)&&" "),
 	       ((item.excerpt)&&(sbookExcerptSpan(item.excerpt))));
   else {
@@ -311,12 +318,8 @@ function sbookMarkInfo(sumdiv,info)
 	 fdjtImage(sbicon(sbook_small_remark_icon),"remarkbutton","mark",
 		   _("click to relay or respond"));
   relay_button.onclick=sbookRelay_onclick;
-  fdjtAppend
-    (sumdiv,img,relay_button,delete_button,
-     ((info.detail)&&(sbookDetailsButton())),((info.detail)&&" "),
-     ((info.xrefs)&&(info.xrefs.length>0)&&(sbookXRefsButton())),
-     ((info.xrefs)&&(info.xrefs.length>0)&&" "),
-     agespan);
+  fdjtAppend(sumdiv,img,
+	     fdjtSpan("glossinfo",agespan," ",relay_button," ",delete_button));
 }
 
 function sbookExcerptSpan(excerpt)
@@ -332,30 +335,40 @@ function sbookExcerptSpan(excerpt)
   return container;
 }
 
-function sbookDetailsButton(excerpt)
+function sbookDetailsButton(info)
 {
-  var img=fdjtImage(sbicon(sbook_details_icon),"detailsbutton","details");
-  img.onclick=function(evt) {
-    var anchor=$P(".summary",$T(evt));
-    if (anchor) fdjtToggleClass(anchor,"showdetail");
-    $T(evt).blur(); if (anchor) anchor.blur();
-    evt.preventDefault(); evt.cancelBubble=true;
-    return false;};
-  img.title=_("show/hide details");
-  return img;
+  if (info.detail) {
+    var img=fdjtImage(sbicon(sbook_details_icon),"detailsbutton","details");
+    img.title="(show/hide) "+info.detail.replace(/\n\n+/g,'\n');
+    img.onclick=function(evt) {
+      var anchor=$P(".summary",$T(evt));
+      if (anchor) fdjtToggleClass(anchor,"showdetail");
+      $T(evt).blur(); if (anchor) anchor.blur();
+      evt.preventDefault(); evt.cancelBubble=true;
+      return false;};
+    return img;}
+  else return false;
 }
 
-function sbookXRefsButton(excerpt)
+function sbookXRefsButton(info)
 {
-  var img=fdjtImage(sbicon(sbook_outlink_icon),"xrefsbutton","xrefs");
-  img.onclick=function(evt) {
-    var anchor=$P(".summary",$T(evt));
-    if (anchor) fdjtToggleClass(anchor,"showxrefs");
-    $T(evt).blur(); if (anchor) anchor.blur();
-    evt.preventDefault(); evt.cancelBubble=true;
-    return false;};
-  img.title=_("show/hide web references");
-  return img;
+  if ((info.xrefs)&&(info.xrefs.length>0))
+    if (info.xrefs.length===1) {
+      var img=fdjtImage(sbicon(sbook_outlink_icon),"xrefsbutton","xrefs");
+      var anchor=fdjtAnchor(info.xrefs[0],img);
+      anchor.title='click to follow'; anchor.target='_blank';
+      return anchor;}
+    else {
+      var img=fdjtImage(sbicon(sbook_outlink_icon),"xrefsbutton","xrefs");
+      img.onclick=function(evt) {
+	var anchor=$P(".summary",$T(evt));
+	if (anchor) fdjtToggleClass(anchor,"showxrefs");
+	$T(evt).blur(); if (anchor) anchor.blur();
+	evt.preventDefault(); evt.cancelBubble=true;
+	return false;};
+      img.title=_("show/hide web references");
+      return img;}
+  else return false;
 }
 
 function sbookRelay_onclick(evt)
@@ -425,103 +438,21 @@ function sbookSelectTargets(results_div,ids)
 
 /* Results handlers */
 
-/* Preview handlers */
-
-var sbook_preview_delay=500;
-var sbook_preview_clickmax=1500;
-var sbook_preview_hysteresis=1000;
-
-function sbookSummary_onmouseover(evt)
+function sbookSetupSummaryDiv(div)
 {
-  evt=evt||event||null;
-  // sbook_trace("summary_mouseover",evt);
-  var target=$T(evt);
-  var ref=sbookGetRef(target);
-  if (ref===sbook_preview_target) return;
-  sbook_preview_target=ref;
-  if ((sbook_preview)&&(!((evt.ctrlKey)||(evt.button))))
-    sbookSummaryPreview(false);
-  else if ((ref)&&((evt.ctrlKey)||(evt.button)))
-    sbookPreview(ref);
-}
-
-function sbookSummary_onmousemove(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("summary_mousemove",evt);
-  var target=$T(evt);
-  var ref=sbookGetRef(target);
-  if (ref===sbook_preview_target) return;
-  sbook_preview_target=ref;
-  if ((sbook_preview)&&(!((evt.ctrlKey)||(evt.button))))
-    sbookSummaryPreview(false);
-  else if ((ref)&&(evt.ctrlKey))
-    sbookSummaryPreview(ref);
-}
-
-function sbookSummary_onmouseout(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("summary_mouseout",evt);
-  var destination=((evt.relatedTarget)||(evt.toElement));
-  var ref=((destination)&&(sbookGetRef(destination)));
-  if (ref===sbook_preview_target) return;
-  else sbook_preview_target=false;
-}
-
-function sbookSummary_onmousedown(evt)
-{
-  evt=evt||event||null;
-  sbook_trace("summary_mousedown",evt);
-  var target=$T(evt);
-  if (fdjtIsClickactive(target)) return;
-  fdjtCancelEvent(evt);
-  sbook_preview_mousedown=fdjtTime();
-  var ref=sbookGetRef($T(evt));
-  if (ref) sbookSummaryPreview(ref);
-}
-
-function sbookSummaryPreview(ref)
-{
-  sbookPreview(ref);
-}
-
-function sbookSummary_onmouseup(evt)
-{
-  evt=evt||event||null;
-  sbook_trace("summary_mouseup",evt);
-  var down=sbook_preview_mousedown;
-  sbook_preview_mousedown=false;
-  if (evt.ctrlKey) return;
-  if (document.body.preview) {
-    clearTimeout(document.body.preview);
-    document.body.preview=false;}
-  sbookSummaryPreview(false);
-  var ref=sbookGetRef($T(evt));
-  if ((ref)&&((fdjtTime()-down)<sbook_preview_clickmax)) {
-    var ref=sbookGetRef($T(evt));
-    fdjtScrollDiscard();
-    sbookGoTo(ref);
-    fdjtCancelEvent(evt);
-    return false;}
+  div.onclick=sbookSummary_onclick;
 }
 
 function sbookSummary_onclick(evt)
 {
+  evt=evt||event;
+  if (!(evt)) return;
   var target=$T(evt);
-  fdjtCancelEvent(evt);
-}
-
-function sbookSetupSummaryDiv(div)
-{
-  div.onmouseover=sbookSummary_onmouseover;
-  div.onmouseout=sbookSummary_onmouseout;
-  div.onmousemove=sbookSummary_onmousemove;
-  div.onmousedown=sbookSummary_onmousedown;
-  div.onmouseup=sbookSummary_onmouseup;
-  div.onclick=sbookSummary_onclick;
-  if (!(div.title))
-    div.title="hold mouse or control for preview; click to jump";
+  if (fdjtIsClickactive(target)) return;
+  var ref=sbookGetRef(target);
+  if (ref) {
+    fdjtCancelEvent(evt);
+    sbookGoTo(ref);}
 }
 
 /* Emacs local variables
