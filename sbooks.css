@@ -1249,7 +1249,8 @@ span.glossmark img {
    width: 100%; height: auto;
    vertical-align: top; text-align: right;}
 span.glossmark img.tiny { display: none; }
-.sbookfocus span.glossmark { opacity: 0.75; border-top: solid blue 2px;}
+body.focuscues .sbookfocus span.glossmark {
+    opacity: 0.75; border-top: solid blue 2px;}
 .sbookfocus [id] span.glossmark { opacity: 0.75; border: none;}
 body.hudup .sbookfocus span.glossmark {
     width: 50px;}

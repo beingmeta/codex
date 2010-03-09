@@ -48,7 +48,7 @@ var sbook_orphan_limit=3;
 
 var sbook_debug_pagination=false;
 var sbook_trace_pagination=0;
-var sbook_trace_paging=false;
+var sbook_trace_paging=true;
 
 /* Pagination predicates */
 

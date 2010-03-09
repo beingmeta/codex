@@ -134,12 +134,12 @@ var sbook_overlays=
 /* Defining information for the document */
 
 // This is the base URI for this document, also known as the REFURI
-// All stored references to this document use this REFURI, even if the
-//  document is split across several files
+// A document (for instance an anthology or collection) may include
+// several refuri's, but this is the default.
 var sbook_refuri=false;
-// This is the 'source' URI for this document.  When a document is
-//  split into multiple files/URIs, this is the URI where it is read
-//  from.
+// These are the refuris used in this document
+var sbook_refuris=[];
+// This is the document URI, which is usually the same as the REFURI.
 var sbook_docuri=false;
 // This is the base ID for fragment/element identifiers in this
 // document.
@@ -576,7 +576,9 @@ function _sbook_setid(elt,scanstate,level,curlevel)
     var tocidstring=elt.getAttribute("SBOOKIDS");
     var tocids=((tocidstring)?(tocidstring.split(';')):([]));
     var i=0; while (i<tocids.length) sbook_hashmap[tocids[i++]]=elt;}
-  if (elt.id) return elt.id;
+  if (elt.id) {
+    sbook_hashmap[elt.id]=elt;
+    return elt.id;}
   else if (!((fdjtHasContent(elt))||
 	     (fdjtHasClass(elt,"sbookidify"))||
 	     (fdjtElementMatches(elt,sbook_idify))))
@@ -673,23 +675,34 @@ function sbook_scanner(child,scanstate,skiptoc)
   if (child.nodeType===3) {
     var width=child.nodeValue.length;
     if (!(fdjtIsEmptyString(child.nodeValue)))
-      scanstate.location=scanstate.location+width;}
-  else if (child.nodeType!==1)
+      scanstate.location=scanstate.location+width;
+    return;}
+  else if (child.nodeType!==1) {
     child.sbook_head=curhead;
+    return;}
   else if (sbookInUI(child)) return;
   else if ((fdjtHasClass(child,"sbookignore"))||
 	   (fdjtElementMatches(child,sbook_ignored))) {
     fdjtComputeOffsets(child);
     sbook_nodes.push(child);
     return;}
-  else if (level=sbookHeadLevel(child)) {
-    fdjtComputeOffsets(child);
+  fdjtComputeOffsets(child);
+  var refuri=(child.refuri)||
+    child.getAttributeNS('refuri','http://www.sbooks.net')||
+    child.getAttribute('refuri')||
+    child.getAttribute('data-refuri');
+  if ((refuri)&&(refuri!==sbook_refuri)) {
+    child.refuri=refuri;
+    fdjtInsert(sbook_refuris,refuri);}
+  var refid=child.getAttributeNS('refid','http://www.sbooks.net')||
+    child.getAttribute('refuid')||
+    child.getAttribute('data-refid');
+  if ((refid)&&(refid!==child.id)) sbook_hashmap[refid]=child;
+  if (level=sbookHeadLevel(child)) {
     if (skiptoc) sbook_nodes.push(child);
     else _sbook_process_head
 	   (child,scanstate,level,curhead,curinfo,curlevel);}
-  else if (skiptoc) {
-    fdjtComputeOffsets(child);
-    sbook_nodes.push(child);}
+  else if (skiptoc) sbook_nodes.push(child);
   else if ((fdjtIsBlockElt(child))||
 	   (fdjtHasClass(child,"sbookidify"))||
 	   (fdjtElementMatches(child,sbook_idify))) {
@@ -698,7 +711,6 @@ function sbook_scanner(child,scanstate,skiptoc)
     skiptoc=skiptoc||
       (fdjtHasClass(child,"sbookterminal"))||
       (fdjtElementMatches(child,sbook_terminals));
-    fdjtComputeOffsets(child);
     sbook_nodes.push(child);
     child.sbookloc=loc;
     child.sbook_headid=curhead.id;
@@ -1282,67 +1294,37 @@ function sbook_tagdiv_onclick(evt)
   sbookHUDMode("searching");
 }
 
-/* Default keystrokes */
+/* Getting REFURI/DOCURI context */
 
-function getsbookrefuri()
-{
-  // Explicit REFURI is just returned
-  var refuri=fdjtGetLink("REFURI",true)||fdjtGetMeta("REFURI",true);
-  if (refuri) return refuri;
-  // No explicit value, try to figure one out
-  // First, try the CANONICAL link
-  refuri=fdjtGetLink("canonical",true);
-  // Next, look for a BASE declaration
-  if (!(refuri)) {
-    var base_elts=fdjtGetChildrenByTagName("BASE");
-    if ((base_elts) && (base_elts.length>0)) {
-      refuri=base_elt[0].href;}}
-  // Otherwise, use the document location
-  if (!(refuri)) refuri=document.location.href;
-  // For anything but explicit REFURI, strip off the fragment ID and
-  // the type suffix; if the 
-  var hashpos=refuri.indexOf("#");
-  if (hashpos>0) refuri=refuri.slice(0,hashpos);
-  return refuri;
-}
-
-function getsbookbaseid()
-{
-  var baseid=fdjtGetMeta("SBOOKID",true);
-  if ((!(baseid))||(typeof baseid !== 'string')||
-      (baseid.length===0) || (baseid[0]===':'))
-    return false;
-  else return baseid;
-}
-
-function sbook_getdocuri()
-{
-  var meta=fdjtGetMeta("SBOOKSRC",true);
-  if (meta) return meta;
-  var locref=document.location.href;
-  var qstart=locref.indexOf('?');
-  if (qstart>0) return locref.slice(0,qstart);
-  else return locref;
-}
-
-function sbook_getrefuri(target)
+function sbookGetRefURI(target)
 {
   var scan=target;
   while (scan)
-    if ((scan.getAttribute) &&
-	(scan.getAttribute("REFURI"))) 
-      return scan.getAttribute("REFURI");
+    if (scan.refuri) return scan.refuri;
     else scan=scan.parentNode;
   return sbook_refuri;
 }
 
-function sbook_getsrc(elt)
+function sbookGetDocURI(target)
 {
-  while (elt)
-    if ((elt.getAttribute) && (elt.getAttribute("SBOOKSRC")))
-      return elt.getAttribute("SBOOKSRC");
-    else elt=elt.parentNode;
-  return sbook_getdocuri();
+  var scan=target;
+  while (scan) {
+    var docuri=
+      (((scan.getAttributeNS)&&
+	(scan.getAttributeNS("docuri","http://sbooks.net/")))||
+       ((scan.getAttribute)&&(scan.getAttribute("docuri")))||
+       ((scan.getAttribute)&&(scan.getAttribute("data-docuri"))));
+    if (docuri) return docuri;
+    else scan=scan.parentNode;}
+  return sbook_docuri;
+}
+
+function sbookGetRefID(target)
+{
+  return (target.getAttributeNS('sbookid','http://sbooks.net/'))||
+    (target.getAttributeNS('sbookid'))||
+    (target.getAttributeNS('data-sbookid'))||
+    (target.id);
 }
 
 function sbook_get_titlepath(info,embedded)
@@ -1361,11 +1343,52 @@ function sbook_get_titlepath(info,embedded)
     else return sbook_get_titlepath(next,embedded);}
 }
 
-/* Getting metadata */
+/* Getting settings */
+
+function _getsbookrefuri()
+{
+  // Explicit REFURI is just returned
+  var refuri=fdjtGetLink("REFURI",true)||fdjtGetMeta("REFURI",true);
+  if (refuri) return refuri;
+  // No explicit value, try to figure one out
+  // First, try the CANONICAL link
+  refuri=fdjtGetLink("canonical",true);
+  // Otherwise, use the document location
+  if (!(refuri)) {
+    var locref=document.location.href;
+    var qstart=locref.indexOf('?');
+    if (qstart>=0) locref=locref.slice(0,qstart);
+    refuri=locref;}
+  return refuri;
+}
+
+function _getsbookbaseid()
+{
+  var baseid=fdjtGetMeta("SBOOKPREFIX",true)||fdjtGetMeta("SBOOKID",true);
+  if ((!(baseid))||(typeof baseid !== 'string')||
+      (baseid.length===0) || (baseid[0]===':'))
+    return false;
+  else return baseid;
+}
+
+function _getsbookdocuri()
+{
+  var docuri=fdjtGetLink("DOCURI",true)||
+    fdjtGetMeta("DOCURI",true)||
+    fdjtGetMeta("SBOOKSRC",true);
+  if (docuri) return docuri;
+  else return _getsbookrefuri();
+}
 
 function sbookGetSettings()
 {
+  // Basic stuff
+  document.body.refuri=sbook_refuri=_getsbookrefuri();
+  sbook_baseid=_getsbookbaseid()||"SBOOK";
+  sbook_docuri=_getsbookdocuri();
+  // Get the settings for scanning the document structure
   sbookGetScanSettings();
+  // Get the settings for automatic pagination
   sbookGetPageSettings();
   sbook_max_excerpt=fdjtGetMeta("SBOOKMAXEXCERPT",false)
   var sbooksrv=fdjtGetMeta("SBOOKSERVER",true);
@@ -1380,9 +1403,6 @@ function sbookGetSettings()
 
 function sbookGetScanSettings()
 {
-  sbook_refuri=getsbookrefuri();
-  sbook_baseid=getsbookbaseid()||"SBOOK";
-  sbook_docuri=sbook_getdocuri();
   if (!(sbook_root))
     if (fdjtGetMeta("SBOOKROOT"))
       sbook_root=$(fdjtGetMeta("SBOOKROOT"));
@@ -1723,12 +1743,16 @@ function sbookSetup()
   else {
     fdjtReplace("SBOOKSTARTUP",
 		fdjtDiv("message","Loading glosses..."));
-    var refuri=sbook_refuri;
+    var refuri=sbook_refuri; var added=[];
     var uri="https://"+sbook_server+"/sbook/glosses.fdcgi?URI="+
-      ((sbook_baseid) ?
-       (encodeURIComponent(refuri+"#"+sbook_baseid)) :
-       (encodeURIComponent(refuri)))+
+      (encodeURIComponent(refuri))+
       ((sbook_mycopyid)?("&MYCOPY="+encodeURIComponent(sbook_mycopyid)):(""));
+    added.push(refuri);
+    var i=0; while (i<sbook_refuris.length) {
+      if (fdjtContains(added,sbook_refuris)) i++;
+      else {
+	var oref=sbook_refuris[i++];
+	uri=uri+'&'+oref; added.push(oref);}}
     var script_elt=fdjtNewElement("SCRIPT");
     script_elt.language="javascript"; script_elt.src=uri;
     document.body.appendChild(script_elt);}

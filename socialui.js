@@ -291,6 +291,7 @@ function sbookGlossmark_onclick(evt)
     fdjtCancelEvent(evt);
     sbookHUDMode(false);
     return;}
+  if (sbook_focus!==target) sbookSetFocus(target);
   sbook_glosses_target=target;
   if ((evt.shiftKey)||(evt.ctrlKey)) {
     sbookSelectSources(sbookGlossesHUD,sbook_sources);
@@ -299,7 +300,6 @@ function sbookGlossmark_onclick(evt)
     sbookSelectSources(sbookGlossesHUD);
     sbookSelectTargets(sbookGlossesHUD,target.id);}
   fdjtAddClass(sbookGlossesHUD,"onepassage");
-  sbookSetTarget(target);
   sbook_glossmark=$P(".glossmark",evt.target);
   sbookMarkHUDSetup(target);
   // $("SBOOKMARKFORM").removeAttribute('mode');

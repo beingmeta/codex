@@ -47,6 +47,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     if ((origin)&&(origin.id))
       target=$(origin.id);
     else target=sbook_target||sbook_focus;
+  var refuri=sbookGetRefURI(target);
   if (sbook_trace_gloss)
     fdjtLog("Setting up gloss HUD for %o from %o st=%o sf=%o excerpt=%o",
 	    target,origin,sbook_target,sbook_focus,excerpt);
@@ -58,7 +59,6 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     if ((excerpt)&&(excerpt.length>sbook_min_excerpt))
       sbookSetMarkExcerpt(excerpt);
     return;}
-  else sbookSetTarget(target);
   sbook_mark_target=target;
   var info=((target) &&
 	    ((sbook_getinfo(target)) ||
@@ -75,9 +75,9 @@ function sbookMarkHUDSetup(target,origin,excerpt)
       $("SBOOKMARKOID").value=null;
       $("SBOOKMARKRELAY").value=origin.oid;}
   $("SBOOKMARKFORM").setAttribute('mode','tag');
-  $("SBOOKMARKREFURI").value=sbook_getrefuri(target);
+  $("SBOOKMARKREFURI").value=refuri;
   $("SBOOKMARKFRAGID").value=target.id;
-  $("SBOOKMARKSOURCE").value=sbook_getsrc(target);
+  $("SBOOKMARKSOURCE").value=sbookGetDocURI(target);
   $("SBOOKMARKSYNC").value=sbook_gloss_syncstamp;
   $("SBOOKMARKTITLE").value=
     ((origin)&&(origin.title))||
@@ -242,7 +242,7 @@ function sbookCreateMarkHUD(classinfo)
       fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
     sbookImportGlosses(JSON.parse(req.responseText));
     fdjtDropClass(form,"submitting");
-    /* Turn off the focus lock */
+    /* Turn off the target lock */
     sbookSetTarget(false);
     form.reset();
     fdjtCheckSpan_setup($("SBOOKMARKCLOUD"));
