@@ -438,10 +438,14 @@ div#SBOOKHUD div#SBOOKAPP {
   padding-bottom: 12px; padding-top: 4px;
   display: none;}
 div#SBOOKHUD #SBOOKAPPCLOSE { 
-  position: fixed; top: 60px; left: 56px;
-  padding: 1px; margin: 0px; width: 16px; height: 16px;
+  position: fixed; top: 60px; left: 52px;
+  padding: 1px; margin: 0px; width: 20px; height: 20px;
   background-color: gold;
   z-index: 250; display: none;}
+div#SBOOKHUD #SBOOKAPPCLOSE img {
+  color: black; font-weight: bold;
+  border: none; vertical-align: text-bottom;
+  height: 20px; width: 20px;}
 div#SBOOKHUD div#SBOOKAPP a { 
   color: lightblue; text-decoration: none; font-weight: bold;}
 div#SBOOKHUD div#SBOOKAPP a:visited { color: lightblue;}
@@ -452,15 +456,15 @@ div#SBOOKHUD div#SBOOKAPP div.tabbar {
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP {
   position: absolute; top: 0px; left: 0px; right: 0px; z-index: 225;
   display: block; min-height: 24px; text-decoration: none; text-align: left;
-  padding-top: 3px; padding-bottom: 2px; background-color: gold;}
+  padding-top: 3px; padding-bottom: 2px; padding-left: 2px;
+  background-color: gold;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP:hover { text-decoration: none;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKIBELONGTO {
   /* position: absolute; top: 0px; left: 2px; */
   font-family: times,serif; font-variant: small-caps; color: black;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKIBELONGTO .closebutton {
-  color: black; font-weight: bold; border: none; vertical-align: text-bottom;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERNAME {
-  font-family: helvetica,arial,sans; font-variant: normal; color: blue;}
+  font-family: helvetica,arial,sans; font-variant: normal; color: blue;
+  padding-left: 12px;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKIBELONGTO #SBOOKUSERNAME:hover {
   text-decoration: underline;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {

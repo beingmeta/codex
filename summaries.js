@@ -136,7 +136,7 @@ function sbookShowSummaries(summaries,summary_div,query)
       block.sbook_ref=block.blockid=target.id;
       fdjtAppend(summary_div,block);
       curblock=block; curtarget=target;}
-    fdjtAppend(curblock,sbookSummaryDiv(summary,query,true));}
+    fdjtAppend(curblock,sbookSummaryDiv(summary,query));}
   return summary_div;
 }
 
@@ -149,7 +149,7 @@ function sbookAddSummary(summary,summary_div,query)
   var targetloc=target.sbookloc;
   var head=sbookGetHead(target);
   var children=summary_div.childNodes; var placed=false;
-  var sum_div=sbookSummaryDiv(summary,query,true);
+  var sum_div=sbookSummaryDiv(summary,query);
   var i=0; while (i<children.length) {
     var child=children[i++];
     if (child.nodeType!==1) continue;
@@ -195,7 +195,7 @@ function sbookItemInfo(item)
   else return false;
 }
 
-function sbookSummaryDiv(item,query,showhead)
+function sbookSummaryDiv(item,query)
 {
   var info=sbookItemInfo(item);
   var key=info._fdjtid; var target_id=(info.id); var oid=info.oid;
