@@ -204,13 +204,14 @@ function sbookPaginate(pagesize,start)
       // Look ahead to see if we should page break anyway
       nextinfo=sbookNodeInfo(next);
       if (dbginfo)
-	dbginfo=dbginfo+" ... N"+_sbookPageNodeInfo(next,nextinfo,curpage);
+	dbginfo=dbginfo+" ... N#"+next.id+
+	  _sbookPageNodeInfo(next,nextinfo,curpage);
       if ((scan.toclevel)||(sbookAvoidPageFoot(scan))) {
 	// If we're trying to avoid the foot,
 	if (sbookIsPageHead(next))
 	  // If the next item is a page head, break right away
 	  newpage=scan;
-	else if (nextinfo.top>pagelim)
+	else if (nextinfo.top>=pagelim)
 	  // If the next item is off the page, break right away
 	  newpage=scan;
 	// If the next item is a straddling block and a page block,
@@ -226,6 +227,10 @@ function sbookPaginate(pagesize,start)
 	else if ((pagelim-nextinfo.top)<widowthresh)
 	  // If the next node is likely to be pushed off,
 	  // keep it by breaking right away
+	  newpage=scan;
+	else if ((nextinfo.bottom>=pagelim)&&
+		 ((nextinfo.height)<(widowthresh+orphanthresh)))
+	  // If the next node is small and straddling, push right away
 	  newpage=scan;
 	else {}} ///// End of foot avoiding logic
       else if (sbookAvoidPageHead(next)) {
@@ -410,10 +415,12 @@ function _sbookPaginationInfo(elt,info,newpage,splitblock)
 function _sbookPageNodeInfo(elt,info,curpage)
 {
   return "["+info.top+","+info.bottom+"/"+info.height+"] "+
-    (((info.top<curpage.top)&&(info.bottom>curpage.limit))?"around":
-     ((info.top>=curpage.top)&&(info.bottom<=curpage.limit))?"inside":
+    (((info.top<=curpage.top)&&(info.bottom>=curpage.limit))?"around":
+     ((info.top>curpage.top)&&(info.bottom<curpage.limit))?"inside":
      ((info.top<curpage.top)&&(info.bottom>=curpage.top))?"topedge":
-     ((info.top<=curpage.limit)&&(info.bottom>curpage.limit))?"botedge":
+     ((info.top<curpage.limit)&&(info.bottom>=curpage.limit))?"botedge":
+     (info.top>=curpage.limit)?"below":
+     (info.bottom<=curpage.top)?"above":
      "weird")+
     "/t"+(elt.toclevel||0)+
     ((sbookIsPageHead(elt))?"/ph":"")+
@@ -430,16 +437,27 @@ function _sbookPageNodeInfo(elt,info,curpage)
 function sbookAdjustPageBreak(node,edge)
 {
   var nodeinfo=fdjtGetOffset(node);
+  var styleinfo=((window.getComputedStyle)&&
+		 (window.getComputedStyle(node,null)));
   var lastbottom=nodeinfo.top;
+  var linebottom=lastbottom;
   var children=node.childNodes;
   var len=children.length; 
   var i=0; while (i<len) {
     var child=children[i++];
-    if (child.nodeType===1) {
-      var offinfo=fdjtGetOffset(child);
-      if ((!(offinfo))||(offinfo.height===0)) continue;
-      else if (offinfo.bottom>edge) return lastbottom;
-      else lastbottom=offinfo.bottom;}
+    if (child.nodeType===1)
+      if (child.sbookinui) continue;
+      else {
+	var offinfo=fdjtGetOffset(child);
+	if ((!(offinfo))||(offinfo.height===0)) continue;
+	else if (offinfo.bottom>=edge)
+	  return lastbottom;
+	else if (offinfo.top>=lastbottom) { // new line 
+	  lastbottom=linebottom;
+	  linebottom=offinfo.bottom;}
+	else if (offinfo.bottom>linebottom)
+	  linebottom=offinfo.bottom;
+	else {}}
     else if (child.nodeType===3) {
       // Make the text into a span
       var chunk=fdjtSpan(false,child.nodeValue);
@@ -448,15 +466,20 @@ function sbookAdjustPageBreak(node,edge)
       if ((!(offinfo))||(offinfo.height===0)) {
 	node.replaceChild(child,chunk);
 	continue;}
-      else if (offinfo.bottom<edge) {
-	// if it's above the edge, put it back and keep going
-	node.replaceChild(child,chunk);
-	lastbottom=offinfo.bottom;}
-      else if (offinfo.top>edge) {
+      else if (offinfo.top>=edge) {
 	// if it's over the edge, put it back
 	// and use the last bottom
 	node.replaceChild(child,chunk);
 	return lastbottom;}
+      else if (offinfo.bottom<edge) {
+	// if it's above the edge, put it back and keep going
+	node.replaceChild(child,chunk);
+	if (offinfo.top>=lastbottom) { // new line 
+	  lastbottom=linebottom;
+	  linebottom=offinfo.bottom;}
+	else if (offinfo.bottom>linebottom)
+	  linebottom=offinfo.bottom;
+	else {}}
       else {
 	// It's stradding the edge, so we go finer
 	var split=sbookSplitNode(child);
@@ -467,12 +490,16 @@ function sbookAdjustPageBreak(node,edge)
 	  var word=words[j++];
 	  if (word.nodeType!==1) continue;
 	  var wordoff=fdjtGetOffset(word);
-	  if ((!(wordoff))||(wordoff.height===0)) continue;
-	  else if (wordoff.bottom>edge) {
+	  if (wordoff.bottom>=edge) {
 	    // As soon as we're over the edge, we return the last bottom
 	    node.replaceChild(child,split);
 	    return lastbottom;}
-	  else lastbottom=wordoff.bottom;}
+	  else if (wordoff.top>=lastbottom) { // new line
+	    lastbottom=linebottom;
+	    linebottom=wordoff.bottom;}
+	  else if (wordoff.bottom>linebottom)
+	    linebottom=wordoff.bottom;
+	  else {}}
 	node.replaceChild(child,split);
 	return lastbottom;}}
     else {}}
