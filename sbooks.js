@@ -996,6 +996,11 @@ function sbookTrackFocus(target,fine)
       sbookHUDMode("minimal");
       return;}
     else return;
+  else if ((sbook_pageview) &&
+	   ((sbook_last_y<sbook_top_px)||
+	    (sbook_last_y>(window.innerHeight-sbook_bottom_px))))
+    return;
+
   // All the direct reasons not to track the focus are false,
   // so we try to find the actual focus element
   if (sbook_trace_focus) sbook_trace("sbookTrackFocus",target);
@@ -1227,6 +1232,8 @@ function sbook_onmouseover(evt)
   else target=sbookGetFocus(target,evt.ctrlKey);
   var scrollx=window.scrollX||document.body.scrollLeft;
   var scrolly=window.scrollY||document.body.scrollLeft;
+  // Track position
+  sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
   /* These are top level elements which aren't much use as heads or foci */
   if ((target===null) || (target===sbook_root) ||
       (!((target) && ((target.Xoff) || (target.Yoff))))) 
