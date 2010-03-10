@@ -992,7 +992,10 @@ function sbookTrackFocus(target,fine)
   if (!(target)) return null;
   else if ((sbook_mode)&&(sbook_mode!=="minimal")) return;
   else if ((sbook_target)&&(fdjtIsVisible($(sbook_target))))
-    return;
+    if ((target===sbook_target)&&(!(sbook_mode))) {
+      sbookHUDMode("minimal");
+      return;}
+    else return;
   // All the direct reasons not to track the focus are false,
   // so we try to find the actual focus element
   if (sbook_trace_focus) sbook_trace("sbookTrackFocus",target);
@@ -1020,12 +1023,12 @@ function sbookSetTarget(target)
     if (sbook_target_title) sbook_target.title=sbook_target_title;
     fdjtDropClass(sbook_target,"sbooktarget");
     sbook_target=false; sbook_target_title=false;}
-  if (!(target)) return;
-  else if (sbookInUI(target)) {}
-  else if ((target===sbook_root)||(target===document.body)) {}
+  if ((!(target))||(sbookInUI(target))||
+      ((target===sbook_root)||(target===document.body))) {
+    return;}
   else {
     fdjtAddClass(target,"sbooktarget");
-    sbook_target=target;
+     sbook_target=target;
     if (target.id) {
       window.location.hash=target.id;
       if (sbook_pageview) sbookGoToPage(sbookGetPage(target));}

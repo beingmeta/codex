@@ -78,9 +78,13 @@ function sbook_onmousedown(evt)
     sbookStopPreview(evt);
     return;}
   // If the HUD is up, clicks on the content just hide the HUD
-  else if ((sbook_mode)&&(sbook_mode!=="minimal")) {
-    sbookHUDMode(false);
-    return;}
+  else if ((sbook_mode)&&(sbook_mode!=="minimal"))
+    if (fdjtHasParent(target,sbook_target)) {
+      sbookHUDMode("minimal");
+      return;}
+    else {
+      sbookHUDMode(false);
+      return;}
   // Ignore clicks on text fields, anchors, inputs, etc
   else if (fdjtIsClickactive(target)) return;
   else if (fdjtHasParent(target,sbook_target)) {
@@ -90,8 +94,9 @@ function sbook_onmousedown(evt)
   else {
     var focus=sbookGetFocus(target,evt.altKey);
     if (focus) {
+      sbookSetFocus(focus);
       sbookSetTarget(focus);
-      sbookHUDFlash("minimal");}
+      sbookHUDMode("minimal");}
     else {
       sbookSetTarget(false);
       sbookHUDMode(false);}}

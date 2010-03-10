@@ -99,14 +99,13 @@ img.previewicon {
     font-weight: bold; color: gold;
     cursor: pointer;
     background-color: silver; 
-    border: dotted ivory 2px;
+    border: solid gray 2px;
     border-radius: 6px;
     -khtml-border-radius: 6px; 
     -webkit-border-radius: 6px; 
     -moz-border-radius: 6px;}
 .preview img.previewicon {
-    cursor: url(http://static.beingmeta.com/graphics/binocularscursor64x64.png),
-            url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
+    cursor: url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
             crosshair;}
 
 div#SBOOKHUD div.hudblock.hover { opacity: 0.8;}
@@ -228,6 +227,8 @@ div#SBOOKHUD div.hud#SBOOKTAGS {
   display: none;}
 div#SBOOKHUD div.hudblock.flash#SBOOKTAGS {
     opacity: 0.9; display: block; max-height: 50px;}
+div#SBOOKHUD div.hud#SBOOKTAGS {
+    font-size: 12px;}
 
 /* Paging buttons */
 
@@ -308,10 +309,11 @@ body.sparsebook.hudup div#SBOOKHUD .hud#SBOOKSOURCES img.source {
 body.sparsebook div#SBOOKHUD .hud#SBOOKSOURCES:hover img.source { 
   display: inline;} 
 
-div#SBOOKHUD .hud#SBOOKSOURCES img.source { 
-  width: 34px;
-  border: solid transparent 2px;} 
+div#SBOOKHUD .hud#SBOOKSOURCES img.button { 
+  width: 34px; border: solid transparent 2px;} 
 div#SBOOKHUD .hud#SBOOKSOURCES img.source:hover { 
+  border: dotted blue 2px;} 
+div#SBOOKHUD .hud#SBOOKSOURCES img.button#SBOOKEVERYONE:hover { 
   border: dotted blue 2px;} 
 div#SBOOKHUD .hud#SBOOKSOURCES img.source.selected { 
   border: solid blue 2px;} 
@@ -1046,7 +1048,7 @@ div.tocblock div.tochead span.head {
 div.tocblock div.tochead span.headtext {
     white-space: nowrap; font-size: 90%;}
 div.tocblock div.tochead img.previewicon {
-    vertical-align: middle; margin-right: 3px; width: 16px; height: 16px;}
+    vertical-align: middle; margin-right: 3px;}
 
 /* Search rules */
 
@@ -1171,12 +1173,10 @@ div.sbooksummaries div.tocblock  .summary { margin-left: 10px;}
 div.sbooksummaries.onepassage div.tocblock  .summary { margin-left: 2px;}
 
 body.preview div.sbooksummaries {
-  cursor: url(http://static.beingmeta.com/graphics/binocularscursor64x64.png),
-          url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
+  cursor: url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
           crosshair;}
 body.preview {
-  cursor: url(http://static.beingmeta.com/graphics/binocularscursor64x64.png),
-          url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
+  cursor: url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
           crosshair;}
 
 /* Display rules */

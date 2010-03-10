@@ -117,7 +117,6 @@ function sbookSummaryHead(target,head,eltspec,extra)
 				    hinfo.title));
       fdjtAppend(curspan," \u22ef ",newspan);
       curspan=newspan;}}
-  basespan.title='click to go/hold mouse or control key for preview/';
   var tocblock=((eltspec)?(fdjtNewElt(eltspec,preview,basespan)):
 		(fdjtDiv("tochead",preview,basespan)));
   tocblock.title=title;
@@ -415,7 +414,7 @@ function sbookSelectSources(results_div,sources)
 function sbookSelectTargets(results_div,ids)
 {
   if (!(ids)) {
-    fdjtDropClass(results_div,"tareted");
+    fdjtDropClass(results_div,"targeted");
     fdjtDropClass($$(".targeted",results_div),"targeted");
     return;}
   if (typeof ids === 'string') ids=new Array(ids);

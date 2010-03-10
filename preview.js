@@ -36,10 +36,10 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 var sbook_preview_icon="binoculars24x24.png";
 
-function sbookPreviewIcon()
+function sbookPreviewIcon(img)
 {
-  var img=fdjtImage(sbicon("binoculars24x24.png"),"previewicon","[pre]",
-		    "hold mouse or control for preview; click to jump");
+  var img=fdjtImage(sbicon(img||"binoculars24x24.png"),"previewicon","[pre]",
+		    "preview: click or hold mouse button or control key");
   img.onmouseover=sbookPreview_onmouseover;
   img.onmouseout=sbookPreview_onmouseout;
   // img.onmousemove=sbookPreview_onmousemove;
