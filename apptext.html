@@ -5,7 +5,8 @@
      alt='X' title='click to close'
      onclick='sbookHUDMode(false); return false'/>
 </span>
-<a id='SBOOKAPPTOP' title='click to login' href='javascript:sbookHUDMode('login');'>
+<a id='SBOOKAPPTOP' title='click to login'
+   href='javascript:sbookHUDMode('login');'>
 <img id='SBOOKUSERPIC' class='userpic'
   src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'/>
 <span id='SBOOKIBELONGTO'>
@@ -14,16 +15,33 @@
 </a>
 <div class='message' id='SBOOKSTARTUP'></div>
 <div class='tabbar' id='SBOOKTABS'>
-<span class='tab' contentid='APPHELP' onclick='sbookHUDMode("help");' title='how to use this sBook'>
-  Help</span>
-<span class='tab' contentid='APPSETTINGS' onclick='sbookHUDMode("settings");' title='alter appearance and interaction'>
- Settings</span>
-<span class='tab' contentid='APPMANAGE' onclick='sbookHUDMode("manage");' title='manage how sBooks enhances your sBook'>
+<span class='tab' contentid='APPABOUT'
+      onclick='sbookHUDMode("about"); fdjtCancelEvent(event); return false;'
+      title='information and links about this book'>
+  About</span>
+<span class='tab' contentid='APPTOC'
+      onclick='sbookHUDMode("apptoc"); fdjtCancelEvent(event); return false;'
+      title='Table of Contents (static)'>
+  ToC</span>
+<span class='tab' contentid='APPMANAGE'
+      onclick='sbookHUDMode("manage"); fdjtCancelEvent(event); return false;'
+      title='manage how sBooks enhances your sBook'>
  Manage</span>
-<span class='tab' contentid='APPLOGIN' onclick='sbookHUDMode("login");'>
+<span class='tab' contentid='APPSETTINGS'
+      onclick='sbookHUDMode("settings"); fdjtCancelEvent(event); return false;'
+      title='alter appearance and interaction'>
+ Settings</span>
+<span class='tab' contentid='APPLOGIN'
+      onclick='sbookHUDMode("login"); fdjtCancelEvent(event); return false;'
+      title='login to sBooks'>
   Login</span>
 <a href='http://sbooks.net/logout.fdcgi' class='tab' id='SBOOKLOGOUT'>
   Logout</a>
+<span class='tab' contentid='APPHELP'
+      onclick='sbookHUDMode("help"); fdjtCancelEvent(event); return false;'
+      title='how to use this sBook'>
+  Help
+  <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png'/></span>
 </div>
 <div class='tabcontent helpbody' id='APPHELP'>
 <div class='sbookh1'>Welcome to sBooks!
@@ -259,7 +277,8 @@ or methods.</p>
 <div class='tabcontent' id='APPSETTINGS'
      onclick='fdjtCheckSpan_onclick(event);'>
 <div class='setting'>
-  <span class='checkspan' onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
+  <span class='checkspan'
+	onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
    <input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>
    tablet mode</span>
    <div class='explanation'>
@@ -291,6 +310,16 @@ or methods.</p>
    divide content into pages</span>
 </div>
 <div class='buttons'></div>
+</div>
+<div class='tabcontent' id='APPTOC'>
+</div>
+<div class='tabcontent sbookabout' id='APPABOUT'>
+<div class='title'>An sBook</div>
+<div class='byline'></div>
+<div class='cover'></div>
+<div class='publisher'></div>
+<div class='description'></div>
+<div class='about'></div>
 </div>
 <div class='tabcontent' id='APPMANAGE'>
 <iframe id='APPFRAME' frameborder='0' scrolling='auto'

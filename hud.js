@@ -44,7 +44,7 @@ var sbookNavHUD=false;
 // This is the last active 'app' tab
 var sbook_last_app="help";
 // This is the regex for all sbook apps
-var sbook_apps=["help","login","manage","settings"];
+var sbook_apps=["help","login","manage","settings","apptoc","about"];
 
 function createSBOOKHUD()
 {
@@ -115,14 +115,16 @@ function createSBOOKHUD()
 
 function sbookInitNavHUD()
 {
-  fdjtReplace("SBOOKTOC",sbookCreateNavHUD());
+  var navhud=sbookCreateNavHUD();
   var toc_button=
     fdjtImage(sbicon("CompassIcon40x40.png"),"hudbutton","toc",
 	      "navigate table of contents");
   toc_button.onclick=sbookTOCButton_onclick;
   toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
   toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
+  fdjtReplace("SBOOKTOC",navhud);
   fdjtPrepend(sbookHUD,toc_button);
+  fdjtAppend($("APPTOC"),sbookStaticNavHUD(navhud));
 }
 
 function sbookInitSocialHUD()
@@ -148,7 +150,7 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(login)|(settings)|(manage)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)/g;
+  /(login)|(settings)|(manage)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)|(apptoc)|(about)/g;
 
 function sbookHUDMode(mode)
 {
@@ -336,6 +338,50 @@ function sbookUpdateAppHUD()
       if (refuris[i].value==='fillin')
 	refuris[i++].value=sbook_refuri;
       else i++;}
+  sbookUpdateAboutInfo();
+}
+
+function _sbookFillTemplate(template,spec,content)
+{
+  if (!(content)) return;
+  var elt=$$(spec,template);
+  if ((elt)&&(elt.length>0)) elt=elt[0];
+  else return;
+  if (typeof content === 'string')
+    elt.innerHTML=content;
+  else if (content.cloneNode)
+    fdjtReplace(elt,content.cloneNode(true));
+  else fdjtAppend(elt,content);
+}
+
+function sbookUpdateAboutInfo()
+{
+  var about=$("APPABOUT");
+  var title=
+    $("SBOOKTITLE")||
+    fdjtGetMeta("SBOOKTITLE")||fdjtGetMeta("TITLE")||
+    document.title;
+  var byline=
+    $("SBOOKBYLINE")||$("SBOOKAUTHOR")||
+    fdjtGetMeta("SBOOKBYLINE")||fdjtGetMeta("BYLINE")||
+    fdjtGetMeta("SBOOKAUTHOR")||fdjtGetMeta("AUTHOR");
+  var publisher=
+    $("SBOOKPUBLISHER")||
+    fdjtGetMeta("SBOOKPUBLISHER")||
+    fdjtGetMeta("PUBLISHER");
+  var description=
+    $("SBOOKDESCRIPTION")||
+    fdjtGetMeta("SBOOKDESCRIPTION")||
+    fdjtGetMeta("DESCRIPTION");
+  _sbookFillTemplate(about,".title",title);
+  _sbookFillTemplate(about,".byline",byline);
+  _sbookFillTemplate(about,".publisher",publisher);
+  _sbookFillTemplate(about,".description",description);
+  _sbookFillTemplate(about,".about",$("SBOOKABOUT"));
+  var cover=fdjtGetLink("cover");
+  if (cover) {
+    var cover_elt=$$(".cover",about)[0];
+    if (cover_elt) fdjtAppend(cover_elt,fdjtImage(cover));}
 }
 
 /* Previewing */

@@ -439,8 +439,8 @@ div#SBOOKHUD div#SBOOKAPP {
   -moz-border-radius: 12px; 
   background-color: gray; color: ivory;
   padding-left: 5%; padding-right: 5%;
-  padding-bottom: 12px; padding-top: 4px;
-  display: none;}
+  padding-bottom: 12px; padding-top: 4px;}
+div#SBOOKHUD div#SBOOKAPP { display: none;}
 div#SBOOKHUD #SBOOKAPPCLOSE { 
   position: fixed; top: 60px; left: 52px;
   padding: 1px; margin: 0px; width: 20px; height: 20px;
@@ -456,10 +456,11 @@ div#SBOOKHUD div#SBOOKAPP a:visited { color: lightblue;}
 div#SBOOKHUD div#SBOOKAPP a:hover { text-decoration: underline;}
 div#SBOOKHUD div#SBOOKAPP div.tabbar {
     text-align: center; font-size: 125%; z-index: 300;}
+div#SBOOKHUD div#SBOOKAPP div#SBOOKAPPTOC a.cohi {color: white;}
   
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP {
   position: absolute; top: 0px; left: 0px; right: 0px; z-index: 225;
-  display: block; min-height: 24px; text-decoration: none; text-align: left;
+  display: block; min-height: 16px; text-decoration: none; text-align: left;
   padding-top: 3px; padding-bottom: 2px; padding-left: 2px;
   background-color: gold;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP:hover { text-decoration: none;}
@@ -494,6 +495,10 @@ div#SBOOKHUD.settings div#SBOOKAPP {
   display: block; opacity: 0.9; }
 div#SBOOKHUD.manage div#SBOOKAPP {
   display: block; opacity: 0.9; }
+div#SBOOKHUD.apptoc div#SBOOKAPP {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.about div#SBOOKAPP {
+  display: block; opacity: 0.9; }
 
 div#SBOOKHUD.help #SBOOKAPPCLOSE {
   display: block; opacity: 0.9; }
@@ -503,22 +508,35 @@ div#SBOOKHUD.settings #SBOOKAPPCLOSE {
   display: block; opacity: 0.9; }
 div#SBOOKHUD.manage #SBOOKAPPCLOSE {
   display: block; opacity: 0.9; }
+div#SBOOKHUD.apptoc #SBOOKAPPCLOSE {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.about #SBOOKAPPCLOSE {
+  display: block; opacity: 0.9; }
 
-div#SBOOKHUD div#SBOOKAPP div.tabcontent {
-    height: 100%;}
+div#SBOOKHUD div#SBOOKAPP div.tabcontent {}
 div#SBOOKHUD.help div#SBOOKAPP div.tabcontent#APPHELP { display: block;}
 div#SBOOKHUD.login div#SBOOKAPP div.tabcontent#APPLOGIN { display: block;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS { display: block;}
 div#SBOOKHUD.manage div#SBOOKAPP div.tabcontent#APPMANAGE { display: block;}
+div#SBOOKHUD.apptoc div#SBOOKAPP div.tabcontent#APPTOC { display: block;}
+div#SBOOKHUD.about div#SBOOKAPP div.tabcontent#APPABOUT { display: block;}
+
+div#SBOOKHUD div#SBOOKAPP span.tab[contentid='APPHELP'] {
+    font-weight: bold; color: yellow;}
 
 div#SBOOKHUD.help div#SBOOKAPP span.tab[contentid='APPHELP'] {
-    border-bottom: none;}
+    border-bottom: none; color: gold;}
 div#SBOOKHUD.login div#SBOOKAPP span.tab[contentid='APPLOGIN'] {
-    border-bottom: none;}
+    border-bottom: none; color: gold;}
 div#SBOOKHUD.settings div#SBOOKAPP span.tab[contentid='APPSETTINGS'] {
-    border-bottom: none;}
+    border-bottom: none; color: gold;}
 div#SBOOKHUD.manage div#SBOOKAPP span.tab[contentid='APPMANAGE'] {
-    border-bottom: none;}
+    border-bottom: none; color: gold;}
+div#SBOOKHUD.apptoc div#SBOOKAPP span.tab[contentid='APPTOC'] {
+    border-bottom: none; color: gold;}
+div#SBOOKHUD.about div#SBOOKAPP span.tab[contentid='APPABOUT'] {
+    border-bottom: none; color: gold;}
+
 div#SBOOKHUD div#SBOOKAPP div#APPMANAGE iframe {
   border-width: solid transparent 3px;
   -khtml-border-radius: 9px; 
@@ -939,6 +957,8 @@ div.sbooktoc div.head .progressbar {
   padding: 0px; margin: 0px; border-right: solid red 3px;
   position: absolute;  left: 0px; height: 100%;
   z-index: -100; opacity: 0.5;}
+div#SBOOKAPP div#APPTOC div.sbooktoc { display: block;}
+div#SBOOKAPP div#APPTOC div.sbooktoc div.head { display: block;}
 
 body.preview div.sbooktoc.live { display: none;}
 body.preview div.sbooktoc.live div.sbooktoc.live { display: none;}
@@ -1370,6 +1390,13 @@ table.login a img { border: none;}
 table.login td.userlogin { vertical-align: top;}
 table.login td.userlogin button { padding: 2px;}
 table.login td.userlogin img { vertical-align: top; height: 16px;}
+
+/* About information */
+
+div.sbookabout { text-align: center; font-family: sans,sans-serif;}
+div.sbookabout div.title { font-size: 150%;}
+div.sbookabout div.byline { font-size: 125%; font-weight: bold;}
+div.sbookabout div.publisher { font-style: italic;}
 
 /* Special display stuff */
 

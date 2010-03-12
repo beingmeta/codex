@@ -61,6 +61,37 @@ function sbookCreateNavHUD(eltspec)
   return div;
 }
 
+function sbookStaticNavHUD(navhud)
+{
+  var clone=navhud.cloneNode(true);
+  fdjtDropClass(clone,"hud");
+  fdjtDropClass(clone,"hudblock");
+  _sbookCleanupStaticHUD(clone);
+  clone.onmouseover=sbookTOC_onmouseover;
+  clone.onmouseout=sbookTOC_onmouseout;
+  clone.onclick=sbookTOC_onclick;
+  return clone;
+}
+
+function _sbookCleanupStaticHUD(node)
+{
+  if ((node.id)&&(node.id.search("SBOOKTOC")===0))
+    node.id="SBOOKAPPTOC"+node.id.slice(8);
+  var children=node.childNodes;
+  if (children) {
+    var i=0; var len=children.length; var remove=[];
+    while (i<len)
+      if (children[i].nodeType===1) {
+	var child=children[i++];
+	if (child.className==='progressbox') remove.push(child);
+	else if (child.className==='progressbar') remove.push(child);
+	else if (child.className==='rangebox') remove.push(child);
+	else _sbookCleanupStaticHUD(child);}
+      else i++;
+    i=0; len=remove.length;
+    while (i<len) node.removeChild(remove[i++]);}
+}
+
 /* Building the DIV */
 
 function sbookTOCDiv(headinfo,depth,classname)
