@@ -52,7 +52,8 @@ var sbooks_nav_version=parseInt("$Revision$".slice(10,-1));
 
 function sbookCreateNavHUD(eltspec)
 {
-  var toc_div=sbookTOCDiv(sbook_getinfo(sbook_root),0);
+  var root_info=sbook_getinfo(sbook_root);
+  var toc_div=sbookTOCDiv(root_info,0,false,"SBOOKTOC4");
   var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
   div.onmouseover=sbookTOC_onmouseover;
   div.onmouseout=sbookTOC_onmouseout;
@@ -61,40 +62,21 @@ function sbookCreateNavHUD(eltspec)
   return div;
 }
 
-function sbookStaticNavHUD(navhud)
+function sbookStaticNavHUD(eltspec)
 {
-  var clone=navhud.cloneNode(true);
-  fdjtDropClass(clone,"hud");
-  fdjtDropClass(clone,"hudblock");
-  _sbookCleanupStaticHUD(clone);
-  clone.onmouseover=sbookTOC_onmouseover;
-  clone.onmouseout=sbookTOC_onmouseout;
-  clone.onclick=sbookTOC_onclick;
-  return clone;
-}
-
-function _sbookCleanupStaticHUD(node)
-{
-  if ((node.id)&&(node.id.search("SBOOKTOC")===0))
-    node.id="SBOOKAPPTOC"+node.id.slice(8);
-  var children=node.childNodes;
-  if (children) {
-    var i=0; var len=children.length; var remove=[];
-    while (i<len)
-      if (children[i].nodeType===1) {
-	var child=children[i++];
-	if (child.className==='progressbox') remove.push(child);
-	else if (child.className==='progressbar') remove.push(child);
-	else if (child.className==='rangebox') remove.push(child);
-	else _sbookCleanupStaticHUD(child);}
-      else i++;
-    i=0; len=remove.length;
-    while (i<len) node.removeChild(remove[i++]);}
+  var root_info=sbook_getinfo(sbook_root);
+  var toc_div=sbookTOCDiv(root_info,0,false,"SBOOKAPPTOC4");
+  var div=fdjtDiv(eltspec||"#SBOOKAPPTOC",toc_div);
+  div.onmouseover=fdjtCoHi_onmouseover;
+  div.onmouseout=fdjtCoHi_onmouseout;
+  div.onclick=sbookTOC_onclick;
+  if (!(eltspec)) sbookNavHUD=div;
+  return div;
 }
 
 /* Building the DIV */
 
-function sbookTOCDiv(headinfo,depth,classname)
+function sbookTOCDiv(headinfo,depth,classname,prefix)
 {
   var progressbar=
     fdjtImage('http://static.beingmeta.com/graphics/silverbrick.png',
@@ -105,7 +87,6 @@ function sbookTOCDiv(headinfo,depth,classname)
 		  fdjtDiv("head",progressbar,head),
 		  _sbook_generate_spanbar(headinfo),
 		  sbookTOCDivSubsections(headinfo));
-  var tocid="SBOOKTOC4"+headinfo.id;
   var sub=headinfo.sub;
   if (!(depth)) depth=0;
   head.name="SBR"+headinfo.id;
@@ -113,15 +94,13 @@ function sbookTOCDiv(headinfo,depth,classname)
   toc.sbook_start=headinfo.starts_at;
   toc.sbook_end=headinfo.ends_at;
   fdjtAddClass(toc,"toc"+depth);
-  headinfo.tocid=tocid;
-  if (!(toc.id)) {
-    headinfo.tocid=tocid;
-    toc.id=tocid;}
-  else headinfo.tocid=toc.id;
-  if ((!(sub)) || (!(sub.length))) return toc;
+  toc.id=(prefix||"SBOOKTOC4")+headinfo.id;
+  if ((!(sub)) || (!(sub.length))) {
+    fdjtAddClass(toc,"sbooktocleaf");
+    return toc;}
   var i=0; var n=sub.length;
   while (i<n)
-    fdjtAppend(toc,sbookTOCDiv(sub[i++],depth+1));
+    fdjtAppend(toc,sbookTOCDiv(sub[i++],depth+1,classname,prefix));
   return toc;
 }
 
@@ -202,6 +181,41 @@ function _sbook_generate_span(sectnum,subsection,title,spanstart,spanend,len,nam
   return span;
 }
 
+/* TOC display update */
+
+function sbookTOCUpdate(head,prefix)
+{
+  if (!(prefix)) prefix="SBOOKTOC4";
+  if (sbook_head) {
+    // Hide the current head and its (TOC) parents
+    var tohide=[];
+    var info=sbook_getinfo(sbook_head);
+    var base_elt=document.getElementById(prefix+info.id);
+    while (info) {
+      var tocelt=document.getElementById(prefix+info.id);
+      tohide.push(tocelt);
+      // Get TOC parent
+      info=info.sbook_head;
+      tocelt=document.getElementById(prefix+info.id);}
+    var n=tohide.length-1;
+    // Go backwards (up) to potentially accomodate some redisplayers
+    while (n>=0) fdjtDropClass(tohide[n--],"live");
+    fdjtDropClass(base_elt,"cur");}
+  if (!(head)) return;
+  var info=sbook_getinfo(head);
+  var base_elt=document.getElementById(prefix+info.id);
+  var toshow=[];
+  while (info) {
+    var tocelt=document.getElementById(prefix+info.id);
+    toshow.push(tocelt);
+    info=info.sbook_head;}
+  var n=toshow.length-1;
+  // Go backwards to accomodate some redisplayers
+  while (n>=0) {
+    fdjtAddClass(toshow[n--],"live");}
+  fdjtAddClass(base_elt,"cur");
+}
+
 /* TOC handlers */
 
 function sbookTOC_onmouseover(evt)
@@ -241,10 +255,9 @@ function sbookTOC_onclick(evt)
   evt=evt||event||null;
   // sbook_trace("sbookTOC_onclick",evt);
   var target=sbookGetRef($T(evt));
-  if (target===null) {
-    sbookHUDToggle("toc");
-    return;}
+  if (!(target)) return;
   sbookStopPreview(evt);
+  fdjtTrace("Going to head %o",target);
   sbookSetHead(target);
   var info=sbook_getinfo(target);
   sbookSetTarget(target);

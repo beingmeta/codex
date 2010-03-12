@@ -124,7 +124,7 @@ function sbookInitNavHUD()
   toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
   fdjtReplace("SBOOKTOC",navhud);
   fdjtPrepend(sbookHUD,toc_button);
-  fdjtAppend($("APPTOC"),sbookStaticNavHUD(navhud));
+  fdjtAppend($("APPTOC"),sbookStaticNavHUD("#SBOOKAPPTOC"));
 }
 
 function sbookInitSocialHUD()
@@ -365,6 +365,10 @@ function sbookUpdateAboutInfo()
     $("SBOOKBYLINE")||$("SBOOKAUTHOR")||
     fdjtGetMeta("SBOOKBYLINE")||fdjtGetMeta("BYLINE")||
     fdjtGetMeta("SBOOKAUTHOR")||fdjtGetMeta("AUTHOR");
+  var copyright=
+    $("SBOOKCOPYRIGHT")||
+    fdjtGetMeta("SBOOKCOPYRIGHT")||fdjtGetMeta("COPYRIGHT")||
+    fdjtGetMeta("RIGHTS");
   var publisher=
     $("SBOOKPUBLISHER")||
     fdjtGetMeta("SBOOKPUBLISHER")||
@@ -373,10 +377,18 @@ function sbookUpdateAboutInfo()
     $("SBOOKDESCRIPTION")||
     fdjtGetMeta("SBOOKDESCRIPTION")||
     fdjtGetMeta("DESCRIPTION");
+  var digitized=
+    $("SBOOKDIGITIZED")||
+    fdjtGetMeta("SBOOKDIGITIZED")||
+    fdjtGetMeta("DIGITIZED");
+  var sbookified=$("SBOOKIFIED")||fdjtGetMeta("SBOOKIFIED");
   _sbookFillTemplate(about,".title",title);
   _sbookFillTemplate(about,".byline",byline);
   _sbookFillTemplate(about,".publisher",publisher);
+  _sbookFillTemplate(about,".copyright",copyright);
   _sbookFillTemplate(about,".description",description);
+  _sbookFillTemplate(about,".digitized",digitized);
+  _sbookFillTemplate(about,".sbookified",sbookified);
   _sbookFillTemplate(about,".about",$("SBOOKABOUT"));
   var cover=fdjtGetLink("cover");
   if (cover) {
