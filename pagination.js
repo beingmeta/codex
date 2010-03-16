@@ -127,6 +127,8 @@ function sbookPaginate(pagesize,start)
 		  "/"+pagesize+"/"+widowthresh+","+orphanthresh+"] "));
     if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info,curpage));
     if (sbook_trace_pagination>1) _sbookTracePagination("SCAN",scan,info);
+    if ((dbginfo)&&(scan.getAttribute("sbookpagedbg")))
+      dbginfo=scan.getAttribute("sbookpagedbg")+" // "+dbginfo;
     if (sbookIsPageHead(scan)) {
       if (info.top>pagetop) newpage=scan;}
     // We're completely off the page
@@ -182,10 +184,16 @@ function sbookPaginate(pagesize,start)
 	  // either moving it down (possibly a bad idea)
 	  curpage.bottom=info.bottom;}
 	else {
+	  var maxbottom=info.bottom-orphanthresh;
 	  newpage=splitblock=scan;
-	  curpage.bottom=info.bottom-orphanthresh;
-	  if (curpage.bottom<info.top)
-	    curpage.bottom=info.top+(info.height/2);}
+	  if (maxbottom>pagelim)
+	    curpage.bottom=pagelim;
+	  else curpage.bottom=maxbottom;
+	  if (curpage.bottom<info.top) {
+	    var newbottom=info.top+(info.height/2);
+	    if (newbottom>pagelim)
+	      curpage.bottom=pagelim;
+	    else curpage.bottom=newbottom;}}
       else {
 	newpage=splitblock=scan;
 	curpage.bottom=pagelim;}
@@ -263,7 +271,9 @@ function sbookPaginate(pagesize,start)
 	curpage.last=splitblock;
 	curpage.bottomedge=splitblock;
 	curpage.bottom=sbookAdjustPageBreak(splitblock,curpage.bottom);
-	if (dbginfo) dbginfo=dbginfo+"~"+curpage.bottom;}
+	if (dbginfo) dbginfo=dbginfo+"~"+curpage.bottom;
+	if (curpage.bottom<info.bottom) {
+	  next=splitblock; nextinfo=info;}}
       else if (!(curpage.bottom)) curpage.bottom=newinfo.top;
       else if (newinfo.top<curpage.bottom) curpage.bottom=newinfo.top;
       else {}

@@ -356,6 +356,9 @@ function _sbookFillTemplate(template,spec,content)
 
 function sbookUpdateAboutInfo()
 {
+  if ($("SBOOKABOUT")) {
+    fdjtReplace("APPABOUTCONTENT",$("SBOOKABOUT"));
+    return;}
   var about=$("APPABOUT");
   var title=
     $("SBOOKTITLE")||

@@ -1348,7 +1348,7 @@ function _getsbookrefuri()
 
 function _getsbookbaseid()
 {
-  var baseid=fdjtGetMeta("SBOOKPREFIX",true)||fdjtGetMeta("SBOOKID",true);
+  var baseid=fdjtGetMeta("SBOOKIDPREFIX",true)||fdjtGetMeta("SBOOKID",true);
   if ((!(baseid))||(typeof baseid !== 'string')||
       (baseid.length===0) || (baseid[0]===':'))
     return false;
