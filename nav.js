@@ -255,13 +255,16 @@ function sbookTOC_onclick(evt)
   evt=evt||event||null;
   // sbook_trace("sbookTOC_onclick",evt);
   var target=sbookGetRef($T(evt));
-  if (!(target)) return;
   sbookStopPreview(evt);
-  fdjtTrace("Going to head %o",target);
+  if (target===sbook_head) {
+    sbookHUDMode(false);
+    return false;}
+  if (!(target)) return;
   sbookSetHead(target);
   var info=sbook_getinfo(target);
   sbookSetTarget(target);
   sbookGoTo(target);
+  if ((info.sub)&&(info.sub.length>3)) sbookHUDMode("toc");
   return false;
 }
 
