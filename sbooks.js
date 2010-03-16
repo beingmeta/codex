@@ -1050,7 +1050,7 @@ function sbookGoTo(target)
 {
   sbookPreview(false);
   sbookHUDMode(false);
-  if (elt.sbookloc) sbookSetLocation(elt.sbookloc);
+  if (target.sbookloc) sbookSetLocation(target.sbookloc);
   if ((target.id)&&(!(sbookInUI(target)))) 
     sbookSetTarget(target);
   if (sbook_pageview)
