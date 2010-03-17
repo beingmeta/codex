@@ -520,7 +520,8 @@ div#SBOOKHUD.apptoc #SBOOKAPPCLOSE {
 div#SBOOKHUD.about #SBOOKAPPCLOSE {
   display: block; opacity: 0.9; }
 
-div#SBOOKHUD div#SBOOKAPP div.tabcontent {}
+div#SBOOKHUD div#SBOOKAPP div.tabcontent { height: 80%;}
+
 div#SBOOKHUD.help div#SBOOKAPP div.tabcontent#APPHELP { display: block;}
 div#SBOOKHUD.login div#SBOOKAPP div.tabcontent#APPLOGIN { display: block;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS { display: block;}
@@ -545,6 +546,7 @@ div#SBOOKHUD.about div#SBOOKAPP span.tab[contentid='APPABOUT'] {
     border-bottom: none; color: gold;}
 
 div#SBOOKHUD div#SBOOKAPP div#APPMANAGE iframe {
+  width: 100%; height: 100%;
   border-width: solid transparent 3px;
   -khtml-border-radius: 9px; 
   -webkit-border-radius: 9px; 
