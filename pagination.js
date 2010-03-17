@@ -103,24 +103,27 @@ function sbookAvoidPageFoot(elt)
 
 function sbookPaginate(pagesize,start)
 {
-  if (!(start)) start=_sbookScanPageContent(sbook_root||document.body);
+  if (!(start)) start=_sbookScanContent(sbook_root||document.body);
   var result={}; var pages=[]; var pageinfo=[];
   result.pages=pages; result.info=pageinfo;
   var scan=start; var info=sbookNodeInfo(scan);
   var pagetop=info.top; var pagelim=pagetop+pagesize;
   var fudge=sbook_bottom_px/4;
   var start=fdjtET();
-  var curpage={}; var newpage=false; var nodecount=1;
+  var curpage={}; var newtop=false; var nodecount=1;
   curpage.pagenum=pages.length;
   curpage.top=pagetop; curpage.limit=pagelim;
   curpage.first=start; curpage.last=start;
   pages.push(pagetop); pageinfo.push(curpage);
   while (scan) {
-    var next=false; var nextinfo=false;
+    var oversize=false;
+    var next=_sbookScanContent(scan); var nextinfo=fdjtGetOffset(next);
     var splitblock=false; var forcebottom=false;
     var widowthresh=((info.fontsize)*sbook_widow_limit);
     var orphanthresh=((info.fontsize)*sbook_orphan_limit);
-    var skipchildren=false;
+    // If the top of the current node is above the page,
+    //  make scantop be the page top
+    var scantop=((info.top<pagetop)?(pagetop):(info.top));
     var dbginfo=((sbook_debug_pagination)&&
 		 ("P#"+curpage.pagenum+
 		  "["+pagetop+","+pagelim+
@@ -130,183 +133,196 @@ function sbookPaginate(pagesize,start)
     if ((dbginfo)&&(scan.getAttribute("sbookpagedbg")))
       dbginfo=scan.getAttribute("sbookpagedbg")+" // "+dbginfo;
     if (sbookIsPageHead(scan)) {
-      if (info.top>pagetop) newpage=scan;}
-    // We're completely off the page
-    else if (info.top>pagelim) {
+      // Unless we're already at the top, just break
+      if (scantop>pagetop) newtop=scan;
+      else {}}
+    // WE'RE COMPLETELY OFF THE PAGE
+    else if (scantop>pagelim) {
+      // Issue a warning (if neccessary) and break on this element
       if (sbookAvoidPageHead(scan)) 
 	fdjtWarn("Pagination got stuck with non page head %o",scan);
       else if (sbookIsPageFoot(scan))
 	fdjtWarn("Pagination got stuck with page foot at head %o",scan);
       else {}
-      newpage=scan;}
-    /* We're straddling the bottom of the page */
-    else if (info.bottom>pagelim) {
-      if (sbookIsPageBlock(scan))
-	if (curpage.top<info.top) newpage=scan;
-	else {
-	  // We're already at the top, so it's a big block,
-	  //  we'll keep it all on this page but mark the page
-	  //  as oversize
-	  skipchildren=true;
-	  curpage.bottom=info.bottom;
-	  curpage.oversize=true;
-	  curpage.last=scan;}
-      else if ((scan.toclevel)||(sbookAvoidPageFoot(scan)))
-	newpage=scan;
-      else if (sbookAvoidPageHead(scan))
-	newpage=splitblock=scan;
-      else if ((sbook_fudge_bottom)&&
-	       (sbookIsPageFoot(scan))&&
-	       (info.bottom<
-		(pagelim+
-		 ((sbook_fudge_bottom<1)?
-		  (sbook_bottom_px*sbook_fudge_bottom):
-		  (sbook_fudge_bottom)))))
-	// If we want to be a foot and we're close enough,
-	// just fudge the bottom
+      newtop=scan;}
+    else if ((info.bottom>pagelim)&&(sbookIsPageBlock(scan)))
+      if (info.top>pagetop) {
+	// If we're already at the top, declare an oversize page
 	curpage.bottom=info.bottom;
-      else if (_sbookIsJustContainer(scan)) {} // Rely on the children to break
-      else if ((pagelim-info.top)<widowthresh)
-	// If we're in the widow range, just break
-	newpage=scan;
-      else if (info.height<(widowthresh+orphanthresh))
-	// If we're too small to split, just start a new page
-	newpage=scan;
-      else if ((info.bottom-pagelim)<orphanthresh)
-	// If we're in the orphan range, adjust the bottom
-	if ((sbook_fudge_bottom)&&
-	    ((info.bottom-pagelim)<orphanthresh)&&
-	    (info.bottom<
-	     (pagelim+
-	      ((sbook_fudge_bottom<1)?
-	       (sbook_bottom_px*sbook_fudge_bottom):
-	       (sbook_fudge_bottom))))) {
-	  // either moving it down (possibly a bad idea)
-	  curpage.bottom=info.bottom;}
-	else {
-	  var maxbottom=info.bottom-orphanthresh;
-	  newpage=splitblock=scan;
-	  if (maxbottom>pagelim)
-	    curpage.bottom=pagelim;
-	  else curpage.bottom=maxbottom;
-	  if (curpage.bottom<info.top) {
-	    var newbottom=info.top+(info.height/2);
-	    if (newbottom>pagelim)
-	      curpage.bottom=pagelim;
-	    else curpage.bottom=newbottom;}}
-      else {
-	newpage=splitblock=scan;
-	curpage.bottom=pagelim;}
-      /* End of straddling code */}
-    // So, we're completely on the page
-    else if (sbookAvoidPageHead(scan)) {}
-    else if (sbookIsPageFoot(scan)) {
-      // Force a break if we want to be a foot
-      curpage.bottom=info.bottom;
-      newpage=_sbookScanPageContent(scan);}
-    else if (((scan.toclevel)||(sbookAvoidPageFoot(scan)))&&
-	     ((pagelim-info.bottom)<widowthresh))
-      // Bad feet in a widowsbreadth of the bottom get pushed
-      newpage=scan;
-    else if (next=_sbookScanPageContent(scan)) {
+	curpage.oversize=oversize=true;}
+      else newtop=scan; // Otherwise, break now
+    // WE'RE COMPLETELY ON THE PAGE
+    // including the case where we have children which are on the page.
+    else if ((info.bottom<pagelim)||((nextinfo)&&(nextinfo.top<pagelim))) {
+      if (sbookAvoidPageHead(scan)) {} // don't think about breaking here
+      // if we want to be a foot, force a break at the next node
+      else if (sbookIsPageFoot(scan)) {
+	curpage.bottom=info.bottom;
+	newtop=_sbookScanContent(scan);}
+      // if we're a bad foot close to the bottom, break
+      else if (((scan.toclevel)||(sbookAvoidPageFoot(scan)))&&
+	       ((pagelim-info.bottom)<widowthresh))
+	newtop=scan;
       // Look ahead to see if we should page break anyway
-      nextinfo=sbookNodeInfo(next);
-      if (dbginfo)
-	dbginfo=dbginfo+" ... N#"+next.id+
-	  _sbookPageNodeInfo(next,nextinfo,curpage);
-      if ((scan.toclevel)||(sbookAvoidPageFoot(scan))) {
-	// If we're trying to avoid the foot,
-	if (sbookIsPageHead(next))
-	  // If the next item is a page head, break right away
-	  newpage=scan;
-	else if (nextinfo.top>=pagelim)
-	  // If the next item is off the page, break right away
-	  newpage=scan;
-	// If the next item is a straddling block and a page block,
-	// then break right away
-	else if (((nextinfo.top<pagelim)&&(nextinfo.bottom>pagelim))&&
+      else if (next) {
+	// Only record next in debug info if we look at it
+	if (dbginfo)
+	  dbginfo=dbginfo+" ... N#"+next.id+
+	    _sbookPageNodeInfo(next,nextinfo,curpage);
+	// If we're trying to avoid putting this item at the foot
+	if ((scan.toclevel)||(sbookAvoidPageFoot(scan))) {
+	  // Break here if the next item 
+	  if ((nextinfo.top>=pagelim) // is off the page
+	      ||(sbookIsPageHead(next)) // is a forced head
+	      // is a straddling no-break block
+	      ||((nextinfo.top<pagelim)&&(nextinfo.bottom>pagelim)&&
 		 (sbookIsPageBlock(next)))
-	  newpage=scan;
-	// Double heads/non feet cause a page break when they're more
-	// than halfway down
-	else if (((next.toclevel)||(sbookAvoidPageFoot(next)))&&
-		 ((pagelim-info.top)<pagesize/2))
-	  newpage=scan;
-	else if ((pagelim-nextinfo.top)<widowthresh)
-	  // If the next node is likely to be pushed off,
-	  // keep it by breaking right away
-	  newpage=scan;
-	else if ((nextinfo.bottom>=pagelim)&&
-		 ((nextinfo.height)<(widowthresh+orphanthresh)))
-	  // If the next node is small and straddling, push right away
-	  newpage=scan;
-	else {}} ///// End of foot avoiding logic
-      else if (sbookAvoidPageHead(next)) {
-	// If the next node is a bad head, ignore, break or split
-	if (nextinfo.bottom<pagelim) {} // enough space for it
- 	else {
-	  // Otherwise, break early
-	  var newbreak=info.bottom-orphanthresh;
-	  if (newbreak<info.top)
-	    // If there's not enough to split, just break
-	    newpage=scan;
-	  else {
-	    curpage.bottom=newbreak;
-	    newpage=splitblock=scan;}}}
-      // No problem, leave this block on the page
-      else {}}
-    // No problem, leave this block on the page
-    else {}
-    if (!(newpage)) {
-      // The default
+	      // is a bad foot close to the bottom
+	      ||(((next.toclevel)||(sbookAvoidPageFoot(next)))&&
+		 ((pagelim-nextinfo.bottom)<widowthresh*2))
+	      // is likely to be pushed off the bottom
+	      ||((pagelim-nextinfo.top)<widowthresh)
+	      // is small and straddling
+	      ||((nextinfo.bottom>=pagelim)&&
+		 ((nextinfo.height)<(widowthresh+orphanthresh))))
+	    newtop=scan;
+	  else {}} ///// End of foot avoiding logic
+	else if (sbookAvoidPageHead(next)) {
+	  // If the next node is a bad head, break or split
+	  if (nextinfo.bottom<pagelim) {} // if there isn't enough space for it
+	  else { // Either break or split
+	    var newbreak=info.bottom-orphanthresh;
+	    if (newbreak<scantop) newtop=scan; // just break
+	    else { // split
+	      curpage.bottom=newbreak;
+	      newtop=splitblock=scan;}}}
+	// No problem, leave this block on the page
+	else {}}
+      // We're on the page and at the end
+      else {}
+      /* End of 'on the page' cases */}
+    // If we've gotten here,
+    // WE'RE STRADDLING THE BOTTOM OF THE PAGE
+    else if (sbookIsPageBlock(scan))
+      if (curpage.top<scantop)
+	// Break if we're not at the top already
+	newtop=scan;
+      else {
+	// If we're already at the top, this is a huge block
+	// and we will make an oversize page
+	curpage.bottom=info.bottom;
+	curpage.oversize=oversize=true;
+	curpage.last=scan;}
+    else if ((scan.toclevel)||(sbookAvoidPageFoot(scan)))
+      // If we're avoiding the foot, we start a new page
+      newtop=scan;
+    else if (sbookAvoidPageHead(scan))
+      // If we're avoiding the head, we split this block.
+      newtop=splitblock=scan;
+    else if ((sbook_fudge_bottom)&&
+	     (sbookIsPageFoot(scan))&&
+	     (info.bottom<(pagelim+sbook_fudge_bottom)))
+      // If we want to be a foot and we're close enough,
+      // just fudge the bottom, pushing it down.  This may be 
+      // a bad idea (adjust sbook_fudge_bottom accordingly)
+      curpage.bottom=info.bottom;
+    // If we're too small to split, just start a new page
+    else if (info.height<(widowthresh+orphanthresh))
+      newtop=scan;
+    // If splitting would create a widow, just break
+    else if ((pagelim-scantop)<widowthresh)
+      newtop=scan;
+    // If we might create orphans, adjust the page bottom
+    // to ensure that doesn't happen
+    else if ((info.bottom-pagelim)<orphanthresh)
+      if ((sbook_fudge_bottom)&&
+	  (info.bottom<(pagelim+sbook_fudge_bottom))) {
+	// possibly move the bottom down
+	curpage.bottom=pagelim=info.bottom;}
+      else {
+	// Or making this page shorter to keep orphans from being
+	// too isolated on the next page
+	// move the pagelim up to make sure the orphans aren't isolated
+	curpage.bottom=pagelim=info.bottom-orphanthresh;
+	newtop=splitblock=scan;}
+    else {
+      // Just break at (around) the pagelim
+      newtop=splitblock=scan;
+      curpage.bottom=pagelim;}
+    // Okay, we've figured out what to do with this element
+    if (!(newtop)) {
+      // When we're not starting a new page, just extend the bottom
+      //  of this one
       curpage.bottom=info.bottom;
       curpage.last=scan;}
     else {
-      var newinfo=((newpage==scan)?(info):sbookNodeInfo(newpage));
+      // If we starting a new page, clean up the page break
+      var newinfo=((newtop==scan)?(info):sbookNodeInfo(newtop));
       var prevpage=curpage;
       if (dbginfo)
 	dbginfo=dbginfo+" np"+((splitblock)?"/split":"")+"/"+curpage.bottom;
       // Adjust the page bottom information
       if (splitblock) {
+	curpage.bottom=pagelim;
 	curpage.last=splitblock;
-	curpage.bottomedge=splitblock;
-	curpage.bottom=sbookAdjustPageBreak(splitblock,curpage.bottom);
-	if (dbginfo) dbginfo=dbginfo+"~"+curpage.bottom;
-	if (curpage.bottom<info.bottom) {
-	  next=splitblock; nextinfo=info;}}
+	var newbottom=
+	  sbookAdjustPageBreak(splitblock,curpage.top,curpage.bottom);
+	if ((newbottom>pagetop)&&(newbottom>info.top)&&
+	    (newbottom>(pagetop+(pagesize/2)))) {
+	  // Check that we were able to find a good page break
+	  curpage.bottom=newbottom;
+	  curpage.bottomedge=splitblock;
+	  if (dbginfo) dbginfo=dbginfo+"~"+curpage.bottom;
+	  // If we're splitting, force the next node to be the split block
+	  next=splitblock; nextinfo=info;}
+	else {
+	  // We weren't able to find a good page break,
+	  // so we break entirely (no split), and declare this
+	  // page oversize
+	  curpage.bottom=info.bottom; curpage.oversize=oversize=true;
+	  if (dbginfo) dbginfo=dbginfo+"~oversize/"+curpage.bottom;}}
+      // If it's a clean break, make sure that the page bottom is good
       else if (!(curpage.bottom)) curpage.bottom=newinfo.top;
       else if (newinfo.top<curpage.bottom) curpage.bottom=newinfo.top;
       else {}
       if (sbook_trace_pagination) 
 	fdjtLog("[%f] New %spage break P%d[%d,%d]#%s %o, closed P%d[%d,%d] %o",
 		fdjtET(),((splitblock)?("split "):("")),
-		pages.length,newinfo.top,newinfo.bottom,newpage.id,newpage,
+		pages.length,newinfo.top,newinfo.bottom,newtop.id,newtop,
 		curpage.pagenum,curpage.top,curpage.bottom,curpage);
       // Make a new page
       curpage={}; curpage.pagenum=pages.length;
       if (splitblock) curpage.top=prevpage.bottom;
       else curpage.top=newinfo.top;
-      // If the top of the new page is large than a page, declare it oversize
-      if (newinfo.height>pagesize) curpage.oversize=true;
+      // If the item at the top of the new page is larger than a page,
+      // declare the page oversize
+      if (newinfo.height>pagesize) curpage.oversize=oversize=true;
       // Initialize the first and last elements on the page
-      curpage.first=newpage; curpage.last=newpage;
-      // Indicate the element on the age
+      curpage.first=newtop; curpage.last=newtop;
+      // Indicate the straddling top element, if we're split
       if (splitblock) curpage.topedge=splitblock;
       // Initialize the scan variables of the page top and bottom
       pagetop=curpage.top;
       pagelim=curpage.limit=pagetop+pagesize;
-      scan=newpage; splitblock=false; newpage=false;
+      scan=newtop; splitblock=false; newtop=false;
       // Update the tables
       pages.push(pagetop); pageinfo.push(curpage);}
     if (dbginfo) scan.setAttribute("sbookpagedbg",dbginfo);
+    // We track a 'focus' for every page, which is the first sbook
+    // focusable element on the page.
     if (!(curpage.focus))
       if (fdjtElementMatches(scan,sbook_focus_rules)) curpage.focus=scan;
-    // Advance
-    if (next) {scan=next; info=nextinfo;}
-    else {
-      scan=_sbookScanPageContent(scan,skipchildren);
+    // Advance around the loop.  If we have an explicit next page,
+    //  we use it (usually the case if we're splitting a block).
+    if (oversize) {
+      scan=_sbookScanContent(scan,true);
       if (scan) info=sbookNodeInfo(scan);}
-    nodecount++;}
+    else if (next) {scan=next; info=nextinfo;}
+    else {
+      // Otherwise, advance through the DOM
+      scan=_sbookScanContent(scan);
+      if (scan) info=sbookNodeInfo(scan);}
+    if (!(splitblock)) nodecount++;}
   var done=fdjtET();
   fdjtLog("[%f] Paginated %d nodes into %d pages with pagesize=%d in %s",
 	  fdjtET(),nodecount,pages.length,pagesize,
@@ -326,12 +342,17 @@ function sbookNodeInfo(node)
 
 var sbook_content_nodes=['IMG','BR','HR'];
 
-function _sbookScanPageContent(scan,skipchildren)
+function _sbookScanContent(scan,skipchildren)
 {
+  var info=fdjtGetOffset(scan);
   var next=((skipchildren)?
 	    (fdjtNextNode(scan,_sbookIsContentBlock)):
 	    (fdjtForwardNode(scan,_sbookIsContentBlock)));
+  var nextinfo=((next)&&(fdjtGetOffset(next)));
   if (!(next)) {}
+  else if ((nextinfo.height===0)||(nextinfo.top<info.top)) 
+    // Skip over weird nodes
+    return _sbookScanContent(next,skipchildren);
   else if ((sbookIsPageHead(next))||(sbookIsPageBlock(next))) {}
   else if ((next.childNodes)&&(next.childNodes.length>0)) {
     var children=next.childNodes;
@@ -389,7 +410,14 @@ function _sbookIsJustContainer(node)
       else return false;}
     else {}}
   return true;
-}    
+}
+
+function _sbookIsContainer(node)
+{
+  var next=_sbookScanContent(node);
+  if (fdjtHasParent(next,node)) return next;
+  else return false;
+}
 
 
 function _sbookTracePagination(name,elt,info)
@@ -444,7 +472,7 @@ function _sbookPageNodeInfo(elt,info,curpage)
 
 /* This adjusts the offset of a page and its successor to avoid widows */
 
-function sbookAdjustPageBreak(node,edge)
+function sbookAdjustPageBreak(node,top,bottom)
 {
   var nodeinfo=fdjtGetOffset(node);
   var styleinfo=((window.getComputedStyle)&&
@@ -460,7 +488,8 @@ function sbookAdjustPageBreak(node,edge)
       else {
 	var offinfo=fdjtGetOffset(child);
 	if ((!(offinfo))||(offinfo.height===0)) continue;
-	else if (offinfo.bottom>=edge)
+	else if (offinfo.bottom<top) continue;
+	else if (offinfo.bottom>=bottom)
 	  return lastbottom;
 	else if (offinfo.top>=lastbottom) { // new line 
 	  lastbottom=linebottom;
@@ -476,13 +505,16 @@ function sbookAdjustPageBreak(node,edge)
       if ((!(offinfo))||(offinfo.height===0)) {
 	node.replaceChild(child,chunk);
 	continue;}
-      else if (offinfo.top>=edge) {
-	// if it's over the edge, put it back
+      else if (offinfo.bottom<top) {
+	node.replaceChild(child,chunk);
+	continue;}
+      else if (offinfo.top>=bottom) {
+	// if it's over the bottom, put it back
 	// and use the last bottom
 	node.replaceChild(child,chunk);
 	return lastbottom;}
-      else if (offinfo.bottom<edge) {
-	// if it's above the edge, put it back and keep going
+      else if (offinfo.bottom<bottom) {
+	// if it's above the bottom, put it back and keep going
 	node.replaceChild(child,chunk);
 	if (offinfo.top>=lastbottom) { // new line 
 	  lastbottom=linebottom;
@@ -491,7 +523,7 @@ function sbookAdjustPageBreak(node,edge)
 	  linebottom=offinfo.bottom;
 	else {}}
       else {
-	// It's stradding the edge, so we go finer
+	// It's stradding the bottom, so we go finer
 	var split=sbookSplitNode(child);
 	node.replaceChild(split,chunk);
 	var words=split.childNodes;
@@ -500,8 +532,9 @@ function sbookAdjustPageBreak(node,edge)
 	  var word=words[j++];
 	  if (word.nodeType!==1) continue;
 	  var wordoff=fdjtGetOffset(word);
-	  if (wordoff.bottom>=edge) {
-	    // As soon as we're over the edge, we return the last bottom
+	  if (wordoff.bottom<top) continue;
+	  else if (wordoff.bottom>=bottom) {
+	    // As soon as we're over the bottom, we return the last bottom
 	    node.replaceChild(child,split);
 	    return lastbottom;}
 	  else if (wordoff.top>=lastbottom) { // new line
