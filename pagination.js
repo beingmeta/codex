@@ -117,7 +117,8 @@ function sbookPaginate(pagesize,start)
   pages.push(pagetop); pageinfo.push(curpage);
   while (scan) {
     var oversize=false;
-    var next=_sbookScanContent(scan); var nextinfo=fdjtGetOffset(next);
+    var next=_sbookScanContent(scan);
+    var nextinfo=(next)&&sbookNodeInfo(next);
     var splitblock=false; var forcebottom=false;
     var widowthresh=((info.fontsize)*sbook_widow_limit);
     var orphanthresh=((info.fontsize)*sbook_orphan_limit);
@@ -129,6 +130,9 @@ function sbookPaginate(pagesize,start)
 		  "["+pagetop+","+pagelim+
 		  "/"+pagesize+"/"+widowthresh+","+orphanthresh+"] "));
     if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info,curpage));
+    if ((dbginfo)&&(next))
+      dbginfo=dbginfo+" ... N#"+next.id+
+	_sbookPageNodeInfo(next,nextinfo,curpage);
     if (sbook_trace_pagination>1) _sbookTracePagination("SCAN",scan,info);
     if ((dbginfo)&&(scan.getAttribute("sbookpagedbg")))
       dbginfo=scan.getAttribute("sbookpagedbg")+" // "+dbginfo;
@@ -245,6 +249,9 @@ function sbookPaginate(pagesize,start)
 	// move the pagelim up to make sure the orphans aren't isolated
 	curpage.bottom=pagelim=info.bottom-orphanthresh;
 	newtop=splitblock=scan;}
+    //  If the next node is inside the current one, just break
+    else if (fdjtHasParent(next,scan))
+      newtop=scan;
     else {
       // Just break at (around) the pagelim
       newtop=splitblock=scan;
@@ -296,7 +303,7 @@ function sbookPaginate(pagesize,start)
       else curpage.top=newinfo.top;
       // If the item at the top of the new page is larger than a page,
       // declare the page oversize
-      if (newinfo.height>pagesize) curpage.oversize=oversize=true;
+      // (Left out for now)
       // Initialize the first and last elements on the page
       curpage.first=newtop; curpage.last=newtop;
       // Indicate the straddling top element, if we're split

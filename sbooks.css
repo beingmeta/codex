@@ -430,6 +430,7 @@ div#SBOOKHUD div#SBOOKGLOSSES.onepassage {
 /* The App HUD */
 
 div#SBOOKHUD div#SBOOKAPP {
+  font-family: arial,helvetica,sans,sans-serif;
   position: fixed; top: 60px; bottom: 50px;
   left: 74px; right: 75px; z-index: 250;
   overflow: auto;
@@ -583,10 +584,11 @@ div#SBOOKAPP div.helpbody div.sbookh1 div.motto {
 
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
      div.setting span.checkspan {
-  font-size: 150%; color: orange;}
+  font-size: 125%; color: orange;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
      div.setting span.checkspan input[type='CHECKBOX'] {
-  width: 2em; height: 2em; background-color: orange;}
+  width: 16px; height: 16px; color: orange; background-color: orange;
+  vertical-align: bottom;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
      div.setting div.explanation { 
   font-style: italic; clear: both; margin-left: 3em;}
@@ -1407,7 +1409,7 @@ table.login td.userlogin img { vertical-align: top; height: 16px;}
 
 /* About information */
 
-div.sbookabout { text-align: center; font-family: sans,sans-serif;}
+div.sbookabout { text-align: center; }
 div.sbookabout div.title { font-size: 150%;}
 div.sbookabout div.byline { font-size: 125%; font-weight: bold;}
 div.sbookabout div.publisher { font-style: italic;}
