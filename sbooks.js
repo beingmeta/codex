@@ -702,7 +702,7 @@ function sbook_scanner(child,scanstate,skiptoc)
     child.refuri=refuri;
     fdjtInsert(sbook_refuris,refuri);}
   var refid=child.getAttributeNS('refid','http://www.sbooks.net')||
-    child.getAttribute('refuid')||
+    child.getAttribute('refid')||
     child.getAttribute('data-refid');
   if ((refid)&&(refid!==child.id)) sbook_hashmap[refid]=child;
   if (level=sbookHeadLevel(child)) {
