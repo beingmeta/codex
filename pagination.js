@@ -803,15 +803,13 @@ function sbookNextPrev_stopit(evt)
 
 function sbookPageView(flag)
 {
-  if (!($("SBOOKPAGEVIEWINFO"))) sbookSetupPageInfoHUDs();
   if (flag) {
     sbook_pageview=true;
     $("SBOOKPAGEVIEW").checked=true;
     fdjtSetCookie("sbookpageview","yes",false,"/");
     fdjtAddClass(document.body,"sbookpageview");
     fdjtDropClass(document.body,"sbookscroll");
-    if ($("SBOOKPAGEVIEWINFO"))
-      sbookShowInfoHUD($("SBOOKPAGEVIEWINFO"));
+    sbookShowMessage(sbook_pageview_message);
     sbookCheckPagination();
     sbookGoToPage(sbookGetPage(sbook_focus||sbook_root));}
   else {
@@ -821,51 +819,7 @@ function sbookPageView(flag)
     fdjtAddClass(document.body,"sbookscroll");
     fdjtDropClass(document.body,"sbookpageview");
     fdjtSetCookie("sbookpageview","no",false,"/");
-    if ($("SBOOKSCROLLVIEWINFO"))
-      sbookShowInfoHUD($("SBOOKSCROLLVIEWINFO"));}
-}
-
-/* Setup page info huds */
-
-function sbookSetupPageInfoHUDs()
-{
-  var onmsg=
-    fdjtDiv("#SBOOKPAGEVIEWINFO.infohud",
-	    fdjtDiv("content",
-		    fdjtDiv("body","Paged reading enabled"),
-		    fdjtDiv("details",
-			    fdjtDiv("help","Type ",fdjtSpan("key","P"),
-				    " to switch to scrolled reading"),
-			    fdjtDiv("help",
-				    fdjtSpan("key","Space"),"/",fdjtSpan("key","Page Down"),
-				    " for next page"),
-			    fdjtDiv("help",
-				    fdjtSpan("key","Backspace"),"/",
-				    fdjtSpan("key","Page Up"),
-				    " for previous page"))));
-  var offmsg=
-    fdjtDiv("#SBOOKSCROLLVIEWINFO.infohud",
-	    fdjtDiv("content",
-		    fdjtDiv("body","Scrolled reading enabled"),
-		    fdjtDiv("details",
-			    fdjtDiv("help","Type ",fdjtSpan("key","P"),
-				    " to switch to paged reading"),
-			    fdjtDiv("help","use scroll bar"),
-			    fdjtDiv("help",
-				    fdjtSpan("key","Space"),"/",
-				    fdjtSpan("key","Page Down"),
-				    " to scroll forward one page"),
-			    fdjtDiv("help",
-				    fdjtSpan("key","Backspace"),"/",
-				    fdjtSpan("key","Page Up"),
-				    " to scroll back one page"),
-			    fdjtDiv("help","Type ",fdjtSpan("key","S"),
-				    " for settings"))));
-  onmsg.onclick=_sbookHideInfoHUD; onmsg.title='click to dismiss';
-  onmsg.sbookinui=true;
-  offmsg.onclick=_sbookHideInfoHUD; offmsg.title='click to dismiss';
-  offmsg.sbookinui=true;
-  fdjtAppend(sbookHUD,onmsg,offmsg);
+    sbookShowMessage(sbook_scrollview_message);}
 }
 
 /* Setting up the page layout */

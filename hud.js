@@ -41,12 +41,13 @@ var sbookSearchHUD=false;
 // This is the TOC HUD for navigation
 var sbookNavHUD=false;
 // This is the "info HUD" for informative message
-var sbookInfoHUD=false;
+var sbookMessageHUD=false;
+var sbookMessageHUD_timeout=5000;
 
 // This is the last active 'app' tab
 var sbook_last_app="help";
 // This is the regex for all sbook apps
-var sbook_apps=["help","login","manage","settings","apptoc","about"];
+var sbook_apps=["help","login","overlays","settings","apptoc","about"];
 
 function createSBOOKHUD()
 {
@@ -112,12 +113,19 @@ function createSBOOKHUD()
 
     hud.sbookui=true;
 
+    sbookSetupMessages(hud);
+
     fdjtPrepend(document.body,hud);
 
     if (sbook_head) sbookSetHead(sbook_head);
 
     hud.setAttribute("flatwidth","0");
 
+    var fasthelp=document.getElementsByName('SBOOKFASTHELP');
+    if (fasthelp) {
+      var i=0; while (i<fasthelp.length)
+		 fasthelp[i++].innerHTML=sbook_fasthelp;}
+    
     return hud;}
 }
 
@@ -158,7 +166,7 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(login)|(settings)|(manage)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)|(apptoc)|(about)/g;
+  /(login)|(settings)|(overlays)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)|(apptoc)|(about)/g;
 
 function sbookHUDMode(mode)
 {
@@ -172,11 +180,12 @@ function sbookHUDMode(mode)
       if (mode===true) mode="minimal";
       if (typeof mode !== 'string') 
 	throw new Error('mode arg not a string');
-      if ((mode==="manage")&&(!($("APPFRAME").src)))
+      if ((mode==="overlays")&&(!($("APPFRAME").src)))
 	sbookSetupAppFrame();
       sbook_mode=mode;
       sbook_last_mode=mode;
       if (fdjtContains(sbook_apps,mode)) sbook_last_app=mode;
+      if (sbookMessageHUD) sbookShowMessage(false);
       fdjtAddClass(document.body,"hudup");
       fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
       if ((mode==="glosses")&&(sbook_focus))
@@ -220,28 +229,100 @@ function sbookDropHUD()
   return sbookHUDMode(false);
 }
 
-function sbookShowInfoHUD(hud)
+/* HUD Messages */
+
+var sbook_message_timer=false;
+
+function sbookShowMessage(hud,expires)
 {
-  sbookInfoHUD=hud; fdjtAddClass(hud,"visible");
-  setTimeout(5000,_sbookHideInfoHUD);
+  if ((sbookMessageHUD)&&(hud!==sbookMessageHUD)) {
+    var oldhud=sbookMessageHUD;
+    fdjtDropClass(oldhud,"visible");
+    if (sbook_message_timer) {
+      clearTimeout(sbook_message_timer);
+      sbook_message_timer=false;}
+    if ((hud)||(sbook_mode)) {
+      fdjtAddClass(sbookMessageHUD,"replaced");
+      setTimeout(sbookMessageHUD_timeout,function() {
+	  fdjtDropClass(oldhud,"replaced");});}
+    sbookMessageHUD=false;}
+  if (!(hud)) {
+    if (sbook_message_timer) {
+      clearTimeout(sbook_message_timer);
+      sbook_message_timer=false;}
+    if (sbook_mode) fdjtAddClass(sbookHUD,sbook_mode);
+    return;}
+  else if (typeof hud === 'string')
+    hud=fdjtDiv("messagehud",fdjtDiv("body",hud));
+  else {}
+  sbookMessageHUD=hud;
+  fdjtDropClass(sbookHUD,sbookHUDMode_pat);
+  fdjtAddClass(hud,"visible");
+  if ((typeof expires === 'undefined')||(expires===true))
+    expires=sbookMessageHUD_timeout;
+  if (sbook_message_timer)
+    clearTimeout(sbook_message_timer);
+  sbook_message_timer=setTimeout(_sbookHideMessageHUD,expires);
 }
 
-function _sbookHideInfoHUD(evt)
+function _sbookHideMessageHUD(evt)
 {
-  if (sbookInfoHUD) {
-    fdjtDropClass(sbookInfoHUD,"visible");
-    sbookInfoHUD=false;}
+  sbookShowMessage(false);
   if (evt) fdjtCancelEvent(evt);
 }
 
-// What to use as the glossmark image URI.  This 'image' 
-//  really invokes a script to pick or generate a
-//  image for the current user and document.
-var sbook_glossmark_img="sBooksWE_32x32.png";
-function sbook_glosses_icon(uri)
+var sbook_startup_message;
+var sbook_pageview_message;
+var sbook_scrollview_message;
+
+function sbookSetupMessages(hud)
 {
-  return sbook_webglosses_root+"glossmarks/"+sbook_glossmark_img+
-    ((uri) ? ("?URI="+encodeURIComponent(uri)) : "");
+  sbook_startup_message=$("SBOOKSTARTUPMESSAGE")||
+    fdjtDiv("#SBOOKSTARTUPMESSAGE.messagehud");
+  sbook_pageview_message=$("SBOOKPAGEVIEWMESSAGE")||
+    fdjtDiv("#SBOOKPAGEVIEWMESSAGE.messagehud",
+	    fdjtDiv("body","Paged reading enabled"),
+	    fdjtDiv("details",
+		    fdjtDiv("help","Type ",fdjtSpan("key","P"),
+			    " to switch to scrolled reading"),
+		    fdjtDiv("help",
+			    fdjtSpan("key","Space"),"/",fdjtSpan("key","Page Down"),
+			    " for next page"),
+		    fdjtDiv("help",
+			    fdjtSpan("key","Backspace"),"/",
+			    fdjtSpan("key","Page Up"),
+			    " for previous page")));
+  sbook_scrollview_message=$("SBOOKSCROLLVIEWMESSAGE")||
+    fdjtDiv("#SBOOKSCROLLVIEWINFO.infohud",
+	      fdjtDiv("body","Scrolled reading enabled"),
+	      fdjtDiv("details",
+		      fdjtDiv("help","Type ",fdjtSpan("key","P"),
+			      " to switch to paged reading"),
+		      fdjtDiv("help","use scroll bar"),
+		      fdjtDiv("help",
+			      fdjtSpan("key","Space"),"/",
+			      fdjtSpan("key","Page Down"),
+			      " to scroll forward one page"),
+		      fdjtDiv("help",
+			      fdjtSpan("key","Backspace"),"/",
+			      fdjtSpan("key","Page Up"),
+			      " to scroll back one page"),
+		      fdjtDiv("help","Type ",fdjtSpan("key","S"),
+			      " for settings")));
+  sbook_startup_message.innerHTML=sbook_sbookstartup;
+  sbook_scrollview_message.onclick=_sbookHideMessageHUD;
+  sbook_scrollview_message.sbookinui=true;
+  sbook_scrollview_message.title='click to dismiss';
+  sbook_pageview_message.onclick=_sbookHideMessageHUD;
+  sbook_pageview_message.sbookinui=true;
+  sbook_pageview_message.title='click to dismiss';
+  sbook_startup_message.onclick=_sbookHideMessageHUD;
+  sbook_startup_message.sbookinui=true;
+  sbook_startup_message.title='click to dismiss';
+  fdjtAppend(sbookHUD,
+	     sbook_startup_message,
+	     sbook_pageview_message,
+	     sbook_scrollview_message);
 }
 
 /* Handlers */
@@ -316,6 +397,8 @@ function sbookHelpHighlight(hudelt)
     hudelt.style.display='block';
     hudelt.style.opacity=0.9;}
 }
+
+/* The App HUD */
 
 function sbookCreateAppHUD(eltspec)
 {

@@ -1000,11 +1000,17 @@ function sbookSetTarget(target)
       ((target===sbook_root)||(target===document.body))) {
     return;}
   else {
+    var saved_y=((fdjtIsVisible(target))&&(window.scrollY));
+    var saved_x=((fdjtIsVisible(target))&&(window.scrollX));
     fdjtAddClass(target,"sbooktarget");
-     sbook_target=target;
+    sbook_target=target;
     if (target.id) {
       window.location.hash=target.id;
-      if (sbook_pageview) sbookGoToPage(sbookGetPage(target));}
+      if (sbook_pageview) sbookGoToPage(sbookGetPage(target));
+      else if ((saved_y)&&(saved_y!==window.scrollY))
+	window.scrollTo(saved_x,saved_y);
+      else if (!(fdjtIsVisible(target)))
+	sbookScrollTo(target);}
     if (target.title) sbook_target_title=target.title;
     target.title=_('click to add a gloss');}
 }
@@ -1042,9 +1048,10 @@ function sbookScrollTo(elt,cxt)
     sbookSetHead(elt);
   else if (elt.sbook_head)
     sbookSetHead(elt.sbook_head);
-  if (sbook_pageview) sbookGoToPage(sbookGetPage(elt));
-  else
-    if ((!cxt) || (elt===cxt))
+  if (sbook_pageview)
+    sbookGoToPage(sbookGetPage(elt));
+  else if (fdjtIsVisible(elt)) {}
+  else if ((!cxt) || (elt===cxt))
     fdjtScrollTo(elt,sbookGetStableId(elt),false,true,sbookDisplayOffset());
   else fdjtScrollTo(elt,sbookGetStableId(elt),cxt,true,sbookDisplayOffset());
 }
@@ -1098,12 +1105,14 @@ function sbook_onkeydown(evt)
     else if (sbook_preview_target)
       sbookPreview(sbook_preview_target);
     else return;}
-  else if ((kc===32)||(kc===34))
+  else if ((kc===32)||(kc===34)) {
     /* Space char or page down */
-    sbookForward();
-  else if ((kc===8)||(kc===45)||(kc===33))
+    sbookHUDMode(false);
+    sbookForward();}
+  else if ((kc===8)||(kc===45)||(kc===33)) {
     /* Backspace, Delete, or Page Up */
-    sbookBackward();
+    sbookHUDMode(false);
+    sbookBackward();}
   else if (kc===36)  
     // Home goes to the current head.
     // (more nav keys to come)
@@ -1137,7 +1146,7 @@ var sbook_modechars={
  116: "apptoc",84: "apptoc",
  104: "help",72: "help",
  103: "glosses",71: "glosses",
- 67: "manage", 99: "manage"};
+ 79: "overlays", 111: "overlays"};
 
 function sbook_onkeypress(evt)
 {
@@ -1713,28 +1722,31 @@ function sbookSetup()
   var fdjt_done=new Date();
   sbookGetSettings();
   createSBOOKHUD();
+  if (!((document.location.search)&&
+	(document.location.search.length>0))) {
+    sbookHUDMode(false);
+    sbookShowMessage(sbook_startup_message,false);}
   sbookGetAppSettings();
   sbookPageSetup();
   if ((document.location.search)&&
       (document.location.search.length>0)) {
     sbookSetupAppFrame();
     sbookHUDMode("social");}
-  else sbookHUDMode("help");
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Scanning document structure"));
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Scanning document structure"));
   var scanstate=sbookGatherMetadata();
   sbookInitNavHUD();
   var scan_done=new Date();
   sbookSparseMode(sbook_sparse);
   sbookTabletMode(sbook_tablet);
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Determining page layout"));
-  sbookPageView(sbook_pageview);
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Processing knowledge sources"));
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Determining page layout"));
+  if (sbook_pageview) sbookCheckPagination();
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Processing knowledge sources"));
   if (knoHTMLSetup) knoHTMLSetup();
   if (scanstate) sbookHandleInlineKnowlets(scanstate);
   var knowlets_done=new Date();
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Indexing tags"));
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Indexing tags"));
   if (scanstate) sbookIndexTags(scanstate);
   sbookIndexTechnoratiTags(knowlet);
   var tags_done=new Date();
@@ -1742,7 +1754,7 @@ function sbookSetup()
     $("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
   if (sbook_gloss_data) {sbookGlossesSetup();}
   else {
-    fdjtReplace("SBOOKSTARTUP",
+    fdjtReplace("SBOOKPROGRESS",
 		fdjtDiv("message","Loading glosses..."));
     var refuri=sbook_refuri; var added=[];
     var uri="https://"+sbook_server+"/sbook/glosses.fdcgi?URI="+
@@ -1773,6 +1785,7 @@ function sbookSetup()
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
   window.onkeyup=sbook_onkeyup;
+  sbookShowMessage(sbook_startup_message);
   // sbookFullCloud();
   _sbook_setup=true;
 }
@@ -1785,15 +1798,15 @@ function sbookGlossesSetup()
 {
   sbookUserSetup();
   if (_sbook_gloss_setup) return;
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Importing glosses..."));
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Importing glosses..."));
   sbookInitSocialHUD();
   sbookInitSearchHUD();
   sbookImportGlosses();
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Analyzing tag frequencies..."));
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Analyzing tag frequencies..."));
   sbookTagScores();
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Setting up search cloud..."));
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Setting up search cloud..."));
   sbookFullCloud();
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Setting up glossing cloud..."));
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Setting up glossing cloud..."));
   fdjtReplace("SBOOKMARKCLOUD",sbookMarkCloud());
   sbookSetupGlossServer();
   if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
@@ -1801,11 +1814,16 @@ function sbookGlossesSetup()
     if (sbook_user)
       $("SBOOKFRIENDLYOPTION").value=sbook_user;
     else $("SBOOKFRIENDLYOPTION").value=null;
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Adding print icons..."));
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Adding print icons..."));
   if (sbook_heading_qricons) sbookAddQRIcons();
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Importing personal overlays..."));
+  fdjtReplace("SBOOKPROGRESS",fdjtDiv("message","Importing personal overlays..."));
   if (sbook_user) sbookImportOverlays();
-  fdjtReplace("SBOOKSTARTUP",fdjtDiv("message",""));
+  var done=new Date().getTime();
+  fdjtReplace("SBOOKPROGRESS",
+	      fdjtDiv("message",
+		      "sBook setup completed in ",
+		      ((done-_sbook_setup_start.getTime())/1000),
+		      " seconds"));
   // fdjtTrace("[%fs] Done with glosses setup",fdjtET());
   _sbookHUDSplash();
   _sbook_gloss_setup=true;

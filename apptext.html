@@ -45,10 +45,10 @@
       onclick='sbookHUDMode("settings"); fdjtCancelEvent(event); return false;'
       title='alter appearance and interaction'>
  Settings</span>
-<span class='tab' contentid='APPMANAGE'
-      onclick='sbookHUDMode("manage"); fdjtCancelEvent(event); return false;'
+<span class='tab' contentid='APPOVERLAYS'
+      onclick='sbookHUDMode("overlays"); fdjtCancelEvent(event); return false;'
       title='manage how sBooks enhances your sBook'>
- Manage</span>
+ Overlays</span>
 <span class='tab' contentid='APPLOGIN'
       onclick='sbookHUDMode("login"); fdjtCancelEvent(event); return false;'
       title='login to sBooks'>
@@ -61,33 +61,10 @@
 </div>
 <div class='tabcontent helpbody' id='APPHELP'>
 <div class='sbookh1'>Welcome to sBooks!
-  <div class='motto'>&ldquo;possibly the best thing since sliced paper&rdquo;</div>
+  <div class='motto'>&ldquo;the best idea since sliced paper&rdquo;</div>
 </div>
 
-<div class='fasthelp'>
-<table class='fdjt'>
-<tr><th>Click</th>
-  <td>
-<span class='keydef'><span class='key'>once</span> to see context, <span class='key'>again</span> to add/share a gloss;</span></td></tr>
-<tr><th>Keys</th>
-  <td>
-    <span class='keydef'><span class='key'>H</span>elp</span>, 
-    <span class='keydef'><span class='key'>T</span>oC (map)</span>,
-    <span class='keydef'><span class='key'>F</span>ind (search)</span>,
-    <span class='keydef'><span class='key'>S</span>ettings</span>,
-    <span class='keydef'><span class='key'>C</span>onnect</span>,
-    <span class='keydef'><span class='key'>Escape</span> to toggle
-      the HUD.</span></td></tr>
-<tr><th>Hold</th> <td><span class='key'>Shift</span> to temporarily show/hide the overlay.</td></tr>
-<tr><th>Forward</th><td><span class='key'>Space</span>, <span class='key'>N</span>, <span class='key'>Page
-Down</span>, or tap the <span class='key'>right margin</span</td></tr>
-<tr><th>Backward</th><td><span class='key'>Backspace</span>, <span class='key'>P</span>, <span class='key'>Page
-Up</span>, or tap the <span class='key'>left margin</span></td></tr>
-<tr><th>Preview</th> <td>a reference by <strong>holding down</strong>
-    the <span class='key'>mouse button</span> or <span class='key'>Control key</span>.
-</td></tr>
-</table>
-</div>
+<div class='fasthelp' name='SBOOKFASTHELP'></div>
 
 <p>This sBooks translucent <strong>HUD</strong> (heads up display)
 provides rich <em>context and interaction</em> around this book's
@@ -368,7 +345,7 @@ or methods.</p>
 <div class='about'></div>
 </div>
 </div>
-<div class='tabcontent' id='APPMANAGE'>
+<div class='tabcontent' id='APPOVERLAYS'>
 <iframe id='APPFRAME' frameborder='0'
 	scrolling='auto'/>
 </div>

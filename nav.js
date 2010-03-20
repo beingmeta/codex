@@ -255,6 +255,7 @@ function sbookTOC_onclick(evt)
   evt=evt||event||null;
   // sbook_trace("sbookTOC_onclick",evt);
   var target=sbookGetRef($T(evt));
+  var mode=sbook_mode;
   sbookStopPreview(evt);
   if (target===sbook_head) {
     sbookHUDMode(false);
@@ -264,7 +265,8 @@ function sbookTOC_onclick(evt)
   var info=sbook_getinfo(target);
   sbookSetTarget(target);
   sbookGoTo(target);
-  if ((info.sub)&&(info.sub.length>3)) sbookHUDMode("toc");
+  if (((info.sub)&&(info.sub.length>3))&&(mode==="toc"))
+    sbookHUDMode("toc");
   return false;
 }
 
