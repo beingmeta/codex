@@ -1101,8 +1101,8 @@ function sbook_onkeydown(evt)
   else if ((kc===32)||(kc===34))
     /* Space char or page down */
     sbookForward();
-  else if ((kc===8)||(kc===45)||(kc===33)||(kc===80))
-    /* Backspace, Delete, P, or Page Up */
+  else if ((kc===8)||(kc===45)||(kc===33))
+    /* Backspace, Delete, or Page Up */
     sbookBackward();
   else if (kc===36)  
     // Home goes to the current head.
@@ -1146,8 +1146,12 @@ function sbook_onkeypress(evt)
   // sbook_trace("sbook_onkeypress",evt);
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
-  else if ((evt.charCode===65)||(evt.charCode===97))
+  else if ((evt.charCode===65)||(evt.charCode===97)) /* A */
     modearg=sbook_last_app||"help";
+  else if (((!(sbook_mode))||(sbook_mode==="minimal"))&&
+	    ((evt.charCode===112)||(evt.charCode===80))) /* P */
+    if (sbook_pageview) sbookPageView(false);
+    else sbookPageView(true);
   else modearg=sbook_modechars[evt.charCode];
   if (modearg) 
     if (sbook_mode===modearg) sbookHUDMode(false);
@@ -1705,6 +1709,7 @@ function sbookSetup()
   if (_sbook_setup) return;
   if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
   else fdjtAddClass(document.body,"nosbookuser");
+  fdjtAddClass(document.body,"sbooknovice");
   var fdjt_done=new Date();
   sbookGetSettings();
   createSBOOKHUD();
@@ -1724,7 +1729,6 @@ function sbookSetup()
   sbookSparseMode(sbook_sparse);
   sbookTabletMode(sbook_tablet);
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Determining page layout"));
-  if (sbook_pageview) sbookUpdatePagination();
   sbookPageView(sbook_pageview);
   fdjtReplace("SBOOKSTARTUP",fdjtDiv("message","Processing knowledge sources"));
   if (knoHTMLSetup) knoHTMLSetup();

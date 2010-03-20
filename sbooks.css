@@ -87,6 +87,29 @@ body.hudup div#SBOOKHUD div.hudblock { opacity: 0.8;}
 div#SBOOKHUD div.hudblock:hover { opacity: 0.5;}
 body.hudup div#SBOOKHUD.minimal div.hudblock { opacity: 0.8;}
 
+div.infohud { 
+  position: fixed;
+  top: 20%; bottom: 20%; left: 20%; right: 20%;
+  opacity: 0.95; text-align: center; overflow: hidden;
+  font-family: sans,sans-serif; color: gold; background-color: gray;
+  font-size: 150%;
+  display: none;}
+div.infohud.visible { display: block;}
+div.infohud:hover { display: block;}
+
+div.infohud div.content { height: 100%; width: 100%;}
+
+div.infohud div.body {
+    font-weight: bold; font-size: 200%;
+    margin-bottom: 1em;}
+div.infohud div.details {
+  vertical-align: bottom;}
+div.infohud div.help { }
+div.infohud div.help span.key {
+    font-weight: bold; font-variant: small-caps; font-family: fixed;
+    color: white;}
+
+
 img.hudbutton { 
   opacity: 0.2; z-index: 200;
   position: fixed;
@@ -442,6 +465,48 @@ div#SBOOKHUD div#SBOOKAPP {
   padding-left: 5%; padding-right: 5%;
   padding-bottom: 12px; padding-top: 4px;}
 div#SBOOKHUD div#SBOOKAPP { display: none;}
+
+img.hudbutton[alt='app'] { 
+  bottom: 0px; left: 0px;
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px;}
+div#SBOOKHUD.toc img.hudbutton[alt='app'] { 
+  opacity: 1.0;
+  border-right: solid lightblue 4px;
+  border-top: solid lightblue 4px;}
+body.nosbookuser div#SBOOKHUD img.hudbutton[alt='app'] { display: none;}
+body.sbooknovice div#SBOOKHUD img.hudbutton[alt='app'] { display: none;}
+
+img.hudbutton[alt='?'] { 
+  bottom: 0px; left: 0px;
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px;}
+div#SBOOKHUD.toc img.hudbutton[alt='?'] { 
+  opacity: 1.0;
+  border-right: solid lightblue 4px;
+  border-top: solid lightblue 4px;}
+body div#SBOOKHUD img.hudbutton[alt='?'] { display: none;}
+body.sbooknovice div#SBOOKHUD img.hudbutton[alt='?'] { display: block;}
+body.sbooknouser.sbooknovice div#SBOOKHUD img.hudbutton[alt='?'] {
+    display: none;}
+
+img.hudbutton[alt='login'] { 
+  bottom: 0px; left: 0px;
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px;}
+div#SBOOKHUD.toc img.hudbutton[alt='login'] { 
+  opacity: 1.0;
+  border-right: solid lightblue 4px;
+  border-top: solid lightblue 4px;}
+body div#SBOOKHUD img.hudbutton[alt='login'] {display: none;}
+body.nosbookuser div#SBOOKHUD img.hudbutton[alt='login'] {display: block;}
+
 div#SBOOKHUD #SBOOKAPPCLOSE { 
   position: fixed; top: 60px; left: 52px;
   padding: 1px; margin: 0px; width: 20px; height: 20px;
@@ -548,18 +613,19 @@ div#SBOOKHUD.about div#SBOOKAPP div.tabcontent#APPABOUT { display: block;}
 
 div#SBOOKHUD div#SBOOKAPP span.tab[contentid='APPHELP'] {
     font-weight: bold; color: yellow;}
-
 div#SBOOKHUD.help div#SBOOKAPP span.tab[contentid='APPHELP'] {
     border-bottom: none; color: gold;}
+
 div#SBOOKHUD.login div#SBOOKAPP span.tab[contentid='APPLOGIN'] {
     border-bottom: none; color: gold;}
 div#SBOOKHUD.settings div#SBOOKAPP span.tab[contentid='APPSETTINGS'] {
     border-bottom: none; color: gold;}
 div#SBOOKHUD.manage div#SBOOKAPP span.tab[contentid='APPMANAGE'] {
     border-bottom: none; color: gold;}
-div#SBOOKHUD.apptoc div#SBOOKAPP span.tab[contentid='APPTOC'] {
-    border-bottom: none; color: gold;}
+
 div#SBOOKHUD.about div#SBOOKAPP span.tab[contentid='APPABOUT'] {
+    border-bottom: none; color: gold;}
+div#SBOOKHUD.apptoc div#SBOOKAPP span.tab[contentid='APPTOC'] {
     border-bottom: none; color: gold;}
 
 div#SBOOKHUD div#SBOOKAPP div#APPMANAGE iframe {
@@ -601,6 +667,8 @@ div#SBOOKAPP div.helpbody div.sbookh1 {
 div#SBOOKAPP div.helpbody div.sbookh1 div.motto {
   font-weight: normal; font-style: italic; font-size: 50%; color: yellow;}
 
+div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS div.setting {
+    clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
      div.setting span.checkspan {
   font-size: 125%; color: orange;}
@@ -612,9 +680,10 @@ div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
      div.setting div.explanation { 
   font-style: italic; clear: both; margin-left: 3em;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
-     div.setting span.button {
-	 float: right; cursor: pointer; 
-	 background-color: orange; color: white; font-weight: bold;
+     div.setting .button {
+	 float: right; clear: right; cursor: pointer; 
+	 background-color: orange; color: white;
+	 font-weight: bold; font-variant: small-caps;
 	 padding: 4px; border: solid orange 2px;
 	 border-radius: 6px;
 	 -khtml-border-radius: 6px; 
@@ -665,7 +734,8 @@ div#SBOOKHUD div.hud#SBOOKMARK {
 
 div#SBOOKHUD span.dterm { color: gold;}
 div#SBOOKHUD span.dterm.prime { font-weight: bold;}
-body.nosbookuser .tab#SBOOKLOGOUT { display: none;}
+
+body.nosbookuser #SBOOKLOGOUT { display: none;}
 
 body span.tab[CONTENTID='APPLOGIN'] { display: none;}
 body.nosbookuser span.tab[CONTENTID='APPLOGIN'] { display: inline;}
@@ -1443,6 +1513,14 @@ body.tablet span.glossmark { width: 50px; height: 50px;}
 
 body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
 
+div#SBOOKPAGEMESSAGE {
+  position: fixed;
+  top: 20%; bottom: 20%; left: 20%; right: 20%;
+  opacity: 0.9; text-align: center;
+  display: none; font-size: 200%;}
+div#SBOOKPAGEMESSAGE div#SBOOKPAGEMESSAGETEXT {
+  font-size: 200%; font-weight: bold;}
+
 body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
 body div.sbookmargin {
@@ -1454,13 +1532,19 @@ body div#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
 body div.sbookmargin#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
 body div.sbookmargin#SBOOKBOTTOMMARGIN {
   bottom: 0; left: 0; right: 0;}
- body.sbookscrollview div.sbookmargin { display: none;}
+body.sbookscrollview div.sbookmargin { display: none;}
 body.sbookpageview div.sbookmargin { display: block;}
+body.sbookpageview { overflow: hidden; }
 body.preview div.sbookmargin { display: none;}
 body.sbookpageview.preview div.sbookmargin { display: none;}
 
 .sbookpage { page-break-before: always;}
+.sbookpageblock { page-break-inside: avoid;}
 .sbookkeep { page-break-inside: avoid;}
+.sbookonepage {
+    page-break-inside: avoid;
+    page-break-before: always;
+    page-break-after: always;}
 
 span.sbookpageprobe span {
     vertical-align: baseline; padding: 0px; margin: 0px; border: 0px;}

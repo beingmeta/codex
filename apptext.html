@@ -6,28 +6,29 @@
      onclick='sbookHUDMode(false); return false'/>
 </span>
 <div id='SBOOKAPPTOP'>
-<a id='SBOOKUSERPIC' name='IDLINK'
-   href='javascript:sbookHUDMode("login");'
+<a name='IDLINK' href='javascript:sbookHUDMode("login");'
    title='click to login'
    class='userpic'>
 <img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
-     alt='login'/></a>
+     alt='login' id='SBOOKUSERPIC'/></a>
 <a href='javascript:sbookHUDMode("login");' name='IDLINK'>
 <span id='SBOOKIBELONGTO'>
   This sBook Belongs To:
 <span id='SBOOKUSERNAME' class='username'>(not logged in)</span></span>
 </a>
 <span class='applinks'>
-(<a name='SBOOKOFFLINELINK' title='click for personalized offline version'
-    target='_blank'>
+(<a name='SBOOKOFFLINELINK' target='_blank'
+    title='click for personalized offline version'>
     Offline,</a>
-<a name='SBOOKEPUBLINK' title='click to download personalized ePub version'
-    target='_blank'>
+<a name='SBOOKEPUBLINK' target='_blank'
+   title='click to download personalized ePub version'>
   ePub,</a>
-<a name='SBOOKEPUBLINK'
-   title='click to download personalized MOBI/Kindle version'
-   target='_blank'>
-  Kindle</a>)
+<a name='SBOOKEPUBLINK' target='_blank'
+   title='click to download personalized MOBI/Kindle version'>
+  Kindle</a>,
+<a name='SBOOKZIPLINK' target='_blank'
+   title='download a personalized ZIP file for offline reading'>
+  ZIP</a>)
 </span>
 </div>
 <div class='message' id='SBOOKSTARTUP'></div>
@@ -52,8 +53,6 @@
       onclick='sbookHUDMode("login"); fdjtCancelEvent(event); return false;'
       title='login to sBooks'>
   Login</span>
-<a href='http://sbooks.net/logout.fdcgi' class='tab' id='SBOOKLOGOUT'>
-  Logout</a>
 <span class='tab' contentid='APPHELP'
       onclick='sbookHUDMode("help"); fdjtCancelEvent(event); return false;'
       title='how to use this sBook'>
@@ -294,6 +293,25 @@ or methods.</p>
 <div class='tabcontent' id='APPSETTINGS'
      onclick='fdjtCheckSpan_onclick(event);'>
 <div class='setting'>
+  <a class='button' href='http://sbooks.net/logout.fdcgi'
+     id='SBOOKLOGOUT'>Logout</a>
+  <span class='checkspan'
+	onchange="javascript:sbookLeaveTraces($('LEAVETRACES').checked);">
+    <input TYPE='checkbox' NAME='LEAVETRACES' VALUE='yes' ID='LEAVETRACES'/>
+    leave traces as I read</span>
+  <div class='explanation'>
+    traces are notes, empty glosses, that indicate that you've looked
+    at a passage
+  </div>
+</div>
+<div class='setting'>
+  <span class='button' onclick='fdjtDelay(500,sbookUpdatePagination,false);'>
+    Repaginate</span>
+  <span class='checkspan' onchange="javascript:sbookPageView((!($('SBOOKPAGEVIEW').checked)));">
+   <input TYPE='checkbox' NAME='PAGEVIEW' VALUE='yes' ID='SBOOKPAGEVIEW'/>
+   divide content into pages</span>
+</div>
+<div class='setting'>
   <span class='checkspan'
 	onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
    <input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>
@@ -319,23 +337,24 @@ or methods.</p>
     feed display on the left and the glossmark icons on the right (mouseover to expand either)
   </div>
 </div>
-<div class='setting'>
-  <span class='button' onclick='fdjtDelay(500,sbookUpdatePagination,false);'>
-    repaginate</span>
-  <span class='checkspan' onchange="javascript:sbookPageView((!($('SBOOKPAGEVIEW').checked)));">
-   <input TYPE='checkbox' NAME='PAGEVIEW' VALUE='yes' ID='SBOOKPAGEVIEW'/>
-   divide content into pages</span>
-</div>
 <div class='buttons'></div>
 </div>
 <div class='tabcontent' id='APPTOC'>
 </div>
 <div class='tabcontent sbookabout' id='APPABOUT'>
 <div class='applinks'>
-<a name='SBOOKOFFLINELINK' target='_blank'>offline</a>
-<a name='SBOOKEPUBLINK' target='_blank'>ePub</a>
-<a name='SBOOKMOBILINK' target='_blank'>kindle</a>
-<a name='SBOOKPRINTLINK' target='_blank'>print</a>
+<a name='SBOOKOFFLINELINK' target='_blank'
+   title='click for personalized offline version'>
+  offline</a>
+<a name='SBOOKEPUBLINK' target='_blank'
+   title='click to download personalized ePub version'>
+  ePub</a>
+<a name='SBOOKMOBILINK' target='_blank'
+   title='click to download personalized MOBI/Kindle version'>kindle</a>
+<!--<a name='SBOOKPRINTLINK' target='_blank'>print</a>-->
+<a name='SBOOKZIPLINK' target='_blank'
+   title='download a personalized ZIP file for offline reading'>
+  ZIP</a>
 </div>
 <div id='APPABOUTCONTENT'>
 <div class='title'>An sBook</div>

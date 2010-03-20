@@ -63,24 +63,15 @@ function sbookCreateSourceHUD(classinfo,overlays)
   if (sbookSourceHUD) return sbookSourceHUD;
   if (!(overlays)) overlays=sbook_conversants;
   if (!(classinfo)) classinfo=".overlays.hudblock.hud#SBOOKSOURCES";
-  var app_button=
-    fdjtImage(sbicon("sbooksappicon40x40.png"),".button.app","?","Help, settings, etc");
-  var login_button=
-    fdjtImage(sbicon("sbooksconnecticon40x40.png"),".button.login","?",
-	      "click to login");
   var everyone_button=
     fdjtImage(sbicon("sBooksWE_2_32x32.png"),".button.everyone#SBOOKEVERYONE","everyone");
   var sourceicons=fdjtDiv("#SBOOKSOURCEICONS.sourceicons",everyone_button);
   var socialelts=[]; var glosselts=[];
   everyone_button.onclick=sbookEveryoneButton_onclick;
-  login_button.onclick=sbookLoginButton_onclick;
   sourceicons.onclick=sbookOverlays_onclick;
-  app_button.onclick=sbookAppButton_onclick;
   var i=0; var n=overlays.length;
   while (i<n) sbookAddSourceIcon(fdjtOIDs[overlays[i++]]);
-  sbookSourceHUD=fdjtDiv(classinfo," ",
-		       login_button,app_button,
-		       sourceicons);
+  sbookSourceHUD=fdjtDiv(classinfo," ",sourceicons);
   sbookSourceHUD.onclick=sbookLeftEdge_onclick;
   return sbookSourceHUD;
 }
@@ -104,7 +95,7 @@ function sbookAddSourceIcon(info)
     (pic,".button.source",info.name|info.kind,
      ("click to see glosses for "+info.name));
   icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
-  fdjtInsertBefore("SBOOKEVERYONE"," ",icon);
+  fdjtAppend("SBOOKSOURCEICONS","\n",icon);
   return icon;
 }
 

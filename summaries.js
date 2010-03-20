@@ -91,31 +91,28 @@ function sbookSummaryHead(target,head,eltspec,extra)
   var head=sbookGetHead(target);
   var preview=sbookPreviewIcon();
   var basespan=fdjtSpan(false);
-  if (target!==head)
-    if (title) 
-      fdjtAppend
-	(basespan,fdjtSpan("paratext",fdjtSpan("spacer","\u00B6"),title));
-    else {
-      var text=fdjtTextify(target);
-      if ((text)&&(text.length>0)) {
-	title=text.replace(/\n\n+/g,"\n");
-	var extract=((title.length<40)?(title):((title.slice(0,40))+"\u22ef "));
-	var paratext=fdjtSpan("paratext",fdjtSpan("spacer","\u00B6"),extract);
-	fdjtAppend(basespan,paratext," ");}}
+  if (!(title)) {
+    var text=fdjtTextify(target);
+    if ((text)&&(text.length>0)) title=text.replace(/\n\n+/g,"\n");}
+  if (target!==head) {
+    var extract=((title.length<40)?(title):((title.slice(0,40))+"\u22ef "));
+    var paratext=fdjtSpan("paratext",fdjtSpan("spacer","\u00B6"),extract);
+    fdjtAppend(basespan,paratext," ");}
+  else {
+    var headelt=fdjtSpan("paratext",fdjtSpan("spacer","\u00A7"),title);
+    fdjtAppend(basespan,headelt," ");}
   var info;
   if (info=sbook_getinfo(head)) {
-    if (info.title)
-      fdjtAppend(basespan,fdjtSpan("headtext",fdjtSpan("spacer","\u00A7"),
-				   info.title));
     var heads=((info) ? (info.sbook_heads) : []);
     var curspan=basespan;
-    j=heads.length-1; while (j>=0) {
+    var j=heads.length-1; while (j>=0) {
       var hinfo=heads[j--]; var elt=$(hinfo.id);
       if ((elt===sbook_root)||(elt===document.body)) continue;
       var newspan=fdjtSpan("head",
 			   fdjtSpan("headtext",fdjtSpan("spacer","\u00A7"),
 				    hinfo.title));
-      fdjtAppend(curspan," \u22ef ",newspan);
+      if (target===head) fdjtAppend(curspan,newspan);
+      else fdjtAppend(curspan," \u22ef ",newspan);
       curspan=newspan;}}
   var tocblock=((eltspec)?(fdjtNewElt(eltspec,preview,basespan)):
 		(fdjtDiv("tochead",preview,basespan)));

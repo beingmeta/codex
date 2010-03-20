@@ -42,12 +42,14 @@ var sbook_pageinfo=[];
 var sbook_pagescroll=false;
 var sbook_fudge_bottom=false;
 
+var sbook_paginated=false;
+
 var sbook_top_px=40;
 var sbook_bottom_px=40;
 var sbook_widow_limit=3;
 var sbook_orphan_limit=3;
 
-var sbook_debug_pagination=false;
+var sbook_debug_pagination=true;
 var sbook_trace_pagination=0;
 var sbook_trace_paging=false;
 
@@ -150,11 +152,12 @@ function sbookPaginate(pagesize,start)
       else {}
       newtop=scan;}
     else if ((info.bottom>pagelim)&&(sbookIsPageBlock(scan)))
-      if (info.top>pagetop) {
-	// If we're already at the top, declare an oversize page
+      if (info.top>pagetop)  // If we're not at the top, break now
+	newtop=scan;
+      else {
+	// Otherwise, declare an oversized page
 	curpage.bottom=info.bottom;
 	curpage.oversize=oversize=true;}
-      else newtop=scan; // Otherwise, break now
     // WE'RE COMPLETELY ON THE PAGE
     // including the case where we have children which are on the page.
     else if ((info.bottom<pagelim)||((nextinfo)&&(nextinfo.top<pagelim))) {
@@ -800,12 +803,16 @@ function sbookNextPrev_stopit(evt)
 
 function sbookPageView(flag)
 {
+  if (!($("SBOOKPAGEVIEWINFO"))) sbookSetupPageInfoHUDs();
   if (flag) {
     sbook_pageview=true;
     $("SBOOKPAGEVIEW").checked=true;
     fdjtSetCookie("sbookpageview","yes",false,"/");
     fdjtAddClass(document.body,"sbookpageview");
     fdjtDropClass(document.body,"sbookscroll");
+    if ($("SBOOKPAGEVIEWINFO"))
+      sbookShowInfoHUD($("SBOOKPAGEVIEWINFO"));
+    sbookCheckPagination();
     sbookGoToPage(sbookGetPage(sbook_focus||sbook_root));}
   else {
     sbook_pageview=false;
@@ -813,7 +820,52 @@ function sbookPageView(flag)
     $("SBOOKPAGEVIEW").checked=false;
     fdjtAddClass(document.body,"sbookscroll");
     fdjtDropClass(document.body,"sbookpageview");
-    fdjtSetCookie("sbookpageview","no",false,"/");}
+    fdjtSetCookie("sbookpageview","no",false,"/");
+    if ($("SBOOKSCROLLVIEWINFO"))
+      sbookShowInfoHUD($("SBOOKSCROLLVIEWINFO"));}
+}
+
+/* Setup page info huds */
+
+function sbookSetupPageInfoHUDs()
+{
+  var onmsg=
+    fdjtDiv("#SBOOKPAGEVIEWINFO.infohud",
+	    fdjtDiv("content",
+		    fdjtDiv("body","Paged reading enabled"),
+		    fdjtDiv("details",
+			    fdjtDiv("help","Type ",fdjtSpan("key","P"),
+				    " to switch to scrolled reading"),
+			    fdjtDiv("help",
+				    fdjtSpan("key","Space"),"/",fdjtSpan("key","Page Down"),
+				    " for next page"),
+			    fdjtDiv("help",
+				    fdjtSpan("key","Backspace"),"/",
+				    fdjtSpan("key","Page Up"),
+				    " for previous page"))));
+  var offmsg=
+    fdjtDiv("#SBOOKSCROLLVIEWINFO.infohud",
+	    fdjtDiv("content",
+		    fdjtDiv("body","Scrolled reading enabled"),
+		    fdjtDiv("details",
+			    fdjtDiv("help","Type ",fdjtSpan("key","P"),
+				    " to switch to paged reading"),
+			    fdjtDiv("help","use scroll bar"),
+			    fdjtDiv("help",
+				    fdjtSpan("key","Space"),"/",
+				    fdjtSpan("key","Page Down"),
+				    " to scroll forward one page"),
+			    fdjtDiv("help",
+				    fdjtSpan("key","Backspace"),"/",
+				    fdjtSpan("key","Page Up"),
+				    " to scroll back one page"),
+			    fdjtDiv("help","Type ",fdjtSpan("key","S"),
+				    " for settings"))));
+  onmsg.onclick=_sbookHideInfoHUD; onmsg.title='click to dismiss';
+  onmsg.sbookinui=true;
+  offmsg.onclick=_sbookHideInfoHUD; offmsg.title='click to dismiss';
+  offmsg.sbookinui=true;
+  fdjtAppend(sbookHUD,onmsg,offmsg);
 }
 
 /* Setting up the page layout */
@@ -868,6 +920,25 @@ function sbookUpdatePagination()
   if (focus)
     sbookGoToPage(sbookGetPage(focus));
   else sbookGoToPage(sbookGetPage(window.scrollY));
+}
+
+function sbookCheckPagination()
+{
+  if ((sbook_paginated)&&
+      (sbook_paginated.offheight===document.body.offsetHeight)&&
+      (sbook_paginated.offwidth===document.body.offsetWidth)&&
+      (sbook_paginated.winwidth===window.innerWidth)&&
+      (sbook_paginated.winheight===window.innerHeight))
+    return false;
+  else {
+    var newinfo={};
+    newinfo.offheight=document.body.offsetHeight;
+    newinfo.offwidth=document.body.offsetWidth;
+    newinfo.winwidth=window.innerWidth;
+    newinfo.winheight=window.innerHeight;
+    sbook_pageinated=newinfo;
+    sbookUpdatePagination();
+    return newinfo;}
 }
 
 /* Emacs local variables

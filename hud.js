@@ -40,6 +40,8 @@ var sbookGlossesHUD=false;
 var sbookSearchHUD=false;
 // This is the TOC HUD for navigation
 var sbookNavHUD=false;
+// This is the "info HUD" for informative message
+var sbookInfoHUD=false;
 
 // This is the last active 'app' tab
 var sbook_last_app="help";
@@ -53,12 +55,17 @@ function createSBOOKHUD()
   else {
     var help_button=
       fdjtImage("http://static.beingmeta.com/graphics/HelpIcon40x40.png",
-		".button.help","?","help");
-    var login_button=
-      fdjtImage("http://static.beingmeta.com/graphics/sbookslogo40x40.png",
-		".button.login","?","login");
+		".hudbutton.help","?","help");
     help_button.onclick=sbookHelpButton_onclick;
+    var app_button=
+      fdjtImage(sbicon("sbooksappicon40x40.png"),".hudbutton.app","app",
+		"Click for Help, settings, book description, etc");
+    app_button.onclick=sbookAppButton_onclick;
+    var login_button=
+      fdjtImage(sbicon("sbooksconnecticon40x40.png"),".hudbutton.login","login",
+		"click to login");
     login_button.onclick=sbookLoginButton_onclick;
+
     var next_button=
       fdjtImage("http://static.beingmeta.com/graphics/PageRight40x40.png",
 		".hudbutton",">>","hold to move forward by pages");
@@ -83,12 +90,13 @@ function createSBOOKHUD()
       ("#SBOOKHUD.hud",
        leftedge,rightedge,
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
-       fdjtDiv("#SBOOKSOURCES.hudblock.hud",login_button,help_button),
+       fdjtDiv("#SBOOKSOURCES.hudblock.hud"),
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
        fdjtDiv("#SBOOKSEARCH.hudblock.hud"),
        fdjtDiv("#SBOOKTAGS.hudblock.hud.tags"),
        fdjtDiv("#SBOOKMARKHUD.hudblock.hud"),
        sbookCreateAppHUD(),
+       app_button,login_button,help_button,
        prev_button,next_button);
 
     hud.title="";
@@ -210,6 +218,20 @@ function sbookHUDFlash(mode,usecs)
 function sbookDropHUD()
 {
   return sbookHUDMode(false);
+}
+
+function sbookShowInfoHUD(hud)
+{
+  sbookInfoHUD=hud; fdjtAddClass(hud,"visible");
+  setTimeout(5000,_sbookHideInfoHUD);
+}
+
+function _sbookHideInfoHUD(evt)
+{
+  if (sbookInfoHUD) {
+    fdjtDropClass(sbookInfoHUD,"visible");
+    sbookInfoHUD=false;}
+  if (evt) fdjtCancelEvent(evt);
 }
 
 // What to use as the glossmark image URI.  This 'image' 
@@ -508,7 +530,7 @@ function sbookIndexButton_onclick(evt)
   else {
     sbookHUDMode("searching");
     $("SBOOKSEARCHTEXT").focus();
-    evt.cancelBubble=true;}
+    fdjtCancelEvent(evt);}
 }
 
 function sbookTOCButton_onclick(evt)
@@ -518,14 +540,16 @@ function sbookTOCButton_onclick(evt)
     sbookHUDMode(false);
     fdjtDropClass("SBOOKTOC","hover");}
   else sbookHUDMode("toc");
-  evt.cancelBubble=true;
+  fdjtCancelEvent(evt);
 }
 
 function sbookHelpButton_onclick(evt)
 {
   if (sbook_mode==="help") sbookHUDMode(false);
-  else sbookHUDMode("help");
-  evt.cancelBubble=true;
+  else {
+    sbookHUDMode("help");
+    fdjtDropClass(document.body,"sbooknovice");}
+  fdjtCancelEvent(evt);
 }
 
 function sbookAppButton_onclick(evt)
@@ -535,7 +559,7 @@ function sbookAppButton_onclick(evt)
       sbookHUDMode(false);
     else sbookHUDMode(sbook_last_app);
   else sbookHUDMode(sbook_last_app);
-  evt.cancelBubble=true;
+  fdjtCancelEvent(evt);
 }
 
 function sbookLoginButton_onclick(evt)
