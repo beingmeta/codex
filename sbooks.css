@@ -465,7 +465,7 @@ div#SBOOKHUD div#SBOOKAPP div#SBOOKAPPTOC a.cohi {color: white;}
 
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP {
   position: absolute; top: 0px; left: 0px; right: 0px; z-index: 225;
-  display: block; min-height: 16px; text-decoration: none; text-align: left;
+  display: block; height: 16px; text-decoration: none; text-align: left;
   padding-top: 3px; padding-bottom: 2px; padding-left: 2px;
   background-color: gold;}
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP:hover { text-decoration: none;}
@@ -485,12 +485,29 @@ body.nosbookuser div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
     display: none;}
 body.sbookuser div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
     display: block;}
+div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP .applinks {
+    color: blue; font-size: 80%;
+    font-weight: normal; font-variant: small-caps;}
 
 div#SBOOKHUD div#SBOOKAPP .tab { font-variant: small-caps;}
 
 div#SBOOKHUD div#SBOOKAPP div.message {
   margin-top: 24px;  text-align: center; color: gold;
   font-family: sans,sans-serif; font-weight: bold; font-size: 125%;}
+
+body.sbook .applinks a { 
+  text-decoration: none; color: inherit;}
+body.sbook div.applinks a { 
+  padding-left: 3em; padding-right: 3em;}
+div#SBOOKHUD div#SBOOKAPP .applinks a { color: inherit;}
+body.sbook .applinks a:hover {
+  text-decoration: none; color: inherit;}
+body.sbook .applinks a:visited { color: inherit;}
+
+div#SBOOKHUD div#SBOOKAPP div#APPABOUT .applinks {
+    color: gold;
+    margin-bottom: 8px;
+    border-bottom: solid gold 2px;}
 
 div#SBOOKHUD div#SBOOKAPP div.tabbar { }
 

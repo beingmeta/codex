@@ -5,14 +5,31 @@
      alt='X' title='click to close'
      onclick='sbookHUDMode(false); return false'/>
 </span>
-<a id='SBOOKAPPTOP' title='click to login'
-   href='javascript:sbookHUDMode('login');'>
-<img id='SBOOKUSERPIC' class='userpic'
-  src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'/>
+<div id='SBOOKAPPTOP'>
+<a id='SBOOKUSERPIC' name='IDLINK'
+   href='javascript:sbookHUDMode("login");'
+   title='click to login'
+   class='userpic'>
+<img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
+     alt='login'/></a>
+<a href='javascript:sbookHUDMode("login");' name='IDLINK'>
 <span id='SBOOKIBELONGTO'>
   This sBook Belongs To:
 <span id='SBOOKUSERNAME' class='username'>(not logged in)</span></span>
 </a>
+<span class='applinks'>
+(<a name='SBOOKOFFLINELINK' title='click for personalized offline version'
+    target='_blank'>
+    Offline,</a>
+<a name='SBOOKEPUBLINK' title='click to download personalized ePub version'
+    target='_blank'>
+  ePub,</a>
+<a name='SBOOKEPUBLINK'
+   title='click to download personalized MOBI/Kindle version'
+   target='_blank'>
+  Kindle</a>)
+</span>
+</div>
 <div class='message' id='SBOOKSTARTUP'></div>
 <div class='tabbar' id='SBOOKTABS'>
 <span class='tab' contentid='APPABOUT'
@@ -314,6 +331,12 @@ or methods.</p>
 <div class='tabcontent' id='APPTOC'>
 </div>
 <div class='tabcontent sbookabout' id='APPABOUT'>
+<div class='applinks'>
+<a name='SBOOKOFFLINELINK' target='_blank'>offline</a>
+<a name='SBOOKEPUBLINK' target='_blank'>ePub</a>
+<a name='SBOOKMOBILINK' target='_blank'>kindle</a>
+<a name='SBOOKPRINTLINK' target='_blank'>print</a>
+</div>
 <div id='APPABOUTCONTENT'>
 <div class='title'>An sBook</div>
 <div class='byline'></div>

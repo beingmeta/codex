@@ -339,6 +339,50 @@ function sbookUpdateAppHUD()
 	refuris[i++].value=sbook_refuri;
       else i++;}
   sbookUpdateAboutInfo();
+  if (sbook_offline) {
+    var offline_links=document.getElementsByName("SBOOKOFFLINELINK");
+    var i=0; while (i<offline_links.length)
+	       offline_links[i++].style.display='none';}
+  var offlineuri=fdjtGetLink("sbook.offline")||sbookAltLink("offline");
+  var epuburi=fdjtGetLink("sbook.epub")||sbookAltLink("ebub");
+  var mobiuri=fdjtGetLink("sbook.mobi")||sbookAltLink("mobi");
+  var zipuri=fdjtGetLink("sbook.mobi")||sbookAltLink("mobi");
+  if (offlineuri) {
+    var elts=document.getElementsByName("SBOOKOFFLINELINK");
+    var i=0; while (i<elts.length) {
+      var elt=elts[i++];
+      if (offlineuri!=='none') elt.href=offlineuri;
+      else {
+	elt.href=false;
+	fdjtAddClass(elt,"deadlink");
+	elt.title='this sBook is not available offline';}}
+  if (epuburi) {
+    var elts=document.getElementsByName("SBOOKEPUBLINK");
+    var i=0; while (i<elts.length) {
+      var elt=elts[i++];
+      if (epuburi!=='none') elt.href=epuburi;
+      else {
+	elt.href=false;
+	fdjtAddClass(elt,"deadlink");
+	elt.title='this sBook is not available as an ePub';}}
+  if (mobiuri) {
+    var elts=document.getElementsByName("SBOOKMOBILINK");
+    var i=0; while (i<elts.length) {
+      var elt=elts[i++];
+      if (mobiuri!=='none') elt.href=mobiuri;
+      else {
+	elt.href=false;
+	fdjtAddClass(elt,"deadlink");
+	elt.title='this sBook is not available as a MOBIpocket format eBook';}}
+  if (zipuri) {
+    var elts=document.getElementsByName("SBOOKZIPLINK");
+    var i=0; while (i<elts.length) {
+      var elt=elts[i++];
+      if (zipuri!=='none') elt.href=zipuri;
+      else {
+	elt.href=false;
+	fdjtAddClass(elt,"deadlink");
+	elt.title='this sBook is not available as a ZIP bundle';}}
 }
 
 function _sbookFillTemplate(template,spec,content)

@@ -100,6 +100,9 @@ var sbook_servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
 var sbook_default_server="glosses.sbooks.net";
 // This (when needed) is the iframe bridge for sBooks requests
 var sbook_ibridge=false;
+// Whether this sbook is set up for offline reading
+var sbook_offline=
+  ((typeof sbook_offline === "undefined")?(false):(sbook_offline)); 
 
 // There be icons here!
 var sbook_graphics_root="http://static.beingmeta.com/graphics/";
@@ -1311,6 +1314,16 @@ function sbookGetRefID(target)
     (target.id);
 }
 
+function sbookAltLink(type,uri)
+{
+  uri=uri||sbook_refuri;
+  if (uri.search("http://")===0)
+    return "http://offline."+uri.slice(7);
+  else if (uri.search("https://")===0)
+    return "https://offline."+uri.slice(8);
+  else return false;
+}
+
 function sbook_get_titlepath(info,embedded)
 {
   if (!(info))
@@ -1849,11 +1862,14 @@ function sbookUserSetup()
   if (sbook_user_img) {
     if ($("SBOOKMARKIMAGE")) $("SBOOKMARKIMAGE").src=sbook_user_img;
     if ($("SBOOKUSERPIC")) $("SBOOKUSERPIC").src=sbook_user_img;}
-  if ($("SBOOKAPPTOP")) {
-    var apptop=$("SBOOKAPPTOP");
-    apptop.target='_blank';
-    apptop.title='click to edit your personal information';
-    apptop.href='http://www.sbooks.net/admin/id.fdcgi';}
+  var idlinks=document.getElementsByName("IDLINK");
+  if (idlinks) {
+    var i=0; var len=idlinks.length;
+    while (i<len) {
+      var idlink=idlinks[i++];
+      idlink.target='_blank';
+      idlink.title='click to edit your personal information';
+      idlink.href='http://www.sbooks.net/admin/id.fdcgi';}}
   _sbook_user_setup=true;
 }
 
