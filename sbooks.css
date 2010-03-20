@@ -1441,6 +1441,8 @@ body.tablet img.hudbutton { width: 50px; height: 50px;}
 body.tablet span.glossmark { width: 50px; height: 50px;}
 body.tablet span.glossmark { width: 50px; height: 50px;}
 
+body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
+
 body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
 body div.sbookmargin {

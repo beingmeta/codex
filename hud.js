@@ -339,10 +339,7 @@ function sbookUpdateAppHUD()
 	refuris[i++].value=sbook_refuri;
       else i++;}
   sbookUpdateAboutInfo();
-  if (sbook_offline) {
-    var offline_links=document.getElementsByName("SBOOKOFFLINELINK");
-    var i=0; while (i<offline_links.length)
-	       offline_links[i++].style.display='none';}
+  /* Get various external APPLINK uris */
   var offlineuri=fdjtGetLink("sbook.offline")||sbookAltLink("offline");
   var epuburi=fdjtGetLink("sbook.epub")||sbookAltLink("ebub");
   var mobiuri=fdjtGetLink("sbook.mobi")||sbookAltLink("mobi");
@@ -355,7 +352,7 @@ function sbookUpdateAppHUD()
       else {
 	elt.href=false;
 	fdjtAddClass(elt,"deadlink");
-	elt.title='this sBook is not available offline';}}
+	elt.title='this sBook is not available offline';}}}
   if (epuburi) {
     var elts=document.getElementsByName("SBOOKEPUBLINK");
     var i=0; while (i<elts.length) {
@@ -364,7 +361,7 @@ function sbookUpdateAppHUD()
       else {
 	elt.href=false;
 	fdjtAddClass(elt,"deadlink");
-	elt.title='this sBook is not available as an ePub';}}
+	elt.title='this sBook is not available as an ePub';}}}
   if (mobiuri) {
     var elts=document.getElementsByName("SBOOKMOBILINK");
     var i=0; while (i<elts.length) {
@@ -373,7 +370,7 @@ function sbookUpdateAppHUD()
       else {
 	elt.href=false;
 	fdjtAddClass(elt,"deadlink");
-	elt.title='this sBook is not available as a MOBIpocket format eBook';}}
+	elt.title='this sBook is not available as a MOBIpocket format eBook';}}}
   if (zipuri) {
     var elts=document.getElementsByName("SBOOKZIPLINK");
     var i=0; while (i<elts.length) {
@@ -382,7 +379,12 @@ function sbookUpdateAppHUD()
       else {
 	elt.href=false;
 	fdjtAddClass(elt,"deadlink");
-	elt.title='this sBook is not available as a ZIP bundle';}}
+	elt.title='this sBook is not available as a ZIP bundle';}}}
+  /* If the book is offline, don't bother showing the link to the offline
+     version
+     ?? Maybe show link to the dynamic version
+  */
+  if (sbook_offline) fdjtAddClass(document.body,"sbookoffline");
 }
 
 function _sbookFillTemplate(template,spec,content)
