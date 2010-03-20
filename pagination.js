@@ -49,7 +49,7 @@ var sbook_bottom_px=40;
 var sbook_widow_limit=3;
 var sbook_orphan_limit=3;
 
-var sbook_debug_pagination=true;
+var sbook_debug_pagination=false;
 var sbook_trace_pagination=0;
 var sbook_trace_paging=false;
 
@@ -809,7 +809,11 @@ function sbookPageView(flag)
     fdjtSetCookie("sbookpageview","yes",false,"/");
     fdjtAddClass(document.body,"sbookpageview");
     fdjtDropClass(document.body,"sbookscroll");
-    sbookShowMessage(sbook_pageview_message);
+    sbookFlashMessage(3000,
+		      "Now using page view",
+		      fdjtSpan("details",
+			       "Press ",fdjtSpan("key","P"),
+			       " to toggle back to scroll view"));
     sbookCheckPagination();
     sbookGoToPage(sbookGetPage(sbook_focus||sbook_root));}
   else {
@@ -819,7 +823,14 @@ function sbookPageView(flag)
     fdjtAddClass(document.body,"sbookscroll");
     fdjtDropClass(document.body,"sbookpageview");
     fdjtSetCookie("sbookpageview","no",false,"/");
-    sbookShowMessage(sbook_scrollview_message);}
+    sbookFlashMessage(3000,
+		      "Now using scroll view",
+		      fdjtSpan("details",
+			       "Press ",fdjtSpan("key","P"),
+			       " to toggle back to page view"));
+    var curx=window.scrollX; var cury=window.scrollY;
+    window.scrollTo(0,0);
+    window.scrollTo(curx,cury);}
 }
 
 /* Setting up the page layout */
@@ -866,11 +877,19 @@ function sbookUpdatePagination()
   var pagesize=window.innerHeight-
     (sbook_top_px+sbook_bottom_px);
   var focus=sbook_focus;
+  var elts=$$(sbook_fullpages);
+  var i=0; var len=elts.length;
+  while (i<len) {
+    var elt=elts[i++];
+    elt.style.height=pagesize+'px';
+    elt.style.width=window.innerWidth-100;}
+  sbookMessage("Determining page layout");
   var pagination=sbookPaginate(pagesize);
   $("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
   sbook_pages=pagination.pages;
   sbook_pageinfo=pagination.info;
   sbook_pagesize=pagesize;
+  sbookFlashMessage(2000,"Done with page layout");
   if (focus)
     sbookGoToPage(sbookGetPage(focus));
   else sbookGoToPage(sbookGetPage(window.scrollY));

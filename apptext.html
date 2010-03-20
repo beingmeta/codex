@@ -45,10 +45,10 @@
       onclick='sbookHUDMode("settings"); fdjtCancelEvent(event); return false;'
       title='alter appearance and interaction'>
  Settings</span>
-<span class='tab' contentid='APPOVERLAYS'
+<span class='tab' contentid='APPLAYERS'
       onclick='sbookHUDMode("overlays"); fdjtCancelEvent(event); return false;'
-      title='manage how sBooks enhances your sBook'>
- Overlays</span>
+      title='manage how your sBook is enhanced with added layers'>
+ Layers</span>
 <span class='tab' contentid='APPLOGIN'
       onclick='sbookHUDMode("login"); fdjtCancelEvent(event); return false;'
       title='login to sBooks'>
@@ -64,7 +64,42 @@
   <div class='motto'>&ldquo;the best idea since sliced paper&rdquo;</div>
 </div>
 
-<div class='fasthelp' name='SBOOKFASTHELP'></div>
+<div class='fasthelp'>
+<table class='fdjt'>
+<tr>
+  <th>Backward</th>
+  <td><span class='key'>Backspace</span>, <span class='key'>Page Up</span>,
+    or <span class='keydef'>tap <span class='key'>left</span></span></td>
+</tr>
+<tr>
+  <th>Forward</th>
+  <td><span class='key'>Space</span>, <span class='key'>Page Down</span>,
+    or <span class='keydef'>tap <span class='key'>right</span></span></td>
+</tr>
+<tr>
+  <th>Keys</th>
+  <td>
+    <span class='keydef'><span class='key'>H</span>elp</span> &middot;
+    <span class='keydef'><span class='key'>N</span>avigate</span> &middot;
+    <span class='keydef'><span class='key'>?</span>/<span class='key'>F</span>ind</span> &middot;
+    <span class='keydef'><span class='key'>S</span>ettings</span> &middot;
+    <span class='keydef'><span class='key'>L</span>ayers</span> &middot;
+    <span class='keydef'><span class='key'>C</span>onsole</span>
+  </td>
+</tr>
+<tr>
+  <th>Context</th>
+  <td><span class='key'>Shift</span>
+    or <span class='key'>Click</span>,
+    or <span class='key'>Select</span></td>
+</tr>
+<tr>
+  <th>Comment</th>
+  <td><span class='key'>Click again</span> or <span class='key'>
+      Shift-Click</span></td>
+</tr>
+</table>
+</div>
 
 <p>This sBooks translucent <strong>HUD</strong> (heads up display)
 provides rich <em>context and interaction</em> around this book's
@@ -345,7 +380,7 @@ or methods.</p>
 <div class='about'></div>
 </div>
 </div>
-<div class='tabcontent' id='APPOVERLAYS'>
+<div class='tabcontent' id='APPLAYERS'>
 <iframe id='APPFRAME' frameborder='0'
 	scrolling='auto'/>
 </div>

@@ -149,13 +149,11 @@ function sbookTabletMode(flag)
 {
   var oldflag=sbook_tablet;
   if (flag) {
-    sbook_edge_taps=true;
     sbook_tablet=true;
     sbook_gestures=false;
     fdjtSetCookie("sbooktablet","yes",false,"/");
     fdjtAddClass(document.body,"tablet");}
   else {
-    sbook_edge_taps=false;
     sbook_tablet=false;
     sbook_gestures=false;
     fdjtClearCookie("sbooktablet","/");
