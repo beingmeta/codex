@@ -56,11 +56,9 @@ body.sbookhead { text-decoration: none;}
 /* This is tracks the mouse */
 .sbookfocus { cursor: pointer; }
 body.hudup .sbookfocus { color: blue;}
-
-/* This is the last explicit target of a jump or mark */
-.sbooktarget { color: red; cursor: crosshair;}
-.sbooktarget .glossmark { color: red; cursor: pointer;}
-body.hudup .sbookfocus.sbooktarget { color: red;}
+.sbooktarget { color: darkblue; cursor: crosshair;}
+.sbooktarget .glossmark { color: darkblue; cursor: pointer;}
+body.hudup .sbookfocus.sbooktarget { color: darkblue;}
 
 body.sbookfocus { color: inherit;}
 body.sbooktarget { color: inherit;}
@@ -591,7 +589,7 @@ div#SBOOKHUD.login div#SBOOKAPP {
   display: block; opacity: 0.9; }
 div#SBOOKHUD.settings div#SBOOKAPP {
   display: block; opacity: 0.9; }
-div#SBOOKHUD.layers div#SBOOKAPP {
+div#SBOOKHUD.sbookapp div#SBOOKAPP {
   display: block; opacity: 0.9; }
 div#SBOOKHUD.apptoc div#SBOOKAPP {
   display: block; opacity: 0.9; }
@@ -604,7 +602,7 @@ div#SBOOKHUD.login #SBOOKAPPCLOSE {
   display: block; opacity: 0.9; }
 div#SBOOKHUD.settings #SBOOKAPPCLOSE {
   display: block; opacity: 0.9; }
-div#SBOOKHUD.layers #SBOOKAPPCLOSE {
+div#SBOOKHUD.sbookapp #SBOOKAPPCLOSE {
   display: block; opacity: 0.9; }
 div#SBOOKHUD.apptoc #SBOOKAPPCLOSE {
   display: block; opacity: 0.9; }
@@ -616,7 +614,7 @@ div#SBOOKHUD div#SBOOKAPP div.tabcontent { height: 80%;}
 div#SBOOKHUD.help div#SBOOKAPP div.tabcontent#APPHELP { display: block;}
 div#SBOOKHUD.login div#SBOOKAPP div.tabcontent#APPLOGIN { display: block;}
 div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS { display: block;}
-div#SBOOKHUD.layers div#SBOOKAPP div.tabcontent#APPLAYERS { display: block;}
+div#SBOOKHUD.sbookapp div#SBOOKAPP div.tabcontent#SBOOKSAPP { display: block;}
 div#SBOOKHUD.apptoc div#SBOOKAPP div.tabcontent#APPTOC { display: block;}
 div#SBOOKHUD.about div#SBOOKAPP div.tabcontent#APPABOUT { display: block;}
 
@@ -629,7 +627,7 @@ div#SBOOKHUD.login div#SBOOKAPP span.tab[contentid='APPLOGIN'] {
     border-bottom: none; color: gold;}
 div#SBOOKHUD.settings div#SBOOKAPP span.tab[contentid='APPSETTINGS'] {
     border-bottom: none; color: gold;}
-div#SBOOKHUD.layers div#SBOOKAPP span.tab[contentid='APPLAYERS'] {
+div#SBOOKHUD.sbookapp div#SBOOKAPP span.tab[contentid='SBOOKSAPP'] {
     border-bottom: none; color: gold;}
 
 div#SBOOKHUD.about div#SBOOKAPP span.tab[contentid='APPABOUT'] {
@@ -637,7 +635,7 @@ div#SBOOKHUD.about div#SBOOKAPP span.tab[contentid='APPABOUT'] {
 div#SBOOKHUD.apptoc div#SBOOKAPP span.tab[contentid='APPTOC'] {
     border-bottom: none; color: gold;}
 
-div#SBOOKHUD div#SBOOKAPP div#APPLAYERS iframe {
+div#SBOOKHUD div#SBOOKAPP div#SBOOKSAPP iframe {
   width: 100%; height: 100%;
   border-width: solid transparent 3px;
   -khtml-border-radius: 9px; 
@@ -748,7 +746,7 @@ body.nosbookuser #SBOOKLOGOUT { display: none;}
 
 body span.tab[CONTENTID='APPLOGIN'] { display: none;}
 body.nosbookuser span.tab[CONTENTID='APPLOGIN'] { display: inline;}
-body.nosbookuser span.tab[CONTENTID='APPLAYERS'] { display: none;}
+body.nosbookuser span.tab[CONTENTID='SBOOKSAPP'] { display: none;}
 
 div#SBOOKHUD div.hud#SBOOKSOURCES img.button.app {
   display: block; margin-bottom: 5px;}

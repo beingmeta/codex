@@ -877,12 +877,14 @@ function sbookUpdatePagination()
   var pagesize=window.innerHeight-
     (sbook_top_px+sbook_bottom_px);
   var focus=sbook_focus;
+  /*
   var elts=$$(sbook_fullpages);
   var i=0; var len=elts.length;
   while (i<len) {
     var elt=elts[i++];
     elt.style.height=pagesize+'px';
     elt.style.width=window.innerWidth-100;}
+  */
   sbookMessage("Determining page layout");
   var pagination=sbookPaginate(pagesize);
   $("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
