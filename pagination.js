@@ -609,7 +609,7 @@ function sbookGoToPage(pagenum,pageoff)
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
   if ((sbook_focus)&&(!(fdjtIsVisible(sbook_focus))))
-    sbookSetFocus(info.focus||info.first);
+    sbookSetFocus(sbook_target||info.focus||info.first);
   sbook_pagescroll=window.scrollY+sbook_top_px;
   // Add class if it's temporarily gone
   fdjtAddClass(document.body,"sbookpageview");
