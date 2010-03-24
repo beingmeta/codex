@@ -132,14 +132,14 @@ div#SBOOKHUD div.hudblock.flash#SBOOKTOC {
 div#SBOOKHUD div.hudblock.flash#SBOOKTOC .sectname { display: none;}
 
 img.hudbutton[alt='toc'] { 
-  top: 0px; left: 0px;
-  -khtml-border-bottom-right-radius: 6px; 
-  -webkit-border-bottom-right-radius: 6px; 
-  -moz-border-radius-bottomright: 6px; 
-  border-bottom-right-radius: 6px;}
+  top: 0px; right: 0px;
+  -khtml-border-bottom-left-radius: 6px; 
+  -webkit-border-bottom-left-radius: 6px; 
+  -moz-border-radius-bottomleft: 6px; 
+  border-bottom-left-radius: 6px;}
 div#SBOOKHUD.toc img.hudbutton[alt='toc'] { 
   opacity: 1.0;
-  border-right: solid lightblue 4px;
+  border-left: solid lightblue 4px;
   border-bottom: solid lightblue 4px;}
 
 /* The Search HUD */
@@ -470,17 +470,11 @@ img.hudbutton[alt='app'],
 img.hudbutton[alt='?'],
 img.hudbutton[alt='login']
 { 
-  top: 0px; right: 0px;
+  top: 0px; left: 0px;
   -khtml-border-bottom-left-radius: 6px; 
   -webkit-border-bottom-left-radius: 6px; 
   -moz-border-radius-bottomleft: 6px; 
   border-bottom-left-radius: 6px;}
-div#SBOOKHUD.toc img.hudbutton[alt='app'],
-div#SBOOKHUD.toc img.hudbutton[alt='?'],
-div#SBOOKHUD.toc img.hudbutton[alt='login']  { 
-  opacity: 1.0;
-  border-left: solid lightblue 4px;
-  border-bottom: solid lightblue 4px;}
 
 body.nosbookuser div#SBOOKHUD img.hudbutton[alt='app'] { display: none;}
 body.sbooknovice div#SBOOKHUD img.hudbutton[alt='app'] { display: none;}
@@ -599,6 +593,7 @@ div#SBOOKHUD.sbookapp div#SBOOKAPP div.tabcontent#SBOOKSAPP { display: block;}
 div#SBOOKHUD.apptoc div#SBOOKAPP div.tabcontent#APPTOC { display: block;}
 div#SBOOKHUD.about div#SBOOKAPP div.tabcontent#APPABOUT { display: block;}
 
+div#SBOOKHUD div#SBOOKAPP span.tab {white-space: nowrap;}
 div#SBOOKHUD div#SBOOKAPP span.tab[contentid='APPHELP'] {
     font-weight: bold; color: yellow;}
 div#SBOOKHUD.help div#SBOOKAPP span.tab[contentid='APPHELP'] {
