@@ -77,7 +77,7 @@ body.preview .previewing { color: red;}
 div.hud {
    background-color: gray; color: ivory;} /* #483D8B */
 div.hudblock { 
-  opacity: 0.01; z-index: 150;
+  opacity: 0.01; z-index: 200;
   overflow: hidden; text-align: center; 
   font-family: sans,sans-serif;
   display: none;}
@@ -1494,7 +1494,7 @@ div.sbookmargin#SBOOKBOTTOMMARGIN {
 div.sbookmargin#SBOOKTOPMARGIN,
 div.sbookmargin#SBOOKBOTTOMMARGIN {
     /* Increase the z-index to hide offpage glossmarks */
-    z-index: 200;}
+    z-index: 175;}
 div.sbookmargin#SBOOKRIGHTMARGIN {
  right: 0px; top: 0px; bottom: 0px;
  width: 50px; height: 100%;
