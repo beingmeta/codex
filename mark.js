@@ -1,10 +1,10 @@
 /* -*- Mode: Javascript; -*- */
 
+/* This file implements dialogs and interaction for marking (adding
+   glosses) to sbooks. */
+
 var sbooks_glossmark_id="$Id$";
 var sbooks_glossmark_version=parseInt("$Revision$".slice(10,-1));
-
-/* This file implements comment dialogs */
-
 
 /* Copyright (C) 2009 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
@@ -421,7 +421,7 @@ function sbookMarkCloud()
 function sbookMarkCloud_onclick(evt)
 {
   var target=$P(".checkspan",$T(evt));
-  fdjtCheckSpan_onclick(evt);
+  // fdjtCheckSpan_onclick(evt);
   if (target.getAttribute("ischecked"))
     $("SBOOKMARKTAGINPUT").value='';
 }
