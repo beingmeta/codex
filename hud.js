@@ -80,10 +80,10 @@ function createSBOOKHUD()
     prev_button.onmouseup=sbookNextPrev_stopit;
     prev_button.onmouseout=sbookNextPrev_stopit;
     prev_button.onclick=fdjtCancelEvent;
-    var leftedge=fdjtDiv("#SBOOKLEFTEDGE.hud");
+    var leftedge=fdjtDiv("#SBOOKLEFTMARGIN.hud.sbookmargin");
     leftedge.title='tap/click to go back';
     leftedge.onclick=sbookLeftEdge_onclick;
-    var rightedge=fdjtDiv("#SBOOKRIGHTEDGE.hud");
+    var rightedge=fdjtDiv("#SBOOKRIGHTMARGIN.hud.sbookmargin");
     rightedge.title='tap/click to go forward';
     rightedge.onclick=sbookRightEdge_onclick;
     var messages=fdjtDiv("#SBOOKCONSOLE");

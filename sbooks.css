@@ -56,9 +56,9 @@ body.sbookhead { text-decoration: none;}
 /* This is tracks the mouse */
 .sbookfocus { cursor: pointer; }
 body.hudup .sbookfocus { color: blue;}
-.sbooktarget { color: darkblue; cursor: crosshair;}
-.sbooktarget .glossmark { color: darkblue; cursor: pointer;}
-body.hudup .sbookfocus.sbooktarget { color: darkblue;}
+body.hudup .sbookfocus.sbooktarget { color: blue;}
+.sbooktarget { color: blue; cursor: crosshair;}
+.sbooktarget .glossmark { color: blue; cursor: pointer;}
 
 body.sbookfocus { color: inherit;}
 body.sbooktarget { color: inherit;}
@@ -166,22 +166,19 @@ div#SBOOKHUD.browsing div.hudblock#SBOOKSEARCH {
   display: block; height: 50px; opacity: 0.95;}
 
 img.hudbutton[alt='index'] { 
-  top: 0px; right: 0px;
-  -khtml-border-bottom-left-radius: 6px; 
-  -webkit-border-bottom-left-radius: 6px; 
-  -moz-border-radius-bottomleft: 6px; 
-  border-bottom-left-radius: 6px;}
-div#SBOOKHUD.searching img.hudbutton[alt='index'] {
-    opacity: 1.0;
-    border-left: solid lightblue 4px;
-    border-bottom: solid lightblue 4px;}
+  bottom: 0px; left: 0px;
+  -khtml-border-top-right-radius: 6px; 
+  -webkit-border-top-right-radius: 6px; 
+  -moz-border-radius-topright: 6px; 
+  border-top-right-radius: 6px;}
+div#SBOOKHUD.searching img.hudbutton[alt='index'],
 div#SBOOKHUD.browsing img.hudbutton[alt='index'] { 
     opacity: 1.0;
-    border-left: solid lightblue 4px;
-    border-bottom: solid lightblue 4px;}
+    border-right: solid lightblue 4px;
+    border-top: solid lightblue 4px;}
 
 div#SBOOKHUD div.hud#SBOOKSEARCH.hover {
-  display: block; opacity: 0.7; max-height: inherit;}
+  display: block; opacity: 0.9; max-height: inherit;}
 div#SBOOKHUD div.hud#SBOOKSEARCH.hover div.query {
     display: block; height: inherit;}
 div#SBOOKHUD div.hud#SBOOKSEARCH.hover div.completions { display: block;}
@@ -354,18 +351,14 @@ div#SBOOKHUD.glosses div.hudblock#SBOOKSOURCES {
 
 div#SBOOKHUD div#SBOOKMARKHUD {
   position: fixed;
-  right: 0px; top: 75px; left: 75px;
+  right: 25px; top: 75px; left: 75px;
   overflow: auto;
   margin: 0px; padding: 3px;
-  border: inset black 4px; border-right: none;
-  -khtml-border-top-left-radius: 6px; 
-  -webkit-border-top-left-radius: 6px; 
-  -moz-border-radius-topleft: 6px; 
-  border-top-left-radius: 6px; 
-  -khtml-border-bottom-left-radius: 6px;
-  -webkit-border-bottom-left-radius: 6px; 
-  -moz-border-radius-bottomleft: 6px; 
-  border-bottom-left-radius: 6px;
+  border: inset black 4px; 
+  -khtml-border-radius: 6px; 
+  -webkit-border-radius: 6px; 
+  -moz-border-radius: 6px; 
+  border-radius: 6px; 
   display: none;}
 div#SBOOKHUD.mark div#SBOOKMARKHUD {
     display: block; opacity: 0.9;}
@@ -428,7 +421,7 @@ div#SBOOKHUD div#SBOOKGLOSSES.onepassage {
 /* The Message HUD */
 
 div#SBOOKHUD div#SBOOKCONSOLE { 
-  position: fixed; z-index: 500;
+  position: fixed; z-index: 200;
   border: hidden transparent 4px; padding: 5px;
   top: 20%; bottom: 20%; left: 20%; right: 20%;
   opacity: 0.95; text-align: center; overflow: hidden;
@@ -461,7 +454,7 @@ div#SBOOKHUD div#SBOOKCONSOLE div#SBOOKMESSAGELOG div.logentry span.time {
 div#SBOOKHUD div#SBOOKAPP {
   font-family: arial,helvetica,sans,sans-serif;
   position: fixed; top: 60px; bottom: 50px;
-  left: 74px; right: 75px; z-index: 250;
+  left: 74px; right: 75px; z-index: 200;
   overflow: auto;
   margin: 0px; height: auto; min-height: auto;
   -khtml-border-radius: 12px; 
@@ -473,46 +466,34 @@ div#SBOOKHUD div#SBOOKAPP {
   padding-bottom: 12px; padding-top: 4px;}
 div#SBOOKHUD div#SBOOKAPP { display: none;}
 
-img.hudbutton[alt='app'] { 
-  bottom: 0px; left: 0px;
-  -khtml-border-top-right-radius: 6px; 
-  -webkit-border-top-right-radius: 6px; 
-  -moz-border-radius-topright: 6px; 
-  border-top-right-radius: 6px;}
-div#SBOOKHUD.toc img.hudbutton[alt='app'] { 
+img.hudbutton[alt='app'],
+img.hudbutton[alt='?'],
+img.hudbutton[alt='login']
+{ 
+  top: 0px; right: 0px;
+  -khtml-border-bottom-left-radius: 6px; 
+  -webkit-border-bottom-left-radius: 6px; 
+  -moz-border-radius-bottomleft: 6px; 
+  border-bottom-left-radius: 6px;}
+div#SBOOKHUD.toc img.hudbutton[alt='app'],
+div#SBOOKHUD.toc img.hudbutton[alt='?'],
+div#SBOOKHUD.toc img.hudbutton[alt='login']  { 
   opacity: 1.0;
-  border-right: solid lightblue 4px;
-  border-top: solid lightblue 4px;}
+  border-left: solid lightblue 4px;
+  border-bottom: solid lightblue 4px;}
+
 body.nosbookuser div#SBOOKHUD img.hudbutton[alt='app'] { display: none;}
 body.sbooknovice div#SBOOKHUD img.hudbutton[alt='app'] { display: none;}
 
-img.hudbutton[alt='?'] { 
-  bottom: 0px; left: 0px;
-  -khtml-border-top-right-radius: 6px; 
-  -webkit-border-top-right-radius: 6px; 
-  -moz-border-radius-topright: 6px; 
-  border-top-right-radius: 6px;}
-div#SBOOKHUD.toc img.hudbutton[alt='?'] { 
-  opacity: 1.0;
-  border-right: solid lightblue 4px;
-  border-top: solid lightblue 4px;}
 body div#SBOOKHUD img.hudbutton[alt='?'] { display: none;}
 body.sbooknovice div#SBOOKHUD img.hudbutton[alt='?'] { display: block;}
 body.sbooknouser.sbooknovice div#SBOOKHUD img.hudbutton[alt='?'] {
     display: none;}
 
-img.hudbutton[alt='login'] { 
-  bottom: 0px; left: 0px;
-  -khtml-border-top-right-radius: 6px; 
-  -webkit-border-top-right-radius: 6px; 
-  -moz-border-radius-topright: 6px; 
-  border-top-right-radius: 6px;}
-div#SBOOKHUD.toc img.hudbutton[alt='login'] { 
-  opacity: 1.0;
-  border-right: solid lightblue 4px;
-  border-top: solid lightblue 4px;}
 body div#SBOOKHUD img.hudbutton[alt='login'] {display: none;}
 body.nosbookuser div#SBOOKHUD img.hudbutton[alt='login'] {display: block;}
+
+/* SBOOKAPP styling */
 
 div#SBOOKHUD #SBOOKAPPCLOSE { 
   position: fixed; top: 60px; left: 52px;
@@ -536,7 +517,7 @@ div#SBOOKHUD div#SBOOKAPP div#SBOOKAPPTOC a {
 div#SBOOKHUD div#SBOOKAPP div#SBOOKAPPTOC a.cohi {color: white;}
 
 div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP {
-  position: absolute; top: 0px; left: 0px; right: 0px; z-index: 225;
+  position: absolute; top: 0px; left: 0px; right: 0px; z-index: 250;
   display: block; height: 16px; text-decoration: none; text-align: left;
   padding-top: 3px; padding-bottom: 2px; padding-left: 2px;
   background-color: gold;}
@@ -1024,27 +1005,6 @@ div.sbooksearch div.query input[TYPE='TEXT'] {
 body div#SBOOKHUD.search .sbooksearch {display: block; }
 body div#SBOOKHUD.glosses .glosses {display: block; }
 
-/* Margins */
-div#SBOOKHUD div#SBOOKRIGHTEDGE {
- position: fixed;
- width: 50px; height: 100%;
- right: 0px; top: 0px; bottom: 0px;
- z-index: 100; opacity: 0.03;
- display: none;}
-div#SBOOKHUD div#SBOOKLEFTEDGE {
- position: fixed;
- width: 50px; height: 100%; 
- left: 0px; top: 0px; bottom: 0px;
- z-index: 100; opacity: 0.03;
- display: none;}
-body.tablet div#SBOOKHUD div#SBOOKLEFTEDGE { display: block;}
-body.tablet div#SBOOKHUD div#SBOOKRIGHTEDGE { display: block;}
-body.sbookpageview div#SBOOKHUD div#SBOOKLEFTEDGE { display: block;}
-body.sbookpageview div#SBOOKHUD div#SBOOKRIGHTEDGE { display: block;}
-
-/* div#SBOOKHUD div#SBOOKLEFTEDGE:hover { opacity: 0.5;} 
-   div#SBOOKHUD div#SBOOKRIGHTEDGE:hover { opacity: 0.5;}  */
-
 /* Individual sub content */
 
 div.sbookhud {}
@@ -1409,7 +1369,7 @@ body.focuscues .sbookfocus span.glossmark {
 body.hudup .sbookfocus span.glossmark {
     width: 50px;}
 .sbooktarget.sbookfocus span.glossmark {
-    opacity: 0.9; border-top: solid red 2px;}
+    opacity: 0.9; border-top: solid blue 2px;}
 .sbookfocus span.glossmark img.big { }
 .sbookfocus span.glossmark img.tiny { border: none; }
 
@@ -1425,7 +1385,7 @@ span.glossmark:hover img.tiny { display: none;}
 
 .sbooktarget { }
 .sbooktarget span.glossmark {
-    border-top: solid red 2px; opacity: 0.9; }
+    border-top: solid blue 2px; opacity: 0.9; }
 .sbooktarget span.glossmark:hover { opacity: 0.9;}
 .sbooktarget span.glossmark img { }
 
@@ -1525,18 +1485,33 @@ body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
 
 body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
-body div.sbookmargin {
-    position: fixed; height: 40px; background-color: white;
-    z-index: 75; opacity: 0.99;
+
+div.sbookmargin {
+    position: fixed; background-color: white;
+    z-index: 50; opacity: 0.99;
     display: none;}
-body.tablet div.sbookmargin { }
-body div#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
-body div.sbookmargin#SBOOKTOPMARGIN {top: 0; left: 0; right: 0;}
-body div.sbookmargin#SBOOKBOTTOMMARGIN {
-  bottom: 0; left: 0; right: 0;}
+div.sbookmargin#SBOOKTOPMARGIN {
+    top: 0; left: 0; right: 0;
+    width: 100%; height: 40px;}
+div.sbookmargin#SBOOKBOTTOMMARGIN {
+    bottom: 0; left: 0; right: 0;
+    width: 100%; height: 40px;}
+div.sbookmargin#SBOOKRIGHTMARGIN {
+ right: 0px; top: 0px; bottom: 0px;
+ width: 50px; height: 100%;
+ opacity: 0.1;}
+div.sbookmargin#SBOOKLEFTMARGIN {
+ left: 0px; top: 0px; bottom: 0px;
+ width: 50px; height: 100%;
+ opacity: 0.1;}
+body.hudup div.sbookmargin#SBOOKLEFTMARGIN,
+body.hudup div.sbookmargin#SBOOKRIGHTMARGIN {
+    background-color: gray;}
+
 body.sbookscrollview div.sbookmargin { display: none;}
 body.sbookpageview div.sbookmargin { display: block;}
 body.sbookpageview { overflow: hidden; }
+
 body.preview div.sbookmargin { display: none;}
 body.sbookpageview.preview div.sbookmargin { display: none;}
 
