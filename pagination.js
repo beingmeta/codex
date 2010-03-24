@@ -870,6 +870,30 @@ function sbookPageSetup()
   sbook_bottom_px=pagefoot.offsetHeight;
   pagehead.style.display=null; pagefoot.style.display=null;
   pagehead.sbookui=true; pagefoot.sbookui=true;
+  pagehead.onclick=sbookPageHead_onclick;
+  pagefoot.onclick=sbookPageFoot_onclick;
+}
+
+function sbookPageHead_onclick(evt)
+{
+  evt=evt||event;
+  if ((evt.clientX)>($("SBOOKRIGHTMARGIN").offsetLeft))
+    return sbookRightEdge_onclick(evt);
+  else if ((evt.clientX)<($("SBOOKLEFTMARGIN").offsetWidth))
+    return sbookLeftEdge_onclick(evt);
+  else if (sbook_mode) sbookHUDMode(false);
+  else sbookHUDMode(sbook_last_app);
+}
+
+function sbookPageFoot_onclick(evt)
+{
+  evt=evt||event;
+  if ((evt.clientX)>($("SBOOKRIGHTMARGIN").offsetLeft))
+    return sbookRightEdge_onclick(evt);
+  else if ((evt.clientX)<($("SBOOKLEFTMARGIN").offsetWidth))
+    return sbookLeftEdge_onclick(evt);
+  else if (sbook_mode) sbookHUDMode(false);
+  else sbookHUDMode("minimal");
 }
 
 function sbookUpdatePagination()
