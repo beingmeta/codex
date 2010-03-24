@@ -46,7 +46,7 @@ var sbook_message_timeout=5000;
 // This is the last active 'app' tab
 var sbook_last_app="help";
 // This is the regex for all sbook apps
-var sbook_apps=["help","login","sbooksapp","settings","apptoc","about"];
+var sbook_apps=["help","login","sbookapp","settings","apptoc","about"];
 
 function createSBOOKHUD()
 {
@@ -160,7 +160,7 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(login)|(settings)|(sbooksapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)|(apptoc)|(about)|(console)/g;
+  /(login)|(settings)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)|(apptoc)|(about)|(console)/g;
 
 function sbookHUDMode(mode)
 {
@@ -174,7 +174,7 @@ function sbookHUDMode(mode)
       if (mode===true) mode="minimal";
       if (typeof mode !== 'string') 
 	throw new Error('mode arg not a string');
-      if ((mode==="sbooksapp")&&(!($("APPFRAME").src)))
+      if ((mode==="sbookapp")&&(!($("APPFRAME").src)))
 	sbookSetupAppFrame();
       sbook_mode=mode;
       sbook_last_mode=mode;

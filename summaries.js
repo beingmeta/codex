@@ -94,7 +94,8 @@ function sbookSummaryHead(target,head,eltspec,extra)
   if (!(title)) {
     var text=fdjtTextify(target);
     if ((text)&&(text.length>0)) title=text.replace(/\n\n+/g,"\n");}
-  if (target!==head) {
+  if (!(title)) {}
+  else if (target!==head) {
     var extract=((title.length<40)?(title):((title.slice(0,40))+"\u22ef "));
     var paratext=fdjtSpan("paratext",fdjtSpan("spacer","\u00B6"),extract);
     fdjtAppend(basespan,paratext," ");}

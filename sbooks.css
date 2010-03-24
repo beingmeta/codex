@@ -1395,7 +1395,7 @@ span.glossmark {
   position: absolute; right: 0px; text-align: right;
   margin: 0px; padding: 0px; text-indent: 0px; 
   border: solid transparent 2px;
-  width: 32px; height: 32px; z-index: 50;
+  width: 32px; height: 32px; z-index: 150;
   border-right: 0px;
   opacity: 0.5;}
 span.glossmark img {
