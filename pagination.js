@@ -39,6 +39,7 @@ var sbook_curbottom=sbook_bottom_px;
 var sbook_pagesize=-1;
 var sbook_pages=[];
 var sbook_pageinfo=[];
+var sbook_pagemaxoff=-1;
 var sbook_pagescroll=false;
 var sbook_fudge_bottom=false;
 
@@ -584,6 +585,8 @@ function sbookGoToPage(pagenum,pageoff)
       (pagenum<0)||(pagenum>=sbook_pages.length)) {
     fdjtWarn("[%f] Invalid page number %o",pagenum);
     return;}
+  if (sbook_trace_paging)
+    fdjtLog("[%f] sbookGoToPage %o+%o",fdjtET(),pagenum,pageoff);
   var off=sbook_pages[pagenum]+(pageoff||0);
   var info=sbook_pageinfo[pagenum];
   if (sbook_trace_paging)
@@ -625,7 +628,7 @@ function sbookGetPage(arg)
   while (i<len) 
     if (sbook_pages[i]>top) return i-1;
     else i++;
-  return 0;
+  return i-1;
 }
 
 /* Other stuff */
@@ -801,7 +804,7 @@ function sbookNextPrev_stopit(evt)
   clearInterval(advance_timer);
 }
 
-function sbookPageView(flag)
+function sbookPageView(flag,nogo)
 {
   if (flag) {
     sbook_pageview=true;
@@ -815,7 +818,8 @@ function sbookPageView(flag)
 			       "Press ",fdjtSpan("key","P"),
 			       " to toggle back to scroll view"));
     sbookCheckPagination();
-    sbookGoToPage(sbookGetPage(sbook_focus||sbook_root));}
+    if (!(nogo))
+      sbookGoToPage(sbookGetPage(sbook_focus||sbook_root));}
   else {
     sbook_pageview=false;
     sbook_nextpage=false; sbook_pagebreak=false;
@@ -828,9 +832,10 @@ function sbookPageView(flag)
 		      fdjtSpan("details",
 			       "Press ",fdjtSpan("key","P"),
 			       " to toggle back to page view"));
-    var curx=window.scrollX; var cury=window.scrollY;
-    window.scrollTo(0,0);
-    window.scrollTo(curx,cury);}
+    if (!(nogo)) {
+      var curx=window.scrollX; var cury=window.scrollY;
+      window.scrollTo(0,0);
+      window.scrollTo(curx,cury);}}
 }
 
 /* Setting up the page layout */

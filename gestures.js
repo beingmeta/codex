@@ -95,7 +95,7 @@ function sbook_onmousedown(evt)
     var focus=sbookGetFocus(target,evt.altKey);
     if (focus) {
       sbookSetFocus(focus);
-      sbookSetTarget(focus);
+      sbookSetTarget(focus,false);
       sbookHUDMode("minimal");}
     else {
       sbookSetTarget(false);
@@ -112,7 +112,7 @@ function sbook_ondblclick(evt)
   evt=evt||event||null;
   var target=sbookGetFocus($T(evt),evt.altKey);
   if (target) {
-    sbookSetTarget(target);
+    sbookSetTarget(target,false);
     sbook_mark(target,false,fdjtSelectedText());
     return;}
 }

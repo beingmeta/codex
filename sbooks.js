@@ -158,6 +158,8 @@ var sbook_mycopyid=false;
 
 // Whether the HUD is up
 var sbook_mode=false;
+// Whether we're moving ourselves
+var sbook_egomotion=false;
 // This is the last mode which was active
 var sbook_last_mode="minimal";
 // Whether preview mode is engaged
@@ -285,6 +287,8 @@ var sbook_trace_locations=false;
 var sbook_trace_network=0;
 // Whether to debug startup
 var sbook_trace_startup=0;
+// Whether to trace navigation
+var sbook_trace_nav=false;
 // Whether to trace paging
 var sbook_trace_paging=false;
 // Whether to trace gesture recognition
@@ -959,6 +963,7 @@ function sbookTrackFocus(target)
 {
   // Lots of reasons *not* to track the focus
   if (!(target)) return null;
+  else if (sbook_egomotion) return null;
   else if ((sbook_mode)&&(sbook_mode!=="minimal")) return;
   else if ((sbook_target)&&(fdjtIsVisible($(sbook_target))))
     if ((target===sbook_target)&&(!(sbook_mode))) {
@@ -989,7 +994,7 @@ function sbookTrackFocus(target)
   sbookSetFocus(target);
 }
 
-function sbookSetTarget(target)
+function sbookSetTarget(target,nogo)
 {
   if (sbook_trace_focus) sbook_trace("sbookSetTarget",target);
   if (target===sbook_target) return;
@@ -1001,17 +1006,9 @@ function sbookSetTarget(target)
       ((target===sbook_root)||(target===document.body))) {
     return;}
   else {
-    var saved_y=((fdjtIsVisible(target))&&(window.scrollY));
-    var saved_x=((fdjtIsVisible(target))&&(window.scrollX));
     fdjtAddClass(target,"sbooktarget");
     sbook_target=target;
-    if (target.id) {
-      window.location.hash=target.id;
-      if (sbook_pageview) sbookGoToPage(sbookGetPage(target));
-      else if ((saved_y)&&(saved_y!==window.scrollY))
-	window.scrollTo(saved_x,saved_y);
-      else if (!(fdjtIsVisible(target)))
-	sbookScrollTo(target);}
+    if (!(nogo)) sbookGoTo(target);
     if (target.title) sbook_target_title=target.title;
     target.title=_('click to add a gloss');}
 }
@@ -1057,16 +1054,36 @@ function sbookScrollTo(elt,cxt)
   else fdjtScrollTo(elt,sbookGetStableId(elt),cxt,true,sbookDisplayOffset());
 }
 
-function sbookGoTo(target)
+function sbookSetHashID(target)
+{
+  if ((!(target.id))||(window.location.hash===target.id))
+    return;
+  var saved_y=((fdjtIsVisible(target))&&(window.scrollY));
+  var saved_x=((fdjtIsVisible(target))&&(window.scrollX));
+  var was_visible=fdjtIsVisible(target);
+  window.location.hash=target.id;
+  if (sbook_pageview) sbookGoToPage(sbookGetPage(target));
+  else if ((was_visible)&&(saved_y)&&(saved_y!==window.scrollY))
+    // This resets when setting the ID moved the page unneccessarily
+    window.scrollTo(saved_x,saved_y);
+  else if (!(fdjtIsVisible(target)))
+    sbookScrollTo(target,((target.sbook_head)&&($(target.sbook_head))));
+  else {}
+}
+
+function sbookGoTo(target,noset)
 {
   sbookPreview(false);
-  sbookHUDMode(false);
+  var page=((sbook_pageview)&&sbookGetPage(target));
+  if (sbook_trace_nav)
+    fdjtLog("sbookGoTo #%o@P%o/L%o %o",target.id,page,target.sbookloc,target);
   if (target.sbookloc) sbookSetLocation(target.sbookloc);
-  if ((target.id)&&(!(sbookInUI(target)))) 
-    sbookSetTarget(target);
-  if (sbook_pageview)
-    sbookGoToPage(sbookGetPage(target));
-  else sbookScrollTo(target,((target.sbook_head)&&($(target.sbook_head))));
+  if ((!(noset))&&(target.id)&&(!(sbookInUI(target))))
+    sbookSetTarget(target,true);
+  if (target.id) sbookSetHashID(target);
+  else if (sbook_pageview) sbookGoToPage(page);
+  else sbookScrollTo(target);
+  sbookHUDMode(false);
   if ((sbook_hud_flash)&&(!(sbook_mode)))
     sbookHUDFlash("minimal",sbook_hud_flash);
 }
@@ -1687,13 +1704,20 @@ function sbookApplySettings()
    document, using the hash value if there is one. */ 
 function sbookInitLocation()
 {
-  var hash=window.location.hash, target=sbook_root;
+  var hash=window.location.hash; var target=sbook_root;
+  var justfocus=true;
   if ((typeof hash === "string") && (hash.length>0)) {
     if ((hash[0]==='#') && (hash.length>1))
       target=sbook_hashmap[hash.slice(1)];
-    else target=sbook_hashmap[hash];}
+    else target=sbook_hashmap[hash];
+    if (sbook_trace_startup)
+      fdjtLog("[%f] sbookInitLocation #%s=%o",fdjtET(),hash,target);
+    justfocus=false;}
   else if (fdjtGetCookie("sbookfocus")) {
     var focusid=fdjtGetCookie("sbookfocus");
+    if (sbook_trace_startup)
+      fdjtLog("[%f] sbookInitLocation cookie=#%s=%o",
+	      fdjtET(),focusid,target);
     if ((focusid)&&($(focusid)))
       target=$(focusid);
     else target=sbook_root;}
@@ -1703,13 +1727,17 @@ function sbookInitLocation()
     var xoff=scrollx+sbook_last_x;
     var yoff=scrolly+sbook_last_y;
     var scroll_target=sbookGetXYFocus(xoff,yoff);
+    if (sbook_trace_startup)
+      fdjtLog("[%f] sbookInitLocation %o,%o=%o",fdjtET(),xoff,yoff,target);
     if (scroll_target) target=scroll_target;}
-  if (sbook_pageview)
-    if (target) sbookGoToPage(sbookGetPage(target));
-    else sbookGoToPage(sbookGetPage(sbook_start));
-  else if ((target!==sbook_root)||(target!==document.body)) 
-    target.scrollIntoView();
-  sbookSetFocus(target||sbook_start||sbook_root);
+  if (justfocus) {
+    sbookSetFocus(target||sbook_start||sbook_root);
+    if (sbook_pageview)
+      if (target) sbookGoToPage(sbookGetPage(target));
+      else sbookGoToPage(sbookGetPage(sbook_start));
+    else if ((target!==sbook_root)||(target!==document.body)) 
+      target.scrollIntoView();}
+  else sbookGoTo(target||sbook_start||sbook_root);
 }
 
 /* Initialization */

@@ -481,7 +481,7 @@ body.sbooknovice div#SBOOKHUD img.hudbutton[alt='app'] { display: none;}
 
 body div#SBOOKHUD img.hudbutton[alt='?'] { display: none;}
 body.sbooknovice div#SBOOKHUD img.hudbutton[alt='?'] { display: block;}
-body.sbooknouser.sbooknovice div#SBOOKHUD img.hudbutton[alt='?'] {
+body.nosbookuser.sbooknovice div#SBOOKHUD img.hudbutton[alt='?'] {
     display: none;}
 
 body div#SBOOKHUD img.hudbutton[alt='login'] {display: none;}

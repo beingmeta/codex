@@ -263,7 +263,6 @@ function sbookTOC_onclick(evt)
   if (!(target)) return;
   sbookSetHead(target);
   var info=sbook_getinfo(target);
-  sbookSetTarget(target);
   sbookGoTo(target);
   if (((info.sub)&&(info.sub.length>3))&&(mode==="toc"))
     sbookHUDMode("toc");
