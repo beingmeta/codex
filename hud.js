@@ -266,7 +266,7 @@ function sbookFlashMessage(arg0)
   sbook_message_timer=
     setTimeout(function() {
 	if (mode==="console") sbookHUDMode(false);
-	else sbookHUDMode(mode);},
+	else if (mode) sbookHUDMode(mode);},
       duration);
 }
 
@@ -523,6 +523,7 @@ function sbookPreview(elt,offset)
     else offset=sbookDisplayOffset();
   fdjtAddClass(document.body,"preview");
   fdjtAddClass(elt,"previewing");
+  sbook_last_preview=elt;
   sbook_preview=elt;
   if ((elt.getAttribute) &&
       (elt.getAttribute("toclevel")) ||
@@ -601,15 +602,15 @@ function sbookLoginButton_onclick(evt)
 function sbookRightEdge_onclick(evt)
 {
   fdjtTrace("Right edge click %o",evt);
-  sbookHUDMode(false);
   if (sbook_edge_taps) sbookForward();
+  else sbookHUDMode(false);
   fdjtCancelEvent(evt);
 }
 
 function sbookLeftEdge_onclick(evt)
 {
-  sbookHUDMode(false);
   if (sbook_edge_taps) sbookBackward();
+  else sbookHUDMode(false);
   fdjtCancelEvent(evt);
 }
 

@@ -304,52 +304,63 @@ or methods.</p>
 </div>
 <div class='tabcontent' id='APPSETTINGS'
      onclick='fdjtCheckSpan_onclick(event);'>
-<div class='setting'>
-  <a class='button' href='http://sbooks.net/logout.fdcgi'
-     id='SBOOKLOGOUT'>Logout</a>
-  <span class='checkspan'
-	onchange="javascript:sbookLeaveTraces($('LEAVETRACES').checked);">
-    <input TYPE='checkbox' NAME='LEAVETRACES' VALUE='yes' ID='LEAVETRACES'/>
-    leave traces as I read</span>
-  <div class='explanation'>
-    traces are notes, empty glosses, that indicate that you've looked
-    at a passage
-  </div>
-</div>
-<div class='setting'>
-  <span class='button' onclick='fdjtDelay(500,sbookUpdatePagination,false);'>
-    Repaginate</span>
-  <span class='checkspan' onchange="javascript:sbookPageView((!($('SBOOKPAGEVIEW').checked)));">
-   <input TYPE='checkbox' NAME='PAGEVIEW' VALUE='yes' ID='SBOOKPAGEVIEW'/>
-   divide content into pages</span>
-</div>
-<div class='setting'>
-  <span class='checkspan'
-	onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
-   <input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>
-   tablet mode</span>
-   <div class='explanation'>
-     no scrollbars, advance by tapping left and right edges
-   </div>
-</div>
-<div class='setting'>
-  <span class='checkspan'
-   onchange="javascript:sbookNoHUDFlash($('HUDFLASHING').checked);">
-   <input TYPE='checkbox' NAME='HUDFLASH' VALUE='yes' ID='HUDFLASHING'/>
-   don't flash the HUD</span>
-  <div class='explanation'>
-    when information changes while moving through the document
-  </div>
-</div>
-<div class='setting'>
-  <span class='checkspan' onchange="javascript:sbookSparseMode($('SBOOKSPARSE').checked);">
-   <input TYPE='checkbox' NAME='SPARSEBOOK' VALUE='yes' ID='SBOOKSPARSE'/>
-   minimize the HUD</span>
-  <div class='explanation'>when simply reading the text, reducing both the
-    feed display on the left and the glossmark icons on the right (mouseover to expand either)
-  </div>
-</div>
-<div class='buttons'></div>
+<table class='settings'>
+<tr><th>sBooks</th>
+  <td>
+    <a class='button' href='http://sbooks.net/logout.fdcgi'
+       id='SBOOKLOGOUT'>Logout</a>
+    <a href='http://www.sbooks.net/'>Home</a> &middot; 
+    <a href='http://www.sbooks.net/books.fdcgi'>Books</a> &middot; 
+    <a href='http://www.sbooks.net/books.fdcgi' disabled="">Store</a> &middot; 
+    <a href='http://www.sbooks.net/admin/id.fdcgi'>Identity</a>
+  </td></tr>
+<tr><th>Content</th>
+    <td>
+      <span class='button' onclick='fdjtDelay(500,sbookUpdatePagination,false);'>
+	Repaginate</span>
+      <span class='checkspan'
+	    onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
+	<input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>
+	tablet mode</span>
+      <span class='checkspan' onchange="javascript:sbookPageView((!($('SBOOKPAGEVIEW').checked)));">
+	<input TYPE='checkbox' NAME='PAGEVIEW' VALUE='yes' ID='SBOOKPAGEVIEW'/>
+	page view</span>
+      &middot;
+      <span>
+	<select name='fontsize' id='SBOOKFONTSIZE' onchange='sbookSetFontSize(this.value);'>
+	  <option value='50%'>Tiny font</option>
+	  <option value='75%'>Small font</option>
+	  <option value='80%'>Smaller font</option>
+	  <option value='100%' selected=''>Default font</option>
+	  <option value='120%'>Larger font</option>
+	  <option value='150%'>Large font</option>
+	  <option value='200%'>Huge font</option>
+	</select></span>
+      </td></tr>
+<tr><th>HUD</th>
+  <td>
+    <span class='checkspan'
+	  title="don't flash the HUD to display updated context while reading"
+	  onchange="javascript:sbookNoHUDFlash($('HUDFLASHING').checked);">
+      <input TYPE='checkbox' NAME='HUDFLASH' VALUE='yes' ID='HUDFLASHING'/>
+      no flash</span>
+    <span class='checkspan' onchange="javascript:sbookSparseMode($('SBOOKSPARSE').checked);"
+	  title="minimize the display of the HUD, glossmarks, etc">
+      <input TYPE='checkbox' NAME='SPARSEBOOK' VALUE='yes' ID='SBOOKSPARSE'/>
+      minimize</span>
+      &middot;
+    <span>
+      <select name='fontsize' id='SBOOKFONTSIZE' onchange='sbookSetHUDFontSize(this.value);'>
+	<option value='50%'>Tiny font</option>
+	<option value='75%'>Small font</option>
+	<option value='80%'>Smaller font</option>
+	<option value='100%' selected=''>Default font</option>
+	<option value='120%'>Larger font</option>
+	<option value='150%'>Large font</option>
+	<option value='200%'>Huge font</option>
+    </select></span>
+</td></tr>
+</table>  
 </div>
 <div class='tabcontent' id='APPTOC'>
 </div>

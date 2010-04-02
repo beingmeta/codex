@@ -52,7 +52,6 @@ var sbook_orphan_limit=3;
 
 var sbook_debug_pagination=false;
 var sbook_trace_pagination=0;
-var sbook_trace_paging=false;
 
 /* Pagination predicates */
 
@@ -132,6 +131,11 @@ function sbookPaginate(pagesize,start)
 		 ("P#"+curpage.pagenum+
 		  "["+pagetop+","+pagelim+
 		  "/"+pagesize+"/"+widowthresh+","+orphanthresh+"] "));
+    // We track a 'focus' for every page, which is the first sbook
+    // focusable element on the page.
+    if (!(curpage.focus))
+      if ((scan.toclevel)||(fdjtElementMatches(scan,sbook_focus_rules)))
+	curpage.focus=scan;
     if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info,curpage));
     if ((dbginfo)&&(next))
       dbginfo=dbginfo+" ... N#"+next.id+
@@ -319,10 +323,6 @@ function sbookPaginate(pagesize,start)
       // Update the tables
       pages.push(pagetop); pageinfo.push(curpage);}
     if (dbginfo) scan.setAttribute("sbookpagedbg",dbginfo);
-    // We track a 'focus' for every page, which is the first sbook
-    // focusable element on the page.
-    if (!(curpage.focus))
-      if (fdjtElementMatches(scan,sbook_focus_rules)) curpage.focus=scan;
     // Advance around the loop.  If we have an explicit next page,
     //  we use it (usually the case if we're splitting a block).
     if (oversize) {
@@ -594,14 +594,13 @@ function sbookGoToPage(pagenum,pageoff)
       fdjtLog("[%f] Jumped to P%d@%d=%d+%d P%d@[%d,%d]#%s+%d (%o) from P%d@[%d,%d]#%s (%o)",
 	      fdjtET(),pagenum,off,sbook_pages[pagenum],pageoff,
 	      pagenum,info.top,info.bottom,info.first.id,pageoff||0,info,
-	      sbook_curpage,sbook_pages[sbook_curpage],
-	      sbook_curinfo.top,sbook_curinfo.bottom,
+	      sbook_curpage,sbook_curinfo.top,sbook_curinfo.bottom,
 	      sbook_curinfo.first.id,sbook_curinfo);
     else ("[%f] Jumped to %d P%d@[%d,%d]#%s+%d (%o)",
 	  fdjtET(),off,
 	  pagenum,info.top,info.bottom,info.first.id,pageoff||0,info);
   window.scrollTo(0,(off-sbook_top_px));
-  var footheight=(window.scrollY+window.innerHeight)-info.bottom;
+  var footheight=((off-sbook_top_px)+window.innerHeight)-info.bottom;
   if (footheight<0) {
     $("SBOOKBOTTOMMARGIN").style.height=0;
     sbook_curbottom=sbook_bottom_px;}
@@ -613,7 +612,7 @@ function sbookGoToPage(pagenum,pageoff)
   sbook_curinfo=info;
   if ((sbook_focus)&&(!(fdjtIsVisible(sbook_focus))))
     sbookSetFocus(sbook_target||info.focus||info.first);
-  sbook_pagescroll=window.scrollY+sbook_top_px;
+  sbook_pagescroll=window.scrollY;
   // Add class if it's temporarily gone
   fdjtAddClass(document.body,"sbookpageview");
 }
@@ -651,7 +650,9 @@ function sbookForward()
 	sbookGoToPage(sbook_curpage,pagebottom-info.top);
       else if (sbook_curpage===sbook_pages.length) {}
       else {
-	sbook_curpage++; sbookGoToPage(sbook_curpage);}}}
+	sbook_curpage++;
+	sbookGoToPage(sbook_curpage);
+	if (sbook_curinfo.focus) sbookSetHashID(sbook_curinfo.focus);}}}
   else window.scrollBy(0,sbook_pagesize);
 }
 
@@ -673,8 +674,10 @@ function sbookBackward()
 	sbookGoToPage(sbook_curpage,(info.top-pagetop)-sbook_pagesize);
       else if (sbook_curpage===0) {}
       else {
-	sbook_curpage--; sbookGoToPage(sbook_curpage);}}}
-  else window.scrollBy(0,sbook_pagesize);
+	sbook_curpage--;
+	sbookGoToPage(sbook_curpage);
+	if (sbook_curinfo.focus) sbookSetHashID(sbook_curinfo.focus);}}}
+  else window.scrollBy(0,-sbook_pagesize);
 }
 
 
@@ -901,6 +904,8 @@ function sbookPageFoot_onclick(evt)
   else sbookHUDMode("minimal");
 }
 
+/* Pagination utility functions */
+
 function sbookUpdatePagination()
 {
   var pagesize=window.innerHeight-
@@ -943,6 +948,18 @@ function sbookCheckPagination()
     sbook_pageinated=newinfo;
     sbookUpdatePagination();
     return newinfo;}
+}
+
+function sbookSetFontSize(size)
+{
+  if (document.body.style.fontSize!==size) {
+    document.body.style.fontSize=size;
+    sbookCheckPagination();}
+}
+
+function sbookSetHUDFontSize(size)
+{
+  if (sbookHUD.style.fontSize!==size) sbookHUD.style.fontSize=size;
 }
 
 /* Emacs local variables

@@ -46,13 +46,14 @@ function sbookPreviewIcon(img)
   img.onmousedown=sbookPreview_onmousedown;
   img.onmouseup=sbookPreview_onmouseup;
   img.onclick=sbookPreview_onclick;
+  img.ondblclick=sbookPreview_ondblclick;
   return img;
 }
 
 /* Preview handlers */
 
 var sbook_preview_delay=500;
-var sbook_preview_clickmax=1500;
+var sbook_preview_clickmax=1000;
 var sbook_preview_hysteresis=1000;
 
 function sbookPreview_onmouseover(evt)
@@ -61,33 +62,23 @@ function sbookPreview_onmouseover(evt)
   // sbook_trace("preview_mouseover",evt);
   var target=$T(evt);
   var ref=sbookGetRef(target);
+  if (!(ref)) return;
+  if (document.body.previewtimer) clearTimeout(document.body.previewtimer);
   if (ref===sbook_preview_target) return;
   sbook_preview_target=ref;
-  if ((sbook_preview)&&(!((evt.ctrlKey)||(evt.button))))
-    sbookPreview(false);
-  else if ((ref)&&((evt.ctrlKey)||(evt.button)))
-    sbookPreview(ref);
-}
-
-function sbookPreview_onmousemove(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("preview_mousemove",evt);
-  var target=$T(evt);
-  var ref=sbookGetRef(target);
-  if (ref===sbook_preview_target) return;
-  sbook_preview_target=ref;
-  if ((sbook_preview)&&(!((evt.ctrlKey)||(evt.button))))
-    sbookPreview(false);
-  else if ((ref)&&(evt.ctrlKey))
-    sbookPreview(ref);
+  if ((sbook_preview)||(evt.ctrlKey)||(evt.button)) sbookPreview(ref);
 }
 
 function sbookPreview_onmouseout(evt)
 {
   evt=evt||event||null;
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
   // sbook_trace("preview_mouseout",evt);
-  sbookPreview(false);
+  if (document.body.previewtimer) clearTimeout(document.body.previewtimer);
+  if (ref===sbook_last_preview) sbook_last_preview=false;
+  if ((!ref)||(ref===sbook_preview_target))
+    document.body.previewtimer=setTimeout(sbookPreview,sbook_preview_delay,false);
 }
 
 function sbookPreview_onmousedown(evt)
@@ -97,12 +88,13 @@ function sbookPreview_onmousedown(evt)
   var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
   fdjtCancelEvent(evt);
-  if ((sbook_preview)&&(!(evt.ctrlKey))) {
-    sbookPreview(false);
-    return;}
   sbook_preview_mousedown=fdjtTime();
   var ref=sbookGetRef($T(evt));
-  if (ref) sbookPreview(ref);
+  if (document.body.previewtimer) clearTimeout(document.body.previewtimer);
+  sbook_preview_target=ref;
+  if (ref) 
+    document.body.previewtimer=
+      setTimeout(sbookPreview,sbook_preview_delay,ref);
 }
 
 function sbookPreview_onmouseup(evt)
@@ -113,20 +105,30 @@ function sbookPreview_onmouseup(evt)
   sbook_preview_mousedown=false;
   // Still down, don't stop
   if (evt.ctrlKey) return;
-  if (document.body.preview) {
-    clearTimeout(document.body.preview);
-    document.body.preview=false;}
+  if (document.body.previewtimer) {
+    clearTimeout(document.body.previewtimer);
+    document.body.previewtimer=false;}
   var ref=sbookGetRef($T(evt));
-  if ((ref)&&((fdjtTime()-down)>sbook_preview_clickmax)) {
+  if (sbook_preview) {
     sbookPreview(false);
     fdjtCancelEvent(evt);
     return false;}
+  else if (sbook_last_preview===ref) sbookGoTo(ref);
+  else sbookPreview(ref);
 }
 
 function sbookPreview_onclick(evt)
 {
   var target=$T(evt);
   fdjtCancelEvent(evt);
+}
+
+function sbookPreview_ondblclick(evt)
+{
+  var target=$T(evt);
+  fdjtCancelEvent(evt);
+  var ref=sbookGetRef($T(evt));
+  if (ref) sbookGoTo(ref);
 }
 
 /* Emacs local variables
