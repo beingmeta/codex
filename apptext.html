@@ -316,16 +316,10 @@ or methods.</p>
   </td></tr>
 <tr><th>Content</th>
     <td>
-      <span class='button' onclick='fdjtDelay(500,sbookUpdatePagination,false);'>
-	Repaginate</span>
-      <span class='checkspan'
-	    onchange="javascript:sbookTabletMode($('TABLETMODE').checked);">
-	<input TYPE='checkbox' NAME='TABLET' VALUE='yes' ID='TABLETMODE'/>
-	tablet mode</span>
-      <span class='checkspan' onchange="javascript:sbookPageView((!($('SBOOKPAGEVIEW').checked)));">
-	<input TYPE='checkbox' NAME='PAGEVIEW' VALUE='yes' ID='SBOOKPAGEVIEW'/>
-	page view</span>
-      &middot;
+      <span class='button'
+	    title='save your session settings to local storage'
+	    onclick='sbookSaveSessionSettings();'>
+	Save</span>
       <span>
 	<select name='fontsize' id='SBOOKFONTSIZE' onchange='sbookSetFontSize(this.value);'>
 	  <option value='50%'>Tiny font</option>
@@ -335,20 +329,20 @@ or methods.</p>
 	  <option value='120%'>Larger font</option>
 	  <option value='150%'>Large font</option>
 	  <option value='200%'>Huge font</option>
-	</select></span>
-      </td></tr>
-<tr><th>HUD</th>
+      </select></span>
+      <span class='checkspan'
+	    title='use paging (vs. scrolling) to advance through the book'>
+	<input TYPE='checkbox' NAME='PAGEVIEW' VALUE='yes' ID='SBOOKPAGEVIEW'
+             onchange="javascript:sbookUpdateSessionSettings();"/>
+	paged</span>
+      <span class='smallbutton'
+	    title='recompute the page layout for this document (usually automatic)'
+	    onclick='fdjtDelay(500,sbookUpdatePagination,false);'>
+	Repaginate</span>
+
+</td></tr>
+<tr><th>Display</th>
   <td>
-    <span class='checkspan'
-	  title="don't flash the HUD to display updated context while reading"
-	  onchange="javascript:sbookNoHUDFlash($('HUDFLASHING').checked);">
-      <input TYPE='checkbox' NAME='HUDFLASH' VALUE='yes' ID='HUDFLASHING'/>
-      no flash</span>
-    <span class='checkspan' onchange="javascript:sbookSparseMode($('SBOOKSPARSE').checked);"
-	  title="minimize the display of the HUD, glossmarks, etc">
-      <input TYPE='checkbox' NAME='SPARSEBOOK' VALUE='yes' ID='SBOOKSPARSE'/>
-      minimize</span>
-      &middot;
     <span>
       <select name='fontsize' id='SBOOKFONTSIZE' onchange='sbookSetHUDFontSize(this.value);'>
 	<option value='50%'>Tiny font</option>
@@ -359,6 +353,34 @@ or methods.</p>
 	<option value='150%'>Large font</option>
 	<option value='200%'>Huge font</option>
     </select></span>
+    <span class='checkspan'
+	  title="flash the HUD when contextual information changes">
+      <input TYPE='checkbox' NAME='HUDFLASH' VALUE='yes' ID='SBOOKHUDFLASH'
+             onchange="javascript:sbookUpdateSessionSettings();"/>
+      flash</span>
+    <span class='checkspan'
+	  title="minimize the display of the HUD, glossmarks, etc">
+      <input TYPE='checkbox' NAME='SPARSEBOOK' VALUE='yes' ID='SBOOKSPARSE'
+             onchange="javascript:sbookUpdateSessionSettings();"/>
+      sparse</span>
+</td></tr>
+<tr><th>Interface</th>
+  <td>
+    <span class='checkspan'
+	  title='optimize display and interaction for touch interaction'>
+      <input TYPE='radio' NAME='UIMODE' VALUE='touch' ID='SBOOKTOUCHMODE'
+             onchange="javascript:sbookUpdateSessionSettings(500);"/>
+      touch</span>
+    <span class='checkspan'
+	  title='optimize display and interaction for mouse interaction'>
+      <input TYPE='radio' NAME='UIMODE' VALUE='mouse' ID='SBOOKMOUSEMODE'
+             onchange="javascript:sbookUpdateSessionSettings(500);"/>
+      mouse</span>
+    <span class='checkspan'
+          title='optimize display and interaction for keyboard interaction'>
+      <input TYPE='radio' NAME='UIMODE' VALUE='keyboard' ID='SBOOKKBDMODE'
+             onchange="javascript:sbookUpdateSessionSettings(500);"/>
+      keyboard</span>
 </td></tr>
 </table>  
 </div>

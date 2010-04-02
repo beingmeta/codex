@@ -34,9 +34,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
 /* Core gesture handling */
 
-/* There are currently two interaction modes: browser and tablet.  In
+/* There are currently two interaction modes: browser and touch.  In
    browser mode, clicking on a text or selecting a passage brings up
-   the dialog for adding a gloss; in tablet mode (because the
+   the dialog for adding a gloss; in touch mode (because the
    interaction is different), this process has two phases.  The first
    click or initial selection causes the passage to be 'selected'; the
    second click actually pulls up the dialog.
@@ -47,7 +47,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
    one.
 
    In browser mode, we open the dialog on mouse up, grabbing any
-   selected text.  In tablet mode, we use the UI's "target" object to
+   selected text.  In touch mode, we use the UI's "target" object to
    separate out the two phases.  On mouseup, we set the sbook target
    and on mousedown we open the dialog if the event target is the
    sbook target.
@@ -145,40 +145,52 @@ function sbookHandleGestures(evt)
     fdjtCancelEvent(evt);}
 }
 
-function sbookTabletMode(flag)
+function sbookInterfaceMode(mode)
 {
-  var oldflag=sbook_tablet;
-  if (flag) {
-    sbook_tablet=true;
+  if (mode==='touch') {
+    sbook_touch=true;
     sbook_gestures=false;
-    fdjtSetCookie("sbooktablet","yes",false,"/");
-    fdjtAddClass(document.body,"tablet");}
+    fdjtCheckSpan_set($("SBOOKTOUCHMODE"),true,true);
+    fdjtAddClass(document.body,"touch");
+    sbookCheckPagination();}
+  else if (mode==='mouse') {
+    sbook_touch=false;
+    sbook_gestures=false;
+    fdjtCheckSpan_set($("SBOOKMOUSEMODE"),true,true);
+    fdjtDropClass(document.body,"touch");
+    sbookCheckPagination();}
+  else if (mode==='keyboard') {
+    sbook_touch=false;
+    sbook_gestures=false;
+    fdjtCheckSpan_set($("SBOOKKBDMODE"),true,true);
+    fdjtDropClass(document.body,"touch");
+    sbookCheckPagination();}
   else {
-    sbook_tablet=false;
+    sbook_touch=false;
     sbook_gestures=false;
-    fdjtClearCookie("sbooktablet","/");
-    fdjtDropClass(document.body,"tablet");}
-  if (oldflag!==flag) sbookUpdatePagination();
+    fdjtDropClass(document.body,"touch");}
 }
 
 function sbookSparseMode(flag)
 {
   if (flag) {
     sbook_sparse=true;
-    $("SBOOKSPARSE").checked=true;
-    fdjtSetCookie("sbooksparse","yes",false,"/");
+    fdjtCheckSpan_set($("SBOOKSPARSE"),true,true);
     fdjtAddClass(document.body,"sparsebook");}
   else {
     sbook_sparse=false;
-    $("SBOOKSPARSE").checked=false;
-    fdjtClearCookie("sbooksparse","/");
+    fdjtCheckSpan_set($("SBOOKSPARSE"),false,true);
     fdjtDropClass(document.body,"sparsebook");}
 }
 
-function sbookNoHUDFlash(flag)
+function sbookFlashMode(flag)
 {
-  if (flag) sbook_hud_flash=false;
-  else sbook_hud_flash=2000;
+  if (flag) {
+    fdjtCheckSpan_set($("SBOOKHUDFLASH"),true,true);
+    sbook_hud_flash=sbook_default_hud_flash;}
+  else {
+    fdjtCheckSpan_set($("SBOOKHUDFLASH"),false,true);
+    sbook_hud_flash=false;}
 }
 
 /* Dead (sleeping?) code */

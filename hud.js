@@ -266,7 +266,9 @@ function sbookFlashMessage(arg0)
   sbook_message_timer=
     setTimeout(function() {
 	if (mode==="console") sbookHUDMode(false);
-	else if (mode) sbookHUDMode(mode);},
+	else if (sbook_mode==="console") sbookHUDMode(false);	
+	else if (mode) {
+	  fdjtSwapClass(sbookHUD,"console",mode);}},
       duration);
 }
 
@@ -601,7 +603,6 @@ function sbookLoginButton_onclick(evt)
 
 function sbookRightEdge_onclick(evt)
 {
-  fdjtTrace("Right edge click %o",evt);
   if (sbook_edge_taps) sbookForward();
   else sbookHUDMode(false);
   fdjtCancelEvent(evt);

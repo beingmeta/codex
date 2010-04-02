@@ -809,10 +809,11 @@ function sbookNextPrev_stopit(evt)
 
 function sbookPageView(flag,nogo)
 {
-  if (flag) {
+  if (flag===sbook_pageview)
+    sbookCheckPagination();
+  else if (flag) {
     sbook_pageview=true;
-    $("SBOOKPAGEVIEW").checked=true;
-    fdjtSetCookie("sbookpageview","yes",false,"/");
+    fdjtCheckSpan_set($("SBOOKPAGEVIEW"),true,true);
     fdjtAddClass(document.body,"sbookpageview");
     fdjtDropClass(document.body,"sbookscroll");
     sbookFlashMessage(3000,
@@ -826,10 +827,9 @@ function sbookPageView(flag,nogo)
   else {
     sbook_pageview=false;
     sbook_nextpage=false; sbook_pagebreak=false;
-    $("SBOOKPAGEVIEW").checked=false;
+    fdjtCheckSpan_set($("SBOOKPAGEVIEW"),false,true);
     fdjtAddClass(document.body,"sbookscroll");
     fdjtDropClass(document.body,"sbookpageview");
-    fdjtSetCookie("sbookpageview","no",false,"/");
     sbookFlashMessage(3000,
 		      "Now using scroll view",
 		      fdjtSpan("details",
@@ -941,12 +941,13 @@ function sbookCheckPagination()
     return false;
   else {
     var newinfo={};
+    sbookUpdatePagination();
     newinfo.offheight=document.body.offsetHeight;
     newinfo.offwidth=document.body.offsetWidth;
     newinfo.winwidth=window.innerWidth;
     newinfo.winheight=window.innerHeight;
-    sbook_pageinated=newinfo;
-    sbookUpdatePagination();
+    // fdjtTrace("Updated pagination from %o to %o",sbook_paginated,newinfo);
+    sbook_paginated=newinfo;
     return newinfo;}
 }
 

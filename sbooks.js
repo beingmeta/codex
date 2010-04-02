@@ -203,8 +203,8 @@ var sbook_search_gotlucky=5;
 var sbook_search_focus=false;
 // Whether to display verbose tool tips
 var sbook_noisy_tooltips=false;
-// Whether the UI is tablet based
-var sbook_tablet=false;
+// Whether the UI is touch based
+var sbook_touch=false;
 // Whether to do gesture recognition
 var sbook_gestures=false;
 // Whether to handle edge taps/clicks
@@ -215,7 +215,9 @@ var sbook_accessible=false;
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
 // How long to flash HUD elements when they change (milliseconds)
-var sbook_hud_flash=2000;
+var sbook_hud_flash=false;
+// The default value for the above value when engaged (milliseconds)
+var sbook_default_hud_flash=2000;
 
 /* Control of initial document scan */
 
@@ -254,7 +256,7 @@ var sbook_electric_spanbars=false;
 // Focus rules
 var sbook_focus_rules=[];
 // Whether to do pagination
-var sbook_pageview=true;
+var sbook_pageview=false;
 // Whether to be sparse
 var sbook_sparse=false;
 
@@ -1036,7 +1038,7 @@ function sbookCheckTarget()
 function sbookDisplayOffset()
 {
   var toc;
-  if (sbook_tablet) return -50;
+  if (sbook_touch) return -50;
   else if (sbook_mode)
     if (toc=$("SBOOKTOC"))
       return -((toc.offsetHeight||50)+15);
@@ -1293,7 +1295,7 @@ function sbook_onmousemove(evt)
 function sbook_onscroll(evt)
 {
   evt=evt||event||null;
-  sbook_trace("sbook_onscroll",evt);
+  // sbook_trace("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
   if (sbook_preview) return;
   if (sbook_target) sbookCheckTarget();
@@ -1530,44 +1532,6 @@ function sbookGetScanSettings()
   else sbook_autoid=true;
 }
 
-function sbookGetAppSettings()
-{
-  var appsettings=fdjtGetMeta("SBOOKDISPLAY");
-  if (appsettings)
-    appsettings=fdjtSplitSemi(appsettings);
-  else appsettings=[];
-  if ((fdjtGetCookie("sbooknoflash"))||
-      (fdjtContains(appsettings,"noflash")))
-    sbook_hud_flash=0;
-  if (fdjtGetCookie("sbookpageview")==="yes")
-    sbook_pageview=true;
-  else if (fdjtGetCookie("sbookpageview")==="no")
-    sbook_pageview=false;
-  else if (fdjtContains(appsettings,"paged"))
-    sbook_pageview=true;
-  else if (fdjtContains(appsettings,"scroll"))
-    sbook_pageview=false;
-  else if (fdjtHasClass(document.body,"sbookpageview"))
-    sbook_pageview=true;
-  else if (fdjtHasClass(document.body,"sbookscrollview"))
-    sbook_pageview=false;
-  else {}
-  if (fdjtGetCookie("sbooktablet")==="yes") 
-    sbook_table=true;
-  if (fdjtGetCookie("sbooksparse")==="yes")
-    sbook_sparse=true;
-  else if (fdjtGetCookie("sbooksparse")==="no")
-    sbook_sparse=false;
-  else if (fdjtContains(appsettings,"sparse"))
-    sbook_sparse=true;
-  else if (fdjtHasClass(document.body,"sparsebook"))
-    sbook_sparse=true;
-  var tocmax=fdjtGetMeta("SBOOKTOCMAX",true);
-  if (tocmax) sbook_tocmax=parseInt(tocmax);
-  var sbookhelp=fdjtGetMeta("SBOOKHELP",true);
-  if (sbookhelp) sbook_help_on_startup=true;
-}
-
 function sbookGetPageSettings()
 {
   var tocmajor=fdjtGetMeta("SBOOKTOCMAJOR",true);
@@ -1608,6 +1572,88 @@ function sbookGetPageSettings()
     var i=0; while (i<selectors.length) {
       sbook_fullpages.push(fdjtParseSelector(selectors[i++]));}}
 }
+
+/* Application settings */
+
+var sbook_allopts=
+  [["page","scroll"],["sparse","rich"],["flash","noflash"],
+   ["fetch","nofetch"],["setup","nosetup"]];
+
+var sbook_default_opts=["page","rich","flash","mouse"];
+var sbook_window_opts=[];
+var sbook_opts=[];
+
+function sbookTestOpt(pos,neg,session)
+{
+  return fdjtTestOpt(pos,neg,
+		     (session||fdjtGetSession("sbookopts")),
+		     fdjtGetQuery("sbookopts"),
+		     fdjtGetLocal("sbookopts"),
+		     fdjtGetMeta("sbookopts"),
+		     sbook_default_opts);
+}
+
+function sbookApplySettings()
+{
+  // This applies the current session settings
+  sbookSparseMode(sbookTestOpt("sparse","rich"));
+  sbookFlashMode(sbookTestOpt("flash","dull"));
+  var tocmax=fdjtGetMeta("SBOOKTOCMAX",true);
+  if (tocmax) sbook_tocmax=parseInt(tocmax);
+  var sbookhelp=fdjtGetMeta("SBOOKHELP",true);
+  if (sbookhelp) sbook_help_on_startup=true;
+  sbookPageView(sbookTestOpt("page","scroll"));
+  if (sbookTestOpt("touch",["mouse",",keyboard"]))
+    sbookInterfaceMode("touch");
+  else if (sbookTestOpt("keyboard",["mouse","touch"]))
+    sbookInterfaceMode("keyboard");
+  else sbookInterfaceMode("mouse");
+}
+
+function sbookUpdateSessionSettings(delay)
+{
+  if (delay) {
+    setTimeout(sbookUpdateSessionSettings,delay);
+    return;}
+  // This updates the session settings from the checkboxes 
+  var sessionsettings="opts";
+  if ($("SBOOKPAGEVIEW").checked)
+    if (sbookTestOpt("page","scroll","")) {}
+    else sessionsettings=sessionsettings+" page";
+  else if (sbookTestOpt("scroll","page","")) {}
+  else sessionsettings=sessionsettings+" scroll";
+  if ($("SBOOKTOUCHMODE").checked)
+    if (sbookTestOpt("touch",["mouse","keyboard"],"")) {}
+    else sessionsettings=sessionsettings+" touch";
+  if ($("SBOOKMOUSEMODE").checked)
+    if (sbookTestOpt("mouse",["touch","keyboard"],"")) {}
+    else sessionsettings=sessionsettings+" mouse";
+  if ($("SBOOKKBDMODE").checked)
+    if (sbookTestOpt("keyboard",["touch","mouse"],"")) {}
+    else sessionsettings=sessionsettings+" keyboard";
+  if ($("SBOOKHUDFLASH").checked)
+    if (sbookTestOpt("flash","noflash","")) {}
+    else sessionsettings="sessionsettings"+flash;
+  else if (sbookTestOpt("noflash","flash","")) {}
+  else sessionsettings=sessionsettings+" noflash";
+  if ($("SBOOKSPARSE").checked)
+    if (sbookTestOpt("sparse","rich","")) {}
+    else sessionsettings=sessionsettings+" sparse";
+  else if (sbookTestOpt("sparse","rich","")) {}
+  else sessionsettings=sessionsettings+" rich";
+  fdjtSetSession("sbookopts",sessionsettings);
+  sbookApplySettings();
+}
+
+function sbookSaveSessionSettings()
+{
+  var opts=fdjtGetSession("sbookopts");
+  if (opts) {
+    fdjtSetLocal("sbookopts",opts);
+    fdjtDropLocal("sbookopts");}
+}
+
+/* Other setup */
 
 function sbookLookupServer(string)
 {
@@ -1704,15 +1750,6 @@ function _sbookHUDSplash()
     else sbookHUDMode(false);}
 }
 
-/* Applying settings */
-
-function sbookApplySettings()
-{
-  sbookTabletMode($("TABLETMODE").checked);
-  sbookSparseMode($("SBOOKSPARSE").checked);
-  sbookPageView($("SBOOKPAGEVIEW").checked);
-}
-
 /* Other stuff */
 
 /* This initializes the sbook state to the initial location with the
@@ -1778,10 +1815,9 @@ function sbookSetup()
 	(document.location.search.length>0))) {
     sbookHUDMode(false);
     sbookMessage("Setting up your sBook");}
-  sbookGetAppSettings();
   sbookPageSetup();
-  if ((document.location.search)&&
-      (document.location.search.length>0)) {
+  sbookApplySettings();
+  if (fdjtGetQuery("action")) {
     sbookSetupAppFrame();
     sbookHUDMode("sbookapp");}
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
@@ -1790,8 +1826,6 @@ function sbookSetup()
   var scanstate=sbookGatherMetadata();
   sbookInitNavHUD();
   var scan_done=new Date();
-  sbookSparseMode(sbook_sparse);
-  sbookTabletMode(sbook_tablet);
   sbookMessage("Determining page layout");
   if (sbook_pageview) sbookCheckPagination();
   sbookMessage("Processing knowledge sources");
