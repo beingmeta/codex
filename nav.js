@@ -65,8 +65,8 @@ function sbookCreateNavHUD(eltspec)
 function sbookStaticNavHUD(eltspec)
 {
   var root_info=sbook_getinfo(sbook_root);
-  var toc_div=sbookTOCDiv(root_info,0,false,"SBOOKAPPTOC4");
-  var div=fdjtDiv(eltspec||"#SBOOKAPPTOC",toc_div);
+  var toc_div=sbookTOCDiv(root_info,0,false,"SBOOKDASHTOC4");
+  var div=fdjtDiv(eltspec||"#SBOOKDASHTOC",toc_div);
   div.onmouseover=sbookTOC_onmouseover;
   div.onmouseout=sbookTOC_onmouseout;
   div.onmousedown=sbookPreview_onmousedown;

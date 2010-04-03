@@ -493,7 +493,7 @@ div#SBOOKHUD div#SBOOKCONSOLE div#SBOOKMESSAGELOG div.logentry span.time {
 
 /* The App HUD */
 
-div#SBOOKHUD div#SBOOKAPP {
+div#SBOOKHUD div#SBOOKDASH {
   font-family: arial,helvetica,sans,sans-serif;
   position: fixed; top: 60px; bottom: 50px;
   left: 74px; right: 75px; z-index: 200;
@@ -506,7 +506,7 @@ div#SBOOKHUD div#SBOOKAPP {
   background-color: gray; color: ivory;
   padding-left: 5%; padding-right: 5%;
   padding-bottom: 12px; padding-top: 4px;}
-div#SBOOKHUD div#SBOOKAPP { display: none;}
+div#SBOOKHUD div#SBOOKDASH { display: none;}
 
 img.hudbutton[alt='app'] { 
   top: 0px; right: 0px;
@@ -549,56 +549,56 @@ div#SBOOKHUD.toc img.hudbutton[alt='login'] {
 body div#SBOOKHUD img.hudbutton[alt='login'] {display: none;}
 body.nosbookuser div#SBOOKHUD img.hudbutton[alt='login'] {display: block;}
 
-div#SBOOKHUD #SBOOKAPPCLOSE { 
+div#SBOOKHUD #SBOOKDASHCLOSE { 
   position: fixed; top: 60px; left: 52px;
   padding: 1px; margin: 0px; width: 20px; height: 20px;
   background-color: gold;
   z-index: 250; display: none;}
-div#SBOOKHUD #SBOOKAPPCLOSE img {
+div#SBOOKHUD #SBOOKDASHCLOSE img {
   color: black; font-weight: bold;
   border: none; vertical-align: text-bottom;
   height: 20px; width: 20px;}
-div#SBOOKHUD div#SBOOKAPP a { 
+div#SBOOKHUD div#SBOOKDASH a { 
   color: lightblue; text-decoration: none; font-weight: bold;}
-div#SBOOKHUD div#SBOOKAPP a:visited { color: lightblue;}
-div#SBOOKHUD div#SBOOKAPP a:hover { text-decoration: underline;}
-div#SBOOKHUD div#SBOOKAPP div.tabbar {
+div#SBOOKHUD div#SBOOKDASH a:visited { color: lightblue;}
+div#SBOOKHUD div#SBOOKDASH a:hover { text-decoration: underline;}
+div#SBOOKHUD div#SBOOKDASH div.tabbar {
     text-align: center; font-weight: bold; z-index: 300;}
-div#SBOOKHUD div#SBOOKAPP div#SBOOKAPPTOC div.head { color: black; } 
-div#SBOOKHUD div#SBOOKAPP div#SBOOKAPPTOC div.head { padding-left: 4px;} 
-div#SBOOKHUD div#SBOOKAPP div#SBOOKAPPTOC a {
+div#SBOOKHUD div#SBOOKDASH div#SBOOKDASHTOC div.head { color: black; } 
+div#SBOOKHUD div#SBOOKDASH div#SBOOKDASHTOC div.head { padding-left: 4px;} 
+div#SBOOKHUD div#SBOOKDASH div#SBOOKDASHTOC a {
     color: inherit; font-weight: inherit;}
-div#SBOOKHUD div#SBOOKAPP div#SBOOKAPPTOC a.cohi {color: white;}
+div#SBOOKHUD div#SBOOKDASH div#SBOOKDASHTOC a.cohi {color: white;}
 
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP {
+div#SBOOKHUD div#SBOOKDASH #SBOOKDASHTOP {
   position: absolute; top: 0px; left: 0px; right: 0px; z-index: 250;
   display: block; height: 16px; text-decoration: none; text-align: left;
   padding-top: 3px; padding-bottom: 2px; padding-left: 2px;
   background-color: gold;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP:hover { text-decoration: none;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKIBELONGTO {
+div#SBOOKHUD div#SBOOKDASH #SBOOKDASHTOP:hover { text-decoration: none;}
+div#SBOOKHUD div#SBOOKDASH #SBOOKDASHTOP #SBOOKIBELONGTO {
   /* position: absolute; top: 0px; left: 2px; */
   font-family: times,serif; font-variant: small-caps; color: black;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERNAME {
+div#SBOOKHUD div#SBOOKDASH #SBOOKDASHTOP #SBOOKUSERNAME {
   font-family: helvetica,arial,sans; font-variant: normal; color: blue;
   padding-left: 12px;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKIBELONGTO #SBOOKUSERNAME:hover {
+div#SBOOKHUD div#SBOOKDASH #SBOOKDASHTOP #SBOOKIBELONGTO #SBOOKUSERNAME:hover {
   text-decoration: underline;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
+div#SBOOKHUD div#SBOOKDASH #SBOOKDASHTOP #SBOOKUSERPIC {
   position: absolute; top: 0px; right: 0px; height: 40px;
   border-bottom: solid gold 2px; border-left: solid gold 2px;
   background-color: gold;}
-body.nosbookuser div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
+body.nosbookuser div#SBOOKHUD div#SBOOKDASH #SBOOKDASHTOP #SBOOKUSERPIC {
     display: none;}
-body.sbookuser div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP #SBOOKUSERPIC {
+body.sbookuser div#SBOOKHUD div#SBOOKDASH #SBOOKDASHTOP #SBOOKUSERPIC {
     display: block;}
-div#SBOOKHUD div#SBOOKAPP #SBOOKAPPTOP .applinks {
+div#SBOOKHUD div#SBOOKDASH #SBOOKDASHTOP .applinks {
     color: blue; font-size: 80%;
     font-weight: normal; font-variant: small-caps;}
 
-div#SBOOKHUD div#SBOOKAPP .tab { font-variant: small-caps;}
+div#SBOOKHUD div#SBOOKDASH .tab { font-variant: small-caps;}
 
-div#SBOOKHUD div#SBOOKAPP div.message {
+div#SBOOKHUD div#SBOOKDASH div.message {
   margin-top: 24px;  text-align: center; color: gold;
   font-family: sans,sans-serif; font-weight: bold; font-size: 125%;}
 
@@ -606,72 +606,72 @@ body.sbook .applinks a {
   text-decoration: none; color: inherit;}
 body.sbook div.applinks a { 
   padding-left: 1.5em; padding-right: 1.5em;}
-div#SBOOKHUD div#SBOOKAPP .applinks a { color: inherit;}
+div#SBOOKHUD div#SBOOKDASH .applinks a { color: inherit;}
 body.sbook .applinks a:hover {
   text-decoration: none; color: inherit;}
 body.sbook .applinks a:visited { color: inherit;}
 
-div#SBOOKHUD div#SBOOKAPP div#APPABOUT .applinks {
+div#SBOOKHUD div#SBOOKDASH div#APPABOUT .applinks {
     color: gold;
     margin-bottom: 8px;
     border-bottom: solid gold 2px;}
 
-div#SBOOKHUD div#SBOOKAPP div.tabbar { }
+div#SBOOKHUD div#SBOOKDASH div.tabbar { }
 
-div#SBOOKHUD.help div#SBOOKAPP {
+div#SBOOKHUD.help div#SBOOKDASH {
   display: block; opacity: 0.9; }
-div#SBOOKHUD.login div#SBOOKAPP {
+div#SBOOKHUD.login div#SBOOKDASH {
   display: block; opacity: 0.9; }
-div#SBOOKHUD.settings div#SBOOKAPP {
+div#SBOOKHUD.device div#SBOOKDASH {
   display: block; opacity: 0.9; }
-div#SBOOKHUD.sbookapp div#SBOOKAPP {
+div#SBOOKHUD.sbookapp div#SBOOKDASH {
   display: block; opacity: 0.9; }
-div#SBOOKHUD.apptoc div#SBOOKAPP {
+div#SBOOKHUD.apptoc div#SBOOKDASH {
   display: block; opacity: 0.9; }
-div#SBOOKHUD.about div#SBOOKAPP {
-  display: block; opacity: 0.9; }
-
-div#SBOOKHUD.help #SBOOKAPPCLOSE {
-  display: block; opacity: 0.9; }
-div#SBOOKHUD.login #SBOOKAPPCLOSE {
-  display: block; opacity: 0.9; }
-div#SBOOKHUD.settings #SBOOKAPPCLOSE {
-  display: block; opacity: 0.9; }
-div#SBOOKHUD.sbookapp #SBOOKAPPCLOSE {
-  display: block; opacity: 0.9; }
-div#SBOOKHUD.apptoc #SBOOKAPPCLOSE {
-  display: block; opacity: 0.9; }
-div#SBOOKHUD.about #SBOOKAPPCLOSE {
+div#SBOOKHUD.about div#SBOOKDASH {
   display: block; opacity: 0.9; }
 
-div#SBOOKHUD div#SBOOKAPP div.tabcontent { height: 80%;}
+div#SBOOKHUD.help #SBOOKDASHCLOSE {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.login #SBOOKDASHCLOSE {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.device #SBOOKDASHCLOSE {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.sbookapp #SBOOKDASHCLOSE {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.apptoc #SBOOKDASHCLOSE {
+  display: block; opacity: 0.9; }
+div#SBOOKHUD.about #SBOOKDASHCLOSE {
+  display: block; opacity: 0.9; }
 
-div#SBOOKHUD.help div#SBOOKAPP div.tabcontent#APPHELP { display: block;}
-div#SBOOKHUD.login div#SBOOKAPP div.tabcontent#APPLOGIN { display: block;}
-div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS { display: block;}
-div#SBOOKHUD.sbookapp div#SBOOKAPP div.tabcontent#SBOOKSAPP { display: block;}
-div#SBOOKHUD.apptoc div#SBOOKAPP div.tabcontent#APPTOC { display: block;}
-div#SBOOKHUD.about div#SBOOKAPP div.tabcontent#APPABOUT { display: block;}
+div#SBOOKHUD div#SBOOKDASH div.tabcontent { height: 80%;}
 
-div#SBOOKHUD div#SBOOKAPP span.tab { white-space: nowrap;}
-div#SBOOKHUD div#SBOOKAPP span.tab[contentid='APPHELP'] {
+div#SBOOKHUD.help div#SBOOKDASH div.tabcontent#APPHELP { display: block;}
+div#SBOOKHUD.login div#SBOOKDASH div.tabcontent#APPLOGIN { display: block;}
+div#SBOOKHUD.device div#SBOOKDASH div.tabcontent#APPDEVICE { display: block;}
+div#SBOOKHUD.sbookapp div#SBOOKDASH div.tabcontent#SBOOKSAPP { display: block;}
+div#SBOOKHUD.apptoc div#SBOOKDASH div.tabcontent#APPTOC { display: block;}
+div#SBOOKHUD.about div#SBOOKDASH div.tabcontent#APPABOUT { display: block;}
+
+div#SBOOKHUD div#SBOOKDASH span.tab { white-space: nowrap;}
+div#SBOOKHUD div#SBOOKDASH span.tab[contentid='APPHELP'] {
     font-weight: bold; color: yellow;}
-div#SBOOKHUD.help div#SBOOKAPP span.tab[contentid='APPHELP'] {
+div#SBOOKHUD.help div#SBOOKDASH span.tab[contentid='APPHELP'] {
     border-bottom: none; color: gold;}
 
-div#SBOOKHUD.login div#SBOOKAPP span.tab[contentid='APPLOGIN'] {
+div#SBOOKHUD.login div#SBOOKDASH span.tab[contentid='APPLOGIN'] {
     border-bottom: none; color: gold;}
-div#SBOOKHUD.settings div#SBOOKAPP span.tab[contentid='APPSETTINGS'] {
+div#SBOOKHUD.device div#SBOOKDASH span.tab[contentid='APPDEVICE'] {
     border-bottom: none; color: gold;}
-div#SBOOKHUD.sbookapp div#SBOOKAPP span.tab[contentid='SBOOKSAPP'] {
-    border-bottom: none; color: gold;}
-
-div#SBOOKHUD.about div#SBOOKAPP span.tab[contentid='APPABOUT'] {
-    border-bottom: none; color: gold;}
-div#SBOOKHUD.apptoc div#SBOOKAPP span.tab[contentid='APPTOC'] {
+div#SBOOKHUD.sbookapp div#SBOOKDASH span.tab[contentid='SBOOKSAPP'] {
     border-bottom: none; color: gold;}
 
-div#SBOOKHUD div#SBOOKAPP div#SBOOKSAPP iframe {
+div#SBOOKHUD.about div#SBOOKDASH span.tab[contentid='APPABOUT'] {
+    border-bottom: none; color: gold;}
+div#SBOOKHUD.apptoc div#SBOOKDASH span.tab[contentid='APPTOC'] {
+    border-bottom: none; color: gold;}
+
+div#SBOOKHUD div#SBOOKDASH div#SBOOKSAPP iframe {
   width: 100%; height: 100%;
   border-width: solid transparent 3px;
   -khtml-border-radius: 9px; 
@@ -679,7 +679,7 @@ div#SBOOKHUD div#SBOOKAPP div#SBOOKSAPP iframe {
   -moz-border-radius: 9px; 
   border-radius: 9px;}
 
-div#SBOOKAPP div.helpbody {
+div#SBOOKDASH div.helpbody {
   max-width: 50em; margin-left: auto; margin-right: auto;
   margin-top: 18px;}
 div.fasthelp {
@@ -693,34 +693,34 @@ div.fasthelp span.keydef {
 div.fasthelp th { color: gold;}
 div.fasthelp strong { color: gold;}
 
-div#SBOOKAPP div.helpbody span.fortouch { display: none;}
-div#SBOOKAPP div.helpbody span.forbrowser { display: inline;}
+div#SBOOKDASH div.helpbody span.fortouch { display: none;}
+div#SBOOKDASH div.helpbody span.forbrowser { display: inline;}
 
-div#SBOOKAPP div.helpbody span.hudref {
+div#SBOOKDASH div.helpbody span.hudref {
   font-weight: bold; color: blue; cursor: pointer;}
-div#SBOOKAPP div.helpbody strong {
+div#SBOOKDASH div.helpbody strong {
   font-weight: bold; color: yellow;}
-div#SBOOKAPP div.helpbody em {
+div#SBOOKDASH div.helpbody em {
   font-style: italic; color: yellow;}
-div#SBOOKAPP div.helpbody div.sbookh1 { 
+div#SBOOKDASH div.helpbody div.sbookh1 { 
   font-size: 200%; font-weight: bold;
   text-align: center;}
-div#SBOOKAPP div.helpbody div.sbookh1 div.motto {
+div#SBOOKDASH div.helpbody div.sbookh1 div.motto {
   font-weight: normal; font-style: italic; font-size: 50%; color: yellow;}
 
-div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS div.setting {
+div#SBOOKHUD.device div#SBOOKDASH div.tabcontent#APPDEVICE div.setting {
     clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
-div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
+div#SBOOKHUD.device div#SBOOKDASH div.tabcontent#APPDEVICE
      div.setting span.checkspan {
   font-size: 125%; color: orange;}
-div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
+div#SBOOKHUD.device div#SBOOKDASH div.tabcontent#APPDEVICE
      div.setting span.checkspan input[type='CHECKBOX'] {
   width: 16px; height: 16px; color: orange; background-color: orange;
   vertical-align: bottom;}
-div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
+div#SBOOKHUD.device div#SBOOKDASH div.tabcontent#APPDEVICE
      div.setting div.explanation { 
   font-style: italic; clear: both; margin-left: 3em;}
-div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
+div#SBOOKHUD.device div#SBOOKDASH div.tabcontent#APPDEVICE
      div.setting .button {
 	 float: right; clear: right; cursor: pointer; 
 	 background-color: orange; color: white;
@@ -730,10 +730,10 @@ div#SBOOKHUD.settings div#SBOOKAPP div.tabcontent#APPSETTINGS
 	 -khtml-border-radius: 6px; 
 	 -webkit-border-radius: 6px; 
 	 -moz-border-radius: 6px;}
-div#SBOOKAPP table.settings {width: 100%; vertical-align: top;}
-div#SBOOKAPP table.settings th {text-align: right; vertical-align: top;}
-div#SBOOKAPP table.settings td {text-align: left; vertical-align: top; padding-left: 12px;}
-div#SBOOKHUD.settings div#SBOOKAPP table.settings .button {
+div#SBOOKDASH table.settings {width: 100%; vertical-align: top;}
+div#SBOOKDASH table.settings th {text-align: right; vertical-align: top;}
+div#SBOOKDASH table.settings td {text-align: left; vertical-align: top; padding-left: 12px;}
+div#SBOOKHUD.settings div#SBOOKDASH table.settings .button {
     float: right; clear: right; cursor: pointer; 
     background-color: orange; color: white;
     font-weight: bold; font-variant: small-caps;
@@ -742,7 +742,7 @@ div#SBOOKHUD.settings div#SBOOKAPP table.settings .button {
     -khtml-border-radius: 6px; 
     -webkit-border-radius: 6px; 
     -moz-border-radius: 6px;}
-div#SBOOKHUD.settings div#SBOOKAPP table.settings .smallbutton {
+div#SBOOKHUD.settings div#SBOOKDASH table.settings .smallbutton {
     cursor: pointer;
     margin-left: 4px; margin-right: 4px; padding: 3px;
     background-color: gold; color: darkblue;
@@ -786,8 +786,8 @@ body.preview div#SBOOKHUD.searching div.hudblock#SBOOKSEARCH { opacity: 0.05;}
 body.preview div#SBOOKHUD.browsing div.hudblock#SBOOKSEARCH { opacity: 0.05;}
 body.preview div#SBOOKHUD.glosses div.hudblock#SBOOKGLOSSES { opacity: 0.05;}
 body.preview div#SBOOKHUD.mark div.hudblock#SBOOKMARK { opacity: 0.05;}
-body.preview div#SBOOKHUD div#SBOOKAPP { visibility: hidden;}
-body.preview div#SBOOKHUD div#SBOOKAPP .spanbar:hover { visibility: visible; opacity: 0.5;}
+body.preview div#SBOOKHUD div#SBOOKDASH { visibility: hidden;}
+body.preview div#SBOOKHUD div#SBOOKDASH .spanbar:hover { visibility: visible; opacity: 0.5;}
 
 body.preview img.hudbutton { opacity: 0.05;}
 
@@ -1094,20 +1094,20 @@ div.sbooktoc div.head .progressbar {
   padding: 0px; margin: 0px; border-right: solid red 3px;
   position: absolute;  left: 0px; height: 100%;
   z-index: -100; opacity: 0.5;}
-div#SBOOKAPP div#APPTOC div.sbooktoc {
+div#SBOOKDASH div#APPTOC div.sbooktoc {
     display: block; font-size: 90%;}
-div#SBOOKHUD div#SBOOKAPP div#APPTOC div.sbooktoc div.head {
+div#SBOOKHUD div#SBOOKDASH div#APPTOC div.sbooktoc div.head {
     display: block; font-weight: bold;}
-div#SBOOKHUD div#SBOOKAPP div#APPTOC div.sbooktocleaf > div.head {
+div#SBOOKHUD div#SBOOKDASH div#APPTOC div.sbooktocleaf > div.head {
     display: block; font-weight: normal;}
-div#SBOOKHUD div#SBOOKAPP div#APPTOC hr.progressbar {
+div#SBOOKHUD div#SBOOKDASH div#APPTOC hr.progressbar {
     display: none; border: none;}
-div#SBOOKHUD div#SBOOKAPP div#APPTOC div.progressbox { display: none;}
-div#SBOOKHUD div#SBOOKAPP div#APPTOC div.live > div.head { color: gold;}
-div#SBOOKHUD div#SBOOKAPP div#APPTOC
+div#SBOOKHUD div#SBOOKDASH div#APPTOC div.progressbox { display: none;}
+div#SBOOKHUD div#SBOOKDASH div#APPTOC div.live > div.head { color: gold;}
+div#SBOOKHUD div#SBOOKDASH div#APPTOC
   div.live > div.head hr.progressbar {
       display: block;}
-div#SBOOKHUD div#SBOOKAPP div#APPTOC
+div#SBOOKHUD div#SBOOKDASH div#APPTOC
   div.live > div.spanbar div.progressbox {
       display: block;}
 
@@ -1125,7 +1125,7 @@ div.sbooktoc.live div.sbooktoc.live { display: block;}
 div.sbooktoc div.sub { display: none; margin-left: 20px; margin-right: 20px;}
 div.sbooktoc.cur div.head { font-size: 125%;}
 div.sbooktoc.cur div.sub { display: block;}
-div#SBOOKAPPTOC div.sbooktoc.cur div.sub { display: none;}
+div#SBOOKDASHTOC div.sbooktoc.cur div.sub { display: none;}
 
 div.sbooktoc .sectname.cohi { color: ivory;}
 div.sbooktoc .sectname { color: ivory; cursor: pointer;}

@@ -46,7 +46,7 @@ var sbook_message_timeout=5000;
 // This is the last active 'app' tab
 var sbook_last_app="help";
 // This is the regex for all sbook apps
-var sbook_apps=["help","login","sbookapp","settings","apptoc","about"];
+var sbook_apps=["help","login","sbookapp","device","apptoc","about"];
 
 function createSBOOKHUD()
 {
@@ -134,7 +134,7 @@ function sbookInitNavHUD()
   toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
   fdjtReplace("SBOOKTOC",navhud);
   fdjtPrepend(sbookHUD,toc_button);
-  fdjtAppend($("APPTOC"),sbookStaticNavHUD("#SBOOKAPPTOC"));
+  fdjtAppend($("APPTOC"),sbookStaticNavHUD("#SBOOKDASHTOC"));
 }
 
 function sbookInitSocialHUD()
@@ -160,7 +160,7 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(login)|(settings)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)|(apptoc)|(about)|(console)/g;
+  /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)|(apptoc)|(about)|(console)/g;
 
 function sbookHUDMode(mode)
 {
@@ -349,7 +349,7 @@ function sbookHelpHighlight(hudelt)
 
 function sbookCreateAppHUD(eltspec)
 {
-  var div=fdjtDiv(eltspec||"#SBOOKAPP");
+  var div=fdjtDiv(eltspec||"#SBOOKDASH");
   div.onmouseover=function(evt){
     var target=$T(evt);
     while (target)
@@ -381,8 +381,8 @@ function sbookUpdateAppHUD()
       if (hidehelp.checked)
 	fdjtSetCookie("sbookhidehelp",true,false,"/"); /* document.location.host */
       else fdjtSetCookie("sbookhidehelp","no",false,"/");};
-  fdjtAutoPrompt_setup($("SBOOKAPP"));
-  fdjtAnchorSubmit_setup($("SBOOKAPP"));
+  fdjtAutoPrompt_setup($("SBOOKDASH"));
+  fdjtAnchorSubmit_setup($("SBOOKDASH"));
   var refuris=document.getElementsByName("REFURI");
   if (refuris) {
     var i=0; var len=refuris.length;

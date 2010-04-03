@@ -840,7 +840,7 @@ function sbookSetHead(head)
     var headinfo=sbook_getinfo(head);
     if (sbook_trace_focus) sbook_trace("sbookSetHead",head);
     sbookTOCUpdate(head,"SBOOKTOC4");
-    sbookTOCUpdate(head,"SBOOKAPPTOC4");
+    sbookTOCUpdate(head,"SBOOKDASHTOC4");
     window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
@@ -849,7 +849,7 @@ function sbookSetHead(head)
   else {
     if (sbook_trace_focus) sbook_trace("sbookSetHead",head);
     sbookTOCUpdate(head,"SBOOKTOC4");
-    sbookTOCUpdate(head,"SBOOKAPPTOC4");
+    sbookTOCUpdate(head,"SBOOKDASHTOC4");
     sbook_head=false;}
   // if (sbookHUDglosses) sbookSetGlosses(sbookGetGlossesUnder(sbook_head.id));
 }
@@ -864,7 +864,7 @@ function sbookSetLocation(location,force)
   var info=sbook_getinfo(sbook_head);
   while (info) {
     var tocelt=document.getElementById("SBOOKTOC4"+info.id);
-    var apptocelt=document.getElementById("SBOOKAPPTOC4"+info.id);
+    var apptocelt=document.getElementById("SBOOKDASHTOC4"+info.id);
     var start=tocelt.sbook_start; var end=tocelt.sbook_end;
     var progress=((location-start)*80)/(end-start);
     var bar=fdjtGetFirstChild(tocelt,".progressbar");
@@ -1170,8 +1170,10 @@ function sbook_onkeyup(evt)
 
 var sbook_modechars={
  43: "mark",13: "mark",
- 63: "searching",102: "searching",70: "searching",
- 115: "settings",83: "settings",
+ 63: "searching",102: "searching",
+ 83: "searching",115: "searching",
+ 70: "searching",
+ 100: "device",68: "device",
  110: "toc",78: "toc",
  116: "apptoc",84: "apptoc",
  104: "help",72: "help",
