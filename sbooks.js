@@ -156,6 +156,10 @@ var sbook_mycopyid=false;
 
 /* UI State information */
 
+// This is the DOM element which contains most of the UI
+var sbookPage=false;
+// This is the HUD top element
+var sbookHUD=false;
 // Whether the HUD is up
 var sbook_mode=false;
 // Whether we're moving ourselves
@@ -1303,8 +1307,8 @@ function sbook_onscroll(evt)
   // sbook_trace("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
   if (sbook_tracking_hud) {
-    sbookHUD.style['-webkit-transform']=
-      'translateY('+window.scrollY+')';}
+    fdjtTrace("Moving page vertically to %o",window.scrollY);
+    sbookPage.style.top=window.scrollY+'px';}
   if (sbook_preview) return;
   if (sbook_target) sbookCheckTarget();
   // if (sbook_pageview) fdjtDropClass(document.body,"sbookpageview");
@@ -1818,7 +1822,6 @@ function sbookSetup()
   fdjtAddClass(document.body,"sbooknovice");
   var fdjt_done=new Date();
   sbookGetSettings();
-  createSBOOKHUD();
   if (!((document.location.search)&&
 	(document.location.search.length>0))) {
     sbookHUDMode(false);

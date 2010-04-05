@@ -600,6 +600,9 @@ function sbookGoToPage(pagenum,pageoff)
 	  fdjtET(),off,
 	  pagenum,info.top,info.bottom,info.first.id,pageoff||0,info);
   window.scrollTo(0,(off-sbook_top_px));
+  if (sbook_tracking_hud) {
+    fdjtTrace("Moving page vertically to %o",window.scrollY);
+    sbookPage.style.top=window.scrollY+'px';}
   var footheight=((off-sbook_top_px)+window.innerHeight)-info.bottom;
   if (footheight<0) {
     $("SBOOKBOTTOMMARGIN").style.height=0;
@@ -867,20 +870,25 @@ function sbookMobileSafariSetup()
   var meta=fdjtElt("META");
   meta.name='viewport'; meta.content='user-scalable=no,width=device-width';
   fdjtPrepend(head,meta);
+  fdjtAddClass(document.body,"sbooktrackhud");
+  sbook_tracking_hud=true;
 }
 
 function sbookPageSetup()
 {
   var useragent=navigator.userAgent;
-  var pagehead=sbookMakeMargin(".sbookmargin#SBOOKTOPMARGIN"," ");
-  var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKBOTTOMMARGIN"," ");
   var topleading=fdjtDiv("#SBOOKTOPLEADING.leading.top"," ");
   var bottomleading=fdjtDiv("#SBOOKBOTTOMLEADING.leading.bottom"," ");
-  if ((useragent.search("Safari/")>0)&&
-      (useragent.search("Mobile/")>0))
+  var pagehead=sbookMakeMargin(".sbookmargin#SBOOKTOPMARGIN"," ");
+  var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKBOTTOMMARGIN"," ");
+  var leftedge=fdjtDiv("#SBOOKLEFTMARGIN.hud.sbookmargin");
+  var rightedge=fdjtDiv("#SBOOKRIGHTMARGIN.hud.sbookmargin");
+  if ((useragent.search("Safari/")>0)) // &&(useragent.search("Mobile/")>0) 
     sbookMobileSafariSetup();    
   topleading.sbookui=true; bottomleading.sbookui=true;
-  fdjtPrepend(document.body,pagehead,pagefoot);
+  sbookPage=fdjtDiv("#SBOOKPAGE",pagehead,pagefoot,leftedge,rightedge,
+		    createSBOOKHUD());
+  fdjtPrepend(document.body,sbookPage);
   fdjtPrepend(document.body,topleading);  
   fdjtAppend(document.body,bottomleading);
   var bgcolor=document.body.style.backgroundColor;
@@ -899,6 +907,11 @@ function sbookPageSetup()
   pagehead.sbookui=true; pagefoot.sbookui=true;
   pagehead.onclick=sbookPageHead_onclick;
   pagefoot.onclick=sbookPageFoot_onclick;
+  leftedge.title='tap/click to go back';
+  leftedge.onclick=sbookLeftEdge_onclick;
+  rightedge.title='tap/click to go forward';
+  rightedge.onclick=sbookRightEdge_onclick;
+  return sbookPage;
 }
 
 function sbookPageHead_onclick(evt)
@@ -980,6 +993,22 @@ function sbookSetFontSize(size)
 function sbookSetHUDFontSize(size)
 {
   if (sbookHUD.style.fontSize!==size) sbookHUD.style.fontSize=size;
+}
+
+function sbookLeftEdge_onclick(evt)
+{
+  sbook_trace("sbookLeftEdge_onclick",evt);
+  if (sbook_edge_taps) sbookBackward();
+  else sbookHUDMode(false);
+  fdjtCancelEvent(evt);
+}
+
+function sbookRightEdge_onclick(evt)
+{
+  sbook_trace("sbookRightEdge_onclick",evt);
+  if (sbook_edge_taps) sbookForward();
+  else sbookHUDMode(false);
+  fdjtCancelEvent(evt);
 }
 
 /* Emacs local variables

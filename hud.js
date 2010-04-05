@@ -32,8 +32,6 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-// This is the HUD top element
-var sbookHUD=false;
 // This is the HUD where all glosses are displayed
 var sbookGlossesHUD=false;
 // This is the HUD for tag searching
@@ -80,17 +78,11 @@ function createSBOOKHUD()
     prev_button.onmouseup=sbookNextPrev_stopit;
     prev_button.onmouseout=sbookNextPrev_stopit;
     prev_button.onclick=fdjtCancelEvent;
-    var leftedge=fdjtDiv("#SBOOKLEFTMARGIN.hud.sbookmargin");
-    leftedge.title='tap/click to go back';
-    leftedge.onclick=sbookLeftEdge_onclick;
-    var rightedge=fdjtDiv("#SBOOKRIGHTMARGIN.hud.sbookmargin");
-    rightedge.title='tap/click to go forward';
-    rightedge.onclick=sbookRightEdge_onclick;
     var messages=fdjtDiv("#SBOOKCONSOLE");
     messages.innerHTML=sbook_messagebox;
     hud=fdjtDiv
       ("#SBOOKHUD.hud",
-       leftedge,rightedge,messages,
+       messages,
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
        fdjtDiv("#SBOOKSOURCES.hudblock.hud"),
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
@@ -113,8 +105,6 @@ function createSBOOKHUD()
     sbookHUD=hud;
 
     hud.sbookui=true;
-
-    fdjtPrepend(document.body,hud);
 
     if (sbook_head) sbookSetHead(sbook_head);
 
@@ -599,20 +589,6 @@ function sbookLoginButton_onclick(evt)
   if (sbook_mode==="login") sbookHUDMode(false);
   else sbookHUDMode("login");
   evt.cancelBubble=true;
-}
-
-function sbookRightEdge_onclick(evt)
-{
-  if (sbook_edge_taps) sbookForward();
-  else sbookHUDMode(false);
-  fdjtCancelEvent(evt);
-}
-
-function sbookLeftEdge_onclick(evt)
-{
-  if (sbook_edge_taps) sbookBackward();
-  else sbookHUDMode(false);
-  fdjtCancelEvent(evt);
 }
 
 /* Emacs local variables
