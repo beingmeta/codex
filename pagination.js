@@ -854,12 +854,31 @@ function sbookMakeMargin(spec)
   return div;
 }
 
+function sbookMobileSafariSetup()
+{
+  var head=$$("HEAD")[0];
+  fdjtTrace("Mobile Safari setup");
+  document.body.ontouchmove=
+    function(evt){ evt.preventDefault(); return false;};
+  var meta=fdjtElt("META");
+  meta.name='apple-mobile-web-app-capable';
+  meta.content='yes';
+  fdjtPrepend(head,meta);
+  var meta=fdjtElt("META");
+  meta.name='viewport'; meta.content='user-scalable=no,width=device-width';
+  fdjtPrepend(head,meta);
+}
+
 function sbookPageSetup()
 {
+  var useragent=navigator.userAgent;
   var pagehead=sbookMakeMargin(".sbookmargin#SBOOKTOPMARGIN"," ");
   var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKBOTTOMMARGIN"," ");
   var topleading=fdjtDiv("#SBOOKTOPLEADING.leading.top"," ");
   var bottomleading=fdjtDiv("#SBOOKBOTTOMLEADING.leading.bottom"," ");
+  if ((useragent.search("Safari/")>0)&&
+      (useragent.search("Mobile/")>0))
+    sbookMobileSafariSetup();    
   topleading.sbookui=true; bottomleading.sbookui=true;
   fdjtPrepend(document.body,pagehead,pagefoot);
   fdjtPrepend(document.body,topleading);  

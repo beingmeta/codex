@@ -36,6 +36,11 @@
 /* Margins, leading, etc for the content */
 
 body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
+div#SBOOKHUD {
+    position: fixed; width: 100%; height: 100%;
+    top: 0; bottom:0; left: 0;  right:0;
+    background-color: transparent;
+    z-index: 200;}
 
 body div.leading.top { height: 50px; width: 100%;}
 body div.leading.bottom { height: 50px; width: 100%;}
@@ -128,7 +133,7 @@ body.hudup div#SBOOKHUD.minimal div.hudblock { opacity: 0.8;}
 
 img.hudbutton { 
   opacity: 0.2; z-index: 200;
-  position: fixed;
+  position: absolute;
   background-color: gray; padding-right: 4px;
   font-family: sans,sans-serif;}
 img.hudbutton:hover { opacity: 0.8;}
@@ -152,7 +157,7 @@ div#SBOOKHUD div.hudblock.hover { opacity: 0.8;}
 /* The TOC/Nav HUD */
 
 div#SBOOKHUD div.hud#SBOOKTOC {
-  position: fixed; top: 0px; left: 75px; right: 75px;
+  position: absolute; top: 0px; left: 75px; right: 75px;
   margin: 0px; padding: 0px; min-height: 30px;
   padding-top: 2px; padding-bottom: 5px;
   -khtml-border-bottom-left-radius: 6px; 
@@ -186,7 +191,7 @@ div#SBOOKHUD.toc img.hudbutton[alt='toc'] {
 /* The Search HUD */
 
 div#SBOOKHUD div.hud#SBOOKSEARCH {
-  position: fixed; top: 0px; left: 75px; right: 75px;
+  position: absolute; top: 0px; left: 75px; right: 75px;
   max-height: 40px; min-height: 30px; 
   margin: 0px; padding: 0px; 
   -khtml-border-bottom-left-radius: 6px; 
@@ -230,7 +235,7 @@ div#SBOOKHUD div.hud#SBOOKSEARCH.hover div.completions { display: block;}
 /* The summaries (search results) HUD */
 
 div#SBOOKHUD div#SBOOKSUMMARIES {
-  position: fixed; overflow: auto; max-height: 75%;
+  position: absolute; overflow: auto; max-height: 75%;
   top: 50px; left: 75px; right: 75px; z-index: 200;
   margin: 0px; padding: 6px; padding-bottom: 0px;
   -khtml-border-bottom-left-radius: 6px; 
@@ -252,7 +257,7 @@ body.preview div#SBOOKHUD.browsing div#SBOOKSUMMARIES { }
 /* The Tags HUD */
 
 div#SBOOKHUD div.hud#SBOOKTAGS {
-  position: fixed; bottom: 0px; left: 75px; right: 75px;
+  position: absolute; bottom: 0px; left: 75px; right: 75px;
   margin: 0px; padding: 0px; min-height: 30px;
   padding-top: 2px; padding-top: 5px;
   -khtml-border-top-left-radius: 6px; 
@@ -290,7 +295,7 @@ img.hudbutton[alt='<<'] { display: none;}
 /* The Overlays HUD */
 
 div#SBOOKHUD div.hud#SBOOKSOURCES {
-  position: fixed; display: block; 
+  position: absolute; display: block; 
   top: 75px; left: 0px; width: 50px;
   bottom: 75px; margin: 0px; text-align: left;
   border: none;
@@ -392,7 +397,7 @@ div#SBOOKHUD.glosses div.hudblock#SBOOKSOURCES {
 /* The Bookmark HUD */
 
 div#SBOOKHUD div#SBOOKMARKHUD {
-  position: fixed;
+  position: absolute;
   right: 25px; top: 75px; left: 75px;
   overflow: auto;
   margin: 0px; padding: 3px;
@@ -408,7 +413,7 @@ div#SBOOKHUD.mark div#SBOOKMARKHUD {
 /* The Glosses HUD */
 
 div#SBOOKHUD div#SBOOKGLOSSES {
-  position: fixed; top: 75px; bottom: 75px;
+  position: absolute; top: 75px; bottom: 75px;
   left: 50px; right: 50px; z-index: 200;
   overflow: auto;
   margin: 0px; height: auto; min-height: auto;
@@ -463,7 +468,7 @@ div#SBOOKHUD div#SBOOKGLOSSES.onepassage {
 /* The Message HUD */
 
 div#SBOOKHUD div#SBOOKCONSOLE { 
-  position: fixed; z-index: 200;
+  position: absolute; z-index: 200;
   border: hidden transparent 4px; padding: 5px;
   top: 20%; bottom: 20%; left: 20%; right: 20%;
   opacity: 0.95; text-align: center; overflow: hidden;
@@ -495,7 +500,7 @@ div#SBOOKHUD div#SBOOKCONSOLE div#SBOOKMESSAGELOG div.logentry span.time {
 
 div#SBOOKHUD div#SBOOKDASH {
   font-family: arial,helvetica,sans,sans-serif;
-  position: fixed; top: 60px; bottom: 50px;
+  position: absolute; top: 60px; bottom: 50px;
   left: 74px; right: 75px; z-index: 200;
   overflow: auto;
   margin: 0px; height: auto; min-height: auto;
@@ -550,7 +555,7 @@ body div#SBOOKHUD img.hudbutton[alt='login'] {display: none;}
 body.nosbookuser div#SBOOKHUD img.hudbutton[alt='login'] {display: block;}
 
 div#SBOOKHUD #SBOOKDASHCLOSE { 
-  position: fixed; top: 60px; left: 52px;
+  position: absolute; top: 60px; left: 52px;
   padding: 1px; margin: 0px; width: 20px; height: 20px;
   background-color: gold;
   z-index: 250; display: none;}
@@ -787,7 +792,8 @@ body.preview div#SBOOKHUD.browsing div.hudblock#SBOOKSEARCH { opacity: 0.05;}
 body.preview div#SBOOKHUD.glosses div.hudblock#SBOOKGLOSSES { opacity: 0.05;}
 body.preview div#SBOOKHUD.mark div.hudblock#SBOOKMARK { opacity: 0.05;}
 body.preview div#SBOOKHUD div#SBOOKDASH { visibility: hidden;}
-body.preview div#SBOOKHUD div#SBOOKDASH .spanbar:hover { visibility: visible; opacity: 0.5;}
+body.preview div#SBOOKHUD div#SBOOKDASH .spanbar:hover {
+    visibility: visible; opacity: 0.5;}
 
 body.preview img.hudbutton { opacity: 0.05;}
 
@@ -1009,7 +1015,7 @@ form.mark div.tribebar a.nopost {
 /* For scrollable results */
 
 div#SBOOKHUD div.hud#SBOOKLOC {
-  position: fixed;
+  position: absolute;
   bottom: 0px; left: 75px; right: 75px;
   max-height: 15px; min-height: 15px;
   margin: 0px; padding: 0px;
@@ -1548,8 +1554,9 @@ body.touch { overflow: hidden;}
 body.touch img.hudbutton { width: 50px; height: 50px;}
 body.touch span.glossmark { width: 50px; height: 50px;}
 
+/* Put the TOC on the button in touch mode */
 body.touch div#SBOOKHUD div.hud#SBOOKTOC {
-  position: fixed; bottom: 0px; top: auto;
+  position: absolute; bottom: 0px; top: auto;
   padding-bottom: 2px; padding-top: 5px;
   -khtml-border-top-left-radius: 6px; 
   -webkit-border-top-left-radius: 6px; 
@@ -1573,8 +1580,10 @@ body.touch div.sbooktoc div.sub a.sectname { font-size: 95%; }
 body.touch.preview div.sbooktoc.live { display: block;}
 body.touch.preview div.sbooktoc.live div.sbooktoc.live { display: block;}
 body.touch.preview div.sbooktoc.live:hover { display: block;}
-body.touch.preview div.sbooktoc.live:hover div.sbooktoc.live { display: block;}
-body.touch.preview div.sbooktoc.live:hover div.sbooktoc.live:hover { display: block;}
+body.touch.preview div.sbooktoc.live:hover div.sbooktoc.live {
+    display: block;}
+body.touch.preview div.sbooktoc.live:hover div.sbooktoc.live:hover {
+    display: block;}
 
 /* Show edges in touch mode (for tap/click) */
 body.touch div#SBOOKHUD div#SBOOKLEFTMARGIN { display: block;}
@@ -1606,11 +1615,12 @@ a img { border: transparent;}
 span.sbookpageprobe span {
     vertical-align: baseline; padding: 0px; margin: 0px; border: 0px;}
 
-div#SBOOKHUD.toc div.spanbar:hover div.sbookhudspan { height: 45px;}
-div#SBOOKHUD.toc div.spanbar:hover div.progressbox { height: 50px;}
-div#SBOOKHUD.apptoc div.spanbar:hover div.sbookhudspan { height: 45px;}
-div#SBOOKHUD.apptoc div.spanbar:hover div.progressbox { height: 50px;}
-
+body.touch div#SBOOKHUD.toc div.spanbar:hover div.sbookhudspan,
+body.touch div#SBOOKHUD.apptoc div.spanbar:hover div.sbookhudspan {
+    height: 45px;}
+body.touch div#SBOOKHUD.toc div.spanbar:hover div.progressbox,
+body.touch div#SBOOKHUD.apptoc div.spanbar:hover div.progressbox  {
+    height: 50px;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

@@ -211,6 +211,9 @@ var sbook_gestures=false;
 var sbook_edge_taps=true;
 // Modifies some gestures to be more accessible
 var sbook_accessible=false;
+// Whether the HUD should track the scroll position absolutely
+// This is neccessary for viewport based browsers like the iPad
+var sbook_tracking_hud=false;
 
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
@@ -1299,6 +1302,9 @@ function sbook_onscroll(evt)
   evt=evt||event||null;
   // sbook_trace("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
+  if (sbook_tracking_hud) {
+    sbookHUD.style['-webkit-transform']=
+      'translateY('+window.scrollY+')';}
   if (sbook_preview) return;
   if (sbook_target) sbookCheckTarget();
   // if (sbook_pageview) fdjtDropClass(document.body,"sbookpageview");
