@@ -45,6 +45,8 @@ function sbookPreviewIcon(img)
   // img.onmousemove=sbookPreview_onmousemove;
   img.onmousedown=sbookPreview_onmousedown;
   img.onmouseup=sbookPreview_onmouseup;
+  img.ontouchstart=sbookPreview_onmousedown;
+  img.ontouchstart=sbookPreview_onmouseup;
   img.onclick=sbookPreview_onclick;
   img.ondblclick=sbookPreview_ondblclick;
   return img;

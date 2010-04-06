@@ -156,8 +156,6 @@ var sbook_mycopyid=false;
 
 /* UI State information */
 
-// This is the DOM element which contains most of the UI
-var sbookPage=false;
 // This is the HUD top element
 var sbookHUD=false;
 // Whether the HUD is up
@@ -217,7 +215,7 @@ var sbook_edge_taps=true;
 var sbook_accessible=false;
 // Whether the HUD should track the scroll position absolutely
 // This is neccessary for viewport based browsers like the iPad
-var sbook_tracking_hud=false;
+var sbook_floating_hud=false;
 
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
@@ -1306,9 +1304,7 @@ function sbook_onscroll(evt)
   evt=evt||event||null;
   // sbook_trace("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
-  if (sbook_tracking_hud) {
-    fdjtTrace("Moving page vertically to %o",window.scrollY);
-    sbookPage.style.top=window.scrollY+'px';}
+  if (sbook_floating_hud) sbookSyncHUD();
   if (sbook_preview) return;
   if (sbook_target) sbookCheckTarget();
   // if (sbook_pageview) fdjtDropClass(document.body,"sbookpageview");
@@ -1822,11 +1818,11 @@ function sbookSetup()
   fdjtAddClass(document.body,"sbooknovice");
   var fdjt_done=new Date();
   sbookGetSettings();
+  sbookPageSetup();
   if (!((document.location.search)&&
 	(document.location.search.length>0))) {
     sbookHUDMode(false);
     sbookMessage("Setting up your sBook");}
-  sbookPageSetup();
   sbookApplySettings();
   if (fdjtGetQuery("action")) {
     sbookSetupAppFrame();
@@ -1868,20 +1864,8 @@ function sbookSetup()
   var hud_done=new Date();
   sbookInitLocation();
   var hud_init_done=new Date();
-  // These are for mouse tracking
-  window.onmouseover=sbook_onmouseover;
-  window.onmousemove=sbook_onmousemove;
-  window.onscroll=sbook_onscroll;
-  // These are for gesture recognition and adding glosses
-  window.onmousedown=sbook_onmousedown;
-  window.onmouseup=sbook_onmouseup;
-  // window.onclick=sbook_onclick;
-  window.ondblclick=sbook_ondblclick;
-  // For command keys
-  window.onkeypress=sbook_onkeypress;
-  window.onkeydown=sbook_onkeydown;
-  window.onkeyup=sbook_onkeyup;
   window.onresize=sbookCheckPagination;
+  sbookGestureSetup();
   sbookFlashMessage();
   // sbookFullCloud();
   _sbook_setup=new Date();

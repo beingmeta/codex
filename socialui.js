@@ -116,7 +116,7 @@ function sbookEveryoneButton_onclick(evt)
     else sbookHUDMode("glosses");}
   else if (sbook_mode==='glosses') sbookHUDMode(false);
   else sbookHUDMode("glosses");
-  fdjtDropClass(sbookHUD,"onepassage");
+  fdjtDropClass(sbookGlossesHUD,"onepassage");
   fdjtCancelEvent(evt);
 }
 
@@ -295,7 +295,7 @@ function sbookGlossmark_onclick(evt)
   sbookMarkHUDSetup(target);
   // $("SBOOKMARKFORM").removeAttribute('mode');
   fdjtAddClass($("SBOOKMARKFORM"),"closed");
-  fdjtAppend("SBOOKGLOSSES",$("SBOOKMARK"));
+  fdjtPrepend("SBOOKGLOSSES",$("SBOOKMARK"));
   sbookHUDMode("glosses");
   // fdjtSetScroll(false,75,sbook_glossmark);
   fdjtCancelEvent(evt);

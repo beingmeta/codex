@@ -62,10 +62,40 @@ var sbook_gesture_min=0.4;
 var sbook_gesture_max=3;
 var sbook_gq=18;
 
+function sbook_onclick(evt)
+{
+  evt=evt||event||null;
+  sbook_trace("sbook_onclick",evt);
+  if (evt.button>1) return;
+  var target=$T(evt);
+  // Don't override anchors, input, etc
+  if (fdjtIsClickactive(target)) return;
+  else if (sbookInUI(target)) return;
+  if (sbook_preview)
+    // In preview mode, clicking turns off preview mode
+    // and may jump to the click target if it's the preview
+    // point
+    if (fdjtHasParent(target,sbook_preview)) {
+      sbookPreview(false);
+      sbookSetTarget(target);}
+    else sbookPreview(false);
+  else if (sbook_mode) {
+    // If the HUD is up, toggle it off
+    sbookHUDMode(false);
+    fdjtCancelEvent(evt);
+    return;}
+  else if ((sbook_target)&&(fdjtHasParent(target,sbook_target))) {
+    sbook_mark(focus);
+    fdjtCancelEvent(evt);}
+  else {
+    var focus=sbookGetFocus(target);
+    sbookSetTarget(focus);}
+}
+
 function sbook_onmousedown(evt)
 {
   evt=evt||event||null;
-  // sbook_trace("sbook_onmousedown",evt);
+  sbook_trace("sbook_onmousedown",evt);
   // Track these no matter what
   sbook_mousedown_x=evt.screenX;
   sbook_mousedown_y=evt.screenY;
@@ -116,6 +146,8 @@ function sbook_ondblclick(evt)
     sbook_mark(target,false,fdjtSelectedText());
     return;}
 }
+
+/* Homegrown gesture recognition */
 
 function sbookHandleGestures(evt)
 {
@@ -193,69 +225,42 @@ function sbookFlashMode(flag)
     sbook_hud_flash=false;}
 }
 
-/* Dead (sleeping?) code */
+/* Setup */
 
-/*
-function sbook_onmouseup(evt)
+function sbookGestureSetup()
 {
-  evt=evt||event||null;
-  var target=$T(evt); var focus=false;
-  // sbook_trace("sbook_onmouseup",evt);
-  // When to ignore the mouseup
-  if ((evt.button>1)||
-      (sbook_simple_select)||
-      (sbook_2phase_select)||
-      (fdjtIsClickactive(target))||
-      (sbookInUI(target))) {
-    sbook_mousedown_x=false;
-    sbook_mousedown_y=false;
-    sbook_mousedown_tick=false;
-    return;}
-  // This click on the content just hides the HUD
-  if ((sbook_mode)&&(sbook_mode!=="minimal")) {
-    sbookHUDMode(false);
-    fdjtCancelEvent(evt);
-    return;}
-  else if (!(focus=sbookGetFocus(target))) {
-    sbook_mousedown_x=false;
-    sbook_mousedown_y=false;
-    sbook_mousedown_tick=false;
-    return;}
-  else if ((sbook_gestures)&&(sbook_mousedown_tick))
-    sbookHandleGestures(evt);
-  else if (sbook_2phase_select)
-    sbookSetTarget(focus);
-  else {
-    var text=fdjtSelectedText();
-    sbook_mark(focus,false,text);
-    fdjtCancelEvent(evt);}
+  if (sbook_touch) sbookTouchGestureSetup();
+  else sbookMouseGestureSetup();
 }
 
-function sbook_onclick(evt)
+function sbookMouseGestureSetup()
 {
-  // Non-simple select is handled by onmousedown and onmouseup
-  if (!(sbook_simple_select)) return;
-  evt=evt||event||null;
-  if (evt.button>1) return;
-  // sbook_trace("sbook_onclick",evt);
-  var target=$T(evt);
-  // Don't override anchors, input, etc
-  if (fdjtIsClickactive(target)) return;
-  else if (sbookInUI(target)) return;
-  // If you're clicking on the selected target, mark it
-  // Note that this isn't normally the path to marking, since
-  // we catch the on mousedown to avoid resetting the selection
-  if (sbook_mode) {
-    // This just toggles the HUD off
-    sbookHUDMode(false);
-    fdjtCancelEvent(evt);
-    return;}
-  var focus=sbookGetFocus(target);
-  if (focus) {
-    sbook_mark(focus);
-    fdjtCancelEvent(evt);}
+  // These are for mouse tracking
+  window.onmouseover=sbook_onmouseover;
+  window.onmousemove=sbook_onmousemove;
+  window.onscroll=sbook_onscroll;
+  // These are for gesture recognition and adding glosses
+  window.onmousedown=sbook_onmousedown;
+  window.onmouseup=sbook_onmouseup;
+  // window.onclick=sbook_onclick;
+  window.ondblclick=sbook_ondblclick;
+  // For command keys
+  window.onkeypress=sbook_onkeypress;
+  window.onkeydown=sbook_onkeydown;
+  window.onkeyup=sbook_onkeyup;
 }
-*/
+
+function sbookTouchGestureSetup()
+{
+  // These are for mouse tracking
+  window.onscroll=sbook_onscroll;
+  // These are for gesture recognition and adding glosses
+  document.body.onclick=sbook_onclick;
+  // For command keys, just in case
+  window.onkeypress=sbook_onkeypress;
+  window.onkeydown=sbook_onkeydown;
+  window.onkeyup=sbook_onkeyup;
+}
 
 /* Emacs local variables
 ;;;  Local variables: ***

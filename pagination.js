@@ -1,6 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_pagination_id="$Id$";
+var sbooks_pagination_id=
+  "$Id$";
 var sbooks_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009 beingmeta, inc.
@@ -599,12 +600,12 @@ function sbookGoToPage(pagenum,pageoff)
     else ("[%f] Jumped to %d P%d@[%d,%d]#%s+%d (%o)",
 	  fdjtET(),off,
 	  pagenum,info.top,info.bottom,info.first.id,pageoff||0,info);
-  window.scrollTo(0,(off-sbook_top_px));
-  if (sbook_tracking_hud) {
-    fdjtTrace("Moving page vertically to %o",window.scrollY);
-    sbookPage.style.top=window.scrollY+'px';}
   var footheight=((off-sbook_top_px)+window.innerHeight)-info.bottom;
-  if (footheight<0) {
+  if (sbook_floating_hud) {
+    $("SBOOKTOPMARGIN").style.height=off+'px';
+    $("SBOOKBOTTOMMARGIN").style.height=
+      (document.body.offsetHeight-info.bottom)+'px';}
+  else if (footheight<0) {
     $("SBOOKBOTTOMMARGIN").style.height=0;
     sbook_curbottom=sbook_bottom_px;}
   else {
@@ -613,9 +614,12 @@ function sbookGoToPage(pagenum,pageoff)
   sbook_curpage=pagenum;
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
+  window.scrollTo(0,(off-sbook_top_px));
   if ((sbook_focus)&&(!(fdjtIsVisible(sbook_focus))))
     sbookSetFocus(sbook_target||info.focus||info.first);
   sbook_pagescroll=window.scrollY;
+  document.body.style.opacity=1.0;
+  if (sbook_floating_hud) sbookSyncHUD();
   // Add class if it's temporarily gone
   fdjtAddClass(document.body,"sbookpageview");
 }
@@ -631,6 +635,14 @@ function sbookGetPage(arg)
     if (sbook_pages[i]>top) return i-1;
     else i++;
   return i-1;
+}
+
+function sbookSyncPage()
+{
+  if (sbook_pageview) {
+    if (window.scrollY!==sbook_pages[sbook_curpage]) {
+      window.scrollTo(sbook_pages[sbook_curpage]);
+      if (sbook_floating_hud) sbookSyncHUD();}}
 }
 
 /* Other stuff */
@@ -862,16 +874,22 @@ function sbookMobileSafariSetup()
   var head=$$("HEAD")[0];
   fdjtTrace("Mobile Safari setup");
   document.body.ontouchmove=
-    function(evt){ evt.preventDefault(); return false;};
+    function(evt){ if (sbook_pageview) {
+      evt.preventDefault(); return false;}};
   var meta=fdjtElt("META");
-  meta.name='apple-mobile-web-app-capable';
+  meta.name='apple-mobile-web-app-capable ';
   meta.content='yes';
   fdjtPrepend(head,meta);
   var meta=fdjtElt("META");
   meta.name='viewport'; meta.content='user-scalable=no,width=device-width';
   fdjtPrepend(head,meta);
-  fdjtAddClass(document.body,"sbooktrackhud");
-  sbook_tracking_hud=true;
+  fdjtAddClass(document.body,"fixedbroken");
+
+  var modepos=fdjtIndexOf(sbook_default_opts,"mouse");
+  if (modepos<0) sbook_default_opts.push("touch");
+  else sbook_default_opts[modepos]="touch";
+
+  sbook_floating_hud=true;
 }
 
 function sbookPageSetup()
@@ -883,14 +901,15 @@ function sbookPageSetup()
   var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKBOTTOMMARGIN"," ");
   var leftedge=fdjtDiv("#SBOOKLEFTMARGIN.hud.sbookmargin");
   var rightedge=fdjtDiv("#SBOOKRIGHTMARGIN.hud.sbookmargin");
-  if ((useragent.search("Safari/")>0)) // &&(useragent.search("Mobile/")>0) 
+    
+  if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
     sbookMobileSafariSetup();    
   topleading.sbookui=true; bottomleading.sbookui=true;
-  sbookPage=fdjtDiv("#SBOOKPAGE",pagehead,pagefoot,leftedge,rightedge,
-		    createSBOOKHUD());
-  fdjtPrepend(document.body,sbookPage);
-  fdjtPrepend(document.body,topleading);  
+  fdjtPrepend(document.body,topleading,pagehead,pagefoot,leftedge,rightedge);  
   fdjtAppend(document.body,bottomleading);
+  fdjtAppend(document.body,createSBOOKHUD());
+  var pagehead=$("SBOOKTOPMARGIN");
+  var pagefoot=$("SBOOKBOTTOMMARGIN");
   var bgcolor=document.body.style.backgroundColor;
   if ((!(bgcolor)) && (window.getComputedStyle)) {
     var bodystyle=window.getComputedStyle(document.body,null);
@@ -900,6 +919,7 @@ function sbookPageSetup()
   if (bgcolor) {
     pagehead.style.backgroundColor=bgcolor;
     pagefoot.style.backgroundColor=bgcolor;}
+  // Probe the size of the head and foot
   pagehead.style.display='block'; pagefoot.style.display='block';
   sbook_top_px=pagehead.offsetHeight;
   sbook_bottom_px=pagefoot.offsetHeight;
@@ -911,7 +931,7 @@ function sbookPageSetup()
   leftedge.onclick=sbookLeftEdge_onclick;
   rightedge.title='tap/click to go forward';
   rightedge.onclick=sbookRightEdge_onclick;
-  return sbookPage;
+
 }
 
 function sbookPageHead_onclick(evt)

@@ -64,25 +64,25 @@ function createSBOOKHUD()
 		"click to login");
     login_button.onclick=sbookLoginButton_onclick;
 
-    var next_button=
-      fdjtImage("http://static.beingmeta.com/graphics/PageRight40x40.png",
-		".hudbutton",">>","hold to move forward by pages");
-    next_button.onmousedown=sbookNextPrev_startit;
-    next_button.onmouseup=sbookNextPrev_stopit;
-    next_button.onmouseout=sbookNextPrev_stopit;
-    next_button.onclick=fdjtCancelEvent;
-    var prev_button=
-      fdjtImage("http://static.beingmeta.com/graphics/PageLeft40x40.png",
-		".hudbutton","<<","hold to move backward by pages");
-    prev_button.onmousedown=sbookNextPrev_startit;
-    prev_button.onmouseup=sbookNextPrev_stopit;
-    prev_button.onmouseout=sbookNextPrev_stopit;
-    prev_button.onclick=fdjtCancelEvent;
-    var messages=fdjtDiv("#SBOOKCONSOLE");
+    var messages=fdjtDiv("#SBOOKCONSOLE.hudblock");
     messages.innerHTML=sbook_messagebox;
+
+
+    var toc_button=
+      fdjtImage(sbicon("CompassIcon40x40.png"),
+		"#SBOOKTOCBUTTON.hudbutton",
+		"toc","navigate table of contents");
+    var index_button=
+      fdjtImage(sbicon("TagSearch40x40.png"),
+		"#SBOOKINDEXBUTTON.hudbutton","hudbutton",
+		"index","search the content using semantic tags");
+    toc_button.style.visibility='hidden';
+    index_button.style.visibility='hidden';
+    
     hud=fdjtDiv
       ("#SBOOKHUD.hud",
-       messages,
+       app_button,login_button,help_button,
+       toc_button,index_button,
        fdjtDiv("#SBOOKTOC.hudblock.hud"),
        fdjtDiv("#SBOOKSOURCES.hudblock.hud"),
        fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
@@ -90,17 +90,9 @@ function createSBOOKHUD()
        fdjtDiv("#SBOOKTAGS.hudblock.hud.tags"),
        fdjtDiv("#SBOOKMARKHUD.hudblock.hud"),
        sbookCreateAppHUD(),
-       app_button,login_button,help_button,
-       prev_button,next_button);
-
+       messages);
+    
     hud.title="";
-
-    hud.onclick=sbookHUD_onclick;
-    hud.onmouseover=sbookHUD_onmouseover;
-    hud.onmouseout=sbookHUD_onmouseout;
-
-    hud.onclick=hud.onmouseover=hud.onmouseout=fdjtCancelBubble;
-    hud.onmousedown=hud.onmouseup=fdjtCancelBubble;
 
     sbookHUD=hud;
 
@@ -116,14 +108,12 @@ function createSBOOKHUD()
 function sbookInitNavHUD()
 {
   var navhud=sbookCreateNavHUD();
-  var toc_button=
-    fdjtImage(sbicon("CompassIcon40x40.png"),"hudbutton","toc",
-	      "navigate table of contents");
+  var toc_button=$("SBOOKTOCBUTTON");
   toc_button.onclick=sbookTOCButton_onclick;
   toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
   toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
+  toc_button.style.visibility='inherit';
   fdjtReplace("SBOOKTOC",navhud);
-  fdjtPrepend(sbookHUD,toc_button);
   fdjtAppend($("APPTOC"),sbookStaticNavHUD("#SBOOKDASHTOC"));
 }
 
@@ -136,13 +126,11 @@ function sbookInitSocialHUD()
 function sbookInitSearchHUD()
 {
   fdjtReplace("SBOOKSEARCH",sbookCreateSearchHUD());
-  var index_button=
-    fdjtImage(sbicon("TagSearch40x40.png"),"hudbutton","index",
-	      "search the content using semantic tags");
+  var index_button=$("SBOOKINDEXBUTTON");
   index_button.onclick=sbookIndexButton_onclick;
   index_button.onmouseover=fdjtClassAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
   index_button.onmouseout=fdjtClassDropper("#SBOOKSEARCH#SBOOKTAGS","hover");
-  fdjtPrepend(sbookHUD,index_button);
+  index_button.style.visibility='inherit';
 }
 
 
@@ -158,6 +146,7 @@ function sbookHUDMode(mode)
     fdjtLog("[%fs] sbookHUDMode %o, cur=%o dbc=%o",
 	    fdjtET(),mode,sbook_mode,document.body.className);
   if (sbook_preview) sbookStopPreview();
+  if (sbook_floating_hud) sbookSyncHUD();
   if (mode)
     if (mode===sbook_mode) {}
     else {
@@ -311,6 +300,17 @@ function sbookGetStableId(elt)
   else return false;
 }
 
+function sbookSyncHUD()
+{
+  var hidden=false;
+  if (window.scrollY!==sbookHUD.offsetTop) {
+    hidden=true; sbookHUD.style.opacity=0.01;
+    /* sbookHUD.style['-webkit-transform']=
+       "translate("+window.scrollX+"px,"+window.scrollY+"px)"; */
+    sbookHUD.style.top=window.scrollY+'px';}
+  if (hidden) sbookHUD.style.opacity=null;
+}
+
 /* The APP HUD */
 
 var sbook_helphud_highlight=false;
@@ -339,7 +339,7 @@ function sbookHelpHighlight(hudelt)
 
 function sbookCreateAppHUD(eltspec)
 {
-  var div=fdjtDiv(eltspec||"#SBOOKDASH");
+  var div=fdjtDiv(eltspec||"#SBOOKDASH.hudblock");
   div.onmouseover=function(evt){
     var target=$T(evt);
     while (target)
