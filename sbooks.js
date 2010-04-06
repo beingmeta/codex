@@ -1818,7 +1818,7 @@ function sbookSetup()
   fdjtAddClass(document.body,"sbooknovice");
   var fdjt_done=new Date();
   sbookGetSettings();
-  sbookPageSetup();
+  sbookDisplaySetup();
   if (!((document.location.search)&&
 	(document.location.search.length>0))) {
     sbookHUDMode(false);
@@ -1874,6 +1874,71 @@ function sbookSetup()
 var _sbook_user_setup=false;
 var _sbook_gloss_setup=false;
 var _sbook_social_setup=false;
+
+function sbookDisplaySetup()
+{
+  var useragent=navigator.userAgent;
+  var topleading=fdjtDiv("#SBOOKTOPLEADING.leading.top"," ");
+  var bottomleading=fdjtDiv("#SBOOKBOTTOMLEADING.leading.bottom"," ");
+  var pagehead=sbookMakeMargin(".sbookmargin#SBOOKTOPMARGIN"," ");
+  var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKBOTTOMMARGIN"," ");
+  var leftedge=fdjtDiv("#SBOOKLEFTMARGIN.hud.sbookmargin");
+  var rightedge=fdjtDiv("#SBOOKRIGHTMARGIN.hud.sbookmargin");
+    
+  if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
+    sbookMobileSafariSetup();    
+  topleading.sbookui=true; bottomleading.sbookui=true;
+  fdjtPrepend(document.body,createSBOOKHUD(),
+	      topleading,pagehead,pagefoot,leftedge,rightedge);  
+  fdjtAppend(document.body,bottomleading);
+  var pagehead=$("SBOOKTOPMARGIN");
+  var pagefoot=$("SBOOKBOTTOMMARGIN");
+  var bgcolor=document.body.style.backgroundColor;
+  if ((!(bgcolor)) && (window.getComputedStyle)) {
+    var bodystyle=window.getComputedStyle(document.body,null);
+    var bgcolor=((bodystyle)&&(bodystyle.backgroundColor));
+    if ((bgcolor==='transparent')||(bgcolor.search('rgba')>=0))
+      bgcolor=false;}
+  if (bgcolor) {
+    pagehead.style.backgroundColor=bgcolor;
+    pagefoot.style.backgroundColor=bgcolor;}
+  // Probe the size of the head and foot
+  pagehead.style.display='block'; pagefoot.style.display='block';
+  sbook_top_px=pagehead.offsetHeight;
+  sbook_bottom_px=pagefoot.offsetHeight;
+  pagehead.style.display=null; pagefoot.style.display=null;
+  pagehead.sbookui=true; pagefoot.sbookui=true;
+  pagehead.onclick=sbookPageHead_onclick;
+  pagefoot.onclick=sbookPageFoot_onclick;
+  leftedge.title='tap/click to go back';
+  leftedge.onclick=sbookLeftEdge_onclick;
+  rightedge.title='tap/click to go forward';
+  rightedge.onclick=sbookRightEdge_onclick;
+
+}
+
+function sbookMobileSafariSetup()
+{
+  var head=$$("HEAD")[0];
+  fdjtTrace("Mobile Safari setup");
+  document.body.ontouchmove=
+    function(evt){ if (sbook_pageview) {
+      evt.preventDefault(); return false;}};
+  var meta=fdjtElt("META");
+  meta.name='apple-mobile-web-app-capable ';
+  meta.content='yes';
+  fdjtPrepend(head,meta);
+  var meta=fdjtElt("META");
+  meta.name='viewport'; meta.content='user-scalable=no,width=device-width';
+  fdjtPrepend(head,meta);
+  fdjtAddClass(document.body,"fixedbroken");
+
+  var modepos=fdjtIndexOf(sbook_default_opts,"mouse");
+  if (modepos<0) sbook_default_opts.push("touch");
+  else sbook_default_opts[modepos]="touch";
+
+  sbook_floating_hud=true;
+}
 
 function sbookGlossesSetup()
 {

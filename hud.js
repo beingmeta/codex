@@ -74,7 +74,7 @@ function createSBOOKHUD()
 		"toc","navigate table of contents");
     var index_button=
       fdjtImage(sbicon("TagSearch40x40.png"),
-		"#SBOOKINDEXBUTTON.hudbutton","hudbutton",
+		"#SBOOKINDEXBUTTON.hudbutton",
 		"index","search the content using semantic tags");
     toc_button.style.visibility='hidden';
     index_button.style.visibility='hidden';
@@ -112,7 +112,7 @@ function sbookInitNavHUD()
   toc_button.onclick=sbookTOCButton_onclick;
   toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
   toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
-  toc_button.style.visibility='inherit';
+  toc_button.style.visibility=null;
   fdjtReplace("SBOOKTOC",navhud);
   fdjtAppend($("APPTOC"),sbookStaticNavHUD("#SBOOKDASHTOC"));
 }
@@ -130,7 +130,7 @@ function sbookInitSearchHUD()
   index_button.onclick=sbookIndexButton_onclick;
   index_button.onmouseover=fdjtClassAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
   index_button.onmouseout=fdjtClassDropper("#SBOOKSEARCH#SBOOKTAGS","hover");
-  index_button.style.visibility='inherit';
+  index_button.style.visibility=null;
 }
 
 
