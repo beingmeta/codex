@@ -407,32 +407,6 @@ function sbookSelectSources(results_div,sources)
   if (sbook_focus) sbookScrollGlosses(results_div,sbook_focus);
 }
 
-/* Selecting a subset of glosses to display */
-
-function sbookSelectTargets(results_div,ids)
-{
-  if (!(ids)) {
-    fdjtDropClass(results_div,"targeted");
-    fdjtDropClass($$(".targeted",results_div),"targeted");
-    return;}
-  if (typeof ids === 'string') ids=new Array(ids);
-  fdjtAddClass(results_div,"targeted");
-  var blocks=$$(".tocblock",results_div);
-  var i=0; while (i<blocks.length) {
-    var block=blocks[i++];  var empty=true;
-    var summaries=$$(".summary",block);
-    var j=0; while (j<summaries.length) {
-      var summary=summaries[j++];
-      var gloss=(summary.sbook_oid)&&fdjtOIDs[summary.sbook_oid];
-      if (fdjtContains(ids,gloss.id)) {
-	fdjtAddClass(summary,"targeted");
-	empty=false;}
-      else fdjtDropClass(summary,"targeted");}
-    if (empty) fdjtDropClass(block,"targeted");
-    else fdjtAddClass(block,"targeted");}
-  if (sbook_focus) sbookScrollGlosses(results_div,sbook_focus);
-}
-
 /* Results handlers */
 
 function sbookSetupSummaryDiv(div)

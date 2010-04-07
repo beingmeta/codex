@@ -111,9 +111,9 @@ function sbook_add_gloss(id,entry)
     fdjtAdd(sbook_glosses_by_user,user,item);}
   var tstamp=entry.tstamp;
   if (tstamp>sbook_gloss_syncstamp) sbook_gloss_syncstamp=tstamp;
-  if ($("SBOOKGLOSSES")) {
-    var allglosses_div=$("SBOOKGLOSSES");
-    sbookAddSummary(item,$("SBOOKGLOSSES"),false);}
+  if ($("SBOOKALLGLOSSES")) {
+    var allglosses_div=$("SBOOKALLGLOSSES");
+    sbookAddSummary(item,allglosses_div,false);}
   return item;
 }
 

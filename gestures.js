@@ -65,7 +65,7 @@ var sbook_gq=18;
 function sbook_onclick(evt)
 {
   evt=evt||event||null;
-  sbook_trace("sbook_onclick",evt);
+  // sbook_trace("sbook_onclick",evt);
   if (evt.button>1) return;
   var target=$T(evt);
   // Don't override anchors, input, etc
@@ -95,7 +95,7 @@ function sbook_onclick(evt)
 function sbook_onmousedown(evt)
 {
   evt=evt||event||null;
-  sbook_trace("sbook_onmousedown",evt);
+  // sbook_trace("sbook_onmousedown",evt);
   // Track these no matter what
   sbook_mousedown_x=evt.screenX;
   sbook_mousedown_y=evt.screenY;

@@ -133,8 +133,6 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     sbookSetMarkExcerpt(excerpt);
   fdjtSetCompletionCues($("SBOOKMARKCLOUD"),tagcues);
   fdjtAutoPrompt_setup($("SBOOKMARK"));
-  sbookSelectSources(sbookGlossesHUD);
-  sbookSelectTargets(sbookGlossesHUD,target.id);
   fdjtComplete($("SBOOKMARKTAGINPUT"));
   fdjtRedisplay($("SBOOKMARKFORM"));
   // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);

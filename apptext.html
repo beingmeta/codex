@@ -31,7 +31,6 @@
   ZIP</a>)
 </span>
 </div>
-<div class='message' id='SBOOKSTARTUP'></div>
 <div class='tabbar' id='SBOOKTABS'>
 <span class='tab' contentid='APPHELP'
       onclick='sbookHUDMode("help"); fdjtCancelEvent(event); return false;'
@@ -46,7 +45,7 @@
       onclick='sbookHUDMode("apptoc"); fdjtCancelEvent(event); return false;'
       title='Table of Contents (static)'>
   Contents</span>
-<span class='tab' contentid='APPSETTINGS'
+<span class='tab' contentid='APPDEVICE'
       onclick='sbookHUDMode("device"); fdjtCancelEvent(event); return false;'
       title='alter appearance and interaction'>
  Device</span>
@@ -59,7 +58,8 @@
       title='login to sBooks'>
   Login</span>
 </div>
-<div class='tabcontent helpbody' id='APPHELP'>
+<div class='tabcontent' id='APPHELP'>
+<div class='helpbody'>
 <div class='sbookh1'>Welcome to sBooks!
   <div class='motto'>&ldquo;the best idea since sliced paper&rdquo;</div>
 </div>
@@ -231,6 +231,7 @@ use <a href='http://www.openid.net/'>OpenID</a> and related
 technologies to let log into sBooks through other sites that you
 already use.  You can login below using any of a variety of sites
 or methods.</p>
+</div>
 </div>
 
 <form action='https://sbooks.net/auth.fdcgi'

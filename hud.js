@@ -51,57 +51,51 @@ function createSBOOKHUD()
   var hud=$("SBOOKHUD");
   if (hud) return hud;
   else {
-    var help_button=
-      fdjtImage("http://static.beingmeta.com/graphics/HelpIcon40x40.png",
-		".hudbutton.help","?","help");
-    help_button.onclick=sbookHelpButton_onclick;
-    var app_button=
-      fdjtImage(sbicon("sbooksappicon40x40.png"),".hudbutton.app","app",
-		"Click for Help, settings, book description, etc");
-    app_button.onclick=sbookAppButton_onclick;
-    var login_button=
-      fdjtImage(sbicon("sbooksconnecticon40x40.png"),".hudbutton.login","login",
-		"click to login");
-    login_button.onclick=sbookLoginButton_onclick;
-
-    var messages=fdjtDiv("#SBOOKCONSOLE.hudblock");
-    messages.innerHTML=sbook_messagebox;
-
-
     var toc_button=
       fdjtImage(sbicon("CompassIcon40x40.png"),
 		"#SBOOKTOCBUTTON.hudbutton",
 		"toc","navigate table of contents");
+    toc_button.onclick=sbookTOCButton_onclick;
     var index_button=
       fdjtImage(sbicon("TagSearch40x40.png"),
 		"#SBOOKINDEXBUTTON.hudbutton",
 		"index","search the content using semantic tags");
-    toc_button.style.visibility='hidden';
-    index_button.style.visibility='hidden';
+    index_button.onclick=sbookIndexButton_onclick;
+    var app_button=
+      fdjtImage(sbicon("sbooksappicon40x40.png"),".hudbutton.app","app",
+		"Click for Help, settings, book description, etc");
+    app_button.onclick=sbookAppButton_onclick;
+    var glosses_button=
+      fdjtImage(sbicon("sbookspeople40x40.png"),".hudbutton","glosses",
+		"Click to browse glosses for this book");
+    glosses_button.onclick=sbookGlossesButton_onclick;
     
-    hud=fdjtDiv
-      ("#SBOOKHUD.hud",
-       app_button,login_button,help_button,
-       toc_button,index_button,
-       fdjtDiv("#SBOOKTOC.hudblock.hud"),
-       fdjtDiv("#SBOOKSOURCES.hudblock.hud"),
-       fdjtDiv("#SBOOKGLOSSES.hudblock.hud"),
-       fdjtDiv("#SBOOKSEARCH.hudblock.hud"),
-       fdjtDiv("#SBOOKTAGS.hudblock.hud.tags"),
-       fdjtDiv("#SBOOKMARKHUD.hudblock.hud"),
-       sbookCreateAppHUD(),
-       messages);
+    var console=fdjtDiv("#SBOOKCONSOLE.sbookconsole.hudblock");
+    console.innerHTML=sbook_messagebox;
+
+    var headhud=
+      fdjtDiv("#SBOOKHEAD",toc_button,index_button,
+	       fdjtDiv("#SBOOKTOC.hudblock"),
+	      fdjtDiv("#SBOOKSEARCH.hudblock"));
+    var foothud=
+      fdjtDiv("#SBOOKFOOT",app_button,glosses_button,
+	      sbookCreateGlossesHUD(),
+	      fdjtDiv("#SBOOKTAGS.hudblock.tags"),
+	      sbookCreateAppHUD(),
+	      console);
+    var markhud=
+      fdjtDiv("#SBOOKMARKHUD.hudblock",
+	      sbookCreateMarkHUD("#SBOOKMARK"),
+	      fdjtDiv("#SBOOKMARKGLOSSES.sbookglosses"));
+      
+    hud=fdjtDiv("#SBOOKHUD",headhud,foothud,markhud);
     
-    hud.title="";
+    headhud.onclick=sbookHeadHUD_onclick;
+    foothud.onclick=sbookFootHUD_onclick;
 
-    sbookHUD=hud;
-
-    hud.sbookui=true;
-
-    if (sbook_head) sbookSetHead(sbook_head);
-
+    sbookHUD=hud; hud.sbookui=true; hud.title="";
     hud.setAttribute("flatwidth","0");
-
+    
     return hud;}
 }
 
@@ -119,8 +113,8 @@ function sbookInitNavHUD()
 
 function sbookInitSocialHUD()
 {
-  fdjtReplace("SBOOKGLOSSES",sbookCreateGlossesHUD());
-  fdjtReplace("SBOOKSOURCES",sbookCreateSourceHUD());
+  // fdjtReplace("SBOOKGLOSSES",sbookCreateGlossesHUD());
+  // fdjtReplace("SBOOKSOURCES",sbookCreateSourceHUD());
 }
 
 function sbookInitSearchHUD()
@@ -140,6 +134,13 @@ var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
   /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)|(apptoc)|(about)|(console)/g;
 
+var sbook_footmodes=
+  ["login","device","sbookapp","help","apptoc","about","glosses","console"];
+var sbook_headmodes=["toc","searching","browsing"];
+
+var sbook_last_headmode="toc";
+var sbook_last_footmode="help";
+
 function sbookHUDMode(mode)
 {
   if (sbook_trace_mode)
@@ -158,6 +159,8 @@ function sbookHUDMode(mode)
       sbook_mode=mode;
       sbook_last_mode=mode;
       if (fdjtContains(sbook_apps,mode)) sbook_last_app=mode;
+      if (fdjtContains(sbook_headmodes,mode)) sbook_last_headmode=mode;
+      if (fdjtContains(sbook_footmodes,mode)) sbook_last_footmode=mode;
       fdjtAddClass(document.body,"hudup");
       fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
       if ((mode==="glosses")&&(sbook_focus))
@@ -541,6 +544,16 @@ function sbookStopPreview(evt)
 
 /* Button methods */
 
+function sbookTOCButton_onclick(evt)
+{
+  evt=evt||event||null;
+  if (sbook_mode==="toc") {
+    sbookHUDMode(false);
+    fdjtDropClass("SBOOKTOC","hover");}
+  else sbookHUDMode("toc");
+  fdjtCancelEvent(evt);
+}
+
 function sbookIndexButton_onclick(evt)
 {
   evt=evt||event||null;
@@ -554,25 +567,6 @@ function sbookIndexButton_onclick(evt)
     fdjtCancelEvent(evt);}
 }
 
-function sbookTOCButton_onclick(evt)
-{
-  evt=evt||event||null;
-  if (sbook_mode==="toc") {
-    sbookHUDMode(false);
-    fdjtDropClass("SBOOKTOC","hover");}
-  else sbookHUDMode("toc");
-  fdjtCancelEvent(evt);
-}
-
-function sbookHelpButton_onclick(evt)
-{
-  if (sbook_mode==="help") sbookHUDMode(false);
-  else {
-    sbookHUDMode("help");
-    fdjtDropClass(document.body,"sbooknovice");}
-  fdjtCancelEvent(evt);
-}
-
 function sbookAppButton_onclick(evt)
 {
   if (sbook_mode)
@@ -583,12 +577,38 @@ function sbookAppButton_onclick(evt)
   fdjtCancelEvent(evt);
 }
 
+function sbookGlossesButton_onclick(evt)
+{
+  evt=evt||event||null;
+  if (sbook_mode==="glosses") {
+    sbookHUDMode(false);
+    fdjtDropClass("SBOOKGLOSSES","hover");}
+  else sbookHUDMode("glosses");
+  fdjtCancelEvent(evt);
+}
+
 function sbookLoginButton_onclick(evt)
 {
   evt=evt||event||null;
   if (sbook_mode==="login") sbookHUDMode(false);
   else sbookHUDMode("login");
   evt.cancelBubble=true;
+}
+
+function sbookFootHUD_onclick(evt)
+{
+  evt=evt||event||null;
+  /* If it gets through... */
+  if (sbook_mode) sbookHUDMode(false);
+  else sbookHUDMode(sbook_last_footmode);
+}
+
+function sbookHeadHUD_onclick(evt)
+{
+  evt=evt||event||null;
+  /* If it gets through... */
+  if (sbook_mode) sbookHUDMode(false);
+  else sbookHUDMode(sbook_last_headmode);
 }
 
 /* Emacs local variables
