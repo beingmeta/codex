@@ -888,7 +888,7 @@ function sbookPageFoot_onclick(evt)
   else if ((evt.clientX)<($("SBOOKLEFTMARGIN").offsetWidth))
     return sbookLeftEdge_onclick(evt);
   else if (sbook_mode) sbookHUDMode(false);
-  else sbookHUDMode("minimal");
+  else sbookHUDMode("context");
 }
 
 /* Pagination utility functions */

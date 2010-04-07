@@ -163,7 +163,7 @@ var sbook_mode=false;
 // Whether we're moving ourselves
 var sbook_egomotion=false;
 // This is the last mode which was active
-var sbook_last_mode="minimal";
+var sbook_last_mode="context";
 // Whether preview mode is engaged (the element being previewed)
 var sbook_preview=false; 
 // The last element being previewed
@@ -975,11 +975,11 @@ function sbookTrackFocus(target,shift)
   // Lots of reasons *not* to track the focus
   if (!(target)) return null;
   else if (sbook_egomotion) return null;
-  else if ((sbook_mode)&&(sbook_mode!=="minimal"))
+  else if ((sbook_mode)&&(sbook_mode!=="context"))
     if (shift) {} else return;
   else if ((sbook_target)&&(fdjtIsVisible($(sbook_target))))
     if ((target===sbook_target)&&(!(sbook_mode))) {
-      sbookHUDMode("minimal");
+      sbookHUDMode("context");
       return;}
     else return;
   else if ((sbook_pageview) &&
@@ -1100,7 +1100,7 @@ function sbookGoTo(target,noset)
   else sbookScrollTo(target);
   sbookHUDMode(false);
   if ((sbook_hud_flash)&&(!(sbook_mode)))
-    sbookHUDFlash("minimal",sbook_hud_flash);
+    sbookHUDFlash("context",sbook_hud_flash);
 }
 
 /* Keyboard handlers */
@@ -1122,7 +1122,7 @@ function sbook_onkeydown(evt)
     else {
       if ((sbook_mark_target)&&(fdjtIsVisible(sbook_mark_target)))
 	sbookHUDMode("mark");
-      else sbookHUDMode("minimal");}
+      else sbookHUDMode("context");}
     return;}
   if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (kc===34) sbookForward();   /* page down */
@@ -1133,7 +1133,7 @@ function sbook_onkeydown(evt)
       fdjtDropClass(document.body,"hudup");
       fdjtDropClass(sbookHUD,sbook_mode);}
     else {
-      fdjtSwapClass(sbookHUD,sbookHUDMode_pat,"minimal");
+      fdjtSwapClass(sbookHUD,sbookHUDMode_pat,"context");
       fdjtAddClass(document.body,"hudup");}}
   else if (kc===17) { /* Control key */
     if (sbook_preview) return;
@@ -1195,7 +1195,7 @@ function sbook_onkeypress(evt)
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if ((evt.charCode===65)||(evt.charCode===97)) /* A */
     modearg=sbook_last_app||"help";
-  else if (((!(sbook_mode))||(sbook_mode==="minimal"))&&
+  else if (((!(sbook_mode))||(sbook_mode==="context"))&&
 	    ((evt.charCode===112)||(evt.charCode===80))) /* P */
     if (sbook_pageview) sbookPageView(false);
     else sbookPageView(true);
@@ -2022,7 +2022,7 @@ function sbookUserSetup()
   var username=userinfo.name;
   if ((!(sbook_user_img))&&(userinfo.pic))
     sbook_user_img=userinfo.pic;
-  fdjtReplace("SBOOKUSERNAME",fdjtSpan("username",username));
+  $("SBOOKUSERNAME").innerHTML=username;
   if ($("SBOOKMARKUSER")) $("SBOOKMARKUSER").value=sbook_user;
   if ($("SBOOKMARKFORM"))
     $("SBOOKMARKFORM").onsubmit=fdjtForm_onsubmit;

@@ -460,7 +460,7 @@ function sbookCreateSearchHUD(classinfo)
   completions.id="SBOOKSEARCHCOMPLETIONS";
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=
-    fdjtDiv(classinfo||".sbooksearch.hudblock.hud#SBOOKSEARCH",
+    fdjtDiv(classinfo||".sbooksearch.hudblock#SBOOKSEARCH",
 	    input_help,
 	    fdjtDiv("query",
 		    fdjtDiv("spacer",fdjtDiv("input",clear_input,input)),

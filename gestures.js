@@ -32,6 +32,40 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
+/*
+
+  Preview behavior:
+   click enables/disables preview mode, hold/release enables/disables
+     preview mode
+   clicking on the preview target while in preview mode jumps to the target
+   shift acts just like the mouse button
+  Body behavior:
+   hold either temporarily hides the HUD or temporarily engages context mode
+    (this might also be selecting some text)
+   click when sbook_mode is non-context just drops the HUD
+   click on a non-target makes it the target and enters context mode
+   click on a target opens the mark HUD
+  Marginal behavior:
+   click on top or bottom margin, either hides HUD or engages last relevant
+    mode
+   click on left or right margin goes forward or backward
+   hold on left or right margin auto-advances, springs back on release,
+    stops on mouseout/touchout
+     
+  Handling hold with mouse:
+   onmousedown enters mode, sets tick
+   onmouseup leaves mode (unless shift is down)
+   onmouseout leaves mode (unless shift or mouse is down)
+     clears mouse_focus
+   onmouseover shifts mode target when mode is live, sets mouse_focus on move
+   shiftkey down enters mode on mouse_focus
+   shiftkey up leaves mode (unless mousedown tick is set)
+
+  Hold-free mode:
+   click enters/leaves mode
+
+*/
+
 /* Core gesture handling */
 
 /* There are currently two interaction modes: browser and touch.  In
@@ -108,9 +142,9 @@ function sbook_onmousedown(evt)
     sbookStopPreview(evt);
     return;}
   // If the HUD is up, clicks on the content just hide the HUD
-  else if ((sbook_mode)&&(sbook_mode!=="minimal"))
+  else if ((sbook_mode)&&(sbook_mode!=="context"))
     if (fdjtHasParent(target,sbook_target)) {
-      sbookHUDMode("minimal");
+      sbookHUDMode("context");
       return;}
     else {
       sbookHUDMode(false);
@@ -126,7 +160,7 @@ function sbook_onmousedown(evt)
     if (focus) {
       sbookSetFocus(focus);
       sbookSetTarget(focus,false);
-      sbookHUDMode("minimal");}
+      sbookHUDMode("context");}
     else {
       sbookSetTarget(false);
       sbookHUDMode(false);}}

@@ -56,17 +56,21 @@ function createSBOOKHUD()
 		"#SBOOKTOCBUTTON.hudbutton",
 		"toc","navigate table of contents");
     toc_button.onclick=sbookTOCButton_onclick;
-    var index_button=
+    var search_button=
       fdjtImage(sbicon("TagSearch40x40.png"),
-		"#SBOOKINDEXBUTTON.hudbutton",
-		"index","search the content using semantic tags");
-    index_button.onclick=sbookIndexButton_onclick;
-    var app_button=
+		"#SBOOKSEARCHBUTTON.hudbutton",
+		"search","search the content using semantic tags");
+    search_button.onclick=sbookSearchButton_onclick;
+    var dash_button=
       fdjtImage(sbicon("sbooksappicon40x40.png"),".hudbutton.app","app",
 		"Click for Help, settings, book description, etc");
-    app_button.onclick=sbookAppButton_onclick;
+    dash_button.onclick=sbookDashButton_onclick;
+    dash_button.onmouseover=fdjtClassAdder("SBOOKDASH","hover");
+    dash_button.onmouseout=fdjtClassDropper("SBOOKDASH","hover");
+    
     var glosses_button=
-      fdjtImage(sbicon("sbookspeople40x40.png"),".hudbutton","glosses",
+      fdjtImage(sbicon("sbookspeople40x40.png"),
+		"#SBOOKGLOSSESBUTTON.hudbutton","glosses",
 		"Click to browse glosses for this book");
     glosses_button.onclick=sbookGlossesButton_onclick;
     
@@ -74,14 +78,14 @@ function createSBOOKHUD()
     console.innerHTML=sbook_messagebox;
 
     var headhud=
-      fdjtDiv("#SBOOKHEAD",toc_button,index_button,
-	       fdjtDiv("#SBOOKTOC.hudblock"),
-	      fdjtDiv("#SBOOKSEARCH.hudblock"));
+      fdjtDiv("#SBOOKHEAD",toc_button,search_button,
+	      fdjtDiv("#SBOOKTOC.hudblock"),
+	      sbookCreateSearchHUD("#SBOOKSEARCH.hudblock.sbooksearch"));
     var foothud=
-      fdjtDiv("#SBOOKFOOT",app_button,glosses_button,
+      fdjtDiv("#SBOOKFOOT",dash_button,glosses_button,
 	      sbookCreateGlossesHUD(),
 	      fdjtDiv("#SBOOKTAGS.hudblock.tags"),
-	      sbookCreateAppHUD(),
+	      sbookCreateDash(),
 	      console);
     var markhud=
       fdjtDiv("#SBOOKMARKHUD.hudblock",
@@ -113,18 +117,20 @@ function sbookInitNavHUD()
 
 function sbookInitSocialHUD()
 {
-  // fdjtReplace("SBOOKGLOSSES",sbookCreateGlossesHUD());
-  // fdjtReplace("SBOOKSOURCES",sbookCreateSourceHUD());
+  var glosses_button=$("SBOOKGLOSSESBUTTON");
+  glosses_button.onclick=sbookGlossesButton_onclick;
+  glosses_button.onmouseover=fdjtClassAdder("SBOOKGLOSSES","hover");
+  glosses_button.onmouseout=fdjtClassDropper("SBOOKGLOSSES","hover");
+  glosses_button.style.visibility=null;
 }
 
 function sbookInitSearchHUD()
 {
-  fdjtReplace("SBOOKSEARCH",sbookCreateSearchHUD());
-  var index_button=$("SBOOKINDEXBUTTON");
-  index_button.onclick=sbookIndexButton_onclick;
-  index_button.onmouseover=fdjtClassAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
-  index_button.onmouseout=fdjtClassDropper("#SBOOKSEARCH#SBOOKTAGS","hover");
-  index_button.style.visibility=null;
+  var search_button=$("SBOOKSEARCHBUTTON");
+  search_button.onclick=sbookSearchButton_onclick;
+  search_button.onmouseover=fdjtClassAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
+  search_button.onmouseout=fdjtClassDropper("#SBOOKSEARCH#SBOOKTAGS","hover");
+  search_button.style.visibility=null;
 }
 
 
@@ -132,7 +138,7 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(minimal)|(apptoc)|(about)|(console)/g;
+  /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(context)|(apptoc)|(about)|(console)/g;
 
 var sbook_footmodes=
   ["login","device","sbookapp","help","apptoc","about","glosses","console"];
@@ -151,7 +157,7 @@ function sbookHUDMode(mode)
   if (mode)
     if (mode===sbook_mode) {}
     else {
-      if (mode===true) mode="minimal";
+      if (mode===true) mode="context";
       if (typeof mode !== 'string') 
 	throw new Error('mode arg not a string');
       if ((mode==="sbookapp")&&(!($("APPFRAME").src)))
@@ -340,9 +346,9 @@ function sbookHelpHighlight(hudelt)
 
 /* The App HUD */
 
-function sbookCreateAppHUD(eltspec)
+function sbookCreateDash(eltspec)
 {
-  var div=fdjtDiv(eltspec||"#SBOOKDASH.hudblock");
+  var div=fdjtDiv(eltspec||"#SBOOKDASH.hudblock.scrollhud");
   div.onmouseover=function(evt){
     var target=$T(evt);
     while (target)
@@ -356,11 +362,11 @@ function sbookCreateAppHUD(eltspec)
     var target=$T(evt);
     sbookHelpHighlight(false);};
   div.innerHTML=sbook_apptext;
-  fdjtDelay(1500,sbookUpdateAppHUD,false,sbook_root);
+  fdjtDelay(1500,sbookUpdateDash,false,sbook_root);
   return div;
 }
 
-function sbookUpdateAppHUD()
+function sbookUpdateDash()
 {
   var hidehelp=$("SBOOKHIDEHELP");
   var dohidehelp=fdjtGetCookie("sbookhidehelp");
@@ -554,7 +560,7 @@ function sbookTOCButton_onclick(evt)
   fdjtCancelEvent(evt);
 }
 
-function sbookIndexButton_onclick(evt)
+function sbookSearchButton_onclick(evt)
 {
   evt=evt||event||null;
   if ((sbook_mode==="searching") || (sbook_mode==="browsing")) {
@@ -567,7 +573,7 @@ function sbookIndexButton_onclick(evt)
     fdjtCancelEvent(evt);}
 }
 
-function sbookAppButton_onclick(evt)
+function sbookDashButton_onclick(evt)
 {
   if (sbook_mode)
     if (fdjtContains(sbook_apps,sbook_mode))

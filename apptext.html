@@ -1,21 +1,17 @@
 <div style='position: absolute; top: 0px; height: 110%;'> </div>
-<span id='SBOOKDASHCLOSE'>
-<img class='closebutton' 
-     src='http://static.beingmeta.com/graphics/xbox16x16.png'
-     alt='X' title='click to close'
-     onclick='sbookHUDMode(false); return false'/>
-</span>
 <div id='SBOOKDASHTOP'>
+<a href='http://sbooks.net/logout.fdcgi' class='logout'
+   title='click to logout of the sBooks server'>
+  logout</a>
 <a name='IDLINK' href='javascript:sbookHUDMode("login");'
    title='click to login'
    class='userpic'>
 <img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
      alt='login' id='SBOOKUSERPIC'/></a>
-<a href='javascript:sbookHUDMode("login");' name='IDLINK'>
-<span id='SBOOKIBELONGTO'>
   This sBook Belongs To:
-<span id='SBOOKUSERNAME' class='username'>(not logged in)</span></span>
-</a>
+<a href='javascript:sbookHUDMode("login");' name='IDLINK'
+   id='SBOOKUSERNAME'>
+(click to log in)</a>
 <span class='applinks'>
 (<a name='SBOOKOFFLINELINK' target='_blank'
     title='click for personalized offline version'>
@@ -58,6 +54,8 @@
       title='login to sBooks'>
   Login</span>
 </div>
+
+<div class='scrollbody'>
 <div class='tabcontent' id='APPHELP'>
 <div class='helpbody'>
 <div class='sbookh1'>Welcome to sBooks!
@@ -221,6 +219,7 @@ the location; holding down the control key or mouse button previews
 its content.</p>
 
 </div>
+
 <div class='tabcontent' id='APPLOGIN'>
 <div class='logindoc'>
 <p>In order to save and share your glosses as well as viewing the
@@ -303,6 +302,7 @@ or methods.</p>
 </table>
 </form>
 </div>
+
 <div class='tabcontent' id='APPDEVICE'
      onclick='fdjtCheckSpan_onclick(event);'>
 <table class='settings'>
@@ -336,7 +336,7 @@ or methods.</p>
 	<input TYPE='checkbox' NAME='PAGEVIEW' VALUE='yes' ID='SBOOKPAGEVIEW'
              onchange="javascript:sbookUpdateSessionSettings();"/>
 	paged</span>
-      <span class='smallbutton'
+      <span class='button'
 	    title='recompute the page layout for this document (usually automatic)'
 	    onclick='fdjtDelay(500,sbookUpdatePagination,false);'>
 	Repaginate</span>
@@ -385,8 +385,11 @@ or methods.</p>
 </td></tr>
 </table>  
 </div>
+
 <div class='tabcontent' id='APPTOC'>
+<h1>Table of Contents</h1>
 </div>
+
 <div class='tabcontent sbookabout' id='APPABOUT'>
 <div class='applinks'>
 <a name='SBOOKOFFLINELINK' target='_blank'
@@ -414,10 +417,13 @@ or methods.</p>
 <div class='about'></div>
 </div>
 </div>
+
 <div class='tabcontent' id='SBOOKSAPP'>
 <iframe id='APPFRAME' frameborder='0'
 	scrolling='auto'/>
 </div>
+
+</div> <!-- class='scrollbody'-->
 
 <!--
 /* Emacs local variables

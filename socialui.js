@@ -58,12 +58,12 @@ function sbookCreateGlossesHUD(classinfo)
   everyone_button.onclick=sbookEveryoneButton_onclick;
   allsources.onclick=sbookSources_onclick;
   
-  var allglosses=fdjtDiv("#SBOOKALLGLOSSES.sbooksummaries");
+  var allglosses=fdjtDiv("#SBOOKALLGLOSSES.sbooksummaries.scrollable");
   sbookSetupSummaryDiv(allglosses);
   sbookShowSummaries(sbook_allglosses,allglosses,false);
   
   sbookGlossesHUD=
-    fdjtDiv(classinfo||"#SBOOKGLOSSES.sbookglosses.hudblock",
+    fdjtDiv(classinfo||"#SBOOKGLOSSES.sbookglosses.hudblock.scrollhud",
 	    allsources,allglosses);
   
   return sbookGlossesHUD;
