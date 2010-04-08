@@ -55,9 +55,6 @@ function sbookCreateNavHUD(eltspec)
   var root_info=sbook_getinfo(sbook_root);
   var toc_div=sbookTOCDiv(root_info,0,false,"SBOOKTOC4");
   var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
-  div.onmouseover=sbookNav_onmouseover;
-  div.onmouseout=sbookNav_onmouseout;
-  div.onclick=sbookNav_onclick;
   if (!(eltspec)) sbookNavHUD=div;
   return div;
 }
@@ -67,11 +64,6 @@ function sbookStaticNavHUD(eltspec)
   var root_info=sbook_getinfo(sbook_root);
   var toc_div=sbookTOCDiv(root_info,0,false,"SBOOKDASHTOC4");
   var div=fdjtDiv(eltspec||"#SBOOKDASHTOC",toc_div);
-  div.onmouseover=sbookTOC_onmouseover;
-  div.onmouseout=sbookTOC_onmouseout;
-  div.onmousedown=sbookPreview_onmousedown;
-  div.onmouseup=sbookPreview_onmouseup;
-  div.onclick=sbookPreview_onclick;
   if (!(eltspec)) sbookNavHUD=div;
   return div;
 }
@@ -177,7 +169,7 @@ function _sbook_generate_span(sectnum,subsection,title,spanstart,spanend,len,nam
   if (odd) span.setAttribute("odd",sectnum);
   else span.setAttribute("even",sectnum);
   span.style.width=width;
-  // span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
+  span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
   span.sbook_ref=subsection.id;
   if (name) anchor.name=name;
   return span;

@@ -238,7 +238,8 @@ function sbookOpenGlossmark(target,addmark)
     var glosses=sbook_glosses_by_id[target.id];
     var sumdiv=fdjtDiv(".sbooksummaries");
     sbookSetupSummaryDiv(sumdiv);
-    sbookShowSummaries(glosses,sumdiv,false);
+    if (glosses)
+      sbookShowSummaries(glosses,sumdiv,false);
     fdjtReplace("SBOOKMARKGLOSSES",sumdiv);
     sbookSetFocus(target);
     sbookSetTarget(target);

@@ -247,7 +247,9 @@ function sbookCreateMarkHUD(classinfo)
    win.sbookHUDMode(false);};
   // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
   // hideicon.onclick="fdjtAddClass('SBOOKMARK','hidden')"; 
-  return fdjtDiv(classinfo||".mark",need_login,messages_elt,form);
+  var markdiv=fdjtDiv(classinfo||".mark",need_login,messages_elt,form);
+  markdiv.sbookui=true;
+  return markdiv;
 }
 
 function sbookMark_onsubmit(evt)
@@ -581,7 +583,7 @@ function sbookMarkTag_onkeyup(evt)
 
 /* Mark functions */
 
-function sbook_mark(target,gloss,excerpt)
+function sbookMark(target,gloss,excerpt)
 {
   if (sbook_mark_target!==target) {$("SBOOKMARKFORM").reset();}
   if ((gloss)&&(gloss.user))

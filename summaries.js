@@ -376,8 +376,8 @@ function sbookRelay_onclick(evt)
     else target=target.parentNode;
   if (!(target)) return;
   if (target.sbook_oid)
-    sbook_mark($(target.sbook_ref),fdjtOIDs[target.sbook_oid]||false);
-  else sbook_mark($(target.sbook_ref),false);
+    sbookMark($(target.sbook_ref),fdjtOIDs[target.sbook_oid]||false);
+  else sbookMark($(target.sbook_ref),false);
   evt.preventDefault(); evt.cancelBubble=true;
 }
 
@@ -411,7 +411,7 @@ function sbookSelectSources(results_div,sources)
 
 function sbookSetupSummaryDiv(div)
 {
-  div.onclick=sbookSummary_onclick;
+  // div.onclick=sbookSummary_onclick;
 }
 
 function sbookSummary_onclick(evt)

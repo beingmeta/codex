@@ -48,11 +48,16 @@ var sbook_paginated=false;
 
 var sbook_top_px=40;
 var sbook_bottom_px=40;
+var sbook_left_px=40;
+var sbook_right_px=40;
 var sbook_widow_limit=3;
 var sbook_orphan_limit=3;
 
 var sbook_debug_pagination=false;
 var sbook_trace_pagination=0;
+
+var sbookPageHead=false;
+var sbookPageFoot=false;
 
 /* Pagination predicates */
 
@@ -601,25 +606,18 @@ function sbookGoToPage(pagenum,pageoff)
 	  fdjtET(),off,
 	  pagenum,info.top,info.bottom,info.first.id,pageoff||0,info);
   var footheight=((off-sbook_top_px)+window.innerHeight)-info.bottom;
-  if (sbook_floating_hud) {
-    $("SBOOKTOPMARGIN").style.height=off+'px';
-    $("SBOOKBOTTOMMARGIN").style.height=
-      (document.body.offsetHeight-info.bottom)+'px';}
-  else if (footheight<0) {
-    $("SBOOKBOTTOMMARGIN").style.height=0;
-    sbook_curbottom=sbook_bottom_px;}
-  else {
-    $("SBOOKBOTTOMMARGIN").style.height=footheight+'px';
-    sbook_curbottom=footheight;}
+  if (footheight<0) {
+    footheight=0; sbook_curbottom=sbook_bottom_px;}
+  $("SBOOKPAGEFOOT").style.height=footheight+'px';
   sbook_curpage=pagenum;
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
   window.scrollTo(0,(off-sbook_top_px));
+  if (sbook_notfixed) sbookSyncViewport();
   if ((sbook_focus)&&(!(fdjtIsVisible(sbook_focus))))
     sbookSetFocus(sbook_target||info.focus||info.first);
   sbook_pagescroll=window.scrollY;
   document.body.style.opacity=1.0;
-  if (sbook_floating_hud) sbookSyncHUD();
   // Add class if it's temporarily gone
   fdjtAddClass(document.body,"sbookpageview");
 }
@@ -642,7 +640,7 @@ function sbookSyncPage()
   if (sbook_pageview) {
     if (window.scrollY!==sbook_pages[sbook_curpage]) {
       window.scrollTo(sbook_pages[sbook_curpage]);
-      if (sbook_floating_hud) sbookSyncHUD();}}
+      if (sbook_notfixed) sbookSyncHUD();}}
 }
 
 /* Other stuff */
@@ -952,7 +950,7 @@ function sbookSetHUDFontSize(size)
 
 function sbookLeftEdge_onclick(evt)
 {
-  sbook_trace("sbookLeftEdge_onclick",evt);
+  // sbook_trace("sbookLeftEdge_onclick",evt);
   if (sbook_edge_taps) sbookBackward();
   else sbookHUDMode(false);
   fdjtCancelEvent(evt);

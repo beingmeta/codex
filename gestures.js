@@ -66,119 +66,211 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-/* Core gesture handling */
+/* Getting the target for a touch operation */
 
-/* There are currently two interaction modes: browser and touch.  In
-   browser mode, clicking on a text or selecting a passage brings up
-   the dialog for adding a gloss; in touch mode (because the
-   interaction is different), this process has two phases.  The first
-   click or initial selection causes the passage to be 'selected'; the
-   second click actually pulls up the dialog.
+function sbookTouchTarget(scan,closest)
+{
+  var target=false;
+  while (scan) 
+    if ((scan===sbook_root)||(scan===sbook_root)||(scan.sbookui))
+      return target;
+    else if (scan.id)
+      if (fdjtHasClass(scan,"sbookfoci"))
+	return scan;
+      else if (fdjtElementMatches(scan,sbook_focus_rules))
+	return scan;
+      else {
+	if (!(target)) target=scan;
+	scan=scan.parentNode;}
+    else if (scan.sbook_ref) return scan;
+    else scan=scan.parentNode;
+  return target;
+}
 
-   Implementing these functions is a little tricky because of the
-   interaction with text selection and the fact that mousedown (or
-   click) normally clears the current text selection to start a new
-   one.
+/* Simple interaction model */
 
-   In browser mode, we open the dialog on mouse up, grabbing any
-   selected text.  In touch mode, we use the UI's "target" object to
-   separate out the two phases.  On mouseup, we set the sbook target
-   and on mousedown we open the dialog if the event target is the
-   sbook target.
- */
+function sbook_justonclick(evt)
+{
+  evt=evt||event;
+  sbook_trace("sbook_justonclick",evt);
+  var target=$T(evt);
+  if (fdjtIsClickactive(target)) return;
+  var ref=sbookGetRef(target);
+  if (sbook_preview)
+    if (ref) sbookPreview(ref);
+    else if (fdjtHasParent(target,sbook_preview))
+      sbookGoTo(sbook_preview);
+    else sbookPreview(false);
+  else if (ref) sbookPreview(ref);
+  else if (sbookInUI(target)) {}
+  else if (evt.clientX<sbook_left_px)
+    sbookBackward();
+  else if ((window.innerWidth-evt.clientX)<sbook_right_px)
+    sbookForward();
+  else if ((sbook_target)&&(fdjtHasParent(target,sbook_target)))
+    sbookOpenGlossmark(sbook_target,true);
+  else sbookSetTarget(sbookTouchTarget(target));
+}
 
+/* Interaction with click and hold */
 
-var sbook_mousedown_x=false;
-var sbook_mousedown_y=false;
-var sbook_mousedown_tick=false;
+var sbook_click_threshold=800;
+var sbook_touched=false;
+var sbook_touchtime=false;
+var sbook_touch_x=false;
+var sbook_touch_y=false;
 
-var sbook_gesture_min=0.4;
-var sbook_gesture_max=3;
-var sbook_gq=18;
+function sbook_touchdown(elt,evt)
+{
+  if (fdjtIsClickactive(elt)) return;
+  var target=sbookTouchTarget(elt);
+  if (!(target)) return;
+  fdjtTrace("[%f] sbook_touchdown %o @%o old=%o evt=%o",
+	    fdjtET(),evt.type,target,sbook_touched,evt);
+  if (sbook_touched===target) return;
+  sbook_touched=target;
+  if (!(sbook_touchtime)) {
+    sbook_touchtime=fdjtTime();
+    sbook_touch_x=evt.clientX;
+    sbook_touch_y=evt.clientY;}
+  var ref=sbookGetRef(elt);
+  if (ref) {
+    if ((sbook_preview)&&(sbook_preview===ref))
+      sbookPreview(false);
+    else sbookPreview(ref);}
+  else if (sbook_preview) {}
+  else if ((sbook_target)&&(fdjtHasParent(sbook_target,target)))
+    sbookMark(sbook_target);
+  else if (sbook_mode)
+    fdjtDropClass(sbookHUD,sbookHUDMode_pat);
+  else fdjtSwapClass(sbookHUD,sbookHUDMode_pat,"context");
+}
+
+function sbook_touchup(elt,evt)
+{
+  if (fdjtIsClickactive(elt)) return;
+  var isclick=
+    ((fdjtTime()-sbook_touchtime)<sbook_click_threshold);
+  fdjtTrace("[%f] sbook_touchup %o @%o evt=%o isclick=%o",
+	    fdjtET(),evt.type,sbook_touched,evt,isclick);
+  if (!(sbook_touched)) return;
+  var target=sbook_touched;
+  var this_target=sbookTouchTarget(evt.target);
+  var ref=((sbook_touched)&&(sbookGetRef(sbook_touched)));
+  sbook_touched=false;
+  sbook_touchtime=false;
+  if (sbook_preview)
+    if (ref)
+      if (isclick) {}
+      else sbookPreview(false);
+    else if ((isclick)&&(fdjtHasParent(elt,sbook_preview)))
+      sbookGoTo(elt);
+    else sbookPreview(false);
+  else if (isclick)
+    if ((sbook_target)&&(sbook_target===this_target))
+      if (fdjtHasParent(elt,sbook_target))
+	sbookMark(sbook_target);
+      else sbookSetTarget(this_target);
+    else sbookSetTarget(this_target);
+  else if (sbook_mode)
+    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,sbook_mode);
+  else fdjtDropClass(sbookHUD,"context");
+}
+
+var sbook_mouse_focus=false;
+var sbook_shift_key=false;
+var sbook_mousedown=false;
 
 function sbook_onclick(evt)
 {
-  evt=evt||event||null;
+  evt=evt||event;
   // sbook_trace("sbook_onclick",evt);
-  if (evt.button>1) return;
   var target=$T(evt);
-  // Don't override anchors, input, etc
   if (fdjtIsClickactive(target)) return;
-  else if (sbookInUI(target)) return;
-  if (sbook_preview)
-    // In preview mode, clicking turns off preview mode
-    // and may jump to the click target if it's the preview
-    // point
-    if (fdjtHasParent(target,sbook_preview)) {
-      sbookPreview(false);
-      sbookSetTarget(target);}
-    else sbookPreview(false);
-  else if (sbook_mode) {
-    // If the HUD is up, toggle it off
-    sbookHUDMode(false);
-    fdjtCancelEvent(evt);
-    return;}
-  else if ((sbook_target)&&(fdjtHasParent(target,sbook_target))) {
-    sbook_mark(focus);
-    fdjtCancelEvent(evt);}
-  else {
-    var focus=sbookGetFocus(target);
-    sbookSetTarget(focus);}
+  else fdjtCancelEvent(evt);
 }
 
 function sbook_onmousedown(evt)
 {
-  evt=evt||event||null;
+  evt=evt||event;
   // sbook_trace("sbook_onmousedown",evt);
-  // Track these no matter what
-  sbook_mousedown_x=evt.screenX;
-  sbook_mousedown_y=evt.screenY;
-  sbook_mousedown_tick=fdjtTick();
-  if ((evt.button>1)||(evt.ctrlKey)) return;
-  var target=$T(evt);
-  // Ignores clicks on the HUD
-  if (sbookInUI(target)) return;
-  else if (sbook_preview) {
-    sbookStopPreview(evt);
-    return;}
-  // If the HUD is up, clicks on the content just hide the HUD
-  else if ((sbook_mode)&&(sbook_mode!=="context"))
-    if (fdjtHasParent(target,sbook_target)) {
-      sbookHUDMode("context");
-      return;}
-    else {
-      sbookHUDMode(false);
-      return;}
-  // Ignore clicks on text fields, anchors, inputs, etc
-  else if (fdjtIsClickactive(target)) return;
-  else if (fdjtHasParent(target,sbook_target)) {
-    sbook_mark(sbook_target,false,fdjtSelectedText());
-    fdjtCancelEvent(evt);
-    return;}
-  else {
-    var focus=sbookGetFocus(target,evt.altKey);
-    if (focus) {
-      sbookSetFocus(focus);
-      sbookSetTarget(focus,false);
-      sbookHUDMode("context");}
-    else {
-      sbookSetTarget(false);
-      sbookHUDMode(false);}}
-}
-function sbook_onmouseup(evt)
-{
-  evt=evt||event||null;
-  sbookHUDFlash(false,1000);
+  if (evt.button===0) {
+    sbook_mousedown=true;
+    sbook_touchdown($T(evt),evt);}
 }
 
-function sbook_ondblclick(evt)
+function sbook_onmouseup(evt)
+{
+  evt=evt||event;
+  if (evt.button===0) {
+    sbook_mousedown=false;
+    // sbook_trace("sbook_onmouseup",evt);
+    if (!(sbook_shift_key)) {
+      sbook_touchup($T(evt),evt);
+      fdjtCancelEvent(evt);}}
+}
+
+function sbook_onmouseover(evt)
+{
+  evt=evt||event;
+  if ((sbook_preview)&&(!(sbookGetRef($T(evt))))) return;
+  sbook_mouse_focus=
+    sbookTouchTarget($T(evt))||sbook_mouse_focus;
+  if ((sbook_mouse_focus)&&((sbook_shift_key)||(sbook_mousedown)))
+    sbook_touchdown(sbook_mouse_focus,evt);
+}
+
+function sbook_onmouseout(evt)
+{
+  evt=evt||event;
+  sbook_mouse_focus=false;
+}
+
+function sbook_onkeydown(evt)
 {
   evt=evt||event||null;
-  var target=sbookGetFocus($T(evt),evt.altKey);
-  if (target) {
-    sbookSetTarget(target,false);
-    sbook_mark(target,false,fdjtSelectedText());
+  var kc=evt.keyCode;
+  // sbook_trace("sbook_onkeydown",evt);
+  if (evt.keyCode===27) { /* Escape works anywhere */
+    if (sbook_mode) {
+      sbook_last_mode=sbook_mode;
+      sbookHUDMode(false);
+      fdjtDropClass(document.body,"hudup");
+      sbookStopPreview(evt);
+      sbookSetTarget(false);
+      $("SBOOKSEARCHTEXT").blur();}
+    else if (sbook_last_mode) sbookHUDMode(sbook_last_mode);
+    else {
+      if ((sbook_mark_target)&&(fdjtIsVisible(sbook_mark_target)))
+	sbookHUDMode("mark");
+      else sbookHUDMode("context");}
     return;}
+  else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
+  else if (kc===34) sbookForward();   /* page down */
+  else if (kc===33) sbookBackward();  /* Page Up */
+  else if (fdjtIsTextInput($T(evt))) return true;
+  else if (kc===16) { /* Shift key */
+    sbook_shift_key=true;
+    if (sbook_mouse_focus) sbook_touchdown(sbook_mouse_focus,evt);}
+  else if (kc===32) sbookForward(); // Space
+  else if ((kc===8)||(kc===45)) sbookBackward(); // backspace or delete
+  else if (kc===36)  
+    // Home goes to the current head.
+    sbookGoTo(sbook_head);
+  else return;
+}
+
+function sbook_onkeyup(evt)
+{
+  evt=evt||event||null;
+  var kc=evt.keyCode;
+  // sbook_trace("sbook_onkeyup",evt);
+  if (fdjtIsTextInput($T(evt))) return true;
+  else if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)) return true;
+  else if (kc===16) {
+    sbook_shift_key=false;
+    sbook_touchup(sbook_mouse_focus,evt);
+    fdjtCancelEvent(evt);}
 }
 
 /* Homegrown gesture recognition */
@@ -198,7 +290,7 @@ function sbookHandleGestures(evt)
     if (sbook_trace_gestures)
       fdjtTrace("absdx=%o absdy=%o v=%o h=%o",
 		absdx,absdy,vertical,horizontal);
-    if ((horizontal===0)&&(vertical===0)) sbook_mark($T(evt));
+    if ((horizontal===0)&&(vertical===0)) sbookMark($T(evt));
     else if (absdy<(3*sbook_gq))
       if (horizontal>0) sbookNextPage(evt);
       else if (horizontal<0) sbookPrevPage(evt);
@@ -269,27 +361,24 @@ function sbookGestureSetup()
 
 function sbookMouseGestureSetup()
 {
-  // These are for mouse tracking
-  window.onmouseover=sbook_onmouseover;
-  window.onmousemove=sbook_onmousemove;
   window.onscroll=sbook_onscroll;
-  // These are for gesture recognition and adding glosses
-  window.onmousedown=sbook_onmousedown;
-  window.onmouseup=sbook_onmouseup;
-  // window.onclick=sbook_onclick;
-  window.ondblclick=sbook_ondblclick;
+  window.onclick=sbook_justonclick;
+  // window.onmousedown=sbook_onmousedown;
+  // window.onmouseup=sbook_onmouseup;
+  // window.onmouseover=sbook_onmouseover;
   // For command keys
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
-  window.onkeyup=sbook_onkeyup;
+  // window.onkeyup=sbook_onkeyup;
 }
 
 function sbookTouchGestureSetup()
 {
   // These are for mouse tracking
   window.onscroll=sbook_onscroll;
+  window.ontouch=sbook_justonclick;
   // These are for gesture recognition and adding glosses
-  document.body.onclick=sbook_onclick;
+  // document.body.onclick=sbook_onclick;
   // For command keys, just in case
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;

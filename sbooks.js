@@ -215,7 +215,7 @@ var sbook_edge_taps=true;
 var sbook_accessible=false;
 // Whether the HUD should track the scroll position absolutely
 // This is neccessary for viewport based browsers like the iPad
-var sbook_floating_hud=false;
+var sbook_notfixed=false;
 
 // Whether to startup with the help screen
 var sbook_help_on_startup=false;
@@ -282,6 +282,8 @@ var sbook_debug=false;
 var sbook_trace_hud=false;
 // Whether to trace mode changes
 var sbook_trace_mode=false;
+// Whether to trace navigation
+var sbook_trace_nav=false;
 // Whether to debug the NAV/TOC HUD
 var sbook_trace_nav_hud=false;
 // Whether to debug search
@@ -298,8 +300,6 @@ var sbook_trace_locations=false;
 var sbook_trace_network=0;
 // Whether to debug startup
 var sbook_trace_startup=0;
-// Whether to trace navigation
-var sbook_trace_nav=false;
 // Whether to trace paging
 var sbook_trace_paging=false;
 // Whether to trace gesture recognition
@@ -457,6 +457,23 @@ function sbookGetRef(target)
     if (target.sbook_ref) break;
     else target=target.parentNode;
   return (target)&&($(target.sbook_ref));
+}
+
+function sbookGetTarget(scan,closest)
+{
+  var target=false;
+  while (scan) 
+    if ((scan===sbook_root)||(scan===sbook_root)||(scan.sbookui))
+      return target;
+    else if (scan.id)
+      if ((fdjtHasClass(scan,"sbookfoci"))||
+	  (fdjtElementMatches(scan,sbook_focus_rules)))
+	return scan;
+      else if (closest) return scan;
+      else if (target) scan=scan.parentNode;
+      else {target=scan; scan=scan.parentNode;}
+    else scan=scan.parentNode;
+  return target;
 }
 
 function sbookGetTitle(target)
@@ -1105,74 +1122,6 @@ function sbookGoTo(target,noset)
 
 /* Keyboard handlers */
 
-function sbook_onkeydown(evt)
-{
-  evt=evt||event||null;
-  var kc=evt.keyCode;
-  // sbook_trace("sbook_onkeydown",evt);
-  if (evt.keyCode===27) { /* Escape works anywhere */
-    if ((sbook_mode)||(sbook_target)) {
-      sbook_last_mode=sbook_mode;
-      sbookHUDMode(false);
-      fdjtDropClass(document.body,"hudup");
-      sbookStopPreview(evt);
-      sbookSetTarget(false);
-      $("SBOOKSEARCHTEXT").blur();}
-    else if (sbook_last_mode) sbookHUDMode(sbook_last_mode);
-    else {
-      if ((sbook_mark_target)&&(fdjtIsVisible(sbook_mark_target)))
-	sbookHUDMode("mark");
-      else sbookHUDMode("context");}
-    return;}
-  if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
-  else if (kc===34) sbookForward();   /* page down */
-  else if (kc===33) sbookBackward();  /* Page Up */
-  else if (fdjtIsTextInput($T(evt))) return true;
-  else if (kc===16) { /* Shift key */
-    if (sbook_mode) {
-      fdjtDropClass(document.body,"hudup");
-      fdjtDropClass(sbookHUD,sbook_mode);}
-    else {
-      fdjtSwapClass(sbookHUD,sbookHUDMode_pat,"context");
-      fdjtAddClass(document.body,"hudup");}}
-  else if (kc===17) { /* Control key */
-    if (sbook_preview) return;
-    else if (sbook_preview_target)
-      sbookPreview(sbook_preview_target);
-    else return;}
-  else if (kc===32) {
-    /* Space char or page down */
-    // sbookHUDMode(false);
-    sbookForward();}
-  else if ((kc===8)||(kc===45)) {
-    /* Backspace, Delete, or Page Up */
-    // sbookHUDMode(false);
-    sbookBackward();}
-  else if (kc===36)  
-    // Home goes to the current head.
-    // (more nav keys to come)
-    sbookGoTo(sbook_head);
-  else return;
-}
-
-function sbook_onkeyup(evt)
-{
-  evt=evt||event||null;
-  var kc=evt.keyCode;
-  // sbook_trace("sbook_onkeyup",evt);
-  if (fdjtIsTextInput($T(evt))) return true;
-  else if ((evt.altKey)||(evt.metaKey)) return true;
-  else if (kc===17) { /* Control key */
-    if (sbook_preview)
-      if (sbook_preview_mousedown) return false;
-      else return sbookPreview(false);
-    else return;}
-  else if (kc===16) {
-    fdjtDropClass(document.body,"hudup");
-    if (sbook_mode) fdjtAddClass(sbookHUD,sbook_mode);
-    fdjtCancelEvent(evt);}
-}
-
 var sbook_modechars={
  43: "mark",13: "mark",
  63: "searching",102: "searching",
@@ -1240,71 +1189,11 @@ function sbookGetXYFocus(xoff,yoff,closest)
   return sbookGetFocus(node,closest||false);
 }
 
-function sbook_onmouseover(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbook_onmouseover",evt);
-  /* If you're previewing, ignore mouse action */
-  if (sbook_preview) return;
-  if (sbook_target) sbookCheckTarget();
-  /* Get the target */
-  var target=$T(evt);
-  if (sbookInUI(target)) return;
-  else target=sbookGetFocus(target,evt.ctrlKey);
-  if ((target)&&(evt.shiftKey)&&(sbook_mode)) {
-    sbookTrackFocus(target,true);
-    return;}
-  var scrollx=window.scrollX||document.body.scrollLeft;
-  var scrolly=window.scrollY||document.body.scrollLeft;
-  // Track position
-  sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
-  /* These are top level elements which aren't much use as heads or foci */
-  if ((target===null) || (target===sbook_root) ||
-      (!((target) && ((target.Xoff) || (target.Yoff))))) 
-    target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY,evt.ctrlKey);
-  // Don't raise the focus to parents unless the control key down
-  if ((sbook_focus)&&(fdjtHasParent(sbook_focus,target)))
-    if (!(evt.ctrlKey)) return;
-  fdjtDelay
-    (sbook_focus_delay,sbookTrackFocus,target,document.body,"setfocus");
-}
-
-function sbook_onmousemove(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbook_onmousemove",evt);
-  if (sbook_target) sbookCheckTarget();
-  var target=$T(evt);
-  /* If you're previewing, ignore mouse action */
-  if ((sbook_preview) || (sbook_mode) || (sbook_mode)) return;
-  if (fdjtHasClass(document.body,"hudup")) return;
-  /* Save mouse positions */
-  sbook_last_x=evt.clientX; sbook_last_y=evt.clientY;
-  /* Now, we try to find a top level element to sort out whether
-     we need to update the location or section head. */
-  while (target)
-    if (target.sbook_head) break;
-    else if (target.sbookinfo) break;
-    else if (target.parentNode===document.body) break;
-    else target=target.parentNode;
-  /* These are all cases which onmouseover will handle */
-  if ((target) && ((target.Xoff) || (target.Yoff))) return;
-  var scrollx=window.scrollX||document.body.scrollLeft;
-  var scrolly=window.scrollY||document.body.scrollLeft;
-  target=sbookGetXYFocus(scrollx+evt.clientX,scrolly+evt.clientY,evt.ctrlKey);
-  // Don't raise the focus to parents unless the control key down
-  if ((sbook_focus)&&(fdjtHasParent(sbook_focus,target)))
-    if (!(evt.ctrlKey)) return;
-  fdjtDelay
-    (sbook_focus_delay,sbookTrackFocus,target,document.body,"setfocus");
-}
-
 function sbook_onscroll(evt)
 {
   evt=evt||event||null;
   // sbook_trace("sbook_onscroll",evt);
   /* If you're previewing, ignore mouse action */
-  if (sbook_floating_hud) sbookSyncHUD();
   if (sbook_preview) return;
   if (sbook_target) sbookCheckTarget();
   // if (sbook_pageview) fdjtDropClass(document.body,"sbookpageview");
@@ -1880,19 +1769,26 @@ function sbookDisplaySetup()
   var useragent=navigator.userAgent;
   var topleading=fdjtDiv("#SBOOKTOPLEADING.leading.top"," ");
   var bottomleading=fdjtDiv("#SBOOKBOTTOMLEADING.leading.bottom"," ");
-  var pagehead=sbookMakeMargin(".sbookmargin#SBOOKTOPMARGIN"," ");
-  var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKBOTTOMMARGIN"," ");
-  var leftedge=fdjtDiv("#SBOOKLEFTMARGIN.hud.sbookmargin");
-  var rightedge=fdjtDiv("#SBOOKRIGHTMARGIN.hud.sbookmargin");
-    
+  var pagehead=sbookMakeMargin(".sbookmargin#SBOOKPAGEHEAD"," ");
+  var footmargin=sbookMakeMargin(".sbookmargin#SBOOKPAGEFOOT"," ");
+  var pagefoot=fdjtDiv(".sbookshoe#SBOOKSHOE",footmargin);
+  var leftedge=fdjtDiv("#SBOOKLEFTMARGIN.sbookmargin.sbookleftmargin");
+  var rightedge=fdjtDiv("#SBOOKRIGHTMARGIN.sbookmargin.sbookrightmargin");
+
   if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
     sbookMobileSafariSetup();    
+
   topleading.sbookui=true; bottomleading.sbookui=true;
+  var hud=createSBOOKHUD();
+  fdjtAppend(hud,leftedge,rightedge);
   fdjtPrepend(document.body,createSBOOKHUD(),
-	      topleading,pagehead,pagefoot,leftedge,rightedge);  
+	      pagehead,pagefoot,leftedge,rightedge,
+	      topleading);  
   fdjtAppend(document.body,bottomleading);
-  var pagehead=$("SBOOKTOPMARGIN");
-  var pagefoot=$("SBOOKBOTTOMMARGIN");
+  
+  var pagehead=$("SBOOKPAGEHEAD");
+  var pagefoot=$("SBOOKPAGEFOOT");
+  sbookPageHead=pagehead; sbookPageFoot=pagefoot;
   var bgcolor=document.body.style.backgroundColor;
   if ((!(bgcolor)) && (window.getComputedStyle)) {
     var bodystyle=window.getComputedStyle(document.body,null);
@@ -1906,15 +1802,24 @@ function sbookDisplaySetup()
   pagehead.style.display='block'; pagefoot.style.display='block';
   sbook_top_px=pagehead.offsetHeight;
   sbook_bottom_px=pagefoot.offsetHeight;
+  sbook_left_px=leftedge.offsetHeight;
+  sbook_right_px=rightedge.offsetHeight;
   pagehead.style.display=null; pagefoot.style.display=null;
   pagehead.sbookui=true; pagefoot.sbookui=true;
-  pagehead.onclick=sbookPageHead_onclick;
-  pagefoot.onclick=sbookPageFoot_onclick;
+  pagehead.onclick=sbookHeadHUD_onclick;
+  pagefoot.onclick=sbookFootHUD_onclick;
   leftedge.title='tap/click to go back';
   leftedge.onclick=sbookLeftEdge_onclick;
   rightedge.title='tap/click to go forward';
   rightedge.onclick=sbookRightEdge_onclick;
-
+  // These are the edges above the bottom margin
+  var leftedge2=fdjtDiv(".sbookmargin.sbookleftmargin");
+  var rightedge2=fdjtDiv(".sbookmargin.sbookrightmargin");
+  fdjtAppend(footmargin,leftedge2,rightedge2);
+  leftedge2.title='tap/click to go back';
+  leftedge2.onclick=sbookLeftEdge_onclick;
+  rightedge2.title='tap/click to go forward';
+  rightedge2.onclick=sbookRightEdge_onclick;
 }
 
 function sbookMobileSafariSetup()
@@ -1931,13 +1836,13 @@ function sbookMobileSafariSetup()
   var meta=fdjtElt("META");
   meta.name='viewport'; meta.content='user-scalable=no,width=device-width';
   fdjtPrepend(head,meta);
-  fdjtAddClass(document.body,"fixedbroken");
+  fdjtAddClass(document.body,"notfixed");
 
   var modepos=fdjtIndexOf(sbook_default_opts,"mouse");
   if (modepos<0) sbook_default_opts.push("touch");
   else sbook_default_opts[modepos]="touch";
 
-  sbook_floating_hud=true;
+  sbook_notfixed=true;
 }
 
 function sbookGlossesSetup()

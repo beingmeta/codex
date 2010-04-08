@@ -40,15 +40,6 @@ function sbookPreviewIcon(img)
 {
   var img=fdjtImage(sbicon(img||"binoculars24x24.png"),"previewicon","[pre]",
 		    "preview: click or hold mouse button or control key");
-  img.onmouseover=sbookPreview_onmouseover;
-  img.onmouseout=sbookPreview_onmouseout;
-  // img.onmousemove=sbookPreview_onmousemove;
-  img.onmousedown=sbookPreview_onmousedown;
-  img.onmouseup=sbookPreview_onmouseup;
-  img.ontouchstart=sbookPreview_onmousedown;
-  img.ontouchstart=sbookPreview_onmouseup;
-  img.onclick=sbookPreview_onclick;
-  img.ondblclick=sbookPreview_ondblclick;
   return img;
 }
 
@@ -80,7 +71,8 @@ function sbookPreview_onmouseout(evt)
   if (document.body.previewtimer) clearTimeout(document.body.previewtimer);
   if (ref===sbook_last_preview) sbook_last_preview=false;
   if ((!ref)||(ref===sbook_preview_target))
-    document.body.previewtimer=setTimeout(sbookPreview,sbook_preview_delay,false);
+    document.body.previewtimer=
+      setTimeout(sbookPreview,sbook_preview_delay,false);
 }
 
 function sbookPreview_onmousedown(evt)

@@ -32,6 +32,10 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
+// The head HUD
+var sbookHead=false;
+// The foot HUD
+var sbookFoot=false;
 // This is the HUD where all glosses are displayed
 var sbookGlossesHUD=false;
 // This is the HUD for tag searching
@@ -82,21 +86,20 @@ function createSBOOKHUD()
 	      fdjtDiv("#SBOOKTOC.hudblock"),
 	      sbookCreateSearchHUD("#SBOOKSEARCH.hudblock.sbooksearch"));
     var foothud=
-      fdjtDiv("#SBOOKFOOT",dash_button,glosses_button,
-	      sbookCreateGlossesHUD(),
-	      fdjtDiv("#SBOOKTAGS.hudblock.tags"),
-	      sbookCreateDash(),
-	      console);
+      fdjtDiv("#SBOOKHUDSHOE.sbookshoe",
+	      fdjtDiv("#SBOOKFOOT",dash_button,glosses_button,
+		      sbookCreateGlossesHUD(),
+		      fdjtDiv("#SBOOKTAGS.hudblock.tags"),
+		      sbookCreateDash(),
+		      console));
     var markhud=
       fdjtDiv("#SBOOKMARKHUD.hudblock",
 	      sbookCreateMarkHUD("#SBOOKMARK"),
 	      fdjtDiv("#SBOOKMARKGLOSSES.sbookglosses"));
       
+    sbookHead=headhud; sbookFoot=foothud;
     hud=fdjtDiv("#SBOOKHUD",headhud,foothud,markhud);
     
-    headhud.onclick=sbookHeadHUD_onclick;
-    foothud.onclick=sbookFootHUD_onclick;
-
     sbookHUD=hud; hud.sbookui=true; hud.title="";
     hud.setAttribute("flatwidth","0");
     
@@ -153,7 +156,7 @@ function sbookHUDMode(mode)
     fdjtLog("[%fs] sbookHUDMode %o, cur=%o dbc=%o",
 	    fdjtET(),mode,sbook_mode,document.body.className);
   if (sbook_preview) sbookStopPreview();
-  if (sbook_floating_hud) sbookSyncHUD();
+  if (sbook_notfixed) sbookSyncViewport();
   if (mode)
     if (mode===sbook_mode) {}
     else {
@@ -309,15 +312,19 @@ function sbookGetStableId(elt)
   else return false;
 }
 
-function sbookSyncHUD()
+var sbook_sync_head=false;
+var sbook_sync_foot=false;
+
+function sbookSyncViewport()
 {
-  var hidden=false;
-  if (window.scrollY!==sbookHUD.offsetTop) {
-    hidden=true; sbookHUD.style.opacity=0.01;
-    /* sbookHUD.style['-webkit-transform']=
-       "translate("+window.scrollX+"px,"+window.scrollY+"px)"; */
-    sbookHUD.style.top=window.scrollY+'px';}
-  if (hidden) sbookHUD.style.opacity=null;
+  if (window.offsetY!==sbook_sync_head) {
+    sbookPageHead.style.top=sbookHead.style.top=window.scrollY+'px';
+    sbook_sync_head=window.scrollY;}
+  if ((window.scrollY+window.innerHeight)!==sbook_sync_foot) {
+    $("SBOOKHUDSHOE").style.top=
+      $("SBOOKSHOE").style.top=
+      (window.scrollY+window.innerHeight)+'px';
+    sbook_sync_foot=(window.scrollY+window.innerHeight);}
 }
 
 /* The APP HUD */
