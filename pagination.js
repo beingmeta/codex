@@ -613,7 +613,9 @@ function sbookGoToPage(pagenum,pageoff)
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
   window.scrollTo(0,(off-sbook_top_px));
-  if (sbook_notfixed) sbookMoveMargins(info);
+  if (sbook_notfixed) {
+    sbookMoveMargins(info);
+    sbookSyncHUD();}
   if ((sbook_focus)&&(!(fdjtIsVisible(sbook_focus))))
     sbookSetFocus(sbook_target||info.focus||info.first);
   sbook_pagescroll=window.scrollY;

@@ -1481,26 +1481,26 @@ function sbookMobileSafariSetup()
 {
   var head=$$("HEAD")[0];
   fdjtTrace("Mobile Safari setup");
+  /*
   document.body.ontouchmove=
     function(evt){ if (sbook_pageview) {
       evt.preventDefault(); return false;}};
+  */
   var meta=fdjtElt("META");
   meta.name='apple-mobile-web-app-capable ';
   meta.content='yes';
-  fdjtPrepend(head,meta);
+  // fdjtPrepend(head,meta);
   var meta=fdjtElt("META");
   meta.name='viewport';
   meta.content='user-scalable=no,height=device-height,width=device-width';
-  fdjtPrepend(head,meta);
+  // fdjtPrepend(head,meta);
 
   var modepos=fdjtIndexOf(sbook_default_opts,"mouse");
   if (modepos<0) sbook_default_opts.push("touch");
   else sbook_default_opts[modepos]="touch";
 
-  /*
   sbook_notfixed=false;
   fdjtAddClass(document.body,"notfixed");
-  */
 }
 
 /* Application settings */

@@ -80,8 +80,7 @@ div#SBOOKHUD div#SBOOKFOOT {
 body.notfixed div#SBOOKHUD div#SBOOKHEAD,
 body.notfixed div#SBOOKHUD div#SBOOKFOOT {
   position: absolute; }
-body.hudup.notfixed div#SBOOKHUD div#SBOOKHEAD { bottom: auto;}
-body.hudup.notfixed div#SBOOKHUD div#SBOOKBOTTOM { top: auto;}
+body.notfixed div#SBOOKHUD div#SBOOKFOOT { top: 100px; bottom: auto;}
 
 div.sbookshoe {
   position: absolute; top: 0px; left: 0px; right: 0px; 

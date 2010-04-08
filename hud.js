@@ -89,9 +89,7 @@ function createSBOOKHUD()
 	      fdjtDiv("#SBOOKTAGS.hudblock.tags"),
 	      sbookCreateDash(),
 	      console);
-    var foothud=
-      fdjtDiv("#SBOOKHUDSHOE.sbookshoe",
-	      fdjtDiv("#SBOOKFOOT",dash_button,glosses_button));
+    var foothud=fdjtDiv("#SBOOKFOOT",dash_button,glosses_button);
     var markhud=
       fdjtDiv("#SBOOKMARKHUD.hudblock",
 	      sbookCreateMarkHUD("#SBOOKMARK"),
@@ -156,7 +154,7 @@ function sbookHUDMode(mode)
     fdjtLog("[%fs] sbookHUDMode %o, cur=%o dbc=%o",
 	    fdjtET(),mode,sbook_mode,document.body.className);
   if (sbook_preview) sbookStopPreview();
-  if (sbook_notfixed) sbookSyncViewport();
+  if (sbook_notfixed) sbookSyncHUD();
   if (mode)
     if (mode===sbook_mode) {}
     else {
@@ -315,15 +313,13 @@ function sbookGetStableId(elt)
 var sbook_sync_head=false;
 var sbook_sync_foot=false;
 
-function sbookSyncViewport()
+function sbookSyncHUD()
 {
   if (window.offsetY!==sbook_sync_head) {
-    sbookPageHead.style.top=sbookHead.style.top=window.scrollY+'px';
+    sbookHead.style.top=window.scrollY+'px';
     sbook_sync_head=window.scrollY;}
   if ((window.scrollY+window.innerHeight)!==sbook_sync_foot) {
-    $("SBOOKHUDSHOE").style.top=
-      $("SBOOKSHOE").style.top=
-      (window.scrollY+window.innerHeight)+'px';
+    sbookFoot.style.top=(window.scrollY+window.innerHeight-60)+'px';
     sbook_sync_foot=(window.scrollY+window.innerHeight);}
 }
 
