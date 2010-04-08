@@ -88,7 +88,6 @@ div.sbookshoe {
   z-index: 100; overflow: visible;}
 div#SBOOKHUDSHOE { z-index: 200;}
 
-
 body.preview div#SBOOKHUD div.hudblock { opacity: 0.05;}
 
 /* Buttons */
@@ -102,8 +101,9 @@ div#SBOOKHUD img.hudbutton:hover { opacity: 0.9; background-color: gray;}
 /* Margins */
 
 body div.sbookmargin {
-    position: fixed; background-color: white; z-index: 25;
-    display: block;}
+    position: fixed; display: block;
+    background-color: white; z-index: 25;}
+
 body.preview div.sbookmargin { display: none;}
 body.notfixed div.sbookmargin { position: absolute;}
 
@@ -112,12 +112,14 @@ body div.sbookmargin#SBOOKPAGEFOOT {
   left: 0px; right: 0px; width: 100%; height: 40px; z-index: 75;}
 body div.sbookmargin#SBOOKPAGEHEAD { top: 0px; }
 body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; }
+body.notfixed div.sbookmargin#SBOOKPAGEFOOT {
+    top: 0px; bottom: inherit; }
 
-body div.sbookmargin.sbookrightmargin,
-body div.sbookmargin.sbookleftmargin {
+body div.sbookmargin.sbookright,
+body div.sbookmargin.sbookleft {
  top: 0px; height: 100%; width: 50px; opacity: 0.01;}
-body div.sbookmargin.sbookrightmargin { right: 0px; }
-body div.sbookmargin.sbookleftmargin { left: 0px; }
+body div.sbookmargin.sbookright { right: 0px; }
+body div.sbookmargin.sbookleft { left: 0px; }
 
 body.sbookpageview { overflow: hidden; } /* Don't scroll */
 body.sbookpageview.preview div.sbookmargin { display: none;}
@@ -1396,8 +1398,8 @@ body.touch.preview div.sbooktoc.live:hover div.sbooktoc.live:hover {
     display: block;}
 
 /* Show edges in touch mode (for tap/click) */
-body.touch div#SBOOKHUD div#SBOOKLEFTMARGIN { display: block;}
-body.touch div#SBOOKHUD div#SBOOKRIGHTMARGIN { display: block;}
+body.touch div#SBOOKHUD div#SBOOKLEFTEDGE { display: block;}
+body.touch div#SBOOKHUD div#SBOOKRIGHTEDGE { display: block;}
 
 /* Conditional display */
 .fortouch { display: none;}

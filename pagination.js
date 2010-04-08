@@ -613,7 +613,7 @@ function sbookGoToPage(pagenum,pageoff)
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
   window.scrollTo(0,(off-sbook_top_px));
-  if (sbook_notfixed) sbookSyncViewport();
+  if (sbook_notfixed) sbookMoveMargins(info);
   if ((sbook_focus)&&(!(fdjtIsVisible(sbook_focus))))
     sbookSetFocus(sbook_target||info.focus||info.first);
   sbook_pagescroll=window.scrollY;
@@ -633,6 +633,14 @@ function sbookGetPage(arg)
     if (sbook_pages[i]>top) return i-1;
     else i++;
   return i-1;
+}
+
+function sbookMoveMargins(pageinfo)
+{
+  $("SBOOKPAGEHEAD").style.top=pageinfo.top-sbook_top_px;
+  $("SBOOKLEFTEDGE").style.top=pageinfo.top-sbook_top_px;
+  $("SBOOKRIGHTEDGE").style.top=pageinfo.top-sbook_top_px;
+  $("SBOOKPAGEFOOT").style.top=pageinfo.bottom;
 }
 
 function sbookSyncPage()
@@ -870,9 +878,9 @@ function sbookMakeMargin(spec)
 function sbookPageHead_onclick(evt)
 {
   evt=evt||event;
-  if ((evt.clientX)>($("SBOOKRIGHTMARGIN").offsetLeft))
+  if ((evt.clientX)>($("SBOOKRIGHTEDGE").offsetLeft))
     return sbookRightEdge_onclick(evt);
-  else if ((evt.clientX)<($("SBOOKLEFTMARGIN").offsetWidth))
+  else if ((evt.clientX)<($("SBOOKLEFTEDGE").offsetWidth))
     return sbookLeftEdge_onclick(evt);
   else if (sbook_mode) sbookHUDMode(false);
   else sbookHUDMode(sbook_last_app);
@@ -881,9 +889,9 @@ function sbookPageHead_onclick(evt)
 function sbookPageFoot_onclick(evt)
 {
   evt=evt||event;
-  if ((evt.clientX)>($("SBOOKRIGHTMARGIN").offsetLeft))
+  if ((evt.clientX)>($("SBOOKRIGHTEDGE").offsetLeft))
     return sbookRightEdge_onclick(evt);
-  else if ((evt.clientX)<($("SBOOKLEFTMARGIN").offsetWidth))
+  else if ((evt.clientX)<($("SBOOKLEFTEDGE").offsetWidth))
     return sbookLeftEdge_onclick(evt);
   else if (sbook_mode) sbookHUDMode(false);
   else sbookHUDMode("context");

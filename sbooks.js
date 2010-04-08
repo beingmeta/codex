@@ -1340,6 +1340,11 @@ function sbookGetSettings()
   if (!(sbook_server)) sbook_server=sbook_default_server;
   sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
   sbook_mycopyid=fdjtGetMeta("SBOOKMYCOPY",false);
+
+  // Unavoidable browser sniffing
+  var useragent=navigator.userAgent;
+  if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
+    sbookMobileSafariSetup();    
 }
 
 function sbookGetScanSettings()
@@ -1468,6 +1473,34 @@ function sbookGetPageSettings()
     var selectors=fdjtSemiSplit(sbook_noafter_rules);
     var i=0; while (i<selectors.length) {
       sbook_fullpages.push(fdjtParseSelector(selectors[i++]));}}
+}
+
+/* Device settings */
+
+function sbookMobileSafariSetup()
+{
+  var head=$$("HEAD")[0];
+  fdjtTrace("Mobile Safari setup");
+  document.body.ontouchmove=
+    function(evt){ if (sbook_pageview) {
+      evt.preventDefault(); return false;}};
+  var meta=fdjtElt("META");
+  meta.name='apple-mobile-web-app-capable ';
+  meta.content='yes';
+  fdjtPrepend(head,meta);
+  var meta=fdjtElt("META");
+  meta.name='viewport';
+  meta.content='user-scalable=no,height=device-height,width=device-width';
+  fdjtPrepend(head,meta);
+
+  var modepos=fdjtIndexOf(sbook_default_opts,"mouse");
+  if (modepos<0) sbook_default_opts.push("touch");
+  else sbook_default_opts[modepos]="touch";
+
+  /*
+  sbook_notfixed=false;
+  fdjtAddClass(document.body,"notfixed");
+  */
 }
 
 /* Application settings */
@@ -1766,17 +1799,12 @@ var _sbook_social_setup=false;
 
 function sbookDisplaySetup()
 {
-  var useragent=navigator.userAgent;
   var topleading=fdjtDiv("#SBOOKTOPLEADING.leading.top"," ");
   var bottomleading=fdjtDiv("#SBOOKBOTTOMLEADING.leading.bottom"," ");
   var pagehead=sbookMakeMargin(".sbookmargin#SBOOKPAGEHEAD"," ");
-  var footmargin=sbookMakeMargin(".sbookmargin#SBOOKPAGEFOOT"," ");
-  var pagefoot=fdjtDiv(".sbookshoe#SBOOKSHOE",footmargin);
-  var leftedge=fdjtDiv("#SBOOKLEFTMARGIN.sbookmargin.sbookleftmargin");
-  var rightedge=fdjtDiv("#SBOOKRIGHTMARGIN.sbookmargin.sbookrightmargin");
-
-  if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
-    sbookMobileSafariSetup();    
+  var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKPAGEFOOT"," ");
+  var leftedge=fdjtDiv("#SBOOKLEFTEDGE.sbookmargin.sbookleft");
+  var rightedge=fdjtDiv("#SBOOKRIGHTEDGE.sbookmargin.sbookright");
 
   topleading.sbookui=true; bottomleading.sbookui=true;
   var hud=createSBOOKHUD();
@@ -1786,8 +1814,6 @@ function sbookDisplaySetup()
 	      topleading);  
   fdjtAppend(document.body,bottomleading);
   
-  var pagehead=$("SBOOKPAGEHEAD");
-  var pagefoot=$("SBOOKPAGEFOOT");
   sbookPageHead=pagehead; sbookPageFoot=pagefoot;
   var bgcolor=document.body.style.backgroundColor;
   if ((!(bgcolor)) && (window.getComputedStyle)) {
@@ -1813,36 +1839,13 @@ function sbookDisplaySetup()
   rightedge.title='tap/click to go forward';
   rightedge.onclick=sbookRightEdge_onclick;
   // These are the edges above the bottom margin
-  var leftedge2=fdjtDiv(".sbookmargin.sbookleftmargin");
-  var rightedge2=fdjtDiv(".sbookmargin.sbookrightmargin");
-  fdjtAppend(footmargin,leftedge2,rightedge2);
+  var leftedge2=fdjtDiv(".sbookmargin.sbookleft");
+  var rightedge2=fdjtDiv(".sbookmargin.sbookright");
+  fdjtAppend(pagefoot,leftedge2,rightedge2);
   leftedge2.title='tap/click to go back';
   leftedge2.onclick=sbookLeftEdge_onclick;
   rightedge2.title='tap/click to go forward';
   rightedge2.onclick=sbookRightEdge_onclick;
-}
-
-function sbookMobileSafariSetup()
-{
-  var head=$$("HEAD")[0];
-  fdjtTrace("Mobile Safari setup");
-  document.body.ontouchmove=
-    function(evt){ if (sbook_pageview) {
-      evt.preventDefault(); return false;}};
-  var meta=fdjtElt("META");
-  meta.name='apple-mobile-web-app-capable ';
-  meta.content='yes';
-  fdjtPrepend(head,meta);
-  var meta=fdjtElt("META");
-  meta.name='viewport'; meta.content='user-scalable=no,width=device-width';
-  fdjtPrepend(head,meta);
-  fdjtAddClass(document.body,"notfixed");
-
-  var modepos=fdjtIndexOf(sbook_default_opts,"mouse");
-  if (modepos<0) sbook_default_opts.push("touch");
-  else sbook_default_opts[modepos]="touch";
-
-  sbook_notfixed=true;
 }
 
 function sbookGlossesSetup()
