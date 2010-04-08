@@ -376,7 +376,7 @@ function sbookTouchGestureSetup()
 {
   // These are for mouse tracking
   window.onscroll=sbook_onscroll;
-  window.ontouch=sbook_justonclick;
+  window.onclick=sbook_justonclick;
   // These are for gesture recognition and adding glosses
   // document.body.onclick=sbook_onclick;
   // For command keys, just in case

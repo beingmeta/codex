@@ -1802,8 +1802,8 @@ function sbookDisplaySetup()
   pagehead.style.display='block'; pagefoot.style.display='block';
   sbook_top_px=pagehead.offsetHeight;
   sbook_bottom_px=pagefoot.offsetHeight;
-  sbook_left_px=leftedge.offsetHeight;
-  sbook_right_px=rightedge.offsetHeight;
+  sbook_left_px=leftedge.offsetWidth;
+  sbook_right_px=rightedge.offsetWidth;
   pagehead.style.display=null; pagefoot.style.display=null;
   pagehead.sbookui=true; pagefoot.sbookui=true;
   pagehead.onclick=sbookHeadHUD_onclick;
