@@ -84,14 +84,14 @@ function createSBOOKHUD()
     var headhud=
       fdjtDiv("#SBOOKHEAD",toc_button,search_button,
 	      fdjtDiv("#SBOOKTOC.hudblock"),
-	      sbookCreateSearchHUD("#SBOOKSEARCH.hudblock.sbooksearch"));
+	      sbookCreateSearchHUD("#SBOOKSEARCH.hudblock.sbooksearch"),
+	      sbookCreateGlossesHUD(),
+	      fdjtDiv("#SBOOKTAGS.hudblock.tags"),
+	      sbookCreateDash(),
+	      console);
     var foothud=
       fdjtDiv("#SBOOKHUDSHOE.sbookshoe",
-	      fdjtDiv("#SBOOKFOOT",dash_button,glosses_button,
-		      sbookCreateGlossesHUD(),
-		      fdjtDiv("#SBOOKTAGS.hudblock.tags"),
-		      sbookCreateDash(),
-		      console));
+	      fdjtDiv("#SBOOKFOOT",dash_button,glosses_button));
     var markhud=
       fdjtDiv("#SBOOKMARKHUD.hudblock",
 	      sbookCreateMarkHUD("#SBOOKMARK"),
