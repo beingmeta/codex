@@ -466,8 +466,8 @@ function sbookCreateSearchHUD(classinfo)
 		    fdjtDiv("spacer",fdjtDiv("input",clear_input,input)),
 		    completions),
 	    fdjtDiv("#SBOOKSUMMARIES.sbookresults"));
-  sbooksearch.onmouseover=sbookHUD_onmouseover;
-  sbooksearch.onmouseout=sbookHUD_onmouseout;
+  // sbooksearch.onmouseover=sbookHUD_onmouseover;
+  // sbooksearch.onmouseout=sbookHUD_onmouseout;
   fdjtAutoPrompt_setup(sbooksearch);
   return sbooksearch;
 }

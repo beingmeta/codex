@@ -100,7 +100,7 @@ function sbook_body_onclick(evt)
       var goto=sbook_preview;
       sbookPreview(false); sbookHUDMode(false);
       sbookGoTo(goto);}
-    else sbookPreview(false);
+    else {} // sbookPreview(false);
   else if ((sbook_mode)&&(sbook_mode!=="context"))
     sbookHUDMode(false);
   else if (sbook_target)
@@ -111,85 +111,66 @@ function sbook_body_onclick(evt)
   fdjtCancelEvent();
 }
 
-/* Preview events */
+/* Generic handlers */
 
-var sbook_preview_mousedown=false;
-var sbook_preview_shiftdown=false;
+var sbook_mousedown=false;
+var sbook_shiftdown=false;
 var sbook_preview_target=false;
-var sbook_stopping_preview=false;
-var sbook_preview_stop_delay=1000;
 var sbook_hold_threshold=1000;
 
-function sbookHUD_onmousedown(evt)
+function sbook_onmousedown(evt)
 {
-  var ref=false;
   var target=$T(evt);
-  evt=evt||event;
-  // sbook_trace("sbookHUD_onmousedown",evt);
   if (fdjtIsClickactive(target)) return;
-  else if ((evt.ctrlKey)||(evt.altKey)) return;
-  else if ((sbook_preview_shiftdown)||(sbook_preview_mousedown))
-    return;
-  else if (sbook_preview) {
-    var ref=sbookGetRef(target);
-    if (ref===sbook_preview) sbookPreview(false);
-    else {
-      sbook_preview_mousedown=fdjtTime();
-      sbookPreview(ref); fdjtCancelEvent(evt);}}
-  else if (ref=sbookGetRef(target)) {
-    if (sbook_stopping_preview) clearTimeout(sbook_stopping_preview);
-    sbook_stopping_preview=false;
-    sbook_preview_mousedown=fdjtTime();
-    sbookPreview(ref); fdjtCancelEvent(evt);}
-  else return;
-}
-
-function sbookHUD_onmouseup(evt)
-{
-  var target=$T(evt);
-  evt=evt||event;
-  // sbook_trace("sbookHUD_onmouseup",evt);
-  if (fdjtIsClickactive(target)) {}
-  else if ((evt.ctrlKey)||(evt.altKey)) {}
-  else if (sbook_preview_shiftdown) {}
-  else if (sbook_preview) {
-    // sbook_trace("sbookHUD_onmouseup/sp",evt);    
-    var tick=fdjtTime();
-    if ((sbook_preview_mousedown)&&
-	((tick-sbook_preview_mousedown)>sbook_hold_threshold)) {
-      sbook_stopping_preview=
-	setTimeout(sbookPreview,sbook_preview_stop_delay,false);}
-    sbook_preview_mousedown=false;
-    return;}
-  else {}
-  sbook_preview_mousedown=false;
-  fdjtCancelEvent();
-}
-
-function sbookHUD_onclick(evt)
-{
-  var target=$T(evt);
-  evt=evt||event;
-  // sbook_trace("sbookHUD_onclick",evt);
-  if (sbook_preview_mousedown) sbook_preview_mousedown=false;
-  if (fdjtIsClickactive(target)) return;
-  else fdjtCancelEvent(evt);
-}
-
-function sbookHUD_onmouseover(evt)
-{
-  var ref=sbookGetRef($T(evt));
-  // sbook_trace("sbookHUD_onmouseover",evt);
+  var ref=sbookGetRef(target);
+  sbook_mousedown=fdjtTime();
   if (ref)
     if (sbook_preview)
-      if (sbook_preview===ref) {}
+      if (ref===sbook_preview) sbookPreview(false);
       else sbookPreview(ref);
-    else sbook_preview_target=$T(evt);
+    else sbookPreview(ref);
+  else if (sbookInUI(target))
+    if (sbook_preview) sbookPreview(false);
+    else return;
+  else if (sbook_preview)
+    if (fdjtHasParent(target,sbook_preview))
+      sbookGoTo(sbook_preview);
+    else sbookPreview(false);
+  else if ((sbook_target)&&(fdjtHasParent(target,sbook_target)))
+    sbookMark(sbook_target);
+  else sbookSetTarget(sbookGetTarget(target));
+  fdjtCancelEvent(evt);
 }
 
-function sbookHUD_onmouseout(evt)
+function sbook_onmouseover(evt)
 {
-  sbook_preview_target=false;
+  var target=$T(evt);
+  if (fdjtIsClickactive(target)) return;
+  var ref=sbookGetRef(target);
+  if ((sbook_preview)&&(ref)) sbookPreview(ref);
+  else if (ref) sbook_preview_target=target;
+  else return;
+  fdjtCancelEvent(evt);
+}
+
+function sbook_onmouseup(evt)
+{
+  var target=$T(evt);
+  var tick=fdjtTime();
+  if (sbook_preview)
+    if (sbook_shiftdown) {}
+    else if ((tick-sbook_mousedown)>sbook_hold_threshold)
+      sbookPreview(false);
+    else return;
+  else return;
+  fdjtCancelEvent(evt);
+}
+
+function sbook_ignoreclick(evt)
+{
+  var target=$T(evt);
+  if (fdjtIsClickactive(target)) return;
+  else fdjtCancelEvent();
 }
 
 /* Keyboard handlers */
@@ -218,7 +199,7 @@ function sbook_onkeydown(evt)
   else if (kc===33) sbookBackward();  /* Page Up */
   else if (fdjtIsTextInput($T(evt))) return true;
   else if (kc===16) { /* Shift key */
-    sbook_preview_shiftdown=fdjtTime();
+    sbook_shiftdown=fdjtTime();
     if ((!(sbook_preview))&&(sbook_preview_target)) {
       var ref=sbookGetRef(sbook_preview_target);
       if (ref) sbookPreview(ref);}}
@@ -238,14 +219,13 @@ function sbook_onkeyup(evt)
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)) return true;
   else if (kc===16) {
-    if (sbook_preview_mousedown) {
-      sbook_preview_shiftdown=false;
+    if (sbook_mousedown) {
+      sbook_shiftdown=false;
       return;}
     var tick=fdjtTime();
     if ((sbook_preview_shiftdown)&&
-	((tick-sbook_preview_shiftdown)>sbook_hold_threshold)) {
-      sbook_stopping_preview=
-	setTimeout(sbookPreview,sbook_preview_stop_delay,false);}
+	((tick-sbook_shiftdown)>sbook_hold_threshold)) 
+      sbookPreview(false);
     sbook_preview_shiftdown=false;}
 }
 
@@ -352,12 +332,12 @@ function sbookGestureSetup()
 function sbookMouseGestureSetup()
 {
   document.body.onscroll=sbook_onscroll;
-  document.body.onclick=sbook_body_onclick;
-  sbookHUD.addEventListener("click",sbookHUD_onclick);
-  sbookHUD.addEventListener("mouseover",sbookHUD_onmouseover);
-  sbookHUD.addEventListener("mouseout",sbookHUD_onmouseout);
-  sbookHUD.addEventListener("mousedown",sbookHUD_onmousedown);
-  document.body.addEventListener("mouseup",sbookHUD_onmouseup);
+  document.body.onclick=sbook_ignoreclick;
+  window.addEventListener("click",sbook_ignoreclick);
+  window.addEventListener("mouseover",sbook_onmouseover);
+  // document.body.addEventListener("mouseout",sbook_onmouseout);
+  window.addEventListener("mousedown",sbook_onmousedown);
+  window.addEventListener("mouseup",sbook_onmouseup);
   // For command keys
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;

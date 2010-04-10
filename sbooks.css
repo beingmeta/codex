@@ -302,6 +302,8 @@ body.hudup div.hudblock.scrollhud.hover div.scrollable {
 div#SBOOKHUD.glosses div.hudblock#SBOOKGLOSSES {
     display: block; top: 0px; bottom: 100px; opacity: 0.9;
     max-height: inherit;}
+body.notfixed div#SBOOKHUD.glosses div#SBOOKHEAD {
+  height: 100%;}
 
 div#SBOOKHUD div.hudblock#SBOOKGLOSSES div.sbooksummaries {}
 
