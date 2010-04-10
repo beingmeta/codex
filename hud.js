@@ -469,7 +469,7 @@ var sbook_preview_title=false;
 function sbookPreview(elt,offset)
 {
   var cxt=false;
-  // sbook_trace("sbookPreview",elt);
+  sbook_trace("sbookPreview",elt);
   if (!(elt)) 
     if (sbook_preview) {
       if (sbook_preview_title)

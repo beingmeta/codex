@@ -1301,7 +1301,7 @@ function sbookGetSettings()
 
   // Unavoidable browser sniffing
   var useragent=navigator.userAgent;
-  if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
+  // if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
     sbookMobileSafariSetup();
 }
 

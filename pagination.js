@@ -640,9 +640,11 @@ function sbookGetPage(arg)
 function sbookMoveMargins(pageinfo)
 {
   $("SBOOKPAGEHEAD").style.top=(pageinfo.top-sbook_top_px)+"px";
-  $("SBOOKLEFTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
-  $("SBOOKRIGHTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
   $("SBOOKPAGEFOOT").style.top=pageinfo.bottom+"px";
+  $("SBOOKLEFTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
+  $("SBOOKLEFTEDGE").style.height=window.innerHeight+"px";
+  $("SBOOKRIGHTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
+  $("SBOOKRIGHTEDGE").style.height=window.innerHeight+"px";
 }
 
 function sbookSyncPage()

@@ -87,20 +87,24 @@ function sbookTouchTarget(scan,closest)
   return target;
 }
 
-/* Body click events */
+/* click events */
 
-function sbook_body_onclick(evt)
+function sbook_onclick(evt)
 {
   evt=evt||event;
   // sbook_trace("sbook_body_onclick",evt);
   var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
-  if (sbook_preview)
+  var ref=sbookGetRef(target);
+  if (ref)
+    if (sbook_preview===ref) sbookPreview(false);
+    else sbookPreview(ref);
+  else if (sbook_preview)
     if (fdjtHasParent(target,sbook_preview)) {
       var goto=sbook_preview;
       sbookPreview(false); sbookHUDMode(false);
       sbookGoTo(goto);}
-    else {} // sbookPreview(false);
+    else sbookPreview(false);
   else if ((sbook_mode)&&(sbook_mode!=="context"))
     sbookHUDMode(false);
   else if (sbook_target)
@@ -109,6 +113,13 @@ function sbook_body_onclick(evt)
     else sbookSetTarget(sbookGetTarget(target));
   else sbookSetTarget(sbookGetTarget(target));
   fdjtCancelEvent();
+}
+
+function sbook_ignoreclick(evt)
+{
+  var target=$T(evt);
+  if (fdjtIsClickactive(target)) return;
+  else fdjtCancelEvent();
 }
 
 /* Generic handlers */
@@ -145,9 +156,17 @@ function sbook_onmousedown(evt)
 function sbook_onmouseover(evt)
 {
   var target=$T(evt);
-  if (fdjtIsClickactive(target)) return;
   var ref=sbookGetRef(target);
-  if ((sbook_preview)&&(ref)) sbookPreview(ref);
+  /*
+  fdjtTrace("mo %o (%o) sp=%o ref=%o cn=%o ct=%o",
+	    target,evt,sbook_preview,ref,document.body.className,
+	    fdjtIsClickactive(target));
+  */
+  if (fdjtIsClickactive(target)) return;
+  if (sbook_preview)
+    if (ref===sbook_preview) {}
+    else if (ref) sbookPreview(ref);
+    else {}
   else if (ref) sbook_preview_target=target;
   else return;
   fdjtCancelEvent(evt);
@@ -164,13 +183,6 @@ function sbook_onmouseup(evt)
     else return;
   else return;
   fdjtCancelEvent(evt);
-}
-
-function sbook_ignoreclick(evt)
-{
-  var target=$T(evt);
-  if (fdjtIsClickactive(target)) return;
-  else fdjtCancelEvent();
 }
 
 /* Keyboard handlers */
@@ -344,9 +356,14 @@ function sbookMouseGestureSetup()
   window.onkeyup=sbook_onkeyup;
 }
 
+
 function sbookTouchGestureSetup()
 {
-  sbookMouseGestureSetup();
+  window.addEventListener("click",sbook_onclick);
+  // For command keys
+  window.onkeypress=sbook_onkeypress;
+  window.onkeydown=sbook_onkeydown;
+  window.onkeyup=sbook_onkeyup;
 }
 
 /* Emacs local variables

@@ -236,7 +236,7 @@ body.notfixed.hudup div#SBOOKHUD.device div#SBOOKHEAD,
 body.notfixed.hudup div#SBOOKHUD.sbookapp div#SBOOKHEAD,
 body.notfixed.hudup div#SBOOKHUD.apptoc div#SBOOKHEAD,
 body.hudup div#SBOOKHUD.glosses div#SBOOKHEAD {
-    bottom: 100px;}
+  height: 100%;}
 
 /* The TOC/Nav HUD */
 
@@ -353,6 +353,15 @@ div#SBOOKHUD.sbookapp div.hudblock#SBOOKDASH,
 div#SBOOKHUD.apptoc div.hudblock#SBOOKDASH {
   display: block; top: 0px; bottom: 100px;
   max-height: inherit; opacity: 0.9;}
+
+body.notfixed div#SBOOKHUD.help div.hudblock#SBOOKDASH,
+body.notfixed div#SBOOKHUD.login div.hudblock#SBOOKDASH,
+body.notfixed div#SBOOKHUD.about div.hudblock#SBOOKDASH,
+body.notfixed div#SBOOKHUD.device div.hudblock#SBOOKDASH,
+body.notfixed div#SBOOKHUD.sbookapp div.hudblock#SBOOKDASH,
+body.notfixed div#SBOOKHUD.apptoc div.hudblock#SBOOKDASH {
+  bottom: auto; height: 100%;}
+
 
 div#SBOOKHUD img.hudbutton[alt='app'] { 
   bottom: 0px; left: 0px;
@@ -1404,6 +1413,7 @@ body.xtouch img.hudbutton[alt='>>'] { display: block;}
 body.xtouch img.hudbutton[alt='<<'] { display: block;}
 
 /* Make span bars finger-fat in touch mode */
+/*
 body.touch div#SBOOKHUD.toc div.spanbar div.sbookhudspan { height: 45px;}
 body.touch div#SBOOKHUD.toc div.spanbar div.progressbox { height: 50px;}
 body.touch div.sbooktoc div.sub a.sectname { font-size: 95%; }
@@ -1414,6 +1424,7 @@ body.touch.preview div.sbooktoc.live:hover div.sbooktoc.live {
     display: block;}
 body.touch.preview div.sbooktoc.live:hover div.sbooktoc.live:hover {
     display: block;}
+*/
 
 /* Show edges in touch mode (for tap/click) */
 body.touch div#SBOOKHUD div#SBOOKLEFTEDGE { display: block;}
@@ -1445,12 +1456,14 @@ a img { border: transparent;}
 span.sbookpageprobe span {
     vertical-align: baseline; padding: 0px; margin: 0px; border: 0px;}
 
+/*
 body.touch div#SBOOKHUD.toc div.spanbar:hover div.sbookhudspan,
 body.touch div#SBOOKHUD.apptoc div.spanbar:hover div.sbookhudspan {
     height: 45px;}
 body.touch div#SBOOKHUD.toc div.spanbar:hover div.progressbox,
 body.touch div#SBOOKHUD.apptoc div.spanbar:hover div.progressbox  {
     height: 50px;}
+*/
 
 body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
 
