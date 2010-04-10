@@ -86,10 +86,10 @@ function createSBOOKHUD()
 	      fdjtDiv("#SBOOKTOC.hudblock"),
 	      sbookCreateSearchHUD("#SBOOKSEARCH.hudblock.sbooksearch"),
 	      sbookCreateGlossesHUD(),
-	      fdjtDiv("#SBOOKTAGS.hudblock.tags"),
 	      sbookCreateDash(),
 	      console);
-    var foothud=fdjtDiv("#SBOOKFOOT",dash_button,glosses_button);
+    var foothud=fdjtDiv("#SBOOKFOOT",dash_button,glosses_button,
+			fdjtDiv("#SBOOKTAGS.hudblock.tags"));
     var markhud=
       fdjtDiv("#SBOOKMARKHUD.hudblock",
 	      sbookCreateMarkHUD("#SBOOKMARK"),
@@ -261,44 +261,6 @@ function sbookFlashMessage(arg0)
       duration);
 }
 
-/* Handlers */
-
-function sbookHUD_onmouseover(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbookHUD_onmouseover",evt);
-  if (sbook_mode) evt.cancelBubble=true;
-}
-
-function sbookHUD_onmouseout(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbookHUD_onmouseout",evt);
-  if (sbook_mode) evt.cancelBubble=true;
-}
-
-function sbookHUD_onclick(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbookHUD_onclick",evt);
-  var target=$T(evt);
-  while (target)
-    if ((sbook_mode) &&
-	((target.tagName==="A") || (target.tagName==="INPUT") ||
-	 (target.onclick) || (target.hasAttribute("onclick")))) {
-      // evt.cancelBubble=true;
-      return;}
-    else if ((target.id==="SBOOKTOC")&&(evt.shiftKey)) {
-      sbookHUDMode("toc"); target=target.parentNode;}
-    else if ((target.id==="SBOOKSEARCH")&&(evt.shiftKey)) {
-      sbookHUDMode("searching"); target=target.parentNode;}
-    else target=target.parentNode;
-  evt.cancelBubble=true;
-  if (evt.shiftKey)
-    if (evt.preventDefault) evt.preventDefault();
-    else evt.returnValue=false;
-}
-
 function sbookGetStableId(elt)
 {
   var info=sbook_getinfo(elt);
@@ -317,9 +279,10 @@ function sbookSyncHUD()
 {
   if (window.offsetY!==sbook_sync_head) {
     sbookHead.style.top=window.scrollY+'px';
-    sbook_sync_head=window.scrollY;}
+    sbook_sync_head=window.scrollY;
+    sbookHead.style.maxHeight=(window.innerHeight-100)+'px';}
   if ((window.scrollY+window.innerHeight)!==sbook_sync_foot) {
-    sbookFoot.style.top=(window.scrollY+window.innerHeight-60)+'px';
+    sbookFoot.style.top=(window.scrollY+window.innerHeight-42)+'px';
     sbook_sync_foot=(window.scrollY+window.innerHeight);}
 }
 
@@ -501,12 +464,17 @@ function sbookUpdateAboutInfo()
 
 /* Previewing */
 
+var sbook_preview_title=false;
+
 function sbookPreview(elt,offset)
 {
   var cxt=false;
   // sbook_trace("sbookPreview",elt);
   if (!(elt)) 
     if (sbook_preview) {
+      if (sbook_preview_title)
+	sbook_preview.title=sbook_preview_title;
+      sbook_preview_title=false;
       fdjtDropClass(document.body,"preview");
       fdjtDropClass(sbook_preview,"previewing");
       fdjtScrollRestore();
@@ -529,6 +497,9 @@ function sbookPreview(elt,offset)
   fdjtAddClass(elt,"previewing");
   sbook_last_preview=elt;
   sbook_preview=elt;
+  if ((elt.title)&&(elt!==sbook_target))
+    sbook_preview_title=elt.title;
+  elt.title='click to jump to this passage';
   if ((elt.getAttribute) &&
       (elt.getAttribute("toclevel")) ||
       ((elt.sbookinfo) && (elt.sbookinfo.level)))

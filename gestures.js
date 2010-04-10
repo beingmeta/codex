@@ -87,144 +87,112 @@ function sbookTouchTarget(scan,closest)
   return target;
 }
 
-/* Simple interaction model */
+/* Body click events */
 
-function sbook_justonclick(evt)
+function sbook_body_onclick(evt)
 {
   evt=evt||event;
-  sbook_trace("sbook_justonclick",evt);
+  // sbook_trace("sbook_body_onclick",evt);
   var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
-  var ref=sbookGetRef(target);
   if (sbook_preview)
-    if (ref) sbookPreview(ref);
-    else if (fdjtHasParent(target,sbook_preview))
-      sbookGoTo(sbook_preview);
+    if (fdjtHasParent(target,sbook_preview)) {
+      var goto=sbook_preview;
+      sbookPreview(false); sbookHUDMode(false);
+      sbookGoTo(goto);}
     else sbookPreview(false);
-  else if (ref) sbookPreview(ref);
-  else if (sbookInUI(target)) {}
-  else if (evt.clientX<sbook_left_px)
-    sbookBackward();
-  else if ((window.innerWidth-evt.clientX)<sbook_right_px)
-    sbookForward();
-  else if ((sbook_target)&&(fdjtHasParent(target,sbook_target)))
-    sbookOpenGlossmark(sbook_target,true);
-  else sbookSetTarget(sbookTouchTarget(target));
+  else if ((sbook_mode)&&(sbook_mode!=="context"))
+    sbookHUDMode(false);
+  else if (sbook_target)
+    if (fdjtHasParent(target,sbook_target))
+      sbookMark(sbook_target);
+    else sbookSetTarget(sbookGetTarget(target));
+  else sbookSetTarget(sbookGetTarget(target));
+  fdjtCancelEvent();
 }
 
-/* Interaction with click and hold */
+/* Preview events */
 
-var sbook_click_threshold=800;
-var sbook_touched=false;
-var sbook_touchtime=false;
-var sbook_touch_x=false;
-var sbook_touch_y=false;
+var sbook_preview_mousedown=false;
+var sbook_preview_shiftdown=false;
+var sbook_preview_target=false;
+var sbook_stopping_preview=false;
+var sbook_preview_stop_delay=1000;
+var sbook_hold_threshold=1000;
 
-function sbook_touchdown(elt,evt)
+function sbookHUD_onmousedown(evt)
 {
-  if (fdjtIsClickactive(elt)) return;
-  var target=sbookTouchTarget(elt);
-  if (!(target)) return;
-  fdjtTrace("[%f] sbook_touchdown %o @%o old=%o evt=%o",
-	    fdjtET(),evt.type,target,sbook_touched,evt);
-  if (sbook_touched===target) return;
-  sbook_touched=target;
-  if (!(sbook_touchtime)) {
-    sbook_touchtime=fdjtTime();
-    sbook_touch_x=evt.clientX;
-    sbook_touch_y=evt.clientY;}
-  var ref=sbookGetRef(elt);
-  if (ref) {
-    if ((sbook_preview)&&(sbook_preview===ref))
-      sbookPreview(false);
-    else sbookPreview(ref);}
-  else if (sbook_preview) {}
-  else if ((sbook_target)&&(fdjtHasParent(sbook_target,target)))
-    sbookMark(sbook_target);
-  else if (sbook_mode)
-    fdjtDropClass(sbookHUD,sbookHUDMode_pat);
-  else fdjtSwapClass(sbookHUD,sbookHUDMode_pat,"context");
-}
-
-function sbook_touchup(elt,evt)
-{
-  if (fdjtIsClickactive(elt)) return;
-  var isclick=
-    ((fdjtTime()-sbook_touchtime)<sbook_click_threshold);
-  fdjtTrace("[%f] sbook_touchup %o @%o evt=%o isclick=%o",
-	    fdjtET(),evt.type,sbook_touched,evt,isclick);
-  if (!(sbook_touched)) return;
-  var target=sbook_touched;
-  var this_target=sbookTouchTarget(evt.target);
-  var ref=((sbook_touched)&&(sbookGetRef(sbook_touched)));
-  sbook_touched=false;
-  sbook_touchtime=false;
-  if (sbook_preview)
-    if (ref)
-      if (isclick) {}
-      else sbookPreview(false);
-    else if ((isclick)&&(fdjtHasParent(elt,sbook_preview)))
-      sbookGoTo(elt);
-    else sbookPreview(false);
-  else if (isclick)
-    if ((sbook_target)&&(sbook_target===this_target))
-      if (fdjtHasParent(elt,sbook_target))
-	sbookMark(sbook_target);
-      else sbookSetTarget(this_target);
-    else sbookSetTarget(this_target);
-  else if (sbook_mode)
-    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,sbook_mode);
-  else fdjtDropClass(sbookHUD,"context");
-}
-
-var sbook_mouse_focus=false;
-var sbook_shift_key=false;
-var sbook_mousedown=false;
-
-function sbook_onclick(evt)
-{
-  evt=evt||event;
-  // sbook_trace("sbook_onclick",evt);
+  var ref=false;
   var target=$T(evt);
+  evt=evt||event;
+  // sbook_trace("sbookHUD_onmousedown",evt);
+  if (fdjtIsClickactive(target)) return;
+  else if ((evt.ctrlKey)||(evt.altKey)) return;
+  else if ((sbook_preview_shiftdown)||(sbook_preview_mousedown))
+    return;
+  else if (sbook_preview) {
+    var ref=sbookGetRef(target);
+    if (ref===sbook_preview) sbookPreview(false);
+    else {
+      sbook_preview_mousedown=fdjtTime();
+      sbookPreview(ref); fdjtCancelEvent(evt);}}
+  else if (ref=sbookGetRef(target)) {
+    if (sbook_stopping_preview) clearTimeout(sbook_stopping_preview);
+    sbook_stopping_preview=false;
+    sbook_preview_mousedown=fdjtTime();
+    sbookPreview(ref); fdjtCancelEvent(evt);}
+  else return;
+}
+
+function sbookHUD_onmouseup(evt)
+{
+  var target=$T(evt);
+  evt=evt||event;
+  // sbook_trace("sbookHUD_onmouseup",evt);
+  if (fdjtIsClickactive(target)) {}
+  else if ((evt.ctrlKey)||(evt.altKey)) {}
+  else if (sbook_preview_shiftdown) {}
+  else if (sbook_preview) {
+    // sbook_trace("sbookHUD_onmouseup/sp",evt);    
+    var tick=fdjtTime();
+    if ((sbook_preview_mousedown)&&
+	((tick-sbook_preview_mousedown)>sbook_hold_threshold)) {
+      sbook_stopping_preview=
+	setTimeout(sbookPreview,sbook_preview_stop_delay,false);}
+    sbook_preview_mousedown=false;
+    return;}
+  else {}
+  sbook_preview_mousedown=false;
+  fdjtCancelEvent();
+}
+
+function sbookHUD_onclick(evt)
+{
+  var target=$T(evt);
+  evt=evt||event;
+  // sbook_trace("sbookHUD_onclick",evt);
+  if (sbook_preview_mousedown) sbook_preview_mousedown=false;
   if (fdjtIsClickactive(target)) return;
   else fdjtCancelEvent(evt);
 }
 
-function sbook_onmousedown(evt)
+function sbookHUD_onmouseover(evt)
 {
-  evt=evt||event;
-  // sbook_trace("sbook_onmousedown",evt);
-  if (evt.button===0) {
-    sbook_mousedown=true;
-    sbook_touchdown($T(evt),evt);}
+  var ref=sbookGetRef($T(evt));
+  // sbook_trace("sbookHUD_onmouseover",evt);
+  if (ref)
+    if (sbook_preview)
+      if (sbook_preview===ref) {}
+      else sbookPreview(ref);
+    else sbook_preview_target=$T(evt);
 }
 
-function sbook_onmouseup(evt)
+function sbookHUD_onmouseout(evt)
 {
-  evt=evt||event;
-  if (evt.button===0) {
-    sbook_mousedown=false;
-    // sbook_trace("sbook_onmouseup",evt);
-    if (!(sbook_shift_key)) {
-      sbook_touchup($T(evt),evt);
-      fdjtCancelEvent(evt);}}
+  sbook_preview_target=false;
 }
 
-function sbook_onmouseover(evt)
-{
-  evt=evt||event;
-  if ((sbook_preview)&&(!(sbookGetRef($T(evt))))) return;
-  sbook_mouse_focus=
-    sbookTouchTarget($T(evt))||sbook_mouse_focus;
-  if ((sbook_mouse_focus)&&((sbook_shift_key)||(sbook_mousedown)))
-    sbook_touchdown(sbook_mouse_focus,evt);
-}
-
-function sbook_onmouseout(evt)
-{
-  evt=evt||event;
-  sbook_mouse_focus=false;
-}
+/* Keyboard handlers */
 
 function sbook_onkeydown(evt)
 {
@@ -234,9 +202,9 @@ function sbook_onkeydown(evt)
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_mode) {
       sbook_last_mode=sbook_mode;
-      sbookHUDMode(false);
       fdjtDropClass(document.body,"hudup");
-      sbookStopPreview(evt);
+      sbookHUDMode(false);
+      sbookPreview(false);
       sbookSetTarget(false);
       $("SBOOKSEARCHTEXT").blur();}
     else if (sbook_last_mode) sbookHUDMode(sbook_last_mode);
@@ -250,8 +218,10 @@ function sbook_onkeydown(evt)
   else if (kc===33) sbookBackward();  /* Page Up */
   else if (fdjtIsTextInput($T(evt))) return true;
   else if (kc===16) { /* Shift key */
-    sbook_shift_key=true;
-    if (sbook_mouse_focus) sbook_touchdown(sbook_mouse_focus,evt);}
+    sbook_preview_shiftdown=fdjtTime();
+    if ((!(sbook_preview))&&(sbook_preview_target)) {
+      var ref=sbookGetRef(sbook_preview_target);
+      if (ref) sbookPreview(ref);}}
   else if (kc===32) sbookForward(); // Space
   else if ((kc===8)||(kc===45)) sbookBackward(); // backspace or delete
   else if (kc===36)  
@@ -268,40 +238,60 @@ function sbook_onkeyup(evt)
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)) return true;
   else if (kc===16) {
-    sbook_shift_key=false;
-    sbook_touchup(sbook_mouse_focus,evt);
-    fdjtCancelEvent(evt);}
+    if (sbook_preview_mousedown) {
+      sbook_preview_shiftdown=false;
+      return;}
+    var tick=fdjtTime();
+    if ((sbook_preview_shiftdown)&&
+	((tick-sbook_preview_shiftdown)>sbook_hold_threshold)) {
+      sbook_stopping_preview=
+	setTimeout(sbookPreview,sbook_preview_stop_delay,false);}
+    sbook_preview_shiftdown=false;}
 }
 
-/* Homegrown gesture recognition */
+/* Keypress handling */
 
-function sbookHandleGestures(evt)
+var sbook_modechars={
+ 43: "mark",13: "mark",
+ 63: "searching",102: "searching",
+ 83: "searching",115: "searching",
+ 70: "searching",
+ 100: "device",68: "device",
+ 110: "toc",78: "toc",
+ 116: "apptoc",84: "apptoc",
+ 104: "help",72: "help",
+ 103: "glosses",71: "glosses",
+ 67: "console", 99: "console",
+ 76: "layers", 108: "layers"};
+
+function sbook_onkeypress(evt)
 {
-  var x=evt.screenX; var y=evt.screenY; var tick=fdjtTick();
-  var dx=x-sbook_mousedown_x; var dy=y-sbook_mousedown_y;
-  var dt=tick-sbook_mousedown_tick;
-  if (sbook_trace_gestures) 
-    fdjtTrace("x=%o y=%o tick=%o dx=%o dy=%o dt=%o",
-	      x,y,tick,dx,dy,dt);
-  if ((dt>sbook_gesture_min)&&(dt<sbook_gesture_max)) {
-    var absdx=((dx<0)?(-dx):(dx)); var absdy=((dy<0)?(-dy):(dy));
-    var horizontal=((dx>sbook_gq)?(1):(dx<-sbook_gq)?(-1):(0));
-    var vertical=((dy>sbook_gq)?(1):(dy<-sbook_gq)?(-1):(0));
-    if (sbook_trace_gestures)
-      fdjtTrace("absdx=%o absdy=%o v=%o h=%o",
-		absdx,absdy,vertical,horizontal);
-    if ((horizontal===0)&&(vertical===0)) sbookMark($T(evt));
-    else if (absdy<(3*sbook_gq))
-      if (horizontal>0) sbookNextPage(evt);
-      else if (horizontal<0) sbookPrevPage(evt);
-      else {}
-    else if (absdx<(3*sbook_gq))
-      if (vertical>0) sbookNextSection(evt);
-      else if (vertical<0) sbookPrevSection(evt);
-      else {}
-    else {}
-    fdjtCancelEvent(evt);}
+  var modearg=false;
+  evt=evt||event||null;
+  // sbook_trace("sbook_onkeypress",evt);
+  if (fdjtIsTextInput($T(evt))) return true;
+  else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
+  else if ((evt.charCode===65)||(evt.charCode===97)) /* A */
+    modearg=sbook_last_app||"help";
+  else if (((!(sbook_mode))||(sbook_mode==="context"))&&
+	    ((evt.charCode===112)||(evt.charCode===80))) /* P */
+    if (sbook_pageview) sbookPageView(false);
+    else sbookPageView(true);
+  else modearg=sbook_modechars[evt.charCode];
+  if (modearg) 
+    if (sbook_mode===modearg) sbookHUDMode(false);
+    else sbookHUDMode(modearg);
+  else {}
+  if (sbook_mode==="searching")
+    $("SBOOKSEARCHTEXT").focus();
+  else if (sbook_mode==="mark") {
+    sbookMarkHUDSetup(false);
+    $("SBOOKMARKINPUT").focus();}
+  else $("SBOOKSEARCHTEXT").blur();
+  fdjtCancelEvent(evt);
 }
+
+/* Top level functions */
 
 function sbookInterfaceMode(mode)
 {
@@ -361,28 +351,22 @@ function sbookGestureSetup()
 
 function sbookMouseGestureSetup()
 {
-  window.onscroll=sbook_onscroll;
-  window.onclick=sbook_justonclick;
-  // window.onmousedown=sbook_onmousedown;
-  // window.onmouseup=sbook_onmouseup;
-  // window.onmouseover=sbook_onmouseover;
+  document.body.onscroll=sbook_onscroll;
+  document.body.onclick=sbook_body_onclick;
+  sbookHUD.addEventListener("click",sbookHUD_onclick);
+  sbookHUD.addEventListener("mouseover",sbookHUD_onmouseover);
+  sbookHUD.addEventListener("mouseout",sbookHUD_onmouseout);
+  sbookHUD.addEventListener("mousedown",sbookHUD_onmousedown);
+  document.body.addEventListener("mouseup",sbookHUD_onmouseup);
   // For command keys
   window.onkeypress=sbook_onkeypress;
   window.onkeydown=sbook_onkeydown;
-  // window.onkeyup=sbook_onkeyup;
+  window.onkeyup=sbook_onkeyup;
 }
 
 function sbookTouchGestureSetup()
 {
-  // These are for mouse tracking
-  window.onscroll=sbook_onscroll;
-  window.onclick=sbook_justonclick;
-  // These are for gesture recognition and adding glosses
-  // document.body.onclick=sbook_onclick;
-  // For command keys, just in case
-  window.onkeypress=sbook_onkeypress;
-  window.onkeydown=sbook_onkeydown;
-  window.onkeyup=sbook_onkeyup;
+  sbookMouseGestureSetup();
 }
 
 /* Emacs local variables

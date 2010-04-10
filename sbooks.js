@@ -1120,48 +1120,6 @@ function sbookGoTo(target,noset)
     sbookHUDFlash("context",sbook_hud_flash);
 }
 
-/* Keyboard handlers */
-
-var sbook_modechars={
- 43: "mark",13: "mark",
- 63: "searching",102: "searching",
- 83: "searching",115: "searching",
- 70: "searching",
- 100: "device",68: "device",
- 110: "toc",78: "toc",
- 116: "apptoc",84: "apptoc",
- 104: "help",72: "help",
- 103: "glosses",71: "glosses",
- 67: "console", 99: "console",
- 76: "layers", 108: "layers"};
-
-function sbook_onkeypress(evt)
-{
-  var modearg=false;
-  evt=evt||event||null;
-  // sbook_trace("sbook_onkeypress",evt);
-  if (fdjtIsTextInput($T(evt))) return true;
-  else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
-  else if ((evt.charCode===65)||(evt.charCode===97)) /* A */
-    modearg=sbook_last_app||"help";
-  else if (((!(sbook_mode))||(sbook_mode==="context"))&&
-	    ((evt.charCode===112)||(evt.charCode===80))) /* P */
-    if (sbook_pageview) sbookPageView(false);
-    else sbookPageView(true);
-  else modearg=sbook_modechars[evt.charCode];
-  if (modearg) 
-    if (sbook_mode===modearg) sbookHUDMode(false);
-    else sbookHUDMode(modearg);
-  else {}
-  if (sbook_mode==="searching")
-    $("SBOOKSEARCHTEXT").focus();
-  else if (sbook_mode==="mark") {
-    sbookMarkHUDSetup(false);
-    $("SBOOKMARKINPUT").focus();}
-  else $("SBOOKSEARCHTEXT").blur();
-  fdjtCancelEvent(evt);
-}
-
 /* Mouse handlers */
 
 function sbookGetXYFocus(xoff,yoff,closest)
@@ -1344,7 +1302,7 @@ function sbookGetSettings()
   // Unavoidable browser sniffing
   var useragent=navigator.userAgent;
   if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
-    sbookMobileSafariSetup();    
+    sbookMobileSafariSetup();
 }
 
 function sbookGetScanSettings()
@@ -1499,7 +1457,7 @@ function sbookMobileSafariSetup()
   if (modepos<0) sbook_default_opts.push("touch");
   else sbook_default_opts[modepos]="touch";
 
-  sbook_notfixed=false;
+  sbook_notfixed=true;
   fdjtAddClass(document.body,"notfixed");
 }
 
