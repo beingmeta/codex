@@ -469,6 +469,7 @@ var sbook_preview_title=false;
 function sbookPreview(elt,offset)
 {
   var cxt=false;
+  // alert(fdjtObj2String(elt));
   // sbook_trace("sbookPreview",elt);
   if (!(elt)) 
     if (sbook_preview) {

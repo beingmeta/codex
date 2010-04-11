@@ -1437,12 +1437,10 @@ function sbookGetPageSettings()
 function sbookMobileSafariSetup()
 {
   var head=$$("HEAD")[0];
-  fdjtTrace("Mobile Safari setup");
-  /*
+  fdjt_format_console=true;
   document.body.ontouchmove=
     function(evt){ if (sbook_pageview) {
       evt.preventDefault(); return false;}};
-  */
   var meta=fdjtElt("META");
   meta.name='apple-mobile-web-app-capable ';
   meta.content='yes';

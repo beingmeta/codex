@@ -131,6 +131,16 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   // Set the selected text as an excerpt
   if ((excerpt)&&(excerpt.length>sbook_min_excerpt)) 
     sbookSetMarkExcerpt(excerpt);
+  var hud=$("SBOOKMARKHUD");
+  var offinfo=fdjtGetOffset(target);
+  hud.style.maxHeight=(window.innerHeight-100)+'px';
+  hud.style.opacity=0.0; hud.style.display='block';
+  var hudinfo=fdjtGetOffset(hud);
+  var minoff=(window.scrollY+window.innerHeight)-hudinfo.height;
+  hud.style.opacity=null; hud.style.display=null;
+  if (offinfo.top<minoff) 
+    hud.style.top=offinfo.top+'px';
+  else hud.style.top=minoff+'px';
   fdjtSetCompletionCues($("SBOOKMARKCLOUD"),tagcues);
   fdjtAutoPrompt_setup($("SBOOKMARK"));
   fdjtComplete($("SBOOKMARKTAGINPUT"));
@@ -584,6 +594,7 @@ function sbookMarkTag_onkeyup(evt)
 /* Mark functions */
 
 function sbookMark(target,gloss,excerpt)
+
 {
   if (sbook_mark_target!==target) {$("SBOOKMARKFORM").reset();}
   if ((gloss)&&(gloss.user))
@@ -602,8 +613,6 @@ function sbookMark(target,gloss,excerpt)
 		  ((gloss.msg)?(fdjtSpan("msg",gloss.msg)):(false)));
 	fdjtReplace("SBOOKMARKRELAYBLOCK",glossblock);}}
   else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
-  var markhud=$("SBOOKMARKHUD");
-  fdjtAppend("SBOOKMARKHUD",$("SBOOKMARK"));
   sbookHUDMode("mark");
   $("SBOOKMARKINPUT").focus();
 }

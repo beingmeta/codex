@@ -377,8 +377,13 @@ function sbookMouseGestureSetup()
 
 function sbookTouchGestureSetup()
 {
-  window.addEventListener("scroll",sbook_onscroll);
-  window.addEventListener("click",sbook_onclick);
+  document.body.addEventListener("scroll",sbook_onscroll);
+  document.body.addEventListener("click",sbook_onclick);
+  var i=0; var len=sbook_nodes.length;
+  while (i<len) {
+    var node=sbook_nodes[i++];
+    if (!(node.onclick)) node.onclick=sbook_onclick;}
+  sbookHUD.onclick=sbook_onclick;
   window.addEventListener("keypress",sbook_onkeypress);
   window.addEventListener("keydown",sbook_onkeydown);
   window.addEventListener("keyup",sbook_onkeyup);

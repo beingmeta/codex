@@ -248,15 +248,6 @@ function sbookOpenGlossmark(target,addmark)
     if (addmark)
       fdjtDropClass($("SBOOKMARKFORM"),"closed");
     else fdjtAddClass($("SBOOKMARKFORM"),"closed");
-    var offinfo=fdjtGetOffset(target);
-    hud.style.maxHeight=(window.innerHeight-100)+'px';
-    hud.style.opacity=0.0; hud.style.display='block';
-    var hudinfo=fdjtGetOffset(hud);
-    var minoff=(window.scrollY+window.innerHeight)-hudinfo.height;
-    hud.style.opacity=null; hud.style.display=null;
-    if (offinfo.top<minoff) 
-      hud.style.top=offinfo.top+'px';
-    else hud.style.top=minoff+'px';
     sbookHUDMode("mark");}
 }
 

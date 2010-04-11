@@ -1456,6 +1456,9 @@ a img { border: transparent;}
 span.sbookpageprobe span {
     vertical-align: baseline; padding: 0px; margin: 0px; border: 0px;}
 
+body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar,
+body.touch div#SBOOKHUD.apptoc div#SBOOKAPPTOC div.spanbar {
+    height: 50px;}
 body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.sbookhudspan,
 body.touch div#SBOOKHUD.apptoc div#SBOOKAPPTOC div.spanbar div.sbookhudspan {
     height: 45px;}
