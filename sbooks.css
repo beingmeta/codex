@@ -88,7 +88,7 @@ div#SBOOKHUDSHOE { z-index: 200;}
 
 body.preview div#SBOOKHUD div#SBOOKHEAD { display: none;}
 body.preview div#SBOOKHUD.toc div#SBOOKHEAD { display: block;}
-body.preview div#SBOOKHUD div.hudblock#SBOOKTOC {
+body.preview div#SBOOKHUD div#SBOOKHEAD div.hudblock#SBOOKTOC {
     display: block; opacity: 0.3;}
 
 /* Buttons */
@@ -1456,14 +1456,12 @@ a img { border: transparent;}
 span.sbookpageprobe span {
     vertical-align: baseline; padding: 0px; margin: 0px; border: 0px;}
 
-/*
-body.touch div#SBOOKHUD.toc div.spanbar:hover div.sbookhudspan,
-body.touch div#SBOOKHUD.apptoc div.spanbar:hover div.sbookhudspan {
+body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.sbookhudspan,
+body.touch div#SBOOKHUD.apptoc div#SBOOKAPPTOC div.spanbar div.sbookhudspan {
     height: 45px;}
-body.touch div#SBOOKHUD.toc div.spanbar:hover div.progressbox,
-body.touch div#SBOOKHUD.apptoc div.spanbar:hover div.progressbox  {
+body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.progressbox,
+body.touch div#SBOOKHUD.apptoc div#SBOOKAPPTOC div.spanbar div.progressbox  {
     height: 50px;}
-*/
 
 body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
 

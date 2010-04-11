@@ -970,7 +970,7 @@ function sbookLeftEdge_onclick(evt)
 
 function sbookRightEdge_onclick(evt)
 {
-  sbook_trace("sbookRightEdge_onclick",evt);
+  // sbook_trace("sbookRightEdge_onclick",evt);
   if (sbook_edge_taps) sbookForward();
   else sbookHUDMode(false);
   fdjtCancelEvent(evt);

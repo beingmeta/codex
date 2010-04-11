@@ -32,17 +32,6 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-/* Making the icon */
-
-var sbook_preview_icon="binoculars24x24.png";
-
-function sbookPreviewIcon(img)
-{
-  var img=fdjtImage(sbicon(img||"binoculars24x24.png"),"previewicon","[pre]",
-		    "preview: click or hold mouse button or control key");
-  return img;
-}
-
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

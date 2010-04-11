@@ -92,7 +92,7 @@ function sbookTouchTarget(scan,closest)
 function sbook_onclick(evt)
 {
   evt=evt||event;
-  // sbook_trace("sbook_body_onclick",evt);
+  // sbook_trace("sbook_onclick",evt);
   var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
   var ref=sbookGetRef(target);
@@ -112,6 +112,7 @@ function sbook_onclick(evt)
       sbookMark(sbook_target);
     else sbookSetTarget(sbookGetTarget(target));
   else sbookSetTarget(sbookGetTarget(target));
+  sbookSyncHUD();
   fdjtCancelEvent();
 }
 
@@ -126,6 +127,7 @@ function sbook_ignoreclick(evt)
 
 var sbook_mousedown=false;
 var sbook_shiftdown=false;
+var sbook_auto_preview=false;
 var sbook_preview_target=false;
 var sbook_hold_threshold=1000;
 
@@ -150,6 +152,7 @@ function sbook_onmousedown(evt)
   else if ((sbook_target)&&(fdjtHasParent(target,sbook_target)))
     sbookMark(sbook_target);
   else sbookSetTarget(sbookGetTarget(target));
+  sbookSyncHUD();
   fdjtCancelEvent(evt);
 }
 
@@ -157,31 +160,44 @@ function sbook_onmouseover(evt)
 {
   var target=$T(evt);
   var ref=sbookGetRef(target);
-  /*
-  fdjtTrace("mo %o (%o) sp=%o ref=%o cn=%o ct=%o",
-	    target,evt,sbook_preview,ref,document.body.className,
-	    fdjtIsClickactive(target));
-  */
   if (fdjtIsClickactive(target)) return;
   if (sbook_preview)
     if (ref===sbook_preview) {}
     else if (ref) sbookPreview(ref);
     else {}
-  else if (ref) sbook_preview_target=target;
+  else if (ref)
+    if (sbook_auto_preview)
+      sbookPreview(ref);
+    else sbook_preview_target=target;
   else return;
+  sbookSyncHUD();
   fdjtCancelEvent(evt);
+}
+
+function sbook_onmouseout(evt)
+{
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (fdjtIsClickactive(target)) return;
+  if ((sbook_preview)&&(ref===sbook_preview)&&
+      (!((sbook_mousedown)||(sbook_shiftdown)))) {
+    sbookPreview(false);
+    sbookSyncHUD();}
 }
 
 function sbook_onmouseup(evt)
 {
   var target=$T(evt);
   var tick=fdjtTime();
+  var down=sbook_mousedown;
+  sbook_mousedown=false;
   if (sbook_preview)
     if (sbook_shiftdown) {}
-    else if ((tick-sbook_mousedown)>sbook_hold_threshold)
+    else if ((tick-down)>sbook_hold_threshold)
       sbookPreview(false);
     else return;
   else return;
+  sbookSyncHUD();
   fdjtCancelEvent(evt);
 }
 
@@ -214,7 +230,9 @@ function sbook_onkeydown(evt)
     sbook_shiftdown=fdjtTime();
     if ((!(sbook_preview))&&(sbook_preview_target)) {
       var ref=sbookGetRef(sbook_preview_target);
-      if (ref) sbookPreview(ref);}}
+      if (ref) {
+	sbookPreview(ref);
+	sbookSyncHUD();}}}
   else if (kc===32) sbookForward(); // Space
   else if ((kc===8)||(kc===45)) sbookBackward(); // backspace or delete
   else if (kc===36)  
@@ -236,8 +254,9 @@ function sbook_onkeyup(evt)
       return;}
     var tick=fdjtTime();
     if ((sbook_preview_shiftdown)&&
-	((tick-sbook_shiftdown)>sbook_hold_threshold)) 
+	((tick-sbook_shiftdown)>sbook_hold_threshold))  {
       sbookPreview(false);
+      sbookSyncHUD();}
     sbook_preview_shiftdown=false;}
 }
 
@@ -343,27 +362,26 @@ function sbookGestureSetup()
 
 function sbookMouseGestureSetup()
 {
-  document.body.onscroll=sbook_onscroll;
-  document.body.onclick=sbook_ignoreclick;
+  window.addEventListener("scroll",sbook_onscroll);
   window.addEventListener("click",sbook_ignoreclick);
   window.addEventListener("mouseover",sbook_onmouseover);
-  // document.body.addEventListener("mouseout",sbook_onmouseout);
+  window.addEventListener("mouseout",sbook_onmouseout);
   window.addEventListener("mousedown",sbook_onmousedown);
   window.addEventListener("mouseup",sbook_onmouseup);
   // For command keys
-  window.onkeypress=sbook_onkeypress;
-  window.onkeydown=sbook_onkeydown;
-  window.onkeyup=sbook_onkeyup;
+  window.addEventListener("keypress",sbook_onkeypress);
+  window.addEventListener("keydown",sbook_onkeydown);
+  window.addEventListener("keyup",sbook_onkeyup);
+  sbook_auto_preview=true;
 }
-
 
 function sbookTouchGestureSetup()
 {
+  window.addEventListener("scroll",sbook_onscroll);
   window.addEventListener("click",sbook_onclick);
-  // For command keys
-  window.onkeypress=sbook_onkeypress;
-  window.onkeydown=sbook_onkeydown;
-  window.onkeyup=sbook_onkeyup;
+  window.addEventListener("keypress",sbook_onkeypress);
+  window.addEventListener("keydown",sbook_onkeydown);
+  window.addEventListener("keyup",sbook_onkeyup);
 }
 
 /* Emacs local variables

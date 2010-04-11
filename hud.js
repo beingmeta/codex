@@ -469,7 +469,7 @@ var sbook_preview_title=false;
 function sbookPreview(elt,offset)
 {
   var cxt=false;
-  sbook_trace("sbookPreview",elt);
+  // sbook_trace("sbookPreview",elt);
   if (!(elt)) 
     if (sbook_preview) {
       if (sbook_preview_title)
@@ -506,7 +506,7 @@ function sbookPreview(elt,offset)
     cxt=false;
   else if (elt.sbook_head)
     cxt=elt.sbook_head;
-  if (elt) fdjtScrollPreview(elt,cxt,offset);
+  fdjtScrollPreview(elt,cxt,offset);
 }
 
 function sbookStartPreview(evt)
@@ -520,6 +520,17 @@ function sbookStopPreview(evt)
 {
   if (evt) fdjtCancelEvent(evt);
   window.setTimeout("sbookPreview(false);",100);
+}
+
+/* Making the icon */
+
+var sbook_preview_icon="binoculars24x24.png";
+
+function sbookPreviewIcon(img)
+{
+  var img=fdjtImage(sbicon(img||"binoculars24x24.png"),"previewicon","[pre]",
+		    "preview: click or hold mouse button or control key");
+  return img;
 }
 
 /* Button methods */

@@ -1060,8 +1060,7 @@ function sbookCheckTarget()
 function sbookDisplayOffset()
 {
   var toc;
-  if (sbook_touch) return -50;
-  else if (sbook_mode)
+  if (sbook_mode)
     if (toc=$("SBOOKTOC"))
       return -((toc.offsetHeight||50)+15);
     else return -60;
@@ -1301,7 +1300,7 @@ function sbookGetSettings()
 
   // Unavoidable browser sniffing
   var useragent=navigator.userAgent;
-  // if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
+  if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
     sbookMobileSafariSetup();
 }
 
