@@ -48,7 +48,7 @@ var sbook_message_timeout=5000;
 // This is the last active 'app' tab
 var sbook_last_app="help";
 // This is the regex for all sbook apps
-var sbook_apps=["help","login","sbookapp","device","apptoc","about"];
+var sbook_apps=["help","login","sbookapp","device","dashtoc","about"];
 
 function createSBOOKHUD()
 {
@@ -113,7 +113,7 @@ function sbookInitNavHUD()
   toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
   toc_button.style.visibility=null;
   fdjtReplace("SBOOKTOC",navhud);
-  fdjtAppend($("APPTOC"),sbookStaticNavHUD("#SBOOKDASHTOC"));
+  fdjtAppend($("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC"));
 }
 
 function sbookInitSocialHUD()
@@ -139,10 +139,10 @@ function sbookInitSearchHUD()
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 var sbookHUDMode_pat=
-  /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(context)|(apptoc)|(about)|(console)/g;
+  /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(context)|(dashtoc)|(about)|(console)/g;
 
 var sbook_footmodes=
-  ["login","device","sbookapp","help","apptoc","about","glosses","console"];
+  ["login","device","sbookapp","help","dashtoc","about","glosses","console"];
 var sbook_headmodes=["toc","searching","browsing"];
 
 var sbook_last_headmode="toc";
@@ -277,6 +277,7 @@ var sbook_sync_foot=false;
 
 function sbookSyncHUD()
 {
+  if (!(sbook_notfixed)) return;
   if (window.offsetY!==sbook_sync_head) {
     sbookHead.style.top=window.scrollY+'px';
     sbook_sync_head=window.scrollY;
@@ -508,19 +509,6 @@ function sbookPreview(elt,offset)
   else if (elt.sbook_head)
     cxt=elt.sbook_head;
   fdjtScrollPreview(elt,cxt,offset);
-}
-
-function sbookStartPreview(evt)
-{
-  fdjtCancelEvent(evt);
-  var ref=sbookGetRef($T(evt));
-  if (ref) sbookPreview(ref);
-}
-
-function sbookStopPreview(evt)
-{
-  if (evt) fdjtCancelEvent(evt);
-  window.setTimeout("sbookPreview(false);",100);
 }
 
 /* Making the icon */

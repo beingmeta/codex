@@ -66,45 +66,18 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-/* Getting the target for a touch operation */
-
-function sbookTouchTarget(scan,closest)
-{
-  var target=false;
-  while (scan) 
-    if ((scan===sbook_root)||(scan===sbook_root)||(scan.sbookui))
-      return target;
-    else if (scan.id)
-      if (fdjtHasClass(scan,"sbookfoci"))
-	return scan;
-      else if (fdjtElementMatches(scan,sbook_focus_rules))
-	return scan;
-      else {
-	if (!(target)) target=scan;
-	scan=scan.parentNode;}
-    else if (scan.sbook_ref) return scan;
-    else scan=scan.parentNode;
-  return target;
-}
-
 /* click events */
 
-function sbook_onclick(evt)
+function sbook_body_onclick(evt)
 {
   evt=evt||event;
-  // sbook_trace("sbook_onclick",evt);
+  // sbook_trace("sbook_body_onclick",evt);
   var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
-  var ref=sbookGetRef(target);
-  if (ref)
-    if (sbook_preview===ref) sbookPreview(false);
-    else sbookPreview(ref);
-  else if (sbook_preview)
-    if (fdjtHasParent(target,sbook_preview)) {
-      var goto=sbook_preview;
-      sbookPreview(false); sbookHUDMode(false);
-      sbookGoTo(goto);}
-    else sbookPreview(false);
+  else if (sbookInUI(target)) return;
+  else if (sbook_preview) {
+    sbookPreview(false); sbookHUDMode(false);
+    sbookGoTo(target);}
   else if ((sbook_mode)&&(sbook_mode!=="context"))
     sbookHUDMode(false);
   else if (sbook_target)
@@ -112,8 +85,15 @@ function sbook_onclick(evt)
       sbookMark(sbook_target);
     else sbookSetTarget(sbookGetTarget(target));
   else sbookSetTarget(sbookGetTarget(target));
-  sbookSyncHUD();
+  if (sbook_notfixed) sbookSyncHUD();
   fdjtCancelEvent();
+}
+
+function sbook_onmouseup(evt)
+{
+  var target=$T(evt);
+  sbook_mousedown=false;
+  if (!(sbook_shiftdown)) sbookStopPreview(false);
 }
 
 function sbook_ignoreclick(evt)
@@ -123,83 +103,127 @@ function sbook_ignoreclick(evt)
   else fdjtCancelEvent();
 }
 
-/* Generic handlers */
+/* Start/stop preview */
+
+var sbook_preview_target=false;
+var sbook_preview_timer=false;
+var sbook_hold_delay=250;
+
+function _sbookPreview(ref)
+{
+  if (sbook_preview_timer) {
+    clearTimeout(sbook_preview_timer);
+    sbook_preview_timer=false;}
+  sbookPreview(ref);
+  if (sbook_notfixed) sbookSyncHUD();
+}
+
+function sbookStartPreview(ref)
+{
+  if (sbook_preview)
+    if (sbook_preview===ref) return;
+    else sbookPreview(ref);
+  else if (sbook_preview_timer)
+    if (sbook_preview_target===ref) {}
+    else {
+      clearTimeout(sbook_preview_timer);
+      sbook_preview_target=ref;
+      sbook_preview_timer=setTimeout(_sbookPreview,sbook_hold_delay,ref);}
+  else {
+      sbook_preview_target=ref;
+      sbook_preview_timer=setTimeout(_sbookPreview,sbook_hold_delay,ref);}
+}
+
+function sbookStopPreview(ref)
+{
+  if (ref)
+    if (sbook_preview)
+      if (sbook_preview===ref) _sbookPreview(false);
+      else {}
+    else _sbookPreview(false);
+  else {
+    if (sbook_preview_timer) clearTimeout(sbook_preview_timer);
+    sbook_preview_timer=setTimeout(_sbookPreview,sbook_hold_delay,false);}
+}
+
+/* Handling previews */
 
 var sbook_mousedown=false;
 var sbook_shiftdown=false;
 var sbook_auto_preview=false;
-var sbook_preview_target=false;
-var sbook_hold_threshold=1000;
 
-function sbook_onmousedown(evt)
+function sbookHUD_onmousedown(evt)
 {
+  evt=evt||event;
   var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
+  if ((evt.button>0)||(evt.altKey)||(evt.ctrlKey)) return;
   var ref=sbookGetRef(target);
+  if (!(ref)) return;
   sbook_mousedown=fdjtTime();
-  if (ref)
-    if (sbook_preview)
-      if (ref===sbook_preview) sbookPreview(false);
-      else sbookPreview(ref);
-    else sbookPreview(ref);
-  else if (sbookInUI(target))
-    if (sbook_preview) sbookPreview(false);
-    else return;
-  else if (sbook_preview)
-    if (fdjtHasParent(target,sbook_preview))
-      sbookGoTo(sbook_preview);
-    else sbookPreview(false);
-  else if ((sbook_target)&&(fdjtHasParent(target,sbook_target)))
-    sbookMark(sbook_target);
-  else sbookSetTarget(sbookGetTarget(target));
-  sbookSyncHUD();
+  if (sbook_preview)
+    if (ref===sbook_preview) sbookStopPreview(false);
+    else sbookStartPreview(ref);
+  else sbookStartPreview(ref);
   fdjtCancelEvent(evt);
 }
 
-function sbook_onmouseover(evt)
+function sbookHUD_onmouseover(evt)
 {
+  evt=evt||event;
+  var target=$T(evt);
+  if (fdjtIsClickactive(target)) return;
+  var ref=sbookGetRef(target);
+  if (!(ref)) return;
+  if (sbook_preview) {
+    sbookStartPreview(ref);
+    fdjtCancelEvent(evt);}
+  else sbook_preview_target=ref;
+}
+
+function sbookHUD_onclick(evt)
+{
+  evt=evt||event;
+  if (sbook_preview) return;
   var target=$T(evt);
   var ref=sbookGetRef(target);
+  if (!(ref)) return;
+  sbookGoTo(ref);
+  fdjtCancelEvent(evt);
+}
+
+function sbookTOC_onclick(evt)
+{
+  evt=evt||event;
+  if (sbook_preview) return;
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (!(ref)) return;
+  sbookGoTo(ref);
+  var info=sbook_getinfo(ref);
+  if ((info.sub)&&(info.sub.length>1)) sbookHUDMode("toc");
+  fdjtCancelEvent(evt);
+}
+
+function sbookRef_onclick(evt)
+{
+  evt=evt||event;
+  // sbook_trace("sbook_body_onclick",evt);
+  var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
+  var ref=sbookGetRef(target);
   if (sbook_preview)
-    if (ref===sbook_preview) {}
-    else if (ref) sbookPreview(ref);
-    else {}
+    if (!(ref)) sbookStopPreview(false);
+    else if (sbook_preview===ref)
+      sbookStopPreview(ref);
+    else sbookStartPreview(ref);
   else if (ref)
-    if (sbook_auto_preview)
-      sbookPreview(ref);
-    else sbook_preview_target=target;
-  else return;
-  sbookSyncHUD();
+    sbookStartPreview(ref);
+  else {}
   fdjtCancelEvent(evt);
 }
 
-function sbook_onmouseout(evt)
-{
-  var target=$T(evt);
-  var ref=sbookGetRef(target);
-  if (fdjtIsClickactive(target)) return;
-  if ((sbook_preview)&&(ref===sbook_preview)&&
-      (!((sbook_mousedown)||(sbook_shiftdown)))) {
-    sbookPreview(false);
-    sbookSyncHUD();}
-}
 
-function sbook_onmouseup(evt)
-{
-  var target=$T(evt);
-  var tick=fdjtTime();
-  var down=sbook_mousedown;
-  sbook_mousedown=false;
-  if (sbook_preview)
-    if (sbook_shiftdown) {}
-    else if ((tick-down)>sbook_hold_threshold)
-      sbookPreview(false);
-    else return;
-  else return;
-  sbookSyncHUD();
-  fdjtCancelEvent(evt);
-}
 
 /* Keyboard handlers */
 
@@ -228,11 +252,8 @@ function sbook_onkeydown(evt)
   else if (fdjtIsTextInput($T(evt))) return true;
   else if (kc===16) { /* Shift key */
     sbook_shiftdown=fdjtTime();
-    if ((!(sbook_preview))&&(sbook_preview_target)) {
-      var ref=sbookGetRef(sbook_preview_target);
-      if (ref) {
-	sbookPreview(ref);
-	sbookSyncHUD();}}}
+    if ((!(sbook_preview))&&(sbook_preview_target)) 
+      sbookStartPreview(sbook_preview_target);}
   else if (kc===32) sbookForward(); // Space
   else if ((kc===8)||(kc===45)) sbookBackward(); // backspace or delete
   else if (kc===36)  
@@ -249,15 +270,9 @@ function sbook_onkeyup(evt)
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)) return true;
   else if (kc===16) {
-    if (sbook_mousedown) {
-      sbook_shiftdown=false;
-      return;}
-    var tick=fdjtTime();
-    if ((sbook_preview_shiftdown)&&
-	((tick-sbook_shiftdown)>sbook_hold_threshold))  {
-      sbookPreview(false);
-      sbookSyncHUD();}
-    sbook_preview_shiftdown=false;}
+    sbook_shiftdown=false;
+    if (!(sbook_mousedown)) sbookStopPreview(false);}
+  else {}
 }
 
 /* Keypress handling */
@@ -269,7 +284,7 @@ var sbook_modechars={
  70: "searching",
  100: "device",68: "device",
  110: "toc",78: "toc",
- 116: "apptoc",84: "apptoc",
+ 116: "dashtoc",84: "dashtoc",
  104: "help",72: "help",
  103: "glosses",71: "glosses",
  67: "console", 99: "console",
@@ -363,27 +378,30 @@ function sbookGestureSetup()
 function sbookMouseGestureSetup()
 {
   window.addEventListener("scroll",sbook_onscroll);
-  window.addEventListener("click",sbook_ignoreclick);
-  window.addEventListener("mouseover",sbook_onmouseover);
-  window.addEventListener("mouseout",sbook_onmouseout);
-  window.addEventListener("mousedown",sbook_onmousedown);
   window.addEventListener("mouseup",sbook_onmouseup);
+
+  document.body.addEventListener("click",sbook_body_onclick);
+  sbookHUD.addEventListener("mouseover",sbookHUD_onmouseover);
+  // sbookHUD.addEventListener("mouseout",sbookHUD_onmouseout);
+  sbookHUD.addEventListener("mousedown",sbookHUD_onmousedown);
+  sbookHUD.addEventListener("click",sbookHUD_onclick);
+  $("SBOOKTOC").addEventListener("click",sbookTOC_onclick);
   // For command keys
   window.addEventListener("keypress",sbook_onkeypress);
   window.addEventListener("keydown",sbook_onkeydown);
   window.addEventListener("keyup",sbook_onkeyup);
-  sbook_auto_preview=true;
+  sbook_auto_preview=false;
 }
 
 function sbookTouchGestureSetup()
 {
   document.body.addEventListener("scroll",sbook_onscroll);
-  document.body.addEventListener("click",sbook_onclick);
+  document.body.addEventListener("click",sbook_body_onclick);
   var i=0; var len=sbook_nodes.length;
   while (i<len) {
     var node=sbook_nodes[i++];
-    if (!(node.onclick)) node.onclick=sbook_onclick;}
-  sbookHUD.onclick=sbook_onclick;
+    if (!(node.onclick)) node.onclick=sbook_body_onclick;}
+  sbookHUD.onclick=sbookRef_onclick;
   window.addEventListener("keypress",sbook_onkeypress);
   window.addEventListener("keydown",sbook_onkeydown);
   window.addEventListener("keyup",sbook_onkeyup);

@@ -86,10 +86,16 @@ div.sbookshoe {
   z-index: 100; overflow: visible;}
 div#SBOOKHUDSHOE { z-index: 200;}
 
+body.preview div#SBOOKHUD div.hudblock { opacity: 0.3}
 body.preview div#SBOOKHUD div#SBOOKHEAD { display: none;}
 body.preview div#SBOOKHUD.toc div#SBOOKHEAD { display: block;}
-body.preview div#SBOOKHUD div#SBOOKHEAD div.hudblock#SBOOKTOC {
-    display: block; opacity: 0.3;}
+body.preview div#SBOOKHUD.dashtoc div#SBOOKHEAD { display: block;}
+body.preview div#SBOOKHUD.toc div#SBOOKHEAD div.hudblock#SBOOKTOC {
+    display: block;}
+body.preview div#SBOOKHUD.dashtoc div#SBOOKHEAD div.hudblock#SBOOKDASH {
+    display: block; visiblity: hidden;}
+body.preview div#SBOOKHUD.dashtoc div#SBOOKHEAD div.hudblock#SBOOKDASH div.spanbar:hover {
+    visibility: visible; }
 
 /* Buttons */
 
@@ -225,7 +231,7 @@ body.hudup div#SBOOKHUD.login div#SBOOKHEAD,
 body.hudup div#SBOOKHUD.about div#SBOOKHEAD,
 body.hudup div#SBOOKHUD.device div#SBOOKHEAD,
 body.hudup div#SBOOKHUD.sbookapp div#SBOOKHEAD,
-body.hudup div#SBOOKHUD.apptoc div#SBOOKHEAD,
+body.hudup div#SBOOKHUD.dashtoc div#SBOOKHEAD,
 body.hudup div#SBOOKHUD.glosses div#SBOOKHEAD {
     bottom: 100px;}
 
@@ -234,7 +240,7 @@ body.notfixed.hudup div#SBOOKHUD.login div#SBOOKHEAD,
 body.notfixed.hudup div#SBOOKHUD.about div#SBOOKHEAD,
 body.notfixed.hudup div#SBOOKHUD.device div#SBOOKHEAD,
 body.notfixed.hudup div#SBOOKHUD.sbookapp div#SBOOKHEAD,
-body.notfixed.hudup div#SBOOKHUD.apptoc div#SBOOKHEAD,
+body.notfixed.hudup div#SBOOKHUD.dashtoc div#SBOOKHEAD,
 body.hudup div#SBOOKHUD.glosses div#SBOOKHEAD {
   height: 100%;}
 
@@ -350,7 +356,7 @@ div#SBOOKHUD.login div.hudblock#SBOOKDASH,
 div#SBOOKHUD.about div.hudblock#SBOOKDASH,
 div#SBOOKHUD.device div.hudblock#SBOOKDASH,
 div#SBOOKHUD.sbookapp div.hudblock#SBOOKDASH,
-div#SBOOKHUD.apptoc div.hudblock#SBOOKDASH {
+div#SBOOKHUD.dashtoc div.hudblock#SBOOKDASH {
   display: block; top: 0px; bottom: 100px;
   max-height: inherit; opacity: 0.9;}
 
@@ -359,7 +365,7 @@ body.notfixed div#SBOOKHUD.login div.hudblock#SBOOKDASH,
 body.notfixed div#SBOOKHUD.about div.hudblock#SBOOKDASH,
 body.notfixed div#SBOOKHUD.device div.hudblock#SBOOKDASH,
 body.notfixed div#SBOOKHUD.sbookapp div.hudblock#SBOOKDASH,
-body.notfixed div#SBOOKHUD.apptoc div.hudblock#SBOOKDASH {
+body.notfixed div#SBOOKHUD.dashtoc div.hudblock#SBOOKDASH {
   bottom: auto; height: 100%;}
 
 
@@ -378,7 +384,7 @@ div#SBOOKHUD.login img.hudbutton[alt='app'],
 div#SBOOKHUD.about img.hudbutton[alt='app'],
 div#SBOOKHUD.device img.hudbutton[alt='app'],
 div#SBOOKHUD.sbookapp img.hudbutton[alt='app'],
-div#SBOOKHUD.apptoc img.hudbutton[alt='app'] { 
+div#SBOOKHUD.dashtoc img.hudbutton[alt='app'] { 
   opacity: 1.0; border-color: blue; background-color: gray;}
 
 div#SBOOKHUD div#SBOOKDASH div.tabbar { }
@@ -395,7 +401,7 @@ div#SBOOKHUD.help div#SBOOKDASH div.tabcontent#APPHELP { display: block;}
 div#SBOOKHUD.login div#SBOOKDASH div.tabcontent#APPLOGIN { display: block;}
 div#SBOOKHUD.device div#SBOOKDASH div.tabcontent#APPDEVICE { display: block;}
 div#SBOOKHUD.sbookapp div#SBOOKDASH div.tabcontent#SBOOKSAPP { display: block;}
-div#SBOOKHUD.apptoc div#SBOOKDASH div.tabcontent#APPTOC { display: block;}
+div#SBOOKHUD.dashtoc div#SBOOKDASH div.tabcontent#DASHTOC { display: block;}
 div#SBOOKHUD.about div#SBOOKDASH div.tabcontent#APPABOUT { display: block;}
 
 div#SBOOKHUD div#SBOOKDASH span.tab[contentid='APPHELP'] {
@@ -405,7 +411,7 @@ div#SBOOKHUD.login div#SBOOKDASH span.tab[contentid='APPLOGIN'],
 div#SBOOKHUD.device div#SBOOKDASH span.tab[contentid='APPDEVICE'],
 div#SBOOKHUD.sbookapp div#SBOOKDASH span.tab[contentid='SBOOKSAPP'],
 div#SBOOKHUD.about div#SBOOKDASH span.tab[contentid='APPABOUT'],
-div#SBOOKHUD.apptoc div#SBOOKDASH span.tab[contentid='APPTOC'] {
+div#SBOOKHUD.dashtoc div#SBOOKDASH span.tab[contentid='DASHTOC'] {
     border-bottom: none; color: gold;}
 
 /* SBOOKDASH content rules */
@@ -921,20 +927,20 @@ div.sbooktoc div.head .progressbar {
   padding: 0px; margin: 0px; border-right: solid red 3px;
   position: absolute;  left: 0px; height: 100%;
   z-index: -100; opacity: 0.5;}
-div#SBOOKDASH div#APPTOC div.sbooktoc {
+div#SBOOKDASH div#DASHTOC div.sbooktoc {
     display: block; font-size: 90%;}
-div#SBOOKHUD div#SBOOKDASH div#APPTOC div.sbooktoc div.head {
+div#SBOOKHUD div#SBOOKDASH div#DASHTOC div.sbooktoc div.head {
     display: block; font-weight: bold;}
-div#SBOOKHUD div#SBOOKDASH div#APPTOC div.sbooktocleaf > div.head {
+div#SBOOKHUD div#SBOOKDASH div#DASHTOC div.sbooktocleaf > div.head {
     display: block; font-weight: normal;}
-div#SBOOKHUD div#SBOOKDASH div#APPTOC hr.progressbar {
+div#SBOOKHUD div#SBOOKDASH div#DASHTOC hr.progressbar {
     display: none; border: none;}
-div#SBOOKHUD div#SBOOKDASH div#APPTOC div.progressbox { display: none;}
-div#SBOOKHUD div#SBOOKDASH div#APPTOC div.live > div.head { color: gold;}
-div#SBOOKHUD div#SBOOKDASH div#APPTOC
+div#SBOOKHUD div#SBOOKDASH div#DASHTOC div.progressbox { display: none;}
+div#SBOOKHUD div#SBOOKDASH div#DASHTOC div.live > div.head { color: gold;}
+div#SBOOKHUD div#SBOOKDASH div#DASHTOC
   div.live > div.head hr.progressbar {
       display: block;}
-div#SBOOKHUD div#SBOOKDASH div#APPTOC
+div#SBOOKHUD div#SBOOKDASH div#DASHTOC
   div.live > div.spanbar div.progressbox {
       display: block;}
 
@@ -1027,6 +1033,8 @@ div.tocblock div.tochead {
 div.tocblock div.tochead span.spacer {
     font-size: 125%; font-weight: bold; font-style: italic;}
 div.tocblock div.tochead span.paratext {
+    color: gold; font-style: italic;}
+div.tocblock div.tochead a.paratext {
     color: gold; font-style: italic;}
 div.tocblock div.tochead span.head {
     font-size: 90%;}
@@ -1457,13 +1465,13 @@ span.sbookpageprobe span {
     vertical-align: baseline; padding: 0px; margin: 0px; border: 0px;}
 
 body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar,
-body.touch div#SBOOKHUD.apptoc div#SBOOKAPPTOC div.spanbar {
+body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar {
     height: 50px;}
 body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.sbookhudspan,
-body.touch div#SBOOKHUD.apptoc div#SBOOKAPPTOC div.spanbar div.sbookhudspan {
+body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.sbookhudspan {
     height: 45px;}
 body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.progressbox,
-body.touch div#SBOOKHUD.apptoc div#SBOOKAPPTOC div.spanbar div.progressbox  {
+body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.progressbox  {
     height: 50px;}
 
 body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}

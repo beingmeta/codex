@@ -886,11 +886,11 @@ function sbookSetLocation(location,force)
   var info=sbook_getinfo(sbook_head);
   while (info) {
     var tocelt=document.getElementById("SBOOKTOC4"+info.id);
-    var apptocelt=document.getElementById("SBOOKDASHTOC4"+info.id);
+    var dashtocelt=document.getElementById("SBOOKDASHTOC4"+info.id);
     var start=tocelt.sbook_start; var end=tocelt.sbook_end;
     var progress=((location-start)*80)/(end-start);
     var bar=fdjtGetFirstChild(tocelt,".progressbar");
-    var appbar=fdjtGetFirstChild(apptocelt,".progressbar");
+    var appbar=fdjtGetFirstChild(dashtocelt,".progressbar");
     if (sbook_trace_locations)
       fdjtLog("For tocbar %o loc=%o start=%o end=%o progress=%o",
 	      bar,location,start,end,progress);
@@ -949,6 +949,7 @@ var sbook_track_window=25;
 
 function sbookSetFocus(target)
 {
+  if (!(sbook_preview)) return;
   // If the target has changed, update the location
   if (target!==sbook_focus) {
     var info=sbook_getinfo(target);
@@ -1037,8 +1038,10 @@ function sbookSetTarget(target,nogo)
       ((target===sbook_root)||(target===document.body))) {
     return;}
   else {
+    var head=sbookGetHead(target);
     fdjtAddClass(target,"sbooktarget");
     sbook_target=target;
+    sbookSetHead(head);
     if (!(nogo)) sbookGoTo(target);
     if (target.title) sbook_target_title=target.title;
     target.title=_('click to add a gloss');}
@@ -1105,6 +1108,8 @@ function sbookSetHashID(target)
 function sbookGoTo(target,noset)
 {
   sbookPreview(false);
+  if (typeof target === 'string') target=document.getElementById(target);
+  if (!(target)) return;
   var page=((sbook_pageview)&&sbookGetPage(target));
   if (sbook_trace_nav)
     fdjtLog("sbookGoTo #%o@P%o/L%o %o",target.id,page,target.sbookloc,target);
@@ -1300,7 +1305,7 @@ function sbookGetSettings()
 
   // Unavoidable browser sniffing
   var useragent=navigator.userAgent;
-  if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
+  // if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
     sbookMobileSafariSetup();
 }
 
