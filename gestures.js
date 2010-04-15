@@ -122,7 +122,9 @@ function sbookStartPreview(ref)
 {
   if (sbook_preview)
     if (sbook_preview===ref) return;
-    else sbookPreview(ref);
+    else {
+      sbookPreview(ref);
+      if (sbook_notfixed) sbookSyncHUD();}
   else if (sbook_preview_timer)
     if (sbook_preview_target===ref) {}
     else {
@@ -172,6 +174,7 @@ function sbookHUD_onmouseover(evt)
 {
   evt=evt||event;
   var target=$T(evt);
+  fdjtCoHi_onmouseover(evt);
   if (fdjtIsClickactive(target)) return;
   var ref=sbookGetRef(target);
   if (!(ref)) return;
@@ -382,7 +385,7 @@ function sbookMouseGestureSetup()
 
   document.body.addEventListener("click",sbook_body_onclick);
   sbookHUD.addEventListener("mouseover",sbookHUD_onmouseover);
-  // sbookHUD.addEventListener("mouseout",sbookHUD_onmouseout);
+  sbookHUD.addEventListener("mouseout",fdjtCoHi_onmouseout);
   sbookHUD.addEventListener("mousedown",sbookHUD_onmousedown);
   sbookHUD.addEventListener("click",sbookHUD_onclick);
   $("SBOOKTOC").addEventListener("click",sbookTOC_onclick);
@@ -401,7 +404,9 @@ function sbookTouchGestureSetup()
   while (i<len) {
     var node=sbook_nodes[i++];
     if (!(node.onclick)) node.onclick=sbook_body_onclick;}
-  sbookHUD.onclick=sbookRef_onclick;
+  sbookHUD.addEventListener("mouseover",fdjtCoHi_onmouseover);
+  sbookHUD.addEventListener("mouseout",fdjtCoHi_onmouseout);
+  sbookHUD.addEventListener("click",sbookRef_onclick);
   window.addEventListener("keypress",sbook_onkeypress);
   window.addEventListener("keydown",sbook_onkeydown);
   window.addEventListener("keyup",sbook_onkeyup);
