@@ -226,6 +226,38 @@ function sbookRef_onclick(evt)
   fdjtCancelEvent(evt);
 }
 
+/* Touch handlers */
+
+function sbook_ontouchstart(evt)
+{
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (ref) {
+    if (sbook_preview)
+      if (ref===sbook_preview) sbookPreview(false);
+      else sbookPreview(ref);
+    else  sbookStartPreview(ref);
+    fdjtCancelEvent(evt);}
+}
+
+function sbook_ontouchmove(evt)
+{
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (ref) {
+    if (sbook_preview)
+      if (ref===sbook_preview) {}
+      else sbookPreview(ref);
+    fdjtCancelEvent(evt);}
+}
+
+function sbook_ontouchend(evt)
+{
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (sbook_preview) sbookStopPreview();
+  fdjtCancelEvent(evt);
+}
 
 
 /* Keyboard handlers */
@@ -397,6 +429,22 @@ function sbookMouseGestureSetup()
 }
 
 function sbookTouchGestureSetup()
+{
+  document.body.addEventListener("scroll",sbook_onscroll);
+  document.body.addEventListener("click",sbook_body_onclick);
+  var i=0; var len=sbook_nodes.length;
+  while (i<len) {
+    var node=sbook_nodes[i++];
+    if (!(node.onclick)) node.onclick=sbook_body_onclick;}
+  sbookHUD.addEventListener("touchstart",sbook_ontouchstart);
+  sbookHUD.addEventListener("touchmove",sbook_ontouchmove);
+  document.body.addEventListener("touchend",sbook_ontouchend);
+  window.addEventListener("keypress",sbook_onkeypress);
+  window.addEventListener("keydown",sbook_onkeydown);
+  window.addEventListener("keyup",sbook_onkeyup);
+}
+
+function sbookSimpleGestureSetup()
 {
   document.body.addEventListener("scroll",sbook_onscroll);
   document.body.addEventListener("click",sbook_body_onclick);

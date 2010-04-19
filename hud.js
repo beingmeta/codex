@@ -154,7 +154,9 @@ function sbookHUDMode(mode)
     fdjtLog("[%fs] sbookHUDMode %o, cur=%o dbc=%o",
 	    fdjtET(),mode,sbook_mode,document.body.className);
   if (sbook_preview) sbookStopPreview();
-  if (sbook_notfixed) sbookSyncHUD();
+  if (sbook_notfixed) {
+    // sbookMoveMargins(sbook_curinfo);
+    sbookSyncHUD();}
   if (mode)
     if (mode===sbook_mode) {}
     else {

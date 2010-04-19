@@ -1289,6 +1289,11 @@ function sbookGetSettings()
   document.body.refuri=sbook_refuri=_getsbookrefuri();
   sbook_baseid=_getsbookbaseid()||"SBOOK";
   sbook_docuri=_getsbookdocuri();
+
+  var modepos=fdjtIndexOf(sbook_default_opts,"mouse");
+  if (modepos<0) sbook_default_opts.push("touch");
+  else sbook_default_opts[modepos]="touch";
+
   // Get the settings for scanning the document structure
   sbookGetScanSettings();
   // Get the settings for automatic pagination
@@ -1305,7 +1310,7 @@ function sbookGetSettings()
 
   // Unavoidable browser sniffing
   var useragent=navigator.userAgent;
-  // if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
+  if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
     sbookMobileSafariSetup();
 }
 
@@ -1443,22 +1448,10 @@ function sbookMobileSafariSetup()
 {
   var head=$$("HEAD")[0];
   fdjt_format_console=true;
+  /*
   document.body.ontouchmove=
     function(evt){ if (sbook_pageview) {
-      evt.preventDefault(); return false;}};
-  var meta=fdjtElt("META");
-  meta.name='apple-mobile-web-app-capable ';
-  meta.content='yes';
-  // fdjtPrepend(head,meta);
-  var meta=fdjtElt("META");
-  meta.name='viewport';
-  meta.content='user-scalable=no,height=device-height,width=device-width';
-  // fdjtPrepend(head,meta);
-
-  var modepos=fdjtIndexOf(sbook_default_opts,"mouse");
-  if (modepos<0) sbook_default_opts.push("touch");
-  else sbook_default_opts[modepos]="touch";
-
+    evt.preventDefault(); return false;}}; */
   sbook_notfixed=true;
   fdjtAddClass(document.body,"notfixed");
 }
