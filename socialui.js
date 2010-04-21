@@ -241,14 +241,28 @@ function sbookOpenGlossmark(target,addmark)
     if (glosses)
       sbookShowSummaries(glosses,sumdiv,false);
     fdjtReplace("SBOOKMARKGLOSSES",sumdiv);
-    sbookSetFocus(target);
     sbookSetTarget(target);
     sbook_glossmark_target=target;
     sbookMarkHUDSetup(target);
-    if (addmark)
+    sbookAlignGlossmark(hud,target);
+   if (addmark)
       fdjtDropClass($("SBOOKMARKFORM"),"closed");
     else fdjtAddClass($("SBOOKMARKFORM"),"closed");
     sbookHUDMode("mark");}
+}
+
+function sbookAlignGlossmark(hud,target)
+{
+  return;
+  var offinfo=fdjtGetOffset(target);
+  hud.style.maxHeight=(window.innerHeight-100)+'px';
+  hud.style.opacity=0.0; hud.style.display='block';
+  var hudinfo=fdjtGetOffset(hud);
+  var minoff=(window.scrollY+window.innerHeight)-hudinfo.height;
+  if (offinfo.top<minoff) 
+    hud.style.top=offinfo.top+'px';
+  else hud.style.top=minoff+'px';
+  hud.style.opacity=null; hud.style.display=null;
 }
 
 function sbookGlossmark_onclick(evt)

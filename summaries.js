@@ -404,14 +404,19 @@ function sbookSelectSources(results_div,sources)
       else fdjtDropClass(summary,"sourced");}
     if (empty) fdjtDropClass(block,"sourced");
     else fdjtAddClass(block,"sourced");}
-  if (sbook_focus) sbookScrollGlosses(results_div,sbook_focus);
+  if (sbook_target) sbookScrollGlosses(results_div,sbook_target);
 }
 
 /* Results handlers */
 
 function sbookSetupSummaryDiv(div)
 {
-  // div.onclick=sbookSummary_onclick;
+  div.title="(hold to glimpse,click to go) "+(div.title||"");
+  if (sbook_interaction==="mouse") {
+    div.addEventListener("click",sbookSummary_onclick,false);
+    div.addEventListener("mousedown",sbookTOC_onmousedown,false);
+    div.addEventListener("mouseup",sbookTOC_onmouseup,false);}
+  else div.addEventListener("click",sbookTOC_oneclick,false);
 }
 
 function sbookSummary_onclick(evt)

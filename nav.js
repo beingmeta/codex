@@ -56,6 +56,13 @@ function sbookCreateNavHUD(eltspec)
   var toc_div=sbookTOCDiv(root_info,0,false,"SBOOKTOC4");
   var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
   if (!(eltspec)) sbookNavHUD=div;
+  if (sbook_interaction==="mouse") {
+    div.addEventListener("mouseover",sbookTOC_onmouseover,false);
+    div.addEventListener("mouseout",sbookTOC_onmouseout,false);
+    div.addEventListener("mousedown",sbookTOC_onmousedown,false);
+    div.addEventListener("mouseup",sbookTOC_onmouseup,false);
+    div.addEventListener("click",sbookTOC_onclick,false);}
+  else div.addEventListener("click",sbookTOC_oneclick,false);
   return div;
 }
 
@@ -65,6 +72,13 @@ function sbookStaticNavHUD(eltspec)
   var toc_div=sbookTOCDiv(root_info,0,false,"SBOOKDASHTOC4");
   var div=fdjtDiv(eltspec||"#SBOOKDASHTOC",toc_div);
   if (!(eltspec)) sbookNavHUD=div;
+  if (sbook_interaction==="mouse") {
+    div.addEventListener("mouseover",sbookTOC_onmouseover,false);
+    div.addEventListener("mouseout",sbookTOC_onmouseout,false);
+    div.addEventListener("mousedown",sbookTOC_onmousedown,false);
+    div.addEventListener("mouseup",sbookTOC_onmouseup,false);
+    div.addEventListener("click",sbookStaticTOC_onclick,false);}
+  else div.addEventListener("click",sbookTOC_oneclick,false);
   return div;
 }
 
@@ -212,73 +226,105 @@ function sbookTOCUpdate(head,prefix)
 
 /* TOC handlers */
 
-function sbookNav_onmouseover(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbookNav_onmouseover",evt);
-  if (!(sbook_mode)) return;
-  var target=sbookGetRef($T(evt));
-  if (!((sbook_mode)||(fdjtHasClass(document.body,"hudup")))) return;
-  sbookHUD_onmouseover(evt);
-  fdjtCoHi_onmouseover(evt);
-  if (target===null) return;
-  fdjtDelay(250,sbookPreview,target,document.body,"previewing");
-}
-
-function sbookNav_onmouseout(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbookNav_onmouseout",evt);
-  sbookHUD_onmouseout(evt);
-  fdjtCoHi_onmouseout(evt);
-  fdjtDelay(250,sbookStopPreview,false,document.body,"previewing");
-  var rtarget=evt.relatedTarget;
-  if (!(rtarget)) return;
-  while (rtarget)
-    if (rtarget===sbookHUD) return;
-    else if (rtarget===document.body) break;
-    else if (rtarget===window) break;
-    else if (rtarget===document) break;
-    else try {rtarget=rtarget.parentNode;}
-      catch (e) {break;}
-  sbook_hud_forced=false;
-}
-
-function sbookNav_onclick(evt)
-{
-  evt=evt||event||null;
-  // sbook_trace("sbookNav_onclick",evt);
-  var target=sbookGetRef($T(evt));
-  var mode=sbook_mode;
-  sbookStopPreview(evt);
-  if (target===sbook_head) {
-    sbookHUDMode(false);
-    return false;}
-  if (!(target)) return;
-  sbookSetHead(target);
-  var info=sbook_getinfo(target);
-  sbookGoTo(target);
-  if (((info.sub)&&(info.sub.length>3))&&(mode==="toc"))
-    sbookHUDMode("toc");
-  return false;
-}
-
-/* TOC (static Nav) handlers */
-
 function sbookTOC_onmouseover(evt)
 {
-  evt=evt||event||null;
-  // sbook_trace("sbookTOC_onmouseout",evt);
+  evt=evt||event;
+  var target=$T(evt);
   fdjtCoHi_onmouseover(evt);
-  sbookPreview_onmouseover(evt);
+  if (fdjtIsClickactive(target)) return;
+  if (!(($P(".spanbar",target))||($P(".previewicon",target)))) {
+    if (sbook_preview) sbookSetPreview(false);
+    return;}
+  var ref=sbookGetRef(target);
+  if (sbook_preview) {
+    if (ref===sbook_preview) {}
+    else if (ref) sbookSetPreview(ref);
+    else sbookSetPreview(false);
+    fdjtCancelEvent(evt);}
+  else if (ref) {
+    sbookSetPreview(ref);
+    fdjtCancelEvent(evt);}
+  else {
+    sbookSetPreview(false);
+    fdjtCancelEvent(evt);}
 }
 
 function sbookTOC_onmouseout(evt)
 {
-  evt=evt||event||null;
-  // sbook_trace("sbookTOC_onmouseout",evt);
+  evt=evt||event;
+  var target=$T(evt);
   fdjtCoHi_onmouseout(evt);
-  sbookPreview_onmouseout(evt);
+  var ref=sbookGetRef(target);
+  if (ref) sbookSetPreview(false);
+}
+
+function sbookTOC_onmousedown(evt)
+{
+  evt=evt||event;
+  sbook_mousedown=fdjtTime();
+  var target=$T(evt);
+  fdjtCoHi_onmouseout(evt);
+  if (!(($P(".sectname",target))||
+	($P(".sbooksummaries",target))))
+    return;
+  var ref=sbookGetRef(target);
+  if (ref) sbookSetPreview(ref);
+}
+
+function sbookTOC_onmouseup(evt)
+{
+  evt=evt||event;
+  if ((sbook_preview)||(sbook_preview_target))
+    sbookSetPreview(false);
+  fdjtCancelEvent(evt);
+}
+
+function sbookTOC_onclick(evt)
+{
+  evt=evt||event;
+  if ((sbook_mousedown)&&
+      ((fdjtTime()-sbook_mousedown)>sbook_hold_threshold)) {
+    sbook_mousedown=false;
+    fdjtCancelEvent(evt);
+    return false;}
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (!(ref)) return;
+  sbookGoTo(ref);
+  var info=sbook_getinfo(ref);
+  if ((info.sub)&&(info.sub.length>1)) sbookHUDMode("toc");
+  else sbookHUDMode(false);
+  fdjtCancelEvent(evt);
+}
+
+function sbookTOC_oneclick(evt)
+{
+  evt=evt||event;
+  if (sbook_preview) return;
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (sbook_preview===ref) sbookPreview(false);
+  else if (ref) sbookPreview(ref);
+  else if (sbook_preview) sbookPreview(false);
+  else {}
+  fdjtCancelEvent(evt);
+}
+
+function sbookStaticTOC_onclick(evt)
+{
+  evt=evt||event;
+  if ((sbook_mousedown)&&
+      ((fdjtTime()-sbook_mousedown)>sbook_hold_threshold)) {
+    sbook_mousedown=false;
+    fdjtCancelEvent(evt);
+    return false;}
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (!(ref)) return;
+  sbookGoTo(ref);
+  sbookPreview(false);
+  sbookHUDMode(false);
+  fdjtCancelEvent(evt);
 }
 
 /* Emacs local variables

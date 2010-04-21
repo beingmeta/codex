@@ -69,8 +69,9 @@ function createSBOOKHUD()
       fdjtImage(sbicon("sbooksappicon40x40.png"),".hudbutton.app","app",
 		"Click for Help, settings, book description, etc");
     dash_button.onclick=sbookDashButton_onclick;
-    dash_button.onmouseover=fdjtClassAdder("SBOOKDASH","hover");
-    dash_button.onmouseout=fdjtClassDropper("SBOOKDASH","hover");
+    if (sbook_interaction==='mouse') {
+      dash_button.onmouseover=fdjtClassAdder("SBOOKDASH","hover");
+      dash_button.onmouseout=fdjtClassDropper("SBOOKDASH","hover");}
     
     var glosses_button=
       fdjtImage(sbicon("sbookspeople40x40.png"),
@@ -81,22 +82,24 @@ function createSBOOKHUD()
     var console=fdjtDiv("#SBOOKCONSOLE.sbookconsole.hudblock");
     console.innerHTML=sbook_messagebox;
 
+    var markhud=
+      fdjtDiv("#SBOOKMARKHUD.hudblock",
+	      sbookCreateMarkHUD("#SBOOKMARK"),
+	      fdjtDiv("#SBOOKMARKGLOSSES.sbookglosses"));
+
     var headhud=
       fdjtDiv("#SBOOKHEAD",toc_button,search_button,
 	      fdjtDiv("#SBOOKTOC.hudblock"),
 	      sbookCreateSearchHUD("#SBOOKSEARCH.hudblock.sbooksearch"),
 	      sbookCreateGlossesHUD(),
 	      sbookCreateDash(),
+	      markhud,
 	      console);
     var foothud=fdjtDiv("#SBOOKFOOT",dash_button,glosses_button,
 			fdjtDiv("#SBOOKTAGS.hudblock.tags"));
-    var markhud=
-      fdjtDiv("#SBOOKMARKHUD.hudblock",
-	      sbookCreateMarkHUD("#SBOOKMARK"),
-	      fdjtDiv("#SBOOKMARKGLOSSES.sbookglosses"));
       
     sbookHead=headhud; sbookFoot=foothud;
-    hud=fdjtDiv("#SBOOKHUD",headhud,foothud,markhud);
+    hud=fdjtDiv("#SBOOKHUD",headhud,foothud);
     
     sbookHUD=hud; hud.sbookui=true; hud.title="";
     hud.setAttribute("flatwidth","0");
@@ -109,8 +112,9 @@ function sbookInitNavHUD()
   var navhud=sbookCreateNavHUD();
   var toc_button=$("SBOOKTOCBUTTON");
   toc_button.onclick=sbookTOCButton_onclick;
-  toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
-  toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");
+  if (sbook_interaction==='mouse') {
+    toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
+    toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");}
   toc_button.style.visibility=null;
   fdjtReplace("SBOOKTOC",navhud);
   fdjtAppend($("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC"));
@@ -120,8 +124,9 @@ function sbookInitSocialHUD()
 {
   var glosses_button=$("SBOOKGLOSSESBUTTON");
   glosses_button.onclick=sbookGlossesButton_onclick;
-  glosses_button.onmouseover=fdjtClassAdder("SBOOKGLOSSES","hover");
-  glosses_button.onmouseout=fdjtClassDropper("SBOOKGLOSSES","hover");
+  if (sbook_interaction==='mouse') {
+    glosses_button.onmouseover=fdjtClassAdder("SBOOKGLOSSES","hover");
+    glosses_button.onmouseout=fdjtClassDropper("SBOOKGLOSSES","hover");}
   glosses_button.style.visibility=null;
 }
 
@@ -129,11 +134,11 @@ function sbookInitSearchHUD()
 {
   var search_button=$("SBOOKSEARCHBUTTON");
   search_button.onclick=sbookSearchButton_onclick;
-  search_button.onmouseover=fdjtClassAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
-  search_button.onmouseout=fdjtClassDropper("#SBOOKSEARCH#SBOOKTAGS","hover");
+  if (sbook_interaction==='mouse') {
+    search_button.onmouseover=fdjtClassAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
+    search_button.onmouseout=fdjtClassDropper("#SBOOKSEARCH#SBOOKTAGS","hover");}
   search_button.style.visibility=null;
 }
-
 
 /* Mode controls */
 
@@ -153,7 +158,7 @@ function sbookHUDMode(mode)
   if (sbook_trace_mode)
     fdjtLog("[%fs] sbookHUDMode %o, cur=%o dbc=%o",
 	    fdjtET(),mode,sbook_mode,document.body.className);
-  if (sbook_preview) sbookStopPreview();
+  if (sbook_preview) sbookSetPreview(false);
   if (sbook_notfixed) {
     // sbookMoveMargins(sbook_curinfo);
     sbookSyncHUD();}
@@ -172,8 +177,8 @@ function sbookHUDMode(mode)
       if (fdjtContains(sbook_footmodes,mode)) sbook_last_footmode=mode;
       fdjtAddClass(document.body,"hudup");
       fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
-      if ((mode==="glosses")&&(sbook_focus))
-	sbookScrollGlosses(sbook_focus);}
+      if ((mode==="glosses")&&(sbook_target))
+	sbookScrollGlosses(sbook_target);}
   else {
     sbook_last_mode=sbook_mode;
     sbook_mode=false;
@@ -467,6 +472,8 @@ function sbookUpdateAboutInfo()
 
 /* Previewing */
 
+var sbook_preview_target=false;
+var sbook_preview_delay=250;
 var sbook_preview_title=false;
 
 function sbookPreview(elt,offset)
@@ -482,7 +489,7 @@ function sbookPreview(elt,offset)
       fdjtDropClass(document.body,"preview");
       fdjtDropClass(sbook_preview,"previewing");
       fdjtScrollRestore();
-      sbook_preview=false;
+      sbook_preview_target=sbook_preview=false;
       return;}
     else {
       fdjtDropClass(document.body,"preview");
@@ -500,7 +507,7 @@ function sbookPreview(elt,offset)
   fdjtAddClass(document.body,"preview");
   fdjtAddClass(elt,"previewing");
   sbook_last_preview=elt;
-  sbook_preview=elt;
+  sbook_preview_target=sbook_preview=elt;
   if ((elt.title)&&(elt!==sbook_target))
     sbook_preview_title=elt.title;
   elt.title='click to jump to this passage';
@@ -513,6 +520,21 @@ function sbookPreview(elt,offset)
   fdjtScrollPreview(elt,cxt,offset);
 }
 
+function _sbookPreviewSync()
+{
+  if (sbook_preview===sbook_preview_target) return;
+  sbookPreview(sbook_preview_target);
+  if (sbook_notfixed) sbookSyncHUD();
+}
+
+function sbookSetPreview(ref)
+{
+  sbook_preview_target=ref;
+  if (ref)
+    setTimeout(_sbookPreviewSync,sbook_preview_delay);
+  else setTimeout(_sbookPreviewSync,sbook_preview_delay*5);
+}
+
 /* Making the icon */
 
 var sbook_preview_icon="binoculars24x24.png";
@@ -521,7 +543,16 @@ function sbookPreviewIcon(img)
 {
   var img=fdjtImage(sbicon(img||"binoculars24x24.png"),"previewicon","[pre]",
 		    "preview: click or hold mouse button or control key");
+  img.addEventListener("mouseover",sbookTOC_onmouseover,false);
+  img.addEventListener("mouseout",sbookTOC_onmouseout,false);
+  img.addEventListener("mousedown",fdjtCancelEvent,false);
+  img.addEventListener("mouseup",fdjtCancelEvent,false);
   return img;
+}
+
+function sbookPreviewIcon(img)
+{
+  return false;
 }
 
 /* Button methods */

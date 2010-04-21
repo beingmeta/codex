@@ -46,11 +46,11 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   if (!(target))
     if ((origin)&&(origin.id))
       target=$(origin.id);
-    else target=sbook_target||sbook_focus;
+    else target=sbook_target;
   var refuri=sbookGetRefURI(target);
   if (sbook_trace_gloss)
-    fdjtLog("Setting up gloss HUD for %o from %o st=%o sf=%o excerpt=%o",
-	    target,origin,sbook_target,sbook_focus,excerpt);
+    fdjtLog("Setting up gloss HUD for %o from %o st=%o excerpt=%o",
+	    target,origin,sbook_target,excerpt);
   if (sbook_mark_target===target) {
     /* If the HUD is already, initialized for the target, just update
        the excerpt */
@@ -124,23 +124,13 @@ function sbookMarkHUDSetup(target,origin,excerpt)
 	  var j=0; var jlim=tags.length;
 	  while (j<jlim) fdjtInsert(tagcues,tags[j++]);}}
       scan=$(scan.sbook_headid);}}
-  var tags=gather_tags(sbook_focus);
+  var tags=gather_tags(sbook_target);
   var k=0; while (k<tags.length) {
     var tag=tags[k++];
     if (fdjtIndexOf(tagcues,tag)<0) tagcues.push(tag);}
   // Set the selected text as an excerpt
   if ((excerpt)&&(excerpt.length>sbook_min_excerpt)) 
     sbookSetMarkExcerpt(excerpt);
-  var hud=$("SBOOKMARKHUD");
-  var offinfo=fdjtGetOffset(target);
-  hud.style.maxHeight=(window.innerHeight-100)+'px';
-  hud.style.opacity=0.0; hud.style.display='block';
-  var hudinfo=fdjtGetOffset(hud);
-  var minoff=(window.scrollY+window.innerHeight)-hudinfo.height;
-  hud.style.opacity=null; hud.style.display=null;
-  if (offinfo.top<minoff) 
-    hud.style.top=offinfo.top+'px';
-  else hud.style.top=minoff+'px';
   fdjtSetCompletionCues($("SBOOKMARKCLOUD"),tagcues);
   fdjtAutoPrompt_setup($("SBOOKMARK"));
   fdjtComplete($("SBOOKMARKTAGINPUT"));
@@ -613,6 +603,7 @@ function sbookMark(target,gloss,excerpt)
 		  ((gloss.msg)?(fdjtSpan("msg",gloss.msg)):(false)));
 	fdjtReplace("SBOOKMARKRELAYBLOCK",glossblock);}}
   else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
+  sbookOpenGlossmark(target,true);
   sbookHUDMode("mark");
   $("SBOOKMARKINPUT").focus();
 }

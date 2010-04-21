@@ -81,11 +81,6 @@ body.notfixed div#SBOOKHUD div#SBOOKHEAD,
 body.notfixed div#SBOOKHUD div#SBOOKFOOT {
   position: absolute; }
 
-div.sbookshoe {
-  position: absolute; top: 0px; left: 0px; right: 0px; 
-  z-index: 100; overflow: visible;}
-div#SBOOKHUDSHOE { z-index: 200;}
-
 body.preview div#SBOOKHUD div.hudblock { opacity: 0.3}
 body.preview div#SBOOKHUD div#SBOOKHEAD { display: none;}
 body.preview div#SBOOKHUD.toc div#SBOOKHEAD { display: block;}
@@ -94,8 +89,20 @@ body.preview div#SBOOKHUD.toc div#SBOOKHEAD div.hudblock#SBOOKTOC {
     display: block;}
 body.preview div#SBOOKHUD.dashtoc div#SBOOKHEAD div.hudblock#SBOOKDASH {
     display: block; visiblity: hidden;}
-body.preview div#SBOOKHUD.dashtoc div#SBOOKHEAD div.hudblock#SBOOKDASH div.spanbar:hover {
+body.preview div#SBOOKHUD.dashtoc div#SBOOKHEAD div.hudblock#SBOOKDASH
+  div.spanbar:hover {
     visibility: visible; }
+/*
+body.preview div#SBOOKHUD.dashtoc div#SBOOKHEAD div.hudblock#SBOOKDASH
+  div.live.sbooktoc:hover > div.sbooktocleaf {
+    visibility: visible; }
+body.preview div#SBOOKHUD.dashtoc div#SBOOKHEAD div.hudblock#SBOOKDASH
+  div.live.sbooktoc:hover > div.spanbar {
+    visibility: visible; opacity: 0.5;}
+body.preview div#SBOOKHUD.dashtoc div#SBOOKHEAD div.hudblock#SBOOKDASH
+  div.live.sbooktoc:hover > div.sbooktocleaf a.cohi {
+    color: red;}
+*/
 
 /* Buttons */
 
@@ -109,7 +116,7 @@ div#SBOOKHUD img.hudbutton:hover { opacity: 0.9; background-color: gray;}
 
 body div.sbookmargin {
     position: fixed; display: block;
-    background-color: white; z-index: 25;}
+    background-color: white; z-index: 5;}
 
 body.preview div.sbookmargin { display: none;}
 body.notfixed div.sbookmargin { position: absolute;}
@@ -122,6 +129,9 @@ body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; }
 body.notfixed div.sbookmargin#SBOOKPAGEFOOT {
     top: 0px; bottom: inherit; }
 
+body div.sbookmargin#SBOOKPAGEFOOT div.sbookmargin { position: absolute; }
+
+body div#SBOOKHUD div { z-index: inherit;}
 body div.sbookmargin.sbookright,
 body div.sbookmargin.sbookleft {
  top: 0px; height: 100%; width: 50px; opacity: 0.01;}
@@ -241,7 +251,7 @@ body.notfixed.hudup div#SBOOKHUD.about div#SBOOKHEAD,
 body.notfixed.hudup div#SBOOKHUD.device div#SBOOKHEAD,
 body.notfixed.hudup div#SBOOKHUD.sbookapp div#SBOOKHEAD,
 body.notfixed.hudup div#SBOOKHUD.dashtoc div#SBOOKHEAD,
-body.hudup div#SBOOKHUD.glosses div#SBOOKHEAD {
+body.notfixed.hudup div#SBOOKHUD.glosses div#SBOOKHEAD {
   height: 100%;}
 
 /* The TOC/Nav HUD */
@@ -596,7 +606,7 @@ div#SBOOKHUD div.hud#SBOOKTAGS {
 /* The Bookmark HUD */
 
 div#SBOOKHUD.mark div.hudblock#SBOOKMARKHUD {
-    overflow: auto; right: 50px;
+    overflow: auto; right: 50px; top: 0px;
     display: block; opacity: 0.9;
     max-height: inherit; z-index: 200;
     border-color: blue;}
@@ -1421,22 +1431,10 @@ body.xtouch img.hudbutton[alt='>>'] { display: block;}
 body.xtouch img.hudbutton[alt='<<'] { display: block;}
 
 /* Make span bars finger-fat in touch mode */
-/*
-body.touch div#SBOOKHUD.toc div.spanbar div.sbookhudspan { height: 45px;}
-body.touch div#SBOOKHUD.toc div.spanbar div.progressbox { height: 50px;}
-body.touch div.sbooktoc div.sub a.sectname { font-size: 95%; }
-body.touch.preview div.sbooktoc.live { display: block;}
-body.touch.preview div.sbooktoc.live div.sbooktoc.live { display: block;}
-body.touch.preview div.sbooktoc.live:hover { display: block;}
-body.touch.preview div.sbooktoc.live:hover div.sbooktoc.live {
-    display: block;}
-body.touch.preview div.sbooktoc.live:hover div.sbooktoc.live:hover {
-    display: block;}
-*/
 
 /* Show edges in touch mode (for tap/click) */
-body.touch div#SBOOKHUD div#SBOOKLEFTEDGE { display: block;}
-body.touch div#SBOOKHUD div#SBOOKRIGHTEDGE { display: block;}
+body.touch div#SBOOKHUD div#SBOOKLEFTEDGE { display: block; }
+body.touch div#SBOOKHUD div#SBOOKRIGHTEDGE { display: block; }
 
 /* Conditional display */
 .fortouch { display: none;}

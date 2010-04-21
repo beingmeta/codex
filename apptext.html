@@ -28,17 +28,12 @@
 </span>
 </div>
 <div class='tabbar' id='SBOOKTABS'>
-<span class='tab' contentid='APPHELP'
-      onclick='sbookHUDMode("help"); fdjtCancelEvent(event); return false;'
-      title='how to use this sBook'>
-  <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png'
-       alt='Help'/></span>
 <span class='tab' contentid='APPABOUT'
       onclick='sbookHUDMode("about"); fdjtCancelEvent(event); return false;'
       title='information and links about this book'>
   About</span>
-<span class='tab' contentid='APPTOC'
-      onclick='sbookHUDMode("apptoc"); fdjtCancelEvent(event); return false;'
+<span class='tab' contentid='DASHTOC'
+      onclick='sbookHUDMode("dashtoc"); fdjtCancelEvent(event); return false;'
       title='Table of Contents (static)'>
   Contents</span>
 <span class='tab' contentid='APPDEVICE'
@@ -53,6 +48,11 @@
       onclick='sbookHUDMode("login"); fdjtCancelEvent(event); return false;'
       title='login to sBooks'>
   Login</span>
+<span class='tab' contentid='APPHELP'
+      onclick='sbookHUDMode("help"); fdjtCancelEvent(event); return false;'
+      title='how to use this sBook'>
+  <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png'
+       alt='Help'/></span>
 </div>
 
 <div class='tabcontent' id='APPHELP'>
@@ -384,7 +384,7 @@ or methods.</p>
 </table>  
 </div>
 
-<div class='tabcontent' id='APPTOC'>
+<div class='tabcontent' id='DASHTOC'>
 <h1>Table of Contents</h1>
 </div>
 
