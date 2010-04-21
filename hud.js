@@ -287,10 +287,12 @@ function sbookSyncHUD()
   if (!(sbook_notfixed)) return;
   if (window.offsetY!==sbook_sync_head) {
     sbookHead.style.top=window.scrollY+'px';
+    // sbookHead.style["-webkit-transformation"]="translate(0px,"+window.scrollY+"px)";
     sbook_sync_head=window.scrollY;
     sbookHead.style.maxHeight=(window.innerHeight-100)+'px';}
   if ((window.scrollY+window.innerHeight)!==sbook_sync_foot) {
     sbookFoot.style.top=(window.scrollY+window.innerHeight-42)+'px';
+    // sbookFoot.style["-webkit-transformation"]="translate(0px,"+(window.scrollY+window.innerHeight-50)+"px)";
     sbook_sync_foot=(window.scrollY+window.innerHeight);}
 }
 

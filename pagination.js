@@ -613,10 +613,13 @@ function sbookGoToPage(pagenum,pageoff)
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
   if (window.scrollY!==(off-sbook_top_px)) {
+    if (sbook_notfixed) 
+      document.body.style.visibility='hidden';
     window.scrollTo(0,(off-sbook_top_px));
     if (sbook_notfixed) {
       sbookMoveMargins(info);
-      sbookSyncHUD();}}
+      sbookSyncHUD();
+      document.body.style.visibility='visible';}}
   if ((sbook_target)&&(fdjtIsVisible(sbook_target)))
     sbookSetHead(sbook_target);
   else sbookSetHead(info.focus||info.first);
