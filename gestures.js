@@ -153,7 +153,7 @@ function sbook_onkeydown(evt)
       sbookHUDMode(false);
       sbookPreview(false);
       sbookSetTarget(false);
-      $("SBOOKSEARCHTEXT").blur();}
+      $ID("SBOOKSEARCHTEXT").blur();}
     else if (sbook_last_mode) sbookHUDMode(sbook_last_mode);
     else {
       if ((sbook_mark_target)&&(fdjtIsVisible(sbook_mark_target)))
@@ -216,11 +216,11 @@ function sbook_onkeypress(evt)
     else sbookHUDMode(modearg);
   else {}
   if (sbook_mode==="searching")
-    $("SBOOKSEARCHTEXT").focus();
+    $ID("SBOOKSEARCHTEXT").focus();
   else if (sbook_mode==="mark") {
     sbookMarkHUDSetup(false);
-    $("SBOOKMARKINPUT").focus();}
-  else $("SBOOKSEARCHTEXT").blur();
+    $ID("SBOOKMARKINPUT").focus();}
+  else $ID("SBOOKSEARCHTEXT").blur();
   fdjtCancelEvent(evt);
 }
 
@@ -230,17 +230,17 @@ function sbookInterfaceMode(mode)
 {
   if (mode==='touch') {
     sbook_interaction=mode;
-    fdjtCheckSpan_set($("SBOOKTOUCHMODE"),true,true);
+    fdjtCheckSpan_set($ID("SBOOKTOUCHMODE"),true,true);
     fdjtAddClass(document.body,"touch");
     sbookCheckPagination();}
   else if (mode==='mouse') {
     sbook_interaction=mode;
-    fdjtCheckSpan_set($("SBOOKMOUSEMODE"),true,true);
+    fdjtCheckSpan_set($ID("SBOOKMOUSEMODE"),true,true);
     fdjtDropClass(document.body,"touch");
     sbookCheckPagination();}
   else if (mode==='keyboard') {
     sbook_interaction=mode;
-    fdjtCheckSpan_set($("SBOOKKBDMODE"),true,true);
+    fdjtCheckSpan_set($ID("SBOOKKBDMODE"),true,true);
     fdjtDropClass(document.body,"touch");
     sbookCheckPagination();}
   else {
@@ -252,21 +252,21 @@ function sbookSparseMode(flag)
 {
   if (flag) {
     sbook_sparse=true;
-    fdjtCheckSpan_set($("SBOOKSPARSE"),true,true);
+    fdjtCheckSpan_set($ID("SBOOKSPARSE"),true,true);
     fdjtAddClass(document.body,"sparsebook");}
   else {
     sbook_sparse=false;
-    fdjtCheckSpan_set($("SBOOKSPARSE"),false,true);
+    fdjtCheckSpan_set($ID("SBOOKSPARSE"),false,true);
     fdjtDropClass(document.body,"sparsebook");}
 }
 
 function sbookFlashMode(flag)
 {
   if (flag) {
-    fdjtCheckSpan_set($("SBOOKHUDFLASH"),true,true);
+    fdjtCheckSpan_set($ID("SBOOKHUDFLASH"),true,true);
     sbook_hud_flash=sbook_default_hud_flash;}
   else {
-    fdjtCheckSpan_set($("SBOOKHUDFLASH"),false,true);
+    fdjtCheckSpan_set($ID("SBOOKHUDFLASH"),false,true);
     sbook_hud_flash=false;}
 }
 

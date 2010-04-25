@@ -45,7 +45,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
 {
   if (!(target))
     if ((origin)&&(origin.id))
-      target=$(origin.id);
+      target=$ID(origin.id);
     else target=sbook_target;
   var refuri=sbookGetRefURI(target);
   if (sbook_trace_gloss)
@@ -69,24 +69,24 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   var glossinfo=((origin)&&(origin.oid)&&fdjtOIDs[origin.oid]);
   if (glossinfo)
     if (glossinfo.user===sbook_user) {
-      $("SBOOKMARKOID").value=origin.oid;
-      $("SBOOKMARKRELAY").value=glossinfo.relay||null;}
+      $ID("SBOOKMARKOID").value=origin.oid;
+      $ID("SBOOKMARKRELAY").value=glossinfo.relay||null;}
     else {
-      $("SBOOKMARKOID").value=null;
-      $("SBOOKMARKRELAY").value=origin.oid;}
-  $("SBOOKMARKFORM").setAttribute('mode','tag');
-  $("SBOOKMARKREFURI").value=refuri;
-  $("SBOOKMARKFRAGID").value=target.id;
-  $("SBOOKMARKSOURCE").value=sbookGetDocURI(target);
-  $("SBOOKMARKSYNC").value=sbook_gloss_syncstamp;
-  $("SBOOKMARKTITLE").value=
+      $ID("SBOOKMARKOID").value=null;
+      $ID("SBOOKMARKRELAY").value=origin.oid;}
+  $ID("SBOOKMARKFORM").setAttribute('mode','tag');
+  $ID("SBOOKMARKREFURI").value=refuri;
+  $ID("SBOOKMARKFRAGID").value=target.id;
+  $ID("SBOOKMARKSOURCE").value=sbookGetDocURI(target);
+  $ID("SBOOKMARKSYNC").value=sbook_gloss_syncstamp;
+  $ID("SBOOKMARKTITLE").value=
     ((origin)&&(origin.title))||
     ((target)&&(target===sbook_target)&&(sbook_target_title))||
     (sbook_get_titlepath(info))||"";
   if ((origin)&&(origin.oid))
-    $("SBOOKMARKRELAY").value=origin.oid;
-  else $("SBOOKMARKRELAY").value=null;
-  var completions_elt=$("SBOOKMARKCLOUD");
+    $ID("SBOOKMARKRELAY").value=origin.oid;
+  else $ID("SBOOKMARKRELAY").value=null;
+  var completions_elt=$ID("SBOOKMARKCLOUD");
   var cinfo=fdjtEltInfo(completions_elt);
   var completions=cinfo.allcompletions;
   // Uncheck all the completions
@@ -105,7 +105,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     completions._ischecked=newchecked;}
   var seen_tags=[];
   var tags_elt=fdjtSpan(".tagcues");
-  $("SBOOKMARKTAGINPUT").value="";
+  $ID("SBOOKMARKTAGINPUT").value="";
   /* Figure out the tagcues */
   var tagcues=[];
   /* Get tags from the item and the items above it */
@@ -123,7 +123,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
 	  var tags=glosses[i++].tags;
 	  var j=0; var jlim=tags.length;
 	  while (j<jlim) fdjtInsert(tagcues,tags[j++]);}}
-      scan=$(scan.sbook_headid);}}
+      scan=$ID(scan.sbook_headid);}}
   var tags=gather_tags(sbook_target);
   var k=0; while (k<tags.length) {
     var tag=tags[k++];
@@ -131,10 +131,10 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   // Set the selected text as an excerpt
   if ((excerpt)&&(excerpt.length>sbook_min_excerpt)) 
     sbookSetMarkExcerpt(excerpt);
-  fdjtSetCompletionCues($("SBOOKMARKCLOUD"),tagcues);
-  fdjtAutoPrompt_setup($("SBOOKMARK"));
-  fdjtComplete($("SBOOKMARKTAGINPUT"));
-  fdjtRedisplay($("SBOOKMARKFORM"));
+  fdjtSetCompletionCues($ID("SBOOKMARKCLOUD"),tagcues);
+  fdjtAutoPrompt_setup($ID("SBOOKMARK"));
+  fdjtComplete($ID("SBOOKMARKTAGINPUT"));
+  fdjtRedisplay($ID("SBOOKMARKFORM"));
   // fdjtTrace("tags_elt=%o tags_elt.input_elt=%o",tags_elt,tags_elt.input_elt);
   // fdjtComplete(tags_elt.input_elt);
 }
@@ -243,7 +243,7 @@ function sbookCreateMarkHUD(classinfo)
     /* Turn off the target lock */
     sbookSetTarget(false);
     form.reset();
-    fdjtCheckSpan_setup($("SBOOKMARKCLOUD"));
+    fdjtCheckSpan_setup($ID("SBOOKMARKCLOUD"));
    win.sbookHUDMode(false);};
   // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
   // hideicon.onclick="fdjtAddClass('SBOOKMARK','hidden')"; 
@@ -254,12 +254,12 @@ function sbookCreateMarkHUD(classinfo)
 
 function sbookMark_onsubmit(evt)
 {
-  if (($("SBOOKMARKINPUT").value)==="") {
-    var id=$("SBOOKMARKFRAGID").value;
-    var elt=$(id);
+  if (($ID("SBOOKMARKINPUT").value)==="") {
+    var id=$ID("SBOOKMARKFRAGID").value;
+    var elt=$ID(id);
     var text=fdjtStdSpace(fdjtTextify(elt));
     fdjtTrace("Initializing text to %o from %o",text,elt);
-    $("SBOOKMARKINPUT").value=
+    $ID("SBOOKMARKINPUT").value=
       ((text.length>60)?((text.slice(0,60))+"..."):(text));}
   return fdjtForm_onsubmit(evt);
 }
@@ -305,7 +305,7 @@ function sbookMarkPickFeed()
 
 function sbookMarkFeed_onchange(evt)
 {
-  var checkspan=$("SBOOKMARKPRIVATE");
+  var checkspan=$ID("SBOOKMARKPRIVATE");
   var overlays=evt.target;
   var newfeed=evt.target.value;
   var info=fdjtOIDs[newfeed];
@@ -420,10 +420,10 @@ function sbookMarkCloud()
 
 function sbookMarkCloud_onclick(evt)
 {
-  var target=$P(".checkspan",$T(evt));
+  var target=FDJT$P(".checkspan",$T(evt));
   // fdjtCheckSpan_onclick(evt);
   if (target.getAttribute("ischecked"))
-    $("SBOOKMARKTAGINPUT").value='';
+    $ID("SBOOKMARKTAGINPUT").value='';
 }
 
 function sbookAddConversant(completions,c,seen,checked,init)
@@ -474,7 +474,7 @@ function sbooksXRefs_onkeypress(evt)
 
 function sbookSetMarkExcerpt(excerpt)
 {
-  var input=$("SBOOKMARKEXCERPT");
+  var input=$ID("SBOOKMARKEXCERPT");
   var use_excerpt=excerpt;
   if ((excerpt)&&(excerpt.length<sbook_min_excerpt))
     excerpt=fdjtTextify(target,true);
@@ -497,7 +497,7 @@ function sbookSetMarkExcerpt(excerpt)
 function sbookMarkTagInput_onfocus(evt)
 {
   var target=$T(evt);
-  var markform=$P("form.mark",target);
+  var markform=FDJT$P("form.mark",target);
   if (markform) {
     // markform.setAttribute("mode","tag");
     fdjtRedisplay(markform);}
@@ -507,7 +507,7 @@ function sbookMarkTagInput_onfocus(evt)
 function sbookMarkMode_onclick_handler(mode)
 {
   return function(evt) {
-    var pingbox=$P("FORM.mark",$T(evt));
+    var pingbox=FDJT$P("FORM.mark",$T(evt));
     var curmode=pingbox.getAttribute('mode');
     if (mode)
       if (mode===curmode)
@@ -516,7 +516,7 @@ function sbookMarkMode_onclick_handler(mode)
     else pingbox.removeAttribute('mode');
     if (mode) {
       var inputid="SBOOKMARK"+mode.toUpperCase();
-      if ($(inputid)) $(inputid).focus();}
+      if ($ID(inputid)) $ID(inputid).focus();}
     pingbox.className=pingbox.className;}
 }
 
@@ -541,7 +541,7 @@ function sbookMarkForm_onclick(evt)
 function _sbook_tags_oncomplete(elt)
 {
   fdjtCheckSpan_update(elt,true);
-  var completions=$P(".completions",elt);
+  var completions=FDJT$P(".completions",elt);
   var input_elt=((completions)&&(fdjt_get_completions_input(completions)));
   if (input_elt) {
     input_elt.value="";
@@ -573,7 +573,7 @@ function sbookMarkTag_onkeyup(evt)
     if (!(fdjtForceComplete(target))) {
       var curval=target.value;
       var knospan=knoCheckCompletion("TAGS",curval,true);
-      fdjtPrepend($("SBOOKMARKCLOUD"),knospan);
+      fdjtPrepend($ID("SBOOKMARKCLOUD"),knospan);
       target.value="";}
     evt.preventDefault(); evt.cancelBubble=true;
     return false;}
@@ -586,14 +586,14 @@ function sbookMarkTag_onkeyup(evt)
 function sbookMark(target,gloss,excerpt)
 
 {
-  if (sbook_mark_target!==target) {$("SBOOKMARKFORM").reset();}
+  if (sbook_mark_target!==target) {$ID("SBOOKMARKFORM").reset();}
   if ((gloss)&&(gloss.user))
     // Handle relays and edits
     if (gloss.user===sbook_user)
       sbookMarkHUDSetup(target,gloss||false,excerpt||false);
     else {
       sbookMarkHUDSetup(target,false,excerpt||false);
-      if (gloss.gloss) $("SBOOKMARKRELAY").value=gloss.gloss;
+      if (gloss.gloss) $ID("SBOOKMARKRELAY").value=gloss.gloss;
       if (gloss.user) {
 	var userinfo=fdjtOIDs[gloss.user];
 	var glossblock=
@@ -605,7 +605,7 @@ function sbookMark(target,gloss,excerpt)
   else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
   sbookOpenGlossmark(target,true);
   sbookHUDMode("mark");
-  $("SBOOKMARKINPUT").focus();
+  $ID("SBOOKMARKINPUT").focus();
 }
 
 /* Creating login button */

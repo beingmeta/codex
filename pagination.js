@@ -608,7 +608,7 @@ function sbookGoToPage(pagenum,pageoff)
   var footheight=((off-sbook_top_px)+window.innerHeight)-info.bottom;
   if (footheight<0) {
     footheight=0; sbook_curbottom=sbook_bottom_px;}
-  $("SBOOKPAGEFOOT").style.height=footheight+'px';
+  $ID("SBOOKPAGEFOOT").style.height=footheight+'px';
   sbook_curpage=pagenum;
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
@@ -634,8 +634,8 @@ function sbookGetPage(arg)
 {
   var top;
   if (typeof arg === "number") top=arg;
-  else if (!($(arg))) return 0;
-  else top=fdjtGetOffset($(arg)).top;
+  else if (!($ID(arg))) return 0;
+  else top=fdjtGetOffset($ID(arg)).top;
   var i=1; var len=sbook_pages.length;
   while (i<len) 
     if (sbook_pages[i]>top) return i-1;
@@ -645,12 +645,12 @@ function sbookGetPage(arg)
 
 function sbookMoveMargins(pageinfo)
 {
-  $("SBOOKPAGEHEAD").style.top=(pageinfo.top-sbook_top_px)+"px";
-  $("SBOOKPAGEFOOT").style.top=pageinfo.bottom+"px";
-  $("SBOOKLEFTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
-  $("SBOOKLEFTEDGE").style.height=window.innerHeight+"px";
-  $("SBOOKRIGHTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
-  $("SBOOKRIGHTEDGE").style.height=window.innerHeight+"px";
+  $ID("SBOOKPAGEHEAD").style.top=(pageinfo.top-sbook_top_px)+"px";
+  $ID("SBOOKPAGEFOOT").style.top=pageinfo.bottom+"px";
+  $ID("SBOOKLEFTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
+  $ID("SBOOKLEFTEDGE").style.height=window.innerHeight+"px";
+  $ID("SBOOKRIGHTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
+  $ID("SBOOKRIGHTEDGE").style.height=window.innerHeight+"px";
 }
 
 function sbookSyncPage()
@@ -842,7 +842,7 @@ function sbookPageView(flag,nogo)
     sbookCheckPagination();
   else if (flag) {
     sbook_pageview=true;
-    fdjtCheckSpan_set($("SBOOKPAGEVIEW"),true,true);
+    fdjtCheckSpan_set($ID("SBOOKPAGEVIEW"),true,true);
     fdjtAddClass(document.body,"sbookpageview");
     fdjtDropClass(document.body,"sbookscroll");
     sbookFlashMessage(3000,
@@ -856,7 +856,7 @@ function sbookPageView(flag,nogo)
   else {
     sbook_pageview=false;
     sbook_nextpage=false; sbook_pagebreak=false;
-    fdjtCheckSpan_set($("SBOOKPAGEVIEW"),false,true);
+    fdjtCheckSpan_set($ID("SBOOKPAGEVIEW"),false,true);
     fdjtAddClass(document.body,"sbookscroll");
     fdjtDropClass(document.body,"sbookpageview");
     sbookFlashMessage(3000,
@@ -886,9 +886,9 @@ function sbookMakeMargin(spec)
 function sbookPageHead_onclick(evt)
 {
   evt=evt||event;
-  if ((evt.clientX)>($("SBOOKRIGHTEDGE").offsetLeft))
+  if ((evt.clientX)>($ID("SBOOKRIGHTEDGE").offsetLeft))
     return sbookRightEdge_onclick(evt);
-  else if ((evt.clientX)<($("SBOOKLEFTEDGE").offsetWidth))
+  else if ((evt.clientX)<($ID("SBOOKLEFTEDGE").offsetWidth))
     return sbookLeftEdge_onclick(evt);
   else if (sbook_mode) sbookHUDMode(false);
   else sbookHUDMode(sbook_last_app);
@@ -897,9 +897,9 @@ function sbookPageHead_onclick(evt)
 function sbookPageFoot_onclick(evt)
 {
   evt=evt||event;
-  if ((evt.clientX)>($("SBOOKRIGHTEDGE").offsetLeft))
+  if ((evt.clientX)>($ID("SBOOKRIGHTEDGE").offsetLeft))
     return sbookRightEdge_onclick(evt);
-  else if ((evt.clientX)<($("SBOOKLEFTEDGE").offsetWidth))
+  else if ((evt.clientX)<($ID("SBOOKLEFTEDGE").offsetWidth))
     return sbookLeftEdge_onclick(evt);
   else if (sbook_mode) sbookHUDMode(false);
   else sbookHUDMode("context");
@@ -914,7 +914,7 @@ function sbookUpdatePagination()
   var target=sbook_target;
   sbookMessage("Determining page layout");
   var pagination=sbookPaginate(pagesize);
-  $("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
+  $ID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
   sbook_pages=pagination.pages;
   sbook_pageinfo=pagination.info;
   sbook_pagesize=pagesize;

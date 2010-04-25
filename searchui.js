@@ -91,8 +91,8 @@ function sbookSearchInput_onkeypress(evt)
     sbookForceComplete(target);
     sbookShowSearch(sbook_query);
     sbookHUDMode("browsing");
-    $("SBOOKSEARCHTEXT").blur();
-    $("SBOOKSUMMARIES").focus();
+    $ID("SBOOKSEARCHTEXT").blur();
+    $ID("SBOOKSUMMARIES").focus();
     fdjtCancelEvent(evt);
     return false;}
   else if (ch===59) { /* That is, semicolon */
@@ -113,8 +113,8 @@ function sbookSearchInput_onkeyup(evt)
     sbookForceComplete(target);
     sbookShowSearch(sbook_query);
     sbookHUDMode("browsing");
-    $("SBOOKSEARCHTEXT").blur();
-    $("SBOOKSUMMARIES").focus();
+    $ID("SBOOKSEARCHTEXT").blur();
+    $ID("SBOOKSUMMARIES").focus();
     fdjtCancelEvent(evt);
     return false;}
   else if ((kc===8)||(kc===9)) {
@@ -164,9 +164,9 @@ function _sbook_replace_current_entry(elt,value)
       (sbook_query._results.length<=sbook_search_gotlucky)) {
     // fdjtTrace("Search got lucky: %o",sbook_query);
     sbookShowSearch(sbook_query);
-    $("SBOOKSEARCHTEXT").blur();
+    $ID("SBOOKSEARCHTEXT").blur();
     sbookHUDMode("browsing");}
-  else $("SBOOKSEARCHTEXT").focus();
+  else $ID("SBOOKSEARCHTEXT").focus();
 }
 
 function _sbook_note_completions(completions)
@@ -288,8 +288,8 @@ function sbookQueryCloud(query)
       evt=evt||event||null;
       sbookShowSearch(query);
       sbookHUDMode("browsing");
-      $("SBOOKSEARCHTEXT").blur();
-      $("SBOOKSUMMARIES").focus();
+      $ID("SBOOKSEARCHTEXT").blur();
+      $ID("SBOOKSUMMARIES").focus();
       if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
       evt.cancelBubble=true;};
     result_counts.title='click to see results; click in the input box to return here';
@@ -302,9 +302,9 @@ function sbookQueryCloud(query)
     fdjtPrepend(completions,counts,msg1,msg2);
     query._cloud=completions;
     if (hide_some) {
-      var cues=$$(".cue",completions);
+      var cues=FDJT$(".cue",completions);
       if (!((cues)&&(cues.length))) {
-	var compelts=$$(".completion",completions);
+	var compelts=FDJT$(".completion",completions);
 	var i=0; while (i<sbook_show_refiners) fdjtAddClass(compelts[i++],"cue");}}
     else fdjtAddClass(completions,"showempty");
     // fdjtTrace("Generated completions for %o: %o",query,completions);
@@ -394,8 +394,8 @@ function sbookMaxComplete_onclick(evt)
 {
   evt=evt||event;
   var target=$T(evt);
-  var container=$P(".completions",target);
-  $("SBOOKSEARCHTEXT").focus();
+  var container=FDJT$P(".completions",target);
+  $ID("SBOOKSEARCHTEXT").focus();
   fdjtToggleClass(container,"showall");
   fdjtCancelEvent(evt);
 }
@@ -474,7 +474,7 @@ function sbookCreateSearchHUD(classinfo)
 
 function sbookClearInput_onclick(evt)
 {
-  var input_elt=$("SBOOKSEARCHTEXT");
+  var input_elt=$ID("SBOOKSEARCHTEXT");
   input_elt.value='';
   sbookUpdateQuery(input_elt);
   input_elt.focus();

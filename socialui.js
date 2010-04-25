@@ -72,7 +72,7 @@ function sbookCreateGlossesHUD(classinfo)
 function sbookAddSourceIcon(info)
 {
   var humid=info.humid;
-  var icon=$("SBOOKSOURCEICON"+humid);
+  var icon=$ID("SBOOKSOURCEICON"+humid);
   if (icon) return icon;
   if (!(info.name)) return;
   var pic=info.pic; var kind=info.kind;
@@ -96,9 +96,9 @@ function sbookEveryoneButton_onclick(evt)
 {
   evt=evt||event||null;
   var target=$T(evt);
-  var sources=$P(".sbooksources",target);
-  var glosses=$P(".sbookglosses",target);
-  var summaries=$$(".sbooksummaries",glosses)[0];
+  var sources=FDJT$P(".sbooksources",target);
+  var glosses=FDJT$P(".sbookglosses",target);
+  var summaries=FDJT$(".sbooksummaries",glosses)[0];
   var new_sources=[];
   if ((!(sources))||(!(glosses)))
     return; /* Warning? */
@@ -106,7 +106,7 @@ function sbookEveryoneButton_onclick(evt)
     sbookHUDMode(false);
     fdjtCancelEvent(evt);
     return;}
-  var selected=$$(".selected",sources);
+  var selected=FDJT$(".selected",sources);
   fdjtToggleClass(selected,"selected");
   fdjtAddClass(target,"selected");
   sbookSelectSources(summaries,false);
@@ -118,19 +118,19 @@ function sbookSources_onclick(evt)
   evt=evt||event||null;
   // if (!(sbook_user)) return;
   var target=$T(evt);
-  var sources=$P(".sbooksources",target);
-  var glosses=$P(".sbookglosses",target);
-  var summaries=$$(".sbooksummaries",glosses)[0];
+  var sources=FDJT$P(".sbooksources",target);
+  var glosses=FDJT$P(".sbookglosses",target);
+  var summaries=FDJT$(".sbooksummaries",glosses)[0];
   var new_sources=[];
   if ((!(sources))||(!(glosses))||(!(target.oid)))
     return; /* Warning? */
   fdjtToggleClass(target,"selected");
-  var selected=$$(".selected",sources);
+  var selected=FDJT$(".selected",sources);
   var i=0; var len=selected.length;
   while (i<len) {
     var oid=selected[i++].oid;
     if (oid) new_sources.push(oid);}
-  var everyone=$$(".everyone",sources)[0];
+  var everyone=FDJT$(".everyone",sources)[0];
   if (new_sources.length) {
     if (everyone) fdjtDropClass(everyone,"selected");
     sbookSelectSources(summaries,new_sources);}
@@ -156,7 +156,7 @@ function sbookScrollGlosses(elt,glosses)
 {
   if (elt.sbookloc) {
     var targetloc=elt.sbookloc;
-    if (!(glosses)) glosses=$("SBOOKALLGLOSSES");
+    if (!(glosses)) glosses=$ID("SBOOKALLGLOSSES");
     var children=glosses.childNodes;
     /* We do this linearly because it's fast enough and simpler */
     var i=0; var len=children.length; while (i<len) {
@@ -190,7 +190,7 @@ function gather_tags(elt,results)
 function sbookGlossmark(target,open)
 {
   if ((target)&&(target.glossmarkid))
-    return $(target.glossmarkid);
+    return $ID(target.glossmarkid);
   var id=((target)&&(target.id));
   var title=((target)&&(target.getAttribute('title')));
   var tags=((target)?(gather_tags(target)):[]);
@@ -230,11 +230,11 @@ var sbook_glossmark_target=false;
 function sbookOpenGlossmark(target,addmark)
 {
   if (sbook_glossmark_target===target) {
-    var hud=$("SBOOKMARKHUD");
+    var hud=$ID("SBOOKMARKHUD");
     hud.style.maxHeight=(window.innerHeight-100);
     sbookHUDMode("mark");}
   else {
-    var hud=$("SBOOKMARKHUD");
+    var hud=$ID("SBOOKMARKHUD");
     var glosses=sbook_glosses_by_id[target.id];
     var sumdiv=fdjtDiv(".sbooksummaries");
     sbookSetupSummaryDiv(sumdiv);
@@ -246,8 +246,8 @@ function sbookOpenGlossmark(target,addmark)
     sbookMarkHUDSetup(target);
     sbookAlignGlossmark(hud,target);
    if (addmark)
-      fdjtDropClass($("SBOOKMARKFORM"),"closed");
-    else fdjtAddClass($("SBOOKMARKFORM"),"closed");
+      fdjtDropClass($ID("SBOOKMARKFORM"),"closed");
+    else fdjtAddClass($ID("SBOOKMARKFORM"),"closed");
     sbookHUDMode("mark");}
 }
 

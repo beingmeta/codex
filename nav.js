@@ -232,7 +232,7 @@ function sbookTOC_onmouseover(evt)
   var target=$T(evt);
   fdjtCoHi_onmouseover(evt);
   if (fdjtIsClickactive(target)) return;
-  if (!(($P(".spanbar",target))||($P(".previewicon",target)))) {
+  if (!((FDJT$P(".spanbar",target))||(FDJT$P(".previewicon",target)))) {
     if (sbook_preview) sbookSetPreview(false);
     return;}
   var ref=sbookGetRef(target);
@@ -264,8 +264,8 @@ function sbookTOC_onmousedown(evt)
   sbook_mousedown=fdjtTime();
   var target=$T(evt);
   fdjtCoHi_onmouseout(evt);
-  if (!(($P(".sectname",target))||
-	($P(".sbooksummaries",target))))
+  if (!((FDJT$P(".sectname",target))||
+	(FDJT$P(".sbooksummaries",target))))
     return;
   var ref=sbookGetRef(target);
   if (ref) sbookSetPreview(ref);
