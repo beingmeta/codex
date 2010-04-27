@@ -1,227 +1,265 @@
-/* Building the TOC */
+/* -*- Mode: Javascript; -*- */
 
-var sbook_scanned=false;
-var sbook_trace_scan=false;
+/* Copyright (C) 2009 beingmeta, inc.
+   This file implements a Javascript/DHTML UI for reading
+    large structured documents (sBooks).
 
-function sbookTOC(root,tocinfo,taginfo)
+   For more information on sbooks, visit www.sbooks.net
+   For more information on knowlets, visit www.knowlets.net
+   For more information about beingmeta, visit www.beingmeta.com
+
+   This library uses the FDJT (www.fdjt.org) toolkit.
+
+   This program comes with absolutely NO WARRANTY, including implied
+   warranties of merchantability or fitness for any particular
+   purpose.
+
+    Use and redistribution (especially embedding in other
+      CC licensed content) is permitted under the terms of the
+      Creative Commons "Attribution-NonCommercial" license:
+
+          http://creativecommons.org/licenses/by-nc/3.0/ 
+
+    Other uses may be allowed based on prior agreement with
+      beingmeta, inc.  Inquiries can be addressed to:
+
+       licensing@beingmeta.com
+
+   Enjoy!
+
+*/
+
+/* New NAV hud design
+   One big DIV for the whole TOC, use CSS to change what's visible
+   General structure:
+     div.sbooktoc.toc0
+       div.head (contains section name)
+       div.spanbar (contains spanbar)
+       div.sub (contains all the subsections names)
+       div.sbooktoc.toc1 (tree for first section)
+       div.sbooktoc.toc1 (tree for second section)
+    Controlling display:
+       .cur class on current head
+       .live class on div.sbooktoc and parents
+*/
+
+/* Building the DIV */
+
+function sbookTOC(headinfo,depth,tocspec,prefix)
 {
-  if (!(root)) root=document.body;
-  if (!(tocinfo)) tocinfo=[];
-  if (!(taginfo)) taginfo=[];
-  var node_count=0;
-  var start=new Date();
-  this.root=root; this.tocinfo=tocinfo; this.taginfo=taginfo;
-  if (console.log)
-    console.log("[%fs] Scanning %o DOM for metadata",this.now(),root);
-  var children=root.childNodes, level=false;
-  var rootinfo={};
-  var scanstate=
-    {curlevel: 0,idserial:0,location: 0,
-     tagstack: [],taggings: [],
-     idstate: {prefix: false,count: 0},
-     idstack: [{prefix: false,count: 0}]};
-  scanstate.curhead=root; scanstate.curinfo=rootinfo;
-  if (root.id) tocinfo[root.id]=rootinfo;
-  // Location is an indication of distance into the document
-  var location=0;
-  rootinfo.title=root.title||document.title;
-  rootinfo.starts_at=0;
-  rootinfo.level=0; rootinfo.sub=new Array();
-  rootinfo.head=false; rootinfo.heads=new Array();
-  if (!(root.id)) root.id="SBOOKROOT";
-  rootinfo.id=root.id;
-  /* Build the metadata */
-  var i=0; while (i<children.length) {
-    var child=children[i++];
-    if (!(child.sbookskip))
-      node_count=node_count+
-	this.scanner(child,scanstate,tocinfo,taginfo);} 
-  var scaninfo=scanstate.curinfo;
-  /* Close off all of the open spans in the TOC */
-  while (scaninfo) {
-    scaninfo.ends_at=scanstate.location;
-    scaninfo=scaninfo.head;}
-  var done=new Date();
-  fdjtLog('[%fs] Finished gathering metadata in %f secs over %d/%d heads/nodes',
-	  fdjtET(),(done.getTime()-start.getTime())/1000,
-	  tocinfo.length,node_count);
-  return result;
+  var progressbar=fdjtDOM("HR.progressbar");
+  var head=fdjtDOM("A.sectname",headinfo.title);
+  var spec=tocspec||"DIV.sbooktoc";
+  var toc=fdjtDOM(spec,fdjtDOM("DIV.head",progressbar,head),
+		  generate_spanbar(headinfo),
+		  generate_subsections(headinfo));
+  var sub=headinfo.sub;
+  if (!(depth)) depth=0;
+  head.name="SBR"+headinfo.id;
+  head.sbook_ref=headinfo.id;
+  toc.sbook_start=headinfo.starts_at;
+  toc.sbook_end=headinfo.ends_at;
+  fdjtDOM.addClass(toc,"toc"+depth);
+  toc.id=(prefix||"SBOOKTOC4")+headinfo.id;
+  if ((!(sub)) || (!(sub.length))) {
+    fdjtDOM.addClass(toc,"sbooktocleaf");
+    return toc;}
+  var i=0; var n=sub.length;
+  while (i<n) {
+    toc.appendChild(sbookTOC(sub[i++],depth+1,spec,prefix));}
+  return toc;
+
+  function generate_subsections(headinfo) {
+    var sub=headinfo.sub;
+    if ((!(sub)) || (!(sub.length))) return false;
+    var div=fdjtDiv("sub");
+    var i=0; var n=sub.length;
+    while (i<n) {
+      var subinfo=sub[i];
+      var subspan=fdjtNewElt("A.sectname",subinfo.title);
+      subspan.sbook_ref=subinfo.id;
+      subspan.name="SBR"+subinfo.id;
+      fdjtAppend(div,((i>0)&&" \u00b7 "),subspan);
+      i++;}
+    return div;}
+  function generate_spanbar(headinfo){
+    var spanbar=fdjtDOM("div.spanbar");
+    var spans=fdjtDOM("div.spans");
+    var start=headinfo.starts_at;
+    var end=headinfo.ends_at;
+    var len=end-start;
+    var subsections=headinfo.sub; var last_info;
+    var sectnum=0; var percent=0;
+    spanbar.starts=start; spanbar.ends=end;
+    if ((!(subsections)) || (subsections.length===0))
+      return false;
+    var progress=fdjtDOM("div.progressbox","\u00A0");
+    var range=false;
+    fdjtAppend(spanbar,spans);
+    fdjtAppend(spans,range,progress);
+    progress.style.left="0%";
+    if (range) range.style.left="0%";
+    var i=0; while (i<subsections.length) {
+      var spaninfo=subsections[i++];
+      var subsection=document.getElementById(spaninfo.id);
+      var spanstart; var spanend; var spanlen; var addname=true;
+      if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
+	/* Add 'fake section' for the precursor of the first actual section */
+	spanstart=start;  spanend=spaninfo.starts_at;
+	spaninfo=headinfo; subsection=document.getElementById(headinfo.id);
+	i--; sectnum++; addname=false;}
+      else {
+	spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
+	sectnum++;}
+      var span=generate_span
+	(sectnum,subsection,spaninfo.title,spanstart,spanend,len,
+	 ((addname)&&("SBR"+subsection.id)));
+      spans.appendChild(span);
+      last_info=spaninfo;}
+    if ((end-last_info.ends_at)>0) {
+      /* Add 'fake section' for the content after the last actual section */
+      var span=generate_span
+	(sectnum,head,headinfo.title,last_info.ends_at,end,len);
+      spanbar.appendChild(span);}    
+    return spanbar;}
+
+  function generate_span(sectnum,subsection,title,spanstart,spanend,len,name){
+    var spanlen=spanend-spanstart;
+    var anchor=fdjtDOM("A.brick","\u00A0");
+    var span=fdjtDOM("DIV.sbookhudspan",anchor);
+    var width=(Math.floor(10000*(spanlen/len))/100)+"%";
+    var odd=((sectnum%2)==1);
+    if (odd) span.setAttribute("odd",sectnum);
+    else span.setAttribute("even",sectnum);
+    span.style.width=width;
+    span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
+    span.sbook_ref=subsection.id;
+    if (name) anchor.name=name;
+    return span;}
 }
+sbookTOC.id="$Id$";
+sbookTOC.version=parseInt("$Revision$".slice(10,-1));
 
-sbookTOC.headTitle=function(head)
-{
-  var title=
-    (head.toctitle)||
-    head.getAttributeNS('toctitle','http://sbooks.net')||
-    head.getAttribute('toctitle')||
-    head.getAttribute('data-toctitle')||
-    head.title;
-  if (!(title)) title=head.innerText;
-  if ((!(title))&&(head.innerHTML))
-    title=(head.innerHTML).replace();
-  if (!(title))
-    title=sbookTOC.gatherText(head);
-  if (typeof title === "string") {
-    var std=fdjtStdSpace(title);
-    if (std==="") return false;
-    else return std;}
-  else return fdjtTextify(title,true);
-}
+sbookTOC.update=function(prefix,head,cur){
+  if (!(prefix)) prefix="SBOOKTOC4";
+  if (cur) {
+    // Hide the current head and its (TOC) parents
+    var tohide=[];
+    var base_elt=document.getElementById(prefix+cur.id);
+    while (cur) {
+      var tocelt=document.getElementById(prefix+cur.id);
+      tohide.push(tocelt);
+      // Get TOC parent
+      cur=cur.sbook_head;}
+    var n=tohide.length-1;
+    // Go backwards (up) to potentially accomodate some redisplayers
+    while (n>=0) {fdjtDOM.dropClass(tohide[n--],"live");}
+    fdjtDOM.dropClass(base_elt,"cur");}
+  if (!(head)) return;
+  var base_elt=document.getElementById(prefix+head.id);
+  var toshow=[];
+  while (head) {
+    var tocelt=document.getElementById(prefix+head.id);
+    toshow.push(tocelt);
+    head=head.sbook_head;}
+  var n=toshow.length-1;
+  // Go backwards to accomodate some redisplayers
+  while (n>=0) {fdjtDOM.addClass(toshow[n--],"live");}
+  fdjtDOM.addClass(base_elt,"cur");};
 
-  sbookTOC.gatherText=function(head,s) {
-    if (!(s)) s="";
-    if (head.nodeType===3)
-      return s+head.nodeValue;
-    else if (head.nodeType!==1) return s;
-    else {
-      var children=head.childNodes;
-      var i=0; var len=children.length;
-      while (i<len) {
-	var child=children[i++];
-	if (child.nodeType===3) s=s+child.nodeValue;
-	else if (child.nodeType===1)
-	  s=sbookTOC.gatherText(child,s);
-	else {}}
-      return s;}}
+/* TOC handlers */
 
-
-sbookTOC.textWidth=function(elt)
-{
-  if (elt.nodeType===3) return elt.nodeValue.length;
-  else if (elt.nodeType===1) {
-    var children=elt.childNodes; var loc=0;
-    var i=0; var len=children.length;
-    while (i<len) {
-      var child=children[i++];
-      if (child.nodeType===3) loc=loc+child.nodeValue.length;
-      else if (child.nodeType===1)
-	loc=loc+sbookTOC.TextWidth(child);
-      else {}}
-    return loc;}
-  else return 0;
-}
-
-sbookTOC.headLevel=function(elt)
-{
-  if (elt.toclevel) return elt.toclevel;
-  var attrval=
-    elt.getAttributeNS('toclevel','http://sbooks.net')||
-    elt.getAttribute('toclevel')||elt.getAttribute('data-toclevel');
-  if (attrval) return parseInt(attrval);
-  if (elt.className) {
-    var cname=elt.className;
-    var tocloc=cname.search(/sbook\dhead/);
-    if (tocloc>=0) return parseInt(cname.slice(5,6));}
-  if (elt.tagName.search(/H\d/)==0)
-    return parseInt(elt.tagName.slice(1,2));
-  else return false;
-}
-
-sbookTOC.handleHead=function
-  (head,tocinfo,scanstate,level,curhead,curinfo,curlevel)
-{
-  var headid=head.id;
-  var headinfo=tocinfo[headid];
-  if (!(headinfo)) {
-    headinfo=tocinfo[headid]={};
-    tocinfo.push(headid);}
-  if (sbook_trace_scan)
-    fdjtLog("Scanning head item %o under %o at level %d w/id=#%s ",
-	    head,curhead,level,headid);
-  /* Iniitalize the headinfo */
-  headinfo.starts_at=scanstate.location;
-  headinfo.elt=head; headinfo.level=level;
-  headinfo.sub=new Array(); headinfo.id=headid;
-  headinfo.title=sbookTOCTitle(head);
-  headinfo.next=false; headinfo.prev=false;
-  if (level>curlevel) {
-    /* This is the simple case where we are a subhead
-       of the current head. */
-    headinfo.sbook_head=curinfo;
-    if (!(curinfo.intro_ends_at))
-      curinfo.intro_ends_at=scanstate.location;
-    curinfo.sub.push(headinfo);}
+sbookTOC.onmouseover=function(evt){
+  evt=evt||event;
+  var target=$T(evt);
+  fdjtWidget.cohi.onmouseover(evt);
+  if (fdjtDOM.isClickable(target)) return;
+  if (!((fdjtDOM.hasParent(target,"spanbar"))||
+	(fdjtDOM.hasParent(target,"previewicon")))) {
+    if (sbook_preview) sbookSetPreview(false);
+    return;}
+  var ref=sbookGetRef(target);
+  if (sbook_preview) {
+    if (ref===sbook_preview) {}
+    else if (ref) sbookSetPreview(ref);
+    else sbookSetPreview(false);
+    fdjtDOM.cancel(evt);}
+  else if (ref) {
+    sbookSetPreview(ref);
+    fdjtDOM.cancel(evt);}
   else {
-    /* We're not a subhead, so we're popping up at least one level. */
-    var scan=curhead;
-    var scaninfo=curinfo;
-    var scanlevel=curinfo.level;
-    /* Climb the stack of headers, closing off entries and setting up
-       prev/next pointers where needed. */
-    while (scaninfo) {
-      if (sbook_trace_scan)
-	fdjtLog("Finding head: scan=%o, info=%o, sbook_head=%o, cmp=%o",
-		scan,scaninfo,scanlevel,scaninfo.sbook_head,
-		(scanlevel<level));
-      if (scanlevel<level) break;
-      if (level===scanlevel) {
-	headinfo.prev=scan;
-	scaninfo.next=headinfo;}
-      scaninfo.ends_at=scanstate.location;
-      scanstate.tagstack=scanstate.tagstack.slice(0,-1);
-      scaninfo=scaninfo.sbook_head;
-      scanlevel=((scaninfo)?(scaninfo.level):(0));}
-    if (sbook_trace_scan)
-      fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
-	      scan,scaninfo,scaninfo.level,scaninfo.sbook_head);
-    /* We've found the head for this item. */
-    headinfo.sbook_head=scaninfo;
-    scaninfo.sub.push(headinfo);} /* handled below */
-  /* Add yourself to your children's subsections */
-  var supinfo=headinfo.sbook_head;
-  var newheads=new Array();
-  newheads=newheads.concat(supinfo.sbook_heads); newheads.push(supinfo);
-  headinfo.sbook_heads=newheads;
-  if (sbook_trace_scan)
-    fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
-	    scanstate.location,head,headinfo,headinfo.sbook_head);
-  /* Update the toc state */
-  scanstate.curhead=head;
-  scanstate.curinfo=headinfo;
-  scanstate.curlevel=level;
-  if (headinfo)
-    headinfo.head_ends_at=scanstate.location+fdjtFlatWidth(head);
-  scanstate.location=scanstate.location+fdjtFlatWidth(head);  
-}
+    sbookSetPreview(false);
+    fdjtDOM.cancel(evt);}};
 
-sbookTOC.scanner=function(child,scanstate,tocinfo,taginfo)
-{
-  var location=scanstate.location;
-  var curhead=scanstate.curhead;
-  var curinfo=scanstate.curinfo;
-  var curlevel=scanstate.curlevel;
-  var node_count=1;
-  // Location tracking and TOC building
-  if (child.nodeType===3) {
-    var width=child.nodeValue.length;
-    // Need to regularize whitespace
-    scanstate.location=scanstate.location+width;
-    return 0;}
-  else if (child.nodeType!==1) return 0;
-  else {}
-  child.sbookloc=location;
-  child.sbookhead=curhead.id;
-  if ((child.sbookskip)||
-      ((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
+sbookTOC.onmouseout=function(evt){
+  evt=evt||event;
+  var target=$T(evt);
+  fdjtWidget.cohi.onmouseout(evt);
+  var ref=sbookGetRef(target);
+  if (ref) sbookSetPreview(false);};
+
+sbookTOC.onmousedown=function(evt){
+  evt=evt||event;
+  sbook_mousedown=fdjtTime();
+  var target=$T(evt);
+  fdjtCoHi_onmouseout(evt);
+  if (!((FDJT$P(".sectname",target))||
+	(FDJT$P(".sbooksummaries",target))))
     return;
-  var toclevel=((child.id)&&(sbookTOC.headLevel(child)));
-  if (child.id) {
-    var tags=child.getAttributeNS('tags','http://sbooks.net/')||
-      child.getAttribute('tags')||child.getAttribute('data-tags');
-    if (tags) taginfo[child.id]=tags.split(';');}
-  if (toclevel)
-    sbookTOC.handleHead
-      (child,tocinfo,scanstate,toclevel,curhead,curinfo,curlevel);
-  var children=child.childNodes;
-  var i=0; var len=children.length;
-  while (i<len) {
-    var grandchild=children[i++];
-    if (grandchild.nodeType===3)
-      scanstate.location=scanstate.location+
-	grandchild.nodeValue.length;
-    else if (grandchild.nodeType===1)
-      node_count=node_count+
-	sbookTOC.scanner(grandchild,scanstate,tocinfo,taginfo);}
-  return node_count;
-}
+  var ref=sbookGetRef(target);
+  if (ref) sbookSetPreview(ref);};
 
+sbookTOC.onmouseup=function(evt){
+  evt=evt||event;
+  if ((sbook_preview)||(sbook_preview_target))
+    sbookSetPreview(false);
+  fdjtDOM.cancel(evt);};
+
+sbookTOC.onclick=function(evt){
+  evt=evt||event;
+  if ((sbook_mousedown)&&
+      ((fdjtTime()-sbook_mousedown)>sbook_hold_threshold)) {
+    sbook_mousedown=false;
+    fdjtDOM.cancel(evt);
+    return false;}
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (!(ref)) return;
+  sbookGoTo(ref);
+  var info=sbook_getinfo(ref);
+  if ((info.sub)&&(info.sub.length>1)) sbookHUDMode("toc");
+  else sbookHUDMode(false);
+  fdjtDOM.cancel(evt);};
+
+sbookTOC.oneclick=function(evt){
+  evt=evt||event;
+  if (sbook_preview) return;
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (sbook_preview===ref) sbookPreview(false);
+  else if (ref) sbookPreview(ref);
+  else if (sbook_preview) sbookPreview(false);
+  else {}
+  fdjtDOM.cancel(evt);};
+
+sbookTOC.onholdclick=function(evt){
+  evt=evt||event;
+  if ((sbook_mousedown)&&
+      ((fdjtTime()-sbook_mousedown)>sbook_hold_threshold)) {
+    sbook_mousedown=false;
+    fdjtDOM.cancel(evt);
+    return false;}
+  var target=$T(evt);
+  var ref=sbookGetRef(target);
+  if (!(ref)) return;
+  sbookGoTo(ref);
+  sbookPreview(false);
+  sbookHUDMode(false);
+  fdjtDOM.cancel(evt);
+};
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

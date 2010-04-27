@@ -140,6 +140,40 @@ function sbookInitSearchHUD()
   search_button.style.visibility=null;
 }
 
+/* Creating the HUD */
+
+function sbookCreateNavHUD(eltspec)
+{
+  var root_info=sbook_getinfo(sbook_root);
+  var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
+  var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
+  if (!(eltspec)) sbookNavHUD=div;
+  if (sbook_interaction==="mouse") {
+    div.addEventListener("mouseover",sbookTOC.onmouseover,false);
+    div.addEventListener("mouseout",sbookTOC.onmouseout,false);
+    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
+    div.addEventListener("mouseup",sbookTOC.onmouseup,false);
+    div.addEventListener("click",sbookTOC.onclick,false);}
+  else div.addEventListener("click",sbookTOC.oneclick,false);
+  return div;
+}
+
+function sbookStaticNavHUD(eltspec)
+{
+  var root_info=sbook_getinfo(sbook_root);
+  var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
+  var div=fdjtDiv(eltspec||"#SBOOKDASHTOC",toc_div);
+  if (!(eltspec)) sbookNavHUD=div;
+  if (sbook_interaction==="mouse") {
+    div.addEventListener("mouseover",sbookTOC.onmouseover,false);
+    div.addEventListener("mouseout",sbookTOC.onmouseout,false);
+    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
+    div.addEventListener("mouseup",sbookTOC.onmouseup,false);
+    div.addEventListener("click",sbookTOC.onholdclick,false);}
+  else div.addEventListener("click",sbookTOC.oneclick,false);
+  return div;
+}
+
 /* Mode controls */
 
 var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;

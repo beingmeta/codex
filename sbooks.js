@@ -857,8 +857,8 @@ function sbookSetHead(head)
   else if (head) {
     var headinfo=sbook_getinfo(head);
     if (sbook_trace_focus) sbook_trace("sbookSetHead",head);
-    sbookTOCUpdate(head,"SBOOKTOC4");
-    sbookTOCUpdate(head,"SBOOKDASHTOC4");
+    sbookTOC.update("SBOOKTOC4",headinfo,sbook_getinfo(sbook_head));
+    sbookTOC.update("SBOOKDASHTOC4",headinfo,sbook_getinfo(sbook_head));
     window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");

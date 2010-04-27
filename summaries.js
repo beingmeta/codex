@@ -414,9 +414,9 @@ function sbookSetupSummaryDiv(div)
   div.title="(hold to glimpse,click to go) "+(div.title||"");
   if (sbook_interaction==="mouse") {
     div.addEventListener("click",sbookSummary_onclick,false);
-    div.addEventListener("mousedown",sbookTOC_onmousedown,false);
-    div.addEventListener("mouseup",sbookTOC_onmouseup,false);}
-  else div.addEventListener("click",sbookTOC_oneclick,false);
+    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
+    div.addEventListener("mouseup",sbookTOC.onmouseup,false);}
+  else div.addEventListener("click",sbookTOC.oneclick,false);
 }
 
 function sbookSummary_onclick(evt)
