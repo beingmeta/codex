@@ -3,27 +3,28 @@
 var sbook_scanned=false;
 var sbook_trace_scan=false;
 
-function sbookPubCrawl(body,tocinfo,taginfo)
+function sbookTOC(root,tocinfo,taginfo)
 {
+  if (!(root)) root=document.body;
+  if (!(tocinfo)) tocinfo=[];
+  if (!(taginfo)) taginfo=[];
+  var node_count=0;
   var start=new Date();
-  if (_sbook_toc_built) return false;
-  if (sbook_trace_startup>0)
-    fdjtLog("[%fs] Starting to gather metadata from DOM",fdjtET());
-  var children=body.childNodes, level=false;
+  this.root=root; this.tocinfo=tocinfo; this.taginfo=taginfo;
+  if (console.log)
+    console.log("[%fs] Scanning %o DOM for metadata",this.now(),root);
+  var children=root.childNodes, level=false;
   var rootinfo={};
   var scanstate=
     {curlevel: 0,idserial:0,location: 0,
      tagstack: [],taggings: [],
      idstate: {prefix: false,count: 0},
      idstack: [{prefix: false,count: 0}]};
-  scanstate.idstate.prefix=sbook_baseid;
-  scanstate.idstack[0].prefix=sbook_baseid;
   scanstate.curhead=root; scanstate.curinfo=rootinfo;
-  scanstate.knowlet=knowlet;
-  if (body.id) tocinfo[body.id]=rootinfo;
+  if (root.id) tocinfo[root.id]=rootinfo;
   // Location is an indication of distance into the document
   var location=0;
-  rootinfo.title=body.title||document.title;
+  rootinfo.title=root.title||document.title;
   rootinfo.starts_at=0;
   rootinfo.level=0; rootinfo.sub=new Array();
   rootinfo.head=false; rootinfo.heads=new Array();
@@ -33,7 +34,8 @@ function sbookPubCrawl(body,tocinfo,taginfo)
   var i=0; while (i<children.length) {
     var child=children[i++];
     if (!(child.sbookskip))
-      sbook_scanner(child,scanstate,tocinfo,taginfo);} 
+      node_count=node_count+
+	this.scanner(child,scanstate,tocinfo,taginfo);} 
   var scaninfo=scanstate.curinfo;
   /* Close off all of the open spans in the TOC */
   while (scaninfo) {
@@ -42,29 +44,48 @@ function sbookPubCrawl(body,tocinfo,taginfo)
   var done=new Date();
   fdjtLog('[%fs] Finished gathering metadata in %f secs over %d/%d heads/nodes',
 	  fdjtET(),(done.getTime()-start.getTime())/1000,
-	  sbook_heads.length,sbook_nodes.length);
-  _sbook_toc_built=true;
-  return scanstate;
+	  tocinfo.length,node_count);
+  return result;
 }
 
-function sbookTOCTitle(head)
+sbookTOC.headTitle=function(head)
 {
   var title=
     (head.toctitle)||
-    child.getAttributeNS('toctitle','http://sbooks.net')||
-    child.getAttribute('toctitle')||
-    child.getAttribute('data-toctitle')||
-    child.title;
+    head.getAttributeNS('toctitle','http://sbooks.net')||
+    head.getAttribute('toctitle')||
+    head.getAttribute('data-toctitle')||
+    head.title;
+  if (!(title)) title=head.innerText;
+  if ((!(title))&&(head.innerHTML))
+    title=(head.innerHTML).replace();
   if (!(title))
-    return fdjtTextify(head,true);
-  else if (typeof title === "string") {
+    title=sbookTOC.gatherText(head);
+  if (typeof title === "string") {
     var std=fdjtStdSpace(title);
     if (std==="") return false;
     else return std;}
   else return fdjtTextify(title,true);
 }
 
-function sbookTextWidth(elt)
+  sbookTOC.gatherText=function(head,s) {
+    if (!(s)) s="";
+    if (head.nodeType===3)
+      return s+head.nodeValue;
+    else if (head.nodeType!==1) return s;
+    else {
+      var children=head.childNodes;
+      var i=0; var len=children.length;
+      while (i<len) {
+	var child=children[i++];
+	if (child.nodeType===3) s=s+child.nodeValue;
+	else if (child.nodeType===1)
+	  s=sbookTOC.gatherText(child,s);
+	else {}}
+      return s;}}
+
+
+sbookTOC.textWidth=function(elt)
 {
   if (elt.nodeType===3) return elt.nodeValue.length;
   else if (elt.nodeType===1) {
@@ -74,18 +95,18 @@ function sbookTextWidth(elt)
       var child=children[i++];
       if (child.nodeType===3) loc=loc+child.nodeValue.length;
       else if (child.nodeType===1)
-	loc=loc+sbookTextWidth(child);
+	loc=loc+sbookTOC.TextWidth(child);
       else {}}
     return loc;}
   else return 0;
 }
 
-function sbookTOCLevel(elt)
+sbookTOC.headLevel=function(elt)
 {
   if (elt.toclevel) return elt.toclevel;
   var attrval=
-    child.getAttributeNS('toclevel','http://sbooks.net')||
-    child.getAttribute('toclevel')||child.getAttribute('data-toclevel');
+    elt.getAttributeNS('toclevel','http://sbooks.net')||
+    elt.getAttribute('toclevel')||elt.getAttribute('data-toclevel');
   if (attrval) return parseInt(attrval);
   if (elt.className) {
     var cname=elt.className;
@@ -96,13 +117,15 @@ function sbookTOCLevel(elt)
   else return false;
 }
 
-function _sbook_process_head(head,tocinfo,scanstate,
-			     level,curhead,curinfo,curlevel)
+sbookTOC.handleHead=function
+  (head,tocinfo,scanstate,level,curhead,curinfo,curlevel)
 {
   var headid=head.id;
   var headinfo=tocinfo[headid];
-  if (!(headinfo)) headinfo=tocinfo[headid]={};
-  if (sbook_debug_scan)
+  if (!(headinfo)) {
+    headinfo=tocinfo[headid]={};
+    tocinfo.push(headid);}
+  if (sbook_trace_scan)
     fdjtLog("Scanning head item %o under %o at level %d w/id=#%s ",
 	    head,curhead,level,headid);
   /* Iniitalize the headinfo */
@@ -126,7 +149,7 @@ function _sbook_process_head(head,tocinfo,scanstate,
     /* Climb the stack of headers, closing off entries and setting up
        prev/next pointers where needed. */
     while (scaninfo) {
-      if (debug_toc_build) /* debug_toc_build */
+      if (sbook_trace_scan)
 	fdjtLog("Finding head: scan=%o, info=%o, sbook_head=%o, cmp=%o",
 		scan,scaninfo,scanlevel,scaninfo.sbook_head,
 		(scanlevel<level));
@@ -138,7 +161,7 @@ function _sbook_process_head(head,tocinfo,scanstate,
       scanstate.tagstack=scanstate.tagstack.slice(0,-1);
       scaninfo=scaninfo.sbook_head;
       scanlevel=((scaninfo)?(scaninfo.level):(0));}
-    if (debug_toc_build)
+    if (sbook_trace_scan)
       fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
 	      scan,scaninfo,scaninfo.level,scaninfo.sbook_head);
     /* We've found the head for this item. */
@@ -149,7 +172,7 @@ function _sbook_process_head(head,tocinfo,scanstate,
   var newheads=new Array();
   newheads=newheads.concat(supinfo.sbook_heads); newheads.push(supinfo);
   headinfo.sbook_heads=newheads;
-  if ((trace_toc_build) || (debug_toc_build))
+  if (sbook_trace_scan)
     fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
 	    scanstate.location,head,headinfo,headinfo.sbook_head);
   /* Update the toc state */
@@ -161,42 +184,44 @@ function _sbook_process_head(head,tocinfo,scanstate,
   scanstate.location=scanstate.location+fdjtFlatWidth(head);  
 }
 
-function sbook_scanner(child,scanstate,tocinfo,taginfo)
+sbookTOC.scanner=function(child,scanstate,tocinfo,taginfo)
 {
-  // fdjtTrace("scanner %o %o",scanstate,child);
   var location=scanstate.location;
   var curhead=scanstate.curhead;
   var curinfo=scanstate.curinfo;
   var curlevel=scanstate.curlevel;
+  var node_count=1;
   // Location tracking and TOC building
   if (child.nodeType===3) {
     var width=child.nodeValue.length;
     // Need to regularize whitespace
     scanstate.location=scanstate.location+width;
-    return;}
-  else if (child.nodeType!==1) return;
+    return 0;}
+  else if (child.nodeType!==1) return 0;
   else {}
-  child.sbookloc=loc;
+  child.sbookloc=location;
   child.sbookhead=curhead.id;
-  if ((child.sbookskip)||(!(child.id))||
+  if ((child.sbookskip)||
       ((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
     return;
-  var toclevel=sbookTOCLevel(child);
-  var tags=child.getAttributeNS('tags','http://sbooks.net/')||
-    child.getAttribute('tags')||child.getAttribute('data-tags');
-  if (tags) taginfo[child.id]=tags.split(';');
+  var toclevel=((child.id)&&(sbookTOC.headLevel(child)));
+  if (child.id) {
+    var tags=child.getAttributeNS('tags','http://sbooks.net/')||
+      child.getAttribute('tags')||child.getAttribute('data-tags');
+    if (tags) taginfo[child.id]=tags.split(';');}
   if (toclevel)
-    _sbook_process_head(child,tocinfo,scanstate,
-			toclevel,curhead,curinfo,curlevel);
-  else {
-    var children=child.childNodes;
-    var i=0; var len=children.length;
-    while (i<len) {
-      var grandchild=children[i++];
-      if (grandchild.nodeType===3)
-	scanstate.location=scanstate.location+
-	  grandchild.nodeValue.length;
-      else if (grandchild.nodeType===1)
-	sbook_scanner(grandchild,scanstate,tocinfo,taginfo);}}
+    sbookTOC.handleHead
+      (child,tocinfo,scanstate,toclevel,curhead,curinfo,curlevel);
+  var children=child.childNodes;
+  var i=0; var len=children.length;
+  while (i<len) {
+    var grandchild=children[i++];
+    if (grandchild.nodeType===3)
+      scanstate.location=scanstate.location+
+	grandchild.nodeValue.length;
+    else if (grandchild.nodeType===1)
+      node_count=node_count+
+	sbookTOC.scanner(grandchild,scanstate,tocinfo,taginfo);}
+  return node_count;
 }
 
