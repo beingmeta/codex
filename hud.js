@@ -107,9 +107,9 @@ function createSBOOKHUD()
     return hud;}
 }
 
-function sbookInitNavHUD()
+function sbookInitNavHUD(root_info)
 {
-  var navhud=sbookCreateNavHUD();
+  var navhud=sbookCreateNavHUD("#SBOOKTOC.hudblock",root_info);
   var toc_button=$ID("SBOOKTOCBUTTON");
   toc_button.onclick=sbookTOCButton_onclick;
   if (sbook_interaction==='mouse') {
@@ -117,7 +117,7 @@ function sbookInitNavHUD()
     toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");}
   toc_button.style.visibility=null;
   fdjtReplace("SBOOKTOC",navhud);
-  fdjtAppend($ID("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC"));
+  fdjtAppend($ID("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC",root_info));
 }
 
 function sbookInitSocialHUD()
@@ -142,9 +142,8 @@ function sbookInitSearchHUD()
 
 /* Creating the HUD */
 
-function sbookCreateNavHUD(eltspec)
+function sbookCreateNavHUD(eltspec,root_info)
 {
-  var root_info=sbook_getinfo(sbook_root);
   var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
   var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
   if (!(eltspec)) sbookNavHUD=div;
@@ -158,9 +157,8 @@ function sbookCreateNavHUD(eltspec)
   return div;
 }
 
-function sbookStaticNavHUD(eltspec)
+function sbookStaticNavHUD(eltspec,root_info)
 {
-  var root_info=sbook_getinfo(sbook_root);
   var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
   var div=fdjtDiv(eltspec||"#SBOOKDASHTOC",toc_div);
   if (!(eltspec)) sbookNavHUD=div;
@@ -551,8 +549,8 @@ function sbookPreview(elt,offset)
       (elt.getAttribute("toclevel")) ||
       ((elt.sbookinfo) && (elt.sbookinfo.level)))
     cxt=false;
-  else if (elt.sbook_head)
-    cxt=elt.sbook_head;
+  else if (elt.head)
+    cxt=elt.head;
   fdjtScrollPreview(elt,cxt,offset);
 }
 

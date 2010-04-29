@@ -60,21 +60,15 @@ var sbook_heads=[];
 var sbook_hashmap={};
 // Array of sbook info, mapping from _fdjtid to objects
 var sbook_info=[];
+// Array of sbook info, mapping from _fdjtid to objects
+var sbook_taginfo=[];
 // Array of sbook info, mapping from element IDs objects
 var sbook_idinfo={};
+// This is a big weighted inverted index
+var sbook_index=new KnowletIndex();
 
 /* Tag indices */
 
-// This is a table mapping tags (dterms) to elements (or IDs)
-//  Note that this includes the genls of actual tags; the index
-//   sbook_dindex is reserved for actual tags.
-var sbook_index={_all: []};
-// This is a table mapping prime (focal) tags (dterms) to elements (or IDs)
-var sbook_prime_index={_all: []};
-// This is the 'direct index' of dterms which are explicitly referenced
-var sbook_direct_index={_all: []};
-// This is the index of dterms/tags to items that don't include genls
-var sbook_dterm_index={_all: []};
 // This is a straight 'keyword' index mapping keywords to elements (or IDs)
 // This is actually just a cache of searches which are done on demand
 var sbook_word_index={};
@@ -365,10 +359,8 @@ function sbookHeadLevel(elt)
 function sbook_getinfo(elt)
 {
   if (!(elt)) return elt;
-  else if (typeof elt === "string") 
-    return sbook_getinfo($ID(elt));
-  else if (elt._sbookid)
-    return sbook_info[(elt._sbookid)]||false;
+  else if (typeof elt === "string") return sbook_info[elt];
+  else if (elt.id) return sbook_info[elt.id];
   else return false;
 }
 
@@ -477,320 +469,6 @@ function sbookGetTitle(target)
   else return (target.title)||false;
 }
 
-
-/* Building the TOC */
-
-var debug_toc_build=false;
-var trace_toc_build=false;
-var _sbook_toc_built=false;
-
-var _total_tagged_count=0; var _total_tag_count=0;
-
-function sbookGatherMetadata()
-{
-  var start=new Date();
-  if (_sbook_toc_built) return false;
-  if (sbook_trace_startup>0)
-    fdjtLog("[%fs] Starting to gather metadata from DOM",fdjtET());
-  var root=((sbook_root)||
-	    (document.getElementById("SBOOKROOT"))||
-	    (document.body));
-  sbook_root=root;
-  var children=root.childNodes, level=false;
-  var rootinfo=sbook_needinfo(root);
-  var scanstate=
-    {curlevel: 0,idserial:0,location: 0,
-     tagstack: [],taggings: [],
-     idstate: {prefix: false,count: 0},
-     idstack: [{prefix: false,count: 0}]};
-  scanstate.idstate.prefix=sbook_baseid;
-  scanstate.idstack[0].prefix=sbook_baseid;
-  scanstate.curhead=root; scanstate.curinfo=rootinfo;
-  scanstate.knowlet=knowlet;
-  // Location is an indication of distance into the document
-  var location=0;
-  rootinfo.title=root.title||document.title;
-  rootinfo.starts_at=0;
-  rootinfo.level=0; rootinfo.sub=new Array();
-  rootinfo.sbook_head=false; rootinfo.sbook_heads=new Array();
-  if (!(root.id)) root.id="SBOOKROOT";
-  rootinfo.id=root.id;
-  /* Build the metadata */
-  var i=0; while (i<children.length) {
-    var child=children[i++];
-    if (!(child.sbookui))
-      sbook_scanner(child,scanstate);} 
-  var scaninfo=scanstate.curinfo;
-  /* Close off all of the open spans in the TOC */
-  while (scaninfo) {
-    scaninfo.ends_at=scanstate.location;
-    scaninfo=scaninfo.sbook_head;}
-  /* Sort the nodes by their offset in the document */
-  sbook_nodes.sort(function(x,y) {
-      if ((!(x.Xoff))&&(x.Xoff!==0)) {
-	fdjtWarn("Bad sbook node (xoff=%o) %o",x.Xoff,x);
-	return 0;}
-      else if ((!(y.Xoff))&&(y.Xoff!==0)) {
-	fdjtWarn("Bad sbook node (xoff=%o) %o",y.Xoff,y);
-	return 0;}
-      else if (x.Yoff<y.Yoff) return -1;
-      else if (x.Yoff===y.Yoff)
-	if (x.Xoff<y.Xoff) return -1;
-	else if (x.Xoff===y.Xoff) return 0;
-	else return 1;
-      else return 1;});
-  var done=new Date();
-  fdjtLog('[%fs] Finished gathering metadata in %f secs over %d/%d heads/nodes',
-	  fdjtET(),(done.getTime()-start.getTime())/1000,
-	  sbook_heads.length,sbook_nodes.length);
-  /* 
-  fdjtLog("[%fs] Found %d tags over %d elements: %s now has %d dterms",
-	  fdjtET(),_total_tag_count,_total_tagged_count,
-	  knowlet.name,knowlet.alldterms.length);
-  */
-  _sbook_toc_built=true;
-  return scanstate;
-}
-
-function _sbook_transplant_content(content)
-{
-  var transplanted=[];
-  var i=0; var j=0;
-  while (i<content.length) {
-    var transplant=fdjtTransplant(content[i++]);
-    if (transplant) transplanted[j++]=transplant;}
-  return transplanted;
-}
-function _sbook_get_title(head)
-{
-  var title=
-    (head.toctitle)||(head.getAttribute('toctitle'))||(head.title);
-  if (!(title))
-    return fdjtTextify(head,true);
-  else if (typeof title === "string") {
-    var std=fdjtStdSpace(title);
-    if (std==="") return false;
-    else return std;}
-  else return fdjtTextify(title,true);
-}
-
-function _sbook_getid(elt,scanstate,level)
-{
-  if (!(level)) {
-    var idstate=scanstate.idstate; idstate.count++;
-    return idstate.prefix+"p"+fdjtPadNum(idstate.count,4);}
-  else {
-    var headstate; var idstate={};
-    var curlevel=scanstate.idstack.length;
-    if (level>curlevel) {
-      // Add new heading levels if neccessary
-      var curhead=scanstate.idstack[curlevel-1];
-      while (level>curlevel) {
-	var newhead={};
-	// Level 0 has only one node, so we don't need to count up
-	if (curlevel) 
-	  newhead.prefix=curhead.prefix+"h"+fdjtPadNum(curhead.count,4);
-	else newhead.prefix=curhead.prefix;
-	newhead.count=0;
-	scanstate.idstack.push(newhead);
-	headstate=curhead=newhead;
-	curlevel++;}}
-    else {
-      headstate=scanstate.idstack[level-1];
-      scanstate.idstack=scanstate.idstack.slice(0,level+1);
-      curlevel=level;}
-    headstate.count++;
-    var headid=headstate.prefix+"h"+fdjtPadNum(headstate.count,4);
-    idstate.prefix=headid; idstate.count=0;
-    scanstate.idstate=idstate;
-    return headid;}
-}
-
-function _sbook_setid(elt,scanstate,level,curlevel)
-{
-  /* This doesn't currently handle the addition of conflicting IDs */
-  if (elt.getAttribute("SBOOKIDS")) {
-    var tocidstring=elt.getAttribute("SBOOKIDS");
-    var tocids=((tocidstring)?(tocidstring.split(';')):([]));
-    var i=0; while (i<tocids.length) sbook_hashmap[tocids[i++]]=elt;}
-  if (elt.id) {
-    sbook_hashmap[elt.id]=elt;
-    return elt.id;}
-  else if (!((fdjtHasContent(elt))||
-	     (fdjtHasClass(elt,"sbookidify"))||
-	     (fdjtElementMatches(elt,sbook_idify))))
-    return false;
-  else if (sbook_autoid) {
-    var tocid=_sbook_getid(elt,scanstate,level,curlevel);
-    elt.id=tocid; sbook_hashmap[tocid]=elt;  
-    return tocid;}
-  else return false;
-}
-
-function _sbook_process_head(head,scanstate,level,curhead,curinfo,curlevel)
-{
-  var headinfo=sbook_needinfo(head);
-  var headid=_sbook_setid(head,scanstate,level,curlevel);
-  /* Update global tables, arrays */
-  sbook_heads.push(head);
-  head.sbookloc=scanstate.location;
-  head.sbooklevel=level;
-  if (debug_toc_build)
-    fdjtLog("Found head item %o under %o at level %d w/id=#%s ",
-	    head,curhead,level,headid);
-  /* Iniitalize the headinfo */
-  headinfo.starts_at=scanstate.location;
-  headinfo.elt=head; headinfo.level=level;
-  headinfo.sub=new Array(); headinfo.id=headid;
-  headinfo.title=_sbook_get_title(head);
-  headinfo.toctitle=head.getAttribute('toctitle');
-  headinfo.next=false; headinfo.prev=false;
-  if (level>curlevel) {
-    /* This is the simple case where we are a subhead
-       of the current head. */
-    headinfo.sbook_head=curinfo;
-    if (!(curinfo.intro_ends_at))
-      curinfo.intro_ends_at=scanstate.location;
-    curinfo.sub.push(headinfo);}
-  else {
-    /* We're not a subhead, so we're popping up at least one level. */
-    var scan=curhead;
-    var scaninfo=curinfo;
-    var scanlevel=curinfo.level;
-    /* Climb the stack of headers, closing off entries and setting up
-       prev/next pointers where needed. */
-    while (scaninfo) {
-      if (debug_toc_build) /* debug_toc_build */
-	fdjtLog("Finding head: scan=%o, info=%o, sbook_head=%o, cmp=%o",
-		scan,scaninfo,scanlevel,scaninfo.sbook_head,
-		(scanlevel<level));
-      if (scanlevel<level) break;
-      if (level===scanlevel) {
-	headinfo.prev=scan;
-	scaninfo.next=headinfo;}
-      scaninfo.ends_at=scanstate.location;
-      scanstate.tagstack=scanstate.tagstack.slice(0,-1);
-      var nextinfo=scaninfo.sbook_head;
-      if (nextinfo) {
-	scaninfo=nextinfo; scanlevel=nextinfo.level;}
-      else {
-	scaninfo=sbook_getinfo(root);
-	scanlevel=0;
-	break;}}
-    if (debug_toc_build)
-      fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
-	      scan,scaninfo,scaninfo.level,scaninfo.sbook_head);
-    /* We've found the head for this item. */
-    headinfo.sbook_head=scaninfo;
-    scaninfo.sub.push(headinfo);} /* handled below */
-  /* Add yourself to your children's subsections */
-  var supinfo=headinfo.sbook_head;
-  var newheads=new Array();
-  newheads=newheads.concat(supinfo.sbook_heads); newheads.push(supinfo);
-  headinfo.sbook_heads=newheads;
-  if ((trace_toc_build) || (debug_toc_build))
-    fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
-	    scanstate.location,head,headinfo,headinfo.sbook_head);
-  /* Update the toc state */
-  scanstate.curhead=head;
-  scanstate.curinfo=headinfo;
-  scanstate.curlevel=level;
-  if (headinfo)
-    headinfo.head_ends_at=scanstate.location+fdjtFlatWidth(head);
-  scanstate.location=scanstate.location+fdjtFlatWidth(head);  
-}
-
-function sbook_scanner(child,scanstate,skiptoc)
-{
-  // fdjtTrace("scanner %o %o",scanstate,child);
-  var location=scanstate.location;
-  var curhead=scanstate.curhead;
-  var curinfo=scanstate.curinfo;
-  var curlevel=scanstate.curlevel;
-  var level=0;
-  // Location tracking and TOC building
-  if (child.nodeType===3) {
-    var width=child.nodeValue.length;
-    if (!(fdjtIsEmptyString(child.nodeValue)))
-      scanstate.location=scanstate.location+width;
-    return;}
-  else if (child.nodeType!==1) {
-    child.sbook_head=curhead;
-    return;}
-  else if (sbookInUI(child)) return;
-  else if ((fdjtHasClass(child,"sbookignore"))||
-	   (fdjtElementMatches(child,sbook_ignored))) {
-    fdjtComputeOffsets(child);
-    sbook_nodes.push(child);
-    return;}
-  fdjtComputeOffsets(child);
-  var refuri=(child.refuri)||
-    child.getAttributeNS('refuri','http://www.sbooks.net')||
-    child.getAttribute('refuri')||
-    child.getAttribute('data-refuri');
-  if ((refuri)&&(refuri!==sbook_refuri)) {
-    child.refuri=refuri;
-    fdjtInsert(sbook_refuris,refuri);}
-  var refid=child.getAttributeNS('refid','http://www.sbooks.net')||
-    child.getAttribute('refid')||
-    child.getAttribute('data-refid');
-  if ((refid)&&(refid!==child.id)) sbook_hashmap[refid]=child;
-  if (level=sbookHeadLevel(child)) {
-    if (skiptoc) sbook_nodes.push(child);
-    else _sbook_process_head
-	   (child,scanstate,level,curhead,curinfo,curlevel);}
-  else if (skiptoc) sbook_nodes.push(child);
-  else if ((fdjtIsBlockElt(child))||
-	   (fdjtHasClass(child,"sbookidify"))||
-	   (fdjtElementMatches(child,sbook_idify))) {
-    var loc=scanstate.location;
-    var eltid=_sbook_setid(child,scanstate,level,curlevel);
-    skiptoc=skiptoc||
-      (fdjtHasClass(child,"sbookterminal"))||
-      (fdjtElementMatches(child,sbook_terminals));
-    sbook_nodes.push(child);
-    child.sbookloc=loc;
-    child.sbook_headid=curhead.id;
-    scanstate.location=loc+fdjtTagWidth(child);
-    if (child.childNodes) {
-      var children=child.childNodes;
-      var i=0; while (i<children.length)
-		 sbook_scanner(children[i++],scanstate,skiptoc);}}
-  else {}
-  if (level) child.toclevel=level;
-  // Tagging
-  var info=sbook_getinfo(child);
-  var headtag=((info)&&((info.title) && ("\u00A7"+info.title)));
-  var tagstring;
-  if (headtag) {
-    sbookAddTag(child,headtag,true,false,true,scanstate.knowlet);}
-  if ((sbook_build_index)&&(child.id)&&(child.getAttribute)&&
-      (tagstring=
-       ((child.getAttribute("tags"))||
-	(child.getAttribute("data-tags"))||
-	((child.getAttributeNS)&&
-	 (child.getAttribute("tags","http://sbooks.net/")))))) { 
-    var tags=fdjtSemiSplit(fdjtUnEntify(tagstring));
-    var tagging={};
-    tagging.elt=child; tagging.tags=tags;
-    tagging.ctags=scanstate.tagstack;
-    scanstate.taggings.push(tagging);
-    if (level>0) {
-      var ctags=[]; if (headtag) ctags.push(headtag);
-      var i=0; var len=tags.length; while (i<len) {
-	if (tags[i][0]==='*') {
-	  var tag=tags[i++];
-	  var barpos=tag.indexOf('|');
-	  if (barpos<0) ctags.push(tag.slice(1));
-	  else ctags.push(tag.slice(1,barpos));}
-	else i++;}
-      scanstate.tagstack.push(ctags);}}
-  else {}
-  // Setting this attribute can help with debugging
-  if ((sbook_trace_locations) && (child.sbookloc) && (child.setAttribute))
-    child.setAttribute("sbookloc",child.sbookloc);
-}
-
 /* Global query information */
 
 function sbookSetQuery(query,scored)
@@ -836,7 +514,7 @@ function sbook_title_path(head)
     var scan=sbook_getinfo(info.elt.sbook_ref);
     while (scan) {
       if (scan.title) title=title+" // "+scan.title;
-      scan=sbook_getinfo(scan.elt.sbook_head);}
+      scan=sbook_getinfo(scan.elt.head);}
     return title;}
   else return null;
 }
@@ -893,7 +571,7 @@ function sbookSetLocation(location,force)
     if ((bar)&& (progress>0) && (progress<100)) {
       bar.style.width=((progress)+10)+"%";
       appbar.style.width=((progress)+10)+"%";}
-    info=info.sbook_head;}
+    info=info.head;}
   var spanbars=FDJT$(".spanbar",$ID("SBOOKHUD"));
   var i=0; while (i<spanbars.length) {
     var spanbar=spanbars[i++];
@@ -919,8 +597,8 @@ function sbookNextHead(head)
     return $ID(info.sub[0].id);
   else if (info.next)
     return $ID(info.next.id);
-  else if ((info.sbook_head)&&(info.sbook_head.next))
-    return $ID(info.sbook_head.next.id);
+  else if ((info.head)&&(info.head.next))
+    return $ID(info.head.next.id);
   else return false;
 }
 
@@ -929,8 +607,8 @@ function sbookPrevHead(head)
   var info=sbook_getinfo(head);
   if (info.prev)
     return $ID(info.prev.id);
-  else if (info.sbook_head)
-    return $ID(info.sbook_head.id);
+  else if (info.head)
+    return $ID(info.head.id);
   else return false;
 }
 
@@ -990,8 +668,8 @@ function sbookScrollTo(elt,cxt)
       ((elt.tocleve)|| (elt.getAttribute("toclevel")) ||
        ((elt.sbookinfo) && (elt.sbookinfo.level))))
     sbookSetHead(elt);
-  else if (elt.sbook_head)
-    sbookSetHead(elt.sbook_head);
+  else if (elt.head)
+    sbookSetHead(elt.head);
   if (sbook_pageview)
     sbookGoToPage(sbookGetPage(elt));
   else if (fdjtIsVisible(elt)) {}
@@ -1015,7 +693,7 @@ function sbookSetHashID(target)
     // This resets when setting the ID moved the page unneccessarily
     window.scrollTo(saved_x,saved_y);
   else if (!(fdjtIsVisible(target)))
-    sbookScrollTo(target,((target.sbook_head)&&($ID(target.sbook_head))));
+    sbookScrollTo(target,((target.head)&&($ID(target.head))));
   else {}
 }
 
@@ -1117,7 +795,7 @@ function sbook_get_titlepath(info,embedded)
       else return "";
     else return "";
   else {
-    var next=(info.sbook_head)||false;
+    var next=(info.head)||false;
     if (info.title)
       return ((embedded) ? (" // ") : (""))+info.title+
 	sbook_get_titlepath(next,true);
@@ -1576,6 +1254,8 @@ function sbookInitLocation()
 var _sbook_setup=false;
 var _sbook_setup_start=false;
 
+var sbook_metadata=false;
+
 function sbookSetup()
 {
   if (_sbook_setup) return;
@@ -1598,19 +1278,23 @@ function sbookSetup()
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
     sbook_ajax_uri=false;
   sbookMessage("Scanning document structure");
-  var scanstate=sbookGatherMetadata();
-  sbookInitNavHUD();
+  var metadata=sbookScan(sbook_root);
+  sbook_metadata=metadata;
+  sbook_info=metadata.tocinfo;
+  sbookInitNavHUD(metadata.tocinfo[sbook_root.id]);
   var scan_done=new Date();
   sbookMessage("Determining page layout");
   sbookApplySessionSettings();
   if (sbook_pageview) sbookCheckPagination();
-  sbookMessage("Processing knowledge sources");
-  if (knoHTMLSetup) knoHTMLSetup();
-  if (scanstate) sbookHandleInlineKnowlets(scanstate);
+  var knowlet=fdjtDOM.getMeta("KNOWLET")||sbook_refuri;
+  sbookMessage("Processing knowledge with knowlet %s",knowlet);
+  document.knowlet=knowlet=new Knowlet(knowlet);
+  if (knowletSetupHTML) knowletSetupHTML();
   var knowlets_done=new Date();
   sbookMessage("Indexing tags");
-  if (scanstate) sbookIndexTags(scanstate);
-  sbookIndexTechnoratiTags(knowlet);
+  sbookIndexTags(metadata.taginfo);
+  sbook_taginfo=metadata.taginfo;
+  // sbookIndexTechnoratiTags(knowlet);
   var tags_done=new Date();
   if ($ID("SBOOKHIDEHELP"))
     $ID("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));

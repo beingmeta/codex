@@ -104,7 +104,7 @@ function sbookSummaryHead(target,head,eltspec,extra)
     fdjtAppend(basespan,headelt," ");}
   var info;
   if (info=sbook_getinfo(head)) {
-    var heads=((info) ? (info.sbook_heads) : []);
+    var heads=((info) ? (info.heads) : []);
     var curspan=basespan;
     var j=heads.length-1; while (j>=0) {
       var hinfo=heads[j--]; var elt=$ID(hinfo.id);

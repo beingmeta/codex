@@ -82,6 +82,7 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
       fdjtAppend(div,((i>0)&&" \u00b7 "),subspan);
       i++;}
     return div;}
+
   function generate_spanbar(headinfo){
     var spanbar=fdjtDOM("div.spanbar");
     var spans=fdjtDOM("div.spans");
@@ -102,7 +103,7 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
     var i=0; while (i<subsections.length) {
       var spaninfo=subsections[i++];
       var subsection=document.getElementById(spaninfo.id);
-      var spanstart; var spanend; var spanlen; var addname=true;
+      var spanstart; var spanend; var addname=true;
       if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
 	/* Add 'fake section' for the precursor of the first actual section */
 	spanstart=start;  spanend=spaninfo.starts_at;
@@ -122,15 +123,12 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
 	(sectnum,head,headinfo.title,last_info.ends_at,end,len);
       spanbar.appendChild(span);}    
     return spanbar;}
-
+  
   function generate_span(sectnum,subsection,title,spanstart,spanend,len,name){
     var spanlen=spanend-spanstart;
     var anchor=fdjtDOM("A.brick","\u00A0");
     var span=fdjtDOM("DIV.sbookhudspan",anchor);
     var width=(Math.floor(10000*(spanlen/len))/100)+"%";
-    var odd=((sectnum%2)==1);
-    if (odd) span.setAttribute("odd",sectnum);
-    else span.setAttribute("even",sectnum);
     span.style.width=width;
     span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
     span.sbook_ref=subsection.id;
@@ -150,7 +148,7 @@ sbookTOC.update=function(prefix,head,cur){
       var tocelt=document.getElementById(prefix+cur.id);
       tohide.push(tocelt);
       // Get TOC parent
-      cur=cur.sbook_head;}
+      cur=cur.head;}
     var n=tohide.length-1;
     // Go backwards (up) to potentially accomodate some redisplayers
     while (n>=0) {fdjtDOM.dropClass(tohide[n--],"live");}
@@ -161,7 +159,7 @@ sbookTOC.update=function(prefix,head,cur){
   while (head) {
     var tocelt=document.getElementById(prefix+head.id);
     toshow.push(tocelt);
-    head=head.sbook_head;}
+    head=head.head;}
   var n=toshow.length-1;
   // Go backwards to accomodate some redisplayers
   while (n>=0) {fdjtDOM.addClass(toshow[n--],"live");}

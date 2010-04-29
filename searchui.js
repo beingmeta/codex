@@ -190,60 +190,53 @@ function _sbook_note_completions(completions)
 
 /* Getting query cloud */
 
-function sbookDTermCompletion(dterm,title)
+function sbookDTermCompletion(term,title)
 {
-  if ((typeof dterm === "string") && (dterm[0]==="\u00A7")) {
-    var showname=dterm;
+  if ((typeof term === "string") && (term[0]==="\u00A7")) {
+    var showname=term;
     if (showname.length>17) {
       showname=showname.slice(0,17)+"...";
-      title=dterm;}
+      title=term;}
     var span=fdjtSpan("completion",fdjtSpan("sectname",showname));
-    span.key=dterm; span.value=dterm; span.anymatch=true;
+    span.key=term; span.value=term; span.anymatch=true;
     if (title)
-      span.title="("+sbook_index[dterm].length+" items) "+title;
-    else span.title=sbook_index[dterm].length+" items";
+      span.title="("+sbook_index.freq(term)+" items) "+title;
+    else span.title=sbook_index.freq(term)+" items";
     return span;}
-  var knowde=Knowde(dterm);
-  if (!(knowde))
+  var dterm=document.knowlet.DTerm(term);
+  if (!(dterm))
     fdjtLog("Couldn't get knowlet references from %o",dterm);
-  else if (!(knowde.dterm)) {
-    fdjtLog("Got bogus dterm reference for %s: %o",dterm,knowde);
-    knowde=false;}
-  var dterm_node=((knowde) ? (knowde.toHTML()) : (fdjtSpan("dterm",dterm)));
-  var span=fdjtSpan("completion");
+  else if (!(dterm.dterm)) {
+    fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
+    dterm=false;}
+  var dterm_node=
+    ((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.dterm.raw",term)));
   // Adds the cute hole to the vaugely tag shaped textform
   // fdjtPrepend(dterm_node,fdjtSpan("bigpunct","\u00b7"));
   if (!(title))
-    if (sbook_index[dterm])
-      title=sbook_index[dterm].length+" items";
+    if (sbook_index.freq(dterm))
+      title=sbook_index.freq(dterm)+" items";
     else title=false;
-  if (knowde) {
-    if (knowde.gloss)
-      if (title)
-	span.title=title+": "+fdjtStripMarkup(knowde.gloss);
-      else span.title=fdjtStripMarkup(knowde.gloss);
+  var span=fdjtDOM("span.completion");
+  if (dterm) {
+    if (dterm.gloss)
+      if (title) span.title=title+": "+dterm.gloss;
+      else span.title=dterm.gloss;
     else span.title=title;
     /* Now add variation elements */
     var variations=[];
-    var i=0; var terms=knowde.terms;
+    var i=0; var terms=dterm.get('EN');
     while (i<terms.length) {
       var term=terms[i++];
-      // var vary=fdjtSpan("variation","(",term,")");
+      if (term===dterm.dterm) continue;
       var vary=fdjtSpan("variation",term);
       vary.key=term;
-      variations.push(vary);
-      variations.push(" ");}
-    i=0; terms=knowde.hooks;
-    while (i<terms.length) {
-      var term=terms[i++];
-      var vary=fdjtSpan("variation",term);
-      vary.key=term;
-      variations.push(vary);
-      variations.push(" ");}
-    fdjtAppend(span,variations,dterm_node);
-    span.key=knowde.dterm;
-    span.value=knowde.dterm;
-    span.setAttribute("dterm",knowde.dterm);}
+      span.appendChild(vary);
+      span.appendChild(document.createTextNode(" "));}
+    span.appendChild(dterm_node);
+    span.key=dterm.dterm;
+    span.value=dterm.dterm;
+    span.setAttribute("dterm",dterm.dterm);}
   else {
     // This is helpful for debugging
     span.setAttribute("dterm",dterm);

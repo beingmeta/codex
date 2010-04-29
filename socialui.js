@@ -178,8 +178,8 @@ function gather_tags(elt,results)
     var i=0; while (i<tags.length) results.push(tags[i++]);}
   // don't do this for now
   // if (elt.parentNode) gather_tags(elt.parentNode,results);
-  if (elt.sbook_head) {
-    var head=elt.sbook_head; var htags=head.tags;
+  if (elt.head) {
+    var head=elt.head; var htags=head.tags;
     if ((htags) && (htags.length>0)) {
       var i=0; while (i<htags.length) results.push(htags[i++]);}}
   return results;

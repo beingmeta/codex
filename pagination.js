@@ -742,65 +742,6 @@ function sbookPagePlacement(offsets,top,bottom)
   else return "atfoot";
 }
 
-/* Getting the 'next' node */
-
-function sbookNext(elt)
-{
-  var info=sbook_getinfo(elt);
-  if ((info.sub) && (info.sub.length>0))
-    return info.sub[0];
-  else if (info.next) return info.next;
-  else return sbookNextUp(elt);
-}
-
-function sbookNextUp(elt)
-{
-  var info=sbook_getinfo(elt).sbook_head;
-  while (info) {
-    if (info.next) return info.next;
-    info=info.sbook_head;}
-  return false;
-}
-
-function sbookPrev(elt)
-{
-  var info=sbook_getinfo(elt);
-  if (!(info)) return false;
-  else if (info.prev) {
-    info=info.prev;
-    if ((info.sub) && (info.sub.length>0))
-      return info.sub[info.sub.length-1];
-    else return document.getElementById(info.id);}
-  else if (info.sbook_head)
-    return document.getElementById(info.sbook_head.id);
-  else return false;
-}
-
-function sbookUp(elt)
-{
-  var info=sbook_getinfo(elt);
-  if ((info) && (info.sbook_head))
-    return document.getElementById(info.sbook_head.id);
-  else return false;
-}
-
-
-/* Section/page navigation */
-
-function sbookNextSection(evt)
-{
-  var prev=((evt.ctrlKey) ? (sbookUp(sbook_head)) :
-	    (sbookPrev(sbook_head)));
-  if (prev) sbookGoTo(prev);
-}
-
-function sbookPrevSection(evt)
-{
-    var next=((evt.ctrlKey) ? (sbookNextUp(sbook_head)) :
-	      (sbookNext(sbook_head)));
-    if (next) sbookGoTo(next);
-}
-
 function sbookNextPage(evt)
 {
   evt=evt||event||null;

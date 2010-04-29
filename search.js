@@ -38,35 +38,12 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 
 var sbook_trace_tagging=false;
 
-function sbookAddTag(elt,tag,prime,contextual,unique,kno)
+function sbookAddTag(elt,tag,weight,kno)
 {
-  if (!(kno)) kno=knowlet;
-  if ((typeof tag === "string") && (tag[0]==="\u00A7")) {}
-  else if ((kno) && (typeof tag === "string"))
-    tag=(KnowDef(tag,kno))||(tag);
-  // Force a _fdjtid
-  var info=sbook_needinfo(elt);
-  var dterm=((typeof tag === "string") ? (tag) : (tag.dterm));
-  if (info.tags)
-    if (fdjtIndexOf(info.tags,dterm)<0) info.tags.push(dterm);
-    else return;
-  else info.tags=new Array(dterm);
-  if (sbook_trace_tagging) 
-    fdjtLog("Tagging %o#%s with %s/%o",elt,elt.id,dterm,tag);
-  /* This is for tags which indicate sections */
-  if ((typeof tag === "string") && (tag[0]==="\u00A7")) {
-    fdjtAdd(sbook_index,tag,elt,(!(unique)));
-    fdjtAdd(sbook_prime_index,tag,elt,(!(unique)));
-    if (!(contextual))
-      fdjtAdd(sbook_direct_index,tag,elt,(!(unique)));
-    return;}
-  /* knoIndexTag returns true if the value wasn't identified as a duplicate */
-  knoIndexTag(sbook_index,tag,elt,kno_wgenls,(!(unique)));
-  knoIndexTag(sbook_dterm_index,tag,elt,kno_wogenls,(!(unique)));
-  if (prime)
-    knoIndexTag(sbook_prime_index,tag,elt,kno_wogenls,(!(unique)));
-  if (!(contextual))
-    knoIndexTag(sbook_direct_index,tag,elt,kno_wogenls,(!(unique)));
+  if ((typeof elt === 'string')||(typeof elt === 'number'))
+    sbook_index.add(elt,tag,weight,kno);
+  else sbook_index.add(elt.id||elt._fdjtid||fdjtDB.register(elt),
+		       tag,weight,kno);
 }
 
 function sbookNewTag(tag,kno)
@@ -127,69 +104,18 @@ function sbookHandleTagSpec(elt,tagspec)
 
 // Configuration
 
-// Whether query results are 'scored' by the number and prominence of
-// individual tags.  Otherwise, the query results are just a conjunction
-// of the non-empty tags
-var sbook_fuzzy_queries=false;
-
 function sbook_lookup_term(term,table)
 {
   if (term==="") return [];
-  // This covers the term cache
-  else if (table) 
-    if ((sbook_hybrid_index) && (table._hybrid)) {
-      var v=table[term];
-      if (!(v)) return [];
-      else if (v._idsresolved) return v;
-      else return sbookResolveIDs(v);}
-    else return table[term]||[];
-  else if (term[0]==='\'') {
-    // This covers literal searches, which can take a while
-    var items=sbook_word_index[term];
-    if (items) return items;
-    var slashpos=term.indexOf('/');
-    if (slashpos)
-	 items=sbook_word_index[term.slice(0,slashpos)];
-    if (items) return items;
-    if (slashpos) {
-      var regex_end=term.indexOf('/',slashpos+1);
-      var regex=new RegExp(term.slice(slashpos+1,regex_end),
-			   term.slice(regex_end+1));
-      var baseterm=term.slice(0,slashpos);
-      var items=fdjtSearchContent(document.body,term);
-      sbook_word_index[baseterm]=items;
-      return items;}
-    else {
-      var items=fdjtSearchContent(document.body,term);
-      sbook_word_index[term]=items;
-      return items;}}
-  else if (sbook_hybrid_index) {
-    var v=sbook_index[term];
-    if (!(v)) return [];
-    else if (v._idsresolved) return v;
-    else return sbookResolveIDs(v);}
-  // This returns the info from the index
-  else return sbook_index[term]||[];
-}
-
-function sbookResolveIDs(v)
-{
-  if (v._idsresolved) return v;
-  else {
-    var i=0; while (i<v.length) {
-      var e=v[i];
-      if (typeof e === 'string')
-	v[i]=document.getElementById(e)||e;
-      i++;}
-    v._idsresolved=true;
-    return v;}
+  if (!(table)) table=sbook_index;
+  if (table.hasOwnProperty(term))
+    return table[term];
+  else return fdjtDB.Set();
 }
 
 function sbookDoSearch(query,results)
 {
   var base=false;
-  var sources=[];
-  var simple=(!(results._fuzzy));
   // A query is an array of terms.  In a simple query,
   // the results are simply all elements which are tagged
   // with all of the query terms.  In a linear scored query,
@@ -197,50 +123,20 @@ function sbookDoSearch(query,results)
   // possibly with weights based on the basis of the match.
   var i=0; while (i<query.length) {
     var term=query[i++];
-    var items=sbook_lookup_term(term);
+    var items=sbook_index.find(term);
     if (sbook_trace_search)
       fdjtLog("Query element '%s' matches %d items",
 	      term,items.length);
-    if (items.length>0) {
-      // We just ignore terms that don't have any results
-      if (simple)
-	// Simple queries just do an intersection, requiring
-	// matches in every query element
-	if (base) base=fdjtIntersect(base,items);
-	else base=items;
-      else if (!(base)) {
-	// Fuzzy queries only require a match in the first query
-	// element.
-	base=items;}}}
-  // Apply any social filters
-  // Trying different approach
-  // base=sbook_limit_search(base,(query._sources)||(sbook_sources));
+    if (items.length===0) continue;
+    else if (base) 
+      base=base.intersection(items);
+    else base=items;}
+  var allitems=items.get();
+  i=0; var n_items=allitems.length;
+  while (i<n_items)
+    sbook_index.score(allitems[i++],results);
   // Initialize scores for all of results
-  var j=0; while (j<base.length) {
-    var elt=base[j++];
-    if (elt.glossid) {
-      var user=elt.user; var tribes=elt.tribes;
-      if (fdjtIndexOf(sources,user)<0) sources.push(user);
-      if (tribes) {
-	var k=0; while (k<tribes.length) {
-	  var tribe=tribes[k++];
-	  if (fdjtIndexOf(sources,tribe)<0) sources.push(tribe);}}}
-    results[elt._fdjtid]=1;}
-  results._sources=sources;
-  var i=0; while (i<query.length) {
-    var qelt=query[i++];
-    var prime=sbook_lookup_term(qelt,sbook_prime_index)||[];
-    var direct=sbook_lookup_term(qelt,sbook_direct_index)||[];
-    var k=0; while (k<prime.length) {
-      var score;
-      var elt=prime[k++]; var sortkey=elt._fdjtid;
-      if (score=results[sortkey])
-	results[sortkey]=score+1;}
-    var k=0; while (k<direct.length) {
-      var score;
-      var elt=direct[k++]; var sortkey=elt._fdjtid;
-      if (score=results[sortkey]) results[sortkey]=score+1;}}
-  results._results=base;
+  results._results=allitems;
   return results;
 }
 
@@ -254,24 +150,23 @@ function sbookGetRefiners(results)
   var refiners={}; var freqs={}; var alltags=[];
   var i=0; while (i<rvec.length) {
     var item=rvec[i++];
-    var item_score=results[item._fdjtid];
-    if (typeof item === "string") item=document.getElementById(item);
-    var info=((item)&&(sbook_needinfo(item)));
-    if ((info) && (info.tags)) {
-      var tags=info.tags; var j=0; while (j<tags.length) {
+    var item_score=results[item];
+    var tags=sbook_taginfo[item];
+    if (tags) {
+      var j=0; var len=tags.length; while (j<len) {
 	var tag=tags[j++];
 	// If the tag is already part of the query, we ignore it.
-	if (fdjtIndexOf(query,tag)>=0) {}
-	// If the tag is already a refiner, we increase its score.
-	else if (!(refiners[tag])) {
-	  // If the tag isn't a refiner, we initialize its score
-	  // and add it to the list of all the tags we've found
-	  alltags.push(tag);
-	  freqs[tag]=1;
-	  refiners[tag]=item_score;}
-	else {
+	if (fdjtDB.contains(query,tag)) {}
+	// If the tag has already been seen, we increase its frequency
+	// and its general score
+	else if (freqs[tag]) {
 	  freqs[tag]=freqs[tag]+1;
-	  refiners[tag]=refiners[tag]+item_score;}}}}
+	  refiners[tag]=refiners[tag]+item_score;}
+	else {
+	  // If the tag hasn't been counted, we initialize its frequency
+	  // and score, adding it to the list of all the tags we've found
+	  alltags.push(tag); freqs[tag]=1;
+	  refiners[tag]=item_score;}}}}
   freqs._count=rvec.length;
   refiners._freqs=freqs;
   results._refiners=refiners;
@@ -284,6 +179,33 @@ function sbookGetRefiners(results)
     fdjtLog("Refiners for %o are (%o) %o",
 	    results._query,refiners,alltags);
   return refiners;
+}
+
+function sbookIndexTags(taginfo)
+{
+  /* One pass processes all of the inline DTerms and
+     also separates out primary and auto tags. */
+  for (var eltid in taginfo) {
+    var tags=taginfo[eltid];
+    var k=0; var ntags=tags.length;
+    while (k<ntags) {
+      var tag=tags[k];
+      if (tag[0]==='*') {
+	var tagstart=tag.search(/[^*]+/);
+	tags[k]=tag=tag.slice(tagstart);
+	tags[tag]=2*tagstart;}
+      else if (tag[0]==='~') tags[k]=tag=tag.slice(1);
+      else tags[tag]=2;
+      if ((tag.indexOf('|')>=0)) knowlet.handleSubjectEntry(tag);
+      k++;}}
+  if (!(sbook_index)) sbook_index=new KnowletIndex();
+  var knowlet=document.knowlet||false;
+  for (var eltid in taginfo) {
+    var tags=taginfo[eltid];
+    var k=0; var ntags=tags.length;
+    while (k<ntags) {
+      var tag=tags[k++];
+      sbook_index.add(eltid,tag,tags[tag]||1,knowlet);}}    
 }
 
 /* Utility functions */
@@ -379,36 +301,6 @@ function sbookHandleInlineKnowlets(scanstate)
       else j++;}
 }
 
-function sbookIndexTags(scanstate)
-{
-  var taggings=scanstate.taggings;
-  var i=0; var n=taggings.length; while (i<n) {
-    var tagging=taggings[i++];
-    var elt=tagging.elt;
-    var tags=tagging.tags; var tagstack=tagging.ctags;
-    var knowdes=[]; var prime_knowdes=[];
-    var j=0; var ntags=tags.length;
-    while (j<ntags) {
-      var tag=tags[j++]; var knowde=false;
-      var prime=(tag[0]==="*");
-      if (tag.length===0) continue;
-      _total_tag_count++;
-      if ((knowlet) && (tag.indexOf('|')>=0))
-	knowde=knowlet.handleSubjectEntry
-	  (((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
-      else knowde=(((prime) || (tag[0]==="~")) ? (tag.slice(1)) : (tag));
-      if (knowde) {
-	knowdes.push(knowde);
-	if ((prime) && (level>0)) prime_knowdes.push(knowde);
-	sbookAddTag(elt,knowde,prime,false,true,scanstate.knowlet);}}
-    j=0; ntags=tagstack.length; while (j<ntags) {
-      var ctags=tagstack[j++];
-      var k=0; var nctags=ctags.length;
-      while (k<ctags.length)  {
-	sbookAddTag(elt,ctags[k++],false,true,true,scanstate.knowlet);}}
-    _total_tagged_count++;}
-}
-
 function sbookIndexTechnoratiTags(kno)
 {
   if (!(kno)) kno=knowlet;
@@ -443,24 +335,15 @@ function sbookTagScores()
   // The scores here are used to determine sizes in the cloud
   // A regular index reference counts as 1 and a prime reference counts
   //  as one more.
-  var i=0; while (i<book_tags.length) {
-    var tag=book_tags[i++];
-    var score=Math.ceil(Math.log(sbook_index[tag].length))+
-      ((sbook_direct_index[tag]) ? (sbook_direct_index[tag].length) : (0))+
-      ((sbook_prime_index[tag]) ? (sbook_prime_index[tag].length) : (0));
-    if (tagscores[tag]) tagscores[tag]=tagscores[tag]+score;
-    else tagscores[tag]=score;
-    tagfreqs[tag]=((sbook_index[tag])?(sbook_index[tag].length):(0))
-      alltags.push(tag);}
+  var bykey=sbook_index.bykey; var alltags=[];
+  for (var tag in bykey) {
+    tagfreqs[tag]=bykey[tag].elements.length;
+    alltags.push(tag);}
   alltags.sort(function (x,y) {
       var xlen=tagfreqs[x]; var ylen=tagfreqs[y];
       if (xlen==ylen) return 0;
       else if (xlen>ylen) return -1;
       else return 1;});
-  var max_score=0;
-  var i=0; while (i<alltags.length) {
-    var score=tagscores[alltags[i++]];
-    if (score>max_score) max_score=score;}
   tagscores._all=alltags; tagscores._freq=tagfreqs;
   sbook_tagscores=tagscores;
   return tagscores;

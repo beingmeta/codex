@@ -379,7 +379,7 @@ function sbookMarkCloud()
     var tag=alltags[i++];
     // We elide sectional tags
     if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
-    var tagnode=knoCheckCompletion("TAGS",Knowde(tag),false);
+    var tagnode=knoCheckCompletion("TAGS",tag,false,document.knowlet||false);
     fdjtAppend(completions, tagnode," ");}
   var i=0; while (i<alltags.length) {
     var tag=alltags[i++];
