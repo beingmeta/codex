@@ -386,16 +386,16 @@ var sbookUIclasses=/(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bsbookmargin\b)/;
 
 function sbookIsUIElement(elt)
 {
-  return fdjtHasClass(elt,sbookUIclasses);
+  return fdjtDOM.hasClass(elt,sbookUIclasses);
 }
 
 function sbookInUI(elt)
 {
   if (elt.sbookui) return true;
-  else if (fdjtHasParent(elt,sbookHUD)) return true;
+  else if (fdjtDOM.hasParent(elt,sbookHUD)) return true;
   else while (elt)
 	 if (elt.sbookui) return true;
-	 else if (fdjtHasClass(elt,sbookUIclasses)) return true;
+	 else if (fdjtDOM.hasClass(elt,sbookUIclasses)) return true;
 	 else elt=elt.parentNode;
   return false;
 }
@@ -430,7 +430,7 @@ function sbookGetFocus(target,closest)
   else while (target) {
       if (target.id)
 	if (closest) return target;
-	else if (fdjtHasClass(target,"sbookfoci"))
+	else if (fdjtDOM.hasClass(target,"sbookfoci"))
 	  return target;
 	else if (fdjtElementMatches(target,sbook_focus_rules))
 	  return target;
@@ -454,7 +454,7 @@ function sbookGetTarget(scan,closest)
     if ((scan===sbook_root)||(scan===sbook_root)||(scan.sbookui))
       return target;
     else if (scan.id)
-      if ((fdjtHasClass(scan,"sbookfoci"))||
+      if ((fdjtDOM.hasClass(scan,"sbookfoci"))||
 	  (fdjtElementMatches(scan,sbook_focus_rules)))
 	return scan;
       else if (closest) return scan;
@@ -540,8 +540,8 @@ function sbookSetHead(head)
     sbookTOC.update("SBOOKTOC4",headinfo,sbookInfo(sbook_head));
     sbookTOC.update("SBOOKDASHTOC4",headinfo,sbookInfo(sbook_head));
     window.title=headinfo.title+" ("+document.title+")";
-    if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
-    fdjtAddClass(head,"sbookhead");
+    if (sbook_head) fdjtDOM.dropClass(sbook_head,"sbookhead");
+    fdjtDOM.addClass(head,"sbookhead");
     sbookSetLocation(sbook_location);
     sbook_head=head;}
   else {
@@ -624,14 +624,14 @@ function sbookSetTarget(target,nogo)
     if (sbook_target_title)
       sbook_target.title=sbook_target_title;
     else sbook_target.title=null;
-    fdjtDropClass(sbook_target,"sbooktarget");
+    fdjtDOM.dropClass(sbook_target,"sbooktarget");
     sbook_target=false; sbook_target_title=false;}
   if ((!(target))||(sbookInUI(target))||
       ((target===sbook_root)||(target===document.body))) {
     return;}
   else {
     var head=sbookGetHead(target);
-    fdjtAddClass(target,"sbooktarget");
+    fdjtDOM.addClass(target,"sbooktarget");
     fdjtSetCookie("sbooktarget",target);
     sbook_target=target;
     sbookSetHead(head);
@@ -645,7 +645,7 @@ function sbookCheckTarget()
   if ((sbook_target) && (!(fdjtIsVisible(sbook_target,true)))) {
     if (sbook_trace_focus)
       sbook_trace("sbookCheckTarget(clear)",sbook_target);
-    fdjtDropClass(sbook_target,"sbooktarget");
+    fdjtDOM.dropClass(sbook_target,"sbooktarget");
     sbook_target=false;}
 }
 
@@ -1013,8 +1013,8 @@ function sbookMobileSafariSetup()
   document.body.ontouchmove=
     function(evt){
     var target=$T(evt);
-    if ((FDJT$P("sbooksummaries",target))||
-	(fdjtHasParent(target,sbookDash)))
+    if ((fdjtDOM.hasParent(target,"sbooksummaries"))||
+	(fdjtDOM.hasParent(target,sbookDash)))
       return true;
     else if (sbook_pageview) {
       evt.preventDefault(); return false;}};
@@ -1023,15 +1023,15 @@ function sbookMobileSafariSetup()
   var appmeta=fdjtElt("META");
   appmeta.name='apple-mobile-web-app-capable';
   appmeta.content='yes';
-  // fdjtPrepend(head,appmeta);
+  // fdjtDOM.prepend(head,appmeta);
 
   var viewmeta=fdjtElt("META");
   viewmeta.name='viewport';
   viewmeta.content='user-scalable=no,width=device-width';
-  fdjtPrepend(head,viewmeta);
+  fdjtDOM.prepend(head,viewmeta);
 
   sbook_notfixed=true;
-  fdjtAddClass(document.body,"notfixed");
+  fdjtDOM.addClass(document.body,"notfixed");
   
  var mouseopt=fdjtIndexOf(sbook_default_opts,"mouse");
   if (mouseopt<0)
@@ -1196,7 +1196,7 @@ function sbookAddQRIcons()
       ((id)?("&FRAG="+head.id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var qricon=fdjtImage(qrhref,"sbookqricon");
-    fdjtPrepend(head,qricon);}
+    fdjtDOM.prepend(head,qricon);}
 }
 
 /* The Help Splash */
@@ -1262,9 +1262,9 @@ function sbookSetup()
   if (!(_sbook_setup_start)) _sbook_setup_start=new Date();
   if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
-  if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
-  else fdjtAddClass(document.body,"nosbookuser");
-  fdjtAddClass(document.body,"sbooknovice");
+  if (sbook_user) fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
+  else fdjtDOM.addClass(document.body,"nosbookuser");
+  fdjtDOM.addClass(document.body,"sbooknovice");
   var fdjt_done=new Date();
   sbookGetSettings();
   sbookDisplaySetup();
@@ -1337,10 +1337,10 @@ function sbookDisplaySetup()
 
   topleading.sbookui=true; bottomleading.sbookui=true;
   var hud=createSBOOKHUD();
-  fdjtPrepend(document.body,createSBOOKHUD(),
+  fdjtDOM.prepend(document.body,createSBOOKHUD(),
 	      pagehead,pagefoot,leftedge,rightedge,
 	      topleading);  
-  fdjtAppend(document.body,bottomleading);
+  fdjtDOM(document.body,bottomleading);
   
   sbookPageHead=pagehead; sbookPageFoot=pagefoot;
   var bgcolor=document.body.style.backgroundColor;
@@ -1371,7 +1371,7 @@ function sbookDisplaySetup()
   // These are the edges above the bottom margin
   var leftedge2=fdjtDOM("div.sbookmargin.sbookleft");
   var rightedge2=fdjtDOM("div.sbookmargin.sbookright");
-  fdjtAppend(pagefoot,leftedge2,rightedge2);
+  fdjtDOM(pagefoot,leftedge2,rightedge2);
   leftedge2.title='tap/click to go back';
   leftedge2.onclick=sbookLeftEdge_onclick;
   rightedge2.title='tap/click to go forward';
@@ -1391,9 +1391,9 @@ function sbookGlossesSetup()
   sbookMessage("Setting up search cloud...");
   sbookFullCloud();
   sbookMessage("Setting up glossing cloud...");
-  fdjtReplace("SBOOKMARKCLOUD",sbookMarkCloud());
+  fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud());
   sbookSetupGlossServer();
-  if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
+  if (sbook_user) fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
   if ($ID("SBOOKFRIENDLYOPTION"))
     if (sbook_user)
       $ID("SBOOKFRIENDLYOPTION").value=sbook_user;
@@ -1428,11 +1428,11 @@ function sbookImportOverlays(arg)
       var invite_option=fdjtElt("OPTION",named);
       invite_option.title=info.about;
       invite_option.value=info.oid;
-      fdjtAppend(invite_options,invite_option);
+      fdjtDOM(invite_options,invite_option);
       var mark_option=fdjtElt("OPTION",named);
       mark_option.title=info.about;
       mark_option.value=info.oid;
-      fdjtAppend(mark_options,mark_option);}
+      fdjtDOM(mark_options,mark_option);}
     sbookOIDs.import(info);}
 }
 
@@ -1443,7 +1443,7 @@ function sbookSocialSetup()
   if (typeof sbook_tribes !== "undefined")
     sbookImportSocialInfo(sbook_social_info);
   if (sbook_user_canpost) {
-    fdjtDropClass(document.body,"sbookcantpost");}
+    fdjtDOM.dropClass(document.body,"sbookcantpost");}
   _sbook_social_setup=true;
 }
 
@@ -1451,11 +1451,11 @@ function sbookUserSetup()
 {
   if (_sbook_user_setup) return;
   if (!(sbook_user)) {
-    fdjtAddClass(document.body,"nosbookuser");
+    fdjtDOM.addClass(document.body,"nosbookuser");
     return;}
   if ((sbook_user_data)&&(sbook_user_data.oid))
     sbookOIDs.import(sbook_user_data);
-  if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
+  if (sbook_user) fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
   var userinfo=sbookOIDs.map[sbook_user];
   var username=userinfo.name;
   if ((!(sbook_user_img))&&(userinfo.pic))

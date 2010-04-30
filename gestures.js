@@ -84,12 +84,12 @@ function sbook_body_onclick(evt)
   else if ((sbook_mode)&&(sbook_mode!=="context"))
     sbookHUDMode(false);
   else if (sbook_target)
-    if (fdjtHasParent(target,sbook_target))
+    if (fdjtDOM.hasParent(target,sbook_target))
       sbookMark(sbook_target);
     else sbookSetTarget(sbookGetTarget(target));
   else sbookSetTarget(sbookGetTarget(target));
   if (sbook_notfixed) sbookSyncHUD();
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 function sbook_onmouseup(evt)
@@ -102,7 +102,7 @@ function sbook_ignoreclick(evt)
 {
   var target=$T(evt);
   if (fdjtIsClickactive(target)) return;
-  else fdjtCancelEvent(evt);
+  else fdjtDOM.cancel(evt);
 }
 
 /* Touch handlers */
@@ -116,7 +116,7 @@ function sbook_ontouchstart(evt)
       if (ref===sbook_preview) sbookPreview(false);
       else sbookPreview(ref);
     else  sbookSetPreview(ref);
-    fdjtCancelEvent(evt);}
+    fdjtDOM.cancel(evt);}
 }
 
 function sbook_ontouchmove(evt)
@@ -127,7 +127,7 @@ function sbook_ontouchmove(evt)
     if (sbook_preview)
       if (ref===sbook_preview) {}
       else sbookPreview(ref);
-    fdjtCancelEvent(evt);}
+    fdjtDOM.cancel(evt);}
 }
 
 function sbook_ontouchend(evt)
@@ -135,7 +135,7 @@ function sbook_ontouchend(evt)
   var target=$T(evt);
   var ref=sbookGetRef(target);
   if (sbook_preview) sbookStopPreview();
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 
@@ -149,7 +149,7 @@ function sbook_onkeydown(evt)
   if (evt.keyCode===27) { /* Escape works anywhere */
     if (sbook_mode) {
       sbook_last_mode=sbook_mode;
-      fdjtDropClass(document.body,"hudup");
+      fdjtDOM.dropClass(document.body,"hudup");
       sbookHUDMode(false);
       sbookPreview(false);
       sbookSetTarget(false);
@@ -221,7 +221,7 @@ function sbook_onkeypress(evt)
     sbookMarkHUDSetup(false);
     $ID("SBOOKMARKINPUT").focus();}
   else $ID("SBOOKSEARCHTEXT").blur();
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 /* Top level functions */
@@ -231,21 +231,21 @@ function sbookInterfaceMode(mode)
   if (mode==='touch') {
     sbook_interaction=mode;
     fdjtCheckSpan_set($ID("SBOOKTOUCHMODE"),true,true);
-    fdjtAddClass(document.body,"touch");
+    fdjtDOM.addClass(document.body,"touch");
     sbookCheckPagination();}
   else if (mode==='mouse') {
     sbook_interaction=mode;
     fdjtCheckSpan_set($ID("SBOOKMOUSEMODE"),true,true);
-    fdjtDropClass(document.body,"touch");
+    fdjtDOM.dropClass(document.body,"touch");
     sbookCheckPagination();}
   else if (mode==='keyboard') {
     sbook_interaction=mode;
     fdjtCheckSpan_set($ID("SBOOKKBDMODE"),true,true);
-    fdjtDropClass(document.body,"touch");
+    fdjtDOM.dropClass(document.body,"touch");
     sbookCheckPagination();}
   else {
     sbook_interaction=false;
-    fdjtDropClass(document.body,"touch");}
+    fdjtDOM.dropClass(document.body,"touch");}
 }
 
 function sbookSparseMode(flag)
@@ -253,11 +253,11 @@ function sbookSparseMode(flag)
   if (flag) {
     sbook_sparse=true;
     fdjtCheckSpan_set($ID("SBOOKSPARSE"),true,true);
-    fdjtAddClass(document.body,"sparsebook");}
+    fdjtDOM.addClass(document.body,"sparsebook");}
   else {
     sbook_sparse=false;
     fdjtCheckSpan_set($ID("SBOOKSPARSE"),false,true);
-    fdjtDropClass(document.body,"sparsebook");}
+    fdjtDOM.dropClass(document.body,"sparsebook");}
 }
 
 function sbookFlashMode(flag)
@@ -305,7 +305,7 @@ function sbookTouchGestureSetup()
   window.addEventListener("keypress",sbook_onkeypress,false);
   window.addEventListener("keydown",sbook_onkeydown,false);
   window.addEventListener("keyup",sbook_onkeyup,false);
-  fdjtAddClass(document.body,"touch");
+  fdjtDOM.addClass(document.body,"touch");
 }
 
 function sbookSimpleGestureSetup()

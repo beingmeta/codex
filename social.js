@@ -151,7 +151,7 @@ function sbookNewGlosses(glosses,winarg)
   var win=winarg||window;
   sbookImportGlosses(glosses);
   var form=win.document.getElementById("SBOOKMARKFORM");
-  fdjtDropClass(form,"submitting");
+  fdjtDOM.dropClass(form,"submitting");
   form.reset();
   fdjtCheckSpan_setup($ID("SBOOKMARKCLOUD"));
   win.sbookHUDMode(false);

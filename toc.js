@@ -79,7 +79,7 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
       var subspan=fdjtNewElt("A.sectname",subinfo.title);
       subspan.sbook_ref=subinfo.frag;
       subspan.name="SBR"+subinfo.frag;
-      fdjtAppend(div,((i>0)&&" \u00b7 "),subspan);
+      fdjtDOM(div,((i>0)&&" \u00b7 "),subspan);
       i++;}
     return div;}
 
@@ -96,8 +96,8 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
       return false;
     var progress=fdjtDOM("div.progressbox","\u00A0");
     var range=false;
-    fdjtAppend(spanbar,spans);
-    fdjtAppend(spans,range,progress);
+    fdjtDOM(spanbar,spans);
+    fdjtDOM(spans,range,progress);
     progress.style.left="0%";
     if (range) range.style.left="0%";
     var i=0; while (i<subsections.length) {
@@ -131,7 +131,7 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
     var width=(Math.floor(10000*(spanlen/len))/100)+"%";
     span.style.width=width;
     span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
-    span.sbook_ref=subsection.frag;
+    span.sbook_ref=subsection.id;
     if (name) anchor.name=name;
     return span;}
 }

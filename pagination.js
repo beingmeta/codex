@@ -63,48 +63,31 @@ var sbookPageFoot=false;
 
 function sbookIsPageHead(elt)
 {
-  return ((elt)&&
-	  (((elt.toclevel||0)&&
-	    (sbook_tocmajor)&&
-	    (elt.toclevel<=sbook_tocmajor))||
-	   ((sbook_pageheads)&&(fdjtElementMatches(elt,sbook_pageheads)))||
-	   ((window.getComputedStyle)&&
-	    (window.getComputedStyle(elt,null).pageBreakBefore==='always'))));
+  return ((sbook_tocmajor)&&(elt.id)&&
+	  ((sbook_info[elt.id]).toclevel)&&
+	  (((sbook_info[elt.id]).toclevel)<=sbook_tocmajor))||
+    (fdjtDOM.getStyle(elt).pageBreakBefore==='always');
 }
 
 function sbookIsPageFoot(elt)
 { 
-  return ((elt)&&
-	  (((sbook_pagefeet)&&(fdjtElementMatches(elt,sbook_pagefeet)))||
-	   ((window.getComputedStyle)&&
-	    (window.getComputedStyle(elt,null).pageBreakAfter==='always'))));
+  return (fdjtDOM.getStyle(elt).pageBreakAfter==='always');
 }
 
 function sbookIsPageBlock(elt)
 {
-  return ((elt)&&
-	  (((sbook_pageblocks)&&(fdjtElementMatches(elt,sbook_pageblocks)))||
-	   ((window.getComputedStyle)&&
-	    (window.getComputedStyle(elt,null).pageBreakInside==='avoid'))));
+  return ((elt)&&(fdjtDOM.getStyle(elt).pageBreakInside==='avoid'));
 }
 
 function sbookAvoidPageHead(elt)
 {
-  return ((elt)&&
-	  (((sbook_avoid_pagehead)&&
-	    (fdjtElementMatches(elt,sbook_avoid_pagehead)))||
-	   ((window.getComputedStyle)&&
-	    (window.getComputedStyle(elt,null).pageBreakBefore==='avoid'))));
+  return ((elt)&&(fdjtDOM.getStyle(elt).pageBreakBefore==='avoid'));
 }
 
 function sbookAvoidPageFoot(elt)
 {
-  return ((elt)&&
-	  ((elt.toclevel)||(fdjtHasClass(elt,"nobreakafter"))||
-	   ((sbook_avoid_pagefoot)&&
-	    (fdjtElementMatches(elt,sbook_avoid_pagefoot)))||
-	   ((window.getComputedStyle)&&
-	    (window.getComputedStyle(elt,null).pageBreakAfter==='avoid'))));
+  return ((elt.id)&&(sbook_info[elt.id])&&((sbook_info[elt.id]).toclevel))||
+    (fdjtDOM.getStyle(elt).pageBreakAfter==='avoid');
 }
 
 /* Pagination loop */
@@ -264,7 +247,7 @@ function sbookPaginate(pagesize,start)
 	curpage.bottom=pagelim=info.bottom-orphanthresh;
 	newtop=splitblock=scan;}
     //  If the next node is inside the current one, just break
-    else if (fdjtHasParent(next,scan))
+    else if (fdjtDOM.hasParent(next,scan))
       newtop=scan;
     else {
       // Just break at (around) the pagelim
@@ -343,13 +326,13 @@ function sbookPaginate(pagesize,start)
   var done=fdjtET();
   fdjtLog("[%f] Paginated %d nodes into %d pages with pagesize=%d in %s",
 	  fdjtET(),nodecount,pages.length,pagesize,
-	  fdjtShortIntervalString(done-start));
+	  fdjtTime.secs2short(done-start));
   return result;
 }
 
 function sbookNodeInfo(node)
 {
-  var info=fdjtGetOffset(node);
+  var info=fdjtDOM.getGeometry(node);
   var fontsize=getComputedStyle(node,null).fontSize;
   if ((fontsize)&&(typeof fontsize === 'string'))
     fontsize=parseInt(fontsize.slice(0,fontsize.length-2));
@@ -361,11 +344,11 @@ var sbook_content_nodes=['IMG','BR','HR'];
 
 function _sbookScanContent(scan,skipchildren)
 {
-  var info=fdjtGetOffset(scan);
+  var info=fdjtDOM.getGeometry(scan);
   var next=((skipchildren)?
 	    (fdjtNextNode(scan,_sbookIsContentBlock)):
 	    (fdjtForwardNode(scan,_sbookIsContentBlock)));
-  var nextinfo=((next)&&(fdjtGetOffset(next)));
+  var nextinfo=((next)&&(fdjtDOM.getGeometry(next)));
   if (!(next)) {}
   else if ((nextinfo.height===0)||(nextinfo.top<info.top)) 
     // Skip over weird nodes
@@ -376,7 +359,7 @@ function _sbookScanContent(scan,skipchildren)
     if ((children[0].nodeType===1)&&(_sbookIsContentBlock(children[0])))
       next=children[0];
     else if ((children[0].nodeType===3)&&
-	     (fdjtIsEmptyString(children[0].nodeValue))&&
+	     (fdjtString.isEmpty(children[0].nodeValue))&&
 	     (children.length>1)&&(children[1].nodeType===1)&&
 	     (_sbookIsContentBlock(children[1])))
       next=children[1];}
@@ -402,7 +385,7 @@ function _sbookIsContentBlock(node)
 	       (styleinfo.display==='list-item'))
 	return true;
       else return false;}
-    else if (fdjtDisplayStyle(node)==="inline") return false;
+    else if (fdjtDOM.getDisplay(node)==="inline") return false;
     else return true;
   else return false;
 }
@@ -414,12 +397,11 @@ function _sbookIsJustContainer(node)
   while (i<len) {
     var child=children[i++];
     if ((child.nodeType===3)&&
-	(!(fdjtIsEmptyString(child.nodeValue))))
+	(!(fdjtString.isEmpty(child.nodeValue))))
       return false;
     else if (child.sbookui) {}
     else if (sbook_block_tags[node.tagName]) {}
-    else if ((window.getComputedStyle)&&
-	     (styleinfo=window.getComputedStyle(node,null))) {
+    else if (styleinfo=fdjtDOM.getStyle(node)) {
       if (styleinfo.position!=='static') {}
       else if ((styleinfo.display==='block')||
 	       (styleinfo.display==='list-item'))
@@ -432,7 +414,7 @@ function _sbookIsJustContainer(node)
 function _sbookIsContainer(node)
 {
   var next=_sbookScanContent(node);
-  if (fdjtHasParent(next,node)) return next;
+  if (fdjtDOM.hasParent(next,node)) return next;
   else return false;
 }
 
@@ -491,7 +473,7 @@ function _sbookPageNodeInfo(elt,info,curpage)
 
 function sbookAdjustPageBreak(node,top,bottom)
 {
-  var nodeinfo=fdjtGetOffset(node);
+  var nodeinfo=fdjtDOM.getGeometry(node);
   var styleinfo=((window.getComputedStyle)&&
 		 (window.getComputedStyle(node,null)));
   var lastbottom=nodeinfo.top;
@@ -503,7 +485,7 @@ function sbookAdjustPageBreak(node,top,bottom)
     if (child.nodeType===1)
       if (child.sbookinui) continue;
       else {
-	var offinfo=fdjtGetOffset(child);
+	var offinfo=fdjtDOM.getGeometry(child);
 	if ((!(offinfo))||(offinfo.height===0)) continue;
 	else if (offinfo.bottom<top) continue;
 	else if (offinfo.bottom>=bottom)
@@ -518,7 +500,7 @@ function sbookAdjustPageBreak(node,top,bottom)
       // Make the text into a span
       var chunk=fdjtSpan(false,child.nodeValue);
       node.replaceChild(chunk,child);
-      var offinfo=fdjtGetOffset(chunk);
+      var offinfo=fdjtDOM.getGeometry(chunk);
       if ((!(offinfo))||(offinfo.height===0)) {
 	node.replaceChild(child,chunk);
 	continue;}
@@ -548,7 +530,7 @@ function sbookAdjustPageBreak(node,top,bottom)
 	while (j<nwords) {
 	  var word=words[j++];
 	  if (word.nodeType!==1) continue;
-	  var wordoff=fdjtGetOffset(word);
+	  var wordoff=fdjtDOM.getGeometry(word);
 	  if (wordoff.bottom<top) continue;
 	  else if (wordoff.bottom>=bottom) {
 	    // As soon as we're over the bottom, we return the last bottom
@@ -627,7 +609,7 @@ function sbookGoToPage(pagenum,pageoff)
     sbookHUDMode(false);
   sbook_pagescroll=window.scrollY;
   // Add class if it's temporarily gone
-  fdjtAddClass(document.body,"sbookpageview");
+  fdjtDOM.addClass(document.body,"sbookpageview");
 }
 
 function sbookGetPage(arg)
@@ -635,7 +617,7 @@ function sbookGetPage(arg)
   var top;
   if (typeof arg === "number") top=arg;
   else if (!($ID(arg))) return 0;
-  else top=fdjtGetOffset($ID(arg)).top;
+  else top=fdjtDOM.getGeometry($ID(arg)).top;
   var i=1; var len=sbook_pages.length;
   while (i<len) 
     if (sbook_pages[i]>top) return i-1;
@@ -721,7 +703,7 @@ function sbookTracePaging(name,elt)
     return;}
   var top=window.scrollY+sbook_top_px;
   var bottom=window.scrollY+(window.innerHeight-sbook_bottom_px);
-  var offsets=fdjtGetOffset(elt);
+  var offsets=fdjtDOM.getGeometry(elt);
   fdjtLog("[%f] %s [%d+%d=%d] %s [%d,%d] %o%s%s%s%s '%s'\n%o",
 	  fdjtET(),name,offsets.top,offsets.height,offsets.top+offsets.height,
 	  sbookPagePlacement(offsets,top,bottom),top,bottom,
@@ -784,8 +766,8 @@ function sbookPageView(flag,nogo)
   else if (flag) {
     sbook_pageview=true;
     fdjtCheckSpan_set($ID("SBOOKPAGEVIEW"),true,true);
-    fdjtAddClass(document.body,"sbookpageview");
-    fdjtDropClass(document.body,"sbookscroll");
+    fdjtDOM.addClass(document.body,"sbookpageview");
+    fdjtDOM.dropClass(document.body,"sbookscroll");
     sbookFlashMessage(3000,
 		      "Now using page view",
 		      fdjtDOM("span.details",
@@ -798,8 +780,8 @@ function sbookPageView(flag,nogo)
     sbook_pageview=false;
     sbook_nextpage=false; sbook_pagebreak=false;
     fdjtCheckSpan_set($ID("SBOOKPAGEVIEW"),false,true);
-    fdjtAddClass(document.body,"sbookscroll");
-    fdjtDropClass(document.body,"sbookpageview");
+    fdjtDOM.addClass(document.body,"sbookscroll");
+    fdjtDOM.dropClass(document.body,"sbookpageview");
     sbookFlashMessage(3000,
 		      "Now using scroll view",
 		      fdjtDOM("span.details",
@@ -816,10 +798,10 @@ function sbookPageView(flag,nogo)
 function sbookMakeMargin(spec)
 {
   var div=fdjtDiv(spec);
-  div.onmouseover=fdjtCancelEvent;
-  div.onmouseout=fdjtCancelEvent;
-  div.onmousedown=fdjtCancelEvent;
-  div.onmouseup=fdjtCancelEvent;
+  div.onmouseover=fdjtDOM.cancel;
+  div.onmouseout=fdjtDOM.cancel;
+  div.onmousedown=fdjtDOM.cancel;
+  div.onmouseup=fdjtDOM.cancel;
   div.onclick=sbookDropHUD;
   return div;
 }
@@ -902,7 +884,7 @@ function sbookLeftEdge_onclick(evt)
   // sbook_trace("sbookLeftEdge_onclick",evt);
   if (sbook_edge_taps) sbookBackward();
   else sbookHUDMode(false);
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 function sbookRightEdge_onclick(evt)
@@ -910,7 +892,7 @@ function sbookRightEdge_onclick(evt)
   // sbook_trace("sbookRightEdge_onclick",evt);
   if (sbook_edge_taps) sbookForward();
   else sbookHUDMode(false);
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 /* Emacs local variables

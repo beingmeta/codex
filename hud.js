@@ -90,7 +90,7 @@ function createSBOOKHUD()
     var headhud=
       fdjtDOM("div#SBOOKHEAD",toc_button,search_button,
 	      fdjtDOM("div#SBOOKTOC.hudblock"),
-	      sbookCreateSearchHUD("#SBOOKSEARCH.hudblock.sbooksearch"),
+	      sbookCreateSearchHUD("div#SBOOKSEARCH.hudblock.sbooksearch"),
 	      sbookCreateGlossesHUD(),
 	      sbookCreateDash(),
 	      markhud,
@@ -116,8 +116,8 @@ function sbookInitNavHUD(root_info)
     toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
     toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");}
   toc_button.style.visibility=null;
-  fdjtReplace("SBOOKTOC",navhud);
-  fdjtAppend($ID("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC",root_info));
+  fdjtDOM.replace("SBOOKTOC",navhud);
+  fdjtDOM($ID("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC",root_info));
 }
 
 function sbookInitSocialHUD()
@@ -207,42 +207,42 @@ function sbookHUDMode(mode)
       if (fdjtContains(sbook_apps,mode)) sbook_last_app=mode;
       if (fdjtContains(sbook_headmodes,mode)) sbook_last_headmode=mode;
       if (fdjtContains(sbook_footmodes,mode)) sbook_last_footmode=mode;
-      fdjtAddClass(document.body,"hudup");
-      fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
+      fdjtDOM.addClass(document.body,"hudup");
+      fdjtDOM.swapClass(sbookHUD,sbookHUDMode_pat,mode);
       if ((mode==="glosses")&&(sbook_target))
 	sbookScrollGlosses(sbook_target);}
   else {
     sbook_last_mode=sbook_mode;
     sbook_mode=false;
-    fdjtDropClass(sbookHUD,sbookHUDMode_pat);
-    fdjtDropClass(document.body,"hudup");}
+    fdjtDOM.dropClass(sbookHUD,sbookHUDMode_pat);
+    fdjtDOM.dropClass(document.body,"hudup");}
 }
 function sbookHUDToggle(mode)
 {
-  if (fdjtHasClass(sbookHUD,mode)) {
+  if (fdjtDOM.hasClass(sbookHUD,mode)) {
     sbook_mode=false;
-    fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
+    fdjtDOM.dropClass(sbookHUD,sbookHUDMode_pat);}
   else if (mode) {
     sbook_mode=mode;
-    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);}
+    fdjtDOM.swapClass(sbookHUD,sbookHUDMode_pat,mode);}
   else {
     sbook_mode=false;
-    fdjtDropClass(sbookHUD,sbookHUDMode_pat);}
+    fdjtDOM.dropClass(sbookHUD,sbookHUDMode_pat);}
 }
 
 function sbookHUDFlash(mode,usecs)
 {
   if (mode) {
-    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,mode);
-    fdjtAddClass(document.body,"hudup");
+    fdjtDOM.swapClass(sbookHUD,sbookHUDMode_pat,mode);
+    fdjtDOM.addClass(document.body,"hudup");
     if (usecs) fdjtDelay(usecs,sbookHUDFlash,false,sbookHUD,"flash");}
   else if (usecs)
     fdjtDelay(usecs,sbookHUDFlash,false,sbookHUD,"flash");
   else if (sbook_mode)
-    fdjtSwapClass(sbookHUD,sbookHUDMode_pat,sbook_mode);
+    fdjtDOM.swapClass(sbookHUD,sbookHUDMode_pat,sbook_mode);
   else {
-    fdjtDropClass(sbookHUD,sbookHUDMode_pat);
-    fdjtDropClass(document.body,"hudup");}
+    fdjtDOM.dropClass(sbookHUD,sbookHUDMode_pat);
+    fdjtDOM.dropClass(document.body,"hudup");}
 }
 
 function sbookDropHUD()
@@ -256,11 +256,11 @@ var sbook_message_timer=false;
 
 function sbookMessage(message)
 {
-  fdjtReplace("SBOOKMESSAGE",
+  fdjtDOM.replace("SBOOKMESSAGE",
 	      fdjtDOM("div.message",
 		      fdjtDOM("div.head",message),
 		      fdjtArguments(arguments,1)));
-  fdjtPrepend("SBOOKMESSAGELOG",
+  fdjtDOM.prepend("SBOOKMESSAGELOG",
 	      fdjtDOM("div.logentry",
 		      fdjtDOM("span.time",fdjtET()),
 		      message));
@@ -282,21 +282,21 @@ function sbookFlashMessage(arg0)
     args=fdjtArguments(arguments,1);}
   if (sbook_message_timer) clearTimeout(sbook_message_timer);
   if (message) {
-    fdjtReplace("SBOOKMESSAGE",
+    fdjtDOM.replace("SBOOKMESSAGE",
 		fdjtDOM("div.message",fdjtDOM("div.head",message),args));
-    fdjtPrepend("SBOOKMESSAGELOG",
+    fdjtDOM.prepend("SBOOKMESSAGELOG",
 		fdjtDOM("div.logentry",
 			fdjtDOM("span.time",fdjtET()),
 			message));}
-  fdjtDropClass(sbookHUD,sbookHUDMode_pat);
-  fdjtAddClass(sbookHUD,"console");
+  fdjtDOM.dropClass(sbookHUD,sbookHUDMode_pat);
+  fdjtDOM.addClass(sbookHUD,"console");
   var mode=sbook_mode;
   sbook_message_timer=
     setTimeout(function() {
 	if (mode==="console") sbookHUDMode(false);
 	else if (sbook_mode==="console") sbookHUDMode(false);	
 	else if (mode) {
-	  fdjtSwapClass(sbookHUD,"console",mode);}},
+	  fdjtDOM.swapClass(sbookHUD,"console",mode);}},
       duration);
 }
 
@@ -410,7 +410,7 @@ function sbookUpdateDash()
       if (offlineuri!=='none') elt.href=offlineuri;
       else {
 	elt.href=false;
-	fdjtAddClass(elt,"deadlink");
+	fdjtDOM.addClass(elt,"deadlink");
 	elt.title='this sBook is not available offline';}}}
   if (epuburi) {
     var elts=document.getElementsByName("SBOOKEPUBLINK");
@@ -419,7 +419,7 @@ function sbookUpdateDash()
       if (epuburi!=='none') elt.href=epuburi;
       else {
 	elt.href=false;
-	fdjtAddClass(elt,"deadlink");
+	fdjtDOM.addClass(elt,"deadlink");
 	elt.title='this sBook is not available as an ePub';}}}
   if (mobiuri) {
     var elts=document.getElementsByName("SBOOKMOBILINK");
@@ -428,7 +428,7 @@ function sbookUpdateDash()
       if (mobiuri!=='none') elt.href=mobiuri;
       else {
 	elt.href=false;
-	fdjtAddClass(elt,"deadlink");
+	fdjtDOM.addClass(elt,"deadlink");
 	elt.title='this sBook is not available as a MOBIpocket format eBook';}}}
   if (zipuri) {
     var elts=document.getElementsByName("SBOOKZIPLINK");
@@ -437,13 +437,13 @@ function sbookUpdateDash()
       if (zipuri!=='none') elt.href=zipuri;
       else {
 	elt.href=false;
-	fdjtAddClass(elt,"deadlink");
+	fdjtDOM.addClass(elt,"deadlink");
 	elt.title='this sBook is not available as a ZIP bundle';}}}
   /* If the book is offline, don't bother showing the link to the offline
      version
      ?? Maybe show link to the dynamic version
   */
-  if (sbook_offline) fdjtAddClass(document.body,"sbookoffline");
+  if (sbook_offline) fdjtDOM.addClass(document.body,"sbookoffline");
 }
 
 function _sbookFillTemplate(template,spec,content)
@@ -455,14 +455,14 @@ function _sbookFillTemplate(template,spec,content)
   if (typeof content === 'string')
     elt.innerHTML=content;
   else if (content.cloneNode)
-    fdjtReplace(elt,content.cloneNode(true));
-  else fdjtAppend(elt,content);
+    fdjtDOM.replace(elt,content.cloneNode(true));
+  else fdjtDOM(elt,content);
 }
 
 function sbookUpdateAboutInfo()
 {
   if ($ID("SBOOKABOUT")) {
-    fdjtReplace("APPABOUTCONTENT",$ID("SBOOKABOUT"));
+    fdjtDOM.replace("APPABOUTCONTENT",$ID("SBOOKABOUT"));
     return;}
   var about=$ID("APPABOUT");
   var title=
@@ -501,7 +501,7 @@ function sbookUpdateAboutInfo()
   var cover=fdjtGetLink("cover");
   if (cover) {
     var cover_elt=FDJT$(".cover",about)[0];
-    if (cover_elt) fdjtAppend(cover_elt,fdjtImage(cover));}
+    if (cover_elt) fdjtDOM(cover_elt,fdjtImage(cover));}
 }
 
 /* Previewing */
@@ -520,17 +520,17 @@ function sbookPreview(elt,offset)
       if (sbook_preview_title)
 	sbook_preview.title=sbook_preview_title;
       sbook_preview_title=false;
-      fdjtDropClass(document.body,"preview");
-      fdjtDropClass(sbook_preview,"previewing");
+      fdjtDOM.dropClass(document.body,"preview");
+      fdjtDOM.dropClass(sbook_preview,"previewing");
       fdjtScrollRestore();
       sbook_preview_target=sbook_preview=false;
       return;}
     else {
-      fdjtDropClass(document.body,"preview");
+      fdjtDOM.dropClass(document.body,"preview");
       fdjtScrollRestore();
       return;}
   if (sbook_preview)
-    fdjtDropClass(sbook_preview,"previewing");
+    fdjtDOM.dropClass(sbook_preview,"previewing");
   if ((elt===sbook_root)||(elt===document.body))
     return;
   if (!(offset))
@@ -538,8 +538,8 @@ function sbookPreview(elt,offset)
       offset=elt.preview_off||sbookDisplayOffset();
       elt=elt.sbook_ref;}
     else offset=sbookDisplayOffset();
-  fdjtAddClass(document.body,"preview");
-  fdjtAddClass(elt,"previewing");
+  fdjtDOM.addClass(document.body,"preview");
+  fdjtDOM.addClass(elt,"previewing");
   sbook_last_preview=elt;
   sbook_preview_target=sbook_preview=elt;
   if ((elt.title)&&(elt!==sbook_target))
@@ -579,8 +579,8 @@ function sbookPreviewIcon(img)
 		    "preview: click or hold mouse button or control key");
   img.addEventListener("mouseover",sbookTOC_onmouseover,false);
   img.addEventListener("mouseout",sbookTOC_onmouseout,false);
-  img.addEventListener("mousedown",fdjtCancelEvent,false);
-  img.addEventListener("mouseup",fdjtCancelEvent,false);
+  img.addEventListener("mousedown",fdjtDOM.cancel,false);
+  img.addEventListener("mouseup",fdjtDOM.cancel,false);
   return img;
 }
 
@@ -596,9 +596,9 @@ function sbookTOCButton_onclick(evt)
   evt=evt||event||null;
   if (sbook_mode==="toc") {
     sbookHUDMode(false);
-    fdjtDropClass("SBOOKTOC","hover");}
+    fdjtDOM.dropClass("SBOOKTOC","hover");}
   else sbookHUDMode("toc");
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 function sbookSearchButton_onclick(evt)
@@ -606,12 +606,12 @@ function sbookSearchButton_onclick(evt)
   evt=evt||event||null;
   if ((sbook_mode==="searching") || (sbook_mode==="browsing")) {
     sbookHUDMode(false);
-    fdjtDropClass("SBOOKSEARCH","hover");
+    fdjtDOM.dropClass("SBOOKSEARCH","hover");
     $ID("SBOOKSEARCHTEXT").blur();}
   else {
     sbookHUDMode("searching");
     $ID("SBOOKSEARCHTEXT").focus();
-    fdjtCancelEvent(evt);}
+    fdjtDOM.cancel(evt);}
 }
 
 function sbookDashButton_onclick(evt)
@@ -621,7 +621,7 @@ function sbookDashButton_onclick(evt)
       sbookHUDMode(false);
     else sbookHUDMode(sbook_last_app);
   else sbookHUDMode(sbook_last_app);
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 function sbookGlossesButton_onclick(evt)
@@ -629,9 +629,9 @@ function sbookGlossesButton_onclick(evt)
   evt=evt||event||null;
   if (sbook_mode==="glosses") {
     sbookHUDMode(false);
-    fdjtDropClass("SBOOKGLOSSES","hover");}
+    fdjtDOM.dropClass("SBOOKGLOSSES","hover");}
   else sbookHUDMode("glosses");
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 function sbookLoginButton_onclick(evt)

@@ -88,7 +88,7 @@ function sbookAddSourceIcon(info)
     (pic,".button.source",info.name|info.kind,
      ("click to show/hide glosses from "+info.name));
   icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
-  fdjtAppend("SBOOKSOURCES"," ",icon);
+  fdjtDOM("SBOOKSOURCES"," ",icon);
   return icon;
 }
 
@@ -102,15 +102,15 @@ function sbookEveryoneButton_onclick(evt)
   var new_sources=[];
   if ((!(sources))||(!(glosses)))
     return; /* Warning? */
-  if (fdjtHasClass(target,"selected")) {
+  if (fdjtDOM.hasClass(target,"selected")) {
     sbookHUDMode(false);
-    fdjtCancelEvent(evt);
+    fdjtDOM.cancel(evt);
     return;}
   var selected=FDJT$(".selected",sources);
-  fdjtToggleClass(selected,"selected");
-  fdjtAddClass(target,"selected");
+  fdjtDOM.toggleClass(selected,"selected");
+  fdjtDOM.addClass(target,"selected");
   sbookSelectSources(summaries,false);
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 function sbookSources_onclick(evt)
@@ -124,7 +124,7 @@ function sbookSources_onclick(evt)
   var new_sources=[];
   if ((!(sources))||(!(glosses))||(!(target.oid)))
     return; /* Warning? */
-  fdjtToggleClass(target,"selected");
+  fdjtDOM.toggleClass(target,"selected");
   var selected=FDJT$(".selected",sources);
   var i=0; var len=selected.length;
   while (i<len) {
@@ -132,12 +132,12 @@ function sbookSources_onclick(evt)
     if (oid) new_sources.push(oid);}
   var everyone=FDJT$(".everyone",sources)[0];
   if (new_sources.length) {
-    if (everyone) fdjtDropClass(everyone,"selected");
+    if (everyone) fdjtDOM.dropClass(everyone,"selected");
     sbookSelectSources(summaries,new_sources);}
   else {
-    if (everyone) fdjtAddClass(everyone,"selected");
+    if (everyone) fdjtDOM.addClass(everyone,"selected");
     sbookSelectSources(summaries,false);}
-  fdjtCancelEvent(evt);
+  fdjtDOM.cancel(evt);
 }
 
 function sbookSetSources(overlays,sources)
@@ -148,8 +148,8 @@ function sbookSetSources(overlays,sources)
     if (child.nodeType===1) {
       if ((fdjtIndexOf(sources,child.oid)>=0) ||
 	  (fdjtOverlaps(sources,child.oid)))
-	fdjtAddClass(child,"sourced");
-      else fdjtDropClass(child,"sourced");}}
+	fdjtDOM.addClass(child,"sourced");
+      else fdjtDOM.dropClass(child,"sourced");}}
 }
 
 function sbookScrollGlosses(elt,glosses)
@@ -165,7 +165,7 @@ function sbookScrollGlosses(elt,glosses)
 	if ((child.blockloc) &&
 	    (child.blockloc>=targetloc) &&
 	    (child.offsetHeight>0)) {
-	  var off=fdjtGetOffset(child,false,glosses);
+	  var off=fdjtDOM.getGeometry(child,false,glosses);
 	  glosses.scrollTop=off.top;
 	  return;}}}}
 }
@@ -204,7 +204,7 @@ function sbookGlossmark(target,open)
      fdjtImage(imgsrc,"big","comments"),
      fdjtImage(sbicon("sbicon16x16.png"),"tiny","+"));
   glossmark.onclick=sbookGlossmark_onclick;
-  glossmark.onmousedown=fdjtCancelEvent;
+  glossmark.onmousedown=fdjtDOM.cancel;
   glossmark.onmouseover=sbookGlossmark_onmouseover;
   glossmark.onmouseout=sbookGlossmark_onmouseout;
   if (id) {
@@ -216,10 +216,10 @@ function sbookGlossmark(target,open)
       ((id)?("&FRAG="+id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var i=0; while (i<tags.length) qrhref=qrhref+"&TAGCUE="+tags[i++];
-    fdjtPrepend(target,fdjtImage(qrhref,"sbookqricon"));}
+    fdjtDOM.prepend(target,fdjtImage(qrhref,"sbookqricon"));}
   if (target) {
-    fdjtAddClass(target,"glossed");
-    fdjtPrepend(target,glossmark);}
+    fdjtDOM.addClass(target,"glossed");
+    fdjtDOM.prepend(target,glossmark);}
   glossmark.sbookui=true;
   return glossmark;
 }
@@ -240,24 +240,24 @@ function sbookOpenGlossmark(target,addmark)
     sbookSetupSummaryDiv(sumdiv);
     if (glosses)
       sbookShowSummaries(glosses,sumdiv,false);
-    fdjtReplace("SBOOKMARKGLOSSES",sumdiv);
+    fdjtDOM.replace("SBOOKMARKGLOSSES",sumdiv);
     sbookSetTarget(target);
     sbook_glossmark_target=target;
     sbookMarkHUDSetup(target);
     sbookAlignGlossmark(hud,target);
    if (addmark)
-      fdjtDropClass($ID("SBOOKMARKFORM"),"closed");
-    else fdjtAddClass($ID("SBOOKMARKFORM"),"closed");
+      fdjtDOM.dropClass($ID("SBOOKMARKFORM"),"closed");
+    else fdjtDOM.addClass($ID("SBOOKMARKFORM"),"closed");
     sbookHUDMode("mark");}
 }
 
 function sbookAlignGlossmark(hud,target)
 {
   return;
-  var offinfo=fdjtGetOffset(target);
+  var offinfo=fdjtDOM.getGeometry(target);
   hud.style.maxHeight=(window.innerHeight-100)+'px';
   hud.style.opacity=0.0; hud.style.display='block';
-  var hudinfo=fdjtGetOffset(hud);
+  var hudinfo=fdjtDOM.getGeometry(hud);
   var minoff=(window.scrollY+window.innerHeight)-hudinfo.height;
   if (offinfo.top<minoff) 
     hud.style.top=offinfo.top+'px';
@@ -279,14 +279,14 @@ function sbookGlossmark_onmouseover(evt)
 {
   evt=evt||event||null;
   var target=sbookGetRef(evt.target)||sbookGetFocus(evt.target);
-  fdjtAddClass(target,"sbooklivespot");
+  fdjtDOM.addClass(target,"sbooklivespot");
 }
 
 function sbookGlossmark_onmouseout(evt)
 {
   evt=evt||event||null;
   var target=sbookGetRef(evt.target)||sbookGetFocus(evt.target);
-  fdjtDropClass(target,"sbooklivespot");
+  fdjtDOM.dropClass(target,"sbooklivespot");
 }
 
 function createSBOOKHUDping()
@@ -297,7 +297,7 @@ function createSBOOKHUDping()
   iframe.hspace=0; iframe.vspace=0;
   iframe.marginHeight=0; iframe.marginWidth=0;
   iframe.border=0; iframe.frameBorder=0;
-  fdjtAppend(wrapper,iframe);
+  fdjtDOM(wrapper,iframe);
   wrapper.onfocus=function (evt){
     iframe.src=
     sbook_glossmark_uri(sbook_refuri,

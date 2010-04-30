@@ -39,7 +39,7 @@ function sbookShowSearch(result)
   var results_div=fdjtDOM("div.sbooksummaries.hud");
   sbookSetupSummaryDiv(results_div);
   sbookShowSearchSummaries(result,results_div);
-  fdjtReplace("SBOOKSUMMARIES",results_div);
+  fdjtDOM.replace("SBOOKSUMMARIES",results_div);
 }
 
 function sbookShowSearchSummaries(result,results_div)
@@ -51,19 +51,19 @@ function sbookShowSearchSummaries(result,results_div)
   else head_div=fdjtDOM("div.count");
   var query=result._query;
   var j=0; while (j<query.length) 
-	     fdjtAppend(head_div,((j>0)&&(" \u00b7 ")),
+	     fdjtDOM(head_div,((j>0)&&(" \u00b7 ")),
 			fdjtDOM("span.dterm",query[j++]));
   var results_sum;
   if (results.length===0)
-    results_sum=fdjtSpan(false," \u2192 ","no results");
+    results_sum=fdjtDOM("span"," \u2192 ","no results");
   else if (results.length===1)
-    results_sum=fdjtSpan(false," \u2192 ","one result");
-  else results_sum=fdjtSpan(false," \u2192 ",results.length," results");
+    results_sum=fdjtDOM("span"," \u2192 ","one result");
+  else results_sum=fdjtDOM("span"," \u2192 ",results.length," results");
   // When the dterm has RTL content (say Hebrew), it may mess up
   //  the display of the results list, so we explicitly set the direction.
   results_sum.dir='ltr';
-  fdjtAppend(head_div,results_sum);
-  fdjtAppend(results_div,head_div);
+  fdjtDOM(head_div,results_sum);
+  fdjtDOM(results_div,head_div);
   sbookShowSummaries(results,results_div,result);
 }
 
@@ -93,7 +93,7 @@ function sbookSearchInput_onkeypress(evt)
     sbookHUDMode("browsing");
     $ID("SBOOKSEARCHTEXT").blur();
     $ID("SBOOKSUMMARIES").focus();
-    fdjtCancelEvent(evt);
+    fdjtDOM.cancel(evt);
     return false;}
   else if (ch===59) { /* That is, semicolon */
     sbookForceComplete($T(evt));
@@ -102,26 +102,6 @@ function sbookSearchInput_onkeypress(evt)
   else {
     return fdjtComplete_onkey(evt);}
 }
-
-/*
-function sbookSearchInput_onkeyup(evt)
-{
-  evt=evt||event||null;
-  var target=$T(evt);
-  var kc=evt.keyCode;
-  if (kc===13) {
-    sbookForceComplete(target);
-    sbookShowSearch(sbook_query);
-    sbookHUDMode("browsing");
-    $ID("SBOOKSEARCHTEXT").blur();
-    $ID("SBOOKSUMMARIES").focus();
-    fdjtCancelEvent(evt);
-    return false;}
-  else if ((kc===8)||(kc===9)) {
-    sbookUpdateQuery(target);
-    return fdjtComplete_onkey(evt);}
-}
-*/
 
 function sbookSearchInput_onfocus(evt)
 {
@@ -137,7 +117,6 @@ function sbookSearchInput_onfocus(evt)
 function sbookSearchInput_onblur(evt)
 {
   evt=evt||event||null;
-  // fdjtDropClass(sbookHUD,"searching");
   fdjtAutoPrompt_onblur(evt);
   sbook_search_focus=false;
 }
@@ -183,9 +162,9 @@ function _sbook_note_completions(completions)
   else {}
   if (forced) {
     if (this.forced_elt)
-      fdjtDropClass(this.forced_elt,"prime");
+      fdjtDOM.dropClass(this.forced_elt,"prime");
     this.forced_elt=forced;
-    fdjtAddClass(forced,"prime");}
+    fdjtDOM.addClass(forced,"prime");}
 }
 
 /* Getting query cloud */
@@ -211,8 +190,6 @@ function sbookDTermCompletion(term,title)
     dterm=false;}
   var dterm_node=
     ((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.dterm.raw",term)));
-  // Adds the cute hole to the vaugely tag shaped textform
-  // fdjtPrepend(dterm_node,fdjtDOM("span.bigpunct","\u00b7"));
   if (!(title))
     if (sbook_index.freq(dterm))
       title=sbook_index.freq(dterm)+" items";
@@ -288,18 +265,18 @@ function sbookQueryCloud(query)
     result_counts.title='click to see results; click in the input box to return here';
     refiner_counts.onclick=function(evt){
       evt=evt||event||null;
-      fdjtToggleClass(completions,"showempty");
+      fdjtDOM.toggleClass(completions,"showempty");
       if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
       evt.cancelBubble=true;};
     refiner_counts.title='click to show more/less';
-    fdjtPrepend(completions,counts,msg1,msg2);
+    fdjtDOM.prepend(completions,counts,msg1,msg2);
     query._cloud=completions;
     if (hide_some) {
       var cues=FDJT$(".cue",completions);
       if (!((cues)&&(cues.length))) {
 	var compelts=FDJT$(".completion",completions);
-	var i=0; while (i<sbook_show_refiners) fdjtAddClass(compelts[i++],"cue");}}
-    else fdjtAddClass(completions,"showempty");
+	var i=0; while (i<sbook_show_refiners) fdjtDOM.addClass(compelts[i++],"cue");}}
+    else fdjtDOM.addClass(completions,"showempty");
     // fdjtTrace("Generated completions for %o: %o",query,completions);
     fdjtInitCompletions(completions);
     return completions;}
@@ -309,8 +286,8 @@ function sbookMakeCloud(dterms,scores,freqs)
 {
   var start=new Date();
   if (sbook_trace_clouds)
-    fdjtLog("[%f] Making cloud based on %d dterms using scores=%o and freqs=%o",
-	    fdjtElapsedTime(),dterms.length,scores,freqs);
+    fdjtLog("[%fs] Making cloud from %d dterms using scores=%o and freqs=%o",
+	    fdjtET(),dterms.length,scores,freqs);
   var completions=fdjtDOM("div.completions");
   var n_terms=dterms.length;
   var i=0; var max_score=0;
@@ -356,14 +333,14 @@ function sbookMakeCloud(dterms,scores,freqs)
 		 ((freq/freqs._count)-(count/sbook_tagged_count))
 		 : (0.5));
     var span=sbookDTermCompletion(dterm,title);
-    if (freq===1) fdjtAddClass(span,"singleton");
+    if (freq===1) fdjtDOM.addClass(span,"singleton");
     if ((scores) && (scores[dterm])) {
       var relsize=
 	Math.ceil((75+(Math.ceil(50*(score/max_score)))+
 		   (Math.ceil(50*(relfreq))))
 		  *((dterm.length>8) ? (2/Math.log(dterm.length)) : (1)));
       span.style.fontSize=relsize+"%";}
-    fdjtAppend(completions,span,"\n");}
+    fdjtDOM(completions,span,"\n");}
   /*
   var showall=fdjtDOM("span.showall","show completions");
   var hideall=fdjtDOM("span.hideall","hide completions");
@@ -375,7 +352,7 @@ function sbookMakeCloud(dterms,scores,freqs)
 		     "(",fdjtDOM("span.completioncount","really"),")",
 		     " of completions.  ");
   maxmsg.onclick=sbookMaxComplete_onclick;
-  fdjtPrepend(completions,maxmsg);
+  fdjtDOM.prepend(completions,maxmsg);
   var end=new Date();
   if (sbook_trace_clouds)
     fdjtLog("[%f] Made cloud for %d dterms in %f seconds",
@@ -389,8 +366,8 @@ function sbookMaxComplete_onclick(evt)
   var target=$T(evt);
   var container=FDJT$P(".completions",target);
   $ID("SBOOKSEARCHTEXT").focus();
-  fdjtToggleClass(container,"showall");
-  fdjtCancelEvent(evt);
+  fdjtDOM.toggleClass(container,"showall");
+  fdjtDOM.cancel(evt);
 }
 
 var sbook_full_cloud=false;
@@ -409,7 +386,7 @@ function sbookFullCloud()
     if (!((cues)&&(cues.length))) {
       var celts=fdjtGetChildrenByClassName(completions,"completion");
       var j=0; while ((j<sbook_show_refiners)&&(j<celts.length)) {
-	fdjtAddClass(celts[j++],"cue");}}
+	fdjtDOM.addClass(celts[j++],"cue");}}
     return completions;}
 }
 
@@ -427,7 +404,7 @@ function sbookCreateSearchHUD(classinfo)
   var completions=sbook_empty_cloud=
     fdjtDOM("div.completions",fdjtDOM("span.count","no query refinements"));
   
-  fdjtAddClass(input,"autoprompt");
+  fdjtDOM.addClass(input,"autoprompt");
   input.setAttribute("COMPLETEOPTS","anywhere cloud");
   input.completions_elt=completions;
   input.prompt="Enter tags (or click on completions)";
@@ -448,12 +425,12 @@ function sbookCreateSearchHUD(classinfo)
   input.setAttribute("MAXCOMPLETE","45");  
 
   clear_input.onclick=sbookClearInput_onclick;
-  clear_input.onmousedown=fdjtCancelEvent;
+  clear_input.onmousedown=fdjtDOM.cancel;
 
   completions.id="SBOOKSEARCHCOMPLETIONS";
   input.id="SBOOKSEARCHTEXT";
   var sbooksearch=
-    fdjtDiv(classinfo||".sbooksearch.hudblock#SBOOKSEARCH",
+    fdjtDOM(classinfo||"div.sbooksearch.hudblock#SBOOKSEARCH",
 	    input_help,
 	    fdjtDOM("div.query",
 		    fdjtDOM("div.spacer",fdjtDOM("div.input",clear_input,input)),
