@@ -42,7 +42,7 @@ function sbookAddTag(elt,tag,weight,kno)
 {
   if ((typeof elt === 'string')||(typeof elt === 'number'))
     sbook_index.add(elt,tag,weight,kno);
-  else sbook_index.add(elt.id||elt._fdjtid||fdjtDB.register(elt),
+  else sbook_index.add(elt.id||elt._fdjtid||fdjtKB.register(elt),
 		       tag,weight,kno);
 }
 
@@ -110,7 +110,7 @@ function sbook_lookup_term(term,table)
   if (!(table)) table=sbook_index;
   if (table.hasOwnProperty(term))
     return table[term];
-  else return fdjtDB.Set();
+  else return fdjtKB.Set();
 }
 
 function sbookDoSearch(query,results)
@@ -156,7 +156,7 @@ function sbookGetRefiners(results)
       var j=0; var len=tags.length; while (j<len) {
 	var tag=tags[j++];
 	// If the tag is already part of the query, we ignore it.
-	if (fdjtDB.contains(query,tag)) {}
+	if (fdjtKB.contains(query,tag)) {}
 	// If the tag has already been seen, we increase its frequency
 	// and its general score
 	else if (freqs[tag]) {

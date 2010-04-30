@@ -67,7 +67,7 @@ var sbook_idinfo={};
 // This is a big weighted inverted index
 var sbook_index=new KnowletIndex();
 // This is a pool for all OID information
-var sbookOIDs=new fdjtDB.Pool("oids");
+var sbookOIDs=new fdjtKB.Pool("oids");
 
 /* Tag indices */
 
