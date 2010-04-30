@@ -66,6 +66,8 @@ var sbook_taginfo=[];
 var sbook_idinfo={};
 // This is a big weighted inverted index
 var sbook_index=new KnowletIndex();
+// This is a pool for all OID information
+var sbookOIDs=new fdjtDB.Pool("oids");
 
 /* Tag indices */
 
@@ -356,32 +358,28 @@ function sbookHeadLevel(elt)
   else return false;
 }
 
-function sbook_getinfo(elt)
+function sbookInfo(arg)
 {
-  if (!(elt)) return elt;
-  else if (typeof elt === "string") return sbook_info[elt];
-  else if (elt.id) return sbook_info[elt.id];
+  if (arg)
+    if (typeof arg === 'string')
+      return sbook_info[arg]||sbookOIDs.map[arg];
+    else if (arg.oid) return arg;
+    else if (arg.id) return sbook_info[arg.id];
+    else return false;
   else return false;
 }
 
-function sbook_needinfo(elt)
+function sbookInfoTarget(arg)
 {
-  if (!(elt)) return elt;
-  else if (typeof elt === "string") 
-    return sbook_needinfo($ID(elt));
-  else if (elt._sbookid)
-    return sbook_info[elt._sbookid];
-  else {
-    var id=elt._fdjtid||fdjtObjID(elt);
-    elt._sbookid=id;
-    var info=sbook_info[id];
-    if (info) return info;
-    info={}; info._sbookid=id;
-    if (elt.id) {
-      info.id=elt.id;
-      sbook_idinfo[elt.id]=info;}
-    sbook_info[id]=info;
-    return info;}
+  if (arg)
+    if (typeof arg === 'string')
+      return document.getElementById(arg);
+    else if (arg.nodeType) return arg;
+    else if (arg.frag)
+      return document.getElementById(arg);
+    else if (arg.id) return sbook_info[arg.id];
+    else return false;
+  else return false;
 }
 
 /* Access functions */
@@ -509,12 +507,12 @@ function sbookUpdateQuery(input_elt)
 
 function sbook_title_path(head)
 {
-  var info=sbook_getinfo(head);
+  var info=sbookInfo(head);
   if (info.title) {
-    var scan=sbook_getinfo(info.elt.sbook_ref);
+    var scan=sbookInfo(info.elt.sbook_ref);
     while (scan) {
       if (scan.title) title=title+" // "+scan.title;
-      scan=sbook_getinfo(scan.elt.head);}
+      scan=sbookInfo(scan.elt.head);}
     return title;}
   else return null;
 }
@@ -533,10 +531,10 @@ function sbookSetHead(head)
     if (sbook_debug) fdjtLog("Redundant SetHead");
     return;}
   else if (head) {
-    var headinfo=sbook_getinfo(head);
+    var headinfo=sbookInfo(head);
     if (sbook_trace_focus) sbook_trace("sbookSetHead",head);
-    sbookTOC.update("SBOOKTOC4",headinfo,sbook_getinfo(sbook_head));
-    sbookTOC.update("SBOOKDASHTOC4",headinfo,sbook_getinfo(sbook_head));
+    sbookTOC.update("SBOOKTOC4",headinfo,sbookInfo(sbook_head));
+    sbookTOC.update("SBOOKDASHTOC4",headinfo,sbookInfo(sbook_head));
     window.title=headinfo.title+" ("+document.title+")";
     if (sbook_head) fdjtDropClass(sbook_head,"sbookhead");
     fdjtAddClass(head,"sbookhead");
@@ -557,10 +555,10 @@ function sbookSetLocation(location,force)
   if ((!(force)) && (sbook_location===location)) return;
   if (sbook_trace_locations)
     fdjtLog("Setting location to %o",location);
-  var info=sbook_getinfo(sbook_head);
+  var info=sbookInfo(sbook_head);
   while (info) {
-    var tocelt=document.getElementById("SBOOKTOC4"+info.id);
-    var dashtocelt=document.getElementById("SBOOKDASHTOC4"+info.id);
+    var tocelt=document.getElementById("SBOOKTOC4"+info.frag);
+    var dashtocelt=document.getElementById("SBOOKDASHTOC4"+info.frag);
     var start=tocelt.sbook_start; var end=tocelt.sbook_end;
     var progress=((location-start)*80)/(end-start);
     var bar=fdjtGetFirstChild(tocelt,".progressbar");
@@ -592,7 +590,7 @@ function sbookSetLocation(location,force)
 
 function sbookNextHead(head)
 {
-  var info=sbook_getinfo(head);
+  var info=sbookInfo(head);
   if ((info.sub)&&(info.sub.length>0))
     return $ID(info.sub[0].id);
   else if (info.next)
@@ -604,7 +602,7 @@ function sbookNextHead(head)
 
 function sbookPrevHead(head)
 {
-  var info=sbook_getinfo(head);
+  var info=sbookInfo(head);
   if (info.prev)
     return $ID(info.prev.id);
   else if (info.head)
@@ -1254,8 +1252,6 @@ function sbookInitLocation()
 var _sbook_setup=false;
 var _sbook_setup_start=false;
 
-var sbook_metadata=false;
-
 function sbookSetup()
 {
   if (_sbook_setup) return;
@@ -1279,9 +1275,8 @@ function sbookSetup()
     sbook_ajax_uri=false;
   sbookMessage("Scanning document structure");
   var metadata=sbookScan(sbook_root);
-  sbook_metadata=metadata;
-  sbook_info=metadata.tocinfo;
-  sbookInitNavHUD(metadata.tocinfo[sbook_root.id]);
+  sbook_info=metadata;
+  sbookInitNavHUD(metadata[sbook_root.id]);
   var scan_done=new Date();
   sbookMessage("Determining page layout");
   sbookApplySessionSettings();
@@ -1435,7 +1430,7 @@ function sbookImportOverlays(arg)
       mark_option.title=info.about;
       mark_option.value=info.oid;
       fdjtAppend(mark_options,mark_option);}
-    fdjtImportOID(info);}
+    sbookOIDs.import(info);}
 }
 
 function sbookSocialSetup()
@@ -1456,9 +1451,9 @@ function sbookUserSetup()
     fdjtAddClass(document.body,"nosbookuser");
     return;}
   if ((sbook_user_data)&&(sbook_user_data.oid))
-    fdjtImportOID(sbook_user_data);
+    sbookOIDs.import(sbook_user_data);
   if (sbook_user) fdjtSwapClass(document.body,"nosbookuser","sbookuser");
-  var userinfo=fdjtOIDs[sbook_user];
+  var userinfo=sbookOIDs.map[sbook_user];
   var username=userinfo.name;
   if ((!(sbook_user_img))&&(userinfo.pic))
     sbook_user_img=userinfo.pic;

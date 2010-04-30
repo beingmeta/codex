@@ -61,12 +61,12 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     return;}
   sbook_mark_target=target;
   var info=((target) &&
-	    ((sbook_getinfo(target)) ||
-	     (sbook_getinfo(sbookGetHead(target)))));
+	    ((sbookInfo(target)) ||
+	     (sbookInfo(sbookGetHead(target)))));
   // Get information about the origin if it's a gloss
   //  If it's the user's gloss, we set it.  Otherwise,
   //   we set the relay field
-  var glossinfo=((origin)&&(origin.oid)&&fdjtOIDs[origin.oid]);
+  var glossinfo=((origin)&&(origin.oid)&&sbookOIDs.map[origin.oid]);
   if (glossinfo)
     if (glossinfo.user===sbook_user) {
       $ID("SBOOKMARKOID").value=origin.oid;
@@ -111,7 +111,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   /* Get tags from the item and the items above it */
   {var scan=target; while (scan) {
       var glosses=sbook_glosses_by_id[scan.id];
-      var info=sbook_getinfo(scan);
+      var info=sbookInfo(scan);
       /* Get the tags from the content */
       if ((info)&&(info.tags)&&(info.tags.length)) {
 	var tags=info.tags; var i=0; var lim=tags.length;
@@ -308,7 +308,7 @@ function sbookMarkFeed_onchange(evt)
   var checkspan=$ID("SBOOKMARKPRIVATE");
   var overlays=evt.target;
   var newfeed=evt.target.value;
-  var info=fdjtOIDs[newfeed];
+  var info=sbookOIDs.map[newfeed];
   var checkstate;
   if (newfeed===':{}') checkstate=true;
   else if (newfeed===sbook_user) checkstate=false;
@@ -430,7 +430,7 @@ function sbookAddConversant(completions,c,seen,checked,init)
 {
   if (!(seen)) seen=completions._seen;
   if (seen[c]) return seen[c];
-  var cinfo=fdjtOIDs[c];
+  var cinfo=sbookOIDs.map[c];
   var icon=false;
   if (cinfo.postable) 
     icon=fdjtImage("http://static.beingmeta.com/graphics/thumbtack19x15.png",
@@ -458,8 +458,8 @@ function sbookCompletionCheckspan(varname,value,checked,key)
   if (arguments.length>4)
     fdjtAddElements(checkspan,arguments,4);
   else fdjtAppend(checkspan,key);
-  if ((fdjtOIDs[value]) && (fdjtOIDs[value].summary))
-    checkspan.title=fdjtOIDs[value].gloss;
+  if ((sbookOIDs.map[value]) && (sbookOIDs.map[value].summary))
+    checkspan.title=sbookOIDs.map[value].gloss;
   if (checked) {
     checkspan.setAttribute("ischecked","yes");
     checkbox.checked=true;}
@@ -595,7 +595,7 @@ function sbookMark(target,gloss,excerpt)
       sbookMarkHUDSetup(target,false,excerpt||false);
       if (gloss.gloss) $ID("SBOOKMARKRELAY").value=gloss.gloss;
       if (gloss.user) {
-	var userinfo=fdjtOIDs[gloss.user];
+	var userinfo=sbookOIDs.map[gloss.user];
 	var glossblock=
 	  fdjtDiv("sbookrelayblock","Relayed from ",
 		  fdjtSpan("user",userinfo.name),

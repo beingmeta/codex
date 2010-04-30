@@ -34,41 +34,44 @@ var sbooks_scan_version=parseInt("$Revision$".slice(10,-1));
 
 /* Scanning the document for Metadata */
 
-function sbookScan(root,tocinfo,taginfo){
-  var result=this;
-  if (!(this instanceof sbookScan)) result={};
-  if (!(root)) root=document.body;
-  if (!(tocinfo)) tocinfo={};
-  if (!(taginfo)) taginfo={};
+function sbookScan(root,docinfo){
+  if (typeof root === 'undefined') return this;
+  if (!(docinfo))
+    if (this instanceof sbookScan)
+      docinfo=this;
+    else docinfo=new sbookScan();
+  if (!(root)) root=sbook_root||document.body;
   var start=new Date();
-  result.root=root; result.tocinfo=tocinfo; result.taginfo=taginfo;
+  docinfo._root=root;
+  if (!(root.id)) root.id="SBOOKROOT";
   fdjtLog("[%o] Scanning %o DOM for metadata",fdjtET(),root);
+  var nodefn=sbookScan.nodeFn||false;
   var children=root.childNodes, level=false;
-  var rootinfo=((sbookScan.nodeFn)?(sbookScan.nodeFn(root)):({}));
+  var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
+		(docinfo[root.id]=new scanInfo()));
   var scanstate=
     {curlevel: 0,idserial:0,location: 0,
      nodecount: 0,eltcount: 0,headcount: 0,
      tagstack: [],taggings: [],
      idstate: {prefix: false,count: 0},
      idstack: [{prefix: false,count: 0}]};
+  if (root.id) docinfo[root.id]=rootinfo;
   scanstate.curhead=root; scanstate.curinfo=rootinfo;
-  if (root.id) tocinfo[root.id]=rootinfo;
   // Location is an indication of distance into the document
   var location=0;
   rootinfo.title=root.title||document.title;
   rootinfo.starts_at=0;
   rootinfo.level=0; rootinfo.sub=new Array();
   rootinfo.head=false; rootinfo.heads=new Array();
-  if (!(root.id)) root.id="SBOOKROOT";
-  rootinfo.id=root.id;
+  rootinfo.frag=root.id;
   /* Build the metadata */
   var i=0; while (i<children.length) {
     var child=children[i++];
     if (!((child.sbookskip)||(child.sbookui)))
-      scanner(child,scanstate,tocinfo,taginfo,sbookScan.nodeFn);} 
-  result.nodecount=scanstate.nodecount;
-  result.eltcount=scanstate.eltcount;
-  result.maxloc=scanstate.location;
+      scanner(child,scanstate,docinfo,sbookScan.nodeFn||false);} 
+  docinfo._nodecount=scanstate.nodecount;
+  docinfo._eltcount=scanstate.eltcount;
+  docinfo._maxloc=scanstate.location;
   var scaninfo=scanstate.curinfo;
   /* Close off all of the open spans in the TOC */
   while (scaninfo) {
@@ -78,8 +81,10 @@ function sbookScan(root,tocinfo,taginfo){
   fdjtLog('[%fs] Finished gathering metadata in %f secs over %d/%d heads/nodes',
 	  fdjtET(),(done.getTime()-start.getTime())/1000,
 	  scanstate.headcount,scanstate.eltcount);
-  result.root=root;
-  return result;
+  return docinfo;
+
+  function scanInfo(id) {}
+  sbookScan.scanInfo=scanInfo;
 
   function getTitle(head) {
     var title=
@@ -140,21 +145,18 @@ function sbookScan(root,tocinfo,taginfo){
     else return false;}
 
   function handleHead
-    (head,tocinfo,scanstate,level,curhead,curinfo,curlevel,nodefn){
+    (head,docinfo,scanstate,level,curhead,curinfo,curlevel,nodefn){
     var headid=head.id;
-    var headinfo=tocinfo[headid];
+    var headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
+      (docinfo[headid]=new scanInfo());
     scanstate.headcount++;
-    if (!(headinfo)) {
-      if (nodefn)
-	headinfo=tocinfo[headid]=nodefn(head);
-      else headinfo=tocinfo[headid]={};}
     if (sbookScan.trace)
       fdjtLog("Scanning head item %o under %o at level %d w/id=#%s ",
 	      head,curhead,level,headid);
     /* Iniitalize the headinfo */
     headinfo.starts_at=scanstate.location;
     headinfo.elt=head; headinfo.level=level;
-    headinfo.sub=new Array(); headinfo.id=headid;
+    headinfo.sub=new Array(); headinfo.frag=headid;
     headinfo.title=getTitle(head);
     headinfo.next=false; headinfo.prev=false;
     if (level>curlevel) {
@@ -208,7 +210,7 @@ function sbookScan(root,tocinfo,taginfo){
       headinfo.ends_at=scanstate.location+fdjtFlatWidth(head);
     scanstate.location=scanstate.location+fdjtFlatWidth(head);}
 
-  function scanner(child,scanstate,tocinfo,taginfo,nodefn){
+  function scanner(child,scanstate,docinfo,nodefn){
     var location=scanstate.location;
     var curhead=scanstate.curhead;
     var curinfo=scanstate.curinfo;
@@ -222,27 +224,25 @@ function sbookScan(root,tocinfo,taginfo){
       return 0;}
     else if (child.nodeType!==1) return 0;
     else {}
+    var toclevel=((child.id)&&(getLevel(child)));
     scanstate.eltcount++;
-    if (nodefn) {
-      var info=nodefn(child);
-      info.sbookloc=location;
-      info.sbookhead=curhead.id;}
-    else {
-      child.sbookloc=location;
-      child.sbookhead=curhead.id;}
+    var info=((nodefn)&&(nodefn(child)));
+    if ((!(info))&&(!(info=docinfo[child.id]))) 
+      docinfo[child.id]=info={};
+    info.sbookloc=location;
+    info.sbookhead=curhead.id;
+    info.frag=child.id;
     if ((child.sbookskip)||(child.sbookui)||
 	((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
       return;
-    var toclevel=((child.id)&&(getLevel(child)));
     if ((toclevel)&&(!(child.toclevel))) child.toclevel=toclevel;
     if (child.id) {
       var tags=child.getAttributeNS('tags','http://sbooks.net/')||
 	child.getAttribute('tags')||child.getAttribute('data-tags');
-      if (tags) {
-	taginfo[child.id]=tags.split(';');}}
+      if (tags) info.tags=tags.split(';');}
     if (toclevel)
       handleHead
-	(child,tocinfo,scanstate,toclevel,curhead,curinfo,curlevel,nodefn);
+	(child,docinfo,scanstate,toclevel,curhead,curinfo,curlevel,nodefn);
     var children=child.childNodes;
     var i=0; var len=children.length;
     while (i<len) {
@@ -251,7 +251,7 @@ function sbookScan(root,tocinfo,taginfo){
 	scanstate.location=scanstate.location+
 	  grandchild.nodeValue.length;
       else if (grandchild.nodeType===1) {
-	scanner(grandchild,scanstate,tocinfo,taginfo,nodefn);}}}}
+	scanner(grandchild,scanstate,docinfo,nodefn);}}}}
 
 /* Emacs local variables
 ;;;  Local variables: ***

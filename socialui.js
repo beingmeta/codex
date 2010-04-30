@@ -198,7 +198,7 @@ function sbookGlossmark(target,open)
   var imgsrc=((target)?(sbicon("sbookspeople32x32.png")):
 	      (sbicon("remarkballoon32x32.png")));
   // By default the glossmark image is the user when unique
-  if (sources.length===1) imgsrc=(fdjtOIDs[sources[0]].pic)||imgsrc;
+  if (sources.length===1) imgsrc=(sbookOIDs.map[sources[0]].pic)||imgsrc;
   var glossmark=fdjtSpan
     ("glossmark",
      fdjtImage(imgsrc,"big","comments"),

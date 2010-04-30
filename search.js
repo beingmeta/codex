@@ -131,7 +131,7 @@ function sbookDoSearch(query,results)
     else if (base) 
       base=base.intersection(items);
     else base=items;}
-  var allitems=items.get();
+  var allitems=base.get();
   i=0; var n_items=allitems.length;
   while (i<n_items)
     sbook_index.score(allitems[i++],results);

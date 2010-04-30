@@ -103,11 +103,11 @@ function sbookSummaryHead(target,head,eltspec,extra)
     var headelt=fdjtSpan("paratext",fdjtSpan("spacer","\u00A7"),title);
     fdjtAppend(basespan,headelt," ");}
   var info;
-  if (info=sbook_getinfo(head)) {
+  if (info=sbookInfo(head)) {
     var heads=((info) ? (info.heads) : []);
     var curspan=basespan;
     var j=heads.length-1; while (j>=0) {
-      var hinfo=heads[j--]; var elt=$ID(hinfo.id);
+      var hinfo=heads[j--]; var elt=$ID(hinfo.frag);
       if ((elt===sbook_root)||(elt===document.body)) continue;
       var newspan=fdjtSpan("head",
 			   fdjtSpan("headtext",fdjtSpan("spacer","\u00A7"),
@@ -126,11 +126,12 @@ function sbookShowSummaries(summaries,summary_div,query)
 {
   var todisplay=[].concat(summaries).sort(_sbook_sort_summaries);
   var curtarget=false; var curblock=false;
+  fdjtLog("Showing %d summaries (%o) into %o for %o",
+	  todisplay.length,summaries,summary_div,query);
   var i=0; var len=todisplay.length; while (i<len) {
     var summary=todisplay[i++];
-    var target_id=((summary.id)||(summary.fragid)||false);
-    var target=((target_id)&&($ID(target_id)));
-    if (!target) continue;
+    var info=sbookInfo(summary);
+    var target=sbookTarget(summary);
     if (target!==curtarget) {
       var head=sbookGetHead(target);
       var blockhead=sbookSummaryHead(target,head);
@@ -139,7 +140,7 @@ function sbookShowSummaries(summaries,summary_div,query)
       block.sbook_ref=block.blockid=target.id;
       fdjtAppend(summary_div,block);
       curblock=block; curtarget=target;}
-    fdjtAppend(curblock,sbookSummaryDiv(summary,query));}
+    fdjtAppend(curblock,sbookSummaryDiv(info,query));}
   return summary_div;
 }
 
@@ -190,31 +191,26 @@ function sbookAddSummary(summary,summary_div,query)
 function sbookItemInfo(item)
 {
   if (typeof item === 'string')
-    if (item[0]===':') return sbookOIDRef(item);
-    else sbook_info[item];
+    return sbookOIDs.map[item]||sbook_info[item];
   else if (item.oid) return item;
-  else if (item._fdjtid)
-    return sbook_info[item._fdjtid]||false;
   else return false;
 }
 
-function sbookSummaryDiv(item,query)
+function sbookSummaryDiv(info,query)
 {
-  var info=sbookItemInfo(item);
-  var key=info._fdjtid; var target_id=(info.id); var oid=info.oid;
+  var key=info.oid||info.id;
+  var target_id=(info.frag)||(info.id);
+  var target=((target_id)&&($ID(target_id)));
   var refiners=((query) && (query._refiners));
-  var target=$ID(target_id);
-  var sumdiv=fdjtDiv(((info.glossid) ? "summary gloss" : "summary"),
-		     false);
+  var sumdiv=fdjtDOM(((info.glossid) ? "div.summary.gloss" : "div.summary"));
   if (target_id) sumdiv.sbook_ref=target_id;
-  if (oid) sumdiv.sbook_oid=oid;
-  var infospan=fdjtSpan("info");
+  var infospan=fdjtDOM("span.info");
   if ((query) && (query[key])) { /* If you have a score, use it */
-    var scorespan=fdjtSpan("score");
+    var scorespan=fdjtDOM("span.score");
     var score=query[key]; var k=0;
-    while (k<score) {fdjtAppend(scorespan,"*"); k++;}
-    fdjtAppend(infospan,scorespan);}
-  fdjtAppend(sumdiv,infospan);
+    while (k<score) {fdjtDOM(scorespan,"*"); k++;}
+    fdjtDOM(infospan,scorespan);}
+  fdjtDOM(sumdiv,infospan);
   var tags=info.tags||[];
   if (refiners)
     tags.sort(function(t1,t2) {
@@ -231,45 +227,44 @@ function sbookSummaryDiv(item,query)
   if (head===document.body) head=target;
   if (info.glossid) sbookMarkInfo(sumdiv,info);
   if (info.glossid)
-    fdjtAppend(sumdiv,
-	       (sbookDetailsButton(info)),(sbookXRefsButton(info)),
-	       ((item.msg)&&(fdjtSpan("msg",item.msg))),((item.msg)&&" "),
-	       ((item.excerpt)&&(sbookExcerptSpan(item.excerpt))));
+    fdjtDOM(sumdiv,
+	    (sbookDetailsButton(info)),(sbookXRefsButton(info)),
+	    ((item.msg)&&(fdjtDOM("span.msg",item.msg))),((item.msg)&&" "),
+	    ((item.excerpt)&&(sbookExcerptSpan(item.excerpt))));
   else {
-    var contentspan=fdjtSpan("content");
-    fdjtAppend(sumdiv,contentspan);}
+    var contentspan=fdjtDOM("span.content");
+    fdjtDOM(sumdiv,contentspan);}
   var tagspan=sumdiv;
-  if ((tags)&&(tags.length>0)) fdjtAppend(sumdiv," // ");
+  if ((tags)&&(tags.length>0)) fdjtDOM(sumdiv," // ");
   var j=0; var first=true; while (j<tags.length) {
     var tag=tags[j++];
-    if (j===1) 
-      fdjtAppend(tagspan,knoSpan(tag));
+    if (j===1) fdjtDOM(tagspan,knoSpan(tag));
     else if ((j===7) &&
 	     (tagspan===sumdiv) &&
 	     (tags.length>10)) {
-      var controller=fdjtSpan("controller",
+      var controller=fdjtDOM("span.controller",
 			      "\u00b7\u00b7\u00b7",tags.length-6,
 			      "+\u00b7\u00b7\u00b7");
-      tagspan=fdjtSpan("moretags");
+      tagspan=fdjtDOM("span.moretags");
       tagspan.style.display='none';
       controller.title=("click to toggle more tags");
       controller.onclick=fdjtShowHide_onclick;
       controller.clicktotoggle=new Array(tagspan);
-      fdjtAppend(sumdiv," ",controller," ",tagspan);
-      fdjtAppend(tagspan,knoSpan(tag));}
-    else fdjtAppend(tagspan," \u00b7 ",knoSpan(tag));}
+      fdjtDOM(sumdiv," ",controller," ",tagspan);
+      fdjtDOM(tagspan,knoSpan(tag));}
+    else fdjtDOM(tagspan," \u00b7 ",knoSpan(tag));}
   if (info.detail) 
-    fdjtAppend(sumdiv,fdjtDiv("detail",item.detail));
+    fdjtDOM(sumdiv,fdjtDOM("div.detail",item.detail));
   if ((info.xrefs) && (info.xrefs.length>0))  {
-    var xrefsdiv=fdjtDiv("xrefs");
+    var xrefsdiv=fdjtDOM("div.xrefs");
     var xrefs=info.xrefs;
     var i=0; while (i<xrefs.length) {
       var xref=xrefs[i++];
       var anchor=fdjtAnchor(xref,xref);
       anchor.target='_blank';
       anchor.onclick=fdjtCancelBubble;
-      fdjtAppend(xrefsdiv,anchor);}
-    fdjtAppend(sumdiv,xrefsdiv);}
+      fdjtDOM(xrefsdiv,anchor);}
+    fdjtDOM(sumdiv,xrefsdiv);}
   return sumdiv;
 }
 
@@ -277,8 +272,8 @@ function sbookMarkInfo(sumdiv,info)
 {
   var user=info.user;
   var feed=info.feed||false;
-  var userinfo=fdjtOIDs[user];
-  var feedinfo=fdjtOIDs[feed];
+  var userinfo=sbookOIDs.map[user];
+  var feedinfo=sbookOIDs.map[feed];
   var img=((info.pic)&&(fdjtImage((info.pic),"glosspic",userinfo.name)))||
     ((userinfo.pic)&&(fdjtImage((userinfo.pic),"userpic",userinfo.name)))||
     (sbookSourceIcon(feedinfo))||(sbookSourceIcon(userinfo));
@@ -376,7 +371,7 @@ function sbookRelay_onclick(evt)
     else target=target.parentNode;
   if (!(target)) return;
   if (target.sbook_oid)
-    sbookMark($ID(target.sbook_ref),fdjtOIDs[target.sbook_oid]||false);
+    sbookMark($ID(target.sbook_ref),sbookOIDs.map[target.sbook_oid]||false);
   else sbookMark($ID(target.sbook_ref),false);
   evt.preventDefault(); evt.cancelBubble=true;
 }
@@ -396,7 +391,7 @@ function sbookSelectSources(results_div,sources)
     var summaries=FDJT$(".summary",block);
     var j=0; while (j<summaries.length) {
       var summary=summaries[j++];
-      var gloss=(summary.sbook_oid)&&fdjtOIDs[summary.sbook_oid];
+      var gloss=(summary.sbook_oid)&&sbookOIDs.map[summary.sbook_oid];
       if ((fdjtContains(sources,gloss.user))||
 	  (fdjtContains(sources,gloss.feed))) {
 	fdjtAddClass(summary,"sourced");

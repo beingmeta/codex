@@ -302,10 +302,10 @@ function sbookFlashMessage(arg0)
 
 function sbookGetStableId(elt)
 {
-  var info=sbook_getinfo(elt);
-  // fdjtLog("Scrolling to %o with id %s/%s",target,info.id,target.id);
-  if ((info) && (info.id) && (!(info.id.search(/TMPID/)==0)))
-    return info.id;
+  var info=sbookInfo(elt);
+  // fdjtLog("Scrolling to %o with id %s/%s",target,info.frag,target.id);
+  if ((info) && (info.frag) && (!(info.frag.search(/TMPID/)==0)))
+    return info.frag;
   else if ((elt.id) && (!(elt.id.search(/TMPID/)==0)))
     return elt.id;
   else return false;

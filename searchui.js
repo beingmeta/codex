@@ -225,7 +225,7 @@ function sbookDTermCompletion(term,title)
     else span.title=title;
     /* Now add variation elements */
     var variations=[];
-    var i=0; var terms=dterm.get('EN');
+    var i=0; var terms=dterm.getSet('EN').elements;
     while (i<terms.length) {
       var term=terms[i++];
       if (term===dterm.dterm) continue;

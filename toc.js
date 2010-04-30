@@ -55,12 +55,12 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
 		  generate_subsections(headinfo));
   var sub=headinfo.sub;
   if (!(depth)) depth=0;
-  head.name="SBR"+headinfo.id;
-  head.sbook_ref=headinfo.id;
+  head.name="SBR"+headinfo.frag;
+  head.sbook_ref=headinfo.frag;
   toc.sbook_start=headinfo.starts_at;
   toc.sbook_end=headinfo.ends_at;
   fdjtDOM.addClass(toc,"toc"+depth);
-  toc.id=(prefix||"SBOOKTOC4")+headinfo.id;
+  toc.id=(prefix||"SBOOKTOC4")+headinfo.frag;
   if ((!(sub)) || (!(sub.length))) {
     fdjtDOM.addClass(toc,"sbooktocleaf");
     return toc;}
@@ -77,8 +77,8 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
     while (i<n) {
       var subinfo=sub[i];
       var subspan=fdjtNewElt("A.sectname",subinfo.title);
-      subspan.sbook_ref=subinfo.id;
-      subspan.name="SBR"+subinfo.id;
+      subspan.sbook_ref=subinfo.frag;
+      subspan.name="SBR"+subinfo.frag;
       fdjtAppend(div,((i>0)&&" \u00b7 "),subspan);
       i++;}
     return div;}
@@ -102,19 +102,19 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
     if (range) range.style.left="0%";
     var i=0; while (i<subsections.length) {
       var spaninfo=subsections[i++];
-      var subsection=document.getElementById(spaninfo.id);
+      var subsection=document.getElementById(spaninfo.frag);
       var spanstart; var spanend; var addname=true;
       if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
 	/* Add 'fake section' for the precursor of the first actual section */
 	spanstart=start;  spanend=spaninfo.starts_at;
-	spaninfo=headinfo; subsection=document.getElementById(headinfo.id);
+	spaninfo=headinfo; subsection=document.getElementById(headinfo.frag);
 	i--; sectnum++; addname=false;}
       else {
 	spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
 	sectnum++;}
       var span=generate_span
 	(sectnum,subsection,spaninfo.title,spanstart,spanend,len,
-	 ((addname)&&("SBR"+subsection.id)));
+	 ((addname)&&("SBR"+spaninfo.frag)));
       spans.appendChild(span);
       last_info=spaninfo;}
     if ((end-last_info.ends_at)>0) {
@@ -131,7 +131,7 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
     var width=(Math.floor(10000*(spanlen/len))/100)+"%";
     span.style.width=width;
     span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
-    span.sbook_ref=subsection.id;
+    span.sbook_ref=subsection.frag;
     if (name) anchor.name=name;
     return span;}
 }
@@ -143,9 +143,9 @@ sbookTOC.update=function(prefix,head,cur){
   if (cur) {
     // Hide the current head and its (TOC) parents
     var tohide=[];
-    var base_elt=document.getElementById(prefix+cur.id);
+    var base_elt=document.getElementById(prefix+cur.frag);
     while (cur) {
-      var tocelt=document.getElementById(prefix+cur.id);
+      var tocelt=document.getElementById(prefix+cur.frag);
       tohide.push(tocelt);
       // Get TOC parent
       cur=cur.head;}
@@ -154,10 +154,10 @@ sbookTOC.update=function(prefix,head,cur){
     while (n>=0) {fdjtDOM.dropClass(tohide[n--],"live");}
     fdjtDOM.dropClass(base_elt,"cur");}
   if (!(head)) return;
-  var base_elt=document.getElementById(prefix+head.id);
+  var base_elt=document.getElementById(prefix+head.frag);
   var toshow=[];
   while (head) {
-    var tocelt=document.getElementById(prefix+head.id);
+    var tocelt=document.getElementById(prefix+head.frag);
     toshow.push(tocelt);
     head=head.head;}
   var n=toshow.length-1;
@@ -224,7 +224,7 @@ sbookTOC.onclick=function(evt){
   var ref=sbookGetRef(target);
   if (!(ref)) return;
   sbookGoTo(ref);
-  var info=sbook_getinfo(ref);
+  var info=sbookInfo(ref);
   if ((info.sub)&&(info.sub.length>1)) sbookHUDMode("toc");
   else sbookHUDMode(false);
   fdjtDOM.cancel(evt);};

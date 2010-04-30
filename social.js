@@ -59,7 +59,7 @@ function sbookImportGlosses(data)
   var info=data['%info'];
   if ((info) && (info.length)) {
     var i=0; while (i<info.length) {
-      var item=info[i++]; var slots=fdjtImportOID(item);
+      var item=info[i++]; var slots=sbookOIDs.import(item);
       if (!(slots.conversant)) {
 	fdjtInsert(sbook_conversants,slots.oid);
 	sbookAddSourceIcon(slots);
@@ -92,7 +92,7 @@ function sbookImportGlosses(data)
 
 function sbook_add_gloss(id,entry)
 {
-  var item=fdjtImportOID(entry);
+  var item=sbookOIDs.import(entry);
   var user=entry.user;
   var feed=entry.feed;
   if (!(item.pushed)) {
