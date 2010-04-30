@@ -1286,7 +1286,7 @@ function sbookSetup()
   sbookApplySessionSettings();
   if (sbook_pageview) sbookCheckPagination();
   var knowlet=fdjtDOM.getMeta("KNOWLET")||sbook_refuri;
-  sbookMessage("Processing knowledge with knowlet %s",knowlet);
+  sbookMessage("Processing knowledge with knowlet ",knowlet);
   document.knowlet=knowlet=new Knowlet(knowlet);
   if (knowletSetupHTML) knowletSetupHTML();
   var knowlets_done=new Date();

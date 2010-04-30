@@ -44,7 +44,7 @@ function sbookScan(root,docinfo){
   var start=new Date();
   docinfo._root=root;
   if (!(root.id)) root.id="SBOOKROOT";
-  fdjtLog("[%o] Scanning %o DOM for metadata",fdjtET(),root);
+  fdjtLog("[%o] Scanning DOM for metadata",fdjtET());
   var nodefn=sbookScan.nodeFn||false;
   var children=root.childNodes, level=false;
   var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
