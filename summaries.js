@@ -135,8 +135,6 @@ function sbookShowSummaries(summaries,summary_div,query)
 {
   var todisplay=[].concat(summaries).sort(_sbook_sort_summaries);
   var curtarget=false; var curblock=false;
-  fdjtLog("Showing %d summaries (%o) into %o for %o",
-	  todisplay.length,summaries,summary_div,query);
   var i=0; var len=todisplay.length; while (i<len) {
     var summary=todisplay[i++];
     var info=sbookInfo(summary);
