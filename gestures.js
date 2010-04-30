@@ -206,7 +206,7 @@ function sbook_onkeypress(evt)
   if (fdjtIsTextInput($T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if ((evt.charCode===65)||(evt.charCode===97)) /* A */
-    modearg=sbook_last_app||"help";
+    modearg=sbook_last_dash||"help";
   else if (((!(sbook_mode))||(sbook_mode==="context"))&&
 	    ((evt.charCode===112)||(evt.charCode===80))) /* P */
     if (sbook_pageview) sbookPageView(false);

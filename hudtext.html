@@ -1,107 +1,40 @@
-<div id='SBOOKHEAD'>
-  <img src='http://static.beingmeta.com/graphics/CompassIcon40x40.png'
-       alt='toc' title='click to navigate the book as a whole'
-       class='hudbutton' id='SBOOKTOCBUTTON'
-       onclick='sbookHUDMode("toc")'/>
-  <img src='http://static.beingmeta.com/graphics/TagSearch40x40.png'
-       alt='search' title='click to search tags within the book'
-       class='hudbutton' id='SBOOKSEARCHBUTTON'
-       onclick='sbookHUDMode("search")'/>
-  <div id='SBOOKTOC' class='hudblock'></div>
-  <div id='SBOOKSEARCH' class='hudblock'></div>
-  <div id='SBOOKGLOSSES' class='hudblock'></div>
-  <div id='SBOOKDASH' class='hudblock'>
-    <!-- This is stored elsewhere -->
+<img src='http://static.beingmeta.com/graphics/CompassIcon40x40.png'
+     alt='toc' title='click to navigate the book as a whole'
+     class='hudbutton' id='SBOOKTOCBUTTON'
+     onclick='sbookHUDMode("toc")'/>
+<img src='http://static.beingmeta.com/graphics/TagSearch40x40.png'
+     alt='search' title='click to search tags within the book'
+     class='hudbutton' id='SBOOKSEARCHBUTTON'
+     onclick='sbookHUDMode("search")'/>
+<div id='SBOOKTOC' class='hudblock'></div>
+<div id='SBOOKSEARCH' class='hudblock sbooksearch'></div>
+<div id='SBOOKGLOSSES' class='sbookglosses scrollhud hudblock'>
+  <div id='SBOOKSOURCES' class='sbooksources'
+       onclick='sbookSources_onclick(event);'>
+    <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
+	 class='button everyone selected'
+	 alt='show all' title='click to see all glosses
+	 onclick='sbookEveryoneButton_onclick(event);'/>
   </div>
-  <div id='SBOOKCONSOLE' class='hudblock sbookconsole'></div>
+  <div id='SBOOKALLGLOSSES' class='sbooksummaries scrollable'>
+  </div>
+</div>
+<div id='SBOOKDASH'>
+  <!-- This content comes from dashtext.html -->
+</div>
+<div id='SBOOKCONSOLE' class='hudblock sbookconsole'>
+  <!-- This content comes from consoletext.html -->
 </div>
 <div id='SBOOKFOOT'>
   <img src='http://static.beingmeta.com/graphics/sbooksappicon40x40.png'
        alt='dash' title='Click for Help, settings, book description, etc'
        class='hudbutton' id='SBOOKDASHBUTTON'
-       onclick='sbookHUDMode(sbook_last_dash)'/>
+       onclick='sbookHUDToggle(sbook_last_dash)'/>
   <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
        alt='glosses' title='Click to browse glosses overlaid on this book'
        class='hudbutton' id='SBOOKGLOSSESBUTTON'
-       onclick='sbookHUDMode("glosses")'/>
+       onclick='sbookHUDToggle("glosses")'/>
   <div class='hudblock tags' id='SBOOKTAGS'></div>
 </div>
-<div id='SBOOKMARKHUD' class='hudblock'>
-  <div id='SBOOKMARK'>
-    <form class='mark tag' id='SBOOKMARKFORM'
-	  accept-charset='UTF-8' target='sbookping'>
-      <div class='hidden'>
-	<input TYPE='HIDDEN' NAME='FRAGID' VALUE='' ID='SBOOKMARKFRAGID'/>
-	<input TYPE='HIDDEN' NAME='OID' VALUE='' ID='SBOOKMARKOID'/>
-	<input TYPE='HIDDEN' NAME='REFURI' VALUE='' ID='SBOOKMARKREFURI'/>
-	<input TYPE='HIDDEN' NAME='TITLE' VALUE='' ID='SBOOKMARKTITLE'/>
-	<input TYPE='HIDDEN' NAME='RELAY' VALUE='' ID='SBOOKMARKRELAY'/>
-	<input TYPE='HIDDEN' NAME='SOURCE' VALUE='' ID='SBOOKMARKSOURCE'/>
-	<input TYPE='HIDDEN' NAME='EXCERPT' VALUE='' ID='SBOOKMARKEXCERPT'/>
-	<input TYPE='HIDDEN' NAME='SYNC' VALUE='' ID='SBOOKMARKSYNC'/>
-	<input TYPE='HIDDEN' NAME='USER' VALUE='' ID='SBOOKMARKUSER'/>
-	<input TYPE='HIDDEN' NAME='DOCTITLE' VALUE='' ID='SBOOKDOCTITLE'/>
-      </div>
-      <div class='excerpt' id='SBOOKSHOWEXCERPT'></div>
-      <div class='markform'>
-	<div class='lhs'>
-	  <img class='userpic' id='SBOOKMARKIMAGE'/>
-	  <div class='controls'>
-	    <img class='button' alt='tags'
-		 src='http://static.beingmeta.com/graphics/TagIcon16x16.png'
-		 onclick='sbookMarkMode("tags")'/>
-	    <img class='button' alt='detail'
-		 src='http://static.beingmeta.com/graphics/detailsicon16x16.png'
-		 onclick='sbookMarkMode("detail")'/>
-	    <img class='button' alt='xrefs'
-		 src='http://static.beingmeta.com/graphics/outlink16x16.png'
-		 onclick='sbookMarkMode("xrefs")'/>
-	  </div>
-	  <img class='head' alt='detail'
-	       src='http://static.beingmeta.com/graphics/detailsicon32x32.png'/>
-	  <img class='head' alt='xrefs'
-	       src='http://static.beingmeta.com/graphics/outlink48x48.png'/>
-	  <img class='head' alt='tags'
-	       src='http://static.beingmeta.com/graphics/TagIcon32x32.png'/>
-	</div>
-	<div class='msg'>
-	  <input type='TEXT' name='MSG' class='autoprompt'
-		 autocomplete='off' prompt='What do you think?'/>
-	</div>
-	<div class='metastuff'>
-	  <div class='controls'>
-	    <select name='FEED' id='SBOOKMARKOPTIONS'>
-	      <option value=":{}">Just me</option>
-	      </select>
-	    <span class='checkspan'>
-	      <input type='checkbox' name='private' value='yes'
-		     id='SBOOKMARKPRIVATE'/>
-	      privy
-	    </span>
-	  </div>
-	  <div class='buttons'>
-	    <input type='SUBMIT' name='ACTION' value='Save'
-		   id='SBOOKMARKSAVEACTION'
-		   title='Save (mark) this gloss on the server'/>
-	    <input type='SUBMIT' name='ACTION' value='Push'
-		   id='SBOOKMARKPUSHACTION'
-		   title='Save this gloss and publish it to your feeds'/>
-	  </div>
-	</div>
-	<div class='detail marktab'>
-	  <div class='content'>
-	    <textarea name='DETAIL' class='autoprompt'
-		      id='SBOOKMARKDETAIL' prompt='enter detailed comments'>
-	    </textarea>
-	  </div>
-	</div>
-	<div class='xrefs marktab'>
-	  <div class='content'>
-	    <input TYPE='TEXT' NAME='XREFS' class='xref autoprompt'/>
-	  </div>
-	</div>
-      </div>
-    </form>
-  </div>
-  <div id='SBOOKMARKGLOSSES' class='sbookglosses'></div>
-</div>
+<div id='SBOOKMARKHUD' class='hudblock'></div>
+

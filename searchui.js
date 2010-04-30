@@ -442,6 +442,27 @@ function sbookCreateSearchHUD(classinfo)
   return sbooksearch;
 }
 
+function sbookSetupSearchHUD()
+{
+  var input=$ID("SBOOKSEARCHTEXT");
+  input.onkeypress=sbookSearchInput_onkeypress;
+  input.onfocus=sbookSearchInput_onfocus;
+  input.onblur=sbookSearchInput_onblur;
+  input.getCompletionText=_sbook_get_current_entry;
+  input.oncomplete=_sbook_replace_current_entry;
+  input.noteCompletions=_sbook_note_completions;
+
+  var sbooksearch=$ID("SBOOKSEARCH");
+  fdjtAutoPrompt_setup(sbooksearch);
+  // sbooksearch.onmouseover=sbookHUD_onmouseover;
+  // sbooksearch.onmouseout=sbookHUD_onmouseout;
+
+  var completions=$ID("SBOOKSEARCHCOMPLETIONS");
+  completions.input_elt=input;
+}
+
+
+
 function sbookClearInput_onclick(evt)
 {
   var input_elt=$ID("SBOOKSEARCHTEXT");

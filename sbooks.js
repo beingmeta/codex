@@ -1267,6 +1267,7 @@ function sbookSetup()
   fdjtDOM.addClass(document.body,"sbooknovice");
   var fdjt_done=new Date();
   sbookGetSettings();
+  sbookSetupHUD();
   sbookDisplaySetup();
   if (!((document.location.search)&&
 	(document.location.search.length>0))) {
@@ -1280,7 +1281,7 @@ function sbookSetup()
   sbookMessage("Scanning document structure");
   var metadata=sbookScan(sbook_root);
   sbook_info=metadata;
-  sbookInitNavHUD(metadata[sbook_root.id]);
+  sbookSetupNavHUD(metadata[sbook_root.id]);
   var scan_done=new Date();
   sbookMessage("Determining page layout");
   sbookApplySessionSettings();
@@ -1336,11 +1337,9 @@ function sbookDisplaySetup()
   var rightedge=fdjtDOM("div#SBOOKRIGHTEDGE.sbookmargin.sbookright");
 
   topleading.sbookui=true; bottomleading.sbookui=true;
-  var hud=createSBOOKHUD();
-  fdjtDOM.prepend(document.body,createSBOOKHUD(),
-	      pagehead,pagefoot,leftedge,rightedge,
-	      topleading);  
-  fdjtDOM(document.body,bottomleading);
+  fdjtDOM.insertAfter
+    (sbookHUD,pagehead,pagefoot,leftedge,rightedge,topleading);  
+  fdjtDOM.append(document.body,bottomleading);
   
   sbookPageHead=pagehead; sbookPageFoot=pagefoot;
   var bgcolor=document.body.style.backgroundColor;

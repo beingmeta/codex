@@ -45,10 +45,78 @@ var sbookNavHUD=false;
 // This is the "info HUD" for informative message
 var sbook_message_timeout=5000;
 
-// This is the last active 'app' tab
-var sbook_last_app="help";
+// This is the last active 'dash' tab
+var sbook_last_dash="help";
 // This is the regex for all sbook apps
 var sbook_apps=["help","login","sbookapp","device","dashtoc","about"];
+
+function sbookSetupHUD()
+{
+  if ($ID("SBOOKHUD")) return;
+  else {
+    sbookHUD=fdjtDOM("div#SBOOKHUD");
+    sbookHUD.innerHTML=sbook_hudtext;
+    fdjtDOM.prepend(document.body,sbookHUD);}
+  var console=$ID("SBOOKCONSOLE");
+  console.innerHTML=sbook_consoletext;
+  var dash=$ID("SBOOKDASH");
+  dash.innerHTML=sbook_dashtext.replace('%HELPTEXT',sbook_helptext);
+  var search=$ID("SBOOKSEARCH");
+  search.innerHTML=sbook_searchtext;
+  sbookSetupSearchHUD(search);
+  var glosses=$ID("SBOOKALLGLOSSES");
+  sbookSetupSummaryDiv(glosses);
+  if ((sbook_allglosses)&&(sbook_allglosses.length))
+    sbookShowSummaries(sbook_allglosses,allglosses,false);
+  var bookmark=$ID("SBOOKMARKHUD");
+  bookmark.innerHTML=sbook_markhudtext;
+  fdjtDelay(1500,sbookUpdateDash,false,sbook_root);
+}
+
+/* Creating the HUD */
+
+function sbookSetupNavHUD(root_info)
+{
+  var navhud=sbookCreateNavHUD("#SBOOKTOC.hudblock",root_info);
+  var toc_button=$ID("SBOOKTOCBUTTON");
+  toc_button.onclick=sbookTOCButton_onclick;
+  if (sbook_interaction==='mouse') {
+    toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
+    toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");}
+  toc_button.style.visibility=null;
+  fdjtDOM.replace("SBOOKTOC",navhud);
+  fdjtDOM($ID("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC",root_info));
+}
+
+function sbookCreateNavHUD(eltspec,root_info)
+{
+  var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
+  var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
+  if (!(eltspec)) sbookNavHUD=div;
+  if (sbook_interaction==="mouse") {
+    div.addEventListener("mouseover",sbookTOC.onmouseover,false);
+    div.addEventListener("mouseout",sbookTOC.onmouseout,false);
+    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
+    div.addEventListener("mouseup",sbookTOC.onmouseup,false);
+    div.addEventListener("click",sbookTOC.onclick,false);}
+  else div.addEventListener("click",sbookTOC.oneclick,false);
+  return div;
+}
+
+function sbookStaticNavHUD(eltspec,root_info)
+{
+  var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
+  var div=fdjtDiv(eltspec||"#SBOOKDASHTOC",toc_div);
+  if (!(eltspec)) sbookNavHUD=div;
+  if (sbook_interaction==="mouse") {
+    div.addEventListener("mouseover",sbookTOC.onmouseover,false);
+    div.addEventListener("mouseout",sbookTOC.onmouseout,false);
+    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
+    div.addEventListener("mouseup",sbookTOC.onmouseup,false);
+    div.addEventListener("click",sbookTOC.onholdclick,false);}
+  else div.addEventListener("click",sbookTOC.oneclick,false);
+  return div;
+}
 
 function createSBOOKHUD()
 {
@@ -107,19 +175,6 @@ function createSBOOKHUD()
     return hud;}
 }
 
-function sbookInitNavHUD(root_info)
-{
-  var navhud=sbookCreateNavHUD("#SBOOKTOC.hudblock",root_info);
-  var toc_button=$ID("SBOOKTOCBUTTON");
-  toc_button.onclick=sbookTOCButton_onclick;
-  if (sbook_interaction==='mouse') {
-    toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
-    toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");}
-  toc_button.style.visibility=null;
-  fdjtDOM.replace("SBOOKTOC",navhud);
-  fdjtDOM($ID("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC",root_info));
-}
-
 function sbookInitSocialHUD()
 {
   var glosses_button=$ID("SBOOKGLOSSESBUTTON");
@@ -138,38 +193,6 @@ function sbookInitSearchHUD()
     search_button.onmouseover=fdjtClassAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
     search_button.onmouseout=fdjtClassDropper("#SBOOKSEARCH#SBOOKTAGS","hover");}
   search_button.style.visibility=null;
-}
-
-/* Creating the HUD */
-
-function sbookCreateNavHUD(eltspec,root_info)
-{
-  var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
-  var div=fdjtDiv(eltspec||"#SBOOKTOC.hudblock.hud",toc_div);
-  if (!(eltspec)) sbookNavHUD=div;
-  if (sbook_interaction==="mouse") {
-    div.addEventListener("mouseover",sbookTOC.onmouseover,false);
-    div.addEventListener("mouseout",sbookTOC.onmouseout,false);
-    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
-    div.addEventListener("mouseup",sbookTOC.onmouseup,false);
-    div.addEventListener("click",sbookTOC.onclick,false);}
-  else div.addEventListener("click",sbookTOC.oneclick,false);
-  return div;
-}
-
-function sbookStaticNavHUD(eltspec,root_info)
-{
-  var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
-  var div=fdjtDiv(eltspec||"#SBOOKDASHTOC",toc_div);
-  if (!(eltspec)) sbookNavHUD=div;
-  if (sbook_interaction==="mouse") {
-    div.addEventListener("mouseover",sbookTOC.onmouseover,false);
-    div.addEventListener("mouseout",sbookTOC.onmouseout,false);
-    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
-    div.addEventListener("mouseup",sbookTOC.onmouseup,false);
-    div.addEventListener("click",sbookTOC.onholdclick,false);}
-  else div.addEventListener("click",sbookTOC.oneclick,false);
-  return div;
 }
 
 /* Mode controls */
@@ -204,7 +227,7 @@ function sbookHUDMode(mode)
 	sbookSetupAppFrame();
       sbook_mode=mode;
       sbook_last_mode=mode;
-      if (fdjtContains(sbook_apps,mode)) sbook_last_app=mode;
+      if (fdjtContains(sbook_apps,mode)) sbook_last_dash=mode;
       if (fdjtContains(sbook_headmodes,mode)) sbook_last_headmode=mode;
       if (fdjtContains(sbook_footmodes,mode)) sbook_last_footmode=mode;
       fdjtDOM.addClass(document.body,"hudup");
@@ -353,26 +376,6 @@ function sbookHelpHighlight(hudelt)
 }
 
 /* The App HUD */
-
-function sbookCreateDash(eltspec)
-{
-  var div=fdjtDiv(eltspec||"#SBOOKDASH.hudblock.scrollhud");
-  div.onmouseover=function(evt){
-    var target=$T(evt);
-    while (target)
-      if ((target.getAttribute) &&
-	  (target.getAttribute('hudref'))) break;
-      else target=target.parentNode;
-    if ((target) && (target.getAttribute('hudref'))) {
-      var hudelt=$ID(target.getAttribute('hudref'));
-      sbookHelpHighlight(hudelt);}};
-  div.onmouseout=function(evt){
-    var target=$T(evt);
-    sbookHelpHighlight(false);};
-  div.innerHTML=sbook_dashtext.replace('%HELPTEXT',sbook_helptext);
-  fdjtDelay(1500,sbookUpdateDash,false,sbook_root);
-  return div;
-}
 
 function sbookUpdateDash()
 {
@@ -619,8 +622,8 @@ function sbookDashButton_onclick(evt)
   if (sbook_mode)
     if (fdjtContains(sbook_apps,sbook_mode))
       sbookHUDMode(false);
-    else sbookHUDMode(sbook_last_app);
-  else sbookHUDMode(sbook_last_app);
+    else sbookHUDMode(sbook_last_dash);
+  else sbookHUDMode(sbook_last_dash);
   fdjtDOM.cancel(evt);
 }
 

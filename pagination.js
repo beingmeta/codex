@@ -814,7 +814,7 @@ function sbookPageHead_onclick(evt)
   else if ((evt.clientX)<($ID("SBOOKLEFTEDGE").offsetWidth))
     return sbookLeftEdge_onclick(evt);
   else if (sbook_mode) sbookHUDMode(false);
-  else sbookHUDMode(sbook_last_app);
+  else sbookHUDMode(sbook_last_dash);
 }
 
 function sbookPageFoot_onclick(evt)
