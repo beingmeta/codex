@@ -76,7 +76,7 @@ function sbook_body_onclick(evt)
   evt=evt||event;
   // sbook_trace("sbook_body_onclick",evt);
   var target=$T(evt);
-  if (fdjtIsClickactive(target)) return;
+  if (fdjtDOM.isClickable(target)) return;
   else if (sbookInUI(target)) return;
   else if (sbook_preview) {
     sbookPreview(false); sbookHUDMode(false);
@@ -84,7 +84,8 @@ function sbook_body_onclick(evt)
   else if ((sbook_mode)&&(sbook_mode!=="context"))
     sbookHUDMode(false);
   else if (sbook_target)
-    if (fdjtDOM.hasParent(target,sbook_target))
+    if ((target===sbook_target)||
+	(fdjtDOM.hasParent(target,sbook_target)))
       sbookMark(sbook_target);
     else sbookSetTarget(sbookGetTarget(target));
   else sbookSetTarget(sbookGetTarget(target));
@@ -101,7 +102,7 @@ function sbook_onmouseup(evt)
 function sbook_ignoreclick(evt)
 {
   var target=$T(evt);
-  if (fdjtIsClickactive(target)) return;
+  if (fdjtDOM.isClickable(target)) return;
   else fdjtDOM.cancel(evt);
 }
 
@@ -156,7 +157,7 @@ function sbook_onkeydown(evt)
       $ID("SBOOKSEARCHTEXT").blur();}
     else if (sbook_last_mode) sbookHUDMode(sbook_last_mode);
     else {
-      if ((sbook_mark_target)&&(fdjtIsVisible(sbook_mark_target)))
+      if ((sbook_mark_target)&&(fdjtDOM.isVisible(sbook_mark_target)))
 	sbookHUDMode("mark");
       else sbookHUDMode("context");}
     return;}

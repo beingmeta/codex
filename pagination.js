@@ -602,10 +602,10 @@ function sbookGoToPage(pagenum,pageoff)
       sbookMoveMargins(info);
       sbookSyncHUD();
       document.body.style.visibility='visible';}}
-  if ((sbook_target)&&(fdjtIsVisible(sbook_target)))
+  if ((sbook_target)&&(fdjtDOM.isVisible(sbook_target)))
     sbookSetHead(sbook_target);
   else sbookSetHead(info.focus||info.first);
-  if ((sbook_mode==="mark")&&(!(fdjtIsVisible(sbook_mark_target))))
+  if ((sbook_mode==="mark")&&(!(fdjtDOM.isVisible(sbook_mark_target))))
     sbookHUDMode(false);
   sbook_pagescroll=window.scrollY;
   // Add class if it's temporarily gone

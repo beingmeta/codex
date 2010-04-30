@@ -427,7 +427,7 @@ function sbookSummary_onclick(evt)
   evt=evt||event;
   if (!(evt)) return;
   var target=$T(evt);
-  if (fdjtIsClickactive(target)) return;
+  if (fdjtDOM.isClickable(target)) return;
   var ref=sbookGetRef(target);
   if (ref) {
     fdjtDOM.cancel(evt);

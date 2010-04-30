@@ -642,7 +642,7 @@ function sbookSetTarget(target,nogo)
 
 function sbookCheckTarget()
 {
-  if ((sbook_target) && (!(fdjtIsVisible(sbook_target,true)))) {
+  if ((sbook_target) && (!(fdjtDOM.isVisible(sbook_target,true)))) {
     if (sbook_trace_focus)
       sbook_trace("sbookCheckTarget(clear)",sbook_target);
     fdjtDOM.dropClass(sbook_target,"sbooktarget");
@@ -674,7 +674,7 @@ function sbookScrollTo(elt,cxt)
     sbookSetHead(elt.head);
   if (sbook_pageview)
     sbookGoToPage(sbookGetPage(elt));
-  else if (fdjtIsVisible(elt)) {}
+  else if (fdjtDOM.isVisible(elt)) {}
   else if ((!cxt) || (elt===cxt))
     fdjtScrollTo(elt,sbookGetStableId(elt),false,true,sbookDisplayOffset());
   else fdjtScrollTo(elt,sbookGetStableId(elt),cxt,true,sbookDisplayOffset());
@@ -686,15 +686,15 @@ function sbookSetHashID(target)
       ((window.location.hash[0]==='#')&&
        (window.location.hash.slice(1)===target.id)))
     return;
-  var saved_y=((fdjtIsVisible(target))&&(window.scrollY));
-  var saved_x=((fdjtIsVisible(target))&&(window.scrollX));
-  var was_visible=fdjtIsVisible(target);
+  var saved_y=((fdjtDOM.isVisible(target))&&(window.scrollY));
+  var saved_x=((fdjtDOM.isVisible(target))&&(window.scrollX));
+  var was_visible=fdjtDOM.isVisible(target);
   window.location.hash=target.id;
   if (sbook_pageview) sbookGoToPage(sbookGetPage(target));
   else if ((was_visible)&&(saved_y)&&(saved_y!==window.scrollY))
     // This resets when setting the ID moved the page unneccessarily
     window.scrollTo(saved_x,saved_y);
-  else if (!(fdjtIsVisible(target)))
+  else if (!(fdjtDOM.isVisible(target)))
     sbookScrollTo(target,((target.head)&&($ID(target.head))));
   else {}
 }
