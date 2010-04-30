@@ -80,7 +80,7 @@ function createSBOOKHUD()
     glosses_button.onclick=sbookGlossesButton_onclick;
     
     var console=fdjtDOM("div#SBOOKCONSOLE.sbookconsole.hudblock");
-    console.innerHTML=sbook_messagebox;
+    console.innerHTML=sbook_consoletext;
 
     var markhud=
       fdjtDOM("div#SBOOKMARKHUD.hudblock",
@@ -369,7 +369,7 @@ function sbookCreateDash(eltspec)
   div.onmouseout=function(evt){
     var target=$T(evt);
     sbookHelpHighlight(false);};
-  div.innerHTML=sbook_apptext;
+  div.innerHTML=sbook_dashtext.replace('%HELPTEXT',sbook_helptext);
   fdjtDelay(1500,sbookUpdateDash,false,sbook_root);
   return div;
 }

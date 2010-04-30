@@ -1,0 +1,99 @@
+<div id="SBOOKMARKHUD" class="hudblock">
+<div id="SBOOKMARK">
+<div class="needlogin">
+  You must <span class="loginbutton" title="click to login to sBooks">login</span> to add your own glosses
+</div>
+<div class="messages"></div>
+<form id="SBOOKMARKFORM" class="mark tag"
+      action="http://glosses.sbooks.net/sbook/glossmark.fdcgi"
+      accept-charset="UTF-8"
+      target="sbookping">
+<div class="hidden">
+  <input id="SBOOKMARKFRAGID" type="HIDDEN" name="FRAGID"/>
+  <input id="SBOOKMARKREFURI" type="HIDDEN" name="REFURI"/>
+  <input id="SBOOKMARKSOURCE" type="HIDDEN" name="SOURCE"/>
+  <input id="SBOOKMARKTITLE" type="HIDDEN" name="TITLE"/>
+  <input id="SBOOKMARKEXCERPT" type="HIDDEN" name="EXCERPT"/>
+  <input id="SBOOKMARKRELAY" type="HIDDEN" name="RELAY"/>
+  <input id="SBOOKMARKOID" type="HIDDEN" name="OID"/>
+  <input id="SBOOKMARKSYNC" type="HIDDEN" name="SYNC"/>
+  <input id="SBOOKMARKUSER" type="HIDDEN" name="USER"/>
+  <input type="HIDDEN" name="DOCTITLE"/>
+</div>
+<div id="SBOOKSHOWEXCERPT" class="excerpt"></div>
+<div id="SBOOKMARKRELAYBLOCK" class="sbookrelayblock"></div>
+<div class="markform">
+<div class="lhs">
+  <img id="SBOOKMARKIMAGE" class="userpic"
+       src="http://static.beingmeta.com/graphics/remarkballoon50x50.png"/>
+<div class="controls">
+  <img class="button" alt="tags" title="add or edit descriptive tag/s"
+       src="http://static.beingmeta.com/graphics/TagIcon16x16.png"/>
+  <img class="button" alt="detail" title="add extended comments"
+       src="http://static.beingmeta.com/graphics/detailsicon16x16.png"/>
+  <img class="button" alt="xrefs" title="add or edit external references"
+       src="http://static.beingmeta.com/graphics/outlink16x16.png"/>
+</div>
+<img class="head" alt="detail" title="detail"
+     src="http://static.beingmeta.com/graphics/detailsicon32x32.png"/>
+<img class="head" alt="xrefs" title="xrefs"
+     src="http://static.beingmeta.com/graphics/outlink48x48.png"/>
+<img class="head" alt="tags" title="tags"
+     src="http://static.beingmeta.com/graphics/TagIcon32x32.png"/>
+</div>
+<div class="msg">
+  <input id="SBOOKMARKINPUT" type="TEXT" name="MSG" class="autoprompt"
+	 autocomplete="off" colspan="2" isempty="yes"/>
+  
+</div>
+<div class="metastuff">
+<div class="controls">
+  <select id="SBOOKMARKOPTIONS" name="FEED"
+	  title="The primary 'audience' for this gloss">
+    <option value=":{}">Just me</option>
+    <option id="SBOOKFRIENDLYOPTION" selected="">
+      My friends (personal circle)
+  </option>
+  </select>
+  <span class="checkspan"
+	title="private: don't share this with my personal circle">
+    <input type="CHECKBOX" name="private" value="yes" id="SBOOKMARKPRIVATE"/>
+    private</span>
+</div>
+<div class="buttons">
+  <input id="SBOOKMARKSAVEACTION" type="SUBMIT" name="ACTION" value="Save"
+	 title="Save (mark) this gloss to the server"/>
+  
+  <input id="SBOOKMARKPUSHACTION" type="SUBMIT" name="ACTION" value="Push"
+	 title="Save this gloss and publish it to any enabled overlays/walls/etc"/>
+  
+</div>
+</div>
+<div class="marktab tags">
+<div class="taginput">
+  <input id="SBOOKMARKTAGINPUT" type="TEXT" name="TAGS" 
+	 class="autoprompt" completions="SBOOKMARKCLOUD"
+	 prompt="enter tags, groups, or friends"
+	 autocomplete="off" isempty="yes"/>
+  
+</div>
+<div class="completions checkspans" id="SBOOKMARKCLOUD">
+</div>
+</div>
+<div class="detail marktab">
+<div class="content">
+  <textarea id="SBOOKMARKDETAIL" name="DETAIL" isempty="yes" class="autoprompt">
+  </textarea>
+</div>
+</div>
+<div class="xrefs marktab">
+<div class="content">
+  <input type="TEXT" name="XREFS" class="xref autoprompt"
+	 prompt="enter external URLs" isempty="yes"/>
+</div>
+</div>
+</div></form>
+</div>
+<div id="SBOOKMARKGLOSSES" class="sbookglosses">
+</div>
+</div>
