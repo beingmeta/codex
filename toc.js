@@ -170,7 +170,7 @@ sbookTOC.update=function(prefix,head,cur){
 sbookTOC.onmouseover=function(evt){
   evt=evt||event;
   var target=$T(evt);
-  fdjtWidget.cohi.onmouseover(evt);
+  fdjtUI.cohi.onmouseover(evt);
   if (fdjtDOM.isClickable(target)) return;
   if (!((fdjtDOM.hasParent(target,"spanbar"))||
 	(fdjtDOM.hasParent(target,"previewicon")))) {
@@ -192,7 +192,7 @@ sbookTOC.onmouseover=function(evt){
 sbookTOC.onmouseout=function(evt){
   evt=evt||event;
   var target=$T(evt);
-  fdjtWidget.cohi.onmouseout(evt);
+  fdjtUI.cohi.onmouseout(evt);
   var ref=sbookGetRef(target);
   if (ref) sbookSetPreview(false);};
 
