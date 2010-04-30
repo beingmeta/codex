@@ -54,11 +54,11 @@ function sbookCreateGlossesHUD(classinfo)
     fdjtImage(sbicon("sbookspeople40x40.png"),
 	      ".button.everyone.selected",
 	      "click to see all glosses");
-  var allsources=fdjtDiv("#SBOOKSOURCES.sbooksources",everyone_button);
+  var allsources=fdjtDOM("div#SBOOKSOURCES.sbooksources",everyone_button);
   everyone_button.onclick=sbookEveryoneButton_onclick;
   allsources.onclick=sbookSources_onclick;
   
-  var allglosses=fdjtDiv("#SBOOKALLGLOSSES.sbooksummaries.scrollable");
+  var allglosses=fdjtDOM("div#SBOOKALLGLOSSES.sbooksummaries.scrollable");
   sbookSetupSummaryDiv(allglosses);
   sbookShowSummaries(sbook_allglosses,allglosses,false);
   
@@ -236,7 +236,7 @@ function sbookOpenGlossmark(target,addmark)
   else {
     var hud=$ID("SBOOKMARKHUD");
     var glosses=sbook_glosses_by_id[target.id];
-    var sumdiv=fdjtDiv(".sbooksummaries");
+    var sumdiv=fdjtDOM("div.sbooksummaries");
     sbookSetupSummaryDiv(sumdiv);
     if (glosses)
       sbookShowSummaries(glosses,sumdiv,false);
@@ -291,7 +291,7 @@ function sbookGlossmark_onmouseout(evt)
 
 function createSBOOKHUDping()
 {
-  var wrapper=fdjtDiv("#SBOOKMARK.sbookping.hudblock.hud");
+  var wrapper=fdjtDOM("div#SBOOKMARK.sbookping.hudblock.hud");
   var iframe=fdjtNewElement("iframe","#SBOOKMARKFRAME");
   iframe.src="";
   iframe.hspace=0; iframe.vspace=0;

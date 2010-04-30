@@ -92,6 +92,7 @@ function sbookImportGlosses(data)
 
 function sbook_add_gloss(id,entry)
 {
+  if (!(entry.frag)) entry.frag=id;
   var item=sbookOIDs.import(entry);
   var user=entry.user;
   var feed=entry.feed;

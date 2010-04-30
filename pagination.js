@@ -570,7 +570,7 @@ function sbookSplitNode(textnode)
 {
   var text=textnode.nodeValue;
   var words=text.split(/\b/);
-  var span=fdjtSpan("sbookpageprobe");
+  var span=fdjtDOM("span.sbookpageprobe");
   var i=0; var len=words.length;
   while (i<len) {
     var word=words[i++];
@@ -788,8 +788,8 @@ function sbookPageView(flag,nogo)
     fdjtDropClass(document.body,"sbookscroll");
     sbookFlashMessage(3000,
 		      "Now using page view",
-		      fdjtSpan("details",
-			       "Press ",fdjtSpan("key","P"),
+		      fdjtDOM("span.details",
+			       "Press ",fdjtDOM("span.key","P"),
 			       " to toggle back to scroll view"));
     sbookCheckPagination();
     if (!(nogo))
@@ -802,8 +802,8 @@ function sbookPageView(flag,nogo)
     fdjtDropClass(document.body,"sbookpageview");
     sbookFlashMessage(3000,
 		      "Now using scroll view",
-		      fdjtSpan("details",
-			       "Press ",fdjtSpan("key","P"),
+		      fdjtDOM("span.details",
+			       "Press ",fdjtDOM("span.key","P"),
 			       " to toggle back to page view"));
     if (!(nogo)) {
       var curx=window.scrollX; var cury=window.scrollY;

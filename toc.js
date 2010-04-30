@@ -72,7 +72,7 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
   function generate_subsections(headinfo) {
     var sub=headinfo.sub;
     if ((!(sub)) || (!(sub.length))) return false;
-    var div=fdjtDiv("sub");
+    var div=fdjtDOM("div.sub");
     var i=0; var n=sub.length;
     while (i<n) {
       var subinfo=sub[i];

@@ -79,27 +79,27 @@ function createSBOOKHUD()
 		"Click to browse glosses for this book");
     glosses_button.onclick=sbookGlossesButton_onclick;
     
-    var console=fdjtDiv("#SBOOKCONSOLE.sbookconsole.hudblock");
+    var console=fdjtDOM("div#SBOOKCONSOLE.sbookconsole.hudblock");
     console.innerHTML=sbook_messagebox;
 
     var markhud=
-      fdjtDiv("#SBOOKMARKHUD.hudblock",
+      fdjtDOM("div#SBOOKMARKHUD.hudblock",
 	      sbookCreateMarkHUD("#SBOOKMARK"),
-	      fdjtDiv("#SBOOKMARKGLOSSES.sbookglosses"));
+	      fdjtDOM("div#SBOOKMARKGLOSSES.sbookglosses"));
 
     var headhud=
-      fdjtDiv("#SBOOKHEAD",toc_button,search_button,
-	      fdjtDiv("#SBOOKTOC.hudblock"),
+      fdjtDOM("div#SBOOKHEAD",toc_button,search_button,
+	      fdjtDOM("div#SBOOKTOC.hudblock"),
 	      sbookCreateSearchHUD("#SBOOKSEARCH.hudblock.sbooksearch"),
 	      sbookCreateGlossesHUD(),
 	      sbookCreateDash(),
 	      markhud,
 	      console);
-    var foothud=fdjtDiv("#SBOOKFOOT",dash_button,glosses_button,
-			fdjtDiv("#SBOOKTAGS.hudblock.tags"));
+    var foothud=fdjtDOM("div#SBOOKFOOT",dash_button,glosses_button,
+			fdjtDOM("div#SBOOKTAGS.hudblock.tags"));
       
     sbookHead=headhud; sbookFoot=foothud;
-    hud=fdjtDiv("#SBOOKHUD",headhud,foothud);
+    hud=fdjtDOM("div#SBOOKHUD",headhud,foothud);
     
     sbookHUD=hud; hud.sbookui=true; hud.title="";
     hud.setAttribute("flatwidth","0");
@@ -257,12 +257,12 @@ var sbook_message_timer=false;
 function sbookMessage(message)
 {
   fdjtReplace("SBOOKMESSAGE",
-	      fdjtDiv("message",
-		      fdjtDiv("head",message),
+	      fdjtDOM("div.message",
+		      fdjtDOM("div.head",message),
 		      fdjtArguments(arguments,1)));
   fdjtPrepend("SBOOKMESSAGELOG",
-	      fdjtDiv("logentry",
-		      fdjtSpan("time",fdjtET()),
+	      fdjtDOM("div.logentry",
+		      fdjtDOM("span.time",fdjtET()),
 		      message));
   sbookHUDMode("console");
 }
@@ -283,10 +283,10 @@ function sbookFlashMessage(arg0)
   if (sbook_message_timer) clearTimeout(sbook_message_timer);
   if (message) {
     fdjtReplace("SBOOKMESSAGE",
-		fdjtDiv("message",fdjtDiv("head",message),args));
+		fdjtDOM("div.message",fdjtDOM("div.head",message),args));
     fdjtPrepend("SBOOKMESSAGELOG",
-		fdjtDiv("logentry",
-			fdjtSpan("time",fdjtET()),
+		fdjtDOM("div.logentry",
+			fdjtDOM("span.time",fdjtET()),
 			message));}
   fdjtDropClass(sbookHUD,sbookHUDMode_pat);
   fdjtAddClass(sbookHUD,"console");

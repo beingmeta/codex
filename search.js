@@ -129,9 +129,9 @@ function sbookDoSearch(query,results)
 	      term,items.length);
     if (items.length===0) continue;
     else if (base) 
-      base=base.intersection(items);
+      base=fdjtKB.intersection(base,items);
     else base=items;}
-  var allitems=base.get();
+  var allitems=base;
   i=0; var n_items=allitems.length;
   while (i<n_items)
     sbook_index.score(allitems[i++],results);
@@ -151,7 +151,7 @@ function sbookGetRefiners(results)
   var i=0; while (i<rvec.length) {
     var item=rvec[i++];
     var item_score=results[item];
-    var tags=sbook_taginfo[item];
+    var tags=sbook_info[item].tags||[];
     if (tags) {
       var j=0; var len=tags.length; while (j<len) {
 	var tag=tags[j++];
@@ -181,12 +181,13 @@ function sbookGetRefiners(results)
   return refiners;
 }
 
-function sbookIndexTags(taginfo)
+function sbookIndexTags(docinfo)
 {
   /* One pass processes all of the inline DTerms and
      also separates out primary and auto tags. */
-  for (var eltid in taginfo) {
-    var tags=taginfo[eltid];
+  for (var eltid in docinfo) {
+    var tags=docinfo[eltid].tags;
+    if (!(tags)) continue;
     var k=0; var ntags=tags.length;
     while (k<ntags) {
       var tag=tags[k];
@@ -200,12 +201,13 @@ function sbookIndexTags(taginfo)
       k++;}}
   if (!(sbook_index)) sbook_index=new KnowletIndex();
   var knowlet=document.knowlet||false;
-  for (var eltid in taginfo) {
-    var tags=taginfo[eltid];
+  for (var eltid in docinfo) {
+    var tags=docinfo[eltid].tags;
+    if (!(tags)) continue;
     var k=0; var ntags=tags.length;
     while (k<ntags) {
       var tag=tags[k++];
-      sbook_index.add(eltid,tag,tags[tag]||1,knowlet);}}    
+      sbook_index.add(eltid,tag,tags[tag]||1,knowlet);}}
 }
 
 /* Utility functions */
@@ -337,7 +339,7 @@ function sbookTagScores()
   //  as one more.
   var bykey=sbook_index.bykey; var alltags=[];
   for (var tag in bykey) {
-    tagfreqs[tag]=bykey[tag].elements.length;
+    tagfreqs[tag]=bykey[tag].length;
     alltags.push(tag);}
   alltags.sort(function (x,y) {
       var xlen=tagfreqs[x]; var ylen=tagfreqs[y];

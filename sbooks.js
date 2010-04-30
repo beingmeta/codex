@@ -58,10 +58,8 @@ var sbook_heads=[];
 //  from just their XML ids, because elements that have no ID by
 //  a nearby named anchor will appear in this table.
 var sbook_hashmap={};
-// Array of sbook info, mapping from _fdjtid to objects
+// Array of sbook info, mapping from element IDs to descriptive info
 var sbook_info=[];
-// Array of sbook info, mapping from _fdjtid to objects
-var sbook_taginfo=[];
 // Array of sbook info, mapping from element IDs objects
 var sbook_idinfo={};
 // This is a big weighted inverted index
@@ -369,7 +367,7 @@ function sbookInfo(arg)
   else return false;
 }
 
-function sbookInfoTarget(arg)
+function sbookTarget(arg)
 {
   if (arg)
     if (typeof arg === 'string')
@@ -405,11 +403,17 @@ function sbookInUI(elt)
 function sbookGetHead(target)
 {
   while (target)
-    if (target.toclevel) return target;
-    else if (target.sbook_headid) 
-      return document.getElementById(target.sbook_headid);
+    if ((target.id)&&(sbook_info[target.id])) {
+      target=sbook_info[target.id]; break;}
     else target=target.parentNode;
-  return false;
+  if (target)
+    if (target.toclevel)
+      return target.elt||document.getElementById(target.frag);
+    else if (target.head)
+      return target.head.elt||
+	document.getElementById(target.head.frag);
+    else return false;
+  else return false;
 }
 
 function sbookGetFocus(target,closest)
@@ -1287,8 +1291,7 @@ function sbookSetup()
   if (knowletSetupHTML) knowletSetupHTML();
   var knowlets_done=new Date();
   sbookMessage("Indexing tags");
-  sbookIndexTags(metadata.taginfo);
-  sbook_taginfo=metadata.taginfo;
+  sbookIndexTags(metadata);
   // sbookIndexTechnoratiTags(knowlet);
   var tags_done=new Date();
   if ($ID("SBOOKHIDEHELP"))
@@ -1325,12 +1328,12 @@ var _sbook_social_setup=false;
 
 function sbookDisplaySetup()
 {
-  var topleading=fdjtDiv("#SBOOKTOPLEADING.leading.top"," ");
-  var bottomleading=fdjtDiv("#SBOOKBOTTOMLEADING.leading.bottom"," ");
+  var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
+  var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
   var pagehead=sbookMakeMargin(".sbookmargin#SBOOKPAGEHEAD"," ");
   var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKPAGEFOOT"," ");
-  var leftedge=fdjtDiv("#SBOOKLEFTEDGE.sbookmargin.sbookleft");
-  var rightedge=fdjtDiv("#SBOOKRIGHTEDGE.sbookmargin.sbookright");
+  var leftedge=fdjtDOM("div#SBOOKLEFTEDGE.sbookmargin.sbookleft");
+  var rightedge=fdjtDOM("div#SBOOKRIGHTEDGE.sbookmargin.sbookright");
 
   topleading.sbookui=true; bottomleading.sbookui=true;
   var hud=createSBOOKHUD();
@@ -1366,8 +1369,8 @@ function sbookDisplaySetup()
   leftedge.title='tap/click to go back';
 
   // These are the edges above the bottom margin
-  var leftedge2=fdjtDiv(".sbookmargin.sbookleft");
-  var rightedge2=fdjtDiv(".sbookmargin.sbookright");
+  var leftedge2=fdjtDOM("div.sbookmargin.sbookleft");
+  var rightedge2=fdjtDOM("div.sbookmargin.sbookright");
   fdjtAppend(pagefoot,leftedge2,rightedge2);
   leftedge2.title='tap/click to go back';
   leftedge2.onclick=sbookLeftEdge_onclick;

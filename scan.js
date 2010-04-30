@@ -231,6 +231,7 @@ function sbookScan(root,docinfo){
       docinfo[child.id]=info={};
     info.sbookloc=location;
     info.sbookhead=curhead.id;
+    info.head=curinfo;
     info.frag=child.id;
     if ((child.sbookskip)||(child.sbookui)||
 	((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
