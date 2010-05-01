@@ -96,6 +96,7 @@ function sbook_body_onclick(evt)
 function sbook_onmouseup(evt)
 {
   var target=$T(evt);
+  if (sbook_preview) sbookPreview(false);
   sbook_mousedown=false;
 }
 

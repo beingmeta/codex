@@ -36,7 +36,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 function sbookShowSearch(result)
 {
   if (!(result)) result=sbook_query;
-  var results_div=fdjtDOM("div.sbooksummaries.hud");
+  var results_div=fdjtDOM("div.sbooksummaries.scrollbody");
   sbookSetupSummaryDiv(results_div);
   sbookShowSearchSummaries(result,results_div);
   fdjtDOM.replace("SBOOKSUMMARIES",results_div);

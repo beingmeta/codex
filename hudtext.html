@@ -7,19 +7,19 @@
      class='hudbutton' id='SBOOKSEARCHBUTTON'
      onclick='sbookHUDMode("search")'/>
 <div id='SBOOKTOC' class='hudblock'></div>
-<div id='SBOOKSEARCH' class='hudblock sbooksearch'></div>
-<div id='SBOOKGLOSSES' class='sbookglosses scrollhud hudblock'>
-  <div id='SBOOKSOURCES' class='sbooksources'
+<div id='SBOOKSEARCH' class='scrollhud sbooksearch'></div>
+<div id='SBOOKGLOSSES' class='sbookglosses scrollhud'>
+  <div id='SBOOKSOURCES' class='sbooksources scrollhead'
        onclick='sbookSources_onclick(event);'>
     <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
 	 class='button everyone selected'
 	 alt='show all' title='click to see all glosses
 	 onclick='sbookEveryoneButton_onclick(event);'/>
   </div>
-  <div id='SBOOKALLGLOSSES' class='sbooksummaries scrollable'>
+  <div id='SBOOKALLGLOSSES' class='sbooksummaries scrollbody'>
   </div>
 </div>
-<div id='SBOOKDASH'>
+<div id='SBOOKDASH' class='scrollhud'>
   <!-- This content comes from dashtext.html -->
 </div>
 <div id='SBOOKCONSOLE' class='hudblock sbookconsole'>
@@ -37,4 +37,12 @@
   <div class='hudblock tags' id='SBOOKTAGS'></div>
 </div>
 <div id='SBOOKMARKHUD' class='hudblock'></div>
+
+<!--
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
+-->
 

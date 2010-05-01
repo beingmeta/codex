@@ -374,7 +374,7 @@ function sbookTarget(arg)
       return document.getElementById(arg);
     else if (arg.nodeType) return arg;
     else if (arg.frag)
-      return document.getElementById(arg);
+      return document.getElementById(arg.frag);
     else if (arg.id) return sbook_info[arg.id];
     else return false;
   else return false;
