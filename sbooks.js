@@ -1432,7 +1432,7 @@ function sbookImportOverlays(arg)
       mark_option.title=info.about;
       mark_option.value=info.oid;
       fdjtDOM(mark_options,mark_option);}
-    sbookOIDs.import(info);}
+    sbookOIDs.Import(info);}
 }
 
 function sbookSocialSetup()
@@ -1453,7 +1453,7 @@ function sbookUserSetup()
     fdjtDOM.addClass(document.body,"nosbookuser");
     return;}
   if ((sbook_user_data)&&(sbook_user_data.oid))
-    sbookOIDs.import(sbook_user_data);
+    sbookOIDs.Import(sbook_user_data);
   if (sbook_user) fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
   var userinfo=sbookOIDs.map[sbook_user];
   var username=userinfo.name;
