@@ -75,7 +75,7 @@ function sbook_body_onclick(evt)
 {
   evt=evt||event;
   // sbook_trace("sbook_body_onclick",evt);
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   if (fdjtDOM.isClickable(target)) return;
   else if (sbookInUI(target)) return;
   else if (sbook_preview) {
@@ -95,14 +95,14 @@ function sbook_body_onclick(evt)
 
 function sbook_onmouseup(evt)
 {
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   if (sbook_preview) sbookPreview(false);
   sbook_mousedown=false;
 }
 
 function sbook_ignoreclick(evt)
 {
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   if (fdjtDOM.isClickable(target)) return;
   else fdjtDOM.cancel(evt);
 }
@@ -111,7 +111,7 @@ function sbook_ignoreclick(evt)
 
 function sbook_ontouchstart(evt)
 {
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   var ref=sbookGetRef(target);
   if (ref) {
     if (sbook_preview)
@@ -123,7 +123,7 @@ function sbook_ontouchstart(evt)
 
 function sbook_ontouchmove(evt)
 {
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   var ref=sbookGetRef(target);
   if (ref) {
     if (sbook_preview)
@@ -134,7 +134,7 @@ function sbook_ontouchmove(evt)
 
 function sbook_ontouchend(evt)
 {
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   var ref=sbookGetRef(target);
   if (sbook_preview) sbookStopPreview();
   fdjtDOM.cancel(evt);
@@ -155,7 +155,7 @@ function sbook_onkeydown(evt)
       sbookHUDMode(false);
       sbookPreview(false);
       sbookSetTarget(false);
-      $ID("SBOOKSEARCHTEXT").blur();}
+      fdjtID("SBOOKSEARCHTEXT").blur();}
     else if (sbook_last_mode) sbookHUDMode(sbook_last_mode);
     else {
       if ((sbook_mark_target)&&(fdjtDOM.isVisible(sbook_mark_target)))
@@ -165,7 +165,7 @@ function sbook_onkeydown(evt)
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if (kc===34) sbookForward();   /* page down */
   else if (kc===33) sbookBackward();  /* Page Up */
-  else if (fdjtIsTextInput($T(evt))) return true;
+  else if (fdjtIsTextInput(fdjtDOM.T(evt))) return true;
   else if (kc===32) sbookForward(); // Space
   else if ((kc===8)||(kc===45)) sbookBackward(); // backspace or delete
   else if (kc===36)  
@@ -179,7 +179,7 @@ function sbook_onkeyup(evt)
   evt=evt||event||null;
   var kc=evt.keyCode;
   // sbook_trace("sbook_onkeyup",evt);
-  if (fdjtIsTextInput($T(evt))) return true;
+  if (fdjtIsTextInput(fdjtDOM.T(evt))) return true;
   else if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)) return true;
   else {}
 }
@@ -204,7 +204,7 @@ function sbook_onkeypress(evt)
   var modearg=false;
   evt=evt||event||null;
   // sbook_trace("sbook_onkeypress",evt);
-  if (fdjtIsTextInput($T(evt))) return true;
+  if (fdjtIsTextInput(fdjtDOM.T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
   else if ((evt.charCode===65)||(evt.charCode===97)) /* A */
     modearg=sbook_last_dash||"help";
@@ -218,11 +218,11 @@ function sbook_onkeypress(evt)
     else sbookHUDMode(modearg);
   else {}
   if (sbook_mode==="searching")
-    $ID("SBOOKSEARCHTEXT").focus();
+    fdjtID("SBOOKSEARCHTEXT").focus();
   else if (sbook_mode==="mark") {
     sbookMarkHUDSetup(false);
-    $ID("SBOOKMARKINPUT").focus();}
-  else $ID("SBOOKSEARCHTEXT").blur();
+    fdjtID("SBOOKMARKINPUT").focus();}
+  else fdjtID("SBOOKSEARCHTEXT").blur();
   fdjtDOM.cancel(evt);
 }
 
@@ -232,17 +232,17 @@ function sbookInterfaceMode(mode)
 {
   if (mode==='touch') {
     sbook_interaction=mode;
-    fdjtCheckSpan_set($ID("SBOOKTOUCHMODE"),true,true);
+    fdjtCheckSpan_set(fdjtID("SBOOKTOUCHMODE"),true,true);
     fdjtDOM.addClass(document.body,"touch");
     sbookCheckPagination();}
   else if (mode==='mouse') {
     sbook_interaction=mode;
-    fdjtCheckSpan_set($ID("SBOOKMOUSEMODE"),true,true);
+    fdjtCheckSpan_set(fdjtID("SBOOKMOUSEMODE"),true,true);
     fdjtDOM.dropClass(document.body,"touch");
     sbookCheckPagination();}
   else if (mode==='keyboard') {
     sbook_interaction=mode;
-    fdjtCheckSpan_set($ID("SBOOKKBDMODE"),true,true);
+    fdjtCheckSpan_set(fdjtID("SBOOKKBDMODE"),true,true);
     fdjtDOM.dropClass(document.body,"touch");
     sbookCheckPagination();}
   else {
@@ -254,21 +254,21 @@ function sbookSparseMode(flag)
 {
   if (flag) {
     sbook_sparse=true;
-    fdjtCheckSpan_set($ID("SBOOKSPARSE"),true,true);
+    fdjtCheckSpan_set(fdjtID("SBOOKSPARSE"),true,true);
     fdjtDOM.addClass(document.body,"sparsebook");}
   else {
     sbook_sparse=false;
-    fdjtCheckSpan_set($ID("SBOOKSPARSE"),false,true);
+    fdjtCheckSpan_set(fdjtID("SBOOKSPARSE"),false,true);
     fdjtDOM.dropClass(document.body,"sparsebook");}
 }
 
 function sbookFlashMode(flag)
 {
   if (flag) {
-    fdjtCheckSpan_set($ID("SBOOKHUDFLASH"),true,true);
+    fdjtCheckSpan_set(fdjtID("SBOOKHUDFLASH"),true,true);
     sbook_hud_flash=sbook_default_hud_flash;}
   else {
-    fdjtCheckSpan_set($ID("SBOOKHUDFLASH"),false,true);
+    fdjtCheckSpan_set(fdjtID("SBOOKHUDFLASH"),false,true);
     sbook_hud_flash=false;}
 }
 

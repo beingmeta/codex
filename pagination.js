@@ -123,7 +123,8 @@ function sbookPaginate(pagesize,start)
     // We track a 'focus' for every page, which is the first sbook
     // focusable element on the page.
     if (!(curpage.focus))
-      if ((scan.toclevel)||(fdjtElementMatches(scan,sbook_focus_rules)))
+      if ((scan.toclevel)||
+	  ((sbook_focus_rules)&&(sbook_focus_rules.match(scan))))
 	curpage.focus=scan;
     if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info,curpage));
     if ((dbginfo)&&(next))
@@ -590,7 +591,7 @@ function sbookGoToPage(pagenum,pageoff)
   var footheight=((off-sbook_top_px)+window.innerHeight)-info.bottom;
   if (footheight<0) {
     footheight=0; sbook_curbottom=sbook_bottom_px;}
-  $ID("SBOOKPAGEFOOT").style.height=footheight+'px';
+  fdjtID("SBOOKPAGEFOOT").style.height=footheight+'px';
   sbook_curpage=pagenum;
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
@@ -605,6 +606,19 @@ function sbookGoToPage(pagenum,pageoff)
   if ((sbook_target)&&(fdjtDOM.isVisible(sbook_target)))
     sbookSetHead(sbook_target);
   else sbookSetHead(info.focus||info.first);
+  
+  if (((info.first)&&(info.first.id))||((info.last)&&(info.last.id))) {
+    var firstloc=
+      ((info.first)&&(info.first.id)&&
+       (sbook_info[info.first.id])&&(sbook_info[info.first.id].sbookloc));
+    var lastloc=
+      ((info.last)&&(info.last.id)&&
+       (sbook_info[info.last.id])&&(sbook_info[info.last.id].sbookloc));
+    if ((firstloc)&&(lastloc))
+      sbookSetLocation(Math.floor((firstloc+lastloc)/2));
+    else if (firstloc) sbookSetLocation(firstloc);
+    else if (lastloc) sbookSetLocation(lastloc);}
+
   if ((sbook_mode==="mark")&&(!(fdjtDOM.isVisible(sbook_mark_target))))
     sbookHUDMode(false);
   sbook_pagescroll=window.scrollY;
@@ -616,8 +630,10 @@ function sbookGetPage(arg)
 {
   var top;
   if (typeof arg === "number") top=arg;
-  else if (!($ID(arg))) return 0;
-  else top=fdjtDOM.getGeometry($ID(arg)).top;
+  else if (arg.nodeType)
+    top=fdjtDOM.getGeometry(arg).top;
+  else if (!(fdjtID(arg))) return 0;
+  else top=fdjtDOM.getGeometry(fdjtID(arg)).top;
   var i=1; var len=sbook_pages.length;
   while (i<len) 
     if (sbook_pages[i]>top) return i-1;
@@ -627,12 +643,12 @@ function sbookGetPage(arg)
 
 function sbookMoveMargins(pageinfo)
 {
-  $ID("SBOOKPAGEHEAD").style.top=(pageinfo.top-sbook_top_px)+"px";
-  $ID("SBOOKPAGEFOOT").style.top=pageinfo.bottom+"px";
-  $ID("SBOOKLEFTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
-  $ID("SBOOKLEFTEDGE").style.height=window.innerHeight+"px";
-  $ID("SBOOKRIGHTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
-  $ID("SBOOKRIGHTEDGE").style.height=window.innerHeight+"px";
+  fdjtID("SBOOKPAGEHEAD").style.top=(pageinfo.top-sbook_top_px)+"px";
+  fdjtID("SBOOKPAGEFOOT").style.top=pageinfo.bottom+"px";
+  fdjtID("SBOOKLEFTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
+  fdjtID("SBOOKLEFTEDGE").style.height=window.innerHeight+"px";
+  fdjtID("SBOOKRIGHTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
+  fdjtID("SBOOKRIGHTEDGE").style.height=window.innerHeight+"px";
 }
 
 function sbookSyncPage()
@@ -665,7 +681,8 @@ function sbookForward()
       else {
 	sbook_curpage++;
 	sbookGoToPage(sbook_curpage);
-	if (sbook_curinfo.focus) sbookSetHashID(sbook_curinfo.focus);}}}
+	if ((sbook_curinfo.focus)&&(sbook_curinfo.focus.id))
+	  sbookSetHashID(sbook_curinfo.focus);}}}
   else window.scrollBy(0,sbook_pagesize);
 }
 
@@ -746,7 +763,7 @@ var advance_interval=800;
 function sbookNextPrev_startit(evt)
 {
   evt=evt||event;
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   if (advance_timer) clearInterval(advance_timer);
   if (target.alt==='>>') sbookForward(); else sbookBackward();
   if (target.alt==='>>')
@@ -765,7 +782,7 @@ function sbookPageView(flag,nogo)
     sbookCheckPagination();
   else if (flag) {
     sbook_pageview=true;
-    fdjtCheckSpan_set($ID("SBOOKPAGEVIEW"),true,true);
+    fdjtCheckSpan_set(fdjtID("SBOOKPAGEVIEW"),true,true);
     fdjtDOM.addClass(document.body,"sbookpageview");
     fdjtDOM.dropClass(document.body,"sbookscroll");
     sbookFlashMessage(3000,
@@ -779,7 +796,7 @@ function sbookPageView(flag,nogo)
   else {
     sbook_pageview=false;
     sbook_nextpage=false; sbook_pagebreak=false;
-    fdjtCheckSpan_set($ID("SBOOKPAGEVIEW"),false,true);
+    fdjtCheckSpan_set(fdjtID("SBOOKPAGEVIEW"),false,true);
     fdjtDOM.addClass(document.body,"sbookscroll");
     fdjtDOM.dropClass(document.body,"sbookpageview");
     sbookFlashMessage(3000,
@@ -809,9 +826,9 @@ function sbookMakeMargin(spec)
 function sbookPageHead_onclick(evt)
 {
   evt=evt||event;
-  if ((evt.clientX)>($ID("SBOOKRIGHTEDGE").offsetLeft))
+  if ((evt.clientX)>(fdjtID("SBOOKRIGHTEDGE").offsetLeft))
     return sbookRightEdge_onclick(evt);
-  else if ((evt.clientX)<($ID("SBOOKLEFTEDGE").offsetWidth))
+  else if ((evt.clientX)<(fdjtID("SBOOKLEFTEDGE").offsetWidth))
     return sbookLeftEdge_onclick(evt);
   else if (sbook_mode) sbookHUDMode(false);
   else sbookHUDMode(sbook_last_dash);
@@ -820,9 +837,9 @@ function sbookPageHead_onclick(evt)
 function sbookPageFoot_onclick(evt)
 {
   evt=evt||event;
-  if ((evt.clientX)>($ID("SBOOKRIGHTEDGE").offsetLeft))
+  if ((evt.clientX)>(fdjtID("SBOOKRIGHTEDGE").offsetLeft))
     return sbookRightEdge_onclick(evt);
-  else if ((evt.clientX)<($ID("SBOOKLEFTEDGE").offsetWidth))
+  else if ((evt.clientX)<(fdjtID("SBOOKLEFTEDGE").offsetWidth))
     return sbookLeftEdge_onclick(evt);
   else if (sbook_mode) sbookHUDMode(false);
   else sbookHUDMode("context");
@@ -837,7 +854,7 @@ function sbookUpdatePagination()
   var target=sbook_target;
   sbookMessage("Determining page layout");
   var pagination=sbookPaginate(pagesize);
-  $ID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
+  fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
   sbook_pages=pagination.pages;
   sbook_pageinfo=pagination.info;
   sbook_pagesize=pagesize;

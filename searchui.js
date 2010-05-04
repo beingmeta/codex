@@ -86,17 +86,17 @@ function sbookSearchInput_onkeypress(evt)
 {
   evt=evt||event||null;
   var ch=evt.charCode; var kc=evt.keyCode;
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   if ((kc===13)||(ch===13)) {
     sbookForceComplete(target);
     sbookShowSearch(sbook_query);
     sbookHUDMode("browsing");
-    $ID("SBOOKSEARCHTEXT").blur();
-    $ID("SBOOKSUMMARIES").focus();
+    fdjtID("SBOOKSEARCHTEXT").blur();
+    fdjtID("SBOOKSUMMARIES").focus();
     fdjtDOM.cancel(evt);
     return false;}
   else if (ch===59) { /* That is, semicolon */
-    sbookForceComplete($T(evt));
+    sbookForceComplete(fdjtDOM.T(evt));
     if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
     evt.cancelBubble=true;}
   else {
@@ -110,7 +110,7 @@ function sbookSearchInput_onfocus(evt)
   fdjtAutoPrompt_onfocus(evt);
   sbook_search_focus=true;
   sbookHUDMode("searching");
-  sbookSetQuery(sbookStringToQuery($T(evt).value));
+  sbookSetQuery(sbookStringToQuery(fdjtDOM.T(evt).value));
   return fdjtComplete_show(evt);
 }
 
@@ -143,9 +143,9 @@ function _sbook_replace_current_entry(elt,value)
       (sbook_query._results.length<=sbook_search_gotlucky)) {
     // fdjtTrace("Search got lucky: %o",sbook_query);
     sbookShowSearch(sbook_query);
-    $ID("SBOOKSEARCHTEXT").blur();
+    fdjtID("SBOOKSEARCHTEXT").blur();
     sbookHUDMode("browsing");}
-  else $ID("SBOOKSEARCHTEXT").focus();
+  else fdjtID("SBOOKSEARCHTEXT").focus();
 }
 
 function _sbook_note_completions(completions)
@@ -258,8 +258,8 @@ function sbookQueryCloud(query)
       evt=evt||event||null;
       sbookShowSearch(query);
       sbookHUDMode("browsing");
-      $ID("SBOOKSEARCHTEXT").blur();
-      $ID("SBOOKSUMMARIES").focus();
+      fdjtID("SBOOKSEARCHTEXT").blur();
+      fdjtID("SBOOKSUMMARIES").focus();
       if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
       evt.cancelBubble=true;};
     result_counts.title='click to see results; click in the input box to return here';
@@ -272,10 +272,12 @@ function sbookQueryCloud(query)
     fdjtDOM.prepend(completions,counts,msg1,msg2);
     query._cloud=completions;
     if (hide_some) {
-      var cues=FDJT$(".cue",completions);
+      var cues=fdjtDOM.$(".cue",completions);
       if (!((cues)&&(cues.length))) {
-	var compelts=FDJT$(".completion",completions);
-	var i=0; while (i<sbook_show_refiners) fdjtDOM.addClass(compelts[i++],"cue");}}
+	var compelts=fdjtDOM.$(".completion",completions);
+	var i=0; var lim=((compelts.length<sbook_show_refiners)?
+			  (compelts.length):(sbook_show_refiners));
+	while (i<lim) fdjtDOM.addClass(compelts[i++],"cue");}}
     else fdjtDOM.addClass(completions,"showempty");
     // fdjtTrace("Generated completions for %o: %o",query,completions);
     fdjtInitCompletions(completions);
@@ -363,9 +365,9 @@ function sbookMakeCloud(dterms,scores,freqs)
 function sbookMaxComplete_onclick(evt)
 {
   evt=evt||event;
-  var target=$T(evt);
-  var container=FDJT$P(".completions",target);
-  $ID("SBOOKSEARCHTEXT").focus();
+  var target=fdjtDOM.T(evt);
+  var container=fdjtDOM.getParent(target,".completions");
+  fdjtID("SBOOKSEARCHTEXT").focus();
   fdjtDOM.toggleClass(container,"showall");
   fdjtDOM.cancel(evt);
 }
@@ -382,9 +384,9 @@ function sbookFullCloud()
     var tagfreqs=tagscores._freq;
     var completions=sbookMakeCloud(alltags,tagscores,tagfreqs);
     sbook_full_cloud=completions;
-    var cues=fdjtGetChildrenByClassName(completions,"cue");
+    var cues=fdjtDOM.getChildren(completions,".cue");
     if (!((cues)&&(cues.length))) {
-      var celts=fdjtGetChildrenByClassName(completions,"completion");
+      var celts=fdjtDOM.getChildren(completions,".completion");
       var j=0; while ((j<sbook_show_refiners)&&(j<celts.length)) {
 	fdjtDOM.addClass(celts[j++],"cue");}}
     return completions;}
@@ -444,7 +446,7 @@ function sbookCreateSearchHUD(classinfo)
 
 function sbookSetupSearchHUD()
 {
-  var input=$ID("SBOOKSEARCHTEXT");
+  var input=fdjtID("SBOOKSEARCHTEXT");
   input.onkeypress=sbookSearchInput_onkeypress;
   input.onfocus=sbookSearchInput_onfocus;
   input.onblur=sbookSearchInput_onblur;
@@ -452,12 +454,12 @@ function sbookSetupSearchHUD()
   input.oncomplete=_sbook_replace_current_entry;
   input.noteCompletions=_sbook_note_completions;
 
-  var sbooksearch=$ID("SBOOKSEARCH");
+  var sbooksearch=fdjtID("SBOOKSEARCH");
   fdjtAutoPrompt_setup(sbooksearch);
   // sbooksearch.onmouseover=sbookHUD_onmouseover;
   // sbooksearch.onmouseout=sbookHUD_onmouseout;
 
-  var completions=$ID("SBOOKSEARCHCOMPLETIONS");
+  var completions=fdjtID("SBOOKSEARCHCOMPLETIONS");
   completions.input_elt=input;
 }
 
@@ -465,7 +467,7 @@ function sbookSetupSearchHUD()
 
 function sbookClearInput_onclick(evt)
 {
-  var input_elt=$ID("SBOOKSEARCHTEXT");
+  var input_elt=fdjtID("SBOOKSEARCHTEXT");
   input_elt.value='';
   sbookUpdateQuery(input_elt);
   input_elt.focus();

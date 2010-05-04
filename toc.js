@@ -169,11 +169,11 @@ sbookTOC.update=function(prefix,head,cur){
 
 sbookTOC.onmouseover=function(evt){
   evt=evt||event;
-  var target=$T(evt);
-  fdjtUI.cohi.onmouseover(evt);
+  var target=fdjtDOM.T(evt);
+  fdjtUI.CoHi.onmouseover(evt);
   if (fdjtDOM.isClickable(target)) return;
-  if (!((fdjtDOM.hasParent(target,"spanbar"))||
-	(fdjtDOM.hasParent(target,"previewicon")))) {
+  if (!((fdjtDOM.hasParent(target,".spanbar"))||
+	(fdjtDOM.hasParent(target,".previewicon")))) {
     if (sbook_preview) sbookSetPreview(false);
     return;}
   var ref=sbookGetRef(target);
@@ -191,18 +191,18 @@ sbookTOC.onmouseover=function(evt){
 
 sbookTOC.onmouseout=function(evt){
   evt=evt||event;
-  var target=$T(evt);
-  fdjtUI.cohi.onmouseout(evt);
+  var target=fdjtDOM.T(evt);
+  fdjtUI.CoHi.onmouseout(evt);
   var ref=sbookGetRef(target);
   if (ref) sbookSetPreview(false);};
 
 sbookTOC.onmousedown=function(evt){
   evt=evt||event;
   sbook_mousedown=fdjtTime();
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   fdjtCoHi_onmouseout(evt);
-  if (!((FDJT$P(".sectname",target))||
-	(FDJT$P(".sbooksummaries",target))))
+  if (!((fdjtDOM.hasParent(target,".sectname"))||
+	(fdjtDOM.hasParent(target,".sbooksummaries"))))
     return;
   var ref=sbookGetRef(target);
   if (ref) sbookSetPreview(ref);};
@@ -215,14 +215,16 @@ sbookTOC.onmouseup=function(evt){
 
 sbookTOC.onclick=function(evt){
   evt=evt||event;
+  fdjtLog("sbm=%o t=%o",sbook_mousedown,fdjtTime());
   if ((sbook_mousedown)&&
       ((fdjtTime()-sbook_mousedown)>sbook_hold_threshold)) {
     sbook_mousedown=false;
     fdjtDOM.cancel(evt);
     return false;}
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   var ref=sbookGetRef(target);
   if (!(ref)) return;
+  if (sbook_preview) sbookPreview(false);
   sbookGoTo(ref);
   var info=sbookInfo(ref);
   if ((info.sub)&&(info.sub.length>1)) sbookHUDMode("toc");
@@ -232,7 +234,7 @@ sbookTOC.onclick=function(evt){
 sbookTOC.oneclick=function(evt){
   evt=evt||event;
   if (sbook_preview) return;
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   var ref=sbookGetRef(target);
   if (sbook_preview===ref) sbookPreview(false);
   else if (ref) sbookPreview(ref);
@@ -247,7 +249,7 @@ sbookTOC.onholdclick=function(evt){
     sbook_mousedown=false;
     fdjtDOM.cancel(evt);
     return false;}
-  var target=$T(evt);
+  var target=fdjtDOM.T(evt);
   var ref=sbookGetRef(target);
   if (!(ref)) return;
   sbookGoTo(ref);

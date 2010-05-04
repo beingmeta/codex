@@ -70,7 +70,7 @@ function sbookImportGlosses(data)
   if ((ids) && (ids.length)) {
     var i=0; while (i<ids.length) {
       var id=ids[i++];
-      var element=$ID(id);
+      var element=fdjtID(id);
       // Skip references to IDs which don't exist
       if (!(element)) continue;
       var entries=data[id];
@@ -112,8 +112,8 @@ function sbook_add_gloss(id,entry)
     fdjtAdd(sbook_glosses_by_user,user,item);}
   var tstamp=entry.tstamp;
   if (tstamp>sbook_gloss_syncstamp) sbook_gloss_syncstamp=tstamp;
-  if ($ID("SBOOKALLGLOSSES")) {
-    var allglosses_div=$ID("SBOOKALLGLOSSES");
+  if (fdjtID("SBOOKALLGLOSSES")) {
+    var allglosses_div=fdjtID("SBOOKALLGLOSSES");
     sbookAddSummary(item,allglosses_div,false);}
   return item;
 }
@@ -153,7 +153,8 @@ function sbookNewGlosses(glosses,winarg)
   var form=win.document.getElementById("SBOOKMARKFORM");
   fdjtDOM.dropClass(form,"submitting");
   form.reset();
-  fdjtCheckSpan_setup($ID("SBOOKMARKCLOUD"));
+  fdjtID("SBOOKMARKCLOUD").addEventListener
+    ("click",fdjtUI.Checkspan.onclick,false);
   win.sbookHUDMode(false);
 }
 

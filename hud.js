@@ -52,23 +52,23 @@ var sbook_apps=["help","login","sbookapp","device","dashtoc","about"];
 
 function sbookSetupHUD()
 {
-  if ($ID("SBOOKHUD")) return;
+  if (fdjtID("SBOOKHUD")) return;
   else {
     sbookHUD=fdjtDOM("div#SBOOKHUD");
     sbookHUD.innerHTML=sbook_hudtext;
     fdjtDOM.prepend(document.body,sbookHUD);}
-  var console=$ID("SBOOKCONSOLE");
+  var console=fdjtID("SBOOKCONSOLE");
   console.innerHTML=sbook_consoletext;
-  var dash=$ID("SBOOKDASH");
+  var dash=fdjtID("SBOOKDASH");
   dash.innerHTML=sbook_dashtext.replace('%HELPTEXT',sbook_helptext);
-  var search=$ID("SBOOKSEARCH");
+  var search=fdjtID("SBOOKSEARCH");
   search.innerHTML=sbook_searchtext;
   sbookSetupSearchHUD(search);
-  var glosses=$ID("SBOOKALLGLOSSES");
+  var glosses=fdjtID("SBOOKALLGLOSSES");
   sbookSetupSummaryDiv(glosses);
   if ((sbook_allglosses)&&(sbook_allglosses.length))
     sbookShowSummaries(sbook_allglosses,allglosses,false);
-  var bookmark=$ID("SBOOKMARKHUD");
+  var bookmark=fdjtID("SBOOKMARKHUD");
   bookmark.innerHTML=sbook_markhudtext;
   fdjtDelay(1500,sbookUpdateDash,false,sbook_root);
 }
@@ -78,14 +78,14 @@ function sbookSetupHUD()
 function sbookSetupNavHUD(root_info)
 {
   var navhud=sbookCreateNavHUD("#SBOOKTOC.hudblock",root_info);
-  var toc_button=$ID("SBOOKTOCBUTTON");
+  var toc_button=fdjtID("SBOOKTOCBUTTON");
   toc_button.onclick=sbookTOCButton_onclick;
   if (sbook_interaction==='mouse') {
     toc_button.onmouseover=fdjtClassAdder("SBOOKTOC","hover");
     toc_button.onmouseout=fdjtClassDropper("SBOOKTOC","hover");}
   toc_button.style.visibility=null;
   fdjtDOM.replace("SBOOKTOC",navhud);
-  fdjtDOM($ID("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC",root_info));
+  fdjtDOM(fdjtID("DASHTOC"),sbookStaticNavHUD("#SBOOKDASHTOC",root_info));
 }
 
 function sbookCreateNavHUD(eltspec,root_info)
@@ -120,7 +120,7 @@ function sbookStaticNavHUD(eltspec,root_info)
 
 function createSBOOKHUD()
 {
-  var hud=$ID("SBOOKHUD");
+  var hud=fdjtID("SBOOKHUD");
   if (hud) return hud;
   else {
     var toc_button=
@@ -177,7 +177,7 @@ function createSBOOKHUD()
 
 function sbookInitSocialHUD()
 {
-  var glosses_button=$ID("SBOOKGLOSSESBUTTON");
+  var glosses_button=fdjtID("SBOOKGLOSSESBUTTON");
   glosses_button.onclick=sbookGlossesButton_onclick;
   if (sbook_interaction==='mouse') {
     glosses_button.onmouseover=fdjtClassAdder("SBOOKGLOSSES","hover");
@@ -187,7 +187,7 @@ function sbookInitSocialHUD()
 
 function sbookInitSearchHUD()
 {
-  var search_button=$ID("SBOOKSEARCHBUTTON");
+  var search_button=fdjtID("SBOOKSEARCHBUTTON");
   search_button.onclick=sbookSearchButton_onclick;
   if (sbook_interaction==='mouse') {
     search_button.onmouseover=fdjtClassAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
@@ -223,7 +223,7 @@ function sbookHUDMode(mode)
       if (mode===true) mode="context";
       if (typeof mode !== 'string') 
 	throw new Error('mode arg not a string');
-      if ((mode==="sbookapp")&&(!($ID("APPFRAME").src)))
+      if ((mode==="sbookapp")&&(!(fdjtID("APPFRAME").src)))
 	sbookSetupAppFrame();
       sbook_mode=mode;
       sbook_last_mode=mode;
@@ -379,7 +379,7 @@ function sbookHelpHighlight(hudelt)
 
 function sbookUpdateDash()
 {
-  var hidehelp=$ID("SBOOKHIDEHELP");
+  var hidehelp=fdjtID("SBOOKHIDEHELP");
   var dohidehelp=fdjtGetCookie("sbookhidehelp");
   if (!(hidehelp)) {}
   else if (dohidehelp==='no') hidehelp.checked=false;
@@ -391,8 +391,8 @@ function sbookUpdateDash()
       if (hidehelp.checked)
 	fdjtSetCookie("sbookhidehelp",true,false,"/"); /* document.location.host */
       else fdjtSetCookie("sbookhidehelp","no",false,"/");};
-  fdjtAutoPrompt_setup($ID("SBOOKDASH"));
-  fdjtAnchorSubmit_setup($ID("SBOOKDASH"));
+  fdjtAutoPrompt_setup(fdjtID("SBOOKDASH"));
+  fdjtAnchorSubmit_setup(fdjtID("SBOOKDASH"));
   var refuris=document.getElementsByName("REFURI");
   if (refuris) {
     var i=0; var len=refuris.length;
@@ -452,7 +452,7 @@ function sbookUpdateDash()
 function _sbookFillTemplate(template,spec,content)
 {
   if (!(content)) return;
-  var elt=FDJT$(spec,template);
+  var elt=fdjtDOM.$(spec,template);
   if ((elt)&&(elt.length>0)) elt=elt[0];
   else return;
   if (typeof content === 'string')
@@ -464,35 +464,35 @@ function _sbookFillTemplate(template,spec,content)
 
 function sbookUpdateAboutInfo()
 {
-  if ($ID("SBOOKABOUT")) {
-    fdjtDOM.replace("APPABOUTCONTENT",$ID("SBOOKABOUT"));
+  if (fdjtID("SBOOKABOUT")) {
+    fdjtDOM.replace("APPABOUTCONTENT",fdjtID("SBOOKABOUT"));
     return;}
-  var about=$ID("APPABOUT");
+  var about=fdjtID("APPABOUT");
   var title=
-    $ID("SBOOKTITLE")||
+    fdjtID("SBOOKTITLE")||
     fdjtGetMeta("SBOOKTITLE")||fdjtGetMeta("TITLE")||
     document.title;
   var byline=
-    $ID("SBOOKBYLINE")||$ID("SBOOKAUTHOR")||
+    fdjtID("SBOOKBYLINE")||fdjtID("SBOOKAUTHOR")||
     fdjtGetMeta("SBOOKBYLINE")||fdjtGetMeta("BYLINE")||
     fdjtGetMeta("SBOOKAUTHOR")||fdjtGetMeta("AUTHOR");
   var copyright=
-    $ID("SBOOKCOPYRIGHT")||
+    fdjtID("SBOOKCOPYRIGHT")||
     fdjtGetMeta("SBOOKCOPYRIGHT")||fdjtGetMeta("COPYRIGHT")||
     fdjtGetMeta("RIGHTS");
   var publisher=
-    $ID("SBOOKPUBLISHER")||
+    fdjtID("SBOOKPUBLISHER")||
     fdjtGetMeta("SBOOKPUBLISHER")||
     fdjtGetMeta("PUBLISHER");
   var description=
-    $ID("SBOOKDESCRIPTION")||
+    fdjtID("SBOOKDESCRIPTION")||
     fdjtGetMeta("SBOOKDESCRIPTION")||
     fdjtGetMeta("DESCRIPTION");
   var digitized=
-    $ID("SBOOKDIGITIZED")||
+    fdjtID("SBOOKDIGITIZED")||
     fdjtGetMeta("SBOOKDIGITIZED")||
     fdjtGetMeta("DIGITIZED");
-  var sbookified=$ID("SBOOKIFIED")||fdjtGetMeta("SBOOKIFIED");
+  var sbookified=fdjtID("SBOOKIFIED")||fdjtGetMeta("SBOOKIFIED");
   _sbookFillTemplate(about,".title",title);
   _sbookFillTemplate(about,".byline",byline);
   _sbookFillTemplate(about,".publisher",publisher);
@@ -500,10 +500,10 @@ function sbookUpdateAboutInfo()
   _sbookFillTemplate(about,".description",description);
   _sbookFillTemplate(about,".digitized",digitized);
   _sbookFillTemplate(about,".sbookified",sbookified);
-  _sbookFillTemplate(about,".about",$ID("SBOOKABOUT"));
+  _sbookFillTemplate(about,".about",fdjtID("SBOOKABOUT"));
   var cover=fdjtGetLink("cover");
   if (cover) {
-    var cover_elt=FDJT$(".cover",about)[0];
+    var cover_elt=fdjtDOM.$(".cover",about)[0];
     if (cover_elt) fdjtDOM(cover_elt,fdjtImage(cover));}
 }
 
@@ -610,10 +610,10 @@ function sbookSearchButton_onclick(evt)
   if ((sbook_mode==="searching") || (sbook_mode==="browsing")) {
     sbookHUDMode(false);
     fdjtDOM.dropClass("SBOOKSEARCH","hover");
-    $ID("SBOOKSEARCHTEXT").blur();}
+    fdjtID("SBOOKSEARCHTEXT").blur();}
   else {
     sbookHUDMode("searching");
-    $ID("SBOOKSEARCHTEXT").focus();
+    fdjtID("SBOOKSEARCHTEXT").focus();
     fdjtDOM.cancel(evt);}
 }
 
