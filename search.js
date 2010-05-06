@@ -161,12 +161,12 @@ function sbookGetRefiners(results)
 	// and its general score
 	else if (freqs[tag]) {
 	  freqs[tag]=freqs[tag]+1;
-	  refiners[tag]=refiners[tag]+item_score;}
+	  if (item_score) refiners[tag]=refiners[tag]+item_score;}
 	else {
 	  // If the tag hasn't been counted, we initialize its frequency
 	  // and score, adding it to the list of all the tags we've found
 	  alltags.push(tag); freqs[tag]=1;
-	  refiners[tag]=item_score;}}}}
+	  if (item_score) refiners[tag]=item_score;}}}}
   freqs._count=rvec.length;
   refiners._freqs=freqs;
   results._refiners=refiners;
@@ -229,7 +229,8 @@ function sbookStringToQuery(string)
 function sbookQueryToString(query)
 {
   if ((typeof query === "object") && (query instanceof Array))
-    return query.join(';')+';';
+    if (query.length===0) return "";
+    else return query.join(';')+';';
   else return query;
 }
 
@@ -238,7 +239,15 @@ function sbookQueryBase(string)
   var lastsemi=string.lastIndexOf(';');
   if (lastsemi>0)
     return string.slice(0,lastsemi+1);
-  else return ";";
+  else return "";
+}
+
+function sbookQueryEnd(string)
+{
+  var lastsemi=string.lastIndexOf(';');
+  if (lastsemi>0)
+    return string.slice(lastsemi+1);
+  else return string;
 }
 
 /* Top level query construction */
@@ -333,7 +342,8 @@ function sbookTagScores()
   var tagscores={}; var tagfreqs={}; var alltags=[];
   var book_tags=sbook_index._all;
   if (sbook_trace_clouds)
-    fdjtLog("[%f] Making full cloud over %d tags",fdjtElapsedTime(),book_tags.length);
+    fdjtLog("[%f] Making full cloud over %d tags",
+	    fdjtElapsedTime(),book_tags.length);
   // The scores here are used to determine sizes in the cloud
   // A regular index reference counts as 1 and a prime reference counts
   //  as one more.
@@ -341,6 +351,7 @@ function sbookTagScores()
   for (var tag in bykey) {
     tagfreqs[tag]=bykey[tag].length;
     alltags.push(tag);}
+  tagfreqs._count=alltags.length;
   alltags.sort(function (x,y) {
       var xlen=tagfreqs[x]; var ylen=tagfreqs[y];
       if (xlen==ylen) return 0;

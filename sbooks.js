@@ -482,7 +482,8 @@ function sbookSetQuery(query,scored)
   var result=sbookQuery(query);
   if (result._qstring!==sbookQueryBase(fdjtID("SBOOKSEARCHTEXT").value)) {
     fdjtID("SBOOKSEARCHTEXT").value=result._qstring;
-    fdjtID("SBOOKSEARCHTEXT").removeAttribute('isempty');}
+    fdjtID("SBOOKSEARCHTEXT").removeAttribute('isempty');
+    fdjtDOM.dropClass(fdjtID("SBOOKSEARCHTEXT"),'isempty');}
   sbook_query=result; query=result._query;
   // sbookSetGlosses(sbook_search_glosses(query));
   if (sbook_trace_search>1)
@@ -495,9 +496,8 @@ function sbookSetQuery(query,scored)
   if (result._refiners) {
     var completions=sbookQueryCloud(result);
     if (sbook_trace_search>1)
-      fdjtLog("Setting completions to %o",completions);
-    fdjtSetCompletions("SBOOKSEARCHCOMPLETIONS",completions);
-    var ncompletions=fdjtComplete(fdjtID("SBOOKSEARCHTEXT")).length;}
+      fdjtLog("Setting completions to %o",completions.dom);
+    fdjtDOM.replace(fdjtID("SBOOKSEARCHCOMPLETIONS"),completions.dom);}
   sbookSetSources(fdjtID("SBOOKGLOSSES"),result._sources||[]);
   return result;
 }

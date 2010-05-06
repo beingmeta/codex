@@ -249,8 +249,8 @@ div#SBOOKHUD div.scrollhud div.scrollhead {
 
 div#SBOOKHUD div.scrollhud div.scrollbody {
   position: absolute; top: 60px; right: 0px;  left: 0px; margin: 0px;
-  background-color: inherit;
-  max-height: 300px;
+  background-color: inherit; padding-left: 1em; padding-right: 1em;
+  max-height: 500px;
   overflow: auto;}
 
 /* The TOC/Nav HUD */
@@ -1102,9 +1102,17 @@ div.sbooksearch .completions span.counts {
   border-radius: 3px;}
 div.sbooksearch div.query {}
 
+/*
 div.sbooksearch .completions .completion:after { 
-  content: "·"; font-size: 200%; font-weight: bold; 
+  content: "·"; font-size: 24px; font-weight: bold; 
   color: purple; vertical-align: middle;}
+  */
+.completions span.sep { 
+  font-size: 24px; font-weight: bold; 
+  color: purple; vertical-align: middle;}
+
+.completions span.completion {
+    cursor: pointer; padding-right: 0.5em;}
 
 div.sbooksearch span.sectname {
   font-weight: bold; font-style: italic;  font-size: 80%;
