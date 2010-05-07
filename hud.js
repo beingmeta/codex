@@ -55,6 +55,7 @@ function sbookSetupHUD()
   if (fdjtID("SBOOKHUD")) return;
   else {
     sbookHUD=fdjtDOM("div#SBOOKHUD");
+    sbookHUD.sbookui=true;
     sbookHUD.innerHTML=sbook_hudtext;
     fdjtDOM.prepend(document.body,sbookHUD);}
   var console=fdjtID("SBOOKCONSOLE");
@@ -70,6 +71,7 @@ function sbookSetupHUD()
     sbookShowSummaries(sbook_allglosses,allglosses,false);
   var bookmark=fdjtID("SBOOKMARKHUD");
   bookmark.innerHTML=sbook_markhudtext;
+  sbookSetupMarkHUD(bookmark);
   fdjtDelay(1500,sbookUpdateDash,false,sbook_root);
 }
 
@@ -391,7 +393,7 @@ function sbookUpdateDash()
       if (hidehelp.checked)
 	fdjtSetCookie("sbookhidehelp",true,false,"/"); /* document.location.host */
       else fdjtSetCookie("sbookhidehelp","no",false,"/");};
-  fdjtAutoPrompt_setup(fdjtID("SBOOKDASH"));
+  fdjtUI.AutoPrompt.setup(fdjtID("SBOOKDASH"));
   fdjtAnchorSubmit_setup(fdjtID("SBOOKDASH"));
   var refuris=document.getElementsByName("REFURI");
   if (refuris) {

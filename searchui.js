@@ -148,8 +148,7 @@ function sbookSearchUpdate(input,cloud)
 function sbookSearchInput_onfocus(evt)
 {
   evt=evt||event||null;
-  var ch=evt.charCode, kc=evt.keyCode;
-  var input=fdjtDOM.T(evt);
+   var input=fdjtDOM.T(evt);
   fdjtUI.AutoPrompt.onfocus(evt);
   sbook_search_focus=true;
   sbookHUDMode("searching");
@@ -234,6 +233,7 @@ function sbookQueryCloud(query)
       (query._refiners._results,
        ((query._simple)?(query._refiners._freqs):(query._refiners)),
        query._refiners._freqs);
+    completions.onclick=sbookCloud_onclick;
     var result_counts=
       fdjtDOM("span.resultcounts",
 	       query._results.length,
@@ -291,6 +291,11 @@ function sbookCloud_onclick(evt)
   else if (fdjtDOM.inherits(target,".refinercounts")) {
     var completions=fdjtDOM.getParent(target,".completions");
     fdjtDOM.toggleClass(completions,"showempty");
+    fdjtDOM.cancel(evt);}
+  else if (fdjtDOM.inherits(target,".maxcompletemsg")) {
+    var completions=fdjtDOM.getParent(target,".completions");
+    fdjtID("SBOOKSEARCHTEXT").focus();
+    fdjtDOM.toggleClass(container,"showall");
     fdjtDOM.cancel(evt);}
   else {}
 }
@@ -381,29 +386,18 @@ function sbookMakeCloud(dterms,scores,freqs,noscale)
     var scaledown=7500/minscale; // 10000/avgscale;
     spans.style.fontSize=scaledown+"%";
     spans.style.lineHeight=avgscale+"%";}
-  var maxmsg=fdjtDOM("div.maxcompletemsg",
-		     "There are a lot ",
-		     "(",fdjtDOM("span.completioncount","really"),")",
-		     " of completions.  ");
-  maxmsg.onclick=sbookMaxComplete_onclick;
+  var maxmsg=fdjtDOM
+    ("div.maxcompletemsg",
+     "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
+     " of completions.  ");
   fdjtDOM.prepend(completions,maxmsg);
   var end=new Date();
   if (sbook_trace_clouds)
     fdjtLog("[%f] Made cloud for %d dterms in %f seconds",
-	    fdjtElapsedTime(),dterms.length,(end.getTime()-start.getTime())/1000);
-  completions.onclick=sbookCloud_onclick;
+	    fdjtElapsedTime(),dterms.length,
+	    (end.getTime()-start.getTime())/1000);
 
   return completions;
-}
-
-function sbookMaxComplete_onclick(evt)
-{
-  evt=evt||event;
-  var target=fdjtDOM.T(evt);
-  var container=fdjtDOM.getParent(target,".completions");
-  fdjtID("SBOOKSEARCHTEXT").focus();
-  fdjtDOM.toggleClass(container,"showall");
-  fdjtDOM.cancel(evt);
 }
 
 var sbook_full_cloud=false;
@@ -422,78 +416,27 @@ function sbookFullCloud()
       var celts=fdjtDOM.getChildren(completions,".completion");
       var j=0; while ((j<sbook_show_refiners)&&(j<celts.length)) {
 	fdjtDOM.addClass(celts[j++],"cue");}}
+    completions.onclick=sbookCloud_onclick;
     sbook_full_cloud=new fdjtUI.Completions(completions);
     return sbook_full_cloud;}
 }
 
 /* Search UI */
 
-function sbookCreateSearchHUD(classinfo)
-{
-  var input_help=fdjtDiv
-    (".helptext#SBOOKQUERYHELP",
-     "Enter ",fdjtElt("TT","tag1;tag2;etc"),
-     " or click on completions in the search cloud");
-  var input=fdjtInput("TEXT","QTEXT","",null);
-  var clear_input=
-    fdjtImage(sbook_graphics_root+"xbox16x16.png","clearinput","x");
-  var completions=
-    fdjtDOM("div.completions",fdjtDOM("span.count","no query refinements"));
-  
-  fdjtDOM.addClass(input,"autoprompt");
-  input.setAttribute("COMPLETEOPTS","anywhere cloud");
-  input.prompt="Enter tags (or click on completions)";
-  input.setAttribute("HELPTEXT","SBOOKQUERYHELP");
-  input.onkeypress=sbookSearchInput_onkeypress;
-  input.onkeyup=sbookSearchInput_onkeyup;
-  input.onfocus=sbookSearchInput_onfocus;
-  input.onblur=sbookSearchInput_onblur;
-
-  sbook_empty_cloud=new fdjtUI.Completions(completions);
-
-  // This causes a timing problem
-  // input.onblur=fdjtComplete_hide;
-  input.setAttribute("AUTOCOMPLETE","off");
-  input.setAttribute("COMPLETIONS","SBOOKSEARCHCOMPLETIONS");
-  input.setAttribute("ENTERCHARS",";");
-  input.setAttribute("MAXCOMPLETE","45");  
-
-  clear_input.onclick=sbookClearInput_onclick;
-  clear_input.onmousedown=fdjtDOM.cancel;
-
-  completions.id="SBOOKSEARCHCOMPLETIONS";
-  input.id="SBOOKSEARCHTEXT";
-  var sbooksearch=
-    fdjtDOM(classinfo||"div.sbooksearch.hudblock#SBOOKSEARCH",
-	    input_help,
-	    fdjtDOM("div.query",
-		    fdjtDOM("div.spacer",fdjtDOM("div.input",clear_input,input)),
-		    completions),
-	    fdjtDOM("div#SBOOKSUMMARIES.sbookresults"));
-  // sbooksearch.onmouseover=sbookHUD_onmouseover;
-  // sbooksearch.onmouseout=sbookHUD_onmouseout;
-  fdjtAutoPrompt_setup(sbooksearch);
-  return sbooksearch;
-}
-
 function sbookSetupSearchHUD()
 {
   var input=fdjtID("SBOOKSEARCHTEXT");
-  input.onkeypress=sbookSearchInput_onkeypress;
-  input.onkeyup=sbookSearchInput_onkeyup;
-  input.onfocus=sbookSearchInput_onfocus;
-  input.onblur=sbookSearchInput_onblur;
+  input.addEventListener("keypress",sbookSearchInput_onkeypress,false);
+  input.addEventListener("keyup",sbookSearchInput_onkeyup,false);
+  input.addEventListener("focus",sbookSearchInput_onfocus,false);
+  input.addEventListener("blur",sbookSearchInput_onblur,false);
 
   var sbooksearch=fdjtID("SBOOKSEARCH");
-  fdjtAutoPrompt_setup(sbooksearch);
-  // sbooksearch.onmouseover=sbookHUD_onmouseover;
-  // sbooksearch.onmouseout=sbookHUD_onmouseout;
+  fdjtUI.AutoPrompt.setup(sbooksearch);
 
   var completions=fdjtID("SBOOKSEARCHCOMPLETIONS");
-  completions.input_elt=input;
+  sbook_empty_cloud=new fdjtUI.Completions(completions);
 }
-
-
 
 function sbookClearInput_onclick(evt)
 {
@@ -501,13 +444,6 @@ function sbookClearInput_onclick(evt)
   input_elt.value='';
   sbookUpdateQuery(input_elt);
   input_elt.focus();
-}
-
-function _sbook_get_current_entry()
-{
-  var endsemi=this.value.lastIndexOf(';');
-  if (endsemi) return this.value.slice(endsemi+1);
-  else return this.value;
 }
 
 /* Emacs local variables
