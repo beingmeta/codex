@@ -154,7 +154,7 @@ function sbookCreateMarkHUD(classinfo)
   msg_input.prompt="What do you think?";
   msg_input.onfocus=sbookMark_onfocus;
 
-  var detail_input=fdjtNewElement("TEXTAREA",".autoprompt#SBOOKMARKDETAIL");
+  var detail_input=fdjtDOM("TEXTAREA.autoprompt#SBOOKMARKDETAIL");
   var detail_elt=
     fdjtDOM("div.detail.marktab",
 	    // fdjtImage(sbicon("detailsicon32x32.png"),"head","details"),
@@ -218,7 +218,7 @@ function sbookCreateMarkHUD(classinfo)
   form.action="http://"+sbook_server+"/sbook/glossmark.fdcgi";
   form.target="sbookping";
   form.onclick=sbookMarkForm_onclick;
-  fdjtCheckSpan_setup(metastuff);
+  fdjtUI.CheckSpan.setup(metastuff);
   fdjtUI.AutoPrompt.setup(grid);
   // form.windowopts="width=500,height=400";
   form.onsubmit=
@@ -236,7 +236,7 @@ function sbookCreateMarkHUD(classinfo)
    win.sbookHUDMode(false);};
   // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
   // hideicon.onclick="fdjtDOM.addClass('SBOOKMARK','hidden')"; 
-  var markdiv=fdjtDiv(classinfo||".mark",need_login,messages_elt,form);
+  var markdiv=fdjtDOM(classinfo||"div.mark",need_login,messages_elt,form);
   markdiv.sbookui=true;
   return markdiv;
 }
@@ -246,7 +246,7 @@ function sbookMark_onsubmit(evt)
   if ((fdjtID("SBOOKMARKINPUT").value)==="") {
     var id=fdjtID("SBOOKMARKFRAGID").value;
     var elt=fdjtID(id);
-    var text=fdjtStdSpace(fdjtTextify(elt));
+    var text=fdjtString.stdspace(fdjtDOM.textify(elt));
     fdjtTrace("Initializing text to %o from %o",text,elt);
     fdjtID("SBOOKMARKINPUT").value=
       ((text.length>60)?((text.slice(0,60))+"..."):(text));}
@@ -263,9 +263,6 @@ function sbookMarkTagInput()
   taginput.setAttribute("COMPLETIONS","SBOOKMARKCLOUD");
   taginput.setAttribute("PROMPT","enter tags, groups, or friends");
   taginput.setAttribute("autocomplete","off");
-  taginput.completeopts=
-    FDJT_COMPLETE_OPTIONS|FDJT_COMPLETE_ANYWORD|
-    FDJT_COMPLETE_CLOUD;
   taginput.onkeyup=sbookMarkTag_onkeyup;
   taginput.onkeypress=fdjtComplete_onkey;
   taginput.oncomplete=_sbook_tags_oncomplete;
@@ -332,7 +329,7 @@ function sbookMarkPush()
   var span1=fdjtDOM("span.checkspan#SBOOKCANPOST","push",check1);
   var span2=fdjtDOM("span.checkspan","push",check2);
   span1.onclick=fdjtUI.Checkspan.onclick;
-  var a1=fdjtAnchor("http://sbooks.net/fb/settings/prefs",span2);
+  var a1=fdjtDOM.Anchor("A","http://sbooks.net/fb/settings/prefs",span2);
   a1.id="SBOOKCANTPOST";
   return new Array(span1,a1);
 }
@@ -344,10 +341,6 @@ function sbookMarkOK()
 
 
 /* The completions element */
-
-var _sbook_tag_completeopts=
-  FDJT_COMPLETE_OPTIONS|FDJT_COMPLETE_ANYWORD|
-  FDJT_COMPLETE_CLOUD;
 
 function sbookMarkTagTab()
 {
@@ -482,7 +475,7 @@ function sbookSetMarkExcerpt(excerpt)
   var input=fdjtID("SBOOKMARKEXCERPT");
   var use_excerpt=excerpt;
   if ((excerpt)&&(excerpt.length<sbook_min_excerpt))
-    excerpt=fdjtTextify(target,true);
+    excerpt=fdjtDOM.textify(target,true);
   else if ((excerpt)&&(sbook_max_excerpt)&&(excerpt.length>sbook_max_excerpt))
     excerpt=excerpt.slice(0,sbook_max_excerpt);
   if (excerpt) {
@@ -566,11 +559,13 @@ function sbookMark(target,gloss,excerpt)
 function sbookCreateLoginButton(uri,image,title)
 {
   var login_button=
-    fdjtAnchor(((uri)?
-		(uri+"?NEXT="+
-		 encodeURIComponent("http://sbooks.net/app/read?URI="+encodeURIComponent(window.location.href))):
-		"javascript:alert('sorry, not yet implemented'); return false;"),
-	       fdjtImage(sbicon(image),"button"));
+    fdjtDOM.Anchor
+    ("A",((uri)?
+	  (uri+"?NEXT="+
+	   encodeURIComponent("http://sbooks.net/app/read?URI="+
+			      encodeURIComponent(window.location.href))):
+	  "javascript:alert('sorry, not yet implemented'); return false;"),
+     fdjtImage(sbicon(image),"button"));
   fdjtDOM.addClass(login_button,"login");
   if (!(uri)) fdjtDOM.addClass(login_button,"disabled");
   login_button.title=((uri)?(title):("(coming soon) "+title));

@@ -347,8 +347,8 @@ function _sbookScanContent(scan,skipchildren)
 {
   var info=fdjtDOM.getGeometry(scan);
   var next=((skipchildren)?
-	    (fdjtNextNode(scan,_sbookIsContentBlock)):
-	    (fdjtForwardNode(scan,_sbookIsContentBlock)));
+	    (fdjtDOM.next(scan,_sbookIsContentBlock)):
+	    (fdjtDOM.forward(scan,_sbookIsContentBlock)));
   var nextinfo=((next)&&(fdjtDOM.getGeometry(next)));
   if (!(next)) {}
   else if ((nextinfo.height===0)||(nextinfo.top<info.top)) 
@@ -499,7 +499,7 @@ function sbookAdjustPageBreak(node,top,bottom)
 	else {}}
     else if (child.nodeType===3) {
       // Make the text into a span
-      var chunk=fdjtSpan(false,child.nodeValue);
+      var chunk=fdjtDOM("span",child.nodeValue);
       node.replaceChild(chunk,child);
       var offinfo=fdjtDOM.getGeometry(chunk);
       if ((!(offinfo))||(offinfo.height===0)) {
@@ -782,7 +782,7 @@ function sbookPageView(flag,nogo)
     sbookCheckPagination();
   else if (flag) {
     sbook_pageview=true;
-    fdjtCheckSpan_set(fdjtID("SBOOKPAGEVIEW"),true,true);
+    fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGEVIEW"),true,true);
     fdjtDOM.addClass(document.body,"sbookpageview");
     fdjtDOM.dropClass(document.body,"sbookscroll");
     sbookFlashMessage(3000,
@@ -796,7 +796,7 @@ function sbookPageView(flag,nogo)
   else {
     sbook_pageview=false;
     sbook_nextpage=false; sbook_pagebreak=false;
-    fdjtCheckSpan_set(fdjtID("SBOOKPAGEVIEW"),false,true);
+    fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGEVIEW"),false,true);
     fdjtDOM.addClass(document.body,"sbookscroll");
     fdjtDOM.dropClass(document.body,"sbookpageview");
     sbookFlashMessage(3000,
@@ -814,7 +814,7 @@ function sbookPageView(flag,nogo)
 
 function sbookMakeMargin(spec)
 {
-  var div=fdjtDiv(spec);
+  var div=fdjtDOM(spec);
   div.onmouseover=fdjtDOM.cancel;
   div.onmouseout=fdjtDOM.cancel;
   div.onmousedown=fdjtDOM.cancel;

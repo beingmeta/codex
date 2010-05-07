@@ -63,7 +63,7 @@ function sbookCreateGlossesHUD(classinfo)
   sbookShowSummaries(sbook_allglosses,allglosses,false);
   
   sbookGlossesHUD=
-    fdjtDiv(classinfo||"#SBOOKGLOSSES.sbookglosses.hudblock.scrollhud",
+    fdjtDOM(classinfo||"div#SBOOKGLOSSES.sbookglosses.hudblock.scrollhud",
 	    allsources,allglosses);
   
   return sbookGlossesHUD;
@@ -153,8 +153,8 @@ function sbookSetSources(overlays,sources)
   var i=0; while (i<children.length) {
     var child=children[i++];
     if (child.nodeType===1) {
-      if ((fdjtIndexOf(sources,child.oid)>=0) ||
-	  (fdjtOverlaps(sources,child.oid)))
+      if ((fdjtKB.position(sources,child.oid)>=0) ||
+	  (fdjtKB.overlaps(sources,child.oid)))
 	fdjtDOM.addClass(child,"sourced");
       else fdjtDOM.dropClass(child,"sourced");}}
 }
@@ -206,8 +206,8 @@ function sbookGlossmark(target,open)
 	      (sbicon("remarkballoon32x32.png")));
   // By default the glossmark image is the user when unique
   if (sources.length===1) imgsrc=(sbookOIDs.map[sources[0]].pic)||imgsrc;
-  var glossmark=fdjtSpan
-    ("glossmark",
+  var glossmark=fdjtDOM
+    ("span.glossmark",
      fdjtImage(imgsrc,"big","comments"),
      fdjtImage(sbicon("sbicon16x16.png"),"tiny","+"));
   glossmark.onclick=sbookGlossmark_onclick;
@@ -299,7 +299,7 @@ function sbookGlossmark_onmouseout(evt)
 function createSBOOKHUDping()
 {
   var wrapper=fdjtDOM("div#SBOOKMARK.sbookping.hudblock.hud");
-  var iframe=fdjtNewElement("iframe","#SBOOKMARKFRAME");
+  var iframe=fdjtDOM("iframe#SBOOKMARKFRAME");
   iframe.src="";
   iframe.hspace=0; iframe.vspace=0;
   iframe.marginHeight=0; iframe.marginWidth=0;

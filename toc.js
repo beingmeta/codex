@@ -76,7 +76,7 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
     var i=0; var n=sub.length;
     while (i<n) {
       var subinfo=sub[i];
-      var subspan=fdjtNewElt("A.sectname",subinfo.title);
+      var subspan=fdjtDOM("A.sectname",subinfo.title);
       subspan.sbook_ref=subinfo.frag;
       subspan.name="SBR"+subinfo.frag;
       fdjtDOM(div,((i>0)&&" \u00b7 "),subspan);
@@ -200,7 +200,7 @@ sbookTOC.onmousedown=function(evt){
   evt=evt||event;
   sbook_mousedown=fdjtTime();
   var target=fdjtDOM.T(evt);
-  fdjtCoHi_onmouseout(evt);
+  fdjtUI.CoHi.onmouseout(evt);
   if (!((fdjtDOM.hasParent(target,".sectname"))||
 	(fdjtDOM.hasParent(target,".sbooksummaries"))))
     return;

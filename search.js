@@ -327,7 +327,7 @@ function sbookIndexTechnoratiTags(kno)
       if (!((href)&&(cxt))) return;
       var tagstart=(href.search(/[^/]+$/));
       var tag=((tagstart<0)?(href):href.slice(tagstart));
-      var dterm=((kno)?(kno.handleEntry(tag)):(fdjtStdSpace(tag)));
+      var dterm=((kno)?(kno.handleEntry(tag)):(fdjtString.stdspace(tag)));
       sbookAddTag(cxt,dterm);}
     else i++;
 }

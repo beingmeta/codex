@@ -136,9 +136,9 @@ function sbookGetSourcesUnder(idroot)
   var i=0; var lim=glosses.length;
   while (i<lim) {
     var gloss=glosses[i++];
-    if (fdjtIndexOf(sources,gloss.user)<0)
+    if (fdjtKB.position(sources,gloss.user)<0)
       sources.push(gloss.user);
-    if (fdjtIndexOf(sources,gloss.feed)<0)
+    if (fdjtKB.position(sources,gloss.feed)<0)
       sources.push(gloss.feed);}
   return sources;
 }

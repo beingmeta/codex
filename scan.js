@@ -95,10 +95,10 @@ function sbookScan(root,docinfo){
       head.title;
     if (!(title)) title=gatherText(head);
     if (typeof title === "string") {
-      var std=fdjtStdSpace(title);
+      var std=fdjtString.stdspace(title);
       if (std==="") return false;
       else return std;}
-    else return fdjtTextify(title,true);}
+    else return fdjtDOM.textify(title,true);}
 
   function gatherText(head,s) {
     if (!(s)) s="";
@@ -207,8 +207,8 @@ function sbookScan(root,docinfo){
     scanstate.curinfo=headinfo;
     scanstate.curlevel=level;
     if (headinfo)
-      headinfo.ends_at=scanstate.location+fdjtFlatWidth(head);
-    scanstate.location=scanstate.location+fdjtFlatWidth(head);}
+      headinfo.ends_at=scanstate.location+fdjtDOM.textWidth(head);
+    scanstate.location=scanstate.location+fdjtDOM.textWidth(head);}
 
   function scanner(child,scanstate,docinfo,nodefn){
     var location=scanstate.location;

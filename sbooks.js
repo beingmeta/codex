@@ -1,5 +1,6 @@
 /* -*- Mode: Javascript; -*- */
 
+
 var sbooks_id="$Id$";
 var sbooks_version=parseInt("$Revision$".slice(10,-1));
 
@@ -262,7 +263,7 @@ var sbook_tocmajor=1;
 var sbook_pageblocks=false;
 var sbook_avoid_pagehead=false;
 var sbook_avoid_pagefoot=false;
-var sbook_fullpages=[".sbookfullpage",".titlepage"];
+var sbook_fullpages=[];
 
 /* Debugging flags */
 
@@ -565,8 +566,8 @@ function sbookSetLocation(location,force)
     var dashtocelt=document.getElementById("SBOOKDASHTOC4"+info.frag);
     var start=tocelt.sbook_start; var end=tocelt.sbook_end;
     var progress=((location-start)*80)/(end-start);
-    var bar=fdjtGetFirstChild(tocelt,".progressbar");
-    var appbar=fdjtGetFirstChild(dashtocelt,".progressbar");
+    var bar=fdjtDOM.getFirstChild(tocelt,".progressbar");
+    var appbar=fdjtDOM.getFirstChild(dashtocelt,".progressbar");
     if (sbook_trace_locations)
       fdjtLog("For tocbar %o loc=%o start=%o end=%o progress=%o",
 	      bar,location,start,end,progress);
@@ -631,7 +632,7 @@ function sbookSetTarget(target,nogo)
     return;}
   else {
     fdjtDOM.addClass(target,"sbooktarget");
-    fdjtSetCookie("sbooktarget",target);
+    fdjtState.setCookie("sbooktarget",target);
     sbook_target=target;
     if (!(nogo)) sbookGoTo(target,true);
     if (target.title) sbook_target_title=target.title;
@@ -806,11 +807,12 @@ function sbook_get_titlepath(info,embedded)
 function _getsbookrefuri()
 {
   // Explicit REFURI is just returned
-  var refuri=fdjtGetLink("REFURI",true)||fdjtGetMeta("REFURI",true);
+  var refuri=fdjtDOM.getLink("REFURI",false,true)||
+    fdjtDOM.getMeta("REFURI",false,true);
   if (refuri) return refuri;
   // No explicit value, try to figure one out
   // First, try the CANONICAL link
-  refuri=fdjtGetLink("canonical",true);
+  refuri=fdjtDOM.getLink("canonical",false,true);
   // Otherwise, use the document location
   if (!(refuri)) {
     var locref=document.location.href;
@@ -822,7 +824,7 @@ function _getsbookrefuri()
 
 function _getsbookbaseid()
 {
-  var baseid=fdjtGetMeta("SBOOKIDPREFIX",true)||fdjtGetMeta("SBOOKID",true);
+  var baseid=fdjtDOM.getMeta("SBOOKIDPREFIX",true)||fdjtDOM.getMeta("SBOOKID",true);
   if ((!(baseid))||(typeof baseid !== 'string')||
       (baseid.length===0) || (baseid[0]===':'))
     return false;
@@ -831,9 +833,9 @@ function _getsbookbaseid()
 
 function _getsbookdocuri()
 {
-  var docuri=fdjtGetLink("DOCURI",true)||
-    fdjtGetMeta("DOCURI",true)||
-    fdjtGetMeta("SBOOKSRC",true);
+  var docuri=fdjtDOM.getLink("DOCURI",true)||
+    fdjtDOM.getMeta("DOCURI",true)||
+    fdjtDOM.getMeta("SBOOKSRC",true);
   if (docuri) return docuri;
   else return _getsbookrefuri();
 }
@@ -849,15 +851,15 @@ function sbookGetSettings()
   sbookGetScanSettings();
   // Get the settings for automatic pagination
   sbookGetPageSettings();
-  sbook_max_excerpt=fdjtGetMeta("SBOOKMAXEXCERPT",false)
-  var sbooksrv=fdjtGetMeta("SBOOKSERVER",true);
+  sbook_max_excerpt=fdjtDOM.getMeta("SBOOKMAXEXCERPT",false)
+  var sbooksrv=fdjtDOM.getMeta("SBOOKSERVER",true);
   if (sbooksrv) sbook_server=sbooksrv;
-  else if (fdjtGetCookie["SBOOKSERVER"])
-    sbook_server=fdjtGetCookie["SBOOKSERVER"];
+  else if (fdjtState.getCookie["SBOOKSERVER"])
+    sbook_server=fdjtState.getCookie["SBOOKSERVER"];
   else sbook_server=sbookLookupServer(document.domain);
   if (!(sbook_server)) sbook_server=sbook_default_server;
-  sbook_ajax_uri=fdjtGetMeta("SBOOKSAJAX",true);
-  sbook_mycopyid=fdjtGetMeta("SBOOKMYCOPY",false);
+  sbook_ajax_uri=fdjtDOM.getMeta("SBOOKSAJAX",true);
+  sbook_mycopyid=fdjtDOM.getMeta("SBOOKMYCOPY",false);
 
   if (sbookTestOpt("touch",["mouse",",keyboard"]))
     sbook_interaction="touch";
@@ -875,139 +877,86 @@ function sbookGetSettings()
 function sbookGetScanSettings()
 {
   if (!(sbook_root))
-    if (fdjtGetMeta("SBOOKROOT"))
-      sbook_root=fdjtID(fdjtGetMeta("SBOOKROOT"));
+    if (fdjtDOM.getMeta("SBOOKROOT"))
+      sbook_root=fdjtID(fdjtDOM.getMeta("SBOOKROOT"));
     else sbook_root=document.body;
   if (!(sbook_start))
-    if (fdjtGetMeta("SBOOKSTART"))
-      sbook_start=fdjtID(fdjtGetMeta("SBOOKSTART"));
+    if (fdjtDOM.getMeta("SBOOKSTART"))
+      sbook_start=fdjtID(fdjtDOM.getMeta("SBOOKSTART"));
     else if (fdjtID("SBOOKSTART"))
       sbook_start=fdjtID("SBOOKSTART");
     else {
       var titlepage=fdjtID("SBOOKTITLE")||fdjtID("TITLEPAGE");
       if (titlepage) {
-	fdjtComputeOffsets(titlepage);
+	fdjtDOM.getGeometry(titlepage);
 	sbook_nodes.push(titlepage);}
       while (titlepage)
-	if (fdjtNextElement(titlepage)) {
-	  sbook_start=fdjtNextElement(titlepage); break;}
+	if (fdjtDOM.nextElt(titlepage)) {
+	  sbook_start=fdjtDOM.nextElt(titlepage); break;}
 	else titlepage=titlepage.parentNode;}
-  var h1=fdjtGetMeta("SBOOKHEAD1",true);
-  if (h1) {
-    var rules=fdjtSemiSplit(h1);
-    var i=0; while (i<rules.length) {
-      sbook_headlevels[rules[i++]]=1;}}
-  var h2=fdjtGetMeta("SBOOKHEAD2",true);
-  if (h2) {
-    var rules=fdjtSemiSplit(h2);
-    var i=0; while (i<rules.length) {
-      sbook_headlevels[rules[i++]]=2;}}
-  var h3=fdjtGetMeta("SBOOKHEAD3",true);
-  if (h3) {
-    var rules=fdjtSemiSplit(h3);
-    var i=0; while (i<rules.length) {
-      sbook_headlevels[rules[i++]]=3;}}
-  var h4=fdjtGetMeta("SBOOKHEAD4",true);
-  if (h4) {
-    var rules=fdjtSemiSplit(h4);
-    var i=0; while (i<rules.length) {
-      sbook_headlevels[rules[i++]]=4;}}
-  var h5=fdjtGetMeta("SBOOKHEAD5",true);
-  if (h5) {
-    var rules=fdjtSemiSplit(h5);
-    var i=0; while (i<rules.length) {
-      sbook_headlevels[rules[i++]]=5;}}
-  var h6=fdjtGetMeta("SBOOKHEAD6",true);
-  if (h6) {
-    var rules=fdjtSemiSplit(h6);
-    var i=0; while (i<rules.length) {
-      sbook_headlevels[rules[i++]]=6;}}
-  var h7=fdjtGetMeta("SBOOKHEAD7",true);
-  if (h7) {
-    var rules=fdjtSemiSplit(h7);
-    var i=0; while (i<rules.length) {
-      sbook_headlevels[rules[i++]]=7;}}
-  var ignored_rules=fdjtGetMeta("SBOOKIGNORED",true);
-  if (ignored_rules) {
-    var selectors=fdjtSemiSplit(ignored_rules);
-    var i=0; while (i<selectors.length) {
-      sbook_ignored.push(fdjtParseSelector(selectors[i++]));}}
-  var idify_rules=fdjtGetMeta("SBOOKIDIFY",true);
-  if (idify_rules) {
-    var selectors=fdjtSemiSplit(idify_rules);
-    var i=0; while (i<selectors.length) {
-      sbook_idify.push(fdjtParseSelector(selectors[i++]));}}
-  var focus_rules=fdjtDOM.getMeta("SBOOKFOCI",true);
-  if ((focus_rules)&&(focus_rules.length>0))
-    if (focus_rules.length==1)
-      sbook_focus_rules=new fdjtDOM.Selector(focus_rules[0]);
-    else {
-      var combo=new fdjtDOM.Selector();
-      var compound=[];
-      var i=0; var lim=focus_rules.length;
-      while (i<lim) {
-	var sel=fdjtDOM.Selector(focus_rules[i++]);
-	if (sel.compound)
-	  compound.concat(sel.compound);
-	else compound.concat.push(sel);}
-      combo.compound=compound;
-      return combo;}
-  var terminal_rules=fdjtGetMeta("SBOOKTERMINALS",true);
-  if (terminal_rules) {
-    var selectors=fdjtSemiSplit(terminal_rules);
-    var i=0; while (i<selectors.length) {
-      sbook_terminals.push(fdjtParseSelector(selectors[i++]));}}
-  var notag=fdjtGetMeta("SBOOKNOTAG",true);
-  if (notag) {
-    var rules=fdjtSemiSplit(notag);
-    var i=0; while (i<rules.length) {
-      sbook_notags.push(rules[i++]);}}
-  if (fdjtGetMeta("SBOOKAUTOID"))
-    sbook_autoid=true;
-  else if (fdjtID(sbook_baseid))
-    sbook_autoid=false;
-  else sbook_autoid=true;
+  var i=1; while (i<9) {
+    var rules=fdjtDOM.getMeta("SBOOKHEAD"+i,true);
+    if ((rules)&&(rules.length)) {
+      var j=0; var lim=rules.length;
+      var elements=fdjtDOM.getChildren(rules[j++]);
+      var k=0; var n=elements.length;
+      while (k<n) elements[k++].toclevel=i;}
+    i++;}
+  if (fdjtDOM.getMeta("SBOOKIGNORED")) 
+    sbook_ignored=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKIGNORED"));
+  if (fdjtDOM.getMeta("SBOOKIDIFY")) 
+    sbook_idify=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKIDIFY"));
+  if (fdjtDOM.getMeta("SBOOKIDIFY")) 
+    sbook_idify=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKFOCI"));
+  if (fdjtDOM.getMeta("SBOOKFOCI"))
+    sbook_focus_rules=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKFOCI"));
+  if (fdjtDOM.getMeta("SBOOKTERMINALS"))
+    sbook_terminals=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKTERMINALS"));
+  if (fdjtDOM.getMeta("SBOOKNOTAG"))
+    sbook_terminals=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKNOTAG"));
 }
 
 function sbookGetPageSettings()
 {
-  var tocmajor=fdjtGetMeta("SBOOKTOCMAJOR",true);
+  var tocmajor=fdjtDOM.getMeta("SBOOKTOCMAJOR",true);
   if (tocmajor) sbook_tocmajor=parseInt(tocmajor);
-  var sbook_pagehead_rules=fdjtGetMeta("SBOOKPAGEHEADS",true);
+  /*
+  var sbook_pagehead_rules=fdjtDOM.getMeta("SBOOKPAGEHEADS",true);
   if (sbook_pagehead_rules) {
-    var selectors=fdjtSemiSplit(sbook_pagehead_rules);
+    var selectors=fdjtString.semiSplit(sbook_pagehead_rules);
     sbook_pageheads=[];
     var i=0; while (i<selectors.length) {
       sbook_pageheads.push(fdjtParseSelector(selectors[i++]));}}
-  var sbook_pagefoot_rules=fdjtGetMeta("SBOOKPAGEFEET",true);
+  var sbook_pagefoot_rules=fdjtDOM.getMeta("SBOOKPAGEFEET",true);
   if (sbook_pagefoot_rules) {
-    var selectors=fdjtSemiSplit(sbook_pagefoot_rules);
+    var selectors=fdjtString.semiSplit(sbook_pagefoot_rules);
     sbook_pagefeet=[];
     var i=0; while (i<selectors.length) {
       sbook_pagefeet.push(fdjtParseSelector(selectors[i++]));}}
-  var sbook_pageblock_rules=fdjtGetMeta("SBOOKPAGEBLOCKS",true);
+  var sbook_pageblock_rules=fdjtDOM.getMeta("SBOOKPAGEBLOCKS",true);
   if (sbook_pageblock_rules) {
-    var selectors=fdjtSemiSplit(sbook_pageblock_rules);
+    var selectors=fdjtString.semiSplit(sbook_pageblock_rules);
     sbook_pageblocks=[];
     var i=0; while (i<selectors.length) {
       sbook_pageblocks.push(fdjtParseSelector(selectors[i++]));}}
-  var sbook_nobefore_rules=fdjtGetMeta("SBOOKAVOIDTOP",true);
+  var sbook_nobefore_rules=fdjtDOM.getMeta("SBOOKAVOIDTOP",true);
   if (sbook_nobefore_rules) {
-    var selectors=fdjtSemiSplit(sbook_nobefore_rules);
+    var selectors=fdjtString.semiSplit(sbook_nobefore_rules);
     sbook_avoid_pagehead=[];
     var i=0; while (i<selectors.length) {
       sbook_avoid_pagehead.push(fdjtParseSelector(selectors[i++]));}}
-  var sbook_noafter_rules=fdjtGetMeta("SBOOKAVOIDBOTTOM",true);
+  var sbook_noafter_rules=fdjtDOM.getMeta("SBOOKAVOIDBOTTOM",true);
   if (sbook_noafter_rules) {
-    var selectors=fdjtSemiSplit(sbook_noafter_rules);
+    var selectors=fdjtString.semiSplit(sbook_noafter_rules);
     sbook_avoid_pagefoot=[];
     var i=0; while (i<selectors.length) {
       sbook_avoid_pagefoot.push(fdjtParseSelector(selectors[i++]));}}
-  var sbook_fullpage_rules=fdjtGetMeta("SBOOKFULLPAGE",true);
+  */
+  var sbook_fullpage_rules=fdjtDOM.getMeta("SBOOKFULLPAGE",true);
   if (sbook_fullpage_rules) {
-    var selectors=fdjtSemiSplit(sbook_noafter_rules);
-    var i=0; while (i<selectors.length) {
-      sbook_fullpages.push(fdjtParseSelector(selectors[i++]));}}
+    var i=0; while (i<sbook_fullpage_rules.length) {
+      sbook_fullpages.push(fdjtDOM.Selector(sbook_fullpage_rules[i++]));}}
+  sbook_fullpages.push(fdjtDOM.Selector(".sbookfullpage, .titlepage"));
 }
 
 /* Device settings */
@@ -1040,11 +989,11 @@ function sbookMobileSafariSetup()
   sbook_notfixed=true;
   fdjtDOM.addClass(document.body,"notfixed");
   
- var mouseopt=fdjtIndexOf(sbook_default_opts,"mouse");
+ var mouseopt=fdjtKB.position(sbook_default_opts,"mouse");
   if (mouseopt<0)
-    mouseopt=fdjtIndexOf(sbook_default_opts,"keyboard");
+    mouseopt=fdjtKB.position(sbook_default_opts,"keyboard");
   if (mouseopt<0)
-    mouseopt=fdjtIndexOf(sbook_default_opts,"oneclick");
+    mouseopt=fdjtKB.position(sbook_default_opts,"oneclick");
   if (mouseopt<0) sbook_default_opts.push("touch");
   else sbook_default_opts[mouseopt]="touch";
 
@@ -1062,12 +1011,13 @@ var sbook_opts=[];
 
 function sbookTestOpt(pos,neg,session)
 {
-  return fdjtTestOpt(pos,neg,
-		     (session||fdjtGetSession("sbookopts")),
-		     fdjtGetQuery("sbookopts"),
-		     fdjtGetLocal("sbookopts"),
-		     fdjtGetMeta("sbookopts"),
-		     sbook_default_opts);
+  return fdjtState.testOption
+    (pos,neg,
+     (session||fdjtState.getSession("sbookopts")),
+     fdjtState.getQuery("sbookopts"),
+     fdjtState.getLocal("sbookopts"),
+     fdjtDOM.getMeta("sbookopts"),
+     sbook_default_opts);
 }
 
 function sbookApplySessionSettings()
@@ -1075,9 +1025,9 @@ function sbookApplySessionSettings()
   // This applies the current session settings
   sbookSparseMode(sbookTestOpt("sparse","rich"));
   sbookFlashMode(sbookTestOpt("flash","dull"));
-  var tocmax=fdjtGetMeta("SBOOKTOCMAX",true);
+  var tocmax=fdjtDOM.getMeta("SBOOKTOCMAX",true);
   if (tocmax) sbook_tocmax=parseInt(tocmax);
-  var sbookhelp=fdjtGetMeta("SBOOKHELP",true);
+  var sbookhelp=fdjtDOM.getMeta("SBOOKHELP",true);
   if (sbookhelp) sbook_help_on_startup=true;
   sbookPageView(sbookTestOpt("page","scroll"));
   sbookInterfaceMode(sbook_interaction);
@@ -1155,7 +1105,7 @@ function sbookSetupGlossServer()
 	if (sbook_trace_network)
 	  fdjtLog("[%fs] Setting up access to gloss server %o from %o through %o",
 		  fdjtET(),sbook_server,domain,common_suffix);
-	var iframe=fdjtNewElement("iframe");
+	var iframe=fdjtDOM("iframe");
 	iframe.style.display='none';
 	iframe.id="SBOOKIBRIDGE";
 	iframe.onload=function() {
@@ -1214,7 +1164,7 @@ function _sbookHUDSplash()
       (document.location.search.length>0))
     sbookHUDMode("sbookapp");
   else {
-    var cookie=fdjtGetCookie("sbookhidehelp");
+    var cookie=fdjtState.getCookie("sbookhidehelp");
     if (cookie==='no') sbookHUDMode("help");
     else if (cookie) {}
     else if (sbook_help_on_startup) sbookHUDMode("help");
@@ -1238,8 +1188,8 @@ function sbookInitLocation()
 	   document.getElementById(hash);
     if (sbook_trace_startup)
       fdjtLog("[%f] sbookInitLocation %s=%o",fdjtET(),hash,target);}
-  else if (fdjtGetCookie("sbooktarget")) {
-    var targetid=fdjtGetCookie("sbooktarget");
+  else if (fdjtState.getCookie("sbooktarget")) {
+    var targetid=fdjtState.getCookie("sbooktarget");
     if (sbook_trace_startup)
       fdjtLog("[%f] sbookInitLocation cookie=#%s=%o",
 	      fdjtET(),targetid,target);
@@ -1263,7 +1213,6 @@ function sbookSetup()
 {
   if (_sbook_setup) return;
   if (!(_sbook_setup_start)) _sbook_setup_start=new Date();
-  if (!((fdjt_setup_started))) fdjtSetup();
   if (_sbook_setup) return;
   if (sbook_user) fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
   else fdjtDOM.addClass(document.body,"nosbookuser");
@@ -1276,7 +1225,7 @@ function sbookSetup()
 	(document.location.search.length>0))) {
     sbookHUDMode(false);
     sbookMessage("Setting up your sBook");}
-  if (fdjtGetQuery("action")) {
+  if (fdjtState.getQuery("action")) {
     sbookSetupAppFrame();
     sbookHUDMode("sbookapp");}
   if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
@@ -1309,11 +1258,11 @@ function sbookSetup()
       ((sbook_mycopyid)?("&MYCOPY="+encodeURIComponent(sbook_mycopyid)):(""));
     added.push(refuri);
     var i=0; while (i<sbook_refuris.length) {
-      if (fdjtContains(added,sbook_refuris)) i++;
+      if (fdjtKB.contains(added,sbook_refuris)) i++;
       else {
 	var oref=sbook_refuris[i++];
 	uri=uri+'&'+oref; added.push(oref);}}
-    var script_elt=fdjtNewElement("SCRIPT");
+    var script_elt=fdjtDOM("SCRIPT");
     script_elt.language="javascript"; script_elt.src=uri;
     document.body.appendChild(script_elt);}
   var hud_done=new Date();
@@ -1334,8 +1283,8 @@ function sbookDisplaySetup()
 {
   var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
   var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
-  var pagehead=sbookMakeMargin(".sbookmargin#SBOOKPAGEHEAD"," ");
-  var pagefoot=sbookMakeMargin(".sbookmargin#SBOOKPAGEFOOT"," ");
+  var pagehead=sbookMakeMargin("div.sbookmargin#SBOOKPAGEHEAD"," ");
+  var pagefoot=sbookMakeMargin("div.sbookmargin#SBOOKPAGEFOOT"," ");
   var leftedge=fdjtDOM("div#SBOOKLEFTEDGE.sbookmargin.sbookleft");
   var rightedge=fdjtDOM("div#SBOOKRIGHTEDGE.sbookmargin.sbookright");
 
@@ -1423,7 +1372,7 @@ function sbookImportOverlays(arg)
   while (i<n) {
     var info=overlays[i++];
     if (!(info.oid)) continue;
-    else if (fdjtContains(sbook_overlays,info.oid)) {}
+    else if (fdjtKB.contains(sbook_overlays,info.oid)) {}
     else {
       var named="("+info.kind.slice(1)+") "+info.name;
       sbook_overlays.push(info.oid);
@@ -1494,9 +1443,9 @@ function sbookSetupAppFrame()
   fdjtID("APPFRAME").src=appuri;
 }
 
-fdjtAddSetup(sbookSetup);
+//fdjtAddSetup(sbookSetup);
 
-fdjtLoadMessage("Loaded sbooks module");
+//fdjtLoadMessage("Loaded sbooks module");
 
 /* Emacs local variables
 ;;;  Local variables: ***

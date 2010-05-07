@@ -90,9 +90,9 @@ function sbookSummaryHead(target,head,eltspec,extra)
   var title=sbookGetTitle(target);
   if (!(head)) head=sbookGetHead(target);
   var preview=sbookPreviewIcon();
-  var basespan=fdjtSpan(false);
+  var basespan=fdjtDOM("span");
   if (!(title)) {
-    var text=fdjtTextify(target);
+    var text=fdjtDOM.textify(target);
     if ((text)&&(text.length>0)) title=text.replace(/\n\n+/g,"\n");}
   if (!(title)) {}
   else if (target!==head) {
@@ -124,7 +124,7 @@ function sbookSummaryHead(target,head,eltspec,extra)
       if (target===head) fdjtDOM(curspan,newspan);
       else fdjtDOM(curspan," \u22ef ",newspan);
       curspan=newspan;}}
-  var tocblock=((eltspec)?(fdjtNewElt(eltspec,preview,basespan)):
+  var tocblock=((eltspec)?(fdjtDOM(eltspec,preview,basespan)):
 		(fdjtDOM("div.tochead",preview,basespan)));
   tocblock.title=title;
   tocblock.sbook_ref=target.id;
@@ -254,11 +254,9 @@ function sbookSummaryDiv(info,query)
       var controller=fdjtDOM("span.controller",
 			      "\u00b7\u00b7\u00b7",tags.length-6,
 			      "+\u00b7\u00b7\u00b7");
-      tagspan=fdjtDOM("span.moretags");
-      tagspan.style.display='none';
+      tagspan=fdjtDOM("span.moretags.fdjtexpands.closed");
       controller.title=("click to toggle more tags");
-      controller.onclick=fdjtShowHide_onclick;
-      controller.clicktotoggle=new Array(tagspan);
+      controller.onclick=fdjtUI.Expansion.onclick;
       fdjtDOM(sumdiv," ",controller," ",tagspan);
       fdjtDOM(tagspan,knoSpan(tag));}
     else fdjtDOM(tagspan," \u00b7 ",knoSpan(tag));}
@@ -269,7 +267,7 @@ function sbookSummaryDiv(info,query)
     var xrefs=info.xrefs;
     var i=0; while (i<xrefs.length) {
       var xref=xrefs[i++];
-      var anchor=fdjtAnchor(xref,xref);
+      var anchor=fdjtDOM.Anchor("A",xref,xref);
       anchor.target='_blank';
       anchor.onclick=fdjtCancelBubble;
       fdjtDOM(xrefsdiv,anchor);}
@@ -289,19 +287,20 @@ function sbookMarkInfo(sumdiv,info)
   var interval=((info.tstamp) ? (fdjtTick()-info.tstamp) : (-1));
   var delete_button=
     ((user===sbook_user)&&
-     (fdjtAnchorC("http://"+sbook_server+"/sbook/delete?GLOSS="+info.oid,
-		  ".deletebutton",
-		  fdjtImage(sbicon(sbook_delete_icon),false,"x"))));
+     (fdjtDOM.anchor("A.deletebutton",
+		     "http://"+sbook_server+"/sbook/delete?GLOSS="+info.oid,
+		     fdjtImage(sbicon(sbook_delete_icon),false,"x"))));
   var agespan=
     ((interval>0)&&
      ((interval>(5*24*3600)) 
-      ? (fdjtAnchorC("http://"+sbook_server+"/sbook/browse/"+info.glossid,
-		     "age",fdjtTickDate(info.tstamp)))
-      : (fdjtAnchorC("http://"+sbook_server+"/sbook/browse/"+info.glossid,
-		     "age",
-		     fdjtDOM("span.altreltime",fdjtIntervalString(interval)),
-		     fdjtDOM("span.altabstime",fdjtTickDate(info.tstamp)),
-		     " ago"))));
+      ? (fdjtDOM.Anchor("A.age",
+			"http://"+sbook_server+"/sbook/browse/"+info.glossid,
+			fdjtTickDate(info.tstamp)))
+      : (fdjtDOM.AnchorC("A.age",
+			 "http://"+sbook_server+"/sbook/browse/"+info.glossid,
+			 fdjtDOM("span.altreltime",fdjtIntervalString(interval)),
+			 fdjtDOM("span.altabstime",fdjtTickDate(info.tstamp)),
+			 " ago"))));
   if (agespan) {
     agespan.onclick=fdjtCancelBubble;
     agespan.target="sbookglosses";
@@ -356,7 +355,7 @@ function sbookXRefsButton(info)
   if ((info.xrefs)&&(info.xrefs.length>0))
     if (info.xrefs.length===1) {
       var img=fdjtImage(sbicon(sbook_outlink_icon),"xrefsbutton","xrefs");
-      var anchor=fdjtAnchor(info.xrefs[0],img);
+      var anchor=fdjtDOM.Anchor("A",info.xrefs[0],img);
       anchor.title='click to follow'; anchor.target='_blank';
       return anchor;}
     else {
