@@ -238,7 +238,7 @@ function sbookOpenGlossmark(target,addmark)
 {
   if (sbook_glossmark_target===target) {
     var hud=fdjtID("SBOOKMARKHUD");
-    hud.style.maxHeight=(window.innerHeight-100);
+    hud.style.maxHeight=((fdjtDOM.viewHeight())-100);
     sbookHUDMode("mark");}
   else {
     var hud=fdjtID("SBOOKMARKHUD");
@@ -262,14 +262,14 @@ function sbookAlignGlossmark(hud,target)
 {
   return;
   var offinfo=fdjtDOM.getGeometry(target);
-  hud.style.maxHeight=(window.innerHeight-100)+'px';
+  hud.style.maxHeight=((fdjtDOM.viewHeight())-100)+'px';
   hud.style.opacity=0.0; hud.style.display='block';
   var hudinfo=fdjtDOM.getGeometry(hud);
-  var minoff=(window.scrollY+window.innerHeight)-hudinfo.height;
+  var minoff=(fdjtDOM.viewTop()+(fdjtDOM.viewHeight()))-hudinfo.height;
   if (offinfo.top<minoff) 
     hud.style.top=offinfo.top+'px';
   else hud.style.top=minoff+'px';
-  hud.style.opacity=null; hud.style.display=null;
+  hud.style.opacity=''; hud.style.display='';
 }
 
 function sbookGlossmark_onclick(evt)

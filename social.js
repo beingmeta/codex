@@ -104,7 +104,7 @@ function sbook_add_gloss(id,entry)
     var tags=entry.tags;
     var k=0; while (k<tags.length) {
       var tag=tags[k++];
-      sbookAddTag(item,tag,true,false,true,false);}}
+      sbook_index.add(item,tag,true,false,true,false);}}
   else item.tags=[];
   item.taginfo=false;
   if (entry.user) {
@@ -153,8 +153,8 @@ function sbookNewGlosses(glosses,winarg)
   var form=win.document.getElementById("SBOOKMARKFORM");
   fdjtDOM.dropClass(form,"submitting");
   form.reset();
-  fdjtID("SBOOKMARKCLOUD").addEventListener
-    ("click",fdjtUI.Checkspan.onclick,false);
+  fdjtDOM.addListener
+    (fdjtID("SBOOKMARKCLOUD"),"click",fdjtUI.Checkspan.onclick);
   win.sbookHUDMode(false);
 }
 

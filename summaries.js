@@ -247,7 +247,7 @@ function sbookSummaryDiv(info,query)
   if ((tags)&&(tags.length>0)) fdjtDOM(sumdiv," // ");
   var j=0; var first=true; while (j<tags.length) {
     var tag=tags[j++];
-    if (j===1) fdjtDOM(tagspan,knoSpan(tag));
+    if (j===1) fdjtDOM(tagspan,Knowlet.HTML(tag));
     else if ((j===7) &&
 	     (tagspan===sumdiv) &&
 	     (tags.length>10)) {
@@ -258,8 +258,8 @@ function sbookSummaryDiv(info,query)
       controller.title=("click to toggle more tags");
       controller.onclick=fdjtUI.Expansion.onclick;
       fdjtDOM(sumdiv," ",controller," ",tagspan);
-      fdjtDOM(tagspan,knoSpan(tag));}
-    else fdjtDOM(tagspan," \u00b7 ",knoSpan(tag));}
+      fdjtDOM(tagspan,Knowlet.HTML(tag));}
+    else fdjtDOM(tagspan," \u00b7 ",Knowlet.HTML(tag));}
   if (info.detail) 
     fdjtDOM(sumdiv,fdjtDOM("div.detail",info.detail));
   if ((info.xrefs) && (info.xrefs.length>0))  {
@@ -416,10 +416,10 @@ function sbookSetupSummaryDiv(div)
 {
   div.title="(hold to glimpse,click to go) "+(div.title||"");
   if (sbook_interaction==="mouse") {
-    div.addEventListener("click",sbookSummary_onclick,false);
-    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
-    div.addEventListener("mouseup",sbookTOC.onmouseup,false);}
-  else div.addEventListener("click",sbookTOC.oneclick,false);
+    fdjtDOM.addListener(div,"click",sbookSummary_onclick);
+    fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
+    fdjtDOM.addListener(div,"mouseup",sbookTOC.onmouseup);}
+  else fdjtDOM.addListener(div,"click",sbookTOC.oneclick);
 }
 
 function sbookSummary_onclick(evt)

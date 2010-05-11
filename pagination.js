@@ -141,9 +141,11 @@ function sbookPaginate(pagesize,start)
     else if (scantop>pagelim) {
       // Issue a warning (if neccessary) and break on this element
       if (sbookAvoidPageHead(scan)) 
-	fdjtWarn("Pagination got stuck with non page head %o",scan);
+	fdjtLog.warn("[%f] Pagination got stuck with non page head %o",
+		     fdjtET(),scan);
       else if (sbookIsPageFoot(scan))
-	fdjtWarn("Pagination got stuck with page foot at head %o",scan);
+	fdjtLog.warn("[%f] Pagination got stuck with page foot at head %o",
+		     fdjtET(),scan);
       else {}
       newtop=scan;}
     else if ((info.bottom>pagelim)&&(sbookIsPageBlock(scan)))
@@ -334,7 +336,7 @@ function sbookPaginate(pagesize,start)
 function sbookNodeInfo(node)
 {
   var info=fdjtDOM.getGeometry(node);
-  var fontsize=getComputedStyle(node,null).fontSize;
+  var fontsize=fdjtDOM.getStyle(node).fontSize;
   if ((fontsize)&&(typeof fontsize === 'string'))
     fontsize=parseInt(fontsize.slice(0,fontsize.length-2));
   info.fontsize=(fontsize||12);
@@ -379,8 +381,7 @@ function _sbookIsContentBlock(node)
   if (node.nodeType===1)
     if (node.sbookui) return false;
     else if (sbook_block_tags[node.tagName]) return true;
-    else if ((window.getComputedStyle)&&
-	     (styleinfo=window.getComputedStyle(node,null))) {
+    else if (styleinfo=fdjtDOM.getStyle(node)) {
       if (styleinfo.position!=='static') return false;
       else if ((styleinfo.display==='block')||
 	       (styleinfo.display==='list-item'))
@@ -475,8 +476,7 @@ function _sbookPageNodeInfo(elt,info,curpage)
 function sbookAdjustPageBreak(node,top,bottom)
 {
   var nodeinfo=fdjtDOM.getGeometry(node);
-  var styleinfo=((window.getComputedStyle)&&
-		 (window.getComputedStyle(node,null)));
+  var styleinfo=fdjtDOM.getStyle(node);
   var lastbottom=nodeinfo.top;
   var linebottom=lastbottom;
   var children=node.childNodes;
@@ -572,7 +572,7 @@ function sbookGoToPage(pagenum,pageoff)
 {
   if ((typeof pagenum !== 'number')||
       (pagenum<0)||(pagenum>=sbook_pages.length)) {
-    fdjtWarn("[%f] Invalid page number %o",pagenum);
+    fdjtLog.warn("[%f] Invalid page number %o",pagenum);
     return;}
   if (sbook_trace_paging)
     fdjtLog("[%f] sbookGoToPage %o+%o",fdjtET(),pagenum,pageoff);
@@ -588,14 +588,14 @@ function sbookGoToPage(pagenum,pageoff)
     else ("[%f] Jumped to %d P%d@[%d,%d]#%s+%d (%o)",
 	  fdjtET(),off,
 	  pagenum,info.top,info.bottom,info.first.id,pageoff||0,info);
-  var footheight=((off-sbook_top_px)+window.innerHeight)-info.bottom;
+  var footheight=((off-sbook_top_px)+(fdjtDOM.viewHeight()))-info.bottom;
   if (footheight<0) {
     footheight=0; sbook_curbottom=sbook_bottom_px;}
   fdjtID("SBOOKPAGEFOOT").style.height=footheight+'px';
   sbook_curpage=pagenum;
   sbook_curoff=pageoff||0;
   sbook_curinfo=info;
-  if (window.scrollY!==(off-sbook_top_px)) {
+  if (fdjtDOM.viewTop()!==(off-sbook_top_px)) {
     if (sbook_notfixed) 
       document.body.style.visibility='hidden';
     window.scrollTo(0,(off-sbook_top_px));
@@ -621,7 +621,7 @@ function sbookGoToPage(pagenum,pageoff)
 
   if ((sbook_mode==="mark")&&(!(fdjtDOM.isVisible(sbook_mark_target))))
     sbookHUDMode(false);
-  sbook_pagescroll=window.scrollY;
+  sbook_pagescroll=fdjtDOM.viewTop();
   // Add class if it's temporarily gone
   fdjtDOM.addClass(document.body,"sbookpageview");
 }
@@ -646,15 +646,15 @@ function sbookMoveMargins(pageinfo)
   fdjtID("SBOOKPAGEHEAD").style.top=(pageinfo.top-sbook_top_px)+"px";
   fdjtID("SBOOKPAGEFOOT").style.top=pageinfo.bottom+"px";
   fdjtID("SBOOKLEFTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
-  fdjtID("SBOOKLEFTEDGE").style.height=window.innerHeight+"px";
+  fdjtID("SBOOKLEFTEDGE").style.height=(fdjtDOM.viewHeight())+"px";
   fdjtID("SBOOKRIGHTEDGE").style.top=(pageinfo.top-sbook_top_px)+"px";
-  fdjtID("SBOOKRIGHTEDGE").style.height=window.innerHeight+"px";
+  fdjtID("SBOOKRIGHTEDGE").style.height=(fdjtDOM.viewHeight())+"px";
 }
 
 function sbookSyncPage()
 {
   if (sbook_pageview) {
-    if (window.scrollY!==sbook_pages[sbook_curpage]) {
+    if (fdjtDOM.viewTop()!==sbook_pages[sbook_curpage]) {
       window.scrollTo(sbook_pages[sbook_curpage]);
       if (sbook_notfixed) sbookSyncHUD();}}
 }
@@ -666,15 +666,15 @@ function sbookForward()
   if (sbook_pageview) {
     var goto=-1;
     if ((sbook_curpage<0)||(sbook_curpage>=sbook_pages.length)) {
-      var pagenum=sbookGetPage(window.scrollY);
+      var pagenum=sbookGetPage(fdjtDOM.viewTop());
       if (pagenum<(sbook_pages.length-1)) sbook_curpage=pagenum+1;
       sbookGoToPage(sbook_curpage);}
     else {
       // Synchronize if neccessary
-      if (sbook_pagescroll!==window.scrollY)
+      if (sbook_pagescroll!==fdjtDOM.viewTop())
 	sbookGoToPage(sbook_curpage,sbook_curoff);
       var info=sbook_pageinfo[sbook_curpage];
-      var pagebottom=window.scrollY+window.innerHeight;
+      var pagebottom=fdjtDOM.viewTop()+(fdjtDOM.viewHeight());
       if (pagebottom<info.bottom)
 	sbookGoToPage(sbook_curpage,pagebottom-info.top);
       else if (sbook_curpage===sbook_pages.length) {}
@@ -691,15 +691,15 @@ function sbookBackward()
   if (sbook_pageview) {
     var goto=-1;
     if ((sbook_curpage<0)||(sbook_curpage>=sbook_pages.length)) {
-      var pagenum=sbookGetPage(window.scrollY);
+      var pagenum=sbookGetPage(fdjtDOM.viewTop());
       if (pagenum<(sbook_pages.length-1)) sbook_curpage=pagenum+1;
       sbookGoToPage(sbook_curpage);}
     else {
       // Synchronize if neccessary
-      if (sbook_pagescroll!==window.scrollY)
+      if (sbook_pagescroll!==fdjtDOM.viewTop())
 	sbookGoToPage(sbook_curpage,sbook_curoff);
       var info=sbook_pageinfo[sbook_curpage];
-      var pagetop=window.scrollY+sbook_top_px;
+      var pagetop=fdjtDOM.viewTop()+sbook_top_px;
       if (pagetop>info.top)
 	sbookGoToPage(sbook_curpage,(info.top-pagetop)-sbook_pagesize);
       else if (sbook_curpage===0) {}
@@ -718,8 +718,8 @@ function sbookTracePaging(name,elt)
   if (!(elt)) {
     fdjtLog("[%f] %s none",fdjtET(),name);
     return;}
-  var top=window.scrollY+sbook_top_px;
-  var bottom=window.scrollY+(window.innerHeight-sbook_bottom_px);
+  var top=fdjtDOM.viewTop()+sbook_top_px;
+  var bottom=fdjtDOM.viewTop()+((fdjtDOM.viewHeight())-sbook_bottom_px);
   var offsets=fdjtDOM.getGeometry(elt);
   fdjtLog("[%f] %s [%d+%d=%d] %s [%d,%d] %o%s%s%s%s '%s'\n%o",
 	  fdjtET(),name,offsets.top,offsets.height,offsets.top+offsets.height,
@@ -744,7 +744,7 @@ function sbookPagePlacement(offsets,top,bottom)
 function sbookNextPage(evt)
 {
   evt=evt||event||null;
-  window.scrollBy(0,window.innerHeight-100);
+  window.scrollBy(0,(fdjtDOM.viewHeight())-100);
   if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
   evt.cancelBubble=true;
 }
@@ -752,7 +752,7 @@ function sbookNextPage(evt)
 function sbookPrevPage(evt)
 {
   evt=evt||event||null;
-  window.scrollBy(0,-(window.innerHeight-100));
+  window.scrollBy(0,-((fdjtDOM.viewHeight())-100));
   if (evt.preventDefault) evt.preventDefault(); else evt.returnValue=false;
   evt.cancelBubble=true;
 }
@@ -805,7 +805,7 @@ function sbookPageView(flag,nogo)
 			       "Press ",fdjtDOM("span.key","P"),
 			       " to toggle back to page view"));
     if (!(nogo)) {
-      var curx=window.scrollX; var cury=window.scrollY;
+      var curx=fdjtDOM.viewLeft(); var cury=fdjtDOM.viewTop();
       window.scrollTo(0,0);
       window.scrollTo(curx,cury);}}
 }
@@ -849,7 +849,7 @@ function sbookPageFoot_onclick(evt)
 
 function sbookUpdatePagination()
 {
-  var pagesize=window.innerHeight-
+  var pagesize=(fdjtDOM.viewHeight())-
     (sbook_top_px+sbook_bottom_px);
   var target=sbook_target;
   sbookMessage("Determining page layout");
@@ -861,7 +861,7 @@ function sbookUpdatePagination()
   sbookFlashMessage(2000,"Done with page layout");
   if (target)
     sbookGoToPage(sbookGetPage(target));
-  else sbookGoToPage(sbookGetPage(window.scrollY));
+  else sbookGoToPage(sbookGetPage(fdjtDOM.viewTop()));
 }
 
 function sbookCheckPagination()
@@ -869,16 +869,16 @@ function sbookCheckPagination()
   if ((sbook_paginated)&&
       (sbook_paginated.offheight===document.body.offsetHeight)&&
       (sbook_paginated.offwidth===document.body.offsetWidth)&&
-      (sbook_paginated.winwidth===window.innerWidth)&&
-      (sbook_paginated.winheight===window.innerHeight))
+      (sbook_paginated.winwidth===(document.documentElement.clientWidth))&&
+      (sbook_paginated.winheight===(fdjtDOM.viewHeight())))
     return false;
   else {
     var newinfo={};
     sbookUpdatePagination();
     newinfo.offheight=document.body.offsetHeight;
     newinfo.offwidth=document.body.offsetWidth;
-    newinfo.winwidth=window.innerWidth;
-    newinfo.winheight=window.innerHeight;
+    newinfo.winwidth=(document.documentElement.clientWidth);
+    newinfo.winheight=(fdjtDOM.viewHeight());
     // fdjtTrace("Updated pagination from %o to %o",sbook_paginated,newinfo);
     sbook_paginated=newinfo;
     return newinfo;}

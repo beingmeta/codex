@@ -85,7 +85,7 @@ function sbookSetupNavHUD(root_info)
   if (sbook_interaction==='mouse') {
     toc_button.onmouseover=fdjtDOM.classAdder("SBOOKTOC","hover");
     toc_button.onmouseout=fdjtDOM.classDropper("SBOOKTOC","hover");}
-  toc_button.style.visibility=null;
+  toc_button.style.visibility='';
   fdjtDOM.replace("SBOOKTOC",navhud);
   fdjtDOM(fdjtID("DASHTOC"),sbookStaticNavHUD("div#SBOOKDASHTOC",root_info));
 }
@@ -96,12 +96,12 @@ function sbookCreateNavHUD(eltspec,root_info)
   var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudblock.hud",toc_div);
   if (!(eltspec)) sbookNavHUD=div;
   if (sbook_interaction==="mouse") {
-    div.addEventListener("mouseover",sbookTOC.onmouseover,false);
-    div.addEventListener("mouseout",sbookTOC.onmouseout,false);
-    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
-    div.addEventListener("mouseup",sbookTOC.onmouseup,false);
-    div.addEventListener("click",sbookTOC.onclick,false);}
-  else div.addEventListener("click",sbookTOC.oneclick,false);
+    fdjtDOM.addListener(div,"mouseover",sbookTOC.onmouseover);
+    fdjtDOM.addListener(div,"mouseout",sbookTOC.onmouseout);
+    fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
+    fdjtDOM.addListener(div,"mouseup",sbookTOC.onmouseup);
+    fdjtDOM.addListener(div,"click",sbookTOC.onclick);}
+  else fdjtDOM.addListener(div,"click",sbookTOC.oneclick);
   return div;
 }
 
@@ -111,12 +111,12 @@ function sbookStaticNavHUD(eltspec,root_info)
   var div=fdjtDOM(eltspec||"div#SBOOKDASHTOC",toc_div);
   if (!(eltspec)) sbookNavHUD=div;
   if (sbook_interaction==="mouse") {
-    div.addEventListener("mouseover",sbookTOC.onmouseover,false);
-    div.addEventListener("mouseout",sbookTOC.onmouseout,false);
-    div.addEventListener("mousedown",sbookTOC.onmousedown,false);
-    div.addEventListener("mouseup",sbookTOC.onmouseup,false);
-    div.addEventListener("click",sbookTOC.onholdclick,false);}
-  else div.addEventListener("click",sbookTOC.oneclick,false);
+    fdjtDOM.addListener(div,"mouseover",sbookTOC.onmouseover);
+    fdjtDOM.addListener(div,"mouseout",sbookTOC.onmouseout);
+    fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
+    fdjtDOM.addListener(div,"mouseup",sbookTOC.onmouseup);
+    fdjtDOM.addListener(div,"click",sbookTOC.onholdclick);}
+  else fdjtDOM.addListener(div,"click",sbookTOC.oneclick);
   return div;
 }
 
@@ -184,7 +184,7 @@ function sbookInitSocialHUD()
   if (sbook_interaction==='mouse') {
     glosses_button.onmouseover=fdjtDOM.classAdder("SBOOKGLOSSES","hover");
     glosses_button.onmouseout=fdjtDOM.classDropper("SBOOKGLOSSES","hover");}
-  glosses_button.style.visibility=null;
+  glosses_button.style.visibility='';
 }
 
 function sbookInitSearchHUD()
@@ -194,7 +194,7 @@ function sbookInitSearchHUD()
   if (sbook_interaction==='mouse') {
     search_button.onmouseover=fdjtDOM.classAdder("#SBOOKSEARCH#SBOOKTAGS","hover");
     search_button.onmouseout=fdjtDOM.classDropper("#SBOOKSEARCH#SBOOKTAGS","hover");}
-  search_button.style.visibility=null;
+  search_button.style.visibility='';
 }
 
 /* Mode controls */
@@ -343,14 +343,14 @@ function sbookSyncHUD()
 {
   if (!(sbook_notfixed)) return;
   if (window.offsetY!==sbook_sync_head) {
-    sbookHead.style.top=window.scrollY+'px';
-    // sbookHead.style["-webkit-transformation"]="translate(0px,"+window.scrollY+"px)";
-    sbook_sync_head=window.scrollY;
-    sbookHead.style.maxHeight=(window.innerHeight-100)+'px';}
-  if ((window.scrollY+window.innerHeight)!==sbook_sync_foot) {
-    sbookFoot.style.top=(window.scrollY+window.innerHeight-42)+'px';
-    // sbookFoot.style["-webkit-transformation"]="translate(0px,"+(window.scrollY+window.innerHeight-50)+"px)";
-    sbook_sync_foot=(window.scrollY+window.innerHeight);}
+    sbookHead.style.top=fdjtDOM.viewTop()+'px';
+    // sbookHead.style["-webkit-transformation"]="translate(0px,"+fdjtDOM.viewTop()+"px)";
+    sbook_sync_head=fdjtDOM.viewTop();
+    sbookHead.style.maxHeight=((fdjtDOM.viewHeight())-100)+'px';}
+  if ((fdjtDOM.viewTop()+(fdjtDOM.viewHeight()))!==sbook_sync_foot) {
+    sbookFoot.style.top=(fdjtDOM.viewTop()+(fdjtDOM.viewHeight())-42)+'px';
+    // sbookFoot.style["-webkit-transformation"]="translate(0px,"+(fdjtDOM.viewTop()+(fdjtDOM.viewHeight())-50)+"px)";
+    sbook_sync_foot=(fdjtDOM.viewTop()+(fdjtDOM.viewHeight()));}
 }
 
 /* The APP HUD */
@@ -582,10 +582,10 @@ function sbookPreviewIcon(img)
 {
   var img=fdjtImage(sbicon(img||"binoculars24x24.png"),"previewicon","[pre]",
 		    "preview: click or hold mouse button or control key");
-  img.addEventListener("mouseover",sbookTOC_onmouseover,false);
-  img.addEventListener("mouseout",sbookTOC_onmouseout,false);
-  img.addEventListener("mousedown",fdjtDOM.cancel,false);
-  img.addEventListener("mouseup",fdjtDOM.cancel,false);
+  fdjtDOM.addListener(img,"mouseover",sbookTOC_onmouseover);
+  fdjtDOM.addListener(img,"mouseout",sbookTOC_onmouseout);
+  fdjtDOM.addListener(img,"mousedown",fdjtDOM.cancel);
+  fdjtDOM.addListener(img,"mouseup",fdjtDOM.cancel);
   return img;
 }
 

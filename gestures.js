@@ -203,16 +203,17 @@ function sbook_onkeypress(evt)
 {
   var modearg=false;
   evt=evt||event||null;
+  var ch=evt.charCode||evt.keyCode;
   // sbook_trace("sbook_onkeypress",evt);
   if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
   else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
-  else if ((evt.charCode===65)||(evt.charCode===97)) /* A */
+  else if ((ch===65)||(ch===97)) /* A */
     modearg=sbook_last_dash||"help";
   else if (((!(sbook_mode))||(sbook_mode==="context"))&&
-	    ((evt.charCode===112)||(evt.charCode===80))) /* P */
+	   ((ch===112)||(ch===80))) /* P */
     if (sbook_pageview) sbookPageView(false);
     else sbookPageView(true);
-  else modearg=sbook_modechars[evt.charCode];
+  else modearg=sbook_modechars[ch];
   if (modearg) 
     if (sbook_mode===modearg) sbookHUDMode(false);
     else sbookHUDMode(modearg);
@@ -282,48 +283,48 @@ function sbookGestureSetup()
 
 function sbookMouseGestureSetup()
 {
-  window.addEventListener("scroll",sbook_onscroll,false);
-  window.addEventListener("mouseup",sbook_onmouseup,false);
+  fdjtDOM.addListener(window,"scroll",sbook_onscroll);
+  fdjtDOM.addListener(window,"mouseup",sbook_onmouseup);
 
-  document.body.addEventListener("click",sbook_body_onclick,false);
+  fdjtDOM.addListener(document.body,"click",sbook_body_onclick);
 
  // For command keys
-  window.addEventListener("keypress",sbook_onkeypress,false);
-  window.addEventListener("keydown",sbook_onkeydown,false);
-  window.addEventListener("keyup",sbook_onkeyup,false);
+  fdjtDOM.addListener(window,"keypress",sbook_onkeypress);
+  fdjtDOM.addListener(window,"keydown",sbook_onkeydown);
+  fdjtDOM.addListener(window,"keyup",sbook_onkeyup);
 }
 
 function sbookTouchGestureSetup()
 {
-  document.body.addEventListener("scroll",sbook_onscroll,false);
-  document.body.addEventListener("click",sbook_body_onclick,false);
+  fdjtDOM.addListener(document.body,"scroll",sbook_onscroll);
+  fdjtDOM.addListener(document.body,"click",sbook_body_onclick);
   var i=0; var len=sbook_nodes.length;
   while (i<len) {
     var node=sbook_nodes[i++];
     if (!(node.onclick)) node.onclick=sbook_body_onclick;}
-  sbookHUD.addEventListener("touchstart",sbook_ontouchstart,false);
-  sbookHUD.addEventListener("touchmove",sbook_ontouchmove,false);
-  document.body.addEventListener("touchend",sbook_ontouchend,false);
-  window.addEventListener("keypress",sbook_onkeypress,false);
-  window.addEventListener("keydown",sbook_onkeydown,false);
-  window.addEventListener("keyup",sbook_onkeyup,false);
+  fdjtDOM.addListener(sbookHUD,"touchstart",sbook_ontouchstart);
+  fdjtDOM.addListener(sbookHUD,"touchmove",sbook_ontouchmove);
+  document.fdjtDOM.addListener(body,"touchend",sbook_ontouchend);
+  fdjtDOM.addListener(window,"keypress",sbook_onkeypress);
+  fdjtDOM.addListener(window,"keydown",sbook_onkeydown);
+  fdjtDOM.addListener(window,"keyup",sbook_onkeyup);
   fdjtDOM.addClass(document.body,"touch");
 }
 
 function sbookSimpleGestureSetup()
 {
-  document.body.addEventListener("scroll",sbook_onscroll,false);
-  document.body.addEventListener("click",sbook_body_onclick,false);
+  fdjtDOM.addListener(document.body,"scroll",sbook_onscroll);
+  fdjtDOM.addListener(document.body,"click",sbook_body_onclick);
   var i=0; var len=sbook_nodes.length;
   while (i<len) {
     var node=sbook_nodes[i++];
     if (!(node.onclick)) node.onclick=sbook_body_onclick;}
-  sbookHUD.addEventListener("mouseover",fdjtUI.CoHi.onmouseover,false);
-  sbookHUD.addEventListener("mouseout",fdjtUI.CoHi.onmouseout,false);
-  sbookHUD.addEventListener("click",sbookRef_onclick,false);
-  window.addEventListener("keypress",sbook_onkeypress,false);
-  window.addEventListener("keydown",sbook_onkeydown,false);
-  window.addEventListener("keyup",sbook_onkeyup,false);
+  fdjtDOM.addListener(sbookHUD,"mouseover",fdjtUI.CoHi.onmouseover);
+  fdjtDOM.addListener(sbookHUD,"mouseout",fdjtUI.CoHi.onmouseout);
+  fdjtDOM.addListener(sbookHUD,"click",sbookRef_onclick);
+  fdjtDOM.addListener(window,"keypress",sbook_onkeypress);
+  fdjtDOM.addListener(window,"keydown",sbook_onkeydown);
+  fdjtDOM.addListener(window,"keyup",sbook_onkeyup);
 }
 
 /* Emacs local variables

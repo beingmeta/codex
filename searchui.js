@@ -75,18 +75,18 @@ var _sbook_searchupdate_delay=200;
 function sbookSearchInput_onkeypress(evt)
 {
   evt=evt||event||null;
-  var ch=evt.charCode; var kc=evt.keyCode;
+  var ch=evt.charCode||evt.keyCode;
   var target=fdjtDOM.T(evt);
   if (_sbook_searchupdate) {
     clearTimeout(_sbook_searchupdate);
     _sbook_searchupdate=false;}
   if ((kc===13)||(ch===13)||(ch===59)) {
-    var qstring=sbookQueryEnd(target.value);
+    var qstring=Knowlet.Query.tail(target.value);
     if (!(fdjtString.isEmpty(qstring))) {
       var completeinfo=sbookQueryCloud(sbook_query);
       var completions=completeinfo.complete(qstring);
       if (completions.length) {
-	var query_base=sbookQueryBase(target.value);
+	var query_base=Knowlet.Query.base(target.value);
 	var new_term=completeinfo.getValue(completions[0]);
 	var new_query=(query_base+new_term+";");
 	sbookSetQuery(new_query,true);}}
@@ -105,19 +105,19 @@ function sbookSearchInput_onkeypress(evt)
       completeinfo.complete("");}
     return false;}
   else if (ch==32) { /* Space */
-    var qstring=sbookQueryEnd(target.value);
+    var qstring=Knowlet.Query.tail(target.value);
     var completeinfo=sbookQueryCloud(sbook_query);
     var completions=completeinfo.complete(qstring);
     if (completions.prefix!==qstring) {
-      target.value=sbookQueryBase(target.value)+';'+completions.prefix;
+      target.value=Knowlet.Query.base(target.value)+';'+completions.prefix;
       fdjtDOM.cancel(evt);
       return;}}
   else {
     var completeinfo=sbookQueryCloud(sbook_query);
     _sbook_searchupdate=
-      setTimeout(function(cinfo,target){
-	  cinfo.complete(sbookQueryEnd(target.value));},
-	_sbook_searchupdate_delay,completeinfo,target);}
+      setTimeout(function(){
+	  completeinfo.complete(Knowlet.Query.tail(target.value));},
+	_sbook_searchupdate_delay);}
 }
 
 function sbookSearchInput_onkeyup(evt)
@@ -139,9 +139,9 @@ function sbookSearchInput_onkeyup(evt)
 function sbookSearchUpdate(input,cloud)
 {
   if (!(input)) input=fdjtID("SBOOKSEARCHTEXT");
-  var base=sbookQueryBase(input.value);
-  var end=sbookQueryEnd(input.value);
-  sbookSetQuery(sbookStringToQuery(base));
+  var base=Knowlet.Query.base(input.value);
+  var end=Knowlet.Query.tail(input.value);
+  sbookSetQuery(Knowlet.Query.string2query(base));
   sbookQueryCloud(sbook_query).complete(end);
 }
 
@@ -426,10 +426,10 @@ function sbookFullCloud()
 function sbookSetupSearchHUD()
 {
   var input=fdjtID("SBOOKSEARCHTEXT");
-  input.addEventListener("keypress",sbookSearchInput_onkeypress,false);
-  input.addEventListener("keyup",sbookSearchInput_onkeyup,false);
-  input.addEventListener("focus",sbookSearchInput_onfocus,false);
-  input.addEventListener("blur",sbookSearchInput_onblur,false);
+  fdjtDOM.addListener(input,"keypress",sbookSearchInput_onkeypress);
+  fdjtDOM.addListener(input,"keyup",sbookSearchInput_onkeyup);
+  fdjtDOM.addListener(input,"focus",sbookSearchInput_onfocus);
+  fdjtDOM.addListener(input,"blur",sbookSearchInput_onblur);
 
   var sbooksearch=fdjtID("SBOOKSEARCH");
   fdjtUI.AutoPrompt.setup(sbooksearch);

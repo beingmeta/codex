@@ -50,6 +50,8 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     if ((origin)&&(origin.id))
       target=fdjtID(origin.id);
     else target=sbook_target;
+  if (!(sbook_mark_cloud))
+    fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud());
   var refuri=sbookGetRefURI(target);
   if (sbook_trace_gloss)
     fdjtLog("Setting up gloss HUD for %o from %o st=%o excerpt=%o",
@@ -184,8 +186,8 @@ function sbookCreateMarkHUD(classinfo)
   privy.checked=false;
   privy.id="SBOOKMARKPRIVATE";
   privyspan.title="private: don't share this with my personal circle";
-  privy_span.addEventListener
-    ("click",fdjtUI.Checkspan.onclick,false);
+  privy_fdjtDOM.addListener
+    span,    ("click",fdjtUI.Checkspan.onclick);
   var metastuff=
     fdjtDOM("div.metastuff",
 	    fdjtDOM("div.controls",sbookMarkPickFeed(),privyspan),
@@ -231,8 +233,8 @@ function sbookCreateMarkHUD(classinfo)
     /* Turn off the target lock */
     sbookSetTarget(false);
     form.reset();
-    fdjtID("SBOOKMARKCLOUD").addEventListener
-    ("click",fdjtUI.Checkspan.onclick,false);
+    fdjtDOM.addListener
+    (fdjtID("SBOOKMARKCLOUD"),"click",fdjtUI.Checkspan.onclick);
    win.sbookHUDMode(false);};
   // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
   // hideicon.onclick="fdjtDOM.addClass('SBOOKMARK','hidden')"; 
@@ -355,14 +357,14 @@ function sbookMarkCloud()
   var completions=fdjtDOM("div.completions.checkspans");
   completions._seen=seen;
   completions.onclick=fdjtUI.CheckSpan.onclick;
-  var tagscores=sbookTagScores();
+  var tagscores=sbook_index.tagScores();
   var alltags=tagscores._all;
   var i=0; while (i<alltags.length) {
     var tag=alltags[i++];
     // We elide sectional tags
     if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
-    var tagnode=knoCheckCompletion("TAGS",tag,false,document.knowlet||false);
-    fdjtDOM(completions, tagnode," ");}
+    var tagnode=Knowlet.HTML(tag,document.knowlet,"TAGS",true);
+    fdjtDOM(completions,tagnode," ");}
   var i=0; while (i<alltags.length) {
     var tag=alltags[i++];
     // We elide sectional tags
@@ -406,24 +408,26 @@ function sbookTagInput_onkeypress(evt)
   if (_sbook_tagupdate) {
     clearTimeout(_sbook_tagupdate);
     _sbook_tagupdate=false;}
-  var ch=evt.charCode; var kc=evt.keyCode;
+  var ch=evt.charCode||evt.keyCode;
   var target=fdjtDOM.T(evt);
   if ((ch===13)||(ch===59)) {
     var qstring=target.value;
     if (!(fdjtString.isEmpty(qstring))) {
+      fdjtDOM.cancel(evt);
       var completions=sbook_mark_cloud.complete(qstring);
+      fdjtLog("Completions on %o are %o",qstring,completions);
       if (completions.length) 
 	fdjtUI.CheckSpan.set(completions[0],true);
       else {
 	var curval=target.value;
-	var knospan=knoCheckCompletion("TAGS",curval,true);
+	var knospan=document.knowlet.HTML(curval,"TAGS",true);
+	fdjtUI.CheckSpan.set(knospan,true);
 	fdjtDOM.prepend(fdjtID("SBOOKMARKCLOUD"),knospan);
-	sbook_mark_cloud.addCompletion(curval);}
+	sbook_mark_cloud.addCompletion(knospan);}
       target.value="";
       fdjtDOM.addClass(target,"isempty");
       sbook_mark_cloud.complete("");}
     else {}
-    fdjtDOM.cancel(evt);
     return false;}
   else if (ch==32) { /* Space */
     var qstring=target.value;
@@ -434,10 +438,10 @@ function sbookTagInput_onkeypress(evt)
       return;}}
   else {
     _sbook_tagupdate=
-      setTimeout(function(target){
+      setTimeout(function(){
 	  _sbook_tagupdate=false;
 	  sbook_mark_cloud.complete(target.value);},
-	_sbook_searchupdate_delay,target);}
+	_sbook_searchupdate_delay);}
 }
 
 function sbookTagInput_onfocus(evt)
@@ -457,10 +461,10 @@ function sbookTagInput_onkeyup(evt)
       _sbook_tagupdate=false;}
     var target=fdjtDOM.T(evt);
     _sbook_tagupdate=
-      setTimeout(function(target){
+      setTimeout(function(){
 	  _sbook_tagupdate=false;
 	  sbook_mark_cloud.complete(target.value);},
-	_sbook_searchupdate_delay,target);}
+	_sbook_searchupdate_delay);}
 }
 
 /* Other fields */
@@ -575,10 +579,12 @@ function sbookCreateLoginButton(uri,image,title)
 
 function sbookSetupMarkHUD(hud)
 {
+  fdjtLog("initializing mark hud %o",hud);
   var input=fdjtID("SBOOKMARKTAGINPUT");
-  input.addEventListener("keypress",sbookTagInput_onkeypress);
-  input.addEventListener("keyup",sbookTagInput_onkeyup);
-  input.addEventListener("focus",sbookTagInput_onfocus);
+  fdjtDOM.addListener(input,"keypress",sbookTagInput_onkeypress);
+  fdjtDOM.addListener(input,"keyup",sbookTagInput_onkeyup);
+  fdjtDOM.addListener(input,"focus",sbookTagInput_onfocus);
+  fdjtUI.AutoPrompt.setup(hud);
 }
 
 /* Emacs local variables

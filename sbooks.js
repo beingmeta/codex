@@ -1,6 +1,5 @@
 /* -*- Mode: Javascript; -*- */
 
-
 var sbooks_id="$Id$";
 var sbooks_version=parseInt("$Revision$".slice(10,-1));
 
@@ -480,8 +479,9 @@ function sbookSetQuery(query,scored)
       ((sbook_query._query)===query) &&
       ((scored||false)===(sbook_query._scored)))
     return sbook_query;
-  var result=sbookQuery(query);
-  if (result._qstring!==sbookQueryBase(fdjtID("SBOOKSEARCHTEXT").value)) {
+  var result=sbook_index.Query(query);
+  if (result._qstring!==
+      Knowlet.Query.base(fdjtID("SBOOKSEARCHTEXT").value)) {
     fdjtID("SBOOKSEARCHTEXT").value=result._qstring;
     fdjtID("SBOOKSEARCHTEXT").removeAttribute('isempty');
     fdjtDOM.dropClass(fdjtID("SBOOKSEARCHTEXT"),'isempty');}
@@ -505,7 +505,7 @@ function sbookSetQuery(query,scored)
 
 function sbookUpdateQuery(input_elt)
 {
-  var q=sbookStringToQuery(input_elt.value);
+  var q=Knowlet.Query.string2query(input_elt.value);
   if ((q)!==(sbook_query._query))
     sbookSetQuery(q,false);
 }
@@ -685,11 +685,11 @@ function sbookSetHashID(target)
       ((window.location.hash[0]==='#')&&
        (window.location.hash.slice(1)===target.id)))
     return;
-  var saved_y=((fdjtDOM.isVisible(target))&&(window.scrollY));
-  var saved_x=((fdjtDOM.isVisible(target))&&(window.scrollX));
+  var saved_y=((fdjtDOM.isVisible(target))&&fdjtDOM.viewTop());
+  var saved_x=((fdjtDOM.isVisible(target))&&(fdjtDOM.viewLeft()));
   window.location.hash=target.id;
   // This resets when setting the ID moved the page unneccessarily
-  if ((window.scrollX!==saved_x)||(window.scrollY!==saved_y))
+  if ((fdjtDOM.viewLeft()!==saved_x)||(fdjtDOM.viewTop()!==saved_y))
     window.scrollTo(saved_x,saved_y);
 }
 
@@ -770,10 +770,12 @@ function sbookGetDocURI(target)
 
 function sbookGetRefID(target)
 {
-  return (target.getAttributeNS('sbookid','http://sbooks.net/'))||
-    (target.getAttributeNS('sbookid'))||
-    (target.getAttributeNS('data-sbookid'))||
-    (target.id);
+  if (target.getAttributeNS)
+    return (target.getAttributeNS('sbookid','http://sbooks.net/'))||
+      (target.getAttributeNS('sbookid'))||
+      (target.getAttributeNS('data-sbookid'))||
+      (target.id);
+  else return target.id;
 }
 
 function sbookAltLink(type,uri)
@@ -1201,7 +1203,7 @@ function sbookInitLocation()
   sbookSetHead(target||sbook_start||sbook_root);
   var tinfo=((target)&&(fdjtDOM.getGeometry(target)));
   sbookGoTo(target||sbook_start||sbook_root,
-	    (!((tinfo)&&(tinfo.height<window.innerHeight))));
+	    (!((tinfo)&&(tinfo.height<(fdjtDOM.viewHeight())))));
 }
 
 /* Initialization */
@@ -1241,7 +1243,8 @@ function sbookSetup()
   var knowlet=fdjtDOM.getMeta("KNOWLET")||sbook_refuri;
   sbookMessage("Processing knowledge with knowlet ",knowlet);
   document.knowlet=knowlet=new Knowlet(knowlet);
-  if (knowletSetupHTML) knowletSetupHTML();
+  if ((Knowlet)&&(Knowlet.HTML)&&(Knowlet.HTML.Setup))
+    Knowlet.HTML.Setup();
   var knowlets_done=new Date();
   sbookMessage("Indexing tags");
   sbookIndexTags(metadata);
@@ -1294,20 +1297,11 @@ function sbookDisplaySetup()
   fdjtDOM.append(document.body,bottomleading);
   
   sbookPageHead=pagehead; sbookPageFoot=pagefoot;
-  var bgcolor=document.body.style.backgroundColor;
-  if ((!(bgcolor)) && (window.getComputedStyle)) {
-    var bodystyle=window.getComputedStyle(document.body,null);
-    var bgcolor=((bodystyle)&&(bodystyle.backgroundColor));
-    if ((bgcolor==='transparent')||(bgcolor.search('rgba')>=0))
-      bgcolor=false;}
-  if (bgcolor) {
-    pagehead.style.backgroundColor=bgcolor;
-    pagefoot.style.backgroundColor=bgcolor;}
   // Probe the size of the head and foot
   pagehead.style.display='block'; pagefoot.style.display='block';
   sbook_top_px=pagehead.offsetHeight;
   sbook_bottom_px=pagefoot.offsetHeight;
-  pagehead.style.display=null; pagefoot.style.display=null;
+  pagehead.style.display=''; pagefoot.style.display='';
   pagehead.sbookui=true; pagefoot.sbookui=true;
   pagehead.onclick=sbookHeadHUD_onclick;
   pagefoot.onclick=sbookFootHUD_onclick;
@@ -1327,6 +1321,23 @@ function sbookDisplaySetup()
   leftedge2.onclick=sbookLeftEdge_onclick;
   rightedge2.title='tap/click to go forward';
   rightedge2.onclick=sbookRightEdge_onclick;
+
+  // The better way to do this might be to change the stylesheet,
+  //  but fdjtDOM doesn't handle that currently
+  var bgcolor=document.body.style.backgroundColor;
+  if (!(bgcolor)) {
+    var bodystyle=fdjtDOM.getStyle(document.body);
+    var bgcolor=((bodystyle)&&(bodystyle.backgroundColor));
+    if ((bgcolor==='transparent')||(bgcolor.search('rgba')>=0))
+      bgcolor=false;}
+  if (bgcolor) {
+    leftedge.style.backgroundColor=bgcolor;
+    rightedge.style.backgroundColor=bgcolor;
+    leftedge2.style.backgroundColor=bgcolor;
+    rightedge2.style.backgroundColor=bgcolor;
+    pagehead.style.backgroundColor=bgcolor;
+    pagefoot.style.backgroundColor=bgcolor;}
+
 }
 
 function sbookGlossesSetup()

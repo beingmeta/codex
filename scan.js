@@ -89,10 +89,11 @@ function sbookScan(root,docinfo){
   function getTitle(head) {
     var title=
       (head.toctitle)||
-      head.getAttributeNS('toctitle','http://sbooks.net')||
-      head.getAttribute('toctitle')||
-      head.getAttribute('data-toctitle')||
-      head.title;
+      ((head.getAttributeNS)&&
+       (head.getAttributeNS('toctitle','http://sbooks.net')))||
+      (head.getAttribute('toctitle'))||
+      (head.getAttribute('data-toctitle'))||
+      (head.title);
     if (!(title)) title=gatherText(head);
     if (typeof title === "string") {
       var std=fdjtString.stdspace(title);
@@ -131,11 +132,18 @@ function sbookScan(root,docinfo){
     else return 0;}
 
   function getLevel(elt){
-    if (elt.toclevel) return elt.toclevel;
+    if (elt.toclevel)
+      if (elt.toclevel==='none')
+	return elt.toclevel=false;
+      else return elt.toclevel;
     var attrval=
-      elt.getAttributeNS('toclevel','http://sbooks.net')||
-      elt.getAttribute('toclevel')||elt.getAttribute('data-toclevel');
-    if (attrval) return parseInt(attrval);
+      ((elt.getAttributeNS)&&
+       (elt.getAttributeNS('toclevel','http://sbooks.net')))||
+      (elt.getAttribute('toclevel'))||
+      (elt.getAttribute('data-toclevel'));
+    if (attrval)
+      if (attrval==='none') return false;
+      else return parseInt(attrval);
     if (elt.className) {
       var cname=elt.className;
       var tocloc=cname.search(/sbook\dhead/);
@@ -238,8 +246,11 @@ function sbookScan(root,docinfo){
       return;
     if ((toclevel)&&(!(child.toclevel))) child.toclevel=toclevel;
     if (child.id) {
-      var tags=child.getAttributeNS('tags','http://sbooks.net/')||
-	child.getAttribute('tags')||child.getAttribute('data-tags');
+      var tags=
+	((child.getAttributeNS)&&
+	 (child.getAttributeNS('tags','http://sbooks.net/')))||
+	(child.getAttribute('tags'))||
+	(child.getAttribute('data-tags'));
       if (tags) info.tags=tags.split(';');}
     if (toclevel)
       handleHead
