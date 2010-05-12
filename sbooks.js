@@ -308,10 +308,11 @@ var sbook_trace_gestures=false;
 
 function sbook_trace(handler,cxt)
 {
-  if (cxt.target)
+  var target=fdjtUI.T(cxt);
+  if (target)
     fdjtLog
       ("[%f] %s %o in %o: mode%s=%o, target=%o, head=%o preview=%o",
-       fdjtElapsedTime(),handler,cxt,cxt.target,
+       fdjtElapsedTime(),handler,cxt,target,
        ((sbook_preview)?("(preview)"):""),sbook_mode,
        sbook_target,sbook_head,sbook_preview);
   else fdjtLog
@@ -853,8 +854,8 @@ function sbookGetSettings()
   sbookGetScanSettings();
   // Get the settings for automatic pagination
   sbookGetPageSettings();
-  sbook_max_excerpt=fdjtDOM.getMeta("SBOOKMAXEXCERPT",false)
-  var sbooksrv=fdjtDOM.getMeta("SBOOKSERVER",true);
+  sbook_max_excerpt=fdjtDOM.getMeta("SBOOKMAXEXCERPT")
+  var sbooksrv=fdjtDOM.getMeta("SBOOKSERVER");
   if (sbooksrv) sbook_server=sbooksrv;
   else if (fdjtState.getCookie["SBOOKSERVER"])
     sbook_server=fdjtState.getCookie["SBOOKSERVER"];
@@ -1027,9 +1028,9 @@ function sbookApplySessionSettings()
   // This applies the current session settings
   sbookSparseMode(sbookTestOpt("sparse","rich"));
   sbookFlashMode(sbookTestOpt("flash","dull"));
-  var tocmax=fdjtDOM.getMeta("SBOOKTOCMAX",true);
+  var tocmax=fdjtDOM.getMeta("SBOOKTOCMAX");
   if (tocmax) sbook_tocmax=parseInt(tocmax);
-  var sbookhelp=fdjtDOM.getMeta("SBOOKHELP",true);
+  var sbookhelp=fdjtDOM.getMeta("SBOOKHELP");
   if (sbookhelp) sbook_help_on_startup=true;
   sbookPageView(sbookTestOpt("page","scroll"));
   sbookInterfaceMode(sbook_interaction);
@@ -1101,7 +1102,7 @@ function sbookSetupGlossServer()
   if ((sbook_server) && (domain===sbook_server))
     return;
   else if (sbook_server) {
-    var common_suffix=fdjtCommonSuffix(sbook_server,domain,'.');
+    var common_suffix=fdjtString.commonSuffix(sbook_server,domain,'.');
     if (common_suffix) {
       if (common_suffix.indexOf('.')>0) {
 	if (sbook_trace_network)
@@ -1154,7 +1155,7 @@ function sbookAddQRIcons()
       "URI="+encodeURIComponent(sbook_docuri||sbook_refuri)+
       ((id)?("&FRAG="+head.id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
-    var qricon=fdjtImage(qrhref,"sbookqricon");
+    var qricon=fdjtDOM.Image(qrhref,".sbookqricon");
     fdjtDOM.prepend(head,qricon);}
 }
 
@@ -1425,7 +1426,7 @@ function sbookUserSetup()
   fdjtID("SBOOKUSERNAME").innerHTML=username;
   if (fdjtID("SBOOKMARKUSER")) fdjtID("SBOOKMARKUSER").value=sbook_user;
   if (fdjtID("SBOOKMARKFORM"))
-    fdjtID("SBOOKMARKFORM").onsubmit=fdjtForm_onsubmit;
+    fdjtID("SBOOKMARKFORM").onsubmit=fdjtAjax.onsubmit;
   if (sbook_user_img) {
     if (fdjtID("SBOOKMARKIMAGE")) fdjtID("SBOOKMARKIMAGE").src=sbook_user_img;
     if (fdjtID("SBOOKUSERPIC")) fdjtID("SBOOKUSERPIC").src=sbook_user_img;}

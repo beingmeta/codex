@@ -120,63 +120,6 @@ function sbookStaticNavHUD(eltspec,root_info)
   return div;
 }
 
-function createSBOOKHUD()
-{
-  var hud=fdjtID("SBOOKHUD");
-  if (hud) return hud;
-  else {
-    var toc_button=
-      fdjtImage(sbicon("CompassIcon40x40.png"),
-		"#SBOOKTOCBUTTON.hudbutton",
-		"toc","navigate table of contents");
-    toc_button.onclick=sbookTOCButton_onclick;
-    var search_button=
-      fdjtImage(sbicon("TagSearch40x40.png"),
-		"#SBOOKSEARCHBUTTON.hudbutton",
-		"search","search the content using semantic tags");
-    search_button.onclick=sbookSearchButton_onclick;
-    var dash_button=
-      fdjtImage(sbicon("sbooksappicon40x40.png"),".hudbutton.app","app",
-		"Click for Help, settings, book description, etc");
-    dash_button.onclick=sbookDashButton_onclick;
-    if (sbook_interaction==='mouse') {
-      dash_button.onmouseover=fdjtDOM.classAdder("SBOOKDASH","hover");
-      dash_button.onmouseout=fdjtDOM.classDropper("SBOOKDASH","hover");}
-    
-    var glosses_button=
-      fdjtImage(sbicon("sbookspeople40x40.png"),
-		"#SBOOKGLOSSESBUTTON.hudbutton","glosses",
-		"Click to browse glosses for this book");
-    glosses_button.onclick=sbookGlossesButton_onclick;
-    
-    var console=fdjtDOM("div#SBOOKCONSOLE.sbookconsole.hudblock");
-    console.innerHTML=sbook_consoletext;
-
-    var markhud=
-      fdjtDOM("div#SBOOKMARKHUD.hudblock",
-	      sbookCreateMarkHUD("div#SBOOKMARK"),
-	      fdjtDOM("div#SBOOKMARKGLOSSES.sbookglosses"));
-
-    var headhud=
-      fdjtDOM("div#SBOOKHEAD",toc_button,search_button,
-	      fdjtDOM("div#SBOOKTOC.hudblock"),
-	      sbookCreateSearchHUD("div#SBOOKSEARCH.hudblock.sbooksearch"),
-	      sbookCreateGlossesHUD(),
-	      sbookCreateDash(),
-	      markhud,
-	      console);
-    var foothud=fdjtDOM("div#SBOOKFOOT",dash_button,glosses_button,
-			fdjtDOM("div#SBOOKTAGS.hudblock.tags"));
-      
-    sbookHead=headhud; sbookFoot=foothud;
-    hud=fdjtDOM("div#SBOOKHUD",headhud,foothud);
-    
-    sbookHUD=hud; hud.sbookui=true; hud.title="";
-    hud.setAttribute("flatwidth","0");
-    
-    return hud;}
-}
-
 function sbookInitSocialHUD()
 {
   var glosses_button=fdjtID("SBOOKGLOSSESBUTTON");
@@ -506,7 +449,7 @@ function sbookUpdateAboutInfo()
   var cover=fdjtDOM.getLink("cover");
   if (cover) {
     var cover_elt=fdjtDOM.$(".cover",about)[0];
-    if (cover_elt) fdjtDOM(cover_elt,fdjtImage(cover));}
+    if (cover_elt) fdjtDOM(cover_elt,fdjtDOM.Image(cover));}
 }
 
 /* Previewing */
@@ -580,8 +523,9 @@ var sbook_preview_icon="binoculars24x24.png";
 
 function sbookPreviewIcon(img)
 {
-  var img=fdjtImage(sbicon(img||"binoculars24x24.png"),"previewicon","[pre]",
-		    "preview: click or hold mouse button or control key");
+  var img=fdjtDOM.Image
+    (sbicon(img||"binoculars24x24.png"),".previewicon","[pre]",
+     "preview: click or hold mouse button or control key");
   fdjtDOM.addListener(img,"mouseover",sbookTOC_onmouseover);
   fdjtDOM.addListener(img,"mouseout",sbookTOC_onmouseout);
   fdjtDOM.addListener(img,"mousedown",fdjtDOM.cancel);

@@ -119,7 +119,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
 	while (i<lim) {
 	  var tags=glosses[i++].tags;
 	  var j=0; var jlim=tags.length;
-	  while (j<jlim) fdjtInsert(tagcues,tags[j++]);}}
+	  while (j<jlim) fdjtKB.add(tagcues,tags[j++]);}}
       info=info.head;}}
   // Set the selected text as an excerpt
   if ((excerpt)&&(excerpt.length>sbook_min_excerpt)) 
@@ -158,18 +158,14 @@ function sbookCreateMarkHUD(classinfo)
 
   var detail_input=fdjtDOM("TEXTAREA.autoprompt#SBOOKMARKDETAIL");
   var detail_elt=
-    fdjtDOM("div.detail.marktab",
-	    // fdjtImage(sbicon("detailsicon32x32.png"),"head","details"),
-	    fdjtDOM("div.content",detail_input));
+    fdjtDOM("div.detail.marktab",fdjtDOM("div.content",detail_input));
   detail_input.name="DETAIL";
   detail_input.prompt="Enter detailed comments";
 
   var xrefs_input=fdjtInput("TEXT","XREFS","",".xref.autoprompt");
   xrefs_input.setAttribute("prompt","enter external URLs");
   var xrefs_elt=
-    fdjtDOM("div.xrefs.marktab",
-	    // fdjtImage(sbicon("outlink32x32.png"),"head","REFS"),
-	    fdjtDOM("div.content",xrefs_input));
+    fdjtDOM("div.xrefs.marktab",fdjtDOM("div.content",xrefs_input));
   xrefs_input.onkeypress=sbooksXRefs_onkeypress;
 
   var login_button=((sbook_user)?(false):(fdjtDOM("span.loginbutton","login")));
@@ -198,11 +194,12 @@ function sbookCreateMarkHUD(classinfo)
 				  "Save this gloss and publish it to any enabled overlays/walls/etc")));
   var grid=
     fdjtDOM("div.markform",
-	    fdjtDOM("div.lhs",fdjtImage(image_uri,"#SBOOKMARKIMAGE.userpic"),
+	    fdjtDOM("div.lhs",
+		    fdjtDOM.Image(image_uri,"#SBOOKMARKIMAGE.userpic"),
 		    fdjtDOM("div.controls",sbookMarkControls()),
-		    fdjtImage(sbicon("detailsicon32x32.png"),"head","detail"),
-		    fdjtImage(sbicon("outlink48x48.png"),"head","xrefs"),
-		    fdjtImage(sbicon("TagIcon32x32.png"),"head","tags")),
+		    fdjtDOM.Image(sbicon("detailsicon32x32.png"),"head","detail"),
+		    fdjtDOM.Image(sbicon("outlink48x48.png"),"head","xrefs"),
+		    fdjtDOM.Image(sbicon("TagIcon32x32.png"),"head","tags")),
 	    fdjtDOM("div.msg",msg_input),
 	    metastuff,sbookMarkTagTab(),detail_elt,xrefs_elt);
   
@@ -252,7 +249,7 @@ function sbookMark_onsubmit(evt)
     fdjtTrace("Initializing text to %o from %o",text,elt);
     fdjtID("SBOOKMARKINPUT").value=
       ((text.length>60)?((text.slice(0,60))+"..."):(text));}
-  return fdjtForm_onsubmit(evt);
+  return fdjtAjax.onsubmit(evt);
 }
 
 /* Mark form design elements */
@@ -294,8 +291,8 @@ function sbookMarkPickFeed()
 function sbookMarkFeed_onchange(evt)
 {
   var checkspan=fdjtID("SBOOKMARKPRIVATE");
-  var overlays=evt.target;
-  var newfeed=evt.target.value;
+  var overlays=fdjtUI.T(evt);
+  var newfeed=overlays.value;
   var info=sbookOIDs.map[newfeed];
   var checkstate;
   if (newfeed===':{}') checkstate=true;
@@ -309,14 +306,14 @@ function sbookMarkFeed_onchange(evt)
 function sbookMarkControls()
 {
   var tags_button=
-    fdjtImage(sbicon("TagIcon16x16.png"),"button","tags",
-	      "add or edit descriptive tags");
+    fdjtDOM.Image(sbicon("TagIcon16x16.png"),"button","tags",
+		  "add or edit descriptive tags");
   var detail_button=
-    fdjtImage(sbicon("detailsicon16x16.png"),"button","detail",
-	      "add extended comments");
+    fdjtDOM.Image(sbicon("detailsicon16x16.png"),"button","detail",
+		  "add extended comments");
   var xrefs_button=
-    fdjtImage(sbicon("outlink16x16.png"),"button","xrefs",
-	      "add or edit external references");
+    fdjtDOM.Image(sbicon("outlink16x16.png"),"button","xrefs",
+		  "add or edit external references");
   tags_button.onclick=sbookMarkMode_onclick_handler("tag");
   detail_button.onclick=sbookMarkMode_onclick_handler("detail");
   xrefs_button.onclick=sbookMarkMode_onclick_handler("xrefs");
@@ -331,7 +328,7 @@ function sbookMarkPush()
   var span1=fdjtDOM("span.checkspan#SBOOKCANPOST","push",check1);
   var span2=fdjtDOM("span.checkspan","push",check2);
   span1.onclick=fdjtUI.Checkspan.onclick;
-  var a1=fdjtDOM.Anchor("A","http://sbooks.net/fb/settings/prefs",span2);
+  var a1=fdjtDOM.Anchor("http://sbooks.net/fb/settings/prefs","A",span2);
   a1.id="SBOOKCANTPOST";
   return new Array(span1,a1);
 }
@@ -564,12 +561,12 @@ function sbookCreateLoginButton(uri,image,title)
 {
   var login_button=
     fdjtDOM.Anchor
-    ("A",((uri)?
-	  (uri+"?NEXT="+
-	   encodeURIComponent("http://sbooks.net/app/read?URI="+
-			      encodeURIComponent(window.location.href))):
-	  "javascript:alert('sorry, not yet implemented'); return false;"),
-     fdjtImage(sbicon(image),"button"));
+    (((uri)?
+      (uri+"?NEXT="+
+       encodeURIComponent("http://sbooks.net/app/read?URI="+
+			  encodeURIComponent(window.location.href))):
+      "javascript:alert('sorry, not yet implemented'); return false;"),
+     "A",fdjtDOM.Image(sbicon(image),"button"));
   fdjtDOM.addClass(login_button,"login");
   if (!(uri)) fdjtDOM.addClass(login_button,"disabled");
   login_button.title=((uri)?(title):("(coming soon) "+title));
@@ -579,7 +576,6 @@ function sbookCreateLoginButton(uri,image,title)
 
 function sbookSetupMarkHUD(hud)
 {
-  fdjtLog("initializing mark hud %o",hud);
   var input=fdjtID("SBOOKMARKTAGINPUT");
   fdjtDOM.addListener(input,"keypress",sbookTagInput_onkeypress);
   fdjtDOM.addListener(input,"keyup",sbookTagInput_onkeyup);

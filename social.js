@@ -61,7 +61,7 @@ function sbookImportGlosses(data)
     var i=0; while (i<info.length) {
       var item=info[i++]; var slots=sbookOIDs.Import(item);
       if (!(slots.conversant)) {
-	fdjtInsert(sbook_conversants,slots.oid);
+	fdjtKB.add(sbook_conversants,slots.oid);
 	sbookAddSourceIcon(slots);
 	slots.conversant=true;}}}
   var ids=data['%ids'];
@@ -99,17 +99,23 @@ function sbook_add_gloss(id,entry)
   if (!(item.pushed)) {
     sbook_allglosses.push(entry);
     item.pushed=true;}
-  fdjtAdd(sbook_glosses_by_id,id,item);
+  fdjtKB.add(sbook_glosses_by_id,id,item);
   if (entry.tags) {
-    var tags=entry.tags;
+    var tags=entry.tags; var dterms=[];
     var k=0; while (k<tags.length) {
-      var tag=tags[k++];
-      sbook_index.add(item,tag,true,false,true,false);}}
+      var tag=tags[k++]; var dterm=tag;
+      if (typeof tag==='string')
+	if (tag.indexOf('|')>=0)
+	  dterm=document.knowlet.handleSubjectEntry(tag);
+	else dterm=document.knowlet.probe(tag)||tag;
+      dterms.push(dterm||tag);
+      sbook_index.add(item,dterm,true,false,true,false);
+      item.tags=dterms;}}
   else item.tags=[];
   item.taginfo=false;
   if (entry.user) {
     if (item!=entry) item.user=user;
-    fdjtAdd(sbook_glosses_by_user,user,item);}
+    fdjtKB.add(sbook_glosses_by_user,user,item);}
   var tstamp=entry.tstamp;
   if (tstamp>sbook_gloss_syncstamp) sbook_gloss_syncstamp=tstamp;
   if (fdjtID("SBOOKALLGLOSSES")) {

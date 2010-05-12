@@ -171,6 +171,7 @@ sbookTOC.onmouseover=function(evt){
   evt=evt||event;
   var target=fdjtDOM.T(evt);
   fdjtUI.CoHi.onmouseover(evt);
+  if ((evt.ctrlKey)||(evt.altKey)) return;
   if (fdjtDOM.isClickable(target)) return;
   if (!((fdjtDOM.hasParent(target,".spanbar"))||
 	(fdjtDOM.hasParent(target,".previewicon")))) {
@@ -199,6 +200,7 @@ sbookTOC.onmouseout=function(evt){
 sbookTOC.onmousedown=function(evt){
   evt=evt||event;
   sbook_mousedown=fdjtTime();
+  if ((evt.ctrlKey)||(evt.altKey)) return;
   var target=fdjtDOM.T(evt);
   fdjtUI.CoHi.onmouseout(evt);
   if (!((fdjtDOM.hasParent(target,".sectname"))||

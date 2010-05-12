@@ -51,9 +51,9 @@ function sbookCreateGlossesHUD(classinfo)
 {
   if (sbookGlossesHUD) return sbookGlossesHUD;
   var everyone_button=
-    fdjtImage(sbicon("sbookspeople40x40.png"),
-	      ".button.everyone.selected",
-	      "click to see all glosses");
+    fdjtDOM.Image(sbicon("sbookspeople40x40.png"),
+		  ".button.everyone.selected",
+		  "click to see all glosses");
   var allsources=fdjtDOM("div#SBOOKSOURCES.sbooksources",everyone_button);
   everyone_button.onclick=sbookEveryoneButton_onclick;
   allsources.onclick=sbookSources_onclick;
@@ -84,7 +84,7 @@ function sbookAddSourceIcon(info)
   else if (kind===':OVERDOC')
     pic=sbicon("sbooksoverdoc40x40.png");
   else pic=sbook;
-  icon=fdjtImage
+  icon=fdjtDOM.Image
     (pic,".button.source",info.name|info.kind,
      ("click to show/hide glosses from "+info.name));
   icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
@@ -107,6 +107,8 @@ function sbookEveryoneButton_onclick(evt)
     fdjtDOM.cancel(evt);
     return;}
   var selected=fdjtDOM.$(".selected",sources);
+  fdjtLog("Everyone click sources=%o glosses=%o selected=%o/%d",
+	  sources,glosses,selected,selected.length);
   fdjtDOM.toggleClass(selected,"selected");
   fdjtDOM.addClass(target,"selected");
   sbookSelectSources(summaries,false);
@@ -208,8 +210,8 @@ function sbookGlossmark(target,open)
   if (sources.length===1) imgsrc=(sbookOIDs.map[sources[0]].pic)||imgsrc;
   var glossmark=fdjtDOM
     ("span.glossmark",
-     fdjtImage(imgsrc,"big","comments"),
-     fdjtImage(sbicon("sbicon16x16.png"),"tiny","+"));
+     fdjtDOM.Image(imgsrc,"big","comments"),
+     fdjtDOM.Image(sbicon("sbicon16x16.png"),"tiny","+"));
   glossmark.onclick=sbookGlossmark_onclick;
   glossmark.onmousedown=fdjtDOM.cancel;
   glossmark.onmouseover=sbookGlossmark_onmouseover;
@@ -223,7 +225,7 @@ function sbookGlossmark(target,open)
       ((id)?("&FRAG="+id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var i=0; while (i<tags.length) qrhref=qrhref+"&TAGCUE="+tags[i++];
-    fdjtDOM.prepend(target,fdjtImage(qrhref,"sbookqricon"));}
+    fdjtDOM.prepend(target,fdjtDOM.Image(qrhref,"sbookqricon"));}
   if (target) {
     fdjtDOM.addClass(target,"glossed");
     fdjtDOM.prepend(target,glossmark);}
@@ -275,7 +277,7 @@ function sbookAlignGlossmark(hud,target)
 function sbookGlossmark_onclick(evt)
 {
   evt=evt||event||null;
-  var target=sbookGetRef(evt.target);
+  var target=sbookGetRef(fdjtUI.T(evt));
   if (sbook_glossmark_target===target)
     if (sbook_mode) sbookHUDMode(false);
     else sbookOpenGlossmark(target,false);
@@ -285,14 +287,14 @@ function sbookGlossmark_onclick(evt)
 function sbookGlossmark_onmouseover(evt)
 {
   evt=evt||event||null;
-  var target=sbookGetRef(evt.target)||sbookGetFocus(evt.target);
+  var target=sbookGetRef(fdjtUI.T(evt))||sbookGetFocus(fdjtUI.T(evt));
   fdjtDOM.addClass(target,"sbooklivespot");
 }
 
 function sbookGlossmark_onmouseout(evt)
 {
   evt=evt||event||null;
-  var target=sbookGetRef(evt.target)||sbookGetFocus(evt.target);
+  var target=sbookGetRef(fdjtUI.T(evt))||sbookGetFocus(fdjtUI.T(evt));
   fdjtDOM.dropClass(target,"sbooklivespot");
 }
 

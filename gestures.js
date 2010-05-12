@@ -283,15 +283,15 @@ function sbookGestureSetup()
 
 function sbookMouseGestureSetup()
 {
-  fdjtDOM.addListener(window,"scroll",sbook_onscroll);
-  fdjtDOM.addListener(window,"mouseup",sbook_onmouseup);
+  fdjtDOM.addListener(false,"scroll",sbook_onscroll);
+  fdjtDOM.addListener(false,"mouseup",sbook_onmouseup);
 
   fdjtDOM.addListener(document.body,"click",sbook_body_onclick);
 
- // For command keys
-  fdjtDOM.addListener(window,"keypress",sbook_onkeypress);
-  fdjtDOM.addListener(window,"keydown",sbook_onkeydown);
-  fdjtDOM.addListener(window,"keyup",sbook_onkeyup);
+  // For command keys
+  fdjtDOM.addListener(false,"keypress",sbook_onkeypress);
+  fdjtDOM.addListener(false,"keydown",sbook_onkeydown);
+  fdjtDOM.addListener(false,"keyup",sbook_onkeyup);
 }
 
 function sbookTouchGestureSetup()
