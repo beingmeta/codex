@@ -45,6 +45,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
      
 function sbookIndexTags(docinfo)
 {
+  var sbook_index=sBook.Index;
   /* One pass processes all of the inline DTerms and
      also separates out primary and auto tags. */
   for (var eltid in docinfo) {
@@ -62,7 +63,6 @@ function sbookIndexTags(docinfo)
       if ((tag.indexOf('|')>=0)) knowlet.handleSubjectEntry(tag);
       k++;}}
   var knowlet=document.knowlet||false;
-  if (!(sbook_index)) sbook_index=new KnowletIndex(knowlet);
   sbook_index.Tags=function(item){return docinfo[item].tags;};
   for (var eltid in docinfo) {
     var tags=docinfo[eltid].tags;
@@ -72,6 +72,7 @@ function sbookIndexTags(docinfo)
       var tag=tags[k++];
       sbook_index.add(eltid,tag,tags[tag]||1,knowlet);}}
 }
+sBook.Setup.indexTags=sbookIndexTags;
 
 /* Inline knowlets */
 
@@ -89,6 +90,7 @@ function sbookHandleInlineKnowlets(scanstate)
 
 function sbookIndexTechnoratiTags(kno)
 {
+  var sbook_index=sBook.Index;
   if (!(kno)) kno=knowlet;
   var anchors=document.getElementsByTagName("A");
   if (!(anchors)) return;
@@ -113,12 +115,13 @@ var sbook_tagscores=false;
 
 function sbookTagScores()
 {
+  var sbook_index=sBook.Index;
   if (sbook_tagscores) return sbook_tagscores;
   var tagscores={}; var tagfreqs={}; var alltags=[];
   var book_tags=sbook_index._all;
-  if (sbook_trace_clouds)
+  if (sBook.Trace.clouds)
     fdjtLog("[%f] Making full cloud over %d tags",
-	    fdjtElapsedTime(),book_tags.length);
+	    fdjtET(),book_tags.length);
   // The scores here are used to determine sizes in the cloud
   // A regular index reference counts as 1 and a prime reference counts
   //  as one more.

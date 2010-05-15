@@ -1,11 +1,11 @@
 <img src='http://static.beingmeta.com/graphics/CompassIcon40x40.png'
      alt='toc' title='click to navigate the book as a whole'
      class='hudbutton' id='SBOOKTOCBUTTON'
-     onclick='sbookHUDMode("toc")'/>
+     onclick='sBookMode("toc")'/>
 <img src='http://static.beingmeta.com/graphics/TagSearch40x40.png'
      alt='search' title='click to search tags within the book'
      class='hudbutton' id='SBOOKSEARCHBUTTON'
-     onclick='sbookHUDMode("searching")'/>
+     onclick='sBookMode("searching")'/>
 <div id='SBOOKTOC' class='hudblock'></div>
 <div id='SBOOKSEARCH' class='scrollhud sbooksearch'></div>
 <div id='SBOOKGLOSSES' class='sbookglosses scrollhud'>
@@ -29,11 +29,11 @@
   <img src='http://static.beingmeta.com/graphics/sbooksappicon40x40.png'
        alt='dash' title='Click for Help, settings, book description, etc'
        class='hudbutton' id='SBOOKDASHBUTTON'
-       onclick='sbookHUDToggle(sbook_last_dash)'/>
+       onclick='sBookMode.toggle(sbook.last_dash)'/>
   <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
        alt='glosses' title='Click to browse glosses overlaid on this book'
        class='hudbutton' id='SBOOKGLOSSESBUTTON'
-       onclick='sbookHUDToggle("glosses")'/>
+       onclick='sBookMode.toggle("glosses")'/>
   <div class='hudblock tags' id='SBOOKTAGS'></div>
 </div>
 <div id='SBOOKMARKHUD' class='hudblock'></div>

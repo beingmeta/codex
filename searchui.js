@@ -33,9 +33,11 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
+var sbook_noisy_tooltips=false;
+
 function sbookShowSearch(result)
 {
-  if (!(result)) result=sbook_query;
+  if (!(result)) result=sbook.query;
   var results_div=fdjtDOM("div.sbooksummaries.scrollbody");
   sbookSetupSummaryDiv(results_div);
   sbookShowSearchSummaries(result,results_div);
@@ -83,37 +85,37 @@ function sbookSearchInput_onkeypress(evt)
   if ((kc===13)||(ch===13)||(ch===59)) {
     var qstring=Knowlet.Query.tail(target.value);
     if (!(fdjtString.isEmpty(qstring))) {
-      var completeinfo=sbookQueryCloud(sbook_query);
+      var completeinfo=sbookQueryCloud(sbook.query);
       var completions=completeinfo.complete(qstring);
       if (completions.length) {
 	var query_base=Knowlet.Query.base(target.value);
 	var new_term=completeinfo.getValue(completions[0]);
 	var new_query=(query_base+new_term+";");
-	sbookSetQuery(new_query,true);}}
+	sBook.setQuery(new_query,true);}}
     fdjtDOM.cancel(evt);
     if ((ch===13)||
 	((sbook_search_gotlucky) && 
-	 (sbook_query._results.length>0) &&
-	 (sbook_query._results.length<=sbook_search_gotlucky))) {
-      sbookShowSearch(sbook_query);
-      sbookHUDMode("browsing");
+	 (sbook.query._results.length>0) &&
+	 (sbook.query._results.length<=sbook_search_gotlucky))) {
+      sbookShowSearch(sbook.query);
+      sBookMode("browsing");
       fdjtID("SBOOKSEARCHTEXT").blur();
       fdjtID("SBOOKSUMMARIES").focus();}
     else {
       /* Handle new info */
-      var completeinfo=sbookQueryCloud(sbook_query);
+      var completeinfo=sbookQueryCloud(sbook.query);
       completeinfo.complete("");}
     return false;}
   else if (ch==32) { /* Space */
     var qstring=Knowlet.Query.tail(target.value);
-    var completeinfo=sbookQueryCloud(sbook_query);
+    var completeinfo=sbookQueryCloud(sbook.query);
     var completions=completeinfo.complete(qstring);
     if (completions.prefix!==qstring) {
       target.value=Knowlet.Query.base(target.value)+';'+completions.prefix;
       fdjtDOM.cancel(evt);
       return;}}
   else {
-    var completeinfo=sbookQueryCloud(sbook_query);
+    var completeinfo=sbookQueryCloud(sbook.query);
     _sbook_searchupdate=
       setTimeout(function(){
 	  completeinfo.complete(Knowlet.Query.tail(target.value));},
@@ -141,8 +143,8 @@ function sbookSearchUpdate(input,cloud)
   if (!(input)) input=fdjtID("SBOOKSEARCHTEXT");
   var base=Knowlet.Query.base(input.value);
   var end=Knowlet.Query.tail(input.value);
-  sbookSetQuery(Knowlet.Query.string2query(base));
-  sbookQueryCloud(sbook_query).complete(end);
+  sBook.setQuery(Knowlet.Query.string2query(base));
+  sbookQueryCloud(sbook.query).complete(end);
 }
 
 function sbookSearchInput_onfocus(evt)
@@ -151,7 +153,7 @@ function sbookSearchInput_onfocus(evt)
    var input=fdjtDOM.T(evt);
   fdjtUI.AutoPrompt.onfocus(evt);
   sbook_search_focus=true;
-  sbookHUDMode("searching");
+  sBookMode("searching");
   sbookSearchUpdate(input);
 }
 
@@ -166,6 +168,7 @@ function sbookSearchInput_onblur(evt)
 
 function sbookDTermCompletion(term,title)
 {
+  var sbook_index=sBook.Index;
   if ((typeof term === "string") && (term[0]==="\u00A7")) {
     var showname=term;
     if (showname.length>17) {
@@ -278,13 +281,13 @@ function sbookCloud_onclick(evt)
   var target=fdjtDOM.T(evt);
   var completion=fdjtDOM.getParent(target,".completion");
   if (completion) {
-    var cinfo=sbook_query._cloud;
+    var cinfo=sbook.query._cloud;
     var value=cinfo.getValue(completion);
     _sbook_add_searchtag(value);
     fdjtDOM.cancel(evt);}
   else if (fdjtDOM.inherits(target,".resultcounts")) {
-    sbookShowSearch(sbook_query);
-    sbookHUDMode("browsing");
+    sbookShowSearch(sbook.query);
+    sBookMode("browsing");
     fdjtID("SBOOKSEARCHTEXT").blur();
     fdjtID("SBOOKSUMMARIES").focus();
     fdjtDOM.cancel(evt);}
@@ -311,21 +314,22 @@ function _sbook_add_searchtag(value)
       newval=curval.slice(0,endsemi)+";"+value+';';
     else newval=curval+value+";";
   else newval=value+";";
-  sbookSetQuery(newval);
+  sBook.setQuery(newval);
   if ((sbook_search_gotlucky) && 
-      (sbook_query._results.length>0) &&
-      (sbook_query._results.length<=sbook_search_gotlucky)) {
-    // fdjtTrace("Search got lucky: %o",sbook_query);
-    sbookShowSearch(sbook_query);
+      (sbook.query._results.length>0) &&
+      (sbook.query._results.length<=sbook_search_gotlucky)) {
+    // fdjtTrace("Search got lucky: %o",sbook.query);
+    sbookShowSearch(sbook.query);
     fdjtID("SBOOKSEARCHTEXT").blur();
-    sbookHUDMode("browsing");}
+    sBookMode("browsing");}
   else fdjtID("SBOOKSEARCHTEXT").focus();
 }
 
 function sbookMakeCloud(dterms,scores,freqs,noscale)
 {
+  var sbook_index=sBook.Index;
   var start=new Date();
-  if (sbook_trace_clouds)
+  if (sBook.Trace.clouds)
     fdjtLog("[%fs] Making cloud from %d dterms using scores=%o and freqs=%o",
 	    fdjtET(),dterms.length,scores,freqs);
   var spans=fdjtDOM("span");  
@@ -370,7 +374,7 @@ function sbookMakeCloud(dterms,scores,freqs,noscale)
     var span=sbookDTermCompletion(dterm,title);
     if (freq===1) fdjtDOM.addClass(span,"singleton");
     if ((freqs)&&(!(noscale))) {
-      var relfreq=((freq/freqs._count)/(count/sbook_info._eltcount));
+      var relfreq=((freq/freqs._count)/(count/sBook.Info.map._eltcount));
       var scaling=Math.sqrt(relfreq);
       var fontscale=100+(scaling*100);
       sumscale=fontscale+sumscale; nspans++;
@@ -378,7 +382,7 @@ function sbookMakeCloud(dterms,scores,freqs,noscale)
       /*
       fdjtLog("For %o, freq=%o fc=%o relfreq=%o count=%o ec=%o fontscale=%o",
 	      dterm,freq,freqs._count,relfreq,count,
-	      sbook_info._eltcount,fontscale);*/
+	      sBook.Info.map._eltcount,fontscale);*/
       span.style.fontSize=fontscale+"%";}
     fdjtDOM(spans,span,"\n");}
   if ((freqs)&&(!(noscale))) {
@@ -392,9 +396,9 @@ function sbookMakeCloud(dterms,scores,freqs,noscale)
      " of completions.  ");
   fdjtDOM.prepend(completions,maxmsg);
   var end=new Date();
-  if (sbook_trace_clouds)
+  if (sBook.Trace.clouds)
     fdjtLog("[%f] Made cloud for %d dterms in %f seconds",
-	    fdjtElapsedTime(),dterms.length,
+	    fdjtET(),dterms.length,
 	    (end.getTime()-start.getTime())/1000);
 
   return completions;

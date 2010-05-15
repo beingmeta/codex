@@ -50,6 +50,7 @@ var sbook_glosses_by_id={};
 
 function sbookImportGlosses(data)
 {
+  var sbook_index=sBook.Index;
   if (!(data))
     if (typeof sbook_gloss_data === "undefined") {
       fdjtLog("No gloss data available");
@@ -59,13 +60,13 @@ function sbookImportGlosses(data)
   var info=data['%info'];
   if ((info) && (info.length)) {
     var i=0; while (i<info.length) {
-      var item=info[i++]; var slots=sbookOIDs.Import(item);
+      var item=info[i++]; var slots=sBook.OIDs.Import(item);
       if (!(slots.conversant)) {
 	fdjtKB.add(sbook_conversants,slots.oid);
 	sbookAddSourceIcon(slots);
 	slots.conversant=true;}}}
   var ids=data['%ids'];
-  if (sbook_trace_network)
+  if (sBook.Trace.network)
     fdjtLog("Importing gloss data %o for %d ids: %o",data,ids.length,ids);
   if ((ids) && (ids.length)) {
     var i=0; while (i<ids.length) {
@@ -77,10 +78,10 @@ function sbookImportGlosses(data)
       var need_glossmark=false;
       var j=0; while (j<entries.length) {
 	var entry=entries[j++];
-	var gloss=sbook_add_gloss(id,entry);
+	var gloss=sbook_add_gloss(id,entry,sbook_index);
 	if (!(entry.noglossmark)) need_glossmark=true;
 	if (element.sbookloc) gloss.location=element.sbookloc;}
-      if (need_glossmark) sbookGlossmark(element);}}
+      if (need_glossmark) sBook.Glossmark(element);}}
   sbook_allglosses.sort(function(x,y) {
       if ((x.id)<(y.id)) return -1;
       else if ((x.id)==(y.id))
@@ -90,10 +91,11 @@ function sbookImportGlosses(data)
       else return 1;});
 }
 
-function sbook_add_gloss(id,entry)
+function sbook_add_gloss(id,entry,index)
 {
+  if (!(index)) index=sBook.Index;
   if (!(entry.frag)) entry.frag=id;
-  var item=sbookOIDs.Import(entry);
+  var item=sBook.OIDs.Import(entry);
   var user=entry.user;
   var feed=entry.feed;
   if (!(item.pushed)) {
@@ -109,7 +111,7 @@ function sbook_add_gloss(id,entry)
 	  dterm=document.knowlet.handleSubjectEntry(tag);
 	else dterm=document.knowlet.probe(tag)||tag;
       dterms.push(dterm||tag);
-      sbook_index.add(item,dterm,true,false,true,false);
+      index.add(item,dterm,true,false,true,false);
       item.tags=dterms;}}
   else item.tags=[];
   item.taginfo=false;
@@ -161,12 +163,12 @@ function sbookNewGlosses(glosses,winarg)
   form.reset();
   fdjtDOM.addListener
     (fdjtID("SBOOKMARKCLOUD"),"click",fdjtUI.Checkspan.onclick);
-  win.sbookHUDMode(false);
+  win.sBookMode(false);
 }
 
 function sbookJSONPglosses(glosses)
 {
-  if (sbook_trace_network)
+  if (sBook.Trace.network)
     fdjtLog("Got new glosses (probably) from JSONP call");
   sbookNewGlosses(glosses);
 }

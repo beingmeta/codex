@@ -253,6 +253,26 @@ div#SBOOKHUD div.scrollhud div.scrollbody {
   max-height: 500px;
   overflow: auto;}
 
+div#SBOOKHUD div.scrollhud.hover {
+    display: block; opacity: 0.8; max-height: 60px;}
+div#SBOOKHUD div.scrollhud.hover div.scrollbody {
+    display: none;}
+div#SBOOKHUD div.scrollhud.flash {
+    opacity: 0.8; display: block; max-height: 60px;}
+body.hudup div#SBOOKHUD div.scrollhud {
+    opacity: 0.5; max-height: 80%;}
+body.hudup div#SBOOKHUD div.scrollhud.hover { display: none;}
+
+div#SBOOKHUD.glosses div.scrollhud.hover div.scrollbody,
+div#SBOOKHUD.browsing div.scrollhud.hover div.scrollbody,
+div#SBOOKHUD.help div.scrollhud.hover div.scrollbody,
+div#SBOOKHUD.login div.scrollhud.hover div.scrollbody,
+div#SBOOKHUD.about div.scrollhud.hover div.scrollbody,
+div#SBOOKHUD.device div.scrollhud.hover div.scrollbody,
+div#SBOOKHUD.sbookapp div.scrollhud.hover div.scrollbody,
+div#SBOOKHUD.dashtoc div.scrollhud.hover div.scrollbody {
+    display: block;}
+
 /* The TOC/Nav HUD */
 
 div#SBOOKHUD.toc div.hudblock#SBOOKTOC {

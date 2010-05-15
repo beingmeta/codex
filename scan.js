@@ -40,7 +40,7 @@ function sbookScan(root,docinfo){
     if (this instanceof sbookScan)
       docinfo=this;
     else docinfo=new sbookScan();
-  if (!(root)) root=sbook_root||document.body;
+  if (!(root)) root=sbook.root||document.body;
   var start=new Date();
   docinfo._root=root;
   if (!(root.id)) root.id="SBOOKROOT";

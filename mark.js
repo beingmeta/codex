@@ -37,7 +37,6 @@ var sbooks_glossmark_version=parseInt("$Revision$".slice(10,-1));
 
 // This is the target for which the mark HUD has been set
 var sbook_mark_target=false;
-var sbook_trace_gloss=false;
 
 // This is the completions object for the mark cloud
 var sbook_mark_cloud=false;
@@ -49,31 +48,31 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   if (!(target))
     if ((origin)&&(origin.id))
       target=fdjtID(origin.id);
-    else target=sbook_target;
+    else target=sbook.target;
   if (!(sbook_mark_cloud))
     fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud());
-  var refuri=sbookGetRefURI(target);
-  if (sbook_trace_gloss)
+  var refuri=sBook.getRefURI(target);
+  if (sBook.Trace.mark)
     fdjtLog("Setting up gloss HUD for %o from %o st=%o excerpt=%o",
-	    target,origin,sbook_target,excerpt);
+	    target,origin,sbook.target,excerpt);
   if (sbook_mark_target===target) {
     /* If the HUD is already, initialized for the target, just update
        the excerpt */
-    if (sbook_trace_gloss)
+    if (sBook.Trace.mark)
       fdjtLog("Just updating gloss HUD with excerpt %o",excerpt);
     if ((excerpt)&&(excerpt.length>sbook_min_excerpt))
       sbookSetMarkExcerpt(excerpt);
     return;}
   sbook_mark_target=target;
   var info=((target) &&
-	    ((sbookInfo(target)) ||
-	     (sbookInfo(sbookGetHead(target)))));
+	    ((sBook.Info(target)) ||
+	     (sBook.Info(sBook.getHead(target)))));
   // Get information about the origin if it's a gloss
   //  If it's the user's gloss, we set it.  Otherwise,
   //   we set the relay field
-  var glossinfo=((origin)&&(origin.oid)&&sbookOIDs.map[origin.oid]);
+  var glossinfo=((origin)&&(origin.oid)&&sBook.OIDs.map[origin.oid]);
   if (glossinfo)
-    if (glossinfo.user===sbook_user) {
+    if (glossinfo.user===sbook.user) {
       fdjtID("SBOOKMARKOID").value=origin.oid;
       fdjtID("SBOOKMARKRELAY").value=glossinfo.relay||null;}
     else {
@@ -82,11 +81,11 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   fdjtID("SBOOKMARKFORM").setAttribute('mode','tag');
   fdjtID("SBOOKMARKREFURI").value=refuri;
   fdjtID("SBOOKMARKFRAGID").value=target.id;
-  fdjtID("SBOOKMARKSOURCE").value=sbookGetDocURI(target);
+  fdjtID("SBOOKMARKSOURCE").value=sBook.getDocURI(target);
   fdjtID("SBOOKMARKSYNC").value=sbook_gloss_syncstamp;
   fdjtID("SBOOKMARKTITLE").value=
     ((origin)&&(origin.title))||
-    ((target)&&(target===sbook_target)&&(sbook_target_title))||
+    ((target)&&(target===sbook.target)&&(sbook.target_title))||
     (sbook_get_titlepath(info))||"";
   if ((origin)&&(origin.oid))
     fdjtID("SBOOKMARKRELAY").value=origin.oid;
@@ -107,7 +106,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   /* Figure out the tagcues */
   var tagcues=[];
   /* Get tags from the item and the items above it */
-  {var info=sbook_info[target.id]; while (info) {
+  {var info=sBook.Info.map[target.id]; while (info) {
       var glosses=sbook_glosses_by_id[info.frag];
       /* Get the tags from the content */
       if ((info)&&(info.tags)&&(info.tags.length)) {
@@ -130,6 +129,8 @@ function sbookMarkHUDSetup(target,origin,excerpt)
 
 /* Making the MARK hud */
 
+function sbicon(name,suffix) {return sBook.graphics+name+(suffix||"");}
+
 function sbookCreateMarkHUD(classinfo)
 {
   // Bind lexically, for the closure below, just in case
@@ -143,11 +144,11 @@ function sbookCreateMarkHUD(classinfo)
   var source_elt=fdjtInput("HIDDEN","SOURCE","","#SBOOKMARKSOURCE");
   var excerpt_elt=fdjtInput("HIDDEN","EXCERPT","","#SBOOKMARKEXCERPT");
   var sync_input=fdjtInput("HIDDEN","SYNC","","#SBOOKMARKSYNC");
-  var user_elt=fdjtInput("HIDDEN","USER",sbook_user,"#SBOOKMARKUSER");
+  var user_elt=fdjtInput("HIDDEN","USER",sbook.user,"#SBOOKMARKUSER");
   var doctitle_elt=
     ((document.title)&&(fdjtInput("HIDDEN","DOCTITLE",document.title)));
 
-  var image_uri=(sbook_user_img)||(sbicon("remarkballoon50x50.png"));
+  var image_uri=(sbook.user_img)||(sbicon("remarkballoon50x50.png"));
   
   var relay_block=fdjtDOM("div.sbookrelayblock#SBOOKMARKRELAYBLOCK");
   var msg_input=fdjtInput("TEXT","MSG","",".autoprompt#SBOOKMARKINPUT");
@@ -168,7 +169,7 @@ function sbookCreateMarkHUD(classinfo)
     fdjtDOM("div.xrefs.marktab",fdjtDOM("div.content",xrefs_input));
   xrefs_input.onkeypress=sbooksXRefs_onkeypress;
 
-  var login_button=((sbook_user)?(false):(fdjtDOM("span.loginbutton","login")));
+  var login_button=((sbook.user)?(false):(fdjtDOM("span.loginbutton","login")));
   if (login_button) {
     login_button.title="click to login to sBooks";
     login_button.onclick=sbookLoginButton_onclick;}
@@ -221,18 +222,18 @@ function sbookCreateMarkHUD(classinfo)
   fdjtUI.AutoPrompt.setup(grid);
   // form.windowopts="width=500,height=400";
   form.onsubmit=
-    ((sbook_user)?(sbookMark_onsubmit):(sbookNoUserSubmit));
+    ((sbook.user)?(sbookMark_onsubmit):(sbookNoUserSubmit));
   form.oncallback=function(req) {
-    if (sbook_trace_network)
+    if (sBook.Trace.network)
       fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
     sbookImportGlosses(JSON.parse(req.responseText));
     fdjtDOM.dropClass(form,"submitting");
     /* Turn off the target lock */
-    sbookSetTarget(false);
+    sBook.setTarget(false);
     form.reset();
     fdjtDOM.addListener
     (fdjtID("SBOOKMARKCLOUD"),"click",fdjtUI.Checkspan.onclick);
-   win.sbookHUDMode(false);};
+   win.sBookMode(false);};
   // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
   // hideicon.onclick="fdjtDOM.addClass('SBOOKMARK','hidden')"; 
   var markdiv=fdjtDOM(classinfo||"div.mark",need_login,messages_elt,form);
@@ -280,7 +281,7 @@ function sbookMarkPickFeed()
     ("SELECT#SBOOKMARKOPTIONS",private_option,friendly_option);
   pickfeed.name='FEED';
   private_option.value=":{}";
-  friendly_option.value=sbook_user;
+  friendly_option.value=sbook.user;
   friendly_option.selected=true; friendly_option.defaultSelected=true;
   var i=0; var len=sbook_overlays.length;
   pickfeed.onchange=sbookMarkFeed_onchange;
@@ -293,10 +294,10 @@ function sbookMarkFeed_onchange(evt)
   var checkspan=fdjtID("SBOOKMARKPRIVATE");
   var overlays=fdjtUI.T(evt);
   var newfeed=overlays.value;
-  var info=sbookOIDs.map[newfeed];
+  var info=sBook.OIDs.map[newfeed];
   var checkstate;
   if (newfeed===':{}') checkstate=true;
-  else if (newfeed===sbook_user) checkstate=false;
+  else if (newfeed===sbook.user) checkstate=false;
   else if ((info)&&(info.private)) checkstate=true;
   else checkstate=false;
   if (checkspan.tagName==='INPUT') checkspan.checked=checkstate;
@@ -351,6 +352,7 @@ function sbookMarkTagTab()
 function sbookMarkCloud()
 {
   var seen={};
+  var sbook_index=sBook.Index;
   var completions=fdjtDOM("div.completions.checkspans");
   completions._seen=seen;
   completions.onclick=fdjtUI.CheckSpan.onclick;
@@ -402,9 +404,9 @@ var _sbook_tagupdate=false;
 function sbookTagInput_onkeypress(evt)
 {
   evt=evt||event||null;
-  if (_sbook_tagupdate) {
-    clearTimeout(_sbook_tagupdate);
-    _sbook_tagupdate=false;}
+  if (sbook._tagupdate) {
+    clearTimeout(sbook._tagupdate);
+    sbook._tagupdate=false;}
   var ch=evt.charCode||evt.keyCode;
   var target=fdjtDOM.T(evt);
   if ((ch===13)||(ch===59)) {
@@ -434,9 +436,9 @@ function sbookTagInput_onkeypress(evt)
       fdjtDOM.cancel(evt);
       return;}}
   else {
-    _sbook_tagupdate=
+    sbook._tagupdate=
       setTimeout(function(){
-	  _sbook_tagupdate=false;
+	  sbook._tagupdate=false;
 	  sbook_mark_cloud.complete(target.value);},
 	_sbook_searchupdate_delay);}
 }
@@ -453,13 +455,13 @@ function sbookTagInput_onkeyup(evt)
   evt=evt||event||null;
   var kc=evt.keyCode;
   if ((kc===8)||(kc===45)) {
-    if (_sbook_tagupdate) {
-      clearTimeout(_sbook_tagupdate);
-      _sbook_tagupdate=false;}
+    if (sbook._tagupdate) {
+      clearTimeout(sbook._tagupdate);
+      sbook._tagupdate=false;}
     var target=fdjtDOM.T(evt);
-    _sbook_tagupdate=
+    sbook._tagupdate=
       setTimeout(function(){
-	  _sbook_tagupdate=false;
+	  sbook._tagupdate=false;
 	  sbook_mark_cloud.complete(target.value);},
 	_sbook_searchupdate_delay);}
 }
@@ -531,18 +533,17 @@ function sbookMarkForm_onclick(evt)
 /* Mark functions */
 
 function sbookMark(target,gloss,excerpt)
-
 {
   if (sbook_mark_target!==target) {fdjtID("SBOOKMARKFORM").reset();}
   if ((gloss)&&(gloss.user))
     // Handle relays and edits
-    if (gloss.user===sbook_user)
+    if (gloss.user===sbook.user)
       sbookMarkHUDSetup(target,gloss||false,excerpt||false);
     else {
       sbookMarkHUDSetup(target,false,excerpt||false);
       if (gloss.gloss) fdjtID("SBOOKMARKRELAY").value=gloss.gloss;
       if (gloss.user) {
-	var userinfo=sbookOIDs.map[gloss.user];
+	var userinfo=sBook.OIDs.map[gloss.user];
 	var glossblock=
 	  fdjtDOM("div.sbookrelayblock","Relayed from ",
 		  fdjtDOM("span.user",userinfo.name),
@@ -551,7 +552,7 @@ function sbookMark(target,gloss,excerpt)
 	fdjtDOM.replace("SBOOKMARKRELAYBLOCK",glossblock);}}
   else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
   sbookOpenGlossmark(target,true);
-  sbookHUDMode("mark");
+  sBookMode("mark");
   fdjtID("SBOOKMARKINPUT").focus();
 }
 
@@ -581,6 +582,22 @@ function sbookSetupMarkHUD(hud)
   fdjtDOM.addListener(input,"keyup",sbookTagInput_onkeyup);
   fdjtDOM.addListener(input,"focus",sbookTagInput_onfocus);
   fdjtUI.AutoPrompt.setup(hud);
+}
+
+function sbook_get_titlepath(info,embedded)
+{
+  if (!(info))
+    if (document.title)
+      if (embedded)
+	return " // "+document.title;
+      else return "";
+    else return "";
+  else {
+    var next=(info.head)||false;
+    if (info.title)
+      return ((embedded) ? (" // ") : (""))+info.title+
+	sbook_get_titlepath(next,true);
+    else return sbook_get_titlepath(next,embedded);}
 }
 
 /* Emacs local variables

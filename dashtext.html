@@ -4,13 +4,13 @@
 <a href='http://sbooks.net/logout.fdcgi' class='logout'
    title='click to logout of the sBooks server'>
   logout</a>
-<a name='IDLINK' href='javascript:sbookHUDMode("login");'
+<a name='IDLINK' href='javascript:sBookMode("login");'
    title='click to login'
    class='userpic'>
 <img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
      alt='login' id='SBOOKUSERPIC'/></a>
   This sBook Belongs To:
-<a href='javascript:sbookHUDMode("login");' name='IDLINK'
+<a href='javascript:sBookMode("login");' name='IDLINK'
    id='SBOOKUSERNAME'>
 (click to log in)</a>
 <span class='applinks'>
@@ -30,27 +30,27 @@
 </div>
 <div class='tabbar' id='SBOOKTABS'>
 <span class='tab' contentid='APPABOUT'
-      onclick='sbookHUDMode("about"); fdjtUI.cancel(event); return false;'
+      onclick='sBookMode("about"); fdjtUI.cancel(event); return false;'
       title='information and links about this book'>
   About</span>
 <span class='tab' contentid='DASHTOC'
-      onclick='sbookHUDMode("dashtoc"); fdjtUI.cancel(event); return false;'
+      onclick='sBookMode("dashtoc"); fdjtUI.cancel(event); return false;'
       title='Table of Contents (static)'>
   Contents</span>
 <span class='tab' contentid='APPDEVICE'
-      onclick='sbookHUDMode("device"); fdjtUI.cancel(event); return false;'
+      onclick='sBookMode("device"); fdjtUI.cancel(event); return false;'
       title='alter appearance and interaction'>
  Device</span>
 <span class='tab' contentid='SBOOKSAPP'
-      onclick='sbookHUDMode("sbookapp"); fdjtUI.cancel(event); return false;'
+      onclick='sBookMode("sbookapp"); fdjtUI.cancel(event); return false;'
       title='manage how your sBook is enhanced with added layers'>
  sBooks</span>
 <span class='tab' contentid='APPLOGIN'
-      onclick='sbookHUDMode("login"); fdjtUI.cancel(event); return false;'
+      onclick='sBookMode("login"); fdjtUI.cancel(event); return false;'
       title='login to sBooks'>
   Login</span>
 <span class='tab' contentid='APPHELP'
-      onclick='sbookHUDMode("help"); fdjtUI.cancel(event); return false;'
+      onclick='sBookMode("help"); fdjtUI.cancel(event); return false;'
       title='how to use this sBook'>
   <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png'
        alt='Help'/></span>

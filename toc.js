@@ -175,27 +175,27 @@ sbookTOC.onmouseover=function(evt){
   if (fdjtDOM.isClickable(target)) return;
   if (!((fdjtDOM.hasParent(target,".spanbar"))||
 	(fdjtDOM.hasParent(target,".previewicon")))) {
-    if (sbook_preview) sbookSetPreview(false);
+    if (sbook.preview) sBook.Preview(false,true);
     return;}
-  var ref=sbookGetRef(target);
-  if (sbook_preview) {
-    if (ref===sbook_preview) {}
-    else if (ref) sbookSetPreview(ref);
-    else sbookSetPreview(false);
+  var ref=sBook.getRef(target);
+  if (sbook.preview) {
+    if (ref===sbook.preview) {}
+    else if (ref) sBook.Preview(ref,true);
+    else sBook.Preview(false,true);
     fdjtDOM.cancel(evt);}
   else if (ref) {
-    sbookSetPreview(ref);
+    sBook.Preview(ref,true);
     fdjtDOM.cancel(evt);}
   else {
-    sbookSetPreview(false);
+    sBook.Preview(false,true);
     fdjtDOM.cancel(evt);}};
 
 sbookTOC.onmouseout=function(evt){
   evt=evt||event;
   var target=fdjtDOM.T(evt);
   fdjtUI.CoHi.onmouseout(evt);
-  var ref=sbookGetRef(target);
-  if (ref) sbookSetPreview(false);};
+  var ref=sBook.getRef(target);
+  if (ref) sBook.Preview(false,true);};
 
 sbookTOC.onmousedown=function(evt){
   evt=evt||event;
@@ -206,57 +206,56 @@ sbookTOC.onmousedown=function(evt){
   if (!((fdjtDOM.hasParent(target,".sectname"))||
 	(fdjtDOM.hasParent(target,".sbooksummaries"))))
     return;
-  var ref=sbookGetRef(target);
-  if (ref) sbookSetPreview(ref);};
+  var ref=sBook.getRef(target);
+  if (ref) sBook.Preview(ref,true);};
 
 sbookTOC.onmouseup=function(evt){
   evt=evt||event;
-  if ((sbook_preview)||(sbook_preview_target))
-    sbookSetPreview(false);
+  if ((sbook.preview)||(sbook.preview_target))
+    sBook.Preview(false,true);
   fdjtDOM.cancel(evt);};
 
 sbookTOC.onclick=function(evt){
   evt=evt||event;
-  fdjtLog("sbm=%o t=%o",sbook_mousedown,fdjtTime());
   if ((sbook_mousedown)&&
-      ((fdjtTime()-sbook_mousedown)>sbook_hold_threshold)) {
+      ((fdjtTime()-sbook_mousedown)>sBookUI.holdThreshold)) {
     sbook_mousedown=false;
     fdjtDOM.cancel(evt);
     return false;}
   var target=fdjtDOM.T(evt);
-  var ref=sbookGetRef(target);
+  var ref=sBook.getRef(target);
   if (!(ref)) return;
-  if (sbook_preview) sbookPreview(false);
-  sbookGoTo(ref);
-  var info=sbookInfo(ref);
-  if ((info.sub)&&(info.sub.length>1)) sbookHUDMode("toc");
-  else sbookHUDMode(false);
+  if (sbook.preview) sBook.Preview(false);
+  sBook.GoTo(ref);
+  var info=sBook.Info(ref);
+  if ((info.sub)&&(info.sub.length>1)) sBookMode("toc");
+  else sBookMode(false);
   fdjtDOM.cancel(evt);};
 
 sbookTOC.oneclick=function(evt){
   evt=evt||event;
-  if (sbook_preview) return;
+  if (sbook.preview) return;
   var target=fdjtDOM.T(evt);
-  var ref=sbookGetRef(target);
-  if (sbook_preview===ref) sbookPreview(false);
-  else if (ref) sbookPreview(ref);
-  else if (sbook_preview) sbookPreview(false);
+  var ref=sBook.getRef(target);
+  if (sbook.preview===ref) sBook.Preview(false);
+  else if (ref) sBook.Preview(ref);
+  else if (sbook.preview) sBook.Preview(false);
   else {}
   fdjtDOM.cancel(evt);};
 
 sbookTOC.onholdclick=function(evt){
   evt=evt||event;
   if ((sbook_mousedown)&&
-      ((fdjtTime()-sbook_mousedown)>sbook_hold_threshold)) {
+      ((fdjtTime()-sbook_mousedown)>sBookUI.holdThreshold)) {
     sbook_mousedown=false;
     fdjtDOM.cancel(evt);
     return false;}
   var target=fdjtDOM.T(evt);
-  var ref=sbookGetRef(target);
+  var ref=sBook.getRef(target);
   if (!(ref)) return;
-  sbookGoTo(ref);
-  sbookPreview(false);
-  sbookHUDMode(false);
+  sBook.GoTo(ref);
+  sBook.Preview(false);
+  sBookMode(false);
   fdjtDOM.cancel(evt);
 };
 
