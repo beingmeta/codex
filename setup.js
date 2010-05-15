@@ -32,13 +32,9 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-sBook.Setup=
+sbook.Setup=
   (function(){
 
-    var info=sBook.Info;
-    var sbook_index=sBook.Index;
-    var sbookOIDs=sBook.OIDs;
-    
     var sbook_fullpages=[];
     var sbook_heading_qricons=false;
     var sbook_help_on_startup=false;
@@ -50,55 +46,57 @@ sBook.Setup=
     function Setup(){
       if (sbook._setup) return;
       if (!(sbook._setup_start)) sbook._setup_start=new Date();
-      if (sbook._setup) return;
-      if (sbook.user) fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
-      else fdjtDOM.addClass(document.body,"nosbookuser");
-      fdjtDOM.addClass(document.body,"sbooknovice");
-      var fdjt_done=new Date();
+      // Get various settings
       getSettings();
-      sBook.Setup.HUD();
-      displaySetup();
+      if (sbook.user)
+	fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
+      else if (sbook.nouser)
+	fdjtDOM.addClass(document.body,"nosbookuser");
+      else {
+	fdjtDOM.addClass(document.body,"nosbookuser");}
+      // Setup sbook tables, databases, etc
+      sbook.initDB();
+      sbook.initHUD();
+      sbook.initDisplay();
       if (!((document.location.search)&&
 	    (document.location.search.length>0))) {
-	sBookMode(false);
-	sBook.Message("Setting up your sBook");}
+	sbookMode(false);
+	sbook.Message("Setting up your sbook");}
       if (fdjtState.getQuery("action")) {
-	sbookSetupDash();
-	sBookMode("sbookapp");}
+	sbookMode("sbookapp");}
       if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
 	sbook_ajax_uri=false;
-      sBook.Message("Scanning document structure");
+      sbook.Message("Scanning document structure");
       var metadata=sbookScan(sbook.root);
-      sBook.Info.map=metadata;
-      sBook.Setup.NavHUD(metadata[sbook.root.id]);
+      sbook.nodeinfo=sbook.NodeInfo.map=metadata;
+      sbook.Message("Building table of contents");
+      sbook.setupTOC(metadata[sbook.root.id]);
       var scan_done=new Date();
-      sBook.Message("Determining page layout");
-      applySettings();
-      if (sBook.pageview) sbookPaginate();
-      var knowlet=fdjtDOM.getMeta("KNOWLET")||sBook.refuri;
-      sBook.Message("Processing knowledge with knowlet ",knowlet);
-      document.knowlet=knowlet=new Knowlet(knowlet);
+      sbook.Message("Processing knowledge for knowlet ",sbook.knowlet);
       if ((Knowlet)&&(Knowlet.HTML)&&(Knowlet.HTML.Setup))
 	Knowlet.HTML.Setup();
+      sbook.Message("Indexing tags");
+      sbook.indexTags(metadata);
+      sbook.indexTechnoratiTags(sbook.knowlet);
+      applySettings();
+      if (sbook.pageview) sbookPaginate();
       var knowlets_done=new Date();
-      sBook.Message("Indexing tags");
-      sBook.Setup.indexTags(metadata);
-      // sbookIndexTechnoratiTags(knowlet);
+      // 
       var tags_done=new Date();
       if (fdjtID("SBOOKHIDEHELP"))
 	fdjtID("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
       if (sbook_gloss_data) {glossesSetup();}
       else {
-	sBook.Message("Loading glosses...");
-	var refuri=sBook.refuri; var added=[];
+	sbook.Message("Loading glosses...");
+	var refuri=sbook.refuri; var added=[];
 	var uri="https://"+sbook_server+"/sbook/glosses.fdcgi?URI="+
 	  (encodeURIComponent(refuri))+
-	  ((sBook.mycopyid)?("&MYCOPY="+encodeURIComponent(sBook.mycopyid)):(""));
+	  ((sbook.mycopyid)?("&MYCOPY="+encodeURIComponent(sbook.mycopyid)):(""));
 	added.push(refuri);
-	var i=0; while (i<sBook.refuris.length) {
-	  if (fdjtKB.contains(added,sBook.refuris)) i++;
+	var i=0; while (i<sbook.refuris.length) {
+	  if (fdjtKB.contains(added,sbook.refuris)) i++;
 	  else {
-	    var oref=sBook.refuris[i++];
+	    var oref=sbook.refuris[i++];
 	    uri=uri+'&'+oref; added.push(oref);}}
 	var script_elt=fdjtDOM("SCRIPT");
 	script_elt.language="javascript"; script_elt.src=uri;
@@ -107,11 +105,11 @@ sBook.Setup=
       initLocation();
       var hud_init_done=new Date();
       window.onresize=function(evt){sbookPaginate();};
-      sBook.Setup.Gesture();
-      sBook.Flash();
+      sbook.setupGestures();
+      sbook.Flash();
       // sbookFullCloud();
       _sbook_setup=sbook._setup=new Date();}
-    sBook.Setup=Setup;
+    sbook.Setup=Setup;
 
     /* Application settings */
     var sbook_allopts=
@@ -129,78 +127,12 @@ sBook.Setup=
 	 fdjtState.getLocal("sbookopts"),
 	 fdjtDOM.getMeta("sbookopts"),
 	 sbook_default_opts);}
-    sBook.testopt=testopt;
+    sbook.testopt=testopt;
 
-    function applySettings(){
-      // This applies the current session settings
-      sBookUI.Sparse(testopt("sparse","rich"));
-      sBookUI.Flash(testopt("flash","dull"));
-      var tocmax=fdjtDOM.getMeta("SBOOKTOCMAX");
-      if (tocmax) sbook_tocmax=parseInt(tocmax);
-      var sbookhelp=fdjtDOM.getMeta("SBOOKHELP");
-      if (sbookhelp) sbook_help_on_startup=true;
-      sbookPaginate(testopt("page","scroll"));
-      sBookUI(sbook_interaction);}
-
-    function updateSessionSettings(delay){
-      if (delay) {
-	setTimeout(sbookUpdateSessionSettings,delay);
-	return;}
-      // This updates the session settings from the checkboxes 
-      var sessionsettings="opts";
-      if (fdjtID("SBOOKPAGEVIEW").checked)
-	if (testopt("page","scroll","")) {}
-	else sessionsettings=sessionsettings+" page";
-      else if (testopt("scroll","page","")) {}
-      else sessionsettings=sessionsettings+" scroll";
-      if (fdjtID("SBOOKTOUCHMODE").checked)
-	if (testopt("touch",["mouse","keyboard"],"")) {}
-	else sessionsettings=sessionsettings+" touch";
-      if (fdjtID("SBOOKMOUSEMODE").checked)
-	if (testopt("mouse",["touch","keyboard"],"")) {}
-	else sessionsettings=sessionsettings+" mouse";
-      if (fdjtID("SBOOKKBDMODE").checked)
-	if (testopt("keyboard",["touch","mouse"],"")) {}
-	else sessionsettings=sessionsettings+" keyboard";
-      if (fdjtID("SBOOKHUDFLASH").checked)
-	if (testopt("flash","noflash","")) {}
-	else sessionsettings="sessionsettings"+flash;
-      else if (testopt("noflash","flash","")) {}
-      else sessionsettings=sessionsettings+" noflash";
-      if (fdjtID("SBOOKSPARSE").checked)
-	if (testopt("sparse","rich","")) {}
-	else sessionsettings=sessionsettings+" sparse";
-      else if (testopt("sparse","rich","")) {}
-      else sessionsettings=sessionsettings+" rich";
-      fdjtSetSession("sbookopts",sessionsettings);
-      applySettings();}
-
-    function saveSettings(){
-      var opts=fdjtGetSession("sbookopts");
-      if (opts) {
-	fdjtSetLocal("sbookopts",opts);
-	fdjtDropLocal("sbookopts");}}
-    sBook.saveSettings=saveSettings;
-
-    // This is the base URI for this document, also known as the REFURI
-    // A document (for instance an anthology or collection) may include
-    // several refuri's, but this is the default.
-    sBook.refuri=false;
-    // These are the refuris used in this document
-    sBook.refuris=[];
-    // This is the document URI, which is usually the same as the REFURI.
-    sBook.docuri=false;
-    // This is the unique DOC identifier used by myCopy social DRM.
-    sBook.mycopyid=false; 
-    // Controls on excerpts
-    var sbook_max_excerpt=false;
-    // This is mostly a kludge to ignore selections which are really just clicks
-    var sbook_min_excerpt=5;
-    
     function getSettings(){
       // Basic stuff
-      document.body.refuri=sBook.refuri=_getsbookrefuri();
-      sBook.docuri=_getsbookdocuri();
+      document.body.refuri=sbook.refuri=_getsbookrefuri();
+      sbook.docuri=_getsbookdocuri();
       // Get the settings for scanning the document structure
       getScanSettings();
       // Get the settings for automatic pagination
@@ -213,7 +145,7 @@ sBook.Setup=
       else sbook_server=lookupServer(document.domain);
       if (!(sbook_server)) sbook_server=sbook_default_server;
       sbook_ajax_uri=fdjtDOM.getMeta("SBOOKSAJAX",true);
-      sBook.mycopyid=fdjtDOM.getMeta("SBOOKMYCOPY",false);
+      sbook.mycopyid=fdjtDOM.getMeta("SBOOKMYCOPY",false);
 
       if (testopt("touch",["mouse",",keyboard"]))
 	sbook_interaction="touch";
@@ -236,7 +168,7 @@ sBook.Setup=
 	if ((fdjtDOM.hasParent(target,"sbooksummaries"))||
 	    (fdjtDOM.hasParent(target,sbookDash)))
 	  return true;
-	else if (sBook.pageview) {
+	else if (sbook.pageview) {
 	  evt.preventDefault(); return false;}};
       
       var head=fdjtDOM.$("HEAD")[0];
@@ -250,7 +182,7 @@ sBook.Setup=
       viewmeta.content='user-scalable=no,width=device-width';
       fdjtDOM.prepend(head,viewmeta);
 
-      sBook.Setup.notfixed=true;
+      sbook.Setup.notfixed=true;
       fdjtDOM.addClass(document.body,"notfixed");
   
       var mouseopt=fdjtKB.position(sbook_default_opts,"mouse");
@@ -286,7 +218,7 @@ sBook.Setup=
       else return _getsbookrefuri();}
 
     function lookupServer(string){
-      var sbook_servers=sBook.servers;
+      var sbook_servers=sbook.servers;
       var i=0;
       while (i<sbook_servers.length) 
 	if (sbook_servers[i][0]===string)
@@ -344,77 +276,79 @@ sBook.Setup=
 	var i=0; while (i<sbook_fullpage_rules.length) {
 	  sbook_fullpages.push(fdjtDOM.Selector(sbook_fullpage_rules[i++]));}}
       sbook_fullpages.push(fdjtDOM.Selector(".sbookfullpage, .titlepage"));}
- 
-    function displaySetup(){
-      var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
-      var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
-      var pagehead=makeMargin("div.sbookmargin#SBOOKPAGEHEAD"," ");
-      var pagefoot=makeMargin("div.sbookmargin#SBOOKPAGEFOOT"," ");
-      var leftedge=fdjtDOM("div#SBOOKLEFTEDGE.sbookmargin.sbookleft");
-      var rightedge=fdjtDOM("div#SBOOKRIGHTEDGE.sbookmargin.sbookright");
 
-      topleading.sbookui=true; bottomleading.sbookui=true;
-      fdjtDOM.insertAfter
-	(sbookHUD,pagehead,pagefoot,leftedge,rightedge,topleading);  
-      fdjtDOM.append(document.body,bottomleading);
-  
-      sbookPageHead=pagehead; sbookPageFoot=pagefoot;
-      // Probe the size of the head and foot
-      pagehead.style.display='block'; pagefoot.style.display='block';
-      sbook_top_px=pagehead.offsetHeight;
-      sbook_bottom_px=pagefoot.offsetHeight;
-      pagehead.style.display=''; pagefoot.style.display='';
-      pagehead.sbookui=true; pagefoot.sbookui=true;
-      // pagehead.onclick=sbookHeadHUD_onclick;
-      // pagefoot.onclick=sbookFootHUD_onclick;
+    /* Changing settings */
 
-      sbook_left_px=leftedge.offsetWidth;
-      sbook_right_px=rightedge.offsetWidth;
+    function applySettings(){
+      // This applies the current session settings
+      sbookUI.Sparse(testopt("sparse","rich"));
+      sbookUI.Flash(testopt("flash","dull"));
+      var tocmax=fdjtDOM.getMeta("SBOOKTOCMAX");
+      if (tocmax) sbook_tocmax=parseInt(tocmax);
+      var sbookhelp=fdjtDOM.getMeta("SBOOKHELP");
+      if (sbookhelp) sbook_help_on_startup=true;
+      sbookPaginate(testopt("page","scroll"));
+      sbookUI(sbook_interaction);}
 
-      // These are the edges above the bottom margin
-      var leftedge2=fdjtDOM("div.sbookmargin.sbookleft#SBOOKLEFTEDGE2");
-      var rightedge2=fdjtDOM("div.sbookmargin.sbookright#SBOOKRIGHTEDGE2");
-      fdjtDOM(pagefoot,leftedge2,rightedge2);
+    function updateSessionSettings(delay){
+      if (delay) {
+	setTimeout(sbookUpdateSessionSettings,delay);
+	return;}
+      // This updates the session settings from the checkboxes 
+      var sessionsettings="opts";
+      if (fdjtID("SBOOKPAGEVIEW").checked)
+	if (testopt("page","scroll","")) {}
+	else sessionsettings=sessionsettings+" page";
+      else if (testopt("scroll","page","")) {}
+      else sessionsettings=sessionsettings+" scroll";
+      if (fdjtID("SBOOKTOUCHMODE").checked)
+	if (testopt("touch",["mouse","keyboard"],"")) {}
+	else sessionsettings=sessionsettings+" touch";
+      if (fdjtID("SBOOKMOUSEMODE").checked)
+	if (testopt("mouse",["touch","keyboard"],"")) {}
+	else sessionsettings=sessionsettings+" mouse";
+      if (fdjtID("SBOOKKBDMODE").checked)
+	if (testopt("keyboard",["touch","mouse"],"")) {}
+	else sessionsettings=sessionsettings+" keyboard";
+      if (fdjtID("SBOOKHUDFLASH").checked)
+	if (testopt("flash","noflash","")) {}
+	else sessionsettings="sessionsettings"+flash;
+      else if (testopt("noflash","flash","")) {}
+      else sessionsettings=sessionsettings+" noflash";
+      if (fdjtID("SBOOKSPARSE").checked)
+	if (testopt("sparse","rich","")) {}
+	else sessionsettings=sessionsettings+" sparse";
+      else if (testopt("sparse","rich","")) {}
+      else sessionsettings=sessionsettings+" rich";
+      fdjtSetSession("sbookopts",sessionsettings);
+      applySettings();}
 
-      // The better way to do this might be to change the stylesheet,
-      //  but fdjtDOM doesn't handle that currently
-      var bgcolor=document.body.style.backgroundColor;
-      if (!(bgcolor)) {
-	var bodystyle=fdjtDOM.getStyle(document.body);
-	var bgcolor=((bodystyle)&&(bodystyle.backgroundColor));
-	if ((bgcolor==='transparent')||(bgcolor.search('rgba')>=0))
-	  bgcolor=false;}
-      if (bgcolor) {
-	leftedge.style.backgroundColor=bgcolor;
-	rightedge.style.backgroundColor=bgcolor;
-	leftedge2.style.backgroundColor=bgcolor;
-	rightedge2.style.backgroundColor=bgcolor;
-	pagehead.style.backgroundColor=bgcolor;
-	pagefoot.style.backgroundColor=bgcolor;}}
+    function saveSettings(){
+      var opts=fdjtGetSession("sbookopts");
+      if (opts) {
+	fdjtSetLocal("sbookopts",opts);
+	fdjtDropLocal("sbookopts");}}
+    sbook.saveSettings=saveSettings;
 
-    function makeMargin(spec){
-      var div=fdjtDOM(spec);
-      div.onmouseover=fdjtDOM.cancel;
-      div.onmouseout=fdjtDOM.cancel;
-      div.onmousedown=fdjtDOM.cancel;
-      div.onmouseup=fdjtDOM.cancel;
-      div.onclick=sBook.dropHUD;
-      return div;}
+    // Controls on excerpts
+    var sbook_max_excerpt=false;
+    // This is mostly a kludge to ignore selections which are really just clicks
+    var sbook_min_excerpt=5;
 
     function glossesSetup(){
       userSetup();
       if (sbook._gloss_setup) return;
       sbookImportGlosses();
-      sBook.Message("Importing glosses...");
+      sbook.Message("Importing glosses...");
       var glosses_button=fdjtID("SBOOKGLOSSESBUTTON");
       glosses_button.style.visibility='';
       var search_button=fdjtID("SBOOKSEARCHBUTTON");
       search_button.style.visibility='';
-      sBook.Message("Analyzing tag frequencies...");
+      sbook.Message("Analyzing tag frequencies...");
       sbookTagScores();
-      sBook.Message("Setting up search cloud...");
+      sbook.Message("Setting up search cloud...");
       sbookFullCloud();
-      sBook.Message("Setting up glossing cloud...");
+      sbook.Message("Setting up glossing cloud...");
       fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud());
       setupGlossServer();
       if (sbook.user)
@@ -424,18 +358,18 @@ sBook.Setup=
 	  fdjtID("SBOOKFRIENDLYOPTION").value=sbook.user;
 	else fdjtID("SBOOKFRIENDLYOPTION").value=null;
       if (sbook_heading_qricons) {
-	sBook.Message("Adding print icons...");
+	sbook.Message("Adding print icons...");
 	sbookAddQRIcons();}
-      sBook.Message("Importing personal overlays...");
+      sbook.Message("Importing personal overlays...");
       // if (sbook.user) importOverlays();
       var done=new Date().getTime();
-      sBook.Message("Completed sBook setup"," in ",
+      sbook.Message("Completed sbook setup"," in ",
 		    ((done-sbook._setup_start.getTime())/1000),
 		    " seconds");
       // fdjtTrace("[%fs] Done with glosses setup",fdjtET());
       splash();
       sbook._gloss_setup=true;}
-    sBook.Setup.Glosses=glossesSetup;
+    sbook.Setup.Glosses=glossesSetup;
 
     function importOverlays(arg)
     {
@@ -468,27 +402,35 @@ sBook.Setup=
       if (sbook.user_canpost) {
 	fdjtDOM.dropClass(document.body,"sbookcantpost");}
       sbook._social_setup=true;}
-    sBook.Setup.social=socialSetup;
+    sbook.Setup.social=socialSetup;
 
     function userSetup(){
       if (sbook._user_setup) return;
       if (!(sbook.user)) {
 	fdjtDOM.addClass(document.body,"nosbookuser");
 	return;}
-      if ((sbook.user_data)&&(sbook.user_data.oid))
-	sbookOIDs.Import(sbook.user_data);
-      if (sbook.user) fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
+      if (sbook_user) {
+	/* This is the old style user info */
+	if ((sbook_user_data)&&(sbook_user_data.oid))
+	  sbook.user=sbook.OIDs.Import(sbook_user_data);
+	else if (typeof sbook_user === 'string')
+	  sbook.user=sbook.OIDs.ref(sbook_user);
+	else sbook.user=sbook.OIDs.Import(sbook_user);
+	fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");}
       var userinfo=sbookOIDs.map[sbook.user];
       var username=userinfo.name;
       if ((!(sbook.user_img))&&(userinfo.pic))
 	sbook.user_img=userinfo.pic;
       fdjtID("SBOOKUSERNAME").innerHTML=username;
-      if (fdjtID("SBOOKMARKUSER")) fdjtID("SBOOKMARKUSER").value=sbook.user;
+      if (fdjtID("SBOOKMARKUSER"))
+	fdjtID("SBOOKMARKUSER").value=sbook.user.oid;
       if (fdjtID("SBOOKMARKFORM"))
 	fdjtID("SBOOKMARKFORM").onsubmit=fdjtAjax.onsubmit;
       if (sbook.user_img) {
-	if (fdjtID("SBOOKMARKIMAGE")) fdjtID("SBOOKMARKIMAGE").src=sbook.user_img;
-	if (fdjtID("SBOOKUSERPIC")) fdjtID("SBOOKUSERPIC").src=sbook.user_img;}
+	if (fdjtID("SBOOKMARKIMAGE"))
+	  fdjtID("SBOOKMARKIMAGE").src=sbook.user.pic;
+	if (fdjtID("SBOOKUSERPIC"))
+	  fdjtID("SBOOKUSERPIC").src=sbook.user.pic;}
       var idlinks=document.getElementsByName("IDLINK");
       if (idlinks) {
 	var i=0; var len=idlinks.length;
@@ -498,7 +440,7 @@ sBook.Setup=
 	  idlink.title='click to edit your personal information';
 	  idlink.href='http://www.sbooks.net/admin/id.fdcgi';}}
       sbook._user_setup=true;}
-    sBook.Setup.user=userSetup;
+    sbook.userSetup=userSetup;
 
     /* This initializes the sbook state to the initial location with the
        document, using the hash value if there is one. */ 
@@ -508,21 +450,21 @@ sBook.Setup=
 	if ((hash[0]==='#') && (hash.length>1))
 	  target=document.getElementById(hash.slice(1));
 	else target=document.getElementById(hash);
-	if (sBook.Trace.startup)
+	if (sbook.Trace.startup)
 	  fdjtLog("[%f] sbookInitLocation %s=%o",fdjtET(),hash,target);}
       else if (fdjtState.getCookie("sbooktarget")) {
 	var targetid=fdjtState.getCookie("sbooktarget");
-	if (sBook.Trace.startup)
+	if (sbook.Trace.startup)
 	  fdjtLog("[%f] sbookInitLocation cookie=#%s=%o",
 		  fdjtET(),targetid,target);
 	if ((targetid)&&(fdjtID(targetid)))
 	  target=fdjtID(targetid);
 	else target=sbook.root;}
-      if (sBook.Trace.startup)
+      if (sbook.Trace.startup)
 	fdjtLog("[%f] sbookInitLocation t=%o jf=%o",fdjtET(),target,justfocus);
-      sBook.setHead(target||sbook.start||sbook.root);
+      sbook.setHead(target||sbook.start||sbook.root);
       var tinfo=((target)&&(fdjtDOM.getGeometry(target)));
-      sBook.GoTo(target||sbook.start||sbook.root,
+      sbook.GoTo(target||sbook.start||sbook.root,
 		(!((tinfo)&&(tinfo.height<(fdjtDOM.viewHeight())))));}
 
     /* Other setup */
@@ -535,7 +477,7 @@ sBook.Setup=
 	var common_suffix=fdjtString.commonSuffix(sbook_server,domain,'.');
 	if (common_suffix) {
 	  if (common_suffix.indexOf('.')>0) {
-	    if (sBook.Trace.network)
+	    if (sbook.Trace.network)
 	      fdjtLog("[%fs] Setting up access to gloss server %o from %o through %o",
 		      fdjtET(),sbook_server,domain,common_suffix);
 	    var iframe=fdjtDOM("iframe");
@@ -558,19 +500,19 @@ sBook.Setup=
     function splash(){
       if ((document.location.search)&&
 	  (document.location.search.length>0))
-	sBookMode("sbookapp");
+	sbookMode("sbookapp");
       else {
 	var cookie=fdjtState.getCookie("sbookhidehelp");
-	if (cookie==='no') sBookMode("help");
+	if (cookie==='no') sbookMode("help");
 	else if (cookie) {}
-	else if (sbook_help_on_startup) sBookMode("help");
+	else if (sbook_help_on_startup) sbookMode("help");
 	else if (!(sbook.mode)) {}
 	else if (sbook.mode!=="console") {}
-	else sBookMode(false);}}
+	else sbookMode(false);}}
 
     return Setup;})();
-sbookSetup=sBook.Setup;
-sbookGlossesSetup=sBook.Setup.Glosses;
+sbookSetup=sbook.Setup;
+sbookGlossesSetup=sbook.Setup.Glosses;
 
 /* Emacs local variables
 ;;;  Local variables: ***

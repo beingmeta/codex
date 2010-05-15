@@ -32,7 +32,7 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-var sBookMode=
+var sbookMode=
   (function(){
 
     // This is the regex for all sbook apps
@@ -49,41 +49,40 @@ var sBookMode=
     // How long to let messages flash up
     var message_timeout=5000;
     
-    function SetupHUD(){
+    function initHUD(){
       if (fdjtID("SBOOKHUD")) return;
       else {
 	sbookHUD=fdjtDOM("div#SBOOKHUD");
 	sbookHUD.sbookui=true;
 	sbookHUD.innerHTML=sbook_hudtext;
 	fdjtDOM.prepend(document.body,sbookHUD);}
+      initButtons();
       var console=fdjtID("SBOOKCONSOLE");
       console.innerHTML=sbook_consoletext;
       var dash=fdjtID("SBOOKDASH");
       dash.innerHTML=sbook_dashtext.replace('%HELPTEXT',sbook_helptext);
+      initDash(dash);
       var search=fdjtID("SBOOKSEARCH");
       search.innerHTML=sbook_searchtext;
-      sbookSetupSearchHUD(search);
+      initSearch(search);
       var glosses=fdjtID("SBOOKALLGLOSSES");
       sbookSetupSummaryDiv(glosses);
-      if ((sbook_allglosses)&&(sbook_allglosses.length))
-	sbookShowSummaries(sbook_allglosses,allglosses,false);
       var bookmark=fdjtID("SBOOKMARKHUD");
       bookmark.innerHTML=sbook_markhudtext;
-      setupButtons();
-      sbookSetupMarkHUD(bookmark);
-      fdjtUI.Delay(1500,false,updateDash);}
-    sBook.Setup.HUD=SetupHUD;
+      initMarkHUD(bookmark);
+      fillinDash();}
+    sbook.initHUD=initHUD;
 
     /* Creating the HUD */
     
-    function sbookSetupNavHUD(root_info){
+    function setupTOC(root_info){
       var navhud=createNavHUD("div#SBOOKTOC.hudblock",root_info);
       var toc_button=fdjtID("SBOOKTOCBUTTON");
       toc_button.style.visibility='';
       fdjtDOM.replace("SBOOKTOC",navhud);
       fdjtDOM(fdjtID("DASHTOC"),
 	      createStaticTOC("div#SBOOKDASHTOC",root_info));}
-    sBook.Setup.NavHUD=sbookSetupNavHUD;
+    sbook.setupTOC=setupTOC;
 
     function createNavHUD(eltspec,root_info){
       var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
@@ -111,14 +110,14 @@ var sBookMode=
       else fdjtDOM.addListener(div,"click",sbookTOC.oneclick);
       return div;}
 
-    function sbookSetupDash(){
+    function initDash(){
       var query=document.location.search||"?";
-      var refuri=sBook.refuri;
+      var refuri=sbook.refuri;
       var appuri="https://"+sbook_server+"/sbook/manage.fdcgi"+query;
       if (query.search("REFURI=")<0)
 	appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
       if (query.search("DOCURI=")<0)
-	appuri=appuri+"&DOCURI="+encodeURIComponent(sBook.docuri);
+	appuri=appuri+"&DOCURI="+encodeURIComponent(sbook.docuri);
       if (document.title) {
 	appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
       fdjtID("APPFRAME").src=appuri;
@@ -126,10 +125,34 @@ var sBookMode=
       dash_button.style.visibility='';}
 
 
+    function initSearch(){
+      var input=fdjtID("SBOOKSEARCHTEXT");
+      fdjtDOM.addListener(input,"keypress",
+			  sbook.handlers.SearchInput_onkeypress);
+      fdjtDOM.addListener(input,"keyup",
+			  sbook.handlers.SearchInput_onkeyup);
+      fdjtDOM.addListener(input,"focus",
+			  sbook.handlers.SearchInput_onfocus);
+      fdjtDOM.addListener(input,"blur",
+			  sbook.handlers.SearchInput_onblur);
+
+      var sbooksearch=fdjtID("SBOOKSEARCH");
+      fdjtUI.AutoPrompt.setup(sbooksearch);
+
+      var completions=fdjtID("SBOOKSEARCHCOMPLETIONS");
+      sbook_empty_cloud=new fdjtUI.Completions(completions);}
+
+    function initMarkHUD(hud){
+      var input=fdjtID("SBOOKMARKTAGINPUT");
+      fdjtDOM.addListener(input,"keypress",sbookTagInput_onkeypress);
+      fdjtDOM.addListener(input,"keyup",sbookTagInput_onkeyup);
+      fdjtDOM.addListener(input,"focus",sbookTagInput_onfocus);
+      fdjtUI.AutoPrompt.setup(hud);}
+
     /* Mode controls */
     
     var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
-    var sBookMode_pat=
+    var sbookMode_pat=
       /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(context)|(dashtoc)|(about)|(console)/g;
     
     var sbook_footmodes=
@@ -139,13 +162,13 @@ var sBookMode=
     var sbook_last_headmode="toc";
     var sbook_last_footmode="help";
     
-    function sBookMode(mode){
+    function sbookMode(mode){
       if (typeof mode === 'undefined') return sbook.mode;
-      if (sBook.Trace.mode)
-	fdjtLog("[%fs] sBookMode %o, cur=%o dbc=%o",
+      if (sbook.Trace.mode)
+	fdjtLog("[%fs] sbookMode %o, cur=%o dbc=%o",
 		fdjtET(),mode,sbook.mode,document.body.className);
-      if (sbook.preview) sBook.Preview(false);
-      if (sBook.Setup.notfixed) {
+      if (sbook.preview) sbook.Preview(false);
+      if (sbook.Setup.notfixed) {
 	// sbookMoveMargins(sbook_curinfo);
 	sbookSyncHUD();}
       if (mode)
@@ -162,40 +185,40 @@ var sBookMode=
 	  if (fdjtKB.contains(sbook_headmodes,mode)) sbook_last_headmode=mode;
 	  if (fdjtKB.contains(sbook_footmodes,mode)) sbook_last_footmode=mode;
 	  fdjtDOM.addClass(document.body,"hudup");
-	  fdjtDOM.swapClass(sbookHUD,sBookMode_pat,mode);
+	  fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
 	  if ((mode==="glosses")&&(sbook.target))
 	    sbookScrollGlosses(sbook.target);}
       else {
 	sbook.last_mode=sbook.mode;
 	sbook.mode=false;
-	fdjtDOM.dropClass(sbookHUD,sBookMode_pat);
+	fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
 	fdjtDOM.dropClass(document.body,"hudup");}}
-    function sbookHUDToggle(mode){
-      if (fdjtDOM.hasClass(sbookHUD,mode)) {
+    function sbookHUDToggle(mode,cur){
+      if (fdjtDOM.hasClass(sbookHUD,cur||mode)) {
 	sbook.mode=false;
-	fdjtDOM.dropClass(sbookHUD,sBookMode_pat);}
+	fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}
       else if (mode) {
 	sbook.mode=mode;
-	fdjtDOM.swapClass(sbookHUD,sBookMode_pat,mode);}
+	fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);}
       else {
 	sbook.mode=false;
-	fdjtDOM.dropClass(sbookHUD,sBookMode_pat);}}
+	fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}}
     function sbookHUDFlash(mode,usecs){
       if (mode) {
-	fdjtDOM.swapClass(sbookHUD,sBookMode_pat,mode);
+	fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
 	fdjtDOM.addClass(document.body,"hudup");
 	if (usecs) fdjtUI.Delay(usecs,"flash",sbookHUDFlash);}
       else if (usecs)
 	fdjtUI.Delay(usecs,"flash",sbookHUDFlash);
       else if (sbook.mode)
-	fdjtDOM.swapClass(sbookHUD,sBookMode_pat,sbook.mode);
+	fdjtDOM.swapClass(sbookHUD,sbookMode_pat,sbook.mode);
       else {
-	fdjtDOM.dropClass(sbookHUD,sBookMode_pat);
+	fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
 	fdjtDOM.dropClass(document.body,"hudup");}}
-    sBookMode.toggle=sbookHUDToggle;
-    sBookMode.flash=sbookHUDFlash;
+    sbookMode.toggle=sbookHUDToggle;
+    sbookMode.flash=sbookHUDFlash;
 
-    sBook.dropHUD=function(){return sBookMode(false);}
+    sbook.dropHUD=function(){return sbookMode(false);}
 
     /* HUD Messages */
     
@@ -210,8 +233,8 @@ var sBookMode=
 		      fdjtDOM("div.logentry",
 			      fdjtDOM("span.time",fdjtET()),
 			      message));
-      sBookMode("console");}
-    sBook.Message=sbookMessage;
+      sbookMode("console");}
+    sbook.Message=sbookMessage;
 
     function sbookFlashMessage(arg0){
       var duration=message_timeout; var message; var args;
@@ -233,20 +256,20 @@ var sBookMode=
 			fdjtDOM("div.logentry",
 				fdjtDOM("span.time",fdjtET()),
 				message));}
-      fdjtDOM.dropClass(sbookHUD,sBookMode_pat);
+      fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
       fdjtDOM.addClass(sbookHUD,"console");
       var mode=sbook.mode;
       sbook_message_timer=
 	setTimeout(function() {
-	    if (mode==="console") sBookMode(false);
-	    else if (sbook.mode==="console") sBookMode(false);	
+	    if (mode==="console") sbookMode(false);
+	    else if (sbook.mode==="console") sbookMode(false);	
 	    else if (mode) {
 	      fdjtDOM.swapClass(sbookHUD,"console",mode);}},
 	  duration);}
-    sBook.Flash=sbookFlashMessage;
+    sbook.Flash=sbookFlashMessage;
 
     function sbookGetStableId(elt){
-      var info=sBook.Info(elt);
+      var info=sbook.Info(elt);
       // fdjtLog("Scrolling to %o with id %s/%s",target,info.frag,target.id);
       if ((info) && (info.frag) && (!(info.frag.search(/TMPID/)==0)))
 	return info.frag;
@@ -258,7 +281,7 @@ var sBookMode=
     var sbook_sync_foot=false;
     
     function sbookSyncHUD(){
-      if (!(sBook.Setup.notfixed)) return;
+      if (!(sbook.Setup.notfixed)) return;
       if (window.offsetY!==sbook_sync_head) {
 	sbookHUD.style.top=fdjtDOM.viewTop()+'px';
 	// sbookHead.style["-webkit-transformation"]="translate(0px,"+fdjtDOM.viewTop()+"px)";
@@ -293,7 +316,7 @@ var sBookMode=
 
     /* The App HUD */
     
-    function updateDash(){
+    function fillinDash(){
       var hidehelp=fdjtID("SBOOKHIDEHELP");
       var dohidehelp=fdjtState.getCookie("sbookhidehelp");
       if (!(hidehelp)) {}
@@ -311,9 +334,9 @@ var sBookMode=
 	var i=0; var len=refuris.length;
 	while (i<len)
 	  if (refuris[i].value==='fillin')
-	    refuris[i++].value=sBook.refuri;
+	    refuris[i++].value=sbook.refuri;
 	  else i++;}
-      updateAboutInfo();
+      fillinAboutInfo();
       /* Get various external APPLINK uris */
       var offlineuri=fdjtDOM.getLink("sbook.offline")||altLink("offline");
       var epuburi=fdjtDOM.getLink("sbook.epub")||altLink("ebub");
@@ -359,10 +382,10 @@ var sBookMode=
 	 version
 	 ?? Maybe show link to the dynamic version
       */
-      if (sBook.offline) fdjtDOM.addClass(document.body,"sbookoffline");}
+      if (sbook.offline) fdjtDOM.addClass(document.body,"sbookoffline");}
 
     function altLink(type,uri){
-      uri=uri||sBook.refuri;
+      uri=uri||sbook.refuri;
       if (uri.search("http://")===0)
 	return "http://offline."+uri.slice(7);
       else if (uri.search("https://")===0)
@@ -380,7 +403,7 @@ var sBookMode=
 	fdjtDOM.replace(elt,content.cloneNode(true));
       else fdjtDOM(elt,content);}
 
-    function updateAboutInfo(){
+    function fillinAboutInfo(){
       if (fdjtID("SBOOKABOUT")) {
 	fdjtDOM.replace("APPABOUTCONTENT",fdjtID("SBOOKABOUT"));
 	return;}
@@ -448,7 +471,7 @@ var sBookMode=
       if ((elt===sbook.root)||(elt===document.body))
 	return;
       if (!(offset)) {
-	var ref=sBook.getRef(elt);
+	var ref=sbook.getRef(elt);
 	if (ref) {
 	  offset=displayOffset();
 	  elt=ref;}
@@ -471,7 +494,7 @@ var sBookMode=
     function _sbookPreviewSync(){
       if (sbook.preview===sbook.preview_target) return;
       sbookPreview(sbook.preview_target);
-      if (sBook.Setup.notfixed) sbookSyncHUD();}
+      if (sbook.Setup.notfixed) sbookSyncHUD();}
 
     function sbookSetPreview(ref,delay){
       if ((delay)&&(typeof delay !== 'number'))
@@ -481,7 +504,7 @@ var sBookMode=
       else if (ref)
 	setTimeout(_sbookPreviewSync,delay);
       else setTimeout(_sbookPreviewSync,delay);}
-    sBook.Preview=sbookSetPreview;
+    sbook.Preview=sbookSetPreview;
 
     function displayOffset(){
       var toc;
@@ -493,50 +516,50 @@ var sBookMode=
 
     /* Button methods */
 
-    function setupButtons() {
+    function initButtons() {
       fdjtID("SBOOKTOCBUTTON").onclick=function(evt){
 	evt=evt||event||null;
 	if (sbook.mode==="toc") {
-	  sBookMode(false);
+	  sbookMode(false);
 	  fdjtDOM.dropClass("SBOOKTOC","hover");}
-	else sBookMode("toc");
+	else sbookMode("toc");
 	fdjtDOM.cancel(evt);};
 
 
       fdjtID("SBOOKSEARCHBUTTON").onclick=function(evt){
 	evt=evt||event||null;
 	if ((sbook.mode==="searching") || (sbook.mode==="browsing")) {
-	  sBookMode(false);
+	  sbookMode(false);
 	  fdjtDOM.dropClass("SBOOKSEARCH","hover");
 	  fdjtID("SBOOKSEARCHTEXT").blur();}
 	else {
-	  sBookMode("searching");
+	  sbookMode("searching");
 	  fdjtID("SBOOKSEARCHTEXT").focus();
 	  fdjtDOM.cancel(evt);}};
 
       fdjtID("SBOOKDASHBUTTON").onclick=function(evt){
 	if (sbook.mode)
 	  if (fdjtKB.contains(sbook_apps,sbook.mode))
-	    sBookMode(false);
-	  else sBookMode(sbook.last_dash);
-	else sBookMode(sbook.last_dash);
+	    sbookMode(false);
+	  else sbookMode(sbook.last_dash);
+	else sbookMode(sbook.last_dash);
 	fdjtDOM.cancel(evt);};
 
       fdjtID("SBOOKGLOSSESBUTTON").onclick=function(evt){
 	evt=evt||event||null;
 	if (sbook.mode==="glosses") {
-	  sBookMode(false);
+	  sbookMode(false);
 	  fdjtDOM.dropClass("SBOOKGLOSSES","hover");}
-	else sBookMode("glosses");
+	else sbookMode("glosses");
 	fdjtDOM.cancel(evt);}}
 
     function LoginButton_onclick(evt){
       evt=evt||event||null;
-      if (sbook.mode==="login") sBookMode(false);
-      else sBookMode("login");
+      if (sbook.mode==="login") sbookMode(false);
+      else sbookMode("login");
       evt.cancelBubble=true;}
 
-    return sBookMode;})();
+    return sbookMode;})();
 
 /* Emacs local variables
 ;;;  Local variables: ***

@@ -72,7 +72,7 @@ function sbookSourceIcon(info)
   else return false;
 }
 
-function sbicon(name,suffix) {return sBook.graphics+name+(suffix||"");}
+function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
 function _sbookSourceImage(info)
 {
@@ -89,8 +89,8 @@ function _sbookSourceImage(info)
 
 function sbookSummaryHead(target,head,eltspec,extra)
 {
-  var title=sBook.getTitle(target);
-  if (!(head)) head=sBook.getHead(target);
+  var title=sbook.getTitle(target);
+  if (!(head)) head=sbook.getHead(target);
   var basespan=fdjtDOM("span");
   if (!(title)) {
     var text=fdjtDOM.textify(target);
@@ -107,7 +107,7 @@ function sbookSummaryHead(target,head,eltspec,extra)
 			fdjtDOM("span.spacer","\u00A7"),
 			title);
     fdjtDOM(basespan,headelt," ");}
-  var info=sBook.Info(target);
+  var info=sbook.Info(target);
   var heads=info.heads||
     ((info.head)&&([info].concat(info.head.heads)));
   if (heads) {
@@ -140,7 +140,7 @@ function sbookTarget(arg)
     else if (arg.nodeType) return arg;
     else if (arg.frag)
       return document.getElementById(arg.frag);
-    else if (arg.id) return sBook.Info.map[arg.id];
+    else if (arg.id) return sbook.nodeinfo[arg.id];
     else return false;
   else return false;
 }
@@ -151,11 +151,11 @@ function sbookShowSummaries(summaries,summary_div,query)
   var curtarget=false; var curblock=false;
   var i=0; var len=todisplay.length; while (i<len) {
     var summary=todisplay[i++];
-    var info=sBook.Info(summary);
+    var info=sbook.Info(summary);
     var target=sbookTarget(summary);
-    var tinfo=sBook.Info.map[target.id];
+    var tinfo=sbook.nodeinfo[target.id];
     if (target!==curtarget) {
-      var head=sBook.getHead(target);
+      var head=sbook.getHead(target);
       var blockhead=sbookSummaryHead(target,head);
       var block=fdjtDOM("div.tocblock",blockhead);
       block.blockloc=tinfo.sbookloc;
@@ -171,10 +171,10 @@ function sbookAddSummary(summary,summary_div,query)
   var curtarget=false; var curblock=false;
   var target_id=((summary.id)||(summary.fragid)||false);
   var target=((target_id)&&(fdjtID(target_id)));
-  var info=sBook.Info.map[target_id];
+  var info=sbook.nodeinfo[target_id];
   if (!target) return;
   var targetloc=info.sbookloc;
-  var head=sBook.getHead(target);
+  var head=sbook.getHead(target);
   var children=summary_div.childNodes; var placed=false;
   var sum_div=sbookSummaryDiv(summary,query);
   var i=0; while (i<children.length) {
@@ -212,7 +212,7 @@ function sbookAddSummary(summary,summary_div,query)
 function sbookItemInfo(item)
 {
   if (typeof item === 'string')
-    return sBook.OIDs.map[item]||sBook.Info.map[item];
+    return sbook.OIDs.map[item]||sbook.nodeinfo[item];
   else if (item.oid) return item;
   else return false;
 }
@@ -246,7 +246,7 @@ function sbookSummaryDiv(info,query)
 	else if (s2) return 1;
 	else return 0;});
   var head=((target.sbooklevel) ? (target) :
-	    ((sBook.getHead(target))||(target)));
+	    ((sbook.getHead(target))||(target)));
   if (head===document.body) head=target;
   if (info.glossid) sbookMarkInfo(sumdiv,info);
   if (info.glossid)
@@ -293,8 +293,8 @@ function sbookMarkInfo(sumdiv,info)
 {
   var user=info.user;
   var feed=info.feed||false;
-  var userinfo=sBook.OIDs.map[user];
-  var feedinfo=sBook.OIDs.map[feed];
+  var userinfo=sbook.OIDs.map[user];
+  var feedinfo=sbook.OIDs.map[feed];
   var img=((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
     ((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
     (sbookSourceIcon(feedinfo))||(sbookSourceIcon(userinfo));
@@ -390,7 +390,7 @@ function sbookRelay_onclick(evt)
     else target=target.parentNode;
   if (!(target)) return;
   if (target.sbook_oid)
-    sbookMark(fdjtID(target.sbook_ref),sBook.OIDs.map[target.sbook_oid]||false);
+    sbookMark(fdjtID(target.sbook_ref),sbook.OIDs.map[target.sbook_oid]||false);
   else sbookMark(fdjtID(target.sbook_ref),false);
   evt.preventDefault(); evt.cancelBubble=true;
 }
@@ -410,7 +410,7 @@ function sbookSelectSources(results_div,sources)
     var summaries=fdjtDOM.$(".summary",block);
     var j=0; while (j<summaries.length) {
       var summary=summaries[j++];
-      var gloss=(summary.sbook_oid)&&sBook.OIDs.map[summary.sbook_oid];
+      var gloss=(summary.sbook_oid)&&sbook.OIDs.map[summary.sbook_oid];
       if ((fdjtKB.contains(sources,gloss.user))||
 	  (fdjtKB.contains(sources,gloss.feed))) {
 	fdjtDOM.addClass(summary,"sourced");
@@ -439,10 +439,10 @@ function sbookSummary_onclick(evt)
   if (!(evt)) return;
   var target=fdjtDOM.T(evt);
   if (fdjtDOM.isClickable(target)) return;
-  var ref=sBook.getRef(target);
+  var ref=sbook.getRef(target);
   if (ref) {
     fdjtDOM.cancel(evt);
-    sBook.GoTo(ref);}
+    sbook.GoTo(ref);}
 }
 
 /* Emacs local variables

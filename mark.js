@@ -51,26 +51,26 @@ function sbookMarkHUDSetup(target,origin,excerpt)
     else target=sbook.target;
   if (!(sbook_mark_cloud))
     fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud());
-  var refuri=sBook.getRefURI(target);
-  if (sBook.Trace.mark)
+  var refuri=sbook.getRefURI(target);
+  if (sbook.Trace.mark)
     fdjtLog("Setting up gloss HUD for %o from %o st=%o excerpt=%o",
 	    target,origin,sbook.target,excerpt);
   if (sbook_mark_target===target) {
     /* If the HUD is already, initialized for the target, just update
        the excerpt */
-    if (sBook.Trace.mark)
+    if (sbook.Trace.mark)
       fdjtLog("Just updating gloss HUD with excerpt %o",excerpt);
     if ((excerpt)&&(excerpt.length>sbook_min_excerpt))
       sbookSetMarkExcerpt(excerpt);
     return;}
   sbook_mark_target=target;
   var info=((target) &&
-	    ((sBook.Info(target)) ||
-	     (sBook.Info(sBook.getHead(target)))));
+	    ((sbook.Info(target)) ||
+	     (sbook.Info(sbook.getHead(target)))));
   // Get information about the origin if it's a gloss
   //  If it's the user's gloss, we set it.  Otherwise,
   //   we set the relay field
-  var glossinfo=((origin)&&(origin.oid)&&sBook.OIDs.map[origin.oid]);
+  var glossinfo=((origin)&&(origin.oid)&&sbook.OIDs.map[origin.oid]);
   if (glossinfo)
     if (glossinfo.user===sbook.user) {
       fdjtID("SBOOKMARKOID").value=origin.oid;
@@ -81,7 +81,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   fdjtID("SBOOKMARKFORM").setAttribute('mode','tag');
   fdjtID("SBOOKMARKREFURI").value=refuri;
   fdjtID("SBOOKMARKFRAGID").value=target.id;
-  fdjtID("SBOOKMARKSOURCE").value=sBook.getDocURI(target);
+  fdjtID("SBOOKMARKSOURCE").value=sbook.getDocURI(target);
   fdjtID("SBOOKMARKSYNC").value=sbook_gloss_syncstamp;
   fdjtID("SBOOKMARKTITLE").value=
     ((origin)&&(origin.title))||
@@ -106,7 +106,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   /* Figure out the tagcues */
   var tagcues=[];
   /* Get tags from the item and the items above it */
-  {var info=sBook.Info.map[target.id]; while (info) {
+  {var info=sbook.nodeinfo[target.id]; while (info) {
       var glosses=sbook_glosses_by_id[info.frag];
       /* Get the tags from the content */
       if ((info)&&(info.tags)&&(info.tags.length)) {
@@ -129,7 +129,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
 
 /* Making the MARK hud */
 
-function sbicon(name,suffix) {return sBook.graphics+name+(suffix||"");}
+function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
 function sbookCreateMarkHUD(classinfo)
 {
@@ -224,16 +224,16 @@ function sbookCreateMarkHUD(classinfo)
   form.onsubmit=
     ((sbook.user)?(sbookMark_onsubmit):(sbookNoUserSubmit));
   form.oncallback=function(req) {
-    if (sBook.Trace.network)
+    if (sbook.Trace.network)
       fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
     sbookImportGlosses(JSON.parse(req.responseText));
     fdjtDOM.dropClass(form,"submitting");
     /* Turn off the target lock */
-    sBook.setTarget(false);
+    sbook.setTarget(false);
     form.reset();
     fdjtDOM.addListener
     (fdjtID("SBOOKMARKCLOUD"),"click",fdjtUI.Checkspan.onclick);
-   win.sBookMode(false);};
+   win.sbookMode(false);};
   // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
   // hideicon.onclick="fdjtDOM.addClass('SBOOKMARK','hidden')"; 
   var markdiv=fdjtDOM(classinfo||"div.mark",need_login,messages_elt,form);
@@ -294,7 +294,7 @@ function sbookMarkFeed_onchange(evt)
   var checkspan=fdjtID("SBOOKMARKPRIVATE");
   var overlays=fdjtUI.T(evt);
   var newfeed=overlays.value;
-  var info=sBook.OIDs.map[newfeed];
+  var info=sbook.OIDs.map[newfeed];
   var checkstate;
   if (newfeed===':{}') checkstate=true;
   else if (newfeed===sbook.user) checkstate=false;
@@ -352,7 +352,7 @@ function sbookMarkTagTab()
 function sbookMarkCloud()
 {
   var seen={};
-  var sbook_index=sBook.Index;
+  var sbook_index=sbook.index;
   var completions=fdjtDOM("div.completions.checkspans");
   completions._seen=seen;
   completions.onclick=fdjtUI.CheckSpan.onclick;
@@ -362,7 +362,7 @@ function sbookMarkCloud()
     var tag=alltags[i++];
     // We elide sectional tags
     if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
-    var tagnode=Knowlet.HTML(tag,document.knowlet,"TAGS",true);
+    var tagnode=Knowlet.HTML(tag,sbook.knowlet,"TAGS",true);
     fdjtDOM(completions,tagnode," ");}
   var i=0; while (i<alltags.length) {
     var tag=alltags[i++];
@@ -419,7 +419,7 @@ function sbookTagInput_onkeypress(evt)
 	fdjtUI.CheckSpan.set(completions[0],true);
       else {
 	var curval=target.value;
-	var knospan=document.knowlet.HTML(curval,"TAGS",true);
+	var knospan=sbook.knowlet.HTML(curval,"TAGS",true);
 	fdjtUI.CheckSpan.set(knospan,true);
 	fdjtDOM.prepend(fdjtID("SBOOKMARKCLOUD"),knospan);
 	sbook_mark_cloud.addCompletion(knospan);}
@@ -543,7 +543,7 @@ function sbookMark(target,gloss,excerpt)
       sbookMarkHUDSetup(target,false,excerpt||false);
       if (gloss.gloss) fdjtID("SBOOKMARKRELAY").value=gloss.gloss;
       if (gloss.user) {
-	var userinfo=sBook.OIDs.map[gloss.user];
+	var userinfo=sbook.OIDs.map[gloss.user];
 	var glossblock=
 	  fdjtDOM("div.sbookrelayblock","Relayed from ",
 		  fdjtDOM("span.user",userinfo.name),
@@ -552,7 +552,7 @@ function sbookMark(target,gloss,excerpt)
 	fdjtDOM.replace("SBOOKMARKRELAYBLOCK",glossblock);}}
   else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
   sbookOpenGlossmark(target,true);
-  sBookMode("mark");
+  sbookMode("mark");
   fdjtID("SBOOKMARKINPUT").focus();
 }
 
@@ -573,15 +573,6 @@ function sbookCreateLoginButton(uri,image,title)
   login_button.title=((uri)?(title):("(coming soon) "+title));
   login_button.onclick=sbookLoginButton_onclick;
   return login_button;
-}
-
-function sbookSetupMarkHUD(hud)
-{
-  var input=fdjtID("SBOOKMARKTAGINPUT");
-  fdjtDOM.addListener(input,"keypress",sbookTagInput_onkeypress);
-  fdjtDOM.addListener(input,"keyup",sbookTagInput_onkeyup);
-  fdjtDOM.addListener(input,"focus",sbookTagInput_onfocus);
-  fdjtUI.AutoPrompt.setup(hud);
 }
 
 function sbook_get_titlepath(info,embedded)

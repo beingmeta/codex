@@ -48,7 +48,7 @@ var sbookHUDsocial=false;
 
 /* Social UI components */
 
-function sbicon(name,suffix) {return sBook.graphics+name+(suffix||"");}
+function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
 function sbookCreateGlossesHUD(classinfo)
 {
@@ -106,7 +106,7 @@ function sbookEveryoneButton_onclick(evt)
   if ((!(sources))||(!(glosses)))
     return; /* Warning? */
   if (fdjtDOM.hasClass(target,"selected")) {
-    sBookMode(false);
+    sbookMode(false);
     fdjtDOM.cancel(evt);
     return;}
   var selected=fdjtDOM.$(".selected",sources);
@@ -163,7 +163,7 @@ function sbookSetSources(overlays,sources)
 	fdjtDOM.addClass(child,"sourced");
       else fdjtDOM.dropClass(child,"sourced");}}
 }
-sBook.setSources=sbookSetSources;
+sbook.setSources=sbookSetSources;
 
 function sbookScrollGlosses(elt,glosses)
 {
@@ -211,7 +211,7 @@ function sbookGlossmark(target,open)
   var imgsrc=((target)?(sbicon("sbookspeople32x32.png")):
 	      (sbicon("remarkballoon32x32.png")));
   // By default the glossmark image is the user when unique
-  if (sources.length===1) imgsrc=(sBook.OIDs.map[sources[0]].pic)||imgsrc;
+  if (sources.length===1) imgsrc=(sbook.OIDs.map[sources[0]].pic)||imgsrc;
   var glossmark=fdjtDOM
     ("span.glossmark",
      fdjtDOM.Image(imgsrc,"big","comments"),
@@ -225,7 +225,7 @@ function sbookGlossmark(target,open)
     glossmark.sbook_ref=id;}
   if ((target)&&(sbook_glossmark_qricons)) {
     var qrhref="http://"+sbook_server+"/sbook/qricon.fdcgi?"+
-      "URI="+encodeURIComponent(sBook.refuri)+
+      "URI="+encodeURIComponent(sbook.refuri)+
       ((id)?("&FRAG="+id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
     var i=0; while (i<tags.length) qrhref=qrhref+"&TAGCUE="+tags[i++];
@@ -236,7 +236,7 @@ function sbookGlossmark(target,open)
   glossmark.sbookui=true;
   return glossmark;
 }
-sBook.Glossmark=sbookGlossmark;
+sbook.Glossmark=sbookGlossmark;
 
 var sbook_glossmark_div=false;
 var sbook_glossmark_target=false;
@@ -246,7 +246,7 @@ function sbookOpenGlossmark(target,addmark)
   if (sbook_glossmark_target===target) {
     var hud=fdjtID("SBOOKMARKHUD");
     hud.style.maxHeight=((fdjtDOM.viewHeight())-100);
-    sBookMode("mark");}
+    sbookMode("mark");}
   else {
     var hud=fdjtID("SBOOKMARKHUD");
     var glosses=sbook_glosses_by_id[target.id];
@@ -255,14 +255,14 @@ function sbookOpenGlossmark(target,addmark)
     if (glosses)
       sbookShowSummaries(glosses,sumdiv,false);
     fdjtDOM.replace("SBOOKMARKGLOSSES",sumdiv);
-    sBook.setTarget(target);
+    sbook.setTarget(target);
     sbook_glossmark_target=target;
     sbookMarkHUDSetup(target);
     sbookAlignGlossmark(hud,target);
    if (addmark)
       fdjtDOM.dropClass(fdjtID("SBOOKMARKFORM"),"closed");
     else fdjtDOM.addClass(fdjtID("SBOOKMARKFORM"),"closed");
-    sBookMode("mark");}
+    sbookMode("mark");}
 }
 
 function sbookAlignGlossmark(hud,target)
@@ -282,9 +282,9 @@ function sbookAlignGlossmark(hud,target)
 function sbookGlossmark_onclick(evt)
 {
   evt=evt||event||null;
-  var target=sBook.getRef(fdjtUI.T(evt));
+  var target=sbook.getRef(fdjtUI.T(evt));
   if (sbook_glossmark_target===target)
-    if (sbook.mode) sBookMode(false);
+    if (sbook.mode) sbookMode(false);
     else sbookOpenGlossmark(target,false);
   else sbookOpenGlossmark(target,false);
 }
@@ -292,14 +292,14 @@ function sbookGlossmark_onclick(evt)
 function sbookGlossmark_onmouseover(evt)
 {
   evt=evt||event||null;
-  var target=sBook.getRef(fdjtUI.T(evt))||sbookGetFocus(fdjtUI.T(evt));
+  var target=sbook.getRef(fdjtUI.T(evt))||sbookGetFocus(fdjtUI.T(evt));
   fdjtDOM.addClass(target,"sbooklivespot");
 }
 
 function sbookGlossmark_onmouseout(evt)
 {
   evt=evt||event||null;
-  var target=sBook.getRef(fdjtUI.T(evt))||sBook.getFocus(fdjtUI.T(evt));
+  var target=sbook.getRef(fdjtUI.T(evt))||sbook.getFocus(fdjtUI.T(evt));
   fdjtDOM.dropClass(target,"sbooklivespot");
 }
 
@@ -315,7 +315,7 @@ function createSBOOKHUDping()
   wrapper.onfocus=function (evt){
     iframe.src=
     sbook_glossmark_uri
-    (sBook.refuri,
+    (sbook.refuri,
      sbook.head.id,
      sbook.head.title||document.title||"",
      false);};

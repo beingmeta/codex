@@ -47,18 +47,19 @@ function sbookScan(root,docinfo){
   fdjtLog("[%o] Scanning DOM for metadata",fdjtET());
   var nodefn=sbookScan.nodeFn||false;
   var children=root.childNodes, level=false;
-  var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
-		(docinfo[root.id]=new scanInfo()));
   var scanstate=
     {curlevel: 0,idserial:0,location: 0,
      nodecount: 0,eltcount: 0,headcount: 0,
      tagstack: [],taggings: [],
      idstate: {prefix: false,count: 0},
-     idstack: [{prefix: false,count: 0}]};
-  if (root.id) docinfo[root.id]=rootinfo;
+     idstack: [{prefix: false,count: 0}],
+     pool: sbook.NodeInfo};
+  var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
+		(docinfo[root.id]=new scanInfo(root.id,scanstate)));
   scanstate.curhead=root; scanstate.curinfo=rootinfo;
   // Location is an indication of distance into the document
   var location=0;
+  rootinfo.pool=scanstate.pool;
   rootinfo.title=root.title||document.title;
   rootinfo.starts_at=0;
   rootinfo.level=0; rootinfo.sub=new Array();
@@ -83,7 +84,12 @@ function sbookScan(root,docinfo){
 	  scanstate.headcount,scanstate.eltcount);
   return docinfo;
 
-  function scanInfo(id) {}
+  function scanInfo(id,scanstate) {
+    if (docinfo[id]) return docinfo[id];
+    this.pool=scanstate.pool;
+    this.frag=id;
+    docinfo[id]=this;
+    return this;}
   sbookScan.scanInfo=scanInfo;
 
   function getTitle(head) {
@@ -156,7 +162,7 @@ function sbookScan(root,docinfo){
     (head,docinfo,scanstate,level,curhead,curinfo,curlevel,nodefn){
     var headid=head.id;
     var headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
-      (docinfo[headid]=new scanInfo());
+      (docinfo[headid]=new scanInfo(headid,scanstate));
     scanstate.headcount++;
     if (sbookScan.trace)
       fdjtLog("Scanning head item %o under %o at level %d w/id=#%s ",
@@ -236,11 +242,10 @@ function sbookScan(root,docinfo){
     scanstate.eltcount++;
     var info=((nodefn)&&(nodefn(child)));
     if ((!(info))&&(!(info=docinfo[child.id]))) 
-      docinfo[child.id]=info={};
+      info=new scanInfo(child.id,scanstate);
     info.sbookloc=location;
     info.sbookhead=curhead.id;
     info.head=curinfo;
-    info.frag=child.id;
     if ((child.sbookskip)||(child.sbookui)||
 	((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
       return;

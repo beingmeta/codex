@@ -45,7 +45,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
      
 function sbookIndexTags(docinfo)
 {
-  var sbook_index=sBook.Index;
+  var sbook_index=sbook.index;
   /* One pass processes all of the inline DTerms and
      also separates out primary and auto tags. */
   for (var eltid in docinfo) {
@@ -62,7 +62,7 @@ function sbookIndexTags(docinfo)
       else tags[tag]=2;
       if ((tag.indexOf('|')>=0)) knowlet.handleSubjectEntry(tag);
       k++;}}
-  var knowlet=document.knowlet||false;
+  var knowlet=sbook.knowlet||false;
   sbook_index.Tags=function(item){return docinfo[item].tags;};
   for (var eltid in docinfo) {
     var tags=docinfo[eltid].tags;
@@ -72,7 +72,7 @@ function sbookIndexTags(docinfo)
       var tag=tags[k++];
       sbook_index.add(eltid,tag,tags[tag]||1,knowlet);}}
 }
-sBook.Setup.indexTags=sbookIndexTags;
+sbook.indexTags=sbookIndexTags;
 
 /* Inline knowlets */
 
@@ -90,7 +90,7 @@ function sbookHandleInlineKnowlets(scanstate)
 
 function sbookIndexTechnoratiTags(kno)
 {
-  var sbook_index=sBook.Index;
+  var sbook_index=sbook.index;
   if (!(kno)) kno=knowlet;
   var anchors=document.getElementsByTagName("A");
   if (!(anchors)) return;
@@ -108,6 +108,7 @@ function sbookIndexTechnoratiTags(kno)
       sbook_index.add(cxt,dterm);}
     else i++;
 }
+sbook.indexTechnoratiTags=sbookIndexTechnoratiTags;
 
 /* Processing tags when all done */
 
@@ -115,11 +116,11 @@ var sbook_tagscores=false;
 
 function sbookTagScores()
 {
-  var sbook_index=sBook.Index;
+  var sbook_index=sbook.index;
   if (sbook_tagscores) return sbook_tagscores;
   var tagscores={}; var tagfreqs={}; var alltags=[];
   var book_tags=sbook_index._all;
-  if (sBook.Trace.clouds)
+  if (sbook.Trace.clouds)
     fdjtLog("[%f] Making full cloud over %d tags",
 	    fdjtET(),book_tags.length);
   // The scores here are used to determine sizes in the cloud

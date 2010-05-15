@@ -91,14 +91,14 @@ function sbookSearchInput_onkeypress(evt)
 	var query_base=Knowlet.Query.base(target.value);
 	var new_term=completeinfo.getValue(completions[0]);
 	var new_query=(query_base+new_term+";");
-	sBook.setQuery(new_query,true);}}
+	sbook.setQuery(new_query,true);}}
     fdjtDOM.cancel(evt);
     if ((ch===13)||
 	((sbook_search_gotlucky) && 
 	 (sbook.query._results.length>0) &&
 	 (sbook.query._results.length<=sbook_search_gotlucky))) {
       sbookShowSearch(sbook.query);
-      sBookMode("browsing");
+      sbookMode("browsing");
       fdjtID("SBOOKSEARCHTEXT").blur();
       fdjtID("SBOOKSUMMARIES").focus();}
     else {
@@ -143,7 +143,7 @@ function sbookSearchUpdate(input,cloud)
   if (!(input)) input=fdjtID("SBOOKSEARCHTEXT");
   var base=Knowlet.Query.base(input.value);
   var end=Knowlet.Query.tail(input.value);
-  sBook.setQuery(Knowlet.Query.string2query(base));
+  sbook.setQuery(Knowlet.Query.string2query(base));
   sbookQueryCloud(sbook.query).complete(end);
 }
 
@@ -153,7 +153,7 @@ function sbookSearchInput_onfocus(evt)
    var input=fdjtDOM.T(evt);
   fdjtUI.AutoPrompt.onfocus(evt);
   sbook_search_focus=true;
-  sBookMode("searching");
+  sbookMode("searching");
   sbookSearchUpdate(input);
 }
 
@@ -168,7 +168,7 @@ function sbookSearchInput_onblur(evt)
 
 function sbookDTermCompletion(term,title)
 {
-  var sbook_index=sBook.Index;
+  var sbook_index=sbook.index;
   if ((typeof term === "string") && (term[0]==="\u00A7")) {
     var showname=term;
     if (showname.length>17) {
@@ -180,7 +180,7 @@ function sbookDTermCompletion(term,title)
       span.title="("+term+": "+sbook_index.freq(term)+" items) "+title;
     else span.title=term+": "+sbook_index.freq(term)+" items";
     return span;}
-  var dterm=document.knowlet.DTerm(term);
+  var dterm=sbook.knowlet.DTerm(term);
   if (!(dterm))
     fdjtLog("Couldn't get knowlet references from %o",dterm);
   else if (!(dterm.dterm)) {
@@ -287,7 +287,7 @@ function sbookCloud_onclick(evt)
     fdjtDOM.cancel(evt);}
   else if (fdjtDOM.inherits(target,".resultcounts")) {
     sbookShowSearch(sbook.query);
-    sBookMode("browsing");
+    sbookMode("browsing");
     fdjtID("SBOOKSEARCHTEXT").blur();
     fdjtID("SBOOKSUMMARIES").focus();
     fdjtDOM.cancel(evt);}
@@ -314,22 +314,22 @@ function _sbook_add_searchtag(value)
       newval=curval.slice(0,endsemi)+";"+value+';';
     else newval=curval+value+";";
   else newval=value+";";
-  sBook.setQuery(newval);
+  sbook.setQuery(newval);
   if ((sbook_search_gotlucky) && 
       (sbook.query._results.length>0) &&
       (sbook.query._results.length<=sbook_search_gotlucky)) {
     // fdjtTrace("Search got lucky: %o",sbook.query);
     sbookShowSearch(sbook.query);
     fdjtID("SBOOKSEARCHTEXT").blur();
-    sBookMode("browsing");}
+    sbookMode("browsing");}
   else fdjtID("SBOOKSEARCHTEXT").focus();
 }
 
 function sbookMakeCloud(dterms,scores,freqs,noscale)
 {
-  var sbook_index=sBook.Index;
+  var sbook_index=sbook.index;
   var start=new Date();
-  if (sBook.Trace.clouds)
+  if (sbook.Trace.clouds)
     fdjtLog("[%fs] Making cloud from %d dterms using scores=%o and freqs=%o",
 	    fdjtET(),dterms.length,scores,freqs);
   var spans=fdjtDOM("span");  
@@ -374,7 +374,7 @@ function sbookMakeCloud(dterms,scores,freqs,noscale)
     var span=sbookDTermCompletion(dterm,title);
     if (freq===1) fdjtDOM.addClass(span,"singleton");
     if ((freqs)&&(!(noscale))) {
-      var relfreq=((freq/freqs._count)/(count/sBook.Info.map._eltcount));
+      var relfreq=((freq/freqs._count)/(count/sbook.nodeinfo._eltcount));
       var scaling=Math.sqrt(relfreq);
       var fontscale=100+(scaling*100);
       sumscale=fontscale+sumscale; nspans++;
@@ -382,7 +382,7 @@ function sbookMakeCloud(dterms,scores,freqs,noscale)
       /*
       fdjtLog("For %o, freq=%o fc=%o relfreq=%o count=%o ec=%o fontscale=%o",
 	      dterm,freq,freqs._count,relfreq,count,
-	      sBook.Info.map._eltcount,fontscale);*/
+	      sbook.nodeinfo._eltcount,fontscale);*/
       span.style.fontSize=fontscale+"%";}
     fdjtDOM(spans,span,"\n");}
   if ((freqs)&&(!(noscale))) {
@@ -396,7 +396,7 @@ function sbookMakeCloud(dterms,scores,freqs,noscale)
      " of completions.  ");
   fdjtDOM.prepend(completions,maxmsg);
   var end=new Date();
-  if (sBook.Trace.clouds)
+  if (sbook.Trace.clouds)
     fdjtLog("[%f] Made cloud for %d dterms in %f seconds",
 	    fdjtET(),dterms.length,
 	    (end.getTime()-start.getTime())/1000);
@@ -426,21 +426,6 @@ function sbookFullCloud()
 }
 
 /* Search UI */
-
-function sbookSetupSearchHUD()
-{
-  var input=fdjtID("SBOOKSEARCHTEXT");
-  fdjtDOM.addListener(input,"keypress",sbookSearchInput_onkeypress);
-  fdjtDOM.addListener(input,"keyup",sbookSearchInput_onkeyup);
-  fdjtDOM.addListener(input,"focus",sbookSearchInput_onfocus);
-  fdjtDOM.addListener(input,"blur",sbookSearchInput_onblur);
-
-  var sbooksearch=fdjtID("SBOOKSEARCH");
-  fdjtUI.AutoPrompt.setup(sbooksearch);
-
-  var completions=fdjtID("SBOOKSEARCHCOMPLETIONS");
-  sbook_empty_cloud=new fdjtUI.Completions(completions);
-}
 
 function sbookClearInput_onclick(evt)
 {
