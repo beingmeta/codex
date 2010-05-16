@@ -139,7 +139,7 @@ var sbookMode=
       fdjtUI.AutoPrompt.setup(sbooksearch);
 
       var completions=fdjtID("SBOOKSEARCHCLOUD");
-      sbook_empty_cloud=new fdjtUI.Completions(completions);}
+      sbook.empty_cloud=new fdjtUI.Completions(completions);}
 
     function initMarkHUD(hud){
       var input=fdjtID("SBOOKMARKTAGINPUT");

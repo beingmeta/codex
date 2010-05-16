@@ -43,101 +43,58 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
        a query
 */
      
-function sbookIndexTags(docinfo)
-{
-  var sbook_index=sbook.index;
-  /* One pass processes all of the inline DTerms and
-     also separates out primary and auto tags. */
-  for (var eltid in docinfo) {
-    var tags=docinfo[eltid].tags;
-    if (!(tags)) continue;
-    var k=0; var ntags=tags.length;
-    while (k<ntags) {
-      var tag=tags[k];
-      if (tag[0]==='*') {
-	var tagstart=tag.search(/[^*]+/);
-	tags[k]=tag=tag.slice(tagstart);
-	tags[tag]=2*tagstart;}
-      else if (tag[0]==='~') tags[k]=tag=tag.slice(1);
-      else tags[tag]=2;
-      if ((tag.indexOf('|')>=0)) knowlet.handleSubjectEntry(tag);
-      k++;}}
-  var knowlet=sbook.knowlet||false;
-  sbook_index.Tags=function(item){return docinfo[item].tags;};
-  for (var eltid in docinfo) {
-    var tags=docinfo[eltid].tags;
-    if (!(tags)) continue;
-    var k=0; var ntags=tags.length;
-    while (k<ntags) {
-      var tag=tags[k++];
-      sbook_index.add(eltid,tag,tags[tag]||1,knowlet);}}
-}
-sbook.indexTags=sbookIndexTags;
-
-/* Inline knowlets */
-
-function sbookHandleInlineKnowlets(scanstate)
-{
-  var kno=((scanstate.knowlet)||knowlet);
-  var taggings=scanstate.taggings;
-  var i=0; var n=taggings.length; while (i<n) {
-    var tags=taggings[i++].tags;
-    var j=0; var ntags=tags.length;
-    while (j<ntags)
-      if (tags[j].indexOf('|')) kno.handleSubjectEntry(tags[j++]);
-      else j++;}
-}
-
-function sbookIndexTechnoratiTags(kno)
-{
-  var sbook_index=sbook.index;
-  if (!(kno)) kno=knowlet;
-  var anchors=document.getElementsByTagName("A");
-  if (!(anchors)) return;
-  var i=0; var len=anchors.length;
-  while (i<len)
-    if (anchors[i].rel==='tag') {
-      var elt=anchors[i++];
-      var href=elt.href;
-      var cxt=elt;
-      while (cxt) if (cxt.id) break; else cxt=cxt.parentNode;
-      if (!((href)&&(cxt))) return;
-      var tagstart=(href.search(/[^/]+$/));
-      var tag=((tagstart<0)?(href):href.slice(tagstart));
-      var dterm=((kno)?(kno.handleEntry(tag)):(fdjtString.stdspace(tag)));
-      sbook_index.add(cxt,dterm);}
-    else i++;
-}
-sbook.indexTechnoratiTags=sbookIndexTechnoratiTags;
-
-/* Processing tags when all done */
-
-var sbook_tagscores=false;
-
-function sbookTagScores()
-{
-  var sbook_index=sbook.index;
-  if (sbook_tagscores) return sbook_tagscores;
-  var tagscores={}; var tagfreqs={}; var alltags=[];
-  var book_tags=sbook_index._all;
-  // The scores here are used to determine sizes in the cloud
-  // A regular index reference counts as 1 and a prime reference counts
-  //  as one more.
-  var bykey=sbook_index.bykey; var alltags=[];
-  for (var tag in bykey) {
-    tagfreqs[tag]=bykey[tag].length;
-    alltags.push(tag);}
-  tagfreqs._count=alltags.length;
-  alltags.sort(function (x,y) {
-      var xlen=tagfreqs[x]; var ylen=tagfreqs[y];
-      if (xlen==ylen) return 0;
-      else if (xlen>ylen) return -1;
-      else return 1;});
-  tagscores._all=alltags; tagscores._freq=tagfreqs;
-  sbook_tagscores=tagscores;
-  return tagscores;
-}
-
+(function(){
+  function sbookIndexTags(docinfo){
+    var sbook_index=sbook.index;
+    /* One pass processes all of the inline DTerms and
+       also separates out primary and auto tags. */
+    for (var eltid in docinfo) {
+      var tags=docinfo[eltid].tags;
+      if (!(tags)) continue;
+      var k=0; var ntags=tags.length;
+      while (k<ntags) {
+	var tag=tags[k];
+	if (tag[0]==='*') {
+	  var tagstart=tag.search(/[^*]+/);
+	  tags[k]=tag=tag.slice(tagstart);
+	  tags[tag]=2*tagstart;}
+	else if (tag[0]==='~') tags[k]=tag=tag.slice(1);
+	else tags[tag]=2;
+	if ((tag.indexOf('|')>=0)) knowlet.handleSubjectEntry(tag);
+	k++;}}
+    var knowlet=sbook.knowlet||false;
+    sbook_index.Tags=function(item){return docinfo[item].tags;};
+    for (var eltid in docinfo) {
+      var tags=docinfo[eltid].tags;
+      if (!(tags)) continue;
+      var k=0; var ntags=tags.length;
+      while (k<ntags) {
+	var tag=tags[k++];
+	sbook_index.add(eltid,tag,tags[tag]||1,knowlet);}}}
+  sbook.indexTags=sbookIndexTags;
+  
+  /* Inline knowlets */
+  function indexTechnoratiTags(kno) {
+    var sbook_index=sbook.index;
+    if (!(kno)) kno=knowlet;
+    var anchors=document.getElementsByTagName("A");
+    if (!(anchors)) return;
+    var i=0; var len=anchors.length;
+    while (i<len)
+      if (anchors[i].rel==='tag') {
+	var elt=anchors[i++];
+	var href=elt.href;
+	var cxt=elt;
+	while (cxt) if (cxt.id) break; else cxt=cxt.parentNode;
+	if (!((href)&&(cxt))) return;
+	var tagstart=(href.search(/[^/]+$/));
+	var tag=((tagstart<0)?(href):href.slice(tagstart));
+	var dterm=((kno)?(kno.handleEntry(tag)):(fdjtString.stdspace(tag)));
+	sbook_index.add(cxt,dterm);}
+      else i++;}
+  sbook.indexTechnoratiTags=indexTechnoratiTags;
+  ;})();
+  
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

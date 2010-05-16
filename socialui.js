@@ -50,28 +50,6 @@ var sbookHUDsocial=false;
 
 function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
-function sbookCreateGlossesHUD(classinfo)
-{
-  if (sbookGlossesHUD) return sbookGlossesHUD;
-  var everyone_button=
-    fdjtDOM.Image(sbicon("sbookspeople40x40.png"),
-		  ".button.everyone.selected",
-		  "click to see all glosses");
-  var allsources=fdjtDOM("div#SBOOKSOURCES.sbooksources",everyone_button);
-  everyone_button.onclick=sbookEveryoneButton_onclick;
-  allsources.onclick=sbookSources_onclick;
-  
-  var allglosses=fdjtDOM("div#SBOOKALLGLOSSES.sbooksummaries.scrollable");
-  sbookSetupSummaryDiv(allglosses);
-  sbookShowSummaries(sbook_allglosses,allglosses,false);
-  
-  sbookGlossesHUD=
-    fdjtDOM(classinfo||"div#SBOOKGLOSSES.sbookglosses.hudblock.scrollhud",
-	    allsources,allglosses);
-  
-  return sbookGlossesHUD;
-}
-
 function sbookAddSourceIcon(info)
 {
   var humid=info.humid;
@@ -167,11 +145,13 @@ sbook.setSources=sbookSetSources;
 
 function sbookScrollGlosses(elt,glosses)
 {
-  if (elt.sbookloc) {
-    var targetloc=elt.sbookloc;
+  var info=sbook.nodefino[elt.id];
+  if ((info)&&(info.sbookloc)) {
+    var targetloc=info.sbookloc;
     if (!(glosses)) glosses=fdjtID("SBOOKALLGLOSSES");
     var children=glosses.childNodes;
-    /* We do this linearly because it's fast enough and simpler */
+    /* We do this linearly for now because it's fast enough and
+       simpler. */
     var i=0; var len=children.length; while (i<len) {
       var child=children[i++];
       if (child.nodeType===1) {

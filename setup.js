@@ -107,7 +107,7 @@ sbook.Setup=
       window.onresize=function(evt){sbookPaginate();};
       sbook.setupGestures();
       sbook.Flash();
-      // sbookFullCloud();
+      // sbook.fullCloud();
       _sbook_setup=sbook._setup=new Date();}
     sbook.Setup=Setup;
 
@@ -344,10 +344,8 @@ sbook.Setup=
       glosses_button.style.visibility='';
       var search_button=fdjtID("SBOOKSEARCHBUTTON");
       search_button.style.visibility='';
-      sbook.Message("Analyzing tag frequencies...");
-      sbookTagScores();
       sbook.Message("Setting up search cloud...");
-      fdjtDOM.replace("SBOOKSEARCHCLOUD",sbookFullCloud().dom);
+      fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
       sbook.Message("Setting up glossing cloud...");
       fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud().dom);
       setupGlossServer();

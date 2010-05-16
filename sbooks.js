@@ -247,7 +247,7 @@ var sbook_gloss_data=
 	      result._query,result._results.length,
 	      result._refiners._results.length);
     if (result._refiners) {
-      var completions=sbookQueryCloud(result);
+      var completions=sbook.queryCloud(result);
       if (sbook.Trace.search>1)
 	fdjtLog("Setting completions to %o",completions.dom);
       fdjtDOM.replace(fdjtID("SBOOKSEARCHCLOUD"),completions.dom);}
