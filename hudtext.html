@@ -1,11 +1,11 @@
 <img src='http://static.beingmeta.com/graphics/CompassIcon40x40.png'
      alt='toc' title='click to navigate the book as a whole'
      class='hudbutton' id='SBOOKTOCBUTTON'
-     onclick='sbookMode.toggle("toc")'/>
+     onclick='sbookMode.toggle("toc"); fdjtUI.cancel(event); return false;'/>
 <img src='http://static.beingmeta.com/graphics/TagSearch40x40.png'
      alt='search' title='click to search tags within the book'
      class='hudbutton' id='SBOOKSEARCHBUTTON'
-     onclick='sbookMode.toggle("searching",/(searching)|(browsing)/)'/>
+     onclick='sbook.toggleSearch();'/>
 <div id='SBOOKTOC' class='hudblock'></div>
 <div id='SBOOKSEARCH' class='scrollhud sbooksearch'></div>
 <div id='SBOOKGLOSSES' class='sbookglosses scrollhud'>
@@ -29,11 +29,38 @@
   <img src='http://static.beingmeta.com/graphics/sbooksappicon40x40.png'
        alt='dash' title='Click for Help, settings, book description, etc'
        class='hudbutton' id='SBOOKDASHBUTTON'
-       onclick='sbookMode.toggle(sbook.last_dash)'/>
+       onclick='sbookMode.toggle(sbook.last_dash); fdjtUI.cancel(event); return false;'/>
   <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
        alt='glosses' title='Click to browse glosses overlaid on this book'
        class='hudbutton' id='SBOOKGLOSSESBUTTON'
-       onclick='sbookMode.toggle("glosses")'/>
+       onclick='sbookMode.toggle("glosses"); fdjtUI.cancel(event); return false;'/>
+  <div class='tabbar' id='SBOOKTABS'>
+    <span class='tab' contentid='APPABOUT'
+	  onclick='sbookMode("about"); fdjtUI.cancel(event); return false;'
+	  title='information and links about this book'>
+      About</span>
+    <span class='tab' contentid='DASHTOC'
+	  onclick='sbookMode("dashtoc"); fdjtUI.cancel(event); return false;'
+	  title='Table of Contents (static)'>
+      Contents</span>
+    <span class='tab' contentid='APPDEVICE'
+	  onclick='sbookMode("device"); fdjtUI.cancel(event); return false;'
+	  title='alter appearance and interaction'>
+      Device</span>
+    <span class='tab' contentid='SBOOKSAPP'
+	  onclick='sbookMode("sbookapp"); fdjtUI.cancel(event); return false;'
+	  title='manage how your sBook is enhanced with added layers'>
+      sBooks</span>
+    <span class='tab' contentid='APPLOGIN'
+	  onclick='sbookMode("login"); fdjtUI.cancel(event); return false;'
+	  title='login to sBooks'>
+      Login</span>
+    <span class='tab' contentid='APPHELP'
+	  onclick='sbookMode("help"); fdjtUI.cancel(event); return false;'
+	  title='how to use this sBook'>
+      <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png'
+	   alt='Help'/></span>
+  </div>
   <div class='hudblock tags' id='SBOOKTAGS'></div>
 </div>
 <div id='SBOOKMARKHUD' class='hudblock'></div>

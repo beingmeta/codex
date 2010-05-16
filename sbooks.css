@@ -78,7 +78,7 @@ div#SBOOKHUD div#SBOOKFOOT {
 
 body.notfixed div#SBOOKHUD ,
 body.notfixed div#SBOOKHUD div#SBOOKFOOT {
-  position: absolute; }
+  position: absolute;}
 
 body.preview div#SBOOKHUD div.hudblock { opacity: 0.3}
 body.preview div#SBOOKHUD { display: none;}
@@ -297,9 +297,15 @@ div#SBOOKHUD.browsing div.scrollhud#SBOOKSEARCH {
   border-color: blue;}
 
 div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH div.scrollhead {
-    max-height: inherit; height: inherit;}
+    max-height: 30px; height: 30px;}
+div#SBOOKHUD div.scrollhud#SBOOKSEARCH div.scrollbody {
+    top: 30px;}
 div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH div.scrollbody {
     display: none;}
+div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH div.scrollbody.searchcloud {
+    display: block;}
+div#SBOOKHUD.browsing div.scrollhud#SBOOKSEARCH div.scrollbody.sbookresults {
+    display: block;}
 
 div#SBOOKHUD img.hudbutton[alt='search'] { 
   top: 0px; right: 0px;
@@ -360,10 +366,46 @@ div#SBOOKHUD div#SBOOKGLOSSES.onepassage {
 
 /* The Dashboard HUD */
 
+div#SBOOKHUD div.scrollhud div.scrollhead#SBOOKDASHTOP {
+    height: 30px; min-height: 30px;}
+
+div#SBOOKHUD div.scrollhud div.scrollbody#SBOOKDASHCONTENT {
+    top: 30px; margin-top: 0px; padding-top: 0px;}
+div#SBOOKHUD div.scrollhud div.scrollbody#SBOOKDASHCONTENT div.tabcontent {
+    margin-top: 0px;}
+
 div#SBOOKHUD div#SBOOKDASH div#SBOOKDASHTOP div#SBOOKDASHBAR {
   position: absolute; top: 0px; left: 0px; right: 0px; }
 div#SBOOKHUD div#SBOOKDASH div#SBOOKDASHTOP div.tabbar {
   margin-top: 20px;}
+
+div#SBOOKHUD div#SBOOKFOOT div.tabbar {
+    position: absolute; text-align: center;
+    bottom: 0px; left: 75px; right: 75px;
+    margin-left: 0px; margin-right: 0px;
+    margin-top: 10px; margin-bottom: 10px;
+    padding-left: 50px; padding-right: 50px;}
+
+div#SBOOKHUD div#SBOOKFOOT div.tabbar { display: none;}
+div#SBOOKHUD.about div#SBOOKFOOT div.tabbar,
+div#SBOOKHUD.help div#SBOOKFOOT div.tabbar,
+div#SBOOKHUD.login div#SBOOKFOOT div.tabbar,
+div#SBOOKHUD.device div#SBOOKFOOT div.tabbar,
+div#SBOOKHUD.dashtoc div#SBOOKFOOT div.tabbar,
+div#SBOOKHUD.sbookapp div#SBOOKFOOT div.tabbar {
+    display: block;}
+
+div#SBOOKHUD div#SBOOKFOOT:hover div.tabbar {
+    display: block;}
+
+div#SBOOKHUD div#SBOOKFOOT div.tabbar span.tab { border-radius: 6px; }
+div#SBOOKHUD.about div#SBOOKFOOT div.tabbar span.tab[contentid='APPABOUT'],
+div#SBOOKHUD.help div#SBOOKFOOT div.tabbar span.tab[contentid='APPHELP'],
+div#SBOOKHUD.login div#SBOOKFOOT div.tabbar span.tab[contentid='APPLOGIN'],
+div#SBOOKHUD.device div#SBOOKFOOT div.tabbar span.tab[contentid='APPDEVICE'],
+div#SBOOKHUD.dashtoc div#SBOOKFOOT div.tabbar span.tab[contentid='DASHTOC'],
+div#SBOOKHUD.sbookapp div#SBOOKFOOT div.tabbar span.tab[contentid='SBOOKSAPP'] {
+    background-color: lightgray;}
 
 div#SBOOKHUD.help div#SBOOKDASH,
 div#SBOOKHUD.login div#SBOOKDASH,

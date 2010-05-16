@@ -231,7 +231,7 @@ var sbook_gloss_data=
 	((sbook.query._query)===query) &&
 	((scored||false)===(sbook.query._scored)))
       return sbook.query;
-    var result=sbook_index.Query(query);
+    var result=sbook.index.Query(query);
     if (result._qstring!==
 	Knowlet.Query.base(fdjtID("SBOOKSEARCHTEXT").value)) {
       fdjtID("SBOOKSEARCHTEXT").value=result._qstring;
@@ -250,7 +250,7 @@ var sbook_gloss_data=
       var completions=sbookQueryCloud(result);
       if (sbook.Trace.search>1)
 	fdjtLog("Setting completions to %o",completions.dom);
-      fdjtDOM.replace(fdjtID("SBOOKSEARCHCOMPLETIONS"),completions.dom);}
+      fdjtDOM.replace(fdjtID("SBOOKSEARCHCLOUD"),completions.dom);}
     sbook.setSources(fdjtID("SBOOKGLOSSES"),result._sources||[]);
     return result;};
 

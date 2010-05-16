@@ -56,7 +56,6 @@ var sbookMode=
 	sbookHUD.sbookui=true;
 	sbookHUD.innerHTML=sbook_hudtext;
 	fdjtDOM.prepend(document.body,sbookHUD);}
-      initButtons();
       var console=fdjtID("SBOOKCONSOLE");
       console.innerHTML=sbook_consoletext;
       var dash=fdjtID("SBOOKDASH");
@@ -139,7 +138,7 @@ var sbookMode=
       var sbooksearch=fdjtID("SBOOKSEARCH");
       fdjtUI.AutoPrompt.setup(sbooksearch);
 
-      var completions=fdjtID("SBOOKSEARCHCOMPLETIONS");
+      var completions=fdjtID("SBOOKSEARCHCLOUD");
       sbook_empty_cloud=new fdjtUI.Completions(completions);}
 
     function initMarkHUD(hud){
@@ -515,43 +514,6 @@ var sbookMode=
       else return -40;}
 
     /* Button methods */
-
-    function initButtons() {
-      fdjtID("SBOOKTOCBUTTON").onclick=function(evt){
-	evt=evt||event||null;
-	if (sbook.mode==="toc") {
-	  sbookMode(false);
-	  fdjtDOM.dropClass("SBOOKTOC","hover");}
-	else sbookMode("toc");
-	fdjtDOM.cancel(evt);};
-
-
-      fdjtID("SBOOKSEARCHBUTTON").onclick=function(evt){
-	evt=evt||event||null;
-	if ((sbook.mode==="searching") || (sbook.mode==="browsing")) {
-	  sbookMode(false);
-	  fdjtDOM.dropClass("SBOOKSEARCH","hover");
-	  fdjtID("SBOOKSEARCHTEXT").blur();}
-	else {
-	  sbookMode("searching");
-	  fdjtID("SBOOKSEARCHTEXT").focus();
-	  fdjtDOM.cancel(evt);}};
-
-      fdjtID("SBOOKDASHBUTTON").onclick=function(evt){
-	if (sbook.mode)
-	  if (fdjtKB.contains(sbook_apps,sbook.mode))
-	    sbookMode(false);
-	  else sbookMode(sbook.last_dash);
-	else sbookMode(sbook.last_dash);
-	fdjtDOM.cancel(evt);};
-
-      fdjtID("SBOOKGLOSSESBUTTON").onclick=function(evt){
-	evt=evt||event||null;
-	if (sbook.mode==="glosses") {
-	  sbookMode(false);
-	  fdjtDOM.dropClass("SBOOKGLOSSES","hover");}
-	else sbookMode("glosses");
-	fdjtDOM.cancel(evt);}}
 
     function LoginButton_onclick(evt){
       evt=evt||event||null;

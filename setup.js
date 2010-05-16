@@ -347,9 +347,9 @@ sbook.Setup=
       sbook.Message("Analyzing tag frequencies...");
       sbookTagScores();
       sbook.Message("Setting up search cloud...");
-      sbookFullCloud();
+      fdjtDOM.replace("SBOOKSEARCHCLOUD",sbookFullCloud().dom);
       sbook.Message("Setting up glossing cloud...");
-      fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud());
+      fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud().dom);
       setupGlossServer();
       if (sbook.user)
 	fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");

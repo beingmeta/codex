@@ -34,6 +34,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 */
 
 var sbook_noisy_tooltips=false;
+sbook.search_gotlucky=7;
 
 function sbookShowSearch(result)
 {
@@ -82,7 +83,10 @@ function sbookSearchInput_onkeypress(evt)
   if (_sbook_searchupdate) {
     clearTimeout(_sbook_searchupdate);
     _sbook_searchupdate=false;}
-  if ((kc===13)||(ch===13)||(ch===59)) {
+  if ((ch===13)||(ch===13)||(ch===59)) {
+    if (ch===59)
+      sbook.setQuery(target.value);
+    else sbook.setQuery(Knowlet.Query.base(target.value));
     var qstring=Knowlet.Query.tail(target.value);
     if (!(fdjtString.isEmpty(qstring))) {
       var completeinfo=sbookQueryCloud(sbook.query);
@@ -92,11 +96,14 @@ function sbookSearchInput_onkeypress(evt)
 	var new_term=completeinfo.getValue(completions[0]);
 	var new_query=(query_base+new_term+";");
 	sbook.setQuery(new_query,true);}}
+    else {
+      var completeinfo=sbookQueryCloud(sbook.query);
+      completeinfo.complete("");}
     fdjtDOM.cancel(evt);
     if ((ch===13)||
-	((sbook_search_gotlucky) && 
+	((sbook.search_gotlucky) && 
 	 (sbook.query._results.length>0) &&
-	 (sbook.query._results.length<=sbook_search_gotlucky))) {
+	 (sbook.query._results.length<=sbook.search_gotlucky))) {
       sbookShowSearch(sbook.query);
       sbookMode("browsing");
       fdjtID("SBOOKSEARCHTEXT").blur();
@@ -121,6 +128,7 @@ function sbookSearchInput_onkeypress(evt)
 	  completeinfo.complete(Knowlet.Query.tail(target.value));},
 	_sbook_searchupdate_delay);}
 }
+sbook.handlers.SearchInput_onkeypress=sbookSearchInput_onkeypress;
 
 function sbookSearchInput_onkeyup(evt)
 {
@@ -137,6 +145,7 @@ function sbookSearchInput_onkeyup(evt)
 	  sbookSearchUpdate(target);},
 	_sbook_searchupdate_delay,target);}
 }
+sbook.handlers.SearchInput_onkeyup=sbookSearchInput_onkeyup;
 
 function sbookSearchUpdate(input,cloud)
 {
@@ -156,6 +165,7 @@ function sbookSearchInput_onfocus(evt)
   sbookMode("searching");
   sbookSearchUpdate(input);
 }
+sbook.handlers.SearchInput_onfocus=sbookSearchInput_onfocus;
 
 function sbookSearchInput_onblur(evt)
 {
@@ -163,6 +173,7 @@ function sbookSearchInput_onblur(evt)
   fdjtUI.AutoPrompt.onblur(evt);
   sbook_search_focus=false;
 }
+sbook.handlers.SearchInput_onblur=sbookSearchInput_onblur;
 
 /* Getting query cloud */
 
@@ -302,6 +313,7 @@ function sbookCloud_onclick(evt)
     fdjtDOM.cancel(evt);}
   else {}
 }
+sbook.handlers.Cloud_onclick=sbookCloud_onclick;
 
 function _sbook_add_searchtag(value)
 {
@@ -315,9 +327,9 @@ function _sbook_add_searchtag(value)
     else newval=curval+value+";";
   else newval=value+";";
   sbook.setQuery(newval);
-  if ((sbook_search_gotlucky) && 
+  if ((sbook.search_gotlucky) && 
       (sbook.query._results.length>0) &&
-      (sbook.query._results.length<=sbook_search_gotlucky)) {
+      (sbook.query._results.length<=sbook.search_gotlucky)) {
     // fdjtTrace("Search got lucky: %o",sbook.query);
     sbookShowSearch(sbook.query);
     fdjtID("SBOOKSEARCHTEXT").blur();
@@ -434,6 +446,17 @@ function sbookClearInput_onclick(evt)
   sbookUpdateQuery(input_elt);
   input_elt.focus();
 }
+sbook.handlers.ClearInput_onclick=sbookClearInput_onclick;
+
+sbook.toggleSearch=function(evt){
+  evt=evt||event;
+  if ((sbook.mode==="searching")||(sbook.mode==="browsing"))
+    sbookMode(false);
+  else {
+    sbookMode("searching");
+    fdjtID("SBOOKSEARCHTEXT").focus();}
+  fdjtUI.cancel(evt);};
+    
 
 /* Emacs local variables
 ;;;  Local variables: ***

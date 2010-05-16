@@ -120,9 +120,6 @@ function sbookTagScores()
   if (sbook_tagscores) return sbook_tagscores;
   var tagscores={}; var tagfreqs={}; var alltags=[];
   var book_tags=sbook_index._all;
-  if (sbook.Trace.clouds)
-    fdjtLog("[%f] Making full cloud over %d tags",
-	    fdjtET(),book_tags.length);
   // The scores here are used to determine sizes in the cloud
   // A regular index reference counts as 1 and a prime reference counts
   //  as one more.

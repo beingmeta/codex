@@ -50,7 +50,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
       target=fdjtID(origin.id);
     else target=sbook.target;
   if (!(sbook_mark_cloud))
-    fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud());
+    fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud().dom);
   var refuri=sbook.getRefURI(target);
   if (sbook.Trace.mark)
     fdjtLog("Setting up gloss HUD for %o from %o st=%o excerpt=%o",
@@ -351,6 +351,7 @@ function sbookMarkTagTab()
 
 function sbookMarkCloud()
 {
+  if (sbook_mark_cloud) return sbook_mark_cloud;
   var seen={};
   var sbook_index=sbook.index;
   var completions=fdjtDOM("div.completions.checkspans");
@@ -385,7 +386,7 @@ function sbookMarkCloud()
 		     " of completions.  ");
   fdjtDOM.prepend(completions,maxmsg);
   sbook_mark_cloud=new fdjtUI.Completions(completions);
-  return completions;
+  return sbook_mark_cloud;
 }
 
 function _sbook_tags_oncomplete(elt)
