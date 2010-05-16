@@ -192,16 +192,11 @@ var sbookMode=
 	sbook.mode=false;
 	fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
 	fdjtDOM.dropClass(document.body,"hudup");}}
-    function sbookHUDToggle(mode,cur){
-      if (fdjtDOM.hasClass(sbookHUD,cur||mode)) {
-	sbook.mode=false;
-	fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}
-      else if (mode) {
-	sbook.mode=mode;
-	fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);}
-      else {
-	sbook.mode=false;
-	fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}}
+    function sbookHUDToggle(mode){
+      if (!(sbook.mode)) sbookMode(mode);
+      else if (fdjtKB.contains(arguments,sbook.mode))
+	sbookMode(false);
+      else sbookMode(mode);}
     function sbookHUDFlash(mode,usecs){
       if (mode) {
 	fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);

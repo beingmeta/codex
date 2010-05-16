@@ -404,8 +404,8 @@ sbook.Setup=
 
     function userSetup(){
       if (sbook._user_setup) return;
-      if (!(sbook.user)) {
-	fdjtDOM.addClass(document.body,"nosbookuser");
+      if (sbook.user) {
+	fdjtDOM.dropClass(document.body,"nosbookuser");
 	return;}
       if (sbook_user) {
 	/* This is the old style user info */
@@ -415,10 +415,10 @@ sbook.Setup=
 	  sbook.user=sbook.OIDs.ref(sbook_user);
 	else sbook.user=sbook.OIDs.Import(sbook_user);
 	fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");}
-      var userinfo=sbookOIDs.map[sbook.user];
-      var username=userinfo.name;
-      if ((!(sbook.user_img))&&(userinfo.pic))
-	sbook.user_img=userinfo.pic;
+      if (!(sbook.user)) {
+	fdjtDOM.addClass(document.body,"nosbookuser");
+	return;}
+      var username=sbook.user.name;
       fdjtID("SBOOKUSERNAME").innerHTML=username;
       if (fdjtID("SBOOKMARKUSER"))
 	fdjtID("SBOOKMARKUSER").value=sbook.user.oid;
