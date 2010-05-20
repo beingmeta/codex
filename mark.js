@@ -106,7 +106,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   /* Figure out the tagcues */
   var tagcues=[];
   /* Get tags from the item and the items above it */
-  {var info=sbook.nodeinfo[target.id]; while (info) {
+  {var info=sbook.docinfo[target.id]; while (info) {
       var glosses=sbook_glosses_by_id[info.frag];
       /* Get the tags from the content */
       if ((info)&&(info.tags)&&(info.tags.length)) {

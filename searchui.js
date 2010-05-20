@@ -309,7 +309,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
       var span=DTermCompletion(dterm,title);
       if (freq===1) fdjtDOM.addClass(span,"singleton");
       if ((freqs)&&(!(noscale))) {
-	var relfreq=((freq/freqs._count)/(count/sbook.nodeinfo._eltcount));
+	var relfreq=((freq/freqs._count)/(count/sbook.docinfo._eltcount));
 	var scaling=Math.sqrt(relfreq);
 	var fontscale=100+(scaling*100);
 	sumscale=fontscale+sumscale; nspans++;

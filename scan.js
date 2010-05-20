@@ -53,7 +53,7 @@ function sbookScan(root,docinfo){
      tagstack: [],taggings: [],
      idstate: {prefix: false,count: 0},
      idstack: [{prefix: false,count: 0}],
-     pool: sbook.NodeInfo};
+     pool: sbook.DocInfo};
   var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
 		(docinfo[root.id]=new scanInfo(root.id,scanstate)));
   scanstate.curhead=root; scanstate.curinfo=rootinfo;

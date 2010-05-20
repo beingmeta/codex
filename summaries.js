@@ -140,7 +140,7 @@ function sbookTarget(arg)
     else if (arg.nodeType) return arg;
     else if (arg.frag)
       return document.getElementById(arg.frag);
-    else if (arg.id) return sbook.nodeinfo[arg.id];
+    else if (arg.id) return sbook.docinfo[arg.id];
     else return false;
   else return false;
 }
@@ -153,7 +153,7 @@ function sbookShowSummaries(summaries,summary_div,query)
     var summary=todisplay[i++];
     var info=sbook.Info(summary);
     var target=sbookTarget(summary);
-    var tinfo=sbook.nodeinfo[target.id];
+    var tinfo=sbook.docinfo[target.id];
     if (target!==curtarget) {
       var head=sbook.getHead(target);
       var blockhead=sbookSummaryHead(target,head);
@@ -171,7 +171,7 @@ function sbookAddSummary(summary,summary_div,query)
   var curtarget=false; var curblock=false;
   var target_id=((summary.id)||(summary.fragid)||false);
   var target=((target_id)&&(fdjtID(target_id)));
-  var info=sbook.nodeinfo[target_id];
+  var info=sbook.docinfo[target_id];
   if (!target) return;
   var targetloc=info.sbookloc;
   var head=sbook.getHead(target);
@@ -212,7 +212,7 @@ function sbookAddSummary(summary,summary_div,query)
 function sbookItemInfo(item)
 {
   if (typeof item === 'string')
-    return sbook.OIDs.map[item]||sbook.nodeinfo[item];
+    return sbook.OIDs.map[item]||sbook.docinfo[item];
   else if (item.oid) return item;
   else return false;
 }

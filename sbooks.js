@@ -78,8 +78,10 @@ var sbook_gloss_data=
 (function(){
 
   function initDB() {
-    sbook.NodeInfo=new fdjtKB.Pool((sbook.refuri||"")+"#");
-    sbook.knowlet=new Knowlet(fdjtDOM.getMeta("KNOWLET")||sbook.refuri);
+    sbook.DocInfo=new fdjtKB.Pool((sbook.refuri||document.location.href));
+    sbook.knowlet=((fdjtDOM.getMeta("KNOWLET"))?
+		   (new Knowlet(fdjtDOM.getMeta("KNOWLET"))):
+		   (sbook.DocInfo));
     sbook.index=new KnowletIndex(sbook.knowlet);
     sbook.OIDs=new fdjtKB.Pool("oids");}
   sbook.initDB=initDB;
@@ -150,8 +152,8 @@ var sbook_gloss_data=
 
   function getHead(target){
     while (target)
-      if ((target.id)&&(sbook.nodeinfo[target.id])) {
-	target=sbook.nodeinfo[target.id]; break;}
+      if ((target.id)&&(sbook.docinfo[target.id])) {
+	target=sbook.docinfo[target.id]; break;}
       else target=target.parentNode;
     if (target)
       if (target.toclevel)
@@ -213,9 +215,9 @@ var sbook_gloss_data=
   function getinfo(arg){
     if (arg)
       if (typeof arg === 'string')
-	return sbook.nodeinfo[arg]||sbookOIDs.map[arg];
+	return sbook.docinfo[arg]||sbookOIDs.map[arg];
       else if (arg.oid) return arg;
-      else if (arg.id) return sbook.nodeinfo[arg.id];
+      else if (arg.id) return sbook.docinfo[arg.id];
       else return false;
     else return false;}
   sbook.Info=getinfo;
@@ -411,7 +413,7 @@ var sbook_gloss_data=
     if (typeof target === 'string') target=document.getElementById(target);
     if (!(target)) return;
     var page=((sbook.pageview)&&sbook.getPage(target));
-    var info=((target.id)&&(sbook.nodeinfo[target.id]));
+    var info=((target.id)&&(sbook.docinfo[target.id]));
     if (sbook.Trace.nav)
       fdjtLog("sbook.GoTo #%o@P%o/L%o %o",
 	      target.id,page,info.sbookloc,target);

@@ -68,7 +68,7 @@ var sbookPaginate=
       if (!(start)) start=_sbookScanContent(sbook.root||document.body);
       var result={}; var pages=[]; var pageinfo=[];
       result.pages=pages; result.info=pageinfo;
-      var scan=start; var info=sbookNodeInfo(scan);
+      var scan=start; var info=nodeInfo(scan);
       var pagetop=info.top; var pagelim=pagetop+pagesize;
       var fudge=sbook_bottom_px/4;
       var start=fdjtET();
@@ -80,7 +80,7 @@ var sbookPaginate=
       while (scan) {
 	var oversize=false;
 	var next=_sbookScanContent(scan);
-	var nextinfo=(next)&&sbookNodeInfo(next);
+	var nextinfo=(next)&&nodeInfo(next);
 	var splitblock=false; var forcebottom=false;
 	var widowthresh=((info.fontsize)*sbook_widow_limit);
 	var orphanthresh=((info.fontsize)*sbook_orphan_limit);
@@ -97,10 +97,9 @@ var sbookPaginate=
 	  if ((scan.toclevel)||
 	      ((sbook_focus_rules)&&(sbook_focus_rules.match(scan))))
 	    curpage.focus=scan;
-	if (dbginfo) dbginfo=dbginfo+(_sbookPageNodeInfo(scan,info,curpage));
+	if (dbginfo) dbginfo=dbginfo+(pageNodeInfo(scan,info,curpage));
 	if ((dbginfo)&&(next))
-	  dbginfo=dbginfo+" ... N#"+next.id+
-	    _sbookPageNodeInfo(next,nextinfo,curpage);
+	  dbginfo=dbginfo+" ... N#"+next.id+pageNodeInfo(next,nextinfo,curpage);
 	if (sbook.Trace.pagination>1) _sbookTracePagination("SCAN",scan,info);
 	if ((dbginfo)&&(scan.getAttribute("sbookpagedbg")))
 	  dbginfo=scan.getAttribute("sbookpagedbg")+" // "+dbginfo;
@@ -143,7 +142,7 @@ var sbookPaginate=
 	    // Only record next in debug info if we look at it
 	    if (dbginfo)
 	      dbginfo=dbginfo+" ... N#"+next.id+
-		_sbookPageNodeInfo(next,nextinfo,curpage);
+		pageNodeInfo(next,nextinfo,curpage);
 	    // If we're trying to avoid putting this item at the foot
 	    if ((scan.toclevel)||(avoidPageFoot(scan))) {
 	      // Break here if the next item 
@@ -235,7 +234,7 @@ var sbookPaginate=
 	  curpage.last=scan;}
 	else {
 	  // If we starting a new page, clean up the page break
-	  var newinfo=((newtop==scan)?(info):sbookNodeInfo(newtop));
+	  var newinfo=((newtop==scan)?(info):nodeInfo(newtop));
 	  var prevpage=curpage;
 	  if (dbginfo)
 	    dbginfo=dbginfo+" np"+((splitblock)?"/split":"")+"/"+curpage.bottom;
@@ -290,12 +289,12 @@ var sbookPaginate=
 	//  we use it (usually the case if we're splitting a block).
 	if (oversize) {
 	  scan=_sbookScanContent(scan,true);
-	  if (scan) info=sbookNodeInfo(scan);}
+	  if (scan) info=nodeInfo(scan);}
 	else if (next) {scan=next; info=nextinfo;}
 	else {
 	  // Otherwise, advance through the DOM
 	  scan=_sbookScanContent(scan);
-	  if (scan) info=sbookNodeInfo(scan);}
+	  if (scan) info=nodeInfo(scan);}
 	if (!(splitblock)) nodecount++;}
       var done=fdjtET();
       fdjtLog("[%f] Paginated %d nodes into %d pages with pagesize=%d in %s",
@@ -305,8 +304,8 @@ var sbookPaginate=
 
     function isPageHead(elt){
       return ((sbook_tocmajor)&&(elt.id)&&
-	      ((sbook.nodeinfo[elt.id]).toclevel)&&
-	      (((sbook.nodeinfo[elt.id]).toclevel)<=sbook_tocmajor))||
+	      ((sbook.docinfo[elt.id]).toclevel)&&
+	      (((sbook.docinfo[elt.id]).toclevel)<=sbook_tocmajor))||
 	(fdjtDOM.getStyle(elt).pageBreakBefore==='always');}
 
     function isPageFoot(elt){ 
@@ -319,11 +318,11 @@ var sbookPaginate=
       return ((elt)&&(fdjtDOM.getStyle(elt).pageBreakBefore==='avoid'));}
 
     function avoidPageFoot(elt){
-      return ((elt.id)&&(sbook.nodeinfo[elt.id])&&
-	      ((sbook.nodeinfo[elt.id]).toclevel))||
+      return ((elt.id)&&(sbook.docinfo[elt.id])&&
+	      ((sbook.docinfo[elt.id]).toclevel))||
 	(fdjtDOM.getStyle(elt).pageBreakAfter==='avoid');}
 
-    function sbookNodeInfo(node){
+    function nodeInfo(node){
       var info=fdjtDOM.getGeometry(node);
       var fontsize=fdjtDOM.getStyle(node).fontSize;
       if ((fontsize)&&(typeof fontsize === 'string'))
@@ -428,7 +427,7 @@ var sbookPaginate=
 	+"]"+
 	((newpage)?((newpage!==elt)?("ph="+newpage.id):""):"");}
 
-    function _sbookPageNodeInfo(elt,info,curpage){
+    function pageNodeInfo(elt,info,curpage){
       return "["+info.top+","+info.bottom+"/"+info.height+"] "+
 	(((info.top<=curpage.top)&&(info.bottom>=curpage.limit))?"around":
 	 ((info.top>curpage.top)&&(info.bottom<curpage.limit))?"inside":
@@ -580,12 +579,12 @@ var sbookPaginate=
       if (((info.first)&&(info.first.id))||((info.last)&&(info.last.id))) {
 	var firstloc=
 	  ((info.first)&&(info.first.id)&&
-	   (sbook.nodeinfo[info.first.id])&&
-	   (sbook.nodeinfo[info.first.id].sbookloc));
+	   (sbook.docinfo[info.first.id])&&
+	   (sbook.docinfo[info.first.id].sbookloc));
 	var lastloc=
 	  ((info.last)&&(info.last.id)&&
-	   (sbook.nodeinfo[info.last.id])&&
-	   (sbook.nodeinfo[info.last.id].sbookloc));
+	   (sbook.docinfo[info.last.id])&&
+	   (sbook.docinfo[info.last.id].sbookloc));
 	if ((firstloc)&&(lastloc))
 	  sbook.setLocation(Math.floor((firstloc+lastloc)/2));
 	else if (firstloc) sbook.setLocation(firstloc);

@@ -146,7 +146,7 @@ sbook.setSources=sbookSetSources;
 function sbookScrollGlosses(elt,glosses)
 {
   fdjtLog("Scrolling glosses to %o",elt);
-  var info=sbook.nodeinfo[elt.id];
+  var info=sbook.docinfo[elt.id];
   if ((info)&&(info.sbookloc)) {
     var targetloc=info.sbookloc;
     if (!(glosses)) glosses=fdjtID("SBOOKALLGLOSSES");

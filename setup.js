@@ -68,7 +68,7 @@ sbook.Setup=
 	sbook_ajax_uri=false;
       sbook.Message("Scanning document structure");
       var metadata=sbookScan(sbook.root);
-      sbook.nodeinfo=sbook.NodeInfo.map=metadata;
+      sbook.docinfo=sbook.DocInfo.map=metadata;
       sbook.Message("Building table of contents");
       sbook.setupTOC(metadata[sbook.root.id]);
       var scan_done=new Date();
