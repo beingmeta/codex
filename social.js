@@ -55,7 +55,9 @@ function sbookImportGlosses(data)
     if (typeof sbook_gloss_data === "undefined") {
       fdjtLog("No gloss data available");
       return;}
-    else data=sbook_gloss_data;
+    else {
+      data=sbook_gloss_data;
+      sbook_gloss_data=false;}
   var date=data['%date'];
   var info=data['%info'];
   if ((info) && (info.length)) {

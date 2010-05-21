@@ -438,7 +438,17 @@ sbook.Setup=
 	  idlink.title='click to edit your personal information';
 	  idlink.href='http://www.sbooks.net/admin/id.fdcgi';}}
       sbook._user_setup=true;}
-    sbook.userSetup=userSetup;
+    function setUser(userinfo,nodeid,otherinfo){
+      if (sbook.user)
+	if (userinfo.oid===sbook.user.oid) {}
+	else throw { error: "Can't change user"};
+      sbook.user=fdjtKB.import(userinfo);
+      if (!(sbook.nodeid))
+	sbook.nodeid=nodeid||fdjtState.getNodeID();
+      if (otherinfo instanceof Array) {
+	var i=0; var lim=otherinfo.length;
+	while (i<lim) fdjtKB.import(otherinfo[i++]);}}
+    sbook.setUser=setUser;
 
     /* This initializes the sbook state to the initial location with the
        document, using the hash value if there is one. */ 
