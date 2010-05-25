@@ -204,22 +204,9 @@ function sbookAddSummary(summary,summary_div,query)
 
 /* Showing a single summary */
 
-// Gets a DOM element from a search summary (section or gloss)
-// QUERY is the query which generated this summary (could be false)
-// NOTOC indicates whether to include location information in the
-//  displayed information.  This is true if the context somehow
-//  provides that information
-function sbookItemInfo(item)
-{
-  if (typeof item === 'string')
-    return sbook.OIDs.map[item]||sbook.docinfo[item];
-  else if (item.oid) return item;
-  else return false;
-}
-
 function sbookSummaryDiv(info,query)
 {
-  var key=info.oid||info.id;
+  var key=info.qid||info.oid||info.id;
   var target_id=(info.frag)||(info.id);
   var target=((target_id)&&(fdjtID(target_id)));
   var refiners=((query) && (query._refiners));
@@ -293,23 +280,23 @@ function sbookMarkInfo(sumdiv,info)
 {
   var user=info.user;
   var feed=info.feed||false;
-  var userinfo=sbook.OIDs.map[user];
-  var feedinfo=sbook.OIDs.map[feed];
+  var userinfo=sbook.sources.map[user];
+  var feedinfo=sbook.sources.map[feed];
   var img=((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
     ((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
     (sbookSourceIcon(feedinfo))||(sbookSourceIcon(userinfo));
   var interval=((info.tstamp) ? (fdjtTime.tick()-info.tstamp) : (-1));
   var delete_button=
     ((user===sbook.user)&&
-     (fdjtDOM.Anchor("http://"+sbook_server+"/sbook/delete?GLOSS="+info.oid,
+     (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/delete?GLOSS="+info.oid,
 		     "A.deletebutton",
 		     fdjtDOM.Image(sbicon(sbook_delete_icon),false,"x"))));
   var agespan=
     ((interval>0)&&
      ((interval>(5*24*3600)) 
-      ? (fdjtDOM.Anchor("http://"+sbook_server+"/sbook/browse/"+info.glossid,
+      ? (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/browse/"+info.glossid,
 			"A.age",fdjtTime.tick2date(info.tstamp)))
-      : (fdjtDOM.Anchor("http://"+sbook_server+"/sbook/browse/"+info.glossid,
+      : (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/browse/"+info.glossid,
 			"A.age",fdjtTime.secs2string(info.tstamp)+
 			" ago"))));
   if (agespan) {
@@ -390,7 +377,7 @@ function sbookRelay_onclick(evt)
     else target=target.parentNode;
   if (!(target)) return;
   if (target.sbook_oid)
-    sbookMark(fdjtID(target.sbook_ref),sbook.OIDs.map[target.sbook_oid]||false);
+    sbookMark(fdjtID(target.sbook_ref),sbook.sources.map[target.sbook_oid]||false);
   else sbookMark(fdjtID(target.sbook_ref),false);
   evt.preventDefault(); evt.cancelBubble=true;
 }
@@ -410,7 +397,7 @@ function sbookSelectSources(results_div,sources)
     var summaries=fdjtDOM.$(".summary",block);
     var j=0; while (j<summaries.length) {
       var summary=summaries[j++];
-      var gloss=(summary.sbook_oid)&&sbook.OIDs.map[summary.sbook_oid];
+      var gloss=(summary.sbook_oid)&&sbook.sources.map[summary.sbook_oid];
       if ((fdjtKB.contains(sources,gloss.user))||
 	  (fdjtKB.contains(sources,gloss.feed))) {
 	fdjtDOM.addClass(summary,"sourced");

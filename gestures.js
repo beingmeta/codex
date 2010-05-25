@@ -201,7 +201,7 @@ var sbookUI=
     67: "console", 99: "console",
     76: "layers", 108: "layers"};
 
-    function sbook_onkeypress(evt){
+    function onkeypress(evt){
       var modearg=false; 
       evt=evt||event||null;
       var ch=evt.charCode||evt.keyCode;
@@ -279,7 +279,7 @@ var sbookUI=
       // sbook.trace("sbook_onscroll",evt);
       /* If you're previewing, ignore mouse action */
       if (sbook.preview) return;
-      if (sbook.target) sbookCheckTarget();}
+      if (sbook.target) sbook.checkTarget();}
     sbook.handlers.onscroll=sbook_onscroll;
 
     /* Setup */
@@ -307,20 +307,32 @@ var sbookUI=
       var search_button=fdjtID("SBOOKSEARCHBUTTON");
       var glosses_button=fdjtID("SBOOKGLOSSESBUTTON");
 
-      toc_button.onmouseover=fdjtDOM.classAdder("SBOOKTOC","hover");
-      toc_button.onmouseout=fdjtDOM.classDropper("SBOOKTOC","hover");
-      search_button.onmouseover=
-	fdjtDOM.classAdder(fdjtID("SBOOKSEARCH"),"hover");
-      search_button.onmouseout=
-	fdjtDOM.classDropper(fdjtID("SBOOKSEARCH"),"hover");
-      glosses_button.onmouseover=
-	fdjtDOM.classAdder("SBOOKGLOSSES","hover");
-      glosses_button.onmouseout=
-	fdjtDOM.classDropper("SBOOKGLOSSES","hover");
-      dash_button.onmouseover=
-	fdjtDOM.classAdder(fdjtID("SBOOKDASH"),"hover");
-      dash_button.onmouseout=
-	fdjtDOM.classDropper(fdjtID("SBOOKDASH"),"hover");}
+      toc_button.onmouseover==function(evt){
+	fdjtDOM.addClass(fdjtID("SBOOKTOC"),"hover");
+	fdjtUI.cancel(evt);};
+      toc_button.onmouseout==function(evt){
+	fdjtDOM.dropClass(fdjtID("SBOOKTOC"),"hover");
+	fdjtUI.cancel(evt);};
+      search_button.onmouseover=function(evt){
+	fdjtDOM.addClass(fdjtID("SBOOKSEARCH"),"hover");
+	fdjtUI.cancel(evt);};
+      search_button.onmouseout=function(evt){
+	fdjtDOM.dropClass(fdjtID("SBOOKSEARCH"),"hover");
+	fdjtUI.cancel(evt);};
+      glosses_button.onmouseover=function(evt){
+	fdjtDOM.addClass(fdjtID("SBOOKGLOSSES"),"hover");
+	fdjtUI.cancel(evt);};
+      glosses_button.onmouseout=function(evt){
+	fdjtDOM.dropClass(fdjtID("SBOOKGLOSSES"),"hover");
+	fdjtUI.cancel(evt);};
+      dash_button.onmouseover=function(evt){
+	fdjtDOM.addClass(fdjtID("SBOOKDASH"),"hover");
+	fdjtDOM.addClass(fdjtID("SBOOKFOOT"),"hover");
+	fdjtUI.cancel(evt);};
+      dash_button.onmouseout=function(evt){
+	fdjtDOM.dropClass(fdjtID("SBOOKDASH"),"hover");
+	fdjtDOM.dropClass(fdjtID("SBOOKFOOT"),"hover");
+	fdjtUI.cancel(evt);};}
 
     function touchGestureSetup(){
       setupMargins();

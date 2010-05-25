@@ -112,7 +112,7 @@ var sbookMode=
     function initDash(){
       var query=document.location.search||"?";
       var refuri=sbook.refuri;
-      var appuri="https://"+sbook_server+"/sbook/manage.fdcgi"+query;
+      var appuri="http://"+sbook.server+"/sbook/manage.fdcgi"+query;
       if (query.search("REFURI=")<0)
 	appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
       if (query.search("DOCURI=")<0)

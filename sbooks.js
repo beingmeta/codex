@@ -48,8 +48,10 @@ var sbook=
    refuris: [],
    // This is the document URI, which is usually the same as the REFURI.
    docuri: false,
-   // This is the unique DOC identifier used by myCopy social DRM.
+   // This is the unique DOC+USER identifier used by myCopy social DRM.
    mycopyid: false, 
+   // This is the time of the last update
+   syncstamp: false,
    // Various settings
    pageview: false,
    handlers: {},
@@ -78,12 +80,19 @@ var sbook_gloss_data=
 (function(){
 
   function initDB() {
-    sbook.DocInfo=new fdjtKB.Pool((sbook.refuri||document.location.href));
-    sbook.knowlet=((fdjtDOM.getMeta("KNOWLET"))?
-		   (new Knowlet(fdjtDOM.getMeta("KNOWLET"))):
-		   (sbook.DocInfo));
+    var refuri=(sbook.refuri||document.location.href);
+    if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
+    sbook.DocInfo=new fdjtKB.Pool(refuri+"#");
+    sbook.knowlet=new Knowlet(fdjtDOM.getMeta("KNOWLET")||refuri);
     sbook.index=new KnowletIndex(sbook.knowlet);
-    sbook.OIDs=new fdjtKB.Pool("oids");}
+    sbook.glosses=new fdjtKB.Pool("glosses"); {
+      sbook.glosses.addAlias("glossdb");
+      sbook.glosses.addAlias("UUIDP61");
+      sbook.glosses.addAlias(":@31055/");
+      sbook.glosses.index=new fdjtKB.Index();}
+    sbook.sources=new fdjtKB.Pool("sources");{
+      sbook.sources.addAlias(":@1961/");
+      sbook.sources.index=new fdjtKB.Index();}}
   sbook.initDB=initDB;
 
   function sbook_trace(handler,cxt){
@@ -111,9 +120,9 @@ var sbook_gloss_data=
   sbook.server=false;
   // This is an array for looking up sbook servers.
   sbook.servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
-  //var sbook_servers=[];
+  //sbook.servers=[];
   // This is the default server
-  var sbook_default_server="glosses.sbooks.net";
+  sbook.default_server="glosses.sbooks.net";
   // This (when needed) is the iframe bridge for sbooks requests
   sbook.ibridge=false;
   // Whether this sbook is set up for offline reading
@@ -438,7 +447,7 @@ function sbookAddQRIcons(){
     var head=sbook.heads[i++];
     var id=head.id;
     var title=(head.sbookinfo)&&sbook_get_titlepath(head.sbookinfo);
-    var qrhref="https://"+sbook_server+"/sbook/qricon.fdcgi?"+
+    var qrhref="https://"+sbook.server+"/sbook/qricon.fdcgi?"+
       "URI="+encodeURIComponent(sbook.docuri||sbook.refuri)+
       ((id)?("&FRAG="+head.id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");

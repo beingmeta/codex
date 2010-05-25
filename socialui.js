@@ -192,7 +192,7 @@ function sbookGlossmark(target,open)
   var imgsrc=((target)?(sbicon("sbookspeople32x32.png")):
 	      (sbicon("remarkballoon32x32.png")));
   // By default the glossmark image is the user when unique
-  if (sources.length===1) imgsrc=(sbook.OIDs.map[sources[0]].pic)||imgsrc;
+  if (sources.length===1) imgsrc=(sbook.sources.map[sources[0]].pic)||imgsrc;
   var glossmark=fdjtDOM
     ("span.glossmark",
      fdjtDOM.Image(imgsrc,"big","comments"),
@@ -205,7 +205,7 @@ function sbookGlossmark(target,open)
     target.glossmarkid=glossmark.id="SBOOK_GLOSSMARK_"+id;
     glossmark.sbook_ref=id;}
   if ((target)&&(sbook_glossmark_qricons)) {
-    var qrhref="http://"+sbook_server+"/sbook/qricon.fdcgi?"+
+    var qrhref="http://"+sbook.server+"/sbook/qricon.fdcgi?"+
       "URI="+encodeURIComponent(sbook.refuri)+
       ((id)?("&FRAG="+id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
@@ -230,7 +230,7 @@ function sbookOpenGlossmark(target,addmark)
     sbookMode("mark");}
   else {
     var hud=fdjtID("SBOOKMARKHUD");
-    var glosses=sbook_glosses_by_id[target.id];
+    var glosses=sbook.glosses.find('frag',target.id)
     var sumdiv=fdjtDOM("div.sbooksummaries");
     sbookSetupSummaryDiv(sumdiv);
     if (glosses)

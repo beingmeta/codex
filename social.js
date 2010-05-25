@@ -34,17 +34,9 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 
 /* Global variables */
 
-// 'Database' elements
-var sbook_allglosses=[];
 var sbook_gloss_syncstamp=false;
 var sbook_conversants=[];
 var social_info={};
-var sbook_glosses_by_glossid={};
-var sbook_glosses_by_user={_all:[]};
-var sbook_glosses_by_tag={_all:[]};
-var sbook_glosses_by_xtag={};
-var sbook_glosses_by_tribe={_all:[]};
-var sbook_glosses_by_id={};
 
 /* The Glosses/Social Database */
 
@@ -62,7 +54,7 @@ function sbookImportGlosses(data)
   var info=data['%info'];
   if ((info) && (info.length)) {
     var i=0; while (i<info.length) {
-      var item=info[i++]; var slots=sbook.OIDs.Import(item);
+      var item=info[i++]; var slots=sbook.sources.Import(item);
       if (!(slots.conversant)) {
 	fdjtKB.add(sbook_conversants,slots.oid);
 	sbookAddSourceIcon(slots);
@@ -84,26 +76,54 @@ function sbookImportGlosses(data)
 	if (!(entry.noglossmark)) need_glossmark=true;
 	if (element.sbookloc) gloss.location=element.sbookloc;}
       if (need_glossmark) sbook.Glossmark(element);}}
-  sbook_allglosses.sort(function(x,y) {
-      if ((x.id)<(y.id)) return -1;
-      else if ((x.id)==(y.id))
-	if ((x.tstamp)<(y.tstamp)) return -1;
-	else if ((x.tstamp)===(y.tstamp)) return 0;
-	else return 1;
-      else return 1;});
 }
+
+function _sbook_add_glosses(glosses,etc,syncstamp)
+{
+  var sbook_index=sbook.index;
+  var glossetc=sbook.glossetc;
+  var allglosses=sbook.allglosses;
+  var allsources=sbook.allsources;
+  if (!(syncstamp)) syncstamp=fdjtTime();
+  if ((etc) && (etc.length)) {
+    var i=0; var lim=etc.length; while (i<lim) {
+      var item=etc[i++]; var slots=sbook.sources.Import(item);
+      var qid=slots.qid||slots.uuid||slots.oid;
+      if (qid) {
+	fdjtState.setLocal(qid,JSON.stringify(slots));
+	glossetc[qid]=syncstamp;}
+      allsources[qid]=qid;}}
+  if (sbook.Trace.network)
+    fdjtLog("Importing gloss data %o",glosses);
+  if ((glosses) && (glosses.length)) {
+    var i=0; var lim=glosses.length;
+    while (i<lim) {
+      var entry=glosses[i++];
+      var id=entry.frag||entry.id;
+      var element=fdjtID(id);
+      // Skip references to IDs which don't exist
+      if (!(element)) continue;
+      var need_glossmark=false;
+      var gloss=sbook_add_gloss(id,entry,sbook.index);
+      allglosses[gloss.qid]=syncstamp;
+      if (!(entry.noglossmark)) need_glossmark=true;
+      if (need_glossmark) sbook.Glossmark(element);}}
+  fdjtState.setLocal("glosses("+sbook.refuri+")",
+		     JSON.stringify(allglosses));
+  fdjtState.setLocal("glossetc("+sbook.refuri+")",
+		     JSON.stringify(glossetc));
+  fdjtState.setLocal("sources("+sbook.refuri+")",
+		     JSON.stringify(allsources));
+}
+sbook.addGlosses=_sbook_add_glosses;
 
 function sbook_add_gloss(id,entry,index)
 {
   if (!(index)) index=sbook.index;
   if (!(entry.frag)) entry.frag=id;
-  var item=sbook.OIDs.Import(entry);
+  var item=sbook.glosses.Import(entry);
   var user=entry.user;
   var feed=entry.feed;
-  if (!(item.pushed)) {
-    sbook_allglosses.push(entry);
-    item.pushed=true;}
-  fdjtKB.add(sbook_glosses_by_id,id,item);
   if (entry.tags) {
     var tags=entry.tags; var dterms=[];
     var k=0; while (k<tags.length) {
@@ -117,32 +137,19 @@ function sbook_add_gloss(id,entry,index)
       item.tags=dterms;}}
   else item.tags=[];
   item.taginfo=false;
-  if (entry.user) {
-    if (item!=entry) item.user=user;
-    fdjtKB.add(sbook_glosses_by_user,user,item);}
+  if (entry.user) if (item!=entry) item.user=user;
   var tstamp=entry.tstamp;
-  if (tstamp>sbook_gloss_syncstamp) sbook_gloss_syncstamp=tstamp;
+  if (tstamp>sbook.syncstamp) sbook.syncstamp=tstamp;
   if (fdjtID("SBOOKALLGLOSSES")) {
     var allglosses_div=fdjtID("SBOOKALLGLOSSES");
     sbookAddSummary(item,allglosses_div,false);}
   return item;
 }
 
-function sbookGetGlossesUnder(id)
-{
-  var results=[];
-  var i=0; while (i<sbook_allglosses.length) {
-    var gloss=sbook_allglosses[i++];
-    var fragid=gloss.id;
-    if (fragid.search(id)===0) results.push(gloss);}
-  // fdjtTrace("Got %d glosses under %s",results.length,id);
-  return results;
-}
-
 function sbookGetSourcesUnder(idroot)
 {
   var sources=[];
-  var glosses=sbook_glosses_by_id[idroot];
+  var glosses=sbook.glosses.find('frag',idroot);
   var i=0; var lim=glosses.length;
   while (i<lim) {
     var gloss=glosses[i++];
@@ -173,22 +180,6 @@ function sbookJSONPglosses(glosses)
   if (sbook.Trace.network)
     fdjtLog("Got new glosses (probably) from JSONP call");
   sbookNewGlosses(glosses);
-}
-
-/* Searching glosses */
-
-function sbook_search_glosses(query)
-{
-  var i=0; var results=false;
-  while (i<query.length) {
-    var q=query[i++];
-    var glosses=sbook_glosses_by_tag[q]||(false);
-    if (glosses)
-      if (results)
-	results=fdjtIntersect(results,glosses);
-      else results=glosses;
-    else {}}
-  return results||[];
 }
 
 /* Emacs local variables

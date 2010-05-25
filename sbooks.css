@@ -366,6 +366,9 @@ div#SBOOKHUD div#SBOOKGLOSSES.onepassage {
 
 /* The Dashboard HUD */
 
+div#SBOOKHUD div.scrollhud#SBOOKDASH {
+    bottom: 50px;}
+
 div#SBOOKHUD div.scrollhud div.scrollhead#SBOOKDASHTOP {
     height: 30px; min-height: 30px;}
 
@@ -395,7 +398,7 @@ div#SBOOKHUD.dashtoc div#SBOOKFOOT div.tabbar,
 div#SBOOKHUD.sbookapp div#SBOOKFOOT div.tabbar {
     display: block;}
 
-div#SBOOKHUD div#SBOOKFOOT:hover div.tabbar {
+div#SBOOKHUD div#SBOOKFOOT.hover div.tabbar {
     display: block;}
 
 div#SBOOKHUD div#SBOOKFOOT div.tabbar span.tab { border-radius: 6px; }
