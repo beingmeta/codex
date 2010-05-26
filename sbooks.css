@@ -370,10 +370,10 @@ div#SBOOKHUD div.scrollhud#SBOOKDASH {
     bottom: 50px;}
 
 div#SBOOKHUD div.scrollhud div.scrollhead#SBOOKDASHTOP {
-    height: 30px; min-height: 30px;}
+    height: 50px; min-height: 50px;}
 
 div#SBOOKHUD div.scrollhud div.scrollbody#SBOOKDASHCONTENT {
-    top: 30px; margin-top: 0px; padding-top: 0px;}
+    top: 50px; margin-top: 0px; padding-top: 0px;}
 div#SBOOKHUD div.scrollhud div.scrollbody#SBOOKDASHCONTENT div.tabcontent {
     margin-top: 0px;}
 

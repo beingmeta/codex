@@ -52,6 +52,7 @@ function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
 function sbookAddSourceIcon(info)
 {
+  if (typeof info === 'string') info=fdjtKB.ref(info);
   var humid=info.humid;
   var icon=fdjtID("SBOOKSOURCEICON"+humid);
   if (icon) return icon;

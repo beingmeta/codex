@@ -84,6 +84,10 @@ var sbook_gloss_data=
     if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
     sbook.DocInfo=new fdjtKB.Pool(refuri+"#");
     sbook.knowlet=new Knowlet(fdjtDOM.getMeta("KNOWLET")||refuri);
+    sbook.BRICO=new Knowlet("BRICO");
+    sbook.BRICO.addAlias(":@1/");
+    sbook.glosses=new fdjtKB.Pool("GLOSSES");
+    sbook.glosses.addAlias("-UUIDTYPE=17");
     sbook.index=new KnowletIndex(sbook.knowlet);
     sbook.glosses=new fdjtKB.Pool("glosses"); {
       sbook.glosses.addAlias("glossdb");
@@ -118,6 +122,8 @@ var sbook_gloss_data=
   sbook.jsonp="https://apps.sbooks.net/sbook/glossmark.fdcgi?JSONP=yes";
   // This is the hostname for the sbookserver.
   sbook.server=false;
+  // Whether this sbook is set up for offline reading
+  sbook.offline=false;
   // This is an array for looking up sbook servers.
   sbook.servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
   //sbook.servers=[];
@@ -125,9 +131,6 @@ var sbook_gloss_data=
   sbook.default_server="glosses.sbooks.net";
   // This (when needed) is the iframe bridge for sbooks requests
   sbook.ibridge=false;
-  // Whether this sbook is set up for offline reading
-  sbook.offline=
-    ((typeof sbook_offline === "undefined")?(false):(sbook_offline)); 
   // There be icons here!
   sbook.graphics="http://static.beingmeta.com/graphics/";
   function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}

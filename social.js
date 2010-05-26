@@ -89,7 +89,7 @@ function _sbook_add_glosses(glosses,etc,syncstamp)
     var i=0; var lim=etc.length; while (i<lim) {
       var item=etc[i++]; var slots=sbook.sources.Import(item);
       var qid=slots.qid||slots.uuid||slots.oid;
-      if (qid) {
+      if ((sbook.offline)&&(qid)) {
 	fdjtState.setLocal(qid,JSON.stringify(slots));
 	glossetc[qid]=syncstamp;}
       allsources[qid]=qid;}}
@@ -108,12 +108,10 @@ function _sbook_add_glosses(glosses,etc,syncstamp)
       allglosses[gloss.qid]=syncstamp;
       if (!(entry.noglossmark)) need_glossmark=true;
       if (need_glossmark) sbook.Glossmark(element);}}
-  fdjtState.setLocal("glosses("+sbook.refuri+")",
-		     JSON.stringify(allglosses));
-  fdjtState.setLocal("glossetc("+sbook.refuri+")",
-		     JSON.stringify(glossetc));
-  fdjtState.setLocal("sources("+sbook.refuri+")",
-		     JSON.stringify(allsources));
+  if (sbook.offline) {
+    fdjtState.setLocal("glosses("+sbook.refuri+")",allglosses,true);
+    fdjtState.setLocal("glossetc("+sbook.refuri+")",glossetc,true);
+    fdjtState.setLocal("sources("+sbook.refuri+")",allsources,true);}
 }
 sbook.addGlosses=_sbook_add_glosses;
 
@@ -143,6 +141,8 @@ function sbook_add_gloss(id,entry,index)
   if (fdjtID("SBOOKALLGLOSSES")) {
     var allglosses_div=fdjtID("SBOOKALLGLOSSES");
     sbookAddSummary(item,allglosses_div,false);}
+  if (user) sbookAddSourceIcon(user);
+  if (feed) sbookAddSourceIcon(feed);
   return item;
 }
 
