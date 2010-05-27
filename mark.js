@@ -6,7 +6,7 @@
 var sbooks_glossmark_id="$Id$";
 var sbooks_glossmark_version=parseInt("$Revision$".slice(10,-1));
 
-/* Copyright (C) 2009 beingmeta, inc.
+/* Copyright (C) 2009-2010 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
     large structured documents (sBooks).
 
@@ -57,7 +57,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
 	    target,origin,sbook.target,excerpt);
   if (sbook_mark_target===target) {
     /* If the HUD is already, initialized for the target, just update
-       the excerpt */
+       the excerpt from the current selection */
     if (sbook.Trace.mark)
       fdjtLog("Just updating gloss HUD with excerpt %o",excerpt);
     if ((excerpt)&&(excerpt.length>sbook_min_excerpt))
@@ -70,7 +70,10 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   // Get information about the origin if it's a gloss
   //  If it's the user's gloss, we set it.  Otherwise,
   //   we set the relay field
-  var glossinfo=((origin)&&(origin.oid)&&sbook.sources.map[origin.oid]);
+  var glossinfo=((origin)&&
+		 (((origin.qid)&&(sbook.sources.map[origin.qid]))||
+		  ((origin.uuid)&&(sbook.sources.map[origin.uuid]))||
+		  ((origin.oid)&&(sbook.sources.map[origin.oid]))));
   if (glossinfo)
     if (glossinfo.user===sbook.user) {
       fdjtID("SBOOKMARKOID").value=origin.oid;
@@ -83,6 +86,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   fdjtID("SBOOKMARKFRAGID").value=target.id;
   fdjtID("SBOOKMARKSOURCE").value=sbook.getDocURI(target);
   fdjtID("SBOOKMARKSYNC").value=sbook.syncstamp;
+  fdjtID("SBOOKMARKUUID").value=fdjtState.getUUID(sbook.nodeid);
   fdjtID("SBOOKMARKTITLE").value=
     ((origin)&&(origin.title))||
     ((target)&&(target===sbook.target)&&(sbook.target_title))||

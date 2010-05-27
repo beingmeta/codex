@@ -357,8 +357,8 @@ sbook.Setup=
 	fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
       if (fdjtID("SBOOKFRIENDLYOPTION"))
 	if (sbook.user)
-	  fdjtID("SBOOKFRIENDLYOPTION").value=sbook.user;
-	else fdjtID("SBOOKFRIENDLYOPTION").value=null;
+	  fdjtID("SBOOKFRIENDLYOPTION").value=sbook.user.oid;
+	else fdjtID("SBOOKFRIENDLYOPTION").value="";
       if (sbook_heading_qricons) {
 	sbook.Message("Adding print icons...");
 	sbookAddQRIcons();}
