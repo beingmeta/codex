@@ -1,34 +1,49 @@
 <div id='SBOOKDASHTOP' class='scrollhead'>
-<div style='position: absolute; top: 0px; height: 110%;'> </div>
-<div id='SBOOKDASHBAR'>
-<a href='http://sbooks.net/logout.fdcgi' class='logout'
-   title='click to logout of the sBooks server'>
-  logout</a>
-<a name='IDLINK' href='javascript:sbookMode("login");'
-   title='click to login'
-   class='userpic'>
-<img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
-     alt='login' id='SBOOKUSERPIC'/></a>
-  This sBook Belongs To:
-<a href='javascript:sbookMode("login");' name='IDLINK'
-   id='SBOOKUSERNAME'>
-(click to log in)</a>
-<span class='applinks'>
-(<a name='SBOOKOFFLINELINK' target='_blank'
-    title='click for personalized offline version'>
-    Offline,</a>
-<a name='SBOOKEPUBLINK' target='_blank'
-   title='click to download personalized ePub version'>
-  ePub,</a>
-<a name='SBOOKEPUBLINK' target='_blank'
-   title='click to download personalized MOBI/Kindle version'>
-  Kindle</a>,
-<a name='SBOOKZIPLINK' target='_blank'
-   title='download a personalized ZIP file for offline reading'>
-  ZIP</a>)
-</span>
-</div>
-</div>
+  <div style='position: absolute; top: 0px; height: 110%;'> </div>
+  <a href='http://sbooks.net/logout.fdcgi' class='logout'
+     title='click to logout of the sBooks server'>
+    logout</a>
+  <a name='IDLINK' href='javascript:sbookMode("login");'
+     title='click to login'
+     class='userpic'>
+    <img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
+	 alt='login' id='SBOOKUSERPIC'/></a>
+  <div class='dashbar'>
+    <div class='belongsto'>
+      This sBook Belongs To:
+      <a href='javascript:sbookMode("login");' name='IDLINK'
+	 id='SBOOKUSERNAME'>
+	(click to log in)</a>
+    </div> <!-- .belongsto -->
+  </div> <!-- .dashbar -->
+  <div class='tabbar' id='SBOOKTABS'>
+    <span class='tab' contentid='APPABOUT'
+	  onclick='sbookMode.toggle("about"); fdjtUI.cancel(event); return false;'
+	  title='information and links about this book'>
+      About</span>
+    <span class='tab' contentid='DASHTOC'
+	  onclick='sbookMode.toggle("dashtoc"); fdjtUI.cancel(event); return false;'
+	  title='Table of Contents (static)'>
+      Contents</span>
+    <span class='tab' contentid='APPDEVICE'
+	  onclick='sbookMode.toggle("device"); fdjtUI.cancel(event); return false;'
+	  title='alter appearance and interaction'>
+      Device</span>
+    <span class='tab' contentid='SBOOKSAPP'
+	  onclick='sbookMode.toggle("sbookapp"); fdjtUI.cancel(event); return false;'
+	  title='manage how your sBook is enhanced with added layers'>
+      sBooks</span>
+    <span class='tab' contentid='APPLOGIN'
+	  onclick='sbookMode.toggle("login"); fdjtUI.cancel(event); return false;'
+	  title='login to sBooks'>
+      Login</span>
+    <span class='tab' contentid='APPHELP'
+	  onclick='sbookMode.toggle("help"); fdjtUI.cancel(event); return false;'
+	  title='how to use this sBook'>
+      <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png'
+	   alt='Help'/>Help</span></span>
+  </div> <!-- .tabbar -->
+</div> <!-- #SBOOKDASHTOP -->
 
 <div id='SBOOKDASHCONTENT' class='scrollbody'>
 
@@ -204,6 +219,7 @@ or methods.</p>
 </div>
 
 <div class='tabcontent sbookabout' id='APPABOUT'>
+<!--
 <div class='applinks'>
 <a name='SBOOKOFFLINELINK' target='_blank'
    title='click for personalized offline version'>
@@ -213,11 +229,12 @@ or methods.</p>
   ePub</a>
 <a name='SBOOKMOBILINK' target='_blank'
    title='click to download personalized MOBI/Kindle version'>kindle</a>
-<!--<a name='SBOOKPRINTLINK' target='_blank'>print</a>-->
+<a name='SBOOKPRINTLINK' target='_blank'>print</a>
 <a name='SBOOKZIPLINK' target='_blank'
    title='download a personalized ZIP file for offline reading'>
   ZIP</a>
 </div>
+-->
 <div id='APPABOUTCONTENT'>
 <div class='title'>An sBook</div>
 <div class='byline'></div>

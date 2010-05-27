@@ -397,7 +397,7 @@ function sbookSelectSources(results_div,sources)
     var summaries=fdjtDOM.$(".summary",block);
     var j=0; while (j<summaries.length) {
       var summary=summaries[j++];
-      var gloss=(summary.sbook_oid)&&sbook.sources.map[summary.sbook_oid];
+      var gloss=(summary.sbook_oid)&&sbook.glosses.map[summary.sbook_oid];
       if ((fdjtKB.contains(sources,gloss.user))||
 	  (fdjtKB.contains(sources,gloss.feed))) {
 	fdjtDOM.addClass(summary,"sourced");
