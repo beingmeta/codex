@@ -66,12 +66,26 @@ var sbookMode=
       initSearch(search);
       var glosses=fdjtID("SBOOKALLGLOSSES");
       sbookSetupSummaryDiv(glosses);
+      sbook.glosses.addEffect("uid",function(f,p,v){
+	  sbook.sources.ref(v).oninit(sbookUI.addSourceIcon);});
+      sbook.glosses.addEffect("feed",function(f,p,v){
+	  sbook.sources.ref(v).oninit(sbookUI.addSourceIcon);});
+      sbook.glosses.oninit=function(item){
+	if (fdjtID("SBOOKALLGLOSSES")) {
+	  var allglosses_div=fdjtID("SBOOKALLGLOSSES");
+	  sbookAddSummary(item,allglosses_div,false);
+	  var glossmark=sbookUI.addGlossmark(item.frag);
+	  if (item.tstamp>sbook.syncstamp) sbook.syncstamp=item.tstamp;
+	  var pic=((fdjtKB.ref(item.user)).pic)||((fdjtKB.ref(item.feed)).pic);
+	  if (pic) {
+	    var img=fdjtDOM.getFirstChild(glossmark,"IMG.big");
+	    if (img) img.src=pic;}}};
       var bookmark=fdjtID("SBOOKMARKHUD");
       bookmark.innerHTML=sbook_markhudtext;
       initMarkHUD(bookmark);
       fillinDash();}
     sbook.initHUD=initHUD;
-
+    
     /* Creating the HUD */
     
     function setupTOC(root_info){

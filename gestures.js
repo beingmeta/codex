@@ -438,7 +438,7 @@ var sbookUI=
       else window.scrollBy(0,-sbook_pagesize);}
     sbook.Backward=sbookBackward;
 
-    return sbookUI})();
+    return sbookUI;})();
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

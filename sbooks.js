@@ -85,15 +85,21 @@ var sbook_gloss_data=
     if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
     sbook.DocInfo=new fdjtKB.Pool(refuri+"#");
     sbook.knowlet=new Knowlet(fdjtDOM.getMeta("KNOWLET")||refuri);
+    sbook.index=new KnowletIndex(sbook.knowlet);
     sbook.BRICO=new Knowlet("BRICO");
     sbook.BRICO.addAlias(":@1/");
-    sbook.glosses=new fdjtKB.Pool("GLOSSES");
-    sbook.glosses.addAlias("-UUIDTYPE=17");
-    sbook.index=new KnowletIndex(sbook.knowlet);
     sbook.glosses=new fdjtKB.Pool("glosses"); {
+      var superadd=sbook.glosses.add;
       sbook.glosses.addAlias("glossdb");
-      sbook.glosses.addAlias("UUIDP61");
+      sbook.glosses.addAlias("-UUIDTYPE=61");
       sbook.glosses.addAlias(":@31055/");
+      sbook.glosses.xforms['tags']=function(tag){
+	var dterm=tag;
+	if (typeof tag==='string')
+	  if (tag.indexOf('|')>=0)
+	    return sbook.knowlet.handleSubjectEntry(tag);
+	  else return sbook.knowlet.probe(tag)||tag;
+	else return tag;};
       sbook.glosses.index=new fdjtKB.Index();}
     sbook.sources=new fdjtKB.Pool("sources");{
       sbook.sources.addAlias(":@1961/");

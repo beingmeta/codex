@@ -87,44 +87,46 @@ function _sbookSourceImage(info)
   else return false;
 }
 
+function sbookSumText(target)
+{
+  var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
+    replace(/\n\n+/g,"\n");
+  if (title.length<40) return title;
+  else return title.slice(0,40)+"\u22ef ";
+}
+
 function sbookSummaryHead(target,head,eltspec,extra)
 {
-  var title=sbook.getTitle(target);
   if (!(head)) head=sbook.getHead(target);
   var basespan=fdjtDOM("span");
-  if (!(title)) {
-    var text=fdjtDOM.textify(target);
-    if ((text)&&(text.length>0)) title=text.replace(/\n\n+/g,"\n");}
-  if (!(title)) {}
-  else if (target!==head) {
-    var extract=((title.length<40)?(title):((title.slice(0,40))+"\u22ef "));
+  var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
+    replace(/\n\n+/g,"\n");
+  if (target!==head) {
     var paratext=fdjtDOM("span.paratext",
 			 fdjtDOM("span.spacer","\u00B6"),
-			 extract);
+			 sbookSumText(target));
     fdjtDOM(basespan,paratext," ");}
-  else {
-    var headelt=fdjtDOM("span.paratext",
-			fdjtDOM("span.spacer","\u00A7"),
-			title);
-    fdjtDOM(basespan,headelt," ");}
-  var info=sbook.Info(target);
-  var heads=info.heads||
-    ((info.head)&&([info].concat(info.head.heads)));
-  if (heads) {
-    var curspan=basespan;
-    var j=heads.length-1; while (j>=0) {
-      var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
-      if ((!(elt))||(!(hinfo.title))||
-	  (elt===sbook.root)||(elt===document.body))
-	continue;
-      var newspan=
-	fdjtDOM("span.head",
-		fdjtDOM("span.headtext",
-			fdjtDOM("span.spacer","\u00A7"),
-			hinfo.title));
-      if (target===head) fdjtDOM(curspan,newspan);
-      else fdjtDOM(curspan," \u22ef ",newspan);
-      curspan=newspan;}}
+  if (head) {
+    var headtext=fdjtDOM("span.headtext",
+			 fdjtDOM("span.spacer","\u00A7"),
+			 sbookSumText(head));
+    fdjtDOM(basespan,headtext," ");
+    var heads=sbook.Info(head).heads;
+    if (heads) {
+      var curspan=basespan;
+      var j=heads.length-1; while (j>=0) {
+	var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
+	if ((!(elt))||(!(hinfo.title))||
+	    (elt===sbook.root)||(elt===document.body))
+	  continue;
+	var newspan=
+	  fdjtDOM("span.head",
+		  fdjtDOM("span.headtext",
+			  fdjtDOM("span.spacer","\u00A7"),
+			  hinfo.title));
+	if (target===head) fdjtDOM(curspan,newspan);
+	else fdjtDOM(curspan," \u22ef ",newspan);
+	curspan=newspan;}}}
   var tocblock=((eltspec)?(fdjtDOM(eltspec,basespan)):
 		(fdjtDOM("div.tochead",basespan)));
   tocblock.title=title;

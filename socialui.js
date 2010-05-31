@@ -50,8 +50,7 @@ var sbookHUDsocial=false;
 
 function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
-function sbookAddSourceIcon(info)
-{
+sbookUI.addSourceIcon=function(info){
   if (typeof info === 'string') info=fdjtKB.ref(info);
   var humid=info.humid;
   var icon=fdjtID("SBOOKSOURCEICON"+humid);
@@ -67,12 +66,11 @@ function sbookAddSourceIcon(info)
     pic=sbicon("sbooksoverdoc40x40.png");
   else pic=sbook;
   icon=fdjtDOM.Image
-    (pic,".button.source",info.name|info.kind,
-     ("click to show/hide glosses from "+info.name));
+  (pic,".button.source",info.name|info.kind,
+   ("click to show/hide glosses from "+info.name));
   icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
   fdjtDOM(fdjtID("SBOOKSOURCES")," ",icon);
-  return icon;
-}
+  return icon;};
 
 function sbookEveryoneButton_onclick(evt)
 {
@@ -146,7 +144,6 @@ sbook.setSources=sbookSetSources;
 
 function sbookScrollGlosses(elt,glosses)
 {
-  fdjtLog("Scrolling glosses to %o",elt);
   var info=sbook.docinfo[elt.id];
   if ((info)&&(info.sbookloc)) {
     var targetloc=info.sbookloc;
@@ -219,6 +216,36 @@ function sbookGlossmark(target,open)
   return glossmark;
 }
 sbook.Glossmark=sbookGlossmark;
+
+sbookUI.addGlossmark=function(id){
+  var target=fdjtID(id);
+  if (!(target)) return false;
+  var glossmarkid="SBOOK_GLOSSMARK_"+id;
+  if (fdjtID(glossmarkid)) return fdjtID(glossmarkid);
+  var imgsrc=(sbicon("sbookspeople32x32.png"));
+  var glossmark=fdjtDOM
+  ("span.glossmark",
+   fdjtDOM.Image(imgsrc,"big","comments"),
+   fdjtDOM.Image(sbicon("sbicon16x16.png"),"tiny","+"));
+  glossmark.id=glossmarkid;
+  glossmark.onclick=sbookGlossmark_onclick;
+  glossmark.onmousedown=fdjtDOM.cancel;
+  glossmark.onmouseover=sbookGlossmark_onmouseover;
+  glossmark.onmouseout=sbookGlossmark_onmouseout;
+  if (id) {
+    target.glossmarkid=glossmark.id="SBOOK_GLOSSMARK_"+id;
+    glossmark.sbook_ref=id;}
+  if (sbook_glossmark_qricons) {
+    var qrhref="http://"+sbook.server+"/sbook/qricon.fdcgi?"+
+    "URI="+encodeURIComponent(sbook.refuri)+
+    ((id)?("&FRAG="+id):"")+
+    ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
+    var i=0; while (i<tags.length) qrhref=qrhref+"&TAGCUE="+tags[i++];
+    fdjtDOM.prepend(target,fdjtDOM.Image(qrhref,"sbookqricon"));}
+  fdjtDOM.addClass(target,"glossed");
+  fdjtDOM.prepend(target,glossmark);
+  glossmark.sbookui=true;
+  return glossmark;};
 
 var sbook_glossmark_div=false;
 var sbook_glossmark_target=false;

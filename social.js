@@ -138,12 +138,13 @@ function sbook_add_gloss(id,entry,index)
   if (entry.user) if (item!=entry) item.user=user;
   var tstamp=entry.tstamp;
   if (tstamp>sbook.syncstamp) sbook.syncstamp=tstamp;
-  if (fdjtID("SBOOKALLGLOSSES")) {
-    var allglosses_div=fdjtID("SBOOKALLGLOSSES");
-    sbookAddSummary(item,allglosses_div,false);}
   if (user) sbookAddSourceIcon(user);
   if (feed) sbookAddSourceIcon(feed);
   return item;
+}
+function sbook_add_gloss(id,entry,index)
+{
+  return sbook.glosses.Import(entry);
 }
 
 function sbookGetSourcesUnder(idroot)

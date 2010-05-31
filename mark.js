@@ -229,7 +229,7 @@ function sbookCreateMarkHUD(classinfo)
   form.oncallback=function(req) {
     if (sbook.Trace.network)
       fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
-    sbookImportGlosses(JSON.parse(req.responseText));
+    fdjtKB.Import(JSON.parse(req.responseText));
     fdjtDOM.dropClass(form,"submitting");
     /* Turn off the target lock */
     sbook.setTarget(false);
