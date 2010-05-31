@@ -346,7 +346,7 @@ sbook.Setup=
       if (sbook._gloss_setup) return;
       sbookImportGlosses();
       sbook.Message("Importing glosses...");
-      var glosses_button=fdjtID("SBOOKGLOSSESBUTTON");
+      var glosses_button=fdjtID("SBOOKALLGLOSSESBUTTON");
       glosses_button.style.visibility='';
       var search_button=fdjtID("SBOOKSEARCHBUTTON");
       search_button.style.visibility='';

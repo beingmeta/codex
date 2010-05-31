@@ -220,7 +220,7 @@ div#SBOOKHUD div#SBOOKFOOT div.hudblock {
     border-radius: 6px;}
 
 div#SBOOKHUD div.scrollhud {
-  position: absolute; top: 0px; left: 100px; right: 100px; 
+  position: fixed; top: 0px; left: 100px; right: 100px; bottom: 75px;
   font-family: arial,helvetica,sans,sans-serif;
   background-color: gray;
   text-align: center;
@@ -237,30 +237,15 @@ div#SBOOKHUD div.scrollhud div.scrollhead {
   border-radius: 0px;}
 
 div#SBOOKHUD div.scrollhud div.scrollbody {
-  position: absolute; top: 60px; right: 0px;  left: 0px; margin: 0px;
-  background-color: inherit; padding-left: 1em; padding-right: 1em;
-  max-height: 500px;
+  position: absolute; top: 60px; right: 0px;  left: 0px; bottom: 0px; display: none;
+  background-color: inherit; padding-left: 1em; padding-right: 1em; margin: 0px;
   overflow: auto;}
 
 div#SBOOKHUD div.scrollhud.hover {
     display: block; opacity: 0.8; max-height: 60px;}
-div#SBOOKHUD div.scrollhud.hover div.scrollbody {
-    display: none;}
 div#SBOOKHUD div.scrollhud.flash {
     opacity: 0.8; display: block; max-height: 60px;}
-body.hudup div#SBOOKHUD div.scrollhud {
-    opacity: 0.5; max-height: 80%;}
-body.hudup div#SBOOKHUD div.scrollhud.hover { display: none;}
-
-div#SBOOKHUD.glosses div.scrollhud.hover div.scrollbody,
-div#SBOOKHUD.browsing div.scrollhud.hover div.scrollbody,
-div#SBOOKHUD.help div.scrollhud.hover div.scrollbody,
-div#SBOOKHUD.login div.scrollhud.hover div.scrollbody,
-div#SBOOKHUD.about div.scrollhud.hover div.scrollbody,
-div#SBOOKHUD.device div.scrollhud.hover div.scrollbody,
-div#SBOOKHUD.sbookapp div.scrollhud.hover div.scrollbody,
-div#SBOOKHUD.dashtoc div.scrollhud.hover div.scrollbody {
-    display: block;}
+body.hudup div#SBOOKHUD div.scrollhud.hover { max-height: inherit; display: none;}
 
 /* The TOC/Nav HUD */
 
@@ -281,7 +266,6 @@ div#SBOOKHUD.toc img.hudbutton[alt='toc'] {
 div#SBOOKHUD.toc div.hudblock#SBOOKTOC.hover {
   display: block; opacity: 0.8;}
 
-
 /* The Search HUD */
 
 div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH,
@@ -293,11 +277,9 @@ div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH div.scrollhead {
     max-height: 30px; height: 30px;}
 div#SBOOKHUD div.scrollhud#SBOOKSEARCH div.scrollbody {
     top: 30px;}
-div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH div.scrollbody {
-    display: none;}
 div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH div.scrollbody.searchcloud {
     display: block;}
-div#SBOOKHUD.browsing div.scrollhud#SBOOKSEARCH div.scrollbody.sbookresults {
+div#SBOOKHUD.browsing div.scrollhud#SBOOKSEARCH div.scrollbody.sbooksummaries {
     display: block;}
 
 div#SBOOKHUD div#SBOOKSEARCH.scrollhud.hover div.scrollbody.searchcloud {
@@ -324,12 +306,12 @@ div#SBOOKHUD.console div.hudblock#SBOOKCONSOLE {
 
 /* The Glosses HUD */
 
-div#SBOOKHUD.glosses div.scrollhud#SBOOKGLOSSES {
-    display: block; opacity: 0.9; max-height: inherit;}
-body.notfixed div#SBOOKHUD.glosses {
-  height: 100%;}
+div#SBOOKHUD.allglosses div.scrollhud#SBOOKALLGLOSSES {
+    display: block; opacity: 0.9;}
+div#SBOOKHUD.allglosses div.scrollhud#SBOOKALLGLOSSES div.scrollbody {
+    display: block;}
 
-div#SBOOKHUD div.scrollhud#SBOOKGLOSSES div.sbooksummaries {}
+div#SBOOKHUD div.scrollhud#SBOOKALLGLOSSES div.sbooksummaries {}
 
 div#SBOOKHUD img.hudbutton[alt='glosses'] { 
   bottom: 0px; right: 0px;
@@ -338,27 +320,24 @@ div#SBOOKHUD img.hudbutton[alt='glosses'] {
   -webkit-border-top-left-radius: 6px; 
   -moz-border-radius-topleft: 6px; 
   border-top-left-radius: 6px;}
-div#SBOOKHUD.glosses img.hudbutton[alt='glosses'] { 
+div#SBOOKHUD.allglosses img.hudbutton[alt='glosses'] { 
   opacity: 1.0; border-color: blue; background-color: gray;}
 body.notfixed div#SBOOKHUD img.hudbutton[alt='glosses'] {
   top: 0px;}
 
 /* Miscellaneous gloss rules */
 
-div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK {
+div#SBOOKHUD div#SBOOKMARK {
     /* Unindent */
     margin-left: -12px;}
-div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK div.markform {
+div#SBOOKHUD div#SBOOKMARK div.markform {
   min-height: 60px;}
-div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK form.mark.closed div.markform {
+div#SBOOKHUD div#SBOOKMARK form.mark.closed div.markform {
   min-height: inherit;}
 
-div#SBOOKHUD div#SBOOKGLOSSES div#SBOOKMARK { display: none;}
-div#SBOOKHUD.mark div#SBOOKGLOSSES div#SBOOKMARK { display: block;}
-div#SBOOKHUD div#SBOOKGLOSSES.onepassage div#SBOOKMARK { display: block;}
-
-div#SBOOKHUD div#SBOOKGLOSSES.onepassage {
-  right: auto; left: auto;}
+div#SBOOKHUD div#SBOOKMARK { display: none;}
+div#SBOOKHUD.mark div#SBOOKMARK { display: block;}
+div#SBOOKHUD div#SBOOKMARK { display: block;}
 
 /* The Dashboard HUD */
 
@@ -435,13 +414,13 @@ div#SBOOKHUD.about div#SBOOKDASH,
 div#SBOOKHUD.device div#SBOOKDASH,
 div#SBOOKHUD.sbookapp div#SBOOKDASH,
 div#SBOOKHUD.dashtoc div#SBOOKDASH {
-  display: block; overflow: visible; opacity: 0.95;}
-div#SBOOKHUD.help div#SBOOKDASH div#SBOOKDASHTOP,
-div#SBOOKHUD.login div#SBOOKDASH div#SBOOKDASHTOP,
-div#SBOOKHUD.about div#SBOOKDASH div#SBOOKDASHTOP,
-div#SBOOKHUD.device div#SBOOKDASH div#SBOOKDASHTOP,
-div#SBOOKHUD.sbookapp div#SBOOKDASH div#SBOOKDASHTOP,
-div#SBOOKHUD.dashtoc div#SBOOKDASH div#SBOOKDASHTOP {
+  display: block; opacity: 0.95;}
+div#SBOOKHUD.help div#SBOOKDASH div#SBOOKDASHCONTENT,
+div#SBOOKHUD.login div#SBOOKDASH div#SBOOKDASHCONTENT,
+div#SBOOKHUD.about div#SBOOKDASH div#SBOOKDASHCONTENT,
+div#SBOOKHUD.device div#SBOOKDASH div#SBOOKDASHCONTENT,
+div#SBOOKHUD.sbookapp div#SBOOKDASH div#SBOOKDASHCONTENT,
+div#SBOOKHUD.dashtoc div#SBOOKDASH div#SBOOKDASHCONTENT {
   display: block;  opacity: 1.0;}
 
 body.notfixed div#SBOOKHUD.help div#SBOOKDASH,
@@ -664,7 +643,7 @@ div#SBOOKHUD.context div.hudblock#SBOOKTOC { font-size: 75%;}
 
 div#SBOOKHUD.mark div.hudblock#SBOOKTOC { display: none;}
 div#SBOOKHUD.mark div.scrollhud#SBOOKSEARCH { display: none;}
-div#SBOOKHUD.mark div.scrollhud#SBOOKGLOSSES { display: none;}
+div#SBOOKHUD.mark div.scrollhud#SBOOKALLGLOSSES { display: none;}
 
 /* Preview rules */
 
@@ -676,7 +655,7 @@ body.preview div#SBOOKHUD.browsing img.hudbutton[alt='search'] {
 body.preview div#SBOOKHUD.toc div.hudblock#SBOOKTOC { opacity: 0.8;}
 body.preview div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH { opacity: 0.05;}
 body.preview div#SBOOKHUD.browsing div.scrollhud#SBOOKSEARCH { opacity: 0.05;}
-body.preview div#SBOOKHUD.glosses div.scrollhud#SBOOKGLOSSES { opacity: 0.05;}
+body.preview div#SBOOKHUD.allglosses div.scrollhud#SBOOKALLGLOSSES { opacity: 0.05;}
 body.preview div#SBOOKHUD.mark div.hudblock#SBOOKMARK { opacity: 0.05;}
 body.preview div#SBOOKHUD div#SBOOKDASH { visibility: hidden;}
 body.preview div#SBOOKHUD div#SBOOKDASH .spanbar:hover {
@@ -907,11 +886,11 @@ div#SBOOKHUD div.hud#SBOOKLOC {
 
 /* There are three HUD UI modes: toc, searching, browsing */
 
-div#SBOOKHUD.toc div.hud#SBOOKTOC div.supersections {
+div#SBOOKHUD.toc div.hudblock#SBOOKTOC div.supersections {
   display: block;}
-div#SBOOKHUD.toc div.hud#SBOOKTOC div.subsections {
+div#SBOOKHUD.toc div.hudblock#SBOOKTOC div.subsections {
   display: block;}
-div#SBOOKHUD.toc div.hud#SBOOKTOC {
+div#SBOOKHUD.toc div.hudblock#SBOOKTOC {
   max-height: inherit;}
 
 div#SBOOKHUD.searching div.hud#SBOOKSEARCH {max-height: inherit;}
@@ -919,13 +898,11 @@ div#SBOOKHUD.browsing div#SBOOKTOC { display: none; }
 div#SBOOKHUD.browsing div#SBOOKLOC { display: block;}
 div#SBOOKHUD.browsing div#SBOOKLOC:hover { display: block;}
 
-div#SBOOKHUD.glosses div#SBOOKTOC { display: none; }
-div#SBOOKHUD.glosses div#SBOOKLOC { display: block; }
-div#SBOOKHUD.glosses div#SBOOKGLOSSES { opacity: 0.9;}
-div#SBOOKHUD.mark div#SBOOKGLOSSES {
-  opacity: 0.9;}
-body.preview div#SBOOKHUD.glosses div#SBOOKGLOSSES { display: none;}
-body.preview div#SBOOKHUD.mark div#SBOOKGLOSSES { display: none;}
+div#SBOOKHUD.allglosses div#SBOOKTOC { display: none; }
+div#SBOOKHUD.allglosses div#SBOOKLOC { display: block; }
+div#SBOOKHUD.allglosses div#SBOOKALLGLOSSES { opacity: 0.9;}
+body.preview div#SBOOKHUD.allglosses div#SBOOKALLGLOSSES { display: none;}
+body.preview div#SBOOKHUD.mark div#SBOOKALLGLOSSES { display: none;}
 
 div#SBOOKHUD.mark div#SBOOKMARK {display: block; }
 div#SBOOKHUD.mark div#SBOOKSEARCH {display: none; }
@@ -953,7 +930,7 @@ div.sbooksearch div.query input[TYPE='TEXT'] {
   width: 100%; clear: both;}
 */
 body div#SBOOKHUD.search .sbooksearch {display: block; }
-body div#SBOOKHUD.glosses .glosses {display: block; }
+body div#SBOOKHUD.allglosses .glosses {display: block; }
 
 /* Individual sub content */
 
@@ -1017,6 +994,7 @@ div#SBOOKHUD div.sbooktoc.cur div.head { display: block;}
 div#SBOOKHUD.toc div.sbooktoc div.head { display: block;}
 div#SBOOKHUD.toc div.sbooktoc div.spanbar { display: block;}
 div#SBOOKHUD.toc div.sbooktoc.cur div.sub { display: block;}
+div#SBOOKHUD div#SBOOKTOC.hover div.sbooktoc.cur div.sub { display: none;}
 
 div.spanbar {
   position: relative;

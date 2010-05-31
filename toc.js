@@ -47,93 +47,94 @@
 
 function sbookTOC(headinfo,depth,tocspec,prefix)
 {
-  var progressbar=fdjtDOM("HR.progressbar");
-  var head=fdjtDOM("A.sectname",headinfo.title);
-  var spec=tocspec||"DIV.sbooktoc";
-  var toc=fdjtDOM(spec,fdjtDOM("DIV.head",progressbar,head),
-		  generate_spanbar(headinfo),
-		  generate_subsections(headinfo));
-  var sub=headinfo.sub;
-  if (!(depth)) depth=0;
-  head.name="SBR"+headinfo.frag;
-  head.sbook_ref=headinfo.frag;
-  toc.sbook_start=headinfo.starts_at;
-  toc.sbook_end=headinfo.ends_at;
-  fdjtDOM.addClass(toc,"toc"+depth);
-  toc.id=(prefix||"SBOOKTOC4")+headinfo.frag;
-  if ((!(sub)) || (!(sub.length))) {
-    fdjtDOM.addClass(toc,"sbooktocleaf");
-    return toc;}
-  var i=0; var n=sub.length;
-  while (i<n) {
-    toc.appendChild(sbookTOC(sub[i++],depth+1,spec,prefix));}
-  return toc;
-
-  function generate_subsections(headinfo) {
+    var progressbar=fdjtDOM("HR.progressbar");
+    var head=fdjtDOM("A.sectname",headinfo.title);
+    var spec=tocspec||"DIV.sbooktoc";
+    var toc=fdjtDOM(spec,fdjtDOM("DIV.head",progressbar,head),
+		    generate_spanbar(headinfo),
+		    generate_subsections(headinfo));
     var sub=headinfo.sub;
-    if ((!(sub)) || (!(sub.length))) return false;
-    var div=fdjtDOM("div.sub");
+    if (!(depth)) depth=0;
+    head.name="SBR"+headinfo.frag;
+    head.sbook_ref=headinfo.frag;
+    toc.sbook_start=headinfo.starts_at;
+    toc.sbook_end=headinfo.ends_at;
+    fdjtDOM.addClass(toc,"toc"+depth);
+    toc.id=(prefix||"SBOOKTOC4")+headinfo.frag;
+    if ((!(sub)) || (!(sub.length))) {
+	fdjtDOM.addClass(toc,"sbooktocleaf");
+	return toc;}
     var i=0; var n=sub.length;
     while (i<n) {
-      var subinfo=sub[i];
-      var subspan=fdjtDOM("A.sectname",subinfo.title);
-      subspan.sbook_ref=subinfo.frag;
-      subspan.name="SBR"+subinfo.frag;
-      fdjtDOM(div,((i>0)&&" \u00b7 "),subspan);
-      i++;}
-    return div;}
+	toc.appendChild(sbookTOC(sub[i++],depth+1,spec,prefix));}
+    return toc;
 
-  function generate_spanbar(headinfo){
-    var spanbar=fdjtDOM("div.spanbar");
-    var spans=fdjtDOM("div.spans");
-    var start=headinfo.starts_at;
-    var end=headinfo.ends_at;
-    var len=end-start;
-    var subsections=headinfo.sub; var last_info;
-    var sectnum=0; var percent=0;
-    spanbar.starts=start; spanbar.ends=end;
-    if ((!(subsections)) || (subsections.length===0))
-      return false;
-    var progress=fdjtDOM("div.progressbox","\u00A0");
-    var range=false;
-    fdjtDOM(spanbar,spans);
-    fdjtDOM(spans,range,progress);
-    progress.style.left="0%";
-    if (range) range.style.left="0%";
-    var i=0; while (i<subsections.length) {
-      var spaninfo=subsections[i++];
-      var subsection=document.getElementById(spaninfo.frag);
-      var spanstart; var spanend; var addname=true;
-      if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
-	/* Add 'fake section' for the precursor of the first actual section */
-	spanstart=start;  spanend=spaninfo.starts_at;
-	spaninfo=headinfo; subsection=document.getElementById(headinfo.frag);
-	i--; sectnum++; addname=false;}
-      else {
-	spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
-	sectnum++;}
-      var span=generate_span
-	(sectnum,subsection,spaninfo.title,spanstart,spanend,len,
-	 ((addname)&&("SBR"+spaninfo.frag)));
-      spans.appendChild(span);
-      last_info=spaninfo;}
-    if ((end-last_info.ends_at)>0) {
-      /* Add 'fake section' for the content after the last actual section */
-      var span=generate_span
-	(sectnum,head,headinfo.title,last_info.ends_at,end,len);
-      spanbar.appendChild(span);}    
-    return spanbar;}
-  
-  function generate_span(sectnum,subsection,title,spanstart,spanend,len,name){
-    var spanlen=spanend-spanstart;
-    var anchor=fdjtDOM("A.brick","\u00A0");
-    var span=fdjtDOM("DIV.sbookhudspan",anchor);
-    var width=(Math.floor(10000*(spanlen/len))/100)+"%";
-    span.style.width=width;
-    span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
-    span.sbook_ref=subsection.id;
-    if (name) anchor.name=name;
-    return span;}
+    function generate_subsections(headinfo) {
+	var sub=headinfo.sub;
+	if ((!(sub)) || (!(sub.length))) return false;
+	var div=fdjtDOM("div.sub");
+	var i=0; var n=sub.length;
+	div.title='hold to glimpse, click to go';
+	while (i<n) {
+	    var subinfo=sub[i];
+	    var subspan=fdjtDOM("A.sectname",subinfo.title);
+	    subspan.sbook_ref=subinfo.frag;
+	    subspan.name="SBR"+subinfo.frag;
+	    fdjtDOM(div,((i>0)&&" \u00b7 "),subspan);
+	    i++;}
+	return div;}
+
+    function generate_spanbar(headinfo){
+	var spanbar=fdjtDOM("div.spanbar");
+	var spans=fdjtDOM("div.spans");
+	var start=headinfo.starts_at;
+	var end=headinfo.ends_at;
+	var len=end-start;
+	var subsections=headinfo.sub; var last_info;
+	var sectnum=0; var percent=0;
+	spanbar.starts=start; spanbar.ends=end;
+	if ((!(subsections)) || (subsections.length===0))
+	    return false;
+	var progress=fdjtDOM("div.progressbox","\u00A0");
+	var range=false;
+	fdjtDOM(spanbar,spans);
+	fdjtDOM(spans,range,progress);
+	progress.style.left="0%";
+	if (range) range.style.left="0%";
+	var i=0; while (i<subsections.length) {
+	    var spaninfo=subsections[i++];
+	    var subsection=document.getElementById(spaninfo.frag);
+	    var spanstart; var spanend; var addname=true;
+	    if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
+		/* Add 'fake section' for the precursor of the first actual section */
+		spanstart=start;  spanend=spaninfo.starts_at;
+		spaninfo=headinfo; subsection=document.getElementById(headinfo.frag);
+		i--; sectnum++; addname=false;}
+	    else {
+		spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
+		sectnum++;}
+	    var span=generate_span
+	    (sectnum,subsection,spaninfo.title,spanstart,spanend,len,
+	     ((addname)&&("SBR"+spaninfo.frag)));
+	    spans.appendChild(span);
+	    last_info=spaninfo;}
+	if ((end-last_info.ends_at)>0) {
+	    /* Add 'fake section' for the content after the last actual section */
+	    var span=generate_span
+	    (sectnum,head,headinfo.title,last_info.ends_at,end,len);
+	    spanbar.appendChild(span);}    
+	return spanbar;}
+    
+    function generate_span(sectnum,subsection,title,spanstart,spanend,len,name){
+	var spanlen=spanend-spanstart;
+	var anchor=fdjtDOM("A.brick","\u00A0");
+	var span=fdjtDOM("DIV.sbookhudspan",anchor);
+	var width=(Math.floor(10000*(spanlen/len))/100)+"%";
+	span.style.width=width;
+	span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
+	span.sbook_ref=subsection.id;
+	if (name) anchor.name=name;
+	return span;}
 }
 sbookTOC.id="$Id$";
 sbookTOC.version=parseInt("$Revision$".slice(10,-1));
@@ -168,96 +169,96 @@ sbookTOC.update=function(prefix,head,cur){
 /* TOC handlers */
 
 sbookTOC.onmouseover=function(evt){
-  evt=evt||event;
-  var target=fdjtDOM.T(evt);
-  fdjtUI.CoHi.onmouseover(evt);
-  if ((evt.ctrlKey)||(evt.altKey)) return;
-  if (fdjtDOM.isClickable(target)) return;
-  if (!((fdjtDOM.hasParent(target,".spanbar"))||
-	(fdjtDOM.hasParent(target,".previewicon")))) {
-    if (sbook.preview) sbook.Preview(false,true);
-    return;}
-  var ref=sbook.getRef(target);
-  if (sbook.preview) {
-    if (ref===sbook.preview) {}
-    else if (ref) sbook.Preview(ref,true);
-    else sbook.Preview(false,true);
-    fdjtDOM.cancel(evt);}
-  else if (ref) {
-    sbook.Preview(ref,true);
-    fdjtDOM.cancel(evt);}
-  else {
-    sbook.Preview(false,true);
-    fdjtDOM.cancel(evt);}};
+    evt=evt||event;
+    var target=fdjtDOM.T(evt);
+    fdjtUI.CoHi.onmouseover(evt);
+    if ((evt.ctrlKey)||(evt.altKey)) return;
+    if (fdjtDOM.isClickable(target)) return;
+    fdjtLog("mouseover %o button=%o",evt,evt.button);
+    if (!((fdjtDOM.hasParent(target,".spanbar"))||
+	  (fdjtDOM.hasParent(target,".previewicon")))) {
+	if (sbook.preview) sbook.Preview(false,true);
+	return;}
+    var ref=sbook.getRef(target);
+    if (sbook.preview) {
+	if (ref===sbook.preview) {}
+	else if (ref) sbook.Preview(ref,true);
+	else sbook.Preview(false,true);
+	fdjtDOM.cancel(evt);}
+    else if (ref) {
+	sbook.Preview(ref,true);
+	fdjtDOM.cancel(evt);}
+    else {
+	sbook.Preview(false,true);
+	fdjtDOM.cancel(evt);}};
 
 sbookTOC.onmouseout=function(evt){
-  evt=evt||event;
-  var target=fdjtDOM.T(evt);
-  fdjtUI.CoHi.onmouseout(evt);
-  var ref=sbook.getRef(target);
-  if (ref) sbook.Preview(false,true);};
+    evt=evt||event;
+    var target=fdjtDOM.T(evt);
+    fdjtUI.CoHi.onmouseout(evt);
+    var ref=sbook.getRef(target);
+    if (ref) sbook.Preview(false,true);};
 
 sbookTOC.onmousedown=function(evt){
-  evt=evt||event;
-  sbook_mousedown=fdjtTime();
-  if ((evt.ctrlKey)||(evt.altKey)) return;
-  var target=fdjtDOM.T(evt);
-  fdjtUI.CoHi.onmouseout(evt);
-  if (!((fdjtDOM.hasParent(target,".sectname"))||
-	(fdjtDOM.hasParent(target,".sbooksummaries"))))
-    return;
-  var ref=sbook.getRef(target);
-  if (ref) sbook.Preview(ref,true);};
+    evt=evt||event;
+    sbook_mousedown=fdjtTime();
+    if ((evt.ctrlKey)||(evt.altKey)) return;
+    var target=fdjtDOM.T(evt);
+    fdjtUI.CoHi.onmouseout(evt);
+    if (!((fdjtDOM.hasParent(target,".sectname"))||
+	  (fdjtDOM.hasParent(target,".sbooksummaries"))))
+	return;
+    var ref=sbook.getRef(target);
+    if (ref) sbook.Preview(ref,true);};
 
 sbookTOC.onmouseup=function(evt){
-  evt=evt||event;
-  if ((sbook.preview)||(sbook.preview_target))
-    sbook.Preview(false,true);
-  fdjtDOM.cancel(evt);};
+    evt=evt||event;
+    if ((sbook.preview)||(sbook.preview_target))
+	sbook.Preview(false,true);
+    fdjtDOM.cancel(evt);};
 
 sbookTOC.onclick=function(evt){
-  evt=evt||event;
-  if ((sbook_mousedown)&&
-      ((fdjtTime()-sbook_mousedown)>sbookUI.holdThreshold)) {
-    sbook_mousedown=false;
-    fdjtDOM.cancel(evt);
-    return false;}
-  var target=fdjtDOM.T(evt);
-  var ref=sbook.getRef(target);
-  if (!(ref)) return;
-  if (sbook.preview) sbook.Preview(false);
-  sbook.GoTo(ref);
-  var info=sbook.Info(ref);
-  if ((info.sub)&&(info.sub.length>1)) sbookMode("toc");
-  else sbookMode(false);
-  fdjtDOM.cancel(evt);};
+    evt=evt||event;
+    if ((sbook_mousedown)&&
+	((fdjtTime()-sbook_mousedown)>sbookUI.holdThreshold)) {
+	sbook_mousedown=false;
+	fdjtDOM.cancel(evt);
+	return false;}
+    var target=fdjtDOM.T(evt);
+    var ref=sbook.getRef(target);
+    if (!(ref)) return;
+    if (sbook.preview) sbook.Preview(false);
+    sbook.GoTo(ref);
+    var info=sbook.Info(ref);
+    if ((info.sub)&&(info.sub.length>1)) sbookMode("toc");
+    else sbookMode(false);
+    fdjtDOM.cancel(evt);};
 
 sbookTOC.oneclick=function(evt){
-  evt=evt||event;
-  if (sbook.preview) return;
-  var target=fdjtDOM.T(evt);
-  var ref=sbook.getRef(target);
-  if (sbook.preview===ref) sbook.Preview(false);
-  else if (ref) sbook.Preview(ref);
-  else if (sbook.preview) sbook.Preview(false);
-  else {}
-  fdjtDOM.cancel(evt);};
+    evt=evt||event;
+    if (sbook.preview) return;
+    var target=fdjtDOM.T(evt);
+    var ref=sbook.getRef(target);
+    if (sbook.preview===ref) sbook.Preview(false);
+    else if (ref) sbook.Preview(ref);
+    else if (sbook.preview) sbook.Preview(false);
+    else {}
+    fdjtDOM.cancel(evt);};
 
 sbookTOC.onholdclick=function(evt){
-  evt=evt||event;
-  if ((sbook_mousedown)&&
-      ((fdjtTime()-sbook_mousedown)>sbookUI.holdThreshold)) {
-    sbook_mousedown=false;
-    fdjtDOM.cancel(evt);
-    return false;}
-  var target=fdjtDOM.T(evt);
-  var ref=sbook.getRef(target);
-  if (!(ref)) return;
-  sbook.GoTo(ref);
-  sbook.Preview(false);
-  sbookMode(false);
-  fdjtDOM.cancel(evt);
-};
+    evt=evt||event;
+    if ((sbook_mousedown)&&
+	((fdjtTime()-sbook_mousedown)>sbookUI.holdThreshold)) {
+	sbook_mousedown=false;
+	fdjtDOM.cancel(evt);
+	return false;}
+    var target=fdjtDOM.T(evt);
+    var ref=sbook.getRef(target);
+    if (!(ref)) return;
+    sbook.GoTo(ref);
+    sbook.Preview(false);
+    sbookMode(false);
+    fdjtDOM.cancel(evt);};
 
 /* Emacs local variables
 ;;;  Local variables: ***

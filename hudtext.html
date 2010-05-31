@@ -8,7 +8,7 @@
      onclick='sbook.toggleSearch(event);'/>
 <div id='SBOOKTOC' class='hudblock'></div>
 <div id='SBOOKSEARCH' class='scrollhud sbooksearch'></div>
-<div id='SBOOKGLOSSES' class='sbookglosses scrollhud'>
+<div id='SBOOKALLGLOSSES' class='sbookglosses scrollhud'>
   <div id='SBOOKSOURCES' class='sbooksources scrollhead'
        onclick='sbookSources_onclick(event);'>
     <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
@@ -16,7 +16,7 @@
 	 alt='show all' title='click to see all glosses'
 	 onclick='sbookEveryoneButton_onclick(event);'/>
   </div>
-  <div id='SBOOKALLGLOSSES' class='sbooksummaries scrollbody'>
+  <div id='SBOOKALLSUMMARIES' class='sbooksummaries scrollbody'>
   </div>
 </div>
 <div id='SBOOKDASH' class='scrollhud'>
@@ -32,8 +32,8 @@
        onclick='sbookMode.toggle(sbook.last_dash); fdjtUI.cancel(event); return false;'/>
   <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
        alt='glosses' title='Click to browse glosses overlaid on this book'
-       class='hudbutton' id='SBOOKGLOSSESBUTTON'
-       onclick='sbookMode.toggle("glosses"); fdjtUI.cancel(event); return false;'/>
+       class='hudbutton' id='SBOOKALLGLOSSESBUTTON'
+       onclick='sbookMode.toggle("allglosses"); fdjtUI.cancel(event); return false;'/>
   <div class='hudblock tags' id='SBOOKTAGS'></div>
 </div>
 <div id='SBOOKMARKHUD' class='hudblock'></div>
