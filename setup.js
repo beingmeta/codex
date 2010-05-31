@@ -77,6 +77,8 @@ sbook.Setup=
       sbook.Message("Indexing tags");
       sbook.indexTags(metadata);
       sbook.indexTechnoratiTags(sbook.knowlet);
+      sbook.Message("Setting up gloss server");
+      setupGlossServer();
       applySettings();
       if (sbook.pageview) sbookPaginate();
       var knowlets_done=new Date();
@@ -352,13 +354,8 @@ sbook.Setup=
       fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
       sbook.Message("Setting up glossing cloud...");
       fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud().dom);
-      setupGlossServer();
       if (sbook.user)
 	fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
-      if (fdjtID("SBOOKFRIENDLYOPTION"))
-	if (sbook.user)
-	  fdjtID("SBOOKFRIENDLYOPTION").value=sbook.user.oid;
-	else fdjtID("SBOOKFRIENDLYOPTION").value="";
       if (sbook_heading_qricons) {
 	sbook.Message("Adding print icons...");
 	sbookAddQRIcons();}
@@ -471,6 +468,10 @@ sbook.Setup=
 	  fdjtID("SBOOKMARKIMAGE").src=sbook.user.pic;
 	if (fdjtID("SBOOKUSERPIC"))
 	  fdjtID("SBOOKUSERPIC").src=sbook.user.pic;}
+      if (fdjtID("SBOOKFRIENDLYOPTION"))
+	if (sbook.user)
+	  fdjtID("SBOOKFRIENDLYOPTION").value=sbook.user.oid;
+	else fdjtID("SBOOKFRIENDLYOPTION").value="";
       var idlinks=document.getElementsByName("IDLINK");
       if (idlinks) {
 	var i=0; var len=idlinks.length;
@@ -522,6 +523,7 @@ sbook.Setup=
 	if ((targetid)&&(fdjtID(targetid)))
 	  target=fdjtID(targetid);
 	else target=sbook.root;}
+      else target=sbook.root;
       if (sbook.Trace.startup)
 	fdjtLog("[%f] sbookInitLocation t=%o jf=%o",fdjtET(),target,justfocus);
       sbook.setHead(target||sbook.start||sbook.root);
@@ -531,33 +533,8 @@ sbook.Setup=
 
     /* Other setup */
     
-    function setupGlossServer(){
-      var domain=document.domain;
-      if ((sbook.server) && (domain===sbook.server))
-	return;
-      else if (sbook.server) {
-	var common_suffix=fdjtString.commonSuffix(sbook.server,domain,'.');
-	if (common_suffix) {
-	  if (common_suffix.indexOf('.')>0) {
-	    if (sbook.Trace.network)
-	      fdjtLog("[%fs] Setting up access to gloss server %o from %o through %o",
-		      fdjtET(),sbook.server,domain,common_suffix);
-	    var iframe=fdjtDOM("iframe");
-	    iframe.style.display='none';
-	    iframe.id="SBOOKIBRIDGE";
-	    iframe.onload=function() {
-	      document.domain=common_suffix;
-	      setIBridge(iframe.contentWindow);};
-	    iframe.src=
-	      'https://'+sbook.server+'/sbook/ibridge.fdcgi?DOMAIN='+
-	      common_suffix;
-	    document.body.appendChild(iframe);}}}}
+    function setupGlossServer(){}
 
-    function setIBridge(window){
-      sbook_ibridge=window;
-      if (fdjtID("SBOOKMARKFORM")) fdjtID("SBOOKMARKFORM").ajaxbridge=window;}
-
-    
     /* The Help Splash */
     function splash(){
       if ((document.location.search)&&

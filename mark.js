@@ -216,7 +216,6 @@ function sbookCreateMarkHUD(classinfo)
 		   fdjtDOM("div#SBOOKSHOWEXCERPT.excerpt"),relay_block,
 		   grid);
   form.setAttribute("accept-charset","UTF-8");
-  form.ajaxuri=sbook_mark_uri;
   form.jsonpuri=sbook_jsonping_uri;
   form.synchronous=true;
   form.action="http://"+sbook.server+"/sbook/glossmark.fdcgi";

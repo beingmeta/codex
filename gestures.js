@@ -210,14 +210,19 @@ var sbookUI=
       else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
       else if ((ch===65)||(ch===97)) /* A */
 	modearg=sbook.last_dash||"help";
+      /*
       else if (((!(sbook.mode))||(sbook.mode==="context"))&&
-	       ((ch===112)||(ch===80))) /* P */
-	if (sbook.pageview) sbookPaginate(false);
-	else sbookPaginate(true);
+	       ((ch===112)||(ch===80)))
+	       if (sbook.pageview) sbookPaginate(false);
+	       else sbookPaginate(true);
+      */
       else modearg=modechars[ch];
+      var mode=sbookMode();
       if (modearg) 
-	if (mode===modearg) sbookMode(false);
-	else sbookMode(modearg);
+	if (mode===modearg) {
+	  sbookMode(false); mode=false;}
+	else {
+	  sbookMode(modearg); mode=modearg;}
       else {}
       if (mode==="searching")
 	fdjtID("SBOOKSEARCHTEXT").focus();
@@ -307,10 +312,10 @@ var sbookUI=
       var search_button=fdjtID("SBOOKSEARCHBUTTON");
       var glosses_button=fdjtID("SBOOKGLOSSESBUTTON");
 
-      toc_button.onmouseover==function(evt){
+      toc_button.onmouseover=function(evt){
 	fdjtDOM.addClass(fdjtID("SBOOKTOC"),"hover");
 	fdjtUI.cancel(evt);};
-      toc_button.onmouseout==function(evt){
+      toc_button.onmouseout=function(evt){
 	fdjtDOM.dropClass(fdjtID("SBOOKTOC"),"hover");
 	fdjtUI.cancel(evt);};
       search_button.onmouseover=function(evt){

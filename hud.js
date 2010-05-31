@@ -146,6 +146,8 @@ var sbookMode=
       fdjtDOM.addListener(input,"keypress",sbookTagInput_onkeypress);
       fdjtDOM.addListener(input,"keyup",sbookTagInput_onkeyup);
       fdjtDOM.addListener(input,"focus",sbookTagInput_onfocus);
+      fdjtID("SBOOKMARKORIGIN").value=
+	document.location.protocol+document.location.hostname;
       fdjtUI.AutoPrompt.setup(hud);}
 
     /* Mode controls */

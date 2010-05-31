@@ -249,7 +249,7 @@ function sbookScan(root,docinfo){
     if ((child.sbookskip)||(child.sbookui)||
 	((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
       return;
-    if ((toclevel)&&(!(child.toclevel))) child.toclevel=toclevel;
+    if ((toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
     if (child.id) {
       var tags=
 	((child.getAttributeNS)&&

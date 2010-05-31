@@ -232,7 +232,7 @@ function sbookSummaryDiv(info,query)
 	else if (s1) return -1;
 	else if (s2) return 1;
 	else return 0;});
-  var head=((target.sbooklevel) ? (target) :
+  var head=((info.level) ? (target) :
 	    ((sbook.getHead(target))||(target)));
   if (head===document.body) head=target;
   if (info.glossid) sbookMarkInfo(sumdiv,info);

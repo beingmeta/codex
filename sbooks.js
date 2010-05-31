@@ -54,6 +54,7 @@ var sbook=
    syncstamp: false,
    // Various settings
    pageview: false,
+   // This is where defined event handlers live
    handlers: {},
    Trace: {
     mode: false,  // Whether to trace mode changes
@@ -129,8 +130,6 @@ var sbook_gloss_data=
   //sbook.servers=[];
   // This is the default server
   sbook.default_server="glosses.sbooks.net";
-  // This (when needed) is the iframe bridge for sbooks requests
-  sbook.ibridge=false;
   // There be icons here!
   sbook.graphics="http://static.beingmeta.com/graphics/";
   function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
@@ -168,7 +167,7 @@ var sbook_gloss_data=
 	target=sbook.docinfo[target.id]; break;}
       else target=target.parentNode;
     if (target)
-      if (target.toclevel)
+      if (target.level)
 	return target.elt||document.getElementById(target.frag);
       else if (target.head)
 	return target.head.elt||
@@ -277,17 +276,15 @@ var sbook_gloss_data=
 
   function setHead(head){
     if (head===null) head=sbook.root;
-    else if (typeof head === "string") {
-      var probe=fdjtID(head);
-      if (!(probe)) return;
-      else head=probe;}
-    if (!(head.toclevel)) head=getHead(head);
+    else if (typeof head === "string") 
+      head=getHead(fdjtID(head));
+    else head=getHead(head)||sbook.root;
+    var headinfo=sbook.docinfo[head.id];
     if (!(head)) return;
     else if (head===sbook.head) {
       if (sbook.Trace.focus) fdjtLog("Redundant SetHead");
       return;}
     else if (head) {
-      var headinfo=sbook.Info(head);
       if (sbook.Trace.focus) sbook.trace("sbook.setHead",head);
       sbookTOC.update("SBOOKTOC4",headinfo,sbook.Info(sbook.head));
       sbookTOC.update("SBOOKDASHTOC4",headinfo,sbook.Info(sbook.head));
@@ -295,7 +292,7 @@ var sbook_gloss_data=
       if (sbook.head) fdjtDOM.dropClass(sbook.head,"sbookhead");
       fdjtDOM.addClass(head,"sbookhead");
       sbook.setLocation(sbook_location);
-      sbook.head=head;}
+      sbook.head=fdjtID(head.id);}
     else {
       if (sbook.Trace.focus) sbook.trace("sbook.setHead",head);
       sbookTOCUpdate(head,"SBOOKTOC4");

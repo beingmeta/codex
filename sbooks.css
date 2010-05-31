@@ -91,17 +91,6 @@ body.preview div#SBOOKHUD.dashtoc div#SBOOKDASH {
 body.preview div#SBOOKHUD.dashtoc  div#SBOOKDASH
   div.spanbar:hover {
     visibility: visible; }
-/*
-body.preview div#SBOOKHUD.dashtoc  div#SBOOKDASH
-  div.live.sbooktoc:hover > div.sbooktocleaf {
-    visibility: visible; }
-body.preview div#SBOOKHUD.dashtoc  div#SBOOKDASH
-  div.live.sbooktoc:hover > div.spanbar {
-    visibility: visible; opacity: 0.5;}
-body.preview div#SBOOKHUD.dashtoc  div#SBOOKDASH
-  div.live.sbooktoc:hover > div.sbooktocleaf a.cohi {
-    color: red;}
-*/
 
 /* Buttons */
 
@@ -289,6 +278,10 @@ div#SBOOKHUD img.hudbutton[alt='toc'] {
 div#SBOOKHUD.toc img.hudbutton[alt='toc'] { 
   opacity: 1.0; border-color: blue; background-color: gray;}
 
+div#SBOOKHUD.toc div.hudblock#SBOOKTOC.hover {
+  display: block; opacity: 0.8;}
+
+
 /* The Search HUD */
 
 div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH,
@@ -305,6 +298,9 @@ div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH div.scrollbody {
 div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH div.scrollbody.searchcloud {
     display: block;}
 div#SBOOKHUD.browsing div.scrollhud#SBOOKSEARCH div.scrollbody.sbookresults {
+    display: block;}
+
+div#SBOOKHUD div#SBOOKSEARCH.scrollhud.hover div.scrollbody.searchcloud {
     display: block;}
 
 div#SBOOKHUD img.hudbutton[alt='search'] { 
@@ -429,7 +425,7 @@ div#SBOOKHUD div#SBOOKDASH .tabcontent h1 { margin-top: 3px;}
 
 div#SBOOKHUD div.scrollhud div.scrollbody#SBOOKDASHCONTENT {
     top: 60px; margin-top: 0px; padding-top: 0px;
-    border-top: gold dotted 2px;}
+    border-top: gold solid 2px;}
 div#SBOOKHUD div.scrollhud div.scrollbody#SBOOKDASHCONTENT div.tabcontent {
     margin-top: 0px;}
 
