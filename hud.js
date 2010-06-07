@@ -59,7 +59,6 @@ var sbookMode=
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
 	    dash.innerHTML=sbook_dashtext.replace('%HELPTEXT',sbook_helptext);
-	    initDash(dash);
 	    var search=fdjtID("SBOOKSEARCH");
 	    search.innerHTML=sbook_searchtext;
 	    initSearch(search);
@@ -121,7 +120,7 @@ var sbookMode=
 	    else fdjtDOM.addListener(div,"click",sbookTOC.oneclick);
 	    return div;}
 
-	function initDash(){
+	function initManageApp(){
 	    var query=document.location.search||"?";
 	    var refuri=sbook.refuri;
 	    var appuri="https://"+sbook.server+"/sbook/manage.fdcgi"+query;
@@ -131,9 +130,7 @@ var sbookMode=
 		appuri=appuri+"&DOCURI="+encodeURIComponent(sbook.docuri);
 	    if (document.title) {
 		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
-	    fdjtID("APPFRAME").src=appuri;
-	    var dash_button=fdjtID("SBOOKDASHBUTTON");
-	    dash_button.style.visibility='';}
+	    fdjtID("MANAGEAPP").src=appuri;}
 
 
 	function initSearch(){
@@ -190,7 +187,7 @@ var sbookMode=
 		if (mode===true) mode="context";
 		if (typeof mode !== 'string') 
 		    throw new Error('mode arg not a string');
-		if ((mode==="sbookapp")&&(!(fdjtID("APPFRAME").src)))
+		if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
 		    sbookSetupDash();
 		sbook.mode=mode;
 		sbook.last_mode=mode;

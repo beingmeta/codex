@@ -497,6 +497,7 @@ sbook.Setup=
 		    idlink.target='_blank';
 		    idlink.title='click to edit your personal information';
 		    idlink.href='https://www.sbooks.net/admin/id.fdcgi';}}
+	    initManageApp(dash);
 	    sbook._user_setup=true;
 	    getGlosses();}
 
