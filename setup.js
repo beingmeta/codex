@@ -427,29 +427,38 @@ sbook.Setup=
 	document.body.appendChild(user_script);
 	fdjtDOM.addClass(document.body,"nosbookuser");}
       else fdjtDOM.addClass(document.body,"nosbookuser");}
-    function setUser(userinfo,nodeid,otherinfo){
+    function setUser(userinfo,nodeid,sources,audiences,etc){
       if (sbook.user)
 	if (userinfo.oid===sbook.user.oid) {}
 	else throw { error: "Can't change user"};
-      sbook.user=fdjtKB.Import(userinfo);
-      var userid=userinfo.qid||userinfo.oid||userinfo.uuid;
-      if (sbook.offline) {
-	fdjt.setLocal("sbook.user",userid);
-	fdjt.setLocal(userid,JSON.stringify(sbook.user));}
+      gotInfo("user",userinfo);
+      gotInfo("sources",sources);
+      gotInfo("audiences",audiences);
+      gotInfo("etc",etc);
       if (!(sbook.nodeid)) {
 	sbook.nodeid=nodeid||fdjtState.getNodeID();
 	if ((nodeid)&&(sbook.offline))
 	  fdjtSetLocal("sbook.nodeid",nodeid);}
-      if (otherinfo instanceof Array) {
-	var i=0; var lim=otherinfo.length; var qids=[];
-	while (i<lim) {
-	  var obj=fdjtKB.Import(otherinfo[i++]);
-	  if (sbook.offline) {
-	    fdjtState.setLocal(obj.qid,obj,true);
-	    qids.push(obj.qid);}}
-	if (sbook.offline)
-	  fdjtState.setLocal("sbook.useretc",qids,true);}
       setupUser();}
+    function gotInfo(name,info) {
+      if (info)
+	if (info instanceof Array) {
+	  var i=0; var lim=info.length; var qids=[];
+	  while (i<lim) {
+	    var obj=fdjtKB.Import(info[i++]);
+	    if (sbook.offline) {
+	      fdjtState.setLocal(obj.qid,JSON.stringify(obj),true);
+	      qids.push(obj.qid);}}
+	  sbook[name]=qids;
+	  if (sbook.offline)
+	    fdjtState.setLocal("sbook."+name,qids,true);}
+	else {
+	  var obj=fdjtKB.Import(info);
+	  if (sbook.offline) 
+	    fdjtState.setLocal(obj.qid,obj,true);
+	  sbook[name]=obj.qid;
+	  if (sbook.offline)
+	    fdjtState.setLocal("sbook."+name,qid,true);}}
     sbook.setUser=setUser;
     function setupUser(){
       if (sbook._user_setup) return;
