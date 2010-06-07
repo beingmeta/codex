@@ -186,29 +186,16 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
     var sbook_glossmark_div=false;
     var sbook_glossmark_target=false;
 
-    function sbookOpenGlossmark(target,addmark)
-    {
-	if (sbook_glossmark_target===target) {
-	    var hud=fdjtID("SBOOKMARKHUD");
-	    hud.style.maxHeight=((fdjtDOM.viewHeight())-100);
-	    sbookMode("mark");}
-	else {
-	    var hud=fdjtID("SBOOKMARKHUD");
-	    var glosses=sbook.glosses.find('frag',target.id)
-	    var sumdiv=fdjtDOM("div.sbooksummaries");
-	    sbookUI.setupSummaryDiv(sumdiv);
-	    if (glosses)
-		sbookUI.showSummaries(glosses,sumdiv,false);
-	    fdjtDOM.replace("SBOOKMARKGLOSSES",sumdiv);
-	    sbook.setTarget(target);
-	    sbook_glossmark_target=target;
-	    sbookMarkHUDSetup(target);
-	    alignGlossmark(hud,target);
-	    if (addmark)
-		fdjtDOM.dropClass(fdjtID("SBOOKMARKFORM"),"closed");
-	    else fdjtDOM.addClass(fdjtID("SBOOKMARKFORM"),"closed");
-	    sbookMode("mark");}
-    }
+    function openGlossmark(target,addmark) {
+	var glosses=sbook.glosses.find('frag',target.id)
+	var sumdiv=fdjtDOM("div.sbooksummaries.hudblock");
+	sbookUI.setupSummaryDiv(sumdiv);
+	if (glosses)
+	    sbookUI.showSummaries(glosses,sumdiv,false);
+	fdjtDOM.replace("SBOOKGLOSSES",sumdiv);
+	sbook.setTarget(target);
+	sbookMode("glosses");}
+    sbookUI.openGlossmark=openGlossmark;
 
     function alignGlossmark(hud,target)
     {
@@ -224,15 +211,10 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	hud.style.opacity=''; hud.style.display='';
     }
 
-    function glossmark_onclick(evt)
-    {
+    function glossmark_onclick(evt){
 	evt=evt||event||null;
 	var target=sbook.getRef(fdjtUI.T(evt));
-	if (sbook_glossmark_target===target)
-	    if (sbook.mode) sbookMode(false);
-	else sbookOpenGlossmark(target,false);
-	else sbookOpenGlossmark(target,false);
-    }
+	openGlossmark(target);}
     sbookUI.handlers.glossmark_onclick=glossmark_onclick;
 
     function glossmark_onmouseover(evt)

@@ -124,11 +124,11 @@ var sbook_gloss_data=
     sbook.trace=sbook_trace;
 
     // Where to go for your glosses
-    sbook.glossroot="https://app.sbooks.net/sbook/";
+    sbook.glossroot="https://glosses.sbooks.net/sbook/";
     // This is the AJAX sbook mark uri
     sbook.mark_uri="/sbook/glossmark.fdcgi?AJAX=yes";
     // This is the JSONP sbook mark uri
-    sbook.jsonp="https://apps.sbooks.net/sbook/glossmark.fdcgi?JSONP=yes";
+    sbook.jsonp="https://glosses.sbooks.net/sbook/glossmark.fdcgi?JSONP=yes";
     // This is the hostname for the sbookserver.
     sbook.server=false;
     // Whether this sbook is set up for offline reading

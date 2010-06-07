@@ -327,17 +327,16 @@ body.notfixed div#SBOOKHUD img.hudbutton[alt='glosses'] {
 
 /* Miscellaneous gloss rules */
 
-div#SBOOKHUD div#SBOOKMARK {
+div#SBOOKHUD div#SBOOKMARKHUD {
     /* Unindent */
     margin-left: -12px;}
-div#SBOOKHUD div#SBOOKMARK div.markform {
+div#SBOOKHUD div#SBOOKMARKHUD div.markform {
   min-height: 60px;}
-div#SBOOKHUD div#SBOOKMARK form.mark.closed div.markform {
+div#SBOOKHUD div#SBOOKMARKHUD form.mark.closed div.markform {
   min-height: inherit;}
 
-div#SBOOKHUD div#SBOOKMARK { display: none;}
-div#SBOOKHUD.mark div#SBOOKMARK { display: block;}
-div#SBOOKHUD div#SBOOKMARK { display: block;}
+div#SBOOKHUD div#SBOOKMARKHUD { display: none;}
+div#SBOOKHUD.mark div#SBOOKMARKHUD { display: block;}
 
 /* The Dashboard HUD */
 
@@ -597,6 +596,11 @@ div#SBOOKHUD div#SBOOKSEARCH div.completions { display: none;}
 div#SBOOKHUD.browsing div#SBOOKSEARCH div.searchresults { display: block;}
 div#SBOOKHUD.searching div#SBOOKSEARCH div.completions { display: block;}
 
+/* Glosses for a particular fragments */
+
+div#SBOOKHUD.glosses div.hudblock#SBOOKGLOSSES {
+  display: block; position: fixed; bottom: 100px; opacity: 0.9; overflow: auto;}
+
 /* The Tags HUD */
 
 div#SBOOKHUD div.hud#SBOOKTAGS {
@@ -656,7 +660,7 @@ body.preview div#SBOOKHUD.toc div.hudblock#SBOOKTOC { opacity: 0.8;}
 body.preview div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH { opacity: 0.05;}
 body.preview div#SBOOKHUD.browsing div.scrollhud#SBOOKSEARCH { opacity: 0.05;}
 body.preview div#SBOOKHUD.allglosses div.scrollhud#SBOOKALLGLOSSES { opacity: 0.05;}
-body.preview div#SBOOKHUD.mark div.hudblock#SBOOKMARK { opacity: 0.05;}
+body.preview div#SBOOKHUD.mark div.hudblock#SBOOKMARKHUD { opacity: 0.05;}
 body.preview div#SBOOKHUD div#SBOOKDASH { visibility: hidden;}
 body.preview div#SBOOKHUD div#SBOOKDASH .spanbar:hover {
     visibility: visible; opacity: 0.5;}
@@ -703,10 +707,10 @@ div.sbookrelayblock span.user {
 div.sbookrelayblock span.msg {
   font-style: italic; font-weight: normal;}
 
-div#SBOOKHUD div#SBOOKMARK div.needlogin { display: none;}
-body.nosbookuser div#SBOOKHUD div#SBOOKMARK div.needlogin {
+div#SBOOKHUD div#SBOOKMARKHUD div.needlogin { display: none;}
+body.nosbookuser div#SBOOKHUD div#SBOOKMARKHUD div.needlogin {
     display: block; margin-bottom: 8px;}
-div#SBOOKHUD div#SBOOKMARK div.needlogin span.loginbutton { 
+div#SBOOKHUD div#SBOOKMARKHUD div.needlogin span.loginbutton { 
   color: blue; background-color: white; padding: 3px;
   border: solid blue 2px;
   -khtml-border-radius: 6px; 
@@ -860,11 +864,11 @@ form.mark div.tribebar {
 form.mark div.tribebar
   select[NAME='TRIBE'] { width: 50%; max-width: 50%; clear: none;}
 
-div#SBOOKHUD div#SBOOKMARK div.needlogin {
+div#SBOOKHUD div#SBOOKMARKHUD div.needlogin {
   font-size: 150%;}
-div#SBOOKHUD div#SBOOKMARK div.needlogin a.login {
+div#SBOOKHUD div#SBOOKMARKHUD div.needlogin a.login {
   display: inline;}
-body.nosbookuser div#SBOOKHUD div#SBOOKMARK div.needlogin a.login {
+body.nosbookuser div#SBOOKHUD div#SBOOKMARKHUD div.needlogin a.login {
   display: inline;}
 form.mark div.tribebar
   select[NAME='status'] { float: right; clear: none;}
@@ -904,9 +908,9 @@ div#SBOOKHUD.allglosses div#SBOOKALLGLOSSES { opacity: 0.9;}
 body.preview div#SBOOKHUD.allglosses div#SBOOKALLGLOSSES { display: none;}
 body.preview div#SBOOKHUD.mark div#SBOOKALLGLOSSES { display: none;}
 
-div#SBOOKHUD.mark div#SBOOKMARK {display: block; }
+div#SBOOKHUD.mark div#SBOOKMARKHUD {display: block; }
 div#SBOOKHUD.mark div#SBOOKSEARCH {display: none; }
-div#SBOOKHUD.mark div.hud#SBOOKMARK {
+div#SBOOKHUD.mark div.hud#SBOOKMARKHUD {
   max-height: inherit;}
 
 div#SBOOKHUD img.button { z-index: 200; vertical-align: top;}

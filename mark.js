@@ -128,7 +128,7 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   if ((excerpt)&&(excerpt.length>sbook_min_excerpt)) 
     sbookSetMarkExcerpt(excerpt);
   sbook_mark_cloud.setCues(tagcues);
-  fdjtUI.AutoPrompt.setup(fdjtID("SBOOKMARK"));
+  fdjtUI.AutoPrompt.setup(fdjtID("SBOOKMARKHUD"));
 }
 
 /* Making the MARK hud */
@@ -238,7 +238,7 @@ function sbookCreateMarkHUD(classinfo)
     (fdjtID("SBOOKMARKCLOUD"),"click",fdjtUI.Checkspan.onclick);
    win.sbookMode(false);};
   // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
-  // hideicon.onclick="fdjtDOM.addClass('SBOOKMARK','hidden')"; 
+  // hideicon.onclick="fdjtDOM.addClass('SBOOKMARKHUD','hidden')"; 
   var markdiv=fdjtDOM(classinfo||"div.mark",need_login,messages_elt,form);
   markdiv.sbookui=true;
   return markdiv;
@@ -555,7 +555,7 @@ function sbookMark(target,gloss,excerpt)
 		  ((gloss.msg)?(fdjtDOM("span.msg",gloss.msg)):(false)));
 	fdjtDOM.replace("SBOOKMARKRELAYBLOCK",glossblock);}}
   else sbookMarkHUDSetup(target,gloss||false,excerpt||false);
-  sbookOpenGlossmark(target,true);
+  sbookUI.openGlossmark(target,true);
   sbookMode("mark");
   fdjtID("SBOOKMARKINPUT").focus();
 }

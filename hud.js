@@ -166,7 +166,7 @@ var sbookMode=
 	
 	var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 	var sbookMode_pat=
-	    /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(mark)|(context)|(dashtoc)|(about)|(console)/g;
+	    /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(mark)|(context)|(dashtoc)|(about)|(console)/g;
 	
 	var sbook_footmodes=
 	    ["login","device","sbookapp","help","dashtoc","about","allglosses","console"];
