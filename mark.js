@@ -218,7 +218,7 @@ function sbookCreateMarkHUD(classinfo)
   form.setAttribute("accept-charset","UTF-8");
   form.jsonpuri=sbook_jsonping_uri;
   form.synchronous=true;
-  form.action="http://"+sbook.server+"/sbook/glossmark.fdcgi";
+  form.action="https://"+sbook.server+"/v3/glossmark.fdcgi";
   form.target="sbookping";
   form.onclick=sbookMarkForm_onclick;
   fdjtUI.CheckSpan.setup(metastuff);
@@ -227,21 +227,21 @@ function sbookCreateMarkHUD(classinfo)
   form.onsubmit=
     ((sbook.user)?(sbookMark_onsubmit):(sbookNoUserSubmit));
   form.oncallback=function(req) {
-    if (sbook.Trace.network)
-      fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
-    fdjtKB.Import(JSON.parse(req.responseText));
-    fdjtDOM.dropClass(form,"submitting");
-    /* Turn off the target lock */
-    sbook.setTarget(false);
-    form.reset();
-    fdjtDOM.addListener
-    (fdjtID("SBOOKMARKCLOUD"),"click",fdjtUI.Checkspan.onclick);
-   win.sbookMode(false);};
-  // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
-  // hideicon.onclick="fdjtDOM.addClass('SBOOKMARKHUD','hidden')"; 
-  var markdiv=fdjtDOM(classinfo||"div.mark",need_login,messages_elt,form);
-  markdiv.sbookui=true;
-  return markdiv;
+      if (sbook.Trace.network)
+	  fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
+      fdjtKB.Import(JSON.parse(req.responseText));
+      fdjtDOM.dropClass(form,"submitting");
+      /* Turn off the target lock */
+      sbook.setTarget(false);
+      form.reset();
+      fdjtDOM.addListener
+      (fdjtID("SBOOKMARKCLOUD"),"click",fdjtUI.Checkspan.onclick);
+      win.sbookMode(false);};
+    // var hideicon=fdjtImage(sbicon("redx16x16.png"),"hideicon","x");
+    // hideicon.onclick="fdjtDOM.addClass('SBOOKMARKHUD','hidden')"; 
+    var markdiv=fdjtDOM(classinfo||"div.mark",need_login,messages_elt,form);
+    markdiv.sbookui=true;
+    return markdiv;
 }
 
 function sbookMark_onsubmit(evt)
@@ -568,7 +568,7 @@ function sbookCreateLoginButton(uri,image,title)
     fdjtDOM.Anchor
     (((uri)?
       (uri+"?NEXT="+
-       encodeURIComponent("http://sbooks.net/app/read?URI="+
+       encodeURIComponent("https://sbooks.net/app/read?URI="+
 			  encodeURIComponent(window.location.href))):
       "javascript:alert('sorry, not yet implemented'); return false;"),
      "A",fdjtDOM.Image(sbicon(image),"button"));

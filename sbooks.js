@@ -124,11 +124,11 @@ var sbook_gloss_data=
     sbook.trace=sbook_trace;
 
     // Where to go for your glosses
-    sbook.glossroot="https://glosses.sbooks.net/sbook/";
+    sbook.glossroot="https://glosses.sbooks.net/v3/";
     // This is the AJAX sbook mark uri
-    sbook.mark_uri="/sbook/glossmark.fdcgi?AJAX=yes";
+    sbook.mark_uri="/v3/glossmark.fdcgi?AJAX=yes";
     // This is the JSONP sbook mark uri
-    sbook.jsonp="https://glosses.sbooks.net/sbook/glossmark.fdcgi?JSONP=yes";
+    sbook.jsonp="https://glosses.sbooks.net/v3/glossmark.fdcgi?JSONP=yes";
     // This is the hostname for the sbookserver.
     sbook.server=false;
     // Whether this sbook is set up for offline reading
@@ -454,7 +454,7 @@ function sbookAddQRIcons(){
     var head=sbook.heads[i++];
     var id=head.id;
     var title=(head.sbookinfo)&&sbook_get_titlepath(head.sbookinfo);
-    var qrhref="https://"+sbook.server+"/sbook/qricon.fdcgi?"+
+    var qrhref="https://"+sbook.server+"/v3/qricon.fdcgi?"+
       "URI="+encodeURIComponent(sbook.docuri||sbook.refuri)+
       ((id)?("&FRAG="+head.id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");

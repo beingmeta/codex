@@ -426,7 +426,7 @@ sbook.Setup=
 		var user_script=fdjtDOM("SCRIPT#SBOOKGETUSERINFO");
 		user_script.language="javascript";
 		user_script.src=
-		  "https://"+sbook.server+"/sbook/user.js";
+		  "https://"+sbook.server+"/v3/user.js";
 		document.body.appendChild(user_script);
 		fdjtDOM.addClass(document.body,"nosbookuser");}
 	    else fdjtDOM.addClass(document.body,"nosbookuser");}
@@ -518,7 +518,7 @@ sbook.Setup=
 	    var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 	    glosses_script.language="javascript";
 	    glosses_script.src="https://"+sbook.server+
-	      "/sbook/glosses.js?CALLBACK=sbook.glosses.Import&REFURI="+
+	      "/v3/glosses.js?CALLBACK=sbook.glosses.Import&REFURI="+
 	      encodeURIComponent(sbook.refuri);
 	    if (sbook.syncstamp)
 		glosses_script.src=glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;

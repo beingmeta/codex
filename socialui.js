@@ -172,7 +172,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	glossmark.onmouseout=glossmark_onmouseout;
 	if (id) {glossmark.sbook_ref=id;}
 	if (sbook_glossmark_qricons) {
-	    var qrhref="http://"+sbook.server+"/sbook/qricon.fdcgi?"+
+	    var qrhref="http://"+sbook.server+"/v3/qricon.fdcgi?"+
 		"URI="+encodeURIComponent(sbook.refuri)+
 		((id)?("&FRAG="+id):"")+
 		((title) ? ("&TITLE="+encodeURIComponent(title)) : "");

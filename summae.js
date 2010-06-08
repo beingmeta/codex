@@ -280,15 +280,15 @@ var sbook_delete_icon="redx16x16.png";
 	var interval=((info.tstamp) ? (fdjtTime.tick()-info.tstamp) : (-1));
 	var delete_button=
 	    ((user===sbook.user)&&
-	     (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/delete?GLOSS="+info.oid,
+	     (fdjtDOM.Anchor("https://"+sbook.server+"/v3/delete?GLOSS="+info.oid,
 			     "A.deletebutton",
 			     fdjtDOM.Image(sbicon(sbook_delete_icon),false,"x"))));
 	var agespan=
 	    ((interval>0)&&
 	     ((interval>(5*24*3600)) 
-	      ? (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/browse/"+info.gloss,
+	      ? (fdjtDOM.Anchor("https://"+sbook.server+"/v3/browse/"+info.gloss,
 				"A.age",fdjtTime.tick2date(info.tstamp)))
-	      : (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/browse/"+info.gloss,
+	      : (fdjtDOM.Anchor("https://"+sbook.server+"/v3/browse/"+info.gloss,
 				"A.age",fdjtTime.secs2string(info.tstamp)+
 				" ago"))));
 	if (agespan) {
