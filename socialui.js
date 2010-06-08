@@ -131,7 +131,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	    sbookUI.selectSources(summaries,false);}
 	fdjtDOM.cancel(evt);
     }
-    sbookUI.handlers.sources_onclick=everyone_onclick;
+    sbookUI.handlers.sources_onclick=sources_onclick;
 
 
     function scrollGlosses(elt,glosses)

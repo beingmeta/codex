@@ -202,9 +202,10 @@ var sbook_delete_icon="redx16x16.png";
 	var target_id=(info.frag)||(info.id);
 	var target=((target_id)&&(fdjtID(target_id)));
 	var refiners=((query) && (query._refiners));
-	var sumdiv=fdjtDOM(((info.glossid) ? "div.summary.gloss" : "div.summary"));
+	var sumdiv=fdjtDOM(((info.gloss) ? "div.summary.gloss" : "div.summary"));
 	if (target_id) sumdiv.sbook_ref=target_id;
-	if (info.oid) sumdiv.sbook_oid=info.oid;
+	if (info.qid) sumdiv.sbook_qid=info.qid;
+	else if (info.oid) sumdiv.sbook_qid=info.oid;
 	var infospan=fdjtDOM("span.info");
 	if ((query) && (query[key])) { /* If you have a score, use it */
 	    var scorespan=fdjtDOM("span.score");
@@ -227,8 +228,8 @@ var sbook_delete_icon="redx16x16.png";
 	var head=((info.level) ? (target) :
 		  ((sbook.getHead(target))||(target)));
 	if (head===document.body) head=target;
-	if (info.glossid) sbookMarkInfo(sumdiv,info);
-	if (info.glossid)
+	if (info.gloss) sbookMarkInfo(sumdiv,info);
+	if (info.gloss)
 	    fdjtDOM(sumdiv,
 		    (sbookDetailsButton(info)),(sbookXRefsButton(info)),
 		    ((info.msg)&&(fdjtDOM("span.msg",info.msg))),((info.msg)&&" "),
@@ -271,8 +272,8 @@ var sbook_delete_icon="redx16x16.png";
     function sbookMarkInfo(sumdiv,info){
 	var user=info.user;
 	var feed=info.feed||false;
-	var userinfo=sbook.sources.map[user];
-	var feedinfo=sbook.sources.map[feed];
+	var userinfo=sbook.sourcekb.map[user];
+	var feedinfo=sbook.sourcekb.map[feed];
 	var img=((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
 	    ((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
 	    (sbookSourceIcon(feedinfo))||(sbookSourceIcon(userinfo));
@@ -285,9 +286,9 @@ var sbook_delete_icon="redx16x16.png";
 	var agespan=
 	    ((interval>0)&&
 	     ((interval>(5*24*3600)) 
-	      ? (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/browse/"+info.glossid,
+	      ? (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/browse/"+info.gloss,
 				"A.age",fdjtTime.tick2date(info.tstamp)))
-	      : (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/browse/"+info.glossid,
+	      : (fdjtDOM.Anchor("http://"+sbook.server+"/sbook/browse/"+info.gloss,
 				"A.age",fdjtTime.secs2string(info.tstamp)+
 				" ago"))));
 	if (agespan) {
@@ -359,8 +360,8 @@ var sbook_delete_icon="redx16x16.png";
 	    if (target.sbook_ref) break;
 	else target=target.parentNode;
 	if (!(target)) return;
-	if (target.sbook_oid)
-	    sbookMark(fdjtID(target.sbook_ref),sbook.sources.map[target.sbook_oid]||false);
+	if (target.sbook_qid)
+	    sbookMark(fdjtID(target.sbook_ref),sbook.sourcekb.map[target.sbook_qid]||false);
 	else sbookMark(fdjtID(target.sbook_ref),false);
 	evt.preventDefault(); evt.cancelBubble=true;}
 
@@ -378,7 +379,7 @@ var sbook_delete_icon="redx16x16.png";
 	    var summaries=fdjtDOM.$(".summary",block);
 	    var j=0; while (j<summaries.length) {
 		var summary=summaries[j++];
-		var gloss=(summary.sbook_oid)&&sbook.glosses.map[summary.sbook_oid];
+		var gloss=(summary.sbook_qid)&&sbook.glosses.map[summary.sbook_qid];
 		if ((fdjtKB.contains(sources,gloss.user))||
 		    (fdjtKB.contains(sources,gloss.feed))) {
 		    fdjtDOM.addClass(summary,"sourced");

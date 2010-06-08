@@ -64,10 +64,10 @@ var sbookMode=
 	    initSearch(search);
 	    var glosses=fdjtID("SBOOKALLSUMMARIES");
 	    sbookUI.setupSummaryDiv(glosses);
-	    sbook.glosses.addEffect("uid",function(f,p,v){
-		sbook.sources.ref(v).oninit(sbookUI.addSourceIcon);});
-	    sbook.glosses.addEffect("feed",function(f,p,v){
-		sbook.sources.ref(v).oninit(sbookUI.addSourceIcon);});
+	    sbook.glosses.addEffect("user",function(f,p,v){
+		sbook.sourcekb.ref(v).oninit(sbookUI.addSourceIcon);});
+	    sbook.glosses.addEffect("distribution",function(f,p,v){
+		sbook.sourcekb.ref(v).oninit(sbookUI.addSourceIcon);});
 	    sbook.glosses.addInit(function(item){
 		sbookUI.addSummary(item,glosses,false);
 		var glossmark=sbookUI.addGlossmark(item.frag); {
@@ -119,19 +119,6 @@ var sbookMode=
 		fdjtDOM.addListener(div,"click",sbookTOC.onholdclick);}
 	    else fdjtDOM.addListener(div,"click",sbookTOC.oneclick);
 	    return div;}
-
-	function initManageApp(){
-	    var query=document.location.search||"?";
-	    var refuri=sbook.refuri;
-	    var appuri="https://"+sbook.server+"/sbook/manage.fdcgi"+query;
-	    if (query.search("REFURI=")<0)
-		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
-	    if (query.search("DOCURI=")<0)
-		appuri=appuri+"&DOCURI="+encodeURIComponent(sbook.docuri);
-	    if (document.title) {
-		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
-	    fdjtID("MANAGEAPP").src=appuri;}
-
 
 	function initSearch(){
 	    var input=fdjtID("SBOOKSEARCHTEXT");
@@ -383,6 +370,7 @@ var sbookMode=
 			elt.href=false;
 			fdjtDOM.addClass(elt,"deadlink");
 			elt.title='this sBook is not available as a ZIP bundle';}}}
+	    initManageIFrame();
 	    /* If the book is offline, don't bother showing the link to the offline
 	       version
 	       ?? Maybe show link to the dynamic version
@@ -450,6 +438,19 @@ var sbookMode=
 	    if (cover) {
 		var cover_elt=fdjtDOM.$(".cover",about)[0];
 		if (cover_elt) fdjtDOM(cover_elt,fdjtDOM.Image(cover));}}
+
+	function initManageIFrame(){
+	    var query=document.location.search||"?";
+	    var refuri=sbook.refuri;
+	    var appuri="https://"+sbook.server+"/sbook/manage.fdcgi"+query;
+	    if (query.search("REFURI=")<0)
+		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
+	    if (query.search("DOCURI=")<0)
+		appuri=appuri+"&DOCURI="+encodeURIComponent(sbook.docuri);
+	    if (document.title) {
+		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
+	    fdjtID("MANAGEAPP").src=appuri;}
+
 
 	/* Previewing */
 	

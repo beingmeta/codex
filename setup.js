@@ -390,7 +390,7 @@ sbook.Setup=
 		    mark_option.title=info.about;
 		    mark_option.value=info.oid;
 		    fdjtDOM(mark_options,mark_option);}
-		sbook.sources.Import(info);}}
+		sbook.sourcekb.Import(info);}}
 
 	function socialSetup(){
 	    setupUser();
@@ -425,7 +425,8 @@ sbook.Setup=
 	    else if (!(fdjtID("SBOOKGETUSERINFO"))) {
 		var user_script=fdjtDOM("SCRIPT#SBOOKGETUSERINFO");
 		user_script.language="javascript";
-		user_script.src="https://"+sbook.server+"/sbook/user.js";
+		user_script.src=
+		  "https://"+sbook.server+"/sbook/user.js";
 		document.body.appendChild(user_script);
 		fdjtDOM.addClass(document.body,"nosbookuser");}
 	    else fdjtDOM.addClass(document.body,"nosbookuser");}
@@ -497,7 +498,6 @@ sbook.Setup=
 		    idlink.target='_blank';
 		    idlink.title='click to edit your personal information';
 		    idlink.href='https://www.sbooks.net/admin/id.fdcgi';}}
-	    initManageApp(dash);
 	    sbook._user_setup=true;
 	    getGlosses();}
 
@@ -517,8 +517,9 @@ sbook.Setup=
 		else sbook.allglosses=[];}
 	    var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 	    glosses_script.language="javascript";
-	    glosses_script.src="https://"+sbook.server+"/sbook/glosses.js?REFURI="+
-		encodeURIComponent(sbook.refuri);
+	    glosses_script.src="https://"+sbook.server+
+	      "/sbook/glosses.js?CALLBACK=sbook.glosses.Import&REFURI="+
+	      encodeURIComponent(sbook.refuri);
 	    if (sbook.syncstamp)
 		glosses_script.src=glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
 	    document.body.appendChild(glosses_script);}

@@ -71,9 +71,9 @@ function sbookMarkHUDSetup(target,origin,excerpt)
   //  If it's the user's gloss, we set it.  Otherwise,
   //   we set the relay field
   var glossinfo=((origin)&&
-		 (((origin.qid)&&(sbook.sources.map[origin.qid]))||
-		  ((origin.uuid)&&(sbook.sources.map[origin.uuid]))||
-		  ((origin.oid)&&(sbook.sources.map[origin.oid]))));
+		 (((origin.qid)&&(sbook.sourcekb.map[origin.qid]))||
+		  ((origin.uuid)&&(sbook.sourcekb.map[origin.uuid]))||
+		  ((origin.oid)&&(sbook.sourcekb.map[origin.oid]))));
   if (glossinfo)
     if (glossinfo.user===sbook.user) {
       fdjtID("SBOOKMARKOID").value=origin.oid;
@@ -297,7 +297,7 @@ function sbookMarkFeed_onchange(evt)
   var checkspan=fdjtID("SBOOKMARKPRIVATE");
   var overlays=fdjtUI.T(evt);
   var newfeed=overlays.value;
-  var info=sbook.sources.map[newfeed];
+  var info=sbook.sourcekb.map[newfeed];
   var checkstate;
   if (newfeed===':{}') checkstate=true;
   else if (newfeed===sbook.user) checkstate=false;
@@ -547,7 +547,7 @@ function sbookMark(target,gloss,excerpt)
       sbookMarkHUDSetup(target,false,excerpt||false);
       if (gloss.gloss) fdjtID("SBOOKMARKRELAY").value=gloss.gloss;
       if (gloss.user) {
-	var userinfo=sbook.sources.map[gloss.user];
+	var userinfo=sbook.sourcekb.map[gloss.user];
 	var glossblock=
 	  fdjtDOM("div.sbookrelayblock","Relayed from ",
 		  fdjtDOM("span.user",userinfo.name),

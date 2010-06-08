@@ -103,9 +103,9 @@ var sbook_gloss_data=
 		if ((info)&&(info.sbookloc)) item.sbookloc=info.sbookloc;});
 
 	    sbook.glosses.index=new fdjtKB.Index();}
-	sbook.sources=new fdjtKB.Pool("sources");{
-	    sbook.sources.addAlias(":@1961/");
-	    sbook.sources.index=new fdjtKB.Index();}}
+	sbook.sourcekb=new fdjtKB.Pool("sources");{
+	    sbook.sourcekb.addAlias(":@1961/");
+	    sbook.sourcekb.index=new fdjtKB.Index();}}
     sbook.initDB=initDB;
 
     function sbook_trace(handler,cxt){
@@ -232,13 +232,13 @@ var sbook_gloss_data=
 	else return (target.title)||false;};
 
     function getinfo(arg){
-	if (arg)
-	    if (typeof arg === 'string')
-		return sbook.docinfo[arg]||sbookOIDs.map[arg];
-	else if (arg.oid) return arg;
+      if (arg)
+	if (typeof arg === 'string')
+	  return sbook.docinfo[arg]||fdjtKB.ref(arg);
+	else if ((arg.qid)||(arg.oid)) return arg;
 	else if (arg.id) return sbook.docinfo[arg.id];
 	else return false;
-	else return false;}
+      else return false;}
     sbook.Info=getinfo;
 
     /* Query functions */
