@@ -78,7 +78,7 @@ var sbookMode=
 			var img=fdjtDOM.getFirstChild(glossmark,"IMG.big");
 			if (img) img.src=pic;}}});
 	    var bookmark=fdjtID("SBOOKMARKHUD");
-	    bookmark.innerHTML=sbook_markhudtext;
+	    bookmark.innerHTML=sbook_addgloss_html;
 	    initMarkHUD(bookmark);
 	    fillinDash();}
 	sbook.initHUD=initHUD;
@@ -139,11 +139,11 @@ var sbookMode=
 
 	function initMarkHUD(hud){
 	    var input=fdjtID("SBOOKMARKTAGINPUT");
-	    fdjtDOM.addListener(input,"keypress",sbookTagInput_onkeypress);
-	    fdjtDOM.addListener(input,"keyup",sbookTagInput_onkeyup);
-	    fdjtDOM.addListener(input,"focus",sbookTagInput_onfocus);
+	    fdjtDOM.addListener(input,"keypress",sbookUI.handlers.taginput_onkeypress);
+	    fdjtDOM.addListener(input,"keyup",sbookUI.handlers.taginput_onkeyup);
+	    fdjtDOM.addListener(input,"focus",sbookUI.handlers.taginput_onfocus);
 	    fdjtID("SBOOKMARKORIGIN").value=
-		document.location.protocol+document.location.hostname;
+		document.location.protocol+"//"+document.location.hostname;
 	    fdjtUI.AutoPrompt.setup(hud);}
 
 	/* Mode controls */

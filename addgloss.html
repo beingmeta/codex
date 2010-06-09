@@ -1,0 +1,63 @@
+<div class="needlogin">
+  You must <span class="loginbutton" title="click to login to sBooks">login</span> to add your own glosses
+</div>
+<div class="messages"></div>
+<form id="SBOOKMARKFORM" class="mark tag"
+      action="https://glosses.sbooks.net/v3/glossmark.fdcgi"
+      ajaxaction="https://glosses.sbooks.net/v3/ajaxgloss.fdcgi"
+      accept-charset="UTF-8"
+      target="sbookping">
+<div class="hidden">
+  <input id="SBOOKMARKFRAGID" type="HIDDEN" name="FRAG"/>
+  <input id="SBOOKMARKREFURI" type="HIDDEN" name="REFURI"/>
+  <input id="SBOOKMARKSOURCE" type="HIDDEN" name="SOURCE"/>
+  <input id="SBOOKMARKEXCERPT" type="HIDDEN" name="EXCERPT"/>
+  <input id="SBOOKMARKRELAY" type="HIDDEN" name="RELAY"/>
+  <input id="SBOOKMARKOID" type="HIDDEN" name="OID"/>
+  <input id="SBOOKMARKSYNC" type="HIDDEN" name="SYNC"/>
+  <input id="SBOOKMARKUSER" type="HIDDEN" name="USER"/>
+  <input id="SBOOKMARKUUID" type="HIDDEN" name="UUID"/>
+  <input id="SBOOKMARKORIGIN" type="HIDDEN" name="ORIGIN"/>
+  <input id="SBOOKMARKTITLE" type="HIDDEN" name="DOCTITLE"/>
+</div>
+<div id="SBOOKSHOWEXCERPT" class="excerpt"></div>
+<div id="SBOOKMARKRELAYBLOCK" class="sbookrelayblock"></div>
+<div class="markform">
+<div class='glossbar'>
+  <span style="float: right;">
+    <span class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+      <input type="CHECKBOX" name="PRIVATE" value="yes"/>
+      <span class="checked" title="don't share this note with my personal circle (friends)">private</span>
+      <span class="unchecked" title="share this note with my personal circle (friends)">shared</span>
+    </span>
+    <input id="SBOOKMARKSAVEACTION" type="SUBMIT" name="ACTION" value="Save"
+	   title="Save (mark) this gloss to the server"/>
+    <input id="SBOOKMARKPUSHACTION" type="SUBMIT" name="ACTION" value="Push"
+	   title="Save this gloss and publish it to any enabled overlays/walls/etc"/>
+  </span>
+  <span class="float: left"></span>
+</div>
+<div class='textinput'>
+  <textarea id='SBOOKMARKINPUT'
+	    name='NOTE' WRAP='SOFT' class='autoprompt' prompt='add a note' autocomplete='off'>
+  </textarea>
+</div>
+<div id="SBOOKMARKTAGS" class="tags">
+  <input ID="SBOOKMARKTAGINPUT"
+	 TYPE="TEXT" NAME="TAGS" VALUE="" class="autoprompt"
+	 prompt="add tags or targets"/>
+</div>
+<div id="SBOOKMARKCLOUD">
+</div>
+</div>
+</form>
+
+<!--
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
+-->
+
+

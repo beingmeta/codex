@@ -73,7 +73,7 @@ sbook.Setup=
 	    var scan_done=new Date();
 	    sbook.Message("Processing knowledge for knowlet ",sbook.knowlet);
 	    if ((Knowlet)&&(Knowlet.HTML)&&(Knowlet.HTML.Setup))
-		Knowlet.HTML.Setup();
+		Knowlet.HTML.Setup(sbook.knowlet);
 	    sbook.Message("Indexing tags");
 	    sbook.indexTags(metadata);
 	    sbook.indexTechnoratiTags(sbook.knowlet);
@@ -340,35 +340,6 @@ sbook.Setup=
 	// This is mostly a kludge to ignore selections which are really just clicks
 	var sbook_min_excerpt=5;
 
-	function glossesSetup(){
-	    setupUser();
-	    if (sbook._gloss_setup) return;
-	    sbookImportGlosses();
-	    sbook.Message("Importing glosses...");
-	    var glosses_button=fdjtID("SBOOKALLGLOSSESBUTTON");
-	    glosses_button.style.visibility='';
-	    var search_button=fdjtID("SBOOKSEARCHBUTTON");
-	    search_button.style.visibility='';
-	    sbook.Message("Setting up search cloud...");
-	    fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
-	    sbook.Message("Setting up glossing cloud...");
-	    fdjtDOM.replace("SBOOKMARKCLOUD",sbookMarkCloud().dom);
-	    if (sbook.user)
-		fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
-	    if (sbook_heading_qricons) {
-		sbook.Message("Adding print icons...");
-		sbookAddQRIcons();}
-	    sbook.Message("Importing personal overlays...");
-	    // if (sbook.user) importOverlays();
-	    var done=new Date().getTime();
-	    sbook.Message("Completed sbook setup"," in ",
-			  ((done-sbook._setup_start.getTime())/1000),
-			  " seconds");
-	    // fdjtTrace("[%fs] Done with glosses setup",fdjtET());
-	    splash();
-	    sbook._gloss_setup=true;}
-	sbook.Setup.Glosses=glossesSetup;
-
 	function importOverlays(arg)
 	{
 	    var invite_options=fdjtID("SBOOKINVITEOPTIONS");
@@ -434,7 +405,10 @@ sbook.Setup=
 	    if (sbook.user)
 		if (userinfo.oid===sbook.user.oid) {}
 	    else throw { error: "Can't change user"};
-	    gotInfo("user",userinfo);
+	    sbook.user=fdjtKB.Import(userinfo);
+	    if (sbook.offline) {
+		fdjtState.setLocal(sbook.user.oid,sbook.user);
+		fdjtState.setLocal("sbook.user",sbook.user.oid);}
 	    gotInfo("sources",sources);
 	    gotInfo("outlets",outlets);
 	    gotInfo("etc",etc);
@@ -455,9 +429,9 @@ sbook.Setup=
 			    qids.push(info[i++]);
 			else {
 			    var obj=fdjtKB.Import(info[i++]);
-			    if (sbook.offline) {
+			    if (sbook.offline) 
 				fdjtState.setLocal(obj.qid,JSON.stringify(obj),true);
-				qids.push(obj.qid);}}}
+			    qids.push(obj.qid);}}
 		    sbook[name]=qids;
 		    if (sbook.offline)
 			fdjtState.setLocal("sbook."+name,qids,true);}
@@ -479,8 +453,9 @@ sbook.Setup=
 	    fdjtID("SBOOKUSERNAME").innerHTML=username;
 	    if (fdjtID("SBOOKMARKUSER"))
 		fdjtID("SBOOKMARKUSER").value=sbook.user.oid;
-	    if (fdjtID("SBOOKMARKFORM"))
+	    if (fdjtID("SBOOKMARKFORM")) {
 		fdjtID("SBOOKMARKFORM").onsubmit=fdjtAjax.onsubmit;
+		fdjtID("SBOOKMARKFORM").oncallback=sbookMark.oncallback;}
 	    if (sbook.user.pic) {
 		if (fdjtID("SBOOKMARKIMAGE"))
 		    fdjtID("SBOOKMARKIMAGE").src=sbook.user.pic;
@@ -518,7 +493,7 @@ sbook.Setup=
 	    var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 	    glosses_script.language="javascript";
 	    glosses_script.src="https://"+sbook.server+
-	      "/v3/glosses.js?CALLBACK=sbook.glosses.Import&REFURI="+
+	      "/v3/glosses.js?CALLBACK=sbook.Setup.initGlosses&REFURI="+
 	      encodeURIComponent(sbook.refuri);
 	    if (sbook.syncstamp)
 		glosses_script.src=glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
@@ -549,6 +524,22 @@ sbook.Setup=
 	    var tinfo=((target)&&(fdjtDOM.getGeometry(target)));
 	    sbook.GoTo(target||sbook.start||sbook.root,
 		       (!((tinfo)&&(tinfo.height<(fdjtDOM.viewHeight())))));}
+	
+	function initGlosses(glosses){
+	    sbook.Message("Initializing glosses...");
+	    sbook.glosses.Import(glosses);
+	    sbook.Message("Setting up search cloud...");
+	    fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
+	    sbook.FullCloud().complete('');
+	    sbook.Message("Setting up glossing cloud...");
+	    fdjtDOM.replace("SBOOKMARKCLOUD",sbookMark.getCloud().dom);
+	    sbookMark.getCloud().complete('');
+	    var done=new Date().getTime();
+	    sbook.Message("Completed sbook setup"," in ",
+			  ((done-sbook._setup_start.getTime())/1000),
+			  " seconds");
+	    splash();}
+	sbook.Setup.initGlosses=initGlosses;
 
 	/* Other setup */
 	
@@ -570,7 +561,6 @@ sbook.Setup=
 
 	return Setup;})();
 sbookSetup=sbook.Setup;
-sbookGlossesSetup=sbook.Setup.Glosses;
 
 /* Emacs local variables
 ;;;  Local variables: ***

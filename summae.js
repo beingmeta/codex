@@ -232,7 +232,7 @@ var sbook_delete_icon="redx16x16.png";
 	if (info.gloss)
 	    fdjtDOM(sumdiv,
 		    (sbookDetailsButton(info)),(sbookXRefsButton(info)),
-		    ((info.msg)&&(fdjtDOM("span.msg",info.msg))),((info.msg)&&" "),
+		    ((info.note)&&(fdjtDOM("span.note",info.note))),((info.note)&&" "),
 		    ((info.excerpt)&&(sbookExcerptSpan(info.excerpt))));
 	else {
 	    var contentspan=fdjtDOM("span.content");

@@ -275,7 +275,7 @@ var sbookUI=
 	    if (mode==="searching")
 		fdjtID("SBOOKSEARCHTEXT").focus();
 	    else if (mode==="mark") {
-		sbookMarkHUDSetup(false);
+		sbookMark.setup(false);
 		fdjtID("SBOOKMARKINPUT").focus();}
 	    else fdjtID("SBOOKSEARCHTEXT").blur();
 	    fdjtDOM.cancel(evt);}
