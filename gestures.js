@@ -131,6 +131,10 @@ var sbookUI=
 	
 	function body_onclick(evt){
 	    evt=evt||event;
+	    // fdjtLog("body_onclick %o",evt);
+	    if ((sbook_mousedown)&&
+		((fdjtTime()-sbook_mousedown)>sbook_hold_threshold))
+		return;
 	    var target=fdjtDOM.T(evt);
 	    if (fdjtDOM.isClickable(target)) return;
 	    else if (inUI(target)) return;
@@ -149,12 +153,34 @@ var sbookUI=
 	    fdjtDOM.cancel(evt);}
 	sbookUI.handlers.bodyclick=body_onclick
 
+	function onmousedown(evt){
+	    var target=fdjtDOM.T(evt);
+	    if (fdjtDOM.isClickable(target)) return;
+	    if (sbook.mode) return;
+	    sbook_mousedown=fdjtTime();}
+	sbookUI.handlers.onmousedown=onmousedown;
 
 	function onmouseup(evt){
 	    var target=fdjtDOM.T(evt);
 	    if (sbook.preview) sbook.Preview(false);
-	    sbook_mousedown=false;}
-	sbookUI.handlers.onmouseup=onmouseup
+	    if (sbook.mode) {
+		sbook_mousedown=false;
+		return;}
+	    //fdjtLog("onmouseup evt=%o sbmd=%o",evt,sbook_mousedown);
+	    if (sbook_mousedown) {
+		var now=fdjtTime();
+		var started=sbook_mousedown;
+		if ((now-started)>sbook_hold_threshold) {
+		    var selection=window.getSelection();
+		    var gloss_target=
+			((selection)?(sbook.getTarget(selection.anchorNode)):
+			 (sbook.getTarget(target)));
+		    var excerpt=
+			((selection)&&
+			 (fdjtString.stdspace(selection.toString())));
+		    if (fdjtString.isEmpty(excerpt)) excerpt=false;
+		    sbookMark(gloss_target,false,excerpt);}}}
+	sbookUI.handlers.onmouseup=onmouseup;
 
 	function ignoreclick(evt){
 	    var target=fdjtDOM.T(evt);
@@ -209,7 +235,8 @@ var sbookUI=
 		    fdjtID("SBOOKSEARCHTEXT").blur();}
 		else if (sbook.last_mode) sbookMode(sbook.last_mode);
 		else {
-		    if ((sbook_mark_target)&&(fdjtDOM.isVisible(sbook_mark_target)))
+		    if ((sbook.mark_target)&&
+			(fdjtDOM.isVisible(sbook.mark_target)))
 			sbookMode("mark");
 		    else sbookMode("context");}
 		return;}
@@ -301,6 +328,7 @@ var sbookUI=
 
 	    fdjtDOM.addListener(false,"scroll",sbook_onscroll);
 	    fdjtDOM.addListener(false,"mouseup",onmouseup);
+	    fdjtDOM.addListener(false,"mousedown",onmousedown);
 
 	    fdjtDOM.addListener(document.body,"click",body_onclick);
 

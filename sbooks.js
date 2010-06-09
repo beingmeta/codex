@@ -54,6 +54,8 @@ var sbook=
    syncstamp: false,
    // Various settings
    pageview: false,
+   // Restrictions on excerpts
+   min_excerpt: 3, max_excerpt: false,
    Trace: {
     mode: false,  // Whether to trace mode changes
     nav: false,    // Whether to trace book navigation

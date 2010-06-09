@@ -590,7 +590,8 @@ var sbookPaginate=
 	else if (firstloc) sbook.setLocation(firstloc);
 	else if (lastloc) sbook.setLocation(lastloc);}
 
-      if ((sbook.mode==="mark")&&(!(fdjtDOM.isVisible(sbook_mark_target))))
+      if ((sbook.mode==="mark")&&
+	  (!(fdjtDOM.isVisible(sbook.mark_target))))
 	sbookMode(false);
       sbook_pagescroll=fdjtDOM.viewTop();
       // Add class if it's temporarily gone

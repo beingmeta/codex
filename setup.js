@@ -128,7 +128,10 @@ sbook.Setup=
 	    getScanSettings();
 	    // Get the settings for automatic pagination
 	    getPageSettings();
-	    sbook_max_excerpt=fdjtDOM.getMeta("SBOOKMAXEXCERPT")
+	    sbook.max_excerpt=fdjtDOM.getMeta("SBOOKMAXEXCERPT")||
+		(sbook.max_excerpt);
+	    sbook.min_excerpt=fdjtDOM.getMeta("SBOOKMINEXCERPT")||
+		(sbook.min_excerpt);
 	    var sbooksrv=fdjtDOM.getMeta("SBOOKSERVER");
 	    if (sbooksrv) sbook.server=sbooksrv;
 	    else if (fdjtState.getCookie["SBOOKSERVER"])
@@ -334,44 +337,6 @@ sbook.Setup=
 	    if (opts) {
 		fdjtState.setLocal("sbookopts",opts);}}
 	sbook.saveSettings=saveSettings;
-
-	// Controls on excerpts
-	var sbook_max_excerpt=false;
-	// This is mostly a kludge to ignore selections which are really just clicks
-	var sbook_min_excerpt=5;
-
-	function importOverlays(arg)
-	{
-	    var invite_options=fdjtID("SBOOKINVITEOPTIONS");
-	    var mark_options=fdjtID("SBOOKMARKOPTIONS");
-	    var overlays=((arg)?((arg.oid)?(new Array(arg)):(arg)):sbook.user_overlays);
-	    var i=0; var n=overlays.length;
-	    while (i<n) {
-		var info=overlays[i++];
-		if (!(info.oid)) continue;
-		else if (fdjtKB.contains(sbook_overlays,info.oid)) {}
-		else {
-		    var named="("+info.kind.slice(1)+") "+info.name;
-		    sbook_overlays.push(info.oid);
-		    var invite_option=fdjtElt("OPTION",named);
-		    invite_option.title=info.about;
-		    invite_option.value=info.oid;
-		    fdjtDOM(invite_options,invite_option);
-		    var mark_option=fdjtElt("OPTION",named);
-		    mark_option.title=info.about;
-		    mark_option.value=info.oid;
-		    fdjtDOM(mark_options,mark_option);}
-		sbook.sourcekb.Import(info);}}
-
-	function socialSetup(){
-	    setupUser();
-	    if (sbook._social_setup) return;
-	    if (typeof sbook_tribes !== "undefined")
-		sbookImportSocialInfo(sbook_social_info);
-	    if (sbook.user_canpost) {
-		fdjtDOM.dropClass(document.body,"sbookcantpost");}
-	    sbook._social_setup=true;}
-	sbook.Setup.social=socialSetup;
 
 	function getUser() {
 	    if (sbook.user) return;

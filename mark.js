@@ -38,7 +38,7 @@ var sbooks_glossmark_version=parseInt("$Revision$".slice(10,-1));
 var sbookMark=
     (function(){
 	// This is the target for which the mark HUD has been set
-	var sbook_mark_target=false;
+	sbook.mark_target=false;
 	
 	// This is the completions object for the mark cloud
 	var sbook_mark_cloud=false;
@@ -69,17 +69,18 @@ var sbookMark=
 	    if (sbook.Trace.mark)
 		fdjtLog("Setting up gloss HUD for %o from %o st=%o excerpt=%o",
 			target,origin,sbook.target,excerpt);
-	    if (sbook_mark_target===target) {
+	    if (sbook.mark_target===target) {
 		/* If the HUD is already, initialized for the target, just update
 		   the excerpt from the current selection */
 		if (sbook.Trace.mark)
 		    fdjtLog("Just updating gloss HUD with excerpt %o",excerpt);
+		// Make sure there's a UUID
 		if (!(fdjtID("SBOOKMARKUUID").value))
-		    fdjtID("SBOOKMARKUUID").value=fdjtState.getUUID(sbook.nodeid);
-		if ((excerpt)&&(excerpt.length>sbook_min_excerpt))
-		    setMarkExcerpt(excerpt);
+		    fdjtID("SBOOKMARKUUID").value=
+		    fdjtState.getUUID(sbook.nodeid);
+		setExcerpt(fdjtID("SBOOKMARKFORM"),excerpt||false);
 		return;}
-	    sbook_mark_target=target;
+	    sbook.mark_target=target;
 	    var info=((target) &&
 		      ((sbook.Info(target)) ||
 		       (sbook.Info(sbook.getHead(target)))));
@@ -97,7 +98,6 @@ var sbookMark=
 	    else {
 		fdjtID("SBOOKMARKOID").value=null;
 		fdjtID("SBOOKMARKRELAY").value=origin.oid;}
-	    fdjtID("SBOOKMARKFORM").setAttribute('mode','tag');
 	    fdjtID("SBOOKMARKREFURI").value=refuri;
 	    fdjtID("SBOOKMARKFRAGID").value=target.id;
 	    fdjtID("SBOOKMARKSOURCE").value=sbook.getDocURI(target);
@@ -110,6 +110,7 @@ var sbookMark=
 	    if ((origin)&&(origin.oid))
 		fdjtID("SBOOKMARKRELAY").value=origin.oid;
 	    else fdjtID("SBOOKMARKRELAY").value=null;
+	    setExcerpt(fdjtID("SBOOKMARKFORM"),excerpt||false);
 	    var tags_elt=fdjtID("SBOOKMARKTAGS");
 	    var checkspans=fdjtDOM.getChildren(tags_elt,".checkspan");
 	    fdjtDOM.remove(fdjtDOM.toArray(checkspans));
@@ -117,7 +118,12 @@ var sbookMark=
 		var tags=glossinfo.tags;
 		i=0; lim=tags.length;
 		while (i<lim) addTag(tags_elt,tags[i++]);}
+	    if ((glossinfo)&&(glossinfo.xrefs))
+		setXREFS(fdjtID("SBOOKMARKFORM"),(glossinfo.xrefs));
+	    if ((glossinfo)&&(glossinfo.attachments))
+		setAttachments(fdjtID("SBOOKMARKFORM"),(glossinfo.attachments));
 	    fdjtID("SBOOKMARKTAGINPUT").value="";
+	    fdjtDOM.addClass(fdjtID("SBOOKMARKTAGINPUT"),"isempty");
 	    /* Figure out the tagcues */
 	    var tagcues=[];
 	    /* Get tags from the item and the items above it */
@@ -135,11 +141,52 @@ var sbookMark=
 			var j=0; var jlim=tags.length;
 			while (j<jlim) fdjtKB.add(tagcues,tags[j++]);}}
 		info=info.head;}}
-	    // Set the selected text as an excerpt
-	    if ((excerpt)&&(excerpt.length>sbook_min_excerpt)) 
-		setMarkExcerpt(excerpt);
 	    sbook_mark_cloud.setCues(tagcues);
 	    fdjtUI.AutoPrompt.setup(fdjtID("SBOOKMARKHUD"));}
+
+	function setExcerpt(form,text){
+	    var excerpt=fdjtDOM.getChild(form,'.excerpt');
+	    var content=(excerpt)&&fdjtDOM.getChild(excerpt,'.content');
+	    var input=(excerpt)&&
+		fdjtDOM.getChild(excerpt,"input[name='EXCERPT']");	    
+	    if (!(text)) {
+		input.value="";
+		fdjtDOM.replace(content,fdjtDOM("span.content"));
+		fdjtDOM.addClass(excerpt,"noexcerpt");}
+	    else {
+		input.value=text;
+		fdjtDOM.dropClass(excerpt,"noexcerpt");
+		fdjtDOM.replace(content,fdjtDOM("span.content",text));}}
+	function setXREFS(form,xrefs){
+	    var div=fdjtDOM.getChild(form,'.xrefs');
+	    var cur=fdjtDOM.getChildren(div,'.xref');
+	    if ((cur)&&(cur.length)) fdjtDOM.remove(cur);
+	    if (xrefs) 
+		for (var uri in xrefs) {
+		    var title=xrefs[uri];
+		    var compound=((uri===title)?(uri):(uri+"|"+title));
+		    var xref_div=
+			fdjtDOM("div.xref",
+				fdjtUI.CheckSpan
+				("span.checkspan.checkbox",
+				 "XREF",compound,true),
+				fdjtDOM.Anchor(false,uri,title));
+		    fdjtDOM(div,xref_div);}}
+	function setAttachments(form,attachments){
+	    var div=fdjtDOM.getChild(form,'.attachments');
+	    var cur=fdjtDOM.getChildren(div,'.attachment');
+	    if ((cur)&&(cur.length)) fdjtDOM.remove(cur);
+	    if (attachments) 
+		for (var uri in attachments) {
+		    var title=attachments[uri];
+		    var compound=((uri===title)?(uri):(uri+"|"+title));
+		    var xref_div=
+			fdjtDOM("div.attachment",
+				fdjtUI.CheckSpan
+				("span.checkspan.checkbox",
+				 "ATTACHMENTS",compound,true),
+				fdjtDOM.Anchor(false,uri,title));
+		    fdjtDOM(div,xref_div);}}
 
 	function oncallback(req){
 	    if (sbook.Trace.network)
@@ -155,7 +202,15 @@ var sbookMark=
 	    if (form.tagName!=='FORM')
 		form=fdjtDOM.getParent(form,'form')||form;
 	    var tagselt=fdjtDOM.getChild(form,'.tags');
-	    var varname='TAGS'; var info=fdjtKB.ref(tag);
+	    var varname='TAGS'; var info;
+	    if ((tag.nodeType)&&(fdjtDOM.hasClass(tag,'completion'))) {
+		if (fdjtDOM.hasClass(tag,'outlet'))
+		    varname='OUTLETS';
+		else if (fdjtDOM.hasClass(tag,'source'))
+		    varname='ATTENTION'
+		else {}
+		tag=sbook_mark_cloud.getValue(tag);}
+	    var info=fdjtKB.ref(tag);
 	    var text=((info)?(info.name||info.dterm):(tag));
 	    if (info) tag=info.qid||info.oid||info.dterm||tag;
 	    if ((info)&&(info.pool===sbook.sourcekb)) varname='OUTLETS';
@@ -190,7 +245,8 @@ var sbookMark=
 		    var source=sources[i++];
 		    if (fdjtKB.contains(outlets,source)) continue;
 		    var info=sbook.sourcekb.ref(source);
-		    var completion=fdjtDOM("span.completion.cue.source",info.name);
+		    var completion=fdjtDOM
+		    ("span.completion.source",info.name);
 		    completion.setAttribute("value",source);
 		    completion.setAttribute("key",info.name);
 		    if (info.about) completion.title=info.about;
@@ -311,24 +367,6 @@ var sbookMark=
 	    return fdjtMultiText_onkeypress(evt,'div');}
 	sbookUI.handlers.xrefs_onkeypress;
 	
-	function setMarkExcerpt(excerpt){
-	    var input=fdjtID("SBOOKMARKEXCERPT");
-	    var use_excerpt=excerpt;
-	    if ((excerpt)&&(excerpt.length<sbook_min_excerpt))
-		excerpt=fdjtDOM.textify(target,true);
-	    else if ((excerpt)&&(sbook_max_excerpt)&&(excerpt.length>sbook_max_excerpt))
-		excerpt=excerpt.slice(0,sbook_max_excerpt);
-	    if (excerpt) {
-		excerpt=fdjtStringTrim(excerpt);
-		input.value=excerpt;
-		fdjtDOM.replace("SBOOKSHOWEXCERPT",
-				fdjtDOM("div.excerpt",
-					fdjtDOM("span.lq","\u201c"),fdjtDOM("span.rq","\u201d"),
-					fdjtDOM("div.text",excerpt.replace(/\n+/g," \u2016 "))));}
-	    else {
-		input.value="";
-		fdjtDOM.replace("SBOOKSHOWEXCERPT",fdjtDOM("div.noexcerpt"));}}
-	
 	function inline_complete(input_elt,engage)
 	{
 	    var val=input_elt.value;
@@ -414,25 +452,24 @@ var sbookMark=
 
 	/* Mark functions */
 	
-	function sbookMark(target,gloss,excerpt)
-	{
-	    setupMarkForm(fdjtID("SBOOKMARKFORM"));
-	    if (sbook_mark_target!==target) {fdjtID("SBOOKMARKFORM").reset();}
-	    if ((gloss)&&(gloss.user))
+	function sbookMark(target,gloss,excerpt){
+	    setupMarkForm(fdjtID("SBOOKMARKFORM"),gloss,excerpt);
+	    if (sbook.mark_target!==target) {fdjtID("SBOOKMARKFORM").reset();}
+	    if ((gloss)&&(gloss.user)) {
 		// Handle relays and edits
-		if (gloss.user===sbook.user)
+		if (gloss.user===sbook.user.qid)
 		    sbookMark.setup(target,gloss||false,excerpt||false);
-	    else {
-		sbookMark.setup(target,false,excerpt||false);
-		if (gloss.gloss) fdjtID("SBOOKMARKRELAY").value=gloss.gloss;
-		if (gloss.user) {
-		    var userinfo=sbook.sourcekb.map[gloss.user];
-		    var glossblock=
-			fdjtDOM("div.sbookrelayblock","Relayed from ",
-				fdjtDOM("span.user",userinfo.name),
-				((gloss.note)&&(": ")),
-				((gloss.note)?(fdjtDOM("span.note",gloss.note)):(false)));
-		    fdjtDOM.replace("SBOOKMARKRELAYBLOCK",glossblock);}}
+		else {
+		    sbookMark.setup(target,false,excerpt||false);
+		    if (gloss.gloss) fdjtID("SBOOKMARKRELAY").value=gloss.gloss;
+		    if (gloss.user) {
+			var userinfo=sbook.sourcekb.map[gloss.user];
+			var glossblock=
+			    fdjtDOM("div.sbookrelayblock","Relayed from ",
+				    fdjtDOM("span.user",userinfo.name),
+				    ((gloss.note)&&(": ")),
+				    ((gloss.note)?(fdjtDOM("span.note",gloss.note)):(false)));
+			fdjtDOM.replace("SBOOKMARKRELAYBLOCK",glossblock);}}}
 	    else sbookMark.setup(target,gloss||false,excerpt||false);
 	    sbookUI.openGlossmark(target,true);
 	    sbookMode("mark");

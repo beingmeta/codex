@@ -11,7 +11,6 @@
   <input id="SBOOKMARKFRAGID" type="HIDDEN" name="FRAG"/>
   <input id="SBOOKMARKREFURI" type="HIDDEN" name="REFURI"/>
   <input id="SBOOKMARKSOURCE" type="HIDDEN" name="SOURCE"/>
-  <input id="SBOOKMARKEXCERPT" type="HIDDEN" name="EXCERPT"/>
   <input id="SBOOKMARKRELAY" type="HIDDEN" name="RELAY"/>
   <input id="SBOOKMARKOID" type="HIDDEN" name="OID"/>
   <input id="SBOOKMARKSYNC" type="HIDDEN" name="SYNC"/>
@@ -20,9 +19,7 @@
   <input id="SBOOKMARKORIGIN" type="HIDDEN" name="ORIGIN"/>
   <input id="SBOOKMARKTITLE" type="HIDDEN" name="DOCTITLE"/>
 </div>
-<div id="SBOOKSHOWEXCERPT" class="excerpt"></div>
 <div id="SBOOKMARKRELAYBLOCK" class="sbookrelayblock"></div>
-<div class="markform">
 <div class='glossbar'>
   <span class="right">
     <span class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
@@ -30,8 +27,6 @@
       <span class="checked" title="don't share this note with my personal circle (friends)">private</span>
       <span class="unchecked" title="share this note with my personal circle (friends)">shared</span>
     </span>
-    <input id="SBOOKMARKPUSHACTION" type="SUBMIT" name="ACTION" value="Push"
-	   title="Save this gloss and publish it to any enabled overlays/walls/etc"/>
     <input id="SBOOKMARKSAVEACTION" type="SUBMIT" name="ACTION" value="Save"
 	   title="Save (mark) this gloss to the server"/>
   </span>
@@ -47,42 +42,48 @@
 	 onclick="sbookMark.toggle(event,'showattach');"/>
   </span>
 </div>
-<div class='help'>
-Type your note in the box below, enclosing tag phrases in [bracket]s
-or typing in the yellow tag box: type enter or a close bracket (]) to
-actually add the tag.  Tags will automatically be completed as you
-type.
+<div class='formbody'>
+<div class="help">
+Type your note in the box below, enclosing tag phrases in [bracket]s.
 
 Tagging with a group publishes the post to that group; tagging with a
-person's name brings the note to that person's attention.
+person"s name brings the note to that person's attention.
 </div>
-<div class='xrefs'>
-  <input TYPE='TEXT' NAME='XREFTITLE' VALUE='' class='autoprompt'
-	 prompt='Enter a descriptive title'/>
-  <input TYPE='TEXT' NAME='XREFURI' VALUE='' class='autoprompt'
-	 prompt='Enter a URL'/>
+<div class="xrefs" title="add an external link to your note">
+  <input TYPE="TEXT" NAME="XREFTITLE" VALUE="" class="autoprompt"
+	 prompt="Describe the external link you are adding"/>
+  <input TYPE="TEXT" NAME="XREFURI" VALUE="" class="autoprompt"
+	 prompt="Enter the actual location (URL) for the link"/>
 </div>
-<div class='attachments'>
-  <input TYPE='TEXT' NAME='ATTDESC' VALUE='' class='autoprompt'
-	 prompt='Enter a descriptive title for the file'/>
-  <input TYPE='FILE' NAME='ATTDATA' VALUE=''/>
+<div class="attachments">
+  <input TYPE="TEXT" NAME="ATTDESC" VALUE="" class="autoprompt"
+	 prompt="Enter a descriptive title for the file"/>
+  <input TYPE="FILE" NAME="ATTDATA" VALUE=""/>
 </div>
-<div class='note'>
-  <textarea name='NOTE' WRAP='SOFT' prompt='add a note'
-            id='SBOOKMARKINPUT' class='autoprompt' 
-	    autocomplete='off'></textarea>
+<div class="excerpt noexcerpt">
+  <span class="rq">&rdquo;</span>
+  <span class="lq">&ldquo;</span>
+  <span class="content"></span>
+  <input id="SBOOKMARKEXCERPT" type="HIDDEN" name="EXCERPT"/>
 </div>
+<div class="note">
+  <textarea name="NOTE" WRAP="SOFT" prompt="add a note"
+            id="SBOOKMARKINPUT" class="autoprompt" 
+	    autocomplete="off"></textarea>
+</div>
+<div class="tagblock">
 <div id="SBOOKMARKTAGS" class="tags">
-  <div class='inputhelp' id='SBOOKMARKTAGHELP'>
-   Type related words or phrases to find tags; tagging with
-   a group or individual shares your note with them..
+  <div class="inputhelp" id="SBOOKMARKTAGHELP">
+   type to find or add tags; tag groups or friends to share with them
   </div>
   <input id="SBOOKMARKTAGINPUT"
 	 type="TEXT" name="XTAG" value="" class="autoprompt"
-	 helptext="SBOOKMARKTAGHELP"
+	 wordyhelptext="SBOOKMARKTAGHELP"
+	 title="type to find or add tags, friends, or groups"
 	 prompt="add tags, friends, groups, etc"/>
 </div>
 <div id="SBOOKMARKCLOUD">
+</div>
 </div>
 </div>
 </form>

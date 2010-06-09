@@ -65,7 +65,8 @@ div.leading { height: 50px; width: 100%;}
 div#SBOOKTOPLEADING { height: 50px; width: 100%;}
 div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 
-/* Overlays */
+p[id], li[id], ul[id], blockquote[id], div[id] {
+    cursor: pointer;}
 
 /* HUDs */
 
@@ -156,7 +157,7 @@ img.sbookqricon { display: none;}
 .sbookfocus { cursor: pointer; }
 body.hudup .sbookfocus { color: blue;}
 
-.sbooktarget { color: blue; cursor: crosshair;}
+.sbooktarget { color: blue; }
 .sbooktarget .glossmark { color: blue; cursor: pointer;}
 body.hudup .sbookfocus.sbooktarget { color: darkblue;}
 
@@ -189,7 +190,7 @@ div#SBOOKHUD div.hudblock {
     position: absolute; left: 100px; right: 100px; top: 0px;
     min-height: 40px; max-height: 50px; opacity: 0.5; z-index: 200;
     margin: 0px; border: transparent solid 4px;
-    padding: 0px; padding-top: 2px; padding-bottom: 6px;
+    padding: 0px; padding-top: 0px; padding-bottom: 6px;
     text-align: center;
     background-color: gray;
     border-top: none; 
@@ -719,12 +720,36 @@ div#SBOOKHUD div#SBOOKMARKHUD div.needlogin span.loginbutton {
   -moz-border-radius: 6px; 
   border-radius: 6px;}
 
-form.mark div.glossbar { width: 100%; height: 1.5em;}
-form.mark div.glossbar span.right { float: right;}
+form.mark { }
+form.mark div.formbody {
+    margin-left: 15px; margin-right: 15px;
+    padding-bottom: 15px;}
+form.mark div.glossbar {
+    background-color: silver; width: 100%; height: 1.5em;
+    margin-left: 0px; margin-right: 0px; margin-bottom: 3px;}
+
 form.mark div.glossbar span.left { float: left;}
-form.mark div.glossbar .checkspan { color: gold; font-weight: bold;}
+form.mark div.glossbar span.left img {
+    border: 0px; padding-bottom: 2px;
+    border-bottom: solid transparent 3px;
+    display: none;}
+form.mark div.glossbar span.left img[alt='help'] { display: inline;}
+form.mark div.glossbar:hover span.left img { display: inline;}
+form.mark div.glossbar.engaged span.left img { display: inline;}
+
+form.mark div.glossbar span.right { float: right;}
+form.mark div.glossbar .checkspan {
+    font-size: 10px; color: blue; font-weight: bold;}
 form.mark div.glossbar .checkspan input[type='checkbox'] { display: none;}
-form.mark div.glossbar .checkspan .checked { color: silver;}
+form.mark div.glossbar .checkspan .checked { color: black;}
+
+form.mark div.excerpt { text-align: center;}
+form.mark div.excerpt.noexcerpt { display: none;}
+form.mark div.excerpt span.lq {
+    font-size: 600%; font-weight: bold; float: left;}
+form.mark div.excerpt span.rq {
+    font-size: 600%; font-weight: bold; float: right;}
+form.mark div.excerpt span.content { font-family: italic; }
 
 form.mark div.help,
 form.mark div.xrefs,
@@ -736,13 +761,25 @@ form.mark div.xrefs input,
 form.mark div.attachments input {
     background-color: silver; border: 0px; color: white;}
 
-form.mark div.help { text-align: left; color: gold;}
+form.mark div.help {
+    min-height: inherit; text-align: left; font-size: 12px; color: white;}
 form.mark.showhelp div.help { display: block;}
 form.mark.showxrefs div.xrefs { display: block;}
 form.mark.showattach div.attachments { display: block;}
-form.mark.showhelp div.note { display: none;}
-form.mark.showxrefs div.note { display: none;}
-form.mark.showattach div.note { display: none;}
+
+form.mark.showhelp div.glossbar span.left img[alt='help'] {
+    border-color: blue;}
+form.mark.showxrefs div.glossbar span.left img[alt='xref'] {
+    border-color: blue;}
+form.mark.showattach div.glossbar span.left img[alt='attach'] {
+    border-color: blue;}
+
+form.mark.showhelp div.excerpt,
+form.mark.showxrefs div.note,
+form.mark.showxrefs div.excerpt,
+form.mark.showattach div.note,
+form.mark.showattach div.excerpt {
+    display: none;}
 
 form.mark input[NAME='XREFURI'], form.mark input[NAME='ATTDATA'] {
     font-family: fixed;}
@@ -765,7 +802,7 @@ form.mark div.attachments div.attachment span.checkbox {
     width: 24px;}
 
 form.mark div.note {
-    clear: both; width: 100%; margin: 0px; text-align: right;
+    clear: both; width: 100%; text-align: right; margin: 0px; 
     min-height: 60px;}
 form.mark div.note textarea {
     font-size: 12px; height: 40px; display: block;
@@ -778,13 +815,13 @@ form.mark div.note textarea {
     -webkit-border-radius: 12px;
     -moz-border-radius: 12px;
     -khtml-border-radius: 12px;}
-}
 
+form.mark > div.tagblock { margin-right: 0px;}
 form.mark div.tags {
     margin-right: 0px; padding-right: 0px;
     text-align: left;}
 form.mark div.tags div.inputhelp {
-    display: none; text-align: left; color: yellow; font-size: 12px;}
+    display: none; text-align: right; color: yellow; font-size: 12px;}
 form.mark div.tags div.inputhelp.showhelp { display: block;}
 
 form.mark div.tags input[type='text'] {
@@ -796,10 +833,12 @@ form.mark div.tags input[type='text'] {
     -moz-border-radius: 6px;
     -khtml-border-radius: 6px;}
 
-form.mark div.completions span.outlet { font-weight: bold; color: white; }
-form.mark div.completions span.source { color: white; }
+form.mark div.completions .completion { color: yellow; }
 form.mark div.completions .completion:after { content: ' \· ';}
 form.mark div.completions .completion { white-space: nowrap;}
+
+form.mark div.completions span.outlet { font-weight: bold; color: gold; }
+form.mark div.completions span.source { color: gold; }
 
 form.mark div.messages div.message { display: none;}
 form.mark div.messages div.message { 
@@ -815,31 +854,6 @@ form.mark div.messages div.message.glossing { font-style: italic;}
 form.mark.submitting div.messages div.pinging { display: block;}
 form.mark.glossing div.messages div.glossing { display: block;}
 
-form.mark div.markform div.metastuff {
-  clear: right; margin-left: 60px; text-align: right; min-height: 16px;}
-form.mark div.markform div.metastuff span.checkspan { 
-  font-style: italic; font-size: 60%;}
-form.mark div.markform div.metastuff span.checkspan input[type='checkbox'] { 
-  margin: 1px;}
-form.mark div.markform div.metastuff input[TYPE='SUBMIT'] {
-    float: right; padding: 1px; margin: 1px; margin-bottom: 3px; font-size: 80%; font-weight: bold;}
-form.mark div.markform div.metastuff div.controls { float: left; max-width: 70%;}
-form.mark div.markform div.metastuff div.buttons { float: right;}
-form.mark div.markform div.metastuff div.controls select { max-width: 80%;}
-form.mark div.markform div.metastuff img.button { float: right; }
-
-form.mark.closed div.markform div.metastuff { display: none;}
-form.mark.closed[mode] div.markform div.marktab { display: none;}
-form.mark.closed[mode] div.markform div.lhs img.head { display: none;}
-form.mark.closed[mode] div.markform div.lhs img.head[alt] { display: none;}
-form.mark.closed div.markform div.lhs img.head[alt] { display: none;}
-form.mark.closed div.markform div.lhs div.controls { display: none;}
-
-form.mark div.markform div.metastuff div.taginput { 
-  float: left; width: 50%;}
-form.mark div.markform div.taginput input[TYPE='TEXT'] {
-  width: 100%;}
-
 form.mark div.excerpt { color: yellow;}
 form.mark div.excerpt div.text { 
  margin-left: 40px; margin-right: 40px; min-height: 2ex;}
@@ -851,16 +865,6 @@ form.mark div.excerpt span.lq {
  font-weight: bold; font-size: 200%; float: left; }
 form.mark div.excerpt span.rq { 
  font-weight: bold; font-size: 200%; float: right; }
-
-form.mark { clear: both;}
-form.mark div.marktab { display: none;}
-
-form.mark { 
-  text-align: right; margin-left: 10px; margin-right: 10px;}
-form.mark table.grid { 
-  width: 100%;}
-form.mark table.grid td input[TYPE='TEXT'] { 
-  width: 100%; font-size: 12px;}
 
 form.mark div.completions {
   text-align: left;}
