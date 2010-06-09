@@ -24,28 +24,63 @@
 <div id="SBOOKMARKRELAYBLOCK" class="sbookrelayblock"></div>
 <div class="markform">
 <div class='glossbar'>
-  <span style="float: right;">
+  <span class="right">
     <span class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
       <input type="CHECKBOX" name="PRIVATE" value="yes"/>
       <span class="checked" title="don't share this note with my personal circle (friends)">private</span>
       <span class="unchecked" title="share this note with my personal circle (friends)">shared</span>
     </span>
-    <input id="SBOOKMARKSAVEACTION" type="SUBMIT" name="ACTION" value="Save"
-	   title="Save (mark) this gloss to the server"/>
     <input id="SBOOKMARKPUSHACTION" type="SUBMIT" name="ACTION" value="Push"
 	   title="Save this gloss and publish it to any enabled overlays/walls/etc"/>
+    <input id="SBOOKMARKSAVEACTION" type="SUBMIT" name="ACTION" value="Save"
+	   title="Save (mark) this gloss to the server"/>
   </span>
-  <span class="float: left"></span>
+  <span class="left">
+    <img src="http://static.beingmeta.com/graphics/helpicon16x16.png"
+	 alt="help" title="help on adding glosses"
+	 onclick="sbookMark.toggle(event,'showhelp');"/>
+    <img src="http://static.beingmeta.com/graphics/outlink24x12.png"
+	 alt="xref" title="add or edit external URL references"
+	 onclick="sbookMark.toggle(event,'showxrefs');"/>
+    <img src="http://static.beingmeta.com/graphics/thumbtack19x15.png"
+	 alt="attach" title="attach files to this gloss"
+	 onclick="sbookMark.toggle(event,'showattach');"/>
+  </span>
 </div>
-<div class='textinput'>
-  <textarea id='SBOOKMARKINPUT'
-	    name='NOTE' WRAP='SOFT' class='autoprompt' prompt='add a note' autocomplete='off'>
-  </textarea>
+<div class='help'>
+Type your note in the box below, enclosing tag phrases in [bracket]s
+or typing in the yellow tag box: type enter or a close bracket (]) to
+actually add the tag.  Tags will automatically be completed as you
+type.
+
+Tagging with a group publishes the post to that group; tagging with a
+person's name brings the note to that person's attention.
+</div>
+<div class='xrefs'>
+  <input TYPE='TEXT' NAME='XREFTITLE' VALUE='' class='autoprompt'
+	 prompt='Enter a descriptive title'/>
+  <input TYPE='TEXT' NAME='XREFURI' VALUE='' class='autoprompt'
+	 prompt='Enter a URL'/>
+</div>
+<div class='attachments'>
+  <input TYPE='TEXT' NAME='ATTDESC' VALUE='' class='autoprompt'
+	 prompt='Enter a descriptive title for the file'/>
+  <input TYPE='FILE' NAME='ATTDATA' VALUE=''/>
+</div>
+<div class='note'>
+  <textarea name='NOTE' WRAP='SOFT' prompt='add a note'
+            id='SBOOKMARKINPUT' class='autoprompt' 
+	    autocomplete='off'></textarea>
 </div>
 <div id="SBOOKMARKTAGS" class="tags">
-  <input ID="SBOOKMARKTAGINPUT"
-	 TYPE="TEXT" NAME="TAGS" VALUE="" class="autoprompt"
-	 prompt="add tags or targets"/>
+  <div class='inputhelp' id='SBOOKMARKTAGHELP'>
+   Type related words or phrases to find tags; tagging with
+   a group or individual shares your note with them..
+  </div>
+  <input id="SBOOKMARKTAGINPUT"
+	 type="TEXT" name="XTAG" value="" class="autoprompt"
+	 helptext="SBOOKMARKTAGHELP"
+	 prompt="add tags, friends, groups, etc"/>
 </div>
 <div id="SBOOKMARKCLOUD">
 </div>

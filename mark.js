@@ -329,10 +329,94 @@ var sbookMark=
 		input.value="";
 		fdjtDOM.replace("SBOOKSHOWEXCERPT",fdjtDOM("div.noexcerpt"));}}
 	
+	function inline_complete(input_elt,engage)
+	{
+	    var val=input_elt.value;
+	    var start=input_elt.selectionStart;
+	    var end=input_elt.selectionEnd;
+	    if (!(start)) return;
+	    if ((!end)||(end===start)) {
+		var scan=val.indexOf('[');
+		end=start; start=-1;
+		while ((scan>=0)&&(scan<end)) {
+		    start=scan+1;
+		    scan=val.indexOf('[',start);}}
+	    if (start>=0) {
+		var tagend=val.indexOf(']',start);
+		if ((tagend>0)&&(tagend<end)) return;}
+	    if ((start>=0)&&(start<end)) {
+		if (engage) inline_tag(input_elt,val,start-1,end);
+		else sbook_mark_cloud.complete(val.slice(start,end));}
+	}
+	function inline_tag(input_elt,string,start,end)
+	{
+	    var tagstring=string.slice(start,end);
+	    if (tagstring[0]==='[') tagstring=tagstring.slice(1);
+	    if (tagstring[tagstring.length-1]===']')
+		tagstring=tagstring.slice(0,tagstring.length-1);
+	    var completions=
+		sbook_mark_cloud.complete(string.slice(start,end));
+	    if ((!(completions))||(completions.length===0))
+		addTag(input_elt,tagstring);
+	    else if (completions.length===1) {
+		var value=sbook_mark_cloud.getValue(completions[0]);
+		addTag(input_elt,value);}
+	    else  {
+		var value=sbook_mark_cloud.getValue(completions[0]);
+		addTag(input_elt,value);}
+	    input_elt.value=
+		string.slice(0,start)+
+		'['+tagstring+']'+
+		string.slice(end+1);
+	}
+
+	function note_onmouseup(evt){
+	    inline_complete(fdjtUI.T(evt));}
+	function note_onkeypress(evt){
+	    var target=fdjtUI.T(evt);
+	    if (evt.charCode===93) { /* ] */
+		inline_complete(target,true);
+		fdjtUI.cancel(evt);}
+	    else setTimeout(function(){inline_complete(target);},
+			    _sbook_tagupdate_delay);}
+	
+	function setupMarkForm(form){
+	    if (form.getAttribute("sbooksetup")) return;
+	    form.onsubmit=fdjtAjax.onsubmit;
+	    form.oncallback=sbookMark.oncallback;
+	    var taginput=fdjtDOM.getChild(form,"[name='XTAG']");
+	    if (taginput) {
+		fdjtDOM.addListener(taginput,"keypress",taginput_onkeypress);
+		fdjtDOM.addListener(taginput,"keyup",taginput_onkeyup);
+		fdjtDOM.addListener(taginput,"focus",taginput_onfocus);}
+	    var noteinput=fdjtDOM.getChild(form,"[name='NOTE']");
+	    if (noteinput) {
+		fdjtDOM.addListener(noteinput,"mouseup",note_onmouseup);
+		fdjtDOM.addListener(noteinput,"keypress",note_onkeypress);}
+	    var origin=fdjtDOM.getChild(form,"input[name='origin']");
+	    if (origin) origin.value=
+		document.location.protocol+"//"+document.location.hostname;
+	    fdjtUI.AutoPrompt.setup(form);
+	    form.setAttribute("sbooksetup","yes");}
+
+	var markmodes=/(showxrefs)|(showhelp)|(showattach)/;
+
+	function toggleMarkMode(arg,mode) {
+	    if (!(arg)) arg=event;
+	    var target=((arg.nodeType)?(arg):(fdjtUI.T(arg)));
+	    var form=fdjtDOM.getParent(target,'form');
+	    if (!(mode)) fdjtDOM.dropClass(form,markmodes);
+	    else if (fdjtDOM.hasClass(form,mode))
+		fdjtDOM.dropClass(form,mode);
+	    else {
+		fdjtDOM.dropClass(form,markmodes);
+		fdjtDOM.addClass(form,mode);}}
+
 	/* Mark functions */
 	
 	function sbookMark(target,gloss,excerpt)
 	{
+	    setupMarkForm(fdjtID("SBOOKMARKFORM"));
 	    if (sbook_mark_target!==target) {fdjtID("SBOOKMARKFORM").reset();}
 	    if ((gloss)&&(gloss.user))
 		// Handle relays and edits
@@ -356,6 +440,7 @@ var sbookMark=
 	sbookMark.setup=setupHUD;
 	sbookMark.oncallback=oncallback;
 	sbookMark.getCloud=getCloud;
+	sbookMark.toggle=toggleMarkMode;
 	sbookMark.revid="$Id$";
 	sbookMark.version=parseInt("$Revision$".slice(10,-1));
 	sbookMark.cloud=function(){return sbook_mark_cloud;};

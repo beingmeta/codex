@@ -453,9 +453,6 @@ sbook.Setup=
 	    fdjtID("SBOOKUSERNAME").innerHTML=username;
 	    if (fdjtID("SBOOKMARKUSER"))
 		fdjtID("SBOOKMARKUSER").value=sbook.user.oid;
-	    if (fdjtID("SBOOKMARKFORM")) {
-		fdjtID("SBOOKMARKFORM").onsubmit=fdjtAjax.onsubmit;
-		fdjtID("SBOOKMARKFORM").oncallback=sbookMark.oncallback;}
 	    if (sbook.user.pic) {
 		if (fdjtID("SBOOKMARKIMAGE"))
 		    fdjtID("SBOOKMARKIMAGE").src=sbook.user.pic;
