@@ -256,16 +256,28 @@ var sbook_delete_icon="redx16x16.png";
 	    else fdjtDOM(tagspan," \u00b7 ",Knowlet.HTML(tag));}
 	if (info.detail) 
 	    fdjtDOM(sumdiv,fdjtDOM("div.detail",info.detail));
-	if ((info.xrefs) && (info.xrefs.length>0))  {
-	    var xrefsdiv=fdjtDOM("div.xrefs");
+	if (info.xrefs)  {
 	    var xrefs=info.xrefs;
-	    var i=0; while (i<xrefs.length) {
-		var xref=xrefs[i++];
-		var anchor=fdjtDOM.Anchor(xref,"A",xref);
-		anchor.target='_blank';
-		anchor.onclick=fdjtUI.cancel;
-		fdjtDOM(xrefsdiv,anchor);}
+	    var xrefspan=fdjtDOM("span.xrefs");
+	    for (var uri in xrefs) {
+		var title=xrefs[uri];
+		var spec=((uri===title)?("a.xref.raw"):("a.xref"));
+		var icon=fdjtDOM.Image(sbicon("outlink16x8.png"));
+		var xref=fdjtDOM.Anchor(uri,spec,icon,title);
+		xref.target='_blank';
+		fdjtDOM(xrefspan,xref,"\n");}
 	    fdjtDOM(sumdiv,xrefsdiv);}
+	if (info.attachments)  {
+	    var attachments=info.attachments;
+	    var attachmentspan=fdjtDOM("span.attachments");
+	    for (var uri in attachments) {
+		var title=attachments[uri];
+		var spec=((uri===title)?("a.attachment.raw"):("a.attachment"));
+		var icon=fdjtDOM.Image(sbicon("outlink16x8.png"));
+		var attachment=fdjtDOM.Anchor(uri,spec,icon,title);
+		attachment.target='_blank';
+		fdjtDOM(attachmentspan,attachment,"\n");}
+	    fdjtDOM(sumdiv,attachmentsdiv);}
 	return sumdiv;}
     sbookUI.summaryDiv=summaryDiv;
 

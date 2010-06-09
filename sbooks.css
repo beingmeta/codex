@@ -719,8 +719,8 @@ div#SBOOKHUD div#SBOOKMARKHUD div.needlogin span.loginbutton {
 
 form.mark { }
 form.mark div.formbody {
-    margin-left: 15px; margin-right: 15px;
-    padding-bottom: 15px;}
+    margin-left: 10px; margin-right: 10px;
+    padding-bottom: 10px;}
 form.mark div.glossbar {
     background-color: silver; width: 100%; height: 1.5em;
     margin-left: 0px; margin-right: 0px; margin-bottom: 3px;}
@@ -740,13 +740,19 @@ form.mark div.glossbar .checkspan {
 form.mark div.glossbar .checkspan input[type='checkbox'] { display: none;}
 form.mark div.glossbar .checkspan .checked { color: black;}
 
-form.mark div.excerpt { text-align: center;}
+form.mark div.excerpt { text-align: center; margin-bottom: 5px;}
 form.mark div.excerpt.noexcerpt { display: none;}
 form.mark div.excerpt span.lq {
-    font-size: 600%; font-weight: bold; float: left;}
+    font-size: 400%; font-weight: bold; float: left; display: none;}
 form.mark div.excerpt span.rq {
-    font-size: 600%; font-weight: bold; float: right;}
-form.mark div.excerpt span.content { font-family: italic; }
+    font-size: 400%; font-weight: bold; float: right; display: none;}
+form.mark div.excerpt span.content {
+    font-family: italic; background-color: yellow; font-style: italic;
+    padding-right: 2em; padding-left: 2em; font-size: 14px;}
+form.mark div.excerpt span.content:after {
+    content: ' \… ';}
+form.mark div.excerpt span.content:before {
+    content: ' \… ';}
 
 form.mark div.help,
 form.mark div.xrefs,
@@ -850,19 +856,6 @@ form.mark div.messages div.message {
 form.mark div.messages div.message.glossing { font-style: italic;} 
 form.mark.submitting div.messages div.pinging { display: block;}
 form.mark.glossing div.messages div.glossing { display: block;}
-
-form.mark div.excerpt { color: yellow;}
-form.mark div.excerpt div.text { 
- margin-left: 40px; margin-right: 40px; min-height: 2ex;}
-form.mark div.excerpt { 
- text-align: center; font-style: italic; font-size: 80%;
- margin-left: 5%; margin-right: 5%;
- clear: both;}
-form.mark div.excerpt span.lq { 
- font-weight: bold; font-size: 200%; float: left; }
-form.mark div.excerpt span.rq { 
- font-weight: bold; font-size: 200%; float: right; }
-
 form.mark div.completions {
   text-align: left;}
 
