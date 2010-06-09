@@ -329,9 +329,6 @@ body.notfixed div#SBOOKHUD img.hudbutton[alt='glosses'] {
 
 /* Miscellaneous gloss rules */
 
-div#SBOOKHUD div#SBOOKMARKHUD {
-    /* Unindent */
-    margin-left: -12px;}
 div#SBOOKHUD div#SBOOKMARKHUD div.markform {
   min-height: 60px;}
 div#SBOOKHUD div#SBOOKMARKHUD form.mark.closed div.markform {
@@ -626,7 +623,7 @@ div#SBOOKHUD div.hud#SBOOKTAGS {
 /* The Bookmark HUD */
 
 div#SBOOKHUD.mark div.hudblock#SBOOKMARKHUD {
-    overflow: auto; right: 50px; top: 0px;
+    overflow: auto; top: 0px;
     display: block; opacity: 0.9;
     max-height: inherit; z-index: 200;
     border-color: blue;}
@@ -1083,6 +1080,9 @@ div.tocblock div.tochead span.headtext {
     white-space: nowrap; font-size: 90%;}
 div.tocblock div.tochead img.previewicon {
     vertical-align: middle; margin-right: 3px;}
+
+div#SBOOKHUD.glosses div.tocblock { border-top: none;}
+div#SBOOKHUD.glosses div.tocblock div.tochead { display: none;}
 
 /* Search rules */
 

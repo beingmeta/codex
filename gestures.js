@@ -227,7 +227,7 @@ var sbookUI=
 	    // sbook.trace("sbook_onkeydown",evt);
 	    if (evt.keyCode===27) { /* Escape works anywhere */
 		if (sbook.mode) {
-		    sbook.last_mode=mode;
+		    sbook.last_mode=sbook.mode;
 		    fdjtDOM.dropClass(document.body,"hudup");
 		    sbookMode(false);
 		    sbook.Preview(false);

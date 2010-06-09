@@ -183,9 +183,6 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	glossmark.sbookui=true;
 	return glossmark;};
 
-    var sbook_glossmark_div=false;
-    var sbook_glossmark_target=false;
-
     function openGlossmark(target,addmark) {
 	var glosses=sbook.glosses.find('frag',target.id)
 	var sumdiv=fdjtDOM("div.sbooksummaries.hudblock");
@@ -214,7 +211,10 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
     function glossmark_onclick(evt){
 	evt=evt||event||null;
 	var target=sbook.getRef(fdjtUI.T(evt));
-	openGlossmark(target);}
+	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
+	    sbookMode(false);
+	    return;}
+	else openGlossmark(target);}
     sbookUI.handlers.glossmark_onclick=glossmark_onclick;
 
     function glossmark_onmouseover(evt)
