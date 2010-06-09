@@ -43,6 +43,11 @@ var sbookMark=
 	// This is the completions object for the mark cloud
 	var sbook_mark_cloud=false;
 	
+	function inputvalue(elt){
+	    if (fdjtDOM.hasClass(elt,"isempty"))
+		return "";
+	    else return elt.value;}
+
 	function get_titlepath(info,embedded){
 	    if (!(info))
 		if (document.title)
@@ -225,7 +230,7 @@ var sbookMark=
 	    var sbook_index=sbook.index;
 	    var outlets_span=fdjtDOM("span.outlets");
 	    var sources_span=fdjtDOM("span.sources");
-	    var completions=fdjtDOM("div.completions",outlets_span);
+	    var completions=fdjtDOM("div.completions","\n",outlets_span);
 	    if (sbook.outlets) {
 		var outlets=sbook.outlets;
 		var i=0; var lim=outlets.length;
@@ -274,11 +279,6 @@ var sbookMark=
 		    sectnode.key=tag; sectnode.value=tag;
 		    fdjtDOM(completions,sectnode," ");
 		    continue;}}
-	    var maxmsg=fdjtDOM("div.maxcompletemsg",
-			       "There are a lot ",
-			       "(",fdjtDOM("span.completioncount","really"),")",
-			       " of completions.  ");
-	    fdjtDOM.prepend(completions,maxmsg);
 	    // Generic sources go at the end
 	    fdjtDOM(completions,sources_span);
 	    fdjtDOM.addListener(completions,"click",markcloud_onclick);
@@ -307,8 +307,8 @@ var sbookMark=
 		sbook._tagupdate=false;}
 	    var ch=evt.charCode||evt.keyCode;
 	    var target=fdjtDOM.T(evt);
-	    if ((ch===13)||(ch===59)) {
-		var qstring=target.value;
+	    if ((ch===13)||(ch===59)||(ch===93)) {
+		var qstring=inputvalue(target);
 		if (!(fdjtString.isEmpty(qstring))) {
 		    fdjtDOM.cancel(evt);
 		    var completions=sbook_mark_cloud.complete(qstring);
@@ -326,7 +326,7 @@ var sbookMark=
 		else {}
 		return false;}
 	    else if (ch==32) { /* Space */
-		var qstring=target.value;
+		var qstring=inputvalue(target);
 		var completions=sbook_mark_cloud.complete(qstring);
 		if (completions.prefix!==qstring) {
 		    target.value=completions.prefix;
@@ -336,14 +336,14 @@ var sbookMark=
 		sbook._tagupdate=
 		    setTimeout(function(){
 			sbook._tagupdate=false;
-			sbook_mark_cloud.complete(target.value);},
+			sbook_mark_cloud.complete(inputvalue(target));},
 			       _sbook_tagupdate_delay);}}
 	sbookUI.handlers.taginput_onkeypress=taginput_onkeypress;
 
 	function taginput_onfocus(evt){
 	    evt=evt||event||null;
 	    var input=fdjtDOM.T(evt);
-	    sbook_mark_cloud.complete(input.value);}
+	    sbook_mark_cloud.complete(inputvalue(input));}
 	sbookUI.handlers.taginput_onfocus=taginput_onfocus;
 
 	function taginput_onkeyup(evt){
@@ -357,7 +357,7 @@ var sbookMark=
 		sbook._tagupdate=
 		    setTimeout(function(){
 			sbook._tagupdate=false;
-			sbook_mark_cloud.complete(target.value);},
+			sbook_mark_cloud.complete(inputvalue(target));},
 			       _sbook_tagupdate_delay);}}
 	sbookUI.handlers.taginput_onkeyup=taginput_onkeyup;
 
@@ -369,6 +369,7 @@ var sbookMark=
 	
 	function inline_complete(input_elt,engage)
 	{
+	    if (fdjtDOM.hasClass(input_elt,"isempty")) return;
 	    var val=input_elt.value;
 	    var start=input_elt.selectionStart;
 	    var end=input_elt.selectionEnd;

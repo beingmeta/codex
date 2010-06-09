@@ -808,7 +808,7 @@ form.mark div.note {
     clear: both; width: 100%; text-align: right; margin: 0px; 
     min-height: 60px;}
 form.mark div.note textarea {
-    font-size: 12px; height: 40px; display: block;
+    font-size: 12px; height: 60px; display: block;
     background-color: white;
     width: 96%;  max-width: 100%; margin: 0px; border: 0px;
     padding-left: 2%; padding-right: 2%;
