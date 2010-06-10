@@ -111,11 +111,11 @@ var sbookUI=
 	    if (flag) {
 		sbook_sparse=true;
 		fdjtUI.CheckSpan.set(fdjtID("SBOOKSPARSE"),true,true);
-		fdjtDOM.addClass(document.body,"sparsebook");}
+		fdjtDOM.addClass(document.body,"spartan");}
 	    else {
 		sbook_sparse=false;
 		fdjtUI.CheckSpan.set(fdjtID("SBOOKSPARSE"),false,true);
-		fdjtDOM.dropClass(document.body,"sparsebook");}}
+		fdjtDOM.dropClass(document.body,"spartan");}}
 	sbookUI.Sparse=sparseMode;
 
 	function flashMode(flag){
@@ -407,7 +407,6 @@ var sbookUI=
 	    leftedge2.onclick=leftedge_onclick;
 	    rightedge2.title='tap/click to go forward';
 	    rightedge2.onclick=rightedge_onclick;}
-
 
 	function leftedge_onclick(evt){
 	    // sbook.trace("sbookLeftEdge_onclick",evt);

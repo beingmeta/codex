@@ -100,7 +100,7 @@ sbook.Setup=
 	    [["page","scroll"],["sparse","rich"],["flash","noflash"],
 	     ["fetch","nofetch"],["setup","nosetup"]];
 	
-	sbook.default_opts=["page","rich","flash","mouse"];
+	sbook.default_opts=["page","sparse","flash","mouse"];
 	
 	function testopt(pos,neg,session){
 	    return fdjtState.testOption

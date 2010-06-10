@@ -662,8 +662,6 @@ var sbookPaginate=
       sbook_bottom_px=pagefoot.offsetHeight;
       pagehead.style.display=''; pagefoot.style.display='';
       pagehead.sbookui=true; pagefoot.sbookui=true;
-      // pagehead.onclick=sbookHeadHUD_onclick;
-      // pagefoot.onclick=sbookFootHUD_onclick;
 
       sbook_left_px=leftedge.offsetWidth;
       sbook_right_px=rightedge.offsetWidth;
@@ -696,7 +694,7 @@ var sbookPaginate=
       div.onmouseout=fdjtDOM.cancel;
       div.onmousedown=fdjtDOM.cancel;
       div.onmouseup=fdjtDOM.cancel;
-      div.onclick=sbook.dropHUD;
+      div.onclick=sbook.toggleHUD;
       return div;}
 
     function moveMargins(pageinfo){

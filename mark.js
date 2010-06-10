@@ -425,10 +425,17 @@ var sbookMark=
 	    else setTimeout(function(){inline_complete(target);},
 			    _sbook_tagupdate_delay);}
 	
+	function engage_glossbar(evt){
+	  var gb=fdjtDOM.getParent(fdjtUI.T(evt),".glossbar");
+	  fdjtDOM.toggleClass(gb,"engaged");}
+
 	function setupMarkForm(form){
 	    if (form.getAttribute("sbooksetup")) return;
 	    form.onsubmit=fdjtAjax.onsubmit;
 	    form.oncallback=sbookMark.oncallback;
+	    var glossbar=fdjtDOM.getChild(form,".glossbar");
+	    if (glossbar)
+	      fdjtDOM.addListener(glossbar,"click",engage_glossbar);
 	    var taginput=fdjtDOM.getChild(form,"[name='XTAG']");
 	    if (taginput) {
 		fdjtDOM.addListener(taginput,"keypress",taginput_onkeypress);

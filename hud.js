@@ -201,6 +201,11 @@ var sbookMode=
 	sbookMode.flash=sbookHUDFlash;
 
 	sbook.dropHUD=function(){return sbookMode(false);}
+	sbook.toggleHUD=function(){
+	  if (sbook.mode) {
+	    sbookMode(false);
+	    fdjtDOM.dropClass(document.body,"hudup");}
+	  else fdjtDOM.toggleClass(document.body,"hudup");};
 
 	/* HUD Messages */
 	
