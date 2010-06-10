@@ -570,7 +570,7 @@ var sbookPaginate=
 	window.scrollTo(0,(off-sbook_top_px));
 	if (sbook.Setup.notfixed) {
 	  moveMargins(info);
-	  sbookSyncHUD();
+	  sbook.syncHUD();
 	  document.body.style.visibility='visible';}}
       if ((sbook.target)&&(fdjtDOM.isVisible(sbook.target)))
 	sbook.setHead(sbook.target);

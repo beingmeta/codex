@@ -160,47 +160,7 @@ sbook.Setup=
 	    sbook.glossetc=
 		((offline)?
 		 ((fdjtState.getLocal("glossetc("+refuri+")",true))||{}):
-		 {});
-
-	    // Unavoidable browser sniffing
-	    var useragent=navigator.userAgent;
-	    if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0))
-		sbookMobileSafariSetup();}
-
-	function sbookMobileSafariSetup(){
-	    var head=fdjtDOM.$("HEAD")[0];
-	    fdjt_format_console=true;
-
-	    document.body.ontouchmove=
-		function(evt){
-		    var target=fdjtDOM.T(evt);
-		    if ((fdjtDOM.hasParent(target,"sbooksummaries"))||
-			(fdjtDOM.hasParent(target,sbookDash)))
-			return true;
-		    else if (sbook.pageview) {
-			evt.preventDefault(); return false;}};
-	    
-	    var head=fdjtDOM.$("HEAD")[0];
-	    var appmeta=fdjtElt("META");
-	    appmeta.name='apple-mobile-web-app-capable';
-	    appmeta.content='yes';
-	    // fdjtDOM.prepend(head,appmeta);
-
-	    var viewmeta=fdjtElt("META");
-	    viewmeta.name='viewport';
-	    viewmeta.content='user-scalable=no,width=device-width';
-	    fdjtDOM.prepend(head,viewmeta);
-
-	    sbook.Setup.notfixed=true;
-	    fdjtDOM.addClass(document.body,"notfixed");
-	    
-	    var mouseopt=fdjtKB.position(sbook_default_opts,"mouse");
-	    if (mouseopt<0)
-		mouseopt=fdjtKB.position(sbook_default_opts,"keyboard");
-	    if (mouseopt<0)
-		mouseopt=fdjtKB.position(sbook_default_opts,"oneclick");
-	    if (mouseopt<0) sbook_default_opts.push("touch");
-	    else sbook_default_opts[mouseopt]="touch";}
+		 {});}
 
 	/* Getting settings */
 

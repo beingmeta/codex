@@ -77,6 +77,7 @@ var sbookMode=
 		    if (pic) {
 			var img=fdjtDOM.getFirstChild(glossmark,"IMG.big");
 			if (img) img.src=pic;}}});
+	    sbookFoot=fdjtID("SBOOKFOOT");
 	    var bookmark=fdjtID("SBOOKMARKHUD");
 	    bookmark.innerHTML=sbook_addgloss_html;
 	    fillinDash();}
@@ -157,7 +158,7 @@ var sbookMode=
 	    if (sbook.preview) sbook.Preview(false);
 	    if (sbook.Setup.notfixed) {
 		// sbookMoveMargins(sbook_curinfo);
-		sbookSyncHUD();}
+		syncHUD();}
 	    if (mode)
 		if (mode===sbook.mode) {}
 	    else {
@@ -267,7 +268,7 @@ var sbookMode=
 	var sbook_sync_head=false;
 	var sbook_sync_foot=false;
 	
-	function sbookSyncHUD(){
+	function syncHUD(){
 	    if (!(sbook.Setup.notfixed)) return;
 	    if (window.offsetY!==sbook_sync_head) {
 		sbookHUD.style.top=fdjtDOM.viewTop()+'px';
@@ -278,6 +279,7 @@ var sbookMode=
 		sbookFoot.style.top=(fdjtDOM.viewTop()+(fdjtDOM.viewHeight())-42)+'px';
 		// sbookFoot.style["-webkit-transformation"]="translate(0px,"+(fdjtDOM.viewTop()+(fdjtDOM.viewHeight())-50)+"px)";
 		sbook_sync_foot=(fdjtDOM.viewTop()+(fdjtDOM.viewHeight()));}    }
+	sbook.syncHUD=syncHUD;
 	
 	/* The APP HUD */
 	
@@ -495,7 +497,7 @@ var sbookMode=
 	function _sbookPreviewSync(){
 	    if (sbook.preview===sbook.preview_target) return;
 	    sbookPreview(sbook.preview_target);
-	    if (sbook.Setup.notfixed) sbookSyncHUD();}
+	    if (sbook.Setup.notfixed) syncHUD();}
 
 	function sbookSetPreview(ref,delay){
 	    if ((delay)&&(typeof delay !== 'number'))
