@@ -204,6 +204,7 @@ var sbookMark=
 	    sbookMode(false);}
 
 	function addTag(form,tag) {
+	    if (!(tag)) tag=form;
 	    if (form.tagName!=='FORM')
 		form=fdjtDOM.getParent(form,'form')||form;
 	    var tagselt=fdjtDOM.getChild(form,'.tags');
@@ -215,11 +216,17 @@ var sbookMark=
 		    varname='ATTENTION'
 		else {}
 		tag=sbook_mark_cloud.getValue(tag);}
-	    var info=fdjtKB.ref(tag);
-	    var text=((info)?(info.name||info.dterm):(tag));
-	    if (info) tag=info.qid||info.oid||info.dterm||tag;
+	    var info=fdjtKB.ref(tag)||sbook.knowlet.probe(tag);
+	    var text=((info)?
+		      ((info.toHTML)&&(info.toHTML())||info.name||info.dterm):
+		      (tag));
+	    if (info) {
+		if (info.knowlet===sbook.knowlet)
+		    tag=info.dterm;
+		else tag=info.qid||info.oid||info.dterm||tag;}
 	    if ((info)&&(info.pool===sbook.sourcekb)) varname='OUTLETS';
 	    var span=fdjtUI.CheckSpan("span.checkspan",varname,tag,true);
+	    fdjtDOM.addClass(span,varname.toLowerCase());
 	    fdjtDOM.append(span,text);
 	    fdjtDOM.append(tagselt,span," ");}
 	    
@@ -296,8 +303,11 @@ var sbookMark=
 	    if (!(completion)) return;
 	    var value=sbook_mark_cloud.getValue(completion);
 	    addTag(completion,value);}
-	    
-
+	function markcloud_onclick(evt){
+	    var target=fdjtUI.T(evt);
+	    var completion=fdjtDOM.getParent(target,'.completion');
+	    if (completion) addTag(completion);}
+	
 	var _sbook_tagupdate=false;
 	var _sbook_tagupdate_delay=300;
 	function taginput_onkeypress(evt){
@@ -313,8 +323,7 @@ var sbookMark=
 		    fdjtDOM.cancel(evt);
 		    var completions=sbook_mark_cloud.complete(qstring);
 		    // fdjtLog("Completions on %o are %o",qstring,completions);
-		    if (completions.length) 
-			addTag(target,sbook_mark_cloud.getValue(completions[0]));
+		    if (completions.length) addTag(target,completions[0]);
 		    else {
 			var curval=target.value;
 			var knospan=sbook.knowlet.HTML(curval,false,true);
@@ -367,8 +376,7 @@ var sbookMark=
 	    return fdjtMultiText_onkeypress(evt,'div');}
 	sbookUI.handlers.xrefs_onkeypress;
 	
-	function inline_complete(input_elt,engage)
-	{
+	function inline_complete(input_elt,engage){
 	    if (fdjtDOM.hasClass(input_elt,"isempty")) return;
 	    var val=input_elt.value;
 	    var start=input_elt.selectionStart;
@@ -385,29 +393,27 @@ var sbookMark=
 		if ((tagend>0)&&(tagend<end)) return;}
 	    if ((start>=0)&&(start<end)) {
 		if (engage) inline_tag(input_elt,val,start-1,end);
-		else sbook_mark_cloud.complete(val.slice(start,end));}
-	}
-	function inline_tag(input_elt,string,start,end)
-	{
+		else sbook_mark_cloud.complete(val.slice(start,end));}}
+	function inline_tag(input_elt,string,start,end){
 	    var tagstring=string.slice(start,end);
 	    if (tagstring[0]==='[') tagstring=tagstring.slice(1);
 	    if (tagstring[tagstring.length-1]===']')
 		tagstring=tagstring.slice(0,tagstring.length-1);
 	    var completions=
-		sbook_mark_cloud.complete(string.slice(start,end));
+		sbook_mark_cloud.complete(tagstring);
 	    if ((!(completions))||(completions.length===0))
 		addTag(input_elt,tagstring);
 	    else if (completions.length===1) {
-		var value=sbook_mark_cloud.getValue(completions[0]);
-		addTag(input_elt,value);}
-	    else  {
-		var value=sbook_mark_cloud.getValue(completions[0]);
-		addTag(input_elt,value);}
+		addTag(input_elt,completions[0]);
+		if (completions.strings) tagstring=completions.strings[0];}
+	    else {
+		addTag(input_elt,completions[0]);
+		if (completions.strings) tagstring=completions.strings[0];}
+	    sbook_mark_cloud.complete("");
 	    input_elt.value=
 		string.slice(0,start)+
 		'['+tagstring+']'+
-		string.slice(end+1);
-	}
+		string.slice(end+1);}
 
 	function note_onmouseup(evt){
 	    inline_complete(fdjtUI.T(evt));}
