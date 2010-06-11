@@ -133,25 +133,25 @@ var sbookUI=
 	    evt=evt||event;
 	    // fdjtLog("body_onclick %o",evt);
 	    if ((sbook_mousedown)&&
-		((fdjtTime()-sbook_mousedown)>sbook_hold_threshold))
-		return;
+		((fdjtTime()-sbook_mousedown)>sbook_hold_threshold)) {
+		sbook_mousedown=false;
+		return;}
 	    var target=fdjtDOM.T(evt);
 	    if (fdjtDOM.isClickable(target)) return;
 	    else if (inUI(target)) return;
 	    else if (sbook.preview) {
 		sbook.Preview(false); sbookMode(false);
 		sbook.GoTo(target);}
-	    else if ((sbook.mode)&&(sbook.mode!=="context"))
-		sbookMode(false);
-	    else if (sbook.target)
-		if ((target===sbook.target)||
-		    (fdjtDOM.hasParent(target,sbook.target)))
-		    sbookMark(sbook.target);
-	    else sbook.setTarget(sbook.getTarget(target));
-	    else sbook.setTarget(sbook.getTarget(target));
-	    if (sbook.Setup.notfixed) sbook.syncHUD();
-	    fdjtDOM.cancel(evt);}
+	    else if (fdjtDOM.hasClass(document.body,"hudup"))
+		fdjtDOM.dropClass(document.body,"hudup");
+	    else {
+		sbook.setTarget(sbook.getTarget(target));
+	    	fdjtDOM.addClass(document.body,"hudup");}}
 	sbookUI.handlers.bodyclick=body_onclick
+	function body_dblclick(evt){
+	    var target=sbook.getTarget(fdjtUI.T(evt));
+	    sbookMark(target);}
+	sbookUI.handlers.bodydblclick=body_dblclick
 
 	function onmousedown(evt){
 	    var target=fdjtDOM.T(evt);
@@ -336,6 +336,7 @@ var sbookUI=
 	    fdjtDOM.addListener(false,"mousedown",onmousedown);
 
 	    fdjtDOM.addListener(document.body,"click",body_onclick);
+	    fdjtDOM.addListener(document.body,"dblclick",body_dblclick);
 
 	    // For command keys
 	    fdjtDOM.addListener(false,"keypress",onkeypress);
@@ -423,8 +424,8 @@ var sbookUI=
 	    viewmeta.content='user-scalable=no,width=device-width';
 	    fdjtDOM.prepend(head,viewmeta);
 
-	    sbook.Setup.notfixed=true;
-	    fdjtDOM.addClass(document.body,"notfixed");
+	    sbook.floathud=true;
+	    fdjtDOM.addClass(document.body,"floathud");
 	    
 	    var mouseopt=fdjtKB.position(sbook.default_opts,"mouse");
 	    if (mouseopt<0)
@@ -432,7 +433,11 @@ var sbookUI=
 	    if (mouseopt<0)
 		mouseopt=fdjtKB.position(sbook.default_opts,"oneclick");
 	    if (mouseopt<0) sbook.default_opts.push("touch");
-	    else sbook.default_opts[mouseopt]="touch";}
+	    else sbook.default_opts[mouseopt]="touch";
+
+	    var pageopt=fdjtKB.position(sbook.default_opts,"pageview");
+	    if (pageopt<0) sbook.default_opts.push("scrollview");
+	    else sbook.default_opts[pageopt]="scrollview";}
 	sbook.Setup.mobileSafariSetup=mobileSafariSetup;
 
 

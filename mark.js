@@ -129,8 +129,9 @@ var sbookMark=
 		setAttachments(fdjtID("SBOOKMARKFORM"),(glossinfo.attachments));
 	    fdjtID("SBOOKMARKTAGINPUT").value="";
 	    fdjtDOM.addClass(fdjtID("SBOOKMARKTAGINPUT"),"isempty");
-	    /* Figure out the tagcues */
+	    // Reinit the autoprompt fields
 	    fdjtUI.AutoPrompt.setup(fdjtID("SBOOKMARKHUD"));
+	    /* Figure out the tagcues */
 	    setTagCues(sbook_mark_cloud,target);}
 
 	function setTagCues(cloud,target){
@@ -138,10 +139,11 @@ var sbookMark=
 	    var glosses=sbook.glosses.find('frag',target.id);
 	    if (cloud.frag_cues) fdjtDOM.dropClass(cloud.frag_cues,"cue");
 	    var tags=[].concat(docinfo.tags||[]);
-	    var i=0; var lim=glosses.length;
-	    while (i<lim) {
-		var gloss=glosses[i++];
-		if (gloss.tags) cues.concat(gloss.tags);}
+	    if ((glosses)&&(glosses.length)) {
+		var i=0; var lim=glosses.length;
+		while (i<lim) {
+		    var gloss=glosses[i++];
+		    if (gloss.tags) cues.concat(gloss.tags);}}
 	    cloud.frag_cues=cloud.setCues(tags);}
 
 	function setExcerpt(form,text){

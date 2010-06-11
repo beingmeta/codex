@@ -72,13 +72,14 @@ p[id], li[id], ul[id], blockquote[id], div[id] {
 
 div#SBOOKHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; 
+    transition-property: opacity; transition-duration: 3s;
     z-index: 100;}
 div#SBOOKHUD div#SBOOKFOOT {
     position: fixed; bottom: 0px; left: 0px; right: 0px; 
     z-index: 200;}
 
-body.notfixed div#SBOOKHUD ,
-body.notfixed div#SBOOKHUD div#SBOOKFOOT {
+body.floathud div#SBOOKHUD ,
+body.floathud div#SBOOKHUD div#SBOOKFOOT {
   position: absolute;}
 
 body.preview div#SBOOKHUD div.hudblock { opacity: 0.3}
@@ -108,15 +109,12 @@ body div.sbookmargin {
     background-color: white; z-index: 5;}
 
 body.preview div.sbookmargin { display: none;}
-body.notfixed div.sbookmargin { position: absolute;}
 
 body div.sbookmargin#SBOOKPAGEHEAD,
 body div.sbookmargin#SBOOKPAGEFOOT {
   left: 0px; right: 0px; width: 100%; height: 40px; z-index: 75;}
 body div.sbookmargin#SBOOKPAGEHEAD { top: 0px; }
 body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; }
-body.notfixed div.sbookmargin#SBOOKPAGEFOOT {
-    top: 0px; bottom: inherit; }
 
 body div.sbookmargin#SBOOKPAGEFOOT div.sbookmargin { position: absolute; }
 
@@ -157,8 +155,8 @@ img.sbookqricon { display: none;}
 .sbookfocus { cursor: pointer; }
 body.hudup .sbookfocus { color: blue;}
 
-.sbooktarget { color: blue; }
-.sbooktarget .glossmark { color: blue; cursor: pointer;}
+body.hudup .sbooktarget { color: blue; }
+body.hudup .sbooktarget .glossmark { color: blue; cursor: pointer;}
 body.hudup .sbookfocus.sbooktarget { color: darkblue;}
 
 /* None of these apply to the body generally */
@@ -324,7 +322,7 @@ div#SBOOKHUD img.hudbutton[alt='glosses'] {
   border-top-left-radius: 6px;}
 div#SBOOKHUD.allglosses img.hudbutton[alt='glosses'] { 
   opacity: 1.0; border-color: blue; background-color: gray;}
-body.notfixed div#SBOOKHUD img.hudbutton[alt='glosses'] {
+body.floathud div#SBOOKHUD img.hudbutton[alt='glosses'] {
   top: 0px;}
 
 /* Miscellaneous gloss rules */
@@ -421,14 +419,6 @@ div#SBOOKHUD.sbookapp div#SBOOKDASH div#SBOOKDASHCONTENT,
 div#SBOOKHUD.dashtoc div#SBOOKDASH div#SBOOKDASHCONTENT {
   display: block;  opacity: 1.0;}
 
-body.notfixed div#SBOOKHUD.help div#SBOOKDASH,
-body.notfixed div#SBOOKHUD.login div#SBOOKDASH,
-body.notfixed div#SBOOKHUD.about div#SBOOKDASH,
-body.notfixed div#SBOOKHUD.device div#SBOOKDASH,
-body.notfixed div#SBOOKHUD.sbookapp div#SBOOKDASH,
-body.notfixed div#SBOOKHUD.dashtoc div#SBOOKDASH {
-  bottom: auto; height: 100%;}
-
 div#SBOOKHUD img.hudbutton[alt='dash'] { 
   bottom: 0px; left: 0px;
   border-left: none; border-bottom: none;
@@ -436,7 +426,7 @@ div#SBOOKHUD img.hudbutton[alt='dash'] {
   -webkit-border-top-right-radius: 6px; 
   -moz-border-radius-topright: 6px; 
   border-top-right-radius: 6px;}
-body.notfixed div#SBOOKHUD img.hudbutton[alt='dash'] {
+body.floathud div#SBOOKHUD img.hudbutton[alt='dash'] {
   top: 0px;}
 
 div#SBOOKHUD.help img.hudbutton[alt='dash'],

@@ -34,9 +34,8 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 
 var sbook=
   {mode: false,query: false,user: false,
-   root: false,start: false,
-   target: false,head: false,
-   preview: false,preview_target:false,
+   root: false,start: false,target: false,head: false,
+   HUD: false,preview: false,preview_target:false,
    _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
    last_preview: false,last_mode: false,last_dash: "help",
    target_title: false,preview_title: false,
@@ -53,7 +52,7 @@ var sbook=
    // This is the time of the last update
    syncstamp: false,
    // Various settings
-   pageview: false,
+   pageview: false, floathud: false,
    // Restrictions on excerpts
    min_excerpt: 3, max_excerpt: false,
    Trace: {

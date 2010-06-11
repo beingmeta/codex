@@ -51,7 +51,7 @@ var sbookMode=
 	function initHUD(){
 	    if (fdjtID("SBOOKHUD")) return;
 	    else {
-		sbookHUD=fdjtDOM("div#SBOOKHUD");
+		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=sbook_hudtext;
 		fdjtDOM.prepend(document.body,sbookHUD);}
@@ -156,31 +156,29 @@ var sbookMode=
 		fdjtLog("[%fs] sbookMode %o, cur=%o dbc=%o",
 			fdjtET(),mode,sbook.mode,document.body.className);
 	    if (sbook.preview) sbook.Preview(false);
-	    if (sbook.Setup.notfixed) {
-		// sbookMoveMargins(sbook_curinfo);
-		syncHUD();}
-	    if (mode)
+	    if (mode) {
+		if (sbook.floathud) syncHUD();
 		if (mode===sbook.mode) {}
-	    else {
-		if (mode===true) mode="context";
-		if (typeof mode !== 'string') 
-		    throw new Error('mode arg not a string');
-		if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
-		    sbookSetupDash();
-		sbook.mode=mode;
-		sbook.last_mode=mode;
-		if (fdjtKB.contains(sbook_apps,mode)) sbook.last_dash=mode;
-		if (fdjtKB.contains(sbook_headmodes,mode)) sbook_last_headmode=mode;
-		if (fdjtKB.contains(sbook_footmodes,mode)) sbook_last_footmode=mode;
-		fdjtDOM.addClass(document.body,"hudup");
-		fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
-		if ((mode==="allglosses")&&(sbook.target))
-		    sbookUI.scrollGlosses(sbook.target);}
+		else if (mode===true) 
+		    fdjtDOM.addClass(document.body,"hudup");
+		else {
+		    if (typeof mode !== 'string') 
+			throw new Error('mode arg not a string');
+		    if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
+			sbookSetupDash();
+		    sbook.mode=mode;
+		    sbook.last_mode=mode;
+		    if (fdjtKB.contains(sbook_apps,mode)) sbook.last_dash=mode;
+		    fdjtDOM.addClass(document.body,"hudup");
+		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
+		    if ((mode==="allglosses")&&(sbook.target))
+			sbookUI.scrollGlosses(sbook.target);}}
 	    else {
 		sbook.last_mode=sbook.mode;
 		sbook.mode=false;
-		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
-		fdjtDOM.dropClass(document.body,"hudup");}}
+		fdjtDOM.dropClass(document.body,"hudup");
+		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}}
+
 	function sbookHUDToggle(mode){
 	    if (!(sbook.mode)) sbookMode(mode);
 	    else if (fdjtKB.contains(arguments,sbook.mode))
@@ -204,10 +202,8 @@ var sbookMode=
 	sbook.dropHUD=function(){return sbookMode(false);}
 	sbook.toggleHUD=function(evt){
 	    if (fdjtDOM.isClickable(fdjtUI.T(evt))) return;
-	    if (sbook.mode) {
-		sbookMode(false);
-		fdjtDOM.dropClass(document.body,"hudup");}
-	    else fdjtDOM.toggleClass(document.body,"hudup");};
+	    if (sbook.mode) sbookMode(false);
+	    else sbookMode(true);};
 	
 	/* HUD Messages */
 	
@@ -270,7 +266,7 @@ var sbookMode=
 	var sbook_sync_foot=false;
 	
 	function syncHUD(){
-	    if (!(sbook.Setup.notfixed)) return;
+	    if (!(sbook.floathud)) return;
 	    if (window.offsetY!==sbook_sync_head) {
 		sbookHUD.style.top=fdjtDOM.viewTop()+'px';
 		// sbookHead.style["-webkit-transformation"]="translate(0px,"+fdjtDOM.viewTop()+"px)";
@@ -498,7 +494,7 @@ var sbookMode=
 	function _sbookPreviewSync(){
 	    if (sbook.preview===sbook.preview_target) return;
 	    sbookPreview(sbook.preview_target);
-	    if (sbook.Setup.notfixed) syncHUD();}
+	    if (sbook.floathud) syncHUD();}
 
 	function sbookSetPreview(ref,delay){
 	    if ((delay)&&(typeof delay !== 'number'))

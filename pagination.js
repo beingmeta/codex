@@ -565,10 +565,10 @@ var sbookPaginate=
       sbook_curoff=pageoff||0;
       sbook_curinfo=info;
       if (fdjtDOM.viewTop()!==(off-sbook_top_px)) {
-	if (sbook.Setup.notfixed) 
+	if (sbook.floathud) 
 	  document.body.style.visibility='hidden';
 	window.scrollTo(0,(off-sbook_top_px));
-	if (sbook.Setup.notfixed) {
+	if (sbook.floathud) {
 	  moveMargins(info);
 	  sbook.syncHUD();
 	  document.body.style.visibility='visible';}}
