@@ -130,24 +130,19 @@ var sbookMark=
 	    fdjtID("SBOOKMARKTAGINPUT").value="";
 	    fdjtDOM.addClass(fdjtID("SBOOKMARKTAGINPUT"),"isempty");
 	    /* Figure out the tagcues */
-	    var tagcues=[];
-	    /* Get tags from the item and the items above it */
-	    {var info=sbook.docinfo[target.id]; while (info) {
-		var glosses=sbook.glosses.find['frag',info.frag];
-		/* Get the tags from the content */
-		if ((info)&&(info.tags)&&(info.tags.length)) {
-		    var tags=info.tags; var i=0; var lim=tags.length;
-		    while (i<lim) tagcues.concat(tags[i++]);}
-		/* Get anyone else's tags for this item or its heads */
-		if ((glosses) && (glosses.length)) {
-		    var i=0; var lim=glosses.length;
-		    while (i<lim) {
-			var tags=glosses[i++].tags;
-			var j=0; var jlim=tags.length;
-			while (j<jlim) fdjtKB.add(tagcues,tags[j++]);}}
-		info=info.head;}}
-	    sbook_mark_cloud.setCues(tagcues);
-	    fdjtUI.AutoPrompt.setup(fdjtID("SBOOKMARKHUD"));}
+	    fdjtUI.AutoPrompt.setup(fdjtID("SBOOKMARKHUD"));
+	    setTagCues(sbook_mark_cloud,target);}
+
+	function setTagCues(cloud,target){
+	    var docinfo=sbook.docinfo[target.id];
+	    var glosses=sbook.glosses.find('frag',target.id);
+	    if (cloud.frag_cues) fdjtDOM.dropClass(cloud.frag_cues,"cue");
+	    var tags=[].concat(docinfo.tags||[]);
+	    var i=0; var lim=glosses.length;
+	    while (i<lim) {
+		var gloss=glosses[i++];
+		if (gloss.tags) cues.concat(gloss.tags);}
+	    cloud.frag_cues=cloud.setCues(tags);}
 
 	function setExcerpt(form,text){
 	    var excerpt=fdjtDOM.getChild(form,'.excerpt');
