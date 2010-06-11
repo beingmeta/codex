@@ -1392,11 +1392,17 @@ span.glossmark img.markbutton { display: none;}
 
 /* Spartan style */
 
+body.spartan div#SBOOKHUD { visibility: hidden;}
+body.spartan div#SBOOKHUD img.hudbutton {
+    visibility: visible; opacity: 0.01;}
 body.spartan span.glossmark { opacity: 0.01;}
-body.spartan span.glossmark:hover { opacity: 0.5;}
-body.spartan div#SBOOKHUD { display: none;}
-body.spartan.hudup span.glossmark { opacity: 0.75;}
-body.spartan.hudup div#SBOOKHUD { display: block;}
+body.spartan [id]:hover > span.glossmark { opacity: 0.4;}
+body.spartan div#SBOOKHUD img.hudbutton:hover {
+    visibility: visible; opacity: 0.4;}
+body.spartan.hudup div#SBOOKHUD { visibility: visible;}
+body.spartan.hudup span.glossmark { opacity: 0.6;}
+body.spartan.hudup div#SBOOKHUD img.hudbutton {
+    opacity: 0.6;}
 
 /* For going to ebooks forms */
 

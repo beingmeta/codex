@@ -202,12 +202,13 @@ var sbookMode=
 	sbookMode.flash=sbookHUDFlash;
 
 	sbook.dropHUD=function(){return sbookMode(false);}
-	sbook.toggleHUD=function(){
-	  if (sbook.mode) {
-	    sbookMode(false);
-	    fdjtDOM.dropClass(document.body,"hudup");}
-	  else fdjtDOM.toggleClass(document.body,"hudup");};
-
+	sbook.toggleHUD=function(evt){
+	    if (fdjtDOM.isClickable(fdjtUI.T(evt))) return;
+	    if (sbook.mode) {
+		sbookMode(false);
+		fdjtDOM.dropClass(document.body,"hudup");}
+	    else fdjtDOM.toggleClass(document.body,"hudup");};
+	
 	/* HUD Messages */
 	
 	var sbook_message_timer=false;
