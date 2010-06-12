@@ -39,6 +39,8 @@ var sbook=
    _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
    last_preview: false,last_mode: false,last_dash: "help",
    target_title: false,preview_title: false,
+   // How long it takes a gesture to go from tap to hold
+   hold_ms: 500,
    // This is the base URI for this document, also known as the REFURI
    // A document (for instance an anthology or collection) may include
    // several refuri's, but this is the default.
@@ -213,6 +215,7 @@ var sbook_gloss_data=
 	return (target)&&(fdjtID(target.sbook_ref));};
 
     sbook.getTarget=function(scan,closest){
+	scan=scan.target||scan.srcElement||scan;
 	var target=false;
 	while (scan) 
 	    if ((scan===sbook.root)||(scan===sbook.root)||(scan.sbookui))
