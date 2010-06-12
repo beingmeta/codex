@@ -142,6 +142,8 @@ var sbookUI=
 	    else if (sbook.preview) {
 		sbook.Preview(false); sbookMode(false);
 		sbook.GoTo(target);}
+	    else if (sbook.mode)
+		sbookMode(false);
 	    else if (fdjtDOM.hasClass(document.body,"hudup"))
 		fdjtDOM.dropClass(document.body,"hudup");
 	    else {
@@ -308,14 +310,6 @@ var sbookUI=
 	    fdjtDOM.cancel(evt);}
 	sbookUI.handlers.onkeypress=onkeypress;
 
-	function sbook_onscroll(evt){
-	    evt=evt||event||null;
-	    // sbook.trace("sbook_onscroll",evt);
-	    /* If you're previewing, ignore mouse action */
-	    if (sbook.preview) return;
-	    if (sbook.target) sbook.checkTarget();}
-	sbookUI.handlers.onscroll=sbook_onscroll;
-
 	/* Setup */
 
 	function setupGestures(){
@@ -331,7 +325,6 @@ var sbookUI=
 	function mouseGestureSetup(){
 	    setupMargins();
 
-	    fdjtDOM.addListener(false,"scroll",sbook_onscroll);
 	    fdjtDOM.addListener(false,"mouseup",onmouseup);
 	    fdjtDOM.addListener(false,"mousedown",onmousedown);
 
@@ -377,7 +370,6 @@ var sbookUI=
 
 	function touchGestureSetup(){
 	    setupMargins();
-	    fdjtDOM.addListener(document.body,"scroll",sbook_onscroll);
 	    fdjtDOM.addListener(document.body,"click",sbook_body_onclick);
 	    fdjtDOM.addListener(sbookHUD,"touchstart",sbook_ontouchstart);
 	    fdjtDOM.addListener(sbookHUD,"touchmove",sbook_ontouchmove);
@@ -389,7 +381,6 @@ var sbookUI=
 
 	function sbookSimpleGestureSetup(){
 	    setupMargins();
-	    fdjtDOM.addListener(document.body,"scroll",sbook_onscroll);
 	    fdjtDOM.addListener(document.body,"click",sbook_body_onclick);
 	    fdjtDOM.addListener(sbookHUD,"mouseover",fdjtUI.CoHi.onmouseover);
 	    fdjtDOM.addListener(sbookHUD,"mouseout",fdjtUI.CoHi.onmouseout);

@@ -80,36 +80,36 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
     if (_sbook_searchupdate) {
       clearTimeout(_sbook_searchupdate);
       _sbook_searchupdate=false;}
-    if ((ch===13)||(ch===13)||(ch===59)) {
-      if (ch===59)
-	sbook.setQuery(target.value);
-      else sbook.setQuery(Knowlet.Query.base(target.value));
-      var qstring=Knowlet.Query.tail(target.value);
-      if (!(fdjtString.isEmpty(qstring))) {
-	var completeinfo=queryCloud(sbook.query);
-	var completions=completeinfo.complete(qstring);
-	if (completions.length) {
-	  var query_base=Knowlet.Query.base(target.value);
-	  var new_term=completeinfo.getValue(completions[0]);
-	  var new_query=(query_base+new_term+";");
-	  sbook.setQuery(new_query,true);}}
-      else {
-	var completeinfo=queryCloud(sbook.query);
-	completeinfo.complete("");}
-      fdjtDOM.cancel(evt);
-      if ((ch===13)||
-	  ((sbook.search_gotlucky) && 
-	   (sbook.query._results.length>0) &&
-	   (sbook.query._results.length<=sbook.search_gotlucky))) {
-	showSearchResults(sbook.query);
-	sbookMode("browsing");
-	fdjtID("SBOOKSEARCHTEXT").blur();
-	fdjtID("SBOOKSUMMARIES").focus();}
-      else {
-	/* Handle new info */
-	var completeinfo=queryCloud(sbook.query);
-	completeinfo.complete("");}
-      return false;}
+      if ((ch===13)||(ch===13)||(ch===59)||(ch===93)) {
+	  if ((ch===59)||(ch===93))
+	      sbook.setQuery(target.value);
+	  else sbook.setQuery(Knowlet.Query.base(target.value));
+	  var qstring=Knowlet.Query.tail(target.value);
+	  if (!(fdjtString.isEmpty(qstring))) {
+	      var completeinfo=queryCloud(sbook.query);
+	      var completions=completeinfo.complete(qstring);
+	      if (completions.length) {
+		  var query_base=Knowlet.Query.base(target.value);
+		  var new_term=completeinfo.getValue(completions[0]);
+		  var new_query=(query_base+new_term+";");
+		  sbook.setQuery(new_query,true);}}
+	  else {
+	      var completeinfo=queryCloud(sbook.query);
+	      completeinfo.complete("");}
+	  fdjtDOM.cancel(evt);
+	  if ((ch===13)||
+	      ((sbook.search_gotlucky) && 
+	       (sbook.query._results.length>0) &&
+	       (sbook.query._results.length<=sbook.search_gotlucky))) {
+	      showSearchResults(sbook.query);
+	      sbookMode("browsing");
+	      fdjtID("SBOOKSEARCHTEXT").blur();
+	      fdjtID("SBOOKSUMMARIES").focus();}
+	  else {
+	      /* Handle new info */
+	      var completeinfo=queryCloud(sbook.query);
+	      completeinfo.complete("");}
+	  return false;}
     else if (ch==32) { /* Space */
       var qstring=Knowlet.Query.tail(target.value);
       var completeinfo=queryCloud(sbook.query);

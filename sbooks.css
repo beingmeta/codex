@@ -208,7 +208,21 @@ div#SBOOKHUD div.hudblock.flash {
     opacity: 0.8; display: block; max-height: 60px;}
 body.hudup div#SBOOKHUD div.hudblock {
     opacity: 0.5; max-height: 80%;}
-body.hudup div#SBOOKHUD div.hudblock.hover { display: none;}
+
+body div#SBOOKHUD.toc div.hudblock.hover,
+body div#SBOOKHUD.context div.hudblock.hover,
+body div#SBOOKHUD.console div.hudblock.hover { display: none;}
+
+body div#SBOOKHUD.searching div.scrollhud.hover,
+body div#SBOOKHUD.browsing div.scrollhud.hover,
+body div#SBOOKHUD.allglosses div.scrollhud.hover,
+body div#SBOOKHUD.glosses div.scrollhud.hover
+body div#SBOOKHUD.login div.scrollhud.hover,
+body div#SBOOKHUD.about div.scrollhud.hover
+body div#SBOOKHUD.help div.scrollhud.hover,
+body div#SBOOKHUD.device div.scrollhud.hover,
+body div#SBOOKHUD.sbookapp div.scrollhud.hover,
+body div#SBOOKHUD.dashtoc div.scrollhud.hover { display: none;}
 
 div#SBOOKHUD div#SBOOKFOOT div.hudblock {
     position: absolute; bottom: 10px; 
@@ -244,7 +258,6 @@ div#SBOOKHUD div.scrollhud.hover {
     display: block; opacity: 0.8; max-height: 60px;}
 div#SBOOKHUD div.scrollhud.flash {
     opacity: 0.8; display: block; max-height: 60px;}
-body.hudup div#SBOOKHUD div.scrollhud.hover { max-height: inherit; display: none;}
 
 /* The TOC/Nav HUD */
 
