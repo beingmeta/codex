@@ -33,44 +33,44 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 */
 
 var sbook=
-  {mode: false,query: false,user: false,
-   root: false,start: false,target: false,head: false,
-   HUD: false,preview: false,preview_target:false,
-   _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
-   last_preview: false,last_mode: false,last_dash: "help",
-   target_title: false,preview_title: false,
-   // How long it takes a gesture to go from tap to hold
-   hold_ms: 500,
-   // This is the base URI for this document, also known as the REFURI
-   // A document (for instance an anthology or collection) may include
-   // several refuri's, but this is the default.
-   refuri: false,
-   // These are the refuris used in this document
-   refuris: [],
-   // This is the document URI, which is usually the same as the REFURI.
-   docuri: false,
-   // This is the unique DOC+USER identifier used by myCopy social DRM.
-   mycopyid: false, 
-   // This is the time of the last update
-   syncstamp: false,
-   // Various settings
-   pageview: false, floathud: false,
-   // Restrictions on excerpts
-   min_excerpt: 3, max_excerpt: false,
-   Trace: {
-    mode: false,  // Whether to trace mode changes
-    nav: false,    // Whether to trace book navigation
-    search: 0, // Whether (and level) to trace searches
-    clouds: 0, // Whether to trace cloud generation
-    focus: false,// Whether to trace focus/target changes
-    locations: false, // Whether we're debugging locations
-    network: 0,      // Whether we're debugging server interaction
-    startup: 0,      // Whether to debug startup
-    mark: false,      // Whether to debug gloss addition
-    pagination: false, // Whether to trace pagination
-    paging: false,       // Whether to trace paging (movement by pages)
-    gestures: false},
-  };
+    {mode: false,hudup: false,preview: false,query: false,user: false,
+     root: false,start: false,target: false,head: false,
+     HUD: false,preview_target:false,last_preview: false,
+     _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
+     last_mode: false,last_dash: "help",
+     target_title: false,preview_title: false,
+     // How long it takes a gesture to go from tap to hold
+     hold_ms: 700,
+     // This is the base URI for this document, also known as the REFURI
+     // A document (for instance an anthology or collection) may include
+     // several refuri's, but this is the default.
+     refuri: false,
+     // These are the refuris used in this document
+     refuris: [],
+     // This is the document URI, which is usually the same as the REFURI.
+     docuri: false,
+     // This is the unique DOC+USER identifier used by myCopy social DRM.
+     mycopyid: false, 
+     // This is the time of the last update
+     syncstamp: false,
+     // Various settings
+     pageview: false, floathud: false,
+     // Restrictions on excerpts
+     min_excerpt: 3, max_excerpt: false,
+     Trace: {
+	 mode: false,  // Whether to trace mode changes
+	 nav: false,    // Whether to trace book navigation
+	 search: 0, // Whether (and level) to trace searches
+	 clouds: 0, // Whether to trace cloud generation
+	 focus: false,// Whether to trace focus/target changes
+	 locations: false, // Whether we're debugging locations
+	 network: 0,      // Whether we're debugging server interaction
+	 startup: 0,      // Whether to debug startup
+	 mark: false,      // Whether to debug gloss addition
+	 pagination: false, // Whether to trace pagination
+	 paging: false,       // Whether to trace paging (movement by pages)
+	 gestures: false},
+    };
 var _sbook_setup=false;
 
 var sbookHUD=false;

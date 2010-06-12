@@ -98,7 +98,7 @@ var sbookMode=
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudblock.hud",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    if (sbook_interaction==="mouse") {
+	    if (sbook.interaction==="mouse") {
 		fdjtDOM.addListener(div,"mouseover",sbookTOC.onmouseover);
 		fdjtDOM.addListener(div,"mouseout",sbookTOC.onmouseout);
 		fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
@@ -111,7 +111,7 @@ var sbookMode=
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKDASHTOC",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    if (sbook_interaction==="mouse") {
+	    if (sbook.interaction==="mouse") {
 		fdjtDOM.addListener(div,"mouseover",sbookTOC.onmouseover);
 		fdjtDOM.addListener(div,"mouseout",sbookTOC.onmouseout);
 		fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
@@ -159,8 +159,9 @@ var sbookMode=
 	    if (mode) {
 		if (sbook.floathud) syncHUD();
 		if (mode===sbook.mode) {}
-		else if (mode===true) 
-		    fdjtDOM.addClass(document.body,"hudup");
+		else if (mode===true)  {
+		    sbook.hudup=true;
+		    fdjtDOM.addClass(document.body,"hudup");}
 		else {
 		    if (typeof mode !== 'string') 
 			throw new Error('mode arg not a string');
@@ -169,13 +170,13 @@ var sbookMode=
 		    sbook.mode=mode;
 		    sbook.last_mode=mode;
 		    if (fdjtKB.contains(sbook_apps,mode)) sbook.last_dash=mode;
-		    fdjtDOM.addClass(document.body,"hudup");
+		    fdjtDOM.addClass(document.body,"hudup"); sbook.hudup=true;
 		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
 		    if ((mode==="allglosses")&&(sbook.target))
 			sbookUI.scrollGlosses(sbook.target);}}
 	    else {
 		sbook.last_mode=sbook.mode;
-		sbook.mode=false;
+		sbook.mode=false; sbook.hudup=false;
 		fdjtDOM.dropClass(document.body,"hudup");
 		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}}
 
@@ -187,7 +188,7 @@ var sbookMode=
 	function sbookHUDFlash(mode,usecs){
 	    if (mode) {
 		fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
-		fdjtDOM.addClass(document.body,"hudup");
+		fdjtDOM.addClass(document.body,"hudup"); sbook.hudup=true;
 		if (usecs) fdjtUI.Delay(usecs,"flash",sbookHUDFlash);}
 	    else if (usecs)
 		fdjtUI.Delay(usecs,"flash",sbookHUDFlash);
@@ -195,7 +196,8 @@ var sbookMode=
 		fdjtDOM.swapClass(sbookHUD,sbookMode_pat,sbook.mode);
 	    else {
 		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
-		fdjtDOM.dropClass(document.body,"hudup");}}
+		fdjtDOM.dropClass(document.body,"hudup");
+		sbook.hudup=false;}}
 	sbookMode.toggle=sbookHUDToggle;
 	sbookMode.flash=sbookHUDFlash;
 
@@ -270,12 +272,13 @@ var sbookMode=
 	    if (window.offsetY!==sbook_sync_head) {
 		sbookHUD.style.top=fdjtDOM.viewTop()+'px';
 		// sbookHead.style["-webkit-transformation"]="translate(0px,"+fdjtDOM.viewTop()+"px)";
-		sbook_sync_head=fdjtDOM.viewTop();
-		sbookHUD.style.maxHeight=((fdjtDOM.viewHeight())-100)+'px';}
-	    if ((fdjtDOM.viewTop()+(fdjtDOM.viewHeight()))!==sbook_sync_foot) {
-		sbookFoot.style.top=(fdjtDOM.viewTop()+(fdjtDOM.viewHeight())-42)+'px';
+		sbook_sync_head=fdjtDOM.viewTop();}
+	    var footoff=fdjtDOM.getOffset(sbookFoot);
+	    var newfoot=(fdjtDOM.viewHeight())-footoff.height;
+	    if (newfoot!==sbook_sync_foot) {
+		sbookFoot.style.top=newfoot+'px';
 		// sbookFoot.style["-webkit-transformation"]="translate(0px,"+(fdjtDOM.viewTop()+(fdjtDOM.viewHeight())-50)+"px)";
-		sbook_sync_foot=(fdjtDOM.viewTop()+(fdjtDOM.viewHeight()));}    }
+		sbook_sync_foot=newfoot;}}
 	sbook.syncHUD=syncHUD;
 	
 	/* The APP HUD */

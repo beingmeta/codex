@@ -1425,11 +1425,6 @@ div.sectionname { clear: both;}
 
 span.redx { font-weight: bold; color: red; vertical-align: middle;}
 
-/* SBOOK formatting */
-
-body[hudup] iframe div.commentors { display: none;}
-body iframe div.commentors { display: block;}
-
 /* Login tab */
 
 table.login {}

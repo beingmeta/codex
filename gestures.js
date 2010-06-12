@@ -86,22 +86,22 @@ var sbookUI=
 
 	function sbookUI(mode){
 	    if (mode==='touch') {
-		sbook_interaction=mode;
+		sbook.interaction=mode;
 		fdjtUI.CheckSpan.set(fdjtID("SBOOKTOUCHMODE"),true,true);
 		fdjtDOM.addClass(document.body,"touch");
 		sbookPaginate();}
 	    else if (mode==='mouse') {
-		sbook_interaction=mode;
+		sbook.interaction=mode;
 		fdjtUI.CheckSpan.set(fdjtID("SBOOKMOUSEMODE"),true,true);
 		fdjtDOM.dropClass(document.body,"touch");
 		sbookPaginate();}
 	    else if (mode==='keyboard') {
-		sbook_interaction=mode;
+		sbook.interaction=mode;
 		fdjtUI.CheckSpan.set(fdjtID("SBOOKKBDMODE"),true,true);
 		fdjtDOM.dropClass(document.body,"touch");
 		sbookPaginate();}
 	    else {
-		sbook_interaction=false;
+		sbook.interaction=false;
 		fdjtDOM.dropClass(document.body,"touch");}}
 	sbookUI.handlers={};
 	sbookUI.holdThreshold=sbook_hold_threshold;
@@ -129,6 +129,27 @@ var sbookUI=
 
 	/* Mouse handlers */
 	
+	function onclick(evt){
+	    var target=fdjtUI.T(evt);
+	    if (fdjtDOM.isClickable(target)) return;
+	    else if (inUI(target)) return;
+	    else if (sbook.preview) {
+		if ((target)&&(fdjtDOM.hasParent(target,sbook.preview))) {
+		    sbook.Preview(false); sbookMode(false);
+		    sbook.GoTo(target);}
+		else sbook.Preview(false);}
+	    else if ((sbook.hudup)&&
+		     (sbook.target)&&
+		     (fdjtDOM.hasParent(target,sbook.target))) {
+		var target=sbook.getTarget(evt)
+		var selection=window.getSelection();
+		var excerpt=fdjtString.stdspace(selection.toString());
+		sbookMark(target,false,excerpt);}
+	    else if ((sbook.mode)||(sbook.hudup)) sbookMode(false);
+	    else {
+		sbook.setTarget(sbook.getTarget(target));
+		sbookMode(true);}}
+
 	/*
 	  body_onmousedown:
 	    if preview mode and over target, go there, otherwise
@@ -142,10 +163,14 @@ var sbookUI=
 	 */
 
 	var mousedown_timer=false;
+	var mousedown=false;
 	var mousemoved=false;
 
 	function onmousedown(evt){
 	    var target=sbook.getTarget(evt);
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] onmousedown@%o %o %o",
+			fdjtET(),fdjtTime(),evt,target);
 	    if (fdjtDOM.isClickable(target)) return;
 	    else if (inUI(target)) return;
 	    else if (sbook.preview) {
@@ -156,27 +181,55 @@ var sbookUI=
 	    else if ((sbook.mode)||(sbook.hudup)) sbookMode(false);
 	    else {
 		mousemoved=false;
-		mousedown_timer=setTimeout(addgloss,sbook.hold_ms,target);}}
+		mousedown=fdjtTime();
+		mousedown_timer=
+		    setTimeout(addgloss,sbook.hold_ms,target);
+		if (sbook.Trace.gestures)
+	    	    fdjtLog("[%f] settimeout@%o to gloss %o after %o",
+			    fdjtET(),mousedown,target,sbook.hold_ms);}}
 
 	function addgloss(target){
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] addgloss %o",fdjtET(),target);
 	    mousedown_timer=false;
 	    sbookMark(target);}
 
 	function onmousemove(evt){
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] onmousemove@%o %o t=%o moved=%o",
+			fdjtET(),fdjtTime(),
+			evt,mousedown_timer,mousemoved);
 	    if (mousedown_timer) {
 		clearTimeout(mousedown_timer);
 		mousedown_timer=false;
 		mousemoved=true;}}
 
 	function onmouseup(evt){
+	    var now=fdjtTime();
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] onmouseup@%o %o timer=%o down=%o moved=%o hold=%o",
+			fdjtET(),now,evt,mousedown_timer,mousedown,mousemoved,
+			now-mousedown);
 	    if (mousedown_timer) {
-		clearTimeout(mousedown_timer);
-		mousedown_timer=false; mousemoved=false;
-		if ((sbook.mode)||(fdjtDOM.hasClass(document.body,"hudup")))
-		    sbookMode(false);
+		if ((mousedown)&&((now-mousedown)>sbook.hold_ms)) {
+		    if (sbook.Trace.gestures)
+			fdjtLog("[%f] timer %o didn't trip@%o",
+				fdjtET(),mousedown_timer,now);
+		    // Timer didn't trip for some reason
+		    clearTimeout(mousedown_timer);
+		    mousedown_timer=false; mousemoved=false; mousedown=false;
+		    var target=sbook.getTarget(evt)
+		    var selection=window.getSelection();
+		    var excerpt=fdjtString.stdspace(selection.toString());
+		    sbookMark(target,false,excerpt);}
 		else {
-		    sbook.setTarget(sbook.getTarget(evt));
-		    sbookMode(true);}}
+		    clearTimeout(mousedown_timer);
+		    mousedown_timer=false; mousemoved=false; mousedown=false;
+		    if ((sbook.mode)||(sbook.hudup))
+			sbookMode(false);
+		    else {
+			sbook.setTarget(sbook.getTarget(evt));
+			sbookMode(true);}}}
 	    else if (mousemoved) {
 		var target=sbook.getTarget(evt)
 		var selection=window.getSelection();
@@ -231,15 +284,10 @@ var sbookUI=
 
 	/* Touch handlers */
 
-	// Touch start on a reference starts a preview of the reference
-	// Touch start 
-
-	function ontouchstart(evt){
-	    var target=fdjtDOM.T(evt);
-	    if (sbook.preview) sbookPreview(false);
-	    else if (sbook.mode) sbookMode(false);
-	    else fdjtDOM.toggleClass(document.body,"hudup");}
-	sbookUI.handlers.ontouchstart=ontouchstart;
+	// Touch start on a reference starts a timer to preview
+	//   the reference
+	// Touch end on a reference either jumps (if the timer is still running)
+	//  or stops preview
 
 	/* Keyboard handlers */
 
@@ -250,7 +298,6 @@ var sbookUI=
 	    if (evt.keyCode===27) { /* Escape works anywhere */
 		if (sbook.mode) {
 		    sbook.last_mode=sbook.mode;
-		    fdjtDOM.dropClass(document.body,"hudup");
 		    sbookMode(false);
 		    sbook.Preview(false);
 		    sbook.setTarget(false);
@@ -338,7 +385,7 @@ var sbookUI=
 	    if ((useragent.search("Safari/")>0)&&
 		(useragent.search("Mobile/")>0))
 		mobileSafariSetup();
-	    if ((sbook_interaction==='touch')) touchGestureSetup();
+	    if ((sbook.interaction==='touch')) touchGestureSetup();
 	    else mouseGestureSetup();}
 	sbook.setupGestures=setupGestures;
 
@@ -347,9 +394,10 @@ var sbookUI=
 
 	    // click either hides hud or selects target and raises hud
 	    // hold or dblclick raises hud, selects target, and opens a gloss
-	    fdjtDOM.addListener(false,"mousedown",onmousedown);
-	    fdjtDOM.addListener(false,"mousemove",onmousemove);
-	    fdjtDOM.addListener(false,"mouseup",onmouseup);
+	    // fdjtDOM.addListener(false,"mousedown",onmousedown);
+	    // fdjtDOM.addListener(false,"mousemove",onmousemove);
+	    // fdjtDOM.addListener(false,"mouseup",onmouseup);
+	    fdjtDOM.addListener(false,"mouseup",onclick);
 	    fdjtDOM.addListener(document.body,"dblclick",ondblclick);
 
 	    // For command keys
@@ -391,7 +439,14 @@ var sbookUI=
 
 	function touchGestureSetup(){
 	    setupMargins();
-	    fdjtDOM.addListener(sbookHUD,"touchstart",sbook_ontouchstart);
+
+	    fdjtDOM.addListener(window,"click",onclick);
+	    //fdjtDOM.addListener(window,"touchstart",onmousedown);
+	    //fdjtDOM.addListener(window,"touchmove",onmousemove);
+	    //fdjtDOM.addListener(window,"touchend",onmouseup);
+	    //fdjtDOM.addListener(window,"mousedown",onmousedown);
+	    //fdjtDOM.addListener(window,"mousemove",onmousemove);
+	    //fdjtDOM.addListener(window,"mouseup",onmouseup);
 	    fdjtDOM.addListener(window,"keypress",sbook_onkeypress);
 	    fdjtDOM.addListener(window,"keydown",sbook_onkeydown);
 	    fdjtDOM.addListener(window,"keyup",sbook_onkeyup);
@@ -411,17 +466,8 @@ var sbookUI=
 	function mobileSafariSetup(){
 	    var head=fdjtDOM.$("HEAD")[0];
 	    var dash=fdjtID("SBOOKDASH");
-	    fdjt_format_console=true;
+	    fdjtLog.doformat=true;
 
-	    document.body.ontouchmove=
-		function(evt){
-		    var target=fdjtDOM.T(evt);
-		    if ((fdjtDOM.hasParent(target,"sbooksummaries"))||
-			(fdjtDOM.hasParent(target,dash)))
-			return true;
-		    else if (sbook.pageview) {
-			evt.preventDefault(); return false;}};
-	    
 	    var head=fdjtDOM.$("HEAD")[0];
 	    var appmeta=fdjtDOM("META");
 	    appmeta.name='apple-mobile-web-app-capable';
@@ -436,6 +482,10 @@ var sbookUI=
 	    sbook.floathud=true;
 	    fdjtDOM.addClass(document.body,"floathud");
 	    
+	    window.onscroll=function(evt){
+		evt=evt||event;
+		if (sbook.hudup) setTimeout(sbook.syncHUD,50);}
+
 	    var mouseopt=fdjtKB.position(sbook.default_opts,"mouse");
 	    if (mouseopt<0)
 		mouseopt=fdjtKB.position(sbook.default_opts,"keyboard");

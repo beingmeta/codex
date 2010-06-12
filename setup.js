@@ -144,10 +144,10 @@ sbook.Setup=
 	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")");
 	    
 	    if (testopt("touch",["mouse",",keyboard"]))
-		sbook_interaction="touch";
+		sbook.interactions="touch";
 	    else if (testopt("keyboard",["mouse","touch"]))
-		sbook_interaction="keyboard";
-	    else sbook_interaction="mouse";
+		sbook.interaction="keyboard";
+	    else sbook.interaction="mouse";
 	    
 	    sbook.allglosses=
 		((offline)?
@@ -257,7 +257,7 @@ sbook.Setup=
 	    var sbookhelp=fdjtDOM.getMeta("SBOOKHELP");
 	    if (sbookhelp) sbook_help_on_startup=true;
 	    sbookPaginate(testopt("page","scroll"));
-	    sbookUI(sbook_interaction);}
+	    sbookUI(sbook.interaction);}
 
 	function updateSessionSettings(delay){
 	    if (delay) {
