@@ -80,7 +80,7 @@ sbook.Setup=
 	    sbook.Message("Setting up gloss server");
 	    setupGlossServer();
 	    applySettings();
-	    if (sbook.pageview) sbookPaginate();
+	    if (sbook.paginate) sbookPaginate();
 	    var knowlets_done=new Date();
 	    // 
 	    var tags_done=new Date();
@@ -100,7 +100,7 @@ sbook.Setup=
 	    [["page","scroll"],["sparse","rich"],["flash","noflash"],
 	     ["fetch","nofetch"],["setup","nosetup"]];
 	
-	sbook.default_opts=["page","sparse","flash","mouse"];
+	sbook.default_opts=["paginate","sparse","flash","mouse"];
 	
 	function testopt(pos,neg,session){
 	    return fdjtState.testOption
@@ -114,6 +114,7 @@ sbook.Setup=
 
 	function getSettings(){
 	    // Basic stuff
+	    var useragent=navigator.userAgent;
 	    var refuri=_getsbookrefuri();
 	    document.body.refuri=sbook.refuri=refuri;
 	    sbook.docuri=_getsbookdocuri();
@@ -143,12 +144,12 @@ sbook.Setup=
 		((offline)&&(fdjtState.getLocal("mycopyid("+refuri+")")))||false;
 	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")");
 	    
-	    if (testopt("touch",["mouse",",keyboard"]))
-		sbook.interactions="touch";
-	    else if (testopt("keyboard",["mouse","touch"]))
-		sbook.interaction="keyboard";
-	    else sbook.interaction="mouse";
-	    
+	    if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0)) {
+	      fdjtLog.doformat=true;
+	      sbook.paginate=false; sbook.floathud=true;
+	      sbook.mobilesafari=true; sbook.touchmode=true;
+	      sbook.default_opts=sbook.default_opts.remove("paginate");}
+
 	    sbook.allglosses=
 		((offline)?
 		 ((fdjtState.getLocal("glosses("+refuri+")",true))||{}):
@@ -250,13 +251,11 @@ sbook.Setup=
 
 	function applySettings(){
 	    // This applies the current session settings
-	    sbookUI.Sparse(testopt("sparse","rich"));
-	    sbookUI.Flash(testopt("flash","dull"));
 	    var tocmax=fdjtDOM.getMeta("SBOOKTOCMAX");
 	    if (tocmax) sbook_tocmax=parseInt(tocmax);
 	    var sbookhelp=fdjtDOM.getMeta("SBOOKHELP");
 	    if (sbookhelp) sbook_help_on_startup=true;
-	    sbookPaginate(testopt("page","scroll"));
+	    sbookPaginate(sbook.paginate);
 	    sbookUI(sbook.interaction);}
 
 	function updateSessionSettings(delay){
@@ -265,8 +264,8 @@ sbook.Setup=
 		return;}
 	    // This updates the session settings from the checkboxes 
 	    var sessionsettings="opts";
-	    if (fdjtID("SBOOKPAGEVIEW").checked)
-		if (testopt("page","scroll","")) {}
+	    if (fdjtID("SBOOKPAGINATE").checked)
+		if (testopt("pageinate")) {}
 	    else sessionsettings=sessionsettings+" page";
 	    else if (testopt("scroll","page","")) {}
 	    else sessionsettings=sessionsettings+" scroll";

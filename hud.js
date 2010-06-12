@@ -273,7 +273,7 @@ var sbookMode=
 		sbookHUD.style.top=fdjtDOM.viewTop()+'px';
 		// sbookHead.style["-webkit-transformation"]="translate(0px,"+fdjtDOM.viewTop()+"px)";
 		sbook_sync_head=fdjtDOM.viewTop();}
-	    var footoff=fdjtDOM.getOffset(sbookFoot);
+	    var footoff=fdjtDOM.getGeometry(sbookFoot);
 	    var newfoot=(fdjtDOM.viewHeight())-footoff.height;
 	    if (newfoot!==sbook_sync_foot) {
 		sbookFoot.style.top=newfoot+'px';

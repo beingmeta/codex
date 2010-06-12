@@ -595,7 +595,7 @@ var sbookPaginate=
 	sbookMode(false);
       sbook_pagescroll=fdjtDOM.viewTop();
       // Add class if it's temporarily gone
-      fdjtDOM.addClass(document.body,"sbookpageview");}
+      fdjtDOM.addClass(document.body,"paginate");}
     sbook.GoToPage=sbookGoToPage;
 
     function sbookGetPage(arg){
@@ -650,6 +650,18 @@ var sbookPaginate=
       var leftedge=fdjtDOM("div#SBOOKLEFTEDGE.sbookmargin.sbookleft");
       var rightedge=fdjtDOM("div#SBOOKRIGHTEDGE.sbookmargin.sbookright");
 
+      if (sbook.mobilesafari) {
+	var head=fdjtDOM.$("HEAD")[0];
+	var dash=fdjtID("SBOOKDASH");
+	var appmeta=fdjtDOM("META");
+	appmeta.name='apple-mobile-web-app-capable';
+	appmeta.content='yes';
+	// fdjtDOM.prepend(head,appmeta);
+	var viewmeta=fdjtDOM("META");
+	viewmeta.name='viewport';
+	viewmeta.content='user-scalable=no,width=device-width';
+	fdjtDOM.prepend(head,viewmeta);}
+      
       topleading.sbookui=true; bottomleading.sbookui=true;
       fdjtDOM.insertAfter
 	(sbookHUD,pagehead,pagefoot,leftedge,rightedge,topleading);  
@@ -725,13 +737,12 @@ var sbookPaginate=
 
     function sbookPaginate(flag,nogo){
       if (arguments.length>0)
-	if (flag===sbook.pageview) return;
+	if (flag===sbook.paginate) return;
 	else if (!(flag)) {
-	  sbook.pageview=false;
+	  sbook.paginate=false;
 	  sbook_nextpage=false; sbook_pagebreak=false;
-	  fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGEVIEW"),false,true);
-	  fdjtDOM.addClass(document.body,"sbookscroll");
-	  fdjtDOM.dropClass(document.body,"sbookpageview");
+	  fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGINATE"),false,true);
+	  fdjtDOM.dropClass(document.body,"paginate");
 	  sbook.Flash(3000,
 		      "Now using scroll view",
 		      fdjtDOM("span.details",
@@ -743,10 +754,9 @@ var sbookPaginate=
 	    window.scrollTo(curx,cury);}
 	  return;}
 	else {
-	  sbook.pageview=true;
-	  fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGEVIEW"),true,true);
-	  fdjtDOM.addClass(document.body,"sbookpageview");
-	  fdjtDOM.dropClass(document.body,"sbookscroll");
+	  sbook.paginate=true;
+	  fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGINATE"),true,true);
+	  fdjtDOM.addClass(document.body,"paginate");
 	  sbook.Flash(3000,
 		      "Switching to page view",
 		      fdjtDOM("span.details",

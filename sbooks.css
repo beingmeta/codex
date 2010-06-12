@@ -73,7 +73,9 @@ p[id], li[id], ul[id], blockquote[id], div[id] {
 div#SBOOKHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; 
     transition-property: opacity; transition-duration: 3s;
+    visibility: hidden;
     z-index: 100;}
+body.hudup div#SBOOKHUD {visibility: visible;}
 div#SBOOKHUD div#SBOOKFOOT {
     position: fixed; bottom: 0px; left: 0px; right: 0px; 
     z-index: 200;}
@@ -99,14 +101,19 @@ body.preview div#SBOOKHUD.dashtoc  div#SBOOKDASH
 div#SBOOKHUD img.hudbutton {
     position: absolute; opacity: 0.7; z-index: 200;
     font-family: sans,sans-serif;
+    visibility: visible; opacity: 0.01;
     border: solid transparent 3px;}
-div#SBOOKHUD img.hudbutton:hover { opacity: 0.9; background-color: gray;}
+body.hudup div#SBOOKHUD img.hudbutton {
+    visibility: visible; opacity: 0.8; background-color: gray;}
+div#SBOOKHUD img.hudbutton:hover {
+    visibility: visible; opacity: 0.6; background-color: gray;}
 
 /* Margins */
 
 body div.sbookmargin {
-    position: fixed; display: block;
+    position: fixed; display: none;
     background-color: white; z-index: 5;}
+body.paginate div.sbookmargin { display: block;}
 
 body.preview div.sbookmargin { display: none;}
 
@@ -125,16 +132,16 @@ body div.sbookmargin.sbookleft {
 body div.sbookmargin.sbookright { right: 0px; }
 body div.sbookmargin.sbookleft { left: 0px; }
 
-body.sbookpageview { overflow: hidden; } /* Don't scroll */
-body.sbookpageview.preview div.sbookmargin { display: none;}
+body.sbookpaginate { overflow: hidden; } /* Don't scroll */
+body.sbookpaginate.preview div.sbookmargin { display: none;}
 
 /* Print rules */
 
 @media print {
     div#SBOOKHUD { display: none;}
     body.hudup div#SBOOKHUD { display: none;}
-    body.sbookpageview div.sbookmargin { display: none;}
-    body.sbookpageview div.leading { display: none;}
+    body.sbookpaginate div.sbookmargin { display: none;}
+    body.sbookpaginate div.leading { display: none;}
 }
 
 /* Show only absolute times when printing, hide otherwise */
@@ -1342,7 +1349,10 @@ span.glossmark {
   border: solid transparent 2px;
   width: 32px; height: 32px; z-index: 50;
   border-right: 0px;
-  opacity: 0.5;}
+  opacity: 0.01;}
+body.hudup span.glossmark { opacity: 0.6;}
+body [id]:hover > span.glossmark { opacity: 0.4;}
+
 span.glossmark img {
    position: relative; right: 0px;
    width: 100%; height: auto;
@@ -1392,20 +1402,6 @@ span.glossmark img.markbutton { display: none;}
 .sbooktarget span.glossmark { opacity: 0.8; }
 .sbooktarget span.glossmark img.markbutton { 
   display: inline;}
-
-/* Spartan style */
-
-body.spartan div#SBOOKHUD { visibility: hidden;}
-body.spartan div#SBOOKHUD img.hudbutton {
-    visibility: visible; opacity: 0.01;}
-body.spartan span.glossmark { opacity: 0.01;}
-body.spartan [id]:hover > span.glossmark { opacity: 0.4;}
-body.spartan div#SBOOKHUD img.hudbutton:hover {
-    visibility: visible; opacity: 0.4;}
-body.spartan.hudup div#SBOOKHUD { visibility: visible;}
-body.spartan.hudup span.glossmark { opacity: 0.6;}
-body.spartan.hudup div#SBOOKHUD img.hudbutton {
-    opacity: 0.6;}
 
 /* For going to ebooks forms */
 

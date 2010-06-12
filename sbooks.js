@@ -54,7 +54,7 @@ var sbook=
      // This is the time of the last update
      syncstamp: false,
      // Various settings
-     pageview: false, floathud: false,
+     paginate: true, touchmode: false, floathud: false,
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
      Trace: {
@@ -419,7 +419,7 @@ var sbook_gloss_data=
 	    setHead(elt);
 	else if (elt.head)
 	    setHead(elt.head);
-	if (sbook.pageview)
+	if (sbook.paginate)
 	    sbook.GoToPage(sbook.getPage(elt));
 	else if (fdjtDOM.isVisible(elt)) {}
 	else if ((!cxt) || (elt===cxt))
@@ -432,7 +432,7 @@ var sbook_gloss_data=
 	sbook.Preview(false);
 	if (typeof target === 'string') target=document.getElementById(target);
 	if (!(target)) return;
-	var page=((sbook.pageview)&&sbook.getPage(target));
+	var page=((sbook.paginate)&&sbook.getPage(target));
 	var info=((target.id)&&(sbook.docinfo[target.id]));
 	if (sbook.Trace.nav)
 	    fdjtLog("sbook.GoTo #%o@P%o/L%o %o",
@@ -444,7 +444,7 @@ var sbook_gloss_data=
 	    else if (info.head) setHead(info.head.frag);}
 	if ((!(noset))&&(target.id)&&(!(inUI(target))))
 	    setTarget(target);
-	else if (sbook.pageview) sbook.GoToPage(page);
+	else if (sbook.paginate) sbook.GoToPage(page);
 	else scrollTo(target);
 	sbookMode(false);}
     sbook.GoTo=sbookGoTo;})();

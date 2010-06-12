@@ -84,25 +84,7 @@ var sbookUI=
 
 	/* Top level functions */
 
-	function sbookUI(mode){
-	    if (mode==='touch') {
-		sbook.interaction=mode;
-		fdjtUI.CheckSpan.set(fdjtID("SBOOKTOUCHMODE"),true,true);
-		fdjtDOM.addClass(document.body,"touch");
-		sbookPaginate();}
-	    else if (mode==='mouse') {
-		sbook.interaction=mode;
-		fdjtUI.CheckSpan.set(fdjtID("SBOOKMOUSEMODE"),true,true);
-		fdjtDOM.dropClass(document.body,"touch");
-		sbookPaginate();}
-	    else if (mode==='keyboard') {
-		sbook.interaction=mode;
-		fdjtUI.CheckSpan.set(fdjtID("SBOOKKBDMODE"),true,true);
-		fdjtDOM.dropClass(document.body,"touch");
-		sbookPaginate();}
-	    else {
-		sbook.interaction=false;
-		fdjtDOM.dropClass(document.body,"touch");}}
+	function sbookUI(mode){}
 	sbookUI.handlers={};
 	sbookUI.holdThreshold=sbook_hold_threshold;
 	sbookUI.hudFlash=default_hud_flash;
@@ -138,14 +120,15 @@ var sbookUI=
 		    sbook.Preview(false); sbookMode(false);
 		    sbook.GoTo(target);}
 		else sbook.Preview(false);}
-	    else if ((sbook.hudup)&&
-		     (sbook.target)&&
-		     (fdjtDOM.hasParent(target,sbook.target))) {
+	    else if ((sbook.hudup)&&(sbook.target)&&
+		     (fdjtDOM.hasParent(target,sbook.target))&&
+		     (!(sbook.mode==="mark"))) {
 		var target=sbook.getTarget(evt)
 		var selection=window.getSelection();
 		var excerpt=fdjtString.stdspace(selection.toString());
 		sbookMark(target,false,excerpt);}
-	    else if ((sbook.mode)||(sbook.hudup)) sbookMode(false);
+	    else if ((sbook.mode)||(sbook.hudup))
+	      sbookMode(false);
 	    else {
 		sbook.setTarget(sbook.getTarget(target));
 		sbookMode(true);}}
@@ -354,12 +337,6 @@ var sbookUI=
 	    else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
 	    else if ((ch===65)||(ch===97)) /* A */
 		modearg=sbook.last_dash||"help";
-	    /*
-	      else if (((!(sbook.mode))||(sbook.mode==="context"))&&
-	      ((ch===112)||(ch===80)))
-	      if (sbook.pageview) sbookPaginate(false);
-	      else sbookPaginate(true);
-	    */
 	    else modearg=modechars[ch];
 	    var mode=sbookMode();
 	    if (modearg) 
@@ -381,11 +358,8 @@ var sbookUI=
 
 	function setupGestures(){
 	    // Unavoidable browser sniffing
-	    var useragent=navigator.userAgent;
-	    if ((useragent.search("Safari/")>0)&&
-		(useragent.search("Mobile/")>0))
-		mobileSafariSetup();
-	    if ((sbook.interaction==='touch')) touchGestureSetup();
+	    if (sbook.mobilesafari) mobileSafariGestures();
+	    if (sbook.touchmode) touchGestureSetup();
 	    else mouseGestureSetup();}
 	sbook.setupGestures=setupGestures;
 
@@ -461,44 +435,6 @@ var sbookUI=
 	    fdjtDOM.addListener(window,"keypress",sbook_onkeypress);
 	    fdjtDOM.addListener(window,"keydown",sbook_onkeydown);
 	    fdjtDOM.addListener(window,"keyup",sbook_onkeyup);}
-	
-	/* Mobile Safari setup */
-	function mobileSafariSetup(){
-	    var head=fdjtDOM.$("HEAD")[0];
-	    var dash=fdjtID("SBOOKDASH");
-	    fdjtLog.doformat=true;
-
-	    var head=fdjtDOM.$("HEAD")[0];
-	    var appmeta=fdjtDOM("META");
-	    appmeta.name='apple-mobile-web-app-capable';
-	    appmeta.content='yes';
-	    // fdjtDOM.prepend(head,appmeta);
-
-	    var viewmeta=fdjtDOM("META");
-	    viewmeta.name='viewport';
-	    viewmeta.content='user-scalable=no,width=device-width';
-	    fdjtDOM.prepend(head,viewmeta);
-
-	    sbook.floathud=true;
-	    fdjtDOM.addClass(document.body,"floathud");
-	    
-	    window.onscroll=function(evt){
-		evt=evt||event;
-		if (sbook.hudup) setTimeout(sbook.syncHUD,50);}
-
-	    var mouseopt=fdjtKB.position(sbook.default_opts,"mouse");
-	    if (mouseopt<0)
-		mouseopt=fdjtKB.position(sbook.default_opts,"keyboard");
-	    if (mouseopt<0)
-		mouseopt=fdjtKB.position(sbook.default_opts,"oneclick");
-	    if (mouseopt<0) sbook.default_opts.push("touch");
-	    else sbook.default_opts[mouseopt]="touch";
-
-	    var pageopt=fdjtKB.position(sbook.default_opts,"pageview");
-	    if (pageopt<0) sbook.default_opts.push("scrollview");
-	    else sbook.default_opts[pageopt]="scrollview";}
-	sbook.Setup.mobileSafariSetup=mobileSafariSetup;
-
 
 	/* Other stuff */
 
@@ -529,7 +465,7 @@ var sbookUI=
 	    fdjtDOM.cancel(evt);}
 
 	function sbookForward(){
-	    if (sbook.pageview) {
+	    if (sbook.paginate) {
 		var goto=-1;
 		if ((sbook_curpage<0)||(sbook_curpage>=sbook_pages.length)) {
 		    var pagenum=sbookGetPage(fdjtDOM.viewTop());
@@ -553,7 +489,7 @@ var sbookUI=
 	sbook.Forward=sbookForward;
 
 	function sbookBackward(){
-	    if (sbook.pageview) {
+	    if (sbook.paginate) {
 		var goto=-1;
 		if ((sbook_curpage<0)||(sbook_curpage>=sbook_pages.length)) {
 		    var pagenum=sbook.getPage(fdjtDOM.viewTop());
