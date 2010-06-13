@@ -29,7 +29,7 @@
 
 */
 
-/* New display model:
+/* Display model:
 
    Margins are in the body, with fixed or absolute positions
      With a viewport-based browser, margins are absolute; the
@@ -83,6 +83,8 @@ div#SBOOKHUD div#SBOOKFOOT {
 body.floathud div#SBOOKHUD ,
 body.floathud div#SBOOKHUD div#SBOOKFOOT {
   position: absolute;}
+body.floathud div#SBOOKHUD div.scrollhud {
+  position: absolute;}
 
 body.preview div#SBOOKHUD div.hudblock { opacity: 0.3}
 body.preview div#SBOOKHUD { display: none;}
@@ -114,8 +116,8 @@ body div.sbookmargin {
     position: fixed; display: none;
     background-color: white; z-index: 5;}
 body.paginate div.sbookmargin { display: block;}
-
 body.preview div.sbookmargin { display: none;}
+body.paginate.preview div.sbookmargin { display: none;}
 
 body div.sbookmargin#SBOOKPAGEHEAD,
 body div.sbookmargin#SBOOKPAGEFOOT {
@@ -231,6 +233,7 @@ div#SBOOKHUD div.scrollhud {
   text-align: center;
   display: none;}
 
+
 div#SBOOKHUD div.scrollhud div.scrollhead {
   position: absolute; top: 0px; left: 0px; right: 0px;
   height: 60px; min-height: 60px;
@@ -242,7 +245,8 @@ div#SBOOKHUD div.scrollhud div.scrollhead {
   border-radius: 0px;}
 
 div#SBOOKHUD div.scrollhud div.scrollbody {
-  position: absolute; top: 60px; right: 0px;  left: 0px; bottom: 0px; display: none;
+  position: absolute;
+  top: 60px; right: 0px;  left: 0px; bottom: 0px; display: none;
   background-color: inherit; padding-left: 1em; padding-right: 1em; margin: 0px;
   overflow: auto;}
 
@@ -327,8 +331,10 @@ div#SBOOKHUD img.hudbutton[alt='glosses'] {
   border-top-left-radius: 6px;}
 div#SBOOKHUD.allglosses img.hudbutton[alt='glosses'] { 
   opacity: 1.0; border-color: blue; background-color: gray;}
+/*
 body.floathud div#SBOOKHUD img.hudbutton[alt='glosses'] {
   top: 0px;}
+*/
 
 /* Miscellaneous gloss rules */
 
@@ -347,6 +353,7 @@ div#SBOOKHUD div.scrollhud#SBOOKDASH {
     padding: 0px; border: 0px; margin: 0px;
     text-align: center;
     bottom: 50px;}
+/* body.floathud div#SBOOKHUD div.scrollhud#SBOOKDASH { bottom: inherit;} */
 div#SBOOKHUD div.scrollhud div.scrollhead#SBOOKDASHTOP {
     margin: 0px; padding: 0px; border: 0px;
     height: 60px; min-height: 60px;
@@ -431,8 +438,10 @@ div#SBOOKHUD img.hudbutton[alt='dash'] {
   -webkit-border-top-right-radius: 6px; 
   -moz-border-radius-topright: 6px; 
   border-top-right-radius: 6px;}
-body.floathud div#SBOOKHUD img.hudbutton[alt='dash'] {
+/*
+  body.floathud div#SBOOKHUD img.hudbutton[alt='dash'] {
   top: 0px;}
+  */
 
 div#SBOOKHUD.help img.hudbutton[alt='dash'],
 div#SBOOKHUD.login img.hudbutton[alt='dash'],
@@ -593,7 +602,8 @@ div#SBOOKHUD.searching div#SBOOKSEARCH div.completions { display: block;}
 /* Glosses for a particular fragments */
 
 div#SBOOKHUD.glosses div.hudblock#SBOOKGLOSSES {
-  display: block; position: fixed; bottom: 100px; opacity: 0.9; overflow: auto;}
+  display: block; opacity: 0.9; overflow: auto; max-height: 250px;}
+
 
 /* The Tags HUD */
 

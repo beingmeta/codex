@@ -54,7 +54,8 @@ var sbookMode=
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,sbookHUD);}
+		fdjtDOM.prepend(document.body,sbookHUD);
+		fdjtDOM.addListener(sbookHUD,"click",hideHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
@@ -83,6 +84,9 @@ var sbookMode=
 	    fillinDash();}
 	sbook.initHUD=initHUD;
 	
+	function hideHUD(evt){
+	    sbookMode(false);}
+
 	/* Creating the HUD */
 	
 	function setupTOC(root_info){
@@ -267,19 +271,20 @@ var sbookMode=
 
 	var sbook_sync_head=false;
 	var sbook_sync_foot=false;
+	var sbook_sync_height=false;
 	
 	function syncHUD(){
 	    if (!(sbook.floathud)) return;
-	    if (window.offsetY!==sbook_sync_head) {
-		sbookHUD.style.top=fdjtDOM.viewTop()+'px';
-		// sbookHead.style["-webkit-transformation"]="translate(0px,"+fdjtDOM.viewTop()+"px)";
-		sbook_sync_head=fdjtDOM.viewTop();}
-	    var footoff=fdjtDOM.getGeometry(sbookFoot);
-	    var newfoot=(fdjtDOM.viewHeight())-footoff.height;
-	    if (newfoot!==sbook_sync_foot) {
-		sbookFoot.style.top=newfoot+'px';
-		// sbookFoot.style["-webkit-transformation"]="translate(0px,"+(fdjtDOM.viewTop()+(fdjtDOM.viewHeight())-50)+"px)";
-		sbook_sync_foot=newfoot;}}
+	    var view_top=fdjtDOM.viewTop();
+	    var view_height=fdjtDOM.viewHeight();
+	    if ((view_top!==sbook_sync_head)||
+		(view_height!==sbook_sync_height)) {
+		sbookHUD.style.top=view_top+'px';
+		// sbookHead.style["-webkit-transformation"]=
+		//    "translate(0px,"+view_top+"px)";
+		sbook_sync_head=view_top;
+		sbookHUD.style.height=view_height+'px';
+		sbook_sync_height=view_height;}}
 	sbook.syncHUD=syncHUD;
 	
 	/* The APP HUD */

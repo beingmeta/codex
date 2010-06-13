@@ -89,7 +89,8 @@ sbook.Setup=
 	    var hud_done=new Date();
 	    initLocation();
 	    var hud_init_done=new Date();
-	    window.onresize=function(evt){sbookPaginate();};
+	    window.onresize=function(evt){
+		if (sbook.paginate) sbookPaginate();};
 	    sbook.setupGestures();
 	    sbookMode(false);
 	    _sbook_setup=sbook._setup=new Date();}
@@ -146,12 +147,14 @@ sbook.Setup=
 		((offline)&&(fdjtState.getLocal("mycopyid("+refuri+")")))||false;
 	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")");
 	    
-	    if ((useragent.search("Safari/")>0)&&(useragent.search("Mobile/")>0)) {
-	      fdjtLog.doformat=true;
-	      sbook.paginate=false; sbook.floathud=true;
-	      sbook.mobilesafari=true; sbook.touchmode=true;
-	      sbook.default_opts=sbook.default_opts.remove("paginate");}
-
+	    if (((useragent.search("Safari/")>0)&&
+		 (useragent.search("Mobile/")>0))||
+		(true)) {
+		fdjtLog.doformat=true;
+		sbook.paginate=false; sbook.scrolling=true;
+		sbook.floathud=true;
+		sbook.mobilesafari=true; sbook.touchmode=true;}
+	    
 	    sbook.allglosses=
 		((offline)?
 		 ((fdjtState.getLocal("glosses("+refuri+")",true))||{}):

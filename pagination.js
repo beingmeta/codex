@@ -662,6 +662,9 @@ var sbookPaginate=
 	viewmeta.content='user-scalable=no,width=device-width';
 	fdjtDOM.prepend(head,viewmeta);}
       
+	if (sbook.floathud) {
+	    fdjtDOM.addClass(document.body,"floathud");}
+
       topleading.sbookui=true; bottomleading.sbookui=true;
       fdjtDOM.insertAfter
 	(sbookHUD,pagehead,pagefoot,leftedge,rightedge,topleading);  
@@ -729,7 +732,7 @@ var sbookPaginate=
       fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
       sbook_pages=pagination.pages;
       sbook_pageinfo=pagination.info;
-      sbook_pagesize=pagesize;
+      sbook.pagesize=pagesize;
       sbook.Flash(2000,"Done with page layout");
       if (target)
 	sbook.GoToPage(sbook.getPage(target));

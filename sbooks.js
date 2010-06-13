@@ -40,7 +40,7 @@ var sbook=
      last_mode: false,last_dash: "help",
      target_title: false,preview_title: false,
      // How long it takes a gesture to go from tap to hold
-     hold_ms: 700,
+     hold_ms: 700, edgeclick: 50, pagesize: 250,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -424,10 +424,8 @@ var sbook_gloss_data=
 	    sbook.GoToPage(sbook.getPage(elt));
 	else if (fdjtDOM.isVisible(elt)) {}
 	else if ((!cxt) || (elt===cxt))
-	    fdjtUI.scrollIntoView
-	(elt,sbookGetStableId(elt),false,true,displayOffset());
-	else fdjtUI.scrollIntoView
-	(elt,sbookGetStableId(elt),cxt,true,displayOffset());}
+	    fdjtUI.scrollIntoView(elt,elt.id,false,true,displayOffset());
+	else fdjtUI.scrollIntoView(elt,elt.id,cxt,true,displayOffset());}
 
     function sbookGoTo(target,noset){
 	sbook.Preview(false);

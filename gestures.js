@@ -127,8 +127,15 @@ var sbookUI=
 		var selection=window.getSelection();
 		var excerpt=fdjtString.stdspace(selection.toString());
 		sbookMark(target,false,excerpt);}
+	    else if ((sbook.edgeclick)&&
+		     ((evt.clientX-(fdjtDOM.viewLeft()))<sbook.edgeclick))
+		sbookBackward();
+	    else if ((sbook.edgeclick)&&
+		     (((fdjtDOM.viewLeft()+fdjtDOM.viewWidth())-evt.clientX)
+		      <sbook.edgeclick))
+	    	sbookForward();
 	    else if ((sbook.mode)||(sbook.hudup))
-	      sbookMode(false);
+		sbookMode(false);
 	    else {
 		sbook.setTarget(sbook.getTarget(target));
 		sbookMode(true);}}
@@ -363,7 +370,7 @@ var sbookUI=
 	function setupGestures(){
 	    // Unavoidable browser sniffing
 	    if (sbook.mobilesafari) mobileSafariGestures();
-	    if (sbook.touchmode) touchGestureSetup();
+	    if (sbook.touch) touchGestureSetup();
 	    else mouseGestureSetup();}
 	sbook.setupGestures=setupGestures;
 
@@ -393,6 +400,9 @@ var sbookUI=
 		dash_button.onclick=hudbutton;
 	    glosses_button.onmouseover=glosses_button.onmouseout=
 		glosses_button.onclick=hudbutton;}
+
+	function mobileSafariGestures(){
+	    window.onscroll=function(evt){sbook.syncHUD();};}
 
 	var mode_hud_map={
 	    "toc": "SBOOKTOC",
@@ -493,7 +503,11 @@ var sbookUI=
 			sbook.GoToPage(sbook_curpage);
 			if ((sbook_curinfo.focus)&&(sbook_curinfo.focus.id))
 			    sbook.setHashID(sbook_curinfo.focus);}}}
-	    else window.scrollBy(0,sbook_pagesize);}
+	    else {
+		var delta=fdjtDOM.viewHeight()-50;
+		if (delta<0) delta=fdjtDOM.viewHeight();
+		var newy=fdjtDOM.viewTop()+delta;
+		window.scrollTo(fdjtDOM.viewLeft(),newy);}}
 	sbook.Forward=sbookForward;
 
 	function sbookBackward(){
@@ -510,16 +524,21 @@ var sbookUI=
 		    var info=sbook_pageinfo[sbook_curpage];
 		    var pagetop=fdjtDOM.viewTop()+sbook_top_px;
 		    if (pagetop>info.top)
-			sbook.GoToPage(sbook_curpage,(info.top-pagetop)-sbook_pagesize);
+			sbook.GoToPage(sbook_curpage,(info.top-pagetop)-sbook.pagesize);
 		    else if (sbook_curpage===0) {}
 		    else {
 			sbook_curpage--;
 			sbook.GoToPage(sbook_curpage);
 			if (sbook_curinfo.focus) sbook.setHashID(sbook_curinfo.focus);}}}
-	    else window.scrollBy(0,-sbook_pagesize);}
+	    else {
+		var delta=fdjtDOM.viewHeight()-50;
+		if (delta<0) delta=fdjtDOM.viewHeight();
+		var newy=fdjtDOM.viewTop()-delta;
+		window.scrollTo(fdjtDOM.viewLeft(),newy);}}
 	sbook.Backward=sbookBackward;
 
 	return sbookUI;})();
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
