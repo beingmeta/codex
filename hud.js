@@ -98,7 +98,7 @@ var sbookMode=
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudblock.hud",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    if (sbook.interaction==="mouse") {
+	    if (sbook.mouse) {
 		fdjtDOM.addListener(div,"mouseover",sbookTOC.onmouseover);
 		fdjtDOM.addListener(div,"mouseout",sbookTOC.onmouseout);
 		fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
@@ -111,7 +111,7 @@ var sbookMode=
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKDASHTOC",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    if (sbook.interaction==="mouse") {
+	    if (sbook.mouse) {
 		fdjtDOM.addListener(div,"mouseover",sbookTOC.onmouseover);
 		fdjtDOM.addListener(div,"mouseout",sbookTOC.onmouseout);
 		fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
@@ -157,6 +157,7 @@ var sbookMode=
 			fdjtET(),mode,sbook.mode,document.body.className);
 	    if (sbook.preview) sbook.Preview(false);
 	    if (mode) {
+		if (mode==="dash") mode=sbook.last_dash||"help";
 		if (sbook.floathud) syncHUD();
 		if (mode===sbook.mode) {}
 		else if (mode===true)  {

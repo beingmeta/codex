@@ -162,7 +162,7 @@ img.sbookqricon { display: none;}
 .sbookfocus { cursor: pointer; }
 body.hudup .sbookfocus { color: blue;}
 
-body.hudup .sbooktarget { color: blue; }
+.sbooktarget { color: blue; }
 body.hudup .sbooktarget .glossmark { color: blue; cursor: pointer;}
 body.hudup .sbookfocus.sbooktarget { color: darkblue;}
 
@@ -215,21 +215,6 @@ div#SBOOKHUD div.hudblock.flash {
     opacity: 0.8; display: block; max-height: 60px;}
 body.hudup div#SBOOKHUD div.hudblock {
     opacity: 0.5; max-height: 80%;}
-
-body div#SBOOKHUD.toc div.hudblock.hover,
-body div#SBOOKHUD.context div.hudblock.hover,
-body div#SBOOKHUD.console div.hudblock.hover { display: none;}
-
-body div#SBOOKHUD.searching div.scrollhud.hover,
-body div#SBOOKHUD.browsing div.scrollhud.hover,
-body div#SBOOKHUD.allglosses div.scrollhud.hover,
-body div#SBOOKHUD.glosses div.scrollhud.hover
-body div#SBOOKHUD.login div.scrollhud.hover,
-body div#SBOOKHUD.about div.scrollhud.hover
-body div#SBOOKHUD.help div.scrollhud.hover,
-body div#SBOOKHUD.device div.scrollhud.hover,
-body div#SBOOKHUD.sbookapp div.scrollhud.hover,
-body div#SBOOKHUD.dashtoc div.scrollhud.hover { display: none;}
 
 div#SBOOKHUD div#SBOOKFOOT div.hudblock {
     position: absolute; bottom: 10px; 
@@ -1351,7 +1336,9 @@ span.glossmark {
   border-right: 0px;
   opacity: 0.01;}
 body.hudup span.glossmark { opacity: 0.6;}
-body [id]:hover > span.glossmark { opacity: 0.4;}
+body p[id]:hover > span.glossmark { opacity: 0.4;}
+body div[id]:hover > span.glossmark { opacity: 0.4;}
+
 
 span.glossmark img {
    position: relative; right: 0px;
@@ -1386,8 +1373,9 @@ span.glossmark:hover img.tiny { display: none;}
 
 .sbooktarget { }
 .sbooktarget span.glossmark {
-    border-top: solid blue 2px; opacity: 0.9; }
-.sbooktarget span.glossmark:hover { opacity: 0.9;}
+    border-top: solid blue 2px;}
+.sbooktarget span.glossmark:hover { opacity: 0.5;}
+body.hudup .sbooktarget span.glossmark:hover { opacity: 0.9;}
 .sbooktarget span.glossmark img { }
 
 span.glossmark:hover { opacity: 0.9;}
@@ -1399,7 +1387,6 @@ span.glossmark img.markbutton {
   position: static; background-color: lightblue; display: none;
   border: solid transparent 0px;}
 span.glossmark img.markbutton { display: none;}
-.sbooktarget span.glossmark { opacity: 0.8; }
 .sbooktarget span.glossmark img.markbutton { 
   display: inline;}
 

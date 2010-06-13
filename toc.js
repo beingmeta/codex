@@ -174,7 +174,6 @@ sbookTOC.onmouseover=function(evt){
     fdjtUI.CoHi.onmouseover(evt);
     if ((evt.ctrlKey)||(evt.altKey)) return;
     if (fdjtDOM.isClickable(target)) return;
-    fdjtLog("mouseover %o button=%o",evt,evt.button);
     if (!((fdjtDOM.hasParent(target,".spanbar"))||
 	  (fdjtDOM.hasParent(target,".previewicon")))) {
 	if (sbook.preview) sbook.Preview(false,true);

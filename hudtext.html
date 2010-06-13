@@ -1,11 +1,9 @@
 <img src='http://static.beingmeta.com/graphics/CompassIcon40x40.png'
      alt='toc' title='click to navigate the book as a whole'
-     class='hudbutton' id='SBOOKTOCBUTTON'
-     onclick='sbookMode.toggle("toc"); fdjtUI.cancel(event); return false;'/>
+     class='hudbutton' id='SBOOKTOCBUTTON' hudmode='toc'/>
 <img src='http://static.beingmeta.com/graphics/TagSearch40x40.png'
      alt='search' title='click to search tags within the book'
-     class='hudbutton' id='SBOOKSEARCHBUTTON'
-     onclick='sbook.toggleSearch(event);'/>
+     class='hudbutton' id='SBOOKSEARCHBUTTON' hudmode='search'/>
 <div id='SBOOKTOC' class='hudblock'></div>
 <div id='SBOOKSEARCH' class='scrollhud sbooksearch'></div>
 <div id='SBOOKALLGLOSSES' class='sbookglosses scrollhud'>
@@ -31,12 +29,10 @@
 <div id='SBOOKFOOT'>
   <img src='http://static.beingmeta.com/graphics/sbooksappicon40x40.png'
        alt='dash' title='Click for Help, settings, book description, etc'
-       class='hudbutton' id='SBOOKDASHBUTTON'
-       onclick='sbookMode.toggle(sbook.last_dash); fdjtUI.cancel(event); return false;'/>
+       class='hudbutton' id='SBOOKDASHBUTTON' hudmode='dash'/>
   <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
        alt='glosses' title='Click to browse glosses overlaid on this book'
-       class='hudbutton' id='SBOOKALLGLOSSESBUTTON'
-       onclick='sbookMode.toggle("allglosses"); fdjtUI.cancel(event); return false;'/>
+       class='hudbutton' id='SBOOKALLGLOSSESBUTTON' hudmode='allglosses'/>
   <div class='hudblock tags' id='SBOOKTAGS'></div>
 </div>
 <div id='SBOOKMARKHUD' class='hudblock'></div>

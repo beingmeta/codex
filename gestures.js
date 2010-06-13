@@ -132,6 +132,10 @@ var sbookUI=
 	    else {
 		sbook.setTarget(sbook.getTarget(target));
 		sbookMode(true);}}
+	sbookUI.margin_onclick=function(evt) {
+	    if (sbook.preview) sbook.Preview(false);
+	    else if ((sbook.mode)||(sbook.hudup)) sbookMode(false);
+	    else sbookMode(true);};
 
 	/*
 	  body_onmousedown:
@@ -366,11 +370,8 @@ var sbookUI=
 	function mouseGestureSetup(){
 	    setupMargins();
 
-	    // click either hides hud or selects target and raises hud
-	    // hold or dblclick raises hud, selects target, and opens a gloss
-	    // fdjtDOM.addListener(false,"mousedown",onmousedown);
-	    // fdjtDOM.addListener(false,"mousemove",onmousemove);
-	    // fdjtDOM.addListener(false,"mouseup",onmouseup);
+	    // We handle the click on mouseup because that way
+	    //  we will get selections
 	    fdjtDOM.addListener(false,"mouseup",onclick);
 	    fdjtDOM.addListener(document.body,"dblclick",ondblclick);
 
@@ -384,32 +385,39 @@ var sbookUI=
 	    var search_button=fdjtID("SBOOKSEARCHBUTTON");
 	    var glosses_button=fdjtID("SBOOKALLGLOSSESBUTTON");
 
-	    toc_button.onmouseover=function(evt){
-		fdjtDOM.addClass(fdjtID("SBOOKTOC"),"hover");
-		fdjtUI.cancel(evt);};
-	    toc_button.onmouseout=function(evt){
-		fdjtDOM.dropClass(fdjtID("SBOOKTOC"),"hover");
-		fdjtUI.cancel(evt);};
-	    search_button.onmouseover=function(evt){
-		fdjtDOM.addClass(fdjtID("SBOOKSEARCH"),"hover");
-		fdjtUI.cancel(evt);};
-	    search_button.onmouseout=function(evt){
-		fdjtDOM.dropClass(fdjtID("SBOOKSEARCH"),"hover");
-		fdjtUI.cancel(evt);};
-	    glosses_button.onmouseover=function(evt){
-		fdjtDOM.addClass(fdjtID("SBOOKALLGLOSSES"),"hover");
-		fdjtUI.cancel(evt);};
-	    glosses_button.onmouseout=function(evt){
-		fdjtDOM.dropClass(fdjtID("SBOOKALLGLOSSES"),"hover");
-		fdjtUI.cancel(evt);};
-	    dash_button.onmouseover=function(evt){
-		fdjtDOM.addClass(fdjtID("SBOOKDASH"),"hover");
-		fdjtDOM.addClass(fdjtID("SBOOKFOOT"),"hover");
-		fdjtUI.cancel(evt);};
-	    dash_button.onmouseout=function(evt){
-		fdjtDOM.dropClass(fdjtID("SBOOKDASH"),"hover");
-		fdjtDOM.dropClass(fdjtID("SBOOKFOOT"),"hover");
-		fdjtUI.cancel(evt);};}
+	    toc_button.onmouseover=toc_button.onmouseout=
+		toc_button.onclick=hudbutton;
+	    search_button.onmouseover=search_button.onmouseout=
+		search_button.onclick=hudbutton;
+	    dash_button.onmouseover=dash_button.onmouseout=
+		dash_button.onclick=hudbutton;
+	    glosses_button.onmouseover=glosses_button.onmouseout=
+		glosses_button.onclick=hudbutton;}
+
+	var mode_hud_map={
+	    "toc": "SBOOKTOC",
+	    "search": "SBOOKSEARCH",
+	    "allglosses": "SBOOKALLGLOSSES",
+	    "dash": "SBOOKDASH"};
+
+	function hudbutton(evt){
+	    var target=fdjtUI.T(evt);
+	    var mode=target.getAttribute("hudmode");
+	    if (!(mode)) return;
+	    var hudid=((mode)&&(mode_hud_map[mode]));
+	    var hud=fdjtID(hudid);
+	    if (evt.type==='click') {
+		if (hud) fdjtDOM.dropClass(hud,"hover");
+		sbookMode(mode); fdjtUI.cancel(evt);}
+	    else if ((evt.type==='mouseover')&&(sbook.mode))
+		return;
+	    else {
+		if (!(hud)) {}
+		else if (evt.type==='mouseover')
+		    fdjtDOM.addClass(hud,"hover");
+		else if (evt.type==='mouseout')
+		    fdjtDOM.dropClass(hud,"hover");
+		else {}}}
 
 	function touchGestureSetup(){
 	    setupMargins();

@@ -96,21 +96,23 @@ sbook.Setup=
 	sbook.Setup=Setup;
 
 	/* Application settings */
-	sbook.allopts=
-	    [["page","scroll"],["sparse","rich"],["flash","noflash"],
-	     ["fetch","nofetch"],["setup","nosetup"]];
-	
-	sbook.default_opts=["paginate","sparse","flash","mouse"];
-	
-	function testopt(pos,neg,session){
-	    return fdjtState.testOption
-	    (pos,neg,
-	     (session||fdjtState.getSession("sbookopts")),
-	     fdjtState.getQuery("sbookopts"),
-	     fdjtState.getLocal("sbookopts"),
-	     fdjtDOM.getMeta("sbookopts"),
-	     sbook.default_opts);}
-	sbook.testopt=testopt;
+
+	var optrules=
+	    {"paginate":["scrolling"],
+	     "scrolling":["paginate"],
+	     "touch":["mouse","kbd"],
+	     "mouse":["touch","kbd"],
+	     "kbd":["touch","mouse"]};
+
+	function setopt(opt,flag){
+	    if (typeof flag === 'undefined') flag=true;
+	    if ((flag)&&(sbook[opt])) return;
+	    else if ((!(flag))&&(!(sbook[opt]))) return;
+	    var unset=optrules[opt];
+	    sbook[opt]=true;
+	    if (unset) {
+		var i=0; var lim=unset.length;
+		sbook[unset[i++]]=false;}}
 
 	function getSettings(){
 	    // Basic stuff
@@ -264,30 +266,12 @@ sbook.Setup=
 		return;}
 	    // This updates the session settings from the checkboxes 
 	    var sessionsettings="opts";
-	    if (fdjtID("SBOOKPAGINATE").checked)
-		if (testopt("pageinate")) {}
-	    else sessionsettings=sessionsettings+" page";
-	    else if (testopt("scroll","page","")) {}
-	    else sessionsettings=sessionsettings+" scroll";
-	    if (fdjtID("SBOOKTOUCHMODE").checked)
-		if (testopt("touch",["mouse","keyboard"],"")) {}
-	    else sessionsettings=sessionsettings+" touch";
-	    if (fdjtID("SBOOKMOUSEMODE").checked)
-		if (testopt("mouse",["touch","keyboard"],"")) {}
-	    else sessionsettings=sessionsettings+" mouse";
-	    if (fdjtID("SBOOKKBDMODE").checked)
-		if (testopt("keyboard",["touch","mouse"],"")) {}
-	    else sessionsettings=sessionsettings+" keyboard";
-	    if (fdjtID("SBOOKHUDFLASH").checked)
-		if (testopt("flash","noflash","")) {}
-	    else sessionsettings="sessionsettings"+flash;
-	    else if (testopt("noflash","flash","")) {}
-	    else sessionsettings=sessionsettings+" noflash";
-	    if (fdjtID("SBOOKSPARSE").checked)
-		if (testopt("sparse","rich","")) {}
-	    else sessionsettings=sessionsettings+" sparse";
-	    else if (testopt("sparse","rich","")) {}
-	    else sessionsettings=sessionsettings+" rich";
+	    setopt("paginate",fdjtID("SBOOKPAGINATE").checked);
+	    setopt("touch",fdjtID("SBOOKTOUCHMODE").checked);
+	    setopt("mouse",fdjtID("SBOOKMOUSEMODE").checked);
+	    setopt("kbd",fdjtID("SBOOKKBDMODE").checked);
+	    setopt("flashy",fdjtID("SBOOKHUDFLASH").checked);
+	    // setopt("rich",fdjtID("SBOOKHUDRICH").checked);
 	    fdjtSetSession("sbookopts",sessionsettings);
 	    applySettings();}
 

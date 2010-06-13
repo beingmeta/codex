@@ -700,14 +700,14 @@ var sbookPaginate=
 	pagefoot.style.backgroundColor=bgcolor;}}
     sbook.initDisplay=initDisplay;
 
-    function makeMargin(spec){
-      var div=fdjtDOM(spec);
-      div.onmouseover=fdjtDOM.cancel;
-      div.onmouseout=fdjtDOM.cancel;
-      div.onmousedown=fdjtDOM.cancel;
-      div.onmouseup=fdjtDOM.cancel;
-      div.onclick=sbook.toggleHUD;
-      return div;}
+      function makeMargin(spec){
+	  var div=fdjtDOM(spec);
+	  // div.onmouseover=fdjtDOM.cancel;
+	  // div.onmouseout=fdjtDOM.cancel;
+	  // div.onmousedown=fdjtDOM.cancel;
+	  // div.onmouseup=fdjtDOM.cancel;
+	  div.onclick=sbookUI.margin_onclick;
+	  return div;}
 
     function moveMargins(pageinfo){
       // This is only neccessary if we can't use fixed positioning
