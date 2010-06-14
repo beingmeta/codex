@@ -54,8 +54,7 @@ var sbookMode=
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,sbookHUD);
-		fdjtDOM.addListener(sbookHUD,"click",hideHUD);}
+		fdjtDOM.prepend(document.body,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
@@ -84,9 +83,6 @@ var sbookMode=
 	    fillinDash();}
 	sbook.initHUD=initHUD;
 	
-	function hideHUD(evt){
-	    sbookMode(false);}
-
 	/* Creating the HUD */
 	
 	function setupTOC(root_info){
@@ -269,21 +265,25 @@ var sbookMode=
 		return elt.id;
 	    else return false;}
 
-	var sbook_sync_head=false;
-	var sbook_sync_foot=false;
+	var sbook_sync_off=false;
 	var sbook_sync_height=false;
 	
 	function syncHUD(){
 	    if (!(sbook.floathud)) return;
 	    var view_top=fdjtDOM.viewTop();
-	    var view_height=fdjtDOM.viewHeight();
-	    if ((view_top!==sbook_sync_head)||
-		(view_height!==sbook_sync_height)) {
+	    var view_height=((sbook.mode)&&(fdjtDOM.viewHeight()));
+	    if (view_top!==sbook_sync_off) {
 		sbookHUD.style.top=view_top+'px';
-		// sbookHead.style["-webkit-transformation"]=
-		//    "translate(0px,"+view_top+"px)";
-		sbook_sync_head=view_top;
-		sbookHUD.style.height=view_height+'px';
+		sbook_sync_off=view_top;}
+	    if (view_height!==sbook_sync_height) {
+		if (view_height) {
+		    sbookHUD.style.height=view_height+'px';
+		    sbookFoot.style.top='';
+		    sbookFoot.style.bottom='0px';}
+		else {
+		    sbookHUD.style.height='';
+		    sbookFoot.style.bottom='';
+		    sbookFoot.style.top=(fdjtDOM.viewHeight()-42)+'px';}
 		sbook_sync_height=view_height;}}
 	sbook.syncHUD=syncHUD;
 	

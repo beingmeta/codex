@@ -68,7 +68,7 @@ var sbook=
 	 network: 0,      // Whether we're debugging server interaction
 	 startup: 0,      // Whether to debug startup
 	 mark: false,      // Whether to debug gloss addition
-	 pagination: false, // Whether to trace pagination
+	 pagination: 0, // Whether to trace pagination
 	 paging: false,       // Whether to trace paging (movement by pages)
 	 gestures: false},
     };
@@ -369,13 +369,6 @@ var sbook_gloss_data=
 	    if (target.title) sbook.target_title=target.title;
 	    target.title=_('click to add a gloss');}}
     sbook.setTarget=setTarget;
-
-    sbook.checkTarget=function(){
-	if ((sbook.target) && (!(fdjtDOM.isVisible(sbook.target,true)))) {
-	    if (sbook.Trace.focus)
-		sbook.trace("sbookCheckTarget(clear)",sbook.target);
-	    fdjtDOM.dropClass(sbook.target,"sbooktarget");
-	    sbook.target=false;}};
 
     /* Navigation */
 

@@ -1,6 +1,6 @@
 /* -*- Mode: CSS; character-encoding: utf-8; -*- */
 
-/* Copyright (C) 2009 beingmeta, inc.
+/* Copyright (C) 2009-2010 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
     large structured documents (sBooks).
 
@@ -31,6 +31,45 @@
 
 /* Display model:
 
+   This file describes the CSS styles used in the sbooks web reader.
+   These are distinct from content styles used in the sbooks themselves.
+
+   These styles are used in both the interface itself (the HUD and glossmarks)
+    and in the implementation of pagination.
+
+   The interface has two components: glossmarks distributed throughout
+    the content and the sbooks HUD, where search and browsing happen.
+
+   This sBooks HUD is a DIV inserted at the head of the document but
+    out of the document flow.  In most browsers, the HUD has 'position: fixed'
+    but for Mobile Safari (at least), the HUD is absolutely positioned and
+    dynamically moved.
+
+   The interface between the UI logic and the CSS lies primarily in
+    the CSS classes assigned to the body and the sBooks HUD.  
+
+   The body has two dynamic classes: hudup and preview.  'hudup' is
+    assigned when the HUD is up and displayed.  'preview' is assigned
+    when the HUD UI is providing a preview of some content.
+
+   The HUD itself has a dynamic class describing the current 'mode'
+    which means which overlay is currently visible (if any).
+       toc, searching, browsing, allglosses, glosses,
+  
+
+   Margins and Pagination
+   
+     Pagination in sBooks divides the document content into pages and
+      identifies absolute y-offsets for each page start and end.  Display
+      of a page overlays an obscuring DIV over the top and bottom to hide
+      content not on the page.  Displaying a page scrolls to some interval
+      above the page top and then sets a top and bottom margin to obscure
+      content above and below the page bounds.
+
+    In most browsers, the margins are 'position: fixed' and the height
+     of the top margin never changes.
+    In Mobile Safari (at least), the margins are 'position: absolute'.
+   
    Margins are in the body, with fixed or absolute positions
      With a viewport-based browser, margins are absolute; the
       left and right edges run along the whole document; the top
@@ -118,6 +157,7 @@ body div.sbookmargin {
 body.paginate div.sbookmargin { display: block;}
 body.preview div.sbookmargin { display: none;}
 body.paginate.preview div.sbookmargin { display: none;}
+body.floathud div.sbookmargin { position: absolute;}
 
 body div.sbookmargin#SBOOKPAGEHEAD,
 body div.sbookmargin#SBOOKPAGEFOOT {
@@ -126,6 +166,15 @@ body div.sbookmargin#SBOOKPAGEHEAD { top: 0px; }
 body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; }
 
 body div.sbookmargin#SBOOKPAGEFOOT div.sbookmargin { position: absolute; }
+
+body div.sbookmargin#SBOOKPAGELEFT,
+body div.sbookmargin#SBOOKPAGERIGHT {
+    position: fixed; width: 40px; top: 0px; bottom: 0px; height: 1000px;
+    opacity: 0.01;}
+body div.sbookmargin#SBOOKPAGELEFT { left: 0px;}
+body div.sbookmargin#SBOOKPAGERIGHT { right: 0px;}
+body.floathud div.sbookmargin#SBOOKPAGERIGHT {
+    position: absolute;}
 
 body div#SBOOKHUD div { z-index: inherit;}
 body div.sbookmargin.sbookright,
@@ -164,7 +213,8 @@ img.sbookqricon { display: none;}
 .sbookfocus { cursor: pointer; }
 body.hudup .sbookfocus { color: blue;}
 
-.sbooktarget { color: blue; }
+.sbooktarget { }
+body.hudup .sbooktarget { color: blue; cursor: pointer;}
 body.hudup .sbooktarget .glossmark { color: blue; cursor: pointer;}
 body.hudup .sbookfocus.sbooktarget { color: darkblue;}
 
@@ -1344,11 +1394,9 @@ span.glossmark {
   border: solid transparent 2px;
   width: 32px; height: 32px; z-index: 50;
   border-right: 0px;
-  opacity: 0.01;}
-body.hudup span.glossmark { opacity: 0.6;}
-body p[id]:hover > span.glossmark { opacity: 0.4;}
-body div[id]:hover > span.glossmark { opacity: 0.4;}
-
+  opacity: 0.75;
+  display: none;}
+body.hudup span.glossmark { display: block;}
 
 span.glossmark img {
    position: relative; right: 0px;
@@ -1472,10 +1520,6 @@ body.xtouch img.hudbutton[alt='>>'] { display: block;}
 body.xtouch img.hudbutton[alt='<<'] { display: block;}
 
 /* Make span bars finger-fat in touch mode */
-
-/* Show edges in touch mode (for tap/click) */
-body.touch div#SBOOKHUD div#SBOOKLEFTEDGE { display: block; }
-body.touch div#SBOOKHUD div#SBOOKRIGHTEDGE { display: block; }
 
 /* Conditional display */
 .fortouch { display: none;}

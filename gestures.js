@@ -113,10 +113,19 @@ var sbookUI=
 	
 	function onclick(evt){
 	    var target=fdjtUI.T(evt);
-	    if (fdjtDOM.isClickable(target)) return;
+	    if (sbook.Trace.gestures)
+		fdjtLog(
+		    "[%f] onclick %o cl=%o ui=%o sbt=%o sbp=%o sh=%o sm=%o hp=%o @<%o,%o>",
+		    fdjtET(),evt,fdjtDOM.isClickable(target),inUI(target),
+		    sbook.target,sbook.preview,
+		    sbook.hudup,sbook.mode,
+		    (fdjtDOM.hasParent(target,sbook.target)),
+		    evt.clientX,evt.clientY);
+	    if (!(target)) return;
+	    else if (fdjtDOM.isClickable(target)) return;
 	    else if (inUI(target)) return;
 	    else if (sbook.preview) {
-		if ((target)&&(fdjtDOM.hasParent(target,sbook.preview))) {
+		if (fdjtDOM.hasParent(target,sbook.preview)) {
 		    sbook.Preview(false); sbookMode(false);
 		    sbook.GoTo(target);}
 		else sbook.Preview(false);}
@@ -126,155 +135,35 @@ var sbookUI=
 		var target=sbook.getTarget(evt)
 		var selection=window.getSelection();
 		var excerpt=fdjtString.stdspace(selection.toString());
-		sbookMark(target,false,excerpt);}
-	    else if ((sbook.edgeclick)&&
-		     ((evt.clientX-(fdjtDOM.viewLeft()))<sbook.edgeclick))
-		sbookBackward();
-	    else if ((sbook.edgeclick)&&
-		     (((fdjtDOM.viewLeft()+fdjtDOM.viewWidth())-evt.clientX)
-		      <sbook.edgeclick))
-	    	sbookForward();
-	    else if ((sbook.mode)||(sbook.hudup))
+		sbookMark(target,false,excerpt);
+		sbook.GoToPage(sbook_curpage);}
+	    else if (!(sbook.getTarget(target)))
 		sbookMode(false);
 	    else {
 		sbook.setTarget(sbook.getTarget(target));
 		sbookMode(true);}}
 	sbookUI.margin_onclick=function(evt) {
+	    var left=fdjtDOM.viewLeft();
+	    var width=fdjtDOM.viewWidth();
+	    var leftwidth=fdjtDOM.getGeometry("SBOOKPAGELEFT").width;
+	    var rightwidth=fdjtDOM.getGeometry("SBOOKPAGERIGHT").width;
 	    if (sbook.preview) sbook.Preview(false);
+	    else if ((sbook.edgeclick)&&((evt.clientX-left)<leftwidth))
+		sbookBackward();
+	    else if ((sbook.edgeclick)&&(((left+width)-evt.clientX)<rightwidth))
+	    	sbookForward();
 	    else if ((sbook.mode)||(sbook.hudup)) sbookMode(false);
-	    else sbookMode(true);};
-
-	/*
-	  body_onmousedown:
-	    if preview mode and over target, go there, otherwise
-	      leave preview mode
-	    if hudup, bring it down
-	    otherwise start addgloss timer
-           body_onmouseup:
-            if addgloss timer, stop it and bring the hud up
-            otherwise, don't do anything
-	    
-	 */
-
-	var mousedown_timer=false;
-	var mousedown=false;
-	var mousemoved=false;
-
-	function onmousedown(evt){
-	    var target=sbook.getTarget(evt);
+	    else sbookMode(true);
+	    fdjtUI.cancel(evt);};
+	function hud_onclick(evt){
 	    if (sbook.Trace.gestures)
-		fdjtLog("[%f] onmousedown@%o %o %o",
-			fdjtET(),fdjtTime(),evt,target);
-	    if (fdjtDOM.isClickable(target)) return;
-	    else if (inUI(target)) return;
-	    else if (sbook.preview) {
-		if ((target)&&(fdjtDOM.hasParent(target,sbook.preview))) {
-		    sbook.Preview(false); sbookMode(false);
-		    sbook.GoTo(target);}
-		else sbook.Preview(false);}
-	    else if ((sbook.mode)||(sbook.hudup)) sbookMode(false);
-	    else {
-		mousemoved=false;
-		mousedown=fdjtTime();
-		mousedown_timer=
-		    setTimeout(addgloss,sbook.hold_ms,target);
-		if (sbook.Trace.gestures)
-	    	    fdjtLog("[%f] settimeout@%o to gloss %o after %o",
-			    fdjtET(),mousedown,target,sbook.hold_ms);}}
-
-	function addgloss(target){
-	    if (sbook.Trace.gestures)
-		fdjtLog("[%f] addgloss %o",fdjtET(),target);
-	    mousedown_timer=false;
-	    sbookMark(target);}
-
-	function onmousemove(evt){
-	    if (sbook.Trace.gestures)
-		fdjtLog("[%f] onmousemove@%o %o t=%o moved=%o",
-			fdjtET(),fdjtTime(),
-			evt,mousedown_timer,mousemoved);
-	    if (mousedown_timer) {
-		clearTimeout(mousedown_timer);
-		mousedown_timer=false;
-		mousemoved=true;}}
-
-	function onmouseup(evt){
-	    var now=fdjtTime();
-	    if (sbook.Trace.gestures)
-		fdjtLog("[%f] onmouseup@%o %o timer=%o down=%o moved=%o hold=%o",
-			fdjtET(),now,evt,mousedown_timer,mousedown,mousemoved,
-			now-mousedown);
-	    if (mousedown_timer) {
-		if ((mousedown)&&((now-mousedown)>sbook.hold_ms)) {
-		    if (sbook.Trace.gestures)
-			fdjtLog("[%f] timer %o didn't trip@%o",
-				fdjtET(),mousedown_timer,now);
-		    // Timer didn't trip for some reason
-		    clearTimeout(mousedown_timer);
-		    mousedown_timer=false; mousemoved=false; mousedown=false;
-		    var target=sbook.getTarget(evt)
-		    var selection=window.getSelection();
-		    var excerpt=fdjtString.stdspace(selection.toString());
-		    sbookMark(target,false,excerpt);}
-		else {
-		    clearTimeout(mousedown_timer);
-		    mousedown_timer=false; mousemoved=false; mousedown=false;
-		    if ((sbook.mode)||(sbook.hudup))
-			sbookMode(false);
-		    else {
-			sbook.setTarget(sbook.getTarget(evt));
-			sbookMode(true);}}}
-	    else if (mousemoved) {
-		var target=sbook.getTarget(evt)
-		var selection=window.getSelection();
-		var excerpt=fdjtString.stdspace(selection.toString());
-		sbookMark(target,false,excerpt);}
-	    else if (sbook.preview) sbook.Preview(false);}
+		fdjtLog("[%f] hud_onclick %o",fdjtET(),evt);
+	    if (fdjtDOM.isClickable(fdjtUI.T(evt))) return;
+	    sbookMode(false);}
+	sbookUI.hud_onclick=hud_onclick;
 	
 	function ondblclick(evt){
 	    sbookMark(sbook.getTarget(evt));}
-
-	// This should be for the accessible version
-	// In preview mode, clicking on the target goes there
-	//   otherwise, disable preview mode
-	// Outside of preview mode,
-	//   clicking on the target brings up the gloss HUD
-	// otherwse, if the HUD is up, clicking brings it down
-	// otherwise, clicking sets the target and brings it up
-
-	/*
-	function body_onclick(evt){
-	    var mousedown=sbook_mousedown; var target;
-	    evt=evt||event; sbook_mousedown=false;
-	    // fdjtLog("body_onclick %o",evt);
-	    // Determine if you were really held down and not clicked
-	    if ((mousedown)&&
-		((fdjtTime()-mousedown)>sbook_hold_threshold)) {
-		return;}
-	    // Check if you should do anything
-	    if (!(target=fdjtDOM.T(evt))) return;
-	    else if (fdjtDOM.isClickable(target)) return;
-	    else if (inUI(target)) return;
-	    // In preview mode, clicking on the previewed passage goes
-	    //  there but anything else just turns off preview mode.
-	    else if (sbook.preview) {
-		if (fdjtDOM.hasParent(target,sbook.preview)) {
-		    sbook.Preview(false); sbookMode(false);
-		    sbook.GoTo(target);}
-		else sbook.Preview(false);}
-	    // If you're in a HUD mode, leave the mode
-	    else if (sbook.mode)
-		sbookMode(false);
-	    // If the HUD is up, bring it down
-	    else if (fdjtDOM.hasClass(document.body,"hudup"))
-		fdjtDOM.dropClass(document.body,"hudup");
-	    // Otherwise, bring the HUD up and set the target
-	    // (Maybe, flash some context)
-	    else {
-		sbook.setTarget(sbook.getTarget(target));
-	    	fdjtDOM.addClass(document.body,"hudup");}}
-	sbookUI.handlers.bodyclick=body_onclick
-	*/
 
 	/* Touch handlers */
 
@@ -367,6 +256,10 @@ var sbookUI=
 
 	/* Setup */
 
+	var hudbuttons=
+	    ["SBOOKTOCBUTTON","SBOOKDASHBUTTON","SBOOKSEARCHBUTTON",
+	     "SBOOKALLGLOSSESBUTTON"];
+
 	function setupGestures(){
 	    // Unavoidable browser sniffing
 	    if (sbook.mobilesafari) mobileSafariGestures();
@@ -375,31 +268,20 @@ var sbookUI=
 	sbook.setupGestures=setupGestures;
 
 	function mouseGestureSetup(){
-	    setupMargins();
-
 	    // We handle the click on mouseup because that way
 	    //  we will get selections
 	    fdjtDOM.addListener(false,"mouseup",onclick);
 	    fdjtDOM.addListener(document.body,"dblclick",ondblclick);
+	    fdjtDOM.addListener(sbook.HUD,"click",hud_onclick);
 
 	    // For command keys
 	    fdjtDOM.addListener(false,"keypress",onkeypress);
 	    fdjtDOM.addListener(false,"keydown",onkeydown);
 	    fdjtDOM.addListener(false,"keyup",onkeyup);
 
-	    var toc_button=fdjtID("SBOOKTOCBUTTON");
-	    var dash_button=fdjtID("SBOOKDASHBUTTON");
-	    var search_button=fdjtID("SBOOKSEARCHBUTTON");
-	    var glosses_button=fdjtID("SBOOKALLGLOSSESBUTTON");
-
-	    toc_button.onmouseover=toc_button.onmouseout=
-		toc_button.onclick=hudbutton;
-	    search_button.onmouseover=search_button.onmouseout=
-		search_button.onclick=hudbutton;
-	    dash_button.onmouseover=dash_button.onmouseout=
-		dash_button.onclick=hudbutton;
-	    glosses_button.onmouseover=glosses_button.onmouseout=
-		glosses_button.onclick=hudbutton;}
+	    if (sbook.mouse) {
+		fdjtDOM.addListener(hudbuttons,"mouseover",hudbutton);
+		fdjtDOM.addListener(hudbuttons,"mouseout",hudbutton);}}
 
 	function mobileSafariGestures(){
 	    window.onscroll=function(evt){sbook.syncHUD();};}
@@ -413,12 +295,17 @@ var sbookUI=
 	function hudbutton(evt){
 	    var target=fdjtUI.T(evt);
 	    var mode=target.getAttribute("hudmode");
+	    fdjtLog("[%f] hudbutton %o mode=%o",fdjtET(),evt,mode);
+	    fdjtUI.cancel(evt);
 	    if (!(mode)) return;
 	    var hudid=((mode)&&(mode_hud_map[mode]));
 	    var hud=fdjtID(hudid);
+	    if (mode==='dash') mode=sbook.last_dash||"help";
 	    if (evt.type==='click') {
 		if (hud) fdjtDOM.dropClass(hud,"hover");
-		sbookMode(mode); fdjtUI.cancel(evt);}
+		if (fdjtDOM.hasClass(sbook.HUD,mode)) {
+		    sbookMode(false); sbookMode(true);}
+		else sbookMode(mode);}
 	    else if ((evt.type==='mouseover')&&(sbook.mode))
 		return;
 	    else {
@@ -428,59 +315,27 @@ var sbookUI=
 		else if (evt.type==='mouseout')
 		    fdjtDOM.dropClass(hud,"hover");
 		else {}}}
+	sbookUI.hudbutton=hudbutton;
 
 	function touchGestureSetup(){
-	    setupMargins();
-
-	    fdjtDOM.addListener(window,"click",onclick);
-	    //fdjtDOM.addListener(window,"touchstart",onmousedown);
-	    //fdjtDOM.addListener(window,"touchmove",onmousemove);
-	    //fdjtDOM.addListener(window,"touchend",onmouseup);
-	    //fdjtDOM.addListener(window,"mousedown",onmousedown);
-	    //fdjtDOM.addListener(window,"mousemove",onmousemove);
-	    //fdjtDOM.addListener(window,"mouseup",onmouseup);
-	    fdjtDOM.addListener(window,"keypress",sbook_onkeypress);
-	    fdjtDOM.addListener(window,"keydown",sbook_onkeydown);
-	    fdjtDOM.addListener(window,"keyup",sbook_onkeyup);
+	    fdjtLog("touchGestureSetup");
+	    fdjtDOM.addListener(document.body,"click",onclick);
+	    fdjtDOM.addListener(sbook.HUD,"click",hud_onclick);	    
+	    fdjtDOM.addListener(window,"keypress",onkeypress);
+	    fdjtDOM.addListener(window,"keydown",onkeydown);
+	    fdjtDOM.addListener(window,"keyup",onkeyup);
 	    fdjtDOM.addClass(document.body,"touch");}
 
 	function sbookSimpleGestureSetup(){
-	    setupMargins();
 	    fdjtDOM.addListener(document.body,"click",sbook_body_onclick);
 	    fdjtDOM.addListener(sbookHUD,"mouseover",fdjtUI.CoHi.onmouseover);
 	    fdjtDOM.addListener(sbookHUD,"mouseout",fdjtUI.CoHi.onmouseout);
 	    fdjtDOM.addListener(sbookHUD,"click",sbookRef_onclick);
-	    fdjtDOM.addListener(window,"keypress",sbook_onkeypress);
-	    fdjtDOM.addListener(window,"keydown",sbook_onkeydown);
-	    fdjtDOM.addListener(window,"keyup",sbook_onkeyup);}
+	    fdjtDOM.addListener(window,"keypress",onkeypress);
+	    fdjtDOM.addListener(window,"keydown",onkeydown);
+	    fdjtDOM.addListener(window,"keyup",onkeyup);}
 
 	/* Other stuff */
-
-	function setupMargins() {
-	    var leftedge=fdjtID("SBOOKLEFTEDGE");
-	    var rightedge=fdjtID("SBOOKRIGHTEDGE");
-	    var leftedge2=fdjtID("SBOOKLEFTEDGE2");
-	    var rightedge2=fdjtID("SBOOKRIGHTEDGE2");
-	    leftedge.onclick=leftedge_onclick;
-	    rightedge.title='tap/click to go forward';
-	    rightedge.onclick=rightedge_onclick;
-	    leftedge.title='tap/click to go back';
-	    leftedge2.title='tap/click to go back';
-	    leftedge2.onclick=leftedge_onclick;
-	    rightedge2.title='tap/click to go forward';
-	    rightedge2.onclick=rightedge_onclick;}
-
-	function leftedge_onclick(evt){
-	    // sbook.trace("sbookLeftEdge_onclick",evt);
-	    if (sbook_edge_taps) sbookBackward();
-	    else sbookMode(false);
-	    fdjtDOM.cancel(evt);}
-
-	function rightedge_onclick(evt){
-	    // sbook.trace("sbookRightEdge_onclick",evt);
-	    if (sbook_edge_taps) sbookForward();
-	    else sbookMode(false);
-	    fdjtDOM.cancel(evt);}
 
 	function sbookForward(){
 	    if (sbook.paginate) {

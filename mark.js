@@ -297,13 +297,8 @@ var sbookMark=
 	function markcloud_onclick(evt){
 	    var target=fdjtUI.T(evt);
 	    var completion=fdjtDOM.getParent(target,'.completion');
-	    if (!(completion)) return;
-	    var value=sbook_mark_cloud.getValue(completion);
-	    addTag(completion,value);}
-	function markcloud_onclick(evt){
-	    var target=fdjtUI.T(evt);
-	    var completion=fdjtDOM.getParent(target,'.completion');
-	    if (completion) addTag(completion);}
+	    if (completion) addTag(completion);
+	    fdjtUI.cancel(evt);}
 	
 	var _sbook_tagupdate=false;
 	var _sbook_tagupdate_delay=300;
