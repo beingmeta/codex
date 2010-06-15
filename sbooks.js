@@ -219,8 +219,8 @@ var sbook_gloss_data=
 	scan=scan.target||scan.srcElement||scan;
 	var target=false;
 	while (scan) 
-	    if ((scan===sbook.root)||(scan===sbook.root)||(scan.sbookui))
-		return target;
+	    if ((scan===sbook.root)||(scan.sbookui))
+		return false;
 	else if (scan.id)
 	    if ((fdjtDOM.hasClass(scan,"sbookfoci"))||
 		((sbook_focus_rules)&&(sbook_focus_rules.match(scan))))

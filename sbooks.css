@@ -877,9 +877,18 @@ form.mark div.note textarea {
 
 form.mark > div.tagblock { margin-right: 0px;}
 form.mark div.tags {
-    margin-right: 0px; padding-right: 0px;
+    margin-right: 0px; padding-right: 0px; padding-top: 7px;
     text-align: left;}
-form.mark div.tags span.checkspan { padding-top: 4px;}
+form.mark div.tags span.checkspan {
+    background-color: yellow; color: black;
+    padding-right: 3px; padding-left: 2px;
+    border: solid black 2px;
+    border-top-left-radius: 6px; border-bottom-left-radius: 6px;
+    border-top-right-radius: 2px; border-bottom-right-radius: 2px;}
+form.mark div.tags span.checkspan span.dterm {
+    color: black; font-weight: bold;}
+div#SBOOKHUD form.mark div.tags span.checkspan span.dterm {
+    color: black; font-weight: bold;}
 form.mark div.tags div.inputhelp {
     display: none; text-align: right; color: yellow; font-size: 12px;}
 form.mark div.tags div.inputhelp.showhelp { display: block;}
