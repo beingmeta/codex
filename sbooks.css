@@ -277,9 +277,9 @@ div#SBOOKHUD div#SBOOKFOOT div.hudblock {
     border-radius: 6px;}
 
 div#SBOOKHUD div.scrollhud {
-  position: fixed; top: 0px; left: 100px; right: 100px; bottom: 75px;
+  position: fixed;
+  top: 0px; left: 100px; right: 100px; bottom: 50px;
   font-family: arial,helvetica,sans,sans-serif;
-  background-color: gray;
   text-align: center;
   display: none;}
 
@@ -288,7 +288,7 @@ div#SBOOKHUD div.scrollhud div.scrollhead {
   position: absolute; top: 0px; left: 0px; right: 0px;
   height: 60px; min-height: 60px;
   border-bottom: 0px; padding-bottom: 0px;
-  background-color: inherit;
+  background-color: gray;
   -khtml-border-radius: 0px; 
   -webkit-border-radius: 0px; 
   -moz-border-radius: 0px;
@@ -296,8 +296,10 @@ div#SBOOKHUD div.scrollhud div.scrollhead {
 
 div#SBOOKHUD div.scrollhud div.scrollbody {
   position: absolute;
-  top: 60px; right: 0px;  left: 0px; bottom: 0px; display: none;
-  background-color: inherit; padding-left: 1em; padding-right: 1em; margin: 0px;
+  top: 60px; right: 0px;  left: 0px; display: none;
+  padding-left: 1em; padding-right: 1em; margin: 0px;
+  background-color: gray;
+  max-height: 80%;
   overflow: auto;}
 
 div#SBOOKHUD div.scrollhud.hover {

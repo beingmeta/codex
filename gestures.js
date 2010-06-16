@@ -295,7 +295,6 @@ var sbookUI=
 	function hudbutton(evt){
 	    var target=fdjtUI.T(evt);
 	    var mode=target.getAttribute("hudmode");
-	    fdjtLog("[%f] hudbutton %o mode=%o",fdjtET(),evt,mode);
 	    fdjtUI.cancel(evt);
 	    if (!(mode)) return;
 	    var hudid=((mode)&&(mode_hud_map[mode]));
