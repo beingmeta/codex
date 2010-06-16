@@ -376,8 +376,8 @@ var sbookMark=
 		var val=input.value;
 		var start=input.selectionStart;
 		var end=input.selectionEnd;
-		if ((start>0)&&(val[start-1]==='[')) start--;
-		if (val[end+1]===']') end++;
+		if ((start>=0)&&(val[start]==='[')) start++;
+		if (val[end]===']') end--;
 		return [start,end];}
 	    if (!(pt)) pt=input.selectionStart;
 	    var val=input.value;
@@ -385,45 +385,106 @@ var sbookMark=
 	    if ((start<0)||(start>pt)) return false;
 	    var scan=val.indexOf('[',start+1);
 	    while ((scan>=0)&&(scan<pt)) {
-		start=scan; scan=val.indexOf('[',start+1);}
+	      start=scan; scan=val.indexOf('[',start+1);}
 	    if (start<0) return false;
 	    var end=val.indexOf(']',start);
-	    if (end<0) return [start,pt];
+	    if (end<0) return [start+1,pt];
 	    else if (end<pt) return false;
-	    else return [start,end+1];}
+	    else return [start,end];}
+	function gettagstring(input,pt){
+	  var span=gettagspan(input,pt);
+	  if (span)
+	    return input.value.slice(span[0],span[1]);
+	  else return false;}
 
-	function inline_complete(input_elt,engage){
-	    if (fdjtDOM.hasClass(input_elt,"isempty")) return;
-	    var tagspan=gettagspan(input_elt);
-	    if (!(tagspan)) return;
-	    var start=tagspan[0], end=tagspan[1];
-	    if (engage) inline_tag(input_elt,input_elt.value,start,end);
-	    else {
-		var val=input_elt.value;
-		if (val[start]==='[') start++;
-		if (val[end-1]===']') end--;
-		sbook_mark_cloud.complete(val.slice(start,end));}}
-	function inline_tag(input_elt,string,start,end){
-	    var tagstring=string.slice(start,end);
-	    if (tagstring[0]==='[') tagstring=tagstring.slice(1);
-	    if (tagstring[tagstring.length-1]===']')
-		tagstring=tagstring.slice(0,tagstring.length-1);
-	    var completions=
-		sbook_mark_cloud.complete(tagstring);
-	    if ((!(completions))||(completions.length===0))
-		addTag(input_elt,tagstring);
-	    else if (completions.length===1) {
-		addTag(input_elt,completions[0]);
-		if (completions.strings) tagstring=completions.strings[0];}
-	    else {
-		addTag(input_elt,completions[0]);
-		if (completions.strings) tagstring=completions.strings[0];}
+	function tagspan(input){
+	  var value=input.value;
+	  var start=value.indexOf('[');
+	  if (start<0) return false;
+	  var selstart=input.selectionStart;
+	  if (start>selstart) return false;
+	  var scan=value.indexOf('[',start+1);
+	  while ((scan>0)&&(scan<selstart)) {
+	    start=scan; scan=value.indexOf('[',start+1);}
+	  var end=value.indexOf(']',start);
+	  if (end<0) return [start+1,selstart];
+	  else if (end<selstart) return false;
+	  else return [start+1,end];}
+	function istagging(input){
+	  var form=fdjtDOM.getParent(input,"form");
+	  var span=tagspan(input);
+	  if (span) {
+	    fdjtDOM.addClass(form,"tagging");
+	    return span;}
+	  else {
+	    fdjtDOM.dropClass(form,"tagging");
+	    return false;}}
+	function tagcomplete(input){
+	  var span=istagging(input);
+	  if (span)
+	    sbook_mark_cloud.complete(input.value.slice(span[0],span[1]));}
+
+	// This captures either text selection or mouse motion
+	function note_onmouseup(evt){
+	  var target=fdjtUI.T(evt);
+	  if ((typeof target.selectionStart === 'number')&&
+	      (typeof target.selectionEnd === 'number')&&
+	      (target.selectionEnd>target.selectionStart)) {
+	    var value=target.value;
+	    var start=target.selectionStart;
+	    var end=target.selectionEnd;
+	    if (value[start]==='[') start++;
+	    if ((end>0)&&(value[end-1]===']')) end--;
+	    if (end>start)
+	      sbook_mark_cloud.complete(value.slice(start,end));}
+	  else tagcomplete(target);}
+	
+	function note_onkeyup(evt){
+	  var target=fdjtUI.T(evt);
+	  var form=fdjtDOM.getParent(target,"FORM");
+	  var tagspan=istagging(target);
+	  var kc=evt.keyCode;
+	  if (!(tagspan)) return;
+	  if ((kc===8)||(kc===236)) {
+	    if (sbookMark.tagupdate) {
+	      clearTimeout(sbookMark.tagupdate);
+	      sbookMark.tagupdate=false;}
+	    sbookMark.tagupdate=
+	      setTimeout(function(){tagcomplete(target);},100);}}
+	function note_onkeypress(evt){
+	  var target=fdjtUI.T(evt);
+	  var form=fdjtDOM.getParent(target,"FORM");
+	  //fdjtLog("kp %o %o",evt,evt.charCode);
+	  if (sbookMark.tagupdate) {
+	    clearTimeout(sbookMark.tagupdate);
+	    sbookMark.tagupdate=false;}
+	  var tagspan=istagging(target);
+	  if (!(tagspan)) return;
+	  var value=target.value;
+	  var tagstring=value.slice(tagspan[0],tagspan[1]);
+	  var ch=evt.charCode;
+	  if (ch===91)
 	    sbook_mark_cloud.complete("");
-	    input_elt.value=
-		string.slice(0,start)+
-		'['+tagstring+']'+
-		string.slice(end+1);}
-
+	  else if (ch===93) {
+	    var completions=sbook_mark_cloud.complete(tagstring);
+	    if (completions.length) {
+	      target.value=
+		value.slice(0,tagspan[0])+
+		sbook_mark_cloud.getKey(completions[0])+
+		value.slice(tagspan[1]);
+	      addTag(form,completions[0]);}
+	    else addTag(form,tagstring);
+	    sbook_mark_cloud.complete("");}
+	  else if ((ch===34)||(ch===13)) {
+	    addTag(form,tagstring);
+	    target.value=
+	      value.slice(0,tagspan[1])+']'+value.slice(tagspan[1]);
+	    fdjtUI.cancel(evt);
+	    target.selectionStart=target.selectionEnd=tagspan[1]+1;
+	    sbook_mark_cloud.complete("");}
+	  else sbookMark.tagupdate=
+		 setTimeout(function(){tagcomplete(target);},100);}
+	
 	// Here's how it works:
 	//  When typing, go back to the open bracket and try to complete
 	//  When you type a ], force a completion
@@ -446,28 +507,23 @@ var sbookMark=
 		(end>start)) {
 		var val=input.value;
 		var sel=val.slice(start,end);
-		input.focus();
-		fdjtLog("cur=%o sel=%o",sbook_mark_cloud.curstring,sel);
-		if (sbook_mark_cloud.curstring===sel)
-		    inline_tag(input,val,start,end);
-		else sbook_mark_cloud.complete(sel);}
+		sbook_mark_cloud.complete(sel);
+		input.value=val.slice(0,start)+'['+val.slice(start);
+		input.selectionStart=input.selectionEnd=end+1;
+		tagcomplete(input);
+		input.focus();}
 	    else {
-		var val=input.value;
-		input.value=val.slice(0,start)+'[]'+val.slice(start);
+	      var tagspan=istagging(input);
+	      if (tagspan) 
+		addTag(form,input.value.slice(tagspan[0],tagspan[1]));
+	      else {
+		input.value=
+		  input.value.slice(0,start)+'['+
+		  input.value.slice(start);
 		input.selectionStart=input.selectionEnd=start+1;
-		return;}}
+		tagcomplete(input);}}}
 	sbookMark.insertTag=insertTag;
 		
-	function note_onmouseup(evt){
-	    inline_complete(fdjtUI.T(evt));}
-	function note_onkeypress(evt){
-	    var target=fdjtUI.T(evt);
-	    if (evt.charCode===93) { /* ] */
-		inline_complete(target,true);
-		fdjtUI.cancel(evt);}
-	    else setTimeout(function(){inline_complete(target);},
-			    _sbook_tagupdate_delay);}
-	
 	function engage_glossbar(evt){
 	  var gb=fdjtDOM.getParent(fdjtUI.T(evt),".glossbar");
 	  fdjtDOM.toggleClass(gb,"engaged");}
@@ -482,6 +538,7 @@ var sbookMark=
 	    var noteinput=fdjtDOM.getChild(form,"[name='NOTE']");
 	    if (noteinput) {
 		fdjtDOM.addListener(noteinput,"mouseup",note_onmouseup);
+		fdjtDOM.addListener(noteinput,"keyup",note_onkeyup);
 		fdjtDOM.addListener(noteinput,"keypress",note_onkeypress);}
 	    var origin=fdjtDOM.getChild(form,"input[name='origin']");
 	    if (origin) origin.value=
