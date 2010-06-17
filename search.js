@@ -8,7 +8,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
     Javascript/DHTML UI for reading large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
-   For more information on knowlets, visit www.knowlets.net
+   For more information on knodules, visit www.knodules.net
    For more information about beingmeta, visit www.beingmeta.com
 
    This library uses the FDJT (www.fdjt.org) toolkit.
@@ -35,18 +35,18 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 
 /*
   New design:
-   sbookIndex inherits from knowletIndex
+   sbookIndex inherits from knoduleIndex
      has methods for processing docinfo, technorati tags, etc
-     KnowletIndex has constructor method Query for creating a query object
+     KnoduleIndex has constructor method Query for creating a query object
      and doing a search
-     KnowletCloud contains the cloud code from searchui, taking
+     KnoduleCloud contains the cloud code from searchui, taking
        a query
 */
      
 (function(){
   function sbookIndexTags(docinfo){
     var sbook_index=sbook.index;
-    /* One pass processes all of the inline DTerms and
+    /* One pass processes all of the inline KNodes and
        also separates out primary and auto tags. */
     for (var eltid in docinfo) {
       var tags=docinfo[eltid].tags;
@@ -60,9 +60,9 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	  tags[tag]=2*tagstart;}
 	else if (tag[0]==='~') tags[k]=tag=tag.slice(1);
 	else tags[tag]=2;
-	if ((tag.indexOf('|')>=0)) knowlet.handleSubjectEntry(tag);
+	if ((tag.indexOf('|')>=0)) knodule.handleSubjectEntry(tag);
 	k++;}}
-    var knowlet=sbook.knowlet||false;
+    var knodule=sbook.knodule||false;
     sbook_index.Tags=function(item){return docinfo[item].tags;};
     for (var eltid in docinfo) {
       var tags=docinfo[eltid].tags;
@@ -70,13 +70,13 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
       var k=0; var ntags=tags.length;
       while (k<ntags) {
 	var tag=tags[k++];
-	sbook_index.add(eltid,tag,tags[tag]||1,knowlet);}}}
+	sbook_index.add(eltid,tag,tags[tag]||1,knodule);}}}
   sbook.indexTags=sbookIndexTags;
   
-  /* Inline knowlets */
+  /* Inline knodules */
   function indexTechnoratiTags(kno) {
     var sbook_index=sbook.index;
-    if (!(kno)) kno=knowlet;
+    if (!(kno)) kno=knodule;
     var anchors=document.getElementsByTagName("A");
     if (!(anchors)) return;
     var i=0; var len=anchors.length;

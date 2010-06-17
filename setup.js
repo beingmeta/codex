@@ -8,7 +8,7 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
     large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
-   For more information on knowlets, visit www.knowlets.net
+   For more information on knodules, visit www.knodules.net
    For more information about beingmeta, visit www.beingmeta.com
 
    This library uses the FDJT (www.fdjt.org) toolkit.
@@ -71,17 +71,17 @@ sbook.Setup=
 	    sbook.Message("Building table of contents");
 	    sbook.setupTOC(metadata[sbook.root.id]);
 	    var scan_done=new Date();
-	    sbook.Message("Processing knowledge for knowlet ",sbook.knowlet);
-	    if ((Knowlet)&&(Knowlet.HTML)&&(Knowlet.HTML.Setup))
-		Knowlet.HTML.Setup(sbook.knowlet);
+	    sbook.Message("Processing knowledge for knodule ",sbook.knodule);
+	    if ((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup))
+		Knodule.HTML.Setup(sbook.knodule);
 	    sbook.Message("Indexing tags");
 	    sbook.indexTags(metadata);
-	    sbook.indexTechnoratiTags(sbook.knowlet);
+	    sbook.indexTechnoratiTags(sbook.knodule);
 	    sbook.Message("Setting up gloss server");
 	    setupGlossServer();
 	    applySettings();
 	    if (sbook.paginate) sbookPaginate();
-	    var knowlets_done=new Date();
+	    var knodules_done=new Date();
 	    // 
 	    var tags_done=new Date();
 	    if (fdjtID("SBOOKHIDEHELP"))

@@ -5,7 +5,7 @@
     large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
-   For more information on knowlets, visit www.knowlets.net
+   For more information on knodules, visit www.knodules.net
    For more information about beingmeta, visit www.beingmeta.com
 
    This library uses the FDJT (www.fdjt.org) toolkit.

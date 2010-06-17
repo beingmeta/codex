@@ -8,7 +8,7 @@ var sbooks_summae_version=parseInt("$Revision$".slice(10,-1));
     Javascript/DHTML UI for reading large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
-   For more information on knowlets, visit www.knowlets.net
+   For more information on knodules, visit www.knodules.net
    For more information about beingmeta, visit www.beingmeta.com
 
    This library uses the FDJT (www.fdjt.org) toolkit.
@@ -241,7 +241,7 @@ var sbook_delete_icon="redx16x16.png";
 	if ((tags)&&(tags.length>0)) fdjtDOM(sumdiv," // ");
 	var j=0; var first=true; while (j<tags.length) {
 	    var tag=tags[j++];
-	    if (j===1) fdjtDOM(tagspan,Knowlet.HTML(tag));
+	    if (j===1) fdjtDOM(tagspan,Knodule.HTML(tag));
 	    else if ((j===7) &&
 		     (tagspan===sumdiv) &&
 		     (tags.length>10)) {
@@ -252,8 +252,8 @@ var sbook_delete_icon="redx16x16.png";
 		controller.title=("click to toggle more tags");
 		controller.onclick=fdjtUI.Expansion.onclick;
 		fdjtDOM(sumdiv," ",controller," ",tagspan);
-		fdjtDOM(tagspan,Knowlet.HTML(tag));}
-	    else fdjtDOM(tagspan," \u00b7 ",Knowlet.HTML(tag));}
+		fdjtDOM(tagspan,Knodule.HTML(tag));}
+	    else fdjtDOM(tagspan," \u00b7 ",Knodule.HTML(tag));}
 	if (info.detail) 
 	    fdjtDOM(sumdiv,fdjtDOM("div.detail",info.detail));
 	if (info.xrefs)  {

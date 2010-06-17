@@ -8,7 +8,7 @@
     large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
-   For more information on knowlets, visit www.knowlets.net
+   For more information on knodules, visit www.knodules.net
    For more information about beingmeta, visit www.beingmeta.com
 
    This library uses the FDJT (www.fdjt.org) toolkit.
@@ -211,12 +211,12 @@ var sbookMark=
 		    varname='ATTENTION'
 		else {}
 		tag=sbook_mark_cloud.getValue(tag);}
-	    var info=fdjtKB.ref(tag)||sbook.knowlet.probe(tag);
+	    var info=fdjtKB.ref(tag)||sbook.knodule.probe(tag);
 	    var text=((info)?
 		      ((info.toHTML)&&(info.toHTML())||info.name||info.dterm):
 		      (tag));
 	    if (info) {
-		if (info.knowlet===sbook.knowlet)
+		if (info.knodule===sbook.knodule)
 		    tag=info.dterm;
 		else tag=info.qid||info.oid||info.dterm||tag;}
 	    if ((info)&&(info.pool===sbook.sourcekb)) varname='OUTLETS';
@@ -266,7 +266,7 @@ var sbookMark=
 		var tag=alltags[i++];
 		// We elide sectional tags
 		if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
-		var tagnode=Knowlet.HTML(tag,sbook.knowlet,false,true);
+		var tagnode=Knodule.HTML(tag,sbook.knodule,false,true);
 		fdjtDOM(completions,tagnode," ");}
 	    var i=0; while (i<alltags.length) {
 		var tag=alltags[i++];
@@ -317,7 +317,7 @@ var sbookMark=
 		    if (completions.length) addTag(target,completions[0]);
 		    else {
 			var curval=target.value;
-			var knospan=sbook.knowlet.HTML(curval,false,true);
+			var knospan=sbook.knodule.HTML(curval,false,true);
 			fdjtDOM.prepend(fdjtID("SBOOKMARKCLOUD"),knospan);
 			addTag(target,curval);}
 		    target.value="";

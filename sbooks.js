@@ -8,7 +8,7 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
     large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
-   For more information on knowlets, visit www.knowlets.net
+   For more information on knodules, visit www.knodules.net
    For more information about beingmeta, visit www.beingmeta.com
 
    This library uses the FDJT (www.fdjt.org) toolkit.
@@ -86,9 +86,9 @@ var sbook_gloss_data=
 	var refuri=(sbook.refuri||document.location.href);
 	if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
 	sbook.DocInfo=new fdjtKB.Pool(refuri+"#");
-	sbook.knowlet=new Knowlet(fdjtDOM.getMeta("KNOWLET")||refuri);
-	sbook.index=new KnowletIndex(sbook.knowlet);
-	sbook.BRICO=new Knowlet("BRICO");
+	sbook.knodule=new Knodule(fdjtDOM.getMeta("KNODULE")||refuri);
+	sbook.index=new KnoduleIndex(sbook.knodule);
+	sbook.BRICO=new Knodule("BRICO");
 	sbook.BRICO.addAlias(":@1/");
 	sbook.glosses=new fdjtKB.Pool("glosses"); {
 	    var superadd=sbook.glosses.add;
@@ -99,8 +99,8 @@ var sbook_gloss_data=
 		var dterm=tag;
 		if (typeof tag==='string')
 		    if (tag.indexOf('|')>=0)
-			return sbook.knowlet.handleSubjectEntry(tag);
-		else return sbook.knowlet.probe(tag)||tag;
+			return sbook.knodule.handleSubjectEntry(tag);
+		else return sbook.knodule.probe(tag)||tag;
 		else return tag;};
 	    sbook.glosses.addInit(function(item) {
 		var info=sbook.docinfo[item.frag];
@@ -259,7 +259,7 @@ var sbook_gloss_data=
 	    return sbook.query;
 	var result=sbook.index.Query(query);
 	if (result._qstring!==
-	    Knowlet.Query.base(fdjtID("SBOOKSEARCHTEXT").value)) {
+	    Knodule.Query.base(fdjtID("SBOOKSEARCHTEXT").value)) {
 	    fdjtID("SBOOKSEARCHTEXT").value=result._qstring;
 	    fdjtID("SBOOKSEARCHTEXT").removeAttribute('isempty');
 	    fdjtDOM.dropClass(fdjtID("SBOOKSEARCHTEXT"),'isempty');}
@@ -280,7 +280,7 @@ var sbook_gloss_data=
 	return result;};
 
     sbook.updateQuery=function(input_elt){
-	var q=Knowlet.Query.string2query(input_elt.value);
+	var q=Knodule.Query.string2query(input_elt.value);
 	if ((q)!==(sbook.query._query))
 	    sbook.setQuery(q,false);};
 

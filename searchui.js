@@ -8,7 +8,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
     Javascript/DHTML UI for reading large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
-   For more information on knowlets, visit www.knowlets.net
+   For more information on knodules, visit www.knodules.net
    For more information about beingmeta, visit www.beingmeta.com
 
    This library uses the FDJT (www.fdjt.org) toolkit.
@@ -83,13 +83,13 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
       if ((ch===13)||(ch===13)||(ch===59)||(ch===93)) {
 	  if ((ch===59)||(ch===93))
 	      sbook.setQuery(target.value);
-	  else sbook.setQuery(Knowlet.Query.base(target.value));
-	  var qstring=Knowlet.Query.tail(target.value);
+	  else sbook.setQuery(Knodule.Query.base(target.value));
+	  var qstring=Knodule.Query.tail(target.value);
 	  if (!(fdjtString.isEmpty(qstring))) {
 	      var completeinfo=queryCloud(sbook.query);
 	      var completions=completeinfo.complete(qstring);
 	      if (completions.length) {
-		  var query_base=Knowlet.Query.base(target.value);
+		  var query_base=Knodule.Query.base(target.value);
 		  var new_term=completeinfo.getValue(completions[0]);
 		  var new_query=(query_base+new_term+";");
 		  sbook.setQuery(new_query,true);}}
@@ -111,18 +111,18 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	      completeinfo.complete("");}
 	  return false;}
     else if (ch==32) { /* Space */
-      var qstring=Knowlet.Query.tail(target.value);
+      var qstring=Knodule.Query.tail(target.value);
       var completeinfo=queryCloud(sbook.query);
       var completions=completeinfo.complete(qstring);
       if (completions.prefix!==qstring) {
-	target.value=Knowlet.Query.base(target.value)+';'+completions.prefix;
+	target.value=Knodule.Query.base(target.value)+';'+completions.prefix;
 	fdjtDOM.cancel(evt);
 	return;}}
     else {
       var completeinfo=queryCloud(sbook.query);
       _sbook_searchupdate=
 	setTimeout(function(){
-	    completeinfo.complete(Knowlet.Query.tail(target.value));},
+	    completeinfo.complete(Knodule.Query.tail(target.value));},
 	  _sbook_searchupdate_delay);}}
   sbookUI.handlers.SearchInput_onkeypress=searchInput_onkeypress;
 
@@ -143,9 +143,9 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 
   function searchUpdate(input,cloud){
     if (!(input)) input=fdjtID("SBOOKSEARCHTEXT");
-    var base=Knowlet.Query.base(input.value);
-    var end=Knowlet.Query.tail(input.value);
-    sbook.setQuery(Knowlet.Query.string2query(base));
+    var base=Knodule.Query.base(input.value);
+    var end=Knodule.Query.tail(input.value);
+    sbook.setQuery(Knodule.Query.string2query(base));
     queryCloud(sbook.query).complete(end);}
   sbook.searchUpdate=searchUpdate;
 
@@ -306,7 +306,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	((sbook.noisy_tooltips) ?
 	 (dterm+": "+(((score)?("s="+score+"; "):"")+freq+"/"+count+" items")) :
 	 (dterm+": "+freq+((freq==1) ? " item" : " items")));
-      var span=DTermCompletion(dterm,title);
+      var span=KNodeCompletion(dterm,title);
       if (freq===1) fdjtDOM.addClass(span,"singleton");
       if ((freqs)&&(!(noscale))) {
 	var relfreq=((freq/freqs._count)/(count/sbook.docinfo._eltcount));
@@ -335,7 +335,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
     return completions;}
   sbook.makeCloud=makeCloud;
 
-  function DTermCompletion(term,title){
+  function KNodeCompletion(term,title){
     var sbook_index=sbook.index;
     if ((typeof term === "string") && (term[0]==="\u00A7")) {
       var showname=term;
@@ -348,9 +348,9 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	span.title="("+term+": "+sbook_index.freq(term)+" items) "+title;
       else span.title=term+": "+sbook_index.freq(term)+" items";
       return span;}
-    var dterm=sbook.knowlet.DTerm(term);
+    var dterm=sbook.knodule.KNode(term);
     if (!(dterm))
-      fdjtLog("Couldn't get knowlet references from %o",dterm);
+      fdjtLog("Couldn't get knodule references from %o",dterm);
     else if (!(dterm.dterm)) {
       fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
       dterm=false;}
