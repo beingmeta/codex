@@ -111,9 +111,12 @@ var sbookUI=
 
 	/* Mouse handlers */
 	
+	var mousedown=false;
+
 	/* Clicking on the body */
 	function onclick(evt){
 	    var target=fdjtUI.T(evt);
+	    mousedown=false;
 	    if (sbook.Trace.gestures)
 		fdjtLog(
 		    "[%f] onclick %o cl=%o ui=%o sbt=%o sbp=%o sh=%o sm=%o hp=%o @<%o,%o>",
@@ -262,31 +265,30 @@ var sbookUI=
 	    ["SBOOKTOCBUTTON","SBOOKDASHBUTTON","SBOOKSEARCHBUTTON",
 	     "SBOOKALLGLOSSESBUTTON"];
 
+	sbookUI.getMode=function(){
+	  return ((sbook.touch)?("touch"):
+		  (sbook.mouse)?("mouse"):
+		  (sbook.kbd)?("keyboard"):
+		  (sbook.oneclick)?("oneclick"):
+		  ("mouse"));}
+	function addHandlers(node,type){
+	  var mode=sbookUI.getMode();
+	  fdjtDOM.addListeners(node,sbookUI.handlers[mode][type]);}
+	sbookUI.addHandlers=addHandlers;
+
 	function setupGestures(){
 	    // Unavoidable browser sniffing
-	    if (sbook.mobilesafari) mobileSafariGestures();
-	    if (sbook.touch) touchGestureSetup();
-	    else mouseGestureSetup();}
+	  if (sbook.mobilesafari) mobileSafariGestures();
+	  var mode=sbookUI.getMode();
+	  addHandlers(false,'window');
+	  addHandlers(sbook.HUD,'hud');
+	  addHandlers(hudbuttons,'hudbutton');}
 	sbook.setupGestures=setupGestures;
-
-	function mouseGestureSetup(){
-	    // We handle the click on mouseup because that way
-	    //  we will get selections
-	    fdjtDOM.addListener(false,"mouseup",onclick);
-	    fdjtDOM.addListener(document.body,"dblclick",ondblclick);
-	    fdjtDOM.addListener(sbook.HUD,"click",hud_onclick);
-
-	    // For command keys
-	    fdjtDOM.addListener(false,"keypress",onkeypress);
-	    fdjtDOM.addListener(false,"keydown",onkeydown);
-	    fdjtDOM.addListener(false,"keyup",onkeyup);
-
-	    if (sbook.mouse) {
-		fdjtDOM.addListener(hudbuttons,"mouseover",hudbutton);
-		fdjtDOM.addListener(hudbuttons,"mouseout",hudbutton);}}
 
 	function mobileSafariGestures(){
 	    window.onscroll=function(evt){sbook.syncHUD();};}
+
+	/* HUD button handling */
 
 	var mode_hud_map={
 	    "toc": "SBOOKTOC",
@@ -318,23 +320,108 @@ var sbookUI=
 		else {}}}
 	sbookUI.hudbutton=hudbutton;
 
-	function touchGestureSetup(){
-	    fdjtLog("touchGestureSetup");
-	    fdjtDOM.addListener(document.body,"click",onclick);
-	    fdjtDOM.addListener(sbook.HUD,"click",hud_onclick);	    
-	    fdjtDOM.addListener(window,"keypress",onkeypress);
-	    fdjtDOM.addListener(window,"keydown",onkeydown);
-	    fdjtDOM.addListener(window,"keyup",onkeyup);
-	    fdjtDOM.addClass(document.body,"touch");}
+	/* Preview support */
 
-	function sbookSimpleGestureSetup(){
-	    fdjtDOM.addListener(document.body,"click",sbook_body_onclick);
-	    fdjtDOM.addListener(sbookHUD,"mouseover",fdjtUI.CoHi.onmouseover);
-	    fdjtDOM.addListener(sbookHUD,"mouseout",fdjtUI.CoHi.onmouseout);
-	    fdjtDOM.addListener(sbookHUD,"click",sbookRef_onclick);
-	    fdjtDOM.addListener(window,"keypress",onkeypress);
-	    fdjtDOM.addListener(window,"keydown",onkeydown);
-	    fdjtDOM.addListener(window,"keyup",onkeyup);}
+	var cohi_onmouseover=fdjtUI.CoHi.onmouseover;
+	var cohi_onmouseout=fdjtUI.CoHi.onmouseout;
+
+	var stopping_preview=false;
+	function start_preview(evt){
+	  var target=fdjtDOM.T(evt);
+	  var ref=sbook.getRef(target);
+	  if (!(ref)) return;
+	  if (stopping_preview) {
+	    clearTimeout(stopping_preview);
+	    stopping_preview=false;}
+	  if (ref===sbook.preview) {}
+	  else if (ref) sbook.Preview(ref,true);
+	  fdjtUI.cancel(evt);}
+	function stop_preview(evt){
+	  if (stopping_preview) return false;
+	  var target=fdjtDOM.T(evt);
+	  var ref=sbook.getRef(target);
+	  sbook.Preview(false,true);}
+
+	/* TOC handlers */
+
+	function toc_onmouseover(evt){
+	  evt=evt||event;
+	  var target=fdjtDOM.T(evt);
+	  // Spanbars in TOCs automatically generate previews on mouseover
+	  if (fdjtDOM.hasParent(target,'.spanbar'))
+	    start_preview(evt);
+	  else if (evt.button)
+	    start_preview(evt);
+	  else {}}
+	function toc_onmouseout(evt){
+	  evt=evt||event;
+	  var target=fdjtDOM.T(evt);
+	  if (fdjtDOM.hasParent(target,'.spanbar'))
+	    stop_preview(evt);}
+	function toc_onmousedown(evt){
+	  evt=evt||event;
+	  var target=fdjtDOM.T(evt);
+	  if (fdjtDOM.hasParent(target,'.spanbar')) return;
+	  mousedown=fdjtTime();
+	  start_preview(evt);}
+	// The generic mouseup handles stopping preview
+	function toc_onclick(evt){
+	  fdjtLog("onclick now=%o md=%o sp=%o",
+		  mousedown,sbook.preview,fdjtTime());
+	  if ((sbook.preview)&&(mousedown)) {
+	    var duration=fdjtTime()-mousedown;
+	    if (duration>1000) {
+	      mousedown=false; return;}}
+	  mousedown=false;
+	  evt=evt||event;
+	  var ref=sbook.getRef(evt);
+	  if (ref) sbook.GoTo(ref);}
+
+	/* Summary handlers */
+
+	function summary_onmousedown(evt){
+	  evt=evt||event;
+	  mousedown=fdjtTime();
+	  var target=fdjtDOM.T(evt);
+	  start_preview(evt);}
+	function summary_onmouseover(evt){
+	  if (!(sbook.preview)) return;
+	  evt=evt||event;
+	  var ref=sbook.getRef(evt);
+	  if (ref===sbook.preview) {}
+	  else if (ref) sbook.Preview(ref,true);}
+	function summary_onclick(evt){
+	  evt=evt||event;
+	  if (mousedown) {
+	    var duration=fdjtTime()-mousedown;
+	    if (duration>1000) {
+	      mousedown=false; return;}}
+	  mousedown=false;
+	  var ref=sbook.getRef(evt);
+	  if (ref) sbook.GoTo(ref);
+	  fdjtUI.cancel(evt);}
+
+	/* Rules */
+
+	sbookUI.handlers.mouse=
+	  {window: {"mouseup": onclick,"dblclick": ondblclick,
+		    "keyup":onkeyup,"keydown":onkeydown,"keypress":onkeypress},
+	   hud: {"click":hud_onclick},
+	   hudbutton: {"mouseover":hudbutton,
+		       "mouseout":hudbutton},
+	   toc: {mouseover: toc_onmouseover,mouseout: toc_onmouseout,
+		 mousedown: toc_onmousedown,onclick: toc_onclick},
+	   summary: {title: "hold to glimpse, click to go",
+		     mouseover: summary_onmouseover,
+		     mousedown: summary_onmousedown,
+		     click: summary_onclick}};
+	
+	sbookUI.handlers.oneclick=
+	  {window: {"mouseup": onclick,"dblclick": ondblclick,
+		    "keyup":onkeyup,"keydown":onkeydown,"keypress":onkeypress},
+	   hud: {"click":hud_onclick,
+		 "mouseover":fdjtUI.CoHi.onmouseover,
+		 "mouseout":fdjtUI.CoHi.onmouseout}};
 
 	/* Other stuff */
 

@@ -405,12 +405,7 @@ var sbook_delete_icon="redx16x16.png";
     /* Results handlers */
 
     function setupSummaryDiv(div){
-	div.title="(hold to glimpse,click to go) "+(div.title||"");
-	if (sbook.mouse) {
-	    fdjtDOM.addListener(div,"click",summary_onclick);
-	    fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
-	    fdjtDOM.addListener(div,"mouseup",sbookTOC.onmouseup);}
-	else fdjtDOM.addListener(div,"click",sbookTOC.oneclick);}
+      sbookUI.addHandlers(div,'summary');}
     sbookUI.setupSummaryDiv=setupSummaryDiv;
 
     function summary_onclick(evt){

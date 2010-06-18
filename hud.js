@@ -103,26 +103,14 @@ var sbookMode=
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudblock.hud",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    if (sbook.mouse) {
-		fdjtDOM.addListener(div,"mouseover",sbookTOC.onmouseover);
-		fdjtDOM.addListener(div,"mouseout",sbookTOC.onmouseout);
-		fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
-		fdjtDOM.addListener(div,"mouseup",sbookTOC.onmouseup);
-		fdjtDOM.addListener(div,"click",sbookTOC.onclick);}
-	    else fdjtDOM.addListener(div,"click",sbookTOC.oneclick);
+	    sbookUI.addHandlers(div,"toc");
 	    return div;}
 
 	function createStaticTOC(eltspec,root_info){
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKDASHTOC",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    if (sbook.mouse) {
-		fdjtDOM.addListener(div,"mouseover",sbookTOC.onmouseover);
-		fdjtDOM.addListener(div,"mouseout",sbookTOC.onmouseout);
-		fdjtDOM.addListener(div,"mousedown",sbookTOC.onmousedown);
-		fdjtDOM.addListener(div,"mouseup",sbookTOC.onmouseup);
-		fdjtDOM.addListener(div,"click",sbookTOC.onholdclick);}
-	    else fdjtDOM.addListener(div,"click",sbookTOC.oneclick);
+	    sbookUI.addHandlers(div,"toc");
 	    return div;}
 
 	function initSearch(){
