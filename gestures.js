@@ -70,7 +70,7 @@ var sbookUI=
     (function(){
 
 	var sbook_mousedown=false;
-	var sbook_hold_threshold=900;
+	var sbook_hold_threshold=750;
 	var default_hud_flash=3000;
 
 	/* click events */
@@ -111,6 +111,7 @@ var sbookUI=
 
 	/* Mouse handlers */
 	
+	/* Clicking on the body */
 	function onclick(evt){
 	    var target=fdjtUI.T(evt);
 	    if (sbook.Trace.gestures)
@@ -142,6 +143,7 @@ var sbookUI=
 	    else {
 		sbook.setTarget(sbook.getTarget(target));
 		sbookMode(true);}}
+	/* This does paging forward and backwards */
 	sbookUI.margin_onclick=function(evt) {
 	    var left=fdjtDOM.viewLeft();
 	    var width=fdjtDOM.viewWidth();

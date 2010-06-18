@@ -224,8 +224,6 @@ body.sbookfocus { color: inherit;}
 body.sbooktarget { color: inherit;}
 body.sbookhead { text-decoration: none;}
 
-body.preview .previewing { color: red;}
-
 /* Generic HUD Display/opacity rules */
 
 img.previewicon {
@@ -237,9 +235,26 @@ img.previewicon {
     -khtml-border-radius: 6px; 
     -webkit-border-radius: 6px; 
     -moz-border-radius: 6px;}
-.preview img.previewicon {
+body.preview p[id], body.preview div[id], body.preview li[id], body.preview ul[id] {
     cursor: url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
             crosshair;}
+/* body.preview * { opacity: .75;} */
+body.preview { }
+body.preview *.previewing { color: red; }
+
+div#SBOOKPREVIEWMSG {
+    position: fixed;
+    color: black; background-color: white;
+    top: 25%; bottom: 25%; right: 15%; left: 15%;
+    padding-top: 5%; padding-bottom: 5%;
+    font-size: 36px; font-weight: bold;
+    text-align: center; vertical-align: middle;
+    transition-property: opacity; transition-duration: 2s;
+    border: solid black 6px; border-radius: 12px;
+    opacity: 0.75;
+    display: none;}
+div#SBOOKPREVIEWMSG div {}
+/* body.preview div#SBOOKPREVIEWMSG { display: block;} */
 
 /* HUD blocks */
 
@@ -282,7 +297,6 @@ div#SBOOKHUD div.scrollhud {
   font-family: arial,helvetica,sans,sans-serif;
   text-align: center;
   display: none;}
-
 
 div#SBOOKHUD div.scrollhud div.scrollhead {
   position: absolute; top: 0px; left: 0px; right: 0px;

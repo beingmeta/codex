@@ -51,10 +51,13 @@ var sbookMode=
 	function initHUD(){
 	    if (fdjtID("SBOOKHUD")) return;
 	    else {
+		var hudmessages=fdjtDOM("div#SBOOKHUDMESSAGES");
+		hudmessages.sbookui=true;
+		hudmessages.innerHTML=sbook_messages;
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,sbookHUD);}
+		fdjtDOM.prepend(document.body,hudmessages,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
@@ -89,9 +92,11 @@ var sbookMode=
 	    var navhud=createNavHUD("div#SBOOKTOC.hudblock",root_info);
 	    var toc_button=fdjtID("SBOOKTOCBUTTON");
 	    toc_button.style.visibility='';
+	    sbook.TOC=navhud;
 	    fdjtDOM.replace("SBOOKTOC",navhud);
-	    fdjtDOM(fdjtID("DASHTOC"),
-		    createStaticTOC("div#SBOOKDASHTOC",root_info));}
+	    var dashtoc=createStaticTOC("div#SBOOKDASHTOC",root_info);
+	    sbook.DashTOC=dashtoc;
+	    fdjtDOM(fdjtID("DASHTOC"),dashtoc);}
 	sbook.setupTOC=setupTOC;
 
 	function createNavHUD(eltspec,root_info){
@@ -486,7 +491,11 @@ var sbookMode=
 		    elt=ref;}
 		else offset=displayOffset();}
 	    fdjtDOM.addClass(document.body,"preview");
+	    fdjtID("SBOOKPREVIEWMSG").style.display="";
 	    fdjtDOM.addClass(elt,"previewing");
+	    setTimeout(function(){
+		fdjtID("SBOOKPREVIEWMSG").style.display="none";},
+		       2000);
 	    sbook.last_preview=elt;
 	    sbook.preview_target=sbook.preview=elt;
 	    if ((elt.title)&&(elt!==sbook.target))

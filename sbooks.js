@@ -438,7 +438,14 @@ var sbook_gloss_data=
 	    setTarget(target);
 	else if (sbook.paginate) sbook.GoToPage(page);
 	else scrollTo(target);
-	sbookMode(false);}
+	sbookMode(false);
+	fdjtDOM.addClass(sbook.TOC,"hover");
+	fdjtDOM.addClass(document.body,"hudup");
+	setTimeout(function(){
+	    fdjtDOM.dropClass(sbook.TOC,"hover");
+	    fdjtDOM.dropClass(document.body,"hudup");},
+		   1500);}
+
     sbook.GoTo=sbookGoTo;})();
 
 /* Adding qricons */
