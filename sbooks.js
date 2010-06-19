@@ -70,7 +70,8 @@ var sbook=
 	 mark: false,      // Whether to debug gloss addition
 	 pagination: 0, // Whether to trace pagination
 	 paging: false,       // Whether to trace paging (movement by pages)
-	 gestures: true},
+	 preview: false, // Whether to trace preview
+	 gestures: false}, // Whether to trace gestures
     };
 var _sbook_setup=false;
 

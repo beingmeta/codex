@@ -210,17 +210,13 @@ img.sbookqricon { display: none;}
 
 /* Tracking styles */
 
-.sbookfocus { cursor: pointer; }
-body.hudup .sbookfocus { color: blue;}
-
 .sbooktarget { }
 body.hudup .sbooktarget { color: blue; cursor: pointer;}
+body.hudup .sbooktarget.previewing { color: red; cursor: pointer;}
 body.hudup .sbooktarget .glossmark { color: blue; cursor: pointer;}
-body.hudup .sbookfocus.sbooktarget { color: darkblue;}
 
 /* None of these apply to the body generally */
 
-body.sbookfocus { color: inherit;}
 body.sbooktarget { color: inherit;}
 body.sbookhead { text-decoration: none;}
 
@@ -238,8 +234,12 @@ img.previewicon {
 body.preview p[id], body.preview div[id], body.preview li[id], body.preview ul[id] {
     cursor: url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
             crosshair;}
-/* body.preview * { opacity: .75;} */
-body.preview { }
+body.preview div#SBOOKHUD { opacity: 0.9;}
+body.preview div#SBOOKHUD * { opacity: 1.0;}
+body.preview * { opacity: .75;}
+body.preview *.preview { opacity: 1.0;}
+body.preview *.preview * { opacity: 0.75;}
+body.preview *.preview *.preview { opacity: 1.0;}
 body.preview *.previewing { color: red; }
 
 div#SBOOKPREVIEWMSG {
@@ -1428,18 +1428,6 @@ span.glossmark img {
    width: 100%; height: auto;
    vertical-align: top; text-align: right;}
 span.glossmark img.tiny { display: none; }
-body.focuscues .sbookfocus span.glossmark {
-    opacity: 0.75; border-top: solid blue 2px;}
-.sbookfocus [id] span.glossmark { opacity: 0.75; border: none;}
-body.hudup .sbookfocus span.glossmark {
-    width: 50px;}
-.sbooktarget.sbookfocus span.glossmark {
-    opacity: 0.9; border-top: solid blue 2px;}
-.sbookfocus span.glossmark img.big { }
-.sbookfocus span.glossmark img.tiny { border: none; }
-
-.sbooktarget.sbookfocus span.glossmark {
-    opacity: 0.9; border-top: solid blue 3px;}
 
 body.sparsebook span.glossmark { width: 16px; height: 16px; }
 body.sparsebook span.glossmark img.big { display: none;}
