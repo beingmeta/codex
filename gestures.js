@@ -73,6 +73,35 @@ var sbookUI=
 	var sbook_hold_threshold=750;
 	var default_hud_flash=3000;
 
+	/* Setup for gesture handling */
+
+	var hudbuttons=
+	    ["SBOOKTOCBUTTON","SBOOKDASHBUTTON","SBOOKSEARCHBUTTON",
+	     "SBOOKALLGLOSSESBUTTON"];
+
+	sbookUI.getMode=function(){
+	  return ((sbook.touch)?("touch"):
+		  (sbook.mouse)?("mouse"):
+		  (sbook.kbd)?("keyboard"):
+		  (sbook.oneclick)?("oneclick"):
+		  ("mouse"));}
+	function addHandlers(node,type){
+	  var mode=sbookUI.getMode();
+	  fdjtDOM.addListeners(node,sbookUI.handlers[mode][type]);}
+	sbookUI.addHandlers=addHandlers;
+
+	function setupGestures(){
+	    // Unavoidable browser sniffing
+	  if (sbook.mobilesafari) mobileSafariGestures();
+	  var mode=sbookUI.getMode();
+	  addHandlers(false,'window');
+	  addHandlers(sbook.HUD,'hud');
+	  addHandlers(hudbuttons,'hudbutton');}
+	sbook.setupGestures=setupGestures;
+
+	function mobileSafariGestures(){
+	    window.onscroll=function(evt){sbook.syncHUD();};}
+
 	/* click events */
 
 	function inUI(node){
@@ -113,26 +142,37 @@ var sbookUI=
 	
 	var mousedown=false;
 
-	/* Clicking on the body */
+	/* Clicking on the body:
+	   when in preview, if you've clicked on the target, go there, otherwise leave preview
+	   when the HUD is up and the click target is the sbook target, toggle the mark HUD,
+	   otherwise if there's a content target, make it the sbook target and bring the HUD up,
+	   while if there's no content target (typically margin or whitespace click), toggle the HUD.
+	*/
 	function onclick(evt){
 	    var target=fdjtUI.T(evt);
 	    mousedown=false;
 	    if (sbook.Trace.gestures)
 		fdjtLog(
-		    "[%f] onclick %o cl=%o ui=%o sbt=%o sbp=%o sh=%o sm=%o hp=%o @<%o,%o>",
+		    "[%f] onclick() %o cl=%o ui=%o sbt=%o sbp=%o sh=%o sm=%o sbph=%o hp=%o @<%o,%o>",
 		    fdjtET(),evt,fdjtDOM.isClickable(target),inUI(target),
 		    sbook.target,sbook.preview,
-		    sbook.hudup,sbook.mode,
+		    sbook.hudup,sbook.mode,sbook.preview_hold,
 		    (fdjtDOM.hasParent(target,sbook.target)),
 		    evt.clientX,evt.clientY);
+	    /* These are all cases where this method doesn't apply */
 	    if (!(target)) return;
 	    else if (fdjtDOM.isClickable(target)) return;
 	    else if (inUI(target)) return;
+	    /* In preview mode, either go to the target (and drop the HUD)
+	       or toggle out of preview mode and back to the HUD. */
 	    else if (sbook.preview) {
-		if (fdjtDOM.hasParent(target,sbook.preview)) {
-		    sbook.Preview(false); sbookMode(false);
-		    sbook.GoTo(target);}
-		else sbook.Preview(false);}
+		if (sbook.preview_hold) {
+		    if (fdjtDOM.hasParent(target,sbook.preview)) {
+			sbook.Preview(false); sbookMode(false);
+			sbook.GoTo(target);}
+		    else sbook.Preview(false);}
+		else return;}
+	    /* If you're clicking on the current target, toggle the mark HUD */
 	    else if ((sbook.hudup)&&(sbook.target)&&
 		     (fdjtDOM.hasParent(target,sbook.target))&&
 		     (!(sbook.mode==="mark"))) {
@@ -141,8 +181,9 @@ var sbookUI=
 		var excerpt=fdjtString.stdspace(selection.toString());
 		sbookMark(target,false,excerpt);
 		sbook.GoToPage(sbook_curpage);}
+	    /* Otherwise, if there's no content target, just toggle the HUD */
 	    else if (!(sbook.getTarget(target)))
-		sbookMode(false);
+		if (sbook.hudup) sbookMode(false); else sbookMode(true);
 	    else {
 		sbook.setTarget(sbook.getTarget(target));
 		sbookMode(true);}}
@@ -170,15 +211,10 @@ var sbookUI=
 	function ondblclick(evt){
 	    sbookMark(sbook.getTarget(evt));}
 
-	/* Touch handlers */
-
-	// Touch start on a reference starts a timer to preview
-	//   the reference
-	// Touch end on a reference either jumps (if the timer is still running)
-	//  or stops preview
-
 	/* Keyboard handlers */
 
+	// We handle a few cases in onkeydown, where the event might not turn into
+	//  a keypress
 	function onkeydown(evt){
 	    evt=evt||event||null;
 	    var kc=evt.keyCode;
@@ -199,7 +235,8 @@ var sbookUI=
 		return;}
 	    else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
 	    else if (kc===34) sbook.Forward();   /* page down */
-	    else if (kc===33) sbook.Backward();  /* Page Up */
+	    else if (kc===33) sbook.Backward();  /* page up */
+	    // Don't interrupt text input
 	    else if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
 	    else if (kc===32) sbook.Forward(); // Space
 	    else if ((kc===8)||(kc===45)) sbook.Backward(); // backspace or delete
@@ -220,6 +257,7 @@ var sbookUI=
 
 	/* Keypress handling */
 
+	// We have a big table of command characters which lead to modes
 	var modechars={
 	    43: "mark",13: "mark",
 	    63: "searching",102: "searching",
@@ -230,8 +268,7 @@ var sbookUI=
 	    116: "dashtoc",84: "dashtoc",
 	    104: "help",72: "help",
 	    103: "allglosses",71: "allglosses",
-	    67: "console", 99: "console",
-	    76: "layers", 108: "layers"};
+	    67: "console", 99: "console"};
 
 	function onkeypress(evt){
 	    var modearg=false; 
@@ -258,35 +295,6 @@ var sbookUI=
 	    else fdjtID("SBOOKSEARCHTEXT").blur();
 	    fdjtDOM.cancel(evt);}
 	sbookUI.handlers.onkeypress=onkeypress;
-
-	/* Setup */
-
-	var hudbuttons=
-	    ["SBOOKTOCBUTTON","SBOOKDASHBUTTON","SBOOKSEARCHBUTTON",
-	     "SBOOKALLGLOSSESBUTTON"];
-
-	sbookUI.getMode=function(){
-	  return ((sbook.touch)?("touch"):
-		  (sbook.mouse)?("mouse"):
-		  (sbook.kbd)?("keyboard"):
-		  (sbook.oneclick)?("oneclick"):
-		  ("mouse"));}
-	function addHandlers(node,type){
-	  var mode=sbookUI.getMode();
-	  fdjtDOM.addListeners(node,sbookUI.handlers[mode][type]);}
-	sbookUI.addHandlers=addHandlers;
-
-	function setupGestures(){
-	    // Unavoidable browser sniffing
-	  if (sbook.mobilesafari) mobileSafariGestures();
-	  var mode=sbookUI.getMode();
-	  addHandlers(false,'window');
-	  addHandlers(sbook.HUD,'hud');
-	  addHandlers(hudbuttons,'hudbutton');}
-	sbook.setupGestures=setupGestures;
-
-	function mobileSafariGestures(){
-	    window.onscroll=function(evt){sbook.syncHUD();};}
 
 	/* HUD button handling */
 
@@ -322,84 +330,119 @@ var sbookUI=
 
 	/* Preview support */
 
+	/* Preview mode provides a temporary glimpse of the content
+	   from the HUD.  It is designed to be easy to invoke and
+	   recover from.  In some cases, UI elements (like spanbars in
+	   the TOC) provide previews on mouseover (where there is a
+	   mouse), in other cases, the preview is engaged on a click;
+	   clicking on the previewed element jumps there and clicking
+	   anywhere else leaves preview mode and goes back to the
+	   HUD.
+	   
+	   There are really two cases: preview mode where the HUD goes
+	   away and preview mode where the HUD (or a part of it)
+	   remains visible.  The mouseover functionality (or its touch
+	   equivalent) only makes sense for the latter.  The touch
+	   interface here is really just a navigation interface.
+
+	   Touch idea:
+	   No mouseover (of course)
+	   Click sets a preview and swipe moves forward or backward at the level of reference.
+	   
+	*/
+
+	var preview_hold=false;
+	var preview_timer=false;
+	function preview_down(evt){
+	    evt=evt||event;
+	    var target=fdjtUI.T(evt);
+	    var ref=sbook.getRef(target);
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] preview_down() %o pt=%o sbp=%o ph=%o, ref=%o",
+			fdjtET(),evt,preview_timer,sbook.preview,preview_hold,ref);
+	    if (sbook.preview) {
+		sbook.Preview(false);
+		return;}
+	    if (ref) {
+		sbook.preview_hold=preview_hold=false;
+		sbook.Preview(ref);
+		preview_timer=setTimeout(function(){
+		    sbook.preview_hold=preview_hold=true;},500);}}
+	function preview_up(evt){
+	    evt=evt||event;
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] preview_up() %o pt=%o sbp=%o ph=%o",
+			fdjtET(),evt,preview_timer,sbook.preview,preview_hold);
+	    if (preview_timer) {
+		clearTimeout(preview_timer);
+		preview_timer=false;}
+	    if ((sbook.preview)&&(preview_hold)) sbook.Preview(false);
+	    fdjtUI.cancel(evt);}
+
 	var cohi_onmouseover=fdjtUI.CoHi.onmouseover;
 	var cohi_onmouseout=fdjtUI.CoHi.onmouseout;
-
-	var stopping_preview=false;
-	function start_preview(evt){
-	  var target=fdjtDOM.T(evt);
-	  var ref=sbook.getRef(target);
-	  if (!(ref)) return;
-	  if (stopping_preview) {
-	    clearTimeout(stopping_preview);
-	    stopping_preview=false;}
-	  if (ref===sbook.preview) {}
-	  else if (ref) sbook.Preview(ref,true);
-	  fdjtUI.cancel(evt);}
-	function stop_preview(evt){
-	  if (stopping_preview) return false;
-	  var target=fdjtDOM.T(evt);
-	  var ref=sbook.getRef(target);
-	  sbook.Preview(false,true);}
 
 	/* TOC handlers */
 
 	function toc_onmouseover(evt){
-	  evt=evt||event;
-	  var target=fdjtDOM.T(evt);
-	  // Spanbars in TOCs automatically generate previews on mouseover
-	  if (fdjtDOM.hasParent(target,'.spanbar'))
-	    start_preview(evt);
-	  else if (evt.button)
-	    start_preview(evt);
-	  else {}}
+	    evt=evt||event;
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] toc_onmouseover() %o pt=%o sbp=%o ph=%o",
+			fdjtET(),evt,preview_timer,sbook.preview,preview_hold);
+	    var target=fdjtDOM.T(evt);
+	    // Spanbars in TOCs automatically generate previews on mouseover
+	    if ((evt.button)||(fdjtDOM.hasParent(target,'.spanbar'))) {
+		var ref=sbook.getRef(target);
+		if (ref) {
+		    if (preview_timer) {clearTimeout(preview_timer); preview_timer=false;}
+		    sbook.Preview(ref);}}}
 	function toc_onmouseout(evt){
-	  evt=evt||event;
-	  var target=fdjtDOM.T(evt);
-	  if (fdjtDOM.hasParent(target,'.spanbar'))
-	    stop_preview(evt);}
+	    evt=evt||event;
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] toc_onmouseout() %o pt=%o sbp=%o ph=%o",
+			fdjtET(),evt,preview_timer,sbook.preview,preview_hold);
+	    var target=fdjtDOM.T(evt);
+	    // Spanbars in TOCs automatically generate previews on mouseover
+	    if (sbook.preview) {
+		var ref=sbook.getRef(target);
+		if ((ref)&&(sbook.preview)&&(sbook.preview===ref))
+		    if (preview_timer) {clearTimeout(preview_timer); preview_timer=false;}
+		    preview_timer=setTimeout(function(){sbook.Preview(false);},1000);}}
 	function toc_onmousedown(evt){
-	  evt=evt||event;
-	  var target=fdjtDOM.T(evt);
-	  if (fdjtDOM.hasParent(target,'.spanbar')) return;
-	  mousedown=fdjtTime();
-	  start_preview(evt);}
+	    evt=evt||event;
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] toc_onmousedown() %o pt=%o sbp=%o ph=%o",
+			fdjtET(),evt,preview_timer,sbook.preview,preview_hold);
+	    var target=fdjtDOM.T(evt);
+	    // Spanbars in TOCs automatically generate previews on mouseover
+	    if (!(fdjtDOM.hasParent(target,'.spanbar'))) preview_down(evt);}
+	function toc_onmouseup(evt){
+	    evt=evt||event;
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] toc_onmouseup() %o pt=%o sbp=%o ph=%o",
+			fdjtET(),evt,preview_timer,sbook.preview,preview_hold);
+	    var target=fdjtDOM.T(evt);
+	    // Spanbars in TOCs automatically generate previews on mouseover
+	    if (!(fdjtDOM.hasParent(target,'.spanbar'))) preview_up(evt);}
+
 	// The generic mouseup handles stopping preview
 	function toc_onclick(evt){
-	  fdjtLog("onclick now=%o md=%o sp=%o",
-		  mousedown,sbook.preview,fdjtTime());
-	  if ((sbook.preview)&&(mousedown)) {
-	    var duration=fdjtTime()-mousedown;
-	    if (duration>1000) {
-	      mousedown=false; return;}}
-	  mousedown=false;
-	  evt=evt||event;
-	  var ref=sbook.getRef(evt);
-	  if (ref) sbook.GoTo(ref);}
+	    var keeptoc=(sbook.mode==='toc');
+	    var target=fdjtUI.T(evt);
+	    var ref=sbook.getRef(target);
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%f] toc_onmouseup() %o pt=%o sbp=%o ph=%o ref=%o",
+			fdjtET(),evt,preview_timer,sbook.preview,preview_hold,ref);
+	    if ((ref)&&(!(preview_hold))) {
+		if (keeptoc) {
+		    var info=sbook.Info(ref); var sub=info.sub;
+		    if ((!(sub))||(sub.length<3)) keeptoc=false;}
+		if (keeptoc) sbook.setHead(ref);
+		else sbook.GoTo(ref);}
+	    preview_hold=false;
+	    fdjtUI.cancel(evt);}
 
 	/* Summary handlers */
-
-	function summary_onmousedown(evt){
-	  evt=evt||event;
-	  mousedown=fdjtTime();
-	  var target=fdjtDOM.T(evt);
-	  start_preview(evt);}
-	function summary_onmouseover(evt){
-	  if (!(sbook.preview)) return;
-	  evt=evt||event;
-	  var ref=sbook.getRef(evt);
-	  if (ref===sbook.preview) {}
-	  else if (ref) sbook.Preview(ref,true);}
-	function summary_onclick(evt){
-	  evt=evt||event;
-	  if (mousedown) {
-	    var duration=fdjtTime()-mousedown;
-	    if (duration>1000) {
-	      mousedown=false; return;}}
-	  mousedown=false;
-	  var ref=sbook.getRef(evt);
-	  if (ref) sbook.GoTo(ref);
-	  fdjtUI.cancel(evt);}
 
 	/* Rules */
 
@@ -410,11 +453,11 @@ var sbookUI=
 	   hudbutton: {"mouseover":hudbutton,
 		       "mouseout":hudbutton},
 	   toc: {mouseover: toc_onmouseover,mouseout: toc_onmouseout,
-		 mousedown: toc_onmousedown,onclick: toc_onclick},
-	   summary: {title: "hold to glimpse, click to go",
-		     mouseover: summary_onmouseover,
-		     mousedown: summary_onmousedown,
-		     click: summary_onclick}};
+		 mousedown: toc_onmousedown,mouseup: toc_onmouseup,
+		 click: toc_onclick},
+	   summary: {title: "hold or click to glimpse",
+		     mousedown: preview_down,
+		     mouseup: preview_up}};
 	
 	sbookUI.handlers.oneclick=
 	  {window: {"mouseup": onclick,"dblclick": ondblclick,
