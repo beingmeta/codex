@@ -203,13 +203,14 @@ var sbookMark=
 	    if (form.tagName!=='FORM')
 		form=fdjtDOM.getParent(form,'form')||form;
 	    var tagselt=fdjtDOM.getChild(form,'.tags');
-	    var varname='TAGS'; var info;
+	    var varname='TAGS'; var info; var title=false;
 	    if ((tag.nodeType)&&(fdjtDOM.hasClass(tag,'completion'))) {
 		if (fdjtDOM.hasClass(tag,'outlet'))
 		    varname='OUTLETS';
 		else if (fdjtDOM.hasClass(tag,'source'))
 		    varname='ATTENTION'
 		else {}
+		if (tag.title) title=tag.title;
 		tag=sbook_mark_cloud.getValue(tag);}
 	    var info=fdjtKB.ref(tag)||sbook.knodule.probe(tag);
 	    var text=((info)?
@@ -221,6 +222,7 @@ var sbookMark=
 		else tag=info.qid||info.oid||info.dterm||tag;}
 	    if ((info)&&(info.pool===sbook.sourcekb)) varname='OUTLETS';
 	    var span=fdjtUI.CheckSpan("span.checkspan",varname,tag,true);
+	    if (title) span.title=title;
 	    fdjtDOM.addClass(span,varname.toLowerCase());
 	    fdjtDOM.append(span,text);
 	    fdjtDOM.append(tagselt,span," ");}
@@ -243,7 +245,8 @@ var sbookMark=
 		    var completion=fdjtDOM("span.completion.cue.outlet",info.name);
 		    completion.setAttribute("value",outlet);
 		    completion.setAttribute("key",info.name);
-		    if (info.about) completion.title=info.about;
+		    if (info.about) completion.title=
+			"share with '"+info.about+"'";
 		    fdjtDOM(outlets_span,completion," ");}}
 	    if (sbook.sources) {
 		var outlets=sbook.outlets||[];
@@ -257,7 +260,8 @@ var sbookMark=
 		    ("span.completion.source",info.name);
 		    completion.setAttribute("value",source);
 		    completion.setAttribute("key",info.name);
-		    if (info.about) completion.title=info.about;
+		    if (info.about) completion.title=
+			"highlight for '"+info.about+"'";
 		    fdjtDOM(sources_span,completion," ");}}
 	    completions._seen=seen;
 	    var tagscores=sbook_index.tagScores();

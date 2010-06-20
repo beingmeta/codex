@@ -151,7 +151,7 @@ var sbookMode=
 	    if (sbook.preview) sbook.Preview(false);
 	    if (mode) {
 		if (mode==="dash") mode=sbook.last_dash||"help";
-		if (sbook.floathud) syncHUD();
+		if (sbook.floathud) syncHUD(mode);
 		if (mode===sbook.mode) {}
 		else if (mode===true)  {
 		    sbook.hudup=true;
@@ -164,11 +164,13 @@ var sbookMode=
 		    sbook.mode=mode;
 		    sbook.last_mode=mode;
 		    if (fdjtKB.contains(sbook_apps,mode)) sbook.last_dash=mode;
-		    fdjtDOM.addClass(document.body,"hudup"); sbook.hudup=true;
+		    sbook.hudup=true;
+		    fdjtDOM.addClass(document.body,"hudup");
 		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
 		    if ((mode==="allglosses")&&(sbook.target))
 			sbookUI.scrollGlosses(sbook.target);}}
 	    else {
+		syncHUD(false);
 		sbook.last_mode=sbook.mode;
 		sbook.mode=false; sbook.hudup=false;
 		fdjtDOM.dropClass(document.body,"hudup");
@@ -261,10 +263,11 @@ var sbookMode=
 	var sbook_sync_off=false;
 	var sbook_sync_height=false;
 	
-	function syncHUD(){
+	function syncHUD(mode){
 	    if (!(sbook.floathud)) return;
 	    var view_top=fdjtDOM.viewTop();
-	    var view_height=((sbook.mode)&&(fdjtDOM.viewHeight()));
+	    var view_height=((mode)&&(typeof mode ==='string')&&
+			     (fdjtDOM.viewHeight()-50));
 	    if (view_top!==sbook_sync_off) {
 		sbookHUD.style.top=view_top+'px';
 		sbook_sync_off=view_top;}

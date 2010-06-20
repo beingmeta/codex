@@ -59,8 +59,8 @@ var sbook=
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
      Trace: {
-	 mode: false,  // Whether to trace mode changes
-	 nav: false,    // Whether to trace book navigation
+	 mode: true,  // Whether to trace mode changes
+	 nav: true,    // Whether to trace book navigation
 	 search: 0, // Whether (and level) to trace searches
 	 clouds: 0, // Whether to trace cloud generation
 	 focus: false,// Whether to trace focus/target changes
@@ -71,7 +71,7 @@ var sbook=
 	 pagination: 0, // Whether to trace pagination
 	 paging: false,       // Whether to trace paging (movement by pages)
 	 preview: false, // Whether to trace preview
-	 gestures: false}, // Whether to trace gestures
+	 gestures: true}, // Whether to trace gestures
     };
 var _sbook_setup=false;
 
@@ -428,8 +428,8 @@ var sbook_gloss_data=
 	var page=((sbook.paginate)&&sbook.getPage(target));
 	var info=((target.id)&&(sbook.docinfo[target.id]));
 	if (sbook.Trace.nav)
-	    fdjtLog("sbook.GoTo #%o@P%o/L%o %o",
-		    target.id,page,info.sbookloc,target);
+	    fdjtLog("[%f] sbook.GoTo() #%o@P%o/L%o %o",
+		    fdjtET(),target.id,page,((info)&&(info.sbookloc)),target);
 	if (target.id) setHashID(target);
 	if (info) {
 	    if (info.sbookloc) setLocation(info.sbookloc);

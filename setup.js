@@ -151,11 +151,13 @@ sbook.Setup=
 		 (useragent.search("Mobile/")>0))||
 		// this (false) is here to make it easy to partially
 		// test for Mobile Safari
-		(false)) { 
+		(true)) { 
 		fdjtLog.doformat=true;
 		// sbook.paginate=false; sbook.scrolling=true;
 		sbook.floathud=true; sbook.mobilesafari=true;
-		setopt("touch");}
+		sbook.ui="ios";}
+	    else {
+		sbook.ui="mouse";}
 	    
 	    sbook.allglosses=
 		((offline)?
