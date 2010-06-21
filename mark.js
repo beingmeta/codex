@@ -342,13 +342,13 @@ var sbookMark=
 			sbook._tagupdate=false;
 			sbook_mark_cloud.complete(inputvalue(target));},
 			       _sbook_tagupdate_delay);}}
-	sbookUI.handlers.taginput_onkeypress=taginput_onkeypress;
+	sbook.UI.handlers.taginput_onkeypress=taginput_onkeypress;
 
 	function taginput_onfocus(evt){
 	    evt=evt||event||null;
 	    var input=fdjtDOM.T(evt);
 	    sbook_mark_cloud.complete(inputvalue(input));}
-	sbookUI.handlers.taginput_onfocus=taginput_onfocus;
+	sbook.UI.handlers.taginput_onfocus=taginput_onfocus;
 
 	function taginput_onkeyup(evt){
 	    evt=evt||event||null;
@@ -363,13 +363,13 @@ var sbookMark=
 			sbook._tagupdate=false;
 			sbook_mark_cloud.complete(inputvalue(target));},
 			       _sbook_tagupdate_delay);}}
-	sbookUI.handlers.taginput_onkeyup=taginput_onkeyup;
+	sbook.UI.handlers.taginput_onkeyup=taginput_onkeyup;
 
 	/* Other fields */
 	
 	function xrefs_onkeypress(evt){
 	    return fdjtMultiText_onkeypress(evt,'div');}
-	sbookUI.handlers.xrefs_onkeypress;
+	sbook.UI.handlers.xrefs_onkeypress;
 	
 	function gettagspan(input,pt){
 	    if (fdjtDOM.hasClass(input,"isempty")) return false;
@@ -584,7 +584,7 @@ var sbookMark=
 				    ((gloss.note)?(fdjtDOM("span.note",gloss.note)):(false)));
 			fdjtDOM.replace("SBOOKMARKRELAYBLOCK",glossblock);}}}
 	    else sbookMark.setup(target,gloss||false,excerpt||false);
-	    sbookUI.openGlossmark(target,true);
+	    sbook.UI.openGlossmark(target,true);
 	    sbookMode("mark");
 	    fdjtID("SBOOKMARKINPUT").focus();}
 	sbookMark.setup=setupHUD;

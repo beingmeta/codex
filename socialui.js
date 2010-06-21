@@ -52,7 +52,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 
     function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
-    sbookUI.addSourceIcon=function(info){
+    sbook.UI.addSourceIcon=function(info){
 	if (typeof info === 'string') info=fdjtKB.ref(info);
 	var humid=info.humid;
 	var icon=fdjtID("SBOOKSOURCEICON"+humid);
@@ -96,7 +96,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	sbookSelectSources(summaries,false);
 	fdjtDOM.cancel(evt);
     }
-    sbookUI.handlers.everyone_onclick=everyone_onclick;
+    sbook.UI.handlers.everyone_onclick=everyone_onclick;
 
     function sources_onclick(evt)
     {
@@ -125,13 +125,13 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	var everyone=fdjtDOM.$(".everyone",sources)[0];
 	if (new_sources.length) {
 	    if (everyone) fdjtDOM.dropClass(everyone,"selected");
-	    sbookUI.selectSources(summaries,new_sources);}
+	    sbook.UI.selectSources(summaries,new_sources);}
 	else {
 	    if (everyone) fdjtDOM.addClass(everyone,"selected");
-	    sbookUI.selectSources(summaries,false);}
+	    sbook.UI.selectSources(summaries,false);}
 	fdjtDOM.cancel(evt);
     }
-    sbookUI.handlers.sources_onclick=sources_onclick;
+    sbook.UI.handlers.sources_onclick=sources_onclick;
 
 
     function scrollGlosses(elt,glosses)
@@ -153,9 +153,9 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 			glosses.scrollTop=off.top;
 			return;}}}}
     }
-    sbookUI.scrollGlosses=scrollGlosses;
+    sbook.UI.scrollGlosses=scrollGlosses;
 
-    sbookUI.addGlossmark=function(id){
+    sbook.UI.addGlossmark=function(id){
 	var target=fdjtID(id);
 	if (!(target)) return false;
 	var glossmarkid="SBOOK_GLOSSMARK_"+id;
@@ -186,13 +186,13 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
     function openGlossmark(target,addmark) {
 	var glosses=sbook.glosses.find('frag',target.id)
 	var sumdiv=fdjtDOM("div.sbooksummaries.hudblock");
-	sbookUI.setupSummaryDiv(sumdiv);
+	sbook.UI.setupSummaryDiv(sumdiv);
 	if (glosses)
-	    sbookUI.showSummaries(glosses,sumdiv,false);
+	    sbook.UI.showSummaries(glosses,sumdiv,false);
 	fdjtDOM.replace("SBOOKGLOSSES",sumdiv);
 	sbook.setTarget(target);
 	sbookMode("glosses");}
-    sbookUI.openGlossmark=openGlossmark;
+    sbook.UI.openGlossmark=openGlossmark;
 
     function alignGlossmark(hud,target)
     {
@@ -215,7 +215,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	    sbookMode(false);
 	    return;}
 	else openGlossmark(target);}
-    sbookUI.handlers.glossmark_onclick=glossmark_onclick;
+    sbook.UI.handlers.glossmark_onclick=glossmark_onclick;
 
     function glossmark_onmouseover(evt)
     {
@@ -223,7 +223,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	var target=sbook.getRef(fdjtUI.T(evt))||sbookGetFocus(fdjtUI.T(evt));
 	fdjtDOM.addClass(target,"sbooklivespot");
     }
-    sbookUI.handlers.glossmark_onmouseover=glossmark_onmouseover;
+    sbook.UI.handlers.glossmark_onmouseover=glossmark_onmouseover;
 
     function glossmark_onmouseout(evt)
     {
@@ -231,7 +231,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	var target=sbook.getRef(fdjtUI.T(evt))||sbook.getFocus(fdjtUI.T(evt));
 	fdjtDOM.dropClass(target,"sbooklivespot");
     }
-    sbookUI.handlers.glossmark_onmouseout=glossmark_onmouseout;
+    sbook.UI.handlers.glossmark_onmouseout=glossmark_onmouseout;
 
 })();
 

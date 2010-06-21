@@ -42,7 +42,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
   function showSearchResults(result){
       if (!(result)) result=sbook.query;
       var results_div=fdjtDOM("div.sbooksummaries.scrollbody");
-      sbookUI.setupSummaryDiv(results_div);
+      sbook.UI.setupSummaryDiv(results_div);
       showSearchSummaries(result,results_div);
       fdjtDOM.replace("SBOOKSUMMARIES",results_div);}
     sbook.showSearchResults=showSearchResults;
@@ -68,7 +68,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
     results_sum.dir='ltr';
     fdjtDOM(head_div,results_sum);
     fdjtDOM(results_div,head_div);
-    sbookUI.showSummaries(results,results_div,result);}
+    sbook.UI.showSummaries(results,results_div,result);}
 
   var _sbook_searchupdate=false;
   var _sbook_searchupdate_delay=200;
@@ -124,7 +124,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	setTimeout(function(){
 	    completeinfo.complete(Knodule.Query.tail(target.value));},
 	  _sbook_searchupdate_delay);}}
-  sbookUI.handlers.SearchInput_onkeypress=searchInput_onkeypress;
+  sbook.UI.handlers.SearchInput_onkeypress=searchInput_onkeypress;
 
   function searchInput_onkeyup(evt){
     evt=evt||event||null;
@@ -139,7 +139,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	    _sbook_searchupdate=false;
 	    searchUpdate(target);},
 	  _sbook_searchupdate_delay,target);}}
-  sbookUI.handlers.SearchInput_onkeyup=searchInput_onkeyup;
+  sbook.UI.handlers.SearchInput_onkeyup=searchInput_onkeyup;
 
   function searchUpdate(input,cloud){
     if (!(input)) input=fdjtID("SBOOKSEARCHTEXT");
@@ -156,20 +156,20 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
     sbook_search_focus=true;
     sbookMode("searching");
     searchUpdate(input);}
-  sbookUI.handlers.SearchInput_onfocus=searchInput_onfocus;
+  sbook.UI.handlers.SearchInput_onfocus=searchInput_onfocus;
 
   function searchInput_onblur(evt){
     evt=evt||event||null;
     fdjtUI.AutoPrompt.onblur(evt);
     sbook_search_focus=false;}
-  sbookUI.handlers.SearchInput_onblur=searchInput_onblur;
+  sbook.UI.handlers.SearchInput_onblur=searchInput_onblur;
 
   function clearInput_onclick(evt){
     var input_elt=fdjtID("SBOOKSEARCHTEXT");
     input_elt.value='';
     sbookUpdateQuery(input_elt);
     input_elt.focus();}
-  sbookUI.handlers.ClearInput_onclick=clearInput_onclick;
+  sbook.UI.handlers.ClearInput_onclick=clearInput_onclick;
   
   sbook.toggleSearch=function(evt){
     evt=evt||event;
@@ -259,7 +259,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
       fdjtDOM.toggleClass(container,"showall");
       fdjtDOM.cancel(evt);}
     else {}}
-  sbookUI.handlers.Cloud_onclick=Cloud_onclick;
+  sbook.UI.handlers.Cloud_onclick=Cloud_onclick;
 
   function makeCloud(dterms,scores,freqs,noscale){
     var sbook_index=sbook.index;

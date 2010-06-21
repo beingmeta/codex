@@ -58,6 +58,7 @@ var sbook=
      mouse: true,touch: false,kbd: false,
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
+     UI: {handlers: {}},
      Trace: {
 	 mode: true,  // Whether to trace mode changes
 	 nav: true,    // Whether to trace book navigation
@@ -70,7 +71,7 @@ var sbook=
 	 mark: false,      // Whether to debug gloss addition
 	 pagination: 0, // Whether to trace pagination
 	 paging: false,       // Whether to trace paging (movement by pages)
-	 preview: false, // Whether to trace preview
+	 preview: true, // Whether to trace preview
 	 gestures: true}, // Whether to trace gestures
     };
 var _sbook_setup=false;
@@ -215,6 +216,11 @@ var sbook_gloss_data=
 	    if (target.sbook_ref) break;
 	else target=target.parentNode;
 	return (target)&&(fdjtID(target.sbook_ref));};
+    sbook.getRefElt=function(target){
+	while (target)
+	    if (target.sbook_ref) break;
+	else target=target.parentNode;
+	return (fdjtID(target.sbook_ref))&&(target);};
 
     sbook.getTarget=function(scan,closest){
 	scan=scan.target||scan.srcElement||scan;

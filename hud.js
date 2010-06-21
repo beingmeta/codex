@@ -54,10 +54,11 @@ var sbookMode=
 		var hudmessages=fdjtDOM("div#SBOOKHUDMESSAGES");
 		hudmessages.sbookui=true;
 		hudmessages.innerHTML=sbook_messages;
+		var previewsum=fdjtDOM("div#SBOOKPREVIEWSUM");
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,hudmessages,sbookHUD);}
+		fdjtDOM.prepend(document.body,previewsum,hudmessages,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
@@ -66,14 +67,14 @@ var sbookMode=
 	    search.innerHTML=sbook_searchtext;
 	    initSearch(search);
 	    var glosses=fdjtID("SBOOKALLSUMMARIES");
-	    sbookUI.setupSummaryDiv(glosses);
+	    sbook.UI.setupSummaryDiv(glosses);
 	    sbook.glosses.addEffect("user",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit(sbookUI.addSourceIcon);});
+		sbook.sourcekb.ref(v).oninit(sbook.UI.addSourceIcon);});
 	    sbook.glosses.addEffect("distribution",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit(sbookUI.addSourceIcon);});
+		sbook.sourcekb.ref(v).oninit(sbook.UI.addSourceIcon);});
 	    sbook.glosses.addInit(function(item){
-		sbookUI.addSummary(item,glosses,false);
-		var glossmark=sbookUI.addGlossmark(item.frag); {
+		sbook.UI.addSummary(item,glosses,false);
+		var glossmark=sbook.UI.addGlossmark(item.frag); {
 		    if (item.tstamp>sbook.syncstamp) sbook.syncstamp=item.tstamp;
 		    var pic=((fdjtKB.ref(item.user)).pic)||
 			((fdjtKB.ref(item.feed)).pic);
@@ -103,26 +104,26 @@ var sbookMode=
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudblock.hud",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    sbookUI.addHandlers(div,"toc");
+	    sbook.UI.addHandlers(div,"toc");
 	    return div;}
 
 	function createStaticTOC(eltspec,root_info){
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKDASHTOC",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    sbookUI.addHandlers(div,"toc");
+	    sbook.UI.addHandlers(div,"toc");
 	    return div;}
 
 	function initSearch(){
 	    var input=fdjtID("SBOOKSEARCHTEXT");
 	    fdjtDOM.addListener(input,"keypress",
-				sbookUI.handlers.SearchInput_onkeypress);
+				sbook.UI.handlers.SearchInput_onkeypress);
 	    fdjtDOM.addListener(input,"keyup",
-				sbookUI.handlers.SearchInput_onkeyup);
+				sbook.UI.handlers.SearchInput_onkeyup);
 	    fdjtDOM.addListener(input,"focus",
-				sbookUI.handlers.SearchInput_onfocus);
+				sbook.UI.handlers.SearchInput_onfocus);
 	    fdjtDOM.addListener(input,"blur",
-				sbookUI.handlers.SearchInput_onblur);
+				sbook.UI.handlers.SearchInput_onblur);
 
 	    var sbooksearch=fdjtID("SBOOKSEARCH");
 	    fdjtUI.AutoPrompt.setup(sbooksearch);
@@ -168,7 +169,7 @@ var sbookMode=
 		    fdjtDOM.addClass(document.body,"hudup");
 		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
 		    if ((mode==="allglosses")&&(sbook.target))
-			sbookUI.scrollGlosses(sbook.target);}}
+			sbook.UI.scrollGlosses(sbook.target);}}
 	    else {
 		syncHUD(false);
 		sbook.last_mode=sbook.mode;
@@ -459,43 +460,42 @@ var sbookMode=
 	    var cxt=false;
 	    var body=document.body; 
 	    if (sbook.Trace.preview)
-	      fdjtLog("[%f] sbookPreview() %o (src=%o) sbp=%o sbpt=%o",
-		      fdjtET(),elt,src,
-		      sbook.preview,sbook.preview_target);
+		fdjtLog("[%f] sbookPreview() %o (src=%o) sbp=%o sbpt=%o",
+			fdjtET(),elt,src,
+			sbook.preview,sbook.preview_target);
 	    // Save the source HUD element for the preview (when provided)
-	    if (src)
-	      sbook.previewsrc=src;
-	    else if (sbook.previewsrc)
-	      sbook.previewsrc=false;
+	    if (src) sbook.previewelt=src;
+	    else if (sbook.previewelt)
+		sbook.previewelt=false;
 	    else {}
 	    if ((sbook.preview)&&(sbook.preview!==elt)) {
-	      var scan=sbook.preview;
-	      // Clear the 'preview' class on the parents
-	      while (scan)
-		if (scan===body) break;
+		var scan=sbook.preview;
+		// Clear the 'preview' class on the parents
+		while (scan)
+		    if (scan===body) break;
 		else {
-		  fdjtDOM.dropClass(scan,"preview");
-		  scan=scan.parentNode;}
-	      // Update the element itself, 
-	      if (sbook.preview_title)
-		sbook.preview.title=sbook.preview_title;
-	      sbook.preview_title=false;
-	      fdjtDOM.dropClass(sbook.preview,"previewing");}
+		    fdjtDOM.dropClass(scan,"preview");
+		    scan=scan.parentNode;}
+		// Update the element itself, 
+		if (sbook.preview_title)
+		    sbook.preview.title=sbook.preview_title;
+		sbook.preview_title=false;
+		fdjtDOM.dropClass(sbook.preview,"previewing");}
 	    if (!(elt)) {
-	      fdjtDOM.dropClass(body,"preview");
-	      // Restore the scroll position
-	      fdjtUI.scrollRestore();
-	      // Set the state
-	      sbook.preview_target=sbook.preview=false;
-	      return;}
+		fdjtDOM.dropClass(body,"preview");
+		// Restore the scroll position
+		fdjtUI.scrollRestore();
+		// Set the state
+		sbook.preview_target=sbook.preview=false;
+		return;}
 	    else if ((elt===sbook.root)||(elt===document.body))
-	      return;
+		return;
 	    fdjtDOM.addClass(body,"preview");
 	    fdjtID("SBOOKPREVIEWMSG").style.display="";
 	    var scan=elt;
 	    while (scan)
-	      if (scan===body) break;
-	      else {
+		if (scan===body) break;
+	    else {
 		fdjtDOM.addClass(scan,"preview");
 		scan=scan.parentNode;}
 	    fdjtDOM.addClass(elt,"previewing");
@@ -505,38 +505,20 @@ var sbookMode=
 	    sbook.last_preview=elt;
 	    sbook.preview_target=sbook.preview=elt;
 	    if ((elt.title)&&(elt!==sbook.target))
-	      sbook.preview_title=elt.title;
+		sbook.preview_title=elt.title;
 	    elt.title='click to jump to this passage';
 	    if ((elt.getAttribute) &&
 		(elt.getAttribute("toclevel")) ||
 		((elt.sbookinfo) && (elt.sbookinfo.level)))
-	      cxt=false;
+		cxt=false;
 	    else if (elt.head)
-	      cxt=elt.head;
+		cxt=elt.head;
 	    fdjtUI.scrollPreview(elt,cxt,displayOffset());}
 
-	function _sbookPreviewSync(){
-	    if (sbook.preview===sbook.preview_target) return;
-	    sbookPreview(sbook.preview_target);
-	    if (sbook.floathud) syncHUD();}
-
-	function sbookSetPreview(ref,delay){
-	    if ((delay)&&(typeof delay !== 'number'))
-		delay=((ref)?(sbook_preview_delay):(sbook_preview_delay*5));
-	    sbook.preview_target=ref;
-	    if (!(delay)) sbookPreview(ref);
-	    else if (ref)
-		setTimeout(_sbookPreviewSync,delay);
-	    else setTimeout(_sbookPreviewSync,delay);}
-	sbook.Preview=sbookSetPreview;
+	sbook.Preview=sbookPreview;
 
 	function displayOffset(){
-	    var toc;
-	    if (sbook.mode)
-		if (toc=fdjtID("SBOOKTOC"))
-		    return -((toc.offsetHeight||50)+15);
-	    else return -60;
-	    else return -40;}
+	    return -(Math.floor(fdjtDOM.viewHeight()/2));}
 
 	/* Button methods */
 

@@ -136,6 +136,25 @@ body.preview div#SBOOKHUD.dashtoc  div#SBOOKDASH
   div.spanbar:hover {
     visibility: visible; }
 
+div#SBOOKPREVIEWSUM {
+    position: fixed; top: 0px; left: 100px; right: 100px;
+    background-color: black; color: white;
+    max-height: 100px; overflow: auto;
+    display: none;}
+body.preview div#SBOOKPREVIEWSUM {
+    display: block; opacity: 0.7;}
+div#SBOOKPREVIEWSUM.summary {
+    padding: 12px; padding-top: 0px;
+    border: solid black 3px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    -khtml-border-bottom-right-radius: 6px; 
+    -webkit-border-bottom-right-radius: 6px; 
+    -moz-border-radius-bottomright: 6px; 
+    -khtml-border-bottom-left-radius: 6px; 
+    -webkit-border-bottom-left-radius: 6px; 
+    -moz-border-radius-bottomleft: 6px;}
+
 /* Buttons */
 
 div#SBOOKHUD img.hudbutton {
@@ -239,7 +258,7 @@ body.preview * { opacity: .75;}
 body.preview *.preview { opacity: 1.0;}
 body.preview *.preview * { opacity: 0.75;}
 body.preview *.preview *.preview { opacity: 1.0;}
-body.preview *.previewing { color: red; }
+body.preview *.previewing { color: red; cursor: crosshair;}
 
 div#SBOOKPREVIEWMSG {
     position: fixed;

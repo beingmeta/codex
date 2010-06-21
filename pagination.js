@@ -650,11 +650,11 @@ var sbookPaginate=
 	function initDisplay(){
 	    var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
 	    var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
-	    var pagehead=makeMargin("div.sbookmargin#SBOOKPAGEHEAD"," ");
-	    var pagefoot=makeMargin("div.sbookmargin#SBOOKPAGEFOOT"," ");
+	    var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
+	    var pagefoot=fdjtDOM("div.sbookmargin#SBOOKPAGEFOOT"," ");
 
-	    var leftedge=makeMargin("div.sbookmargin#SBOOKPAGELEFT",".")
-	    var rightedge=makeMargin("div.sbookmargin#SBOOKPAGERIGHT",".")
+	    var leftedge=fdjtDOM("div.sbookmargin#SBOOKPAGELEFT",".")
+	    var rightedge=fdjtDOM("div.sbookmargin#SBOOKPAGERIGHT",".")
 
 	    if (sbook.mobilesafari) {
 		var head=fdjtDOM.$("HEAD")[0];
@@ -699,15 +699,6 @@ var sbookPaginate=
 		pagefoot.style.backgroundColor=bgcolor;}}
 	sbook.initDisplay=initDisplay;
 	
-	function makeMargin(spec){
-	    var div=fdjtDOM(spec);
-	    // div.onmouseover=fdjtDOM.cancel;
-	    // div.onmouseout=fdjtDOM.cancel;
-	    // div.onmousedown=fdjtDOM.cancel;
-	    // div.onmouseup=fdjtDOM.cancel;
-	    div.onclick=sbookUI.margin_onclick;
-	    return div;}
-
 	function moveMargins(pageinfo){
 	    fdjtID("SBOOKPAGELEFT").style.top=pageinfo.top+'px';
 	    fdjtID("SBOOKPAGERIGHT").style.top=pageinfo.top+'px';

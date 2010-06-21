@@ -151,7 +151,7 @@ sbook.Setup=
 		 (useragent.search("Mobile/")>0))||
 		// this (false) is here to make it easy to partially
 		// test for Mobile Safari
-		(true)) { 
+		(false)) { 
 		fdjtLog.doformat=true;
 		// sbook.paginate=false; sbook.scrolling=true;
 		sbook.floathud=true; sbook.mobilesafari=true;
@@ -264,8 +264,7 @@ sbook.Setup=
 	    if (tocmax) sbook_tocmax=parseInt(tocmax);
 	    var sbookhelp=fdjtDOM.getMeta("SBOOKHELP");
 	    if (sbookhelp) sbook_help_on_startup=true;
-	    sbookPaginate(sbook.paginate);
-	    sbookUI(sbook.interaction);}
+	    sbookPaginate(sbook.paginate);}
 
 	function updateSessionSettings(delay){
 	    if (delay) {
