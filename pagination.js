@@ -585,11 +585,11 @@ var sbookPaginate=
 		var firstloc=
 		    ((info.first)&&(info.first.id)&&
 		     (sbook.docinfo[info.first.id])&&
-		     (sbook.docinfo[info.first.id].sbookloc));
+		     (sbook.docinfo[info.first.id].starts_at));
 		var lastloc=
 		    ((info.last)&&(info.last.id)&&
 		     (sbook.docinfo[info.last.id])&&
-		     (sbook.docinfo[info.last.id].sbookloc));
+		     (sbook.docinfo[info.last.id].starts_at));
 		if ((firstloc)&&(lastloc))
 		    sbook.setLocation(Math.floor((firstloc+lastloc)/2));
 		else if (firstloc) sbook.setLocation(firstloc);

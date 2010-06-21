@@ -80,7 +80,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtDOM.T(evt);
 	var sources=fdjtDOM.getParent(target,".sbooksources");
 	var glosses=fdjtDOM.getParent(target,".sbookglosses");
-	var summaries=fdjtDOM.$(".sbooksummaries",glosses)[0];
+	var summaries=fdjtDOM.$(".sbookslice",glosses)[0];
 	var new_sources=[];
 	if ((!(sources))||(!(glosses)))
 	    return; /* Warning? */
@@ -105,7 +105,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtDOM.T(evt);
 	var sources=fdjtDOM.getParent(target,".sbooksources");
 	var glosses=fdjtDOM.getParent(target,".sbookglosses");
-	var summaries=fdjtDOM.$(".sbooksummaries",glosses)[0];
+	var summaries=fdjtDOM.$(".sbookslice",glosses)[0];
 	var new_sources=[];
 	if ((!(sources))||(!(glosses))||(!(target.oid)))
 	    return; /* Warning? */
@@ -133,28 +133,6 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
     }
     sbook.UI.handlers.sources_onclick=sources_onclick;
 
-
-    function scrollGlosses(elt,glosses)
-    {
-	var info=sbook.docinfo[elt.id];
-	if ((info)&&(info.sbookloc)) {
-	    var targetloc=info.sbookloc;
-	    if (!(glosses)) glosses=fdjtID("SBOOKALLGLOSSES");
-	    var children=glosses.childNodes;
-	    /* We do this linearly for now because it's fast enough and
-	       simpler. */
-	    var i=0; var len=children.length; while (i<len) {
-		var child=children[i++];
-		if (child.nodeType===1) {
-		    if ((child.blockloc) &&
-			(child.blockloc>=targetloc) &&
-			(child.offsetHeight>0)) {
-			var off=fdjtDOM.getGeometry(child,false,glosses);
-			glosses.scrollTop=off.top;
-			return;}}}}
-    }
-    sbook.UI.scrollGlosses=scrollGlosses;
-
     sbook.UI.addGlossmark=function(id){
 	var target=fdjtID(id);
 	if (!(target)) return false;
@@ -170,7 +148,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	glossmark.onmousedown=fdjtDOM.cancel;
 	glossmark.onmouseover=glossmark_onmouseover;
 	glossmark.onmouseout=glossmark_onmouseout;
-	if (id) {glossmark.sbook_ref=id;}
+	if (id) {glossmark.about="#"+id;}
 	if (sbook_glossmark_qricons) {
 	    var qrhref="http://"+sbook.server+"/v3/qricon.fdcgi?"+
 		"URI="+encodeURIComponent(sbook.refuri)+
@@ -185,28 +163,14 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 
     function openGlossmark(target,addmark) {
 	var glosses=sbook.glosses.find('frag',target.id)
-	var sumdiv=fdjtDOM("div.sbooksummaries.hudblock");
+	var sumdiv=fdjtDOM("div.sbookslice.hudblock");
 	sbook.UI.setupSummaryDiv(sumdiv);
 	if (glosses)
-	    sbook.UI.showSummaries(glosses,sumdiv,false);
+	    sbook.UI.showSlice(glosses,sumdiv,false);
 	fdjtDOM.replace("SBOOKGLOSSES",sumdiv);
 	sbook.setTarget(target);
 	sbookMode("glosses");}
     sbook.UI.openGlossmark=openGlossmark;
-
-    function alignGlossmark(hud,target)
-    {
-	return;
-	var offinfo=fdjtDOM.getGeometry(target);
-	hud.style.maxHeight=((fdjtDOM.viewHeight())-100)+'px';
-	hud.style.opacity=0.0; hud.style.display='block';
-	var hudinfo=fdjtDOM.getGeometry(hud);
-	var minoff=(fdjtDOM.viewTop()+(fdjtDOM.viewHeight()))-hudinfo.height;
-	if (offinfo.top<minoff) 
-	    hud.style.top=offinfo.top+'px';
-	else hud.style.top=minoff+'px';
-	hud.style.opacity=''; hud.style.display='';
-    }
 
     function glossmark_onclick(evt){
 	evt=evt||event||null;
@@ -220,7 +184,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
     function glossmark_onmouseover(evt)
     {
 	evt=evt||event||null;
-	var target=sbook.getRef(fdjtUI.T(evt))||sbookGetFocus(fdjtUI.T(evt));
+	var target=sbook.getRef(fdjtUI.T(evt))
 	fdjtDOM.addClass(target,"sbooklivespot");
     }
     sbook.UI.handlers.glossmark_onmouseover=glossmark_onmouseover;

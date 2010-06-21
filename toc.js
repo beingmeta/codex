@@ -56,7 +56,7 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
     var sub=headinfo.sub;
     if (!(depth)) depth=0;
     head.name="SBR"+headinfo.frag;
-    head.sbook_ref=headinfo.frag;
+    head.about="#"+headinfo.frag;
     toc.sbook_start=headinfo.starts_at;
     toc.sbook_end=headinfo.ends_at;
     fdjtDOM.addClass(toc,"toc"+depth);
@@ -78,14 +78,14 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
 	while (i<n) {
 	    var subinfo=sub[i];
 	    var subspan=fdjtDOM("A.sectname",subinfo.title);
-	    subspan.sbook_ref=subinfo.frag;
+	    subspan.about="#"+subinfo.frag;
 	    subspan.name="SBR"+subinfo.frag;
 	    fdjtDOM(div,((i>0)&&" \u00b7 "),subspan);
 	    i++;}
 	return div;}
 
     function generate_spanbar(headinfo){
-	var spanbar=fdjtDOM("div.spanbar");
+	var spanbar=fdjtDOM("div.spanbar.sbookslice");
 	var spans=fdjtDOM("div.spans");
 	var start=headinfo.starts_at;
 	var end=headinfo.ends_at;
@@ -132,7 +132,7 @@ function sbookTOC(headinfo,depth,tocspec,prefix)
 	var width=(Math.floor(10000*(spanlen/len))/100)+"%";
 	span.style.width=width;
 	span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
-	span.sbook_ref=subsection.id;
+	span.about="#"+subsection.id;
 	if (name) anchor.name=name;
 	return span;}
 }

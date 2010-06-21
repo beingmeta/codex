@@ -37,6 +37,8 @@ var sbooks_glossmark_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookMark=
     (function(){
+	var markmodes=/(showxrefs)|(showhelp)|(showattach)/;
+
 	// This is the target for which the mark HUD has been set
 	sbook.mark_target=false;
 	
@@ -83,7 +85,8 @@ var sbookMark=
 		if (!(fdjtID("SBOOKMARKUUID").value))
 		    fdjtID("SBOOKMARKUUID").value=
 		    fdjtState.getUUID(sbook.nodeid);
-		setExcerpt(fdjtID("SBOOKMARKFORM"),excerpt||false);
+		if (typeof excerpt != 'undefined')
+		    setExcerpt(fdjtID("SBOOKMARKFORM"),excerpt||false);
 		return;}
 	    sbook.mark_target=target;
 	    var info=((target) &&
@@ -147,6 +150,7 @@ var sbookMark=
 	function setExcerpt(form,text){
 	    var excerpt=fdjtDOM.getChild(form,'.excerpt');
 	    var content=(excerpt)&&fdjtDOM.getChild(excerpt,'.content');
+	    fdjtLog('Setting excerpt to %o',text);
 	    var input=(excerpt)&&
 		fdjtDOM.getChild(excerpt,"input[name='EXCERPT']");	    
 	    if (!(text)) {
@@ -303,68 +307,6 @@ var sbookMark=
 	    if (completion) addTag(completion);
 	    fdjtUI.cancel(evt);}
 	
-	var _sbook_tagupdate=false;
-	var _sbook_tagupdate_delay=300;
-	function taginput_onkeypress(evt){
-	    evt=evt||event||null;
-	    if (sbook._tagupdate) {
-		clearTimeout(sbook._tagupdate);
-		sbook._tagupdate=false;}
-	    var ch=evt.charCode||evt.keyCode;
-	    var target=fdjtDOM.T(evt);
-	    if ((ch===13)||(ch===59)||(ch===93)) {
-		var qstring=inputvalue(target);
-		if (!(fdjtString.isEmpty(qstring))) {
-		    fdjtDOM.cancel(evt);
-		    var completions=sbook_mark_cloud.complete(qstring);
-		    // fdjtLog("Completions on %o are %o",qstring,completions);
-		    if (completions.length) addTag(target,completions[0]);
-		    else {
-			var curval=target.value;
-			var knospan=sbook.knodule.HTML(curval,false,true);
-			fdjtDOM.prepend(fdjtID("SBOOKMARKCLOUD"),knospan);
-			addTag(target,curval);}
-		    target.value="";
-		    fdjtDOM.addClass(target,"isempty");
-		    sbook_mark_cloud.complete("");}
-		else {}
-		return false;}
-	    else if (ch==32) { /* Space */
-		var qstring=inputvalue(target);
-		var completions=sbook_mark_cloud.complete(qstring);
-		if (completions.prefix!==qstring) {
-		    target.value=completions.prefix;
-		    fdjtDOM.cancel(evt);
-		    return;}}
-	    else {
-		sbook._tagupdate=
-		    setTimeout(function(){
-			sbook._tagupdate=false;
-			sbook_mark_cloud.complete(inputvalue(target));},
-			       _sbook_tagupdate_delay);}}
-	sbook.UI.handlers.taginput_onkeypress=taginput_onkeypress;
-
-	function taginput_onfocus(evt){
-	    evt=evt||event||null;
-	    var input=fdjtDOM.T(evt);
-	    sbook_mark_cloud.complete(inputvalue(input));}
-	sbook.UI.handlers.taginput_onfocus=taginput_onfocus;
-
-	function taginput_onkeyup(evt){
-	    evt=evt||event||null;
-	    var kc=evt.keyCode;
-	    if ((kc===8)||(kc===45)) {
-		if (sbook._tagupdate) {
-		    clearTimeout(sbook._tagupdate);
-		    sbook._tagupdate=false;}
-		var target=fdjtDOM.T(evt);
-		sbook._tagupdate=
-		    setTimeout(function(){
-			sbook._tagupdate=false;
-			sbook_mark_cloud.complete(inputvalue(target));},
-			       _sbook_tagupdate_delay);}}
-	sbook.UI.handlers.taginput_onkeyup=taginput_onkeyup;
-
 	/* Other fields */
 	
 	function xrefs_onkeypress(evt){
@@ -402,18 +344,21 @@ var sbookMark=
 	  else return false;}
 
 	function tagspan(input){
-	  var value=input.value;
-	  var start=value.indexOf('[');
-	  if (start<0) return false;
-	  var selstart=input.selectionStart;
-	  if (start>selstart) return false;
-	  var scan=value.indexOf('[',start+1);
-	  while ((scan>0)&&(scan<selstart)) {
-	    start=scan; scan=value.indexOf('[',start+1);}
-	  var end=value.indexOf(']',start);
-	  if (end<0) return [start+1,selstart];
-	  else if (end<selstart) return false;
-	  else return [start+1,end];}
+	    var value=input.value;
+	    var start=value.indexOf('[');
+	    if (start<0) return false;
+	    var selstart=input.selectionStart;
+	    if (start>selstart) return false;
+	    var scan=value.indexOf('[',start+1);
+	    while ((scan>0)&&(scan<selstart)) {
+		start=scan; scan=value.indexOf('[',start+1);}
+	    var end=value.indexOf(']',start);
+	    if (end<0) {
+		if (start+1===selstart) return false;
+		else return [start+1,selstart];}
+	    else if (end<selstart) return false;
+	    else if (start+1===end) return false;
+	    else return [start+1,end];}
 	function istagging(input){
 	  var form=fdjtDOM.getParent(input,"form");
 	  var span=tagspan(input);
@@ -444,50 +389,57 @@ var sbookMark=
 	  else tagcomplete(target);}
 	
 	function note_onkeyup(evt){
-	  var target=fdjtUI.T(evt);
-	  var form=fdjtDOM.getParent(target,"FORM");
-	  var tagspan=istagging(target);
-	  var kc=evt.keyCode;
-	  if (!(tagspan)) return;
-	  if ((kc===8)||(kc===236)) {
-	    if (sbookMark.tagupdate) {
-	      clearTimeout(sbookMark.tagupdate);
-	      sbookMark.tagupdate=false;}
-	    sbookMark.tagupdate=
-	      setTimeout(function(){tagcomplete(target);},100);}}
+	    var target=fdjtUI.T(evt);
+	    var form=fdjtDOM.getParent(target,"FORM");
+	    var tagspan=istagging(target);
+	    var kc=evt.keyCode;
+	    if ((tagspan)&&((kc===8)||(kc===236))) {
+		if (sbookMark.tagupdate) {
+		    clearTimeout(sbookMark.tagupdate);
+		    sbookMark.tagupdate=false;}
+		sbookMark.tagupdate=
+		    setTimeout(function(){tagcomplete(target);},100);}
+	    else if ((kc===13)&&(evt.ctrlKey)) {
+		var form=fdjtDOM.getParent(fdjtUI.T(evt),"form");
+		fdjtUI.cancel(evt);
+		// Should go through AJAX
+		form.submit();}}
 	function note_onkeypress(evt){
-	  var target=fdjtUI.T(evt);
-	  var form=fdjtDOM.getParent(target,"FORM");
-	  //fdjtLog("kp %o %o",evt,evt.charCode);
-	  if (sbookMark.tagupdate) {
-	    clearTimeout(sbookMark.tagupdate);
-	    sbookMark.tagupdate=false;}
-	  var tagspan=istagging(target);
-	  if (!(tagspan)) return;
-	  var value=target.value;
-	  var tagstring=value.slice(tagspan[0],tagspan[1]);
-	  var ch=evt.charCode;
-	  if (ch===91)
-	    sbook_mark_cloud.complete("");
-	  else if (ch===93) {
-	    var completions=sbook_mark_cloud.complete(tagstring);
-	    if (completions.length) {
-	      target.value=
-		value.slice(0,tagspan[0])+
-		sbook_mark_cloud.getKey(completions[0])+
-		value.slice(tagspan[1]);
-	      addTag(form,completions[0]);}
-	    else addTag(form,tagstring);
-	    sbook_mark_cloud.complete("");}
-	  else if ((ch===34)||(ch===13)) {
-	    addTag(form,tagstring);
-	    target.value=
-	      value.slice(0,tagspan[1])+']'+value.slice(tagspan[1]);
-	    fdjtUI.cancel(evt);
-	    target.selectionStart=target.selectionEnd=tagspan[1]+1;
-	    sbook_mark_cloud.complete("");}
-	  else sbookMark.tagupdate=
-		 setTimeout(function(){tagcomplete(target);},100);}
+	    var target=fdjtUI.T(evt);
+	    var form=fdjtDOM.getParent(target,"FORM");
+	    //fdjtLog("kp %o %o",evt,evt.charCode);
+	    if (sbookMark.tagupdate) {
+		clearTimeout(sbookMark.tagupdate);
+		sbookMark.tagupdate=false;}
+	    var tagspan=istagging(target);
+	    if (!(tagspan)) return;
+	    var value=target.value;
+	    var tagstring=value.slice(tagspan[0],tagspan[1]);
+	    var ch=evt.charCode;
+	    if (ch===91)
+		sbook_mark_cloud.complete("");
+	    else if (ch===93) {
+		var completions=sbook_mark_cloud.complete(tagstring);
+		if (completions.length) {
+		    target.value=
+			value.slice(0,tagspan[0])+
+			sbook_mark_cloud.getKey(completions[0])+
+			((value[tagspan[1]]===']')?
+			 (value.slice(tagspan[1]+1)):((value.slice(tagspan[1]))));
+		    addTag(form,completions[0]);}
+		else addTag(form,tagstring);
+		sbook_mark_cloud.complete("");}
+	    else if ((ch===34)||(ch===13)) {
+		addTag(form,tagstring);
+		target.value=
+		    value.slice(0,tagspan[1])+
+		    ((value[tagspan[1]+1]===']')?'':']')+
+		    value.slice(tagspan[1]);
+		fdjtUI.cancel(evt);
+		target.selectionStart=target.selectionEnd=tagspan[1]+1;
+		sbook_mark_cloud.complete("");}
+	    else sbookMark.tagupdate=
+		setTimeout(function(){tagcomplete(target);},100);}
 	
 	// Here's how it works:
 	//  When typing, go back to the open bracket and try to complete
@@ -506,6 +458,7 @@ var sbookMark=
 	    var input=fdjtDOM.getChild(form,".addnote");
 	    var start=input.selectionStart;
 	    var end=input.selectionEnd;
+	    fdjtDOM.dropClass(form,markmodes);
 	    if ((typeof start === 'number')&&
 		(typeof end === 'number')&&
 		(end>start)) {
@@ -522,7 +475,7 @@ var sbookMark=
 		addTag(form,input.value.slice(tagspan[0],tagspan[1]));
 	      else {
 		input.value=
-		  input.value.slice(0,start)+'['+
+		  input.value.slice(0,start)+'[]'+
 		  input.value.slice(start);
 		input.selectionStart=input.selectionEnd=start+1;
 		tagcomplete(input);}}}
@@ -550,8 +503,6 @@ var sbookMark=
 	    fdjtUI.AutoPrompt.setup(form);
 	    form.setAttribute("sbooksetup","yes");}
 
-	var markmodes=/(showxrefs)|(showhelp)|(showattach)/;
-
 	function toggleMarkMode(arg,mode) {
 	    if (!(arg)) arg=event;
 	    var target=((arg.nodeType)?(arg):(fdjtUI.T(arg)));
@@ -568,12 +519,16 @@ var sbookMark=
 	function sbookMark(target,gloss,excerpt){
 	    setupMarkForm(fdjtID("SBOOKMARKFORM"),gloss,excerpt);
 	    if (sbook.mark_target!==target) {fdjtID("SBOOKMARKFORM").reset();}
+	    if (typeof excerpt === 'undefined') {
+		var selection=window.getSelection();
+		var string=((selection)?(selection.toString()):"");
+		if (string.length) excerpt=string;}
 	    if ((gloss)&&(gloss.user)) {
 		// Handle relays and edits
 		if (gloss.user===sbook.user.qid)
-		    sbookMark.setup(target,gloss||false,excerpt||false);
+		    sbookMark.setup(target,gloss||false,excerpt);
 		else {
-		    sbookMark.setup(target,false,excerpt||false);
+		    sbookMark.setup(target,false,excerpt);
 		    if (gloss.gloss) fdjtID("SBOOKMARKRELAY").value=gloss.gloss;
 		    if (gloss.user) {
 			var userinfo=sbook.sourcekb.map[gloss.user];
@@ -583,7 +538,7 @@ var sbookMark=
 				    ((gloss.note)&&(": ")),
 				    ((gloss.note)?(fdjtDOM("span.note",gloss.note)):(false)));
 			fdjtDOM.replace("SBOOKMARKRELAYBLOCK",glossblock);}}}
-	    else sbookMark.setup(target,gloss||false,excerpt||false);
+	    else sbookMark.setup(target,gloss||false,excerpt);
 	    sbook.UI.openGlossmark(target,true);
 	    sbookMode("mark");
 	    fdjtID("SBOOKMARKINPUT").focus();}

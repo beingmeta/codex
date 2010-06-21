@@ -60,8 +60,8 @@ var sbook=
      min_excerpt: 3, max_excerpt: false,
      UI: {handlers: {}},
      Trace: {
-	 mode: true,  // Whether to trace mode changes
-	 nav: true,    // Whether to trace book navigation
+	 mode: false,  // Whether to trace mode changes
+	 nav: false,    // Whether to trace book navigation
 	 search: 0, // Whether (and level) to trace searches
 	 clouds: 0, // Whether to trace cloud generation
 	 focus: false,// Whether to trace focus/target changes
@@ -71,8 +71,8 @@ var sbook=
 	 mark: false,      // Whether to debug gloss addition
 	 pagination: 0, // Whether to trace pagination
 	 paging: false,       // Whether to trace paging (movement by pages)
-	 preview: true, // Whether to trace preview
-	 gestures: true}, // Whether to trace gestures
+	 preview: false, // Whether to trace preview
+	 gestures: false}, // Whether to trace gestures
     };
 var _sbook_setup=false;
 
@@ -106,8 +106,8 @@ var sbook_gloss_data=
 		else return tag;};
 	    sbook.glosses.addInit(function(item) {
 		var info=sbook.docinfo[item.frag];
-		if ((info)&&(info.sbookloc)) item.sbookloc=info.sbookloc;});
-
+		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
+		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}});
 	    sbook.glosses.index=new fdjtKB.Index();}
 	sbook.sourcekb=new fdjtKB.Pool("sources");{
 	    sbook.sourcekb.addAlias(":@1961/");
@@ -213,34 +213,21 @@ var sbook_gloss_data=
 
     sbook.getRef=function(target){
 	while (target)
-	  if (target.href) break;
-	  else if ((target.getAttribute)&&(target.getAttribute("href"))) break;
+	  if (target.about) break;
+	  else if ((target.getAttribute)&&(target.getAttribute("about"))) break;
 	  else target=target.parentNode;
 	if (target) {
-	  var ref=((target.href)||(target.getAttribute("href")));
-	  if (!(target.href)) target.href=ref;
+	  var ref=((target.about)||(target.getAttribute("about")));
+	  if (!(target.about)) target.about=ref;
 	  if (ref[0]==='#')
 	    return document.getElementById(ref.slice(1));
 	  else return document.getElementById(ref);}
 	else return false;}
     sbook.getRefElt=function(target){
 	while (target)
-	  if ((target.href)||
-	      ((target.getAttribute)&&(target.getAttribute("href"))))
+	  if ((target.about)||
+	      ((target.getAttribute)&&(target.getAttribute("about"))))
 	    break;
-	  else target=target.parentNode;
-	return target||false;}
-    sbook.getRef=function(target){
-	while (target)
-	  if (target.sbook_ref) break;
-	  else target=target.parentNode;
-	if (target) {
-	  var ref=target.sbook_ref;
-	  return document.getElementById(ref);}
-	else return false;}
-    sbook.getRefElt=function(target){
-	while (target)
-	  if (target.sbook_ref) break;
 	  else target=target.parentNode;
 	return target||false;}
 
@@ -263,6 +250,8 @@ var sbook_gloss_data=
     sbook.getTitle=function(target) {
 	if (target===sbook.target)
 	    return sbook.target_title;
+	else if (target===sbook.preview)
+	    return sbook.preview_title;
 	else return (target.title)||false;};
 
     function getinfo(arg){
@@ -276,8 +265,6 @@ var sbook_gloss_data=
     sbook.Info=getinfo;
 
     /* Query functions */
-
-    /* Global query information */
 
     sbook.getQuery=function(){return sbook.query;}
 
@@ -457,25 +444,32 @@ var sbook_gloss_data=
 	var info=((target.id)&&(sbook.docinfo[target.id]));
 	if (sbook.Trace.nav)
 	    fdjtLog("[%f] sbook.GoTo() #%o@P%o/L%o %o",
-		    fdjtET(),target.id,page,((info)&&(info.sbookloc)),target);
+		    fdjtET(),target.id,page,((info)&&(info.starts_at)),target);
 	if (target.id) setHashID(target);
 	if (info) {
-	    if (info.sbookloc) setLocation(info.sbookloc);
+	    if (info.starts_at) setLocation(info.starts_at);
 	    if (info.level) setHead(target);
 	    else if (info.head) setHead(info.head.frag);}
 	if ((!(noset))&&(target.id)&&(!(inUI(target))))
 	    setTarget(target);
 	else if (sbook.paginate) sbook.GoToPage(page);
 	else scrollTo(target);
-	sbookMode(false);
-	fdjtDOM.addClass(sbook.TOC,"hover");
-	fdjtDOM.addClass(document.body,"hudup");
-	setTimeout(function(){
-	    fdjtDOM.dropClass(sbook.TOC,"hover");
-	    fdjtDOM.dropClass(document.body,"hudup");},
-		   1500);}
+	// sbookMode(false);
+	if (!(sbook.mode)) {
+	    fdjtDOM.addClass(sbook.TOC,"hover");
+	    fdjtDOM.addClass(document.body,"hudup");
+	    setTimeout(function(){
+		fdjtDOM.dropClass(sbook.TOC,"hover");
+		if (!(sbook.hudup))
+		    fdjtDOM.dropClass(document.body,"hudup");},
+		       1500);}}
+    sbook.GoTo=sbookGoTo;
 
-    sbook.GoTo=sbookGoTo;})();
+    function sbookJumpTo(target){
+	sbookGoTo(target); sbookMode(false);}
+    sbook.JumpTo=sbookJumpTo;
+
+})();
 
 /* Adding qricons */
 

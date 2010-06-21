@@ -54,11 +54,11 @@ var sbookMode=
 		var hudmessages=fdjtDOM("div#SBOOKHUDMESSAGES");
 		hudmessages.sbookui=true;
 		hudmessages.innerHTML=sbook_messages;
-		var previewsum=fdjtDOM("div#SBOOKPREVIEWSUM");
+		var PREVIEWNOTE=fdjtDOM("div#SBOOKPREVIEWNOTE");
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,previewsum,hudmessages,sbookHUD);}
+		fdjtDOM.prepend(document.body,PREVIEWNOTE,hudmessages,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
@@ -73,7 +73,7 @@ var sbookMode=
 	    sbook.glosses.addEffect("distribution",function(f,p,v){
 		sbook.sourcekb.ref(v).oninit(sbook.UI.addSourceIcon);});
 	    sbook.glosses.addInit(function(item){
-		sbook.UI.addSummary(item,glosses,false);
+		sbook.UI.addToSlice(item,glosses,false);
 		var glossmark=sbook.UI.addGlossmark(item.frag); {
 		    if (item.tstamp>sbook.syncstamp) sbook.syncstamp=item.tstamp;
 		    var pic=((fdjtKB.ref(item.user)).pic)||
@@ -182,21 +182,7 @@ var sbookMode=
 	    else if (fdjtKB.contains(arguments,sbook.mode))
 		sbookMode(false);
 	    else sbookMode(mode);}
-	function sbookHUDFlash(mode,usecs){
-	    if (mode) {
-		fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
-		fdjtDOM.addClass(document.body,"hudup"); sbook.hudup=true;
-		if (usecs) fdjtUI.Delay(usecs,"flash",sbookHUDFlash);}
-	    else if (usecs)
-		fdjtUI.Delay(usecs,"flash",sbookHUDFlash);
-	    else if (sbook.mode)
-		fdjtDOM.swapClass(sbookHUD,sbookMode_pat,sbook.mode);
-	    else {
-		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
-		fdjtDOM.dropClass(document.body,"hudup");
-		sbook.hudup=false;}}
 	sbookMode.toggle=sbookHUDToggle;
-	sbookMode.flash=sbookHUDFlash;
 
 	sbook.dropHUD=function(){return sbookMode(false);}
 	sbook.toggleHUD=function(evt){
@@ -456,32 +442,28 @@ var sbookMode=
 	
 	var sbook_preview_delay=250;
 	// This can be a regular expression
-	var sbook_preview_classes=/(summary)|(tocblock)/;
+	var sbook_preview_classes=/(sbooknote)/;
 	
 	function sbookPreview(elt,src){
 	    var cxt=false;
-	    var body=document.body; 
+	    var body=document.body;
+	    var pelt=sbook.previewelt;
 	    if (sbook.Trace.preview)
 		fdjtLog("[%f] sbookPreview() %o (src=%o) sbp=%o sbpt=%o",
 			fdjtET(),elt,src,
 			sbook.preview,sbook.preview_target);
 	    // Save the source HUD element for the preview (when provided)
-	    if (src)
-	      if (sbook.previewelt!==src)
-		if (fdjtDOM.hasClass(src,sbook_preview_classes)) {
-		  var clone=src.cloneNode(true);
-		  clone.id="SBOOKPREVIEWSUM";
-		  fdjtDOM.replace("SBOOKPREVIEWSUM",clone);
-		  sbook.previewelt=src;}
-		else {
-		  fdjtDOM.replace("SBOOKPREVIEWSUM",
-				  fdjtDOM("div#SBOOKPREVIEWSUM"));
-		  sbook.previewelt=src;}
-	      else {}
-	    else if (sbook.previewelt) {
-	      fdjtDOM.replace("SBOOKPREVIEWSUM",
-			      fdjtDOM("div#SBOOKPREVIEWSUM"));
-	      sbook.previewelt=false;}
+	    if (src) {
+		if (sbook.previewelt!==src) {
+		    if (fdjtDOM.hasClass(src,sbook_preview_classes)) {
+			var clone=src.cloneNode(true);
+			clone.id="SBOOKPREVIEWNOTE";
+			fdjtDOM.replace("SBOOKPREVIEWNOTE",clone);}
+		    else fdjtDOM.replace("SBOOKPREVIEWNOTE",
+					 fdjtDOM("div#SBOOKPREVIEWNOTE"));
+		    sbook.previewelt=src;}
+		else {}}
+	    else if (sbook.previewelt) {sbook.previewelt=false;}
 	    else {}
 	    if ((sbook.preview)&&(sbook.preview!==elt)) {
 		var scan=sbook.preview;
@@ -502,9 +484,24 @@ var sbookMode=
 		fdjtUI.scrollRestore();
 		// Set the state
 		sbook.preview_target=sbook.preview=false;
+		// Scroll the past preview element context
+		// We can't do this earlier because it's not displayed
+		//  and so has no geometry
+		if (pelt) pelt.scrollIntoView();
+		fdjtDOM.replace("SBOOKPREVIEWNOTE",
+				fdjtDOM("div#SBOOKPREVIEWNOTE"));
 		return;}
 	    else if ((elt===sbook.root)||(elt===document.body))
 		return;
+
+	    /* Update the preview element in its slice. */
+	    if (src) {
+		var slice=fdjtDOM.getParent(src,".sbookslice");
+		var replaces=fdjtDOM.getChildren(slice,".previewed");
+		fdjtDOM.dropClass(replaces,"previewed");
+		fdjtDOM.addClass(src,"previewed");
+		if (src.scrollIntoView) src.scrollIntoView();}
+
 	    fdjtDOM.addClass(body,"preview");
 	    fdjtID("SBOOKPREVIEWMSG").style.display="";
 	    var scan=elt;

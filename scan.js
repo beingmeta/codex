@@ -224,51 +224,52 @@ function sbookScan(root,docinfo){
       headinfo.ends_at=scanstate.location+fdjtDOM.textWidth(head);
     scanstate.location=scanstate.location+fdjtDOM.textWidth(head);}
 
-  function scanner(child,scanstate,docinfo,nodefn){
-    var location=scanstate.location;
-    var curhead=scanstate.curhead;
-    var curinfo=scanstate.curinfo;
-    var curlevel=scanstate.curlevel;
-    scanstate.nodecount++;
-    // Location tracking and TOC building
-    if (child.nodeType===3) {
-      var width=child.nodeValue.length;
-      // Need to regularize whitespace
-      scanstate.location=scanstate.location+width;
-      return 0;}
-    else if (child.nodeType!==1) return 0;
-    else {}
-    var toclevel=((child.id)&&(getLevel(child)));
-    scanstate.eltcount++;
-    var info=((nodefn)&&(nodefn(child)));
-    if ((!(info))&&(!(info=docinfo[child.id]))) 
-      info=new scanInfo(child.id,scanstate);
-    info.sbookloc=location;
-    info.sbookhead=curhead.id;
-    info.head=curinfo;
-    if ((child.sbookskip)||(child.sbookui)||
-	((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
-      return;
-    if ((toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
-    if (child.id) {
-      var tags=
-	((child.getAttributeNS)&&
-	 (child.getAttributeNS('tags','http://sbooks.net/')))||
-	(child.getAttribute('tags'))||
-	(child.getAttribute('data-tags'));
-      if (tags) info.tags=tags.split(';');}
-    if (toclevel)
-      handleHead
-	(child,docinfo,scanstate,toclevel,curhead,curinfo,curlevel,nodefn);
-    var children=child.childNodes;
-    var i=0; var len=children.length;
-    while (i<len) {
-      var grandchild=children[i++];
-      if (grandchild.nodeType===3)
-	scanstate.location=scanstate.location+
-	  grandchild.nodeValue.length;
-      else if (grandchild.nodeType===1) {
-	scanner(grandchild,scanstate,docinfo,nodefn);}}}}
+    function scanner(child,scanstate,docinfo,nodefn){
+	var location=scanstate.location;
+	var curhead=scanstate.curhead;
+	var curinfo=scanstate.curinfo;
+	var curlevel=scanstate.curlevel;
+	scanstate.nodecount++;
+	// Location tracking and TOC building
+	if (child.nodeType===3) {
+	    var width=child.nodeValue.length;
+	    // Need to regularize whitespace
+	    scanstate.location=scanstate.location+width;
+	    return 0;}
+	else if (child.nodeType!==1) return 0;
+	else {}
+	var toclevel=((child.id)&&(getLevel(child)));
+	scanstate.eltcount++;
+	var info=((nodefn)&&(nodefn(child)));
+	if ((!(info))&&(!(info=docinfo[child.id]))) 
+	    info=new scanInfo(child.id,scanstate);
+	info.starts_at=scanstate.location;
+	info.sbookhead=curhead.id;
+	info.head=curinfo;
+	if ((child.sbookskip)||(child.sbookui)||
+	    ((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
+	    return;
+	if ((toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
+	if (child.id) {
+	    var tags=
+		((child.getAttributeNS)&&
+		 (child.getAttributeNS('tags','http://sbooks.net/')))||
+		(child.getAttribute('tags'))||
+		(child.getAttribute('data-tags'));
+	    if (tags) info.tags=tags.split(';');}
+	if (toclevel)
+	    handleHead(child,docinfo,scanstate,toclevel,curhead,curinfo,curlevel,nodefn);
+	var children=child.childNodes;
+	var i=0; var len=children.length;
+	while (i<len) {
+	    var grandchild=children[i++];
+	    if (grandchild.nodeType===3)
+		scanstate.location=scanstate.location+
+		grandchild.nodeValue.length;
+	    else if (grandchild.nodeType===1) {
+		scanner(grandchild,scanstate,docinfo,nodefn);}}
+	info.ends_at=scanstate.location;}
+}
 
 /* Emacs local variables
 ;;;  Local variables: ***

@@ -41,10 +41,10 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 
   function showSearchResults(result){
       if (!(result)) result=sbook.query;
-      var results_div=fdjtDOM("div.sbooksummaries.scrollbody");
+      var results_div=fdjtDOM("div.sbookslice.scrollbody");
       sbook.UI.setupSummaryDiv(results_div);
       showSearchSummaries(result,results_div);
-      fdjtDOM.replace("SBOOKSUMMARIES",results_div);}
+      fdjtDOM.replace("SBOOKRESULTS",results_div);}
     sbook.showSearchResults=showSearchResults;
     
   function showSearchSummaries(result,results_div){
@@ -68,7 +68,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
     results_sum.dir='ltr';
     fdjtDOM(head_div,results_sum);
     fdjtDOM(results_div,head_div);
-    sbook.UI.showSummaries(results,results_div,result);}
+    sbook.UI.showSlice(results,results_div,result);}
 
   var _sbook_searchupdate=false;
   var _sbook_searchupdate_delay=200;
@@ -104,7 +104,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	      showSearchResults(sbook.query);
 	      sbookMode("browsing");
 	      fdjtID("SBOOKSEARCHTEXT").blur();
-	      fdjtID("SBOOKSUMMARIES").focus();}
+	      fdjtID("SBOOKRESULTS").focus();}
 	  else {
 	      /* Handle new info */
 	      var completeinfo=queryCloud(sbook.query);
@@ -247,7 +247,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
       showSearchResults(sbook.query);
       sbookMode("browsing");
       fdjtID("SBOOKSEARCHTEXT").blur();
-      fdjtID("SBOOKSUMMARIES").focus();
+      fdjtID("SBOOKRESULTS").focus();
       fdjtDOM.cancel(evt);}
     else if (fdjtDOM.inherits(target,".refinercounts")) {
       var completions=fdjtDOM.getParent(target,".completions");

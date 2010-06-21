@@ -122,12 +122,21 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	/* Three cases: preview, hudup, and plain */
 	else if (sbook.preview) {
 	    if (fdjtDOM.hasParent(target,sbook.preview)) 
-		sbook.GoTo(sbook.preview);
+		sbook.JumpTo(sbook.preview);
 	    else sbook.Preview(false);}
-	else if (sbook.hudup) sbookMode(false);
+	else if (sbook.mode) {
+	    if (sbook.mode==='mark') {
+		var tomark=sbook.getTarget(target);
+		var selection=window.getSelection();
+		var string=((selection)&&(selection.toString()));
+		if ((string)&&(string.length))
+		    sbookMark(tomark,false,string);
+		else sbookMode(false);}
+	    else sbookMode(false);}
 	else {
 	    var glosstarget=sbook.getTarget(target);
 	    if (glosstarget) sbookMark(glosstarget);
+	    else if (sbook.hudup) sbookMode(false);
 	    else sbookMode(true);}}
     
     function hud_onclick(evt){
@@ -139,7 +148,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (fdjtDOM.isClickable(target)) return;
 	else fdjtUI.cancel(evt);
 	var ref=sbook.getRef(target);
-	if (ref) sbook.Preview(ref,sbook.getRefElt(target));}
+	if (ref) {
+	    if ((sbook.preview)&&(sbook.preview===ref)) 
+		sbook.JumpTo(ref);
+	    else sbook.Preview(ref,sbook.getRefElt(target));}}
     
     function margin_onclick(evt){
 	var left=fdjtDOM.viewLeft();
@@ -162,35 +174,41 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     var hasClass=fdjtDOM.hasClass;
     function previewForward(){
-      var start=sbook.previewelt;
-      var scan=fdjtDOM.forwardElt(start); var ref=false;
-      while (scan) {
-	if ((scan.sbook_ref)&&(fdjtDOM.hasClass(scan,"summary")))
-	  break;
-	else scan=fdjtDOM.forwardElt(scan);}
-      if (sbook.Trace.preview) 
-	fdjtLog("[%f] previewForward() from %o to %o",fdjtET(),start,scan);
-      var ref=((scan)&&(sbook.getRef(scan)));
-      if ((ref)&&(scan)) sbook.Preview(ref,scan);
-      else if (ref) sbook.Preview(ref);
-      else sbook.Preview(false);
-      if (scan) {} // scroll into view
-      return scan;}
+	var start=sbook.previewelt;
+	var slice=fdjtDOM.getParent(start,".sbookslice");
+	var scan=fdjtDOM.forwardElt(start); var ref=false;
+	while (scan) {
+	    if (((scan.about)||((scan.getAttribute)&&(scan.getAttribute("about"))))&&
+		(fdjtDOM.hasClass(scan,"sbooknote")))
+		break;
+	    else scan=fdjtDOM.forwardElt(scan);}
+	if (sbook.Trace.preview) 
+	    fdjtLog("[%f] previewForward() from %o to %o under %o",fdjtET(),start,scan,slice);
+	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
+	var ref=((scan)&&(sbook.getRef(scan)));
+	if ((ref)&&(scan)) sbook.Preview(ref,scan);
+	else if (ref) sbook.Preview(ref);
+	else sbook.Preview(false);
+	if (scan) {} // scroll into view
+	return scan;}
     function previewBackward(){
-      var start=sbook.previewelt;
-      var scan=fdjtDOM.backwardElt(start); var ref=false;
-      while (scan) {
-	if ((scan.sbook_ref)&&(fdjtDOM.hasClass(scan,"summary")))
-	  break;
-	else scan=fdjtDOM.backwardElt(scan);}
-      if (sbook.Trace.preview) 
-	fdjtLog("[%f] previewBackward() from %o to %o",fdjtET(),start,scan);
-      var ref=((scan)&&(sbook.getRef(scan)));
-      if ((ref)&&(scan)) sbook.Preview(ref,scan);
-      else if (ref) sbook.Preview(ref);
-      else sbook.Preview(false);
-      if (scan) {} // scroll into view
-      return scan;}
+	var start=sbook.previewelt;
+	var slice=fdjtDOM.getParent(start,".sbookslice");
+	var scan=fdjtDOM.backwardElt(start); var ref=false;
+	while (scan) {
+	    if (((scan.about)||((scan.getAttribute)&&(scan.getAttribute("about"))))&&
+		(fdjtDOM.hasClass(scan,"sbooknote")))
+		break;
+	    else scan=fdjtDOM.backwardElt(scan);}
+	if (sbook.Trace.preview) 
+	    fdjtLog("[%f] previewBackward() from %o to %o under %o",fdjtET(),start,scan,slice);
+	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
+	var ref=((scan)&&(sbook.getRef(scan)));
+	if ((ref)&&(scan)) sbook.Preview(ref,scan);
+	else if (ref) sbook.Preview(ref);
+	else sbook.Preview(false);
+	if (scan) {} // scroll into view
+	return scan;}
 
     /* Keyboard handlers */
 
@@ -227,9 +245,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if (sbook.preview) previewBackward();
 	    else sbook.Backward();}
 	// Home goes to the current head.
-	else if (kc===36) sbook.GoTo(sbook.head);
+	else if (kc===36) sbook.JumpTo(sbook.head);
 	else return;}
-    sbook.UI.handlers.onkeydown=onkeydown;
 
     // At one point, we had the shift key temporarily raise/lower the HUD.
     //  We might do it again, so we keep this definition around
@@ -320,7 +337,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     
     sbook.UI.handlers.mouse=
 	{window: {"mouseup": body_onclick,"keyup":onkeyup,"keydown":onkeydown,"keypress":onkeypress},
-	 ".sbookmargin": {click: margin_onclick},
+	 ".sbookmargin": {mouseup: margin_onclick},
 	 hud: {click:hud_onclick},
 	 hudbutton: {"mouseover":hudbutton,"mouseout":hudbutton},
 	 toc: {},

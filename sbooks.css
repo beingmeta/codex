@@ -136,15 +136,15 @@ body.preview div#SBOOKHUD.dashtoc  div#SBOOKDASH
   div.spanbar:hover {
     visibility: visible; }
 
-div#SBOOKPREVIEWSUM {
+div#SBOOKPREVIEWNOTE {
     position: fixed; top: 0px; left: 100px; right: 100px;
     background-color: black; color: white;
     max-height: 100px; overflow: auto;
     display: none;}
-body.preview div#SBOOKPREVIEWSUM {
+body.preview div#SBOOKPREVIEWNOTE {
     display: block; opacity: 0.7;}
-div#SBOOKPREVIEWSUM.summary {
-    padding: 12px; padding-top: 0px;
+div#SBOOKPREVIEWNOTE.sbooknote {
+    padding: 12px; padding-top: 0px; margin-top: 0px;
     border: solid black 3px;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
@@ -176,6 +176,9 @@ body.paginate div.sbookmargin { display: block;}
 body.preview div.sbookmargin { display: none;}
 body.paginate.preview div.sbookmargin { display: none;}
 body.floathud div.sbookmargin { position: absolute;}
+
+body.paginate { overflow: hidden;}
+body.paginate.preview { overflow: auto;}
 
 body div.sbookmargin#SBOOKPAGEHEAD,
 body div.sbookmargin#SBOOKPAGEFOOT {
@@ -370,7 +373,7 @@ div#SBOOKHUD div.scrollhud#SBOOKSEARCH div.scrollbody {
     top: 30px;}
 div#SBOOKHUD.searching div.scrollhud#SBOOKSEARCH div.scrollbody.searchcloud {
     display: block;}
-div#SBOOKHUD.browsing div.scrollhud#SBOOKSEARCH div.scrollbody.sbooksummaries {
+div#SBOOKHUD.browsing div.scrollhud#SBOOKSEARCH div.scrollbody.sbookslice {
     display: block;}
 
 div#SBOOKHUD div#SBOOKSEARCH.scrollhud.hover div.scrollbody.searchcloud {
@@ -403,7 +406,7 @@ div#SBOOKHUD.allglosses div.scrollhud#SBOOKALLGLOSSES {
 div#SBOOKHUD.allglosses div.scrollhud#SBOOKALLGLOSSES div.scrollbody {
     display: block;}
 
-div#SBOOKHUD div.scrollhud#SBOOKALLGLOSSES div.sbooksummaries {}
+div#SBOOKHUD div.scrollhud#SBOOKALLGLOSSES div.sbookslice {}
 
 div#SBOOKHUD img.hudbutton[alt='glosses'] { 
   bottom: 0px; right: 0px;
@@ -817,7 +820,7 @@ form.mark div.glossbar .checkspan {
 form.mark div.glossbar .checkspan input[type='checkbox'] { display: none;}
 form.mark div.glossbar .checkspan .checked { color: black;}
 
-form.mark div.excerpt { text-align: center; margin-bottom: 5px;}
+form.mark div.excerpt { text-align: center; margin-bottom: 5px; color: black;}
 form.mark div.excerpt.noexcerpt { display: none;}
 form.mark div.excerpt span.lq {
     font-size: 400%; font-weight: bold; float: left; display: none;}
@@ -885,7 +888,7 @@ form.mark div.note {
     clear: both; width: 100%; text-align: right; margin: 0px; 
     min-height: 60px;}
 form.mark div.note textarea {
-    font-size: 12px; height: 60px; display: block;
+    font-size: 12px; height: 30px; min-height: 30px; display: block;
     background-color: white;
     width: 96%;  max-width: 100%; margin: 0px; border: 0px;
     padding-left: 2%; padding-right: 2%;
@@ -1157,10 +1160,10 @@ div.spanbar div.sbookhudspan.current {
     color: yellow; background-color: yellow;}
 div.spanbar div.sbookhudspan:hover { 
   border-bottom: dotted red 2px; border-top: dotted red 2px; }
-div.spanbar div.sbookhudspan[odd]:hover {
-  border-bottom: dotted red 2px; border-top: dotted red 2px; }
-div.spanbar div.sbookhudspan[even]:hover {
-  border-bottom: dotted red 2px; border-top: dotted red 2px; }
+div.spanbar div.sbookhudspan.previewed { 
+  border-bottom: solid red 2px; border-top: solid red 2px; }
+div.spanbar div.sbookhudspan.previewed:hover { 
+  background-color: red;}
 div#SBOOKHUD div.sbooktoc { 
   width: 94%; margin-left: 3%; margin-right: 3%;}
 
@@ -1174,29 +1177,21 @@ div.spanbar div.progressbox {
   position: absolute; z-index: 250; 
   margin: 0px; padding: 0px; border: 0px;}
 
-div.tocblock {
-    clear: both;
-    margin-top: 2px; padding-top: 2px;
-    border-top: solid gold 2px;}
-.onepassage div.tocblock { border: none; padding-left: 2px;}
-div.tocblock div.tochead { 
-  text-align: left; vertical-align: middle; 
-  margin-left: 30px; text-indent: -30px;}
-div.tocblock div.tochead span.spacer {
+div.tochead { 
+  background-color: ivory; color: blue;
+  text-align: left; vertical-align: middle;}
+div.tochead span.spacer {
     font-size: 125%; font-weight: bold; font-style: italic;}
-div.tocblock div.tochead span.paratext {
-    color: gold; font-style: italic;}
-div.tocblock div.tochead a.paratext {
-    color: gold; font-style: italic;}
-div.tocblock div.tochead span.head {
-    font-size: 90%;}
-div.tocblock div.tochead span.headtext {
+div.tochead .paratext {
+    color: darkblue; font-style: italic; padding-left: 5px;}
+div.tochead span.head {
+    font-size: 80%; opacity: 0.75; padding-left: 5px;}
+div.tochead span.headtext {
     white-space: nowrap; font-size: 90%;}
-div.tocblock div.tochead img.previewicon {
+div.tochead img.previewicon {
     vertical-align: middle; margin-right: 3px;}
 
-div#SBOOKHUD.glosses div.tocblock { border-top: none;}
-div#SBOOKHUD.glosses div.tocblock div.tochead { display: none;}
+div#SBOOKHUD.glosses div.tochead { display: none;}
 
 /* Search rules */
 
@@ -1277,7 +1272,7 @@ div.sbooksearch span.sectname {
   -moz-border-radius: 6px; 
   border-radius: 6px;}
 
-div.sbooksummaries div#SBOOKMARKCLOUD .dterm { font-weight: normal;}
+div.sbookslice div#SBOOKMARKCLOUD .dterm { font-weight: normal;}
 div#SBOOKMARKCLOUD.completions { display: block;}
 div#SBOOKMARKCLOUD span.sectname {
   white-space: nowrap;
@@ -1335,68 +1330,79 @@ div.sbookglosses div.sbooksources img.button.selected {
 
 /* sBook summaries (refs and glosses) */
 
-body.sbook .summary { 
-    font-size: 75%; 
+.sbooknote { 
     white-space: normal; clear: both;
     text-decoration: none;
     margin-bottom: 4px; margin-top: 4px;
     padding-bottom: 4px; padding-bottom: 4px;
-    border-top: dotted orange 1px; padding-top: 3px;
     text-align: left;}
-body.sbook .summary a.ref {
+.sbooknote a.ref {
   display: block; font-weight: normal;}
-body.sbook .summary a.ref span.title {
+.sbooknote a.ref span.title {
   font-family: sans,sans-serif;}
-body.sbook .summary a.ref span.uri {
+.sbooknote a.ref span.uri {
   font-family: courier,fixed;}
-body.sbook .summary span.tribe { 
+.sbooknote span.dterm {
+    color: blue; background-color: yellow;
+    padding: 2px; border: solid blue 1px;
+    border-radius: 4px;}
+div#SBOOKHUD .sbooknote span.dterm {color: blue; }
+.sbooknote span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
-body.sbook a.summary { display: block;}
-body.sbook .summary.gloss { min-height: 50px;}
-body.sbook .summary .info { 
+body.sbook a.sbooknote { display: block;}
+.sbooknote.gloss { min-height: 50px;}
+.sbooknote .info { 
   float: right;}
-body.sbook .summary div.info { 
+.sbooknote div.info { 
   float: right; width: 40px;}
-body.sbook .summary img.previewicon { 
+.sbooknote img.previewicon { 
   float: left; display: none;}
-body.sbook .summary .info span.score {
+.sbooknote .info span.score {
   color: gold; display: none;}
-body.sbook .summary span.dterm {
+.sbooknote span.dterm {
     font-size: 75%;}
-body.sbook .summary span.head {
+.sbooknote span.head {
     font-size: 75%;}
-body.sbook .summary span.headhead {
+.sbooknote span.headhead {
     color: blue; font-weight: bold;}
-body.sbook .summary span.controller {
+.sbooknote span.controller {
     font-weight: bold; color: white;}
-body.sbook .summary span.note { font-weight: bold; font-size: 110%;}
-body.sbook .summary img.userpic { float: left; margin-right: 3px; width: 50px;}
-body.sbook .summary img.detailsbutton { border: none; }
-body.sbook .summary img.xrefsbutton { border: none;}
-body.sbook .summary .glossinfo {
+.sbooknote span.note { font-weight: bold; font-size: 110%;}
+.sbooknote img.userpic { float: left; margin-right: 3px; width: 50px;}
+.sbooknote img.detailsbutton { border: none; }
+.sbooknote img.xrefsbutton { border: none;}
+.sbooknote .glossinfo {
     float: right; clear: right; display: block;
     padding: 0px; margin: 0px; margin-left: 3px;
     text-align: right; width: 4em;}
-body.sbook .summary a.age { 
-  color: yellow; clear: right;
+.sbooknote .age { 
+  color: yellow; float: right; 
   font-size: 80%; text-decoration: none;}
-body.sbook .summary a.deletebutton { 
+.sbooknote a.deletebutton { 
   color: orange; text-decoration: none;}
-body.sbook .summary a.deletebutton img { 
+.sbooknote a.deletebutton img { 
   width: 12px; height: 12px;}
-body.sbook .summary img.remarkbutton { }
-body.sbook .summary a.agespan {
+.sbooknote img.remarkbutton { }
+.sbooknote a.age {
     text-decoration: none;}
 
+div.sbooknote div.locbar {
+    background-color: blue;
+    height: 3px; width: 100%; clear: both;
+    min-height: 6px; height: 6px;
+    border: 0px; margin: 0px; padding: 0px;
+    margin-bottom: 2px;}
+div.sbooknote div.locbar hr {
+    color: gold; background-color: gold; min-width: 3px;
+    position: relative; left: 0px; width: 100%; height: 100%;
+    border: 0px; padding: 0px; margin: 0px;}
 
-body.sbook div.tocblock  .summary { margin-left: 10px;}
-
-div.sbooksummaries { cursor: pointer;}
-div.sbooksummaries div.count {
+div.sbookslice { cursor: pointer;}
+div.sbookslice div.count {
   text-align: right; color: orange; font-weight: bold;
   padding-bottom: 3px; }
 
-body.preview div.sbooksummaries {
+body.preview div.sbookslice {
   cursor: url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
           crosshair;}
 body.preview {
@@ -1404,35 +1410,34 @@ body.preview {
           crosshair;}
 
 /* Display rules */
-div.sbooksummaries.sourced .tocblock { display: none;}
-div.sbooksummaries.sourced .summary { display: none;}
-div.sbooksummaries.sourced div.tocblock.sourced { display: block;}
-div.sbooksummaries.sourced div.summary.sourced { display: block;}
-div.sbooksummaries.targeted .tocblock { display: none;}
-div.sbooksummaries.targeted .summary { display: none;}
-div.sbooksummaries.targeted div.tocblock.targeted { display: block;}
-div.sbooksummaries.targeted div.summary.targeted { display: block;}
-div.sbooksummaries.sourced.targeted .tocblock { display: none;}
-div.sbooksummaries.sourced.targeted .summary { display: none;}
-div.sbooksummaries.sourced.targeted div.tocblock.sourced.targeted {
+div.sbookslice.sourced .sbooknote { display: none;}
+div.sbookslice.targeted .tocblock { display: none;}
+div.sbookslice.sourced div.tocblock.sourced { display: block;}
+div.sbookslice.sourced div.sbooknote.sourced { display: block;}
+div.sbookslice.targeted .sbooknote { display: none;}
+div.sbookslice.targeted div.tocblock.targeted { display: block;}
+div.sbookslice.targeted div.sbooknote.targeted { display: block;}
+div.sbookslice.sourced.targeted .tocblock { display: none;}
+div.sbookslice.sourced.targeted .sbooknote { display: none;}
+div.sbookslice.sourced.targeted div.tocblock.sourced.targeted {
     display: block;}
-div.sbooksummaries.sourced.targeted div.summary.sourced.targeted {
+div.sbookslice.sourced.targeted div.sbooknote.sourced.targeted {
     display: block;}
 
-div.sbooksummaries.onepassage .tocblock .tochead {display:none;}
-div.sbooksummaries.onepassage .summary img.previewicon { display: inline;}
+div.sbookslice.onepassage .tocblock .tochead {display:none;}
+div.sbookslice.onepassage .sbooknote img.previewicon { display: inline;}
 
 span.excerpt { font-size: 120%; color: white;}
 span.excerpt span.content { font-size: 80%; color: white; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 
-div.sbooksummaries .summary div.detail { 
+div.sbookslice .sbooknote div.detail { 
   display: none; color: ivory; clear: both;}
-div.sbooksummaries .showdetail div.detail { display: block;}
-div.sbooksummaries div.xrefs { display: none;}
-div.sbooksummaries .showxrefs div.xrefs { display: block;}
-div.sbooksummaries div.xrefs a { display: block;}
+div.sbookslice .showdetail div.detail { display: block;}
+div.sbookslice div.xrefs { display: none;}
+div.sbookslice .showxrefs div.xrefs { display: block;}
+div.sbookslice div.xrefs a { display: block;}
 
 img.markbutton {
   position: fixed; right: 0px; text-align: right;
@@ -1442,13 +1447,17 @@ img.markbutton {
   display: none;}
 .sbooktarget img.markbutton { display: inherit;}
 
+div.sbookslice div.sbookthread div.sbooknote div.tochead {font-size: 75%;}
+div.sbookslice div.sbookthread div.sbooknote div.tochead {display:none;}
+div.sbookslice div.sbookthread div.sbooknote:first-child div.tochead {display:block;}
+
 /* Displayed glossmarks */
 
-div.sbooksummaries#SBOOKGLOSSMARKDIV {
+div.sbookslice#SBOOKGLOSSMARKDIV {
     position: absolute; right: 50px; z-index: 45; opacity: 0.5;
     max-height: inherit; width: 50%; overflow: auto;}
-div.sbooksummaries#SBOOKGLOSSMARKDIV:hover {}
-div.sbooksummaries#SBOOKGLOSSMARKDIV div.tochead { display: none;}
+div.sbookslice#SBOOKGLOSSMARKDIV:hover {}
+div.sbookslice#SBOOKGLOSSMARKDIV div.tochead { display: none;}
 
 /* Glossmarks */
 
