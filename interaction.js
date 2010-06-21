@@ -114,7 +114,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function body_onclick(evt){
 	var target=fdjtUI.T(evt);
 	if (sbook.Trace.gestures) 
-	    fdjtLog("[%f] body_onclick() %o inui=%o cl=%o sbp=%o sbh=%o mode=%o",
+	    fdjtLog("[%f] body_onclick() %o ui=%o cl=%o sbp=%o sbh=%o mode=%o",
 		    fdjtET(),evt,(inUI(target)),(fdjtDOM.isClickable(target)),
 		    sbook.preview,sbook.hudup,sbookMode());
 	if (fdjtDOM.isClickable(target)) return;
@@ -129,9 +129,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    var glosstarget=sbook.getTarget(target);
 	    if (glosstarget) sbookMark(glosstarget);
 	    else sbookMode(true);}}
-
+    
     function hud_onclick(evt){
 	var target=fdjtUI.T(evt);
+	if (sbook.Trace.gestures) 
+	  fdjtLog("[%f] hid_onclick() %o cl=%o sbp=%o sbh=%o mode=%o",
+		  fdjtET(),evt,(fdjtDOM.isClickable(target)),
+		  sbook.preview,sbook.hudup,sbookMode());
 	if (fdjtDOM.isClickable(target)) return;
 	else fdjtUI.cancel(evt);
 	var ref=sbook.getRef(target);
@@ -158,29 +162,35 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     var hasClass=fdjtDOM.hasClass;
     function previewForward(){
-	var scan=fdjtDOM.forwardElt(sbook.previewelt); var ref=false;
-	while (scan) {
-	    if ((scan.getAttribute)&&(scan.getAttribute("about"))) break;
-	    else scan=fdjtDOM.forwardElt(scan);}
-	var ref=((scan)&&(sbook.getRef(scan)));
-	if (ref) {
-	    if (hasClass(scan,"summary")) {
-		var copy=scan.cloneNode(true);
-		fdjtDOM.replace("SBOOKPREVIEWSUM",copy);
-		copy.id="SBOOKPREVIEWSUM";}
-	    sbook.Preview(ref,scan);}}
+      var start=sbook.previewelt;
+      var scan=fdjtDOM.forwardElt(start); var ref=false;
+      while (scan) {
+	if ((scan.sbook_ref)&&(fdjtDOM.hasClass(scan,"summary")))
+	  break;
+	else scan=fdjtDOM.forwardElt(scan);}
+      if (sbook.Trace.preview) 
+	fdjtLog("[%f] previewForward() from %o to %o",fdjtET(),start,scan);
+      var ref=((scan)&&(sbook.getRef(scan)));
+      if ((ref)&&(scan)) sbook.Preview(ref,scan);
+      else if (ref) sbook.Preview(ref);
+      else sbook.Preview(false);
+      if (scan) {} // scroll into view
+      return scan;}
     function previewBackward(){
-	var scan=fdjtDOM.backwardElt(sbook.previewelt); var ref=false;
-	while (scan) {
-	    if ((scan.getAttribute)&&(scan.getAttribute("about"))) break;
-	    else scan=fdjtDOM.backwardElt(scan);}
-	var ref=((scan)&&(sbook.getRef(scan)));
-	if (ref) {
-	    if (hasClass(scan,"summary")) {
-		var copy=scan.cloneNode(true);
-		fdjtDOM.replace("SBOOKPREVIEWSUM",copy);
-		copy.id="SBOOKPREVIEWSUM";}
-	    sbook.Preview(ref,scan);}}
+      var start=sbook.previewelt;
+      var scan=fdjtDOM.backwardElt(start); var ref=false;
+      while (scan) {
+	if ((scan.sbook_ref)&&(fdjtDOM.hasClass(scan,"summary")))
+	  break;
+	else scan=fdjtDOM.backwardElt(scan);}
+      if (sbook.Trace.preview) 
+	fdjtLog("[%f] previewBackward() from %o to %o",fdjtET(),start,scan);
+      var ref=((scan)&&(sbook.getRef(scan)));
+      if ((ref)&&(scan)) sbook.Preview(ref,scan);
+      else if (ref) sbook.Preview(ref);
+      else sbook.Preview(false);
+      if (scan) {} // scroll into view
+      return scan;}
 
     /* Keyboard handlers */
 
@@ -210,8 +220,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	// Don't interrupt text input for space, etc
 	else if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
 	else if (kc===32) {  // Space
-	    if (sbook.preview) previewForward();
-	    else sbook.Forward();}
+	  if (sbook.preview) previewForward();
+	  else sbook.Forward();}
 	// backspace or delete
 	else if ((kc===8)||(kc===45)) {
 	    if (sbook.preview) previewBackward();

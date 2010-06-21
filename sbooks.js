@@ -213,14 +213,36 @@ var sbook_gloss_data=
 
     sbook.getRef=function(target){
 	while (target)
-	    if (target.sbook_ref) break;
-	else target=target.parentNode;
-	return (target)&&(fdjtID(target.sbook_ref));};
+	  if (target.href) break;
+	  else if ((target.getAttribute)&&(target.getAttribute("href"))) break;
+	  else target=target.parentNode;
+	if (target) {
+	  var ref=((target.href)||(target.getAttribute("href")));
+	  if (!(target.href)) target.href=ref;
+	  if (ref[0]==='#')
+	    return document.getElementById(ref.slice(1));
+	  else return document.getElementById(ref);}
+	else return false;}
     sbook.getRefElt=function(target){
 	while (target)
-	    if (target.sbook_ref) break;
-	else target=target.parentNode;
-	return (fdjtID(target.sbook_ref))&&(target);};
+	  if ((target.href)||
+	      ((target.getAttribute)&&(target.getAttribute("href"))))
+	    break;
+	  else target=target.parentNode;
+	return target||false;}
+    sbook.getRef=function(target){
+	while (target)
+	  if (target.sbook_ref) break;
+	  else target=target.parentNode;
+	if (target) {
+	  var ref=target.sbook_ref;
+	  return document.getElementById(ref);}
+	else return false;}
+    sbook.getRefElt=function(target){
+	while (target)
+	  if (target.sbook_ref) break;
+	  else target=target.parentNode;
+	return target||false;}
 
     sbook.getTarget=function(scan,closest){
 	scan=scan.target||scan.srcElement||scan;

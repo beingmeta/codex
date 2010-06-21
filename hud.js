@@ -455,6 +455,8 @@ var sbookMode=
 	/* Previewing */
 	
 	var sbook_preview_delay=250;
+	// This can be a regular expression
+	var sbook_preview_classes=/(summary)|(tocblock)/;
 	
 	function sbookPreview(elt,src){
 	    var cxt=false;
@@ -464,9 +466,22 @@ var sbookMode=
 			fdjtET(),elt,src,
 			sbook.preview,sbook.preview_target);
 	    // Save the source HUD element for the preview (when provided)
-	    if (src) sbook.previewelt=src;
-	    else if (sbook.previewelt)
-		sbook.previewelt=false;
+	    if (src)
+	      if (sbook.previewelt!==src)
+		if (fdjtDOM.hasClass(src,sbook_preview_classes)) {
+		  var clone=src.cloneNode(true);
+		  clone.id="SBOOKPREVIEWSUM";
+		  fdjtDOM.replace("SBOOKPREVIEWSUM",clone);
+		  sbook.previewelt=src;}
+		else {
+		  fdjtDOM.replace("SBOOKPREVIEWSUM",
+				  fdjtDOM("div#SBOOKPREVIEWSUM"));
+		  sbook.previewelt=src;}
+	      else {}
+	    else if (sbook.previewelt) {
+	      fdjtDOM.replace("SBOOKPREVIEWSUM",
+			      fdjtDOM("div#SBOOKPREVIEWSUM"));
+	      sbook.previewelt=false;}
 	    else {}
 	    if ((sbook.preview)&&(sbook.preview!==elt)) {
 		var scan=sbook.preview;

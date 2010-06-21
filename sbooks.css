@@ -1335,25 +1335,66 @@ div.sbookglosses div.sbooksources img.button.selected {
 
 /* sBook summaries (refs and glosses) */
 
+body.sbook .summary { 
+    font-size: 75%; 
+    white-space: normal; clear: both;
+    text-decoration: none;
+    margin-bottom: 4px; margin-top: 4px;
+    padding-bottom: 4px; padding-bottom: 4px;
+    border-top: dotted orange 1px; padding-top: 3px;
+    text-align: left;}
+body.sbook .summary a.ref {
+  display: block; font-weight: normal;}
+body.sbook .summary a.ref span.title {
+  font-family: sans,sans-serif;}
+body.sbook .summary a.ref span.uri {
+  font-family: courier,fixed;}
+body.sbook .summary span.tribe { 
+  color: darkblue; font-weight: bold; font-style: italic;}
+body.sbook a.summary { display: block;}
+body.sbook .summary.gloss { min-height: 50px;}
+body.sbook .summary .info { 
+  float: right;}
+body.sbook .summary div.info { 
+  float: right; width: 40px;}
+body.sbook .summary img.previewicon { 
+  float: left; display: none;}
+body.sbook .summary .info span.score {
+  color: gold; display: none;}
+body.sbook .summary span.dterm {
+    font-size: 75%;}
+body.sbook .summary span.head {
+    font-size: 75%;}
+body.sbook .summary span.headhead {
+    color: blue; font-weight: bold;}
+body.sbook .summary span.controller {
+    font-weight: bold; color: white;}
+body.sbook .summary span.note { font-weight: bold; font-size: 110%;}
+body.sbook .summary img.userpic { float: left; margin-right: 3px; width: 50px;}
+body.sbook .summary img.detailsbutton { border: none; }
+body.sbook .summary img.xrefsbutton { border: none;}
+body.sbook .summary .glossinfo {
+    float: right; clear: right; display: block;
+    padding: 0px; margin: 0px; margin-left: 3px;
+    text-align: right; width: 4em;}
+body.sbook .summary a.age { 
+  color: yellow; clear: right;
+  font-size: 80%; text-decoration: none;}
+body.sbook .summary a.deletebutton { 
+  color: orange; text-decoration: none;}
+body.sbook .summary a.deletebutton img { 
+  width: 12px; height: 12px;}
+body.sbook .summary img.remarkbutton { }
+body.sbook .summary a.agespan {
+    text-decoration: none;}
+
+
+body.sbook div.tocblock  .summary { margin-left: 10px;}
+
 div.sbooksummaries { cursor: pointer;}
 div.sbooksummaries div.count {
   text-align: right; color: orange; font-weight: bold;
   padding-bottom: 3px; }
-div.sbooksummaries .summary { 
-  white-space: normal; clear: both;
-  text-decoration: none;  font-size: 75%;
-  margin-bottom: 4px; margin-top: 4px;
-  padding-bottom: 4px; padding-bottom: 4px;
-  border-top: dotted orange 1px; padding-top: 3px;
-  color: black; text-align: left;}
-div.sbooksummaries .summary a.ref {
-  display: block; font-weight: normal;}
-div.sbooksummaries .summary a.ref span.title {
-  font-family: sans,sans-serif;}
-div.sbooksummaries .summary a.ref span.uri {
-  font-family: courier,fixed;}
-div.sbooksummaries div.tocblock  .summary { margin-left: 10px;}
-div.sbooksummaries.onepassage div.tocblock  .summary { margin-left: 2px;}
 
 body.preview div.sbooksummaries {
   cursor: url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
@@ -1378,46 +1419,8 @@ div.sbooksummaries.sourced.targeted div.tocblock.sourced.targeted {
 div.sbooksummaries.sourced.targeted div.summary.sourced.targeted {
     display: block;}
 
-div.sbooksummaries .summary span.tribe { 
-  color: darkblue; font-weight: bold; font-style: italic;}
-div.sbooksummaries a.summary { display: block;}
 div.sbooksummaries.onepassage .tocblock .tochead {display:none;}
-div.sbooksummaries .summary.gloss { min-height: 50px;}
-div.sbooksummaries .summary .info { 
-  float: right;}
-div.sbooksummaries .summary div.info { 
-  float: right; width: 40px;}
-div.sbooksummaries .summary img.previewicon { 
-  float: left; display: none;}
 div.sbooksummaries.onepassage .summary img.previewicon { display: inline;}
-div.sbooksummaries .summary .info span.score {
-  color: gold; display: none;}
-div.sbooksummaries .summary span.dterm {
-    font-size: 75%;}
-div.sbooksummaries .summary span.head {
-    font-size: 75%;}
-div.sbooksummaries .summary span.headhead {
-    color: blue; font-weight: bold;}
-div.sbooksummaries .summary span.controller {
-    font-weight: bold; color: white;}
-.summary span.note { font-weight: bold; font-size: 110%;}
-.summary img.userpic { float: left; margin-right: 3px; width: 50px;}
-.summary img.detailsbutton { border: none; }
-.summary img.xrefsbutton { border: none;}
-.summary .glossinfo {
-    float: right; clear: right; display: block;
-    padding: 0px; margin: 0px; margin-left: 3px;
-    text-align: right; width: 4em;}
-.summary a.age { 
-  color: yellow; clear: right;
-  font-size: 80%; text-decoration: none;}
-.summary a.deletebutton { 
-  color: orange; text-decoration: none;}
-.summary a.deletebutton img { 
-  width: 12px; height: 12px;}
-.summary img.remarkbutton { }
-div.sbooksummaries .summary a.agespan {
-    text-decoration: none;}
 
 span.excerpt { font-size: 120%; color: white;}
 span.excerpt span.content { font-size: 80%; color: white; display: none;}
