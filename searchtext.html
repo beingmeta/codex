@@ -1,28 +1,26 @@
-<div class='scrollhead'>
-  <div id="SBOOKQUERYHELP" class="helptext">
-    Enter <tt>tag1;tag2;etc</tt> or click on completions in the search cloud
-  </div>
-  <div class="query">
-    <div class="spacer">
-      <div class="input">
-	<img class="clearinput" alt="x" title="x"
-	     src="http://static.beingmeta.com/graphics/xbox16x16.png"
-	     onclick="sbookClearInput_onclick(event);"
-	     onmousedown="fdjtDOM.cancel(event);"/>
-	<input id="SBOOKSEARCHTEXT" type="TEXT" class="autoprompt"
-	       name="QTEXT" value="" isempty="yes" autocomplete="off"
-	       completeopts="anywhere cloud" enterchars=";" maxcomplete="45" 
-	       helptext="SBOOKQUERYHELP" completions="SBOOKSEARCHCOMPLETIONS"/>
-      </div>
+<div id="SBOOKQUERYHELP" class="helptext">
+  Enter <tt>tag1;tag2;etc</tt> or click on completions in the search cloud
+</div>
+<div class="query">
+  <div class="spacer">
+    <div class="input">
+      <img class="clearinput" alt="x" title="x"
+	   src="http://static.beingmeta.com/graphics/xbox16x16.png"
+	   onclick="sbookClearInput_onclick(event);"
+	   onmousedown="fdjtDOM.cancel(event);"/>
+      <input id="SBOOKSEARCHTEXT" type="TEXT" class="autoprompt"
+	     name="QTEXT" value="" isempty="yes" autocomplete="off"
+	     completeopts="anywhere cloud" enterchars=";" maxcomplete="45" 
+	     helptext="SBOOKQUERYHELP" completions="SBOOKSEARCHCOMPLETIONS"/>
     </div>
   </div>
 </div>
-<div class="scrollbody searchcloud">
-<div id="SBOOKSEARCHCLOUD" class="completions">
+<div id="SBOOKSEARCHCLOUD" class="completions searchcloud">
   <span class="count">no query refinements</span>
 </div>
-</div>
-<div id="SBOOKRESULTS" class="sbookresults scrollbody"></div>
+
+
+
 
 <!--
 /* Emacs local variables

@@ -539,7 +539,7 @@ var sbookMark=
 				    ((gloss.note)?(fdjtDOM("span.note",gloss.note)):(false)));
 			fdjtDOM.replace("SBOOKMARKRELAYBLOCK",glossblock);}}}
 	    else sbookMark.setup(target,gloss||false,excerpt);
-	    sbook.UI.openGlossmark(target,true);
+	    sbook.openGlossmark(target,true);
 	    sbookMode("mark");
 	    fdjtID("SBOOKMARKINPUT").focus();}
 	sbookMark.setup=setupHUD;

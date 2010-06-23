@@ -147,15 +147,18 @@ sbook.Setup=
 		((offline)&&(fdjtState.getLocal("mycopyid("+refuri+")")))||false;
 	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")");
 	    
-	    if (((useragent.search("Safari/")>0)&&
-		 (useragent.search("Mobile/")>0))||
-		// this (false) is here to make it easy to partially
-		// test for Mobile Safari
-		(false)) { 
+	    if ((useragent.search("Safari/")>0)&&
+		 (useragent.search("Mobile/")>0)) { 
+		hide_mobile_safari_address_bar();
+		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;
-		// sbook.paginate=false; sbook.scrolling=true;
+		fdjtDOM.addClass(document.body,"touch");
 		sbook.floathud=true; sbook.mobilesafari=true;
 		sbook.ui="ios";}
+	    else if (true) {
+		fdjtDOM.addClass(document.body,"touch");
+		sbook.floathud=true; sbook.mobilesafari=true;
+		sbook.ui="touchmouse"}
 	    else {
 		sbook.ui="mouse";}
 	    
@@ -171,6 +174,10 @@ sbook.Setup=
 		((offline)?
 		 ((fdjtState.getLocal("glossetc("+refuri+")",true))||{}):
 		 {});}
+
+	function hide_mobile_safari_address_bar(){
+	    window.scrollTo(0,1);
+	    setTimeout(function(){window.scrollTo(0,0);},0);}
 
 	/* Getting settings */
 

@@ -68,15 +68,16 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
 (function(){
 
+    // Imports (kind of )
+    var hasClass=fdjtDOM.hasClass;
+
+    var holding=false; var hold_timer=false;
+    
     var sbook_mousedown=false;
     var sbook_hold_threshold=750;
     var default_hud_flash=3000;
 
     /* Setup for gesture handling */
-
-    var hudbuttons=
-	["SBOOKTOCBUTTON","SBOOKDASHBUTTON","SBOOKSEARCHBUTTON",
-	 "SBOOKALLGLOSSESBUTTON"];
 
     function addHandlers(node,type){
 	var mode=sbook.ui;
@@ -84,8 +85,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.UI.addHandlers=addHandlers;
 
     function setupGestures(){
-	// Unavoidable browser sniffing
-	if (sbook.mobilesafari) mobileSafariGestures();
 	var mode=sbook.ui;
 	if (!(mode)) sbook.ui=mode="mouse";
 	addHandlers(false,'window');
@@ -99,8 +98,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtDOM.addListeners(nodes,h);}}
     sbook.setupGestures=setupGestures;
 
-    function mobileSafariGestures(){
-	window.onscroll=function(evt){sbook.syncHUD();};}
+    var dont=fdjtUI.nobubble;
+    function passmultitouch(evt){
+	if ((evt.touches)&&(evt.touches.length>1)) return;
+	else fdjtUI.nobubble(evt);}
 
     /* New simpler UI */
 
@@ -111,6 +112,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else node=node.parentNode;
 	return false;}
 
+    /* Onclick handlers */
+
     function body_onclick(evt){
 	var target=fdjtUI.T(evt);
 	if (sbook.Trace.gestures) 
@@ -118,7 +121,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),evt,(inUI(target)),(fdjtDOM.isClickable(target)),
 		    sbook.preview,sbook.hudup,sbookMode());
 	if (fdjtDOM.isClickable(target)) return;
-	else if (inUI(target)) return;
+	if (evt.clientX) {
+	    var x=evt.clientX, y=evt.clientY;
+	    fdjtLog("[%f] clientX=%o clientY=%o width=%o",fdjtET(),x,y,fdjtDOM.viewWidth());
+	    if (evt.clientX<50)
+		return pageBackward();
+	    else if (evt.clientX>(fdjtDOM.viewWidth()-50))
+		return pageForward();}
+	if (inUI(target)) return;
 	/* Three cases: preview, hudup, and plain */
 	else if (sbook.preview) {
 	    if (fdjtDOM.hasParent(target,sbook.preview)) 
@@ -142,7 +152,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function hud_onclick(evt){
 	var target=fdjtUI.T(evt);
 	if (sbook.Trace.gestures) 
-	  fdjtLog("[%f] hid_onclick() %o cl=%o sbp=%o sbh=%o mode=%o",
+	  fdjtLog("[%f] hud_onclick() %o cl=%o sbp=%o sbh=%o mode=%o",
 		  fdjtET(),evt,(fdjtDOM.isClickable(target)),
 		  sbook.preview,sbook.hudup,sbookMode());
 	if (fdjtDOM.isClickable(target)) return;
@@ -154,15 +164,24 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else sbook.Preview(ref,sbook.getRefElt(target));}}
     
     function margin_onclick(evt){
+	var target=fdjtUI.T(evt);
+	if (sbook.Trace.gestures) 
+	  fdjtLog("[%f] margin_onclick() %o cl=%o sbp=%o sbh=%o mode=%o",
+		  fdjtET(),evt,(fdjtDOM.isClickable(target)),
+		  sbook.preview,sbook.hudup,sbookMode());
+	if (fdjtDOM.hasParent(target,".glossmark")) return;
+	fdjtLog("[%f] margin_onclick() %o",fdjtET(),evt);
+	var x=evt.clientX||touch_x;
+	var y=evt.clientY||touch_y;
 	var left=fdjtDOM.viewLeft();
 	var width=fdjtDOM.viewWidth();
 	var leftwidth=fdjtDOM.getGeometry("SBOOKPAGELEFT").width;
 	var rightwidth=fdjtDOM.getGeometry("SBOOKPAGERIGHT").width;
 	if (sbook.preview) sbook.Preview(false);
-	else if ((sbook.edgeclick)&&((evt.clientX-left)<leftwidth))
-	    sbookBackward();
-	else if ((sbook.edgeclick)&&(((left+width)-evt.clientX)<rightwidth))
-	    sbookForward();
+	else if ((sbook.edgeclick)&&((x-left)<leftwidth))
+	    pageBackward();
+	else if ((sbook.edgeclick)&&(((left+width)-x)<rightwidth))
+	    pageForward();
 	else if ((sbook.mode)||(sbook.hudup)) sbookMode(false);
 	else sbookMode(true);
 	fdjtUI.cancel(evt);}
@@ -170,46 +189,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* This does paging forward and backwards */
     sbook.UI.margin_onclick=margin_onclick;
     
-    /* Browsing by refs */
-
-    var hasClass=fdjtDOM.hasClass;
-    function previewForward(){
-	var start=sbook.previewelt;
-	var slice=fdjtDOM.getParent(start,".sbookslice");
-	var scan=fdjtDOM.forwardElt(start); var ref=false;
-	while (scan) {
-	    if (((scan.about)||((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		(fdjtDOM.hasClass(scan,"sbooknote")))
-		break;
-	    else scan=fdjtDOM.forwardElt(scan);}
-	if (sbook.Trace.preview) 
-	    fdjtLog("[%f] previewForward() from %o to %o under %o",fdjtET(),start,scan,slice);
-	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
-	var ref=((scan)&&(sbook.getRef(scan)));
-	if ((ref)&&(scan)) sbook.Preview(ref,scan);
-	else if (ref) sbook.Preview(ref);
-	else sbook.Preview(false);
-	if (scan) {} // scroll into view
-	return scan;}
-    function previewBackward(){
-	var start=sbook.previewelt;
-	var slice=fdjtDOM.getParent(start,".sbookslice");
-	var scan=fdjtDOM.backwardElt(start); var ref=false;
-	while (scan) {
-	    if (((scan.about)||((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		(fdjtDOM.hasClass(scan,"sbooknote")))
-		break;
-	    else scan=fdjtDOM.backwardElt(scan);}
-	if (sbook.Trace.preview) 
-	    fdjtLog("[%f] previewBackward() from %o to %o under %o",fdjtET(),start,scan,slice);
-	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
-	var ref=((scan)&&(sbook.getRef(scan)));
-	if ((ref)&&(scan)) sbook.Preview(ref,scan);
-	else if (ref) sbook.Preview(ref);
-	else sbook.Preview(false);
-	if (scan) {} // scroll into view
-	return scan;}
-
     /* Keyboard handlers */
 
     // We use keydown to handle navigation functions and keypress
@@ -312,6 +291,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function hudbutton(evt){
 	var target=fdjtUI.T(evt);
 	var mode=target.getAttribute("hudmode");
+	if (sbook.Trace.gestures) 
+	  fdjtLog("[%f] hudbutton() %o mode=%o cl=%o sbp=%o sbh=%o mode=%o",
+		  fdjtET(),evt,mode,(fdjtDOM.isClickable(target)),
+		  sbook.preview,sbook.hudup,sbookMode());
 	fdjtUI.cancel(evt);
 	if (!(mode)) return;
 	var hudid=((mode)&&(mode_hud_map[mode]));
@@ -333,27 +316,237 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else {}}}
     sbook.UI.hudbutton=hudbutton;
 
+    /* Mouse handlers */
+
+    function hud_mousedown(evt){
+	var target=fdjtUI.T(evt);
+	var ref=sbook.getRef(target);
+	if (sbook.Trace.gestures) 
+	    fdjtLog("[%f] hud_mousedown() %o ref=%o cl=%o sbp=%o sbh=%o mode=%o",
+		    fdjtET(),evt,ref,(fdjtDOM.isClickable(target)),
+		    sbook.preview,sbook.hudup,sbookMode());
+	if (!(ref)) return;
+	if (fdjtDOM.isClickable(target)) return;
+	fdjtUI.cancel(evt);
+	if ((sbook.preview)&&(sbook.preview!==ref)) sbook.Preview(false);
+	var src=sbook.getRefElt(target);
+	if (hold_timer) {
+	    clearTimeout(hold_timer);
+	    hold_timer=false;}
+	holding=false;
+	if (!(sbook.preview)) {
+	    hold_timer=setTimeout
+	    (function(){holding=true; sbook.Preview(ref,src); hold_timer=false;},
+	     sbook.holdmsecs||500);}}
+    function hud_mouseup(evt){
+	var target=fdjtUI.T(evt);
+	var ref=sbook.getRef(target);
+	if (sbook.Trace.gestures) 
+	    fdjtLog("[%f] hud_mouseup() %o ref=%o holding=%o, ht=%o, cl=%o sbp=%o sbh=%o mode=%o",
+		    fdjtET(),evt,ref,holding,hold_timer,
+		    (fdjtDOM.isClickable(target)),
+		    sbook.preview,sbook.hudup,sbookMode());
+	if (!(ref)) return;
+	if (fdjtDOM.isClickable(target)) return;
+	fdjtUI.cancel(evt);
+	if (holding) {sbook.Preview(false); return;}
+	else if (sbook.preview) sbook.Preview(false);
+	else {
+	    if (!(ref)) return;
+	    var src=sbook.getRefElt(target);
+	    sbook.Preview(ref,src);}}
+
+    /* Touch handlers */
+
+    var start_x=-1; var start_y=-1;
+    var touch_x=-1; var touch_y=-1;
+    var start_time=-1; var moved=false; var scrolled=false;
+
+    function body_touchstart(evt){
+	var target=fdjtUI.T(evt);
+	if (fdjtDOM.isClickable(target)) return;
+	else if ((evt.touches)&&(evt.touches.length>1)) return;
+	// Ok, we'll handle it
+	touch_x=start_x=((evt.touches)&&(evt.touches[0].clientX))||evt.clientX;
+	touch_y=start_y=((evt.touches)&&(evt.touches[0].clientY))||evt.clientY;
+	var width=fdjtDOM.viewWidth();
+	fdjtLog("[%f] body_touchstart() %o @%o,%o, w=%o",
+		fdjtET(),evt,touch_x,touch_y,width);
+	start_time=fdjtTime(); moved=false; scrolled=false;}
+    function body_touchmove(evt){
+	if ((evt.touches)&&(evt.touches.length>1)) {
+	    scrolled=true; return;}
+	touch_x=((evt.touches)&&(evt.touches[0].clientX))||evt.clientX;
+	touch_y=((evt.touches)&&(evt.touches[0].clientY))||evt.clientY;
+	moved=true;
+	fdjtUI.cancel(evt);}
+    function body_touchend(evt){
+	var target=fdjtUI.T(evt);
+	fdjtLog("[%f] body_touchend() %o moved=%o cl=%o ui=%o cur=%o,%o start=%o,%o",
+		fdjtET(),evt,moved,fdjtDOM.isClickable(target),inUI(target),
+		touch_x,touch_y,start_x,start_y);
+	if ((scrolled)||((evt.touches)&&(evt.touches.length>1))) return;
+	if (sbook.preview)
+	    if (fdjtDOM.hasParent(target,sbook.preview))
+		sbook.JumpTo(sbook.preview);
+	else {
+	    fdjtUI.cancel(evt); sbook.Preview(false); return;}
+	var width=fdjtDOM.viewWidth();
+	if (!(moved)) {
+	    if (fdjtDOM.hasClass(target,"sbookmargin")) return;
+	    else if (!(inUI(target))) body_onclick(evt);
+	    return;}
+	else {
+	    var dx=touch_x-start_x; var dy=touch_y-start_y;
+	    var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
+	    fdjtLog("moved=%o, dx=%o dy=%o start=%o,%o end=%o,%o",
+		    moved,dx,dy,start_x,start_y,touch_x,touch_y);
+	    // Minimum gesture threshold
+	    if ((adx+ady)<10) {
+		// Treat it as a click
+		if (fdjtDOM.hasClass(target,"sbookmargin")) return;
+		else if (!(inUI(target))) body_onclick(evt);
+		return;}
+	    if ((adx+ady)<100)
+		// Just ignore it
+		return;
+	    else if (adx>(ady*4)) { /* horizontal swipe */
+		if (dx>0) {
+		    if (sbook.preview) previewBackward();
+		    else pageBackward();}
+		else {
+		    if (sbook.preview) previewForward();
+		    else pageForward();}}
+	    else if (ady>(adx*4)) { /* vertical swipe */
+		if (sbook.preview) {}
+		else if (sbook.hudup) {
+		    if (dy<0) sbookMode(false);
+		    else sbookMode(sbook.last_dash);}
+		else if (dy>0) sbookMode(sbook.last_mode);
+		else sbookMode(true);}
+	    else {}}
+	fdjtUI.cancel(evt);}
+
+
+    /* HUD touch handlers */
+
+    function hud_touchstart(evt){
+	var target=fdjtUI.T(evt);
+	var ref=sbook.getRef(target);
+	if (sbook.Trace.gestures) 
+	    fdjtLog("[%f] hud_touchstart() %o ref=%o cl=%o sbp=%o sbh=%o mode=%o",
+		    fdjtET(),evt,ref,(fdjtDOM.isClickable(target)),
+		    sbook.preview,sbook.hudup,sbookMode());
+	if (!(ref)) return;
+	if (fdjtDOM.isClickable(target)) return;
+	fdjtUI.cancel(evt);
+	var stop_preview=false;
+	if (sbook.preview) {
+	    if (sbook.preview!==ref) sbook.Preview(false);
+	    else stop_preview=true;}
+	var src=sbook.getRefElt(target);
+	if (hold_timer) {
+	    clearTimeout(hold_timer);
+	    hold_timer=false;}
+	touch_x=start_x=((evt.touches)&&(evt.touches[0].clientX))||evt.clientX;
+	touch_y=start_y=((evt.touches)&&(evt.touches[0].clientY))||evt.clientY;
+	holding=false; moved=false; scrolled=false;
+	if (!(stop_preview)) {
+	    hold_timer=setTimeout
+	    (function(){
+		if ((sbook.Trace.preview)||(sbook.Trace.gestures))
+		    fdjtLog("[%f] Activating previewing for %o from %o",fdjtET(),ref,src);
+		holding=true; hold_timer=false;
+		sbook.Preview(ref,src);},
+	     sbook.holdmsecs||500);}}
+    function hud_touchend(evt){
+	var target=fdjtUI.T(evt);
+	var ref=sbook.getRef(target);
+	if (sbook.Trace.gestures) 
+	    fdjtLog("[%f] hud_touchend() %o ref=%o holding=%o, ht=%o, cl=%o sbp=%o sbh=%o mode=%o",
+		    fdjtET(),evt,ref,holding,hold_timer,
+		    (fdjtDOM.isClickable(target)),
+		    sbook.preview,sbook.hudup,sbookMode());
+	if (!(holding)) {
+	    clearTimeout(hold_timer); hold_timer=false;}
+	if (scrolled) return;
+	if (!(ref)) return;
+	if (fdjtDOM.isClickable(target)) return;
+	if (moved) {
+	    var dx=touch_x-start_x; var dy=touch_y-start_y;
+	    var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
+	    if ((adx+ady)>20) return;}
+	fdjtUI.cancel(evt);
+	if (holding) {sbook.Preview(false); return;}
+	else if (sbook.preview) sbook.Preview(false);
+	else {
+	    if (!(ref)) return;
+	    var src=sbook.getRefElt(target);
+	    sbook.Preview(ref,src);}}
+    
+    /* Glossmarks */
+    
+    function glossmark_onclick(evt){
+	evt=evt||event||null;
+	var target=sbook.getRef(fdjtUI.T(evt));
+	fdjtLog("[%f] glossmark_onclick() %o for %o",fdjtET(),evt,target);
+	fdjtUI.cancel(evt);
+	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
+	    sbookMode(false);
+	    return;}
+	else sbook.openGlossmark(target);}
+    function glossmark_onmouseover(evt){
+	evt=evt||event||null;
+	var target=sbook.getRef(fdjtUI.T(evt))
+	fdjtDOM.addClass(target,"sbooklivespot");}
+    function glossmark_onmouseout(evt){
+	evt=evt||event||null;
+	var target=sbook.getRef(fdjtUI.T(evt))||sbook.getFocus(fdjtUI.T(evt));
+	fdjtDOM.dropClass(target,"sbooklivespot");}
+
     /* Rules */
     
     sbook.UI.handlers.mouse=
 	{window: {"mouseup": body_onclick,"keyup":onkeyup,"keydown":onkeydown,"keypress":onkeypress},
-	 ".sbookmargin": {mouseup: margin_onclick},
-	 hud: {click:hud_onclick},
-	 hudbutton: {"mouseover":hudbutton,"mouseout":hudbutton},
-	 toc: {},
-	 summary: {}};
+	 hud: {mouseup:hud_mouseup,mousedown: hud_mousedown,click: fdjtUI.cancel},
+	 glossmark: {click: glossmark_onclick,
+		     mousedown: fdjtDOM.cancel,
+		     mouseover: glossmark_onmouseover,
+		     nmouseout: glossmark_onmouseout},
+	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
+	 ".sbookmargin": {mouseup: margin_onclick}};
     
-    function ios_dontscroll(evt){
-	if ((evt.touches)&&(evt.touches.length===1)) fdjtUI.cancel(evt);}
-    
+    // A mouse pretending to be a touch screen
+    sbook.UI.handlers.touchmouse=
+	{window: {mousedown: body_touchstart,
+		  mousemove: body_touchmove,
+		  mouseup: body_touchend,
+		  keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
+		  scroll:function(evt){sbook.syncHUD();}},
+	 ".sbookmargin": {click: margin_onclick},
+	 hud: {onclick: fdjtUI.cancel,
+	       mousedown: hud_touchstart,
+	       mousemove: body_touchmove,
+	       mouseup: hud_touchend},
+	 ".hudbutton": {mousedown: dont,touchmove: dont, touchend: dont},
+	 "#SBOOKTABS": {mousedown: dont,touchmove: dont, touchend: dont},
+	 glossmark: {click: glossmark_onclick}};
+
     sbook.UI.handlers.ios=
-	{window: {touchend: body_onclick,touchmove: ios_dontscroll,
-		  keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
-	 body: {},
-	 hud: {},
-	 hudbutton: {},
-	 toc: {},
-	 summary: {}};
+	{window: {touchstart: body_touchstart,
+		  touchmove: body_touchmove,
+		  touchend: body_touchend,
+		  keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
+		  onscroll:function(evt){sbook.syncHUD();}},
+	 ".sbookmargin": {click: margin_onclick},
+	 hud: {onclick: fdjtUI.cancel,
+	       touchstart: hud_touchstart,
+	       touchmove: body_touchmove,
+	       touchend: hud_touchend},
+	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
+	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
+	 glossmark: {click: glossmark_onclick}};
+
     
     sbook.UI.handlers.oneclick=
 	{window: {"mouseup": onclick,"dblclick": ondblclick,
@@ -364,60 +557,102 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     /* Other stuff */
 
-    function sbookForward(){
+    function pageForward(){
 	if (sbook.paginate) {
 	    var goto=-1;
-	    if ((sbook_curpage<0)||(sbook_curpage>=sbook_pages.length)) {
-		var pagenum=sbookGetPage(fdjtDOM.viewTop());
-		if (pagenum<(sbook_pages.length-1)) sbook_curpage=pagenum+1;
-		sbook.GoToPage(sbook_curpage);}
+	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
+		var pagenum=sbook.getPage(fdjtDOM.viewTop());
+		if (pagenum<(sbook.pages.length-1)) sbook.curpage=pagenum+1;
+		sbook.GoToPage(sbook.curpage);}
 	    else {
 		// Synchronize if neccessary
-		if (sbook_pagescroll!==fdjtDOM.viewTop())
-		    sbook.GoToPage(sbook_curpage,sbook_curoff);
-		var info=sbook_pageinfo[sbook_curpage];
+		if (sbook.pagescroll!==fdjtDOM.viewTop())
+		    sbook.GoToPage(sbook.curpage,sbook.curoff);
+		var info=sbook.pageinfo[sbook.curpage];
 		var pagebottom=fdjtDOM.viewTop()+(fdjtDOM.viewHeight());
 		if (pagebottom<info.bottom)
-		    sbook.GoToPage(sbook_curpage,pagebottom-info.top);
-		else if (sbook_curpage===sbook_pages.length) {}
+		    sbook.GoToPage(sbook.curpage,pagebottom-info.top);
+		else if (sbook.curpage===sbook.pages.length) {}
 		else {
-		    sbook_curpage++;
-		    sbook.GoToPage(sbook_curpage);
-		    if ((sbook_curinfo.focus)&&(sbook_curinfo.focus.id))
-			sbook.setHashID(sbook_curinfo.focus);}}}
+		    sbook.curpage++;
+		    sbook.GoToPage(sbook.curpage);
+		    if ((sbook.curinfo.focus)&&(sbook.curinfo.focus.id))
+			sbook.setHashID(sbook.curinfo.focus);}}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
 	    var newy=fdjtDOM.viewTop()+delta;
 	    window.scrollTo(fdjtDOM.viewLeft(),newy);}}
-    sbook.Forward=sbookForward;
+    sbook.Forward=pageForward;
 
-    function sbookBackward(){
+    function pageBackward(){
 	if (sbook.paginate) {
 	    var goto=-1;
-	    if ((sbook_curpage<0)||(sbook_curpage>=sbook_pages.length)) {
+	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
 		var pagenum=sbook.getPage(fdjtDOM.viewTop());
-		if (pagenum<(sbook_pages.length-1)) sbook_curpage=pagenum+1;
-		sbook.GoToPage(sbook_curpage);}
+		if (pagenum<(sbook.pages.length-1)) sbook.curpage=pagenum+1;
+		sbook.GoToPage(sbook.curpage);}
 	    else {
 		// Synchronize if neccessary
-		if (sbook_pagescroll!==fdjtDOM.viewTop())
-		    sbook.GoToPage(sbook_curpage,sbook_curoff);
-		var info=sbook_pageinfo[sbook_curpage];
-		var pagetop=fdjtDOM.viewTop()+sbook_top_px;
+		if (sbook.pagescroll!==fdjtDOM.viewTop())
+		    sbook.GoToPage(sbook.curpage,sbook.curoff);
+		var info=sbook.pageinfo[sbook.curpage];
+		var pagetop=fdjtDOM.viewTop()+sbook.pageTop();
 		if (pagetop>info.top)
-		    sbook.GoToPage(sbook_curpage,(info.top-pagetop)-sbook.pagesize);
-		else if (sbook_curpage===0) {}
+		    sbook.GoToPage(sbook.curpage,(info.top-pagetop)-sbook.pageSize());
+		else if (sbook.curpage===0) {}
 		else {
-		    sbook_curpage--;
-		    sbook.GoToPage(sbook_curpage);
-		    if (sbook_curinfo.focus) sbook.setHashID(sbook_curinfo.focus);}}}
+		    sbook.curpage--;
+		    sbook.GoToPage(sbook.curpage);
+		    if (sbook.curinfo.focus) sbook.setHashID(sbook.curinfo.focus);}}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
 	    var newy=fdjtDOM.viewTop()-delta;
 	    window.scrollTo(fdjtDOM.viewLeft(),newy);}}
-    sbook.Backward=sbookBackward;})();
+    sbook.Backward=pageBackward;
+
+    /* Moving forward and backward in preview mode */
+
+    function previewForward(){
+	var start=sbook.previewelt;
+	var slice=fdjtDOM.getParent(start,".sbookslice");
+	var scan=fdjtDOM.forwardElt(start); var ref=false;
+	while (scan) {
+	    if (((scan.about)||((scan.getAttribute)&&(scan.getAttribute("about"))))&&
+		(fdjtDOM.hasClass(scan,"sbooknote")))
+		break;
+	    else scan=fdjtDOM.forwardElt(scan);}
+	if (sbook.Trace.preview) 
+	    fdjtLog("[%f] previewForward() from %o to %o under %o",fdjtET(),start,scan,slice);
+	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
+	var ref=((scan)&&(sbook.getRef(scan)));
+	if ((ref)&&(scan)) sbook.Preview(ref,scan);
+	else if (ref) sbook.Preview(ref);
+	else sbook.Preview(false);
+	if (scan) {} // scroll into view
+	return scan;}
+    function previewBackward(){
+	var start=sbook.previewelt;
+	var slice=fdjtDOM.getParent(start,".sbookslice");
+	var scan=fdjtDOM.backwardElt(start); var ref=false;
+	while (scan) {
+	    if (((scan.about)||((scan.getAttribute)&&(scan.getAttribute("about"))))&&
+		(fdjtDOM.hasClass(scan,"sbooknote")))
+		break;
+	    else scan=fdjtDOM.backwardElt(scan);}
+	if (sbook.Trace.preview) 
+	    fdjtLog("[%f] previewBackward() from %o to %o under %o",fdjtET(),start,scan,slice);
+	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
+	var ref=((scan)&&(sbook.getRef(scan)));
+	if ((ref)&&(scan)) sbook.Preview(ref,scan);
+	else if (ref) sbook.Preview(ref);
+	else sbook.Preview(false);
+	if (scan) {} // scroll into view
+	return scan;}
+
+
+})();
 
 /* Emacs local variables
 ;;;  Local variables: ***

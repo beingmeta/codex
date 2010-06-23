@@ -78,9 +78,10 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
     {
 	evt=evt||event||null;
 	var target=fdjtDOM.T(evt);
-	var sources=fdjtDOM.getParent(target,".sbooksources");
-	var glosses=fdjtDOM.getParent(target,".sbookglosses");
-	var summaries=fdjtDOM.$(".sbookslice",glosses)[0];
+	// var sources=fdjtDOM.getParent(target,".sbooksources");
+	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
+	var sources=fdjtID("SBOOKSOURCES");
+	var glosses=fdjtID("SBOOKALLGLOSSES");
 	var new_sources=[];
 	if ((!(sources))||(!(glosses)))
 	    return; /* Warning? */
@@ -93,7 +94,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 		sources,glosses,selected,selected.length);
 	fdjtDOM.toggleClass(selected,"selected");
 	fdjtDOM.addClass(target,"selected");
-	sbookSelectSources(summaries,false);
+	sbook.UI.selectSources(glosses,false);
 	fdjtDOM.cancel(evt);
     }
     sbook.UI.handlers.everyone_onclick=everyone_onclick;
@@ -103,9 +104,10 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event||null;
 	// if (!(sbook.user)) return;
 	var target=fdjtDOM.T(evt);
-	var sources=fdjtDOM.getParent(target,".sbooksources");
-	var glosses=fdjtDOM.getParent(target,".sbookglosses");
-	var summaries=fdjtDOM.$(".sbookslice",glosses)[0];
+	// var sources=fdjtDOM.getParent(target,".sbooksources");
+	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
+	var sources=fdjtID("SBOOKSOURCES");
+	var glosses=fdjtID("SBOOKALLGLOSSES");
 	var new_sources=[];
 	if ((!(sources))||(!(glosses))||(!(target.oid)))
 	    return; /* Warning? */
@@ -125,10 +127,10 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	var everyone=fdjtDOM.$(".everyone",sources)[0];
 	if (new_sources.length) {
 	    if (everyone) fdjtDOM.dropClass(everyone,"selected");
-	    sbook.UI.selectSources(summaries,new_sources);}
+	    sbook.UI.selectSources(glosses,new_sources);}
 	else {
 	    if (everyone) fdjtDOM.addClass(everyone,"selected");
-	    sbook.UI.selectSources(summaries,false);}
+	    sbook.UI.selectSources(glosses,false);}
 	fdjtDOM.cancel(evt);
     }
     sbook.UI.handlers.sources_onclick=sources_onclick;
@@ -144,10 +146,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	 fdjtDOM.Image(imgsrc,"big","comments"),
 	 fdjtDOM.Image(sbicon("sbicon16x16.png"),"tiny","+"));
 	glossmark.id=glossmarkid;
-	glossmark.onclick=glossmark_onclick;
-	glossmark.onmousedown=fdjtDOM.cancel;
-	glossmark.onmouseover=glossmark_onmouseover;
-	glossmark.onmouseout=glossmark_onmouseout;
+	sbook.UI.addHandlers(glossmark,"glossmark");
 	if (id) {glossmark.about="#"+id;}
 	if (sbook_glossmark_qricons) {
 	    var qrhref="http://"+sbook.server+"/v3/qricon.fdcgi?"+
@@ -170,32 +169,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.replace("SBOOKGLOSSES",sumdiv);
 	sbook.setTarget(target);
 	sbookMode("glosses");}
-    sbook.UI.openGlossmark=openGlossmark;
-
-    function glossmark_onclick(evt){
-	evt=evt||event||null;
-	var target=sbook.getRef(fdjtUI.T(evt));
-	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
-	    sbookMode(false);
-	    return;}
-	else openGlossmark(target);}
-    sbook.UI.handlers.glossmark_onclick=glossmark_onclick;
-
-    function glossmark_onmouseover(evt)
-    {
-	evt=evt||event||null;
-	var target=sbook.getRef(fdjtUI.T(evt))
-	fdjtDOM.addClass(target,"sbooklivespot");
-    }
-    sbook.UI.handlers.glossmark_onmouseover=glossmark_onmouseover;
-
-    function glossmark_onmouseout(evt)
-    {
-	evt=evt||event||null;
-	var target=sbook.getRef(fdjtUI.T(evt))||sbook.getFocus(fdjtUI.T(evt));
-	fdjtDOM.dropClass(target,"sbooklivespot");
-    }
-    sbook.UI.handlers.glossmark_onmouseout=glossmark_onmouseout;
+    sbook.openGlossmark=openGlossmark;
 
 })();
 

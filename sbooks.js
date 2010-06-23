@@ -37,6 +37,9 @@ var sbook=
      root: false,start: false,target: false,head: false,
      HUD: false,preview_target:false,last_preview: false,
      _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
+     // For pagination
+     curpage: false,curoff: false,curinfo: false, curbottom: false,
+     // For tracking UI state
      last_mode: false,last_dash: "help",
      target_title: false,preview_title: false,
      // How long it takes a gesture to go from tap to hold
@@ -58,7 +61,7 @@ var sbook=
      mouse: true,touch: false,kbd: false,
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
-     UI: {handlers: {}},
+     UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
 	 mode: false,  // Whether to trace mode changes
 	 nav: false,    // Whether to trace book navigation
@@ -230,6 +233,11 @@ var sbook_gloss_data=
 	    break;
 	  else target=target.parentNode;
 	return target||false;}
+
+    sbook.checkTarget=function(){
+	if ((sbook.target)&&(sbook.mode==='glosses'))
+	    if (!(fdjtDOM.isVisible(sbook.target))) {
+		sbookMode(false); sbookMode(true);}};
 
     sbook.getTarget=function(scan,closest){
 	scan=scan.target||scan.srcElement||scan;
@@ -454,6 +462,7 @@ var sbook_gloss_data=
 	    setTarget(target);
 	else if (sbook.paginate) sbook.GoToPage(page);
 	else scrollTo(target);
+	sbook.checkTarget();
 	// sbookMode(false);
 	if (!(sbook.mode)) {
 	    fdjtDOM.addClass(sbook.TOC,"hover");

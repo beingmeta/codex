@@ -130,6 +130,24 @@ var sbook_delete_icon="redx16x16.png";
 	locrule.style.width=(((location_end-location_start)/body_len)*100)+"%";
 	locrule.style.left=((location_start/body_len)*100)+"%";
 	return locbar;}
+    function makelocspan(target_info){
+	var locrule=fdjtDOM("div.locspan");
+	var location_start=target_info.starts_at;
+	var location_end=target_info.ends_at;
+	var body_len=sbook.docinfo[document.body.id].ends_at;
+	locrule.style.width=(((location_end-location_start)/body_len)*100)+"%";
+	locrule.style.left=((location_start/body_len)*100)+"%";
+	return locrule;}
+    function makelocrule(target_info){
+	var locrule=fdjtDOM("HR");
+	var location_start=target_info.starts_at;
+	var location_end=target_info.ends_at;
+	var body_len=sbook.docinfo[document.body.id].ends_at;
+	locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
+	locrule.title='click to peek';
+	locrule.style.width=(((location_end-location_start)/body_len)*100)+"%";
+	locrule.style.left=((location_start/body_len)*100)+"%";
+	return locrule;}
 
 
     function sourceIcon(info){
@@ -217,7 +235,7 @@ var sbook_delete_icon="redx16x16.png";
 		    else fdjtDOM(curspan," \u22ef ",newspan);
 		    curspan=newspan;}}}
 
-	var tochead=fdjtDOM("div.tochead",basespan,makelocbar(info));
+	var tochead=fdjtDOM("div.tochead",makelocrule(info),basespan);
 	return tochead;}
 
     function addToSlice(note,summary_div,query){

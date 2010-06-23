@@ -66,7 +66,7 @@ var sbookMode=
 	    var search=fdjtID("SBOOKSEARCH");
 	    search.innerHTML=sbook_searchtext;
 	    initSearch(search);
-	    var glosses=fdjtID("SBOOKALLSUMMARIES");
+	    var glosses=fdjtID("SBOOKALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
 	    sbook.glosses.addEffect("user",function(f,p,v){
 		sbook.sourcekb.ref(v).oninit(sbook.UI.addSourceIcon);});
@@ -164,7 +164,10 @@ var sbookMode=
 			sbookSetupDash();
 		    sbook.mode=mode;
 		    sbook.last_mode=mode;
-		    if (fdjtKB.contains(sbook_apps,mode)) sbook.last_dash=mode;
+		    if (fdjtKB.contains(sbook_apps,mode)) {
+			fdjtDOM.addClass(sbookHUD,"dash");
+			sbook.last_dash=mode;}
+		    else fdjtDOM.dropClass(sbookHUD,"dash");
 		    sbook.hudup=true;
 		    fdjtDOM.addClass(document.body,"hudup");
 		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
@@ -253,20 +256,18 @@ var sbookMode=
 	function syncHUD(mode){
 	    if (!(sbook.floathud)) return;
 	    var view_top=fdjtDOM.viewTop();
-	    var view_height=((mode)&&(typeof mode ==='string')&&
-			     (fdjtDOM.viewHeight()-50));
+	    var view_height=fdjtDOM.viewHeight();
+	    var box=fdjtID("SBOOKBOX");
 	    if (view_top!==sbook_sync_off) {
 		sbookHUD.style.top=view_top+'px';
 		sbook_sync_off=view_top;}
 	    if (view_height!==sbook_sync_height) {
 		if (view_height) {
-		    sbookHUD.style.height=view_height+'px';
-		    sbookFoot.style.top='';
-		    sbookFoot.style.bottom='0px';}
+		    box.style.height=(view_height-100)+'px';
+		    sbookFoot.style.top=(view_height-50)+'px';}
 		else {
-		    sbookHUD.style.height='';
-		    sbookFoot.style.bottom='';
-		    sbookFoot.style.top=(fdjtDOM.viewHeight()-42)+'px';}
+		    box.style.height='';
+		    sbookFoot.style.top='';}
 		sbook_sync_height=view_height;}}
 	sbook.syncHUD=syncHUD;
 	
@@ -463,7 +464,9 @@ var sbookMode=
 					 fdjtDOM("div#SBOOKPREVIEWNOTE"));
 		    sbook.previewelt=src;}
 		else {}}
-	    else if (sbook.previewelt) {sbook.previewelt=false;}
+	    else if (sbook.previewelt) {
+		fdjtDOM.dropClass(sbook.previewelt,"previewed");
+		sbook.previewelt=false;}
 	    else {}
 	    if ((sbook.preview)&&(sbook.preview!==elt)) {
 		var scan=sbook.preview;
@@ -482,6 +485,7 @@ var sbookMode=
 		fdjtDOM.dropClass(body,"preview");
 		// Restore the scroll position
 		fdjtUI.scrollRestore();
+		setTimeout(syncHUD,20);
 		// Set the state
 		sbook.preview_target=sbook.preview=false;
 		// Scroll the past preview element context
@@ -496,12 +500,10 @@ var sbookMode=
 
 	    /* Update the preview element in its slice. */
 	    if (src) {
-		var slice=fdjtDOM.getParent(src,".sbookslice");
-		var replaces=fdjtDOM.getChildren(slice,".previewed");
-		fdjtDOM.dropClass(replaces,"previewed");
 		fdjtDOM.addClass(src,"previewed");
-		if (src.scrollIntoView) src.scrollIntoView();}
-
+		if (src.scrollIntoView) src.scrollIntoView();
+		fdjtLog("Handled src %o",src);}
+	    
 	    fdjtDOM.addClass(body,"preview");
 	    fdjtID("SBOOKPREVIEWMSG").style.display="";
 	    var scan=elt;
@@ -525,7 +527,8 @@ var sbookMode=
 		cxt=false;
 	    else if (elt.head)
 		cxt=elt.head;
-	    fdjtUI.scrollPreview(elt,cxt,displayOffset());}
+	    fdjtUI.scrollPreview(elt,cxt,displayOffset());
+	    setTimeout(syncHUD,20);}
 
 	sbook.Preview=sbookPreview;
 

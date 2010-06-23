@@ -7,23 +7,78 @@
      class='hudbutton' id='SBOOKSEARCHBUTTON' hudmode='searching'
      onclick='sbook.UI.hudbutton(event);'/>
 <div id='SBOOKTOC' class='hudblock'></div>
-<div id='SBOOKSEARCH' class='scrollhud sbooksearch'></div>
-<div id='SBOOKALLGLOSSES' class='sbookglosses scrollhud'>
-  <div id='SBOOKSOURCES' class='sbooksources scrollhead'
-       onclick='sbook.UI.handlers.sources_onclick(event);'>
-    <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
-	 class='button everyone selected'
-	 alt='show all' title='click to see all glosses'
-	 onclick='sbook.UI.handlers.everyone_onclick(event);'/>
-  </div>
-  <div id='SBOOKALLSUMMARIES' class='sbookslice scrollbody'>
-  </div>
+<div id='SBOOKSEARCH' class='hudblock sbooksearch'>
+  <!-- THis is filled by searchtext.html -->
 </div>
-<div id='SBOOKDASH' class='scrollhud'>
+<div id='SBOOKDASHTOP' class='hudblock'>
+  <div style='position: absolute; top: 0px; height: 110%;'> </div>
+  <a href='http://sbooks.net/logout.fdcgi' class='logout'
+     title='click to logout of the sBooks server'>
+    logout</a>
+  <a name='IDLINK' href='javascript:sbookMode("login");'
+     title='click to login'
+     class='userpic'>
+    <img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
+	 alt='login' id='SBOOKUSERPIC'/></a>
+  <div class='dashbar'>
+    <div class='belongsto'>
+      This sBook Belongs To:
+      <a href='javascript:sbookMode("login");' name='IDLINK'
+	 id='SBOOKUSERNAME'>
+	(click to log in)</a>
+    </div> <!-- .belongsto -->
+  </div> <!-- .dashbar -->
+  <div class='tabbar' id='SBOOKTABS'>
+    <span class='tab' contentid='APPABOUT'
+	  onclick='sbookMode.toggle("about"); fdjtUI.cancel(event); return false;'
+	  title='information and links about this book'>
+      About</span>
+    <span class='tab' contentid='DASHTOC'
+	  onclick='sbookMode.toggle("dashtoc"); fdjtUI.cancel(event); return false;'
+	  title='Table of Contents (static)'>
+      Contents</span>
+    <span class='tab' contentid='APPDEVICE'
+	  onclick='sbookMode.toggle("device"); fdjtUI.cancel(event); return false;'
+	  title='alter appearance and interaction'>
+      Device</span>
+    <span class='tab' contentid='SBOOKSAPP'
+	  onclick='sbookMode.toggle("sbookapp"); fdjtUI.cancel(event); return false;'
+	  title='manage how your sBook is enhanced with added layers'>
+      sBooks</span>
+    <span class='tab' contentid='APPLOGIN'
+	  onclick='sbookMode.toggle("login"); fdjtUI.cancel(event); return false;'
+	  title='login to sBooks'>
+      Login</span>
+    <span class='tab' contentid='APPHELP'
+	  onclick='sbookMode.toggle("help"); fdjtUI.cancel(event); return false;'
+	  title='how to use this sBook'>
+      <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png'
+	   alt='Help'/>Help</span></span>
+  </div> <!-- .tabbar -->
+</div> <!-- #SBOOKDASHTOP -->
+<div id='SBOOKCONSOLE' class='hudblock sbookconsole'>
+  <!-- This content comes from consoletext.html -->
+</div>
+<div id='SBOOKMARKHUD' class='hudblock'>
+  <!-- This content comes from addgloss.html -->
+</div>
+<div id='SBOOKSOURCES' class='hudblock sbooksources'
+     onclick='sbook.UI.handlers.sources_onclick(event);'>
+  <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
+       class='button everyone selected'
+       alt='show all' title='click to see all glosses'
+       onclick='sbook.UI.handlers.everyone_onclick(event);'/>
+</div>
+<div id='SBOOKBOX'>
+<div id='SBOOKRESULTS' class='sbookslice'></div>
+<div id='SBOOKALLGLOSSES' class='sbookslice'></div>
+<div id='SBOOKDASH'>
   <!-- This content comes from dashtext.html -->
+</div>
 </div>
 <div id='SBOOKGLOSSES' class='hudblock'>
   <!-- This is filled in on demand -->
+</div>
 </div>
 <div id='SBOOKFOOT'>
   <img src='http://static.beingmeta.com/graphics/sbooksappicon40x40.png'
@@ -36,10 +91,6 @@
        onclick='sbook.UI.hudbutton(event);'/>
   <div class='hudblock tags' id='SBOOKTAGS'></div>
 </div>
-<div id='SBOOKCONSOLE' class='hudblock sbookconsole'>
-  <!-- This content comes from consoletext.html -->
-</div>
-<div id='SBOOKMARKHUD' class='hudblock'></div>
 
 <!--
 /* Emacs local variables
