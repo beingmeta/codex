@@ -170,7 +170,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		  fdjtET(),evt,(fdjtDOM.isClickable(target)),
 		  sbook.preview,sbook.hudup,sbookMode());
 	if (fdjtDOM.hasParent(target,".glossmark")) return;
-	fdjtLog("[%f] margin_onclick() %o",fdjtET(),evt);
 	var x=evt.clientX||touch_x;
 	var y=evt.clientY||touch_y;
 	var left=fdjtDOM.viewLeft();
@@ -370,8 +369,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	touch_x=start_x=((evt.touches)&&(evt.touches[0].clientX))||evt.clientX;
 	touch_y=start_y=((evt.touches)&&(evt.touches[0].clientY))||evt.clientY;
 	var width=fdjtDOM.viewWidth();
-	fdjtLog("[%f] body_touchstart() %o @%o,%o, w=%o",
-		fdjtET(),evt,touch_x,touch_y,width);
+	if (sbook.Trace.gestures) 
+	    fdjtLog("[%f] body_touchstart() %o @%o,%o, w=%o",
+		    fdjtET(),evt,touch_x,touch_y,width);
 	start_time=fdjtTime(); moved=false; scrolled=false;}
     function body_touchmove(evt){
 	if ((evt.touches)&&(evt.touches.length>1)) {
@@ -382,9 +382,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	fdjtUI.cancel(evt);}
     function body_touchend(evt){
 	var target=fdjtUI.T(evt);
-	fdjtLog("[%f] body_touchend() %o moved=%o cl=%o ui=%o cur=%o,%o start=%o,%o",
-		fdjtET(),evt,moved,fdjtDOM.isClickable(target),inUI(target),
-		touch_x,touch_y,start_x,start_y);
+	if (sbook.Trace.gestures) 
+	    fdjtLog("[%f] body_touchend() %o moved=%o cl=%o ui=%o cur=%o,%o start=%o,%o",
+		    fdjtET(),evt,moved,fdjtDOM.isClickable(target),inUI(target),
+		    touch_x,touch_y,start_x,start_y);
 	if ((scrolled)||((evt.touches)&&(evt.touches.length>1))) return;
 	if (sbook.preview)
 	    if (fdjtDOM.hasParent(target,sbook.preview))
@@ -399,8 +400,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else {
 	    var dx=touch_x-start_x; var dy=touch_y-start_y;
 	    var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
-	    fdjtLog("moved=%o, dx=%o dy=%o start=%o,%o end=%o,%o",
-		    moved,dx,dy,start_x,start_y,touch_x,touch_y);
+	    if (sbook.Trace.gestures) 
+		fdjtLog("moved=%o, dx=%o dy=%o start=%o,%o end=%o,%o",
+			moved,dx,dy,start_x,start_y,touch_x,touch_y);
 	    // Minimum gesture threshold
 	    if ((adx+ady)<10) {
 		// Treat it as a click
@@ -455,7 +457,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    hold_timer=setTimeout
 	    (function(){
 		if ((sbook.Trace.preview)||(sbook.Trace.gestures))
-		    fdjtLog("[%f] Activating previewing for %o from %o",fdjtET(),ref,src);
+		    fdjtLog("[%f] Activating previewing for %o from %o",
+			    fdjtET(),ref,src);
 		holding=true; hold_timer=false;
 		sbook.Preview(ref,src);},
 	     sbook.holdmsecs||500);}}
@@ -489,7 +492,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function glossmark_onclick(evt){
 	evt=evt||event||null;
 	var target=sbook.getRef(fdjtUI.T(evt));
-	fdjtLog("[%f] glossmark_onclick() %o for %o",fdjtET(),evt,target);
+	if (sbook.Trace.gestures) 
+	    fdjtLog("[%f] glossmark_onclick() %o for %o",fdjtET(),evt,target);
 	fdjtUI.cancel(evt);
 	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
 	    sbookMode(false);
@@ -507,8 +511,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* Rules */
     
     sbook.UI.handlers.mouse=
-	{window: {"mouseup": body_onclick,"keyup":onkeyup,"keydown":onkeydown,"keypress":onkeypress},
-	 hud: {mouseup:hud_mouseup,mousedown: hud_mousedown,click: fdjtUI.cancel},
+	{window: {mouseup: body_onclick,
+		  keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
+	 hud: {mouseup:hud_mouseup,mousedown: hud_mousedown,
+	       click: fdjtUI.cancel},
 	 glossmark: {click: glossmark_onclick,
 		     mousedown: fdjtDOM.cancel,
 		     mouseover: glossmark_onmouseover,
@@ -599,12 +605,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		var info=sbook.pageinfo[sbook.curpage];
 		var pagetop=fdjtDOM.viewTop()+sbook.pageTop();
 		if (pagetop>info.top)
-		    sbook.GoToPage(sbook.curpage,(info.top-pagetop)-sbook.pageSize());
+		    sbook.GoToPage(sbook.curpage,
+				   (info.top-pagetop)-sbook.pageSize());
 		else if (sbook.curpage===0) {}
 		else {
 		    sbook.curpage--;
 		    sbook.GoToPage(sbook.curpage);
-		    if (sbook.curinfo.focus) sbook.setHashID(sbook.curinfo.focus);}}}
+		    if (sbook.curinfo.focus)
+			sbook.setHashID(sbook.curinfo.focus);}}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
@@ -619,12 +627,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var slice=fdjtDOM.getParent(start,".sbookslice");
 	var scan=fdjtDOM.forwardElt(start); var ref=false;
 	while (scan) {
-	    if (((scan.about)||((scan.getAttribute)&&(scan.getAttribute("about"))))&&
+	    if (((scan.about)||
+		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
 		(fdjtDOM.hasClass(scan,"sbooknote")))
 		break;
 	    else scan=fdjtDOM.forwardElt(scan);}
 	if (sbook.Trace.preview) 
-	    fdjtLog("[%f] previewForward() from %o to %o under %o",fdjtET(),start,scan,slice);
+	    fdjtLog("[%f] previewForward() from %o to %o under %o",
+		    fdjtET(),start,scan,slice);
 	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
 	var ref=((scan)&&(sbook.getRef(scan)));
 	if ((ref)&&(scan)) sbook.Preview(ref,scan);
@@ -637,12 +647,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var slice=fdjtDOM.getParent(start,".sbookslice");
 	var scan=fdjtDOM.backwardElt(start); var ref=false;
 	while (scan) {
-	    if (((scan.about)||((scan.getAttribute)&&(scan.getAttribute("about"))))&&
+	    if (((scan.about)||
+		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
 		(fdjtDOM.hasClass(scan,"sbooknote")))
 		break;
 	    else scan=fdjtDOM.backwardElt(scan);}
 	if (sbook.Trace.preview) 
-	    fdjtLog("[%f] previewBackward() from %o to %o under %o",fdjtET(),start,scan,slice);
+	    fdjtLog("[%f] previewBackward() from %o to %o under %o",
+		    fdjtET(),start,scan,slice);
 	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
 	var ref=((scan)&&(sbook.getRef(scan)));
 	if ((ref)&&(scan)) sbook.Preview(ref,scan);

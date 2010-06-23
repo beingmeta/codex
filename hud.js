@@ -171,8 +171,9 @@ var sbookMode=
 		    sbook.hudup=true;
 		    fdjtDOM.addClass(document.body,"hudup");
 		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
-		    if ((mode==="allglosses")&&(sbook.target))
-			sbook.UI.scrollGlosses(sbook.target);}}
+		    if ((mode==="allglosses")&&(sbook.target)) {
+			sbook.UI.scrollGlosses(sbook.target);
+			if (sbook.floathud) sbook.syncHUD();}}}
 	    else {
 		syncHUD(false);
 		sbook.last_mode=sbook.mode;
