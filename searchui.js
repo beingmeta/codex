@@ -97,7 +97,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	      var completeinfo=queryCloud(sbook.query);
 	      completeinfo.complete("");}
 	  fdjtDOM.cancel(evt);
-	  if ((ch===13)||
+	  if (((ch===13)&&(fdjtString.isEmpty(qstring)))||
 	      ((sbook.search_gotlucky) && 
 	       (sbook.query._results.length>0) &&
 	       (sbook.query._results.length<=sbook.search_gotlucky))) {

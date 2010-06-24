@@ -123,8 +123,8 @@ div#SBOOKHUD div#SBOOKFOOT {
 
 div#SBOOKBOX {
     position: fixed;
-    top: 50px; bottom: 100px; left: 100px; right: 100px;
-    background-color: #505050; color: ivory; opacity: 0.95;
+    top: 50px; bottom: 50px; left: 100px; right: 100px;
+    background-color: #505050; color: ivory; opacity: 1.0;
     padding: 6px; border: solid blue 3px;
     padding-top: 0px; border-top: 0px;
     border-radius: 0px 0px 6px 6px;
@@ -185,8 +185,10 @@ body.preview *[id].previewing { color: red; cursor: crosshair;}
 body.preview *[id].previewing * { cursor: crosshair;}
 
 
-body.preview div#SBOOKHUD { display: none;}
+body.preview div#SBOOKHUD div#SBOOKHEAD { display: none;}
 body.preview div#SBOOKHUD div#SBOOKBOX { display: none;}
+body.preview div#SBOOKHUD div#SBOOKPREVIEWNOTE { display: block;}
+
 
 div#SBOOKPREVIEWNOTE {
     position: fixed; top: 0px; left: 100px; right: 100px;
@@ -196,6 +198,7 @@ div#SBOOKPREVIEWNOTE {
 body.preview div#SBOOKPREVIEWNOTE {
     display: block; opacity: 0.7;}
 div#SBOOKPREVIEWNOTE.sbooknote {
+    text-align: left;
     padding: 12px; padding-top: 0px; margin-top: 0px;
     border: solid red 2px; border-top: 0px;
     border-bottom-left-radius: 6px;
@@ -242,6 +245,13 @@ body.paginate div.sbookmargin { display: block;}
 body.preview div.sbookmargin { display: none;}
 body.paginate.preview div.sbookmargin { display: none;}
 body.floathud div.sbookmargin { position: absolute;}
+
+body.preview div#SBOOKLEFTEDGE.sbookmargin,
+body.paginate.preview div#SBOOKLEFTEDGE.sbookmargin,
+body.preview div#SBOOKRIGHTEDGE.sbookmargin,
+body.paginate.preview div#SBOOKRIGHTEDGE.sbookmargin {
+    display: none;}
+
 
 body.paginate { overflow: hidden;}
 body.paginate.preview { overflow: auto;}
@@ -374,36 +384,6 @@ div#SBOOKHUD div#SBOOKFOOT div.hudblock {
     -moz-border-radius: 6px; 
     border-radius: 6px;}
 
-div#SBOOKHUD div.scrollhud {
-  position: fixed;
-  top: 0px; left: 100px; right: 100px; bottom: 50px;
-  font-family: arial,helvetica,sans,sans-serif;
-  text-align: center;
-  display: none;}
-
-div#SBOOKHUD div.scrollhud div.scrollhead {
-  position: absolute; top: 0px; left: 0px; right: 0px;
-  height: 60px; min-height: 60px;
-  border-bottom: 0px; padding-bottom: 0px;
-  background-color: #505050; color: ivory;
-  -khtml-border-radius: 0px; 
-  -webkit-border-radius: 0px; 
-  -moz-border-radius: 0px;
-  border-radius: 0px;}
-
-div#SBOOKHUD div.scrollhud div.scrollbody {
-  position: absolute;
-  top: 60px; right: 0px;  left: 0px; display: none;
-  padding-left: 1em; padding-right: 1em; margin: 0px;
-  background-color: #505050; color: ivory;
-  max-height: 80%;
-  overflow: auto;}
-
-div#SBOOKHUD div.scrollhud.hover {
-    display: block; opacity: 0.8; max-height: 60px;}
-div#SBOOKHUD div.scrollhud.flash {
-    opacity: 0.8; display: block; max-height: 60px;}
-
 /* The TOC/Nav HUD */
 
 div#SBOOKHUD.toc div.hudblock#SBOOKTOC {
@@ -507,7 +487,7 @@ div#SBOOKHUD div#SBOOKDASHTOP {
 div#SBOOKHUD div#SBOOKDASHTOP div.dashbar {
     margin: 0px; padding: 0px; border: 0px;
     margin-left: 50px; margin-right: 50px;
-    background-color: gold; color: white;}
+    background-color: gold; color: black;}
 div#SBOOKHUD div#SBOOKDASHTOP div.tabbar {
     margin: 0px; padding: 0px; border: 0px;
     margin-left: 50px; margin-right: 50px;
@@ -1104,7 +1084,7 @@ div#SBOOKHUD div#SBOOKSEARCH.sbooksearch div.spacer {
 div#SBOOKHUD div#SBOOKSEARCH.sbooksearch div.input input[TYPE='TEXT'] {
   width: 100%;}
 div#SBOOKHUD div#SBOOKSEARCH.sbooksearch div.input img.clearinput {
-  position: absolute; right: 12px; top: 5px;
+  position: absolute; right: .3em; top: 1ex;
   color: black; vertical-align: middle;}
 
 /*
@@ -1294,8 +1274,7 @@ div.sbooksearch div.controls input[type="TEXT"] {
   font-size: 16px; font-family: sans,sans-serif; 
   width: 100%; background-color: ivory;}
 div.sbooksearch .completions { 
-  text-align: left;
-  font-size: 12px; font-family: sans,sans-serif; 
+  text-align: left; font-family: sans,sans-serif; 
   padding-bottom: 5px; overflow: visible;}
 div.sbooksearch .completions span.counts { 
   float: right; color: red; font-weight: bold;
@@ -1388,11 +1367,8 @@ div.sbooksources img.button.selected {
 
 .sbooknote { 
     white-space: normal; clear: both;
-    text-decoration: none;
-    border-top: solid gold 1px;
-    margin-bottom: 4px; margin-top: 4px;
-    padding-bottom: 4px; padding-bottom: 4px;
-    text-align: left;}
+    text-align: left; text-decoration: none;
+    margin-top: 1px; text-align: left;}
 .sbooknote a.ref {
   display: block; font-weight: normal;}
 .sbooknote a.ref span.title {
@@ -1431,7 +1407,7 @@ body.sbook a.sbooknote { display: block;}
 .sbooknote .glossinfo {
     float: right; clear: right; display: block;
     padding: 0px; margin: 0px; margin-left: 3px;
-    text-align: right; width: 4em;}
+    text-align: right;}
 .sbooknote .age { 
   color: yellow; float: right; 
   font-size: 80%; text-decoration: none;}
@@ -1442,17 +1418,23 @@ body.sbook a.sbooknote { display: block;}
 .sbooknote img.remarkbutton { }
 .sbooknote a.age {
     text-decoration: none;}
+.sbooknote a.headref {
+    float: right; clear: right;
+    font-family: times,serif; font-style: italic; font-size: 80%;
+    white-space: nowrap;
+    color: lightblue;}
 
 div.sbooknote div.locbar {
-    background-color: blue;
+    background-color: ivory;
     height: 3px; width: 100%; clear: both;
     min-height: 6px; height: 6px;
     border: 0px; margin: 0px; padding: 0px;
     margin-bottom: 2px;}
 div.sbooknote div.locbar hr {
-    color: gold; background-color: gold; min-width: 3px;
+    color: red; background-color: red; min-width: 3px;
     position: relative; left: 0px; width: 100%; height: 100%;
     border: 0px; padding: 0px; margin: 0px;}
+
 div.sbooknote div.tochead div.locbar {
     position: relative; left: 0px; bottom: 0px;
     z-index: 50;
@@ -1505,9 +1487,21 @@ img.markbutton {
   display: none;}
 .sbooktarget img.markbutton { display: inherit;}
 
-div.sbookslice div.sbookthread div.sbooknote div.tochead {font-size: 75%;}
-div.sbookslice div.sbookthread div.sbooknote div.tochead {display:none;}
-div.sbookslice div.sbookthread div.sbooknote:first-child div.tochead {display:block;}
+div.sbookthread {
+    clear: both;
+    border-left: solid silver 15px;
+    border-top: solid silver 1px;
+    margin-top: 6px; margin-bottom: 18px;}
+div.sbookthread.singleton,
+div#SBOOKGLOSSES div.sbookthread {
+    border-left: none; padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
+
+div.sbookthread div.sbooknote {
+    border-stop: solid gold 1px;}
+
+div.sbookslice div.sbookthread div.sbooknote div.locbar {border: none;}
+div.sbookslice div.sbookthread div.sbooknote div.locbar {display:none;}
+div.sbookslice div.sbookthread div.sbooknote:first-child div.locbar {display:block;}
 
 /* Displayed glossmarks */
 
@@ -1636,7 +1630,11 @@ body.touch { overflow: hidden;}
 body.touch div.sbookmargin { }
 body.touch .hudbutton { width: 60px; }
 body.touch .glossmark { width: 60px; }
-body.touch div.sbooktoc { font-size: 120%;}
+body.touch div#SBOOKHUD { font-size: 150%;}
+
+body.touch form.mark { font-size: 125%;}
+body.touch div#SBOOKHUD div.sbooksearch { font-size: 150%;}
+body.touch div#SBOOKHUD div.sbooksearch .completions { font-size: 14px;}
 
 body.xtouch img.hudbutton[alt='>>'] { display: block;}
 body.xtouch img.hudbutton[alt='<<'] { display: block;}

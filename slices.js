@@ -51,12 +51,13 @@ var sbook_delete_icon="redx16x16.png";
 	var score=((query)&&(query[key]));
 	var div=
 	    fdjtDOM(((info.gloss) ? "div.sbooknote.gloss" : "div.sbooknote"),
-		    makeTOCHead(target),
+		    makelocbar(target_info),
 		    ((info.gloss)&&(showglossinfo(info))),
+		    (showtocloc(target_info)),
 		    ((score)&&(showscore(score))),
 		    ((info.note)&&(fdjtDOM("span.note",info.note))),
-		    ((info.excerpt)&&(fdjtDOM("span.excerpt",info.excerpt))),
 		    ((info.tags)&&(info.tags.length)&&(showtags(info.tags))),
+		    ((info.excerpt)&&(fdjtDOM("span.excerpt",info.excerpt))),
 		    ((info.xrefs)&&(showlinks(info.xrefs,"span.xrefs"))),
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments"))));
@@ -97,8 +98,6 @@ var sbook_delete_icon="redx16x16.png";
 	var score=query[key]; var k=0;
 	while (k<score) {fdjtDOM(scorespan,"*"); k++;}
 	return scorespan;}
-    function showglossinfo(gloss) {
-	return [];}
     function showglossinfo(info) {
 	var user=info.user;
 	var feed=info.feed||false;
@@ -110,14 +109,12 @@ var sbook_delete_icon="redx16x16.png";
 	// temporary
 	age.onclick=fdjtUI.cancel;
 	
-	return [age,
-		((user===sbook.user)&&
-		 (fdjtDOM.Image(sbicon(sbook_delete_icon),"img.delete","x",
-				"delete this gloss"))),
-		((info.pic)&&
-		 (fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
-		((userinfo.pic)&&
-		 (fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
+	return [fdjtDOM("span.glossinfo",age,
+			((user===sbook.user)&&
+			 (fdjtDOM.Image(sbicon(sbook_delete_icon),"img.delete","x",
+					"delete this gloss")))),
+		((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
+		((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
 		(sourceIcon(feedinfo))||(sourceIcon(userinfo))];}
 
     function makelocbar(target_info){
@@ -126,10 +123,29 @@ var sbook_delete_icon="redx16x16.png";
 	var location_start=target_info.starts_at;
 	var location_end=target_info.ends_at;
 	var body_len=sbook.docinfo[document.body.id].ends_at;
-	locbar.setAttribute("debug","ls="+location_start+"; le="+location_end+"; bl="+body_len);
+	locbar.setAttribute
+	("debug","ls="+location_start+"; le="+location_end+"; bl="+body_len);
 	locrule.style.width=(((location_end-location_start)/body_len)*100)+"%";
 	locrule.style.left=((location_start/body_len)*100)+"%";
+	var id=target_info.id||target_info.frag;
+	if (id) {
+	    locbar.about="#"+id;
+	    locbar.title=sumText(fdjtID(id));}
 	return locbar;}
+    function showtocloc(target_info){
+	var head=((target_info.toclevel)?(target_info):(target_info.head));
+	var heads=head.heads;
+	var anchor=fdjtDOM.Anchor(
+	    "javascript:sbook.JumpTo('"+(head.frag||head.id)+"');","a.headref",
+	    fdjtDOM("span.spacer","\u00A7"),
+	    head.title);
+	var title="jump to "+head.title;
+	var i=heads.length-1; 
+	while (i>0) {
+	    var head=heads[i--]; title=title+"// "+head.title;}
+	anchor.title=title;
+	return [" ",anchor];}
+
     function makelocspan(target_info){
 	var locrule=fdjtDOM("div.locspan");
 	var location_start=target_info.starts_at;
@@ -169,7 +185,7 @@ var sbook_delete_icon="redx16x16.png";
 	else return 0;}
 
     function showSlice(notes,div,query){
-	var curdiv=false; var curthread=false; var curfrag=false;
+	var curdiv=false; var curthread=false; var curfrag=false; var count=0;
 	notes=[].concat(notes).sort(sortbyloctime);
 	var i=0; var len=notes.length; while (i<len) {
 	    var note=notes[i++];
@@ -179,12 +195,18 @@ var sbook_delete_icon="redx16x16.png";
 	    var tinfo=sbook.docinfo[target.id];
 	    var thread=info.relay||info.frag||info.id||frag;
 	    if (thread!==curthread) {
-		fdjtDOM(div,curdiv,"\n");
+		if (curdiv) {
+		    fdjtDOM(div,curdiv,"\n");
+		    if (count<=1) fdjtDOM.addClass(curdiv,"singleton");}
+		count=0;
 		curthread=thread; curdiv=fdjtDOM("div.sbookthread");
 		curdiv.tocref=frag;
 		curdiv.starts_at=tinfo.starts_at;}
-	    fdjtDOM(curdiv,renderNote(info,query),"\n");}
-	if (curdiv) fdjtDOM(div,curdiv,"\n");
+	    fdjtDOM(curdiv,renderNote(info,query),"\n");
+	    count++;}
+	if (curdiv) {
+	    fdjtDOM(div,curdiv,"\n");
+	    if (count<=1) fdjtDOM.addClass(curdiv,"singleton");}
 	return div;}
     sbook.UI.showSlice=showSlice;
 
@@ -248,6 +270,7 @@ var sbook_delete_icon="redx16x16.png";
 	    var tocref=(thread.tocref)||(thread.getAttribute("tocref"));
 	    if (!(thread.tocref)) thread.tocref=tocref;
 	    if (tocref===frag) {
+		fdjtDOM.dropClass(thread,"singleton");
 		fdjtDOM.append(thread,renderNote(note,query));
 		return;}
 	    else {
@@ -261,7 +284,7 @@ var sbook_delete_icon="redx16x16.png";
 		    else {insertion=thread
 			  insidff=info.starts_at-starts;}}}}
 	var target=fdjtID(note.id||note.frag);
-	var thread=fdjtDOM("div.sbookthread",renderNote(note,query));
+	var thread=fdjtDOM("div.sbookthread.singleton",renderNote(note,query));
 	thread.tocref=frag;
 	thread.starts_at=starts;
 	if (insertion)
@@ -302,6 +325,7 @@ var sbook_delete_icon="redx16x16.png";
     function scrollGlosses(elt,glosses)
     {
 	var info=sbook.docinfo[elt.id];
+	if (sbook.mode==='allglosses') return;
 	if ((info)&&(info.starts_at)) {
 	    var targetloc=info.starts_at;
 	    if (!(glosses)) glosses=fdjtID("SBOOKALLGLOSSES");

@@ -602,9 +602,14 @@ var sbookPaginate=
 	    fdjtDOM.addClass(document.body,"paginate");}
 	sbook.GoToPage=GoToPage;
 
-	function CheckPage(){
-	    if ((window.scrollY!==page_yoff)||(window.scrollY!==page_xoff))
+	function displaySync(){
+	    if (sbook.preview) return false;
+	    if ((window.scrollY!==page_yoff)||(window.scrollX!==page_xoff)) {
+		fdjtLog("[%f] syncing the page, was %o,%o should be %o,%o",
+			fdjtET(),window.scrollX,window.scrollY,page_xoff,page_yoff);
 		GoToPage(sbook.curpage);}
+	    if (sbook.hudup) sbook.syncHUD();}
+	sbook.displaySync=displaySync;
 
 	function sbookGetPage(arg){
 	    var top;

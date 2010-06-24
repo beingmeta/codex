@@ -54,11 +54,10 @@ var sbookMode=
 		var hudmessages=fdjtDOM("div#SBOOKHUDMESSAGES");
 		hudmessages.sbookui=true;
 		hudmessages.innerHTML=sbook_messages;
-		var PREVIEWNOTE=fdjtDOM("div#SBOOKPREVIEWNOTE");
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,PREVIEWNOTE,hudmessages,sbookHUD);}
+		fdjtDOM.prepend(document.body,hudmessages,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
@@ -172,14 +171,17 @@ var sbookMode=
 		    fdjtDOM.addClass(document.body,"hudup");
 		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
 		    if ((mode==="allglosses")&&(sbook.target)) {
-			sbook.UI.scrollGlosses(sbook.target);
-			if (sbook.floathud) sbook.syncHUD();}}}
+			sbook.UI.scrollGlosses(sbook.target);}
+		    else if (mode==="searching")
+			fdjtID("SBOOKSEARCHTEXT").focus();
+		    else {}}}
 	    else {
 		syncHUD(false);
 		sbook.last_mode=sbook.mode;
 		sbook.mode=false; sbook.hudup=false;
 		fdjtDOM.dropClass(document.body,"hudup");
-		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}}
+		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}
+	    if (sbook.floathud) sbook.displaySync();}
 
 	function sbookHUDToggle(mode){
 	    if (!(sbook.mode)) sbookMode(mode);
@@ -258,6 +260,7 @@ var sbookMode=
 	    if (!(sbook.floathud)) return;
 	    var view_top=fdjtDOM.viewTop();
 	    var view_height=fdjtDOM.viewHeight();
+	    var foot_height=fdjtDOM.getGeometry(sbookFoot).height;
 	    var box=fdjtID("SBOOKBOX");
 	    if (view_top!==sbook_sync_off) {
 		sbookHUD.style.top=view_top+'px';
@@ -460,6 +463,7 @@ var sbookMode=
 		    if (fdjtDOM.hasClass(src,sbook_preview_classes)) {
 			var clone=src.cloneNode(true);
 			clone.id="SBOOKPREVIEWNOTE";
+			fdjtDOM.addClass(clone,"hudblock");
 			fdjtDOM.replace("SBOOKPREVIEWNOTE",clone);}
 		    else fdjtDOM.replace("SBOOKPREVIEWNOTE",
 					 fdjtDOM("div#SBOOKPREVIEWNOTE"));
@@ -492,7 +496,9 @@ var sbookMode=
 		// Scroll the past preview element context
 		// We can't do this earlier because it's not displayed
 		//  and so has no geometry
+		// if ((pelt)&&(sbook.previewstart!==pelt)&&(pelt.scrollIntoView))
 		if (pelt) pelt.scrollIntoView();
+		sbook.previewstart=false;
 		fdjtDOM.replace("SBOOKPREVIEWNOTE",
 				fdjtDOM("div#SBOOKPREVIEWNOTE"));
 		return;}
@@ -502,21 +508,17 @@ var sbookMode=
 	    /* Update the preview element in its slice. */
 	    if (src) {
 		fdjtDOM.addClass(src,"previewed");
-		if (src.scrollIntoView) src.scrollIntoView();
-		fdjtLog("Handled src %o",src);}
+		if (!(sbook.previewstart)) sbook.previewstart=src;
+		if ((pelt)&&(pelt!==src)&&(src.scrollIntoView))
+		    src.scrollIntoView();}
 	    
 	    fdjtDOM.addClass(body,"preview");
-	    fdjtID("SBOOKPREVIEWMSG").style.display="";
 	    var scan=elt;
-	    while (scan)
-		if (scan===body) break;
+	    while (scan) if (scan===body) break;
 	    else {
 		fdjtDOM.addClass(scan,"preview");
 		scan=scan.parentNode;}
 	    fdjtDOM.addClass(elt,"previewing");
-	    setTimeout(function(){
-		fdjtID("SBOOKPREVIEWMSG").style.display="none";},
-		       2000);
 	    sbook.last_preview=elt;
 	    sbook.preview_target=sbook.preview=elt;
 	    if ((elt.title)&&(elt!==sbook.target))
@@ -529,7 +531,7 @@ var sbookMode=
 	    else if (elt.head)
 		cxt=elt.head;
 	    fdjtUI.scrollPreview(elt,cxt,displayOffset());
-	    setTimeout(syncHUD,20);}
+	    if (sbook.floathud) setTimeout(syncHUD,20);}
 
 	sbook.Preview=sbookPreview;
 

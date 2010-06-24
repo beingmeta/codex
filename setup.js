@@ -35,6 +35,8 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 sbook.Setup=
     (function(){
 
+	var sbook_touchmouse=false;
+
 	var sbook_fullpages=[];
 	var sbook_heading_qricons=false;
 	var sbook_help_on_startup=false;
@@ -57,6 +59,7 @@ sbook.Setup=
 	    sbook.initDB();
 	    sbook.initHUD();
 	    sbook.initDisplay();
+	    sbook.displaySync();
 	    if (!((document.location.search)&&
 		  (document.location.search.length>0))) {
 		sbookMode(false);
@@ -93,6 +96,8 @@ sbook.Setup=
 		if (sbook.paginate) sbookPaginate();};
 	    sbook.setupGestures();
 	    sbookMode(false);
+	    sbook.displaySync();
+	    // if (sbook.floathud) setInterval(sbook.displaySync,3000);
 	    _sbook_setup=sbook._setup=new Date();}
 	sbook.Setup=Setup;
 
@@ -155,7 +160,7 @@ sbook.Setup=
 		fdjtDOM.addClass(document.body,"touch");
 		sbook.floathud=true; sbook.mobilesafari=true;
 		sbook.ui="ios";}
-	    else if (true) {
+	    else if (sbook_touchmouse) {
 		fdjtDOM.addClass(document.body,"touch");
 		sbook.floathud=true; sbook.mobilesafari=true;
 		sbook.ui="touchmouse"}
