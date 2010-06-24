@@ -43,7 +43,7 @@ var sbook=
      last_mode: false,last_dash: "help",
      target_title: false,preview_title: false,
      // How long it takes a gesture to go from tap to hold
-     hold_ms: 700, edgeclick: 50, pagesize: 250,
+     holdmsecs: 500, edgeclick: 50, pagesize: 250,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -64,7 +64,7 @@ var sbook=
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
 	 mode: false,  // Whether to trace mode changes
-	 nav: false,    // Whether to trace book navigation
+	 nav: true,    // Whether to trace book navigation
 	 search: 0, // Whether (and level) to trace searches
 	 clouds: 0, // Whether to trace cloud generation
 	 focus: false,// Whether to trace focus/target changes

@@ -121,6 +121,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),evt,(inUI(target)),(fdjtDOM.isClickable(target)),
 		    sbook.preview,sbook.hudup,sbookMode());
 	if (fdjtDOM.isClickable(target)) return;
+	if (inUI(target)) return;
 	if (!(x)) x=((evt.touches)&&(evt.touches[0].clientX))||evt.clientX;
 	if (!(y)) y=((evt.touches)&&(evt.touches[0].clientY))||evt.clientY;
 	if (x) {
@@ -561,13 +562,15 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.UI.handlers.mouse=
 	{window: {mouseup: body_onclick,
 		  keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
-	 hud: {mouseup:hud_mouseup,mousedown: hud_mousedown,
-	       click: fdjtUI.cancel},
+	 hud: {mouseup:hud_mouseup,mousedown: hud_mousedown},
 	 glossmark: {click: glossmark_onclick,
-		     mousedown: fdjtDOM.cancel,
+		     mouseup: fdjtUI.nobubble,
+		     mousedown: fdjtUI.nobubble,
 		     mouseover: glossmark_onmouseover,
 		     nmouseout: glossmark_onmouseout},
-	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
+	 ".hudbutton": {mouseup: fdjtUI.nobubble,
+			mouseover:hudbutton,
+			mouseout:hudbutton},
 	 ".sbookmargin": {mouseup: margin_onclick}};
     
     // A mouse pretending to be a touch screen
@@ -602,14 +605,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
 	 glossmark: {click: glossmark_onclick}};
-    
-    sbook.UI.handlers.oneclick=
-	{window: {"mouseup": onclick,"dblclick": ondblclick,
-		  "keyup":onkeyup,"keydown":onkeydown,"keypress":onkeypress},
-	 hud: {//"click":hud_onclick,
-	     "mouseover":fdjtUI.CoHi.onmouseover,
-	     "mouseout":fdjtUI.CoHi.onmouseout}};
 
+    sbook.UI.handlers.oneclick=
+	{window: {mouseup: body_onclick,
+		  "keyup":onkeyup,"keydown":onkeydown,"keypress":onkeypress},
+	 hud: {click:hud_onclick,
+	       mouseover:fdjtUI.CoHi.onmouseover,
+	       mouseout:fdjtUI.CoHi.onmouseout}};
     /* Other stuff */
 
     function pageForward(){

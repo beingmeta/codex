@@ -482,8 +482,10 @@ var sbookMark=
 	sbookMark.insertTag=insertTag;
 		
 	function engage_glossbar(evt){
-	  var gb=fdjtDOM.getParent(fdjtUI.T(evt),".glossbar");
-	  fdjtDOM.toggleClass(gb,"engaged");}
+	    var target=fdjtUI.T(evt);
+	    if (fdjtDOM.isClickable(target)) return;
+	    var gb=fdjtDOM.getParent(target,".glossbar");
+	    fdjtDOM.toggleClass(gb,"engaged");}
 
 	function setupMarkForm(form){
 	    if (form.getAttribute("sbooksetup")) return;
@@ -497,9 +499,10 @@ var sbookMark=
 		fdjtDOM.addListener(noteinput,"mouseup",note_onmouseup);
 		fdjtDOM.addListener(noteinput,"keyup",note_onkeyup);
 		fdjtDOM.addListener(noteinput,"keypress",note_onkeypress);}
-	    var origin=fdjtDOM.getChild(form,"input[name='origin']");
+	    var origin=fdjtDOM.getChild(form,"input[name='ORIGIN']");
 	    if (origin) origin.value=
 		document.location.protocol+"//"+document.location.hostname;
+	    else fdjtLog("No origin field in form");
 	    fdjtUI.AutoPrompt.setup(form);
 	    form.setAttribute("sbooksetup","yes");}
 

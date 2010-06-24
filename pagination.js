@@ -546,7 +546,7 @@ var sbookPaginate=
 	    var off=sbook.pages[pagenum]+(pageoff||0);
 	    var info=sbook.pageinfo[pagenum];
 	    if (sbook.Trace.nav) 
-		if (sbook.curpage>=0)
+		if ((sbook.curpage)&&(sbook.curpage>=0))
 		    fdjtLog("[%f] Jumped to P%d@%d=%d+%d P%d@[%d,%d]#%s+%d (%o) from P%d@[%d,%d]#%s (%o)",
 			    fdjtET(),pagenum,off,sbook.pages[pagenum],pageoff,
 			    pagenum,info.top,info.bottom,info.first.id,

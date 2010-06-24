@@ -83,6 +83,9 @@ var sbookMode=
 	    sbookFoot=fdjtID("SBOOKFOOT");
 	    var bookmark=fdjtID("SBOOKMARKHUD");
 	    bookmark.innerHTML=sbook_addgloss_html;
+	    var form=fdjtID("SBOOKMARKFORM");
+	    form.onsubmit=fdjtAjax.onsubmit;
+	    // fdjtDOM.addListener(form,"submit",fdjtAjax.onsubmit);
 	    fillinDash();}
 	sbook.initHUD=initHUD;
 	
@@ -178,6 +181,8 @@ var sbookMode=
 	    else {
 		syncHUD(false);
 		sbook.last_mode=sbook.mode;
+		if (fdjtKB.contains(sbook_apps,sbook.mode)) 
+		    fdjtDOM.dropClass(sbookHUD,"dash");
 		sbook.mode=false; sbook.hudup=false;
 		fdjtDOM.dropClass(document.body,"hudup");
 		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}

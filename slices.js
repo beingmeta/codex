@@ -317,7 +317,7 @@ var sbook_delete_icon="redx16x16.png";
 		else fdjtDOM.dropClass(note,"sourced");}
 	    if (empty) fdjtDOM.dropClass(thread,"sourced");
 	    else fdjtDOM.addClass(thread,"sourced");}
-	if (sbook.target) sbook.UI.scrollGlosses(results_div,sbook.target);}
+	if (sbook.target) scrollGlosses(sbook.target,results_div);}
     sbook.UI.selectSources=selectSources;
 
     /* Scrolling slices */
@@ -325,7 +325,8 @@ var sbook_delete_icon="redx16x16.png";
     function scrollGlosses(elt,glosses)
     {
 	var info=sbook.docinfo[elt.id];
-	if (sbook.mode==='allglosses') return;
+	fdjtLog("[%f] Scrolling glosses to match %o, info=%o",
+		fdjtET(),elt,info);
 	if ((info)&&(info.starts_at)) {
 	    var targetloc=info.starts_at;
 	    if (!(glosses)) glosses=fdjtID("SBOOKALLGLOSSES");
@@ -340,8 +341,8 @@ var sbook_delete_icon="redx16x16.png";
 		else if(thread.starts_at===targetloc) {
 		    scrollto=thread; break;}
 		else scrollto=thread;}
-	    fdjtLog("scrolling to %o in %o @%o to line up with %o at %o",
-		    scrollto,glosses,i,elt,targetloc);
+	    fdjtLog("[%f] Scrolling to element %o in %o @%o to line up with %o at %o",
+		    fdjtET(),scrollto,glosses,i,elt,targetloc);
 	    if (scrollto) scrollto.scrollIntoView();}
     }
     sbook.UI.scrollGlosses=scrollGlosses;
