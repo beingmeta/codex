@@ -50,14 +50,14 @@ sbook.Setup=
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
 	    getSettings();
+	    // Setup sbook tables, databases, etc
+	    sbook.initDB();
+	    sbook.initHUD();
 	    if (sbook.user)
 		fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
 	    else if (sbook.nouser) {
 		fdjtDOM.addClass(document.body,"nosbookuser");}
 	    else getUser();
-	    // Setup sbook tables, databases, etc
-	    sbook.initDB();
-	    sbook.initHUD();
 	    sbook.initDisplay();
 	    sbook.displaySync();
 	    if (!((document.location.search)&&
@@ -71,6 +71,9 @@ sbook.Setup=
 	    sbook.Message("Scanning document structure");
 	    var metadata=sbookScan(sbook.root);
 	    sbook.docinfo=sbook.DocInfo.map=metadata;
+	    // Now get the glosses
+	    sbook.Message("Getting glosses");
+	    getGlosses();
 	    sbook.Message("Building table of contents");
 	    sbook.setupTOC(metadata[sbook.root.id]);
 	    var scan_done=new Date();
@@ -126,12 +129,16 @@ sbook.Setup=
 	    var refuri=_getsbookrefuri();
 	    document.body.refuri=sbook.refuri=refuri;
 	    sbook.docuri=_getsbookdocuri();
+	    var refuris=fdjtState.getLocal("sbook.refuris",true);
 	    var offline=
-		((fdjtState.getQuery("offline"))&&
-		 (fdjtState.getQuery("offline")!=="no"))||
-		fdjtState.getLocal("sbook.offline")||
-		fdjtState.getLocal("offline("+refuri+")")||
-		false;
+		((fdjtState.getQuery("offline")!=="no")&&
+		 ((fdjtState.getQuery("offline"))||
+		  (fdjtState.getLocal("sbook.offline"))||
+		  (fdjtState.getLocal("sbook.offline("+refuri+")"))||
+		  (fdjtDOM.getMeta("SBOOKMYCOPY"))||
+		  ((refuris)&&(fdjtKB.contains(refuri,refuris)))||
+		  ((fdjtDOM.getMeta("SBOOKOFFLINE"))&&
+		   (window.confirm)&&(window.confirm("Read offline?")))));
 	    sbook.offline=offline;
 	    // Get the settings for scanning the document structure
 	    getScanSettings();
@@ -152,6 +159,11 @@ sbook.Setup=
 		((offline)&&(fdjtState.getLocal("mycopyid("+refuri+")")))||false;
 	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")");
 	    
+	    if ((offline)&&(!(fdjtState.getLocal("sbook.offline("+refuri+")")))) {
+		fdjtState.setLocal("sbook.offline("+refuri+")",true,true);
+		refuris.push(refuri);
+		fdjtState.setLocal("sbook.refuris",refuris,true);}
+	    
 	    if ((useragent.search("Safari/")>0)&&
 		 (useragent.search("Mobile/")>0)) { 
 		hide_mobile_safari_address_bar();
@@ -169,8 +181,8 @@ sbook.Setup=
 	    
 	    sbook.allglosses=
 		((offline)?
-		 ((fdjtState.getLocal("glosses("+refuri+")",true))||{}):
-		 {});
+		 ((fdjtState.getLocal("glosses("+refuri+")",true))||[]):
+		 []);
 	    sbook.allsources=
 		((offline)?
 		 ((fdjtState.getLocal("sources("+refuri+")",true))||{}):
@@ -303,19 +315,19 @@ sbook.Setup=
 	    if (sbook.user) return;
 	    else if ((sbook.offline)&&
 		     (fdjtState.getLocal("sbook.user"))) {
+		var refuri=sbook.refuri;
 		var user=fdjtState.getLocal("sbook.user");
 		var userinfo=JSON.parse(fdjtState.getLocal(user));
-		var sources=fdjtState.getLocal("sbook.sources",true);
-		var outlets=fdjtState.getLocal("sbook.outlets",true);
-		var etc=fdjtState.getLocal("sbook.etc",true);
-		var nodeid=fdjtState.getLocal("sbook.nodeid");
+		var sources=fdjtState.getLocal("sbook.sources("+refuri+")",true);
+		var outlets=fdjtState.getLocal("sbook.outlets("+refuri+")",true);
+		var etc=fdjtState.getLocal("sbook.etc("+refuri+")",true);
+		var nodeid=fdjtState.getLocal("sbook.nodeid("+refuri+")");
 		var sync=fdjtState.getLocal("sbook.usersync",true);
 		var etcinfo=[];
 		if (etc) {
-		    var etcids=JSON.parse(etc);
-		    var i=0; var lim=etcids.length;
+		    var i=0; var lim=etc.length;
 		    while (i<lim) {
-			var info=fdjtState.getLocal(etcids[i++]);
+			var info=fdjtState.getLocal(etc[i++]);
 			if (info) etcinfo.push(JSON.parse(info));}}
 		setUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
 		return;}
@@ -333,7 +345,7 @@ sbook.Setup=
 	    else throw { error: "Can't change user"};
 	    sbook.user=fdjtKB.Import(userinfo);
 	    if (sbook.offline) {
-		fdjtState.setLocal(sbook.user.oid,sbook.user);
+		fdjtState.setLocal(sbook.user.oid,sbook.user,true);
 		fdjtState.setLocal("sbook.user",sbook.user.oid);}
 	    gotInfo("sources",sources);
 	    gotInfo("outlets",outlets);
@@ -347,6 +359,7 @@ sbook.Setup=
 		    fdjtState.setLocal("sbook.nodeid",nodeid);}
 	    setupUser();}
 	function gotInfo(name,info) {
+	    var refuri=sbook.refuri;
 	    if (info)
 		if (info instanceof Array) {
 		    var i=0; var lim=info.length; var qids=[];
@@ -356,18 +369,18 @@ sbook.Setup=
 			else {
 			    var obj=fdjtKB.Import(info[i++]);
 			    if (sbook.offline) 
-				fdjtState.setLocal(obj.qid,JSON.stringify(obj),true);
+				fdjtState.setLocal(obj.qid,obj,true);
 			    qids.push(obj.qid);}}
 		    sbook[name]=qids;
 		    if (sbook.offline)
-			fdjtState.setLocal("sbook."+name,qids,true);}
+			fdjtState.setLocal("sbook."+name+"("+refuri+")",qids,true);}
 	    else {
 		var obj=fdjtKB.Import(info);
 		if (sbook.offline) 
 		    fdjtState.setLocal(obj.qid,obj,true);
 		sbook[name]=obj.qid;
 		if (sbook.offline)
-		    fdjtState.setLocal("sbook."+name,qid,true);}}
+		    fdjtState.setLocal("sbook."+name+"("+refuri+")",qid,true);}}
 	sbook.setUser=setUser;
 	function setupUser(){
 	    if (sbook._user_setup) return;
@@ -396,28 +409,25 @@ sbook.Setup=
 		    idlink.target='_blank';
 		    idlink.title='click to edit your personal information';
 		    idlink.href='https://www.sbooks.net/admin/id.fdcgi';}}
-	    sbook._user_setup=true;
-	    getGlosses();}
+	    sbook._user_setup=true;}
 
 	function getGlosses() {
-	    if (sbook.glossinfo) return;
 	    if (sbook.syncstamp) {
-		var glosses=fdjtState.getLocal("glosses("+sbook.refuri+")");
+		var glosses=fdjtState.getLocal("glosses("+sbook.refuri+")",true)||[];
 		var glossdb=sbook.glosses;
 		if (glosses) {
-		    glosses=JSON.parse(glosses);
 		    sbook.allglosses=glosses;
 		    var i=0; var lim=glosses.length;
 		    while (i<lim) {
 			var glossid=glosses[i++];
-			var glossdata=fdjtState.getLocal(glossid);
+			var glossdata=fdjtState.getLocal(glossid,true);
 			if (glossdata) glossdb.Import(glossdata);}}
 		else sbook.allglosses=[];}
 	    var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 	    glosses_script.language="javascript";
 	    glosses_script.src="https://"+sbook.server+
 	      "/v3/glosses.js?CALLBACK=sbook.Setup.initGlosses&REFURI="+
-	      encodeURIComponent(sbook.refuri);
+		encodeURIComponent(sbook.refuri);
 	    if (sbook.syncstamp)
 		glosses_script.src=glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
 	    document.body.appendChild(glosses_script);}
@@ -449,8 +459,22 @@ sbook.Setup=
 		       (!((tinfo)&&(tinfo.height<(fdjtDOM.viewHeight())))));}
 	
 	function initGlosses(glosses){
+	    var allglosses=sbook.allglosses;
 	    sbook.Message("Initializing glosses...");
 	    sbook.glosses.Import(glosses);
+	    var i=0; var lim=glosses.length;
+	    var latest=sbook.syncstamp||0;
+	    while (i<lim) {
+		var gloss=glosses[i++];
+		var id=gloss.qid||gloss.uuid||gloss.oid;
+		var tstamp=gloss.syncstamp||gloss.tstamp;
+		if (tstamp>latest) latest=tstamp;
+		allglosses.push(id);}
+	    sbook.syncstamp=latest;
+	    sbook.allglosses=allglosses;
+	    if (sbook.offline) {
+		fdjtState.setLocal("glosses("+sbook.refuri+")",allglosses,true);
+		fdjtState.setLocal("syncstamp("+sbook.refuri+")",latest);}
 	    sbook.Message("Setting up search cloud...");
 	    fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
 	    sbook.FullCloud().complete('');
@@ -463,6 +487,26 @@ sbook.Setup=
 			  " seconds");
 	    splash();}
 	sbook.Setup.initGlosses=initGlosses;
+
+	/* Clearing offline data */
+
+	function clearOffline(refuri){
+	    if (refuri) {
+		var glosses=fdjtState.getLocal("sbook.glosses("+refuri+")",true);
+		var i=0; var lim=glosses.length;
+		while (i<lim) fdjtState.dropLocal(glosses[i++]);
+		fdjtState.dropLocal("sbook.sources("+refuri+")");
+		fdjtState.dropLocal("sbook.outlets("+refuri+")");
+		fdjtState.dropLocal("sbook.etc("+refuri+")");
+		fdjtState.dropLocal("sbook.offline("+refuri+")");
+		var refuris=fdjtState.getLocal("sbook.refuris",true);
+		refuris=fdjtKB.remove(refuris,refuri);
+		fdjtState.setLocal("sbook.refuris",refuris,true);}
+	    else {
+		var refuris=fdjtState.getLocal("sbook.refuris",true);
+		var i=0; var lim=refuris.length;
+		while (i<lim) clearOffline(refuris[i++]);
+		fdjtState.dropLocal("sbook.refuris");}}
 
 	/* Other setup */
 	

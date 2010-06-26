@@ -3,22 +3,11 @@
 %HELPTEXT
 
 <div class='tabcontent' id='APPLOGIN'>
-<div class='logindoc'>
-<p>In order to save and share your glosses as well as viewing the
-glosses of friends and colleagues, we need to identify you.
-Rather than introducing another password to remember or
-registration process to slog through, we
-use <a href='http://www.openid.net/'>OpenID</a> and related
-technologies to let log into sBooks through other sites that you
-already use.  You can login below using any of a variety of sites
-or methods.</p>
-</div>
-
-<form action='https://sbooks.net/auth.fdcgi'
+<form action='https://auth.sbooks.net/auth.fdcgi'
       onsubmit='fdjtAutoPrompt_cleanup();'>
 <table class='login' rowspacing='6'>
 <tr>
-<th/><th>Using</th>
+<th/><th>Login using</th>
 <td class='oneclick'>
   <a href='https://sbooks.net/auth.fdcgi?facebook=login' class='fdjtsubmit login'
      title='login using Facebook'>
@@ -42,7 +31,7 @@ or methods.</p>
     &nbsp;username<br/><span style='font-size: 300%;'>@</span></th>
   <td class='userlogin'>
     <input type='TEXT' name='USERNAME' value='' class='autoprompt'
-           prompt='Enter a username and select the corresponding site'/>
+           prompt='Enter a username and click your site'/>
     <br/>
     <div class='doc' id='USERNAMEDOC' style='display: none;'>
     Some sites provide OpenID login based on your user name.  Enter your
@@ -82,6 +71,17 @@ or methods.</p>
 </tr>
 </table>
 </form>
+<div class='logindoc'>
+<p>In order to save and share your glosses as well as viewing the
+glosses of friends and colleagues, we need to identify you.
+Rather than introducing another password to remember or
+registration process to slog through, we
+use <a href='http://www.openid.net/'>OpenID</a> and related
+technologies to let log into sBooks through other sites that you
+already use.  You can login below using any of a variety of sites
+or methods.</p>
+</div>
+
 </div>
 
 <div class='tabcontent' id='APPDEVICE'

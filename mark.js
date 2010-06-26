@@ -41,6 +41,8 @@ var sbookMark=
 
 	// This is the target for which the mark HUD has been set
 	sbook.mark_target=false;
+	// This is the gloss being edited
+	sbook.mark_gloss=false;
 	
 	// This is the completions object for the mark cloud
 	var sbook_mark_cloud=false;
@@ -76,7 +78,9 @@ var sbookMark=
 	    if (sbook.Trace.mark)
 		fdjtLog("Setting up gloss HUD for %o from %o st=%o excerpt=%o",
 			target,origin,sbook.target,excerpt);
-	    if (sbook.mark_target===target) {
+	    if ((sbook.mark_target===target)&&
+		((origin===sbook.mark_origin)||
+		 ((!(origin))&&(!(sbook.mark_origin))))) {
 		/* If the HUD is already, initialized for the target, just update
 		   the excerpt from the current selection */
 		if (sbook.Trace.mark)
@@ -86,7 +90,8 @@ var sbookMark=
 		    fdjtID("SBOOKMARKUUID").value=
 		    fdjtState.getUUID(sbook.nodeid);
 		if (typeof excerpt != 'undefined')
-		    setExcerpt(fdjtID("SBOOKMARKFORM"),excerpt||false);
+		    setExcerpt(fdjtID("SBOOKMARKFORM"),
+			       excerpt||((origin)&&(origin.excerpt))||false);
 		return;}
 	    sbook.mark_target=target;
 	    var info=((target) &&
@@ -95,22 +100,19 @@ var sbookMark=
 	    // Get information about the origin if it's a gloss
 	    //  If it's the user's gloss, we set it.  Otherwise,
 	    //   we set the relay field
-	    var glossinfo=((origin)&&
-			   (((origin.qid)&&(sbook.sourcekb.map[origin.qid]))||
-			    ((origin.uuid)&&(sbook.sourcekb.map[origin.uuid]))||
-			    ((origin.oid)&&(sbook.sourcekb.map[origin.oid]))));
-	    if (glossinfo)
-		if (glossinfo.user===sbook.user) {
-		    fdjtID("SBOOKMARKOID").value=origin.oid;
-		    fdjtID("SBOOKMARKRELAY").value=glossinfo.relay||null;}
+	    if (origin)
+		if (origin.user===sbook.user) {
+		    fdjtID("SBOOKMARKUUID").value=origin.qid;
+		    fdjtID("SBOOKMARKRELAY").value=origin.relay||null;}
 	    else {
-		fdjtID("SBOOKMARKOID").value=null;
-		fdjtID("SBOOKMARKRELAY").value=origin.oid;}
+		fdjtID("SBOOKMARKUUID").value=null;
+		fdjtID("SBOOKMARKRELAY").value=origin.qid;}
 	    fdjtID("SBOOKMARKREFURI").value=refuri;
 	    fdjtID("SBOOKMARKFRAGID").value=target.id;
 	    fdjtID("SBOOKMARKSOURCE").value=sbook.getDocURI(target);
 	    fdjtID("SBOOKMARKSYNC").value=sbook.syncstamp;
-	    fdjtID("SBOOKMARKUUID").value=fdjtState.getUUID(sbook.nodeid);
+	    fdjtID("SBOOKMARKUUID").value=
+		((origin)&&(origin.qid))||(fdjtState.getUUID(sbook.nodeid));
 	    fdjtID("SBOOKMARKTITLE").value=
 		((origin)&&(origin.title))||
 		((target)&&(target===sbook.target)&&(sbook.target_title))||
@@ -118,23 +120,26 @@ var sbookMark=
 	    if ((origin)&&(origin.oid))
 		fdjtID("SBOOKMARKRELAY").value=origin.oid;
 	    else fdjtID("SBOOKMARKRELAY").value=null;
-	    setExcerpt(fdjtID("SBOOKMARKFORM"),excerpt||false);
+	    if (origin)
+		fdjtID("SBOOKMARKINPUT").value=origin.note;
+	    setExcerpt(fdjtID("SBOOKMARKFORM"),
+		       excerpt||((origin)&&(origin.excerpt))||false);
 	    var tags_elt=fdjtID("SBOOKMARKTAGS");
 	    var checkspans=fdjtDOM.getChildren(tags_elt,".checkspan");
 	    fdjtDOM.remove(fdjtDOM.toArray(checkspans));
-	    if ((glossinfo)&&(glossinfo.tags)) {
-		var tags=glossinfo.tags;
+	    if ((origin)&&(origin.tags)) {
+		var tags=origin.tags;
 		i=0; lim=tags.length;
 		while (i<lim) addTag(tags_elt,tags[i++]);}
-	    if ((glossinfo)&&(glossinfo.xrefs))
-		setXREFS(fdjtID("SBOOKMARKFORM"),(glossinfo.xrefs));
-	    if ((glossinfo)&&(glossinfo.attachments))
-		setAttachments(fdjtID("SBOOKMARKFORM"),(glossinfo.attachments));
+	    if ((origin)&&(origin.xrefs))
+		setXRefs(fdjtID("SBOOKMARKFORM"),(origin.xrefs));
+	    if ((origin)&&(origin.attachments))
+		setAttachments(fdjtID("SBOOKMARKFORM"),(origin.attachments));
 	    // Reinit the autoprompt fields
 	    fdjtUI.AutoPrompt.setup(fdjtID("SBOOKMARKHUD"));
 	    /* Figure out the tagcues */
 	    setTagCues(sbook_mark_cloud,target);}
-
+	
 	function setTagCues(cloud,target){
 	    var docinfo=sbook.docinfo[target.id];
 	    var glosses=sbook.glosses.find('frag',target.id);
@@ -150,7 +155,6 @@ var sbookMark=
 	function setExcerpt(form,text){
 	    var excerpt=fdjtDOM.getChild(form,'.excerpt');
 	    var content=(excerpt)&&fdjtDOM.getChild(excerpt,'.content');
-	    fdjtLog('Setting excerpt to %o',text);
 	    var input=(excerpt)&&
 		fdjtDOM.getChild(excerpt,"input[name='EXCERPT']");	    
 	    if (!(text)) {
@@ -161,7 +165,7 @@ var sbookMark=
 		input.value=text;
 		fdjtDOM.dropClass(excerpt,"noexcerpt");
 		fdjtDOM.replace(content,fdjtDOM("span.content",text));}}
-	function setXREFS(form,xrefs){
+	function setXRefs(form,xrefs){
 	    var div=fdjtDOM.getChild(form,'.xrefs');
 	    var cur=fdjtDOM.getChildren(div,'.xref');
 	    if ((cur)&&(cur.length)) fdjtDOM.remove(cur);
@@ -198,6 +202,7 @@ var sbookMark=
 	    fdjtKB.Import(JSON.parse(req.responseText));
 	    // Clear the UUID
 	    fdjtID("SBOOKMARKUUID").value="";
+	    sbook.preview_target=false;
 	    /* Turn off the target lock */
 	    sbook.setTarget(false);
 	    sbookMode(false);}

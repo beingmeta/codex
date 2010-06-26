@@ -157,6 +157,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.prepend(target,fdjtDOM.Image(qrhref,"sbookqricon"));}
 	fdjtDOM.addClass(target,"glossed");
 	fdjtDOM.prepend(target,glossmark);
+	glossmark.glosses=[];
 	glossmark.sbookui=true;
 	return glossmark;};
 

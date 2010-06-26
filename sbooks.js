@@ -64,7 +64,7 @@ var sbook=
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
 	 mode: false,  // Whether to trace mode changes
-	 nav: true,    // Whether to trace book navigation
+	 nav: false,    // Whether to trace book navigation
 	 search: 0, // Whether (and level) to trace searches
 	 clouds: 0, // Whether to trace cloud generation
 	 focus: false,// Whether to trace focus/target changes
@@ -111,7 +111,9 @@ var sbook_gloss_data=
 		var info=sbook.docinfo[item.frag];
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}});
-	    sbook.glosses.index=new fdjtKB.Index();}
+	    sbook.glosses.index=new fdjtKB.Index();
+	    if (sbook.offline)
+		sbook.glosses.storage=new fdjtKB.OfflineKB(sbook.glosses);}
 	sbook.sourcekb=new fdjtKB.Pool("sources");{
 	    sbook.sourcekb.addAlias(":@1961/");
 	    sbook.sourcekb.index=new fdjtKB.Index();}}

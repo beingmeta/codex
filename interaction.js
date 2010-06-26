@@ -562,7 +562,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.UI.handlers.mouse=
 	{window: {mouseup: body_onclick,
 		  keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
-	 hud: {mouseup:hud_mouseup,mousedown: hud_mousedown},
+	 hud: {mouseup:hud_mouseup,mousedown: hud_mousedown,
+	       title: "click or hold for content"},
 	 glossmark: {click: glossmark_onclick,
 		     mouseup: fdjtUI.nobubble,
 		     mousedown: fdjtUI.nobubble,

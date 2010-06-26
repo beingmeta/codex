@@ -113,7 +113,7 @@ div#SBOOKHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; 
     transition-property: opacity; transition-duration: 3s;
     visibility: hidden;
-    font-size: 15px;
+    font-size: 14px; font-family: helvetica,sans,sans-serif;
     z-index: 100;}
 /* SBOOKHUD should be dimensionless so it doesn't get in the way of body clicks */
 body.hudup div#SBOOKHUD {visibility: visible;}
@@ -358,7 +358,7 @@ div#SBOOKHUD div.hudblock {
     margin: 0px; padding: 0px; padding-bottom: 6px;
     border: solid blue 3px; border-top: 0px;
     text-align: center;
-    background-color: #505050; color: ivory; opacity: 0.95;
+    background-color: #505050; color: ivory; opacity: 1.0;
     -khtml-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px; 
@@ -459,7 +459,7 @@ div#SBOOKHUD.mark div#SBOOKMARKHUD { display: block;}
 /* The Dashboard HUD */
 
 div#SBOOKHUD div#SBOOKDASHTOP {
-    margin: 0px; padding: 0px; border: 0px;
+    margin: 0px; padding: 0px; border-bottom: 0px;
     height: 60px; min-height: 60px;
     font-family: times,serif; font-variant: small-caps;}
 
@@ -472,6 +472,12 @@ div#SBOOKHUD div#SBOOKDASHTOP div.tabbar {
     font-variant: small-caps; margin-top: 2px;}
 div#SBOOKHUD div#SBOOKDASHTOP div.tabbar .tab {
     font-variant: small-caps; border-radius: 6px;}
+div#SBOOKHUD div#SBOOKDASHTOP div.tabbar.icons .tab  {
+    border: none;}
+div#SBOOKHUD div#SBOOKDASHTOP div.tabbar.icons .tab img {
+    border: transparent solid 3px; padding: 2px; border-radius: 6px;}
+div#SBOOKHUD.help div#SBOOKDASHTOP div.tabbar.icons .tab[contentid='APPHELP'] img {
+    border: gold solid 3px; border-radius: 6px;}
 
 div#SBOOKHUD.about span.tab[contentid='APPABOUT'],
 div#SBOOKHUD.help div#SBOOKDASHTOP span.tab[contentid='APPHELP'],
@@ -480,6 +486,14 @@ div#SBOOKHUD.device div#SBOOKDASHTOP span.tab[contentid='APPDEVICE'],
 div#SBOOKHUD.dashtoc div#SBOOKDASHTOP span.tab[contentid='DASHTOC'],
 div#SBOOKHUD.sbookapp div#SBOOKDASHTOP span.tab[contentid='SBOOKSAPP'] {
     border-bottom: none;}
+
+div#SBOOKHUD.about div#SBOOKDASHTOP span.tab[contentid='APPABOUT'] img,
+div#SBOOKHUD.help div#SBOOKDASHTOP span.tab[contentid='APPHELP'] img,
+div#SBOOKHUD.login div#SBOOKDASHTOP span.tab[contentid='APPLOGIN'] img,
+div#SBOOKHUD.device div#SBOOKDASHTOP span.tab[contentid='APPDEVICE'] img,
+div#SBOOKHUD.dashtoc div#SBOOKDASHTOP span.tab[contentid='DASHTOC'] img,
+div#SBOOKHUD.sbookapp div#SBOOKDASHTOP span.tab[contentid='SBOOKSAPP'] img {
+    border: gold solid 3px;}
 
 div#SBOOKHUD div#SBOOKDASHTOP .userpic {
   margin: 0px; padding: 0px; border: 0px;
@@ -1340,18 +1354,18 @@ body.sbook a.sbooknote { display: block;}
     text-align: right;}
 .sbooknote .age { 
   color: yellow; float: right; 
-  font-size: 80%; text-decoration: none;}
+  font-size: 90%; text-decoration: none;}
+.sbooknote .age:hover {text-decoration: underline;} 
 .sbooknote a.deletebutton { 
-  color: orange; text-decoration: none;}
-.sbooknote a.deletebutton img { 
-  width: 12px; height: 12px;}
+  color: orange; text-decoration: none;
+  padding-right: 3px;}
+.sbooknote .glossinfo img.delete { 
+  width: 1em; height: 1em; padding-right: 3px;}
 .sbooknote img.remarkbutton { }
-.sbooknote a.age {
-    text-decoration: none;}
 .sbooknote a.headref {
     float: right; clear: right; 
     font-family: times,serif; font-style: italic; font-size: 80%;
-    white-space: nowrap; padding: 2px;
+    white-space: nowrap; padding: 2px; padding-top: 0px;
     color: lightblue;}
 
 div.sbooknote div.locbar {
@@ -1419,12 +1433,13 @@ img.markbutton {
 
 div.sbookthread {
     clear: both;
-    border-left: solid white 6px; margin-left: 6px;
+    border-left: solid white 2px; margin-left: 10px; 
     border-top: none;
     margin-top: 6px; margin-bottom: 18px;}
 div.sbookthread.singleton,
 div#SBOOKGLOSSES div.sbookthread {
-    border-left: none; padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
+    border-left: none; margin-left: 0px;
+    padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
 
 div.sbookthread div.sbooknote {
     border-top: solid gold 1px;}

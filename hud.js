@@ -74,6 +74,9 @@ var sbookMode=
 	    sbook.glosses.addInit(function(item){
 		sbook.UI.addToSlice(item,glosses,false);
 		var glossmark=sbook.UI.addGlossmark(item.frag); {
+		    if (glossmark) {
+			var curglosses=glossmark.glosses;
+			curglosses.push(item.qid);}
 		    if (item.tstamp>sbook.syncstamp) sbook.syncstamp=item.tstamp;
 		    var pic=((fdjtKB.ref(item.user)).pic)||
 			((fdjtKB.ref(item.feed)).pic);

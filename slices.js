@@ -38,7 +38,7 @@ var sbook_small_eye_icon="EyeIcon13x10.png";
 var sbook_details_icon="detailsicon16x16.png";
 var sbook_outlink_icon="outlink16x16.png";
 var sbook_small_remark_icon="remarkballoon16x13.png";
-var sbook_delete_icon="redx16x16.png";
+var sbook_delete_icon="redx12x12.png";
 
 (function () {
 
@@ -68,7 +68,9 @@ var sbook_delete_icon="redx16x16.png";
 	div.about="#"+target_id;
 	// div.setAttribute('about',"#"+info.id);
 	if (idprefix) div.id=idprefix+info.id;
-	if (info.qid) div.qref=info.qid;
+	if (info.qid) {
+	    div.name=div.qref=info.qid;
+	    div.setAttribute("name",info.qid);}
 	return div;}
     sbook.renderNote=renderNote;
     
@@ -106,13 +108,15 @@ var sbook_delete_icon="redx16x16.png";
 	var age=fdjtDOM("span.age",fdjtTime.tick2date(info.tstamp));
 	age.title=((user===sbook.user)?("edit this gloss"):
 		   ("relay/reply to this gloss"));
-	// temporary
-	age.onclick=fdjtUI.cancel;
+	age.onclick=relayoredit_gloss;
 	
-	return [fdjtDOM("span.glossinfo",age,
-			((user===sbook.user)&&
-			 (fdjtDOM.Image(sbicon(sbook_delete_icon),"img.delete","x",
-					"delete this gloss")))),
+	var deleteicon=
+	    ((user===sbook.user.oid)&&
+	     (fdjtDOM.Image(sbicon(sbook_delete_icon),"img.delete","x",
+			    "delete this gloss")))
+	if (deleteicon) deleteicon.onclick=deletegloss_onclick;
+	
+	return [fdjtDOM("span.glossinfo",age,deleteicon),
 		((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
 		((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
 		(sourceIcon(feedinfo))||(sourceIcon(userinfo))];}
@@ -165,8 +169,52 @@ var sbook_delete_icon="redx16x16.png";
 	locrule.style.left=((location_start/body_len)*100)+"%";
 	return locrule;}
 
+    function deletegloss_onclick(evt){
+	var scan=fdjtUI.T(evt);
+	fdjtUI.cancel(evt);
+	while (scan) {
+	    if (scan.qref) break;
+	    else scan=scan.parentNode;}
+	if (!(scan)) return;
+	var qref=scan.qref;
+	var frag=sbook.glosses.ref(qref).get("frag");
+	if (scan)
+	    fdjtAjax.jsonCall(
+		function(response){deletegloss(response,qref,frag);},
+		"https://"+sbook.server+"/v3/delete",
+		"gloss",scan.qref,
+		"origin",document.location.protocol+"//"+document.location.hostname);}
+    function deletegloss(response,glossid,frag){
+	if (response===glossid) {
+	    sbook.glosses.drop(glossid);
+	    sbook.allglosses=fdjtKB.remove(sbook.allglosses,glossid);
+	    if (sbook.offline)
+		fdjtState.setLocal("glosses("+sbook.refuri+")",
+				   sbook.allglosses,true);
+	    var renderings=document.getElementsByName(glossid);
+	    if (renderings) {
+		var i=0; var lim=renderings.length;
+		while (i<lim) fdjtDOM.remove(renderings[i++]);}
+	    var glossmark=fdjtID("SBOOK_GLOSSMARK_"+frag);
+	    if (glossmark) {
+		var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
+		if (newglosses.length===0) fdjtDOM.remove(glossmark);
+		else glossmark.glosses=newglosses;}}
+	else throw response;}
+    
+    function relayoredit_gloss(evt){
+	var scan=fdjtUI.T(evt);
+	fdjtUI.cancel(evt);
+	while (scan) {
+	    if (scan.qref) break;
+	    else scan=scan.parentNode;}
+	if (!(scan)) return;
+	var qref=scan.qref;
+	var gloss=sbook.glosses.ref(qref);
+	var frag=gloss.get("frag");
+	sbookMark(fdjtID(frag),gloss);}
 
-    function sourceIcon(info){
+	function sourceIcon(info){
 	if (info) return info.pic;}
     
     function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
@@ -191,6 +239,7 @@ var sbook_delete_icon="redx16x16.png";
 	    var note=notes[i++];
 	    var info=sbook.Info(note);
 	    var frag=info.id||info.frag;
+	    if (!(frag)) continue;
 	    var target=fdjtID(frag);
 	    var tinfo=sbook.docinfo[target.id];
 	    var thread=info.relay||info.frag||info.id||frag;
@@ -325,8 +374,6 @@ var sbook_delete_icon="redx16x16.png";
     function scrollGlosses(elt,glosses)
     {
 	var info=sbook.docinfo[elt.id];
-	fdjtLog("[%f] Scrolling glosses to match %o, info=%o",
-		fdjtET(),elt,info);
 	if ((info)&&(info.starts_at)) {
 	    var targetloc=info.starts_at;
 	    if (!(glosses)) glosses=fdjtID("SBOOKALLGLOSSES");
