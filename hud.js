@@ -35,7 +35,7 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 var sbookMode=
     (function(){
 	// This is the regex for all sbook apps
-	var sbook_apps=["help","login","sbookapp","device","dashtoc","about"];
+	var sbook_apps=["login","sbookapp","device","dashtoc","about"];
 	
 	// The foot HUD
 	var sbookFoot=false;
@@ -138,16 +138,8 @@ var sbookMode=
 
 	/* Mode controls */
 	
-	var sbookHUD_displaypat=/(hudup)|(hudresults)|(hudglosses)/g;
 	var sbookMode_pat=
 	    /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(mark)|(context)|(dashtoc)|(about)|(console)/g;
-	
-	var sbook_footmodes=
-	    ["login","device","sbookapp","help","dashtoc","about","allglosses","console"];
-	var sbook_headmodes=["toc","searching","browsing"];
-	
-	var sbook_last_headmode="toc";
-	var sbook_last_footmode="help";
 	
 	function sbookMode(mode){
 	    if (typeof mode === 'undefined') return sbook.mode;
@@ -155,20 +147,26 @@ var sbookMode=
 		fdjtLog("[%fs] sbookMode %o, cur=%o dbc=%o",
 			fdjtET(),mode,sbook.mode,document.body.className);
 	    if (sbook.preview) sbook.Preview(false);
+	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
-		if (mode==="dash") mode=sbook.last_dash||"help";
+		if (mode==="dash") mode=sbook.last_dash||"about";
 		if (sbook.floathud) syncHUD(mode);
 		if (mode===sbook.mode) {}
-		else if (mode===true)  {
-		    sbook.hudup=true;
-		    fdjtDOM.addClass(document.body,"hudup");}
 		else {
-		    if (typeof mode !== 'string') 
+		    if (mode===true) {
+			sbook.mode=false;
+			sbook.last_mode=true;}
+		    else if (typeof mode !== 'string') 
 			throw new Error('mode arg not a string');
+		    else if (mode==='help') {
+			// Don't save 'help' as the last mode, because we'll return to
+			//  the actual last mode when help finishes
+			sbook.mode=mode;}
+		    else {
+			sbook.mode=mode;
+			sbook.last_mode=mode;}
 		    if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
 			sbookSetupDash();
-		    sbook.mode=mode;
-		    sbook.last_mode=mode;
 		    if (fdjtKB.contains(sbook_apps,mode)) {
 			fdjtDOM.addClass(sbookHUD,"dash");
 			sbook.last_dash=mode;}
@@ -269,7 +267,7 @@ var sbookMode=
 	    var view_top=fdjtDOM.viewTop();
 	    var view_height=fdjtDOM.viewHeight();
 	    var foot_height=fdjtDOM.getGeometry(sbookFoot).height;
-	    var box=fdjtID("SBOOKBOX");
+	    var box=fdjtID("SBOOKCONTENT");
 	    if (view_top!==sbook_sync_off) {
 		sbookHUD.style.top=view_top+'px';
 		sbook_sync_off=view_top;}
@@ -465,16 +463,17 @@ var sbookMode=
 		fdjtLog("[%f] sbookPreview() %o (src=%o) sbp=%o sbpt=%o",
 			fdjtET(),elt,src,
 			sbook.preview,sbook.preview_target);
+	    
 	    // Save the source HUD element for the preview (when provided)
 	    if (src) {
 		if (sbook.previewelt!==src) {
 		    if (fdjtDOM.hasClass(src,sbook_preview_classes)) {
 			var clone=src.cloneNode(true);
-			clone.id="SBOOKPREVIEWNOTE";
+			clone.id="SBOOKPREVIEW";
 			fdjtDOM.addClass(clone,"hudblock");
-			fdjtDOM.replace("SBOOKPREVIEWNOTE",clone);}
-		    else fdjtDOM.replace("SBOOKPREVIEWNOTE",
-					 fdjtDOM("div#SBOOKPREVIEWNOTE"));
+			fdjtDOM.replace("SBOOKPREVIEW",clone);}
+		    else fdjtDOM.replace("SBOOKPREVIEW",
+					 fdjtDOM("div#SBOOKPREVIEW"));
 		    sbook.previewelt=src;}
 		else {}}
 	    else if (sbook.previewelt) {
@@ -507,8 +506,7 @@ var sbookMode=
 		// if ((pelt)&&(sbook.previewstart!==pelt)&&(pelt.scrollIntoView))
 		if (pelt) pelt.scrollIntoView();
 		sbook.previewstart=false;
-		fdjtDOM.replace("SBOOKPREVIEWNOTE",
-				fdjtDOM("div#SBOOKPREVIEWNOTE"));
+		fdjtDOM.replace("SBOOKPREVIEW",fdjtDOM("div#SBOOKPREVIEW"));
 		return;}
 	    else if ((elt===sbook.root)||(elt===document.body))
 		return;

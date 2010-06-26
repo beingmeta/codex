@@ -280,13 +280,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
 	else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
 	else modearg=modechars[ch];
-	if (modearg==="dash") modearg=sbook.last_dash||"help";
+	if (modearg==="dash") modearg=sbook.last_dash||"about";
 	var mode=sbookMode();
-	if (modearg) 
+	if (modearg) {
 	    if (mode===modearg) {
 		sbookMode(false); mode=false;}
-	else {
-	    sbookMode(modearg); mode=modearg;}
+	    else {
+		sbookMode(modearg); mode=modearg;}}
 	else {}
 	if (mode==="searching")
 	    fdjtID("SBOOKSEARCHTEXT").focus();

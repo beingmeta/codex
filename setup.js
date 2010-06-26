@@ -53,6 +53,8 @@ sbook.Setup=
 	    // Setup sbook tables, databases, etc
 	    sbook.initDB();
 	    sbook.initHUD();
+	    fdjtDOM.addClass(document.body,"hudup");
+	    fdjtDOM.addClass("SBOOKHUD","help");
 	    if (sbook.user)
 		fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
 	    else if (sbook.nouser) {
@@ -60,12 +62,6 @@ sbook.Setup=
 	    else getUser();
 	    sbook.initDisplay();
 	    sbook.displaySync();
-	    if (!((document.location.search)&&
-		  (document.location.search.length>0))) {
-		sbookMode(false);
-		sbook.Message("Setting up your sbook");}
-	    if (fdjtState.getQuery("action")) {
-		sbookMode("sbookapp");}
 	    if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
 		sbook_ajax_uri=false;
 	    sbook.Message("Scanning document structure");
@@ -98,7 +94,14 @@ sbook.Setup=
 	    window.onresize=function(evt){
 		if (sbook.paginate) sbookPaginate();};
 	    sbook.setupGestures();
-	    sbookMode(false);
+	    if (!((document.location.search)&&
+		  (document.location.search.length>0))) {
+		sbookMode("help");
+		setTimeout(function(){
+		    if (sbook.mode==="help") sbookMode(false);},
+			   2500);}
+	    if (fdjtState.getQuery("action")) {
+		sbookMode("sbookapp");}
 	    sbook.displaySync();
 	    // if (sbook.floathud) setInterval(sbook.displaySync,3000);
 	    _sbook_setup=sbook._setup=new Date();}

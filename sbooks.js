@@ -40,7 +40,7 @@ var sbook=
      // For pagination
      curpage: false,curoff: false,curinfo: false, curbottom: false,
      // For tracking UI state
-     last_mode: false,last_dash: "help",
+     last_mode: false, last_dash: "about",
      target_title: false,preview_title: false,
      // How long it takes a gesture to go from tap to hold
      holdmsecs: 500, edgeclick: 50, pagesize: 250,

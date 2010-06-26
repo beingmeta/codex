@@ -2,11 +2,13 @@
      alt='toc' title='click to navigate the book as a whole'
      class='hudbutton' id='SBOOKTOCBUTTON' hudmode='toc'
      onclick='sbook.UI.hudbutton(event);'/>
+<div class='helphud tapnav'><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> to navigate</div>
+<div class='helphud tapsearch'><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> to search</div>
 <img src='http://static.beingmeta.com/graphics/TagSearch40x40.png'
      alt='search' title='click to search tags within the book'
      class='hudbutton' id='SBOOKSEARCHBUTTON' hudmode='searching'
      onclick='sbook.UI.hudbutton(event);'/>
-<div id='SBOOKPREVIEWNOTE'></div>
+<div id='SBOOKPREVIEW' class='hudblock'></div>
 <div id='SBOOKHEAD'>
 <div id='SBOOKTOC' class='hudblock'></div>
 <div id='SBOOKSEARCH' class='hudblock sbooksearch'>
@@ -15,14 +17,12 @@
 <div id='SBOOKDASHTOP' class='hudblock'>
   <div style='position: absolute; top: 0px; height: 110%;'> </div>
   <div class='dashbar'>
-  <a href='http://sbooks.net/logout.fdcgi' class='logout'
-     title='click to logout of the sBooks server'>
-    logout</a>
-  <a name='IDLINK' href='javascript:sbookMode("login");'
-     title='click to login'
-     class='userpic'>
-    <img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
-	 alt='login' id='SBOOKUSERPIC'/></a>
+    <a href='http://sbooks.net/logout.fdcgi' class='logout'
+       title='click to logout of the sBooks server'>
+      logout</a>
+    <a class='login href='javascript:sbookMode("login");'
+       title='click to login'>
+      login</a>
     <div class='belongsto'>
       This sBook Belongs To:
       <a href='javascript:sbookMode("login");' name='IDLINK'
@@ -30,6 +30,15 @@
 	(click to log in)</a>
     </div> <!-- .belongsto -->
   </div> <!-- .dashbar -->
+  <a name='IDLINK' href='javascript:sbookMode("login");' 
+     id='IDBUTTON' class='userpic'
+     title='click to login'>
+    <img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
+	 alt='login' id='SBOOKUSERPIC'/></a>
+  <a id='HELPBUTTON' href='javascript:sbookMode("help");'
+     title='click for UI help'>
+    <img src='http://static.beingmeta.com/graphics/HelpIcon32x32.png'
+	 alt='Help'/></a>
   <div class='tabbar icons' id='SBOOKTABS'>
     <span class='tab' contentid='APPABOUT'
 	  onclick='sbookMode.toggle("about"); fdjtUI.cancel(event); return false;'
@@ -51,11 +60,6 @@
 	  onclick='sbookMode.toggle("login"); fdjtUI.cancel(event); return false;'
 	  title='login to sBooks'>
       <img src='http://static.beingmeta.com/graphics/sbooksconnecticon32x32.png' alt='Login'/></span>
-    <span class='tab' contentid='APPHELP'
-	  onclick='sbookMode.toggle("help"); fdjtUI.cancel(event); return false;'
-	  title='how to use this sBook'>
-      <img src='http://static.beingmeta.com/graphics/HelpIcon32x32.png'
-	   alt='Help'/></span></span>
   </div> <!-- .tabbar -->
 </div> <!-- #SBOOKDASHTOP -->
 <div id='SBOOKCONSOLE' class='hudblock sbookconsole'>
@@ -72,7 +76,7 @@
        onclick='sbook.UI.handlers.everyone_onclick(event);'/>
 </div>
 </div> <!-- SBOOKHEAD -->
-<div id='SBOOKBOX'>
+<div id='SBOOKCONTENT'>
 <div id='SBOOKRESULTS' class='sbookslice'></div>
 <div id='SBOOKALLGLOSSES' class='sbookslice'></div>
 <div id='SBOOKDASH'>
@@ -83,11 +87,38 @@
   <!-- This is filled in on demand -->
 </div>
 </div>
+<div id='SBOOKHELPHUD'>
+<table>
+  <tr><td colspan='2' align='center'>
+      <strong class='fortouch'>swipe or tap edges</strong>
+      <strong class='notouch'>click edges or use <span title='space/backspace/pageup/pagedown'>keys</span></strong>
+      to <strong>page</strong> forward, backward</td></tr>
+  <tr><td colspan='2' align='center'>
+      <strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> to toggle the meta HUD
+      <span style='font-size: smaller'>(navigate/search/overlays/etc)</span></td></tr>
+  <tr>
+    <th rowspan='3'><div>in the<br/>meta<br/>HUD</div></th>
+    <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> a passage or select text to <strong>add</strong> notes or tags</td></tr>
+  <tr>
+    <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> or hold elements to <strong>preview</strong> their content</td></tr>
+  <tr>
+    <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> the top/bottom margin to <strong>hide</strong> the HUD</td></tr>
+  <tr>
+    <th rowspan='2'><div>during<br/>content<br/>preview</div></th>
+    <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> the <span style='color: red;'>preview target</span>
+      to <strong>jump</strong>, elsewhere to return</td></tr>
+  <tr>
+    <td><strong>page</strong> (swipe, tap, or type) to <strong>scan</strong> through
+    notes, results, or sections directly from preview mode</td></tr>
+</table>
+</div>
 <div id='SBOOKFOOT'>
   <img src='http://static.beingmeta.com/graphics/sbooksappicon40x40.png'
        alt='dash' title='Click for Help, settings, book description, etc'
        class='hudbutton' id='SBOOKDASHBUTTON' hudmode='dash'
        onclick='sbook.UI.hudbutton(event);'/>
+  <div class='helphud tapdash'><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> for the dash (more stuff)</div>
+  <div class='helphud tapnotes'><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> for notes/overlays</div>
   <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
        alt='glosses' title='Click to browse glosses overlaid on this book'
        class='hudbutton' id='SBOOKALLGLOSSESBUTTON' hudmode='allglosses'
