@@ -154,11 +154,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    sbookMark(tomark,false,string);
 		else sbookMode(false);}
 	    else sbookMode(false);}
-	else {
+	else if (sbook.hudup) {
 	    var glosstarget=sbook.getTarget(target);
 	    if (glosstarget) sbookMark(glosstarget);
-	    else if (sbook.hudup) sbookMode(false);
-	    else sbookMode(true);}}
+	    else sbookMode(false);}
+	else sbookMode(true);}
     
     function hud_onclick(evt){
 	var target=fdjtUI.T(evt);
@@ -407,10 +407,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),evt,scrolled,moved,fdjtDOM.isClickable(target),inUI(target),
 		    touch_x,touch_y,start_x,start_y);
 	if (sbook.preview) {
-	    if (fdjtDOM.hasParent(target,sbook.preview)) {
+	    if (holding) {
+		sbook.Preview(false);
+		return;}
+	    else if (fdjtDOM.hasParent(target,sbook.preview)) {
 		sbook.JumpTo(sbook.preview);
 		return;}
-	    else if (holding) {
+	    else {
 		sbook.Preview(false);
 		return;}}
 	var width=fdjtDOM.viewWidth();
@@ -419,7 +422,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((!(moved))||((adx+ady)<20)) {
 	    if (fdjtDOM.hasClass(target,"sbookmargin")) return;
 	    else if (fdjtDOM.hasParent(target,".glossmark")) return;
-	    else if (!(inUI(target))) body_onclick(evt,start_x,start_y);
+	    else if (!(inUI(target)))
+		// We pass in the position information because body_click
+		// will determine if it's an edge tap (we don't really need start_y)
+		body_onclick(evt,start_x,start_y);
 	    return;}
 	// Ignore this case
 	else if ((adx+ady)<100) return;

@@ -20,15 +20,19 @@
   <input id="SBOOKMARKTITLE" type="HIDDEN" name="DOCTITLE"/>
 </div>
 <div id="SBOOKMARKRELAYBLOCK" class="sbookrelayblock"></div>
-<div class='glossbar'>
+<div class="glossbar">
   <span class="right">
+    <img src="http://static.beingmeta.com/graphics/redx16x16.png"
+	 alt="delete" onclick="sbookMark.delete(evt);"/>
     <span class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
       <input type="CHECKBOX" name="PRIVATE" value="yes"/>
       <span class="checked" title="don't share this note with my personal circle (friends)">private</span>
       <span class="unchecked" title="share this note with my personal circle (friends)">shared</span>
     </span>
+    <input id="SBOOKMARKSAVEACTION" type="SUBMIT" name="ACTION" value="Add"
+	   title="Add this gloss to the server"/>
     <input id="SBOOKMARKSAVEACTION" type="SUBMIT" name="ACTION" value="Save"
-	   title="Save (mark) this gloss to the server"/>
+	   title="Save the edits for this gloss to the server"/>
   </span>
   <span class="left">
     <img src="http://static.beingmeta.com/graphics/helpicon16x16.png"
@@ -45,7 +49,7 @@
 	 onclick="sbookMark.toggle(event,'showattach');"/>
   </span>
 </div>
-<div class='formbody'>
+<div class="formbody">
 <div class="help">
 Type your note in the box below, enclosing tag phrases in [bracket]s.
 

@@ -862,6 +862,12 @@ form.mark div.glossbar .checkspan {
 form.mark div.glossbar .checkspan input[type='checkbox'] { display: none;}
 form.mark div.glossbar .checkspan .checked { color: black;}
 
+form.mark div.glossbar input[value='Save'] {display: none;}
+form.mark div.glossbar img[alt='delete'] {display: none;}
+form.mark.sbookedit div.glossbar input[value='Save'] {display: inline;}
+form.mark.sbookedit div.glossbar input[value='Add'] {display: none;}
+form.mark.sbookedit div.glossbar img[alt='delete'] {display: inline;}
+
 form.mark div.excerpt { text-align: center; margin-bottom: 5px; color: black;}
 form.mark div.excerpt.noexcerpt { display: none;}
 form.mark div.excerpt span.lq {
@@ -1626,6 +1632,12 @@ body.touch .sbooknote span.note { font-size: 95%;}
 body.touch div.sbookmargin { }
 body.touch .hudbutton { width: 60px; }
 body.touch .glossmark { width: 60px; }
+
+body.touch div.helphud {font-size: 20px;}
+body.touch div.helphud.tapnav {left: 75px;}
+body.touch div.helphud.tapsearch {right: 75px;}
+body.touch div.helphud.tapdash {left: 75px;}
+body.touch div.helphud.tapnotes {right: 75px;}
 
 body.touch div#SBOOKHUD div.sbooksearch { }
 

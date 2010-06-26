@@ -100,13 +100,19 @@ var sbookMark=
 	    // Get information about the origin if it's a gloss
 	    //  If it's the user's gloss, we set it.  Otherwise,
 	    //   we set the relay field
-	    if (origin)
+	    if (origin) {
 		if (origin.user===sbook.user) {
+		    fdjtDOM.addClass(fdjtID("SBOOKMARKFORM"),"sbookedit");
 		    fdjtID("SBOOKMARKUUID").value=origin.qid;
 		    fdjtID("SBOOKMARKRELAY").value=origin.relay||null;}
+		else {
+		    fdjtDOM.dropClass(fdjtID("SBOOKMARKFORM"),"sbookedit");
+		    fdjtID("SBOOKMARKUUID").value=null;
+		    fdjtID("SBOOKMARKRELAY").value=origin.qid;}}
 	    else {
+		fdjtDOM.dropClass(fdjtID("SBOOKMARKFORM"),"sbookedit");
 		fdjtID("SBOOKMARKUUID").value=null;
-		fdjtID("SBOOKMARKRELAY").value=origin.qid;}
+		fdjtID("SBOOKMARKRELAY").value=null;}
 	    fdjtID("SBOOKMARKREFURI").value=refuri;
 	    fdjtID("SBOOKMARKFRAGID").value=target.id;
 	    fdjtID("SBOOKMARKSOURCE").value=sbook.getDocURI(target);

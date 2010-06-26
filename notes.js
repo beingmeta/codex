@@ -53,7 +53,8 @@ var sbook_delete_icon="redx12x12.png";
 	    fdjtDOM(((info.gloss) ? "div.sbooknote.gloss" : "div.sbooknote"),
 		    makelocbar(target_info),
 		    ((info.gloss)&&(showglossinfo(info))),
-		    (showtocloc(target_info)),
+		    // Makes it noisy (and probably slow) on the iPad
+		    ((sbook.ui!=='ios')&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
 		    ((info.note)&&(fdjtDOM("span.note",info.note))),
 		    ((info.tags)&&(info.tags.length)&&(showtags(info.tags))),
@@ -105,13 +106,15 @@ var sbook_delete_icon="redx12x12.png";
 	var feed=info.feed||false;
 	var userinfo=sbook.sourcekb.map[user];
 	var feedinfo=sbook.sourcekb.map[feed];
-	var age=fdjtDOM("span.age",fdjtTime.tick2date(info.tstamp));
+	var agestring=timestring(info.tstamp);
+	var age=fdjtDOM("span.age",agestring);
 	age.title=((user===sbook.user)?("edit this gloss"):
 		   ("relay/reply to this gloss"));
 	age.onclick=relayoredit_gloss;
 	
 	var deleteicon=
-	    ((user===sbook.user.oid)&&
+	    // No delete icons for the ipad
+	    ((user===sbook.user.oid)&&(sbook.ui!=='ios')&&
 	     (fdjtDOM.Image(sbicon(sbook_delete_icon),"img.delete","x",
 			    "delete this gloss")))
 	if (deleteicon) deleteicon.onclick=deletegloss_onclick;
@@ -120,6 +123,24 @@ var sbook_delete_icon="redx12x12.png";
 		((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
 		((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
 		(sourceIcon(feedinfo))||(sourceIcon(userinfo))];}
+    var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    function timestring(tick){
+	var now=fdjtTime.tick();
+	if ((now-tick)<(12*3600)) {
+	    var date=new Date(1000*tick);
+	    var hour=date.getHour();
+	    var minute=date.getMinute();
+	    return ""+hour+":"+((minute<10)?"0":"")+minute;}
+	else {
+	    var date=new Date(1000*tick);
+	    var year=date.getFullYear();
+	    var month=date.getMonth();
+	    var date=date.getDate();
+	    var shortyear=year%100;
+	    if (year<10)
+		return ""+date+"/"+months[month]+"/0"+year;
+	    else return ""+date+"/"+months[month]+"/"+year;}}
+
 
     function makelocbar(target_info){
 	var locrule=fdjtDOM("HR");
@@ -390,7 +411,9 @@ var sbook_delete_icon="redx12x12.png";
 		else scrollto=thread;}
 	    fdjtLog("[%f] Scrolling to element %o in %o @%o to line up with %o at %o",
 		    fdjtET(),scrollto,glosses,i,elt,targetloc);
-	    if (scrollto) scrollto.scrollIntoView();}
+	    if (scrollto) {
+		var geom=fdjtDOM.getGeometry(scrollto,false,glosses);
+		scrollto.scrollIntoView(true);}}
     }
     sbook.UI.scrollGlosses=scrollGlosses;
 
