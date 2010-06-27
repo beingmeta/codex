@@ -103,7 +103,7 @@ sbook.Setup=
 	    if (fdjtState.getQuery("action")) {
 		sbookMode("sbookapp");}
 	    sbook.displaySync();
-	    // if (sbook.floathud) setInterval(sbook.displaySync,3000);
+	    if (sbook.floathud) setInterval(sbook.displaySync,3000);
 	    _sbook_setup=sbook._setup=new Date();}
 	sbook.Setup=Setup;
 

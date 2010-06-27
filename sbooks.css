@@ -511,10 +511,11 @@ div#SBOOKHUD div#SBOOKDASHTOP {
 
 div#SBOOKHUD div#SBOOKDASHTOP div.dashbar {
     margin: 0px; padding: 0px; border: 0px;
+    width: 100%; clear: both;
     background-color: gold; color: black;}
 div#SBOOKHUD div#SBOOKDASHTOP div.tabbar {
     margin: 0px; padding: 0px; border: 0px;
-    margin-left: 50px; margin-right: 50px;
+    width: 100%; clear: both;
     font-variant: small-caps; margin-top: 2px;}
 div#SBOOKHUD div#SBOOKDASHTOP div.tabbar .tab {
     font-variant: small-caps; border-radius: 6px;}
@@ -1204,7 +1205,7 @@ div.spanbar div.progressbox {
 
 div.tochead { 
   position: relative; width: 100%;
-  background-color: ivory; color: blue;
+  background-color: silver; color: blue;
   text-align: left; vertical-align: middle;}
 div.tochead span.spacer {
     font-size: 125%; font-weight: bold; font-style: italic;}
@@ -1358,7 +1359,7 @@ div.sbooksources img.button.selected {
 .sbooknote { 
     white-space: normal; clear: both;
     text-align: left; text-decoration: none;
-    margin-top: 1px; text-align: left;
+    text-align: left;
     font-size: 90%;}
 .sbooknote a.ref {
   display: block; font-weight: normal;}
@@ -1415,18 +1416,18 @@ body.sbook a.sbooknote { display: block;}
     white-space: nowrap; padding: 2px; padding-top: 0px;
     color: lightblue;}
 
-div.sbooknote div.locbar {
+div.locbar {
     background-color: ivory;
     width: 100%; clear: both;
     min-height: 6px; height: 6px;
     border: 0px; margin: 0px; padding: 0px;
     margin-bottom: 2px;}
-div.sbooknote div.locbar hr {
+div.locbar hr {
     color: red; background-color: red; min-width: 3px;
     position: relative; left: 0px; width: 100%; height: 100%;
     border: 0px; padding: 0px; margin: 0px;}
 
-div.sbooknote div.tochead div.locbar {
+div.tochead div.locbar {
     position: relative; left: 0px; bottom: 0px;
     z-index: 50;
     width: 100%;}
@@ -1479,20 +1480,18 @@ img.markbutton {
 .sbooktarget img.markbutton { display: inherit;}
 
 div.sbookthread {
-    clear: both;
-    border-left: solid white 2px; margin-left: 10px; 
-    border-top: none;
-    margin-top: 6px; margin-bottom: 18px;}
+    clear: both; margin: 0px; border none;}
+div.sbookthread div.tochead { text-align: right;}
 div.sbookthread.singleton,
 div#SBOOKGLOSSES div.sbookthread {
     border-left: none; margin-left: 0px;
     padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
-
-div.sbookthread div.sbooknote {
-    border-top: solid gold 1px;}
-div.sbookthread div.sbooknote:first-child {
-    border-top: none;}
-
+div.sbookthread .locbar { background-color: silver;}
+div.sbookthread.headthread { border-top: solid gold 2px;}
+div.sbookthread.idthread { border-bottom: solid red 1px; border: none;}
+div.sbookthread.idthread .sbooknote { border-left: solid red 1px; border-right: solid red 1px; }
+div.sbookthread.idthread .locbar {
+    border-bottom: solid red 1px;}
 div.sbookslice div.sbookthread div.sbooknote div.locbar {border: none;}
 div.sbookslice div.sbookthread div.sbooknote div.locbar {display:none;}
 div.sbookslice div.sbookthread div.sbooknote:first-child div.locbar {display:block;}

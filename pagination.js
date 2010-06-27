@@ -567,13 +567,9 @@ var sbookPaginate=
 	    sbook.curoff=pageoff||0;
 	    sbook.curinfo=info;
 	    if (fdjtDOM.viewTop()!==(off-sbook_top_px)) {
-		if (sbook.floathud) 
-		    document.body.style.visibility='hidden';
+		if (sbook.floathud) sbook.syncHUD((off-sbook_top_px));
 		window.scrollTo(0,(off-sbook_top_px));
-		page_xoff=0; page_yoff=(off-sbook_top_px);
-		if (sbook.floathud) {
-		    sbook.syncHUD();
-		    document.body.style.visibility='visible';}}
+		page_xoff=0; page_yoff=(off-sbook_top_px);}
 	    if ((sbook.target)&&(fdjtDOM.isVisible(sbook.target)))
 		sbook.setHead(sbook.target);
 	    else sbook.setHead(info.focus||info.first);

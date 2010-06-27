@@ -406,26 +406,17 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%f] body_touchend() %o scrolled=%o moved=%o cl=%o ui=%o cur=%o,%o start=%o,%o",
 		    fdjtET(),evt,scrolled,moved,fdjtDOM.isClickable(target),inUI(target),
 		    touch_x,touch_y,start_x,start_y);
-	if (sbook.preview) {
-	    if (holding) {
-		sbook.Preview(false);
-		return;}
-	    else if (fdjtDOM.hasParent(target,sbook.preview)) {
-		sbook.JumpTo(sbook.preview);
-		return;}
-	    else {
-		sbook.Preview(false);
-		return;}}
 	var width=fdjtDOM.viewWidth();
 	var dx=touch_x-start_x; var dy=touch_y-start_y;
 	var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
 	if ((!(moved))||((adx+ady)<20)) {
 	    if (fdjtDOM.hasClass(target,"sbookmargin")) return;
 	    else if (fdjtDOM.hasParent(target,".glossmark")) return;
-	    else if (!(inUI(target)))
+	    else if (!(inUI(target))) 
 		// We pass in the position information because body_click
 		// will determine if it's an edge tap (we don't really need start_y)
 		body_onclick(evt,start_x,start_y);
+	    fdjtUI.cancel(evt);
 	    return;}
 	// Ignore this case
 	else if ((adx+ady)<100) return;
@@ -454,10 +445,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* HUD touch handlers */
 
     function hud_touchstart(evt){
+	/*
 	if ((evt.touches)&&(evt.touches.length>1)) {
 	    if (hold_timer) {
 		clearTimeout(hold_timer); hold_timer=false;}
 	    return;}
+	*/
 	var target=fdjtUI.T(evt);
 	var ref=sbook.getRef(target);
 	if (sbook.Trace.gestures) 
@@ -466,18 +459,17 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    sbook.preview,sbook.hudup,sbookMode());
 	if (!(ref)) return;
 	if (fdjtDOM.isClickable(target)) return;
-	fdjtUI.cancel(evt);
+	if ((evt.touches)&&(evt.touches.length>1)) fdjtUI.nobubble(evt);
+	else fdjtUI.cancel(evt); 
 	var stop_preview=false;
 	if (sbook.preview) {
 	    if (sbook.preview!==ref) sbook.Preview(false);
 	    else stop_preview=true;}
 	var src=sbook.getRefElt(target);
-	if (hold_timer) {
-	    clearTimeout(hold_timer);
-	    hold_timer=false;}
 	touch_x=start_x=((evt.touches)&&(evt.touches[0].clientX))||evt.clientX;
 	touch_y=start_y=((evt.touches)&&(evt.touches[0].clientY))||evt.clientY;
 	holding=false; moved=false; scrolled=false;
+	/*
 	if (!(stop_preview)) {
 	    hold_timer=setTimeout
 	    (function(){
@@ -486,27 +478,24 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 			    fdjtET(),ref,src);
 		holding=true; hold_timer=false;
 		sbook.Preview(ref,src);},
-	     sbook.holdmsecs||1000);}}
+	     sbook.holdmsecs||1000);}
+	*/
+    }
     function hud_touchmove(evt){
-	if (sbook.Trace.gestures) 
-	    fdjtLog("[%f] hud_touchmove() %o",fdjtET(),evt);
-	if ((evt.touches)&&(evt.touches.length>1)) {
-	    if (hold_timer) {
-		clearTimeout(hold_timer); hold_timer=false;}
-	    scrolled=true;
-	    fdjtUI.nobubble(evt);
-	    return;}
 	if (hold_timer) {
 	    clearTimeout(hold_timer); hold_timer=false;}
-	scrolled=true; 
+	fdjtUI.nobubble(evt);
+	scrolled=true;
+	if (sbook.Trace.gestures) 
+	    fdjtLog("[%f] hud_touchmove() %o",fdjtET(),evt);
+	// if ((evt.touches)&&(evt.touches.length>1)) {fdjtUI.nobubble(evt);}
 	touch_x=((evt.touches)&&(evt.touches[0].clientX))||evt.clientX;
-	touch_y=((evt.touches)&&(evt.touches[0].clientY))||evt.clientY;
-	moved=true;
-	fdjtUI.cancel(evt);}
+	touch_y=((evt.touches)&&(evt.touches[0].clientY))||evt.clientY;}
 
     function hud_touchend(evt){
 	var target=fdjtUI.T(evt);
 	var ref=sbook.getRef(target);
+	fdjtUI.nobubble(evt);
 	if (sbook.Trace.gestures) {
 	    fdjtLog("[%f] hud_touchend() %o holding=%o, scrolled=%o, ht=%o, cl=%o sbp=%o sbh=%o mode=%o",
 		    fdjtET(),evt,holding,scrolled,hold_timer,

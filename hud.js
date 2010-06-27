@@ -150,7 +150,7 @@ var sbookMode=
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
 		if (mode==="dash") mode=sbook.last_dash||"about";
-		if (sbook.floathud) syncHUD(mode);
+		if (sbook.floathud) syncHUD();
 		if (mode===sbook.mode) {}
 		else {
 		    if (mode===true) {
@@ -180,7 +180,7 @@ var sbookMode=
 			fdjtID("SBOOKSEARCHTEXT").focus();
 		    else {}}}
 	    else {
-		syncHUD(false);
+		syncHUD();
 		sbook.last_mode=sbook.mode;
 		if (fdjtKB.contains(sbook_apps,sbook.mode)) 
 		    fdjtDOM.dropClass(sbookHUD,"dash");
@@ -262,10 +262,10 @@ var sbookMode=
 	var sbook_sync_off=false;
 	var sbook_sync_height=false;
 	
-	function syncHUD(mode){
+	function syncHUD(view_top,view_height){
 	    if (!(sbook.floathud)) return;
-	    var view_top=fdjtDOM.viewTop();
-	    var view_height=fdjtDOM.viewHeight();
+	    view_top=view_top||fdjtDOM.viewTop();
+	    view_height=view_height||fdjtDOM.viewHeight();
 	    var foot_height=fdjtDOM.getGeometry(sbookFoot).height;
 	    var box=fdjtID("SBOOKCONTENT");
 	    if (view_top!==sbook_sync_off) {
@@ -497,7 +497,8 @@ var sbookMode=
 		fdjtDOM.dropClass(body,"preview");
 		// Restore the scroll position
 		fdjtUI.scrollRestore();
-		setTimeout(syncHUD,20);
+		syncHUD();
+		// setTimeout(syncHUD,20);
 		// Set the state
 		sbook.preview_target=sbook.preview=false;
 		// Scroll the past preview element context
@@ -537,7 +538,8 @@ var sbookMode=
 	    else if (elt.head)
 		cxt=elt.head;
 	    fdjtUI.scrollPreview(elt,cxt,displayOffset());
-	    if (sbook.floathud) setTimeout(syncHUD,20);}
+	    //if (sbook.floathud) setTimeout(syncHUD,20);
+	    syncHUD();}
 
 	sbook.Preview=sbookPreview;
 

@@ -42,7 +42,7 @@ var sbook_delete_icon="redx12x12.png";
 
 (function () {
 
-    function renderNote(info,query,idprefix){
+    function renderNote(info,query,idprefix,locbar){
 	var key=info.qid||info.oid||info.id;
 	var target_id=(info.frag)||(info.id);
 	var target=((target_id)&&(fdjtID(target_id)));
@@ -51,7 +51,7 @@ var sbook_delete_icon="redx12x12.png";
 	var score=((query)&&(query[key]));
 	var div=
 	    fdjtDOM(((info.gloss) ? "div.sbooknote.gloss" : "div.sbooknote"),
-		    makelocbar(target_info),
+		    ((locbar)&&(makelocbar(target_info))),
 		    ((info.gloss)&&(showglossinfo(info))),
 		    // Makes it noisy (and probably slow) on the iPad
 		    ((sbook.ui!=='ios')&&(showtocloc(target_info))),
@@ -63,9 +63,7 @@ var sbook_delete_icon="redx12x12.png";
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments"))));
 	if (!(info.gloss))
-	    div.title=
-	    (sbook.getTitle(target)||fdjtDOM.textify(target)).
-	    replace(/\n\n+/g,"\n");
+	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target)).replace(/\n\n+/g,"\n");
 	div.about="#"+target_id;
 	// div.setAttribute('about',"#"+info.id);
 	if (idprefix) div.id=idprefix+info.id;
@@ -330,36 +328,55 @@ var sbook_delete_icon="redx12x12.png";
 	var tochead=fdjtDOM("div.tochead",makelocrule(info),basespan);
 	return tochead;}
 
-    function addToSlice(note,summary_div,query){
-	var threads=fdjtDOM.getChildren(summary_div,".sbookthread");
-	var frag=(note.id||note.frag); var starts=note.starts_at;
-	var insertion=false; var insdiff=0;
-	var i=0; var lim=threads.length;
+    function findTOCref(div,ref,loc) {
+	var children=div.childNodes;
+	if (!(children)) return false;
+	var i=0; var lim=children.length;
 	while (i<lim) {
-	    var thread=threads[i++];
-	    var tocref=(thread.tocref)||(thread.getAttribute("tocref"));
-	    if (!(thread.tocref)) thread.tocref=tocref;
-	    if (tocref===frag) {
-		fdjtDOM.dropClass(thread,"singleton");
-		fdjtDOM.append(thread,renderNote(note,query));
-		return;}
+	    var child=children[i++];
+	    if (!((child.nodeType===1)&&(child.tocref)&&(child.bookloc)))
+		continue;
+	    else if (child.tocref===ref) return child;
+	    else if (child.bookloc>loc) return child;
+	    else continue;}
+	return false;}
+
+    function addToSlice(note,div,query){
+	var frag=(note.id||note.frag);
+	var eltinfo=sbook.docinfo[frag];
+	var headinfo=sbook.docinfo[frag].head;
+	var headid=headinfo.frag;
+	var head=document.getElementById(headid);
+	var starts=note.starts_at;
+	var head_starts=headinfo.starts_at;
+	var insertion=false; var insdiff=0;
+	var headelt=findTOCref(div,headid,head_starts);
+	if ((!(headelt))||(headelt.tocref!==headid)) {
+	    var insertion=headelt;
+	    headelt=fdjtDOM("div.sbookthread.headthread",makeTOCHead(head,head));
+	    headelt.tocref=headid; headelt.bookloc=head_starts;
+	    if (insertion) fdjtDOM.insertBefore(insertion,headelt);
+	    else fdjtDOM.append(div,headelt);}
+	var children=headelt.childNodes;
+	var tstamp=note.tstamp;
+	var notediv=renderNote(note);
+	notediv.bookloc=starts;
+	notediv.tstamp=note.tstamp;
+	var i=0; var lim=children.length;
+	while (i<lim) {
+	    var child=children[i++];
+	    if (child.nodeType!==1) continue;
+	    if (!(fdjtDOM.hasClass(child,"sbooknote"))) continue;
+	    if (child.bookloc<starts) continue;
+	    else if (child.bookloc===starts) {
+		if (child.tstamp<=tstamp) {
+		    fdjtDOM.insertBefore(child,notediv);
+		    return;}
+		else continue;}
 	    else {
-		var info=sbook.docinfo[tocref];
-		if (starts<info.starts_at) {
-		    if (insertion) {
-			var diff=info.starts_at-starts;
-			if (diff<insdiff) {
-			    insertion=thread;
-			    insidff=diff;}}
-		    else {insertion=thread
-			  insidff=info.starts_at-starts;}}}}
-	var target=fdjtID(note.id||note.frag);
-	var thread=fdjtDOM("div.sbookthread.singleton",renderNote(note,query));
-	thread.tocref=frag;
-	thread.starts_at=starts;
-	if (insertion)
-	    fdjtDOM.insertBefore(insertion,thread);
-	else fdjtDOM.append(summary_div,thread);}
+		fdjtDOM.insertBefore(child,notediv);
+		return;}}
+	fdjtDOM.append(headelt,notediv);}
     sbook.UI.addToSlice=addToSlice;
 
     /* Selecting a subset of glosses to display */
@@ -409,11 +426,11 @@ var sbook_delete_icon="redx12x12.png";
 		else if(thread.starts_at===targetloc) {
 		    scrollto=thread; break;}
 		else scrollto=thread;}
-	    fdjtLog("[%f] Scrolling to element %o in %o @%o to line up with %o at %o",
-		    fdjtET(),scrollto,glosses,i,elt,targetloc);
-	    if (scrollto) {
+	    /* fdjtLog("[%f] Scrolling to element %o in %o @%o to line up with %o at %o",
+		    fdjtET(),scrollto,glosses,i,elt,targetloc); */
+	    if ((scrollto)&&(!(fdjtDOM.isVisible(scrollto)))) {
 		var geom=fdjtDOM.getGeometry(scrollto,false,glosses);
-		scrollto.scrollIntoView(true);}}
+		scrollto.scrollIntoView(false);}}
     }
     sbook.UI.scrollGlosses=scrollGlosses;
 
