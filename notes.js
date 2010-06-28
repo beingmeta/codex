@@ -194,7 +194,7 @@ var sbook_delete_icon="redx12x12.png";
 	var target_start=target_info.starts_at-cxt_start;
 	var target_len=target_info.ends_at-target_info.starts_at;
 	var locstring="~"+Math.ceil(target_len/5)+ " words long ~"+
-	    Math.ceil((target_start/cxt_len)*100)+"% in";
+	    Math.ceil((target_start/cxt_len)*100)+"% along";
 	locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
 	locrule.locstring=locstring+".";
 	locrule.title=locstring+": click or hold to glimpse";
@@ -390,8 +390,7 @@ var sbook_delete_icon="redx12x12.png";
 	var frag=(note.id||note.frag);
 	var eltinfo=sbook.docinfo[frag];
 	var about=document.getElementById(frag);
-	var headinfo=
-	    ((sbook.docinfo[frag].toclevel)?(sbook.docinfo[frag]):(sbook.docinfo[frag].head));
+	var headinfo=((eltinfo.toclevel)?(eltinfo):(eltinfo.head));
 	var headid=headinfo.frag;
 	var head=document.getElementById(headid);
 	var starts=note.starts_at;
@@ -404,7 +403,7 @@ var sbook_delete_icon="redx12x12.png";
 	    headelt.tocref=headid; headelt.starts=head_starts;
 	    if (insertion) fdjtDOM.insertBefore(insertion,headelt);
 	    else fdjtDOM.append(div,headelt);}
-	var idelt=((head===elt)?(headelt):(findTOCref(headelt,frag,starts)));
+	var idelt=((frag===headid)?(headelt):(findTOCref(headelt,frag,starts)));
 	if ((!(idelt))||(idelt.tocref!==frag)) {
 	    var insertion=idelt;
 	    idelt=fdjtDOM("div.sbookthread.idthread",makeIDHead(about,headinfo));
@@ -413,11 +412,17 @@ var sbook_delete_icon="redx12x12.png";
 	    else fdjtDOM.append(headelt,idelt);}
 	var tstamp=note.tstamp; var qid=note.qid;
 	var children=headelt.childNodes;
+	var ishead=(frag===headid);
 	var i=0; var lim=children.length;
 	while (i<lim) {
 	    var child=children[i++];
 	    if (child.nodeType!==1) continue;
-	    if (!(fdjtDOM.hasClass(child,"sbooknote"))) continue;
+	    if ((ishead)&&(fdjtDOM.hasClass(child,"sbookthread"))) {
+		fdjtDOM.insertBefore(child,renderNote(note));
+		return;}
+	    if (!((fdjtDOM.hasClass(child,"sbooknote"))||
+		  (fdjtDOM.hasClass(child,"sbookthread"))))
+		continue;
 	    if (child.qid===qid) return;
 	    if (child.tstamp<=tstamp) {
 		fdjtDOM.insertBefore(child,renderNote(note));
@@ -428,29 +433,36 @@ var sbook_delete_icon="redx12x12.png";
 
     /* Selecting a subset of glosses to display */
 
+    var hasClass=fdjtDOM.hasClass;
+
+    function selectSourcesRecur(thread,sources){
+	var empty=true; var children=thread.childNodes;
+	var i=0; var lim=children.length;
+	while (i<children.length) {
+	    var child=children[i++];
+	    if (child.nodeType!==1) continue;
+	    if (hasClass(child,"sbooknote")) {
+		var gloss=(child.qref)&&sbook.glosses.map[child.qref];
+		if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
+		else if ((fdjtKB.contains(sources,gloss.user))||
+			 (fdjtKB.contains(sources,gloss.feed))) {
+		    fdjtDOM.addClass(child,"sourced");
+		    empty=false;}
+		else fdjtDOM.dropClass(child,"sourced");}
+	    else if (hasClass(child,"sbookthread")) {
+		if (!(selectSourcesRecur(child,sources)))
+		    empty=false;}
+	    else {}}
+	if (!(empty)) fdjtDOM.addClass(thread,"sourced");
+	else fdjtDOM.dropClass(thread,"sourced");
+	return empty;}
+
     function selectSources(results_div,sources){
 	if (!(sources)) {
 	    fdjtDOM.dropClass(results_div,"sourced");
 	    fdjtDOM.dropClass(fdjtDOM.$(".sourced",results_div),"sourced");
 	    return;}
-	fdjtDOM.addClass(results_div,"sourced");
-	var threads=fdjtDOM.$(".sbookthread",results_div);
-	var i=0; var lim=threads.length;
-	while (i<threads.length) {
-	    var thread=threads[i++];  var empty=true;
-	    var notes=fdjtDOM.$(".sbooknote",thread);
-	    var j=0; var jlim=notes.length;
-	    while (j<jlim) {
-		var note=notes[j++];
-		var gloss=(note.qref)&&sbook.glosses.map[note.qref];
-		if (!(gloss)) fdjtDOM.dropClass(note,"sourced");
-		else if ((fdjtKB.contains(sources,gloss.user))||
-			 (fdjtKB.contains(sources,gloss.feed))) {
-		    fdjtDOM.addClass(note,"sourced");
-		    empty=false;}
-		else fdjtDOM.dropClass(note,"sourced");}
-	    if (empty) fdjtDOM.dropClass(thread,"sourced");
-	    else fdjtDOM.addClass(thread,"sourced");}
+	selectSourcesRecur(results_div,sources);
 	if (sbook.target) scrollGlosses(sbook.target,results_div);}
     sbook.UI.selectSources=selectSources;
 

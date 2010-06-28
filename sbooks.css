@@ -1476,19 +1476,16 @@ div.sbookslice div.count {
   text-align: right; color: orange; font-weight: bold; padding-bottom: 3px; }
 
 /* Display rules */
-div.sbookslice.sourced .sbooknote { display: none;}
-div.sbookslice.targeted .tocblock { display: none;}
-div.sbookslice.sourced div.tocblock.sourced { display: block;}
+div.sbookslice.sourced div.sbooknote { display: none;}
 div.sbookslice.sourced div.sbooknote.sourced { display: block;}
-div.sbookslice.targeted .sbooknote { display: none;}
-div.sbookslice.targeted div.tocblock.targeted { display: block;}
-div.sbookslice.targeted div.sbooknote.targeted { display: block;}
-div.sbookslice.sourced.targeted .tocblock { display: none;}
-div.sbookslice.sourced.targeted .sbooknote { display: none;}
-div.sbookslice.sourced.targeted div.tocblock.sourced.targeted {
-    display: block;}
-div.sbookslice.sourced.targeted div.sbooknote.sourced.targeted {
-    display: block;}
+
+div.sbookslice.sourced div.sbookthread { display: none;}
+div.sbookslice.sourced div.sbookthread > div { display: none;}
+div.sbookslice.sourced div.sbookthread.sourced { display: block;}
+div.sbookslice.sourced div.sbookthread.sourced > div.tochead { display: block;}
+div.sbookslice.sourced div.sbookthread.sourced > div.idhead { display: block;}
+div.sbookslice.sourced div.sbookthread.sourced > div.sbookthread { display: none;}
+div.sbookslice.sourced div.sbookthread.sourced > div.sbookthread.sourced { display: block;}
 
 div.sbookslice.onepassage .tocblock .tochead {display:none;}
 div.sbookslice.onepassage .sbooknote img.previewicon { display: inline;}
@@ -1515,7 +1512,6 @@ img.markbutton {
 
 div.sbookthread {
     clear: both; margin: 0px; border none;}
-div.sbookthread div.tochead { text-align: right;}
 div.sbookthread.singleton,
 div#SBOOKGLOSSES div.sbookthread {
     border-left: none; margin-left: 0px;
