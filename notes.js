@@ -334,17 +334,18 @@ var sbook_delete_icon="redx12x12.png";
 	var i=0; var lim=children.length;
 	while (i<lim) {
 	    var child=children[i++];
-	    if (!((child.nodeType===1)&&(child.tocref)&&(child.bookloc)))
+	    if (!((child.nodeType===1)&&(child.tocref)&&(child.starts)))
 		continue;
 	    else if (child.tocref===ref) return child;
-	    else if (child.bookloc>loc) return child;
+	    else if (child.starts>loc) return child;
 	    else continue;}
 	return false;}
 
     function addToSlice(note,div,query){
 	var frag=(note.id||note.frag);
 	var eltinfo=sbook.docinfo[frag];
-	var headinfo=sbook.docinfo[frag].head;
+	var headinfo=
+	    ((sbook.docinfo[frag].toclevel)?(sbook.docinfo[frag]):(sbook.docinfo[frag].head));
 	var headid=headinfo.frag;
 	var head=document.getElementById(headid);
 	var starts=note.starts_at;
@@ -354,29 +355,29 @@ var sbook_delete_icon="redx12x12.png";
 	if ((!(headelt))||(headelt.tocref!==headid)) {
 	    var insertion=headelt;
 	    headelt=fdjtDOM("div.sbookthread.headthread",makeTOCHead(head,head));
-	    headelt.tocref=headid; headelt.bookloc=head_starts;
+	    headelt.tocref=headid; headelt.starts=head_starts;
 	    if (insertion) fdjtDOM.insertBefore(insertion,headelt);
 	    else fdjtDOM.append(div,headelt);}
+	var idelt=((head===elt)?(headelt):(findTOCref(headelt,frag,starts)));
+	if ((!(idelt))||(idelt.tocref!==frag)) {
+	    var insertion=idelt;
+	    idelt=fdjtDOM("div.sbookthread.idthread");
+	    idelt.tocref=frag; idelt.start=starts;
+	    if (insertion) fdjtDOM.insertBefore(insertion,idelt);
+	    else fdjtDOM.append(headelt,idelt);}
+	var tstamp=note.tstamp; var qid=note.qid;
 	var children=headelt.childNodes;
-	var tstamp=note.tstamp;
-	var notediv=renderNote(note);
-	notediv.bookloc=starts;
-	notediv.tstamp=note.tstamp;
 	var i=0; var lim=children.length;
 	while (i<lim) {
 	    var child=children[i++];
 	    if (child.nodeType!==1) continue;
 	    if (!(fdjtDOM.hasClass(child,"sbooknote"))) continue;
-	    if (child.bookloc<starts) continue;
-	    else if (child.bookloc===starts) {
-		if (child.tstamp<=tstamp) {
-		    fdjtDOM.insertBefore(child,notediv);
-		    return;}
-		else continue;}
-	    else {
-		fdjtDOM.insertBefore(child,notediv);
-		return;}}
-	fdjtDOM.append(headelt,notediv);}
+	    if (child.qid===qid) return;
+	    if (child.tstamp<=tstamp) {
+		fdjtDOM.insertBefore(child,renderNote(note));
+		return;}
+	    else continue;}
+	fdjtDOM.append(idelt,renderNote(note));}
     sbook.UI.addToSlice=addToSlice;
 
     /* Selecting a subset of glosses to display */
@@ -411,28 +412,63 @@ var sbook_delete_icon="redx12x12.png";
 
     function scrollGlosses(elt,glosses)
     {
+	if (!(elt.id)) elt=getFirstID(elt);
 	var info=sbook.docinfo[elt.id];
-	if ((info)&&(info.starts_at)) {
-	    var targetloc=info.starts_at;
-	    if (!(glosses)) glosses=fdjtID("SBOOKALLGLOSSES");
-	    var threads=fdjtDOM.getChildren(glosses,".sbookthread");
-	    var scrollto=false;
-	    /* We do this linearly for now because it's fast enough and
-	       simpler. */
-	    var i=0; var len=threads.length; while (i<len) {
-		var thread=threads[i++];
-		if (!(thread.starts_at)) continue;
-		else if (thread.starts_at>targetloc) break;
-		else if(thread.starts_at===targetloc) {
-		    scrollto=thread; break;}
-		else scrollto=thread;}
-	    /* fdjtLog("[%f] Scrolling to element %o in %o @%o to line up with %o at %o",
-		    fdjtET(),scrollto,glosses,i,elt,targetloc); */
-	    if ((scrollto)&&(!(fdjtDOM.isVisible(scrollto)))) {
-		var geom=fdjtDOM.getGeometry(scrollto,false,glosses);
-		scrollto.scrollIntoView(false);}}
+	var targetloc=((info)&&(info.starts_at))||(elt.starts_at);
+	if (targetloc) {
+	    var scrollto=getFirstElt(glosses,targetloc);
+	    if (scrollto) {
+		if ((sbook.ui==='ios')||(sbook.ui==='touchmouse')) {
+		    // var off=getScrollOffset(scrollto,glosses);
+		    // var transform='translate('+0+'px,'+off+'px)';
+		    // fdjtLog("Applying transform %o",transform);
+		    // glosses.style.webkitTransform=transform;
+		    var off=getScrollOffset(scrollto,glosses);
+		    fdjtLog("Positioning for scroll offset %o",off);
+		    glosses.style.top="-"+off+"px";}
+		else scrollto.scrollIntoView(true);}}
     }
     sbook.UI.scrollGlosses=scrollGlosses;
+
+    function getFirstID(node){
+	if (node.id) return node;
+	else if (node.childNodes) {
+	    var children=node.childNodes;
+	    var i=0; var lim=children.length;
+	    while (i<lim) {
+		var child=children[i++];
+		if (child.nodeType===1) {
+		    var found=getFirstID(child);
+		    if (found) return found;}}
+	    return false;}
+	else return false;}
+
+    function getFirstElt(glosses,location){
+	var children=glosses.childNodes; var last=false;
+	var i=0; var lim=children.length;
+	while (i<lim) {
+	    var child=children[i++];
+	    if (child.nodeType!==1) continue;
+	    else if (!(child.starts)) continue;
+	    else if (child.starts===location)
+		return child;
+	    else if (child.starts>location)
+		return getFirstElt(last,location)||last;
+	    else last=child;}
+	if (last) getFirstElt(last,location);
+	return false;}
+		
+    function getScrollOffset(elt,inside){
+	if (elt.parentNode===inside) {
+	    var children=inside.childNodes;
+	    var i=0; var lim=children.length; var off=0;
+	    while (i<lim) {
+		var child=children[i++];
+		if (child===elt) return off;
+		if (child.offsetHeight) off=off+child.offsetHeight;}
+	    return off;}
+	else return getScrollOffset(elt,elt.parentNode)+
+	    getScrollOffset(elt.parentNode,inside);}
 
     /* Results handlers */
 

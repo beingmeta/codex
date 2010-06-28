@@ -34,9 +34,6 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookMode=
     (function(){
-	// This is the regex for all sbook apps
-	var sbook_apps=["login","sbookapp","device","dashtoc","about"];
-	
 	// The foot HUD
 	var sbookFoot=false;
 	// This is the HUD where all glosses are displayed
@@ -140,6 +137,9 @@ var sbookMode=
 	
 	var sbookMode_pat=
 	    /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(mark)|(context)|(dashtoc)|(about)|(console)/g;
+	var sbookFullMode_pat=
+	    /(login)|(device)|(sbookapp)|(browsing)|(allglosses)|(mark)|(dashtoc)|(about)|(console)/g;
+	var sbookDashMode_pat=/(login)|(device)|(sbookapp)|(dashtoc)|(about)/g;
 	
 	function sbookMode(mode){
 	    if (typeof mode === 'undefined') return sbook.mode;
@@ -167,24 +167,32 @@ var sbookMode=
 			sbook.last_mode=mode;}
 		    if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
 			sbookSetupDash();
-		    if (fdjtKB.contains(sbook_apps,mode)) {
+		    if (!(typeof mode === 'string'))
+			sbook.scrolling=false;
+		    else if (mode==='allglosses')
+			sbook.scrolling="SBOOKALLGLOSSES";
+		    else if (mode==='browsing')
+			sbook.scrolling="SBOOKALLGLOSSES";
+		    else if (mode.search(sbookDashMode_pat)===0) {
 			fdjtDOM.addClass(sbookHUD,"dash");
+			sbook.scrolling="SBOOKDASH";
 			sbook.last_dash=mode;}
-		    else fdjtDOM.dropClass(sbookHUD,"dash");
+		    else {
+			sbook.scrolling=false;
+			fdjtDOM.dropClass(sbookHUD,"dash");}
 		    sbook.hudup=true;
 		    fdjtDOM.addClass(document.body,"hudup");
 		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
-		    if ((mode==="allglosses")&&(sbook.target)) {
-			sbook.UI.scrollGlosses(sbook.target);}
+		    if ((mode==="allglosses")&&(sbook.curinfo)&&(sbook.curinfo.first)) {
+			sbook.UI.scrollGlosses(sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"));}
 		    else if (mode==="searching")
 			fdjtID("SBOOKSEARCHTEXT").focus();
 		    else {}}}
 	    else {
 		syncHUD();
 		sbook.last_mode=sbook.mode;
-		if (fdjtKB.contains(sbook_apps,sbook.mode)) 
-		    fdjtDOM.dropClass(sbookHUD,"dash");
-		sbook.mode=false; sbook.hudup=false;
+		fdjtDOM.dropClass(sbookHUD,"dash"); fdjtDOM.dropClass(sbookHUD,"full");
+		sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
 		fdjtDOM.dropClass(document.body,"hudup");
 		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}
 	    if (sbook.floathud) sbook.displaySync();}

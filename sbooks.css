@@ -146,7 +146,7 @@ div#SBOOKCONTENT {
     -moz-border-radius: 0px 0px 6px 6px;
     overflow: auto;
     display: none;}
-div#SBOOKCONTENT > div { display: none;}
+div#SBOOKCONTENT > div { display: none; position: relative; top: 0px;}
 
 body.floathud div#SBOOKHUD { position: absolute;}
 body.floathud div#SBOOKHUD div#SBOOKFOOT {
@@ -287,6 +287,7 @@ body.hudup div#SBOOKHUD img.hudbutton {
     visibility: visible; opacity: 0.8; background-color: gray;}
 div#SBOOKHUD img.hudbutton:hover {
     visibility: visible; opacity: 0.6; background-color: gray;}
+div#SBOOKHUD.hidebuttons img.hudbutton { display: none;}
 
 /* Margins */
 
@@ -1489,7 +1490,7 @@ div#SBOOKGLOSSES div.sbookthread {
 div.sbookthread .locbar { background-color: silver;}
 div.sbookthread.headthread { border-top: solid gold 2px;}
 div.sbookthread.idthread { border-bottom: solid red 1px; border: none;}
-div.sbookthread.idthread .sbooknote { border-left: solid red 1px; border-right: solid red 1px; }
+div.sbookthread.idthread .sbooknote {}
 div.sbookthread.idthread .locbar {
     border-bottom: solid red 1px;}
 div.sbookslice div.sbookthread div.sbooknote div.locbar {border: none;}
@@ -1682,6 +1683,11 @@ body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.progressbox {
     height: 50px;}
 
 body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
+
+/* Iscroll */
+
+body.touch div.iscrollwrapper {
+  position: relative; z-index: 1; width: 100%; height: auto; overflow: auto;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

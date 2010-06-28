@@ -241,15 +241,16 @@ function sbookScan(root,docinfo){
 	var toclevel=((child.id)&&(getLevel(child)));
 	scanstate.eltcount++;
 	var info=((nodefn)&&(nodefn(child)));
-	if ((!(info))&&(!(info=docinfo[child.id]))) 
+	if ((!(info))&&(child.id)&&(!(info=docinfo[child.id])))
 	    info=new scanInfo(child.id,scanstate);
-	info.starts_at=scanstate.location;
-	info.sbookhead=curhead.id;
-	info.head=curinfo;
+	if (info) {
+	    info.starts_at=scanstate.location;
+	    info.sbookhead=curhead.id;}
+	if (info) info.head=curinfo;
 	if ((child.sbookskip)||(child.sbookui)||
 	    ((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
 	    return;
-	if ((toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
+	if ((info)&&(toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
 	if (child.id) {
 	    var tags=
 		((child.getAttributeNS)&&
@@ -268,8 +269,7 @@ function sbookScan(root,docinfo){
 		grandchild.nodeValue.length;
 	    else if (grandchild.nodeType===1) {
 		scanner(grandchild,scanstate,docinfo,nodefn);}}
-	info.ends_at=scanstate.location;}
-}
+	if (info) info.ends_at=scanstate.location;}}
 
 /* Emacs local variables
 ;;;  Local variables: ***

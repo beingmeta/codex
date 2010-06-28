@@ -33,8 +33,9 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 */
 
 var sbook=
-    {mode: false,hudup: false,preview: false,query: false,user: false,
-     root: false,start: false,target: false,head: false,
+    {mode: false,hudup: false,preview: false,scrolling: false,
+     query: false,head: false,target: false,
+     user: false,root: false,start: false,
      HUD: false,preview_target:false,last_preview: false,
      _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
      // For pagination
@@ -74,8 +75,8 @@ var sbook=
 	 mark: false,      // Whether to debug gloss addition
 	 pagination: 0, // Whether to trace pagination
 	 paging: false,       // Whether to trace paging (movement by pages)
-	 preview: false, // Whether to trace preview
-	 gestures: false}, // Whether to trace gestures
+	 preview: true, // Whether to trace preview
+	 gestures: true}, // Whether to trace gestures
     };
 var _sbook_setup=false;
 

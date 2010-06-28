@@ -147,7 +147,6 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	 fdjtDOM.Image(sbicon("sbicon16x16.png"),"tiny","+"));
 	glossmark.id=glossmarkid;
 	sbook.UI.addHandlers(glossmark,"glossmark");
-	if (id) {glossmark.about="#"+id;}
 	if (sbook_glossmark_qricons) {
 	    var qrhref="http://"+sbook.server+"/v3/qricon.fdcgi?"+
 		"URI="+encodeURIComponent(sbook.refuri)+
