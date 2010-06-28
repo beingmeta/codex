@@ -42,7 +42,7 @@ var sbook_delete_icon="redx12x12.png";
 
 (function () {
 
-    function renderNote(info,query,idprefix,locbar){
+    function renderNote(info,query,idprefix,standalone){
 	var key=info.qid||info.oid||info.id;
 	var target_id=(info.frag)||(info.id);
 	var target=((target_id)&&(fdjtID(target_id)));
@@ -51,10 +51,11 @@ var sbook_delete_icon="redx12x12.png";
 	var score=((query)&&(query[key]));
 	var div=
 	    fdjtDOM(((info.gloss) ? "div.sbooknote.gloss" : "div.sbooknote"),
-		    ((locbar)&&(makelocbar(target_info))),
+		    ((standalone)&&(makelocbar(target_info))),
+		    // (makelocrule(target_info,target_info.head)),
 		    ((info.gloss)&&(showglossinfo(info))),
 		    // Makes it noisy (and probably slow) on the iPad
-		    ((sbook.ui!=='ios')&&(showtocloc(target_info))),
+		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
 		    ((info.note)&&(fdjtDOM("span.note",info.note))),
 		    ((info.tags)&&(info.tags.length)&&(showtags(info.tags))),
@@ -74,7 +75,7 @@ var sbook_delete_icon="redx12x12.png";
     sbook.renderNote=renderNote;
     
     function showtags(tags){
-	var span=fdjtDOM("span.tags"," // ");
+	var span=fdjtDOM("span.tags");
 	var i=0; var lim=tags.length;
 	// This might do some kind of more/less controls and sorted
 	// or cloudy display
@@ -139,17 +140,19 @@ var sbook_delete_icon="redx12x12.png";
 		return ""+date+"/"+months[month]+"/0"+year;
 	    else return ""+date+"/"+months[month]+"/"+year;}}
 
-
-    function makelocbar(target_info){
+    function makelocbar(target_info,cxt_info){
 	var locrule=fdjtDOM("HR");
 	var locbar=fdjtDOM("DIV.locbar",locrule);
-	var location_start=target_info.starts_at;
-	var location_end=target_info.ends_at;
-	var body_len=sbook.docinfo[document.body.id].ends_at;
-	locbar.setAttribute
-	("debug","ls="+location_start+"; le="+location_end+"; bl="+body_len);
-	locrule.style.width=(((location_end-location_start)/body_len)*100)+"%";
-	locrule.style.left=((location_start/body_len)*100)+"%";
+	var target_start=target_info.starts_at;
+	var target_end=target_info.ends_at;
+	var target_len=target_end-target_start;
+	if (!(cxt_info)) cxt_info=sbook.docinfo[document.body.id];
+	var cxt_start=cxt_info.starts_at;
+	var cxt_end=cxt_info.ends_at;
+	var cxt_len=cxt_end-cxt_start;
+	locbar.setAttribute("debug","ts="+target_start+"; te="+target_end+"; cl="+cxt_len);
+	locrule.style.width=((target_len/cxt_len)*100)+"%";
+	locrule.style.left=(((target_start-cxt_start)/cxt_len)*100)+"%";
 	var id=target_info.id||target_info.frag;
 	if (id) {
 	    locbar.about="#"+id;
@@ -169,23 +172,34 @@ var sbook_delete_icon="redx12x12.png";
 	anchor.title=title;
 	return [" ",anchor];}
 
-    function makelocspan(target_info){
-	var locrule=fdjtDOM("div.locspan");
-	var location_start=target_info.starts_at;
-	var location_end=target_info.ends_at;
-	var body_len=sbook.docinfo[document.body.id].ends_at;
-	locrule.style.width=(((location_end-location_start)/body_len)*100)+"%";
-	locrule.style.left=((location_start/body_len)*100)+"%";
-	return locrule;}
-    function makelocrule(target_info){
-	var locrule=fdjtDOM("HR");
-	var location_start=target_info.starts_at;
-	var location_end=target_info.ends_at;
-	var body_len=sbook.docinfo[document.body.id].ends_at;
+    function makelocspan(target_info,cxtinfo){
+	if (!(cxtinfo)) cxtinfo=sbook.docinfo[document.body.id];
+	var locrule=fdjtDOM("div.locrule");
+	var cxt_start=cxtinfo.starts_at;
+	var cxt_end=cxtinfo.ends_at;
+	var cxt_len=cxt_end-cxt_start;
+	var location_start=target_info.starts_at-cxt_start;
+	var location_len=target_info.ends_at-target_info.starts_at;
 	locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
-	locrule.title='click to peek';
-	locrule.style.width=(((location_end-location_start)/body_len)*100)+"%";
-	locrule.style.left=((location_start/body_len)*100)+"%";
+	locrule.title='click or hold to glimpse';
+	locrule.style.width=((location_len/cxt_len)*100)+"%";
+	locrule.style.left=((location_start/cxt_len)*100)+"%";
+	return locrule;}
+    function makelocrule(target_info,cxtinfo){
+	if (!(cxtinfo)) cxtinfo=sbook.docinfo[document.body.id];
+	var locrule=fdjtDOM("hr.locrule");
+	var cxt_start=cxtinfo.starts_at;
+	var cxt_end=cxtinfo.ends_at;
+	var cxt_len=cxt_end-cxt_start;
+	var target_start=target_info.starts_at-cxt_start;
+	var target_len=target_info.ends_at-target_info.starts_at;
+	var locstring="~"+Math.ceil(target_len/5)+ " words long ~"+
+	    Math.ceil((target_start/cxt_len)*100)+"% in";
+	locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
+	locrule.locstring=locstring+".";
+	locrule.title=locstring+": click or hold to glimpse";
+	locrule.style.width=((target_len/cxt_len)*100)+"%";
+	locrule.style.left=((target_start/cxt_len)*100)+"%";
 	return locrule;}
 
     function deletegloss_onclick(evt){
@@ -251,30 +265,50 @@ var sbook_delete_icon="redx12x12.png";
 	else if (y.tstamp) return -1;
 	else return 0;}
 
-    function showSlice(notes,div,query){
-	var curdiv=false; var curthread=false; var curfrag=false; var count=0;
-	notes=[].concat(notes).sort(sortbyloctime);
+    function showSlice(results,div,query){
+	var notes=new Array(results.length);
+	var i=0; var lim=results.length;
+	while (i<lim) {
+	    var r=results[i];
+	    if (typeof r === 'string')
+		notes[i]=sbook.docinfo[r]||sbook.glosses.ref[r];
+	    else notes[i]=r;
+	    i++;}
+	notes.sort(function(n1,n2){
+	    var s1=((query)&&(query[n1.qid]));
+	    var s2=((query)&&(query[n2.qid]));
+	    if ((s1)&&(s2)) {
+		if (s1>s2) return -1;
+		else if (s2>s1) return 1;}
+	    if (n1.starts_at<n2.starts_at) return -1;
+	    else if (n1.starts_at>n2.starts_at) return 1;
+	    else if ((n1.tstamp)&&(n2.tstamp)) {
+		if (n1.tstamp>n2.tstamp) return -1;
+		else if (n1.tstamp>n2.tstamp) return 1;
+		else return 0;}
+	    else if (n1.tstamp) return 1;
+	    else if (n2.tstamp) return -1;
+	    else return 0;});
+	var headelt=false; var threadelt=false;
+	var curhead=false; var curinfo=false;
 	var i=0; var len=notes.length; while (i<len) {
 	    var note=notes[i++];
-	    var info=sbook.Info(note);
-	    var frag=info.id||info.frag;
+	    var frag=note.id||note.frag;
 	    if (!(frag)) continue;
 	    var target=fdjtID(frag);
-	    var tinfo=sbook.docinfo[target.id];
-	    var thread=info.relay||info.frag||info.id||frag;
-	    if (thread!==curthread) {
-		if (curdiv) {
-		    fdjtDOM(div,curdiv,"\n");
-		    if (count<=1) fdjtDOM.addClass(curdiv,"singleton");}
-		count=0;
-		curthread=thread; curdiv=fdjtDOM("div.sbookthread");
-		curdiv.tocref=frag;
-		curdiv.starts_at=tinfo.starts_at;}
-	    fdjtDOM(curdiv,renderNote(info,query),"\n");
-	    count++;}
-	if (curdiv) {
-	    fdjtDOM(div,curdiv,"\n");
-	    if (count<=1) fdjtDOM.addClass(curdiv,"singleton");}
+	    var docinfo=sbook.docinfo[target.id];
+	    var headinfo=docinfo.head;
+	    var head=document.getElementById(headinfo.frag);
+	    if (curinfo!==docinfo) {
+		if (headinfo!==curhead) {
+		    headelt=fdjtDOM("div.sbookthread.tocthread",makeTOCHead(head));
+		    fdjtDOM.append(div,headelt);
+		    curhead=headinfo;}
+		threadelt=fdjtDOM("div.sbookthread.idthread",
+				  makeIDHead(target,headinfo,true));
+		fdjtDOM.append(headelt,threadelt);
+		curinfo=docinfo;}
+	    fdjtDOM.append(threadelt,renderNote(note));}
 	return div;}
     sbook.UI.showSlice=showSlice;
 
@@ -324,8 +358,20 @@ var sbook_delete_icon="redx12x12.png";
 		    if (target===head) fdjtDOM(curspan,newspan);
 		    else fdjtDOM(curspan," \u22ef ",newspan);
 		    curspan=newspan;}}}
+	var locrule=makelocrule(info);
+	var tochead=fdjtDOM("div.tochead",locrule,basespan);
+	tochead.title=locrule.locstring;
+	return tochead;}
 
-	var tochead=fdjtDOM("div.tochead",makelocrule(info),basespan);
+    function makeIDHead(target,headinfo,locrule){
+	var info=sbook.docinfo[target.id];
+	var headinfo=info.head;
+	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
+	    replace(/\n\n+/g,"\n");
+	var tochead=fdjtDOM("div.idhead",
+			    ((locrule)&&(makelocrule(info,headinfo))),
+			    fdjtDOM("div",sumText(target)));
+	tochead.title=title;
 	return tochead;}
 
     function findTOCref(div,ref,loc) {
@@ -334,8 +380,7 @@ var sbook_delete_icon="redx12x12.png";
 	var i=0; var lim=children.length;
 	while (i<lim) {
 	    var child=children[i++];
-	    if (!((child.nodeType===1)&&(child.tocref)&&(child.starts)))
-		continue;
+	    if (!(child.nodeType===1)) continue;
 	    else if (child.tocref===ref) return child;
 	    else if (child.starts>loc) return child;
 	    else continue;}
@@ -344,6 +389,7 @@ var sbook_delete_icon="redx12x12.png";
     function addToSlice(note,div,query){
 	var frag=(note.id||note.frag);
 	var eltinfo=sbook.docinfo[frag];
+	var about=document.getElementById(frag);
 	var headinfo=
 	    ((sbook.docinfo[frag].toclevel)?(sbook.docinfo[frag]):(sbook.docinfo[frag].head));
 	var headid=headinfo.frag;
@@ -361,8 +407,8 @@ var sbook_delete_icon="redx12x12.png";
 	var idelt=((head===elt)?(headelt):(findTOCref(headelt,frag,starts)));
 	if ((!(idelt))||(idelt.tocref!==frag)) {
 	    var insertion=idelt;
-	    idelt=fdjtDOM("div.sbookthread.idthread");
-	    idelt.tocref=frag; idelt.start=starts;
+	    idelt=fdjtDOM("div.sbookthread.idthread",makeIDHead(about,headinfo));
+	    idelt.tocref=frag; idelt.start=starts; idelt.about="#"+frag;
 	    if (insertion) fdjtDOM.insertBefore(insertion,idelt);
 	    else fdjtDOM.append(headelt,idelt);}
 	var tstamp=note.tstamp; var qid=note.qid;

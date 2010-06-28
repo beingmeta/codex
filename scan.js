@@ -245,7 +245,8 @@ function sbookScan(root,docinfo){
 	    info=new scanInfo(child.id,scanstate);
 	if (info) {
 	    info.starts_at=scanstate.location;
-	    info.sbookhead=curhead.id;}
+	    info.sbookhead=curhead.id;
+	    info.headstart=curinfo.starts_at;}
 	if (info) info.head=curinfo;
 	if ((child.sbookskip)||(child.sbookui)||
 	    ((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))

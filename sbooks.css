@@ -1207,7 +1207,8 @@ div.spanbar div.progressbox {
 div.tochead { 
   position: relative; width: 100%;
   background-color: silver; color: blue;
-  text-align: left; vertical-align: middle;}
+  text-align: left; vertical-align: middle;
+  margin-bottom: 2px;}
 div.tochead span.spacer {
     font-size: 125%; font-weight: bold; font-style: italic;}
 div.tochead .paratext {
@@ -1219,10 +1220,30 @@ div.tochead span.headtext {
 div.tochead img.previewicon {
     vertical-align: middle; margin-right: 3px;}
 div.tochead hr {
-    color: gold; background-color: red; min-width: 3px;
+    color: gold; background-color: lightblue; min-width: 3px; z-index: 5;
     position: absolute; left: 0px; height: 100%; opacity: 0.5;
     border: 0px; padding: 0px; margin: 0px;}
+div.tochead a { z-index: 10;} 
 div.tochead hr[about] { cursor: crosshair;}
+
+div.idhead { 
+  position: relative; width: 100%; 
+  background-color: silver; color: black;
+  text-align: left; vertical-align: middle;
+  border-top: solid gold 1px;
+  max-height: 3ex; overflow: hidden;}
+div.idhead hr {
+    color: gold; background-color: lightblue; min-width: 3px; z-index: 5;
+    position: absolute; left: 0px; height: 100%; opacity: 0.4;
+    border: 0px; padding: 0px; margin: 0px;}
+div.idhead div { z-index: 10; opacity: 1.0;}
+
+div.sbooknote { position: relative;}
+
+div.sbooknote > hr {
+    color: gold; background-color: lightblue; min-width: 3px; height: 100%;
+    position: absolute; left: 0px; opacity: 0.3;
+    border: 0px; padding: 0px; margin: 0px;}
 
 div#SBOOKHUD.glosses div.tochead { display: none;}
 
@@ -1371,7 +1392,20 @@ div.sbooksources img.button.selected {
 .sbooknote span.dterm {
     color: blue; background-color: yellow;
     padding: 2px; border: solid blue 1px;
-    border-radius: 4px;}
+    border-top-left-radius: 6px; border-bottom-left-radius: 6px;
+    border-top-right-radius: 2px; border-bottom-right-radius: 2px;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-top-right-radius: 2px;
+    -webkit-border-bottom-right-radius: 2px;
+    -khtml-border-top-left-radius: 6px;
+    -khtml-border-bottom-left-radius: 6px;
+    -khtml-border-top-right-radius: 2px;
+    -khtml-border-bottom-right-radius: 2px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    -moz-border-radius-topright: 2px;
+    -moz-border-radius-bottomright: 2px;}
 div#SBOOKHUD .sbooknote span.dterm {color: blue; }
 .sbooknote span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
@@ -1385,8 +1419,7 @@ body.sbook a.sbooknote { display: block;}
   float: left; display: none;}
 .sbooknote .info span.score {
   color: gold; display: none;}
-.sbooknote span.dterm {
-    font-size: 75%;}
+.sbooknote span.tags { line-height: 200%;}
 .sbooknote span.head {
     font-size: 75%;}
 .sbooknote span.headhead {
@@ -1424,7 +1457,7 @@ div.locbar {
     border: 0px; margin: 0px; padding: 0px;
     margin-bottom: 2px;}
 div.locbar hr {
-    color: red; background-color: red; min-width: 3px;
+    color: red; background-color: ivory; min-width: 3px;
     position: relative; left: 0px; width: 100%; height: 100%;
     border: 0px; padding: 0px; margin: 0px;}
 
@@ -1489,13 +1522,16 @@ div#SBOOKGLOSSES div.sbookthread {
     padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
 div.sbookthread .locbar { background-color: silver;}
 div.sbookthread.headthread { border-top: solid gold 2px;}
-div.sbookthread.idthread { border-bottom: solid red 1px; border: none;}
+div.sbookthread.idthread {
+    margin-left: 16px; border: none;}
 div.sbookthread.idthread .sbooknote {}
-div.sbookthread.idthread .locbar {
-    border-bottom: solid red 1px;}
 div.sbookslice div.sbookthread div.sbooknote div.locbar {border: none;}
 div.sbookslice div.sbookthread div.sbooknote div.locbar {display:none;}
 div.sbookslice div.sbookthread div.sbooknote:first-child div.locbar {display:block;}
+
+body div#SBOOKHUD div.sbookthread > div.locrule {
+    position: relative; left: 0px; bottom: 0px; z-index: 50;
+    width: 100%; min-height: 10px;}
 
 /* Displayed glossmarks */
 
