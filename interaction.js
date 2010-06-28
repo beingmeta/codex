@@ -393,11 +393,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	touch_moved=false; touch_scrolled=false;}
 
     function tracetouch(handler,evt){
-	var touches=evt.touches; var touch=touches[0];
+	var touches=evt.touches;
+	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
 	var target=fdjtUI.T(evt); var ref=sbook.getRef(target);
 	if (touch_started)
 	    fdjtLog("[%f] %s() n=%o %sts=%o %s@%o\n\t+%o %s%s%s%s%s%s%s s=%o,%o l=%o,%o p=%o,%o d=%o,%o tt=%o",
-		    fdjtET(),handler,touches.length,
+		    fdjtET(),handler,((touches)&&(touches.length)),
 		    ((!(touch))?(""):
 		     ("c="+touch.clientX+","+touch.clientY+";s="+touch.screenX+","+touch.screenY+" ")),
 		    touch_started,evt.type,target,
@@ -431,10 +432,16 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var ref=sbook.getRef(target);
 	var refelt=sbook.getRefElt(target);
 	touch_started=fdjtTime();
-	var touches=evt.touches; var touch=touches[0];
-	start_x=last_x=touch.clientX;
-	start_y=last_y=touch.clientY;
-	page_x=touch.screenX; page_y=touch.screenY;
+	var touches=evt.touches;
+	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
+	if (touch) {
+	    start_x=last_x=touch.clientX;
+	    start_y=last_y=touch.clientY;
+	    page_x=touch.screenX; page_y=touch.screenY;}
+	else if (evt.clientX) { /* touchmouse */
+	    start_x=last_x=evt.clientX;
+	    start_y=last_y=evt.clientY;
+	    page_x=touch.screenX; page_y=evt.screenY;}
 	touch_held=false; touch_moved=false; touch_scrolled=false;
 	if ((ref)&&(!(fdjtDOM.isClickable(target)))) {
 	    if (sbook.preview) sbook.Preview(ref,refelt);
@@ -449,7 +456,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function touchmove(evt){
 	fdjtUI.cancel(evt);
 	if (touch_held) return;
-	var touches=evt.touches; var touch=touches[0];
+	var touches=evt.touches;
+	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
+	if (!(touches)) {
+	    if (!((evt.clientX)&&(evt.button))) return;}
 	if (page_x<0) page_x=touch.screenX;
 	if (page_y<0) page_y=touch.screenY;
 	var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
@@ -529,7 +539,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else if (fdjtDOM.hasParent(target,".glossmark"))
 		glossmark_onclick(evt);
 	    else if (fdjtDOM.isClickable(target)) {
-		/* create a click event */}
+		var ev=document.createEvent("MouseEvents");
+		ev.initMouseEvent("click",true,true,window,0,
+				  page_x,page_y,last_x,last_y);
+		if (target.dispatchEvent)
+		    target.dispatchEvent(ev);
+		else if (target.fireEvent)
+		    target.fireEvent(ev);
+		else {}}
 	    else if (last_x<50) {
 		if (sbook.preview) previewBackward();
 		else pageBackward();}
@@ -619,12 +636,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		  mouseup: touchend,
 		  keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
 		  scroll:function(evt){sbook.syncHUD();}},
-	 ".sbookmargin": {click: margin_onclick},
+	 ".sbookmargin": {},
 	 "#SBOOKFOOT": {click: margin_onclick},
 	 hud: {},
-	 ".hudbutton": {mousedown: dont,touchmove: dont, touchend: dont},
-	 "#SBOOKTABS": {mousedown: dont,touchmove: dont, touchend: dont},
-	 glossmark: {click: glossmark_onclick}};
+	 ".hudbutton": {},
+	 "#SBOOKTABS": {},
+	 glossmark: {}};
 
     sbook.UI.handlers.ios=
 	{window: {touchstart: touchstart,
