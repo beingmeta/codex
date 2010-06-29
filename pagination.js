@@ -91,7 +91,7 @@ var sbookPaginate=
 		// focusable element on the page.
 		if (!(curpage.focus))
 		    if ((scan.toclevel)||
-			((sbook_focus_rules)&&(sbook_focus_rules.match(scan))))
+			((sbook.focusrules)&&(sbook.focusrules.match(scan))))
 			curpage.focus=scan;
 		if (dbginfo) dbginfo=dbginfo+(pageNodeInfo(scan,info,curpage));
 		if ((dbginfo)&&(next))

@@ -468,14 +468,14 @@ var sbook_delete_icon="redx12x12.png";
 
     /* Scrolling slices */
 
-    function scrollGlosses(elt,glosses)
+    function scrollGlosses(elt,glosses,top)
     {
 	if (!(elt.id)) elt=getFirstID(elt);
 	var info=sbook.docinfo[elt.id];
 	var targetloc=((info)&&(info.starts_at))||(elt.starts_at);
 	if (targetloc) {
 	    var scrollto=getFirstElt(glosses,targetloc);
-	    if (scrollto) {
+	    if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
 		if ((sbook.ui==='ios')||(sbook.ui==='touchmouse')) {
 		    // var off=getScrollOffset(scrollto,glosses);
 		    // var transform='translate('+0+'px,'+off+'px)';

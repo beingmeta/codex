@@ -44,7 +44,7 @@ var sbook=
      last_mode: false, last_dash: "about",
      target_title: false,preview_title: false,
      // How long it takes a gesture to go from tap to hold
-     holdmsecs: 500, edgeclick: 50, pagesize: 250,
+     holdmsecs: 500, edgeclick: 50, pagesize: 250, pagefade: true,  
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -62,6 +62,7 @@ var sbook=
      mouse: true,touch: false,kbd: false,
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
+     focusrules: false,
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
 	 mode: false,  // Whether to trace mode changes
@@ -110,6 +111,8 @@ var sbook_gloss_data=
 		else return tag;};
 	    sbook.glosses.addInit(function(item) {
 		var info=sbook.docinfo[item.frag];
+		if (!(info)) fdjtLog("[%f] Gloss refers to nonexistent '%s': %o",
+				     fdjtET(),item.frag,item);
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}});
 	    sbook.glosses.index=new fdjtKB.Index();
@@ -200,7 +203,7 @@ var sbook_gloss_data=
 	var first=false;
 	if (!(target)) return false;
 	else if (inUI(target)) return false;
-	else if ((!(sbook_focus_rules))||(sbook_focus_rules.length===0))
+	else if ((!(sbook.focusrules))||(sbook.focusrules.length===0))
 	    while (target) {
 		if (target.id) 
 		    if (closest) return target;
@@ -211,7 +214,7 @@ var sbook_gloss_data=
 		if (closest) return target;
 	    else if (fdjtDOM.hasClass(target,"sbookfoci"))
 		return target;
-	    else if (sbook_focus_rules.match(target))
+	    else if (sbook.focusrules.match(target))
 		return target;
 	    else if (!(first)) first=target;
 	    target=target.parentNode;}
@@ -250,7 +253,7 @@ var sbook_gloss_data=
 		return false;
 	else if (scan.id)
 	    if ((fdjtDOM.hasClass(scan,"sbookfoci"))||
-		((sbook_focus_rules)&&(sbook_focus_rules.match(scan))))
+		((sbook.focusrules)&&(sbook.focusrules.match(scan))))
 		return scan;
 	else if (closest) return scan;
 	else if (target) scan=scan.parentNode;

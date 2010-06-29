@@ -262,17 +262,15 @@ sbook.Setup=
 		    while (k<n) elements[k++].toclevel=i;}
 		i++;}
 	    if (fdjtDOM.getMeta("SBOOKIGNORED")) 
-		sbook_ignored=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKIGNORED"));
+		sbook.ignored=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKIGNORED"));
+	    if (fdjtDOM.getMeta("SBOOKNOTAG"))
+		sbook.terminal_rules=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKNOTAG"));
+	    if (fdjtDOM.getMeta("SBOOKTERMINALS"))
+		sbook.terminal_rules=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKTERMINALS"));
 	    if (fdjtDOM.getMeta("SBOOKIDIFY")) 
 		sbook_idify=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKIDIFY"));
-	    if (fdjtDOM.getMeta("SBOOKIDIFY")) 
-		sbook_idify=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKFOCI"));
 	    if (fdjtDOM.getMeta("SBOOKFOCI"))
-		sbook_focus_rules=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKFOCI"));
-	    if (fdjtDOM.getMeta("SBOOKTERMINALS"))
-		sbook_terminals=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKTERMINALS"));
-	    if (fdjtDOM.getMeta("SBOOKNOTAG"))
-		sbook_terminals=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKNOTAG"));}
+		sbook.focusrules=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKFOCI"));}
 
 	function getPageSettings(){
 	    var tocmajor=fdjtDOM.getMeta("SBOOKTOCMAJOR",true);
@@ -463,6 +461,7 @@ sbook.Setup=
 	
 	function initGlosses(glosses){
 	    var allglosses=sbook.allglosses;
+	    fdjtLog("[%f] Initializing glosses",fdjtET());
 	    sbook.Message("Initializing glosses...");
 	    sbook.glosses.Import(glosses);
 	    var i=0; var lim=glosses.length;

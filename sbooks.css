@@ -116,6 +116,10 @@ div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 
 /* HUDs */
 
+body {
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 0.75s;}
+
 div#SBOOKHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; 
     transition-property: opacity; transition-duration: 3s;
