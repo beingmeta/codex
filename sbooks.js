@@ -478,7 +478,9 @@ var sbook_gloss_data=
     sbook.GoTo=sbookGoTo;
 
     function sbookJumpTo(target){
-	sbookGoTo(target); sbookMode(false);}
+	sbook.Preview(false);
+	sbookGoTo(target);
+	sbookMode(false);}
     sbook.JumpTo=sbookJumpTo;
 
 })();
