@@ -327,7 +327,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else if ((evt.type==='mouseover')&&(sbook.mode))
 	    return;
 	else {
-	    fdjtLog("[%f] %o hud=%o",fdjtET(),evt,hud);
 	    if (!(hud)) {}
 	    else if (evt.type==='mouseover')
 		fdjtDOM.addClass(hud,"hover");
@@ -335,46 +334,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		fdjtDOM.dropClass(hud,"hover");
 	    else {}}}
     sbook.UI.hudbutton=hudbutton;
-
-    /* Mouse handlers */
-
-    function hud_mousedown(evt){
-	var target=fdjtUI.T(evt);
-	var ref=sbook.getRef(target);
-	if (sbook.Trace.gestures) 
-	    fdjtLog("[%f] hud_mousedown() %o ref=%o cl=%o sbp=%o sbh=%o mode=%o",
-		    fdjtET(),evt,ref,(fdjtDOM.isClickable(target)),
-		    sbook.preview,sbook.hudup,sbookMode());
-	if (!(ref)) return;
-	if (fdjtDOM.isClickable(target)) return;
-	fdjtUI.cancel(evt);
-	if ((sbook.preview)&&(sbook.preview!==ref)) sbook.Preview(false);
-	var src=sbook.getRefElt(target);
-	if (hold_timer) {
-	    clearTimeout(hold_timer);
-	    hold_timer=false;}
-	holding=false;
-	if (!(sbook.preview)) {
-	    hold_timer=setTimeout
-	    (function(){holding=true; sbook.Preview(ref,src); hold_timer=false;},
-	     sbook.holdmsecs||1000);}}
-    function hud_mouseup(evt){
-	var target=fdjtUI.T(evt);
-	var ref=sbook.getRef(target);
-	if (sbook.Trace.gestures) 
-	    fdjtLog("[%f] hud_mouseup() %o ref=%o holding=%o, ht=%o, cl=%o sbp=%o sbh=%o mode=%o",
-		    fdjtET(),evt,ref,holding,hold_timer,
-		    (fdjtDOM.isClickable(target)),
-		    sbook.preview,sbook.hudup,sbookMode());
-	if (!(ref)) return;
-	if (fdjtDOM.isClickable(target)) return;
-	fdjtUI.cancel(evt);
-	if (holding) {sbook.Preview(false); return;}
-	else if (sbook.preview) sbook.Preview(false);
-	else {
-	    if (!(ref)) return;
-	    var src=sbook.getRefElt(target);
-	    sbook.Preview(ref,src);}}
 
     /* Gesture state */
 
@@ -484,15 +443,20 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if (fdjtDOM.hasParent(target,".hudbutton")) hudbutton(evt);
 	    else if (fdjtDOM.hasParent(target,".glossmark"))
 		glossmark_onclick(evt);
-	    else if (fdjtDOM.isClickable(target)) {
-		var ev=document.createEvent("MouseEvents");
-		ev.initMouseEvent("click",true,true,window,0,
-				  page_x,page_y,last_x,last_y);
-		if (target.dispatchEvent)
-		    target.dispatchEvent(ev);
-		else if (target.fireEvent)
-		    target.fireEvent(ev);
-		else {}}
+	    // If it's clickable, let it's click handler take it
+	    else if (fdjtDOM.isClickable(target)) {}
+	    /*
+	      var ev=document.createEvent("MouseEvents");
+	      ev.initMouseEvent("click",true,true,window,0,
+	      page_x,page_y,last_x,last_y);
+	      if (sbook.Trace.gestures)
+	      fdjtLog("Dispatching click event %o to %o",ev,target);
+	      if (target.dispatchEvent)
+	      target.dispatchEvent(ev);
+	      else if (target.fireEvent)
+	      target.fireEvent(ev);
+	      else {}
+	    */
 	    else if (last_x<50) {
 		if (sbook.preview) previewBackward();
 		else pageBackward();}
