@@ -305,11 +305,12 @@ div#SBOOKHUD img.hudbutton:hover {
 div#SBOOKHUD.hidebuttons img.hudbutton { display: none;}
 
 body.hudup div#SBOOKHUD img.sbookhidehud {
-    position: absolute; top: 2px; left: 105px; color: red;
+    position: absolute; top: 0px; left: 105px; color: red;
     border: solid red 1px; padding 1px; margin: 2px;
     z-index: 500; opacity: 1.0;}
 body.hudup div#SBOOKHUD.minimal img.sbookhidehud { display: none;}
 body.hudup div#SBOOKHUD.help > img.sbookhidehud { display: none;}
+body.hudup.preview div#SBOOKHUD img.sbookhidehud { display: none;}
 
 
 /* Margins */
