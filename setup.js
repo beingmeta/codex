@@ -53,8 +53,8 @@ sbook.Setup=
 	    // Setup sbook tables, databases, etc
 	    sbook.initDB();
 	    sbook.initHUD();
-	    fdjtDOM.addClass(document.body,"hudup");
-	    fdjtDOM.addClass("SBOOKHUD","help");
+	    sbookMode("help");
+	    fdjtDOM.sizeToFit(fdjtID("SBOOKHELP"));
 	    if (sbook.user)
 		fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
 	    else if (sbook.nouser) {

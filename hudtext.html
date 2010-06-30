@@ -2,13 +2,19 @@
      alt='toc' title='click to navigate the book as a whole'
      class='hudbutton' id='SBOOKTOCBUTTON' hudmode='toc'
      onclick='sbook.UI.hudbutton(event);'/>
-<div class='helphud tapnav'></strong> to navigate</div>
-<div class='helphud tapsearch'>to search</div>
+<div class='helphud tapnav'>
+  <strong class='notouch'>click</strong>
+  <strong class='fortouch'>tap</strong> to<br/>
+  navigate</div>
+<div class='helphud tapsearch'>
+  <strong class='notouch'>click</strong>
+  <strong class='fortouch'>tap</strong> to<br/>
+  search</div>
 <img src='http://static.beingmeta.com/graphics/TagSearch40x40.png'
      alt='search' title='click to search tags within the book'
      class='hudbutton' id='SBOOKSEARCHBUTTON' hudmode='searching'
      onclick='sbook.UI.hudbutton(event);'/>
-<img src='http://static.beingmeta.com/graphics/redx12x12.png' alt='close'
+<img src='http://static.beingmeta.com/graphics/redx16x16.png' alt='close'
      class='sbookhidehud' onclick='sbookMode(false);'/>
 <div id='SBOOKPREVIEW' class='hudblock'></div>
 <div id='SBOOKHEAD'>
@@ -89,17 +95,27 @@
   <!-- This is filled in on demand -->
 </div>
 </div>
-<div id='SBOOKHELPHUD'>
+<div id='SBOOKHELP'>
 <img src='http://static.beingmeta.com/graphics/redx24x24.png' alt='close'
-     class='sbookhidehud' onclick='sbookMode(false);'/>
+     style='float: left; padding: 2px; border: solid red 2px; z-index: 300;'
+     onclick='sbookMode(false);'/>
 <div class='oneline'>
    <strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
-   to toggle the <strong>meta HUD</strong>
+   <strong>content</strong> to toggle this <strong>meta HUD</strong>
 </div>
 <div class='oneline'>
  <strong class='fortouch'>swipe <em>or</em> tap edges</strong>
       <strong class='notouch'>click edges</strong>
-      to <strong>page</strong> forward, backward
+      to <strong>page</strong> forward and backward
+</div>
+<div>
+<table align='center'>
+  <th rowspan="2"><div>Keys</div></th>
+  <td><span class='key'>H</span>elp, <span class='key'>S</span>earch,
+      <span class='key'>N</span>avigate, <span class='key'>G</span>losses
+</td></tr>
+<tr><td><strong>Paging:</strong> space, backspace, page up, page down</td></tr>
+</table>
 </div>
 <div>
 <table align='center'>
@@ -123,23 +139,20 @@
     notes, results, or sections directly from preview mode</td></tr>
 </table>
 </div>
-<div>
-<table align='center' width='75%'>
-  <th rowspan="2"><div>Keys</div></th>
-  <td><span class='key'>H</span>elp, <span class='key'>S</span>earch,
-      <span class='key'>N</span>avigate, <span class='key'>G</span>losses
-</td></tr>
-<tr><td><strong>Paging:</strong> space, backspace, page up, page down</td></tr>
-</table>
-</div>
 </div>
 <div id='SBOOKFOOT'>
   <img src='http://static.beingmeta.com/graphics/sbooksappicon40x40.png'
        alt='dash' title='Click for Help, settings, book description, etc'
        class='hudbutton' id='SBOOKDASHBUTTON' hudmode='dash'
        onclick='sbook.UI.hudbutton(event);'/>
-  <div class='helphud tapdash'>the dashboard</div>
-  <div class='helphud tapnotes'>browse notes/overlays</div>
+  <div class='helphud tapdash'>
+    <strong class='notouch'>click</strong>
+    <strong class='fortouch'>tap</strong> for the<br/>
+    dashboard</div>
+  <div class='helphud tapnotes'>
+    <strong class='notouch'>click</strong>
+    <strong class='fortouch'>tap</strong> to see<br/>
+    notes/glosses</div>
   <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
        alt='glosses' title='Click to browse glosses overlaid on this book'
        class='hudbutton' id='SBOOKALLGLOSSESBUTTON' hudmode='allglosses'

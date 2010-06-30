@@ -149,13 +149,14 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
     queryCloud(sbook.query).complete(end);}
   sbook.searchUpdate=searchUpdate;
 
-  function searchInput_onfocus(evt){
-    evt=evt||event||null;
-    var input=fdjtDOM.T(evt);
-    fdjtUI.AutoPrompt.onfocus(evt);
-    sbook_search_focus=true;
-    sbookMode("searching");
-    searchUpdate(input);}
+    function searchInput_onfocus(evt){
+	evt=evt||event||null;
+	var input=fdjtDOM.T(evt);
+	fdjtUI.AutoPrompt.onfocus(evt);
+	sbook_search_focus=true;
+	if ((sbook.mode)&&(sbook.mode==='browsing'))
+	    sbookMode("searching");
+	searchUpdate(input);}
   sbook.UI.handlers.SearchInput_onfocus=searchInput_onfocus;
 
   function searchInput_onblur(evt){
