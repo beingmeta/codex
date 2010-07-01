@@ -1679,6 +1679,10 @@ body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
 body.touch div.iscrollwrapper {
   position: relative; z-index: 1; width: 100%; height: auto; overflow: auto;}
 
+/* Pagination stuff */
+
+h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

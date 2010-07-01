@@ -58,7 +58,7 @@ var sbook=
      // This is the time of the last update
      syncstamp: false,
      // Various settings
-     paginate: true, scrolling: false, floathud: false,
+     paginate: true, fastpage: false, scrolling: false, floathud: false,
      mouse: true,touch: false,kbd: false,
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
