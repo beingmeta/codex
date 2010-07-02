@@ -114,7 +114,8 @@ var sbookMode=
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKDASHTOC",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    sbook.UI.addHandlers(div,"toc");
+	    // The dash TOC doesn't do fancy mouseovers
+	    // sbook.UI.addHandlers(div,"toc");
 	    return div;}
 
 	function initSearch(){
@@ -527,7 +528,8 @@ var sbookMode=
 		// We can't do this earlier because it's not displayed
 		//  and so has no geometry
 		// if ((pelt)&&(sbook.previewstart!==pelt)&&(pelt.scrollIntoView))
-		if (pelt) pelt.scrollIntoView();
+		if ((pelt)&&(!(fdjtDOM.isVisible(pelt))))
+		  pelt.scrollIntoView(false);
 		sbook.previewstart=false;
 		fdjtDOM.replace("SBOOKPREVIEW",fdjtDOM("div#SBOOKPREVIEW"));
 		return;}
