@@ -50,6 +50,8 @@ sbook.Setup=
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
 	    getSettings();
+	    // Dependent setups
+	    fdjtDOM.init();
 	    // Setup sbook tables, databases, etc
 	    sbook.initDB();
 	    sbook.initHUD();
