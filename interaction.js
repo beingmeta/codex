@@ -242,7 +242,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else sbook.Backward();}
 	// Home goes to the current head.
 	else if (kc===36) sbook.JumpTo(sbook.head);
-	else return;}
+	else return;
+	fdjtUI.cancel(evt);}
 
     // At one point, we had the shift key temporarily raise/lower the HUD.
     //  We might do it again, so we keep this definition around
@@ -345,12 +346,15 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     var touch_moved=false;
     var touch_scrolled=false;
 
+    var doubletap=false, tripletap=false;
+
     function cleartouch(){
 	touch_started=false; touch_ref=false;
 	start_x=start_y=last_x=last_y=-1;
 	page_x=page_y=sample_t=-1;
 	touch_timer=false; touch_held=false;
-	touch_moved=false; touch_scrolled=false;}
+	touch_moved=false; touch_scrolled=false;
+	doubletap=false; tripletap=false;}
 
     function tracetouch(handler,evt){
 	var touches=evt.touches;
@@ -441,8 +445,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 			(((fdjtDOM.viewWidth()-last_x)<50)?"/rightedge":""),
 			target,ref);
 	    if (fdjtDOM.hasParent(target,".hudbutton")) hudbutton(evt);
-	    else if (fdjtDOM.hasParent(target,".glossmark"))
-		glossmark_onclick(evt);
+	    else if (fdjtDOM.hasParent(target,".glossmark")) {}
 	    // If it's clickable, let it's click handler take it
 	    else if (fdjtDOM.isClickable(target)) {}
 	    /*
@@ -474,6 +477,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else if (sbook.mode) {
 		if (fdjtDOM.hasParent(target,sbook.HUD)) {}
 		else sbookMode(false);}
+	    else if (sbook.mode==='mark')
+		sbookMode(true);
 	    else if (sbook.hudup) {
 		var marked=sbook.getTarget(target);
 		if (marked) sbookMark(marked);
@@ -510,7 +515,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* Consolidated touch */
 
     function touchstart(evt){
-	fdjtUI.cancel(evt);
 	if (touch_started) {
 	    /* Do something clever? */}
 	if (sbook.Trace.gestures) tracetouch("touchstart",evt);
@@ -544,9 +548,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function touchmove(evt){
 	fdjtUI.cancel(evt);
 	if (touch_held) return;
-	var touch=(((evt.touches)&&(evt.touches.length))?(touches[0]):(evt));
-	if (!(touches)) {
-	    if (!((evt.clientX)&&(evt.button))) return;}
+	var touch=(((evt.touches)&&(evt.touches.length))?(evt.touches[0]):(evt));
 	if (page_x<0) page_x=touch.screenX;
 	if (page_y<0) page_y=touch.screenY;
 	var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
@@ -620,8 +622,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 			(((fdjtDOM.viewWidth()-last_x)<50)?"/rightedge":""),
 			target,ref);
 	    if (fdjtDOM.hasParent(target,".hudbutton")) hudbutton(evt);
-	    else if (fdjtDOM.hasParent(target,".glossmark"))
-		glossmark_onclick(evt);
+	    else if (fdjtDOM.hasParent(target,".glossmark")) {}
 	    else if (fdjtDOM.isClickable(target)) {
 		var ev=document.createEvent("MouseEvents");
 		ev.initMouseEvent("click",true,true,window,0,
@@ -642,7 +643,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		else if (fdjtDOM.hasParent(target,sbook.preview))
 		    sbook.JumpTo(sbook.preview);
 		else sbook.Preview(false);}
-	    else if (sbook.mode) sbookMode(false);
+	    else if (sbook.mode==='mark')
+		sbookMode(true);
+	    else if (sbook.mode)
+		sbookMode(false);
 	    else if (sbook.hudup) {
 		var marked=sbook.getTarget(target);
 		sbookMark(marked);}
@@ -679,12 +683,17 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     
     function glossmark_onclick(evt){
 	evt=evt||event||null;
-	var target=sbook.getTarget(fdjtUI.T(evt));
+	var glossmark=fdjtDOM.getParent(fdjtUI.T(evt),".glossmark");
+	if (glossmark) return glossmark_clicked(glossmark,evt);
+	else return false;}
+    function glossmark_clicked(glossmark,evt){
+	var target=sbook.getTarget(glossmark.parentNode);
+	fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) 
-	    fdjtLog("[%f] glossmark_onclick() %o for %o",fdjtET(),evt,target);
+	    fdjtLog("[%f] glossmark_clicked() %o to %o for %o",fdjtET(),evt,glossmark,target);
 	fdjtUI.cancel(evt);
 	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
-	    sbookMode(false);
+	    sbookMode(true);
 	    return;}
 	else sbook.openGlossmark(target);}
     function glossmark_onmouseover(evt){

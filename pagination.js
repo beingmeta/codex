@@ -65,7 +65,7 @@ var sbookPaginate=
 	var getStyle=fdjtDOM.getStyle;
 
 	function Paginate(pagesize,start){
-	    if (!(start)) start=_sbookScanContent(sbook.root||document.body);
+	    if (!(start)) start=scanContent(sbook.root||document.body);
 	    if (sbook.Trace.pagination)
 		fdjtLog("Starting pagination at %o",start);
 	    var result={}; var pages=[]; var pageinfo=[];
@@ -81,7 +81,7 @@ var sbookPaginate=
 	    pages.push(pagetop); pageinfo.push(curpage);
 	    while (scan) {
 		var oversize=false;
-		var next=_sbookScanContent(scan,style);
+		var next=scanContent(scan);
 		var nextinfo=(next)&&nodeInfo(next);
 		var splitblock=false; var forcebottom=false;
 		var widowthresh=((info.fontsize)*sbook_widow_limit);
@@ -134,7 +134,7 @@ var sbookPaginate=
 		    // if we want to be a foot, force a break at the next node
 		    else if (isPageFoot(scan)) {
 			curpage.bottom=info.bottom;
-			newtop=_sbookScanContent(scan,style);}
+			newtop=scanContent(scan);}
 		    // if we're a bad foot close to the bottom, break
 		    else if (((scan.toclevel)||(avoidPageFoot(scan,style)))&&
 			     ((pagelim-info.bottom)<widowthresh))
@@ -296,7 +296,7 @@ var sbookPaginate=
 		// Advance around the loop.  If we have an explicit next page,
 		//  we use it (usually the case if we're splitting a block).
 		if (oversize) {
-		    scan=_sbookScanContent(scan,true);
+		    scan=scanContent(scan,true);
 		    if (scan) style=getStyle(scan);
 		    if (scan) info=nodeInfo(scan);}
 		else if (next) {
@@ -305,7 +305,7 @@ var sbookPaginate=
 		    info=nextinfo;}
 		else {
 		    // Otherwise, advance through the DOM
-		    scan=_sbookScanContent(scan);
+		    scan=scanContent(scan);
 		    if (scan) info=nodeInfo(scan);
 		    if (scan) style=getStyle(scan);}
 		if (!(splitblock)) nodecount++;}
@@ -345,25 +345,25 @@ var sbookPaginate=
 
 	var sbook_content_nodes=['IMG','BR','HR'];
 	
-	function _sbookScanContent(scan,skipchildren){
+	function scanContent(scan,skipchildren){
 	    var next=(((skipchildren)||(scan.sbookui))?
-		      (fdjtDOM.next(scan,_sbookIsContentBlock)):
-		      (fdjtDOM.forward(scan,_sbookIsContentBlock)));
+		      (fdjtDOM.next(scan,isContentBlock)):
+		      (fdjtDOM.forward(scan,isContentBlock)));
 	    var info=getGeometry(scan);
 	    var nextinfo=((next)&&(getGeometry(next)));
 	    if (!(next)) {}
 	    else if ((nextinfo.height===0)||(nextinfo.top<info.top)) 
 		// Skip over weird nodes
-		return _sbookScanContent(next,skipchildren);
+		return scanContent(next,skipchildren);
 	    else if ((isPageHead(next))||(isPageBlock(next))) {}
 	    else if ((next.childNodes)&&(next.childNodes.length>0)) {
 		var children=next.childNodes;
-		if ((children[0].nodeType===1)&&(_sbookIsContentBlock(children[0])))
+		if ((children[0].nodeType===1)&&(isContentBlock(children[0])))
 		    next=children[0];
 		else if ((children[0].nodeType===3)&&
 			 (isEmpty(children[0].nodeValue))&&
 			 (children.length>1)&&(children[1].nodeType===1)&&
-			 (_sbookIsContentBlock(children[1])))
+			 (isContentBlock(children[1])))
 		    next=children[1];}
 	    if ((next)&&(sbookPaginate.debug)) {
 		if (next.id) scan.setAttribute("sbooknextnode",next.id);
@@ -374,7 +374,7 @@ var sbookPaginate=
 	    {"IMG": true, "HR": true, "P": true, "DIV": true,
 	     "UL": true,"BLOCKQUOTE":true};
 
-	function _sbookIsContentBlock(node,style){
+	function isContentBlock(node,style){
 	    var styleinfo;
 	    if (node.nodeType===1) {
 		if (node.sbookui) return false;
@@ -389,7 +389,7 @@ var sbookPaginate=
 		else return true;}
 	    else return false;}
 	
-	function _sbookIsJustContainer(node,style){
+	function isJustContainer(node,style){
 	    var children=node.childNodes;
 	    var i=0; var len=children.length;
 	    while (i<len) {
@@ -408,8 +408,8 @@ var sbookPaginate=
 		else {}}
 	    return true;}
 
-	function _sbookIsContainer(node){
-	    var next=_sbookScanContent(node);
+	function isContainer(node){
+	    var next=scanContent(node);
 	    if (fdjtDOM.hasParent(next,node)) return next;
 	    else return false;}
 
@@ -633,8 +633,10 @@ var sbookPaginate=
 	function displaySync(){
 	    if (sbook.preview) return false;
 	    if ((window.scrollY!==page_yoff)||(window.scrollX!==page_xoff)) {
+		/*
 		fdjtLog("[%f] syncing the page, was %o,%o should be %o,%o",
 			fdjtET(),window.scrollX,window.scrollY,page_xoff,page_yoff);
+		*/
 		GoToPage(sbook.curpage);}
 	    if (sbook.hudup) sbook.syncHUD();}
 	sbook.displaySync=displaySync;
@@ -813,8 +815,8 @@ var sbookPaginate=
 		    sbook.GoToPage(sbook.getPage(sbook.target||sbook.root));
 		return newinfo;}}
 	
-	sbook.isContent=_sbookIsContentBlock;
-	sbook.scanContent=_sbookScanContent;
+	sbook.isContent=isContentBlock;
+	sbook.scanContent=scanContent;
 
 	sbook.pageTop=function(){return sbook_top_px;}
 	sbook.pageBottom=function(){return sbook_bottom_px;}
@@ -823,8 +825,6 @@ var sbookPaginate=
 	sbook.pageSize=function(){return sbook_pagesize;}
 
 	return sbookPaginate;})();
-
-sbookPaginate.debug=true;
 
 /* Pagination utility functions */
 

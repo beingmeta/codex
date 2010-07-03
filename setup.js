@@ -35,7 +35,7 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 sbook.Setup=
     (function(){
 
-	var sbook_touchmouse=false;
+	var sbook_touchmouse=true;
 
 	var sbook_fullpages=[];
 	var sbook_heading_qricons=false;
@@ -55,8 +55,9 @@ sbook.Setup=
 	    // Setup sbook tables, databases, etc
 	    sbook.initDB();
 	    sbook.initHUD();
+	    if (sbook.floathud) sbook.syncHUD();
 	    sbookMode("help");
-	    fdjtDOM.sizeToFit(fdjtID("SBOOKHELP"));
+	    // fdjtDOM.sizeToFit(fdjtID("SBOOKHELP"));
 	    if (sbook.user)
 		fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
 	    else if (sbook.nouser) {

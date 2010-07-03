@@ -270,8 +270,10 @@ var sbook_delete_icon="redx12x12.png";
 	var i=0; var lim=results.length;
 	while (i<lim) {
 	    var r=results[i];
-	    if (typeof r === 'string')
-		notes[i]=sbook.docinfo[r]||sbook.glosses.ref[r];
+	    if (typeof r === 'string') {
+		var ref=sbook.docinfo[r]||sbook.glosses.ref[r];
+		if (!(ref)) fdjtLog("[%f] No resolution for %o",r);
+		notes[i]=ref;}
 	    else notes[i]=r;
 	    i++;}
 	notes.sort(function(n1,n2){

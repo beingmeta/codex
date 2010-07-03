@@ -128,8 +128,11 @@ div#SBOOKHUD {
     visibility: hidden;
     font-size: 14px; font-family: helvetica,sans,sans-serif;
     z-index: 100;}
-body.hudup > div#SBOOKHUD { opacity: 1.0;}
-body.dimmed > div#SBOOKHUD { opacity: 1.0;}
+body.hudup > div#SBOOKHUD, 
+body.dimmed > div#SBOOKHUD,
+body.hudup > div.sbookmargin,
+body.dimmed > div.sbookmargin { opacity: 1.0;}
+
 /* SBOOKHUD should be dimensionless so it doesn't get in the way of
    body clicks */
 body.hudup div#SBOOKHUD {visibility: visible;}
@@ -264,15 +267,16 @@ div#SBOOKHUD.help div.helphud { display: block;}
 div#SBOOKHELP {
     position: fixed;
     top: 75px; left: 50px; right: 50px; bottom: 75px;
-    padding: 1em; border-radius: 1em;
-    border: solid gray 1px;
+    padding: 1em; border: solid gray 1px;
+    border-radius: 1em; -moz-border-radius: 1em;
+    -khtml-border-radius: 1em; -webkit-border-radius: 1em;
     opacity: 0.95; background-color: white;
     text-align: center; vertical-align: middle;
     display: none;}
 div#SBOOKHELP > div {
-    margin-bottom: 1em; font-size: 125%;}
+    margin-bottom: 1em; font-size: 100%;}
 div#SBOOKHELP > div.oneline {
-    font-size: 150%;}
+    font-size: 110%;}
 div#SBOOKHELP table {}
 div#SBOOKHELP table th {
     color: orange; text-align: right; vertical-align: top;}
@@ -283,7 +287,7 @@ div#SBOOKHUD.help div#SBOOKHELP { display: block;}
 div#SBOOKHUD.help div#SBOOKHELP img.sbookhidehud {
     left: 0.5em; top: 0.5em; padding: 3px;}
 div#SBOOKHELP strong em { font-weight: normal;}
-div#SBOOKHELP span.key { font-weight: bold; font-size: 125%;}
+div#SBOOKHELP span.key { font-weight: bold; font-size: 110%;}
 div#SBOOKHELP span.key:before { content: '(';}
 div#SBOOKHELP span.key:after { content: ')';}
 
@@ -316,8 +320,9 @@ div#SBOOKHUD img.hudbutton:hover {
 div#SBOOKHUD.hidebuttons img.hudbutton { display: none;}
 
 body.hudup div#SBOOKHUD img.sbookhidehud {
-    position: absolute; top: 0px; left: 105px; color: red;
-    border: solid red 1px; padding 1px; margin: 2px;
+    position: absolute; top: 0px; right: 79px; color: red;
+    padding: 1px; margin: 2px; padding-top: 0px; margin-top: 0px;
+    border: solid red 1px; 
     z-index: 500; opacity: 1.0;}
 body.hudup div#SBOOKHUD.minimal img.sbookhidehud { display: none;}
 body.hudup div#SBOOKHUD.help > img.sbookhidehud { display: none;}
@@ -334,12 +339,8 @@ body.paginate div.sbookmargin { display: block;}
 body.preview div.sbookmargin { display: none;}
 body.paginate.preview div.sbookmargin { display: none;}
 
-body.preview div#SBOOKLEFTEDGE.sbookmargin,
-body.paginate.preview div#SBOOKLEFTEDGE.sbookmargin,
-body.preview div#SBOOKRIGHTEDGE.sbookmargin,
-body.paginate.preview div#SBOOKRIGHTEDGE.sbookmargin {
-    display: none;}
-
+body.hudup div.sbookmargin#SBOOKPAGELEFT,
+body.hudup div.sbookmargin#SBOOKPAGERIGHT { z-index: -5;}
 
 body.paginate { overflow: hidden;}
 body.paginate.preview { overflow: auto;}

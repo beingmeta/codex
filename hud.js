@@ -53,12 +53,12 @@ var sbookMode=
 		hudmessages.innerHTML=sbook_messages;
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
-		sbookHUD.innerHTML=sbook_hudtext;
+		sbookHUD.innerHTML=sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
 		fdjtDOM.prepend(document.body,hudmessages,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
-	    dash.innerHTML=sbook_dashtext.replace('%HELPTEXT',sbook_helptext);
+	    dash.innerHTML=sbook_dashtext;
 	    var search=fdjtID("SBOOKSEARCH");
 	    search.innerHTML=sbook_searchtext;
 	    initSearch(search);
@@ -293,12 +293,12 @@ var sbookMode=
 		sbook_sync_off=view_top;}
 	    if (view_height!==sbook_sync_height) {
 		if (view_height) {
-		    help.style.height=(view_height-100)+'px';
-		    box.style.maxHeight=(view_height-100)+'px';
+		    help.style.height=(view_height-200)+'px';
+		    box.style.height=(view_height-100)+'px';
 		    fdjtDOM.sizeToFit(box);
 		    sbookFoot.style.top=(view_height-50)+'px';}
 		else {
-		    help.style.height=(view_height-100)+'px';
+		    help.style.height='';
 		    box.style.height='';
 		    sbookFoot.style.top='';}
 		sbook_sync_height=view_height;}}

@@ -161,7 +161,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	return glossmark;};
 
     function openGlossmark(target,addmark) {
-	var glosses=sbook.glosses.find('frag',target.id)
+	var glosses=sbook.glosses.find('frag',target.id);
 	var sumdiv=fdjtDOM("div.sbookslice.hudblock");
 	sbook.UI.setupSummaryDiv(sumdiv);
 	if (glosses)
