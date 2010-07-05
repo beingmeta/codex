@@ -479,13 +479,13 @@ var sbook_delete_icon="redx12x12.png";
 	    var scrollto=getFirstElt(glosses,targetloc);
 	    if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
 		if ((sbook.ui==='ios')||(sbook.ui==='touchmouse')) {
-		    // var off=getScrollOffset(scrollto,glosses);
-		    // var transform='translate('+0+'px,'+off+'px)';
-		    // fdjtLog("Applying transform %o",transform);
-		    // glosses.style.webkitTransform=transform;
 		    var off=getScrollOffset(scrollto,glosses);
-		    fdjtLog("Positioning for scroll offset %o",off);
-		    glosses.style.top="-"+off+"px";}
+		    // var transform='translate('+0+'px,-'+off+'px)';
+		    // fdjtLog("Applying transform %o",transform);
+		    //glosses.style.webkitTransform=transform;
+		    // fdjtLog("Positioning for scroll offset %o",off);
+		    glosses.style.top="-"+off+"px";
+		}
 		else scrollto.scrollIntoView(true);}}
     }
     sbook.UI.scrollGlosses=scrollGlosses;
@@ -512,8 +512,10 @@ var sbook_delete_icon="redx12x12.png";
 	    else if (!(child.starts)) continue;
 	    else if (child.starts===location)
 		return child;
-	    else if (child.starts>location)
-		return getFirstElt(last,location)||last;
+	    else if (child.starts>location) {
+		if (last)
+		    return getFirstElt(last,location)||last;
+		else return last;}
 	    else last=child;}
 	if (last) getFirstElt(last,location);
 	return false;}

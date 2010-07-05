@@ -515,6 +515,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* Consolidated touch */
 
     function touchstart(evt){
+	fdjtUI.cancel(evt);
 	if (touch_started) {
 	    /* Do something clever? */}
 	if (sbook.Trace.gestures) tracetouch("touchstart",evt);
@@ -588,7 +589,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%f] scrollHUD() %o,%o: cur=%o new=%o min=%o=-(%o): %o",
 		    fdjtET(),dx,dy,curtop,newtop,mintop,geom.height,
 		    content);
-	if (newtop!==curtop) content.style.top=newtop+'px';}
+	if (newtop!==curtop) content.style.top=newtop+'px';
+    }
 
     function touchend(evt){
 	fdjtUI.cancel(evt);
@@ -605,7 +607,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    sbook.Preview(false);
 	    return cleartouch();}
 	if (touch_scrolled) {
-	    sbook.syncHUD(window.scrollX,window.scrollY);
 	    fdjtDOM.dropClass(sbookHUD,"hidebuttons");
 	    return cleartouch();}
 	var dx=last_x-start_x; var dy=last_y-start_y;
@@ -825,7 +826,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		(fdjtDOM.hasClass(scan,"sbooknote")))
 		break;
 	    else scan=fdjtDOM.forwardElt(scan);}
-	if (sbook.Trace.preview) 
+	if (sbook.Trace.mode) 
 	    fdjtLog("[%f] previewForward() from %o to %o under %o",
 		    fdjtET(),start,scan,slice);
 	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
@@ -845,7 +846,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		(fdjtDOM.hasClass(scan,"sbooknote")))
 		break;
 	    else scan=fdjtDOM.backwardElt(scan);}
-	if (sbook.Trace.preview) 
+	if (sbook.Trace.mode) 
 	    fdjtLog("[%f] previewBackward() from %o to %o under %o",
 		    fdjtET(),start,scan,slice);
 	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;

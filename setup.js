@@ -35,7 +35,7 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 sbook.Setup=
     (function(){
 
-	var sbook_touchmouse=true;
+	var sbook_touchmouse=false;
 
 	var sbook_fullpages=[];
 	var sbook_heading_qricons=false;
@@ -95,6 +95,7 @@ sbook.Setup=
 	    initLocation();
 	    var hud_init_done=new Date();
 	    window.onresize=function(evt){
+		fdjtLog("Resize event %o");
 		if (sbook.paginate) sbookPaginate();};
 	    sbook.setupGestures();
 	    if (!((document.location.search)&&

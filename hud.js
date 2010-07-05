@@ -293,13 +293,13 @@ var sbookMode=
 		sbook_sync_off=view_top;}
 	    if (view_height!==sbook_sync_height) {
 		if (view_height) {
-		    help.style.height=(view_height-200)+'px';
-		    box.style.height=(view_height-100)+'px';
+		    help.style.maxHeight=help.style.height=(view_height-200)+'px';
+		    box.style.maxHeight=box.style.height=(view_height-100)+'px';
 		    fdjtDOM.sizeToFit(box);
 		    sbookFoot.style.top=(view_height-50)+'px';}
 		else {
-		    help.style.height='';
-		    box.style.height='';
+		    help.style.maxHeight=help.style.height='';
+		    box.style.maxHeight=box.style.height='';
 		    sbookFoot.style.top='';}
 		sbook_sync_height=view_height;}}
 	sbook.syncHUD=syncHUD;
@@ -482,10 +482,11 @@ var sbookMode=
 	    var cxt=false;
 	    var body=document.body;
 	    var pelt=sbook.previewelt;
-	    if (sbook.Trace.preview)
-		fdjtLog("[%f] sbookPreview() %o (src=%o) sbp=%o sbpt=%o",
-			fdjtET(),elt,src,
-			sbook.preview,sbook.preview_target);
+	    if (sbook.Trace.mode)
+		fdjtLog("[%f] sbookPreview() %o (src=%o) mode=%o sbp=%o pe=%o sbpt=%o target=%o",
+			fdjtET(),elt,src,sbook.mode,
+			sbook.preview,sbook.previewelt,sbook.preview_target,
+		       sbook.target);
 	    
 	    // Save the source HUD element for the preview (when provided)
 	    if (src) {
@@ -528,10 +529,10 @@ var sbookMode=
 		// We can't do this earlier because it's not displayed
 		//  and so has no geometry
 		// if ((pelt)&&(sbook.previewstart!==pelt)&&(pelt.scrollIntoView))
-		if ((pelt)&&(!(fdjtDOM.isVisible(pelt))))
-		  pelt.scrollIntoView(false);
+		if (pelt) pelt.scrollIntoView();
 		sbook.previewstart=false;
 		fdjtDOM.replace("SBOOKPREVIEW",fdjtDOM("div#SBOOKPREVIEW"));
+		if (sbook.floathud) syncHUD();
 		return;}
 	    else if ((elt===sbook.root)||(elt===document.body))
 		return;
@@ -562,8 +563,7 @@ var sbookMode=
 	    else if (elt.head)
 		cxt=elt.head;
 	    fdjtUI.scrollPreview(elt,cxt,displayOffset());
-	    //if (sbook.floathud) setTimeout(syncHUD,20);
-	    syncHUD();}
+	    if (sbook.floathud) syncHUD();}
 
 	sbook.Preview=sbookPreview;
 

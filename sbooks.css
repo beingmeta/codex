@@ -158,7 +158,8 @@ div#SBOOKCONTENT {
     -moz-border-radius: 0px 0px 6px 6px;
     overflow: auto;
     display: none;}
-div#SBOOKCONTENT > div { display: none; position: relative; top: 0px;}
+div#SBOOKCONTENT > div {
+    display: none; position: relative; top: 0px;}
 
 /* Modes are classes on SBOOKHUD which control what is actually visible */
 
@@ -378,7 +379,7 @@ body.floathud div#SBOOKHUD div#SBOOKFOOT {
 body.floathud div#SBOOKHUD div#SBOOKFOOT img.hudbutton {
   position: absolute; bottom: 0px;}
 body.floathud div#SBOOKHUD div#SBOOKCONTENT {
-  position: absolute;}
+  position: absolute; overflow: hidden;}
 body.floathud div#SBOOKHUD div#SBOOKHELP {
   position: absolute;}
 body.floathud div.sbookmargin { position: absolute;}
