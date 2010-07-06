@@ -623,9 +623,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 			(((fdjtDOM.viewWidth()-last_x)<50)?"/rightedge":""),
 			target,ref);
 	    if (fdjtDOM.hasParent(target,".hudbutton")) hudbutton(evt);
-	    else if (fdjtDOM.hasParent(target,".glossmark")) {}
-	    else if (fdjtDOM.isClickable(target)) {
+	    else if ((fdjtDOM.hasParent(target,".glossmark"))||(fdjtDOM.isClickable(target))) {
 		var ev=document.createEvent("MouseEvents");
+		if (sbook.Trace.gestures)
+		    fdjtLog("[%f] Generating click on %o",target);
 		ev.initMouseEvent("click",true,true,window,0,
 				  page_x,page_y,last_x,last_y);
 		if (target.dispatchEvent)
@@ -729,7 +730,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 hud: {},
 	 ".hudbutton": {},
 	 "#SBOOKTABS": {},
-	 glossmark: {}};
+	 glossmark: {click: glossmark_onclick}};
 
     sbook.UI.handlers.ios=
 	{window: {touchstart: touchstart,
