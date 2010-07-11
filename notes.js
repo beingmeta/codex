@@ -308,6 +308,7 @@ var sbook_delete_icon="redx12x12.png";
 		    curhead=headinfo;}
 		threadelt=fdjtDOM("div.sbookthread.idthread",
 				  makeIDHead(target,headinfo,true));
+		threadelt.about="#"+frag;
 		fdjtDOM.append(headelt,threadelt);
 		curinfo=docinfo;}
 	    fdjtDOM.append(threadelt,renderNote(note));}
