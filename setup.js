@@ -136,7 +136,7 @@ sbook.Setup=
 	    var refuri=_getsbookrefuri();
 	    document.body.refuri=sbook.refuri=refuri;
 	    sbook.docuri=_getsbookdocuri();
-	    var refuris=fdjtState.getLocal("sbook.refuris",true);
+	    var refuris=fdjtState.getLocal("sbook.refuris",true)||[];
 	    var offline=
 		((fdjtState.getQuery("offline")!=="no")&&
 		 ((fdjtState.getQuery("offline"))||

@@ -236,12 +236,23 @@ var sbookMark=
 		    tag=info.dterm;
 		else tag=info.qid||info.oid||info.dterm||tag;}
 	    if ((info)&&(info.pool===sbook.sourcekb)) varname='OUTLETS';
+	    var checkspans=fdjtDOM.getChildren(tagselt,".checkspan");
+	    var i=0; var lim=checkspans.length;
+	    while (i<lim) {
+		var cspan=checkspans[i++];
+		if (((cspan.getAttribute("varname"))===varname)&&
+		    ((cspan.getAttribute("tagval"))===tag))
+		    return cspan;}
 	    var span=fdjtUI.CheckSpan("span.checkspan",varname,tag,true);
 	    if (title) span.title=title;
+	    span.setAttribute("varname",varname);
+	    span.setAttribute("tagval",tag);
 	    fdjtDOM.addClass(span,varname.toLowerCase());
-	    fdjtDOM.append(span,text);
-	    fdjtDOM.append(tagselt,span," ");}
-
+	    if (typeof text === 'string')
+		fdjtDOM.append(span,fdjtDOM("span.term",text));
+	    else fdjtDOM.append(span,text);
+	    fdjtDOM.append(tagselt,span," ");
+	    return span;}
 	    
 	/* The completions element */
 	function getCloud(){
@@ -303,7 +314,8 @@ var sbookMark=
 		    continue;}}
 	    // Generic sources go at the end
 	    fdjtDOM(completions,sources_span);
-	    fdjtDOM.addListener(completions,"click",markcloud_onclick);
+	    //fdjtDOM.addListener(completions,"click",markcloud_onclick);
+	    completions.onclick=markcloud_onclick;
 	    sbook_mark_cloud=
 		new fdjtUI.Completions(
 		    completions,false,
@@ -563,6 +575,8 @@ var sbookMark=
 	sbookMark.revid="$Id$";
 	sbookMark.version=parseInt("$Revision$".slice(10,-1));
 	sbookMark.cloud=function(){return sbook_mark_cloud;};
+	sbookMark.setExcerpt=function(ex){
+	    setExcerpt(fdjtID("SBOOKMARKFORM"),ex);};
 
 	return sbookMark;})();
 

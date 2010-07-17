@@ -127,8 +127,8 @@ var sbook_delete_icon="redx12x12.png";
 	var now=fdjtTime.tick();
 	if ((now-tick)<(12*3600)) {
 	    var date=new Date(1000*tick);
-	    var hour=date.getHour();
-	    var minute=date.getMinute();
+	    var hour=date.getHours();
+	    var minute=date.getMinutes();
 	    return ""+hour+":"+((minute<10)?"0":"")+minute;}
 	else {
 	    var date=new Date(1000*tick);

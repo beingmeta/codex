@@ -35,6 +35,8 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 var sbookMode=
     (function(){
 	// The foot HUD
+	var sbookHead=false;
+	// The foot HUD
 	var sbookFoot=false;
 	// This is the HUD where all glosses are displayed
 	var sbookGlossesHUD=false;
@@ -82,6 +84,7 @@ var sbookMode=
 			    var img=fdjtDOM.getFirstChild(glossmark,"IMG.big");
 			    if (img) img.src=pic;}}}});
 	    sbookFoot=fdjtID("SBOOKFOOT");
+	    sbookHead=fdjtID("SBOOKHEAD");
 	    var bookmark=fdjtID("SBOOKMARKHUD");
 	    bookmark.innerHTML=sbook_addgloss_html;
 	    var form=fdjtID("SBOOKMARKFORM");
@@ -207,7 +210,7 @@ var sbookMode=
 		sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
 		fdjtDOM.dropClass(document.body,"hudup");
 		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}
-	    if (sbook.floathud) sbook.displaySync();}
+	    sbook.displaySync();}
 
 	function sbookHUDToggle(mode){
 	    if (!(sbook.mode)) sbookMode(mode);
@@ -286,17 +289,24 @@ var sbookMode=
 	    view_top=view_top||fdjtDOM.viewTop();
 	    view_height=view_height||fdjtDOM.viewHeight();
 	    var foot_height=fdjtDOM.getGeometry(sbookFoot).height;
+	    var top_height=fdjtDOM.getGeometry(sbookHead).height;
+	    var content_offset=fdjtDOM.parsePX(fdjtDOM.getStyle("SBOOKCONTENT","top"));
 	    var box=fdjtID("SBOOKCONTENT");
 	    var help=fdjtID("SBOOKHELP");
+	    fdjtLog("[%f] syncHUD() fh=%o th=%o co=%o vt=%o vh=%o",
+		    fdjtET(),foot_height,top_height,content_offset,
+		    view_top,view_height);
 	    if (view_top!==sbook_sync_off) {
 		sbookHUD.style.top=view_top+'px';
 		sbook_sync_off=view_top;}
 	    if (view_height!==sbook_sync_height) {
 		if (view_height) {
-		    help.style.maxHeight=help.style.height=(view_height-200)+'px';
-		    box.style.maxHeight=box.style.height=(view_height-100)+'px';
-		    fdjtDOM.sizeToFit(box);
-		    sbookFoot.style.top=(view_height-50)+'px';}
+		    help.style.maxHeight=help.style.height=
+			(view_height-(top_height+foot_height))+'px';
+		    box.style.maxHeight=box.style.height=
+			(view_height-(content_offset+foot_height))+'px';
+		    // fdjtDOM.sizeToFit(box);
+		    sbookFoot.style.top=(view_height-foot_height)+'px';}
 		else {
 		    help.style.maxHeight=help.style.height='';
 		    box.style.maxHeight=box.style.height='';

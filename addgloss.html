@@ -22,7 +22,7 @@
 <div id="SBOOKMARKRELAYBLOCK" class="sbookrelayblock"></div>
 <div class="glossbar">
   <span class="right">
-    <img src="http://static.beingmeta.com/graphics/redx16x16.png"
+    <img src="http://static.beingmeta.com/graphics/redx32x32.png"
 	 alt="delete" onclick="sbookMark.delete(evt);"/>
     <span class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
       <input type="CHECKBOX" name="PRIVATE" value="yes"/>
@@ -35,36 +35,36 @@
 	   title="Save the edits for this gloss to the server"/>
   </span>
   <span class="left">
-    <img src="http://static.beingmeta.com/graphics/helpicon16x16.png"
-	 alt="help" title="help on adding glosses"
+    <img src="http://static.beingmeta.com/graphics/helpicon32x32.png"
+	 alt="help" title="help on adding glosses" class="mouseicon"
 	 onclick="sbookMark.toggle(event,'showhelp');"/>
-    <img src="http://static.beingmeta.com/graphics/TagIcon16x16.png"
-	 alt="help" title="insert or finish a tag"
+    <img src="http://static.beingmeta.com/graphics/helpicon40x40.png"
+	 alt="help" title="help on adding glosses" class="touchicon"
+	 onclick="sbookMark.toggle(event,'showhelp');"/>
+    <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+	 alt="tag" title="insert or finish a tag"
 	 onclick="sbookMark.insertTag(evt);"/>
-    <img src="http://static.beingmeta.com/graphics/outlink24x12.png"
+    <img src="http://static.beingmeta.com/graphics/outlink64x32.png"
 	 alt="xref" title="add or edit external URL references"
 	 onclick="sbookMark.toggle(event,'showxrefs');"/>
-    <img src="http://static.beingmeta.com/graphics/upload16x16.png"
+    <img src="http://static.beingmeta.com/graphics/upload32x32.png"
 	 alt="attach" title="upload files to attach to this gloss"
 	 onclick="sbookMark.toggle(event,'showattach');"/>
   </span>
 </div>
 <div class="formbody">
-<div class="help">
-Type your note in the box below, enclosing tag phrases in [bracket]s.
-
-Tagging with a group publishes the post to that group; tagging with a
-person"s name brings the note to that person's attention.
+<div class="help" id="GLOSSINPUTHELP">
+Enrich with [tags], sharing with [contacts]
 </div>
 <div class="xrefs" title="add an external link to your note">
   <input TYPE="TEXT" NAME="XREFTITLE" VALUE="" class="autoprompt"
-	 prompt="Describe the external link you are adding"/>
-  <input TYPE="TEXT" NAME="XREFURI" VALUE="" class="autoprompt"
-	 prompt="Enter the actual location (URL) for the link"/>
+	 prompt="Describe this URL"/>
+  <input TYPE="URL" NAME="XREFURI" VALUE="" class="autoprompt"
+	 prompt="URL (web address)"/>
 </div>
 <div class="attachments">
   <input TYPE="TEXT" NAME="ATTDESC" VALUE="" class="autoprompt"
-	 prompt="Enter a descriptive title for the file"/>
+	 prompt="Describe this file"/>
   <input TYPE="FILE" NAME="ATTDATA" VALUE=""/>
 </div>
 <div class="excerpt noexcerpt">
@@ -74,9 +74,9 @@ person"s name brings the note to that person's attention.
   <input id="SBOOKMARKEXCERPT" type="HIDDEN" name="EXCERPT"/>
 </div>
 <div class="note">
-  <textarea name="NOTE" WRAP="SOFT" prompt="add a note"
+  <textarea name="NOTE" WRAP="SOFT" prompt="add a note enriched with [tags] and addressed to [contacts]"
             id="SBOOKMARKINPUT" class="autoprompt addnote" 
-	    autocomplete="off"></textarea>
+	    autocomplete="off" helptext="GLOSSINPUTHELP"></textarea>
 </div>
 <div class="tagblock">
 <div id="SBOOKMARKTAGS" class="tags">

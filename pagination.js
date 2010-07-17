@@ -638,7 +638,7 @@ var sbookPaginate=
 			fdjtET(),window.scrollX,window.scrollY,page_xoff,page_yoff);
 		*/
 		GoToPage(sbook.curpage);}
-	    if (sbook.hudup) sbook.syncHUD();}
+	    if ((sbook.hudup)&&(sbook.floathud)) sbook.syncHUD();}
 	sbook.displaySync=displaySync;
 
 	function sbookGetPage(arg){

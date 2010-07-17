@@ -114,6 +114,11 @@ div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 .touch .fortouch {display: inline;}
 .touch li.fortouch {display: list-item;}
 
+body img.touchicon { display: none;}
+body img.mouseicon { display: inline;}
+body.touch img.touchicon { display: inline;}
+body.touch img.mouseicon { display: none;}
+
 /* HUDs */
 
 body {
@@ -323,7 +328,7 @@ div#SBOOKHUD.hidebuttons img.hudbutton { display: none;}
 body.hudup div#SBOOKHUD img.sbookhidehud {
     position: absolute; top: 0px; right: 79px; color: red;
     padding: 1px; margin: 2px; padding-top: 0px; margin-top: 0px;
-    border: solid red 1px; 
+    border: solid red 1px; width: 16px; background-color: silver;
     z-index: 500; opacity: 1.0;}
 body.hudup div#SBOOKHUD.minimal img.sbookhidehud { display: none;}
 body.hudup div#SBOOKHUD.help > img.sbookhidehud { display: none;}
@@ -815,8 +820,9 @@ form.mark div.formbody {
     margin-left: 10px; margin-right: 10px;
     padding-bottom: 10px;}
 form.mark div.glossbar {
-    background-color: silver; width: 100%; height: 2em;
+    background-color: silver; width: 100%; height: 32px;
     margin-left: 0px; margin-right: 0px; margin-bottom: 3px;}
+form.mark div.glossbar img { height: 24px;}
 
 form.mark div.glossbar span.left {
     float: left; margin-top: 2px; paddingc-left: 2px;}
@@ -825,16 +831,18 @@ form.mark div.glossbar span.left img {
     border-bottom: solid transparent 3px;
     display: none;}
 form.mark div.glossbar span.left img[alt='help'] { display: inline;}
+form.mark div.glossbar span.left img.touchicon[alt='help'] { display: none;}
 form.mark div.glossbar:hover span.left img { display: inline;}
 form.mark div.glossbar.engaged span.left img { display: inline;}
 
-form.mark div.glossbar { font-size: 75%; }
+form.mark div.glossbar { }
 form.mark div.glossbar span.right { float: right;}
 form.mark div.glossbar .checkspan {
-    color: blue; font-weight: bold;}
+    color: blue; font-weight: bold; font-size: 16px;}
 form.mark div.glossbar .checkspan input[type='checkbox'] { display: none;}
 form.mark div.glossbar .checkspan .checked { color: black;}
 
+form.mark div.glossbar input[type='SUBMIT'] {font-size: 16px;}
 form.mark div.glossbar input[value='Save'] {display: none;}
 form.mark div.glossbar img[alt='delete'] {display: none;}
 form.mark.sbookedit div.glossbar input[value='Save'] {display: inline;}
@@ -866,7 +874,9 @@ form.mark div.attachments input {
     background-color: silver; border: 0px; color: white;}
 
 form.mark div.help {
-    min-height: inherit; text-align: left; color: white;}
+    min-height: inherit; text-align: center; color: white;
+    font-style: italic; margin-bottom: 5px;}
+form.mark div.help.showhelp { display: block;}
 form.mark.showhelp div.help { display: block;}
 form.mark.showxrefs div.xrefs { display: block;}
 form.mark.showattach div.attachments { display: block;}
@@ -888,7 +898,7 @@ form.mark.showattach div.excerpt {
 form.mark input[NAME='XREFURI'], form.mark input[NAME='ATTDATA'] {
     font-family: fixed;}
 form.mark input[NAME='XREFTITLE'], form.mark input[NAME='ATTDESC'] {
-    font-size: 125%;}
+    font-family: sans,sans-serif;}
 form.mark div.xrefs input[type='TEXT'] {
     clear: both; width: 100%; display: block;}
 form.mark div.xrefs div.xref {
@@ -909,8 +919,8 @@ form.mark div.note {
     clear: both; width: 100%; text-align: right; margin: 0px; 
     min-height: 60px;}
 form.mark div.note textarea {
-    height: 30px; min-height: 30px; display: block;
-    background-color: white;
+    min-height: 45px; display: block;
+    background-color: white; font-size: 100%;
     width: 96%;  max-width: 100%; margin: 0px; border: 0px;
     padding-left: 2%; padding-right: 2%;
     padding-top: 6px; padding-bottom: 6px;
@@ -920,14 +930,16 @@ form.mark div.note textarea {
     -moz-border-radius: 12px;
     -khtml-border-radius: 12px;}
 
-form.mark > div.tagblock { margin-right: 0px;}
+form.mark div.tagblock {
+    border-top: solid silver 4px; padding-top: 4px;
+    margin-right: 0px; margin-top: 4px;}
 form.mark div.tags {
-    margin-right: 0px; padding-right: 0px; padding-top: 7px;
-    text-align: left;}
+    text-align: left; background-color: lightgray; line-height: 150%;
+    border-radius: .75em; -webkit-border-radius: .75em;
+    -moz-border-radius: .75em; -khtml-border-radius: .75em;}
 form.mark div.tags span.checkspan {
-    background-color: yellow; color: black;
     padding: 2px; padding-right: 3px; 
-    border: solid black 2px;
+    border: solid black 2px; margin-bottom: 3px;
     border-top-left-radius: 6px; border-bottom-left-radius: 6px;
     border-top-right-radius: 2px; border-bottom-right-radius: 2px;
     -webkit-border-top-left-radius: 6px;
@@ -942,7 +954,12 @@ form.mark div.tags span.checkspan {
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topright: 3px;
     -moz-border-radius-bottomright: 3px;}
-form.mark div.tags span.checkspan.outlets { background-color: white;} 
+form.mark div.tags span.checkspan.tags {
+    background-color: yellow; color: black;}
+form.mark div.tags span.checkspan.outlets {
+    background-color: ivory; color: blue; } 
+form.mark div.tags span.checkspan.outlets span.term:before {
+    color: orange; content: '@';} 
 form.mark div.tags span.checkspan span.dterm {
     color: black; font-weight: bold;}
 div#SBOOKHUD form.mark div.tags span.checkspan span.dterm {
@@ -952,7 +969,8 @@ form.mark div.tags div.inputhelp {
 form.mark div.tags div.inputhelp.showhelp { display: block;}
 
 form.mark div.completions { clear: both; }
-form.mark div.completions .completion {
+form.mark div.completions .completion { white-space: nowrap;}
+form.mark div.completions .completion.dterm {
     background-color: yellow; color: black;
     padding-right: 3px; padding-left: 2px;
     border: solid black 2px;
@@ -970,9 +988,11 @@ form.mark div.completions .completion {
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;}
+form.mark div.completions .completion.outlet {
+    background-color: inherit; color: ivory; font-weight: normal;}
+form.mark div.completions .completion.outlet:before {
+    content: '@'; font-weight: bold; color: yellow; font-size: 125%;}
 
-form.mark div.completions .completion { white-space: nowrap;}
-form.mark div.completions .completion.outlet { background-color: white;}
 div#SBOOKHUD form.mark div.completions .completion.dterm {
     color: #505050;}
 
@@ -1630,11 +1650,27 @@ body.touch div#SBOOKHUD div#SBOOKSOURCES { height: 75px;  padding-bottom: 0px;}
 body.touch div#SBOOKHUD.browsing div#SBOOKSEARCH.hudblock {
     height: 70px;  padding-bottom: 0px; padding-top: 5px;}
 body.touch div#SBOOKHUD div#SBOOKCONTENT { top: 75px; }
+body.touch div#SBOOKHUD div#SBOOKFOOT { height: 75px; }
+body.touch.hudup div#SBOOKHUD img.sbookhidehud {
+    width: 32px; right: 63px;}
 body.touch .sbooknote span.note { font-size: 95%;}
+
+body.touch form.mark div.glossbar { height: 50px;}
+body.touch form.mark div.glossbar input[type='submit'] { font-size: 24px;}
+body.touch form.mark div.glossbar span.checkspan { font-size: 20px;}
+body.touch form.mark div.glossbar img { height: 40px; margin-top: 4px;}
+body.touch form.mark div.glossbar span.left img { display: inline;}
+body.touch form.mark div.glossbar span.left img.mouseicon { display: none;}
+body.touch form.mark div.glossbar span.left img.touchicon[alt='help'] { display: none;}
+body.touch form.mark div.note textarea { font-size: 18px;}
 
 body.touch div.sbookmargin { }
 body.touch .hudbutton { width: 60px; }
 body.touch .glossmark { width: 60px; }
+
+body.touch form.mark input[TYPE='TEXT'] { font-size: 100%; width: 95%;}
+body.touch form.mark input[TYPE='URL'] { font-size: 100%; width: 95%;}
+body.touch form.mark input[TYPE='FILE'] { font-size: 100%; width: 95%;}
 
 body.touch div.helphud {font-size: 20px;}
 body.touch div.helphud.tapnav {left: 75px;}
