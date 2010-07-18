@@ -428,14 +428,15 @@ sbook.Setup=
 			var glossdata=fdjtState.getLocal(glossid,true);
 			if (glossdata) glossdb.Import(glossdata);}}
 		else sbook.allglosses=[];}
-	    var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
-	    glosses_script.language="javascript";
-	    glosses_script.src="https://"+sbook.server+
-	      "/v3/glosses.js?CALLBACK=sbook.Setup.initGlosses&REFURI="+
-		encodeURIComponent(sbook.refuri);
-	    if (sbook.syncstamp)
-		glosses_script.src=glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
-	    document.body.appendChild(glosses_script);}
+	    if (navigator.onLine) {
+		var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
+		glosses_script.language="javascript";
+		glosses_script.src="https://"+sbook.server+
+		    "/v3/glosses.js?CALLBACK=sbook.Setup.initGlosses&REFURI="+
+		    encodeURIComponent(sbook.refuri);
+		if (sbook.syncstamp)
+		    glosses_script.src=glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
+		document.body.appendChild(glosses_script);}}
 
 	/* This initializes the sbook state to the initial location with the
 	   document, using the hash value if there is one. */ 
