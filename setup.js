@@ -70,6 +70,7 @@ sbook.Setup=
 	    sbook.Message("Scanning document structure");
 	    var metadata=sbookScan(sbook.root);
 	    sbook.docinfo=sbook.DocInfo.map=metadata;
+	    setupGlossServer();
 	    // Now get the glosses
 	    sbook.Message("Getting glosses");
 	    getGlosses();
@@ -82,8 +83,8 @@ sbook.Setup=
 	    sbook.Message("Indexing tags");
 	    sbook.indexTags(metadata);
 	    sbook.indexTechnoratiTags(sbook.knodule);
-	    sbook.Message("Setting up gloss server");
-	    setupGlossServer();
+	    if (sbook.offline)
+		fdjtDOM.addListener(document.body,"online",go_online);
 	    applySettings();
 	    if (sbook.paginate) sbookPaginate();
 	    var knodules_done=new Date();
@@ -319,7 +320,8 @@ sbook.Setup=
 	function getUser() {
 	    if (sbook.user) return;
 	    else if ((sbook.offline)&&
-		     (fdjtState.getLocal("sbook.user"))) {
+		     (fdjtState.getLocal("sbook.user"))&&
+		     (fdjtState.getLocal("sbook.nodeid("+refuri+")"))) {
 		var refuri=sbook.refuri;
 		var user=fdjtState.getLocal("sbook.user");
 		var userinfo=JSON.parse(fdjtState.getLocal(user));
@@ -438,6 +440,15 @@ sbook.Setup=
 		    glosses_script.src=glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
 		document.body.appendChild(glosses_script);}}
 
+	function go_online(evt){
+	    sbookMark.sync();
+	    var uri="https://"+sbook.server+
+		"/v3/glosses.js?&REFURI="+
+		encodeURIComponent(sbook.refuri)+
+		"&ORIGIN="+encodeURIComponent(document.location.protocol+"//"+document.location.hostname);
+	    if (sbook.syncstamp) uri=uri+"&SYNCSTAMP="+sbook.syncstamp;
+	    fdjtAjax.jsonCall(fdjtKB.Import,uri);}
+	    
 	/* This initializes the sbook state to the initial location with the
 	   document, using the hash value if there is one. */ 
 	function initLocation() {

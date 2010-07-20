@@ -393,6 +393,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function mousedown(evt){
 	var target=fdjtUI.T(evt); var ref;
+	if (evt.button>1) return;
 	fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) tracetouch("mousedown",evt);
 	if (touch_timer) {
@@ -424,9 +425,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else {}}
 
     function mouseup(evt){
+	if (evt.button>1) return;
+	var target=fdjtUI.T(evt);
+	if (fdjtDOM.isClickable(target)) return;
 	fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) tracetouch("mouseup",evt);
-	var target=fdjtUI.T(evt); var ref=sbook.getRef(target);
+	var ref=sbook.getRef(target);
 	if (touch_timer) {
 	    clearTimeout(touch_timer); touch_timer=false;
 	    if (ref) {
@@ -747,7 +751,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	{window: {mousedown: mousedown,mouseup: mouseup,
 		  keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
 	 hud: {},
-	 glossmark: {},
+	 glossmark: {click: glossmark_onclick},
 	 ".hudbutton": {mouseover:hudbutton,
 			mouseout:hudbutton},
 	 ".sbookmargin": {}};

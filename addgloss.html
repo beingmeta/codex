@@ -7,7 +7,8 @@
       ajaxaction="https://glosses.sbooks.net/v3/ajaxgloss.fdcgi"
       accept-charset="UTF-8"
       target="sbookping"
-      method="GET">
+      enctype="multipart/form-data"
+      method="POST">
 <div class="hidden">
   <input id="SBOOKMARKFRAGID" type="HIDDEN" name="FRAG"/>
   <input id="SBOOKMARKREFURI" type="HIDDEN" name="REFURI"/>
@@ -59,7 +60,7 @@ Enrich with [tags], sharing with [contacts]
 <div class="xrefs" title="add an external link to your note">
   <input TYPE="TEXT" NAME="XREFTITLE" VALUE="" class="autoprompt"
 	 prompt="Describe this URL"/>
-  <input TYPE="URL" NAME="XREFURI" VALUE="" class="autoprompt"
+  <input TYPE="TEXT" NAME="XREFURI" VALUE="" class="autoprompt"
 	 prompt="URL (web address)"/>
 </div>
 <div class="attachments">

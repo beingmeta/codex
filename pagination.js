@@ -570,7 +570,7 @@ var sbookPaginate=
 	function GoToPage(pagenum,pageoff){
 	    if ((typeof pagenum !== 'number')||
 		(pagenum<0)||(pagenum>=sbook.pages.length)) {
-		fdjtLog.warn("[%f] Invalid page number %o",pagenum);
+		fdjtLog.warn("[%f] Invalid page number %o",fdjtET(),pagenum);
 		return;}
 	    if (sbook.Trace.nav)
 		fdjtLog("[%f] sbook.GoToPage %o+%o",fdjtET(),pagenum,pageoff);

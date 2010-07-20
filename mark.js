@@ -512,7 +512,7 @@ var sbookMark=
 
 	function setupMarkForm(form){
 	    if (form.getAttribute("sbooksetup")) return;
-	    form.onsubmit=fdjtAjax.onsubmit;
+	    form.onsubmit=glossmark_onsubmit;
 	    form.oncallback=sbookMark.oncallback;
 	    var glossbar=fdjtDOM.getChild(form,".glossbar");
 	    if (glossbar)
@@ -528,6 +528,70 @@ var sbookMark=
 	    else fdjtLog("No origin field in form");
 	    fdjtUI.AutoPrompt.setup(form);
 	    form.setAttribute("sbooksetup","yes");}
+
+	function glossmark_onsubmit(evt){
+	    evt=evt||event||null;
+	    var form=fdjtUI.T(evt);
+	    fdjtUI.AutoPrompt.cleanup(form);
+	    if (!(sbook.offline)) return fdjtAjax.onsubmit(evt);
+	    if (!(navigator.onLine)) return glossmark_offline(form);
+	    // Eventually, we'll unpack the AJAX handler to let it handle
+	    //  connection failures by calling glossmark_offline.
+	    else return fdjtAjax.onsubmit(evt);}
+	sbookMark.onsubmit=glossmark_onsubmit;
+	function glossmark_offline(form){
+	    var json=fdjtAjax.formJSON(form,["tags","xrefs"],true);
+	    var params=fdjtAjax.formParams(form);
+	    var queued=fdjtState.getLocal("queued("+sbook.refuri+")",true);
+	    if (!(queued)) queued=[];
+	    queued.push(json.uuid);
+	    var glossdata=
+		{refuri: json.refuri,frag: json.frag,user: json.user,uuid: json.uuid,
+		 qid: json.uuid,gloss: json.uuid};
+	    glossdata.tstamp=fdjtTime.tick();
+	    if ((json.note)&&(!(fdjtString.isEmpty(json.note)))) glossdata.note=json.note;
+	    if ((json.excerpt)&&(!(fdjtString.isEmpty(json.excerpt)))) glossdata.excerpt=json.excerpt;
+	    if ((json.details)&&(!(fdjtString.isEmpty(json.details)))) glossdata.details=json.details;
+	    if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
+	    if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
+	    sbook.glosses.Import(glossdata);
+	    fdjtState.setLocal("params("+json.uuid+")",params);
+	    fdjtState.setLocal("queued("+sbook.refuri+")",queued,true);
+	    // Clear the UUID
+	    fdjtID("SBOOKMARKUUID").value="";
+	    sbook.preview_target=false;
+	    /* Turn off the target lock */
+	    sbook.setTarget(false);
+	    sbookMode(false);}
+	function glossmark_sync(){
+	    if (!(sbook.offline)) return;
+	    var queued=fdjtState.getLocal("queued("+sbook.refuri+")",true);
+	    if ((!(queued))||(queued.length===0)) {
+		fdjtState.dropLocal("queued("+sbook.refuri+")");
+		return;}
+	    var ajax_uri=fdjtID("SBOOKMARKFORM").getAttribute("ajaxaction");
+	    var i=0; var lim=queued.length; var pending=[];
+	    while (i<lim) {
+		var uuid=queued[i++];
+		var params=fdjtState.getLocal("params("+uuid+")");
+		if (params) pending.push(uuid);
+		var req=new XMLHttpRequest();
+		req.open('POST',ajax_uri);
+		req.withCredentials='yes';
+		req.onreadystatechange=function () {
+		    if ((req.readyState === 4) && (req.status>=200) && (req.status<300)) {
+			fdjtState.dropLocal("params("+uuid+")");
+			oncallback(req);}};
+		try {
+		    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		    req.send(params);}
+		catch (ex) {failed.push(uuid);}}
+	    if ((pending)&&(pending.length))
+		fdjtState.setLocal("queued("+sbook.refuri+")",pending,true);
+	    else fdjtState.dropLocal("queued("+sbook.refuri+")");
+	    if ((pending)&&(pending.length>0)) return pending;
+	    else return false;}
+	sbookMark.sync=glossmark_sync;
 
 	function toggleMarkMode(arg,mode) {
 	    if (!(arg)) arg=event;
