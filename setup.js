@@ -354,6 +354,7 @@ sbook.Setup=
 	    sbook.user=fdjtKB.Import(userinfo);
 	    if (sbook.offline) {
 		fdjtState.setLocal(sbook.user.oid,sbook.user,true);
+		fdjtState.setLocal("sbook.nodeid("+sbook.refuri+")",nodeid);
 		fdjtState.setLocal("sbook.user",sbook.user.oid);}
 	    gotInfo("sources",sources);
 	    gotInfo("outlets",outlets);
