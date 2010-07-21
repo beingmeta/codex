@@ -44,7 +44,7 @@ var sbook=
      last_mode: false, last_dash: "about",
      target_title: false,preview_title: false,
      // How long it takes a gesture to go from tap to hold
-     holdmsecs: 500, edgeclick: 50, pagesize: 250, pagefade: true,  
+     holdmsecs: 500, edgeclick: 50, pagesize: 250, animate: true,  
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -480,9 +480,14 @@ var sbook_gloss_data=
     sbook.GoTo=sbookGoTo;
 
     function sbookJumpTo(target){
-	sbook.Preview(false);
-	sbookGoTo(target);
-	sbookMode(false);}
+      sbook.Preview(false); sbookMode(false);
+      if (sbook.animate) {
+	document.body.style.opacity=0;
+	setTimeout(function() {
+	    sbookGoTo(target);
+	    document.body.style.opacity=1;},
+	  150);}
+      else sbookGoTo(target);}
     sbook.JumpTo=sbookJumpTo;
 
 })();

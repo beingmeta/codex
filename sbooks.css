@@ -121,16 +121,23 @@ body.touch img.mouseicon { display: none;}
 
 /* HUDs */
 
-body {
+body.sbook {
     -webkit-transition-property: opacity;
-    -webkit-transition-duration: 0.75s;}
+    -webkit-transition-duration: 0.2s;}
+#SBOOKBODY {
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 0.2s;}
 body.dimmed > * { opacity: 0.3;}
-body.hudup > * { opacity: 0.9;}
+body.hudup > * {
+    transition-property: opacity; transition-duration: .5s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: .5s;
+    opacity: 0.9; }
 
 div#SBOOKHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; 
-    transition-property: opacity; transition-duration: 3s;
     visibility: hidden;
+    transition-property: opacity; transition-duration: .5s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: .5s;
     font-size: 14px; font-family: helvetica,sans,sans-serif;
     z-index: 100;}
 body.hudup > div#SBOOKHUD, 
@@ -1703,7 +1710,7 @@ a img { border: transparent;}
 .sbookpage { page-break-before: always;}
 .sbookpageblock { page-break-inside: avoid;}
 .sbookkeep { page-break-inside: avoid;}
-.sbookfullpage {
+.sbookfullpage, .singlepage {
     page-break-inside: avoid;
     page-break-before: always;
     page-break-after: always;}

@@ -145,72 +145,87 @@ var sbookMode=
 	var sbookDashMode_pat=/(login)|(device)|(sbookapp)|(dashtoc)|(about)/g;
 	
 	function sbookMode(mode){
-	    if (typeof mode === 'undefined') return sbook.mode;
-	    if (sbook.Trace.mode)
-		fdjtLog("[%fs] sbookMode %o, cur=%o dbc=%o",
-			fdjtET(),mode,sbook.mode,document.body.className);
-	    if (sbook.preview) sbook.Preview(false);
-	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
-	    if (mode) {
-		if (mode==="dash") mode=sbook.last_dash||"about";
-		if (sbook.floathud) syncHUD();
-		if (mode===sbook.mode) {}
-		else if (mode===true) {
-		    sbook.mode=false;
-		    sbook.last_mode=true;}
-		else if (typeof mode !== 'string') 
-		    throw new Error('mode arg not a string');
-		else if (mode==='help') {
-		    // Don't save 'help' as the last mode, because
-		    //  we'll return to the actual last mode when help
-		    //  finishes
-		    sbook.mode=mode;}
-		else {
-		    sbook.mode=mode;
-		    sbook.last_mode=mode;}
-		if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
-		    sbookSetupDash();
-		if (!(typeof mode === 'string'))
-		    sbook.scrolling=false;
-		else if (mode==='allglosses')
-		    sbook.scrolling="SBOOKALLGLOSSES";
-		else if (mode==='browsing')
-		    sbook.scrolling="SBOOKALLGLOSSES";
-		else if (mode.search(sbookDashMode_pat)===0) {
-		    fdjtDOM.addClass(sbookHUD,"dash");
-		    sbook.scrolling="SBOOKDASH";
-		    sbook.last_dash=mode;}
-		else {
-		    sbook.scrolling=false;
-		    fdjtDOM.dropClass(sbookHUD,"dash");}
-		sbook.hudup=true;
-		fdjtDOM.addClass(document.body,"hudup");
-		if (mode===true) 
-		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,"minimal");
-		else fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
-		if (mode==="help")
-		    fdjtDOM.addClass(document.body,"dimmed");
-		else fdjtDOM.dropClass(document.body,"dimmed");
-		if ((mode==="allglosses")&&
-		    (sbook.curinfo)&&(sbook.curinfo.first)) {
-		    sbook.UI.scrollGlosses(
-			sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"));}
-		if (mode==="searching")
-		    fdjtID("SBOOKSEARCHTEXT").focus();
-		else if (mode==="mark")
-		    fdjtID("SBOOKMARKINPUT").focus();
-		else document.body.focus();}
+	  if (typeof mode === 'undefined') return sbook.mode;
+	  if (sbook.Trace.mode)
+	    fdjtLog("[%fs] sbookMode %o, cur=%o dbc=%o",
+		    fdjtET(),mode,sbook.mode,document.body.className);
+	  if (sbook.preview) sbook.Preview(false);
+	  if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
+	  if (mode) {
+	    if (mode==="dash") mode=sbook.last_dash||"about";
+	    if (sbook.floathud) syncHUD();
+	    if (mode===sbook.mode) {}
+	    else if (mode===true) {
+	      sbook.mode=false;
+	      sbook.last_mode=true;}
+	    else if (typeof mode !== 'string') 
+	      throw new Error('mode arg not a string');
+	    else if (mode==='help') {
+	      // Don't save 'help' as the last mode, because
+	      //  we'll return to the actual last mode when help
+	      //  finishes
+	      sbook.mode=mode;}
 	    else {
-		syncHUD();
-		sbook.last_mode=sbook.mode;
-		document.body.focus();
-		fdjtDOM.dropClass(document.body,"dimmed");
-		fdjtDOM.dropClass(sbookHUD,"dash");
-		fdjtDOM.dropClass(sbookHUD,"full");
-		sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
-		fdjtDOM.dropClass(document.body,"hudup");
-		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);}
+	      sbook.mode=mode;
+	      sbook.last_mode=mode;}
+	    if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
+	      sbookSetupDash();
+	    if (!(typeof mode === 'string'))
+	      sbook.scrolling=false;
+	    else if (mode==='allglosses')
+	      sbook.scrolling="SBOOKALLGLOSSES";
+	    else if (mode==='browsing')
+	      sbook.scrolling="SBOOKALLGLOSSES";
+	    else if (mode.search(sbookDashMode_pat)===0) {
+	      fdjtDOM.addClass(sbookHUD,"dash");
+	      sbook.scrolling="SBOOKDASH";
+	      sbook.last_dash=mode;}
+	    else {
+	      sbook.scrolling=false;
+	      fdjtDOM.dropClass(sbookHUD,"dash");}
+	    sbook.hudup=true;
+	    if ((mode===true)&&(sbook.animate)) {
+	      sbookHUD.opacity=1;
+	      setTimeout(function(){
+		  fdjtDOM.addClass(document.body,"hudup");},
+		500);}
+	    else fdjtDOM.addClass(document.body,"hudup");
+	    if (mode===true) 
+	      fdjtDOM.swapClass(sbookHUD,sbookMode_pat,"minimal");
+	    else fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
+	    if (mode==="help")
+	      fdjtDOM.addClass(document.body,"dimmed");
+	    else fdjtDOM.dropClass(document.body,"dimmed");
+	    if ((mode==="allglosses")&&
+		(sbook.curinfo)&&(sbook.curinfo.first)) {
+	      sbook.UI.scrollGlosses
+		(sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"));}
+	    if (mode==="searching")
+	      fdjtID("SBOOKSEARCHTEXT").focus();
+	    else if (mode==="mark")
+	      fdjtID("SBOOKMARKINPUT").focus();
+	    else document.body.focus();
 	    sbook.displaySync();}
+	  else {
+	    syncHUD();
+	    sbook.last_mode=sbook.mode;
+	    document.body.focus();
+	    fdjtDOM.dropClass(document.body,"dimmed");
+	    fdjtDOM.dropClass(sbookHUD,"dash");
+	    fdjtDOM.dropClass(sbookHUD,"full");
+	    sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
+	    if (sbook.animate) {
+	      sbookHUD.style.opacity=0;
+	      setTimeout(function(){
+		  fdjtDOM.dropClass(document.body,"hudup");
+		  fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
+		  sbook.displaySync();
+		  sbookHUD.style.opacity=1;},
+		500);}
+	    else {
+	      fdjtDOM.dropClass(document.body,"hudup");
+	      fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
+	      sbook.displaySync();}}}
 
 	function sbookHUDToggle(mode){
 	    if (!(sbook.mode)) sbookMode(mode);

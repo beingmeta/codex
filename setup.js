@@ -63,6 +63,7 @@ sbook.Setup=
 	    else if (sbook.nouser) {
 		fdjtDOM.addClass(document.body,"nosbookuser");}
 	    else getUser();
+	    sbook.body=fdjtID("SBOOKBODY")||document.body;
 	    sbook.initDisplay();
 	    sbook.displaySync();
 	    if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))

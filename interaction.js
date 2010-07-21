@@ -190,13 +190,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((sbook.edgeclick)&&((x-left)<leftwidth)) {
 	    if (sbook.preview) previewBackward();
 	    else {
-		if (sbook.mode) sbookMode(false);
+	      if (sbook.mode) sbookMode(false);
 		pageBackward();}}
 	else if ((sbook.edgeclick)&&(((left+width)-x)<rightwidth)) {
 	    if (sbook.preview) previewBackward();
 	    else {
-		if (sbook.mode) sbookMode(false);
-		pageForward();}}
+	      if (sbook.mode) sbookMode(false);
+	      pageForward();}}
 	else if (sbook.preview) sbook.Preview(false);
 	else if (sbook.mode) sbookMode(false);
 	else if (sbook.hudup) sbookMode(false);
@@ -323,7 +323,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if (fdjtDOM.hasClass(sbook.HUD,mode)) {
 		if (sbook.preview) sbook.Preview(false);
 		else {
-		    sbookMode(false); sbookMode(true);}}
+		  sbookMode(false); sbookMode(true);}}
 	    else sbookMode(mode);}
 	else if ((evt.type==='mouseover')&&(sbook.mode))
 	    return;
@@ -798,7 +798,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
 		var pagenum=sbook.getPage(fdjtDOM.viewTop());
 		if (pagenum<(sbook.pages.length-1)) sbook.curpage=pagenum+1;
-		sbook.GoToPage(sbook.curpage);}
+		sbook.FadeToPage(sbook.curpage);}
 	    else {
 		// Synchronize if neccessary
 		if (sbook.pagescroll!==fdjtDOM.viewTop())
@@ -806,11 +806,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		var info=sbook.pageinfo[sbook.curpage];
 		var pagebottom=fdjtDOM.viewTop()+(fdjtDOM.viewHeight());
 		if (pagebottom<info.bottom)
-		    sbook.GoToPage(sbook.curpage,pagebottom-info.top);
+		    sbook.FadeToPage(sbook.curpage,pagebottom-info.top);
 		else if (sbook.curpage===sbook.pages.length) {}
 		else {
 		    sbook.curpage++;
-		    sbook.GoToPage(sbook.curpage);
+		    sbook.FadeToPage(sbook.curpage);
 		    if ((sbook.curinfo.focus)&&(sbook.curinfo.focus.id))
 			sbook.setHashID(sbook.curinfo.focus);}}
 	    if (sbook.mode==='allglosses')
@@ -828,20 +828,20 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
 		var pagenum=sbook.getPage(fdjtDOM.viewTop());
 		if (pagenum<(sbook.pages.length-1)) sbook.curpage=pagenum+1;
-		sbook.GoToPage(sbook.curpage);}
+		sbook.FadeToPage(sbook.curpage);}
 	    else {
 		// Synchronize if neccessary
 		if (sbook.pagescroll!==fdjtDOM.viewTop())
-		    sbook.GoToPage(sbook.curpage,sbook.curoff);
+		    sbook.FadeToPage(sbook.curpage,sbook.curoff);
 		var info=sbook.pageinfo[sbook.curpage];
 		var pagetop=fdjtDOM.viewTop()+sbook.pageTop();
 		if (pagetop>info.top)
-		    sbook.GoToPage(sbook.curpage,
+		    sbook.FadeToPage(sbook.curpage,
 				   (info.top-pagetop)-sbook.pageSize());
 		else if (sbook.curpage===0) {}
 		else {
 		    sbook.curpage--;
-		    sbook.GoToPage(sbook.curpage);
+		    sbook.FadeToPage(sbook.curpage);
 		    if (sbook.curinfo.focus)
 			sbook.setHashID(sbook.curinfo.focus);}}
 	    if (sbook.mode==='allglosses')
