@@ -392,7 +392,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function mousedown(evt){
 	var target=fdjtUI.T(evt); var ref;
-	if (evt.button>1) return;
+	if ((evt.button>1)||(fdjtDOM.isClickable(target))) return;
 	fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) tracetouch("mousedown",evt);
 	if (touch_timer) {
@@ -492,6 +492,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		sbookMode(true);
 	    else if (sbook.hudup) {
 		var marked=sbook.getTarget(target);
+		fdjtTrace("click on %o from %o",marked,target);
 		if (marked) sbookMark(marked);
 		else sbookMode(false);}
 	    else sbookMode(true);}

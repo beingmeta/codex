@@ -21,6 +21,35 @@
   <input id="SBOOKMARKTITLE" type="HIDDEN" name="DOCTITLE"/>
 </div>
 <div id="SBOOKMARKRELAYBLOCK" class="sbookrelayblock"></div>
+<div class="formbody">
+<div class="help" id="GLOSSINPUTHELP">
+Enrich with [tags], sharing with [contacts]
+</div>
+<div class="xrefs" title="add an external link to your note">
+  <input TYPE="TEXT" NAME="XREFTITLE" VALUE="" class="autoprompt"
+	 prompt="Describe this URL"/>
+  <input TYPE="TEXT" NAME="XREFURI" VALUE="" class="autoprompt"
+	 prompt="URL (web address)"/>
+</div>
+<div class="attachments">
+  <input TYPE="TEXT" NAME="ATTDESC" VALUE="" class="autoprompt"
+	 prompt="Describe this file"/>
+  <input TYPE="FILE" NAME="ATTDATA" VALUE=""/>
+</div>
+<div class="excerpt noexcerpt">
+  <span class="rq">&rdquo;</span>
+  <span class="lq">&ldquo;</span>
+  <span class="content"></span>
+  <input id="SBOOKMARKEXCERPT" type="HIDDEN" name="EXCERPT"/>
+</div>
+<div class="note">
+  <textarea name="NOTE" WRAP="SOFT" prompt="add a note enriched with [tags] and addressed to [contacts]"
+            id="SBOOKMARKINPUT" class="autoprompt addnote" 
+	    autocomplete="off" xhelptext="GLOSSINPUTHELP"></textarea>
+</div>
+<div class="tagblock">
+<div id="SBOOKMARKTAGS" class="tags">
+</div>
 <div class="glossbar">
   <span class="right">
     <img src="http://static.beingmeta.com/graphics/redx32x32.png"
@@ -53,37 +82,8 @@
 	 onclick="sbookMark.toggle(event,'showattach');"/>
   </span>
 </div>
-<div class="formbody">
-<div class="help" id="GLOSSINPUTHELP">
-Enrich with [tags], sharing with [contacts]
-</div>
-<div class="xrefs" title="add an external link to your note">
-  <input TYPE="TEXT" NAME="XREFTITLE" VALUE="" class="autoprompt"
-	 prompt="Describe this URL"/>
-  <input TYPE="TEXT" NAME="XREFURI" VALUE="" class="autoprompt"
-	 prompt="URL (web address)"/>
-</div>
-<div class="attachments">
-  <input TYPE="TEXT" NAME="ATTDESC" VALUE="" class="autoprompt"
-	 prompt="Describe this file"/>
-  <input TYPE="FILE" NAME="ATTDATA" VALUE=""/>
-</div>
-<div class="excerpt noexcerpt">
-  <span class="rq">&rdquo;</span>
-  <span class="lq">&ldquo;</span>
-  <span class="content"></span>
-  <input id="SBOOKMARKEXCERPT" type="HIDDEN" name="EXCERPT"/>
-</div>
-<div class="note">
-  <textarea name="NOTE" WRAP="SOFT" prompt="add a note enriched with [tags] and addressed to [contacts]"
-            id="SBOOKMARKINPUT" class="autoprompt addnote" 
-	    autocomplete="off" xhelptext="GLOSSINPUTHELP"></textarea>
-</div>
-<div class="tagblock">
-<div id="SBOOKMARKTAGS" class="tags">
 </div>
 <div id="SBOOKMARKCLOUD">
-</div>
 </div>
 </div>
 </form>

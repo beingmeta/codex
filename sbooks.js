@@ -248,17 +248,18 @@ var sbook_gloss_data=
     sbook.getTarget=function(scan,closest){
 	scan=scan.target||scan.srcElement||scan;
 	var target=false;
-	while (scan) 
-	    if ((scan===sbook.root)||(scan.sbookui))
-		return false;
-	else if (scan.id)
-	    if ((fdjtDOM.hasClass(scan,"sbookfoci"))||
-		((sbook.focusrules)&&(sbook.focusrules.match(scan))))
-		return scan;
-	else if (closest) return scan;
-	else if (target) scan=scan.parentNode;
-	else {target=scan; scan=scan.parentNode;}
-	else scan=scan.parentNode;
+	while (scan) {
+	  if (scan.sbookui)
+	    return false;
+	  else if (scan===sbook.root) return target;
+	  else if (scan.id) {
+	    if ((fdjtDOM.hasClass(scan,"sbookfoci"))||(!(sbook.focusrules))||
+		(sbook.focusrules.match(scan)))
+	      return scan;
+	    else if (closest) return scan;
+	    else if (target) scan=scan.parentNode;
+	    else {target=scan; scan=scan.parentNode;}}
+	  else scan=scan.parentNode;}
 	return target;};
 
     sbook.getTitle=function(target) {
