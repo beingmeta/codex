@@ -63,7 +63,9 @@ sbook.Setup=
 	    else if (sbook.nouser) {
 		fdjtDOM.addClass(document.body,"nosbookuser");}
 	    else getUser();
-	    sbook.body=fdjtID("SBOOKBODY")||document.body;
+	    if (fdjtDOM.getMeta("SBOOKBODY"))
+		sbook.body=fdjtID(fdjtDOM.getMeta("SBOOKBODY"))||fdjtID("SBOOKBODY")||document.body;
+	    else sbook.body=fdjtID("SBOOKBODY")||document.body;
 	    sbook.initDisplay();
 	    sbook.displaySync();
 	    if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
@@ -247,7 +249,7 @@ sbook.Setup=
 	    if (!(sbook.root))
 		if (fdjtDOM.getMeta("SBOOKROOT"))
 		    sbook.root=fdjtID(fdjtDOM.getMeta("SBOOKROOT"));
-	    else sbook.root=document.body;
+	    else sbook.root=fdjtID("SBOOKBODY")||document.body;
 	    if (!(sbook.start))
 		if (fdjtDOM.getMeta("SBOOKSTART"))
 		    sbook.start=fdjtID(fdjtDOM.getMeta("SBOOKSTART"));

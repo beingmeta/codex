@@ -534,12 +534,12 @@ var sbookMark=
 	    var form=fdjtUI.T(evt);
 	    fdjtUI.AutoPrompt.cleanup(form);
 	    if (!(sbook.offline)) return fdjtAjax.onsubmit(evt);
-	    if (!(navigator.onLine)) return glossmark_offline(form);
+	    if (!(navigator.onLine)) return glossmark_offline(form,evt);
 	    // Eventually, we'll unpack the AJAX handler to let it handle
 	    //  connection failures by calling glossmark_offline.
 	    else return fdjtAjax.onsubmit(evt);}
 	sbookMark.onsubmit=glossmark_onsubmit;
-	function glossmark_offline(form){
+	function glossmark_offline(form,evt){
 	    var json=fdjtAjax.formJSON(form,["tags","xrefs"],true);
 	    var params=fdjtAjax.formParams(form);
 	    var queued=fdjtState.getLocal("queued("+sbook.refuri+")",true);
@@ -560,6 +560,7 @@ var sbookMark=
 	    // Clear the UUID
 	    fdjtID("SBOOKMARKUUID").value="";
 	    sbook.preview_target=false;
+	    if (evt) fdjtUI.cancel(evt);
 	    /* Turn off the target lock */
 	    sbook.setTarget(false);
 	    sbookMode(false);}
