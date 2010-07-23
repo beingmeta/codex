@@ -97,8 +97,8 @@ sbook.Setup=
 	    initLocation();
 	    var hud_init_done=new Date();
 	    window.onresize=function(evt){
-		fdjtLog("Resize event %o");
-		if (sbook.paginate) sbookPaginate();};
+	      // fdjtLog("[%f] Resize event %o",fdjtET(),evt);
+	      if (sbook.paginate) sbookPaginate();};
 	    sbook.setupGestures();
 	    if (!((document.location.search)&&
 		  (document.location.search.length>0))) {
@@ -148,7 +148,7 @@ sbook.Setup=
 		  ((refuris)&&(fdjtKB.contains(refuri,refuris)))||
 		  ((fdjtDOM.getMeta("SBOOKOFFLINE"))&&
 		   (window.confirm)&&(window.confirm("Read offline?")))));
-	    sbook.offline=offline;
+	    sbook.offline=((offline)?(true):(false));
 	    // Get the settings for scanning the document structure
 	    getScanSettings();
 	    // Get the settings for automatic pagination
@@ -319,77 +319,86 @@ sbook.Setup=
 	sbook.saveSettings=saveSettings;
 
 	function getUser() {
-	    if (sbook.user) return;
-	    else if ((sbook.offline)&&
-		     (fdjtState.getLocal("sbook.user"))&&
-		     (fdjtState.getLocal("sbook.nodeid("+refuri+")"))) {
-		var refuri=sbook.refuri;
-		var user=fdjtState.getLocal("sbook.user");
-		var userinfo=JSON.parse(fdjtState.getLocal(user));
-		var sources=fdjtState.getLocal("sbook.sources("+refuri+")",true);
-		var outlets=fdjtState.getLocal("sbook.outlets("+refuri+")",true);
-		var etc=fdjtState.getLocal("sbook.etc("+refuri+")",true);
-		var nodeid=fdjtState.getLocal("sbook.nodeid("+refuri+")");
-		var sync=fdjtState.getLocal("sbook.usersync",true);
-		var etcinfo=[];
-		if (etc) {
-		    var i=0; var lim=etc.length;
-		    while (i<lim) {
-			var info=fdjtState.getLocal(etc[i++]);
-			if (info) etcinfo.push(JSON.parse(info));}}
-		setUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
-		return;}
-	    else if (!(fdjtID("SBOOKGETUSERINFO"))) {
-		var user_script=fdjtDOM("SCRIPT#SBOOKGETUSERINFO");
-		user_script.language="javascript";
-		user_script.src=
-		  "https://"+sbook.server+"/v3/user.js";
-		document.body.appendChild(user_script);
-		fdjtDOM.addClass(document.body,"nosbookuser");}
-	    else fdjtDOM.addClass(document.body,"nosbookuser");}
-	function setUser(userinfo,nodeid,sources,outlets,etc,sync){
-	    if (sbook.user)
-		if (userinfo.oid===sbook.user.oid) {}
-	    else throw { error: "Can't change user"};
-	    sbook.user=fdjtKB.Import(userinfo);
-	    if (sbook.offline) {
-		fdjtState.setLocal(sbook.user.oid,sbook.user,true);
-		fdjtState.setLocal("sbook.nodeid("+sbook.refuri+")",nodeid);
-		fdjtState.setLocal("sbook.user",sbook.user.oid);}
-	    gotInfo("sources",sources);
-	    gotInfo("outlets",outlets);
-	    gotInfo("etc",etc);
-	    if (sync) {
-		sbook.usersync=sync;
-		if (sbook.offline) fdjtState.setLocal("sbook.usersync",sync);}
-	    if (!(sbook.nodeid)) {
-		sbook.nodeid=nodeid||fdjtState.getNodeID();
-		if ((nodeid)&&(sbook.offline))
-		    fdjtState.setLocal("sbook.nodeid",nodeid);}
-	    setupUser();}
-	function gotInfo(name,info) {
+	  var refuri=sbook.refuri;
+	  if (sbook.user) return;
+	  else if ((sbook.offline)&&
+		   (fdjtState.getLocal("sbook.user"))&&
+		   (fdjtState.getLocal("sbook.nodeid("+refuri+")"))) {
 	    var refuri=sbook.refuri;
-	    if (info)
-		if (info instanceof Array) {
-		    var i=0; var lim=info.length; var qids=[];
-		    while (i<lim) {
-			if (typeof info[i] === 'string')
-			    qids.push(info[i++]);
-			else {
-			    var obj=fdjtKB.Import(info[i++]);
-			    if (sbook.offline) 
-				fdjtState.setLocal(obj.qid,obj,true);
-			    qids.push(obj.qid);}}
-		    sbook[name]=qids;
-		    if (sbook.offline)
-			fdjtState.setLocal("sbook."+name+"("+refuri+")",qids,true);}
-	    else {
-		var obj=fdjtKB.Import(info);
-		if (sbook.offline) 
+	    var user=fdjtState.getLocal("sbook.user");
+	    if (sbook.trace.startup)
+	      fdjtLog("[%f] Restoring offline user info for %o reading %o",
+		      fdjtET(),user,refuri);
+	    var userinfo=JSON.parse(fdjtState.getLocal(user));
+	    var sources=fdjtState.getLocal("sbook.sources("+refuri+")",true);
+	    var outlets=fdjtState.getLocal("sbook.outlets("+refuri+")",true);
+	    var etc=fdjtState.getLocal("sbook.etc("+refuri+")",true);
+	    var nodeid=fdjtState.getLocal("sbook.nodeid("+refuri+")");
+	    var sync=fdjtState.getLocal("sbook.usersync",true);
+	    var etcinfo=[];
+	    if (etc) {
+	      var i=0; var lim=etc.length;
+	      while (i<lim) {
+		var info=fdjtState.getLocal(etc[i++]);
+		if (info) etcinfo.push(JSON.parse(info));}}
+	    setUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
+	    return;}
+	  else if (!(fdjtID("SBOOKGETUSERINFO"))) {
+	    var user_script=fdjtDOM("SCRIPT#SBOOKGETUSERINFO");
+	    user_script.language="javascript";
+	    user_script.src=
+	      "https://"+sbook.server+"/v3/user.js";
+	    document.body.appendChild(user_script);
+	    fdjtDOM.addClass(document.body,"nosbookuser");}
+	  else fdjtDOM.addClass(document.body,"nosbookuser");}
+	
+	function setUser(userinfo,nodeid,sources,outlets,etc,sync){
+	  var persist=((sbook.offline)&&(navigator.onLine));
+	  if (sbook.user)
+	    if (userinfo.oid===sbook.user.oid) {}
+	    else throw { error: "Can't change user"};
+	  sbook.user=fdjtKB.Import(userinfo);
+	  if (persist) {
+	    fdjtState.setLocal(sbook.user.oid,sbook.user,true);
+	    fdjtState.setLocal("sbook.nodeid("+sbook.refuri+")",nodeid);
+	    fdjtState.setLocal("sbook.user",sbook.user.oid);}
+	  gotInfo("sources",sources,persist);
+	  gotInfo("outlets",outlets,persist);
+	  gotInfo("etc",etc,persist);
+	  if (sync) {
+	    sbook.usersync=sync;
+	    if (persist) fdjtState.setLocal("sbook.usersync",sync);}
+	  if (!(sbook.nodeid)) {
+	    sbook.nodeid=nodeid;
+	    if ((nodeid)&&(persist))
+	      fdjtState.setLocal("sbook.nodeid",nodeid);}
+	  setupUser();}
+	function gotInfo(name,info,persist) {
+	  var refuri=sbook.refuri;
+	  if (info)
+	    if (info instanceof Array) {
+	      var i=0; var lim=info.length; var qids=[];
+	      while (i<lim) {
+		if (typeof info[i] === 'string') {
+		  var qid=info[i++];
+		  if (sbook.offline) fdjtKB.load(qid);
+		  qids.push(qid);}
+		else {
+		  var obj=fdjtKB.Import(info[i++]);
+		  if (persist) 
 		    fdjtState.setLocal(obj.qid,obj,true);
-		sbook[name]=obj.qid;
-		if (sbook.offline)
-		    fdjtState.setLocal("sbook."+name+"("+refuri+")",qid,true);}}
+		  qids.push(obj.qid);}}
+	      sbook[name]=qids;
+	      if (sbook.offline)
+		fdjtState.setLocal
+		  ("sbook."+name+"("+refuri+")",qids,true);}
+	    else {
+	      var obj=fdjtKB.Import(info);
+	      if (persist) 
+		fdjtState.setLocal(obj.qid,obj,true);
+	      sbook[name]=obj.qid;
+	      if (persist)
+		fdjtState.setLocal("sbook."+name+"("+refuri+")",qid,true);}}
 	sbook.setUser=setUser;
 	function setupUser(){
 	    if (sbook._user_setup) return;
@@ -460,7 +469,8 @@ sbook.Setup=
 		    target=document.getElementById(hash.slice(1));
 		else target=document.getElementById(hash);
 		if (sbook.Trace.startup)
-		    fdjtLog("[%f] sbookInitLocation %s=%o",fdjtET(),hash,target);}
+		    fdjtLog("[%f] sbookInitLocation hash=%s=%o",
+			    fdjtET(),hash,target);}
 	    else if (fdjtState.getCookie("sbooktarget")) {
 		var targetid=fdjtState.getCookie("sbooktarget");
 		if (sbook.Trace.startup)
@@ -471,7 +481,7 @@ sbook.Setup=
 		else target=sbook.root;}
 	    else target=sbook.root;
 	    if (sbook.Trace.startup)
-		fdjtLog("[%f] sbookInitLocation t=%o jf=%o",fdjtET(),target,justfocus);
+	      fdjtLog("[%f] sbookInitLocation target=%o",fdjtET(),target);
 	    sbook.setHead(target||sbook.start||sbook.root);
 	    var tinfo=((target)&&(fdjtDOM.getGeometry(target)));
 	    sbook.GoTo(target||sbook.start||sbook.root,
@@ -479,7 +489,8 @@ sbook.Setup=
 	
 	function initGlosses(glosses){
 	    var allglosses=sbook.allglosses;
-	    fdjtLog("[%f] Initializing glosses",fdjtET());
+	    if (sbook.Trace.startup)
+	      fdjtLog("[%f] Initializing glosses",fdjtET());
 	    sbook.Message("Initializing glosses...");
 	    sbook.glosses.Import(glosses);
 	    var i=0; var lim=glosses.length;

@@ -44,7 +44,8 @@ function sbookScan(root,docinfo){
   var start=new Date();
   docinfo._root=root;
   if (!(root.id)) root.id="SBOOKROOT";
-  fdjtLog("[%o] Scanning DOM for metadata",fdjtET());
+  if (sbook.Trace.startup)
+    fdjtLog("[%f] Scanning DOM for metadata",fdjtET());
   var nodefn=sbookScan.nodeFn||false;
   var children=root.childNodes, level=false;
   var scanstate=
@@ -79,9 +80,10 @@ function sbookScan(root,docinfo){
     scaninfo.ends_at=scanstate.location;
     scaninfo=scaninfo.head;}
   var done=new Date();
-  fdjtLog('[%fs] Finished gathering metadata in %f secs over %d/%d heads/nodes',
-	  fdjtET(),(done.getTime()-start.getTime())/1000,
-	  scanstate.headcount,scanstate.eltcount);
+  if (sbook.Trace.startup)
+    fdjtLog('[%fs] Gathered metadata in %f secs over %d/%d heads/nodes',
+	    fdjtET(),(done.getTime()-start.getTime())/1000,
+	    scanstate.headcount,scanstate.eltcount);
   return docinfo;
 
   function scanInfo(id,scanstate) {

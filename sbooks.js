@@ -65,6 +65,7 @@ var sbook=
      focusrules: false,
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
+	 startup: 1,      // Whether to debug startup
 	 mode: false,  // Whether to trace mode changes
 	 nav: false,    // Whether to trace book navigation
 	 search: 0, // Whether (and level) to trace searches
@@ -72,7 +73,6 @@ var sbook=
 	 focus: false,// Whether to trace focus/target changes
 	 locations: false, // Whether we're debugging locations
 	 network: 0,      // Whether we're debugging server interaction
-	 startup: 0,      // Whether to debug startup
 	 mark: false,      // Whether to debug gloss addition
 	 pagination: 0, // Whether to trace pagination
 	 paging: false,       // Whether to trace paging (movement by pages)
@@ -110,8 +110,9 @@ var sbook_gloss_data=
 		else return tag;};
 	    sbook.glosses.addInit(function(item) {
 		var info=sbook.docinfo[item.frag];
-		if (!(info)) fdjtLog("[%f] Gloss refers to nonexistent '%s': %o",
-				     fdjtET(),item.frag,item);
+		if (!(info))
+		  fdjtLog("[%f] Gloss refers to nonexistent '%s': %o",
+			  fdjtET(),item.frag,item);
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}});
 	    sbook.glosses.index=new fdjtKB.Index();
@@ -119,22 +120,22 @@ var sbook_gloss_data=
 		sbook.glosses.storage=new fdjtKB.OfflineKB(sbook.glosses);}
 	sbook.sourcekb=new fdjtKB.Pool("sources");{
 	    sbook.sourcekb.addAlias(":@1961/");
-	    sbook.sourcekb.index=new fdjtKB.Index();}}
+	    sbook.sourcekb.index=new fdjtKB.Index();
+	    if (sbook.offline)
+	      sbook.sourcekb.storage=new fdjtKB.OfflineKB(sbook.sourcekb);}}
     sbook.initDB=initDB;
 
+    var trace1="[%f] %s %o in %o: mode%s=%o, target=%o, head=%o preview=%o";
+    var trace2="[%f] %s %o: mode%s=%o, target=%o, head=%o preview=%o";
     function sbook_trace(handler,cxt){
 	var target=fdjtUI.T(cxt);
 	if (target)
-	    fdjtLog
-	("[%f] %s %o in %o: mode%s=%o, target=%o, head=%o preview=%o",
-	 fdjtET(),handler,cxt,target,
-	 ((sbook.preview)?("(preview)"):""),sbook.mode,
-	 sbook.target,sbook.head,sbook.preview);
-	else fdjtLog
-	("[%f] %s %o: mode%s=%o, target=%o, head=%o preview=%o",
-	 fdjtET(),handler,cxt,
-	 ((sbook.preview)?("(preview)"):""),sbook.mode,
-	 sbook.target,sbook.head,sbook.preview);}
+	    fdjtLog(trace1,fdjtET(),handler,cxt,target,
+		    ((sbook.preview)?("(preview)"):""),sbook.mode,
+		    sbook.target,sbook.head,sbook.preview);
+	else fdjtLog(trace2,fdjtET(),handler,cxt,
+		     ((sbook.preview)?("(preview)"):""),sbook.mode,
+		     sbook.target,sbook.head,sbook.preview);}
     sbook.trace=sbook_trace;
 
     // Where to go for your glosses

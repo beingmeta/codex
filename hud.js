@@ -67,9 +67,11 @@ var sbookMode=
 	    var glosses=fdjtID("SBOOKALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
 	    sbook.glosses.addEffect("user",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit(sbook.UI.addSourceIcon);});
+		sbook.sourcekb.ref(v).oninit
+		  (sbook.UI.addSourceIcon,"sourceicon");});
 	    sbook.glosses.addEffect("distribution",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit(sbook.UI.addSourceIcon);});
+		sbook.sourcekb.ref(v).oninit
+		  (sbook.UI.addSourceIcon,"sourceicon");});
 	    sbook.glosses.addInit(function(item){
 		if (document.getElementById(item.frag)) {
 		    sbook.UI.addToSlice(item,glosses,false);

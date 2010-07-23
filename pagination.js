@@ -102,8 +102,10 @@ var sbookPaginate=
 			curpage.focus=scan;
 		if (dbginfo) dbginfo=dbginfo+(pageNodeInfo(scan,info,curpage));
 		if ((dbginfo)&&(next))
-		    dbginfo=dbginfo+" ... N#"+next.id+pageNodeInfo(next,nextinfo,curpage);
-		if (sbook.Trace.pagination>1) _sbookTracePagination("SCAN",scan,info);
+		    dbginfo=dbginfo+" ... N#"+next.id+
+		      pageNodeInfo(next,nextinfo,curpage);
+		if (sbook.Trace.pagination>1)
+		  _sbookTracePagination("SCAN",scan,info);
 		if ((dbginfo)&&(scan.getAttribute("sbookpagedbg")))
 		    dbginfo=scan.getAttribute("sbookpagedbg")+" // "+dbginfo;
 		if (isPageHead(scan,style)) {
@@ -311,9 +313,11 @@ var sbookPaginate=
 		    if (scan) style=getStyle(scan);}
 		if (!(splitblock)) nodecount++;}
 	    var done=fdjtET();
-	    fdjtLog("[%f] Paginated %d nodes into %d pages with pagesize=%d in %s",
-		    fdjtET(),nodecount,pages.length,pagesize,
-		    fdjtTime.secs2short(done-start));
+	    if ((sbook.Trace.pagination)||
+		((sbook.Trace.startup)&&(!(sbook._setup))))
+	      fdjtLog("[%f] Paginated %d nodes into %d pages with pagesize=%d in %s",
+		      fdjtET(),nodecount,pages.length,pagesize,
+		      fdjtTime.secs2short(done-start));
 	    return result;}
 
 	function isPageHead(elt,style){
