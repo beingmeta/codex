@@ -289,13 +289,13 @@ div#SBOOKHELP {
 div#SBOOKHELP > div {
     margin-bottom: 1em; font-size: 100%;}
 div#SBOOKHELP > div.oneline {
-    font-size: 110%;}
-div#SBOOKHELP table {}
+    font-size: 125%;}
+div#SBOOKHELP table { margin-left: 3em; margin-right: 3em;}
 div#SBOOKHELP table th {
     color: orange; text-align: right; vertical-align: top;}
 div#SBOOKHELP table th div {
-    padding-right: 4px;}
-div#SBOOKHELP table td { text-align: left;}
+    padding-right: 4px; margin-bottom: .75em;}
+div#SBOOKHELP table td { text-align: left; vertical-align: top;}
 div#SBOOKHUD.help div#SBOOKHELP { display: block;}
 div#SBOOKHUD.help div#SBOOKHELP img.sbookhidehud {
     left: 0.5em; top: 0.5em; padding: 3px;}

@@ -173,34 +173,34 @@ var sbook_delete_icon="redx12x12.png";
 	return [" ",anchor];}
 
     function makelocspan(target_info,cxtinfo){
-	if (!(cxtinfo)) cxtinfo=sbook.docinfo[document.body.id];
-	var locrule=fdjtDOM("div.locrule");
-	var cxt_start=cxtinfo.starts_at;
-	var cxt_end=cxtinfo.ends_at;
-	var cxt_len=cxt_end-cxt_start;
-	var location_start=target_info.starts_at-cxt_start;
-	var location_len=target_info.ends_at-target_info.starts_at;
-	locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
-	locrule.title='click or hold to glimpse';
-	locrule.style.width=((location_len/cxt_len)*100)+"%";
-	locrule.style.left=((location_start/cxt_len)*100)+"%";
-	return locrule;}
+      if (!(cxtinfo)) cxtinfo=sbook.docinfo[(sbook.body||document.body).id];
+      var locrule=fdjtDOM("div.locrule");
+      var cxt_start=cxtinfo.starts_at;
+      var cxt_end=cxtinfo.ends_at;
+      var cxt_len=cxt_end-cxt_start;
+      var location_start=target_info.starts_at-cxt_start;
+      var location_len=target_info.ends_at-target_info.starts_at;
+      locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
+      locrule.title='click or hold to glimpse';
+      locrule.style.width=((location_len/cxt_len)*100)+"%";
+      locrule.style.left=((location_start/cxt_len)*100)+"%";
+      return locrule;}
     function makelocrule(target_info,cxtinfo){
-	if (!(cxtinfo)) cxtinfo=sbook.docinfo[document.body.id];
-	var locrule=fdjtDOM("hr.locrule");
-	var cxt_start=cxtinfo.starts_at;
-	var cxt_end=cxtinfo.ends_at;
-	var cxt_len=cxt_end-cxt_start;
-	var target_start=target_info.starts_at-cxt_start;
-	var target_len=target_info.ends_at-target_info.starts_at;
-	var locstring="~"+Math.ceil(target_len/5)+ " words long ~"+
-	    Math.ceil((target_start/cxt_len)*100)+"% along";
-	locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
-	locrule.locstring=locstring+".";
-	locrule.title=locstring+": click or hold to glimpse";
-	locrule.style.width=((target_len/cxt_len)*100)+"%";
-	locrule.style.left=((target_start/cxt_len)*100)+"%";
-	return locrule;}
+      if (!(cxtinfo)) cxtinfo=sbook.docinfo[(sbook.body||document.body).id];
+      var locrule=fdjtDOM("hr.locrule");
+      var cxt_start=cxtinfo.starts_at;
+      var cxt_end=cxtinfo.ends_at;
+      var cxt_len=cxt_end-cxt_start;
+      var target_start=target_info.starts_at-cxt_start;
+      var target_len=target_info.ends_at-target_info.starts_at;
+      var locstring="~"+Math.ceil(target_len/5)+ " words long ~"+
+	Math.ceil((target_start/cxt_len)*100)+"% along";
+      locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
+      locrule.locstring=locstring+".";
+      locrule.title=locstring+": click or hold to glimpse";
+      locrule.style.width=((target_len/cxt_len)*100)+"%";
+      locrule.style.left=((target_start/cxt_len)*100)+"%";
+      return locrule;}
 
     function deletegloss_onclick(evt){
 	var scan=fdjtUI.T(evt);
