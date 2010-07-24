@@ -610,6 +610,16 @@ var sbookPaginate=
 		if (footheight<0) {
 		    footheight=0; sbook.curbottom=sbook_bottom_px;}
 		fdjtID("SBOOKPAGEFOOT").style.height=footheight+'px';}
+	    var npages=sbook.pageinfo.length;
+	    var pbar=fdjtDOM("div.progressbar");
+	    var starts_at=info.top+(pageoff||0); var ends_at=info.bottom;
+	    var book_len=sbook.pageinfo[npages-1].bottom;
+	    pbar.style.left=(100*(starts_at/book_len))+"%";
+	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
+	    var pageno=
+		fdjtDOM("div#SBOOKPAGENO",
+			pbar,pagenum+1,((pageoff)?"+":""),"/",npages);
+	    fdjtDOM.replace("SBOOKPAGENO",pageno);
 	    sbook.curpage=pagenum;
 	    sbook.curoff=pageoff||0;
 	    sbook.curinfo=info;
@@ -718,7 +728,8 @@ var sbookPaginate=
 	    topleading.sbookui=true; bottomleading.sbookui=true;
 
 	    var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
-	    var pagefoot=fdjtDOM("div.sbookmargin#SBOOKPAGEFOOT"," ");
+	    var pagefoot=fdjtDOM("div.sbookmargin#SBOOKPAGEFOOT"," ",
+				 fdjtDOM("div#SBOOKPAGENO","pageno/npages"));
 	    pagehead.sbookui=true; pagefoot.sbookui=true;
 	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
 

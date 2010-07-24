@@ -84,7 +84,8 @@ sbook.Setup=
 		function(){sbook.Message("scanning document structure");},10,
 		function(){
 		    metadata=sbookScan(sbook.root);
-		    sbook.docinfo=sbook.DocInfo.map=metadata;},
+		    sbook.docinfo=sbook.DocInfo.map=metadata;
+		    sbook.ends_at=sbook.docinfo[sbook.root.id].ends_at;},
 		function(){sbook.Message("configuring server");},10,
 		setupGlossServer,
 		function(){sbook.Message("getting glosses");},10,
@@ -511,7 +512,11 @@ sbook.Setup=
 	    else target=sbook.root;
 	    if (sbook.Trace.startup>1)
 		fdjtLog("[%f] sbookInitLocation target=%o",fdjtET(),target);
-	    sbook.setHead(target||sbook.start||sbook.root);}
+	    sbook.target=target;
+	    sbook.setHead(target||sbook.start||sbook.root);
+	    if (sbook.paginate) {
+		if (sbook.pages) sbook.GoTo(target);}
+	    else sbook.GoTo(target);}
 	
 	function initGlosses(glosses){
 	    var allglosses=sbook.allglosses;

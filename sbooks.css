@@ -365,11 +365,22 @@ body.paginate.preview { overflow: auto;}
 
 body div.sbookmargin#SBOOKPAGEHEAD,
 body div.sbookmargin#SBOOKPAGEFOOT {
-  left: 0px; right: 0px; width: 100%; height: 40px; z-index: 75;}
+  left: 0px; right: 0px; width: 100%; height: 40px; z-index: 75;
+  text-align: center;}
 body div.sbookmargin#SBOOKPAGEHEAD { top: 0px; }
-body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; }
+body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
 
 body div.sbookmargin#SBOOKPAGEFOOT div.sbookmargin { position: absolute; }
+
+div#SBOOKPAGEFOOT div#SBOOKPAGENO {
+    position: absolute; bottom: 4px;
+    width: 80%; margin-left: 10%; margin-right: 10%;
+    border-top: solid black 1px;
+    display: none;}
+div#SBOOKPAGEFOOT div#SBOOKPAGENO div.progressbar {
+    background-color: gray; border: solid black 1px; border-top: 0px;
+    z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
+body.paginate div#SBOOKPAGEFOOT div#SBOOKPAGENO {display: block;}
 
 body div.sbookmargin#SBOOKPAGELEFT,
 body div.sbookmargin#SBOOKPAGERIGHT {

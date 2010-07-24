@@ -793,7 +793,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* Other stuff */
 
     function pageForward(){
-	if (sbook.paginate) {
+	if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var goto=-1;
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
 		var pagenum=sbook.getPage(fdjtDOM.viewTop());
@@ -814,7 +814,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    if ((sbook.curinfo.focus)&&(sbook.curinfo.focus.id))
 			sbook.setHashID(sbook.curinfo.focus);}}
 	    if (sbook.mode==='allglosses')
-		sbook.UI.scrollGlosses(sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"),true);}
+		sbook.UI.scrollGlosses(
+		    sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"),true);}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
@@ -823,7 +824,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.Forward=pageForward;
 
     function pageBackward(){
-	if (sbook.paginate) {
+	if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var goto=-1;
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
 		var pagenum=sbook.getPage(fdjtDOM.viewTop());
@@ -845,7 +846,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    if (sbook.curinfo.focus)
 			sbook.setHashID(sbook.curinfo.focus);}}
 	    if (sbook.mode==='allglosses')
-		sbook.UI.scrollGlosses(sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"),true);}
+		sbook.UI.scrollGlosses(
+		    sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"),true);}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
