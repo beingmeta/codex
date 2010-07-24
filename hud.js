@@ -55,7 +55,8 @@ var sbookMode=
 		hudmessages.innerHTML=sbook_messages;
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
-		sbookHUD.innerHTML=sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
+		sbookHUD.innerHTML=
+		  sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
 		fdjtDOM.prepend(document.body,hudmessages,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
@@ -245,15 +246,22 @@ var sbookMode=
 	var sbook_message_timer=false;
 	
 	function sbookMessage(message){
-	    fdjtDOM.replace("SBOOKMESSAGE",
-			    fdjtDOM("div.message",
-				    fdjtDOM("div.head",message),
-				    fdjtState.argVec(arguments,1)));
-	    fdjtDOM.prepend("SBOOKMESSAGELOG",
-			    fdjtDOM("div.logentry",
-				    fdjtDOM("span.time",fdjtET()),
-				    message));
-	    sbookMode("console");}
+	  var msg=fdjtDOM("div.message",
+			  fdjtDOM("span.head",message),
+			  fdjtState.argVec(arguments,1));
+	  fdjtDOM.replace("SBOOKHELPMESSAGE",fdjtDOM.clone(msg));
+	  fdjtDOM.replace("SBOOKCONSOLEMESSAGE",fdjtDOM.clone(msg));
+	  fdjtDOM.replace("SBOOKMESSAGE",fdjtDOM.clone(msg));
+	  fdjtDOM.prepend("SBOOKMESSAGELOG",
+			  fdjtDOM("div.logentry",
+				  fdjtDOM("span.time",fdjtET()),
+				  message,
+				  fdjtState.argVec(arguments,1)));
+	  if (sbook.mode==='console')
+	    fdjtDOM.adjustToFit(fdjtID("SBOOKCONSOLEMESSAGE"),1.0);
+	  else if (sbook.mode==='help')
+	    fdjtDOM.adjustToFit(fdjtID("SBOOKHELPMESSAGE"),1.0);
+	  else {}}
 	sbook.Message=sbookMessage;
 
 	function sbookFlashMessage(arg0){
@@ -276,16 +284,18 @@ var sbookMode=
 				fdjtDOM("div.logentry",
 					fdjtDOM("span.time",fdjtET()),
 					message));}
-	    fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
-	    fdjtDOM.addClass(sbookHUD,"console");
-	    var mode=sbook.mode;
-	    sbook_message_timer=
+	    if (!((sbook.mode==='console')||(sbook.mode==='help')||
+		  (sbook.mode==='message'))) { 
+	      fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
+	      fdjtDOM.addClass(sbookHUD,"console");
+	      var mode=sbook.mode;
+	      sbook_message_timer=
 		setTimeout(function() {
 		    if (mode==="console") sbookMode(false);
 		    else if (sbook.mode==="console") sbookMode(false);	
 		    else if (mode) {
-			fdjtDOM.swapClass(sbookHUD,"console",mode);}},
-			   duration);}
+		      fdjtDOM.swapClass(sbookHUD,"console",mode);}},
+		  duration);}}
 	sbook.Flash=sbookFlashMessage;
 
 	function sbookGetStableId(elt){

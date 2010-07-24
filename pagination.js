@@ -715,42 +715,43 @@ var sbookPaginate=
     function initDisplay(){
       var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
       var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
+      topleading.sbookui=true; bottomleading.sbookui=true;
+
       var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
       var pagefoot=fdjtDOM("div.sbookmargin#SBOOKPAGEFOOT"," ");
+      pagehead.sbookui=true; pagefoot.sbookui=true;
+      sbookPageHead=pagehead; sbookPageFoot=pagefoot;
 
-      var leftedge=fdjtDOM("div.sbookmargin#SBOOKPAGELEFT",".")
-	var rightedge=fdjtDOM("div.sbookmargin#SBOOKPAGERIGHT",".")
+      var leftedge=fdjtDOM("div.sbookmargin#SBOOKPAGELEFT",".");
+      var rightedge=fdjtDOM("div.sbookmargin#SBOOKPAGERIGHT",".");
+      leftedge.sbookui=true; rightedge.sbookui=true;
 
-	if (sbook.mobilesafari) {
-	  var head=fdjtDOM.$("HEAD")[0];
-	  var dash=fdjtID("SBOOKDASH");
-	  var appmeta=fdjtDOM("META");
-	  appmeta.name='apple-mobile-web-app-capable';
-	  appmeta.content='yes';
-	  // fdjtDOM.prepend(head,appmeta);
-	  var viewmeta=fdjtDOM("META");
-	  viewmeta.name='viewport';
-	  viewmeta.content='user-scalable=no,width=device-width,height=device-height';
-	  fdjtDOM.prepend(head,viewmeta);}
+      if (sbook.mobilesafari) {
+	var head=fdjtDOM.$("HEAD")[0];
+	var dash=fdjtID("SBOOKDASH");
+	var appmeta=fdjtDOM("META");
+	appmeta.name='apple-mobile-web-app-capable';
+	appmeta.content='yes';
+	fdjtDOM.prepend(head,appmeta);
+	var viewmeta=fdjtDOM("META");
+	viewmeta.name='viewport';
+	viewmeta.content='user-scalable=no,width=device-width,height=device-height';
+	fdjtDOM.prepend(head,viewmeta);}
 	    
       if (sbook.floathud) {
 	fdjtDOM.addClass(document.body,"floathud");}
 
-      topleading.sbookui=true; bottomleading.sbookui=true;
-      leftedge.sbookui=true; rightedge.sbookui=true;
       fdjtDOM.insertAfter(sbookHUD,
 			  pagehead,pagefoot,
 			  leftedge,rightedge,
 			  topleading);  
       fdjtDOM.append(document.body,bottomleading);
 	    
-      sbookPageHead=pagehead; sbookPageFoot=pagefoot;
       // Probe the size of the head and foot
       pagehead.style.display='block'; pagefoot.style.display='block';
       sbook_top_px=pagehead.offsetHeight;
       sbook_bottom_px=pagefoot.offsetHeight;
       pagehead.style.display=''; pagefoot.style.display='';
-      pagehead.sbookui=true; pagefoot.sbookui=true;
 
       // The better way to do this might be to change the stylesheet,
       //  but fdjtDOM doesn't handle that currently

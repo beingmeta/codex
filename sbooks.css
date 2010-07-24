@@ -304,6 +304,10 @@ div#SBOOKHELP span.key { font-weight: bold; font-size: 110%;}
 div#SBOOKHELP span.key:before { content: '(';}
 div#SBOOKHELP span.key:after { content: ')';}
 
+div#SBOOKHELP div.message {
+    position: absolute; bottom: 0px; left: 0px; right: 0px;
+    font-size: 125%; color: red; height: 2em;}
+
 div.helphud span.fauxarrow { font-size: 150%; vertical-align: middle;}
 
 div.helphud.tapnav {

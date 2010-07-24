@@ -54,22 +54,26 @@ sbook.Setup=
 	    fdjtDOM.init();
 	    // Setup sbook tables, databases, etc
 	    sbook.initDB();
+	    // This wraps the body in an div#SBOOKBODY if not
+	    // otherwise specified
+	    initBody();
 	    sbook.initHUD();
 	    if (sbook.floathud) sbook.syncHUD();
 	    sbookMode("help");
-	    // fdjtDOM.sizeToFit(fdjtID("SBOOKHELP"));
+	    fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.1);
 	    if (sbook.user)
 		fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
 	    else if (sbook.nouser) {
 		fdjtDOM.addClass(document.body,"nosbookuser");}
 	    else getUser();
-	    if (fdjtDOM.getMeta("SBOOKBODY"))
-		sbook.body=fdjtID(fdjtDOM.getMeta("SBOOKBODY"))||fdjtID("SBOOKBODY")||document.body;
-	    else sbook.body=fdjtID("SBOOKBODY")||document.body;
+
 	    sbook.initDisplay();
 	    sbook.displaySync();
-	    if ((!(sbook_ajax_uri))||(sbook_ajax_uri==="")||(sbook_ajax_uri==="none"))
-		sbook_ajax_uri=false;
+
+	    if ((!(sbook_ajax_uri))||
+		(sbook_ajax_uri==="")||
+		(sbook_ajax_uri==="none"))
+	      sbook_ajax_uri=false;
 	    sbook.Message("Scanning document structure");
 	    var metadata=sbookScan(sbook.root);
 	    sbook.docinfo=sbook.DocInfo.map=metadata;
@@ -288,6 +292,19 @@ sbook.Setup=
 		var i=0; while (i<sbook_fullpage_rules.length) {
 		    sbook_fullpages.push(fdjtDOM.Selector(sbook_fullpage_rules[i++]));}}
 	    sbook_fullpages.push(fdjtDOM.Selector(".sbookfullpage, .titlepage"));}
+
+	function initBody(){
+	  var sbody=
+	    ((fdjtDOM.getMeta("SBOOKBODY"))?
+	     ((fdjtID(fdjtDOM.getMeta("SBOOKBODY")))||(document.body)):
+	     (fdjtID("SBOOKBODY")));
+	  if (!(sbody)) {
+	    sbody=fdjtDOM("div#SBOOKBODY");
+	    var nodes=fdjtDOM.toArray(document.body.childNodes);
+	    var i=0; var lim=nodes.length;
+	    while (i<lim) sbody.appendChild(nodes[i++]);
+	    document.body.appendChild(sbody);}
+	  sbook.body=sbody;}
 
 	/* Changing settings */
 
