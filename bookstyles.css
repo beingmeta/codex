@@ -45,10 +45,8 @@ body.sbook h1.titlepage div.pubinfo {
   width: 90%; margin-left: 5%; margin-right: 5%;
   margin-bottom: 12px; margin-top: 12px;}
 body.sbook h1.titlepage div.sbookinfo { 
-  position: relative; bottom: 0px;
   font-family: sans,sans-serif;
-  font-size: 18px; margin-top: 128px;
-  text-align: center; font-variant: small-caps;}
+  font-size: 18px; text-align: center; font-variant: small-caps;}
 body.sbook h1.titlepage div.frontpiece { 
   text-align: center;}
 body.sbook h1.titlepage .frontpiece img { border: none; }

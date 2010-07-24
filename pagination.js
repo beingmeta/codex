@@ -802,11 +802,6 @@ var sbookPaginate=
 	  sbook_nextpage=false; sbook_pagebreak=false;
 	  fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGINATE"),false,true);
 	  fdjtDOM.dropClass(document.body,"paginate");
-	  sbook.Flash(3000,
-		      "Now using scroll view",
-		      fdjtDOM("span.details",
-			      "Press ",fdjtDOM("span.key","P"),
-			      " to toggle back to page view"));
 	  if (!(nogo)) {
 	    var curx=fdjtDOM.viewLeft(); var cury=fdjtDOM.viewTop();
 	    window.scrollTo(0,0);
@@ -835,7 +830,8 @@ var sbookPaginate=
 	while (i<lim) {
 	  var block=singlepages[i++];
 	  block.style.maxHeight=pagesize+'px';
-	  block.style.height=pagesize+'px';}
+	  block.style.height=pagesize+'px';
+	  fdjtDOM.adjustToFit(block,0.1);}
 	sbookUpdatePagination();
 	newinfo.offheight=document.body.offsetHeight;
 	newinfo.offwidth=document.body.offsetWidth;
