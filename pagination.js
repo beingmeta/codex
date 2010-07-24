@@ -816,12 +816,7 @@ var sbookPaginate=
       else {
 	sbook.paginate=true;
 	fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGINATE"),true,true);
-	fdjtDOM.addClass(document.body,"paginate");
-	sbook.Flash(3000,
-		    "Switching to page view",
-		    fdjtDOM("span.details",
-			    "Press ",fdjtDOM("span.key","P"),
-			    " to toggle back to scroll view"));}
+	fdjtDOM.addClass(document.body,"paginate");}
       if ((sbook_paginated)&&
 	  (sbook_paginated.offheight===document.body.offsetHeight)&&
 	  (sbook_paginated.offwidth===document.body.offsetWidth)&&

@@ -210,7 +210,8 @@ var sbookMode=
 		sbook.displaySync();}
 	    else {
 		syncHUD();
-		sbook.last_mode=sbook.mode;
+		if (sbook.mode!=='help')
+		  sbook.last_mode=sbook.mode;
 		document.body.focus();
 		fdjtDOM.dropClass(document.body,"dimmed");
 		fdjtDOM.dropClass(sbookHUD,"dash");

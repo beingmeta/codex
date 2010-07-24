@@ -52,71 +52,73 @@ sbook.Setup=
 	    getSettings();
 	    // Dependent setups
 	    fdjtDOM.init();
-	    // Setup sbook tables, databases, etc
-	    sbook.initDB();
-	    // This wraps the body in an div#SBOOKBODY if not
-	    // otherwise specified
-	    initBody();
-	    sbook.initHUD();
-	    if (sbook.floathud) sbook.syncHUD();
-	    sbookMode("help");
-	    fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.1);
-	    if (sbook.user)
-		fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
-	    else if (sbook.nouser) {
-		fdjtDOM.addClass(document.body,"nosbookuser");}
-	    else getUser();
-
-	    sbook.initDisplay();
-	    sbook.displaySync();
-
-	    if ((!(sbook_ajax_uri))||
-		(sbook_ajax_uri==="")||
-		(sbook_ajax_uri==="none"))
-	      sbook_ajax_uri=false;
-	    sbook.Message("Scanning document structure");
-	    var metadata=sbookScan(sbook.root);
-	    sbook.docinfo=sbook.DocInfo.map=metadata;
-	    setupGlossServer();
-	    // Now get the glosses
-	    sbook.Message("Getting glosses");
-	    getGlosses();
-	    sbook.Message("Building table of contents");
-	    sbook.setupTOC(metadata[sbook.root.id]);
-	    var scan_done=new Date();
-	    sbook.Message("Processing knowledge for knodule ",sbook.knodule);
-	    if ((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup))
-		Knodule.HTML.Setup(sbook.knodule);
-	    sbook.Message("Indexing tags");
-	    sbook.indexTags(metadata);
-	    sbook.indexTechnoratiTags(sbook.knodule);
-	    if (sbook.offline)
-		fdjtDOM.addListener(document.body,"online",go_online);
-	    applySettings();
-	    if (sbook.paginate) sbookPaginate();
-	    var knodules_done=new Date();
-	    // 
-	    var tags_done=new Date();
-	    if (fdjtID("SBOOKHIDEHELP"))
-		fdjtID("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
-	    var hud_done=new Date();
-	    initLocation();
-	    var hud_init_done=new Date();
-	    window.onresize=function(evt){
-	      // fdjtLog("[%f] Resize event %o",fdjtET(),evt);
-	      if (sbook.paginate) sbookPaginate();};
-	    sbook.setupGestures();
-	    if (!((document.location.search)&&
-		  (document.location.search.length>0))) {
-		sbookMode("help");
-		setTimeout(function(){
-		    if (sbook.mode==="help") sbookMode(false);},
-			   2500);}
-	    if (fdjtState.getQuery("action")) {
-		sbookMode("sbookapp");}
-	    sbook.displaySync();
-	    // if (sbook.floathud) setInterval(sbook.displaySync,3000);
-	    _sbook_setup=sbook._setup=new Date();}
+	    var metadata=false;
+	    fdjtTime.timeslice
+	      ([// Setup sbook tables, databases, etc
+		sbook.initDB,
+		// This wraps the body in an div#SBOOKBODY 
+		initBody,
+		function(){
+		  sbook.initHUD(); sbook.syncHUD();},
+		function(){
+		  sbookMode("help");
+		  fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.1);
+		  if ((sbook.user)||(sbook.nouser))
+		    sbook.Message("Initializing....");
+		  else sbook.Message("getting user information");},
+		function(){
+		  if (sbook.user)
+		    fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
+		  else if (sbook.nouser) {
+		    fdjtDOM.addClass(document.body,"nosbookuser");}
+		  else getUser();},
+		function(){sbook.Message("initializing display");},10,
+		function(){
+		  sbook.initDisplay(); sbook.displaySync();},
+		function(){sbook.Message("scanning document structure");},10,
+		function(){
+		  metadata=sbookScan(sbook.root);
+		  sbook.docinfo=sbook.DocInfo.map=metadata;},
+		function(){sbook.Message("configuring server");},10,
+		setupGlossServer,
+		function(){sbook.Message("getting glosses");},10,
+		getGlosses,
+		function(){sbook.Message("Building table of contents");},10,
+		function(){
+		  sbook.setupTOC(metadata[sbook.root.id]);},
+		function(){
+		  sbook.Message("Processing knodule ",sbook.knodule);},10,
+		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
+		 (function(){Knodule.HTML.Setup(sbook.knodule);})),
+		function(){sbook.Message("Indexing tags");},10,
+		function(){
+		  sbook.indexTags(metadata);
+		  sbook.indexTechnoratiTags(sbook.knodule);},
+		function(){
+		  if (sbook.offline)
+		    fdjtDOM.addListener(document.body,"online",go_online);
+		  window.onresize=function(evt){
+		    // fdjtLog("[%f] Resize event %o",fdjtET(),evt);
+		    sbookPaginate(sbook.paginate);};
+		  if (fdjtID("SBOOKHIDEHELP"))
+		    fdjtID("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
+		  applySettings();},
+		function(){sbookPaginate(sbook.paginate);},
+		initLocation,
+		sbook.setupGestures,
+		function(){sbook.Message("setup completed");},10,
+		function(){
+		  if (fdjtState.getQuery("action")) {
+		    sbookMode("sbookapp");}
+		  else if (sbook.mode==='help') 
+		    setTimeout(function(){
+			if (sbook.mode==="help") sbookMode(false);},
+		      2500);
+		  else {}},
+		function(){
+		  sbook.displaySync();
+		  _sbook_setup=sbook._setup=new Date();}],
+	       25,100);}
 	sbook.Setup=Setup;
 
 	/* Application settings */
@@ -309,12 +311,12 @@ sbook.Setup=
 	/* Changing settings */
 
 	function applySettings(){
-	    // This applies the current session settings
-	    var tocmax=fdjtDOM.getMeta("SBOOKTOCMAX");
-	    if (tocmax) sbook_tocmax=parseInt(tocmax);
-	    var sbookhelp=fdjtDOM.getMeta("SBOOKHELP");
-	    if (sbookhelp) sbook_help_on_startup=true;
-	    sbookPaginate(sbook.paginate);}
+	  // This applies the current session settings
+	  var tocmax=fdjtDOM.getMeta("SBOOKTOCMAX");
+	  if (tocmax) sbook_tocmax=parseInt(tocmax);
+	  var sbookhelp=fdjtDOM.getMeta("SBOOKHELP");
+	  if (sbookhelp) sbook_help_on_startup=true;
+	  sbookPaginate(sbook.paginate);}
 
 	function updateSessionSettings(delay){
 	    if (delay) {
@@ -358,8 +360,8 @@ sbook.Setup=
 	    if (etc) {
 	      var i=0; var lim=etc.length;
 	      while (i<lim) {
-		var info=fdjtState.getLocal(etc[i++]);
-		if (info) etcinfo.push(JSON.parse(info));}}
+		var ref=etc[i++];
+		fdjtKB.load(ref); etcinfo.push(ref);}}
 	    setUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
 	    return;}
 	  else if (!(fdjtID("SBOOKGETUSERINFO"))) {
@@ -373,6 +375,7 @@ sbook.Setup=
 	
 	function setUser(userinfo,nodeid,sources,outlets,etc,sync){
 	  var persist=((sbook.offline)&&(navigator.onLine));
+	  var refuri=sbook.refuri;
 	  if (sbook.user)
 	    if (userinfo.oid===sbook.user.oid) {}
 	    else throw { error: "Can't change user"};
@@ -390,7 +393,7 @@ sbook.Setup=
 	  if (!(sbook.nodeid)) {
 	    sbook.nodeid=nodeid;
 	    if ((nodeid)&&(persist))
-	      fdjtState.setLocal("sbook.nodeid",nodeid);}
+	      fdjtState.setLocal("sbook.nodeid("+refuri+")",nodeid);}
 	  setupUser();}
 	function gotInfo(name,info,persist) {
 	  var refuri=sbook.refuri;
@@ -450,16 +453,17 @@ sbook.Setup=
 
 	function getGlosses() {
 	    if (sbook.syncstamp) {
-		var glosses=fdjtState.getLocal("glosses("+sbook.refuri+")",true)||[];
-		var glossdb=sbook.glosses;
-		if (glosses) {
-		    sbook.allglosses=glosses;
-		    var i=0; var lim=glosses.length;
-		    while (i<lim) {
-			var glossid=glosses[i++];
-			var glossdata=fdjtState.getLocal(glossid,true);
-			if (glossdata) glossdb.Import(glossdata);}}
-		else sbook.allglosses=[];}
+	      // fdjtLog("[%f] Restoring glosses from local storage",fdjtET());
+	      var glosses=
+		fdjtState.getLocal("glosses("+sbook.refuri+")",true)||[];
+	      var glossdb=sbook.glosses;
+	      if (glosses) {
+		sbook.allglosses=glosses;
+		var i=0; var lim=glosses.length;
+		while (i<lim) glossdb.load(glosses[i++]);}
+	      else sbook.allglosses=[];
+	      // fdjtLog("[%f] Restored glosses from local storage",fdjtET());
+	    }
 	    if (navigator.onLine) {
 		var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 		glosses_script.language="javascript";
@@ -509,8 +513,8 @@ sbook.Setup=
 	function initGlosses(glosses){
 	    var allglosses=sbook.allglosses;
 	    if (sbook.Trace.startup)
-	      fdjtLog("[%f] Initializing glosses",fdjtET());
-	    sbook.Message("Initializing glosses...");
+	      fdjtLog("[%f] Initializing %d glosses",fdjtET(),glosses.length);
+	    sbook.Message("Initializing %d glosses...",glosses.length);
 	    sbook.glosses.Import(glosses);
 	    var i=0; var lim=glosses.length;
 	    var latest=sbook.syncstamp||0;

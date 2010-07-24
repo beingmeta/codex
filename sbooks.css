@@ -306,7 +306,7 @@ div#SBOOKHELP span.key:after { content: ')';}
 
 div#SBOOKHELP div.message {
     position: absolute; bottom: 0px; left: 0px; right: 0px;
-    font-size: 125%; color: red; height: 2em;}
+    font-size: 125%; color: red; height: 3ex;}
 
 div.helphud span.fauxarrow { font-size: 150%; vertical-align: middle;}
 
@@ -1371,6 +1371,8 @@ div.sbookconsole div.sbookmessagelog div.logentry {
     text-align: left; color: white; font-size: 80%;}
 div.sbookconsole div.sbookmessagelog div.logentry span.time {
     float: right; color: orange;}
+
+div#SBOOKMESSAGE { display: none;}
 
 /* Sources */
 
