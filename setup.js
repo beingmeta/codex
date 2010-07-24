@@ -54,70 +54,76 @@ sbook.Setup=
 	    fdjtDOM.init();
 	    var metadata=false;
 	    fdjtTime.timeslice
-	      ([// Setup sbook tables, databases, etc
+	    ([// Setup sbook tables, databases, etc
 		sbook.initDB,
 		// This wraps the body in an div#SBOOKBODY 
 		initBody,
 		function(){
-		  sbook.initHUD(); sbook.syncHUD();},
+		    sbook.initHUD(); sbook.syncHUD();},
+		function(){sbookMode("help");}, 
+		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
+		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
+		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
+		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
+		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
+		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
+		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
 		function(){
-		  sbookMode("help");
-		  fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.1);
-		  if ((sbook.user)||(sbook.nouser))
-		    sbook.Message("Initializing....");
-		  else sbook.Message("getting user information");},
+		    if ((sbook.user)||(sbook.nouser))
+			sbook.Message("Initializing....");
+		    else sbook.Message("getting user information");}, 10,
 		function(){
-		  if (sbook.user)
-		    fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
-		  else if (sbook.nouser) {
-		    fdjtDOM.addClass(document.body,"nosbookuser");}
-		  else getUser();},
+		    if (sbook.user)
+			fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
+		    else if (sbook.nouser) {
+			fdjtDOM.addClass(document.body,"nosbookuser");}
+		    else getUser();},
 		function(){sbook.Message("initializing display");},10,
 		function(){
-		  sbook.initDisplay(); sbook.displaySync();},
+		    sbook.initDisplay(); sbook.displaySync();},
 		function(){sbook.Message("scanning document structure");},10,
 		function(){
-		  metadata=sbookScan(sbook.root);
-		  sbook.docinfo=sbook.DocInfo.map=metadata;},
+		    metadata=sbookScan(sbook.root);
+		    sbook.docinfo=sbook.DocInfo.map=metadata;},
 		function(){sbook.Message("configuring server");},10,
 		setupGlossServer,
 		function(){sbook.Message("getting glosses");},10,
 		getGlosses,
 		function(){sbook.Message("Building table of contents");},10,
 		function(){
-		  sbook.setupTOC(metadata[sbook.root.id]);},
+		    sbook.setupTOC(metadata[sbook.root.id]);},
 		function(){
-		  sbook.Message("Processing knodule ",sbook.knodule);},10,
+		    sbook.Message("Processing knodule ",sbook.knodule);},10,
 		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
 		 (function(){Knodule.HTML.Setup(sbook.knodule);})),
 		function(){sbook.Message("Indexing tags");},10,
 		function(){
-		  sbook.indexTags(metadata);
-		  sbook.indexTechnoratiTags(sbook.knodule);},
-		function(){
-		  if (sbook.offline)
-		    fdjtDOM.addListener(document.body,"online",go_online);
-		  window.onresize=function(evt){
-		    // fdjtLog("[%f] Resize event %o",fdjtET(),evt);
-		    sbookPaginate(sbook.paginate);};
-		  if (fdjtID("SBOOKHIDEHELP"))
-		    fdjtID("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
-		  applySettings();},
-		function(){sbookPaginate(sbook.paginate);},
+		    sbook.indexTags(metadata);
+		    sbook.indexTechnoratiTags(sbook.knodule);},
 		initLocation,
+		function(){
+		    if (sbook.offline)
+			fdjtDOM.addListener(document.body,"online",go_online);
+		    window.onresize=function(evt){
+			// fdjtLog("[%f] Resize event %o",fdjtET(),evt);
+			sbookPaginate(sbook.paginate);};
+		    if (fdjtID("SBOOKHIDEHELP"))
+			fdjtID("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
+		    applySettings();},
 		sbook.setupGestures,
+		function(){sbookPaginate(sbook.paginate);},
 		function(){sbook.Message("setup completed");},10,
 		function(){
-		  if (fdjtState.getQuery("action")) {
-		    sbookMode("sbookapp");}
-		  else if (sbook.mode==='help') 
-		    setTimeout(function(){
-			if (sbook.mode==="help") sbookMode(false);},
-		      2500);
-		  else {}},
+		    if (fdjtState.getQuery("action")) {
+			sbookMode("sbookapp");}
+		    else if (sbook.mode==='help') 
+			setTimeout(function(){
+			    if (sbook.mode==="help") sbookMode(false);},
+				   2500);
+		    else {}},
 		function(){
-		  sbook.displaySync();
-		  _sbook_setup=sbook._setup=new Date();}],
+		    sbook.displaySync();
+		    _sbook_setup=sbook._setup=new Date();}],
 	       25,100);}
 	sbook.Setup=Setup;
 
@@ -491,30 +497,27 @@ sbook.Setup=
 		if ((hash[0]==='#') && (hash.length>1))
 		    target=document.getElementById(hash.slice(1));
 		else target=document.getElementById(hash);
-		if (sbook.Trace.startup)
+		if (sbook.Trace.startup>1)
 		    fdjtLog("[%f] sbookInitLocation hash=%s=%o",
 			    fdjtET(),hash,target);}
 	    else if (fdjtState.getCookie("sbooktarget")) {
 		var targetid=fdjtState.getCookie("sbooktarget");
-		if (sbook.Trace.startup)
+		if (sbook.Trace.startup>1)
 		    fdjtLog("[%f] sbookInitLocation cookie=#%s=%o",
 			    fdjtET(),targetid,target);
 		if ((targetid)&&(fdjtID(targetid)))
 		    target=fdjtID(targetid);
 		else target=sbook.root;}
 	    else target=sbook.root;
-	    if (sbook.Trace.startup)
-	      fdjtLog("[%f] sbookInitLocation target=%o",fdjtET(),target);
-	    sbook.setHead(target||sbook.start||sbook.root);
-	    var tinfo=((target)&&(fdjtDOM.getGeometry(target)));
-	    sbook.GoTo(target||sbook.start||sbook.root,
-		       (!((tinfo)&&(tinfo.height<(fdjtDOM.viewHeight())))));}
+	    if (sbook.Trace.startup>1)
+		fdjtLog("[%f] sbookInitLocation target=%o",fdjtET(),target);
+	    sbook.setHead(target||sbook.start||sbook.root);}
 	
 	function initGlosses(glosses){
 	    var allglosses=sbook.allglosses;
 	    if (sbook.Trace.startup)
-	      fdjtLog("[%f] Initializing %d glosses",fdjtET(),glosses.length);
-	    sbook.Message("Initializing %d glosses...",glosses.length);
+	      fdjtLog("[%f] Assimilating %d glosses",fdjtET(),glosses.length);
+	    sbook.Message("Assimilating %d glosses...",glosses.length);
 	    sbook.glosses.Import(glosses);
 	    var i=0; var lim=glosses.length;
 	    var latest=sbook.syncstamp||0;

@@ -133,6 +133,8 @@ body.hudup > * {
     -webkit-transition-property: opacity; -webkit-transition-duration: .5s;
     opacity: 0.9; }
 
+body.sbook > * { width: 100%;}
+
 div#SBOOKHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; 
     visibility: hidden;
@@ -305,8 +307,7 @@ div#SBOOKHELP span.key:before { content: '(';}
 div#SBOOKHELP span.key:after { content: ')';}
 
 div#SBOOKHELP div.message {
-    position: absolute; bottom: 0px; left: 0px; right: 0px;
-    font-size: 125%; color: red; height: 3ex;}
+    margin-top: 2ex; font-size: 125%; color: red; height: 3ex;}
 
 div.helphud span.fauxarrow { font-size: 150%; vertical-align: middle;}
 

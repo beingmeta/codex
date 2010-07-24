@@ -21,7 +21,7 @@ body.sbook h1.titlepage {
   overflow: hidden;}
 body.sbook h1.titlepage div.title {
     text-align: center; font-weight: bold;
-    clear: both;}
+    clear: both; font-size: 150%;}
 body.sbook h1.titlepage div.title img {
     width: 80%;}
 body.sbook h1.titlepage div.subtitle {
@@ -32,21 +32,22 @@ body.sbook h1.titlepage div.author {
   clear: both;
   text-align: center; font-style: italic; 
   margin-top: 1em; margin-bottom: 1em;
-  font-size: 80%;}
+  font-size: 120%;}
 body.sbook h1.titlepage div.editor { 
   clear: both;
   text-align: center; font-style: normal; font-weight: normal;
-  font-size: 80%;}
+  font-size: 100%;}
 body.sbook h1.titlepage div.pubinfo { 
-  clear: both;
+  clear: both; font-size: 80%;
   position: relative; bottom: 0px;
   font-variant: smallcaps;
   background-color: ivory; font-size: 50%; padding: 4px;
   width: 90%; margin-left: 5%; margin-right: 5%;
   margin-bottom: 12px; margin-top: 12px;}
 body.sbook h1.titlepage div.sbookinfo { 
-  font-family: sans,sans-serif;
-  font-size: 18px; text-align: center; font-variant: small-caps;}
+    float: left; clear: both; width: 100%; vertical-align: middle;
+    font-family: sans,sans-serif; margin-top: 2ex;
+    text-align: center; font-variant: small-caps;}
 body.sbook h1.titlepage div.frontpiece { 
   text-align: center;}
 body.sbook h1.titlepage .frontpiece img { border: none; }
