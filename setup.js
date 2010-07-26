@@ -89,12 +89,12 @@ sbook.Setup=
 		function(){sbook.Message("configuring server");},10,
 		setupGlossServer,
 		function(){sbook.Message("getting glosses");},10,
-		getGlosses,
+		setupGlosses,
 		function(){sbook.Message("Building table of contents");},10,
 		function(){
 		    sbook.setupTOC(metadata[sbook.root.id]);},
 		function(){
-		    sbook.Message("Processing knodule ",sbook.knodule);},10,
+		    sbook.Message("Processing knodule ",sbook.knodule.name);},10,
 		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
 		 (function(){Knodule.HTML.Setup(sbook.knodule);})),
 		function(){sbook.Message("Indexing tags");},10,
@@ -181,7 +181,7 @@ sbook.Setup=
 	    sbook_ajax_uri=fdjtDOM.getMeta("SBOOKSAJAX",true);
 	    sbook.mycopyid=fdjtDOM.getMeta("SBOOKMYCOPY")||
 		((offline)&&(fdjtState.getLocal("mycopyid("+refuri+")")))||false;
-	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")");
+	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")",true);
 	    
 	    if ((offline)&&(!(fdjtState.getLocal("sbook.offline("+refuri+")")))) {
 		fdjtState.setLocal("sbook.offline("+refuri+")",true,true);
@@ -458,19 +458,18 @@ sbook.Setup=
 		    idlink.href='https://www.sbooks.net/admin/id.fdcgi';}}
 	    sbook._user_setup=true;}
 
-	function getGlosses() {
-	    if (sbook.syncstamp) {
-	      // fdjtLog("[%f] Restoring glosses from local storage",fdjtET());
-	      var glosses=
-		fdjtState.getLocal("glosses("+sbook.refuri+")",true)||[];
-	      var glossdb=sbook.glosses;
-	      if (glosses) {
+	function setupGlosses() {
+	    var glosses=(sbook.syncstamp)&&(sbook.offline)&&
+		(fdjtState.getLocal("glosses("+sbook.refuri+")",true));
+	    if (glosses) {
+		var glossdb=sbook.glosses;
 		sbook.allglosses=glosses;
 		var i=0; var lim=glosses.length;
-		while (i<lim) glossdb.load(glosses[i++]);}
-	      else sbook.allglosses=[];
-	      // fdjtLog("[%f] Restored glosses from local storage",fdjtET());
-	    }
+		while (i<lim) glossdb.load(glosses[i++]);
+		gotGlosses();
+		offline_update();
+		return;}
+	    sbook.allglosses=[];
 	    if (navigator.onLine) {
 		var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 		glosses_script.language="javascript";
@@ -478,17 +477,32 @@ sbook.Setup=
 		    "/v3/glosses.js?CALLBACK=sbook.Setup.initGlosses&REFURI="+
 		    encodeURIComponent(sbook.refuri);
 		if (sbook.syncstamp)
-		    glosses_script.src=glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
+		    glosses_script.src=
+		    glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
 		document.body.appendChild(glosses_script);}}
 
-	function go_online(evt){
+	function go_online(evt){return offline_update();}
+	function offline_update(){
 	    sbookMark.sync();
 	    var uri="https://"+sbook.server+
-		"/v3/glosses.js?&REFURI="+
+		"/v3/update.fdcgi?REFURI="+
 		encodeURIComponent(sbook.refuri)+
-		"&ORIGIN="+encodeURIComponent(document.location.protocol+"//"+document.location.hostname);
-	    if (sbook.syncstamp) uri=uri+"&SYNCSTAMP="+sbook.syncstamp;
-	    fdjtAjax.jsonCall(fdjtKB.Import,uri);}
+		"&ORIGIN="+
+		encodeURIComponent(
+		    document.location.protocol+"//"+document.location.hostname);
+	    if (sbook.syncstamp) uri=uri+"&SYNCSTAMP="+(sbook.syncstamp+1);
+	    fdjtAjax.jsonCall(offline_import,uri);}
+	function offline_import(results){
+	    fdjtKB.Import(results);
+	    var i=0; var lim=results.length;
+	    var syncstamp=sbook.syncstamp; var tstamp=false;
+	    while (i<lim) {
+		tstamp=results[i++].tstamp;
+		if ((tstamp)&&(tstamp>syncstamp)) syncstamp=tstamp;}
+	    sbook.syncstamp=syncstamp;
+	    fdjtState.setLocal("syncstamp("+sbook.refuri+")",syncstamp);}
+	    
+	sbook.update=offline_update;
 	    
 	/* This initializes the sbook state to the initial location with the
 	   document, using the hash value if there is one. */ 
@@ -518,11 +532,30 @@ sbook.Setup=
 		if (sbook.pages) sbook.GoTo(target);}
 	    else sbook.GoTo(target);}
 	
-	function initGlosses(glosses){
+	function gotGlosses(){
+	    sbook.Message("Setting up search cloud...");
+	    fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
+	    sbook.FullCloud().complete('');
+	    sbook.Message("Setting up glossing cloud...");
+	    fdjtDOM.replace("SBOOKMARKCLOUD",sbookMark.getCloud().dom);
+	    sbookMark.getCloud().complete('');}
+
+	function updateGlosses(){}
+
+	function initGlosses(glosses,etc){
 	    var allglosses=sbook.allglosses;
-	    if (sbook.Trace.startup)
-	      fdjtLog("[%f] Assimilating %d glosses",fdjtET(),glosses.length);
-	    sbook.Message("Assimilating %d glosses...",glosses.length);
+	    if (etc) {
+		if (sbook.Trace.startup)
+		    fdjtLog("[%f] Assimilating %d new glosses/%d sources",
+			    fdjtET(),glosses.length,etc.length);
+		sbook.Message("Assimilating %d new glosses/%d sources...",
+			      glosses.length,etc.length);}
+	    else {
+		if (sbook.Trace.startup)
+		    fdjtLog("[%f] Assimilating %d new glosses",
+			    fdjtET(),glosses.length);
+		sbook.Message("Assimilating %d new glosses...",glosses.length);}
+	    fdjtKB.Import(etc);
 	    sbook.glosses.Import(glosses);
 	    var i=0; var lim=glosses.length;
 	    var latest=sbook.syncstamp||0;
@@ -537,17 +570,7 @@ sbook.Setup=
 	    if (sbook.offline) {
 		fdjtState.setLocal("glosses("+sbook.refuri+")",allglosses,true);
 		fdjtState.setLocal("syncstamp("+sbook.refuri+")",latest);}
-	    sbook.Message("Setting up search cloud...");
-	    fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
-	    sbook.FullCloud().complete('');
-	    sbook.Message("Setting up glossing cloud...");
-	    fdjtDOM.replace("SBOOKMARKCLOUD",sbookMark.getCloud().dom);
-	    sbookMark.getCloud().complete('');
-	    var done=new Date().getTime();
-	    sbook.Message("Completed sbook setup"," in ",
-			  ((done-sbook._setup_start.getTime())/1000),
-			  " seconds");
-	    splash();}
+	    gotGlosses();}
 	sbook.Setup.initGlosses=initGlosses;
 
 	/* Clearing offline data */

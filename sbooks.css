@@ -152,7 +152,7 @@ body.dimmed > div.sbookmargin { opacity: 1.0;}
 body.hudup div#SBOOKHUD {visibility: visible;}
 /* We organize the foot together */
 div#SBOOKHUD div#SBOOKFOOT {
-    position: fixed; bottom: 0px; left: 0px; right: 0px; 
+    position: fixed; bottom: 0px; left: 0px; right: 0px; opacity: 0.1;
     z-index: 200;}
 
 div#SBOOKHUD div#SBOOKDASHTOP { height: 60px; padding-bottom: 0px;}
@@ -370,17 +370,17 @@ body div.sbookmargin#SBOOKPAGEFOOT {
 body div.sbookmargin#SBOOKPAGEHEAD { top: 0px; }
 body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
 
-body div.sbookmargin#SBOOKPAGEFOOT div.sbookmargin { position: absolute; }
-
-div#SBOOKPAGEFOOT div#SBOOKPAGENO {
-    position: absolute; bottom: 4px;
+div#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
+    vertical-align: bottom; max-height: 20px;
+    position: absolute; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
     border-top: solid black 1px;
     display: none;}
 div#SBOOKPAGEFOOT div#SBOOKPAGENO div.progressbar {
     background-color: gray; border: solid black 1px; border-top: 0px;
     z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
-body.paginate div#SBOOKPAGEFOOT div#SBOOKPAGENO {display: block;}
+body.paginate div#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
+    display: block;}
 
 body div.sbookmargin#SBOOKPAGELEFT,
 body div.sbookmargin#SBOOKPAGERIGHT {

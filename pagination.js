@@ -729,7 +729,8 @@ var sbookPaginate=
 
 	    var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
 	    var pagefoot=fdjtDOM("div.sbookmargin#SBOOKPAGEFOOT"," ",
-				 fdjtDOM("div#SBOOKPAGENO","pageno/npages"));
+				 fdjtDOM("div#SBOOKPAGEINFO",
+					 fdjtDOM("div#SBOOKPAGENO","p/n")));
 	    pagehead.sbookui=true; pagefoot.sbookui=true;
 	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
 
@@ -783,6 +784,10 @@ var sbookPaginate=
 	    fdjtID("SBOOKPAGEHEAD").style.height=pageinfo.top+'px';
 	    fdjtID("SBOOKPAGEFOOT").style.top=pageinfo.bottom+'px';
 	    fdjtID("SBOOKPAGEFOOT").style.height=fdjtDOM.viewHeight()+'px';
+	    fdjtID("SBOOKPAGEINFO").style.top=
+		((((pageinfo.top-sbook_top_px)+fdjtDOM.viewHeight())-pageinfo.bottom)-
+		 fdjtID("SBOOKPAGEINFO").offsetHeight)+'px';
+	    
 	    if (sbook.Trace.paging)
 		fdjtLog("Moved margins for %o to head=%o and foot=%o",
 			pageinfo,
@@ -880,7 +885,7 @@ var sbookPaginate=
 	sbook.pageRight=function(){return sbook_right_px;}
 	sbook.pageSize=function(){return sbook_pagesize;}
 
-	sbookPaginate.debug=true;
+	// sbookPaginate.debug=true;
 
 	return sbookPaginate;})();
 
