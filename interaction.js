@@ -760,7 +760,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.UI.handlers.touchmouse=
 	{window: {mousedown: touchstart,
 		  mousemove: touchmove,
-		  mouseup: touchend,
+		  Mouseup: touchend,
 		  keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
 		  scroll:function(evt){sbook.syncHUD();}},
 	 ".sbookmargin": {},
@@ -793,26 +793,26 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* Other stuff */
 
     function pageForward(){
+	if (sbook.Trace.gestures)
+	    fdjtLog("[%f] pageForward c=%o n=%o",
+		    fdjtET(),sbook.curpage,sbook.pages.length);
 	if ((sbook.paginate)&&(sbook.pageinfo)) {
-	    var goto=-1;
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
+		// If there isn't a valid page number, figure one out
+		//  (if possible) and advance from there.
 		var pagenum=sbook.getPage(fdjtDOM.viewTop());
-		if (pagenum<(sbook.pages.length-1)) sbook.curpage=pagenum+1;
-		sbook.FadeToPage(sbook.curpage);}
+		if ((pagenum>=0)&&(pagenum<(sbook.pages.length-1)))
+		    sbook.FadeToPage(pagenum+1);}
 	    else {
-		// Synchronize if neccessary
-		if (sbook.pagescroll!==fdjtDOM.viewTop())
-		    sbook.GoToPage(sbook.curpage,sbook.curoff);
+		var pagescroll=sbook.pagescroll;
 		var info=sbook.pageinfo[sbook.curpage];
-		var pagebottom=fdjtDOM.viewTop()+(fdjtDOM.viewHeight());
+		// This is where the display bottom is
+		var pagebottom=pagescroll+(fdjtDOM.viewHeight())-sbook.pageBottom();
 		if (pagebottom<info.bottom)
-		    sbook.FadeToPage(sbook.curpage,pagebottom-info.top);
+		    // This handles oversize pages
+		    sbook.FadeToPage(sbook.curpage,pagebottom);
 		else if (sbook.curpage===sbook.pages.length) {}
-		else {
-		    sbook.curpage++;
-		    sbook.FadeToPage(sbook.curpage);
-		    if ((sbook.curinfo.focus)&&(sbook.curinfo.focus.id))
-			sbook.setHashID(sbook.curinfo.focus);}}
+		else sbook.FadeToPage(sbook.curpage+1);}
 	    if (sbook.mode==='allglosses')
 		sbook.UI.scrollGlosses(
 		    sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"),true);}
@@ -824,27 +824,26 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.Forward=pageForward;
 
     function pageBackward(){
+	if (sbook.Trace.gestures)
+	    fdjtLog("[%f] pageBackward c=%o n=%o",
+		    fdjtET(),sbook.curpage,sbook.pages.length);
 	if ((sbook.paginate)&&(sbook.pageinfo)) {
-	    var goto=-1;
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
+		// If there isn't a valid page number, figure one out
+		//  (if possible) and go back from there.
 		var pagenum=sbook.getPage(fdjtDOM.viewTop());
-		if (pagenum<(sbook.pages.length-1)) sbook.curpage=pagenum+1;
-		sbook.FadeToPage(sbook.curpage);}
+		if ((pagenum<=(sbook.pages.length-1))&&(pagenum>0))
+		    sbook.FadeToPage(pagenum-1);}
 	    else {
-		// Synchronize if neccessary
-		if (sbook.pagescroll!==fdjtDOM.viewTop())
-		    sbook.FadeToPage(sbook.curpage,sbook.curoff);
+		var pagescroll=sbook.pagescroll;
 		var info=sbook.pageinfo[sbook.curpage];
-		var pagetop=fdjtDOM.viewTop()+sbook.pageTop();
+		var pagetop=pagescroll+sbook.pageTop();
 		if (pagetop>info.top)
-		    sbook.FadeToPage(sbook.curpage,
-				   (info.top-pagetop)-sbook.pageSize());
+		    // Move within oversize page
+		    sbook.FadeToPage(sbook.curpage,pagetop-sbook.pageSize());
 		else if (sbook.curpage===0) {}
 		else {
-		    sbook.curpage--;
-		    sbook.FadeToPage(sbook.curpage);
-		    if (sbook.curinfo.focus)
-			sbook.setHashID(sbook.curinfo.focus);}}
+		    sbook.FadeToPage(sbook.curpage-1);}}
 	    if (sbook.mode==='allglosses')
 		sbook.UI.scrollGlosses(
 		    sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"),true);}

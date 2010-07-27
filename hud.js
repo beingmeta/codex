@@ -320,9 +320,11 @@ var sbookMode=
 	    var content_offset=fdjtDOM.parsePX(fdjtDOM.getStyle("SBOOKCONTENT","top"));
 	    var box=fdjtID("SBOOKCONTENT");
 	    var help=fdjtID("SBOOKHELP");
+	    /*
 	    fdjtLog("[%f] syncHUD() fh=%o th=%o co=%o vt=%o vh=%o",
 		    fdjtET(),foot_height,top_height,content_offset,
 		    view_top,view_height);
+	    */
 	    if (view_top!==sbook_sync_off) {
 		sbookHUD.style.top=view_top+'px';
 		sbook_sync_off=view_top;}

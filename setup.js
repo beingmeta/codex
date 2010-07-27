@@ -35,7 +35,7 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 sbook.Setup=
     (function(){
 
-	var sbook_touchmouse=false;
+	var sbook_touchmouse=true;
 
 	var sbook_fullpages=[];
 	var sbook_heading_qricons=false;
@@ -105,14 +105,12 @@ sbook.Setup=
 		function(){
 		    if (sbook.offline)
 			fdjtDOM.addListener(document.body,"online",go_online);
-		    window.onresize=function(evt){
-			// fdjtLog("[%f] Resize event %o",fdjtET(),evt);
-			sbookPaginate(sbook.paginate);};
 		    if (fdjtID("SBOOKHIDEHELP"))
 			fdjtID("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
 		    applySettings();},
 		sbook.setupGestures,
-		function(){sbookPaginate(sbook.paginate);},
+		function(){
+		    sbookPaginate(sbook.paginate);},
 		function(){sbook.Message("setup completed");},10,
 		function(){
 		    if (fdjtState.getQuery("action")) {

@@ -125,6 +125,7 @@ body.sbook {
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.2s;}
 #SBOOKBODY {
+    transition-property: opacity; transition-duration: 0.2s;}
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.2s;}
 body.dimmed > * { opacity: 0.3;}
@@ -381,6 +382,8 @@ div#SBOOKPAGEFOOT div#SBOOKPAGENO div.progressbar {
     z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
 body.paginate div#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
     display: block;}
+body.floathud div#SBOOKPAGEFOOT div#SBOOKPAGEINFO { top: 0px;}
+body.pageswitch div#SBOOKPAGEFOOT div#SBOOKPAGEINFO { opacity: 0.0001;}
 
 body div.sbookmargin#SBOOKPAGELEFT,
 body div.sbookmargin#SBOOKPAGERIGHT {

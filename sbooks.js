@@ -44,7 +44,8 @@ var sbook=
      last_mode: false, last_dash: "about",
      target_title: false,preview_title: false,
      // How long it takes a gesture to go from tap to hold
-     holdmsecs: 500, edgeclick: 50, pagesize: 250, animate: true,  
+     holdmsecs: 500, edgeclick: 50, pagesize: 250, animate: true,
+     updatelocation: true,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -445,12 +446,15 @@ var sbook_gloss_data=
 	else if (elt.head)
 	    setHead(elt.head);
 	if (sbook.paginate)
-	    sbook.GoToPage(sbook.getPage(elt));
+	    sbook.GoToPage(sbook.getPage(elt),"scrollTo");
 	else if (fdjtDOM.isVisible(elt)) {}
 	else if ((!cxt) || (elt===cxt))
 	    fdjtUI.scrollIntoView(elt,elt.id,false,true,displayOffset());
 	else fdjtUI.scrollIntoView(elt,elt.id,cxt,true,displayOffset());}
 
+    // This moves within the document in a persistent way
+    // It disables preview mode if it is engaged
+    // It leaves any active HUD mode
     function sbookGoTo(target,noset){
 	sbook.Preview(false);
 	if (typeof target === 'string') target=document.getElementById(target);
@@ -467,7 +471,7 @@ var sbook_gloss_data=
 	    else if (info.head) setHead(info.head.frag);}
 	if ((!(noset))&&(target.id)&&(!(inUI(target))))
 	    setTarget(target);
-	else if (sbook.paginate) sbook.GoToPage(page);
+	else if (sbook.paginate) sbook.GoToPage(page,0,"sbookGoTo");
 	else scrollTo(target);
 	sbook.checkTarget();
 	// sbookMode(false);
@@ -481,15 +485,30 @@ var sbook_gloss_data=
 		       1500);}}
     sbook.GoTo=sbookGoTo;
 
+    // This jumps and disables the HUD at the same time
+    // We try to animate the transition
     function sbookJumpTo(target){
-      sbook.Preview(false); sbookMode(false);
-      if (sbook.animate) {
-	document.body.style.opacity=0;
-	setTimeout(function() {
-	    sbookGoTo(target);
-	    document.body.style.opacity=1;},
-	  150);}
-      else sbookGoTo(target);}
+	if (sbook.animate) {
+	    sbook.body.style.opacity=0.0001;
+	    if (sbook.hudup) sbook.HUD.style.opacity=0.0001;
+	    fdjtDOM.addClass(document.body,"pageswitch");
+	    setTimeout(function() {
+		if (sbook.preview) sbook.Preview(false);
+		if (sbook.hudup) sbookMode(false);
+		sbookGoTo(target);
+		fdjtDOM.dropClass(document.body,"pageswitch");
+		sbook.HUD.style.opacity=1.0;
+		sbook.body.style.opacity=1.0;
+		setTimeout(function(){
+		    fdjtDOM.dropClass(document.body,"pageswitch");
+		    sbook.HUD.style.opacity="";
+		    sbook.body.style.opacity="";},
+			   200);},
+		       200);}
+	else {
+	    if (sbook.preview) sbook.Preview(false);
+	    if (sbook.hudup) sbookMode(false);
+	    sbookGoTo(target);}}
     sbook.JumpTo=sbookJumpTo;
 
 })();
