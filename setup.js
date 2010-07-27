@@ -35,7 +35,7 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 sbook.Setup=
     (function(){
 
-	var sbook_touchmouse=true;
+	var sbook_touchmouse=false;
 
 	var sbook_fullpages=[];
 	var sbook_heading_qricons=false;
