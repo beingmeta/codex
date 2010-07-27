@@ -129,18 +129,12 @@ body.sbook {
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.2s;}
 body.dimmed > * { opacity: 0.3;}
-body.hudup > * {
-    transition-property: opacity; transition-duration: .5s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: .5s;
-    opacity: 0.9; }
 
 body.sbook > * { width: 100%;}
 
 div#SBOOKHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; 
     visibility: hidden;
-    transition-property: opacity; transition-duration: .5s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: .5s;
     font-size: 14px; font-family: helvetica,sans,sans-serif;
     z-index: 100;}
 body.hudup > div#SBOOKHUD, 
@@ -153,7 +147,7 @@ body.dimmed > div.sbookmargin { opacity: 1.0;}
 body.hudup div#SBOOKHUD {visibility: visible;}
 /* We organize the foot together */
 div#SBOOKHUD div#SBOOKFOOT {
-    position: fixed; bottom: 0px; left: 0px; right: 0px; opacity: 0.1;
+    position: fixed; bottom: 0px; left: 0px; right: 0px; 
     z-index: 200;}
 
 div#SBOOKHUD div#SBOOKDASHTOP { height: 60px; padding-bottom: 0px;}

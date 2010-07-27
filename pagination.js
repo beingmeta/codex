@@ -663,7 +663,7 @@ var sbookPaginate=
 	    if (sbook.Trace.nav)
 		fdjtLog("[%f] sbook.FadeToPage %o+%o",fdjtET(),pagenum,off);
 	    sbook.body.style.opacity=0.0001;
-	    sbook.HUD.style.opacity=0.0001;	    
+	    sbook.HUD.style.opacity=0.0001;
 	    fdjtDOM.addClass(document.body,"pageswitch");
 	    setTimeout(function(){
 		GoToPage(pagenum,off,"FadeToPage+");
