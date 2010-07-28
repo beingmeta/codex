@@ -125,6 +125,7 @@ body.sbook {
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.2s;}
 #SBOOKBODY {
+    margin: 0px; padding: 0px; border: 0px;
     transition-property: opacity; transition-duration: 0.2s;}
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.2s;}

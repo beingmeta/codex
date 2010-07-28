@@ -320,6 +320,9 @@ var sbookMode=
 	    var content_offset=fdjtDOM.parsePX(fdjtDOM.getStyle("SBOOKCONTENT","top"));
 	    var box=fdjtID("SBOOKCONTENT");
 	    var help=fdjtID("SBOOKHELP");
+
+	    var boxstyle=fdjtDOM.getStyle(box);
+	    var helpstyle=fdjtDOM.getStyle(help);
 	    /*
 	    fdjtLog("[%f] syncHUD() fh=%o th=%o co=%o vt=%o vh=%o",
 		    fdjtET(),foot_height,top_height,content_offset,
@@ -331,9 +334,13 @@ var sbookMode=
 	    if (view_height!==sbook_sync_height) {
 		if (view_height) {
 		    help.style.maxHeight=help.style.height=
-			(view_height-(top_height+foot_height))+'px';
+			(view_height
+			 -(fdjtDOM.parsePX(helpstyle.top)
+			   -(fdjtDOM.parsePX(helpstyle.top))))+'px';
 		    box.style.maxHeight=box.style.height=
-			(view_height-(content_offset+foot_height))+'px';
+			(view_height
+			 -(fdjtDOM.parsePX(boxstyle.top)
+			   -(fdjtDOM.parsePX(boxstyle.top))))+'px';
 		    // fdjtDOM.sizeToFit(box);
 		    sbookFoot.style.top=(view_height-foot_height)+'px';}
 		else {
@@ -343,28 +350,6 @@ var sbookMode=
 		sbook_sync_height=view_height;}}
 	sbook.syncHUD=syncHUD;
 	
-	/* The APP HUD */
-	
-	var sbook_helphud_highlight=false;
-	var sbook_helphud_display=false;
-	var sbook_helphud_opacity=false;
-	
-	function sbookHelpHighlight(hudelt){
-	    // fdjtTrace("Highlighting hud elt %o",hudelt);
-	    if (hudelt===sbook_helphud_highlight) return;
-	    if (sbook_helphud_highlight) {
-		sbook_helphud_highlight.style.display=sbook_helphud_display;
-		sbook_helphud_highlight.style.opacity=sbook_helphud_opacity;
-		sbook_helphud_highlight=false;
-		sbook_helphud_opacity=false;
-		sbook_helphud_display=false;}
-	    if (hudelt) {
-		sbook_helphud_highlight=hudelt;
-		sbook_helphud_display=hudelt.style.display;
-		sbook_helphud_opacity=hudelt.style.opacity;
-		hudelt.style.display='block';
-		hudelt.style.opacity=0.9;}}
-
 	/* The App HUD */
 	
 	function fillinDash(){

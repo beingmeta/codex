@@ -53,64 +53,45 @@ sbook.Setup=
 	    // Dependent setups
 	    fdjtDOM.init();
 	    var metadata=false;
+	    var helphud=false;
 	    fdjtTime.timeslice
 	    ([// Setup sbook tables, databases, etc
 		sbook.initDB,
 		// This wraps the body in an div#SBOOKBODY 
 		initBody,
 		function(){
-		    sbook.initHUD(); sbook.syncHUD();},
+		    sbook.initHUD(); sbook.initDisplay();
+		    sbook.syncHUD();
+		    helphud=fdjtID("SBOOKHELP");},
 		function(){sbookMode("help");}, 
-		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
-		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
-		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
-		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
-		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
-		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
-		function(){fdjtDOM.adjustToFit(fdjtID("SBOOKHELP"),0.2);},
-		function(){
-		    if ((sbook.user)||(sbook.nouser))
-			sbook.Message("Initializing....");
-		    else sbook.Message("getting user information");}, 10,
-		function(){
-		    if (sbook.user)
-			fdjtDOM.swapClass(document.body,"nosbookuser","sbookuser");
-		    else if (sbook.nouser) {
-			fdjtDOM.addClass(document.body,"nosbookuser");}
-		    else getUser();},
-		function(){sbook.Message("initializing display");},10,
-		function(){
-		    sbook.initDisplay(); sbook.displaySync();},
-		function(){sbook.Message("scanning document structure");},10,
+		function(){fdjtDOM.adjustToFit(helphud,0.2);},
+		function(){fdjtDOM.adjustToFit(helphud,0.2);},
+		function(){fdjtDOM.adjustToFit(helphud,0.2);},
+		sbook.setupGestures,
+		getUser,
+		function(){sbook.Message("analyzing book structure");},10,
 		function(){
 		    metadata=sbookScan(sbook.root);
 		    sbook.docinfo=sbook.DocInfo.map=metadata;
 		    sbook.ends_at=sbook.docinfo[sbook.root.id].ends_at;},
-		function(){sbook.Message("configuring server");},10,
-		setupGlossServer,
-		function(){sbook.Message("getting glosses");},10,
-		setupGlosses,
-		function(){sbook.Message("Building table of contents");},10,
+		function(){sbook.Message("building table of contents");},10,
 		function(){
 		    sbook.setupTOC(metadata[sbook.root.id]);},
+		initLocation,
 		function(){
-		    sbook.Message("Processing knodule ",sbook.knodule.name);},10,
+		    sbook.Message("processing knodule ",sbook.knodule.name);},
+		10,
 		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
 		 (function(){Knodule.HTML.Setup(sbook.knodule);})),
 		function(){sbook.Message("Indexing tags");},10,
 		function(){
 		    sbook.indexTags(metadata);
 		    sbook.indexTechnoratiTags(sbook.knodule);},
-		initLocation,
-		function(){
-		    if (sbook.offline)
-			fdjtDOM.addListener(document.body,"online",go_online);
-		    if (fdjtID("SBOOKHIDEHELP"))
-			fdjtID("SBOOKHIDEHELP").checked=(!(sbook_help_on_startup));
-		    applySettings();},
-		sbook.setupGestures,
-		function(){
-		    sbookPaginate(sbook.paginate);},
+		function(){sbook.Message("configuring server");},10,
+		setupGlossServer,
+		function(){sbook.Message("getting glosses");},10,
+		setupGlosses,
+		function(){sbookPaginate(sbook.paginate);},
 		function(){sbook.Message("setup completed");},10,
 		function(){
 		    if (fdjtState.getQuery("action")) {
@@ -314,14 +295,6 @@ sbook.Setup=
 	  sbook.body=sbody;}
 
 	/* Changing settings */
-
-	function applySettings(){
-	  // This applies the current session settings
-	  var tocmax=fdjtDOM.getMeta("SBOOKTOCMAX");
-	  if (tocmax) sbook_tocmax=parseInt(tocmax);
-	  var sbookhelp=fdjtDOM.getMeta("SBOOKHELP");
-	  if (sbookhelp) sbook_help_on_startup=true;
-	  sbookPaginate(sbook.paginate);}
 
 	function updateSessionSettings(delay){
 	    if (delay) {
