@@ -155,11 +155,10 @@ div#SBOOKHUD div#SBOOKDASHTOP { height: 60px; padding-bottom: 0px;}
 div#SBOOKHUD div#SBOOKSOURCES { height: 60px;  padding-bottom: 0px;}
 div#SBOOKHUD.browsing div#SBOOKSEARCH.hudblock {
     height: 55px;  padding-bottom: 0px; padding-top: 5px;}
-div#SBOOKHUD div#SBOOKCONTENT { top: 60px; }
 
 div#SBOOKCONTENT {
     position: fixed;
-    bottom: 50px; left: 100px; right: 100px;
+    top: 50px; bottom: 50px; left: 100px; right: 100px;
     background-color: #505050; color: ivory; opacity: 1.0;
     padding: 6px; border: solid blue 3px;
     padding-top: 0px; border-top: 0px;
