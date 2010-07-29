@@ -81,86 +81,46 @@ or methods.</p>
 
 </div>
 
-<div class='tabcontent dashtab' id='APPDEVICE'
-     onclick='fdjtCheckSpan_onclick(event);'>
-<h1>Device/Display Settings</h1>
+<div class='tabcontent dashtab' id='APPDEVICE'>
+<h1>Settings</h1>
 <table class='settings'>
+<tr><th>Offline</th>
+  <td>
+    Remove <a href='javascript:sbook.clearOffline(sbook.refuri);'>this book</a> or
+    <a href='javascript:sbook.clearOffline();'>all books</a>.<br/>
+    <a href='javascript:fdjtState.clearLocal();'>Clear all sBooks data</a>.
+</td></tr>
 <tr><th>sBooks</th>
   <td>
-    <a class='button' href='http://sbooks.net/logout.fdcgi'
-       id='SBOOKLOGOUT'>Logout</a>
-    <a href='http://www.sbooks.net/'>Home</a> &middot; 
-    <a href='http://www.sbooks.net/books.fdcgi'>Books</a> &middot; 
-    <a href='http://www.sbooks.net/books.fdcgi' disabled="">Store</a> &middot; 
-    <a href='http://www.sbooks.net/admin/id.fdcgi'>Identity</a>
+    <a href='http://www.sbooks.net/' target='_blank'>Home</a> &middot; 
+    <a href='http://www.sbooks.net/books.fdcgi' target='_blank'>Browse</a> &middot; 
+    <a href='http://www.sbooks.net/admin/id.fdcgi' target='_blank'>Identity</a> &middot; 
+    <a href='http://sbooks.net/logout.fdcgi'>Logout</a>
   </td></tr>
 <tr><th>Content</th>
     <td>
-      <span class='button'
-	    title='save your session settings to local storage'
-	    onclick='sbookSaveSessionSettings();'>
-	Save</span>
-      <span>
-	<select name='fontsize' id='SBOOKFONTSIZE' onchange='sbookSetFontSize(this.value);'>
-	  <option value='50%'>Tiny font</option>
-	  <option value='75%'>Small font</option>
-	  <option value='80%'>Smaller font</option>
-	  <option value='100%' selected=''>Default font</option>
-	  <option value='120%'>Larger font</option>
-	  <option value='150%'>Large font</option>
-	  <option value='200%'>Huge font</option>
-      </select></span>
-      <span class='checkspan'
-	    title='use paging (vs. scrolling) to advance through the book'>
-	<input TYPE='checkbox' NAME='PAGINATE' VALUE='yes' ID='SBOOKPAGINATE'
-             onchange="javascript:sbookUpdateSessionSettings();"/>
-	paged</span>
-      <span class='button'
-	    title='recompute the page layout for this document (usually automatic)'
-	    onclick='fdjtUI.Delay(500,false,sbookUpdatePagination);'>
-	Repaginate</span>
-
-</td></tr>
-<tr><th>Display</th>
-  <td>
-    <span>
-      <select name='fontsize' id='SBOOKFONTSIZE' onchange='sbookSetHUDFontSize(this.value);'>
+      <select name='fontsize' id='SBOOKFONTSIZE' onchange='sbook.setFontSize(this.value);'>
 	<option value='50%'>Tiny font</option>
 	<option value='75%'>Small font</option>
 	<option value='80%'>Smaller font</option>
-	<option value='100%' selected=''>Default font</option>
+	<option value='100%' selected=''>Default size</option>
 	<option value='120%'>Larger font</option>
 	<option value='150%'>Large font</option>
 	<option value='200%'>Huge font</option>
-    </select></span>
-    <span class='checkspan'
-	  title="flash the HUD when contextual information changes">
-      <input TYPE='checkbox' NAME='HUDFLASH' VALUE='yes' ID='SBOOKHUDFLASH'
-             onchange="javascript:sbookUpdateSessionSettings();"/>
-      flash</span>
-    <span class='checkspan'
-	  title="minimize the display of the HUD, glossmarks, etc">
-      <input TYPE='checkbox' NAME='SPARSEBOOK' VALUE='yes' ID='SBOOKSPARSE'
-             onchange="javascript:sbookUpdateSessionSettings();"/>
-      sparse</span>
+      </select>
+      <a href='javascript:sbook.updatePagination();' style='float: right;'>repaginate</a>
 </td></tr>
-<tr><th>Interface</th>
+<tr><th>Display</th>
   <td>
-    <span class='checkspan'
-	  title='optimize display and interaction for touch interaction'>
-      <input TYPE='radio' NAME='UIMODE' VALUE='touch' ID='SBOOKTOUCHMODE'
-             onchange="javascript:sbookUpdateSessionSettings(500);"/>
-      touch</span>
-    <span class='checkspan'
-	  title='optimize display and interaction for mouse interaction'>
-      <input TYPE='radio' NAME='UIMODE' VALUE='mouse' ID='SBOOKMOUSEMODE'
-             onchange="javascript:sbookUpdateSessionSettings(500);"/>
-      mouse</span>
-    <span class='checkspan'
-          title='optimize display and interaction for keyboard interaction'>
-      <input TYPE='radio' NAME='UIMODE' VALUE='keyboard' ID='SBOOKKBDMODE'
-             onchange="javascript:sbookUpdateSessionSettings(500);"/>
-      keyboard</span>
+    <select name='fontsize' id='SBOOKFONTSIZE' onchange='sbook.setUIFontSize(this.value);'>
+      <option value='50%'>Tiny font</option>
+      <option value='75%'>Small font</option>
+      <option value='80%'>Smaller font</option>
+      <option value='100%' selected=''>Default size</option>
+      <option value='120%'>Larger font</option>
+      <option value='150%'>Large font</option>
+      <option value='200%'>Huge font</option>
+    </select>
 </td></tr>
 </table>  
 </div>

@@ -126,6 +126,18 @@ sbook.Startup=
 		var i=0; var lim=unset.length;
 		sbook[unset[i++]]=false;}}
 
+	function workOffline(refuri){
+	    var value=fdjtState.getQuery("offline")||
+		fdjtState.getLocal("sbook.offline("+refuri+")")||
+		fdjtState.getLocal("sbook.offline")||
+		((fdjtDOM.getMeta("SBOOK.MYCOPY"))&&"mycopy")||
+		(fdjtDOM.getMeta("SBOOK.OFFLINE"));
+	    if ((!(value))||(value==="no")||(value==="off")||(value==="never"))
+		return false;
+	    else if ((value==="ask")&&(window.confirm))
+		return window.confirm("Read offline?");
+	    else return true;}
+	
 	function getSettings(){
 	    // Basic stuff
 	    var useragent=navigator.userAgent;
@@ -133,16 +145,10 @@ sbook.Startup=
 	    document.body.refuri=sbook.refuri=refuri;
 	    sbook.docuri=_getsbookdocuri();
 	    var refuris=fdjtState.getLocal("sbook.refuris",true)||[];
-	    var offline=
-		((fdjtState.getQuery("offline")!=="no")&&
-		 ((fdjtState.getQuery("offline"))||
-		  (fdjtState.getLocal("sbook.offline"))||
-		  (fdjtState.getLocal("sbook.offline("+refuri+")"))||
-		  (fdjtDOM.getMeta("SBOOKMYCOPY"))||
-		  ((refuris)&&(fdjtKB.contains(refuri,refuris)))||
-		  ((fdjtDOM.getMeta("SBOOKOFFLINE"))&&
-		   (window.confirm)&&(window.confirm("Read offline?")))));
+	    var offline=workOffline(refuri);
 	    sbook.offline=((offline)?(true):(false));
+	    if (offline)
+		fdjtState.setLocal("sbook.offline("+refuri+")",offline);
 	    // Get the settings for scanning the document structure
 	    getScanSettings();
 	    // Get the settings for automatic pagination
@@ -548,7 +554,8 @@ sbook.Startup=
 
 	function clearOffline(refuri){
 	    if (refuri) {
-		var glosses=fdjtState.getLocal("sbook.glosses("+refuri+")",true);
+		var glosses=
+		    fdjtState.getLocal("sbook.glosses("+refuri+")",true);
 		var i=0; var lim=glosses.length;
 		while (i<lim) fdjtState.dropLocal(glosses[i++]);
 		fdjtState.dropLocal("sbook.sources("+refuri+")");
@@ -563,6 +570,7 @@ sbook.Startup=
 		var i=0; var lim=refuris.length;
 		while (i<lim) clearOffline(refuris[i++]);
 		fdjtState.dropLocal("sbook.refuris");}}
+	sbook.clearOffline=clearOffline;
 
 	/* Other setup */
 	

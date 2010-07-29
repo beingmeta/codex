@@ -151,11 +151,6 @@ var sbookMode=
 		var helpbounds=getBounds(sbookHelp);
 		var boxbounds=getBounds(sbookBox);
 		if (view_height) {
-		    fdjtLog("hbt=%o hbb=%o bbt=%o bbb=%o ht=%o hb=%o bt=%o bb=%o",
-			    helpbounds.top,helpbounds.bottom,
-			    boxbounds.top,boxbounds.bottom,
-			    help_top,help_bottom,
-			    box_top,box_bottom);
 		    sbookHelp.style.maxHeight=sbookHelp.style.height=
 			(view_height
 			 -helpbounds.top-helpbounds.bottom
@@ -333,12 +328,7 @@ var sbookMode=
 			    fdjtDOM("div.logentry",
 				    fdjtDOM("span.time",fdjtET()),
 				    message,
-				    fdjtState.argVec(arguments,1)));
-	    if (sbook.mode==='console')
-		fdjtDOM.adjustToFit(fdjtID("SBOOKCONSOLEMESSAGE"),1.0);
-	    else if (sbook.mode==='help')
-		fdjtDOM.adjustToFit(fdjtID("SBOOKHELPMESSAGE"),1.0);
-	    else {}}
+				    fdjtState.argVec(arguments,1)));}
 	sbook.Message=sbookMessage;
 
 	function sbookFlashMessage(arg0){

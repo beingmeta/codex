@@ -827,7 +827,6 @@ var sbookPaginate=
 		if (sbook.paginate) {
 		    sbook.paginate=false;
 		    sbook_nextpage=false; sbook_pagebreak=false;
-		    fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGINATE"),false,true);
 		    fdjtDOM.dropClass(document.body,"paginate");
 		    if (!(nogo)) {
 			var curx=fdjtDOM.viewLeft(); var cury=fdjtDOM.viewTop();
@@ -837,7 +836,6 @@ var sbookPaginate=
 		else return;}
 	    else {
 		sbook.paginate=true;
-		fdjtUI.CheckSpan.set(fdjtID("SBOOKPAGINATE"),true,true);
 		fdjtDOM.addClass(document.body,"paginate");}
 	    if ((sbook_paginated)&&
 		(sbook_paginated.offheight===document.body.offsetHeight)&&

@@ -307,7 +307,9 @@ div#SBOOKHELP span.key:before { content: '(';}
 div#SBOOKHELP span.key:after { content: ')';}
 
 div#SBOOKHELP div.message {
-    margin-top: 2ex; font-size: 125%; color: red; height: 3ex;}
+    margin-top: 2ex; font-size: 16px; color: red; height: 40px;
+    overflow: hidden;}
+div#SBOOKHELP div.message .head { font-size: 150%;}
 
 div.helphud span.fauxarrow { font-size: 150%; vertical-align: middle;}
 
