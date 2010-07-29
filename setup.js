@@ -519,13 +519,13 @@ sbook.Setup=
 		if (sbook.Trace.startup)
 		    fdjtLog("[%f] Assimilating %d new glosses/%d sources",
 			    fdjtET(),glosses.length,etc.length);
-		sbook.Message("Assimilating %d new glosses/%d sources...",
-			      glosses.length,etc.length);}
+		sbook.Message(fdjtString("Assimilating %d new glosses/%d sources...",
+					 glosses.length,etc.length));}
 	    else {
 		if (sbook.Trace.startup)
 		    fdjtLog("[%f] Assimilating %d new glosses",
 			    fdjtET(),glosses.length);
-		sbook.Message("Assimilating %d new glosses...",glosses.length);}
+		sbook.Message(fdjtString("Assimilating %d new glosses...",glosses.length));}
 	    fdjtKB.Import(etc);
 	    sbook.glosses.Import(glosses);
 	    var i=0; var lim=glosses.length;
