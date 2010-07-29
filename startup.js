@@ -32,7 +32,7 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-sbook.Setup=
+sbook.Startup=
     (function(){
 
 	var sbook_touchmouse=false;
@@ -45,7 +45,7 @@ sbook.Setup=
 	
 	var _sbook_setup_start=false;
 	
-	function Setup(){
+	function Startup(){
 	    if (sbook._setup) return;
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
@@ -105,7 +105,7 @@ sbook.Setup=
 		    sbook.displaySync();
 		    _sbook_setup=sbook._setup=new Date();}],
 	       25,100);}
-	sbook.Setup=Setup;
+	sbook.Startup=Startup;
 
 	/* Application settings */
 
@@ -445,7 +445,7 @@ sbook.Setup=
 		var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 		glosses_script.language="javascript";
 		glosses_script.src="https://"+sbook.server+
-		    "/v3/glosses.js?CALLBACK=sbook.Setup.initGlosses&REFURI="+
+		    "/v3/glosses.js?CALLBACK=sbook.Startup.initGlosses&REFURI="+
 		    encodeURIComponent(sbook.refuri);
 		if (sbook.syncstamp)
 		    glosses_script.src=
@@ -542,7 +542,7 @@ sbook.Setup=
 		fdjtState.setLocal("glosses("+sbook.refuri+")",allglosses,true);
 		fdjtState.setLocal("syncstamp("+sbook.refuri+")",latest);}
 	    gotGlosses();}
-	sbook.Setup.initGlosses=initGlosses;
+	sbook.Startup.initGlosses=initGlosses;
 
 	/* Clearing offline data */
 
@@ -582,8 +582,8 @@ sbook.Setup=
 		else if (sbook.mode!=="console") {}
 		else sbookMode(false);}}
 
-	return Setup;})();
-sbookSetup=sbook.Setup;
+	return Startup;})();
+sbookStartup=sbook.Startup;
 
 /* Emacs local variables
 ;;;  Local variables: ***
