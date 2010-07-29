@@ -122,11 +122,16 @@ body.touch img.mouseicon { display: none;}
 /* HUDs */
 
 body.sbook {
+    transition-property: opacity; transition-duration: 0.2s;
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.2s;}
 #SBOOKBODY {
     margin: 0px; padding: 0px; border: 0px;
     transition-property: opacity; transition-duration: 0.2s;}
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 0.2s;}
+#SBOOKHUD {
+    transition-property: opacity; transition-duration: 0.2s;
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.2s;}
 body.dimmed > * { opacity: 0.3;}

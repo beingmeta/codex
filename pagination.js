@@ -626,9 +626,12 @@ var sbookPaginate=
 	    if (fdjtDOM.viewTop()!==(off-sbook_top_px)) {
 		if ((sbook.updatelocation)&&(info.focus)&&(info.focus.id))
 		    window.location.hash=info.focus.id;
-		if (sbook.floathud) sbook.syncHUD((off-sbook_top_px));
+		sbook.syncHUD((off-sbook_top_px),fdjtDOM.viewHeight());
+		// sbook.body.top='-'+(off-sbook_top_px)+'px';
 		window.scrollTo(0,(off-sbook_top_px));
-		page_xoff=0; page_yoff=(off-sbook_top_px);}
+		page_xoff=0; page_yoff=(off-sbook_top_px);
+		// Add class if it's temporarily gone
+		fdjtDOM.addClass(document.body,"paginate");}
 	    if ((sbook.target)&&(fdjtDOM.isVisible(sbook.target)))
 		sbook.setHead(sbook.target);
 	    else sbook.setHead(info.focus||info.first);
@@ -645,33 +648,25 @@ var sbookPaginate=
 		if ((firstloc)&&(lastloc))
 		    sbook.setLocation(Math.floor((firstloc+lastloc)/2));
 		else if (firstloc) sbook.setLocation(firstloc);
-		else if (lastloc) sbook.setLocation(lastloc);}
-
-	    sbook.checkTarget();
-	    if ((sbook.mode==="mark")&&
-		(!(fdjtDOM.isVisible(sbook.mark_target))))
-		sbookMode(false);
-	    sbook.pagescroll=fdjtDOM.viewTop();
-	    sbook.HUD.style.display='';
-	    // Add class if it's temporarily gone
-	    fdjtDOM.addClass(document.body,"paginate");}
+		else if (lastloc) sbook.setLocation(lastloc);}}
 	sbook.GoToPage=GoToPage;
 
 	function FadeToPage(pagenum,off){
+	    var floathud=sbook.floathud;
 	    if (!(off)) off=0;
 	    if (!(sbook.animate)) return GoToPage(pagenum,off,"FadeToPage");
 	    if (sbook.Trace.nav)
 		fdjtLog("[%f] sbook.FadeToPage %o+%o",fdjtET(),pagenum,off);
 	    sbook.body.style.opacity=0.0001;
-	    sbook.HUD.style.opacity=0.0001;
+	    if (floathud) sbook.HUD.style.opacity=0.0001;
 	    fdjtDOM.addClass(document.body,"pageswitch");
 	    setTimeout(function(){
 		GoToPage(pagenum,off,"FadeToPage+");
-		sbook.HUD.style.opacity=1.0;	    
 		sbook.body.style.opacity=1.0;
+		if (floathud) sbook.HUD.style.opacity=1.0;	    
 		setTimeout(function(){
 		    fdjtDOM.dropClass(document.body,"pageswitch");
-		    sbook.HUD.style.opacity="";	    
+		    if (floathud) sbook.HUD.style.opacity='';
 		    sbook.body.style.opacity="";},
 			   200);},
 		       200);}
@@ -790,6 +785,8 @@ var sbookPaginate=
 	sbook.initDisplay=initDisplay;
 	
 	function moveMargins(pageinfo){
+	    if (sbook.Trace.floathud)
+		fdjtLog("Moving margins");
 	    fdjtID("SBOOKPAGELEFT").style.top=pageinfo.top+'px';
 	    fdjtID("SBOOKPAGERIGHT").style.top=pageinfo.top+'px';
 	    fdjtID("SBOOKPAGEHEAD").style.height=pageinfo.top+'px';
@@ -816,7 +813,6 @@ var sbookPaginate=
 	    var target=sbook.target;
 	    sbook.Message("Determining page layout");
 	    var pagination=Paginate(pagesize);
-	    fdjtLog("[%f] sbookUpdatePagination()",fdjtET());
 	    fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
 	    sbook.pages=pagination.pages;
 	    sbook.pageinfo=pagination.info;

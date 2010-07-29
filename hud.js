@@ -139,7 +139,11 @@ var sbookMode=
 
 	    view_top=view_top||fdjtDOM.viewTop();
 	    view_height=view_height||fdjtDOM.viewHeight();
-
+	    if (sbook.Trace.floathud)
+		fdjtLog("[%f] syncHUD top=%o/%o height=%o/%o sync=%o/%o",
+			fdjtET(),view_top,fdjtDOM.viewTop(),view_height,fdjtDOM.viewHeight(),
+			sbook_sync_off,sbook_sync_height);
+	    
 	    if (view_top!==sbook_sync_off) {
 		sbookHUD.style.top=view_top+'px';
 		sbook_sync_off=view_top;}

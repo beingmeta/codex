@@ -801,7 +801,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		// If there isn't a valid page number, figure one out
 		//  (if possible) and advance from there.
 		var pagenum=sbook.getPage(fdjtDOM.viewTop());
-		if ((pagenum>=0)&&(pagenum<(sbook.pages.length-1)))
+		if ((pagenum>=0)&&(pagenum<(sbook.pages.length-2)))
 		    sbook.FadeToPage(pagenum+1);}
 	    else {
 		var pagescroll=sbook.pagescroll;
