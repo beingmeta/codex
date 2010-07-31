@@ -620,7 +620,7 @@ var sbookMark=
 		    sbookMark.setup(target,gloss||false,excerpt);
 		else {
 		    sbookMark.setup(target,false,excerpt);
-		    if (gloss.gloss) fdjtID("SBOOKMARKRELAY").value=gloss.gloss;
+		    if (gloss.frag) fdjtID("SBOOKMARKRELAY").value=gloss.gloss;
 		    if (gloss.user) {
 			var userinfo=sbook.sourcekb.map[gloss.user];
 			var glossblock=

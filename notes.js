@@ -50,10 +50,10 @@ var sbook_delete_icon="redx12x12.png";
 	var refiners=((query) && (query._refiners));
 	var score=((query)&&(query[key]));
 	var div=
-	    fdjtDOM(((info.gloss) ? "div.sbooknote.gloss" : "div.sbooknote"),
+	    fdjtDOM(((info.frag) ? "div.sbooknote.gloss" : "div.sbooknote"),
 		    ((standalone)&&(makelocbar(target_info))),
 		    // (makelocrule(target_info,target_info.head)),
-		    ((info.gloss)&&(showglossinfo(info))),
+		    ((info.frag)&&(showglossinfo(info))),
 		    // Makes it noisy (and probably slow) on the iPad
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
@@ -63,7 +63,7 @@ var sbook_delete_icon="redx12x12.png";
 		    ((info.xrefs)&&(showlinks(info.xrefs,"span.xrefs"))),
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments"))));
-	if (!(info.gloss))
+	if (!(info.frag))
 	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target)).replace(/\n\n+/g,"\n");
 	div.about="#"+target_id;
 	// div.setAttribute('about',"#"+info.id);
