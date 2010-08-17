@@ -45,7 +45,8 @@ function sbookScan(root,docinfo){
   docinfo._root=root;
   if (!(root.id)) root.id="SBOOKROOT";
   if (sbook.Trace.startup)
-    fdjtLog("[%f] Scanning DOM for metadata",fdjtET());
+    fdjtLog("[%fs] Scanning DOM for structure and metadata: %o",
+	    fdjtET(),root);
   var nodefn=sbookScan.nodeFn||false;
   var children=root.childNodes, level=false;
   var scanstate=
@@ -66,6 +67,7 @@ function sbookScan(root,docinfo){
   rootinfo.level=0; rootinfo.sub=new Array();
   rootinfo.head=false; rootinfo.heads=new Array();
   rootinfo.frag=root.id;
+  rootinfo.qid="#"+root.id;
   /* Build the metadata */
   var i=0; while (i<children.length) {
     var child=children[i++];
@@ -90,6 +92,7 @@ function sbookScan(root,docinfo){
     if (docinfo[id]) return docinfo[id];
     this.pool=scanstate.pool;
     this.frag=id;
+    this.qid="#"+id;
     docinfo[id]=this;
     return this;}
   sbookScan.scanInfo=scanInfo;
@@ -172,7 +175,8 @@ function sbookScan(root,docinfo){
     /* Iniitalize the headinfo */
     headinfo.starts_at=scanstate.location;
     headinfo.elt=head; headinfo.level=level;
-    headinfo.sub=new Array(); headinfo.frag=headid;
+    headinfo.sub=new Array();
+    headinfo.frag=headid; headinfo.qid="#"+headid;
     headinfo.title=getTitle(head);
     headinfo.next=false; headinfo.prev=false;
     if (level>curlevel) {

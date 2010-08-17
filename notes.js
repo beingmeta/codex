@@ -76,6 +76,7 @@ var sbook_delete_icon="redx12x12.png";
     
     function showtags(tags){
 	var span=fdjtDOM("span.tags");
+	if (!(tags instanceof Array)) tags=[tags];
 	var i=0; var lim=tags.length;
 	// This might do some kind of more/less controls and sorted
 	// or cloudy display
@@ -271,8 +272,8 @@ var sbook_delete_icon="redx12x12.png";
 	while (i<lim) {
 	    var r=results[i];
 	    if (typeof r === 'string') {
-		var ref=sbook.docinfo[r]||sbook.glosses.ref[r];
-		if (!(ref)) fdjtLog("[%f] No resolution for %o",r);
+		var ref=sbook.docinfo[r]||sbook.glosses.ref(r);
+		if (!(ref)) fdjtLog("[%fs] No resolution for %o",r);
 		notes[i]=ref;}
 	    else notes[i]=r;
 	    i++;}
@@ -479,7 +480,7 @@ var sbook_delete_icon="redx12x12.png";
 	if (targetloc) {
 	    var scrollto=getFirstElt(glosses,targetloc);
 	    if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
-		if ((sbook.ui==='ios')||(sbook.ui==='touchmouse')) {
+		if ((sbook.ui==='ios')||(sbook.ui==='faketouch')) {
 		    var off=getScrollOffset(scrollto,glosses);
 		    // var transform='translate('+0+'px,-'+off+'px)';
 		    // fdjtLog("Applying transform %o",transform);

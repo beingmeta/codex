@@ -66,9 +66,11 @@ var sbookMode=
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
 	    dash.innerHTML=sbook_dashtext;
-	    var search=fdjtID("SBOOKSEARCH");
-	    search.innerHTML=sbook_searchtext;
-	    initSearch(search);
+	    // Initialize search UI
+	    fdjtUI.AutoPrompt.setup(fdjtID("SBOOKSEARCH"));
+	    sbook.empty_cloud=
+	      new fdjtUI.Completions(fdjtID("SBOOKSEARCHCLOUD"));
+	    // Initialize gloss UI
 	    var glosses=fdjtID("SBOOKALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
 	    sbook.glosses.addEffect("user",function(f,p,v){
@@ -77,46 +79,62 @@ var sbookMode=
 	    sbook.glosses.addEffect("distribution",function(f,p,v){
 		sbook.sourcekb.ref(v).oninit
 		(sbook.UI.addSourceIcon,"sourceicon");});
-	    sbook.glosses.addInit(function(item){
+
+	    function initUI4Item(item){
 		if (document.getElementById(item.frag)) {
 		    sbook.UI.addToSlice(item,glosses,false);
 		    var glossmark=sbook.UI.addGlossmark(item.frag); {
 			if (glossmark) {
 			    var curglosses=glossmark.glosses;
 			    curglosses.push(item.qid);}
-			if (item.tstamp>sbook.syncstamp) sbook.syncstamp=item.tstamp;
+			if (item.tstamp>sbook.syncstamp)
+			    sbook.syncstamp=item.tstamp;
 			var pic=((fdjtKB.ref(item.user)).pic)||
 			    ((fdjtKB.ref(item.feed)).pic);
 			if (pic) {
 			    var img=fdjtDOM.getFirstChild(glossmark,"IMG.big");
-			    if (img) img.src=pic;}}}});
+			    if (img) img.src=pic;}}
+		    if (item.tags) addTag2UI(item.tags);}}
+	    sbook.glosses.addInit(initUI4Item);
+
+	    function addTag2UI(tag){
+		if (tag instanceof Array) {
+		    var i=0; var lim=tag.length;
+		    while (i<lim) addTag2UI(tag[i++]);
+		    return;}
+		else {
+		    var gloss_cloud=sbook.glossCloud();
+		    var search_cloud=sbook.FullCloud();
+		    var gloss_tag=
+			gloss_cloud.getByValue(tag,".completion.tag");
+		    var search_tag=
+			search_cloud.getByValue(tag,".completion.tag");
+		    if (!((gloss_tag)&&(gloss_tag.length))) {
+			gloss_tag=Knodule.HTML(tag,sbook.knodule,false,true);
+			gloss_cloud.addCompletion(gloss_tag);}
+		    if (!((search_tag)&&(search_tag.length))) {
+			search_tag=Knodule.HTML(tag,sbook.knodule,false,true);
+			search_cloud.addCompletion(search_tag);}}}
+	    
 	    sbookFoot=fdjtID("SBOOKFOOT");
 	    sbookHead=fdjtID("SBOOKHEAD");
 	    sbookHelp=fdjtID("SBOOKHELP");
-	    sbookBox=fdjtID("SBOOKCONTENT");
-	    var bookmark=fdjtID("SBOOKMARKHUD");
-	    bookmark.innerHTML=sbook_addgloss_html;
-	    var form=fdjtID("SBOOKMARKFORM");
-	    form.onsubmit=fdjtAjax.onsubmit;
+	    sbookBox=fdjtID("SBOOKFLYLEAF");
 	    fillinDash();
-	    if (sbook.floathud) {
-		var headstyle=fdjtDOM.getStyle(sbookHead);
-		var footstyle=fdjtDOM.getStyle(sbookFoot);
-		var helpstyle=fdjtDOM.getStyle(sbookHelp);
-		var boxstyle=fdjtDOM.getStyle(sbookBox);
-		head_height=fdjtDOM.parsePX(headstyle.height);
-		foot_height=fdjtDOM.parsePX(footstyle.height);
-		help_top=fdjtDOM.parsePX(helpstyle.top);
-		help_bottom=fdjtDOM.parsePX(helpstyle.bottom);
-		box_top=fdjtDOM.parsePX(boxstyle.top);
-		box_bottom=fdjtDOM.parsePX(boxstyle.bottom);
-		
-		// This will now be controlled by modifying the height
-		// dynamically while the top is fixed within the HUD
-		sbookHelp.style.bottom='';
-		sbookBox.style.bottom='';}}
+	    if (sbook.scrollfree) {
+	      resizeHUD();
+	      fdjtDOM.addListener(window,"resize",resizeHUD);}}
 	sbook.initHUD=initHUD;
 	
+	function resizeHUD(){
+	  var vh=fdjtDOM.viewHeight();
+	  var vw=fdjtDOM.viewWidth();
+	  var hf=fdjtID("SBOOKFOOT");
+	  var fh=fdjtDOM.getGeometry(hf).height;
+	  fdjtLog("[%fs] resizeHUD vh=%o vw=%o fh=%o",fdjtET(),vh,vw,fh);
+	  sbookHUD.style.width=vw+'px';
+	  hf.style.top=(vh-fh)+'px';}
+
 	/* This is used for viewport-based browser, where the HUD moves
 	   to be aligned with the viewport */
 	
@@ -133,40 +151,6 @@ var sbookMode=
 		     fdjtDOM.parsePX(style.paddingBottom)||0};}
 	fdjtDOM.getBounds=getBounds;
 	
-
-	function syncHUD(view_top,view_height){
-	    if (!(sbook.floathud)) return;
-
-	    view_top=view_top||fdjtDOM.viewTop();
-	    view_height=view_height||fdjtDOM.viewHeight();
-	    if (sbook.Trace.floathud)
-		fdjtLog("[%f] syncHUD top=%o/%o height=%o/%o sync=%o/%o",
-			fdjtET(),view_top,fdjtDOM.viewTop(),view_height,fdjtDOM.viewHeight(),
-			sbook_sync_off,sbook_sync_height);
-	    
-	    if (view_top!==sbook_sync_off) {
-		sbookHUD.style.top=view_top+'px';
-		sbook_sync_off=view_top;}
-	    if (view_height!==sbook_sync_height) {
-		var helpbounds=getBounds(sbookHelp);
-		var boxbounds=getBounds(sbookBox);
-		if (view_height) {
-		    sbookHelp.style.maxHeight=sbookHelp.style.height=
-			(view_height
-			 -helpbounds.top-helpbounds.bottom
-			 -help_top-help_bottom)+'px';
-		    sbookBox.style.maxHeight=sbookBox.style.height=
-			(view_height
-			 -boxbounds.top-boxbounds.bottom
-			 -box_top-box_bottom)+'px';
-		    sbookFoot.style.top=(view_height-foot_height)+'px';}
-		else {
-		    sbookHelp.style.maxHeight=sbookHelp.style.height='';
-		    sbookBox.style.maxHeight=sbookBox.style.height='';
-		    sbookFoot.style.top='';}
-		sbook_sync_height=view_height;}}
-	sbook.syncHUD=syncHUD;
-
 	/* Creating the HUD */
 	
 	function setupTOC(root_info){
@@ -195,27 +179,10 @@ var sbookMode=
 	    // sbook.UI.addHandlers(div,"toc");
 	    return div;}
 
-	function initSearch(){
-	    var input=fdjtID("SBOOKSEARCHTEXT");
-	    fdjtDOM.addListener(input,"keypress",
-				sbook.UI.handlers.SearchInput_onkeypress);
-	    fdjtDOM.addListener(input,"keyup",
-				sbook.UI.handlers.SearchInput_onkeyup);
-	    fdjtDOM.addListener(input,"focus",
-				sbook.UI.handlers.SearchInput_onfocus);
-	    fdjtDOM.addListener(input,"blur",
-				sbook.UI.handlers.SearchInput_onblur);
-
-	    var sbooksearch=fdjtID("SBOOKSEARCH");
-	    fdjtUI.AutoPrompt.setup(sbooksearch);
-
-	    var completions=fdjtID("SBOOKSEARCHCLOUD");
-	    sbook.empty_cloud=new fdjtUI.Completions(completions);}
-
 	/* Mode controls */
 	
 	var sbookMode_pat=
-	    /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(mark)|(context)|(dashtoc)|(about)|(console)|(minimal)/g;
+	    /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(mark)|(context)|(dashtoc)|(about)|(console)|(minimal)|(target)/g;
 	var sbookDashMode_pat=/(login)|(device)|(sbookapp)|(dashtoc)|(about)/g;
 	
 	function sbookMode(mode){
@@ -227,7 +194,6 @@ var sbookMode=
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
 		if (mode==="dash") mode=sbook.last_dash||"about";
-		if (sbook.floathud) syncHUD();
 		if (mode===sbook.mode) {}
 		else if (mode===true) {
 		    sbook.mode=false;
@@ -274,13 +240,10 @@ var sbookMode=
 		    sbook.UI.scrollGlosses
 		    (sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"));}
 		if (mode==="searching")
-		    fdjtID("SBOOKSEARCHTEXT").focus();
-		else if (mode==="mark")
-		    fdjtID("SBOOKMARKINPUT").focus();
+		    fdjtID("SBOOKSEARCHINPUT").focus();
 		else document.body.focus();
 		sbook.displaySync();}
 	    else {
-		syncHUD();
 		if (sbook.mode!=='help')
 		    sbook.last_mode=sbook.mode;
 		document.body.focus();
@@ -532,7 +495,7 @@ var sbookMode=
 	    var body=document.body;
 	    var pelt=sbook.previewelt;
 	    if (sbook.Trace.mode)
-		fdjtLog("[%f] sbookPreview() %o (src=%o) mode=%o sbp=%o pe=%o sbpt=%o target=%o",
+		fdjtLog("[%fs] sbookPreview() %o (src=%o) mode=%o sbp=%o pe=%o sbpt=%o target=%o",
 			fdjtET(),elt,src,sbook.mode,
 			sbook.preview,sbook.previewelt,sbook.preview_target,
 			sbook.target);
@@ -562,18 +525,16 @@ var sbookMode=
 		    fdjtDOM.dropClass(scan,"preview");
 		    scan=scan.parentNode;}
 		// Update the element itself, 
-		if (sbook.preview_title)
-		    sbook.preview.title=sbook.preview_title;
-		sbook.preview_title=false;
+		if (sbook.preview.sbooktitle) {
+		    sbook.preview.title=sbook.preview.sbooktitle;}
 		fdjtDOM.dropClass(sbook.preview,"previewing");}
 	    if (!(elt)) {
 		fdjtDOM.dropClass(body,"preview");
 		// Restore the scroll position
-		fdjtUI.scrollRestore();
-		syncHUD();
-		// setTimeout(syncHUD,20);
+		sbook.scrollRestore();
 		// Set the state
-		sbook.preview_target=sbook.preview=false;
+		sbook.preview_target=false;
+		sbook.preview=false;
 		// Scroll the past preview element context
 		// We can't do this earlier because it's not displayed
 		//  and so has no geometry
@@ -581,7 +542,6 @@ var sbookMode=
 		if (pelt) pelt.scrollIntoView();
 		sbook.previewstart=false;
 		fdjtDOM.replace("SBOOKPREVIEW",fdjtDOM("div#SBOOKPREVIEW"));
-		if (sbook.floathud) syncHUD();
 		return;}
 	    else if ((elt===sbook.root)||(elt===document.body))
 		return;
@@ -602,8 +562,7 @@ var sbookMode=
 	    fdjtDOM.addClass(elt,"previewing");
 	    sbook.last_preview=elt;
 	    sbook.preview_target=sbook.preview=elt;
-	    if ((elt.title)&&(elt!==sbook.target))
-		sbook.preview_title=elt.title;
+	    if ((!(elt.sbooktitle))&&(elt.title)) elt.sbooktitle=elt.title;
 	    elt.title='click to jump to this passage';
 	    if ((elt.getAttribute) &&
 		(elt.getAttribute("toclevel")) ||
@@ -611,8 +570,7 @@ var sbookMode=
 		cxt=false;
 	    else if (elt.head)
 		cxt=elt.head;
-	    fdjtUI.scrollPreview(elt,cxt,displayOffset());
-	    if (sbook.floathud) syncHUD();}
+	    sbook.scrollPreview(elt,cxt,displayOffset());}
 
 	sbook.Preview=sbookPreview;
 

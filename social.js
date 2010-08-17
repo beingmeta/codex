@@ -8,7 +8,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
     large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
-   For more information on knowlets, visit www.knowlets.net
+   For more information on knodules, visit www.knodules.net
    For more information about beingmeta, visit www.beingmeta.com
 
    This library uses the FDJT (www.fdjt.org) toolkit.
@@ -32,156 +32,146 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-/* Global variables */
+(function(){
 
-var sbook_gloss_syncstamp=false;
-var sbook_conversants=[];
-var social_info={};
+    var sbook_sources=false;
+    var sbook_glosses_target=false;
+    var sbookGlossesHUD=false;
+    var sbookSourceHUD=false;
 
-/* The Glosses/Social Database */
+    // The highlighted glossmark
+    var sbook_glossmark=false;
+    var sbook_glossmark_qricons=false;
 
-function sbookImportGlosses(data)
-{
-  var sbook_index=sbook.index;
-  if (!(data))
-    if (typeof sbook_gloss_data === "undefined") {
-      fdjtLog("No gloss data available");
-      return;}
-    else {
-      data=sbook_gloss_data;
-      sbook_gloss_data=false;}
-  var date=data['%date'];
-  var info=data['%info'];
-  if ((info) && (info.length)) {
-    var i=0; while (i<info.length) {
-      var item=info[i++]; var slots=sbook.sources.Import(item);
-      if (!(slots.conversant)) {
-	fdjtKB.add(sbook_conversants,slots.oid);
-	sbookAddSourceIcon(slots);
-	slots.conversant=true;}}}
-  var ids=data['%ids'];
-  if (sbook.Trace.network)
-    fdjtLog("Importing gloss data %o for %d ids: %o",data,ids.length,ids);
-  if ((ids) && (ids.length)) {
-    var i=0; while (i<ids.length) {
-      var id=ids[i++];
-      var element=fdjtID(id);
-      // Skip references to IDs which don't exist
-      if (!(element)) continue;
-      var entries=data[id];
-      var need_glossmark=false;
-      var j=0; while (j<entries.length) {
-	var entry=entries[j++];
-	var gloss=sbook_add_gloss(id,entry,sbook_index);
-	if (!(entry.noglossmark)) need_glossmark=true;
-	if (element.sbookloc) gloss.location=element.sbookloc;}
-      if (need_glossmark) sbook.Glossmark(element);}}
-}
+    // The glosses element
+    var sbookHUDglosses=false;
+    // The user/tribe bar
+    var sbookHUDsocial=false;
 
-function _sbook_add_glosses(glosses,etc,syncstamp)
-{
-  var sbook_index=sbook.index;
-  var glossetc=sbook.glossetc;
-  var allglosses=sbook.allglosses;
-  var allsources=sbook.allsources;
-  if (!(syncstamp)) syncstamp=fdjtTime();
-  if ((etc) && (etc.length)) {
-    var i=0; var lim=etc.length; while (i<lim) {
-      var item=etc[i++]; var slots=sbook.sources.Import(item);
-      var qid=slots.qid||slots.uuid||slots.oid;
-      if ((sbook.offline)&&(qid)) {
-	fdjtState.setLocal(qid,JSON.stringify(slots));
-	glossetc[qid]=syncstamp;}
-      allsources[qid]=qid;}}
-  if (sbook.Trace.network)
-    fdjtLog("Importing gloss data %o",glosses);
-  if ((glosses) && (glosses.length)) {
-    var i=0; var lim=glosses.length;
-    while (i<lim) {
-      var entry=glosses[i++];
-      var id=entry.frag||entry.id;
-      var element=fdjtID(id);
-      // Skip references to IDs which don't exist
-      if (!(element)) continue;
-      var need_glossmark=false;
-      var gloss=sbook_add_gloss(id,entry,sbook.index);
-      allglosses[gloss.qid]=syncstamp;
-      if (!(entry.noglossmark)) need_glossmark=true;
-      if (need_glossmark) sbook.Glossmark(element);}}
-  if (sbook.offline) {
-    fdjtState.setLocal("glosses("+sbook.refuri+")",allglosses,true);
-    fdjtState.setLocal("glossetc("+sbook.refuri+")",glossetc,true);
-    fdjtState.setLocal("sources("+sbook.refuri+")",allsources,true);}
-}
-sbook.addGlosses=_sbook_add_glosses;
+    /* Social UI components */
 
-function sbook_add_gloss(id,entry,index)
-{
-  if (!(index)) index=sbook.index;
-  if (!(entry.frag)) entry.frag=id;
-  var item=sbook.glosses.Import(entry);
-  var user=entry.user;
-  var feed=entry.feed;
-  if (entry.tags) {
-    var tags=entry.tags; var dterms=[];
-    var k=0; while (k<tags.length) {
-      var tag=tags[k++]; var dterm=tag;
-      if (typeof tag==='string')
-	if (tag.indexOf('|')>=0)
-	  dterm=sbook.knowlet.handleSubjectEntry(tag);
-	else dterm=sbook.knowlet.probe(tag)||tag;
-      dterms.push(dterm||tag);
-      index.add(item,dterm,true,false,true,false);
-      item.tags=dterms;}}
-  else item.tags=[];
-  item.taginfo=false;
-  if (entry.user) if (item!=entry) item.user=user;
-  var tstamp=entry.tstamp;
-  if (tstamp>sbook.syncstamp) sbook.syncstamp=tstamp;
-  if (user) sbookAddSourceIcon(user);
-  if (feed) sbookAddSourceIcon(feed);
-  return item;
-}
-function sbook_add_gloss(id,entry,index)
-{
-  return sbook.glosses.Import(entry);
-}
+    function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
-function sbookGetSourcesUnder(idroot)
-{
-  var sources=[];
-  var glosses=sbook.glosses.find('frag',idroot);
-  var i=0; var lim=glosses.length;
-  while (i<lim) {
-    var gloss=glosses[i++];
-    if (fdjtKB.position(sources,gloss.user)<0)
-      sources.push(gloss.user);
-    if (fdjtKB.position(sources,gloss.feed)<0)
-      sources.push(gloss.feed);}
-  return sources;
-}
+    sbook.UI.addSourceIcon=function(info){
+	if (typeof info === 'string') info=fdjtKB.ref(info);
+	var humid=info.humid;
+	var icon=fdjtID("SBOOKSOURCEICON"+humid);
+	if (icon) return icon;
+	if (!(info.name)) return;
+	var pic=info.pic; var kind=info.kind;
+	if (pic) {}
+	else if (kind===':PERSON')
+	    pic=sbicon("sbooksperson40x40.png");
+	else if (kind===':CIRCLE')
+	    pic=sbicon("sbookscircle40x40.png");
+	else if (kind===':OVERDOC')
+	    pic=sbicon("sbooksoverdoc40x40.png");
+	else pic=sbook;
+	icon=fdjtDOM.Image
+	(pic,".button.source",info.name|info.kind,
+	 ("click to show/hide glosses from "+info.name));
+	icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
+	fdjtDOM(fdjtID("SBOOKSOURCES")," ",icon);
+	return icon;};
 
-/* Callbacks */
+    function everyone_onclick(evt)
+    {
+	evt=evt||event||null;
+	var target=fdjtDOM.T(evt);
+	// var sources=fdjtDOM.getParent(target,".sbooksources");
+	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
+	var sources=fdjtID("SBOOKSOURCES");
+	var glosses=fdjtID("SBOOKALLGLOSSES");
+	var new_sources=[];
+	if ((!(sources))||(!(glosses)))
+	    return; /* Warning? */
+	if (fdjtDOM.hasClass(target,"selected")) {
+	    sbookMode(false);
+	    fdjtDOM.cancel(evt);
+	    return;}
+	var selected=fdjtDOM.$(".selected",sources);
+	fdjtLog("Everyone click sources=%o glosses=%o selected=%o/%d",
+		sources,glosses,selected,selected.length);
+	fdjtDOM.toggleClass(selected,"selected");
+	fdjtDOM.addClass(target,"selected");
+	sbook.UI.selectSources(glosses,false);
+	fdjtDOM.cancel(evt);
+    }
+    sbook.UI.handlers.everyone_onclick=everyone_onclick;
 
-function sbookNewGlosses(glosses,winarg)
-{
-  /* For when called from the iframe bridge */
-  var win=winarg||window;
-  sbookImportGlosses(glosses);
-  var form=win.document.getElementById("SBOOKMARKFORM");
-  fdjtDOM.dropClass(form,"submitting");
-  form.reset();
-  fdjtDOM.addListener
-    (fdjtID("SBOOKMARKCLOUD"),"click",fdjtUI.Checkspan.onclick);
-  win.sbookMode(false);
-}
+    function sources_onclick(evt)
+    {
+	evt=evt||event||null;
+	// if (!(sbook.user)) return;
+	var target=fdjtDOM.T(evt);
+	// var sources=fdjtDOM.getParent(target,".sbooksources");
+	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
+	var sources=fdjtID("SBOOKSOURCES");
+	var glosses=fdjtID("SBOOKALLGLOSSES");
+	var new_sources=[];
+	if ((!(sources))||(!(glosses))||(!(target.oid)))
+	    return; /* Warning? */
+	if ((evt.shiftKey)||(fdjtDOM.hasClass(target,"selected"))) {
+	    fdjtDOM.toggleClass(target,"selected");
+	    var selected=fdjtDOM.$(".selected",sources);
+	    var i=0; var len=selected.length;
+	    while (i<len) {
+		var oid=selected[i++].oid;
+		if (oid) new_sources.push(oid);}}
+	else {
+	    var selected=fdjtDOM.$(".selected",sources);
+	    var i=0; var len=selected.length;
+	    while (i<len) fdjtDOM.dropClass(selected[i++],"selected");
+	    fdjtDOM.addClass(target,"selected");
+	    new_sources=[target.oid];}
+	var everyone=fdjtDOM.$(".everyone",sources)[0];
+	if (new_sources.length) {
+	    if (everyone) fdjtDOM.dropClass(everyone,"selected");
+	    sbook.UI.selectSources(glosses,new_sources);}
+	else {
+	    if (everyone) fdjtDOM.addClass(everyone,"selected");
+	    sbook.UI.selectSources(glosses,false);}
+	fdjtDOM.cancel(evt);
+    }
+    sbook.UI.handlers.sources_onclick=sources_onclick;
 
-function sbookJSONPglosses(glosses)
-{
-  if (sbook.Trace.network)
-    fdjtLog("Got new glosses (probably) from JSONP call");
-  sbookNewGlosses(glosses);
-}
+    sbook.UI.addGlossmark=function(id){
+	var target=fdjtID(id);
+	if (!(target)) return false;
+	var glossmarkid="SBOOK_GLOSSMARK_"+id;
+	if (fdjtID(glossmarkid)) return fdjtID(glossmarkid);
+	var imgsrc=(sbicon("sbookspeople32x32.png"));
+	var glossmark=fdjtDOM
+	("span.glossmark",
+	 fdjtDOM.Image(imgsrc,"big","comments"),
+	 fdjtDOM.Image(sbicon("sbicon16x16.png"),"tiny","+"));
+	glossmark.id=glossmarkid;
+	sbook.UI.addHandlers(glossmark,"glossmark");
+	if (sbook_glossmark_qricons) {
+	    var qrhref="http://"+sbook.server+"/v3/qricon.fdcgi?"+
+		"URI="+encodeURIComponent(sbook.refuri)+
+		((id)?("&FRAG="+id):"")+
+		((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
+	    var i=0; while (i<tags.length) qrhref=qrhref+"&TAGCUE="+tags[i++];
+	    fdjtDOM.prepend(target,fdjtDOM.Image(qrhref,"sbookqricon"));}
+	fdjtDOM.addClass(target,"glossed");
+	fdjtDOM.prepend(target,glossmark);
+	glossmark.glosses=[];
+	glossmark.sbookui=true;
+	return glossmark;};
+
+    function openGlossmark(target,addmark) {
+	var glosses=sbook.glosses.find('frag',target.id);
+	var sumdiv=fdjtDOM("div.sbookslice.hudblock");
+	sbook.UI.setupSummaryDiv(sumdiv);
+	if (glosses)
+	    sbook.UI.showSlice(glosses,sumdiv,false);
+	fdjtDOM.replace("SBOOKGLOSSES",sumdiv);
+	sbook.setTarget(target);
+	sbookMode("glosses");}
+    sbook.openGlossmark=openGlossmark;
+
+})();
 
 /* Emacs local variables
 ;;;  Local variables: ***

@@ -1,121 +1,218 @@
-<img src='http://static.beingmeta.com/graphics/CompassIcon40x40.png'
-     alt='toc' title='click to navigate the book as a whole'
-     class='hudbutton' id='SBOOKTOCBUTTON' hudmode='toc'
-     onclick='sbook.UI.hudbutton(event);'/>
-<div class='helphud tapnav'>
-  <strong class='notouch'>click</strong>
-  <strong class='fortouch'>tap</strong> to<br/>
+<img src="http://static.beingmeta.com/graphics/CompassIcon40x40.png"
+     alt="toc" title="click to navigate the book as a whole"
+     class="hudbutton" id="SBOOKTOCBUTTON" hudmode="toc"
+     onclick="sbook.UI.hudbutton(event);"/>
+<img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
+     class="previewicon topleft"/>
+<div class="helphud tapnav">
+  <strong class="notouch">click</strong>
+  <strong class="fortouch">tap</strong> to<br/>
   navigate</div>
-<div class='helphud tapsearch'>
-  <strong class='notouch'>click</strong>
-  <strong class='fortouch'>tap</strong> to<br/>
+<div class="helphud tapsearch">
+  <strong class="notouch">click</strong>
+  <strong class="fortouch">tap</strong> to<br/>
   search</div>
-<img src='http://static.beingmeta.com/graphics/TagSearch40x40.png'
-     alt='search' title='click to search tags within the book'
-     class='hudbutton' id='SBOOKSEARCHBUTTON' hudmode='searching'
-     onclick='sbook.UI.hudbutton(event);'/>
-<img src='http://static.beingmeta.com/graphics/redx32x32.png' alt='close'
-     class='sbookhidehud' onclick='sbookMode(false);'/>
-<div id='SBOOKPREVIEW' class='hudblock'></div>
-<div id='SBOOKTOC' class='hudblock'></div>
-<div id='SBOOKMESSAGE' class='hudblock'></div>
-<div id='SBOOKHEAD'>
-<div id='SBOOKSEARCH' class='hudblock sbooksearch'>
-  <!-- THis is filled by searchtext.html -->
+<img src="http://static.beingmeta.com/graphics/TagSearch40x40.png"
+     alt="search" title="click to search tags within the book"
+     class="hudbutton" id="SBOOKSEARCHBUTTON" hudmode="searching"
+     onclick="sbook.UI.hudbutton(event);"/>
+<img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
+     class="previewicon topright"/>
+<div id="SBOOKPREVIEW" class="hudblock"></div>
+<div id="SBOOKMESSAGE" class="hudblock"></div>
+<div id="SBOOKHEAD">
+<div id="SBOOKTOC" class="hudblock"></div>
+<div id="SBOOKSEARCH" class="searchbox hudblock">
+  <div class="tags">
+    <img class="clearsearch" alt="X" title="clear search"
+	 src="http://static.beingmeta.com/graphics/redx16x16.png"
+	 onclick="sbook.UI.handlers.clearSearch();"/>
+    <span id="SBOOKSEARCHTAGS" class="qtags"></span>
+  </div>
+  <div class="input">
+    <input id="SBOOKSEARCHINPUT"
+	   type="TEXT" class="autoprompt searchinput"
+	   name="QTEXT" value="" isempty="yes" autocomplete="off"
+	   onfocus="sbook.UI.handlers.search_onfocus(event);"
+	   onblur="sbook.UI.handlers.search_onblur(event);"
+	   onkeypress="sbook.UI.handlers.search_onkeypress(event);"
+	   completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
+	   completions="SBOOKSEARCHCLOUD"
+	   results="SBOOKSEARCHRESULTS"/>
+  </div>
+  <div class="resultinfo">
+    <div class="noresults">Sorry, I've got nada</div>
+    <span class="resultcount" onclick="sbook.showSearchResults();"></span>
+    <span class="sep vbar">|</span>
+    <span class="refinecount" onclick="sbookMode('searching');"></span>
+  </div>
+  <div class='searchcloud'></div>
+  <div class='searchresults'></div>
 </div>
-<div id='SBOOKDASHTOP' class='hudblock'>
-  <div style='position: absolute; top: 0px; height: 110%;'> </div>
-  <div class='dashbar'>
-    <a href='http://sbooks.net/logout.fdcgi' class='logout'
-       title='click to logout of the sBooks server'>
+<div id="SBOOKDASHTOP" class="hudblock">
+  <div style="position: absolute; top: 0px; height: 110%;"> </div>
+  <div class="dashbar">
+    <a href="http://sbooks.net/logout.fdcgi" class="logout"
+       title="click to logout of the sBooks server">
       logout</a>
-    <a class='login href='javascript:sbookMode("login");'
-       title='click to login'>
+    <a class="login" href="javascript:sbookMode('login');"
+       title="click to login">
       login</a>
-    <div class='belongsto'>
+    <div class="belongsto">
       This sBook Belongs To:
-      <a href='javascript:sbookMode("login");' name='IDLINK'
-	 id='SBOOKUSERNAME'>
+      <a href="javascript:sbookMode('login');" name="IDLINK"
+	 id="SBOOKUSERNAME">
 	(click to log in)</a>
     </div> <!-- .belongsto -->
   </div> <!-- .dashbar -->
-  <div class='tabbar icons' id='SBOOKTABS'>
-  <a name='IDLINK' href='javascript:sbookMode("login");' 
-     id='IDBUTTON' class='userpic'
-     title='click to login'>
-    <img src='http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png'
-	 alt='login' id='SBOOKUSERPIC'/></a>
-  <a id='HELPBUTTON' href='javascript:sbookMode("help");'
-     title='click for UI help'>
-    <img src='http://static.beingmeta.com/graphics/HelpIcon32x32.png'
-	 alt='Help'/></a>
-    <span class='tab' contentid='APPABOUT'
-	  onclick='sbookMode.toggle("about"); fdjtUI.cancel(event); return false;'
-	  title='information and links about this book'>
-      <img src='http://static.beingmeta.com/graphics/BookIcon32x32.png' alt='About'/></span>
-    <span class='tab' contentid='DASHTOC'
-	  onclick='sbookMode.toggle("dashtoc"); fdjtUI.cancel(event); return false;'
-	  title='Table of Contents (static)'>
-      <img src='http://static.beingmeta.com/graphics/TOCIcon32x32.png' alt='ToC'/></span>
-    <span class='tab' contentid='APPDEVICE'
-	  onclick='sbookMode.toggle("device"); fdjtUI.cancel(event); return false;'
-	  title='alter appearance and interaction'>
-      <img src='http://static.beingmeta.com/graphics/GearIcon32x32.png' alt='Device'/></span>
-    <span class='tab' contentid='SBOOKSAPP'
-	  onclick='sbookMode.toggle("sbookapp"); fdjtUI.cancel(event); return false;'
-	  title='manage how your sBook is enhanced with added layers'>
-      <img src='http://static.beingmeta.com/graphics/sbookspeople32x32.png' alt='sBooks'/></span>
-    <span class='tab' contentid='APPLOGIN'
-	  onclick='sbookMode.toggle("login"); fdjtUI.cancel(event); return false;'
-	  title='login to sBooks'>
-      <img src='http://static.beingmeta.com/graphics/sbooksconnecticon32x32.png' alt='Login'/></span>
+  <div class="tabbar icons" id="SBOOKTABS">
+  <a name="IDLINK" href="javascript:sbookMode('login');" 
+     id="IDBUTTON" class="userpic"
+     title="click to login">
+    <img src="http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png"
+	 alt="login" id="SBOOKUSERPIC"/></a>
+  <a id="HELPBUTTON" href="javascript:sbookMode('help');"
+     title="click for UI help">
+    <img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
+	 alt="Help"/></a>
+    <span class="tab" contentid="APPABOUT"
+	  onclick="sbookMode.toggle('about'); fdjtUI.cancel(event); return false;"
+	  title="information and links about this book">
+      <img src="http://static.beingmeta.com/graphics/BookIcon32x32.png" alt="About"/></span>
+    <span class="tab" contentid="DASHTOC"
+	  onclick="sbookMode.toggle('dashtoc'); fdjtUI.cancel(event); return false;"
+	  title="Table of Contents (static)">
+      <img src="http://static.beingmeta.com/graphics/TOCIcon32x32.png" alt="ToC"/></span>
+    <span class="tab" contentid="APPDEVICE"
+	  onclick="sbookMode.toggle('device'); fdjtUI.cancel(event); return false;"
+	  title="alter appearance and interaction">
+      <img src="http://static.beingmeta.com/graphics/GearIcon32x32.png" alt="Device"/></span>
+    <span class="tab" contentid="SBOOKSAPP"
+	  onclick="sbookMode.toggle('sbookapp'); fdjtUI.cancel(event); return false;"
+	  title="manage how your sBook is enhanced with added layers">
+      <img src="http://static.beingmeta.com/graphics/sbookspeople32x32.png" alt="sBooks"/></span>
+    <span class="tab" contentid="APPLOGIN"
+	  onclick="sbookMode.toggle('login'); fdjtUI.cancel(event); return false;"
+	  title="login to sBooks">
+      <img src="http://static.beingmeta.com/graphics/sbooksconnecticon32x32.png" alt="Login"/></span>
   </div> <!-- .tabbar -->
 </div> <!-- #SBOOKDASHTOP -->
-<div id='SBOOKCONSOLE' class='hudblock sbookconsole'>
+<div id="SBOOKCONSOLE" class="hudblock sbookconsole">
   <!-- This content comes from consoletext.html -->
 </div>
-<div id='SBOOKMARKHUD' class='hudblock'>
-  <!-- This content comes from addgloss.html -->
-</div>
-<div id='SBOOKSOURCES' class='hudblock sbooksources'
-     onclick='sbook.UI.handlers.sources_onclick(event);'>
-  <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
-       class='button everyone selected'
-       alt='show all' title='click to see all glosses'
-       onclick='sbook.UI.handlers.everyone_onclick(event);'/>
+<div id="SBOOKGLOSS" class="sbookgloss hudblock">
+  <form action="https://glossdb.sbooks.net/v3/addgloss.fdcgi"
+	ajaxaction="https://glosses.sbooks.net/v3/ajaxgloss.fdcgi"
+	target="addgloss" class="note" id="SBOOKGLOSSFORM">
+    <div class="glossmode" title="switch between notes, tags, and links">
+      <!--
+      <img src="http://static.beingmeta.com/graphics/diamond32.png"
+	   alt="MODE"/>
+      -->
+      <select name="DISPLAY" id="SBOOKGLOSSMODE"
+	      onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
+	<option value="note" SELECTED><span>Note</span></option>
+	<option value="tag"><span>Tag</span></option>
+	<option value="link"><span>Link</span></option>
+      </select>
+    </div>
+    <div class="submit">
+      <input type="SUBMIT" name="ACTION" value="OK"/>
+      <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+	<input type="CHECKBOX" name="PRIVATE" value="yes"/>
+	<span class="checked"
+	      title="don't share this note with my personal circle (friends)">
+	  private</span>
+	<span class="unchecked"
+	      title="share this note with my personal circle (friends)">
+	  shared</span>
+      </div>
+    </div>
+    <div class="hidden">
+      <input type="HIDDEN" name="FRAG"/>
+      <input type="HIDDEN" name="REFURI"/>
+      <input type="HIDDEN" name="SOURCE"/>
+      <input type="HIDDEN" name="SYNC"/>
+      <input type="HIDDEN" name="USER"/>
+      <input type="HIDDEN" name="UUID"/>
+      <input type="HIDDEN" name="DOCTITLE"/>
+    </div>
+    <fieldset>
+      <div class="input note">
+	<!--
+	<textarea name="NOTE" class="autoprompt"
+		  prompt="add a note plus [tag]s"
+		  id="SBOOKGLOSSNOTE">
+	</textarea>
+	-->
+	<input type="TEXT" name="NOTE" class="autoprompt"
+	       prompt="add a note plus [tag]s"
+	       id="SBOOKGLOSSNOTE"/>
+      </div>
+      <div class="input tag">
+	<input type="TEXT" name="TAG" value=""
+	       class="autoprompt" prompt="add tags"
+	       id="SBOOKGLOSSTAG">
+      </div>
+      <div class="input link">
+	<input type="TEXT" name="HREF" value=""
+	       class="autoprompt" prompt="add links"
+	       id="SBOOKGLOSSHREF"/>
+      </div>
+      <div class="tags" onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);"></div>
+    </fieldset>
+  </form>
 </div>
 </div> <!-- SBOOKHEAD -->
-<div id='SBOOKCONTENT'>
-<div id='SBOOKRESULTS' class='sbookslice'></div>
-<div id='SBOOKALLGLOSSES' class='sbookslice'></div>
-<div id='SBOOKDASH'>
+<div id="SBOOKFLYLEAF">
+<div id="SBOOKGLOSSCLOUD" class="hudblock"></div>
+<div id="SBOOKSEARCHCLOUD" class="completions searchcloud hudblock">
+  <span class="count">no query refinements</span>
+</div>
+<div id="SBOOKSEARCHRESULTS" class="sbookslice hudblock"></div>
+<div id="SBOOKALLGLOSSES" class="sbookslice hudblock"></div>
+<div id="SBOOKDASH" class="hudblock">
   <!-- This content comes from dashtext.html -->
 </div>
-</div>
-<div id='SBOOKGLOSSES' class='hudblock'>
+<div id="SBOOKGLOSSES" class="hudblock">
   <!-- This is filled in on demand -->
 </div>
-</div>
-<div id='SBOOKHELP'>
+</div> <!-- id="SBOOKFLYLEAF" -->
+<div id="SBOOKHELP">
   %HELPTEXT
 </div>
-<div id='SBOOKFOOT'>
-  <img src='http://static.beingmeta.com/graphics/sbooksappicon40x40.png'
-       alt='dash' title='Click for Help, settings, book description, etc'
-       class='hudbutton' id='SBOOKDASHBUTTON' hudmode='dash'
-       onclick='sbook.UI.hudbutton(event);'/>
-  <div class='helphud tapdash'>
-    <strong class='notouch'>click</strong>
-    <strong class='fortouch'>tap</strong> for the<br/>
+<div id="SBOOKFOOT">
+  <img src="http://static.beingmeta.com/graphics/sbooksappicon40x40.png"
+       alt="dash" title="Click for Help, settings, book description, etc"
+       class="hudbutton" id="SBOOKDASHBUTTON" hudmode="dash"
+       onclick="sbook.UI.hudbutton(event);"/>
+  <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
+       class="previewicon bottomleft"/>
+  <div class="helphud tapdash">
+    <strong class="notouch">click</strong>
+    <strong class="fortouch">tap</strong> for the<br/>
     dashboard</div>
-  <div class='helphud tapnotes'>
-    <strong class='notouch'>click</strong>
-    <strong class='fortouch'>tap</strong> to see<br/>
+  <div id="SBOOKINFO" class="hudblock">
+    <div id="SBOOKTARGETINFO"></div>
+  </div>
+  <div id="SBOOKSOURCES" class="hudblock sbooksources"
+       onclick="sbook.UI.handlers.sources_onclick(event);">
+    <img src="http://static.beingmeta.com/graphics/sbookspeople40x40.png"
+	 class="button everyone selected"
+	 alt="show all" title="click to see all glosses"
+	 onclick="sbook.UI.handlers.everyone_onclick(event);"/>
+  </div>
+  <div class="helphud tapnotes">
+    <strong class="notouch">click</strong>
+    <strong class="fortouch">tap</strong> to see<br/>
     notes/glosses</div>
-  <img src='http://static.beingmeta.com/graphics/sbookspeople40x40.png'
-       alt='glosses' title='Click to browse glosses overlaid on this book'
-       class='hudbutton' id='SBOOKALLGLOSSESBUTTON' hudmode='allglosses'
-       onclick='sbook.UI.hudbutton(event);'/>
+  <img src="http://static.beingmeta.com/graphics/sbookspeople40x40.png"
+       alt="glosses" title="Click to browse glosses overlaid on this book"
+       class="hudbutton" id="SBOOKALLGLOSSESBUTTON" hudmode="allglosses"
+       onclick="sbook.UI.hudbutton(event);"/>
+  <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
+       class="previewicon bottomright"/>
+
 </div>
 
 <!--
