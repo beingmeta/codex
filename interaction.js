@@ -260,13 +260,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else if (kc===33) sbook.Backward();  /* page up */
 	// Don't interrupt text input for space, etc
 	else if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
-	else if (kc===32) {  // Space
-	  if (sbook.preview) previewForward();
-	  else sbook.Forward();}
+	else if (kc===32) sbook.Forward(); // Space
 	// backspace or delete
-	else if ((kc===8)||(kc===45)) {
-	    if (sbook.preview) previewBackward();
-	    else sbook.Backward();}
+	else if ((kc===8)||(kc===45)) sbook.Backward();
 	// Home goes to the current head.
 	else if (kc===36) sbook.JumpTo(sbook.head);
 	else return;
@@ -630,6 +626,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if (delta<0) delta=fdjtDOM.viewHeight();
 	    var newy=fdjtDOM.viewTop()+delta;
 	    window.scrollTo(fdjtDOM.viewLeft(),newy);}}
+    sbook.pageForward=pageForward;
 
     function pageBackward(){
 	if (sbook.Trace.gestures)
@@ -660,7 +657,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if (delta<0) delta=fdjtDOM.viewHeight();
 	    var newy=fdjtDOM.viewTop()-delta;
 	    window.scrollTo(fdjtDOM.viewLeft(),newy);}}
-    sbook.Backward=pageBackward;
+    sbook.pageBackward=pageBackward;
 
     /* Moving forward and backward in preview mode */
 
@@ -671,7 +668,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	while (scan) {
 	    if (((scan.about)||
 		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		(fdjtDOM.hasClass(scan,"sbooknote")))
+		((fdjtDOM.hasClass(scan,"sbooknote"))||
+		 (fdjtDOM.hasClass(scan,"passage"))))
 		break;
 	    else scan=fdjtDOM.forwardElt(scan);}
 	if (sbook.Trace.mode) 
@@ -684,6 +682,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else sbook.Preview(false);
 	if (scan) {} // scroll into view
 	return scan;}
+    sbook.previewForward=previewForward;
     function previewBackward(){
 	var start=sbook.previewelt;
 	var slice=fdjtDOM.getParent(start,".sbookslice");
@@ -691,7 +690,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	while (scan) {
 	    if (((scan.about)||
 		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		(fdjtDOM.hasClass(scan,"sbooknote")))
+		((fdjtDOM.hasClass(scan,"sbooknote"))||
+		 (fdjtDOM.hasClass(scan,"passage"))))
 		break;
 	    else scan=fdjtDOM.backwardElt(scan);}
 	if (sbook.Trace.mode) 
@@ -704,6 +704,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else sbook.Preview(false);
 	if (scan) {} // scroll into view
 	return scan;}
+    sbook.previewBackward=previewBackward;
 
     /* Rules */
     
