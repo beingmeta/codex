@@ -550,13 +550,21 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	fdjtLog("[%fs] touchend/gesture d=%o,%o |d|=%o,%o",
 		fdjtET(),dx,dy,adx,ady);
 	if (adx>(ady*4)) { /* horizontal */
-	  if (dx<0) sbook.Backward();
-	  else sbook.Forward();}
+	  if (dx<0) sbook.Forward();
+	  else sbook.Backward();}
 	else if (ady>(adx*4)) { /* vertical */
 	  if ((sbook.mode)&&(dy<0)) sbookMode(false);
-	  else if ((sbook.mode)&&(dy>0)) {}
+	  else if ((sbook.mode)&&(dy>0)) {
+	    if (sbook.target) {
+	      sbook.glossTarget(sbook.target);
+	      sbookMode("target");}
+	    else sbookMode(true);}
 	  else if (dy<0) sbookMode("context");
-	  else sbookMode("context");}
+	  else {
+	    if (sbook.target) {
+	      sbook.glossTarget(sbook.target);
+	      sbookMode("target");}
+	    else sbookMode(true);}}
 	else if ((adx+ady)>17) {
 	  if ((dx>0)&&(dy>0)) sbookMode("toc");
 	  else if ((dx<0)&&(dy>0)) sbookMode("searching");
