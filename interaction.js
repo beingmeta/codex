@@ -490,8 +490,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function touchmove(evt){
 	if (touch_selecting) return;
-	if (evt.type==='mousemove') {
-	    if (!(evt.button)) return;}
+	// if (evt.type==='mousemove') {if (!(evt.button)) return;}
 	fdjtUI.cancel(evt);
 	touch_moves++;
 	if (touch_held) return;
@@ -544,9 +543,29 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var tocall=unhold; unhold=false; tocall();}
       if (hold_timer) {
 	var target=fdjtUI.T(evt);
-	clearTimeout(hold_timer); hold_timer=false;
-	if ((touch_moved)||(touch_scrolled)) return;
-	if (!(edgeTap(evt))) return tap(target);}
+	clearTimeout(hold_timer); hold_timer=false;}
+      if (touch_moved) {
+	var dx=last_x-start_x; var dy=last_y-start_y;
+	var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
+	fdjtLog("[%fs] touchend/gesture d=%o,%o |d|=%o,%o",
+		fdjtET(),dx,dy,adx,ady);
+	if (adx>(ady*4)) { /* horizontal */
+	  if (dx<0) sbook.Backward();
+	  else sbook.Forward();}
+	else if (ady>(adx*4)) { /* vertical */
+	  if ((sbook.mode)&&(dy<0)) sbookMode(false);
+	  else if ((sbook.mode)&&(dy>0)) {}
+	  else if (dy<0) sbookMode("context");
+	  else sbookMode("context");}
+	else if ((adx+ady)>17) {
+	  if ((dx>0)&&(dy>0)) sbookMode("toc");
+	  else if ((dx<0)&&(dy>0)) sbookMode("searching");
+	  else if ((dx>0)&&(dy<0)) sbookMode("dash");
+	  else if ((dx<0)&&(dy<0)) sbookMode("allglosses");
+	  else {}}
+	else {}
+	return;}
+      else if (!(edgeTap(evt))) return tap(target);
       else return;}
 
     /* Mouse handlers for body and HUD */
