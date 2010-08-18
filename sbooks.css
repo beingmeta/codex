@@ -137,7 +137,7 @@ body.sbook {
     width: 100%;}
 body.dimmed > * { opacity: 0.3;}
 
-body.scrollfree { } /* margin: 0px; */
+body.scrollfree {} /* margin: 0px; */
 body.scrollfree #SBOOKBODY {
     position: absolute;}
 body.scrollfree div#SBOOKHUD div#SBOOKFOOT,
