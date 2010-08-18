@@ -143,6 +143,11 @@ body.scrollfree #SBOOKBODY {
 body.scrollfree div#SBOOKHUD div#SBOOKFOOT,
 body.scrollfree div#SBOOKPAGEFOOT {
     bottom: auto; position: absolute;}
+body.scrollfree div#SBOOKHUD div#SBOOKFLYLEAF {
+    overflow: hidden; position: absolute; bottom: auto;}
+body.scrollfree div#SBOOKHUD div#SBOOKFLYLEAF > div {
+    position: absolute; overflow: visible; bottom: auto;
+    min-height: inherit;}
 
 /* The DOM of an sbook puts the content in one element */
 body.sbook > * { width: 100%; margin: 0px;}
@@ -171,6 +176,9 @@ div#SBOOKHUD div#SBOOKHEAD {
     z-index: 200;}
 div#SBOOKHUD div#SBOOKFLYLEAF {
     position: fixed; top: 75px; bottom: 75px; left: 100px; right: 100px;
+    background-color: #505050; color: ivory; border: solid darkblue 3px;
+    -khtml-border-radius: 6px; -webkit-border-radius: 6px; 
+    -moz-border-radius: 6px; border-radius: 6px; 
     display: none;}
 
 div#SBOOKHUD img.button { z-index: 250;}
@@ -179,22 +187,21 @@ div#SBOOKHUD div#SBOOKFOOT img.button { vertical-align: bottom;}
 
 /* HUD blocks */
 
-div#SBOOKHUD div#SBOOKHEAD > div, div#SBOOKHUD div#SBOOKFLYLEAF > div, div#SBOOKHUD div#SBOOKFOOT > div {
-    position: absolute; left: 100px; right: 100px;
-    min-height: 40px; max-height: 50px; z-index: 200;
-    margin: 0px; padding: 5px; border: solid blue 3px;
-    background-color: gray; opacity: 0.9;
-    text-align: center; background-color: #505050; color: ivory;
-    -khtml-border-radius: 0px; -webkit-border-radius: 0px; 
-    -moz-border-radius: 0px; border-radius: 0px; 
+div#SBOOKHUD div#SBOOKHEAD > div.hudblock,
+div#SBOOKHUD div#SBOOKFOOT > div.hudblock,
+div#SBOOKHUD div#SBOOKFLYLEAF > div {
+    position: absolute; left: 100px; right: 100px; z-index: 200;
+    margin: 0px; padding: 5px; opacity: 0.9;
+    text-align: center;
     display: none;}
+
+div#SBOOKHUD div#SBOOKHEAD > div.hudblock,
+div#SBOOKHUD div#SBOOKFOOT > div.hudblock {
+    background-color: #505050; color: ivory;}
 
 body.hudup div#SBOOKHUD div#SBOOKHEAD div.hudblock,
 body.hudup div#SBOOKHUD div#SBOOKFOOT div.hudblock {
-    max-height: inherit; min-height: 60px;}
-body.touch.hudup div#SBOOKHUD div#SBOOKHEAD div.hudblock,
-body.touch.hudup div#SBOOKHUD div#SBOOKFOOT div.hudblock {
-    min-height: 80px;}
+    max-height: inherit;}
 body.hudup div#SBOOKHUD.context div#SBOOKHEAD div.hudblock,
 body.hudup div#SBOOKHUD.context div#SBOOKFOOT div.hudblock {
     min-height: inherit;}
@@ -225,7 +232,6 @@ div#SBOOKHUD div#SBOOKFOOT > div {
 
 div#SBOOKHUD div#SBOOKFLYLEAF > div {
     top: 0px; bottom: 0px; left: 0px; right: 0px;
-    min-height: 90%; margin-top: 5%; margin-bottom: 5%;
     padding-bottom: 6px; padding-top: 6px;
     -khtml-border-radius: 6px; 
     -webkit-border-radius: 6px; 
@@ -241,11 +247,11 @@ div#SBOOKHUD div#SBOOKSOURCES { height: 60px;  padding-bottom: 0px;}
 
 /* Modes are classes on SBOOKHUD which control what is actually visible */
 
-div#SBOOKHUD.searching div#SBOOKSEARCH,
+div#SBOOKHUD.searching div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
 div#SBOOKHUD.searching div#SBOOKFLYLEAF,
 div#SBOOKHUD.searching div#SBOOKSEARCHCLOUD,
 div#SBOOKHUD.browsing div#SBOOKFLYLEAF,
-div#SBOOKHUD.browsing div#SBOOKSEARCH,
+div#SBOOKHUD.browsing div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
 div#SBOOKHUD.browsing div#SBOOKFLYLEAF div#SBOOKSEARCHRESULTS {
     display: block;}
 
@@ -263,7 +269,7 @@ div#SBOOKHUD.allglosses div#SBOOKFLYLEAF div#SBOOKALLGLOSSES {
     display: block;}
 
 div#SBOOKHUD.dash div#SBOOKFLYLEAF,
-div#SBOOKHUD.dash div#SBOOKDASHTOP,
+div#SBOOKHUD.dash div#SBOOKHEAD div.hudblock#SBOOKDASHTOP,
 div#SBOOKHUD.dash div#SBOOKFLYLEAF div#SBOOKDASH {
     display: block;}
 
@@ -382,19 +388,21 @@ div#SBOOKHELP div.message {
     overflow: hidden;}
 div#SBOOKHELP div.message .head { font-size: 200%;}
 
-div.helphud span.fauxarrow { font-size: 150%; vertical-align: middle;}
+.helphud span.arrow {
+    font-weight: bold; font-size: 150%;
+    vertical-align: middle;}
 
 div.helphud.tapnav {
-    top: 3px; left: 50px; text-align: left;
+    top: 3px; left: 50px; text-align: right;
     font-size: 17px;}
 div.helphud.tapsearch {
-    top: 3px; right: 50px; text-align: right;
+    top: 3px; right: 50px; text-align: left;
     font-size: 17px;}
 div.helphud.tapdash {
-    bottom: 3px; left: 50px; text-align: left;
+    bottom: 3px; left: 50px; text-align: right;
     font-size: 17px;}
 div.helphud.tapnotes {
-    bottom: 3px; right: 50px; text-align: right;
+    bottom: 3px; right: 50px; text-align: left;
     font-size: 17px;}
 
 /* Buttons */
@@ -574,7 +582,7 @@ div#SBOOKHUD div.hudblock.flash {
 
 /* The TOC/Nav HUD */
 
-div#SBOOKHUD.toc div.hudblock#SBOOKTOC {
+div#SBOOKHUD.toc div#SBOOKHEAD > div.hudblock#SBOOKTOC {
   display: block; max-height: inherit;
   border-color: blue;}
 
@@ -1140,6 +1148,7 @@ div.sbookgloss form div.submit .checkspan {
     font-weight: bold; font-size: 10px; border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
     background-color: silver; color: green;}
+div.sbookgloss form div.submit div.checkspan { text-align: center;}
 div.sbookgloss form div.submit .checkspan.ischecked {
     font-weight: normal; color: red; }
 div.sbookgloss form div.submit .checkspan input[type='checkbox'] {

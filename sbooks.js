@@ -73,10 +73,9 @@ var sbook=
 	 focus: false,// Whether to trace focus/target changes
 	 locations: false, // Whether we're debugging locations
 	 network: 0,      // Whether we're debugging server interaction
-	 mark: false,      // Whether to debug gloss addition
+	 glosses: false, // Whether we're tracing gloss processing
 	 pagination: 0, // Whether to trace pagination
 	 paging: false, // Whether to trace paging (movement by pages)
-	 floathud: false,
 	 gestures: false} // Whether to trace gestures
     };
 var _sbook_setup=false;
@@ -386,17 +385,25 @@ var sbook_gloss_data=
 
   var scrollfree=sbook.scrollfree=false;
   var x_offset=0; var y_offset=-1;
-  function scrollTo(x,y){
+  function scrollTo(x,y,win){
     if (x_offset<0)
       x_offset=fdjtDOM.parsePX(fdjtDOM.getStyle(document.body).marginLeft);
     if (y_offset<0)
       y_offset=fdjtDOM.parsePX(fdjtDOM.getStyle(document.body).marginTop);
     if (scrollfree) {
       window.scrollTo(0,0);
-      sbook.body.style.left=""+(-x+x_offset)+"px";
-      sbook.body.style.top=""+(-y+y_offset)+"px";}
-    else window.scrollTo(x,y);}
+      (win||sbook.body).style.left=""+(-x+x_offset)+"px";
+      (win||sbook.body).style.top=""+(-y+y_offset)+"px";}
+    else (win||window).scrollTo(x,y);}
   sbook.scrollTo=scrollTo;
+  function scrollPos(win){
+    if (scrollfree) {
+      var x=fdjtDOM.parsePX((win||(sbook.body)).style.left);
+      var y=fdjtDOM.parsePX((win||sbook.body).style.top);
+      return {x: x,y: y};}
+    else return {x:(win||window).scrollX,y:(win||window).scrollY};}
+  sbook.scrollPos=scrollPos;
+
   sbook.ScrollFree=function(arg){
     if (typeof arg === 'undefined') return scrollfree;
     else sbook.scrollfree=scrollfree=arg;};
@@ -407,9 +414,8 @@ var sbook_gloss_data=
   var saved_x=false; var saved_y=false;
   function scrollPreview(elt,cxt,off){
     if (sbook.scrollfree) {
-      var geom=fdjtDOM.getGeometry(elt,sbook.body,false);
+      var geom=fdjtDOM.getGeometry(elt,sbook.body||sbook.root,false);
       var x=0; var y=geom.top-(fdjtDOM.viewHeight()/2);
-      fdjtLog("Outer limits scroll to %o [%o,%o]",elt,x,y);
       if ((!(saved_y))||(!(saved_x))) {
 	saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
 	saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}

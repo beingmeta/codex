@@ -73,7 +73,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     var unhold=false;
     var hold_timer=false;
-    var hold_interval=500;
+    var hold_interval=1500;
     var start_x=-1; var start_y=-1; var last_x=-1; var last_y=-1;
     
     /* Setup for gesture handling */
@@ -488,9 +488,15 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	  hold_interval);
       touch_held=false; touch_moved=false; touch_scrolled=false;}
 
+    var mouseisdown=false;
+
     function touchmove(evt){
 	if (touch_selecting) return;
-	// if (evt.type==='mousemove') {if (!(evt.button)) return;}
+	// When faking touch, moves only get counted if the mouse is down.
+	if (hold_timer) {
+	  clearTimeout(hold_timer); hold_timer=false;
+	  mouseisdown=true;}
+	if (!(mouseisdown)) return;
 	fdjtUI.cancel(evt);
 	touch_moves++;
 	if (touch_held) return;
@@ -517,7 +523,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else {}}
 
     function scrollBody(dx,dy){
-      var curx=window.scrollX; var cury=window.scrollY;
+      var curpos=sbook.scrollPos();
+      var curx=curpos.x; var cury=curpos.y;
       if (sbook.Trace.gestures)
 	fdjtLog("[%fs] scrollBody(%o,%o)",fdjtET(),dx,dy);
       var newx=curx-dx; var newy=cury-dy;
@@ -526,24 +533,27 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function scrollHUD(dx,dy){
       var content=((sbook.scrolling)&&(fdjtID(sbook.scrolling)));
       if (!(content)) return;
-      var curtop=parseInt(fdjtDOM.getStyle(content).top.slice(0,-2));
+      var curtop=-fdjtDOM.parsePX(content.style.top)||0;
       var geom=fdjtDOM.getGeometry(content);
-      var newtop=curtop+dy; 
+      var newtop=curtop-dy; 
       var mintop=-(geom.height);
       if (newtop>0) newtop=0; else if (newtop<mintop) newtop=mintop; else {}
       if (sbook.Trace.gestures) 
 	fdjtLog("[%fs] scrollHUD() %o,%o: cur=%o new=%o min=%o=-(%o): %o",
 		fdjtET(),dx,dy,curtop,newtop,mintop,geom.height,
 		content);
-      if (newtop!==curtop) content.style.top=newtop+'px';}
+      if (newtop!==curtop) content.style.top=(-newtop)+'px';}
 
     function touchend(evt,tap){
       if (sbook.Trace.gestures) tracetouch("touchend",evt);
       if (unhold) {
 	var tocall=unhold; unhold=false; tocall();}
+      var target=fdjtUI.T(evt);
       if (hold_timer) {
-	var target=fdjtUI.T(evt);
 	clearTimeout(hold_timer); hold_timer=false;}
+      mouseisdown=false; // For faketouch
+      if (touch_scrolled) return;  // Gesture already intepreted
+      if (fdjtDOM.isClickable(target)) return;
       if (touch_moved) {
 	var dx=last_x-start_x; var dy=last_y-start_y;
 	var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));

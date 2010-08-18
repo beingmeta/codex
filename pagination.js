@@ -677,7 +677,7 @@ var sbookPaginate=
 	    var top;
 	    if (typeof arg === "number") top=arg;
 	    else if (arg.nodeType)
-	      top=getGeometry(arg,sbook.root).top;
+	      top=getGeometry(arg,sbook.body||sbook.root).top;
 	    else if (!(fdjtID(arg))) return 0;
 	    else top=getGeometry(arg,sbook.root).top;
 	    var i=1; var len=sbook.pages.length;
@@ -733,18 +733,6 @@ var sbookPaginate=
 	    var rightedge=fdjtDOM("div.sbookmargin#SBOOKPAGERIGHT",".");
 	    leftedge.sbookui=true; rightedge.sbookui=true;
 
-	    if (sbook.mobilesafari) {
-		var head=fdjtDOM.$("HEAD")[0];
-		var dash=fdjtID("SBOOKDASH");
-		var appmeta=fdjtDOM("META");
-		appmeta.name='apple-mobile-web-app-capable';
-		appmeta.content='yes';
-		fdjtDOM.prepend(head,appmeta);
-		var viewmeta=fdjtDOM("META");
-		viewmeta.name='viewport';
-		viewmeta.content='user-scalable=no,width=device-width,height=device-height';
-		fdjtDOM.prepend(head,viewmeta);}
-	    
 	    fdjtDOM.insertAfter(sbookHUD,
 				pagehead,pagefoot,
 				leftedge,rightedge);

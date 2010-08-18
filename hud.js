@@ -130,8 +130,11 @@ var sbookMode=
 	  var vh=fdjtDOM.viewHeight();
 	  var vw=fdjtDOM.viewWidth();
 	  var hf=fdjtID("SBOOKFOOT");
+	  var flyleaf=fdjtID("SBOOKFLYLEAF");
 	  var fh=fdjtDOM.getGeometry(hf).height;
 	  fdjtLog("[%fs] resizeHUD vh=%o vw=%o fh=%o",fdjtET(),vh,vw,fh);
+	  flyleaf.style.height=(vh-150)+'px';
+	  flyleaf.style.minHeight=(vh-150)+'px';
 	  hf.style.top=(vh-fh)+'px';}
 
 	/* This is used for viewport-based browser, where the HUD moves
@@ -165,7 +168,7 @@ var sbookMode=
 
 	function createNavHUD(eltspec,root_info){
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
-	    var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudblock.hud",toc_div);
+	    var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudblock",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
 	    sbook.UI.addHandlers(div,"toc");
 	    return div;}
@@ -211,14 +214,16 @@ var sbookMode=
 		    sbookSetupDash();
 		if (!(typeof mode === 'string'))
 		    sbook.scrolling=false;
-		else if (mode==='allglosses')
+		else if (mode==='allglosses') 
 		    sbook.scrolling="SBOOKALLGLOSSES";
 		else if (mode==='browsing')
-		    sbook.scrolling="SBOOKALLGLOSSES";
-		else if (mode.search(sbookDashMode_pat)===0) {
-		    fdjtDOM.addClass(sbookHUD,"dash");
-		    sbook.scrolling="SBOOKDASH";
-		    sbook.last_dash=mode;}
+		    sbook.scrolling="SBOOKSEARCHRESULTS";
+		else {}
+		if ((mode)&&(typeof mode === 'string')&&
+		    (mode.search(sbookDashMode_pat)===0)) {
+		  fdjtDOM.addClass(sbookHUD,"dash");
+		  sbook.scrolling="SBOOKDASH";
+		  sbook.last_dash=mode;}
 		else {
 		    sbook.scrolling=false;
 		    fdjtDOM.dropClass(sbookHUD,"dash");}

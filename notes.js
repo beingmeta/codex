@@ -480,14 +480,14 @@ var sbook_delete_icon="redx12x12.png";
 	if (targetloc) {
 	    var scrollto=getFirstElt(glosses,targetloc);
 	    if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
-		if ((sbook.ui==='ios')||(sbook.ui==='faketouch')) {
+		if (sbook.scrollfree) {
 		    var off=getScrollOffset(scrollto,glosses);
 		    // var transform='translate('+0+'px,-'+off+'px)';
 		    // fdjtLog("Applying transform %o",transform);
 		    //glosses.style.webkitTransform=transform;
 		    // fdjtLog("Positioning for scroll offset %o",off);
-		    glosses.style.top="-"+off+"px";
-		}
+		    if (off<0) off=0;
+		    glosses.style.top="-"+off+"px";}
 		else scrollto.scrollIntoView(true);}}
     }
     sbook.UI.scrollGlosses=scrollGlosses;
