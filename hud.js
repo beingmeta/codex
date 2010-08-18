@@ -132,7 +132,6 @@ var sbookMode=
 	  var hf=fdjtID("SBOOKFOOT");
 	  var fh=fdjtDOM.getGeometry(hf).height;
 	  fdjtLog("[%fs] resizeHUD vh=%o vw=%o fh=%o",fdjtET(),vh,vw,fh);
-	  sbookHUD.style.width=vw+'px';
 	  hf.style.top=(vh-fh)+'px';}
 
 	/* This is used for viewport-based browser, where the HUD moves
