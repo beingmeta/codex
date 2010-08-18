@@ -7,8 +7,8 @@
 <div class="helphud tapnav">
   <span class="arrow">←</span>
   <strong class="notouch">click</strong>
-  <strong class="fortouch">tap</strong> here to<br/>
-  navigate</div>
+  <strong class="fortouch">tap</strong> here<br/>
+  to navigate</div>
 <div class="helphud tapsearch">
   <strong class="notouch">click</strong>
   <strong class="fortouch">tap</strong> here
@@ -99,6 +99,13 @@
       <img src="http://static.beingmeta.com/graphics/sbooksconnecticon32x32.png" alt="Login"/></span>
   </div> <!-- .tabbar -->
 </div> <!-- #SBOOKDASHTOP -->
+<div id="SBOOKSOURCES" class="hudblock sbooksources"
+     onclick="sbook.UI.handlers.sources_onclick(event);">
+  <img src="http://static.beingmeta.com/graphics/sbookspeople40x40.png"
+       class="button everyone selected"
+       alt="show all" title="click to see all glosses"
+       onclick="sbook.UI.handlers.everyone_onclick(event);"/>
+</div>
 <div id="SBOOKCONSOLE" class="hudblock sbookconsole">
   <!-- This content comes from consoletext.html -->
 </div>
@@ -193,23 +200,16 @@
   <div class="helphud tapdash">
     <span class="arrow">←</span>
     <strong class="notouch">click</strong>
-    <strong class="fortouch">tap</strong> here for the<br/>
-    dashboard</div>
+    <strong class="fortouch">tap</strong> here<br/>
+    for dashboard</div>
   <div id="SBOOKINFO" class="hudblock">
     <div id="SBOOKTARGETINFO"></div>
-  </div>
-  <div id="SBOOKSOURCES" class="hudblock sbooksources"
-       onclick="sbook.UI.handlers.sources_onclick(event);">
-    <img src="http://static.beingmeta.com/graphics/sbookspeople40x40.png"
-	 class="button everyone selected"
-	 alt="show all" title="click to see all glosses"
-	 onclick="sbook.UI.handlers.everyone_onclick(event);"/>
   </div>
   <div class="helphud tapnotes">
     <strong class="notouch">click</strong>
     <strong class="fortouch">tap</strong>
     here <span class="arrow">→</span><br/>
-    to see notes/glosses</div>
+    for glosses</div>
   <img src="http://static.beingmeta.com/graphics/sbookspeople40x40.png"
        alt="glosses" title="Click to browse glosses overlaid on this book"
        class="hudbutton" id="SBOOKALLGLOSSESBUTTON" hudmode="allglosses"
