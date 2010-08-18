@@ -1,0 +1,25 @@
+<div class="tags">
+  <img class="clearsearch" alt="X" title="clear search"
+       src="http://static.beingmeta.com/graphics/redx16x16.png"
+       onclick="sbook.UI.handlers.clearSearch();"/>
+  <span id="SBOOKSEARCHTAGS" class="qtags"></span>
+</div>
+<div class="input">
+  <input id="SBOOKSEARCHINPUT"
+	 type="TEXT" class="autoprompt searchinput"
+	 name="QTEXT" value="" isempty="yes" autocomplete="off"
+	 onfocus="sbook.UI.handlers.search_onfocus(event);"
+	 onblur="sbook.UI.handlers.search_onblur(event);"
+	 onkeypress="sbook.UI.handlers.search_onkeypress(event);"
+	 completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
+	 completions="SBOOKSEARCHCLOUD"
+	 results="SBOOKSEARCHRESULTS"/>
+</div>
+<div class="resultinfo">
+  <div class="noresults">Sorry, I've got nada</div>
+  <span class="resultcount" onclick="sbook.showSearchResults();"></span>
+  <span class="sep vbar">|</span>
+  <span class="refinecount" onclick="sbookMode('searching');"></span>
+</div>
+<div class='searchcloud'></div>
+<div class='searchresults'></div>

@@ -1,0 +1,61 @@
+<form action="https://glossdb.sbooks.net/v3/addgloss.fdcgi"
+      ajaxaction="https://glosses.sbooks.net/v3/ajaxgloss.fdcgi"
+      target="addgloss" class="note" id="SBOOKGLOSSFORM">
+  <div class="glossmode" title="switch between notes, tags, and links">
+    <!--
+       <img src="http://static.beingmeta.com/graphics/diamond32.png"
+	    alt="MODE"/>
+       -->
+    <select name="DISPLAY" id="SBOOKGLOSSMODE"
+	    onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
+      <option value="note" SELECTED><span>Note</span></option>
+      <option value="tag"><span>Tag</span></option>
+      <option value="link"><span>Link</span></option>
+    </select>
+  </div>
+  <div class="submit">
+    <input type="SUBMIT" name="ACTION" value="OK"/>
+    <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+      <input type="CHECKBOX" name="PRIVATE" value="yes"/>
+      <span class="checked"
+	    title="don't share this note with my personal circle (friends)">
+	private</span>
+      <span class="unchecked"
+	    title="share this note with my personal circle (friends)">
+	shared</span>
+    </div>
+  </div>
+  <div class="hidden">
+    <input type="HIDDEN" name="FRAG"/>
+    <input type="HIDDEN" name="REFURI"/>
+    <input type="HIDDEN" name="SOURCE"/>
+    <input type="HIDDEN" name="SYNC"/>
+    <input type="HIDDEN" name="USER"/>
+    <input type="HIDDEN" name="UUID"/>
+    <input type="HIDDEN" name="DOCTITLE"/>
+  </div>
+  <fieldset>
+    <div class="input note">
+      <!--
+	 <textarea name="NOTE" class="autoprompt"
+		   prompt="add a note plus [tag]s"
+		   id="SBOOKGLOSSNOTE">
+	 </textarea>
+	 -->
+      <input type="TEXT" name="NOTE" class="autoprompt"
+	     prompt="add a note plus [tag]s"
+	     id="SBOOKGLOSSNOTE"/>
+    </div>
+    <div class="input tag">
+      <input type="TEXT" name="TAG" value=""
+	     class="autoprompt" prompt="add tags"
+	     id="SBOOKGLOSSTAG">
+    </div>
+    <div class="input link">
+      <input type="TEXT" name="HREF" value=""
+	     class="autoprompt" prompt="add links"
+	     id="SBOOKGLOSSHREF"/>
+    </div>
+    <div class="tags" onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);"></div>
+  </fieldset>
+</form>

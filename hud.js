@@ -66,8 +66,14 @@ var sbookMode=
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
 	    dash.innerHTML=sbook_dashtext;
+	    var gloss=fdjtID("SBOOKGLOSS");
+	    gloss.innerHTML=sbookgloss_hud;
+	    var dashtop=fdjtID("SBOOKDASHTOP");
+	    dashtop.innerHTML=sbookdashtop_hud;
 	    // Initialize search UI
-	    fdjtUI.AutoPrompt.setup(fdjtID("SBOOKSEARCH"));
+	    var search=fdjtID("SBOOKSEARCH");
+	    search.innerHTML=sbooksearch_hud;
+	    fdjtUI.AutoPrompt.setup(search);
 	    sbook.empty_cloud=
 	      new fdjtUI.Completions(fdjtID("SBOOKSEARCHCLOUD"));
 	    // Initialize gloss UI
@@ -184,7 +190,7 @@ var sbookMode=
 	/* Mode controls */
 	
 	var sbookMode_pat=
-	    /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(mark)|(context)|(dashtoc)|(about)|(console)|(minimal)|(target)/g;
+	    /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(dashtoc)|(about)|(console)|(minimal)|(target)/g;
 	var sbookDashMode_pat=/(login)|(device)|(sbookapp)|(dashtoc)|(about)/g;
 	
 	function sbookMode(mode){
