@@ -888,7 +888,7 @@ var sbookPaginate=
 	sbook.pageRight=function(){return sbook_right_px;}
 	sbook.pageSize=function(){return sbook_pagesize;}
 
-	sbookPaginate.debug=true;
+	// sbookPaginate.debug=true;
 
 	return sbookPaginate;})();
 
