@@ -50,6 +50,7 @@ sbook.Startup=
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
 	    getSettings();
+	    fdjtLog("vh=%o",fdjtDOM.viewHeight());
 	    // Dependent setups
 	    fdjtDOM.init();
 	    // Add this as soon as possible

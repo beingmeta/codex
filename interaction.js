@@ -547,8 +547,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
       if (touch_moved) {
 	var dx=last_x-start_x; var dy=last_y-start_y;
 	var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
-	fdjtLog("[%fs] touchend/gesture d=%o,%o |d|=%o,%o",
-		fdjtET(),dx,dy,adx,ady);
+	if (sbook.Trace.gestures)
+	  fdjtLog("[%fs] touchend/gesture d=%o,%o |d|=%o,%o",
+		  fdjtET(),dx,dy,adx,ady);
 	if (adx>(ady*4)) { /* horizontal */
 	  if (dx<0) sbook.Forward();
 	  else sbook.Backward();}
