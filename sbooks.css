@@ -194,7 +194,7 @@ body.hudup div#SBOOKHUD div#SBOOKHEAD div.hudblock,
 body.hudup div#SBOOKHUD div#SBOOKFOOT div.hudblock {
     max-height: inherit;}
 
-div#SBOOKHUD div#SBOOKHEAD > div {
+div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
     top: 0px; border-top: 0px;
     -khtml-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
@@ -205,7 +205,7 @@ div#SBOOKHUD div#SBOOKHEAD > div {
     -moz-border-radius-bottomright: 6px;
     border-bottom-right-radius: 6px;
     vertical-align: top;}
-div#SBOOKHUD div#SBOOKFOOT > div {
+div#SBOOKHUD div#SBOOKFOOT > div.hudblock {
     bottom: 0px; padding-bottom: 2px; border-bottom: 0px;
     padding-top: 2px;
     -khtml-border-top-left-radius: 6px; 
@@ -235,11 +235,13 @@ div#SBOOKHUD div#SBOOKSOURCES { height: 60px;  padding-bottom: 0px;}
 
 /* Modes are classes on SBOOKHUD which control what is actually visible */
 
+body.hudup div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
+    height: 60px; min-height: 60px; max-height: 60px; opacity: 0.95;}
+
 div#SBOOKHUD.searching div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
 div#SBOOKHUD.browsing div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
 div#SBOOKHUD.allglosses div#SBOOKHEAD div.hudblock#SBOOKSOURCES,
 div#SBOOKHUD.dash div#SBOOKHEAD div.hudblock#SBOOKDASHTOP {
-    height: 60px; min-height: 60px; max-height: 60px; opacity: 0.95;
     border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px;
     border-left: solid darkblue 3px; border-right: solid darkblue 3px;
     border-bottom: 0px; 
@@ -396,9 +398,9 @@ div#SBOOKHELP span.key:before { content: '(';}
 div#SBOOKHELP span.key:after { content: ')';}
 
 div#SBOOKHELP div.message {
-    margin-top: 2ex; font-size: 16px; color: red; height: 50px;
+    margin-top: 2ex; font-size: 125%; color: red; height: 50px;
     overflow: hidden;}
-div#SBOOKHELP div.message .head { font-size: 200%;}
+div#SBOOKHELP div.message .head { font-size: 150%;}
 
 .helphud span.arrow {
     font-weight: bold; font-size: 150%;
@@ -406,16 +408,16 @@ div#SBOOKHELP div.message .head { font-size: 200%;}
 
 div.helphud.tapnav {
     top: 3px; left: 50px; text-align: right;
-    font-size: 17px;}
+    font-size: 120%;}
 div.helphud.tapsearch {
     top: 3px; right: 50px; text-align: left;
-    font-size: 17px;}
+    font-size: 120%;}
 div.helphud.tapdash {
     bottom: 3px; left: 50px; text-align: right;
-    font-size: 17px;}
+    font-size: 120%;}
 div.helphud.tapnotes {
     bottom: 3px; right: 50px; text-align: left;
-    font-size: 17px;}
+    font-size: 120%;}
 
 /* Buttons */
 
@@ -573,20 +575,6 @@ body.sbookhead { text-decoration: none;}
 
 /* Generic HUD Display/opacity rules */
 
-div#SBOOKPREVIEWMSG {
-    position: fixed;
-    color: black; background-color: white;
-    top: 25%; bottom: 25%; right: 15%; left: 15%;
-    padding-top: 5%; padding-bottom: 5%;
-    font-size: 36px; font-weight: bold;
-    text-align: center; vertical-align: middle;
-    transition-property: opacity; transition-duration: 2s;
-    border: solid black 6px; border-radius: 12px;
-    opacity: 0.75;
-    display: none;}
-div#SBOOKPREVIEWMSG div {}
-/* body.preview div#SBOOKPREVIEWMSG { display: block;} */
-
 div#SBOOKHUD div.hudblock.hover {
     display: block; opacity: 0.8; max-height: 60px;}
 div#SBOOKHUD div.hudblock.flash {
@@ -648,9 +636,6 @@ div#SBOOKHUD.allglosses img.hudbutton[alt='glosses'] {
   opacity: 1.0; border-color: blue; background-color: gray;}
 
 /* Miscellaneous gloss rules */
-
-div#SBOOKHUD div#SBOOKHEAD div.sbookgloss#SBOOKGLOSS {
-    min-height: 50px;}
 
 div#SBOOKHUD.target div#SBOOKHEAD div#SBOOKGLOSS { display: block;}
 div#SBOOKHUD.target div#SBOOKFOOT div#SBOOKINFO { display: block;}
@@ -909,7 +894,7 @@ div.sbookgloss form fieldset {
     border: 0px; padding: 6px; padding-top: 2px;}
 
 div.sbookgloss form div.glossmode select {
-    font-size: 16px; font-weight: bold; font-variant: small-caps;}
+    font-size: 125%; font-weight: bold; font-variant: small-caps;}
 div.sbookgloss form div.glossmode select option {
     background-image:
     url(http://static.beingmeta.com/graphics/TagIcon16x16.png);
@@ -918,10 +903,10 @@ div.sbookgloss form div.glossmode select option {
 div.sbookgloss form div.submit img,
 div.sbookgloss form div.submit input[type='SUBMIT'] {
     padding-left: 0.2em; padding-right: 0.2em; font-weight: bold;
-    text-align: center; font-size: 16px;}
+    text-align: center; font-size: 150%; width: 100%;}
 div.sbookgloss form div.submit {}
 div.sbookgloss form div.submit .checkspan {
-    font-weight: bold; font-size: 10px;
+    font-weight: bold; font-size: 90%;
     border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
     background-color: silver; color: green;}
@@ -935,23 +920,25 @@ div.sbookgloss form div.input {display: none; width: auto;}
 div.sbookgloss form div.input input {}
 div.sbookgloss form div.input input[type='TEXT'] {} /* width: 100%; */
 div.sbookgloss form div.input input[type='TEXT'][name='TAG'] {
-    height: 24px; font-size: 16px; font-weight: bold;
+    height: 24px; font-size: 125%; font-weight: bold;
     background-image:
     url(http://static.beingmeta.com/graphics/TagIcon24x24.png);
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 div.sbookgloss form div.input input[type='TEXT'][name='HREF'] {
-    height: 24px; font-size: 12px; font-family: fixed; font-style: normal;
+    height: 24px; font-size: 80%; font-family: fixed; font-style: normal;
     background-image:
     url(http://static.beingmeta.com/graphics/DiagLink24x24.png);
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 div.sbookgloss form div.input textarea,
 div.sbookgloss form div.input input[type='TEXT'] {
-    display: block; font-size: 16px; width: 100%;
-    margin: 0px; padding: 3px; border: 3px; border-radius: 6px;}
+    display: block; width: 100%;
+    margin: 0px; padding: 3px; border: 3px;
+    border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px;}
 div.sbookgloss form div.input textarea[name='NOTE'],
-div.sbookgloss form div.input textarea[type='TEXT'][name='NOTE'] {
+div.sbookgloss form div.input input[type='TEXT'][name='NOTE'] {
+    height: 6ex; vertical-align: top; overflow: hidden;
     background-image:
     url(http://static.beingmeta.com/graphics/remarkballoon24x24.png);
     background-position-x: right; background-position-y: top;
@@ -1257,6 +1244,8 @@ div#SBOOKHUD div.sbookinfo { padding-left: 1em; padding-right: 1em;}
 
 div#SBOOKHUD div.sbookinfo div.gloss img.userpic {
     float: left;  height: 40px;}
+div#SBOOKHUD div.sbookinfo div.gloss {
+    min-height: 40px;}
 div.sbookinfo div.gloss span.tstamp { float: right; font-size: 75%;}
 
 div#SBOOKHUD div#SBOOKINFO.sbookinfo div.gloss { display: none;}
@@ -1283,10 +1272,12 @@ div#SBOOKHUD div.sbookinfo span.note { font-style: italic;}
 div#SBOOKHUD div.sbookinfo span.note:before {
     font-size: 200%; content: "\“";
     position: relative; top: 0.5ex;
-    padding-right: 0.2em;}
+    padding-right: 0.2em;
+    display: none;}
 div#SBOOKHUD div.sbookinfo span.note:after {
     font-size: 200%; content: "\”";
-    position: relative; top: 0.5ex;}
+    position: relative; top: 0.5ex;
+    display: none;}
 
 div.sbookinfo span.tag { color: gold;}
 div.sbookinfo span.source { color: white;}
@@ -1721,14 +1712,40 @@ body.touch { overflow: hidden;}
 
 /* Make HUD buttons bigger */
 
-body.touch .hudbutton { width: 60px; }
+body.touch .hudbutton { width: 60px; height: 60px;}
 body.touch div.helphud {font-size: 20px;}
 body.touch div.helphud.tapnav {left: 75px;}
 body.touch div.helphud.tapsearch {right: 75px;}
 body.touch div.helphud.tapdash {left: 75px;}
 body.touch div.helphud.tapnotes {right: 75px;}
 
-body.touch div#SBOOKHUD div#SBOOKGLOSS.sbookgloss { font-size: 125%;}
+body.touch div#SBOOKHUD div#SBOOKHEAD { font-size: 125%;}
+body.touch div#SBOOKHUD div#SBOOKFOOT { font-size: 125%;}
+body.touch div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
+    min-height: 100px;}
+body.hudup.touch div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
+    height: 100px;}
+body.hudup.touch div#SBOOKHUD div#SBOOKFLYLEAF {
+    top: 100px;}
+
+div.sbookgloss form div.submit .checkspan {
+    margin-top: 1ex;}
+
+body.hudup.touch div#SBOOKHUD div.hudblock {
+    min-height: 100px; height: 100px; padding-bottom: 0px;}
+
+body.touch div#SBOOKHUD div#SBOOKDASHTOP div.tabbar img {
+    height: 48px;}
+body.touch div#SBOOKHUD div#SBOOKDASHTOP #IDBUTTON img {
+    max-height: 48px;}
+
+body.touch div#SBOOKHUD div#SBOOKSOURCES img {
+    height: 48px;}
+body.touch div#SBOOKHUD div#SBOOKHEAD > div#SBOOKSOURCES.hudblock {
+    height: 80px; max-height: 80px; min-height: 80px;}
+body.touch div#SBOOKHUD.allglosses div#SBOOKFLYLEAF {
+    top: 80px;}
+
 /*
 body.touch div.sbookgloss form div.submit span.checkspan { font-size: 150%;}
 body.touch div.sbookgloss form div.submit input[type='submit'] {
@@ -1750,11 +1767,6 @@ body.touch div.sbookmargin { }
 body.touch .glossmark { width: 60px; }
 
 body.touch div#SBOOKHUD div.sbooksearch { }
-*/
-
-/* Make span bars finger-fat in touch mode */
-
-/* Conditional display */
 
 body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar,
 body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar {
@@ -1765,6 +1777,12 @@ body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.sbookhudspan {
 body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.progressbox,
 body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.progressbox {
     height: 50px;}
+
+*/
+
+/* Make span bars finger-fat in touch mode */
+
+/* Conditional display */
 
 /* Pagination stuff */
 

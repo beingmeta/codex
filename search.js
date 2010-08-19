@@ -121,7 +121,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	if (n_refiners) {
 	    var completions=sbook.queryCloud(result);
 	    refinecount.innerHTML=n_refiners+
-		((n_refiners===1)?(" co-concept"):(" co-concepts"));
+		((n_refiners===1)?(" association"):(" associations"));
 	    fdjtDOM.dropClass(box,"norefiners");
 	    if (cloudid) completions.id=cloudid;
 	    if (sbook.Trace.search>1)

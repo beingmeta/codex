@@ -54,14 +54,11 @@ var sbookMode=
 	function initHUD(){
 	    if (fdjtID("SBOOKHUD")) return;
 	    else {
-		var hudmessages=fdjtDOM("div#SBOOKHUDMESSAGES");
-		hudmessages.sbookui=true;
-		hudmessages.innerHTML=sbook_messages;
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=
-		    sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
-		fdjtDOM.prepend(document.body,hudmessages,sbookHUD);}
+		  sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
+		fdjtDOM.prepend(document.body,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");

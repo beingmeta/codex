@@ -36,15 +36,16 @@
   </div>
   <fieldset>
     <div class="input note">
-      <!--
 	 <textarea name="NOTE" class="autoprompt"
 		   prompt="add a note plus [tag]s"
+		   wrap="virtual"
 		   id="SBOOKGLOSSNOTE">
 	 </textarea>
-	 -->
+      <!--
       <input type="TEXT" name="NOTE" class="autoprompt"
 	     prompt="add a note plus [tag]s"
 	     id="SBOOKGLOSSNOTE"/>
+      -->
     </div>
     <div class="input tag">
       <input type="TEXT" name="TAG" value=""
@@ -59,3 +60,12 @@
     <div class="tags" onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);"></div>
   </fieldset>
 </form>
+
+<!--
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
+-->
+
