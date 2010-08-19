@@ -1719,6 +1719,16 @@ body.touch img.mouseicon { display: none;}
 
 body.touch { overflow: hidden;}
 
+/* Make HUD buttons bigger */
+
+body.touch .hudbutton { width: 60px; }
+body.touch div.helphud {font-size: 20px;}
+body.touch div.helphud.tapnav {left: 75px;}
+body.touch div.helphud.tapsearch {right: 75px;}
+body.touch div.helphud.tapdash {left: 75px;}
+body.touch div.helphud.tapnotes {right: 75px;}
+
+body.touch div#SBOOKHUD div#SBOOKGLOSS.sbookgloss { font-size: 125%;}
 /*
 body.touch div.sbookgloss form div.submit span.checkspan { font-size: 150%;}
 body.touch div.sbookgloss form div.submit input[type='submit'] {
@@ -1737,14 +1747,7 @@ body.touch.hudup div#SBOOKHUD img.sbookhidehud {
 body.touch .sbooknote span.note { font-size: 95%;}
 
 body.touch div.sbookmargin { }
-body.touch .hudbutton { width: 60px; }
 body.touch .glossmark { width: 60px; }
-
-body.touch div.helphud {font-size: 20px;}
-body.touch div.helphud.tapnav {left: 75px;}
-body.touch div.helphud.tapsearch {right: 75px;}
-body.touch div.helphud.tapdash {left: 75px;}
-body.touch div.helphud.tapnotes {right: 75px;}
 
 body.touch div#SBOOKHUD div.sbooksearch { }
 */
