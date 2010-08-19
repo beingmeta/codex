@@ -363,7 +363,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     var touch_held=false;
     var touch_moved=false;
     var touch_scrolled=false;
-    var touch_selecting=false;
 
     var doubletap=false, tripletap=false;
 
@@ -373,8 +372,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	page_x=page_y=sample_t=-1; touch_moves=0;
 	touch_timer=false; touch_held=false;
 	touch_moved=false; touch_scrolled=false;
-	doubletap=false; tripletap=false;
-	touch_selecting=false;}
+	doubletap=false; tripletap=false;}
 
     function tracetouch(handler,evt){
       var touches=evt.touches;
@@ -490,37 +488,57 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     var mouseisdown=false;
 
-    function touchmove(evt){
-	if (touch_selecting) return;
-	// When faking touch, moves only get counted if the mouse is down.
-	if (hold_timer) {
-	  clearTimeout(hold_timer); hold_timer=false;
-	  mouseisdown=true;}
-	if (!(mouseisdown)) return;
-	fdjtUI.cancel(evt);
-	touch_moves++;
-	if (touch_held) return;
-	var touch=
-	  (((evt.touches)&&(evt.touches.length))?(evt.touches[0]):(evt));
-	if (page_x<0) page_x=touch.screenX;
-	if (page_y<0) page_y=touch.screenY;
-	var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
-	var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
-	// if (sbook.Trace.gestures) tracetouch("touchmove",evt);
-	if ((hold_timer)&&((adx+ady)>4)) {
-	  clearTimeout(hold_timer); hold_timer=false;}
-	var target=fdjtUI.T(evt);
-	touch_moved=true;
-	last_x=touch.clientX; last_y=touch.clientY;
-	if (ady>(adx*4)) {
-	  if (sbook.preview) {
-	    scrollBody(dx,dy); touch_scrolled=true;
-	    page_x=touch.screenX; page_y=touch.screenY;}
-	  else if (fdjtDOM.hasParent(target,fdjtID("SBOOKFLYLEAF"))) {
-	    scrollHUD(dx,dy);
-	    page_x=touch.screenX; page_y=touch.screenY;
-	    touch_scrolled=true;}}
-	else {}}
+    function body_touchmove(evt){
+      // When faking touch, moves only get counted if the mouse is down.
+      if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
+      fdjtUI.cancel(evt);
+      touch_moves++;
+      var touch=
+	(((evt.touches)&&(evt.touches.length))?(evt.touches[0]):(evt));
+      if (page_x<0) page_x=touch.screenX;
+      if (page_y<0) page_y=touch.screenY;
+      var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
+      var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
+      // if (sbook.Trace.gestures) tracetouch("touchmove",evt);
+      if ((hold_timer)&&((adx+ady)>4)) {
+	clearTimeout(hold_timer); hold_timer=false;}
+      if (sbook.Trace.gestures>1)
+	fdjtLog
+	  ("[%fs] body_touchmove d=%o,%o a=%o,%o p=%o,%o l=%o,%o n=%o sp=%o ",
+	   fdjtET(),dx,dy,adx,ady,
+	   touch.clientX,touch.clientY,last_x,last_y,
+	   touch_moves,sbook.preview);
+      last_x=touch.clientX; last_y=touch.clientY;
+      touch_moved=true;
+      /* One might wish to let scrolling work in preview mode,
+	 but it causes problems with moving the HUD to keep up
+	 with the scroll */
+      return;
+      if (!(sbook.preview)) return;
+      if (ady>(adx*4)) {
+	scrollBody(dx,dy); touch_scrolled=true;
+	page_x=touch.screenX; page_y=touch.screenY;
+	touch_scrolled=true;}}
+
+    function hud_touchmove(evt){
+      // When faking touch, moves only get counted if the mouse is down.
+      if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
+      fdjtUI.cancel(evt);
+      touch_moves++;
+      var touch=
+	(((evt.touches)&&(evt.touches.length))?(evt.touches[0]):(evt));
+      var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
+      var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
+      if (page_x<0) page_x=touch.screenX;
+      if (page_y<0) page_y=touch.screenY;
+      if (sbook.Trace.gestures>1) tracetouch("hud_touchmove",evt);
+      if ((hold_timer)&&((adx+ady)>4)) {
+	clearTimeout(hold_timer); hold_timer=false;}
+      last_x=touch.clientX; last_y=touch.clientY;
+      touch_moved=true;
+      scrollHUD(dx,dy);
+      page_x=touch.screenX; page_y=touch.screenY;
+      touch_scrolled=true;}
 
     function scrollBody(dx,dy){
       var curpos=sbook.scrollPos();
@@ -532,15 +550,19 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
       sbook.scrollTo(newx,newy);}
     function scrollHUD(dx,dy){
       var content=((sbook.scrolling)&&(fdjtID(sbook.scrolling)));
-      if (!(content)) return;
+      if (!(content)) {
+	fdjtLog.warn("[%fs] No HUD#%o to scroll %o,%o m=%o",
+		     fdjtET(),sbook.scrolling,dx,dy,sbook.mode);
+	return;}
       var curtop=-fdjtDOM.parsePX(content.style.top)||0;
       var geom=fdjtDOM.getGeometry(content);
+      var maxtop=geom.height;
       var newtop=curtop-dy; 
-      var mintop=-(geom.height);
-      if (newtop>0) newtop=0; else if (newtop<mintop) newtop=mintop; else {}
-      if (sbook.Trace.gestures) 
-	fdjtLog("[%fs] scrollHUD() %o,%o: cur=%o new=%o min=%o=-(%o): %o",
-		fdjtET(),dx,dy,curtop,newtop,mintop,geom.height,
+      if (newtop<0) newtop=0;
+      else if (newtop>maxtop) newtop=maxtop; else {}
+      if (sbook.Trace.gestures)sb
+	fdjtLog("[%fs] scrollHUD() %o,%o: cur=%o new=%o max=%o=-(%o): %o",
+		fdjtET(),dx,dy,curtop,newtop,maxtop,geom.height,
 		content);
       if (newtop!==curtop) content.style.top=(-newtop)+'px';}
 
@@ -761,32 +783,32 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     
     // A mouse pretending to be a touch screen
     sbook.UI.handlers.faketouch=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
-	 body: {mousedown: body_touchstart,mouseup: body_touchend,
-		mousemove: touchmove},
-	 hud: {mousedown: hud_touchstart,mouseup: hud_touchend,
-	       mousemove: touchmove},
-	 ".sbookmargin": {click: body_onclick},
-	 glossmark: {}};
+      {window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
+       body: {mousedown: body_touchstart,mouseup: body_touchend,
+	      mousemove: body_touchmove},
+       hud: {mousedown: hud_touchstart,mouseup: hud_touchend,
+	     mousemove: hud_touchmove},
+       ".sbookmargin": {click: body_onclick},
+       glossmark: {}};
 
     sbook.UI.handlers.ios=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
-	 body: {touchstart: body_touchstart,touchend: body_touchend,
-		touchmove: touchmove},
-	 hud: {touchstart: hud_touchstart,touchend: hud_touchend,
-	       touchmove: touchmove},
-	 ".sbookmargin": {touchstart: body_touchstart,touchend: body_touchend,
-			  touchmove: touchmove},
-	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
-	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
-	 glossmark: {}};
+      {window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
+       body: {touchstart: body_touchstart,touchend: body_touchend,
+	      touchmove: body_touchmove},
+       hud: {touchstart: hud_touchstart,touchend: hud_touchend,
+	     touchmove: hud_touchmove},
+       ".sbookmargin": {touchstart: body_touchstart,touchend: body_touchend,
+			touchmove: body_touchmove},
+       ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
+       "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
+       glossmark: {}};
 
     sbook.UI.handlers.oneclick=
-	{window: {mouseup: body_onclick,
-		  "keyup":onkeyup,"keydown":onkeydown,"keypress":onkeypress},
-	 hud: {click:hud_onclick,
-	       mouseover:fdjtUI.CoHi.onmouseover,
-	       mouseout:fdjtUI.CoHi.onmouseout}};
+      {window: {mouseup: body_onclick,
+		"keyup":onkeyup,"keydown":onkeydown,"keypress":onkeypress},
+       hud: {click:hud_onclick,
+	     mouseover:fdjtUI.CoHi.onmouseover,
+	     mouseout:fdjtUI.CoHi.onmouseout}};
 
 })();
 

@@ -224,15 +224,13 @@ var sbookMode=
 		    sbook.scrolling="SBOOKALLGLOSSES";
 		else if (mode==='browsing')
 		    sbook.scrolling="SBOOKSEARCHRESULTS";
-		else {}
+		else sbook.scrolling=false;
 		if ((mode)&&(typeof mode === 'string')&&
 		    (mode.search(sbookDashMode_pat)===0)) {
 		  fdjtDOM.addClass(sbookHUD,"dash");
 		  sbook.scrolling="SBOOKDASH";
 		  sbook.last_dash=mode;}
-		else {
-		    sbook.scrolling=false;
-		    fdjtDOM.dropClass(sbookHUD,"dash");}
+		else fdjtDOM.dropClass(sbookHUD,"dash");
 		sbook.hudup=true;
 		if ((false)&&(mode===true)&&(sbook.animate)) {
 		    sbookHUD.opacity=1;

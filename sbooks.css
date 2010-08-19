@@ -106,19 +106,6 @@ div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 
 /* Miscellaneous */
 
-.fortouch { display: none;}
-.touch .notouch { display: none;}
-.touch div.fortouch,
-.touch p.fortouch {
-    display: block;}
-.touch .fortouch {display: inline;}
-.touch li.fortouch {display: list-item;}
-
-body img.touchicon { display: none;}
-body img.mouseicon { display: inline;}
-body.touch img.touchicon { display: inline;}
-body.touch img.mouseicon { display: none;}
-
 /* Major wrappers and rules */
 
 body.sbook {
@@ -978,10 +965,6 @@ div.sbookgloss form.note div.input.note { display: block;}
 div.sbookgloss form.tag div.input.tag { display: block;}
 div.sbookgloss form.link div.input.link { display: block;}
 
-body.touch div.sbookgloss form div.submit span.checkspan { font-size: 150%;}
-body.touch div.sbookgloss form div.submit input[type='submit'] {
-    font-size: 120%; padding: 4px;}
-
 /* For scrollable results */
 
 div#SBOOKHUD div.hud#SBOOKLOC {
@@ -1691,46 +1674,6 @@ div.sbookabout div.title { font-size: 150%;}
 div.sbookabout div.byline { font-size: 125%; font-weight: bold;}
 div.sbookabout div.publisher { font-style: italic;}
 
-/* Touch rules */
-
-body.touch { overflow: hidden;}
-
-body.touch div#SBOOKHUD { }
-body.touch div#SBOOKHUD div#SBOOKDASHTOP { height: 75px; padding-bottom: 0px;}
-body.touch div#SBOOKHUD div#SBOOKSOURCES { height: 75px;  padding-bottom: 0px;}
-body.touch div#SBOOKHUD.browsing div#SBOOKSEARCH.hudblock {
-    height: 70px;  padding-bottom: 0px; padding-top: 5px;}
-body.touch div#SBOOKHUD div#SBOOKFLYLEAF { top: 75px; }
-body.touch div#SBOOKHUD div#SBOOKFOOT { height: 75px; }
-body.touch.hudup div#SBOOKHUD img.sbookhidehud {
-    width: 32px; right: 63px;}
-body.touch .sbooknote span.note { font-size: 95%;}
-
-body.touch div.sbookmargin { }
-body.touch .hudbutton { width: 60px; }
-body.touch .glossmark { width: 60px; }
-
-body.touch div.helphud {font-size: 20px;}
-body.touch div.helphud.tapnav {left: 75px;}
-body.touch div.helphud.tapsearch {right: 75px;}
-body.touch div.helphud.tapdash {left: 75px;}
-body.touch div.helphud.tapnotes {right: 75px;}
-
-body.touch div#SBOOKHUD div.sbooksearch { }
-
-body.xtouch img.hudbutton[alt='>>'] { display: block;}
-body.xtouch img.hudbutton[alt='<<'] { display: block;}
-
-/* Make span bars finger-fat in touch mode */
-
-/* Conditional display */
-.fortouch { display: none;}
-body.touch .notouch { display: none;}
-body.touch span.fortouch { display: inline;}
-body.touch div.fortouch { display: block;}
-body.touch p.fortouch { display: block;}
-body.touch li.fortouch { display: list-item;}
-
 /* Handy classes for page layout */
 
 .floatright { float: right; margin-right: 3px;}
@@ -1749,6 +1692,67 @@ a img { border: transparent;}
 span.sbookpageprobe span {
     vertical-align: baseline; padding: 0px; margin: 0px; border: 0px;}
 
+body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
+
+/* Touch sizing rules */
+
+/* Conditional display */
+
+.fortouch { display: none;}
+body.touch .notouch { display: none;}
+body.touch div.fortouch,
+body.touch p.fortouch {
+    display: block;}
+body.touch .fortouch {display: inline;}
+body.touch li.fortouch {display: list-item;}
+body.touch span.fortouch { display: inline;}
+body.touch div.fortouch { display: block;}
+body.touch p.fortouch { display: block;}
+body.touch li.fortouch { display: list-item;}
+
+body img.touchicon { display: none;}
+body img.mouseicon { display: inline;}
+body.touch img.touchicon { display: inline;}
+body.touch img.mouseicon { display: none;}
+
+/* Size changing */
+
+body.touch { overflow: hidden;}
+
+/*
+body.touch div.sbookgloss form div.submit span.checkspan { font-size: 150%;}
+body.touch div.sbookgloss form div.submit input[type='submit'] {
+    font-size: 120%; padding: 4px;}
+
+body.touch div#SBOOKHUD { }
+body.touch div#SBOOKHUD div#SBOOKDASHTOP { height: 75px; padding-bottom: 0px;}
+body.touch div#SBOOKHUD div#SBOOKSOURCES { height: 75px;  padding-bottom: 0px;}
+body.touch div#SBOOKHUD.browsing div#SBOOKSEARCH.hudblock,
+body.touch div#SBOOKHUD.searching div#SBOOKSEARCH.hudblock  {
+    padding-bottom: 0px; padding-top: 5px;}
+body.touch div#SBOOKHUD div#SBOOKFLYLEAF { top: 75px; }
+body.touch div#SBOOKHUD div#SBOOKFOOT { height: 75px; }
+body.touch.hudup div#SBOOKHUD img.sbookhidehud {
+    width: 32px; right: 63px;}
+body.touch .sbooknote span.note { font-size: 95%;}
+
+body.touch div.sbookmargin { }
+body.touch .hudbutton { width: 60px; }
+body.touch .glossmark { width: 60px; }
+
+body.touch div.helphud {font-size: 20px;}
+body.touch div.helphud.tapnav {left: 75px;}
+body.touch div.helphud.tapsearch {right: 75px;}
+body.touch div.helphud.tapdash {left: 75px;}
+body.touch div.helphud.tapnotes {right: 75px;}
+
+body.touch div#SBOOKHUD div.sbooksearch { }
+*/
+
+/* Make span bars finger-fat in touch mode */
+
+/* Conditional display */
+
 body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar,
 body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar {
     height: 50px;}
@@ -1758,13 +1762,6 @@ body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.sbookhudspan {
 body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.progressbox,
 body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.progressbox {
     height: 50px;}
-
-body.sbookoffline [name='SBOOKOFFLINELINK'] { display: none;}
-
-/* Iscroll */
-
-body.touch div.iscrollwrapper {
-  position: relative; z-index: 1; width: 100%; height: auto; overflow: auto;}
 
 /* Pagination stuff */
 
