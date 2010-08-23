@@ -1562,31 +1562,30 @@ span.glossmark {
   border: solid transparent 2px;
   width: 32px; height: 32px; z-index: 50;
   border-right: 0px;
-  opacity: 0.75;
-  display: none;}
-body.hudup span.glossmark { display: block;}
+  opacity: 0.0001;}
+*:hover > span.glossmark { opacity: 0.7;}
+body.hudup span.glossmark { opacity: 0.9;}
 
 span.glossmark img {
    position: relative; right: 0px;
    width: 100%; height: auto;
    vertical-align: top; text-align: right;}
+span.glossmark img.tiny {width: 16px;}
+span.glossmark img.big {width: 32px;}
 span.glossmark img.tiny { display: none; }
 
-body.sparsebook span.glossmark { width: 16px; height: 16px; }
-body.sparsebook span.glossmark img.big { display: none;}
-body.sparsebook span.glossmark img.tiny { display: inline;}
-body.sparsebook span.glossmark:hover { }
-body.sparsebook span.glossmark:hover img.big { display: inline;}
-body.sparsebook span.glossmark:hover img.tiny { display: none;}
-body.sparsebook .hudbutton { opacity: 0.1;}
-body.hudup.sparsebook .hudbutton { opacity: 0.9;}
-body.sparsebook .hudbutton:hover { opacity: 0.9;}
-
-span.glossmark:hover img.big { display: block;}
-span.glossmark:hover img.tiny { display: none;}
+/* .sparsebook */
+body span.glossmark { width: 32px; height: 32px; }
+body span.glossmark img.big { display: none;}
+body span.glossmark img.tiny { display: inline;}
+body.hudup span.glossmark:hover img.big { display: inline;}
+body.hudup span.glossmark:hover img.tiny { display: none;}
+body .hudbutton { opacity: 0.1;}
+body.hudup .hudbutton { opacity: 0.9;}
+body .hudbutton:hover { opacity: 0.9;}
 
 .sbooktarget { }
-.sbooktarget span.glossmark {
+.sbooktarget span.glossmark img {
     border-top: solid blue 2px;}
 .sbooktarget span.glossmark:hover { opacity: 0.5;}
 body.hudup .sbooktarget span.glossmark:hover { opacity: 0.9;}
