@@ -104,7 +104,7 @@ var sbooks_gloss_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		if (freq[tag]) freq[tag]++;
 		else {freq[tag]=1; all.push(tag);}}}
 	var info=fdjtDOM
-	(spec||"div.sbookinfo",
+	(spec||"div.sbookgloss",
 	 (fdjtDOM.Image(sbicon("YellowPlus32x32.png"),
 			"img.expandbutton","+","click to see more")));
 	var i=0; var lim=all.length;
@@ -129,7 +129,7 @@ var sbooks_gloss_version=parseInt("$Revision: 5410 $".slice(10,-1));
 			var gloss=sbook.glosses.ref(sg[0]);
 			icon.title=gloss.note; fdjtDOM(span," ",icon);}
 		    else fdjtDOM(span," ",icon,sg.length);}}
-	    else span=fdjtDOM("span.tag",taginfo||tag);
+	    else span=fdjtDOM("span.dterm",taginfo||tag);
 	    span.setAttribute("tag",(((taginfo)&&(taginfo.qid))||tag));
 	    fdjtDOM(info,((i>0)&&(" \u00b7 ")),span);
 	    i++;}
@@ -200,15 +200,15 @@ var sbooks_gloss_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (tstamp) title=title+"/"+fdjtTime.tick2string(tstamp);
 	    if (title.length) glosselt.title=title;
 	    fdjtDOM(info,fdjtDOM("span.glosspace","\n\u00b7 "),glosselt);}
-	info.onclick=sbookinfo_onclick;
+	info.onclick=sbookgloss_onclick;
 	return info;}
     sbook.glossBlock=glossBlock;
 
-    function sbookinfo_onclick(evt){
+    function sbookgloss_onclick(evt){
 	var target=fdjtUI.T(evt);
 	var parent=false;
 	if (fdjtDOM.hasParent(target,".expandbutton")) {
-	    var sbookinfo=fdjtDOM.getParent(target,".sbookinfo");
+	    var sbookinfo=fdjtDOM.getParent(target,".sbookgloss");
 	    fdjtDOM.toggleClass(sbookinfo,"expanded");}
 	else while (target) {
 	    if (!(target.getAttribute)) target=target.parentNode;
@@ -220,7 +220,7 @@ var sbooks_gloss_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtUI.cancel(evt);}
 
     sbook.setInfoTarget=function(passage){
-	var infodiv=sbook.glossBlock(passage.id,"div.sbookinfo.hudblock")
+	var infodiv=sbook.glossBlock(passage.id,"div.sbookgloss.hudblock")
 	fdjtDOM.replace("SBOOKINFO",infodiv);}
 
     function addTag(form,tag) {

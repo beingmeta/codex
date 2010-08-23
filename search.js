@@ -349,7 +349,7 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	    else return 0;});
 	if (!(result)) result=sbook.query;
 	var div=fdjtDOM("div.sbookslice.sbookresults");
-	sbook.UI.setupSummaryDiv(div);
+	sbook.UI.addHandlers(div,'summary');
 	i=0; lim=allids.length;
 	while (i<lim) {
 	    var id=allids[i++];

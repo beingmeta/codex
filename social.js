@@ -144,7 +144,8 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	var glossmark=fdjtDOM
 	("span.glossmark",
 	 fdjtDOM.Image(imgsrc,"big","comments"),
-	 fdjtDOM.Image(sbicon("sbicon16x16.png"),"tiny","+"));
+	 //fdjtDOM.Image(sbicon("sbicon16x16.png"),"tiny","+"),
+	 fdjtDOM.Image(sbicon("Asterisk16x16.png"),"tiny","+"));
 	glossmark.id=glossmarkid;
 	sbook.UI.addHandlers(glossmark,"glossmark");
 	if (sbook_glossmark_qricons) {
@@ -165,7 +166,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	var sumdiv=fdjtDOM("div.sbookslice.hudblock");
 	sbook.UI.setupSummaryDiv(sumdiv);
 	if (glosses)
-	    sbook.UI.showSlice(glosses,sumdiv,false);
+	  sbook.UI.showSlice(glosses,sumdiv,false);
 	fdjtDOM.replace("SBOOKGLOSSES",sumdiv);
 	sbook.setTarget(target);
 	sbookMode("glosses");}

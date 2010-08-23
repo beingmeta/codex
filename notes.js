@@ -81,8 +81,9 @@ var sbook_delete_icon="redx12x12.png";
 	// This might do some kind of more/less controls and sorted
 	// or cloudy display
 	while (i<tags.length) {
-	    var tag=tags[i++];
-	    fdjtDOM.append(span," ",Knodule.HTML(tag));}
+	    var tag=tags[i];
+	    fdjtDOM.append(span,((i>0)?" \u00b7 ":" "),Knodule.HTML(tag));
+	    i++;}
 	return span;}
     function showlinks(refs,spec){
 	var span=fdjtDOM(spec);
@@ -217,7 +218,9 @@ var sbook_delete_icon="redx12x12.png";
 		function(response){deletegloss(response,qref,frag);},
 		"https://"+sbook.server+"/v4/delete",
 		"gloss",scan.qref,
-		"origin",document.location.protocol+"//"+document.location.hostname);}
+		"origin",
+		document.location.protocol+"//"+
+		document.location.hostname);}
     function deletegloss(response,glossid,frag){
 	if (response===glossid) {
 	    sbook.glosses.drop(glossid);
@@ -537,7 +540,7 @@ var sbook_delete_icon="redx12x12.png";
     /* Results handlers */
 
     function setupSummaryDiv(div){
-	sbook.UI.addHandlers(div,'summary');}
+      sbook.UI.addHandlers(div,'summary');}
     sbook.UI.setupSummaryDiv=setupSummaryDiv;
     
 })();

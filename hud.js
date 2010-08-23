@@ -63,8 +63,8 @@ var sbookMode=
 	    console.innerHTML=sbook_consoletext;
 	    var dash=fdjtID("SBOOKDASH");
 	    dash.innerHTML=sbook_dashtext;
-	    var gloss=fdjtID("SBOOKGLOSS");
-	    gloss.innerHTML=sbookgloss_hud;
+	    var gloss=fdjtID("SBOOKADDGLOSS");
+	    gloss.innerHTML=sbookaddgloss_hud;
 	    var dashtop=fdjtID("SBOOKDASHTOP");
 	    dashtop.innerHTML=sbookdashtop_hud;
 	    // Initialize search UI

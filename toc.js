@@ -171,6 +171,7 @@ var sbookTOC=
     //  and jump on click
     var mouseout_timer=false;
     function toc_mouseover(evt){
+      if (sbook.mode!=='toc') return;
       var target=fdjtUI.T(evt);
       var ref=sbook.getRef(target);
       if (fdjtDOM.hasParent(target,".sbookhudspan")) {
@@ -183,6 +184,7 @@ var sbookTOC=
       else if (sbook.preview) sbook.Preview(false);}
     function toc_mouseout(evt){
       var target=fdjtUI.T(evt);
+      if (sbook.mode!=='toc') return;
       var ref=sbook.getRef(target);
       if (fdjtDOM.hasParent(target,".sbookhudspan")) {
 	if (!(ref)) return;

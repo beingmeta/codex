@@ -219,7 +219,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	  fdjtLog("[%fs] body_onclick() %o ui=%o cl=%o sbp=%o sbh=%o mode=%o",
 		  fdjtET(),evt,(inUI(target)),(fdjtDOM.isClickable(target)),
 		  sbook.preview,sbook.hudup,sbookMode());
-	if ((evt.button>1)||(fdjtDOM.isClickable(target))||(edgeTap(evt)))
+	if ((evt.button>1)||(evt.ctrlKey)||(evt.shiftKey)||
+	    (fdjtDOM.isClickable(target))||(edgeTap(evt)))
 	  return;
 	else return body_tap(sbook.getTarget(target));}
     
@@ -408,7 +409,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function mousedown(evt,hold){
 	var target=fdjtUI.T(evt);
-	if ((evt.button>1)||(fdjtDOM.isClickable(target))) return;
+	if ((evt.button>1)||(evt.ctrlKey)||(evt.shiftKey)||
+	    (fdjtDOM.isClickable(target))) return;
 	fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) tracetouch("mousedown",evt);
 	if (hold_timer) {
@@ -428,7 +430,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	touch_held=false; touch_moved=false; touch_scrolled=false;}
 
     function mouseup(evt,tap){
-      if (evt.button>1) return;
+      var target=fdjtUI.T(evt);
+      if ((evt.button>1)||(evt.ctrlKey)||(evt.shiftKey)||
+	  (fdjtDOM.hasParent(target,".glossmark"))||
+	  (fdjtDOM.isClickable(target)))
+	return;
       if (sbook.Trace.gestures) tracetouch("mouseup",evt);
       if (unhold) {
 	var tocall=unhold; unhold=false; tocall();}
