@@ -479,7 +479,7 @@ var sbookMode=
 	function initManageIFrame(){
 	    var query=document.location.search||"?";
 	    var refuri=sbook.refuri;
-	    var appuri="https://"+sbook.server+"/v3/manage.fdcgi"+query;
+	    var appuri="https://"+sbook.server+"/v4/manage.fdcgi"+query;
 	    if (query.search("REFURI=")<0)
 		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
 	    if (query.search("DOCURI=")<0)

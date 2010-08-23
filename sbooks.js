@@ -160,12 +160,6 @@ var sbook_gloss_data=
 		 sbook.target,sbook.head,sbook.preview);}
   sbook.trace=sbook_trace;
 
-  // Where to go for your glosses
-  sbook.glossroot="https://glosses.sbooks.net/v3/";
-  // This is the AJAX sbook mark uri
-  sbook.mark_uri="/v3/glossmark.fdcgi?AJAX=yes";
-  // This is the JSONP sbook mark uri
-  sbook.jsonp="https://glosses.sbooks.net/v3/glossmark.fdcgi?JSONP=yes";
   // This is the hostname for the sbookserver.
   sbook.server=false;
   // Whether this sbook is set up for offline reading
@@ -552,7 +546,7 @@ function sbookAddQRIcons(){
     var head=sbook.heads[i++];
     var id=head.id;
     var title=(head.sbookinfo)&&sbook_get_titlepath(head.sbookinfo);
-    var qrhref="https://"+sbook.server+"/v3/qricon.fdcgi?"+
+    var qrhref="https://"+sbook.server+"/v4/qricon.png?"+
       "URI="+encodeURIComponent(sbook.docuri||sbook.refuri)+
       ((id)?("&FRAG="+head.id):"")+
       ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");

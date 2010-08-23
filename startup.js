@@ -50,12 +50,14 @@ sbook.Startup=
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
 	    getSettings();
+	    /*
 	    fdjtLog("wh=%o",window.innerHeight);
 	    fdjtLog("db.ch=%o",document.body.clientHeight);
 	    fdjtLog("de.ch=%o",document.documentElement.clientHeight);
 	    fdjtLog("ww=%o",window.innerWidth);
 	    fdjtLog("db.cw=%o",document.body.clientWidth);
 	    fdjtLog("de.cw=%o",document.documentElement.clientWidth);
+	    */
 	    // Dependent setups
 	    fdjtDOM.init();
 	    // Add this as soon as possible
@@ -427,7 +429,7 @@ sbook.Startup=
 		var user_script=fdjtDOM("SCRIPT#SBOOKGETUSERINFO");
 		user_script.language="javascript";
 		user_script.src=
-		    "https://"+sbook.server+"/v3/user.js";
+		    "https://"+sbook.server+"/v4/user.js";
 		document.body.appendChild(user_script);
 		fdjtDOM.addClass(document.body,"nosbookuser");}
 	    else fdjtDOM.addClass(document.body,"nosbookuser");}
@@ -533,7 +535,7 @@ sbook.Startup=
 	    var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 	    glosses_script.language="javascript";
 	    glosses_script.src="https://"+sbook.server+
-	      "/v3/glosses.js?CALLBACK=sbook.Startup.initGlosses&REFURI="+
+	      "/v4/glosses.js?CALLBACK=sbook.Startup.initGlosses&REFURI="+
 	      encodeURIComponent(sbook.refuri);
 	    if (sbook.Trace.glosses)
 	      fdjtLog("[%fs] setupGlosses/JSONP %o sync=%o",
@@ -548,7 +550,7 @@ sbook.Startup=
 	function offline_update(){
 	  sbook.writeGlosses();
 	    var uri="https://"+sbook.server+
-		"/v3/update.fdcgi?REFURI="+
+		"/v4/update?REFURI="+
 		encodeURIComponent(sbook.refuri)+
 		"&ORIGIN="+
 		encodeURIComponent(

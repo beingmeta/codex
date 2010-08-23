@@ -148,7 +148,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	glossmark.id=glossmarkid;
 	sbook.UI.addHandlers(glossmark,"glossmark");
 	if (sbook_glossmark_qricons) {
-	    var qrhref="http://"+sbook.server+"/v3/qricon.fdcgi?"+
+	    var qrhref="http://"+sbook.server+"/v3/qricon.png?"+
 		"URI="+encodeURIComponent(sbook.refuri)+
 		((id)?("&FRAG="+id):"")+
 		((title) ? ("&TITLE="+encodeURIComponent(title)) : "");

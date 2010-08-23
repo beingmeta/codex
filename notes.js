@@ -215,7 +215,7 @@ var sbook_delete_icon="redx12x12.png";
 	if (scan)
 	    fdjtAjax.jsonCall(
 		function(response){deletegloss(response,qref,frag);},
-		"https://"+sbook.server+"/v3/delete",
+		"https://"+sbook.server+"/v4/delete",
 		"gloss",scan.qref,
 		"origin",document.location.protocol+"//"+document.location.hostname);}
     function deletegloss(response,glossid,frag){

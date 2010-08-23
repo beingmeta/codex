@@ -128,7 +128,8 @@ body.scrollfree {} /* margin: 0px; */
 body.scrollfree #SBOOKBODY {
     position: absolute;}
 body.scrollfree div#SBOOKHUD div#SBOOKFOOT,
-body.scrollfree div#SBOOKPAGEFOOT {
+body.scrollfree div.sbookmargin#SBOOKPAGEFOOT,
+body.scrollfree div.sbookmargin#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
     bottom: auto; position: absolute;}
 body.scrollfree div#SBOOKHUD div#SBOOKFLYLEAF {
     overflow: hidden; position: absolute; bottom: auto;}
@@ -408,16 +409,16 @@ div#SBOOKHELP div.message .head { font-size: 150%;}
 
 div.helphud.tapnav {
     top: 3px; left: 50px; text-align: right;
-    font-size: 120%;}
+    font-size: 100%;}
 div.helphud.tapsearch {
     top: 3px; right: 50px; text-align: left;
-    font-size: 120%;}
+    font-size: 100%;}
 div.helphud.tapdash {
     bottom: 3px; left: 50px; text-align: right;
-    font-size: 120%;}
+    font-size: 100%;}
 div.helphud.tapnotes {
     bottom: 3px; right: 50px; text-align: left;
-    font-size: 120%;}
+    font-size: 100%;}
 
 /* Buttons */
 
