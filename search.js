@@ -327,46 +327,41 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	return head;}
 
     function showResults(result){
-	var allids=[]; var rscores=result._scores;
-	var scores={}; var tags={}; var refs={}; var glosses={};
-	if (result._results_div) return result._results_div;
-	var results=result._results;
-	var i=0; var lim=results.length;
-	while (i<lim) {
-	    var r=results[i++];
-	    var ref=sbook.docinfo[r]||sbook.glosses.map[r];
-	    if (!(ref)) continue;
-	    var frag=ref.frag;
-	    if (ref.tstamp) fdjtKB.add(glosses,frag,r);
-	    if (scores[frag]) 
-		scores[frag]=scores[frag]+(rscores[r]||1);
-	    else {
-		allids.push(frag);
-		scores[frag]=rscores[r];}}
-	allids.sort(function(x,y){
-	    if (scores[x]>scores[y]) return -1;
-	    else if (scores[x]<scores[y]) return 1;
-	    else return 0;});
-	if (!(result)) result=sbook.query;
-	var div=fdjtDOM("div.sbookslice.sbookresults");
-	sbook.UI.addHandlers(div,'summary');
-	i=0; lim=allids.length;
-	while (i<lim) {
-	    var id=allids[i++];
-	    var info=sbook.docinfo[id];
-	    var elt=document.getElementById(id);
-	    var text=fdjtDOM.textify(elt);
-	    var headinfo=info.head;
-	    var head=fdjtDOM("div.head",headinfo.title);
-	    var passage=fdjtDOM("div.passage",text);
-	    passage.title=text;
-	    fdjtDOM(div,
-		    fdjtDOM("div.sbookresult",
-			    resultHead(headinfo),
-			    resultPassage(elt,info),
-			    sbook.glossBlock(id,false,[],glosses[id],true)));}
-	result._results_div=div;
-	return div;}
+      if (result._results_div) return result._results_div;
+      var results=result._results; var rscores=result._scores;
+      var scores={}; var sorted=[];
+      var i=0; var lim=results.length;
+      var scores=new Array(lim);
+      while (i<lim) {
+	var r=results[i++];
+	var ref=sbook.docinfo[r]||sbook.glosses.map[r]||fdjtKB.ref(r)||r;
+	if (!(ref)) continue;
+	var frag=ref.frag;
+	if (!(frag)) continue;
+	sorted.push(ref);
+	if (scores[frag]) 
+	  scores[frag]=scores[frag]+(rscores[r]||1);
+	else {
+	  scores[frag]=rscores[r];}
+	i++;}
+      sorted.sort(function(x,y){
+	  var xfrag=x.frag; var yfrag=y.frag;
+	  if (xfrag===yfrag) {}
+	  else if (scores[x.frag]>scores[yfrag]) return -1;
+	  else if (scores[xfrag]<scores[yfrag]) return 1;
+	  var xqid=x.qid; var yqid=y.qid;
+	  if (rscores[xqid]>rscores[yqid]) return -1;
+	  else if (rscores[xqid]<rscores[yqid]) return 1;
+	  var xstart=x.starts_at; var ystart=y.starts_at;
+	  if (rscores[xqid]<rscores[yqid]) return -1;
+	  else if (rscores[xqid]>rscores[yqid]) return 1;
+	  else return 0;});
+      if (!(result)) result=sbook.query;
+      var div=fdjtDOM("div.sbookslice.sbookresults");
+      sbook.UI.addHandlers(div,'summary');
+      sbook.UI.showSlice(result._results,div,rscores);
+      result._results_div=div;
+      return div;}
     KnoduleIndex.Query.prototype.showResults=
 	function(){return showResults(this);};
     

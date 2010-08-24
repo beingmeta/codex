@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_summae_id="$Id$";
-var sbooks_summae_version=parseInt("$Revision$".slice(10,-1));
+var sbooks_notes_id="$Id$";
+var sbooks_notes_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2010 beingmeta, inc.
    This file implements the search component of a 
@@ -50,10 +50,10 @@ var sbook_delete_icon="redx12x12.png";
 	var refiners=((query) && (query._refiners));
 	var score=((query)&&(query[key]));
 	var div=
-	    fdjtDOM(((info.frag) ? "div.sbooknote.gloss" : "div.sbooknote"),
+	    fdjtDOM(((info.tstamp) ? "div.sbooknote.gloss" : "div.sbooknote"),
 		    ((standalone)&&(makelocbar(target_info))),
 		    // (makelocrule(target_info,target_info.head)),
-		    ((info.frag)&&(showglossinfo(info))),
+		    ((info.tstamp)&&(showglossinfo(info))),
 		    // Makes it noisy (and probably slow) on the iPad
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
@@ -63,8 +63,9 @@ var sbook_delete_icon="redx12x12.png";
 		    ((info.xrefs)&&(showlinks(info.xrefs,"span.xrefs"))),
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments"))));
-	if (!(info.frag))
-	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target)).replace(/\n\n+/g,"\n");
+	if (!(info.tstamp))
+	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
+	      .replace(/\n\n+/g,"\n");
 	div.about="#"+target_id;
 	// div.setAttribute('about',"#"+info.id);
 	if (idprefix) div.id=idprefix+info.id;
@@ -269,106 +270,122 @@ var sbook_delete_icon="redx12x12.png";
 	else if (y.tstamp) return -1;
 	else return 0;}
 
-    function showSlice(results,div,query){
-	var notes=new Array(results.length);
-	var i=0; var lim=results.length;
-	while (i<lim) {
-	    var r=results[i];
-	    if (typeof r === 'string') {
-		var ref=sbook.docinfo[r]||sbook.glosses.ref(r);
-		if (!(ref)) fdjtLog("[%fs] No resolution for %o",r);
-		notes[i]=ref;}
-	    else notes[i]=r;
-	    i++;}
+    function showSlice(results,div,scores,sort){
+      var notes=new Array(results.length);
+      var i=0; var lim=results.length;
+      while (i<lim) {
+	var r=results[i];
+	if (typeof r === 'string') {
+	  var ref=sbook.docinfo[r]||sbook.glosses.ref(r);
+	  if (!(ref)) fdjtLog("[%fs] No resolution for %o",r);
+	  notes[i]=ref;}
+	else notes[i]=r;
+	i++;}
+      if (!(sort)) {}
+      else if (scores)
 	notes.sort(function(n1,n2){
-	    var s1=((query)&&(query[n1.qid]));
-	    var s2=((query)&&(query[n2.qid]));
+	    var s1=(scores[n1.qid]);
+	    var s2=(scores[n2.qid]);
 	    if ((s1)&&(s2)) {
-		if (s1>s2) return -1;
-		else if (s2>s1) return 1;}
+	      if (s1>s2) return -1;
+	      else if (s2>s1) return 1;}
+	    else if (s1) return -1;
+	    else if (s2) return 1;
 	    if (n1.starts_at<n2.starts_at) return -1;
 	    else if (n1.starts_at>n2.starts_at) return 1;
 	    else if ((n1.tstamp)&&(n2.tstamp)) {
-		if (n1.tstamp>n2.tstamp) return -1;
-		else if (n1.tstamp>n2.tstamp) return 1;
-		else return 0;}
+	      if (n1.tstamp>n2.tstamp) return -1;
+	      else if (n1.tstamp>n2.tstamp) return 1;
+	      else return 0;}
 	    else if (n1.tstamp) return 1;
 	    else if (n2.tstamp) return -1;
 	    else return 0;});
-	var headelt=false; var threadelt=false;
-	var curhead=false; var curinfo=false;
-	var i=0; var len=notes.length; while (i<len) {
-	    var note=notes[i++];
-	    var frag=note.id||note.frag;
-	    if (!(frag)) continue;
-	    var target=fdjtID(frag);
-	    var docinfo=sbook.docinfo[target.id];
-	    var headinfo=docinfo.head;
-	    var head=document.getElementById(headinfo.frag);
-	    if (curinfo!==docinfo) {
-		if (headinfo!==curhead) {
-		    headelt=fdjtDOM("div.sbookthread.tocthread",makeTOCHead(head));
-		    fdjtDOM.append(div,headelt);
-		    curhead=headinfo;}
-		threadelt=fdjtDOM("div.sbookthread.idthread",
-				  makeIDHead(target,headinfo,true));
-		threadelt.about="#"+frag;
-		fdjtDOM.append(headelt,threadelt);
-		curinfo=docinfo;}
-	    fdjtDOM.append(threadelt,renderNote(note));}
-	return div;}
+      else notes.sort(function(n1,n2){
+	  if (n1.starts_at<n2.starts_at) return -1;
+	  else if (n1.starts_at>n2.starts_at) return 1;
+	  else if ((n1.tstamp)&&(n2.tstamp)) {
+	    if (n1.tstamp>n2.tstamp) return -1;
+	    else if (n1.tstamp>n2.tstamp) return 1;
+	    else return 0;}
+	  else if (n1.tstamp) return 1;
+	  else if (n2.tstamp) return -1;
+	  else return 0;});
+	
+      var headelt=false; var threadelt=false;
+      var curhead=false; var curinfo=false;
+      var i=0; var len=notes.length; while (i<len) {
+	var note=notes[i++];
+	var frag=note.id||note.frag;
+	if (!(frag)) continue;
+	var target=fdjtID(frag);
+	var docinfo=sbook.docinfo[target.id];
+	var headinfo=docinfo.head;
+	var head=document.getElementById(headinfo.frag);
+	var tochead=makeTOCHead(head);
+	if (curinfo!==docinfo) {
+	  if (headinfo!==curhead) {
+	    headelt=fdjtDOM("div.sbookthread.tocthread",tochead);
+	    fdjtDOM.append(div,headelt);
+	    curhead=headinfo;}
+	  threadelt=fdjtDOM("div.sbookthread.idthread",
+			    makeIDHead(target,headinfo,true));
+	  threadelt.about="#"+frag;
+	  fdjtDOM.append(headelt,threadelt);
+	  curinfo=docinfo;}
+	fdjtDOM.append(threadelt,renderNote(note));}
+      return div;}
     sbook.UI.showSlice=showSlice;
-
+    
     function sumText(target){
-	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
-	    replace(/\n\n+/g,"\n");
-	if (title.length<40) return title;
-	else return title.slice(0,40)+"\u22ef ";}
-
+      var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
+	replace(/\n\n+/g,"\n");
+      if (title.length<40) return title;
+      else return title.slice(0,40)+"\u22ef ";}
+    
     function makeTOCHead(target,head){
-	if (!(head)) head=sbook.getHead(target);
-	var basespan=fdjtDOM("span");
-	basespan.title='click to jump';
-	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
-	    replace(/\n\n+/g,"\n");
-	var info=sbook.docinfo[target.id];
-	if (target!==head) {
-	    var paratext=
-		fdjtDOM.Anchor("javascript:sbook.JumpTo('"+target.id+"');",
-			       "a.paratext",
-			       fdjtDOM("span.spacer","\u00B6"),
-			       sumText(target));
-	    paratext.title='(click to jump) '+title;
-	    fdjtDOM(basespan,paratext," ");}
-	if (head) {
-	    var headtext=
-		fdjtDOM.Anchor("javascript:sbook.JumpTo('"+head.id+"');",
-			       "a.headtext",
-			       fdjtDOM("span.spacer","\u00A7"),
-			       sumText(head));
-	    var curspan=fdjtDOM("span.head",headtext);
-	    fdjtDOM.append(basespan," ",curspan);
-	    var heads=sbook.Info(head).heads;
-	    if (heads) {
-		var j=heads.length-1; while (j>=0) {
-		    var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
-		    if ((!(elt))||(!(hinfo.title))||
-			(elt===sbook.root)||(elt===document.body))
-			continue;
-		    var anchor=
-			fdjtDOM.Anchor(
-			    "javascript:sbook.JumpTo('"+hinfo.frag+"');",
-			    "a.headtext",
-			    fdjtDOM("span.spacer","\u00A7"),
-			    hinfo.title);
-		    var newspan=fdjtDOM("span.head"," ",anchor);
-		    if (target===head) fdjtDOM(curspan,newspan);
-		    else fdjtDOM(curspan," \u22ef ",newspan);
-		    curspan=newspan;}}}
-	var locrule=makelocrule(info);
-	var tochead=fdjtDOM("div.tochead",locrule,basespan);
-	tochead.title=locrule.locstring;
-	return tochead;}
+      if (!(head)) head=sbook.getHead(target);
+      var basespan=fdjtDOM("span");
+      basespan.title='click to jump';
+      var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
+	replace(/\n\n+/g,"\n");
+      var info=sbook.docinfo[target.id];
+      if (target!==head) {
+	var paratext=
+	  fdjtDOM.Anchor("javascript:sbook.JumpTo('"+target.id+"');",
+			 "a.paratext",
+			 fdjtDOM("span.spacer","\u00B6"),
+			 sumText(target));
+	paratext.title='(click to jump) '+title;
+	fdjtDOM(basespan,paratext," ");}
+      if (head) {
+	var headtext=
+	  fdjtDOM.Anchor("javascript:sbook.JumpTo('"+head.id+"');",
+			 "a.headtext",
+			 fdjtDOM("span.spacer","\u00A7"),
+			 sumText(head));
+	var curspan=fdjtDOM("span.head",headtext);
+	fdjtDOM.append(basespan," ",curspan);
+	var heads=sbook.Info(head).heads;
+	if (heads) {
+	  var j=heads.length-1; while (j>=0) {
+	    var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
+	    if ((!(elt))||(!(hinfo.title))||
+		(elt===sbook.root)||(elt===document.body))
+	      continue;
+	    var anchor=
+	      fdjtDOM.Anchor(
+			     "javascript:sbook.JumpTo('"+hinfo.frag+"');",
+			     "a.headtext",
+			     fdjtDOM("span.spacer","\u00A7"),
+			     hinfo.title);
+	    var newspan=fdjtDOM("span.head"," ",anchor);
+	    if (target===head) fdjtDOM(curspan,newspan);
+	    else fdjtDOM(curspan," \u22ef ",newspan);
+	    curspan=newspan;}}}
+      var locrule=makelocrule(info);
+      var tochead=fdjtDOM("div.tochead",locrule,basespan);
+      tochead.title=locrule.locstring;
+      return tochead;}
 
     function makeIDHead(target,headinfo,locrule){
 	var info=sbook.docinfo[target.id];
@@ -475,26 +492,24 @@ var sbook_delete_icon="redx12x12.png";
 
     /* Scrolling slices */
 
-    function scrollGlosses(elt,glosses,top)
-    {
-	if (!(elt.id)) elt=getFirstID(elt);
-	var info=sbook.docinfo[elt.id];
-	var targetloc=((info)&&(info.starts_at))||(elt.starts_at);
-	if (targetloc) {
-	    var scrollto=getFirstElt(glosses,targetloc);
-	    if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
-		if (sbook.scrollfree) {
-		    var off=getScrollOffset(scrollto,glosses);
-		    // var transform='translate('+0+'px,-'+off+'px)';
-		    // fdjtLog("Applying transform %o",transform);
-		    //glosses.style.webkitTransform=transform;
-		    // fdjtLog("Positioning for scroll offset %o",off);
-		    if (off<0) off=0;
-		    glosses.style.top="-"+off+"px";}
-		else scrollto.scrollIntoView(true);}}
-    }
+    function scrollGlosses(elt,glosses,top){
+      if (!(elt.id)) elt=getFirstID(elt);
+      var info=sbook.docinfo[elt.id];
+      var targetloc=((info)&&(info.starts_at))||(elt.starts_at);
+      if (targetloc) {
+	var scrollto=getFirstElt(glosses,targetloc);
+	if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
+	  if (sbook.scrollfree) {
+	    var off=getScrollOffset(scrollto,glosses);
+	    // var transform='translate('+0+'px,-'+off+'px)';
+	    // fdjtLog("Applying transform %o",transform);
+	    //glosses.style.webkitTransform=transform;
+	    // fdjtLog("Positioning for scroll offset %o",off);
+	    if (off<0) off=0;
+	    glosses.style.top="-"+off+"px";}
+	  else scrollto.scrollIntoView(true);}}}
     sbook.UI.scrollGlosses=scrollGlosses;
-
+    
     function getFirstID(node){
 	if (node.id) return node;
 	else if (node.childNodes) {
