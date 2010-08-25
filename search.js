@@ -1,9 +1,9 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_searchui_id="$Id$";
-var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
+var sbooks_search_id="$Id$";
+var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 
-/* Copyright (C) 2009 beingmeta, inc.
+/* Copyright (C) 2009-2010 beingmeta, inc.
    This file implements the search component of a 
    Javascript/DHTML UI for reading large structured documents (sBooks).
 
@@ -188,8 +188,8 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 		var completeinfo=queryCloud(sbook.query);
 		var completions=completeinfo.complete(qstring);
 		if (completions.length) {
-		    sbook.query=
-			extendQuery(sbook.query,completeinfo.getValue(completions[0]));}}
+		  var value=completeinfo.getValue(completions[0]);
+		  sbook.query=extendQuery(sbook.query,value);}}
 	    fdjtDOM.cancel(evt);
 	    if ((sbook.search_gotlucky) && 
 		(sbook.query._results.length>0) &&
@@ -294,37 +294,6 @@ var sbooks_searchui_version=parseInt("$Revision$".slice(10,-1));
 	locrule.style.width=((target_len/cxt_len)*100)+"%";
 	locrule.style.left=((target_start/cxt_len)*100)+"%";
 	return locrule;}
-
-    function sumText(target){
-	var text=
-	    fdjtString.trim(
-		sbook.getTitle(target)||fdjtDOM.textify(target));
-	return text.replace(/\n\n+/g," // ");}
-
-    function resultHead(hinfo){
-	var jumper1=fdjtDOM.Anchor(
-	    "javascript:sbook.JumpTo('"+hinfo.frag+"');",
-	    "a.spacer","\u00A7");
-	var jumper2=fdjtDOM.Anchor(
-	    "javascript:sbook.JumpTo('"+hinfo.frag+"');",
-	    "a.head",hinfo.title);
-	var head=fdjtDOM("div.head",makelocrule(hinfo),jumper1," ",jumper2);
-	jumper2.title=jumper1.title="jump to this section";
-	head.setAttribute("about","#"+(hinfo.frag));
-	return head;}
-    function resultPassage(target,info){
-	var text=sumText(target);
-	var jumper=
-	    fdjtDOM.Anchor(
-		"javascript:sbook.JumpTo('"+info.frag+"');",
-		"a.spacer","\u00b6");
-	jumper.title="jump to this passage";
-	var head=fdjtDOM("div.passage",
-			 makelocrule(info,info.head),
-			 jumper," ",fdjtDOM("span.text",text));
-	head.setAttribute("about","#"+(info.frag));
-	head.title=text;
-	return head;}
 
     function showResults(result){
       if (result._results_div) return result._results_div;
