@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_notes_id="$Id$";
-var sbooks_notes_version=parseInt("$Revision$".slice(10,-1));
+var sbooks_slices_id="$Id$";
+var sbooks_slices_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2010 beingmeta, inc.
    This file implements the search component of a 
