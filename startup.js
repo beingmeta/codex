@@ -219,14 +219,20 @@ sbook.Startup=
 	      refuris.push(refuri);
 	      fdjtState.setLocal("sbook.refuris",refuris,true);}
 	    
+	    var isIphone = (/iphone/gi).test(navigator.appVersion);
+	    var isIpad = (/ipad/gi).test(navigator.appVersion);
+	    var isAndroid = (/android/gi).test(navigator.appVersion);
+	    var isWebTouch = isIphone || isIpad || isAndroid;
+
+	    if (isWebTouch) {
+		fdjtDOM.addClass(document.body,"touch");
+		viewportSetup();
+		sbook.ui="webtouch";}
 	    if ((useragent.search("Safari/")>0)&&
 		(useragent.search("Mobile/")>0)) { 
 		hide_mobile_safari_address_bar();
 		// Have fdjtLog do it's own format conversion for the log
-		fdjtLog.doformat=true;
-		fdjtDOM.addClass(document.body,"touch");
-		viewportSetup();
-		sbook.ui="ios";}
+		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {
 		fdjtDOM.addClass(document.body,"touch");
 		viewportSetup();

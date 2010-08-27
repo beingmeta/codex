@@ -127,8 +127,10 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    if (sbook.Trace.search>1)
 		fdjtLog("[%fs] Setting search cloud for %o to %o",
 			fdjtET(),box,completions.dom);
+	    cloudid=cloud.id;
 	    fdjtDOM.replace(cloud,completions.dom);
-	    completions.complete("");}
+	    completions.complete("");
+	    sbook.UI.updateScroller(completions.dom);}
 	else {
 	    fdjtDOM.addClass(box,"norefiners");
 	    refinecount.innerHTML="no refiners";}
@@ -153,7 +155,8 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.replace("SBOOKSEARCHRESULTS",sbook.query.showResults());
 	sbookMode("browsing");
 	fdjtID("SBOOKSEARCHINPUT").blur();
-	fdjtID("SBOOKSEARCHRESULTS").focus();}
+	fdjtID("SBOOKSEARCHRESULTS").focus();
+	sbook.UI.updateScroller(fdjtID("SBOOKSEARCHRESULTS"));}
     sbook.showSearchResults=showSearchResults;
 
     /* Call this to search */
@@ -179,11 +182,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    _sbook_searchupdate=false;}
 	if ((ch===13)||(ch===13)||(ch===59)||(ch===93)) {
 	    var qstring=target.value;
-	    if (fdjtString.isEmpty(qstring)) {
-		fdjtDOM.replace("SBOOKSEARCHRESULTS",sbook.query.showResults());
-		sbookMode("browsing");
-		fdjtID("SBOOKSEARCHINPUT").blur();
-		fdjtID("SBOOKSEARCHRESULTS").focus();}
+	    if (fdjtString.isEmpty(qstring)) showSearchResults();
 	    else {
 		var completeinfo=queryCloud(sbook.query);
 		var completions=completeinfo.complete(qstring);
@@ -193,11 +192,8 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.cancel(evt);
 	    if ((sbook.search_gotlucky) && 
 		(sbook.query._results.length>0) &&
-		(sbook.query._results.length<=sbook.search_gotlucky)) {
-		fdjtDOM.replace("SBOOKSEARCHRESULTS",sbook.query.showResults());
-		sbookMode("browsing");
-		fdjtID("SBOOKSEARCHINPUT").blur();
-		fdjtID("SBOOKSEARCHRESULTS").focus();}
+		(sbook.query._results.length<=sbook.search_gotlucky))
+		showSearchResults();
 	    else {
 		/* Handle new info */
 		var completeinfo=queryCloud(sbook.query);

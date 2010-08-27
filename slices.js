@@ -65,7 +65,7 @@ var sbook_delete_icon="redx12x12.png";
 		     (showlinks(info.attachments,"span.attachments"))));
 	if (!(info.tstamp))
 	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
-	      .replace(/\n\n+/g,"\n");
+	    .replace(/\n\n+/g,"\n");
 	div.about="#"+target_id;
 	// div.setAttribute('about',"#"+info.id);
 	if (idprefix) div.id=idprefix+info.id;
@@ -176,34 +176,34 @@ var sbook_delete_icon="redx12x12.png";
 	return [" ",anchor];}
 
     function makelocspan(target_info,cxtinfo){
-      if (!(cxtinfo)) cxtinfo=sbook.docinfo[(sbook.body||document.body).id];
-      var locrule=fdjtDOM("div.locrule");
-      var cxt_start=cxtinfo.starts_at;
-      var cxt_end=cxtinfo.ends_at;
-      var cxt_len=cxt_end-cxt_start;
-      var location_start=target_info.starts_at-cxt_start;
-      var location_len=target_info.ends_at-target_info.starts_at;
-      locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
-      locrule.title='click or hold to glimpse';
-      locrule.style.width=((location_len/cxt_len)*100)+"%";
-      locrule.style.left=((location_start/cxt_len)*100)+"%";
-      return locrule;}
+	if (!(cxtinfo)) cxtinfo=sbook.docinfo[(sbook.body||document.body).id];
+	var locrule=fdjtDOM("div.locrule");
+	var cxt_start=cxtinfo.starts_at;
+	var cxt_end=cxtinfo.ends_at;
+	var cxt_len=cxt_end-cxt_start;
+	var location_start=target_info.starts_at-cxt_start;
+	var location_len=target_info.ends_at-target_info.starts_at;
+	locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
+	locrule.title='click or hold to glimpse';
+	locrule.style.width=((location_len/cxt_len)*100)+"%";
+	locrule.style.left=((location_start/cxt_len)*100)+"%";
+	return locrule;}
     function makelocrule(target_info,cxtinfo){
-      if (!(cxtinfo)) cxtinfo=sbook.docinfo[(sbook.body||document.body).id];
-      var locrule=fdjtDOM("hr.locrule");
-      var cxt_start=cxtinfo.starts_at;
-      var cxt_end=cxtinfo.ends_at;
-      var cxt_len=cxt_end-cxt_start;
-      var target_start=target_info.starts_at-cxt_start;
-      var target_len=target_info.ends_at-target_info.starts_at;
-      var locstring="~"+Math.ceil(target_len/5)+ " words long ~"+
-	Math.ceil((target_start/cxt_len)*100)+"% along";
-      locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
-      locrule.locstring=locstring+".";
-      locrule.title=locstring+": click or hold to glimpse";
-      locrule.style.width=((target_len/cxt_len)*100)+"%";
-      locrule.style.left=((target_start/cxt_len)*100)+"%";
-      return locrule;}
+	if (!(cxtinfo)) cxtinfo=sbook.docinfo[(sbook.body||document.body).id];
+	var locrule=fdjtDOM("hr.locrule");
+	var cxt_start=cxtinfo.starts_at;
+	var cxt_end=cxtinfo.ends_at;
+	var cxt_len=cxt_end-cxt_start;
+	var target_start=target_info.starts_at-cxt_start;
+	var target_len=target_info.ends_at-target_info.starts_at;
+	var locstring="~"+Math.ceil(target_len/5)+ " words long ~"+
+	    Math.ceil((target_start/cxt_len)*100)+"% along";
+	locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
+	locrule.locstring=locstring+".";
+	locrule.title=locstring+": click or hold to glimpse";
+	locrule.style.width=((target_len/cxt_len)*100)+"%";
+	locrule.style.left=((target_start/cxt_len)*100)+"%";
+	return locrule;}
 
     function deletegloss_onclick(evt){
 	var scan=fdjtUI.T(evt);
@@ -221,7 +221,7 @@ var sbook_delete_icon="redx12x12.png";
 		"gloss",scan.qref,
 		"origin",
 		document.location.protocol+"//"+
-		document.location.hostname);}
+		    document.location.hostname);}
     function deletegloss(response,glossid,frag){
 	if (response===glossid) {
 	    sbook.glosses.drop(glossid);
@@ -252,7 +252,7 @@ var sbook_delete_icon="redx12x12.png";
 	var frag=gloss.get("frag");
 	sbookMark(fdjtID(frag),gloss);}
 
-	function sourceIcon(info){
+    function sourceIcon(info){
 	if (info) return info.pic;}
     
     function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
@@ -271,121 +271,121 @@ var sbook_delete_icon="redx12x12.png";
 	else return 0;}
 
     function showSlice(results,div,scores,sort){
-      var notes=new Array(results.length);
-      var i=0; var lim=results.length;
-      while (i<lim) {
-	var r=results[i];
-	if (typeof r === 'string') {
-	  var ref=sbook.docinfo[r]||sbook.glosses.ref(r);
-	  if (!(ref)) fdjtLog("[%fs] No resolution for %o",r);
-	  notes[i]=ref;}
-	else notes[i]=r;
-	i++;}
-      if (!(sort)) {}
-      else if (scores)
-	notes.sort(function(n1,n2){
-	    var s1=(scores[n1.qid]);
-	    var s2=(scores[n2.qid]);
-	    if ((s1)&&(s2)) {
-	      if (s1>s2) return -1;
-	      else if (s2>s1) return 1;}
-	    else if (s1) return -1;
-	    else if (s2) return 1;
+	var notes=new Array(results.length);
+	var i=0; var lim=results.length;
+	while (i<lim) {
+	    var r=results[i];
+	    if (typeof r === 'string') {
+		var ref=sbook.docinfo[r]||sbook.glosses.ref(r);
+		if (!(ref)) fdjtLog("[%fs] No resolution for %o",r);
+		notes[i]=ref;}
+	    else notes[i]=r;
+	    i++;}
+	if (!(sort)) {}
+	else if (scores)
+	    notes.sort(function(n1,n2){
+		var s1=(scores[n1.qid]);
+		var s2=(scores[n2.qid]);
+		if ((s1)&&(s2)) {
+		    if (s1>s2) return -1;
+		    else if (s2>s1) return 1;}
+		else if (s1) return -1;
+		else if (s2) return 1;
+		if (n1.starts_at<n2.starts_at) return -1;
+		else if (n1.starts_at>n2.starts_at) return 1;
+		else if ((n1.tstamp)&&(n2.tstamp)) {
+		    if (n1.tstamp>n2.tstamp) return -1;
+		    else if (n1.tstamp>n2.tstamp) return 1;
+		    else return 0;}
+		else if (n1.tstamp) return 1;
+		else if (n2.tstamp) return -1;
+		else return 0;});
+	else notes.sort(function(n1,n2){
 	    if (n1.starts_at<n2.starts_at) return -1;
 	    else if (n1.starts_at>n2.starts_at) return 1;
 	    else if ((n1.tstamp)&&(n2.tstamp)) {
-	      if (n1.tstamp>n2.tstamp) return -1;
-	      else if (n1.tstamp>n2.tstamp) return 1;
-	      else return 0;}
+		if (n1.tstamp>n2.tstamp) return -1;
+		else if (n1.tstamp>n2.tstamp) return 1;
+		else return 0;}
 	    else if (n1.tstamp) return 1;
 	    else if (n2.tstamp) return -1;
 	    else return 0;});
-      else notes.sort(function(n1,n2){
-	  if (n1.starts_at<n2.starts_at) return -1;
-	  else if (n1.starts_at>n2.starts_at) return 1;
-	  else if ((n1.tstamp)&&(n2.tstamp)) {
-	    if (n1.tstamp>n2.tstamp) return -1;
-	    else if (n1.tstamp>n2.tstamp) return 1;
-	    else return 0;}
-	  else if (n1.tstamp) return 1;
-	  else if (n2.tstamp) return -1;
-	  else return 0;});
 	
-      var headelt=false; var threadelt=false;
-      var curhead=false; var curinfo=false;
-      var i=0; var len=notes.length; while (i<len) {
-	var note=notes[i++];
-	var frag=note.id||note.frag;
-	if (!(frag)) continue;
-	var target=fdjtID(frag);
-	var docinfo=sbook.docinfo[target.id];
-	var headinfo=docinfo.head;
-	var head=document.getElementById(headinfo.frag);
-	var tochead=makeTOCHead(head);
-	if (curinfo!==docinfo) {
-	  if (headinfo!==curhead) {
-	    headelt=fdjtDOM("div.sbookthread.tocthread",tochead);
-	    fdjtDOM.append(div,headelt);
-	    curhead=headinfo;}
-	  threadelt=fdjtDOM("div.sbookthread.idthread",
-			    makeIDHead(target,headinfo,true));
-	  threadelt.about="#"+frag;
-	  fdjtDOM.append(headelt,threadelt);
-	  curinfo=docinfo;}
-	fdjtDOM.append(threadelt,renderNote(note));}
-      return div;}
+	var headelt=false; var threadelt=false;
+	var curhead=false; var curinfo=false;
+	var i=0; var len=notes.length; while (i<len) {
+	    var note=notes[i++];
+	    var frag=note.id||note.frag;
+	    if (!(frag)) continue;
+	    var target=fdjtID(frag);
+	    var docinfo=sbook.docinfo[target.id];
+	    var headinfo=docinfo.head;
+	    var head=document.getElementById(headinfo.frag);
+	    var tochead=makeTOCHead(head);
+	    if (curinfo!==docinfo) {
+		if (headinfo!==curhead) {
+		    headelt=fdjtDOM("div.sbookthread.tocthread",tochead);
+		    fdjtDOM.append(div,headelt);
+		    curhead=headinfo;}
+		threadelt=fdjtDOM("div.sbookthread.idthread",
+				  makeIDHead(target,headinfo,true));
+		threadelt.about="#"+frag;
+		fdjtDOM.append(headelt,threadelt);
+		curinfo=docinfo;}
+	    fdjtDOM.append(threadelt,renderNote(note));}
+	return div;}
     sbook.UI.showSlice=showSlice;
     
     function sumText(target){
-      var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
-	replace(/\n\n+/g,"\n");
-      if (title.length<40) return title;
-      else return title.slice(0,40)+"\u22ef ";}
+	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
+	    replace(/\n\n+/g,"\n");
+	if (title.length<40) return title;
+	else return title.slice(0,40)+"\u22ef ";}
     
     function makeTOCHead(target,head){
-      if (!(head)) head=sbook.getHead(target);
-      var basespan=fdjtDOM("span");
-      basespan.title='click to jump';
-      var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
-	replace(/\n\n+/g,"\n");
-      var info=sbook.docinfo[target.id];
-      if (target!==head) {
-	var paratext=
-	  fdjtDOM.Anchor("javascript:sbook.JumpTo('"+target.id+"');",
-			 "a.paratext",
-			 fdjtDOM("span.spacer","\u00B6"),
-			 sumText(target));
-	paratext.title='(click to jump) '+title;
-	fdjtDOM(basespan,paratext," ");}
-      if (head) {
-	var headtext=
-	  fdjtDOM.Anchor("javascript:sbook.JumpTo('"+head.id+"');",
-			 "a.headtext",
-			 fdjtDOM("span.spacer","\u00A7"),
-			 sumText(head));
-	var curspan=fdjtDOM("span.head",headtext);
-	fdjtDOM.append(basespan," ",curspan);
-	var heads=sbook.Info(head).heads;
-	if (heads) {
-	  var j=heads.length-1; while (j>=0) {
-	    var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
-	    if ((!(elt))||(!(hinfo.title))||
-		(elt===sbook.root)||(elt===document.body))
-	      continue;
-	    var anchor=
-	      fdjtDOM.Anchor(
-			     "javascript:sbook.JumpTo('"+hinfo.frag+"');",
-			     "a.headtext",
-			     fdjtDOM("span.spacer","\u00A7"),
-			     hinfo.title);
-	    var newspan=fdjtDOM("span.head"," ",anchor);
-	    if (target===head) fdjtDOM(curspan,newspan);
-	    else fdjtDOM(curspan," \u22ef ",newspan);
-	    curspan=newspan;}}}
-      var locrule=makelocrule(info);
-      var tochead=fdjtDOM("div.tochead",locrule,basespan);
-      tochead.title=locrule.locstring;
-      return tochead;}
+	if (!(head)) head=sbook.getHead(target);
+	var basespan=fdjtDOM("span");
+	basespan.title='click to jump';
+	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
+	    replace(/\n\n+/g,"\n");
+	var info=sbook.docinfo[target.id];
+	if (target!==head) {
+	    var paratext=
+		fdjtDOM.Anchor("javascript:sbook.JumpTo('"+target.id+"');",
+			       "a.paratext",
+			       fdjtDOM("span.spacer","\u00B6"),
+			       sumText(target));
+	    paratext.title='(click to jump) '+title;
+	    fdjtDOM(basespan,paratext," ");}
+	if (head) {
+	    var headtext=
+		fdjtDOM.Anchor("javascript:sbook.JumpTo('"+head.id+"');",
+			       "a.headtext",
+			       fdjtDOM("span.spacer","\u00A7"),
+			       sumText(head));
+	    var curspan=fdjtDOM("span.head",headtext);
+	    fdjtDOM.append(basespan," ",curspan);
+	    var heads=sbook.Info(head).heads;
+	    if (heads) {
+		var j=heads.length-1; while (j>=0) {
+		    var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
+		    if ((!(elt))||(!(hinfo.title))||
+			(elt===sbook.root)||(elt===document.body))
+			continue;
+		    var anchor=
+			fdjtDOM.Anchor(
+			    "javascript:sbook.JumpTo('"+hinfo.frag+"');",
+			    "a.headtext",
+			    fdjtDOM("span.spacer","\u00A7"),
+			    hinfo.title);
+		    var newspan=fdjtDOM("span.head"," ",anchor);
+		    if (target===head) fdjtDOM(curspan,newspan);
+		    else fdjtDOM(curspan," \u22ef ",newspan);
+		    curspan=newspan;}}}
+	var locrule=makelocrule(info);
+	var tochead=fdjtDOM("div.tochead",locrule,basespan);
+	tochead.title=locrule.locstring;
+	return tochead;}
 
     function makeIDHead(target,headinfo,locrule){
 	var info=sbook.docinfo[target.id];
@@ -493,21 +493,16 @@ var sbook_delete_icon="redx12x12.png";
     /* Scrolling slices */
 
     function scrollGlosses(elt,glosses,top){
-      if (!(elt.id)) elt=getFirstID(elt);
-      var info=sbook.docinfo[elt.id];
-      var targetloc=((info)&&(info.starts_at))||(elt.starts_at);
-      if (targetloc) {
-	var scrollto=getFirstElt(glosses,targetloc);
-	if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
-	  if (sbook.scrollfree) {
-	    var off=getScrollOffset(scrollto,glosses);
-	    // var transform='translate('+0+'px,-'+off+'px)';
-	    // fdjtLog("Applying transform %o",transform);
-	    //glosses.style.webkitTransform=transform;
-	    // fdjtLog("Positioning for scroll offset %o",off);
-	    if (off<0) off=0;
-	    glosses.style.top="-"+off+"px";}
-	  else scrollto.scrollIntoView(true);}}}
+	if (!(elt.id)) elt=getFirstID(elt);
+	var info=sbook.docinfo[elt.id];
+	var targetloc=((info)&&(info.starts_at))||(elt.starts_at);
+	if (targetloc) {
+	    var scrollto=getFirstElt(glosses,targetloc);
+	    if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
+		if ((sbook.scrollers)&&(glosses.id)) {
+		    var scroller=sbook.scrollers[glosses.id];
+		    scroller.scrollToElement(scrollto);}
+		else scrollto.scrollIntoView(true);}}}
     sbook.UI.scrollGlosses=scrollGlosses;
     
     function getFirstID(node){
@@ -539,7 +534,7 @@ var sbook_delete_icon="redx12x12.png";
 	    else last=child;}
 	if (last) getFirstElt(last,location);
 	return false;}
-		
+    
     function getScrollOffset(elt,inside){
 	if (elt.parentNode===inside) {
 	    var children=inside.childNodes;
@@ -555,7 +550,7 @@ var sbook_delete_icon="redx12x12.png";
     /* Results handlers */
 
     function setupSummaryDiv(div){
-      sbook.UI.addHandlers(div,'summary');}
+	sbook.UI.addHandlers(div,'summary');}
     sbook.UI.setupSummaryDiv=setupSummaryDiv;
     
 })();

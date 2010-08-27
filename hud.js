@@ -41,7 +41,7 @@ var sbookMode=
 	// The HELP HUD, and its margins
 	var sbookHelp=false; var help_top=false; var help_bottom=false;
 	// The BOX HUD (contains scrollable content) and its margins
-	var sbookBox=false; var box_top=false; var box_bottom=false;
+	var sbookFlyleaf=false; var box_top=false; var box_bottom=false;
 	// This is the HUD where all glosses are displayed
 	var sbookGlossesHUD=false;
 	// This is the HUD for tag searching
@@ -57,7 +57,7 @@ var sbookMode=
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=
-		  sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
+		    sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
 		fdjtDOM.prepend(document.body,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_consoletext;
@@ -72,7 +72,7 @@ var sbookMode=
 	    search.innerHTML=sbooksearch_hud;
 	    fdjtUI.AutoPrompt.setup(search);
 	    sbook.empty_cloud=
-	      new fdjtUI.Completions(fdjtID("SBOOKSEARCHCLOUD"));
+		new fdjtUI.Completions(fdjtID("SBOOKSEARCHCLOUD"));
 	    // Initialize gloss UI
 	    var glosses=fdjtID("SBOOKALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
@@ -122,11 +122,19 @@ var sbookMode=
 	    sbookFoot=fdjtID("SBOOKFOOT");
 	    sbookHead=fdjtID("SBOOKHEAD");
 	    sbookHelp=fdjtID("SBOOKHELP");
-	    sbookBox=fdjtID("SBOOKFLYLEAF");
+	    sbookFlyleaf=fdjtID("SBOOKFLYLEAF");
 	    fillinDash();
+	    resizeHUD();
 	    if (sbook.scrollfree) {
-	      resizeHUD();
-	      fdjtDOM.addListener(window,"resize",resizeHUD);}}
+		sbook.scrollers={};
+		var content=sbookFlyleaf.childNodes;
+		var i=0; var lim=content.length;
+		while (i<lim) {
+		    if ((content[i].nodeType===1)&&(content[i].id)) {
+			var elt=content[i++];
+			sbook.scrollers[elt.id]=new iScroll(elt);}
+		    else i++;}
+		fdjtDOM.addListener(window,"resize",resizeHUD);}}
 	sbook.initHUD=initHUD;
 	
 	function resizeHUD(){
@@ -136,9 +144,8 @@ var sbookMode=
 	  var flyleaf=fdjtID("SBOOKFLYLEAF");
 	  var fh=fdjtDOM.getGeometry(hf).height;
 	  fdjtLog("[%fs] resizeHUD vh=%o vw=%o fh=%o",fdjtET(),vh,vw,fh);
-	  flyleaf.style.height=(vh-150)+'px';
-	  flyleaf.style.minHeight=(vh-150)+'px';
-	  hf.style.top=(vh-fh)+'px';}
+	  flyleaf.style.maxHeight=(vh-100)+'px';
+	    if (sbook.scrollfree) hf.style.top=(vh-fh)+'px';}
 
 	/* This is used for viewport-based browser, where the HUD moves
 	   to be aligned with the viewport */
@@ -221,6 +228,10 @@ var sbookMode=
 		    sbook.scrolling="SBOOKALLGLOSSES";
 		else if (mode==='browsing')
 		    sbook.scrolling="SBOOKSEARCHRESULTS";
+		else if (mode==='searching')
+		    sbook.scrolling="SBOOKSEARCHCLOUD";
+		else if (mode==='target')
+		    sbook.scrolling="SBOOKGLOSSCLOUD";
 		else sbook.scrolling=false;
 		if ((mode)&&(typeof mode === 'string')&&
 		    (mode.search(sbookDashMode_pat)===0)) {
@@ -247,10 +258,10 @@ var sbookMode=
 		if (mode==="searching")
 		    fdjtID("SBOOKSEARCHINPUT").focus();
 		else document.body.focus();
+		if (sbook.scrolling) updateScroller(fdjtID(sbook.scrolling));
 		sbook.displaySync();}
 	    else {
-		if (sbook.mode!=='help')
-		    sbook.last_mode=sbook.mode;
+		if (sbook.mode!=='help') sbook.last_mode=sbook.mode;
 		document.body.focus();
 		fdjtDOM.dropClass(document.body,"dimmed");
 		fdjtDOM.dropClass(sbookHUD,"dash");
@@ -268,6 +279,13 @@ var sbookMode=
 		    fdjtDOM.dropClass(document.body,"hudup");
 		    fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
 		    sbook.displaySync();}}}
+
+	function updateScroller(elt){
+	    if ((!(sbook.scrollers))||(!(elt.id))) return;
+	    else if (sbook.scrollers[elt.id].element===elt)
+		sbook.scrollers[elt.id].refresh();
+	    else sbook.scrollers[elt.id]=new iScroll(elt);}
+	sbook.UI.updateScroller=updateScroller;
 
 	function sbookHUDToggle(mode){
 	    if (!(sbook.mode)) sbookMode(mode);
@@ -544,7 +562,12 @@ var sbookMode=
 		// We can't do this earlier because it's not displayed
 		//  and so has no geometry
 		// if ((pelt)&&(sbook.previewstart!==pelt)&&(pelt.scrollIntoView))
-		if (pelt) pelt.scrollIntoView();
+		if ((sbook.scrollers)&&(pelt)&&(sbook.scrolling)&&
+		    (sbook.scrollers[sbook.scrolling])&&
+		    (fdjtDOM.hasParent(pelt,fdjtID(sbook.scrolling)))) {
+		    var scroller=sbook.scrollers[sbook.scrolling];
+		    scroller.scrollToElement(pelt);}
+		else if (pelt) pelt.scrollIntoView();
 		sbook.previewstart=false;
 		fdjtDOM.replace("SBOOKPREVIEW",fdjtDOM("div#SBOOKPREVIEW"));
 		return;}
