@@ -6,38 +6,44 @@ body.sbook {
 body.sbook a { text-decoration: none;}
 body.sbook a:hover { text-decoration: underline;}
 
-body.sbook.novel h1 {
+body.sbook.novel h1, body.sbook.novel .chapter, body.sbook.novel .sbook1 {
     text-align: center; margin-left: 5%; margin-right: 5%;}
 hr.divider { 
     text-align: center; height: 7px; width: 50%;
     color: gray; background-color: gray;}
 body.sbook h1 { page-break-before: always; }
-body.sbook h1.titlepage { 
+body.sbook .titlepage {
   margin-left: 5%; margin-right: 5%;
+  padding-top: 2ex; padding-bottom: 2ex;
   background-color: lightgray;
   font-size: 32px; text-align: center;
   page-break-inside: avoid;
   page-break-after: always;
   overflow: hidden;}
-body.sbook h1.titlepage div.title {
+body.sbook .titlepage .title, {
     text-align: center; font-weight: bold;
     clear: both; font-size: 150%;}
-body.sbook h1.titlepage div.title img {
+body.sbook .titlepage .title img {
     width: 80%;}
-body.sbook h1.titlepage div.subtitle {
+body.sbook .titlepage div.subtitle {
   clear: both;
   text-align: center; font-style: italic; font-weight: normal;
   font-size: 50%;}
-body.sbook h1.titlepage div.author { 
+body.sbook .titlepage .author { 
   clear: both;
   text-align: center; font-style: italic; 
   margin-top: 1em; margin-bottom: 1em;
   font-size: 120%;}
-body.sbook h1.titlepage div.editor { 
+body.sbook .titlepage .editor { 
   clear: both;
   text-align: center; font-style: normal; font-weight: normal;
   font-size: 100%;}
-body.sbook h1.titlepage div.pubinfo { 
+body.sbook .titlepage div.dedication { 
+  clear: both;
+  text-align: left; font-style: normal; font-weight: normal;
+  margin-left: auto; margin-right: auto; width: 50%;
+  font-size: 50%;}
+body.sbook .titlepage div.pubinfo { 
   clear: both; font-size: 80%;
   position: relative; bottom: 0px;
   font-variant: smallcaps;
