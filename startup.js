@@ -277,20 +277,18 @@ sbook.Startup=
 	/* Getting settings */
 
 	function _getsbookrefuri(){
-	    // Explicit REFURI is just returned
-	    var refuri=fdjtDOM.getLink("REFURI",false,true)||
-		fdjtDOM.getMeta("REFURI",false,true);
-	    if (refuri) return refuri;
-	    // No explicit value, try to figure one out
-	    // First, try the CANONICAL link
-	    refuri=fdjtDOM.getLink("canonical",false,true);
-	    // Otherwise, use the document location
-	    if (!(refuri)) {
+	    var refuri=fdjtDOM.getLink("sbook.refuri",false,false)||
+		fdjtDOM.getLink("refuri",false,false)||
+		fdjtDOM.getMeta("refuri",false,false)||
+		fdjtDOM.getLink("canonical",false,true);
+	    if (refuri) return decodeURI(refuri);
+	    else {
 		var locref=document.location.href;
 		var qstart=locref.indexOf('?');
 		if (qstart>=0) locref=locref.slice(0,qstart);
-		refuri=locref;}
-	    return refuri;}
+		var hstart=locref.indexOf('#');
+		if (hstart>=0) locref=locref.slice(0,hstart);
+		return decodeURI(locref);}}
 	function _getsbookdocuri(){
 	    var docuri=fdjtDOM.getLink("DOCURI",true)||
 		fdjtDOM.getMeta("DOCURI",true)||
