@@ -64,6 +64,7 @@ var sbookPaginate=
     var isEmpty=fdjtString.isEmpty;
     var getGeometry=fdjtDOM.getGeometry;
     var getStyle=fdjtDOM.getStyle;
+    var parsePX=fdjtDOM.parsePX;
 
     function Paginate(pagesize,start){
       if (!(start))
@@ -363,7 +364,7 @@ var sbookPaginate=
     var sbook_content_nodes=['IMG','BR','HR'];
 	
     function scanContent(scan,skipchildren){
-      var next=(((skipchildren)||(scan.sbookui))?
+      var next=(((skipchildren)||(scan.sbookui)||(isPageBlock(scan)))?
 		(fdjtDOM.next(scan,isContentBlock)):
 		(fdjtDOM.forward(scan,isContentBlock)));
       var info=getGeometry(scan);
@@ -843,8 +844,14 @@ var sbookPaginate=
       var i=0; var lim=fullpages.length;
       while (i<lim) {
 	var block=fullpages[i++];
-	block.style.maxHeight=pagesize+'px';
-	block.style.height=pagesize+'px';}
+	var blockstyle=getStyle(block);
+	var blocktop=parsePX(blockstyle.paddingTop)+
+	  parsePX(blockstyle.borderTop);
+	var blockbot=parsePX(blockstyle.paddingBottom)+
+	  parsePX(blockstyle.borderBottom);
+	var blockheight=pagesize-((blocktop||0)+(blockbot||0));
+	block.style.maxHeight=blockheight+'px';
+	block.style.height=blockheight+'px';}
       var adjustpages=function(){
 	i=0; while (i<lim) {
 	  var block=fullpages[i++];

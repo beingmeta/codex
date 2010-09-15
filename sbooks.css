@@ -1682,7 +1682,7 @@ a img { border: transparent;}
 .sbookpage { page-break-before: always;}
 .sbookpageblock { page-break-inside: avoid;}
 .sbookkeep { page-break-inside: avoid;}
-.sbookfullpage, .singlepage {
+.sbookfullpage, .singlepage .titlepage .fullpage {
     page-break-inside: avoid;
     page-break-before: always;
     page-break-after: always;}
