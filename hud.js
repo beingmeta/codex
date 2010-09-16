@@ -590,7 +590,9 @@ var sbookMode=
 	    fdjtDOM.addClass(elt,"previewing");
 	    sbook.last_preview=elt;
 	    sbook.preview_target=sbook.preview=elt;
-	    if ((!(elt.sbooktitle))&&(elt.title)) elt.sbooktitle=elt.title;
+	    if ((!(elt.sbooktitle))&&(elt.title)&&
+		(elt.title!=='click to jump to this passage'))
+		elt.sbooktitle=elt.title;
 	    elt.title='click to jump to this passage';
 	    if ((elt.getAttribute) &&
 		(elt.getAttribute("toclevel")) ||

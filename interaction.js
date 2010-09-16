@@ -774,6 +774,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     var nobubble=fdjtUI.cancelBubble;
     var cancel=fdjtUI.cancel;
 
+    /*
     sbook.UI.handlers.mouse=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
 	 hud: {mousedown:hud_mousedown,mouseup:hud_mouseup,
@@ -786,8 +787,22 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 ".hudbutton": {mouseover:hudbutton,
 			mouseout:hudbutton},
 	 ".sbookmargin": {click:body_onclick}};
-    
+    */
+    sbook.UI.handlers.mouse=
+	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
+		  mousedown:body_mousedown,mouseup:body_mouseup,
+		  mousemove:mousemove},
+	 hud: {mousedown:hud_mousedown,mouseup:hud_mouseup,
+	       mousemove:mousemove},
+	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},
+	 "#SBOOKPAGERIGHT": {click: Forward},
+	 "#SBOOKPAGELEFT": {click: Backward},
+	 ".hudbutton": {mouseover:hudbutton,
+			mouseout:hudbutton},
+	 ".sbookmargin": {click:body_onclick}};
+
     // A mouse pretending to be a touch screen
+
     sbook.UI.handlers.faketouch=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
 	 body: {mousedown: body_touchstart,mouseup: body_touchend,

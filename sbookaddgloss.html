@@ -1,20 +1,20 @@
 <form action="https://glossdb.sbooks.net/v4/addgloss.fdcgi"
       ajaxaction="https://glosses.sbooks.net/v4/addgloss"
       target="addgloss" class="note" id="SBOOKGLOSSFORM">
-  <div class="glossmode" title="switch between notes, tags, and links">
-    <!--
-       <img src="http://static.beingmeta.com/graphics/diamond32.png"
-	    alt="MODE"/>
-       -->
-    <select name="DISPLAY" id="SBOOKGLOSSMODE"
-	    onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
-      <option value="note" SELECTED><span>Note</span></option>
-      <option value="tag"><span>Tag</span></option>
-      <option value="link"><span>Link</span></option>
-    </select>
-  </div>
   <div class="submit">
     <input type="SUBMIT" name="ACTION" value="OK"/>
+    <div class="glossmode" title="switch between notes, tags, and links">
+      <!--
+	  <img src="http://static.beingmeta.com/graphics/diamond32.png"
+	       alt="MODE"/>
+	  -->
+      <select name="DISPLAY" id="SBOOKGLOSSMODE"
+	      onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
+	<option value="note" SELECTED><span>Note</span></option>
+	<option value="tag"><span>Tag</span></option>
+	<option value="link"><span>Link</span></option>
+      </select>
+    </div>
     <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
       <input type="CHECKBOX" name="PRIVATE" value="yes"/>
       <span class="checked"

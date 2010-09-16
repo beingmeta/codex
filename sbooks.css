@@ -903,7 +903,7 @@ div.sbookaddgloss form fieldset {
     border: 0px; padding: 6px; padding-top: 2px;}
 div.sbookaddgloss form div { clear: none;}
 div.sbookaddgloss form div.input { }
-div.sbookaddgloss form div.glossmode { float: left; text-align: left;}
+/* div.sbookaddgloss form div.glossmode { float: left; text-align: left;} */
 div.sbookaddgloss form div.submit {
     padding-left: 5px; float: right; text-align: right;}
 div.sbookaddgloss form fieldset {

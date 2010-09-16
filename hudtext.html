@@ -1,12 +1,18 @@
 <div id="SBOOKPREVIEW" class="hudblock"></div>
 <div id="SBOOKMESSAGE" class="hudblock"></div>
-<div id="SBOOKHEAD">
 <img src="http://static.beingmeta.com/graphics/CompassIcon40x40.png"
      alt="toc" title="click to navigate the book as a whole"
      class="hudbutton" id="SBOOKTOCBUTTON" hudmode="toc"
      onclick="sbook.UI.hudbutton(event);"/>
 <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
      class="previewicon topleft"/>
+<img src="http://static.beingmeta.com/graphics/TagSearch40x40.png"
+     alt="search" title="click to search tags within the book"
+     class="hudbutton" id="SBOOKSEARCHBUTTON" hudmode="searching"
+     onclick="sbook.UI.hudbutton(event);"/>
+<img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
+     class="previewicon topright"/>
+<div id="SBOOKHEAD">
 <div class="helphud tapnav">
   <span class="arrow">←</span>
   <strong class="notouch">click</strong>
@@ -17,12 +23,6 @@
   <strong class="fortouch">tap</strong> here
   <span class="arrow">→</span><br/>
   to search</div>
-<img src="http://static.beingmeta.com/graphics/TagSearch40x40.png"
-     alt="search" title="click to search tags within the book"
-     class="hudbutton" id="SBOOKSEARCHBUTTON" hudmode="searching"
-     onclick="sbook.UI.hudbutton(event);"/>
-<img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
-     class="previewicon topright"/>
 <div id="SBOOKTOC" class="hudblock"></div>
 <div id="SBOOKSEARCH" class="searchbox hudblock">
   <!-- This content comes from sbooksearch.html -->
