@@ -134,7 +134,7 @@ body.scrollfree div.sbookmargin#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
     bottom: auto; position: absolute;}
 
 /* The DOM of an sbook puts the content in one element */
-body.sbook > * { width: 100%; margin: 0px;}
+/* body.sbook > * { width: 100%; margin: 0px;} */
 
 /* HUDs */
 
@@ -904,8 +904,11 @@ div.sbookaddgloss form fieldset {
 div.sbookaddgloss form div { clear: none;}
 div.sbookaddgloss form div.input { }
 /* div.sbookaddgloss form div.glossmode { float: left; text-align: left;} */
+div.sbookaddgloss form div.glossmode { display: none;}
 div.sbookaddgloss form div.submit {
-    padding-left: 5px; float: right; text-align: right;}
+    padding-left: 5px; float: right; text-align: center;}
+div.sbookaddgloss form div.submit { width: 50px; }
+body.touch div.sbookaddgloss form div.submit { width: 75px;}
 div.sbookaddgloss form fieldset {
     border: 0px; padding: 6px; padding-top: 2px;}
 
@@ -918,8 +921,8 @@ div.sbookaddgloss form div.glossmode select option {
 
 div.sbookaddgloss form div.submit img,
 div.sbookaddgloss form div.submit input[type='SUBMIT'] {
-    padding-left: 0.2em; padding-right: 0.2em; font-weight: bold;
-    text-align: center; font-size: 150%; width: 100%;}
+    font-weight: bold; text-align: center; padding: 4px;
+    font-size: 150%; width: 100%;}
 div.sbookaddgloss form div.submit {}
 div.sbookaddgloss form div.submit .checkspan {
     font-weight: bold; font-size: 90%;
@@ -1682,7 +1685,7 @@ a img { border: transparent;}
 .sbookpage { page-break-before: always;}
 .sbookpageblock { page-break-inside: avoid;}
 .sbookkeep { page-break-inside: avoid;}
-.sbookfullpage, .singlepage .titlepage .fullpage {
+.sbookfullpage, .singlepage, .titlepage, .fullpage {
     page-break-inside: avoid;
     page-break-before: always;
     page-break-after: always;}
@@ -1733,7 +1736,7 @@ body.touch div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
 body.hudup.touch div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
     height: 100px;}
 body.hudup.touch div#SBOOKHUD div#SBOOKFLYLEAF {
-    top: 100px; bottom: 100px;}
+    top: 100px; }
 
 div.sbookaddgloss form div.submit .checkspan {
     margin-top: 1ex;}
@@ -1748,7 +1751,7 @@ body.touch div#SBOOKHUD div#SBOOKSOURCES img {
 body.touch div#SBOOKHUD div#SBOOKHEAD > div#SBOOKSOURCES.hudblock {
     height: 80px; max-height: 80px; min-height: 80px;}
 body.touch div#SBOOKHUD.allglosses div#SBOOKFLYLEAF {
-    top: 80px; bottom: 100px;}
+    top: 80px; }
 
 /*
 body.touch div.sbookaddgloss form div.submit span.checkspan { font-size: 150%;}

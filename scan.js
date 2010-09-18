@@ -142,27 +142,27 @@ function sbookScan(root,docinfo){
       return loc;}
     else return 0;}
 
-  function getLevel(elt){
-    if (elt.toclevel)
-      if (elt.toclevel==='none')
-	return elt.toclevel=false;
-      else return elt.toclevel;
-    var attrval=
-      ((elt.getAttributeNS)&&
-       (elt.getAttributeNS('toclevel','http://sbooks.net')))||
-      (elt.getAttribute('toclevel'))||
-      (elt.getAttribute('data-toclevel'));
-    if (attrval)
-      if (attrval==='none') return false;
-      else return parseInt(attrval);
-    if (elt.className) {
-      var cname=elt.className;
-      var tocloc=cname.search(/sbook\dhead/);
-      if (tocloc>=0) return parseInt(cname.slice(5,6));}
-    if (elt.tagName.search(/H\d/)==0)
-      return parseInt(elt.tagName.slice(1,2));
-    else return false;}
-
+    function getLevel(elt){
+	if (elt.toclevel) {
+	    if (elt.toclevel==='none')
+		return elt.toclevel=false;
+	    else return elt.toclevel;}
+	var attrval=
+	    ((elt.getAttributeNS)&&
+	     (elt.getAttributeNS('toclevel','http://sbooks.net')))||
+	    (elt.getAttribute('toclevel'))||
+	    (elt.getAttribute('data-toclevel'));
+	if (attrval) {
+	    if (attrval==='none') return false;
+	    else return parseInt(attrval);}
+	if (elt.className) {
+	    var cname=elt.className;
+	    var tocloc=cname.search(/sbook\dhead/);
+	    if (tocloc>=0) return parseInt(cname.slice(5,6));}
+	if (elt.tagName.search(/H\d/)==0)
+	    return parseInt(elt.tagName.slice(1,2));
+	else return false;}
+    
   function handleHead
     (head,docinfo,scanstate,level,curhead,curinfo,curlevel,nodefn){
     var headid=head.id;

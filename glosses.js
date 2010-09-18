@@ -466,16 +466,18 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM.getInput(form,"DOCTITLE").value=document.title;
 	fdjtDOM.getInput(form,"SOURCE").value=document.location.href;
 	var noteinput=fdjtDOM.getInput(form,"NOTE");
-	noteinput.onfocus=note_focus;
-	noteinput.onblur=note_blur;
-	noteinput.onkeypress=note_keypress;
-	noteinput.onkeyup=note_keyup;
-	noteinput.onmouseup=note_mouseup;
+	if (noteinput) {
+	    noteinput.onfocus=note_focus;
+	    noteinput.onblur=note_blur;
+	    noteinput.onkeypress=note_keypress;
+	    noteinput.onkeyup=note_keyup;
+	    noteinput.onmouseup=note_mouseup;}
 	var taginput=fdjtDOM.getInput(form,"TAG");
-	taginput.onkeypress=taginput_keypress;
-	taginput.onkeyup=taginput_keyup;
-	taginput.onfocus=taginput_focus;
-	taginput.onblur=taginput_blur;
+	if (taginput) {
+	    taginput.onkeypress=taginput_keypress;
+	    taginput.onkeyup=taginput_keyup;
+	    taginput.onfocus=taginput_focus;
+	    taginput.onblur=taginput_blur;}
 	if (sbook.syncstamp)
 	    fdjtDOM.getInput(form,"SYNC").value=(sbook.syncstamp+1);
 	fdjtUI.AutoPrompt.setup(form);

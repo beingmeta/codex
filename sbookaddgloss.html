@@ -1,13 +1,18 @@
 <form action="https://glossdb.sbooks.net/v4/addgloss.fdcgi"
       ajaxaction="https://glosses.sbooks.net/v4/addgloss"
       target="addgloss" class="note" id="SBOOKGLOSSFORM">
+  <div class="hidden">
+    <input type="HIDDEN" name="FRAG"/>
+    <input type="HIDDEN" name="REFURI"/>
+    <input type="HIDDEN" name="SOURCE"/>
+    <input type="HIDDEN" name="SYNC"/>
+    <input type="HIDDEN" name="USER"/>
+    <input type="HIDDEN" name="UUID"/>
+    <input type="HIDDEN" name="DOCTITLE"/>
+  </div>
   <div class="submit">
     <input type="SUBMIT" name="ACTION" value="OK"/>
     <div class="glossmode" title="switch between notes, tags, and links">
-      <!--
-	  <img src="http://static.beingmeta.com/graphics/diamond32.png"
-	       alt="MODE"/>
-	  -->
       <select name="DISPLAY" id="SBOOKGLOSSMODE"
 	      onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
 	<option value="note" SELECTED><span>Note</span></option>
@@ -25,15 +30,6 @@
 	shared</span>
     </div>
   </div>
-  <div class="hidden">
-    <input type="HIDDEN" name="FRAG"/>
-    <input type="HIDDEN" name="REFURI"/>
-    <input type="HIDDEN" name="SOURCE"/>
-    <input type="HIDDEN" name="SYNC"/>
-    <input type="HIDDEN" name="USER"/>
-    <input type="HIDDEN" name="UUID"/>
-    <input type="HIDDEN" name="DOCTITLE"/>
-  </div>
   <fieldset>
     <div class="input note">
 	 <textarea name="NOTE" class="autoprompt"
@@ -41,11 +37,6 @@
 		   wrap="virtual"
 		   id="SBOOKGLOSSNOTE">
 	 </textarea>
-      <!--
-      <input type="TEXT" name="NOTE" class="autoprompt"
-	     prompt="add a note plus [tag]s"
-	     id="SBOOKGLOSSNOTE"/>
-      -->
     </div>
     <div class="input tag">
       <input type="TEXT" name="TAG" value=""

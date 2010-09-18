@@ -1,9 +1,9 @@
-@charset "UTF-8";
+s@charset "UTF-8";
 
 body.sbook {
   background-color: ivory;}
 body.sbook div#SBOOKBODY {
-  max-width: 40em; margin-left: auto; margin-right: auto;}
+    margin-left: auto; margin-right: auto;}
 body.sbook a { text-decoration: none;}
 body.sbook a:hover { text-decoration: underline;}
 

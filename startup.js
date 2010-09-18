@@ -330,7 +330,7 @@ sbook.Startup=
 		var rules=fdjtDOM.getMeta("SBOOKHEAD"+i,true);
 		if ((rules)&&(rules.length)) {
 		    var j=0; var lim=rules.length;
-		    var elements=fdjtDOM.getChildren(rules[j++]);
+		    var elements=fdjtDOM.getChildren(document.body,rules[j++]);
 		    var k=0; var n=elements.length;
 		    while (k<n) elements[k++].toclevel=i;}
 		i++;}

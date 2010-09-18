@@ -595,7 +595,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		else {}}
 	    else {}
 	    return;}
-	else if (!(edgeTap(evt))) return tap(target);
+	else if (!(edgeTap(evt,last_x))) return tap(target);
 	else return;}
 
     function hud_touchend(evt){
@@ -610,7 +610,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		      (sbook.scrollers[sbook.scrolling]));
 	// fdjtLog("[%f] hud_touchend scroller=%o(%o) moved=%o",fdjtET(),scroller,scroller.element,scroller.moved);
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
-	else if (fdjtDOM.isClickable(target)) return;
+	else if (fdjtDOM.isClickable(target)) {
+	    var click_evt = document.createEvent("MouseEvents");
+	    click_evt.initMouseEvent("click", true, true, window,
+				     1,page_x,page_y,last_x, last_y,
+				     false, false, false, false, 0, null);
+	    target.dispatchEvent(click_evt);
+	    return;}
 	else return hud_tap(target);}
 
     /* Mouse handlers for body and HUD */
@@ -774,20 +780,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     var nobubble=fdjtUI.cancelBubble;
     var cancel=fdjtUI.cancel;
 
-    /*
-    sbook.UI.handlers.mouse=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
-	 hud: {mousedown:hud_mousedown,mouseup:hud_mouseup,
-	       mousemove:mousemove},
-	 body: {mousedown:body_mousedown,mouseup:body_mouseup,
-		mousemove:mousemove},
-	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},
-	 "#SBOOKPAGERIGHT": {click: Forward},
-	 "#SBOOKPAGELEFT": {click: Backward},
-	 ".hudbutton": {mouseover:hudbutton,
-			mouseout:hudbutton},
-	 ".sbookmargin": {click:body_onclick}};
-    */
     sbook.UI.handlers.mouse=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
 		  mousedown:body_mousedown,mouseup:body_mouseup,

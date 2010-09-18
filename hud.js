@@ -143,7 +143,7 @@ var sbookMode=
 	  var hf=fdjtID("SBOOKFOOT");
 	  var flyleaf=fdjtID("SBOOKFLYLEAF");
 	  var fh=fdjtDOM.getGeometry(hf).height;
-	  fdjtLog("[%fs] resizeHUD vh=%o vw=%o fh=%o",fdjtET(),vh,vw,fh);
+          // fdjtLog("[%fs] resizeHUD vh=%o vw=%o fh=%o",fdjtET(),vh,vw,fh);
 	  flyleaf.style.maxHeight=(vh-100)+'px';
 	    if (sbook.scrollfree) hf.style.top=(vh-fh)+'px';}
 
