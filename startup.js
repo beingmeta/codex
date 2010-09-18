@@ -655,6 +655,7 @@ sbook.Startup=
 	/* Indexing tags */
 	function sbookIndexTags(docinfo){
 	    var sbook_index=sbook.index;
+	    knodule=(knodule)||(knodule=sbook.knodule);
 	    /* One pass processes all of the inline KNodes and
 	       also separates out primary and auto tags. */
 	    for (var eltid in docinfo) {
