@@ -441,7 +441,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (hold_timer) {
 	    var target=fdjtUI.T(evt);
 	    clearTimeout(hold_timer); hold_timer=false;
-	    if (!(edgeTap(evt))) return tap(target);}
+	    if (!(edgeTap(evt))) return tap(sbook.getTarget(target));}
 	else return;}
     
     function mousemove(evt){
@@ -790,8 +790,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
 	 ".hudbutton": {mouseover:hudbutton,
-			mouseout:hudbutton},
-	 ".sbookmargin": {click:body_onclick}};
+			mouseout:hudbutton}};
 
     // A mouse pretending to be a touch screen
 
