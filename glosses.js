@@ -593,8 +593,9 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	evt=evt||event||null;
 	var form=fdjtUI.T(evt);
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
-	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5)))
-	    alert('missing UUID');
+	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
+	    fdjtLog.warn('missing UUID');
+	    if (uuidelt) uuidelt.value=fdjtTime.getUUID(sbook.nodeid);}
 	fdjtUI.AutoPrompt.cleanup(form);
 	if (!(sbook.offline)) return fdjtAjax.onsubmit(evt);
 	if (!(navigator.onLine)) return saveGloss(form,evt);

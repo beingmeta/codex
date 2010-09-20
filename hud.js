@@ -65,6 +65,7 @@ var sbookMode=
 	    dash.innerHTML=sbook_dashtext;
 	    var gloss=fdjtID("SBOOKADDGLOSS");
 	    gloss.innerHTML=sbookaddgloss_hud;
+	    fdjtUI.AutoPrompt.setup(gloss);
 	    var dashtop=fdjtID("SBOOKDASHTOP");
 	    dashtop.innerHTML=sbookdashtop_hud;
 	    // Initialize search UI

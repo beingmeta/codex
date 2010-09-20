@@ -1,10 +1,10 @@
 <div class='tabcontent dashtab' id='APPLOGIN'>
-<h1>Introduce Yourself</h1>
+<!-- <h1>Introduce Yourself</h1> -->
 <form action='https://auth.sbooks.net/v4/auth'
       onsubmit='fdjtAutoPrompt_cleanup();'>
 <table class='login' rowspacing='6'>
 <tr>
-<th/><th>Login using</th>
+<th/><th>Connect using</th>
 <td class='oneclick'>
   <a href='https://sbooks.net/v4/auth/fb' class='fdjtsubmit login'
      title='login using Facebook'>
@@ -54,7 +54,10 @@
       <img src='http://static.beingmeta.com/graphics/logos/verisign.png' alt='vidoop'/>
     </button>
   </td>
-  <td><img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?' class='helpicon' title='Some sites provide OpenID login based on your user name.  Enter your username and click the button for the appropriate site.  You&#39;ll go to that site, log in, and return to sBooks.'/></td>
+  <td class='icon'>
+    <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?'
+	 class='helpicon'
+	 title='Some sites provide OpenID login based on your user name.  Enter your username and click the button for the appropriate site.  You&#39;ll go to that site, log in, and return here.'/></td>
 </tr>
 <tr>
   <th class='or'>or</th>
@@ -64,7 +67,10 @@
     <input type='SUBMIT' name='ACTION' value='Use OpenID'/>
     <a href='http://openid.net/get-an-openid/'>Get an OpenID</a>
   </td>
-  <td><img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?' class='helpicon' title='OpenID enables you to use a variety of services, usually free, to identify yourself and provide some limited personal information.'/></td>
+  <td class='icon'>
+    <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?'
+	 class='helpicon'
+	 title='OpenID enables you to use a variety of services, usually free, to identify yourself and provide some limited personal information.'/></td>
 </tr>
 </table>
 </form>

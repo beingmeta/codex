@@ -20,7 +20,7 @@
 	<option value="link"><span>Link</span></option>
       </select>
     </div>
-    <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+    <div class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);">
       <input type="CHECKBOX" name="PRIVATE" value="yes"/>
       <span class="checked"
 	    title="don't share this note with my personal circle (friends)">
@@ -28,6 +28,10 @@
       <span class="unchecked"
 	    title="share this note with my personal circle (friends)">
 	shared</span>
+    </div>
+    <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);"
+	 title="post this to my configured feeds/walls/etc">
+      <input type="CHECKBOX" name="POST" value="yes"/>post
     </div>
   </div>
   <fieldset>

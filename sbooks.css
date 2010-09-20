@@ -702,15 +702,12 @@ div#SBOOKHUD div#SBOOKDASHTOP a.logout {
     float: right; vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif;
     background-color: gold; color: blue;}
-body.nosbookuser div#SBOOKHUD div#SBOOKDASH #SBOOKDASHBAR a.logout {
-    display: none;}
 div#SBOOKHUD div#SBOOKDASHTOP a.login {
     float: right; vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif;
     background-color: gold; color: blue;
     display:none;}
-body.nosbookuser div#SBOOKHUD div#SBOOKDASH #SBOOKDASHBAR a.logout {
-    display: inline;}
+body.nosbookuser a.logout {display: none;}
 
 div#SBOOKHUD img.hudbutton[alt='dash'] { 
   bottom: 0px; left: 0px;
@@ -868,6 +865,8 @@ body span.tab[CONTENTID='APPLOGIN'] { display: none;}
 body.nosbookuser span.tab[CONTENTID='APPLOGIN'] { display: inline;}
 body.nosbookuser span.tab[CONTENTID='SBOOKSAPP'] { display: none;}
 
+#APPLOGIN table.login td.oneclick a.login { background-color: transparent;}
+
 div#SBOOKHUD div.hud#SBOOKSOURCES img.button.app {
   display: block; margin-bottom: 5px;}
 div#SBOOKHUD div.hud#SBOOKSOURCES img.button.login {
@@ -924,15 +923,15 @@ div.sbookaddgloss form div.submit input[type='SUBMIT'] {
     font-weight: bold; text-align: center; padding: 4px;
     font-size: 150%; width: 100%;}
 div.sbookaddgloss form div.submit {}
-div.sbookaddgloss form div.submit .checkspan {
+div.sbookaddgloss form div.submit .checkspan.private {
     font-weight: bold; font-size: 90%;
     border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
     background-color: silver; color: green;}
 div.sbookaddgloss form div.submit div.checkspan { text-align: center;}
-div.sbookaddgloss form div.submit .checkspan.ischecked {
+div.sbookaddgloss form div.submit .checkspan.private.ischecked {
     font-weight: normal; color: red; }
-div.sbookaddgloss form div.submit .checkspan input[type='checkbox'] {
+div.sbookaddgloss form div.submit .checkspan.private input[type='checkbox'] {
     display: none;}
 
 div.sbookaddgloss form div.input {display: none; width: auto;}
@@ -942,12 +941,14 @@ div.sbookaddgloss form div.input input[type='TEXT'][name='TAG'] {
     height: 24px; font-size: 125%; font-weight: bold;
     background-image:
     url(http://static.beingmeta.com/graphics/TagIcon24x24.png);
+    background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 div.sbookaddgloss form div.input input[type='TEXT'][name='HREF'] {
     height: 24px; font-size: 80%; font-family: fixed; font-style: normal;
     background-image:
     url(http://static.beingmeta.com/graphics/DiagLink24x24.png);
+    background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 div.sbookaddgloss form div.input textarea,
@@ -960,6 +961,7 @@ div.sbookaddgloss form div.input input[type='TEXT'][name='NOTE'] {
     height: 6ex; vertical-align: top; overflow: hidden;
     background-image:
     url(http://static.beingmeta.com/graphics/remarkballoon24x24.png);
+    background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 div.sbookaddgloss form div.input input[type='FILE'] { /* width: 100%; */
@@ -1657,8 +1659,11 @@ table.login td input[TYPE='TEXT'][NAME='OPENID'] {
   width: 100%;}
 table.login td div.doc {
     display: none; font-style: italic; color: purple;}
-table.login img.helpicon {
-  float: left; color: yellow;}
+table.login td.icon { vertical-align: top;}
+table.login td.icon img.helpicon {
+  color: yellow; background-color: blue;
+  margin-top: 3px; margin-left: 3px;
+  display: none;}
 table.login tr td { border-bottom: transparent solid 24px;}
 table.login tr th { border-bottom: transparent solid 24px;}
 table.login tr.nospace td { border-bottom: 0px;}
@@ -1738,9 +1743,6 @@ body.hudup.touch div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
 body.hudup.touch div#SBOOKHUD div#SBOOKFLYLEAF {
     top: 100px; }
 
-div.sbookaddgloss form div.submit .checkspan {
-    margin-top: 1ex;}
-
 body.touch div#SBOOKHUD div#SBOOKDASHTOP div.tabbar img {
     height: 48px;}
 body.touch div#SBOOKHUD div#SBOOKDASHTOP #IDBUTTON img {
@@ -1790,6 +1792,8 @@ body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.progressbox {
 /* Make span bars finger-fat in touch mode */
 
 /* Conditional display */
+
+div.logindoc { display: none;}
 
 /* Pagination stuff */
 
