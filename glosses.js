@@ -583,7 +583,18 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     function glosscloud_onclick(evt){
 	var target=fdjtUI.T(evt);
 	var completion=fdjtDOM.getParent(target,'.completion');
-	if (completion) addTag(fdjtID("SBOOKGLOSSFORM"),completion);
+	if (completion) {
+	    addTag(fdjtID("SBOOKGLOSSFORM"),completion);
+	    var keyval=gloss_cloud.getKey(completion);
+	    var input=fdjtID("SBOOKGLOSSNOTE");
+	    if ((input)&&(keyval)) {
+		var tagspan=istagging(input);
+		var stringval=input.value;
+		if (tagspan) {
+		    input.value=
+			stringval.slice(0,tagspan[0])+keyval+"]"+
+			stringval.slice(tagspan[1]);}}
+	    fdjtDOM.dropClass("SBOOKHUD","tagging");}
 	fdjtUI.cancel(evt);}
 
     /***** Saving (submitting/queueing) glosses *****/
