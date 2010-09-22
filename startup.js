@@ -51,18 +51,18 @@ sbook.Startup=
 	    // Get various settings
 	    getSettings();
 	    /*
-	    fdjtLog("wh=%o",window.innerHeight);
-	    fdjtLog("db.ch=%o",document.body.clientHeight);
-	    fdjtLog("de.ch=%o",document.documentElement.clientHeight);
-	    fdjtLog("ww=%o",window.innerWidth);
-	    fdjtLog("db.cw=%o",document.body.clientWidth);
-	    fdjtLog("de.cw=%o",document.documentElement.clientWidth);
+	      fdjtLog("wh=%o",window.innerHeight);
+	      fdjtLog("db.ch=%o",document.body.clientHeight);
+	      fdjtLog("de.ch=%o",document.documentElement.clientHeight);
+	      fdjtLog("ww=%o",window.innerWidth);
+	      fdjtLog("db.cw=%o",document.body.clientWidth);
+	      fdjtLog("de.cw=%o",document.documentElement.clientWidth);
 	    */
 	    // Dependent setups
 	    fdjtDOM.init();
 	    // Add this as soon as possible
 	    if (sbook.paginate)
-	      fdjtDOM.addClass(document.body,"paginate");
+		fdjtDOM.addClass(document.body,"paginate");
 	    var metadata=false;
 	    var helphud=false;
 	    fdjtTime.timeslice
@@ -71,21 +71,21 @@ sbook.Startup=
 		// This wraps the body in an div#SBOOKBODY 
 		initBody,
 		function(){
-		  if (sbook.Trace.startup>1)
-		    fdjtLog("[%fs] Initializing HUD",fdjtET());
-		  sbook.initHUD(); sbook.initDisplay();
-		  helphud=fdjtID("SBOOKHELP");
-		  helphud.style.opacity=0.0001;
-		  if (sbook.Trace.startup>1)
-		    fdjtLog("[%fs] HUD Setup, sizing help",fdjtET());},
+		    if (sbook.Trace.startup>1)
+			fdjtLog("[%fs] Initializing HUD",fdjtET());
+		    sbook.initHUD(); sbook.initDisplay();
+		    helphud=fdjtID("SBOOKHELP");
+		    helphud.style.opacity=0.0001;
+		    if (sbook.Trace.startup>1)
+			fdjtLog("[%fs] HUD Setup, sizing help",fdjtET());},
 		function(){sbookMode("help");}, 
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){
-		  fdjtDOM.adjustToFit(helphud,0.2);
-		  if (sbook.Trace.startup>1)
-		    fdjtLog("[%fs] Displaying help",fdjtET());
-		  helphud.style.opacity='';},
+		    fdjtDOM.adjustToFit(helphud,0.2);
+		    if (sbook.Trace.startup>1)
+			fdjtLog("[%fs] Displaying help",fdjtET());
+		    helphud.style.opacity='';},
 		sbook.setupGestures,
 		getUser,
 		function(){sbook.Message("analyzing book structure");},10,
@@ -102,7 +102,7 @@ sbook.Startup=
 		10,
 		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
 		 (function(){
-		   Knodule.HTML.Setup(sbook.knodule);})),
+		     Knodule.HTML.Setup(sbook.knodule);})),
 		function(){sbook.Message("Indexing tags");},10,
 		function(){
 		    sbook.indexTags(metadata);
@@ -110,28 +110,28 @@ sbook.Startup=
 		function(){sbook.Message("configuring server");},10,
 		setupGlossServer,
 		function(){
-		  if (sbook.user) sbook.Message("getting glosses");},10,
+		    if (sbook.user) sbook.Message("getting glosses");},10,
 		function (){ if (sbook.user) setupGlosses();},
 		function(){
-		  if (sbook.Trace.startup>1)
-		    fdjtLog("[%fs] Initial pagination for %ox%o",
-			    fdjtET(),fdjtDOM.viewWidth(),fdjtDOM.viewHeight());
-		  sbookPaginate(sbook.paginate);},
+		    if (sbook.Trace.startup>1)
+			fdjtLog("[%fs] Initial pagination for %ox%o",
+				fdjtET(),fdjtDOM.viewWidth(),fdjtDOM.viewHeight());
+		    sbookPaginate(sbook.paginate);},
 		function(){
-		  if ((sbook.user)&&(!(sbook.glossing))&&
-		      (!(sbook.glossed)))
-		    sbook.Message("getting glosses");},10,
+		    if ((sbook.user)&&(!(sbook.glossing))&&
+			(!(sbook.glossed)))
+			sbook.Message("getting glosses");},10,
 		function (){
-		  if ((sbook.user)&&(!(sbook.glossing))&&(!(sbook.glossed)))
-		    setupGlosses();},500,
+		    if ((sbook.user)&&(!(sbook.glossing))&&(!(sbook.glossed)))
+			setupGlosses();},500,
 		function(){
-		  if ((sbook.user)&&(!(sbook.glossing))&&
-		      (!(sbook.glossed)))
-		    sbook.Message("getting glosses");},10,
+		    if ((sbook.user)&&(!(sbook.glossing))&&
+			(!(sbook.glossed)))
+			sbook.Message("getting glosses");},10,
 		function(){
-		  if ((!(sbook.glossing))&&(!(sbook.glossed))) {
-		    if (sbook.user) setupGlosses();
-		    else gotGlosses();}},
+		    if ((!(sbook.glossing))&&(!(sbook.glossed))) {
+			if (sbook.user) setupGlosses();
+			else gotGlosses();}},
 		function(){sbook.Message("setup completed");},10,
 		function(){
 		    if (fdjtState.getQuery("action")) {
@@ -196,7 +196,7 @@ sbook.Startup=
 	    // Whether to suppress login, etc
 	    if ((fdjtState.getLocal("sbook.nologin"))||
 		(fdjtState.getQuery("nologin")))
-	      sbook.nologin=true;
+		sbook.nologin=true;
 	    sbook.max_excerpt=fdjtDOM.getMeta("SBOOKMAXEXCERPT")||
 		(sbook.max_excerpt);
 	    sbook.min_excerpt=fdjtDOM.getMeta("SBOOKMINEXCERPT")||
@@ -210,14 +210,14 @@ sbook.Startup=
 	    sbook_ajax_uri=fdjtDOM.getMeta("SBOOKSAJAX",true);
 	    sbook.mycopyid=fdjtDOM.getMeta("SBOOKMYCOPY")||
 		((offline)&&(fdjtState.getLocal("mycopyid("+refuri+")")))||
-	      false;
+		false;
 	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")",true);
 	    
 	    if ((offline)&&
 		(!(fdjtState.getLocal("sbook.offline("+refuri+")")))) {
-	      fdjtState.setLocal("sbook.offline("+refuri+")",true,true);
-	      refuris.push(refuri);
-	      fdjtState.setLocal("sbook.refuris",refuris,true);}
+		fdjtState.setLocal("sbook.offline("+refuri+")",true,true);
+		refuris.push(refuri);
+		fdjtState.setLocal("sbook.refuris",refuris,true);}
 	    
 	    var isIphone = (/iphone/gi).test(navigator.appVersion);
 	    var isIpad = (/ipad/gi).test(navigator.appVersion);
@@ -255,20 +255,20 @@ sbook.Startup=
 
 	var viewport_spec="width=device-width,initial-scale=1.0";
 	function viewportSetup(){
-	  var head=fdjtDOM.getHEAD();
-	  sbook.ScrollFree(true);
-	  var viewport=fdjtDOM.getMeta("viewport",false,false,true);
-	  if (!(viewport)) {
-	    viewport=document.createElement("META");
-	    viewport.setAttribute("name","viewport");
-	    head.appendChild(viewport);}
-	  viewport.setAttribute("content",viewport_spec);
-	  var isapp=fdjtDOM.getMeta
+	    var head=fdjtDOM.getHEAD();
+	    sbook.ScrollFree(true);
+	    var viewport=fdjtDOM.getMeta("viewport",false,false,true);
+	    if (!(viewport)) {
+		viewport=document.createElement("META");
+		viewport.setAttribute("name","viewport");
+		head.appendChild(viewport);}
+	    viewport.setAttribute("content",viewport_spec);
+	    var isapp=fdjtDOM.getMeta
 	    ("apple-mobile-web-app-capable",false,false,true);
-	  if (!(isapp)) {
-	    isapp=document.createElement("META");
-	    isapp.setAttribute("name","apple-mobile-web-app-capable");
-	    head.appendChild(isapp);}}
+	    if (!(isapp)) {
+		isapp=document.createElement("META");
+		isapp.setAttribute("name","apple-mobile-web-app-capable");
+		head.appendChild(isapp);}}
 
 	function hide_mobile_safari_address_bar(){
 	    window.scrollTo(0,1);
@@ -310,6 +310,17 @@ sbook.Startup=
 	    else i++;
 	    return false;}
 
+	function hasTOCLevel(elt){
+	    if ((elt.toclevel)||
+		((elt.getAttributeNS)&&
+		 (elt.getAttributeNS('toclevel','http://sbooks.net')))||
+		(elt.getAttribute('toclevel'))||
+		(elt.getAttribute('data-toclevel'))||
+		((elt.className)&&(elt.className.search(/sbook\dhead/)>=0)))
+		return true;
+	    else return false;}
+	sbook.hasTOCLevel=hasTOCLevel;
+
 	function getScanSettings(){
 	    if (!(sbook.root))
 		if (fdjtDOM.getMeta("SBOOKROOT"))
@@ -332,22 +343,24 @@ sbook.Startup=
 		    var j=0; var lim=rules.length;
 		    var elements=fdjtDOM.getChildren(document.body,rules[j++]);
 		    var k=0; var n=elements.length;
-		    while (k<n) elements[k++].toclevel=i;}
+		    while (k<n) {
+			var elt=elements[k++];
+			if (!(hasTOCLevel(elt))) elt.toclevel=i;}}
 		i++;}
 	    if (fdjtDOM.getMeta("SBOOKIGNORED")) 
 		sbook.ignored=new fdjtDOM.Selector
-		  (fdjtDOM.getMeta("SBOOKIGNORED"));
+	    (fdjtDOM.getMeta("SBOOKIGNORED"));
 	    if (fdjtDOM.getMeta("SBOOKNOTAG"))
 		sbook.terminal_rules=new fdjtDOM.Selector
-		  (fdjtDOM.getMeta("SBOOKNOTAG"));
+	    (fdjtDOM.getMeta("SBOOKNOTAG"));
 	    if (fdjtDOM.getMeta("SBOOKTERMINALS"))
 		sbook.terminal_rules=new fdjtDOM.Selector
-		  (fdjtDOM.getMeta("SBOOKTERMINALS"));
+	    (fdjtDOM.getMeta("SBOOKTERMINALS"));
 	    if (fdjtDOM.getMeta("SBOOKIDIFY")) 
 		sbook_idify=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKIDIFY"));
 	    if (fdjtDOM.getMeta("SBOOKFOCI"))
 		sbook.focusrules=new fdjtDOM.Selector
-		  (fdjtDOM.getMeta("SBOOKFOCI"));}
+	    (fdjtDOM.getMeta("SBOOKFOCI"));}
 
 	function getPageSettings(){
 	    var tocmajor=fdjtDOM.getMeta("SBOOKTOCMAJOR",true);
@@ -356,9 +369,9 @@ sbook.Startup=
 	    if (sbook_fullpage_rules) {
 		var i=0; while (i<sbook_fullpage_rules.length) {
 		    sbook_fullpages.push
-		      (fdjtDOM.Selector(sbook_fullpage_rules[i++]));}}
+		    (fdjtDOM.Selector(sbook_fullpage_rules[i++]));}}
 	    sbook_fullpages.push
-	      (fdjtDOM.Selector(".sbookfullpage, .titlepage"));}
+	    (fdjtDOM.Selector(".sbookfullpage, .titlepage"));}
 
 	function initBody(){
 	    var sbody=
@@ -373,9 +386,9 @@ sbook.Startup=
 		document.body.appendChild(sbody);}
 	    sbook.body=sbody;
 	    if (sbook.scrollfree)
-	      fdjtDOM.addClass(document.body,"scrollfree");
+		fdjtDOM.addClass(document.body,"scrollfree");
 	    if (sbook.Trace.startup>1)
-	      fdjtLog("[%fs] Initialized body",fdjtET());}
+		fdjtLog("[%fs] Initialized body",fdjtET());}
 
 	/* Changing settings */
 
@@ -403,8 +416,8 @@ sbook.Startup=
 	function getUser() {
 	    var refuri=sbook.refuri;
 	    if (sbook.Trace.startup>1)
-	      fdjtLog("[%fs] Getting user for %o cur=%o",
-		      fdjtET(),refuri,sbook.user);
+		fdjtLog("[%fs] Getting user for %o cur=%o",
+			fdjtET(),refuri,sbook.user);
 	    if (sbook.user) return;
 	    else if (sbook.nologin) return;
 	    else if ((sbook.offline)&&
@@ -519,40 +532,40 @@ sbook.Startup=
 	    sbook._user_setup=true;}
 
 	function setupGlosses() {
-	  sbook.glossing=fdjtTime();
-	  var glosses=(sbook.syncstamp)&&(sbook.offline)&&
-	    (fdjtState.getLocal("glosses("+sbook.refuri+")",true));
-	  if (sbook.Trace.glosses)
-	    fdjtLog("[%fs] setupGlosses gl=%o nl=%o user=%o ol=%o",
-		    fdjtET(),((glosses)&&(glosses.length)),
-		    sbook.nologin||false,sbook.user,navigator.onLine);
-	  if (glosses) {
-	    var glossdb=sbook.glosses;
-	    sbook.allglosses=glosses;
-	    var i=0; var lim=glosses.length;
-	    while (i<lim) glossdb.load(glosses[i++]);
-	    gotGlosses();
-	    offline_update();
-	    return;}
-	  sbook.allglosses=[];
-	  if ((!(sbook.nologin)) && (sbook.user) && (navigator.onLine)) {
-	    var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
-	    glosses_script.language="javascript";
-	    glosses_script.src="https://"+sbook.server+
-	      "/v4/glosses.js?CALLBACK=sbook.Startup.initGlosses&REFURI="+
-	      encodeURIComponent(sbook.refuri);
+	    sbook.glossing=fdjtTime();
+	    var glosses=(sbook.syncstamp)&&(sbook.offline)&&
+		(fdjtState.getLocal("glosses("+sbook.refuri+")",true));
 	    if (sbook.Trace.glosses)
-	      fdjtLog("[%fs] setupGlosses/JSONP %o sync=%o",
-		      fdjtET(),glosses_script.src,sbook.syncstamp||false);
-	    if (sbook.syncstamp)
-	      glosses_script.src=
-		glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
-	    document.body.appendChild(glosses_script);}
-	  else gotGlosses();}
+		fdjtLog("[%fs] setupGlosses gl=%o nl=%o user=%o ol=%o",
+			fdjtET(),((glosses)&&(glosses.length)),
+			sbook.nologin||false,sbook.user,navigator.onLine);
+	    if (glosses) {
+		var glossdb=sbook.glosses;
+		sbook.allglosses=glosses;
+		var i=0; var lim=glosses.length;
+		while (i<lim) glossdb.load(glosses[i++]);
+		gotGlosses();
+		offline_update();
+		return;}
+	    sbook.allglosses=[];
+	    if ((!(sbook.nologin)) && (sbook.user) && (navigator.onLine)) {
+		var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
+		glosses_script.language="javascript";
+		glosses_script.src="https://"+sbook.server+
+		    "/v4/glosses.js?CALLBACK=sbook.Startup.initGlosses&REFURI="+
+		    encodeURIComponent(sbook.refuri);
+		if (sbook.Trace.glosses)
+		    fdjtLog("[%fs] setupGlosses/JSONP %o sync=%o",
+			    fdjtET(),glosses_script.src,sbook.syncstamp||false);
+		if (sbook.syncstamp)
+		    glosses_script.src=
+		    glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
+		document.body.appendChild(glosses_script);}
+	    else gotGlosses();}
 
 	function go_online(evt){return offline_update();}
 	function offline_update(){
-	  sbook.writeGlosses();
+	    sbook.writeGlosses();
 	    var uri="https://"+sbook.server+
 		"/v4/update?REFURI="+
 		encodeURIComponent(sbook.refuri)+
@@ -593,9 +606,9 @@ sbook.Startup=
 		    target=fdjtID(targetid);
 		else target=sbook.root;}
 	    else {
-	      target=sbook.root;
-	      if (sbook.Trace.startup>1)
-		fdjtLog("[%fs] sbookInitLocation target=%o",fdjtET(),target);}
+		target=sbook.root;
+		if (sbook.Trace.startup>1)
+		    fdjtLog("[%fs] sbookInitLocation target=%o",fdjtET(),target);}
 	    if (target) {
 		sbook.target=target;
 		fdjtDOM.addClass(target,"sbooktarget");}
@@ -605,16 +618,16 @@ sbook.Startup=
 	    else sbook.GoTo(target);}
 	
 	function gotGlosses(){
-	  delete sbook.glossing; sbook.glossed=fdjtTime();
-	  if (sbook.Trace.glosses)
-	    fdjtLog("[%fs] gotGlosses",fdjtET());
-	  sbook.Message("Setting up search cloud...");
-	  fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
-	  sbook.FullCloud().complete('');
-	  sbook.useQuery(sbook.query,fdjtID("SBOOKSEARCH"));
-	  sbook.Message("Setting up glossing cloud...");
-	  fdjtDOM.replace("SBOOKGLOSSCLOUD",sbook.glossCloud().dom);
-	  sbook.glossCloud().complete('');}
+	    delete sbook.glossing; sbook.glossed=fdjtTime();
+	    if (sbook.Trace.glosses)
+		fdjtLog("[%fs] gotGlosses",fdjtET());
+	    sbook.Message("Setting up search cloud...");
+	    fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
+	    sbook.FullCloud().complete('');
+	    sbook.useQuery(sbook.query,fdjtID("SBOOKSEARCH"));
+	    sbook.Message("Setting up glossing cloud...");
+	    fdjtDOM.replace("SBOOKGLOSSCLOUD",sbook.glossCloud().dom);
+	    sbook.glossCloud().complete('');}
 
 	function updateGlosses(){}
 

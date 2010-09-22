@@ -744,7 +744,7 @@ div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent#APPABOUT {
 
 div#SBOOKHUD div#SBOOKDASH a,
 div#SBOOKHUD div#SBOOKDASH a:visited { 
-  color: lightblue; text-decoration: none; font-weight: bold;}
+  color: lightblue; text-decoration: none;}
 div#SBOOKHUD div#SBOOKDASH a:hover { text-decoration: underline;}
 div#SBOOKHUD div#SBOOKDASH .dashbar a,
 div#SBOOKHUD div#SBOOKDASH .dashbar a:visited {
@@ -788,7 +788,7 @@ div#SBOOKHUD.device div#SBOOKDASH div.tabcontent#APPDEVICE
 	 -webkit-border-radius: 6px; 
 	 -moz-border-radius: 6px;}
 div#SBOOKDASH table.settings {
-    margin-left: auto; margin-right: auto; vertical-align: top;}
+    width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
 div#SBOOKDASH table.settings th {text-align: right; vertical-align: top;}
 div#SBOOKDASH table.settings td {text-align: left; vertical-align: top; padding-left: 12px;}
 div#SBOOKHUD div#SBOOKDASH table.settings .button {
@@ -1063,7 +1063,9 @@ div.sbooktoc.live div.head { display: block;}
 div.sbooktoc.live div.sbooktoc { display: none;}
 div.sbooktoc.live div.sbooktoc.live { display: block;}
 
-div.sbooktoc div.sub { display: none; margin-left: 20px; margin-right: 20px;}
+div.sbooktoc div.sub {
+    display: none; clear: both;
+    margin-left: 20px; margin-right: 20px;}
 div.sbooktoc.cur div.head { font-size: 125%;}
 div.sbooktoc.cur div.sub { display: block;}
 div#SBOOKDASHTOC div.sbooktoc.cur div.sub { display: none;}
@@ -1787,6 +1789,20 @@ body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.progressbox {
     height: 50px;}
 
 */
+
+/* About this book */
+
+div#SBOOKABOUT { display: none;}
+div#SBOOKABOUT { display: none; text-align: left;}
+div#SBOOKHUD div#SBOOKABOUT {
+    display: block; max-width: 40em; margin-left: auto; margin-right: auto;}
+div#SBOOKHUD div#SBOOKABOUT img { max-width: 25%;}
+
+div#SBOOKHUD div#SBOOKABOUT div.textblock {
+    margin-bottom: 2ex; clear: both;}
+
+div#SBOOKHUD div#SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
+div#SBOOKHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
 /* Make span bars finger-fat in touch mode */
 

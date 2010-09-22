@@ -3,7 +3,7 @@
 var sbooks_hud_id="$Id$";
 var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
-/* Copyright (C) 2009 beingmeta, inc.
+/* Copyright (C) 2009-2010 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
     large structured documents (sBooks).
 
@@ -241,11 +241,11 @@ var sbookMode=
 		  sbook.last_dash=mode;}
 		else fdjtDOM.dropClass(sbookHUD,"dash");
 		sbook.hudup=true;
-		if ((false)&&(mode===true)&&(sbook.animate)) {
+		if ((mode===true)&&(sbook.animate)) {
 		    sbookHUD.opacity=1;
 		    setTimeout(function(){
 			fdjtDOM.addClass(document.body,"hudup");},
-			       500);}
+			       1000);}
 		else fdjtDOM.addClass(document.body,"hudup");
 		if (mode===true) fdjtDOM.swapClass(sbookHUD,sbookMode_pat,"minimal");
 		else fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
@@ -268,14 +268,14 @@ var sbookMode=
 		fdjtDOM.dropClass(sbookHUD,"dash");
 		fdjtDOM.dropClass(sbookHUD,"full");
 		sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
-		if ((false)&&(sbook.animate)) {
+		if ((sbook.animate)) {
 		    sbookHUD.style.opacity=0;
 		    setTimeout(function(){
 			fdjtDOM.dropClass(document.body,"hudup");
 			fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
 			sbook.displaySync();
 			sbookHUD.style.opacity=1;},
-			       500);}
+			       1000);}
 		else {
 		    fdjtDOM.dropClass(document.body,"hudup");
 		    fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
@@ -428,9 +428,7 @@ var sbookMode=
 			elt.title='this sBook is not available as a ZIP bundle';}}}
 	    initManageIFrame();
 	    /* If the book is offline, don't bother showing the link to the offline
-	       version
-	       ?? Maybe show link to the dynamic version
-	    */
+	       version. */
 	    if (sbook.offline) fdjtDOM.addClass(document.body,"sbookoffline");}
 
 	function altLink(type,uri){

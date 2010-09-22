@@ -68,6 +68,7 @@ var sbook=
 	 startup: 1,      // Whether to debug startup
 	 mode: false,  // Whether to trace mode changes
 	 nav: false,    // Whether to trace book navigation
+	 scan: false,  // Whether to trace DOM scanning
 	 search: 0, // Whether (and level) to trace searches
 	 clouds: 0, // Whether to trace cloud generation
 	 focus: false,// Whether to trace focus/target changes

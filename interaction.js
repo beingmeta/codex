@@ -3,7 +3,7 @@
 var sbooks_gestures_id="$Id$";
 var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
-/* Copyright (C) 2009 beingmeta, inc.
+/* Copyright (C) 2009-2010 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
     large structured documents (sBooks).
 
@@ -114,6 +114,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* Core functions */
 
     function body_tap(element){
+	element=sbook.getTarget(element);
 	if (sbook.Trace.gestures)
 	    fdjtLog("[%fs] body_tap %o hudup=%o mode=%o preview=%o target=%o",
 		    fdjtET(),element,sbook.hudup,sbook.mode,sbook.preview,
@@ -174,9 +175,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%fs] hud_tap %o (%o) hudup=%o mode=%o preview=%o target=%o",
 		    fdjtET(),element,ref,sbook.hudup,sbook.mode,sbook.preview,
 		    sbook.target);
-	if (!(ref))
+	if (!(ref)) {
 	    if (sbook.preview) return sbook.Preview(false);
-	else return;
+	    else return;}
+	else if (fdjtDOM.hasParent(element,".sectname")) {
+	    var info=sbook.docinfo[ref.id];
+	    if ((info.sub)&&(info.sub.length))
+		sbook.GoTo(ref);
+	    else sbook.JumpTo(ref);}
 	else return sbook.Preview(ref,sbook.getRefElt(element));}
 
     function hud_hold(element){
@@ -441,7 +447,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (hold_timer) {
 	    var target=fdjtUI.T(evt);
 	    clearTimeout(hold_timer); hold_timer=false;
-	    if (!(edgeTap(evt))) return tap(sbook.getTarget(target));}
+	    if (!(edgeTap(evt))) return tap(target);}
 	else return;}
     
     function mousemove(evt){
