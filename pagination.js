@@ -67,8 +67,7 @@ var sbookPaginate=
 	var parsePX=fdjtDOM.parsePX;
 
 	function Paginate(pagesize,start){
-	    if (!(start))
-		start=sbook.root||sbook.body||document.body;
+	    if (!(start)) start=sbook.body||document.body;
 	    start=scanContent(start);
 	    if (sbook.Trace.pagination)
 		fdjtLog("Starting pagination at %o",start);
@@ -394,6 +393,7 @@ var sbookPaginate=
 		if (next.id) scan.setAttribute("sbooknextnode",next.id);
 		if (scan.id) next.setAttribute("sbookprevnode",scan.id);}
 	    return next;}
+	sbook.scanContent=scanContent;
 
 	var sbook_block_tags=
 	    {"IMG": true, "HR": true, "P": true, "DIV": true,

@@ -388,7 +388,9 @@ div#SBOOKHELP > div.login img { vertical-align: top; height: 2ex;}
 body.nosbookuser div#SBOOKHELP > div.login { display: block;}
 div#SBOOKHELP > div.oneline {
     font-size: 125%; clear: both;}
-div#SBOOKHELP table { width: 96%; margin-left: 2%; margin-right: 2%;}
+div#SBOOKHELP table {
+    width: 96%; margin-left: 2%; margin-right: 2%;
+    clear: both;}
 div#SBOOKHELP table th {
     color: orange; text-align: right; vertical-align: top;}
 div#SBOOKHELP table th div {

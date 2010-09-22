@@ -616,7 +616,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		      (sbook.scrollers[sbook.scrolling]));
 	// fdjtLog("[%f] hud_touchend scroller=%o(%o) moved=%o",fdjtET(),scroller,scroller.element,scroller.moved);
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
-	else if (fdjtDOM.isClickable(target)) {
+	else if ((fdjtDOM.isClickable(target))&&(sbook.ui!=="faketouch")) {
 	    var click_evt = document.createEvent("MouseEvents");
 	    click_evt.initMouseEvent("click", true, true, window,
 				     1,page_x,page_y,last_x, last_y,
