@@ -68,7 +68,9 @@ sbook.Startup=
 	    ([// Setup sbook tables, databases, etc
 		sbook.initDB,
 		// This wraps the body in an div#SBOOKBODY 
-		initBody,
+		function(){
+		    initBody();
+		    sbook.body.style.opacity='0.25';},
 		function(){
 		    if (sbook.Trace.startup>1)
 			fdjtLog("[%fs] Initializing HUD",fdjtET());
@@ -95,6 +97,9 @@ sbook.Startup=
 		function(){sbook.Message("building table of contents");},10,
 		function(){
 		    sbook.setupTOC(metadata[sbook.root.id]);},
+		function(){
+		    if (sbook.scrollfree) sbook.resizeBody();
+		    sbook.body.style.opacity='';},
 		initLocation,
 		function(){
 		    sbook.Message("processing knodule ",sbook.knodule.name);},
@@ -408,9 +413,8 @@ sbook.Startup=
 		var i=0; var lim=nodes.length;
 		while (i<lim) sbody.appendChild(nodes[i++]);
 		document.body.appendChild(sbody);}
+	    if (sbook.scrollfree) fdjtDOM.addClass(sbody,"scrollfree");
 	    sbook.body=sbody;
-	    if (sbook.scrollfree)
-		fdjtDOM.addClass(document.body,"scrollfree");
 	    if (sbook.Trace.startup>1)
 		fdjtLog("[%fs] Initialized body",fdjtET());}
 

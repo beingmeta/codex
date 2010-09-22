@@ -436,7 +436,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    while (i<lim) {
 		fdjtDOM.remove(tagspans[i++]);}}
 	var info=sbook.docinfo[target.id];
-	var tags=[].concat(info.tags);
+	var tags=[].concat(((info)&&(info.tags))||[]);
 	var glosses=sbook.glosses.find('frag',target.id);
 	var i=0; var lim=glosses.length;
 	while (i<lim) {

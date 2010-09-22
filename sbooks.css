@@ -236,11 +236,13 @@ div#SBOOKHUD div#SBOOKFOOT > div.hudblock {
 div#SBOOKHUD div#SBOOKDASHTOP { height: 60px; padding-bottom: 0px;}
 div#SBOOKHUD div#SBOOKSOURCES { height: 60px;  padding-bottom: 0px;}
 
-/* Modes are classes on SBOOKHUD which control what is actually visible */
+/* */
 
 body.hudup div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
     min-height: 60px; max-height: 60px; opacity: 0.95;}
 
+/* These are specifications which line up the head hudblock with the flyleaf,
+   including heights and border radii.  */
 div#SBOOKHUD.searching div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
 div#SBOOKHUD.browsing div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
 div#SBOOKHUD.allglosses div#SBOOKHEAD div.hudblock#SBOOKSOURCES,
@@ -248,46 +250,41 @@ div#SBOOKHUD.dash div#SBOOKHEAD div.hudblock#SBOOKDASHTOP {
     border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px;
     border-left: solid darkblue 3px; border-right: solid darkblue 3px;
     border-bottom: 0px; padding-bottom: 0px;
+    height: 75px; min-height: 75px; max-height: 75px; 
     display: block;}
-
-div#SBOOKHUD.searching div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
-div#SBOOKHUD.browsing div#SBOOKHEAD div.hudblock#SBOOKSEARCH {
-    height: 100px; min-height: 100px; max-height: 100px; }
 
 div#SBOOKHUD.searching div#SBOOKFLYLEAF,
 div#SBOOKHUD.browsing div#SBOOKFLYLEAF,
 div#SBOOKHUD.allglosses div#SBOOKFLYLEAF,
-div#SBOOKHUD.dash div#SBOOKFLYLEAF {
+div#SBOOKHUD.dash div#SBOOKFLYLEAF,
+div#SBOOKHUD.tagging div#SBOOKFLYLEAF {
     top: 60px; border-top: 0px; opacity: 0.95;
     border-top-left-radius: 0px; border-top-right-radius: 0px;
     -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px;
     -moz-border-radius-topleft: 0px; -moz-border-radius-topright: 0px; 
     display: block;}
-div#SBOOKHUD.searching div#SBOOKFLYLEAF,
-div#SBOOKHUD.browsing div#SBOOKFLYLEAF {
-    top: 100px;}
 
+div#SBOOKHUD.tagging div#SBOOKFLYLEAF div#SBOOKGLOSSCLOUD,
 div#SBOOKHUD.searching div#SBOOKFLYLEAF div#SBOOKSEARCHCLOUD,
 div#SBOOKHUD.browsing div#SBOOKFLYLEAF div#SBOOKSEARCHRESULTS,
-div#SBOOKHUD.allglosses div#SBOOKFLYLEAF div#SBOOKFLYLEAFCONTENT div#SBOOKALLGLOSSES {
-    display: block;}
-
-div#SBOOKHUD.tagging div#SBOOKFLYLEAF,
-div#SBOOKHUD.tagging div#SBOOKFLYLEAF div#SBOOKGLOSSCLOUD {
-    display: block;}
-
-div#SBOOKHUD.browsing div.hudblock#SBOOKSEARCH {
-    max-height: 75px;}
-
-div#SBOOKHUD.allglosses div#SBOOKFLYLEAF,
+div#SBOOKHUD.allglosses div#SBOOKFLYLEAF div#SBOOKFLYLEAFCONTENT div#SBOOKALLGLOSSES,
+div#SBOOKHUD.dash div#SBOOKHEAD div.hudblock#SBOOKDASHTOP,
+div#SBOOKHUD.dash div#SBOOKFLYLEAF div#SBOOKDASH,
 div#SBOOKHUD.allglosses div.hudblock#SBOOKSOURCES,
 div#SBOOKHUD.allglosses div#SBOOKFLYLEAF div#SBOOKALLGLOSSES {
     display: block;}
 
-div#SBOOKHUD.dash div#SBOOKFLYLEAF,
-div#SBOOKHUD.dash div#SBOOKHEAD div.hudblock#SBOOKDASHTOP,
-div#SBOOKHUD.dash div#SBOOKFLYLEAF div#SBOOKDASH {
-    display: block;}
+div#SBOOKHUD.searching div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
+div#SBOOKHUD.browsing div#SBOOKHEAD div.hudblock#SBOOKSEARCH {
+    height: 100px; min-height: 100px; max-height: 100px;}
+div#SBOOKHUD.searching div#SBOOKFLYLEAF,
+div#SBOOKHUD.browsing div#SBOOKFLYLEAF {
+    top: 100px;}
+
+div#SBOOKHUD.allglosses div#SBOOKHEAD div.hudblock#SBOOKSOURCES {
+    height: 50px; min-height: 50px; max-height: 50px;}
+div#SBOOKHUD.allglosses div#SBOOKFLYLEAF {
+    top: 50px;}
 
 /* Preview mode */
 
@@ -674,7 +671,7 @@ div#SBOOKHUD.allglosses img.hudbutton[alt='glosses'] {
 
 /* Miscellaneous gloss rules */
 
-div#SBOOKHUD.target div#SBOOKHEAD div#SBOOKADDGLOSS { display: block;}
+div#SBOOKHUD.target div#SBOOKHEAD div#SBOOKADDGLOSS { display: block; min-height: 100px;}
 div#SBOOKHUD.target div#SBOOKFOOT div#SBOOKINFO { display: block;}
 div#SBOOKHUD.context div#SBOOKFOOT div#SBOOKINFO { display: block;}
 
@@ -1628,7 +1625,7 @@ body .hudbutton:hover { opacity: 0.9;}
 .sbooktarget { }
 .sbooktarget span.glossmark img {
     border-top: solid blue 2px;}
-.sbooktarget span.glossmark:hover { opacity: 0.5;}
+.sbooktarget:hover span.glossmark { opacity: 0.5;}
 body.hudup .sbooktarget span.glossmark:hover { opacity: 0.9;}
 .sbooktarget span.glossmark img { }
 
@@ -1766,11 +1763,11 @@ body.touch div.helphud.tapnotes {right: 75px;}
 body.touch div#SBOOKHUD div#SBOOKHEAD { font-size: 125%;}
 body.touch div#SBOOKHUD div#SBOOKFOOT { font-size: 125%;}
 body.touch div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
-    min-height: 100px;}
+    /* min-height: 100px; */}
 body.hudup.touch div#SBOOKHUD div#SBOOKHEAD > div.hudblock {
-    height: 100px;}
+    /* height: 100px; */}
 body.hudup.touch div#SBOOKHUD div#SBOOKFLYLEAF {
-    top: 100px; }
+   /*  top: 100px;  */}
 
 body.touch div#SBOOKHUD div#SBOOKDASHTOP div.tabbar img {
     height: 48px;}
@@ -1779,10 +1776,6 @@ body.touch div#SBOOKHUD div#SBOOKDASHTOP #IDBUTTON img {
 
 body.touch div#SBOOKHUD div#SBOOKSOURCES img {
     height: 48px;}
-body.touch div#SBOOKHUD div#SBOOKHEAD > div#SBOOKSOURCES.hudblock {
-    height: 80px; max-height: 80px; min-height: 80px;}
-body.touch div#SBOOKHUD.allglosses div#SBOOKFLYLEAF {
-    top: 80px; }
 
 /*
 body.touch div.sbookaddgloss form div.submit span.checkspan { font-size: 150%;}

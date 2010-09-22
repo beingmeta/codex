@@ -690,6 +690,7 @@ var sbookPaginate=
 		top=getGeometry(arg,sbook.body||sbook.root).top;
 	    else if (!(fdjtID(arg))) return 0;
 	    else top=getGeometry(arg,sbook.root).top;
+	    if (sbook.bodyoff) top=top+sbook.bodyoff[1];
 	    var i=1; var len=sbook.pages.length;
 	    while (i<len) 
 		if (sbook.pages[i]>top) return i-1;

@@ -621,9 +621,27 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    click_evt.initMouseEvent("click", true, true, window,
 				     1,page_x,page_y,last_x, last_y,
 				     false, false, false, false, 0, null);
+	    fdjtUI.cancel(evt);
 	    target.dispatchEvent(click_evt);
 	    return;}
 	else return hud_tap(target);}
+
+    function hud_touchend(evt){
+	if (sbook.Trace.gestures) tracetouch("hud_touchend",evt);
+	if (unhold) {
+	    var tocall=unhold; unhold=false; tocall();}
+	var target=fdjtUI.T(evt);
+	if (hold_timer) {
+	    clearTimeout(hold_timer); hold_timer=false;}
+	mouseisdown=false; // For faketouch
+	var scroller=((sbook.scrolling)&&(sbook.scrollers)&&
+		      (sbook.scrollers[sbook.scrolling]));
+	// fdjtLog("[%f] hud_touchend scroller=%o(%o) moved=%o",fdjtET(),scroller,scroller.element,scroller.moved);
+	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
+	else if (fdjtDOM.isClickable(target)) {}
+	else {
+	    fdjtUI.cancel(evt);
+	    return hud_tap(target);}}
 
     /* Mouse handlers for body and HUD */
 

@@ -270,7 +270,9 @@ var sbook_gloss_data=
 	return false;
       else if (scan===sbook.root) return target;
       else if (scan.id) {
-	if ((fdjtDOM.hasClass(scan,"sbookfoci"))||(!(sbook.focusrules))||
+	  if (fdjtDOM.hasParent(scan,sbookHUD)) return false;
+	  else if (fdjtDOM.hasParent(scan,".sbookmargin")) return false;
+	  else if ((fdjtDOM.hasClass(scan,"sbookfoci"))||(!(sbook.focusrules))||
 	    (sbook.focusrules.match(scan)))
 	  return scan;
 	else if (closest) return scan;
@@ -379,17 +381,13 @@ var sbook_gloss_data=
   /* Navigation */
 
   var scrollfree=sbook.scrollfree=false;
-  var x_offset=0; var y_offset=-1;
-  function scrollTo(x,y,win){
-    if (x_offset<0)
-      x_offset=fdjtDOM.parsePX(fdjtDOM.getStyle(document.body).marginLeft);
-    if (y_offset<0)
-      y_offset=fdjtDOM.parsePX(fdjtDOM.getStyle(document.body).marginTop);
-    if (scrollfree) {
-      window.scrollTo(0,0);
-      (win||sbook.body).style.left=""+(-x+x_offset)+"px";
-      (win||sbook.body).style.top=""+(-y+y_offset)+"px";}
-    else (win||window).scrollTo(x,y);}
+  var x_offset=0; var y_offset=0;
+    function scrollTo(x,y,win){
+	if (scrollfree) {
+	    window.scrollTo(0,0);
+	    (win||sbook.body).style.left=""+(-x+x_offset)+"px";
+	    (win||sbook.body).style.top=""+(-y+y_offset)+"px";}
+	else (win||window).scrollTo(x,y);}
   sbook.scrollTo=scrollTo;
   function scrollPos(win){
     if (scrollfree) {
@@ -398,6 +396,24 @@ var sbook_gloss_data=
       return {x: x,y: y};}
     else return {x:(win||window).scrollX,y:(win||window).scrollY};}
   sbook.scrollPos=scrollPos;
+
+    function resizeBody(){
+	if (!(sbook.scrollfree)) {
+	    fdjtDOM.dropClass(document.body,"scrollfree");
+	    sbook.body.style.left=''; sbook.body.style.top='';}
+	else {
+	    fdjtDOM.dropClass(document.body,"scrollfree");
+	    var curx=x_offset-fdjtDOM.parsePX(sbook.body.style.left);
+	    var cury=y_offset-fdjtDOM.parsePX(sbook.body.style.top);
+	    sbook.body.style.left=''; sbook.body.style.top='';
+	    x_offset=sbook.body.offsetLeft;
+	    y_offset=sbook.body.offsetTop;
+	    sbook.bodyoff=[x_offset,y_offset];
+	    fdjtDOM.addClass(document.body,"scrollfree");
+	    sbook.body.style.left=(x_offset-(curx||0))+'px';
+	    sbook.body.style.top=(y_offset-(cury||0))+'px';}}
+    sbook.resizeBody=resizeBody;
+
 
   sbook.ScrollFree=function(arg){
     if (typeof arg === 'undefined') return scrollfree;
