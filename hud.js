@@ -60,17 +60,17 @@ var sbookMode=
 		    sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
 		fdjtDOM.prepend(document.body,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
-	    console.innerHTML=sbook_consoletext;
+	    console.innerHTML=sbook_console;
 	    var dash=fdjtID("SBOOKDASH");
 	    dash.innerHTML=sbook_dashtext;
 	    var gloss=fdjtID("SBOOKADDGLOSS");
-	    gloss.innerHTML=sbookaddgloss_hud;
+	    gloss.innerHTML=sbook_addgloss;
 	    fdjtUI.AutoPrompt.setup(gloss);
 	    var dashtop=fdjtID("SBOOKDASHTOP");
-	    dashtop.innerHTML=sbookdashtop_hud;
+	    dashtop.innerHTML=sbook_dashtop;
 	    // Initialize search UI
 	    var search=fdjtID("SBOOKSEARCH");
-	    search.innerHTML=sbooksearch_hud;
+	    search.innerHTML=sbook_searchbox;
 	    fdjtUI.AutoPrompt.setup(search);
 	    sbook.empty_cloud=
 		new fdjtUI.Completions(fdjtID("SBOOKSEARCHCLOUD"));
