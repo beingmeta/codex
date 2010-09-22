@@ -74,6 +74,9 @@ var sbookMode=
 	    fdjtUI.AutoPrompt.setup(search);
 	    sbook.empty_cloud=
 		new fdjtUI.Completions(fdjtID("SBOOKSEARCHCLOUD"));
+
+	    if (sbook.hidehelp) sbook.setConfig("hidehelp");
+
 	    // Initialize gloss UI
 	    var glosses=fdjtID("SBOOKALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);

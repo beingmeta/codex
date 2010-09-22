@@ -39,7 +39,6 @@ sbook.Startup=
 
 	var sbook_fullpages=[];
 	var sbook_heading_qricons=false;
-	var sbook_help_on_startup=false;
 
 	/* Initialization */
 	
@@ -136,7 +135,7 @@ sbook.Startup=
 		function(){
 		    if (fdjtState.getQuery("action")) {
 			sbookMode("sbookapp");}
-		    else if (sbook.mode==='help') 
+		    else if ((sbook.mode==='help')&&(sbook.hidehelp))
 			setTimeout(function(){
 			    if (sbook.mode==="help") sbookMode(false);},
 				   2500);
@@ -193,6 +192,9 @@ sbook.Startup=
 	    getScanSettings();
 	    // Get the settings for automatic pagination
 	    getPageSettings();
+	    // Whether to hide help after startup
+	    if (fdjtState.getLocal("sbook.hidehelp")) setConfig('hidehelp');
+
 	    // Whether to suppress login, etc
 	    if ((fdjtState.getLocal("sbook.nologin"))||
 		(fdjtState.getQuery("nologin")))
@@ -252,6 +254,28 @@ sbook.Startup=
 		((offline)?
 		 ((fdjtState.getLocal("glossetc("+refuri+")",true))||{}):
 		 {});}
+
+	function setConfig(name,value){
+	  var inputs=document.getElementsByName(name.toUpperCase());
+	  if ((value===true)||(typeof value === 'undefined')) {
+	    fdjtState.setLocal("sbook."+name,'yes');
+	    sbook[name]=true;
+	    if ((inputs)&&(inputs.length)) {
+	      var i=0; var lim=inputs.length;
+	      while (i<lim) fdjtUI.CheckSpan.set(inputs[i++],true);}}
+	  else if (value===false) {
+	    fdjtState.dropLocal("sbook."+name,'yes');
+	    delete sbook[name];
+	    if ((inputs)&&(inputs.length)) {
+	      var i=0; var lim=inputs.length;
+	      while (i<lim) fdjtUI.CheckSpan.set(inputs[i++],false);}}
+	  else {
+	    fdjtState.setLocal("sbook."+name,value);
+	    sbook[name]=value;
+	    if ((inputs)&&(inputs.length)) {
+	      var i=0; var lim=inputs.length;
+	      while (i<lim) inputs[i++].value=value;}}}
+	sbook.setConfig=setConfig;
 
 	var viewport_spec="width=device-width,initial-scale=1.0";
 	function viewportSetup(){
@@ -746,20 +770,6 @@ sbook.Startup=
      /* Other setup */
      
      function setupGlossServer(){}
-
-     /* The Help Splash */
-     function splash(){
-	 if ((document.location.search)&&
-	     (document.location.search.length>0))
-	     sbookMode("sbookapp");
-	 else {
-	     var cookie=fdjtState.getCookie("sbookhidehelp");
-	     if (cookie==='no') sbookMode("help");
-	     else if (cookie) {}
-	     else if (sbook_help_on_startup) sbookMode("help");
-	     else if (!(sbook.mode)) {}
-	     else if (sbook.mode!=="console") {}
-	     else sbookMode(false);}}
 
      return Startup;})();
 sbookStartup=sbook.Startup;

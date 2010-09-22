@@ -1,50 +1,60 @@
-<img src='http://static.beingmeta.com/graphics/redx16x16.png' alt='close'
-     style='float: left; padding: 2px; border: solid red 2px; z-index: 300;'
+<div class='checkspan' style='float: left'
+     onclick="sbook.setConfig('hidehelp',(!(sbook.hidehelp)));">
+  <input type='CHECKBOX' name='HIDEHELP' value='yes' id='HELPHIDEHELP'
+	 onclick="sbook.setConfig('hidehelp',(!(sbook.hidehelp)));
+		  return false;"/>
+  Hide after loading</div>
+<img src='http://static.beingmeta.com/graphics/redx12x12.png' alt='close'
+     style='float: right; padding: 1px; border: solid red 2px; z-index: 300;'
      onclick='sbookMode(false);' class='nofdjtscale'/>
-<div class='oneline'>
-   <strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
-   <strong>content</strong> to toggle the <strong>meta HUD</strong>
-</div>
-<div class='oneline'>
- <span class='fortouch'><strong>swipe</strong> left/right <em>or</em> <strong>tap</strong> edges</strong>
-      <span class='notouch'><strong>click</strong> edges</span>
-      to <strong>flip pages</strong>
+<div class='login'>
+  login with
+  <a href='https://sbooks.net/v4/auth/fb' class='fdjtsubmit login'
+     title='login using Facebook'>
+    <img src='http://static.beingmeta.com/graphics/facebook32x32.png'
+	 alt='Facebook'/></a>
+  or <a href="javascript:sbookMode('login');">other providers</a>
+  to save and share notes
 </div>
 <div>
 <table align='center'>
 <tbody>
-<tr><th rowspan="2"><div>Keys</div></th>
+<tr><th rowspan='2'>when<br/>reading</th>
+  <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
+    passages to add notes</td></tr>
+<tr><td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
+    the head or foot to see the book tools</td></tr>
+</tbody>
+<tbody>
+<tr><th rowspan='2'>in the<br/>book tools</th>
+  <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
+    references to <strong style='color: red;'>preview</strong> content</td></tr>
+<tr><td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
+    the content to hide the book tools</td></tr>
+</tbody>
+<tbody>
+<tr><th rowspan='3' style='color: red;'>when<br/>previewing</th>
+  <td><strong class='fortouch'>tap</strong>
+    <strong class='notouch'>click</strong> the <strong style='color:
+    red;'>preview target</strong> to jump to it</td></tr>
+<tr>
+  <td><strong class='fortouch'>tap</strong>
+    <strong class='notouch'>click</strong>
+    anywhere else to return</td></tr>
+<tr>
+  <td><strong>page</strong> forward or backward
+    to preview the next/previous element</td></tr>
+</tbody>
+
+<tbody>
+<tr class='notouch'><th rowspan="2"><div>Keys</div></th>
   <td><span class='key'>H</span>elp, <span class='key'>S</span>earch,
       <span class='key'>N</span>avigate, <span class='key'>G</span>losses
 </td></tr>
+<tr><td><strong>page using</strong> space, backspace, page up, page down
+</td></tr>
 </tbody>
 <tbody>
-<tr><th><div>Paging</div></th>
-  <td><span class='fortouch'>
-      <strong>tap</strong> left/<strong>swipe</strong> right to left (backward),
-      <strong>tap</strong> right/<strong>swipe</strong> left to right (forward),</span>
-      space, backspace, page up, page down</td></tr>
-</tbody>
-<tbody>
-  <tr>
-    <th rowspan='3'><div>in the<br/>meta<br/>HUD</div></th>
-    <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> passages or select text to <strong>add</strong> notes or tags</td></tr>
-  <tr>
-    <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> HUD elements to <strong>preview</strong> their content</td></tr>
-  <tr>
-    <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> the top/bottom margin to <strong>hide</strong> the HUD</td></tr>
-</tbody>
-<tbody>
-  <tr>
-  <th rowspan='2'><div>while<br/>previewing<br/>content</div></th>
-  <td>
-    <strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> the <span style='color: red;'>target</span>
-    to <strong>jump</strong> to the location,<br/>
-    <strong class='fortouch'>tap</strong><strong class='notouch'>click</strong> elsewhere to return to the HUD</td></tr>
-<tr>
-  <td><strong>page</strong> to <strong>scan</strong> through
-    previews of notes/results/sections/etc</td></tr>
-</tbody>
 </table>
 <div class='message' id='SBOOKHELPMESSAGE'></div>
 </div>

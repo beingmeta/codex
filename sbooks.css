@@ -368,13 +368,13 @@ body.preview div#SBOOKHUD.dashtoc div#SBOOKDASH div.spanbar:hover {
 div.helphud {
     display: none; position: absolute;
     opacity: 0.95; background-color: white;
-    border-radius: 6px; font-weight: bold; font-size: 125%;
-    padding: 5px;
+    border-radius: 6px; font-weight: bold;
+    padding: 5px; padding-top: 0px;
     vertical-align: middle;}
 div#SBOOKHUD.help div.helphud { display: block;}
 div#SBOOKHELP {
     position: fixed;
-    top: 75px; left: 50px; right: 50px; bottom: 75px;
+    top: 75px; left: 75px; right: 75px; bottom: 75px;
     padding: 1em; border: solid gray 1px;
     border-radius: 1em; -moz-border-radius: 1em;
     -khtml-border-radius: 1em; -webkit-border-radius: 1em;
@@ -383,9 +383,15 @@ div#SBOOKHELP {
     display: none;}
 div#SBOOKHELP > div {
     margin-bottom: 1em; font-size: 100%;}
+div#SBOOKHELP > div.login {
+    font-size: 18px; font-weight: bold; vertical-align: top;
+    clear: both;
+    display: none;}
+div#SBOOKHELP > div.login img { vertical-align: top; height: 2ex;}
+body.nosbookuser div#SBOOKHELP > div.login { display: block;}
 div#SBOOKHELP > div.oneline {
-    font-size: 125%;}
-div#SBOOKHELP table { margin-left: 3em; margin-right: 3em;}
+    font-size: 125%; clear: both;}
+div#SBOOKHELP table { width: 96%; margin-left: 2%; margin-right: 2%;}
 div#SBOOKHELP table th {
     color: orange; text-align: right; vertical-align: top;}
 div#SBOOKHELP table th div {
@@ -404,22 +410,44 @@ div#SBOOKHELP div.message {
     overflow: hidden;}
 div#SBOOKHELP div.message .head { font-size: 150%;}
 
+div.helphud { background-color: silver; opacity: 0.75;}
+
 .helphud span.arrow {
-    font-weight: bold; font-size: 150%;
-    vertical-align: middle;}
+    font-weight: bold; 
+    vertical-align: top;}
 
 div.helphud.tapnav {
-    top: 3px; left: 50px; text-align: right;
+    top: 3px; left: 50px; text-align: left;
     font-size: 100%;}
 div.helphud.tapsearch {
-    top: 3px; right: 50px; text-align: left;
+    top: 3px; right: 50px; text-align: right;
     font-size: 100%;}
+div.helphud.tapsearch .arrow { float: right;}
 div.helphud.tapdash {
-    bottom: 3px; left: 50px; text-align: right;
+    bottom: 3px; left: 50px; text-align: left;
     font-size: 100%;}
+div.helphud.tapdash .arrow { float: left;}
 div.helphud.tapnotes {
-    bottom: 3px; right: 50px; text-align: left;
+    bottom: 3px; right: 50px; text-align: right;
     font-size: 100%;}
+div.helphud.tapnotes .arrow { float: right;}
+
+div.helphud.tapleft {
+    position: fixed; width: 50px;
+    top: 40%; left: 0px; text-align: left;}
+div.helphud.tapright {
+    position: fixed; width: 50px;
+    top: 40%; right: 0px; text-align: right;}
+
+div.helphud.taphead {
+    top: 0px; width: 30%; left: 35%; right: 35%;
+    text-align: center;
+    font-size: 100%;}
+div.helphud.tapfoot {
+    bottom: 0px; width: 30%; left: 35%; right: 35%;
+    text-align: center;
+    font-size: 100%;}
+
 
 /* Buttons */
 
