@@ -275,10 +275,12 @@ div#SBOOKHUD.allglosses div#SBOOKFLYLEAF div#SBOOKALLGLOSSES {
     display: block;}
 
 div#SBOOKHUD.searching div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
-div#SBOOKHUD.browsing div#SBOOKHEAD div.hudblock#SBOOKSEARCH {
+div#SBOOKHUD.browsing div#SBOOKHEAD div.hudblock#SBOOKSEARCH,
+div#SBOOKHUD.browsing div#SBOOKHEAD div.hudblock#SBOOKADDGLOSS  {
     height: 100px; min-height: 100px; max-height: 100px;}
 div#SBOOKHUD.searching div#SBOOKFLYLEAF,
-div#SBOOKHUD.browsing div#SBOOKFLYLEAF {
+div#SBOOKHUD.browsing div#SBOOKFLYLEAF,
+div#SBOOKHUD.tagging div#SBOOKFLYLEAF {
     top: 100px;}
 
 div#SBOOKHUD.allglosses div#SBOOKHEAD div.hudblock#SBOOKSOURCES {

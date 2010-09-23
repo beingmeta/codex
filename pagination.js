@@ -39,7 +39,7 @@ var sbooks_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=true;
+	var debug_pagination=false;
 	var sbook_paginated=false;
 	var sbook_top_px=40;
 	var sbook_bottom_px=40;
