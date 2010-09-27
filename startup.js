@@ -167,9 +167,10 @@ sbook.Startup=
 	    var value=fdjtState.getQuery("offline")||
 		fdjtState.getLocal("sbook.offline("+refuri+")")||
 	      fdjtState.getLocal("sbook.mycopy("+refuri+")")||
-		fdjtState.getLocal("sbook.offline")||
-	      ((fdjtDOM.getMeta("SBOOK.mycopy")))||
-	      (fdjtDOM.getMeta("SBOOK.offline"));
+	      fdjtState.getLocal("sbook.offline")||
+	      ((fdjtDOM.getMeta("sbook.mycopyid")))||
+	      ((fdjtDOM.getMeta("MYCOPYID")))||
+	      (fdjtDOM.getMeta("sbook.offline"));
 	    if ((!(value))||(value==="no")||(value==="off")||(value==="never"))
 		return false;
 	    else if ((value==="ask")&&(window.confirm))
@@ -198,19 +199,19 @@ sbook.Startup=
 	    if ((fdjtState.getLocal("sbook.nologin"))||
 		(fdjtState.getQuery("nologin")))
 		sbook.nologin=true;
-	    sbook.max_excerpt=fdjtDOM.getMeta("SBOOK.maxexcerpt")||
+	    sbook.max_excerpt=fdjtDOM.getMeta("sbook.maxexcerpt")||
 		(sbook.max_excerpt);
-	    sbook.min_excerpt=fdjtDOM.getMeta("SBOOK.minexcerpt")||
+	    sbook.min_excerpt=fdjtDOM.getMeta("sbook.minexcerpt")||
 		(sbook.min_excerpt);
-	    var sbooksrv=fdjtDOM.getMeta("SBOOK.server")||
+	    var sbooksrv=fdjtDOM.getMeta("sbook.server")||
 	      fdjtDOM.getMeta("SBOOKSERVER");
 	    if (sbooksrv) sbook.server=sbooksrv;
 	    else if (fdjtState.getCookie["SBOOKSERVER"])
 		sbook.server=fdjtState.getCookie["SBOOKSERVER"];
 	    else sbook.server=lookupServer(document.domain);
 	    if (!(sbook.server)) sbook.server=sbook.default_server;
-	    sbook_ajax_uri=fdjtDOM.getMeta("SBOOK.ajax",true);
-	    sbook.mycopyid=fdjtDOM.getMeta("SBOOK.mycopy")||
+	    sbook_ajax_uri=fdjtDOM.getMeta("sbook.ajax",true);
+	    sbook.mycopyid=fdjtDOM.getMeta("sbook.mycopyid")||
 		((offline)&&(fdjtState.getLocal("mycopy("+refuri+")")))||
 		false;
 	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")",true);
@@ -301,7 +302,7 @@ sbook.Startup=
 	/* Getting settings */
 
 	function _getsbookrefuri(){
-	    var refuri=fdjtDOM.getLink("SBOOK.refuri",false,false)||
+	    var refuri=fdjtDOM.getLink("sbook.refuri",false,false)||
 		fdjtDOM.getLink("refuri",false,false)||
 		fdjtDOM.getMeta("refuri",false,false)||
 		fdjtDOM.getLink("canonical",false,true);
@@ -314,11 +315,12 @@ sbook.Startup=
 		if (hstart>=0) locref=locref.slice(0,hstart);
 		return decodeURI(locref);}}
 	function _getsbookdocuri(){
-	    var docuri=fdjtDOM.getLink("DOCURI",true)||
-		fdjtDOM.getMeta("DOCURI",true)||
-		fdjtDOM.getMeta("SBOOKSRC",true);
-	    if (docuri) return docuri;
-	    else return _getsbookrefuri();}
+	    return fdjtDOM.getLink("sbook.docuri",true)||
+	      fdjtDOM.getLink("DOCURI",true)||
+	      fdjtDOM.getMeta("sbook.docuri",true)||
+	      fdjtDOM.getMeta("DOCURI",true)||
+	      fdjtDOM.getLink("canonical",true)||
+	      location.href;}
 
 	function lookupServer(string){
 	    var sbook_servers=sbook.servers;
@@ -347,12 +349,12 @@ sbook.Startup=
 
 	function getScanSettings(){
 	    if (!(sbook.root))
-		if (fdjtDOM.getMeta("SBOOK.root"))
-		    sbook.root=fdjtID(fdjtDOM.getMeta("SBOOK.root"));
+		if (fdjtDOM.getMeta("sbook.root"))
+		    sbook.root=fdjtID(fdjtDOM.getMeta("sbook.root"));
 	    else sbook.root=fdjtID("SBOOKBODY")||document.body;
 	    if (!(sbook.start))
-		if (fdjtDOM.getMeta("SBOOK.start"))
-		    sbook.start=fdjtID(fdjtDOM.getMeta("SBOOK.start"));
+		if (fdjtDOM.getMeta("sbook.start"))
+		    sbook.start=fdjtID(fdjtDOM.getMeta("sbook.start"));
 	    else if (fdjtID("SBOOKSTART"))
 		sbook.start=fdjtID("SBOOKSTART");
 	    else {
@@ -362,7 +364,8 @@ sbook.Startup=
 			sbook.start=fdjtDOM.nextElt(titlepage); break;}
 		else titlepage=titlepage.parentNode;}
 	    var i=1; while (i<9) {
-		var rules=fdjtDOM.getMeta("SBOOK.head"+i,true);
+		var rules=fdjtDOM.getMeta("sbook.head"+i,true).
+		  concat(fdjtDOM.getMeta("sbookhead"+i,true));
 		if ((rules)&&(rules.length)) {
 		    var j=0; var lim=rules.length;
 		    var elements=fdjtDOM.getChildren(document.body,rules[j++]);
@@ -371,26 +374,26 @@ sbook.Startup=
 			var elt=elements[k++];
 			if (!(hasTOCLevel(elt))) elt.toclevel=i;}}
 		i++;}
-	    if (fdjtDOM.getMeta("SBOOK.ignored")) 
+	    if (fdjtDOM.getMeta("sbook.ignored")) 
 		sbook.ignored=new fdjtDOM.Selector
-	    (fdjtDOM.getMeta("SBOOK.ignored"));
-	    if (fdjtDOM.getMeta("SBOOK.notag"))
+	    (fdjtDOM.getMeta("sbook.ignored"));
+	    if (fdjtDOM.getMeta("sbook.notag"))
 	      sbook.notag_rules=new fdjtDOM.Selector
-		(fdjtDOM.getMeta("SBOOK.notag"));
-	    if (fdjtDOM.getMeta("SBOOK.terminals"))
+		(fdjtDOM.getMeta("sbook.notag"));
+	    if (fdjtDOM.getMeta("sbook.terminals"))
 		sbook.terminal_rules=new fdjtDOM.Selector
-		  (fdjtDOM.getMeta("SBOOK.terminals"));
-	    if (fdjtDOM.getMeta("SBOOK.idify")) 
+		  (fdjtDOM.getMeta("sbook.terminals"));
+	    if (fdjtDOM.getMeta("sbook.idify")) 
 		sbook_idify=new fdjtDOM.Selector
-		  (fdjtDOM.getMeta("SBOOK.idify"));
-	    if (fdjtDOM.getMeta("SBOOK.foci"))
+		  (fdjtDOM.getMeta("sbook.idify"));
+	    if (fdjtDOM.getMeta("sbook.foci"))
 		sbook.focusrules=new fdjtDOM.Selector
-		  (fdjtDOM.getMeta("SBOOK.foci"));}
+		  (fdjtDOM.getMeta("sbook.foci"));}
 
 	function getPageSettings(){
-	    var tocmajor=fdjtDOM.getMeta("SBOOK.tocmajor",true);
+	    var tocmajor=fdjtDOM.getMeta("sbook.tocmajor",true);
 	    if (tocmajor) sbook_tocmajor=parseInt(tocmajor);
-	    var sbook_fullpage_rules=fdjtDOM.getMeta("SBOOK.fullpage",true);
+	    var sbook_fullpage_rules=fdjtDOM.getMeta("sbook.fullpage",true);
 	    if (sbook_fullpage_rules) {
 		var i=0; while (i<sbook_fullpage_rules.length) {
 		    sbook_fullpages.push
@@ -400,8 +403,8 @@ sbook.Startup=
 
 	function initBody(){
 	  var sbody=
-	    ((fdjtDOM.getMeta("SBOOK.body"))?
-	     ((fdjtID(fdjtDOM.getMeta("SBOOK.body")))||(document.body)):
+	    ((fdjtDOM.getMeta("sbook.body"))?
+	     ((fdjtID(fdjtDOM.getMeta("sbook.body")))||(document.body)):
 	     (fdjtID("SBOOKBODY")));
 	  if (!(sbody)) {
 	    sbody=fdjtDOM("div#SBOOKBODY");
@@ -409,7 +412,8 @@ sbook.Startup=
 	    var i=0; var lim=nodes.length;
 	    while (i<lim) sbody.appendChild(nodes[i++]);
 	    document.body.appendChild(sbody);}
-	  if (sbook.scrollfree) fdjtDOM.addClass(sbody,"scrollfree");
+	  fdjtDOM.addClass(document.body,"sbook");
+	  if (sbook.scrollfree) fdjtDOM.addClass(document.body,"scrollfree");
 	  sbook.body=sbody;
 	  if (sbook.Trace.startup>1)
 	    fdjtLog("[%fs] Initialized body",fdjtET());}

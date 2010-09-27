@@ -740,15 +740,15 @@ var sbookPaginate=
 	
     function getSettings(){
       sbook_avoidpagebreak=
-	fdjtDOM.sel(fdjtDOM.getMeta("SBOOK.avoidpagebreaks",true));
+	fdjtDOM.sel(fdjtDOM.getMeta("sbook.avoidpagebreaks",true));
       sbook_forcepagehead=
-	fdjtDOM.sel(fdjtDOM.getMeta("SBOOK.forcepagehead",true));
+	fdjtDOM.sel(fdjtDOM.getMeta("sbook.forcepagehead",true));
       sbook_forcepagefoot=
-	fdjtDOM.sel(fdjtDOM.getMeta("SBOOK.forcepagefoot",true));
+	fdjtDOM.sel(fdjtDOM.getMeta("sbook.forcepagefoot",true));
       sbook_avoidpagefoot=
-	fdjtDOM.sel(fdjtDOM.getMeta("SBOOK.avoidpagefoot",true));
+	fdjtDOM.sel(fdjtDOM.getMeta("sbook.avoidpagefoot",true));
       sbook_avoidpagehead=
-	fdjtDOM.sel(fdjtDOM.getMeta("SBOOK.avoidpagehead",true));}
+	fdjtDOM.sel(fdjtDOM.getMeta("sbook.avoidpagehead",true));}
 
     /* Margin creation */
 

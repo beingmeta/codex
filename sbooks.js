@@ -99,7 +99,11 @@ var sbook_gloss_data=
 	return ((typeof ref === 'string')&&(ref[0]==='#')&&
 		(docinfo.ref(ref.slice(1))));});
 	
-    sbook.knodule=new Knodule(fdjtDOM.getMeta("KNODULE")||refuri);
+    var knodule_name=
+      fdjtDOM.getMeta("sbook.knodule")||
+      fdjtDOM.getMeta("KNODULE")||
+      refuri;
+    sbook.knodule=new Knodule(knodule_name);
     sbook.index=new KnoduleIndex(sbook.knodule);
     sbook.query=sbook.empty_query=sbook.index.Query([]);
     sbook.BRICO=new Knodule("BRICO");

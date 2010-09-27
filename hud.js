@@ -460,29 +460,29 @@ var sbookMode=
 	    var about=fdjtID("APPABOUT");
 	    var title=
 	      fdjtID("SBOOKTITLE")||
-	      fdjtDOM.getMeta("SBOOK.title")||
+	      fdjtDOM.getMeta("sbook.title")||
 	      fdjtDOM.getMeta("TITLE")||
 	      fdjtDOM.getMeta("DC.title")||
 	      document.title;
 	    var byline=
 		fdjtID("SBOOKBYLINE")||fdjtID("SBOOKAUTHOR")||
-		fdjtDOM.getMeta("SBOOK.byline")||fdjtDOM.getMeta("BYLINE")||
-		fdjtDOM.getMeta("SBOOK.author")||fdjtDOM.getMeta("AUTHOR");
+		fdjtDOM.getMeta("sbook.byline")||fdjtDOM.getMeta("BYLINE")||
+		fdjtDOM.getMeta("sbook.author")||fdjtDOM.getMeta("AUTHOR");
 	    var copyright=
 		fdjtID("SBOOKCOPYRIGHT")||
-		fdjtDOM.getMeta("SBOOK.copyright")||fdjtDOM.getMeta("COPYRIGHT")||
+		fdjtDOM.getMeta("sbook.copyright")||fdjtDOM.getMeta("COPYRIGHT")||
 		fdjtDOM.getMeta("RIGHTS");
 	    var publisher=
-		fdjtID("SBOOKPUBLISHER")||
-		fdjtDOM.getMeta("SBOOK.publisher")||
-		fdjtDOM.getMeta("PUBLISHER");
+	      fdjtID("SBOOKPUBLISHER")||
+	      fdjtDOM.getMeta("sbook.publisher")||
+	      fdjtDOM.getMeta("PUBLISHER");
 	    var description=
-		fdjtID("SBOOKDESCRIPTION")||
-		fdjtDOM.getMeta("SBOOK.description")||
-		fdjtDOM.getMeta("DESCRIPTION");
+	      fdjtID("SBOOKDESCRIPTION")||
+	      fdjtDOM.getMeta("sbook.description")||
+	      fdjtDOM.getMeta("DESCRIPTION");
 	    var digitized=
 		fdjtID("SBOOKDIGITIZED")||
-		fdjtDOM.getMeta("SBOOK.digitized")||
+		fdjtDOM.getMeta("sbook.digitized")||
 		fdjtDOM.getMeta("DIGITIZED");
 	    var sbookified=fdjtID("SBOOKIFIED")||fdjtDOM.getMeta("SBOOKIFIED");
 	    _sbookFillTemplate(about,".title",title);
