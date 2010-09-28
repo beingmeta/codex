@@ -178,6 +178,7 @@ sbook.Startup=
       else return true;}
 	
     function getSettings(){
+      if (typeof _sbook_loadinfo === "undefined") _sbook_loadinfo=false;
       // Basic stuff
       var useragent=navigator.userAgent;
       var refuri=_getsbookrefuri();
@@ -578,7 +579,6 @@ sbook.Startup=
       var loaded=((_sbook_loadinfo)&&(_sbook_loadinfo.glosses))||[];
       var cached=fdjtState.getLocal("glosses("+sbook.refuri+")",true);
       sbook.glosses.Import(loaded);
-      sbook.glosses.fetch(cached);
       if (cached) allglosses=cached;
       if (loaded.length) {
 	var n=loaded.length; var i=0; while (i<n) {
@@ -587,7 +587,8 @@ sbook.Startup=
 	  var tstamp=gloss.syncstamp||gloss.tstamp;
 	  if (tstamp>latest) latest=tstamp;
 	  allglosses.push(id);}}
-      if ((_sbookloadinfo)||(_sbookloadinfo.etc)) fdjtKB.Import(_sbookloadinfo.etc);
+      if ((_sbook_loadinfo)&&(_sbook_loadinfo.etc))
+	  fdjtKB.Import(_sbook_loadinfo.etc);
       sbook.syncstamp=latest;
       sbook.allglosses=allglosses;
       if (sbook.offline) {
@@ -595,7 +596,7 @@ sbook.Startup=
 	fdjtState.setLocal("syncstamp("+sbook.refuri+")",latest);}
       if ((allglosses.length===0) &&
 	  (!(sbook.nologin)) && (sbook.user) && (navigator.onLine) &&
-	  (typeof _sbook_loadinfo === 'undefined')) {
+	  (!(_sbook_loadinfo))) {
 	var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 	glosses_script.language="javascript";
 	glosses_script.src="https://"+sbook.server+
