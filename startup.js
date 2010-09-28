@@ -582,7 +582,7 @@ sbook.Startup=
       if (cached) allglosses=cached;
       if (loaded.length) {
 	var n=loaded.length; var i=0; while (i<n) {
-	  var gloss=glosses[i++];
+	  var gloss=loaded[i++];
 	  var id=gloss.qid||gloss.uuid||gloss.oid;
 	  var tstamp=gloss.syncstamp||gloss.tstamp;
 	  if (tstamp>latest) latest=tstamp;
