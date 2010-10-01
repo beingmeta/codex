@@ -170,7 +170,7 @@ var sbookMode=
 	/* Creating the HUD */
 	
 	function setupTOC(root_info){
-	    var navhud=createNavHUD("div#SBOOKTOC.hudblock",root_info);
+	    var navhud=createNavHUD("div#SBOOKTOC.hudpanel",root_info);
 	    var toc_button=fdjtID("SBOOKTOCBUTTON");
 	    toc_button.style.visibility='';
 	    sbook.TOC=navhud;
@@ -182,7 +182,7 @@ var sbookMode=
 
 	function createNavHUD(eltspec,root_info){
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
-	    var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudblock",toc_div);
+	    var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudpanel",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
 	    sbook.UI.addHandlers(div,"toc");
 	    return div;}
@@ -313,7 +313,6 @@ var sbookMode=
 			    fdjtState.argVec(arguments,1));
 	    fdjtDOM.replace("SBOOKHELPMESSAGE",fdjtDOM.clone(msg));
 	    fdjtDOM.replace("SBOOKCONSOLEMESSAGE",fdjtDOM.clone(msg));
-	    fdjtDOM.replace("SBOOKMESSAGE",fdjtDOM.clone(msg));
 	    fdjtDOM.prepend("SBOOKMESSAGELOG",
 			    fdjtDOM("div.logentry",
 				    fdjtDOM("span.time",fdjtET()),
@@ -533,7 +532,7 @@ var sbookMode=
 		    if (fdjtDOM.hasClass(src,sbook_preview_classes)) {
 			var clone=src.cloneNode(true);
 			clone.id="SBOOKPREVIEW";
-			fdjtDOM.addClass(clone,"hudblock");
+			fdjtDOM.addClass(clone,"hudpanel");
 			fdjtDOM.replace("SBOOKPREVIEW",clone);}
 		    else fdjtDOM.replace("SBOOKPREVIEW",
 					 fdjtDOM("div#SBOOKPREVIEW"));

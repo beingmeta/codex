@@ -10,7 +10,65 @@
     <input type="HIDDEN" name="UUID"/>
     <input type="HIDDEN" name="DOCTITLE"/>
   </div>
-  <div class="submit">
+  <div class="tags"
+       onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
+  </div>
+  <fieldset class="textfields">
+    <div class="input note">
+      <textarea name="NOTE" class="autoprompt"
+		prompt="add a note,using brackets for descriptive [tag]s"
+		wrap="virtual"
+		id="SBOOKGLOSSNOTE">
+      </textarea>
+    </div>
+    <div class="input tag">
+      <input type="TEXT" name="TAG" value=""
+	     class="autoprompt" prompt="add tags"
+	     id="SBOOKGLOSSTAG">
+    </div>
+    <div class="input link">
+      <input type="TEXT" name="HREF" value=""
+	     class="autoprompt urlinput" prompt="type a web address (URL)"
+	     id="SBOOKGLOSSHREF"/>
+      <input type="TEXT" name="LINKLABEL" value=""
+	     class="autoprompt" prompt="link description or image URI"
+	     id="SBOOKGLOSSHREFLABEL"/>
+    </div>
+    <div class="input share">
+      <input type="TEXT" name="HREF" value=""
+	     class="autoprompt" prompt="share with friends, tribes, etc"
+	     id="SBOOKGLOSSHREF"/>
+    </div>
+  </fieldset>
+  <div class="controls">
+    <img src="http://static.beingmeta.com/graphics/remarkballoon32x32.png"
+	 alt="note"
+	 onclick="fdjtID('SBOOKGLOSSFORM').className=this.alt;"/>
+    <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+	 alt="tag"
+	 onclick="fdjtID('SBOOKGLOSSFORM').className=this.alt;"/>
+    <img src="http://static.beingmeta.com/graphics/outlink32x32.png"
+	 alt="link"
+	 onclick="fdjtID('SBOOKGLOSSFORM').className=this.alt;"/>
+    <img src="http://static.beingmeta.com/graphics/sbookspeople32x32.png"
+	 alt="share"
+	 onclick="fdjtID('SBOOKGLOSSFORM').className=this.alt;"/>
+<!--
+    <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);"
+	 title="push this gloss to my configured feeds/walls/etc">
+      <input type="CHECKBOX" name="POST" value="yes"/>push
+    </div>
+    -->
+    <span class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);"
+	 title="don't share this gloss with my friends generally">
+      <input type="CHECKBOX" name="PRIVATE" value="yes"/>
+      <span class="checked"
+	    title="don't share this note with my personal circle (friends)">
+	private</span>
+      <span class="unchecked"
+	    title="share this note with my personal circle (friends)">
+	shared</span>
+    </span>
     <input type="SUBMIT" name="ACTION" value="OK"/>
     <div class="glossmode" title="switch between notes, tags, and links">
       <select name="DISPLAY" id="SBOOKGLOSSMODE"
@@ -20,40 +78,7 @@
 	<option value="link"><span>Link</span></option>
       </select>
     </div>
-    <div class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);">
-      <input type="CHECKBOX" name="PRIVATE" value="yes"/>
-      <span class="checked"
-	    title="don't share this note with my personal circle (friends)">
-	private</span>
-      <span class="unchecked"
-	    title="share this note with my personal circle (friends)">
-	shared</span>
-    </div>
-    <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);"
-	 title="post this to my configured feeds/walls/etc">
-      <input type="CHECKBOX" name="POST" value="yes"/>post
-    </div>
   </div>
-  <fieldset>
-    <div class="input note">
-	 <textarea name="NOTE" class="autoprompt"
-		   prompt="add a note,using brackets for descriptive [tag]s"
-		   wrap="virtual"
-		   id="SBOOKGLOSSNOTE">
-	 </textarea>
-    </div>
-    <div class="input tag">
-      <input type="TEXT" name="TAG" value=""
-	     class="autoprompt" prompt="add tags"
-	     id="SBOOKGLOSSTAG">
-    </div>
-    <div class="input link">
-      <input type="TEXT" name="HREF" value=""
-	     class="autoprompt" prompt="add links"
-	     id="SBOOKGLOSSHREF"/>
-    </div>
-    <div class="tags" onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);"></div>
-  </fieldset>
 </form>
 
 <!--

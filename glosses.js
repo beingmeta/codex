@@ -158,7 +158,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
       fdjtUI.cancel(evt);}
 
     sbook.setInfoTarget=function(passage){
-	var infodiv=sbook.glossBlock(passage.id,"div.sbookgloss.hudblock")
+	var infodiv=sbook.glossBlock(passage.id,"div.sbookgloss.flyleaf")
 	fdjtDOM.replace("SBOOKINFO",infodiv);}
 
     /***** Adding tags ******/

@@ -1,64 +1,63 @@
-<div id="SBOOKPREVIEW" class="hudblock"></div>
-<div id="SBOOKMESSAGE" class="hudblock"></div>
+<div id="SBOOKPREVIEW" class="hudpanel"></div>
 <img src="http://static.beingmeta.com/graphics/CompassIcon40x40.png"
      alt="toc" title="click to navigate the book as a whole"
-     class="hudbutton" id="SBOOKTOCBUTTON" hudmode="toc"
+     class="hudbutton topleft" id="SBOOKTOCBUTTON" hudmode="toc"
      onclick="sbook.UI.hudbutton(event);"/>
 <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
      class="previewicon topleft"/>
 <img src="http://static.beingmeta.com/graphics/TagSearch40x40.png"
      alt="search" title="click to search tags within the book"
-     class="hudbutton" id="SBOOKSEARCHBUTTON" hudmode="searching"
+     class="hudbutton topright" id="SBOOKSEARCHBUTTON" hudmode="searching"
      onclick="sbook.UI.hudbutton(event);"/>
 <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
      class="previewicon topright"/>
 <div id="SBOOKHEAD">
-<div class="helphud tapnav">
-  <span class='nobreak'><span class="arrow">←</span>browse</span><br/>
-  <span class='nobreak'>the ToC</span></div>
-<div class='helphud taphead'>
+<div class="helphud topleft">
+  <span class="nobreak"><span class="arrow">←</span>browse</span><br/>
+  <span class="nobreak">ToC</span></div>
+<div class="helphud topcenter">
   show/hide<br/>book tools
 </div>
-<div class="helphud tapsearch">
-  <span class='nobreak'><span class="arrow">→</span>search</span><br/>
+<div class="helphud topright">
+  <span class="nobreak"><span class="arrow">→</span>search</span><br/>
   tags</div>
-<div id="SBOOKTOC" class="hudblock"></div>
-<div id="SBOOKSEARCH" class="searchbox hudblock">
+<div id="SBOOKTOC" class="hudpanel"></div>
+<div id="SBOOKSEARCH" class="searchbox hudpanel">
   <!-- This content comes from sbooksearch.html -->
 </div>
-<div id="SBOOKDASHTOP" class="hudblock">
+<div id="SBOOKDASHTOP" class="hudpanel">
 </div> <!-- #SBOOKDASHTOP -->
-<div id="SBOOKSOURCES" class="hudblock sbooksources"
+<div id="SBOOKSOURCES" class="hudpanel sbooksources"
      onclick="sbook.UI.handlers.sources_onclick(event);">
   <img src="http://static.beingmeta.com/graphics/sbookspeople40x40.png"
        class="button everyone selected"
        alt="show all" title="click to see all glosses"
        onclick="sbook.UI.handlers.everyone_onclick(event);"/>
 </div>
-<div id="SBOOKADDGLOSS" class="sbookaddgloss hudblock">
+<div id="SBOOKADDGLOSS" class="sbookaddgloss hudpanel">
   <!-- This content comes from sbookaddgloss.html -->
 </div>
-<div id="SBOOKCONSOLE" class="hudblock sbookconsole">
+<div id="SBOOKCONSOLE" class="hudpanel sbookconsole">
   <!-- This content comes from consoletext.html -->
 </div>
 </div> <!-- SBOOKHEAD -->
-<div class='helphud tapleft'>
+<div class="helphud leftmiddle">
   page back
 </div>
-<div class='helphud tapright'>
-  page forward
+<div class="helphud rightmiddle">
+  next page
 </div>
 <div id="SBOOKFLYLEAF">
-<div id="SBOOKGLOSSCLOUD" class="hudblock"></div>
-<div id="SBOOKSEARCHCLOUD" class="completions searchcloud hudblock">
+<div id="SBOOKGLOSSCLOUD" class="completions flyleaf"></div>
+<div id="SBOOKSEARCHCLOUD" class="completions searchcloud flyleaf">
   <span class="count">no query refinements</span>
 </div>
-<div id="SBOOKSEARCHRESULTS" class="sbookslice hudblock"></div>
-<div id="SBOOKALLGLOSSES" class="sbookslice hudblock"></div>
-<div id="SBOOKDASH" class="hudblock">
+<div id="SBOOKSEARCHRESULTS" class="sbookslice flyleaf"></div>
+<div id="SBOOKALLGLOSSES" class="sbookslice flyleaf"></div>
+<div id="SBOOKDASH" class="flyleaf">
   <!-- This content comes from dashtext.html -->
 </div>
-<div id="SBOOKGLOSSES" class="hudblock">
+<div id="SBOOKGLOSSES" class="hudpanel">
   <!-- This is filled in on demand -->
 </div>
 </div> <!-- id="SBOOKFLYLEAF" -->
@@ -68,28 +67,29 @@
 <div id="SBOOKFOOT">
   <img src="http://static.beingmeta.com/graphics/sbooksappicon40x40.png"
        alt="dash" title="Click for Help, settings, book description, etc"
-       class="hudbutton" id="SBOOKDASHBUTTON" hudmode="dash"
+       class="hudbutton botleft" id="SBOOKDASHBUTTON" hudmode="dash"
        onclick="sbook.UI.hudbutton(event);"/>
   <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
-       class="previewicon bottomleft"/>
-  <div class="helphud tapdash">
-    <span class='nobreak'><span class="arrow">←</span>show the</span><br/>
-    'dashboard'</div>
-  <div class='helphud tapfoot'>
+       class="previewicon botleft"/>
+  <div class="helphud botleft">
+    <span class="nobreak"><span class="arrow">←</span>show the</span><br/>
+    "dashboard"</div>
+  <div class="helphud botcenter">
     show/hide<br/>book tools
   </div>
-  <div id="SBOOKINFO" class="hudblock">
+  <div id="SBOOKINFO" class="hudpanel">
     <div id="SBOOKTARGETINFO"></div>
   </div>
-  <div class="helphud tapnotes">
-    <span class='nobreak'>show<span class="arrow">→</span></span><br/>
+  <div class="helphud botright">
+    <span class="nobreak">show<span class="arrow">→</span></span><br/>
     notes</div>
   <img src="http://static.beingmeta.com/graphics/sbookspeople40x40.png"
        alt="glosses" title="Click to browse glosses overlaid on this book"
-       class="hudbutton" id="SBOOKALLGLOSSESBUTTON" hudmode="allglosses"
+       class="hudbutton botright"
+       id="SBOOKALLGLOSSESBUTTON" hudmode="allglosses"
        onclick="sbook.UI.hudbutton(event);"/>
   <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
-       class="previewicon bottomright"/>
+       class="previewicon botright"/>
 
 </div>
 
