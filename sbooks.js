@@ -133,13 +133,13 @@ var sbook_gloss_data=
 	  var tags=item.tags;
 	  if (!(tags instanceof Array)) tags=[tags];
 	  if ((tags)&&(tags.length)) {
-	    var i=0; var lim=tags.length; while (i<lim)
-					    sbook.index.add(item,tags[i++]);}
+	    var i=0; var lim=tags.length;
+	    while (i<lim) sbook.index.add(item,tags[i++]);}
 	  var outlets=item.distribution;
 	  if (typeof outlets === 'string') outlets=[outlets];
 	  if ((outlets)&&(outlets.length)) {
-	    var i=0; var lim=outlets.length; while (i<lim)
-					       sbook.index.add(item,outlets[i++]);}});
+	    var i=0; var lim=outlets.length;
+	    while (i<lim) sbook.index.add(item,outlets[i++]);}});
       sbook.glosses.index=new fdjtKB.Index();
       if (sbook.offline)
 	sbook.glosses.storage=new fdjtKB.OfflineKB(sbook.glosses);}
@@ -148,8 +148,7 @@ var sbook_gloss_data=
       sbook.sourcekb.index=new fdjtKB.Index();
       if (sbook.offline)
 	sbook.sourcekb.storage=new fdjtKB.OfflineKB(sbook.sourcekb);}
-    if (sbook.Trace.start>1) fdjtLog("[%fs] Initialized DB",fdjtET());
-  }
+    if (sbook.Trace.start>1) fdjtLog("[%fs] Initialized DB",fdjtET());}
   sbook.initDB=initDB;
 
   var trace1="[%fs] %s %o in %o: mode%s=%o, target=%o, head=%o preview=%o";

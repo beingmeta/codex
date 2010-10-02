@@ -674,7 +674,10 @@ sbook.Startup=
       sbook.useQuery(sbook.query,fdjtID("SBOOKSEARCH"));
       sbook.Message("Setting up glossing cloud...");
       fdjtDOM.replace("SBOOKGLOSSCLOUD",sbook.glossCloud().dom);
-      sbook.glossCloud().complete('');}
+      sbook.Message("Setting up sharing cloud...");
+      fdjtDOM.replace("SBOOKSHARECLOUD",sbook.shareCloud().dom);
+      sbook.glossCloud().complete('');
+      sbook.shareCloud().complete('');}
 
     function initGlosses(glosses,etc){
       var allglosses=sbook.allglosses;

@@ -10,49 +10,57 @@
     <input type="HIDDEN" name="UUID"/>
     <input type="HIDDEN" name="DOCTITLE"/>
   </div>
-  <div class="tags"
-       onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
+  <div class="topblock">
+    <div class="tags"
+	 onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
+    </div>
+    <fieldset class="textfields">
+      <div class="input note">
+	<textarea name="NOTE" class="autoprompt"
+		  placeholder="add a note,using brackets for descriptive [tag]s"
+		  wrap="virtual"
+		  id="SBOOKNOTEINPUT">
+	</textarea>
+      </div>
+      <div class="input tag">
+	<input type="TEXT" name="TAG" value=""
+	       class="autoprompt" autocomplete="off"
+	       placeholder="add tags to this passage" 
+	       onfocus="sbook.handlers.taginput_focus(event);"
+	       onblur="sbook.handlers.taginput_focus(event);"
+	       id="SBOOKTAGINPUT">
+      </div>
+      <div class="input link">
+	<input type="TEXT" name="LINK" value=""
+	       placeholder="type a URL to link from this passage" 
+	       class="autoprompt urlinput" prompt="type a web address (URL)"
+	       id="SBOOKLINKINPUT"/>
+	<input type="TEXT" name="LINKTEXT" value=""
+	       class="autoprompt"
+	       placeholder="describe this image or specify an image URI"
+	       id="SBOOKLINKTEXTINPUT"/>
+      </div>
+      <div class="input share">
+	<input type="TEXT" name="SHARE" value="" autocomplete="off"
+	       placeholder="type an email or tag with friends or groups to share"
+	       class="autoprompt"
+	       id="SBOOKSHAREINPUT"/>
+      </div>
+    </fieldset>
   </div>
-  <fieldset class="textfields">
-    <div class="input note">
-      <textarea name="NOTE" class="autoprompt"
-		prompt="add a note,using brackets for descriptive [tag]s"
-		wrap="virtual"
-		id="SBOOKGLOSSNOTE">
-      </textarea>
-    </div>
-    <div class="input tag">
-      <input type="TEXT" name="TAG" value=""
-	     class="autoprompt" prompt="add tags"
-	     id="SBOOKGLOSSTAG">
-    </div>
-    <div class="input link">
-      <input type="TEXT" name="HREF" value=""
-	     class="autoprompt urlinput" prompt="type a web address (URL)"
-	     id="SBOOKGLOSSHREF"/>
-      <input type="TEXT" name="LINKLABEL" value=""
-	     class="autoprompt" prompt="link description or image URI"
-	     id="SBOOKGLOSSHREFLABEL"/>
-    </div>
-    <div class="input share">
-      <input type="TEXT" name="HREF" value=""
-	     class="autoprompt" prompt="share with friends, tribes, etc"
-	     id="SBOOKGLOSSHREF"/>
-    </div>
-  </fieldset>
   <div class="controls">
     <img src="http://static.beingmeta.com/graphics/remarkballoon32x32.png"
-	 alt="note"
-	 onclick="fdjtID('SBOOKGLOSSFORM').className=this.alt;"/>
+	 alt="note" onclick="sbook.glossMode(this.alt);"
+	 title="add a note"/>
     <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-	 alt="tag"
-	 onclick="fdjtID('SBOOKGLOSSFORM').className=this.alt;"/>
+	 alt="tag" onclick="sbook.glossMode(this.alt);"
+	 title="add some tags"/>
     <img src="http://static.beingmeta.com/graphics/outlink32x32.png"
-	 alt="link"
-	 onclick="fdjtID('SBOOKGLOSSFORM').className=this.alt;"/>
-    <img src="http://static.beingmeta.com/graphics/sbookspeople32x32.png"
-	 alt="share"
-	 onclick="fdjtID('SBOOKGLOSSFORM').className=this.alt;"/>
+	 alt="link" onclick="sbook.glossMode(this.alt);"
+	 title="add a link"/>
+    <img src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"
+	 alt="share"onclick="sbook.glossMode(this.alt);"
+	 title="share with friends"/>
 <!--
     <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);"
 	 title="push this gloss to my configured feeds/walls/etc">
