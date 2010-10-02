@@ -8,9 +8,9 @@
   <input id="SBOOKSEARCHINPUT"
 	 type="TEXT" class="autoprompt searchinput"
 	 name="QTEXT" value="" isempty="yes" autocomplete="off"
-	 onfocus="sbook.UI.handlers.search_onfocus(event);"
-	 onblur="sbook.UI.handlers.search_onblur(event);"
-	 onkeypress="sbook.UI.handlers.search_onkeypress(event);"
+	 onfocus="sbook.UI.handlers.search_focus(event);"
+	 onblur="sbook.UI.handlers.search_blur(event);"
+	 onkeyup="sbook.UI.handlers.search_keyup(event);"
 	 completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
 	 completions="SBOOKSEARCHCLOUD"
 	 results="SBOOKSEARCHRESULTS"/>

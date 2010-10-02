@@ -471,7 +471,16 @@ div.searchbox.noresults div.resultinfo span { display: none;}
 /* Tag clouds */
 
 div#SBOOKHUD div#SBOOKFLYLEAF > div.completions {
-    padding-left: 2.5em; }
+    padding-left: 2.5em; text-align: center; font-size: 115%;}
+div#SBOOKHUD div#SBOOKFLYLEAF > div.completions div.doc {
+    background-color: ivory; text-align: left; font-size: 80%;
+    font-style: italic; color: black;
+    padding-left: 1.5em; padding-right: 1.5em;
+    margin: 0.5em; margin-right: 5em;
+    border: solid black 2px; border-radius: 6px;
+    -khtml-border-radius: 6px; -webkit-border-radius: 6px; 
+    -moz-border-radius: 6px;}
+
 div#SBOOKHUD .completions span.sep { 
   font-size: 200%; font-weight: bold; 
   color: purple; vertical-align: middle;}
@@ -614,7 +623,9 @@ body.preview div#SBOOKHUD.toc, body.preview div#SBOOKHUD.dashtoc {
     opacity: 1.0;}
 body.preview *.preview * { opacity: 0.75;}
 body.preview *.preview *.preview { opacity: 1.0;}
-body.preview *.previewing { color: red; cursor: crosshair;}
+body.preview *.previewing {
+    color: red; cursor: crosshair; /* font-size: 125%; */
+    border: solid red 2px; padding: 5px; border-radius: 7px;}
 body.preview *[id].previewing { color: red; cursor: crosshair;}
 body.preview *[id].previewing * { cursor: crosshair;}
 
@@ -859,6 +870,23 @@ div.sbookabout div.publisher { font-style: italic;}
 
 div.logindoc { display: none;}
 
+.fortouch { display: none;}
+body.touch .notouch { display: none;}
+body.touch div.fortouch,
+body.touch p.fortouch {
+    display: block;}
+body.touch .fortouch {display: inline;}
+body.touch li.fortouch {display: list-item;}
+body.touch span.fortouch { display: inline;}
+body.touch div.fortouch { display: block;}
+body.touch p.fortouch { display: block;}
+body.touch li.fortouch { display: list-item;}
+
+body img.touchicon { display: none;}
+body img.mouseicon { display: inline;}
+body.touch img.touchicon { display: inline;}
+body.touch img.mouseicon { display: none;}
+
 /* Sbook notes */
 
 div.sbooknote { position: relative;}
@@ -933,7 +961,6 @@ body.sbook a.sbooknote { display: block;}
   padding-right: 3px;}
 .sbooknote .glossinfo img.delete { 
   width: 1em; height: 1em; padding-right: 3px;}
-.sbooknote img.remarkbutton { }
 .sbooknote a.headref {
     float: right; clear: right; 
     font-family: times,serif; font-style: italic; font-size: 80%;
@@ -953,54 +980,44 @@ div.locbar hr {
 
 /* Glossmarks */
 
-/* Glossmarks */
-
-span.glossmark {
+.glossmark {
   position: absolute; right: 0px; text-align: right;
   margin: 0px; padding: 0px; text-indent: 0px; 
   border: solid transparent 2px;
   width: 32px; height: 32px; z-index: 50;
   border-right: 0px;
   opacity: 0.0001;}
-*:hover > span.glossmark { opacity: 0.7;}
-body.hudup span.glossmark { opacity: 0.9;}
+*:hover > .glossmark { opacity: 0.7;}
+body.hudup .glossmark { opacity: 0.9;}
 
-span.glossmark img {
-   position: relative; right: 0px;
-   width: 100%; height: auto;
+.glossmark img {
+   float: right;
    vertical-align: top; text-align: right;}
-span.glossmark img.tiny {width: 16px;}
-span.glossmark img.big {width: 32px;}
-span.glossmark img.tiny { display: none; }
+.glossmark img.tiny {width: 16px;}
+.glossmark img.big {width: 32px;}
+.glossmark img.tiny, span.glossmark img.big { display: none; }
 
 /* .sparsebook */
-body span.glossmark { width: 32px; height: 32px; }
-body span.glossmark img.big { display: none;}
-body span.glossmark img.tiny { display: inline;}
-body.hudup span.glossmark:hover img.big { display: inline;}
-body.hudup span.glossmark:hover img.tiny { display: none;}
-body .hudbutton { opacity: 0.1;}
-body.hudup .hudbutton { opacity: 0.9;}
-body .hudbutton:hover { opacity: 0.9;}
+body .glossmark img.tiny { display: block;}
+body.hudup .glossmark img.big { display: block;}
+body.hudup .glossmark img.tiny { display: none;}
 
-.sbooktarget { }
+body.sparsebook .glossmark img.tiny { display: none;}
+body.sparsebook.hudup .glossmark img.tiny { display: block;}
+body.sparsebook.hudup .glossmark:hover img.big { display: block;}
+body.sparsebook.hudup .glossmark:hover img.tiny { display: none;}
+
+/* Displaying the sbook target */
+
+.sbooktarget { color: darkblue;}
+body.hudup .sbooktarget { color: blue; cursor: pointer;}
+body.hudup .sbooktarget.previewing { color: red; cursor: pointer;}
+body.hudup .sbooktarget .glossmark { color: blue; cursor: pointer;}
+
 .sbooktarget span.glossmark img {
     border-top: solid blue 2px;}
-.sbooktarget:hover span.glossmark { opacity: 0.5;}
-body.hudup .sbooktarget span.glossmark:hover { opacity: 0.9;}
-.sbooktarget span.glossmark img { }
-
-span.glossmark:hover { opacity: 0.9;}
-body.mark span.glossmark { opacity: 0.9;}
-body.glosses span.glossmark { opacity: 0.9;}
-body.preview span.glossmark { opacity: 0.9;}
-
-span.glossmark img.markbutton {
-  position: static; background-color: lightblue; display: none;
-  border: solid transparent 0px;}
-span.glossmark img.markbutton { display: none;}
-.sbooktarget span.glossmark img.markbutton { 
-  display: inline;}
+.sbooktarget:hover .glossmark { opacity: 0.5;}
+body.hudup .sbooktarget .glossmark:hover { opacity: 0.9;}
 
 /* Not logged in conditionalization */
 
@@ -1064,7 +1081,7 @@ div.sbookaddgloss form div.controls .checkspan.private.ischecked {
 div.sbookaddgloss form div.controls .checkspan.private input[type='checkbox'] {
     display: none;}
 
-div.sbookaddgloss form div.topblock { min-height: 50px;}
+div.sbookaddgloss form div.topblock { min-height: 55px;}
 div.sbookaddgloss form div.input {
     display: none; width: auto; }
 div.sbookaddgloss form div.input input {}
@@ -1108,6 +1125,8 @@ div.sbookaddgloss form div.input input[type='FILE'] { /* width: 100%; */
     display: block; }
 div.sbookaddgloss form div.tags {
     display: block; width: 100%; text-align: left;}
+div.sbookaddgloss form span.source:before, .completions span.source:before {
+    content: '@'; color: gold;}
 
 div.sbookaddgloss form.note div.input.note { display: block;}
 div.sbookaddgloss form.tag div.input.tag { display: block;}
@@ -1118,7 +1137,7 @@ div.sbookaddgloss form.note div.controls img[alt='note'],
 div.sbookaddgloss form.tag div.controls img[alt='tag'],
 div.sbookaddgloss form.link div.controls img[alt='link'],
 div.sbookaddgloss form.share div.controls img[alt='share'] {
-    background-color: white; border-color: gold;}
+    background-color: silver; border-color: gold;}
 
 /* Pagination stuff */
 

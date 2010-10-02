@@ -52,27 +52,40 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 
     function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
-    sbook.UI.addSourceIcon=function(info){
+    sbook.UI.addSource=function(info){
 	if (typeof info === 'string') info=fdjtKB.ref(info);
 	var humid=info.humid;
-	var icon=fdjtID("SBOOKSOURCEICON"+humid);
-	if (icon) return icon;
 	if (!(info.name)) return;
-	var pic=info.pic; var kind=info.kind;
-	if (pic) {}
-	else if (kind===':PERSON')
-	    pic=sbicon("sbooksperson40x40.png");
-	else if (kind===':CIRCLE')
-	    pic=sbicon("sbookscircle40x40.png");
-	else if (kind===':OVERDOC')
-	    pic=sbicon("sbooksoverdoc40x40.png");
-	else pic=sbook;
-	icon=fdjtDOM.Image
-	(pic,".button.source",info.name|info.kind,
-	 ("click to show/hide glosses from "+info.name));
-	icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
-	fdjtDOM(fdjtID("SBOOKSOURCES")," ",icon);
-	return icon;};
+	var icon=fdjtID("SBOOKSOURCEICON"+humid);
+	if (!(icon)) { // Add icon to the sources bar
+	    var pic=info.pic; var kind=info.kind;
+	    if (pic) {}
+	    else if (kind===':PERSON')
+		pic=sbicon("sbooksperson40x40.png");
+	    else if (kind===':CIRCLE')
+		pic=sbicon("sbookscircle40x40.png");
+	    else if (kind===':OVERDOC')
+		pic=sbicon("sbooksoverdoc40x40.png");
+	    else pic=sbook;
+	    icon=fdjtDOM.Image(pic,".button.source",info.name|info.kind,
+			       ("click to show/hide glosses from "+info.name));
+	    icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
+	    fdjtDOM(fdjtID("SBOOKSOURCES")," ",icon);}
+	var sharetag=fdjtID("SBOOKSHARETAG"+humid);
+	if (!(sharetag)) { // Add entry to the share cloud
+	    var completion=fdjtDOM("span.completion.cue.source",info.name);
+	    completion.id="SBOOKSHARETAG"+humid;
+	    completion.setAttribute("value",info.qid);
+	    completion.setAttribute("key",info.name);
+	    fdjtDOM(fdjtID("SBOOKSHARECLOUD"),completion," ");}
+	var sourcetag=fdjtID("SBOOKSOURCETAG"+humid);
+	if (!(sourcetag)) { // Add entry to the share cloud
+	    var completion=fdjtDOM("span.completion.cue.source",info.name);
+	    completion.id="SBOOKSOURCETAG"+humid;
+	    completion.setAttribute("value",info.qid);
+	    completion.setAttribute("key",info.name);
+	    fdjtDOM(fdjtID("SBOOKGLOSSCLOUD"),completion," ");}
+	return info;};
 
     function everyone_onclick(evt)
     {

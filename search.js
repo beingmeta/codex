@@ -171,24 +171,24 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
     var _sbook_searchupdate=false;
     var _sbook_searchupdate_delay=200;
     
-    function searchInput_onkeypress(evt){
+    function searchInput_keyup(evt){
 	evt=evt||event||null;
 	var ch=evt.charCode||evt.keyCode;
 	var target=fdjtDOM.T(evt);
 	// fdjtLog("[%fs] Input %o on %o",fdjtET(),evt,target);
 	// Clear any pending completion calls
-	if (_sbook_searchupdate) {
-	    clearTimeout(_sbook_searchupdate);
-	    _sbook_searchupdate=false;}
 	if ((ch===13)||(ch===13)||(ch===59)||(ch===93)) {
 	    var qstring=target.value;
 	    if (fdjtString.isEmpty(qstring)) showSearchResults();
 	    else {
 		var completeinfo=queryCloud(sbook.query);
+		if (completeinfo.timer) {
+		    clearTimeout(completeinfo.timer);
+		    completeinfo.timer=false;}
 		var completions=completeinfo.complete(qstring);
 		if (completions.length) {
-		  var value=completeinfo.getValue(completions[0]);
-		  sbook.query=extendQuery(sbook.query,value);}}
+		    var value=completeinfo.getValue(completions[0]);
+		    sbook.query=extendQuery(sbook.query,value);}}
 	    fdjtDOM.cancel(evt);
 	    if ((sbook.search_gotlucky) && 
 		(sbook.query._results.length>0) &&
@@ -209,12 +209,10 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 		return;}}
 	else {
 	    var completeinfo=queryCloud(sbook.query);
-	    _sbook_searchupdate=
-		setTimeout(function(){
-		    completeinfo.complete(target.value);},
-			   _sbook_searchupdate_delay);}}
-    sbook.UI.handlers.search_onkeypress=searchInput_onkeypress;
+	    completeinfo.docomplete(target);;}}
+    sbook.UI.handlers.search_keyup=searchInput_keyup;
 
+    /*
     function searchInput_onkeyup(evt){
 	evt=evt||event||null;
 	var kc=evt.keyCode;
@@ -229,6 +227,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 		    searchUpdate(target);},
 			   _sbook_searchupdate_delay,target);}}
     sbook.UI.handlers.SearchInput_onkeyup=searchInput_onkeyup;
+    */
 
     function searchUpdate(input,cloud){
 	if (!(input)) input=fdjtID("SBOOKSEARCHINPUT");
@@ -236,7 +235,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	cloud.complete(input.value);}
     sbook.searchUpdate=searchUpdate;
 
-    function searchInput_onfocus(evt){
+    function searchInput_focus(evt){
 	evt=evt||event||null;
 	var input=fdjtDOM.T(evt);
 	fdjtUI.AutoPrompt.onfocus(evt);
@@ -244,13 +243,13 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	if ((sbook.mode)&&(sbook.mode==='browsing'))
 	    sbookMode("searching");
 	searchUpdate(input);}
-    sbook.UI.handlers.search_onfocus=searchInput_onfocus;
+    sbook.UI.handlers.search_focus=searchInput_focus;
 
-    function searchInput_onblur(evt){
+    function searchInput_blur(evt){
 	evt=evt||event||null;
 	fdjtUI.AutoPrompt.onblur(evt);
 	sbook_search_focus=false;}
-    sbook.UI.handlers.search_onblur=searchInput_onblur;
+    sbook.UI.handlers.search_blur=searchInput_blur;
 
     function clearSearch(evt){
 	var target=fdjtUI.T(evt||event);
@@ -341,10 +340,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    result._cloud=sbook.empty_cloud;
 	    return query._cloud;}
 	else {
-	    var completions=makeCloud
-	    (query._refiners._results,
-	     ((query._simple)?(query._refiners._freqs):(query._refiners)),
-	     query._refiners._freqs);
+	    var completions=makeCloud(query._refiners._results,query._refiners._freqs);
 	    completions.onclick=Cloud_onclick;
 	    var n_refiners=query._refiners._results.length;
 	    var hide_some=(n_refiners>sbook.show_refiners);
@@ -391,12 +387,12 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	else {}}
     sbook.UI.handlers.Cloud_onclick=Cloud_onclick;
 
-    function makeCloud(dterms,scores,freqs,noscale){
+    function makeCloud(dterms,scores,noscale){
 	var sbook_index=sbook.index;
 	var start=new Date();
 	if (sbook.Trace.clouds)
-	    fdjtLog("[%fs] Making cloud from %d dterms using scores=%o and freqs=%o",
-		    fdjtET(),dterms.length,scores,freqs);
+	    fdjtLog("[%fs] Making cloud from %d dterms using scores=%o and scores=%o",
+		    fdjtET(),dterms.length,scores,scores);
 	var spans=fdjtDOM("span");  
 	var completions=fdjtDOM("div.completions",spans);
 	var n_terms=dterms.length;
@@ -407,17 +403,8 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 		if ((score) && (score>max_score)) max_score=score;}}
 	var copied=[].concat(dterms);
 	var bykey=sbook_index.bykey;
-	if (freqs)
-	    copied.sort(function (x,y) {
-		var xfreq=((freqs[x])?(freqs[x]):(0));
-		var yfreq=((freqs[y])?(freqs[y]):(0));
-		if (xfreq==yfreq)
-		    if (x>y) return -1;
-		else if (x===y) return 0;
-		else return 1;
-		else if (xfreq>yfreq) return -1;
-		else return 1;});
-	else copied.sort(function (x,y) {
+	// We sort the keys by absolute frequency
+	copied.sort(function (x,y) {
 	    var xlen=((bykey[x])?(bykey[x].length):(0));
 	    var ylen=((bykey[y])?(bykey[y].length):(0));
 	    if (xlen==ylen)
@@ -426,11 +413,12 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    else return 1;
 	    else if (xlen>ylen) return -1;
 	    else return 1;});
+	// Then we scale the keys by the ratio of result frequency to absolute frequency
 	var nspans=0; var sumscale=0; var minscale=false;
 	i=0; while (i<copied.length) {
 	    var dterm=copied[i++];
-	    var count=((bykey[dterm]) ? (bykey[dterm].length) : (0));
-	    var freq=((freqs)?(freqs[dterm]||0):(0));
+	    var count=((bykey[dterm]) ? (bykey[dterm].length) : (1));
+	    var freq=((scores)?(scores[dterm]||1):(1));
 	    var score=((scores) ?(scores[dterm]||false) : (false));
 	    var title=
 		((sbook.noisy_tooltips) ?
@@ -438,15 +426,16 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 		 (dterm+": "+freq+((freq==1) ? " item" : " items")));
 	    var span=KNodeCompletion(dterm,title);
 	    if (freq===1) fdjtDOM.addClass(span,"singleton");
-	    if ((freqs)&&(!(noscale))) {
-		var relfreq=((freq/freqs._count)/(count/sbook.docinfo._eltcount));
+	    if ((scores)&&(!(noscale))) {
+		var relfreq=((freq/scores._count)/(count/sbook.docinfo._eltcount));
 		var scaling=Math.sqrt(relfreq);
-		var fontscale=100+(scaling*100);
+		var maxscaling=freq/max_score;
+		var fontscale=100+(scaling*100); /* +(maxscaling*100) */
 		sumscale=fontscale+sumscale; nspans++;
 		if ((minscale===false)||(fontscale<minscale)) minscale=fontscale;
 		span.style.fontSize=fontscale+"%";}
 	    fdjtDOM(spans,span,"\n");}
-	if ((freqs)&&(!(noscale))) {
+	if ((scores)&&(!(noscale))) {
 	    var avgscale=sumscale/nspans;
 	    var scaledown=7500/minscale; // 10000/avgscale;
 	    spans.style.fontSize=scaledown+"%";
@@ -526,7 +515,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    var tagscores=sbook.index.tagScores();
 	    var alltags=tagscores._all;
 	    var tagfreqs=tagscores._freq;
-	    var completions=sbook.makeCloud(alltags,tagfreqs,tagfreqs,true);
+	    var completions=sbook.makeCloud(alltags,tagfreqs);
 	    var cues=fdjtDOM.getChildren(completions,".cue");
 	    if (!((cues)&&(cues.length))) {
 		var celts=fdjtDOM.getChildren(completions,".completion");

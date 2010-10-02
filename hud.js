@@ -81,11 +81,9 @@ var sbookMode=
 	    var glosses=fdjtID("SBOOKALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
 	    sbook.glosses.addEffect("user",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit
-		(sbook.UI.addSourceIcon,"sourceicon");});
+		sbook.sourcekb.ref(v).oninit(sbook.UI.addSource,"newsource");});
 	    sbook.glosses.addEffect("distribution",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit
-		(sbook.UI.addSourceIcon,"sourceicon");});
+		sbook.sourcekb.ref(v).oninit(sbook.UI.addSource,"newsource");});
 
 	    function initUI4Item(item){
 		if (document.getElementById(item.frag)) {
@@ -112,10 +110,8 @@ var sbookMode=
 		else {
 		    var gloss_cloud=sbook.glossCloud();
 		    var search_cloud=sbook.FullCloud();
-		    var gloss_tag=
-			gloss_cloud.getByValue(tag,".completion.tag");
-		    var search_tag=
-			search_cloud.getByValue(tag,".completion.tag");
+		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
+		    var search_tag=search_cloud.getByValue(tag,".completion");
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			gloss_tag=Knodule.HTML(tag,sbook.knodule,false,true);
 			gloss_cloud.addCompletion(gloss_tag);}
