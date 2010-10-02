@@ -1083,7 +1083,7 @@ div.sbookaddgloss form div.input input[type='TEXT'][name='TAG'] {
 div.sbookaddgloss form div.input input[type='TEXT'][name='LINK'] {
     height: 18px; font-size: 80%; font-family: fixed; font-style: normal;
     background-image:
-    url(http://static.beingmeta.com/graphics/outlink16x16.png);
+    url(http://static.beingmeta.com/graphics/upoutlink16x16.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
@@ -1093,7 +1093,7 @@ div.sbookaddgloss form div.input textarea[name='NOTE'],
 div.sbookaddgloss form div.input input[type='TEXT'][name='NOTE'] {
     height: 5ex; overflow: hidden;
     background-image:
-    url(http://static.beingmeta.com/graphics/remarkballoon24x24.png);
+    url(http://static.beingmeta.com/graphics/justremarkballoon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}

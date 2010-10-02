@@ -230,37 +230,40 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     
     /* Handling tag input */
 
-    var taginput_timer=false; var complete_delay=250;
-    function taginput_keypress(evt){
-	if (taginput_timer) {
-	    clearTimeout(taginput_timer);
-	    taginput_timer=false;}
+    function taginput_keydown(evt){
+	evt=evt||event;
 	var target=fdjtUI.T(evt);
-	var ch=evt.charCode;
-	if ((ch===13)) {
-	  fdjtUI.cancel(evt);
-	  var completions=gloss_cloud.complete(target.value);
-	  if (completions.length) addTag(target.form,completions[0]);
-	  else addTag(target.form,target.value);
-	  target.value=""; fdjtDOM.addClass(target,"isempty");
-	  return;}
-	taginput_timer=setTimeout(function(){
-	    fdjtLog("Completing on %o from %o",target.value,target);
-	    gloss_cloud.complete(target.value);},
-	  complete_delay);}
-    sbook.UI.handlers.taginput_keypress=taginput_keypress;
-    function taginput_keyup(evt){
-      var kc=evt.keyCode;
-      if ((kc===8)||(kc===46)) {
-	if (taginput_timer) {
-	  clearTimeout(taginput_timer);
-	  taginput_timer=false;}
-	var target=fdjtUI.T(evt);
-	taginput_timer=setTimeout(function(){
-	    fdjtLog("Completing on %o from %o",target.value,target);
-	    gloss_cloud.complete(target.value);},
-	  complete_delay);}}
-    sbook.UI.handlers.taginput_keypress=taginput_keyup;
+	var kc=evt.keyCode;
+	if ((kc===13)&&(!(evt.shiftKey))) {
+	    fdjtUI.cancel(evt);
+	    var completions=gloss_cloud.complete(target.value);
+	    if ((completions.exact)&&(completions.exact.length===1))
+		addTag(target.form,completions.exact[0]);
+	    else addTag(target.form,target.value);
+	    target.value=""; fdjtDOM.addClass(target,"isempty");
+	    gloss_cloud.complete("");
+	    return;}
+	else if ((kc===8)||(kc===46)) {
+	    if (gloss_cloud.timer) {
+		clearTimeout(gloss_cloud.timer);
+		gloss_cloud.timer=false;}
+	    gloss_cloud.complete(target.value);}
+	else if (!(evt.shiftKey)) return;
+	else if (kc===32) {
+	    var completions=gloss_cloud.complete(target.value);
+	    target.value=completions.prefix;
+	    fdjtUI.cancel(evt);}
+	else if (kc===13) {
+	    var target=fdjtUI.T(evt);
+	    var completions=gloss_cloud.complete(target.value);
+	    if (completions.length) {
+		addTag(target.form,completions[0]);
+		fdjtDOM.addClass(target,"isempty");
+		target.value=""; gloss_cloud.complete("");}
+	    else target.value=completions.prefix;
+	    fdjtUI.cancel(evt);}
+	else {}}
+    sbook.UI.handlers.taginput_keydown=taginput_keydown;
 
     function taginput_focus(evt){
 	fdjtUI.AutoPrompt.onfocus(evt);
@@ -274,24 +277,6 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /* Handling share input */
 
     var shareinput_timer=false;
-    function shareinput_keypress(evt){
-	if (shareinput_timer) {
-	    clearTimeout(shareinput_timer);
-	    shareinput_timer=false;}
-	var target=fdjtUI.T(evt);
-	var ch=evt.charCode;
-	if ((ch===13)) {
-	  fdjtUI.cancel(evt);
-	  var completions=share_cloud.complete(target.value);
-	  if (completions.length) addTag(target.form,completions[0]);
-	  else addTag(target.form,target.value);
-	  target.value=""; fdjtDOM.addClass(target,"isempty");
-	  return;}
-	shareinput_timer=setTimeout(function(){
-	    fdjtLog("Completing on %o from %o",target.value,target);
-	    share_cloud.complete(target.value);},
-	  complete_delay);}
-    sbook.UI.handlers.shareinput_keypress=shareinput_keypress;
     function shareinput_keyup(evt){
       var kc=evt.keyCode;
       if ((kc===8)||(kc===46)) {
@@ -526,10 +511,16 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    noteinput.onmouseup=note_mouseup;}
 	var taginput=fdjtDOM.getInput(form,"TAG");
 	if (taginput) {
-	    taginput.onkeypress=taginput_keypress;
-	    taginput.onkeyup=taginput_keyup;
+	    taginput.onkeypress=function(evt){gloss_cloud.docomplete();};
+	    taginput.onkeydown=taginput_keydown;
 	    taginput.onfocus=taginput_focus;
 	    taginput.onblur=taginput_blur;}
+	var shareinput=fdjtDOM.getInput(form,"SHARE");
+	if (shareinput) {
+	    shareinput.onkeypress=function(evt){share_cloud.docomplete();};
+	    shareinput.onkeyup=shareinput_keyup;
+	    shareinput.onfocus=shareinput_focus;
+	    shareinput.onblur=shareinput_blur;}
 	if (sbook.syncstamp)
 	    fdjtDOM.getInput(form,"SYNC").value=(sbook.syncstamp+1);
 	fdjtUI.AutoPrompt.setup(form);
@@ -577,75 +568,73 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     
     /* The completions element */
     function glossCloud(){
-      if (gloss_cloud) return gloss_cloud;
-      var seen={};
-      var sbook_index=sbook.index;
-      var label=fdjtDOM.Image(sbicon("TagIcon32x32.png"),"img.label","tags");
-      var outlets_span=fdjtDOM("span.outlets");
-      var sources_span=fdjtDOM("span.sources");
-      var completions=
-	fdjtDOM("div.completions.flyleaf","\n",label,outlets_span);
-      if (sbook.outlets) {
-	var outlets=sbook.outlets;
-	var i=0; var lim=outlets.length;
-	while (i<lim) {
-	  var outlet=outlets[i++];
-	  var info=sbook.sourcekb.ref(outlet);
-	  var completion=fdjtDOM("span.completion.cue.outlet",info.name);
-	  completion.setAttribute("value",outlet);
-	  completion.setAttribute("key",info.name);
-	  if (info.about) completion.title=
-			    "share with '"+info.about+"'";
-	  fdjtDOM(outlets_span,completion," ");}}
-      if (sbook.sources) {
-	var outlets=sbook.outlets||[];
-	var sources=sbook.sources;
-	var i=0; var lim=sources.length;
-	while (i<lim) {
-	  var source=sources[i++];
-	  if (fdjtKB.contains(outlets,source)) continue;
-	  var info=sbook.sourcekb.ref(source);
-	  var completion=fdjtDOM
-	    ("span.completion.source",info.name);
-	  completion.setAttribute("value",source);
-	  completion.setAttribute("key",info.name);
-	  if (info.about) completion.title=
-			    "highlight for '"+info.about+"'";
-	  fdjtDOM(sources_span,completion," ");}}
-      completions._seen=seen;
-      var tagscores=sbook_index.tagScores();
-      var alltags=tagscores._all;
-      var i=0; while (i<alltags.length) {
-	var tag=alltags[i++];
-	// We elide sectional tags
-	if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
-	var tagnode=Knodule.HTML(tag,sbook.knodule,false,true);
-	fdjtDOM(completions,tagnode," ");}
-      var i=0; while (i<alltags.length) {
-	var tag=alltags[i++];
-	// We elide sectional tags
-	if ((typeof tag === "string") && (tag[0]==="\u00A7")) {
-	  var showname=tag; var title;
-	  if (showname.length>17) {
-	    showname=showname.slice(0,17)+"...";
-	    title=tag;}
-	  var sectnode=
-	    fdjtDOM("span.completion",fdjtDOM("span.sectname",showname));
-	  if (title) sectnode.title=title;
-	  sectnode.key=tag; sectnode.value=tag;
-	  fdjtDOM(completions,sectnode," ");
-	  continue;}}
-      // Generic sources go at the end
-      fdjtDOM(completions,sources_span);
-      //fdjtDOM.addListener(completions,"click",markcloud_onclick);
-      completions.onmouseup=glosscloud_onclick;
-      gloss_cloud=
-	new fdjtUI.Completions(
-			       completions,false,
-			       fdjtUI.FDJT_COMPLETE_OPTIONS|
-			       fdjtUI.FDJT_COMPLETE_CLOUD|
-			       fdjtUI.FDJT_COMPLETE_ANYWORD);
-      return gloss_cloud;}
+	if (gloss_cloud) return gloss_cloud;
+	var seen={};
+	var sbook_index=sbook.index;
+	var label=fdjtDOM.Image(sbicon("TagIcon32x32.png"),"img.label","tags");
+	var outlets_span=fdjtDOM("span.outlets");
+	var sources_span=fdjtDOM("span.sources");
+	var completions=
+	    fdjtDOM(fdjtID("SBOOKGLOSSCLOUD"),label,outlets_span);
+	if (sbook.outlets) {
+	    var outlets=sbook.outlets;
+	    var i=0; var lim=outlets.length;
+	    while (i<lim) {
+		var outlet=outlets[i++];
+		var info=sbook.sourcekb.ref(outlet);
+		var completion=fdjtDOM("span.completion.cue.outlet",info.name);
+		completion.setAttribute("value",outlet);
+		completion.setAttribute("key",info.name);
+		if (info.about) completion.title=
+		    "share with '"+info.about+"'";
+		fdjtDOM(outlets_span,completion," ");}}
+	if (sbook.sources) {
+	    var outlets=sbook.outlets||[];
+	    var sources=sbook.sources;
+	    var i=0; var lim=sources.length;
+	    while (i<lim) {
+		var source=sources[i++];
+		if (fdjtKB.contains(outlets,source)) continue;
+		var info=sbook.sourcekb.ref(source);
+		var completion=fdjtDOM
+		("span.completion.source",info.name);
+		completion.setAttribute("value",source);
+		completion.setAttribute("key",info.name);
+		if (info.about) completion.title=
+		    "highlight for '"+info.about+"'";
+		fdjtDOM(sources_span,completion," ");}}
+	completions._seen=seen;
+	var tagscores=sbook_index.tagScores();
+	var alltags=tagscores._all;
+	var i=0; while (i<alltags.length) {
+	    var tag=alltags[i++];
+	    // We elide sectional tags
+	    if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
+	    var tagnode=Knodule.HTML(tag,sbook.knodule,false,true);
+	    fdjtDOM(completions,tagnode," ");}
+	var i=0; while (i<alltags.length) {
+	    var tag=alltags[i++];
+	    // We elide sectional tags
+	    if ((typeof tag === "string") && (tag[0]==="\u00A7")) {
+		var showname=tag; var title;
+		if (showname.length>17) {
+		    showname=showname.slice(0,17)+"...";
+		    title=tag;}
+		var sectnode=
+		    fdjtDOM("span.completion",fdjtDOM("span.sectname",showname));
+		if (title) sectnode.title=title;
+		sectnode.key=tag; sectnode.value=tag;
+		fdjtDOM(completions,sectnode," ");
+		continue;}}
+	// Generic sources go at the end
+	fdjtDOM(completions,sources_span);
+	completions.onmouseup=glosscloud_onclick;
+	gloss_cloud=new fdjtUI.Completions(
+	    completions,fdjtID("SBOOKTAGINPUT"),
+	    fdjtUI.FDJT_COMPLETE_OPTIONS|
+		fdjtUI.FDJT_COMPLETE_CLOUD|
+		fdjtUI.FDJT_COMPLETE_ANYWORD);
+	return gloss_cloud;}
     sbook.glossCloud=glossCloud;
 
     function glosscloud_onclick(evt){
@@ -654,18 +643,19 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (completion) {
 	    addTag(fdjtID("SBOOKGLOSSFORM"),completion);
 	    if (fdjtDOM.hasClass(fdjtID("SBOOKGLOSSFORM"),"note")) {
-	      var keyval=gloss_cloud.getKey(completion);
-	      var input=fdjtID("SBOOKNOTEINPUT");
-	      if ((input)&&(keyval)) {
-		var tagspan=istagging(input);
-		var stringval=input.value;
-		if (tagspan) {
-		  input.value=
-		    stringval.slice(0,tagspan[0])+keyval+"]"+
-		    stringval.slice(tagspan[1]);}}
-	      fdjtDOM.dropClass("SBOOKHUD","tagging");}
+		var keyval=gloss_cloud.getKey(completion);
+		var input=fdjtID("SBOOKNOTEINPUT");
+		if ((input)&&(keyval)) {
+		    var tagspan=istagging(input);
+		    var stringval=input.value;
+		    if (tagspan) {
+			input.value=
+			    stringval.slice(0,tagspan[0])+keyval+"]"+
+			    stringval.slice(tagspan[1]);}}
+		fdjtDOM.dropClass("SBOOKHUD","tagging");}
 	    else {
-	      fdjtID("SBOOKTAGINPUT").value='';}}
+		fdjtID("SBOOKTAGINPUT").value='';
+		gloss_cloud.docomplete();}}
 	fdjtUI.cancel(evt);}
 
     /***** The Share Cloud *****/
@@ -682,7 +672,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var outlets_span=fdjtDOM("span.outlets");
 	var sources_span=fdjtDOM("span.sources");
 	var completions=
-	  fdjtDOM("div.completions.flyleaf.showempty","\n",label,outlets_span);
+	    fdjtDOM(fdjtID("SBOOKSHARECLOUD"),label,outlets_span);
 	if (sbook.outlets) {
 	    var outlets=sbook.outlets;
 	    var i=0; var lim=outlets.length;
@@ -715,12 +705,11 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM(completions,sources_span);
 	//fdjtDOM.addListener(completions,"click",markcloud_onclick);
 	completions.onmouseup=sharecloud_onclick;
-	share_cloud=
-	    new fdjtUI.Completions(
-		completions,false,
-		fdjtUI.FDJT_COMPLETE_OPTIONS|
-		    fdjtUI.FDJT_COMPLETE_CLOUD|
-		    fdjtUI.FDJT_COMPLETE_ANYWORD);
+	share_cloud=new fdjtUI.Completions(
+	    completions,fdjtID("SBOOKSHAREINPUT"),
+	    fdjtUI.FDJT_COMPLETE_OPTIONS|
+		fdjtUI.FDJT_COMPLETE_CLOUD|
+		fdjtUI.FDJT_COMPLETE_ANYWORD);
 	return share_cloud;}
     sbook.shareCloud=shareCloud;
 
@@ -728,8 +717,10 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var completion=fdjtDOM.getParent(target,'.completion');
 	if (completion) {
-	    addTag(fdjtID("SBOOKGLOSSFORM"),completion);}
-	fdjtUI.cancel(evt);}
+	    addTag(fdjtID("SBOOKGLOSSFORM"),completion);
+	    fdjtID("SBOOKSHAREINPUT").value="";
+	    share_cloud.docomplete();
+	    fdjtUI.cancel(evt);}}
 
     /***** Saving (submitting/queueing) glosses *****/
 
