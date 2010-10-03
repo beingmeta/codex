@@ -1081,7 +1081,7 @@ div.sbookaddgloss form div.controls .checkspan.private.ischecked {
 div.sbookaddgloss form div.controls .checkspan.private input[type='checkbox'] {
     display: none;}
 
-div.sbookaddgloss form div.topblock { min-height: 55px;}
+div.sbookaddgloss form div.topblock { min-height: 50px;}
 div.sbookaddgloss form div.input {
     display: none; width: auto; }
 div.sbookaddgloss form div.input input {}
