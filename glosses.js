@@ -76,7 +76,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (gloss.note) {
 		if (notes[user]) fdjtKB.add(notes,user,glossid,true);
 		else notes[user]=[glossid];}
-	    if (gloss.href) {
+	    if (gloss.link) {
 		if (links[user]) fdjtKB.add(links,user,glossid,true);
 		else links[user]=[glossid];}
 	    if (sources) {
@@ -89,7 +89,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 			if (notes[source])
 			    fdjtKB.add(notes,source,glossid,true);
 			else notes[source]=[glossid];}
-		    if (gloss.href) {
+		    if (gloss.link) {
 			if (links[source])
 			    fdjtKB.add(links,source,glossid,true);
 			else links[source]=[glossid];}}}
@@ -124,7 +124,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		    while (j<jlim) {
 			var icon=fdjtDOM.Image(sbicon("DiagLink16x16.png"));
 			var gloss=sbook.glosses.ref(sg[j++]);
-			var anchor=fdjtDOM.Anchor(gloss.href,"a",icon);
+			var anchor=fdjtDOM.Anchor(gloss.link,"a",icon);
 			anchor.title=gloss.note;
 			fdjtDOM(span," ",anchor);}}
 		if (notes[tag]) {
@@ -163,13 +163,14 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
     /***** Adding tags ******/
 
-    function addTag(form,tag) {
+    function addTag(form,tag,varname) {
 	// fdjtLog("[%fs] Adding %o to tags for %o",fdjtET(),tag,form);
 	if (!(tag)) tag=form;
 	if (form.tagName!=='FORM')
 	    form=fdjtDOM.getParent(form,'form')||form;
 	var tagselt=fdjtDOM.getChild(form,'.tags');
-	var varname='TAGS'; var info; var title=false; var textspec='span.term';
+	var info; var title=false; var textspec='span.term';
+	if (!(varname)) varname='TAGS';
 	if ((tag.nodeType)&&(fdjtDOM.hasClass(tag,'completion'))) {
 	    if (fdjtDOM.hasClass(tag,'outlet')) {
 		varname='OUTLETS'; textspec='span.outlet';}
@@ -228,6 +229,10 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM.dropClass(sbookHUD,"tagging");}
     sbook.stopTagging=stopTagging;
     
+    function dontsubmit_keypress(evt){
+	evt=evt||event; var ch=evt.charCode;
+	if (ch===13) fdjtUI.cancel(evt);}
+
     /* Handling tag input */
 
     function taginput_keyup(evt){
@@ -281,7 +286,17 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     var shareinput_timer=false;
     function shareinput_keyup(evt){
 	var kc=evt.keyCode;
-	share_cloud.docomplete();}
+	var target=fdjtUI.T(evt);
+	if (kc===13) {
+	    if (target.value.indexOf('@')>0) {
+		addTag(target.form,target.value,'INVITE');
+		target-value='';}
+	    else {
+		var completions=share_cloud.complete(target.value);
+		if ((completions)&&(completions.length)) {
+		    addTag(target.form,completions[0]);
+		    target.value='';}}}
+	else share_cloud.docomplete();}
     sbook.UI.handlers.shareinput_keyup=shareinput_keyup;
     
     function shareinput_focus(evt){
@@ -507,11 +522,13 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    noteinput.onmouseup=note_mouseup;}
 	var taginput=fdjtDOM.getInput(form,"TAG");
 	if (taginput) {
+	    taginput.onkeypress=dontsubmit_keypress;
 	    taginput.onkeyup=taginput_keyup;
 	    taginput.onfocus=taginput_focus;
 	    taginput.onblur=taginput_blur;}
 	var shareinput=fdjtDOM.getInput(form,"SHARE");
 	if (shareinput) {
+	    shareinput.onkeypress=dontsubmit_keypress;
 	    shareinput.onkeyup=shareinput_keyup;
 	    shareinput.onfocus=shareinput_focus;
 	    shareinput.onblur=shareinput_blur;}
@@ -672,7 +689,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
-	    if (uuidelt) uuidelt.value=fdjtTime.getUUID(sbook.nodeid);}
+	    if (uuidelt) uuidelt.value=fdjtState.getUUID(sbook.nodeid);}
 	fdjtUI.AutoPrompt.cleanup(form);
 	if (!(sbook.offline)) return fdjtAjax.onsubmit(evt);
 	if (!(navigator.onLine)) return saveGloss(form,evt);
