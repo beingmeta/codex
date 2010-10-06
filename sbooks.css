@@ -839,46 +839,6 @@ div#SBOOKHUD.settings div#SBOOKDASH table.settings .smallbutton {
 
 /* Dash content rules */
 
-/* Login tab */
-
-table.login {}
-table.login th {text-align: right; vertical-align: top; font-size: 125%;}
-table.login th.or {font-size: 150%; color: gold;}
-table.login td {text-align: left; vertical-align: top;}
-table.login td.oneclick a { float: left; margin-right: 3px;}
-table.login td.oneclick a.login {
-  background-color: white; padding: 0px; margin-right: 8px;}
-table.login td.oneclick a.login img {
-  margin: 0px; border: 0px; padding: 0px; height: 32px;}
-table.login td.oneclick a.login[value='facebook'] {
-  background-color: inherit;}
-table.login a.button { padding: 1px;}
-table.login td a.button { padding: 1px; }
-table.login td a.button img { height: 32px;}
-table.login td input[TYPE='TEXT'] { }
-table.login td input[TYPE='TEXT'][NAME='USERNAME'] { width: 100%;}
-table.login td input[TYPE='TEXT'][NAME='LOCALNAME'] { 
-  width: 50%; min-width: 20em;}
-table.login td input[TYPE='PASSWORD'][NAME='LOCALPASS'] { 
-  width: 50%; min-width: 20em;}
-table.login td input[TYPE='TEXT'][NAME='OPENID'] {
-  width: 100%;}
-table.login td div.doc {
-    display: none; font-style: italic; color: purple;}
-table.login td.icon { vertical-align: top;}
-table.login td.icon img.helpicon {
-  color: yellow; background-color: blue;
-  margin-top: 3px; margin-left: 3px;
-  display: none;}
-table.login tr td { border-bottom: transparent solid 24px;}
-table.login tr th { border-bottom: transparent solid 24px;}
-table.login tr.nospace td { border-bottom: 0px;}
-table.login tr.nospace th { border-bottom: 0px;}
-table.login a img { border: none;}
-table.login td.userlogin { vertical-align: top;}
-table.login td.userlogin button { padding: 2px;}
-table.login td.userlogin img { vertical-align: top; height: 16px;}
-
 /* About information */
 
 div.sbookabout { text-align: center; }

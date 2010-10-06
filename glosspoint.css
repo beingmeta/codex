@@ -2,6 +2,11 @@ body {
     font-family: helvetica,sans,sans-serif;
     font-size: 14px;}
 
+h1 { min-height: 75px;}
+p.loginprompt {
+    margin-top: 0px; margin-bottom: 4ex;
+    text-align: center; font-size: 125%;}
+
 h1 .passagefrom {
     display: block; clear: both; text-align: center;
     font-weight: normal; font-size: 90%;
@@ -52,3 +57,4 @@ form.glosspoint div.field div.fieldvalue textarea {
 form.glosspoint div.field div.fieldvalue input[TYPE='text'] {
     width: 100%;}
 
+table.login { width: 80%; margin-left: 10%; margin-right: 10%;}
