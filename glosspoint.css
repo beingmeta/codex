@@ -1,0 +1,54 @@
+body {
+    font-family: helvetica,sans,sans-serif;
+    font-size: 14px;}
+
+h1 .passagefrom {
+    display: block; clear: both; text-align: center;
+    font-weight: normal; font-size: 90%;
+    margin-bottom: 0px;}
+
+.topleft {position: absolute; left: 0px; top: 0px;}
+.topright {position: absolute; right: 0px; top: 0px;}
+img.topright, img.topleft { opacity: 0.8;}
+
+h1 { text-align: center;}
+h1 .user { font-style: italic;}
+h1 .title { font-size: 50%;}
+h1 .refuri { font-family: fixed; font-size: 50%;}
+
+form.glosspoint {
+    margin-left: 10%; margin-right: 10%; width: 80%;
+    padding: 1em; border: solid black 3px; padding-top: 2px;}
+form.glosspoint textarea { width: 100%; min-height: 4ex;}
+form.glosspoint input[type='TEXT'] {
+    display: block; width: 100%; clear: both;}
+form.glosspoint div.controls {
+    text-align: right; font-size: 150%;
+    vertical-align: top;}
+form.glosspoint div.controls span.date {
+    font-size: 75%; float: left;}
+
+div.glosses {
+    margin-left: 10%; margin-right: 10%; width: 80%;
+    margin-top: 3ex; border-top: solid black 1ex;}
+div.gloss { width: 100%; clear: both;}
+div.gloss a.editlink { float: right;}
+div.gloss img.userpic { float: left;}
+div.gloss span.source { font-variant: small-caps;}
+div.gloss span.user {
+    font-weight: bold; font-size: 125%; padding-right: 1em;}
+
+form.glosspoint div.field { width: 100%; clear: both;}
+form.glosspoint div.field span.label {
+    width: 5em; font-weight: bold; text-align: right;
+    float: left;}
+form.glosspoint div.field span.controls {
+    text-align: center; float: right;}
+
+form.glosspoint div.field div.fieldvalue {
+    position: absolute; left: 6em;}
+form.glosspoint div.field div.fieldvalue textarea {
+    width: 100%; height: 100%;}
+form.glosspoint div.field div.fieldvalue input[TYPE='text'] {
+    width: 100%;}
+
