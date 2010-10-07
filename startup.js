@@ -573,6 +573,11 @@ sbook.Startup=
 		    idlink.href='https://www.sbooks.net/admin/id.fdcgi';}}
 	    var addgloss=fdjtID("SBOOKGLOSSFORM");
 	    if (addgloss) sbook.setupGlossForm(addgloss);
+	    if (sbook.user.friends) {
+		var friends=sbook.user.friends; var i=0; var lim=friends.length;
+		while (i<lim) {
+		    var friend=fdjtKB.ref(friends[i++]);
+		    sbook.UI.addSource(friend);}}
 	    sbook._user_setup=true;}
 
 	function setupGlosses() {
@@ -680,7 +685,8 @@ sbook.Startup=
 	    sbook.Message("Setting up sharing cloud...");
 	    fdjtDOM.replace("SBOOKSHARECLOUD",sbook.shareCloud().dom);
 	    sbook.glossCloud().complete('');
-	    sbook.shareCloud().complete('');}
+	    sbook.shareCloud().complete('');
+	    if (sbook.knodule) sbook.addTag2UI(sbook.knodule.alldterms);}
 
 	function initGlosses(glosses,etc){
 	    var allglosses=sbook.allglosses;

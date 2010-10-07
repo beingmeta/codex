@@ -1,6 +1,6 @@
 body {
     font-family: helvetica,sans,sans-serif;
-    font-size: 14px;}
+    font-size: 18px;}
 
 h1 { min-height: 75px;}
 p.loginprompt {
@@ -8,22 +8,23 @@ p.loginprompt {
     text-align: center; font-size: 125%;}
 
 h1 .passagefrom {
-    display: block; clear: both; text-align: center;
+    display: block; clear: none; text-align: center;
     font-weight: normal; font-size: 90%;
     margin-bottom: 0px;}
 
-.topleft {position: absolute; left: 0px; top: 0px;}
-.topright {position: absolute; right: 0px; top: 0px;}
+.topleft {float: left;}
+.topright {float: right;}
 img.topright, img.topleft { opacity: 0.8;}
 
 h1 { text-align: center;}
 h1 .user { font-style: italic;}
-h1 .title { font-size: 50%;}
-h1 .refuri { font-family: fixed; font-size: 50%;}
+h1 .title { font-size: 50%; clear: none;}
+h1 .refuri { font-family: fixed; font-size: 50%; clear: none;}
 
 form.glosspoint {
-    margin-left: 10%; margin-right: 10%; width: 80%;
-    padding: 1em; border: solid black 3px; padding-top: 2px;}
+    margin-left: 5%; margin-right: 5%; width: 88%;
+    padding: 1%; border: solid black 3px; padding-top: 2px;
+    clear: both;}
 form.glosspoint textarea { width: 100%; min-height: 4ex;}
 form.glosspoint input[type='TEXT'] {
     display: block; width: 100%; clear: both;}
@@ -34,7 +35,7 @@ form.glosspoint div.controls span.date {
     font-size: 75%; float: left;}
 
 div.glosses {
-    margin-left: 10%; margin-right: 10%; width: 80%;
+    margin-left: 1%; margin-right: 1%; width: 98%;
     margin-top: 3ex; border-top: solid black 1ex;}
 div.gloss { width: 100%; clear: both;}
 div.gloss a.editlink { float: right;}

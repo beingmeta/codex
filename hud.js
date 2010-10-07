@@ -99,25 +99,26 @@ var sbookMode=
 			if (pic) {
 			    var img=fdjtDOM.getFirstChild(glossmark,"IMG.big");
 			    if (img) img.src=pic;}}
-		    if (item.tags) addTag2UI(item.tags);}}
+		    if (item.tags) addTag2UI(item.tags,true);}}
 	    sbook.glosses.addInit(initUI4Item);
 
-	    function addTag2UI(tag){
+	    function addTag2UI(tag,forsearch){
 		if (tag instanceof Array) {
 		    var i=0; var lim=tag.length;
-		    while (i<lim) addTag2UI(tag[i++]);
+		    while (i<lim) addTag2UI(tag[i++],forsearch||false);
 		    return;}
 		else {
 		    var gloss_cloud=sbook.glossCloud();
 		    var search_cloud=sbook.FullCloud();
 		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
-		    var search_tag=search_cloud.getByValue(tag,".completion");
+		    var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			gloss_tag=Knodule.HTML(tag,sbook.knodule,false,true);
 			gloss_cloud.addCompletion(gloss_tag);}
-		    if (!((search_tag)&&(search_tag.length))) {
+		    if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
 			search_tag=Knodule.HTML(tag,sbook.knodule,false,true);
 			search_cloud.addCompletion(search_tag);}}}
+	    sbook.addTag2UI=addTag2UI;
 	    
 	    sbookFoot=fdjtID("SBOOKFOOT");
 	    sbookHead=fdjtID("SBOOKHEAD");

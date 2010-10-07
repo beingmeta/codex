@@ -1123,6 +1123,12 @@ div.sbookaddgloss form.share div.controls img[alt='share'] {
 
 h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
 
+.sbookpagehead { page-break-before: always;}
+.sbookpagefoot { page-break-after: always;}
+.sbookavoidhead { page-break-before: avoid;}
+.sbookavoidfoot { page-break-after: avoid;}
+.sbookavoidbreak { page-break-inside: avoid;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
