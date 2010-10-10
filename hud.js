@@ -65,13 +65,11 @@ var sbookMode=
 	    dash.innerHTML=sbook_dashtext;
 	    var gloss=fdjtID("SBOOKADDGLOSS");
 	    gloss.innerHTML=sbook_addgloss;
-	    fdjtUI.AutoPrompt.setup(gloss);
 	    var dashtop=fdjtID("SBOOKDASHTOP");
 	    dashtop.innerHTML=sbook_dashtop;
 	    // Initialize search UI
 	    var search=fdjtID("SBOOKSEARCH");
 	    search.innerHTML=sbook_searchbox;
-	    fdjtUI.AutoPrompt.setup(search);
 	    sbook.empty_cloud=
 		new fdjtUI.Completions(fdjtID("SBOOKSEARCHCLOUD"));
 
@@ -375,7 +373,6 @@ var sbookMode=
 		    if (hidehelp.checked)
 			fdjtState.setCookie("sbookhidehelp",true,false,"/");
 		    else fdjtState.setCookie("sbookhidehelp","no",false,"/");};
-	    fdjtUI.AutoPrompt.setup(fdjtID("SBOOKDASH"));
 	    var refuris=document.getElementsByName("REFURI");
 	    if (refuris) {
 		var i=0; var len=refuris.length;

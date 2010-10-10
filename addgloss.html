@@ -1,4 +1,4 @@
-<form action="https://glossdb.sbooks.net/v4/addgloss.fdcgi"
+<form action="https://glossdb.sbooks.net/v4/glosspoint"
       ajaxaction="https://glosses.sbooks.net/v4/addgloss"
       target="addgloss" class="note" id="SBOOKGLOSSFORM">
   <div class="hidden">
@@ -18,15 +18,18 @@
     </div>
     <fieldset class="textfields">
       <div class="input note">
-	<textarea name="NOTE" class="autoprompt"
+	<textarea name="NOTE"
 		  placeholder="add a note,using brackets for descriptive [tag]s"
 		  wrap="virtual"
-		  id="SBOOKNOTEINPUT">
-	</textarea>
+		  id="SBOOKNOTEINPUT"></textarea>
+      </div>
+      <div class="input details">
+	<textarea name="DETAIL"
+		  placeholder="Add detailed comments or thoughts"
+		  id="SBOOKDETAILINPUT"></textarea>
       </div>
       <div class="input tag">
-	<input type="TEXT" name="TAG" value=""
-	       class="autoprompt" autocomplete="off"
+	<input type="TEXT" name="TAG" value="" autocomplete="off"
 	       placeholder="add tags to this passage" 
 	       onfocus="sbook.handlers.taginput_focus(event);"
 	       onblur="sbook.handlers.taginput_focus(event);"
@@ -35,13 +38,12 @@
       <div class="input link">
 	<input type="TEXT" name="LINK" value=""
 	       placeholder="type a URL to link from this passage" 
-	       class="autoprompt urlinput" prompt="type a web address (URL)"
+	       class="urlinput" prompt="type a web address (URL)"
 	       id="SBOOKLINKINPUT"/>
       </div>
       <div class="input share">
 	<input type="TEXT" name="SHARE" value="" autocomplete="off"
 	       placeholder="type an email or tag with friends or groups to share"
-	       class="autoprompt"
 	       id="SBOOKSHAREINPUT"/>
       </div>
     </fieldset>
@@ -58,6 +60,9 @@
 	 title="add a link"/>
     <img src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"
 	 alt="share"onclick="sbook.glossMode(this.alt);"
+	 title="share with friends"/>
+    <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
+	 alt="details"onclick="sbook.glossMode(this.alt);"
 	 title="share with friends"/>
 <!--
     <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);"

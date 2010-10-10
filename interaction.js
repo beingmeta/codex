@@ -128,6 +128,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if (fdjtDOM.hasParent(element,sbook.preview))
 		sbook.JumpTo(sbook.preview.id);
 	    else sbook.Preview(false);}
+	else if ((sbook.mode)&&(sbook.mode!=="target"))
+	    sbookMode(false);
 	else {
 	    var target=sbook.getTarget(element);
 	    if (sbook.Trace.gestures)
@@ -175,7 +177,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%fs] hud_tap %o (%o) hudup=%o mode=%o preview=%o target=%o",
 		    fdjtET(),element,ref,sbook.hudup,sbook.mode,sbook.preview,
 		    sbook.target);
-	if (!(ref)) {
+	if (fdjtDOM.hasParent(element,".helphud")) {
+	    var mode=fdjtDOM.findAttrib(element,"data-hudmode")||
+		fdjtDOM.findAttrib(element,"hudmode");
+	    if (mode) sbookMode(mode)
+	    else sbookMode(false);
+	    return;}
+	else if (!(ref)) {
 	    if (sbook.preview) return sbook.Preview(false);
 	    else return;}
 	else if (fdjtDOM.hasParent(element,".sectname")) {
@@ -617,6 +625,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	// fdjtLog("[%f] hud_touchend scroller=%o(%o) moved=%o",fdjtET(),scroller,scroller.element,scroller.moved);
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
 	else if ((fdjtDOM.isClickable(target))&&(sbook.ui!=="faketouch")) {
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%fs] Synthesizing click on %o",fdjtET(),target);
 	    var click_evt = document.createEvent("MouseEvents");
 	    click_evt.initMouseEvent("click", true, true, window,
 				     1,page_x,page_y,last_x, last_y,
@@ -638,7 +648,16 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		      (sbook.scrollers[sbook.scrolling]));
 	// fdjtLog("[%f] hud_touchend scroller=%o(%o) moved=%o",fdjtET(),scroller,scroller.element,scroller.moved);
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
-	else if (fdjtDOM.isClickable(target)) {}
+	else if ((fdjtDOM.isClickable(target))&&(sbook.ui!=="faketouch")) {
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%fs] Synthesizing click on %o",fdjtET(),target);
+	    var click_evt = document.createEvent("MouseEvents");
+	    click_evt.initMouseEvent("click", true, true, window,
+				     1,page_x,page_y,last_x, last_y,
+				     false, false, false, false, 0, null);
+	    fdjtUI.cancel(evt);
+	    target.dispatchEvent(click_evt);
+	    return;}
 	else {
 	    fdjtUI.cancel(evt);
 	    return hud_tap(target);}}

@@ -88,7 +88,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	var resultcount=fdjtDOM.getChild(box,".resultcount");
 	var refinecount=fdjtDOM.getChild(box,".refinecount");
 	// Update (clear) the input field
-	input.value=''; fdjtDOM.addClass(input,"isempty");
+	input.value='';
 	var elts=result._query; var i=0; var lim=elts.length;
 	// Update 'notags' class
 	if (elts.length) fdjtDOM.dropClass(box,"notags");
@@ -238,7 +238,6 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
     function searchInput_focus(evt){
 	evt=evt||event||null;
 	var input=fdjtDOM.T(evt);
-	fdjtUI.AutoPrompt.onfocus(evt);
 	sbook_search_focus=true;
 	if ((sbook.mode)&&(sbook.mode==='browsing'))
 	    sbookMode("searching");
@@ -247,7 +246,6 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 
     function searchInput_blur(evt){
 	evt=evt||event||null;
-	fdjtUI.AutoPrompt.onblur(evt);
 	sbook_search_focus=false;}
     sbook.UI.handlers.search_blur=searchInput_blur;
 

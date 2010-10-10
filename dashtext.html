@@ -1,7 +1,6 @@
 <div class='tabcontent dashtab' id='APPLOGIN'>
 <!-- <h1>Introduce Yourself</h1> -->
-<form action='https://auth.sbooks.net/v4/auth'
-      onsubmit='fdjtAutoPrompt_cleanup();'>
+<form action='https://auth.sbooks.net/v4/auth'>
 <table class='login' rowspacing='6'>
 <tr>
 <th/><th>Connect using</th>
@@ -27,8 +26,8 @@
   <th class='username'>
     &nbsp;username<br/><span style='font-size: 300%;'>@</span></th>
   <td class='userlogin'>
-    <input type='TEXT' name='USERNAME' value='' class='autoprompt'
-           prompt='Enter a username and click your site'/>
+    <input type='TEXT' name='USERNAME' value=''
+           placeholder='Enter a username and click your site'/>
     <br/>
     <div class='doc' id='USERNAMEDOC' style='display: none;'>
     Some sites provide OpenID login based on your user name.  Enter your
@@ -63,7 +62,8 @@
   <th class='or'>or</th>
   <th>
     <img src='http://static.beingmeta.com/graphics/openid-logo-small.png' alt='OpenID' style=' height: 32px;'/></th>
-  <td><input type='TEXT' name='OPENID' value='' class='autoprompt' prompt='Enter your OpenID (a url)'/><br/>
+  <td><input type='TEXT' name='OPENID' value=''
+	     placeholder='Enter your OpenID (a url)'/><br/>
     <input type='SUBMIT' name='ACTION' value='Use OpenID'/>
     <a href='http://openid.net/get-an-openid/'>Get an OpenID</a>
   </td>

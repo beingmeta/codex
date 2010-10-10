@@ -245,7 +245,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if ((completions.exact)&&(completions.exact.length===1))
 		addTag(target.form,completions.exact[0]);
 	    else addTag(target.form,target.value);
-	    target.value=""; fdjtDOM.addClass(target,"isempty");
+	    target.value="";
 	    gloss_cloud.complete("");
 	    return;}
 	else if ((kc===8)||(kc===46)) {
@@ -264,7 +264,6 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var completions=gloss_cloud.complete(target.value);
 	    if (completions.length) {
 		addTag(target.form,completions[0]);
-		fdjtDOM.addClass(target,"isempty");
 		target.value=""; gloss_cloud.complete("");}
 	    else target.value=completions.prefix;
 	    fdjtUI.cancel(evt);}
@@ -272,10 +271,8 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     sbook.UI.handlers.taginput_keyup=taginput_keyup;
 
     function taginput_focus(evt){
-	fdjtUI.AutoPrompt.onfocus(evt);
 	fdjtDOM.addClass(sbookHUD,"tagging");}
     function taginput_blur(evt){
-	fdjtUI.AutoPrompt.onblur(evt);
 	if (!(sbook.lockclouds))
 	    fdjtDOM.dropClass(sbookHUD,"tagging");}
     sbook.UI.handlers.taginput_focus=taginput_focus;
@@ -300,10 +297,8 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     sbook.UI.handlers.shareinput_keyup=shareinput_keyup;
     
     function shareinput_focus(evt){
-	fdjtUI.AutoPrompt.onfocus(evt);
 	fdjtDOM.addClass(sbookHUD,"sharing");}
     function shareinput_blur(evt){
-	fdjtUI.AutoPrompt.onblur(evt);
 	if (!(sbook.lockclouds))
 	    fdjtDOM.dropClass(sbookHUD,"sharing");}
     sbook.UI.handlers.shareinput_focus=shareinput_focus;
@@ -327,11 +322,11 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		tagupdate=false;}
 	    tagupdate=
 		setTimeout(function(){tagcomplete(target);},100);}
-	else if ((kc===13)&&(evt.ctrlKey)) {
+	else if ((kc===13)&&((evt.ctrlKey)||(target.name==='NOTE'))) {
 	    var form=fdjtDOM.getParent(fdjtUI.T(evt),"form");
 	    fdjtUI.cancel(evt);
-	    // Should go through AJAX
-	    form.submit();}}
+	    submitEvent(form);
+	    return;}}
     sbook.UI.handlers.note_keyup=note_keyup;
     function note_keypress(evt){
 	var target=fdjtUI.T(evt);
@@ -345,7 +340,9 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    gloss_cloud.complete("");
 	    return;}
 	var tagspan=istagging(target);
-	if (!(tagspan)) return;
+	if (!(tagspan)) {
+	    if ((ch===13)&&(target.name==='NOTE')) fdjtUI.cancel(evt)
+	    return;}
 	var value=target.value;
 	var tagstring=value.slice(tagspan[0],tagspan[1]);
 	if (ch===93) {
@@ -376,7 +373,8 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
     function gettagspan(input,pt){
 	if (fdjtDOM.hasClass(input,"isempty")) return false;
-	if ((typeof pt === 'undefined')&&
+	else if (fdjtString.isEmpty(input.value)) return false;
+	else if ((typeof pt === 'undefined')&&
 	    (typeof input.selectionStart === 'number')&&
 	    (typeof input.selectionEnd === 'number')&&
 	    (input.selectionEnd>input.selectionStart)) {
@@ -469,6 +467,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		uuidelt.value=fdjtState.getUUID(sbook.nodeid);
 	    return;}
 	idelt.value=target.id;
+	uuidelt.value=fdjtState.getUUID(sbook.nodeid);
 	var syncelt=fdjtDOM.getInput(form,"SYNC");
 	syncelt.value=(sbook.syncstamp+1);
 	var note=fdjtDOM.getInput(form,"NOTE");
@@ -476,16 +475,12 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var href=fdjtDOM.getInput(form,"HREF");
 	var loc=fdjtDOM.getInput(form,"LOCATION");
 	var loclen=fdjtDOM.getInput(form,"LOCLEN");
-	note.value=""; fdjtDOM.addClass(note,"isempty");
-	tag.value=""; fdjtDOM.addClass(tag,"isempty");
-	href.value=""; fdjtDOM.addClass(href,"isempty");
+	note.value=""; tag.value=""; href.value="";
 	if (loc) {loc.value=sbook.docinfo[target.id].starts_at;}
 	if (loclen) {
 	    loclen.value=
 		sbook.docinfo[target.id].ends_at-
 		sbook.docinfo[target.id].starts_at;}
-	// This puts the prompts back into the fields
-	fdjtUI.AutoPrompt.setup(form,true);
 	var tagselt=fdjtDOM.getChild(form,".tags");
 	var tagspans=fdjtDOM.$(".checkspan",tagselt);
 	if (tagspans) {
@@ -529,6 +524,13 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    noteinput.onkeypress=note_keypress;
 	    noteinput.onkeyup=note_keyup;
 	    noteinput.onmouseup=note_mouseup;}
+	var detailinput=fdjtDOM.getInput(form,"DETAIL");
+	if (detailinput) {
+	    detailinput.onfocus=note_focus;
+	    detailinput.onblur=note_blur;
+	    detailinput.onkeypress=note_keypress;
+	    detailinput.onkeyup=note_keyup;
+	    detailinput.onmouseup=note_mouseup;}
 	var taginput=fdjtDOM.getInput(form,"TAG");
 	if (taginput) {
 	    taginput.onkeypress=dontsubmit_keypress;
@@ -543,7 +545,6 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    shareinput.onblur=shareinput_blur;}
 	if (sbook.syncstamp)
 	    fdjtDOM.getInput(form,"SYNC").value=(sbook.syncstamp+1);
-	fdjtUI.AutoPrompt.setup(form);
 	form.onsubmit=submitGloss;
 	form.oncallback=addgloss_callback;
 	form.setAttribute("sbooksetup","yes");}
@@ -694,18 +695,24 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     // Submits a gloss, queueing it if offline.
     function submitGloss(evt){
 	evt=evt||event||null;
-	var form=fdjtUI.T(evt);
+	var form=(fdjtUI.T(evt));
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
 	    if (uuidelt) uuidelt.value=fdjtState.getUUID(sbook.nodeid);}
-	fdjtUI.AutoPrompt.cleanup(form);
+	var note=fdjtDOM.getInput(form,"NOTE");
 	if (!(sbook.offline)) return fdjtAjax.onsubmit(evt);
 	if (!(navigator.onLine)) return saveGloss(form,evt);
 	// Eventually, we'll unpack the AJAX handler to let it handle
 	//  connection failures by calling saveGloss.
 	else return fdjtAjax.onsubmit(evt);}
     sbook.submitGloss=submitGloss;
+
+    function submitEvent(form){
+	var submit_evt = document.createEvent("HTMLEvents");
+	submit_evt.initEvent("submit", true, true);
+	form.dispatchEvent(submit_evt);
+	return;}
 
     // Queues a gloss when offline
     function saveGloss(form,evt){

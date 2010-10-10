@@ -1099,6 +1099,8 @@ div.sbookaddgloss form div.input input[type='TEXT'][name='NOTE'] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
+div.sbookaddgloss form div.input.details textarea[name='DETAILS'] {
+    height: 20ex;}
 div.sbookaddgloss form div.input input[type='TEXT'][name='SHARE'] {
     font-size: 16px; height: 24px; overflow: hidden;
     background-image:
@@ -1117,11 +1119,13 @@ div.sbookaddgloss form.note div.input.note { display: block;}
 div.sbookaddgloss form.tag div.input.tag { display: block;}
 div.sbookaddgloss form.link div.input.link { display: block;}
 div.sbookaddgloss form.share div.input.share { display: block;}
+div.sbookaddgloss form.details div.input.details { display: block;}
 
 div.sbookaddgloss form.note div.controls img[alt='note'],
 div.sbookaddgloss form.tag div.controls img[alt='tag'],
 div.sbookaddgloss form.link div.controls img[alt='link'],
-div.sbookaddgloss form.share div.controls img[alt='share'] {
+div.sbookaddgloss form.share div.controls img[alt='share'],
+div.sbookaddgloss form.details div.controls img[alt='details'] {
     background-color: silver; border-color: gold;}
 
 /* Scroll free rules */
