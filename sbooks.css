@@ -1124,6 +1124,17 @@ div.sbookaddgloss form.link div.controls img[alt='link'],
 div.sbookaddgloss form.share div.controls img[alt='share'] {
     background-color: silver; border-color: gold;}
 
+/* Scroll free rules */
+
+body.scrollfree {} /* margin: 0px; */
+body.scrollfree #SBOOKBODY {
+    position: absolute;}
+body.scrollfree div#SBOOKHUD div#SBOOKFOOT { overflow: visible;}
+body.scrollfree div#SBOOKHUD div#SBOOKFOOT,
+body.scrollfree div.sbookmargin#SBOOKPAGEFOOT,
+body.scrollfree div.sbookmargin#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
+    bottom: auto; position: absolute;}
+
 /* Pagination stuff */
 
 h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}

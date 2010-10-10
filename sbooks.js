@@ -67,7 +67,7 @@ var sbook=
      Trace: {
 	 startup: 1,      // Whether to debug startup
 	 mode: false,  // Whether to trace mode changes
-	 nav: false,    // Whether to trace book navigation
+	 nav: true,    // Whether to trace book navigation
 	 scan: false,  // Whether to trace DOM scanning
 	 search: 0, // Whether (and level) to trace searches
 	 clouds: 0, // Whether to trace cloud generation
@@ -76,7 +76,7 @@ var sbook=
 	 network: 0,      // Whether we're debugging server interaction
 	 glosses: false, // Whether we're tracing gloss processing
 	 pagination: 0, // Whether to trace pagination
-	 paging: false, // Whether to trace paging (movement by pages)
+	 paging: true, // Whether to trace paging (movement by pages)
 	 gestures: 0} // Whether to trace gestures
     };
 var _sbook_setup=false;

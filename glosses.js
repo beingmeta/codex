@@ -290,7 +290,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (kc===13) {
 	    if (target.value.indexOf('@')>0) {
 		addTag(target.form,target.value,'INVITE');
-		target-value='';}
+		target.value='';}
 	    else {
 		var completions=share_cloud.complete(target.value);
 		if ((completions)&&(completions.length)) {
