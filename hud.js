@@ -81,9 +81,9 @@ var sbookMode=
 	    var glosses=fdjtID("SBOOKALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
 	    sbook.glosses.addEffect("user",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit(sbook.UI.addSource,"newsource");});
+		sbook.sourcekb.ref(v).oninit(sbook.UI.addGlossSource,"newsource");});
 	    sbook.glosses.addEffect("distribution",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit(sbook.UI.addSource,"newsource");});
+		sbook.sourcekb.ref(v).oninit(sbook.UI.addGlossSource,"newsource");});
 
 	    function initUI4Item(item){
 		if (document.getElementById(item.frag)) {

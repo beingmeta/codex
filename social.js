@@ -52,25 +52,26 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 
     function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
-    sbook.UI.addSource=function(info){
+    function addSource(info,withgloss){
 	if (typeof info === 'string') info=fdjtKB.ref(info);
 	var humid=info.humid;
 	if (!(info.name)) return;
-	var icon=fdjtID("SBOOKSOURCEICON"+humid);
-	if (!(icon)) { // Add icon to the sources bar
-	    var pic=info.pic; var kind=info.kind;
-	    if (pic) {}
-	    else if (kind===':PERSON')
-		pic=sbicon("sbooksperson40x40.png");
-	    else if (kind===':CIRCLE')
-		pic=sbicon("sbookscircle40x40.png");
-	    else if (kind===':OVERDOC')
-		pic=sbicon("sbooksoverdoc40x40.png");
-	    else pic=sbook;
-	    icon=fdjtDOM.Image(pic,".button.source",info.name|info.kind,
-			       ("click to show/hide glosses from "+info.name));
-	    icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
-	    fdjtDOM(fdjtID("SBOOKSOURCES")," ",icon);}
+	if (withgloss) {
+	    var icon=fdjtID("SBOOKSOURCEICON"+humid);
+	    if (!(icon)) { // Add icon to the sources bar
+		var pic=info.pic; var kind=info.kind;
+		if (pic) {}
+		else if (kind===':PERSON')
+		    pic=sbicon("sbooksperson40x40.png");
+		else if (kind===':CIRCLE')
+		    pic=sbicon("sbookscircle40x40.png");
+		else if (kind===':OVERDOC')
+		    pic=sbicon("sbooksoverdoc40x40.png");
+		else pic=sbook;
+		icon=fdjtDOM.Image(pic,".button.source",info.name|info.kind,
+				   ("click to show/hide glosses from "+info.name));
+		icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
+		fdjtDOM(fdjtID("SBOOKSOURCES")," ",icon);}}
 	var sharetag=fdjtID("SBOOKSHARETAG"+humid);
 	if (!(sharetag)) { // Add entry to the share cloud
 	    var completion=fdjtDOM("span.completion.cue.source",info.name);
@@ -86,6 +87,8 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	    completion.setAttribute("key",info.name);
 	    fdjtDOM(fdjtID("SBOOKGLOSSCLOUD"),completion," ");}
 	return info;};
+    sbook.UI.addSource=addSource;
+    sbook.UI.addGlossSource=function(info){addSource(info,true);};
 
     function everyone_onclick(evt)
     {

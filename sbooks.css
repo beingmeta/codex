@@ -210,6 +210,11 @@ div#SBOOKHUD div#SBOOKABOUT div.textblock {
 div#SBOOKHUD div#SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
 div#SBOOKHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
+/* SBOOKSOURCES */
+
+div#SBOOKSOURCES {
+    overflow-y: hidden; overflow-x: auto; white-space: nowrap;}
+
 /* TOC rules */
 
 div.sbooktoc { display: none;}
