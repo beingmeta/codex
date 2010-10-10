@@ -463,18 +463,27 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (!gloss_cloud) sbook.glossCloud();
 	if (typeof target === 'string') target=fdjtID(id);
 	var idelt=fdjtDOM.getInput(form,"FRAG");
-	if (idelt.value===target.id) {return;}
-	idelt.value=target.id;
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
-	uuidelt.value=fdjtState.getUUID(sbook.nodeid);
+	if (idelt.value===target.id) {
+	    if (!((uuidelt.value)))
+		uuidelt.value=fdjtState.getUUID(sbook.nodeid);
+	    return;}
+	idelt.value=target.id;
 	var syncelt=fdjtDOM.getInput(form,"SYNC");
 	syncelt.value=(sbook.syncstamp+1);
 	var note=fdjtDOM.getInput(form,"NOTE");
 	var tag=fdjtDOM.getInput(form,"TAG");
 	var href=fdjtDOM.getInput(form,"HREF");
+	var loc=fdjtDOM.getInput(form,"LOCATION");
+	var loclen=fdjtDOM.getInput(form,"LOCLEN");
 	note.value=""; fdjtDOM.addClass(note,"isempty");
 	tag.value=""; fdjtDOM.addClass(tag,"isempty");
 	href.value=""; fdjtDOM.addClass(href,"isempty");
+	if (loc) {loc.value=sbook.docinfo[target.id].starts_at;}
+	if (loclen) {
+	    loclen.value=
+		sbook.docinfo[target.id].ends_at-
+		sbook.docinfo[target.id].starts_at;}
 	// This puts the prompts back into the fields
 	fdjtUI.AutoPrompt.setup(form,true);
 	var tagselt=fdjtDOM.getChild(form,".tags");
@@ -512,7 +521,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM.getInput(form,"REFURI").value=sbook.refuri;
 	fdjtDOM.getInput(form,"USER").value=sbook.user.qid;
 	fdjtDOM.getInput(form,"DOCTITLE").value=document.title;
-	fdjtDOM.getInput(form,"SOURCE").value=document.location.href;
+	fdjtDOM.getInput(form,"DOCURI").value=document.location.href;
 	var noteinput=fdjtDOM.getInput(form,"NOTE");
 	if (noteinput) {
 	    noteinput.onfocus=note_focus;
