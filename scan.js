@@ -163,8 +163,7 @@ function sbookScan(root,docinfo){
 	if (elt.tagName.search(/H\d/)==0)
 	    return parseInt(elt.tagName.slice(1,2));
 	else return false;}
-    sbook.getTOCLevel=getLevel;
-    
+
     function handleHead
     (head,docinfo,scanstate,level,curhead,curinfo,curlevel,nodefn){
 	var headid=head.id;

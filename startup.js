@@ -366,7 +366,7 @@ sbook.Startup=
 		else titlepage=titlepage.parentNode;}
 	    var i=1; while (i<9) {
 		var rules=fdjtDOM.getMeta("sbook.head"+i,true).
-		    concat(fdjtDOM.getMeta("sbookhead"+i,true));
+		    concat(fdjtDOM.getMeta("sbook"+i+"head",true));
 		if ((rules)&&(rules.length)) {
 		    var j=0; var lim=rules.length;
 		    var elements=fdjtDOM.getChildren(document.body,rules[j++]);

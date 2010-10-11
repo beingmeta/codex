@@ -247,7 +247,8 @@ var sbook_delete_icon="redx12x12.png";
 	var qref=scan.qref;
 	var gloss=sbook.glosses.ref(qref);
 	var frag=gloss.get("frag");
-	sbookMark(fdjtID(frag),gloss);}
+	sbook.setGlossTarget(gloss);
+	sbookMode("target");}
 
     function sourceIcon(info){
 	if (info) return info.pic;}
@@ -444,7 +445,9 @@ var sbook_delete_icon="redx12x12.png";
 	    if (!((fdjtDOM.hasClass(child,"sbooknote"))||
 		  (fdjtDOM.hasClass(child,"sbookthread"))))
 		continue;
-	    if (child.qid===qid) return;
+	    if (child.qref===qid) {
+		fdjtDOM.replace(child,renderNote(note));
+		return;}
 	    if (child.tstamp<=tstamp) {
 		fdjtDOM.insertBefore(child,renderNote(note));
 		return;}

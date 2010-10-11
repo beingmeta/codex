@@ -457,12 +457,25 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /***** Setting the gloss target ******/
 
     function setGlossTarget(target,form){
+	var gloss=false;
 	if (!(form)) form=fdjtID("SBOOKGLOSSFORM");
 	if (!gloss_cloud) sbook.glossCloud();
-	if (typeof target === 'string') target=fdjtID(id);
+	if ((typeof target === 'string')&&(fdjtID(target))) 
+	    target=fdjtID(target);
+	else if ((typeof target === 'string')&&
+		 (sbook.glosses.ref(target))) {
+	    gloss=sbook.glosses.ref(target);
+	    target=fdjtID(gloss.frag);}
+	else if (target.pool===sbook.glosses) {
+	    gloss=target; target=fdjtID(gloss.frag);}
+	else {}
 	var idelt=fdjtDOM.getInput(form,"FRAG");
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
-	if (idelt.value===target.id) {
+	if ((gloss)&&(gloss.qid===uuidelt.value))
+	    // Already editing the gloss
+	    return;
+	else if (idelt.value===target.id) {
+	    // Already glossing the target
 	    if (!((uuidelt.value)))
 		uuidelt.value=fdjtState.getUUID(sbook.nodeid);
 	    return;}
@@ -471,22 +484,48 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var syncelt=fdjtDOM.getInput(form,"SYNC");
 	syncelt.value=(sbook.syncstamp+1);
 	var note=fdjtDOM.getInput(form,"NOTE");
+	var detail=fdjtDOM.getInput(form,"DETAIL");
 	var tag=fdjtDOM.getInput(form,"TAG");
 	var href=fdjtDOM.getInput(form,"HREF");
 	var loc=fdjtDOM.getInput(form,"LOCATION");
 	var loclen=fdjtDOM.getInput(form,"LOCLEN");
-	note.value""; href.value=""; href.value="";
-	if (loc) {loc.value=sbook.docinfo[target.id].starts_at;}
-	if (loclen) {
-	    loclen.value=
-		sbook.docinfo[target.id].ends_at-
-		sbook.docinfo[target.id].starts_at;}
+	var relay=fdjtDOM.getInput(form,"RELAY");
+	var info=sbook.docinfo[target.id];
+	note.value=""; href.value=""; detail.value="";
+	if (loc) {loc.value=info.starts_at;}
+	if (loclen) {loclen.value=info.ends_at-info.starts_at;}
 	var tagselt=fdjtDOM.getChild(form,".tags");
 	var tagspans=fdjtDOM.$(".checkspan",tagselt);
 	if (tagspans) {
 	    var i=0; var lim=tagspans.length;
 	    while (i<lim) {
 		fdjtDOM.remove(tagspans[i++]);}}
+	if ((gloss)&&(gloss.user===sbook.user.qid)) {
+	    uuidelt.value=gloss.qid;
+	    if (gloss.note) note.value=gloss.note;
+	    if (gloss.link) href.value=gloss.link;
+	    if (gloss.detail) detail.value=gloss.detail;}
+	else if (gloss) {
+	    if (gloss.note) note.value="("+gloss.note+")";}
+	else {}
+	if (gloss) {
+	    if (gloss.tags) {
+		var tags=gloss.tags; var i=0; var lim=tags.length;
+		while (i<lim) addTag(form,tags[i++],"TAGS");}
+	    if (gloss.outlets) {
+		var tags=gloss.outlets; var i=0; var lim=tags.length;
+		while (i<lim) addTag(form,tags[i++],"OUTLETS");}
+	    if (gloss.attention) {
+		var tags=gloss.attention; var i=0; var lim=tags.length;
+		while (i<lim) addTag(form,tags[i++],"ATTENTION");}}
+	// Clear any current tagcues from the last gloss
+	var cursoft=fdjtDOM.getChildren(gloss_cloud.dom,".cue.softcue");
+	var i=0; var lim=cursoft.length;
+	while (i<lim) {
+	    var cur=cursoft[i++];
+	    fdjtDOM.dropClass(cur,"cue");
+	    fdjtDOM.dropClass(cur,"softcue");}
+	// Get the tags on this element as cues
 	var info=sbook.docinfo[target.id];
 	var tags=[].concat(((info)&&(info.tags))||[]);
 	var glosses=sbook.glosses.find('frag',target.id);
@@ -494,12 +533,6 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	while (i<lim) {
 	    var g=glosses[i++]; var gtags=g.tags;
 	    if (gtags) tags=tags.concat(gtags);}
-	var cursoft=fdjtDOM.getChildren(gloss_cloud.dom,".cue.softcue");
-	var i=0; var lim=cursoft.length;
-	while (i<lim) {
-	    var cur=cursoft[i++];
-	    fdjtDOM.dropClass(cur,"cue");
-	    fdjtDOM.dropClass(cur,"softcue");}
 	var newcues=gloss_cloud.getByValue(tags);
 	var i=0; var lim=newcues.length;
 	while (i<lim) {
