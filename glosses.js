@@ -475,7 +475,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var href=fdjtDOM.getInput(form,"HREF");
 	var loc=fdjtDOM.getInput(form,"LOCATION");
 	var loclen=fdjtDOM.getInput(form,"LOCLEN");
-	note.value=""; tag.value=""; href.value="";
+	note.value""; href.value=""; href.value="";
 	if (loc) {loc.value=sbook.docinfo[target.id].starts_at;}
 	if (loclen) {
 	    loclen.value=

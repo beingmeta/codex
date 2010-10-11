@@ -1099,7 +1099,7 @@ div.sbookaddgloss form div.input input[type='TEXT'][name='NOTE'] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.sbookaddgloss form div.input.details textarea[name='DETAILS'] {
+div.sbookaddgloss form div.input.details textarea[name='DETAIL'] {
     height: 20ex;}
 div.sbookaddgloss form div.input input[type='TEXT'][name='SHARE'] {
     font-size: 16px; height: 24px; overflow: hidden;
