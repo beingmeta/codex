@@ -945,7 +945,8 @@ body.sbook a.sbooknote { display: block;}
   color: orange; text-decoration: none;
   padding-right: 3px;}
 .sbooknote .glossinfo img.delete { 
-  width: 1em; height: 1em; padding-right: 3px;}
+  width: 1em; height: 1em; padding-right: 3px;
+  cursor: pointer;}
 .sbooknote a.headref {
     float: right; clear: right; 
     font-family: times,serif; font-style: italic; font-size: 80%;
@@ -998,6 +999,11 @@ body.sparsebook.hudup .glossmark:hover img.tiny { display: none;}
 body.hudup .sbooktarget { color: blue; cursor: pointer;}
 body.hudup .sbooktarget.previewing { color: red; cursor: pointer;}
 body.hudup .sbooktarget .glossmark { color: blue; cursor: pointer;}
+
+/* Don't color the body
+   (actually, the body should probably never be a target, but when it is...)
+   */
+body.sbooktarget { color: inherit;}
 
 .sbooktarget span.glossmark img {
     border-top: solid blue 2px;}

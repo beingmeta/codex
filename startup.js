@@ -259,6 +259,7 @@ sbook.Startup=
 
 	function setConfig(name,value){
 	    var inputs=document.getElementsByName(name.toUpperCase());
+	    // fdjtLog("[%fs] setConfig %o=%o",fdjtET(),name,value);
 	    if ((value===true)||(typeof value === 'undefined')) {
 		fdjtState.setLocal("sbook."+name,'yes');
 		sbook[name]=true;

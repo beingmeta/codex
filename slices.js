@@ -226,7 +226,7 @@ var sbook_delete_icon="redx12x12.png";
 	    if (sbook.offline)
 		fdjtState.setLocal("glosses("+sbook.refuri+")",
 				   sbook.allglosses,true);
-	    var renderings=document.getElementsByName(glossid);
+	    var renderings=fdjtDOM.Array(document.getElementsByName(glossid));
 	    if (renderings) {
 		var i=0; var lim=renderings.length;
 		while (i<lim) fdjtDOM.remove(renderings[i++]);}
@@ -235,7 +235,7 @@ var sbook_delete_icon="redx12x12.png";
 		var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
 		if (newglosses.length===0) fdjtDOM.remove(glossmark);
 		else glossmark.glosses=newglosses;}}
-	else throw response;}
+	else alert(response);}
     
     function relayoredit_gloss(evt){
 	var scan=fdjtUI.T(evt);
