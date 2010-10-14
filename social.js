@@ -78,14 +78,24 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	    completion.id="SBOOKSHARETAG"+humid;
 	    completion.setAttribute("value",info.qid);
 	    completion.setAttribute("key",info.name);
-	    fdjtDOM(fdjtID("SBOOKSHARECLOUD"),completion," ");}
+	    fdjtDOM(fdjtID("SBOOKSHARECLOUD"),completion," ");
+	    if (sbook.share_cloud) sbook.share_cloud.addCompletion(completion);}
 	var sourcetag=fdjtID("SBOOKSOURCETAG"+humid);
 	if (!(sourcetag)) { // Add entry to the share cloud
-	    var completion=fdjtDOM("span.completion.cue.source",info.name);
+	    var completion=fdjtDOM("span.completion.source",info.name);
 	    completion.id="SBOOKSOURCETAG"+humid;
 	    completion.setAttribute("value",info.qid);
 	    completion.setAttribute("key",info.name);
-	    fdjtDOM(fdjtID("SBOOKGLOSSCLOUD"),completion," ");}
+	    fdjtDOM(fdjtID("SBOOKGLOSSCLOUDSOURCES"),completion," ");
+	    if (sbook.gloss_cloud) sbook.gloss_cloud.addCompletion(completion);}
+	var search=fdjtID("SBOOKSEARCHSOURCETAG"+humid);
+	if (!(sourcetag)) { // Add entry to the share cloud
+	    var completion=fdjtDOM("span.completion.source",info.name);
+	    completion.id="SBOOKSEARCHSOURCETAG"+humid;
+	    completion.setAttribute("value",info.qid);
+	    completion.setAttribute("key",info.name);
+	    fdjtDOM(fdjtID("SBOOKSEARCHCLOUDSOURCES"),completion," ");
+	    if (sbook.full_cloud) sbook.full_cloud.addCompletion(completion);}
 	return info;};
     sbook.UI.addSource=addSource;
     sbook.UI.addGlossSource=function(info){addSource(info,true);};

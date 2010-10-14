@@ -47,7 +47,7 @@ body.sbook {
 
 #SBOOKHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
-    opacity: 0.01; z-index: 100;}
+    z-index: 100;}
 
 /* Being a panel */
 div#SBOOKHUD div.hudpanel {
@@ -329,16 +329,23 @@ div.spanbar div.progressbox {
 div#SBOOKHELP {
     position: fixed; 
     top: 75px; left: 75px; right: 75px; bottom: 75px; z-index: 100;
-    padding: 1em; border: solid gray 1px;
+    padding: 1em; 
+    border: solid gray 1px;
     border-radius: 1em; -moz-border-radius: 1em;
     -khtml-border-radius: 1em; -webkit-border-radius: 1em;
     opacity: 0.95; background-color: ivory;
     text-align: center; vertical-align: middle;
+    font-family: sans,sans-serif;
     display: none;}
+div#SBOOKHELP #CHECKHIDEHELP {
+ float: left; font-family: sans; color: red; max-width: 100px;}
+div#SBOOKHELP #CLICKHIDEHELP { 
+ float: right; padding: 1px; border: solid red 2px; z-index: 300;}
 
 div#SBOOKHUD .helphud {
     position: fixed; background-color: ivory; z-index: 100;
     border: solid black 1px; padding: 3px; border-radius: 6px;
+    font-family: sans,sans-serif;
     -khtml-border-radius: 6px; -webkit-border-radius: 6px; 
     -moz-border-radius: 6px;
     display: none;}
@@ -384,6 +391,8 @@ div#SBOOKHUD div.helphud.rightmiddle {
 
 div#SBOOKHELP > div {
     margin-bottom: 1em; font-size: 100%;}
+div#SBOOKHELP > div.about {
+    margin-left: 2em; margin-right: 2em; text-align: center;}
 div#SBOOKHELP > div.login {
     font-size: 18px; font-weight: bold; vertical-align: top;
     clear: both;
@@ -393,13 +402,13 @@ body.nosbookuser div#SBOOKHELP > div.login { display: block;}
 div#SBOOKHELP > div.oneline {
     font-size: 125%; clear: both;}
 div#SBOOKHELP table {
-    width: 96%; margin-left: 2%; margin-right: 2%;
     clear: both;}
 div#SBOOKHELP table th {
     color: orange; text-align: right; vertical-align: top;}
 div#SBOOKHELP table th div {
     padding-right: 4px; margin-bottom: .75em;}
 div#SBOOKHELP table td { text-align: left; vertical-align: top;}
+div#SBOOKHELP table td em { font-size: 125%;}
 div#SBOOKHUD.help div#SBOOKHELP { display: block;}
 div#SBOOKHUD.help div#SBOOKHELP img.sbookhidehud {
     left: 0.5em; top: 0.5em; padding: 3px;}
@@ -434,7 +443,7 @@ body.paginate.preview div.sbookmargin { display: none;}
 
 body div.sbookmargin#SBOOKPAGELEFT,
 body div.sbookmargin#SBOOKPAGERIGHT {
-    position: fixed; width: 40px; top: 0px; bottom: 0px; height: 1000px;
+    position: fixed; width: 50px; top: 0px; bottom: 0px; height: 1000px;
     opacity: 0.01;}
 body.hudup div.sbookmargin#SBOOKPAGELEFT,
 body.hudup div.sbookmargin#SBOOKPAGERIGHT { z-index: -5;}
@@ -444,7 +453,7 @@ body div.sbookmargin#SBOOKPAGERIGHT { right: 0px;}
 
 body div.sbookmargin#SBOOKPAGEHEAD,
 body div.sbookmargin#SBOOKPAGEFOOT {
-  left: 0px; right: 0px; width: 100%; height: 40px; z-index: 75;
+  left: 0px; right: 0px; width: 100%; height: 50px; z-index: 75;
   text-align: center;}
 body div.sbookmargin#SBOOKPAGEHEAD { top: 0px; }
 body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
@@ -498,7 +507,8 @@ div.searchbox.noresults div.resultinfo span { display: none;}
 div#SBOOKHUD div#SBOOKFLYLEAF > div.completions {
     padding-left: 2.5em; text-align: center; font-size: 115%;}
 div#SBOOKHUD div#SBOOKFLYLEAF > div.completions div.doc {
-    background-color: ivory; text-align: left; font-size: 80%;
+    background-color: ivory; text-align: left;
+    font-size: 80%; line-height: 100%;
     font-style: italic; color: black;
     padding-left: 1.5em; padding-right: 1.5em;
     margin: 0.5em; margin-right: 5em;

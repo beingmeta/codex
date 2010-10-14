@@ -1,58 +1,70 @@
-<div class='checkspan' style='float: left'
-     onclick="fdjtUI.CheckSpan.onclick(event); sbook.setConfig('hidehelp',fdjtID('HELPHIDEHELP').checked);">
-  <input type='CHECKBOX' name='HIDEHELP' value='yes' id='HELPHIDEHELP'/>
-  hide after loading</div>
 <img src='http://static.beingmeta.com/graphics/redx12x12.png' alt='close'
-     style='float: right; padding: 1px; border: solid red 2px; z-index: 300;'
+     id='CLICKHIDEHELP'
      onclick='sbookMode(false);' class='noautoscale'/>
+<div class='about'>
+This <a href='http://www.sbooks.net/' target='_blank'>sBook</a> adds a
+subtle structural, social and semantic layer to the author's original
+content.
+</div>
 <div class='login'>
   login with
   <a href='https://sbooks.net/v4/auth/fb' class='fdjtsubmit login'
      title='login using Facebook'>
     <img src='http://static.beingmeta.com/graphics/facebook32x32.png'
-	 alt='Facebook' class='noautoscale'/></a>
+	 alt='Facebook' class="noautoscale"/></a>
   or <a href="javascript:sbookMode('login');">other providers</a>
   to save and share notes
 </div>
 <div>
 <table align='center'>
 <tbody>
-<tr><th rowspan='2'>when<br/>reading</th>
-  <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
-    passages to add notes</td></tr>
-<tr><td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
-    the head or foot to see the <strong>book tools</strong></td></tr>
+<tr><th rowspan='3'>when<br/>reading</th>
+  <td><em>flip pages</em> by <strong class='notouch'>clicking</strong>
+    <strong class='fortouch'>tapping</strong> the edges or
+    <span class='notouch'><strong>pressing</strong> space/backspace, pageup/pagedown</span>
+    <span class='fortouch'><strong>swiping</strong> horizontally</span></td>
+</tr>
+<tr>
+  <td><em>add notes or tags</em> by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
+    passages</td></tr>
+<tr><td><em>see book tools</em>
+    by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
+    the head or foot.</td></tr>
 </tbody>
 <tbody>
 <tr><th rowspan='2'>in the<br/>book tools</th>
-  <td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
-    references to <strong style='color: red;'>preview</strong> content</td></tr>
-<tr><td><strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
-    the content to hide the book tools</td></tr>
+  <td><em>preview content</em>
+    by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
+    <span style='color: red;'>references</span></td></tr>
+<tr><td><em>hide the tools</em>
+    by <strong class='fortouch'>tapping</strong>
+    <strong class='notouch'>clicking</strong>
+    the visible content</td></tr>
 </tbody>
 <tbody>
 <tr><th rowspan='3' style='color: red;'>when<br/>previewing</th>
-  <td><strong class='fortouch'>tap</strong>
-    <strong class='notouch'>click</strong> the <strong style='color:
-    red;'>preview target</strong> to jump to it</td></tr>
+  <td><em>jump to</em> the <strong style='color: red;'>preview
+      target</strong> by <strong class='fortouch'>tapping</strong>
+    <strong class='notouch'>clicking</strong>
+    <span style='color: red;'>it</span></td></tr>
 <tr>
-  <td><strong class='fortouch'>tap</strong>
-    <strong class='notouch'>click</strong>
-    anywhere else to return</td></tr>
+  <td><em>return</em> to the book tools by
+    <strong class='fortouch'>tapping</strong>
+    <strong class='notouch'>clicking</strong>
+    anywhere else</td></tr>
 <tr>
-  <td><strong>page</strong> forward or backward
-    to preview the next/previous element</td></tr>
+  <td><em>page through results</em> by flipping pages</td></tr>
 </tbody>
 
 <tbody class='notouch'>
-<tr><th rowspan="2"><div>Keys</div></th>
+<tr><th><div>Keys</div></th>
   <td><span class='key'>H</span>elp, <span class='key'>S</span>earch,
       <span class='key'>N</span>avigate, <span class='key'>G</span>losses
 </td></tr>
-<tr><td><strong>page using</strong> space, backspace, page up, page down
-</td></tr>
 </tbody>
 <tbody>
+<tr><th><input type='CHECKBOX' name='HIDEHELP' value='yes' id='HELPHIDEHELP'/></th>
+  <td>hide this help after startup</td></tr>
 </table>
 <div class='message' id='SBOOKHELPMESSAGE'></div>
 </div>

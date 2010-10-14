@@ -109,12 +109,14 @@ var sbookMode=
 		    var gloss_cloud=sbook.glossCloud();
 		    var search_cloud=sbook.FullCloud();
 		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
-		    var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			gloss_tag=Knodule.HTML(tag,sbook.knodule,false,true);
+			fdjtDOM(fdjtID("SBOOKGLOSSTAGS"),gloss_tag," ");
 			gloss_cloud.addCompletion(gloss_tag);}
+		    var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
 		    if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
 			search_tag=Knodule.HTML(tag,sbook.knodule,false,true);
+			fdjtDOM(fdjtID("SBOOKSEARCHTAGS"),search_tag," ");
 			search_cloud.addCompletion(search_tag);}}}
 	    sbook.addTag2UI=addTag2UI;
 	    
@@ -239,12 +241,7 @@ var sbookMode=
 		  sbook.last_dash=mode;}
 		else fdjtDOM.dropClass(sbookHUD,"dash");
 		sbook.hudup=true;
-		if ((mode===true)&&(sbook.animate)) {
-		    sbookHUD.opacity=1;
-		    setTimeout(function(){
-			fdjtDOM.addClass(document.body,"hudup");},
-			       1000);}
-		else fdjtDOM.addClass(document.body,"hudup");
+		fdjtDOM.addClass(document.body,"hudup");
 		if (mode===true) fdjtDOM.swapClass(sbookHUD,sbookMode_pat,"minimal");
 		else fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
 		if (mode==="help")
@@ -266,18 +263,9 @@ var sbookMode=
 		fdjtDOM.dropClass(sbookHUD,"dash");
 		fdjtDOM.dropClass(sbookHUD,"full");
 		sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
-		if ((sbook.animate)) {
-		    sbookHUD.style.opacity=0;
-		    setTimeout(function(){
-			fdjtDOM.dropClass(document.body,"hudup");
-			fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
-			sbook.displaySync();
-			sbookHUD.style.opacity=1;},
-			       1000);}
-		else {
-		    fdjtDOM.dropClass(document.body,"hudup");
-		    fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
-		    sbook.displaySync();}}}
+		fdjtDOM.dropClass(document.body,"hudup");
+		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
+		sbook.displaySync();}}
 
 	function updateScroller(elt){
 	    if ((!(sbook.scrollers))||(!(elt.id))) return;

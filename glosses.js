@@ -633,18 +633,21 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var outlets_span=fdjtDOM("span.outlets");
 	var sources_span=fdjtDOM("span.sources");
 	var completions=fdjtID("SBOOKGLOSSCLOUD");
+	var glosstags=fdjtID("SBOOKGLOSSTAGS");
 	completions._seen=seen;
 	var tagscores=sbook_index.tagScores();
 	var max_score=tagscores._maxscore;
 	var alltags=tagscores._all;
 	var i=0; while (i<alltags.length) {
-	    var tag=alltags[i++];
+	    var tagstring=alltags[i++];
+	    var tag=sbook.knodule.probe(tagstring)||tagstring;
 	    // We elide sectional tags
 	    if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
 	    var tagnode=Knodule.HTML(tag,sbook.knodule,false,true);
 	    var score=tagscores[tag];
+	    tagnode.value=tag; tagnode.key=tagstring;
 	    if (score) tagnode.style.fontSize=(100+(100*(score/max_score)))+"%";
-	    fdjtDOM(completions,tagnode," ");}
+	    fdjtDOM(glosstags,tagnode," ");}
 	var i=0; while (i<alltags.length) {
 	    var tag=alltags[i++];
 	    // We elide sectional tags
@@ -662,7 +665,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	// Generic sources go at the end
 	//fdjtDOM(completions,sources_span);
 	completions.onmouseup=glosscloud_onclick;
-	gloss_cloud=new fdjtUI.Completions(
+	sbook.gloss_cloud=gloss_cloud=new fdjtUI.Completions(
 	    completions,fdjtID("SBOOKTAGINPUT"),
 	    fdjtUI.FDJT_COMPLETE_OPTIONS|
 		fdjtUI.FDJT_COMPLETE_CLOUD|
@@ -706,7 +709,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var completions=fdjtID("SBOOKSHARECLOUD");
 	completions._seen=seen;
 	completions.onmouseup=sharecloud_onclick;
-	share_cloud=new fdjtUI.Completions(
+	sbook.share_cloud=share_cloud=new fdjtUI.Completions(
 	    completions,fdjtID("SBOOKSHAREINPUT"),
 	    fdjtUI.FDJT_COMPLETE_OPTIONS|
 		fdjtUI.FDJT_COMPLETE_CLOUD|
