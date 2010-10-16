@@ -195,7 +195,8 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	  sbook.UI.showSlice(glosses,sumdiv,false);
 	fdjtDOM.replace("SBOOKGLOSSES",sumdiv);
 	sbook.setTarget(target);
-	fdjtDOM.replace("SBOOKINFO",sbook.glossBlock(target.id,"div.sbookgloss.flyleaf"));
+	fdjtDOM.replace("SBOOKINFO",
+			sbook.glossBlock(target.id,"div.sbookgloss.flyleaf"));
 	sbookMode("glosses");}
     sbook.openGlossmark=openGlossmark;
 

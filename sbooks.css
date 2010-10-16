@@ -473,8 +473,24 @@ body.paginate div#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
     display: block;}
 body.pageswitch div#SBOOKPAGEFOOT div#SBOOKPAGEINFO { opacity: 0.0001;}
 
-div#SBOOKFOOT div#SBOOKINFO {
-    position: absolute; left: 100px; right: 100px;}
+div#SBOOKFOOT div#SBOOKFOOTINFO {
+    position: absolute; left: 100px; right: 100px; bottom: 0px;
+    opacity: 0.9; background-color: #4682b4; color: ivory;
+    max-height: 100px; overflow: hidden;
+    border-top-left-radius: 6px; 
+    -moz-border-radius-topleft: 6px;
+    -khtml-border-top-left-radius: 6px;
+    -webkit-border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    -moz-border-radius-topright: 6px;
+    -khtml-border-top-right-radius: 6px;
+    -webkit-border-top-right-radius: 6px;}
+div#SBOOKFOOT div#SBOOKFOOTINFO div#SBOOKTARGETINFO {
+    padding: 1em; padding-top: 0.5em; padding-bottom: 4px;}
+
+body div#SBOOKFOOT div#SBOOKFOOTINFO {display: none;}
+body.hudup div#SBOOKFOOT div#SBOOKFOOTINFO {display: block;}
+body.hudup.preview div#SBOOKFOOT div#SBOOKFOOTINFO {display: none;}
 
 /* The SEARCHBOX */
 

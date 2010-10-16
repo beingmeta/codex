@@ -63,7 +63,10 @@ content.
 </td></tr>
 </tbody>
 <tbody>
-<tr><th><input type='CHECKBOX' name='HIDEHELP' value='yes' id='HELPHIDEHELP'/></th>
+<tr><th>
+    <input type='CHECKBOX' name='HIDEHELP' value='yes' id='HELPHIDEHELP'
+	   onclick="sbook.setConfig('hidehelp',fdjtID('HELPHIDEHELP').checked);"/>
+  </th>
   <td>hide this help after startup</td></tr>
 </table>
 <div class='message' id='SBOOKHELPMESSAGE'></div>
