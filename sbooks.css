@@ -404,7 +404,8 @@ div#SBOOKHELP > div.oneline {
 div#SBOOKHELP table {
     clear: both;}
 div#SBOOKHELP table th {
-    color: orange; text-align: right; vertical-align: top;}
+    color: orange; text-align: right; vertical-align: top;
+    padding-right: 0.5em;}
 div#SBOOKHELP table th div {
     padding-right: 4px; margin-bottom: .75em;}
 div#SBOOKHELP table td { text-align: left; vertical-align: top;}
@@ -418,9 +419,9 @@ div#SBOOKHELP span.key:before { content: '(';}
 div#SBOOKHELP span.key:after { content: ')';}
 
 div#SBOOKHELP div.message {
-    margin-top: 2ex; font-size: 125%; color: red; height: 50px;
+    margin-top: 2ex; font-size: 125%; color: red;
     overflow: hidden;}
-div#SBOOKHELP div.message .head { font-size: 150%;}
+div#SBOOKHELP div.message .head { font-size: 150%; display: block;}
 
 /* "Leading" to fill out the top and bottom */
 

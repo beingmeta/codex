@@ -32,7 +32,7 @@ content.
     the head or foot.</td></tr>
 </tbody>
 <tbody>
-<tr><th rowspan='2'>in the<br/>book tools</th>
+<tr><th rowspan='2' style="color: #4682b4;">in the<br/>book tools</th>
   <td><em>preview content</em>
     by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
     <span style='color: red;'>references</span></td></tr>
@@ -63,13 +63,18 @@ content.
 </td></tr>
 </tbody>
 <tbody>
+<tr><th></th><td>&nbsp;</td></tr>
 <tr><th>
     <input type='CHECKBOX' name='HIDEHELP' value='yes' id='HELPHIDEHELP'
+	   style="height: 20px; width: 20px;"
 	   onclick="sbook.setConfig('hidehelp',fdjtID('HELPHIDEHELP').checked);"/>
   </th>
-  <td>hide this help after startup</td></tr>
+  <td style="font-size: 120%; color: red;">hide this help after startup</td></tr>
+<tr><th></th><td>&nbsp;</td></tr>
 </table>
-<div class='message' id='SBOOKHELPMESSAGE'></div>
+<div class='message' id='SBOOKHELPMESSAGE'>
+<span class='head'>Working Status</span>
+</div>
 </div>
 
 <!--

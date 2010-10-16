@@ -76,7 +76,7 @@ sbook.Startup=
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){
-		    fdjtDOM.adjustToFit(helphud,0.2);
+		    fdjtDOM.finishScale(helphud);
 		    if (sbook.Trace.startup>1)
 			fdjtLog("[%fs] Displaying help",fdjtET());
 		    helphud.style.opacity='';},
@@ -679,15 +679,13 @@ sbook.Startup=
 		fdjtLog("[%fs] gotGlosses",fdjtET());
 	    sbook.Message("Setting up search cloud...");
 	    fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
-	    sbook.FullCloud().complete('');
-	    sbook.useQuery(sbook.query,fdjtID("SBOOKSEARCH"));
 	    sbook.Message("Setting up glossing cloud...");
 	    fdjtDOM.replace("SBOOKGLOSSCLOUD",sbook.glossCloud().dom);
 	    sbook.Message("Setting up sharing cloud...");
 	    fdjtDOM.replace("SBOOKSHARECLOUD",sbook.shareCloud().dom);
-	    sbook.glossCloud().complete('');
-	    sbook.shareCloud().complete('');
-	    if (sbook.knodule) sbook.addTag2UI(sbook.knodule.alldterms);}
+	    if (sbook.knodule) {
+		sbook.Message("Integrating knodule terms...");
+		fdjtTime.slowmap(sbook.addTag2UI,sbook.knodule.alldterms);}}
 
 	function initGlosses(glosses,etc){
 	    var allglosses=sbook.allglosses;

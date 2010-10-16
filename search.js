@@ -515,10 +515,6 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    var tagfreqs=tagscores._freq;
 	    var completions=sbook.makeCloud(alltags,tagfreqs);
 	    var cues=fdjtDOM.getChildren(completions,".cue");
-	    if (!((cues)&&(cues.length))) {
-		var celts=fdjtDOM.getChildren(completions,".completion");
-		var j=0; while ((j<sbook.show_refiners)&&(j<celts.length)) {
-		    fdjtDOM.addClass(celts[j++],"cue");}}
 	    completions.onclick=Cloud_onclick;
 	    sbook.full_cloud=new fdjtUI.Completions(completions);
 	    return sbook.full_cloud;}}

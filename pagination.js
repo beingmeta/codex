@@ -73,7 +73,7 @@ var sbookPaginate=
 	var getStyle=fdjtDOM.getStyle;
 	var parsePX=fdjtDOM.parsePX;
 
-	function Paginate(pagesize,start){
+	function Paginate(pagesize,start,callback){
 	    if (!(start)) start=sbook.body||document.body;
 	    start=scanContent(start);
 	    if (sbook.Trace.pagination)
@@ -90,7 +90,7 @@ var sbookPaginate=
 	    curpage.top=pagetop; curpage.limit=pagelim;
 	    curpage.first=start; curpage.last=start;
 	    pages.push(pagetop); pageinfo.push(curpage);
-	    while (scan) {
+	    function loop() {
 		var oversize=false;
 		var next=scanContent(scan);
 		var nextinfo=(next)&&nodeInfo(next);
@@ -331,13 +331,23 @@ var sbookPaginate=
 		    if (scan) info=nodeInfo(scan);
 		    if (scan) style=getStyle(scan);}
 		if (!(splitblock)) nodecount++;}
-	    var doneat=fdjtET();
-	    if ((sbook.Trace.pagination)||
-		((sbook.Trace.startup)&&(!(sbook._setup))))
-		fdjtLog("[%fs] Paginated %d nodes into %d pages with pagesize=%d in %s",
-			fdjtET(),nodecount,pages.length,pagesize,
-			fdjtTime.secs2short(doneat-startedat));
-	    return result;}
+	    var count=1;
+	    function stepfn(){
+		var stopblock=fdjtTime()+200;
+		while ((scan)&&(fdjtTime()<stopblock)) loop();
+		if (scan) {
+		    sbook.Message("Determining page layout",pageinfo.length);
+		    setTimeout(stepfn,200);}
+		else {
+		    var doneat=fdjtET();
+		    sbook.Message("Finished page layout");
+		    if ((sbook.Trace.pagination)||
+			((sbook.Trace.startup)&&(!(sbook._setup))))
+			fdjtLog("[%fs] Paginated %d nodes into %d pages with pagesize=%d in %s",
+				fdjtET(),nodecount,pages.length,pagesize,
+				fdjtTime.secs2short(doneat-startedat));
+		    callback(result);}}
+	    setTimeout(stepfn,10);}
 
 	function isPageHead(elt,style){
 	    return ((sbook_tocmajor)&&(elt.id)&&
@@ -829,21 +839,22 @@ var sbookPaginate=
 
 	/* Top level functions */
 
-	function sbookUpdatePagination(){
-	    var pagesize=(fdjtDOM.viewHeight())-
-		(sbook_top_px+sbook_bottom_px);
+	function sbookUpdatePagination(callback){
+	    var pagesize=(fdjtDOM.viewHeight())-(sbook_top_px+sbook_bottom_px);
 	    var target=sbook.target;
 	    sbook.Message("Determining page layout");
-	    var pagination=Paginate(pagesize);
-	    fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
-	    sbook.pages=pagination.pages;
-	    sbook.pageinfo=pagination.info;
-	    sbook_pagesize=pagesize;
-	    sbook.Flash(2000,"Done with page layout");
-	    if (target)
-		sbook.GoToPage(sbook.getPage(target),0,"sbookUpdatePagination");
-	    else sbook.GoToPage(sbook.getPage(sbook.viewTop()),0,"sbookUpdatePagination/nt");}
-
+	    Paginate(pagesize,sbook.body||document.body,
+		     function(pagination) {
+			 fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
+			 sbook.pages=pagination.pages;
+			 sbook.pageinfo=pagination.info;
+			 sbook_pagesize=pagesize;
+			 sbook.Message("Done with page layout");
+			 if (target)
+			     sbook.GoToPage(sbook.getPage(target),0,"sbookUpdatePagination");
+			 else sbook.GoToPage(sbook.getPage(sbook.viewTop()),0,"sbookUpdatePagination/nt");
+			 if (callback) callback(pagination);});}
+	
 	function sbookPaginate(flag,nogo){
 	    if (flag===false) {
 		if (sbook.paginate) {
@@ -903,21 +914,20 @@ var sbookPaginate=
 	    ([adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
 	      adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
 	      finalizepages,
-	      function(){sbookUpdatePagination();},
 	      function(){
-		  newinfo.offheight=document.body.offsetHeight;
-		  newinfo.offwidth=document.body.offsetWidth;
-		  newinfo.winwidth=(document.documentElement.clientWidth);
-		  newinfo.winheight=(fdjtDOM.viewHeight());
-		  // fdjtTrace("Updated pagination from %o to %o",
-		  //           sbook_paginated,newinfo);
-		  sbook_paginated=newinfo;
-		  sbook.GoToPage(sbook.getPage(sbook.target||sbook.root),0,
-				 "repaginate");}],
-	     0,100);
-	    if (sbook.scrollfree)
-		fdjtDOM.addClass(document.body,"scrollfree");}
-
+		  sbookUpdatePagination(function(result){
+		      newinfo.offheight=document.body.offsetHeight;
+		      newinfo.offwidth=document.body.offsetWidth;
+		      newinfo.winwidth=(document.documentElement.clientWidth);
+		      newinfo.winheight=(fdjtDOM.viewHeight());
+		      // fdjtTrace("Updated pagination from %o to %o",
+		      //           sbook_paginated,newinfo);
+		      sbook_paginated=newinfo;
+		      if (sbook.scrollfree) fdjtDOM.addClass(document.body,"scrollfree");
+		      sbook.GoToPage(sbook.getPage(sbook.target||sbook.root),0,
+				     "repaginate");})}],
+	     0,100);}
+	     
 	sbook.isContent=isContentBlock;
 	sbook.scanContent=scanContent;
 
