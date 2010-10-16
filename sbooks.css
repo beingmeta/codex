@@ -73,7 +73,7 @@ div#SBOOKHUD div.hudpanel {
 
 div#SBOOKHUD img.hudbutton {
     position: absolute; width: 50px; height: 50px; z-index: 200;
-    border: solid darkblue 2px; opacity: 0.01;
+    border: solid transparent 2px; opacity: 0.01;
     background-color: #4682b4;}
 body div#SBOOKHUD img.hudbutton:hover { opacity: 0.45;}
 div#SBOOKHUD img.previewicon {
@@ -195,6 +195,12 @@ div#SBOOKHUD.target.sharing div#SBOOKFLYLEAF div#SBOOKSHARECLOUD {
 div#SBOOKHUD.glosses div#SBOOKFLYLEAF,
 div#SBOOKHUD.glosses div#SBOOKFLYLEAF div#SBOOKGLOSSES {
     display: block;}
+
+div#SBOOKHUD.allglosses .hudbutton[alt='glosses'] { border-color: darkblue;}
+div#SBOOKHUD.dash .hudbutton[alt='dash'] { border-color: darkblue;}
+div#SBOOKHUD.searching .hudbutton[alt='search'] { border-color: darkblue;}
+div#SBOOKHUD.browsing .hudbutton[alt='search'] { border-color: darkblue;}
+div#SBOOKHUD.toc .hudbutton[alt='toc'] { border-color: darkblue;}
 
 /* About this book */
 
@@ -419,9 +425,9 @@ div#SBOOKHELP span.key:before { content: '(';}
 div#SBOOKHELP span.key:after { content: ')';}
 
 div#SBOOKHELP div.message {
-    margin-top: 2ex; font-size: 125%; color: red;
+    margin-top: 2ex; font-size: 75%; color: red;
     overflow: hidden;}
-div#SBOOKHELP div.message .head { font-size: 150%; display: block;}
+div#SBOOKHELP div.message .head { font-size: 200%; display: block;}
 
 /* "Leading" to fill out the top and bottom */
 
@@ -899,6 +905,23 @@ body img.mouseicon { display: inline;}
 body.touch img.touchicon { display: inline;}
 body.touch img.mouseicon { display: none;}
 
+body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar,
+body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar {
+    height: 50px;}
+body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.sbookhudspan,
+body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.sbookhudspan {
+    height: 45px;}
+body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.progressbox,
+body.touch div#SBOOKHUD.dashtoc div#SBOOKDASHTOC div.spanbar div.progressbox {
+    height: 50px;}
+
+body.touch .sbooknote .age { font-size: 125%; padding-bottom; 10px;}
+body.touch .sbooknote .age { font-size: 125%; padding-bottom; 10px;}
+body.touch .sbooknote .glossinfo img.delete { 
+  width: 20px; height: 20px; padding-right: 3px;
+  cursor: pointer;}
+
+
 /* Sbook notes */
 
 div.sbooknote { position: relative;}
@@ -965,7 +988,7 @@ body.sbook a.sbooknote { display: block;}
     padding: 0px; margin: 0px; margin-left: 3px;
     text-align: right;}
 .sbooknote .age { 
-  color: yellow; float: right; 
+  color: yellow; float: right; font-weight: bold;
   font-size: 90%; text-decoration: none;}
 .sbooknote .age:hover {text-decoration: underline;} 
 .sbooknote a.deletebutton { 

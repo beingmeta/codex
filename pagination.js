@@ -336,7 +336,7 @@ var sbookPaginate=
 		var stopblock=fdjtTime()+200;
 		while ((scan)&&(fdjtTime()<stopblock)) loop();
 		if (scan) {
-		    sbook.Message("Determining page layout",pageinfo.length);
+		    sbook.Message("Determining page layout",pageinfo.length," pages");
 		    setTimeout(stepfn,200);}
 		else {
 		    var doneat=fdjtET();
