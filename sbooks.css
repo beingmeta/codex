@@ -76,6 +76,7 @@ div#SBOOKHUD img.hudbutton {
     border: solid transparent 2px; opacity: 0.01;
     background-color: #4682b4;}
 body div#SBOOKHUD img.hudbutton:hover { opacity: 0.45;}
+body.preview div#SBOOKHUD img.hudbutton { display: none;}
 div#SBOOKHUD img.previewicon {
     position: absolute; width: 50px; height: 50px; z-index: 200;
     font-family: sans,sans-serif;
@@ -158,6 +159,7 @@ body.hudup div#SBOOKHUD .hudbutton { opacity: 0.6;}
 body.hudup div#SBOOKHUD img.hudbutton:hover { opacity: 0.8;}
 body.hudup.preview div#SBOOKHUD .hudbutton { display: none;}
 body.hudup.preview div#SBOOKHUD .previewicon { display: block;}
+body.preview div#SBOOKHUD .previewicon { display: block;}
 
 /* Mode display rules */
 
@@ -217,6 +219,10 @@ div#SBOOKHUD div#SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
 div#SBOOKHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
 /* SBOOKSOURCES */
+
+div.sbooksources {}
+div.sbooksources img.button.source { border: solid transparent 2px; margin: 2px;}
+div.sbooksources img.button.source.selected { border-color: silver;}
 
 div#SBOOKSOURCES {
     overflow-y: hidden; overflow-x: auto; white-space: nowrap;}
@@ -447,6 +453,9 @@ body div.sbookmargin {
 body.paginate div.sbookmargin { display: block;}
 body.preview div.sbookmargin { display: none;}
 body.paginate.preview div.sbookmargin { display: none;}
+body.paginate.preview div.sbookmargin#SBOOKPAGEFOOT {
+    background-color: none;
+    display: block; }
 
 body div.sbookmargin#SBOOKPAGELEFT,
 body div.sbookmargin#SBOOKPAGERIGHT {
@@ -495,9 +504,10 @@ div#SBOOKFOOT div#SBOOKFOOTINFO {
 div#SBOOKFOOT div#SBOOKFOOTINFO div#SBOOKTARGETINFO {
     padding: 1em; padding-top: 0.5em; padding-bottom: 4px;}
 
-body div#SBOOKFOOT div#SBOOKFOOTINFO {display: none;}
-body.hudup div#SBOOKFOOT div#SBOOKFOOTINFO {display: block;}
+body div#SBOOKHUD div#SBOOKFOOT div#SBOOKFOOTINFO {display: none;}
+body.hudup div#SBOOKHUD.target div#SBOOKFOOT div#SBOOKFOOTINFO {display: block;}
 body.hudup.preview div#SBOOKFOOT div#SBOOKFOOTINFO {display: none;}
+body.hudup.preview div#SBOOKFOOT div#SBOOKFOOTINFO {display: block;}
 
 /* The SEARCHBOX */
 
@@ -692,6 +702,14 @@ body.preview div#SBOOKHUD.toc div#SBOOKHEAD { display: block;}
 body.preview div#SBOOKHUD.toc div#SBOOKTOC { display: block; opacity: 1.0;}
 body.preview div#SBOOKHUD div#SBOOKPREVIEW { display: block;}
 body.preview div#SBOOKHUD.toc div#SBOOKPREVIEW { display: none;}
+
+body.preview div#SBOOKHUD div#SBOOKPREVIEW { display: none;}
+
+body.pagepreview div.sbookmargin { }
+body.pagepreview div.sbookmargin#SBOOKPAGEFOOT {
+    background-color: transparent;}
+body.pagepreview div.sbookmargin#SBOOKPAGEFOOT div#SBOOKPAGENO {
+    background-color: white;}
 
 div#SBOOKPREVIEW {
     position: fixed; top: 0px; left: 100px; right: 100px;

@@ -819,6 +819,52 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	return scan;}
     sbook.previewBackward=previewBackward;
 
+    /* Page scroller */
+
+    function scroller_pageno(evt){
+	var scroller=fdjtID("SBOOKPAGEINFO");
+	var off=evt.clientX-scroller.offsetLeft;
+	var max=scroller.offsetWidth;
+	var lastpagepos=sbook.pages[sbook.pages.length-1];
+	var targetpos=lastpagepos*(off/max);
+	var i=0; var lim=sbook.pages.length; while (i<lim)
+	    if (sbook.pages[i]>targetpos) return i; else i++;
+	return sbook.curpage;}
+    
+    function scroller_onclick(evt){
+	sbook.GoToPage(scroller_pageno(evt));}
+
+    var preview_pageno=-1;
+    function previewPage(pageno){
+	fdjtLog("[%fs] previewPage %o",fdjtET(),pageno);
+	if (pageno) {
+	    if (preview_pageno<0) {
+		fdjtDOM.addClass(document.body,"pagepreview");}
+	    preview_pageno=pageno;
+	    sbook.scrollPreview(sbook.pages[pageno]);}
+	else {
+	    fdjtDOM.dropClass(document.body,"pagepreview");
+	    preview_pageno=-1;
+	    sbook.scrollPreview(false);}}
+    
+    function scroller_mousedown(evt){
+	var pageno=scroller_pageno(evt);
+	fdjtUI.cancel(evt);
+	if (pageno===preview_pageno) return;
+	else {previewPage(pageno);}}
+    function scroller_mouseup(evt){
+	fdjtUI.cancel(evt);
+	sbook.Preview(false);
+	fdjtDOM.dropClass(document.body,"pagepreview");
+	preview_pageno=-1;}
+    function scroller_mousemove(evt){
+	fdjtUI.cancel(evt);
+	if (preview_pageno<0) return;
+	var pageno=scroller_pageno(evt);
+	if (pageno===preview_pageno) return;
+	else {previewPage(pageno);}}
+    function scroller_mouseout(evt){}
+
     /* Rules */
     var nobubble=fdjtUI.cancelBubble;
     var cancel=fdjtUI.cancel;
@@ -832,6 +878,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
+	 /*
+	 "#SBOOKPAGEINFO": {mousedown: scroller_mousedown,
+			    mousemove: scroller_mousemove,
+			    mouseout: scroller_mouseout,
+			    mouseup: scroller_mouseup},
+	 */
 	 ".hudbutton": {mouseover:hudbutton,
 			mouseout:hudbutton}};
 

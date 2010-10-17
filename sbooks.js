@@ -428,14 +428,26 @@ var sbook_gloss_data=
     var saved_x=false; var saved_y=false;
     function scrollPreview(elt,cxt,off){
 	if (sbook.scrollfree) {
-	    var geom=fdjtDOM.getGeometry(elt,sbook.body||sbook.root,false);
-	    var x=0; var y=geom.top-(fdjtDOM.viewHeight()/2);
-	    if ((!(saved_y))||(!(saved_x))) {
-		saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
-		saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
-	    window.scrollTo(0,0);
-	    sbook.body.style.left=""+(-x+x_offset)+"px";
-	    sbook.body.style.top=""+(-y+y_offset)+"px";}
+	    if (elt) fdjtDOM.addClass(document.body,"preview");
+	    else fdjtDOM.dropClass(document.body,"preview");
+	    if (typeof elt === 'number') {
+		var x_offset=((typeof cxt === 'number')?(cxt):(O));
+		var y_offset=elt;
+		if ((!(saved_y))||(!(saved_x))) {
+		    saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
+		    saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
+		window.scrollTo(0,0);
+		sbook.body.style.left=""+(-x+x_offset)+"px";
+		sbook.body.style.top=""+(-y+y_offset)+"px";}
+	    else {
+		var geom=fdjtDOM.getGeometry(elt,sbook.body||sbook.root,false);
+		var x=0; var y=geom.top-(fdjtDOM.viewHeight()/2);
+		if ((!(saved_y))||(!(saved_x))) {
+		    saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
+		    saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
+		window.scrollTo(0,0);
+		sbook.body.style.left=""+(-x+x_offset)+"px";
+		sbook.body.style.top=""+(-y+y_offset)+"px";}}
 	else fdjtUI.scrollPreview(elt,cxt,off);}
     sbook.scrollPreview=scrollPreview;
     function scrollRestore(){
