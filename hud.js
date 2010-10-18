@@ -151,6 +151,22 @@ var sbookMode=
 	/* This is used for viewport-based browser, where the HUD moves
 	   to be aligned with the viewport */
 	
+	function retractFlyleaf(){
+	    if ((!(sbook.flyleaf))&&(typeof sbook.flyleaf !== 'undefined'))
+		return;
+	    var flyleaf=fdjtID("SBOOKFLYLEAF");
+	    // fdjtLog("[%fs] Retracting flyleaf",fdjtET());
+	    flyleaf.style.webkitTransform="translate(-"+(fdjtDOM.viewWidth())+"px,0px)";
+	    sbook.flyleaf=false;}
+	sbook.retractFlyleaf=retractFlyleaf;
+	function extendFlyleaf(){
+	    if (sbook.flyleaf) return;
+	    var flyleaf=fdjtID("SBOOKFLYLEAF");
+	    // fdjtLog("[%fs] Extending flyleaf",fdjtET());
+	    flyleaf.style.webkitTransform="";
+	    sbook.flyleaf=true;}
+	sbook.extendFlyleaf=extendFlyleaf;
+
 	var sbook_sync_off=false;
 	var sbook_sync_height=false;
 	
@@ -231,8 +247,10 @@ var sbookMode=
 		    sbook.scrolling="SBOOKSEARCHRESULTS";
 		else if (mode==='searching')
 		    sbook.scrolling="SBOOKSEARCHCLOUD";
-		else if (mode==='target')
+		else if (mode==='target') {
 		    sbook.scrolling="SBOOKGLOSSCLOUD";
+		    if (fdjtID("SBOOKGLOSSFORM").className="tag") {
+			sbook.showGlossCloud(fdjtID("SBOOKTAGINPUT"));}}
 		else sbook.scrolling=false;
 		if ((mode)&&(typeof mode === 'string')&&
 		    (mode.search(sbookDashMode_pat)===0)) {
@@ -255,17 +273,25 @@ var sbookMode=
 		    fdjtID("SBOOKSEARCHINPUT").focus();
 		else document.body.focus();
 		if (sbook.scrolling) updateScroller(fdjtID(sbook.scrolling));
+		if ((mode==="allglosses")||(mode==="searching")||
+		    (mode==="browsing")||
+		    ((typeof mode === 'string')&&
+		     (mode.search(sbookDashMode_pat)===0))) {
+		    extendFlyleaf();}
 		sbook.displaySync();}
 	    else {
 		if (sbook.mode!=='help') sbook.last_mode=sbook.mode;
 		document.body.focus();
 		fdjtDOM.dropClass(document.body,"dimmed");
-		fdjtDOM.dropClass(sbookHUD,"dash");
-		fdjtDOM.dropClass(sbookHUD,"full");
 		sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
-		fdjtDOM.dropClass(document.body,"hudup");
-		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
-		sbook.displaySync();}}
+		retractFlyleaf();
+		setTimeout(function(){
+		    fdjtDOM.dropClass(sbookHUD,"dash");
+		    fdjtDOM.dropClass(sbookHUD,"full");
+		    fdjtDOM.dropClass(document.body,"hudup");
+		    fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
+		    sbook.displaySync();},
+			   1000);}}
 
 	function updateScroller(elt){
 	    if ((!(sbook.scrollers))||(!(elt.id))) return;

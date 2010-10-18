@@ -211,8 +211,12 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM.append(tagselt,span," ");
 	return span;}
     
-    function startTagging(input,embedded){
+    var hiding_glosscloud=false;
+    function showGlossCloud(input,embedded){
 	var string=false;
+	// fdjtLog("[%fs] showglosscloud (%o) %o",fdjtET(),input,embedded);
+	if (hiding_glosscloud) {
+	    clearTimeout(hiding_glosscloud); hiding_glosscloud=false;}
 	fdjtDOM.dropClass(sbookHUD,"sharing");
 	if (embedded) {
 	    var span=istagging(input);
@@ -221,14 +225,18 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (embedded) {
 	    if (string) {
 		fdjtDOM.addClass(sbookHUD,"tagging");
-		gloss_cloud.complete(string);}}
+		gloss_cloud.complete(string);
+		setTimeout(sbook.extendFlyleaf,10);}}
 	else {
 	    fdjtDOM.addClass(sbookHUD,"tagging");
-	    gloss_cloud.complete(string);}}
-    sbook.startTagging=startTagging;
-    function stopTagging(){
+	    gloss_cloud.complete(string);
+	    setTimeout(sbook.extendFlyleaf,10);}}
+    sbook.showGlossCloud=showGlossCloud;
+    function hideGlossCloud(){
+	// fdjtLog("[%fs] hideglosscloud",fdjtET());
+	sbook.retractFlyleaf();
 	fdjtDOM.dropClass(sbookHUD,"tagging");}
-    sbook.stopTagging=stopTagging;
+    sbook.hideGlossCloud=hideGlossCloud;
     
     function dontsubmit_keypress(evt){
 	evt=evt||event; var ch=evt.charCode;
@@ -271,11 +279,10 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else gloss_cloud.docomplete();}
     sbook.UI.handlers.taginput_keyup=taginput_keyup;
 
-    function taginput_focus(evt){
-	fdjtDOM.addClass(sbookHUD,"tagging");}
-    function taginput_blur(evt){
-	if (!(sbook.lockclouds))
-	    fdjtDOM.dropClass(sbookHUD,"tagging");}
+    function taginput_focus(evt){showGlossCloud(fdjtUI.T(evt));}
+    // function taginput_blur(evt){if (!(sbook.lockclouds)) {hideGlossCloud();}}
+    // function taginput_focus(evt){}
+    function taginput_blur(evt){}
     sbook.UI.handlers.taginput_focus=taginput_focus;
     sbook.UI.handlers.taginput_blur=taginput_blur;
 
@@ -422,21 +429,21 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var form=fdjtDOM.getParent(input,"form");
 	var span=tagspan(input);
 	if (span) {
-	    fdjtDOM.addClass(sbookHUD,"tagging");
 	    return span;}
 	else {
-	    fdjtDOM.dropClass(sbookHUD,"tagging");
 	    return false;}}
     function tagcomplete(input){
 	var span=istagging(input);
 	if (span) gloss_cloud.complete(input.value.slice(span[0],span[1]));}
 
     function note_focus(evt){
-	sbook.startTagging(fdjtUI.T(evt),true);}
+	var input=fdjtUI.T(evt);
+	if (istagging(input)) 
+	    showGlossCloud(fdjtUI.T(evt),true);}
     sbook.UI.handlers.note_focus=note_focus;
     function note_blur(evt){
-	if (!(sbook.lockclouds))
-	    fdjtDOM.dropClass(sbookHUD,"tagging");}
+	if (!(sbook.lockclouds)) {
+	    hideGlossCloud();}}
     sbook.UI.handlers.note_blur=note_blur;
     
     // This captures either text selection or mouse motion
@@ -605,21 +612,27 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /***** Gloss Modes *****/
 
     function glossMode(mode) {
+	// fdjtLog("[%fs] glossMode mode=%o",fdjtET(),mode);
 	fdjtID("SBOOKGLOSSFORM").className=mode;
 	if (mode==='tag') {
-	    startTagging(fdjtID("SBOOKTAGINPUT"));
+	    showGlossCloud(fdjtID("SBOOKTAGINPUT"));
 	    fdjtID("SBOOKTAGINPUT").focus();}
 	else if (mode==='note') {
-	    startTagging(fdjtID("SBOOKNOTEINPUT"),true);
 	    fdjtDOM.dropClass(sbookHUD,"tagging");
 	    fdjtDOM.dropClass(sbookHUD,"sharing");
+	    if (istagging(fdjtID("SBOOKNOTEINPUT"))) {
+		showGlossCloud(fdjtID("SBOOKNOTEINPUT"),true);
+		sbook.extendFlyleaf();}
 	    fdjtID("SBOOKNOTEINPUT").focus();}
 	else if (mode==='share') {
 	    fdjtDOM.addClass(sbookHUD,"sharing");
 	    fdjtDOM.dropClass(sbookHUD,"tagging");
-	    share_cloud.complete(fdjtID("SBOOKSHAREINPUT").value);
-	    fdjtID("SBOOKSHAREINPUT").focus();}
-	else stopTagging();}
+	    sbook.extendFlyleaf();
+	    share_cloud.complete(fdjtID("SBOOKSHAREINPUT").value);}
+	else {
+	    hideGlossCloud();
+	    fdjtDOM.dropClass(sbookHUD,"sharing");
+	    fdjtDOM.dropClass(sbookHUD,"tagging");}}
     sbook.glossMode=glossMode;
 
     /***** The Gloss Cloud *****/
@@ -653,8 +666,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		    if (tagspan) {
 			input.value=
 			    stringval.slice(0,tagspan[0])+keyval+"]"+
-			    stringval.slice(tagspan[1]);}}
-		fdjtDOM.dropClass("SBOOKHUD","tagging");}
+			    stringval.slice(tagspan[1]);}}}
 	    else {
 		fdjtID("SBOOKTAGINPUT").value='';
 		gloss_cloud.docomplete();}}

@@ -356,7 +356,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if (hud) fdjtDOM.dropClass(hud,"hover");
 	    if (fdjtDOM.hasClass(sbook.HUD,mode)) {
 		if (sbook.preview) sbook.Preview(false);
-		else {sbookMode(false); sbookMode(true);}}
+		else sbookMode(false);}
 	    else sbookMode(mode);}
 	else if ((evt.type==='mouseover')&&(sbook.mode))
 	    return;
