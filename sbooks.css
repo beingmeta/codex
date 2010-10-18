@@ -42,6 +42,10 @@ body.sbook {
     transition-property: opacity; transition-duration: 0.2s;
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.2s;}
+body.touch #SBOOKBODY {
+    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.2s;}
+
 
 /* The HUD */
 
