@@ -79,9 +79,11 @@ var sbookMode=
 	    var glosses=fdjtID("SBOOKALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
 	    sbook.glosses.addEffect("user",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit(sbook.UI.addGlossSource,"newsource");});
+		sbook.sourcekb.ref(v).oninit
+		  (sbook.UI.addGlossSource,"newsource");});
 	    sbook.glosses.addEffect("distribution",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit(sbook.UI.addGlossSource,"newsource");});
+		sbook.sourcekb.ref(v).oninit
+		  (sbook.UI.addGlossSource,"newsource");});
 
 	    function initUI4Item(item){
 		if (document.getElementById(item.frag)) {
@@ -101,23 +103,24 @@ var sbookMode=
 	    sbook.glosses.addInit(initUI4Item);
 
 	    function addTag2UI(tag,forsearch){
-		if (tag instanceof Array) {
-		    var i=0; var lim=tag.length;
-		    while (i<lim) addTag2UI(tag[i++],forsearch||false);
-		    return;}
-		else {
-		    var gloss_cloud=sbook.glossCloud();
-		    var search_cloud=sbook.FullCloud();
-		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
-		    if (!((gloss_tag)&&(gloss_tag.length))) {
-			gloss_tag=Knodule.HTML(tag,sbook.knodule,false,true);
-			fdjtDOM(fdjtID("SBOOKGLOSSTAGS"),gloss_tag," ");
-			gloss_cloud.addCompletion(gloss_tag);}
-		    var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
-		    if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
-			search_tag=Knodule.HTML(tag,sbook.knodule,false,true);
-			fdjtDOM(fdjtID("SBOOKSEARCHTAGS"),search_tag," ");
-			search_cloud.addCompletion(search_tag);}}}
+	      if (!(tag)) return;
+	      else if (tag instanceof Array) {
+		var i=0; var lim=tag.length;
+		while (i<lim) addTag2UI(tag[i++],forsearch||false);
+		return;}
+	      else {
+		var gloss_cloud=sbook.glossCloud();
+		var search_cloud=sbook.FullCloud();
+		var gloss_tag=gloss_cloud.getByValue(tag,".completion");
+		if (!((gloss_tag)&&(gloss_tag.length))) {
+		  gloss_tag=Knodule.HTML(tag,sbook.knodule,false,true);
+		  fdjtDOM(fdjtID("SBOOKGLOSSTAGS"),gloss_tag," ");
+		  gloss_cloud.addCompletion(gloss_tag);}
+		var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
+		if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
+		  search_tag=Knodule.HTML(tag,sbook.knodule,false,true);
+		  fdjtDOM(fdjtID("SBOOKSEARCHTAGS"),search_tag," ");
+		  search_cloud.addCompletion(search_tag);}}}
 	    sbook.addTag2UI=addTag2UI;
 	    
 	    sbookFoot=fdjtID("SBOOKFOOT");
@@ -274,7 +277,7 @@ var sbookMode=
 		else document.body.focus();
 		if (sbook.scrolling) updateScroller(fdjtID(sbook.scrolling));
 		if ((mode==="allglosses")||(mode==="searching")||
-		    (mode==="browsing")||
+		    (mode==="browsing")||(mode==="glosses")||
 		    ((typeof mode === 'string')&&
 		     (mode.search(sbookDashMode_pat)===0))) {
 		    extendFlyleaf();}
@@ -512,9 +515,10 @@ var sbookMode=
 	    if (query.search("REFURI=")<0)
 		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
 	    if (query.search("DOCURI=")<0)
-		appuri=appuri+"&DOCURI="+encodeURIComponent(sbook.docuri);
+		appuri=appuri+"&DOCURI="+
+		  encodeURIComponent(document.location.href);
 	    if (document.title) {
-		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
+	      appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
 	    fdjtID("MANAGEAPP").src=appuri;}
 
 

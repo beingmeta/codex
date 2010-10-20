@@ -67,7 +67,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		glossid=gloss; gloss=sbook.glosses.ref(glossid);}
 	    else glossid=gloss.qid;
 	    var user=gloss.user;
-	    var sources=gloss.distribution;
+	    var sources=gloss.audience;
 	    var tags=gloss.tags;
 	    if ((sources)&&(!(sources instanceof Array))) sources=[sources];
 	    if ((tags)&&(!(tags instanceof Array))) tags=[tags];

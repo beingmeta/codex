@@ -56,7 +56,10 @@ body.sbookapp h1 .floatright { float: right;}
 body.sbookapp h1 .floatleft { float: left;}
 
 body.sbookapp.embedded { 
-  background-color: lightgray;}
+    background-color: #4682b4; color: ivory;}
+body.sbookapp.embedded a { 
+    color: lightblue;}
+body.sbookapp.embedded h2 {  text-align: left;}
 
 .floatleft img { margin-right: 4px;}
 img.floatleft { margin-right: 4px;}
@@ -97,3 +100,21 @@ div.appblock#IDENTITYBLOCK.expanded form#IDFORM { display: block;}
 div.appblock#IDENTITYBLOCK.expanded div.message { display: none;}
 div.appblock#IDENTITYBLOCK button { border: outset;}
 div.appblock#IDENTITYBLOCK.expanded button { border: inset;}
+
+div.item { clear: both; margin-right: 60px;}
+div.item span.action {
+    float: left; text-align: right;
+    width: 100px; padding-right: 6px;}
+div.item div.content { margin-left: 120px;}
+div.item div.content input[TYPE='TEXT'] { width: 100%;}
+div.item div.content TEXTAREA { width: 100%; min-height: 5ex;}
+div.item span.refuri { white-space: nowrap;}
+div.item div.content .invite { float: right; font-size: 70%;}
+
+div.item div.content { font-size: 125%;}
+
+#TOPBLOCK div.item { font-size: 150%;}
+#TOPBLOCK div.item .action input[TYPE='SUBMIT'] { font-size: 150%;}
+ 
+
+

@@ -59,6 +59,8 @@ var sbook_delete_icon="redx12x12.png";
 		    ((score)&&(showscore(score))),
 		    ((info.note)&&(fdjtDOM("span.note",info.note))),
 		    ((info.tags)&&(info.tags.length)&&(showtags(info.tags))),
+		    ((info.audience)&&(info.audience.length)&&
+		     (showaudience(info.audience))),
 		    ((info.excerpt)&&(fdjtDOM("span.excerpt",info.excerpt))),
 		    ((info.xrefs)&&(showlinks(info.xrefs,"span.xrefs"))),
 		    ((info.attachments)&&
@@ -85,6 +87,17 @@ var sbook_delete_icon="redx12x12.png";
 	    var tag=tags[i];
 	    fdjtDOM.append(span,((i>0)?" \u00b7 ":" "),Knodule.HTML(tag));
 	    i++;}
+	return span;}
+    function showaudience(tags){
+	var span=fdjtDOM("span.audience");
+	if (!(tags instanceof Array)) tags=[tags];
+	var i=0; var lim=tags.length;
+	// This might do some kind of more/less controls and sorted
+	// or cloudy display
+	while (i<tags.length) {
+	  var tag=tags[i]; var info=fdjtKB.ref(tag);
+	  fdjtDOM.append(span,((i>0)?" \u00b7 ":" "),info.name);
+	  i++;}
 	return span;}
     function showlinks(refs,spec){
 	var span=fdjtDOM(spec);

@@ -685,8 +685,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%fs] glossmark_clicked() %o to %o for %o",fdjtET(),evt,glossmark,target);
 	fdjtUI.cancel(evt);
 	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
-	    sbookMode(true);
-	    return;}
+	  sbookMode(true); sbook.retractFlyleaf();
+	  return;}
 	else sbook.openGlossmark(target);}
     function glossmark_onmouseover(evt){
 	evt=evt||event||null;

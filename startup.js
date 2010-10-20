@@ -509,6 +509,20 @@ sbook.Startup=
 	    gotInfo("sources",sources,persist);
 	    gotInfo("outlets",outlets,persist);
 	    gotInfo("etc",etc,persist);
+	    if (outlets) {
+	      var i=0; var ilim=outlets.length;
+	      while (i<ilim) {
+		var outlet=outlets[i++];
+		var span=fdjtID("SBOOKGLOSSOUTLET"+outlet.humid);
+		if (!(span)) {
+		  var completion=
+		    fdjtDOM("span.completion.outlet.cue",outlet.name);
+		  completion.id="SBOOKGLOSSOUTLET"+outlet.humid;
+		  completion.setAttribute("value",outlet.qid);
+		  completion.setAttribute("key",outlet.name);
+		  fdjtDOM(fdjtID("SBOOKGLOSSOUTLETS"),completion," ");
+		  if (sbook.gloss_cloud)
+		    sbook.gloss_cloud.addCompletion(completion);}}}
 	    if (sync) {
 		sbook.usersync=sync;
 		if (persist) fdjtState.setLocal("sbook.usersync",sync);}
