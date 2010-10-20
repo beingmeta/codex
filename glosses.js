@@ -594,6 +594,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     function addgloss_callback(req){
 	if (sbook.Trace.network)
 	    fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
+	fdjtDOM.dropClass(fdjtID("SBOOKADDGLOSS"),"submitting");
 	fdjtKB.Import(JSON.parse(req.responseText));
 	// Clear the UUID, and other fields
 	var uuid=fdjtDOM.getInput(fdjtID("SBOOKGLOSSFORM"),"UUID");
@@ -709,6 +710,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     // Submits a gloss, queueing it if offline.
     function submitGloss(evt){
 	evt=evt||event||null;
+	fdjtDOM.addClass(fdjtID("SBOOKADDGLOSS"),"submitting");
 	var form=(fdjtUI.T(evt));
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
@@ -755,6 +757,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtID("SBOOKMARKUUID").value="";
 	sbook.preview_target=false;
 	if (evt) fdjtUI.cancel(evt);
+	fdjtDOM.dropClass(fdjtID("SBOOKADDGLOSS"),"submitting");
 	/* Turn off the target lock */
 	sbook.setTarget(false);
 	sbookMode(false);}

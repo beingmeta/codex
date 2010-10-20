@@ -130,19 +130,26 @@ var sbook_gloss_data=
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
 		sbook.index.add(item,item.user);
+		sbook.addTag2UI(item.user);
 		var tags=item.tags;
 		if (!(tags instanceof Array)) tags=[tags];
 		if ((tags)&&(tags.length)) {
 		    var i=0; var lim=tags.length;
-		    while (i<lim) sbook.index.add(item,tags[i++]);}
-		var outlets=item.distribution;
+		    while (i<lim) {
+		      var tag=tags[i++];
+		      sbook.index.add(item,tag);
+		      sbook.addTag2UI(fdjtKB.ref(tag),true);}}
+		var outlets=item.audience;
 		if (typeof outlets === 'string') outlets=[outlets];
 		if ((outlets)&&(outlets.length)) {
 		    var i=0; var lim=outlets.length;
-		    while (i<lim) sbook.index.add(item,outlets[i++]);}});
+		    while (i<lim) {
+		      var audience=outlets[i++];
+		      sbook.index.add(item,audience);
+		      sbook.UI.addGlossSource(fdjtKB.ref(audience),true);}}});
 	    sbook.glosses.index=new fdjtKB.Index();
 	    if (sbook.offline)
-		sbook.glosses.storage=new fdjtKB.OfflineKB(sbook.glosses);}
+	      sbook.glosses.storage=new fdjtKB.OfflineKB(sbook.glosses);}
 	sbook.sourcekb=new fdjtKB.Pool("sources");{
 	    sbook.sourcekb.addAlias("@1961/");
 	    sbook.sourcekb.index=new fdjtKB.Index();

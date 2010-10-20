@@ -1091,6 +1091,8 @@ body.hudup .sbooktarget .glossmark:hover { opacity: 0.9;}
 
 /* Not logged in conditionalization */
 
+span.tab[CONTENTID='APPLOGIN'] { display: none;}
+
 body.nosbookuser div#SBOOKHELP > div.login { display: block;}
 body.nosbookuser div#SBOOKHUD div#SBOOKDASHTOP #IDBUTTON {
     display: none;}
@@ -1200,6 +1202,7 @@ div.sbookaddgloss form div.tags {
 div.sbookaddgloss form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
+div.sbookaddgloss.submitting { opacity: 0.5;}
 div.sbookaddgloss form.note div.input.note { display: block;}
 div.sbookaddgloss form.tag div.input.tag { display: block;}
 div.sbookaddgloss form.link div.input.link { display: block;}

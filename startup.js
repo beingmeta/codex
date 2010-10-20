@@ -592,7 +592,7 @@ sbook.Startup=
 		var friends=sbook.user.friends; var i=0; var lim=friends.length;
 		while (i<lim) {
 		    var friend=fdjtKB.ref(friends[i++]);
-		    sbook.UI.addSource(friend);}}
+		    sbook.UI.addTag2UI(friend);}}
 	    sbook._user_setup=true;}
 
 	function setupGlosses() {

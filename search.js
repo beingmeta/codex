@@ -101,7 +101,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    if (i>0) fdjtDOM(newtags," \u00B7 ");
 	    if (typeof tag === "string")
 		fdjtDOM(newtags,fdjtDOM("span.dterm",tag));
-	    else if (tag.kind)
+	    else if (tag.name)
 		fdjtDOM(newtags,tag.name);
 	    else fdjtDOM(newtags,tag);
 	    i++;}
