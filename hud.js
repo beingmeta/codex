@@ -252,7 +252,7 @@ var sbookMode=
 		    sbook.scrolling="SBOOKSEARCHCLOUD";
 		else if (mode==='target') {
 		    sbook.scrolling="SBOOKGLOSSCLOUD";
-		    if (fdjtID("SBOOKGLOSSFORM").className="tag") {
+		    if (fdjtID("SBOOKGLOSSFORM").className==="tag") {
 			sbook.showGlossCloud(fdjtID("SBOOKTAGINPUT"));}}
 		else sbook.scrolling=false;
 		if ((mode)&&(typeof mode === 'string')&&

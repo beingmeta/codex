@@ -613,27 +613,27 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /***** Gloss Modes *****/
 
     function glossMode(mode) {
-	// fdjtLog("[%fs] glossMode mode=%o",fdjtET(),mode);
-	fdjtID("SBOOKGLOSSFORM").className=mode;
-	if (mode==='tag') {
-	    showGlossCloud(fdjtID("SBOOKTAGINPUT"));
-	    fdjtID("SBOOKTAGINPUT").focus();}
-	else if (mode==='note') {
-	    fdjtDOM.dropClass(sbookHUD,"tagging");
-	    fdjtDOM.dropClass(sbookHUD,"sharing");
-	    if (istagging(fdjtID("SBOOKNOTEINPUT"))) {
-		showGlossCloud(fdjtID("SBOOKNOTEINPUT"),true);
-		sbook.extendFlyleaf();}
-	    fdjtID("SBOOKNOTEINPUT").focus();}
-	else if (mode==='share') {
-	    fdjtDOM.addClass(sbookHUD,"sharing");
-	    fdjtDOM.dropClass(sbookHUD,"tagging");
-	    sbook.extendFlyleaf();
-	    share_cloud.complete(fdjtID("SBOOKSHAREINPUT").value);}
-	else {
-	    hideGlossCloud();
-	    fdjtDOM.dropClass(sbookHUD,"sharing");
-	    fdjtDOM.dropClass(sbookHUD,"tagging");}}
+      fdjtLog("[%fs] glossMode mode=%o",fdjtET(),mode);
+      fdjtID("SBOOKGLOSSFORM").className=mode;
+      if (mode==='tag') {
+	showGlossCloud(fdjtID("SBOOKTAGINPUT"));
+	fdjtID("SBOOKTAGINPUT").focus();}
+      else if (mode==='note') {
+	fdjtDOM.dropClass(sbookHUD,"tagging");
+	fdjtDOM.dropClass(sbookHUD,"sharing");
+	if (istagging(fdjtID("SBOOKNOTEINPUT"))) {
+	  showGlossCloud(fdjtID("SBOOKNOTEINPUT"),true);
+	  sbook.extendFlyleaf();}
+	fdjtID("SBOOKNOTEINPUT").focus();}
+      else if (mode==='share') {
+	fdjtDOM.addClass(sbookHUD,"sharing");
+	fdjtDOM.dropClass(sbookHUD,"tagging");
+	sbook.extendFlyleaf();
+	share_cloud.complete(fdjtID("SBOOKSHAREINPUT").value);}
+      else {
+	hideGlossCloud();
+	fdjtDOM.dropClass(sbookHUD,"sharing");
+	fdjtDOM.dropClass(sbookHUD,"tagging");}}
     sbook.glossMode=glossMode;
 
     /***** The Gloss Cloud *****/

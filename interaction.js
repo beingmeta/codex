@@ -133,7 +133,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else {
 	    var target=sbook.getTarget(element);
 	    if (sbook.Trace.gestures)
-		fdjtLog("[%fs] Tap on target %o from %o mode=%o",fdjtET(),target,element,sbook.mode);
+		fdjtLog("[%fs] Tap on target %o from %o mode=%o",
+			fdjtET(),target,element,sbook.mode);
 	    if ((!(target))||(target===sbook.root)||(target===sbook.body)) {
 		if  (sbook.hudup) sbookMode(false);
 		else sbookMode(true);
