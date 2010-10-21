@@ -114,7 +114,8 @@ div.item div.content .invite { float: right; font-size: 70%;}
 div.item div.content { font-size: 125%;}
 
 #TOPBLOCK div.item { font-size: 150%;}
-#TOPBLOCK div.item .action input[TYPE='SUBMIT'] { font-size: 150%;}
+#TOPBLOCK div.item .action input[TYPE='SUBMIT'] { }
+
  
 
 
