@@ -462,8 +462,8 @@ var sbook_gloss_data=
 	if (scrollfree) {
 	    if ((saved_x)||(saved_y)) {
 		window.scrollTo(0,0);
-		// sbook.body.style.left=""+(-saved_x)+"px";
-		sbook.body.style.top=""+(-saved_y)+"px";
+		sbook.body.style.left=""+(-saved_x)+"px";
+		sbook.body.style.top=""+(y_offset-saved_y)+"px";
 		saved_x=false; saved_y=false;}}
 	else fdjtUI.scrollRestore();}
     sbook.scrollRestore=scrollRestore;
