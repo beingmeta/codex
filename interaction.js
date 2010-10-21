@@ -186,7 +186,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    return;}
 	else if (!(ref)) {
 	    if (sbook.preview) return sbook.Preview(false);
-	    else return;}
+	    else sbookMode(false);}
 	else if (fdjtDOM.hasParent(element,".sectname")) {
 	    var info=sbook.docinfo[ref.id];
 	    if ((info.sub)&&(info.sub.length))

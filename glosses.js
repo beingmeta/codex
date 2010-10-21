@@ -653,7 +653,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     function glossCloud(){
 	if (gloss_cloud) return gloss_cloud;
 	var completions=fdjtID("SBOOKGLOSSCLOUD");
-	completions.onmouseup=glosscloud_onclick;
+	completions.onclick=glosscloud_onclick;
 	sbook.gloss_cloud=gloss_cloud=new fdjtUI.Completions(
 	    completions,fdjtID("SBOOKTAGINPUT"),
 	    fdjtUI.FDJT_COMPLETE_OPTIONS|

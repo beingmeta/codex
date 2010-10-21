@@ -454,8 +454,8 @@ var sbook_gloss_data=
 		  saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
 		  saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
 		window.scrollTo(0,0);
-		sbook.body.style.left=""+(-x_offset-x)+"px";
-		sbook.body.style.top=""+(-y_offset-y)+"px";}}
+		sbook.body.style.left=""+(-x)+"px";
+		sbook.body.style.top=""+(y_offset-y)+"px";}}
 	else fdjtUI.scrollPreview(elt,cxt,off);}
     sbook.scrollPreview=scrollPreview;
     function scrollRestore(){
