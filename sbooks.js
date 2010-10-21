@@ -439,8 +439,8 @@ var sbook_gloss_data=
 	    if (elt) fdjtDOM.addClass(document.body,"preview");
 	    else fdjtDOM.dropClass(document.body,"preview");
 	    if (typeof elt === 'number') {
-		var x_offset=((typeof cxt === 'number')?(cxt):(O));
-		var y_offset=elt;
+		var x=((typeof cxt === 'number')?(cxt):(O));
+		var y=elt;
 		if ((!(saved_y))||(!(saved_x))) {
 		    saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
 		    saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
