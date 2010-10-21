@@ -526,30 +526,37 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (gloss.attention) {
 		var tags=gloss.attention; var i=0; var lim=tags.length;
 		while (i<lim) addTag(form,tags[i++],"ATTENTION");}}
-	// Clear any current tagcues from the last gloss
-	var cursoft=fdjtDOM.getChildren(gloss_cloud.dom,".cue.softcue");
+	setCloudCuesFromTarget(gloss_cloud,target);}
+    sbook.setGlossTarget=setGlossTarget;
+
+    function setCloudCues(cloud,tags){
+      	// Clear any current tagcues from the last gloss
+	var cursoft=fdjtDOM.getChildren(cloud.dom,".cue.softcue");
 	var i=0; var lim=cursoft.length;
 	while (i<lim) {
 	    var cur=cursoft[i++];
 	    fdjtDOM.dropClass(cur,"cue");
 	    fdjtDOM.dropClass(cur,"softcue");}
 	// Get the tags on this element as cues
-	var info=sbook.docinfo[target.id];
-	var tags=[].concat(((info)&&(info.tags))||[]);
-	var glosses=sbook.glosses.find('frag',target.id);
-	var i=0; var lim=glosses.length;
-	while (i<lim) {
-	    var g=glosses[i++]; var gtags=g.tags;
-	    if (gtags) tags=tags.concat(gtags);}
-	var newcues=gloss_cloud.getByValue(tags);
+	var newcues=cloud.getByValue(tags);
 	var i=0; var lim=newcues.length;
 	while (i<lim) {
-	    var completion=newcues[i++];
-	    if (!(fdjtDOM.hasClass(completion,"cue"))) {
-		fdjtDOM.addClass(completion,"cue");
-		fdjtDOM.addClass(completion,"softcue");}}}
-    sbook.setGlossTarget=setGlossTarget;
-
+	  var completion=newcues[i++];
+	  if (!(fdjtDOM.hasClass(completion,"cue"))) {
+	    fdjtDOM.addClass(completion,"cue");
+	    fdjtDOM.addClass(completion,"softcue");}}}
+    function setCloudCuesFromTarget(cloud,target){
+      var info=sbook.docinfo[target.id];
+      var tags=[].concat(((info)&&(info.tags))||[]);
+      var glosses=sbook.glosses.find('frag',target.id);
+      var i=0; var lim=glosses.length;
+      while (i<lim) {
+	var g=glosses[i++]; var gtags=g.tags;
+	if (gtags) tags=tags.concat(gtags);}
+      setCloudCues(cloud,tags);}
+    sbook.setCloudCues=setCloudCues;
+    sbook.setCloudCuesFromTarget=setCloudCuesFromTarget;
+    
     /***** Initializing the gloss form for the first time ******/
 
     function setupGlossForm(form){
@@ -613,7 +620,9 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /***** Gloss Modes *****/
 
     function glossMode(mode) {
-      fdjtLog("[%fs] glossMode mode=%o",fdjtET(),mode);
+      if (sbook.Trace.mode)
+	fdjtLog("[%fs] glossMode %o=>%o",
+		fdjtET(),fdjtID("SBOOKGLOSSFORM").className,mode);
       fdjtID("SBOOKGLOSSFORM").className=mode;
       if (mode==='tag') {
 	showGlossCloud(fdjtID("SBOOKTAGINPUT"));

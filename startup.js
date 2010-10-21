@@ -699,7 +699,9 @@ sbook.Startup=
 	    fdjtDOM.replace("SBOOKSHARECLOUD",sbook.shareCloud().dom);
 	    if (sbook.knodule) {
 		sbook.Message("Integrating knodule terms...");
-		fdjtTime.slowmap(sbook.addTag2UI,sbook.knodule.alldterms);}}
+		fdjtTime.slowmap(sbook.addTag2UI,sbook.knodule.alldterms);}
+	    sbook.sizeCloud(sbook.full_cloud);
+	    sbook.sizeCloud(sbook.gloss_cloud);}
 
 	function initGlosses(glosses,etc){
 	    var allglosses=sbook.allglosses;

@@ -385,6 +385,8 @@ var sbook_gloss_data=
 	    fdjtDOM.addClass(target,"sbooktarget");
 	    fdjtState.setCookie("sbooktarget",target);
 	    sbook.target=target;
+	    if (sbook.full_cloud)
+	      sbook.setCloudCuesFromTarget(sbook.full_cloud,target);
 	    if (!(nogo)) sbook.GoTo(target,true);}}
     sbook.setTarget=setTarget;
 

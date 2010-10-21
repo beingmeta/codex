@@ -519,6 +519,23 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    sbook.full_cloud=new fdjtUI.Completions(completions);
 	    return sbook.full_cloud;}}
     sbook.FullCloud=FullCloud;
+
+    function sizeCloud(completions,container,index){
+      if (!(index)) index=sbook.index;
+      if (!(container)) container=completions.dom;
+      var nodes=fdjtDOM.getChildren(container,".completion");
+      var tagscores=index.tagScores();
+      var max_score=tagscores._maxscore;
+      var alltags=tagscores._all;
+      var i=0; var lim=nodes.length;
+      while (i<lim) {
+	var tagnode=nodes[i++];
+	var tag=tagnode.value||completions.getValue(tagnode);
+	if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
+	var score=tagscores[tag];
+	if (score) tagnode.style.fontSize=(100+(100*(score/max_score)))+"%";}}
+    sbook.sizeCloud=sizeCloud;
+
 })();
 
 
