@@ -1158,7 +1158,7 @@ div.sbookaddgloss form div.controls .checkspan.private input[type='checkbox'] {
 
 div.sbookaddgloss form div.topblock { min-height: 50px;}
 div.sbookaddgloss form div.input {
-    display: none; width: auto; }
+    display: none; width: auto; margin-left: 0px; margin-right: 0px;}
 div.sbookaddgloss form div.input input {}
 div.sbookaddgloss form div.input textarea,
 div.sbookaddgloss form div.input input[type='TEXT'] {
@@ -1180,10 +1180,11 @@ div.sbookaddgloss form div.input input[type='TEXT'][name='LINK'] {
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 div.sbookaddgloss form div.input input[type='TEXT'][name='LINKTEXT'] {
-    font-size: 80%; font-family: sans; font-style: normal; margin-top: 5px;}
+    font-size: 80%; font-family: sans; font-style: normal; margin-top: 5px;
+    width: 100%;}
 div.sbookaddgloss form div.input textarea[name='NOTE'],
 div.sbookaddgloss form div.input input[type='TEXT'][name='NOTE'] {
-    height: 5ex; overflow: hidden;
+    height: 5ex; overflow: hidden; width: 100%;
     background-image:
     url(http://static.beingmeta.com/graphics/justremarkballoon24x24.png);
     background-position: right top;
@@ -1205,6 +1206,7 @@ div.sbookaddgloss form div.tags {
 div.sbookaddgloss form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
+div.sbookaddgloss form { margin-left: 0%; margin-right: 0%;}
 div.sbookaddgloss.submitting { opacity: 0.5;}
 div.sbookaddgloss form.note div.input.note { display: block;}
 div.sbookaddgloss form.tag div.input.tag { display: block;}
