@@ -459,7 +459,7 @@ var sbook_gloss_data=
 	else fdjtUI.scrollPreview(elt,cxt,off);}
     sbook.scrollPreview=scrollPreview;
     function scrollRestore(){
-	if (scrollfree) {
+	if (sbook.scrollfree) {
 	    if ((saved_x)||(saved_y)) {
 		window.scrollTo(0,0);
 		sbook.body.style.left=""+(-saved_x)+"px";

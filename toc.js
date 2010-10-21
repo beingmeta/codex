@@ -167,8 +167,8 @@ var sbookTOC=
       fdjtDOM.addClass(base_elt,"cur");};
     sbookTOC.update=updateTOC;
 
-    // In mouse-based interfaces, TOC spanbars provide preview on mouseover
-    //  and jump on click
+    // In mouse-based interfaces, TOC spanbars provide preview on
+    //  mouseover and jump on click
     var mouseout_timer=false;
     function toc_mouseover(evt){
       if (sbook.mode!=='toc') return;
