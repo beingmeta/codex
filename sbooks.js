@@ -77,7 +77,7 @@ var sbook=
 	 glosses: false, // Whether we're tracing gloss processing
 	 pagination: 0, // Whether to trace pagination
 	 paging: false, // Whether to trace paging (movement by pages)
-	 gestures: 1} // Whether to trace gestures
+	 gestures: 0} // Whether to trace gestures
     };
 var _sbook_setup=false;
 
@@ -398,7 +398,7 @@ var sbook_gloss_data=
       if (scrollfree) {
 	window.scrollTo(0,0);
 	(win||sbook.body).style.left=""+(-x)+"px";
-	(win||sbook.body).style.top=""+(offset_y-y)+"px";}
+	(win||sbook.body).style.top=""+(y_offset-y)+"px";}
       else (win||window).scrollTo(x,y);}
     sbook.scrollTo=scrollTo;
     function scrollPos(win){
@@ -446,7 +446,7 @@ var sbook_gloss_data=
 		    saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
 		window.scrollTo(0,0);
 		sbook.body.style.left=""+(-x)+"px";
-		sbook.body.style.top=""+(offset_y-y)+"px";}
+		sbook.body.style.top=""+(y_offset-y)+"px";}
 	    else {
 		var geom=fdjtDOM.getGeometry(elt,sbook.body||sbook.root,false);
 		var x=0; var y=geom.top-(fdjtDOM.viewHeight()/2);
