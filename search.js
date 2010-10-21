@@ -417,8 +417,10 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    else return 1;});
 	// Then we scale the keys by the ratio of result frequency to
 	// absolute frequency
-	var nspans=0; var sumscale=0; var minscale=false; var maxscale=false;
-	i=0; while (i<copied.length) {
+	var nspans=0; var sumscale=0;
+	var minscale=false; var maxscale=false;
+	var domnodes=[]; var nodescales=[];
+ 	i=0; while (i<copied.length) {
 	    var dterm=copied[i++];
 	    var count=((bykey[dterm]) ? (bykey[dterm].length) : (1));
 	    var freq=((scores)?(scores[dterm]||1):(1));
@@ -428,25 +430,24 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 		 (dterm+": "+(((score)?("s="+score+"; "):"")+freq+"/"+count+" items")) :
 		 (dterm+": "+freq+((freq==1) ? " item" : " items")));
 	    var span=KNodeCompletion(dterm,title);
+	    domnodes.push(span);
 	    if (freq===1) fdjtDOM.addClass(span,"singleton");
 	    if ((scores)&&(!(noscale))) {
 		var relfreq=
 		  ((freq/scores._count)/(count/sbook.docinfo._eltcount));
 		var scaling=Math.sqrt(relfreq);
-		var maxscaling=freq/max_score;
-		var fontscale=100+(scaling*100); /* +(maxscaling*100) */
-		sumscale=fontscale+sumscale; nspans++;
-		if ((minscale===false)||(fontscale<minscale))
-		  minscale=fontscale;
-		if ((maxscale===false)||(fontscale>maxscale))
-		  maxscale=fontscale;
-		span.style.fontSize=fontscale+"%";}
+		if ((!(minscale))||(scaling<minscale)) minscale=scaling;
+		if ((!(maxscale))||(scaling>maxscale)) maxscale=scaling;
+		nodescales.push(scaling);}
 	    fdjtDOM(spans,span,"\n");}
-	if ((scores)&&(!(noscale))) {
-	    var avgscale=sumscale/nspans;
-	    var scaledown=20000/maxscale;
-	    spans.style.fontSize=scaledown+"%";
-	    spans.style.lineHeight=avgscale+"%";}
+	if (nodescales.length) {
+	  var j=0; var jlim=domnodes.length;
+	  var overscale=100/(maxscale-minscale);
+	  while (j<jlim) {
+	    var node=domnodes[j];
+	    var scale=nodescales[j];
+	    node.style.fontSize=(100+((scale-minscale)*overscale))+'%';
+	    j++;}}
 	var maxmsg=fdjtDOM
 	  ("div.maxcompletemsg",
 	   "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
