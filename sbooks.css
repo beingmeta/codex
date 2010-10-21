@@ -548,6 +548,11 @@ div.searchbox.noresults div.resultinfo span { display: none;}
 
 /* Tag clouds */
 
+div.completions .cloudtoggle {
+    float: right; display: none;}
+div.completions.noinput .cloudtoggle {
+    display: block;}
+
 div#SBOOKHUD div#SBOOKFLYLEAF > div.completions {
     padding-left: 2.5em; text-align: center; font-size: 115%;}
 div#SBOOKHUD div#SBOOKFLYLEAF > div.completions div.doc {

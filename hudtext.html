@@ -50,7 +50,8 @@
 <div id="SBOOKFLYLEAF">
 <div id="SBOOKGLOSSCLOUD" class="completions flyleaf">
   <img class="label" alt="tags"
-       src="http://static.beingmeta.com/graphics/TagIcon32x32.png"/>
+       src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+       onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
   <div class='doc'>
     <strong>Add a tag</strong>
     by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
@@ -73,6 +74,9 @@
   </div>
 </div>
 <div id="SBOOKSEARCHCLOUD" class="completions searchcloud flyleaf">
+  <img class="label" alt="tags"
+       src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+       onclick="fdjtDOM.toggleClass(fdjtID('SBOOKSEARCHCLOUD'),'showempty');"/>
   <span class="count">no query refinements</span>
   <div id="SBOOKSEARCHSOURCES"></div>
   <div id="SBOOKSEARCHTAGS"></div>

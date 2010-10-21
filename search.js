@@ -392,7 +392,11 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%fs] Making cloud from %d dterms using scores=%o and scores=%o",
 		    fdjtET(),dterms.length,scores,scores);
 	var spans=fdjtDOM("span");  
-	var completions=fdjtDOM("div.completions",spans);
+	var tagicon=fdjtDOM.Image
+	  ("http://static.beingmeta.com/graphics/TagSearch40x40.png",
+	   ".cloudtoggle","show/hide all","show all tags");
+	tagicon.onclick=showempty_onclick;
+	var completions=fdjtDOM("div.completions",tagicon,spans);
 	var n_terms=dterms.length;
 	var i=0; var max_score=0;
 	if (scores) {
@@ -411,8 +415,9 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    else return 1;
 	    else if (xlen>ylen) return -1;
 	    else return 1;});
-	// Then we scale the keys by the ratio of result frequency to absolute frequency
-	var nspans=0; var sumscale=0; var minscale=false;
+	// Then we scale the keys by the ratio of result frequency to
+	// absolute frequency
+	var nspans=0; var sumscale=0; var minscale=false; var maxscale=false;
 	i=0; while (i<copied.length) {
 	    var dterm=copied[i++];
 	    var count=((bykey[dterm]) ? (bykey[dterm].length) : (1));
@@ -425,23 +430,27 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    var span=KNodeCompletion(dterm,title);
 	    if (freq===1) fdjtDOM.addClass(span,"singleton");
 	    if ((scores)&&(!(noscale))) {
-		var relfreq=((freq/scores._count)/(count/sbook.docinfo._eltcount));
+		var relfreq=
+		  ((freq/scores._count)/(count/sbook.docinfo._eltcount));
 		var scaling=Math.sqrt(relfreq);
 		var maxscaling=freq/max_score;
 		var fontscale=100+(scaling*100); /* +(maxscaling*100) */
 		sumscale=fontscale+sumscale; nspans++;
-		if ((minscale===false)||(fontscale<minscale)) minscale=fontscale;
+		if ((minscale===false)||(fontscale<minscale))
+		  minscale=fontscale;
+		if ((maxscale===false)||(fontscale>maxscale))
+		  maxscale=fontscale;
 		span.style.fontSize=fontscale+"%";}
 	    fdjtDOM(spans,span,"\n");}
 	if ((scores)&&(!(noscale))) {
 	    var avgscale=sumscale/nspans;
-	    var scaledown=7500/minscale; // 10000/avgscale;
+	    var scaledown=20000/maxscale;
 	    spans.style.fontSize=scaledown+"%";
 	    spans.style.lineHeight=avgscale+"%";}
 	var maxmsg=fdjtDOM
-	("div.maxcompletemsg",
-	 "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
-	 " of completions.  ");
+	  ("div.maxcompletemsg",
+	   "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
+	   " of completions.  ");
 	fdjtDOM.prepend(completions,maxmsg);
 	var end=new Date();
 	if (sbook.Trace.clouds)
@@ -451,6 +460,12 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 
 	return completions;}
     sbook.makeCloud=makeCloud;
+
+    function showempty_onclick(evt){
+      var target=fdjtUI.T(evt);
+      var completions=fdjtDOM.getParent(target,".completions");
+      if (completions)
+	fdjtDOM.toggleClass(completions,"showempty");}
 
     function KNodeCompletion(term,title){
 	var sbook_index=sbook.index;
@@ -531,6 +546,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
       while (i<lim) {
 	var tagnode=nodes[i++];
 	var tag=tagnode.value||completions.getValue(tagnode);
+        if (!(tag)) continue;
 	if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
 	var score=tagscores[tag];
 	if (score) tagnode.style.fontSize=(100+(100*(score/max_score)))+"%";}}
