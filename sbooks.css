@@ -1112,8 +1112,10 @@ body.nosbookuser div#SBOOKHUD div#SBOOKSOURCES img.button.everyone {
 
 /* Gloss form */
 
+div.sbookaddgloss form {
+    padding: 0px; margin: 0px;}
 div.sbookaddgloss form fieldset {
-    border: 0px; padding: 6px; padding-top: 2px;}
+    border: 0px; padding: 6px; padding-top: 2px; margin: 0px;}
 div.sbookaddgloss form div { clear: none;}
 div.sbookaddgloss form div.input { }
 /* div.sbookaddgloss form div.glossmode { float: left; text-align: left;} */
@@ -1132,31 +1134,7 @@ div.sbookaddgloss form div.glossmode select option {
     url(http://static.beingmeta.com/graphics/TagIcon16x16.png);
     font-variant: small-caps;}
 
-div.sbookaddgloss form div.controls {
-    text-align: right; padding-left: 7px;}
-div.sbookaddgloss form div.controls img {
-    margin-left: 3px; margin-right: 3px; margin-bottom: 3px;
-    border: solid silver 2px; padding: 2px;
-    border-radius: 4px;
-    -khtml-border-radius: 4px; -webkit-border-radius: 4px; 
-    -moz-border-radius: 4px;
-    vertical-align: top; float: left;}
-div.sbookaddgloss form div.controls input[type='SUBMIT'] {
-    font-weight: bold; text-align: center; padding: 4px;
-    font-size: 150%; border-radius: 0px;}
-div.sbookaddgloss form div.controls .checkspan {
-    margin-left: 4px; margin-right: 4px;}
-div.sbookaddgloss form div.controls .checkspan.private {
-    font-weight: bold; font-size: 90%;
-    border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px;
-    padding: 0px; padding-right: 2px;  padding-left: 2px; 
-    background-color: silver; color: green;}
-div.sbookaddgloss form div.controls .checkspan.private.ischecked {
-    font-weight: normal; color: red; }
-div.sbookaddgloss form div.controls .checkspan.private input[type='checkbox'] {
-    display: none;}
-
-div.sbookaddgloss form div.topblock { min-height: 50px;}
+div.sbookaddgloss form div.topblock { min-height: 50px; vertical-align: top;}
 div.sbookaddgloss form div.input {
     display: none; width: auto; margin-left: 0px; margin-right: 0px;}
 div.sbookaddgloss form div.input input {}
@@ -1201,6 +1179,31 @@ div.sbookaddgloss form div.input input[type='TEXT'][name='SHARE'] {
     background-repeat: no-repeat;}
 div.sbookaddgloss form div.input input[type='FILE'] { /* width: 100%; */
     display: block; }
+
+div.sbookaddgloss form div.controls {
+    text-align: right; padding-left: 7px;}
+div.sbookaddgloss form div.controls img {
+    margin-left: 3px; margin-right: 3px; margin-bottom: 3px;
+    border: solid silver 2px; padding: 2px;
+    border-radius: 4px;
+    -khtml-border-radius: 4px; -webkit-border-radius: 4px; 
+    -moz-border-radius: 4px;
+    vertical-align: top; float: left;}
+div.sbookaddgloss form div.controls input[type='SUBMIT'] {
+    font-weight: bold; text-align: center; padding: 4px;
+    font-size: 150%; border-radius: 0px;}
+div.sbookaddgloss form div.controls .checkspan {
+    margin-left: 4px; margin-right: 4px; font-family: sans,sans-serif;}
+div.sbookaddgloss form div.controls .checkspan.private {
+    font-weight: bold; font-size: 90%;
+    border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px;
+    padding: 0px; padding-right: 2px;  padding-left: 2px; 
+    background-color: silver; color: green;}
+div.sbookaddgloss form div.controls .checkspan.private.ischecked {
+    font-weight: normal; color: red; }
+div.sbookaddgloss form div.controls .checkspan.private input[type='checkbox'] {
+    display: none;}
+
 div.sbookaddgloss form div.tags {
     display: block; width: 100%; text-align: left;}
 div.sbookaddgloss form span.source:before, .completions span.source:before {
