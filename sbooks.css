@@ -719,8 +719,6 @@ body.preview div#SBOOKHUD.toc div#SBOOKTOC { display: block; opacity: 1.0;}
 body.preview div#SBOOKHUD div#SBOOKPREVIEW { display: block;}
 body.preview div#SBOOKHUD.toc div#SBOOKPREVIEW { display: none;}
 
-body.preview div#SBOOKHUD div#SBOOKPREVIEW { display: none;}
-
 body.pagepreview div.sbookmargin { }
 body.pagepreview div.sbookmargin#SBOOKPAGEFOOT {
     background-color: transparent;}
