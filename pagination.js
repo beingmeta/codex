@@ -367,9 +367,10 @@ var sbookPaginate=
       /(\bfullpage\b)|(\btitlepage\b)|(\bsbookfullpage\b)|(\bsbooktitlepage\b)/;
     function isPageBlock(elt,style){
       return ((elt)&&
-	      ((((style)||getStyle(elt)).pageBreakInside==='avoid')||
-	       (elt.className.search(page_break_classes)>=0))||
-	      ((sbook_avoidpagebreak)&&(sbook_avoidpagebreak.match(elt))));}
+	      (((elt.tagName==='IMG')||
+		(((style)||getStyle(elt)).pageBreakInside==='avoid')||
+		(elt.className.search(page_break_classes)>=0))||
+	       ((sbook_avoidpagebreak)&&(sbook_avoidpagebreak.match(elt)))));}
 
     function avoidPageHead(elt,style){
       return
