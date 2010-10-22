@@ -643,7 +643,8 @@ var sbookPaginate=
       var npages=sbook.pageinfo.length;
       var pbar=fdjtDOM("div.progressbar");
       var starts_at=info.top+pageoff; var ends_at=info.bottom;
-      var book_len=sbook.pageinfo[npages-1].bottom;
+      var lastpage=sbook.pageinfo[npages-1];
+      var book_len=lastpage.bottom||lastpage.limit||lastpage.top;
       pbar.style.left=(100*(starts_at/book_len))+"%";
       pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
       var pageno=
