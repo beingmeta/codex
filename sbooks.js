@@ -449,7 +449,14 @@ var sbook_gloss_data=
 		sbook.body.style.top=""+(y_offset-y)+"px";}
 	    else {
 		var geom=fdjtDOM.getGeometry(elt,sbook.body||sbook.root,false);
-		var x=0; var y=geom.top-(fdjtDOM.viewHeight()/2);
+		var vh=fdjtDOM.viewHeight();
+		var x=0; var y;
+		var y_target=geom.top+(geom.height/3);
+		if ((2*(geom.height/3))<((vh/2)-50))
+		  y=y_target-vh/2;
+		else if ((geom.height)<(vh-100))
+		  y=geom.top-(50+(geom.height/2));
+		else y=geom.top-50;
 		if ((!(saved_y))||(!(saved_x))) {
 		  saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
 		  saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}

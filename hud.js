@@ -526,7 +526,7 @@ var sbookMode=
 	
 	var sbook_preview_delay=250;
 	// This can be a regular expression
-	var sbook_preview_classes=/(sbooknote)/;
+	var sbook_preview_classes=/(gloss)/;
 	
 	function sbookPreview(elt,src){
 	    var cxt=false;
