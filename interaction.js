@@ -577,6 +577,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    clearTimeout(hold_timer); hold_timer=false;}
 	mouseisdown=false; // For faketouch
 	if (touch_scrolled) return;  // Gesture already intepreted
+	if (touch_moved) return;  // Gesture already intepreted
 	if (fdjtDOM.isClickable(target)) return;
 	if (touch_moved) {
 	    var dx=last_x-start_x; var dy=last_y-start_y;
