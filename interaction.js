@@ -576,8 +576,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (hold_timer) {
 	    clearTimeout(hold_timer); hold_timer=false;}
 	mouseisdown=false; // For faketouch
-	if (touch_scrolled) return;  // Gesture already intepreted
-	if (touch_moved) return;  // Gesture already intepreted
 	if (fdjtDOM.isClickable(target)) return;
 	if (touch_moved) {
 	    var dx=last_x-start_x; var dy=last_y-start_y;
@@ -611,6 +609,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		else {}}
 	    else {}
 	    return;}
+	else if (touch_scrolled) return;  // Gesture already intepreted
+	else if (touch_moved) return;  // Gesture already intepreted
 	else if (!(edgeTap(evt,last_x))) return tap(target);
 	else return;}
 
@@ -636,6 +636,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtUI.cancel(evt);
 	    target.dispatchEvent(click_evt);
 	    return;}
+	else if (touch_scrolled) return;  // Gesture already intepreted
+	else if (touch_moved) return;  // Gesture already intepreted
 	else return hud_tap(target);}
 
     function hud_touchend(evt){
@@ -660,6 +662,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtUI.cancel(evt);
 	    target.dispatchEvent(click_evt);
 	    return;}
+	else if (touch_scrolled) return;  // Gesture already intepreted
+	else if (touch_moved) return;  // Gesture already intepreted
 	else {
 	    fdjtUI.cancel(evt);
 	    return hud_tap(target);}}
