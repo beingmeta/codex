@@ -35,7 +35,7 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 sbook.Startup=
   (function(){
 
-    var sbook_faketouch=false;
+    var sbook_faketouch=true;
 
     var sbook_fullpages=[];
     var sbook_heading_qricons=false;
@@ -412,7 +412,7 @@ sbook.Startup=
 	 ((fdjtID(fdjtDOM.getMeta("sbook.body")))||(document.body)):
 	 (fdjtID("SBOOKBODY")));
       if (!(sbody)) {
-	sbody=fdjtDOM("div#SBOOKBODY"); /* {
+	sbody=fdjtDOM("div#SBOOKBODY");  /* {
 	  var bodystyle=fdjtDOM.getStyle(document.body);
 	  var left=fdjtDOM.parsePX(bodystyle.marginLeft);
 	  var right=fdjtDOM.parsePX(bodystyle.marginRight);

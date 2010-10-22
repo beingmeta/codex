@@ -73,7 +73,10 @@ var sbookPaginate=
     var getStyle=fdjtDOM.getStyle;
     var parsePX=fdjtDOM.parsePX;
 
+    var sbook_body=false;
+
     function Paginate(pagesize,start,callback){
+      if (!(sbook_body)) sbook_body=sbook.body;
       if (!(start)) start=sbook.body||document.body;
       start=scanContent(start);
       if (sbook.Trace.pagination)
@@ -384,7 +387,7 @@ var sbookPaginate=
 	((sbook_avoidpagefoot)&&(sbook_avoidpagefoot.match(elt)));}
 
     function nodeInfo(node,style){
-      var info=getGeometry(node);
+      var info=getGeometry(node,sbook_body);
       var fontsize=((style)||getStyle(node)).fontSize;
       if ((fontsize)&&(typeof fontsize === 'string'))
 	fontsize=parseInt(fontsize.slice(0,fontsize.length-2));
@@ -397,8 +400,8 @@ var sbookPaginate=
       var next=(((skipchildren)||(scan.sbookui)||(isPageBlock(scan)))?
 		(fdjtDOM.next(scan,isContentBlock)):
 		(fdjtDOM.forward(scan,isContentBlock)));
-      var info=getGeometry(scan);
-      var nextinfo=((next)&&(getGeometry(next)));
+      var info=getGeometry(scan,sbook_body);
+      var nextinfo=((next)&&(getGeometry(next,sbook_body)));
       if (!(next)) {}
       else if ((nextinfo.height===0)||(nextinfo.top<info.top)) 
 	// Skip over weird nodes
@@ -510,7 +513,7 @@ var sbookPaginate=
     /* This adjusts the offset of a page and its successor to avoid widows */
 	
     function AdjustPageBreak(node,top,bottom,style){
-      var nodeinfo=getGeometry(node);
+      var nodeinfo=getGeometry(node,sbook_body);
       var styleinfo=((style)||getStyle(node));
       var lastbottom=nodeinfo.top;
       var linebottom=lastbottom;
@@ -521,7 +524,7 @@ var sbookPaginate=
 	if (child.nodeType===1)
 	  if (child.sbookinui) continue;
 	  else {
-	    var offinfo=getGeometry(child);
+	    var offinfo=getGeometry(child,sbook_body);
 	    if ((!(offinfo))||(offinfo.height===0)) continue;
 	    else if (offinfo.bottom<top) continue;
 	    else if (offinfo.bottom>=bottom)
@@ -536,7 +539,7 @@ var sbookPaginate=
 	  // Make the text into a span
 	  var chunk=fdjtDOM("span",child.nodeValue);
 	  node.replaceChild(chunk,child);
-	  var offinfo=getGeometry(chunk);
+	  var offinfo=getGeometry(chunk,sbook_body);
 	  if ((!(offinfo))||(offinfo.height===0)) {
 	    node.replaceChild(child,chunk);
 	    continue;}
@@ -731,7 +734,7 @@ var sbookPaginate=
 	return;}
       var top=sbook.viewTop()+sbook_top_px;
       var bottom=sbook.viewTop()+((fdjtDOM.viewHeight())-sbook_bottom_px);
-      var offsets=getGeometry(elt);
+      var offsets=getGeometry(elt,sbook_body);
       fdjtLog("[%fs] %s [%d+%d=%d] %s [%d,%d] %o%s%s%s%s '%s'\n%o",
 	      fdjtET(),name,
 	      offsets.top,offsets.height,offsets.top+offsets.height,
@@ -881,7 +884,7 @@ var sbookPaginate=
       else repaginate();}
 	
     function repaginate(){
-      fdjtDOM.dropClass(document.body,"scrollfree");
+      // fdjtDOM.dropClass(document.body,"scrollfree");
       var newinfo={};
       var pagesize=(fdjtDOM.viewHeight())-
 	(sbook_top_px+sbook_bottom_px);

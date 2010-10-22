@@ -397,9 +397,10 @@ var sbook_gloss_data=
     function scrollTo(x,y,win){
       if (scrollfree) {
 	window.scrollTo(0,0);
-	fdjtLog("[%fs] scrolling to %o,%o, xoff=%o, yoff=%o",
-		fdjtET(),x,y,x_offset,y_offset);
-	(win||sbook.body).style.left=""+(-x)+"px";
+	if (false)
+	  fdjtLog("[%fs] scrolling to %o,%o, xoff=%o, yoff=%o",
+		  fdjtET(),x,y,x_offset,y_offset);
+	(win||sbook.body).style.left=""+(x_offset-x)+"px";
 	(win||sbook.body).style.top=""+(y_offset-y)+"px";}
       else (win||window).scrollTo(x,y);}
     sbook.scrollTo=scrollTo;
@@ -421,9 +422,7 @@ var sbook_gloss_data=
 	    var cury=y_offset-fdjtDOM.parsePX(sbook.body.style.top);
 	    sbook.body.style.left=''; sbook.body.style.top='';
 	    var geom=fdjtDOM.getGeometry(sbook.body,document.body);
-	    x_offset=0; y_offset=0;
-	    // x_offset=geom.left;
-	    y_offset=geom.top;
+	    x_offset=geom.left; y_offset=geom.top;
 	    sbook.bodyoff=[x_offset,y_offset];
 	    fdjtDOM.addClass(document.body,"scrollfree");}}
     sbook.resizeBody=resizeBody;
@@ -447,7 +446,7 @@ var sbook_gloss_data=
 		    saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
 		    saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
 		window.scrollTo(0,0);
-		sbook.body.style.left=""+(-x)+"px";
+		sbook.body.style.left=""+(x_offset-x)+"px";
 		sbook.body.style.top=""+(y_offset-y)+"px";}
 	    else {
 		var geom=fdjtDOM.getGeometry(elt,sbook.body||sbook.root,false);

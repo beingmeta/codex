@@ -3,8 +3,7 @@
 body.sbook {
   margin-left: auto; margin-right: auto;
   background-color: ivory;}
-body.sbook div#SBOOKBODY {
-    margin-left: 60px;; margin-right: auto;}
+body.sbook div#SBOOKBODY { margin-left: auto; margin-right: auto;}
 body.sbook a { text-decoration: none;}
 body.sbook a:hover { text-decoration: underline;}
 
