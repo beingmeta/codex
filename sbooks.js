@@ -400,7 +400,7 @@ var sbook_gloss_data=
 	if (false)
 	  fdjtLog("[%fs] scrolling to %o,%o, xoff=%o, yoff=%o",
 		  fdjtET(),x,y,x_offset,y_offset);
-	(win||sbook.body).style.left=""+(x_offset-x)+"px";
+	(win||sbook.body).style.left=""+(-x)+"px";
 	(win||sbook.body).style.top=""+(y_offset-y)+"px";}
       else (win||window).scrollTo(x,y);}
     sbook.scrollTo=scrollTo;
@@ -424,7 +424,9 @@ var sbook_gloss_data=
 	    var geom=fdjtDOM.getGeometry(sbook.body,document.body);
 	    x_offset=geom.left; y_offset=geom.top;
 	    sbook.bodyoff=[x_offset,y_offset];
-	    fdjtDOM.addClass(document.body,"scrollfree");}}
+	    fdjtDOM.addClass(document.body,"scrollfree");
+	    sbook.body.style.left='0px';
+	    sbook.body.style.top=(y_offset)+'px';}}
     sbook.resizeBody=resizeBody;
 
     sbook.ScrollFree=function(arg){
@@ -446,7 +448,7 @@ var sbook_gloss_data=
 		    saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
 		    saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
 		window.scrollTo(0,0);
-		sbook.body.style.left=""+(x_offset-x)+"px";
+		sbook.body.style.left=""+(-x)+"px";
 		sbook.body.style.top=""+(y_offset-y)+"px";}
 	    else {
 		var geom=fdjtDOM.getGeometry(elt,sbook.body||sbook.root,false);
@@ -462,7 +464,7 @@ var sbook_gloss_data=
 		  saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
 		  saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
 		window.scrollTo(0,0);
-		sbook.body.style.left=""+(-x)+"px";
+		sbook.body.style.left=""+(x_offset-x)+"px";
 		sbook.body.style.top=""+(y_offset-y)+"px";}}
 	else fdjtUI.scrollPreview(elt,cxt,off);}
     sbook.scrollPreview=scrollPreview;
@@ -470,7 +472,7 @@ var sbook_gloss_data=
 	if (sbook.scrollfree) {
 	    if ((saved_x)||(saved_y)) {
 		window.scrollTo(0,0);
-		sbook.body.style.left=""+(-saved_x)+"px";
+		sbook.body.style.left=""+(x_offset-saved_x)+"px";
 		sbook.body.style.top=""+(y_offset-saved_y)+"px";
 		saved_x=false; saved_y=false;}}
 	else fdjtUI.scrollRestore();}
