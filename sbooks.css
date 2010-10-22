@@ -828,6 +828,7 @@ div#SBOOKHUD div#SBOOKDASHTOP a.login {
 body.nosbookuser a.logout {display: none;}
 
 div#SBOOKHUD div#SBOOKFLYLEAF div.tabcontent.dashtab h1 {
+    margin: 0px; border: 0px; text-indent: 0px; padding: 0px;
     text-align: center;}
 
 div#SBOOKHUD.login div#SBOOKFLYLEAF div.tabcontent#APPLOGIN,

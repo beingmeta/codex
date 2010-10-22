@@ -10,7 +10,7 @@ div.appblock div.label {
 div.appblock div.content {
     margin-left: 7em; margin-right: 1em;
     padding-left: 1em; padding-right: 1em;}
-div.appblock div.content INPUT[TYPE='TEXT'] { width: 100%;}
+div.appblock div.content input.fullwidth[TYPE='TEXT'] { width: 100%;}
 div.appblock div.content div.details { display: none;}
 div.appblock.expanded { margin-bottom: 18px;}
 div.appblock.expanded div.content div.details { display: block;}
@@ -106,10 +106,12 @@ div.item span.action {
     float: left; text-align: right;
     width: 100px; padding-right: 6px;}
 div.item div.content { margin-left: 120px;}
-div.item div.content input[TYPE='TEXT'] { width: 100%;}
+div.item div.content input.fullwidth[TYPE='TEXT'] { width: 100%;}
 div.item div.content TEXTAREA { width: 100%; min-height: 5ex;}
 div.item span.refuri { white-space: nowrap;}
 div.item div.content .invite { float: right; font-size: 70%;}
+div.item div.content span.title { font-size: 12px;}
+div.item div.content span.refuri { font-size: 10px; font-family: fixed;}
 
 div.item div.content { font-size: 125%;}
 
