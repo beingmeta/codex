@@ -397,6 +397,8 @@ var sbook_gloss_data=
     function scrollTo(x,y,win){
       if (scrollfree) {
 	window.scrollTo(0,0);
+	fdjtLog("[%fs] scrolling to %o,%o, xoff=%o, yoff=%o",
+		fdjtET(),x,y,x_offset,y_offset);
 	(win||sbook.body).style.left=""+(-x)+"px";
 	(win||sbook.body).style.top=""+(y_offset-y)+"px";}
       else (win||window).scrollTo(x,y);}
@@ -418,12 +420,12 @@ var sbook_gloss_data=
 	    var curx=x_offset-fdjtDOM.parsePX(sbook.body.style.left);
 	    var cury=y_offset-fdjtDOM.parsePX(sbook.body.style.top);
 	    sbook.body.style.left=''; sbook.body.style.top='';
-	    x_offset=sbook.body.offsetLeft;
-	    y_offset=sbook.body.offsetTop;
+	    var geom=fdjtDOM.getGeometry(sbook.body,document.body);
+	    x_offset=0; y_offset=0;
+	    // x_offset=geom.left;
+	    y_offset=geom.top;
 	    sbook.bodyoff=[x_offset,y_offset];
-	    fdjtDOM.addClass(document.body,"scrollfree");
-	    sbook.body.style.left=(x_offset-(curx||0))+'px';
-	    sbook.body.style.top=(y_offset-(cury||0))+'px';}}
+	    fdjtDOM.addClass(document.body,"scrollfree");}}
     sbook.resizeBody=resizeBody;
 
     sbook.ScrollFree=function(arg){
