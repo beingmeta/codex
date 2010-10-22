@@ -452,7 +452,6 @@ div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 /* Margins */
 
 body.paginate { overflow: hidden;}
-/* body.paginate.preview { overflow: auto;} */
 
 body div.sbookmargin {
     position: fixed; display: none;
@@ -461,7 +460,7 @@ body div.sbookmargin {
 body.paginate div.sbookmargin { display: block;}
 body.preview div.sbookmargin { display: none;}
 body.paginate.preview div.sbookmargin { display: none;}
-body.paginate.preview div.sbookmargin#SBOOKPAGEFOOT {
+body.paginate.preview div.sbookmargin#SBOOKPAGEFOOT nevermind {
     background-color: none;
     display: block; }
 
