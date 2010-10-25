@@ -626,33 +626,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		      (sbook.scrollers[sbook.scrolling]));
 	// fdjtLog("[%f] hud_touchend scroller=%o(%o) moved=%o",fdjtET(),scroller,scroller.element,scroller.moved);
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
-	else if ((fdjtDOM.isClickable(target))&&(sbook.ui!=="faketouch")) {
-	    if (sbook.Trace.gestures)
-		fdjtLog("[%fs] Synthesizing click on %o",fdjtET(),target);
-	    var click_evt = document.createEvent("MouseEvents");
-	    click_evt.initMouseEvent("click", true, true, window,
-				     1,page_x,page_y,last_x, last_y,
-				     false, false, false, false, 0, null);
+	else if (fdjtDOM.isClickable(target))
+	  if (sbook.ui==="faketouch") {
+	    // This happens automatically when faking touch
 	    fdjtUI.cancel(evt);
-	    target.dispatchEvent(click_evt);
 	    return;}
-	else if (touch_scrolled) return;  // Gesture already intepreted
-	else if (touch_moved) return;  // Gesture already intepreted
-	else return hud_tap(target);}
-
-    function hud_touchend(evt){
-	if (sbook.Trace.gestures) tracetouch("hud_touchend",evt);
-	if (unhold) {
-	    var tocall=unhold; unhold=false; tocall();}
-	var target=fdjtUI.T(evt);
-	if (hold_timer) {
-	    clearTimeout(hold_timer); hold_timer=false;}
-	mouseisdown=false; // For faketouch
-	var scroller=((sbook.scrolling)&&(sbook.scrollers)&&
-		      (sbook.scrollers[sbook.scrolling]));
-	// fdjtLog("[%f] hud_touchend scroller=%o(%o) moved=%o",fdjtET(),scroller,scroller.element,scroller.moved);
-	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
-	else if ((fdjtDOM.isClickable(target))&&(sbook.ui!=="faketouch")) {
+	  else {
 	    if (sbook.Trace.gestures)
 		fdjtLog("[%fs] Synthesizing click on %o",fdjtET(),target);
 	    var click_evt = document.createEvent("MouseEvents");

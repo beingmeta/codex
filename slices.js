@@ -512,7 +512,8 @@ var sbook_delete_icon="redx12x12.png";
 	if (targetloc) {
 	    var scrollto=getFirstElt(glosses,targetloc);
 	    if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
-		if ((sbook.scrollers)&&(glosses.id)) {
+		if ((sbook.scrollers)&&(glosses.id)&&
+		    (sbook.scrollers[glosses.id])) {
 		    var scroller=sbook.scrollers[glosses.id];
 		    scroller.scrollToElement(scrollto);}
 		else scrollto.scrollIntoView(true);}}}

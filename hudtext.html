@@ -12,34 +12,49 @@
 <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
      class="previewicon topright"/>
 <div id="SBOOKHEAD">
-<div class="helphud topleft" data-hudmode="toc">
-  <span class="nobreak"><span class="arrow">←</span>browse</span><br/>
-  <span class="nobreak">ToC</span></div>
-<div class="helphud topcenter">
-  show/hide<br/>book tools
-</div>
-<div class="helphud topright" data-hudmode="searching">
-  <span class="nobreak"><span class="arrow">→</span>search</span><br/>
-  tags</div>
-<div id="SBOOKTOC" class="hudpanel"></div>
-<div id="SBOOKSEARCH" class="searchbox hudpanel">
-  <!-- This content comes from sbooksearch.html -->
-</div>
-<div id="SBOOKDASHTOP" class="hudpanel">
-</div> <!-- #SBOOKDASHTOP -->
-<div id="SBOOKSOURCES" class="hudpanel sbooksources"
-     onclick="sbook.UI.handlers.sources_onclick(event);">
-  <img src="http://static.beingmeta.com/graphics/sbookspeople40x40.png"
-       class="button everyone selected"
-       alt="show all" title="click to see all glosses"
-       onclick="sbook.UI.handlers.everyone_onclick(event);"/>
-</div>
-<div id="SBOOKADDGLOSS" class="sbookaddgloss hudpanel">
-  <!-- This content comes from sbookaddgloss.html -->
-</div>
-<div id="SBOOKCONSOLE" class="hudpanel sbookconsole">
-  <!-- This content comes from consoletext.html -->
-</div>
+  <div class="helphud topleft" data-hudmode="toc">
+    <span class="nobreak"><span class="arrow">←</span>browse</span><br/>
+    <span class="nobreak">ToC</span></div>
+  <div class="helphud topcenter">
+    show/hide<br/>book tools
+  </div>
+  <div class="helphud topright" data-hudmode="searching">
+    <span class="nobreak"><span class="arrow">→</span>search</span><br/>
+    tags</div>
+  <div id="SBOOKTOC" class="hudpanel"></div>
+  <div id="SBOOKSEARCH" class="searchbox hudpanel notags">
+    <!-- This content comes from sbooksearch.html -->
+  </div>
+  <div id="SBOOKADDGLOSS" class="sbookaddgloss hudpanel">
+    <!-- This content comes from sbookaddgloss.html -->
+  </div>
+  <div id="SBOOKCONSOLE" class="hudpanel sbookconsole">
+    <!-- This content comes from consoletext.html -->
+  </div>
+  <div id="SBOOKBROWSEGLOSSES" class="hudpanel">
+    <!-- This contains renderings of all the glosses, with
+	 a list of sources on top -->
+    <div id="SBOOKSOURCES" class="sbooksources"
+	 onclick="sbook.UI.handlers.sources_onclick(event);">
+      <img src="http://static.beingmeta.com/graphics/sbookspeople40x40.png"
+	   class="button everyone selected"
+	   alt="show all" title="click to see all glosses"
+	   onclick="sbook.UI.handlers.everyone_onclick(event);"/>
+    </div>
+    <div class="scrollbox">
+      <div id="SBOOKALLGLOSSES" class="sbookslice">
+	<!-- This is filled in on demand -->
+      </div>
+    </div>
+  </div>
+  <div id="SBOOKGLOSSES" class="hudpanel"></div>
+  <div id="SBOOKDASH" class="hudpanel">
+    <div id="SBOOKDASHTOP" class="">
+    </div> <!-- #SBOOKDASHTOP -->
+    <div id="SBOOKDASHCONTENT">
+      <!-- This content comes from dashtext.html -->
+    </div> <!-- #SBOOKDASHCONTENT -->
+  </div>
 </div> <!-- SBOOKHEAD -->
 <div class="helphud leftmiddle">
   page back
@@ -47,50 +62,6 @@
 <div class="helphud rightmiddle">
   next page
 </div>
-<div id="SBOOKFLYLEAF">
-<div id="SBOOKGLOSSCLOUD" class="completions flyleaf">
-  <img class="label" alt="tags"
-       src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-       onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
-  <div class='doc'>
-    <strong>Add a tag</strong>
-    by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
-    a displayed <em>cue</em> or <em>completion</em>.   Start typing to <em>see completions</em>;
-    <tt><strong><em>Shift</em>-enter</strong></tt> to pick the
-    first visible completion.
-  </div>
-  <div id="SBOOKGLOSSOUTLETS"></div>
-  <div id="SBOOKGLOSSTAGS"></div>
-  <div id="SBOOKGLOSSCLOUDSOURCES"></div>
-</div>
-<div id="SBOOKSHARECLOUD" class="completions flyleaf showempty">
-  <img class="label" alt="tags"
-       src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"/>
-  <div class='doc'>
-    Tag with friends or tribes to draw their attention.  Start typing to see completions
-      and <tt><em>Shift</em>-enter</tt> for the first choice or
-      <strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
-      for any others.
-  </div>
-</div>
-<div id="SBOOKSEARCHCLOUD" class="completions searchcloud flyleaf">
-  <img class="label" alt="tags"
-       src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-       onclick="fdjtDOM.toggleClass(fdjtID('SBOOKSEARCHCLOUD'),'showempty');"/>
-  <span class="count">no query refinements</span>
-  <div id="SBOOKSEARCHSOURCES"></div>
-  <div id="SBOOKSEARCHTAGS"></div>
-  <div id="SBOOKSEARCHCLOUDSOURCES"></div>
-</div>
-<div id="SBOOKSEARCHRESULTS" class="sbookslice flyleaf"></div>
-<div id="SBOOKALLGLOSSES" class="sbookslice flyleaf"></div>
-<div id="SBOOKDASH" class="flyleaf">
-  <!-- This content comes from dashtext.html -->
-</div>
-<div id="SBOOKGLOSSES" class="hudpanel">
-  <!-- This is filled in on demand -->
-</div>
-</div> <!-- id="SBOOKFLYLEAF" -->
 <div id="SBOOKHELP">
   %HELPTEXT
 </div>
@@ -120,14 +91,13 @@
        onclick="sbook.UI.hudbutton(event);"/>
   <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
        class="previewicon botright"/>
-
 </div>
 
 <!--
-/* Emacs local variables
-;;;  Local variables: ***
-;;;  compile-command: "cd ..; make" ***
-;;;  End: ***
-*/
--->
+   /* Emacs local variables
+   ;;;  Local variables: ***
+   ;;;  compile-command: "cd ..; make" ***
+   ;;;  End: ***
+   */
+  -->
 

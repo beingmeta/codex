@@ -66,7 +66,7 @@ var sbook=
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
 	 startup: 1,      // Whether to debug startup
-	 mode: false,  // Whether to trace mode changes
+	 mode: true,  // Whether to trace mode changes
 	 nav: false,    // Whether to trace book navigation
 	 scan: false,  // Whether to trace DOM scanning
 	 search: 0, // Whether (and level) to trace searches
@@ -77,7 +77,7 @@ var sbook=
 	 glosses: false, // Whether we're tracing gloss processing
 	 pagination: 0, // Whether to trace pagination
 	 paging: false, // Whether to trace paging (movement by pages)
-	 gestures: 1} // Whether to trace gestures
+	 gestures: 0} // Whether to trace gestures
     };
 var _sbook_setup=false;
 

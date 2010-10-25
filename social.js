@@ -197,14 +197,14 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 
     function openGlossmark(target,addmark) {
 	var glosses=sbook.glosses.find('frag',target.id);
-	var sumdiv=fdjtDOM("div.sbookslice.flyleaf");
+	var sumdiv=fdjtDOM("div.sbookslice.hudpanel");
 	sbook.UI.setupSummaryDiv(sumdiv);
 	if (glosses)
 	  sbook.UI.showSlice(glosses,sumdiv,false);
 	fdjtDOM.replace("SBOOKGLOSSES",sumdiv);
 	sbook.setTarget(target);
 	fdjtDOM.replace("SBOOKINFO",
-			sbook.glossBlock(target.id,"div.sbookgloss.flyleaf"));
+			sbook.glossBlock(target.id,"div.sbookgloss"));
 	sbookMode("glosses");}
     sbook.openGlossmark=openGlossmark;
 

@@ -101,21 +101,22 @@ div.appblock#IDENTITYBLOCK.expanded div.message { display: none;}
 div.appblock#IDENTITYBLOCK button { border: outset;}
 div.appblock#IDENTITYBLOCK.expanded button { border: inset;}
 
-div.item { clear: both; margin-right: 60px;}
+div.item { clear: both;
+	   margin-right: 30px; margin-left: 20px;
+	   text-indent: -20px;}
 div.item span.action {
-    float: left; text-align: right;
-    width: 100px; padding-right: 6px;}
-div.item div.content { margin-left: 120px;}
-div.item div.content input.fullwidth[TYPE='TEXT'] { width: 100%;}
-div.item div.content TEXTAREA { width: 100%; min-height: 5ex;}
+    text-align: right; padding-right: 6px;}
+div.item { }
+div.item input.fullwidth[TYPE='TEXT'] { width: 100%;}
+div.item TEXTAREA { width: 100%; min-height: 5ex;}
 div.item span.refuri { white-space: nowrap;}
-div.item div.content .invite { float: right; font-size: 70%;}
-div.item div.content span.title { font-size: 12px;}
-div.item div.content span.refuri { font-size: 10px; font-family: fixed;}
+div.item .invite { float: right; font-size: 70%;}
+div.item span.title { font-size: 12px;}
+div.item span.refuri { font-size: 10px; font-family: fixed;}
 
 div.item div.content { font-size: 125%;}
 
-#TOPBLOCK div.item { font-size: 150%;}
+#TOPBLOCK div.item { font-size: 115%;}
 #TOPBLOCK div.item .action input[TYPE='SUBMIT'] { }
 
  

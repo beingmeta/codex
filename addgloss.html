@@ -1,6 +1,6 @@
 <form action="https://glossdb.sbooks.net/v4/glosspoint"
       ajaxaction="https://glosses.sbooks.net/v4/addgloss"
-      target="addgloss" class="note" id="SBOOKGLOSSFORM">
+      target="addgloss" class="sbnotemode" id="SBOOKGLOSSFORM">
   <div class="hidden">
     <input type="HIDDEN" name="FRAG"/>
     <input type="HIDDEN" name="REFURI"/>
@@ -51,30 +51,29 @@
   </div>
   <div class="controls">
     <img src="http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
-	 alt="note" onclick="sbook.glossMode(this.alt);"
+	 alt="note" onclick="sbook.glossMode('sb'+this.alt+'mode');"
 	 title="add a note"/>
     <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-	 alt="tag" onclick="sbook.glossMode(this.alt);"
+	 alt="tag" onclick="sbook.glossMode('sb'+this.alt+'mode');"
 	 title="add some tags"/>
     <img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
-	 alt="link" onclick="sbook.glossMode(this.alt);"
+	 alt="link" onclick="sbook.glossMode('sb'+this.alt+'mode');"
 	 title="add a link"/>
     <img src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"
-	 alt="share"onclick="sbook.glossMode(this.alt);"
+	 alt="share"onclick="sbook.glossMode('sb'+this.alt+'mode');"
 	 title="share with friends"/>
     <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
-	 alt="details"onclick="sbook.glossMode(this.alt);"
+	 alt="details"onclick="sbook.glossMode('sb'+this.alt+'mode');"
 	 title="share with friends"/>
-<!--
-    <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);"
-	 title="push this gloss to my configured feeds/walls/etc">
-      <input type="CHECKBOX" name="POST" value="yes"/>push
-    </div>
-    -->
-    <span class="checkspan">
-      post <input type="CHECKBOX" name="POST" value="yes" DISABLED/></span>
+    <!--
+       <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);"
+	    title="push this gloss to my configured feeds/walls/etc">
+	 <input type="CHECKBOX" name="POST" value="yes"/>push
+       </div>
+       -->
+    <input type="SUBMIT" name="ACTION" value="OK"/>
     <span class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);"
-	 title="don't share this gloss with my friends generally">
+	  title="don't share this gloss with my friends generally">
       <input type="CHECKBOX" name="PRIVATE" value="yes"/>
       <span class="checked"
 	    title="don't share this note with my personal circle (friends)">
@@ -83,23 +82,41 @@
 	    title="share this note with my personal circle (friends)">
 	shared</span>
     </span>
-    <input type="SUBMIT" name="ACTION" value="OK"/>
-    <div class="glossmode" title="switch between notes, tags, and links">
-      <select name="DISPLAY" id="SBOOKGLOSSMODE"
-	      onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
-	<option value="note" SELECTED><span>Note</span></option>
-	<option value="tag"><span>Tag</span></option>
-	<option value="link"><span>Link</span></option>
-      </select>
+    <span class="checkspan">
+      post <input type="CHECKBOX" name="POST" value="yes" DISABLED/></span>
+  </div>
+  <div id="SBOOKGLOSSCLOUD" class="completions">
+    <img class="label" alt="tags"
+	 src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+	 onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
+    <div class='doc'>
+      <strong>Add a tag</strong>
+      by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
+      a displayed <em>cue</em> or <em>completion</em>.   Start typing to <em>see completions</em>;
+      <tt><strong><em>Shift</em>-enter</strong></tt> to pick the
+      first visible completion.
+    </div>
+    <div id="SBOOKGLOSSOUTLETS"></div>
+    <div id="SBOOKGLOSSTAGS"></div>
+    <div id="SBOOKGLOSSCLOUDSOURCES"></div>
+  </div>
+  <div id="SBOOKSHARECLOUD" class="completions flyleaf showempty">
+    <img class="label" alt="tags"
+	 src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"/>
+    <div class='doc'>
+      Tag with friends or tribes to draw their attention.  Start typing to see completions
+      and <tt><em>Shift</em>-enter</tt> for the first choice or
+      <strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
+      for any others.
     </div>
   </div>
 </form>
 
 <!--
-/* Emacs local variables
-;;;  Local variables: ***
-;;;  compile-command: "cd ..; make" ***
-;;;  End: ***
-*/
--->
+   /* Emacs local variables
+   ;;;  Local variables: ***
+   ;;;  compile-command: "cd ..; make" ***
+   ;;;  End: ***
+   */
+  -->
 
