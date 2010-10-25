@@ -163,6 +163,7 @@ div#SBOOKHUD.browsing div#SBOOKSEARCHCLOUDWRAPPER { display: none;}
 div#SBOOKHUD.searching div#SBOOKSEARCH,
 div#SBOOKHUD.browsing div#SBOOKSEARCH,
 div#SBOOKHUD.dash div#SBOOKDASH,
+div#SBOOKHUD.glosses div#SBOOKGLOSSES,
 div#SBOOKHUD.allglosses div#SBOOKBROWSEGLOSSES {
     display: block;}
 
@@ -923,7 +924,6 @@ body.touch .sbooknote .age { font-size: 125%; padding-bottom; 10px;}
 body.touch .sbooknote .glossinfo img.delete { 
   width: 20px; height: 20px; padding-right: 3px;
   cursor: pointer;}
-
 
 /* Sbook notes */
 

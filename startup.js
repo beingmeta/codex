@@ -100,7 +100,7 @@ sbook.Startup=
 	  ((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
 	   (function(){
 	     Knodule.HTML.Setup(sbook.knodule);})),
-	  function(){sbook.Message("Indexing tags");},10,
+	  function(){sbook.Message("indexing tags");},10,
 	  function(){
 	    sbook.indexTags(metadata);
 	    sbook.indexTechnoratiTags(sbook.knodule);},
@@ -698,14 +698,14 @@ sbook.Startup=
       delete sbook.glossing; sbook.glossed=fdjtTime();
       if (sbook.Trace.glosses)
 	fdjtLog("[%fs] gotGlosses",fdjtET());
-      sbook.Message("Setting up search cloud...");
+      sbook.Message("setting up search cloud...");
       fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
-      sbook.Message("Setting up glossing cloud...");
+      sbook.Message("setting up glossing cloud...");
       fdjtDOM.replace("SBOOKGLOSSCLOUD",sbook.glossCloud().dom);
-      sbook.Message("Setting up sharing cloud...");
+      sbook.Message("setting up sharing cloud...");
       fdjtDOM.replace("SBOOKSHARECLOUD",sbook.shareCloud().dom);
       if (sbook.knodule) {
-	sbook.Message("Integrating knodule terms...");
+	sbook.Message("integrating tag vocabulary");
 	fdjtTime.slowmap(sbook.addTag2UI,sbook.knodule.alldterms);}
       sbook.sizeCloud(sbook.full_cloud);
       sbook.sizeCloud(sbook.gloss_cloud);}

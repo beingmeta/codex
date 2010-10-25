@@ -280,6 +280,7 @@ var sbookMode=
 		      cc.offsetHeight-c.offsetTop);}
 	  c.style.height=''; c.style.overflow='visible';
 	  c.style.height=(cc.offsetHeight-c.offsetTop)+'px';
+	  c.style.overflow='hidden';
 	  if ((sbook.scrollers[elt.id])&&
 	      (sbook.scrollers[elt.id].element===elt))
 	      sbook.scrollers[elt.id].refresh();
