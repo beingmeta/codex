@@ -1190,7 +1190,7 @@ div.sbookaddgloss form.sbsharemode div.input.share { display: block;}
 div.sbookaddgloss form.sbdetailsmode div.input.details { display: block;}
 
 div.sbookaddgloss form.sbnotemode div.controls img[alt='note'],
-div.sbookaddgloss form.sbtagnode div.controls img[alt='tag'],
+div.sbookaddgloss form.sbtagmode div.controls img[alt='tag'],
 div.sbookaddgloss form.sblinkmode div.controls img[alt='link'],
 div.sbookaddgloss form.sbsharemode div.controls img[alt='share'],
 div.sbookaddgloss form.sbdetailsmode div.controls img[alt='details'] {
