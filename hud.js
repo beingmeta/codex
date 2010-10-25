@@ -143,24 +143,6 @@ var sbookMode=
     /* This is used for viewport-based browser, where the HUD moves
        to be aligned with the viewport */
 	
-    function retractFlyleaf(){
-      if ((!(sbook.flyleaf))&&(typeof sbook.flyleaf !== 'undefined'))
-	return;
-      var flyleaf=fdjtID("SBOOKFLYLEAF");
-      // fdjtLog("[%fs] Retracting flyleaf",fdjtET());
-      flyleaf.style.webkitTransform="translate(-"+(fdjtDOM.viewWidth())+"px,0px)";
-      sbook.flyleaf=false;}
-    function retractFlyleaf(){}
-    sbook.retractFlyleaf=retractFlyleaf;
-    function extendFlyleaf(){
-      if (sbook.flyleaf) return;
-      var flyleaf=fdjtID("SBOOKFLYLEAF");
-      // fdjtLog("[%fs] Extending flyleaf",fdjtET());
-      flyleaf.style.webkitTransform="";
-      sbook.flyleaf=true;}
-    function extendFlyleaf(){}
-    sbook.extendFlyleaf=extendFlyleaf;
-
     var sbook_sync_off=false;
     var sbook_sync_height=false;
 	
@@ -184,9 +166,7 @@ var sbookMode=
       fdjtDOM.replace("SBOOKTOC",navhud);
       var dashtoc=createStaticTOC("div#SBOOKDASHTOC",root_info);
       sbook.DashTOC=dashtoc;
-      if (sbook.scrollfree) 
-	  fdjtDOM(fdjtID("DASHTOC"),fdjtDOM("div.scrollbox",dashtoc));
-      else fdjtDOM(fdjtID("DASHTOC"),dashtoc);}
+      fdjtDOM(fdjtID("DASHTOC"),dashtoc);}
     sbook.setupTOC=setupTOC;
 
     function createNavHUD(eltspec,root_info){
@@ -275,18 +255,12 @@ var sbookMode=
 	else document.body.focus();
 	if (sbook.scrolling)
 	  updateScroller(fdjtID(sbook.scrolling));
-	if ((mode==="allglosses")||(mode==="searching")||
-	    (mode==="browsing")||(mode==="glosses")||
-	    ((typeof mode === 'string')&&
-	     (mode.search(sbookDashMode_pat)===0))) {
-	  extendFlyleaf();}
 	sbook.displaySync();}
       else {
 	if (sbook.mode!=='help') sbook.last_mode=sbook.mode;
 	document.body.focus();
 	fdjtDOM.dropClass(document.body,"dimmed");
 	sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
-	retractFlyleaf();
 	setTimeout(function(){
 	    fdjtDOM.dropClass(sbookHUD,"dash");
 	    fdjtDOM.dropClass(sbookHUD,"full");
@@ -300,16 +274,19 @@ var sbookMode=
       var c=elt.parentNode; var cc=c.parentNode;
       if (sbook.scrollfree) {
 	  if ((!(sbook.scrollers))||(!(elt.id))) return;
-	  c.style.height=''; c.style.overflow='hidden';
+	  if (sbook.Trace.scrolling) {
+	      fdjtLog("[%fs] cco=%o ct=%o nh=%o",
+		      fdjtET(),cc.offsetHeight,c.offsetTop,
+		      cc.offsetHeight-c.offsetTop);}
+	  c.style.height=''; c.style.overflow='visible';
 	  c.style.height=(cc.offsetHeight-c.offsetTop)+'px';
 	  if ((sbook.scrollers[elt.id])&&
 	      (sbook.scrollers[elt.id].element===elt))
 	      sbook.scrollers[elt.id].refresh();
 	  else sbook.scrollers[elt.id]=new iScroll(elt);}
       else {
-	fdjtLog("[%fs] ccoh=%o ccot=%o",fdjtET(),cc.offsetHeight,c.offsetTop);
 	  elt.style.height=(cc.offsetHeight-c.offsetTop)+'px';}
-      if (true) {
+      if (sbook.Trace.scrolling) {
 	fdjtLog("[%fs] updateScroller %o %o %o ch=%o h=%o",
 		fdjtET(),elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);
 	fdjtLog("[%fs] e=%o,c=%o,cc=%o",

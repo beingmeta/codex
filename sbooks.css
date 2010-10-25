@@ -80,7 +80,7 @@ div#SBOOKHUD div.hudpanel div.scrollbox {}
 div#SBOOKHUD div.hudpanel div.scrollbox > div {
     overflow: auto;}
 body.scrollfree div#SBOOKHUD div.hudpanel div.scrollbox {
-    overflow: hidden;}
+    overflow: visible;}
 
 div#SBOOKHUD div.hudpanel#SBOOKDASH { min-height: 50%;}
 
@@ -157,8 +157,8 @@ div#SBOOKHUD.searching div#SBOOKSEARCHCLOUD {
 div#SBOOKHUD.browsing div#SBOOKSEARCH,
 div#SBOOKHUD.browsing div#SBOOKSEARCHRESULTS {
     display: block;}
-div#SBOOKHUD.searching div#SBOOKSEARCHRESULTS { display: none;}
-div#SBOOKHUD.browsing div#SBOOKSEARCHCLOUD { display: none;}
+div#SBOOKHUD.searching div#SBOOKSEARCHRESULTSWRAPPER { display: none;}
+div#SBOOKHUD.browsing div#SBOOKSEARCHCLOUDWRAPPER { display: none;}
 
 div#SBOOKHUD.searching div#SBOOKSEARCH,
 div#SBOOKHUD.browsing div#SBOOKSEARCH,

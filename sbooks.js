@@ -77,6 +77,7 @@ var sbook=
 	 glosses: false, // Whether we're tracing gloss processing
 	 pagination: 0, // Whether to trace pagination
 	 paging: false, // Whether to trace paging (movement by pages)
+	 scrolling: true, // Whether to trace scrolling within the HUD
 	 gestures: 0} // Whether to trace gestures
     };
 var _sbook_setup=false;
