@@ -79,7 +79,7 @@ var sbookPaginate=
       if (!(sbook_body)) sbook_body=sbook.body;
       if (!(start)) start=sbook.body||document.body;
       start=scanContent(start);
-      if (sbook.Trace.pagination)
+      if (sbook.Trace.layout)
 	fdjtLog("Starting pagination at %o",start);
       var debug=sbookPaginate.debug;
       var result={}; var pages=[]; var pageinfo=[];
@@ -117,7 +117,7 @@ var sbookPaginate=
 	if ((dbginfo)&&(next))
 	  dbginfo=dbginfo+" ... N#"+next.id+
 	    pageNodeInfo(next,nextinfo,curpage);
-	if (sbook.Trace.pagination>1)
+	if (sbook.Trace.layout>1)
 	  _sbookTracePagination("SCAN",scan,info);
 	if ((dbginfo)&&(scan.getAttribute("sbookpagedbg")))
 	  dbginfo=scan.getAttribute("sbookpagedbg")+" // "+dbginfo;
@@ -294,7 +294,7 @@ var sbookPaginate=
 	  else if (newinfo.top<curpage.bottom)
 	    curpage.bottom=newinfo.top-1;
 	  else curpage.bottom=newinfo.top-1;
-	  if (sbook.Trace.pagination) 
+	  if (sbook.Trace.layout) 
 	    fdjtLog("[%fs] New %spage break P%d[%d,%d]#%s %o, closed P%d[%d,%d] %o",
 		    fdjtET(),((splitblock)?("split "):("")),
 		    pages.length,newinfo.top,newinfo.bottom,newtop.id,newtop,
@@ -344,7 +344,7 @@ var sbookPaginate=
 	else {
 	  var doneat=fdjtET();
 	  sbook.Message("Finished page layout");
-	  if ((sbook.Trace.pagination)||
+	  if ((sbook.Trace.layout)||
 	      ((sbook.Trace.startup)&&(!(sbook._setup))))
 	    fdjtLog("[%fs] Paginated %d nodes into %d pages with pagesize=%d in %s",
 		    fdjtET(),nodecount,pages.length,pagesize,

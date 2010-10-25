@@ -274,7 +274,7 @@ var sbookMode=
       var c=elt.parentNode; var cc=c.parentNode;
       if (sbook.scrollfree) {
 	  if ((!(sbook.scrollers))||(!(elt.id))) return;
-	  if (sbook.Trace.scrolling) {
+	  if (sbook.Trace.scroll) {
 	      fdjtLog("[%fs] cco=%o ct=%o nh=%o",
 		      fdjtET(),cc.offsetHeight,c.offsetTop,
 		      cc.offsetHeight-c.offsetTop);}
@@ -287,7 +287,7 @@ var sbookMode=
 	  else sbook.scrollers[elt.id]=new iScroll(elt);}
       else {
 	  elt.style.height=(cc.offsetHeight-c.offsetTop)+'px';}
-      if (sbook.Trace.scrolling) {
+      if (sbook.Trace.scroll) {
 	fdjtLog("[%fs] updateScroller %o %o %o ch=%o h=%o",
 		fdjtET(),elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);
 	fdjtLog("[%fs] e=%o,c=%o,cc=%o",

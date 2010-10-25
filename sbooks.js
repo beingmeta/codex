@@ -65,19 +65,19 @@ var sbook=
      focusrules: false,
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
-	 startup: 1,      // Whether to debug startup
-	 mode: true,  // Whether to trace mode changes
-	 nav: false,    // Whether to trace book navigation
-	 scan: false,  // Whether to trace DOM scanning
-	 search: 0, // Whether (and level) to trace searches
-	 clouds: 0, // Whether to trace cloud generation
-	 focus: false,// Whether to trace focus/target changes
-	 locations: false, // Whether we're debugging locations
-	 network: 0,      // Whether we're debugging server interaction
-	 glosses: false, // Whether we're tracing gloss processing
-	 pagination: 0, // Whether to trace pagination
-	 paging: false, // Whether to trace paging (movement by pages)
-	 scrolling: true, // Whether to trace scrolling within the HUD
+	 startup: 1,	// Whether to debug startup
+	 mode: false,	// Whether to trace mode changes
+	 nav: false,	// Whether to trace book navigation
+	 scan: false,	// Whether to trace DOM scanning
+	 search: 0,	// Whether (and level) to trace searches
+	 clouds: 0,	// Whether to trace cloud generation
+	 focus: false,	// Whether to trace focus/target changes
+	 toc: false,	// Whether we're debugging TOC tracking
+	 network: 0,	// Whether we're debugging server interaction
+	 glosses: false,// Whether we're tracing gloss processing
+	 layout: 0,	// Whether to trace pagination
+	 paging: false,	// Whether to trace paging (movement by pages)
+	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0} // Whether to trace gestures
     };
 var _sbook_setup=false;
@@ -340,8 +340,8 @@ var sbook_gloss_data=
 
     function setLocation(location,force){
 	if ((!(force)) && (sbook_location===location)) return;
-	if (sbook.Trace.locations)
-	    fdjtLog("Setting location to %o",location);
+	if (sbook.Trace.toc)
+	  fdjtLog("Setting location to %o",location);
 	var info=sbook.Info(sbook.head);
 	while (info) {
 	    var tocelt=document.getElementById("SBOOKTOC4"+info.frag);
@@ -350,7 +350,7 @@ var sbook_gloss_data=
 	    var progress=((location-start)*80)/(end-start);
 	    var bar=fdjtDOM.getFirstChild(tocelt,".progressbar");
 	    var appbar=fdjtDOM.getFirstChild(dashtocelt,".progressbar");
-	    if (sbook.Trace.locations)
+	    if (sbook.Trace.toc)
 		fdjtLog("For tocbar %o loc=%o start=%o end=%o progress=%o",
 			bar,location,start,end,progress);
 	    if ((bar)&& (progress>0) && (progress<100)) {
@@ -362,7 +362,7 @@ var sbook_gloss_data=
 	    var spanbar=spanbars[i++];
 	    var width=spanbar.ends-spanbar.starts;
 	    var ratio=(location-spanbar.starts)/width;
-	    if (sbook.Trace.locations)
+	    if (sbook.Trace.toc)
 		fdjtLog("ratio for spanbar %o[%d] is %o [%o,%o,%o]",
 			spanbar,spanbar.childNodes[0].childNodes.length,
 			ratio,spanbar.starts,location,spanbar.ends);
