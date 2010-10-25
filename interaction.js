@@ -699,6 +699,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),sbook.curpage,sbook.pages.length);
 	if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var newpage=false;
+	    if (sbook.mode==="glosses") sbookMode(true);
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
 		// If there isn't a valid page number, figure one out
 		//  (if possible) and advance from there.
@@ -731,6 +732,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),sbook.curpage,sbook.pages.length);
 	if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var newpage=false;
+	    if (sbook.mode==="glosses") sbookMode(true);
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
 		// If there isn't a valid page number, figure one out
 		//  (if possible) and go back from there.
