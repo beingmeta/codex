@@ -61,12 +61,10 @@ var sbookMode=
 	fdjtDOM.prepend(document.body,sbookHUD);}
       var console=fdjtID("SBOOKCONSOLE");
       console.innerHTML=sbook_console;
-      var dash=fdjtID("SBOOKDASHCONTENT");
+      var dash=fdjtID("SBOOKDASH");
       dash.innerHTML=sbook_dashtext;
       var gloss=fdjtID("SBOOKADDGLOSS");
       gloss.innerHTML=sbook_addgloss;
-      var dashtop=fdjtID("SBOOKDASHTOP");
-      dashtop.innerHTML=sbook_dashtop;
       // Initialize search UI
       var search=fdjtID("SBOOKSEARCH");
       search.innerHTML=sbook_searchbox;
@@ -216,7 +214,7 @@ var sbookMode=
        browsing: "SBOOKSEARCHRESULTS",
        searching: "SBOOKSEARCHCLOUD",
        target: "SBOOKGLOSSCLOUD",
-       sbookapp: "SBOOKSAPP",
+       sbookapp: "MANAGEAPP",
        dashtoc: "SBOOKDASHTOC" /* ,
        login: "SBOOKAPPLOGIN",
        device: "SBOOKAPPDEVICE",
@@ -309,8 +307,9 @@ var sbookMode=
 	      sbook.scrollers[elt.id].refresh();
 	  else sbook.scrollers[elt.id]=new iScroll(elt);}
       else {
+	fdjtLog("[%fs] ccoh=%o ccot=%o",fdjtET(),cc.offsetHeight,c.offsetTop);
 	  elt.style.height=(cc.offsetHeight-c.offsetTop)+'px';}
-      if (false) {
+      if (true) {
 	fdjtLog("[%fs] updateScroller %o %o %o ch=%o h=%o",
 		fdjtET(),elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);
 	fdjtLog("[%fs] e=%o,c=%o,cc=%o",

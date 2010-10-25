@@ -1,3 +1,51 @@
+<div style="position: absolute; top: 0px; height: 110%;"> </div>
+<div id="SBOOKDASHTOP">
+<div class="dashbar">
+  <a href="http://sbooks.net/logout.fdcgi" class="logout"
+     title="click to logout of the sBooks server">
+    logout</a>
+  <a class="login" href="javascript:sbookMode('login');"
+     title="click to login">
+    login</a>
+  <div class="belongsto">
+    This sBook Belongs To:
+    <a href="javascript:sbookMode('login');" name="IDLINK"
+       id="SBOOKUSERNAME">
+      (click to log in)</a>
+  </div> <!-- .belongsto -->
+</div> <!-- .dashbar -->
+<div class="tabbar icons" id="SBOOKTABS">
+  <a name="IDLINK" href="javascript:sbookMode('login');" 
+     id="IDBUTTON" class="userpic"
+     title="click to login">
+    <img src="http://static.beingmeta.com/graphics/sbooksconnecticon40x40.png"
+	 alt="login" id="SBOOKUSERPIC"/></a>
+  <a id="HELPBUTTON" href="javascript:sbookMode('help');"
+     title="click for UI help">
+    <img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
+	 alt="Help"/></a>
+  <span class="tab" contentid="APPABOUT"
+	onclick="sbookMode.toggle('about'); fdjtUI.cancel(event); return false;"
+	title="information and links about this book">
+    <img src="http://static.beingmeta.com/graphics/BookIcon32x32.png" alt="About"/></span>
+  <span class="tab" contentid="DASHTOC"
+	onclick="sbookMode.toggle('dashtoc'); fdjtUI.cancel(event); return false;"
+	title="Table of Contents (static)">
+    <img src="http://static.beingmeta.com/graphics/TOCIcon32x32.png" alt="ToC"/></span>
+  <span class="tab" contentid="APPDEVICE"
+	onclick="sbookMode.toggle('device'); fdjtUI.cancel(event); return false;"
+	title="alter appearance and interaction">
+    <img src="http://static.beingmeta.com/graphics/GearIcon32x32.png" alt="Device"/></span>
+  <span class="tab" contentid="SBOOKSAPP"
+	onclick="sbookMode.toggle('sbookapp'); fdjtUI.cancel(event); return false;"
+	title="manage how your sBook is enhanced with added layers">
+    <img src="http://static.beingmeta.com/graphics/sbookspeople32x32.png" alt="sBooks"/></span>
+  <span class="tab" contentid="APPLOGIN"
+	onclick="sbookMode.toggle('login'); fdjtUI.cancel(event); return false;"
+	title="login to sBooks">
+    <img src="http://static.beingmeta.com/graphics/sbooksconnecticon32x32.png" alt="Login"/></span>
+</div> <!-- .tabbar -->
+</div> <!-- id="SBOOKDASHTOP" -->
 <div class='tabcontent dashtab' id='APPLOGIN'>
 <!-- <h1>Introduce Yourself</h1> -->
 <form action='https://auth.sbooks.net/v4/auth'>
