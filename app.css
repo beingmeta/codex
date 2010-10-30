@@ -101,24 +101,28 @@ div.appblock#IDENTITYBLOCK.expanded div.message { display: none;}
 div.appblock#IDENTITYBLOCK button { border: outset;}
 div.appblock#IDENTITYBLOCK.expanded button { border: inset;}
 
-div.item { clear: both;
-	   margin-right: 30px; margin-left: 20px;
-	   text-indent: -20px;}
+h2 { margin: 3px; clear: both;}
+
+div.item { clear: both; margin-right: 30px; }
 div.item span.action {
-    text-align: right; padding-right: 6px;}
-div.item { }
-div.item input.fullwidth[TYPE='TEXT'] { width: 100%;}
+    float: left; width: 65px; margin-right: 10px;
+    text-align: right;}
+div.item input.fullwidth[TYPE='TEXT'] {
+    width: 100%; vertical-align: top;}
 div.item TEXTAREA { width: 100%; min-height: 5ex;}
 div.item span.refuri { white-space: nowrap;}
 div.item .invite { float: right; font-size: 70%;}
 div.item span.title { font-size: 12px;}
 div.item span.refuri { font-size: 10px; font-family: fixed;}
+div.item span.isfree {
+    float: right; font-size: 50%; font-weight: bold; color: black;
+    border: solid yellow 2px; background-color: ivory; padding: 3px;
+    border-radius: 6px;}
 
-div.item div.content { font-size: 125%;}
+
+div.item div.content {
+    margin-left: 75px; font-size: 125%; text-indent: 0px;}
 
 #TOPBLOCK div.item { font-size: 115%;}
 #TOPBLOCK div.item .action input[TYPE='SUBMIT'] { }
-
- 
-
 
