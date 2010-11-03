@@ -522,7 +522,23 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (gloss.attention) {
 		var tags=gloss.attention; var i=0; var lim=tags.length;
 		while (i<lim) addTag(form,tags[i++],"ATTENTION");}}
-	setCloudCuesFromTarget(gloss_cloud,target);}
+	setCloudCuesFromTarget(gloss_cloud,target);
+	{
+	    /* Move the hud to the target */
+	    var glosshud=fdjtID("SBOOKADDGLOSS");
+	    var height=glosshud.offsetHeight;
+	    var geom=fdjtDOM.getGeometry(target);
+	    var scrollpos=sbook.scrollPos();
+	    var window_height=fdjtDOM.viewHeight();
+	    glosshud.style.maxHeight=(window_height-150)+'px';
+	    var hudoff=geom.top-scrollpos.y;
+	    var height=glosshud.offsetHeight;
+	    if ((hudoff+height)>(window_height-50)) {
+		var overhang=(hudoff+height)-(window_height-50);
+		if ((hudoff-overhang)<50) hudoff=50;
+		else hudoff=hudoff-overhang;}
+	    glosshud.style.top=hudoff+'px';}
+    }
     sbook.setGlossTarget=setGlossTarget;
 
     function setCloudCues(cloud,tags){
