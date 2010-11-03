@@ -62,12 +62,12 @@ div#SBOOKHUD div.hudpanel {
 /* Being on top */
 div#SBOOKHUD div.hudpanel {
     position: fixed; top: 0px; left: 100px; right: 100px;
-    text-align: center; max-height: 75%;
+    text-align: center;
     overflow: hidden;
     display: none;}
 
 div#SBOOKHUD div#SBOOKHEAD div.hudpanel {
-    min-height: 50px; 
+    min-height: 50px;  max-height: 75%;
     border-top: 0px;
     border-top-left-radius: 0px;
     -khtml-border-top-left-radius: 0px; 
@@ -84,7 +84,8 @@ div#SBOOKHUD div.hudpanel div.scrollbox > div {
 body.scrollfree div#SBOOKHUD div.hudpanel div.scrollbox {
     overflow: visible;}
 
-div#SBOOKHUD div.hudpanel#SBOOKDASH { min-height: 50%;}
+div#SBOOKHUD div.hudpanel#SBOOKDASH {
+    top: 60px; bottom: 60px;}
 
 div#SBOOKHUD img.hudbutton {
     position: absolute; width: 50px; height: 50px; z-index: 200;
