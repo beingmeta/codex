@@ -1113,7 +1113,7 @@ div.sbookaddgloss form div.glossmode select option {
     url(http://static.beingmeta.com/graphics/TagIcon16x16.png);
     font-variant: small-caps;}
 
-div.sbookaddgloss form div.topblock { min-height: 50px; vertical-align: top;}
+div.sbookaddgloss form div.topblock { vertical-align: top; clear: both;}
 div.sbookaddgloss form div.input {
     display: none; width: auto; margin-left: 0px; margin-right: 0px;}
 div.sbookaddgloss form div.input input {}
@@ -1160,7 +1160,16 @@ div.sbookaddgloss form div.input input[type='FILE'] { /* width: 100%; */
     display: block; }
 
 div.sbookaddgloss form div.controls {
-    text-align: left; padding-left: 7px;}
+    vertical-align: top; text-align: left; padding-left: 7px;}
+div.sbookaddgloss form div.controls select {
+    vertical-align: top; width: 7em;}
+div.sbookaddgloss form div.controls select option { }
+div.sbookaddgloss form div.controls select option[value="note"] {
+    background-image:
+    url(http://static.beingmeta.com/graphics/justremarkballoon24x24.png);
+    background-position: right top;
+    background-position-x: right; background-position-y: top;
+    background-repeat: no-repeat;}
 div.sbookaddgloss form div.controls img {
     margin-left: 3px; margin-right: 3px; margin-bottom: 3px;
     border: solid silver 2px; padding: 2px;
@@ -1170,7 +1179,7 @@ div.sbookaddgloss form div.controls img {
     vertical-align: top;}
 div.sbookaddgloss form div.controls input[type='SUBMIT'] {
     font-weight: bold; text-align: center; padding: 4px;
-    font-size: 150%; border-radius: 0px; float: right;}
+    border-radius: 0px; float: right;}
 div.sbookaddgloss form div.controls .checkspan {
     margin-left: 4px; margin-right: 4px; font-family: sans,sans-serif;
     float: right;}

@@ -13,6 +13,44 @@
     <input type="HIDDEN" name="DOCTITLE"/>
     <input type="HIDDEN" name="RELAY"/>
   </div>
+  <div class="controls">
+    <select name="MODE" onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
+      <option value="sbnotemode">note</option>
+      <option value="sbtagmode">tag</option>
+      <option value="sblinkmode">link</option>
+      <option value="sbdetailsmode">detail</option>
+    </select>
+    <!--
+    <img src="http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
+	 alt="note" onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	 title="add a note"/>
+    <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+	 alt="tag" onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	 title="add some tags"/>
+    <img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
+	 alt="link" onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	 title="add a link"/>
+    <img src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"
+	 alt="share"onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	 title="share with friends"/>
+    <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
+	 alt="details"onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	 title="share with friends"/>
+    -->
+    <input type="SUBMIT" name="ACTION" value="OK"/>
+    <span class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);"
+	  title="don't share this gloss with my friends generally">
+      <input type="CHECKBOX" name="PRIVATE" value="yes"/>
+      <span class="checked"
+	    title="don't share this note with my personal circle (friends)">
+	private</span>
+      <span class="unchecked"
+	    title="share this note with my personal circle (friends)">
+	shared</span>
+    </span>
+    <span class="checkspan" title="post to your social news feeds">
+      <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
+  </div>
   <div class="topblock">
     <div class="tags"
 	 onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
@@ -48,36 +86,6 @@
 	       id="SBOOKSHAREINPUT"/>
       </div>
     </fieldset>
-  </div>
-  <div class="controls">
-    <img src="http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
-	 alt="note" onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="add a note"/>
-    <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-	 alt="tag" onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="add some tags"/>
-    <img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
-	 alt="link" onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="add a link"/>
-    <img src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"
-	 alt="share"onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="share with friends"/>
-    <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
-	 alt="details"onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="share with friends"/>
-    <input type="SUBMIT" name="ACTION" value="OK"/>
-    <span class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);"
-	  title="don't share this gloss with my friends generally">
-      <input type="CHECKBOX" name="PRIVATE" value="yes"/>
-      <span class="checked"
-	    title="don't share this note with my personal circle (friends)">
-	private</span>
-      <span class="unchecked"
-	    title="share this note with my personal circle (friends)">
-	shared</span>
-    </span>
-    <span class="checkspan" title="post to your social news feeds">
-      <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
   </div>
   <div id="SBOOKGLOSSCLOUD" class="completions">
     <img class="label" alt="tags"
