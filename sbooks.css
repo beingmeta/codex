@@ -85,7 +85,7 @@ body.scrollfree div#SBOOKHUD div.hudpanel div.scrollbox {
     overflow: visible;}
 
 div#SBOOKHUD div.hudpanel#SBOOKDASH {
-    top: 60px; bottom: 60px;}
+    top: 40px; bottom: 60px;}
 
 div#SBOOKHUD img.hudbutton {
     position: absolute; width: 50px; height: 50px; z-index: 200;
