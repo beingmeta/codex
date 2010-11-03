@@ -376,6 +376,7 @@ var sbook_gloss_data=
     function setTarget(target,nogo){
 	if (sbook.Trace.focus) sbook.trace("sbook.setTarget",target);
 	if (target===sbook.target) return;
+	if ((target===document.body)||(target===sbook.body)) target=false;
 	if (sbook.target) {
 	    fdjtDOM.dropClass(sbook.target,"sbooktarget");
 	    sbook.target=false;}

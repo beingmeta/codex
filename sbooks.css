@@ -62,6 +62,12 @@ div#SBOOKHUD div.hudpanel {
 /* Being on top */
 div#SBOOKHUD div.hudpanel {
     position: fixed; top: 0px; left: 100px; right: 100px;
+    text-align: center; max-height: 75%;
+    overflow: hidden;
+    display: none;}
+
+div#SBOOKHUD div#SBOOKHEAD div.hudpanel {
+    min-height: 50px; 
     border-top: 0px;
     border-top-left-radius: 0px;
     -khtml-border-top-left-radius: 0px; 
@@ -70,11 +76,7 @@ div#SBOOKHUD div.hudpanel {
     border-top-right-radius: 0px;
     -khtml-border-top-right-radius: 0px; 
     -webkit-border-top-right-radius: 0px; 
-    -moz-border-radius-topright: 0px;
-    text-align: center;
-    min-height: 50px; max-height: 75%;
-    overflow: hidden;
-    display: none;}
+    -moz-border-radius-topright: 0px;}
 
 div#SBOOKHUD div.hudpanel div.scrollbox {}
 div#SBOOKHUD div.hudpanel div.scrollbox > div {
@@ -188,6 +190,10 @@ div#SBOOKHUD div#SBOOKABOUT div.textblock {
 
 div#SBOOKHUD div#SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
 div#SBOOKHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
+
+/* SBOOKGLOSSES */
+
+div#SBOOKHUD div.hudpanel#SBOOKGLOSSES {position: absolute; right: 50px;}
 
 /* SBOOKSOURCES */
 
@@ -1026,6 +1032,7 @@ div.locbar hr {
   width: 32px; height: 32px; z-index: 50;
   border-right: 0px;
   opacity: 0.0001;}
+body .glossmark { opacity: 0.4;}
 *:hover > .glossmark { opacity: 0.7;}
 body.hudup .glossmark { opacity: 0.9;}
 
@@ -1060,6 +1067,7 @@ body.sbooktarget { color: inherit;}
 
 .sbooktarget span.glossmark img {
     border-top: solid blue 2px;}
+.sbooktarget span.glossmark img.big { width: 50px;} 
 .sbooktarget:hover .glossmark { opacity: 0.5;}
 body.hudup .sbooktarget .glossmark:hover { opacity: 0.9;}
 

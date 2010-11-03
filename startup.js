@@ -665,34 +665,34 @@ sbook.Startup=
 	
     /* This initializes the sbook state to the initial location with the
        document, using the hash value if there is one. */ 
-    function initLocation() {
-      var hash=window.location.hash; var target=sbook.root;
-      if ((typeof hash === "string") && (hash.length>0)) {
-	if ((hash[0]==='#') && (hash.length>1))
-	  target=document.getElementById(hash.slice(1));
-	else target=document.getElementById(hash);
-	if (sbook.Trace.startup>1)
-	  fdjtLog("[%fs] sbookInitLocation hash=%s=%o",
-		  fdjtET(),hash,target);}
-      else if (fdjtState.getCookie("sbooktarget")) {
-	var targetid=fdjtState.getCookie("sbooktarget");
-	if (sbook.Trace.startup>1)
-	  fdjtLog("[%fs] sbookInitLocation cookie=#%s=%o",
-		  fdjtET(),targetid,target);
-	if ((targetid)&&(fdjtID(targetid)))
-	  target=fdjtID(targetid);
-	else target=sbook.root;}
-      else {
-	target=sbook.root;
-	if (sbook.Trace.startup>1)
-	  fdjtLog("[%fs] sbookInitLocation target=%o",fdjtET(),target);}
-      if (target) {
-	sbook.target=target;
-	fdjtDOM.addClass(target,"sbooktarget");}
-      sbook.setHead(target||sbook.start||sbook.root);
-      if (sbook.paginate) {
-	if (sbook.pages) sbook.GoTo(target);}
-      else sbook.GoTo(target);}
+      function initLocation() {
+	  var hash=window.location.hash; var target=sbook.root;
+	  if ((typeof hash === "string") && (hash.length>0)) {
+	      if ((hash[0]==='#') && (hash.length>1))
+		  target=document.getElementById(hash.slice(1));
+	      else target=document.getElementById(hash);
+	      if (sbook.Trace.startup>1)
+		  fdjtLog("[%fs] sbookInitLocation hash=%s=%o",
+			  fdjtET(),hash,target);}
+	  else if (fdjtState.getCookie("sbooktarget")) {
+	      var targetid=fdjtState.getCookie("sbooktarget");
+	      if (sbook.Trace.startup>1)
+		  fdjtLog("[%fs] sbookInitLocation cookie=#%s=%o",
+			  fdjtET(),targetid,target);
+	      if ((targetid)&&(fdjtID(targetid)))
+		  target=fdjtID(targetid);
+	      else target=sbook.root;}
+	  else {
+	      target=sbook.root;
+	      if (sbook.Trace.startup>1)
+		  fdjtLog("[%fs] sbookInitLocation target=%o",fdjtET(),target);}
+	  if ((target)&&(target!==document.body)&&(target!==sbook.body)) {
+	      sbook.target=target;
+	      fdjtDOM.addClass(target,"sbooktarget");}
+	  sbook.setHead(target||sbook.start||sbook.root);
+	  if (sbook.paginate) {
+	      if (sbook.pages) sbook.GoTo(target);}
+	  else sbook.GoTo(target);}
 	
     function gotGlosses(){
       delete sbook.glossing; sbook.glossed=fdjtTime();

@@ -261,13 +261,11 @@ var sbookMode=
 	document.body.focus();
 	fdjtDOM.dropClass(document.body,"dimmed");
 	sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
-	setTimeout(function(){
-	    fdjtDOM.dropClass(sbookHUD,"dash");
-	    fdjtDOM.dropClass(sbookHUD,"full");
-	    fdjtDOM.dropClass(document.body,"hudup");
-	    fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
-	    sbook.displaySync();},
-	  1000);}}
+	  fdjtDOM.dropClass(sbookHUD,"dash");
+	  fdjtDOM.dropClass(sbookHUD,"full");
+	  fdjtDOM.dropClass(document.body,"hudup");
+	  fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
+	  sbook.displaySync();}}
 
     function updateScroller(elt){
       if (typeof elt === 'string') elt=fdjtID(elt);

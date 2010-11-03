@@ -9,8 +9,13 @@ body.sbook a:hover { text-decoration: underline;}
 
 body.sbook.thirty p, body.sbook.thirty li, body.sbook.thirty blockquote {
     max-width: 30em;}
+/*
 body.sbook.forty p, body.sbook.forty li, body.sbook.forty blockquote {
     max-width: 40em;}
+*/
+
+body.sbook.forty div#SBOOKBODY {
+    max-width: 40em; margin-left: auto; margin-right: auto;}
 
 body.sbook.novel h1, body.sbook.novel .chapter, body.sbook.novel .sbook1 {
     text-align: center; margin-left: 5%; margin-right: 5%;}

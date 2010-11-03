@@ -65,12 +65,6 @@
     <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
 	 alt="details"onclick="sbook.glossMode('sb'+this.alt+'mode');"
 	 title="share with friends"/>
-    <!--
-       <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);"
-	    title="push this gloss to my configured feeds/walls/etc">
-	 <input type="CHECKBOX" name="POST" value="yes"/>push
-       </div>
-       -->
     <input type="SUBMIT" name="ACTION" value="OK"/>
     <span class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);"
 	  title="don't share this gloss with my friends generally">
@@ -82,8 +76,8 @@
 	    title="share this note with my personal circle (friends)">
 	shared</span>
     </span>
-    <span class="checkspan">
-      post <input type="CHECKBOX" name="POST" value="yes" DISABLED/></span>
+    <span class="checkspan" title="post to your social news feeds">
+      <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
   </div>
   <div id="SBOOKGLOSSCLOUD" class="completions">
     <img class="label" alt="tags"

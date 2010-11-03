@@ -205,7 +205,20 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	sbook.setTarget(target);
 	fdjtDOM.replace("SBOOKINFO",
 			sbook.glossBlock(target.id,"div.sbookgloss"));
-	sbookMode("glosses");}
+	sbookMode("glosses");
+	var glosshud=fdjtID("SBOOKGLOSSES");
+	var height=glosshud.offsetHeight;
+	var geom=fdjtDOM.getGeometry(target);
+	var scrollpos=sbook.scrollPos();
+	var window_height=fdjtDOM.viewHeight();
+	glosshud.style.maxHeight=(window_height-150)+'px';
+	var hudoff=geom.top-scrollpos.y;
+	var height=glosshud.offsetHeight;
+	if ((hudoff+height)>(window_height-50)) {
+	    var overhang=(hudoff+height)-(window_height-50);
+	    if ((hudoff-overhang)<50) hudoff=50;
+	    else hudoff=hudoff-overhang;}
+	glosshud.style.top=hudoff+'px';}
     sbook.openGlossmark=openGlossmark;
 
 })();
