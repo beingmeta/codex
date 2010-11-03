@@ -128,7 +128,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if (fdjtDOM.hasParent(element,sbook.preview))
 		sbook.JumpTo(sbook.preview.id);
 	    else sbook.Preview(false);}
-	else if ((sbook.mode)&&(sbook.mode!=="target"))
+	else if (sbook.mode)
 	    sbookMode(false);
 	else {
 	    var target=sbook.getTarget(element);
@@ -141,11 +141,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		return;}
 	    else if (sbook.glosstarget===target) {
 		if (sbook.mode) sbookMode(false);
-		else sbookMode("target");
+		else sbookMode("addgloss");
 		return;}
 	    sbook.glossTarget(target);
 	    window.focus();
-	    sbookMode('target');}}
+	    sbookMode('addgloss');}}
 
     function body_hold(element){
 	if (sbook.Trace.gestures)
@@ -168,7 +168,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    var target=sbook.getTarget(element);
 	    if (target) {
 		sbook.setTarget(target);
-		sbook.setInfoTarget(target);
+		// sbook.setInfoTarget(target);
 		sbookMode("context");
 		return function(){sbookMode(false);};}}}
 
@@ -592,13 +592,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		else if ((sbook.mode)&&(dy>0)) {
 		    if (sbook.target) {
 			sbook.glossTarget(sbook.target);
-			sbookMode("target");}
+			sbookMode("addgloss");}
 		    else sbookMode(true);}
 		else if (dy<0) sbookMode("context");
 		else {
 		    if (sbook.target) {
 			sbook.glossTarget(sbook.target);
-			sbookMode("target");}
+			sbookMode("addgloss");}
 		    else sbookMode(true);}}
 	    else if (((adx+ady)>(fdjtDOM.viewWidth()/5))&&
 		     (ad<((adx+ady)/5))) {

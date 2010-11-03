@@ -44,7 +44,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    return false;
 	sbook.setTarget(passage);
 	sbook.setGlossTarget(passage);
-	sbook.setInfoTarget(passage);
+	// sbook.setInfoTarget(passage);
 	sbook.glosstarget=passage;
 	return passage;}
     sbook.glossTarget=glossTarget;
@@ -514,13 +514,19 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else {}
 	if (gloss) {
 	    if (gloss.tags) {
-		var tags=gloss.tags; var i=0; var lim=tags.length;
+		var tags=gloss.tags;
+		if (typeof tags === 'string') tags=[tags];
+		var i=0; var lim=tags.length;
 		while (i<lim) addTag(form,tags[i++],"TAGS");}
 	    if (gloss.outlets) {
-		var tags=gloss.outlets; var i=0; var lim=tags.length;
+		var tags=gloss.outlets;
+		if (typeof tags === 'string') tags=[tags];
+		var i=0; var lim=tags.length;
 		while (i<lim) addTag(form,tags[i++],"OUTLETS");}
 	    if (gloss.attention) {
-		var tags=gloss.attention; var i=0; var lim=tags.length;
+		var tags=gloss.attention;
+		if (typeof tags === 'string') tags=[tags];
+		var i=0; var lim=tags.length;
 		while (i<lim) addTag(form,tags[i++],"ATTENTION");}}
 	setCloudCuesFromTarget(gloss_cloud,target);
 	{

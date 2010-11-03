@@ -170,7 +170,8 @@ div#SBOOKHUD.glosses div#SBOOKGLOSSES,
 div#SBOOKHUD.allglosses div#SBOOKBROWSEGLOSSES {
     display: block;}
 
-div#SBOOKHUD.target div#SBOOKADDGLOSS { display: block;}
+div#SBOOKHUD.addgloss div#SBOOKADDGLOSS { display: block;}
+body.hudup div#SBOOKHUD.addgloss .hudbutton { opacity: 0.15;}
 
 div#SBOOKHUD.allglosses .hudbutton[alt='glosses'] { border-color: darkblue;}
 div#SBOOKHUD.flyleaf .hudbutton[alt='flyleaf'] { border-color: darkblue;}
@@ -499,10 +500,12 @@ div#SBOOKFOOT div#SBOOKFOOTINFO {
 div#SBOOKFOOT div#SBOOKFOOTINFO div#SBOOKTARGETINFO {
     padding: 1em; padding-top: 0.5em; padding-bottom: 4px;}
 
+/* These may go away */
 body div#SBOOKHUD div#SBOOKFOOT div#SBOOKFOOTINFO {display: none;}
-
-body.hudup div#SBOOKHUD.target div#SBOOKFOOT div#SBOOKFOOTINFO {display: block;}
-body.hudup div#SBOOKHUD.tagging.target div#SBOOKFOOT div#SBOOKFOOTINFO {display: none;}
+body.hudup div#SBOOKHUD.target div#SBOOKFOOT div#SBOOKFOOTINFO {
+    display: none;}
+body.hudup div#SBOOKHUD.tagging.target div#SBOOKFOOT div#SBOOKFOOTINFO {
+    display: none;}
 
 body.hudup.preview div#SBOOKFOOT div#SBOOKFOOTINFO {display: none;}
 body.hudup.preview div#SBOOKFOOT div#SBOOKFOOTINFO {display: block;}
@@ -559,7 +562,9 @@ div#SBOOKHUD div.completions div.doc {
     margin: 0.5em; margin-right: 5em;
     border: solid black 2px; border-radius: 6px;
     -khtml-border-radius: 6px; -webkit-border-radius: 6px; 
-    -moz-border-radius: 6px;}
+    -moz-border-radius: 6px;
+    /* Hide this for now */
+    display: none;}
 
 div#SBOOKHUD .completions span.sep { 
   font-size: 200%; font-weight: bold; 
@@ -793,7 +798,8 @@ div#SBOOKHUD.login div#SBOOKFLYHEAD span.tab[contentid='APPLOGIN'] img,
 div#SBOOKHUD.device div#SBOOKFLYHEAD span.tab[contentid='APPDEVICE'] img,
 div#SBOOKHUD.flytoc div#SBOOKFLYHEAD span.tab[contentid='FLYTOC'] img,
 div#SBOOKHUD.sbookapp div#SBOOKFLYHEAD span.tab[contentid='SBOOKSAPP'] img {
-    border: gold solid 3px;}
+    border: gold solid 3px;
+    border-bottom: none;}
 
 div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent[id='APPABOUT'],
 div#SBOOKHUD.login div#SBOOKFLYLEAF div.tabcontent[id='APPLOGIN'],
@@ -1227,6 +1233,7 @@ div.sbookaddgloss form.sbsharemode div.controls img[alt='share'],
 div.sbookaddgloss form.sbdetailsmode div.controls img[alt='details'] {
     background-color: silver; border-color: gold;}
 
+div#SBOOKHUD.tagging div.sbookaddgloss form div.completions#SBOOKGLOSSCLOUD,
 div.sbookaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD,
 div.sbookaddgloss form.sbsharemode div.completions#SBOOKSHARECLOUD {
     display: block;}
