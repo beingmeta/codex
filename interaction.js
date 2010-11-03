@@ -300,12 +300,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     // We have a big table of command characters which lead to modes
     var modechars={
 	63: "searching",102: "searching",
-	65: "dash", 97: "dash",
+	65: "flyleaf", 97: "flyleaf",
 	83: "searching",115: "searching",
 	70: "searching",
 	100: "device",68: "device",
 	110: "toc",78: "toc",
-	116: "dashtoc",84: "dashtoc",
+	116: "flytoc",84: "flytoc",
 	104: "help",72: "help",
 	103: "allglosses",71: "allglosses",
 	67: "console", 99: "console"};
@@ -319,7 +319,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
 	else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
 	else modearg=modechars[ch];
-	if (modearg==="dash") modearg=sbook.last_dash||"about";
+	if (modearg==="flyleaf") modearg=sbook.last_flyleaf||"about";
 	var mode=sbookMode();
 	if (modearg) {
 	    if (mode===modearg) {
@@ -339,7 +339,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	"toc": "SBOOKTOC",
 	"searching": "SBOOKSEARCH",
 	"allglosses": "SBOOKSOURCES",
-	"dash": "SBOOKDASHTOP"};
+	"flyleaf": "SBOOKFLYHEAD"};
     
     function hudbutton(evt){
 	var target=fdjtUI.T(evt);
@@ -352,7 +352,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (!(mode)) return;
 	var hudid=((mode)&&(mode_hud_map[mode]));
 	var hud=fdjtID(hudid);
-	if (mode==='dash') mode=sbook.last_dash||"help";
+	if (mode==='flyleaf') mode=sbook.last_flyleaf||"help";
 	if (evt.type==='click') {
 	    if (hud) fdjtDOM.dropClass(hud,"hover");
 	    if (fdjtDOM.hasClass(sbook.HUD,mode)) {
@@ -604,7 +604,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		     (ad<((adx+ady)/5))) {
 		if ((dx>0)&&(dy>0)) sbookMode("toc");
 		else if ((dx<0)&&(dy>0)) sbookMode("searching");
-		else if ((dx>0)&&(dy<0)) sbookMode("dash");
+		else if ((dx>0)&&(dy<0)) sbookMode("flyleaf");
 		else if ((dx<0)&&(dy<0)) sbookMode("allglosses");
 		else {}}
 	    else {}

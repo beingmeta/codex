@@ -61,8 +61,8 @@ var sbookMode=
 	fdjtDOM.prepend(document.body,sbookHUD);}
       var console=fdjtID("SBOOKCONSOLE");
       console.innerHTML=sbook_console;
-      var dash=fdjtID("SBOOKDASH");
-      dash.innerHTML=sbook_dashtext;
+      var flyleaf=fdjtID("SBOOKFLYLEAF");
+      flyleaf.innerHTML=sbook_flyleaftext;
       var gloss=fdjtID("SBOOKADDGLOSS");
       gloss.innerHTML=sbook_addgloss;
       // Initialize search UI
@@ -124,7 +124,7 @@ var sbookMode=
       sbookFoot=fdjtID("SBOOKFOOT");
       sbookHead=fdjtID("SBOOKHEAD");
       sbookHelp=fdjtID("SBOOKHELP");
-      fillinDash();
+      fillinFlyleaf();
       resizeHUD();
       sbook.scrollers={};
       updateScroller("SBOOKGLOSSCLOUD");
@@ -164,9 +164,9 @@ var sbookMode=
       toc_button.style.visibility='';
       sbook.TOC=navhud;
       fdjtDOM.replace("SBOOKTOC",navhud);
-      var dashtoc=createStaticTOC("div#SBOOKDASHTOC",root_info);
-      sbook.DashTOC=dashtoc;
-      fdjtDOM(fdjtID("DASHTOC"),dashtoc);}
+      var flytoc=createStaticTOC("div#SBOOKFLYTOC",root_info);
+      sbook.Flytoc=flytoc;
+      fdjtDOM(fdjtID("FLYTOC"),flytoc);}
     sbook.setupTOC=setupTOC;
 
     function createNavHUD(eltspec,root_info){
@@ -177,25 +177,25 @@ var sbookMode=
       return div;}
 
     function createStaticTOC(eltspec,root_info){
-      var toc_div=sbookTOC(root_info,0,false,"SBOOKDASHTOC4");
-      var div=fdjtDOM(eltspec||"div#SBOOKDASHTOC",toc_div);
+      var toc_div=sbookTOC(root_info,0,false,"SBOOKFLYTOC4");
+      var div=fdjtDOM(eltspec||"div#SBOOKFLYTOC",toc_div);
       if (!(eltspec)) sbookNavHUD=div;
-      // The dash TOC doesn't do fancy mouseovers
+      // The flyleaf TOC doesn't do fancy mouseovers
       // sbook.UI.addHandlers(div,"toc");
       return div;}
 
     /* Mode controls */
 	
     var sbookMode_pat=
-      /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(dashtoc)|(about)|(console)|(minimal)|(target)/g;
-    var sbookDashMode_pat=/(login)|(device)|(sbookapp)|(dashtoc)|(about)/g;
+      /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(target)/g;
+    var sbookFlyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)/g;
     var sbook_mode_scrollers=
       {allglosses: "SBOOKALLGLOSSES",
        browsing: "SBOOKSEARCHRESULTS",
        searching: "SBOOKSEARCHCLOUD",
        target: "SBOOKGLOSSCLOUD",
        sbookapp: "MANAGEAPP",
-       dashtoc: "SBOOKDASHTOC" /* ,
+       flytoc: "SBOOKFLYTOC" /* ,
        login: "SBOOKAPPLOGIN",
        device: "SBOOKAPPDEVICE",
        about: "APPABOUT",
@@ -211,7 +211,7 @@ var sbookMode=
       if (sbook.preview) sbook.Preview(false);
       if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
       if (mode) {
-	if (mode==="dash") mode=sbook.last_dash||"about";
+	if (mode==="flyleaf") mode=sbook.last_flyleaf||"about";
 	if (mode===sbook.mode) {}
 	else if (mode===true) {
 	  sbook.mode=false;
@@ -227,17 +227,17 @@ var sbookMode=
 	  sbook.mode=mode;
 	  sbook.last_mode=mode;}
 	if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
-	  sbookSetupDash();
+	  sbookSetupFlyleaf();
 	if (!(typeof mode === 'string'))
 	  sbook.scrolling=false;
 	else if (sbook_mode_scrollers[mode]) 
 	  sbook.scrolling=(sbook_mode_scrollers[mode]);
 	else sbook.scrolling=false;
 	if ((mode)&&(typeof mode === 'string')&&
-	    (mode.search(sbookDashMode_pat)===0)) {
-	  fdjtDOM.addClass(sbookHUD,"dash");
-	  sbook.last_dash=mode;}
-	else fdjtDOM.dropClass(sbookHUD,"dash");
+	    (mode.search(sbookFlyleafMode_pat)===0)) {
+	  fdjtDOM.addClass(sbookHUD,"flyleaf");
+	  sbook.last_flyleaf=mode;}
+	else fdjtDOM.dropClass(sbookHUD,"flyleaf");
 	sbook.hudup=true;
 	fdjtDOM.addClass(document.body,"hudup");
 	if (mode===true)
@@ -261,7 +261,7 @@ var sbookMode=
 	document.body.focus();
 	fdjtDOM.dropClass(document.body,"dimmed");
 	sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
-	  fdjtDOM.dropClass(sbookHUD,"dash");
+	  fdjtDOM.dropClass(sbookHUD,"flyleaf");
 	  fdjtDOM.dropClass(sbookHUD,"full");
 	  fdjtDOM.dropClass(document.body,"hudup");
 	  fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
@@ -380,7 +380,7 @@ var sbookMode=
 
     /* The App HUD */
 	
-    function fillinDash(){
+    function fillinFlyleaf(){
       var hidehelp=fdjtID("SBOOKHIDEHELP");
       var dohidehelp=fdjtState.getCookie("sbookhidehelp");
       if (!(hidehelp)) {}

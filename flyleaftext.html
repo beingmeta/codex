@@ -1,6 +1,6 @@
 <div style="position: absolute; top: 0px; height: 110%;"> </div>
-<div id="SBOOKDASHTOP">
-<div class="dashbar">
+<div id="SBOOKFLYHEAD">
+<div class="flyleafplate">
   <a href="http://sbooks.net/logout.fdcgi" class="logout"
      title="click to logout of the sBooks server">
     logout</a>
@@ -13,7 +13,7 @@
        id="SBOOKUSERNAME">
       (click to log in)</a>
   </div> <!-- .belongsto -->
-</div> <!-- .dashbar -->
+</div> <!-- .flyleafplate -->
 <div class="tabbar icons" id="SBOOKTABS">
   <a name="IDLINK" href="javascript:sbookMode('login');" 
      id="IDBUTTON" class="userpic"
@@ -28,8 +28,8 @@
 	onclick="sbookMode.toggle('about'); fdjtUI.cancel(event); return false;"
 	title="information and links about this book">
     <img src="http://static.beingmeta.com/graphics/BookIcon32x32.png" alt="About"/></span>
-  <span class="tab" contentid="DASHTOC"
-	onclick="sbookMode.toggle('dashtoc'); fdjtUI.cancel(event); return false;"
+  <span class="tab" contentid="FLYTOC"
+	onclick="sbookMode.toggle('flytoc'); fdjtUI.cancel(event); return false;"
 	title="Table of Contents (static)">
     <img src="http://static.beingmeta.com/graphics/TOCIcon32x32.png" alt="ToC"/></span>
   <span class="tab" contentid="APPDEVICE"
@@ -45,8 +45,8 @@
 	title="login to sBooks">
     <img src="http://static.beingmeta.com/graphics/sbooksconnecticon32x32.png" alt="Login"/></span>
 </div> <!-- .tabbar -->
-</div> <!-- id="SBOOKDASHTOP" -->
-<div class='tabcontent dashtab' id='APPLOGIN'>
+</div> <!-- id="SBOOKFLYHEAD" -->
+<div class='tabcontent flyleaftab' id='APPLOGIN'>
 <!-- <h1>Introduce Yourself</h1> -->
 <form action='https://auth.sbooks.net/v4/auth'>
 <table class='login' rowspacing='6'>
@@ -136,7 +136,7 @@ or methods.</p>
 
 </div>
 
-<div class='tabcontent dashtab' id='APPDEVICE'>
+<div class='tabcontent flyleaftab' id='APPDEVICE'>
 <h1>Settings</h1>
 <table class='settings'>
 <tr><th>Offline</th>
@@ -180,10 +180,10 @@ or methods.</p>
 </table>  
 </div>
 
-<div class='tabcontent dashtab' id='DASHTOC'>
+<div class='tabcontent flyleaftab' id='FLYTOC'>
 </div>
 
-<div class='tabcontent dashtab sbookabout' id='APPABOUT'>
+<div class='tabcontent flyleaftab sbookabout' id='APPABOUT'>
 <div id='APPABOUTCONTENT'>
 <h1>About This Book</h1>
 <div class='title'>An sBook</div>
@@ -198,7 +198,7 @@ or methods.</p>
 </div>
 </div>
 
-<div class='tabcontent dashtab' id='SBOOKSAPP'>
+<div class='tabcontent flyleaftab' id='SBOOKSAPP'>
 <iframe id='MANAGEAPP' frameborder='0' scrolling='auto'/>
 </div>
 

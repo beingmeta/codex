@@ -41,7 +41,7 @@ var sbook=
      // For pagination
      curpage: false,curoff: false,curinfo: false, curbottom: false,
      // For tracking UI state
-     last_mode: false, last_dash: "about",
+     last_mode: false, last_flyleaf: "about",
      // How long it takes a gesture to go from tap to hold
      holdmsecs: 500, edgeclick: 50, pagesize: 250, animate: true,
      updatelocation: true,
@@ -323,7 +323,7 @@ var sbook_gloss_data=
 	else if (head) {
 	    if (sbook.Trace.focus) sbook.trace("sbook.setHead",head);
 	    sbookTOC.update("SBOOKTOC4",headinfo,sbook.Info(sbook.head));
-	    sbookTOC.update("SBOOKDASHTOC4",headinfo,sbook.Info(sbook.head));
+	    sbookTOC.update("SBOOKFLYTOC4",headinfo,sbook.Info(sbook.head));
 	    window.title=headinfo.title+" ("+document.title+")";
 	    if (sbook.head) fdjtDOM.dropClass(sbook.head,"sbookhead");
 	    fdjtDOM.addClass(head,"sbookhead");
@@ -332,7 +332,7 @@ var sbook_gloss_data=
 	else {
 	    if (sbook.Trace.focus) sbook.trace("sbook.setHead",head);
 	    sbookTOCUpdate(head,"SBOOKTOC4");
-	    sbookTOCUpdate(head,"SBOOKDASHTOC4");
+	    sbookTOCUpdate(head,"SBOOKFLYTOC4");
 	    sbook.head=false;}}
     sbook.setHead=setHead;
 
@@ -345,11 +345,11 @@ var sbook_gloss_data=
 	var info=sbook.Info(sbook.head);
 	while (info) {
 	    var tocelt=document.getElementById("SBOOKTOC4"+info.frag);
-	    var dashtocelt=document.getElementById("SBOOKDASHTOC4"+info.frag);
+	    var flytocelt=document.getElementById("SBOOKFLYTOC4"+info.frag);
 	    var start=tocelt.sbook_start; var end=tocelt.sbook_end;
 	    var progress=((location-start)*80)/(end-start);
 	    var bar=fdjtDOM.getFirstChild(tocelt,".progressbar");
-	    var appbar=fdjtDOM.getFirstChild(dashtocelt,".progressbar");
+	    var appbar=fdjtDOM.getFirstChild(flytocelt,".progressbar");
 	    if (sbook.Trace.toc)
 		fdjtLog("For tocbar %o loc=%o start=%o end=%o progress=%o",
 			bar,location,start,end,progress);
