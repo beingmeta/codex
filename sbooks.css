@@ -1190,13 +1190,15 @@ div.sbookaddgloss form div.controls select option[value="note"] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.sbookaddgloss form div.controls img {
+div.sbookaddgloss form div.controls img.modebutton {
     margin-left: 3px; margin-right: 3px; margin-bottom: 3px;
     border: solid silver 2px; padding: 2px;
     border-radius: 4px;
     -khtml-border-radius: 4px; -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;
     vertical-align: top;}
+div.sbookaddgloss form div.controls img.closebutton {
+    float: right; color: red;}
 div.sbookaddgloss form div.controls input[type='SUBMIT'] {
     font-weight: bold; text-align: center; padding: 4px;
     border-radius: 0px; float: right;}
@@ -1207,9 +1209,9 @@ div.sbookaddgloss form div.controls .checkspan.private {
     font-weight: bold; font-size: 90%;
     border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
-    background-color: silver; color: green;}
+    background-color: white; color: green;}
 div.sbookaddgloss form div.controls .checkspan.private.ischecked {
-    font-weight: normal; color: red; }
+    background-color: black; color: white; }
 div.sbookaddgloss form div.controls .checkspan.private input[type='checkbox'] {
     display: none;}
 

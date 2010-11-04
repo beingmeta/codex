@@ -537,7 +537,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var scrollpos=sbook.scrollPos();
 	    var window_height=fdjtDOM.viewHeight();
 	    glosshud.style.maxHeight=(window_height-150)+'px';
-	    var hudoff=geom.top-scrollpos.y;
+	    var hudoff=geom.top-scrollpos.y+50;
 	    var height=glosshud.offsetHeight;
 	    if ((hudoff+height)>(window_height-50)) {
 		var overhang=(hudoff+height)-(window_height-50);

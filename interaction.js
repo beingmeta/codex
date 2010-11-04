@@ -141,11 +141,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		return;}
 	    else if (sbook.glosstarget===target) {
 		if (sbook.mode) sbookMode(false);
-		else sbookMode("addgloss");
+		else if (sbook.user) sbookMode("addgloss");
+		else sbookMode("login");
 		return;}
 	    sbook.glossTarget(target);
 	    window.focus();
-	    sbookMode('addgloss');}}
+	    if (sbook.user) sbookMode('addgloss');
+	    else sbookMode("login");}}
 
     function body_hold(element){
 	if (sbook.Trace.gestures)
