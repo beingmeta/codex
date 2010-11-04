@@ -196,11 +196,11 @@ var sbookMode=
 	     addgloss: "SBOOKGLOSSCLOUD",
 	     sbookapp: "MANAGEAPP",
 	     flytoc: "SBOOKFLYTOC" /* ,
-				      login: "SBOOKAPPLOGIN",
-				      device: "SBOOKAPPDEVICE",
-				      about: "APPABOUT",
-				      sbookapp: "SBOOKAPPFRAME"
-				   */
+				 login: "SBOOKAPPLOGIN",
+				 device: "SBOOKAPPDEVICE",
+				 about: "APPABOUT",
+				 sbookapp: "SBOOKAPPFRAME"
+			      */
 	    };
 	
 	function sbookMode(mode){
@@ -211,6 +211,7 @@ var sbookMode=
 	    if (sbook.preview) sbook.Preview(false);
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
+		var animated=false; var transformed=false;
 		if (mode==="flyleaf") mode=sbook.last_flyleaf||"about";
 		if (mode===sbook.mode) {}
 		else if (mode===true) {
@@ -233,16 +234,16 @@ var sbookMode=
 		else if (sbook_mode_scrollers[mode]) 
 		    sbook.scrolling=(sbook_mode_scrollers[mode]);
 		else sbook.scrolling=false;
-		if ((mode)&&(typeof mode === 'string')&&
-		    (mode.search(sbookFlyleafMode_pat)===0)) {
-		    fdjtDOM.addClass(sbookHUD,"flyleaf");
-		    sbook.last_flyleaf=mode;}
-		else fdjtDOM.dropClass(sbookHUD,"flyleaf");
 		sbook.hudup=true;
 		fdjtDOM.addClass(document.body,"hudup");
 		if (mode===true)
 		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,"minimal");
 		else fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
+		if ((mode)&&(typeof mode === 'string')&&
+		    (mode.search(sbookFlyleafMode_pat)===0)) {
+		    fdjtDOM.addClass(sbookHUD,"flyleaf");
+		    sbook.last_flyleaf=mode;}
+		else fdjtDOM.dropClass(sbookHUD,"flyleaf");
 		if (mode==="help")
 		    fdjtDOM.addClass(document.body,"dimmed");
 		else fdjtDOM.dropClass(document.body,"dimmed");
