@@ -128,7 +128,7 @@ var sbookMode=
 	    resizeHUD();
 	    sbook.scrollers={};
 	    updateScroller("SBOOKGLOSSCLOUD");
-	    updateScroller("SBOOKSHARECLOUD");
+	    // updateScroller("SBOOKSHARECLOUD");
 	    updateScroller("SBOOKSEARCHCLOUD");}
 	sbook.initHUD=initHUD;
 	

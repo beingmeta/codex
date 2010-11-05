@@ -208,12 +208,14 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	sbookMode("glosses");
 	var glosshud=fdjtID("SBOOKGLOSSES");
 	var height=glosshud.offsetHeight;
-	var geom=fdjtDOM.getGeometry(target);
+	var geom=fdjtDOM.getGeometry(target,sbook.body);
 	var scrollpos=sbook.scrollPos();
 	var window_height=fdjtDOM.viewHeight();
 	glosshud.style.maxHeight=(window_height-150)+'px';
 	var hudoff=geom.top-scrollpos.y;
 	var height=glosshud.offsetHeight;
+	fdjtLog("top=%o height=%o x,y=%o,%o wh=%o ho=%o ht=%o",
+		geom.top,geom.height,scrollpos.x,scrollpos.y,window_height,hudoff,height);
 	if ((hudoff+height)>(window_height-50)) {
 	    var overhang=(hudoff+height)-(window_height-50);
 	    if ((hudoff-overhang)<50) hudoff=50;

@@ -228,7 +228,8 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		gloss_cloud.complete(string);}}
 	else {
 	    fdjtDOM.addClass(sbookHUD,"tagging");
-	    gloss_cloud.complete(string);}}
+	    gloss_cloud.complete(string);}
+	sbook.UI.updateScroller("SBOOKGLOSSCLOUD");}
     sbook.showGlossCloud=showGlossCloud;
     function hideGlossCloud(){
 	fdjtDOM.dropClass(sbookHUD,"tagging");}
@@ -533,7 +534,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    /* Move the hud to the target */
 	    var glosshud=fdjtID("SBOOKADDGLOSS");
 	    var height=glosshud.offsetHeight;
-	    var geom=fdjtDOM.getGeometry(target);
+	    var geom=fdjtDOM.getGeometry(target,sbook.body);
 	    var scrollpos=sbook.scrollPos();
 	    var window_height=fdjtDOM.viewHeight();
 	    glosshud.style.maxHeight=(window_height-150)+'px';

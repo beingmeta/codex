@@ -545,6 +545,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function hud_touchmove(evt){
 	// When faking touch, moves only get counted if the mouse is down.
 	if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
+	var target=fdjtUI.T(evt);
+	if (fdjtDOM.isClickable(target)) return;
 	fdjtUI.cancel(evt);
 	touch_moves++;
 	var touch=

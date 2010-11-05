@@ -1,127 +1,127 @@
 <form action="https://glossdb.sbooks.net/v4/glosspoint"
       ajaxaction="https://glosses.sbooks.net/v4/addgloss"
       target="addgloss" class="sbnotemode" id="SBOOKGLOSSFORM">
-  <div class="hidden">
-    <input type="HIDDEN" name="FRAG"/>
-    <input type="HIDDEN" name="REFURI"/>
-    <input type="HIDDEN" name="DOCURI"/>
-    <input type="HIDDEN" name="SYNC"/>
-    <input type="HIDDEN" name="USER"/>
-    <input type="HIDDEN" name="UUID"/>
-    <input type="HIDDEN" name="LOCATION"/>
-    <input type="HIDDEN" name="LOCLEN"/>
-    <input type="HIDDEN" name="DOCTITLE"/>
-    <input type="HIDDEN" name="RELAY"/>
-  </div>
-  <div class="controls">
-    <select name="MODE" onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
-      <option value="sbnotemode">note</option>
-      <option value="sbtagmode">tag</option>
-      <option value="sblinkmode">link</option>
-      <option value="sbdetailsmode">detail</option>
-    </select>
-    <!--
-    <img src="http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
-	 alt="note" onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="add a note" class="modebutton"/>
-    <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-	 alt="tag" onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="add some tags" class="modebutton"/>
-    <img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
-	 alt="link" onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="add a link" class="modebutton"/>
-    <img src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"
-	 alt="share"onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="share with friends" class="modebutton"/>
-    <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
-	 alt="details"onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	 title="share with friends" class="modebutton"/>
-    -->
-    <img class="closebutton" alt="X"
-	 src="http://static.beingmeta.com/graphics/redx16x16.png"
-	 onclick="sbookMode(false);"/>
-    <input type="SUBMIT" name="ACTION" value="OK"/>
-    <span class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);"
-	  title="don't share this gloss with my friends generally">
-      <input type="CHECKBOX" name="PRIVATE" value="yes"/>
-      <span class="checked"
-	    title="don't share this note with my personal circle (friends)">
-	private</span>
-      <span class="unchecked"
-	    title="share this note with my personal circle (friends)">
-	shared</span>
-    </span>
-    <span class="checkspan" title="post to your social news feeds">
-      <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
-  </div>
-  <div class="topblock">
-    <div class="tags"
-	 onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
+  <div>
+    <div class="topblock">
+      <div class="hidden">
+	<input type="HIDDEN" name="FRAG"/>
+	<input type="HIDDEN" name="REFURI"/>
+	<input type="HIDDEN" name="DOCURI"/>
+	<input type="HIDDEN" name="SYNC"/>
+	<input type="HIDDEN" name="USER"/>
+	<input type="HIDDEN" name="UUID"/>
+	<input type="HIDDEN" name="LOCATION"/>
+	<input type="HIDDEN" name="LOCLEN"/>
+	<input type="HIDDEN" name="DOCTITLE"/>
+	<input type="HIDDEN" name="RELAY"/>
+      </div>
+      <div class="controls">
+	<select name="MODE" onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
+	  <option value="sbnotemode">note</option>
+	  <option value="sbtagmode">tag</option>
+	  <option value="sblinkmode">link</option>
+	  <option value="sbdetailsmode">detail</option>
+	</select>
+	<img src="http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
+	     alt="note" onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	     title="add a note" class="modebutton"/>
+	<img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+	     alt="tag" onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	     title="add some tags" class="modebutton"/>
+	<img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
+	     alt="link" onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	     title="add a link" class="modebutton"/>
+	<img src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"
+	     alt="share"onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	     title="share with friends" class="modebutton"/>
+	<img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
+	     alt="details"onclick="sbook.glossMode('sb'+this.alt+'mode');"
+	     title="share with friends" class="modebutton"/>
+	<img class="closebutton" alt="X"
+	     src="http://static.beingmeta.com/graphics/redx16x16.png"
+	     onclick="sbookMode(false);"/>
+	<input type="SUBMIT" name="ACTION" value="OK"/>
+	<span class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);"
+	      title="don't share this gloss with my friends generally">
+	  <input type="CHECKBOX" name="PRIVATE" value="yes"/>
+	  <span class="checked"
+		title="don't share this note with my personal circle (friends)">
+	    private</span>
+	  <span class="unchecked"
+		title="share this note with my personal circle (friends)">
+	    shared</span>
+	</span>
+	<span class="checkspan" title="post to your social news feeds">
+	  <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
+      </div>
+      <div class="tags"
+	   onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
+      </div>
+      <fieldset class="textfields">
+	<div class="input note">
+	  <textarea name="NOTE"
+		    placeholder="add a note,using brackets for descriptive [tag]s"
+		    wrap="virtual"
+		    id="SBOOKNOTEINPUT"></textarea>
+	</div>
+	<div class="input details">
+	  <textarea name="DETAIL"
+		    placeholder="Enter detailed comments or notes here"
+		    id="SBOOKDETAILINPUT"></textarea>
+	</div>
+	<div class="input tag">
+	  <input type="TEXT" name="TAG" value="" autocomplete="off"
+		 placeholder="add tags to this passage" 
+		 onfocus="sbook.handlers.taginput_focus(event);"
+		 onblur="sbook.handlers.taginput_blur(event);"
+		 id="SBOOKTAGINPUT">
+	</div>
+	<div class="input link">
+	  <input type="TEXT" name="LINK" value=""
+		 placeholder="type a URL to link from this passage" 
+		 class="urlinput" prompt="type a web address (URL)"
+		 id="SBOOKLINKINPUT"/>
+	</div>
+	<div class="input share">
+	  <input type="TEXT" name="SHARE" value="" autocomplete="off"
+		 placeholder="type an email or tag with friends or groups to share"
+		 id="SBOOKSHAREINPUT"/>
+	</div>
+      </fieldset>
     </div>
-    <fieldset class="textfields">
-      <div class="input note">
-	<textarea name="NOTE"
-		  placeholder="add a note,using brackets for descriptive [tag]s"
-		  wrap="virtual"
-		  id="SBOOKNOTEINPUT"></textarea>
+    <div id="SBOOKGLOSSCLOUD" class="completions">
+      <img class="label" alt="tags"
+	   src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+	   onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
+      <div class='doc'>
+	<strong>Add a tag</strong>
+	by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
+	a displayed <em>cue</em> or <em>completion</em>.   Start typing to <em>see completions</em>;
+	<tt><strong><em>Shift</em>-enter</strong></tt> to pick the
+	first visible completion.
       </div>
-      <div class="input details">
-	<textarea name="DETAIL"
-		  placeholder="Enter detailed comments or notes here"
-		  id="SBOOKDETAILINPUT"></textarea>
-      </div>
-      <div class="input tag">
-	<input type="TEXT" name="TAG" value="" autocomplete="off"
-	       placeholder="add tags to this passage" 
-	       onfocus="sbook.handlers.taginput_focus(event);"
-	       onblur="sbook.handlers.taginput_blur(event);"
-	       id="SBOOKTAGINPUT">
-      </div>
-      <div class="input link">
-	<input type="TEXT" name="LINK" value=""
-	       placeholder="type a URL to link from this passage" 
-	       class="urlinput" prompt="type a web address (URL)"
-	       id="SBOOKLINKINPUT"/>
-      </div>
-      <div class="input share">
-	<input type="TEXT" name="SHARE" value="" autocomplete="off"
-	       placeholder="type an email or tag with friends or groups to share"
-	       id="SBOOKSHAREINPUT"/>
-      </div>
-    </fieldset>
-  </div>
-  <div id="SBOOKGLOSSCLOUD" class="completions">
-    <img class="label" alt="tags"
-	 src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-	 onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
-    <div class='doc'>
-      <strong>Add a tag</strong>
-      by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
-      a displayed <em>cue</em> or <em>completion</em>.   Start typing to <em>see completions</em>;
-      <tt><strong><em>Shift</em>-enter</strong></tt> to pick the
-      first visible completion.
+      <div id="SBOOKGLOSSOUTLETS"></div>
+      <div id="SBOOKGLOSSTAGS"></div>
+      <div id="SBOOKGLOSSCLOUDSOURCES"></div>
     </div>
-    <div id="SBOOKGLOSSOUTLETS"></div>
-    <div id="SBOOKGLOSSTAGS"></div>
-    <div id="SBOOKGLOSSCLOUDSOURCES"></div>
-  </div>
-  <div id="SBOOKSHARECLOUD" class="completions flyleaf showempty">
-    <img class="label" alt="tags"
-	 src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"/>
-    <div class='doc'>
-      Tag with friends or tribes to draw their attention.  Start typing to see completions
-      and <tt><em>Shift</em>-enter</tt> for the first choice or
-      <strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
-      for any others.
+    <div id="SBOOKSHARECLOUD" class="completions flyleaf showempty">
+      <img class="label" alt="tags"
+	   src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"/>
+      <div class='doc'>
+	Tag with friends or tribes to draw their attention.  Start typing to see completions
+	and <tt><em>Shift</em>-enter</tt> for the first choice or
+	<strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
+	for any others.
+      </div>
     </div>
   </div>
 </form>
 
 <!--
-   /* Emacs local variables
-   ;;;  Local variables: ***
-   ;;;  compile-command: "cd ..; make" ***
-   ;;;  End: ***
-   */
+    /* Emacs local variables
+    ;;;  Local variables: ***
+    ;;;  compile-command: "cd ..; make" ***
+    ;;;  End: ***
+    */
   -->
 

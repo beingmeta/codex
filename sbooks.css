@@ -1122,16 +1122,11 @@ div.sbookaddgloss form div.glossmode { display: none;}
 div.sbookaddgloss form div.submit {
     padding-left: 5px; float: right; text-align: center;}
 div.sbookaddgloss form div.submit { width: 50px; }
+body.touch div.sbookaddgloss form div.controls { font-size: 175%;}
+
 body.touch div.sbookaddgloss form div.submit { width: 75px;}
 div.sbookaddgloss form fieldset {
     border: 0px; padding: 6px; padding-top: 2px;}
-
-div.sbookaddgloss form div.glossmode select {
-    font-size: 125%; font-weight: bold; font-variant: small-caps;}
-div.sbookaddgloss form div.glossmode select option {
-    background-image:
-    url(http://static.beingmeta.com/graphics/TagIcon16x16.png);
-    font-variant: small-caps;}
 
 div.sbookaddgloss form div.topblock { vertical-align: top; clear: both;}
 div.sbookaddgloss form div.input {
@@ -1182,7 +1177,8 @@ div.sbookaddgloss form div.input input[type='FILE'] { /* width: 100%; */
 div.sbookaddgloss form div.controls {
     vertical-align: top; text-align: left; padding-left: 7px;}
 div.sbookaddgloss form div.controls select {
-    vertical-align: top; width: 7em;}
+    vertical-align: top; width: 7em;
+    display: none;}
 div.sbookaddgloss form div.controls select option { }
 div.sbookaddgloss form div.controls select option[value="note"] {
     background-image:
@@ -1238,6 +1234,7 @@ div.sbookaddgloss form.sbdetailsmode div.controls img[alt='details'] {
 div#SBOOKHUD.tagging div.sbookaddgloss form div.completions#SBOOKGLOSSCLOUD,
 div.sbookaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD,
 div.sbookaddgloss form.sbsharemode div.completions#SBOOKSHARECLOUD {
+    min-height: 100px;
     display: block;}
 
 /* Scroll free rules */

@@ -410,7 +410,7 @@ var sbook_gloss_data=
 	if (scrollfree) {
 	    var x=fdjtDOM.parsePX((win||(sbook.body)).style.left);
 	    var y=fdjtDOM.parsePX((win||sbook.body).style.top);
-	    return {x: x,y: y};}
+	    return {x: x,y: -y};}
 	else return {x:(win||window).scrollX,y:(win||window).scrollY};}
     sbook.scrollPos=scrollPos;
 
