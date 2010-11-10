@@ -289,7 +289,7 @@ var sbookMode=
 	    if (sbook.Trace.scroll) {
 		fdjtLog("[%fs] updateScroller %o %o %o ch=%o h=%o",
 			fdjtET(),elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);
-		fdjtLog("[%fs] e=%o,c=%o,cc=%o",
+		fdjtLog("[%fs] updateScroller e=%o,c=%o,cc=%o",
 			fdjtET(),fdjtDOM.getStyle(elt).overflow,
 			fdjtDOM.getStyle(c).overflow,
 			fdjtDOM.getStyle(cc).overflow);

@@ -23,7 +23,7 @@
 	  <option value="sbnotemode">note</option>
 	  <option value="sbtagmode">tag</option>
 	  <option value="sblinkmode">link</option>
-	  <option value="sbdetailsmode">detail</option>
+	  <option value="sbdetailmode">detail</option>
 	</select>
 	<span class="button" onclick="sbook.glossMode('note');"
 	      title="add a note" data-mode="note">
@@ -44,10 +44,10 @@
 	       alt="link" title="add a link"/>
 	  <span class="text">Link</span>
 	</span>
-	<span class="button" onclick="sbook.glossMode('details');"
+	<span class="button" onclick="sbook.glossMode('detail');"
 	      title="add extended text" data-mode="detail">
 	  <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
-	       alt="details" title="add extended text"/>
+	       alt="detail" title="add extended text"/>
 	  <span class="text">Detail</span>
 	</span>
 	<span class="button submitbutton"
@@ -92,7 +92,7 @@
 		 placeholder="type an email or tag with friends or groups to share"
 		 id="SBOOKSHAREINPUT"/>
 	</div>
-	<div class="input details">
+	<div class="input detail">
 	  <textarea name="DETAIL"
 		    placeholder="Enter detailed comments or notes here"
 		    id="SBOOKDETAILINPUT"></textarea>

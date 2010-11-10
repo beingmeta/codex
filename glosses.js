@@ -380,9 +380,9 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (fdjtDOM.hasClass(input,"isempty")) return false;
 	else if (fdjtString.isEmpty(input.value)) return false;
 	else if ((typeof pt === 'undefined')&&
-	    (typeof input.selectionStart === 'number')&&
-	    (typeof input.selectionEnd === 'number')&&
-	    (input.selectionEnd>input.selectionStart)) {
+		 (typeof input.selectionStart === 'number')&&
+		 (typeof input.selectionEnd === 'number')&&
+		 (input.selectionEnd>input.selectionStart)) {
 	    var val=input.value;
 	    var start=input.selectionStart;
 	    var end=input.selectionEnd;
@@ -560,19 +560,19 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var newcues=cloud.getByValue(tags);
 	var i=0; var lim=newcues.length;
 	while (i<lim) {
-	  var completion=newcues[i++];
-	  if (!(fdjtDOM.hasClass(completion,"cue"))) {
-	    fdjtDOM.addClass(completion,"cue");
-	    fdjtDOM.addClass(completion,"softcue");}}}
+	    var completion=newcues[i++];
+	    if (!(fdjtDOM.hasClass(completion,"cue"))) {
+		fdjtDOM.addClass(completion,"cue");
+		fdjtDOM.addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
-      var info=sbook.docinfo[target.id];
-      var tags=[].concat(((info)&&(info.tags))||[]);
-      var glosses=sbook.glosses.find('frag',target.id);
-      var i=0; var lim=glosses.length;
-      while (i<lim) {
-	var g=glosses[i++]; var gtags=g.tags;
-	if (gtags) tags=tags.concat(gtags);}
-      setCloudCues(cloud,tags);}
+	var info=sbook.docinfo[target.id];
+	var tags=[].concat(((info)&&(info.tags))||[]);
+	var glosses=sbook.glosses.find('frag',target.id);
+	var i=0; var lim=glosses.length;
+	while (i<lim) {
+	    var g=glosses[i++]; var gtags=g.tags;
+	    if (gtags) tags=tags.concat(gtags);}
+	setCloudCues(cloud,tags);}
     sbook.setCloudCues=setCloudCues;
     sbook.setCloudCuesFromTarget=setCloudCuesFromTarget;
     
@@ -639,27 +639,29 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /***** Gloss Modes *****/
 
     function glossMode(mode) {
-      if (sbook.Trace.mode)
-	fdjtLog("[%fs] glossMode %o=>%o",
-		fdjtET(),fdjtID("SBOOKGLOSSFORM").className,mode);
-      fdjtID("SBOOKGLOSSFORM").className='sb'+mode+'mode';
-      if (mode==='tag') {
-	showGlossCloud(fdjtID("SBOOKTAGINPUT"));
-	fdjtID("SBOOKTAGINPUT").focus();}
-      else if (mode==='note') {
-	fdjtDOM.dropClass(sbookHUD,"tagging");
-	fdjtDOM.dropClass(sbookHUD,"sharing");
-	if (istagging(fdjtID("SBOOKNOTEINPUT"))) {
-	  showGlossCloud(fdjtID("SBOOKNOTEINPUT"),true);}
-	fdjtID("SBOOKNOTEINPUT").focus();}
-      else if (mode==='share') {
-	fdjtDOM.addClass(sbookHUD,"sharing");
-	fdjtDOM.dropClass(sbookHUD,"tagging");
-	share_cloud.complete(fdjtID("SBOOKSHAREINPUT").value);}
-      else {
-	hideGlossCloud();
-	fdjtDOM.dropClass(sbookHUD,"sharing");
-	fdjtDOM.dropClass(sbookHUD,"tagging");}}
+	if (sbook.Trace.mode)
+	    fdjtLog("[%fs] glossMode %o=>%o",
+		    fdjtET(),fdjtID("SBOOKGLOSSFORM").className,mode);
+	fdjtID("SBOOKGLOSSFORM").className='sb'+mode+'mode';
+	if (mode==='tag') {
+	    showGlossCloud(fdjtID("SBOOKTAGINPUT"));
+	    fdjtID("SBOOKTAGINPUT").focus();}
+	else if (mode==='note') {
+	    fdjtDOM.dropClass(sbookHUD,"tagging");
+	    fdjtDOM.dropClass(sbookHUD,"sharing");
+	    if (istagging(fdjtID("SBOOKNOTEINPUT"))) {
+		showGlossCloud(fdjtID("SBOOKNOTEINPUT"),true);}
+	    fdjtID("SBOOKNOTEINPUT").focus();}
+	else if (mode==='share') {
+	    fdjtDOM.addClass(sbookHUD,"sharing");
+	    fdjtDOM.dropClass(sbookHUD,"tagging");
+	    share_cloud.complete(fdjtID("SBOOKSHAREINPUT").value);}
+	else {
+	    hideGlossCloud();
+	    fdjtDOM.dropClass(sbookHUD,"sharing");
+	    fdjtDOM.dropClass(sbookHUD,"tagging");
+	    if (mode==="link") fdjtID("SBOOKLINKINPUT").focus();
+	    else if (mode==="detail") fdjtID("SBOOKDETAILINPUT").focus();}}
     sbook.glossMode=glossMode;
 
     /***** The Gloss Cloud *****/
