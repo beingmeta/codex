@@ -15,33 +15,46 @@
 	<input type="HIDDEN" name="DOCTITLE"/>
 	<input type="HIDDEN" name="RELAY"/>
       </div>
+      <img class="closebutton" alt="X" onclick="sbookMode(false);"
+	   src="http://static.beingmeta.com/graphics/redx16x16.png"/>
       <div class="controls">
-	<select name="MODE" onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
+	<select name="MODE"
+		onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
 	  <option value="sbnotemode">note</option>
 	  <option value="sbtagmode">tag</option>
 	  <option value="sblinkmode">link</option>
 	  <option value="sbdetailsmode">detail</option>
 	</select>
-	<img src="http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
-	     alt="note" onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	     title="add a note" class="modebutton"/>
-	<img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-	     alt="tag" onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	     title="add some tags" class="modebutton"/>
-	<img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
-	     alt="link" onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	     title="add a link" class="modebutton"/>
-	<img src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"
-	     alt="share"onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	     title="share with friends" class="modebutton"/>
-	<img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
-	     alt="details"onclick="sbook.glossMode('sb'+this.alt+'mode');"
-	     title="share with friends" class="modebutton"/>
-	<img class="closebutton" alt="X"
-	     src="http://static.beingmeta.com/graphics/redx16x16.png"
-	     onclick="sbookMode(false);"/>
-	<input type="SUBMIT" name="ACTION" value="OK"/>
-	<span class="checkspan private" onclick="fdjtUI.CheckSpan.onclick(event);"
+	<span class="button" onclick="sbook.glossMode('note');"
+	      title="add a note" data-mode="note">
+	  <img src=
+	       "http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
+	       alt="note"/>
+	  <span class="text">Note</span>
+	</span>
+	<span class="button" onclick="sbook.glossMode('tag');"
+	      title="add tags" data-mode="tag">
+	  <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+	       alt="tag" title="add some tags"/>
+	  <span class="text">Tags</span>
+	</span>
+	<span class="button" onclick="sbook.glossMode('link');"
+	      title="add a link" data-mode="link">
+	  <img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
+	       alt="link" title="add a link"/>
+	  <span class="text">Link</span>
+	</span>
+	<span class="button" onclick="sbook.glossMode('details');"
+	      title="add extended text" data-mode="detail">
+	  <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
+	       alt="details" title="add extended text"/>
+	  <span class="text">Detail</span>
+	</span>
+	<span class="button submitbutton"
+	      onclick="sbook.UI.submitEvent(fdjtID('SBOOKGLOSSFORM'));">
+	  OK</span>
+	<span class="button checkspan private"
+	      onclick="fdjtUI.CheckSpan.onclick(event);"
 	      title="don't share this gloss with my friends generally">
 	  <input type="CHECKBOX" name="PRIVATE" value="yes"/>
 	  <span class="checked"
@@ -54,20 +67,12 @@
 	<span class="checkspan" title="post to your social news feeds">
 	  <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
       </div>
-      <div class="tags"
-	   onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
-      </div>
       <fieldset class="textfields">
 	<div class="input note">
 	  <textarea name="NOTE"
 		    placeholder="add a note,using brackets for descriptive [tag]s"
 		    wrap="virtual"
 		    id="SBOOKNOTEINPUT"></textarea>
-	</div>
-	<div class="input details">
-	  <textarea name="DETAIL"
-		    placeholder="Enter detailed comments or notes here"
-		    id="SBOOKDETAILINPUT"></textarea>
 	</div>
 	<div class="input tag">
 	  <input type="TEXT" name="TAG" value="" autocomplete="off"
@@ -86,6 +91,14 @@
 	  <input type="TEXT" name="SHARE" value="" autocomplete="off"
 		 placeholder="type an email or tag with friends or groups to share"
 		 id="SBOOKSHAREINPUT"/>
+	</div>
+	<div class="input details">
+	  <textarea name="DETAIL"
+		    placeholder="Enter detailed comments or notes here"
+		    id="SBOOKDETAILINPUT"></textarea>
+	</div>
+	<div class="tags"
+	     onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
 	</div>
       </fieldset>
     </div>

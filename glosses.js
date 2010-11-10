@@ -642,7 +642,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
       if (sbook.Trace.mode)
 	fdjtLog("[%fs] glossMode %o=>%o",
 		fdjtET(),fdjtID("SBOOKGLOSSFORM").className,mode);
-      fdjtID("SBOOKGLOSSFORM").className=mode;
+      fdjtID("SBOOKGLOSSFORM").className='sb'+mode+'mode';
       if (mode==='tag') {
 	showGlossCloud(fdjtID("SBOOKTAGINPUT"));
 	fdjtID("SBOOKTAGINPUT").focus();}
@@ -755,6 +755,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	submit_evt.initEvent("submit", true, true);
 	form.dispatchEvent(submit_evt);
 	return;}
+    sbook.UI.submitEvent=submitEvent;
 
     // Queues a gloss when offline
     function saveGloss(form,evt){

@@ -66,7 +66,8 @@ div#SBOOKHUD div.hudpanel {
     overflow: hidden;
     display: none;}
 
-div#SBOOKHUD div#SBOOKHEAD div.hudpanel {
+div#SBOOKHUD div#SBOOKHEAD div.hudpanel,
+div#SBOOKHUD div.hudpanel.sbooknote {
     min-height: 50px;  max-height: 75%;
     border-top: 0px;
     border-top-left-radius: 0px;
@@ -89,7 +90,8 @@ div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
 
 div#SBOOKHUD img.hudbutton {
     position: absolute; width: 50px; height: 50px; z-index: 200;
-    border: solid transparent 2px; opacity: 0.01;
+    border: solid transparent 2px; opacity: 0.01;}
+body.hudup div#SBOOKHUD img.hudbutton  {
     background-color: #4682b4;}
 body div#SBOOKHUD img.hudbutton:hover { opacity: 0.45;}
 body.preview div#SBOOKHUD img.hudbutton { display: none;}
@@ -208,8 +210,7 @@ div#SBOOKHUD div.hudpanel#SBOOKADDGLOSS {
     -webkit-border-top-right-radius: 0px;
     -webkit-border-bottom-right-radius: 0px; 
     -moz-border-radius-topright: 0px;
-    -moz-border-radius-bottomright: 0px;
-    padding-right: 16px;}
+    -moz-border-radius-bottomright: 0px;}
 
 /* SBOOKSOURCES */
 
@@ -1129,6 +1130,9 @@ div.sbookaddgloss form fieldset {
     border: 0px; padding: 6px; padding-top: 2px;}
 
 div.sbookaddgloss form div.topblock { vertical-align: top; clear: both;}
+div.sbookaddgloss form fieldset.textfields {
+    padding-left: 20px; padding-right: 10px; padding-top: 0px;
+    clear: both;}
 div.sbookaddgloss form div.input {
     display: none; width: auto; margin-left: 0px; margin-right: 0px;}
 div.sbookaddgloss form div.input input {}
@@ -1137,6 +1141,7 @@ div.sbookaddgloss form div.input input[type='TEXT'] {
     display: block; width: 100%; clear: both; vertical-align: top;
     margin: 0px; padding: 3px; border: 3px; padding-top: 0px;
     border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px;}
+div.sbookaddgloss form div.input input:focus[type='TEXT'] { border: white;}
 div.sbookaddgloss form div.input input[type='TEXT'][name='TAG'] {
     font-size: 16px; height: 24px; font-weight: bold;
     background-image:
@@ -1163,6 +1168,11 @@ div.sbookaddgloss form div.input input[type='TEXT'][name='NOTE'] {
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 div.sbookaddgloss form div.input.details textarea[name='DETAIL'] {
+    background-image:
+    url(http://static.beingmeta.com/graphics/detailsicon32x32.png);
+    background-position: right top;
+    background-position-x: right; background-position-y: top;
+    background-repeat: no-repeat;
     height: 20ex;}
 div.sbookaddgloss form div.input input[type='TEXT'][name='SHARE'] {
     font-size: 16px; height: 24px; overflow: hidden;
@@ -1174,8 +1184,23 @@ div.sbookaddgloss form div.input input[type='TEXT'][name='SHARE'] {
 div.sbookaddgloss form div.input input[type='FILE'] { /* width: 100%; */
     display: block; }
 
+div.sbookaddgloss form div.tags {
+    display: block; text-align: left;}
 div.sbookaddgloss form div.controls {
-    vertical-align: top; text-align: left; padding-left: 7px;}
+    vertical-align: bottom; text-align: left;
+    padding-left: 30px; padding-right: 7px;
+    font-size: 16px;}
+div.sbookaddgloss form div.controls span.button {
+    border: solid silver 2px; background-color: silver; color: black;
+    padding: 2px; border-radius: 4px;
+    -khtml-border-radius: 4px; -webkit-border-radius: 4px; 
+    -moz-border-radius: 4px;
+    text-align: center;
+    cursor: pointer;}
+div.sbookaddgloss form div.controls span.button[data-mode] { vertical-align: bottom;} 
+div.sbookaddgloss form div.controls span.button img {
+    background-color: inherit;
+    height: 1.5ex;}
 div.sbookaddgloss form div.controls select {
     vertical-align: top; width: 7em;
     display: none;}
@@ -1193,26 +1218,29 @@ div.sbookaddgloss form div.controls img.modebutton {
     -khtml-border-radius: 4px; -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;
     vertical-align: top;}
-div.sbookaddgloss form div.controls img.closebutton {
-    float: right; color: red;}
+div.sbookaddgloss form img.closebutton {
+    background-color: lightblue;
+    color: red; float: right; padding: 1px; height: 2ex;
+    float: left;}
+div.sbookaddgloss form div.controls span.submitbutton {
+    font-weight: bold; text-align: center; float: right;
+    margin: 0px; padding: 0px;}
 div.sbookaddgloss form div.controls input[type='SUBMIT'] {
     font-weight: bold; text-align: center; padding: 4px;
     border-radius: 0px; float: right;}
 div.sbookaddgloss form div.controls .checkspan {
     margin-left: 4px; margin-right: 4px; font-family: sans,sans-serif;
     float: right;}
-div.sbookaddgloss form div.controls .checkspan.private {
+div.sbookaddgloss form div.controls .button.checkspan.private {
     font-weight: bold; font-size: 90%;
     border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
     background-color: white; color: green;}
-div.sbookaddgloss form div.controls .checkspan.private.ischecked {
+div.sbookaddgloss form div.controls .button.checkspan.private.ischecked {
     background-color: black; color: white; }
-div.sbookaddgloss form div.controls .checkspan.private input[type='checkbox'] {
+div.sbookaddgloss form div.controls .button.checkspan.private input[type='checkbox'] {
     display: none;}
 
-div.sbookaddgloss form div.tags {
-    display: block; width: 100%; text-align: left;}
 div.sbookaddgloss form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
@@ -1224,12 +1252,17 @@ div.sbookaddgloss form.sblinkmode div.input.link { display: block;}
 div.sbookaddgloss form.sbsharemode div.input.share { display: block;}
 div.sbookaddgloss form.sbdetailsmode div.input.details { display: block;}
 
-div.sbookaddgloss form.sbnotemode div.controls img[alt='note'],
-div.sbookaddgloss form.sbtagmode div.controls img[alt='tag'],
-div.sbookaddgloss form.sblinkmode div.controls img[alt='link'],
-div.sbookaddgloss form.sbsharemode div.controls img[alt='share'],
-div.sbookaddgloss form.sbdetailsmode div.controls img[alt='details'] {
-    background-color: silver; border-color: gold;}
+div.sbookaddgloss form.sbnotemode div.controls span[data-mode='note'],
+div.sbookaddgloss form.sbtagmode div.controls span[data-mode='tag'],
+div.sbookaddgloss form.sblinkmode div.controls span[data-mode='link'],
+div.sbookaddgloss form.sbsharemode div.controls span[data-mode='share'],
+div.sbookaddgloss form.sbdetailsmode div.controls span[data-mode='detail'] {
+    background-color: white;
+    border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
+    -khtml-border-bottom-left-radius: 0px; -khtml-border-bottom-right-radius: 0px; 
+    -webkit-border-bottom-left-radius: 0px; -webkit-border-bottom-right-radius: 0px; 
+    -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px;
+    border-bottom: solid white 2px;}
 
 div#SBOOKHUD.tagging div.sbookaddgloss form div.completions#SBOOKGLOSSCLOUD,
 div.sbookaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD,
