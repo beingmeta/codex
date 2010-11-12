@@ -126,7 +126,7 @@ div.item div.content {
 #TOPBLOCK div.item { font-size: 115%;}
 #TOPBLOCK div.item .action input[TYPE='SUBMIT'] { }
 
-span.free { color: gold; float: right;}
+.free { color: gold; float: right;}
 span.price { color: gold;}
 span.price:before { content: "$";}
 h1 div.title { font-size: 75%;}
