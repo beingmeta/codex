@@ -770,7 +770,8 @@ var sbookPaginate=
 
 	function FadeToPage(pagenum,off){
 	    if (!(off)) off=0;
-	    if (!(sbook.animate)) return sbook.GoToPage(pagenum,off,"FadeToPage");
+	    if (!(sbook.animate))
+		return sbook.GoToPage(pagenum,off,"FadeToPage");
 	    if (sbook.Trace.nav)
 		fdjtLog("[%fs] sbook.FadeToPage %o+%o",fdjtET(),pagenum,off);
 	    sbook.body.style.opacity=0.0001;

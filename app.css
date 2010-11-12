@@ -49,8 +49,7 @@ div.appblock.buttons form { display: inline; clear: none;}
 
 body.sbookapp { margin-left: 5%; margin-right: 5%; background-color: ivory;}
 body.sbookapp h1 {
-  text-align: center; height: 50px;
-  margin-left: 50px; margin-right: 50px;}
+  text-align: center; margin-left: 50px; margin-right: 50px;}
 body.sbookapp h1 img { border: 0px;}
 body.sbookapp h1 .floatright { float: right;}
 body.sbookapp h1 .floatleft { float: left;}

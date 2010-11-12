@@ -36,15 +36,20 @@
 body.sbook {
     transition-property: opacity; transition-duration: 0.2s;
     -webkit-transition-property: opacity;
-    -webkit-transition-duration: 0.2s;}
+    -webkit-transition-duration: 0.2s;
+    -moz-transition-property: opacity;
+    -moz-transition-duration: 0.2s;}
 #SBOOKBODY {
     margin: 0px; padding: 0px; border: 0px;
     transition-property: opacity; transition-duration: 0.2s;
     -webkit-transition-property: opacity;
-    -webkit-transition-duration: 0.2s;}
+    -webkit-transition-duration: 0.2s;
+    -moz-transition-property: opacity;
+    -moz-transition-duration: 0.2s;}
 body.touch #SBOOKBODY {
     transition-duration: 0.4s;
-    -webkit-transition-duration: 0.2s;}
+    -webkit-transition-duration: 0.2s;
+    -moz-transition-duration: 0.2s;}
 
 
 /* The HUD */
