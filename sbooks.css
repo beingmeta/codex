@@ -64,6 +64,8 @@ div#SBOOKHUD div.hudpanel {
     border: solid darkblue 3px; border-radius: 6px;
     -khtml-border-radius: 6px; -webkit-border-radius: 6px; 
     -moz-border-radius: 6px;}
+div#SBOOKHUD div#SBOOKFLYLEAF.hudpanel {
+    background-color: ivory; color: #4682b4; opacity: 0.98;}
 /* Being on top */
 div#SBOOKHUD div.hudpanel {
     position: fixed; top: 0px; left: 100px; right: 100px;
@@ -771,7 +773,7 @@ body.preview div#SBOOKHUD.flytoc div#SBOOKFLYLEAF div.spanbar:hover {
 
 div#SBOOKHUD div#SBOOKFLYHEAD {
     margin: 0px; padding: 0px; border-bottom: 0px;
-    height: 60px; min-height: 60px;
+    height: 100px; min-height: 60px;
     font-family: times,serif; font-variant: small-caps;}
 
 div#SBOOKHUD div#SBOOKFLYHEAD div.flyleafplate {
