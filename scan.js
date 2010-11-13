@@ -164,8 +164,7 @@ function sbookScan(root,docinfo){
 	    return parseInt(elt.tagName.slice(1,2));
 	else return false;}
 
-    function handleHead
-    (head,docinfo,scanstate,level,curhead,curinfo,curlevel,nodefn){
+    function handleHead(head,docinfo,scanstate,level,curhead,curinfo,curlevel,nodefn){
 	var headid=head.id;
 	var headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
 	    (docinfo[headid]=new scanInfo(headid,scanstate));

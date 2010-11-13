@@ -718,6 +718,7 @@ body.preview *[id].previewing { color: red; cursor: crosshair;}
 body.preview *[id].previewing * { cursor: crosshair;}
 
 body.preview div#SBOOKHUD div#SBOOKHEAD { display: none;}
+body.preview div#SBOOKHUD div#SBOOKGLOSSES { display: none;}
 body.preview div#SBOOKHUD.toc div#SBOOKHEAD { display: block;}
 body.preview div#SBOOKHUD.toc div#SBOOKTOC { display: block; opacity: 1.0;}
 body.preview div#SBOOKHUD div#SBOOKPREVIEW { display: block;}
