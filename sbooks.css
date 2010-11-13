@@ -783,31 +783,33 @@ div#SBOOKHUD div#SBOOKFLYHEAD div.flyleafplate {
 div#SBOOKHUD div#SBOOKFLYHEAD div.tabbar {
     margin: 0px; padding: 0px; border: 0px;
     width: 100%; clear: both;
-    font-variant: small-caps; margin-top: 2px;}
+    font-variant: small-caps;}
 div#SBOOKHUD div#SBOOKFLYHEAD div.tabbar .tab {
-    font-variant: small-caps; border-radius: 6px;}
-div#SBOOKHUD div#SBOOKFLYHEAD div.tabbar.icons .tab  {
-    border: none;}
-div#SBOOKHUD div#SBOOKFLYHEAD div.tabbar.icons .tab img {
-    border: transparent solid 3px; padding: 2px; border-radius: 6px;}
+    font-variant: small-caps;
+    border-bottom-right-radius: 6px;
+    -khtml-border-bottom-right-radius: 6px; 
+    -webkit-border-bottom-right-radius: 6px; 
+    -moz-border-radius-bottomright: 6px;
+    border-bottom-left-radius: 6px;
+    -khtml-border-bottom-left-radius: 6px; 
+    -webkit-border-bottom-left-radius: 6px; 
+    -moz-border-radius-bottomleft: 6px;}
+div#SBOOKHUD div#SBOOKFLYHEAD div.tabbar .tab  {
+    border: transparent solid 3px;}
 
 div#SBOOKHUD div#SBOOKFLYLEAF table {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
 
-div#SBOOKHUD.about span.tab[contentid='APPABOUT'],
-div#SBOOKHUD.login div#SBOOKFLYHEAD span.tab[contentid='APPLOGIN'],
-div#SBOOKHUD.device div#SBOOKFLYHEAD span.tab[contentid='APPDEVICE'],
-div#SBOOKHUD.flytoc div#SBOOKFLYHEAD span.tab[contentid='FLYTOC'],
-div#SBOOKHUD.sbookapp div#SBOOKFLYHEAD span.tab[contentid='SBOOKSAPP'] {
-    border-bottom: none;}
+div#SBOOKHUD.about div#SBOOKFLYHEAD div.tabbar .tab[contentid='APPABOUT'],
+div#SBOOKHUD.login div#SBOOKFLYHEAD div.tabbar .tab[contentid='APPLOGIN'],
+div#SBOOKHUD.device div#SBOOKFLYHEAD div.tabbar .tab[contentid='APPDEVICE'],
+div#SBOOKHUD.flytoc div#SBOOKFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
+div#SBOOKHUD.sbookapp div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
+    border: gold solid 3px; background-color: gold;
+    border-bottom: transparent solid 3px;}
 
-div#SBOOKHUD.about div#SBOOKFLYHEAD span.tab[contentid='APPABOUT'] img,
-div#SBOOKHUD.login div#SBOOKFLYHEAD span.tab[contentid='APPLOGIN'] img,
-div#SBOOKHUD.device div#SBOOKFLYHEAD span.tab[contentid='APPDEVICE'] img,
-div#SBOOKHUD.flytoc div#SBOOKFLYHEAD span.tab[contentid='FLYTOC'] img,
-div#SBOOKHUD.sbookapp div#SBOOKFLYHEAD span.tab[contentid='SBOOKSAPP'] img {
-    border: gold solid 3px;
-    border-bottom: none;}
+div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent {
+    margin-top: 0px;}
 
 div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent[id='APPABOUT'],
 div#SBOOKHUD.login div#SBOOKFLYLEAF div.tabcontent[id='APPLOGIN'],
@@ -825,7 +827,7 @@ div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON {
 div#SBOOKHUD div#SBOOKFLYHEAD #HELPBUTTON {
     float: right; margin: 0px; padding: 0px; border: 0px;}
 div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON img {
-  margin: 0px; border: 0px; padding: 0px; max-height: 32px;}
+  margin: 0px; border: 0px; padding: 0px; max-height: 48px;}
 body.nosbookuser div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON {
     display: none;}
 div#SBOOKHUD div#SBOOKFLYHEAD .flyleafplate .applinks {
@@ -868,6 +870,8 @@ div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKSAPP iframe {
   -webkit-border-radius: 9px; 
   -moz-border-radius: 9px; 
   border-radius: 9px;}
+
+div#SBOOKFLYLEAF table.login th.or { font-size: 200%;}
 
 div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#APPDEVICE div.setting {
     clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
@@ -1101,15 +1105,15 @@ body.hudup .sbooktarget .glossmark:hover { opacity: 0.9;}
 
 /* Not logged in conditionalization */
 
-span.tab[CONTENTID='APPLOGIN'] { display: none;}
+.tab[CONTENTID='APPLOGIN'] { display: none;}
 
 body.nosbookuser div#SBOOKHELP > div.login { display: block;}
 body.nosbookuser div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON {
     display: none;}
 body.nosbookuser a.logout {display: none;}
 body.nosbookuser #SBOOKLOGOUT { display: none;}
-body.nosbookuser span.tab[CONTENTID='APPLOGIN'] { display: inline;}
-body.nosbookuser span.tab[CONTENTID='SBOOKSAPP'] { display: none;}
+body.nosbookuser .tab[CONTENTID='APPLOGIN'] { display: inline;}
+body.nosbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
 body.nosbookuser div#SBOOKHUD div.hud#SBOOKSOURCES img.button.login {
   display: block;}
 body.nosbookuser div#SBOOKHUD div.hud#SBOOKSOURCES img.button.app {

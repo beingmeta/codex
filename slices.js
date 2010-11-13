@@ -66,8 +66,10 @@ var sbook_delete_icon="redx12x12.png";
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments"))));
 	if (!(info.tstamp))
-	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
-	    .replace(/\n\n+/g,"\n");
+	    div.title=
+	    "click to preview\n"+
+	    (sbook.getTitle(target)||fdjtDOM.textify(target))
+	    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
 	div.about="#"+target_id;
 	// div.setAttribute('about',"#"+info.id);
 	if (idprefix) div.id=idprefix+info.id;
@@ -341,6 +343,9 @@ var sbook_delete_icon="redx12x12.png";
 		threadelt=fdjtDOM("div.sbookthread.idthread",
 				  makeIDHead(target,headinfo,true));
 		threadelt.about="#"+frag;
+		threadelt.title="(click to preview)\n"+
+		    (sbook.getTitle(target)||fdjtDOM.textify(target))
+		    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
 		fdjtDOM.append(headelt,threadelt);
 		curinfo=docinfo;}
 	    fdjtDOM.append(threadelt,renderNote(note));}
@@ -401,12 +406,12 @@ var sbook_delete_icon="redx12x12.png";
     function makeIDHead(target,headinfo,locrule){
 	var info=sbook.docinfo[target.id];
 	var headinfo=info.head;
-	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
-	    replace(/\n\n+/g,"\n");
 	var tochead=fdjtDOM("div.idhead",
 			    ((locrule)&&(makelocrule(info,headinfo))),
 			    fdjtDOM("div",sumText(target)));
-	tochead.title=title;
+	var title="(click to preview)\n"+
+	    (sbook.getTitle(target)||fdjtDOM.textify(target)).
+	    replace(/\n\n+/g,"\n").replace(/^\n+/,"");
 	return tochead;}
 
     function findTOCref(div,ref,loc) {
@@ -443,6 +448,10 @@ var sbook_delete_icon="redx12x12.png";
 	    var insertion=idelt;
 	    idelt=fdjtDOM("div.sbookthread.idthread",makeIDHead(about,headinfo));
 	    idelt.tocref=frag; idelt.start=starts; idelt.about="#"+frag;
+	    idelt.title="(click to preview)\n"+
+		(sbook.getTitle(about)||fdjtDOM.textify(about))
+		.replace(/\n\n+/g,"\n").replace(/^\n+/,"");
+
 	    if (insertion) fdjtDOM.insertBefore(insertion,idelt);
 	    else fdjtDOM.append(headelt,idelt);}
 	var tstamp=note.tstamp; var qid=note.qid;
