@@ -55,7 +55,7 @@ body.sbookapp h1 .floatright { float: right;}
 body.sbookapp h1 .floatleft { float: left;}
 
 body.sbookapp.embedded { 
-    background-color: #4682b4; color: ivory;}
+    color: #4682b4; background-color: ivory;}
 body.sbookapp.embedded a { 
     color: lightblue;}
 body.sbookapp.embedded h2 {  text-align: left;}
@@ -128,5 +128,12 @@ div.item div.content {
 .free { color: gold; float: right;}
 span.price { color: gold;}
 span.price:before { content: "$";}
+h1 div.spacer { font-size: 50%;}
+h1 div.grouptitle { font-style: italic;}
 h1 div.title { font-size: 75%;}
 h1 div.refuri { font-size: 75%;}
+
+.mustpay {
+    font-size: 125%; text-align: center;}
+.mustpay .paybutton {
+    float: right;}
