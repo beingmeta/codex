@@ -524,6 +524,10 @@ var sbookMode=
 		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
 	    fdjtID("MANAGEAPP").src=appuri;}
 
+	sbookMode.selectApp=function(){
+	    if (sbook.mode==='sbookapp') initManageIFrame();
+	    else sbookMode('sbookapp');}
+
 
 	/* Previewing */
 	
