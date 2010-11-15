@@ -15,8 +15,14 @@ table.login td.oneclick a.login[value='facebook'] {
 table.login a.button { padding: 1px;}
 table.login td a.button { padding: 1px; }
 table.login td a.button img { height: 32px;}
+table.login .registering input[TYPE='SUBMIT'][VALUE='Login'],
+table.login input[TYPE='SUBMIT'][VALUE='Register'] {
+    display: none;}
+table.login .registering input[TYPE='SUBMIT'][VALUE='Register'] {
+    display: inline;}
 table.login td input[TYPE='TEXT'] { }
 table.login td input[TYPE='TEXT'][NAME='USERNAME'] { width: 100%;}
+table.login td input[TYPE='TEXT'][NAME='NAME'] { width: 100%;}
 table.login td input[TYPE='TEXT'][NAME='USERID'] { width: 100%;}
 table.login td input[TYPE='PASSWORD'] { 
   width: 50%; min-width: 20em;}
@@ -37,3 +43,20 @@ table.login a img { border: none;}
 table.login td.userlogin { vertical-align: top;}
 table.login td.userlogin button { padding: 2px;}
 table.login td.userlogin img { vertical-align: top; height: 16px;}
+
+table.login tr.blockstart td {
+    border-bottom: solid blue 7px;}
+table.login tr.blockbreak td {
+    border-top: solid transparent 24px;
+    border-bottom: solid blue 7px;}
+table.login tr.blockstart th {
+    border-bottom: solid silver 7px;}
+table.login tr.blockbreak th {
+    border-top: solid transparent 24px;
+    border-bottom: solid silver 7px;}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

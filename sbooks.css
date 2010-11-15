@@ -820,7 +820,7 @@ div#SBOOKHUD.sbookapp div#SBOOKFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
     display: block;}
 
 div#SBOOKHUD div#SBOOKFLYLEAF div.tabcontent {
-    overflow: auto;}
+    overflow-y: auto; overflow-x: hidden;}
 div#SBOOKHUD.sbookapp div#SBOOKFLYLEAF {}
 
 div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON {

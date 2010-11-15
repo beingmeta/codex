@@ -195,12 +195,14 @@ var sbookMode=
 	     searching: "SBOOKSEARCHCLOUD",
 	     addgloss: "SBOOKGLOSSCLOUD",
 	     sbookapp: "MANAGEAPP",
-	     flytoc: "SBOOKFLYTOC" /* ,
-				 login: "SBOOKAPPLOGIN",
-				 device: "SBOOKAPPDEVICE",
-				 about: "APPABOUT",
-				 sbookapp: "SBOOKAPPFRAME"
-			      */
+	     flytoc: "SBOOKFLYTOC",
+	     login: "SBOOKFLYLOGIN",
+	     /* ,
+		login: "SBOOKAPPLOGIN",
+		device: "SBOOKAPPDEVICE",
+		about: "APPABOUT",
+		sbookapp: "SBOOKAPPFRAME"
+	     */
 	    };
 	
 	function sbookMode(mode){
