@@ -49,9 +49,42 @@
 <div class='tabcontent flyleaftab' id='APPLOGIN'>
 <!-- <h1>Introduce Yourself</h1> -->
 <form action='https://auth.sbooks.net/v4/auth'>
-<table class='login' rowspacing='6'>
+<table class="login fdjtform" cellspacing="1" id="SBOOKLOGINFORM">
+<tbody class='collapsible'>
+  <tr><th><input TYPE='SUBMIT' NAME='ACTION' VALUE='Login'></th>
+    <td><input type='TEXT' name='USERID' value=''
+               placeholder='Enter a username (e.g. email)'/></td></tr>
+  <tr><th>password</th>
+    <td><input type='PASSWORD' name="PASSWD" value=''
+               placeholder='your registered password'/></td></tr>
+  <tr onclick='fdjtDOM.toggleClass(fdjtDOM.getParent(this,"tbody"),"expanded");'
+      title='Click to show/hide'>
+    <th>
+      <img src='http://static.beingmeta.com/graphics/twistyclosed16x16.png'
+	   class='collapsed' alt='+' title='click for more options'/>
+      <img src='http://static.beingmeta.com/graphics/twistyopen16x16.png'
+	   class='expanded' alt='-' title='click to hide options'/>
+    </th>
+    <td>
+      Create a free account.
+      <span class="collapsible">We won't use the provided username/email for anything
+	but letting you log in (we don't even check it).</span></td></tr>
+  <tr class='collapsible'>
+    <th>confirm</th>
+    <td><input type='PASSWORD' name="XPASSWD" value=''
+               placeholder='your registered password'/></td></tr>
+  <tr class='collapsible'>
+    <th>name</th>
+    <td><input type='TEXT' name='NAME' value=''
+	       placeholder='what name to display with your comments'/></td></tr>
+  <tr class='collapsible'>
+    <th>picture</th>
+    <td><input type='FILE' name='PIC' value=''
+	       placeholder='what name to display with your comments'/>
+      (optional)</td></tr>
+</tbody>
 <tr>
-<th/><th>Connect using</th>
+  <th>Connect</th>
 <td class='oneclick'>
   <a href='https://sbooks.net/v4/auth/fb' class='fdjtsubmit login'
      title='login using Facebook'>
@@ -71,17 +104,15 @@
 </td>
 </tr>
 <tr>
-  <th class='or'>or</th>
   <th class='username'>
-    &nbsp;username<br/><span style='font-size: 300%;'>@</span></th>
+    &nbsp;user<br/><span style='font-size: 300%;'>@</span></th>
   <td class='userlogin'>
-    <input type='TEXT' name='USERNAME' value=''
-           placeholder='Enter a username and click your site'/>
+    <input type='TEXT' name='USERNAME' value='' placeholder="username on external site"/>
     <br/>
     <div class='doc' id='USERNAMEDOC' style='display: none;'>
     Some sites provide OpenID login based on your user name.  Enter your
     username and click the button for the appropriate site.  You'll go to
-    that site, log in, and return to sBooks.
+    that site, log in, and return to this book.
     </div>
     <button type='SUBMIT' name='PROVIDER' value='aol.com'>
       <img src='http://static.beingmeta.com/graphics/logos/aol.png' alt='aol'/>
@@ -108,7 +139,6 @@
 	 title='Some sites provide OpenID login based on your user name.  Enter your username and click the button for the appropriate site.  You&#39;ll go to that site, log in, and return here.'/></td>
 </tr>
 <tr>
-  <th class='or'>or</th>
   <th>
     <img src='http://static.beingmeta.com/graphics/openid-logo-small.png' alt='OpenID' style=' height: 32px;'/></th>
   <td><input type='TEXT' name='OPENID' value=''

@@ -94,7 +94,7 @@ var sbookPaginate=
 	    sbook_avoidpagefoot=
 		fdjtDOM.sel(fdjtDOM.getMeta("sbookavoidfoot",true));
 	    sbook_avoidpagehead=
-		fdjtDOM.sel(fdjtDOM.getMeta("sbook.avoidhead",true));
+		fdjtDOM.sel(fdjtDOM.getMeta("sbookavoidhead",true));
 	    sbook_fullpages=
 		fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));}
 	sbookPaginate.getSettings=getSettings;
