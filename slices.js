@@ -53,7 +53,7 @@ var sbook_delete_icon="redx12x12.png";
 	    fdjtDOM(((info.tstamp) ? "div.sbooknote.gloss" : "div.sbooknote"),
 		    ((standalone)&&(makelocbar(target_info))),
 		    // (makelocrule(target_info,target_info.head)),
-		    ((info.tstamp)&&(showglossinfo(info))),
+		    ((info.tstamp)&&(showglossinfo(info)))," ",
 		    // Makes it noisy (and probably slow) on the iPad
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
@@ -137,9 +137,13 @@ var sbook_delete_icon="redx12x12.png";
 	if (deleteicon) deleteicon.onclick=deletegloss_onclick;
 	
 	return [fdjtDOM("span.glossinfo",age,deleteicon),
-		((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
-		((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
-		(sourceIcon(feedinfo))||(sourceIcon(userinfo))];}
+		(((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
+		 ((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
+		 ((userinfo.fbid)&&
+		  (fdjtDOM.Image("https://graph.facebook.com/"+userinfo.fbid+"/picture",
+				 "userpic",userinfo.name)))),
+	       	(((userinfo)&&((userinfo.name)||(userinfo.userid)))&&
+		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid)))))];}
     var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     function timestring(tick){
 	var now=fdjtTime.tick();
