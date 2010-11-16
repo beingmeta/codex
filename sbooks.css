@@ -253,7 +253,7 @@ div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.sbooktocleaf > div.head {
 div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC hr.progressbar {
     display: none; border: none;}
 div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.progressbox { display: none;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.live > div.head { color: gold;}
+div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.live > div.head { color: blue;}
 div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC
   div.live > div.head hr.progressbar {
       display: block;}
@@ -835,10 +835,12 @@ div#SBOOKHUD div#SBOOKFLYHEAD .flyleafplate .applinks {
     color: blue; font-size: 80%;
     font-weight: normal; font-variant: small-caps;}
 
-div#SBOOKHUD div#SBOOKFLYHEAD a.logout {
+div#SBOOKHUD div#SBOOKFLYHEAD .flyleafplate a.logout {
     float: right; vertical-align: top; padding-right: 2px;
-    font-family: helvetica,sans,sans-serif;
-    background-color: gold; color: blue;}
+    font-family: helvetica,sans,sans-serif; font-weight: bold;
+    background-color: gold; color: red;}
+div#SBOOKHUD div#SBOOKFLYHEAD .flyleafplate a.logout:visited {
+    color: red;}
 div#SBOOKHUD div#SBOOKFLYHEAD a.login {
     float: right; vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif;
@@ -858,7 +860,7 @@ div#SBOOKHUD div#SBOOKFLYLEAF .flyleafplate a:visited {
 div#SBOOKHUD div#SBOOKFLYLEAF .flyleafplate a:hover {
     text-decoration: underline;}
 
-div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC div.head { color: silver; } 
+div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC div.head { color: black; } 
 div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC div.head { padding-left: 4px;} 
 div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC a {
     color: inherit; font-weight: inherit;}

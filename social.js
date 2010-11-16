@@ -60,7 +60,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	    var icon=fdjtID("SBOOKSOURCEICON"+humid);
 	    if (!(icon)) { // Add icon to the sources bar
 		var pic=(info.pic)||
-		    ((info.fbid)&&("https://graph.facebook.com/"+info.fbid+"/picture"));
+		    ((info.fbid)&&("https://graph.facebook.com/"+info.fbid+"/picture?type=square"));
 		var kind=info.kind;
 		if (pic) {}
 		else if (kind===':PERSON')

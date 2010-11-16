@@ -73,6 +73,8 @@ var sbookMode=
 
 	    if (sbook.hidehelp) sbook.setConfig("hidehelp");
 
+	    fdjtID("SBOOK_RETURN_TO").value=location.href;
+
 	    // Initialize gloss UI
 	    var glosses=fdjtID("SBOOKALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
@@ -519,8 +521,8 @@ var sbookMode=
 	    var appuri="https://"+sbook.server+"/v4/manage.fdcgi"+query;
 	    if (query.search("REFURI=")<0)
 		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
-	    if (query.search("DOCURI=")<0)
-		appuri=appuri+"&DOCURI="+
+	    if (query.search("TOPURI=")<0)
+		appuri=appuri+"&TOPURI="+
 		encodeURIComponent(document.location.href);
 	    if (document.title) {
 		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}

@@ -578,11 +578,13 @@ sbook.Startup=
 	    fdjtID("SBOOKUSERNAME").innerHTML=username;
 	    if (fdjtID("SBOOKMARKUSER"))
 		fdjtID("SBOOKMARKUSER").value=sbook.user.oid;
-	    if (sbook.user.pic) {
-		if (fdjtID("SBOOKMARKIMAGE"))
-		    fdjtID("SBOOKMARKIMAGE").src=sbook.user.pic;
-		if (fdjtID("SBOOKUSERPIC"))
-		    fdjtID("SBOOKUSERPIC").src=sbook.user.pic;}
+	    var pic=
+		(sbook.user.pic)||
+		((sbook.user.fbid)&&
+		 ("https://graph.facebook.com/"+sbook.user.fbid+"/picture?type=square"));
+	    if (pic) {
+		if (fdjtID("SBOOKMARKIMAGE")) fdjtID("SBOOKMARKIMAGE").src=pic;
+		if (fdjtID("SBOOKUSERPIC")) fdjtID("SBOOKUSERPIC").src=pic;}
 	    if (fdjtID("SBOOKFRIENDLYOPTION"))
 		if (sbook.user)
 		    fdjtID("SBOOKFRIENDLYOPTION").value=sbook.user.oid;

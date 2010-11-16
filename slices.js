@@ -140,7 +140,7 @@ var sbook_delete_icon="redx12x12.png";
 		(((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
 		 ((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
 		 ((userinfo.fbid)&&
-		  (fdjtDOM.Image("https://graph.facebook.com/"+userinfo.fbid+"/picture",
+		  (fdjtDOM.Image("https://graph.facebook.com/"+userinfo.fbid+"/picture?type=square",
 				 "userpic",userinfo.name)))),
 	       	(((userinfo)&&((userinfo.name)||(userinfo.userid)))&&
 		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid)))))];}
