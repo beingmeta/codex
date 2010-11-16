@@ -12,17 +12,17 @@ function updatePrice(){
 
 function invite_keypress(evt){
   var target=fdjtUI.T(evt);
-  var ch=evt.charCode;
+  var ch=evt.charCode||evt.keyCode;
   if (ch!==13) return;
   fdjtUI.cancel(evt);
   var string=target.value; target.value="";
-  var emails=string.slice(",");
+  var emails=string.split(",");
   var i=0; var lim=emails.length;
   while (i<lim) {
     var email=emails[i++];
     var checkbox=fdjtDOM.Checkbox("INVITE",email);
     checkbox.checked=true;
     fdjtDOM(fdjtID("INVITATIONS"),
-	    fdjtDOM("span.checkspan",checkbox,email));}
+	    fdjtDOM("div.checkspan",checkbox,email));}
   updatePrice();}
 

@@ -49,7 +49,7 @@ div.appblock.buttons form { display: inline; clear: none;}
 
 body.sbookapp { margin-left: 5%; margin-right: 5%; background-color: ivory;}
 body.sbookapp h1 {
-  text-align: center; margin-left: 50px; margin-right: 50px;}
+  text-align: center; padding-left: 50px; padding-right: 50px;}
 body.sbookapp h1 img { border: 0px;}
 body.sbookapp h1 .floatright { float: right;}
 body.sbookapp h1 .floatleft { float: left;}
@@ -121,6 +121,8 @@ div.item span.isfree {
 
 div.item div.content {
     margin-left: 75px; font-size: 125%; text-indent: 0px;}
+div.item div.content div.checkspan {
+    margin-left: 1em; text-indent: -1em;}
 
 #TOPBLOCK div.item { font-size: 115%;}
 #TOPBLOCK div.item .action input[TYPE='SUBMIT'] { }
@@ -137,3 +139,25 @@ h1 div.refuri { font-size: 75%;}
     font-size: 125%; text-align: center;}
 .mustpay .paybutton {
     float: right;}
+
+.isfree {
+    background-image: url(/static/graphics/FreeIcon28x21.png);
+    background-position: right top;
+    background-position-x: right; background-position-y: top;
+    background-repeat: no-repeat;}
+h1.isfree {
+    background-image: url(/static/graphics/FreeIcon60x45.png);}
+
+div.invitation {
+    font-family: serif; font-size: 125%; font-style: italic;
+    text-align: center;}
+div.invitation div.smaller { font-size: 75%;}
+div.invitation div.grouptitle {
+    font-size: 150%; font-family: sans,sans-serif;
+    font-style: normal;}
+div.invitation div.doctitle {
+    font-size: 125%;
+    font-weight: bold; font-style: normal;}
+div.invitation div.refuri {
+    font-size: 75%; font-family: fixed;
+    font-weight: bold; font-style: normal;}
