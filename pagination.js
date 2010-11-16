@@ -1017,8 +1017,8 @@ var sbookPaginate=
 /* Pagination utility functions */
 
 sbook.setFontSize=function(size){
-    if (document.body.style.fontSize!==size) {
-	document.body.style.fontSize=size;
+    if (sbook.body.style.fontSize!==size) {
+	sbook.body.style.fontSize=size;
 	sbookPaginate();}};
 
 sbook.setUIFontSize=function(size){

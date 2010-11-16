@@ -802,8 +802,8 @@ div#SBOOKHUD div#SBOOKFLYLEAF table {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
 
 div#SBOOKHUD.about div#SBOOKFLYHEAD div.tabbar .tab[contentid='APPABOUT'],
-div#SBOOKHUD.login div#SBOOKFLYHEAD div.tabbar .tab[contentid='APPLOGIN'],
-div#SBOOKHUD.device div#SBOOKFLYHEAD div.tabbar .tab[contentid='APPDEVICE'],
+div#SBOOKHUD.login div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
+div#SBOOKHUD.device div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKDEVICE'],
 div#SBOOKHUD.flytoc div#SBOOKFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
 div#SBOOKHUD.sbookapp div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
@@ -813,8 +813,8 @@ div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent {
     margin-top: 0px;}
 
 div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent[id='APPABOUT'],
-div#SBOOKHUD.login div#SBOOKFLYLEAF div.tabcontent[id='APPLOGIN'],
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent[id='APPDEVICE'],
+div#SBOOKHUD.login div#SBOOKFLYLEAF div.tabcontent[id='SBOOKAPPLOGIN'],
+div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent[id='SBOOKDEVICE'],
 div#SBOOKHUD.flytoc div#SBOOKFLYLEAF div.tabcontent[id='FLYTOC'],
 div#SBOOKHUD.sbookapp div#SBOOKFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
     display: block;}
@@ -876,31 +876,34 @@ div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKSAPP iframe {
 
 div#SBOOKFLYLEAF table.login th.or { font-size: 200%;}
 
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#APPDEVICE div.setting {
-    clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#APPDEVICE div.setting span.checkspan {
-  font-size: 125%; color: orange;}
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#APPDEVICE
-     div.setting span.checkspan input[type='CHECKBOX'] {
-  width: 16px; height: 16px; color: orange; background-color: orange;
-  vertical-align: bottom;}
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#APPDEVICE
-     div.setting div.explanation { 
-  font-style: italic; clear: both; margin-left: 3em;}
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#APPDEVICE
-     div.setting .button {
-	 float: right; clear: right; cursor: pointer; 
-	 background-color: orange; color: white;
-	 font-weight: bold; font-variant: small-caps;
-	 padding: 4px; border: solid orange 2px;
-	 border-radius: 6px;
-	 -khtml-border-radius: 6px; 
-	 -webkit-border-radius: 6px; 
-	 -moz-border-radius: 6px;}
+div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+ div.setting {
+     clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
+div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+ div.setting span.checkspan {
+     font-size: 125%; color: orange;}
+div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+  div.setting span.checkspan input[type='CHECKBOX'] {
+      width: 16px; height: 16px; color: orange; background-color: orange;
+      vertical-align: bottom;}
+div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+  div.setting div.explanation { 
+      font-style: italic; clear: both; margin-left: 3em;}
+div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+  div.setting .button {
+      float: right; clear: right; cursor: pointer; 
+      background-color: orange; color: white;
+      font-weight: bold; font-variant: small-caps;
+      padding: 4px; border: solid orange 2px;
+      border-radius: 6px;
+      -khtml-border-radius: 6px; 
+      -webkit-border-radius: 6px; 
+      -moz-border-radius: 6px;}
 div#SBOOKFLYLEAF table.settings {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
 div#SBOOKFLYLEAF table.settings th {text-align: right; vertical-align: top;}
-div#SBOOKFLYLEAF table.settings td {text-align: left; vertical-align: top; padding-left: 12px;}
+div#SBOOKFLYLEAF table.settings td {
+    text-align: left; vertical-align: top; padding-left: 12px;}
 div#SBOOKHUD div#SBOOKFLYLEAF table.settings .button {
     float: right; clear: right; cursor: pointer; 
     background-color: orange; color: white;
@@ -1108,14 +1111,14 @@ body.hudup .sbooktarget .glossmark:hover { opacity: 0.9;}
 
 /* Not logged in conditionalization */
 
-.tab[CONTENTID='APPLOGIN'] { display: none;}
+.tab[CONTENTID='SBOOKAPPLOGIN'] { display: none;}
 
 body.nosbookuser div#SBOOKHELP > div.login { display: block;}
 body.nosbookuser div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON {
     display: none;}
 body.nosbookuser a.logout {display: none;}
 body.nosbookuser #SBOOKLOGOUT { display: none;}
-body.nosbookuser .tab[CONTENTID='APPLOGIN'] { display: inline;}
+body.nosbookuser .tab[CONTENTID='SBOOKAPPLOGIN'] { display: inline;}
 body.nosbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
 body.nosbookuser div#SBOOKHUD div.hud#SBOOKSOURCES img.button.login {
   display: block;}

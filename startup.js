@@ -596,7 +596,7 @@ sbook.Startup=
 		    var idlink=idlinks[i++];
 		    idlink.target='_blank';
 		    idlink.title='click to edit your personal information';
-		    idlink.href='https://www.sbooks.net/admin/id.fdcgi';}}
+		    idlink.href='https://admin.sbooks.net/admin/identity';}}
 	    var addgloss=fdjtID("SBOOKGLOSSFORM");
 	    if (addgloss) sbook.setupGlossForm(addgloss);
 	    if (sbook.user.friends) {

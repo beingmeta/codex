@@ -1,7 +1,7 @@
 <div style="position: absolute; top: 0px; height: 110%;"> </div>
 <div id="SBOOKFLYHEAD">
   <div class="flyleafplate">
-    <a href="http://sbooks.net/logout.fdcgi" class="logout"
+    <a href="http://sbooks.net/admin/logout" class="logout"
        title="click to logout of the sBooks server">
       logout</a>
     <a class="login" href="javascript:sbookMode('login');"
@@ -32,7 +32,7 @@
 	 onclick="sbookMode('flytoc'); return fdjtUI.cancel(event);"
 	 title="Table of Contents (static)">
     <img src="http://static.beingmeta.com/graphics/SettingsTab50x64.png"
-	 alt="Device" class="tab" contentid="APPDEVICE"
+	 alt="Device" class="tab" contentid="SBOOKDEVICE"
 	 onclick="sbookMode('device'); return fdjtUI.cancel(event);"
 	 title="alter appearance and interaction"/>
     <img src="http://static.beingmeta.com/graphics/SocialTab50x64.png"
@@ -40,138 +40,14 @@
 	 onclick="sbookMode.selectApp(); return fdjtUI.cancel(event);"
 	 title="manage how your sBook is enhanced with added layers"/>
     <img src="http://static.beingmeta.com/graphics/LoginTab50x64.png"
-	 alt="Login" class="tab" contentid="APPLOGIN"
+	 alt="Login" class="tab" contentid="SBOOKAPPLOGIN"
 	 onclick="sbookMode.toggle('login'); return fdjtUI.cancel(event);"
 	 title="login to sBooks" />
   </div> <!-- .tabbar -->
 </div> <!-- id="SBOOKFLYHEAD" -->
-<div class='tabcontent flyleaftab' id='APPLOGIN'>
-  <div id="SBOOKFLYLOGIN">
-    <form action="https://auth.sbooks.net/v4/auth"
-	  onsubmit="fdjtUI.checkLogin(event);">
-      <input TYPE="HIDDEN" NAME="RETURN_TO" ID="SBOOK_RETURN_TO"/>
-      <table class="login fdjtform" cellspacing="1" id="SBOOKLOGINFORM">
-	<tbody class='collapsible' id="SBOOKNATIVELOGIN">
-	  <tr class='blockstart'><th/><td/></tr>
-	  <tr><th><input TYPE='SUBMIT' NAME='ACTION' VALUE='Login'>
-	      <input TYPE='SUBMIT' NAME='ACTION' VALUE='Register'></th>
-	    <td><input type='TEXT' name='USERID' value=''
-		       placeholder='Enter a username (e.g. email)'/></td></tr>
-	  <tr><th>password</th>
-	    <td><input type='PASSWORD' name="PASSWD" value=''
-		       placeholder='your registered password'/></td></tr>
-	  <tr class='collapsible'>
-	    <th>confirm</th>
-	    <td><input type='PASSWORD' name="XPASSWD" value=''
-		       placeholder='your registered password'/></td></tr>
-	  <tr class='collapsible'>
-	    <th>display</th>
-	    <td><input type='TEXT' name='NAME' value=''
-		       placeholder='what name to display with your comments'/></td></tr>
-	  <tr class='collapsible'>
-	    <th>picture</th>
-	    <td><input type='FILE' name='PIC' value=''
-		       placeholder='what name to display with your comments'/>
-	      (optional)</td></tr>
-	  <tr onclick="fdjtUI.CheckSpan.onclick(event);
-		       setTimeout(sbook.UI.updateLogin,200);"
-	      class='checkspan'>
-	    <th><input TYPE="CHECKBOX" NAME="REGISTER" VALUE="YES"
-		       id="SBOOKREGISTER"/></th>
-	    <td>create a new account&nbsp;&nbsp;
-	      <img src="http://static.beingmeta.com/graphics/FreeIcon28x21.png"
-		   alt="free"/></td></tr>
-	</tbody>
-	<tbody>
-	  <tr class='blockbreak'><th/><td/></tr>
-	  <tr>
-	    <th>Connect<br/>via</th>
-	    <td class='oneclick'>
-	      <button name="FACEBOOK" value="yes" title="login with Facebook">
-		<img src='http://static.beingmeta.com/graphics/facebook32x32.png'
-		     alt='Facebook' class='noautoscale'/>
-	      </button>
-	      <button name="ENDPOINT" VALUE="https://open.login.yahooapis.com/openid/op/auth"
-		      title='login using Yahoo!'>
-		<img src='http://static.beingmeta.com/graphics/yyahoo.png' alt='Yahoo!'/>
-	      </button>
-	      <button  name="ENDPOINT" value="https://www.google.com/accounts/o8/id"
-		       title='login using Google'>
-		<img src='http://static.beingmeta.com/graphics/ggoogle.png' alt='Google'/>
-	      </button>
-	    </td>
-	  </tr>
-	</tbody>
-	<tbody>
-	  <tr class='blockbreak'><th/><td/></tr>
-	  <tr>
-	    <th class='username'>
-	      &nbsp;login as<br/><span style='font-size: 300%;'>@</span></th>
-	    <td class='userlogin'>
-	      <input type='TEXT' name='USERNAME' value='' placeholder="username on external site"/>
-	      <br/>
-	      <div class='doc' id='USERNAMEDOC' style='display: none;'>
-		Some sites provide OpenID login based on your user name.  Enter your
-		username and click the button for the appropriate site.  You'll go to
-		that site, log in, and return to this book.
-	      </div>
-	      <button type='SUBMIT' name='PROVIDER' value='aol.com'>
-		<img src='http://static.beingmeta.com/graphics/logos/aol.png' alt='aol'/>
-	      </button>
-	      <button type='SUBMIT' name='PROVIDER' value='myid.net'>
-		<img src='http://static.beingmeta.com/graphics/logos/myidnet.png' alt='myid'/>
-	      </button>
-	      <button type='SUBMIT' name='PROVIDER' value='flickr.com'>
-		<img src='http://static.beingmeta.com/graphics/logos/flickr.png' alt='flickr'/>
-	      </button>
-	      <button type='SUBMIT' name='PROVIDER' value='myopenid.com'>
-		<img src='http://static.beingmeta.com/graphics/logos/myopenid.png' alt='myopenid'/>
-	      </button>
-	      <button type='SUBMIT' name='PROVIDER' value='wordpress.com'>
-		<img src='http://static.beingmeta.com/graphics/logos/wordpress.png' alt='wordpress'/>
-	      </button>
-	      <button type='SUBMIT' name='PROVIDER' value='pip.verisignlabs.com'>
-		<img src='http://static.beingmeta.com/graphics/logos/verisign.png' alt='vidoop'/>
-	      </button>
-	    </td>
-	    <td class='icon'>
-	      <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?'
-		   class='helpicon'
-		   title='Some sites provide OpenID login based on your user name.  Enter your username and click the button for the appropriate site.  You&#39;ll go to that site, log in, and return here.'/></td>
-	  </tr>
-	  <tr class='spacer'><th/><td/></tr>
-	</tbody>
-	<tr class='blockbreak'><th/><td/></tr>
-	<tr>
-	  <th>
-	    <img src='http://static.beingmeta.com/graphics/openid-logo-small.png' alt='OpenID' style=' height: 32px;'/></th>
-	  <td><input type='TEXT' name='OPENID' value=''
-		     placeholder='Enter your OpenID (a url)'/><br/>
-	    <input type='SUBMIT' name='ACTION' value='Use OpenID'/>
-	    <a href='http://openid.net/get-an-openid/'>Get an OpenID</a>
-	  </td>
-	  <td class='icon'>
-	    <img src='http://static.beingmeta.com/graphics/HelpIcon16x16.png' alt='?'
-		 class='helpicon'
-		 title='OpenID enables you to use a variety of services, usually free, to identify yourself and provide some limited personal information.'/></td>
-	</tr>
-      </table>
-    </form>
-  </div>
-  <div class='logindoc'>
-    <p>In order to save and share your glosses as well as viewing the
-      glosses of friends and colleagues, we need to identify you.
-      Rather than introducing another password to remember or
-      registration process to slog through, we
-      use <a href='http://www.openid.net/'>OpenID</a> and related
-      technologies to let log into sBooks through other sites that you
-      already use.  You can login below using any of a variety of sites
-      or methods.</p>
-  </div>
-
+<div class='tabcontent flyleaftab' id='SBOOKAPPLOGIN'>
 </div>
-
-<div class='tabcontent flyleaftab' id='APPDEVICE'>
+<div class='tabcontent flyleaftab' id='SBOOKDEVICE'>
   <h1>Settings</h1>
   <table class='settings'>
     <tr><th>Offline</th>
@@ -184,8 +60,8 @@
       <td>
 	<a href='http://www.sbooks.net/' target='_blank'>Home</a> &middot; 
 	<a href='http://www.sbooks.net/books.fdcgi' target='_blank'>Browse</a> &middot; 
-	<a href='http://www.sbooks.net/admin/id.fdcgi' target='_blank'>Identity</a> &middot; 
-	<a href='http://sbooks.net/logout.fdcgi'>Logout</a>
+	<a href='http://admin.sbooks.net/admin/identity target='_blank'>Identity</a> &middot; 
+	<a href='http://sbooks.net/admin/logout'>Logout</a>
     </td></tr>
     <tr><th>Content</th>
       <td>

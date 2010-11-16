@@ -70,6 +70,8 @@ var sbookMode=
 	    search.innerHTML=sbook_searchbox;
 	    sbook.empty_cloud=
 		new fdjtUI.Completions(fdjtID("SBOOKSEARCHCLOUD"));
+	    var login=fdjtID("SBOOKAPPLOGIN");
+	    login.innerHTML=sbook_loginform;
 
 	    if (sbook.hidehelp) sbook.setConfig("hidehelp");
 
@@ -201,7 +203,7 @@ var sbookMode=
 	     login: "SBOOKFLYLOGIN",
 	     /* ,
 		login: "SBOOKAPPLOGIN",
-		device: "SBOOKAPPDEVICE",
+		device: "SBOOKDEVICE",
 		about: "APPABOUT",
 		sbookapp: "SBOOKAPPFRAME"
 	     */
@@ -518,7 +520,7 @@ var sbookMode=
 	function initManageIFrame(){
 	    var query=document.location.search||"?";
 	    var refuri=sbook.refuri;
-	    var appuri="https://"+sbook.server+"/v4/manage.fdcgi"+query;
+	    var appuri="https://"+sbook.server+"/v4/flyleaf"+query;
 	    if (query.search("REFURI=")<0)
 		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
 	    if (query.search("TOPURI=")<0)
