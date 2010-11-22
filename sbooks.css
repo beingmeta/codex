@@ -33,12 +33,7 @@
 
 /* Major wrappers and rules */
 
-body.sbook {
-    transition-property: opacity; transition-duration: 0.2s;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 0.2s;
-    -moz-transition-property: opacity;
-    -moz-transition-duration: 0.2s;}
+body.sbook {}
 #SBOOKBODY {
     margin: 0px; padding: 0px; border: 0px;
     transition-property: opacity; transition-duration: 0.2s;
@@ -60,7 +55,7 @@ body.touch #SBOOKBODY {
 
 /* Being a panel */
 div#SBOOKHUD div.hudpanel {
-    background-color: #4682b4; color: ivory; opacity: 0.95;
+    background-color: #4682b4; color: ivory;
     border: solid darkblue 3px; border-radius: 6px;
     -khtml-border-radius: 6px; -webkit-border-radius: 6px; 
     -moz-border-radius: 6px;}
@@ -70,8 +65,13 @@ div#SBOOKHUD div#SBOOKFLYLEAF.hudpanel {
 div#SBOOKHUD div.hudpanel {
     position: fixed; top: 0px; left: 100px; right: 100px;
     text-align: center;
-    overflow: hidden;
-    display: none;}
+    overflow: hidden;}
+div#SBOOKHUD div.hudpanel {
+    opacity: 0.001; height: 0px; /* display: none; */
+    transition-property: opacity; -moz-transition-property: opacity;
+    -webkit-transition-property: opacity;
+    transition-duration: 1.5s; -moz-transition-duration: 1.5s;
+    -webkit-transition-duration: 1.5s;}
 
 div#SBOOKHUD div#SBOOKHEAD div.hudpanel,
 div#SBOOKHUD div.hudpanel.sbooknote {
@@ -98,8 +98,7 @@ div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
 div#SBOOKHUD img.hudbutton {
     position: absolute; width: 50px; height: 50px; z-index: 200;
     border: solid transparent 2px; opacity: 0.01;}
-body.hudup div#SBOOKHUD img.hudbutton  {
-    background-color: #4682b4;}
+body.hudup div#SBOOKHUD img.hudbutton  {}
 body div#SBOOKHUD img.hudbutton:hover { opacity: 0.45;}
 body.preview div#SBOOKHUD img.hudbutton { display: none;}
 div#SBOOKHUD img.previewicon {
@@ -151,7 +150,7 @@ div#SBOOKHUD #SBOOKHEAD {
 
 /* HUDUP rules */
 
-body.hudup div#SBOOKHUD { opacity: 0.95;}
+body.hudup div#SBOOKHUD { } /* opacity: 0.95; */
 body.hudup div#SBOOKHUD .hudbutton { opacity: 0.6;}
 body.hudup div#SBOOKHUD img.hudbutton:hover { opacity: 0.8;}
 body.hudup.preview div#SBOOKHUD .hudbutton { display: none;}
@@ -160,33 +159,49 @@ body.preview div#SBOOKHUD .previewicon { display: block;}
 
 /* Mode display rules */
 
-div#SBOOKHUD.help div#SBOOKHELP { display: block;}
 div#SBOOKHUD.help div.helphud { display: block;}
-div#SBOOKHUD.toc div#SBOOKTOC { display: block;}
+div#SBOOKHUD.help div#SBOOKHELP,
+div#SBOOKHUD.toc div#SBOOKTOC,
 div#SBOOKHUD.searching div#SBOOKSEARCH,
-div#SBOOKHUD.searching div#SBOOKSEARCHCLOUD {
-    display: block;}
 div#SBOOKHUD.browsing div#SBOOKSEARCH,
-div#SBOOKHUD.browsing div#SBOOKSEARCHRESULTS {
-    display: block;}
-div#SBOOKHUD.searching div#SBOOKSEARCHRESULTSWRAPPER { display: none;}
-div#SBOOKHUD.browsing div#SBOOKSEARCHCLOUDWRAPPER { display: none;}
-
+div#SBOOKHUD.browsing div#SBOOKSEARCHRESULTS,
+div#SBOOKHUD.searching div#SBOOKSEARCHCLOUD,
 div#SBOOKHUD.searching div#SBOOKSEARCH,
 div#SBOOKHUD.browsing div#SBOOKSEARCH,
 div#SBOOKHUD.flyleaf div#SBOOKFLYLEAF,
 div#SBOOKHUD.glosses div#SBOOKGLOSSES,
+div#SBOOKHUD.addgloss div#SBOOKADDGLOSS,
 div#SBOOKHUD.allglosses div#SBOOKBROWSEGLOSSES {
-    display: block;}
+    opacity: 0.95;}
+body.hudup div#SBOOKHUD.help div#SBOOKHELP,
+body.hudup div#SBOOKHUD.toc div#SBOOKTOC,
+body.hudup div#SBOOKHUD.searching div#SBOOKSEARCH,
+body.hudup div#SBOOKHUD.browsing div#SBOOKSEARCH,
+body.hudup div#SBOOKHUD.browsing div#SBOOKSEARCHRESULTS,
+body.hudup div#SBOOKHUD.searching div#SBOOKSEARCHCLOUD,
+body.hudup div#SBOOKHUD.searching div#SBOOKSEARCH,
+body.hudup div#SBOOKHUD.browsing div#SBOOKSEARCH,
+body.hudup div#SBOOKHUD.flyleaf div#SBOOKFLYLEAF,
+body.hudup div#SBOOKHUD.glosses div#SBOOKGLOSSES,
+body.hudup div#SBOOKHUD.addgloss div#SBOOKADDGLOSS,
+body.hudup div#SBOOKHUD.allglosses div#SBOOKBROWSEGLOSSES {
+    box-shadow: -1em 1em 1em #cccccc;
+    -webkit-box-shadow: -1em 1em 1em #cccccc;
+    -moz-box-shadow: -1em 1em 1em #cccccc;
+    height: auto;}
 
-div#SBOOKHUD.addgloss div#SBOOKADDGLOSS { display: block;}
+div#SBOOKHUD.searching div#SBOOKSEARCHRESULTSWRAPPER { display: none;}
+div#SBOOKHUD.browsing div#SBOOKSEARCHCLOUDWRAPPER { display: none;}
+
 body.hudup div#SBOOKHUD.addgloss .hudbutton { opacity: 0.15;}
 
-div#SBOOKHUD.allglosses .hudbutton[alt='glosses'] { border-color: darkblue;}
-div#SBOOKHUD.flyleaf .hudbutton[alt='flyleaf'] { border-color: darkblue;}
-div#SBOOKHUD.searching .hudbutton[alt='search'] { border-color: darkblue;}
-div#SBOOKHUD.browsing .hudbutton[alt='search'] { border-color: darkblue;}
-div#SBOOKHUD.toc .hudbutton[alt='toc'] { border-color: darkblue;}
+div#SBOOKHUD.allglosses .hudbutton[alt='glosses'],
+div#SBOOKHUD.flyleaf .hudbutton[alt='flyleaf'],
+div#SBOOKHUD.searching .hudbutton[alt='search'],
+div#SBOOKHUD.browsing .hudbutton[alt='search'],
+div#SBOOKHUD.toc .hudbutton[alt='toc'] {
+    border-color: darkblue;
+    background-color: #4682b4;}
 
 /* About this book */
 
@@ -758,7 +773,7 @@ body.preview div#SBOOKHUD.toc div.hudblock#SBOOKTOC {
     display: block;}
 body.preview div#SBOOKPREVIEW * { opacity: 1.0;}
 body.preview div#SBOOKPREVIEW { opacity: 1.0;}
-body.preview div#SBOOKHUD { opacity: 1.0;}
+body.preview div#SBOOKHUD { }
 body.preview div#SBOOKHUD * { opacity: 0.9;}
 body.preview div#SBOOKHUD.toc { display: block;}
 body.preview div#SBOOKHUD.toc * { opacity: 1.0;}

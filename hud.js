@@ -188,6 +188,20 @@ var sbookMode=
 	    // sbook.UI.addHandlers(div,"toc");
 	    return div;}
 
+	/* HUD animation */
+
+	function setHUD(flag){
+	    if ((!(flag))===(!(sbook.hudup))) {}
+	    else if (flag) {
+		sbook.hudup=true;
+		fdjtDOM.addClass(document.body,"hudup");}
+	    else {
+		sbook.hudup=false;
+		fdjtDOM.dropClass(sbookHUD,"flyleaf");
+		fdjtDOM.dropClass(sbookHUD,"full");
+		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
+		fdjtDOM.dropClass(document.body,"hudup");}}
+
 	/* Mode controls */
 	
 	var sbookMode_pat=
@@ -217,7 +231,6 @@ var sbookMode=
 	    if (sbook.preview) sbook.Preview(false);
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
-		var animated=false; var transformed=false;
 		if (mode==="flyleaf") mode=sbook.last_flyleaf||"about";
 		if (mode===sbook.mode) {}
 		else if (mode===true) {
@@ -240,8 +253,6 @@ var sbookMode=
 		else if (sbook_mode_scrollers[mode]) 
 		    sbook.scrolling=(sbook_mode_scrollers[mode]);
 		else sbook.scrolling=false;
-		sbook.hudup=true;
-		fdjtDOM.addClass(document.body,"hudup");
 		if (mode===true)
 		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,"minimal");
 		else fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
@@ -253,6 +264,7 @@ var sbookMode=
 		if (mode==="help")
 		    fdjtDOM.addClass(document.body,"dimmed");
 		else fdjtDOM.dropClass(document.body,"dimmed");
+		setHUD(true);
 		if ((mode==="allglosses")&&
 		    (sbook.curinfo)&&(sbook.curinfo.first)) {
 		    sbook.UI.scrollGlosses
@@ -267,12 +279,22 @@ var sbookMode=
 		if (sbook.mode!=='help') sbook.last_mode=sbook.mode;
 		document.body.focus();
 		fdjtDOM.dropClass(document.body,"dimmed");
-		sbook.mode=false; sbook.hudup=false; sbook.scrolling=false;
-		fdjtDOM.dropClass(sbookHUD,"flyleaf");
-		fdjtDOM.dropClass(sbookHUD,"full");
-		fdjtDOM.dropClass(document.body,"hudup");
-		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
+		sbook.mode=false; sbook.scrolling=false;
+		setHUD(false);
 		sbook.displaySync();}}
+
+	function fadeUpHUD(){
+	    fdjtLog("Setting properties");
+	    sbookHUD.style.opacity=0.001;
+	    setTimeout(function(){
+		fdjtLog("Changing opacity");
+		sbookHUD.style.opacity=1.00;
+		setTimeout(function(){
+		    fdjtLog("Clearing setup");
+		    sbookHUD.style.opacity='';},
+			   1500);},
+		       1500);}
+	sbook.fadeUpHUD=fadeUpHUD;
 
 	function updateScroller(elt){
 	    if (typeof elt === 'string') elt=fdjtID(elt);
