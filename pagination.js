@@ -733,11 +733,21 @@ var sbookPaginate=
 	    var starts_at=info.top+pageoff; var ends_at=info.bottom;
 	    var lastpage=sbook.pageinfo[npages-1];
 	    var book_len=lastpage.bottom||lastpage.limit||lastpage.top;
+	    var topelt=info.first;
+	    while (topelt) if (topelt.id) break; else topelt=topelt.parentNode;
+	    if (topelt) {
+		var topelt_start=fdjtDOM.getGeometry(topelt,sbook.body).top;
+		var topelt_height=topelt.offsetHeight;
+		var topelt_hidden=info.top-topelt_start;
+		var topelt_info=sbook.docinfo[topelt.id]
+		var topelt_loc_width=topelt_info.ends_at-topelt_info.starts_at;
+		var topelt_display_loc=Math.round(topelt_info.starts_at+(topelt_loc_width*(topelt_hidden/topelt_height)));}
 	    pbar.style.left=(100*(starts_at/book_len))+"%";
 	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
 	    var pageno=
-		fdjtDOM("div#SBOOKPAGENO",
-			pbar,pagenum+1,((pageoff)?"+":""),"/",npages);
+		fdjtDOM("div#SBOOKPAGENO",pbar,
+			((topelt)&&(fdjtDOM("span.locoff","L"+topelt_display_loc))),
+			pagenum+1,((pageoff)?"+":""),"/",npages);
 	    fdjtDOM.replace("SBOOKPAGENO",pageno);
 	    sbook.curpage=pagenum;
 	    sbook.curoff=pageoff;

@@ -32,6 +32,19 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
+/* New body interaction model:
+    With mouse:
+       mouseup: 
+        if non-empty selection, save, set target, raise hud
+	otherwise toggle hud
+
+   With touch:
+    touchstart: after 0.5s: set target, raise hud, set context mode (after ~0.5s)
+    touchmove: clear context mode (or timer)
+    touchend: clear context mode, if scrolled, 
+      if non-empty selection, save, otherwise lower hud
+*/
+
 /*
 
   Preview behavior:
