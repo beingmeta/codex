@@ -18,8 +18,7 @@
       <img class="closebutton" alt="X" onclick="sbookMode(false);"
 	   src="http://static.beingmeta.com/graphics/redx16x16.png"/>
       <div class="controls">
-	<select name="MODE"
-		onchange="fdjtID('SBOOKGLOSSFORM').className=this.value;">
+	<select name="MODE" onchange="this.form.className=this.value;">
 	  <option value="sbnotemode">note</option>
 	  <option value="sbtagmode">tag</option>
 	  <option value="sblinkmode">link</option>
@@ -51,7 +50,7 @@
 	  <span class="text">Detail</span>
 	</span>
 	<span class="button submitbutton"
-	      onclick="sbook.UI.submitEvent(fdjtID('SBOOKGLOSSFORM'));">
+	      onclick="sbook.UI.submitEvent(fdjtDOM.getParent(this,'form'));">
 	  OK</span>
 	<span class="button checkspan private"
 	      onclick="fdjtUI.CheckSpan.onclick(event);"
@@ -101,31 +100,6 @@
 	     onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
 	</div>
       </fieldset>
-    </div>
-    <div id="SBOOKGLOSSCLOUD" class="completions">
-      <img class="label" alt="tags"
-	   src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-	   onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
-      <div class='doc'>
-	<strong>Add a tag</strong>
-	by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
-	a displayed <em>cue</em> or <em>completion</em>.   Start typing to <em>see completions</em>;
-	<tt><strong><em>Shift</em>-enter</strong></tt> to pick the
-	first visible completion.
-      </div>
-      <div id="SBOOKGLOSSOUTLETS"></div>
-      <div id="SBOOKGLOSSTAGS"></div>
-      <div id="SBOOKGLOSSCLOUDSOURCES"></div>
-    </div>
-    <div id="SBOOKSHARECLOUD" class="completions flyleaf showempty">
-      <img class="label" alt="tags"
-	   src="http://static.beingmeta.com/graphics/ShareIcon32x32.png"/>
-      <div class='doc'>
-	Tag with friends or tribes to draw their attention.  Start typing to see completions
-	and <tt><em>Shift</em>-enter</tt> for the first choice or
-	<strong class='fortouch'>tap</strong><strong class='notouch'>click</strong>
-	for any others.
-      </div>
     </div>
   </div>
 </form>

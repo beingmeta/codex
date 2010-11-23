@@ -79,10 +79,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	    var completion=fdjtDOM("span.completion.cue.source",info.name);
 	    completion.id="SBOOKSHARETAG"+humid;
 	    completion.setAttribute("value",info.qid);
-	    completion.setAttribute("key",info.name);
-	    fdjtDOM(fdjtID("SBOOKSHARECLOUD"),completion," ");
-	    if (sbook.share_cloud)
-	      sbook.share_cloud.addCompletion(completion);}
+	    completion.setAttribute("key",info.name);}
 	var sourcetag=fdjtID("SBOOKSOURCETAG"+humid);
 	if (!(sourcetag)) { // Add entry to the share cloud
 	    var completion=fdjtDOM("span.completion.source",info.name);

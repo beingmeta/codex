@@ -597,8 +597,6 @@ sbook.Startup=
 		    idlink.target='_blank';
 		    idlink.title='click to edit your personal information';
 		    idlink.href='https://auth.sbooks.net/admin/identity';}}
-	    var addgloss=fdjtID("SBOOKGLOSSFORM");
-	    if (addgloss) sbook.setupGlossForm(addgloss);
 	    if (sbook.user.friends) {
 		var friends=sbook.user.friends; var i=0; var lim=friends.length;
 		while (i<lim) {
@@ -706,8 +704,6 @@ sbook.Startup=
 	    fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
 	    sbook.Message("setting up glossing cloud...");
 	    fdjtDOM.replace("SBOOKGLOSSCLOUD",sbook.glossCloud().dom);
-	    sbook.Message("setting up sharing cloud...");
-	    fdjtDOM.replace("SBOOKSHARECLOUD",sbook.shareCloud().dom);
 	    if (sbook.knodule) {
 		sbook.Message("integrating tag vocabulary");
 		fdjtTime.slowmap(sbook.addTag2UI,sbook.knodule.alldterms);}

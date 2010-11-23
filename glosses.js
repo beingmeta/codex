@@ -39,13 +39,25 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
     // Make a passage
     function glossTarget(passage,refresh) {
-	if ((sbook.glosstart)&&(!(refresh))&&
+	if ((sbook.glosstarget)&&(!(refresh))&&
 	    (passage===sbook.glosstarget))
 	    return false;
-	sbook.setTarget(passage);
-	sbook.setGlossTarget(passage);
-	// sbook.setInfoTarget(passage);
+	var id=passage.id;
+	var div=fdjtID("SBOOKADDGLOSS_"+id); var form;
+	if (!(div)) {
+	    div=fdjtDOM("div.sbookglossform");
+	    div.innerHTML=sbook_addgloss;
+	    div.id="SBOOKADDGLOSS_"+id;
+	    fdjtDOM(fdjtID("SBOOKGLOSSFORMS"),div);
+	    form=fdjtDOM.getChildren(div,"form")[0];
+	    setupGlossForm(form);
+	    sbook.setGlossTarget(passage,form);}
+	else form=fdjtDOM.getChildren(div,"form")[0];
+	if (sbook.glossform) fdjtDOM.dropClass(sbook.glossform,"sbooklivegloss");
+	fdjtDOM.addClass(div,"sbooklivegloss");
+	sbook.glossform=div;
 	sbook.glosstarget=passage;
+	sbook.setTarget(passage);
 	return passage;}
     sbook.glossTarget=glossTarget;
 
@@ -529,23 +541,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		if (typeof tags === 'string') tags=[tags];
 		var i=0; var lim=tags.length;
 		while (i<lim) addTag(form,tags[i++],"ATTENTION");}}
-	setCloudCuesFromTarget(gloss_cloud,target);
-	{
-	    /* Move the hud to the target */
-	    var glosshud=fdjtID("SBOOKADDGLOSS");
-	    var height=glosshud.offsetHeight;
-	    var geom=fdjtDOM.getGeometry(target,sbook.body);
-	    var scrollpos=sbook.scrollPos();
-	    var window_height=fdjtDOM.viewHeight();
-	    glosshud.style.maxHeight=(window_height-150)+'px';
-	    var hudoff=geom.top-scrollpos.y+50;
-	    var height=glosshud.offsetHeight;
-	    if ((hudoff+height)>(window_height-50)) {
-		var overhang=(hudoff+height)-(window_height-50);
-		if ((hudoff-overhang)<50) hudoff=50;
-		else hudoff=hudoff-overhang;}
-	    glosshud.style.top=hudoff+'px';}
-    }
+	setCloudCuesFromTarget(gloss_cloud,target);}
     sbook.setGlossTarget=setGlossTarget;
 
     function setCloudCues(cloud,tags){
@@ -700,38 +696,6 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		fdjtID("SBOOKTAGINPUT").value='';
 		gloss_cloud.docomplete();}}
 	fdjtUI.cancel(evt);}
-
-    /***** The Share Cloud *****/
-
-    var share_cloud=false;
-    
-    /* The completions element */
-    function shareCloud(){
-	if (share_cloud) return share_cloud;
-	var seen={};
-	var sbook_index=sbook.index;
-	var outlets_span=fdjtDOM("span.outlets");
-	var sources_span=fdjtDOM("span.sources");
-	var friends_span=fdjtDOM("span.friends");
-	var completions=fdjtID("SBOOKSHARECLOUD");
-	completions._seen=seen;
-	completions.onmouseup=sharecloud_onclick;
-	sbook.share_cloud=share_cloud=new fdjtUI.Completions(
-	    completions,fdjtID("SBOOKSHAREINPUT"),
-	    fdjtUI.FDJT_COMPLETE_OPTIONS|
-		fdjtUI.FDJT_COMPLETE_CLOUD|
-		fdjtUI.FDJT_COMPLETE_ANYWORD);
-	return share_cloud;}
-    sbook.shareCloud=shareCloud;
-
-    function sharecloud_onclick(evt){
-	var target=fdjtUI.T(evt);
-	var completion=fdjtDOM.getParent(target,'.completion');
-	if (completion) {
-	    addTag(fdjtID("SBOOKGLOSSFORM"),completion);
-	    fdjtID("SBOOKSHAREINPUT").value="";
-	    share_cloud.docomplete();
-	    fdjtUI.cancel(evt);}}
 
     /***** Saving (submitting/queueing) glosses *****/
 

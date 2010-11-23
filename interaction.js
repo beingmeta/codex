@@ -89,6 +89,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     var hold_interval=1500;
     var start_x=-1; var start_y=-1; var last_x=-1; var last_y=-1;
     
+    function sbicon(base){return sbook.graphics+base;}
+
     /* Setup for gesture handling */
 
     function addHandlers(node,type){
@@ -143,6 +145,21 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else node=node.parentNode;
 	return false;}
 
+    /* Adding a gloss button */
+
+    function addGlossButton(target){
+	var passage=sbook.getTarget(target);
+	var img=fdjtDOM.getChild(passage,".sbookglossbutton");
+	if (img) return;
+	if (!(passage)) return;
+	img=fdjtDOM.Image(sbicon("remarkballoon32x32.png"),".glossbutton",
+			  "+","click to add a gloss to this passage");
+	img.onclick=function(evt){
+	    evt=evt||event;
+	    sbook.glossTarget(passage);
+	    sbookMode("addgloss");}
+	fdjtDOM.prepend(target,img);}
+	    
     /* Core functions */
 
     function body_tap(element){
@@ -173,13 +190,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		return;}
 	    else if (sbook.glosstarget===target) {
 		if (sbook.mode) sbookMode(false);
-		else if (sbook.user) sbookMode("addgloss");
+		else if (true) sbookMode("addgloss"); /* (sbook.user) */
 		else sbookMode("login");
 		return;}
-	    sbook.glossTarget(target);
-	    window.focus();
-	    if (sbook.user) sbookMode('addgloss');
-	    else sbookMode("login");}}
+	    sbook.setTarget(target);
+	    addGlossButton(target);
+	    sbookMode(true);}}
 
     function body_hold(element){
 	if (sbook.Trace.gestures)

@@ -162,6 +162,7 @@ body.preview div#SBOOKHUD .previewicon { display: block;}
 
 /* Mode display rules */
 
+/*
 div#SBOOKHUD.help div.helphud { display: block;}
 div#SBOOKHUD.help div#SBOOKHELP,
 div#SBOOKHUD.toc div#SBOOKTOC,
@@ -174,23 +175,24 @@ div#SBOOKHUD.glosses div#SBOOKGLOSSES,
 div#SBOOKHUD.addgloss div#SBOOKADDGLOSS,
 div#SBOOKHUD.allglosses div#SBOOKBROWSEGLOSSES {
     opacity: 0.95;}
+*/
 
-body.hudup div#SBOOKHUD.help div#SBOOKHELP,
-body.hudup div#SBOOKHUD.toc div#SBOOKTOC,
-body.hudup div#SBOOKHUD.searching div#SBOOKSEARCH,
-body.hudup div#SBOOKHUD.browsing div#SBOOKSEARCH,
-body.hudup div#SBOOKHUD.browsing div#SBOOKSEARCHRESULTS,
-body.hudup div#SBOOKHUD.searching div#SBOOKSEARCHCLOUD,
-body.hudup div#SBOOKHUD.flyleaf div#SBOOKFLYLEAF,
-body.hudup div#SBOOKHUD.glosses div#SBOOKGLOSSES,
-body.hudup div#SBOOKHUD.addgloss div#SBOOKADDGLOSS,
-body.hudup div#SBOOKHUD.allglosses div#SBOOKBROWSEGLOSSES {
+body.hudup div#SBOOKHUD.help div.hudpanel#SBOOKHELP,
+body.hudup div#SBOOKHUD.toc div.hudpanel#SBOOKTOC,
+body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCH,
+body.hudup div#SBOOKHUD.browsing div.hudpanel#SBOOKSEARCH,
+body.hudup div#SBOOKHUD.browsing div.hudpanel#SBOOKSEARCHRESULTS,
+body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCHCLOUD,
+body.hudup div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF,
+body.hudup div#SBOOKHUD.glosses div.hudpanel#SBOOKGLOSSES,
+body.hudup div#SBOOKHUD.addgloss div.hudpanel#SBOOKADDGLOSS,
+body.hudup div#SBOOKHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     border-color: darkblue;
     box-shadow: -1em 1em 1em #cccccc;
     -webkit-box-shadow: -1em 1em 1em #cccccc;
     -moz-box-shadow: -1em 1em 1em #cccccc;
     -o-box-shadow: -1em 1em 1em #cccccc;
-    min-height: 50px; height: auto;}
+    opacity: 0.95; min-height: 50px; height: auto;}
 
 div#SBOOKHUD.searching div#SBOOKSEARCHRESULTSWRAPPER { display: none;}
 div#SBOOKHUD.searching div.completions#SBOOKSEARCHCLOUD { display: block;}
@@ -225,21 +227,6 @@ div#SBOOKHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 /* SBOOKGLOSSES */
 
 div#SBOOKHUD div.hudpanel#SBOOKGLOSSES {position: absolute; right: 50px;}
-
-/* SBOOKADDGLOSS */
-
-div#SBOOKHUD div.hudpanel#SBOOKADDGLOSS {
-    position: absolute; right: 0px;
-    border-right: 0px;
-    border-top-right-radius: 0px; border-bottom-right-radius: 0px;
-    -o-border-top-right-radius: 0px;
-    -o-border-bottom-right-radius: 0px; 
-    -webkit-border-top-right-radius: 0px;
-    -webkit-border-bottom-right-radius: 0px; 
-    -moz-border-radius-topright: 0px;
-    -moz-border-radius-bottomright: 0px;
-    -o-border-radius-topright: 0px;
-    -o-border-radius-bottomright: 0px;}
 
 /* SBOOKSOURCES */
 
@@ -1132,6 +1119,17 @@ body.hudup .glossmark { opacity: 0.9;}
 .glossmark img.big {width: 32px;}
 .glossmark img.tiny, span.glossmark img.big { display: none; }
 
+.glossbutton {
+  position: absolute; left: 0px; text-align: right;
+  margin: 0px; padding: 0px; text-indent: 0px; 
+  border: solid transparent 2px;
+  width: 32px; height: 32px; z-index: 50;
+  border-right: 0px;
+  opacity: 0.0001;
+  display: none;}
+body.hudup .glossbutton { opacity: 0.5;}
+body.hudup .sbooktarget .glossbutton { opacity: 0.9; display: block;}
+
 /* .sparsebook */
 body .glossmark img.tiny { display: block;}
 body.hudup .glossmark img.big { display: block;}
@@ -1180,6 +1178,8 @@ body.nosbookuser div#SBOOKHUD div#SBOOKSOURCES img.button.everyone {
 
 /* Gloss form */
 
+div.sbookglossform { display: none;}
+div.sbookglossform.sbooklivegloss { display: block;}
 div.sbookaddgloss form {
     padding: 0px; margin: 0px;}
 div.sbookaddgloss form fieldset {
@@ -1335,8 +1335,7 @@ div.sbookaddgloss form.sbdetailmode div.controls span[data-mode='detail'] {
     border-bottom: solid white 2px;}
 
 div#SBOOKHUD.tagging div.sbookaddgloss form div.completions#SBOOKGLOSSCLOUD,
-div.sbookaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD,
-div.sbookaddgloss form.sbsharemode div.completions#SBOOKSHARECLOUD {
+div.sbookaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD {
     min-height: 100px;
     display: block;}
 

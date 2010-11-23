@@ -63,8 +63,6 @@ var sbookMode=
 	    console.innerHTML=sbook_console;
 	    var flyleaf=fdjtID("SBOOKFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;
-	    var gloss=fdjtID("SBOOKADDGLOSS");
-	    gloss.innerHTML=sbook_addgloss;
 	    // Initialize search UI
 	    var search=fdjtID("SBOOKSEARCH");
 	    search.innerHTML=sbook_searchbox;
@@ -132,7 +130,6 @@ var sbookMode=
 	    resizeHUD();
 	    sbook.scrollers={};
 	    updateScroller("SBOOKGLOSSCLOUD");
-	    // updateScroller("SBOOKSHARECLOUD");
 	    updateScroller("SBOOKSEARCHCLOUD");}
 	sbook.initHUD=initHUD;
 	
