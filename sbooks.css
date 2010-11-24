@@ -188,10 +188,10 @@ body.hudup div#SBOOKHUD.glosses div.hudpanel#SBOOKGLOSSES,
 body.hudup div#SBOOKHUD.addgloss div.hudpanel#SBOOKADDGLOSS,
 body.hudup div#SBOOKHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     border-color: darkblue;
-    box-shadow: -1em 1em 1em #cccccc;
-    -webkit-box-shadow: -1em 1em 1em #cccccc;
-    -moz-box-shadow: -1em 1em 1em #cccccc;
-    -o-box-shadow: -1em 1em 1em #cccccc;
+    box-shadow: 1em 1em 1em #cccccc;
+    -webkit-box-shadow: 1em 1em 1em #cccccc;
+    -moz-box-shadow: 1em 1em 1em #cccccc;
+    -o-box-shadow: 1em 1em 1em #cccccc;
     opacity: 0.95; min-height: 50px; height: auto;}
 
 div#SBOOKHUD.searching div#SBOOKSEARCHRESULTSWRAPPER { display: none;}
@@ -253,11 +253,10 @@ div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
     -moz-border-radius-bottomleft: 0px; -webkit-border-bottom-left-radius: 0px;}
 
 div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
-    /* Messes up the embedded iframe */
-    /* transform: translate(-2000px,0px);
-       -o-transform: translate(-2000px,0px);
-       -moz-transform: translate(-2000px,0px);
-       -webkit-transform: translate(-2000px,0px); */
+    transform: translate(-2000px,0px);
+    -o-transform: translate(-2000px,0px);
+    -moz-transform: translate(-2000px,0px);
+    -webkit-transform: translate(-2000px,0px);
     transition-property: transform, opacity;
     -o-transition-property: -o-transform, opacity;
     -moz-transition-property: -moz-transform, opacity;
@@ -265,11 +264,8 @@ div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
     top: 55px; bottom: 55px; left: 0px; right: 100px;
     height: auto;}
 div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF {
-    /* Messes up the embedded iframe */
-    /* transform: translate(0px,0px); -o-transform: translate(0px,0px);
-       -moz-transform: translate(0px,0px);
-       -webkit-transform: translate(0px,0px); */
-}
+    transform: none; -o-transform: none;
+    -moz-transform: none; -webkit-transform: none;}
 
 /* TOC rules */
 
