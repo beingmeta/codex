@@ -216,7 +216,6 @@ var sbookMode=
 		login: "SBOOKAPPLOGIN",
 		device: "SBOOKDEVICE",
 		about: "APPABOUT",
-		sbookapp: "SBOOKAPPFRAME"
 	     */
 	    };
 	
@@ -296,6 +295,14 @@ var sbookMode=
 	function updateScroller(elt){
 	    if (typeof elt === 'string') elt=fdjtID(elt);
 	    var c=elt.parentNode; var cc=c.parentNode;
+	    var cstyle=fdjtDOM.getStyle(c);
+	    var ccstyle=fdjtDOM.getStyle(cc);
+	    var cbounds=fdjtDOM.parsePX(cstyle.borderTopWidth)+fdjtDOM.parsePX(cstyle.borderBottomWidth)+
+		fdjtDOM.parsePX(cstyle.paddingTop)+fdjtDOM.parsePX(cstyle.paddingBottom)+
+		fdjtDOM.parsePX(cstyle.marginTop)+fdjtDOM.parsePX(cstyle.marginBottom);
+	    var ccbounds=fdjtDOM.parsePX(ccstyle.borderTopWidth)+fdjtDOM.parsePX(ccstyle.borderBottomWidth)+
+		fdjtDOM.parsePX(ccstyle.paddingTop)+fdjtDOM.parsePX(ccstyle.paddingBottom)+
+		fdjtDOM.parsePX(ccstyle.marginTop)+fdjtDOM.parsePX(ccstyle.marginBottom);
 	    if (sbook.scrollfree) {
 		if ((!(sbook.scrollers))||(!(elt.id))) return;
 		if (sbook.Trace.scroll) {
@@ -303,14 +310,14 @@ var sbookMode=
 			    fdjtET(),cc.offsetHeight,c.offsetTop,
 			    cc.offsetHeight-c.offsetTop);}
 		c.style.height=''; c.style.overflow='visible';
-		c.style.height=(cc.offsetHeight-c.offsetTop)+'px';
+		c.style.height=((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
 		c.style.overflow='hidden';
 		if ((sbook.scrollers[elt.id])&&
 		    (sbook.scrollers[elt.id].element===elt))
 		    sbook.scrollers[elt.id].refresh();
 		else sbook.scrollers[elt.id]=new iScroll(elt);}
 	    else {
-		elt.style.height=(cc.offsetHeight-c.offsetTop)+'px';}
+		c.style.height=((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';}
 	    if (sbook.Trace.scroll) {
 		fdjtLog("[%fs] updateScroller %o %o %o ch=%o h=%o",
 			fdjtET(),elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);

@@ -253,19 +253,23 @@ div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
     -moz-border-radius-bottomleft: 0px; -webkit-border-bottom-left-radius: 0px;}
 
 div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
-    transform: translate(-2000px,0px);
-    -o-transform: translate(-2000px,0px);
-    -moz-transform: translate(-2000px,0px);
-    -webkit-transform: translate(-2000px,0px);
+    /* Messes up the embedded iframe */
+    /* transform: translate(-2000px,0px);
+       -o-transform: translate(-2000px,0px);
+       -moz-transform: translate(-2000px,0px);
+       -webkit-transform: translate(-2000px,0px); */
     transition-property: transform, opacity;
     -o-transition-property: -o-transform, opacity;
     -moz-transition-property: -moz-transform, opacity;
     -webkit-transition-property: -webkit-transform, opacity;
-    top: 60px; bottom: 60px; left: 0px; right: 100px;
+    top: 55px; bottom: 55px; left: 0px; right: 100px;
     height: auto;}
 div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF {
-    transform: translate(0px,0px); -o-transform: translate(0px,0px);
-    -moz-transform: translate(0px,0px); -webkit-transform: translate(0px,0px);}
+    /* Messes up the embedded iframe */
+    /* transform: translate(0px,0px); -o-transform: translate(0px,0px);
+       -moz-transform: translate(0px,0px);
+       -webkit-transform: translate(0px,0px); */
+}
 
 /* TOC rules */
 
@@ -859,7 +863,9 @@ div#SBOOKHUD.sbookapp div#SBOOKFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
 
 div#SBOOKHUD div#SBOOKFLYLEAF div.tabcontent {
     overflow-y: auto; overflow-x: hidden;}
-div#SBOOKHUD.sbookapp div#SBOOKFLYLEAF {}
+div#SBOOKHUD div#SBOOKFLYLEAF div.tabcontent#SBOOKSAPP { overflow: visible;}
+div#SBOOKHUD div#SBOOKFLYLEAF div.tabcontent#SBOOKSAPP iframe {
+  width: 100%; height: 100%; border: 0px; margin: 0px; padding: 0px;}
 
 div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON {
     float: left; margin: 0px; padding: 0px; border: 0px;}
@@ -903,14 +909,6 @@ div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC div.head { padding-left: 4px;}
 div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC a {
     color: inherit; font-weight: inherit;}
 div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC a.cohi {color: white;}
-
-div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKSAPP iframe {
-  width: 100%; height: 100%;
-  border-width: solid transparent 3px;
-  -o-border-radius: 9px; 
-  -webkit-border-radius: 9px; 
-  -moz-border-radius: 9px; 
-  border-radius: 9px;}
 
 div#SBOOKFLYLEAF table.login th.or { font-size: 200%;}
 
