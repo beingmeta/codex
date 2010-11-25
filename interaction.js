@@ -102,7 +102,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var mode=sbook.ui;
 	if (!(mode)) sbook.ui=mode="mouse";
 	addHandlers(false,'window');
-	addHandlers(sbook.body,'body');
+	addHandlers(sbook.body,'content');
 	addHandlers(sbook.HUD,'hud');
 	var handlers=sbook.UI.handlers[mode];
 	if (mode)
@@ -160,7 +160,59 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    sbookMode("addgloss");}
 	fdjtDOM.prepend(target,img);}
 	    
+    var excerpts=[];
+
+    /* New handlers */
+
+    function emptySelection(sel){
+	return ((!(sel))||
+		(!(sel.focusNode))||
+		(!(sel.anchorNode))||
+		((sel.anchorNode===sel.focusNode)&&
+		 (sel.anchorOffset===sel.focusOffset)));}
+
+    /* Functionality:
+        on selection:
+	  save but keep selection,
+	  set target (if available)
+	  if hud is down, raise it
+	on tap: (no selection)
+	  if hud is down, set target and raise it
+          if no target, raise hud
+          if tapping target, lower HUD
+          if tapping other, set target, drop mode, and raise hud
+        (simpler) on tap:
+	  if hudup, drop it
+          otherwise, set target and raise HUD
+    */
+
+    function content_mouseup(evt){
+	var target=fdjtUI.T(evt);
+	var passage=sbook.getTarget(target);
+	if (sbook.Trace.gestures)
+	    fdjtLog("[%fs] content_mouseup (%o) on %o passage=%o mode=%o",
+		    fdjtET(),evt,target,passage,sbook.mode);
+	if (fdjtDOM.isClickable(target)) return;
+	var sel=window.getSelection();
+	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
+	    if (passage) return tapTarget(passage);
+	    else sbookMode(false);}
+	if (!(sbook.hudup)) {
+	    if (passage) tapTarget(passage);
+	    else sbookMode(true);}
+	else if (!(passage)) sbookMode(true);
+	else if (passage===sbook.target) sbookMode(false);
+	else tapTarget(passage);}
+
     /* Core functions */
+
+    function tapTarget(target){
+	if (sbook.Trace.gestures)
+	    fdjtLog("[%fs] Tap on target %o mode=%o",
+		    fdjtET(),target,sbook.mode);
+	sbook.setTarget(target);
+	addGlossButton(target);
+	sbookMode(true);}
 
     function body_tap(element){
 	element=sbook.getTarget(element);
@@ -393,7 +445,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function hudbutton(evt){
 	var target=fdjtUI.T(evt);
 	var mode=target.getAttribute("hudmode");
-	if (sbook.Trace.gestures) 
+	if ((sbook.Trace.gestures)&&
+	    ((evt.type==='click')||(sbook.Trace.gestures>1)))
 	    fdjtLog("[%fs] hudbutton() %o mode=%o cl=%o sbp=%o sbh=%o mode=%o",
 		    fdjtET(),evt,mode,(fdjtDOM.isClickable(target)),
 		    sbook.preview,sbook.hudup,sbookMode());
@@ -908,9 +961,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     var cancel=fdjtUI.cancel;
 
     sbook.UI.handlers.mouse=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
-		  mousedown:body_mousedown,mouseup:body_mouseup,
-		  mousemove:mousemove},
+	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
+	 content: {mouseup:content_mouseup},
 	 hud: {mousedown:hud_mousedown,mouseup:hud_mouseup,
 	       mousemove:mousemove},
 	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},

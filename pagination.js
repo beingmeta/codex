@@ -142,7 +142,7 @@ var sbookPaginate=
 
 	function ColumnGoToPage(pageno){
 	    var offset=fdjtDOM.viewWidth()*pageno-sbook_left_px;
-	    fdjtID("SBOOKBODY").style[fdjtDOM.transform]="translate(-"+offset+"px,0px)";
+	    fdjtID("SBOOKCONTENT").style[fdjtDOM.transform]="translate(-"+offset+"px,0px)";
 	    sbook.curpage=pageno;}
 
 	function ColumnGetPage(arg){

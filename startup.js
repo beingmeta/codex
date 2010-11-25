@@ -60,7 +60,7 @@ sbook.Startup=
 	    fdjtTime.timeslice
 	    ([// Setup sbook tables, databases, etc
 		sbook.initDB,
-		// This wraps the body in an div#SBOOKBODY 
+		// This wraps the body in an div#SBOOKCONTENT 
 		function(){
 		    initBody();
 		    sbook.body.style.opacity='0.25';},
@@ -355,7 +355,7 @@ sbook.Startup=
 	    if (!(sbook.root))
 		if (fdjtDOM.getMeta("sbook.root"))
 		    sbook.root=fdjtID(fdjtDOM.getMeta("sbook.root"));
-	    else sbook.root=fdjtID("SBOOKBODY")||document.body;
+	    else sbook.root=fdjtID("SBOOKCONTENT")||document.body;
 	    if (!(sbook.start))
 		if (fdjtDOM.getMeta("sbook.start"))
 		    sbook.start=fdjtID(fdjtDOM.getMeta("sbook.start"));
@@ -412,9 +412,9 @@ sbook.Startup=
 	    var sbody=
 		((fdjtDOM.getMeta("sbook.body"))?
 		 ((fdjtID(fdjtDOM.getMeta("sbook.body")))||(document.body)):
-		 (fdjtID("SBOOKBODY")));
+		 (fdjtID("SBOOKCONTENT")));
 	    if (!(sbody)) {
-		sbody=fdjtDOM("div#SBOOKBODY");  /* {
+		sbody=fdjtDOM("div#SBOOKCONTENT");  /* {
 						    var bodystyle=fdjtDOM.getStyle(document.body);
 						    var left=fdjtDOM.parsePX(bodystyle.marginLeft);
 						    var right=fdjtDOM.parsePX(bodystyle.marginRight);
