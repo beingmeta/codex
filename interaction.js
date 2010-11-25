@@ -193,6 +193,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%fs] content_mouseup (%o) on %o passage=%o mode=%o",
 		    fdjtET(),evt,target,passage,sbook.mode);
 	if (fdjtDOM.isClickable(target)) return;
+	else if (edgeTap(evt)) return;
 	var sel=window.getSelection();
 	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
 	    if (passage) return tapTarget(passage);
