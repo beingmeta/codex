@@ -162,21 +162,6 @@ body.preview div#SBOOKHUD .previewicon { display: block;}
 
 /* Mode display rules */
 
-/*
-div#SBOOKHUD.help div.helphud { display: block;}
-div#SBOOKHUD.help div#SBOOKHELP,
-div#SBOOKHUD.toc div#SBOOKTOC,
-div#SBOOKHUD.searching div#SBOOKSEARCH,
-div#SBOOKHUD.browsing div#SBOOKSEARCH,
-div#SBOOKHUD.browsing div#SBOOKSEARCHRESULTS,
-div#SBOOKHUD.searching div#SBOOKSEARCHCLOUD,
-div#SBOOKHUD.flyleaf div#SBOOKFLYLEAF,
-div#SBOOKHUD.glosses div#SBOOKGLOSSES,
-div#SBOOKHUD.addgloss div#SBOOKADDGLOSS,
-div#SBOOKHUD.allglosses div#SBOOKBROWSEGLOSSES {
-    opacity: 0.95;}
-*/
-
 body.hudup div#SBOOKHUD.help div.hudpanel#SBOOKHELP,
 body.hudup div#SBOOKHUD.toc div.hudpanel#SBOOKTOC,
 body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCH,
@@ -388,6 +373,10 @@ div#SBOOKHELP {
     opacity: 0.95; background-color: ivory;
     text-align: center; vertical-align: middle;
     font-family: sans,sans-serif;
+    box-shadow: 1em 1em 1em #cccccc;
+    -webkit-box-shadow: 1em 1em 1em #cccccc;
+    -moz-box-shadow: 1em 1em 1em #cccccc;
+    -o-box-shadow: 1em 1em 1em #cccccc;
     display: none;}
 div#SBOOKHELP #CHECKHIDEHELP {
  float: left; font-family: sans; color: red; max-width: 100px;}
