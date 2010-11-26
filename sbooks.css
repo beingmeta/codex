@@ -168,6 +168,7 @@ body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCH,
 body.hudup div#SBOOKHUD.browsing div.hudpanel#SBOOKSEARCH,
 body.hudup div#SBOOKHUD.browsing div.hudpanel#SBOOKSEARCHRESULTS,
 body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCHCLOUD,
+body.hudup div#SBOOKHUD.scanning div.hudpanel#SBOOKSCANNER,
 body.hudup div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF,
 body.hudup div#SBOOKHUD.glosses div.hudpanel#SBOOKGLOSSES,
 body.hudup div#SBOOKHUD.addgloss div.hudpanel#SBOOKADDGLOSS,
@@ -194,6 +195,15 @@ div#SBOOKHUD.browsing .hudbutton[alt='search'],
 div#SBOOKHUD.toc .hudbutton[alt='toc'] {
     border-color: darkblue;
     background-color: #4682b4;}
+
+/* Scanner rules */
+
+body.hudup div#SBOOKHUD div#SBOOKSCANNER div#SBOOKSCAN {
+    position: absolute; left: 36px; right: 36px;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="prev"] {
+    position: absolute; left: 0px; top: 8px;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="next"] {
+    position: absolute; right: 0px; top: 8px;}
 
 /* About this book */
 
@@ -1028,6 +1038,10 @@ div.sbooknote > hr {
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;}
 div#SBOOKHUD .sbooknote span.oldterm {color: blue; }
+.sbooknote span.user { 
+  color: gold; font-size: 125%; font-style: italic;}
+.sbooknote span.user:after { 
+  font-style: normal; color: silver; content: ' ¢¢ ';}
 .sbooknote span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
 body.sbook a.sbooknote { display: block;}

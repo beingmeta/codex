@@ -1,10 +1,7 @@
-<div id="SBOOKPREVIEW" class="hudpanel"></div>
 <img src="http://static.beingmeta.com/graphics/CompassIcon40x40.png"
      alt="toc" title="click to navigate the book as a whole"
      class="hudbutton topleft" id="SBOOKTOCBUTTON" hudmode="toc"
      onclick="sbook.UI.hudbutton(event);"/>
-<img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
-     class="previewicon topleft"/>
 <img src="http://static.beingmeta.com/graphics/TagSearch40x40.png"
      alt="search" title="click to search tags within the book"
      class="hudbutton topright" id="SBOOKSEARCHBUTTON" hudmode="searching"
@@ -22,6 +19,13 @@
     <span class="nobreak"><span class="arrow">→</span>search</span><br/>
     tags</div>
   <div id="SBOOKTOC" class="hudpanel"></div>
+  <div id="SBOOKSCANNER" class="hudpanel">
+    <img src="http://static.beingmeta.com/graphics/GoldLeftTriangle32.png"
+	 alt="prev" onclick="sbook.scanBackward(event);"/>
+    <img src="http://static.beingmeta.com/graphics/GoldRightTriangle32.png"
+	 alt="next" onclick="sbook.scanForward(event);"/>
+    <div id="SBOOKSCAN"></div>
+  </div>
   <div id="SBOOKSEARCH" class="searchbox hudpanel notags">
     <!-- This content comes from sbooksearch.html -->
   </div>
@@ -85,8 +89,6 @@
        alt="flyleaf" title="Click for Help, settings, book description, etc"
        class="hudbutton botleft" id="SBOOKFLYLEAFBUTTON" hudmode="flyleaf"
        onclick="sbook.UI.hudbutton(event);"/>
-  <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
-       class="previewicon botleft"/>
   <div class="helphud botleft" data-hudmode="flyleaf">
     <span class="nobreak"><span class="arrow">←</span>show the</span><br/>
     flyleaf</div>
@@ -104,8 +106,6 @@
        class="hudbutton botright"
        id="SBOOKALLGLOSSESBUTTON" hudmode="allglosses"
        onclick="sbook.UI.hudbutton(event);"/>
-  <img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
-       class="previewicon botright"/>
 </div>
 
 <!--

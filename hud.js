@@ -202,7 +202,7 @@ var sbookMode=
 	/* Mode controls */
 	
 	var sbookMode_pat=
-	    /(login)|(device)|(sbookapp)|(help)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)/g;
+	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)/g;
 	var sbookFlyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "SBOOKALLGLOSSES",
@@ -224,7 +224,6 @@ var sbookMode=
 	    if (sbook.Trace.mode)
 		fdjtLog("[%fs] sbookMode %o, cur=%o dbc=%o",
 			fdjtET(),mode,sbook.mode,document.body.className);
-	    if (sbook.preview) sbook.Preview(false);
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
 		if (mode==="flyleaf") mode=sbook.last_flyleaf||"about";
@@ -560,107 +559,26 @@ var sbookMode=
 	    if (sbook.mode==='sbookapp') initManageIFrame();
 	    else sbookMode('sbookapp');}
 
+	/* Scanning */
 
-	/* Previewing */
-	
-	var sbook_preview_delay=250;
-	// This can be a regular expression
-	var sbook_preview_classes=/(gloss)/;
-	
-	function sbookPreview(elt,src){
+	function sbookScan(elt,src){
 	    var cxt=false;
 	    var body=document.body;
-	    var pelt=sbook.previewelt;
+	    var pelt=sbook.scanning;
 	    if (sbook.Trace.mode)
-		fdjtLog("[%fs] sbookPreview() %o (src=%o) mode=%o sbp=%o pe=%o sbpt=%o target=%o",
-			fdjtET(),elt,src,sbook.mode,
-			sbook.preview,sbook.previewelt,sbook.preview_target,
-			sbook.target);
-	    
+		fdjtLog("[%fs] sbookScan() %o (src=%o) mode=%o scn=%o/%o",
+			fdjtET(),elt,src,sbook.mode,sbook.scanning,sbook.target);
 	    // Save the source HUD element for the preview (when provided)
-	    if (src) {
-		if (sbook.previewelt!==src) {
-		    if (fdjtDOM.hasClass(src,sbook_preview_classes)) {
-			var clone=src.cloneNode(true);
-			clone.id="SBOOKPREVIEW";
-			fdjtDOM.addClass(clone,"hudpanel");
-			fdjtDOM.replace("SBOOKPREVIEW",clone);}
-		    else fdjtDOM.replace("SBOOKPREVIEW",
-					 fdjtDOM("div#SBOOKPREVIEW"));
-		    sbook.previewelt=src;}
-		else {}}
-	    else if (sbook.previewelt) {
-		fdjtDOM.dropClass(sbook.previewelt,"previewed");
-		sbook.previewelt=false;}
+	    if (sbook.scanning!==src) {
+		var clone=src.cloneNode(true);
+		clone.id="SBOOKSCAN";
+		fdjtDOM.replace("SBOOKSCAN",clone);
+		sbook.scanning=src;}
 	    else {}
-	    if ((sbook.preview)&&(sbook.preview!==elt)) {
-		var scan=sbook.preview;
-		// Clear the 'preview' class on the parents
-		while (scan)
-		    if (scan===body) break;
-		else {
-		    fdjtDOM.dropClass(scan,"preview");
-		    scan=scan.parentNode;}
-		// Update the element itself, 
-		if (sbook.preview.sbooktitle) {
-		    sbook.preview.title=sbook.preview.sbooktitle;}
-		fdjtDOM.dropClass(sbook.preview,"previewing");}
-	    if (!(elt)) {
-		fdjtDOM.dropClass(body,"preview");
-		// Restore the scroll position
-		sbook.scrollRestore();
-		// Set the state
-		sbook.preview_target=false;
-		sbook.preview=false;
-		// Scroll the past preview element context
-		// We can't do this earlier because it's not displayed
-		//  and so has no geometry
-		// if ((pelt)&&(sbook.previewstart!==pelt)&&(pelt.scrollIntoView))
-		if ((sbook.scrollers)&&(pelt)&&(sbook.scrolling)&&
-		    (sbook.scrollers[sbook.scrolling])&&
-		    (fdjtDOM.hasParent(pelt,fdjtID(sbook.scrolling)))&&
-		    (sbook.scrollers[sbook.scrolling])) {
-		    var scroller=sbook.scrollers[sbook.scrolling];
-		    scroller.scrollToElement(pelt);}
-		else if (pelt) pelt.scrollIntoView();
-		sbook.previewstart=false;
-		fdjtDOM.replace("SBOOKPREVIEW",fdjtDOM("div#SBOOKPREVIEW"));
-		return;}
-	    else if ((elt===sbook.root)||(elt===document.body))
-		return;
-
-	    /* Update the preview element in its slice. */
-	    if (src) {
-		fdjtDOM.addClass(src,"previewed");
-		if (!(sbook.previewstart)) sbook.previewstart=src;
-		if ((pelt)&&(pelt!==src)&&(src.scrollIntoView))
-		    src.scrollIntoView();}
-	    
-	    fdjtDOM.addClass(body,"preview");
-	    var scan=elt;
-	    while (scan) if (scan===body) break;
-	    else {
-		fdjtDOM.addClass(scan,"preview");
-		scan=scan.parentNode;}
-	    fdjtDOM.addClass(elt,"previewing");
-	    sbook.last_preview=elt;
-	    sbook.preview_target=sbook.preview=elt;
-	    if ((!(elt.sbooktitle))&&(elt.title)&&
-		(elt.title!=='click to jump to this passage'))
-		elt.sbooktitle=elt.title;
-	    elt.title='click to jump to this passage';
-	    if ((elt.getAttribute) &&
-		(elt.getAttribute("toclevel")) ||
-		((elt.sbookinfo) && (elt.sbookinfo.level)))
-		cxt=false;
-	    else if (elt.head)
-		cxt=elt.head;
-	    sbook.scrollPreview(elt,cxt,displayOffset());}
-
-	sbook.Preview=sbookPreview;
-
-	function displayOffset(){
-	    return -(Math.floor(fdjtDOM.viewHeight()/2));}
+	    sbook.setTarget(elt);
+	    sbook.GoTo(elt);
+	    sbookMode("scanning");}
+	sbook.Scan=sbookScan;
 
 	/* Button methods */
 

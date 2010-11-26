@@ -33,10 +33,9 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 */
 
 var sbook=
-    {mode: false,hudup: false,preview: false,scrolling: false,
+    {mode: false,hudup: false,scrolling: false,
      query: false,head: false,target: false,glosstarget: false,
-     user: false,root: false,start: false,
-     HUD: false,preview_target:false,last_preview: false,
+     user: false,root: false,start: false,HUD: false,
      _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
      // For pagination
      curpage: false,curoff: false,curinfo: false, curbottom: false,
@@ -74,6 +73,7 @@ var sbook=
 	 focus: false,	// Whether to trace focus/target changes
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// Whether we're debugging server interaction
+	 scanning: false, // Whether to trace content scanning
 	 glosses: false,// Whether we're tracing gloss processing
 	 layout: 0,	// Whether to trace pagination
 	 paging: false,	// Whether to trace paging (movement by pages)
@@ -159,17 +159,17 @@ var sbook_gloss_data=
 	if (sbook.Trace.start>1) fdjtLog("[%fs] Initialized DB",fdjtET());}
     sbook.initDB=initDB;
 
-    var trace1="[%fs] %s %o in %o: mode%s=%o, target=%o, head=%o preview=%o";
-    var trace2="[%fs] %s %o: mode%s=%o, target=%o, head=%o preview=%o";
+    var trace1="[%fs] %s %o in %o: mode%s=%o, target=%o, head=%o scanning=%o";
+    var trace2="[%fs] %s %o: mode%s=%o, target=%o, head=%o scanning=%o";
     function sbook_trace(handler,cxt){
 	var target=fdjtUI.T(cxt);
 	if (target)
 	    fdjtLog(trace1,fdjtET(),handler,cxt,target,
-		    ((sbook.preview)?("(preview)"):""),sbook.mode,
-		    sbook.target,sbook.head,sbook.preview);
+		    ((sbook.scanning)?("(scanning)"):""),sbook.mode,
+		    sbook.target,sbook.head,sbook.scanning);
 	else fdjtLog(trace2,fdjtET(),handler,cxt,
-		     ((sbook.preview)?("(preview)"):""),sbook.mode,
-		     sbook.target,sbook.head,sbook.preview);}
+		     ((sbook.scanning)?("(scanning)"):""),sbook.mode,
+		     sbook.target,sbook.head,sbook.scanning);}
     sbook.trace=sbook_trace;
 
     // This is the hostname for the sbookserver.
@@ -530,10 +530,8 @@ var sbook_gloss_data=
 	else fdjtUI.scrollIntoView(elt,elt.id,cxt,true,displayOffset());}
     
     // This moves within the document in a persistent way
-    // It disables preview mode if it is engaged
     // It leaves any active HUD mode
     function sbookGoTo(target,noset){
-	sbook.Preview(false);
 	if (typeof target === 'string') target=document.getElementById(target);
 	if (!(target)) return;
 	var page=((sbook.paginate)&&sbook.getPage(target));
@@ -570,7 +568,6 @@ var sbook_gloss_data=
 	    if (sbook.hudup) sbook.HUD.style.opacity=0.0001;
 	    fdjtDOM.addClass(document.body,"pageswitch");
 	    setTimeout(function() {
-		if (sbook.preview) sbook.Preview(false);
 		if (sbook.hudup) sbookMode(false);
 		sbookGoTo(target);
 		fdjtDOM.dropClass(document.body,"pageswitch");
@@ -583,7 +580,6 @@ var sbook_gloss_data=
 			   200);},
 		       200);}
 	else {
-	    if (sbook.preview) sbook.Preview(false);
 	    if (sbook.hudup) sbookMode(false);
 	    sbookGoTo(target);}}
     sbook.JumpTo=sbookJumpTo;

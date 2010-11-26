@@ -66,9 +66,7 @@ var sbook_delete_icon="redx12x12.png";
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments"))));
 	if (!(info.tstamp))
-	    div.title=
-	    "click to preview\n"+
-	    (sbook.getTitle(target)||fdjtDOM.textify(target))
+	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
 	    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
 	div.about="#"+target_id;
 	// div.setAttribute('about',"#"+info.id);
@@ -347,8 +345,7 @@ var sbook_delete_icon="redx12x12.png";
 		threadelt=fdjtDOM("div.sbookthread.idthread",
 				  makeIDHead(target,headinfo,true));
 		threadelt.about="#"+frag;
-		threadelt.title="(click to preview)\n"+
-		    (sbook.getTitle(target)||fdjtDOM.textify(target))
+		threadelt.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
 		    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
 		fdjtDOM.append(headelt,threadelt);
 		curinfo=docinfo;}
@@ -413,8 +410,7 @@ var sbook_delete_icon="redx12x12.png";
 	var tochead=fdjtDOM("div.idhead",
 			    ((locrule)&&(makelocrule(info,headinfo))),
 			    fdjtDOM("div",sumText(target)));
-	var title="(click to preview)\n"+
-	    (sbook.getTitle(target)||fdjtDOM.textify(target)).
+	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
 	    replace(/\n\n+/g,"\n").replace(/^\n+/,"");
 	return tochead;}
 
@@ -452,8 +448,7 @@ var sbook_delete_icon="redx12x12.png";
 	    var insertion=idelt;
 	    idelt=fdjtDOM("div.sbookthread.idthread",makeIDHead(about,headinfo));
 	    idelt.tocref=frag; idelt.start=starts; idelt.about="#"+frag;
-	    idelt.title="(click to preview)\n"+
-		(sbook.getTitle(about)||fdjtDOM.textify(about))
+	    idelt.title=(sbook.getTitle(about)||fdjtDOM.textify(about))
 		.replace(/\n\n+/g,"\n").replace(/^\n+/,"");
 
 	    if (insertion) fdjtDOM.insertBefore(insertion,idelt);
