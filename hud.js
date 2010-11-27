@@ -181,8 +181,6 @@ var sbookMode=
 	    var toc_div=sbookTOC(root_info,0,false,"SBOOKFLYTOC4");
 	    var div=fdjtDOM(eltspec||"div#SBOOKFLYTOC",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
-	    // The flyleaf TOC doesn't do fancy mouseovers
-	    // sbook.UI.addHandlers(div,"toc");
 	    return div;}
 
 	/* HUD animation */
@@ -202,7 +200,7 @@ var sbookMode=
 	/* Mode controls */
 	
 	var sbookMode_pat=
-	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)/g;
+	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)/g;
 	var sbookFlyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "SBOOKALLGLOSSES",

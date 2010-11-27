@@ -180,6 +180,10 @@ body.hudup div#SBOOKHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     -o-box-shadow: 1em 1em 1em #cccccc;
     opacity: 0.95; min-height: 50px; height: auto;}
 
+body.hudup div#SBOOKHUD.tocscan div.hudpanel#SBOOKTOC {
+    border-color: darkblue;
+    opacity: 0.95; min-height: 50px; height: auto;}
+
 div#SBOOKHUD.searching div#SBOOKSEARCHRESULTSWRAPPER { display: none;}
 div#SBOOKHUD.searching div.completions#SBOOKSEARCHCLOUD { display: block;}
 div#SBOOKHUD.searching div.sbookslice#SBOOKSEARCHRESULTS { display: none;}
@@ -267,16 +271,42 @@ div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF {
 div.sbooktoc { display: none;}
 div.sbooktoc div.head {
   position: relative; margin: 0px; padding: 0px; border: 0px;
-  left: 0px; width: 100%;
+  left: 0px; right: 0px; margin-left: 20px; margin-right: 20px;
   display: none;}
 div.sbooktoc div.head .progressbar { 
   color: lightblue; background-color: lightblue;
   padding: 0px; margin: 0px; border-right: solid red 3px;
   position: absolute;  left: 0px; height: 100%;
   z-index: -100; opacity: 0.5;}
+div.sbooktoc img[alt='next'], div.sbooktoc img[alt='nextstop'] {
+    float: right; cursor: pointer; z-index: 100;}
+div.sbooktoc img[alt='back'], div.sbooktoc img[alt='backstop'] {
+    float: left; cursor: pointer; z-index: 100;}
+
+/* Conditional display, so only the live elements are redisplayed */
+div.sbooktoc.live { display: block;}
+div.sbooktoc.live div.head { display: block;}
+
+div.sbooktoc.live div.sbooktoc { display: none;}
+div.sbooktoc.live div.sbooktoc.live { display: block;}
+
+div.sbooktoc div.sub {
+    display: none; clear: both;}
+div.sbooktoc.cur div.head { font-size: 125%;}
+div.sbooktoc.cur div.sub { display: block;}
+
+body.hudup div#SBOOKHUD.tocscan div.sbooktoc.live div.head,
+body.hudup div#SBOOKHUD.tocscan div.sbooktoc.live img {
+    display: none;}
+body.hudup div#SBOOKHUD.tocscan div.sbooktoc.live.cur > div.head,
+body.hudup div#SBOOKHUD.tocscan div.sbooktoc.live.cur > img {
+    display: block;}
+
 div#SBOOKFLYLEAF div#FLYTOC div.sbooktoc {
-    display: block; font-size: 90%;}
+    display: block; font-size: 90%; text-align: left;}
+div#SBOOKFLYLEAF div#FLYTOC div.sbooktoc img { display: none;}
 div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.sbooktoc div.head {
+    margin-left: 0px; margin-right: 0px;
     display: block; font-weight: bold;}
 div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.sbooktocleaf > div.head {
     display: block; font-weight: normal;}
@@ -291,24 +321,13 @@ div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC
   div.live > div.spanbar div.progressbox {
       display: block;}
 
-div.sbooktoc.live { display: block;}
-div.sbooktoc.live div.head { display: block;}
-
-div.sbooktoc.live div.sbooktoc { display: none;}
-div.sbooktoc.live div.sbooktoc.live { display: block;}
-
-div.sbooktoc div.sub {
-    display: none; clear: both;
-    margin-left: 20px; margin-right: 20px;}
-div.sbooktoc.cur div.head { font-size: 125%;}
-div.sbooktoc.cur div.sub { display: block;}
 div#SBOOKFLYTOC div.sbooktoc.cur div.sub { display: none;}
 
 div.sbooktoc .sectname.cohi { color: ivory;}
 div.sbooktoc .sectname { color: ivory; cursor: pointer;}
 div.sbooktoc div.sub a.sectname { 
-  color: yellow; font-size: 80%; white-space: nowrap;}
-div.sbooktoc div.sub a.sectname.cohi { color: ivory; }
+  color: ivory; font-size: 80%; white-space: nowrap;}
+div.sbooktoc div.sub a.sectname.cohi { color: gold; }
 
 div#SBOOKHUD div.sbooktoc div.head { display: none;}
 div#SBOOKHUD div.sbooktoc div.spanbar { display: none;}
@@ -346,9 +365,9 @@ div.spanbar div.sbookhudspan a.brick {
   border-right: solid black 1px; border-left: solid black 1px;
   height: 100%;}
 div.spanbar div.sbookhudspan a.brick.cohi {
-  background-color: ivory;}
+  background-color: gold;}
 div.spanbar div.sbookhudspan .brick.live {
-  background-color: yellow;}
+  background-color: ivory;}
 div.spanbar div.sbookhudspan[odd] {}
 div.spanbar div.sbookhudspan[even] {}
 div.spanbar div.sbookhudspan.current {

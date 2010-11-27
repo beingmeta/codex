@@ -265,6 +265,18 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		sbookMode("context");
 		return function(){sbookMode(false);};}}}
 
+    function hud_click(evt){
+	var target=fdjtUI.T(evt);
+	if (fdjtDOM.isClickable(target)) return;
+	while (target) {
+	    if (target.about) {
+		sbook.Scan(fdjtID(target.about),target);
+		return fdjtUI.cancel(evt);}
+	    else if (target.frag) {
+		sbook.tocJump(fdjtID(target.about));
+		return fdjtUI.cancel(evt);}
+	    else target=target.parentNode;}}
+    
     function hud_tap(element){
 	var ref=sbook.getRef(element);
 	if (sbook.Trace.gestures)
@@ -931,19 +943,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.UI.handlers.mouse=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
 	 content: {mouseup:content_mouseup},
-	 hud: {mousedown:hud_mousedown,mouseup:hud_mouseup,
-	       mousemove:mousemove},
+	 hud: {click: hud_click},
 	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
-	 /*
-	   "#SBOOKPAGEINFO": {mousedown: scroller_mousedown,
-	   mousemove: scroller_mousemove,
-	   mouseout: scroller_mouseout,
-	   mouseup: scroller_mouseup},
-	 */
-	 ".hudbutton": {mouseover:hudbutton,
-			mouseout:hudbutton}};
+	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
+	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
+	       mouseout: fdjtUI.CoHi.onmouseout}};
 
     // A mouse pretending to be a touch screen
 

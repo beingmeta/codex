@@ -560,6 +560,15 @@ var sbook_gloss_data=
 		       1500);}}
     sbook.GoTo=sbookGoTo;
 
+    function anchorFn(evt){
+	var target=fdjtUI.T(evt);
+	while (target)
+	    if (target.href) break; else target=target.parentNode;
+	if ((target)&&(target.href)&&(target.href[0]==='#')) {
+	    var goto=document.getElementById(target.href.slice(1));
+	    if (goto) {sbookGoTo(goto); fdjtUI.cancel(evt);}}}
+    sbook.anchorFn=anchorFn;
+
     // This jumps and disables the HUD at the same time
     // We try to animate the transition
     function sbookJumpTo(target){

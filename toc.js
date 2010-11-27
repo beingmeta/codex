@@ -47,17 +47,31 @@
 
 var sbookTOC=
     (function(){
+	function sbicon(base){return sbook.graphics+base;}
+
 	function sbookTOC(headinfo,depth,tocspec,prefix){
 	    var progressbar=fdjtDOM("HR.progressbar");
 	    var head=fdjtDOM("A.sectname",headinfo.title);
 	    var spec=tocspec||"DIV.sbooktoc";
-	    var toc=fdjtDOM(spec,fdjtDOM("DIV.head",progressbar,head),
+	    var next_button=
+		((headinfo.next)?
+		 (fdjtDOM.Image(sbicon("GoldRightTriangle16.png"),false,"next")):
+		 (fdjtDOM.Image(sbicon("GoldRightStop16.png"),false,"nextstop")));
+	    var back_button=
+		((headinfo.prev)?
+		 (fdjtDOM.Image(sbicon("GoldLeftTriangle16.png"),false,"back")):
+		 (fdjtDOM.Image(sbicon("GoldLeftStop16.png"),false,"backstop")));
+	    if (headinfo.next) next_button.frag=headinfo.next.frag;
+	    if (headinfo.prev) back_button.frag=headinfo.prev.frag;
+	    var toc=fdjtDOM(spec,
+			    next_button,back_button,
+			    fdjtDOM("DIV.head",progressbar,head),
 			    generate_spanbar(headinfo),
 			    generate_subsections(headinfo));
 	    var sub=headinfo.sub;
 	    if (!(depth)) depth=0;
 	    head.name="SBR"+headinfo.frag;
-	    head.about="#"+headinfo.frag;
+	    head.frag=headinfo.frag;
 	    toc.sbook_start=headinfo.starts_at;
 	    toc.sbook_end=headinfo.ends_at;
 	    fdjtDOM.addClass(toc,"toc"+depth);
@@ -70,6 +84,20 @@ var sbookTOC=
 		toc.appendChild(sbookTOC(sub[i++],depth+1,spec,prefix));}
 	    return toc;}
 	
+	function tocJump(evt){
+	    var target=fdjtUI.T(evt);
+	    while (target) {
+		if (target.frag) break;
+		else target=target.parentNode;}
+	    if (target) {
+		var info=sbook.docinfo[target.frag];
+		sbook.GoTo(target.frag);
+		if ((info.sub)&&(info.sub.length>2))
+		    sbookMode("toc");
+		else sbookMode("tocscan");
+		fdjtUI.cancel(evt);}}
+	sbook.tocJump=tocJump;
+
 	function generate_subsections(headinfo) {
 	    var sub=headinfo.sub;
 	    if ((!(sub)) || (!(sub.length))) return false;
@@ -79,7 +107,7 @@ var sbookTOC=
 	    while (i<n) {
 		var subinfo=sub[i];
 		var subspan=fdjtDOM("A.sectname",subinfo.title);
-		subspan.about="#"+subinfo.frag;
+		subspan.frag=subinfo.frag;
 		subspan.name="SBR"+subinfo.frag;
 		fdjtDOM(div,((i>0)&&" \u00b7 "),subspan);
 		i++;}
@@ -109,7 +137,8 @@ var sbookTOC=
 		if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
 		    /* Add 'fake section' for the precursor of the first actual section */
 		    spanstart=start;  spanend=spaninfo.starts_at;
-		    spaninfo=headinfo; subsection=document.getElementById(headinfo.frag);
+		    spaninfo=headinfo;
+		    subsection=document.getElementById(headinfo.frag);
 		    i--; sectnum++; addname=false;}
 		else {
 		    spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
@@ -120,8 +149,10 @@ var sbookTOC=
 		spans.appendChild(span);
 		last_info=spaninfo;}
 	    if ((end-last_info.ends_at)>0) {
-		/* Add 'fake section' for the content after the last actual section */
-		var span=generate_span(sectnum,head,headinfo.title,last_info.ends_at,end,len);
+		/* Add 'fake section' for the content after the last
+		 * actual section */
+		var span=generate_span
+		(sectnum,head,headinfo.title,last_info.ends_at,end,len);
 		spanbar.appendChild(span);}    
 	    return spanbar;}
 	
@@ -132,7 +163,7 @@ var sbookTOC=
 	    var width=(Math.floor(10000*(spanlen/len))/100)+"%";
 	    span.style.width=width;
 	    span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
-	    span.about="#"+subsection.id;
+	    span.frag=subsection.id;
 	    if (name) anchor.name=name;
 	    return span;}
 	sbookTOC.id="$Id$";
@@ -143,7 +174,9 @@ var sbookTOC=
 	    if (cur) {
 		// Hide the current head and its (TOC) parents
 		var tohide=[];
+		var spans=document.getElementsByName("SBR"+cur.frag);
 		var base_elt=document.getElementById(prefix+cur.frag);
+		fdjtDOM.dropClass(spans,"live");
 		while (cur) {
 		    var tocelt=document.getElementById(prefix+cur.frag);
 		    tohide.push(tocelt);
@@ -158,6 +191,8 @@ var sbookTOC=
 	    var toshow=[];
 	    while (head) {
 		var tocelt=document.getElementById(prefix+head.frag);
+		var spans=document.getElementsByName("SBR"+head.frag);
+		fdjtDOM.addClass(spans,"live");
 		toshow.push(tocelt);
 		head=head.head;}
 	    var n=toshow.length-1;
