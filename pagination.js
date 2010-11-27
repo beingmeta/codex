@@ -871,12 +871,12 @@ var sbookPaginate=
 	    fdjtDOM.insertAfter(sbookHUD,
 				pagehead,pagefoot,
 				leftedge,rightedge);
-	    if (sbook.scrollfree) {
-		fdjtDOM.prepend(sbook.body,topleading);
-		fdjtDOM.append(sbook.body,bottomleading);}
-	    else {
+	    if (sbook.nativescroll) {
 		fdjtDOM.prepend(document.body,topleading);
 		fdjtDOM.append(document.body,bottomleading);}
+	    else {
+		fdjtDOM.prepend(sbook.body,topleading);
+		fdjtDOM.append(sbook.body,bottomleading);}
 	    
 	    // Probe the size of the head and foot
 	    pagehead.style.display='block'; pagefoot.style.display='block';
@@ -884,7 +884,7 @@ var sbookPaginate=
 	    sbook_bottom_px=pagefoot.offsetHeight;
 	    pagehead.style.display=''; pagefoot.style.display='';
 
-	    if (sbook.scrollfree) {
+	    if (!(sbook.nativescroll)) {
 		var vh=fdjtDOM.viewHeight();
 		pagefoot.style.height=(vh*2)+'px';}
 
@@ -910,13 +910,13 @@ var sbookPaginate=
 			pageinfo,off,footheight);
 	    if (footheight<0) {
 		footheight=0; sbook.curbottom=sbook_bottom_px;}
-	    if (sbook.scrollfree) {
+	    if (sbook.nativescroll) {
+		fdjtID("SBOOKPAGEFOOT").style.height=footheight+'px';}
+	    else {
 		var pagefoot=fdjtID("SBOOKPAGEFOOT");
 		pagefoot.style.top=(viewheight-footheight)+'px';
 		var pageinfo=fdjtID("SBOOKPAGEINFO");
-		pageinfo.style.top=(footheight-pageinfo.offsetHeight)+'px';}
-	    else {
-		fdjtID("SBOOKPAGEFOOT").style.height=footheight+'px';}}
+		pageinfo.style.top=(footheight-pageinfo.offsetHeight)+'px';}}
 	
 	function resizePage(){
 	    var vh=fdjtDOM.viewHeight();
@@ -967,7 +967,6 @@ var sbookPaginate=
 	    else repaginate();}
 	
 	function repaginate(){
-	    // fdjtDOM.dropClass(document.body,"scrollfree");
 	    var newinfo={};
 	    var pagesize=(fdjtDOM.viewHeight())-
 		(sbook_top_px+sbook_bottom_px);
@@ -1011,8 +1010,6 @@ var sbookPaginate=
 		      // fdjtTrace("Updated pagination from %o to %o",
 		      //           sbook_paginated,newinfo);
 		      sbook_paginated=newinfo;
-		      if (sbook.scrollfree)
-			  fdjtDOM.addClass(document.body,"scrollfree");
 		      sbook.GoToPage(sbook.getPage(sbook.target||sbook.root),0,
 				     "repaginate");})}],
 	     0,100);}

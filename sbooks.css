@@ -90,8 +90,6 @@ div#SBOOKHUD div.hudpanel.sbooknote {
 div#SBOOKHUD div.hudpanel div.scrollbox {}
 div#SBOOKHUD div.hudpanel div.scrollbox > div {
     overflow: auto;}
-body.scrollfree div#SBOOKHUD div.hudpanel div.scrollbox {
-    overflow: visible;}
 
 div#SBOOKHUD img.hudbutton {
     position: absolute; width: 50px; height: 50px; z-index: 200;
@@ -1357,6 +1355,8 @@ div.sbookaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD {
 
 /* Scroll free rules */
 
+body.scrollfree div#SBOOKHUD div.hudpanel div.scrollbox {
+    overflow: visible;}
 body.scrollfree {} /* margin: 0px; */
 body.scrollfree #SBOOKBODY {
     position: absolute;}

@@ -139,7 +139,7 @@ var sbookMode=
 	    var hf=fdjtID("SBOOKFOOT");
 	    var fh=fdjtDOM.getGeometry(hf).height;
 	    // fdjtLog("[%fs] resizeHUD vh=%o vw=%o fh=%o",fdjtET(),vh,vw,fh);
-	    if (sbook.scrollfree) hf.style.top=(vh-fh)+'px';}
+	    if (!(sbook.nativescroll)) hf.style.top=(vh-fh)+'px';}
 
 	/* This is used for viewport-based browser, where the HUD moves
 	   to be aligned with the viewport */
@@ -300,7 +300,10 @@ var sbookMode=
 	    var ccbounds=fdjtDOM.parsePX(ccstyle.borderTopWidth)+fdjtDOM.parsePX(ccstyle.borderBottomWidth)+
 		fdjtDOM.parsePX(ccstyle.paddingTop)+fdjtDOM.parsePX(ccstyle.paddingBottom)+
 		fdjtDOM.parsePX(ccstyle.marginTop)+fdjtDOM.parsePX(ccstyle.marginBottom);
-	    if (sbook.scrollfree) {
+	    if (sbook.nativescroll) {
+		c.style.height=
+		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';}
+	    else {
 		if ((!(sbook.scrollers))||(!(elt.id))) return;
 		if (sbook.Trace.scroll) {
 		    fdjtLog("[%fs] cco=%o ct=%o nh=%o",
@@ -313,8 +316,6 @@ var sbookMode=
 		    (sbook.scrollers[elt.id].element===elt))
 		    sbook.scrollers[elt.id].refresh();
 		else sbook.scrollers[elt.id]=new iScroll(elt);}
-	    else {
-		c.style.height=((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';}
 	    if (sbook.Trace.scroll) {
 		fdjtLog("[%fs] updateScroller %o %o %o ch=%o h=%o",
 			fdjtET(),elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);
@@ -322,7 +323,8 @@ var sbookMode=
 			fdjtET(),fdjtDOM.getStyle(elt).overflow,
 			fdjtDOM.getStyle(c).overflow,
 			fdjtDOM.getStyle(cc).overflow);
-		if ((sbook.scrollfree)&&(elt.id)&&(sbook.scrollers)&&
+		if ((!(sbook.nativescroll))&&
+		    (elt.id)&&(sbook.scrollers)&&
 		    (sbook.scrollers[elt.id])) {
 		    var scroller=sbook.scrollers[elt.id];
 		    fdjtLog("[%fs] e=%o w=%o wo=%o,%o wc=%o,%o i=%o,%o o=%o,%o d=%o,%o m=%o,%o",

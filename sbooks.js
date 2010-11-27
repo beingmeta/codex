@@ -57,7 +57,7 @@ var sbook=
      // This is the time of the last update
      syncstamp: false,
      // Various settings
-     paginate: true, fastpage: false, scrolling: false,
+     paginate: true, fastpage: false, nativescroll: true,
      mouse: true,touch: false,kbd: false,
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
@@ -394,92 +394,40 @@ var sbook_gloss_data=
 
     /* Navigation */
 
-    var scrollfree=sbook.scrollfree=false;
     var x_offset=0; var y_offset=0;
     function scrollTo(x,y,win){
-      if (scrollfree) {
-	window.scrollTo(0,0);
-	if (false)
-	  fdjtLog("[%fs] scrolling to %o,%o, xoff=%o, yoff=%o",
-		  fdjtET(),x,y,x_offset,y_offset);
-	(win||sbook.body).style.left=""+(-x)+"px";
-	(win||sbook.body).style.top=""+(y_offset-y)+"px";}
-      else (win||window).scrollTo(x,y);}
+      if (sbook.nativescroll) (win||window).scrollTo(x,y);
+	else {
+	    fdjtLog("[%fs] scrolling to %o,%o, xoff=%o, yoff=%o",
+		    fdjtET(),x,y,x_offset,y_offset);
+	    (win||sbook.body).style.left=""+(-x)+"px";
+	    (win||sbook.body).style.top=""+(y_offset-y)+"px";}}
     sbook.scrollTo=scrollTo;
     function scrollPos(win){
-	if (scrollfree) {
+	if (sbook.nativescroll)
+	    return {x:(win||window).scrollX,y:(win||window).scrollY};
+	else {
 	    var x=fdjtDOM.parsePX((win||(sbook.body)).style.left);
 	    var y=fdjtDOM.parsePX((win||sbook.body).style.top);
-	    return {x: x,y: -y};}
-	else return {x:(win||window).scrollX,y:(win||window).scrollY};}
+	    return {x: x,y: -y};}}
     sbook.scrollPos=scrollPos;
 
     function resizeBody(){
-	if (!(sbook.scrollfree)) {
-	    fdjtDOM.dropClass(document.body,"scrollfree");
-	    sbook.body.style.left=''; sbook.body.style.top='';}
+	if (sbook.nativescroll) {}
 	else {
-	    fdjtDOM.dropClass(document.body,"scrollfree");
 	    var curx=x_offset-fdjtDOM.parsePX(sbook.body.style.left);
 	    var cury=y_offset-fdjtDOM.parsePX(sbook.body.style.top);
 	    sbook.body.style.left=''; sbook.body.style.top='';
 	    var geom=fdjtDOM.getGeometry(sbook.body,document.body);
 	    x_offset=geom.left; y_offset=geom.top;
 	    sbook.bodyoff=[x_offset,y_offset];
-	    fdjtDOM.addClass(document.body,"scrollfree");
 	    sbook.body.style.left='0px';
 	    sbook.body.style.top=(y_offset)+'px';}}
     sbook.resizeBody=resizeBody;
 
-    sbook.ScrollFree=function(arg){
-	if (typeof arg === 'undefined') return scrollfree;
-	else sbook.scrollfree=scrollfree=arg;};
     sbook.viewTop=function(){
-	if (scrollfree)
-	    return -(fdjtDOM.parsePX(sbook.body.style.top));
-	else return fdjtDOM.viewTop();}
-    var saved_x=false; var saved_y=false;
-    function scrollPreview(elt,cxt,off){
-	if (sbook.scrollfree) {
-	    if (elt) fdjtDOM.addClass(document.body,"preview");
-	    else fdjtDOM.dropClass(document.body,"preview");
-	    if (typeof elt === 'number') {
-		var x=((typeof cxt === 'number')?(cxt):(O));
-		var y=elt;
-		if ((!(saved_y))||(!(saved_x))) {
-		    saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
-		    saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
-		window.scrollTo(0,0);
-		sbook.body.style.left=""+(-x)+"px";
-		sbook.body.style.top=""+(y_offset-y)+"px";}
-	    else {
-		var geom=fdjtDOM.getGeometry(elt,sbook.body||sbook.root,false);
-		var vh=fdjtDOM.viewHeight();
-		var x=0; var y;
-		var y_target=geom.top+(geom.height/3);
-		if ((2*(geom.height/3))<((vh/2)-50))
-		  y=y_target-vh/2;
-		else if ((geom.height)<(vh-100))
-		  y=geom.top-(50+(geom.height/2));
-		else y=geom.top-50;
-		if ((!(saved_y))||(!(saved_x))) {
-		  saved_x=(fdjtDOM.parsePX(sbook.body.style.left));
-		  saved_y=(fdjtDOM.parsePX(sbook.body.style.top));}
-		window.scrollTo(0,0);
-		sbook.body.style.left=""+(x_offset-x)+"px";
-		sbook.body.style.top=""+(y_offset-y)+"px";}}
-	else fdjtUI.scrollPreview(elt,cxt,off);}
-    sbook.scrollPreview=scrollPreview;
-    function scrollRestore(){
-	if (sbook.scrollfree) {
-	    if ((saved_x)||(saved_y)) {
-		window.scrollTo(0,0);
-		sbook.body.style.left=""+(x_offset-saved_x)+"px";
-		sbook.body.style.top=""+(y_offset-saved_y)+"px";
-		saved_x=false; saved_y=false;}}
-	else fdjtUI.scrollRestore();}
-    sbook.scrollRestore=scrollRestore;
-
+	if (sbook.nativescroll) return fdjtDOM.viewTop();
+	else return -(fdjtDOM.parsePX(sbook.body.style.top));}
     var sbookUIclasses=
 	/(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bsbookmargin\b)/;
 
@@ -509,9 +457,8 @@ var sbook_gloss_data=
 	var saved_x=((fdjtDOM.isVisible(target))&&(fdjtDOM.viewLeft()));
 	window.location.hash=target.id;
 	// This resets when setting the ID moved the page unneccessarily
-	if (!(scrollfree)) {
-	    if ((fdjtDOM.viewLeft()!==saved_x)||(fdjtDOM.viewTop()!==saved_y))
-		sbook.scrollTo(saved_x,saved_y);}}
+	if ((fdjtDOM.viewLeft()!==saved_x)||(fdjtDOM.viewTop()!==saved_y))
+	    sbook.scrollTo(saved_x,saved_y);}
     sbook.setHashID=setHashID;
 
     function scrollToElt(elt,cxt){

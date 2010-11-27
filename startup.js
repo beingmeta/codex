@@ -91,7 +91,7 @@ sbook.Startup=
 		function(){
 		    sbook.setupTOC(metadata[sbook.root.id]);},
 		function(){
-		    if (sbook.scrollfree) sbook.resizeBody();
+		    sbook.resizeBody();
 		    sbook.body.style.opacity='';},
 		initLocation,
 		function(){
@@ -285,7 +285,6 @@ sbook.Startup=
 	var viewport_spec="width=device-width,initial-scale=1.0";
 	function viewportSetup(){
 	    var head=fdjtDOM.getHEAD();
-	    sbook.ScrollFree(true);
 	    var viewport=fdjtDOM.getMeta("viewport",false,false,true);
 	    if (!(viewport)) {
 		viewport=document.createElement("META");
@@ -427,7 +426,6 @@ sbook.Startup=
 		while (i<lim) sbody.appendChild(nodes[i++]);
 		document.body.appendChild(sbody);}
 	    fdjtDOM.addClass(document.body,"sbook");
-	    if (sbook.scrollfree) fdjtDOM.addClass(document.body,"scrollfree");
 	    sbook.body=sbody;
 	    if (sbook.Trace.startup>1)
 		fdjtLog("[%fs] Initialized body",fdjtET());}
