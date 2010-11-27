@@ -885,8 +885,16 @@ var sbookPaginate=
 	    pagehead.style.display=''; pagefoot.style.display='';
 
 	    if (!(sbook.nativescroll)) {
+		var vw=fdjtDOM.viewWidth();
+		var vh=fdjtDOM.viewHeight();
+		body.style.width=vw+'px';
+		body.style.height=vh+'px';}
+
+	    /* // Not sure what this does
+	    if (!(sbook.nativescroll)) {
 		var vh=fdjtDOM.viewHeight();
 		pagefoot.style.height=(vh*2)+'px';}
+	    */
 
 	    // The better way to do this might be to change the stylesheet,
 	    //  but fdjtDOM doesn't handle that currently

@@ -53,8 +53,7 @@ sbook.Startup=
 	    // Dependent setups
 	    fdjtDOM.init();
 	    // Add this as soon as possible
-	    if (sbook.paginate)
-		fdjtDOM.addClass(document.body,"paginate");
+	    if (sbook.paginate) fdjtDOM.addClass(document.body,"paginate");
 	    var metadata=false;
 	    var helphud=false;
 	    fdjtTime.timeslice
@@ -413,14 +412,7 @@ sbook.Startup=
 		 ((fdjtID(fdjtDOM.getMeta("sbook.body")))||(document.body)):
 		 (fdjtID("SBOOKCONTENT")));
 	    if (!(sbody)) {
-		sbody=fdjtDOM("div#SBOOKCONTENT");  /* {
-						    var bodystyle=fdjtDOM.getStyle(document.body);
-						    var left=fdjtDOM.parsePX(bodystyle.marginLeft);
-						    var right=fdjtDOM.parsePX(bodystyle.marginRight);
-						    sbody.style.marginLeft=left+'px';
-						    sbody.style.marginRight=right+'px';
-						    document.body.style.marginLeft='0px';
-						    document.body.style.marginRight='0px';} */
+		sbody=fdjtDOM("div#SBOOKCONTENT");
 		var nodes=fdjtDOM.toArray(document.body.childNodes);
 		var i=0; var lim=nodes.length;
 		while (i<lim) sbody.appendChild(nodes[i++]);

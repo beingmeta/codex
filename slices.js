@@ -340,11 +340,12 @@ var sbook_delete_icon="redx12x12.png";
 	    if (curinfo!==docinfo) {
 		if (headinfo!==curhead) {
 		    headelt=fdjtDOM("div.sbookthread.tocthread",tochead);
+		    headelt.frag=headinfo.frag;
 		    fdjtDOM.append(div,headelt);
 		    curhead=headinfo;}
 		threadelt=fdjtDOM("div.sbookthread.idthread",
 				  makeIDHead(target,headinfo,true));
-		threadelt.about="#"+frag;
+		threadelt.frag=frag;
 		threadelt.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
 		    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
 		fdjtDOM.append(headelt,threadelt);

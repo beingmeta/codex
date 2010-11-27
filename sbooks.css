@@ -92,13 +92,13 @@ div#SBOOKHUD div.hudpanel div.scrollbox > div {
     overflow: auto;}
 
 div#SBOOKHUD img.hudbutton {
-    position: absolute; width: 50px; height: 50px; z-index: 200;
+    position: fixed; width: 50px; height: 50px; z-index: 200;
     border: solid transparent 2px; opacity: 0.01;}
 body.hudup div#SBOOKHUD img.hudbutton  {}
 body div#SBOOKHUD img.hudbutton:hover { opacity: 0.45;}
 body.preview div#SBOOKHUD img.hudbutton { display: none;}
 div#SBOOKHUD img.previewicon {
-    position: absolute; width: 50px; height: 50px; z-index: 200;
+    position: fixed; width: 50px; height: 50px; z-index: 200;
     font-family: sans,sans-serif;
     visibility: visible; opacity: 0.01;
     border: solid red 2px;
@@ -201,11 +201,11 @@ div#SBOOKHUD.toc .hudbutton[alt='toc'] {
 /* Scanner rules */
 
 body.hudup div#SBOOKHUD div#SBOOKSCANNER div#SBOOKSCAN {
-    position: absolute; left: 36px; right: 36px;}
+    position: fixed; left: 36px; right: 36px;}
 body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="prev"] {
-    position: absolute; left: 0px; top: 8px;}
+    position: fixec; left: 0px; top: 8px;}
 body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="next"] {
-    position: absolute; right: 0px; top: 8px;}
+    position: fixed; right: 0px; top: 8px;}
 
 /* About this book */
 
@@ -223,7 +223,7 @@ div#SBOOKHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
 /* SBOOKGLOSSES */
 
-div#SBOOKHUD div.hudpanel#SBOOKGLOSSES {position: absolute; right: 50px;}
+div#SBOOKHUD div.hudpanel#SBOOKGLOSSES {position: fixed; right: 50px;}
 
 /* SBOOKSOURCES */
 
@@ -533,7 +533,7 @@ body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
 
 div#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
     vertical-align: bottom; max-height: 20px;
-    position: absolute; bottom: 0px; z-index: 100;
+    position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
     border-top: solid black 1px;
     display: none;}
@@ -546,7 +546,7 @@ body.paginate div#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
 body.pageswitch div#SBOOKPAGEFOOT div#SBOOKPAGEINFO { opacity: 0.0001;}
 
 div#SBOOKFOOT div#SBOOKFOOTINFO {
-    position: absolute; left: 100px; right: 100px; bottom: 0px;
+    position: fixed; left: 100px; right: 100px; bottom: 0px;
     opacity: 0.9; background-color: #4682b4; color: ivory;
     max-height: 100px; overflow: hidden;
     border-top-left-radius: 6px; 
@@ -1058,9 +1058,11 @@ div#SBOOKHUD .sbooknote span.oldterm {color: blue; }
 .sbooknote span.user { 
   color: gold; font-size: 125%; font-style: italic;}
 .sbooknote span.user:after { 
-  font-style: normal; color: silver; content: ' ¢¢ ';}
+  font-style: normal; color: silver; content: ' — ';}
 .sbooknote span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
+.sbooknote span.audience { 
+  color: silver; font-size: 75%; font-weight: normal; font-style: italic;}
 body.sbook a.sbooknote { display: block;}
 .sbooknote.gloss { min-height: 50px;}
 .sbooknote .info { 
