@@ -236,6 +236,7 @@ sbook.Startup=
 	    if ((useragent.search("Safari/")>0)&&
 		(useragent.search("Mobile/")>0)) { 
 		hide_mobile_safari_address_bar();
+		sbook.nativescroll=false;
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {

@@ -65,8 +65,8 @@ var sbook=
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
 	 startup: 1,	// Whether to debug startup
-	 mode: false,	// Whether to trace mode changes
-	 nav: false,	// Whether to trace book navigation
+	 mode: true,	// Whether to trace mode changes
+	 nav: true,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// Whether (and level) to trace searches
 	 clouds: 0,	// Whether to trace cloud generation
@@ -398,10 +398,11 @@ var sbook_gloss_data=
     function scrollTo(x,y,win){
       if (sbook.nativescroll) (win||window).scrollTo(x,y);
 	else {
-	    fdjtLog("[%fs] scrolling to %o,%o, xoff=%o, yoff=%o",
-		    fdjtET(),x,y,x_offset,y_offset);
+	    //(win||sbook.body).style[fdjtDOM.transform]=" translateY(-"+y+"px)";
+	    window.scrollTo(0,0);
 	    (win||sbook.body).style.left=""+(-x)+"px";
-	    (win||sbook.body).style.top=""+(y_offset-y)+"px";}}
+	    (win||sbook.body).style.top=""+(-y)+"px";
+	}}
     sbook.scrollTo=scrollTo;
     function scrollPos(win){
 	if (sbook.nativescroll)

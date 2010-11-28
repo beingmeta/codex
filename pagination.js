@@ -875,6 +875,7 @@ var sbookPaginate=
 		fdjtDOM.prepend(document.body,topleading);
 		fdjtDOM.append(document.body,bottomleading);}
 	    else {
+		fdjtDOM.addClass(document.body,"sbookscroll");
 		fdjtDOM.prepend(sbook.body,topleading);
 		fdjtDOM.append(sbook.body,bottomleading);}
 	    
@@ -887,8 +888,10 @@ var sbookPaginate=
 	    if (!(sbook.nativescroll)) {
 		var vw=fdjtDOM.viewWidth();
 		var vh=fdjtDOM.viewHeight();
-		body.style.width=vw+'px';
-		body.style.height=vh+'px';}
+		window.scrollTo(0,0);
+		document.body.style.overflow='hidden';
+		document.body.style.width=vw+'px';
+		document.body.style.height=vh+'px';}
 
 	    /* // Not sure what this does
 	    if (!(sbook.nativescroll)) {
@@ -918,18 +921,15 @@ var sbookPaginate=
 			pageinfo,off,footheight);
 	    if (footheight<0) {
 		footheight=0; sbook.curbottom=sbook_bottom_px;}
-	    if (sbook.nativescroll) {
-		fdjtID("SBOOKPAGEFOOT").style.height=footheight+'px';}
-	    else {
-		var pagefoot=fdjtID("SBOOKPAGEFOOT");
-		pagefoot.style.top=(viewheight-footheight)+'px';
-		var pageinfo=fdjtID("SBOOKPAGEINFO");
-		pageinfo.style.top=(footheight-pageinfo.offsetHeight)+'px';}}
+	    fdjtID("SBOOKPAGEFOOT").style.height=footheight+'px';}
 	
 	function resizePage(){
+	    var vw=fdjtDOM.viewWidth();
 	    var vh=fdjtDOM.viewHeight();
-	    var pf=fdjtID("SBOOKPAGEFOOT");
-	    pf.style.height=(vh*2)+'px';
+	    if (!(sbook.nativescroll)) {
+		window.scrollTo(0,0);
+		document.body.style.width=vw+'px';
+		document.body.style.height=vh+'px';}
 	    sbookPaginate(sbook.paginate);}
 
 	/* Top level functions */
@@ -992,8 +992,7 @@ var sbookPaginate=
 		var blockbot=parsePX(blockstyle.paddingBottom)+
 		    parsePX(blockstyle.borderBottom);
 		var blockheight=pagesize-((blocktop||0)+(blockbot||0));
-		block.style.maxHeight=blockheight+'px';
-		block.style.height=blockheight+'px';}
+		block.style.maxHeight=blockheight+'px';}
 	    var adjustpages=function(){
 		i=0; while (i<lim) {
 		    var block=fullpages[i++];
@@ -1024,6 +1023,8 @@ var sbookPaginate=
 	
 	sbook.isContent=isContentBlock;
 	sbook.scanContent=scanContent;
+
+	fdjtDOM.trace_adjust=true;
 
 	sbookPaginate.debug=debug_pagination;
 

@@ -34,7 +34,7 @@
 /* Major wrappers and rules */
 
 body.sbook {}
-#SBOOKBODY {
+#SBOOKCONTENT {
     margin: 0px; padding: 0px; border: 0px;
     transition-property: opacity; transition-duration: 0.2s;
     -webkit-transition-property: opacity;
@@ -42,12 +42,15 @@ body.sbook {}
     -moz-transition-property: opacity;
     -moz-transition-duration: 0.2s;
     -o-transition-property: opacity;
-    -o-transition-duration: 0.2s;}
-body.touch #SBOOKBODY {
+    -o-transition-duration: 0.2s;
+    height: 100%; overflow: visible;}
+body.touch #SBOOKCONTENT {
     transition-duration: 0.4s;
     -webkit-transition-duration: 0.4s;
     -moz-transition-duration: 0.4s;
     -o-transition-duration: 0.4s;}
+body.sbookscroll #SBOOKCONTENT {
+    position: absolute; left: 0px; right: 0px; top: 0px;}
 
 /* The HUD */
 
@@ -505,7 +508,8 @@ body div.sbookmargin {
     position: fixed; display: none;
     /* opacity: 0.5; border: solid green 1px; */
     background-color: white; z-index: 5;}
-body.paginate div.sbookmargin { display: block;}
+body.paginate div.sbookmargin {
+    display: block;}
 body.preview div.sbookmargin { display: none;}
 body.paginate.preview div.sbookmargin { display: none;}
 body.paginate.preview div.sbookmargin#SBOOKPAGEFOOT nevermind {
@@ -1123,10 +1127,11 @@ div.locbar hr {
   border: solid transparent 2px;
   width: 32px; height: 32px; z-index: 50;
   border-right: 0px;
-  opacity: 0.0001;}
+  opacity: 0.0001;
+  display: none;}
 body .glossmark { opacity: 0.4;}
 *:hover > .glossmark { opacity: 0.7;}
-body.hudup .glossmark { opacity: 0.9;}
+body.hudup .glossmark { opacity: 0.9; display: block;}
 
 .glossmark img {
    float: right;
@@ -1360,7 +1365,7 @@ div.sbookaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD {
 body.scrollfree div#SBOOKHUD div.hudpanel div.scrollbox {
     overflow: visible;}
 body.scrollfree {} /* margin: 0px; */
-body.scrollfree #SBOOKBODY {
+body.scrollfree #SBOOKCONTENT {
     position: absolute;}
 body.scrollfree div#SBOOKHUD div#SBOOKFOOT { overflow: visible;}
 body.scrollfree div#SBOOKHUD div#SBOOKFOOT,

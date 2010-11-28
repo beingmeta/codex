@@ -900,6 +900,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 content: {mouseup:content_mouseup},
 	 hud: {click: hud_click},
 	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},
+	 ".sbookmargin": {click: content_mouseup},
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
 	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
@@ -928,6 +929,18 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
 	 glossmark: {touchend: glossmark_onclick,touchstart: cancel,touchmove: cancel}};
+
+    sbook.UI.handlers.webtouch=
+	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
+	 content: {mouseup:content_mouseup},
+	 hud: {click: hud_click},
+	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},
+	 "#SBOOKPAGERIGHT": {click: Forward},
+	 "#SBOOKPAGELEFT": {click: Backward},
+	 ".sbookmargin": {click: content_mouseup},
+	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
+	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
+	       mouseout: fdjtUI.CoHi.onmouseout}};
 
     sbook.UI.handlers.oneclick=
 	{window: {keyup: onkeyup, keydown:onkeydown,keypress:onkeypress},

@@ -35,46 +35,28 @@ body.sbook .titlepage .title, {
     text-align: center; font-weight: bold;
     clear: both; font-size: 150%;}
 body.sbook .titlepage .title img {
-    width: 80%;}
+    max-width: 80%;}
 body.sbook .titlepage div.subtitle {
-  clear: both;
-  text-align: center; font-style: italic; font-weight: normal;
-  font-size: 50%;}
+  clear: both; text-align: center;
+  font-style: italic; font-weight: normal; font-size: 50%;}
 body.sbook .titlepage .author { 
-  clear: both;
-  text-align: center; font-style: italic; 
-  margin-top: 1em; margin-bottom: 1em;
-  font-size: 120%;}
+  clear: both; text-align: center;
+  font-style: italic;  font-size: 120%;
+  margin-top: 1em; margin-bottom: 1em;}
 body.sbook .titlepage .editor { 
-  clear: both;
-  text-align: center; font-style: normal; font-weight: normal;
-  font-size: 100%;}
+  clear: both; text-align: center;
+  font-style: normal; font-weight: normal; font-size: 100%;}
 body.sbook .titlepage div.dedication { 
-  clear: both;
-  text-align: left; font-style: normal; font-weight: normal;
-  margin-left: auto; margin-right: auto; width: 50%;
+  clear: both; text-align: left;
+  font-style: normal; font-weight: normal;
+  margin-left: auto; margin-right: auto; max-width: 50%;
   font-size: 50%;}
 body.sbook .titlepage div.pubinfo { 
-  clear: both; font-size: 80%;
+  clear: both; 
   position: relative; bottom: 0px;
-  font-variant: smallcaps;
-  background-color: ivory; font-size: 50%; padding: 4px;
-  width: 90%; margin-left: 5%; margin-right: 5%;
+  font-variant: smallcaps; font-size: 80%;
+  background-color: ivory; padding: 4px;
   margin-bottom: 12px; margin-top: 12px;}
-body.sbook h1.titlepage div.sbookinfo { 
-    float: left; clear: both; width: 100%; vertical-align: middle;
-    font-family: sans,sans-serif; margin-top: 2ex;
-    text-align: center; font-variant: small-caps;}
-body.sbook h1.titlepage div.frontpiece { 
-  text-align: center;}
-body.sbook h1.titlepage .frontpiece img { border: none; }
-
-h1.titlepage.sbookhead { text-decoration: none;}
-h1.titlepage.sbookfocus { color: inherit;}
-h1.titlepage.sbookpingfocus { text-decoration: inherit; color: inherit;}
-
-body.sbook h1.titlepage div.poem { 
-  border: solid 3px black; margin: 6px; font-size: 50%;}
 
 body.sbook .frontpiece div.poem {
   margin: 0px; border: none; font-weight: normal;}
