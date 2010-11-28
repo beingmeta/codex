@@ -1024,8 +1024,6 @@ var sbookPaginate=
 	sbook.isContent=isContentBlock;
 	sbook.scanContent=scanContent;
 
-	fdjtDOM.trace_adjust=true;
-
 	sbookPaginate.debug=debug_pagination;
 
 	return sbookPaginate;})();

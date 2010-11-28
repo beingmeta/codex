@@ -64,7 +64,7 @@ div#SBOOKHUD div.hudpanel {
     border: solid transparent 3px;}
 /* Being on top */
 div#SBOOKHUD div.hudpanel {
-    position: fixed; top: 0px; left: 100px; right: 100px;
+    position: fixed; top: 0px; left: 75px; right: 75px;
     text-align: center;
     overflow: hidden;}
 div#SBOOKHUD div.hudpanel {
@@ -204,11 +204,11 @@ div#SBOOKHUD.toc .hudbutton[alt='toc'] {
 /* Scanner rules */
 
 body.hudup div#SBOOKHUD div#SBOOKSCANNER div#SBOOKSCAN {
-    position: fixed; left: 36px; right: 36px;}
+    margin-left: 36px; margin-right: 36px;}
 body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="prev"] {
-    position: fixec; left: 0px; top: 8px;}
+    position: absolute; left: 0px; top: 8px;}
 body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="next"] {
-    position: fixed; right: 0px; top: 8px;}
+    position: absolute; right: 0px; top: 8px;}
 
 /* About this book */
 
@@ -324,7 +324,7 @@ div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC
 
 div#SBOOKFLYTOC div.sbooktoc.cur div.sub { display: none;}
 
-div.sbooktoc .sectname.cohi { color: ivory;}
+div.sbooktoc .sectname.cohi { color: gold;}
 div.sbooktoc .sectname { color: ivory; cursor: pointer;}
 div.sbooktoc div.sub a.sectname { 
   color: ivory; font-size: 80%; white-space: nowrap;}
@@ -348,12 +348,12 @@ div.spanbar {
   margin: 0px; padding: 0px; border: 0px; /* opacity: 0.5;  */
   height: 14px; font-size: 3px;} /*   border-top: solid black 2px; */
 div.spanbar div.spans { 
-  position: relative;
+  position: relative; width: 100%; background-color: black;
   margin: 0px; padding: 0px; border: 0px;}
 div.spanbar div.sbookhudspan {
-  background-color: silver; clear: none; float: left;
-  margin: 0px; padding: 0px;
-  border: 0px;
+  background-color: silver; clear: none; position: absolute;
+  margin: 0px; padding: 0px; border: 0px;
+  border-right: none; border-left: none;
   border-top: solid blue 2px; border-bottom: solid blue 2px;
   height: 10px; }
 div.spanbar div.sbookhudspan div.brick {
@@ -373,8 +373,7 @@ div.spanbar div.sbookhudspan[odd] {}
 div.spanbar div.sbookhudspan[even] {}
 div.spanbar div.sbookhudspan.current {
     color: yellow; background-color: yellow;}
-div.spanbar div.sbookhudspan:hover { 
-  border-bottom: dotted red 2px; border-top: dotted red 2px; }
+/* div.spanbar div.sbookhudspan:hover { border-bottom: dotted red 2px; border-top: dotted red 2px; } */
 div.spanbar div.sbookhudspan.previewed { 
   border-bottom: solid red 2px; border-top: solid red 2px;
   background-color: red;}
@@ -1140,7 +1139,7 @@ body.hudup .glossmark { opacity: 0.9; display: block;}
 .glossmark img.big {width: 32px;}
 .glossmark img.tiny, span.glossmark img.big { display: none; }
 
-.glossbutton {
+.sbookglossbutton {
   position: absolute; left: 0px; text-align: right;
   margin: 0px; padding: 0px; text-indent: 0px; 
   border: solid transparent 2px;
@@ -1148,8 +1147,8 @@ body.hudup .glossmark { opacity: 0.9; display: block;}
   border-right: 0px;
   opacity: 0.0001;
   display: none;}
-body.hudup .glossbutton { opacity: 0.5;}
-body.hudup .sbooktarget .glossbutton { opacity: 0.9; display: block;}
+body.hudup .sbookglossbutton { opacity: 0.5;}
+body.hudup .sbooktarget .sbookglossbutton { opacity: 0.9; display: block;}
 
 /* .sparsebook */
 body .glossmark img.tiny { display: block;}

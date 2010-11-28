@@ -144,17 +144,23 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function addGlossButton(target){
 	var passage=sbook.getTarget(target);
+	if (!(passage)) return;
 	var img=fdjtDOM.getChild(passage,".sbookglossbutton");
 	if (img) return;
-	if (!(passage)) return;
-	img=fdjtDOM.Image(sbicon("remarkballoon32x32.png"),".glossbutton",
+	img=fdjtDOM.Image(sbicon("remarkballoon32x32.png"),".sbookglossbutton",
 			  "+","click to add a gloss to this passage");
-	img.onclick=function(evt){
-	    evt=evt||event;
-	    sbook.glossTarget(passage);
-	    sbookMode("addgloss");}
-	fdjtDOM.prepend(target,img);}
+	sbook.UI.addHandlers(img,"glossbutton");
+	fdjtDOM.prepend(passage,img);}
     
+    function glossbutton_onclick(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var passage=sbook.getTarget(target);
+	if (passage) {
+	    fdjtUI.cancel(evt);
+	    sbook.glossTarget(passage);
+	    sbookMode("addgloss");}}
+
     var excerpts=[];
 
     /* New handlers */
@@ -193,8 +199,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     /* Mouse handlers */
 
-    function content_tapped(evt){
-	var target=fdjtUI.T(evt);
+    function content_tapped(evt,target){
+	if (!(target)) target=fdjtUI.T(evt);
 	var passage=sbook.getTarget(target);
 	if (sbook.Trace.gestures)
 	    fdjtLog("[%fs] content_tapped (%o) on %o passage=%o mode=%o",
@@ -212,6 +218,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (!(sbook.hudup)) {
 	    if (passage) tapTarget(passage);
 	    else sbookMode(true);}
+	else if (!(sbook.target)) sbookMode(false);
 	else if (!(passage)) sbookMode(true);
 	else if (passage===sbook.target) sbookMode(false);
 	else tapTarget(passage);}
@@ -219,9 +226,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function hud_tap(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
 	if (fdjtDOM.isClickable(target)) return;
-	else if (fdjtDOM.hasParent(element,".helphud")) {
-	    var mode=fdjtDOM.findAttrib(element,"data-hudmode")||
-		fdjtDOM.findAttrib(element,"hudmode");
+	else if (fdjtDOM.hasParent(target,".helphud")) {
+	    var mode=fdjtDOM.findAttrib(target,"data-hudmode")||
+		fdjtDOM.findAttrib(target,"hudmode");
 	    if (mode) sbookMode(mode)
 	    else sbookMode(false);
 	    return fdjtUI.cancel(evt);}
@@ -444,7 +451,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	// When faking touch, moves only get counted if the mouse is down.
 	if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
 	// When selecting, don't do anything
-	if (!(isEmptySelection(window.getSelection()))) return;
+	if (!(emptySelection(window.getSelection()))) return;
 	fdjtUI.cancel(evt);
 	touch_moves++;
 	var touch=
@@ -499,7 +506,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    return;}
 	else if (touch_scrolled) return;  // Gesture already intepreted
 	else if (touch_moved) return;  // Gesture already intepreted
-	else return content_tap(target);}
+	else return content_tapped(evt,target);}
 
     function hud_touchmove(evt){
 	// When faking touch, moves only get counted if the mouse is down.
@@ -533,35 +540,32 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function hud_touchend(evt){
 	if (sbook.Trace.gestures) tracetouch("hud_touchend",evt);
-	if (unhold) {
-	    var tocall=unhold; unhold=false; tocall();}
 	var target=fdjtUI.T(evt);
-	if (hold_timer) {
-	    clearTimeout(hold_timer); hold_timer=false;}
 	mouseisdown=false; // For faketouch
 	var scroller=((sbook.scrolling)&&(sbook.scrollers)&&
 		      (sbook.scrollers[sbook.scrolling]));
 	// fdjtLog("[%f] hud_touchend scroller=%o(%o) moved=%o",fdjtET(),scroller,scroller.element,scroller.moved);
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
-	else if (fdjtDOM.isClickable(target))
+	else if (fdjtDOM.isClickable(target)) {
 	    if (sbook.ui==="faketouch") {
 		// This happens automatically when faking touch
 		fdjtUI.cancel(evt);
 		return;}
-	else {
-	    if (sbook.Trace.gestures)
-		fdjtLog("[%fs] Synthesizing click on %o",fdjtET(),target);
-	    var click_evt = document.createEvent("MouseEvents");
-	    click_evt.initMouseEvent("click", true, true, window,
-				     1,page_x,page_y,last_x, last_y,
-				     false, false, false, false, 0, null);
-	    fdjtUI.cancel(evt);
-	    target.dispatchEvent(click_evt);
-	    return;}
+	    else {
+		if (sbook.Trace.gestures)
+		    fdjtLog("[%fs] Synthesizing click on %o",fdjtET(),target);
+		var click_evt = document.createEvent("MouseEvents");
+		click_evt.initMouseEvent("click", true, true, window,
+					 1,page_x,page_y,last_x, last_y,
+					 false, false, false, false, 0, null);
+		fdjtUI.cancel(evt);
+		target.dispatchEvent(click_evt);
+		return;}}
+	/*
 	else if (touch_scrolled) return;  // Gesture already intepreted
 	else if (touch_moved) return;  // Gesture already intepreted
-	else {
-	    return hud_tap(evt,target);}}
+	*/
+	else return hud_tap(evt);}
 
     /* Glossmarks */
     
@@ -720,6 +724,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 content: {mouseup:content_tapped},
 	 hud: {click: hud_tap},
 	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},
+	 glossbutton: {touchend: glossbutton_onclick,touchstart: cancel,touchmove: cancel},
 	 ".sbookmargin": {click: content_tapped},
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
@@ -732,9 +737,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.UI.handlers.webtouch=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
 		  touchstart:cancel,touchmove:cancel,touchend:cancel},
-	 body: {touchstart: generic_touchstart,
-		touchmove: content_touchmove,
-		touchend: content_touchend},
+	 content: {touchstart: generic_touchstart,
+		   touchmove: content_touchmove,
+		   touchend: content_touchend},
 	 hud: {touchstart: generic_touchstart,
 	       touchmove: hud_touchmove,
 	       touchend: hud_touchend},
@@ -743,24 +748,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 			  touchmove: content_touchmove},
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
-	 glossmark: {touchend: glossmark_onclick,touchstart: cancel,touchmove: cancel}};
-
-    sbook.UI.handlers.webtouch=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
-	 content: {touchstart: generic_touchstart,
-		   touchmove: content_touchmove,
-		   touchend: content_touchend},
-	 hud: {touchstart: generic_touchstart,
-	       touchmove: hud_touchmove,
-	       touchend: hud_touchend},
-	 glossmark: {click: glossmark_onclick},
-	 "#SBOOKPAGERIGHT": {click: Forward,touchmove: cancel},
-	 "#SBOOKPAGELEFT": {click: Backward,touchmove: cancel},
-	 ".sbookmargin": {click: content_tapped,touchmove: cancel},
-	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
-	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
-	       mouseout: fdjtUI.CoHi.onmouseout}};
-
+	 glossmark: {touchend: glossmark_onclick,touchstart: cancel,touchmove: cancel},
+	 glossbutton: {touchend: glossbutton_onclick,touchstart: cancel,touchmove: cancel}
+	};
+    
 })();
 
 /* Emacs local variables

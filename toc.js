@@ -76,6 +76,7 @@ var sbookTOC=
 	    toc.sbook_end=headinfo.ends_at;
 	    fdjtDOM.addClass(toc,"toc"+depth);
 	    toc.id=(prefix||"SBOOKTOC4")+headinfo.frag;
+	    head.name="SBR"+headinfo.frag;
 	    if ((!(sub)) || (!(sub.length))) {
 		fdjtDOM.addClass(toc,"sbooktocleaf");
 		return toc;}
@@ -125,7 +126,7 @@ var sbookTOC=
 	    if ((!(subsections)) || (subsections.length===0))
 		return false;
 	    var progress=fdjtDOM("div.progressbox","\u00A0");
-	    var range=false;
+	    var range=false; var lastspan=false;
 	    fdjtDOM(spanbar,spans);
 	    fdjtDOM(spans,range,progress);
 	    progress.style.left="0%";
@@ -145,22 +146,25 @@ var sbookTOC=
 		    sectnum++;}
 		var span=generate_span
 		(sectnum,subsection,spaninfo.title,spanstart,spanend,len,
-		 ((addname)&&("SBR"+spaninfo.frag)));
+		 ((addname)&&("SBR"+spaninfo.frag)),start);
+		lastspan=span;
 		spans.appendChild(span);
 		last_info=spaninfo;}
 	    if ((end-last_info.ends_at)>0) {
 		/* Add 'fake section' for the content after the last
 		 * actual section */
 		var span=generate_span
-		(sectnum,head,headinfo.title,last_info.ends_at,end,len);
+		(sectnum,head,headinfo.title,last_info.ends_at,end,len,start);
 		spanbar.appendChild(span);}    
 	    return spanbar;}
 	
-	function generate_span(sectnum,subsection,title,spanstart,spanend,len,name){
+	function generate_span(sectnum,subsection,title,spanstart,spanend,len,name,pstart){
 	    var spanlen=spanend-spanstart;
 	    var anchor=fdjtDOM("A.brick","\u00A0");
 	    var span=fdjtDOM("DIV.sbookhudspan",anchor);
-	    var width=(Math.floor(10000*(spanlen/len))/100)+"%";
+	    var width=(Math.round(100000000*(spanlen/len))/1000000)+"%";
+	    var left=(Math.round(100000000*((spanstart-pstart)/len))/1000000);
+	    span.style.left=left+"%";
 	    span.style.width=width;
 	    span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
 	    span.frag=subsection.id;
