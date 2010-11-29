@@ -248,12 +248,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (typeof x !== 'number') x=last_x;
 	if (typeof x === 'number') {
 	    if (x<50) {
-		if (sbook.scanning) scanBackward();
+		if ((sbook.scanning)&&((evt.shiftKey)||(n_touches>1)))
+		    scanBackward();
 		else pageBackward();
 		fdjtUI.cancel(evt);
 		return true;}
 	    else if (x>(fdjtDOM.viewWidth()-50)) {
-		if (sbook.scanning) scanForward();
+		if ((sbook.scanning)&&((evt.shiftKey)||(n_touches>1)))
+		    scanForward();
 		else pageForward();
 		fdjtUI.cancel(evt);
 		return true;}
@@ -384,6 +386,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     var touch_held=false;
     var touch_moved=false;
     var touch_scrolled=false;
+    var n_touches=0;
 
     var doubletap=false, tripletap=false;
 
@@ -435,11 +438,15 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	touch_started=fdjtTime();
 	var touches=evt.touches;
 	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
+	if (touches) n_touches=touches.length;
+	else if (evt.shiftKey) n_touches=2;
+	else n_touches=1;
 	if (touch) {
 	    start_x=last_x=touch.clientX;
 	    start_y=last_y=touch.clientY;
 	    page_x=touch.screenX; page_y=touch.screenY;}
 	else if (evt.clientX) { /* faketouch */
+	    if (evt.shiftKey) n_touches=2; else n_touches=1;
 	    start_x=last_x=evt.clientX;
 	    start_y=last_y=evt.clientY;
 	    page_x=touch.screenX; page_y=evt.screenY;}
@@ -454,10 +461,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (!(emptySelection(window.getSelection()))) return;
 	fdjtUI.cancel(evt);
 	touch_moves++;
+	var touches=evt.touches;
 	var touch=
 	    (((evt.touches)&&(evt.touches.length))?(evt.touches[0]):(evt));
 	if (page_x<0) page_x=touch.screenX;
 	if (page_y<0) page_y=touch.screenY;
+	if ((touches)&&(touches.length>n_touches)) n_touches=touches.length;
 	var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
 	var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
 	// if (sbook.Trace.gestures) tracetouch("touchmove",evt);
@@ -490,8 +499,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		fdjtLog("[%fs] touchend/gesture l=%o,%o s=%o,%o d=%o,%o |d|=%o,%o",
 			fdjtET(),last_x,last_y,start_x,start_y,dx,dy,adx,ady);
 	    if (adx>(ady*3)) { /* horizontal */
-		if (dx<0) sbook.Forward(evt);
-		else sbook.Backward(evt);}
+		if (n_touches===1) {
+		    if (dx<0) sbook.Forward(evt);
+		    else sbook.Backward(evt);}
+		else {
+		    if (dx<0) sbook.scanForward(evt);
+		    else sbook.scanBackward(evt);}}
 	    else if (ady>(adx*3)) { /* vertical */
 		if ((sbook.mode)&&(dy<0)) sbookMode(false);
 		else sbookMode("flyleaf");}
