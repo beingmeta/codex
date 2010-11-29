@@ -73,12 +73,11 @@ var sbook=
 	 focus: false,	// Whether to trace focus/target changes
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// Whether we're debugging server interaction
-	 scanning: false, // Whether to trace content scanning
 	 glosses: false,// Whether we're tracing gloss processing
 	 layout: 0,	// Whether to trace pagination
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 0} // Whether to trace gestures
+	 gestures: 0}   // Whether to trace gestures
     };
 var _sbook_setup=false;
 
@@ -213,10 +212,29 @@ var sbook_gloss_data=
 	else return target.id;};
 
     function getHead(target){
-	while (target)
-	    if ((target.id)&&(sbook.docinfo[target.id])) {
-		target=sbook.docinfo[target.id]; break;}
-	else target=target.parentNode;
+	/* First, find some relevant docinfo */
+	if ((target.id)&&(sbook.docinfo[target.id]))
+	    target=sbook.docinfo[target.id];
+	else if (target.id) {
+	    while (target)
+		if ((target.id)&&(sbook.docinfo[target.id])) {
+		    target=sbook.docinfo[target.id]; break;}
+	    else target=target.parentNode;}
+	else {
+	    /* First, try scanning forward to find a non-empty node */
+	    var scan=target.firstChild; var next=target.nextNode;
+	    while ((scan)&&(scan!=next)) {
+		if (scan.id) break;
+		if ((scan.nodeType===3)&&(!(fdjtString.isEmpty(scan.nodeValue)))) break;
+		scan=fdjtDOM.forward(scan);}
+	    /* If you found something, use it */
+	    if ((scan)&&(scan.id)&&(scan!=next))
+		target=sbook.docinfo[scan.id];
+	    else {
+		while (target)
+		    if ((target.id)&&(sbook.docinfo[target.id])) {
+			target=sbook.docinfo[target.id]; break;}
+		else target=target.parentNode;}}
 	if (target)
 	    if (target.level)
 		return target.elt||document.getElementById(target.frag);

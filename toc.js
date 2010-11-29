@@ -85,8 +85,8 @@ var sbookTOC=
 		toc.appendChild(sbookTOC(sub[i++],depth+1,spec,prefix));}
 	    return toc;}
 	
-	function tocJump(evt){
-	    var target=fdjtUI.T(evt);
+	function tocJump(evt,target){
+	    if (!(target)) target=fdjtUI.T(evt);
 	    while (target) {
 		if (target.frag) break;
 		else target=target.parentNode;}

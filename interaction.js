@@ -237,30 +237,28 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		sbook.Scan(fdjtID(target.about),target);
 		return fdjtUI.cancel(evt);}
 	    else if (target.frag) {
-		sbook.tocJump(fdjtID(target.about));
+		sbook.tocJump(evt,fdjtID(target.about));
 		return fdjtUI.cancel(evt);}
 	    else target=target.parentNode;}}
     
     /* Mouse handlers */
 
     function edgeTap(evt,x){
+	if (!(evt)) evt=event||false;
 	if (typeof x !== 'number') x=((evt)&&(evt.clientX));
 	if (typeof x !== 'number') x=last_x;
 	if (typeof x === 'number') {
-	    if (x<50) {
-		if ((sbook.scanning)&&((evt.shiftKey)||(n_touches>1)))
-		    scanBackward();
-		else pageBackward();
-		fdjtUI.cancel(evt);
-		return true;}
+	    if (sbook.Trace.gestures)
+		fdjtLog("[%fs] edgeTap %o x=%o w=%o",
+			fdjtET(),evt,x,fdjtDOM.viewHeight());
+	    if (x<50) {Backward(evt); return true;}
 	    else if (x>(fdjtDOM.viewWidth()-50)) {
-		if ((sbook.scanning)&&((evt.shiftKey)||(n_touches>1)))
-		    scanForward();
-		else pageForward();
-		fdjtUI.cancel(evt);
-		return true;}
+		Forward(evt); return true;}
 	    else return false;}
 	else return false;}
+    sbook.edgeTap=edgeTap;
+    function edgeTap_onclick(evt) {
+	return edgeTap(evt);}
 
     /* Keyboard handlers */
 
@@ -608,15 +606,29 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     /* Moving forward and backward */
 
+    var last_motion=false;
+
     function Forward(evt){
-	if (!(evt)) evt=event;
-	if ((evt)&&(evt.shiftKey)&&(sbook.scanning))
+	var now=fdjtTime();
+	if (!(evt)) evt=event||false;
+	if (evt) fdjtUI.cancel(evt);
+	if ((last_motion)&&((now-last_motion)<100)) return;
+	else last_motion=now;
+	if (sbook.Trace.nav)
+	    fdjtLog("[%fs] Forward e=%o h=%o t=%o",fdjtET(),evt,sbook.head,sbook.target);
+	if (((evt)&&(evt.shiftKey))||(n_touches>1))
 	    scanForward();
 	else pageForward();}
     sbook.Forward=Forward;
     function Backward(evt){
-	if (!(evt)) evt=event;
-	if ((evt)&&(evt.shiftKey)&&(scanning))
+	var now=fdjtTime();
+	if (!(evt)) evt=event||false;
+	if (evt) fdjtUI.cancel(evt);
+	if ((last_motion)&&((now-last_motion)<100)) return;
+	else last_motion=now;
+	if (sbook.Trace.nav)
+	    fdjtLog("[%fs] Backward e=%o h=%o t=%o",fdjtET(),evt,sbook.head,sbook.target);
+	if (((evt)&&(evt.shiftKey))||(n_touches>1))
 	    scanBackward();
 	else pageBackward();}
     sbook.Backward=Backward;
@@ -688,6 +700,22 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.pageBackward=pageBackward;
 
     function scanForward(){
+	if (sbook.mode==="scanning") {}
+	else if (sbook.mode==="tocscan") {}
+	else if (sbook.scanning) sbookMode("scanning");
+	else sbookMode("tocscan");
+	if (sbook.mode==="tocscan") {
+	    var head=sbook.head; var headinfo=sbook.docinfo[head.id];
+	    if (sbook.Trace.nav) 
+		fdjtLog("[%fs] scanForward/toc() head=%o info=%o n=%o h=%o",
+			fdjtET(),head,headinfo,headinfo.next,headinfo.head);
+	    if (headinfo.next) sbook.GoTo(headinfo.next.elt);
+	    else if ((headinfo.head)&&(headinfo.head.next)) {
+		sbook.GoTo(headinfo.head.next.elt); sbookMode("toc");}
+	    else if ((headinfo.head)&&(headinfo.head.head)&&(headinfo.head.head.next)) {
+		sbook.GoTo(headinfo.head.head.next.elt); sbookMode("toc");}
+	    else sbookMode(false);
+	    return;}
 	var start=sbook.scanning;
 	var slice=fdjtDOM.getParent(start,".sbookslice");
 	var scan=fdjtDOM.forwardElt(start); var ref=false;
@@ -700,13 +728,27 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else scan=fdjtDOM.forwardElt(scan);}
 	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
 	var ref=((scan)&&(sbook.getRef(scan)));
-	if (sbook.Trace.scanning) 
+	if (sbook.Trace.nav) 
 	    fdjtLog("[%fs] scanForward() from %o/%o to %o/%o under %o",
 		    fdjtET(),start,sbook.getRef(start),scan,ref,slice);
 	if ((ref)&&(scan)) sbook.Scan(ref,scan);
 	return scan;}
     sbook.scanForward=scanForward;
     function scanBackward(){
+	if (sbook.mode==="scanning") {}
+	else if (sbook.mode==="tocscan") {}
+	else if (sbook.scanning) sbookMode("scanning");
+	else sbookMode("tocscan");
+	if (sbook.mode==="tocscan") {
+	    var head=sbook.head; var headinfo=sbook.docinfo[head.id];
+	    if (sbook.Trace.nav) 
+		fdjtLog("[%fs] scanBackward/toc() head=%o info=%o p=%o h=%o",
+			fdjtET(),head,headinfo,headinfo.prev,headinfo.head);
+	    if (headinfo.prev) sbook.GoTo(headinfo.prev.elt);
+	    else if (headinfo.head) {
+		sbook.GoTo(headinfo.head.elt); sbookMode("toc");}
+	    else sbookMode(false);
+	    return;}
 	var start=sbook.scanning;
 	var slice=fdjtDOM.getParent(start,".sbookslice");
 	var scan=fdjtDOM.backwardElt(start); var ref=false;
@@ -719,7 +761,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else scan=fdjtDOM.backwardElt(scan);}
 	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
 	var ref=((scan)&&(sbook.getRef(scan)));
-	if (sbook.Trace.scanning) 
+	if (sbook.Trace.nav) 
 	    fdjtLog("[%fs] scanBackward() from %o/%o to %o/%o under %o",
 		    fdjtET(),start,sbook.getRef(start),scan,ref,slice);
 	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
@@ -733,7 +775,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     var cancel=fdjtUI.cancel;
 
     sbook.UI.handlers.mouse=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
+	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,mousedown:edgeTap},
 	 content: {mouseup:content_tapped},
 	 hud: {click: hud_tap},
 	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},
