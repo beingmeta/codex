@@ -246,7 +246,8 @@ div#SBOOKSOURCES {
 div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
     background-color: ivory; color: #4682b4;}
 div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
-    top: 60px; bottom: 60px; left: 0px; right: 100px; border-left: none;
+    top: 55px; bottom: 55px; left: 0px; right: 50px;
+    border-left: none;
     border-top-left-radius: 0px; -o-border-radius-topleft: 0px;
     -moz-border-radius-topleft: 0px; -webkit-border-top-left-radius: 0px; 
     border-bottom-left-radius: 0px; -o-border-radius-bottomleft: 0px;
@@ -261,7 +262,6 @@ div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
     -o-transition-property: -o-transform, opacity;
     -moz-transition-property: -moz-transform, opacity;
     -webkit-transition-property: -webkit-transform, opacity;
-    top: 55px; bottom: 55px; left: 0px; right: 100px;
     height: auto;}
 div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF {
     transform: none; -o-transform: none;
@@ -479,7 +479,7 @@ div#SBOOKHELP table th {
 div#SBOOKHELP table th div {
     padding-right: 4px; margin-bottom: .75em;}
 div#SBOOKHELP table td { text-align: left; vertical-align: top;}
-div#SBOOKHELP table td em { font-size: 125%;}
+div#SBOOKHELP table td em { }
 div#SBOOKHUD.help div#SBOOKHELP { display: block;}
 div#SBOOKHUD.help div#SBOOKHELP img.sbookhidehud {
     left: 0.5em; top: 0.5em; padding: 3px;}
@@ -1278,7 +1278,7 @@ div.sbookaddgloss form div.tags {
 div.sbookaddgloss form div.controls {
     vertical-align: bottom; text-align: left;
     padding-left: 30px; padding-right: 7px;
-    font-size: 16px;}
+    font-size: 12px;}
 div.sbookaddgloss form div.controls span.button {
     border: solid silver 2px; background-color: silver; color: black;
     padding: 2px; border-radius: 4px;

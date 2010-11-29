@@ -225,6 +225,7 @@ var sbookMode=
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
 		if (mode==="flyleaf") mode=sbook.last_flyleaf||"about";
+		if (mode!=="scanning") sbook.scanning=false;
 		if (mode===sbook.mode) {}
 		else if (mode===true) {
 		    sbook.mode=false;

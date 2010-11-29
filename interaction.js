@@ -197,6 +197,15 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	addGlossButton(target);
 	sbookMode(true);}
 
+    function xtapTarget(target){
+	if (sbook.Trace.gestures)
+	    fdjtLog("[%fs] Tap (gloss) on target %o mode=%o",
+		    fdjtET(),target,sbook.mode);
+	sbook.setTarget(target);
+	addGlossButton(target);
+	sbook.glossTarget(target);
+	sbookMode("addgloss");}
+
     /* Mouse handlers */
 
     function content_tapped(evt,target){
@@ -212,15 +221,20 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    var p=sbook.getTarget(sel.anchorNode)||
 		sbook.getTarget(sel.focusNode)||
 		passage;
-	    if (p) sbook.excerpt=sel;
-	    if (p) return tapTarget(p);
+	    if (p) {
+		sbook.excerpt=sel;
+		return tapTarget(p);}
 	    else sbookMode(false);}
 	if (!(sbook.hudup)) {
-	    if (passage) tapTarget(passage);
+	    if ((passage)&&((evt.shiftKey)||(n_touches>1)))
+		xtapTarget(passage);
+	    else if (passage) tapTarget(passage);
 	    else sbookMode(true);}
 	else if (!(sbook.target)) sbookMode(false);
 	else if (!(passage)) sbookMode(true);
 	else if (passage===sbook.target) sbookMode(false);
+	if ((evt.shiftKey)||(n_touches>1))
+	    xtapTarget(passage);
 	else tapTarget(passage);}
 
     function hud_tap(evt,target){
