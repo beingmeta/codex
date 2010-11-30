@@ -215,7 +215,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%fs] content_tapped (%o) on %o passage=%o mode=%o",
 		    fdjtET(),evt,target,passage,sbook.mode);
 	if (fdjtDOM.isClickable(target)) return;
-	else if (edgeTap(evt)) return;
+	else fdjtUI.cancel(evt); 
+	if (edgeTap(evt)) return;
 	var sel=window.getSelection();
 	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
 	    var p=sbook.getTarget(sel.anchorNode)||
@@ -272,7 +273,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else return false;}
     sbook.edgeTap=edgeTap;
     function edgeTap_onclick(evt) {
-	return edgeTap(evt);}
+	if (edgeTap(evt)) fdjtUI.cancel(evt);}
 
     /* Keyboard handlers */
 
@@ -789,11 +790,21 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     var cancel=fdjtUI.cancel;
 
     sbook.UI.handlers.mouse=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,mousedown:edgeTap},
+	{window: {
+	    keyup:onkeyup,
+	    keydown:onkeydown,
+	    keypress:onkeypress,
+	    click:edgeTap_onclick},
 	 content: {mouseup:content_tapped},
 	 hud: {click: hud_tap},
-	 glossmark: {click: glossmark_onclick,mouseup: cancel,mousedown: cancel},
-	 glossbutton: {touchend: glossbutton_onclick,touchstart: cancel,touchmove: cancel},
+	 glossmark: {
+	     click: glossmark_onclick,
+	     mouseup: cancel,
+	     mousedown: cancel},
+	 glossbutton: {
+	     touchend: glossbutton_onclick,
+	     touchstart: cancel,
+	     touchmove: cancel},
 	 ".sbookmargin": {click: content_tapped},
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
