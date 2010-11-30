@@ -110,7 +110,8 @@ div.item input.fullwidth[TYPE='TEXT'] {
     width: 100%; vertical-align: top;}
 div.item TEXTAREA { width: 100%; min-height: 5ex;}
 div.item span.refuri { white-space: nowrap;}
-div.item .invite { float: right; font-size: 70%;}
+div.item .invite { float: right; font-size: 70%; color: green;}
+div.item .admin { float: right; font-size: 70%; color: red;}
 div.item span.title { font-size: 12px;}
 div.item span.refuri { font-size: 10px; font-family: fixed;}
 div.item span.isfree {
