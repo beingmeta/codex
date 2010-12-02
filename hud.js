@@ -57,7 +57,7 @@ var sbookMode=
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=
-		    sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
+		  sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
 		fdjtDOM.prepend(document.body,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_console;
@@ -133,6 +133,13 @@ var sbookMode=
 	    updateScroller("SBOOKSEARCHCLOUD");}
 	sbook.initHUD=initHUD;
 	
+	function fixStaticRefs(string){
+	  if (sbook.graphics==="http://static.beingmeta.com/graphics/")
+	    return string;
+	  else return string.replace
+		 (/http:\/\/static.beingmeta.com\/graphics\//g,
+		  sbook.graphics);}
+
 	function resizeHUD(){
 	    var vh=fdjtDOM.viewHeight();
 	    var vw=fdjtDOM.viewWidth();
@@ -493,7 +500,7 @@ var sbookMode=
 	    if ((elt)&&(elt.length>0)) elt=elt[0];
 	    else return;
 	    if (typeof content === 'string')
-		elt.innerHTML=content;
+	      elt.innerHTML=content;
 	    else if (content.cloneNode)
 		fdjtDOM.replace(elt,content.cloneNode(true));
 	    else fdjtDOM(elt,content);}

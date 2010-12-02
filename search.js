@@ -39,8 +39,9 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
     if (!(sbook.show_refiners)) sbook.show_refiners=25;
     if (!(sbook.search_gotlucky)) sbook.search_gotlucky=7;
     
-    /* Query functions */
+    function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
 
+    /* Query functions */
 
     /* Set on main search input */
     // id="SBOOKSEARCHINPUT" 
@@ -393,7 +394,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),dterms.length,scores,scores);
 	var spans=fdjtDOM("span");  
 	var tagicon=fdjtDOM.Image
-	  ("http://static.beingmeta.com/graphics/TagSearch40x40.png",
+	  (sbicon("TagSearch40x40.png"),
 	   ".cloudtoggle","show/hide all","show all tags");
 	tagicon.onclick=showempty_onclick;
 	var completions=fdjtDOM("div.completions",tagicon,spans);

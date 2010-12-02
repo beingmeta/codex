@@ -181,8 +181,10 @@ var sbook_gloss_data=
     // This is the default server
     sbook.default_server="glosses.sbooks.net";
     // There be icons here!
-    sbook.graphics="http://static.beingmeta.com/graphics/";
     function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
+    sbook.graphics="http://static.beingmeta.com/graphics/";
+    // sbook.graphics="https://www.sbooks.net/static/graphics/";
+    // sbook.graphics="https://beingmeta.s3.amazonaws.com/static/graphics/";
 
     sbook.getRefURI=function(target){
 	var scan=target;
