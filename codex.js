@@ -77,7 +77,8 @@ var sbook=
 	 layout: 0,	// Whether to trace pagination
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 0}   // Whether to trace gestures
+	 gestures: 0},   // Whether to trace gestures
+     version: sbooks_version, id: sbooks_id
     };
 var _sbook_setup=false;
 
@@ -176,10 +177,10 @@ var sbook_gloss_data=
     // Whether this sbook is set up for offline reading
     sbook.offline=false;
     // This is an array for looking up sbook servers.
-    sbook.servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
+    sbook.servers=[[/.sbooks.net$/g,"gloss.sbooks.net"]];
     //sbook.servers=[];
     // This is the default server
-    sbook.default_server="glosses.sbooks.net";
+    sbook.default_server="gloss.sbooks.net";
     // There be icons here!
     function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
     sbook.graphics="http://static.beingmeta.com/graphics/";
