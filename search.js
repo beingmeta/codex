@@ -394,7 +394,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),dterms.length,scores,scores);
 	var spans=fdjtDOM("span");  
 	var tagicon=fdjtDOM.Image
-	  (sbicon("TagSearch40x40.png"),
+	  (sbicon("TagSearch50x50.png"),
 	   ".cloudtoggle","show/hide all","show all tags");
 	tagicon.onclick=showempty_onclick;
 	var completions=fdjtDOM("div.completions",tagicon,spans);

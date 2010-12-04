@@ -64,11 +64,11 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 		var kind=info.kind;
 		if (pic) {}
 		else if (kind===':PERSON')
-		    pic=sbicon("sbooksperson40x40.png");
+		    pic=sbicon("sbooksperson50x50.png");
 		else if (kind===':CIRCLE')
-		    pic=sbicon("sbookscircle40x40.png");
+		    pic=sbicon("sbookscircle50x50.png");
 		else if (kind===':OVERDOC')
-		    pic=sbicon("sbooksoverdoc40x40.png");
+		    pic=sbicon("sbooksoverdoc50x50.png");
 		else pic=sbook;
 		icon=fdjtDOM.Image(pic,".button.source",info.name|info.kind,
 				   ("click to show/hide glosses from "+info.name));
