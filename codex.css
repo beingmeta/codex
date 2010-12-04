@@ -57,6 +57,7 @@ body.sbookscroll #SBOOKCONTENT {
 #SBOOKHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
     z-index: 100;}
+#SBOOKHUD img { border: 0px;}
 
 /* Being a panel */
 div#SBOOKHUD div.hudpanel {

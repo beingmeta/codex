@@ -65,7 +65,7 @@ var sbook=
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
 	 startup: 1,	// Whether to debug startup
-	 mode: false,	// Whether to trace mode changes
+	 mode: true,	// Whether to trace mode changes
 	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// Whether (and level) to trace searches

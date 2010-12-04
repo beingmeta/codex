@@ -130,7 +130,8 @@ sbook.Startup=
 			else gotGlosses();}},
 		function(){sbook.Message("setup completed");},10,
 		function(){
-		    if (fdjtState.getQuery("action")) {
+		    if ((fdjtState.getQuery("action"))||
+			(fdjtState.getQuery("invitation"))) {
 			sbookMode("sbookapp");}
 		    else if ((sbook.mode==='help')&&(sbook.hidehelp))
 			setTimeout(function(){
