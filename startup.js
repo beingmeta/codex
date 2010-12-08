@@ -199,6 +199,10 @@ sbook.Startup=
 	    // Whether to hide help after startup
 	    if (fdjtState.getLocal("sbook.hidehelp")) setConfig('hidehelp');
 
+	    if ((sbook.graphics==="http://static.beingmeta.com/graphics/")&&
+		(window.location.protocol==='https:'))
+		sbook.graphics="https://beingmeta.s3.amazonaws.com/static/graphics/";
+	    
 	    // Whether to suppress login, etc
 	    if ((fdjtState.getLocal("sbook.nologin"))||
 		(fdjtState.getQuery("nologin")))
