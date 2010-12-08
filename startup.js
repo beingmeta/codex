@@ -44,8 +44,9 @@ sbook.Startup=
 	
 	var _sbook_setup_start=false;
 	
-	function Startup(){
+	function Startup(force){
 	    if (sbook._setup) return;
+	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
 	    getSettings();
