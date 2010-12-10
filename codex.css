@@ -36,6 +36,7 @@
 body.sbook {}
 #SBOOKCONTENT {
     margin: 0px; padding: 0px; border: 0px;
+    margin-left: 50px; margin-right: 50px;
     transition-property: opacity; transition-duration: 0.2s;
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.2s;

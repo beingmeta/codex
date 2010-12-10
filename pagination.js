@@ -160,6 +160,7 @@ var sbookPaginate=
 	/* Scroll paginate */
 
 	function ScrollPaginate(pagesize,start,callback){
+	    var getLocInfo=sbook.getLocInfo;
 	    if (!(sbook_body)) sbook_body=sbook.body;
 	    if (!(start)) start=sbook.body||document.body;
 	    start=scanContent(start);
@@ -173,6 +174,7 @@ var sbookPaginate=
 	    var fudge=sbook_bottom_px/4;
 	    var startedat=fdjtET();
 	    var curpage={}; var newtop=false; var nodecount=1;
+	    curpage.loc=0;
 	    curpage.pagenum=pages.length;
 	    curpage.top=pagetop; curpage.limit=pagelim;
 	    curpage.first=start; curpage.last=start;
@@ -385,11 +387,19 @@ var sbookPaginate=
 				curpage.pagenum,curpage.top,curpage.bottom,curpage);
 		    // Make a new page
 		    curpage={}; curpage.pagenum=pages.length;
-		    if (splitblock) curpage.top=prevpage.bottom;
-		    else curpage.top=newinfo.top;
-		    // If the item at the top of the new page is larger than a page,
-		    // declare the page oversize
-		    // (Left out for now)
+		    // Returns start and end location
+		    if (splitblock) {
+			var locinfo=getLocInfo(splitblock);
+			curpage.top=prevpage.bottom;
+			if (locinfo) 
+			    curpage.loc=
+			    (locinfo.start)+
+			    Math.round(locinfo.length*
+				       ((prevpage.bottom-newinfo.top)/newinfo.height));}
+		    else {
+			var locinfo=getLocInfo(newtop);
+			if (locinfo) curpage.loc=locinfo.start;
+			curpage.top=newinfo.top;}
 		    // Initialize the first and last elements on the page
 		    curpage.first=newtop; curpage.last=newtop;
 		    // Indicate the straddling top element, if we're split
@@ -436,7 +446,7 @@ var sbookPaginate=
 		    callback(result);}}
 	    setTimeout(stepfn,10);}
 	var Paginate=ScrollPaginate;
-
+	
 	function isPageHead(elt,style){
 	    return ((sbook_tocmajor)&&(elt.id)&&
 		    ((sbook.docinfo[elt.id]).toclevel)&&
@@ -704,7 +714,7 @@ var sbookPaginate=
 	
 	var page_xoff=false; var page_yoff=false;
 
-	function ScrollGoToPage(pagenum,pageoff,caller){
+	function ScrollGoToPage(pagenum,pageoff,caller,nosave){
 	    if (!(pageoff)) pageoff=0;
 	    if ((typeof pagenum !== 'number')||
 		(pagenum<0)||(pagenum>=sbook.pages.length)) {
@@ -735,18 +745,12 @@ var sbookPaginate=
 	    var book_len=lastpage.bottom||lastpage.limit||lastpage.top;
 	    var topelt=info.first;
 	    while (topelt) if (topelt.id) break; else topelt=topelt.parentNode;
-	    if (topelt) {
-		var topelt_start=fdjtDOM.getGeometry(topelt,sbook.body).top;
-		var topelt_height=topelt.offsetHeight;
-		var topelt_hidden=info.top-topelt_start;
-		var topelt_info=sbook.docinfo[topelt.id]
-		var topelt_loc_width=topelt_info.ends_at-topelt_info.starts_at;
-		var topelt_display_loc=Math.round(topelt_info.starts_at+(topelt_loc_width*(topelt_hidden/topelt_height)));}
 	    pbar.style.left=(100*(starts_at/book_len))+"%";
 	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
 	    var pageno=
 		fdjtDOM("div#SBOOKPAGENO",pbar,
-			((topelt)&&(fdjtDOM("span.locoff","L"+topelt_display_loc))),
+			((topelt)&&
+			 (fdjtDOM("span.locoff","L"+info.loc))),
 			pagenum+1,((pageoff)?"+":""),"/",npages);
 	    fdjtDOM.replace("SBOOKPAGENO",pageno);
 	    sbook.curpage=pagenum;
@@ -759,23 +763,16 @@ var sbookPaginate=
 		page_xoff=0; page_yoff=(off-sbook_top_px);
 		// Add class if it's temporarily gone
 		fdjtDOM.addClass(document.body,"paginate");}
+	    
 	    if ((sbook.target)&&(fdjtDOM.isVisible(sbook.target)))
 		sbook.setHead(sbook.target);
 	    else sbook.setHead(info.focus||info.first);
 	    
-	    if (((info.first)&&(info.first.id))||((info.last)&&(info.last.id))) {
-		var firstloc=
-		    ((info.first)&&(info.first.id)&&
-		     (sbook.docinfo[info.first.id])&&
-		     (sbook.docinfo[info.first.id].starts_at));
-		var lastloc=
-		    ((info.last)&&(info.last.id)&&
-		     (sbook.docinfo[info.last.id])&&
-		     (sbook.docinfo[info.last.id].starts_at));
-		if ((firstloc)&&(lastloc))
-		    sbook.setLocation(Math.floor((firstloc+lastloc)/2));
-		else if (firstloc) sbook.setLocation(firstloc);
-		else if (lastloc) sbook.setLocation(lastloc);}}
+	    sbook.setLocation(info.loc);
+	    if (!(nosave))
+		sbook.setState(
+		    {page: pagenum,location: info.loc,
+		     target:((sbook.target)&&(sbook.target.id))});}
 	sbook.GoToPage=ScrollGoToPage;
 
 	function FadeToPage(pagenum,off){
@@ -821,6 +818,15 @@ var sbookPaginate=
 	    else i++;
 	    return i-1;}
 	sbook.getPage=ScrollGetPage;
+
+	function getPageAt(loc){
+	    var pages=sbook.pageinfo;
+	    var i=1; var len=pages.length;
+	    while (i<len) {
+		if ((pages[i].loc)&&(pages[i].loc>loc)) return i-1;
+		else i++;}
+	    return false;}
+	sbook.getPageAt=getPageAt;
 	
 	/* Tracing pagination */
 
@@ -945,9 +951,8 @@ var sbookPaginate=
 			       sbook.pageinfo=pagination.info;
 			       sbook_pagesize=pagesize;
 			       sbook.Message("Done with page layout");
-			       if (target)
-				   sbook.GoToPage(sbook.getPage(target),0,"sbookUpdatePagination");
-			       else sbook.GoToPage(sbook.getPage(sbook.viewTop()),0,"sbookUpdatePagination/nt");
+			       var gotopage=sbook.getPageAt(sbook.location);
+			       sbook.GoToPage(gotopage||0,0,"sbookUpdatePagination",true);
 			       if (callback) callback(pagination);});}
 	
 	function sbookPaginate(flag,nogo){
@@ -1016,9 +1021,7 @@ var sbookPaginate=
 		      newinfo.winheight=(fdjtDOM.viewHeight());
 		      // fdjtTrace("Updated pagination from %o to %o",
 		      //           sbook_paginated,newinfo);
-		      sbook_paginated=newinfo;
-		      sbook.GoToPage(sbook.getPage(sbook.target||sbook.root),0,
-				     "repaginate");})}],
+		      sbook_paginated=newinfo;})}],
 	     0,100);}
 	
 	sbook.isContent=isContentBlock;

@@ -33,9 +33,9 @@ var sbooks_version=parseInt("$Revision$".slice(10,-1));
 */
 
 var sbook=
-    {mode: false,hudup: false,scrolling: false,
-     query: false,head: false,target: false,glosstarget: false,
-     user: false,root: false,start: false,HUD: false,
+    {mode: false,hudup: false,scrolling: false,query: false,
+     head: false,target: false,glosstarget: false,location: false,
+     user: false,root: false,start: false,HUD: false,dosync: true,
      _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
      // For pagination
      curpage: false,curoff: false,curinfo: false, curbottom: false,
@@ -75,6 +75,7 @@ var sbook=
 	 network: 0,	// Whether we're debugging server interaction
 	 glosses: false,// Whether we're tracing gloss processing
 	 layout: 0,	// Whether to trace pagination
+	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0},   // Whether to trace gestures
@@ -137,20 +138,20 @@ var sbook_gloss_data=
 		if ((tags)&&(tags.length)) {
 		    var i=0; var lim=tags.length;
 		    while (i<lim) {
-		      var tag=tags[i++];
-		      sbook.index.add(item,tag);
-		      sbook.addTag2UI(fdjtKB.ref(tag),true);}}
+			var tag=tags[i++];
+			sbook.index.add(item,tag);
+			sbook.addTag2UI(fdjtKB.ref(tag),true);}}
 		var outlets=item.audience;
 		if (typeof outlets === 'string') outlets=[outlets];
 		if ((outlets)&&(outlets.length)) {
 		    var i=0; var lim=outlets.length;
 		    while (i<lim) {
-		      var audience=outlets[i++];
-		      sbook.index.add(item,audience);
-		      sbook.UI.addGlossSource(fdjtKB.ref(audience),true);}}});
+			var audience=outlets[i++];
+			sbook.index.add(item,audience);
+			sbook.UI.addGlossSource(fdjtKB.ref(audience),true);}}});
 	    sbook.glosses.index=new fdjtKB.Index();
 	    if (sbook.offline)
-	      sbook.glosses.storage=new fdjtKB.OfflineKB(sbook.glosses);}
+		sbook.glosses.storage=new fdjtKB.OfflineKB(sbook.glosses);}
 	sbook.sourcekb=new fdjtKB.Pool("sources");{
 	    sbook.sourcekb.addAlias("@1961/");
 	    sbook.sourcekb.index=new fdjtKB.Index();
@@ -294,7 +295,7 @@ var sbook_gloss_data=
 	    if (!(fdjtDOM.isVisible(sbook.target))) {
 		sbookMode(false); sbookMode(true);}};
 
-    sbook.getTarget=function(scan,closest){
+    function getTarget(scan,closest){
 	scan=scan.target||scan.srcElement||scan;
 	var target=false;
 	while (scan) {
@@ -311,7 +312,8 @@ var sbook_gloss_data=
 		else if (target) scan=scan.parentNode;
 		else {target=scan; scan=scan.parentNode;}}
 	    else scan=scan.parentNode;}
-	return target;};
+	return target;}
+    sbook.getTarget=getTarget;
     
     sbook.getTitle=function(target) {
 	return target.sbooktitle||
@@ -348,7 +350,7 @@ var sbook_gloss_data=
 	    window.title=headinfo.title+" ("+document.title+")";
 	    if (sbook.head) fdjtDOM.dropClass(sbook.head,"sbookhead");
 	    fdjtDOM.addClass(head,"sbookhead");
-	    sbook.setLocation(sbook_location);
+	    sbook.setLocation(sbook.location);
 	    sbook.head=fdjtID(head.id);}
 	else {
 	    if (sbook.Trace.focus) sbook.trace("sbook.setHead",head);
@@ -357,12 +359,10 @@ var sbook_gloss_data=
 	    sbook.head=false;}}
     sbook.setHead=setHead;
 
-    var sbook_location=false;
-
     function setLocation(location,force){
-	if ((!(force)) && (sbook_location===location)) return;
+	if ((!(force)) && (sbook.location===location)) return;
 	if (sbook.Trace.toc)
-	  fdjtLog("Setting location to %o",location);
+	    fdjtLog("Setting location to %o",location);
 	var info=sbook.Info(sbook.head);
 	while (info) {
 	    var tocelt=document.getElementById("SBOOKTOC4"+info.frag);
@@ -391,10 +391,10 @@ var sbook_gloss_data=
 		var progressbox=fdjtDOM.$(".progressbox",spanbar);
 		if (progressbox.length>0) {
 		    progressbox[0].style.left=((Math.round(ratio*10000))/100)+"%";}}}
-	sbook_location=location;}
+	sbook.location=location;}
     sbook.setLocation=setLocation;
 
-    function setTarget(target,nogo){
+    function setTarget(target,nogo,nosave){
 	if (sbook.Trace.focus) sbook.trace("sbook.setTarget",target);
 	if (target===sbook.target) return;
 	if ((target===document.body)||(target===sbook.body)) target=false;
@@ -409,15 +409,18 @@ var sbook_gloss_data=
 	    fdjtState.setCookie("sbooktarget",target);
 	    sbook.target=target;
 	    if (sbook.full_cloud)
-	      sbook.setCloudCuesFromTarget(sbook.full_cloud,target);
-	    if (!(nogo)) sbook.GoTo(target,true);}}
+		sbook.setCloudCuesFromTarget(sbook.full_cloud,target);
+	    if (nogo) {
+		if (nosave) {}
+		else setState({target: target.id,location: sbook.location,page: sbook.curpage});}
+	    else sbook.GoTo(target,true);}}
     sbook.setTarget=setTarget;
 
     /* Navigation */
 
     var x_offset=0; var y_offset=0;
     function scrollTo(x,y,win){
-      if (sbook.nativescroll) (win||window).scrollTo(x,y);
+	if (sbook.nativescroll) (win||window).scrollTo(x,y);
 	else {
 	    //(win||sbook.body).style[fdjtDOM.transform]=" translateY(-"+y+"px)";
 	    window.scrollTo(0,0);
@@ -475,6 +478,7 @@ var sbook_gloss_data=
 	    ((window.location.hash[0]==='#')&&
 	     (window.location.hash.slice(1)===target.id)))
 	    return;
+	if ((target===sbook.body)||(target===document.body)) return;
 	var saved_y=((fdjtDOM.isVisible(target))&&fdjtDOM.viewTop());
 	var saved_x=((fdjtDOM.isVisible(target))&&(fdjtDOM.viewLeft()));
 	window.location.hash=target.id;
@@ -483,8 +487,29 @@ var sbook_gloss_data=
 	    sbook.scrollTo(saved_x,saved_y);}
     sbook.setHashID=setHashID;
 
+    function setState(state){
+	if (sbook.state===state) return;
+	if (!(state.tstamp)) state.tstamp=fdjtTime.tick();
+	if (!(state.refuri)) state.refuri=sbook.refuri;
+	sbook.state=state;
+	var statestring=JSON.stringify(state);
+	var uri=sbook.docuri||sbook.refuri;
+	fdjtState.setLocal("sbook.state("+uri+")",statestring);
+	if ((sbook.dosync)&&(navigator.onLine)) {
+	    var refuri=((sbook.target)&&(sbook.getRefURI(sbook.target)))||
+		(sbook.refuri);
+	    var uri="https://"+sbook.server+"/v4/sync?ACTION=save"+
+		"&DOCURI="+encodeURIComponent(sbook.docuri)+
+		"&REFURI="+encodeURIComponent(refuri);
+	    if (sbook.Trace.dosync)
+		fdjtLog("[%fs] syncPosition(call) %s: %o",fdjtET(),uri,state);
+	    var req=new XMLHttpRequest();
+	    req.open("POST",uri,true);
+	    req.withCredentials='yes';
+	    req.send(statestring);}}
+    sbook.setState=setState;
+	    
     function scrollToElt(elt,cxt){
-	scrollRestore();
 	if ((elt.getAttribute) &&
 	    ((elt.tocleve)|| (elt.getAttribute("toclevel")) ||
 	     ((elt.sbookinfo) && (elt.sbookinfo.level))))
@@ -498,35 +523,70 @@ var sbook_gloss_data=
 	    fdjtUI.scrollIntoView(elt,elt.id,false,true,displayOffset());
 	else fdjtUI.scrollIntoView(elt,elt.id,cxt,true,displayOffset());}
     
+    function getLocInfo(elt){
+	var counter=0; var lim=200;
+	var forward=fdjtDOM.forward;
+	while ((elt)&&(counter<lim)) {
+	    if ((elt.id)&&(sbook.docinfo[elt.id])) break;
+	    else {counter++; elt=forward(elt);}}
+	if ((elt.id)&&(sbook.docinfo[elt.id])) {
+	    var info=sbook.docinfo[elt.id];
+	    return {start: info.starts_at,end: info.ends_at,
+		    len: info.ends_at-info.starts_at};}
+	else return false;}
+    sbook.getLocInfo=getLocInfo;
+
+    function resolveLocation(loc){
+	var allinfo=sbook.docinfo._allinfo;
+	var i=0; var lim=allinfo.length;
+	while (i<lim) {
+	    if (allinfo[i].starts_at<loc) i++;
+	    else break;}
+	while (i<lim)  {
+	    if (allinfo[i].starts_at>loc) break;
+	    else i++;}
+	return fdjtID(allinfo[i-1].frag);}
+    sbook.resolveLocation=resolveLocation;
+
+
     // This moves within the document in a persistent way
-    // It leaves any active HUD mode
-    function sbookGoTo(target,noset){
-	if (typeof target === 'string') target=document.getElementById(target);
+    function sbookGoTo(arg,noset,nosave){
+	var target; var location;
+	if (typeof arg === 'string') {
+	    var elt=document.getElementById(arg);
+	    var locinfo=getLocInfo(elt);
+	    target=getTarget(elt);
+	    location=locinfo.start;}
+	else if (typeof arg === 'number') {
+	    location=arg;
+	    target=resolveLocation(arg);}
+	else if (arg.nodeType) {
+	    var info=getLocInfo(arg);
+	    target=getTarget(arg);
+	    location=info.start;}
+	else {
+	    fdjtLog.warn("[%fs] Bad sbookGoTo %o",fdjtET(),arg);
+	    return;}
 	if (!(target)) return;
-	var page=((sbook.paginate)&&sbook.getPage(target));
+	var page=((sbook.paginate)&&sbook.getPageAt(location));
 	var info=((target.id)&&(sbook.docinfo[target.id]));
 	if (sbook.Trace.nav)
 	    fdjtLog("[%fs] sbook.GoTo() #%o@P%o/L%o %o",
 		    fdjtET(),target.id,page,((info)&&(info.starts_at)),target);
 	if (target.id) setHashID(target);
 	if (info) {
-	    if (info.starts_at) setLocation(info.starts_at);
-	    if (info.level) setHead(target);
+		    if (info.level) setHead(target);
 	    else if (info.head) setHead(info.head.frag);}
+	setLocation(location);
 	if ((!(noset))&&(target.id)&&(!(inUI(target))))
-	    setTarget(target);
-	else if (sbook.paginate) sbook.GoToPage(page,0,"sbookGoTo");
-	else scrollToElt(target);
-	sbook.checkTarget();
-	// sbookMode(false);
-	if (!(sbook.mode)) {
-	    fdjtDOM.addClass(sbook.TOC,"hover");
-	    fdjtDOM.addClass(document.body,"hudup");
-	    setTimeout(function(){
-		fdjtDOM.dropClass(sbook.TOC,"hover");
-		if (!(sbook.hudup))
-		    fdjtDOM.dropClass(document.body,"hudup");},
-		       1500);}}
+	    setTarget(target,true,nosave||false);
+	if (nosave) {}
+	else if (noset)
+	    sbook.setState({
+		target: ((sbook.target)&&(sbook.target.id)),location: location,page: page})
+	else sbook.setState({target: (target.id),location: location,page: page});
+	if (page) sbook.GoToPage(page,0,"sbookGoTo",nosave||false);
+	else sbook.location=location;}
     sbook.GoTo=sbookGoTo;
 
     function anchorFn(evt){

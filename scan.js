@@ -52,7 +52,7 @@ function sbookScan(root,docinfo){
     var scanstate=
 	{curlevel: 0,idserial:0,location: 0,
 	 nodecount: 0,eltcount: 0,headcount: 0,
-	 tagstack: [],taggings: [],
+	 tagstack: [],taggings: [],allinfo: [],
 	 idstate: {prefix: false,count: 0},
 	 idstack: [{prefix: false,count: 0}],
 	 pool: sbook.DocInfo};
@@ -69,6 +69,7 @@ function sbookScan(root,docinfo){
     rootinfo.frag=root.id;
     rootinfo.qid="#"+root.id;
     rootinfo.elt=root;
+    scanstate.allinfo.push(rootinfo);
     /* Build the metadata */
     var i=0; while (i<children.length) {
 	var child=children[i++];
@@ -77,6 +78,7 @@ function sbookScan(root,docinfo){
     docinfo._nodecount=scanstate.nodecount;
     docinfo._eltcount=scanstate.eltcount;
     docinfo._maxloc=scanstate.location;
+    docinfo._allinfo=scanstate.allinfo;
     var scaninfo=scanstate.curinfo;
     /* Close off all of the open spans in the TOC */
     while (scaninfo) {
@@ -95,6 +97,7 @@ function sbookScan(root,docinfo){
 	this.frag=id;
 	this.qid="#"+id;
 	docinfo[id]=this;
+	scanstate.allinfo.push(this);
 	return this;}
     sbookScan.scanInfo=scanInfo;
 

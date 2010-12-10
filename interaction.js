@@ -214,7 +214,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (sbook.Trace.gestures)
 	    fdjtLog("[%fs] content_tapped (%o) on %o passage=%o mode=%o",
 		    fdjtET(),evt,target,passage,sbook.mode);
-	if (fdjtDOM.isClickable(target)) return;
+	if ((fdjtDOM.isClickable(target))||
+	    (fdjtDOM.hasParent(target,".sbookglossbutton"))||
+	    (fdjtDOM.hasParent(target,".sbookglossmark")))
+	    return;
 	else fdjtUI.cancel(evt); 
 	if (edgeTap(evt)) return;
 	var sel=window.getSelection();
@@ -273,6 +276,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else return false;}
     sbook.edgeTap=edgeTap;
     function edgeTap_onclick(evt) {
+	var target=fdjtUI.T(evt);
+	if ((fdjtDOM.isClickable(target))||
+	    (fdjtDOM.hasParent(target,".sbookglossbutton"))||
+	    (fdjtDOM.hasParent(target,".sbookglossmark")))
+	    return;
 	if (edgeTap(evt)) fdjtUI.cancel(evt);}
 
     /* Keyboard handlers */
@@ -798,13 +806,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 content: {mouseup:content_tapped},
 	 hud: {click: hud_tap},
 	 glossmark: {
-	     click: glossmark_onclick,
+	     onclick: glossmark_onclick,
 	     mouseup: cancel,
 	     mousedown: cancel},
 	 glossbutton: {
-	     touchend: glossbutton_onclick,
-	     touchstart: cancel,
-	     touchmove: cancel},
+	     mouseup: glossbutton_onclick,
+	     mousedown: cancel},
 	 ".sbookmargin": {click: content_tapped},
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
@@ -829,7 +836,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
 	 glossmark: {touchend: glossmark_onclick,touchstart: cancel,touchmove: cancel},
-	 glossbutton: {touchend: glossbutton_onclick,touchstart: cancel,touchmove: cancel}
+	 glossbutton: {
+	     touchend: glossbutton_onclick,
+	     touchstart: cancel,
+	     touchmove: cancel}
 	};
     
 })();

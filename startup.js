@@ -93,7 +93,6 @@ sbook.Startup=
 		function(){
 		    sbook.resizeBody();
 		    sbook.body.style.opacity='';},
-		initLocation,
 		function(){
 		    sbook.Message("processing knodule ",sbook.knodule.name);},
 		10,
@@ -139,6 +138,7 @@ sbook.Startup=
 			    if (sbook.mode==="help") sbookMode(false);},
 				   2500);
 		    else {}},
+		initLocation,
 		function(){
 		    sbook.displaySync();
 		    _sbook_setup=sbook._setup=new Date();}],
@@ -324,11 +324,11 @@ sbook.Startup=
 		if (hstart>=0) locref=locref.slice(0,hstart);
 		return decodeURI(locref);}}
 	function _getsbookdocuri(){
-	    return fdjtDOM.getLink("sbook.docuri",true)||
-		fdjtDOM.getLink("DOCURI",true)||
-		fdjtDOM.getMeta("sbook.docuri",true)||
-		fdjtDOM.getMeta("DOCURI",true)||
-		fdjtDOM.getLink("canonical",true)||
+	    return fdjtDOM.getLink("sbook.docuri",false)||
+		fdjtDOM.getLink("DOCURI",false)||
+		fdjtDOM.getMeta("sbook.docuri",false)||
+		fdjtDOM.getMeta("DOCURI",false)||
+		fdjtDOM.getLink("canonical",false)||
 		location.href;}
 
 	function lookupServer(string){
@@ -672,27 +672,46 @@ sbook.Startup=
 		else target=document.getElementById(hash);
 		if (sbook.Trace.startup>1)
 		    fdjtLog("[%fs] sbookInitLocation hash=%s=%o",
-			    fdjtET(),hash,target);}
-	    else if (fdjtState.getCookie("sbooktarget")) {
-		var targetid=fdjtState.getCookie("sbooktarget");
-		if (sbook.Trace.startup>1)
-		    fdjtLog("[%fs] sbookInitLocation cookie=#%s=%o",
-			    fdjtET(),targetid,target);
-		if ((targetid)&&(fdjtID(targetid)))
-		    target=fdjtID(targetid);
-		else target=sbook.root;}
+			    fdjtET(),hash,target);
+		if (target) sbook.GoTo(target,false,true);}
 	    else {
-		target=sbook.root;
-		if (sbook.Trace.startup>1)
-		    fdjtLog("[%fs] sbookInitLocation target=%o",fdjtET(),target);}
-	    if ((target)&&(target!==document.body)&&(target!==sbook.body)) {
-		sbook.target=target;
-		fdjtDOM.addClass(target,"sbooktarget");}
-	    sbook.setHead(target||sbook.start||sbook.root);
-	    if (sbook.paginate) {
-		if (sbook.pages) sbook.GoTo(target);}
-	    else sbook.GoTo(target);}
+		var uri=sbook.docuri||sbook.refuri;
+		var statestring=fdjtState.getLocal("sbook.state("+uri+")");
+		if (statestring) {
+		    var state=JSON.parse(statestring);
+		    if (state.target) sbook.setTarget(state.target,(state.location),true);
+		    if (state.location) sbook.GoTo(state.location,true,true);
+		    sbook.state=state;}
+		if ((sbook.user)&&(sbook.dosync)&&(navigator.onLine)) syncLocation();}}
 	
+	function syncLocation(){
+	    var uri="https://"+sbook.server+"/v4/sync"+
+		"?DOCURI="+encodeURIComponent(sbook.docuri)+
+		"&REFURI="+encodeURIComponent(sbook.refuri);
+	    if (sbook.Trace.dosync)
+		fdjtLog("[%fs] syncLocation(call) %s",fdjtET(),uri);
+	    fdjtAjax.jsonCall(
+		function(d){
+		    if (sbook.Trace.dosync)
+			fdjtLog("[%fs] syncLocation(response) %s: %o",
+				fdjtET(),uri,d);
+		    if (!(d)) {
+			if (!(sbook.state))
+			    sbook.GoTo(sbook.start||sbook.root||sbook.body,false,false);
+			return;}
+		    else if ((!(sbook.state))||(sbook.state.tstamp<d.tstamp)) {
+			if ((d.location)&&(d.location<sbook.location)) return;
+			var msg=
+			    "Sync to L"+d.location+
+			    ((d.page)?(" (page "+d.page+")"):"")+"?";
+			if (confirm(msg)) {
+			    if (d.location) sbook.setLocation(d.location);
+			    if (d.target) sbook.setTarget(d.target,true,true);
+			    if (d.location) sbook.GoTo(d.location,true,true);
+			    sbook.state=d;}}
+		    else {}},
+		uri);}
+
 	function gotGlosses(){
 	    delete sbook.glossing; sbook.glossed=fdjtTime();
 	    if (sbook.Trace.glosses)
