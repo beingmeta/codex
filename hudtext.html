@@ -18,6 +18,55 @@
   <div class="helphud topright" data-hudmode="searching">
     <span class="nobreak"><span class="arrow">→</span>search</span><br/>
     tags</div>
+  <div id="SBOOKHUDBUTTONS" class="hudpanel">
+    <div class="sbookplate">
+      <a href="https://auth.sbooks.net/admin/logout" class="logout"
+	 title="click to logout of the sBooks server">
+	logout</a>
+      <a class="login" href="javascript:sbookMode('login');"
+	 title="click to login">
+	login</a>
+      <a href="javascript:sbookMode('login');" name="IDLINK"
+	 id="SBOOKUSERNAME">
+	(click to log in)</a>
+    </div> <!-- .flyleafplate -->
+    <div class="tabbar icons" id="SBOOKTABS">
+      <!--
+      <a name="IDLINK" href="javascript:sbookMode('login');" 
+	 id="IDBUTTON" class="userpic"
+	 title="click to login">
+	<img alt="login" id="SBOOKUSERPIC"/></a>
+      <a id="HELPBUTTON" href="javascript:sbookMode('help');"
+	 title="click for UI help">
+	<img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
+	     alt="Help"/></a>
+      -->
+      <img src="http://static.beingmeta.com/graphics/AboutTab50x64.png"
+	   alt="About" class="tab" contentid="APPABOUT"
+	   onclick="sbookMode('about'); return fdjtUI.cancel(event);"
+	   title="information and links about this book"/>
+      <img src="http://static.beingmeta.com/graphics/TOCTab50x64.png"
+	   alt="ToC" class="tab" contentid="FLYTOC"
+	   onclick="sbookMode('flytoc'); return fdjtUI.cancel(event);"
+	   title="Table of Contents (static)">
+      <img src="http://static.beingmeta.com/graphics/SettingsTab50x64.png"
+	   alt="Device" class="tab" contentid="SBOOKDEVICE"
+	   onclick="sbookMode('device'); return fdjtUI.cancel(event);"
+	   title="alter appearance and interaction"/>
+      <img src="http://static.beingmeta.com/graphics/SocialTab50x64.png"
+	   alt="sBooks" class="tab" contentid="SBOOKSAPP"
+	   onclick="sbookMode.selectApp(); return fdjtUI.cancel(event);"
+	   title="manage how your sBook is enhanced with added layers"/>
+      <img src="http://static.beingmeta.com/graphics/LoginTab50x64.png"
+	   alt="Login" class="tab" contentid="SBOOKAPPLOGIN"
+	   onclick="sbookMode.toggle('login'); return fdjtUI.cancel(event);"
+	   title="login to sBooks" />
+      <img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
+	   alt="Help" class="tab" contentid="HELPCONTENT"
+	   onclick="sbookMode('help'); return fdjtUI.cancel(event);"
+	   title="information and links about this book"/>
+    </div> <!-- .tabbar -->
+  </div> <!-- id="SBOOKHUDBUTTONS" -->
   <div id="SBOOKTOC" class="hudpanel"></div>
   <div id="SBOOKSCANNER" class="hudpanel">
     <img src="http://static.beingmeta.com/graphics/GoldLeftTriangle32.png"
@@ -67,7 +116,7 @@
       <div id="SBOOKGLOSSTAGS"></div>
       <div id="SBOOKGLOSSCLOUDSOURCES"></div>
     </div>
-</div>
+  </div>
 </div> <!-- SBOOKHEAD -->
 <div class="helphud leftmiddle">
   page back
@@ -109,10 +158,10 @@
 </div>
 
 <!--
-   /* Emacs local variables
-   ;;;  Local variables: ***
-   ;;;  compile-command: "cd ..; make" ***
-   ;;;  End: ***
-   */
+    /* Emacs local variables
+    ;;;  Local variables: ***
+    ;;;  compile-command: "cd ..; make" ***
+    ;;;  End: ***
+    */
   -->
 
