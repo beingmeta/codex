@@ -781,15 +781,13 @@ var sbookPaginate=
 		return sbook.GoToPage(pagenum,off,"FadeToPage");
 	    if (sbook.Trace.nav)
 		fdjtLog("[%fs] sbook.FadeToPage %o+%o",fdjtET(),pagenum,off);
-	    sbook.body.style.opacity=0.0001;
+	    // sbook.body.style.opacity=0.0001;
+	    sbook.newpage={pagenum: pagenum,pageoff: off};
 	    fdjtDOM.addClass(document.body,"pageswitch");
+	    // We could probably use transitionend events for this
 	    setTimeout(function(){
 		sbook.GoToPage(pagenum,off,"FadeToPage+");
-		sbook.body.style.opacity=1.0;
-		setTimeout(function(){
-		    fdjtDOM.dropClass(document.body,"pageswitch");
-		    sbook.body.style.opacity="";},
-			   200);},
+		fdjtDOM.dropClass(document.body,"pageswitch");},
 		       200);}
 	sbook.FadeToPage=FadeToPage;
 	

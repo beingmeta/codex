@@ -794,6 +794,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     sbook.scanBackward=scanBackward;
 
     /* Rules */
+
     var nobubble=fdjtUI.cancelBubble;
     var cancel=fdjtUI.cancel;
 
@@ -803,7 +804,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    keydown:onkeydown,
 	    keypress:onkeypress,
 	    click:edgeTap_onclick},
-	 content: {mouseup:content_tapped},
+	 content: {
+	     mouseup:content_tapped},
 	 hud: {click: hud_tap},
 	 glossmark: {
 	     onclick: glossmark_onclick,

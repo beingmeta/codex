@@ -548,7 +548,8 @@ div#SBOOKPAGEFOOT div#SBOOKPAGENO div.progressbar {
     z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
 body.paginate div#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
     display: block;}
-body.pageswitch div#SBOOKPAGEFOOT div#SBOOKPAGEINFO { opacity: 0.0001;}
+body.pageswitch div#SBOOKCONTENT {
+    opacity: 0.0001;}
 
 div#SBOOKFOOT div#SBOOKFOOTINFO {
     position: fixed; left: 100px; right: 100px; bottom: 0px;
