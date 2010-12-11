@@ -851,18 +851,20 @@ body.preview div#SBOOKHUD.flytoc div#SBOOKFLYLEAF div.spanbar:hover {
 
 /* Buttons */
 
+div#SBOOKHUD div#SBOOKHUDBUTTONS {
+    clear: none; z-index: 100; text-align: center;
+    display: none;}
+body.hudup div#SBOOKHUD div#SBOOKHUDBUTTONS {
+    display: block; opacity: 0.8;}
+
 div#SBOOKHUD div#SBOOKHUDBUTTONS.hudpanel {
-    top: 0px; left: 60px; right: 60px;
-    z-index: 250;}
+    top: 0px; left: 60px; right: 60px; z-index: 100;}
 
 div#SBOOKHUD div#SBOOKHUDBUTTONS {
     margin: 0px; padding: 0px; border-bottom: 0px; min-height: 60px;
     font-family: times,serif; font-variant: small-caps;
     text-align: center;}
 
-body.hudup div#SBOOKHUD div#SBOOKHUDBUTTONS {
-    display: block; opacity: 0.8;
-    background-color: ivory; color: black;}
 body.hudup div#SBOOKHUD.toc div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.searching div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.browsing div#SBOOKHUDBUTTONS,
@@ -875,7 +877,8 @@ body.hudup div#SBOOKHUD.addgloss div#SBOOKHUDBUTTONS {
     display: none;}
 div#SBOOKHUD div#SBOOKHUDBUTTONS div.sbookplate {
     margin: 0px; padding: 0px; border: 0px;
-    width: 100%; clear: both; text-align: left;
+    margin-left: 60px; margin-right: 60px;
+    clear: both; text-align: left;
     /* background-color: gold; */
     color: black;}
 div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar {
@@ -890,11 +893,15 @@ div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar .tab {
     border-bottom-left-radius: 6px;
     -o-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
-    -moz-border-radius-bottomleft: 6px;}
+    -moz-border-radius-bottomleft: 6px;
+    box-shadow: 2px 2px 2px #cccccc;
+    -webkit-box-shadow: 2px 2px 2px #cccccc;
+    -moz-box-shadow: 2px 2px 2px #cccccc;
+    -o-box-shadow: 2px 2px 2px #cccccc;}
 div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar .tab  {
     border: transparent solid 3px;}
 div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar img.tab {
-    height: 50px;}
+    height: 40px;}
 
 div#SBOOKHUD.about div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='APPABOUT'],
 div#SBOOKHUD.login div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
@@ -903,7 +910,11 @@ div#SBOOKHUD.flytoc div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='FLYTOC'],
 div#SBOOKHUD.help div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKHELP'],
 div#SBOOKHUD.sbookapp div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
-    border-bottom: transparent solid 3px;}
+    border-bottom: transparent solid 3px;
+    box-shadow: 4px 4px 4px #cccccc;
+    -webkit-box-shadow: 4px 4px 4px #cccccc;
+    -moz-box-shadow: 4px 4px 4px #cccccc;
+    -o-box-shadow: 4px 4px 4px #cccccc;}
 
 div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent {
     margin-top: 0px;}

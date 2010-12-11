@@ -1,14 +1,12 @@
-<img src="http://static.beingmeta.com/graphics/CompassIcon50x50.png"
-     alt="toc" title="click to navigate the book as a whole"
-     class="hudbutton topleft" id="SBOOKTOCBUTTON" hudmode="toc"
-     onclick="sbook.UI.hudbutton(event);"/>
-<img src="http://static.beingmeta.com/graphics/TagSearch50x50.png"
-     alt="search" title="click to search tags within the book"
-     class="hudbutton topright" id="SBOOKSEARCHBUTTON" hudmode="searching"
-     onclick="sbook.UI.hudbutton(event);"/>
-<img src="http://static.beingmeta.com/graphics/binoculars48x48.png"
-     class="previewicon topright"/>
 <div id="SBOOKHEAD">
+  <img src="http://static.beingmeta.com/graphics/CompassIcon50x50.png"
+       alt="toc" title="click to navigate the book as a whole"
+       class="hudbutton topleft" id="SBOOKTOCBUTTON" hudmode="toc"
+       onclick="sbook.UI.hudbutton(event);"/>
+  <img src="http://static.beingmeta.com/graphics/TagSearch50x50.png"
+       alt="search" title="click to search tags within the book"
+       class="hudbutton topright" id="SBOOKSEARCHBUTTON" hudmode="searching"
+       onclick="sbook.UI.hudbutton(event);"/>
   <div class="helphud topleft" data-hudmode="toc">
     <span class="nobreak"><span class="arrow">←</span>browse</span><br/>
     <span class="nobreak">ToC</span></div>
@@ -18,7 +16,7 @@
   <div class="helphud topright" data-hudmode="searching">
     <span class="nobreak"><span class="arrow">→</span>search</span><br/>
     tags</div>
-  <div id="SBOOKHUDBUTTONS" class="hudpanel">
+  <div id="SBOOKHUDBUTTONS">
     <div class="sbookplate">
       <a href="https://auth.sbooks.net/admin/logout" class="logout"
 	 title="click to logout of the sBooks server">
@@ -66,8 +64,8 @@
 	   onclick="sbookMode.toggle('help',true); return fdjtUI.cancel(event);"
 	   title="help about using sBooks"/>
     </div> <!-- .tabbar -->
-  </div> <!-- id="SBOOKHUDBUTTONS" -->
-  <div id="SBOOKTOC" class="hudpanel"></div>
+</div> <!-- id="SBOOKHUDBUTTONS" -->
+<div id="SBOOKTOC" class="hudpanel"></div>
   <div id="SBOOKSCANNER" class="hudpanel">
     <img src="http://static.beingmeta.com/graphics/GoldLeftTriangle32.png"
 	 alt="prev" onclick="sbook.scanBackward(event);"/>
