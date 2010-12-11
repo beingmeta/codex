@@ -68,7 +68,8 @@ var sbook_delete_icon="redx12x12.png";
 	if (!(info.tstamp))
 	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
 	    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
-	div.about="#"+target_id;
+	// if (info.qid) div.about=info.qid;
+	div.about=info.frag;
 	// div.setAttribute('about',"#"+info.id);
 	if (idprefix) div.id=idprefix+info.id;
 	if (info.qid) {
