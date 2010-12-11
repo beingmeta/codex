@@ -41,28 +41,28 @@
 	<img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
 	     alt="Help"/></a>
       -->
-      <img src="http://static.beingmeta.com/graphics/AboutTab50x64.png"
+      <img src="http://static.beingmeta.com/graphics/AboutTab50h.png"
 	   alt="About" class="tab" contentid="APPABOUT"
 	   onclick="sbookMode('about'); return fdjtUI.cancel(event);"
 	   title="information and links about this book"/>
-      <img src="http://static.beingmeta.com/graphics/TOCTab50x64.png"
+      <img src="http://static.beingmeta.com/graphics/TOCTab50h.png"
 	   alt="ToC" class="tab" contentid="FLYTOC"
 	   onclick="sbookMode('flytoc'); return fdjtUI.cancel(event);"
 	   title="Table of Contents (static)">
-      <img src="http://static.beingmeta.com/graphics/SettingsTab50x64.png"
+      <img src="http://static.beingmeta.com/graphics/SettingsTab50h.png"
 	   alt="Device" class="tab" contentid="SBOOKDEVICE"
 	   onclick="sbookMode('device'); return fdjtUI.cancel(event);"
 	   title="alter appearance and interaction"/>
-      <img src="http://static.beingmeta.com/graphics/SocialTab50x64.png"
+      <img src="http://static.beingmeta.com/graphics/SocialTab50h.png"
 	   alt="sBooks" class="tab" contentid="SBOOKSAPP"
 	   onclick="sbookMode.selectApp(); return fdjtUI.cancel(event);"
 	   title="manage how your sBook is enhanced with added layers"/>
-      <img src="http://static.beingmeta.com/graphics/LoginTab50x64.png"
+      <img src="http://static.beingmeta.com/graphics/LoginTab50h.png"
 	   alt="Login" class="tab" contentid="SBOOKAPPLOGIN"
 	   onclick="sbookMode.toggle('login'); return fdjtUI.cancel(event);"
 	   title="login to sBooks" />
-      <img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
-	   alt="Help" class="tab" contentid="HELPCONTENT"
+      <img src="http://static.beingmeta.com/graphics/HelpTab50h.png"
+	   alt="Help" class="tab" contentid="SBOOKHELP"
 	   onclick="sbookMode('help'); return fdjtUI.cancel(event);"
 	   title="information and links about this book"/>
     </div> <!-- .tabbar -->
@@ -124,9 +124,6 @@
 <div class="helphud rightmiddle">
   next page
 </div>
-<div id="SBOOKHELP">
-  %HELPTEXT
-</div>
 <div id="SBOOKFLYLEAF" class="hudpanel">
   <!-- This content comes from flyleaftext.html -->
 </div>
@@ -134,10 +131,26 @@
   <!-- This is swapped in on demand -->
 </div>
 <div id="SBOOKFOOT">
-  <img src="http://static.beingmeta.com/graphics/flyleaficon50x50.png"
-       alt="flyleaf" title="Click for Help, settings, book description, etc"
-       class="hudbutton botleft" id="SBOOKFLYLEAFBUTTON" hudmode="flyleaf"
-       onclick="sbook.UI.hudbutton(event);"/>
+  <div id="SBOOKFLYLEAFBUTTON" onclick="sbookMode.toggle('flyleaf');" class="help">
+    <img src="http://static.beingmeta.com/graphics/AboutIcon50x50.png"
+	 alt="about" title="About this book"
+	 class="hudbutton botleft"/>
+    <img src="http://static.beingmeta.com/graphics/HelpIcon50x50.png"
+	 alt="help" title="Click for help"
+	 class="hudbutton botleft"/>
+    <img src="http://static.beingmeta.com/graphics/SocialIcon50x50.png"
+	 alt="sbookapp" title="click to manage overlays"
+	 class="hudbutton botleft"/>
+    <img src="http://static.beingmeta.com/graphics/LoginIcon50x50.png"
+	 alt="login" title="login"
+	 class="hudbutton botleft"/>
+    <img src="http://static.beingmeta.com/graphics/SettingsIcon50x50.png"
+	 alt="device" title="reader settings"
+	 class="hudbutton botleft"/>
+    <img src="http://static.beingmeta.com/graphics/FlyTOCIcon50x50.png"
+	 alt="flytoc" title="Table of Contents"
+	 class="hudbutton botleft"/>
+  </div>
   <div class="helphud botleft" data-hudmode="flyleaf">
     <span class="nobreak"><span class="arrow">←</span>show the</span><br/>
     flyleaf</div>

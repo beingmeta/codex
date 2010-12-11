@@ -92,9 +92,14 @@ div#SBOOKHUD div.hudpanel.sbooknote {
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
 
+div#SBOOKHUD div.hudpanel div.scrollbox {
+  overflow: auto;}
+
+/*
 div#SBOOKHUD div.hudpanel div.scrollbox {}
 div#SBOOKHUD div.hudpanel div.scrollbox > div {
     overflow: auto;}
+*/
 
 div#SBOOKHUD img.hudbutton {
     position: fixed; width: 50px; height: 50px; z-index: 200;
@@ -153,6 +158,28 @@ div#SBOOKHUD #SBOOKFOOT {
 div#SBOOKHUD #SBOOKHEAD {
     position: fixed; left: 0px; right: 0px; width: 100%;
     top: 0px; z-index: 100;}
+
+/* The lower left HUD icon */
+
+div#SBOOKHUD div#SBOOKFLYLEAFBUTTON {
+    position: fixed; left: 0px; bottom: 0px;
+    height: 50px; width: 50px;}
+div#SBOOKHUD div#SBOOKFLYLEAFBUTTON img {display: none;}
+div#SBOOKHUD.help div#SBOOKFLYLEAFBUTTON img[alt='help'] {display: block;}
+div#SBOOKHUD.about div#SBOOKFLYLEAFBUTTON img[alt='about'] {display: block;}
+div#SBOOKHUD.sbookapp div#SBOOKFLYLEAFBUTTON img[alt='sbookapp'] {
+    display: block;}
+div#SBOOKHUD.flytoc div#SBOOKFLYLEAFBUTTON img[alt='flytoc'] {display: block;}
+div#SBOOKHUD.device div#SBOOKFLYLEAFBUTTON img[alt='device'] {
+    display: block;}
+
+body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.about img[alt='about'],
+body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.sbookapp img[alt='sbookapp'],
+body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.device img[alt='device'],
+body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.flytoc img[alt='flytoc'],
+body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.login img[alt='login'],
+body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.help img[alt='help'] {
+    display: block; background-color: gold;}
 
 /* HUDUP rules */
 
@@ -394,21 +421,7 @@ div.spanbar div.progressbox {
 
 /* Help HUD */
 
-div#SBOOKHELP {
-    position: fixed; 
-    top: 75px; left: 75px; right: 75px; bottom: 75px; z-index: 100;
-    padding: 1em; 
-    border: solid gray 1px;
-    border-radius: 1em; -moz-border-radius: 1em;
-    -o-border-radius: 1em; -webkit-border-radius: 1em;
-    opacity: 0.95; background-color: ivory;
-    text-align: center; vertical-align: middle;
-    font-family: sans,sans-serif;
-    box-shadow: 1em 1em 1em #cccccc;
-    -webkit-box-shadow: 1em 1em 1em #cccccc;
-    -moz-box-shadow: 1em 1em 1em #cccccc;
-    -o-box-shadow: 1em 1em 1em #cccccc;
-    display: none;}
+div#SBOOKHELP { margin-left: 100px; margin-right: 50px; text-align: center;}
 div#SBOOKHELP #CHECKHIDEHELP {
  float: left; font-family: sans; color: red; max-width: 100px;}
 div#SBOOKHELP #CLICKHIDEHELP { 
@@ -831,7 +844,8 @@ body.preview div#SBOOKHUD.flytoc div#SBOOKFLYLEAF div.spanbar:hover {
 /* Buttons */
 
 div#SBOOKHUD div#SBOOKHUDBUTTONS.hudpanel {
-    top: 0px; left: 60px; right: 60px;}
+    top: 0px; left: 60px; right: 60px;
+    z-index: 250;}
 
 div#SBOOKHUD div#SBOOKHUDBUTTONS {
     margin: 0px; padding: 0px; border-bottom: 0px; min-height: 60px;
@@ -845,7 +859,6 @@ body.hudup div#SBOOKHUD.toc div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.searching div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.browsing div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.scanning div#SBOOKHUDBUTTONS,
-body.hudup div#SBOOKHUD.help div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.tocscan div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.glosses div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.allglosses div#SBOOKHUDBUTTONS,
@@ -879,6 +892,7 @@ div#SBOOKHUD.about div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='APPABOUT'],
 div#SBOOKHUD.login div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
 div#SBOOKHUD.device div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKDEVICE'],
 div#SBOOKHUD.flytoc div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='FLYTOC'],
+div#SBOOKHUD.help div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKHELP'],
 div#SBOOKHUD.sbookapp div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;}

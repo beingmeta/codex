@@ -56,13 +56,14 @@ var sbookMode=
 	    else {
 		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
 		sbookHUD.sbookui=true;
-		sbookHUD.innerHTML=
-		  sbook_hudtext.replace('%HELPTEXT',sbook_helptext);
+		sbookHUD.innerHTML=sbook_hudtext;
 		fdjtDOM.prepend(document.body,sbookHUD);}
 	    var console=fdjtID("SBOOKCONSOLE");
 	    console.innerHTML=sbook_console;
 	    var flyleaf=fdjtID("SBOOKFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;
+	    var help=fdjtID("SBOOKHELP");
+	    help.innerHTML=sbook_helptext;
 	    // Initialize search UI
 	    var search=fdjtID("SBOOKSEARCH");
 	    search.innerHTML=sbook_searchbox;
@@ -130,7 +131,8 @@ var sbookMode=
 	    resizeHUD();
 	    sbook.scrollers={};
 	    updateScroller("SBOOKGLOSSCLOUD");
-	    updateScroller("SBOOKSEARCHCLOUD");}
+	    updateScroller("SBOOKSEARCHCLOUD");
+	}
 	sbook.initHUD=initHUD;
 	
 	function fixStaticRefs(string){
@@ -208,7 +210,7 @@ var sbookMode=
 	
 	var sbookMode_pat=
 	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)/g;
-	var sbookFlyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)/g;
+	var sbookFlyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)|(help)/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "SBOOKALLGLOSSES",
 	     browsing: "SBOOKSEARCHRESULTS",
@@ -217,10 +219,10 @@ var sbookMode=
 	     sbookapp: "MANAGEAPP",
 	     flytoc: "SBOOKFLYTOC",
 	     login: "SBOOKFLYLOGIN",
+	     about: "APPABOUT"
 	     /* ,
 		login: "SBOOKAPPLOGIN",
 		device: "SBOOKDEVICE",
-		about: "APPABOUT",
 	     */
 	    };
 	
@@ -260,7 +262,8 @@ var sbookMode=
 		if ((mode)&&(typeof mode === 'string')&&
 		    (mode.search(sbookFlyleafMode_pat)===0)) {
 		    fdjtDOM.addClass(sbookHUD,"flyleaf");
-		    sbook.last_flyleaf=mode;}
+		    sbook.last_flyleaf=mode;
+		    fdjtID("SBOOKFLYLEAFBUTTON").className=mode;}
 		else fdjtDOM.dropClass(sbookHUD,"flyleaf");
 		if (mode==="help")
 		    fdjtDOM.addClass(document.body,"dimmed");
@@ -300,14 +303,25 @@ var sbookMode=
 	function updateScroller(elt){
 	    if (typeof elt === 'string') elt=fdjtID(elt);
 	    var c=elt.parentNode; var cc=c.parentNode;
+	    // Remove all constraint
+	    c.style.height=''; c.style.overflow='visible';
+	    // Compute bounds to get height
 	    var cstyle=fdjtDOM.getStyle(c);
 	    var ccstyle=fdjtDOM.getStyle(cc);
-	    var cbounds=fdjtDOM.parsePX(cstyle.borderTopWidth)+fdjtDOM.parsePX(cstyle.borderBottomWidth)+
-		fdjtDOM.parsePX(cstyle.paddingTop)+fdjtDOM.parsePX(cstyle.paddingBottom)+
-		fdjtDOM.parsePX(cstyle.marginTop)+fdjtDOM.parsePX(cstyle.marginBottom);
-	    var ccbounds=fdjtDOM.parsePX(ccstyle.borderTopWidth)+fdjtDOM.parsePX(ccstyle.borderBottomWidth)+
-		fdjtDOM.parsePX(ccstyle.paddingTop)+fdjtDOM.parsePX(ccstyle.paddingBottom)+
-		fdjtDOM.parsePX(ccstyle.marginTop)+fdjtDOM.parsePX(ccstyle.marginBottom);
+	    var cbounds=
+		fdjtDOM.parsePX(cstyle.borderTopWidth)+
+		fdjtDOM.parsePX(cstyle.borderBottomWidth)+
+		fdjtDOM.parsePX(cstyle.paddingTop)+
+		fdjtDOM.parsePX(cstyle.paddingBottom)+
+		fdjtDOM.parsePX(cstyle.marginTop)+
+		fdjtDOM.parsePX(cstyle.marginBottom);
+	    var ccbounds=
+		fdjtDOM.parsePX(ccstyle.borderTopWidth)+
+		fdjtDOM.parsePX(ccstyle.borderBottomWidth)+
+		fdjtDOM.parsePX(ccstyle.paddingTop)+
+		fdjtDOM.parsePX(ccstyle.paddingBottom)+
+		fdjtDOM.parsePX(ccstyle.marginTop)+
+		fdjtDOM.parsePX(ccstyle.marginBottom);
 	    if (sbook.nativescroll) {
 		c.style.height=
 		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';}
@@ -317,8 +331,8 @@ var sbookMode=
 		    fdjtLog("[%fs] cco=%o ct=%o nh=%o",
 			    fdjtET(),cc.offsetHeight,c.offsetTop,
 			    cc.offsetHeight-c.offsetTop);}
-		c.style.height=''; c.style.overflow='visible';
-		c.style.height=((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
+		c.style.height=
+		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
 		c.style.overflow='hidden';
 		if ((sbook.scrollers[elt.id])&&
 		    (sbook.scrollers[elt.id].element===elt))
@@ -337,8 +351,10 @@ var sbookMode=
 		    var scroller=sbook.scrollers[elt.id];
 		    fdjtLog("[%fs] e=%o w=%o wo=%o,%o wc=%o,%o i=%o,%o o=%o,%o d=%o,%o m=%o,%o",
 			    fdjtET(),scroller.element,scroller.wrapper,
-			    scroller.wrapper.offsetWidth,scroller.wrapper.offsetHeight,
-			    scroller.wrapper.clientWidth,scroller.wrapper.clientHeight,
+			    scroller.wrapper.offsetWidth,
+			    scroller.wrapper.offsetHeight,
+			    scroller.wrapper.clientWidth,
+			    scroller.wrapper.clientHeight,
 			    elt.offsetWidth,elt.offsetHeight,
 			    scroller.scrollerWidth,scroller.scrollerHeight,
 			    scroller.scrollWidth,scroller.scrollHeight,
@@ -348,6 +364,9 @@ var sbookMode=
 	function sbookHUDToggle(mode){
 	    if (!(sbook.mode)) sbookMode(mode);
 	    else if (mode===sbook.mode) sbookMode(false);
+	    else if ((mode==='flyleaf')&&
+		     (sbook.mode.search(sbookFlyleafMode_pat)===0))
+		sbookMode(false);
 	    else sbookMode(mode);}
 	sbookMode.toggle=sbookHUDToggle;
 

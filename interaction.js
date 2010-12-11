@@ -156,7 +156,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	var passage=sbook.getTarget(target);
-	if (passage) {
+	if ((sbook.mode==="addgloss")&&
+	    (sbook.glosstarget===passage))
+	    sbookMode(true);
+	else if (passage) {
 	    fdjtUI.cancel(evt);
 	    sbook.glossTarget(passage);
 	    sbookMode("addgloss");}}
@@ -235,9 +238,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else if (passage) tapTarget(passage);
 	    else sbookMode(true);}
 	else if (!(sbook.target)) sbookMode(false);
-	else if (!(passage)) sbookMode(true);
+	else if (!(passage)) {
+	    if (sbook.hudup) sbookMode(false);
+	    else sbookMode(true);}
 	else if (passage===sbook.target) sbookMode(false);
-	if ((evt.shiftKey)||(n_touches>1))
+	else if ((evt.shiftKey)||(n_touches>1))
 	    xtapTarget(passage);
 	else tapTarget(passage);}
 
