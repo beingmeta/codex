@@ -43,28 +43,28 @@
       -->
       <img src="http://static.beingmeta.com/graphics/AboutTab50h.png"
 	   alt="About" class="tab" contentid="APPABOUT"
-	   onclick="sbookMode('about'); return fdjtUI.cancel(event);"
+	   onclick="sbookMode.toggle('about',true); return fdjtUI.cancel(event);"
 	   title="information and links about this book"/>
       <img src="http://static.beingmeta.com/graphics/TOCTab50h.png"
 	   alt="ToC" class="tab" contentid="FLYTOC"
-	   onclick="sbookMode('flytoc'); return fdjtUI.cancel(event);"
+	   onclick="sbookMode.toggle('flytoc',true); return fdjtUI.cancel(event);"
 	   title="Table of Contents (static)">
       <img src="http://static.beingmeta.com/graphics/SettingsTab50h.png"
 	   alt="Device" class="tab" contentid="SBOOKDEVICE"
-	   onclick="sbookMode('device'); return fdjtUI.cancel(event);"
+	   onclick="sbookMode.toggle('device',true); return fdjtUI.cancel(event);"
 	   title="alter appearance and interaction"/>
       <img src="http://static.beingmeta.com/graphics/SocialTab50h.png"
 	   alt="sBooks" class="tab" contentid="SBOOKSAPP"
-	   onclick="sbookMode.selectApp(); return fdjtUI.cancel(event);"
+	   onclick="sbookMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
 	   title="manage how your sBook is enhanced with added layers"/>
       <img src="http://static.beingmeta.com/graphics/LoginTab50h.png"
 	   alt="Login" class="tab" contentid="SBOOKAPPLOGIN"
-	   onclick="sbookMode.toggle('login'); return fdjtUI.cancel(event);"
+	   onclick="sbookMode.toggle('login',true); return fdjtUI.cancel(event);"
 	   title="login to sBooks" />
       <img src="http://static.beingmeta.com/graphics/HelpTab50h.png"
 	   alt="Help" class="tab" contentid="SBOOKHELP"
-	   onclick="sbookMode('help'); return fdjtUI.cancel(event);"
-	   title="information and links about this book"/>
+	   onclick="sbookMode.toggle('help',true); return fdjtUI.cancel(event);"
+	   title="help about using sBooks"/>
     </div> <!-- .tabbar -->
   </div> <!-- id="SBOOKHUDBUTTONS" -->
   <div id="SBOOKTOC" class="hudpanel"></div>
@@ -133,22 +133,23 @@
 <div id="SBOOKFOOT">
   <div id="SBOOKFLYLEAFBUTTON" onclick="sbookMode.toggle('flyleaf');" class="help">
     <img src="http://static.beingmeta.com/graphics/AboutIcon50x50.png"
-	 alt="about" title="About this book"
+	 alt="about" title="information and links about this book"
 	 class="hudbutton botleft"/>
     <img src="http://static.beingmeta.com/graphics/HelpIcon50x50.png"
-	 alt="help" title="Click for help"
+	 alt="help" title="help about using sBooks"
 	 class="hudbutton botleft"/>
     <img src="http://static.beingmeta.com/graphics/SocialIcon50x50.png"
-	 alt="sbookapp" title="click to manage overlays"
+	 alt="sbookapp"
+	 title="manage how your sBook is enhanced with added layers"
 	 class="hudbutton botleft"/>
     <img src="http://static.beingmeta.com/graphics/LoginIcon50x50.png"
 	 alt="login" title="login"
 	 class="hudbutton botleft"/>
     <img src="http://static.beingmeta.com/graphics/SettingsIcon50x50.png"
-	 alt="device" title="reader settings"
+	 alt="device" title="alter appearance and interaction"
 	 class="hudbutton botleft"/>
     <img src="http://static.beingmeta.com/graphics/FlyTOCIcon50x50.png"
-	 alt="flytoc" title="Table of Contents"
+	 alt="flytoc" title="Table of Contents (static)"
 	 class="hudbutton botleft"/>
   </div>
   <div class="helphud botleft" data-hudmode="flyleaf">

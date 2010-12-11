@@ -165,13 +165,13 @@ div#SBOOKHUD div#SBOOKFLYLEAFBUTTON {
     position: fixed; left: 0px; bottom: 0px;
     height: 50px; width: 50px;}
 div#SBOOKHUD div#SBOOKFLYLEAFBUTTON img {display: none;}
-div#SBOOKHUD.help div#SBOOKFLYLEAFBUTTON img[alt='help'] {display: block;}
-div#SBOOKHUD.about div#SBOOKFLYLEAFBUTTON img[alt='about'] {display: block;}
-div#SBOOKHUD.sbookapp div#SBOOKFLYLEAFBUTTON img[alt='sbookapp'] {
-    display: block;}
-div#SBOOKHUD.flytoc div#SBOOKFLYLEAFBUTTON img[alt='flytoc'] {display: block;}
+
+div#SBOOKHUD.help div#SBOOKFLYLEAFBUTTON img[alt='help'],
+div#SBOOKHUD.about div#SBOOKFLYLEAFBUTTON img[alt='about'],
+div#SBOOKHUD.sbookapp div#SBOOKFLYLEAFBUTTON img[alt='sbookapp'],
+div#SBOOKHUD.flytoc div#SBOOKFLYLEAFBUTTON img[alt='flytoc'],
 div#SBOOKHUD.device div#SBOOKFLYLEAFBUTTON img[alt='device'] {
-    display: block;}
+    display: block; background-color: gold;}
 
 body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.about img[alt='about'],
 body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.sbookapp img[alt='sbookapp'],
@@ -179,7 +179,15 @@ body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.device img[alt='device'],
 body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.flytoc img[alt='flytoc'],
 body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.login img[alt='login'],
 body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.help img[alt='help'] {
-    display: block; background-color: gold;}
+    display: block;}
+
+body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.about:hover img[alt='about'],
+body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.sbookapp:hover img[alt='sbookapp'],
+body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.device:hover img[alt='device'],
+body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.flytoc:hover img[alt='flytoc'],
+body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.login:hover img[alt='login'],
+body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.help:hover img[alt='help'] {
+    display: block; opacity: 0.5;}
 
 /* HUDUP rules */
 

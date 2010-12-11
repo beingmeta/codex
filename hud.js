@@ -324,7 +324,8 @@ var sbookMode=
 		fdjtDOM.parsePX(ccstyle.marginBottom);
 	    if (sbook.nativescroll) {
 		c.style.height=
-		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';}
+		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
+	    	c.style.overflow='';}
 	    else {
 		if ((!(sbook.scrollers))||(!(elt.id))) return;
 		if (sbook.Trace.scroll) {
@@ -361,12 +362,13 @@ var sbookMode=
 			    scroller.maxScrollX,scroller.maxScrollY);}}}
 	sbook.UI.updateScroller=updateScroller;
 
-	function sbookHUDToggle(mode){
+	function sbookHUDToggle(mode,keephud){
 	    if (!(sbook.mode)) sbookMode(mode);
-	    else if (mode===sbook.mode) sbookMode(false);
+	    else if (mode===sbook.mode)
+		if (keephud) sbookMode(true); else sbookMode(false);
 	    else if ((mode==='flyleaf')&&
 		     (sbook.mode.search(sbookFlyleafMode_pat)===0))
-		sbookMode(false);
+		if (keephud) sbookMode(true); else sbookMode(false);
 	    else sbookMode(mode);}
 	sbookMode.toggle=sbookHUDToggle;
 
@@ -583,7 +585,8 @@ var sbookMode=
 	    fdjtID("MANAGEAPP").src=appuri;}
 
 	sbookMode.selectApp=function(){
-	    if (sbook.mode==='sbookapp') initManageIFrame();
+	    /* initManageIFrame(); */
+	    if (sbook.mode==='sbookapp') sbookMode(false);
 	    else sbookMode('sbookapp');}
 
 	/* Scanning */

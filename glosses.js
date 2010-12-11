@@ -506,11 +506,14 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var href=fdjtDOM.getInput(form,"HREF");
 	var loc=fdjtDOM.getInput(form,"LOCATION");
 	var loclen=fdjtDOM.getInput(form,"LOCLEN");
+	var tagline=fdjtDOM.getInput(form,"TAGLINE");
 	var relay=fdjtDOM.getInput(form,"RELAY");
 	var info=sbook.docinfo[target.id];
 	note.value=""; href.value=""; detail.value="";
 	if (loc) {loc.value=info.starts_at;}
 	if (loclen) {loclen.value=info.ends_at-info.starts_at;}
+	var tagline=getTagline(target);
+	if (tagline) tagline.value=tagline;
 	var tagselt=fdjtDOM.getChild(form,".tags");
 	var tagspans=fdjtDOM.$(".checkspan",tagselt);
 	if (tagspans) {
@@ -543,6 +546,18 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		while (i<lim) addTag(form,tags[i++],"ATTENTION");}}
 	setCloudCuesFromTarget(gloss_cloud,target);}
     sbook.setGlossTarget=setGlossTarget;
+
+    function getTagline(target){
+	var attrib=
+	    target.getAttributeNS("tagline","https://sbooks.net/")||
+	    target.getAttribute("data-tagline")||
+	    target.getAttribute("tagline");
+	if (attrib) return attrib;
+	var text=fdjtDOM.textify(target);
+	if (!(text)) return false;
+	text=fdjtString.stdspace(text);
+	if (text.length>40) return text.slice(0,40)+"...";
+	else return text;}
 
     function setCloudCues(cloud,tags){
       	// Clear any current tagcues from the last gloss

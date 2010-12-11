@@ -750,7 +750,7 @@ var sbookPaginate=
 	    var pageno=
 		fdjtDOM("div#SBOOKPAGENO",pbar,
 			((topelt)&&
-			 (fdjtDOM("span.locoff","L"+info.loc))),
+			 (fdjtDOM("span.locoff","L"+Math.floor(info.loc/128)))),
 			pagenum+1,((pageoff)?"+":""),"/",npages);
 	    fdjtDOM.replace("SBOOKPAGENO",pageno);
 	    sbook.curpage=pagenum;
