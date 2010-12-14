@@ -99,6 +99,21 @@ sbook.Startup=
 		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
 		 (function(){
 		     Knodule.HTML.Setup(sbook.knodule);})),
+		function (){
+		    sbook.Message("Applying tag elements");
+		    var tags=fdjtDOM.$(".sbooktags");
+		    var i=0; var lim=tags.length;
+		    while (i<lim) {
+			var tagelt=tags[i++];
+			var target=sbook.getTarget(tagelt);
+			var info=sbook.docinfo[target.id];
+			var tagtext=fdjtDOM.textify(tagelt);
+			var tagsep=tagelt.getAttribute("tagsep")||";";
+			var tagstrings=tagtext.split(tagsep);
+			if (tagstrings.length) {
+			    if (info.tags)
+				info.tags=info.tags.concat(tagstrings);
+			    else info.tags=tagstrings;}}},
 		function(){sbook.Message("indexing tags");},10,
 		function(){
 		    sbook.indexTags(metadata);
