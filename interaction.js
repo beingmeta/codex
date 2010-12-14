@@ -213,6 +213,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function content_tapped(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
+	var anchor=fdjtDOM.getParent(target,"A");
+	if ((anchor)&&(anchor.href)&&(anchor.href[0]==='#')&&
+	    (document.getElementById(anchor.href.slice(1)))) {
+	    var goto=document.getElementById(anchor.href.slice(1));
+	    // Provide smarts for asides/notes/etc
+	    sbook.JumpTo(goto);
+	    fdjtUI.cancel(evt);
+	    return;}
 	var passage=sbook.getTarget(target);
 	if (sbook.Trace.gestures)
 	    fdjtLog("[%fs] content_tapped (%o) on %o passage=%o mode=%o",

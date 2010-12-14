@@ -251,7 +251,7 @@ sbook.Startup=
 	    var isWebTouch = isIphone || isIpad || isAndroid;
 
 	    if (isWebTouch) {
-		fdjtDOM.addClass(document.body,"touch");
+		fdjtDOM.addClass(document.body,"sbooktouch");
 		viewportSetup();
 		sbook.ui="webtouch";}
 	    if ((useragent.search("Safari/")>0)&&
@@ -261,7 +261,7 @@ sbook.Startup=
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {
-		fdjtDOM.addClass(document.body,"touch");
+		fdjtDOM.addClass(document.body,"sbooktouch");
 		viewportSetup();
 		sbook.ui="faketouch"}
 	    else {
@@ -444,6 +444,8 @@ sbook.Startup=
 		var nodes=fdjtDOM.toArray(document.body.childNodes);
 		var i=0; var lim=nodes.length;
 		while (i<lim) sbody.appendChild(nodes[i++]);
+		document.body.appendChild(fdjtDOM("div#SBOOKASIDE"));
+		document.body.appendChild(fdjtDOM("div#SBOOKREF"));
 		document.body.appendChild(sbody);}
 	    fdjtDOM.addClass(document.body,"sbook");
 	    sbook.body=sbody;
@@ -830,7 +832,8 @@ sbook.Startup=
 	    fdjtDOM.replace("SBOOKGLOSSCLOUD",sbook.glossCloud().dom);
 	    if (sbook.knodule) {
 		sbook.Message("integrating tag vocabulary");
-		fdjtTime.slowmap(sbook.addTag2UI,sbook.knodule.alldterms);}
+		fdjtTime.slowmap(sbook.addTag2UI,sbook.knodule.alldterms,
+				 function(){sbook.Message("Tag vocabulary integrated");});}
 	    sbook.sizeCloud(sbook.full_cloud);
 	    sbook.sizeCloud(sbook.gloss_cloud);}
 

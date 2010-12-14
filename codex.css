@@ -45,8 +45,16 @@ body.sbook {}
     -o-transition-property: opacity;
     -o-transition-duration: 0.2s;
     height: 100%; overflow: visible;}
+
+#SBOOKASIDE {
+    position: fixed;
+    top: 60px; left: 60px; right: 60px; bottom: 60px;}
+#SBOOKREF {
+    position: fixed;
+    top: 60px; left: 60px; right: 60px;}
+
 /*
-body.touch #SBOOKCONTENT {
+body.sbooktouch #SBOOKCONTENT {
     transition-duration: 0.4s;
     -webkit-transition-duration: 0.4s;
     -moz-transition-duration: 0.4s;
@@ -934,21 +942,15 @@ div#SBOOKHUD div#SBOOKHUDBUTTONS .sbookplate .applinks {
     font-weight: normal; font-variant: small-caps;}
 
 div#SBOOKHUD div#SBOOKHUDBUTTONS .sbookplate a.logout {
-    float: right; vertical-align: top; padding-right: 2px;
+    position: absolute; right: 60px;
+    vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif; font-weight: bold;
     color: red;}
 div#SBOOKHUD div#SBOOKHUDBUTTONS .sbookplate a.logout:visited {
     color: red;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS a.login {
-    float: right; vertical-align: top; padding-right: 2px;
-    /*
-    background-color: gold; padding-left: 1em; border-bottom-left-radius: 6px;
-    */
-    font-family: helvetica,sans,sans-serif;
-    color: blue;
-    display:none;}
 div#SBOOKHUD div#SBOOKHUDBUTTONS .sbookplate a#SBOOKUSERNAME {
-    float: left; vertical-align: top; padding-right: 2px;
+    position: absolute; left: 60px;
+    vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif; font-weight: bold;
     color: blue;}
 
@@ -1113,35 +1115,35 @@ div.sbookabout div.publisher { font-style: italic;}
 div.logindoc { display: none;}
 
 .fortouch { display: none;}
-body.touch .notouch { display: none;}
-body.touch div.fortouch,
-body.touch p.fortouch {
+body.sbooktouch .notouch { display: none;}
+body.sbooktouch div.fortouch,
+body.sbooktouch p.fortouch {
     display: block;}
-body.touch .fortouch {display: inline;}
-body.touch li.fortouch {display: list-item;}
-body.touch span.fortouch { display: inline;}
-body.touch div.fortouch { display: block;}
-body.touch p.fortouch { display: block;}
-body.touch li.fortouch { display: list-item;}
+body.sbooktouch .fortouch {display: inline;}
+body.sbooktouch li.fortouch {display: list-item;}
+body.sbooktouch span.fortouch { display: inline;}
+body.sbooktouch div.fortouch { display: block;}
+body.sbooktouch p.fortouch { display: block;}
+body.sbooktouch li.fortouch { display: list-item;}
 
 body img.touchicon { display: none;}
 body img.mouseicon { display: inline;}
-body.touch img.touchicon { display: inline;}
-body.touch img.mouseicon { display: none;}
+body.sbooktouch img.touchicon { display: inline;}
+body.sbooktouch img.mouseicon { display: none;}
 
-body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar,
-body.touch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar {
+body.sbooktouch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar,
+body.sbooktouch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar {
     height: 50px;}
-body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.sbookhudspan,
-body.touch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar div.sbookhudspan {
+body.sbooktouch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.sbookhudspan,
+body.sbooktouch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar div.sbookhudspan {
     height: 45px;}
-body.touch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.progressbox,
-body.touch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar div.progressbox {
+body.sbooktouch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.progressbox,
+body.sbooktouch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar div.progressbox {
     height: 50px;}
 
-body.touch .sbooknote .age { font-size: 125%; padding-bottom; 10px;}
-body.touch .sbooknote .age { font-size: 125%; padding-bottom; 10px;}
-body.touch .sbooknote .glossinfo img.delete { 
+body.sbooktouch .sbooknote .age { font-size: 125%; padding-bottom; 10px;}
+body.sbooktouch .sbooknote .age { font-size: 125%; padding-bottom; 10px;}
+body.sbooktouch .sbooknote .glossinfo img.delete { 
   width: 20px; height: 20px; padding-right: 3px;
   cursor: pointer;}
 
@@ -1336,9 +1338,9 @@ div.sbookaddgloss form div.glossmode { display: none;}
 div.sbookaddgloss form div.submit {
     padding-left: 5px; float: right; text-align: center;}
 div.sbookaddgloss form div.submit { width: 50px; }
-body.touch div.sbookaddgloss form div.controls { font-size: 175%;}
+body.sbooktouch div.sbookaddgloss form div.controls { font-size: 175%;}
 
-body.touch div.sbookaddgloss form div.submit { width: 75px;}
+body.sbooktouch div.sbookaddgloss form div.submit { width: 75px;}
 div.sbookaddgloss form fieldset {
     border: 0px; padding: 6px; padding-top: 2px;}
 
