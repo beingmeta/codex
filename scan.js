@@ -163,9 +163,24 @@ function sbookScan(root,docinfo){
 	    var cname=elt.className;
 	    var tocloc=cname.search(/sbook\dhead/);
 	    if (tocloc>=0) return parseInt(cname.slice(5,6));}
+	if ((elt.tagName==='hgroup')||(elt.tagName==='header'))
+	    return getFirstTocLevel(elt,true);
 	if (elt.tagName.search(/H\d/)==0)
 	    return parseInt(elt.tagName.slice(1,2));
 	else return false;}
+
+    function getFirstTocLevel(node,notself){
+	if (node.nodeType!==1) return false;
+	var level=((!(notself))&&(getLevel(node)));
+	if (level) return level;
+	var children=node.childNodes;
+	var i=0; var lim=children.length;
+	while (i<lim) {
+	    var child=children[i++];
+	    if (child.nodeType!==1) continue;
+	    level=getFirstTocLevel(child);
+	    if (level) return level;}
+	return false;}
 
     function handleHead(head,docinfo,scanstate,level,curhead,curinfo,curlevel,nodefn){
 	var headid=head.id;
@@ -254,23 +269,50 @@ function sbookScan(root,docinfo){
 	else if (child.nodeType!==1) return 0;
 	else {}
 	// Having a section inside a notoc zone probably indicates malformed
-	//  HTML, but it's an ugly world
-	if ((child.tagName==='section')&&(!(scanstate.notoc))) {
+	//  HTML
+	if (((child.tagName==='section')||(child.tagName==='article'))&&
+	    (!(scanstate.notoc))) {
 	    var head=fdjtDOM.findChild(child,'header')||
-		fdjtDOM.findChild(child,'h1,h2,h3,h4,h5,h6,h7');
+		fdjtDOM.findChild(child,'hgroup,h1,h2,h3,h4,h5,h6,h7');
 	    var curlevel=scanstate.curlevel;
 	    var curhead=scanstate.curhead;
 	    var curinfo=scanstate.curinfo;
 	    var notoc=scanstate.notoc;
-	    var nextlevel=scanstate.curlevel+1;
+	    var header=fdjtDOM.getChild(child,"header");
+	    var nextlevel=getLevel(child)||getFirstTocLevel(header)||getFirstTocLevel(child)||
+		((curlevel)?(curlevel+1):(1));
 	    handleHead(child,docinfo,scanstate,nextlevel,
 		       curhead,curinfo,curlevel,
 		       nodefn);
 	    var headinfo=docinfo[child.id];
-	    var children=child.childNodes;
-	    var i=0; var lim=children.length;
+	    headinfo.tocdone=true;
 	    scanstate.curhead=child; scanstate.curinfo=headinfo;
 	    scanstate.curlevel=nextlevel;
+	    var children=child.childNodes;
+	    var i=0; var lim=children.length;
+	    while (i<lim) {
+		var child=children[i++];
+		if (child.nodeType===1)
+		    scanner(child,scanstate,docinfo,nodefn);}
+	    // Put everything back
+	    scanstate.curlevel=curlevel; scanstate.notoc=notoc;
+	    scanstate.curhead=curhead; scanstate.curinfo=curinfo;
+	    return;}
+	// Get the location in the TOC for this out of context node
+	var tocloc=(child.sbooktocloc)||(child.getAttribute("data-tocloc"));
+	if ((tocloc)&&(docinfo[tocloc])) {
+	    var tocinfo=docinfo[tocloc];
+	    var curlevel=scanstate.curlevel;
+	    var curhead=scanstate.curhead;
+	    var curinfo=scanstate.curinfo;
+	    var notoc=scanstate.notoc;
+	    var headinfo=tocinfo.head;
+	    scanstate.curinfo=headinfo;
+	    scanstate.curhead=headinfo.elt;
+	    scanstate.curlevel=headinfo.level;
+	    scanstate.notoc=true;
+	    var children=child.childNodes;
+	    var i=0; var lim=children.length;
 	    while (i<lim) {
 		var child=children[i++];
 		if (child.nodeType===1)
@@ -311,7 +353,7 @@ function sbookScan(root,docinfo){
 		(child.getAttribute('tags'))||
 		(child.getAttribute('data-tags'));
 	    if (tags) info.tags=tags.split(';');}
-	if (toclevel)
+	if ((toclevel)&&(!(info.tocdone)))
 	    handleHead(child,docinfo,scanstate,toclevel,curhead,curinfo,curlevel,nodefn);
 	var children=child.childNodes;
 	var i=0; var len=children.length;

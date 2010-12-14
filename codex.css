@@ -1551,6 +1551,19 @@ body.colpage .fullpage, body.colpage .titlepage, body.colpage .sbookfullpage, bo
     -moz-column-break-after: always;
     -moz-column-break-inside: avoid;}
 
+/* HTML5ish elements */
+
+body.sbook div#SBOOKDETAILS,
+body.sbook div#SBOOKASIDES,
+body.sbook div#SBOOKNOTES {
+    page-break-before: always;}
+
+body.sbook div#SBOOKDETAILS detail,
+body.sbook div#SBOOKDETAILS .sbookdetail,
+body.sbook div#SBOOKDETAILS aside,
+body.sbook div#SBOOKDETAILS .sbookaside {
+    page-break-before: always;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

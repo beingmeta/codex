@@ -413,6 +413,12 @@ sbook.Startup=
 	    sbook_fullpages.push
 	    (fdjtDOM.Selector(".sbookfullpage, .titlepage"));}
 
+	function applyMetaClass(name){
+	    var meta=fdjtDOM.getMeta(name,true);
+	    var i=0; var lim=meta.length;
+	    while (i<lim) fdjtDOM.addClass(fdjtDOM.$(meta[i++]),name);}
+
+	var note_count=1;
 	function initBody(){
 	    var sbody=
 		((fdjtDOM.getMeta("sbook.body"))?
@@ -426,6 +432,93 @@ sbook.Startup=
 		document.body.appendChild(sbody);}
 	    fdjtDOM.addClass(document.body,"sbook");
 	    sbook.body=sbody;
+	    var allnotes=fdjtID("SBOOKNOTES");
+	    var allasides=fdjtID("SBOOKASIDES");
+	    var alldetails=fdjtID("SBOOKDETAILS");
+	    if (!(alldetails)) {
+		var alldetails=fdjtDOM("div#SBOOKDETAILS");
+		fdjtDOM(sbody,alldetails);}
+	    if (!(allasides)) {
+		var allasides=fdjtDOM("div#SBOOKASIDES");
+		fdjtDOM(sbody,allasides);}
+	    if (!(allnotes)) {
+		var allnotes=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
+		fdjtDOM(sbody,allnotes);}
+	    applyMetaClass("sbookdetails");
+	    applyMetaClass("sbooknoteref");
+	    applyMetaClass("sbookbibref");
+	    applyMetaClass("sbookxnote");
+	    applyMetaClass("sbookaside");
+	    applyMetaClass("sbookbackmatter");
+	    var sbookxnotes=fdjtDOM.$("sbookxnote");
+	    // Add refs for all of the xnotes
+	    var i=0; var lim=sbookxnotes.length;
+	    while (i<lim) {
+		var note=sbookxnotes[i++];
+		var anchor=fdjtDOM("A.sbooknoteref","\u2193");
+		var count=note_count++;
+		anchor.id="SBOOKNOTEREF"+count;
+		if (!(note.id)) note.id="SBOOKNOTE"+count;
+		anchor.href="#"+note.id;
+		fdjtDOM.insertBefore(note,anchor);}
+	    // Move all the notes to the end
+	    var noterefs=fdjtDOM.$(".sbooknoteref,.sbookbibref");
+	    var i=0; var lim=noterefs.length;
+	    while (i<lim) {
+		var noteref=noterefs[i++];
+		var idcontext=sbook.getTarget(noteref.parentNode);
+		if ((noteref.href)&&(noteref.href[0]==='#')) {
+		    var noteid=noteref.href.slice(1);
+		    var notenode=fdjtID(noteid);
+		    if (!(notenode)) continue;
+		    if ((noteref.id)||(idcontext)) {
+			var backanchor=fdjtDOM("A.sbooknotebackref","\u2191");
+			backanchor.href="#"+noteref.id||(idcontext.id);
+			fdjtDOM.prepend(notenode,backanchor);}
+		    if ((idcontext)&&(fdjtDOM.hasClass(noteref,"sbooknoteref")))
+			notenode.sbooktocloc=idcontext.id;
+		    if ((fdjtDOM.hasClass(noteref,"sbooknoteref"))&&
+			(!(fdjtDOM.hasParent(notenode,".sbookbackmatter"))))
+			fdjtDOM.append(allnotes,notenode);}}
+	    // Move all the details to the end
+	    var details=fdjtDOM.$("detail,.sbookdetail");
+	    var i=0; var lim=details.length;
+	    while (i<lim) {
+		var detail=details[i++];
+		var head=fdjtDOM.getChild(detail,"summary,.sbooksummary");
+		var detailhead=((head)?(fdjtDOM.clone(head)):
+				fdjtDIV("div.sbookdetailstart",
+					(fdjtString.truncate(fdjtDOM.textify(detail),42))));
+		var anchor=fdjtDOM("A.sbookdetailref",detailhead);
+		var count=detail_count++;
+		if (!(detail.id)) detail.id="SBOOKDETAIL"+count;
+		anchor.href="#"+detail.id; anchor.id="SBOOKDETAILREF"+count;
+		fdjtDOM.replace(detail,anchor);
+		detail.sbooktocloc=anchor.id;
+		fdjtDOM.append(alldetails,detail);}
+	    // Move all the asides to the end
+	    var asides=fdjtDOM.$("aside,.sbookaside");
+	    var i=0; var lim=asides.length;
+	    while (i<lim) {
+		var aside=asides[i++];
+		var head=fdjtDOM.getChild(aside,".sbookasidehead")||
+		    fdjtDOM.getChild(aside,"HEADER")||
+		    fdjtDOM.getChild(aside,"H1")||
+		    fdjtDOM.getChild(aside,"H2")||
+		    fdjtDOM.getChild(aside,"H3")||
+		    fdjtDOM.getChild(aside,"H4")||
+		    fdjtDOM.getChild(aside,"H5")||
+		    fdjtDOM.getChild(aside,"H6");
+		var asidehead=((head)?(fdjtDOM.clone(head)):
+			       fdjtDIV("div.sbookasidestart",
+				       (fdjtString.truncate(fdjtDOM.textify(aside),42))));
+		var anchor=fdjtDOM("A.sbookasideref",asidehead);
+		var count=aside_count++;
+		if (!(aside.id)) aside.id="SBOOKASIDE"+count;
+		anchor.href="#"+aside.id; anchor.id="SBOOKASIDEREF"+count;
+		fdjtDOM.insertBefore(aside,anchor);
+		aside.sbooktocloc=anchor.id;
+		fdjtDOM.append(allasides,aside);}
 	    if (sbook.Trace.startup>1)
 		fdjtLog("[%fs] Initialized body",fdjtET());}
 
