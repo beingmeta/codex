@@ -253,7 +253,37 @@ function sbookScan(root,docinfo){
 	    return 0;}
 	else if (child.nodeType!==1) return 0;
 	else {}
+	// Having a section inside a notoc zone probably indicates malformed
+	//  HTML, but it's an ugly world
+	if ((child.tagName==='section')&&(!(scanstate.notoc))) {
+	    var head=fdjtDOM.findChild(child,'header')||
+		fdjtDOM.findChild(child,'h1,h2,h3,h4,h5,h6,h7');
+	    var curlevel=scanstate.curlevel;
+	    var curhead=scanstate.curhead;
+	    var curinfo=scanstate.curinfo;
+	    var notoc=scanstate.notoc;
+	    var nextlevel=scanstate.curlevel+1;
+	    handleHead(child,docinfo,scanstate,nextlevel,
+		       curhead,curinfo,curlevel,
+		       nodefn);
+	    var headinfo=docinfo[child.id];
+	    var children=child.childNodes;
+	    var i=0; var lim=children.length;
+	    scanstate.curhead=child; scanstate.curinfo=headinfo;
+	    scanstate.curlevel=nextlevel;
+	    while (i<lim) {
+		var child=children[i++];
+		if (child.nodeType===1)
+		    scanner(child,scanstate,docinfo,nodefn);}
+	    // Put everything back
+	    scanstate.curlevel=curlevel; scanstate.notoc=notoc;
+	    scanstate.curhead=curhead; scanstate.curinfo=curinfo;
+	    return;}
 	var toclevel=((child.id)&&(getLevel(child)));
+	// The header functionality (for its contents too) is handled by the
+	// section
+	if ((scanstate.notoc)||(child.tagName==='header')) {
+	    scanstate.notoc=true; toclevel=0;}
 	scanstate.eltcount++;
 	var info=((nodefn)&&(nodefn(child)));
 	if ((!(info))&&(child.id)&&(!(info=docinfo[child.id]))) {
