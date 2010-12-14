@@ -1461,6 +1461,7 @@ div.sbookaddgloss form span.source:before, .completions span.source:before {
 
 div.sbookaddgloss form { margin-left: 0%; margin-right: 0%;}
 div.sbookaddgloss.submitting { opacity: 0.5;}
+div.sbookaddgloss form.sbexcerptmode div.input.excerpt { display: block;}
 div.sbookaddgloss form.sbnotemode div.input.note { display: block;}
 div.sbookaddgloss form.sbtagmode div.input.tag { display: block;}
 div.sbookaddgloss form.sblinkmode div.input.link { display: block;}
@@ -1468,6 +1469,7 @@ div.sbookaddgloss form.sbsharemode div.input.share { display: block;}
 div.sbookaddgloss form.sbdetailmode div.input.detail { display: block;}
 
 div.sbookaddgloss form.sbnotemode div.controls span[data-mode='note'],
+div.sbookaddgloss form.sbexcerptmode div.controls span[data-mode='excerpt'],
 div.sbookaddgloss form.sbtagmode div.controls span[data-mode='tag'],
 div.sbookaddgloss form.sblinkmode div.controls span[data-mode='link'],
 div.sbookaddgloss form.sbsharemode div.controls span[data-mode='share'],

@@ -58,6 +58,14 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	sbook.glossform=div;
 	sbook.glosstarget=passage;
 	sbook.setTarget(passage);
+	var sel=window.getSelection();
+	if (sbook.selection) {
+	    var sel=sbook.selection;
+	    var seltext=sel.toString();
+	    if (seltext.length) {
+		var excerpt=fdjtDOM.getInput(form,"EXCERPT");
+		form.className="sbexcerptmode";
+		excerpt.value=seltext;}}
 	return passage;}
     sbook.glossTarget=glossTarget;
 

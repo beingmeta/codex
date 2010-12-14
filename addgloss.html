@@ -44,6 +44,12 @@
 	       alt="link" title="add a link"/>
 	  <span class="text">Link</span>
 	</span>
+	<span class="button" onclick="sbook.glossMode('excerpt');"
+	      title="edit excerpt" data-mode="excerpt">
+	  <img src="http://static.beingmeta.com/graphics/scissorsicon32x32.png"
+	       alt="detail" title="edit excerpt"/>
+	  <span class="text">Excerpt</span>
+	</span>
 	<span class="button" onclick="sbook.glossMode('detail');"
 	      title="add extended text" data-mode="detail">
 	  <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
@@ -96,6 +102,13 @@
 	  <textarea name="DETAIL"
 		    placeholder="Enter detailed comments or notes here"
 		    id="SBOOKDETAILINPUT"></textarea>
+	</div>
+	<div class="input excerpt">
+	  <input type="HIDDEN" name="EXCERPTSTART"/>
+	  <input type="HIDDEN" name="EXCERPTEND"/>
+	  <textarea name="EXCERPT"
+		    placeholder="Edit excerpt for this gloss"
+		    id="SBOOKEXCERPTINPUT"></textarea>
 	</div>
 	<div class="tags"
 	     onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">

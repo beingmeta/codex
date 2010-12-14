@@ -225,6 +225,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (edgeTap(evt)) return;
 	var sel=window.getSelection();
 	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
+	    sbook.selection=sel;
 	    var p=sbook.getTarget(sel.anchorNode)||
 		sbook.getTarget(sel.focusNode)||
 		passage;
