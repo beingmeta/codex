@@ -603,6 +603,12 @@ var sbookMode=
 		var clone=src.cloneNode(true);
 		clone.id="SBOOKSCAN";
 		fdjtDOM.replace("SBOOKSCAN",clone);
+		if (sbook.nextSlice(src))
+		    fdjtDOM.dropClass("SBOOKSCANNER","sbookatend");
+		else fdjtDOM.addClass("SBOOKSCANNER","sbookatend");
+		if (sbook.prevSlice(src))
+		    fdjtDOM.dropClass("SBOOKSCANNER","sbookatstart");
+		else fdjtDOM.addClass("SBOOKSCANNER","sbookatstart");
 		sbook.scanning=src;}
 	    else {}
 	    sbook.setTarget(elt);

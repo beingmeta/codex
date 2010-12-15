@@ -252,10 +252,22 @@ div#SBOOKHUD.toc .hudbutton[alt='toc'] {
 
 body.hudup div#SBOOKHUD div#SBOOKSCANNER div#SBOOKSCAN {
     margin-left: 36px; margin-right: 36px;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="beginning"],
 body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="prev"] {
     position: absolute; left: 0px; top: 8px;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="end"], 
 body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="next"] {
     position: absolute; right: 0px; top: 8px;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="beginning"],
+body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="end"] {
+    display: none;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="beginning"],
+body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="end"] {
+    z-index: 100;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER.sbookatend img[alt="next"] {display: none;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER.sbookatend img[alt="end"] {display: block;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER.sbookatstart img[alt="prev"] {display: none;}
+body.hudup div#SBOOKHUD div#SBOOKSCANNER.sbookatstart img[alt="beginning"] {display: block;}
 
 /* About this book */
 

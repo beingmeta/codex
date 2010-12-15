@@ -468,7 +468,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function generic_touchstart(evt){
 	var target=fdjtUI.T(evt);
 	if (fdjtDOM.isClickable(target)) return;
-	fdjtUI.cancel(evt);
+	// fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) tracetouch("touchstart",evt);
 	touch_started=fdjtTime();
 	var touches=evt.touches;
@@ -494,7 +494,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
 	// When selecting, don't do anything
 	if (!(emptySelection(window.getSelection()))) return;
-	fdjtUI.cancel(evt);
+	// fdjtUI.cancel(evt);
 	touch_moves++;
 	var touches=evt.touches;
 	var touch=
@@ -754,16 +754,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else sbookMode(false);
 	    return;}
 	var start=sbook.scanning;
-	var slice=fdjtDOM.getParent(start,".sbookslice");
-	var scan=fdjtDOM.forwardElt(start); var ref=false;
-	while (scan) {
-	    if (((scan.about)||
-		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		((fdjtDOM.hasClass(scan,"sbooknote"))||
-		 (fdjtDOM.hasClass(scan,"passage"))))
-		break;
-	    else scan=fdjtDOM.forwardElt(scan);}
-	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
+	var scan=sbook.nextSlice(start);
 	var ref=((scan)&&(sbook.getRef(scan)));
 	if (sbook.Trace.nav) 
 	    fdjtLog("[%fs] scanForward() from %o/%o to %o/%o under %o",
@@ -786,23 +777,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		sbook.GoTo(headinfo.head.elt); sbookMode("toc");}
 	    else sbookMode(false);
 	    return;}
-	var start=sbook.scanning;
-	var slice=fdjtDOM.getParent(start,".sbookslice");
-	var scan=fdjtDOM.backwardElt(start); var ref=false;
-	while (scan) {
-	    if (((scan.about)||
-		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		((fdjtDOM.hasClass(scan,"sbooknote"))||
-		 (fdjtDOM.hasClass(scan,"passage"))))
-		break;
-	    else scan=fdjtDOM.backwardElt(scan);}
-	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
+	var scan=sbook.prevSlice(sbook.scanning);
 	var ref=((scan)&&(sbook.getRef(scan)));
 	if (sbook.Trace.nav) 
 	    fdjtLog("[%fs] scanBackward() from %o/%o to %o/%o under %o",
 		    fdjtET(),start,sbook.getRef(start),scan,ref,slice);
-	if (!(fdjtDOM.hasParent(scan,slice))) scan=false;
-	var ref=((scan)&&(sbook.getRef(scan)));
 	if ((ref)&&(scan)) sbook.Scan(ref,scan);
 	return scan;}
     sbook.scanBackward=scanBackward;

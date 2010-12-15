@@ -478,6 +478,31 @@ var sbook_delete_icon="redx12x12.png";
 	fdjtDOM.append(idelt,renderNote(note));}
     sbook.UI.addToSlice=addToSlice;
 
+    sbook.nextSlice=function(start){
+	var slice=fdjtDOM.getParent(start,".sbookslice");
+	var scan=fdjtDOM.forwardElt(start); var ref=false;
+	while (scan) {
+	    if (((scan.about)||
+		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
+		((fdjtDOM.hasClass(scan,"sbooknote"))||
+		 (fdjtDOM.hasClass(scan,"passage"))))
+		break;
+	    else scan=fdjtDOM.forwardElt(scan);}
+	if (fdjtDOM.hasParent(scan,slice)) return scan;
+	else return false;};
+    sbook.prevSlice=function(start){
+	var slice=fdjtDOM.getParent(start,".sbookslice");
+	var scan=fdjtDOM.backwardElt(start); var ref=false;
+	while (scan) {
+	    if (((scan.about)||
+		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
+		((fdjtDOM.hasClass(scan,"sbooknote"))||
+		 (fdjtDOM.hasClass(scan,"passage"))))
+		break;
+	    else scan=fdjtDOM.backwardElt(scan);}
+	if (fdjtDOM.hasParent(scan,slice)) return scan;
+	else return false;};
+
     /* Selecting a subset of glosses to display */
 
     var hasClass=fdjtDOM.hasClass;
