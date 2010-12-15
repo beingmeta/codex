@@ -777,18 +777,18 @@ var sbookPaginate=
 
 	function FadeToPage(pagenum,off){
 	    if (!(off)) off=0;
-	    if (!(sbook.animate))
+	    if (!(sbook.animate.pages))
 		return sbook.GoToPage(pagenum,off,"FadeToPage");
 	    if (sbook.Trace.nav)
 		fdjtLog("[%fs] sbook.FadeToPage %o+%o",fdjtET(),pagenum,off);
 	    // sbook.body.style.opacity=0.0001;
 	    sbook.newpage={pagenum: pagenum,pageoff: off};
-	    fdjtDOM.addClass(document.body,"pageswitch");
-	    // We could probably use transitionend events for this
+	    fdjtDOM.addClass(sbook.body,"pageswitch");
+	    // We could probably use transition events for this
 	    setTimeout(function(){
 		sbook.GoToPage(pagenum,off,"FadeToPage+");
-		fdjtDOM.dropClass(document.body,"pageswitch");},
-		       200);}
+		fdjtDOM.dropClass(sbook.body,"pageswitch");},
+		       100);}
 	sbook.FadeToPage=FadeToPage;
 	
 	function displaySync(){
@@ -895,7 +895,8 @@ var sbookPaginate=
 		window.scrollTo(0,0);
 		document.body.style.overflow='hidden';
 		document.body.style.width=vw+'px';
-		document.body.style.height=vh+'px';}
+		document.body.style.height=vh+'px';
+		document.body.style.maxHeight=vh+'px';}
 
 	    /* // Not sure what this does
 	    if (!(sbook.nativescroll)) {
@@ -942,7 +943,8 @@ var sbookPaginate=
 	    var pagesize=(fdjtDOM.viewHeight())-(sbook_top_px+sbook_bottom_px);
 	    var target=sbook.target;
 	    sbook.Message("Determining page layout");
-	    ScrollPaginate(pagesize,sbook.body||document.body,
+	    var body=sbook.body||document.body;
+	    ScrollPaginate(pagesize,body,
 			   function(pagination) {
 			       fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
 			       sbook.pages=pagination.pages;

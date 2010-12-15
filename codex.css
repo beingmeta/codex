@@ -37,14 +37,14 @@ body.sbook {}
 #SBOOKCONTENT {
     margin: 0px; padding: 0px; border: 0px;
     padding-left: 50px; padding-right: 50px;
-    transition-property: opacity; transition-duration: 0.2s;
+    transition-property: opacity; transition-duration: 0.1s;
     -webkit-transition-property: opacity;
-    -webkit-transition-duration: 0.2s;
+    -webkit-transition-duration: 0.1s;
     -moz-transition-property: opacity;
-    -moz-transition-duration: 0.2s;
+    -moz-transition-duration: 0.1s;
     -o-transition-property: opacity;
-    -o-transition-duration: 0.2s;
-    height: 100%; overflow: visible;}
+    -o-transition-duration: 0.1s;
+    height: 100%;}
 
 #SBOOKASIDE {
     position: fixed;
@@ -53,13 +53,6 @@ body.sbook {}
     position: fixed;
     top: 60px; left: 60px; right: 60px;}
 
-/*
-body.sbooktouch #SBOOKCONTENT {
-    transition-duration: 0.4s;
-    -webkit-transition-duration: 0.4s;
-    -moz-transition-duration: 0.4s;
-    -o-transition-duration: 0.4s;}
-*/
 body.sbookscroll #SBOOKCONTENT {
     position: absolute; left: 0px; right: 0px; top: 0px;}
 
@@ -218,15 +211,22 @@ body.hudup div#SBOOKHUD.browsing div.hudpanel#SBOOKSEARCHRESULTS,
 body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCHCLOUD,
 body.hudup div#SBOOKHUD.scanning div.hudpanel#SBOOKSCANNER,
 body.hudup div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF,
-body.hudup div#SBOOKHUD.glosses div.hudpanel#SBOOKGLOSSES,
 body.hudup div#SBOOKHUD.addgloss div.hudpanel#SBOOKADDGLOSS,
 body.hudup div#SBOOKHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     border-color: darkblue;
+    opacity: 0.95; min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
-    -o-box-shadow: 1em 1em 1em #cccccc;
-    opacity: 0.95; min-height: 50px; height: auto;}
+    -o-box-shadow: 1em 1em 1em #cccccc;}
+
+body.hudup div#SBOOKHUD.glosses div.hudpanel#SBOOKGLOSSES {
+    border-color: darkblue;
+    opacity: 0.95; min-height: 50px; height: auto;
+    box-shadow: -1em 1em 1em #cccccc;
+    -webkit-box-shadow: -1em 1em 1em #cccccc;
+    -moz-box-shadow: -1em 1em 1em #cccccc;
+    -o-box-shadow: -1em 1em 1em #cccccc;}
 
 body.hudup div#SBOOKHUD.tocscan div.hudpanel#SBOOKTOC {
     border-color: darkblue;
@@ -591,7 +591,7 @@ div#SBOOKPAGEFOOT div#SBOOKPAGENO div.progressbar {
     z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
 body.paginate div#SBOOKPAGEFOOT div#SBOOKPAGEINFO {
     display: block;}
-body.pageswitch div#SBOOKCONTENT {
+div#SBOOKCONTENT.pageswitch {
     opacity: 0.0001;}
 
 div#SBOOKFOOT div#SBOOKFOOTINFO {
@@ -1311,9 +1311,9 @@ body.hudup .sbooktarget .glossmark { color: blue; cursor: pointer;}
    */
 body.sbooktarget { color: inherit;}
 
+.sbooktarget span.glossmark img.big { width: 50px;} 
 .sbooktarget span.glossmark img {
     border-top: solid blue 2px;}
-.sbooktarget span.glossmark img.big { width: 50px;} 
 .sbooktarget:hover .glossmark { opacity: 0.5;}
 body.hudup .sbooktarget .glossmark:hover { opacity: 0.9;}
 
@@ -1350,7 +1350,6 @@ div.sbookaddgloss form div.glossmode { display: none;}
 div.sbookaddgloss form div.submit {
     padding-left: 5px; float: right; text-align: center;}
 div.sbookaddgloss form div.submit { width: 50px; }
-body.sbooktouch div.sbookaddgloss form div.controls { font-size: 175%;}
 
 body.sbooktouch div.sbookaddgloss form div.submit { width: 75px;}
 div.sbookaddgloss form fieldset {

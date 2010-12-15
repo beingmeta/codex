@@ -42,7 +42,8 @@ var sbook=
      // For tracking UI state
      last_mode: false, last_flyleaf: "about",
      // How long it takes a gesture to go from tap to hold
-     holdmsecs: 500, edgeclick: 50, pagesize: 250, animate: true,
+     holdmsecs: 500, edgeclick: 50, pagesize: 250,
+     animate: {pages:false,hud: true},
      updatelocation: true,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include

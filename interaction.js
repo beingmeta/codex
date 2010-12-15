@@ -468,7 +468,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function generic_touchstart(evt){
 	var target=fdjtUI.T(evt);
 	if (fdjtDOM.isClickable(target)) return;
-	// fdjtUI.cancel(evt);
+	fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) tracetouch("touchstart",evt);
 	touch_started=fdjtTime();
 	var touches=evt.touches;
@@ -494,6 +494,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
 	// When selecting, don't do anything
 	if (!(emptySelection(window.getSelection()))) return;
+	evt.preventDefault();
 	// fdjtUI.cancel(evt);
 	touch_moves++;
 	var touches=evt.touches;
@@ -540,16 +541,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		else {
 		    if (dx<0) sbook.scanForward(evt);
 		    else sbook.scanBackward(evt);}}
-	    else if (ady>(adx*3)) { /* vertical */
-		if ((sbook.mode)&&(dy<0)) sbookMode(false);
-		else sbookMode("flyleaf");}
-	    else if (((adx+ady)>(fdjtDOM.viewWidth()/5))&&
-		     (ad<((adx+ady)/5))) {
-		if ((dx>0)&&(dy>0)) sbookMode("toc");
-		else if ((dx<0)&&(dy>0)) sbookMode("searching");
-		else if ((dx>0)&&(dy<0)) sbookMode("flyleaf");
-		else if ((dx<0)&&(dy<0)) sbookMode("allglosses");
-		else {}}
 	    else {}
 	    return;}
 	else if (touch_scrolled) return;  // Gesture already intepreted
@@ -627,7 +618,6 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) 
 	    fdjtLog("[%fs] glossmark_clicked() %o to %o for %o",fdjtET(),evt,glossmark,target);
-	fdjtUI.cancel(evt);
 	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
 	    sbookMode(true);
 	    return;}
@@ -814,11 +804,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
 	       mouseout: fdjtUI.CoHi.onmouseout}};
 
-    // A mouse pretending to be a touch screen
-
     sbook.UI.handlers.webtouch=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
-		  touchstart:cancel,touchmove:cancel,touchend:cancel},
+	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
 	 content: {touchstart: generic_touchstart,
 		   touchmove: content_touchmove,
 		   touchend: content_touchend},
