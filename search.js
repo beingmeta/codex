@@ -320,7 +320,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	  else if (rscores[xqid]>rscores[yqid]) return 1;
 	  else return 0;});
       if (!(result)) result=sbook.query;
-      var div=fdjtDOM("div.sbookslice.sbookresults");
+      var div=fdjtDOM("div.codexslice.sbookresults");
       sbook.UI.addHandlers(div,'summary');
       sbook.UI.showSlice(result._results,div,rscores);
       result._results_div=div;

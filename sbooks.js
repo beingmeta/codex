@@ -398,23 +398,29 @@ var sbook_gloss_data=
     function setTarget(target,nogo,nosave){
 	if (sbook.Trace.focus) sbook.trace("sbook.setTarget",target);
 	if (target===sbook.target) return;
-	if ((target===document.body)||(target===sbook.body)) target=false;
+	else if ((!target)&&(sbook.target)) {
+	    fdjtDOM.dropClass(sbook.target,"sbooktarget");
+	    sbook.target=false;
+	    return;}
+	else if (!(target)) return;
+	else if ((inUI(target))||(!(target.id))) return;
+	else if ((target===sbook.root)||(target===sbook.body)||
+		 (target===document.body)) {
+	    if (!(nogo)) sbook.GoTo(target,true);
+	    return;}
 	if (sbook.target) {
 	    fdjtDOM.dropClass(sbook.target,"sbooktarget");
 	    sbook.target=false;}
-	if ((!(target))||(inUI(target))||(!(target.id))||
-	    ((target===sbook.root)||(target===document.body))) {
-	    return;}
-	else {
-	    fdjtDOM.addClass(target,"sbooktarget");
-	    fdjtState.setCookie("sbooktarget",target);
-	    sbook.target=target;
-	    if (sbook.full_cloud)
-		sbook.setCloudCuesFromTarget(sbook.full_cloud,target);
-	    if (nogo) {
-		if (nosave) {}
-		else setState({target: target.id,location: sbook.location,page: sbook.curpage});}
-	    else sbook.GoTo(target,true);}}
+	fdjtDOM.addClass(target,"sbooktarget");
+	fdjtState.setCookie("sbooktarget",target);
+	sbook.target=target;
+	if (sbook.full_cloud)
+	    sbook.setCloudCuesFromTarget(sbook.full_cloud,target);
+	if (!(nosave))
+	    setState({target: target.id,
+		      location: sbook.location,
+		      page: sbook.curpage});
+ 	if (!(nogo)) sbook.GoTo(target,true);}
     sbook.setTarget=setTarget;
 
     /* Navigation */
@@ -554,16 +560,16 @@ var sbook_gloss_data=
     function sbookGoTo(arg,noset,nosave){
 	var target; var location;
 	if (typeof arg === 'string') {
-	    var elt=document.getElementById(arg);
-	    var locinfo=getLocInfo(elt);
-	    target=getTarget(elt);
-	    location=locinfo.start;}
+	    target=document.getElementById(arg);
+	    var info=getLocInfo(target);
+	    location=info.start;}
 	else if (typeof arg === 'number') {
 	    location=arg;
 	    target=resolveLocation(arg);}
 	else if (arg.nodeType) {
 	    var info=getLocInfo(arg);
-	    target=getTarget(arg);
+	    if (arg.id) target=arg;
+	    else target=getTarget(arg);
 	    location=info.start;}
 	else {
 	    fdjtLog.warn("[%fs] Bad sbookGoTo %o",fdjtET(),arg);
@@ -576,7 +582,8 @@ var sbook_gloss_data=
 		    fdjtET(),target.id,page,((info)&&(info.starts_at)),target);
 	if (target.id) setHashID(target);
 	if (info) {
-		    if (info.level) setHead(target);
+	    if (typeof info.level === 'number')
+		setHead(target);
 	    else if (info.head) setHead(info.head.frag);}
 	setLocation(location);
 	if ((!(noset))&&(target.id)&&(!(inUI(target))))
@@ -584,10 +591,13 @@ var sbook_gloss_data=
 	if (nosave) {}
 	else if (noset)
 	    sbook.setState({
-		target: ((sbook.target)&&(sbook.target.id)),location: location,page: page})
-	else sbook.setState({target: (target.id),location: location,page: page});
-	if (page) sbook.GoToPage(page,0,"sbookGoTo",nosave||false);
-	else sbook.location=location;}
+		target: ((sbook.target)&&(sbook.target.id)),
+		location: location,page: page})
+	else sbook.setState(
+	    {target: (target.id),location: location,page: page});
+	if (typeof page === 'number') 
+	    sbook.GoToPage(page,0,"sbookGoTo",nosave||false);
+	sbook.location=location;}
     sbook.GoTo=sbookGoTo;
 
     function anchorFn(evt){

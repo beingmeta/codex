@@ -50,7 +50,7 @@ var sbook_delete_icon="redx12x12.png";
 	var refiners=((query) && (query._refiners));
 	var score=((query)&&(query[key]));
 	var div=
-	    fdjtDOM(((info.tstamp) ? "div.sbooknote.gloss" : "div.sbooknote"),
+	    fdjtDOM(((info.tstamp) ? "div.codexnote.gloss" : "div.codexnote"),
 		    ((standalone)&&(makelocbar(target_info))),
 		    // (makelocrule(target_info,target_info.head)),
 		    ((info.tstamp)&&(showglossinfo(info)))," ",
@@ -340,11 +340,11 @@ var sbook_delete_icon="redx12x12.png";
 	    var tochead=makeTOCHead(head);
 	    if (curinfo!==docinfo) {
 		if (headinfo!==curhead) {
-		    headelt=fdjtDOM("div.sbookthread.tocthread",tochead);
+		    headelt=fdjtDOM("div.codexthread.tocthread",tochead);
 		    headelt.frag=headinfo.frag;
 		    fdjtDOM.append(div,headelt);
 		    curhead=headinfo;}
-		threadelt=fdjtDOM("div.sbookthread.idthread",
+		threadelt=fdjtDOM("div.codexthread.idthread",
 				  makeIDHead(target,headinfo,true));
 		threadelt.frag=frag;
 		threadelt.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
@@ -441,14 +441,14 @@ var sbook_delete_icon="redx12x12.png";
 	var headelt=findTOCref(div,headid,head_starts);
 	if ((!(headelt))||(headelt.tocref!==headid)) {
 	    var insertion=headelt;
-	    headelt=fdjtDOM("div.sbookthread.headthread",makeTOCHead(head,head));
+	    headelt=fdjtDOM("div.codexthread.headthread",makeTOCHead(head,head));
 	    headelt.tocref=headid; headelt.starts=head_starts;
 	    if (insertion) fdjtDOM.insertBefore(insertion,headelt);
 	    else fdjtDOM.append(div,headelt);}
 	var idelt=((frag===headid)?(headelt):(findTOCref(headelt,frag,starts)));
 	if ((!(idelt))||(idelt.tocref!==frag)) {
 	    var insertion=idelt;
-	    idelt=fdjtDOM("div.sbookthread.idthread",makeIDHead(about,headinfo));
+	    idelt=fdjtDOM("div.codexthread.idthread",makeIDHead(about,headinfo));
 	    idelt.tocref=frag; idelt.start=starts; idelt.about="#"+frag;
 	    idelt.title=(sbook.getTitle(about)||fdjtDOM.textify(about))
 		.replace(/\n\n+/g,"\n").replace(/^\n+/,"");
@@ -462,11 +462,11 @@ var sbook_delete_icon="redx12x12.png";
 	while (i<lim) {
 	    var child=children[i++];
 	    if (child.nodeType!==1) continue;
-	    if ((ishead)&&(fdjtDOM.hasClass(child,"sbookthread"))) {
+	    if ((ishead)&&(fdjtDOM.hasClass(child,"codexthread"))) {
 		fdjtDOM.insertBefore(child,renderNote(note));
 		return;}
-	    if (!((fdjtDOM.hasClass(child,"sbooknote"))||
-		  (fdjtDOM.hasClass(child,"sbookthread"))))
+	    if (!((fdjtDOM.hasClass(child,"codexnote"))||
+		  (fdjtDOM.hasClass(child,"codexthread"))))
 		continue;
 	    if (child.qref===qid) {
 		fdjtDOM.replace(child,renderNote(note));
@@ -479,24 +479,24 @@ var sbook_delete_icon="redx12x12.png";
     sbook.UI.addToSlice=addToSlice;
 
     sbook.nextSlice=function(start){
-	var slice=fdjtDOM.getParent(start,".sbookslice");
+	var slice=fdjtDOM.getParent(start,".codexslice");
 	var scan=fdjtDOM.forwardElt(start); var ref=false;
 	while (scan) {
 	    if (((scan.about)||
 		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		((fdjtDOM.hasClass(scan,"sbooknote"))||
+		((fdjtDOM.hasClass(scan,"codexnote"))||
 		 (fdjtDOM.hasClass(scan,"passage"))))
 		break;
 	    else scan=fdjtDOM.forwardElt(scan);}
 	if (fdjtDOM.hasParent(scan,slice)) return scan;
 	else return false;};
     sbook.prevSlice=function(start){
-	var slice=fdjtDOM.getParent(start,".sbookslice");
+	var slice=fdjtDOM.getParent(start,".codexslice");
 	var scan=fdjtDOM.backwardElt(start); var ref=false;
 	while (scan) {
 	    if (((scan.about)||
 		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		((fdjtDOM.hasClass(scan,"sbooknote"))||
+		((fdjtDOM.hasClass(scan,"codexnote"))||
 		 (fdjtDOM.hasClass(scan,"passage"))))
 		break;
 	    else scan=fdjtDOM.backwardElt(scan);}
@@ -513,7 +513,7 @@ var sbook_delete_icon="redx12x12.png";
 	while (i<children.length) {
 	    var child=children[i++];
 	    if (child.nodeType!==1) continue;
-	    if (hasClass(child,"sbooknote")) {
+	    if (hasClass(child,"codexnote")) {
 		var gloss=(child.qref)&&sbook.glosses.map[child.qref];
 		if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
 		else if ((fdjtKB.contains(sources,gloss.user))||
@@ -521,7 +521,7 @@ var sbook_delete_icon="redx12x12.png";
 		    fdjtDOM.addClass(child,"sourced");
 		    empty=false;}
 		else fdjtDOM.dropClass(child,"sourced");}
-	    else if (hasClass(child,"sbookthread")) {
+	    else if (hasClass(child,"codexthread")) {
 		if (!(selectSourcesRecur(child,sources)))
 		    empty=false;}
 	    else {}}

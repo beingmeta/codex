@@ -740,17 +740,16 @@ var sbookPaginate=
 	    updatePage(info,off);
 	    var npages=sbook.pageinfo.length;
 	    var pbar=fdjtDOM("div.progressbar");
-	    var starts_at=info.top+pageoff; var ends_at=info.bottom;
-	    var lastpage=sbook.pageinfo[npages-1];
-	    var book_len=lastpage.bottom||lastpage.limit||lastpage.top;
-	    var topelt=info.first;
-	    while (topelt) if (topelt.id) break; else topelt=topelt.parentNode;
+	    var book_len=sbook.ends_at;
+	    var starts_at=info.loc;
+	    var ends_at=((sbook.pageinfo[pagenum+1])?
+			 (sbook.pageinfo[pagenum+1].loc):
+			 (book_len));
 	    pbar.style.left=(100*(starts_at/book_len))+"%";
 	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
 	    var pageno=
 		fdjtDOM("div#SBOOKPAGENO",pbar,
-			((topelt)&&
-			 (fdjtDOM("span.locoff","L"+Math.floor(info.loc/128)))),
+			(fdjtDOM("span.locoff","L"+Math.floor(info.loc/128))),
 			pagenum+1,((pageoff)?"+":""),"/",npages);
 	    fdjtDOM.replace("SBOOKPAGENO",pageno);
 	    sbook.curpage=pagenum;

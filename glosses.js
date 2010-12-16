@@ -43,17 +43,18 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    (passage===sbook.glosstarget))
 	    return false;
 	var id=passage.id;
-	var div=fdjtID("SBOOKADDGLOSS_"+id); var form;
+	var div=fdjtID("CODEXADDGLOSS_"+id); var form;
 	if (!(div)) {
 	    div=fdjtDOM("div.sbookglossform");
 	    div.innerHTML=sbook_addgloss;
-	    div.id="SBOOKADDGLOSS_"+id;
+	    div.id="CODEXADDGLOSS_"+id;
 	    fdjtDOM(fdjtID("SBOOKGLOSSFORMS"),div);
 	    form=fdjtDOM.getChildren(div,"form")[0];
 	    setupGlossForm(form);
 	    sbook.setGlossTarget(passage,form);}
 	else form=fdjtDOM.getChildren(div,"form")[0];
-	if (sbook.glossform) fdjtDOM.dropClass(sbook.glossform,"sbooklivegloss");
+	if (sbook.glossform)
+	    fdjtDOM.dropClass(sbook.glossform,"sbooklivegloss");
 	fdjtDOM.addClass(div,"sbooklivegloss");
 	sbook.glossform=div;
 	sbook.glosstarget=passage;
@@ -639,7 +640,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     function addgloss_callback(req){
 	if (sbook.Trace.network)
 	    fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
-	fdjtDOM.dropClass(fdjtID("SBOOKADDGLOSS"),"submitting");
+	fdjtDOM.dropClass(fdjtID("CODEXADDGLOSS"),"submitting");
 	fdjtKB.Import(JSON.parse(req.responseText));
 	// Clear the UUID, and other fields
 	var uuid=fdjtDOM.getInput(fdjtID("SBOOKGLOSSFORM"),"UUID");
@@ -657,30 +658,33 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
     /***** Gloss Modes *****/
 
-    function glossMode(mode) {
+    function glossMode(mode,evt) {
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var form=fdjtDOM.getParent(target,"form");
 	if (sbook.Trace.mode)
-	    fdjtLog("[%fs] glossMode %o=>%o",
-		    fdjtET(),fdjtID("SBOOKGLOSSFORM").className,mode);
-	fdjtID("SBOOKGLOSSFORM").className='sb'+mode+'mode';
+	    fdjtLog("[%fs] glossMode %o %o=>%o",
+		    fdjtET(),form,form.className,mode);
+	form.className='sb'+mode+'mode';
 	if (mode==='tag') {
-	    showGlossCloud(fdjtID("SBOOKTAGINPUT"));
-	    fdjtID("SBOOKTAGINPUT").focus();}
+	    var input=fdjtDOM.getInput(form,"TAG");
+	    showGlossCloud(input); input.focus();}
 	else if (mode==='note') {
+	    var input=fdjtDOM.getInput(form,"NOTE");
 	    fdjtDOM.dropClass(sbookHUD,"tagging");
 	    fdjtDOM.dropClass(sbookHUD,"sharing");
-	    if (istagging(fdjtID("SBOOKNOTEINPUT"))) {
-		showGlossCloud(fdjtID("SBOOKNOTEINPUT"),true);}
-	    fdjtID("SBOOKNOTEINPUT").focus();}
-	else if (mode==='share') {
-	    fdjtDOM.addClass(sbookHUD,"sharing");
-	    fdjtDOM.dropClass(sbookHUD,"tagging");
-	    share_cloud.complete(fdjtID("SBOOKSHAREINPUT").value);}
+	    if (istagging(input)) {showGlossCloud(note,true);}
+	    input.focus();}
 	else {
 	    hideGlossCloud();
 	    fdjtDOM.dropClass(sbookHUD,"sharing");
 	    fdjtDOM.dropClass(sbookHUD,"tagging");
-	    if (mode==="link") fdjtID("SBOOKLINKINPUT").focus();
-	    else if (mode==="detail") fdjtID("SBOOKDETAILINPUT").focus();}}
+	    if (mode==="link") 
+		fdjtDOM.getInput(form,"LINK").focus();
+	    else if (mode==="detail")
+		fdjtDOM.getInput(form,"DETAIL").focus();
+	    else if (mode==="excerpt")
+		fdjtDOM.getInput(form,"EXCERPT").focus();}}
     sbook.glossMode=glossMode;
 
     /***** The Gloss Cloud *****/
@@ -725,7 +729,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     // Submits a gloss, queueing it if offline.
     function submitGloss(evt){
 	evt=evt||event||null;
-	fdjtDOM.addClass(fdjtID("SBOOKADDGLOSS"),"submitting");
+	fdjtDOM.addClass(fdjtID("CODEXADDGLOSS"),"submitting");
 	var form=(fdjtUI.T(evt));
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
@@ -773,7 +777,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtID("SBOOKMARKUUID").value="";
 	sbook.preview_target=false;
 	if (evt) fdjtUI.cancel(evt);
-	fdjtDOM.dropClass(fdjtID("SBOOKADDGLOSS"),"submitting");
+	fdjtDOM.dropClass(fdjtID("CODEXADDGLOSS"),"submitting");
 	/* Turn off the target lock */
 	sbook.setTarget(false);
 	sbookMode(false);}

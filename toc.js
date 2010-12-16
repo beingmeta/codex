@@ -32,15 +32,15 @@
 /* New NAV hud design
    One big DIV for the whole TOC, use CSS to change what's visible
    General structure:
-   div.sbooktoc.toc0
+   div.codextoc.toc0
    div.head (contains section name)
    div.spanbar (contains spanbar)
    div.sub (contains all the subsections names)
-   div.sbooktoc.toc1 (tree for first section)
-   div.sbooktoc.toc1 (tree for second section)
+   div.codextoc.toc1 (tree for first section)
+   div.codextoc.toc1 (tree for second section)
    Controlling display:
    .cur class on current head
-   .live class on div.sbooktoc and parents
+   .live class on div.codextoc and parents
 */
 
 /* Building the DIV */
@@ -48,19 +48,33 @@
 var sbookTOC=
     (function(){
 	function sbicon(base){return sbook.graphics+base;}
+	function navicon(kind){
+	    if (sbook.touch) {
+		switch (kind) {
+		case 'right': return sbicon("GoldRightTriangle32.png");
+		case 'left': return sbicon("GoldLeftTriangle32.png");
+		case 'start': return sbicon("GoldLeftStop32.png");
+		case 'end': return sbicon("GoldRightStop32.png");}}
+	    else {
+		switch (kind) {
+		case 'right': return sbicon("GoldRightTriangle24.png");
+		case 'left': return sbicon("GoldLeftTriangle24.png");
+		case 'start': return sbicon("GoldLeftStop24.png");
+		case 'end': return sbicon("GoldRightStop24.png");}}}
+	sbook.navicon=navicon;
 
 	function sbookTOC(headinfo,depth,tocspec,prefix){
 	    var progressbar=fdjtDOM("HR.progressbar");
 	    var head=fdjtDOM("A.sectname",headinfo.title);
-	    var spec=tocspec||"DIV.sbooktoc";
+	    var spec=tocspec||"DIV.codextoc";
 	    var next_button=
 		((headinfo.next)?
-		 (fdjtDOM.Image(sbicon("GoldRightTriangle16.png"),false,"next")):
-		 (fdjtDOM.Image(sbicon("GoldRightStop16.png"),false,"nextstop")));
+		 (fdjtDOM.Image(navicon("right"),false,"next")):
+		 (fdjtDOM.Image(navicon("end"),false,"nextstop")));
 	    var back_button=
 		((headinfo.prev)?
-		 (fdjtDOM.Image(sbicon("GoldLeftTriangle16.png"),false,"back")):
-		 (fdjtDOM.Image(sbicon("GoldLeftStop16.png"),false,"backstop")));
+		 (fdjtDOM.Image(navicon("left"),false,"back")):
+		 (fdjtDOM.Image(navicon("start"),false,"backstop")));
 	    if (headinfo.next) next_button.frag=headinfo.next.frag;
 	    if (headinfo.prev) back_button.frag=headinfo.prev.frag;
 	    var toc=fdjtDOM(spec,
@@ -78,7 +92,7 @@ var sbookTOC=
 	    toc.id=(prefix||"SBOOKTOC4")+headinfo.frag;
 	    head.name="SBR"+headinfo.frag;
 	    if ((!(sub)) || (!(sub.length))) {
-		fdjtDOM.addClass(toc,"sbooktocleaf");
+		fdjtDOM.addClass(toc,"codextocleaf");
 		return toc;}
 	    var i=0; var n=sub.length;
 	    while (i<n) {
@@ -115,7 +129,7 @@ var sbookTOC=
 	    return div;}
 	
 	function generate_spanbar(headinfo){
-	    var spanbar=fdjtDOM("div.spanbar.sbookslice");
+	    var spanbar=fdjtDOM("div.spanbar.codexslice");
 	    var spans=fdjtDOM("div.spans");
 	    var start=headinfo.starts_at;
 	    var end=headinfo.ends_at;

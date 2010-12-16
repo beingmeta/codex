@@ -1,6 +1,6 @@
 <form action="https://glossdb.sbooks.net/v4/glosspoint"
       ajaxaction="https://glosses.sbooks.net/v4/addgloss"
-      target="addgloss" class="sbnotemode" id="SBOOKGLOSSFORM">
+      target="addgloss" class="sbnotemode">
   <div>
     <div class="topblock">
       <div class="hidden">
@@ -25,32 +25,32 @@
 	  <option value="sblinkmode">link</option>
 	  <option value="sbdetailmode">detail</option>
 	</select>
-	<span class="button" onclick="sbook.glossMode('note');"
+	<span class="button" onclick="sbook.glossMode('note',event);"
 	      title="add a note" data-mode="note">
 	  <img src=
 	       "http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
 	       alt="note"/>
 	  <span class="text">Note</span>
 	</span>
-	<span class="button" onclick="sbook.glossMode('tag');"
+	<span class="button" onclick="sbook.glossMode('tag',event);"
 	      title="add tags" data-mode="tag">
 	  <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
 	       alt="tag" title="add some tags"/>
 	  <span class="text">Tags</span>
 	</span>
-	<span class="button" onclick="sbook.glossMode('link');"
+	<span class="button" onclick="sbook.glossMode('link',event);"
 	      title="add a link" data-mode="link">
 	  <img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
 	       alt="link" title="add a link"/>
 	  <span class="text">Link</span>
 	</span>
-	<span class="button" onclick="sbook.glossMode('excerpt');"
+	<span class="button" onclick="sbook.glossMode('excerpt',event);"
 	      title="edit excerpt" data-mode="excerpt">
 	  <img src="http://static.beingmeta.com/graphics/scissorsicon32x32.png"
 	       alt="detail" title="edit excerpt"/>
 	  <span class="text">Excerpt</span>
 	</span>
-	<span class="button" onclick="sbook.glossMode('detail');"
+	<span class="button" onclick="sbook.glossMode('detail',event);"
 	      title="add extended text" data-mode="detail">
 	  <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
 	       alt="detail" title="add extended text"/>
@@ -77,38 +77,34 @@
 	<div class="input note">
 	  <textarea name="NOTE"
 		    placeholder="add a note,using brackets for descriptive [tag]s"
-		    wrap="virtual"
-		    id="SBOOKNOTEINPUT"></textarea>
+		    wrap="virtual"></textarea>
 	</div>
 	<div class="input tag">
 	  <input type="TEXT" name="TAG" value="" autocomplete="off"
 		 placeholder="add tags to this passage" 
 		 onfocus="sbook.handlers.taginput_focus(event);"
-		 onblur="sbook.handlers.taginput_blur(event);"
-		 id="SBOOKTAGINPUT">
+		 onblur="sbook.handlers.taginput_blur(event);">
 	</div>
 	<div class="input link">
 	  <input type="TEXT" name="LINK" value=""
 		 placeholder="type a URL to link from this passage" 
-		 class="urlinput" prompt="type a web address (URL)"
-		 id="SBOOKLINKINPUT"/>
+		 class="urlinput" prompt="type a web address (URL)"/>
 	</div>
 	<div class="input share">
 	  <input type="TEXT" name="SHARE" value="" autocomplete="off"
-		 placeholder="type an email or tag with friends or groups to share"
-		 id="SBOOKSHAREINPUT"/>
+		 placeholder=
+		 "type an email or tag with friends or groups to share"/>
 	</div>
 	<div class="input detail">
 	  <textarea name="DETAIL"
-		    placeholder="Enter detailed comments or notes here"
-		    id="SBOOKDETAILINPUT"></textarea>
+		    placeholder="Enter detailed comments or notes here">
+	  </textarea>
 	</div>
 	<div class="input excerpt">
 	  <input type="HIDDEN" name="EXCERPTSTART"/>
 	  <input type="HIDDEN" name="EXCERPTEND"/>
-	  <textarea name="EXCERPT"
-		    placeholder="Edit excerpt for this gloss"
-		    id="SBOOKEXCERPTINPUT"></textarea>
+	  <textarea name="EXCERPT" placeholder="Edit excerpt for this gloss">
+	  </textarea>
 	</div>
 	<div class="tags"
 	     onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">

@@ -37,20 +37,21 @@ body.sbook {}
 #SBOOKCONTENT {
     margin: 0px; padding: 0px; border: 0px;
     padding-left: 50px; padding-right: 50px;
+    height: 100%;}
+#SBOOKCONTENT.codexanimate {
     transition-property: opacity; transition-duration: 0.1s;
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.1s;
     -moz-transition-property: opacity;
     -moz-transition-duration: 0.1s;
     -o-transition-property: opacity;
-    -o-transition-duration: 0.1s;
-    height: 100%;}
+    -o-transition-duration: 0.1s;}
 
 #SBOOKASIDE {
-    position: fixed;
+    position: fixed; z-index: -100;
     top: 60px; left: 60px; right: 60px; bottom: 60px;}
 #SBOOKREF {
-    position: fixed;
+    position: fixed; z-index: -100;
     top: 60px; left: 60px; right: 60px;}
 
 body.sbookscroll #SBOOKCONTENT {
@@ -75,7 +76,8 @@ div#SBOOKHUD div.hudpanel {
 div#SBOOKHUD div.hudpanel {
     opacity: 0.001; height: 0px; /* display: none; */
     border-radius: 6px; -o-border-radius: 6px;
-    -webkit-border-radius: 6px; -moz-border-radius: 6px;
+    -webkit-border-radius: 6px; -moz-border-radius: 6px;}
+div#SBOOKHUD.codexanimate div.hudpanel {
     transition-property: opacity,height; -o-transition-property: opacity,height;
     -moz-transition-property: opacity,height;
     -webkit-transition-property: opacity,height; 
@@ -83,7 +85,7 @@ div#SBOOKHUD div.hudpanel {
     -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;}
 
 div#SBOOKHUD div#SBOOKHEAD div.hudpanel,
-div#SBOOKHUD div.hudpanel.sbooknote {
+div#SBOOKHUD div.hudpanel.codexnote {
     max-height: 75%;
     border-top: 0px;
     border-top-left-radius: 0px;
@@ -211,7 +213,7 @@ body.hudup div#SBOOKHUD.browsing div.hudpanel#SBOOKSEARCHRESULTS,
 body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCHCLOUD,
 body.hudup div#SBOOKHUD.scanning div.hudpanel#SBOOKSCANNER,
 body.hudup div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF,
-body.hudup div#SBOOKHUD.addgloss div.hudpanel#SBOOKADDGLOSS,
+body.hudup div#SBOOKHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#SBOOKHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     border-color: darkblue;
     opacity: 0.95; min-height: 50px; height: auto;
@@ -234,7 +236,7 @@ body.hudup div#SBOOKHUD.tocscan div.hudpanel#SBOOKTOC {
 
 div#SBOOKHUD.searching div#SBOOKSEARCHRESULTSWRAPPER { display: none;}
 div#SBOOKHUD.searching div.completions#SBOOKSEARCHCLOUD { display: block;}
-div#SBOOKHUD.searching div.sbookslice#SBOOKSEARCHRESULTS { display: none;}
+div#SBOOKHUD.searching div.codexslice#SBOOKSEARCHRESULTS { display: none;}
 div#SBOOKHUD.browsing div#SBOOKSEARCHCLOUDWRAPPER { display: none;}
 div#SBOOKHUD.browsing div.completions#SBOOKSEARCHCLOUD { display: none;}
 
@@ -328,47 +330,52 @@ div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF {
 
 /* TOC rules */
 
-div.sbooktoc { display: none;}
-div.sbooktoc div.head {
+div.codextoc { display: none;}
+div.codextoc > div, div.codextoc > div.head {
+    margin-left: 32px; margin-right: 32px;}
+div.codextoc div.head {
   position: relative; margin: 0px; padding: 0px; border: 0px;
-  left: 0px; right: 0px; margin-left: 20px; margin-right: 20px;
+  left: 0px; right: 0px; margin: 0px;
+  margin-left: 32px; margin-right: 32px;
   display: none;}
-div.sbooktoc div.head .progressbar { 
+div.codextoc div.head { min-height: 24px;}
+body.sbooktouch div.codextoc div.head { min-height: 32px;}
+div.codextoc div.head .progressbar { 
   color: lightblue; background-color: lightblue;
   padding: 0px; margin: 0px; border-right: solid red 3px;
   position: absolute;  left: 0px; height: 100%;
   z-index: -100; opacity: 0.5;}
-div.sbooktoc img[alt='next'], div.sbooktoc img[alt='nextstop'] {
+div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
     float: right; cursor: pointer; z-index: 100;}
-div.sbooktoc img[alt='back'], div.sbooktoc img[alt='backstop'] {
+div.codextoc img[alt='back'], div.codextoc img[alt='backstop'] {
     float: left; cursor: pointer; z-index: 100;}
 
 /* Conditional display, so only the live elements are redisplayed */
-div.sbooktoc.live { display: block;}
-div.sbooktoc.live div.head { display: block;}
+div.codextoc.live { display: block;}
+div.codextoc.live div.head { display: block;}
 
-div.sbooktoc.live div.sbooktoc { display: none;}
-div.sbooktoc.live div.sbooktoc.live { display: block;}
+div.codextoc.live div.codextoc { display: none;}
+div.codextoc.live div.codextoc.live { display: block;}
 
-div.sbooktoc div.sub {
+div.codextoc div.sub {
     display: none; clear: both;}
-div.sbooktoc.cur div.head { font-size: 125%;}
-div.sbooktoc.cur div.sub { display: block;}
+div.codextoc.cur div.head { font-size: 125%;}
+div.codextoc.cur div.sub { display: block;}
 
-body.hudup div#SBOOKHUD.tocscan div.sbooktoc.live div.head,
-body.hudup div#SBOOKHUD.tocscan div.sbooktoc.live img {
-    display: none;}
-body.hudup div#SBOOKHUD.tocscan div.sbooktoc.live.cur > div.head,
-body.hudup div#SBOOKHUD.tocscan div.sbooktoc.live.cur > img {
-    display: block;}
+body.hudup div#SBOOKHUD.tocscan div.codextoc.live div.head,
+body.hudup div#SBOOKHUD.tocscan div.codextoc.live img {
+    height: 0px;}
+body.hudup div#SBOOKHUD.tocscan div.codextoc.live.cur > div.head,
+body.hudup div#SBOOKHUD.tocscan div.codextoc.live.cur > img {
+    height: inherit;}
 
-div#SBOOKFLYLEAF div#FLYTOC div.sbooktoc {
+div#SBOOKFLYLEAF div#FLYTOC div.codextoc {
     display: block; font-size: 90%; text-align: left;}
-div#SBOOKFLYLEAF div#FLYTOC div.sbooktoc img { display: none;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.sbooktoc div.head {
+div#SBOOKFLYLEAF div#FLYTOC div.codextoc img { display: none;}
+div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.codextoc div.head {
     margin-left: 0px; margin-right: 0px;
     display: block; font-weight: bold;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.sbooktocleaf > div.head {
+div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.codextocleaf > div.head {
     display: block; font-weight: normal;}
 div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC hr.progressbar {
     display: none; border: none;}
@@ -381,25 +388,25 @@ div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC
   div.live > div.spanbar div.progressbox {
       display: block;}
 
-div#SBOOKFLYTOC div.sbooktoc.cur div.sub { display: none;}
+div#SBOOKFLYTOC div.codextoc.cur div.sub { display: none;}
 
-div.sbooktoc .sectname.cohi { color: gold;}
-div.sbooktoc .sectname { color: ivory; cursor: pointer;}
-div.sbooktoc div.sub a.sectname { 
+div.codextoc .sectname.cohi { color: gold;}
+div.codextoc .sectname { color: ivory; cursor: pointer;}
+div.codextoc div.sub a.sectname { 
   color: ivory; font-size: 80%; white-space: nowrap;}
-div.sbooktoc div.sub a.sectname.cohi { color: gold; }
+div.codextoc div.sub a.sectname.cohi { color: gold; }
 
-div#SBOOKHUD div.sbooktoc div.head { display: none;}
-div#SBOOKHUD div.sbooktoc div.spanbar { display: none;}
+div#SBOOKHUD div.codextoc div.head { display: none;}
+div#SBOOKHUD div.codextoc div.spanbar { display: none;}
 
-div#SBOOKHUD div.sbooktoc.toc0 div.spanbar { display: block;}
-div#SBOOKHUD div.sbooktoc.cur div.spanbar { display: block;}
-div#SBOOKHUD div.sbooktoc.cur div.head { display: block;}
+div#SBOOKHUD div.codextoc.toc0 div.spanbar { display: block;}
+div#SBOOKHUD div.codextoc.cur div.spanbar { display: block;}
+div#SBOOKHUD div.codextoc.cur div.head { display: block;}
 
-div#SBOOKHUD.toc div.sbooktoc div.head { display: block;}
-div#SBOOKHUD.toc div.sbooktoc div.spanbar { display: block;}
-div#SBOOKHUD.toc div.sbooktoc.cur div.sub { display: block;}
-div#SBOOKHUD div#SBOOKTOC.hover div.sbooktoc.cur div.sub { display: none;}
+div#SBOOKHUD.toc div.codextoc div.head { display: block;}
+div#SBOOKHUD.toc div.codextoc div.spanbar { display: block;}
+div#SBOOKHUD.toc div.codextoc.cur div.sub { display: block;}
+div#SBOOKHUD div#SBOOKTOC.hover div.codextoc.cur div.sub { display: none;}
 
 div.spanbar {
   position: relative;
@@ -436,8 +443,8 @@ div.spanbar div.sbookhudspan.current {
 div.spanbar div.sbookhudspan.previewed { 
   border-bottom: solid red 2px; border-top: solid red 2px;
   background-color: red;}
-div#SBOOKHUD div.sbooktoc { 
-  width: 94%; margin-left: 3%; margin-right: 3%;}
+div#SBOOKHUD div.codextoc { 
+  margin-left: 32px; margin-right: 32px;}
 
 div.spanbar { padding: 0px; margin: 0px;}
 div.spanbar div.spans { 
@@ -709,48 +716,48 @@ div#SBOOKHUD .dterm { color: gold;}
 /* sbook 'slices' of summaries or glosses */
 
 /* Display rules */
-div.sbookslice.sourced div.sbooknote { display: none;}
-div.sbookslice.sourced div.sbooknote.sourced { display: block;}
+div.codexslice.sourced div.codexnote { display: none;}
+div.codexslice.sourced div.codexnote.sourced { display: block;}
 
-div.sbookslice.sourced div.sbookthread { display: none;}
-div.sbookslice.sourced div.sbookthread > div { display: none;}
-div.sbookslice.sourced div.sbookthread.sourced { display: block;}
-div.sbookslice.sourced div.sbookthread.sourced > div.tochead { display: block;}
-div.sbookslice.sourced div.sbookthread.sourced > div.idhead { display: block;}
-div.sbookslice.sourced div.sbookthread.sourced > div.sbookthread { display: none;}
-div.sbookslice.sourced div.sbookthread.sourced > div.sbookthread.sourced { display: block;}
+div.codexslice.sourced div.codexthread { display: none;}
+div.codexslice.sourced div.codexthread > div { display: none;}
+div.codexslice.sourced div.codexthread.sourced { display: block;}
+div.codexslice.sourced div.codexthread.sourced > div.tochead { display: block;}
+div.codexslice.sourced div.codexthread.sourced > div.idhead { display: block;}
+div.codexslice.sourced div.codexthread.sourced > div.codexthread { display: none;}
+div.codexslice.sourced div.codexthread.sourced > div.codexthread.sourced { display: block;}
 
-div.sbookslice.onepassage .tocblock .tochead {display:none;}
-div.sbookslice.onepassage .sbooknote img.previewicon { display: inline;}
+div.codexslice.onepassage .tocblock .tochead {display:none;}
+div.codexslice.onepassage .codexnote img.previewicon { display: inline;}
 
 span.excerpt { font-size: 120%; color: white;}
 span.excerpt span.content { font-size: 80%; color: white; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 
-div.sbookslice .sbooknote div.detail { 
+div.codexslice .codexnote div.detail { 
   display: none; color: ivory; clear: both;}
-div.sbookslice .showdetail div.detail { display: block;}
-div.sbookslice div.xrefs { display: none;}
-div.sbookslice .showxrefs div.xrefs { display: block;}
-div.sbookslice div.xrefs a { display: block;}
+div.codexslice .showdetail div.detail { display: block;}
+div.codexslice div.xrefs { display: none;}
+div.codexslice .showxrefs div.xrefs { display: block;}
+div.codexslice div.xrefs a { display: block;}
 
-div.sbookthread {
+div.codexthread {
     clear: both; margin: 0px; border none;}
-div.sbookthread.singleton,
-div#SBOOKGLOSSES div.sbookthread {
+div.codexthread.singleton,
+div#SBOOKGLOSSES div.codexthread {
     border-left: none; margin-left: 0px;
     padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
-div.sbookthread .locbar { background-color: silver;}
-div.sbookthread.headthread { border-top: solid gold 2px;}
-div.sbookthread.idthread {
+div.codexthread .locbar { background-color: silver;}
+div.codexthread.headthread { border-top: solid gold 2px;}
+div.codexthread.idthread {
     margin-left: 16px; border: none;}
-div.sbookthread.idthread .sbooknote {}
-div.sbookslice div.sbookthread div.sbooknote div.locbar {border: none;}
-div.sbookslice div.sbookthread div.sbooknote div.locbar {display:none;}
-div.sbookslice div.sbookthread div.sbooknote:first-child div.locbar {display:block;}
+div.codexthread.idthread .codexnote {}
+div.codexslice div.codexthread div.codexnote div.locbar {border: none;}
+div.codexslice div.codexthread div.codexnote div.locbar {display:none;}
+div.codexslice div.codexthread div.codexnote:first-child div.locbar {display:block;}
 
-body div#SBOOKHUD div.sbookthread > div.locrule {
+body div#SBOOKHUD div.codexthread > div.locrule {
     position: relative; left: 0px; bottom: 0px; z-index: 50;
     width: 100%; min-height: 10px;}
 
@@ -788,16 +795,16 @@ div.idhead hr {
     border: 0px; padding: 0px; margin: 0px;}
 div.idhead div { z-index: 10; opacity: 1.0;}
 
-div.sbooknote { position: relative;}
+div.codexnote { position: relative;}
 
-div.sbooknote > hr {
+div.codexnote > hr {
     color: gold; background-color: lightblue; min-width: 3px; height: 100%;
     position: absolute; left: 0px; opacity: 0.3;
     border: 0px; padding: 0px; margin: 0px;}
 
 /* Preview mode */
 
-body.preview div.sbookslice {
+body.preview div.codexslice {
   cursor: url(http://static.beingmeta.com/graphics/binocularscursor32x32.png),
           crosshair;}
 body.preview {
@@ -838,10 +845,10 @@ div#SBOOKPREVIEW {
     max-height: 100px; overflow: auto; z-index: 100;
     background-color: mistyrose; color: darkred;
     display: none;}
-div#SBOOKPREVIEW .sbooknote .age { color: green;}
+div#SBOOKPREVIEW .codexnote .age { color: green;}
 body.preview div#SBOOKPREVIEW {
     display: block; opacity: 0.7;}
-div#SBOOKPREVIEW.sbooknote {
+div#SBOOKPREVIEW.codexnote {
     padding: 12px; padding-top: 0px; margin-top: 0px;
     border: solid red 2px; border-top: 0px;
     border-bottom-left-radius: 6px;
@@ -854,7 +861,7 @@ div#SBOOKPREVIEW.sbooknote {
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;}
 
-div#SBOOKPREVIEW.sbooknote.hudblock {
+div#SBOOKPREVIEW.codexnote.hudblock {
     text-align: left;}
 
 body.preview div#SBOOKHUD.toc div.hudblock#SBOOKTOC {
@@ -1145,41 +1152,41 @@ body.sbooktouch img.mouseicon { display: none;}
 
 body.sbooktouch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar,
 body.sbooktouch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar {
-    height: 50px;}
+    height: 25px;}
 body.sbooktouch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.sbookhudspan,
 body.sbooktouch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar div.sbookhudspan {
-    height: 45px;}
+    height: 20px;}
 body.sbooktouch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.progressbox,
 body.sbooktouch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar div.progressbox {
-    height: 50px;}
+    height: 25px;}
 
-body.sbooktouch .sbooknote .age { font-size: 125%; padding-bottom; 10px;}
-body.sbooktouch .sbooknote .age { font-size: 125%; padding-bottom; 10px;}
-body.sbooktouch .sbooknote .glossinfo img.delete { 
+body.sbooktouch .codexnote .age { font-size: 125%; padding-bottom; 10px;}
+body.sbooktouch .codexnote .age { font-size: 125%; padding-bottom; 10px;}
+body.sbooktouch .codexnote .glossinfo img.delete { 
   width: 20px; height: 20px; padding-right: 3px;
   cursor: pointer;}
 
 /* Sbook notes */
 
-div.sbooknote { position: relative;}
+div.codexnote { position: relative;}
 
-div.sbooknote > hr {
+div.codexnote > hr {
     color: gold; background-color: lightblue; min-width: 3px; height: 100%;
     position: absolute; left: 0px; opacity: 0.3;
     border: 0px; padding: 0px; margin: 0px;}
 
-.sbooknote { 
+.codexnote { 
     white-space: normal; clear: both;
     text-align: left; text-decoration: none;
     text-align: left;
     font-size: 90%;}
-.sbooknote a.ref {
+.codexnote a.ref {
   display: block; font-weight: normal;}
-.sbooknote a.ref span.title {
+.codexnote a.ref span.title {
   font-family: sans,sans-serif;}
-.sbooknote a.ref span.uri {
+.codexnote a.ref span.uri {
   font-family: courier,fixed;}
-.sbooknote span.oldterm, {
+.codexnote span.oldterm, {
     color: blue; background-color: yellow;
     padding: 2px; border: solid blue 1px;
     border-top-left-radius: 6px; border-bottom-left-radius: 6px;
@@ -1196,51 +1203,51 @@ div.sbooknote > hr {
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;}
-div#SBOOKHUD .sbooknote span.oldterm {color: blue; }
-.sbooknote span.user { 
+div#SBOOKHUD .codexnote span.oldterm {color: blue; }
+.codexnote span.user { 
   color: gold; font-size: 125%; font-style: italic;}
-.sbooknote span.user:after { 
+.codexnote span.user:after { 
   font-style: normal; color: silver; content: ' — ';}
-.sbooknote span.tribe { 
+.codexnote span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
-.sbooknote span.audience { 
+.codexnote span.audience { 
   color: silver; font-size: 75%; font-weight: normal; font-style: italic;}
-body.sbook a.sbooknote { display: block;}
-.sbooknote.gloss { min-height: 50px;}
-.sbooknote .info { 
+body.sbook a.codexnote { display: block;}
+.codexnote.gloss { min-height: 50px;}
+.codexnote .info { 
   float: right;}
-.sbooknote div.info { 
+.codexnote div.info { 
   float: right; width: 40px;}
-.sbooknote img.previewicon { 
+.codexnote img.previewicon { 
   float: left; display: none;}
-.sbooknote .info span.score {
+.codexnote .info span.score {
   color: gold; display: none;}
-.sbooknote span.tags { line-height: 200%;}
-.sbooknote span.head {
+.codexnote span.tags { line-height: 200%;}
+.codexnote span.head {
     font-size: 75%;}
-.sbooknote span.headhead {
+.codexnote span.headhead {
     color: blue; font-weight: bold;}
-.sbooknote span.controller {
+.codexnote span.controller {
     font-weight: bold; color: white;}
-.sbooknote span.note { font-size: 110%;}
-.sbooknote img.userpic { float: left; margin-right: 3px; width: 50px;}
-.sbooknote img.detailsbutton { border: none; }
-.sbooknote img.xrefsbutton { border: none;}
-.sbooknote .glossinfo {
+.codexnote span.note { font-size: 110%;}
+.codexnote img.userpic { float: left; margin-right: 3px; width: 50px;}
+.codexnote img.detailsbutton { border: none; }
+.codexnote img.xrefsbutton { border: none;}
+.codexnote .glossinfo {
     float: right; clear: right; display: block;
     padding: 0px; margin: 0px; margin-left: 3px;
     text-align: right;}
-.sbooknote .age { 
+.codexnote .age { 
   color: yellow; float: right; font-weight: bold;
   font-size: 90%; text-decoration: none;}
-.sbooknote .age:hover {text-decoration: underline;} 
-.sbooknote a.deletebutton { 
+.codexnote .age:hover {text-decoration: underline;} 
+.codexnote a.deletebutton { 
   color: orange; text-decoration: none;
   padding-right: 3px;}
-.sbooknote .glossinfo img.delete { 
+.codexnote .glossinfo img.delete { 
   width: 1em; height: 1em; padding-right: 3px;
   cursor: pointer;}
-.sbooknote a.headref {
+.codexnote a.headref {
     float: right; clear: right; 
     font-family: times,serif; font-style: italic; font-size: 80%;
     white-space: nowrap; padding: 2px; padding-top: 0px;
@@ -1339,154 +1346,163 @@ body.nosbookuser div#SBOOKHUD div#SBOOKSOURCES img.button.everyone {
 
 div.sbookglossform { display: none;}
 div.sbookglossform.sbooklivegloss { display: block;}
-div.sbookaddgloss form {
+div.codexaddgloss form {
     padding: 0px; margin: 0px;}
-div.sbookaddgloss form fieldset {
+div.codexaddgloss form fieldset {
     border: 0px; padding: 6px; padding-top: 2px; margin: 0px;}
-div.sbookaddgloss form div { clear: none;}
-div.sbookaddgloss form div.input { }
-/* div.sbookaddgloss form div.glossmode { float: left; text-align: left;} */
-div.sbookaddgloss form div.glossmode { display: none;}
-div.sbookaddgloss form div.submit {
+div.codexaddgloss form div { clear: none;}
+div.codexaddgloss form div.input { }
+/* div.codexaddgloss form div.glossmode { float: left; text-align: left;} */
+div.codexaddgloss form div.glossmode { display: none;}
+div.codexaddgloss form div.submit {
     padding-left: 5px; float: right; text-align: center;}
-div.sbookaddgloss form div.submit { width: 50px; }
+div.codexaddgloss form div.submit { width: 50px; }
 
-body.sbooktouch div.sbookaddgloss form div.submit { width: 75px;}
-div.sbookaddgloss form fieldset {
+body.sbooktouch div.codexaddgloss form div.submit { width: 75px;}
+div.codexaddgloss form fieldset {
     border: 0px; padding: 6px; padding-top: 2px;}
 
-div.sbookaddgloss form div.topblock { vertical-align: top; clear: both;}
-div.sbookaddgloss form fieldset.textfields {
+div.codexaddgloss form div.topblock { vertical-align: top; clear: both;}
+div.codexaddgloss form fieldset.textfields {
     padding-left: 20px; padding-right: 10px; padding-top: 0px;
     clear: both;}
-div.sbookaddgloss form div.input {
+div.codexaddgloss form div.input {
     display: none; width: auto; margin-left: 0px; margin-right: 0px;}
-div.sbookaddgloss form div.input input {}
-div.sbookaddgloss form div.input textarea,
-div.sbookaddgloss form div.input input[type='TEXT'] {
+div.codexaddgloss form div.input input {}
+div.codexaddgloss form div.input textarea,
+div.codexaddgloss form div.input input[type='TEXT'] {
     display: block; width: 100%; clear: both; vertical-align: top;
     margin: 0px; padding: 3px; border: 3px; padding-top: 0px;
     border-radius: 6px; -o-border-radius: 6px; 
     -moz-border-radius: 6px; -webkit-border-radius: 6px;}
-div.sbookaddgloss form div.input input:focus[type='TEXT'] { border: white;}
-div.sbookaddgloss form div.input input[type='TEXT'][name='TAG'] {
+div.codexaddgloss form div.input input:focus[type='TEXT'] { border: white;}
+div.codexaddgloss form div.input input[type='TEXT'][name='TAG'] {
     font-size: 16px; height: 24px; font-weight: bold;
     background-image:
     url(http://static.beingmeta.com/graphics/TagIcon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.sbookaddgloss form div.input input[type='TEXT'][name='LINK'] {
+div.codexaddgloss form div.input input[type='TEXT'][name='LINK'] {
     height: 18px; font-size: 80%; font-family: fixed; font-style: normal;
     background-image:
     url(http://static.beingmeta.com/graphics/upoutlink16x16.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.sbookaddgloss form div.input input[type='TEXT'][name='LINKTEXT'] {
+div.codexaddgloss form div.input input[type='TEXT'][name='LINKTEXT'] {
     font-size: 80%; font-family: sans; font-style: normal; margin-top: 5px;
     width: 100%;}
-div.sbookaddgloss form div.input textarea[name='NOTE'],
-div.sbookaddgloss form div.input input[type='TEXT'][name='NOTE'] {
+div.codexaddgloss form div.input textarea[name='NOTE'],
+div.codexaddgloss form div.input input[type='TEXT'][name='NOTE'] {
     height: 5ex; overflow: hidden; width: 100%;
     background-image:
     url(http://static.beingmeta.com/graphics/justremarkballoon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.sbookaddgloss form div.input.detail textarea[name='DETAIL'] {
+div.codexaddgloss form div.input.detail textarea[name='DETAIL'] {
     background-image:
     url(http://static.beingmeta.com/graphics/detailsicon32x32.png);
-    background-position: right top;
-    background-position-x: right; background-position-y: top;
+    background-position: right bottom;
+    background-position-x: right; background-position-y: bottom;
     background-repeat: no-repeat;
     height: 20ex;}
-div.sbookaddgloss form div.input input[type='TEXT'][name='SHARE'] {
+div.codexaddgloss form div.input.excerpt textarea[name='EXCERPT'] {
+    background-image:
+    url(http://static.beingmeta.com/graphics/scissorsicon32x32.png);
+    background-position: right bottom;
+    background-position-x: right; background-position-y: bottom;
+    background-repeat: no-repeat;
+    height: 20ex;}
+div.codexaddgloss form div.input input[type='TEXT'][name='SHARE'] {
     font-size: 16px; height: 24px; overflow: hidden;
     background-image:
     url(http://static.beingmeta.com/graphics/ShareIcon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.sbookaddgloss form div.input input[type='FILE'] { /* width: 100%; */
+div.codexaddgloss form div.input input[type='FILE'] { /* width: 100%; */
     display: block; }
 
-div.sbookaddgloss form div.tags {
+div.codexaddgloss form div.tags {
     display: block; text-align: left;}
-div.sbookaddgloss form div.controls {
+body.sbooktouch div.codexaddgloss form div.controls { font-size: 110%;}
+div.codexaddgloss form div.controls {
     vertical-align: bottom; text-align: left;
     padding-left: 30px; padding-right: 7px;
     font-size: 12px;}
-div.sbookaddgloss form div.controls span.button {
-    border: solid silver 2px; background-color: silver; color: black;
+div.codexaddgloss form div.controls span.button {
+    color: black; font-weight: bold;
+    border: solid silver 2px; background-color: silver; 
     padding: 2px; border-radius: 4px;
     -o-border-radius: 4px; -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;
     text-align: center;
     cursor: pointer;}
-div.sbookaddgloss form div.controls span.button[data-mode] { vertical-align: bottom;} 
-div.sbookaddgloss form div.controls span.button img {
+div.codexaddgloss form div.controls span.button[data-mode] { vertical-align: bottom;} 
+div.codexaddgloss form div.controls span.button img {
     background-color: inherit;
     height: 1.5ex;}
-div.sbookaddgloss form div.controls select {
+div.codexaddgloss form div.controls select {
     vertical-align: top; width: 7em;
     display: none;}
-div.sbookaddgloss form div.controls select option { }
-div.sbookaddgloss form div.controls select option[value="note"] {
+div.codexaddgloss form div.controls select option { }
+div.codexaddgloss form div.controls select option[value="note"] {
     background-image:
     url(http://static.beingmeta.com/graphics/justremarkballoon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.sbookaddgloss form div.controls img.modebutton {
+div.codexaddgloss form div.controls img.modebutton {
     margin-left: 3px; margin-right: 3px; margin-bottom: 3px;
     border: solid silver 2px; padding: 2px;
     border-radius: 4px;
     -o-border-radius: 4px; -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;
     vertical-align: top;}
-div.sbookaddgloss form img.closebutton {
+div.codexaddgloss form img.closebutton {
     background-color: lightblue;
     color: red; float: right; padding: 1px; height: 2ex;
     float: left;}
-div.sbookaddgloss form div.controls span.submitbutton {
+div.codexaddgloss form div.controls span.submitbutton {
     font-weight: bold; text-align: center; float: right;
     margin: 0px; padding: 0px;}
-div.sbookaddgloss form div.controls input[type='SUBMIT'] {
+div.codexaddgloss form div.controls input[type='SUBMIT'] {
     font-weight: bold; text-align: center; padding: 4px;
     border-radius: 0px; float: right;}
-div.sbookaddgloss form div.controls .checkspan {
+div.codexaddgloss form div.controls .checkspan {
     margin-left: 4px; margin-right: 4px; font-family: sans,sans-serif;
     float: right;}
-div.sbookaddgloss form div.controls .button.checkspan.private {
+div.codexaddgloss form div.controls .button.checkspan.private {
     font-weight: bold; font-size: 90%;
     border-radius: 4px; -o-border-radius: 4px;
     -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
     background-color: white; color: green;}
-div.sbookaddgloss form div.controls .button.checkspan.private.ischecked {
+div.codexaddgloss form div.controls .button.checkspan.private.ischecked {
     background-color: black; color: white; }
-div.sbookaddgloss form div.controls .button.checkspan.private input[type='checkbox'] {
+div.codexaddgloss form div.controls .button.checkspan.private input[type='checkbox'] {
     display: none;}
 
-div.sbookaddgloss form span.source:before, .completions span.source:before {
+div.codexaddgloss form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
-div.sbookaddgloss form { margin-left: 0%; margin-right: 0%;}
-div.sbookaddgloss.submitting { opacity: 0.5;}
-div.sbookaddgloss form.sbexcerptmode div.input.excerpt { display: block;}
-div.sbookaddgloss form.sbnotemode div.input.note { display: block;}
-div.sbookaddgloss form.sbtagmode div.input.tag { display: block;}
-div.sbookaddgloss form.sblinkmode div.input.link { display: block;}
-div.sbookaddgloss form.sbsharemode div.input.share { display: block;}
-div.sbookaddgloss form.sbdetailmode div.input.detail { display: block;}
+div.codexaddgloss form { margin-left: 0%; margin-right: 0%;}
+div.codexaddgloss.submitting { opacity: 0.5;}
+div.codexaddgloss form.sbexcerptmode div.input.excerpt { display: block;}
+div.codexaddgloss form.sbnotemode div.input.note { display: block;}
+div.codexaddgloss form.sbtagmode div.input.tag { display: block;}
+div.codexaddgloss form.sblinkmode div.input.link { display: block;}
+div.codexaddgloss form.sbsharemode div.input.share { display: block;}
+div.codexaddgloss form.sbdetailmode div.input.detail { display: block;}
 
-div.sbookaddgloss form.sbnotemode div.controls span[data-mode='note'],
-div.sbookaddgloss form.sbexcerptmode div.controls span[data-mode='excerpt'],
-div.sbookaddgloss form.sbtagmode div.controls span[data-mode='tag'],
-div.sbookaddgloss form.sblinkmode div.controls span[data-mode='link'],
-div.sbookaddgloss form.sbsharemode div.controls span[data-mode='share'],
-div.sbookaddgloss form.sbdetailmode div.controls span[data-mode='detail'] {
+div.codexaddgloss form.sbnotemode div.controls span[data-mode='note'],
+div.codexaddgloss form.sbexcerptmode div.controls span[data-mode='excerpt'],
+div.codexaddgloss form.sbtagmode div.controls span[data-mode='tag'],
+div.codexaddgloss form.sblinkmode div.controls span[data-mode='link'],
+div.codexaddgloss form.sbsharemode div.controls span[data-mode='share'],
+div.codexaddgloss form.sbdetailmode div.controls span[data-mode='detail'] {
     background-color: white;
     border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
     -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
@@ -1494,8 +1510,8 @@ div.sbookaddgloss form.sbdetailmode div.controls span[data-mode='detail'] {
     -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px;
     border-bottom: solid white 2px;}
 
-div#SBOOKHUD.tagging div.sbookaddgloss form div.completions#SBOOKGLOSSCLOUD,
-div.sbookaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD {
+div#SBOOKHUD.tagging div.codexaddgloss form div.completions#SBOOKGLOSSCLOUD,
+div.codexaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD {
     min-height: 100px;
     display: block;}
 

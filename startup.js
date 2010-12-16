@@ -40,6 +40,9 @@ sbook.Startup=
 	var sbook_fullpages=[];
 	var sbook_heading_qricons=false;
 
+	var https_graphics=
+	    "https://beingmeta.s3.amazonaws.com/static/graphics/";
+
 	/* Initialization */
 	
 	var _sbook_setup_start=false;
@@ -63,11 +66,15 @@ sbook.Startup=
 		// This wraps the body in an div#SBOOKCONTENT 
 		function(){
 		    initBody();
+		    if (sbook.animate.page)
+			fdjtDOM.addClass("SBOOKCONTENT","codexanimate");
 		    sbook.body.style.opacity='0.25';},
 		function(){
 		    if (sbook.Trace.startup>1)
 			fdjtLog("[%fs] Initializing HUD",fdjtET());
 		    sbook.initHUD(); sbook.initDisplay();
+		    if (sbook.animate.hud)
+			fdjtDOM.addClass("SBOOKHUD","codexanimate");
 		    helphud=fdjtID("SBOOKHELP");
 		    helphud.style.opacity=0.0001;
 		    if (sbook.Trace.startup>1)
@@ -216,7 +223,7 @@ sbook.Startup=
 
 	    if ((sbook.graphics==="http://static.beingmeta.com/graphics/")&&
 		(window.location.protocol==='https:'))
-		sbook.graphics="https://beingmeta.s3.amazonaws.com/static/graphics/";
+		sbook.graphics=https_graphics;
 	    
 	    // Whether to suppress login, etc
 	    if ((fdjtState.getLocal("sbook.nologin"))||
@@ -253,7 +260,7 @@ sbook.Startup=
 	    if (isWebTouch) {
 		fdjtDOM.addClass(document.body,"sbooktouch");
 		viewportSetup();
-		sbook.ui="webtouch";}
+		sbook.ui="webtouch"; sbook.touch=true;}
 	    if ((useragent.search("Safari/")>0)&&
 		(useragent.search("Mobile/")>0)) { 
 		hide_mobile_safari_address_bar();
