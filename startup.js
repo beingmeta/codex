@@ -373,7 +373,10 @@ sbook.Startup=
 		 (elt.getAttributeNS('toclevel','http://sbooks.net/')))||
 		(elt.getAttribute('toclevel'))||
 		(elt.getAttribute('data-toclevel'))||
-		((elt.className)&&(elt.className.search(/sbook\dhead/)>=0)))
+		((elt.className)&&
+		 ((elt.className.search(/\bsbook\dhead\b/)>=0)||
+		  (elt.className.search(/\bsbooknotoc\b/)>=0)||
+		  (elt.className.search(/\bsbookignore\b/)>=0))))
 		return true;
 	    else return false;}
 	sbook.hasTOCLevel=hasTOCLevel;
@@ -405,18 +408,16 @@ sbook.Startup=
 			var elt=elements[k++];
 			if (!(hasTOCLevel(elt))) elt.toclevel=i;}}
 		i++;}
-	    if (fdjtDOM.getMeta("sbook.ignored")) 
-		sbook.ignored=new fdjtDOM.Selector
-	    (fdjtDOM.getMeta("sbook.ignored"));
+	    if (fdjtDOM.getMeta("sbookignore")) 
+		sbook.ignore=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookignore"));
+	    if (fdjtDOM.getMeta("sbooknotoc")) 
+		sbook.notoc=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknotoc"));
+	    if (fdjtDOM.getMeta("sbookterminal"))
+		sbook.terminal_rules=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookterminal"));
+	    if (fdjtDOM.getMeta("sbookid")) 
+		sbook_idify=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookid"));
 	    if (fdjtDOM.getMeta("sbook.notag"))
-		sbook.notag_rules=new fdjtDOM.Selector
-	    (fdjtDOM.getMeta("sbook.notag"));
-	    if (fdjtDOM.getMeta("sbook.terminals"))
-		sbook.terminal_rules=new fdjtDOM.Selector
-	    (fdjtDOM.getMeta("sbook.terminals"));
-	    if (fdjtDOM.getMeta("sbook.idify")) 
-		sbook_idify=new fdjtDOM.Selector
-	    (fdjtDOM.getMeta("sbook.idify"));
+		sbook.notag_rules=new fdjtDOM.Selector(fdjtDOM.getMeta("sbook.notag"));
 	    if (fdjtDOM.getMeta("sbook.foci"))
 		sbook.foci=new fdjtDOM.Selector(fdjtDOM.getMeta("sbook.foci"));
 	    else if (fdjtDOM.getMeta("SBOOKFOCI"))

@@ -161,8 +161,12 @@ function sbookScan(root,docinfo){
 	    else return parseInt(attrval);}
 	if (elt.className) {
 	    var cname=elt.className;
-	    var tocloc=cname.search(/sbook\dhead/);
+	    if (cname.search(/\bsbooknotoc\b/)>=0) return 0;
+	    if (cname.search(/\bsbookignore\b/)>=0) return 0;
+	    var tocloc=cname.search(/\bsbook\dhead\b/);
 	    if (tocloc>=0) return parseInt(cname.slice(5,6));}
+	if ((sbook.notoc)&&(sbook.notoc.match(elt))) return 0;
+	if ((sbook.ignore)&&(sbook.ignore.match(elt))) return 0;
 	if ((elt.tagName==='hgroup')||(elt.tagName==='header'))
 	    return getFirstTocLevel(elt,true);
 	if (elt.tagName.search(/H\d/)==0)
@@ -268,6 +272,7 @@ function sbookScan(root,docinfo){
 	    return 0;}
 	else if (child.nodeType!==1) return 0;
 	else {}
+	if ((sbook.ignore)&&(sbook.ignore.match(child))) return;
 	// Having a section inside a notoc zone probably indicates malformed
 	//  HTML
 	if (((child.tagName==='section')||(child.tagName==='article'))&&
@@ -284,6 +289,8 @@ function sbookScan(root,docinfo){
 	    handleHead(child,docinfo,scanstate,nextlevel,
 		       curhead,curinfo,curlevel,
 		       nodefn);
+	    if ((sbook.terminals)&&(sbook.terminals.match(child)))
+		scanstate.notoc=true;
 	    var headinfo=docinfo[child.id];
 	    headinfo.tocdone=true;
 	    scanstate.curhead=child; scanstate.curinfo=headinfo;
@@ -343,7 +350,8 @@ function sbookScan(root,docinfo){
 	    info.headstart=curinfo.starts_at;}
 	if (info) info.head=curinfo;
 	if ((child.sbookskip)||(child.sbookui)||
-	    ((child.className)&&(child.className.search(/\bsbookskip\b/)>=0)))
+	    ((child.className)&&(child.className.search(/\bsbookignore\b/)>=0))||
+	    ((sbook.ignore)&&(sbook.ignore.match(child))))
 	    return;
 	if ((info)&&(toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
 	if (child.id) {

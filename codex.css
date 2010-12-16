@@ -526,7 +526,7 @@ div#SBOOKHELP > div.oneline {
 div#SBOOKHELP table {
     clear: both;}
 div#SBOOKHELP table th {
-    color: orange; text-align: right; vertical-align: top;
+    color: black; text-align: right; vertical-align: top;
     padding-right: 0.5em;}
 div#SBOOKHELP table th div {
     padding-right: 4px; margin-bottom: .75em;}
@@ -544,6 +544,8 @@ div#SBOOKHELP div.message {
     margin-top: 2ex; font-size: 75%; color: red;
     overflow: hidden;}
 div#SBOOKHELP div.message .head { font-size: 200%; display: block;}
+
+div#SBOOKHELP table.sbookhelp th + td > div { border-top: solid black 3px;}
 
 /* "Leading" to fill out the top and bottom */
 
