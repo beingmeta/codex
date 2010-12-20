@@ -58,8 +58,6 @@ var sbookMode=
 		sbookHUD.sbookui=true;
 		sbookHUD.innerHTML=sbook_hudtext;
 		fdjtDOM.prepend(document.body,sbookHUD);}
-	    var console=fdjtID("SBOOKCONSOLE");
-	    console.innerHTML=sbook_console;
 	    var flyleaf=fdjtID("SBOOKFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;
 	    var help=fdjtID("SBOOKHELP");
@@ -209,8 +207,8 @@ var sbookMode=
 	/* Mode controls */
 	
 	var sbookMode_pat=
-	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)/g;
-	var sbookFlyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)|(help)/g;
+	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)/g;
+	var sbookFlyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)|(help)|(console)/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "SBOOKALLGLOSSES",
 	     browsing: "SBOOKSEARCHRESULTS",
@@ -225,6 +223,10 @@ var sbookMode=
 		device: "SBOOKDEVICE",
 	     */
 	    };
+	var sbook_mode_foci=
+	    {gotopage: "CODEXPAGEINPUT",
+	     gotoloc: "CODEXLOCINPUT",
+	     searching: "SBOOKSEARCHINPUT"};
 	
 	function sbookMode(mode){
 	    if (typeof mode === 'undefined') return sbook.mode;
@@ -271,10 +273,10 @@ var sbookMode=
 		setHUD(true);
 		if ((mode==="allglosses")&&
 		    (sbook.curinfo)&&(sbook.curinfo.first)) {
-		    sbook.UI.scrollGlosses
-		    (sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"));}
-		if (mode==="searching")
-		    fdjtID("SBOOKSEARCHINPUT").focus();
+		    sbook.UI.scrollGlosses(sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"));}
+		if (sbook_mode_foci[mode]) {
+		    fdjtID(sbook_mode_foci[mode]).focus();}
+		// Moving the focus back to the body lets keys work
 		else document.body.focus();
 		if (sbook.scrolling)
 		    updateScroller(fdjtID(sbook.scrolling));

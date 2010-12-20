@@ -27,15 +27,15 @@
     </div> <!-- .flyleafplate -->
     <div class="tabbar icons" id="SBOOKTABS">
       <!--
-      <a name="IDLINK" href="javascript:sbookMode('login');" 
-	 id="IDBUTTON" class="userpic"
-	 title="click to login">
-	<img alt="login" id="SBOOKUSERPIC"/></a>
-      <a id="HELPBUTTON" href="javascript:sbookMode('help');"
-	 title="click for UI help">
-	<img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
-	     alt="Help"/></a>
-      -->
+	  <a name="IDLINK" href="javascript:sbookMode('login');" 
+	     id="IDBUTTON" class="userpic"
+	     title="click to login">
+	    <img alt="login" id="SBOOKUSERPIC"/></a>
+	  <a id="HELPBUTTON" href="javascript:sbookMode('help');"
+	     title="click for UI help">
+	    <img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
+		 alt="Help"/></a>
+	  -->
       <img src="http://static.beingmeta.com/graphics/AboutTab40h.png"
 	   alt="About" class="tab" contentid="APPABOUT"
 	   onclick="sbookMode.toggle('about',true); return fdjtUI.cancel(event);"
@@ -61,8 +61,18 @@
 	   onclick="sbookMode.toggle('help',true); return fdjtUI.cancel(event);"
 	   title="help about using sBooks"/>
     </div> <!-- .tabbar -->
-</div> <!-- id="SBOOKHUDBUTTONS" -->
-<div id="SBOOKTOC" class="hudpanel"></div>
+  </div> <!-- id="SBOOKHUDBUTTONS" -->
+  <div id="CODEXGOTOLOC" class="hudpanel codexgoto">
+    Jump to location <input type="text" name="GOTOLOC" value=""
+			    id="CODEXLOCINPUT"
+			    onkeypress="sbook.UI.goto_keypress(event);"/>
+  </div>
+  <div id="CODEXGOTOPAGE" class="hudpanel codexgoto">
+    Jump to page <input type="text" name="GOTOPAGE" value=""
+			id="CODEXPAGEINPUT"
+			onkeypress="sbook.UI.goto_keypress(event);"/>
+  </div>
+  <div id="SBOOKTOC" class="hudpanel"></div>
   <div id="SBOOKSCANNER" class="hudpanel">
     <img src="http://static.beingmeta.com/graphics/GoldLeftTriangle32.png"
 	 alt="prev" onclick="sbook.scanBackward(event);"/>
@@ -76,9 +86,6 @@
   </div>
   <div id="SBOOKSEARCH" class="searchbox hudpanel notags">
     <!-- This content comes from sbooksearch.html -->
-  </div>
-  <div id="SBOOKCONSOLE" class="hudpanel sbookconsole">
-    <!-- This content comes from consoletext.html -->
   </div>
   <div id="SBOOKBROWSEGLOSSES" class="hudpanel">
     <!-- This contains renderings of all the glosses, with

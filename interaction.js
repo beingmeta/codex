@@ -387,6 +387,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	63: "searching",102: "searching",
 	65: "flyleaf", 97: "flyleaf",
 	83: "searching",115: "searching",
+	80: "gotopage",112: "gotopage",
+	76: "gotoloc",108: "gotoloc",
 	70: "searching",
 	100: "device",68: "device",
 	110: "toc",78: "toc",
@@ -417,6 +419,29 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else fdjtID("SBOOKSEARCHINPUT").blur();
 	fdjtDOM.cancel(evt);}
     sbook.UI.handlers.onkeypress=onkeypress;
+
+    function goto_keypress(evt){
+	evt=evt||event||null;
+	var target=fdjtUI.T(evt);
+	var ch=evt.charCode||evt.keyCode;
+	var max=false; var min=false;
+	if (target.name==='GOTOLOC') {
+	    min=0; max=Math.floor(sbook.ends_at/128);}
+	else if (target.name==='GOTOPAGE') {
+	    min=1; max=sbook.pages.length;}
+	else if (ch===13) fdjtUI.cancel(evt);
+	if (ch===13) {
+	    var num=parseInt(target.value);
+	    fdjtUI.cancel(evt);
+	    if ((typeof num !== 'number')||(num<min)||(num>max)) {
+		alert("Enter a number between "+min+" and "+max+" (inclusive)");
+		return;}
+	    if (target.name==='GOTOLOC') sbook.JumpTo(128*num);
+	    else if (target.name==='GOTOPAGE') sbook.FadeToPage(num-1);
+	    else {}
+	    target.value="";
+	    sbookMode(false);}}
+    sbook.UI.goto_keypress=goto_keypress;
 
     /* HUD button handling */
 
