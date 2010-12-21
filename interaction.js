@@ -757,12 +757,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else {
 		var pagescroll=sbook.pagescroll;
 		var info=sbook.pageinfo[sbook.curpage];
-		// This is where the display bottom is
-		var pagebottom=pagescroll+(fdjtDOM.viewHeight())-
-		    sbook.pageBottom();
-		if (pagebottom<info.bottom)
+		if (sbook.page_bottom<info.bottom) 
 		    // This handles oversize pages
-		    sbook.FadeToPage(newpage=sbook.curpage,pagebottom);
+		    sbook.FadeToPage(newpage=sbook.curpage,
+				     sbook.page_bottom-info.top);
 		else if (sbook.curpage===sbook.pages.length) {}
 		else sbook.FadeToPage(newpage=sbook.curpage+1);}
 	    if ((newpage)&&(sbook.mode==='allglosses'))
@@ -792,12 +790,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else {
 		var pagescroll=sbook.pagescroll;
 		var info=sbook.pageinfo[sbook.curpage];
-		var pagetop=pagescroll+sbook.pageTop();
-		if (pagetop>info.top)
+		if (sbook.page_top>info.top)
 		    // Move within oversize page
 		    sbook.FadeToPage(
 			newpage=sbook.curpage,
-			pagetop-sbook.pageSize());
+			(sbook.page_top-info.top)-sbook.pageSize());
 		else if (sbook.curpage===0) {}
 		else {
 		    sbook.FadeToPage(newpage=sbook.curpage-1);}}

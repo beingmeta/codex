@@ -443,32 +443,37 @@ sbook.Startup=
 
 	var note_count=1;
 	function initBody(){
-	    var sbody=
+	    var page=fdjtID("SBOOKPAGE");
+	    var content=
 		((fdjtDOM.getMeta("sbook.body"))?
 		 ((fdjtID(fdjtDOM.getMeta("sbook.body")))||(document.body)):
 		 (fdjtID("SBOOKCONTENT")));
-	    if (!(sbody)) {
-		sbody=fdjtDOM("div#SBOOKCONTENT");
+	    if (!(content)) {
+		content=fdjtDOM("div#SBOOKCONTENT");
 		var nodes=fdjtDOM.toArray(document.body.childNodes);
 		var i=0; var lim=nodes.length;
-		while (i<lim) sbody.appendChild(nodes[i++]);
-		document.body.appendChild(fdjtDOM("div#SBOOKASIDE"));
-		document.body.appendChild(fdjtDOM("div#SBOOKREF"));
-		document.body.appendChild(sbody);}
+		while (i<lim) content.appendChild(nodes[i++]);}
+	    if (!(page))
+		page=fdjtDOM("div#SBOOKPAGE",
+			     fdjtDOM("div#SBOOKASIDE"),
+			     fdjtDOM("div#SBOOKREF"),
+			     fdjtDOM("div#SBOOKMASK"),
+			     content);
+	    document.body.appendChild(page);
 	    fdjtDOM.addClass(document.body,"sbook");
-	    sbook.body=sbody;
+	    sbook.body=content; sbook.page=page;
 	    var allnotes=fdjtID("SBOOKNOTES");
 	    var allasides=fdjtID("SBOOKASIDES");
 	    var alldetails=fdjtID("SBOOKDETAILS");
 	    if (!(alldetails)) {
 		var alldetails=fdjtDOM("div#SBOOKDETAILS");
-		fdjtDOM(sbody,alldetails);}
+		fdjtDOM(content,alldetails);}
 	    if (!(allasides)) {
 		var allasides=fdjtDOM("div#SBOOKASIDES");
-		fdjtDOM(sbody,allasides);}
+		fdjtDOM(content,allasides);}
 	    if (!(allnotes)) {
 		var allnotes=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
-		fdjtDOM(sbody,allnotes);}
+		fdjtDOM(content,allnotes);}
 	    applyMetaClass("sbookdetails");
 	    applyMetaClass("sbooknoteref");
 	    applyMetaClass("sbookbibref");

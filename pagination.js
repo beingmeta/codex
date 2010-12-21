@@ -39,10 +39,8 @@ var sbooks_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=false;
+	var debug_pagination=true;
 	var sbook_paginated=false;
-	var sbook_top_px=40;
-	var sbook_bottom_px=40;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
 	var sbook_widow_limit=3;
@@ -80,7 +78,7 @@ var sbookPaginate=
 	sbook.pageBottom=function(){return sbook_bottom_px;}
 	sbook.pageLeft=function(){return sbook_left_px;}
 	sbook.pageRight=function(){return sbook_right_px;}
-	sbook.pageSize=function(){return sbook_pagesize;}
+	sbook.pageSize=function(){return sbook.page.offsetHeight;}
 
 	function getSettings(){
 	    sbook_avoidpagebreak=
@@ -99,64 +97,6 @@ var sbookPaginate=
 		fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));}
 	sbookPaginate.getSettings=getSettings;
 
-	/* Column pagination */
-	// These are experiments with Monocle style column pagination
-	//  which we're not currently using because the treatment of
-	//  column-breaks is not handled very well.
-
-	var colwidth;
-	var colgap;
-
-	function ColumnPaginate(pagesize){
-	    var body=sbook.body;
-	    var vh=fdjtDOM.viewHeight();
-	    var gap=colgap=sbook_left_px+sbook_right_px;
-	    var width=colwidth=fdjtDOM.viewWidth()-gap;
-	    var style=body.style;
-	    fdjtDOM.addClass(document.body,"colpage");
-	    if (sbook_avoidpagebreak)
-		fdjtDOM.addClass(fdjtDOM.getChildren(body,sbook_avoidpagebreak),
-				 "sbookavoidbreak");
-	    if (sbook_forcepagehead)
-		fdjtDOM.addClass(fdjtDOM.getChildren(body,sbook_forcepagehead),
-				 "sbookpagehead");
-	    if (sbook_forcepagefoot)
-		fdjtDOM.addClass(fdjtDOM.getChildren(body,sbook_forcepagefoot),
-				 "sbookpagefoot");
-	    if (sbook_avoidpagehead)
-		fdjtDOM.addClass(fdjtDOM.getChildren(body,sbook_avoidpagehead),
-				 "sbookavoidhead");
-	    if (sbook_avoidpagefoot)
-		fdjtDOM.addClass(fdjtDOM.getChildren(body,sbook_avoidpagefoot),
-				 "sbookavoidfoot");
-	    if (sbook_pageblock)
-		fdjtDOM.addClass(fdjtDOM.getChildren(body,sbook_pageblock),
-				 "sbookavoidbreak");
-	    window.scrollTo(0,0);
-	    style.minWidth=fdjtDOM.viewWidth()+'px';
-	    style.height=(vh-(sbook_top_px+sbook_bottom_px))+'px';
-	    style["column-width"]=style["-webkit-column-width"]=
-		style["-moz-column-width"]=width+'px';
-	    style["column-gap"]=style["-webkit-column-gap"]=
-		style["-moz-column-gap"]=gap+'px';}
-
-	function ColumnGoToPage(pageno){
-	    var offset=fdjtDOM.viewWidth()*pageno-sbook_left_px;
-	    fdjtID("SBOOKCONTENT").style[fdjtDOM.transform]="translate(-"+offset+"px,0px)";
-	    sbook.curpage=pageno;}
-
-	function ColumnGetPage(arg){
-	    var left;
-	    if (typeof arg === "number") left=arg;
-	    else if (arg.nodeType)
-		left=getGeometry(arg,sbook.body||sbook.root).left;
-	    else if (!(fdjtID(arg))) return 0;
-	    else left=getGeometry(arg,sbook.root).left;
-	    return floor(left/fdjtDOM.viewWidth());}
-	sbook.columnPaginate=ColumnPaginate;
-	sbook.columnGoToPage=ColumnGoToPage;
-	sbook.columnGetPage=ColumnGetPage;
-
 	/* Scroll paginate */
 
 	function ScrollPaginate(pagesize,start,callback){
@@ -170,8 +110,8 @@ var sbookPaginate=
 	    var result={}; var pages=[]; var pageinfo=[];
 	    result.pages=pages; result.info=pageinfo;
 	    var scan=start; var info=nodeInfo(scan); var style=getStyle(scan);
+	    var last=false; var last_info=false; var last_style=false;
 	    var pagetop=info.top; var pagelim=pagetop+pagesize;
-	    var fudge=sbook_bottom_px/4;
 	    var startedat=fdjtET();
 	    var curpage={}; var newtop=false; var nodecount=1;
 	    curpage.loc=0;
@@ -190,7 +130,7 @@ var sbookPaginate=
 		//  make scantop be the page top
 		var scantop=((info.top<pagetop)?(pagetop):(info.top));
 		var dbginfo=((debug)&&
-			     ("P#"+curpage.pagenum+
+			     ("P#"+(curpage.pagenum+1)+
 			      "["+pagetop+","+pagelim+
 			      "/"+pagesize+"/"+widowthresh+","+orphanthresh+"] "));
 		// We track a 'focus' for every page, which is the first sbook
@@ -307,13 +247,6 @@ var sbookPaginate=
 		else if (avoidPageHead(scan,style))
 		    // If we're avoiding the head, we split this block.
 		    newtop=splitblock=scan;
-		else if ((sbook_fudge_bottom)&&
-			 (isPageFoot(scan,style))&&
-			 (info.bottom<(pagelim+sbook_fudge_bottom)))
-		    // If we want to be a foot and we're close enough,
-		    // just fudge the bottom, pushing it down.  This may be 
-		    // a bad idea (adjust sbook_fudge_bottom accordingly)
-		    curpage.bottom=info.bottom;
 		// If we're too small to split, just start a new page
 		else if (info.height<(widowthresh+orphanthresh))
 		    newtop=scan;
@@ -322,12 +255,7 @@ var sbookPaginate=
 		    newtop=scan;
 		// If we might create orphans, adjust the page bottom
 		// to ensure that doesn't happen
-		else if ((info.bottom-pagelim)<orphanthresh)
-		    if ((sbook_fudge_bottom)&&
-			(info.bottom<(pagelim+sbook_fudge_bottom))) {
-			// possibly move the bottom down
-			curpage.bottom=pagelim=info.bottom;}
-		else {
+		else if ((info.bottom-pagelim)<orphanthresh) {
 		    // Or making this page shorter to keep orphans from being
 		    // too isolated on the next page
 		    // move the pagelim up to make sure the orphans aren't isolated
@@ -375,11 +303,11 @@ var sbookPaginate=
 			    curpage.bottom=info.bottom; curpage.oversize=oversize=true;
 			    if (dbginfo) dbginfo=dbginfo+"~oversize/"+curpage.bottom;}}
 		    // If it's a clean break, make sure that the page bottom is good
-		    else if (!(curpage.bottom))
+		    else if (!(last))
 			curpage.bottom=newinfo.top-1;
-		    else if (newinfo.top<curpage.bottom)
-			curpage.bottom=newinfo.top-1;
-		    else curpage.bottom=newinfo.top-1;
+		    else {
+			var mbottom=parsePX(last_style.marginBottomWidth);
+			curpage.bottom=last_info.top+last_info.height-mbottom;}
 		    if (sbook.Trace.layout) 
 			fdjtLog("[%fs] New %spage break P%d[%d,%d]#%s %o, closed P%d[%d,%d] %o",
 				fdjtET(),((splitblock)?("split "):("")),
@@ -407,6 +335,7 @@ var sbookPaginate=
 		    // Initialize the scan variables of the page top and bottom
 		    pagetop=curpage.top;
 		    pagelim=curpage.limit=pagetop+pagesize;
+		    last=scan; last_info=info; last_style=style;
 		    scan=newtop; if (scan) style=getStyle(scan);
 		    splitblock=false; newtop=false;
 		    // Update the tables
@@ -415,15 +344,18 @@ var sbookPaginate=
 		// Advance around the loop.  If we have an explicit next page,
 		//  we use it (usually the case if we're splitting a block).
 		if (oversize) {
+		    last=scan; last_info=info; last_style=style;
 		    scan=scanContent(scan,true);
 		    if (scan) style=getStyle(scan);
 		    if (scan) info=nodeInfo(scan);}
 		else if (next) {
+		    last=scan; last_info=info; last_style=style;
 		    scan=next;
 		    if (scan) style=getStyle(scan);
 		    info=nextinfo;}
 		else {
 		    // Otherwise, advance through the DOM
+		    last=scan; last_info=info; last_style=style;
 		    scan=scanContent(scan);
 		    if (scan) info=nodeInfo(scan);
 		    if (scan) style=getStyle(scan);}
@@ -759,11 +691,11 @@ var sbookPaginate=
 	    sbook.curpage=pagenum;
 	    sbook.curoff=pageoff;
 	    sbook.curinfo=info;
-	    if (sbook.viewTop()!==(off-sbook_top_px)) {
+	    if (true) { /* (sbook.viewTop()!==(off-sbook_top_px)) */
 		if ((sbook.updatelocation)&&(info.focus)&&(info.focus.id))
 		    window.location.hash=info.focus.id;
-		sbook.scrollTo(0,(off-sbook_top_px));
-		page_xoff=0; page_yoff=(off-sbook_top_px);
+		sbook.scrollTo(0,(off));
+		page_xoff=0; page_yoff=(off);
 		// Add class if it's temporarily gone
 		fdjtDOM.addClass(document.body,"paginate");}
 	    
@@ -811,7 +743,8 @@ var sbookPaginate=
 		  fdjtET(),window.scrollX,window.scrollY,page_xoff,page_yoff);
 		*/
 		// Only if pages are defined
-		if (sbook.curpage) sbook.GoToPage(sbook.curpage,0,"displaySync");}}
+		if (sbook.curpage)
+		    sbook.GoToPage(sbook.curpage,0,"displaySync");}}
 	sbook.displaySync=displaySync;
 
 	function ScrollGetPage(arg){
@@ -844,8 +777,8 @@ var sbookPaginate=
 	    if (!(elt)) {
 		fdjtLog("[%fs] %s none",fdjtET(),name);
 		return;}
-	    var top=sbook.viewTop()+sbook_top_px;
-	    var bottom=sbook.viewTop()+((fdjtDOM.viewHeight())-sbook_bottom_px);
+	    var top=sbook.viewTop();
+	    var bottom=sbook.viewTop()+((fdjtDOM.viewHeight()));
 	    var offsets=getGeometry(elt,sbook_body);
 	    fdjtLog("[%fs] %s [%d+%d=%d] %s [%d,%d] %o%s%s%s%s '%s'\n%o",
 		    fdjtET(),name,
@@ -884,9 +817,10 @@ var sbookPaginate=
 	    var rightedge=fdjtDOM("div.sbookmargin#SBOOKPAGERIGHT",".");
 	    leftedge.sbookui=true; rightedge.sbookui=true;
 
-	    fdjtDOM.insertAfter(sbookHUD,
-				pagehead,pagefoot,
-				leftedge,rightedge);
+	    var pagemask=fdjtID("SBOOKMASK");
+	    
+	    fdjtDOM.prepend
+	    (document.body,pagehead,pagefoot,leftedge,rightedge);
 	    if (sbook.nativescroll) {
 		fdjtDOM.prepend(document.body,topleading);
 		fdjtDOM.append(document.body,bottomleading);}
@@ -895,50 +829,29 @@ var sbookPaginate=
 		fdjtDOM.prepend(sbook.body,topleading);
 		fdjtDOM.append(sbook.body,bottomleading);}
 	    
-	    // Probe the size of the head and foot
-	    pagehead.style.display='block'; pagefoot.style.display='block';
-	    sbook_top_px=pagehead.offsetHeight;
-	    sbook_bottom_px=pagefoot.offsetHeight;
-	    pagehead.style.display=''; pagefoot.style.display='';
-
-	    if (!(sbook.nativescroll)) {
-		var vw=fdjtDOM.viewWidth();
-		var vh=fdjtDOM.viewHeight();
-		window.scrollTo(0,0);
-		document.body.style.overflow='hidden';
-		document.body.style.width=vw+'px';
-		document.body.style.height=vh+'px';
-		document.body.style.maxHeight=vh+'px';}
-
-	    /* // Not sure what this does
-	    if (!(sbook.nativescroll)) {
-		var vh=fdjtDOM.viewHeight();
-		pagefoot.style.height=(vh*2)+'px';}
-	    */
+	    if (!(sbook.nativescroll)) window.scrollTo(0,0);
 
 	    // The better way to do this might be to change the stylesheet,
 	    //  but fdjtDOM doesn't handle that currently
-	    var bgcolor=document.body.style.backgroundColor;
-	    if (!(bgcolor)) {
-		var bodystyle=fdjtDOM.getStyle(document.body);
-		var bgcolor=((bodystyle)&&(bodystyle.backgroundColor));
-		if ((bgcolor==='transparent')||(bgcolor.search('rgba')>=0))
-		    bgcolor=false;}
-	    if (bgcolor) {
-		pagehead.style.backgroundColor=bgcolor;
-		pagefoot.style.backgroundColor=bgcolor;}
+	    var bgcolor=fdjtDOM.getStyle(document.body).backgroundColor||
+		'white';
+	    pagehead.style.backgroundColor=bgcolor;
+	    pagefoot.style.backgroundColor=bgcolor;
+	    pagemask.style.backgroundColor=bgcolor;
 	    fdjtDOM.addListener(false,"resize",resizePage);}
 	sbook.initDisplay=initDisplay;
 	
 	function updatePage(pageinfo,off){
-	    var viewheight=fdjtDOM.viewHeight();
-	    var footheight=((off-sbook_top_px)+(viewheight))-pageinfo.bottom+1;
+	    var viewheight=sbook.page.offsetHeight;
+	    var footheight=((off)+(viewheight))-pageinfo.bottom+1;
 	    if (sbook.Trace.paging)
 		fdjtLog("updatePage to %o (%o) footheight=%o",
 			pageinfo,off,footheight);
-	    if (footheight<0) {
-		footheight=0; sbook.curbottom=sbook_bottom_px;}
-	    fdjtID("SBOOKPAGEFOOT").style.height=footheight+'px';}
+	    if (footheight<0) { /* oversize page */
+		footheight=0; sbook.curbottom=0;}
+	    fdjtID("SBOOKMASK").style.height=footheight+'px';
+	    sbook.page_top=off;
+	    sbook.page_bottom=off+viewheight;}
 	
 	function resizePage(){
 	    var vw=fdjtDOM.viewWidth();
@@ -952,7 +865,7 @@ var sbookPaginate=
 	/* Top level functions */
 
 	function sbookUpdatePagination(callback){
-	    var pagesize=(fdjtDOM.viewHeight())-(sbook_top_px+sbook_bottom_px);
+	    var pagesize=sbook.page.offsetHeight;
 	    var target=sbook.target;
 	    sbook.Message("Determining page layout");
 	    var body=sbook.body||document.body;
@@ -993,10 +906,8 @@ var sbookPaginate=
 	
 	function repaginate(){
 	    var newinfo={};
-	    var pagesize=(fdjtDOM.viewHeight())-
-		(sbook_top_px+sbook_bottom_px);
-	    var pagewidth=(fdjtDOM.viewWidth())-
-		(sbook_left_px+sbook_right_px)
+	    var pagesize=sbook.page.offsetHeight;
+	    var pagewidth=(fdjtDOM.viewWidth())-(sbook_left_px+sbook_right_px)
 	    var fullpages=fdjtDOM.$(".sbookfullpage");
 	    if (sbook_fullpages)
 		fullpages=fullpages.concat(fdjtDOM.$(sbook_fullpages));

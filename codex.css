@@ -33,12 +33,24 @@
 
 /* Major wrappers and rules */
 
-body.sbook {}
-#SBOOKCONTENT {
+body.sbook { }
+
+#SBOOKHUD {
+    position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
+    z-index: 100;}
+#SBOOKPAGE {
+    position: absolute;
+    top: 50px; bottom: 50px; left: 0px; right: 0px; width: 100%;
+    overflow: hidden;}
+#SBOOKPAGE #SBOOKMASK {
+    position: absolute; z-index: 50;
+    bottom: 0px; left: 0px; right: 0px; width: 100%;
+    opacity: 1.0; background-color: inherit;}
+#SBOOKPAGE #SBOOKCONTENT {
     margin: 0px; padding: 0px; border: 0px;
     padding-left: 50px; padding-right: 50px;
     height: 100%;}
-#SBOOKCONTENT.codexanimate {
+#SBOOKPAGE #SBOOKCONTENT.codexanimate {
     transition-property: opacity; transition-duration: 0.1s;
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.1s;
@@ -59,9 +71,6 @@ body.sbookscroll #SBOOKCONTENT {
 
 /* The HUD */
 
-#SBOOKHUD {
-    position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
-    z-index: 100;}
 #SBOOKHUD img { border: 0px;}
 
 /* Being a panel */
