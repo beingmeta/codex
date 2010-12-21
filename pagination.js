@@ -679,18 +679,18 @@ var sbookPaginate=
 			 (book_len));
 	    pbar.style.left=(100*(starts_at/book_len))+"%";
 	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
-	    var locoff=fdjtDOM("span.locoff#SBOOKLOCOFF",
+	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF",
 			       "L"+Math.ceil(info.loc/128));
 	    var pageno=
-		fdjtDOM("div#SBOOKPAGENO",pbar,locoff,
+		fdjtDOM("div#CODEXPAGENO",pbar,locoff,
 			pagenum+1,((pageoff)?"+":""),"/",npages);
-	    fdjtDOM.replace("SBOOKPAGENO",pageno);
+	    fdjtDOM.replace("CODEXPAGENO",pageno);
 	    locoff.title="click to jump to a particular location";
 	    fdjtDOM.addListeners
-	      (locoff,sbook.UI.handlers[sbook.ui]["#SBOOKLOCOFF"]);
+	      (locoff,sbook.UI.handlers[sbook.ui]["#CODEXLOCOFF"]);
 	    pageno.title="click to jump to a particular page";
 	    fdjtDOM.addListeners
-	      (pageno,sbook.UI.handlers[sbook.ui]["#SBOOKPAGENO"]);
+	      (pageno,sbook.UI.handlers[sbook.ui]["#CODEXPAGENO"]);
 	    sbook.curpage=pagenum;
 	    sbook.curoff=pageoff;
 	    sbook.curinfo=info;
@@ -802,8 +802,8 @@ var sbookPaginate=
 
 	    var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
 	    var pagefoot=fdjtDOM("div.sbookmargin#SBOOKPAGEFOOT"," ",
-				 fdjtDOM("div#SBOOKPAGEINFO",
-					 fdjtDOM("div#SBOOKPAGENO","p/n")));
+				 fdjtDOM("div#CODEXPAGEINFO",
+					 fdjtDOM("div#CODEXPAGENO","p/n")));
 	    pagehead.sbookui=true; pagefoot.sbookui=true;
 	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
 
@@ -811,7 +811,7 @@ var sbookPaginate=
 	    var rightedge=fdjtDOM("div.sbookmargin#SBOOKPAGERIGHT",".");
 	    leftedge.sbookui=true; rightedge.sbookui=true;
 
-	    var pagemask=fdjtID("SBOOKMASK");
+	    var pagemask=fdjtID("CODEXMASK");
 	    
 	    fdjtDOM.prepend(document.body,pagehead,pagefoot,leftedge,rightedge);
 	    
@@ -844,7 +844,7 @@ var sbookPaginate=
 			pageinfo,off,footheight);
 	    if (footheight<0) { /* oversize page */
 		footheight=0; sbook.curbottom=0;}
-	    fdjtID("SBOOKMASK").style.height=footheight+'px';
+	    fdjtID("CODEXMASK").style.height=footheight+'px';
 	    sbook.page_top=off;
 	    sbook.page_bottom=off+viewheight;}
 	

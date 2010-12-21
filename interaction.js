@@ -883,7 +883,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (typeof evt.offsetX === "number") return evt.offsetX;
 	else if ((evt.touches)&&(evt.touches.length)) {
 	    var touch=evt.touches[0];
-	    var pinfo=fdjtID("SBOOKPAGEINFO");
+	    var pinfo=fdjtID("CODEXPAGEINFO");
 	    var target=touch.target;
 	    while ((target)&&(target.nodeType!==1)) target=target.parentNode;
 	    var geom=fdjtDOM.getGeometry(target,pinfo);
@@ -892,7 +892,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else return false;}
 
     function pageinfo_click(evt){
-	var pageinfo=fdjtID("SBOOKPAGEINFO"); var offx;
+	var pageinfo=fdjtID("CODEXPAGEINFO"); var offx;
 	if (evt.offsetX) {
 	    var tx=fdjtDOM.getGeometry(fdjtUI.T(evt),pageinfo).left;
 	    offx=evt.offsetX+tx;}
@@ -909,12 +909,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* This doesn't quite work on the iPad, so we're not currently
        using it. */
     function pageinfo_move(evt){
-	var pageinfo=fdjtID("SBOOKPAGEINFO"); var offx;
+	var pageinfo=fdjtID("CODEXPAGEINFO"); var offx;
 	if (evt.offsetX) {
 	    var tx=fdjtDOM.getGeometry(fdjtUI.T(evt),pageinfo).left;
 	    offx=evt.offsetX+tx;}
 	else offx=getOffX(evt);
-	var offwidth=fdjtID("SBOOKPAGEINFO").offsetWidth;
+	var offwidth=fdjtID("CODEXPAGEINFO").offsetWidth;
 	var goloc=Math.floor((offx/offwidth)*sbook.ends_at);
 	var page=((sbook.paginate)&&sbook.getPageAt(goloc));
 	fdjtUI.cancel(evt);
@@ -951,9 +951,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	     mousedown: cancel},
 	 ".sbookmargin": {click: edge_click},
 	 "#SBOOKFLYLEAF": {click: flyleaf_tap},
-	 "#SBOOKPAGEINFO": {click: pageinfo_click},
-	 "#SBOOKPAGENO": {click: enterPageNum},
-	 "#SBOOKLOCOFF": {click: enterLocation},
+	 "#CODEXPAGEINFO": {click: pageinfo_click},
+	 "#CODEXPAGENO": {click: enterPageNum},
+	 "#CODEXLOCOFF": {click: enterLocation},
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
 	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
@@ -966,18 +966,18 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
        content: {touchstart: content_touchstart,
 		 touchmove: content_touchmove,
 		 touchend: content_touchend},
-       "#SBOOKMASK": {touchstart: content_touchstart,
+       "#CODEXMASK": {touchstart: content_touchstart,
 		      touchmove: content_touchmove,
 		      touchend: content_touchend},
        hud: {touchstart: shared_touchstart,
 	     touchmove: hud_touchmove,
 	     touchend: hud_touchend},
        "#SBOOKFLYLEAF": {touchend: flyleaf_tap},
-       "#SBOOKPAGEINFO": {touchstart: pageinfo_click,
+       "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			  touchmove: cancel,touchend: cancel},
-       "#SBOOKPAGENO": {touchstart: enterPageNum,
+       "#CODEXPAGENO": {touchstart: enterPageNum,
 			touchmove: cancel,touchend: cancel},
-       "#SBOOKLOCOFF": {touchstart: enterLocation,
+       "#CODEXLOCOFF": {touchstart: enterLocation,
 			touchmove: cancel,touchend: cancel},
        ".sbookmargin": {touchstart: shared_touchstart,
 			touchend: content_touchend,

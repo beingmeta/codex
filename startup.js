@@ -446,7 +446,7 @@ sbook.Startup=
 
 	var note_count=1;
 	function initBody(){
-	    var page=fdjtID("SBOOKPAGE");
+	    var page=fdjtID("CODEXPAGE");
 	    var content=
 		((fdjtDOM.getMeta("sbook.body"))?
 		 ((fdjtID(fdjtDOM.getMeta("sbook.body")))||(document.body)):
@@ -457,10 +457,10 @@ sbook.Startup=
 		var i=0; var lim=nodes.length;
 		while (i<lim) content.appendChild(nodes[i++]);}
 	    if (!(page))
-		page=fdjtDOM("div#SBOOKPAGE",
-			     fdjtDOM("div#SBOOKASIDE"),
-			     fdjtDOM("div#SBOOKREF"),
-			     fdjtDOM("div#SBOOKMASK"),
+		page=fdjtDOM("div#CODEXPAGE",
+			     fdjtDOM("div#CODEXASIDE"),
+			     fdjtDOM("div#CODEXREF"),
+			     fdjtDOM("div#CODEXMASK"),
 			     content);
 	    document.body.appendChild(page);
 	    fdjtDOM.addClass(document.body,"sbook");
