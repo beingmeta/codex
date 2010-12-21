@@ -364,7 +364,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
 	else if (kc===32) sbook.Forward(evt); // Space
 	// backspace or delete
-	else if ((kc===8)||(kc===45)) sbook.Backward();
+	else if ((kc===8)||(kc===45)) sbook.Backward(evt);
 	// Home goes to the current head.
 	else if (kc===36) sbook.JumpTo(sbook.head);
 	else return;
@@ -559,15 +559,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event||false;
 	handled=false;
 	var target=fdjtUI.T(evt);
+	shared_touchstart(evt);
 	var passage;
-	if ((!(fdjtDOM.isClickable(target)))&&
+	if ((!((fdjtDOM.isClickable(target))||(n_touches>1)))&&
 	    (passage=sbook.getTarget(target)))
-	    held=setTimeout(
-		function(evt){
-		    glossExcerpt(passage);
-		    held=false; handled=true;},
-		500);
-	shared_touchstart(evt);}
+	  held=setTimeout(function(evt){
+	      glossExcerpt(passage);
+	      held=false; handled=true;},
+	    500);}
 
     var mouseisdown=false;
 
@@ -594,12 +593,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    touch_moves,sbook.scanning);
 	last_x=touch.clientX; last_y=touch.clientY;
 	touch_moved=true;
-	return;
-	if (!(sbook.preview)) return;
-	if (ady>(adx*4)) {
-	    scrollBody(dx,dy); touch_scrolled=true;
-	    page_x=touch.screenX; page_y=touch.screenY;
-	    touch_scrolled=true;}}
+	return;}
 
     function content_touchend(evt,tap){
 	var target=fdjtUI.T(evt);
@@ -673,9 +667,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		fdjtUI.cancel(evt);
 		return;}
 	    else {
-		if (sbook.Trace.gestures)
-		    fdjtLog("[%fs] Synthesizing click on %o",fdjtET(),target);
 		var click_evt = document.createEvent("MouseEvents");
+		while (target)
+		  if (target.nodeType===1) break;
+		  else target=target.parentNode;
+		if (!(target)) return;
+		if (sbook.Trace.gestures)
+		  fdjtLog("[%fs] Synthesizing click on %o",fdjtET(),target);
 		click_evt.initMouseEvent("click", true, true, window,
 					 1,page_x,page_y,last_x, last_y,
 					 false, false, false, false, 0, null);
@@ -724,6 +722,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (sbook.Trace.nav)
 	    fdjtLog("[%fs] Forward e=%o h=%o t=%o",
 		    fdjtET(),evt,sbook.head,sbook.target);
+	if ((sbook.mode==="glosses")||(sbook.mode==="addgloss"))
+	  sbookMode(true);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
 	    scanForward();
 	else pageForward();}
@@ -734,6 +734,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (evt) fdjtUI.cancel(evt);
 	if ((last_motion)&&((now-last_motion)<100)) return;
 	else last_motion=now;
+	if ((sbook.mode==="glosses")||(sbook.mode==="addgloss"))
+	  sbookMode(true);
 	if (sbook.Trace.nav)
 	    fdjtLog("[%fs] Backward e=%o h=%o t=%o",
 		    fdjtET(),evt,sbook.head,sbook.target);
@@ -860,6 +862,17 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	return scan;}
     sbook.scanBackward=scanBackward;
 
+    /* Entering page numbers and locations */
+
+    function enterPageNum(evt) {
+      evt=evt||event;
+      fdjtUI.cancel(evt);
+      sbookMode.toggle("gotopage");}
+    function enterLocation(evt) {
+      evt=evt||event;
+      fdjtUI.cancel(evt);
+      sbookMode.toggle("gotoloc");}
+    
     /* Other handlers */
 
     function flyleaf_tap(evt){
@@ -939,6 +952,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 ".sbookmargin": {click: edge_click},
 	 "#SBOOKFLYLEAF": {click: flyleaf_tap},
 	 "#SBOOKPAGEINFO": {click: pageinfo_click},
+	 "#SBOOKPAGENO": {click: enterPageNum},
+	 "#SBOOKLOCOFF": {click: enterLocation},
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
 	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
@@ -946,31 +961,36 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	       mouseout: fdjtUI.CoHi.onmouseout}};
 
     sbook.UI.handlers.webtouch=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress},
-	 content: {touchstart: content_touchstart,
-		   touchmove: content_touchmove,
-		   touchend: content_touchend},
-	 hud: {touchstart: shared_touchstart,
-	       touchmove: hud_touchmove,
-	       touchend: hud_touchend},
-	 "#SBOOKFLYLEAF": {touchend: flyleaf_tap},
-	 "#SBOOKPAGEINFO": {
-	     touchstart: pageinfo_click,
-	     touchmove: cancel,touchend: cancel},
-	 ".sbookmargin": {touchstart: shared_touchstart,
-			  touchend: content_touchend,
-			  touchmove: content_touchmove},
-	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
-	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
-	 glossmark: {
-	     touchend: glossmark_onclick,
-	     touchstart: cancel,
-	     touchmove: cancel},
-	 glossbutton: {
-	     touchend: glossbutton_onclick,
-	     touchstart: cancel,
-	     touchmove: cancel}
-	};
+      {window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
+		touchstart: cancel, touchmove: cancel, touchend: cancel},
+       content: {touchstart: content_touchstart,
+		 touchmove: content_touchmove,
+		 touchend: content_touchend},
+       "#SBOOKMASK": {touchstart: content_touchstart,
+		      touchmove: content_touchmove,
+		      touchend: content_touchend},
+       hud: {touchstart: shared_touchstart,
+	     touchmove: hud_touchmove,
+	     touchend: hud_touchend},
+       "#SBOOKFLYLEAF": {touchend: flyleaf_tap},
+       "#SBOOKPAGEINFO": {touchstart: pageinfo_click,
+			  touchmove: cancel,touchend: cancel},
+       "#SBOOKPAGENO": {touchstart: enterPageNum,
+			touchmove: cancel,touchend: cancel},
+       "#SBOOKLOCOFF": {touchstart: enterLocation,
+			touchmove: cancel,touchend: cancel},
+       ".sbookmargin": {touchstart: shared_touchstart,
+			touchend: content_touchend,
+			touchmove: content_touchmove},
+       ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
+       "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
+       glossmark: {touchend: glossmark_onclick,
+		   touchstart: cancel,
+		   touchmove: cancel},
+       glossbutton: {touchend: glossbutton_onclick,
+		     touchstart: cancel,
+		     touchmove: cancel}
+      };
     
 })();
 

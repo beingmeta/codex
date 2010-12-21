@@ -679,15 +679,18 @@ var sbookPaginate=
 			 (book_len));
 	    pbar.style.left=(100*(starts_at/book_len))+"%";
 	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
-	    var locoff=fdjtDOM("span.locoff","L"+Math.floor(info.loc/128));
+	    var locoff=fdjtDOM("span.locoff#SBOOKLOCOFF",
+			       "L"+Math.ceil(info.loc/128));
 	    var pageno=
 		fdjtDOM("div#SBOOKPAGENO",pbar,locoff,
 			pagenum+1,((pageoff)?"+":""),"/",npages);
 	    fdjtDOM.replace("SBOOKPAGENO",pageno);
 	    locoff.title="click to jump to a particular location";
-	    locoff.onclick=EnterLocation;
-	    pageno.onclick=EnterPageNum;
+	    fdjtDOM.addListeners
+	      (locoff,sbook.UI.handlers[sbook.ui]["#SBOOKLOCOFF"]);
 	    pageno.title="click to jump to a particular page";
+	    fdjtDOM.addListeners
+	      (pageno,sbook.UI.handlers[sbook.ui]["#SBOOKPAGENO"]);
 	    sbook.curpage=pagenum;
 	    sbook.curoff=pageoff;
 	    sbook.curinfo=info;
@@ -709,15 +712,6 @@ var sbookPaginate=
 		    {page: pagenum,location: info.loc,
 		     target:((sbook.target)&&(sbook.target.id))});}
 	sbook.GoToPage=ScrollGoToPage;
-
-	function EnterPageNum(evt) {
-	    evt=evt||event;
-	    fdjtUI.cancel(evt);
-	    sbookMode.toggle("gotopage");}
-	function EnterLocation(evt) {
-	    evt=evt||event;
-	    fdjtUI.cancel(evt);
-	    sbookMode.toggle("gotoloc");}
 
 	function FadeToPage(pagenum,off){
 	    if (!(off)) off=0;
@@ -819,8 +813,8 @@ var sbookPaginate=
 
 	    var pagemask=fdjtID("SBOOKMASK");
 	    
-	    fdjtDOM.prepend
-	    (document.body,pagehead,pagefoot,leftedge,rightedge);
+	    fdjtDOM.prepend(document.body,pagehead,pagefoot,leftedge,rightedge);
+	    
 	    if (sbook.nativescroll) {
 		fdjtDOM.prepend(document.body,topleading);
 		fdjtDOM.append(document.body,bottomleading);}

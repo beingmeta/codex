@@ -599,8 +599,8 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /***** Initializing the gloss form for the first time ******/
 
     function setupGlossForm(form){
-	if (form.getAttribute("sbooksetup")) return;
-	fdjtDOM.getInput(form,"REFURI").value=sbook.refuri;
+      if (form.getAttribute("sbooksetup")) return;
+      fdjtDOM.getInput(form,"REFURI").value=sbook.refuri;
 	fdjtDOM.getInput(form,"USER").value=sbook.user.qid;
 	fdjtDOM.getInput(form,"DOCTITLE").value=document.title;
 	fdjtDOM.getInput(form,"DOCURI").value=document.location.href;
@@ -631,30 +631,37 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    shareinput.onfocus=shareinput_focus;
 	    shareinput.onblur=shareinput_blur;}
 	if (sbook.syncstamp)
-	    fdjtDOM.getInput(form,"SYNC").value=(sbook.syncstamp+1);
+	  fdjtDOM.getInput(form,"SYNC").value=(sbook.syncstamp+1);
 	form.onsubmit=submitGloss;
-	form.oncallback=addgloss_callback;
+	form.oncallback=get_addgloss_callback(form);
 	form.setAttribute("sbooksetup","yes");}
     sbook.setupGlossForm=setupGlossForm;
 
-    function addgloss_callback(req){
+    function get_addgloss_callback(form){
+      return function(req){
+	return addgloss_callback(req,form);}}
+
+    function addgloss_callback(req,form){
 	if (sbook.Trace.network)
-	    fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
-	fdjtDOM.dropClass(fdjtID("CODEXADDGLOSS"),"submitting");
+	  fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
+	fdjtDOM.dropClass(form.parentNode,"submitting");
 	fdjtKB.Import(JSON.parse(req.responseText));
-	// Clear the UUID, and other fields
-	var uuid=fdjtDOM.getInput(fdjtID("SBOOKGLOSSFORM"),"UUID");
-	if (uuid) uuid.value="";
-	var note=fdjtDOM.getInput(fdjtID("SBOOKGLOSSFORM"),"NOTE");
-	if (note) note.value="";
-	var taginput=fdjtDOM.getInput(fdjtID("SBOOKGLOSSFORM"),"TAG");
-	if (taginput) taginput.value="";
-	var href=fdjtDOM.getInput(fdjtID("SBOOKGLOSSFORM"),"HREF");
-	if (href) href.value="";
+	clearGlossForm(form);
 	sbook.preview_target=false;
 	/* Turn off the target lock */
 	sbook.setTarget(false);
 	sbookMode(false);}
+
+    function clearGlossForm(form){
+      // Clear the UUID, and other fields
+      var uuid=fdjtDOM.getInput(form,"UUID");
+      if (uuid) uuid.value="";
+      var note=fdjtDOM.getInput(form,"NOTE");
+      if (note) note.value="";
+      var taginput=fdjtDOM.getInput(form,"TAG");
+      if (taginput) taginput.value="";
+      var href=fdjtDOM.getInput(form,"HREF");
+      if (href) href.value="";}
 
     /***** Gloss Modes *****/
 
@@ -729,7 +736,8 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     // Submits a gloss, queueing it if offline.
     function submitGloss(evt){
 	evt=evt||event||null;
-	fdjtDOM.addClass(fdjtID("CODEXADDGLOSS"),"submitting");
+	var target=fdjtUI.T(evt);
+	fdjtDOM.addClass(target.parentNode,"submitting");
 	var form=(fdjtUI.T(evt));
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
@@ -743,11 +751,16 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else return fdjtAjax.onsubmit(evt);}
     sbook.submitGloss=submitGloss;
 
-    function submitEvent(form){
-	var submit_evt = document.createEvent("HTMLEvents");
-	submit_evt.initEvent("submit", true, true);
-	form.dispatchEvent(submit_evt);
-	return;}
+    function submitEvent(arg){
+      var form=((arg.nodeType)?(arg):(fdjtUI.T(arg)));
+      while (form)
+	if (form.tagName==='FORM') break;
+	else form=form.parentNode;
+      if (!(form)) return;
+      var submit_evt = document.createEvent("HTMLEvents");
+      submit_evt.initEvent("submit", true, true);
+      form.dispatchEvent(submit_evt);
+      return;}
     sbook.UI.submitEvent=submitEvent;
 
     // Queues a gloss when offline
@@ -774,10 +787,10 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtState.setLocal("params("+json.uuid+")",params);
 	fdjtState.setLocal("queued("+sbook.refuri+")",queued,true);
 	// Clear the UUID
-	fdjtID("SBOOKMARKUUID").value="";
+	clearGlossForm(form);
 	sbook.preview_target=false;
 	if (evt) fdjtUI.cancel(evt);
-	fdjtDOM.dropClass(fdjtID("CODEXADDGLOSS"),"submitting");
+	fdjtDOM.dropClass(form.parentNode,"submitting");
 	/* Turn off the target lock */
 	sbook.setTarget(false);
 	sbookMode(false);}

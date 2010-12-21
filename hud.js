@@ -239,8 +239,11 @@ var sbookMode=
 		if (mode!=="scanning") sbook.scanning=false;
 		if (mode===sbook.mode) {}
 		else if (mode===true) {
-		    sbook.mode=false;
-		    sbook.last_mode=true;}
+		  if (sbook_mode_foci[sbook.mode]) {
+		    var input=fdjtID(sbook_mode_foci[sbook.mode]);
+		    input.blur();}
+		  sbook.mode=false;
+		  sbook.last_mode=true;}
 		else if (typeof mode !== 'string') 
 		    throw new Error('mode arg not a string');
 		else if (mode==='help') {
@@ -249,8 +252,11 @@ var sbookMode=
 		    //  finishes
 		    sbook.mode=mode;}
 		else {
-		    sbook.mode=mode;
-		    sbook.last_mode=mode;}
+		  if (sbook_mode_foci[sbook.mode]) {
+		    var input=fdjtID(sbook_mode_foci[sbook.mode]);
+		    input.blur();}
+		  sbook.mode=mode;
+		  sbook.last_mode=mode;}
 		if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
 		    sbookSetupFlyleaf();
 		if (!(typeof mode === 'string'))
@@ -275,7 +281,8 @@ var sbookMode=
 		    (sbook.curinfo)&&(sbook.curinfo.first)) {
 		    sbook.UI.scrollGlosses(sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"));}
 		if (sbook_mode_foci[mode]) {
-		    fdjtID(sbook_mode_foci[mode]).focus();}
+		  var input=fdjtID(sbook_mode_foci[mode]);
+		  if (input) input.focus();}
 		// Moving the focus back to the body lets keys work
 		else document.body.focus();
 		if (sbook.scrolling)

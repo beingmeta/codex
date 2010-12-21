@@ -189,6 +189,7 @@ body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.sbookapp img[alt='sbookapp'],
 body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.device img[alt='device'],
 body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.flytoc img[alt='flytoc'],
 body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.login img[alt='login'],
+body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.console img[alt='console'],
 body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.help img[alt='help'] {
     display: block;}
 
@@ -197,6 +198,7 @@ body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.sbookapp:hover img[alt='sbookapp'],
 body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.device:hover img[alt='device'],
 body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.flytoc:hover img[alt='flytoc'],
 body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.login:hover img[alt='login'],
+body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.console:hover img[alt='console'],
 body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.help:hover img[alt='help'] {
     display: block; opacity: 0.5;}
 
@@ -220,8 +222,6 @@ body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCHCLOUD,
 body.hudup div#SBOOKHUD.scanning div.hudpanel#SBOOKSCANNER,
 body.hudup div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF,
 body.hudup div#SBOOKHUD.addgloss div.hudpanel#CODEXADDGLOSS,
-body.hudup div#SBOOKHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
-body.hudup div#SBOOKHUD.gotopage div.hudpanel#CODEXGOTOPAGE,
 body.hudup div#SBOOKHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     border-color: darkblue;
     opacity: 0.95; min-height: 50px; height: auto;
@@ -229,6 +229,11 @@ body.hudup div#SBOOKHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
+
+body.hudup div#SBOOKHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
+body.hudup div#SBOOKHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
+    border-color: darkblue;
+    opacity: 0.95; min-height: 50px; height: auto;}
 
 body.hudup div#SBOOKHUD.glosses div.hudpanel#SBOOKGLOSSES {
     border-color: darkblue;
@@ -292,6 +297,13 @@ div#SBOOKHUD div#SBOOKABOUT div.textblock {
 
 div#SBOOKHUD div#SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
 div#SBOOKHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
+
+/* The Console */
+
+div#SBOOKCONSOLE div.logentry span.time {
+    float: left; width: 6em; color: green;}
+div#SBOOKCONSOLE div.message {
+    text-align: center; font-size: 150%;}
 
 /* SBOOKGLOSSES */
 
@@ -897,6 +909,10 @@ div#SBOOKHUD div#SBOOKHUDBUTTONS {
     display: none;}
 body.hudup div#SBOOKHUD div#SBOOKHUDBUTTONS {
     display: block; opacity: 0.8;}
+body.hudup div#SBOOKHUD div#SBOOKHUDBUTTONS img[alt='console'] {
+    display: none;}
+body.hudup.sbookshowconsole div#SBOOKHUD div#SBOOKHUDBUTTONS img[alt='console'] {
+    display: inline;}
 
 div#SBOOKHUD div#SBOOKHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;}
@@ -913,7 +929,6 @@ body.hudup div#SBOOKHUD.scanning div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.tocscan div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.glosses div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.allglosses div#SBOOKHUDBUTTONS,
-body.hudup div#SBOOKHUD.console div#SBOOKHUDBUTTONS,
 body.hudup div#SBOOKHUD.addgloss div#SBOOKHUDBUTTONS {
     display: none;}
 div#SBOOKHUD div#SBOOKHUDBUTTONS div.sbookplate {
@@ -949,6 +964,7 @@ div#SBOOKHUD.login div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKAPPLOGIN'
 div#SBOOKHUD.device div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKDEVICE'],
 div#SBOOKHUD.flytoc div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='FLYTOC'],
 div#SBOOKHUD.help div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKHELP'],
+div#SBOOKHUD.console div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKCONSOLE'],
 div#SBOOKHUD.sbookapp div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;
@@ -1020,6 +1036,7 @@ div#SBOOKHUD.about div#SBOOKFLYHEAD div.tabbar .tab[contentid='APPABOUT'],
 div#SBOOKHUD.login div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
 div#SBOOKHUD.device div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKDEVICE'],
 div#SBOOKHUD.flytoc div#SBOOKFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
+div#SBOOKHUD.console div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKCONSOLE'],
 div#SBOOKHUD.sbookapp div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;}
@@ -1031,6 +1048,7 @@ div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent[id='APPABOUT'],
 div#SBOOKHUD.login div#SBOOKFLYLEAF div.tabcontent[id='SBOOKAPPLOGIN'],
 div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent[id='SBOOKDEVICE'],
 div#SBOOKHUD.flytoc div#SBOOKFLYLEAF div.tabcontent[id='FLYTOC'],
+div#SBOOKHUD.console div#SBOOKFLYLEAF div.tabcontent[id='SBOOKCONSOLE'],
 div#SBOOKHUD.sbookapp div#SBOOKFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
     display: block;}
 

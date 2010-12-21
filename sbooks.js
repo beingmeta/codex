@@ -79,7 +79,7 @@ var sbook=
 	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 0},   // Whether to trace gestures
+	 gestures: 1},   // Whether to trace gestures
      version: sbooks_version, id: sbooks_id
     };
 var _sbook_setup=false;
@@ -513,6 +513,8 @@ var sbook_gloss_data=
 	    if (sbook.Trace.dosync)
 		fdjtLog("[%fs] syncPosition(call) %s: %o",fdjtET(),uri,state);
 	    var req=new XMLHttpRequest();
+	    /* req.onreadystatechange=function(evt){
+	       fdjtLog("[%fs] Got response %o",fdjtET(),evt);}; */
 	    req.open("POST",uri,true);
 	    req.withCredentials='yes';
 	    req.send(statestring);}}

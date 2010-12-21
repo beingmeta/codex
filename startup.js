@@ -36,6 +36,7 @@ sbook.Startup=
     (function(){
 
 	var sbook_faketouch=false;
+	var sbook_showconsole=true;
 
 	var sbook_fullpages=[];
 	var sbook_heading_qricons=false;
@@ -58,6 +59,8 @@ sbook.Startup=
 	    fdjtDOM.init();
 	    // Add this as soon as possible
 	    if (sbook.paginate) fdjtDOM.addClass(document.body,"paginate");
+	    if (sbook_showconsole)
+	      fdjtDOM.addClass(document.body,"sbookshowconsole");
 	    var metadata=false;
 	    var helphud=false;
 	    fdjtTime.timeslice

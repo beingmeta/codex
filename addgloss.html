@@ -1,119 +1,120 @@
-<form action="https://glossdb.sbooks.net/v4/glosspoint"
-      ajaxaction="https://glosses.sbooks.net/v4/addgloss"
-      target="addgloss" class="sbnotemode">
-  <div>
-    <div class="topblock">
-      <div class="hidden">
-	<input type="HIDDEN" name="FRAG"/>
-	<input type="HIDDEN" name="REFURI"/>
-	<input type="HIDDEN" name="DOCURI"/>
-	<input type="HIDDEN" name="SYNC"/>
-	<input type="HIDDEN" name="USER"/>
-	<input type="HIDDEN" name="UUID"/>
-	<input type="HIDDEN" name="TAGLINE"/>
-	<input type="HIDDEN" name="LOCATION"/>
-	<input type="HIDDEN" name="LOCLEN"/>
-	<input type="HIDDEN" name="DOCTITLE"/>
-	<input type="HIDDEN" name="RELAY"/>
+<div>
+  <form action="https://glossdb.sbooks.net/v4/glosspoint"
+	ajaxaction="https://glosses.sbooks.net/v4/addgloss"
+	target="addgloss" class="sbnotemode">
+    <div>
+      <div class="topblock">
+	<div class="hidden">
+	  <input type="HIDDEN" name="FRAG"/>
+	  <input type="HIDDEN" name="REFURI"/>
+	  <input type="HIDDEN" name="DOCURI"/>
+	  <input type="HIDDEN" name="SYNC"/>
+	  <input type="HIDDEN" name="USER"/>
+	  <input type="HIDDEN" name="UUID"/>
+	  <input type="HIDDEN" name="TAGLINE"/>
+	  <input type="HIDDEN" name="LOCATION"/>
+	  <input type="HIDDEN" name="LOCLEN"/>
+	  <input type="HIDDEN" name="DOCTITLE"/>
+	  <input type="HIDDEN" name="RELAY"/>
+	</div>
+	<img class="closebutton" alt="X" onclick="sbookMode(false);"
+	     src="http://static.beingmeta.com/graphics/redx16x16.png"/>
+	<div class="controls">
+	  <select name="MODE" onchange="this.form.className=this.value;">
+	    <option value="sbnotemode">note</option>
+	    <option value="sbtagmode">tag</option>
+	    <option value="sblinkmode">link</option>
+	    <option value="sbdetailmode">detail</option>
+	  </select>
+	  <span class="button" onclick="sbook.glossMode('note',event);"
+		title="add a note" data-mode="note">
+	    <img src=
+		 "http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
+		 alt="note"/>
+	    <span class="text">Note</span>
+	  </span>
+	  <span class="button" onclick="sbook.glossMode('tag',event);"
+		title="add tags" data-mode="tag">
+	    <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+		 alt="tag" title="add some tags"/>
+	    <span class="text">Tags</span>
+	  </span>
+	  <span class="button" onclick="sbook.glossMode('link',event);"
+		title="add a link" data-mode="link">
+	    <img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
+		 alt="link" title="add a link"/>
+	    <span class="text">Link</span>
+	  </span>
+	  <span class="button" onclick="sbook.glossMode('excerpt',event);"
+		title="edit excerpt" data-mode="excerpt">
+	    <img src="http://static.beingmeta.com/graphics/scissorsicon32x32.png"
+		 alt="detail" title="edit excerpt"/>
+	    <span class="text">Excerpt</span>
+	  </span>
+	  <span class="button" onclick="sbook.glossMode('detail',event);"
+		title="add extended text" data-mode="detail">
+	    <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
+		 alt="detail" title="add extended text"/>
+	    <span class="text">Detail</span>
+	  </span>
+	  <span class="button submitbutton"
+		onclick="sbook.UI.submitEvent(event);">
+	    OK</span>
+	  <span class="button checkspan private"
+		onclick="fdjtUI.CheckSpan.onclick(event);"
+		title="don't share this gloss with my friends generally">
+	    <input type="CHECKBOX" name="PRIVATE" value="yes"/>
+	    <span class="checked"
+		  title="don't share this note with my personal circle (friends)">
+	      private</span>
+	    <span class="unchecked"
+		  title="share this note with my personal circle (friends)">
+	      shared</span>
+	  </span>
+	  <span class="checkspan" title="post to your social news feeds">
+	    <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
+	</div>
+	<fieldset class="textfields">
+	  <div class="input note">
+	    <textarea name="NOTE"
+		      placeholder="add a note,using brackets for descriptive [tag]s"
+		      wrap="virtual"></textarea>
+	  </div>
+	  <div class="input tag">
+	    <input type="TEXT" name="TAG" value="" autocomplete="off"
+		   placeholder="add tags to this passage" 
+		   onfocus="sbook.handlers.taginput_focus(event);"
+		   onblur="sbook.handlers.taginput_blur(event);">
+	  </div>
+	  <div class="input link">
+	    <input type="TEXT" name="LINK" value=""
+		   placeholder="type a URL to link from this passage" 
+		   class="urlinput" prompt="type a web address (URL)"/>
+	  </div>
+	  <div class="input share">
+	    <input type="TEXT" name="SHARE" value="" autocomplete="off"
+		   placeholder=
+		   "type an email or tag with friends or groups to share"/>
+	  </div>
+	  <div class="input detail">
+	    <textarea name="DETAIL"
+		      placeholder="Enter detailed comments or notes here">
+	    </textarea>
+	  </div>
+	  <div class="input excerpt">
+	    <input type="HIDDEN" name="EXCERPTSTART"/>
+	    <input type="HIDDEN" name="EXCERPTEND"/>
+	    <textarea name="EXCERPT" placeholder="Edit excerpt for this gloss">
+	    </textarea>
+	  </div>
+	  <div class="tags"
+	       onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
+	  </div>
+	</fieldset>
       </div>
-      <img class="closebutton" alt="X" onclick="sbookMode(false);"
-	   src="http://static.beingmeta.com/graphics/redx16x16.png"/>
-      <div class="controls">
-	<select name="MODE" onchange="this.form.className=this.value;">
-	  <option value="sbnotemode">note</option>
-	  <option value="sbtagmode">tag</option>
-	  <option value="sblinkmode">link</option>
-	  <option value="sbdetailmode">detail</option>
-	</select>
-	<span class="button" onclick="sbook.glossMode('note',event);"
-	      title="add a note" data-mode="note">
-	  <img src=
-	       "http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
-	       alt="note"/>
-	  <span class="text">Note</span>
-	</span>
-	<span class="button" onclick="sbook.glossMode('tag',event);"
-	      title="add tags" data-mode="tag">
-	  <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-	       alt="tag" title="add some tags"/>
-	  <span class="text">Tags</span>
-	</span>
-	<span class="button" onclick="sbook.glossMode('link',event);"
-	      title="add a link" data-mode="link">
-	  <img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
-	       alt="link" title="add a link"/>
-	  <span class="text">Link</span>
-	</span>
-	<span class="button" onclick="sbook.glossMode('excerpt',event);"
-	      title="edit excerpt" data-mode="excerpt">
-	  <img src="http://static.beingmeta.com/graphics/scissorsicon32x32.png"
-	       alt="detail" title="edit excerpt"/>
-	  <span class="text">Excerpt</span>
-	</span>
-	<span class="button" onclick="sbook.glossMode('detail',event);"
-	      title="add extended text" data-mode="detail">
-	  <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
-	       alt="detail" title="add extended text"/>
-	  <span class="text">Detail</span>
-	</span>
-	<span class="button submitbutton"
-	      onclick="sbook.UI.submitEvent(fdjtDOM.getParent(this,'form'));">
-	  OK</span>
-	<span class="button checkspan private"
-	      onclick="fdjtUI.CheckSpan.onclick(event);"
-	      title="don't share this gloss with my friends generally">
-	  <input type="CHECKBOX" name="PRIVATE" value="yes"/>
-	  <span class="checked"
-		title="don't share this note with my personal circle (friends)">
-	    private</span>
-	  <span class="unchecked"
-		title="share this note with my personal circle (friends)">
-	    shared</span>
-	</span>
-	<span class="checkspan" title="post to your social news feeds">
-	  <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
-      </div>
-      <fieldset class="textfields">
-	<div class="input note">
-	  <textarea name="NOTE"
-		    placeholder="add a note,using brackets for descriptive [tag]s"
-		    wrap="virtual"></textarea>
-	</div>
-	<div class="input tag">
-	  <input type="TEXT" name="TAG" value="" autocomplete="off"
-		 placeholder="add tags to this passage" 
-		 onfocus="sbook.handlers.taginput_focus(event);"
-		 onblur="sbook.handlers.taginput_blur(event);">
-	</div>
-	<div class="input link">
-	  <input type="TEXT" name="LINK" value=""
-		 placeholder="type a URL to link from this passage" 
-		 class="urlinput" prompt="type a web address (URL)"/>
-	</div>
-	<div class="input share">
-	  <input type="TEXT" name="SHARE" value="" autocomplete="off"
-		 placeholder=
-		 "type an email or tag with friends or groups to share"/>
-	</div>
-	<div class="input detail">
-	  <textarea name="DETAIL"
-		    placeholder="Enter detailed comments or notes here">
-	  </textarea>
-	</div>
-	<div class="input excerpt">
-	  <input type="HIDDEN" name="EXCERPTSTART"/>
-	  <input type="HIDDEN" name="EXCERPTEND"/>
-	  <textarea name="EXCERPT" placeholder="Edit excerpt for this gloss">
-	  </textarea>
-	</div>
-	<div class="tags"
-	     onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
-	</div>
-      </fieldset>
     </div>
-  </div>
-</form>
-
+  </form>
+</div>
 <!--
     /* Emacs local variables
     ;;;  Local variables: ***
@@ -121,4 +122,3 @@
     ;;;  End: ***
     */
   -->
-
