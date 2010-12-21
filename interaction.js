@@ -296,7 +296,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (held) clear_hold(); handled=false;
 	var target=fdjtUI.T(evt);
 	var passage;
-	if ((!(fdjtDOM.isClickable(target)))&&
+	if ((!((evt.button)||(evt.shiftKey)||(evt.ctrlKey)||
+	       (fdjtDOM.isClickable(target))))&&
 	    (passage=sbook.getTarget(target)))
 	    held=setTimeout(
 		function(evt){

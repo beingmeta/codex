@@ -431,6 +431,8 @@ var sbook_gloss_data=
 	else {
 	    //(win||sbook.body).style[fdjtDOM.transform]=" translateY(-"+y+"px)";
 	    window.scrollTo(0,0);
+	    sbook.page.scrollLeft=0;
+	    sbook.page.scrollTop=0;
 	    (win||sbook.body).style.left=""+(-x)+"px";
 	    (win||sbook.body).style.top=""+(-y)+"px";
 	}}
@@ -449,8 +451,8 @@ var sbook_gloss_data=
 	else {
 	    var curx=x_offset-fdjtDOM.parsePX(sbook.body.style.left);
 	    var cury=y_offset-fdjtDOM.parsePX(sbook.body.style.top);
-	    sbook.body.style.left=''; sbook.body.style.top='';
-	    var geom=fdjtDOM.getGeometry(sbook.body,document.body);
+	    // sbook.body.style.left=''; sbook.body.style.top='';
+	    var geom=fdjtDOM.getGeometry(sbook.body,sbook.body);
 	    x_offset=geom.left; y_offset=geom.top;
 	    sbook.bodyoff=[x_offset,y_offset];
 	    sbook.body.style.left='0px';

@@ -826,8 +826,9 @@ var sbookPaginate=
 		fdjtDOM.append(document.body,bottomleading);}
 	    else {
 		fdjtDOM.addClass(document.body,"sbookscroll");
-		fdjtDOM.prepend(sbook.body,topleading);
-		fdjtDOM.append(sbook.body,bottomleading);}
+		// fdjtDOM.prepend(sbook.body,topleading);
+		// fdjtDOM.append(sbook.body,bottomleading);
+	    }
 	    
 	    if (!(sbook.nativescroll)) window.scrollTo(0,0);
 
@@ -871,7 +872,7 @@ var sbookPaginate=
 	    var body=sbook.body||document.body;
 	    ScrollPaginate(pagesize,body,
 			   function(pagination) {
-			       fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
+			     // fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
 			       sbook.pages=pagination.pages;
 			       sbook.pageinfo=pagination.info;
 			       sbook_pagesize=pagesize;

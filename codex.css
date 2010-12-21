@@ -39,17 +39,17 @@ body.sbook { }
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
     z-index: 100;}
 #SBOOKPAGE {
-    position: absolute;
+    position: fixed;
     top: 50px; bottom: 50px; left: 0px; right: 0px; width: 100%;
     overflow: hidden;}
 #SBOOKPAGE #SBOOKMASK {
-    position: absolute; z-index: 50;
+    position: absolute; z-index: 75;
     bottom: 0px; left: 0px; right: 0px; width: 100%;
     opacity: 1.0; background-color: inherit;}
 #SBOOKPAGE #SBOOKCONTENT {
+    position: absolute; left: 0; right: 0;
     margin: 0px; padding: 0px; border: 0px;
-    padding-left: 50px; padding-right: 50px;
-    height: 100%;}
+    padding-left: 50px; padding-right: 50px;}
 #SBOOKPAGE #SBOOKCONTENT.codexanimate {
     transition-property: opacity; transition-duration: 0.1s;
     -webkit-transition-property: opacity;
@@ -65,9 +65,6 @@ body.sbook { }
 #SBOOKREF {
     position: fixed; z-index: -100;
     top: 60px; left: 60px; right: 60px;}
-
-body.sbookscroll #SBOOKCONTENT {
-    position: absolute; left: 0px; right: 0px; top: 0px;}
 
 /* The HUD */
 
