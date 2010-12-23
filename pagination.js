@@ -39,7 +39,7 @@ var sbooks_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=true;
+	var debug_pagination=false;
 	var sbook_paginated=false;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
@@ -319,11 +319,12 @@ var sbookPaginate=
 		    if (splitblock) {
 			var locinfo=getLocInfo(splitblock);
 			curpage.top=prevpage.bottom;
-			if (locinfo) 
+			if (locinfo)  {
+			    var height=newinfo.height;
+			    var above=curpage.top-newinfo.top;
 			    curpage.loc=
-			    (locinfo.start)+
-			    Math.round(locinfo.length*
-				       ((prevpage.bottom-newinfo.top)/newinfo.height));}
+				(locinfo.start)+
+				Math.round(locinfo.len*(above/height));}}
 		    else {
 			var locinfo=getLocInfo(newtop);
 			if (locinfo) curpage.loc=locinfo.start;
@@ -548,20 +549,20 @@ var sbookPaginate=
 	    var len=children.length; 
 	    var i=0; while (i<len) {
 		var child=children[i++];
-		if (child.nodeType===1)
+		if (child.nodeType===1) {
 		    if (child.sbookinui) continue;
-		else {
-		    var offinfo=getGeometry(child,sbook_body);
-		    if ((!(offinfo))||(offinfo.height===0)) continue;
-		    else if (offinfo.bottom<top) continue;
-		    else if (offinfo.bottom>=bottom)
-			return lastbottom;
-		    else if (offinfo.top>=lastbottom) { // new line 
-			lastbottom=linebottom;
-			linebottom=offinfo.bottom;}
-		    else if (offinfo.bottom>linebottom)
-			linebottom=offinfo.bottom;
-		    else {}}
+		    else {
+			var offinfo=getGeometry(child,sbook_body);
+			if ((!(offinfo))||(offinfo.height===0)) continue;
+			else if (offinfo.bottom<top) continue;
+			else if (offinfo.bottom>=bottom)
+			    return lastbottom;
+			else if (offinfo.top>=lastbottom) { // new line 
+			    lastbottom=linebottom;
+			    linebottom=offinfo.bottom;}
+			else if (offinfo.bottom>linebottom)
+			    linebottom=offinfo.bottom;
+			else {}}}
 		else if (child.nodeType===3) {
 		    // Make the text into a span
 		    var chunk=fdjtDOM("span",child.nodeValue);
@@ -596,7 +597,7 @@ var sbookPaginate=
 			while (j<nwords) {
 			    var word=words[j++];
 			    if (word.nodeType!==1) continue;
-			    var wordoff=getGeometry(word);
+			    var wordoff=getGeometry(word,sbook_body);
 			    if (wordoff.bottom<top) continue;
 			    else if (wordoff.bottom>=bottom) {
 				// As soon as we're over the bottom, we return the last bottom
