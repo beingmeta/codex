@@ -1,11 +1,11 @@
-<div id="SBOOKHEAD">
+<div id="CODEXHEAD">
   <img src="http://static.beingmeta.com/graphics/CompassIcon50x50.png"
        alt="toc" title="click to navigate the book as a whole"
-       class="hudbutton topleft" id="SBOOKTOCBUTTON"
+       class="hudbutton topleft" id="CODEXTOCBUTTON"
        hudmode="toc" onclick="sbook.UI.hudbutton(event);"/>
   <img src="http://static.beingmeta.com/graphics/TagSearch50x50.png"
        alt="search" title="click to search tags within the book"
-       class="hudbutton topright" id="SBOOKSEARCHBUTTON"
+       class="hudbutton topright" id="CODEXSEARCHBUTTON"
        hudmode="searching" onclick="sbook.UI.hudbutton(event);"/>
   <div class="helphud topleft" data-hudmode="toc">
     <span class="nobreak"><span class="arrow">←</span>browse</span><br/>
@@ -16,56 +16,56 @@
   <div class="helphud topright" data-hudmode="searching">
     <span class="nobreak"><span class="arrow">→</span>search</span><br/>
     tags</div>
-  <div id="SBOOKHUDBUTTONS">
+  <div id="CODEXHUDBUTTONS">
     <div class="sbookplate">
       <a href="https://auth.sbooks.net/admin/logout" class="logout"
 	 title="click to logout of the sBooks server">
 	logout</a>
-      <a href="javascript:sbookMode('login');" name="IDLINK"
+      <a href="javascript:CodexMode('login');" name="IDLINK"
 	 id="SBOOKUSERNAME">
 	(click to log in)</a>
     </div> <!-- .flyleafplate -->
     <div class="tabbar icons" id="SBOOKTABS">
       <!--
-	  <a name="IDLINK" href="javascript:sbookMode('login');" 
+	  <a name="IDLINK" href="javascript:CodexMode('login');" 
 	     id="IDBUTTON" class="userpic"
 	     title="click to login">
 	    <img alt="login" id="SBOOKUSERPIC"/></a>
-	  <a id="HELPBUTTON" href="javascript:sbookMode('help');"
+	  <a id="HELPBUTTON" href="javascript:CodexMode('help');"
 	     title="click for UI help">
 	    <img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
 		 alt="Help"/></a>
 	  -->
       <img src="http://static.beingmeta.com/graphics/AboutTab50h.png"
 	   alt="About" class="tab" contentid="APPABOUT"
-	   onclick="sbookMode.toggle('about',true); return fdjtUI.cancel(event);"
+	   onclick="CodexMode.toggle('about',true); return fdjtUI.cancel(event);"
 	   title="information and links about this book"/>
       <img src="http://static.beingmeta.com/graphics/TOCTab50h.png"
 	   alt="ToC" class="tab" contentid="FLYTOC"
-	   onclick="sbookMode.toggle('flytoc',true); return fdjtUI.cancel(event);"
+	   onclick="CodexMode.toggle('flytoc',true); return fdjtUI.cancel(event);"
 	   title="Table of Contents (static)">
       <img src="http://static.beingmeta.com/graphics/SettingsTab50h.png"
 	   alt="Device" class="tab" contentid="SBOOKDEVICE"
-	   onclick="sbookMode.toggle('device',true); return fdjtUI.cancel(event);"
+	   onclick="CodexMode.toggle('device',true); return fdjtUI.cancel(event);"
 	   title="alter appearance and interaction"/>
       <img src="http://static.beingmeta.com/graphics/SocialTab50h.png"
 	   alt="sBooks" class="tab" contentid="SBOOKSAPP"
-	   onclick="sbookMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
+	   onclick="CodexMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
 	   title="manage how your sBook is enhanced with added layers"/>
       <img src="http://static.beingmeta.com/graphics/LoginTab50h.png"
 	   alt="Login" class="tab" contentid="SBOOKAPPLOGIN"
-	   onclick="sbookMode.toggle('login',true); return fdjtUI.cancel(event);"
+	   onclick="CodexMode.toggle('login',true); return fdjtUI.cancel(event);"
 	   title="login to sBooks" />
       <img src="http://static.beingmeta.com/graphics/ConsoleTab50h.png"
 	   alt="Console" class="tab" contentid="SBOOKCONSOLE"
-	   onclick="sbookMode.toggle('console',true); return fdjtUI.cancel(event);"
+	   onclick="CodexMode.toggle('console',true); return fdjtUI.cancel(event);"
 	   title="show console" />
       <img src="http://static.beingmeta.com/graphics/HelpTab50h.png"
 	   alt="Help" class="tab" contentid="SBOOKHELP"
-	   onclick="sbookMode.toggle('help',true); return fdjtUI.cancel(event);"
+	   onclick="CodexMode.toggle('help',true); return fdjtUI.cancel(event);"
 	   title="help about using sBooks"/>
     </div> <!-- .tabbar -->
-  </div> <!-- id="SBOOKHUDBUTTONS" -->
+  </div> <!-- id="CODEXHUDBUTTONS" -->
   <div id="CODEXGOTOLOC" class="hudpanel codexgoto">
     Jump to location <input type="text" name="GOTOLOC" value=""
 			    id="CODEXLOCINPUT"
@@ -76,8 +76,8 @@
 			id="CODEXPAGEINPUT"
 			onkeypress="sbook.UI.goto_keypress(event);"/>
   </div>
-  <div id="SBOOKTOC" class="hudpanel"></div>
-  <div id="SBOOKSCANNER" class="hudpanel">
+  <div id="CODEXTOC" class="hudpanel"></div>
+  <div id="CODEXSCANNER" class="hudpanel">
     <img src="http://static.beingmeta.com/graphics/GoldLeftTriangle32.png"
 	 alt="prev" onclick="sbook.scanBackward(event);"/>
     <img src="http://static.beingmeta.com/graphics/GoldRightStop32.png"
@@ -86,9 +86,9 @@
 	 alt="next" onclick="sbook.scanForward(event);"/>
     <img src="http://static.beingmeta.com/graphics/GoldLeftStop32.png"
 	 alt="beginning"/>
-    <div id="SBOOKSCAN"></div>
+    <div id="CODEXSCAN"></div>
   </div>
-  <div id="SBOOKSEARCH" class="searchbox hudpanel notags">
+  <div id="CODEXSEARCH" class="searchbox hudpanel notags">
     <!-- This content comes from sbooksearch.html -->
   </div>
   <div id="SBOOKBROWSEGLOSSES" class="hudpanel">
@@ -108,7 +108,7 @@
     </div>
   </div>
   <div id="CODEXADDGLOSS" class="codexaddgloss hudpanel">
-    <div id="SBOOKGLOSSFORMS">
+    <div id="CODEXGLOSSFORMS">
       <!-- This content comes from addgloss.html -->
     </div>
     <div id="SBOOKGLOSSCLOUD" class="completions">
@@ -127,21 +127,21 @@
       <div id="SBOOKGLOSSCLOUDSOURCES"></div>
     </div>
   </div>
-</div> <!-- SBOOKHEAD -->
+</div> <!-- CODEXHEAD -->
 <div class="helphud leftmiddle">
   page back
 </div>
 <div class="helphud rightmiddle">
   next page
 </div>
-<div id="SBOOKFLYLEAF" class="hudpanel">
+<div id="CODEXFLYLEAF" class="hudpanel">
   <!-- This content comes from flyleaftext.html -->
 </div>
 <div id="SBOOKGLOSSES" class="hudpanel">
   <!-- This is swapped in on demand -->
 </div>
-<div id="SBOOKFOOT">
-  <div id="SBOOKFLYLEAFBUTTON" onclick="sbookMode.toggle('flyleaf');" class="help">
+<div id="CODEXFOOT">
+  <div id="CODEXFLYLEAFBUTTON" onclick="CodexMode.toggle('flyleaf');" class="help">
     <img src="http://static.beingmeta.com/graphics/AboutIcon50x50.png"
 	 alt="about" title="information and links about this book"
 	 class="hudbutton botleft"/>

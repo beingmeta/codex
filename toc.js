@@ -45,7 +45,7 @@
 
 /* Building the DIV */
 
-var sbookTOC=
+var CodexTOC=
     (function(){
 	function sbicon(base){return sbook.graphics+base;}
 	function navicon(kind){
@@ -63,7 +63,7 @@ var sbookTOC=
 		case 'end': return sbicon("GoldRightStop24.png");}}}
 	sbook.navicon=navicon;
 
-	function sbookTOC(headinfo,depth,tocspec,prefix){
+	function CodexTOC(headinfo,depth,tocspec,prefix){
 	    var progressbar=fdjtDOM("HR.progressbar");
 	    var head=fdjtDOM("A.sectname",headinfo.title);
 	    var spec=tocspec||"DIV.codextoc";
@@ -89,14 +89,14 @@ var sbookTOC=
 	    toc.sbook_start=headinfo.starts_at;
 	    toc.sbook_end=headinfo.ends_at;
 	    fdjtDOM.addClass(toc,"toc"+depth);
-	    toc.id=(prefix||"SBOOKTOC4")+headinfo.frag;
+	    toc.id=(prefix||"CODEXTOC4")+headinfo.frag;
 	    head.name="SBR"+headinfo.frag;
 	    if ((!(sub)) || (!(sub.length))) {
 		fdjtDOM.addClass(toc,"codextocleaf");
 		return toc;}
 	    var i=0; var n=sub.length;
 	    while (i<n) {
-		toc.appendChild(sbookTOC(sub[i++],depth+1,spec,prefix));}
+		toc.appendChild(CodexTOC(sub[i++],depth+1,spec,prefix));}
 	    return toc;}
 	
 	function tocJump(evt,target){
@@ -108,8 +108,8 @@ var sbookTOC=
 		var info=sbook.docinfo[target.frag];
 		sbook.GoTo(target.frag);
 		if ((info.sub)&&(info.sub.length>2))
-		    sbookMode("toc");
-		else sbookMode("tocscan");
+		    CodexMode("toc");
+		else CodexMode("tocscan");
 		fdjtUI.cancel(evt);}}
 	sbook.tocJump=tocJump;
 
@@ -175,7 +175,7 @@ var sbookTOC=
 	function generate_span(sectnum,subsection,title,spanstart,spanend,len,name,pstart){
 	    var spanlen=spanend-spanstart;
 	    var anchor=fdjtDOM("A.brick","\u00A0");
-	    var span=fdjtDOM("DIV.sbookhudspan",anchor);
+	    var span=fdjtDOM("DIV.codexhudspan",anchor);
 	    var width=(Math.round(100000000*(spanlen/len))/1000000)+"%";
 	    var left=(Math.round(100000000*((spanstart-pstart)/len))/1000000);
 	    span.style.left=left+"%";
@@ -184,11 +184,11 @@ var sbookTOC=
 	    span.frag=subsection.id;
 	    if (name) anchor.name=name;
 	    return span;}
-	sbookTOC.id="$Id$";
-	sbookTOC.version=parseInt("$Revision$".slice(10,-1));
+	CodexTOC.id="$Id$";
+	CodexTOC.version=parseInt("$Revision$".slice(10,-1));
 
 	function updateTOC(prefix,head,cur){
-	    if (!(prefix)) prefix="SBOOKTOC4";
+	    if (!(prefix)) prefix="CODEXTOC4";
 	    if (cur) {
 		// Hide the current head and its (TOC) parents
 		var tohide=[];
@@ -217,9 +217,9 @@ var sbookTOC=
 	    // Go backwards to accomodate some redisplayers
 	    while (n>=0) {fdjtDOM.addClass(toshow[n--],"live");}
 	    fdjtDOM.addClass(base_elt,"cur");};
-	sbookTOC.update=updateTOC;
+	CodexTOC.update=updateTOC;
 
-	return sbookTOC;})();
+	return CodexTOC;})();
 
 
 /* Emacs local variables

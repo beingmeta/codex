@@ -44,9 +44,9 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
     var sbook_glossmark_qricons=false;
 
     // The glosses element
-    var sbookHUDglosses=false;
+    var CodexHUDglosses=false;
     // The user/tribe bar
-    var sbookHUDsocial=false;
+    var CodexHUDsocial=false;
 
     /* Social UI components */
 
@@ -92,15 +92,15 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	// This is tricky because fdjtID may not work when the full
 	//  cloud is not in the DOM for some reason
 	var searchtag=
-	  fdjtID("SBOOKSEARCHSOURCE"+humid)||
+	  fdjtID("CODEXSEARCHSOURCE"+humid)||
 	  ((sbook.full_cloud)&&(sbook.full_cloud.getByValue(info.qid)));
 	if ((!(searchtag))||(searchtag.length===0)) {
 	  // Add entry to the search cloud
 	  var completion=fdjtDOM("span.completion.source",info.name);
-	  completion.id="SBOOKSEARCHSOURCE"+humid;
+	  completion.id="CODEXSEARCHSOURCE"+humid;
 	  completion.setAttribute("value",info.qid);
 	  completion.setAttribute("key",info.name);
-	  fdjtDOM(fdjtID("SBOOKSEARCHSOURCES"),completion," ");
+	  fdjtDOM(fdjtID("CODEXSEARCHSOURCES"),completion," ");
 	  if (sbook.full_cloud)
 	    sbook.full_cloud.addCompletion(completion);}
 	return info;};
@@ -119,7 +119,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	if ((!(sources))||(!(glosses)))
 	    return; /* Warning? */
 	if (fdjtDOM.hasClass(target,"selected")) {
-	    sbookMode(false);
+	    CodexMode(false);
 	    fdjtDOM.cancel(evt);
 	    return;}
 	var selected=fdjtDOM.$(".selected",sources);
@@ -204,7 +204,7 @@ var sbooks_social_version=parseInt("$Revision$".slice(10,-1));
 	sbook.setTarget(target);
 	fdjtDOM.replace("SBOOKINFO",
 			sbook.glossBlock(target.id,"div.sbookgloss"));
-	sbookMode("glosses");
+	CodexMode("glosses");
 	var glosshud=fdjtID("SBOOKGLOSSES");
 	var height=glosshud.offsetHeight;
 	var geom=fdjtDOM.getGeometry(target,sbook.body);

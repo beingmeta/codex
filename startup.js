@@ -77,12 +77,12 @@ sbook.Startup=
 			fdjtLog("[%fs] Initializing HUD",fdjtET());
 		    sbook.initHUD(); sbook.initDisplay();
 		    if (sbook.animate.hud)
-			fdjtDOM.addClass("SBOOKHUD","codexanimate");
+			fdjtDOM.addClass("CODEXHUD","codexanimate");
 		    helphud=fdjtID("SBOOKHELP");
 		    helphud.style.opacity=0.0001;
 		    if (sbook.Trace.startup>1)
 			fdjtLog("[%fs] HUD Setup, sizing help",fdjtET());},
-		function(){sbookMode("help");}, 
+		function(){CodexMode("help");}, 
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){
@@ -94,7 +94,7 @@ sbook.Startup=
 		getUser,
 		function(){sbook.Message("analyzing book structure");},10,
 		function(){
-		    metadata=sbookScan(sbook.root);
+		    metadata=codexscan(sbook.root);
 		    sbook.docinfo=sbook.DocInfo.map=metadata;
 		    sbook.ends_at=sbook.docinfo[sbook.root.id].ends_at;},
 		function(){sbook.Message("building table of contents");},10,
@@ -157,10 +157,10 @@ sbook.Startup=
 		function(){
 		    if ((fdjtState.getQuery("action"))||
 			(fdjtState.getQuery("invitation"))) {
-			sbookMode("sbookapp");}
+			CodexMode("sbookapp");}
 		    else if ((sbook.mode==='help')&&(sbook.hidehelp))
 			setTimeout(function(){
-			    if (sbook.mode==="help") sbookMode(false);},
+			    if (sbook.mode==="help") CodexMode(false);},
 				   2500);
 		    else {}},
 		initLocation,
@@ -509,7 +509,7 @@ sbook.Startup=
 			backanchor.href="#"+noteref.id||(idcontext.id);
 			fdjtDOM.prepend(notenode,backanchor);}
 		    if ((idcontext)&&(fdjtDOM.hasClass(noteref,"sbooknoteref")))
-			notenode.sbooktocloc=idcontext.id;
+			notenode.codextocloc=idcontext.id;
 		    if ((fdjtDOM.hasClass(noteref,"sbooknoteref"))&&
 			(!(fdjtDOM.hasParent(notenode,".sbookbackmatter"))))
 			fdjtDOM.append(allnotes,notenode);}}
@@ -527,7 +527,7 @@ sbook.Startup=
 		if (!(detail.id)) detail.id="SBOOKDETAIL"+count;
 		anchor.href="#"+detail.id; anchor.id="SBOOKDETAILREF"+count;
 		fdjtDOM.replace(detail,anchor);
-		detail.sbooktocloc=anchor.id;
+		detail.codextocloc=anchor.id;
 		fdjtDOM.append(alldetails,detail);}
 	    // Move all the asides to the end
 	    var asides=fdjtDOM.$("aside,.sbookaside");
@@ -550,7 +550,7 @@ sbook.Startup=
 		if (!(aside.id)) aside.id="SBOOKASIDE"+count;
 		anchor.href="#"+aside.id; anchor.id="SBOOKASIDEREF"+count;
 		fdjtDOM.insertBefore(aside,anchor);
-		aside.sbooktocloc=anchor.id;
+		aside.codextocloc=anchor.id;
 		fdjtDOM.append(allasides,aside);}
 	    if (sbook.Trace.startup>1)
 		fdjtLog("[%fs] Initialized body",fdjtET());}
@@ -567,8 +567,8 @@ sbook.Startup=
 	    setopt("touch",fdjtID("SBOOKTOUCHMODE").checked);
 	    setopt("mouse",fdjtID("SBOOKMOUSEMODE").checked);
 	    setopt("kbd",fdjtID("SBOOKKBDMODE").checked);
-	    setopt("flashy",fdjtID("SBOOKHUDFLASH").checked);
-	    // setopt("rich",fdjtID("SBOOKHUDRICH").checked);
+	    setopt("flashy",fdjtID("CODEXHUDFLASH").checked);
+	    // setopt("rich",fdjtID("CODEXHUDRICH").checked);
 	    fdjtSetSession("sbookopts",sessionsettings);
 	    applySettings();}
 
@@ -843,7 +843,7 @@ sbook.Startup=
 	    if (sbook.Trace.glosses)
 		fdjtLog("[%fs] gotGlosses",fdjtET());
 	    sbook.Message("setting up search cloud...");
-	    fdjtDOM.replace("SBOOKSEARCHCLOUD",sbook.FullCloud().dom);
+	    fdjtDOM.replace("CODEXSEARCHCLOUD",sbook.FullCloud().dom);
 	    sbook.Message("setting up glossing cloud...");
 	    fdjtDOM.replace("SBOOKGLOSSCLOUD",sbook.glossCloud().dom);
 	    if (sbook.knodule) {

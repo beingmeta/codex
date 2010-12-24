@@ -32,7 +32,7 @@ var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-var sbookMode=
+var CodexMode=
     (function(){
 	// The foot HUD
 	var sbookHead=false; var head_height=false;
@@ -52,21 +52,21 @@ var sbookMode=
 	var message_timeout=5000;
 	
 	function initHUD(){
-	    if (fdjtID("SBOOKHUD")) return;
+	    if (fdjtID("CODEXHUD")) return;
 	    else {
-		sbook.HUD=sbookHUD=fdjtDOM("div#SBOOKHUD");
-		sbookHUD.sbookui=true;
-		sbookHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,sbookHUD);}
-	    var flyleaf=fdjtID("SBOOKFLYLEAF");
+		sbook.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
+		CodexHUD.sbookui=true;
+		CodexHUD.innerHTML=sbook_hudtext;
+		fdjtDOM.prepend(document.body,CodexHUD);}
+	    var flyleaf=fdjtID("CODEXFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;
 	    var help=fdjtID("SBOOKHELP");
 	    help.innerHTML=sbook_helptext;
 	    // Initialize search UI
-	    var search=fdjtID("SBOOKSEARCH");
+	    var search=fdjtID("CODEXSEARCH");
 	    search.innerHTML=sbook_searchbox;
 	    sbook.empty_cloud=
-		new fdjtUI.Completions(fdjtID("SBOOKSEARCHCLOUD"));
+		new fdjtUI.Completions(fdjtID("CODEXSEARCHCLOUD"));
 	    var login=fdjtID("SBOOKAPPLOGIN");
 	    login.innerHTML=sbook_loginform;
 
@@ -118,18 +118,18 @@ var sbookMode=
 		    var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
 		    if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
 			search_tag=Knodule.HTML(tag,sbook.knodule,false,true);
-			fdjtDOM(fdjtID("SBOOKSEARCHTAGS"),search_tag," ");
+			fdjtDOM(fdjtID("CODEXSEARCHTAGS"),search_tag," ");
 			search_cloud.addCompletion(search_tag);}}}
 	    sbook.addTag2UI=addTag2UI;
 	    
-	    sbookFoot=fdjtID("SBOOKFOOT");
-	    sbookHead=fdjtID("SBOOKHEAD");
+	    sbookFoot=fdjtID("CODEXFOOT");
+	    sbookHead=fdjtID("CODEXHEAD");
 	    sbookHelp=fdjtID("SBOOKHELP");
 	    fillinFlyleaf();
 	    resizeHUD();
 	    sbook.scrollers={};
 	    updateScroller("SBOOKGLOSSCLOUD");
-	    updateScroller("SBOOKSEARCHCLOUD");
+	    updateScroller("CODEXSEARCHCLOUD");
 	}
 	sbook.initHUD=initHUD;
 	
@@ -143,7 +143,7 @@ var sbookMode=
 	function resizeHUD(){
 	    var vh=fdjtDOM.viewHeight();
 	    var vw=fdjtDOM.viewWidth();
-	    var hf=fdjtID("SBOOKFOOT");
+	    var hf=fdjtID("CODEXFOOT");
 	    var fh=fdjtDOM.getGeometry(hf).height;
 	    // fdjtLog("[%fs] resizeHUD vh=%o vw=%o fh=%o",fdjtET(),vh,vw,fh);
 	    if (!(sbook.nativescroll)) hf.style.top=(vh-fh)+'px';}
@@ -167,26 +167,26 @@ var sbookMode=
 	/* Creating the HUD */
 	
 	function setupTOC(root_info){
-	    var navhud=createNavHUD("div#SBOOKTOC.hudpanel",root_info);
-	    var toc_button=fdjtID("SBOOKTOCBUTTON");
+	    var navhud=createNavHUD("div#CODEXTOC.hudpanel",root_info);
+	    var toc_button=fdjtID("CODEXTOCBUTTON");
 	    toc_button.style.visibility='';
 	    sbook.TOC=navhud;
-	    fdjtDOM.replace("SBOOKTOC",navhud);
-	    var flytoc=createStaticTOC("div#SBOOKFLYTOC",root_info);
+	    fdjtDOM.replace("CODEXTOC",navhud);
+	    var flytoc=createStaticTOC("div#CODEXFLYTOC",root_info);
 	    sbook.Flytoc=flytoc;
 	    fdjtDOM(fdjtID("FLYTOC"),flytoc);}
 	sbook.setupTOC=setupTOC;
 
 	function createNavHUD(eltspec,root_info){
-	    var toc_div=sbookTOC(root_info,0,false,"SBOOKTOC4");
-	    var div=fdjtDOM(eltspec||"div#SBOOKTOC.hudpanel",toc_div);
+	    var toc_div=CodexTOC(root_info,0,false,"CODEXTOC4");
+	    var div=fdjtDOM(eltspec||"div#CODEXTOC.hudpanel",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
 	    sbook.UI.addHandlers(div,"toc");
 	    return div;}
 
 	function createStaticTOC(eltspec,root_info){
-	    var toc_div=sbookTOC(root_info,0,false,"SBOOKFLYTOC4");
-	    var div=fdjtDOM(eltspec||"div#SBOOKFLYTOC",toc_div);
+	    var toc_div=CodexTOC(root_info,0,false,"CODEXFLYTOC4");
+	    var div=fdjtDOM(eltspec||"div#CODEXFLYTOC",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
 	    return div;}
 
@@ -199,24 +199,24 @@ var sbookMode=
 		fdjtDOM.addClass(document.body,"hudup");}
 	    else {
 		sbook.hudup=false;
-		fdjtDOM.dropClass(sbookHUD,"flyleaf");
-		fdjtDOM.dropClass(sbookHUD,"full");
-		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
+		fdjtDOM.dropClass(CodexHUD,"flyleaf");
+		fdjtDOM.dropClass(CodexHUD,"full");
+		fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
 		fdjtDOM.dropClass(document.body,"hudup");}}
 
 	/* Mode controls */
 	
-	var sbookMode_pat=
+	var CodexMode_pat=
 	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)/g;
-	var sbookFlyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)|(help)|(console)/g;
+	var codexflyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)|(help)|(console)/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "SBOOKALLGLOSSES",
-	     browsing: "SBOOKSEARCHRESULTS",
-	     searching: "SBOOKSEARCHCLOUD",
+	     browsing: "CODEXSEARCHRESULTS",
+	     searching: "CODEXSEARCHCLOUD",
 	     addgloss: "SBOOKGLOSSCLOUD",
 	     sbookapp: "MANAGEAPP",
-	     flytoc: "SBOOKFLYTOC",
-	     login: "SBOOKFLYLOGIN",
+	     flytoc: "CODEXFLYTOC",
+	     login: "CODEXFLYLOGIN",
 	     about: "APPABOUT"
 	     /* ,
 		login: "SBOOKAPPLOGIN",
@@ -226,12 +226,12 @@ var sbookMode=
 	var sbook_mode_foci=
 	    {gotopage: "CODEXPAGEINPUT",
 	     gotoloc: "CODEXLOCINPUT",
-	     searching: "SBOOKSEARCHINPUT"};
+	     searching: "CODEXSEARCHINPUT"};
 	
-	function sbookMode(mode){
+	function CodexMode(mode){
 	    if (typeof mode === 'undefined') return sbook.mode;
 	    if (sbook.Trace.mode)
-		fdjtLog("[%fs] sbookMode %o, cur=%o dbc=%o",
+		fdjtLog("[%fs] CodexMode %o, cur=%o dbc=%o",
 			fdjtET(),mode,sbook.mode,document.body.className);
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
@@ -265,14 +265,14 @@ var sbookMode=
 		    sbook.scrolling=(sbook_mode_scrollers[mode]);
 		else sbook.scrolling=false;
 		if (mode===true)
-		    fdjtDOM.swapClass(sbookHUD,sbookMode_pat,"minimal");
-		else fdjtDOM.swapClass(sbookHUD,sbookMode_pat,mode);
+		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");
+		else fdjtDOM.swapClass(CodexHUD,CodexMode_pat,mode);
 		if ((mode)&&(typeof mode === 'string')&&
-		    (mode.search(sbookFlyleafMode_pat)===0)) {
-		    fdjtDOM.addClass(sbookHUD,"flyleaf");
+		    (mode.search(codexflyleafMode_pat)===0)) {
+		    fdjtDOM.addClass(CodexHUD,"flyleaf");
 		    sbook.last_flyleaf=mode;
-		    fdjtID("SBOOKFLYLEAFBUTTON").className=mode;}
-		else fdjtDOM.dropClass(sbookHUD,"flyleaf");
+		    fdjtID("CODEXFLYLEAFBUTTON").className=mode;}
+		else fdjtDOM.dropClass(CodexHUD,"flyleaf");
 		if (mode==="help")
 		    fdjtDOM.addClass(document.body,"dimmed");
 		else fdjtDOM.dropClass(document.body,"dimmed");
@@ -298,13 +298,13 @@ var sbookMode=
 
 	function fadeUpHUD(){
 	    fdjtLog("Setting properties");
-	    sbookHUD.style.opacity=0.001;
+	    CodexHUD.style.opacity=0.001;
 	    setTimeout(function(){
 		fdjtLog("Changing opacity");
-		sbookHUD.style.opacity=1.00;
+		CodexHUD.style.opacity=1.00;
 		setTimeout(function(){
 		    fdjtLog("Clearing setup");
-		    sbookHUD.style.opacity='';},
+		    CodexHUD.style.opacity='';},
 			   1500);},
 		       1500);}
 	sbook.fadeUpHUD=fadeUpHUD;
@@ -371,21 +371,21 @@ var sbookMode=
 			    scroller.maxScrollX,scroller.maxScrollY);}}}
 	sbook.UI.updateScroller=updateScroller;
 
-	function sbookHUDToggle(mode,keephud){
-	    if (!(sbook.mode)) sbookMode(mode);
+	function CodexHUDToggle(mode,keephud){
+	    if (!(sbook.mode)) CodexMode(mode);
 	    else if (mode===sbook.mode)
-		if (keephud) sbookMode(true); else sbookMode(false);
+		if (keephud) CodexMode(true); else CodexMode(false);
 	    else if ((mode==='flyleaf')&&
-		     (sbook.mode.search(sbookFlyleafMode_pat)===0))
-		if (keephud) sbookMode(true); else sbookMode(false);
-	    else sbookMode(mode);}
-	sbookMode.toggle=sbookHUDToggle;
+		     (sbook.mode.search(codexflyleafMode_pat)===0))
+		if (keephud) CodexMode(true); else CodexMode(false);
+	    else CodexMode(mode);}
+	CodexMode.toggle=CodexHUDToggle;
 
-	sbook.dropHUD=function(){return sbookMode(false);}
+	sbook.dropHUD=function(){return CodexMode(false);}
 	sbook.toggleHUD=function(evt){
 	    if (fdjtDOM.isClickable(fdjtUI.T(evt))) return;
-	    if (sbook.mode) sbookMode(false);
-	    else sbookMode(true);};
+	    if (sbook.mode) CodexMode(false);
+	    else CodexMode(true);};
 	
 	/* HUD Messages */
 	
@@ -426,15 +426,15 @@ var sbookMode=
 					message));}
 	    if (!((sbook.mode==='console')||(sbook.mode==='help')||
 		  (sbook.mode==='message'))) { 
-		fdjtDOM.dropClass(sbookHUD,sbookMode_pat);
-		fdjtDOM.addClass(sbookHUD,"console");
+		fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
+		fdjtDOM.addClass(CodexHUD,"console");
 		var mode=sbook.mode;
 		sbook_message_timer=
 		    setTimeout(function() {
-			if (mode==="console") sbookMode(false);
-			else if (sbook.mode==="console") sbookMode(false);	
+			if (mode==="console") CodexMode(false);
+			else if (sbook.mode==="console") CodexMode(false);	
 			else if (mode) {
-			    fdjtDOM.swapClass(sbookHUD,"console",mode);}},
+			    fdjtDOM.swapClass(CodexHUD,"console",mode);}},
 			       duration);}}
 	sbook.Flash=sbookFlashMessage;
 
@@ -593,47 +593,47 @@ var sbookMode=
 		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
 	    fdjtID("MANAGEAPP").src=appuri;}
 
-	sbookMode.selectApp=function(){
+	CodexMode.selectApp=function(){
 	    /* initManageIFrame(); */
-	    if (sbook.mode==='sbookapp') sbookMode(false);
-	    else sbookMode('sbookapp');}
+	    if (sbook.mode==='sbookapp') CodexMode(false);
+	    else CodexMode('sbookapp');}
 
 	/* Scanning */
 
-	function sbookScan(elt,src){
+	function codexscan(elt,src){
 	    var cxt=false;
 	    var body=document.body;
 	    var pelt=sbook.scanning;
 	    if (sbook.Trace.mode)
-		fdjtLog("[%fs] sbookScan() %o (src=%o) mode=%o scn=%o/%o",
+		fdjtLog("[%fs] codexscan() %o (src=%o) mode=%o scn=%o/%o",
 			fdjtET(),elt,src,sbook.mode,sbook.scanning,sbook.target);
 	    // Save the source HUD element for the preview (when provided)
 	    if (sbook.scanning!==src) {
 		var clone=src.cloneNode(true);
-		clone.id="SBOOKSCAN";
-		fdjtDOM.replace("SBOOKSCAN",clone);
+		clone.id="CODEXSCAN";
+		fdjtDOM.replace("CODEXSCAN",clone);
 		if (sbook.nextSlice(src))
-		    fdjtDOM.dropClass("SBOOKSCANNER","sbookatend");
-		else fdjtDOM.addClass("SBOOKSCANNER","sbookatend");
+		    fdjtDOM.dropClass("CODEXSCANNER","sbookatend");
+		else fdjtDOM.addClass("CODEXSCANNER","sbookatend");
 		if (sbook.prevSlice(src))
-		    fdjtDOM.dropClass("SBOOKSCANNER","sbookatstart");
-		else fdjtDOM.addClass("SBOOKSCANNER","sbookatstart");
+		    fdjtDOM.dropClass("CODEXSCANNER","sbookatstart");
+		else fdjtDOM.addClass("CODEXSCANNER","sbookatstart");
 		sbook.scanning=src;}
 	    else {}
 	    sbook.setTarget(elt);
 	    sbook.GoTo(elt);
-	    sbookMode("scanning");}
-	sbook.Scan=sbookScan;
+	    CodexMode("scanning");}
+	sbook.Scan=codexscan;
 
 	/* Button methods */
 
 	function LoginButton_onclick(evt){
 	    evt=evt||event||null;
-	    if (sbook.mode==="login") sbookMode(false);
-	    else sbookMode("login");
+	    if (sbook.mode==="login") CodexMode(false);
+	    else CodexMode("login");
 	    evt.cancelBubble=true;}
 
-	return sbookMode;})();
+	return CodexMode;})();
 
 /* Emacs local variables
    ;;;  Local variables: ***

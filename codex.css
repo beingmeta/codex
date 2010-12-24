@@ -35,7 +35,7 @@
 
 body.sbook { }
 
-#SBOOKHUD {
+#CODEXHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
     z-index: 100;}
 #CODEXPAGE {
@@ -68,30 +68,30 @@ body.sbook { }
 
 /* The HUD */
 
-#SBOOKHUD img { border: 0px;}
+#CODEXHUD img { border: 0px;}
 
 /* Being a panel */
-div#SBOOKHUD div.hudpanel {
+div#CODEXHUD div.hudpanel {
     background-color: #4682b4; color: ivory;
     border: solid transparent 3px;}
 /* Being on top */
-div#SBOOKHUD div.hudpanel {
+div#CODEXHUD div.hudpanel {
     position: fixed; top: 0px; left: 75px; right: 75px;
     text-align: center;
     overflow: hidden;}
-div#SBOOKHUD div.hudpanel {
+div#CODEXHUD div.hudpanel {
     opacity: 0.001; height: 0px; /* display: none; */
     border-radius: 6px; -o-border-radius: 6px;
     -webkit-border-radius: 6px; -moz-border-radius: 6px;}
-div#SBOOKHUD.codexanimate div.hudpanel {
+div#CODEXHUD.codexanimate div.hudpanel {
     transition-property: opacity,height; -o-transition-property: opacity,height;
     -moz-transition-property: opacity,height;
     -webkit-transition-property: opacity,height; 
     transition-duration: 1.0s; -o-transition-duration: 1.0s;
     -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;}
 
-div#SBOOKHUD div#SBOOKHEAD div.hudpanel,
-div#SBOOKHUD div.hudpanel.codexnote {
+div#CODEXHUD div#CODEXHEAD div.hudpanel,
+div#CODEXHUD div.hudpanel.codexnote {
     max-height: 75%;
     border-top: 0px;
     border-top-left-radius: 0px;
@@ -103,41 +103,41 @@ div#SBOOKHUD div.hudpanel.codexnote {
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
 
-div#SBOOKHUD div.hudpanel div.scrollbox {
+div#CODEXHUD div.hudpanel div.scrollbox {
   overflow: auto;}
 
-div#SBOOKHUD img.hudbutton {
+div#CODEXHUD img.hudbutton {
     position: fixed; width: 50px; height: 50px; z-index: 200;
     border: solid transparent 2px; opacity: 0.01;}
-body.hudup div#SBOOKHUD img.hudbutton  {}
-body div#SBOOKHUD img.hudbutton:hover { opacity: 0.45;}
-div#SBOOKHUD .topleft {top: 0px; left: 0px;}
-div#SBOOKHUD .topright {top: 0px; right: 0px;}
-div#SBOOKHUD .botleft {bottom: 0px; left: 0px;}
-div#SBOOKHUD .botright {bottom: 0px; right: 0px;}
+body.hudup div#CODEXHUD img.hudbutton  {}
+body div#CODEXHUD img.hudbutton:hover { opacity: 0.45;}
+div#CODEXHUD .topleft {top: 0px; left: 0px;}
+div#CODEXHUD .topright {top: 0px; right: 0px;}
+div#CODEXHUD .botleft {bottom: 0px; left: 0px;}
+div#CODEXHUD .botright {bottom: 0px; right: 0px;}
 
-div#SBOOKHUD img.topleft {
+div#CODEXHUD img.topleft {
     border-top: 0px; border-left: 0px;
     border-bottom-right-radius: 6px;
     -o-border-bottom-right-radius: 6px; 
     -webkit-border-bottom-right-radius: 6px; 
     -moz-border-radius-bottomright: 6px;
     -o-border-radius-bottomright: 6px;}
-div#SBOOKHUD img.topright {
+div#CODEXHUD img.topright {
     border-top: 0px; border-right: 0px;
     border-bottom-left-radius: 6px;
     -o-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;
     -o-border-radius-bottomleft: 6px;}
-div#SBOOKHUD img.botleft {
+div#CODEXHUD img.botleft {
     border-bottom: 0px; border-left: 0px;
     border-top-right-radius: 6px;
     -o-border-top-right-radius: 6px; 
     -webkit-border-top-right-radius: 6px; 
     -moz-border-radius-topright: 6px;
     -o-border-radius-topright: 6px;}
-div#SBOOKHUD img.botright {
+div#CODEXHUD img.botright {
     border-bottom: 0px; border-right: 0px;
     border-top-left-radius: 6px;
     -o-border-top-left-radius: 6px; 
@@ -145,64 +145,64 @@ div#SBOOKHUD img.botright {
     -moz-border-radius-topleft: 6px;
     -o-border-radius-topleft: 6px;}
 
-div#SBOOKHUD #SBOOKFOOT {
+div#CODEXHUD #CODEXFOOT {
     position: fixed; left: 0px; right: 0px; width: 100%;
     bottom: 0px; z-index: 100;}
 
-div#SBOOKHUD #SBOOKHEAD {
+div#CODEXHUD #CODEXHEAD {
     position: fixed; left: 0px; right: 0px; width: 100%;
     top: 0px; z-index: 100;}
 
 /* The lower left HUD icon */
 
-div#SBOOKHUD div#SBOOKFLYLEAFBUTTON {
+div#CODEXHUD div#CODEXFLYLEAFBUTTON {
     position: fixed; left: 0px; bottom: 0px;
     height: 50px; width: 50px;}
-div#SBOOKHUD div#SBOOKFLYLEAFBUTTON img {display: none;}
+div#CODEXHUD div#CODEXFLYLEAFBUTTON img {display: none;}
 
-div#SBOOKHUD.help div#SBOOKFLYLEAFBUTTON img[alt='help'],
-div#SBOOKHUD.about div#SBOOKFLYLEAFBUTTON img[alt='about'],
-div#SBOOKHUD.sbookapp div#SBOOKFLYLEAFBUTTON img[alt='sbookapp'],
-div#SBOOKHUD.flytoc div#SBOOKFLYLEAFBUTTON img[alt='flytoc'],
-div#SBOOKHUD.device div#SBOOKFLYLEAFBUTTON img[alt='device'] {
+div#CODEXHUD.help div#CODEXFLYLEAFBUTTON img[alt='help'],
+div#CODEXHUD.about div#CODEXFLYLEAFBUTTON img[alt='about'],
+div#CODEXHUD.sbookapp div#CODEXFLYLEAFBUTTON img[alt='sbookapp'],
+div#CODEXHUD.flytoc div#CODEXFLYLEAFBUTTON img[alt='flytoc'],
+div#CODEXHUD.device div#CODEXFLYLEAFBUTTON img[alt='device'] {
     display: block; background-color: gold;}
 
-body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.about img[alt='about'],
-body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.sbookapp img[alt='sbookapp'],
-body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.device img[alt='device'],
-body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.flytoc img[alt='flytoc'],
-body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.login img[alt='login'],
-body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.console img[alt='console'],
-body.hudup div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.help img[alt='help'] {
+body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.about img[alt='about'],
+body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.sbookapp img[alt='sbookapp'],
+body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.device img[alt='device'],
+body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.flytoc img[alt='flytoc'],
+body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.login img[alt='login'],
+body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.console img[alt='console'],
+body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.help img[alt='help'] {
     display: block;}
 
-body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.about:hover img[alt='about'],
-body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.sbookapp:hover img[alt='sbookapp'],
-body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.device:hover img[alt='device'],
-body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.flytoc:hover img[alt='flytoc'],
-body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.login:hover img[alt='login'],
-body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.console:hover img[alt='console'],
-body div#SBOOKHUD div#SBOOKFLYLEAFBUTTON.help:hover img[alt='help'] {
+body div#CODEXHUD div#CODEXFLYLEAFBUTTON.about:hover img[alt='about'],
+body div#CODEXHUD div#CODEXFLYLEAFBUTTON.sbookapp:hover img[alt='sbookapp'],
+body div#CODEXHUD div#CODEXFLYLEAFBUTTON.device:hover img[alt='device'],
+body div#CODEXHUD div#CODEXFLYLEAFBUTTON.flytoc:hover img[alt='flytoc'],
+body div#CODEXHUD div#CODEXFLYLEAFBUTTON.login:hover img[alt='login'],
+body div#CODEXHUD div#CODEXFLYLEAFBUTTON.console:hover img[alt='console'],
+body div#CODEXHUD div#CODEXFLYLEAFBUTTON.help:hover img[alt='help'] {
     display: block; opacity: 0.5;}
 
 /* HUDUP rules */
 
-body.hudup div#SBOOKHUD { } /* opacity: 0.95; */
-body.hudup div#SBOOKHUD .hudbutton { opacity: 0.6;}
-body.hudup div#SBOOKHUD img.hudbutton:hover { opacity: 0.8;}
+body.hudup div#CODEXHUD { } /* opacity: 0.95; */
+body.hudup div#CODEXHUD .hudbutton { opacity: 0.6;}
+body.hudup div#CODEXHUD img.hudbutton:hover { opacity: 0.8;}
 
 /* Mode display rules */
 
-body.hudup div#SBOOKHUD.help div.hudpanel#SBOOKHELP,
-body.hudup div#SBOOKHUD.toc div.hudpanel#SBOOKTOC,
-body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCH,
-body.hudup div#SBOOKHUD.browsing div.hudpanel#SBOOKSEARCH,
-body.hudup div#SBOOKHUD.browsing div.hudpanel#SBOOKSEARCHRESULTS,
-body.hudup div#SBOOKHUD.searching div.hudpanel#SBOOKSEARCHCLOUD,
-body.hudup div#SBOOKHUD.scanning div.hudpanel#SBOOKSCANNER,
-body.hudup div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF,
-body.hudup div#SBOOKHUD.addgloss div.hudpanel#CODEXADDGLOSS,
-body.hudup div#SBOOKHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
+body.hudup div#CODEXHUD.help div.hudpanel#SBOOKHELP,
+body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
+body.hudup div#CODEXHUD.searching div.hudpanel#CODEXSEARCH,
+body.hudup div#CODEXHUD.browsing div.hudpanel#CODEXSEARCH,
+body.hudup div#CODEXHUD.browsing div.hudpanel#CODEXSEARCHRESULTS,
+body.hudup div#CODEXHUD.searching div.hudpanel#CODEXSEARCHCLOUD,
+body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
+body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
+body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
+body.hudup div#CODEXHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     border-color: darkblue;
     opacity: 0.95; min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
@@ -210,12 +210,12 @@ body.hudup div#SBOOKHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
 
-body.hudup div#SBOOKHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
-body.hudup div#SBOOKHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
+body.hudup div#CODEXHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
+body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
     border-color: darkblue;
     opacity: 0.95; min-height: 50px; height: auto;}
 
-body.hudup div#SBOOKHUD.glosses div.hudpanel#SBOOKGLOSSES {
+body.hudup div#CODEXHUD.glosses div.hudpanel#SBOOKGLOSSES {
     border-color: darkblue;
     opacity: 0.95; min-height: 50px; height: auto;
     box-shadow: -1em 1em 1em #cccccc;
@@ -223,60 +223,60 @@ body.hudup div#SBOOKHUD.glosses div.hudpanel#SBOOKGLOSSES {
     -moz-box-shadow: -1em 1em 1em #cccccc;
     -o-box-shadow: -1em 1em 1em #cccccc;}
 
-body.hudup div#SBOOKHUD.tocscan div.hudpanel#SBOOKTOC {
+body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     border-color: darkblue;
     opacity: 0.95; min-height: 50px; height: auto;}
 
-div#SBOOKHUD.searching div#SBOOKSEARCHRESULTSWRAPPER { display: none;}
-div#SBOOKHUD.searching div.completions#SBOOKSEARCHCLOUD { display: block;}
-div#SBOOKHUD.searching div.codexslice#SBOOKSEARCHRESULTS { display: none;}
-div#SBOOKHUD.browsing div#SBOOKSEARCHCLOUDWRAPPER { display: none;}
-div#SBOOKHUD.browsing div.completions#SBOOKSEARCHCLOUD { display: none;}
+div#CODEXHUD.searching div#CODEXSEARCHRESULTSWRAPPER { display: none;}
+div#CODEXHUD.searching div.completions#CODEXSEARCHCLOUD { display: block;}
+div#CODEXHUD.searching div.codexslice#CODEXSEARCHRESULTS { display: none;}
+div#CODEXHUD.browsing div#CODEXSEARCHCLOUDWRAPPER { display: none;}
+div#CODEXHUD.browsing div.completions#CODEXSEARCHCLOUD { display: none;}
 
-body.hudup div#SBOOKHUD.addgloss .hudbutton { opacity: 0.15;}
+body.hudup div#CODEXHUD.addgloss .hudbutton { opacity: 0.15;}
 
-div#SBOOKHUD.allglosses .hudbutton[alt='glosses'],
-div#SBOOKHUD.flyleaf .hudbutton[alt='flyleaf'],
-div#SBOOKHUD.searching .hudbutton[alt='search'],
-div#SBOOKHUD.browsing .hudbutton[alt='search'],
-div#SBOOKHUD.toc .hudbutton[alt='toc'] {
+div#CODEXHUD.allglosses .hudbutton[alt='glosses'],
+div#CODEXHUD.flyleaf .hudbutton[alt='flyleaf'],
+div#CODEXHUD.searching .hudbutton[alt='search'],
+div#CODEXHUD.browsing .hudbutton[alt='search'],
+div#CODEXHUD.toc .hudbutton[alt='toc'] {
     border-color: darkblue;
     background-color: #4682b4;}
 
 /* Scanner rules */
 
-body.hudup div#SBOOKHUD div#SBOOKSCANNER div#SBOOKSCAN {
+body.hudup div#CODEXHUD div#CODEXSCANNER div#CODEXSCAN {
     margin-left: 36px; margin-right: 36px;}
-body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="beginning"],
-body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="prev"] {
+body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
+body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="prev"] {
     position: absolute; left: 0px; top: 8px;}
-body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="end"], 
-body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="next"] {
+body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="end"], 
+body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="next"] {
     position: absolute; right: 0px; top: 8px;}
-body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="beginning"],
-body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="end"] {
+body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
+body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="end"] {
     display: none;}
-body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="beginning"],
-body.hudup div#SBOOKHUD div#SBOOKSCANNER img[alt="end"] {
+body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
+body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="end"] {
     z-index: 100;}
-body.hudup div#SBOOKHUD div#SBOOKSCANNER.sbookatend img[alt="next"] {display: none;}
-body.hudup div#SBOOKHUD div#SBOOKSCANNER.sbookatend img[alt="end"] {display: block;}
-body.hudup div#SBOOKHUD div#SBOOKSCANNER.sbookatstart img[alt="prev"] {display: none;}
-body.hudup div#SBOOKHUD div#SBOOKSCANNER.sbookatstart img[alt="beginning"] {display: block;}
+body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="next"] {display: none;}
+body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: block;}
+body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
+body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
 
 /* About this book */
 
 div#SBOOKABOUT { display: none;}
 div#SBOOKABOUT { display: none; text-align: left;}
-div#SBOOKHUD div#SBOOKABOUT {
+div#CODEXHUD div#SBOOKABOUT {
     display: block; max-width: 40em; margin-left: auto; margin-right: auto;}
-div#SBOOKHUD div#SBOOKABOUT img { max-width: 25%;}
+div#CODEXHUD div#SBOOKABOUT img { max-width: 25%;}
 
-div#SBOOKHUD div#SBOOKABOUT div.textblock {
+div#CODEXHUD div#SBOOKABOUT div.textblock {
     margin-bottom: 2ex; clear: both;}
 
-div#SBOOKHUD div#SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
-div#SBOOKHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
+div#CODEXHUD div#SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
+div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
 /* The Console */
 
@@ -287,7 +287,7 @@ div#SBOOKCONSOLE div.message {
 
 /* SBOOKGLOSSES */
 
-div#SBOOKHUD div.hudpanel#SBOOKGLOSSES {position: fixed; right: 50px;}
+div#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: fixed; right: 50px;}
 
 /* SBOOKSOURCES */
 
@@ -304,9 +304,9 @@ div#SBOOKSOURCES {
 
 /* The flyleaf */
 
-div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
+div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
     background-color: ivory; color: #4682b4;}
-div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
+div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
     top: 60px; bottom: 60px; left: 0px; right: 50px;
     border-left: none;
     border-top-left-radius: 0px; -o-border-radius-topleft: 0px;
@@ -314,7 +314,7 @@ div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
     border-bottom-left-radius: 0px; -o-border-radius-bottomleft: 0px;
     -moz-border-radius-bottomleft: 0px; -webkit-border-bottom-left-radius: 0px;}
 
-div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
+div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
     transform: translate(-2000px,0px);
     -o-transform: translate(-2000px,0px);
     -moz-transform: translate(-2000px,0px);
@@ -324,7 +324,7 @@ div#SBOOKHUD div.hudpanel#SBOOKFLYLEAF {
     -moz-transition-property: -moz-transform, opacity;
     -webkit-transition-property: -webkit-transform, opacity;
     height: auto;}
-div#SBOOKHUD.flyleaf div.hudpanel#SBOOKFLYLEAF {
+div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF {
     transform: none; -o-transform: none;
     -moz-transform: none; -webkit-transform: none;}
 
@@ -362,33 +362,33 @@ div.codextoc div.sub {
 div.codextoc.cur div.head { font-size: 125%;}
 div.codextoc.cur div.sub { display: block;}
 
-body.hudup div#SBOOKHUD.tocscan div.codextoc.live div.head,
-body.hudup div#SBOOKHUD.tocscan div.codextoc.live img {
+body.hudup div#CODEXHUD.tocscan div.codextoc.live div.head,
+body.hudup div#CODEXHUD.tocscan div.codextoc.live img {
     height: 0px;}
-body.hudup div#SBOOKHUD.tocscan div.codextoc.live.cur > div.head,
-body.hudup div#SBOOKHUD.tocscan div.codextoc.live.cur > img {
+body.hudup div#CODEXHUD.tocscan div.codextoc.live.cur > div.head,
+body.hudup div#CODEXHUD.tocscan div.codextoc.live.cur > img {
     height: inherit;}
 
-div#SBOOKFLYLEAF div#FLYTOC div.codextoc {
+div#CODEXFLYLEAF div#FLYTOC div.codextoc {
     display: block; font-size: 90%; text-align: left;}
-div#SBOOKFLYLEAF div#FLYTOC div.codextoc img { display: none;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.codextoc div.head {
+div#CODEXFLYLEAF div#FLYTOC div.codextoc img { display: none;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codextoc div.head {
     margin-left: 0px; margin-right: 0px;
     display: block; font-weight: bold;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.codextocleaf > div.head {
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codextocleaf > div.head {
     display: block; font-weight: normal;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC hr.progressbar {
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC hr.progressbar {
     display: none; border: none;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.progressbox { display: none;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC div.live > div.head { color: blue;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.progressbox { display: none;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.live > div.head { color: blue;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
   div.live > div.head hr.progressbar {
       display: block;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#FLYTOC
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
   div.live > div.spanbar div.progressbox {
       display: block;}
 
-div#SBOOKFLYTOC div.codextoc.cur div.sub { display: none;}
+div#CODEXFLYTOC div.codextoc.cur div.sub { display: none;}
 
 div.codextoc .sectname.cohi { color: gold;}
 div.codextoc .sectname { color: ivory; cursor: pointer;}
@@ -396,17 +396,17 @@ div.codextoc div.sub a.sectname {
   color: ivory; font-size: 80%; white-space: nowrap;}
 div.codextoc div.sub a.sectname.cohi { color: gold; }
 
-div#SBOOKHUD div.codextoc div.head { display: none;}
-div#SBOOKHUD div.codextoc div.spanbar { display: none;}
+div#CODEXHUD div.codextoc div.head { display: none;}
+div#CODEXHUD div.codextoc div.spanbar { display: none;}
 
-div#SBOOKHUD div.codextoc.toc0 div.spanbar { display: block;}
-div#SBOOKHUD div.codextoc.cur div.spanbar { display: block;}
-div#SBOOKHUD div.codextoc.cur div.head { display: block;}
+div#CODEXHUD div.codextoc.toc0 div.spanbar { display: block;}
+div#CODEXHUD div.codextoc.cur div.spanbar { display: block;}
+div#CODEXHUD div.codextoc.cur div.head { display: block;}
 
-div#SBOOKHUD.toc div.codextoc div.head { display: block;}
-div#SBOOKHUD.toc div.codextoc div.spanbar { display: block;}
-div#SBOOKHUD.toc div.codextoc.cur div.sub { display: block;}
-div#SBOOKHUD div#SBOOKTOC.hover div.codextoc.cur div.sub { display: none;}
+div#CODEXHUD.toc div.codextoc div.head { display: block;}
+div#CODEXHUD.toc div.codextoc div.spanbar { display: block;}
+div#CODEXHUD.toc div.codextoc.cur div.sub { display: block;}
+div#CODEXHUD div#CODEXTOC.hover div.codextoc.cur div.sub { display: none;}
 
 div.spanbar {
   position: relative;
@@ -416,31 +416,31 @@ div.spanbar {
 div.spanbar div.spans { 
   position: relative; width: 100%; background-color: black;
   margin: 0px; padding: 0px; border: 0px;}
-div.spanbar div.sbookhudspan {
+div.spanbar div.codexhudspan {
   background-color: silver; clear: none; position: absolute;
   margin: 0px; padding: 0px; border: 0px;
   border-right: none; border-left: none;
   border-top: solid blue 2px; border-bottom: solid blue 2px;
   height: 10px; }
-div.spanbar div.sbookhudspan div.brick {
+div.spanbar div.codexhudspan div.brick {
   border: 0px; padding: 0px;
   border-right: solid black 1px; border-left: solid black 1px;
   height: 100%;}
-div.spanbar div.sbookhudspan a.brick {
+div.spanbar div.codexhudspan a.brick {
   display: block;
   border: 0px; padding: 0px;
   border-right: solid black 1px; border-left: solid black 1px;
   height: 100%;}
-div.spanbar div.sbookhudspan a.brick.cohi {
+div.spanbar div.codexhudspan a.brick.cohi {
   background-color: gold;}
-div.spanbar div.sbookhudspan .brick.live {
+div.spanbar div.codexhudspan .brick.live {
   background-color: ivory;}
-div.spanbar div.sbookhudspan[odd] {}
-div.spanbar div.sbookhudspan[even] {}
-div.spanbar div.sbookhudspan.current {
+div.spanbar div.codexhudspan[odd] {}
+div.spanbar div.codexhudspan[even] {}
+div.spanbar div.codexhudspan.current {
     color: yellow; background-color: yellow;}
-/* div.spanbar div.sbookhudspan:hover { border-bottom: dotted red 2px; border-top: dotted red 2px; } */
-div#SBOOKHUD div.codextoc { 
+/* div.spanbar div.codexhudspan:hover { border-bottom: dotted red 2px; border-top: dotted red 2px; } */
+div#CODEXHUD div.codextoc { 
   margin-left: 32px; margin-right: 32px;}
 
 div.spanbar { padding: 0px; margin: 0px;}
@@ -460,32 +460,32 @@ div#SBOOKHELP #CHECKHIDEHELP {
 div#SBOOKHELP #CLICKHIDEHELP { 
  float: right; padding: 1px; border: solid red 2px; z-index: 300;}
 
-div#SBOOKHUD .helphud {
+div#CODEXHUD .helphud {
     position: fixed; background-color: ivory; z-index: 100;
     border: solid black 1px; padding: 3px; border-radius: 6px;
     font-family: sans,sans-serif;
     -o-border-radius: 6px; -webkit-border-radius: 6px; 
     -o-border-radius: 6px;
     display: none;}
-div#SBOOKHUD .helphud.topleft {top: 3px; left: 60px;}
-div#SBOOKHUD .helphud.topright {top: 3px; right: 60px;}
-div#SBOOKHUD .helphud.botleft {bottom: 3px; left: 60px;}
-div#SBOOKHUD .helphud.botright {bottom: 3px; right: 60px;}
-div#SBOOKHUD .helphud.topcenter {
+div#CODEXHUD .helphud.topleft {top: 3px; left: 60px;}
+div#CODEXHUD .helphud.topright {top: 3px; right: 60px;}
+div#CODEXHUD .helphud.botleft {bottom: 3px; left: 60px;}
+div#CODEXHUD .helphud.botright {bottom: 3px; right: 60px;}
+div#CODEXHUD .helphud.topcenter {
     top: 0px; width: 30%; left: 35%; right: 35%; text-align: center;
     border-top-left-radius: 0px; border-top-right-radius: 0px;
     -o-border-top-left-radius: 0px; -o-border-top-right-radius: 0px; 
     -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px; 
     -o-border-radius-topleft: 0px; -oborder-radius-topright: 0px;}
 
-div#SBOOKHUD .helphud.botcenter {
+div#CODEXHUD .helphud.botcenter {
     bottom: 0px; width: 30%; left: 35%; right: 35%; text-align: center;
     border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
     -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
     -webkit-border-bottom-left-radius: 0px; -webkit-border-bottom-right-radius: 0px; 
     -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px;}
 
-div#SBOOKHUD div.helphud.leftmiddle {
+div#CODEXHUD div.helphud.leftmiddle {
     position: fixed; max-width: 50px;
     top: 40%; left: 0px; text-align: left; padding-right: 2px;
     border-top-left-radius: 0px; border-bottom-left-radius: 0px;
@@ -493,7 +493,7 @@ div#SBOOKHUD div.helphud.leftmiddle {
     -webkit-border-top-left-radius: 0px; -webkit-border-bottom-left-radius: 0px; 
     -moz-border-radius-topleft: 0px; -moz-border-radius-bottomleft: 0px;}
 
-div#SBOOKHUD div.helphud.rightmiddle {
+div#CODEXHUD div.helphud.rightmiddle {
     position: fixed; max-width: 50px;
     top: 40%; right: 0px; text-align: right; padding-left: 2px;
     border-top-right-radius: 0px; border-bottom-right-radius: 0px;
@@ -528,8 +528,8 @@ div#SBOOKHELP table th div {
     padding-right: 4px; margin-bottom: .75em;}
 div#SBOOKHELP table td { text-align: left; vertical-align: top;}
 div#SBOOKHELP table td em { }
-div#SBOOKHUD.help div#SBOOKHELP { display: block;}
-div#SBOOKHUD.help div#SBOOKHELP img.sbookhidehud {
+div#CODEXHUD.help div#SBOOKHELP { display: block;}
+div#CODEXHUD.help div#SBOOKHELP img.sbookhidehud {
     left: 0.5em; top: 0.5em; padding: 3px;}
 div#SBOOKHELP strong em { font-weight: normal;}
 div#SBOOKHELP span.key { font-weight: bold; font-size: 110%;}
@@ -596,7 +596,7 @@ body.paginate div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
 div#SBOOKCONTENT.pageswitch {
     opacity: 0.0001;}
 
-div#SBOOKFOOT div#SBOOKFOOTINFO {
+div#CODEXFOOT div#SBOOKFOOTINFO {
     position: fixed; left: 100px; right: 100px; bottom: 0px;
     opacity: 0.9; background-color: #4682b4; color: ivory;
     max-height: 100px; overflow: hidden;
@@ -610,14 +610,14 @@ div#SBOOKFOOT div#SBOOKFOOTINFO {
     -moz-border-radius-topright: 6px;
     -o-border-top-right-radius: 6px;
     -webkit-border-top-right-radius: 6px;}
-div#SBOOKFOOT div#SBOOKFOOTINFO div#SBOOKTARGETINFO {
+div#CODEXFOOT div#SBOOKFOOTINFO div#SBOOKTARGETINFO {
     padding: 1em; padding-top: 0.5em; padding-bottom: 4px;}
 
 /* These may go away */
-body div#SBOOKHUD div#SBOOKFOOT div#SBOOKFOOTINFO {display: none;}
-body.hudup div#SBOOKHUD.target div#SBOOKFOOT div#SBOOKFOOTINFO {
+body div#CODEXHUD div#CODEXFOOT div#SBOOKFOOTINFO {display: none;}
+body.hudup div#CODEXHUD.target div#CODEXFOOT div#SBOOKFOOTINFO {
     display: none;}
-body.hudup div#SBOOKHUD.tagging.target div#SBOOKFOOT div#SBOOKFOOTINFO {
+body.hudup div#CODEXHUD.tagging.target div#CODEXFOOT div#SBOOKFOOTINFO {
     display: none;}
 
 /* The SEARCHBOX */
@@ -661,10 +661,10 @@ div.completions .cloudtoggle {
 div.completions.noinput .cloudtoggle {
     display: block;}
 
-div#SBOOKHUD div.completions {
+div#CODEXHUD div.completions {
     padding-left: 2.5em; text-align: center; font-size: 115%;
     display: none;}
-div#SBOOKHUD div.completions div.doc {
+div#CODEXHUD div.completions div.doc {
     background-color: ivory; text-align: left;
     font-size: 80%; line-height: 100%;
     font-style: italic; color: black;
@@ -676,12 +676,12 @@ div#SBOOKHUD div.completions div.doc {
     /* Hide this for now */
     display: none;}
 
-div#SBOOKHUD .completions span.sep { 
+div#CODEXHUD .completions span.sep { 
   font-size: 200%; font-weight: bold; 
   color: purple; vertical-align: middle;}
-div#SBOOKHUD .completions span.completion {
+div#CODEXHUD .completions span.completion {
     cursor: pointer; padding-right: 0.5em;}
-div#SBOOKHUD .completions span.sectname {
+div#CODEXHUD .completions span.sectname {
   white-space: nowrap;
   font-weight: bold; font-style: italic;  font-size: 70%;
   background-color: ivory; color: purple; max-width: 25%;
@@ -691,19 +691,19 @@ div#SBOOKHUD .completions span.sectname {
   -webkit-border-radius: 6px; 
   -moz-border-radius: 6px; 
   border-radius: 6px;}
-div#SBOOKHUD .completions.showall span.dterm {display: inline;}
-div#SBOOKHUD .completions.showall span.dterm.singleton {display: none;}
-div#SBOOKHUD .completions { line-height: 200%;}
-div#SBOOKHUD .completions .completion.prime { 
+div#CODEXHUD .completions.showall span.dterm {display: inline;}
+div#CODEXHUD .completions.showall span.dterm.singleton {display: none;}
+div#CODEXHUD .completions { line-height: 200%;}
+div#CODEXHUD .completions .completion.prime { 
   font-size: 200%; font-weight: bold;}
-div#SBOOKHUD .completions .completion .sectname { 
+div#CODEXHUD .completions .completion .sectname { 
   white-space: nowrap;}
 
-div#SBOOKHUD .completions .completion .variation { 
+div#CODEXHUD .completions .completion .variation { 
   font-size: 115%; color: white;}
-div#SBOOKHUD .completions .completion .dterm { 
+div#CODEXHUD .completions .completion .dterm { 
   font-size: 95%;}
-div#SBOOKHUD .dterm { color: gold;}
+div#CODEXHUD .dterm { color: gold;}
 
 /* sbook 'slices' of summaries or glosses */
 
@@ -748,7 +748,7 @@ div.codexslice div.codexthread div.codexnote div.locbar {border: none;}
 div.codexslice div.codexthread div.codexnote div.locbar {display:none;}
 div.codexslice div.codexthread div.codexnote:first-child div.locbar {display:block;}
 
-body div#SBOOKHUD div.codexthread > div.locrule {
+body div#CODEXHUD div.codexthread > div.locrule {
     position: relative; left: 0px; bottom: 0px; z-index: 50;
     width: 100%; min-height: 10px;}
 
@@ -793,43 +793,43 @@ div.codexnote > hr {
 
 /* Buttons */
 
-div#SBOOKHUD div#SBOOKHUDBUTTONS {
+div#CODEXHUD div#CODEXHUDBUTTONS {
     clear: none; z-index: 100; text-align: center;
     display: none;}
-body.hudup div#SBOOKHUD div#SBOOKHUDBUTTONS {
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     display: block; opacity: 0.8;}
-body.hudup div#SBOOKHUD div#SBOOKHUDBUTTONS img[alt='console'] {
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: none;}
-body.hudup.sbookshowconsole div#SBOOKHUD div#SBOOKHUDBUTTONS img[alt='console'] {
+body.hudup.sbookshowconsole div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: inline;}
 
-div#SBOOKHUD div#SBOOKHUDBUTTONS.hudpanel {
+div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;}
 
-div#SBOOKHUD div#SBOOKHUDBUTTONS {
+div#CODEXHUD div#CODEXHUDBUTTONS {
     margin: 0px; padding: 0px; border-bottom: 0px; min-height: 60px;
     font-family: times,serif; font-variant: small-caps;
     text-align: center;}
 
-body.hudup div#SBOOKHUD.toc div#SBOOKHUDBUTTONS,
-body.hudup div#SBOOKHUD.searching div#SBOOKHUDBUTTONS,
-body.hudup div#SBOOKHUD.browsing div#SBOOKHUDBUTTONS,
-body.hudup div#SBOOKHUD.scanning div#SBOOKHUDBUTTONS,
-body.hudup div#SBOOKHUD.tocscan div#SBOOKHUDBUTTONS,
-body.hudup div#SBOOKHUD.glosses div#SBOOKHUDBUTTONS,
-body.hudup div#SBOOKHUD.allglosses div#SBOOKHUDBUTTONS,
-body.hudup div#SBOOKHUD.addgloss div#SBOOKHUDBUTTONS {
+body.hudup div#CODEXHUD.toc div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.searching div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.browsing div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.scanning div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.tocscan div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.glosses div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.allglosses div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.addgloss div#CODEXHUDBUTTONS {
     display: none;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS div.sbookplate {
+div#CODEXHUD div#CODEXHUDBUTTONS div.sbookplate {
     margin: 0px; padding: 0px; border: 0px;
     margin-left: 60px; margin-right: 60px;
     clear: both; text-align: left;
     /* background-color: gold; */
     color: black;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar {
+div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar {
     margin: 0px; padding: 0px; border: 0px;
     font-variant: small-caps;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar .tab {
+div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab {
     font-variant: small-caps;
     border-bottom-right-radius: 6px;
     -o-border-bottom-right-radius: 6px; 
@@ -843,18 +843,18 @@ div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar .tab {
     -webkit-box-shadow: 2px 2px 2px #cccccc;
     -moz-box-shadow: 2px 2px 2px #cccccc;
     -o-box-shadow: 2px 2px 2px #cccccc;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar .tab  {
+div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab  {
     border: transparent solid 3px;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar img.tab {
+div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
     height: 50px;}
 
-div#SBOOKHUD.about div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='APPABOUT'],
-div#SBOOKHUD.login div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
-div#SBOOKHUD.device div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKDEVICE'],
-div#SBOOKHUD.flytoc div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='FLYTOC'],
-div#SBOOKHUD.help div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKHELP'],
-div#SBOOKHUD.console div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKCONSOLE'],
-div#SBOOKHUD.sbookapp div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKSAPP'] {
+div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[contentid='APPABOUT'],
+div#CODEXHUD.login div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
+div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKDEVICE'],
+div#CODEXHUD.flytoc div#CODEXHUDBUTTONS div.tabbar .tab[contentid='FLYTOC'],
+div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKHELP'],
+div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKCONSOLE'],
+div#CODEXHUD.sbookapp div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;
     box-shadow: 4px 4px 4px #cccccc;
@@ -862,29 +862,29 @@ div#SBOOKHUD.sbookapp div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKSAPP']
     -moz-box-shadow: 4px 4px 4px #cccccc;
     -o-box-shadow: 4px 4px 4px #cccccc;}
 
-div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent {
+div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent {
     margin-top: 0px;}
 
-div#SBOOKHUD div#SBOOKHUDBUTTONS #IDBUTTON {
+div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
     float: left; margin: 0px; padding: 0px; border: 0px;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS #HELPBUTTON {
+div#CODEXHUD div#CODEXHUDBUTTONS #HELPBUTTON {
     float: right; margin: 0px; padding: 0px; border: 0px;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS #IDBUTTON img {
+div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON img {
   margin: 0px; border: 0px; padding: 0px; max-height: 48px;}
-body.nosbookuser div#SBOOKHUD div#SBOOKHUDBUTTONS #IDBUTTON {
+body.nosbookuser div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
     display: none;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS .sbookplate .applinks {
+div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate .applinks {
     color: blue; font-size: 80%;
     font-weight: normal; font-variant: small-caps;}
 
-div#SBOOKHUD div#SBOOKHUDBUTTONS .sbookplate a.logout {
+div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
     position: absolute; right: 60px;
     vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif; font-weight: bold;
     color: red;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS .sbookplate a.logout:visited {
+div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout:visited {
     color: red;}
-div#SBOOKHUD div#SBOOKHUDBUTTONS .sbookplate a#SBOOKUSERNAME {
+div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#SBOOKUSERNAME {
     position: absolute; left: 60px;
     vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif; font-weight: bold;
@@ -892,20 +892,20 @@ div#SBOOKHUD div#SBOOKHUDBUTTONS .sbookplate a#SBOOKUSERNAME {
 
 /* The Flyleaf */
 
-div#SBOOKHUD div#SBOOKFLYHEAD {
+div#CODEXHUD div#CODEXFLYHEAD {
     margin: 0px; padding: 0px; border-bottom: 0px;
     height: 100px; min-height: 60px;
     font-family: times,serif; font-variant: small-caps;}
 
-div#SBOOKHUD div#SBOOKFLYHEAD div.flyleafplate {
+div#CODEXHUD div#CODEXFLYHEAD div.flyleafplate {
     margin: 0px; padding: 0px; border: 0px;
     width: 100%; clear: both;
     background-color: gold; color: black;}
-div#SBOOKHUD div#SBOOKFLYHEAD div.tabbar {
+div#CODEXHUD div#CODEXFLYHEAD div.tabbar {
     margin: 0px; padding: 0px; border: 0px;
     width: 100%; clear: both;
     font-variant: small-caps;}
-div#SBOOKHUD div#SBOOKFLYHEAD div.tabbar .tab {
+div#CODEXHUD div#CODEXFLYHEAD div.tabbar .tab {
     font-variant: small-caps;
     border-bottom-right-radius: 6px;
     -o-border-bottom-right-radius: 6px; 
@@ -915,97 +915,97 @@ div#SBOOKHUD div#SBOOKFLYHEAD div.tabbar .tab {
     -o-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;}
-div#SBOOKHUD div#SBOOKFLYHEAD div.tabbar .tab  {
+div#CODEXHUD div#CODEXFLYHEAD div.tabbar .tab  {
     border: transparent solid 3px;}
 
-div#SBOOKHUD div#SBOOKFLYLEAF table {
+div#CODEXHUD div#CODEXFLYLEAF table {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
 
-div#SBOOKHUD.about div#SBOOKFLYHEAD div.tabbar .tab[contentid='APPABOUT'],
-div#SBOOKHUD.login div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
-div#SBOOKHUD.device div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKDEVICE'],
-div#SBOOKHUD.flytoc div#SBOOKFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
-div#SBOOKHUD.console div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKCONSOLE'],
-div#SBOOKHUD.sbookapp div#SBOOKFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
+div#CODEXHUD.about div#CODEXFLYHEAD div.tabbar .tab[contentid='APPABOUT'],
+div#CODEXHUD.login div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
+div#CODEXHUD.device div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKDEVICE'],
+div#CODEXHUD.flytoc div#CODEXFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
+div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKCONSOLE'],
+div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;}
 
-div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent {
+div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent {
     margin-top: 0px;}
 
-div#SBOOKHUD.about div#SBOOKFLYLEAF div.tabcontent[id='APPABOUT'],
-div#SBOOKHUD.login div#SBOOKFLYLEAF div.tabcontent[id='SBOOKAPPLOGIN'],
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent[id='SBOOKDEVICE'],
-div#SBOOKHUD.flytoc div#SBOOKFLYLEAF div.tabcontent[id='FLYTOC'],
-div#SBOOKHUD.console div#SBOOKFLYLEAF div.tabcontent[id='SBOOKCONSOLE'],
-div#SBOOKHUD.sbookapp div#SBOOKFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
+div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent[id='APPABOUT'],
+div#CODEXHUD.login div#CODEXFLYLEAF div.tabcontent[id='SBOOKAPPLOGIN'],
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent[id='SBOOKDEVICE'],
+div#CODEXHUD.flytoc div#CODEXFLYLEAF div.tabcontent[id='FLYTOC'],
+div#CODEXHUD.console div#CODEXFLYLEAF div.tabcontent[id='SBOOKCONSOLE'],
+div#CODEXHUD.sbookapp div#CODEXFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
     display: block;}
 
-div#SBOOKHUD div#SBOOKFLYLEAF div.tabcontent {
+div#CODEXHUD div#CODEXFLYLEAF div.tabcontent {
     overflow-y: auto; overflow-x: hidden;}
-div#SBOOKHUD div#SBOOKFLYLEAF div.tabcontent#SBOOKSAPP { overflow: visible;}
-div#SBOOKHUD div#SBOOKFLYLEAF div.tabcontent#SBOOKSAPP iframe {
+div#CODEXHUD div#CODEXFLYLEAF div.tabcontent#SBOOKSAPP { overflow: visible;}
+div#CODEXHUD div#CODEXFLYLEAF div.tabcontent#SBOOKSAPP iframe {
   width: 100%; height: 100%; border: 0px; margin: 0px; padding: 0px;}
 
-div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON {
+div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
     float: left; margin: 0px; padding: 0px; border: 0px;}
-div#SBOOKHUD div#SBOOKFLYHEAD #HELPBUTTON {
+div#CODEXHUD div#CODEXFLYHEAD #HELPBUTTON {
     float: right; margin: 0px; padding: 0px; border: 0px;}
-div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON img {
+div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON img {
   margin: 0px; border: 0px; padding: 0px; max-height: 48px;}
-body.nosbookuser div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON {
+body.nosbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
     display: none;}
-div#SBOOKHUD div#SBOOKFLYHEAD .flyleafplate .applinks {
+div#CODEXHUD div#CODEXFLYHEAD .flyleafplate .applinks {
     color: blue; font-size: 80%;
     font-weight: normal; font-variant: small-caps;}
 
-div#SBOOKHUD div#SBOOKFLYHEAD .flyleafplate a.logout {
+div#CODEXHUD div#CODEXFLYHEAD .flyleafplate a.logout {
     float: right; vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif; font-weight: bold;
     background-color: gold; color: red;}
-div#SBOOKHUD div#SBOOKFLYHEAD .flyleafplate a.logout:visited {
+div#CODEXHUD div#CODEXFLYHEAD .flyleafplate a.logout:visited {
     color: red;}
-div#SBOOKHUD div#SBOOKFLYHEAD a.login {
+div#CODEXHUD div#CODEXFLYHEAD a.login {
     float: right; vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif;
     background-color: gold; color: blue;
     display:none;}
 body.nosbookuser a.logout {display: none;}
 
-/* SBOOKFLYLEAF content rules */
+/* CODEXFLYLEAF content rules */
 
-div#SBOOKHUD div#SBOOKFLYLEAF a,
-div#SBOOKHUD div#SBOOKFLYLEAF a:visited { 
+div#CODEXHUD div#CODEXFLYLEAF a,
+div#CODEXHUD div#CODEXFLYLEAF a:visited { 
   color: lightblue; text-decoration: none;}
-div#SBOOKHUD div#SBOOKFLYLEAF a:hover { text-decoration: underline;}
-div#SBOOKHUD div#SBOOKFLYLEAF .flyleafplate a,
-div#SBOOKHUD div#SBOOKFLYLEAF .flyleafplate a:visited {
+div#CODEXHUD div#CODEXFLYLEAF a:hover { text-decoration: underline;}
+div#CODEXHUD div#CODEXFLYLEAF .flyleafplate a,
+div#CODEXHUD div#CODEXFLYLEAF .flyleafplate a:visited {
     text-decoration: none; color: blue;}
-div#SBOOKHUD div#SBOOKFLYLEAF .flyleafplate a:hover {
+div#CODEXHUD div#CODEXFLYLEAF .flyleafplate a:hover {
     text-decoration: underline;}
 
-div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC div.head { color: black; } 
-div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC div.head { padding-left: 4px;} 
-div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC a {
+div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.head { color: black; } 
+div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.head { padding-left: 4px;} 
+div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a {
     color: inherit; font-weight: inherit;}
-div#SBOOKHUD div#SBOOKFLYLEAF div#SBOOKFLYTOC a.cohi {color: white;}
+div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {color: white;}
 
-div#SBOOKFLYLEAF table.login th.or { font-size: 200%;}
+div#CODEXFLYLEAF table.login th.or { font-size: 200%;}
 
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
  div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
  div.setting span.checkspan {
      font-size: 125%; color: orange;}
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
   div.setting span.checkspan input[type='CHECKBOX'] {
       width: 16px; height: 16px; color: orange; background-color: orange;
       vertical-align: bottom;}
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
   div.setting div.explanation { 
       font-style: italic; clear: both; margin-left: 3em;}
-div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
   div.setting .button {
       float: right; clear: right; cursor: pointer; 
       background-color: orange; color: white;
@@ -1015,12 +1015,12 @@ div#SBOOKHUD.device div#SBOOKFLYLEAF div.tabcontent#SBOOKDEVICE
       -o-border-radius: 6px; 
       -webkit-border-radius: 6px; 
       -moz-border-radius: 6px;}
-div#SBOOKFLYLEAF table.settings {
+div#CODEXFLYLEAF table.settings {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
-div#SBOOKFLYLEAF table.settings th {text-align: right; vertical-align: top;}
-div#SBOOKFLYLEAF table.settings td {
+div#CODEXFLYLEAF table.settings th {text-align: right; vertical-align: top;}
+div#CODEXFLYLEAF table.settings td {
     text-align: left; vertical-align: top; padding-left: 12px;}
-div#SBOOKHUD div#SBOOKFLYLEAF table.settings .button {
+div#CODEXHUD div#CODEXFLYLEAF table.settings .button {
     float: right; clear: right; cursor: pointer; 
     background-color: orange; color: white;
     font-weight: bold; font-variant: small-caps;
@@ -1029,7 +1029,7 @@ div#SBOOKHUD div#SBOOKFLYLEAF table.settings .button {
     -o-border-radius: 6px; 
     -webkit-border-radius: 6px; 
     -moz-border-radius: 6px;}
-div#SBOOKHUD.settings div#SBOOKFLYLEAF table.settings .smallbutton {
+div#CODEXHUD.settings div#CODEXFLYLEAF table.settings .smallbutton {
     cursor: pointer;
     margin-left: 4px; margin-right: 4px; padding: 3px;
     background-color: gold; color: darkblue;
@@ -1069,14 +1069,14 @@ body img.mouseicon { display: inline;}
 body.sbooktouch img.touchicon { display: inline;}
 body.sbooktouch img.mouseicon { display: none;}
 
-body.sbooktouch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar,
-body.sbooktouch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar {
+body.sbooktouch div#CODEXHUD.toc div#CODEXTOC div.spanbar,
+body.sbooktouch div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar {
     height: 25px;}
-body.sbooktouch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.sbookhudspan,
-body.sbooktouch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar div.sbookhudspan {
+body.sbooktouch div#CODEXHUD.toc div#CODEXTOC div.spanbar div.codexhudspan,
+body.sbooktouch div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.codexhudspan {
     height: 20px;}
-body.sbooktouch div#SBOOKHUD.toc div#SBOOKTOC div.spanbar div.progressbox,
-body.sbooktouch div#SBOOKHUD.flytoc div#SBOOKFLYTOC div.spanbar div.progressbox {
+body.sbooktouch div#CODEXHUD.toc div#CODEXTOC div.spanbar div.progressbox,
+body.sbooktouch div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.progressbox {
     height: 25px;}
 
 body.sbooktouch .codexnote .age { font-size: 125%; padding-bottom; 10px;}
@@ -1122,7 +1122,7 @@ div.codexnote > hr {
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;}
-div#SBOOKHUD .codexnote span.oldterm {color: blue; }
+div#CODEXHUD .codexnote span.oldterm {color: blue; }
 .codexnote span.user { 
   color: gold; font-size: 125%; font-style: italic;}
 .codexnote span.user:after { 
@@ -1245,17 +1245,17 @@ body.hudup .sbooktarget .glossmark:hover { opacity: 0.9;}
 .tab[CONTENTID='SBOOKAPPLOGIN'] { display: none;}
 
 body.nosbookuser div#SBOOKHELP > div.login { display: block;}
-body.nosbookuser div#SBOOKHUD div#SBOOKFLYHEAD #IDBUTTON {
+body.nosbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
     display: none;}
 body.nosbookuser a.logout {display: none;}
 body.nosbookuser #SBOOKLOGOUT { display: none;}
 body.nosbookuser .tab[CONTENTID='SBOOKAPPLOGIN'] { display: inline;}
 body.nosbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
-body.nosbookuser div#SBOOKHUD div.hud#SBOOKSOURCES img.button.login {
+body.nosbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
   display: block;}
-body.nosbookuser div#SBOOKHUD div.hud#SBOOKSOURCES img.button.app {
+body.nosbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.app {
   display: none;}
-body.nosbookuser div#SBOOKHUD div#SBOOKSOURCES img.button.everyone {
+body.nosbookuser div#CODEXHUD div#SBOOKSOURCES img.button.everyone {
   display: none;}
 
 /* Gloss form */
@@ -1426,7 +1426,7 @@ div.codexaddgloss form.sbdetailmode div.controls span[data-mode='detail'] {
     -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px;
     border-bottom: solid white 2px;}
 
-div#SBOOKHUD.tagging div.codexaddgloss form div.completions#SBOOKGLOSSCLOUD,
+div#CODEXHUD.tagging div.codexaddgloss form div.completions#SBOOKGLOSSCLOUD,
 div.codexaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD {
     min-height: 100px;
     display: block;}

@@ -1,40 +1,40 @@
 <div class='toolbox'>
   <div class='input'>
-    <input id="SBOOKSEARCHINPUT"
+    <input id="CODEXSEARCHINPUT"
 	   type="TEXT" class="autoprompt searchinput"
 	   name="QTEXT" value="" isempty="yes" autocomplete="off"
 	   onfocus="sbook.UI.handlers.search_focus(event);"
 	   onblur="sbook.UI.handlers.search_blur(event);"
 	   onkeyup="sbook.UI.handlers.search_keyup(event);"
 	   completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
-	   completions="SBOOKSEARCHCLOUD"
-	   results="SBOOKSEARCHRESULTS"/>
+	   completions="CODEXSEARCHCLOUD"
+	   results="CODEXSEARCHRESULTS"/>
   </div>
   <div class="tags">
     <img class="clearsearch" alt="X" title="clear search"
 	 src="http://static.beingmeta.com/graphics/redx16x16.png"
 	 onclick="sbook.UI.handlers.clearSearch();"/>
-    <span id="SBOOKSEARCHTAGS" class="qtags"></span>
+    <span id="CODEXSEARCHTAGS" class="qtags"></span>
   </div>
   <div class="resultinfo">
     <div class="noresults">No results</div>
     <div class="noquery">Add tags to refine query</div>
     <span class="resultcount" onclick="sbook.showSearchResults();"></span>
     <span class="sep vbar">|</span>
-    <span class="refinecount" onclick="sbookMode('searching');"></span>
+    <span class="refinecount" onclick="CodexMode('searching');"></span>
   </div>
 </div>
 <div class='scrollbox'>
-  <div id="SBOOKSEARCHCLOUD" class="completions searchcloud">
+  <div id="CODEXSEARCHCLOUD" class="completions searchcloud">
     <img class="label" alt="tags"
 	 src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-	 onclick="fdjtDOM.toggleClass(fdjtID('SBOOKSEARCHCLOUD'),'showempty');"/>
+	 onclick="fdjtDOM.toggleClass(fdjtID('CODEXSEARCHCLOUD'),'showempty');"/>
     <span class="count">no query refinements</span>
-    <div id="SBOOKSEARCHSOURCES"></div>
-    <div id="SBOOKSEARCHTAGS"></div>
-    <div id="SBOOKSEARCHCLOUDSOURCES"></div>
+    <div id="CODEXSEARCHSOURCES"></div>
+    <div id="CODEXSEARCHTAGS"></div>
+    <div id="CODEXSEARCHCLOUDSOURCES"></div>
   </div>
-  <div id="SBOOKSEARCHRESULTS" class="codexslice"></div>
+  <div id="CODEXSEARCHRESULTS" class="codexslice"></div>
 </div>
 <!--
      /* Emacs local variables

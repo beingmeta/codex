@@ -958,7 +958,7 @@ sbook.setFontSize=function(size){
 	sbookPaginate();}};
 
 sbook.setUIFontSize=function(size){
-    if (sbookHUD.style.fontSize!==size) sbookHUD.style.fontSize=size;};
+    if (CodexHUD.style.fontSize!==size) CodexHUD.style.fontSize=size;};
 
 
 /* Emacs local variables

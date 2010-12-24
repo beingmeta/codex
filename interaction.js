@@ -158,11 +158,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var passage=sbook.getTarget(target);
 	if ((sbook.mode==="addgloss")&&
 	    (sbook.glosstarget===passage))
-	    sbookMode(true);
+	    CodexMode(true);
 	else if (passage) {
 	    fdjtUI.cancel(evt);
 	    sbook.glossTarget(passage);
-	    sbookMode("addgloss");}}
+	    CodexMode("addgloss");}}
 
     var excerpts=[];
 
@@ -231,17 +231,17 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    if (p) {
 		sbook.excerpt=sel;
 		return tapTarget(p);}
-	    else sbookMode(false);}
+	    else CodexMode(false);}
 	if (!(sbook.hudup)) {
 	    if ((passage)&&((evt.shiftKey)||(n_touches>1)))
 		xtapTarget(passage);
 	    else if (passage) tapTarget(passage);
-	    else sbookMode(true);}
-	else if (!(sbook.target)) sbookMode(false);
+	    else CodexMode(true);}
+	else if (!(sbook.target)) CodexMode(false);
 	else if (!(passage)) {
-	    if (sbook.hudup) sbookMode(false);
-	    else sbookMode(true);}
-	else if (passage===sbook.target) sbookMode(false);
+	    if (sbook.hudup) CodexMode(false);
+	    else CodexMode(true);}
+	else if (passage===sbook.target) CodexMode(false);
 	else if ((evt.shiftKey)||(n_touches>1))
 	    xtapTarget(passage);
 	else tapTarget(passage);}
@@ -252,7 +252,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var text=fdjtDOM.textify(passage);
 	sbook.selection=fdjtString.oneline(text);
 	sbook.glossTarget(passage);
-	sbookMode("addgloss");
+	CodexMode("addgloss");
 	return;}
 
     /* Tap actions */
@@ -263,7 +263,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),target,sbook.mode);
 	sbook.setTarget(target);
 	addGlossButton(target);
-	sbookMode(true);}
+	CodexMode(true);}
 
     function xtapTarget(target){
 	if (sbook.Trace.gestures)
@@ -272,7 +272,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	sbook.setTarget(target);
 	addGlossButton(target);
 	sbook.glossTarget(target);
-	sbookMode("addgloss");}
+	CodexMode("addgloss");}
 
     function edgeTap(evt,x){
 	if (!(evt)) evt=event||false;
@@ -326,8 +326,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else if (fdjtDOM.hasParent(target,".helphud")) {
 	    var mode=fdjtDOM.findAttrib(target,"data-hudmode")||
 		fdjtDOM.findAttrib(target,"hudmode");
-	    if (mode) sbookMode(mode)
-	    else sbookMode(false);
+	    if (mode) CodexMode(mode)
+	    else CodexMode(false);
 	    return fdjtUI.cancel(evt);}
 	while (target) {
 	    if (target.about) {
@@ -351,10 +351,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (evt.keyCode===27) { /* Escape works anywhere */
 	    if (sbook.mode) {
 		sbook.last_mode=sbook.mode;
-		sbookMode(false);
+		CodexMode(false);
 		sbook.setTarget(false);
-		fdjtID("SBOOKSEARCHINPUT").blur();}
-	    else if (sbook.last_mode) sbookMode(sbook.last_mode);
+		fdjtID("CODEXSEARCHINPUT").blur();}
+	    else if (sbook.last_mode) CodexMode(sbook.last_mode);
 	    else {}
 	    return;}
 	else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
@@ -408,16 +408,16 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
 	else modearg=modechars[ch];
 	if (modearg==="flyleaf") modearg=sbook.last_flyleaf||"about";
-	var mode=sbookMode();
+	var mode=CodexMode();
 	if (modearg) {
 	    if (mode===modearg) {
-		sbookMode(false); mode=false;}
+		CodexMode(false); mode=false;}
 	    else {
-		sbookMode(modearg); mode=modearg;}}
+		CodexMode(modearg); mode=modearg;}}
 	else {}
 	if (mode==="searching")
-	    fdjtID("SBOOKSEARCHINPUT").focus();
-	else fdjtID("SBOOKSEARCHINPUT").blur();
+	    fdjtID("CODEXSEARCHINPUT").focus();
+	else fdjtID("CODEXSEARCHINPUT").blur();
 	fdjtDOM.cancel(evt);}
     sbook.UI.handlers.onkeypress=onkeypress;
 
@@ -441,16 +441,16 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    else if (target.name==='GOTOPAGE') sbook.FadeToPage(num-1);
 	    else {}
 	    target.value="";
-	    sbookMode(false);}}
+	    CodexMode(false);}}
     sbook.UI.goto_keypress=goto_keypress;
 
     /* HUD button handling */
 
     var mode_hud_map={
-	"toc": "SBOOKTOC",
-	"searching": "SBOOKSEARCH",
+	"toc": "CODEXTOC",
+	"searching": "CODEXSEARCH",
 	"allglosses": "SBOOKSOURCES",
-	"flyleaf": "SBOOKFLYHEAD"};
+	"flyleaf": "CODEXFLYHEAD"};
     
     function hudbutton(evt){
 	var target=fdjtUI.T(evt);
@@ -459,7 +459,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    ((evt.type==='click')||(sbook.Trace.gestures>1)))
 	    fdjtLog("[%fs] hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
 		    fdjtET(),evt,mode,(fdjtDOM.isClickable(target)),
-		    sbook.scanning,sbook.hudup,sbookMode());
+		    sbook.scanning,sbook.hudup,CodexMode());
 	fdjtUI.cancel(evt);
 	if (!(mode)) return;
 	var hudid=((mode)&&(mode_hud_map[mode]));
@@ -467,8 +467,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (mode==='flyleaf') mode=sbook.last_flyleaf||"help";
 	if (evt.type==='click') {
 	    if (hud) fdjtDOM.dropClass(hud,"hover");
-	    if (fdjtDOM.hasClass(sbook.HUD,mode)) sbookMode(false);
-	    else sbookMode(mode);}
+	    if (fdjtDOM.hasClass(sbook.HUD,mode)) CodexMode(false);
+	    else CodexMode(mode);}
 	else if ((evt.type==='mouseover')&&(sbook.mode))
 	    return;
 	else {
@@ -650,7 +650,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (sbook.Trace.gestures)
 	    fdjtLog("[%fs] scrollBody(%o,%o)",fdjtET(),dx,dy);
 	var newx=curx-dx; var newy=cury-dy;
-	fdjtDOM.addClass(sbookHUD,"hidebuttons");
+	fdjtDOM.addClass(CodexHUD,"hidebuttons");
 	sbook.scrollTo(newx,newy);}
 
     function hud_touchend(evt){
@@ -696,7 +696,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%fs] glossmark_clicked() %o to %o for %o",
 		    fdjtET(),evt,glossmark,target);
 	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
-	    sbookMode(true);
+	    CodexMode(true);
 	    return;}
 	else sbook.openGlossmark(target);}
     function glossmark_onmouseover(evt){
@@ -723,7 +723,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("[%fs] Forward e=%o h=%o t=%o",
 		    fdjtET(),evt,sbook.head,sbook.target);
 	if ((sbook.mode==="glosses")||(sbook.mode==="addgloss"))
-	  sbookMode(true);
+	  CodexMode(true);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
 	    scanForward();
 	else pageForward();}
@@ -735,7 +735,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((last_motion)&&((now-last_motion)<100)) return;
 	else last_motion=now;
 	if ((sbook.mode==="glosses")||(sbook.mode==="addgloss"))
-	  sbookMode(true);
+	  CodexMode(true);
 	if (sbook.Trace.nav)
 	    fdjtLog("[%fs] Backward e=%o h=%o t=%o",
 		    fdjtET(),evt,sbook.head,sbook.target);
@@ -750,7 +750,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),sbook.curpage,sbook.pages.length);
 	if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var newpage=false;
-	    if (sbook.mode==="glosses") sbookMode(true);
+	    if (sbook.mode==="glosses") CodexMode(true);
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
 		// If there isn't a valid page number, figure one out
 		//  (if possible) and advance from there.
@@ -783,7 +783,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),sbook.curpage,sbook.pages.length);
 	if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var newpage=false;
-	    if (sbook.mode==="glosses") sbookMode(true);
+	    if (sbook.mode==="glosses") CodexMode(true);
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
 		// If there isn't a valid page number, figure one out
 		//  (if possible) and go back from there.
@@ -815,8 +815,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function scanForward(){
 	if (sbook.mode==="scanning") {}
 	else if (sbook.mode==="tocscan") {}
-	else if (sbook.scanning) sbookMode("scanning");
-	else sbookMode("tocscan");
+	else if (sbook.scanning) CodexMode("scanning");
+	else CodexMode("tocscan");
 	if (sbook.mode==="tocscan") {
 	    var head=sbook.head; var headinfo=sbook.docinfo[head.id];
 	    if (sbook.Trace.nav) 
@@ -824,10 +824,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 			fdjtET(),head,headinfo,headinfo.next,headinfo.head);
 	    if (headinfo.next) sbook.GoTo(headinfo.next.elt);
 	    else if ((headinfo.head)&&(headinfo.head.next)) {
-		sbook.GoTo(headinfo.head.next.elt); sbookMode("toc");}
+		sbook.GoTo(headinfo.head.next.elt); CodexMode("toc");}
 	    else if ((headinfo.head)&&(headinfo.head.head)&&(headinfo.head.head.next)) {
-		sbook.GoTo(headinfo.head.head.next.elt); sbookMode("toc");}
-	    else sbookMode(false);
+		sbook.GoTo(headinfo.head.head.next.elt); CodexMode("toc");}
+	    else CodexMode(false);
 	    return;}
 	var start=sbook.scanning;
 	var scan=sbook.nextSlice(start);
@@ -841,8 +841,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function scanBackward(){
 	if (sbook.mode==="scanning") {}
 	else if (sbook.mode==="tocscan") {}
-	else if (sbook.scanning) sbookMode("scanning");
-	else sbookMode("tocscan");
+	else if (sbook.scanning) CodexMode("scanning");
+	else CodexMode("tocscan");
 	if (sbook.mode==="tocscan") {
 	    var head=sbook.head; var headinfo=sbook.docinfo[head.id];
 	    if (sbook.Trace.nav) 
@@ -850,8 +850,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 			fdjtET(),head,headinfo,headinfo.prev,headinfo.head);
 	    if (headinfo.prev) sbook.GoTo(headinfo.prev.elt);
 	    else if (headinfo.head) {
-		sbook.GoTo(headinfo.head.elt); sbookMode("toc");}
-	    else sbookMode(false);
+		sbook.GoTo(headinfo.head.elt); CodexMode("toc");}
+	    else CodexMode(false);
 	    return;}
 	var scan=sbook.prevSlice(sbook.scanning);
 	var ref=((scan)&&(sbook.getRef(scan)));
@@ -867,17 +867,17 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function enterPageNum(evt) {
       evt=evt||event;
       fdjtUI.cancel(evt);
-      sbookMode.toggle("gotopage");}
+      CodexMode.toggle("gotopage");}
     function enterLocation(evt) {
       evt=evt||event;
       fdjtUI.cancel(evt);
-      sbookMode.toggle("gotoloc");}
+      CodexMode.toggle("gotoloc");}
     
     /* Other handlers */
 
     function flyleaf_tap(evt){
 	if (fdjtDOM.isClickable(evt)) return;
-	else sbookMode(false);}
+	else CodexMode(false);}
 
     function getOffX(evt){
 	if (typeof evt.offsetX === "number") return evt.offsetX;
@@ -904,7 +904,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtET(),evt,offx,offwidth,goloc,sbook.ends_at);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
-	if (!(sbook.mode)) sbookMode("tocscan");
+	if (!(sbook.mode)) CodexMode("tocscan");
 	sbook.GoTo(goloc);}
     /* This doesn't quite work on the iPad, so we're not currently
        using it. */
@@ -950,7 +950,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	     mouseup: glossbutton_onclick,
 	     mousedown: cancel},
 	 ".sbookmargin": {click: edge_click},
-	 "#SBOOKFLYLEAF": {click: flyleaf_tap},
+	 "#CODEXFLYLEAF": {click: flyleaf_tap},
 	 "#CODEXPAGEINFO": {click: pageinfo_click},
 	 "#CODEXPAGENO": {click: enterPageNum},
 	 "#CODEXLOCOFF": {click: enterLocation},
@@ -972,7 +972,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
        hud: {touchstart: shared_touchstart,
 	     touchmove: hud_touchmove,
 	     touchend: hud_touchend},
-       "#SBOOKFLYLEAF": {touchend: flyleaf_tap},
+       "#CODEXFLYLEAF": {touchend: flyleaf_tap},
        "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			  touchmove: cancel,touchend: cancel},
        "#CODEXPAGENO": {touchstart: enterPageNum,

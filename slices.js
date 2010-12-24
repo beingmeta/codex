@@ -266,7 +266,7 @@ var sbook_delete_icon="redx12x12.png";
 	var gloss=sbook.glosses.ref(qref);
 	var frag=gloss.get("frag");
 	sbook.setGlossTarget(gloss);
-	sbookMode("addgloss");}
+	CodexMode("addgloss");}
 
     function sourceIcon(info){
 	if (info) return info.pic;}

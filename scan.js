@@ -34,12 +34,12 @@ var sbooks_scan_version=parseInt("$Revision$".slice(10,-1));
 
 /* Scanning the document for Metadata */
 
-function sbookScan(root,docinfo){
+function codexscan(root,docinfo){
     if (typeof root === 'undefined') return this;
     if (!(docinfo))
-	if (this instanceof sbookScan)
+	if (this instanceof codexscan)
 	    docinfo=this;
-    else docinfo=new sbookScan();
+    else docinfo=new codexscan();
     if (!(root)) root=sbook.root||document.body;
     var start=new Date();
     docinfo._root=root;
@@ -47,7 +47,7 @@ function sbookScan(root,docinfo){
     if (sbook.Trace.startup)
 	fdjtLog("[%fs] Scanning DOM for structure and metadata: %o",
 		fdjtET(),root);
-    var nodefn=sbookScan.nodeFn||false;
+    var nodefn=codexscan.nodeFn||false;
     var children=root.childNodes, level=false;
     var scanstate=
 	{curlevel: 0,idserial:0,location: 0,
@@ -74,7 +74,7 @@ function sbookScan(root,docinfo){
     var i=0; while (i<children.length) {
 	var child=children[i++];
 	if (!((child.sbookskip)||(child.sbookui)))
-	    scanner(child,scanstate,docinfo,sbookScan.nodeFn||false);} 
+	    scanner(child,scanstate,docinfo,codexscan.nodeFn||false);} 
     docinfo._nodecount=scanstate.nodecount;
     docinfo._eltcount=scanstate.eltcount;
     docinfo._maxloc=scanstate.location;
@@ -99,7 +99,7 @@ function sbookScan(root,docinfo){
 	docinfo[id]=this;
 	scanstate.allinfo.push(this);
 	return this;}
-    sbookScan.scanInfo=scanInfo;
+    codexscan.scanInfo=scanInfo;
 
     function getTitle(head) {
 	var title=
@@ -306,7 +306,7 @@ function sbookScan(root,docinfo){
 	    scanstate.curhead=curhead; scanstate.curinfo=curinfo;
 	    return;}
 	// Get the location in the TOC for this out of context node
-	var tocloc=(child.sbooktocloc)||(child.getAttribute("data-tocloc"));
+	var tocloc=(child.codextocloc)||(child.getAttribute("data-tocloc"));
 	if ((tocloc)&&(docinfo[tocloc])) {
 	    var tocinfo=docinfo[tocloc];
 	    var curlevel=scanstate.curlevel;

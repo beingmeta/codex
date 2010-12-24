@@ -44,8 +44,8 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
     /* Query functions */
 
     /* Set on main search input */
-    // id="SBOOKSEARCHINPUT" 
-    // completions="SBOOKSEARCHCLOUD"
+    // id="CODEXSEARCHINPUT" 
+    // completions="CODEXSEARCHCLOUD"
 
     var Query=KnoduleIndex.Query;
 
@@ -53,7 +53,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
     
     function setQuery(query){
       if (sbook.Trace.search) fdjtLog("Setting working query to %o",query);
-      sbook.query=useQuery(query,fdjtID("SBOOKSEARCH"));}
+      sbook.query=useQuery(query,fdjtID("CODEXSEARCH"));}
 
     sbook.setQuery=setQuery;
 
@@ -64,7 +64,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	var qstring=result.getString();
 	if ((box_arg)&&(typeof box_arg === 'string'))
 	    box_arg=document.getElementById(box_arg);
-	var box=box_arg||result._box||fdjtID("SBOOKSEARCH");
+	var box=box_arg||result._box||fdjtID("CODEXSEARCH");
 	if ((query.dom)&&(box)&&(box!==query.dom))
 	  fdjtDOM.replace(box_arg,query.dom);
 	if (qstring===box.getAttribute("qstring")) {
@@ -153,18 +153,18 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    sbook.setQuery(q,false);};
 
     function showSearchResults(){
-	fdjtDOM.replace("SBOOKSEARCHRESULTS",sbook.query.showResults());
-	sbookMode("browsing");
-	fdjtID("SBOOKSEARCHINPUT").blur();
-	fdjtID("SBOOKSEARCHRESULTS").focus();
-	sbook.UI.updateScroller(fdjtID("SBOOKSEARCHRESULTS"));}
+	fdjtDOM.replace("CODEXSEARCHRESULTS",sbook.query.showResults());
+	CodexMode("browsing");
+	fdjtID("CODEXSEARCHINPUT").blur();
+	fdjtID("CODEXSEARCHRESULTS").focus();
+	sbook.UI.updateScroller(fdjtID("CODEXSEARCHRESULTS"));}
     sbook.showSearchResults=showSearchResults;
 
     /* Call this to search */
 
     function startSearch(tag){
 	setQuery([tag]);
-	sbookMode("searching");}
+	CodexMode("searching");}
     sbook.startSearch=startSearch;
 
     /* Text input handlers */
@@ -231,7 +231,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
     */
 
     function searchUpdate(input,cloud){
-	if (!(input)) input=fdjtID("SBOOKSEARCHINPUT");
+	if (!(input)) input=fdjtID("CODEXSEARCHINPUT");
 	if (!(cloud)) cloud=queryCloud(sbook.query);
 	cloud.complete(input.value);}
     sbook.searchUpdate=searchUpdate;
@@ -241,7 +241,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	var input=fdjtDOM.T(evt);
 	sbook_search_focus=true;
 	if ((sbook.mode)&&(sbook.mode==='browsing'))
-	    sbookMode("searching");
+	    CodexMode("searching");
 	searchUpdate(input);}
     sbook.UI.handlers.search_focus=searchInput_focus;
 
@@ -261,10 +261,10 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
     sbook.toggleSearch=function(evt){
 	evt=evt||event;
 	if ((sbook.mode==="searching")||(sbook.mode==="browsing"))
-	    sbookMode(false);
+	    CodexMode(false);
 	else {
-	    sbookMode("searching");
-	    fdjtID("SBOOKSEARCHINPUT").focus();}
+	    CodexMode("searching");
+	    fdjtID("CODEXSEARCHINPUT").focus();}
 	fdjtUI.cancel(evt);};
     
     /* Show search results */
@@ -353,7 +353,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    else fdjtDOM.addClass(completions,"showempty");
 
 	    query._cloud=
-		new fdjtUI.Completions(completions,fdjtID("SBOOKSEARCHINPUT"));
+		new fdjtUI.Completions(completions,fdjtID("CODEXSEARCHINPUT"));
 
 	    return query._cloud;}}
     sbook.queryCloud=queryCloud;
@@ -370,9 +370,9 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".resultcounts")) {
 	    showSearchResults(sbook.query);
-	    sbookMode("browsing");
-	    fdjtID("SBOOKSEARCHINPUT").blur();
-	    fdjtID("SBOOKSEARCHRESULTS").focus();
+	    CodexMode("browsing");
+	    fdjtID("CODEXSEARCHINPUT").blur();
+	    fdjtID("CODEXSEARCHRESULTS").focus();
 	    fdjtDOM.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".refinercounts")) {
 	    var completions=fdjtDOM.getParent(target,".completions");
@@ -380,7 +380,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".maxcompletemsg")) {
 	    var completions=fdjtDOM.getParent(target,".completions");
-	    fdjtID("SBOOKSEARCHINPUT").focus();
+	    fdjtID("CODEXSEARCHINPUT").focus();
 	    fdjtDOM.toggleClass(container,"showall");
 	    fdjtDOM.cancel(evt);}
 	else {}}

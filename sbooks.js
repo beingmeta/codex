@@ -84,7 +84,7 @@ var sbook=
     };
 var _sbook_setup=false;
 
-var sbookHUD=false;
+var CodexHUD=false;
 
 var sbook_gloss_data=
     ((typeof sbook_gloss_data === 'undefined')?(false):
@@ -294,7 +294,7 @@ var sbook_gloss_data=
     sbook.checkTarget=function(){
 	if ((sbook.target)&&(sbook.mode==='glosses'))
 	    if (!(fdjtDOM.isVisible(sbook.target))) {
-		sbookMode(false); sbookMode(true);}};
+		CodexMode(false); CodexMode(true);}};
 
     function getTarget(scan,closest){
 	scan=scan.target||scan.srcElement||scan;
@@ -304,7 +304,7 @@ var sbook_gloss_data=
 		return false;
 	    else if (scan===sbook.root) return target;
 	    else if (scan.id) {
-		if (fdjtDOM.hasParent(scan,sbookHUD)) return false;
+		if (fdjtDOM.hasParent(scan,CodexHUD)) return false;
 		else if (fdjtDOM.hasParent(scan,".sbookmargin")) return false;
 		else if ((fdjtDOM.hasClass(scan,"sbookfoci"))||(!(sbook.foci))||
 			 (sbook.foci.match(scan)))
@@ -346,8 +346,8 @@ var sbook_gloss_data=
 	    return;}
 	else if (head) {
 	    if (sbook.Trace.focus) sbook.trace("sbook.setHead",head);
-	    sbookTOC.update("SBOOKTOC4",headinfo,sbook.Info(sbook.head));
-	    sbookTOC.update("SBOOKFLYTOC4",headinfo,sbook.Info(sbook.head));
+	    CodexTOC.update("CODEXTOC4",headinfo,sbook.Info(sbook.head));
+	    CodexTOC.update("CODEXFLYTOC4",headinfo,sbook.Info(sbook.head));
 	    window.title=headinfo.title+" ("+document.title+")";
 	    if (sbook.head) fdjtDOM.dropClass(sbook.head,"sbookhead");
 	    fdjtDOM.addClass(head,"sbookhead");
@@ -355,8 +355,8 @@ var sbook_gloss_data=
 	    sbook.head=fdjtID(head.id);}
 	else {
 	    if (sbook.Trace.focus) sbook.trace("sbook.setHead",head);
-	    sbookTOCUpdate(head,"SBOOKTOC4");
-	    sbookTOCUpdate(head,"SBOOKFLYTOC4");
+	    CodexTOCUpdate(head,"CODEXTOC4");
+	    CodexTOCUpdate(head,"CODEXFLYTOC4");
 	    sbook.head=false;}}
     sbook.setHead=setHead;
 
@@ -366,8 +366,8 @@ var sbook_gloss_data=
 	    fdjtLog("Setting location to %o",location);
 	var info=sbook.Info(sbook.head);
 	while (info) {
-	    var tocelt=document.getElementById("SBOOKTOC4"+info.frag);
-	    var flytocelt=document.getElementById("SBOOKFLYTOC4"+info.frag);
+	    var tocelt=document.getElementById("CODEXTOC4"+info.frag);
+	    var flytocelt=document.getElementById("CODEXFLYTOC4"+info.frag);
 	    var start=tocelt.sbook_start; var end=tocelt.sbook_end;
 	    var progress=((location-start)*80)/(end-start);
 	    var bar=fdjtDOM.getFirstChild(tocelt,".progressbar");
@@ -467,7 +467,7 @@ var sbook_gloss_data=
 
     function inUI(elt){
 	if (elt.sbookui) return true;
-	else if (fdjtDOM.hasParent(elt,sbookHUD)) return true;
+	else if (fdjtDOM.hasParent(elt,CodexHUD)) return true;
 	else while (elt)
 	    if (elt.sbookui) return true;
 	else if (fdjtDOM.hasClass(elt,sbookUIclasses)) return true;
@@ -477,7 +477,7 @@ var sbook_gloss_data=
     function displayOffset(){
 	var toc;
 	if (sbook.mode)
-	    if (toc=fdjtID("SBOOKTOC"))
+	    if (toc=fdjtID("CODEXTOC"))
 		return -((toc.offsetHeight||50)+15);
 	else return -60;
 	else return -40;}
@@ -621,7 +621,7 @@ var sbook_gloss_data=
 	    if (sbook.hudup) sbook.HUD.style.opacity=0.0001;
 	    fdjtDOM.addClass(document.body,"pageswitch");
 	    setTimeout(function() {
-		if (sbook.hudup) sbookMode(false);
+		if (sbook.hudup) CodexMode(false);
 		sbookGoTo(target);
 		fdjtDOM.dropClass(document.body,"pageswitch");
 		sbook.HUD.style.opacity=1.0;
@@ -633,7 +633,7 @@ var sbook_gloss_data=
 			   200);},
 		       200);}
 	else {
-	    if (sbook.hudup) sbookMode(false);
+	    if (sbook.hudup) CodexMode(false);
 	    sbookGoTo(target);}}
     sbook.JumpTo=sbookJumpTo;
 
