@@ -40,7 +40,7 @@ body.sbook { }
     z-index: 100;}
 #CODEXPAGE {
     position: fixed;
-    top: 50px; bottom: 50px; left: 0px; right: 0px; width: 100%;
+    top: 60px; bottom: 50px; left: 0px; right: 0px; width: 100%;
     overflow: hidden;}
 #CODEXPAGE #CODEXMASK {
     position: absolute; z-index: 75;
@@ -846,7 +846,7 @@ div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar .tab {
 div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar .tab  {
     border: transparent solid 3px;}
 div#SBOOKHUD div#SBOOKHUDBUTTONS div.tabbar img.tab {
-    height: 40px;}
+    height: 50px;}
 
 div#SBOOKHUD.about div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='APPABOUT'],
 div#SBOOKHUD.login div#SBOOKHUDBUTTONS div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
