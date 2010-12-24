@@ -360,6 +360,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
 	else if (kc===34) sbook.Forward(evt);   /* page down */
 	else if (kc===33) sbook.Backward(evt);  /* page up */
+	else if (kc===37) sbook.pageBackward(evt); /* arrow left */
+	else if (kc===38) sbook.scanBackward(evt); /* arrow up */
+	else if (kc===39) sbook.pageForward(evt); /* arrow right */
+	else if (kc===40) sbook.scanForward(evt); /* arrow down */
 	// Don't interrupt text input for space, etc
 	else if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
 	else if (kc===32) sbook.Forward(evt); // Space
@@ -838,6 +842,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((ref)&&(scan)) sbook.Scan(ref,scan);
 	return scan;}
     sbook.scanForward=scanForward;
+
     function scanBackward(){
 	if (sbook.mode==="scanning") {}
 	else if (sbook.mode==="tocscan") {}
