@@ -51,6 +51,12 @@ sbook.Startup=
 	function Startup(force){
 	    if (sbook._setup) return;
 	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
+	    fdjtLog.console_fn=
+		function(){
+		    fdjtDOM(fdjtID("SBOOKCONSOLE"),
+			    fdjtDOM("div.logentry",
+				    fdjtString.apply(null,arguments)));};
+	    fdjtLog.consoletoo=true;
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
 	    getSettings();
