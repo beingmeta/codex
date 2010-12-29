@@ -976,7 +976,7 @@ body.nosbookuser a.logout {display: none;}
 
 div#CODEXHUD div#CODEXFLYLEAF a,
 div#CODEXHUD div#CODEXFLYLEAF a:visited { 
-  color: lightblue; text-decoration: none;}
+  color: darkblue; text-decoration: none;}
 div#CODEXHUD div#CODEXFLYLEAF a:hover { text-decoration: underline;}
 div#CODEXHUD div#CODEXFLYLEAF .flyleafplate a,
 div#CODEXHUD div#CODEXFLYLEAF .flyleafplate a:visited {
