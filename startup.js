@@ -51,11 +51,7 @@ sbook.Startup=
 	function Startup(force){
 	    if (sbook._setup) return;
 	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
-	    fdjtLog.console_fn=
-		function(){
-		    fdjtDOM(fdjtID("SBOOKCONSOLE"),
-			    fdjtDOM("div.logentry",
-				    fdjtString.apply(null,arguments)));};
+	    fdjtLog.console=fdjtID("SBOOKCONSOLE");
 	    fdjtLog.consoletoo=true;
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
@@ -80,21 +76,21 @@ sbook.Startup=
 		    sbook.body.style.opacity='0.25';},
 		function(){
 		    if (sbook.Trace.startup>1)
-			fdjtLog("[%fs] Initializing HUD",fdjtET());
+			fdjtLog("Initializing HUD");
 		    sbook.initHUD(); sbook.initDisplay();
 		    if (sbook.animate.hud)
 			fdjtDOM.addClass("CODEXHUD","codexanimate");
 		    helphud=fdjtID("SBOOKHELP");
 		    helphud.style.opacity=0.0001;
 		    if (sbook.Trace.startup>1)
-			fdjtLog("[%fs] HUD Setup, sizing help",fdjtET());},
+			fdjtLog("HUD Setup, sizing help");},
 		function(){CodexMode("help");}, 
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){
 		    fdjtDOM.finishScale(helphud);
 		    if (sbook.Trace.startup>1)
-			fdjtLog("[%fs] Displaying help",fdjtET());
+			fdjtLog("Displaying help");
 		    helphud.style.opacity='';},
 		sbook.setupGestures,
 		getUser,
@@ -141,8 +137,8 @@ sbook.Startup=
 		function (){ if (sbook.user) setupGlosses();},
 		function(){
 		    if (sbook.Trace.startup>1)
-			fdjtLog("[%fs] Initial pagination for %ox%o",
-				fdjtET(),fdjtDOM.viewWidth(),fdjtDOM.viewHeight());
+			fdjtLog("Initial pagination for %ox%o",
+				fdjtDOM.viewWidth(),fdjtDOM.viewHeight());
 		    sbookPaginate(sbook.paginate);},
 		function(){
 		    if ((sbook.user)&&(!(sbook.glossing))&&
@@ -559,7 +555,7 @@ sbook.Startup=
 		aside.codextocloc=anchor.id;
 		fdjtDOM.append(allasides,aside);}
 	    if (sbook.Trace.startup>1)
-		fdjtLog("[%fs] Initialized body",fdjtET());}
+		fdjtLog("Initialized body");}
 
 	/* Changing settings */
 
@@ -588,8 +584,7 @@ sbook.Startup=
 	    var refuri=sbook.refuri;
 	    var loadinfo=_sbook_loadinfo||false;
 	    if (sbook.Trace.startup>1)
-		fdjtLog("[%fs] Getting user for %o cur=%o",
-			fdjtET(),refuri,sbook.user);
+		fdjtLog("Getting user for %o cur=%o",refuri,sbook.user);
 	    if (sbook.user) return;
 	    else if (sbook.nologin) return;
 	    if ((loadinfo)&&
@@ -603,8 +598,8 @@ sbook.Startup=
 		var refuri=sbook.refuri;
 		var user=fdjtState.getLocal("sbook.user");
 		if (sbook.trace.startup)
-		    fdjtLog("[%fs] Restoring offline user info for %o reading %o",
-			    fdjtET(),user,refuri);
+		    fdjtLog("Restoring offline user info for %o reading %o",
+			    user,refuri);
 		var userinfo=JSON.parse(fdjtState.getLocal(user));
 		var sources=fdjtState.getLocal("sbook.sources("+refuri+")",true);
 		var outlets=fdjtState.getLocal("sbook.outlets("+refuri+")",true);
@@ -636,8 +631,9 @@ sbook.Startup=
 	    else throw { error: "Can't change user"};
 	    var syncstamp=sbook.syncstamp;
 	    if ((syncstamp)&&(syncstamp>=sync)) {
-		fdjtLog.warn("[%fs] Cached user information is newer (%o) than loaded (%o)",
-			     fdjtET(),syncstamp,sync);
+		fdjtLog.warn(
+		    "Cached user information is newer (%o) than loaded (%o)",
+		    syncstamp,sync);
 		return false;}
 	    sbook.user=fdjtKB.Import(userinfo);
 	    if (persist) {
@@ -764,8 +760,8 @@ sbook.Startup=
 		    "/v4/glosses.js?CALLBACK=sbook.Startup.initGlosses&REFURI="+
 		    encodeURIComponent(sbook.refuri);
 		if (sbook.Trace.glosses)
-		    fdjtLog("[%fs] setupGlosses/JSONP %o sync=%o",
-			    fdjtET(),glosses_script.src,sbook.syncstamp||false);
+		    fdjtLog("setupGlosses/JSONP %o sync=%o",
+			    glosses_script.src,sbook.syncstamp||false);
 		if (sbook.syncstamp)
 		    glosses_script.src=
 		    glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
@@ -803,8 +799,7 @@ sbook.Startup=
 		    target=document.getElementById(hash.slice(1));
 		else target=document.getElementById(hash);
 		if (sbook.Trace.startup>1)
-		    fdjtLog("[%fs] sbookInitLocation hash=%s=%o",
-			    fdjtET(),hash,target);
+		    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);
 		if (target) sbook.GoTo(target,false,true);}
 	    else {
 		var uri=sbook.docuri||sbook.refuri;
@@ -821,12 +816,11 @@ sbook.Startup=
 		"?DOCURI="+encodeURIComponent(sbook.docuri)+
 		"&REFURI="+encodeURIComponent(sbook.refuri);
 	    if (sbook.Trace.dosync)
-		fdjtLog("[%fs] syncLocation(call) %s",fdjtET(),uri);
+		fdjtLog("syncLocation(call) %s",uri);
 	    fdjtAjax.jsonCall(
 		function(d){
 		    if (sbook.Trace.dosync)
-			fdjtLog("[%fs] syncLocation(response) %s: %o",
-				fdjtET(),uri,d);
+			fdjtLog("syncLocation(response) %s: %o",uri,d);
 		    if (!(d)) {
 			if (!(sbook.state))
 			    sbook.GoTo(sbook.start||sbook.root||sbook.body,false,false);
@@ -847,7 +841,7 @@ sbook.Startup=
 	function gotGlosses(){
 	    delete sbook.glossing; sbook.glossed=fdjtTime();
 	    if (sbook.Trace.glosses)
-		fdjtLog("[%fs] gotGlosses",fdjtET());
+		fdjtLog("gotGlosses");
 	    sbook.Message("setting up search cloud...");
 	    fdjtDOM.replace("CODEXSEARCHCLOUD",sbook.FullCloud().dom);
 	    sbook.Message("setting up glossing cloud...");
@@ -863,15 +857,14 @@ sbook.Startup=
 	    var allglosses=sbook.allglosses;
 	    if (etc) {
 		if (sbook.Trace.startup)
-		    fdjtLog("[%fs] Assimilating %d new glosses and %d sources",
-			    fdjtET(),glosses.length,etc.length);
+		    fdjtLog("Assimilating %d new glosses and %d sources",
+			    glosses.length,etc.length);
 		sbook.Message(
 		    fdjtString("Assimilating %d new glosses/%d sources...",
 			       glosses.length,etc.length));}
 	    else {
 		if (sbook.Trace.startup)
-		    fdjtLog("[%fs] Assimilating %d new glosses",
-			    fdjtET(),glosses.length);
+		    fdjtLog("Assimilating %d new glosses",glosses.length);
 		sbook.Message(
 		    fdjtString(
 			"Assimilating %d new glosses...",glosses.length));}

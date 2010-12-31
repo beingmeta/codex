@@ -293,7 +293,7 @@ var sbook_delete_icon="redx12x12.png";
 	    var r=results[i];
 	    if (typeof r === 'string') {
 		var ref=sbook.docinfo[r]||sbook.glosses.ref(r);
-		if (!(ref)) fdjtLog("[%fs] No resolution for %o",r);
+		if (!(ref)) fdjtLog("No resolution for %o",r);
 		notes[i]=ref;}
 	    else notes[i]=r;
 	    i++;}

@@ -155,11 +155,13 @@ var sbookPaginate=
 		else if (scantop>pagelim) {
 		    // Issue a warning (if neccessary) and break on this element
 		    if (avoidPageHead(scan,style)) 
-			fdjtLog.warn("[%fs] Pagination got stuck with non page head %o",
-				     fdjtET(),scan);
+			fdjtLog.warn(
+			    "Pagination got stuck with non page head %o",
+			    scan);
 		    else if (isPageFoot(scan,style))
-			fdjtLog.warn("[%fs] Pagination got stuck with page foot at head %o",
-				     fdjtET(),scan);
+			fdjtLog.warn(
+			    "Pagination got stuck with page foot at head %o",
+			    scan);
 		    else {}
 		    newtop=scan;}
 		else if ((info.bottom>pagelim)&&(isPageBlock(scan,style))) {
@@ -309,8 +311,8 @@ var sbookPaginate=
 			var mbottom=parsePX(last_style.marginBottomWidth);
 			curpage.bottom=last_info.top+last_info.height-mbottom;}
 		    if (sbook.Trace.layout) 
-			fdjtLog("[%fs] New %spage break P%d[%d,%d]#%s %o, closed P%d[%d,%d] %o",
-				fdjtET(),((splitblock)?("split "):("")),
+			fdjtLog("New %spage break P%d[%d,%d]#%s %o, closed P%d[%d,%d] %o",
+				((splitblock)?("split "):("")),
 				pages.length,newinfo.top,newinfo.bottom,newtop.id,newtop,
 				curpage.pagenum,curpage.top,curpage.bottom,curpage);
 		    // Make a new page
@@ -373,8 +375,8 @@ var sbookPaginate=
 		    sbook.Message("Finished page layout");
 		    if ((sbook.Trace.layout)||
 			((sbook.Trace.startup)&&(!(sbook._setup))))
-			fdjtLog("[%fs] Paginated %d nodes into %d pages with pagesize=%d in %s",
-				fdjtET(),nodecount,pages.length,pagesize,
+			fdjtLog("Paginated %d nodes into %d pages with pagesize=%d in %s",
+				nodecount,pages.length,pagesize,
 				fdjtTime.secs2short(doneat-startedat));
 		    callback(result);}}
 	    setTimeout(stepfn,10);}
@@ -496,8 +498,8 @@ var sbookPaginate=
 
 	function _sbookTracePagination(name,elt,info){
 	    if (elt)
-		fdjtLog("[%fs] %s '%s' [%d,%d] %d%s%s%s%s%s %o",
-			fdjtET(),name,elt.id,info.top,info.bottom,
+		fdjtLog("%s '%s' [%d,%d] %d%s%s%s%s%s %o",
+			name,elt.id,info.top,info.bottom,
 			elt.toclevel||0,
 			((isPageHead(elt))?"/ph":""),
 			((isPageBlock(elt))?"/pb":""),
@@ -505,7 +507,7 @@ var sbookPaginate=
 			((avoidPageFoot(elt))?"/af":""),
 			((fdjtDOM.hasText(elt))?"/ht":""),
 			elt);
-	    else fdjtLog("[%fs] %s none",fdjtET(),name);}
+	    else fdjtLog("%s none",name);}
 
 	function _sbookPaginationInfo(elt,info,newpage,splitblock){
 	    return ((splitblock)?"s":(newpage)?"h":"p")+(elt.toclevel||0)+
@@ -651,24 +653,24 @@ var sbookPaginate=
 	    if (!(pageoff)) pageoff=0;
 	    if ((typeof pagenum !== 'number')||
 		(pagenum<0)||(pagenum>=sbook.pages.length)) {
-		fdjtLog.warn("[%fs] Invalid page number %o",fdjtET(),pagenum);
+		fdjtLog.warn("Invalid page number %o",pagenum);
 		return;}
 	    if (sbook.Trace.nav)
-		fdjtLog("[%fs] ScrollGoToPage%s %o+%o",
-			fdjtET(),((caller)?"/"+caller:""),pagenum,pageoff);
+		fdjtLog("ScrollGoToPage%s %o+%o",
+			((caller)?"/"+caller:""),pagenum,pageoff);
 	    var info=sbook.pageinfo[pagenum];
 	    var off=sbook.pages[pagenum]+pageoff;
 	    if (sbook.fastpage) AdjustPage(info);
 	    if (sbook.Trace.nav) {
 		if ((sbook.curpage)&&(sbook.curpage>=0))
-		    fdjtLog("[%fs] Jumped to P%d@%d=%d+%d P%d@[%d,%d]#%s+%d (%o) from P%d@[%d,%d]#%s (%o)",
-			    fdjtET(),pagenum,off,sbook.pages[pagenum],pageoff,
+		    fdjtLog("Jumped to P%d@%d=%d+%d P%d@[%d,%d]#%s+%d (%o) from P%d@[%d,%d]#%s (%o)",
+			    pagenum,off,sbook.pages[pagenum],pageoff,
 			    pagenum,info.top,info.bottom,info.first.id,
 			    pageoff,info,sbook.curpage,
 			    sbook.curinfo.top,sbook.curinfo.bottom,
 			    sbook.curinfo.first.id,sbook.curinfo);
-		else fdjtLog("[%fs] Jumped to %d P%d@[%d,%d]#%s+%d (%o)",
-			     fdjtET(),off,pagenum,
+		else fdjtLog("Jumped to %d P%d@[%d,%d]#%s+%d (%o)",
+			     off,pagenum,
 			     info.top,info.bottom,info.first.id,pageoff,info);}
 	    updatePage(info,off);
 	    var npages=sbook.pageinfo.length;
@@ -719,7 +721,7 @@ var sbookPaginate=
 	    if (!(sbook.animate.pages))
 		return sbook.GoToPage(pagenum,off,"FadeToPage");
 	    if (sbook.Trace.nav)
-		fdjtLog("[%fs] sbook.FadeToPage %o+%o",fdjtET(),pagenum,off);
+		fdjtLog("sbook.FadeToPage %o+%o",pagenum,off);
 	    // sbook.body.style.opacity=0.0001;
 	    sbook.newpage={pagenum: pagenum,pageoff: off};
 	    fdjtDOM.addClass(sbook.body,"pageswitch");
@@ -734,8 +736,8 @@ var sbookPaginate=
 	    if (sbook.preview) return false;
 	    if ((window.scrollY!==page_yoff)||(window.scrollX!==page_xoff)) {
 		/*
-		  fdjtLog("[%fs] syncing the page, was %o,%o should be %o,%o",
-		  fdjtET(),window.scrollX,window.scrollY,page_xoff,page_yoff);
+		  fdjtLog("syncing the page, was %o,%o should be %o,%o",
+		  window.scrollX,window.scrollY,page_xoff,page_yoff);
 		*/
 		// Only if pages are defined
 		if (sbook.curpage)
@@ -770,13 +772,12 @@ var sbookPaginate=
 
 	function tracePaging(name,elt){
 	    if (!(elt)) {
-		fdjtLog("[%fs] %s none",fdjtET(),name);
+		fdjtLog("%s none",name);
 		return;}
 	    var top=sbook.viewTop();
 	    var bottom=sbook.viewTop()+((fdjtDOM.viewHeight()));
 	    var offsets=getGeometry(elt,sbook_body);
-	    fdjtLog("[%fs] %s [%d+%d=%d] %s [%d,%d] %o%s%s%s%s '%s'\n%o",
-		    fdjtET(),name,
+	    fdjtLog("%s [%d+%d=%d] %s [%d,%d] %o%s%s%s%s '%s'\n%o",name,
 		    offsets.top,offsets.height,offsets.top+offsets.height,
 		    pagePlacement(offsets,top,bottom),top,bottom,
 		    elt.toclevel||0,

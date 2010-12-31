@@ -186,7 +186,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /***** Adding tags ******/
 
     function addTag(form,tag,varname) {
-	// fdjtLog("[%fs] Adding %o to tags for %o",fdjtET(),tag,form);
+	// fdjtLog("Adding %o to tags for %o",tag,form);
 	if (!(tag)) tag=form;
 	if (form.tagName!=='FORM')
 	    form=fdjtDOM.getParent(form,'form')||form;
@@ -235,7 +235,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     var hiding_glosscloud=false;
     function showGlossCloud(input,embedded){
 	var string=false;
-	// fdjtLog("[%fs] showglosscloud (%o) %o",fdjtET(),input,embedded);
+	// fdjtLog("showglosscloud (%o) %o",input,embedded);
 	if (hiding_glosscloud) {
 	    clearTimeout(hiding_glosscloud); hiding_glosscloud=false;}
 	fdjtDOM.dropClass(CodexHUD,"sharing");
@@ -670,8 +670,7 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var form=fdjtDOM.getParent(target,"form");
 	if (sbook.Trace.mode)
-	    fdjtLog("[%fs] glossMode %o %o=>%o",
-		    fdjtET(),form,form.className,mode);
+	    fdjtLog("glossMode %o %o=>%o",form,form.className,mode);
 	form.className='sb'+mode+'mode';
 	if (mode==='tag') {
 	    var input=fdjtDOM.getInput(form,"TAG");

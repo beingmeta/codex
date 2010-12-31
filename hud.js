@@ -145,7 +145,7 @@ var CodexMode=
 	    var vw=fdjtDOM.viewWidth();
 	    var hf=fdjtID("CODEXFOOT");
 	    var fh=fdjtDOM.getGeometry(hf).height;
-	    // fdjtLog("[%fs] resizeHUD vh=%o vw=%o fh=%o",fdjtET(),vh,vw,fh);
+	    // fdjtLog("resizeHUD vh=%o vw=%o fh=%o",vh,vw,fh);
 	    if (!(sbook.nativescroll)) hf.style.top=(vh-fh)+'px';}
 
 	/* This is used for viewport-based browser, where the HUD moves
@@ -231,8 +231,8 @@ var CodexMode=
 	function CodexMode(mode){
 	    if (typeof mode === 'undefined') return sbook.mode;
 	    if (sbook.Trace.mode)
-		fdjtLog("[%fs] CodexMode %o, cur=%o dbc=%o",
-			fdjtET(),mode,sbook.mode,document.body.className);
+		fdjtLog("CodexMode %o, cur=%o dbc=%o",
+			mode,sbook.mode,document.body.className);
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
 		if (mode==="flyleaf") mode=sbook.last_flyleaf||"about";
@@ -338,8 +338,8 @@ var CodexMode=
 	    else {
 		if ((!(sbook.scrollers))||(!(elt.id))) return;
 		if (sbook.Trace.scroll) {
-		    fdjtLog("[%fs] cco=%o ct=%o nh=%o",
-			    fdjtET(),cc.offsetHeight,c.offsetTop,
+		    fdjtLog("cco=%o ct=%o nh=%o",
+			    cc.offsetHeight,c.offsetTop,
 			    cc.offsetHeight-c.offsetTop);}
 		c.style.height=
 		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
@@ -349,18 +349,18 @@ var CodexMode=
 		    sbook.scrollers[elt.id].refresh();
 		else sbook.scrollers[elt.id]=new iScroll(elt);}
 	    if (sbook.Trace.scroll) {
-		fdjtLog("[%fs] updateScroller %o %o %o ch=%o h=%o",
-			fdjtET(),elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);
-		fdjtLog("[%fs] updateScroller e=%o,c=%o,cc=%o",
-			fdjtET(),fdjtDOM.getStyle(elt).overflow,
+		fdjtLog("updateScroller %o %o %o ch=%o h=%o",
+			elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);
+		fdjtLog("updateScroller e=%o,c=%o,cc=%o",
+			fdjtDOM.getStyle(elt).overflow,
 			fdjtDOM.getStyle(c).overflow,
 			fdjtDOM.getStyle(cc).overflow);
 		if ((!(sbook.nativescroll))&&
 		    (elt.id)&&(sbook.scrollers)&&
 		    (sbook.scrollers[elt.id])) {
 		    var scroller=sbook.scrollers[elt.id];
-		    fdjtLog("[%fs] e=%o w=%o wo=%o,%o wc=%o,%o i=%o,%o o=%o,%o d=%o,%o m=%o,%o",
-			    fdjtET(),scroller.element,scroller.wrapper,
+		    fdjtLog("e=%o w=%o wo=%o,%o wc=%o,%o i=%o,%o o=%o,%o d=%o,%o m=%o,%o",
+			    scroller.element,scroller.wrapper,
 			    scroller.wrapper.offsetWidth,
 			    scroller.wrapper.offsetHeight,
 			    scroller.wrapper.clientWidth,
@@ -397,11 +397,11 @@ var CodexMode=
 			    fdjtState.argVec(arguments,1));
 	    fdjtDOM.replace("SBOOKHELPMESSAGE",fdjtDOM.clone(msg));
 	    fdjtDOM.replace("SBOOKCONSOLEMESSAGE",fdjtDOM.clone(msg));
-	    fdjtDOM.prepend("SBOOKMESSAGELOG",
-			    fdjtDOM("div.logentry",
-				    fdjtDOM("span.time",fdjtET()),
-				    message,
-				    fdjtState.argVec(arguments,1)));}
+	    fdjtDOM.append("SBOOKCONSOLE",
+			   fdjtDOM("div.fdjtlog",
+				   fdjtDOM("span.time",fdjtET()),
+				   message,
+				   fdjtState.argVec(arguments,1)));}
 	sbook.Message=sbookMessage;
 
 	function sbookFlashMessage(arg0){
@@ -605,8 +605,8 @@ var CodexMode=
 	    var body=document.body;
 	    var pelt=sbook.scanning;
 	    if (sbook.Trace.mode)
-		fdjtLog("[%fs] codexscan() %o (src=%o) mode=%o scn=%o/%o",
-			fdjtET(),elt,src,sbook.mode,sbook.scanning,sbook.target);
+		fdjtLog("codexscan() %o (src=%o) mode=%o scn=%o/%o",
+			elt,src,sbook.mode,sbook.scanning,sbook.target);
 	    // Save the source HUD element for the preview (when provided)
 	    if (sbook.scanning!==src) {
 		var clone=src.cloneNode(true);

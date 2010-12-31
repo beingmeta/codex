@@ -214,8 +214,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    return;}
 	var passage=sbook.getTarget(target);
 	if (sbook.Trace.gestures)
-	    fdjtLog("[%fs] content_tapped (%o) on %o passage=%o mode=%o",
-		    fdjtET(),evt,target,passage,sbook.mode);
+	    fdjtLog("content_tapped (%o) on %o passage=%o mode=%o",
+		    evt,target,passage,sbook.mode);
 	if ((fdjtDOM.isClickable(target))||
 	    (fdjtDOM.hasParent(target,".sbookglossbutton"))||
 	    (fdjtDOM.hasParent(target,".sbookglossmark")))
@@ -259,16 +259,14 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function tapTarget(target){
 	if (sbook.Trace.gestures)
-	    fdjtLog("[%fs] Tap on target %o mode=%o",
-		    fdjtET(),target,sbook.mode);
+	    fdjtLog("Tap on target %o mode=%o",target,sbook.mode);
 	sbook.setTarget(target);
 	addGlossButton(target);
 	CodexMode(true);}
 
     function xtapTarget(target){
 	if (sbook.Trace.gestures)
-	    fdjtLog("[%fs] Tap (gloss) on target %o mode=%o",
-		    fdjtET(),target,sbook.mode);
+	    fdjtLog("Tap (gloss) on target %o mode=%o",target,sbook.mode);
 	sbook.setTarget(target);
 	addGlossButton(target);
 	sbook.glossTarget(target);
@@ -280,8 +278,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (typeof x !== 'number') x=last_x;
 	if (typeof x === 'number') {
 	    if (sbook.Trace.gestures)
-		fdjtLog("[%fs] edgeTap %o x=%o w=%o",
-			fdjtET(),evt,x,fdjtDOM.viewHeight());
+		fdjtLog("edgeTap %o x=%o w=%o",evt,x,fdjtDOM.viewHeight());
 	    if (x<50) {Backward(evt); return true;}
 	    else if (x>(fdjtDOM.viewWidth()-50)) {
 		Forward(evt); return true;}
@@ -461,8 +458,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var mode=target.getAttribute("hudmode");
 	if ((sbook.Trace.gestures)&&
 	    ((evt.type==='click')||(sbook.Trace.gestures>1)))
-	    fdjtLog("[%fs] hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
-		    fdjtET(),evt,mode,(fdjtDOM.isClickable(target)),
+	    fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
+		    evt,mode,(fdjtDOM.isClickable(target)),
 		    sbook.scanning,sbook.hudup,CodexMode());
 	fdjtUI.cancel(evt);
 	if (!(mode)) return;
@@ -510,8 +507,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
 	var target=fdjtUI.T(evt); var ref=sbook.getRef(target);
 	if (touch_started)
-	    fdjtLog("[%fs] %s() n=%o %sts=%o %s@%o\n\t+%o %s%s%s%s%s%s%s s=%o,%o l=%o,%o p=%o,%o d=%o,%o ref=%o tt=%o tm=%o",
-		    fdjtET(),handler,((touches)&&(touches.length)),
+	    fdjtLog("%s() n=%o %sts=%o %s@%o\n\t+%o %s%s%s%s%s%s%s s=%o,%o l=%o,%o p=%o,%o d=%o,%o ref=%o tt=%o tm=%o",
+		    handler,((touches)&&(touches.length)),
 		    ((!(touch))?(""):
 		     ("c="+touch.clientX+","+touch.clientY+";s="+touch.screenX+","+touch.screenY+" ")),
 		    touch_started,evt.type,target,
@@ -527,13 +524,13 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    (((touch)&&(touch.screenX))?(touch.screenX-page_x):0),
 		    (((touch)&&(touch.screenY))?(touch.screenY-page_y):0),
 		    touch_ref,touch_timer,touch_moves);
-	else fdjtLog("[%fs] %s() n=%o %s%s c=%o,%o p=%o,%o ts=%o %s@%o ref=%o",
-		     fdjtET(),handler,((touches)&&(touches.length)),
+	else fdjtLog("%s() n=%o %s%s c=%o,%o p=%o,%o ts=%o %s@%o ref=%o",
+		     handler,((touches)&&(touches.length)),
 		     ((sbook.mode)?(sbook.mode+" "):""),
 		     ((sbook.scanning)?"scanning ":""),
 		     touch.clientX,touch.clientY,touch.screenX,touch.screenY,
 		     touch_started,evt.type,target,ref);
-	if (ref) fdjtLog("[%fs] %s() ref=%o from %o",fdjtET(),handler,ref,target);}
+	if (ref) fdjtLog("%s() ref=%o from %o",handler,ref,target);}
 
     /* Touch handling */
 
@@ -591,8 +588,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((held)&&((adx+ady)>10)) {
 	    clear_hold("touchmove"+(adx+ady)); handled=false;}
 	if (sbook.Trace.gestures>1)
-	    fdjtLog("[%fs] body_touchmove d=%o,%o a=%o,%o p=%o,%o l=%o,%o n=%o scan=%o ",
-		    fdjtET(),dx,dy,adx,ady,
+	    fdjtLog("body_touchmove d=%o,%o a=%o,%o p=%o,%o l=%o,%o n=%o scan=%o ",
+		    dx,dy,adx,ady,
 		    touch.clientX,touch.clientY,last_x,last_y,
 		    touch_moves,sbook.scanning);
 	last_x=touch.clientX; last_y=touch.clientY;
@@ -611,8 +608,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
 	    var ad=((adx<ady)?(ady-adx):(adx-ady));
 	    if (sbook.Trace.gestures)
-		fdjtLog("[%fs] touchend/gesture l=%o,%o s=%o,%o d=%o,%o |d|=%o,%o",
-			fdjtET(),last_x,last_y,start_x,start_y,dx,dy,adx,ady);
+		fdjtLog("touchend/gesture l=%o,%o s=%o,%o d=%o,%o |d|=%o,%o",
+			last_x,last_y,start_x,start_y,dx,dy,adx,ady);
 	    if (adx>(ady*3)) { /* horizontal */
 		if (n_touches===1) {
 		    if (dx<0) sbook.Forward(evt);
@@ -652,7 +649,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var curpos=sbook.scrollPos();
 	var curx=curpos.x; var cury=curpos.y;
 	if (sbook.Trace.gestures)
-	    fdjtLog("[%fs] scrollBody(%o,%o)",fdjtET(),dx,dy);
+	    fdjtLog("scrollBody(%o,%o)",dx,dy);
 	var newx=curx-dx; var newy=cury-dy;
 	fdjtDOM.addClass(CodexHUD,"hidebuttons");
 	sbook.scrollTo(newx,newy);}
@@ -663,7 +660,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	mouseisdown=false; // For faketouch
 	var scroller=((sbook.scrolling)&&(sbook.scrollers)&&
 		      (sbook.scrollers[sbook.scrolling]));
-	// fdjtLog("[%f] hud_touchend scroller=%o(%o) moved=%o",fdjtET(),scroller,scroller.element,scroller.moved);
+	// fdjtLog("hud_touchend scroller=%o(%o) moved=%o",scroller,scroller.element,scroller.moved);
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
 	else if (fdjtDOM.isClickable(target)) {
 	    if (sbook.ui==="faketouch") {
@@ -677,7 +674,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		  else target=target.parentNode;
 		if (!(target)) return;
 		if (sbook.Trace.gestures)
-		  fdjtLog("[%fs] Synthesizing click on %o",fdjtET(),target);
+		  fdjtLog("Synthesizing click on %o",target);
 		click_evt.initMouseEvent("click", true, true, window,
 					 1,page_x,page_y,last_x, last_y,
 					 false, false, false, false, 0, null);
@@ -697,8 +694,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var target=sbook.getTarget(glossmark.parentNode);
 	fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) 
-	    fdjtLog("[%fs] glossmark_clicked() %o to %o for %o",
-		    fdjtET(),evt,glossmark,target);
+	    fdjtLog("glossmark_clicked() %o to %o for %o",evt,glossmark,target);
 	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
 	    CodexMode(true);
 	    return;}
@@ -724,8 +720,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((last_motion)&&((now-last_motion)<100)) return;
 	else last_motion=now;
 	if (sbook.Trace.nav)
-	    fdjtLog("[%fs] Forward e=%o h=%o t=%o",
-		    fdjtET(),evt,sbook.head,sbook.target);
+	    fdjtLog("Forward e=%o h=%o t=%o",evt,sbook.head,sbook.target);
 	if ((sbook.mode==="glosses")||(sbook.mode==="addgloss"))
 	  CodexMode(true);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
@@ -741,8 +736,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((sbook.mode==="glosses")||(sbook.mode==="addgloss"))
 	  CodexMode(true);
 	if (sbook.Trace.nav)
-	    fdjtLog("[%fs] Backward e=%o h=%o t=%o",
-		    fdjtET(),evt,sbook.head,sbook.target);
+	    fdjtLog("Backward e=%o h=%o t=%o",evt,sbook.head,sbook.target);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
 	    scanBackward();
 	else pageBackward();}
@@ -750,8 +744,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function pageForward(){
 	if (sbook.Trace.gestures)
-	    fdjtLog("[%fs] pageForward c=%o n=%o",
-		    fdjtET(),sbook.curpage,sbook.pages.length);
+	    fdjtLog("pageForward c=%o n=%o",sbook.curpage,sbook.pages.length);
 	if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var newpage=false;
 	    if (sbook.mode==="glosses") CodexMode(true);
@@ -783,8 +776,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function pageBackward(){
 	if (sbook.Trace.gestures)
-	    fdjtLog("[%fs] pageBackward c=%o n=%o",
-		    fdjtET(),sbook.curpage,sbook.pages.length);
+	    fdjtLog("pageBackward c=%o n=%o",sbook.curpage,sbook.pages.length);
 	if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var newpage=false;
 	    if (sbook.mode==="glosses") CodexMode(true);
@@ -824,8 +816,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (sbook.mode==="tocscan") {
 	    var head=sbook.head; var headinfo=sbook.docinfo[head.id];
 	    if (sbook.Trace.nav) 
-		fdjtLog("[%fs] scanForward/toc() head=%o info=%o n=%o h=%o",
-			fdjtET(),head,headinfo,headinfo.next,headinfo.head);
+		fdjtLog("scanForward/toc() head=%o info=%o n=%o h=%o",
+			head,headinfo,headinfo.next,headinfo.head);
 	    if (headinfo.next) sbook.GoTo(headinfo.next.elt);
 	    else if ((headinfo.head)&&(headinfo.head.next)) {
 		sbook.GoTo(headinfo.head.next.elt); CodexMode("toc");}
@@ -837,8 +829,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var scan=sbook.nextSlice(start);
 	var ref=((scan)&&(sbook.getRef(scan)));
 	if (sbook.Trace.nav) 
-	    fdjtLog("[%fs] scanForward() from %o/%o to %o/%o under %o",
-		    fdjtET(),start,sbook.getRef(start),scan,ref,slice);
+	    fdjtLog("scanForward() from %o/%o to %o/%o under %o",
+		    start,sbook.getRef(start),scan,ref,slice);
 	if ((ref)&&(scan)) sbook.Scan(ref,scan);
 	return scan;}
     sbook.scanForward=scanForward;
@@ -851,8 +843,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (sbook.mode==="tocscan") {
 	    var head=sbook.head; var headinfo=sbook.docinfo[head.id];
 	    if (sbook.Trace.nav) 
-		fdjtLog("[%fs] scanBackward/toc() head=%o info=%o p=%o h=%o",
-			fdjtET(),head,headinfo,headinfo.prev,headinfo.head);
+		fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",
+			head,headinfo,headinfo.prev,headinfo.head);
 	    if (headinfo.prev) sbook.GoTo(headinfo.prev.elt);
 	    else if (headinfo.head) {
 		sbook.GoTo(headinfo.head.elt); CodexMode("toc");}
@@ -861,8 +853,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var scan=sbook.prevSlice(sbook.scanning);
 	var ref=((scan)&&(sbook.getRef(scan)));
 	if (sbook.Trace.nav) 
-	    fdjtLog("[%fs] scanBackward() from %o/%o to %o/%o under %o",
-		    fdjtET(),start,sbook.getRef(start),scan,ref,slice);
+	    fdjtLog("scanBackward() from %o/%o to %o/%o under %o",start,sbook.getRef(start),scan,ref,slice);
 	if ((ref)&&(scan)) sbook.Scan(ref,scan);
 	return scan;}
     sbook.scanBackward=scanBackward;
@@ -905,8 +896,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var offwidth=pageinfo.offsetWidth;
 	var goloc=Math.round((offx/offwidth)*sbook.ends_at);
 	if (sbook.Trace.gestures)
-	    fdjtLog("[%fs] pageinfo_click %o off=%o/%o goloc=%o/%o",
-		    fdjtET(),evt,offx,offwidth,goloc,sbook.ends_at);
+	    fdjtLog("pageinfo_click %o off=%o/%o goloc=%o/%o",
+		    evt,offx,offwidth,goloc,sbook.ends_at);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
 	if (!(sbook.mode)) CodexMode("tocscan");
@@ -923,8 +914,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var goloc=Math.floor((offx/offwidth)*sbook.ends_at);
 	var page=((sbook.paginate)&&sbook.getPageAt(goloc));
 	fdjtUI.cancel(evt);
-	fdjtLog("[%fs] %o type=%o ox=%o ow=%o gl=%o p=%o",
-		fdjtET(),evt,evt.type,offx,offwidth,goloc,page);
+	fdjtLog("%o type=%o ox=%o ow=%o gl=%o p=%o",
+		evt,evt.type,offx,offwidth,goloc,page);
 	if ((evt.type==='touchmove')||
 	    ((evt.type==='mousemove')&&((evt.button)||(evt.shiftKey)))) {
 	    if ((typeof page === 'number')&&(page!==sbook.curpage))

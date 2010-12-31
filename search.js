@@ -68,15 +68,15 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	if ((query.dom)&&(box)&&(box!==query.dom))
 	  fdjtDOM.replace(box_arg,query.dom);
 	if (qstring===box.getAttribute("qstring")) {
-	  fdjtLog("[%fs] No change in query for %o to %o: %o/%o (%o)",
-		  fdjtET(),box,result._query,result,result._refiners,qstring);
+	  fdjtLog("No change in query for %o to %o: %o/%o (%o)",
+		  box,result._query,result,result._refiners,qstring);
 	  return;}
 	if (sbook.Trace.search>1)
-	    fdjtLog("[%fs] Setting query for %o to %o: %o/%o (%o)",
-		    fdjtET(),box,result._query,result,result._refiners,qstring);
+	    fdjtLog("Setting query for %o to %o: %o/%o (%o)",
+		    box,result._query,result,result._refiners,qstring);
 	else if (sbook.Trace.search)
-	    fdjtLog("[%fs] Setting query for %o to %o: %d results/%d refiners (%o)",
-		    fdjtET(),box,result._query,result._results.length,
+	    fdjtLog("Setting query for %o to %o: %d results/%d refiners (%o)",
+		    box,result._query,result._results.length,
 		    result._refiners._results.length,qstring);
 	var input=fdjtDOM.getChild(box,".searchinput");
 	var cloudid=input.getAttribute("completions");
@@ -126,8 +126,8 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.dropClass(box,"norefiners");
 	    if (cloudid) completions.id=cloudid;
 	    if (sbook.Trace.search>1)
-		fdjtLog("[%fs] Setting search cloud for %o to %o",
-			fdjtET(),box,completions.dom);
+		fdjtLog("Setting search cloud for %o to %o",
+			box,completions.dom);
 	    cloudid=cloud.id;
 	    fdjtDOM.replace(cloud,completions.dom);
 	    completions.complete("");
@@ -176,7 +176,7 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event||null;
 	var ch=evt.charCode||evt.keyCode;
 	var target=fdjtDOM.T(evt);
-	// fdjtLog("[%fs] Input %o on %o",fdjtET(),evt,target);
+	// fdjtLog("Input %o on %o",evt,target);
 	// Clear any pending completion calls
 	if ((ch===13)||(ch===13)||(ch===59)||(ch===93)) {
 	    var qstring=target.value;
@@ -390,8 +390,8 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	var sbook_index=sbook.index;
 	var start=new Date();
 	if (sbook.Trace.clouds)
-	    fdjtLog("[%fs] Making cloud from %d dterms using scores=%o and scores=%o",
-		    fdjtET(),dterms.length,scores,scores);
+	    fdjtLog("Making cloud from %d dterms using scores=%o and scores=%o",
+		    dterms.length,scores,scores);
 	var spans=fdjtDOM("span");  
 	var tagicon=fdjtDOM.Image
 	  (sbicon("TagSearch50x50.png"),
@@ -456,9 +456,8 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.prepend(completions,maxmsg);
 	var end=new Date();
 	if (sbook.Trace.clouds)
-	    fdjtLog("[%fs] Made cloud for %d dterms in %f seconds",
-		    fdjtET(),dterms.length,
-		    (end.getTime()-start.getTime())/1000);
+	    fdjtLog("Made cloud for %d dterms in %f seconds",
+		    dterms.length,(end.getTime()-start.getTime())/1000);
 
 	return completions;}
     sbook.makeCloud=makeCloud;

@@ -45,8 +45,7 @@ function codexscan(root,docinfo){
     docinfo._root=root;
     if (!(root.id)) root.id="SBOOKROOT";
     if (sbook.Trace.startup)
-	fdjtLog("[%fs] Scanning DOM for structure and metadata: %o",
-		fdjtET(),root);
+	fdjtLog("Scanning DOM for structure and metadata: %o",root);
     var nodefn=codexscan.nodeFn||false;
     var children=root.childNodes, level=false;
     var scanstate=
@@ -86,8 +85,8 @@ function codexscan(root,docinfo){
 	scaninfo=scaninfo.head;}
     var done=new Date();
     if (sbook.Trace.startup)
-	fdjtLog('[%fs] Gathered metadata in %f secs over %d/%d heads/nodes',
-		fdjtET(),(done.getTime()-start.getTime())/1000,
+	fdjtLog('Gathered metadata in %f secs over %d/%d heads/nodes',
+		(done.getTime()-start.getTime())/1000,
 		scanstate.headcount,scanstate.eltcount);
     return docinfo;
 
@@ -193,7 +192,7 @@ function codexscan(root,docinfo){
 	scanstate.headcount++;
 	if ((headinfo.elt)&&(headinfo.elt!==head)) {
 	    var newid=headid+"x"+scanstate.location;
-	    fdjtLog.warn("[%fs] Duplicate ID=%o newid=%o",fdjtET(),headid,newid);
+	    fdjtLog.warn("Duplicate ID=%o newid=%o",headid,newid);
 	    head.id=headid=newid;
 	    headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
 		(docinfo[headid]=new scanInfo(headid,scanstate));}
@@ -340,7 +339,7 @@ function codexscan(root,docinfo){
 	    info=new scanInfo(id,scanstate);}
 	if ((info)&&(info.elt)&&(child.id)&&(info.elt!==child)) {
 	    var newid=child.id+"x"+scanstate.location;
-	    fdjtLog.warn("[%fs] Duplicate ID=%o newid=%o",fdjtET(),child.id,newid);
+	    fdjtLog.warn("Duplicate ID=%o newid=%o",child.id,newid);
 	    child.id=id=newid;
 	    info=((nodefn)&&(nodefn(head)))||docinfo[id]||
 		(docinfo[id]=new scanInfo(id,scanstate));}

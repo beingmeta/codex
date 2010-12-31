@@ -280,8 +280,7 @@ div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
 /* The Console */
 
-div#SBOOKCONSOLE div.logentry span.time {
-    float: left; width: 6em; color: green;}
+div#SBOOKCONSOLE div.fdjtlog { margin-left: 40px; }
 div#SBOOKCONSOLE div.message {
     text-align: center; font-size: 150%;}
 

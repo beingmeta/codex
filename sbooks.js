@@ -93,7 +93,7 @@ var sbook_gloss_data=
 (function(){
 
     function initDB() {
-	if (sbook.Trace.start>1) fdjtLog("[%fs] Initializing DB",fdjtET());
+	if (sbook.Trace.start>1) fdjtLog("Initializing DB");
 	var refuri=(sbook.refuri||document.location.href);
 	if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
 	var docinfo=sbook.DocInfo=new fdjtKB.Pool(refuri+"#");
@@ -128,8 +128,8 @@ var sbook_gloss_data=
 	    sbook.glosses.addInit(function(item) {
 		var info=sbook.docinfo[item.frag];
 		if (!(info))
-		    fdjtLog("[%fs] Gloss refers to nonexistent '%s': %o",
-			    fdjtET(),item.frag,item);
+		    fdjtLog("Gloss refers to nonexistent '%s': %o",
+			    item.frag,item);
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
 		sbook.index.add(item,item.user);
@@ -158,18 +158,18 @@ var sbook_gloss_data=
 	    sbook.sourcekb.index=new fdjtKB.Index();
 	    if (sbook.offline)
 		sbook.sourcekb.storage=new fdjtKB.OfflineKB(sbook.sourcekb);}
-	if (sbook.Trace.start>1) fdjtLog("[%fs] Initialized DB",fdjtET());}
+	if (sbook.Trace.start>1) fdjtLog("Initialized DB");}
     sbook.initDB=initDB;
 
-    var trace1="[%fs] %s %o in %o: mode%s=%o, target=%o, head=%o scanning=%o";
-    var trace2="[%fs] %s %o: mode%s=%o, target=%o, head=%o scanning=%o";
+    var trace1="%s %o in %o: mode%s=%o, target=%o, head=%o scanning=%o";
+    var trace2="%s %o: mode%s=%o, target=%o, head=%o scanning=%o";
     function sbook_trace(handler,cxt){
 	var target=fdjtUI.T(cxt);
 	if (target)
-	    fdjtLog(trace1,fdjtET(),handler,cxt,target,
+	    fdjtLog(trace1,handler,cxt,target,
 		    ((sbook.scanning)?("(scanning)"):""),sbook.mode,
 		    sbook.target,sbook.head,sbook.scanning);
-	else fdjtLog(trace2,fdjtET(),handler,cxt,
+	else fdjtLog(trace2,handler,cxt,
 		     ((sbook.scanning)?("(scanning)"):""),sbook.mode,
 		     sbook.target,sbook.head,sbook.scanning);}
     sbook.trace=sbook_trace;
@@ -511,10 +511,10 @@ var sbook_gloss_data=
 		"&DOCURI="+encodeURIComponent(sbook.docuri)+
 		"&REFURI="+encodeURIComponent(refuri);
 	    if (sbook.Trace.dosync)
-		fdjtLog("[%fs] syncPosition(call) %s: %o",fdjtET(),uri,state);
+		fdjtLog("syncPosition(call) %s: %o",uri,state);
 	    var req=new XMLHttpRequest();
 	    /* req.onreadystatechange=function(evt){
-	       fdjtLog("[%fs] Got response %o",fdjtET(),evt);}; */
+	       fdjtLog("Got response %o",evt);}; */
 	    req.open("POST",uri,true);
 	    req.withCredentials='yes';
 	    req.send(statestring);}}
@@ -576,14 +576,14 @@ var sbook_gloss_data=
 	    else target=getTarget(arg);
 	    location=info.start;}
 	else {
-	    fdjtLog.warn("[%fs] Bad sbookGoTo %o",fdjtET(),arg);
+	    fdjtLog.warn("Bad sbookGoTo %o",arg);
 	    return;}
 	if (!(target)) return;
 	var page=((sbook.paginate)&&sbook.getPageAt(location));
 	var info=((target.id)&&(sbook.docinfo[target.id]));
 	if (sbook.Trace.nav)
-	    fdjtLog("[%fs] sbook.GoTo() #%o@P%o/L%o %o",
-		    fdjtET(),target.id,page,((info)&&(info.starts_at)),target);
+	    fdjtLog("sbook.GoTo() #%o@P%o/L%o %o",
+		    target.id,page,((info)&&(info.starts_at)),target);
 	if (target.id) setHashID(target);
 	if (info) {
 	    if (typeof info.level === 'number')
