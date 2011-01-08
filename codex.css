@@ -1497,6 +1497,20 @@ body.colpage .fullpage, body.colpage .titlepage, body.colpage .sbookfullpage, bo
     -moz-column-break-after: always;
     -moz-column-break-inside: avoid;}
 
+.backmatter {
+    page-break-before: always;
+    -o-page-break-before: always;
+    -moz-page-break-before: always;
+    -webkit-page-break-before: always;}
+.frontmatter {
+    page-break-after: always;
+    -o-page-break-after: always;
+    -moz-page-break-after: always;
+    -webkit-page-break-after: always;}
+.gutenberg { opacity: 0.5;}
+.gutenberg:hover { opacity: 1.0;}
+    
+
 /* HTML5ish elements */
 
 body.sbook div#SBOOKDETAILS,
