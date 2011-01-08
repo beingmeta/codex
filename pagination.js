@@ -829,9 +829,15 @@ var sbookPaginate=
 	    if (!(sbook.nativescroll)) window.scrollTo(0,0);
 
 	    // The better way to do this might be to change the stylesheet,
-	    //  but fdjtDOM doesn't handle that currently
-	    var bgcolor=fdjtDOM.getStyle(document.body).backgroundColor||
+	    //  but fdjtDOM doesn't currently handle that 
+	    var bgcolor=fdjtDOM.getStyle(sbook.body||document.body).backgroundColor||
 		'white';
+	    if ((bgcolor)&&(bgcolor.search("rgba")>=0)) {
+		if (bgcolor.search(/,\s*0\s*\)/)>0) bgcolor='white';
+		else {
+		    bgcolor=bgcolor.replace("rgba","rgb");
+		    bgcolor=bgcolor.replace(/,\s*((\d+)|(\d+.\d+))\s*\)/,")");}}
+	    fdjtLog("bgcolor=%o",bgcolor);
 	    pagehead.style.backgroundColor=bgcolor;
 	    pagefoot.style.backgroundColor=bgcolor;
 	    pagemask.style.backgroundColor=bgcolor;
