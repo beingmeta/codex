@@ -63,23 +63,28 @@ var CodexTOC=
 		case 'end': return sbicon("GoldRightStop24.png");}}}
 	sbook.navicon=navicon;
 
-	function CodexTOC(headinfo,depth,tocspec,prefix){
+	function CodexTOC(headinfo,depth,tocspec,prefix,headless){
 	    var progressbar=fdjtDOM("HR.progressbar");
-	    var head=fdjtDOM("A.sectname",headinfo.title);
+	    var head=((headless)?(false):
+		      (fdjtDOM("A.sectname",headinfo.title)));
 	    var spec=tocspec||"DIV.codextoc";
 	    var next_button=
-		((headinfo.next)?
-		 (fdjtDOM.Image(navicon("right"),false,"next")):
-		 (fdjtDOM.Image(navicon("end"),false,"nextstop")));
+		((head)&&
+		 ((headinfo.next)?
+		  (fdjtDOM.Image(navicon("right"),false,"next")):
+		  (fdjtDOM.Image(navicon("end"),false,"nextstop"))));
+	    if ((next_button)&&(headinfo.next))
+		next_button.frag=headinfo.next.frag;
 	    var back_button=
-		((headinfo.prev)?
-		 (fdjtDOM.Image(navicon("left"),false,"back")):
-		 (fdjtDOM.Image(navicon("start"),false,"backstop")));
-	    if (headinfo.next) next_button.frag=headinfo.next.frag;
-	    if (headinfo.prev) back_button.frag=headinfo.prev.frag;
+		((head)&&
+		 ((headinfo.prev)?
+		  (fdjtDOM.Image(navicon("left"),false,"back")):
+		  (fdjtDOM.Image(navicon("start"),false,"backstop"))));
+	    if ((back_button)&&(headinfo.prev))
+		back_button.frag=headinfo.prev.frag;
 	    var toc=fdjtDOM(spec,
 			    next_button,back_button,
-			    fdjtDOM("DIV.head",progressbar,head),
+			    ((head)&&(fdjtDOM("DIV.head",progressbar,head))),
 			    generate_spanbar(headinfo),
 			    generate_subsections(headinfo));
 	    var sub=headinfo.sub;

@@ -178,7 +178,8 @@ var CodexMode=
 	sbook.setupTOC=setupTOC;
 
 	function createNavHUD(eltspec,root_info){
-	    var toc_div=CodexTOC(root_info,0,false,"CODEXTOC4");
+	    var toc_div=CodexTOC(root_info,0,false,"CODEXTOC4",
+				 ((root_info.sub.length>1)));
 	    var div=fdjtDOM(eltspec||"div#CODEXTOC.hudpanel",toc_div);
 	    if (!(eltspec)) sbookNavHUD=div;
 	    sbook.UI.addHandlers(div,"toc");
