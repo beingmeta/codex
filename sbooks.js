@@ -419,6 +419,7 @@ var sbook_gloss_data=
 	if (!(nosave))
 	    setState({target: target.id,
 		      location: sbook.location,
+		      loclen: sbook.ends_at,
 		      page: sbook.curpage});
  	if (!(nogo)) sbook.GoTo(target,true);}
     sbook.setTarget=setTarget;
@@ -504,7 +505,7 @@ var sbook_gloss_data=
 	var statestring=JSON.stringify(state);
 	var uri=sbook.docuri||sbook.refuri;
 	fdjtState.setLocal("sbook.state("+uri+")",statestring);
-	if ((sbook.dosync)&&(navigator.onLine)) {
+	if ((sbook.user)&&(sbook.dosync)&&(navigator.onLine)) {
 	    var refuri=((sbook.target)&&(sbook.getRefURI(sbook.target)))||
 		(sbook.refuri);
 	    var uri="https://"+sbook.server+"/v4/sync?ACTION=save"+
@@ -579,7 +580,7 @@ var sbook_gloss_data=
 	    fdjtLog.warn("Bad sbookGoTo %o",arg);
 	    return;}
 	if (!(target)) return;
-	var page=((sbook.paginate)&&sbook.getPageAt(location));
+	var page=((sbook.paginate)&&(sbook.pageinfo)&&(sbook.getPageAt(location)));
 	var info=((target.id)&&(sbook.docinfo[target.id]));
 	if (sbook.Trace.nav)
 	    fdjtLog("sbook.GoTo() #%o@P%o/L%o %o",
@@ -596,9 +597,9 @@ var sbook_gloss_data=
 	else if (noset)
 	    sbook.setState({
 		target: ((sbook.target)&&(sbook.target.id)),
-		location: location,page: page})
+		location: location,loclen: sbook.ends_at,page: page})
 	else sbook.setState(
-	    {target: (target.id),location: location,page: page});
+	    {target: (target.id),location: location,loclen: sbook.ends_at,page: page});
 	if (typeof page === 'number') 
 	    sbook.GoToPage(page,0,"sbookGoTo",nosave||false);
 	sbook.location=location;}

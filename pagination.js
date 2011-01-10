@@ -712,7 +712,7 @@ var sbookPaginate=
 	    sbook.setLocation(info.loc);
 	    if (!(nosave))
 		sbook.setState(
-		    {page: pagenum,location: info.loc,
+		    {page: pagenum,location: info.loc,loclen: sbook.ends_at,
 		     target:((sbook.target)&&(sbook.target.id))});}
 	sbook.GoToPage=ScrollGoToPage;
 
@@ -830,13 +830,15 @@ var sbookPaginate=
 
 	    // The better way to do this might be to change the stylesheet,
 	    //  but fdjtDOM doesn't currently handle that 
-	    var bgcolor=fdjtDOM.getStyle(sbook.body||document.body).backgroundColor||
-		'white';
+	    var bgcolor=getBGColor(sbook.body)||getBGColor(document.body)||"white";
+	    if (bgcolor==='transparent')
+		bgcolor=fdjtDOM.getStyle(document.body).backgroundColor;
 	    if ((bgcolor)&&(bgcolor.search("rgba")>=0)) {
 		if (bgcolor.search(/,\s*0\s*\)/)>0) bgcolor='white';
 		else {
 		    bgcolor=bgcolor.replace("rgba","rgb");
 		    bgcolor=bgcolor.replace(/,\s*((\d+)|(\d+.\d+))\s*\)/,")");}}
+	    else if (bgcolor==="transparent") bgcolor="white";
 	    fdjtLog("bgcolor=%o",bgcolor);
 	    pagehead.style.backgroundColor=bgcolor;
 	    pagefoot.style.backgroundColor=bgcolor;
@@ -844,6 +846,13 @@ var sbookPaginate=
 	    fdjtDOM.addListener(false,"resize",resizePage);}
 	sbook.initDisplay=initDisplay;
 	
+	function getBGColor(arg){
+	    var color=fdjtDOM.getStyle(arg).backgroundColor;
+	    if (!(color)) return false;
+	    else if (color==="transparent") return false;
+	    else if (color.search(/rgba/)>=0) return false;
+	    else return color;}
+
 	function updatePage(pageinfo,off){
 	    var viewheight=sbook.page.offsetHeight;
 	    var footheight=((off)+(viewheight))-pageinfo.bottom+1;

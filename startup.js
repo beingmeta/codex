@@ -812,6 +812,7 @@ sbook.Startup=
 		if ((sbook.user)&&(sbook.dosync)&&(navigator.onLine)) syncLocation();}}
 	
 	function syncLocation(){
+	    if (!(sbook.user)) return;
 	    var uri="https://"+sbook.server+"/v4/sync"+
 		"?DOCURI="+encodeURIComponent(sbook.docuri)+
 		"&REFURI="+encodeURIComponent(sbook.refuri);
