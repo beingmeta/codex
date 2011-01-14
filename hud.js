@@ -381,7 +381,7 @@ var CodexMode=
 
 	sbook.dropHUD=function(){return CodexMode(false);}
 	sbook.toggleHUD=function(evt){
-	    if (fdjtDOM.isClickable(fdjtUI.T(evt))) return;
+	    if (fdjtUI.isClickable(fdjtUI.T(evt))) return;
 	    if (sbook.mode) CodexMode(false);
 	    else CodexMode(true);};
 	

@@ -216,7 +216,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (sbook.Trace.gestures)
 	    fdjtLog("content_tapped (%o) on %o passage=%o mode=%o",
 		    evt,target,passage,sbook.mode);
-	if ((fdjtDOM.isClickable(target))||
+	if ((fdjtUI.isClickable(target))||
 	    (fdjtDOM.hasParent(target,".sbookglossbutton"))||
 	    (fdjtDOM.hasParent(target,".sbookglossmark")))
 	    return;
@@ -294,7 +294,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var passage;
 	if ((!((evt.button)||(evt.shiftKey)||(evt.ctrlKey)||
-	       (fdjtDOM.isClickable(target))))&&
+	       (fdjtUI.isClickable(target))))&&
 	    (passage=sbook.getTarget(target)))
 	    held=setTimeout(
 		function(evt){
@@ -309,7 +309,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function edge_click(evt) {
 	var target=fdjtUI.T(evt);
-	if ((fdjtDOM.isClickable(target))||
+	if ((fdjtUI.isClickable(target))||
 	    (fdjtDOM.hasParent(target,".sbookglossbutton"))||
 	    (fdjtDOM.hasParent(target,".sbookglossmark")))
 	    return;
@@ -319,7 +319,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
     function hud_tap(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
-	if (fdjtDOM.isClickable(target)) return;
+	if (fdjtUI.isClickable(target)) return;
 	else if (fdjtDOM.hasParent(target,".helphud")) {
 	    var mode=fdjtDOM.findAttrib(target,"data-hudmode")||
 		fdjtDOM.findAttrib(target,"hudmode");
@@ -459,7 +459,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if ((sbook.Trace.gestures)&&
 	    ((evt.type==='click')||(sbook.Trace.gestures>1)))
 	    fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
-		    evt,mode,(fdjtDOM.isClickable(target)),
+		    evt,mode,(fdjtUI.isClickable(target)),
 		    sbook.scanning,sbook.hudup,CodexMode());
 	fdjtUI.cancel(evt);
 	if (!(mode)) return;
@@ -518,7 +518,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		    ((touch_held)?("held "):("")),
 		    ((touch_moved)?("moved "):("")),
 		    ((touch_scrolled)?("scrolled "):("")),
-		    ((fdjtDOM.isClickable(target))?("clickable "):("")),
+		    ((fdjtUI.isClickable(target))?("clickable "):("")),
 		    ((touch)?"":"notouch "),
 		    start_x,start_y,last_x,last_y,page_x,page_y,
 		    (((touch)&&(touch.screenX))?(touch.screenX-page_x):0),
@@ -537,7 +537,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function shared_touchstart(evt){
 	evt=evt||event||false;
 	var target=fdjtUI.T(evt);
-	if (fdjtDOM.isClickable(target)) return;
+	if (fdjtUI.isClickable(target)) return;
 	fdjtUI.cancel(evt);
 	if (sbook.Trace.gestures) tracetouch("touchstart",evt);
 	touch_started=fdjtTime();
@@ -562,7 +562,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	shared_touchstart(evt);
 	var passage;
-	if ((!((fdjtDOM.isClickable(target))||(n_touches>1)))&&
+	if ((!((fdjtUI.isClickable(target))||(n_touches>1)))&&
 	    (passage=sbook.getTarget(target)))
 	  held=setTimeout(function(evt){
 	      glossExcerpt(passage);
@@ -601,7 +601,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (held) clear_hold("touchend");
 	if (sbook.Trace.gestures) tracetouch("touchend",evt);
 	mouseisdown=false; // For faketouch
-	if (fdjtDOM.isClickable(target)) return;
+	if (fdjtUI.isClickable(target)) return;
 	if (handled) return;
 	else if (touch_moved) {
 	    var dx=last_x-start_x; var dy=last_y-start_y;
@@ -628,7 +628,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	// When faking touch, moves only get counted if the mouse is down.
 	if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
 	var target=fdjtUI.T(evt);
-	if (fdjtDOM.isClickable(target)) return;
+	if (fdjtUI.isClickable(target)) return;
 	fdjtUI.cancel(evt);
 	touch_moves++;
 	var touch=
@@ -662,7 +662,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 		      (sbook.scrollers[sbook.scrolling]));
 	// fdjtLog("hud_touchend scroller=%o(%o) moved=%o",scroller,scroller.element,scroller.moved);
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
-	else if (fdjtDOM.isClickable(target)) {
+	else if (fdjtUI.isClickable(target)) {
 	    if (sbook.ui==="faketouch") {
 		// This happens automatically when faking touch
 		fdjtUI.cancel(evt);
@@ -872,7 +872,7 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     /* Other handlers */
 
     function flyleaf_tap(evt){
-	if (fdjtDOM.isClickable(evt)) return;
+	if (fdjtUI.isClickable(evt)) return;
 	else CodexMode(false);}
 
     function getOffX(evt){
