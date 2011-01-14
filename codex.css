@@ -210,6 +210,8 @@ body.hudup div#CODEXHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
 
+body.hudup div#CODEXHUD.help div.helphud { display: block;}
+
 body.hudup div#CODEXHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
 body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
     border-color: darkblue;
@@ -337,8 +339,13 @@ div.codextoc div.head {
   left: 0px; right: 0px; margin: 0px;
   margin-left: 32px; margin-right: 32px;
   display: none;}
+
 div.codextoc div.head { min-height: 24px;}
+div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
 body.sbooktouch div.codextoc div.head { min-height: 32px;}
+body.sbooktouch div#CODEXFLYTOC div.codextoc div.head {
+    min-height: 24px;}
+
 div.codextoc div.head .progressbar { 
   color: lightblue; background-color: lightblue;
   padding: 0px; margin: 0px; border-right: solid red 3px;
@@ -987,7 +994,8 @@ div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.head { color: black; }
 div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.head { padding-left: 4px;} 
 div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a {
     color: inherit; font-weight: inherit;}
-div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {color: white;}
+div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {
+    font-weight: bold; background-color: gold;}
 
 div#CODEXFLYLEAF table.login th.or { font-size: 200%;}
 

@@ -46,8 +46,6 @@ var CodexMode=
 	var sbookGlossesHUD=false;
 	// This is the HUD for tag searching
 	var sbookSearchHUD=false;
-	// This is the TOC HUD for navigation
-	var sbookNavHUD=false;
 	// How long to let messages flash up
 	var message_timeout=5000;
 	
@@ -181,14 +179,13 @@ var CodexMode=
 	    var toc_div=CodexTOC(root_info,0,false,"CODEXTOC4",
 				 ((root_info.sub.length>1)));
 	    var div=fdjtDOM(eltspec||"div#CODEXTOC.hudpanel",toc_div);
-	    if (!(eltspec)) sbookNavHUD=div;
 	    sbook.UI.addHandlers(div,"toc");
 	    return div;}
 
 	function createStaticTOC(eltspec,root_info){
 	    var toc_div=CodexTOC(root_info,0,false,"CODEXFLYTOC4");
 	    var div=fdjtDOM(eltspec||"div#CODEXFLYTOC",toc_div);
-	    if (!(eltspec)) sbookNavHUD=div;
+	    sbook.UI.addHandlers(div,"toc");
 	    return div;}
 
 	/* HUD animation */
@@ -332,7 +329,7 @@ var CodexMode=
 		fdjtDOM.parsePX(ccstyle.paddingBottom)+
 		fdjtDOM.parsePX(ccstyle.marginTop)+
 		fdjtDOM.parsePX(ccstyle.marginBottom);
-	    if (sbook.nativescroll) {
+	    if (sbook.scrolldivs) {
 		c.style.height=
 		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
 	    	c.style.overflow='';}

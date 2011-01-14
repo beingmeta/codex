@@ -58,7 +58,12 @@ var sbook=
      // This is the time of the last update
      syncstamp: false,
      // Various settings
-     paginate: true, fastpage: false, nativescroll: false,
+     paginate: true, fastpage: false,
+     // Whether to use native scrolling for body content
+     nativescroll: false,
+     // Whether to use native scrolling for embedded DIVs
+     scrolldivs: true,
+     // Dominant interaction mode
      mouse: true,touch: false,kbd: false,
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
