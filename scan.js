@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_scan_id="$Id$";
-var sbooks_scan_version=parseInt("$Revision$".slice(10,-1));
+var codex_scan_id="$Id$";
+var codex_scan_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
@@ -34,19 +34,21 @@ var sbooks_scan_version=parseInt("$Revision$".slice(10,-1));
 
 /* Scanning the document for Metadata */
 
-function codexscan(root,docinfo){
+function CodexDOMScan(root,docinfo){
     if (typeof root === 'undefined') return this;
     if (!(docinfo))
-	if (this instanceof codexscan)
+	if (this instanceof CodexDOMScan)
 	    docinfo=this;
-    else docinfo=new codexscan();
+    else docinfo=new CodexDOMScan();
     if (!(root)) root=sbook.root||document.body;
     var start=new Date();
     docinfo._root=root;
     if (!(root.id)) root.id="SBOOKROOT";
-    if (sbook.Trace.startup)
-	fdjtLog("Scanning DOM for structure and metadata: %o",root);
-    var nodefn=codexscan.nodeFn||false;
+    if (sbook.Trace.startup) {
+	if (root.id) 
+	    fdjtLog("Scanning %s#%s for structure and metadata",root.tagName,root.id);
+	else fdjtLog("Scanning DOM for structure and metadata: %o",root);}
+    var nodefn=docinfo.nodeFn||false;
     var children=root.childNodes, level=false;
     var scanstate=
 	{curlevel: 0,idserial:0,location: 0,
@@ -73,8 +75,9 @@ function codexscan(root,docinfo){
     var i=0; while (i<children.length) {
 	var child=children[i++];
 	if (!((child.sbookskip)||(child.sbookui)))
-	    scanner(child,scanstate,docinfo,codexscan.nodeFn||false);} 
+	    scanner(child,scanstate,docinfo,docinfo.nodeFn||false);} 
     docinfo._nodecount=scanstate.nodecount;
+    docinfo._headcount=scanstate.headcount;
     docinfo._eltcount=scanstate.eltcount;
     docinfo._maxloc=scanstate.location;
     docinfo._allinfo=scanstate.allinfo;
@@ -98,7 +101,7 @@ function codexscan(root,docinfo){
 	docinfo[id]=this;
 	scanstate.allinfo.push(this);
 	return this;}
-    codexscan.scanInfo=scanInfo;
+    CodexDOMScan.scanInfo=scanInfo;
 
     function getTitle(head) {
 	var title=
@@ -372,6 +375,9 @@ function codexscan(root,docinfo){
 	    else if (grandchild.nodeType===1) {
 		scanner(grandchild,scanstate,docinfo,nodefn);}}
 	if (info) info.ends_at=scanstate.location;}}
+
+fdjt_versions.decl("codex",codex_scan_version);
+fdjt_versions.decl("codex/scan",codex_scan_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

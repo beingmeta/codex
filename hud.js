@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_hud_id="$Id$";
-var sbooks_hud_version=parseInt("$Revision$".slice(10,-1));
+var codex_hud_id="$Id$";
+var codex_hud_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
@@ -394,8 +394,8 @@ var CodexMode=
 			    fdjtDOM("span.head",message),
 			    fdjtState.argVec(arguments,1));
 	    fdjtDOM.replace("SBOOKHELPMESSAGE",fdjtDOM.clone(msg));
-	    fdjtDOM.replace("SBOOKCONSOLEMESSAGE",fdjtDOM.clone(msg));
-	    fdjtDOM.append("SBOOKCONSOLE",
+	    fdjtDOM.replace("CODEXCONSOLEMESSAGE",fdjtDOM.clone(msg));
+	    fdjtDOM.append("CODEXCONSOLE",
 			   fdjtDOM("div.fdjtlog",
 				   fdjtDOM("span.time",fdjtET()),
 				   message,
@@ -598,12 +598,12 @@ var CodexMode=
 
 	/* Scanning */
 
-	function codexscan(elt,src){
+	function CodexScan(elt,src){
 	    var cxt=false;
 	    var body=document.body;
 	    var pelt=sbook.scanning;
 	    if (sbook.Trace.mode)
-		fdjtLog("codexscan() %o (src=%o) mode=%o scn=%o/%o",
+		fdjtLog("CodexScan() %o (src=%o) mode=%o scn=%o/%o",
 			elt,src,sbook.mode,sbook.scanning,sbook.target);
 	    // Save the source HUD element for the preview (when provided)
 	    if (sbook.scanning!==src) {
@@ -621,7 +621,7 @@ var CodexMode=
 	    sbook.setTarget(elt);
 	    sbook.GoTo(elt);
 	    CodexMode("scanning");}
-	sbook.Scan=codexscan;
+	sbook.Scan=CodexScan;
 
 	/* Button methods */
 
@@ -632,6 +632,9 @@ var CodexMode=
 	    evt.cancelBubble=true;}
 
 	return CodexMode;})();
+
+fdjt_versions.decl("codex",codex_hud_version);
+fdjt_versions.decl("codex/hud",codex_hud_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

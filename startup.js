@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_id="$Id$";
-var sbooks_version=parseInt("$Revision$".slice(10,-1));
+var codex_startup_id="$Id$";
+var codex_startup_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
@@ -51,8 +51,10 @@ sbook.Startup=
 	function Startup(force){
 	    if (sbook._setup) return;
 	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
-	    fdjtLog.console=fdjtID("SBOOKCONSOLE");
+	    fdjtLog.console="CODEXCONSOLE";
 	    fdjtLog.consoletoo=true;
+	    fdjtLog("This is Codex version %d, built on %s at %s",
+		    fdjt_versions.codex,sbooks_buildhost,sbooks_buildtime);
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
 	    getSettings();
@@ -94,19 +96,21 @@ sbook.Startup=
 		    helphud.style.opacity='';},
 		sbook.setupGestures,
 		getUser,
-		function(){sbook.Message("analyzing book structure");},10,
 		function(){
-		    metadata=codexscan(sbook.root);
+		    metadata=CodexDOMScan(sbook.root);
 		    sbook.docinfo=sbook.DocInfo.map=metadata;
 		    sbook.ends_at=sbook.docinfo[sbook.root.id].ends_at;},
-		function(){sbook.Message("building table of contents");},10,
+		function(){
+		    fdjtLog("building table of contents based on %d heads",
+			    sbook.docinfo._headcount);},
+		10,
 		function(){
 		    sbook.setupTOC(metadata[sbook.root.id]);},
 		function(){
 		    sbook.resizeBody();
 		    sbook.body.style.opacity='';},
 		function(){
-		    sbook.Message("processing knodule ",sbook.knodule.name);},
+		    fdjtLog("processing knodule %s",sbook.knodule.name);},
 		10,
 		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
 		 (function(){
@@ -973,6 +977,9 @@ sbook.Startup=
      return Startup;})();
 sbookStartup=sbook.Startup;
 sbook.Setup=sbook.Startup;
+
+fdjt_versions.decl("codex",codex_startup_version);
+fdjt_versions.decl("codex/startup",codex_startup_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

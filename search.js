@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_search_id="$Id$";
-var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
+var codex_search_id="$Id$";
+var codex_search_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements the search component of a 
@@ -555,6 +555,9 @@ var sbooks_search_version=parseInt("$Revision$".slice(10,-1));
 
 })();
 
+
+fdjt_versions.decl("codex",codex_search_version);
+fdjt_versions.decl("codex/search",codex_search_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

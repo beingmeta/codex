@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_glosses_id="$Id: notes.js 5410 2010-07-31 12:28:42Z haase $";
-var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
+var codex_glosses_id="$Id: notes.js 5410 2010-07-31 12:28:42Z haase $";
+var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements the search component of a 
@@ -827,6 +827,10 @@ var sbooks_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     sbook.writeGlosses=writeGlosses;
     
 })();
+
+fdjt_versions.decl("codex",codex_glosses_version);
+fdjt_versions.decl("codex/glosses",codex_glosses_version);
+
 /* Emacs local variables
    ;;;  Local variables: ***
    ;;;  compile-command: "cd ..; make" ***

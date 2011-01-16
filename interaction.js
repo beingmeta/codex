@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_gestures_id="$Id$";
-var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
+var codex_interaction_id="$Id$";
+var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
@@ -369,10 +369,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
 	else if (kc===34) sbook.Forward(evt);   /* page down */
 	else if (kc===33) sbook.Backward(evt);  /* page up */
-	else if (kc===37) sbook.pageBackward(evt); /* arrow left */
-	else if (kc===38) sbook.scanBackward(evt); /* arrow up */
-	else if (kc===39) sbook.pageForward(evt); /* arrow right */
-	else if (kc===40) sbook.scanForward(evt); /* arrow down */
+	else if (kc===37) sbook.scanBackward(evt); /* arrow left */
+	else if (kc===39) sbook.scanForward(evt); /* arrow right */
 	// Don't interrupt text input for space, etc
 	else if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
 	else if (kc===32) sbook.Forward(evt); // Space
@@ -1027,6 +1025,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
       };
     
 })();
+
+fdjt_versions.decl("codex",codex_interaction_version);
+fdjt_versions.decl("codex/interaction",codex_interaction_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

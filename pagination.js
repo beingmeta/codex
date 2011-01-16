@@ -1,8 +1,8 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_pagination_id=
+var codex_pagination_id=
     "$Id$";
-var sbooks_pagination_version=parseInt("$Revision$".slice(10,-1));
+var codex_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
@@ -373,7 +373,6 @@ var sbookPaginate=
 		    setTimeout(stepfn,200);}
 		else {
 		    var doneat=fdjtET();
-		    sbook.Message("Finished page layout");
 		    if ((sbook.Trace.layout)||
 			((sbook.Trace.startup)&&(!(sbook._setup))))
 			fdjtLog("Paginated %d nodes into %d pages with pagesize=%d in %s",
@@ -844,7 +843,6 @@ var sbookPaginate=
 		    bgcolor=bgcolor.replace("rgba","rgb");
 		    bgcolor=bgcolor.replace(/,\s*((\d+)|(\d+.\d+))\s*\)/,")");}}
 	    else if (bgcolor==="transparent") bgcolor="white";
-	    fdjtLog("bgcolor=%o",bgcolor);
 	    pagehead.style.backgroundColor=bgcolor;
 	    pagefoot.style.backgroundColor=bgcolor;
 	    pagemask.style.backgroundColor=bgcolor;
@@ -892,7 +890,6 @@ var sbookPaginate=
 			       sbook.pages=pagination.pages;
 			       sbook.pageinfo=pagination.info;
 			       sbook_pagesize=pagesize;
-			       sbook.Message("Done with page layout");
 			       var gotopage=sbook.getPageAt(sbook.location);
 			       sbook.GoToPage(gotopage||0,0,"sbookUpdatePagination",true);
 			       if (callback) callback(pagination);});}
@@ -981,6 +978,8 @@ sbook.setFontSize=function(size){
 sbook.setUIFontSize=function(size){
     if (CodexHUD.style.fontSize!==size) CodexHUD.style.fontSize=size;};
 
+fdjt_versions.decl("codex",codex_pagination_version);
+fdjt_versions.decl("codex/pagination",codex_pagination_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

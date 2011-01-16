@@ -1,5 +1,8 @@
 /* -*- Mode: Javascript; -*- */
 
+var codex_toc_id="$Id$";
+var codex_toc_version=parseInt("$Revision$".slice(10,-1));
+
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
    large structured documents (sBooks).
@@ -226,6 +229,9 @@ var CodexTOC=
 
 	return CodexTOC;})();
 
+
+fdjt_versions.decl("codex",codex_toc_version);
+fdjt_versions.decl("codex/toc",codex_toc_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

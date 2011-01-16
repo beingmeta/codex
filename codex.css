@@ -282,8 +282,9 @@ div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
 /* The Console */
 
-div#SBOOKCONSOLE div.fdjtlog { margin-left: 40px; }
-div#SBOOKCONSOLE div.message {
+div#CODEXCONSOLE h1 { font-size: 1.5em;}
+div#CODEXCONSOLE div.fdjtlog { margin-left: 40px; }
+div#CODEXCONSOLE div.message {
     text-align: center; font-size: 150%;}
 
 /* SBOOKGLOSSES */
@@ -866,7 +867,7 @@ div#CODEXHUD.login div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKAPPLOGIN'
 div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKDEVICE'],
 div#CODEXHUD.flytoc div#CODEXHUDBUTTONS div.tabbar .tab[contentid='FLYTOC'],
 div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKHELP'],
-div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKCONSOLE'],
+div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[contentid='CODEXCONSOLE'],
 div#CODEXHUD.sbookapp div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;
@@ -938,7 +939,7 @@ div#CODEXHUD.about div#CODEXFLYHEAD div.tabbar .tab[contentid='APPABOUT'],
 div#CODEXHUD.login div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
 div#CODEXHUD.device div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKDEVICE'],
 div#CODEXHUD.flytoc div#CODEXFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
-div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKCONSOLE'],
+div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXCONSOLE'],
 div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;}
@@ -950,7 +951,7 @@ div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent[id='APPABOUT'],
 div#CODEXHUD.login div#CODEXFLYLEAF div.tabcontent[id='SBOOKAPPLOGIN'],
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent[id='SBOOKDEVICE'],
 div#CODEXHUD.flytoc div#CODEXFLYLEAF div.tabcontent[id='FLYTOC'],
-div#CODEXHUD.console div#CODEXFLYLEAF div.tabcontent[id='SBOOKCONSOLE'],
+div#CODEXHUD.console div#CODEXFLYLEAF div.tabcontent[id='CODEXCONSOLE'],
 div#CODEXHUD.sbookapp div#CODEXFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
     display: block;}
 

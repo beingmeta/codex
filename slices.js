@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_slices_id="$Id$";
-var sbooks_slices_version=parseInt("$Revision$".slice(10,-1));
+var codex_slices_id="$Id$";
+var codex_slices_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements the search component of a 
@@ -603,6 +603,10 @@ var sbook_delete_icon="redx12x12.png";
     sbook.UI.setupSummaryDiv=setupSummaryDiv;
     
 })();
+
+fdjt_versions.decl("codex",codex_slices_version);
+fdjt_versions.decl("codex/slices",codex_slices_version);
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

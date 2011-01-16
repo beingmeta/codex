@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var sbooks_id="$Id$";
-var sbooks_version=parseInt("$Revision$".slice(10,-1));
+var codex_id="$Id$";
+var codex_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
@@ -85,7 +85,7 @@ var sbook=
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0},   // Whether to trace gestures
-     version: sbooks_version, id: sbooks_id
+     version: codex_version, id: codex_id
     };
 var _sbook_setup=false;
 
@@ -668,6 +668,9 @@ var sbook_gloss_data=
 
 
 })();
+
+fdjt_versions.decl("codex",codex_version);
+fdjt_versions.decl("codex/core",codex_version);
 
 /* Adding qricons */
 
