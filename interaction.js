@@ -887,8 +887,22 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    return touch.clientX-(tx+pinfo.offsetLeft);}
 	else return false;}
 
+    function head_click(evt){
+	if (fdjtUI.isClickable(evt)) return;
+	else if (sbook.mode) return;
+	else CodexMode(true);}
+    function foot_click(evt){
+	if (fdjtUI.isClickable(evt)) return;
+	else if (sbook.mode) {
+	    CodexMode(false);
+	    return;}}
+
     function pageinfo_click(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO"); var offx;
+	if (sbook.hudup) {
+	    fdjtUI.cancel(evt);
+	    CodexMode(false);
+	    return;}
 	if (evt.offsetX) {
 	    var tx=fdjtDOM.getGeometry(fdjtUI.T(evt),pageinfo).left;
 	    offx=evt.offsetX+tx;}
@@ -901,7 +915,9 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
 	if (!(sbook.mode)) CodexMode("tocscan");
-	sbook.GoTo(goloc);}
+	sbook.GoTo(goloc);
+	if ((sbook.mode==="gotoloc")||(sbook.mode==="gotopage"))
+	    CodexMode(false);}
     /* This doesn't quite work on the iPad, so we're not currently
        using it. */
     function pageinfo_move(evt){
@@ -950,6 +966,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXPAGEINFO": {click: pageinfo_click},
 	 "#CODEXPAGENO": {click: enterPageNum},
 	 "#CODEXLOCOFF": {click: enterLocation},
+	 "#SBOOKPAGEHEAD": {click: head_click},
+	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 "#SBOOKPAGERIGHT": {click: Forward},
 	 "#SBOOKPAGELEFT": {click: Backward},
 	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
@@ -968,6 +986,10 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
        hud: {touchstart: shared_touchstart,
 	     touchmove: hud_touchmove,
 	     touchend: hud_touchend},
+       "#SBOOKPAGEHEAD": {click: head_click},
+       "#SBOOKPAGEFOOT": {click: foot_click},
+       "#SBOOKPAGERIGHT": {click: Forward},
+       "#SBOOKPAGELEFT": {click: Backward},
        "#CODEXFLYLEAF": {touchend: flyleaf_tap},
        "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			  touchmove: cancel,touchend: cancel},

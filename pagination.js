@@ -368,7 +368,8 @@ var sbookPaginate=
 		var stopblock=fdjtTime()+200;
 		while ((scan)&&(fdjtTime()<stopblock)) loop();
 		if (scan) {
-		    sbook.Message("Determining page layout",pageinfo.length," pages");
+		    sbook.Message(
+			"Determining page layout",pageinfo.length," pages");
 		    setTimeout(stepfn,200);}
 		else {
 		    var doneat=fdjtET();
@@ -674,7 +675,7 @@ var sbookPaginate=
 			     info.top,info.bottom,info.first.id,pageoff,info);}
 	    updatePage(info,off);
 	    var npages=sbook.pageinfo.length;
-	    var pbar=fdjtDOM("div.progressbar");
+	    var pbar=fdjtDOM("div.progressbar#CODEXPROGRESSBAR");
 	    var book_len=sbook.ends_at;
 	    var starts_at=info.loc;
 	    var ends_at=((sbook.pageinfo[pagenum+1])?
@@ -684,16 +685,17 @@ var sbookPaginate=
 	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
 	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF",
 			       "L"+Math.ceil(info.loc/128));
-	    var pageno=
-		fdjtDOM("div#CODEXPAGENO",pbar,locoff,
-			pagenum+1,((pageoff)?"+":""),"/",npages);
+	    var pageno_text=
+		fdjtDOM("span.pageno",pagenum+1,((pageoff)?"+":""),"/",npages);
+	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
 	    fdjtDOM.replace("CODEXPAGENO",pageno);
+	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
 	    locoff.title="click to jump to a particular location";
 	    fdjtDOM.addListeners
 	      (locoff,sbook.UI.handlers[sbook.ui]["#CODEXLOCOFF"]);
-	    pageno.title="click to jump to a particular page";
+	    pageno_text.title="click to jump to a particular page";
 	    fdjtDOM.addListeners
-	      (pageno,sbook.UI.handlers[sbook.ui]["#CODEXPAGENO"]);
+	      (pageno_text,sbook.UI.handlers[sbook.ui]["#CODEXPAGENO"]);
 	    sbook.curpage=pagenum;
 	    sbook.curoff=pageoff;
 	    sbook.curinfo=info;
@@ -803,9 +805,12 @@ var sbookPaginate=
 	    topleading.sbookui=true; bottomleading.sbookui=true;
 
 	    var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
-	    var pagefoot=fdjtDOM("div.sbookmargin#SBOOKPAGEFOOT"," ",
-				 fdjtDOM("div#CODEXPAGEINFO",
-					 fdjtDOM("div#CODEXPAGENO","p/n")));
+	    var pagefoot=fdjtDOM(
+		"div.sbookmargin#SBOOKPAGEFOOT"," ",
+		fdjtDOM("div#CODEXPAGEINFO",
+			fdjtDOM("div.progressbar#CODEXPROGRESSBAR",""),
+			fdjtDOM("div#CODEXPAGENO",
+				fdjtDOM("span#CODEXPAGENOTEXT","p/n"))));
 	    pagehead.sbookui=true; pagefoot.sbookui=true;
 	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
 
