@@ -205,6 +205,8 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function content_tapped(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
 	var anchor=fdjtDOM.getParent(target,"A");
+	// If you tap on a relative anchor, move there using Codex
+	// rather than the browser default
 	if ((anchor)&&(anchor.href)&&(anchor.href[0]==='#')&&
 	    (document.getElementById(anchor.href.slice(1)))) {
 	    var goto=document.getElementById(anchor.href.slice(1));
@@ -213,16 +215,21 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtUI.cancel(evt);
 	    return;}
 	var passage=sbook.getTarget(target);
+	// We get the passage here so we can include it in the trace message
 	if (sbook.Trace.gestures)
 	    fdjtLog("content_tapped (%o) on %o passage=%o mode=%o",
 		    evt,target,passage,sbook.mode);
+	// These should have their own handlers
 	if ((fdjtUI.isClickable(target))||
-	    (fdjtDOM.hasParent(target,".sbookglossbutton"))||
-	    (fdjtDOM.hasParent(target,".sbookglossmark")))
+	    (fdjtDOM.hasParent(target,".sbookglossbutton")))
+	    // remove for new passage click handling
+	    // (fdjtDOM.hasParent(target,".sbookglossmark"))
 	    return;
 	else fdjtUI.cancel(evt); 
+	// If you tap an edge, page forward or backward
 	if (edgeTap(evt)) return;
 	var sel=window.getSelection();
+	// If there's a selection, store it as an excerpt.
 	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
 	    sbook.selection=sel;
 	    var p=sbook.getTarget(sel.anchorNode)||
@@ -260,13 +267,18 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
     function tapTarget(target){
 	if (sbook.Trace.gestures)
 	    fdjtLog("Tap on target %o mode=%o",target,sbook.mode);
-	sbook.setTarget(target);
 	addGlossButton(target);
-	CodexMode(true);}
+	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
+	    // If you're already showing glosses, hide them
+	    CodexMode(true);
+	    return;}
+	else {
+	    sbook.setTarget(target);
+	    sbook.openGlossmark(target);}}
 
     function xtapTarget(target){
 	if (sbook.Trace.gestures)
-	    fdjtLog("Tap (gloss) on target %o mode=%o",target,sbook.mode);
+	    fdjtLog("Tap (extended) on target %o mode=%o",target,sbook.mode);
 	sbook.setTarget(target);
 	addGlossButton(target);
 	sbook.glossTarget(target);
@@ -954,10 +966,12 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 	     mouseout: content_mousemove,
 	     mouseup:content_mouseup},
 	 hud: {click: hud_tap},
+	 /*
 	 glossmark: {
 	     onclick: glossmark_onclick,
 	     mouseup: cancel,
 	     mousedown: cancel},
+	 */
 	 glossbutton: {
 	     mouseup: glossbutton_onclick,
 	     mousedown: cancel},
@@ -1002,9 +1016,11 @@ var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 			touchmove: content_touchmove},
        ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
        "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
+       /*
        glossmark: {touchend: glossmark_onclick,
 		   touchstart: cancel,
 		   touchmove: cancel},
+       */
        glossbutton: {touchend: glossbutton_onclick,
 		     touchstart: cancel,
 		     touchmove: cancel}
