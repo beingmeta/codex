@@ -574,10 +574,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var passage;
 	if ((!((fdjtUI.isClickable(target))||(n_touches>1)))&&
 	    (passage=sbook.getTarget(target)))
-	  held=setTimeout(function(evt){
-	      glossExcerpt(passage);
-	      held=false; handled=true;},
-	    500);}
+	    held=setTimeout(function(evt){
+		glossExcerpt(passage);
+		held=false; handled=true;},
+			    500);}
 
     var mouseisdown=false;
 
@@ -680,11 +680,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    else {
 		var click_evt = document.createEvent("MouseEvents");
 		while (target)
-		  if (target.nodeType===1) break;
-		  else target=target.parentNode;
+		    if (target.nodeType===1) break;
+		else target=target.parentNode;
 		if (!(target)) return;
 		if (sbook.Trace.gestures)
-		  fdjtLog("Synthesizing click on %o",target);
+		    fdjtLog("Synthesizing click on %o",target);
 		click_evt.initMouseEvent("click", true, true, window,
 					 1,page_x,page_y,last_x, last_y,
 					 false, false, false, false, 0, null);
@@ -732,7 +732,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (sbook.Trace.nav)
 	    fdjtLog("Forward e=%o h=%o t=%o",evt,sbook.head,sbook.target);
 	if ((sbook.mode==="glosses")||(sbook.mode==="addgloss"))
-	  CodexMode(true);
+	    CodexMode(true);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
 	    scanForward();
 	else pageForward();}
@@ -744,7 +744,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if ((last_motion)&&((now-last_motion)<100)) return;
 	else last_motion=now;
 	if ((sbook.mode==="glosses")||(sbook.mode==="addgloss"))
-	  CodexMode(true);
+	    CodexMode(true);
 	if (sbook.Trace.nav)
 	    fdjtLog("Backward e=%o h=%o t=%o",evt,sbook.head,sbook.target);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
@@ -871,13 +871,16 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     /* Entering page numbers and locations */
 
     function enterPageNum(evt) {
-      evt=evt||event;
-      fdjtUI.cancel(evt);
-      CodexMode.toggle("gotopage");}
+	evt=evt||event;
+	fdjtUI.cancel(evt);
+	if (sbook.hudup) {CodexMode(false); return;}
+	
+	CodexMode.toggle("gotopage");}
     function enterLocation(evt) {
-      evt=evt||event;
-      fdjtUI.cancel(evt);
-      CodexMode.toggle("gotoloc");}
+	evt=evt||event;
+	fdjtUI.cancel(evt);
+	if (sbook.hudup) {CodexMode(false); return;}
+	CodexMode.toggle("gotoloc");}
     
     /* Other handlers */
 
@@ -965,10 +968,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	     mouseup:content_mouseup},
 	 hud: {click: hud_tap},
 	 /*
-	 glossmark: {
-	     onclick: glossmark_onclick,
-	     mouseup: cancel,
-	     mousedown: cancel},
+	   glossmark: {
+	   onclick: glossmark_onclick,
+	   mouseup: cancel,
+	   mousedown: cancel},
 	 */
 	 glossbutton: {
 	     mouseup: glossbutton_onclick,
@@ -987,42 +990,42 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	       mouseout: fdjtUI.CoHi.onmouseout}};
 
     sbook.UI.handlers.webtouch=
-      {window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
-		touchstart: cancel, touchmove: cancel, touchend: cancel},
-       content: {touchstart: content_touchstart,
-		 touchmove: content_touchmove,
-		 touchend: content_touchend},
-       "#CODEXMASK": {touchstart: content_touchstart,
-		      touchmove: content_touchmove,
-		      touchend: content_touchend},
-       hud: {touchstart: shared_touchstart,
-	     touchmove: hud_touchmove,
-	     touchend: hud_touchend},
-       "#SBOOKPAGEHEAD": {click: head_click},
-       "#SBOOKPAGEFOOT": {click: foot_click},
-       "#SBOOKPAGERIGHT": {click: Forward},
-       "#SBOOKPAGELEFT": {click: Backward},
-       "#CODEXFLYLEAF": {touchend: flyleaf_tap},
-       "#CODEXPAGEINFO": {touchstart: pageinfo_click,
+	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
+		  touchstart: cancel, touchmove: cancel, touchend: cancel},
+	 content: {touchstart: content_touchstart,
+		   touchmove: content_touchmove,
+		   touchend: content_touchend},
+	 "#CODEXMASK": {touchstart: content_touchstart,
+			touchmove: content_touchmove,
+			touchend: content_touchend},
+	 hud: {touchstart: shared_touchstart,
+	       touchmove: hud_touchmove,
+	       touchend: hud_touchend},
+	 "#SBOOKPAGEHEAD": {click: head_click},
+	 "#SBOOKPAGEFOOT": {click: foot_click},
+	 "#SBOOKPAGERIGHT": {click: Forward},
+	 "#SBOOKPAGELEFT": {click: Backward},
+	 "#CODEXFLYLEAF": {touchend: flyleaf_tap},
+	 "#CODEXPAGEINFO": {touchstart: pageinfo_click,
+			    touchmove: cancel,touchend: cancel},
+	 "#CODEXPAGENO": {touchstart: enterPageNum,
 			  touchmove: cancel,touchend: cancel},
-       "#CODEXPAGENO": {touchstart: enterPageNum,
-			touchmove: cancel,touchend: cancel},
-       "#CODEXLOCOFF": {touchstart: enterLocation,
-			touchmove: cancel,touchend: cancel},
-       ".sbookmargin": {touchstart: shared_touchstart,
-			touchend: content_touchend,
-			touchmove: content_touchmove},
-       ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
-       "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
-       /*
-       glossmark: {touchend: glossmark_onclick,
-		   touchstart: cancel,
-		   touchmove: cancel},
-       */
-       glossbutton: {touchend: glossbutton_onclick,
-		     touchstart: cancel,
-		     touchmove: cancel}
-      };
+	 "#CODEXLOCOFF": {touchstart: enterLocation,
+			  touchmove: cancel,touchend: cancel},
+	 ".sbookmargin": {touchstart: shared_touchstart,
+			  touchend: content_touchend,
+			  touchmove: content_touchmove},
+	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
+	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
+	 /*
+	   glossmark: {touchend: glossmark_onclick,
+	   touchstart: cancel,
+	   touchmove: cancel},
+	 */
+	 glossbutton: {touchend: glossbutton_onclick,
+		       touchstart: cancel,
+		       touchmove: cancel}
+	};
     
 })();
 
