@@ -592,6 +592,8 @@ div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     width: 80%; margin-left: 10%; margin-right: 10%;
     border-top: solid black 1px;
     display: none;}
+body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+    opacity: 0.20;}
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff { float: right;}
 div#SBOOKPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%;
