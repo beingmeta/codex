@@ -3,7 +3,7 @@
 var sbooks_gestures_id="$Id$";
 var sbooks_gestures_version=parseInt("$Revision$".slice(10,-1));
 
-/* Copyright (C) 2009-2010 beingmeta, inc.
+/* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
    large structured documents (sBooks).
 
