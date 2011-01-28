@@ -270,11 +270,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	addGlossButton(target);
 	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
 	    // If you're already showing glosses, hide them
-	    CodexMode(true);
+	    CodexMode(false);
 	    return;}
 	else {
 	    sbook.setTarget(target);
-	    sbook.openGlossmark(target);}}
+	    CodexMode(true);}}
 
     function xtapTarget(target){
 	if (sbook.Trace.gestures)
@@ -294,7 +294,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (x<50) {Backward(evt); return true;}
 	    else if (x>(fdjtDOM.viewWidth()-50)) {
 		Forward(evt); return true;}
-	    else return false;}
+	    else return false};
 	else return false;}
     sbook.edgeTap=edgeTap;
     
@@ -697,7 +697,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     
     function glossmark_onclick(evt){
 	evt=evt||event||null;
-	var glossmark=fdjtDOM.getParent(fdjtUI.T(evt),".glossmark");
+	var glossmark=fdjtDOM.getParent(fdjtUI.T(evt),".sbookglossmark");
 	if (glossmark) return glossmark_clicked(glossmark,evt);
 	else return false;}
     function glossmark_clicked(glossmark,evt){
@@ -715,8 +715,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.addClass(target,"sbooklivespot");}
     function glossmark_onmouseout(evt){
 	evt=evt||event||null;
-	var target=sbook.getTarget(fdjtUI.T(evt))||
-	    sbook.getFocus(fdjtUI.T(evt));
+	var target=sbook.getTarget(fdjtUI.T(evt));
 	fdjtDOM.dropClass(target,"sbooklivespot");}
 
     /* Moving forward and backward */
@@ -967,12 +966,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	     mouseout: content_mousemove,
 	     mouseup:content_mouseup},
 	 hud: {click: hud_tap},
-	 /*
-	   glossmark: {
-	   onclick: glossmark_onclick,
-	   mouseup: cancel,
-	   mousedown: cancel},
-	 */
+	 glossmark: {
+	     onclick: glossmark_onclick,
+	     mouseup: nobubble,
+	     mousedown: nobubble},
 	 glossbutton: {
 	     mouseup: glossbutton_onclick,
 	     mousedown: cancel},
@@ -1017,11 +1014,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 			  touchmove: content_touchmove},
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
-	 /*
-	   glossmark: {touchend: glossmark_onclick,
-	   touchstart: cancel,
-	   touchmove: cancel},
-	 */
+	 glossmark: {touchend: glossmark_onclick,
+		     touchstart: cancel,
+		     touchmove: cancel},
 	 glossbutton: {touchend: glossbutton_onclick,
 		       touchstart: cancel,
 		       touchmove: cancel}

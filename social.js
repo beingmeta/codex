@@ -175,7 +175,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	if (fdjtID(glossmarkid)) return fdjtID(glossmarkid);
 	var imgsrc=(sbicon("sbookspeople32x32.png"));
 	var glossmark=fdjtDOM
-	("span.glossmark",
+	("span.sbookglossmark",
 	 fdjtDOM.Image(imgsrc,"big","comments"),
 	 //fdjtDOM.Image(sbicon("sbicon16x16.png"),"tiny","+"),
 	 fdjtDOM.Image(sbicon("Asterisk16x16.png"),"tiny","+"));
@@ -197,15 +197,17 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     function openGlossmark(target,addmark) {
 	var glosses=sbook.glosses.find('frag',target.id);
 	var sumdiv=fdjtDOM("div.codexslice.hudpanel");
+	if ((!(glosses))||(!(glosses.length)))
+	    fdjtDOM.addClass(sumdiv,"noglosses");
 	sbook.UI.setupSummaryDiv(sumdiv);
 	if (glosses)
 	  sbook.UI.showSlice(glosses,sumdiv,false);
-	fdjtDOM.replace("SBOOKGLOSSES",sumdiv);
+	fdjtDOM.replace("CODEXGLOSSES",sumdiv);
 	sbook.setTarget(target);
 	fdjtDOM.replace("SBOOKINFO",
 			sbook.glossBlock(target.id,"div.sbookgloss"));
 	CodexMode("glosses");
-	var glosshud=fdjtID("SBOOKGLOSSES");
+	var glosshud=fdjtID("CODEXGLOSSES");
 	var height=glosshud.offsetHeight;
 	var geom=fdjtDOM.getGeometry(target,sbook.body);
 	var scrollpos=sbook.scrollPos();

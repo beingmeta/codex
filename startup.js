@@ -430,8 +430,8 @@ sbook.Startup=
 		sbook.notag_rules=new fdjtDOM.Selector(fdjtDOM.getMeta("sbook.notag"));
 	    if (fdjtDOM.getMeta("sbook.foci"))
 		sbook.foci=new fdjtDOM.Selector(fdjtDOM.getMeta("sbook.foci"));
-	    else if (fdjtDOM.getMeta("SBOOKFOCI"))
-		sbook.foci=new fdjtDOM.Selector(fdjtDOM.getMeta("SBOOKFOCI"));
+	    else if (fdjtDOM.getMeta("sbookfoci"))
+		sbook.foci=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfoci"));
 	    else {}}
 	
 

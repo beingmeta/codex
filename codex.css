@@ -217,13 +217,17 @@ body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
     border-color: darkblue;
     opacity: 0.95; min-height: 50px; height: auto;}
 
-body.hudup div#CODEXHUD.glosses div.hudpanel#SBOOKGLOSSES {
+body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES {
     border-color: darkblue;
     opacity: 0.95; min-height: 50px; height: auto;
     box-shadow: -1em 1em 1em #cccccc;
     -webkit-box-shadow: -1em 1em 1em #cccccc;
     -moz-box-shadow: -1em 1em 1em #cccccc;
-    -o-box-shadow: -1em 1em 1em #cccccc;}
+    -o-box-shadow: -1em 1em 1em #cccccc;
+    display: block;}
+
+body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES.noglosses {
+    display: none;}
 
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     border-color: darkblue;
@@ -1200,7 +1204,7 @@ div.locbar hr {
 
 /* Glossmarks */
 
-.glossmark {
+.sbookglossmark {
   position: absolute; right: 0px; text-align: right;
   margin: 0px; padding: 0px; text-indent: 0px; 
   border: solid transparent 2px;
@@ -1208,16 +1212,16 @@ div.locbar hr {
   border-right: 0px;
   opacity: 0.0001;
   display: none;}
-body .glossmark { opacity: 0.4;}
-*:hover > .glossmark { opacity: 0.7;}
-body.hudup .glossmark { opacity: 0.9; display: block;}
+body .sbookglossmark { opacity: 0.4;}
+*:hover > .sbookglossmark { opacity: 0.7;}
+body.hudup .sbookglossmark { opacity: 0.9; display: block;}
 
-.glossmark img {
+.sbookglossmark img {
    float: right;
    vertical-align: top; text-align: right;}
-.glossmark img.tiny {width: 16px;}
-.glossmark img.big {width: 32px;}
-.glossmark img.tiny, span.glossmark img.big { display: none; }
+.sbookglossmark img.tiny {width: 16px;}
+.sbookglossmark img.big {width: 32px;}
+.sbookglossmark img.tiny, span.sbookglossmark img.big { display: none; }
 
 .sbookglossbutton {
   position: absolute; left: 0px; text-align: right;
@@ -1231,31 +1235,31 @@ body.hudup .sbookglossbutton { opacity: 0.5;}
 body.hudup .sbooktarget .sbookglossbutton { opacity: 0.9; display: block;}
 
 /* .sparsebook */
-body .glossmark img.tiny { display: block;}
-body.hudup .glossmark img.big { display: block;}
-body.hudup .glossmark img.tiny { display: none;}
+body .sbookglossmark img.tiny { display: block;}
+body.hudup .sbookglossmark img.big { display: block;}
+body.hudup .sbookglossmark img.tiny { display: none;}
 
-body.sparsebook .glossmark img.tiny { display: none;}
-body.sparsebook.hudup .glossmark img.tiny { display: block;}
-body.sparsebook.hudup .glossmark:hover img.big { display: block;}
-body.sparsebook.hudup .glossmark:hover img.tiny { display: none;}
+body.sparsebook .sbookglossmark img.tiny { display: none;}
+body.sparsebook.hudup .sbookglossmark img.tiny { display: block;}
+body.sparsebook.hudup .sbookglossmark:hover img.big { display: block;}
+body.sparsebook.hudup .sbookglossmark:hover img.tiny { display: none;}
 
 /* Displaying the sbook target */
 
 .sbooktarget { color: darkblue;}
 body.hudup .sbooktarget { color: blue; cursor: pointer;}
-body.hudup .sbooktarget .glossmark { color: blue; cursor: pointer;}
+body.hudup .sbooktarget .sbookglossmark { color: blue; cursor: pointer;}
 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
    */
 body.sbooktarget { color: inherit;}
 
-.sbooktarget span.glossmark img.big { width: 50px;} 
-.sbooktarget span.glossmark img {
+.sbooktarget span.sbookglossmark img.big { width: 50px;} 
+.sbooktarget span.sbookglossmark img {
     border-top: solid blue 2px;}
-.sbooktarget:hover .glossmark { opacity: 0.5;}
-body.hudup .sbooktarget .glossmark:hover { opacity: 0.9;}
+.sbooktarget:hover .sbookglossmark { opacity: 0.5;}
+body.hudup .sbooktarget .sbookglossmark:hover { opacity: 0.9;}
 
 /* Not logged in conditionalization */
 
@@ -1489,7 +1493,10 @@ body.colpage .sbookavoidbreak {
     -o-column-break-inside: avoid;
     -webkit-column-break-inside: avoid;
     -moz-column-break-inside: avoid;}
-body.colpage .fullpage, body.colpage .titlepage, body.colpage .sbookfullpage, body.colpage .sbooktitlepage {
+body.colpage .fullpage,
+body.colpage .titlepage,
+body.colpage .sbookfullpage,
+body.colpage .sbooktitlepage {
     page-break-before: always;
     page-break-after: always;
     page-break-inside: avoid;

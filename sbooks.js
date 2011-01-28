@@ -255,27 +255,6 @@ var sbook_gloss_data=
 	else return false;}
     sbook.getHead=getHead;
 
-    sbook.getFocus=function(target,closest){
-	var first=false;
-	if (!(target)) return false;
-	else if (inUI(target)) return false;
-	else if ((!(sbook.focusrules))||(sbook.focusrules.length===0))
-	    while (target) {
-		if (target.id) 
-		    if (closest) return target;
-		else if (!(first)) first=target;
-		target=target.parentNode;}
-	else while (target) {
-	    if (target.id)
-		if (closest) return target;
-	    else if (fdjtDOM.hasClass(target,"sbookfoci"))
-		return target;
-	    else if (sbook.focusrules.match(target))
-		return target;
-	    else if (!(first)) first=target;
-	    target=target.parentNode;}
-	return first;};
-
     sbook.getRef=function(target){
 	while (target)
 	    if (target.about) break;
