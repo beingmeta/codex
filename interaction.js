@@ -294,7 +294,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (x<50) {Backward(evt); return true;}
 	    else if (x>(fdjtDOM.viewWidth()-50)) {
 		Forward(evt); return true;}
-	    else return false};
+	    else return false}
 	else return false;}
     sbook.edgeTap=edgeTap;
     
@@ -951,7 +951,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     /* Rules */
 
-    var nobubble=fdjtUI.cancelBubble;
+    var nobubble=fdjtUI.nobubble;
     var cancel=fdjtUI.cancel;
 
     sbook.UI.handlers.mouse=
@@ -967,7 +967,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	     mouseup:content_mouseup},
 	 hud: {click: hud_tap},
 	 glossmark: {
-	     onclick: glossmark_onclick,
+	     click: glossmark_onclick,
 	     mouseup: nobubble,
 	     mousedown: nobubble},
 	 glossbutton: {

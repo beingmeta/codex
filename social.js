@@ -100,7 +100,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	  completion.id="CODEXSEARCHSOURCE"+humid;
 	  completion.setAttribute("value",info.qid);
 	  completion.setAttribute("key",info.name);
-	  fdjtDOM(fdjtID("CODEXSEARCHSOURCES"),completion," ");
+	  fdjtDOM(fdjtID("CODEXSEARCHCLOUD"),completion," ");
 	  if (sbook.full_cloud)
 	    sbook.full_cloud.addCompletion(completion);}
 	return info;};
