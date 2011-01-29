@@ -1316,14 +1316,14 @@ div.codexaddgloss form div.input input:focus[type='TEXT'] { border: white;}
 div.codexaddgloss form div.input input[type='TEXT'][name='TAG'] {
     font-size: 16px; height: 24px; font-weight: bold;
     background-image:
-    url(http://static.beingmeta.com/graphics/TagIcon24x24.png);
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/TagIcon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 div.codexaddgloss form div.input input[type='TEXT'][name='LINK'] {
     height: 18px; font-size: 80%; font-family: fixed; font-style: normal;
     background-image:
-    url(http://static.beingmeta.com/graphics/upoutlink16x16.png);
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/upoutlink16x16.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
@@ -1334,20 +1334,20 @@ div.codexaddgloss form div.input textarea[name='NOTE'],
 div.codexaddgloss form div.input input[type='TEXT'][name='NOTE'] {
     height: 5ex; overflow: hidden; width: 100%;
     background-image:
-    url(http://static.beingmeta.com/graphics/justremarkballoon24x24.png);
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 div.codexaddgloss form div.input.detail textarea[name='DETAIL'] {
     background-image:
-    url(http://static.beingmeta.com/graphics/detailsicon32x32.png);
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/detailsicon32x32.png);
     background-position: right bottom;
     background-position-x: right; background-position-y: bottom;
     background-repeat: no-repeat;
     height: 20ex;}
 div.codexaddgloss form div.input.excerpt textarea[name='EXCERPT'] {
     background-image:
-    url(http://static.beingmeta.com/graphics/scissorsicon32x32.png);
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/scissorsicon32x32.png);
     background-position: right bottom;
     background-position-x: right; background-position-y: bottom;
     background-repeat: no-repeat;
@@ -1355,7 +1355,7 @@ div.codexaddgloss form div.input.excerpt textarea[name='EXCERPT'] {
 div.codexaddgloss form div.input input[type='TEXT'][name='SHARE'] {
     font-size: 16px; height: 24px; overflow: hidden;
     background-image:
-    url(http://static.beingmeta.com/graphics/ShareIcon24x24.png);
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/ShareIcon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
@@ -1387,7 +1387,7 @@ div.codexaddgloss form div.controls select {
 div.codexaddgloss form div.controls select option { }
 div.codexaddgloss form div.controls select option[value="note"] {
     background-image:
-    url(http://static.beingmeta.com/graphics/justremarkballoon24x24.png);
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
