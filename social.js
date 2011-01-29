@@ -177,7 +177,6 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	var glossmark=fdjtDOM
 	("span.sbookglossmark",
 	 fdjtDOM.Image(imgsrc,"big","comments"),
-	 //fdjtDOM.Image(sbicon("sbicon16x16.png"),"tiny","+"),
 	 fdjtDOM.Image(sbicon("Asterisk16x16.png"),"tiny","+"));
 	glossmark.id=glossmarkid;
 	sbook.UI.addHandlers(glossmark,"glossmark");
