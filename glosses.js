@@ -281,7 +281,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		gloss_cloud.timer=false;}
 	    gloss_cloud.complete(target.value);}
 	else if (!(evt.shiftKey))
-	    return gloss_cloud.docomplete();
+	    return gloss_cloud.docomplete(target);
 	else if (kc===32) {
 	    var completions=gloss_cloud.complete(target.value);
 	    target.value=completions.prefix;
@@ -294,7 +294,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		target.value=""; gloss_cloud.complete("");}
 	    else target.value=completions.prefix;
 	    fdjtUI.cancel(evt);}
-	else gloss_cloud.docomplete();}
+	else gloss_cloud.docomplete(target);}
     sbook.UI.handlers.taginput_keyup=taginput_keyup;
 
     function taginput_focus(evt){showGlossCloud(fdjtUI.T(evt));}
@@ -633,7 +633,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (sbook.syncstamp)
 	  fdjtDOM.getInput(form,"SYNC").value=(sbook.syncstamp+1);
 	form.onsubmit=submitGloss;
-	form.oncallback=get_addgloss_callback(form);
+	// form.oncallback=get_addgloss_callback(form);
 	form.setAttribute("sbooksetup","yes");}
     sbook.setupGlossForm=setupGlossForm;
 
@@ -653,15 +653,19 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	CodexMode(false);}
 
     function clearGlossForm(form){
-      // Clear the UUID, and other fields
-      var uuid=fdjtDOM.getInput(form,"UUID");
-      if (uuid) uuid.value="";
-      var note=fdjtDOM.getInput(form,"NOTE");
-      if (note) note.value="";
-      var taginput=fdjtDOM.getInput(form,"TAG");
-      if (taginput) taginput.value="";
-      var href=fdjtDOM.getInput(form,"HREF");
-      if (href) href.value="";}
+	// Clear the UUID, and other fields
+	var uuid=fdjtDOM.getInput(form,"UUID");
+	if (uuid) uuid.value="";
+	var note=fdjtDOM.getInput(form,"NOTE");
+	if (note) note.value="";
+	var taginput=fdjtDOM.getInput(form,"TAG");
+	if (taginput) taginput.value="";
+	var href=fdjtDOM.getInput(form,"HREF");
+	if (href) href.value="";
+	var tagselt=fdjtDOM.getChildren(form,"div.tags");
+	if ((tagselt)&&(tagselt.length)) {
+	    var tags=fdjtDOM.getChildren(tagselt[0],".checkspan");
+	    fdjtDOM.remove(fdjtDOM.Array(tags));}}
 
     /***** Gloss Modes *****/
 
@@ -743,7 +747,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    fdjtLog.warn('missing UUID');
 	    if (uuidelt) uuidelt.value=fdjtState.getUUID(sbook.nodeid);}
 	var note=fdjtDOM.getInput(form,"NOTE");
-	if (!(sbook.offline)) return fdjtAjax.onsubmit(evt);
+	if (!(sbook.offline))
+	    return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));
 	if (!(navigator.onLine)) return saveGloss(form,evt);
 	// Eventually, we'll unpack the AJAX handler to let it handle
 	//  connection failures by calling saveGloss.

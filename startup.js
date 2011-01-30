@@ -740,6 +740,11 @@ sbook.Startup=
 	    var latest=sbook.syncstamp||0;
 	    var loaded=((_sbook_loadinfo)&&(_sbook_loadinfo.glosses))||[];
 	    var cached=fdjtState.getLocal("glosses("+sbook.refuri+")",true);
+	    if ((_sbook_loadinfo)&&(_sbook_loadinfo.sync)) {
+		if ((latest)&&(latest>_sbook_loadinfo.sync)) {
+		    fdjtLog.warn("Cached data is fresher than loaded data");
+		    return;}
+		else latest=sbook.syncstamp=(_sbook_loadinfo.sync);}
 	    sbook.glosses.Import(loaded);
 	    if (cached) allglosses=cached;
 	    if (loaded.length) {

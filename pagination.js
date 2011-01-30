@@ -713,7 +713,7 @@ var sbookPaginate=
 	    sbook.setLocation(info.loc);
 	    if (!(nosave))
 		sbook.setState(
-		    {page: pagenum,location: info.loc,loclen: sbook.ends_at,
+		    {page: pagenum,location: info.loc,
 		     target:((sbook.target)&&(sbook.target.id))});}
 	sbook.GoToPage=ScrollGoToPage;
 

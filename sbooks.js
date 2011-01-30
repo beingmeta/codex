@@ -405,7 +405,6 @@ var sbook_gloss_data=
 	if (!(nosave))
 	    setState({target: target.id,
 		      location: sbook.location,
-		      loclen: sbook.ends_at,
 		      page: sbook.curpage});
  	if (!(nogo)) sbook.GoTo(target,true);}
     sbook.setTarget=setTarget;
@@ -483,8 +482,17 @@ var sbook_gloss_data=
 	    sbook.scrollTo(saved_x,saved_y);}
     sbook.setHashID=setHashID;
 
+    var syncing=false;
+    
     function setState(state){
-	if (sbook.state===state) return;
+	if ((sbook.state===state)||
+	    ((sbook.state)&&
+	     (sbook.state.target===state.target)&&
+	     (sbook.state.location===state.location)&&
+	     (sbook.state.page===state.page)))
+	    return;
+	if (syncing) return;
+	if (!(sbook.dosync)) return;
 	if (!(state.tstamp)) state.tstamp=fdjtTime.tick();
 	if (!(state.refuri)) state.refuri=sbook.refuri;
 	sbook.state=state;
@@ -497,14 +505,26 @@ var sbook_gloss_data=
 	    var uri="https://"+sbook.server+"/v4/sync?ACTION=save"+
 		"&DOCURI="+encodeURIComponent(sbook.docuri)+
 		"&REFURI="+encodeURIComponent(refuri);
+	    if (state.target) uri=uri+"&target="+encodeURIComponent(state.target);
+	    if ((state.location)||(state.hasOwnProperty('location')))
+		uri=uri+"&location="+encodeURIComponent(state.location);
+	    if (sbook.ends_at) uri=uri+"&maxloc="+encodeURIComponent(sbook.ends_at);
+	    if ((state.page)||(state.hasOwnProperty('page')))
+		uri=uri+"&page="+encodeURIComponent(state.page);
+	    if ((sbook.pages)&&(sbook.pages.length))
+		uri=uri+"&maxpage="+encodeURIComponent(sbook.pages.length);
 	    if (sbook.Trace.dosync)
 		fdjtLog("syncPosition(call) %s: %o",uri,state);
 	    var req=new XMLHttpRequest();
-	    /* req.onreadystatechange=function(evt){
-	       fdjtLog("Got response %o",evt);}; */
-	    req.open("POST",uri,true);
+	    syncing=state;
+	    req.onreadystatechange=function(evt){
+		syncing=false;
+		if (sbook.Trace.dosync)
+		    fdjtLog("syncPosition(callback) reading=%o status=%o %o",
+			    evt.readyState,evt.status,evt);};
+	    req.open("GET",uri,true);
 	    req.withCredentials='yes';
-	    req.send(statestring);}}
+	    req.send();}}
     sbook.setState=setState;
 	    
     function scrollToElt(elt,cxt){
@@ -583,9 +603,9 @@ var sbook_gloss_data=
 	else if (noset)
 	    sbook.setState({
 		target: ((sbook.target)&&(sbook.target.id)),
-		location: location,loclen: sbook.ends_at,page: page})
+		location: location,page: page})
 	else sbook.setState(
-	    {target: (target.id),location: location,loclen: sbook.ends_at,page: page});
+	    {target: (target.id),location: location,page: page});
 	if (typeof page === 'number') 
 	    sbook.GoToPage(page,0,"sbookGoTo",nosave||false);
 	sbook.location=location;}
