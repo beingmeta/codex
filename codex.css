@@ -892,6 +892,7 @@ div.codexnote > hr {
     color: gold; background-color: lightblue; min-width: 3px; height: 100%;
     position: absolute; left: 0px; opacity: 0.3;
     border: 0px; padding: 0px; margin: 0px;}
+div.codexnote > div span.count { float: right;}
 
 /* Buttons */
 

@@ -42,6 +42,8 @@ var sbook_delete_icon="redx12x12.png";
 
 (function () {
 
+    var div_threshold=7;
+
     function renderNote(info,query,idprefix,standalone){
 	var key=info.qid||info.oid||info.id;
 	var target_id=(info.frag)||(info.id);
@@ -58,13 +60,25 @@ var sbook_delete_icon="redx12x12.png";
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
 		    ((info.note)&&(fdjtDOM("span.note",info.note))),
-		    ((info.tags)&&(info.tags.length)&&(showtags(info.tags))),
+		    ((info.tags)&&(info.tags.length)&&
+		     (info.tags.length<div_threshold)&&
+		     (showtags(info.tags))),
 		    ((info.audience)&&(info.audience.length)&&
+		     (info.audience.length<div_threshold)&&
 		     (showaudience(info.audience))),
-		    ((info.excerpt)&&(fdjtDOM("span.excerpt",info.excerpt))),
+		    ((info.excerpt)&&(info.excerpt.length<40)&&
+		     (fdjtDOM("span.excerpt",info.excerpt))),
 		    ((info.xrefs)&&(showlinks(info.xrefs,"span.xrefs"))),
 		    ((info.attachments)&&
-		     (showlinks(info.attachments,"span.attachments"))));
+		     (showlinks(info.attachments,"span.attachments"))),
+		    ((info.excerpt)&&(info.excerpt.length>=40)&&
+		     (fdjtDOM("div.excerpt",info.excerpt))),
+		    ((info.tags)&&(info.tags.length)&&
+		     (info.tags.length>=div_threshold)&&
+		     (showtags(info.tags))),
+		    ((info.audience)&&(info.audience.length)&&
+		     (info.audience.length>=div_threshold)&&
+		     (showaudience(info.audience))));
 	if (!(info.tstamp))
 	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
 	    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
@@ -79,8 +93,11 @@ var sbook_delete_icon="redx12x12.png";
     sbook.renderNote=renderNote;
     
     function showtags(tags){
-	var span=fdjtDOM("span.tags");
 	if (!(tags instanceof Array)) tags=[tags];
+	var span=fdjtDOM(
+	    ((tags.length>=div_threshold)?"div.tags":"span.tags"),
+	    ((tags.length>=div_threshold)&&
+		  (fdjtDOM("span.count",tags.length, " tags"))));
 	var i=0; var lim=tags.length;
 	// This might do some kind of more/less controls and sorted
 	// or cloudy display
@@ -90,8 +107,11 @@ var sbook_delete_icon="redx12x12.png";
 	    i++;}
 	return span;}
     function showaudience(tags){
-	var span=fdjtDOM("span.audience");
 	if (!(tags instanceof Array)) tags=[tags];
+	var span=fdjtDOM(
+	    ((tags.length>=div_threshold)?"div.audience":"span.audience"),
+	    ((tags.length>=div_threshold)&&
+		  (fdjtDOM("span.count",tags.length, " outlets"))));
 	var i=0; var lim=tags.length;
 	// This might do some kind of more/less controls and sorted
 	// or cloudy display
