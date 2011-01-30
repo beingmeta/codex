@@ -296,9 +296,13 @@ var CodexMode=
 		    fdjtDOM.dropClass(document.body,"hudup");}
 		// And if we're not scanning, we just raise the hud
 		else setHUD(true);
-		// This updates scroller dimensions
+		// This updates scroller dimensions, we delay it
+		//  because apparently, on some browsers, the DOM
+		//  needs to catch up with CSS
 		if (sbook.scrolling)
-		    updateScroller(fdjtID(sbook.scrolling));
+		    setTimeout(function(){
+			updateScroller(fdjtID(sbook.scrolling));},
+			       100);
 		// If we're scanning all glosses, we sync the glosses
 		//  with the current book location.
 		if ((mode==="allglosses")&&

@@ -448,7 +448,8 @@ var sbook_delete_icon="redx12x12.png";
 	var idelt=((frag===headid)?(headelt):(findTOCref(headelt,frag,starts)));
 	if ((!(idelt))||(idelt.tocref!==frag)) {
 	    var insertion=idelt;
-	    idelt=fdjtDOM("div.codexthread.idthread",makeIDHead(about,headinfo));
+	    idelt=fdjtDOM("div.codexthread.idthread",
+			  makeIDHead(about,headinfo));
 	    idelt.tocref=frag; idelt.start=starts; idelt.about="#"+frag;
 	    idelt.title=(sbook.getTitle(about)||fdjtDOM.textify(about))
 		.replace(/\n\n+/g,"\n").replace(/^\n+/,"");

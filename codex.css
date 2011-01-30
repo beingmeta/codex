@@ -227,7 +227,7 @@ body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
-    border-color: darkblue; display: block;
+    border-color: darkblue; display: block; overflow: auto;
     opacity: 0.95; min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
@@ -907,7 +907,6 @@ body.hudup div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
 body.hudup.sbookshowconsole div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: inline;}
 
-
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;}
 
@@ -1358,10 +1357,6 @@ body.nosbookuser .tab[CONTENTID='SBOOKAPPLOGIN'] { display: inline;}
 body.nosbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
 body.nosbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
   display: block;}
-body.nosbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.app {
-  display: none;}
-body.nosbookuser div#CODEXHUD div#SBOOKSOURCES img.button.everyone {
-  display: none;}
 
 /* Gloss form */
 
