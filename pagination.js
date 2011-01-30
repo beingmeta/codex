@@ -685,7 +685,8 @@ var sbookPaginate=
 	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF",
 			       "L"+Math.ceil(info.loc/128));
 	    var pageno_text=
-		fdjtDOM("span.pageno",pagenum+1,((pageoff)?"+":""),"/",npages);
+		fdjtDOM("span#CODEXPAGENOTEXT.pageno",
+			pagenum+1,((pageoff)?"+":""),"/",npages);
 	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
 	    fdjtDOM.replace("CODEXPAGENO",pageno);
 	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
@@ -694,7 +695,7 @@ var sbookPaginate=
 	      (locoff,sbook.UI.handlers[sbook.ui]["#CODEXLOCOFF"]);
 	    pageno_text.title="click to jump to a particular page";
 	    fdjtDOM.addListeners
-	      (pageno_text,sbook.UI.handlers[sbook.ui]["#CODEXPAGENO"]);
+	      (pageno_text,sbook.UI.handlers[sbook.ui]["#CODEXPAGENOTEXT"]);
 	    sbook.curpage=pagenum;
 	    sbook.curoff=pageoff;
 	    sbook.curinfo=info;
@@ -804,14 +805,28 @@ var sbookPaginate=
 	    topleading.sbookui=true; bottomleading.sbookui=true;
 
 	    var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
-	    var pagefoot=fdjtDOM(
-		"div.sbookmargin#SBOOKPAGEFOOT"," ",
+	    var pageinfo=
 		fdjtDOM("div#CODEXPAGEINFO",
 			fdjtDOM("div.progressbar#CODEXPROGRESSBAR",""),
 			fdjtDOM("div#CODEXPAGENO",
-				fdjtDOM("span#CODEXPAGENOTEXT","p/n"))));
+				fdjtDOM("span#CODEXPAGENOTEXT","p/n")));
+	    var pagefoot=fdjtDOM(
+		"div.sbookmargin#SBOOKPAGEFOOT",
+		/*
+		fdjtDOM.Image("http://static.beingmeta.com/graphics/drophud50x50.png",
+			      "img#CODEXDROPHUD.hudbutton.bottomleft",
+			      "drophud","hide the sBook tools"),
+		" ", */
+		pageinfo,
+		" ",
+	    	fdjtDOM.Image("http://static.beingmeta.com/graphics/PageNext50x50.png",
+			      "img#CODEXPAGENEXT.hudbutton.bottomright",
+			      "pagenext","go to the next result/section/page"));
 	    pagehead.sbookui=true; pagefoot.sbookui=true;
 	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
+
+	    fdjtDOM.addListeners(
+		pageinfo,sbook.UI.handlers[sbook.ui]["#CODEXPAGEINFO"]);
 
 	    var leftedge=fdjtDOM("div.sbookmargin#SBOOKPAGELEFT",".");
 	    var rightedge=fdjtDOM("div.sbookmargin#SBOOKPAGERIGHT",".");
@@ -830,6 +845,9 @@ var sbookPaginate=
 		// fdjtDOM.append(sbook.body,bottomleading);
 	    }
 	    
+	    // fdjtID("CODEXDROPHUD").onclick=sbook.dropHUD;
+	    fdjtID("CODEXPAGENEXT").onclick=sbook.Forward;
+
 	    if (!(sbook.nativescroll)) window.scrollTo(0,0);
 
 	    // The better way to do this might be to change the stylesheet,

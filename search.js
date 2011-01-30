@@ -154,7 +154,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 
     function showSearchResults(){
 	fdjtDOM.replace("CODEXSEARCHRESULTS",sbook.query.showResults());
-	CodexMode("browsing");
+	CodexMode("searchresults");
 	fdjtID("CODEXSEARCHINPUT").blur();
 	fdjtID("CODEXSEARCHRESULTS").focus();
 	sbook.UI.updateScroller(fdjtID("CODEXSEARCHRESULTS"));}
@@ -240,7 +240,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event||null;
 	var input=fdjtDOM.T(evt);
 	sbook_search_focus=true;
-	if ((sbook.mode)&&(sbook.mode==='browsing'))
+	if ((sbook.mode)&&(sbook.mode==='searchresults'))
 	    CodexMode("searching");
 	searchUpdate(input);}
     sbook.UI.handlers.search_focus=searchInput_focus;
@@ -260,7 +260,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     
     sbook.toggleSearch=function(evt){
 	evt=evt||event;
-	if ((sbook.mode==="searching")||(sbook.mode==="browsing"))
+	if ((sbook.mode==="searching")||(sbook.mode==="searchresults"))
 	    CodexMode(false);
 	else {
 	    CodexMode("searching");
@@ -370,7 +370,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".resultcounts")) {
 	    showSearchResults(sbook.query);
-	    CodexMode("browsing");
+	    CodexMode("searchresults");
 	    fdjtID("CODEXSEARCHINPUT").blur();
 	    fdjtID("CODEXSEARCHRESULTS").focus();
 	    fdjtDOM.cancel(evt);}

@@ -221,10 +221,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    evt,target,passage,sbook.mode);
 	// These should have their own handlers
 	if ((fdjtUI.isClickable(target))||
-	    (fdjtDOM.hasParent(target,".sbookglossbutton")))
-	    // remove for new passage click handling
-	    // (fdjtDOM.hasParent(target,".sbookglossmark"))
-	    return;
+	    (fdjtDOM.hasParent(target,".sbookglossbutton"))||
+	    (fdjtDOM.hasParent(target,".sbookglossmark"))) {
+	    if (sbook.Trace.gestures)
+		fdjtLog("deferring content_tapped (%o) on %o",
+			evt,target,passage,sbook.mode);
+	    return;}
 	else fdjtUI.cancel(evt); 
 	// If you tap an edge, page forward or backward
 	if (edgeTap(evt)) return;
@@ -239,19 +241,14 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		sbook.excerpt=sel;
 		return tapTarget(p);}
 	    else CodexMode(false);}
-	if (!(sbook.hudup)) {
-	    if ((passage)&&((evt.shiftKey)||(n_touches>1)))
-		xtapTarget(passage);
-	    else if (passage) tapTarget(passage);
-	    else CodexMode(true);}
-	else if (!(sbook.target)) CodexMode(false);
-	else if (!(passage)) {
-	    if (sbook.hudup) CodexMode(false);
-	    else CodexMode(true);}
-	else if (passage===sbook.target) CodexMode(false);
-	else if ((evt.shiftKey)||(n_touches>1))
+	if (sbook.hudup||sbook.mode) {
+	    if (sbook.Trace.gestures) fdjtLog("Dropping HUD");
+	    CodexMode(false);
+	    return;}
+	else if ((passage)&&((evt.shiftKey)||(n_touches>1)))
 	    xtapTarget(passage);
-	else tapTarget(passage);}
+	else if (passage) tapTarget(passage);
+	else CodexMode(true);}
 
     function glossExcerpt(passage){
 	sbook.setTarget(passage);
@@ -491,6 +488,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    else {}}}
     sbook.UI.hudbutton=hudbutton;
 
+    sbook.UI.dropHUD=function(evt){
+	fdjtUI.cancel(evt); CodexMode(false);};
+
     /* Gesture state */
 
     var touch_started=false; var touch_ref=false;
@@ -695,20 +695,21 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     /* Glossmarks */
     
-    function glossmark_onclick(evt){
+    function glossmark_tapped(evt){
 	evt=evt||event||null;
-	var glossmark=fdjtDOM.getParent(fdjtUI.T(evt),".sbookglossmark");
-	if (glossmark) return glossmark_clicked(glossmark,evt);
-	else return false;}
-    function glossmark_clicked(glossmark,evt){
-	var target=sbook.getTarget(glossmark.parentNode);
+	if (held) clear_hold("glossmark_tapped");
+	var target=fdjtUI.T(evt);
+	var glossmark=fdjtDOM.getParent(target,".sbookglossmark");
+	var passage=sbook.getTarget(glossmark.parentNode);
+	if (sbook.Trace.gestures)
+	    fdjtLog("glossmark_tapped (%o) on %o gmark=%o passage=%o mode=%o target=%o",
+		    evt,target,glossmark,passage,sbook.mode,sbook.target);
+	if (!(glossmark)) return false;
 	fdjtUI.cancel(evt);
-	if (sbook.Trace.gestures) 
-	    fdjtLog("glossmark_clicked() %o to %o for %o",evt,glossmark,target);
-	if ((sbook.mode==='glosses')&&(sbook.target===target)) {
+	if ((sbook.mode==='glosses')&&(sbook.target===passage)) {
 	    CodexMode(true);
 	    return;}
-	else sbook.openGlossmark(target);}
+	else sbook.openGlossmark(passage);}
     function glossmark_onmouseover(evt){
 	evt=evt||event||null;
 	var target=sbook.getTarget(fdjtUI.T(evt))
@@ -775,7 +776,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if ((newpage)&&(sbook.mode==='allglosses'))
 		sbook.UI.scrollGlosses(
 		    sbook.pageinfo[newpage].first,
-		    fdjtID("SBOOKALLGLOSSES"),true);}
+		    fdjtID("CODEXALLGLOSSES"),true);}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
@@ -809,7 +810,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if ((newpage)&&(sbook.mode==='allglosses'))
 		sbook.UI.scrollGlosses(
 		    sbook.pageinfo[newpage].first,
-		    fdjtID("SBOOKALLGLOSSES"),true);}
+		    fdjtID("CODEXALLGLOSSES"),true);}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
@@ -830,8 +831,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (headinfo.next) sbook.GoTo(headinfo.next.elt);
 	    else if ((headinfo.head)&&(headinfo.head.next)) {
 		sbook.GoTo(headinfo.head.next.elt); CodexMode("toc");}
-	    else if ((headinfo.head)&&(headinfo.head.head)&&(headinfo.head.head.next)) {
-		sbook.GoTo(headinfo.head.head.next.elt); CodexMode("toc");}
+	    else if ((headinfo.head)&&(headinfo.head.head)&&
+		     (headinfo.head.head.next)) {
+		sbook.GoTo(headinfo.head.head.next.elt);
+		CodexMode("toc");}
 	    else CodexMode(false);
 	    return;}
 	var start=sbook.scanning;
@@ -862,10 +865,25 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var scan=sbook.prevSlice(sbook.scanning);
 	var ref=((scan)&&(sbook.getRef(scan)));
 	if (sbook.Trace.nav) 
-	    fdjtLog("scanBackward() from %o/%o to %o/%o under %o",start,sbook.getRef(start),scan,ref,slice);
+	    fdjtLog("scanBackward() from %o/%o to %o/%o under %o",
+		    start,sbook.getRef(start),scan,ref,slice);
 	if ((ref)&&(scan)) sbook.Scan(ref,scan);
 	return scan;}
     sbook.scanBackward=scanBackward;
+
+    function scanner_click(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	if (fdjtUI.isClickable(target)) return;
+	var scanning=sbook.scanning;
+	if (!(scanning)) return;
+	var hudparent=fdjtDOM.getParent(scanning,".hudpanel");
+	if (!(hudparent)) return;
+	else if (hudparent===fdjtID("CODEXBROWSEGLOSSES"))
+	    CodexMode("allglosses");
+	else if (hudparent===fdjtID("CODEXSEARCH"))
+	    CodexMode("searchresults");
+	else {}};
 
     /* Entering page numbers and locations */
 
@@ -926,7 +944,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    evt,offx,offwidth,goloc,sbook.ends_at);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
-	if (!(sbook.mode)) CodexMode("tocscan");
 	sbook.GoTo(goloc);
 	if ((sbook.mode==="gotoloc")||(sbook.mode==="gotopage"))
 	    CodexMode(false);}
@@ -967,17 +984,17 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	     mouseup:content_mouseup},
 	 hud: {click: hud_tap},
 	 glossmark: {
-	     click: glossmark_onclick,
-	     mouseup: nobubble,
-	     mousedown: nobubble},
+	     mouseup: glossmark_tapped},
 	 glossbutton: {
 	     mouseup: glossbutton_onclick,
 	     mousedown: cancel},
 	 ".sbookmargin": {click: edge_click},
+	 "#CODEXSPLASH": {click: sbook.dropHUD},
 	 "#CODEXFLYLEAF": {click: flyleaf_tap},
 	 "#CODEXPAGEINFO": {click: pageinfo_click},
-	 "#CODEXPAGENO": {click: enterPageNum},
+	 "#CODEXPAGENOTEXT": {click: enterPageNum},
 	 "#CODEXLOCOFF": {click: enterLocation},
+	 "#CODEXSCANNER": {click: scanner_click},
 	 "#SBOOKPAGEHEAD": {click: head_click},
 	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 "#SBOOKPAGERIGHT": {click: Forward},
@@ -1005,16 +1022,16 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXFLYLEAF": {touchend: flyleaf_tap},
 	 "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			    touchmove: cancel,touchend: cancel},
-	 "#CODEXPAGENO": {touchstart: enterPageNum,
-			  touchmove: cancel,touchend: cancel},
+	 "#CODEXPAGENOTEXT": {touchstart: enterPageNum,
+			      touchmove: cancel,touchend: cancel},
 	 "#CODEXLOCOFF": {touchstart: enterLocation,
 			  touchmove: cancel,touchend: cancel},
 	 ".sbookmargin": {touchstart: shared_touchstart,
 			  touchend: content_touchend,
 			  touchmove: content_touchmove},
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
-	 "#SBOOKTABS": {touchstart: dont,touchmove: dont, touchend: dont},
-	 glossmark: {touchend: glossmark_onclick,
+	 "#CODEXTABS": {touchstart: dont,touchmove: dont, touchend: dont},
+	 glossmark: {touchend: glossmark_tapped,
 		     touchstart: cancel,
 		     touchmove: cancel},
 	 glossbutton: {touchend: glossbutton_onclick,

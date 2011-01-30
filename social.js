@@ -86,7 +86,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	    completion.id="SBOOKSOURCETAG"+humid;
 	    completion.setAttribute("value",info.qid);
 	    completion.setAttribute("key",info.name);
-	    fdjtDOM(fdjtID("SBOOKGLOSSCLOUDSOURCES"),completion," ");
+	    fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),completion," ");
 	    if (sbook.gloss_cloud)
 	      sbook.gloss_cloud.addCompletion(completion);}
 	// This is tricky because fdjtID may not work when the full
@@ -114,7 +114,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	// var sources=fdjtDOM.getParent(target,".sbooksources");
 	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
 	var sources=fdjtID("SBOOKSOURCES");
-	var glosses=fdjtID("SBOOKALLGLOSSES");
+	var glosses=fdjtID("CODEXALLGLOSSES");
 	var new_sources=[];
 	if ((!(sources))||(!(glosses)))
 	    return; /* Warning? */
@@ -140,7 +140,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	// var sources=fdjtDOM.getParent(target,".sbooksources");
 	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
 	var sources=fdjtID("SBOOKSOURCES");
-	var glosses=fdjtID("SBOOKALLGLOSSES");
+	var glosses=fdjtID("CODEXALLGLOSSES");
 	var new_sources=[];
 	if ((!(sources))||(!(glosses))||(!(target.oid)))
 	    return; /* Warning? */

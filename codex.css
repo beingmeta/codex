@@ -72,7 +72,7 @@ body.sbook { }
 
 /* Being a panel */
 div#CODEXHUD div.hudpanel {
-    background-color: #4682b4; color: ivory;
+    background-color: #4682b4; color: ivory; z-index: 100;
     border: solid transparent 3px;}
 /* Being on top */
 div#CODEXHUD div.hudpanel {
@@ -80,7 +80,7 @@ div#CODEXHUD div.hudpanel {
     text-align: center;
     overflow: hidden;}
 div#CODEXHUD div.hudpanel {
-    opacity: 0.001; height: 0px; /* display: none; */
+    opacity: 0.001; height: 0px; display: none;
     border-radius: 6px; -o-border-radius: 6px;
     -webkit-border-radius: 6px; -moz-border-radius: 6px;}
 div#CODEXHUD.codexanimate div.hudpanel {
@@ -108,7 +108,8 @@ div#CODEXHUD div.hudpanel div.scrollbox {
 
 div#CODEXHUD img.hudbutton {
     position: fixed; width: 50px; height: 50px; z-index: 200;
-    border: solid transparent 2px; opacity: 0.01;}
+    border: solid transparent 2px; opacity: 0.2;}
+div#CODEXHUD img.hudbutton:hover { background-color: lightblue; border-color: blue;}
 body.hudup div#CODEXHUD img.hudbutton  {}
 body div#CODEXHUD img.hudbutton:hover { opacity: 0.45;}
 div#CODEXHUD .topleft {top: 0px; left: 0px;}
@@ -155,35 +156,58 @@ div#CODEXHUD #CODEXHEAD {
 
 /* The lower left HUD icon */
 
-div#CODEXHUD div#CODEXFLYLEAFBUTTON {
+div#CODEXHUD div#CODEXBUTTON {
     position: fixed; left: 0px; bottom: 0px;
-    height: 50px; width: 50px;}
-div#CODEXHUD div#CODEXFLYLEAFBUTTON img {display: none;}
+    height: 50px; width: 50px;
+    opacity: 0.5;}
+div#CODEXHUD div#CODEXBUTTON:hover {
+    opacity: 0.5;}
+div#CODEXHUD div#CODEXBUTTON img {display: none; opacity: 0.75;}
+div#CODEXHUD div#CODEXBUTTON img:hover {display: none; opacity: 1.0;}
+body.hudup div#CODEXHUD div#CODEXBUTTON {display: none;}
 
-div#CODEXHUD.help div#CODEXFLYLEAFBUTTON img[alt='help'],
-div#CODEXHUD.about div#CODEXFLYLEAFBUTTON img[alt='about'],
-div#CODEXHUD.sbookapp div#CODEXFLYLEAFBUTTON img[alt='sbookapp'],
-div#CODEXHUD.flytoc div#CODEXFLYLEAFBUTTON img[alt='flytoc'],
-div#CODEXHUD.device div#CODEXFLYLEAFBUTTON img[alt='device'] {
-    display: block; background-color: gold;}
+body #CODEXDROPHUD {
+    position: fixed; left: 0px; bottom: 0px;
+    height: 50px; width: 50px;
+    border: solid transparent 2px;
+    border-bottom: 0px; border-left: 0px;
+    border-top-right-radius: 6px;
+    -o-border-top-right-radius: 6px; 
+    -webkit-border-top-right-radius: 6px; 
+    -moz-border-radius-topright: 6px;
+    -o-border-radius-topright: 6px;
+    opacity: 0.5;
+    display: none;}
+body #CODEXDROPHUD:hover {background-color: lightblue; border-color: blue;}
+body.hudup #CODEXDROPHUD {display: block;}
 
-body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.about img[alt='about'],
-body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.sbookapp img[alt='sbookapp'],
-body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.device img[alt='device'],
-body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.flytoc img[alt='flytoc'],
-body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.login img[alt='login'],
-body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.console img[alt='console'],
-body.hudup div#CODEXHUD div#CODEXFLYLEAFBUTTON.help img[alt='help'] {
+body #CODEXPAGENEXT {
+    display: none;
+    position: fixed; right: 0px; bottom: 0px;
+    height: 50px; width: 50px;
+    opacity: 0.5;}
+body #CODEXPAGENEXT:hover {opacity: 0.75;}
+body.hudup #CODEXPAGENEXT {display: none;}
+
+/* This enables the lower right pagenext button, which we're not currentl
+   using
+body #CODEXPAGENEXT { display: block;}
+body div#CODEXHUD img.hudbutton#CODEXALLGLOSSESBUTTON { display: none;}
+body.hudup div#CODEXHUD img.hudbutton#CODEXALLGLOSSESBUTTON { display: block;}
+*/
+
+div#CODEXHUD div#CODEXBUTTON.toc img[alt='toc'],
+div#CODEXHUD div#CODEXBUTTON.search img[alt='search'],
+div#CODEXHUD div#CODEXBUTTON.browse img[alt='search'],
+div#CODEXHUD div#CODEXBUTTON.scan img[alt='scan'],
+div#CODEXHUD div#CODEXBUTTON.addgloss img[alt='addgloss'],
+div#CODEXHUD div#CODEXBUTTON.allglosses img[alt='allglosses'],
+div#CODEXHUD div#CODEXBUTTON.help img[alt='help'],
+div#CODEXHUD div#CODEXBUTTON.about img[alt='about'],
+div#CODEXHUD div#CODEXBUTTON.sbookapp img[alt='sbookapp'],
+div#CODEXHUD div#CODEXBUTTON.flytoc img[alt='flytoc'],
+div#CODEXHUD div#CODEXBUTTON.device img[alt='device'] {
     display: block;}
-
-body div#CODEXHUD div#CODEXFLYLEAFBUTTON.about:hover img[alt='about'],
-body div#CODEXHUD div#CODEXFLYLEAFBUTTON.sbookapp:hover img[alt='sbookapp'],
-body div#CODEXHUD div#CODEXFLYLEAFBUTTON.device:hover img[alt='device'],
-body div#CODEXHUD div#CODEXFLYLEAFBUTTON.flytoc:hover img[alt='flytoc'],
-body div#CODEXHUD div#CODEXFLYLEAFBUTTON.login:hover img[alt='login'],
-body div#CODEXHUD div#CODEXFLYLEAFBUTTON.console:hover img[alt='console'],
-body div#CODEXHUD div#CODEXFLYLEAFBUTTON.help:hover img[alt='help'] {
-    display: block; opacity: 0.5;}
 
 /* HUDUP rules */
 
@@ -193,17 +217,17 @@ body.hudup div#CODEXHUD img.hudbutton:hover { opacity: 0.8;}
 
 /* Mode display rules */
 
-body.hudup div#CODEXHUD.help div.hudpanel#SBOOKHELP,
+body.hudup div#CODEXHUD.help div.hudpanel#CODEXHELP,
 body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
-body.hudup div#CODEXHUD.searching div.hudpanel#CODEXSEARCH,
-body.hudup div#CODEXHUD.browsing div.hudpanel#CODEXSEARCH,
-body.hudup div#CODEXHUD.browsing div.hudpanel#CODEXSEARCHRESULTS,
-body.hudup div#CODEXHUD.searching div.hudpanel#CODEXSEARCHCLOUD,
-body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
+body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCH,
+body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCH,
+body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
+body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
-body.hudup div#CODEXHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
-    border-color: darkblue;
+body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
+body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
+    border-color: darkblue; display: block;
     opacity: 0.95; min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
@@ -211,11 +235,13 @@ body.hudup div#CODEXHUD.allglosses div.hudpanel#SBOOKBROWSEGLOSSES {
     -o-box-shadow: 1em 1em 1em #cccccc;}
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
+body.hudup div#CODEXHUD.splash div.helphud { display: block;}
 
 body.hudup div#CODEXHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
 body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
     border-color: darkblue;
-    opacity: 0.95; min-height: 50px; height: auto;}
+    opacity: 0.95; min-height: 50px; height: auto;
+    display: block;}
 
 body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES {
     border-color: darkblue;
@@ -231,20 +257,21 @@ body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES.noglosses {
 
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     border-color: darkblue;
-    opacity: 0.95; min-height: 50px; height: auto;}
+    opacity: 0.95; min-height: 50px; height: auto;
+    display: block;}
 
-div#CODEXHUD.searching div#CODEXSEARCHRESULTSWRAPPER { display: none;}
-div#CODEXHUD.searching div.completions#CODEXSEARCHCLOUD { display: block;}
-div#CODEXHUD.searching div.codexslice#CODEXSEARCHRESULTS { display: none;}
-div#CODEXHUD.browsing div#CODEXSEARCHCLOUDWRAPPER { display: none;}
-div#CODEXHUD.browsing div.completions#CODEXSEARCHCLOUD { display: none;}
+div#CODEXHUD.search div#CODEXSEARCHRESULTSWRAPPER { display: none;}
+div#CODEXHUD.search div.completions#CODEXSEARCHCLOUD { display: block;}
+div#CODEXHUD.search div.codexslice#CODEXSEARCHRESULTS { display: none;}
+div#CODEXHUD.searchresults div#CODEXSEARCHCLOUDWRAPPER { display: none;}
+div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
 
 body.hudup div#CODEXHUD.addgloss .hudbutton { opacity: 0.15;}
 
 div#CODEXHUD.allglosses .hudbutton[alt='glosses'],
 div#CODEXHUD.flyleaf .hudbutton[alt='flyleaf'],
-div#CODEXHUD.searching .hudbutton[alt='search'],
-div#CODEXHUD.browsing .hudbutton[alt='search'],
+div#CODEXHUD.search .hudbutton[alt='search'],
+div#CODEXHUD.searchresults .hudbutton[alt='search'],
 div#CODEXHUD.toc .hudbutton[alt='toc'] {
     border-color: darkblue;
     background-color: #4682b4;}
@@ -269,6 +296,31 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="next"] {display: no
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: block;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
+
+body div#CODEXHUD img.codexscanbutton {
+    width: 50px; position: fixed; top: 0px; opacity: 0.8;
+    display: none;}
+body div#CODEXHUD img#CODEXSCANRIGHT.codexscanbutton,
+body div#CODEXHUD img#CODEXSCANEND.codexscanbutton {
+    right: 0px;}
+body div#CODEXHUD img#CODEXSCANLEFT.codexscanbutton,
+body div#CODEXHUD img#CODEXSCANSTART.codexscanbutton {
+    left: 0px;}
+
+body div#CODEXHUD.scanning img.codexscanbutton {display: block;}
+body div#CODEXHUD.scanning img#CODEXSCANSTART.codexscanbutton,
+body div#CODEXHUD.scanning img#CODEXSCANEND.codexscanbutton {
+    display: none;}
+body div#CODEXHUD.scanning.scanstart img#CODEXSCANSTART.codexscanbutton,
+body div#CODEXHUD.scanning.scanend img#CODEXSCANEND.codexscanbutton {
+    display: block;}
+body div#CODEXHUD.scanning.scanstart img#CODEXSCANLEFT.codexscanbutton,
+body div#CODEXHUD.scanning.scanend img#CODEXSCANRIGHT.codexscanbutton {
+    display: none;}
+
+body div#CODEXHUD.scanning img.hudbutton#CODEXTOCBUTTON,
+body div#CODEXHUD.scanning img.hudbutton#CODEXSEARCHBUTTON {
+    display: none;}
 
 /* About this book */
 
@@ -313,7 +365,7 @@ div#SBOOKSOURCES {
 div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
     background-color: ivory; color: #4682b4;}
 div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
-    top: 60px; bottom: 60px; left: 0px; right: 50px;
+    top: 70px; bottom: 60px; left: 0px; right: 50px;
     border-left: none;
     border-top-left-radius: 0px; -o-border-radius-topleft: 0px;
     -moz-border-radius-topleft: 0px; -webkit-border-top-left-radius: 0px; 
@@ -463,12 +515,33 @@ div.spanbar div.progressbox {
   position: absolute; z-index: 250; 
   margin: 0px; padding: 0px; border: 0px;}
 
+/* The splash HUD */
+
+div#CODEXHUD div#CODEXSPLASH.hudpanel {
+    position: fixed; text-align: left; padding: 16px;
+    background-color: ivory; color: black; opacity: 1.0;
+    top: 75px; bottom: 75px; left: 75px; right: 75px;}
+div#CODEXHUD.splash div#CODEXSPLASH.hudpanel {
+    display: block; height: inherit; border-color: blue;}
+div#CODEXHUD div#CODEXSPLASH {
+    transition-property: opacity; transition-duration: 1s;
+    -o-transition-property: opacity; -o-transition-duration: 1s;
+    -moz-transition-property: opacity; -moz-transition-duration: 1s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
+div#CODEXHUD div#CODEXSPLASH h2, div#CODEXHUD div#CODEXSPLASH h3 {
+    text-align: center;}
+div#CODEXHUD div#CODEXSPLASH h2:first-child {
+    margin-top: 0px; margin-bottom: 0px;}
+div#CODEXHUD div#CODEXSPLASH .codexclicktohide {
+    margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
+    text-align: center; color: red;}
+
 /* Help HUD */
 
-div#SBOOKHELP { margin-left: 100px; margin-right: 50px; text-align: center;}
-div#SBOOKHELP #CHECKHIDEHELP {
+div#CODEXHELP { margin-left: 100px; margin-right: 50px; text-align: center;}
+div#CODEXHELP #CHECKHIDEHELP {
  float: left; font-family: sans; color: red; max-width: 100px;}
-div#SBOOKHELP #CLICKHIDEHELP { 
+div#CODEXHELP #CLICKHIDEHELP { 
  float: right; padding: 1px; border: solid red 2px; z-index: 300;}
 
 div#CODEXHUD .helphud {
@@ -478,10 +551,10 @@ div#CODEXHUD .helphud {
     -o-border-radius: 6px; -webkit-border-radius: 6px; 
     -o-border-radius: 6px;
     display: none;}
-div#CODEXHUD .helphud.topleft {top: 3px; left: 60px;}
-div#CODEXHUD .helphud.topright {top: 3px; right: 60px;}
-div#CODEXHUD .helphud.botleft {bottom: 3px; left: 60px;}
-div#CODEXHUD .helphud.botright {bottom: 3px; right: 60px;}
+div#CODEXHUD .helphud.topleft {top: 3px; left: 60px; text-align: right;}
+div#CODEXHUD .helphud.topright {top: 3px; right: 60px; text-align: left;}
+div#CODEXHUD .helphud.botleft {bottom: 3px; left: 60px; text-align: right;}
+div#CODEXHUD .helphud.botright {bottom: 3px; right: 60px; text-align: left;}
 div#CODEXHUD .helphud.topcenter {
     top: 0px; width: 30%; left: 35%; right: 35%; text-align: center;
     border-top-left-radius: 0px; border-top-right-radius: 0px;
@@ -497,7 +570,7 @@ div#CODEXHUD .helphud.botcenter {
     -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px;}
 
 div#CODEXHUD div.helphud.leftmiddle {
-    position: fixed; max-width: 50px;
+    position: fixed; max-width: 50px; padding-left: 3px;
     top: 40%; left: 0px; text-align: left; padding-right: 2px;
     border-top-left-radius: 0px; border-bottom-left-radius: 0px;
     -o-border-top-left-radius: 0px; -o-border-bottom-left-radius: 0px; 
@@ -505,7 +578,7 @@ div#CODEXHUD div.helphud.leftmiddle {
     -moz-border-radius-topleft: 0px; -moz-border-radius-bottomleft: 0px;}
 
 div#CODEXHUD div.helphud.rightmiddle {
-    position: fixed; max-width: 50px;
+    position: fixed; max-width: 50px; padding-right: 3px;
     top: 40%; right: 0px; text-align: right; padding-left: 2px;
     border-top-right-radius: 0px; border-bottom-right-radius: 0px;
     -o-border-top-right-radius: 0px; -o-border-bottom-right-radius: 0px; 
@@ -518,41 +591,49 @@ div#CODEXHUD div.helphud.rightmiddle {
 .helphud.botleft span.arrow { float: left;}
 .helphud.botright span.arrow { float: right;}
 
-div#SBOOKHELP > div {
+div#CODEXHUD.help div#CODEXFLYLEAF {
+    left: 75px; right: 75px;
+    border-left: solid blue 3px;;
+    border-top-left-radius: 6px; -o-border-radius-topleft: 6px;
+    -moz-border-radius-topleft: 6px; -webkit-border-top-left-radius: 6px; 
+    border-bottom-left-radius: 6px; -o-border-radius-bottomleft: 6px;
+    -moz-border-radius-bottomleft: 6px; -webkit-border-bottom-left-radius: 6px;}
+
+div#CODEXHELP > div {
     margin-bottom: 1em; font-size: 100%;}
-div#SBOOKHELP > div.about {
+div#CODEXHELP > div.about {
     margin-left: 2em; margin-right: 2em; text-align: center;}
-div#SBOOKHELP > div.login {
+div#CODEXHELP > div.login {
     font-size: 18px; font-weight: bold; vertical-align: top;
     clear: both;
     display: none;}
-div#SBOOKHELP > div.login img { vertical-align: top; height: 2ex;}
-body.nosbookuser div#SBOOKHELP > div.login { display: block;}
-div#SBOOKHELP > div.oneline {
+div#CODEXHELP > div.login img { vertical-align: top; height: 2ex;}
+body.nosbookuser div#CODEXHELP > div.login { display: block;}
+div#CODEXHELP > div.oneline {
     font-size: 125%; clear: both;}
-div#SBOOKHELP table {
+div#CODEXHELP table {
     clear: both;}
-div#SBOOKHELP table th {
+div#CODEXHELP table th {
     color: black; text-align: right; vertical-align: top;
     padding-right: 0.5em;}
-div#SBOOKHELP table th div {
+div#CODEXHELP table th div {
     padding-right: 4px; margin-bottom: .75em;}
-div#SBOOKHELP table td { text-align: left; vertical-align: top;}
-div#SBOOKHELP table td em { }
-div#CODEXHUD.help div#SBOOKHELP { display: block;}
-div#CODEXHUD.help div#SBOOKHELP img.sbookhidehud {
+div#CODEXHELP table td { text-align: left; vertical-align: top;}
+div#CODEXHELP table td em { }
+div#CODEXHUD.help div#CODEXHELP { display: block;}
+div#CODEXHUD.help div#CODEXHELP img.sbookhidehud {
     left: 0.5em; top: 0.5em; padding: 3px;}
-div#SBOOKHELP strong em { font-weight: normal;}
-div#SBOOKHELP span.key { font-weight: bold; font-size: 110%;}
-div#SBOOKHELP span.key:before { content: '(';}
-div#SBOOKHELP span.key:after { content: ')';}
+div#CODEXHELP strong em { font-weight: normal;}
+div#CODEXHELP span.key { font-weight: bold; font-size: 110%;}
+div#CODEXHELP span.key:before { content: '(';}
+div#CODEXHELP span.key:after { content: ')';}
 
-div#SBOOKHELP div.message {
+div#CODEXHELP div.message {
     margin-top: 2ex; font-size: 75%; color: red;
     overflow: hidden;}
-div#SBOOKHELP div.message .head { font-size: 200%; display: block;}
+div#CODEXHELP div.message .head { font-size: 200%; display: block;}
 
-div#SBOOKHELP table.sbookhelp th + td > div { border-top: solid black 3px;}
+div#CODEXHELP table.sbookhelp th + td > div { border-top: solid black 3px;}
 
 /* "Leading" to fill out the top and bottom */
 
@@ -597,7 +678,7 @@ div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     border-top: solid black 1px;
     display: none;}
 body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
-    opacity: 0.20;}
+    opacity: 0.75;}
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff { float: right;}
 div#SBOOKPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%;
@@ -664,7 +745,8 @@ div.searchbox div.tags img.clearsearch { float: right; color: red;}
 div.searchbox div.tags img.clearsearch { float: right; color: red;}
 
 div.searchbox div.input { }
-div.searchbox div.input input[type='TEXT'] { width: 100%;}
+div.searchbox div.input input[type='TEXT'] {
+    width: 100%; font-size: 150%;}
 
 div.searchbox div.resultinfo div.noresults { display: none;}
 div.searchbox div.resultinfo div.noquery { display: none;}
@@ -813,15 +895,18 @@ div.codexnote > hr {
 
 /* Buttons */
 
-div#CODEXHUD div#CODEXHUDBUTTONS {
-    clear: none; z-index: 100; text-align: center;
-    display: none;}
+body div#CODEXHUD div#CODEXHUDBUTTONS {
+    clear: none; z-index: 150; text-align: center;
+    opacity: 0.1;}
+body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
+    opacity: 1.0;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     display: block; opacity: 0.8;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: none;}
 body.hudup.sbookshowconsole div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: inline;}
+
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;}
@@ -831,14 +916,17 @@ div#CODEXHUD div#CODEXHUDBUTTONS {
     font-family: times,serif; font-variant: small-caps;
     text-align: center;}
 
+/* These are all modes which use the top of the screen, so we
+   hide the HUDBUTTONS. */
 body.hudup div#CODEXHUD.toc div#CODEXHUDBUTTONS,
-body.hudup div#CODEXHUD.searching div#CODEXHUDBUTTONS,
-body.hudup div#CODEXHUD.browsing div#CODEXHUDBUTTONS,
-body.hudup div#CODEXHUD.scanning div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.search div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.searchresults div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.tocscan div#CODEXHUDBUTTONS,
-body.hudup div#CODEXHUD.glosses div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.help div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.splash div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.allglosses div#CODEXHUDBUTTONS,
-body.hudup div#CODEXHUD.addgloss div#CODEXHUDBUTTONS {
+body.hudup div#CODEXHUD.addgloss div#CODEXHUDBUTTONS,
+body div#CODEXHUD.scanning div#CODEXHUDBUTTONS {
     display: none;}
 div#CODEXHUD div#CODEXHUDBUTTONS div.sbookplate {
     margin: 0px; padding: 0px; border: 0px;
@@ -870,9 +958,9 @@ div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
 
 div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[contentid='APPABOUT'],
 div#CODEXHUD.login div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
-div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKDEVICE'],
+div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[contentid='CODEXSETTINGS'],
 div#CODEXHUD.flytoc div#CODEXHUDBUTTONS div.tabbar .tab[contentid='FLYTOC'],
-div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKHELP'],
+div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[contentid='CODEXHELP'],
 div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[contentid='CODEXCONSOLE'],
 div#CODEXHUD.sbookapp div#CODEXHUDBUTTONS div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
@@ -943,7 +1031,7 @@ div#CODEXHUD div#CODEXFLYLEAF table {
 
 div#CODEXHUD.about div#CODEXFLYHEAD div.tabbar .tab[contentid='APPABOUT'],
 div#CODEXHUD.login div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
-div#CODEXHUD.device div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKDEVICE'],
+div#CODEXHUD.device div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXSETTINGS'],
 div#CODEXHUD.flytoc div#CODEXFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
 div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXCONSOLE'],
 div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
@@ -955,7 +1043,7 @@ div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent {
 
 div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent[id='APPABOUT'],
 div#CODEXHUD.login div#CODEXFLYLEAF div.tabcontent[id='SBOOKAPPLOGIN'],
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent[id='SBOOKDEVICE'],
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent[id='CODEXSETTINGS'],
 div#CODEXHUD.flytoc div#CODEXFLYLEAF div.tabcontent[id='FLYTOC'],
 div#CODEXHUD.console div#CODEXFLYLEAF div.tabcontent[id='CODEXCONSOLE'],
 div#CODEXHUD.sbookapp div#CODEXFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
@@ -1013,20 +1101,20 @@ div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {
 
 div#CODEXFLYLEAF table.login th.or { font-size: 200%;}
 
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
  div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
  div.setting span.checkspan {
      font-size: 125%; color: orange;}
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
   div.setting span.checkspan input[type='CHECKBOX'] {
       width: 16px; height: 16px; color: orange; background-color: orange;
       vertical-align: bottom;}
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
   div.setting div.explanation { 
       font-style: italic; clear: both; margin-left: 3em;}
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#SBOOKDEVICE
+div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
   div.setting .button {
       float: right; clear: right; cursor: pointer; 
       background-color: orange; color: white;
@@ -1233,13 +1321,12 @@ body.hudup .sbookglossmark { opacity: 0.9; display: block;}
 body.hudup .sbookglossbutton { opacity: 0.5;}
 body.hudup .sbooktarget .sbookglossbutton { opacity: 0.9; display: block;}
 
-/* .sparsebook */
+/* Sparse glossmark display (the default) */
 body .sbookglossmark img.tiny { display: block;}
 body.hudup .sbookglossmark img.big { display: block;}
 body.hudup .sbookglossmark img.tiny { display: none;}
 body .sbookglossmark:hover img.big { display: block;}
 body .sbookglossmark:hover img.tiny { display: none;}
-
 
 /* Displaying the sbook target */
 
@@ -1262,7 +1349,7 @@ body.hudup .sbooktarget .sbookglossmark:hover { opacity: 0.9;}
 
 .tab[CONTENTID='SBOOKAPPLOGIN'] { display: none;}
 
-body.nosbookuser div#SBOOKHELP > div.login { display: block;}
+body.nosbookuser div#CODEXHELP > div.login { display: block;}
 body.nosbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
     display: none;}
 body.nosbookuser a.logout {display: none;}
@@ -1444,8 +1531,8 @@ div.codexaddgloss form.sbdetailmode div.controls span[data-mode='detail'] {
     -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px;
     border-bottom: solid white 2px;}
 
-div#CODEXHUD.tagging div.codexaddgloss form div.completions#SBOOKGLOSSCLOUD,
-div.codexaddgloss form.sbtagmode div.completions#SBOOKGLOSSCLOUD {
+div#CODEXHUD.tagging div.codexaddgloss form div.completions#CODEXGLOSSCLOUD,
+div.codexaddgloss form.sbtagmode div.completions#CODEXGLOSSCLOUD {
     min-height: 100px;
     display: block;}
 

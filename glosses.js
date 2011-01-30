@@ -250,7 +250,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else {
 	    fdjtDOM.addClass(CodexHUD,"tagging");
 	    gloss_cloud.complete(string);}
-	sbook.UI.updateScroller("SBOOKGLOSSCLOUD");}
+	sbook.UI.updateScroller("CODEXGLOSSCLOUD");}
     sbook.showGlossCloud=showGlossCloud;
     function hideGlossCloud(){
 	fdjtDOM.dropClass(CodexHUD,"tagging");}
@@ -704,7 +704,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /* The completions element */
     function glossCloud(){
 	if (gloss_cloud) return gloss_cloud;
-	var completions=fdjtID("SBOOKGLOSSCLOUD");
+	var completions=fdjtID("CODEXGLOSSCLOUD");
 	completions.onclick=glosscloud_onclick;
 	sbook.gloss_cloud=gloss_cloud=new fdjtUI.Completions(
 	    completions,fdjtID("SBOOKTAGINPUT"),

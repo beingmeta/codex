@@ -58,7 +58,7 @@ var CodexMode=
 		fdjtDOM.prepend(document.body,CodexHUD);}
 	    var flyleaf=fdjtID("CODEXFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;
-	    var help=fdjtID("SBOOKHELP");
+	    var help=fdjtID("CODEXHELP");
 	    help.innerHTML=sbook_helptext;
 	    // Initialize search UI
 	    var search=fdjtID("CODEXSEARCH");
@@ -73,7 +73,7 @@ var CodexMode=
 	    fdjtID("SBOOK_RETURN_TO").value=location.href;
 
 	    // Initialize gloss UI
-	    var glosses=fdjtID("SBOOKALLGLOSSES");
+	    var glosses=fdjtID("CODEXALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
 	    sbook.glosses.addEffect("user",function(f,p,v){
 		sbook.sourcekb.ref(v).oninit
@@ -111,7 +111,7 @@ var CodexMode=
 		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			gloss_tag=Knodule.HTML(tag,sbook.knodule,false,true);
-			fdjtDOM(fdjtID("SBOOKGLOSSTAGS"),gloss_tag," ");
+			fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
 			gloss_cloud.addCompletion(gloss_tag);}
 		    var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
 		    if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
@@ -122,11 +122,11 @@ var CodexMode=
 	    
 	    sbookFoot=fdjtID("CODEXFOOT");
 	    sbookHead=fdjtID("CODEXHEAD");
-	    sbookHelp=fdjtID("SBOOKHELP");
+	    sbookHelp=fdjtID("CODEXHELP");
 	    fillinFlyleaf();
 	    resizeHUD();
 	    sbook.scrollers={};
-	    updateScroller("SBOOKGLOSSCLOUD");
+	    updateScroller("CODEXGLOSSCLOUD");
 	    updateScroller("CODEXSEARCHCLOUD");
 	}
 	sbook.initHUD=initHUD;
@@ -191,12 +191,18 @@ var CodexMode=
 	/* HUD animation */
 
 	function setHUD(flag){
-	    if ((!(flag))===(!(sbook.hudup))) {}
-	    else if (flag) {
+	    if (sbook.Trace.gestures)
+		fdjtLog("setHUD %o mode=%o hudup=%o bc=%o hc=%o",
+			flag,sbook.mode,sbook.hudup,
+			document.body.className,
+			CodexHUD.className);
+	    if (flag) {
 		sbook.hudup=true;
 		fdjtDOM.addClass(document.body,"hudup");}
 	    else {
+		sbook.mode=false;
 		sbook.hudup=false;
+		sbook.scrolling=false;
 		fdjtDOM.dropClass(CodexHUD,"flyleaf");
 		fdjtDOM.dropClass(CodexHUD,"full");
 		fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
@@ -205,92 +211,115 @@ var CodexMode=
 	/* Mode controls */
 	
 	var CodexMode_pat=
-	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(searching)|(browsing)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)/g;
+	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(splash)/g;
 	var codexflyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)|(help)|(console)/g;
 	var sbook_mode_scrollers=
-	    {allglosses: "SBOOKALLGLOSSES",
-	     browsing: "CODEXSEARCHRESULTS",
-	     searching: "CODEXSEARCHCLOUD",
-	     addgloss: "SBOOKGLOSSCLOUD",
+	    {allglosses: "CODEXALLGLOSSES",
+	     searchresults: "CODEXSEARCHRESULTS",
+	     search: "CODEXSEARCHCLOUD",
+	     addgloss: "CODEXGLOSSCLOUD",
 	     sbookapp: "MANAGEAPP",
 	     flytoc: "CODEXFLYTOC",
 	     login: "CODEXFLYLOGIN",
 	     about: "APPABOUT"
 	     /* ,
 		login: "SBOOKAPPLOGIN",
-		device: "SBOOKDEVICE",
+		device: "CODEXSETTINGS",
 	     */
 	    };
 	var sbook_mode_foci=
 	    {gotopage: "CODEXPAGEINPUT",
 	     gotoloc: "CODEXLOCINPUT",
-	     searching: "CODEXSEARCHINPUT"};
+	     search: "CODEXSEARCHINPUT"};
 	
 	function CodexMode(mode){
 	    if (typeof mode === 'undefined') return sbook.mode;
+	    if (mode==='last') mode=sbook.last_mode||'help';
+	    if (mode==='none') mode=false;
 	    if (sbook.Trace.mode)
 		fdjtLog("CodexMode %o, cur=%o dbc=%o",
 			mode,sbook.mode,document.body.className);
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
-		if (mode==="flyleaf") mode=sbook.last_flyleaf||"about";
 		if (mode!=="scanning") sbook.scanning=false;
 		if (mode===sbook.mode) {}
 		else if (mode===true) {
-		  if (sbook_mode_foci[sbook.mode]) {
-		    var input=fdjtID(sbook_mode_foci[sbook.mode]);
-		    input.blur();}
-		  sbook.mode=false;
-		  sbook.last_mode=true;}
+		    /* True just puts up the HUD with no mode info */
+		    if (sbook_mode_foci[sbook.mode]) {
+			var input=fdjtID(sbook_mode_foci[sbook.mode]);
+			input.blur();}
+		    sbook.mode=false;
+		    sbook.last_mode=true;}
 		else if (typeof mode !== 'string') 
 		    throw new Error('mode arg not a string');
-		else if (mode==='help') {
-		    // Don't save 'help' as the last mode, because
-		    //  we'll return to the actual last mode when help
-		    //  finishes
-		    sbook.mode=mode;}
 		else {
 		  if (sbook_mode_foci[sbook.mode]) {
 		    var input=fdjtID(sbook_mode_foci[sbook.mode]);
 		    input.blur();}
-		  sbook.mode=mode;
-		  sbook.last_mode=mode;}
+		    sbook.mode=mode;
+		    sbook.last_mode=mode;}
+		// If we're switching to the inner app but the iframe
+		//  hasn't been initialized, we do it now.
 		if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
 		    sbookSetupFlyleaf();
+		// Update sbook.scrolling which is the scrolling
+		// element in the HUD for this mode
 		if (!(typeof mode === 'string'))
 		    sbook.scrolling=false;
 		else if (sbook_mode_scrollers[mode]) 
 		    sbook.scrolling=(sbook_mode_scrollers[mode]);
 		else sbook.scrolling=false;
-		if (mode===true)
+		// Actually change the class on the HUD object
+		if (mode===true) {
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");
-		else fdjtDOM.swapClass(CodexHUD,CodexMode_pat,mode);
-		if ((mode)&&(typeof mode === 'string')&&
-		    (mode.search(codexflyleafMode_pat)===0)) {
-		    fdjtDOM.addClass(CodexHUD,"flyleaf");
-		    sbook.last_flyleaf=mode;
-		    fdjtID("CODEXFLYLEAFBUTTON").className=mode;}
-		else fdjtDOM.dropClass(CodexHUD,"flyleaf");
+		    fdjtDOM.dropClass(CodexHUD,"flyleaf");}
+		else {
+		    if (mode.search(codexflyleafMode_pat)!==0)
+			fdjtDOM.dropClass(CodexHUD,"flyleaf");
+		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,mode);}
+		// Update the 'flyleaf' meta mode
+		if ((mode)&&(typeof mode === 'string')) {
+		    if (mode.search(codexflyleafMode_pat)===0)
+			fdjtDOM.addClass(CodexHUD,"flyleaf");
+		    else fdjtDOM.dropClass(CodexHUD,"flyleaf");
+		    fdjtID("CODEXBUTTON").className=mode;}
+		// Help mode (on the hud) actually dims the body
 		if (mode==="help")
 		    fdjtDOM.addClass(document.body,"dimmed");
 		else fdjtDOM.dropClass(document.body,"dimmed");
-		setHUD(true);
+		// Scanning is a funny mode in that the HUD is down
+		//  for it.  We handle all of this stuff here.
+		if (mode==='scanning') {
+		    sbook.hudup=false;
+		    fdjtDOM.dropClass(CodexHUD,"flyleaf");
+		    fdjtDOM.dropClass(CodexHUD,"full");
+		    fdjtDOM.dropClass(document.body,"hudup");}
+		// And if we're not scanning, we just raise the hud
+		else setHUD(true);
+		// This updates scroller dimensions
+		if (sbook.scrolling)
+		    updateScroller(fdjtID(sbook.scrolling));
+		// If we're scanning all glosses, we sync the glosses
+		//  with the current book location.
 		if ((mode==="allglosses")&&
 		    (sbook.curinfo)&&(sbook.curinfo.first)) {
-		    sbook.UI.scrollGlosses(sbook.curinfo.first,fdjtID("SBOOKALLGLOSSES"));}
+		    sbook.UI.scrollGlosses(
+			sbook.curinfo.first,fdjtID("CODEXALLGLOSSES"));}
+		// We autofocus any input element appropriate to the
+		// mode
 		if (sbook_mode_foci[mode]) {
 		  var input=fdjtID(sbook_mode_foci[mode]);
 		  if (input) input.focus();}
 		// Moving the focus back to the body lets keys work
 		else document.body.focus();
-		if (sbook.scrolling)
-		    updateScroller(fdjtID(sbook.scrolling));
 		sbook.displaySync();}
 	    else {
+		// Clearing the mode is a lot simpler, in part because
+		//  setHUD clears most of the classes when it brings
+		//  the HUD down.
 		if (sbook.mode!=='help') sbook.last_mode=sbook.mode;
 		document.body.focus();
 		fdjtDOM.dropClass(document.body,"dimmed");
-		sbook.mode=false; sbook.scrolling=false;
 		setHUD(false);
 		sbook.displaySync();}}
 
@@ -393,7 +422,7 @@ var CodexMode=
 	    var msg=fdjtDOM("div.message",
 			    fdjtDOM("span.head",message),
 			    fdjtState.argVec(arguments,1));
-	    fdjtDOM.replace("SBOOKHELPMESSAGE",fdjtDOM.clone(msg));
+	    fdjtDOM.replace("CODEXHELPMESSAGE",fdjtDOM.clone(msg));
 	    fdjtDOM.replace("CODEXCONSOLEMESSAGE",fdjtDOM.clone(msg));
 	    fdjtDOM.append("CODEXCONSOLE",
 			   fdjtDOM("div.fdjtlog",
@@ -611,11 +640,11 @@ var CodexMode=
 		clone.id="CODEXSCAN";
 		fdjtDOM.replace("CODEXSCAN",clone);
 		if (sbook.nextSlice(src))
-		    fdjtDOM.dropClass("CODEXSCANNER","sbookatend");
-		else fdjtDOM.addClass("CODEXSCANNER","sbookatend");
+		    fdjtDOM.dropClass("CODEXHUD","scanend");
+		else fdjtDOM.addClass("CODEXHUD","scanend");
 		if (sbook.prevSlice(src))
-		    fdjtDOM.dropClass("CODEXSCANNER","sbookatstart");
-		else fdjtDOM.addClass("CODEXSCANNER","sbookatstart");
+		    fdjtDOM.dropClass("CODEXHUD","scanstart");
+		else fdjtDOM.addClass("CODEXHUD","scanstart");
 		sbook.scanning=src;}
 	    else {}
 	    sbook.setTarget(elt);

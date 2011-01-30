@@ -1,3 +1,38 @@
+<div id="CODEXSPLASH" class="hudpanel">
+  <h2>Welcome to Codex, <span style="white-space: nowrap;">the
+      web-based sBooks reader</span></h2>
+  <div class="codexclicktohide">click anywhere to hide this screen</div>
+  <p>Codex reveals the layers of structure, notes, and tags which
+    enrich this sBook.</p>
+  <p>When reading, page through the book
+    by <span class="fortouch">tapping</span>
+    <span class="notouch">clicking</span> the sides of the screen or
+    swiping horizontally with one finger.</p>
+  <p><span class="fortouch">Tap</span> <span class="notouch">Click</span>
+    the top of the page to see the book tools, the bottom of the page
+    to hide them.</p>
+  <p><span class="fortouch">Tap</span> <span class="notouch">Click</span>
+  a paragraph or heading to see or add notes.</p>
+  <p>The box at the bottom of the screen shows your location within
+    the book.  <span class="fortouch">Tap</span>
+    <span class="notouch">Click</span> in this box to jump to a
+    different part of the book.</p>
+  <p>When you see arrows at the top corners, you're
+    <strong>scanning</strong> through sections, glosses, or search
+    results.  <span class="fortouch">Tap</span>
+    <span class="notouch">Click</span> the arrows (or the sides of the
+    screen) to go forward and back.  You can
+    also <span class="fortouch">swipe with two
+    fingers</span><span class="notouch">use your arrow
+    keys</span>.</p>
+  <h2>Enjoy!</h2>
+  <div  style="display: none;">
+    <div class='message' id='CODEXHELPMESSAGE'>
+      <span class='head'>Working Status</span>
+    </div>
+  </div>
+</div>
+</div>
 <div id="CODEXHEAD">
   <img src="http://static.beingmeta.com/graphics/CompassIcon50x50.png"
        alt="toc" title="click to navigate the book as a whole"
@@ -6,13 +41,17 @@
   <img src="http://static.beingmeta.com/graphics/TagSearch50x50.png"
        alt="search" title="click to search tags within the book"
        class="hudbutton topright" id="CODEXSEARCHBUTTON"
-       hudmode="searching" onclick="sbook.UI.hudbutton(event);"/>
+       hudmode="search" onclick="sbook.UI.hudbutton(event);"/>
+  <div class="helphud topcenter">
+    <span class="fortouch">tap</span><span class="notouch">click</span>
+    here to see the book tools
+  </div>
   <div class="helphud topleft" data-hudmode="toc">
     <span class="nobreak"><span class="arrow">←</span>browse</span><br/>
-    <span class="nobreak">ToC</span></div>
-  <div class="helphud topright" data-hudmode="searching">
+    <span class="nobreak">contents</span></div>
+  <div class="helphud topright" data-hudmode="search">
     <span class="nobreak"><span class="arrow">→</span>search</span><br/>
-    tags</div>
+    for&nbsp;tags</div>
   <div id="CODEXHUDBUTTONS">
     <div class="sbookplate">
       <a href="https://auth.sbooks.net/admin/logout" class="logout"
@@ -22,7 +61,7 @@
 	 id="SBOOKUSERNAME">
 	(click to log in)</a>
     </div> <!-- .flyleafplate -->
-    <div class="tabbar icons" id="SBOOKTABS">
+    <div class="tabbar icons" id="CODEXTABS">
       <!--
 	  <a name="IDLINK" href="javascript:CodexMode('login');" 
 	     id="IDBUTTON" class="userpic"
@@ -42,7 +81,7 @@
 	   onclick="CodexMode.toggle('flytoc',true); return fdjtUI.cancel(event);"
 	   title="Table of Contents (static)">
       <img src="http://static.beingmeta.com/graphics/SettingsTab50h.png"
-	   alt="Device" class="tab" contentid="SBOOKDEVICE"
+	   alt="Device" class="tab" contentid="CODEXSETTINGS"
 	   onclick="CodexMode.toggle('device',true); return fdjtUI.cancel(event);"
 	   title="alter appearance and interaction"/>
       <img src="http://static.beingmeta.com/graphics/SocialTab50h.png"
@@ -58,7 +97,7 @@
 	   onclick="CodexMode.toggle('console',true); return fdjtUI.cancel(event);"
 	   title="show console" />
       <img src="http://static.beingmeta.com/graphics/HelpTab50h.png"
-	   alt="Help" class="tab" contentid="SBOOKHELP"
+	   alt="Help" class="tab" contentid="CODEXHELP"
 	   onclick="CodexMode.toggle('help',true); return fdjtUI.cancel(event);"
 	   title="help about using sBooks"/>
     </div> <!-- .tabbar -->
@@ -74,21 +113,25 @@
 			onkeypress="sbook.UI.goto_keypress(event);"/>
   </div>
   <div id="CODEXTOC" class="hudpanel"></div>
+  <img src="http://static.beingmeta.com/graphics/GoldLeftTriangle32.png"
+       id="CODEXSCANLEFT" class="codexscanbutton"
+       alt="prev" onclick="sbook.scanBackward(event);"/>
+  <img src="http://static.beingmeta.com/graphics/GoldRightStop32.png"
+       id="CODEXSCANEND" class="codexscanbutton"
+       alt="end"/>
+  <img src="http://static.beingmeta.com/graphics/GoldRightTriangle32.png"
+       id="CODEXSCANRIGHT" class="codexscanbutton"
+       alt="next" onclick="sbook.scanForward(event);"/>
+  <img src="http://static.beingmeta.com/graphics/GoldLeftStop32.png"
+       id="CODEXSCANSTART" class="codexscanbutton"
+       alt="beginning"/>
   <div id="CODEXSCANNER" class="hudpanel">
-    <img src="http://static.beingmeta.com/graphics/GoldLeftTriangle32.png"
-	 alt="prev" onclick="sbook.scanBackward(event);"/>
-    <img src="http://static.beingmeta.com/graphics/GoldRightStop32.png"
-	 alt="end"/>
-    <img src="http://static.beingmeta.com/graphics/GoldRightTriangle32.png"
-	 alt="next" onclick="sbook.scanForward(event);"/>
-    <img src="http://static.beingmeta.com/graphics/GoldLeftStop32.png"
-	 alt="beginning"/>
     <div id="CODEXSCAN"></div>
   </div>
   <div id="CODEXSEARCH" class="searchbox hudpanel notags">
     <!-- This content comes from sbooksearch.html -->
   </div>
-  <div id="SBOOKBROWSEGLOSSES" class="hudpanel">
+  <div id="CODEXBROWSEGLOSSES" class="hudpanel">
     <!-- This contains renderings of all the glosses, with
 	 a list of sources on top -->
     <div id="SBOOKSOURCES" class="sbooksources"
@@ -99,7 +142,7 @@
 	   onclick="sbook.UI.handlers.everyone_onclick(event);"/>
     </div>
     <div class="scrollbox">
-      <div id="SBOOKALLGLOSSES" class="codexslice">
+      <div id="CODEXALLGLOSSES" class="codexslice">
 	<!-- This is filled in on demand -->
       </div>
     </div>
@@ -108,7 +151,7 @@
     <div id="CODEXGLOSSFORMS">
       <!-- This content comes from addgloss.html -->
     </div>
-    <div id="SBOOKGLOSSCLOUD" class="completions">
+    <div id="CODEXGLOSSCLOUD" class="completions">
       <img class="label" alt="tags"
 	   src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
 	   onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
@@ -119,12 +162,15 @@
 	<tt><strong><em>Shift</em>-enter</strong></tt> to pick the
 	first visible completion.
       </div>
-      <div id="SBOOKGLOSSOUTLETS"></div>
-      <div id="SBOOKGLOSSTAGS"></div>
-      <div id="SBOOKGLOSSCLOUDSOURCES"></div>
+      <div id="CODEXGLOSSOUTLETS"></div>
+      <div id="CODEXGLOSSTAGS"></div>
+      <div id="CODEXGLOSSCLOUDSOURCES"></div>
     </div>
   </div>
 </div> <!-- CODEXHEAD -->
+<div class="helphud leftmiddle">
+  back page
+</div>
 <div class="helphud rightmiddle">
   next page
 </div>
@@ -135,9 +181,25 @@
   <!-- This is swapped in on demand -->
 </div>
 <div id="CODEXFOOT">
-  <div id="CODEXFLYLEAFBUTTON" onclick="CodexMode.toggle('flyleaf');" class="help">
+  <img src="http://static.beingmeta.com/graphics/drophud50x50.png"
+       alt="drophud" title="drop the HUD"
+       id="CODEXDROPHUD"
+       onclick="CodexMode(false); fdjtUI.cancel(event); return false;"/>
+  <div id="CODEXBUTTON" onclick="CodexMode.toggle('last');" class="help">
     <img src="http://static.beingmeta.com/graphics/AboutIcon50x50.png"
 	 alt="about" title="information and links about this book"
+	 class="hudbutton botleft"/>
+    <img src="http://static.beingmeta.com/graphics/CompassIcon50x50.png"
+	 alt="toc" title="information and links about this book"
+	 class="hudbutton botleft"/>
+    <img src="http://static.beingmeta.com/graphics/SearchIcon50x50.png"
+	 alt="search" title="information and links about this book"
+	 class="hudbutton botleft"/>
+    <img src="http://static.beingmeta.com/graphics/remarkballoon50x50.png"
+	 alt="addgloss" title="information and links about this book"
+	 class="hudbutton botleft"/>
+    <img src="http://static.beingmeta.com/graphics/sbookspeople50x50.png"
+	 alt="allglosses" title="information and links about this book"
 	 class="hudbutton botleft"/>
     <img src="http://static.beingmeta.com/graphics/HelpIcon50x50.png"
 	 alt="help" title="help about using sBooks"
@@ -160,17 +222,21 @@
 	 class="hudbutton botleft"/>
   </div>
   <div class="helphud botleft" data-hudmode="flyleaf">
-    <span class="nobreak"><span class="arrow">←</span>show the</span><br/>
-    flyleaf</div>
+    <span class="nobreak"><span class="arrow">←</span>hide</span><br/>
+    tools</div>
+  <div class="helphud botcenter">
+    <span class="fortouch">tap</span><span class="notouch">click</span>
+    here to hide tools or<br/>jump within the document
+  </div>
   <div id="SBOOKFOOTINFO">
     <div id="SBOOKTARGETINFO"></div>
   </div>
   <div class="helphud botright" data-hudmode="allglosses">
     <span class="nobreak">show<span class="arrow">→</span></span><br/>
-    notes</div>
+    overlays</div>
   <img src="http://static.beingmeta.com/graphics/sbookspeople50x50.png"
        alt="glosses" title="Click to browse glosses overlaid on this book"
-       class="hudbutton botright" id="SBOOKALLGLOSSESBUTTON"
+       class="hudbutton botright" id="CODEXALLGLOSSESBUTTON"
        hudmode="allglosses" onclick="sbook.UI.hudbutton(event);"/>
 </div>
 

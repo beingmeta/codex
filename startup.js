@@ -82,11 +82,11 @@ sbook.Startup=
 		    sbook.initHUD(); sbook.initDisplay();
 		    if (sbook.animate.hud)
 			fdjtDOM.addClass("CODEXHUD","codexanimate");
-		    helphud=fdjtID("SBOOKHELP");
+		    helphud=fdjtID("CODEXHELP");
 		    helphud.style.opacity=0.0001;
 		    if (sbook.Trace.startup>1)
 			fdjtLog("HUD Setup, sizing help");},
-		function(){CodexMode("help");}, 
+		function(){CodexMode("splash");}, 
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){
@@ -164,10 +164,8 @@ sbook.Startup=
 		    if ((fdjtState.getQuery("action"))||
 			(fdjtState.getQuery("invitation"))) {
 			CodexMode("sbookapp");}
-		    else if ((sbook.mode==='help')&&(sbook.hidehelp))
-			setTimeout(function(){
-			    if (sbook.mode==="help") CodexMode(false);},
-				   2500);
+		    else if ((sbook.mode==='splash')&&(sbook.hidesplash)) {
+			CodexMode(false);}
 		    else {}},
 		initLocation,
 		function(){
@@ -428,10 +426,10 @@ sbook.Startup=
 		sbook_idify=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookid"));
 	    if (fdjtDOM.getMeta("sbook.notag"))
 		sbook.notag_rules=new fdjtDOM.Selector(fdjtDOM.getMeta("sbook.notag"));
-	    if (fdjtDOM.getMeta("sbook.foci"))
-		sbook.foci=new fdjtDOM.Selector(fdjtDOM.getMeta("sbook.foci"));
-	    else if (fdjtDOM.getMeta("sbookfoci"))
+	    if (fdjtDOM.getMeta("sbookfoci"))
 		sbook.foci=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfoci"));
+	    if (fdjtDOM.getMeta("sbooknofoci"))
+		sbook.foci=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknofoci"));
 	    else {}}
 	
 
@@ -659,7 +657,7 @@ sbook.Startup=
 			completion.id="SBOOKGLOSSOUTLET"+outlet.humid;
 			completion.setAttribute("value",outlet.qid);
 			completion.setAttribute("key",outlet.name);
-			fdjtDOM(fdjtID("SBOOKGLOSSOUTLETS"),completion," ");
+			fdjtDOM(fdjtID("CODEXGLOSSOUTLETS"),completion," ");
 			if (sbook.gloss_cloud)
 			    sbook.gloss_cloud.addCompletion(completion);}}}
 	    if (sync) {
@@ -856,7 +854,7 @@ sbook.Startup=
 	    sbook.Message("setting up search cloud...");
 	    fdjtDOM.replace("CODEXSEARCHCLOUD",sbook.FullCloud().dom);
 	    sbook.Message("setting up glossing cloud...");
-	    fdjtDOM.replace("SBOOKGLOSSCLOUD",sbook.glossCloud().dom);
+	    fdjtDOM.replace("CODEXGLOSSCLOUD",sbook.glossCloud().dom);
 	    if (sbook.knodule) {
 		sbook.Message("integrating tag vocabulary");
 		fdjtTime.slowmap(sbook.addTag2UI,sbook.knodule.alldterms,
