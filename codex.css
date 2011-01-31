@@ -68,8 +68,6 @@ body.sbook { }
 
 /* The HUD */
 
-#CODEXHUD img { border: 0px;}
-
 /* Being a panel */
 div#CODEXHUD div.hudpanel {
     background-color: #4682b4; color: ivory; z-index: 100;
@@ -265,6 +263,7 @@ div#CODEXHUD.search div.completions#CODEXSEARCHCLOUD { display: block;}
 div#CODEXHUD.search div.codexslice#CODEXSEARCHRESULTS { display: none;}
 div#CODEXHUD.searchresults div#CODEXSEARCHCLOUDWRAPPER { display: none;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
+div#CODEXHUD.addgloss div.completions#CODEXGLOSSCLOUD { display: block;}
 
 body.hudup div#CODEXHUD.addgloss .hudbutton { opacity: 0.15;}
 

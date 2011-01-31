@@ -718,10 +718,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var completion=fdjtDOM.getParent(target,'.completion');
 	if (completion) {
-	    addTag(fdjtID("SBOOKGLOSSFORM"),completion);
-	    if (fdjtDOM.hasClass(fdjtID("SBOOKGLOSSFORM"),"note")) {
+	    var live=fdjtDOM.getChild(fdjtID("CODEXADDGLOSS"),".sbooklivegloss");
+	    var form=((live)&&(fdjtDOM.getChild(live,"form")));
+	    addTag(form,completion);
+	    if (fdjtDOM.hasClass(form,"sbnotemode")) {
 		var keyval=gloss_cloud.getKey(completion);
-		var input=fdjtID("SBOOKNOTEINPUT");
+		var input=fdjtDOM.getInput(form,"NOTE");
 		if ((input)&&(keyval)) {
 		    var tagspan=istagging(input);
 		    var stringval=input.value;
@@ -730,8 +732,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 			    stringval.slice(0,tagspan[0])+keyval+"]"+
 			    stringval.slice(tagspan[1]);}}}
 	    else {
-		fdjtID("SBOOKTAGINPUT").value='';
-		gloss_cloud.docomplete();}}
+		var input=fdjtDOM.getInput(form,"tag");
+		input.value='';
+		gloss_cloud.docomplete(input);}}
 	fdjtUI.cancel(evt);}
 
     /***** Saving (submitting/queueing) glosses *****/

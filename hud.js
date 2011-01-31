@@ -75,10 +75,10 @@ var CodexMode=
 	    // Initialize gloss UI
 	    var glosses=fdjtID("CODEXALLGLOSSES");
 	    sbook.UI.setupSummaryDiv(glosses);
-	    sbook.glosses.addEffect("user",function(f,p,v){
+	    sbook.glosses.addEffect("maker",function(f,p,v){
 		sbook.sourcekb.ref(v).oninit
 		(sbook.UI.addGlossSource,"newsource");});
-	    sbook.glosses.addEffect("distribution",function(f,p,v){
+	    sbook.glosses.addEffect("sources",function(f,p,v){
 		sbook.sourcekb.ref(v).oninit
 		(sbook.UI.addGlossSource,"newsource");});
 

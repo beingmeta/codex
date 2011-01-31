@@ -144,9 +144,10 @@ var sbook_delete_icon="redx12x12.png";
 	var feedinfo=sbook.sourcekb.map[feed];
 	var agestring=timestring(info.modified||info.created);
 	var age=fdjtDOM("span.age",agestring);
-	age.title=((user===sbook.user)?("edit this gloss"):
+	age.title=(((user===sbook.user)||(user===sbook.user.qid))?("edit this gloss"):
 		   ("relay/reply to this gloss"));
-	age.onclick=relayoredit_gloss;
+	// This should be made to work
+	// age.onclick=relayoredit_gloss;
 	
 	var deleteicon=
 	    // No delete icons for the ipad
@@ -538,7 +539,7 @@ var sbook_delete_icon="redx12x12.png";
 		var gloss=(child.qref)&&sbook.glosses.map[child.qref];
 		if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
 		else if ((fdjtKB.contains(sources,gloss.maker))||
-			 (fdjtKB.contains(sources,gloss.feed))) {
+			 (fdjtKB.overlaps(sources,gloss.sources))) {
 		    fdjtDOM.addClass(child,"sourced");
 		    empty=false;}
 		else fdjtDOM.dropClass(child,"sourced");}
