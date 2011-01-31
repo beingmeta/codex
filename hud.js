@@ -91,7 +91,7 @@ var CodexMode=
 			    curglosses.push(item.qid);}
 			if (item.tstamp>sbook.syncstamp)
 			    sbook.syncstamp=item.tstamp;
-			var pic=((fdjtKB.ref(item.user)).pic)||
+			var pic=((fdjtKB.ref(item.maker)).pic)||
 			    ((fdjtKB.ref(item.feed)).pic);
 			if (pic) {
 			    var img=fdjtDOM.getFirstChild(glossmark,"IMG.big");

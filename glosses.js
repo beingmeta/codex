@@ -87,7 +87,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (typeof gloss === 'string') {
 		glossid=gloss; gloss=sbook.glosses.ref(glossid);}
 	    else glossid=gloss.qid;
-	    var user=gloss.user;
+	    var user=gloss.maker;
 	    var sources=gloss.audience;
 	    var tags=gloss.tags;
 	    if ((sources)&&(!(sources instanceof Array))) sources=[sources];
@@ -529,7 +529,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var i=0; var lim=tagspans.length;
 	    while (i<lim) {
 		fdjtDOM.remove(tagspans[i++]);}}
-	if ((gloss)&&(gloss.user===sbook.user.qid)) {
+	if ((gloss)&&(gloss.maker===sbook.user.qid)) {
 	    uuidelt.value=gloss.qid;
 	    if (gloss.note) note.value=gloss.note;
 	    if (gloss.link) href.value=gloss.link;
@@ -776,7 +776,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	queued.push(json.uuid);
 	var glossdata=
 	    {refuri: json.refuri,frag: json.frag,
-	     user: json.user,uuid: json.uuid,
+	     maker: json.maker,uuid: json.uuid,
 	     qid: json.uuid,gloss: json.uuid};
 	glossdata.tstamp=fdjtTime.tick();
 	if ((json.note)&&(!(fdjtString.isEmpty(json.note))))

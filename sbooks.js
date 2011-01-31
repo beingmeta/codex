@@ -137,8 +137,8 @@ var sbook_gloss_data=
 			    item.frag,item);
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
-		sbook.index.add(item,item.user);
-		sbook.addTag2UI(item.user);
+		sbook.index.add(item,item.maker);
+		sbook.addTag2UI(item.maker);
 		var tags=item.tags;
 		if (tags) {
 		    if (!(tags instanceof Array)) tags=[tags];
@@ -148,15 +148,15 @@ var sbook_gloss_data=
 			    var tag=tags[i++];
 			    sbook.index.add(item,tag);
 			    sbook.addTag2UI(fdjtKB.ref(tag),true);}}}
-		var outlets=item.audience;
-		if (outlets) {
-		    if (typeof outlets !== 'array') outlets=[outlets];
-		    if ((outlets)&&(outlets.length)) {
-			var i=0; var lim=outlets.length;
+		var sources=item.sources;
+		if (sources) {
+		    if (typeof sources !== 'array') sources=[sources];
+		    if ((sources)&&(sources.length)) {
+			var i=0; var lim=sources.length;
 			while (i<lim) {
-			    var audience=outlets[i++];
-			    sbook.index.add(item,audience);
-			    sbook.UI.addGlossSource(fdjtKB.ref(audience),true);}}}});
+			    var source=sources[i++];
+			    sbook.index.add(item,source);
+			    sbook.UI.addGlossSource(fdjtKB.ref(source),true);}}}});
 	    sbook.glosses.index=new fdjtKB.Index();
 	    if (sbook.offline)
 		sbook.glosses.storage=new fdjtKB.OfflineKB(sbook.glosses);}

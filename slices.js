@@ -52,10 +52,10 @@ var sbook_delete_icon="redx12x12.png";
 	var refiners=((query) && (query._refiners));
 	var score=((query)&&(query[key]));
 	var div=
-	    fdjtDOM(((info.tstamp) ? "div.codexnote.gloss" : "div.codexnote"),
+	    fdjtDOM(((info.maker) ? "div.codexnote.gloss" : "div.codexnote"),
 		    ((standalone)&&(makelocbar(target_info))),
 		    // (makelocrule(target_info,target_info.head)),
-		    ((info.tstamp)&&(showglossinfo(info)))," ",
+		    ((info.maker)&&(showglossinfo(info)))," ",
 		    // Makes it noisy (and probably slow) on the iPad
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
@@ -138,11 +138,11 @@ var sbook_delete_icon="redx12x12.png";
 	while (k<score) {fdjtDOM(scorespan,"*"); k++;}
 	return scorespan;}
     function showglossinfo(info) {
-	var user=info.user;
+	var user=info.maker;
 	var feed=info.feed||false;
 	var userinfo=sbook.sourcekb.map[user];
 	var feedinfo=sbook.sourcekb.map[feed];
-	var agestring=timestring(info.tstamp);
+	var agestring=timestring(info.modified||info.created);
 	var age=fdjtDOM("span.age",agestring);
 	age.title=((user===sbook.user)?("edit this gloss"):
 		   ("relay/reply to this gloss"));
@@ -537,7 +537,7 @@ var sbook_delete_icon="redx12x12.png";
 	    if (hasClass(child,"codexnote")) {
 		var gloss=(child.qref)&&sbook.glosses.map[child.qref];
 		if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
-		else if ((fdjtKB.contains(sources,gloss.user))||
+		else if ((fdjtKB.contains(sources,gloss.maker))||
 			 (fdjtKB.contains(sources,gloss.feed))) {
 		    fdjtDOM.addClass(child,"sourced");
 		    empty=false;}
