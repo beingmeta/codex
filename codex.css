@@ -40,7 +40,7 @@ body.sbook { }
     z-index: 100;}
 #CODEXPAGE {
     position: fixed;
-    top: 60px; bottom: 50px; left: 0px; right: 0px; width: 100%;
+    top: 70px; bottom: 60px; left: 0px; right: 0px; width: 100%;
     overflow: hidden;}
 #CODEXPAGE #CODEXMASK {
     position: absolute; z-index: 75;
