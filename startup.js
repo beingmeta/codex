@@ -170,6 +170,7 @@ sbook.Startup=
 		initLocation,
 		function(){
 		    sbook.displaySync();
+		    setInterval(sbook.serverSync,60000);
 		    _sbook_setup=sbook._setup=new Date();}],
 	     25,100);}
 	sbook.Startup=Startup;
@@ -216,6 +217,13 @@ sbook.Startup=
 	    var refuri=_getsbookrefuri();
 	    document.body.refuri=sbook.refuri=refuri;
 	    sbook.docuri=_getsbookdocuri();
+	    var deviceid=fdjtState.getLocal("sbook.deviceId",false);
+	    var devicename=fdjtState.getLocal("sbook.deviceName",false);
+	    if (!(deviceid)) {
+		deviceid=fdjtState.getUUID();
+		fdjtState.setLocal("sbook.deviceId",deviceid);}
+	    sbook.deviceId=deviceid;
+	    if (devicename) sbook.deviceName=devicename;
 	    var refuris=fdjtState.getLocal("sbook.refuris",true)||[];
 	    var offline=workOffline(refuri);
 	    sbook.offline=((offline)?(true):(false));

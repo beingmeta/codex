@@ -501,13 +501,29 @@ var sbook_gloss_data=
 	sbook.state=state;
 	var statestring=JSON.stringify(state);
 	var uri=sbook.docuri||sbook.refuri;
-	fdjtState.setLocal("sbook.state("+uri+")",statestring);
+	fdjtState.setLocal("sbook.state("+uri+")",statestring);}
+    sbook.setState=setState;
+	    
+    function serverSync(){
 	if ((sbook.user)&&(sbook.dosync)&&(navigator.onLine)) {
+	    var state=sbook.state; var synced=sbook.syncstate;
+	    // Warning when syncing doesn't return?
+	    if (syncing) return;
+	    if (!(state)) return;
+	    if ((synced)&&
+		(synced.target===state.target)&&
+		(synced.location===state.location)&&
+		(synced.page===state.page))
+		return;
 	    var refuri=((sbook.target)&&(sbook.getRefURI(sbook.target)))||
 		(sbook.refuri);
 	    var uri="https://"+sbook.server+"/v4/sync?ACTION=save"+
 		"&DOCURI="+encodeURIComponent(sbook.docuri)+
 		"&REFURI="+encodeURIComponent(refuri);
+	    if (sbook.deviceId)
+		uri=uri+"&deviceid="+encodeURIComponent(sbook.deviceId);
+	    if (sbook.deviceName)
+		uri=uri+"&devicename="+encodeURIComponent(sbook.deviceName);
 	    if (state.target) uri=uri+"&target="+encodeURIComponent(state.target);
 	    if ((state.location)||(state.hasOwnProperty('location')))
 		uri=uri+"&location="+encodeURIComponent(state.location);
@@ -521,6 +537,7 @@ var sbook_gloss_data=
 	    var req=new XMLHttpRequest();
 	    syncing=state;
 	    req.onreadystatechange=function(evt){
+		sbook.syncstate=syncing;
 		syncing=false;
 		if (sbook.Trace.dosync)
 		    fdjtLog("syncPosition(callback) reading=%o status=%o %o",
@@ -528,8 +545,9 @@ var sbook_gloss_data=
 	    req.open("GET",uri,true);
 	    req.withCredentials='yes';
 	    req.send();}}
-    sbook.setState=setState;
-	    
+    sbook.serverSync=serverSync;
+	
+
     function scrollToElt(elt,cxt){
 	if ((elt.getAttribute) &&
 	    ((elt.tocleve)|| (elt.getAttribute("toclevel")) ||
