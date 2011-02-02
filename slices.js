@@ -59,23 +59,23 @@ var sbook_delete_icon="redx12x12.png";
 		    // Makes it noisy (and probably slow) on the iPad
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
-		    ((info.note)&&(fdjtDOM("span.note",info.note))),
+		    ((info.note)&&(fdjtDOM("span.note",info.note)))," ",
 		    ((info.tags)&&(info.tags.length)&&
 		     (info.tags.length<div_threshold)&&
-		     (showtags(info.tags))),
+		     (showtags(info.tags)))," ",
 		    ((info.audience)&&(info.audience.length)&&
 		     (info.audience.length<div_threshold)&&
-		     (showaudience(info.audience))),
+		     (showaudience(info.audience)))," ",
 		    ((info.excerpt)&&(info.excerpt.length<40)&&
-		     (fdjtDOM("span.excerpt",info.excerpt))),
-		    ((info.xrefs)&&(showlinks(info.xrefs,"span.xrefs"))),
+		     (fdjtDOM("span.excerpt",info.excerpt)))," ",
+		    ((info.links)&&(showlinks(info.links,"span.link")))," ",
 		    ((info.attachments)&&
-		     (showlinks(info.attachments,"span.attachments"))),
+		     (showlinks(info.attachments,"span.attachments")))," ",
 		    ((info.excerpt)&&(info.excerpt.length>=40)&&
-		     (fdjtDOM("div.excerpt",info.excerpt))),
+		     (fdjtDOM("div.excerpt",info.excerpt)))," ",
 		    ((info.tags)&&(info.tags.length)&&
 		     (info.tags.length>=div_threshold)&&
-		     (showtags(info.tags))),
+		     (showtags(info.tags)))," ",
 		    ((info.audience)&&(info.audience.length)&&
 		     (info.audience.length>=div_threshold)&&
 		     (showaudience(info.audience))));
@@ -124,11 +124,14 @@ var sbook_delete_icon="redx12x12.png";
 	var span=fdjtDOM(spec);
 	for (url in refs) {
 	    var urlinfo=refs[url];
-	    var title=urlinfo.title;
-	    var icon=fdjtDOM.Image(sbicon("outlink16x8.png"));
-	    var anchor
-	    ((url===title)?(fdjtDOM.anchor(url,"a.raw",icon)):
-	     (fdjtDOM.anchor(url,{title:url},title)));
+	    var title; var icon=sbicon("outlink16x8.png");
+	    if (typeof urlinfo === 'string') title=urlinfo;
+	    else {
+		title=urlinfo.title;
+		icon=urlinfo.icon;}
+	    var anchor=
+		((url===title)?(fdjtDOM.Anchor(url,"a.raw",icon)):
+		 (fdjtDOM.Anchor(url,{title:url},title)));
 	    anchor.target='_blank';
 	    fdjtDOM(span,anchor,"\n");}
 	return span;}
