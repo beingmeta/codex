@@ -830,7 +830,7 @@ sbook.Startup=
 		function(d){
 		    if (sbook.Trace.dosync)
 			fdjtLog("syncLocation(response) %s: %o",uri,d);
-		    if (!(d)) {
+		    if ((!(d))||(!(d.location))) {
 			if (!(sbook.state))
 			    sbook.GoTo(sbook.start||sbook.root||sbook.body,false,false);
 			return;}
