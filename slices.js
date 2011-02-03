@@ -123,15 +123,15 @@ var sbook_delete_icon="redx12x12.png";
     function showlinks(refs,spec){
 	var span=fdjtDOM(spec);
 	for (url in refs) {
+	    if (url[0]==='_') continue;
 	    var urlinfo=refs[url];
 	    var title; var icon=sbicon("outlink16x8.png");
 	    if (typeof urlinfo === 'string') title=urlinfo;
 	    else {
 		title=urlinfo.title;
 		icon=urlinfo.icon;}
-	    var anchor=
-		((url===title)?(fdjtDOM.Anchor(url,"a.raw",icon)):
-		 (fdjtDOM.Anchor(url,{title:url},title)));
+	    var image=fdjtDOM.Image(icon);
+	    var anchor=(fdjtDOM.Anchor(url,{title:url},title,image));
 	    anchor.target='_blank';
 	    fdjtDOM(span,anchor,"\n");}
 	return span;}

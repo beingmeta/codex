@@ -1406,7 +1406,7 @@ div.codexaddgloss form div.input input[type='TEXT'][name='LINK'] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.codexaddgloss form div.input input[type='TEXT'][name='LINKTEXT'] {
+div.codexaddgloss form div.input input[type='TEXT'][name='LINKTITLE'] {
     font-size: 80%; font-family: sans; font-style: normal; margin-top: 5px;
     width: 100%;}
 div.codexaddgloss form div.input textarea[name='NOTE'],
@@ -1447,7 +1447,7 @@ body.sbooktouch div.codexaddgloss form div.controls { font-size: 110%;}
 div.codexaddgloss form div.controls {
     vertical-align: bottom; text-align: left;
     padding-left: 30px; padding-right: 7px;
-    font-size: 12px;}
+    font-family: sans,sans-serif; font-size: 16px; height: 32px;}
 div.codexaddgloss form div.controls span.button {
     color: black; font-weight: bold;
     border: solid silver 2px; background-color: silver; 
@@ -1458,8 +1458,8 @@ div.codexaddgloss form div.controls span.button {
     cursor: pointer;}
 div.codexaddgloss form div.controls span.button[data-mode] { vertical-align: bottom;} 
 div.codexaddgloss form div.controls span.button img {
-    background-color: inherit;
-    height: 1.5ex;}
+    background-color: inherit; border: 0px; padding: 0px; margin: 0px;
+    height: 16px;}
 div.codexaddgloss form div.controls select {
     vertical-align: top; width: 7em;
     display: none;}
