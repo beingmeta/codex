@@ -147,26 +147,49 @@ var sbook_delete_icon="redx12x12.png";
 	var feedinfo=sbook.sourcekb.map[feed];
 	var agestring=timestring(info.modified||info.created);
 	var age=fdjtDOM("span.age",agestring);
-	age.title=(((user===sbook.user)||(user===sbook.user.qid))?("edit this gloss"):
+	age.title=(((user===sbook.user)||(user===sbook.user.qid))?
+		   ("edit this gloss"):
 		   ("relay/reply to this gloss"));
 	// This should be made to work
 	// age.onclick=relayoredit_gloss;
-	
 	var deleteicon=
 	    // No delete icons for the ipad
 	    ((user===sbook.user.oid)&&(sbook.ui!=='ios')&&
 	     (fdjtDOM.Image(sbicon(sbook_delete_icon),"img.delete","x",
 			    "delete this gloss")))
 	if (deleteicon) deleteicon.onclick=deletegloss_onclick;
+	var picinfo=getpicinfo(info);
 	
 	return [fdjtDOM("span.glossinfo",age,deleteicon),
-		(((info.pic)&&(fdjtDOM.Image((info.pic),"glosspic",userinfo.name)))||
-		 ((userinfo.pic)&&(fdjtDOM.Image((userinfo.pic),"userpic",userinfo.name)))||
-		 ((userinfo.fbid)&&
-		  (fdjtDOM.Image("https://graph.facebook.com/"+userinfo.fbid+"/picture?type=square",
-				 "userpic",userinfo.name)))),
+		((picinfo)&&
+		 (fdjtDOM.Image((picinfo.src),"glosspic",picinfo.alt))),
 	       	(((userinfo)&&((userinfo.name)||(userinfo.userid)))&&
 		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid)))))];}
+
+    function getpicinfo(info){
+	if (info.pic) return {src: info.pic,alt: info.pic};
+	else if (info.sources) {
+	    var sources=info.sources;
+	    var i=0; var lim=sources.length;
+	    while (i<lim) {
+		var source=sources[i++];
+		if ((source)&&(source.kind==='overdoc')&&(source.pic))
+		    return { src: source.pic, alt: source.name,
+			     class: "sourcepic"};}}
+	else if (info.user) {
+	    var userinfo=fdjtKB.ref(info.user);
+	    if (userinfo.pic)
+		return { src: userinfo.pic, alt: userinfo.name,
+			 class: "userpic"};
+	    else if (userinfo.fbid)
+		return {
+		    src: "https://graph.facebook.com/"+
+			userinfo.fbid+
+			"/picture?type=square",
+		    class: "userpic fbpic"};
+	    else return false;}
+	else return false;}
+
     var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     function timestring(tick){
 	var now=fdjtTime.tick();
@@ -490,13 +513,16 @@ var sbook_delete_icon="redx12x12.png";
 	    if ((ishead)&&(fdjtDOM.hasClass(child,"codexthread"))) {
 		fdjtDOM.insertBefore(child,renderNote(note));
 		return;}
+	    // If unrelated, continue
 	    if (!((fdjtDOM.hasClass(child,"codexnote"))||
 		  (fdjtDOM.hasClass(child,"codexthread"))))
 		continue;
+	    // If the same thing, replace
 	    if (child.qref===qid) {
 		fdjtDOM.replace(child,renderNote(note));
 		return;}
-	    if (child.tstamp<=tstamp) {
+	    // if you're earlier, insert yourself and return
+	    if (tstamp<=child.tstamp) {
 		fdjtDOM.insertBefore(child,renderNote(note));
 		return;}
 	    else continue;}
