@@ -1255,7 +1255,8 @@ body.sbook a.codexnote { display: block;}
 .codexnote span.controller {
     font-weight: bold; color: white;}
 .codexnote span.note { font-size: 110%;}
-.codexnote img.userpic { float: left; margin-right: 3px; width: 50px;}
+.codexnote img.userpic, .codexnote img.sourcepic  {
+    float: left; margin-right: 3px; width: 50px;}
 .codexnote img.detailsbutton { border: none; }
 .codexnote img.xrefsbutton { border: none;}
 .codexnote .glossinfo {

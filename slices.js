@@ -162,7 +162,7 @@ var sbook_delete_icon="redx12x12.png";
 	
 	return [fdjtDOM("span.glossinfo",age,deleteicon),
 		((picinfo)&&
-		 (fdjtDOM.Image((picinfo.src),"glosspic",picinfo.alt))),
+		 (fdjtDOM.Image((picinfo.src),picinfo.class,picinfo.alt))),
 	       	(((userinfo)&&((userinfo.name)||(userinfo.userid)))&&
 		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid)))))];}
 
@@ -172,12 +172,12 @@ var sbook_delete_icon="redx12x12.png";
 	    var sources=info.sources;
 	    var i=0; var lim=sources.length;
 	    while (i<lim) {
-		var source=sources[i++];
-		if ((source)&&(source.kind==='overdoc')&&(source.pic))
+		var source=fdjtKB.ref(sources[i++]);
+		if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
 		    return { src: source.pic, alt: source.name,
 			     class: "sourcepic"};}}
-	else if (info.user) {
-	    var userinfo=fdjtKB.ref(info.user);
+	if (info.maker) {
+	    var userinfo=fdjtKB.ref(info.maker);
 	    if (userinfo.pic)
 		return { src: userinfo.pic, alt: userinfo.name,
 			 class: "userpic"};
