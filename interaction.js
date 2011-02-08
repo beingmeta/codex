@@ -969,8 +969,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXSCANNER": {click: scanner_click},
 	 "#SBOOKPAGEHEAD": {click: head_click},
 	 "#SBOOKPAGEFOOT": {click: foot_click},
-	 "#SBOOKPAGERIGHT": {click: Forward},
-	 "#SBOOKPAGELEFT": {click: Backward},
 	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
 	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
 	       mouseout: fdjtUI.CoHi.onmouseout}};
@@ -989,8 +987,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	       touchend: hud_touchend},
 	 "#SBOOKPAGEHEAD": {click: head_click},
 	 "#SBOOKPAGEFOOT": {click: foot_click},
-	 "#SBOOKPAGERIGHT": {click: Forward},
-	 "#SBOOKPAGELEFT": {click: Backward},
 	 "#CODEXFLYLEAF": {touchend: flyleaf_tap},
 	 "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			    touchmove: cancel,touchend: cancel},

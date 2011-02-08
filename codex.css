@@ -654,16 +654,6 @@ body div.sbookmargin {
 body.paginate div.sbookmargin {
     display: block;}
 
-body div.sbookmargin#SBOOKPAGELEFT,
-body div.sbookmargin#SBOOKPAGERIGHT {
-    position: fixed; width: 50px; top: 0px; bottom: 0px; height: 1000px;
-    opacity: 0.01;}
-body.hudup div.sbookmargin#SBOOKPAGELEFT,
-body.hudup div.sbookmargin#SBOOKPAGERIGHT { z-index: -5;}
-
-body div.sbookmargin#SBOOKPAGELEFT { left: 0px;}
-body div.sbookmargin#SBOOKPAGERIGHT { right: 0px;}
-
 body div.sbookmargin#SBOOKPAGEHEAD,
 body div.sbookmargin#SBOOKPAGEFOOT {
   left: 0px; right: 0px; width: 100%; height: 60px; z-index: 75;

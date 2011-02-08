@@ -828,13 +828,9 @@ var sbookPaginate=
 	    fdjtDOM.addListeners(
 		pageinfo,sbook.UI.handlers[sbook.ui]["#CODEXPAGEINFO"]);
 
-	    var leftedge=fdjtDOM("div.sbookmargin#SBOOKPAGELEFT",".");
-	    var rightedge=fdjtDOM("div.sbookmargin#SBOOKPAGERIGHT",".");
-	    leftedge.sbookui=true; rightedge.sbookui=true;
-
 	    var pagemask=fdjtID("CODEXMASK");
 	    
-	    fdjtDOM.prepend(document.body,pagehead,pagefoot,leftedge,rightedge);
+	    fdjtDOM.prepend(document.body,pagehead,pagefoot);
 	    
 	    if (sbook.nativescroll) {
 		fdjtDOM.prepend(document.body,topleading);
