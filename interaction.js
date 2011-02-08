@@ -97,7 +97,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var mode=sbook.ui;
 	if (!(mode)) sbook.ui=mode="mouse";
 	addHandlers(false,'window');
-	addHandlers(sbook.body,'content');
+	addHandlers(fdjtID("CODEXPAGE"),'content');
 	addHandlers(sbook.HUD,'hud');
 	var handlers=sbook.UI.handlers[mode];
 	if (mode)
@@ -127,9 +127,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (passin.value!==xpassin.value) {
 		alert("Passwords don't match!");
 		return fdjtUI.cancel(evt);}}};
-
-
-
 
     /* New simpler UI */
 
@@ -210,7 +207,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if ((anchor)&&(anchor.href)&&(anchor.href[0]==='#')&&
 	    (document.getElementById(anchor.href.slice(1)))) {
 	    var goto=document.getElementById(anchor.href.slice(1));
-	    // Provide smarts for asides/notes/etc
+	    // This would be the place to provide smarts for
+	    // asides/notes/etc, so they (for example) pop up
 	    sbook.JumpTo(goto);
 	    fdjtUI.cancel(evt);
 	    return;}
@@ -239,15 +237,17 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		passage;
 	    if (p) {
 		sbook.excerpt=sel;
-		return tapTarget(p);}
+		return xtapTarget(p);}
 	    else CodexMode(false);}
-	if (sbook.hudup||sbook.mode) {
+	if (passage) {
+	    if (sbook.target===passage) CodexMode(false);
+	    else if ((evt.ctrlKey)||(evt.shiftKey)||(n_touches>1))
+		xtapTarget(passage);
+	    else tapTarget(passage);}
+	else if (sbook.hudup||sbook.mode) {
 	    if (sbook.Trace.gestures) fdjtLog("Dropping HUD");
 	    CodexMode(false);
 	    return;}
-	else if ((passage)&&((evt.shiftKey)||(n_touches>1)))
-	    xtapTarget(passage);
-	else if (passage) tapTarget(passage);
 	else CodexMode(true);}
 
     function glossExcerpt(passage){
@@ -295,27 +295,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else return false;}
     sbook.edgeTap=edgeTap;
     
-    /* Mouse content handlers */
-
-    function content_mousedown(evt){
-	evt=evt||event;
-	if (held) clear_hold(); handled=false;
-	var target=fdjtUI.T(evt);
-	var passage;
-	if ((!((evt.button)||(evt.shiftKey)||(evt.ctrlKey)||
-	       (fdjtUI.isClickable(target))))&&
-	    (passage=sbook.getTarget(target)))
-	    held=setTimeout(
-		function(evt){
-		    glossExcerpt(passage);
-		    held=false; handled=true;},
-		500);}
-    function content_mousemove(evt){if (held) clear_hold();}
-    function content_mouseup(evt){
-	if (held) {clear_hold(); content_tapped(evt);}
-	else if (handled) {}
-	else content_tapped(evt);}
-
     function edge_click(evt) {
 	var target=fdjtUI.T(evt);
 	if ((fdjtUI.isClickable(target))||
@@ -326,7 +305,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     /* HUD handlers */
 
-    function hud_tap(evt,target){
+    function hud_tapped(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
 	if (fdjtUI.isClickable(target)) return;
 	else if (fdjtDOM.hasParent(target,".helphud")) {
@@ -691,7 +670,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		fdjtUI.cancel(evt);
 		target.dispatchEvent(click_evt);
 		return;}}
-	else return hud_tap(evt);}
+	else return hud_tapped(evt);}
 
     /* Glossmarks */
     
@@ -973,21 +952,14 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     sbook.UI.handlers.mouse=
 	{window: {
-	    keyup:onkeyup,
-	    keydown:onkeydown,
-	    keypress:onkeypress,
-	    click:edge_click},
-	 content: {
-	     mousedown: content_mousedown,
-	     mousemove: content_mousemove,
-	     mouseout: content_mousemove,
-	     mouseup:content_mouseup},
-	 hud: {click: hud_tap},
-	 glossmark: {
-	     mouseup: glossmark_tapped},
-	 glossbutton: {
-	     mouseup: glossbutton_onclick,
-	     mousedown: cancel},
+	    keyup: onkeyup,
+	    keydown: onkeydown,
+	    keypress: onkeypress,
+	    click: edge_click},
+	 content: {mouseup: content_tapped},
+	 hud: {click: hud_tapped},
+	 glossmark: {mouseup: glossmark_tapped},
+	 glossbutton: {mouseup: glossbutton_onclick,mousedown: cancel},
 	 ".sbookmargin": {click: edge_click},
 	 "#CODEXSPLASH": {click: sbook.dropHUD},
 	 "#CODEXFLYLEAF": {click: flyleaf_tap},
