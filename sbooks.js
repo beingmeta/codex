@@ -84,7 +84,7 @@ var sbook=
 	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 0},   // Whether to trace gestures
+	 gestures: 1},   // Whether to trace gestures
      version: codex_version, id: codex_id
     };
 var _sbook_setup=false;

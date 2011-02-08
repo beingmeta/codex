@@ -897,12 +897,20 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else return false;}
 
     function head_click(evt){
+	if (sbook.Trace.gestures) fdjtLog("head_click %o",evt);
 	if (fdjtUI.isClickable(evt)) return;
+	else if ((sbook.mode==='help')||(sbook.mode==='splash')) {
+	    fdjtUI.cancel(evt);
+	    CodexMode(true);}
 	else if (sbook.mode) return;
-	else CodexMode(true);}
+	else {
+	    fdjtUI.cancel(evt);
+	    CodexMode(true);}}
     function foot_click(evt){
+	if (sbook.Trace.gestures) fdjtLog("foot_click %o",evt);
 	if (fdjtUI.isClickable(evt)) return;
 	else if (sbook.mode) {
+	    fdjtUI.cancel(evt);
 	    CodexMode(false);
 	    return;}}
 
@@ -968,6 +976,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXLOCOFF": {click: enterLocation},
 	 "#CODEXSCANNER": {click: scanner_click},
 	 "#SBOOKPAGEHEAD": {click: head_click},
+	 "#CODEXHEAD": {click: head_click},	 
 	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
 	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
