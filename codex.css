@@ -204,6 +204,7 @@ div#CODEXHUD div#CODEXBUTTON.help img[alt='help'],
 div#CODEXHUD div#CODEXBUTTON.about img[alt='about'],
 div#CODEXHUD div#CODEXBUTTON.sbookapp img[alt='sbookapp'],
 div#CODEXHUD div#CODEXBUTTON.flytoc img[alt='flytoc'],
+div#CODEXHUD div#CODEXBUTTON.scanning img[alt='scanning'],
 div#CODEXHUD div#CODEXBUTTON.device img[alt='device'] {
     display: block;}
 
@@ -517,7 +518,7 @@ div.spanbar div.progressbox {
 /* The splash HUD */
 
 div#CODEXHUD div#CODEXSPLASH.hudpanel {
-    position: fixed; text-align: left; padding: 16px;
+    position: fixed; text-align: center; padding: 24px;
     background-color: ivory; color: black; opacity: 1.0;
     top: 75px; bottom: 75px; left: 75px; right: 75px;}
 div#CODEXHUD.splash div#CODEXSPLASH.hudpanel {
@@ -534,6 +535,7 @@ div#CODEXHUD div#CODEXSPLASH h2:first-child {
 div#CODEXHUD div#CODEXSPLASH .codexclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
     text-align: center; color: red;}
+div#CODEXHUD div#CODEXSPLASH.hudpanel strong { font-size: 125%;}
 
 /* Help HUD */
 
@@ -602,12 +604,13 @@ div#CODEXHELP > div {
     margin-bottom: 1em; font-size: 100%;}
 div#CODEXHELP > div.about {
     margin-left: 2em; margin-right: 2em; text-align: center;}
-div#CODEXHELP > div.login {
+div#CODEXHELP > div.login, div#CODEXSPLASH > div.login {
     font-size: 18px; font-weight: bold; vertical-align: top;
     clear: both;
     display: none;}
 div#CODEXHELP > div.login img { vertical-align: top; height: 2ex;}
-body.nosbookuser div#CODEXHELP > div.login { display: block;}
+body.nosbookuser div#CODEXHELP > div.login,
+body.nosbookuser div#CODEXSPLASH > div.login { display: block;}
 div#CODEXHELP > div.oneline {
     font-size: 125%; clear: both;}
 div#CODEXHELP table {
@@ -1146,6 +1149,8 @@ div#CODEXHUD.settings div#CODEXFLYLEAF table.settings .smallbutton {
     -o-border-radius: 4px; 
     -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;}
+
+div#CODEXFLYLEAF table.settings td .checkspan { padding-left: 12px;}
 
 /* Flyleaf content rules */
 

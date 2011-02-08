@@ -9,6 +9,43 @@
 <div class='tabcontent flyleaftab' id='CODEXSETTINGS'>
   <h1>Settings</h1>
   <table class='settings'>
+    <tr><th>Content</th>
+      <td>
+	Font size:
+	<select name='fontsize' id='SBOOKFONTSIZE'
+		onchange='sbook.setFontSize(this.value);'>
+	  <option value='50%'>Tiny</option>
+	  <option value='75%'>Small</option>
+	  <option value='80%'>Smaller</option>
+	  <option value='100%' selected=''>Default</option>
+	  <option value='120%'>Larger</option>
+	  <option value='150%'>Large</option>
+	  <option value='200%'>Huge</option>
+	</select>
+	<a href='javascript:sbook.updatePagination();'
+	   style='float: right; text-align: right;'>update layout</a>
+    </td></tr>
+    <tr><th>Codex</th>
+      <td>
+	Font size:
+	<select name='fontsize' id='SBOOKFONTSIZE'
+		onchange='sbook.setUIFontSize(this.value);'>
+	  <option value='50%'>Tiny</option>
+	  <option value='75%'>Small</option>
+	  <option value='80%'>Smaller</option>
+	  <option value='100%' selected=''>Default</option>
+	  <option value='120%'>Larger</option>
+	  <option value='150%'>Large</option>
+	  <option value='200%'>Huge</option>
+	</select>
+	<span class="checkspan" title="show the Codex console tab">
+	  <input type="CHECKBOX" name="SHOWCONSOLE" value="yes"/>
+	  show console</span>
+	<span class="checkspan"
+	      title="faintly show the book tools when reading">
+	  <input type="CHECKBOX" name="GHOSTMODE" value="yes"/>
+	  ghost mode</span>
+    </td></tr>
     <tr><th>Offline</th>
       <td>
 	Remove <a href='javascript:sbook.clearOffline(sbook.refuri);'>this book</a> or
@@ -21,31 +58,6 @@
 	<a href='http://www.sbooks.net/books.fdcgi' target='_blank'>Browse</a> &middot; 
 	<a href='http://auth.sbooks.net/admin/identity target='_blank'>Identity</a> &middot; 
 	<a href='http://auth.sbooks.net/admin/logout'>Logout</a>
-    </td></tr>
-    <tr><th>Content</th>
-      <td>
-	<select name='fontsize' id='SBOOKFONTSIZE' onchange='sbook.setFontSize(this.value);'>
-	  <option value='50%'>Tiny font</option>
-	  <option value='75%'>Small font</option>
-	  <option value='80%'>Smaller font</option>
-	  <option value='100%' selected=''>Default size</option>
-	  <option value='120%'>Larger font</option>
-	  <option value='150%'>Large font</option>
-	  <option value='200%'>Huge font</option>
-	</select>
-	<a href='javascript:sbook.updatePagination();' style='float: right;'>repaginate</a>
-    </td></tr>
-    <tr><th>Display</th>
-      <td>
-	<select name='fontsize' id='SBOOKFONTSIZE' onchange='sbook.setUIFontSize(this.value);'>
-	  <option value='50%'>Tiny font</option>
-	  <option value='75%'>Small font</option>
-	  <option value='80%'>Smaller font</option>
-	  <option value='100%' selected=''>Default size</option>
-	  <option value='120%'>Larger font</option>
-	  <option value='150%'>Large font</option>
-	  <option value='200%'>Huge font</option>
-	</select>
     </td></tr>
   </table>  
 </div>
