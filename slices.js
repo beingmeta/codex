@@ -160,9 +160,8 @@ var sbook_delete_icon="redx12x12.png";
 	if (deleteicon) deleteicon.onclick=deletegloss_onclick;
 	var picinfo=getpicinfo(info);
 	
-	return [fdjtDOM("span.glossinfo",age,deleteicon),
-		((picinfo)&&
-		 (fdjtDOM.Image((picinfo.src),picinfo.class,picinfo.alt))),
+	return [(fdjtDOM("span.glossinfo",age,deleteicon)),
+		((picinfo)&&(fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt))),
 	       	(((userinfo)&&((userinfo.name)||(userinfo.userid)))&&
 		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid)))))];}
 
@@ -175,18 +174,17 @@ var sbook_delete_icon="redx12x12.png";
 		var source=fdjtKB.ref(sources[i++]);
 		if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
 		    return { src: source.pic, alt: source.name,
-			     class: "sourcepic"};}}
+			     classname: "sourcepic"};}}
 	if (info.maker) {
 	    var userinfo=fdjtKB.ref(info.maker);
 	    if (userinfo.pic)
 		return { src: userinfo.pic, alt: userinfo.name,
-			 class: "userpic"};
+			 classname: "userpic"};
 	    else if (userinfo.fbid)
 		return {
 		    src: "https://graph.facebook.com/"+
-			userinfo.fbid+
-			"/picture?type=square",
-		    class: "userpic fbpic"};
+			userinfo.fbid+"/picture?type=square",
+		    classname: "userpic fbpic"};
 	    else return false;}
 	else return false;}
 
