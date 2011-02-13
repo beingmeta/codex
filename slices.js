@@ -159,11 +159,28 @@ var sbook_delete_icon="redx12x12.png";
 			    "delete this gloss")))
 	if (deleteicon) deleteicon.onclick=deletegloss_onclick;
 	var picinfo=getpicinfo(info);
-	
+	var overdoc=getoverdoc(info);
+
 	return [(fdjtDOM("span.glossinfo",age,deleteicon)),
-		((picinfo)&&(fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt))),
-	       	(((userinfo)&&((userinfo.name)||(userinfo.userid)))&&
-		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid)))))];}
+		((picinfo)&&
+		 (fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt))),
+		((overdoc)&&(overdoc.name)&&
+		 (fdjtDOM("span.overdoc",(overdoc.name)))),
+	       	(((!(overdoc))&&(userinfo)&&
+		  ((userinfo.name)||(userinfo.userid)))&&
+		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid))))),
+	       ];}
+
+    function getoverdoc(info){
+	if (info.sources) {
+	    var sources=info.sources;
+	    var i=0; var lim=sources.length;
+	    while (i<lim) {
+		var source=fdjtKB.ref(sources[i++]);
+		if ((source)&&(source.kind===':OVERDOC'))
+		    return source;}
+	    return false;}
+	else return false;}
 
     function getpicinfo(info){
 	if (info.pic) return {src: info.pic,alt: info.pic};

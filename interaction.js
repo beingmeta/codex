@@ -240,7 +240,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		return xtapTarget(p);}
 	    else CodexMode(false);}
 	if (passage) {
-	    if (sbook.target===passage) CodexMode(false);
+	    if (sbook.target===passage) {
+		if (sbook.hudup) CodexMode(false);
+		else CodexMode(true);}
 	    else if ((evt.ctrlKey)||(evt.shiftKey)||(n_touches>1))
 		xtapTarget(passage);
 	    else tapTarget(passage);}
@@ -988,14 +990,14 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 content: {touchstart: content_touchstart,
 		   touchmove: content_touchmove,
 		   touchend: content_touchend},
-	 "#CODEXMASK": {touchstart: content_touchstart,
-			touchmove: content_touchmove,
-			touchend: content_touchend},
 	 hud: {touchstart: shared_touchstart,
 	       touchmove: hud_touchmove,
 	       touchend: hud_touchend},
-	 "#SBOOKPAGEHEAD": {click: head_click},
-	 "#SBOOKPAGEFOOT": {click: foot_click},
+	 "#SBOOKPAGEHEAD": {touchstart: head_click},
+	 "#SBOOKPAGEFOOT": {touchstart: foot_click},
+	 "#CODEXMASK": {touchstart: shared_touchstart,
+			touchmove: content_touchmove,
+			touchend: content_touchend},
 	 "#CODEXFLYLEAF": {touchend: flyleaf_tap},
 	 "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			    touchmove: cancel,touchend: cancel},
