@@ -84,7 +84,7 @@ var sbook=
 	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 1},   // Whether to trace gestures
+	 gestures: 0},   // Whether to trace gestures
      version: codex_version, id: codex_id
     };
 var _sbook_setup=false;
@@ -296,8 +296,10 @@ var sbook_gloss_data=
 			 ((sbook.nofoci)&&(sbook.nofoci.match(scan))))
 		    scan=scan.parentNode;
 		else if ((fdjtDOM.hasClass(scan,"sbookfoci"))||
-			 (!(sbook.foci))||(sbook.foci.match(scan)))
+			 ((sbook.foci)&&(sbook.foci.match(scan))))
 		    return scan;
+		else if (!(fdjtDOM.hasText(scan)))
+		    scan=scan.parentNode;
 		else if (closest) return scan;
 		else if (target) scan=scan.parentNode;
 		else {target=scan; scan=scan.parentNode;}}
