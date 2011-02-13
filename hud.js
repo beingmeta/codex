@@ -107,7 +107,7 @@ var CodexMode=
 		    return;}
 		else {
 		    var gloss_cloud=sbook.glossCloud();
-		    var search_cloud=sbook.FullCloud();
+		    var search_cloud=sbook.fullCloud();
 		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			gloss_tag=Knodule.HTML(tag,sbook.knodule,false,true);

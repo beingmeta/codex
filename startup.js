@@ -860,7 +860,7 @@ sbook.Startup=
 	    if (sbook.Trace.glosses)
 		fdjtLog("gotGlosses");
 	    sbook.Message("setting up search cloud...");
-	    fdjtDOM.replace("CODEXSEARCHCLOUD",sbook.FullCloud().dom);
+	    fdjtDOM.replace("CODEXSEARCHCLOUD",sbook.fullCloud().dom);
 	    sbook.Message("setting up glossing cloud...");
 	    fdjtDOM.replace("CODEXGLOSSCLOUD",sbook.glossCloud().dom);
 	    if (sbook.knodule) {

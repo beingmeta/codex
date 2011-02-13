@@ -333,7 +333,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     function queryCloud(query){
 	if (query._cloud) return query._cloud;
 	else if ((query._query.length)===0) {
-	    query._cloud=FullCloud();
+	    query._cloud=fullCloud();
 	    return query._cloud;}
 	else if (!(query._refiners)) {
 	    result._cloud=sbook.empty_cloud;
@@ -523,7 +523,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     function add_searchtag(value){
 	sbook.query=sbook.extendQuery(sbook.query,value);}
 
-    function FullCloud(){
+    function fullCloud(){
 	if (sbook.full_cloud) return sbook.full_cloud;
 	else {
 	    var tagscores=sbook.index.tagScores();
@@ -534,7 +534,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    completions.onclick=Cloud_onclick;
 	    sbook.full_cloud=new fdjtUI.Completions(completions);
 	    return sbook.full_cloud;}}
-    sbook.FullCloud=FullCloud;
+    sbook.fullCloud=fullCloud;
 
     function sizeCloud(completions,container,index){
       if (!(index)) index=sbook.index;
