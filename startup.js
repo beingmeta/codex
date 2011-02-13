@@ -115,25 +115,13 @@ sbook.Startup=
 		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
 		 (function(){
 		     Knodule.HTML.Setup(sbook.knodule);})),
-		function (){
-		    sbook.Message("Applying tag elements");
-		    var tags=fdjtDOM.$(".sbooktags");
-		    var i=0; var lim=tags.length;
-		    while (i<lim) {
-			var tagelt=tags[i++];
-			var target=sbook.getTarget(tagelt);
-			var info=sbook.docinfo[target.id];
-			var tagtext=fdjtDOM.textify(tagelt);
-			var tagsep=tagelt.getAttribute("tagsep")||";";
-			var tagstrings=tagtext.split(tagsep);
-			if (tagstrings.length) {
-			    if (info.tags)
-				info.tags=info.tags.concat(tagstrings);
-			    else info.tags=tagstrings;}}},
+		applyInlineTags,
 		function(){sbook.Message("indexing tags");},10,
 		function(){
 		    sbook.indexTags(metadata);
 		    sbook.indexTechnoratiTags(sbook.knodule);},
+		function(){sbook.Message("setting up clouds");},10,
+		function(){initClouds();},
 		function(){sbook.Message("configuring server");},10,
 		setupGlossServer,
 		function(){
@@ -857,18 +845,7 @@ sbook.Startup=
 
 	function gotGlosses(){
 	    delete sbook.glossing; sbook.glossed=fdjtTime();
-	    if (sbook.Trace.glosses)
-		fdjtLog("gotGlosses");
-	    sbook.Message("setting up search cloud...");
-	    fdjtDOM.replace("CODEXSEARCHCLOUD",sbook.fullCloud().dom);
-	    sbook.Message("setting up glossing cloud...");
-	    fdjtDOM.replace("CODEXGLOSSCLOUD",sbook.glossCloud().dom);
-	    if (sbook.knodule) {
-		sbook.Message("integrating tag vocabulary");
-		fdjtTime.slowmap(sbook.addTag2UI,sbook.knodule.alldterms,
-				 function(){sbook.Message("Tag vocabulary integrated");});}
-	    sbook.sizeCloud(sbook.full_cloud);
-	    sbook.sizeCloud(sbook.gloss_cloud);}
+	    if (sbook.Trace.glosses) fdjtLog("gotGlosses");}
 
 	function initGlosses(glosses,etc){
 	    var allglosses=sbook.allglosses;
@@ -903,7 +880,24 @@ sbook.Startup=
 	    gotGlosses();}
 	sbook.Startup.initGlosses=initGlosses;
 
+	function applyInlineTags(){
+	    sbook.Message("Applying inline tags");
+	    var tags=fdjtDOM.$(".sbooktags");
+	    var i=0; var lim=tags.length;
+	    while (i<lim) {
+		var tagelt=tags[i++];
+		var target=sbook.getTarget(tagelt);
+		var info=sbook.docinfo[target.id];
+		var tagtext=fdjtDOM.textify(tagelt);
+		var tagsep=tagelt.getAttribute("tagsep")||";";
+		var tagstrings=tagtext.split(tagsep);
+		if (tagstrings.length) {
+		    if (info.tags)
+			info.tags=info.tags.concat(tagstrings);
+		    else info.tags=tagstrings;}}}
+	
 	/* Indexing tags */
+
 	function sbookIndexTags(docinfo){
 	    var sbook_index=sbook.index;
 	    knodule=(knodule)||(knodule=sbook.knodule);
@@ -959,6 +953,36 @@ sbook.Startup=
 	else i++;}
      sbook.indexTechnoratiTags=indexTechnoratiTags;
 
+     /* Setting up the clouds */
+
+     function initClouds(){
+	 sbook.Message("setting up search cloud...");
+	 fdjtDOM.replace("CODEXSEARCHCLOUD",sbook.fullCloud().dom);
+	 sbook.Message("setting up glossing cloud...");
+	 fdjtDOM.replace("CODEXGLOSSCLOUD",sbook.glossCloud().dom);
+	 if (sbook.cloud_queue) {
+	     fdjtLog("Starting to sync gloss cloud");
+	     fdjtTime.slowmap(
+		 sbook.addTag2UI,sbook.cloud_queue,
+		 function(){
+		     sbook.cloud_queue=false;
+		     fdjtLog("Gloss cloud synced");});}
+	 if (sbook.search_cloud_queue) {
+	     fdjtLog("Starting to sync search cloud");
+	     fdjtTime.slowmap(
+		 sbook.addTag2UI,sbook.search_cloud_queue,
+		 function(){
+		     sbook.search_cloud_queue=false;
+		     fdjtLog("Search cloud synced");});}
+	 
+	 if (sbook.knodule) {
+	     fdjtLog("starting to integrate knodule");
+	     fdjtTime.slowmap(
+		 sbook.addTag2UI,sbook.knodule.alldterms,
+		 function(){fdjtLog("Knodule integrated");});}
+	 sbook.sizeCloud(sbook.full_cloud);
+	 sbook.sizeCloud(sbook.gloss_cloud);}
+	 
      /* Clearing offline data */
 
      function clearOffline(refuri){

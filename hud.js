@@ -105,6 +105,14 @@ var CodexMode=
 		    var i=0; var lim=tag.length;
 		    while (i<lim) addTag2UI(tag[i++],forsearch||false);
 		    return;}
+		else if (!(sbook.gloss_cloud)) {
+		    var queue=sbook.cloud_queue;
+		    if (!(queue)) queue=sbook.cloud_queue=[];
+		    queue.push(tag);
+		    if (forsearch) {
+			var squeue=sbook.search_cloud_queue;
+			if (!(squeue)) squeue=sbook.search_cloud_queue=[];
+			squeue.push(tag);}}
 		else {
 		    var gloss_cloud=sbook.glossCloud();
 		    var search_cloud=sbook.fullCloud();
