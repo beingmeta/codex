@@ -72,7 +72,7 @@ var sbook_delete_icon="redx12x12.png";
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments")))," ",
 		    ((info.excerpt)&&(info.excerpt.length>=40)&&
-		     (fdjtDOM("div.excerpt",info.excerpt)))," ",
+		     (fdjtDOM("span.excerpt",info.excerpt)))," ",
 		    ((info.tags)&&(info.tags.length)&&
 		     (info.tags.length>=div_threshold)&&
 		     (showtags(info.tags)))," ",
@@ -473,7 +473,7 @@ var sbook_delete_icon="redx12x12.png";
 	var headinfo=info.head;
 	var tochead=fdjtDOM("div.idhead",
 			    ((locrule)&&(makelocrule(info,headinfo))),
-			    fdjtDOM("div",sumText(target)));
+			    fdjtDOM("span",sumText(target)));
 	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
 	    replace(/\n\n+/g,"\n").replace(/^\n+/,"");
 	return tochead;}
