@@ -470,6 +470,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     sbook.UI.hudbutton=hudbutton;
 
     sbook.UI.dropHUD=function(evt){
+	if (sbook.Trace.gestures) fdjtLog("dropHUD %o",evt);
 	fdjtUI.cancel(evt); CodexMode(false);};
 
     /* Gesture state */
@@ -996,8 +997,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	       touchend: hud_touchend},
 	 "#SBOOKPAGEHEAD": {touchstart: head_click},
 	 "#SBOOKPAGEFOOT": {touchstart: foot_click},
-	 "#CODEXSPLASH": {click: sbook.dropHUD},
-	 "#CODEXHELP": {click: sbook.dropHUD},
+	 "#CODEXSPLASH": {touchstart: sbook.dropHUD,
+			  touchmove: cancel,
+			  touchend: cancel},
+	 "#CODEXHELP": {touchstart: sbook.dropHUD,
+			  touchmove: cancel,
+			  touchend: cancel},
 	 "#CODEXMASK": {touchstart: shared_touchstart,
 			touchmove: content_touchmove,
 			touchend: content_touchend},
