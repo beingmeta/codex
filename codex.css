@@ -232,6 +232,8 @@ body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
+body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
+    max-height: 80px;}
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 body.hudup div#CODEXHUD.splash div.helphud { display: block;}
@@ -278,6 +280,7 @@ div#CODEXHUD.toc .hudbutton[alt='toc'] {
 
 /* Scanner rules */
 
+body div#CODEXHUD div#CODEXSCANNER { max-height: 120px;}
 body.hudup div#CODEXHUD div#CODEXSCANNER div#CODEXSCAN {
     margin-left: 36px; margin-right: 36px;}
 body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
@@ -795,7 +798,7 @@ div#CODEXHUD .completions .completion .sectname {
   white-space: nowrap;}
 
 div#CODEXHUD .completions .completion .variation { 
-  font-size: 115%; color: white;}
+  font-size: 115%; color: silter;}
 div#CODEXHUD .completions .completion .dterm { 
   font-size: 95%;}
 div#CODEXHUD .dterm {
@@ -831,7 +834,7 @@ div.codexslice.onepassage .tocblock .tochead {display:none;}
 span.excerpt { font-size: 120%; color: gray; background-color: yellow;}
 span.excerpt:before { content: "\“"; font-size: 150%;}
 span.excerpt:after { content: "\”"; font-size: 150%;}
-span.excerpt span.content { font-size: 80%; color: white; display: none;}
+span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 
@@ -1276,7 +1279,7 @@ body.sbook a.codexnote { display: block;}
 .codexnote span.headhead {
     color: blue; font-weight: bold;}
 .codexnote span.controller {
-    font-weight: bold; color: white;}
+    font-weight: bold; color: silver;}
 .codexnote span.note { font-size: 110%;}
 .codexnote img.userpic, .codexnote img.sourcepic  {
     float: left; margin-right: 3px; width: 50px;}
