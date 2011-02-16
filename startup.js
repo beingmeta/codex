@@ -918,17 +918,36 @@ sbook.Startup=
 	    for (var eltid in docinfo) {
 		var tags=docinfo[eltid].tags;
 		if (!(tags)) continue;
-		var k=0; var ntags=tags.length;
+		var k=0; var ntags=tags.length; var scores=false;
 		while (k<ntags) {
-		    var tag=tags[k];
+		    var tag=tags[k]; 
+		    // This indicates an 'automatic tag' for easy replacement.
+		    if (tag[0]==='%') tag=tag.slice(1);
 		    if (tag[0]==='*') {
 			var tagstart=tag.search(/[^*]+/);
+			if (!(scores)) tags.scores=scores={};
 			tags[k]=tag=tag.slice(tagstart);
-			tags[tag]=2*tagstart;}
-		    else if (tag[0]==='~') tags[k]=tag=tag.slice(1);
-		    else tags[tag]=2;
+			scores[tag]=2*(tagstart+1);}
+		    else if (tag[0]==='~') {
+			var tagstart=tag.search(/[^~]+/);
+			tags[k]=tag=tag.slice(tagstart);
+			if (tagstart>1) {
+			    if (!(scores)) tags.scores=scores={};
+			    scores[tag]=1/tagstart;}}
+		    else {
+			if (!(scores)) tags.scores=scores={};
+			scores[tag]=2;}
 		    if ((tag.indexOf('|')>=0)) knodule.handleSubjectEntry(tag);
-		    k++;}}
+		    k++;}
+		if (scores) {
+		    tags.sort(function(t1,t2){
+			var s1=scores[t1]||1; var s2=scores[t2]||1;
+			if (s1>s2) return -1;
+			else if (s1<s2) return 1;
+			else if (t1<t2) return -1;
+			else if (t1>t2) return 1;
+			else return 0;});}
+		else tags.sort();}
 	    var knodule=sbook.knodule||false;
 	    sbook_index.Tags=function(item){
 		var info=docinfo[item]||
@@ -936,12 +955,15 @@ sbook.Startup=
 		    fdjtKB.ref(item);
 		return ((info)&&(info.tags))||[];};
 	    for (var eltid in docinfo) {
-		var tags=docinfo[eltid].tags;
+		var tags=docinfo[eltid].tags; 
 		if (!(tags)) continue;
+		var scores=tags.scores;
 		var k=0; var ntags=tags.length;
 		while (k<ntags) {
 		    var tag=tags[k++];
-		    sbook_index.add(eltid,tag,tags[tag]||1,knodule);}}}
+		    if (scores)
+			sbook_index.add(eltid,tag,scores[tag]||1,knodule);
+		    else sbook_index.add(eltid,tag,1,knodule);}}}
 	sbook.indexTags=sbookIndexTags;
 	
 	/* Inline knodules */

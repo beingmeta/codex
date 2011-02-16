@@ -1273,7 +1273,9 @@ body.sbook a.codexnote { display: block;}
   float: right; width: 40px;}
 .codexnote .info span.score {
   color: gold; display: none;}
-.codexnote span.tags { line-height: 200%;}
+.codexnote span.tags { font-size: 80%;}
+.codexnote span.tags.fdjtexpanded { display: block;}
+.codexnote span.tags.fdjtexpanded span.controller { float: right;}
 .codexnote span.head {
     font-size: 75%;}
 .codexnote span.headhead {

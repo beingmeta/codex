@@ -46,6 +46,7 @@ var sbook_delete_icon="redx12x12.png";
 
     function renderNote(info,query,idprefix,standalone){
 	var key=info.qid||info.oid||info.id;
+	var tags=info.tags;
 	var target_id=(info.frag)||(info.id);
 	var target=((target_id)&&(fdjtID(target_id)));
 	var target_info=sbook.docinfo[target_id];
@@ -60,9 +61,6 @@ var sbook_delete_icon="redx12x12.png";
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
 		    ((info.note)&&(fdjtDOM("span.note",info.note)))," ",
-		    ((info.tags)&&(info.tags.length)&&
-		     (info.tags.length<div_threshold)&&
-		     (showtags(info.tags)))," ",
 		    ((info.audience)&&(info.audience.length)&&
 		     (info.audience.length<div_threshold)&&
 		     (showaudience(info.audience)))," ",
@@ -73,12 +71,10 @@ var sbook_delete_icon="redx12x12.png";
 		     (showlinks(info.attachments,"span.attachments")))," ",
 		    ((info.excerpt)&&(info.excerpt.length>=40)&&
 		     (fdjtDOM("span.excerpt",info.excerpt)))," ",
-		    ((info.tags)&&(info.tags.length)&&
-		     (info.tags.length>=div_threshold)&&
-		     (showtags(info.tags)))," ",
 		    ((info.audience)&&(info.audience.length)&&
 		     (info.audience.length>=div_threshold)&&
-		     (showaudience(info.audience))));
+		     (showaudience(info.audience))),
+		    ((info.tags)&&(showtags(info)))," ");
 	if (!(info.tstamp))
 	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
 	    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
@@ -92,18 +88,54 @@ var sbook_delete_icon="redx12x12.png";
 	return div;}
     sbook.renderNote=renderNote;
     
-    function showtags(tags){
+    var prime_thresh=7;
+    function getprimetags(info){
+	if (info.primetags) return info.primetags;
+	var tags=info.tags;
+	if (typeof tags==='string') tags=[tags];
+	if (tags.length<=prime_thresh) return tags;
+	var tagscores=sbook.index.tagweights;
+	var prime=[].concat(info.tags);
+	prime.sort(function(t1,t2){
+	    var s1=tagscores[t1]; var s2=tagscores[t2];
+	    if ((s1)&&(s2)) {
+		if (s1<s2) return -1;
+		else if (s1>s2) return 1;
+		else return 0;}
+	    else if (s1) return -1;
+	    else if (s3) return 1;
+	    else return 0;});
+	info.primetags=prime.slice(0,prime_thresh);
+	return info.primetags;}
+
+    var show_tag_thresh=7;
+
+    var expander_toggle=fdjtUI.Expansion.toggle;
+    function tagexpand_click(evt){
+	return expander_toggle(evt);}
+
+    function showtags(info){
 	if (!(tags instanceof Array)) tags=[tags];
-	var span=fdjtDOM(
-	    ((tags.length>=div_threshold)?"div.tags":"span.tags"),
-	    ((tags.length>=div_threshold)&&
-		  (fdjtDOM("span.count",tags.length, " tags"))));
+	var tags=info.tags; var scores=tags.scores||false;
+	var tagcount=0;
+	var countspan=fdjtDOM("span.count");
+	var span=fdjtDOM("span.tags.fdjtexpands"); var tagspan=span;
+	var controller=false;
 	var i=0; var lim=tags.length;
-	// This might do some kind of more/less controls and sorted
-	// or cloudy display
 	while (i<tags.length) {
-	    var tag=tags[i];
-	    fdjtDOM.append(span,((i>0)?" \u00b7 ":" "),Knodule.HTML(tag));
+	    var tag=tags[i]; var score=((scores)&&(scores[tag]))||false;
+	    var togo=tags.length-i;
+	    if ((!controller)&&((!(score))||(score<=1))&&
+		(i>show_tag_thresh)&&(togo>4)) {
+		controller=fdjtDOM("span.controller",
+				   "all ",tags.length," tags",
+				   fdjtDOM("span.whenexpanded","-"),
+				   fdjtDOM("span.whencollapsed","+"));
+		var subspan=fdjtDOM("span.whenexpanded");
+		controller.onclick=tagexpand_click;
+		fdjtDOM(span," ",controller," ",subspan);
+		tagspan=subspan;}
+	    fdjtDOM.append(tagspan,((i>0)?" \u00b7 ":" "),Knodule.HTML(tag));
 	    i++;}
 	return span;}
     function showaudience(tags){
@@ -421,7 +453,8 @@ var sbook_delete_icon="redx12x12.png";
 	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
 	    replace(/\n\n+/g,"\n");
 	if (title.length<40) return title;
-	else return title.slice(0,40)+"\u22ef ";}
+	/* title.slice(0,40)+"\u22ef "; */
+	else return title;}
     
     function makeTOCHead(target,head){
 	if (!(head)) head=sbook.getHead(target);
