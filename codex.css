@@ -1274,6 +1274,7 @@ body.sbook a.codexnote { display: block;}
 .codexnote .info span.score {
   color: gold; display: none;}
 .codexnote span.tags { font-size: 80%;}
+.codexnote span.tags span.controller { cursor: pointer;}
 .codexnote span.tags.fdjtexpanded { display: block;}
 .codexnote span.tags.fdjtexpanded span.controller { float: right;}
 .codexnote span.head {
