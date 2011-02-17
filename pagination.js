@@ -97,6 +97,45 @@ var sbookPaginate=
 		fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));}
 	sbookPaginate.getSettings=getSettings;
 
+	/* Column pagination */
+	// These are experiments with Monocle style column pagination
+	//  which we're not currently using because the treatment of
+	//  column-breaks is not handled very well.
+
+	var colwidth;
+	var colgap;
+
+	function ColumnPaginate(){
+	    var page=fdjtID("CODEXPAGE");
+	    var content=fdjtID("SBOOKCONTENT");
+	    var vh=fdjtDOM.viewHeight();
+	    var width=colwidth=page.offsetWidth;
+	    var gap=colgap=fdjtDOM.viewWidth()-width;
+	    var style=content.style;
+	    fdjtDOM.addClass(document.body,"sbookcolpage");
+	    window.scrollTo(0,0);
+	    style["column-width"]=style["-webkit-column-width"]=
+		style["-moz-column-width"]=width+'px';
+	    style["column-gap"]=style["-webkit-column-gap"]=
+		style["-moz-column-gap"]=gap+'px';}
+
+	function ColumnGoToPage(pageno){
+	    var offset=fdjtDOM.viewWidth()*pageno;
+	    fdjtID("SBOOKCONTENT").style.left=(-offset)+"px";
+	    sbook.curpage=pageno;}
+
+	function ColumnGetPage(arg){
+	    var left;
+	    if (typeof arg === "number") left=arg;
+	    else if (arg.nodeType)
+		left=getGeometry(arg,sbook.body||sbook.root).left;
+	    else if (!(fdjtID(arg))) return 0;
+	    else left=getGeometry(arg,sbook.root).left;
+	    return floor(left/fdjtDOM.viewWidth());}
+	sbook.columnPaginate=ColumnPaginate;
+	sbook.columnGoToPage=ColumnGoToPage;
+	sbook.columnGetPage=ColumnGetPage;
+
 	/* Scroll paginate */
 
 	function ScrollPaginate(pagesize,start,callback){
@@ -705,7 +744,7 @@ var sbookPaginate=
 		sbook.scrollTo(0,(off));
 		page_xoff=0; page_yoff=(off);
 		// Add class if it's temporarily gone
-		fdjtDOM.addClass(document.body,"paginate");}
+		fdjtDOM.addClass(document.body,"sbookmaskpage");}
 	    
 	    if ((sbook.target)&&(fdjtDOM.isVisible(sbook.target)))
 		sbook.setHead(sbook.target);
@@ -835,11 +874,7 @@ var sbookPaginate=
 	    if (sbook.nativescroll) {
 		fdjtDOM.prepend(document.body,topleading);
 		fdjtDOM.append(document.body,bottomleading);}
-	    else {
-		fdjtDOM.addClass(document.body,"sbookscroll");
-		// fdjtDOM.prepend(sbook.body,topleading);
-		// fdjtDOM.append(sbook.body,bottomleading);
-	    }
+	    else {}
 	    
 	    // fdjtID("CODEXDROPHUD").onclick=sbook.dropHUD;
 	    fdjtID("CODEXPAGENEXT").onclick=sbook.Forward;
@@ -930,7 +965,13 @@ var sbookPaginate=
 		(sbook_paginated.winwidth===(document.documentElement.clientWidth))&&
 		(sbook_paginated.winheight===(fdjtDOM.viewHeight()))) {
 		return false;}
-	    else repaginate();}
+	    else if (sbook.colpage) {
+		sbook.GoToPage=ColumnGoToPage;
+		sbook.GetPage=ColumnGetPage;
+	    	ColumnPaginate();}
+	    else {
+		sbook.GoToPage=ScrollGoToPage;
+		repaginate();}}
 	
 	function repaginate(){
 	    var newinfo={};

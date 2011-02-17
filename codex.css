@@ -647,13 +647,13 @@ div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 
 /* Margins */
 
-body.paginate { overflow: hidden;}
+body.sbookmaskpage { overflow: hidden;}
 
 body div.sbookmargin {
     position: fixed; display: none;
     /* opacity: 0.5; border: solid green 1px; */
     background-color: white; z-index: 5;}
-body.paginate div.sbookmargin {
+body.sbookmaskpage div.sbookmargin {
     display: block;}
 
 body div.sbookmargin#SBOOKPAGEHEAD,
@@ -680,7 +680,7 @@ div#SBOOKPAGEFOOT div#CODEXPAGENO {
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top: 0px;
     z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
-body.paginate div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+body.sbookmaskpage div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
 div#SBOOKPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.001;}
@@ -1572,41 +1572,41 @@ h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
 .sbookavoidfoot { page-break-after: avoid;}
 .sbookavoidbreak { page-break-inside: avoid;}
 
-body.colpage .sbookpagehead {
+body.sbookcolpage .sbookpagehead {
     column-break-before: always;
     -o-column-break-before: always;
     -webkit-column-break-before: always;
     -moz-column-break-before: always;}
-body.colpage .sbookpagefoot {
+body.sbookcolpage .sbookpagefoot {
     column-break-after: always;
     -o-column-break-after: always;
     -webkit-column-break-after: always;
     -moz-column-break-after: always;}
-body.colpage .sbookavoidhead {
+body.sbookcolpage .sbookavoidhead {
     column-break-before: avoid;
     -o-column-break-before: avoid;
     -webkit-column-break-before: avoid;
     -moz-column-break-before: avoid;}
-body.colpage .sbookavoidfoot, body.colpage h1, body.colpage h2,
-body.colpage h3, body.colpage h4, body.colpage h5, body.colpage [toclevel] {
+body.sbookcolpage .sbookavoidfoot, body.sbookcolpage h1, body.sbookcolpage h2,
+body.sbookcolpage h3, body.sbookcolpage h4, body.sbookcolpage h5, body.sbookcolpage [toclevel] {
     column-break-after: avoid;
     -o-column-break-after: avoid;
     -webkit-column-break-after: avoid;
     -moz-column-break-after: avoid;}
-body.colpage [toclevel=0], body.colpage [toclevel=none] {
+body.sbookcolpage [toclevel=0], body.sbookcolpage [toclevel=none] {
     column-break-after: auto;
     -o-column-break-after: auto;
     -webkit-column-break-after: auto;
     -moz-column-break-after: auto;}
-body.colpage .sbookavoidbreak {
+body.sbookcolpage .sbookavoidbreak {
     column-break-inside: avoid;
     -o-column-break-inside: avoid;
     -webkit-column-break-inside: avoid;
     -moz-column-break-inside: avoid;}
-body.colpage .fullpage,
-body.colpage .titlepage,
-body.colpage .sbookfullpage,
-body.colpage .sbooktitlepage {
+body.sbookcolpage .fullpage,
+body.sbookcolpage .titlepage,
+body.sbookcolpage .sbookfullpage,
+body.sbookcolpage .sbooktitlepage {
     page-break-before: always;
     page-break-after: always;
     page-break-inside: avoid;
