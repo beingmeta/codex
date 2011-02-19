@@ -40,7 +40,7 @@ body.sbook { }
     z-index: 100;}
 #CODEXPAGE {
     position: fixed;
-    top: 70px; bottom: 60px; left: 0px; right: 0px; width: 100%;
+    top: 70px; bottom: 60px; left: 50px; right: 50px; width: auto;
     overflow: hidden;}
 #CODEXPAGE #CODEXMASK {
     position: absolute; z-index: 75;
@@ -65,6 +65,9 @@ body.sbook { }
 #CODEXREF {
     position: fixed; z-index: -100;
     top: 60px; left: 60px; right: 60px;}
+
+body.sbookcolpage #CODEXPAGE #SBOOKCONTENT {
+    padding-left: 0px; padding-right: 0px;}
 
 /* The HUD */
 

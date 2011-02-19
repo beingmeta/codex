@@ -98,29 +98,72 @@ var sbookPaginate=
 	sbookPaginate.getSettings=getSettings;
 
 	/* Column pagination */
+
 	// These are experiments with Monocle style column pagination
 	//  which we're not currently using because the treatment of
 	//  column-breaks is not handled very well.
 
 	var colwidth;
 	var colgap;
+	var pageheight;
 
-	function ColumnPaginate(){
+	function ColumnPaginateSetup(){
 	    var page=fdjtID("CODEXPAGE");
 	    var content=fdjtID("SBOOKCONTENT");
 	    var vh=fdjtDOM.viewHeight();
 	    var width=colwidth=page.offsetWidth;
 	    var gap=colgap=fdjtDOM.viewWidth()-width;
 	    var style=content.style;
+	    fdjtDOM.dropClass(document.body,"sbookmaskpage");
 	    fdjtDOM.addClass(document.body,"sbookcolpage");
 	    window.scrollTo(0,0);
-	    style["column-width"]=style["-webkit-column-width"]=
-		style["-moz-column-width"]=width+'px';
-	    style["column-gap"]=style["-webkit-column-gap"]=
-		style["-moz-column-gap"]=gap+'px';}
+	    style[fdjtDOM.columnWidth||"column-width"]=width+'px';
+	    style[fdjtDOM.columnGap||"column-gap"]=gap+'px';
+	    style.height=pageheight=page.offsetHeight+'px';}
+
+	function ColumnPaginate(){
+	    var page=fdjtID("CODEXPAGE");
+	    colwidth=page.offsetWidth; pageheight=page.offsetHeight;
+	    colgap=fdjtDOM.viewWidth()-colwidth;
+	    fdjtDOM.dropClass(document.body,"sbookmaskpage");
+	    fdjtDOM.dropClass(document.body,"sbookcolpage");
+	    var fullpages=fdjtDOM.$(".sbookfullpage");
+	    if (sbook_fullpages)
+		fullpages=fullpages.concat(fdjtDOM.$(sbook_fullpages));
+	    var i=0; var lim=fullpages.length;
+	    while (i<lim) {
+		var block=fullpages[i++];
+		var blockstyle=getStyle(block);
+		block.style.maxHeight=pageheight+'px';
+		block.style.maxWidth=colwidth+'px';}
+	    var adjustpages=function(){
+		i=0; while (i<lim) {
+		    var block=fullpages[i++];
+		    fdjtDOM.adjustToFit(block,0.1,24);}
+		document.body.className=document.body.className;};
+	    var usebest=function(){
+		i=0; while (i<lim) fdjtDOM.finishScale(fullpages[i++]);
+		document.body.className=document.body.className;};
+	    var finalizepages=function(){
+		// This tries to assure that the pages all include all
+		// their content
+		i=0; while (i<lim) {
+		    var block=fullpages[i++];
+		    var page=fdjtID("CODEXPAGE");
+		    var pwidth=page.offsetWidth; var pheight=page.offsetHeight;
+		    var bwidth=block.offsetWidth; var bheight=block.offsetHeight;
+		    var scaleby=Math.min(pwidth/bwidth,pheight/bheight);
+		    block.style[fdjtDOM.transform]="scale("+scaleby+")";
+		    block.style.transform="scale("+scaleby+")";}
+		document.body.className=document.body.className;};
+	    fdjtTime.timeslice
+	    ([adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
+	      adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
+	      usebest,finalizepages,ColumnPaginateSetup],
+	     0,100);}
 
 	function ColumnGoToPage(pageno){
-	    var offset=fdjtDOM.viewWidth()*pageno;
+	    var offset=colwidth*pageno+colgap*pageno;
 	    fdjtID("SBOOKCONTENT").style.left=(-offset)+"px";
 	    sbook.curpage=pageno;}
 
@@ -977,7 +1020,7 @@ var sbookPaginate=
 	    var newinfo={};
 	    var pagesize=sbook.page.offsetHeight;
 	    var pagewidth=(fdjtDOM.viewWidth())-(sbook_left_px+sbook_right_px)
-	    var fullpages=fdjtDOM.$(".sbookfullpage");
+	    var fullpages=fdjtDOM.$(".sbookfullpage"); 
 	    if (sbook_fullpages)
 		fullpages=fullpages.concat(fdjtDOM.$(sbook_fullpages));
 	    var i=0; var lim=fullpages.length;
@@ -993,18 +1036,28 @@ var sbookPaginate=
 	    var adjustpages=function(){
 		i=0; while (i<lim) {
 		    var block=fullpages[i++];
-		    fdjtDOM.adjustToFit(block,0.2,24);}
+		    if (block.goodscale) continue;
+		    fdjtDOM.adjustToFit(block,0.1,24);}
+		// This forces a refresh in some browsers
+		document.body.className=document.body.className;};
+	    var finishscale=function(){
+		i=0; while (i<lim) fdjtDOM.finishScale(fullpages[i++]);
 		document.body.className=document.body.className;};
 	    var finalizepages=function(){
 		// This tries to assure that the pages all include all
 		// their content
 		i=0; while (i<lim) {
-		    var block=fullpages[i++]; fdjtDOM.finishScale(block);}
-		document.body.className=document.body.className;};
+		    var block=fullpages[i++];
+		    var page=fdjtID("CODEXPAGE");
+		    var pwidth=page.offsetWidth; var pheight=page.offsetHeight;
+		    var bwidth=block.offsetWidth; var bheight=block.offsetHeight;
+		    var scaleby=Math.min(pwidth/bwidth,pheight/bheight);
+		    block.style[fdjtDOM.transform]="scale("+scaleby+")";
+		    block.style.transform="scale("+scaleby+")";}};
 	    fdjtTime.timeslice
 	    ([adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
 	      adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
-	      finalizepages,
+	      finishscale,finalizepages,
 	      function(){
 		  sbookUpdatePagination(function(result){
 		      newinfo.offheight=document.body.offsetHeight;
@@ -1014,7 +1067,7 @@ var sbookPaginate=
 		      // fdjtTrace("Updated pagination from %o to %o",
 		      //           sbook_paginated,newinfo);
 		      sbook_paginated=newinfo;})}],
-	     0,100);}
+	     false,0);}
 	
 	sbook.isContent=isContentBlock;
 	sbook.scanContent=scanContent;
