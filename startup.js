@@ -258,8 +258,10 @@ sbook.Startup=
 	    var isIphone = (/iphone/gi).test(navigator.appVersion);
 	    var isIpad = (/ipad/gi).test(navigator.appVersion);
 	    var isAndroid = (/android/gi).test(navigator.appVersion);
+	    var isWebKit = navigator.appVersion.search("WebKit")>=0;
 	    var isWebTouch = isIphone || isIpad || isAndroid;
 
+	    if (isWebKit) sbook.colpage=true;
 	    if (isWebTouch) {
 		fdjtDOM.addClass(document.body,"sbooktouch");
 		viewportSetup();

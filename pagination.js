@@ -202,22 +202,14 @@ var sbookPaginate=
 	    if (sbook.Trace.nav)
 		fdjtLog("ColumnGoToPage%s %o+%o",
 			((caller)?"/"+caller:""),pagenum,pageoff);
-	    fdjtID("SBOOKCONTENT").style.left=(-offset)+"px";
+	    fdjtID("SBOOKCONTENT").style[fdjtDOM.transform]=
+		"translate(-"+offset+"px,0px)";
 	    updatePageDisplay(info,pageno,0);
 	    sbook.curpage=pageno;
 	    if (!(nosave))
 		sbook.setState(
 		    {page: pageno,location: info.loc,
 		     target:((sbook.target)&&(sbook.target.id))});}
-
-	function ColumnGetPage(arg){
-	    var left;
-	    if (typeof arg === "number") left=arg;
-	    else if (arg.nodeType)
-		left=getGeometry(arg,sbook.body||sbook.root).left;
-	    else if (!(fdjtID(arg))) return 0;
-	    else left=getGeometry(arg,sbook.root).left;
-	    return floor(left/fdjtDOM.viewWidth());}
 
 	/* Scroll paginate */
 
@@ -851,7 +843,7 @@ var sbookPaginate=
 		    sbook.GoToPage(sbook.curpage,0,"displaySync");}}
 	sbook.displaySync=displaySync;
 
-	function ScrollGetPage(arg){
+	function getPage(arg){
 	    var top;
 	    if (typeof arg === "number") top=arg;
 	    else if (arg.nodeType)
@@ -864,7 +856,7 @@ var sbookPaginate=
 		if (sbook.pages[i]>top) return i-1;
 	    else i++;
 	    return i-1;}
-	sbook.getPage=ScrollGetPage;
+	sbook.getPage=getPage;
 
 	function getPageAt(loc){
 	    var pages=sbook.pageinfo;
