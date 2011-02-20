@@ -84,7 +84,7 @@ var sbook=
 	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 0},   // Whether to trace gestures
+	 gestures: 1},   // Whether to trace gestures
      version: codex_version, id: codex_id
     };
 var _sbook_setup=false;
@@ -614,7 +614,9 @@ var sbook_gloss_data=
 	    fdjtLog.warn("Bad sbookGoTo %o",arg);
 	    return;}
 	if (!(target)) return;
-	var page=((sbook.paginate)&&(sbook.pageinfo)&&(sbook.getPageAt(location)));
+	var page=((sbook.paginate)&&
+		  (sbook.pageinfo)&&
+		  (sbook.getPageAt(location)));
 	var info=((target.id)&&(sbook.docinfo[target.id]));
 	if (sbook.Trace.nav)
 	    fdjtLog("sbook.GoTo() #%o@P%o/L%o %o",

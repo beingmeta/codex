@@ -687,7 +687,7 @@ div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     width: 80%; margin-left: 10%; margin-right: 10%;
     border-top: solid black 1px;}
 body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
-    opacity: 0.75; display: none;}
+    opacity: 0.5;} /* display: none; */
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff { float: right;}
 div#SBOOKPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%;
@@ -863,6 +863,7 @@ div.codexslice div.xrefs a { display: block;}
 div.codexthread {
     clear: both; margin: 0px; border: none;
     border-right: gold solid 3px;}
+div#CODEXGLOSSES div.codexthread { border-right: 0px;}
 div.codexthread.singleton,
 div#SBOOKGLOSSES div.codexthread {
     border-left: none; margin-left: 0px;
@@ -950,6 +951,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS {
    hide the HUDBUTTONS. */
 body.hudup div#CODEXHUD.toc div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.search div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.glosses div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.searchresults div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.tocscan div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.help div#CODEXHUDBUTTONS,
