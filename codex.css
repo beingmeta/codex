@@ -82,7 +82,13 @@ body.sbookpagehorizontal #CODEXPAGE #SBOOKCONTENT {
 
 /* The HUD */
 
-/* Being a panel */
+#CODEXHUD a { text-decoration: none;}
+#CODEXHUD a img { border: transparent;}
+#CODEXHUD a:hover img { border: inherit;}
+#CODEXHUD a:hover { text-decoration: underline;}
+
+/* HUD panels */
+
 div#CODEXHUD div.hudpanel {
     color: #4682b4; background-color: ivory; z-index: 100;
     border: solid transparent 3px;}
@@ -926,14 +932,12 @@ div.codexnote > div span.count { float: right;}
 
 body div#CODEXHUD div#CODEXHUDBUTTONS {
     clear: none; z-index: 150; text-align: center;
-    opacity: 0.1;}
-body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
-    opacity: 1.0;}
+    opacity: 0.1; display: none;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
-    display: block; opacity: 0.8;}
+    display: block; opacity: 1.0;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: none;}
-body.hudup.sbookshowconsole div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
+body.hudup.sbookconsoled div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: inline;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {

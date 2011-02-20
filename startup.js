@@ -64,7 +64,7 @@ sbook.Startup=
 	    // Add this as soon as possible
 	    if (sbook.paginate) fdjtDOM.addClass(document.body,"paginate");
 	    if (sbook_showconsole)
-		fdjtDOM.addClass(document.body,"sbookshowconsole");
+		fdjtDOM.addClass(document.body,"sbookconsoled");
 	    var metadata=false;
 	    var helphud=false;
 	    fdjtTime.timeslice
