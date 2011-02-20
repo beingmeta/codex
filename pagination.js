@@ -859,10 +859,10 @@ var sbookPaginate=
 	sbook.getPage=getPage;
 
 	function getPageAt(loc){
-	    var pages=sbook.pages;
+	    var pages=sbook.pageinfo;
 	    var i=1; var len=pages.length;
 	    while (i<len) {
-		if ((pages[i])&&(pages[i]>loc)) return i-1;
+		if ((pages[i].loc)&&(pages[i].loc>loc)) return i-1;
 		else i++;}
 	    return false;}
 	sbook.getPageAt=getPageAt;

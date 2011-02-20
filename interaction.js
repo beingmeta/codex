@@ -738,7 +738,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (sbook.Trace.gestures)
 	    fdjtLog("pageForward c=%o n=%o",sbook.curpage,sbook.pages.length);
 	if ((sbook.paginate)&&(sbook.colpage)) {
-	    if (sbook.curpage===sbook.pagecount) {}
+	    if (sbook.curpage===sbook.pages.length) {}
 	    else sbook.GoToPage(sbook.curpage=(sbook.curpage+1));}
 	else if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var newpage=false;
