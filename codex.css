@@ -53,10 +53,7 @@ span.codexcssversion:after {
 #CODEXPAGE #SBOOKCONTENT {
     position: absolute; left: 0; right: 0;
     margin: 0px; padding: 0px; border: 0px;}
-#CODEXPAGE #CODEXSLIDER {
-    position: absolute; left: 0; right: 0;
-    margin: 0px; padding: 0px; border: 0px;}
-body.sbookcolpage #CODEXPAGE #SBOOKCONTENT {
+body.sbookpagehorizontal #CODEXPAGE #SBOOKCONTENT {
     transition-property: transform; transition-duration: 0.5s;
     -webkit-transition-property: -webkit-transform;
     -webkit-transition-duration: 0.5s;
@@ -80,7 +77,7 @@ body.sbookcolpage #CODEXPAGE #SBOOKCONTENT {
     position: fixed; z-index: -100;
     top: 60px; left: 60px; right: 60px;}
 
-body.sbookcolpage #CODEXPAGE #SBOOKCONTENT {
+body.sbookpagehorizontal #CODEXPAGE #SBOOKCONTENT {
     padding-left: 0px; padding-right: 0px;}
 
 /* The HUD */
@@ -664,7 +661,7 @@ div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 
 /* Margins */
 
-body.sbookmaskpage { overflow: hidden;}
+body.sbookpagevertical { overflow: hidden;}
 
 body div.sbookmargin {
     position: fixed; display: block;
@@ -682,12 +679,14 @@ body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
 /* Bottom information */
 
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
-    vertical-align: bottom; height: 3ex;
+    vertical-align: bottom; height: 3ex; display: none;
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
     border-top: solid black 1px;}
+body.sbookpaginated div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+    display: block;}
 body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
-    opacity: 0.5;} /* display: none; */
+    opacity: 0.5;}
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff { float: right;}
 div#SBOOKPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%;
@@ -695,8 +694,6 @@ div#SBOOKPAGEFOOT div#CODEXPAGENO {
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top: 0px;
     z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
-body.paginate div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
-    display: block;}
 div#SBOOKPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.001;}
 div#SBOOKPAGEFOOT div#CODEXPAGELEAP:hover {
@@ -1346,7 +1343,7 @@ div.locbar hr {
   width: 32px; height: 32px; z-index: 50;
   border-right: 0px;
   opacity: 0.0001;}
-body.sbookcolpage .sbookglossmark { position: inherit; float: right;}
+body.sbookpagehorizontal .sbookglossmark { position: inherit; float: right;}
 body .sbookglossmark { opacity: 0.4;}
 *:hover > .sbookglossmark { opacity: 0.7;}
 body.hudup .sbookglossmark { opacity: 0.9; display: block;}
@@ -1596,41 +1593,41 @@ h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
     -webkit-column-break-before: always;
     -moz-column-break-before: always;}
 
-body.sbookcolpage .sbookpagehead {
+body.sbookpagehorizontal .sbookpagehead {
     column-break-before: always;
     -o-column-break-before: always;
     -webkit-column-break-before: always;
     -moz-column-break-before: always;}
-body.sbookcolpage .sbookpagefoot {
+body.sbookpagehorizontal .sbookpagefoot {
     column-break-after: always;
     -o-column-break-after: always;
     -webkit-column-break-after: always;
     -moz-column-break-after: always;}
-body.sbookcolpage .sbookavoidhead {
+body.sbookpagehorizontal .sbookavoidhead {
     column-break-before: avoid;
     -o-column-break-before: avoid;
     -webkit-column-break-before: avoid;
     -moz-column-break-before: avoid;}
-body.sbookcolpage .sbookavoidfoot, body.sbookcolpage h1, body.sbookcolpage h2,
-body.sbookcolpage h3, body.sbookcolpage h4, body.sbookcolpage h5, body.sbookcolpage [toclevel] {
+body.sbookpagehorizontal .sbookavoidfoot, body.sbookpagehorizontal h1, body.sbookpagehorizontal h2,
+body.sbookpagehorizontal h3, body.sbookpagehorizontal h4, body.sbookpagehorizontal h5, body.sbookpagehorizontal [toclevel] {
     column-break-after: avoid;
     -o-column-break-after: avoid;
     -webkit-column-break-after: avoid;
     -moz-column-break-after: avoid;}
-body.sbookcolpage [toclevel=0], body.sbookcolpage [toclevel=none] {
+body.sbookpagehorizontal [toclevel=0], body.sbookpagehorizontal [toclevel=none] {
     column-break-after: auto;
     -o-column-break-after: auto;
     -webkit-column-break-after: auto;
     -moz-column-break-after: auto;}
-body.sbookcolpage .sbookavoidbreak {
+body.sbookpagehorizontal .sbookavoidbreak {
     column-break-inside: avoid;
     -o-column-break-inside: avoid;
     -webkit-column-break-inside: avoid;
     -moz-column-break-inside: avoid;}
-body.sbookcolpage .fullpage,
-body.sbookcolpage .titlepage,
-body.sbookcolpage .sbookfullpage,
-body.sbookcolpage .sbooktitlepage {
+body.sbookpagehorizontal .fullpage,
+body.sbookpagehorizontal .titlepage,
+body.sbookpagehorizontal .sbookfullpage,
+body.sbookpagehorizontal .sbooktitlepage {
     page-break-before: always;
     page-break-after: always;
     page-break-inside: avoid;

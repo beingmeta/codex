@@ -37,7 +37,7 @@ var sbook=
      head: false,target: false,glosstarget: false,location: false,
      user: false,root: false,start: false,HUD: false,dosync: true,
      _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
-     // For pagination
+     // Keeping track of paginated context
      curpage: false,curoff: false,curinfo: false, curbottom: false,
      // For tracking UI state
      last_mode: false, last_flyleaf: "about",
@@ -53,12 +53,11 @@ var sbook=
      refuris: [],
      // This is the document URI, which is usually the same as the REFURI.
      docuri: false,
-     // This is the unique DOC+USER identifier used by myCopy social DRM.
+     // This is the unique signed DOC+USER identifier used by myCopy
+     // social DRM
      mycopyid: false, 
      // This is the time of the last update
      syncstamp: false,
-     // Various settings
-     paginate: true, fastpage: false,
      // Whether to use native scrolling for body content
      nativescroll: false,
      // Whether to use native scrolling for embedded DIVs
@@ -85,6 +84,14 @@ var sbook=
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 1},   // Whether to trace gestures
+     /* This determines whether to use columns for pagination, like
+	Monocole does */
+     // Whether to paginate
+     paginate: true,
+     // When vertically paginating, this postpones the attempt to
+     //  determine the actual page break
+     fastpage: false,
+     // colpage: false,
      version: codex_version, id: codex_id
     };
 var _sbook_setup=false;

@@ -930,8 +930,16 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(false);
 	    return;}
 	if (evt.offsetX) {
+	    // This is the case where we're passed an actual node
+	    //  rather than a real event
 	    var tx=fdjtDOM.getGeometry(fdjtUI.T(evt),pageinfo).left;
 	    offx=evt.offsetX+tx;}
+	else if (evt.pageX) {
+	    var geom=fdjtDOM.getGeometry(pageinfo);
+	    offx=evt.pageX-geom.left;}
+	else if (evt.clientX) {
+	    var geom=fdjtDOM.getGeometry(pageinfo);
+	    offx=evt.clientX-geom.left;}
 	else offx=getOffX(evt);
 	var offwidth=pageinfo.offsetWidth;
 	var goloc=Math.round((offx/offwidth)*sbook.ends_at);

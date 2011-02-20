@@ -175,26 +175,20 @@ var sbookPaginate=
 	var pageheight;
 
 	function SetupColumnPaginate(){
+	    var body=document.body;
 	    var page=fdjtID("CODEXPAGE");
 	    var content=fdjtID("SBOOKCONTENT");
 	    var vh=fdjtDOM.viewHeight();
 	    var width=colwidth=page.offsetWidth;
 	    var gap=colgap=fdjtDOM.viewWidth()-width;
 	    var style=content.style;
-	    fdjtDOM.dropClass(document.body,"sbookmaskpage");
-	    fdjtDOM.addClass(document.body,"sbookcolpage");
+	    fdjtDOM.dropClass(body,"sbookpagevertical");
+	    fdjtDOM.addClass(body,"sbookpagehorizontal");
+	    fdjtDOM.addClass(body,"sbookpaginated");
 	    window.scrollTo(0,0);
 	    style[fdjtDOM.columnWidth||"column-width"]=width+'px';
 	    style[fdjtDOM.columnGap||"column-gap"]=gap+'px';
 	    style.height=pageheight=page.offsetHeight+'px';}
-
-	function ColumnPaginate(){
-	    var page=fdjtID("CODEXPAGE");
-	    colwidth=page.offsetWidth; pageheight=page.offsetHeight;
-	    colgap=fdjtDOM.viewWidth()-colwidth;
-	    fdjtDOM.dropClass(document.body,"sbookmaskpage");
-	    fdjtDOM.dropClass(document.body,"sbookcolpage");
-	    adjustFullPages(ColumnPaginateSetup);}
 
 	function ColumnGoToPage(pageno,offset,caller,nosave){
 	    var offset=colwidth*pageno+colgap*pageno;
@@ -552,6 +546,8 @@ var sbookPaginate=
 		// Skip over weird nodes
 		return scanContent(next,skipchildren);
 	    else if ((isPageHead(next))||(isPageBlock(next))) {}
+	    else if ((sbook.colpage)&&(isWrapped(next)))
+		return next;
 	    else if ((next.childNodes)&&(next.childNodes.length>0)) {
 		var children=next.childNodes;
 		if ((children[0].nodeType===1)&&(isContentBlock(children[0])))
@@ -567,6 +563,17 @@ var sbookPaginate=
 	    return next;}
 	sbook.scanContent=scanContent;
 
+	function isWrapped(node){
+	    var style=getStyle(node);
+	    return
+	    (((style.paddingLeft)&&fdjtDOM.parsePX(style.paddingLeft))||
+	     ((style.borderLeft)&&fdjtDOM.parsePX(style.borderLeft))||
+	     ((style.marginLeft)&&fdjtDOM.parsePX(style.marginLeft))||
+	     (((style.paddingRight)&&fdjtDOM.parsePX(style.paddingRight)))||
+	     ((style.borderRight)&&fdjtDOM.parsePX(style.borderRight))||
+	     ((style.marginRight)&&fdjtDOM.parsePX(style.marginRight)));}
+	     
+	
 	var sbook_block_tags=
 	    {"IMG": true, "HR": true, "P": true, "DIV": true,
 	     "UL": true,"BLOCKQUOTE":true};
@@ -798,7 +805,9 @@ var sbookPaginate=
 		sbook.scrollTo(0,(off));
 		page_xoff=0; page_yoff=(off);
 		// Add class if it's temporarily gone
-		fdjtDOM.addClass(document.body,"sbookmaskpage");}
+		fdjtDOM.addClass(document.body,"sbookpagevertical");
+		fdjtDOM.addClass(document.body,"sbookpaginated");
+		fdjtDOM.dropClass(document.body,"sbookscrolling");}
 	    
 	    if ((sbook.target)&&(fdjtDOM.isVisible(sbook.target)))
 		sbook.setHead(sbook.target);
@@ -986,20 +995,18 @@ var sbookPaginate=
 	    var body=sbook.body||document.body;
 	    fdjtDOM.dropClass(document.body,"paginate");
 	    fdjtDOM.dropClass(document.body,"scrollpage");
-	    fdjtDOM.dropClass(document.body,"sbookcolpage");
+	    fdjtDOM.dropClass(document.body,"sbookpagehorizontal");
 	    if (sbook.colpage) {
-		var oldbreaks=fdjtDOM.$(".sbookcolpage");
-		fdjtDOM.dropClass(oldbreaks,"sbookcolpage");}
+		var oldbreaks=fdjtDOM.$(".sbookpagehorizontal");
+		fdjtDOM.dropClass(oldbreaks,"sbookpagehorizontal");}
 	    Paginate(pagesize,body,
 		     function(pagination) {
-			 // fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
+			 var body=document.body;
 			 sbook.pages=pagination.pages;
 			 sbook.pageinfo=pagination.info;
 			 sbook_pagesize=pagesize;
 			 if (sbook.colpage) SetupColumnPaginate();
-			 else {
-			     fdjtDOM.addClass(document.body,"paginate");
-			     fdjtDOM.dropClass(document.body,"sbookmaskpage");}
+			 else fdjtDOM.dropClass(body,"sbookpagevertical");
 			 var gotopage=sbook.getPageAt(sbook.location);
 			 sbook.GoToPage(gotopage||0,0,
 					"sbookUpdatePagination",true);
@@ -1012,10 +1019,10 @@ var sbookPaginate=
 		    sbook_nextpage=false; sbook_pagebreak=false;
 		    fdjtDOM.dropClass(document.body,"paginate");
 		    fdjtDOM.dropClass(document.body,"scrollpage");
-		    fdjtDOM.dropClass(document.body,"sbookcolpage");
-		    if (sbook.colpage) {
-			var breaks=fdjtDOM.TOA(fdjtDOM.$$(".sbookcolpage"));
-			fdjtDOM.dropClass(breaks,"sbookcolpage");}
+		    fdjtDOM.dropClass(document.body,"sbookpagehorizontal");
+		    if (sbook.colpage) 
+			fdjtDOM.dropClass(
+			    fdjtDOM.$(".sbookcolbreak"),"sbookcolbreak");
 		    if (!(nogo)) {
 			var curx=fdjtDOM.viewLeft(); var cury=sbook.viewTop();
 			sbook.scrollTo(0,0);
@@ -1024,7 +1031,7 @@ var sbookPaginate=
 		else return;}
 	    else {
 		sbook.paginate=true;
-		fdjtDOM.addClass(document.body,"paginate");}
+		fdjtDOM.addClass(document.body,"sbookpaginated");}
 	    if ((sbook_paginated)&&
 		(sbook_paginated.offheight===document.body.offsetHeight)&&
 		(sbook_paginated.offwidth===document.body.offsetWidth)&&
@@ -1036,8 +1043,6 @@ var sbookPaginate=
 	
 	function repaginate(){
 	    var newinfo={};
-	    var pagesize=sbook.page.offsetHeight;
-	    var pagewidth=(fdjtDOM.viewWidth())-(sbook_left_px+sbook_right_px);
 	    var computePages=function(){
 		sbookUpdatePagination(function(result){
 		    newinfo.offheight=document.body.offsetHeight;
