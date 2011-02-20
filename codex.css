@@ -48,8 +48,15 @@ body.sbook { }
     opacity: 1.0; background-color: inherit;}
 #CODEXPAGE #SBOOKCONTENT {
     position: absolute; left: 0; right: 0;
-    margin: 0px; padding: 0px; border: 0px;
-    padding-left: 50px; padding-right: 50px;}
+    margin: 0px; padding: 0px; border: 0px;}
+body.xsbookcolpage #CODEXPAGE #SBOOKCONTENT {
+    transition-property: left; transition-duration: 0.5s;
+    -webkit-transition-property: left;
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-property: left;
+    -moz-transition-duration: 0.5s;
+    -o-transition-property: left;
+    -o-transition-duration: 0.5s;}
 #CODEXPAGE #SBOOKCONTENT.codexanimate {
     transition-property: opacity; transition-duration: 0.1s;
     -webkit-transition-property: opacity;
@@ -653,11 +660,10 @@ div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 body.sbookmaskpage { overflow: hidden;}
 
 body div.sbookmargin {
-    position: fixed; display: none;
+    position: fixed; display: block;
     /* opacity: 0.5; border: solid green 1px; */
     background-color: white; z-index: 5;}
-body.sbookmaskpage div.sbookmargin {
-    display: block;}
+body.sbooknopage div.sbookmargin  { display: none;}
 
 body div.sbookmargin#SBOOKPAGEHEAD,
 body div.sbookmargin#SBOOKPAGEFOOT {
@@ -672,10 +678,9 @@ div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     vertical-align: bottom; height: 3ex;
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
-    border-top: solid black 1px;
-    display: none;}
+    border-top: solid black 1px;}
 body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
-    opacity: 0.75;}
+    opacity: 0.75; display: none;}
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff { float: right;}
 div#SBOOKPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%;
@@ -683,7 +688,7 @@ div#SBOOKPAGEFOOT div#CODEXPAGENO {
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top: 0px;
     z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
-body.sbookmaskpage div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+body.paginate div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
 div#SBOOKPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.001;}
@@ -1574,6 +1579,12 @@ h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
 .sbookavoidhead { page-break-before: avoid;}
 .sbookavoidfoot { page-break-after: avoid;}
 .sbookavoidbreak { page-break-inside: avoid;}
+
+.sbookcolbreak {
+    column-break-before: always;
+    -o-column-break-before: always;
+    -webkit-column-break-before: always;
+    -moz-column-break-before: always;}
 
 body.sbookcolpage .sbookpagehead {
     column-break-before: always;

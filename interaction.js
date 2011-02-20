@@ -737,7 +737,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function pageForward(){
 	if (sbook.Trace.gestures)
 	    fdjtLog("pageForward c=%o n=%o",sbook.curpage,sbook.pages.length);
-	if ((sbook.paginate)&&(sbook.pageinfo)) {
+	if ((sbook.paginate)&&(sbook.colpage)) {
+	    if (sbook.curpage===sbook.pagecount) {}
+	    else sbook.GoToPage(sbook.curpage=(sbook.curpage+1));}
+	else if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var newpage=false;
 	    if (sbook.mode==="glosses") CodexMode(true);
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
@@ -769,7 +772,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function pageBackward(){
 	if (sbook.Trace.gestures)
 	    fdjtLog("pageBackward c=%o n=%o",sbook.curpage,sbook.pages.length);
-	if ((sbook.paginate)&&(sbook.pageinfo)) {
+	if ((sbook.paginate)&&(sbook.colpage)) {
+	    if (sbook.curpage===0) {}
+	    else sbook.GoToPage(sbook.curpage=(sbook.curpage-1));}
+	else if ((sbook.paginate)&&(sbook.pageinfo)) {
 	    var newpage=false;
 	    if (sbook.mode==="glosses") CodexMode(true);
 	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {

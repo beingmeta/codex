@@ -39,7 +39,7 @@ var codex_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=false;
+	var debug_pagination=true;
 	var sbook_paginated=false;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
@@ -97,6 +97,73 @@ var sbookPaginate=
 		fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));}
 	sbookPaginate.getSettings=getSettings;
 
+	/* Adjust full pages */
+
+	function adjustFullPages(alldone){
+	    var fullpages=fdjtDOM.$(".sbookfullpage");
+	    if (sbook_fullpages)
+		fullpages=fullpages.concat(fdjtDOM.$(sbook_fullpages));
+	    var i=0; var lim=fullpages.length;
+	    while (i<lim) {
+		var block=fullpages[i++];
+		var blockstyle=getStyle(block);
+		block.style.maxHeight=pageheight+'px';
+		block.style.maxWidth=colwidth+'px';}
+	    var adjustpages=function(){
+		i=0; while (i<lim) {
+		    var block=fullpages[i++];
+		    fdjtDOM.adjustToFit(block,0.1,24);}
+		document.body.className=document.body.className;};
+	    var finish_scaling=function(){
+		i=0; while (i<lim) fdjtDOM.finishScale(fullpages[i++]);
+		document.body.className=document.body.className;};
+	    var finalizepages=function(){
+		var page=fdjtID("CODEXPAGE");
+		var pwidth=page.offsetWidth; var pheight=page.offsetHeight;
+		// This uses CSS translation
+		i=0; while (i<lim) {
+		    var block=fullpages[i++];
+		    var bwidth=block.offsetWidth; var bheight=block.offsetHeight;
+		    var scaleby=Math.min(pwidth/bwidth,pheight/bheight);
+		    block.style[fdjtDOM.transform]="scale("+scaleby+")";
+		    block.style.transform="scale("+scaleby+")";}
+		document.body.className=document.body.className;
+		var content=fdjtID("SBOOKCONTENT");
+		sbook.pagecount=
+		    Math.floor(content.scrollWidth/fdjtDOM.viewWidth());};
+	    fdjtTime.timeslice
+	    ([adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
+	      adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
+	      finish_scaling,finalizepages,alldone],
+	     0,100);}
+
+	/* Updating the page display */
+
+	function updatePageDisplay(info,pagenum,pageoff) {
+	    var npages=sbook.pagecount||sbook.pages.length;
+	    var pbar=fdjtDOM("div.progressbar#CODEXPROGRESSBAR");
+	    var book_len=sbook.ends_at;
+	    var starts_at=info.loc;
+	    var ends_at=((sbook.pageinfo[pagenum+1])?
+			 (sbook.pageinfo[pagenum+1].loc):
+			 (book_len));
+	    pbar.style.left=(100*(starts_at/book_len))+"%";
+	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
+	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF",
+			       "L"+Math.ceil(info.loc/128));
+	    var pageno_text=
+		fdjtDOM("span#CODEXPAGENOTEXT.pageno",
+			pagenum+1,((pageoff)?"+":""),"/",npages);
+	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
+	    fdjtDOM.replace("CODEXPAGENO",pageno);
+	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
+	    locoff.title="click to jump to a particular location";
+	    fdjtDOM.addListeners
+	      (locoff,sbook.UI.handlers[sbook.ui]["#CODEXLOCOFF"]);
+	    pageno_text.title="click to jump to a particular page";
+	    fdjtDOM.addListeners
+	      (pageno_text,sbook.UI.handlers[sbook.ui]["#CODEXPAGENOTEXT"]);}
+
 	/* Column pagination */
 
 	// These are experiments with Monocle style column pagination
@@ -107,7 +174,7 @@ var sbookPaginate=
 	var colgap;
 	var pageheight;
 
-	function ColumnPaginateSetup(){
+	function SetupColumnPaginate(){
 	    var page=fdjtID("CODEXPAGE");
 	    var content=fdjtID("SBOOKCONTENT");
 	    var vh=fdjtDOM.viewHeight();
@@ -127,45 +194,21 @@ var sbookPaginate=
 	    colgap=fdjtDOM.viewWidth()-colwidth;
 	    fdjtDOM.dropClass(document.body,"sbookmaskpage");
 	    fdjtDOM.dropClass(document.body,"sbookcolpage");
-	    var fullpages=fdjtDOM.$(".sbookfullpage");
-	    if (sbook_fullpages)
-		fullpages=fullpages.concat(fdjtDOM.$(sbook_fullpages));
-	    var i=0; var lim=fullpages.length;
-	    while (i<lim) {
-		var block=fullpages[i++];
-		var blockstyle=getStyle(block);
-		block.style.maxHeight=pageheight+'px';
-		block.style.maxWidth=colwidth+'px';}
-	    var adjustpages=function(){
-		i=0; while (i<lim) {
-		    var block=fullpages[i++];
-		    fdjtDOM.adjustToFit(block,0.1,24);}
-		document.body.className=document.body.className;};
-	    var usebest=function(){
-		i=0; while (i<lim) fdjtDOM.finishScale(fullpages[i++]);
-		document.body.className=document.body.className;};
-	    var finalizepages=function(){
-		// This tries to assure that the pages all include all
-		// their content
-		i=0; while (i<lim) {
-		    var block=fullpages[i++];
-		    var page=fdjtID("CODEXPAGE");
-		    var pwidth=page.offsetWidth; var pheight=page.offsetHeight;
-		    var bwidth=block.offsetWidth; var bheight=block.offsetHeight;
-		    var scaleby=Math.min(pwidth/bwidth,pheight/bheight);
-		    block.style[fdjtDOM.transform]="scale("+scaleby+")";
-		    block.style.transform="scale("+scaleby+")";}
-		document.body.className=document.body.className;};
-	    fdjtTime.timeslice
-	    ([adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
-	      adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
-	      usebest,finalizepages,ColumnPaginateSetup],
-	     0,100);}
+	    adjustFullPages(ColumnPaginateSetup);}
 
-	function ColumnGoToPage(pageno){
+	function ColumnGoToPage(pageno,offset,caller,nosave){
 	    var offset=colwidth*pageno+colgap*pageno;
+	    var info=sbook.pageinfo[pageno];
+	    if (sbook.Trace.nav)
+		fdjtLog("ColumnGoToPage%s %o+%o",
+			((caller)?"/"+caller:""),pagenum,pageoff);
 	    fdjtID("SBOOKCONTENT").style.left=(-offset)+"px";
-	    sbook.curpage=pageno;}
+	    updatePageDisplay(info,pageno,0);
+	    sbook.curpage=pageno;
+	    if (!(nosave))
+		sbook.setState(
+		    {page: pageno,location: info.loc,
+		     target:((sbook.target)&&(sbook.target.id))});}
 
 	function ColumnGetPage(arg){
 	    var left;
@@ -175,13 +218,10 @@ var sbookPaginate=
 	    else if (!(fdjtID(arg))) return 0;
 	    else left=getGeometry(arg,sbook.root).left;
 	    return floor(left/fdjtDOM.viewWidth());}
-	sbook.columnPaginate=ColumnPaginate;
-	sbook.columnGoToPage=ColumnGoToPage;
-	sbook.columnGetPage=ColumnGetPage;
 
 	/* Scroll paginate */
 
-	function ScrollPaginate(pagesize,start,callback){
+	function Paginate(pagesize,start,callback){
 	    var getLocInfo=sbook.getLocInfo;
 	    if (!(sbook_body)) sbook_body=sbook.body;
 	    if (!(start)) start=sbook.body||document.body;
@@ -363,29 +403,31 @@ var sbookPaginate=
 		    // If we starting a new page, clean up the page break
 		    var newinfo=((newtop==scan)?(info):nodeInfo(newtop));
 		    var prevpage=curpage;
+		    if (sbook.colpage) fdjtDOM.addClass(newtop,"sbookcolbreak");
 		    if (dbginfo)
 			dbginfo=dbginfo+" np"+((splitblock)?"/split":"")+"/"+curpage.bottom;
 		    // Adjust the page bottom information
 		    if (splitblock) {
 			curpage.bottom=pagelim;
 			curpage.last=splitblock;
-			var newbottom=
-			    ((sbook.fastpage)?(curpage.bottom):
-			     (AdjustPageBreak(splitblock,curpage.top,curpage.bottom)));
-			if ((newbottom>pagetop)&&(newbottom>info.top)&&
-			    (newbottom>(pagetop+(pagesize/2)))) {
-			    // Check that we were able to find a good page break
-			    curpage.bottom=newbottom;
-			    curpage.bottomedge=splitblock;
-			    if (dbginfo) dbginfo=dbginfo+"~"+curpage.bottom;
-			    // If we're splitting, force the next node to be the split block
-			    next=splitblock; nextinfo=info;}
-			else {
-			    // We weren't able to find a good page break,
-			    // so we break entirely (no split), and declare this
-			    // page oversize
-			    curpage.bottom=info.bottom; curpage.oversize=oversize=true;
-			    if (dbginfo) dbginfo=dbginfo+"~oversize/"+curpage.bottom;}}
+			if (!(sbook.colpage)) {
+			    var newbottom=
+				((sbook.fastpage)?(curpage.bottom):
+				 (AdjustPageBreak(splitblock,curpage.top,curpage.bottom)));
+			    if ((newbottom>pagetop)&&(newbottom>info.top)&&
+				(newbottom>(pagetop+(pagesize/2)))) {
+				// Check that we were able to find a good page break
+				curpage.bottom=newbottom;
+				curpage.bottomedge=splitblock;
+				if (dbginfo) dbginfo=dbginfo+"~"+curpage.bottom;
+				// If we're splitting, force the next node to be the split block
+				next=splitblock; nextinfo=info;}
+			    else {
+				// We weren't able to find a good page break,
+				// so we break entirely (no split), and declare this
+				// page oversize
+				curpage.bottom=info.bottom; curpage.oversize=oversize=true;
+				if (dbginfo) dbginfo=dbginfo+"~oversize/"+curpage.bottom;}}}
 		    // If it's a clean break, make sure that the page bottom is good
 		    else if (!(last))
 			curpage.bottom=newinfo.top-1;
@@ -462,7 +504,6 @@ var sbookPaginate=
 				fdjtTime.secs2short(doneat-startedat));
 		    callback(result);}}
 	    setTimeout(stepfn,10);}
-	var Paginate=ScrollPaginate;
 	
 	function isPageHead(elt,style){
 	    return ((sbook_tocmajor)&&(elt.id)&&
@@ -755,29 +796,7 @@ var sbookPaginate=
 			     off,pagenum,
 			     info.top,info.bottom,info.first.id,pageoff,info);}
 	    updatePage(info,off);
-	    var npages=sbook.pageinfo.length;
-	    var pbar=fdjtDOM("div.progressbar#CODEXPROGRESSBAR");
-	    var book_len=sbook.ends_at;
-	    var starts_at=info.loc;
-	    var ends_at=((sbook.pageinfo[pagenum+1])?
-			 (sbook.pageinfo[pagenum+1].loc):
-			 (book_len));
-	    pbar.style.left=(100*(starts_at/book_len))+"%";
-	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
-	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF",
-			       "L"+Math.ceil(info.loc/128));
-	    var pageno_text=
-		fdjtDOM("span#CODEXPAGENOTEXT.pageno",
-			pagenum+1,((pageoff)?"+":""),"/",npages);
-	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
-	    fdjtDOM.replace("CODEXPAGENO",pageno);
-	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
-	    locoff.title="click to jump to a particular location";
-	    fdjtDOM.addListeners
-	      (locoff,sbook.UI.handlers[sbook.ui]["#CODEXLOCOFF"]);
-	    pageno_text.title="click to jump to a particular page";
-	    fdjtDOM.addListeners
-	      (pageno_text,sbook.UI.handlers[sbook.ui]["#CODEXPAGENOTEXT"]);
+	    updatePageDisplay(info,pagenum,pageoff);
 	    sbook.curpage=pagenum;
 	    sbook.curoff=pageoff;
 	    sbook.curinfo=info;
@@ -798,7 +817,11 @@ var sbookPaginate=
 		sbook.setState(
 		    {page: pagenum,location: info.loc,
 		     target:((sbook.target)&&(sbook.target.id))});}
-	sbook.GoToPage=ScrollGoToPage;
+
+	function GoToPage(num,off,caller,nosave){
+	    if (sbook.colpage) ColumnGoToPage(num,off,caller,nosave);
+	    else ScrollGoToPage(num,off,caller,nosave);}
+	sbook.GoToPage=GoToPage;
 
 	function FadeToPage(pagenum,off){
 	    if (!(off)) off=0;
@@ -894,13 +917,7 @@ var sbookPaginate=
 				fdjtDOM("span#CODEXPAGENOTEXT","p/n")));
 	    var pagefoot=fdjtDOM(
 		"div.sbookmargin#SBOOKPAGEFOOT",
-		/*
-		fdjtDOM.Image("http://static.beingmeta.com/graphics/drophud50x50.png",
-			      "img#CODEXDROPHUD.hudbutton.bottomleft",
-			      "drophud","hide the sBook tools"),
-		" ", */
-		pageinfo,
-		" ",
+		pageinfo," ",
 	    	fdjtDOM.Image("http://static.beingmeta.com/graphics/PageNext50x50.png",
 			      "img#CODEXPAGENEXT.hudbutton.bottomright",
 			      "pagenext","go to the next result/section/page"));
@@ -919,7 +936,6 @@ var sbookPaginate=
 		fdjtDOM.append(document.body,bottomleading);}
 	    else {}
 	    
-	    // fdjtID("CODEXDROPHUD").onclick=sbook.dropHUD;
 	    fdjtID("CODEXPAGENEXT").onclick=sbook.Forward;
 
 	    if (!(sbook.nativescroll)) window.scrollTo(0,0);
@@ -976,15 +992,26 @@ var sbookPaginate=
 	    var target=sbook.target;
 	    sbook.Message("Determining page layout");
 	    var body=sbook.body||document.body;
-	    ScrollPaginate(pagesize,body,
-			   function(pagination) {
-			     // fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
-			       sbook.pages=pagination.pages;
-			       sbook.pageinfo=pagination.info;
-			       sbook_pagesize=pagesize;
-			       var gotopage=sbook.getPageAt(sbook.location);
-			       sbook.GoToPage(gotopage||0,0,"sbookUpdatePagination",true);
-			       if (callback) callback(pagination);});}
+	    fdjtDOM.dropClass(document.body,"paginate");
+	    fdjtDOM.dropClass(document.body,"scrollpage");
+	    fdjtDOM.dropClass(document.body,"sbookcolpage");
+	    if (sbook.colpage) {
+		var oldbreaks=fdjtDOM.$(".sbookcolpage");
+		fdjtDOM.dropClass(oldbreaks,"sbookcolpage");}
+	    Paginate(pagesize,body,
+		     function(pagination) {
+			 // fdjtID("SBOOKBOTTOMLEADING").style.height=pagesize+'px';
+			 sbook.pages=pagination.pages;
+			 sbook.pageinfo=pagination.info;
+			 sbook_pagesize=pagesize;
+			 if (sbook.colpage) SetupColumnPaginate();
+			 else {
+			     fdjtDOM.addClass(document.body,"paginate");
+			     fdjtDOM.dropClass(document.body,"sbookmaskpage");}
+			 var gotopage=sbook.getPageAt(sbook.location);
+			 sbook.GoToPage(gotopage||0,0,
+					"sbookUpdatePagination",true);
+			 if (callback) callback(pagination);});}
 	
 	function sbookPaginate(flag,nogo){
 	    if (flag===false) {
@@ -992,6 +1019,11 @@ var sbookPaginate=
 		    sbook.paginate=false;
 		    sbook_nextpage=false; sbook_pagebreak=false;
 		    fdjtDOM.dropClass(document.body,"paginate");
+		    fdjtDOM.dropClass(document.body,"scrollpage");
+		    fdjtDOM.dropClass(document.body,"sbookcolpage");
+		    if (sbook.colpage) {
+			var breaks=fdjtDOM.TOA(fdjtDOM.$$(".sbookcolpage"));
+			fdjtDOM.dropClass(breaks,"sbookcolpage");}
 		    if (!(nogo)) {
 			var curx=fdjtDOM.viewLeft(); var cury=sbook.viewTop();
 			sbook.scrollTo(0,0);
@@ -1000,77 +1032,33 @@ var sbookPaginate=
 		else return;}
 	    else {
 		sbook.paginate=true;
-		fdjtDOM.addClass(document.body,"paginate");
-	    }
+		fdjtDOM.addClass(document.body,"paginate");}
 	    if ((sbook_paginated)&&
 		(sbook_paginated.offheight===document.body.offsetHeight)&&
 		(sbook_paginated.offwidth===document.body.offsetWidth)&&
-		(sbook_paginated.winwidth===(document.documentElement.clientWidth))&&
+		(sbook_paginated.winwidth===
+		 (document.documentElement.clientWidth))&&
 		(sbook_paginated.winheight===(fdjtDOM.viewHeight()))) {
 		return false;}
-	    else if (sbook.colpage) {
-		sbook.GoToPage=ColumnGoToPage;
-		sbook.GetPage=ColumnGetPage;
-	    	ColumnPaginate();}
-	    else {
-		sbook.GoToPage=ScrollGoToPage;
-		repaginate();}}
+	    else repaginate();}
 	
 	function repaginate(){
 	    var newinfo={};
 	    var pagesize=sbook.page.offsetHeight;
-	    var pagewidth=(fdjtDOM.viewWidth())-(sbook_left_px+sbook_right_px)
-	    var fullpages=fdjtDOM.$(".sbookfullpage"); 
-	    if (sbook_fullpages)
-		fullpages=fullpages.concat(fdjtDOM.$(sbook_fullpages));
-	    var i=0; var lim=fullpages.length;
-	    while (i<lim) {
-		var block=fullpages[i++];
-		var blockstyle=getStyle(block);
-		var blocktop=parsePX(blockstyle.paddingTop)+
-		    parsePX(blockstyle.borderTop);
-		var blockbot=parsePX(blockstyle.paddingBottom)+
-		    parsePX(blockstyle.borderBottom);
-		var blockheight=pagesize-((blocktop||0)+(blockbot||0));
-		block.style.maxHeight=blockheight+'px';}
-	    var adjustpages=function(){
-		i=0; while (i<lim) {
-		    var block=fullpages[i++];
-		    if (block.goodscale) continue;
-		    fdjtDOM.adjustToFit(block,0.1,24);}
-		// This forces a refresh in some browsers
-		document.body.className=document.body.className;};
-	    var finishscale=function(){
-		i=0; while (i<lim) fdjtDOM.finishScale(fullpages[i++]);
-		document.body.className=document.body.className;};
-	    var finalizepages=function(){
-		// This tries to assure that the pages all include all
-		// their content
-		i=0; while (i<lim) {
-		    var block=fullpages[i++];
-		    var page=fdjtID("CODEXPAGE");
-		    var pwidth=page.offsetWidth; var pheight=page.offsetHeight;
-		    var bwidth=block.offsetWidth; var bheight=block.offsetHeight;
-		    var scaleby=Math.min(pwidth/bwidth,pheight/bheight);
-		    block.style[fdjtDOM.transform]="scale("+scaleby+")";
-		    block.style.transform="scale("+scaleby+")";}};
-	    fdjtTime.timeslice
-	    ([adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
-	      adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
-	      finishscale,finalizepages,
-	      function(){
-		  sbookUpdatePagination(function(result){
-		      newinfo.offheight=document.body.offsetHeight;
-		      newinfo.offwidth=document.body.offsetWidth;
-		      newinfo.winwidth=(document.documentElement.clientWidth);
-		      newinfo.winheight=(fdjtDOM.viewHeight());
-		      // fdjtTrace("Updated pagination from %o to %o",
-		      //           sbook_paginated,newinfo);
-		      sbook_paginated=newinfo;})}],
-	     false,0);}
+	    var pagewidth=(fdjtDOM.viewWidth())-(sbook_left_px+sbook_right_px);
+	    var computePages=function(){
+		sbookUpdatePagination(function(result){
+		    newinfo.offheight=document.body.offsetHeight;
+		    newinfo.offwidth=document.body.offsetWidth;
+		    newinfo.winwidth=(document.documentElement.clientWidth);
+		    newinfo.winheight=(fdjtDOM.viewHeight());
+		    sbook_paginated=newinfo;})};
+	    adjustFullPages(computePages);}
 	
 	sbook.isContent=isContentBlock;
 	sbook.scanContent=scanContent;
+
+	// fdjtDOM.trace_adjust=true;
 
 	sbookPaginate.debug=debug_pagination;
 
