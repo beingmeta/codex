@@ -43,6 +43,7 @@ var sbook_delete_icon="redx12x12.png";
 (function () {
 
     var div_threshold=7;
+    var debug_locbars=false;
 
     function renderNote(info,query,idprefix,standalone){
 	var key=info.qid||info.oid||info.id;
@@ -76,8 +77,7 @@ var sbook_delete_icon="redx12x12.png";
 		     (showaudience(info.audience))),
 		    ((info.tags)&&(showtags(info)))," ");
 	if (!(info.tstamp))
-	    div.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
-	    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
+	    div.title=sbook.getTitle(target,true);
 	// if (info.qid) div.about=info.qid;
 	div.about=info.frag;
 	// div.setAttribute('about',"#"+info.id);
@@ -117,6 +117,8 @@ var sbook_delete_icon="redx12x12.png";
     function showtags(info){
 	if (!(tags instanceof Array)) tags=[tags];
 	var tags=info.tags; var scores=tags.scores||false;
+	if ((typeof tags === 'string')||(tags instanceof String))
+	    tags=[tags];
 	var tagcount=0;
 	var countspan=fdjtDOM("span.count");
 	var span=fdjtDOM("span.tags.fdjtexpands"); var tagspan=span;
@@ -193,7 +195,7 @@ var sbook_delete_icon="redx12x12.png";
 	var picinfo=getpicinfo(info);
 	var overdoc=getoverdoc(info);
 
-	return [(fdjtDOM("span.glossinfo",age,deleteicon)),
+	return [(fdjtDOM("span.glossinfo",deleteicon)),
 		((picinfo)&&
 		 (fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt))),
 		((overdoc)&&(overdoc.name)&&
@@ -201,7 +203,7 @@ var sbook_delete_icon="redx12x12.png";
 	       	(((!(overdoc))&&(userinfo)&&
 		  ((userinfo.name)||(userinfo.userid)))&&
 		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid))))),
-	       ];}
+		age];}
 
     function getoverdoc(info){
 	if (info.sources) {
@@ -265,7 +267,9 @@ var sbook_delete_icon="redx12x12.png";
 	var cxt_start=cxt_info.starts_at;
 	var cxt_end=cxt_info.ends_at;
 	var cxt_len=cxt_end-cxt_start;
-	locbar.setAttribute("debug","ts="+target_start+"; te="+target_end+"; cl="+cxt_len);
+	if (debug_locbars)
+	    locbar.setAttribute(
+		"debug","ts="+target_start+"; te="+target_end+"; cl="+cxt_len);
 	locrule.style.width=((target_len/cxt_len)*100)+"%";
 	locrule.style.left=(((target_start-cxt_start)/cxt_len)*100)+"%";
 	var id=target_info.id||target_info.frag;
@@ -441,8 +445,7 @@ var sbook_delete_icon="redx12x12.png";
 		threadelt=fdjtDOM("div.codexthread.idthread",
 				  makeIDHead(target,headinfo,true));
 		threadelt.frag=frag;
-		threadelt.title=(sbook.getTitle(target)||fdjtDOM.textify(target))
-		    .replace(/\n\n+/g,"\n").replace(/^\n+/,"");
+		threadelt.title=sbook.getTitle(target,true);
 		fdjtDOM.append(headelt,threadelt);
 		curinfo=docinfo;}
 	    fdjtDOM.append(threadelt,renderNote(note));}
@@ -450,8 +453,7 @@ var sbook_delete_icon="redx12x12.png";
     sbook.UI.showSlice=showSlice;
     
     function sumText(target){
-	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
-	    replace(/\n\n+/g,"\n");
+	var title=sbook.getTitle(target,true);
 	if (title.length<40) return title;
 	/* title.slice(0,40)+"\u22ef "; */
 	else return title;}
@@ -460,8 +462,7 @@ var sbook_delete_icon="redx12x12.png";
 	if (!(head)) head=sbook.getHead(target);
 	var basespan=fdjtDOM("span");
 	basespan.title='click to jump';
-	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
-	    replace(/\n\n+/g,"\n");
+	var title=sbook.getTitle(target,true);
 	var info=sbook.docinfo[target.id];
 	if (target!==head) {
 	    var paratext=
@@ -507,8 +508,7 @@ var sbook_delete_icon="redx12x12.png";
 	var tochead=fdjtDOM("div.idhead",
 			    ((locrule)&&(makelocrule(info,headinfo))),
 			    fdjtDOM("span",sumText(target)));
-	var title=(sbook.getTitle(target)||fdjtDOM.textify(target)).
-	    replace(/\n\n+/g,"\n").replace(/^\n+/,"");
+	var title=sbook.getTitle(target,true);
 	return tochead;}
 
     function findTOCref(div,ref,loc) {
@@ -544,10 +544,9 @@ var sbook_delete_icon="redx12x12.png";
 	if ((!(idelt))||(idelt.tocref!==frag)) {
 	    var insertion=idelt;
 	    idelt=fdjtDOM("div.codexthread.idthread",
-			  makeIDHead(about,headinfo));
+			  makeIDHead(about,headinfo,true));
 	    idelt.tocref=frag; idelt.start=starts; idelt.about="#"+frag;
-	    idelt.title=(sbook.getTitle(about)||fdjtDOM.textify(about))
-		.replace(/\n\n+/g,"\n").replace(/^\n+/,"");
+	    idelt.title=sbook.getTitle(about,target);
 
 	    if (insertion) fdjtDOM.insertBefore(insertion,idelt);
 	    else fdjtDOM.append(headelt,idelt);}

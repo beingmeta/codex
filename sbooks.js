@@ -308,11 +308,16 @@ var sbook_gloss_data=
 	return target;}
     sbook.getTarget=getTarget;
     
-    sbook.getTitle=function(target) {
+    sbook.getTitle=function(target,tryhard) {
 	return target.sbooktitle||
 	    (((target.id)&&(sbook.docinfo[target.id]))?
 	     (sbook.docinfo[target.id].title):
-	     (target.title));};
+	     (target.title))||
+	    ((tryhard)&&
+	     (fdjtDOM.Textify(target)).
+	     replace(/\n\n+/g,"\n").
+	     replace(/^\n+/,"").
+	     replace(/\n+$/,""));};
 
     function getinfo(arg){
 	if (arg)

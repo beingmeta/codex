@@ -857,7 +857,8 @@ div.codexslice .showxrefs div.xrefs { display: block;}
 div.codexslice div.xrefs a { display: block;}
 
 div.codexthread {
-    clear: both; margin: 0px; border none;}
+    clear: both; margin: 0px; border: none;
+    border-right: gold solid 3px;}
 div.codexthread.singleton,
 div#SBOOKGLOSSES div.codexthread {
     border-left: none; margin-left: 0px;
@@ -898,11 +899,10 @@ div.tochead a { z-index: 10;}
 div.tochead hr[about] { cursor: crosshair;}
 
 div.idhead { 
-  position: relative; width: 100%; 
+  position: relative; width: 100%; white-space: nowrap;
   background-color: silver; color: black;
   text-align: left; vertical-align: middle;
-  border-top: solid gold 1px;
-  max-height: 3ex; overflow: hidden;}
+  border-top: solid gold 1px; overflow: hidden;}
 div.idhead hr {
     color: white; background-color: gold; min-width: 3px; opacity: 0.5;
     border-right: solid gold 1px; border-left: solid gold 1px;
@@ -1296,7 +1296,7 @@ body.sbook a.codexnote { display: block;}
     font-weight: bold; color: silver;}
 .codexnote span.note { font-size: 110%;}
 .codexnote img.userpic, .codexnote img.sourcepic  {
-    float: left; margin-right: 3px; width: 50px;}
+    float: left; clear: left; margin-right: 3px; width: 50px;}
 .codexnote img.detailsbutton { border: none; }
 .codexnote img.xrefsbutton { border: none;}
 .codexnote .glossinfo {
@@ -1304,8 +1304,8 @@ body.sbook a.codexnote { display: block;}
     padding: 0px; margin: 0px; margin-left: 3px;
     text-align: right;}
 .codexnote .age { 
-  color: orange; float: right; font-weight: bold;
-  font-size: 90%; text-decoration: none;}
+  color: green; float: left; clear: left; font-weight: normal;
+  font-size: 60%; text-decoration: none;}
 .codexnote .age:hover {text-decoration: underline;} 
 .codexnote a.deletebutton { 
   color: orange; text-decoration: none;
