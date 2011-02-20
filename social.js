@@ -3,7 +3,7 @@
 var codex_social_id="$Id$";
 var codex_social_version=parseInt("$Revision$".slice(10,-1));
 
-/* Copyright (C) 2009 beingmeta, inc.
+/* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
     large structured documents (sBooks).
 
@@ -207,21 +207,24 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 			sbook.glossBlock(target.id,"div.sbookgloss"));
 	CodexMode("glosses");
 	var glosshud=fdjtID("CODEXGLOSSES");
-	var height=glosshud.offsetHeight;
-	var geom=fdjtDOM.getGeometry(target,sbook.body);
-	var scrollpos=sbook.scrollPos();
-	var window_height=fdjtDOM.viewHeight();
-	glosshud.style.maxHeight=(window_height-150)+'px';
-	var hudoff=geom.top-scrollpos.y;
-	var height=glosshud.offsetHeight;
-	if (false)
+	if (false) { /* (sbook.colpage) */
+	  fdjtDOM.prepend(target,glosshud);}
+	else {
+	  var height=glosshud.offsetHeight;
+	  var geom=fdjtDOM.getGeometry(target,sbook.body);
+	  var scrollpos=sbook.scrollPos();
+	  var window_height=fdjtDOM.viewHeight();
+	  glosshud.style.maxHeight=(window_height-150)+'px';
+	  var hudoff=geom.top-scrollpos.y;
+	  var height=glosshud.offsetHeight;
+	  if (false)
 	    fdjtLog("top=%o height=%o x,y=%o,%o wh=%o ho=%o ht=%o",
 		    geom.top,geom.height,scrollpos.x,scrollpos.y,window_height,hudoff,height);
-	if ((hudoff+height)>(window_height-50)) {
+	  if ((hudoff+height)>(window_height-50)) {
 	    var overhang=(hudoff+height)-(window_height-50);
 	    if ((hudoff-overhang)<50) hudoff=50;
 	    else hudoff=hudoff-overhang;}
-	glosshud.style.top=hudoff+'px';}
+	  glosshud.style.top=hudoff+'px';}}
     sbook.openGlossmark=openGlossmark;
 
 })();
