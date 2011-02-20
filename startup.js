@@ -261,7 +261,9 @@ sbook.Startup=
 	    var isWebKit = navigator.appVersion.search("WebKit")>=0;
 	    var isWebTouch = isIphone || isIpad || isAndroid;
 
-	    if (isWebKit) sbook.colpage=true;
+	    if ((isWebKit)&&(typeof sbook.colpage === 'undefined'))
+		sbook.colpage=true;
+	    else sbook.colpage=false;
 	    if (isWebTouch) {
 		fdjtDOM.addClass(document.body,"sbooktouch");
 		viewportSetup();

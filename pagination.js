@@ -140,7 +140,7 @@ var sbookPaginate=
 	/* Updating the page display */
 
 	function updatePageDisplay(info,pagenum,pageoff) {
-	    var npages=sbook.pagecount||sbook.pages.length;
+	    var npages=sbook.pages.length;
 	    var pbar=fdjtDOM("div.progressbar#CODEXPROGRESSBAR");
 	    var book_len=sbook.ends_at;
 	    var starts_at=info.loc;

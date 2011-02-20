@@ -546,8 +546,7 @@ var sbook_delete_icon="redx12x12.png";
 	    idelt=fdjtDOM("div.codexthread.idthread",
 			  makeIDHead(about,headinfo,true));
 	    idelt.tocref=frag; idelt.start=starts; idelt.about="#"+frag;
-	    idelt.title=sbook.getTitle(about,target);
-
+	    idelt.title=sbook.getTitle(about,true);
 	    if (insertion) fdjtDOM.insertBefore(insertion,idelt);
 	    else fdjtDOM.append(headelt,idelt);}
 	var tstamp=note.tstamp; var qid=note.qid;

@@ -85,7 +85,6 @@ var sbook=
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0},   // Whether to trace gestures
-     colpage: false,
      version: codex_version, id: codex_id
     };
 var _sbook_setup=false;
@@ -314,7 +313,7 @@ var sbook_gloss_data=
 	     (sbook.docinfo[target.id].title):
 	     (target.title))||
 	    ((tryhard)&&
-	     (fdjtDOM.Textify(target)).
+	     (fdjtDOM.textify(target)).
 	     replace(/\n\n+/g,"\n").
 	     replace(/^\n+/,"").
 	     replace(/\n+$/,""));};

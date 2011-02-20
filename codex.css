@@ -35,12 +35,16 @@
 
 body.sbook { }
 
+span.codexcssversion:after {
+    content: "$Id$";}
+
 #CODEXHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
     z-index: 100;}
 #CODEXPAGE {
     position: fixed;
-    top: 70px; bottom: 60px; left: 50px; right: 50px; width: auto;
+    top: 70px; bottom: 60px; left: 0px; right: 0px;
+    width: auto;
     overflow: hidden;}
 #CODEXPAGE #CODEXMASK {
     position: absolute; z-index: 75;
