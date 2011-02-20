@@ -682,7 +682,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (held) clear_hold("glossmark_tapped");
 	var target=fdjtUI.T(evt);
 	var glossmark=fdjtDOM.getParent(target,".sbookglossmark");
-	var passage=sbook.getTarget(glossmark.parentNode);
+	var passage=sbook.getTarget(glossmark.parentNode,true);
 	if (sbook.Trace.gestures)
 	    fdjtLog("glossmark_tapped (%o) on %o gmark=%o passage=%o mode=%o target=%o",
 		    evt,target,glossmark,passage,sbook.mode,sbook.target);
