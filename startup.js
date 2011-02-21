@@ -55,7 +55,8 @@ sbook.Startup=
 	    fdjtLog.consoletoo=true;
 	    fdjtLog("This is Codex version %d, built at %s on %s",
 		    fdjt_versions.codex,sbooks_buildtime,sbooks_buildhost);
-	    if (navigator.appVersion) fdjtLog("App version: ",navigator.appVersion);
+	    if (navigator.appVersion)
+		fdjtLog("App version: %s",navigator.appVersion);
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
 	    getSettings();
@@ -206,6 +207,7 @@ sbook.Startup=
 	    var refuri=_getsbookrefuri();
 	    document.body.refuri=sbook.refuri=refuri;
 	    sbook.docuri=_getsbookdocuri();
+	    sbook.devinfo=fdjtState.versionInfo();
 	    var deviceid=fdjtState.getLocal("sbook.deviceId",false);
 	    var devicename=fdjtState.getLocal("sbook.deviceName",false);
 	    if (!(deviceid)) {
@@ -262,7 +264,9 @@ sbook.Startup=
 	    var isWebKit = navigator.appVersion.search("WebKit")>=0;
 	    var isWebTouch = isIphone || isIpad || isAndroid;
 
-	    if ((isWebKit)&&(typeof sbook.colpage === 'undefined'))
+	    if ((typeof sbook.colpage === 'undefined')&&
+		(((sbook.devinfo.AppleWebKit)&&
+		  (sbook.devinfo.AppleWebKit>=534))))
 		sbook.colpage=true;
 	    else sbook.colpage=false;
 	    if (isWebTouch) {

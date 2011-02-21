@@ -70,7 +70,7 @@ var sbook=
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
 	 startup: 1,	// Whether to debug startup
-	 mode: false,	// Whether to trace mode changes
+	 mode: true,	// Whether to trace mode changes
 	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// Whether (and level) to trace searches
@@ -83,7 +83,7 @@ var sbook=
 	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 0},   // Whether to trace gestures
+	 gestures: 1},   // Whether to trace gestures
      /* This determines whether to use columns for pagination, like
 	Monocole does */
      // Whether to paginate
