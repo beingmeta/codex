@@ -53,8 +53,9 @@ sbook.Startup=
 	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
 	    fdjtLog.console="CODEXCONSOLE";
 	    fdjtLog.consoletoo=true;
-	    fdjtLog("This is Codex version %d, built on %s at %s",
-		    fdjt_versions.codex,sbooks_buildhost,sbooks_buildtime);
+	    fdjtLog("This is Codex version %d, built at %s on %s",
+		    fdjt_versions.codex,sbooks_buildtime,sbooks_buildhost);
+	    if (navigator.appVersion) fdjtLog("App version: ",navigator.appVersion);
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
 	    getSettings();
