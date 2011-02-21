@@ -265,8 +265,12 @@ sbook.Startup=
 	    var isWebTouch = isIphone || isIpad || isAndroid;
 
 	    if ((typeof sbook.colpage === 'undefined')&&
-		(((sbook.devinfo.AppleWebKit)&&
-		  (sbook.devinfo.AppleWebKit>=534))))
+		((sbook.devinfo.Chrome)||
+		 ((sbook.devinfo.AppleWebKit)&&
+		  (sbook.devinfo.Mobile)&&
+		  (sbook.devinfo.AppleWebKit>532))||
+		 ((sbook.devinfo.AppleWebKit)&&
+		  (sbook.devinfo.AppleWebKit>533))))
 		sbook.colpage=true;
 	    else sbook.colpage=false;
 	    if (isWebTouch) {
