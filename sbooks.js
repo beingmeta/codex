@@ -43,7 +43,7 @@ var sbook=
      last_mode: false, last_flyleaf: "about",
      // How long it takes a gesture to go from tap to hold
      holdmsecs: 500, edgeclick: 50, pagesize: 250,
-     animate: {pages:false,hud: true},
+     animate: {pages:true,hud: true},
      updatelocation: true,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
@@ -88,10 +88,13 @@ var sbook=
 	Monocole does */
      // Whether to paginate
      paginate: true,
+     // Whether to do Monocole-style column-based (horizontal) pagination
+     // If this is not specified (commented out), it attempts to determine
+     //  this automatically from browser sniffing
+     colpage: false,
      // When vertically paginating, this postpones the attempt to
      //  determine the actual page break
      fastpage: false,
-     // colpage: false,
      version: codex_version, id: codex_id
     };
 var _sbook_setup=false;

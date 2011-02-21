@@ -1344,7 +1344,10 @@ div.locbar hr {
   position: absolute; right: 0px; text-align: right;
   margin: 0px; padding: 0px; text-indent: 0px; 
   border: solid transparent 2px;
-  width: 32px; height: 32px; z-index: 50;
+  max-width: 32px; max-height: 32px;
+  min-width: 32px; min-height: 32px;
+  width: 32px; height: 32px;
+  z-index: 50;
   border-right: 0px;
   opacity: 0.0001;}
 body.sbookpagehorizontal .sbookglossmark { position: inherit; float: right;}
@@ -1371,6 +1374,7 @@ body.hudup .sbookglossbutton { opacity: 0.5;}
 body.hudup .sbooktarget .sbookglossbutton { opacity: 0.9; display: block;}
 
 /* Sparse glossmark display (the default) */
+
 body .sbookglossmark img.tiny { display: block;}
 body.hudup .sbookglossmark img.big { display: block;}
 body.hudup .sbookglossmark img.tiny { display: none;}
@@ -1388,7 +1392,7 @@ body.hudup .sbooktarget .sbookglossmark { color: blue; cursor: pointer;}
    */
 body.sbooktarget { color: inherit;}
 
-.sbooktarget span.sbookglossmark img.big { width: 50px;} 
+.sbooktarget span.sbookglossmark img.big { width: 32px;} 
 .sbooktarget span.sbookglossmark img {
     border-top: solid blue 2px;}
 .sbooktarget:hover .sbookglossmark { opacity: 0.5;}
