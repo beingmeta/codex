@@ -53,6 +53,7 @@ span.codexcssversion:after {
 #CODEXPAGE #SBOOKCONTENT {
     position: absolute; left: 0; right: 0;
     margin: 0px; padding: 0px; border: 0px;}
+body #CODEXPAGE {}
 body.sbookpagehorizontal #CODEXPAGE #SBOOKCONTENT {
     transition-property: transform; transition-duration: 0.5s;
     -webkit-transition-property: -webkit-transform;
@@ -61,14 +62,14 @@ body.sbookpagehorizontal #CODEXPAGE #SBOOKCONTENT {
     -moz-transition-duration: 0.5s;
     -o-transition-property: -o-transform;
     -o-transition-duration: 0.5s;}
-#CODEXPAGE #SBOOKCONTENT.codexanimate {
-    transition-property: opacity; transition-duration: 0.1s;
+#CODEXPAGE #SBOOKCONTENT {
+    transition-property: opacity; transition-duration: 0.3s;
     -webkit-transition-property: opacity;
-    -webkit-transition-duration: 0.1s;
+    -webkit-transition-duration: 0.3s;
     -moz-transition-property: opacity;
-    -moz-transition-duration: 0.1s;
+    -moz-transition-duration: 0.3s;
     -o-transition-property: opacity;
-    -o-transition-duration: 0.1s;}
+    -o-transition-duration: 0.3s;}
 
 #CODEXASIDE {
     position: fixed; z-index: -100;
@@ -1350,7 +1351,8 @@ div.locbar hr {
   z-index: 50;
   border-right: 0px;
   opacity: 0.0001;}
-body.sbookpagehorizontal .sbookglossmark { position: inherit; float: right;}
+body.sbookpagehorizontal .sbookglossmark {
+    position: static; float: right;}
 body .sbookglossmark { opacity: 0.4;}
 *:hover > .sbookglossmark { opacity: 0.7;}
 body.hudup .sbookglossmark { opacity: 0.9; display: block;}
@@ -1600,66 +1602,6 @@ h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
     -o-column-break-before: always;
     -webkit-column-break-before: always;
     -moz-column-break-before: always;}
-
-body.sbookpagehorizontal .sbookpagehead {
-    column-break-before: always;
-    -o-column-break-before: always;
-    -webkit-column-break-before: always;
-    -moz-column-break-before: always;}
-body.sbookpagehorizontal .sbookpagefoot {
-    column-break-after: always;
-    -o-column-break-after: always;
-    -webkit-column-break-after: always;
-    -moz-column-break-after: always;}
-body.sbookpagehorizontal .sbookavoidhead {
-    column-break-before: avoid;
-    -o-column-break-before: avoid;
-    -webkit-column-break-before: avoid;
-    -moz-column-break-before: avoid;}
-body.sbookpagehorizontal .sbookavoidfoot, body.sbookpagehorizontal h1, body.sbookpagehorizontal h2,
-body.sbookpagehorizontal h3, body.sbookpagehorizontal h4, body.sbookpagehorizontal h5, body.sbookpagehorizontal [toclevel] {
-    column-break-after: avoid;
-    -o-column-break-after: avoid;
-    -webkit-column-break-after: avoid;
-    -moz-column-break-after: avoid;}
-body.sbookpagehorizontal [toclevel=0], body.sbookpagehorizontal [toclevel=none] {
-    column-break-after: auto;
-    -o-column-break-after: auto;
-    -webkit-column-break-after: auto;
-    -moz-column-break-after: auto;}
-body.sbookpagehorizontal .sbookavoidbreak {
-    column-break-inside: avoid;
-    -o-column-break-inside: avoid;
-    -webkit-column-break-inside: avoid;
-    -moz-column-break-inside: avoid;}
-body.sbookpagehorizontal .fullpage,
-body.sbookpagehorizontal .titlepage,
-body.sbookpagehorizontal .sbookfullpage,
-body.sbookpagehorizontal .sbooktitlepage {
-    page-break-before: always;
-    page-break-after: always;
-    page-break-inside: avoid;
-    column-break-before: always;
-    column-break-after: always;
-    column-break-inside: avoid;
-    -o-page-break-before: always;
-    -o-page-break-after: always;
-    -o-page-break-inside: avoid;
-    -o-column-break-before: always;
-    -o-column-break-after: always;
-    -o-column-break-inside: avoid;
-    -webkit-page-break-before: always;
-    -webkit-page-break-after: always;
-    -webkit-page-break-inside: avoid;
-    -webkit-column-break-before: always;
-    -webkit-column-break-after: always;
-    -webkit-column-break-inside: avoid;
-    -moz-page-break-before: always;
-    -moz-page-break-after: always;
-    -moz-page-break-inside: avoid;
-    -moz-column-break-before: always;
-    -moz-column-break-after: always;
-    -moz-column-break-inside: avoid;}
 
 .backmatter {
     page-break-before: always;

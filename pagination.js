@@ -73,7 +73,9 @@ var sbookPaginate=
 	var parsePX=fdjtDOM.parsePX;
 
 	var sbook_body=false;
-
+	var pagewidth=false;
+	var pageheight=false;
+	
 	sbook.pageTop=function(){return sbook_top_px;}
 	sbook.pageBottom=function(){return sbook_bottom_px;}
 	sbook.pageLeft=function(){return sbook_left_px;}
@@ -108,7 +110,7 @@ var sbookPaginate=
 		var block=fullpages[i++];
 		var blockstyle=getStyle(block);
 		block.style.maxHeight=pageheight+'px';
-		block.style.maxWidth=colwidth+'px';}
+		block.style.maxWidth=pagewidth+'px';}
 	    var adjustpages=function(){
 		i=0; while (i<lim) {
 		    var block=fullpages[i++];
@@ -119,8 +121,9 @@ var sbookPaginate=
 		document.body.className=document.body.className;};
 	    var finalizepages=function(){
 		var page=fdjtID("CODEXPAGE");
-		var pwidth=page.offsetWidth; var pheight=page.offsetHeight;
-		// This uses CSS translation
+		var geom=fdjtDOM.getGeometry(page);
+		var pwidth=geom.width; var pheight=geom.height;
+		// This uses CSS transformation
 		i=0; while (i<lim) {
 		    var block=fullpages[i++];
 		    var bwidth=block.offsetWidth; var bheight=block.offsetHeight;
@@ -131,6 +134,8 @@ var sbookPaginate=
 		var content=fdjtID("SBOOKCONTENT");
 		sbook.pagecount=
 		    Math.floor(content.scrollWidth/fdjtDOM.viewWidth());};
+	    // This doesn't interact well with horizontal scrolling
+	    if (sbook.colpage) finalizepages=false;
 	    fdjtTime.timeslice
 	    ([adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
 	      adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
@@ -170,17 +175,17 @@ var sbookPaginate=
 	//  which we're not currently using because the treatment of
 	//  column-breaks is not handled very well.
 
-	var colwidth;
 	var colgap;
-	var pageheight;
 
 	function SetupColumnPaginate(){
 	    var body=document.body;
 	    var page=fdjtID("CODEXPAGE");
 	    var content=fdjtID("SBOOKCONTENT");
+	    var pbounds=fdjtDOM.getGeometry(page);
+	    var cbounds=fdjtDOM.getGeometry(content);
 	    var vh=fdjtDOM.viewHeight();
-	    var width=colwidth=page.offsetWidth;
-	    var gap=colgap=fdjtDOM.viewWidth()-width;
+	    var width=pagewidth=sbook.pagewidth=cbounds.width;
+	    var gap=colgap=sbook.colgap=pbounds.width-width;
 	    var style=content.style;
 	    fdjtDOM.dropClass(body,"sbookpagevertical");
 	    fdjtDOM.addClass(body,"sbookpagehorizontal");
@@ -188,16 +193,17 @@ var sbookPaginate=
 	    window.scrollTo(0,0);
 	    style[fdjtDOM.columnWidth||"column-width"]=width+'px';
 	    style[fdjtDOM.columnGap||"column-gap"]=gap+'px';
-	    style.height=pageheight=page.offsetHeight+'px';}
+	    sbook.pageheight=pageheight=pbounds.height;
+	    style.height=pageheight+'px';}
 
 	function ColumnGoToPage(pageno,offset,caller,nosave){
-	    var offset=colwidth*pageno+colgap*pageno;
+	    var hoff=(pagewidth+colgap)*pageno;
 	    var info=sbook.pageinfo[pageno];
 	    if (sbook.Trace.nav)
-		fdjtLog("ColumnGoToPage%s %o+%o",
-			((caller)?"/"+caller:""),pagenum,pageoff);
+		fdjtLog("ColumnGoToPage%s %o, hoff=%o",
+			((caller)?"/"+caller:""),pageno,hoff);
 	    fdjtID("SBOOKCONTENT").style[fdjtDOM.transform]=
-		"translate(-"+offset+"px,0px)";
+		"translate(-"+hoff+"px,0px)";
 	    updatePageDisplay(info,pageno,0);
 	    sbook.curpage=pageno;
 	    if (!(nosave))
@@ -389,7 +395,8 @@ var sbookPaginate=
 		    // If we starting a new page, clean up the page break
 		    var newinfo=((newtop==scan)?(info):nodeInfo(newtop));
 		    var prevpage=curpage;
-		    if (sbook.colpage) fdjtDOM.addClass(newtop,"sbookcolbreak");
+		    if ((sbook.colpage)&&(!(splitblock)))
+			fdjtDOM.addClass(newtop,"sbookcolbreak");
 		    if (dbginfo)
 			dbginfo=dbginfo+" np"+((splitblock)?"/split":"")+"/"+curpage.bottom;
 		    // Adjust the page bottom information
@@ -662,7 +669,8 @@ var sbookPaginate=
 
 	/* Adjusting pages */
 	
-	/* This adjusts the offset of a page and its successor to avoid widows */
+	/* This adjusts the offset of a page and its successor to
+	 * avoid widows */
 	
 	function AdjustPageBreak(node,top,bottom,style){
 	    var nodeinfo=getGeometry(node,sbook_body);
@@ -724,7 +732,8 @@ var sbookPaginate=
 			    var wordoff=getGeometry(word,sbook_body);
 			    if (wordoff.bottom<top) continue;
 			    else if (wordoff.bottom>=bottom) {
-				// As soon as we're over the bottom, we return the last bottom
+				// As soon as we're over the bottom,
+				// we return the last bottom
 				node.replaceChild(child,split);
 				return lastbottom;}
 			    else if (wordoff.top>=lastbottom) { // new line
@@ -837,7 +846,7 @@ var sbookPaginate=
 	    setTimeout(function(){
 		sbook.GoToPage(pagenum,off,"FadeToPage+");
 		fdjtDOM.dropClass(sbook.body,"pageswitch");},
-		       100);}
+		       300);}
 	sbook.FadeToPage=FadeToPage;
 	
 	function displaySync(){
@@ -989,7 +998,7 @@ var sbookPaginate=
 	/* Top level functions */
 
 	function sbookUpdatePagination(callback){
-	    var pagesize=sbook.page.offsetHeight;
+	    var pagesize=pageheight;
 	    var target=sbook.target;
 	    sbook.Message("Determining page layout");
 	    var body=sbook.body||document.body;
@@ -1011,6 +1020,25 @@ var sbookPaginate=
 			 sbook.GoToPage(gotopage||0,0,
 					"sbookUpdatePagination",true);
 			 if (callback) callback(pagination);});}
+
+	function updatePageInfo(){
+	    var body=document.body;
+	    fdjtDOM.dropClass(body,"sbookpagevertical");
+	    fdjtDOM.dropClass(body,"sbookpagehorizontal");
+	    fdjtDOM.addClass(body,"sbookpaginated");
+	    var page=fdjtID("CODEXPAGE");
+	    var content=fdjtID("SBOOKCONTENT");
+	    var pbounds=fdjtDOM.getGeometry(page);
+	    var cbounds=fdjtDOM.getGeometry(content);
+	    var width=pagewidth=sbook.pagewidth=cbounds.width;
+	    sbook.pageheight=pageheight=pbounds.height;
+	    if (sbook.colpage) {
+		var style=content.style;
+		var gap=colgap=sbook.colgap=pbounds.width-width;
+		style[fdjtDOM.columnWidth||"column-width"]=width+'px';
+		style[fdjtDOM.columnGap||"column-gap"]=gap+'px';
+		style.height=pageheight+'px';}
+	    window.scrollTo(0,0);}
 	
 	function sbookPaginate(flag,nogo){
 	    if (flag===false) {
@@ -1042,6 +1070,7 @@ var sbookPaginate=
 	    else repaginate();}
 	
 	function repaginate(){
+	    updatePageInfo();
 	    var newinfo={};
 	    var computePages=function(){
 		sbookUpdatePagination(function(result){

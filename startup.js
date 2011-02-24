@@ -272,7 +272,6 @@ sbook.Startup=
 		 ((sbook.devinfo.AppleWebKit)&&
 		  (sbook.devinfo.AppleWebKit>533))))
 		sbook.colpage=true;
-	    else sbook.colpage=false;
 	    if (isWebTouch) {
 		fdjtDOM.addClass(document.body,"sbooktouch");
 		viewportSetup();
