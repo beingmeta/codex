@@ -126,7 +126,6 @@ var CodexTOC=
 	    if ((!(sub)) || (!(sub.length))) return false;
 	    var div=fdjtDOM("div.sub");
 	    var i=0; var n=sub.length;
-	    div.title='hold to glimpse, click to go';
 	    while (i<n) {
 		var subinfo=sub[i];
 		var subspan=fdjtDOM("A.sectname",subinfo.title);
@@ -184,11 +183,12 @@ var CodexTOC=
 	    var spanlen=spanend-spanstart;
 	    var anchor=fdjtDOM("A.brick","\u00A0");
 	    var span=fdjtDOM("DIV.codexhudspan",anchor);
-	    var width=(Math.round(100000000*(spanlen/len))/1000000)+"%";
+	    var width=(Math.round(100000000*(spanlen/len))/1000000);
 	    var left=(Math.round(100000000*((spanstart-pstart)/len))/1000000);
 	    span.style.left=left+"%";
-	    span.style.width=width;
-	    span.title=(title||"section")+" ("+spanstart+"+"+(spanend-spanstart)+")";
+	    span.style.width=width+"%";
+	    span.title=(title||"section")+
+		" ("+Math.round(left)+"%-"+(Math.round(left+width))+"%)";
 	    span.frag=subsection.id;
 	    if (name) anchor.name=name;
 	    return span;}

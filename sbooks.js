@@ -375,15 +375,19 @@ var sbook_gloss_data=
 	    var tocelt=document.getElementById("CODEXTOC4"+info.frag);
 	    var flytocelt=document.getElementById("CODEXFLYTOC4"+info.frag);
 	    var start=tocelt.sbook_start; var end=tocelt.sbook_end;
-	    var progress=((location-start)*80)/(end-start);
+	    var progress=((location-start)*100)/(end-start);
 	    var bar=fdjtDOM.getFirstChild(tocelt,".progressbar");
 	    var appbar=fdjtDOM.getFirstChild(flytocelt,".progressbar");
+	    tocelt.title=flytocelt.title=Math.round(progress)+"%";
 	    if (sbook.Trace.toc)
 		fdjtLog("For tocbar %o loc=%o start=%o end=%o progress=%o",
 			bar,location,start,end,progress);
-	    if ((bar)&& (progress>0) && (progress<100)) {
-		bar.style.width=((progress)+10)+"%";
-		appbar.style.width=((progress)+10)+"%";}
+	    if ((bar)&& (progress>=0) && (progress<=100)) {
+		// bar.style.width=((progress)+10)+"%";
+		// appbar.style.width=((progress)+10)+"%";
+		bar.style.width=(progress)+"%";
+		appbar.style.width=(progress)+"%";
+	    }
 	    info=info.head;}
 	var spanbars=fdjtDOM.$(".spanbar");
 	var i=0; while (i<spanbars.length) {

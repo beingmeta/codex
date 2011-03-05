@@ -245,6 +245,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		else CodexMode(true);}
 	    else if ((evt.ctrlKey)||(evt.shiftKey)||(n_touches>1))
 		xtapTarget(passage);
+	    else if (fdjtDOM.hasClass(document.body,"sbookscanning"))
+		CodexMode(false);
 	    else tapTarget(passage);}
 	else if (sbook.hudup||sbook.mode) {
 	    if (sbook.Trace.gestures) fdjtLog("Dropping HUD");

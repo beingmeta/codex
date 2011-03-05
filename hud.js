@@ -250,6 +250,9 @@ var CodexMode=
 	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
 	    if (mode) {
 		if (mode!=="scanning") sbook.scanning=false;
+		if ((mode==="scanning")||(mode==="tocscan"))
+		    fdjtDOM.addClass(document.body,"sbookscanning");
+		else fdjtDOM.dropClass(document.body,"sbookscanning");
 		if (mode===sbook.mode) {}
 		else if (mode===true) {
 		    /* True just puts up the HUD with no mode info */
@@ -285,6 +288,10 @@ var CodexMode=
 		    if (mode.search(codexflyleafMode_pat)!==0)
 			fdjtDOM.dropClass(CodexHUD,"flyleaf");
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,mode);}
+		// Update the body scanning mode
+		if ((mode==="scanning")||(mode==="tocscan"))
+		    fdjtDOM.addClass(document.body,"sbookscanning");
+		else fdjtDOM.dropClass(document.body,"sbookscanning");
 		// Update the 'flyleaf' meta mode
 		if ((mode)&&(typeof mode === 'string')) {
 		    if (mode.search(codexflyleafMode_pat)===0)
@@ -332,6 +339,7 @@ var CodexMode=
 		if (sbook.mode!=='help') sbook.last_mode=sbook.mode;
 		document.body.focus();
 		fdjtDOM.dropClass(document.body,"dimmed");
+		fdjtDOM.dropClass(document.body,"sbookscanning");
 		setHUD(false);
 		sbook.displaySync();}}
 

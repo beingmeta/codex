@@ -1301,7 +1301,8 @@ body.sbook a.codexnote { display: block;}
 .codexnote span.headhead {
     color: blue; font-weight: bold;}
 .codexnote span.controller {
-    font-weight: bold; color: silver;}
+    font-weight: bold; color: silver;
+    white-space: nowrap;}
 .codexnote span.note { font-size: 110%;}
 .codexnote img.userpic, .codexnote img.sourcepic  {
     float: left; clear: left; margin-right: 3px; width: 50px;}
@@ -1386,8 +1387,8 @@ body .sbookglossmark:hover img.tiny { display: none;}
 /* Displaying the sbook target */
 
 .sbooktarget { }
-body.hudup .sbooktarget { color: blue; cursor: pointer;}
-body.hudup .sbooktarget .sbookglossmark { color: blue; cursor: pointer;}
+body.hudup .sbooktarget, body.sbookscanning .sbooktarget {
+    color: blue; cursor: pointer;}
 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)

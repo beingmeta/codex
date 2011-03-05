@@ -39,7 +39,7 @@ var codex_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=true;
+	var debug_pagination=false;
 	var sbook_paginated=false;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
@@ -123,19 +123,26 @@ var sbookPaginate=
 		var page=fdjtID("CODEXPAGE");
 		var geom=fdjtDOM.getGeometry(page);
 		var pwidth=geom.width; var pheight=geom.height;
-		// This uses CSS transformation
-		i=0; while (i<lim) {
-		    var block=fullpages[i++];
-		    var bwidth=block.offsetWidth; var bheight=block.offsetHeight;
-		    var scaleby=Math.min(pwidth/bwidth,pheight/bheight);
-		    block.style[fdjtDOM.transform]="scale("+scaleby+")";
-		    block.style.transform="scale("+scaleby+")";}
+		// Direct scaling doesn't seem to interact well with
+		// horizontal scrolling
+		    // This uses CSS transformation
+		    i=0; while (i<lim) {
+			var block=fullpages[i++];
+			var scaleby=1.0;
+			if (false) { // (!(sbook.colpage))
+			    var bwidth=block.offsetWidth;
+			    var bheight=block.offsetHeight;
+			    scaleby=Math.min(pwidth/bwidth,pheight/bheight);
+			    block.style[fdjtDOM.transform]="scale("+scaleby+")";
+			    block.style.transform="scale("+scaleby+")";}
+			// block.style.width=(pwidth*(1/scaleby))+'px';
+			// block.style.height=(pheight*(1/scaleby))+'px';
+		    }
 		document.body.className=document.body.className;
-		var content=fdjtID("SBOOKCONTENT");
-		sbook.pagecount=
-		    Math.floor(content.scrollWidth/fdjtDOM.viewWidth());};
-	    // This doesn't interact well with horizontal scrolling
-	    if (sbook.colpage) finalizepages=false;
+		if (sbook.colpage) {
+		    var content=fdjtID("SBOOKCONTENT");
+		    sbook.pagecount=
+			Math.floor(content.scrollWidth/fdjtDOM.viewWidth());};};
 	    fdjtTime.timeslice
 	    ([adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
 	      adjustpages,adjustpages,adjustpages,adjustpages,adjustpages,
@@ -422,8 +429,9 @@ var sbookPaginate=
 				curpage.bottom=info.bottom; curpage.oversize=oversize=true;
 				if (dbginfo) dbginfo=dbginfo+"~oversize/"+curpage.bottom;}}}
 		    // If it's a clean break, make sure that the page bottom is good
-		    else if (!(last))
-			curpage.bottom=newinfo.top-1;
+		    else if (!(last)) {
+			// curpage.bottom=newinfo.top-1;
+		    }
 		    else {
 			var mbottom=parsePX(last_style.marginBottomWidth);
 			curpage.bottom=last_info.top+last_info.height-mbottom;}
@@ -593,7 +601,8 @@ var sbookPaginate=
 		else if (styleinfo=((style)||getStyle(node))) {
 		    if (styleinfo.position!=='static') return false;
 		    else if ((styleinfo.display==='block')||
-			     (styleinfo.display==='list-item'))
+			     (styleinfo.display==='list-item')||
+			     (styleinfo.display==='table'))
 			return true;
 		    else return false;}
 		else if (fdjtDOM.getDisplay(node)==="inline") return false;
