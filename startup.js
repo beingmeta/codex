@@ -64,7 +64,8 @@ sbook.Startup=
 	    // Dependent setups
 	    fdjtDOM.init();
 	    // Add this as soon as possible
-	    if (sbook.paginate) fdjtDOM.addClass(document.body,"paginate");
+	    if (sbook.paginate)
+		fdjtDOM.addClass(document.body,"sbookpaginated");
 	    if (sbook_showconsole)
 		fdjtDOM.addClass(document.body,"sbookconsoled");
 	    var metadata=false;
@@ -72,12 +73,12 @@ sbook.Startup=
 	    fdjtTime.timeslice
 	    ([// Setup sbook tables, databases, etc
 		sbook.initDB,
-		// This wraps the body in an div#SBOOKCONTENT 
+		// This wraps the body in the UI
 		function(){
 		    initBody();
 		    if (sbook.animate.page)
-			fdjtDOM.addClass("SBOOKCONTENT","codexanimate");
-		    sbook.body.style.opacity='0.25';},
+			fdjtDOM.addClass("CODEXCANVAS","codexanimate");
+		    sbook.canvas.style.opacity='0.25';},
 		function(){
 		    if (sbook.Trace.startup>1)
 			fdjtLog("Initializing HUD");
@@ -110,7 +111,7 @@ sbook.Startup=
 		    sbook.setupTOC(metadata[sbook.root.id]);},
 		function(){
 		    sbook.resizeBody();
-		    sbook.body.style.opacity='';},
+		    sbook.canvas.style.opacity='';},
 		function(){
 		    fdjtLog("processing knodule %s",sbook.knodule.name);},
 		10,
@@ -472,6 +473,7 @@ sbook.Startup=
 	var note_count=1;
 	function initBody(){
 	    var page=fdjtID("CODEXPAGE");
+	    var canvas=fdjtID("CODEXCANVAS");
 	    var content=
 		((fdjtDOM.getMeta("sbook.body"))?
 		 ((fdjtID(fdjtDOM.getMeta("sbook.body")))||(document.body)):
@@ -481,15 +483,17 @@ sbook.Startup=
 		var nodes=fdjtDOM.toArray(document.body.childNodes);
 		var i=0; var lim=nodes.length;
 		while (i<lim) content.appendChild(nodes[i++]);}
+	    if (!(canvas))
+		canvas=fdjtDOM("div#CODEXCANVAS",content);
 	    if (!(page))
 		page=fdjtDOM("div#CODEXPAGE",
 			     fdjtDOM("div#CODEXASIDE"),
 			     fdjtDOM("div#CODEXREF"),
 			     fdjtDOM("div#CODEXMASK"),
-			     content);
+			     canvas);
 	    document.body.appendChild(page);
 	    fdjtDOM.addClass(document.body,"sbook");
-	    sbook.body=content; sbook.page=page;
+	    sbook.canvas=canvas; sbook.body=content; sbook.page=page;
 	    var allnotes=fdjtID("SBOOKNOTES");
 	    var allasides=fdjtID("SBOOKASIDES");
 	    var alldetails=fdjtID("SBOOKDETAILS");

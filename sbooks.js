@@ -439,39 +439,38 @@ var sbook_gloss_data=
     function scrollTo(x,y,win){
 	if (sbook.nativescroll) (win||window).scrollTo(x,y);
 	else {
-	    //(win||sbook.body).style[fdjtDOM.transform]=" translateY(-"+y+"px)";
 	    window.scrollTo(0,0);
 	    sbook.page.scrollLeft=0;
 	    sbook.page.scrollTop=0;
-	    (win||sbook.body).style.left=""+(-x)+"px";
-	    (win||sbook.body).style.top=""+(-y)+"px";
+	    (win||sbook.canvas).style.left=""+(-x)+"px";
+	    (win||sbook.canvas).style.top=""+(-y)+"px";
 	}}
     sbook.scrollTo=scrollTo;
     function scrollPos(win){
 	if (sbook.nativescroll)
 	    return {x:(win||window).scrollX,y:(win||window).scrollY};
 	else {
-	    var x=fdjtDOM.parsePX((win||(sbook.body)).style.left);
-	    var y=fdjtDOM.parsePX((win||sbook.body).style.top);
+	    var x=fdjtDOM.parsePX((win||(sbook.canvas)).style.left);
+	    var y=fdjtDOM.parsePX((win||sbook.canvas).style.top);
 	    return {x: x,y: -y};}}
     sbook.scrollPos=scrollPos;
 
     function resizeBody(){
 	if (sbook.nativescroll) {}
 	else {
-	    var curx=x_offset-fdjtDOM.parsePX(sbook.body.style.left);
-	    var cury=y_offset-fdjtDOM.parsePX(sbook.body.style.top);
+	    var curx=x_offset-fdjtDOM.parsePX(sbook.canvas.style.left);
+	    var cury=y_offset-fdjtDOM.parsePX(sbook.canvas.style.top);
 	    // sbook.body.style.left=''; sbook.body.style.top='';
 	    var geom=fdjtDOM.getGeometry(sbook.body,sbook.body);
 	    x_offset=geom.left; y_offset=geom.top;
 	    sbook.bodyoff=[x_offset,y_offset];
-	    sbook.body.style.left='0px';
-	    sbook.body.style.top=(y_offset)+'px';}}
+	    sbook.canvas.style.left='0px';
+	    sbook.canvas.style.top=(y_offset)+'px';}}
     sbook.resizeBody=resizeBody;
 
     sbook.viewTop=function(){
 	if (sbook.nativescroll) return fdjtDOM.viewTop();
-	else return -(fdjtDOM.parsePX(sbook.body.style.top));}
+	else return -(fdjtDOM.parsePX(sbook.canvas.style.top));}
     var sbookUIclasses=
 	/(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bsbookmargin\b)/;
 
@@ -668,7 +667,7 @@ var sbook_gloss_data=
     // We try to animate the transition
     function sbookJumpTo(target){
 	if (sbook.animate) {
-	    sbook.body.style.opacity=0.0001;
+	    sbook.canvas.style.opacity=0.0001;
 	    if (sbook.hudup) sbook.HUD.style.opacity=0.0001;
 	    fdjtDOM.addClass(document.body,"pageswitch");
 	    setTimeout(function() {
@@ -676,11 +675,11 @@ var sbook_gloss_data=
 		sbookGoTo(target);
 		fdjtDOM.dropClass(document.body,"pageswitch");
 		sbook.HUD.style.opacity=1.0;
-		sbook.body.style.opacity=1.0;
+		sbook.canvas.style.opacity=1.0;
 		setTimeout(function(){
 		    fdjtDOM.dropClass(document.body,"pageswitch");
 		    sbook.HUD.style.opacity="";
-		    sbook.body.style.opacity="";},
+		    sbook.canvas.style.opacity="";},
 			   200);},
 		       200);}
 	else {

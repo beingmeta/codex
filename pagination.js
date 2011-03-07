@@ -39,7 +39,7 @@ var codex_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=false;
+	var debug_pagination=true;
 	var sbook_paginated=false;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
@@ -140,7 +140,7 @@ var sbookPaginate=
 		    }
 		document.body.className=document.body.className;
 		if (sbook.colpage) {
-		    var content=fdjtID("SBOOKCONTENT");
+		    var content=fdjtID("CODEXCANVAS");
 		    sbook.pagecount=
 			Math.floor(content.scrollWidth/fdjtDOM.viewWidth());};};
 	    fdjtTime.timeslice
@@ -187,6 +187,7 @@ var sbookPaginate=
 	function SetupColumnPaginate(){
 	    var body=document.body;
 	    var page=fdjtID("CODEXPAGE");
+	    var canvas=fdjtID("CODEXCANVAS");
 	    var content=fdjtID("SBOOKCONTENT");
 	    var pbounds=fdjtDOM.getGeometry(page);
 	    var cbounds=fdjtDOM.getGeometry(content);
@@ -209,7 +210,7 @@ var sbookPaginate=
 	    if (sbook.Trace.nav)
 		fdjtLog("ColumnGoToPage%s %o, hoff=%o",
 			((caller)?"/"+caller:""),pageno,hoff);
-	    fdjtID("SBOOKCONTENT").style[fdjtDOM.transform]=
+	    fdjtID("CODEXCANVAS").style[fdjtDOM.transform]=
 		"translate(-"+hoff+"px,0px)";
 	    updatePageDisplay(info,pageno,0);
 	    sbook.curpage=pageno;
@@ -850,11 +851,11 @@ var sbookPaginate=
 		fdjtLog("sbook.FadeToPage %o+%o",pagenum,off);
 	    // sbook.body.style.opacity=0.0001;
 	    sbook.newpage={pagenum: pagenum,pageoff: off};
-	    fdjtDOM.addClass(sbook.body,"pageswitch");
+	    fdjtDOM.addClass(sbook.canvas,"pageswitch");
 	    // We could probably use transition events for this
 	    setTimeout(function(){
 		sbook.GoToPage(pagenum,off,"FadeToPage+");
-		fdjtDOM.dropClass(sbook.body,"pageswitch");},
+		fdjtDOM.dropClass(sbook.canvas,"pageswitch");},
 		       300);}
 	sbook.FadeToPage=FadeToPage;
 	
@@ -1011,7 +1012,7 @@ var sbookPaginate=
 	    var target=sbook.target;
 	    sbook.Message("Determining page layout");
 	    var body=sbook.body||document.body;
-	    fdjtDOM.dropClass(document.body,"paginate");
+	    fdjtDOM.dropClass(document.body,"sbookpaginated");
 	    fdjtDOM.dropClass(document.body,"scrollpage");
 	    fdjtDOM.dropClass(document.body,"sbookpagehorizontal");
 	    if (sbook.colpage) {
@@ -1036,13 +1037,14 @@ var sbookPaginate=
 	    fdjtDOM.dropClass(body,"sbookpagehorizontal");
 	    fdjtDOM.addClass(body,"sbookpaginated");
 	    var page=fdjtID("CODEXPAGE");
+	    var canvas=fdjtID("CODEXCANVAS");
 	    var content=fdjtID("SBOOKCONTENT");
 	    var pbounds=fdjtDOM.getGeometry(page);
 	    var cbounds=fdjtDOM.getGeometry(content);
 	    var width=pagewidth=sbook.pagewidth=cbounds.width;
 	    sbook.pageheight=pageheight=pbounds.height;
 	    if (sbook.colpage) {
-		var style=content.style;
+		var style=canvas.style;
 		var gap=colgap=sbook.colgap=pbounds.width-width;
 		style[fdjtDOM.columnWidth||"column-width"]=width+'px';
 		style[fdjtDOM.columnGap||"column-gap"]=gap+'px';
@@ -1054,7 +1056,7 @@ var sbookPaginate=
 		if (sbook.paginate) {
 		    sbook.paginate=false;
 		    sbook_nextpage=false; sbook_pagebreak=false;
-		    fdjtDOM.dropClass(document.body,"paginate");
+		    fdjtDOM.dropClass(document.body,"sbookpaginated");
 		    fdjtDOM.dropClass(document.body,"scrollpage");
 		    fdjtDOM.dropClass(document.body,"sbookpagehorizontal");
 		    if (sbook.colpage) 
@@ -1093,7 +1095,7 @@ var sbookPaginate=
 	sbook.isContent=isContentBlock;
 	sbook.scanContent=scanContent;
 
-	// fdjtDOM.trace_adjust=true;
+	fdjtDOM.trace_adjust=true;
 
 	sbookPaginate.debug=debug_pagination;
 
