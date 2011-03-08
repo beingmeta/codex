@@ -39,7 +39,7 @@ var codex_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=false;
+	var debug_pagination=true;
 	var sbook_paginated=false;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
@@ -1121,7 +1121,7 @@ var sbookPaginate=
 	    var width=pagewidth=sbook.pagewidth=cbounds.width;
 	    sbook.pageheight=pageheight=pbounds.height;
 	    if (sbook.colpage) {
-		var style=canvas.style;
+		var style=content.style;
 		var gap=colgap=sbook.colgap=pbounds.width-width;
 		style[fdjtDOM.columnWidth||"column-width"]=width+'px';
 		style[fdjtDOM.columnGap||"column-gap"]=gap+'px';
