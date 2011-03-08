@@ -59,8 +59,8 @@ sbook.Startup=
 		fdjtLog("App version: %s",navigator.appVersion);
 	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
 	    // Get various settings
-	    getSettings();
-	    sbookPaginate.getSettings();
+	    readSettings();
+	    sbookPaginate.readSettings();
 	    // Dependent setups
 	    fdjtDOM.init();
 	    // Add this as soon as possible
@@ -201,7 +201,7 @@ sbook.Startup=
 	
 	var glossref_classes=false;
 
-	function getSettings(){
+	function readSettings(){
 	    if (typeof _sbook_loadinfo === "undefined") _sbook_loadinfo=false;
 	    // Basic stuff
 	    var useragent=navigator.userAgent;

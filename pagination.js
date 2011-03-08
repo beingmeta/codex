@@ -82,7 +82,7 @@ var sbookPaginate=
 	sbook.pageRight=function(){return sbook_right_px;}
 	sbook.pageSize=function(){return sbook.page.offsetHeight;}
 
-	function getSettings(){
+	function readSettings(){
 	    sbook_avoidpagebreak=
 		fdjtDOM.sel(fdjtDOM.getMeta("sbookavoidbreak",true));
 	    sbook_pageblock=
@@ -97,7 +97,24 @@ var sbookPaginate=
 		fdjtDOM.sel(fdjtDOM.getMeta("sbookavoidhead",true));
 	    sbook_fullpages=
 		fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));}
-	sbookPaginate.getSettings=getSettings;
+	sbookPaginate.readSettings=readSettings;
+	sbookPaginate.getSettings=function(){
+	    var result= {};
+	    if (sbook_avoidpagebreak)
+		result["sbook_avoidpagebreak"]=sbook_avoidpagebreak;
+	    if (sbook_pageblock)
+		result["sbook_pageblock"]=sbook_pageblock;
+	    if (sbook_forcepagehead)
+		result["sbook_forcepagehead"]=sbook_forcepagehead;
+	    if (sbook_forcepagefoot)
+		result["sbook_forcepagefoot"]=sbook_forcepagefoot;
+	    if (sbook_avoidpagefoot)
+		result["sbook_avoidpagefoot"]=sbook_avoidpagefoot;
+	    if (sbook_avoidpagehead)
+		result["sbook_avoidpagehead"]=sbook_avoidpagehead;
+	    if (sbook_fullpages)
+		result["sbook_fullpages"]=sbook_fullpages;
+	    return result;}
 
 	/* Adjust full pages */
 
@@ -416,18 +433,33 @@ var sbookPaginate=
 				((sbook.fastpage)?(curpage.bottom):
 				 (AdjustPageBreak(splitblock,curpage.top,curpage.bottom)));
 			    if ((newbottom>pagetop)&&(newbottom>info.top)&&
-				(newbottom>(pagetop+(pagesize/2)))) {
-				// Check that we were able to find a good page break
+				 (newbottom>(pagetop+(pagesize/2)))) {
+				// Check that we were able to find a
+				// good page break
 				curpage.bottom=newbottom;
 				curpage.bottomedge=splitblock;
 				if (dbginfo) dbginfo=dbginfo+"~"+curpage.bottom;
-				// If we're splitting, force the next node to be the split block
+				// If we're splitting, force the next
+				// node to be the split block
 				next=splitblock; nextinfo=info;}
+			    else if ((info.bottom-orphanthresh)>info.top) {
+				curpage.bottom=info.bottom-orphanthresh;
+				curpage.bottomedge=splitblock;
+				if (dbginfo)
+				    dbginfo=dbginfo+"~~"+curpage.bottom;}
+			    else if (true) {
+				curpage.bottom=newbottom;
+				curpage.bottomedge=splitblock;
+				if (dbginfo)
+				    dbginfo=dbginfo+"~!"+curpage.bottom;}
+			    // This doesn't seem to work very well
 			    else {
-				// We weren't able to find a good page break,
-				// so we break entirely (no split), and declare this
-				// page oversize
-				curpage.bottom=info.bottom; curpage.oversize=oversize=true;
+				// We weren't able to find a good page
+				// break, so we break entirely (no
+				// split), and declare this page
+				// oversize
+				curpage.bottom=info.bottom;
+				curpage.oversize=oversize=true;
 				if (dbginfo) dbginfo=dbginfo+"~oversize/"+curpage.bottom;}}}
 		    // If it's a clean break, make sure that the page bottom is good
 		    else if (!(last)) {
@@ -508,14 +540,19 @@ var sbookPaginate=
 	    setTimeout(stepfn,10);}
 	
 	function isPageHead(elt,style){
-	    return ((sbook_tocmajor)&&(elt.id)&&
+	    if ((sbook_tocmajor)&&(elt.id)&&
 		    ((sbook.docinfo[elt.id]).toclevel)&&
-		    (((sbook.docinfo[elt.id]).toclevel)<=sbook_tocmajor))||
-		(((style)||getStyle(elt)).pageBreakBefore==='always')||
+		    (((sbook.docinfo[elt.id]).toclevel)<=sbook_tocmajor))
+		return true;
+	    if (!(elt)) return false;
+	    if (!(style)) style=getStyle(elt);
+	    return (style.pageBreakBefore==='always')||
 		((sbook_forcepagehead)&&(sbook_forcepagehead.match(elt)));}
 
 	function isPageFoot(elt,style){ 
-	    return (((style)||getStyle(elt)).pageBreakAfter==='always')||
+	    if (!(elt)) return false;
+	    if (!(style)) style=getStyle(elt);
+	    return (style.pageBreakAfter==='always')||
 		((sbook_forcepagefoot)&&(sbook_forcepagefoot.match(elt)));}
 
 	// We explicitly check for these classes because some browsers
@@ -524,21 +561,26 @@ var sbookPaginate=
 	var page_break_classes=
 	    /(\bfullpage\b)|(\btitlepage\b)|(\bsbookfullpage\b)|(\bsbooktitlepage\b)/;
 	function isPageBlock(elt,style){
-	    return ((elt)&&
-		    (((elt.tagName==='IMG')||
-		      (((style)||getStyle(elt)).pageBreakInside==='avoid')||
-		      (elt.className.search(page_break_classes)>=0))||
-		     ((sbook_avoidpagebreak)&&(sbook_avoidpagebreak.match(elt)))));}
+	    if (!(elt)) return false;
+	    if (elt.tagName==='IMG') return true;
+	    if (!(style)) style=getStyle(elt);
+	    return (style.pageBreakInside==='avoid')||
+		(elt.className.search(page_break_classes)>=0)||
+		((sbook_avoidpagebreak)&&(sbook_avoidpagebreak.match(elt)));}
 
 	function avoidPageHead(elt,style){
-	    return
-	    ((elt)&&(((style)||getStyle(elt)).pageBreakBefore==='avoid'))||
-		((sbook_avoidpagehead)&&(sbook_avoidpagehead.match(elt)));}
+	    if (!(elt)) return false;
+	    if (!(style)) style=getStyle(elt);
+	    return ((style.pageBreakBefore==='avoid')||
+		    ((sbook_avoidpagehead)&&(sbook_avoidpagehead.match(elt))));}
 
 	function avoidPageFoot(elt,style){
-	    return ((elt.id)&&(sbook.docinfo[elt.id])&&
-		    ((sbook.docinfo[elt.id]).toclevel))||
-		(((style)||getStyle(elt)).pageBreakAfter==='avoid')||
+	    if (!(elt)) return false;
+	    if ((elt.id)&&(sbook.docinfo[elt.id])&&
+		((sbook.docinfo[elt.id]).toclevel))
+		return true;
+	    if (!(style)) style=getStyle(elt);
+	    return (style.pageBreakAfter==='avoid')||
 		((sbook_avoidpagefoot)&&(sbook_avoidpagefoot.match(elt)));}
 
 	function nodeInfo(node,style){
@@ -922,6 +964,13 @@ var sbookPaginate=
 	    else if ((offsets.top+offsets.height)<bottom) return "inside";
 	    else return "atfoot";}
 	
+	/* External refs */
+	sbookPaginate.isPageHead=isPageHead;
+	sbookPaginate.isPageBlock=isPageBlock;
+	sbookPaginate.isPageFoot=isPageFoot;
+	sbookPaginate.avoidPageFoot=avoidPageFoot;
+	sbookPaginate.avoidPageHead=avoidPageHead;
+
 	/* Margin creation */
 
 	function initDisplay(){
