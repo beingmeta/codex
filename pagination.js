@@ -39,7 +39,7 @@ var codex_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=true;
+	var debug_pagination=false;
 	var sbook_paginated=false;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
@@ -311,8 +311,10 @@ var sbookPaginate=
 			curpage.bottom=info.bottom;
 			curpage.oversize=oversize=true;}}
 		// WE'RE COMPLETELY ON THE PAGE
-		// including the case where we have children which are on the page.
-		else if ((info.bottom<pagelim)||((nextinfo)&&(nextinfo.top<pagelim))) {
+		// including the case where we have children which are
+		// on the page.
+		else if ((info.bottom<pagelim)||
+			 ((nextinfo)&&(nextinfo.top<pagelim))) {
 		    if (avoidPageHead(scan,style)) {
 			/* don't think about breaking here */}
 		    // if we want to be a foot, force a break at the next node
@@ -330,16 +332,20 @@ var sbookPaginate=
 			if (dbginfo)
 			    dbginfo=dbginfo+" ... N#"+next.id+
 			    pageNodeInfo(next,nextinfo,curpage);
-			// If we're trying to avoid putting this item at the foot
+			// If we're trying to avoid putting this item
+			// at the foot
 			if ((scan.toclevel)||(avoidPageFoot(scan,style))) {
 			    // Break here if the next item 
 			    if ((nextinfo.top>=pagelim) // is off the page
-				||(isPageHead(next,nextstyle)) // is a forced head
+				// is a forced head
+				||(isPageHead(next,nextstyle))
 				// is a straddling no-break block
-				||((nextinfo.top<pagelim)&&(nextinfo.bottom>pagelim)&&
+				||((nextinfo.top<pagelim)&&
+				   (nextinfo.bottom>pagelim)&&
 				   (isPageBlock(next,nextstyle)))
 				// is a bad foot close to the bottom
-				||(((next.toclevel)||(avoidPageFoot(next,nextstyle)))&&
+				||(((next.toclevel)||
+				    (avoidPageFoot(next,nextstyle)))&&
 				   ((pagelim-nextinfo.bottom)<widowthresh*2))
 				// is likely to be pushed off the bottom
 				||((pagelim-nextinfo.top)<widowthresh)
@@ -355,16 +361,21 @@ var sbookPaginate=
 			    else { // Otherwise, either break or split
 				// newbreak is where the new break would be
 				var newbreak=info.bottom-orphanthresh;
-				// If it would create widows or be offpage entirely,
-				// just break at the current scan
+				// If it would create widows or be
+				// offpage entirely, split the difference
 				if (newbreak<(scantop+widowthresh)) {
-				    newtop=scan;
-				    curpage.bottom=info.top-1;}
+				    newtop=splitblock=scan;
+				    curpage.bottom=
+					info.top+Math.floor(info.height/2);}
 				else {
 				    // otherwise, split the current block to keep
 				    // the next element from being a pagehead
 				    curpage.bottom=newbreak;
-				    newtop=splitblock=scan;}}}
+				    newtop=splitblock=scan;}
+				if (sbook.Trace.layout) 
+				    fdjtLog("pre-emptive split of %o: nb=%o cb=%o st=%o wt=%o",
+					    scan,newbreak,curpage.bottom,
+					    scantop,widowthresh);}}
 			// No problem, leave this block on the page
 			else {}}
 		    // We're on the page and at the end
@@ -385,9 +396,10 @@ var sbookPaginate=
 		else if ((scan.toclevel)||(avoidPageFoot(scan,style)))
 		    // If we're avoiding the foot, we start a new page
 		    newtop=scan;
-		else if (avoidPageHead(scan,style))
+		else if (avoidPageHead(scan,style)) {
 		    // If we're avoiding the head, we split this block.
 		    newtop=splitblock=scan;
+		    curpage.bottom=pagelim;}
 		// If we're too small to split, just start a new page
 		else if (info.height<(widowthresh+orphanthresh))
 		    newtop=scan;
@@ -426,7 +438,7 @@ var sbookPaginate=
 			dbginfo=dbginfo+" np"+((splitblock)?"/split":"")+"/"+curpage.bottom;
 		    // Adjust the page bottom information
 		    if (splitblock) {
-			curpage.bottom=pagelim;
+			// curpage.bottom=pagelim;
 			curpage.last=splitblock;
 			if (!(sbook.colpage)) {
 			    var newbottom=
@@ -442,26 +454,13 @@ var sbookPaginate=
 				// If we're splitting, force the next
 				// node to be the split block
 				next=splitblock; nextinfo=info;}
-			    else if ((info.bottom-orphanthresh)>info.top) {
-				curpage.bottom=info.bottom-orphanthresh;
-				curpage.bottomedge=splitblock;
-				if (dbginfo)
-				    dbginfo=dbginfo+"~~"+curpage.bottom;}
-			    else if (true) {
+			    else {
 				curpage.bottom=newbottom;
 				curpage.bottomedge=splitblock;
 				if (dbginfo)
-				    dbginfo=dbginfo+"~!"+curpage.bottom;}
-			    // This doesn't seem to work very well
-			    else {
-				// We weren't able to find a good page
-				// break, so we break entirely (no
-				// split), and declare this page
-				// oversize
-				curpage.bottom=info.bottom;
-				curpage.oversize=oversize=true;
-				if (dbginfo) dbginfo=dbginfo+"~oversize/"+curpage.bottom;}}}
-		    // If it's a clean break, make sure that the page bottom is good
+				    dbginfo=dbginfo+"~!"+curpage.bottom;}}}
+		    // If it's a clean break, make sure that the page
+		    // bottom is good
 		    else if (!(last)) {
 			// curpage.bottom=newinfo.top-1;
 		    }
@@ -731,6 +730,9 @@ var sbookPaginate=
 	    var linebottom=lastbottom;
 	    var children=node.childNodes;
 	    var len=children.length; 
+	    if (sbook.Trace.layout)
+		fdjtLog("Adjusting split block %o at bottom of [%d,%d]",
+			node,top,bottom);
 	    var i=0; while (i<len) {
 		var child=children[i++];
 		if (child.nodeType===1) {
@@ -739,8 +741,11 @@ var sbookPaginate=
 			var offinfo=getGeometry(child,sbook_body);
 			if ((!(offinfo))||(offinfo.height===0)) continue;
 			else if (offinfo.bottom<top) continue;
-			else if (offinfo.bottom>=bottom)
-			    return lastbottom;
+			else if (offinfo.bottom>=bottom) {
+			    fdjtDOM.addClass(child,"sbookpagesplit");
+			    if (sbook.Trace.layout)
+				fdjtLog("Splitting %o at %o",node,child);
+			    return lastbottom;}
 			else if (offinfo.top>=lastbottom) { // new line 
 			    lastbottom=linebottom;
 			    linebottom=offinfo.bottom;}
@@ -760,8 +765,11 @@ var sbookPaginate=
 			continue;}
 		    else if (offinfo.top>=bottom) {
 			// if it's over the bottom, put it back
-			// and use the last bottom
-			node.replaceChild(child,chunk);
+			// and use the last valid bottom
+			fdjtDOM.addClass(chunk,"sbookpagesplit");
+			if (sbook.Trace.layout)
+			    fdjtLog("Splitting %o at %o",node,chunk);
+			// node.replaceChild(child,chunk);
 			return lastbottom;}
 		    else if (offinfo.bottom<bottom) {
 			// if it's above the bottom, put it back and keep going
@@ -786,7 +794,23 @@ var sbookPaginate=
 			    else if (wordoff.bottom>=bottom) {
 				// As soon as we're over the bottom,
 				// we return the last bottom
-				node.replaceChild(child,split);
+				var before=""; var after="";
+				var k=0; j--; while (k<j) {
+				    var wd=words[k++];
+				    before=before+(wd.textValue||wd.nodeValue);}
+				k++;
+				while (k<nwords) {
+				    var wd=words[k++];
+				    after=after+(wd.textValue||wd.nodeValue);}
+				var splitnode=
+				    fdjtDOM("span.sbookpagesplit",
+					    (word.nodeValue||word.textValue));
+				if (sbook.Trace.layout)
+				    fdjtLog("Splitting %o at %o",
+					    node,splitnode);
+				node.replaceChild(
+				    fdjtDOM("span",before,splitnode,after),
+				    split);
 				return lastbottom;}
 			    else if (wordoff.top>=lastbottom) { // new line
 				lastbottom=linebottom;
@@ -794,6 +818,9 @@ var sbookPaginate=
 			    else if (wordoff.bottom>linebottom)
 				linebottom=wordoff.bottom;
 			    else {}}
+			if (sbook.Trace.layout)
+			    fdjtLog("Couldn't find split for %o at %d",
+				    node,bottom);
 			node.replaceChild(child,split);
 			return lastbottom;}}
 		else {}}
@@ -810,6 +837,7 @@ var sbookPaginate=
 		if (word.search(/\S/)>=0) {
 		    var wordspan=document.createElement("span");
 		    wordspan.appendChild(textnode);
+		    wordspan.textValue=word;
 		    span.appendChild(wordspan);}
 		else span.appendChild(textnode);}
 	    return span;}
@@ -1144,7 +1172,7 @@ var sbookPaginate=
 	sbook.isContent=isContentBlock;
 	sbook.scanContent=scanContent;
 
-	fdjtDOM.trace_adjust=true;
+	// fdjtDOM.trace_adjust=true;
 
 	sbookPaginate.debug=debug_pagination;
 
