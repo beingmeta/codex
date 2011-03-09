@@ -739,6 +739,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function pageForward(){
 	if (sbook.Trace.gestures)
 	    fdjtLog("pageForward c=%o n=%o",sbook.curpage,sbook.pages.length);
+	if ((sbook.mode==="scanning")||(sbook.mode==="tocscan"))
+	    CodexMode(false);
 	if ((sbook.paginate)&&(sbook.colpage)) {
 	    if (sbook.curpage===sbook.pages.length) {}
 	    else sbook.GoToPage(sbook.curpage=(sbook.curpage+1));}
@@ -774,6 +776,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function pageBackward(){
 	if (sbook.Trace.gestures)
 	    fdjtLog("pageBackward c=%o n=%o",sbook.curpage,sbook.pages.length);
+	if ((sbook.mode==="scanning")||(sbook.mode==="tocscan"))
+	    CodexMode(false);
 	if ((sbook.paginate)&&(sbook.colpage)) {
 	    if (sbook.curpage===0) {}
 	    else sbook.GoToPage(sbook.curpage=(sbook.curpage-1));}
@@ -927,7 +931,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function pageinfo_click(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO"); var offx;
-	if (sbook.hudup) {
+	if ((sbook.hudup)||(sbook.mode)) {
 	    fdjtUI.cancel(evt);
 	    CodexMode(false);
 	    return;}

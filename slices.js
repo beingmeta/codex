@@ -187,7 +187,7 @@ var sbook_delete_icon="redx12x12.png";
 	// This should be made to work
 	// age.onclick=relayoredit_gloss;
 	var deleteicon=
-	    // No delete icons for the ipad
+	    // No delete icons for the ipad right now (too small)
 	    ((user===sbook.user.oid)&&(sbook.ui!=='ios')&&
 	     (fdjtDOM.Image(sbicon(sbook_delete_icon),"img.delete","x",
 			    "delete this gloss")))
