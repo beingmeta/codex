@@ -32,6 +32,9 @@ var codex_startup_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
+var _sbook_autotags=
+    ((typeof _sbook_autotags === 'undefined')?(false):(_sbook_autotags));
+
 sbook.Startup=
     (function(){
 
@@ -121,8 +124,10 @@ sbook.Startup=
 		applyInlineTags,
 		function(){sbook.Message("indexing tags");},10,
 		function(){
-		    sbook.indexTags(metadata);
-		    sbook.indexTechnoratiTags(sbook.knodule);},
+		    sbook.indexContentTags(metadata);
+		    sbook.indexInlineTags(sbook.knodule);
+		    if (_sbook_autotags)
+			sbook.indexAutoTags(_sbook_autotags,sbook.knodule);},
 		function(){sbook.Message("setting up clouds");},10,
 		function(){initClouds();},
 		function(){sbook.Message("configuring server");},10,
@@ -838,10 +843,12 @@ sbook.Startup=
 		var statestring=fdjtState.getLocal("sbook.state("+uri+")");
 		if (statestring) {
 		    var state=JSON.parse(statestring);
-		    if (state.target) sbook.setTarget(state.target,(state.location),true);
+		    if (state.target)
+			sbook.setTarget(state.target,(state.location),true);
 		    if (state.location) sbook.GoTo(state.location,true,true);
 		    sbook.state=state;}
-		if ((sbook.user)&&(sbook.dosync)&&(navigator.onLine)) syncLocation();}}
+		if ((sbook.user)&&(sbook.dosync)&&(navigator.onLine))
+		    syncLocation();}}
 	
 	function syncLocation(){
 	    if (!(sbook.user)) return;
@@ -926,7 +933,7 @@ sbook.Startup=
 	
 	/* Indexing tags */
 
-	function sbookIndexTags(docinfo){
+	function sbookIndexTagAttribs(docinfo){
 	    var sbook_index=sbook.index;
 	    knodule=(knodule)||(knodule=sbook.knodule);
 	    /* One pass processes all of the inline KNodes and
@@ -980,10 +987,10 @@ sbook.Startup=
 		    if (scores)
 			sbook_index.add(eltid,tag,scores[tag]||1,knodule);
 		    else sbook_index.add(eltid,tag,1,knodule);}}}
-	sbook.indexTags=sbookIndexTags;
+	sbook.sbookIndexTagAttribs=sbookIndexTagAttribs;
 	
-	/* Inline knodules */
-	function indexTechnoratiTags(kno) {
+	/* Inline tags */
+	function indexInlineTags(kno) {
 	    var sbook_index=sbook.index;
 	    if (!(kno)) kno=knodule;
 	    var anchors=document.getElementsByTagName("A");
@@ -1001,7 +1008,21 @@ sbook.Startup=
 	    var dterm=((kno)?(kno.handleEntry(tag)):(fdjtString.stdspace(tag)));
 	    sbook_index.add(cxt,dterm);}
 	else i++;}
-     sbook.indexTechnoratiTags=indexTechnoratiTags;
+     sbook.indexInlineTags=indexInlineTags;
+
+     function indexAutoTags(autotags,knodule){
+	 if (!(autotags)) return;
+	 for (var tag in autotags) {
+	     var ids=autotags[tag];
+	     var weight=tag.search(/[^*]/);
+	     // all stars or empty string, just ignore
+	     if (weight<0) continue;
+	     var knode=((tag.indexOf('|')>=0)?
+			(knodule.handleSubjectEntry(tag)):
+			(tag));
+	     var i=0; var lim=ids.length;
+	     while (i<lim) sbook_index.add(ids[i++],knode,weight,knodule);}}
+     sbook.indexAutoTags=indexAutoTags;
 
      /* Setting up the clouds */
 

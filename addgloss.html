@@ -26,40 +26,27 @@
 	    <option value="sblinkmode">link</option>
 	    <option value="sbdetailmode">detail</option>
 	  </select>
-	  <span class="button" onclick="sbook.glossMode('note',event);"
-		title="add a note" data-mode="note">
-	    <img src=
-		 "http://static.beingmeta.com/graphics/justremarkballoon32x32.png"
-		 alt="note"/>
-	    <span class="text">Note</span>
-	  </span>
-	  <span class="button" onclick="sbook.glossMode('tag',event);"
-		title="add tags" data-mode="tag">
-	    <img src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
-		 alt="tag" title="add some tags"/>
-	    <span class="text">Tags</span>
-	  </span>
-	  <span class="button" onclick="sbook.glossMode('link',event);"
-		title="add a link" data-mode="link">
-	    <img src="http://static.beingmeta.com/graphics/upoutlink32x32.png"
-		 alt="link" title="add a link"/>
-	    <span class="text">Link</span>
-	  </span>
-	  <span class="button" onclick="sbook.glossMode('excerpt',event);"
-		title="edit excerpt" data-mode="excerpt">
-	    <img src="http://static.beingmeta.com/graphics/scissorsicon32x32.png"
-		 alt="detail" title="edit excerpt"/>
-	    <span class="text">Excerpt</span>
-	  </span>
-	  <span class="button" onclick="sbook.glossMode('detail',event);"
-		title="add extended text" data-mode="detail">
-	    <img src="http://static.beingmeta.com/graphics/detailsicon32x32.png"
-		 alt="detail" title="add extended text"/>
-	    <span class="text">Detail</span>
-	  </span>
-	  <span class="button submitbutton"
-		onclick="sbook.UI.submitEvent(event);">
-	    OK</span>
+	  <img src="http://static.beingmeta.com/graphics/sbNoteTab50h.png"
+	       class="button" onclick="sbook.glossMode('note',event);"
+	       title="add a note" data-mode="note" alt="note"/>
+	  <img src="http://static.beingmeta.com/graphics/sbTagsTab50h.png"
+	       class="button" onclick="sbook.glossMode('tag',event);"
+               title="add tags" data-mode="tag" alt="tag"/>
+	  <img src="http://static.beingmeta.com/graphics/sbLinksTab50h.png"
+	       class="button" onclick="sbook.glossMode('link',event);"
+	       title="add a link" data-mode="link" alt="link"/>
+	  <img src="http://static.beingmeta.com/graphics/sbTagsTab50h.png"
+	       class="button" onclick="sbook.glossMode('excerpt',event);"
+		title="edit excerpt" data-mode="excerpt" alt="excerpt"/>
+	  <img src="http://static.beingmeta.com/graphics/sbDetailsTab50h.png"
+	       class="button" onclick="sbook.glossMode('detail',event);"
+		title="add extended text" data-mode="detail" alt="detail"/>
+	  <img src="http://static.beingmeta.com/graphics/sbAddTab50h.png"
+	       class="button" onclick="sbook.UI.submitEvent(event);"
+	       title="add extended text" data-mode="detail" alt="add"/>
+	  <img src="http://static.beingmeta.com/graphics/sbSaveTab50h.png"
+	       class="button" onclick="sbook.UI.submitEvent(event);"
+	       title="add extended text" data-mode="detail" alt="save"/>
 	  <span class="button checkspan private"
 		onclick="fdjtUI.CheckSpan.onclick(event);"
 		title="don't share this gloss with my friends generally">

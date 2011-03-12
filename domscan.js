@@ -1,7 +1,7 @@
 /* -*- Mode: Javascript; -*- */
 
-var codex_scan_id="$Id$";
-var codex_scan_version=parseInt("$Revision$".slice(10,-1));
+var codex_domscan_id="$Id$";
+var codex_domscan_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
@@ -376,8 +376,8 @@ function CodexDOMScan(root,docinfo){
 		scanner(grandchild,scanstate,docinfo,nodefn);}}
 	if (info) info.ends_at=scanstate.location;}}
 
-fdjt_versions.decl("codex",codex_scan_version);
-fdjt_versions.decl("codex/scan",codex_scan_version);
+fdjt_versions.decl("codex",codex_domscan_version);
+fdjt_versions.decl("codex/domscan",codex_domscan_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***
