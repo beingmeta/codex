@@ -442,9 +442,8 @@ var sbook_gloss_data=
 	    window.scrollTo(0,0);
 	    sbook.page.scrollLeft=0;
 	    sbook.page.scrollTop=0;
-	    (win||sbook.canvas).style.left=""+(-x)+"px";
-	    (win||sbook.canvas).style.top=""+(-y)+"px";
-	}}
+	    (win||sbook.canvas).style.left=""+(sbook.page.offsetLeft-x)+"px";
+	    (win||sbook.canvas).style.top=""+(sbook.page.offsetTop-y)+"px";}}
     sbook.scrollTo=scrollTo;
     function scrollPos(win){
 	if (sbook.nativescroll)

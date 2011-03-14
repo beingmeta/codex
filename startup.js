@@ -933,7 +933,7 @@ sbook.Startup=
 	
 	/* Indexing tags */
 
-	function sbookIndexTagAttribs(docinfo){
+	function indexContentTags(docinfo){
 	    var sbook_index=sbook.index;
 	    knodule=(knodule)||(knodule=sbook.knodule);
 	    /* One pass processes all of the inline KNodes and
@@ -944,8 +944,6 @@ sbook.Startup=
 		var k=0; var ntags=tags.length; var scores=false;
 		while (k<ntags) {
 		    var tag=tags[k]; 
-		    // This indicates an 'automatic tag' for easy replacement.
-		    if (tag[0]==='%') tag=tag.slice(1);
 		    if (tag[0]==='*') {
 			var tagstart=tag.search(/[^*]+/);
 			if (!(scores)) tags.scores=scores={};
@@ -987,7 +985,7 @@ sbook.Startup=
 		    if (scores)
 			sbook_index.add(eltid,tag,scores[tag]||1,knodule);
 		    else sbook_index.add(eltid,tag,1,knodule);}}}
-	sbook.sbookIndexTagAttribs=sbookIndexTagAttribs;
+	sbook.indexContentTags=indexContentTags
 	
 	/* Inline tags */
 	function indexInlineTags(kno) {
@@ -1018,8 +1016,9 @@ sbook.Startup=
 	     // all stars or empty string, just ignore
 	     if (weight<0) continue;
 	     var knode=((tag.indexOf('|')>=0)?
-			(knodule.handleSubjectEntry(tag)):
-			(tag));
+			(knodule.handleSubjectEntry(tag.slice(weight))):
+			(tag[0]==='~')?(tag.slice(1)):
+			(knodule.handleSubjectEntry(tag.slice(weight))));
 	     var i=0; var lim=ids.length;
 	     while (i<lim) sbook_index.add(ids[i++],knode,weight,knodule);}}
      sbook.indexAutoTags=indexAutoTags;

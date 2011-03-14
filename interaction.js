@@ -142,9 +142,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function addGlossButton(target){
 	var passage=sbook.getTarget(target);
 	if (!(passage)) return;
-	var img=fdjtDOM.getChild(passage,".sbookglossbutton");
+	var img=fdjtDOM.getChild(passage,".codexglossbutton");
 	if (img) return;
-	img=fdjtDOM.Image(sbicon("remarkballoon32x32.png"),".sbookglossbutton",
+	img=fdjtDOM.Image(sbicon("remarkballoon32x32.png"),".codexglossbutton",
 			  "+","click to add a gloss to this passage");
 	sbook.UI.addHandlers(img,"glossbutton");
 	fdjtDOM.prepend(passage,img);}
@@ -158,7 +158,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(true);
 	else if (passage) {
 	    fdjtUI.cancel(evt);
-	    sbook.glossTarget(passage);
+	    sbook.setGlossTarget(passage);
 	    CodexMode("addgloss");}}
 
     var excerpts=[];
@@ -219,8 +219,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    evt,target,passage,sbook.mode);
 	// These should have their own handlers
 	if ((fdjtUI.isClickable(target))||
-	    (fdjtDOM.hasParent(target,".sbookglossbutton"))||
-	    (fdjtDOM.hasParent(target,".sbookglossmark"))) {
+	    (fdjtDOM.hasParent(target,".codexglossbutton"))||
+	    (fdjtDOM.hasParent(target,".codexglossmark"))) {
 	    if (sbook.Trace.gestures)
 		fdjtLog("deferring content_tapped (%o) on %o",
 			evt,target,passage,sbook.mode);
@@ -242,7 +242,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (passage) {
 	    if (sbook.target===passage) {
 		if (sbook.hudup) CodexMode(false);
-		else CodexMode(true);}
+		else {
+		    addGlossButton(passage);
+		    CodexMode(true);}}
 	    else if ((evt.ctrlKey)||(evt.shiftKey)||(n_touches>1))
 		xtapTarget(passage);
 	    else if (fdjtDOM.hasClass(document.body,"sbookscanning"))
@@ -282,7 +284,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("Tap (extended) on target %o mode=%o",target,sbook.mode);
 	sbook.setTarget(target);
 	addGlossButton(target);
-	sbook.glossTarget(target);
+	sbook.setGlossTarget(target);
 	CodexMode("addgloss");}
 
     function edgeTap(evt,x){
@@ -302,8 +304,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function edge_click(evt) {
 	var target=fdjtUI.T(evt);
 	if ((fdjtUI.isClickable(target))||
-	    (fdjtDOM.hasParent(target,".sbookglossbutton"))||
-	    (fdjtDOM.hasParent(target,".sbookglossmark")))
+	    (fdjtDOM.hasParent(target,".codexglossbutton"))||
+	    (fdjtDOM.hasParent(target,".codexglossmark")))
 	    return;
 	if (edgeTap(evt)) fdjtUI.cancel(evt);}
 
@@ -683,7 +685,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event||null;
 	if (held) clear_hold("glossmark_tapped");
 	var target=fdjtUI.T(evt);
-	var glossmark=fdjtDOM.getParent(target,".sbookglossmark");
+	var glossmark=fdjtDOM.getParent(target,".codexglossmark");
 	var passage=sbook.getTarget(glossmark.parentNode,true);
 	if (sbook.Trace.gestures)
 	    fdjtLog("glossmark_tapped (%o) on %o gmark=%o passage=%o mode=%o target=%o",

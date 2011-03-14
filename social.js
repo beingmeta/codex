@@ -175,7 +175,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	if (fdjtID(glossmarkid)) return fdjtID(glossmarkid);
 	var imgsrc=(sbicon("sbookspeople32x32.png"));
 	var glossmark=fdjtDOM
-	("span.sbookglossmark",
+	("span.codexglossmark",
 	 fdjtDOM.Image(imgsrc,"big","comments"),
 	 fdjtDOM.Image(sbicon("Asterisk16x16.png"),"tiny","+"));
 	glossmark.id=glossmarkid;

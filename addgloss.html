@@ -1,53 +1,27 @@
-<div>
-  <form action="https://gloss.sbooks.net/v4/glosspoint"
-	ajaxaction="https://gloss.sbooks.net/v4/addgloss"
-	target="addgloss" class="sbnotemode">
-    <div>
-      <div class="topblock">
-	<div class="hidden">
-	  <input type="HIDDEN" name="FRAG"/>
-	  <input type="HIDDEN" name="REFURI"/>
-	  <input type="HIDDEN" name="DOCURI"/>
-	  <input type="HIDDEN" name="SYNC"/>
-	  <input type="HIDDEN" name="USER"/>
-	  <input type="HIDDEN" name="UUID"/>
-	  <input type="HIDDEN" name="TAGLINE"/>
-	  <input type="HIDDEN" name="LOCATION"/>
-	  <input type="HIDDEN" name="LOCLEN"/>
-	  <input type="HIDDEN" name="DOCTITLE"/>
-	  <input type="HIDDEN" name="RELAY"/>
-	</div>
-	<img class="closebutton" alt="X" onclick="CodexMode(false);"
-	     src="http://static.beingmeta.com/graphics/redx16x16.png"/>
-	<div class="controls">
-	  <select name="MODE" onchange="this.form.className=this.value;">
-	    <option value="sbnotemode">note</option>
-	    <option value="sbtagmode">tag</option>
-	    <option value="sblinkmode">link</option>
-	    <option value="sbdetailmode">detail</option>
-	  </select>
-	  <img src="http://static.beingmeta.com/graphics/sbNoteTab50h.png"
-	       class="button" onclick="sbook.glossMode('note',event);"
-	       title="add a note" data-mode="note" alt="note"/>
-	  <img src="http://static.beingmeta.com/graphics/sbTagsTab50h.png"
-	       class="button" onclick="sbook.glossMode('tag',event);"
-               title="add tags" data-mode="tag" alt="tag"/>
-	  <img src="http://static.beingmeta.com/graphics/sbLinksTab50h.png"
-	       class="button" onclick="sbook.glossMode('link',event);"
-	       title="add a link" data-mode="link" alt="link"/>
-	  <img src="http://static.beingmeta.com/graphics/sbTagsTab50h.png"
-	       class="button" onclick="sbook.glossMode('excerpt',event);"
-		title="edit excerpt" data-mode="excerpt" alt="excerpt"/>
-	  <img src="http://static.beingmeta.com/graphics/sbDetailsTab50h.png"
-	       class="button" onclick="sbook.glossMode('detail',event);"
-		title="add extended text" data-mode="detail" alt="detail"/>
-	  <img src="http://static.beingmeta.com/graphics/sbAddTab50h.png"
-	       class="button" onclick="sbook.UI.submitEvent(event);"
-	       title="add extended text" data-mode="detail" alt="add"/>
-	  <img src="http://static.beingmeta.com/graphics/sbSaveTab50h.png"
-	       class="button" onclick="sbook.UI.submitEvent(event);"
-	       title="add extended text" data-mode="detail" alt="save"/>
-	  <span class="button checkspan private"
+<form action="https://gloss.sbooks.net/v4/glosspoint"
+      ajaxaction="https://gloss.sbooks.net/v4/addgloss"
+      target="addgloss" class="sbnotemode">
+  <div class="hidden">
+    <input type="HIDDEN" name="FRAG"/>
+    <input type="HIDDEN" name="REFURI"/>
+    <input type="HIDDEN" name="DOCURI"/>
+    <input type="HIDDEN" name="SYNC"/>
+    <input type="HIDDEN" name="USER"/>
+    <input type="HIDDEN" name="UUID"/>
+    <input type="HIDDEN" name="TAGLINE"/>
+    <input type="HIDDEN" name="LOCATION"/>
+    <input type="HIDDEN" name="LOCLEN"/>
+    <input type="HIDDEN" name="DOCTITLE"/>
+    <input type="HIDDEN" name="RELAY"/>
+  </div>
+  <table>
+    <tr>
+      <td>
+	<textarea name="NOTE"
+		  placeholder="add a note, [tag]s or [@http://example.com/ links]"
+		  wrap="virtual"></textarea>
+	<div class="glossetc">
+	  <span class="checkspan private"
 		onclick="fdjtUI.CheckSpan.onclick(event);"
 		title="don't share this gloss with my friends generally">
 	    <input type="CHECKBOX" name="PRIVATE" value="yes"/>
@@ -58,53 +32,18 @@
 		  title="share this note with my personal circle (friends)">
 	      shared</span>
 	  </span>
-	  <span class="checkspan" title="post to your social news feeds">
+	  <span class="checkspan" title="post to your social news feeds">    
 	    <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
-	</div>
-	<fieldset class="textfields">
-	  <div class="input note">
-	    <textarea name="NOTE"
-		      placeholder="add a note,using brackets for descriptive [tag]s"
-		      wrap="virtual"></textarea>
-	  </div>
-	  <div class="input tag">
-	    <input type="TEXT" name="TAG" value="" autocomplete="off"
-		   placeholder="add tags to this passage" 
-		   onfocus="sbook.handlers.taginput_focus(event);"
-		   onblur="sbook.handlers.taginput_blur(event);">
-	  </div>
-	  <div class="input link">
-	    <input type="TEXT" name="LINK" value=""
-		   placeholder="type a URL to link from this passage" 
-		   class="urlinput" prompt="type a web address (URL)"/>
-	    <input type="TEXT" name="LINKTITLE" value=""
-		   placeholder="type a title for this URL" 
-		   prompt="a descriptive title"/>
-	  </div>
-	  <div class="input share">
-	    <input type="TEXT" name="SHARE" value="" autocomplete="off"
-		   placeholder=
-		   "type an email or tag with friends or groups to share"/>
-	  </div>
-	  <div class="input detail">
-	    <textarea name="DETAIL"
-		      placeholder="Enter detailed comments or notes here">
-	    </textarea>
-	  </div>
-	  <div class="input excerpt">
-	    <input type="HIDDEN" name="EXCERPTSTART"/>
-	    <input type="HIDDEN" name="EXCERPTEND"/>
-	    <textarea name="EXCERPT" placeholder="Edit excerpt for this gloss">
-	    </textarea>
-	  </div>
-	  <div class="tags"
-	       onclick="fdjtUI.CheckSpan.onclick(event); fdjtUI.cancel(event);">
-	  </div>
-	</fieldset>
-      </div>
-    </div>
-  </form>
-</div>
+	  <span class="outlets" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
+	  <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
+      </td>
+    <td class="button">
+      <img src="http://static.beingmeta.com/graphics/sbgAddButton50x50.png"
+	   class="button" onclick="sbook.UI.submitEvent(event);"
+	   title="add extended text" data-mode="detail" alt="add"/>
+    </td></tr>
+  </table>
+</form>
 <!--
     /* Emacs local variables
     ;;;  Local variables: ***

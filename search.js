@@ -481,14 +481,12 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		span.title="("+term+": "+sbook_index.freq(term)+" items) "+title;
 	    else span.title=term+": "+sbook_index.freq(term)+" items";
 	    return span;}
-	var dterm=sbook.knodule.KNode(term);
-	if (!(dterm))
-	    fdjtLog("Couldn't get knodule references from %o",dterm);
+	var dterm=sbook.knodule.probe(term);
+	if (!(dterm)) {}
 	else if (!(dterm.dterm)) {
 	    fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
 	    dterm=false;}
-	var dterm_node=
-	    ((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.dterm.raw",term)));
+	var term_node=((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.raw",term)));
 	if (!(title))
 	    if (sbook_index.freq(dterm))
 		title=dterm+": "+sbook_index.freq(dterm)+" items";
@@ -509,14 +507,14 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		vary.key=term;
 		span.appendChild(vary);
 		span.appendChild(document.createTextNode(" "));}
-	    span.appendChild(dterm_node);
+	    span.appendChild(term_node);
 	    span.key=dterm.dterm;
 	    span.value=dterm.dterm;
 	    span.setAttribute("dterm",dterm.dterm);}
 	else {
 	    // This is helpful for debugging
-	    span.setAttribute("dterm",dterm);
-	    span.key=dterm; span.value=dterm;
+	    span.key=term; span.value=term;
+	    span.appendChild(term_node);
 	    if (title) span.title=title;}
 	return span;}
     
