@@ -1423,138 +1423,28 @@ div.codexglossform { display: none;}
 div.codexglossform#CODEXLIVEGLOSS { display: block;}
 div.codexglossform form {
     padding: 0px; margin: 0px;}
-div.codexglossform form fieldset {
-    border: 0px; padding: 6px; padding-top: 2px; margin: 0px;}
-div.codexglossform form div { clear: none;}
-div.codexglossform form div.input { }
-/* div.codexglossform form div.glossmode { float: left; text-align: left;} */
-div.codexglossform form div.glossmode { display: none;}
-div.codexglossform form div.submit {
-    padding-left: 5px; float: right; text-align: center;}
-div.codexglossform form div.submit { width: 50px; }
+div.codexglossform form div.inputhelp {
+    color: black; padding-bottom: 4px;
+    display: none;}
+div.codexglossform form div.inputhelp span.bracketbutton {
+    float: right; font-family: fixed; font-size: 120%; font-weight: bold;
+    color: orange; cursor: pointer;}
+div.codexglossform form div.inputhelp strong {font-size: 120%; color: orange;}
+div.codexglossform form.focused div.inputhelp { display: block;}
 
-body.sbooktouch div.codexglossform form div.submit { width: 75px;}
-div.codexglossform form fieldset {
-    border: 0px; padding: 6px; padding-top: 2px;}
-
-div.codexglossform form div.topblock { vertical-align: top; clear: both;}
-div.codexglossform form fieldset.textfields {
-    padding-left: 20px; padding-right: 10px; padding-top: 0px;
-    clear: both;}
-div.codexglossform form div.input {
-    display: none; width: auto; margin-left: 0px; margin-right: 0px;}
-div.codexglossform form div.input input {}
-div.codexglossform form div.input textarea,
-div.codexglossform form div.input input[type='TEXT'] {
-    display: block; width: 100%; clear: both; vertical-align: top;
-    margin: 0px; padding: 3px; border: 3px; padding-top: 0px;
-    border-radius: 6px; -o-border-radius: 6px; 
-    -moz-border-radius: 6px; -webkit-border-radius: 6px;}
-div.codexglossform form div.input input:focus[type='TEXT'] { border: white;}
-div.codexglossform form div.input input[type='TEXT'][name='TAG'] {
-    font-size: 16px; height: 24px; font-weight: bold;
-    background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/graphics/TagIcon24x24.png);
-    background-position: right top;
-    background-position-x: right; background-position-y: top;
-    background-repeat: no-repeat;}
-div.codexglossform form div.input input[type='TEXT'][name='LINK'] {
-    height: 18px; font-size: 80%; font-family: fixed; font-style: normal;
-    background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/graphics/upoutlink16x16.png);
-    background-position: right top;
-    background-position-x: right; background-position-y: top;
-    background-repeat: no-repeat;}
-div.codexglossform form div.input input[type='TEXT'][name='LINKTITLE'] {
-    font-size: 80%; font-family: sans; font-style: normal; margin-top: 5px;
-    width: 100%;}
-div.codexglossform form div.input textarea[name='NOTE'],
-div.codexglossform form div.input input[type='TEXT'][name='NOTE'] {
+div.codexglossform form textarea[name='NOTE'],
+div.codexglossform form input[type='TEXT'][name='NOTE'] {
     height: 5ex; overflow: hidden; width: 100%;
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.codexglossform form div.input.detail textarea[name='DETAIL'] {
-    background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/graphics/detailsicon32x32.png);
-    background-position: right bottom;
-    background-position-x: right; background-position-y: bottom;
-    background-repeat: no-repeat;
-    height: 20ex;}
-div.codexglossform form div.input.excerpt textarea[name='EXCERPT'] {
-    background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/graphics/scissorsicon32x32.png);
-    background-position: right bottom;
-    background-position-x: right; background-position-y: bottom;
-    background-repeat: no-repeat;
-    height: 20ex;}
-div.codexglossform form div.input input[type='TEXT'][name='SHARE'] {
-    font-size: 16px; height: 24px; overflow: hidden;
-    background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/graphics/ShareIcon24x24.png);
-    background-position: right top;
-    background-position-x: right; background-position-y: top;
-    background-repeat: no-repeat;}
-div.codexglossform form div.input input[type='FILE'] { /* width: 100%; */
-    display: block; }
-
-div.codexglossform form div.tags {
-    display: block; text-align: left;}
-body.sbooktouch div.codexglossform form div.controls { font-size: 110%;}
-div.codexglossform form div.controls {
-    vertical-align: bottom; text-align: left;
-    padding-left: 30px; padding-right: 7px;
-    font-family: sans,sans-serif; font-size: 16px;
-    height: 50px;}
-div.codexglossform form div.controls img[alt='add'],
-div.codexglossform form div.controls img[alt='save'] {
-    float: right;}
-div.codexglossform form div.controls img[alt='save'] { display: none;}
-div.codexglossform form div.controls img[alt='save'] { display: none;}
-div.codexglossform form div.controls span.button {
-    color: black; font-weight: bold;
-    border: solid silver 2px; background-color: silver; 
-    padding: 2px; border-radius: 4px;
-    -o-border-radius: 4px; -webkit-border-radius: 4px; 
-    -moz-border-radius: 4px;
-    text-align: center;
-    cursor: pointer;}
-div.codexglossform form div.controls img[data-mode] {
-    vertical-align: bottom;} 
-div.codexglossform form div.controls select {
-    vertical-align: top; width: 7em;
-    display: none;}
-div.codexglossform form div.controls select option { }
-div.codexglossform form div.controls select option[value="note"] {
-    background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);
-    background-position: right top;
-    background-position-x: right; background-position-y: top;
-    background-repeat: no-repeat;}
-div.codexglossform form div.controls img.modebutton {
-    margin-left: 3px; margin-right: 3px; margin-bottom: 3px;
-    border: solid silver 2px; padding: 2px;
-    border-radius: 4px;
-    -o-border-radius: 4px; -webkit-border-radius: 4px; 
-    -moz-border-radius: 4px;
-    vertical-align: top;}
-div.codexglossform form img.closebutton {
-    background-color: lightblue;
-    color: red; float: right; padding: 1px; height: 2ex;
-    float: left;}
-div.codexglossform form div.controls span.submitbutton {
-    font-weight: bold; text-align: center; float: right;
-    margin: 0px; padding: 0px;}
-div.codexglossform form div.controls input[type='SUBMIT'] {
-    font-weight: bold; text-align: center; padding: 4px;
-    border-radius: 0px; float: right;}
-div.codexglossform form div.controls .checkspans {
-    padding-top: 3px; padding-bottom: 3px;
-    float: right;}
+div.codexglossform form div.glossetc {
+    display: block; text-align: left; font-size: 12px;}
 div.codexglossform form .checkspan {
-    margin-left: 4px; margin-right: 4px; font-family: sans,sans-serif;}
+    padding-left: 2px; padding-right: 2px;
+    font-family: sans,sans-serif;}
 div.codexglossform form .checkspan.private {
     font-weight: bold; font-size: 90%;
     border-radius: 4px; -o-border-radius: 4px;
@@ -1572,32 +1462,7 @@ div.codexglossform form .checkspan.private input[type='checkbox'] {
 div.codexglossform form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
-div.codexglossform form { margin-left: 0%; margin-right: 0%;}
 div.codexglossform.submitting { opacity: 0.5;}
-div.codexglossform form.sbexcerptmode div.input.excerpt { display: block;}
-div.codexglossform form.sbnotemode div.input.note { display: block;}
-div.codexglossform form.sbtagmode div.input.tag { display: block;}
-div.codexglossform form.sblinkmode div.input.link { display: block;}
-div.codexglossform form.sbsharemode div.input.share { display: block;}
-div.codexglossform form.sbdetailmode div.input.detail { display: block;}
-
-div.codexglossform form.sbnotemode div.controls span[data-mode='note'],
-div.codexglossform form.sbexcerptmode div.controls span[data-mode='excerpt'],
-div.codexglossform form.sbtagmode div.controls span[data-mode='tag'],
-div.codexglossform form.sblinkmode div.controls span[data-mode='link'],
-div.codexglossform form.sbsharemode div.controls span[data-mode='share'],
-div.codexglossform form.sbdetailmode div.controls span[data-mode='detail'] {
-    background-color: white;
-    border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
-    -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
-    -webkit-border-bottom-left-radius: 0px; -webkit-border-bottom-right-radius: 0px; 
-    -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px;
-    border-bottom: solid white 2px;}
-
-div#CODEXHUD.tagging div.codexglossform form div.completions#CODEXGLOSSCLOUD,
-div.codexglossform form.sbtagmode div.completions#CODEXGLOSSCLOUD {
-    min-height: 100px;
-    display: block;}
 
 /* Pagination stuff */
 

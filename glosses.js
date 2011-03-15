@@ -101,6 +101,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var noteinput=fdjtDOM.getInput(form,"NOTE");
 	if (noteinput) {
 	    noteinput.onkeypress=addgloss_keypress;
+	    noteinput.onkeydown=addgloss_keydown;
 	    if (gloss) noteinput.value=gloss.note||"";
 	    else noteinput.value="";}
 	if (sbook.syncstamp)
@@ -300,6 +301,44 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     /* Text handling for the gloss text input */
 
     var addgloss_timer=false;
+    
+    function bracket_click (evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var form=fdjtDOM.getParent(target,'form');
+	var input=fdjtDOM.getInput(form,'NOTE');
+	var string=input.value;
+	var bracketed=getbracketed(input);
+	fdjtUI.cancel(evt);
+	if (bracketed)
+	    handleBracketed(form,getbracketed(input,true));
+	else {
+	    var pos=input.selectionStart;
+	    input.value=string.slice(0,pos)+"[]"+string.slice(pos);
+	    input.selectionStart=input.selectionEnd=pos+1;}}
+    sbook.UI.bracket_click=bracket_click;
+
+    function handleBracketed(form,content){
+	if (content[0]==='!') {
+	    var brk=content.indexOf(' ');
+	    if (brk<0) addLink(form,content.slice(1,-1));
+	    else {
+		addLink(form,linkdata.slice(0,brk),
+			linkdata.slice(brk+1));}}
+	else if (content.indexOf('|')>=0) addTag(form,content);
+	else {
+	    var completions=gloss_cloud.complete(content);
+	    if (!(completions)) {
+		addTag(form,content);
+		return;}
+	    var i=0; var lim=completions.length;
+	    var std=fdjtString.stdspace(content);
+	    while (i<lim) {
+		var completion=completions[i++];
+		if (content===gloss_cloud.getKey(completion)) {
+		    addTag(form,completion);
+		    return;}}
+	    addTag(form,std);}}
 
     function addgloss_keypress(evt){
 	var target=fdjtUI.T(evt);
@@ -319,32 +358,27 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var content=getbracketed(target,true);
 	    if (!(content)) return;
 	    fdjtUI.cancel(evt);
-	    if (content[0]==='@') {
-		var brk=content.indexOf(' ');
-		if (brk<0) addLink(form,content.slice(1,-1));
-		else {
-		    addLink(form,linkdata.slice(0,brk),
-			    linkdata.slice(brk+1));}}
-	    else if (content.indexOf('|')>=0) addTag(form,content);
-	    else {
-		var completions=gloss_cloud.complete(content);
-		if (!(completions)) {
-		    addTag(form,content);
-		    return;}
-		var i=0; var lim=completions.length;
-		var std=fdjtString.stdspace(content);
-		while (i<lim) {
-		    var completion=completions[i++];
-		    if (content===gloss_cloud.getKey(completion)) {
-			addTag(form,completion);
-			return;}}
-		addTag(form,std);}}
+	    handleBracketed(form,content);}
 	else {
 	    var content=getbracketed(target);
-	    if ((content)&&(content[0]!=='@'))
+	    if ((content)&&(content[0]!=='!'))
 		addgloss_timer=setTimeout(function(){
 		    var span=getbracketed(target,false);
 		    gloss_cloud.complete(span);},100);}}
+
+    function addgloss_keydown(evt){
+	evt=evt||event;
+	var kc=evt.keyCode;
+	var target=fdjtUI.T(evt);
+	var form=fdjtDOM.getParent(target,'form');
+	if (kc===13) {
+	    var bracketed=getbracketed(target);
+	    if (bracketed) {
+		fdjtUI.cancel(evt);
+		handleBracketed(form,getbracketed(target));}
+	    else if (evt.ctrlKey) {
+		fdjtUI.cancel(evt);
+		submitEvent(target);}}}
 
     function get_addgloss_callback(form){
       return function(req){

@@ -1,6 +1,6 @@
 <form action="https://gloss.sbooks.net/v4/glosspoint"
       ajaxaction="https://gloss.sbooks.net/v4/addgloss"
-      target="addgloss" class="sbnotemode">
+      target="addgloss">
   <div class="hidden">
     <input type="HIDDEN" name="FRAG"/>
     <input type="HIDDEN" name="REFURI"/>
@@ -17,8 +17,19 @@
   <table>
     <tr>
       <td>
+	<div class="inputhelp">
+	  <span class="bracketbutton"
+		onmousedown="sbook.UI.bracket_click(event);"
+		ontouchstart="sbook.UI.bracket_click(event);"
+		title="open/close bracketed tag or link">
+	    []</span>
+	  Add text, <strong>[</strong>tag<strong>]</strong>s, or
+	  <strong>[!</strong>http://example.com/ <em>links</em><strong>]</strong>.  Ctrl-enter to save, enter to close [brackets].
+	</div>
 	<textarea name="NOTE"
-		  placeholder="add a note, [tag]s or [@http://example.com/ links]"
+		  placeholder="add text, [tag]s or [!http://example.com/ links]"
+		  onfocus="fdjtDOM.aC(fdjtDOM.$P(this,'form'),'focused');"
+		  onblur="fdjtDOM.dC(fdjtDOM.$P(this,'form'),'focused');"
 		  wrap="virtual"></textarea>
 	<div class="glossetc">
 	  <span class="checkspan private"
