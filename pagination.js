@@ -39,7 +39,7 @@ var codex_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=true;
+	var debug_pagination=false;
 	var sbook_paginated=false;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
@@ -1089,8 +1089,8 @@ var sbookPaginate=
 	    var target=sbook.target;
 	    sbook.Message("Determining page layout");
 	    var body=sbook.body||document.body;
-	    fdjtDOM.dropClass(document.body,"sbookpaginated");
-	    fdjtDOM.dropClass(document.body,"scrollpage");
+	    fdjtDOM.addClass(document.body,"sbookpaginated");
+	    fdjtDOM.dropClass(document.body,"sbookpagevertical");
 	    fdjtDOM.dropClass(document.body,"sbookpagehorizontal");
 	    if (sbook.colpage) {
 		var oldbreaks=fdjtDOM.$(".sbookpagehorizontal");

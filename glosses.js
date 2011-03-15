@@ -358,6 +358,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	clearGlossForm(form);
 	sbook.preview_target=false;
 	/* Turn off the target lock */
+	setGlossTarget(false);
 	sbook.setTarget(false);
 	CodexMode(false);}
 
@@ -414,13 +415,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
 	    if (uuidelt) uuidelt.value=fdjtState.getUUID(sbook.nodeid);}
-	setGlossTarget(false);
 	if (!(sbook.offline))
 	    return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));
 	if (!(navigator.onLine)) return saveGloss(form,evt);
 	// Eventually, we'll unpack the AJAX handler to let it handle
 	//  connection failures by calling saveGloss.
-	else return fdjtAjax.onsubmit(evt);}
+	else return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));}
     sbook.submitGloss=submitGloss;
 
     function submitEvent(arg){
@@ -464,8 +464,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (evt) fdjtUI.cancel(evt);
 	fdjtDOM.dropClass(form.parentNode,"submitting");
 	/* Turn off the target lock */
-	sbook.setTarget(false);
-	CodexMode(false);}
+	setGlossTarget(false); sbook.setTarget(false); CodexMode(false);}
+
     // Saves queued glosses
     function writeGlosses(){
 	if (!(sbook.offline)) return;

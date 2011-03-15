@@ -29,7 +29,7 @@
 
 */
 
-@charset "utf-8";
+@charset "UTF-8";
 
 /* Major wrappers and rules */
 
@@ -41,18 +41,19 @@ span.codexcssversion:after {
 #CODEXHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
     z-index: 100;}
+#CODEXPAGE { width: auto;}
 .sbookpaginated #CODEXPAGE {
     position: fixed;
     top: 70px; bottom: 60px; left: 0px; right: 0px;
-    width: auto;
     overflow: hidden;}
 #CODEXPAGE #CODEXMASK {
     position: absolute; z-index: 75;
     bottom: 0px; left: 0px; right: 0px; width: 100%;
     opacity: 1.0; background-color: inherit;}
-.sbookpaginated #CODEXPAGE #CODEXCANVAS {
-    position: absolute; left: 0; right: 0;
+#CODEXCANVAS {
     margin: 0px; padding: 0px; border: 0px;}
+.sbookpaginated #CODEXPAGE #CODEXCANVAS {
+    position: absolute; left: 0; right: 0;}
 body #CODEXPAGE {}
 body.sbookpagehorizontal #CODEXPAGE #CODEXCANVAS {
     transition-property: transform; transition-duration: 0.5s;
@@ -900,7 +901,7 @@ div.tochead span.head {
 div.tochead span.headtext {
     white-space: nowrap; font-size: 90%;}
 div.tochead hr {
-    color: white; background-color: gold; min-width: 3px;
+    color: white; background-color: white; min-width: 3px;
     border-right: solid gold 1px; border-left: solid gold 1px;
     position: absolute; left: 0px; height: 100%;
     border: 0px; padding: 0px; margin: 0px;}
@@ -914,11 +915,11 @@ div.idhead {
   text-align: left; vertical-align: middle;
   border-top: solid gold 1px; overflow: hidden;}
 div.idhead hr {
-    color: white; background-color: gold; min-width: 3px; opacity: 0.5;
-    border-right: solid gold 1px; border-left: solid gold 1px;
+    color: white; background-color: white; min-width: 3px; opacity: 0.5;
+    border-right: solid gold 1px; border-left: solid gold 1px; 
     position: absolute; left: 0px; height: 100%;
     border: 0px; padding: 0px; margin: 0px;}
-div.idhead span { z-index: 10; opacity: 1.0;}
+div.idhead span { z-index: 10;}
 div.idhead div { z-index: 10; opacity: 1.0;}
 
 div.codexnote { position: relative;}
@@ -1654,3 +1655,4 @@ div.codexglossform form table td textarea { width: 100%;}
 ;;;  compile-command: "cd ..; make" ***
 ;;;  End: ***
 */
+

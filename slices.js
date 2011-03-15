@@ -115,7 +115,6 @@ var sbook_delete_icon="redx12x12.png";
 	return expander_toggle(evt);}
 
     function showtags(info){
-	if (!(tags instanceof Array)) tags=[tags];
 	var tags=info.tags; var scores=tags.scores||false;
 	if ((typeof tags === 'string')||(tags instanceof String))
 	    tags=[tags];
@@ -126,6 +125,8 @@ var sbook_delete_icon="redx12x12.png";
 	var i=0; var lim=tags.length;
 	while (i<tags.length) {
 	    var tag=tags[i]; var score=((scores)&&(scores[tag]))||false;
+	    if ((typeof tag === 'string')&&(tag.indexOf('@')>=0))
+		tag=fdjtKB.ref(tag)||tag;
 	    var togo=tags.length-i;
 	    if ((!controller)&&((!(score))||(score<=1))&&
 		(i>show_tag_thresh)&&(togo>4)) {

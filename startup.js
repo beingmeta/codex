@@ -941,24 +941,31 @@ sbook.Startup=
 	    for (var eltid in docinfo) {
 		var tags=docinfo[eltid].tags;
 		if (!(tags)) continue;
-		var k=0; var ntags=tags.length; var scores=false;
+		var k=0; var ntags=tags.length; var scores=tags.scores||false;
+		if (!(scores)) tags.scores=scores={};
 		while (k<ntags) {
-		    var tag=tags[k]; 
+		    var tag=tags[k]; var score=1; var tagbase=false;
 		    if (tag[0]==='*') {
 			var tagstart=tag.search(/[^*]+/);
-			if (!(scores)) tags.scores=scores={};
-			tags[k]=tag=tag.slice(tagstart);
-			scores[tag]=2*(tagstart+1);}
+			score=2*(tagstart+1);
+			tagbase=tag.slice(tagstart);}
 		    else if (tag[0]==='~') {
 			var tagstart=tag.search(/[^~]+/);
-			tags[k]=tag=tag.slice(tagstart);
+			tag=tag.slice(tagstart);
 			if (tagstart>1) {
 			    if (!(scores)) tags.scores=scores={};
-			    scores[tag]=1/tagstart;}}
+			    score=1/tagstart;}
+			else score=1;}
 		    else {
-			if (!(scores)) tags.scores=scores={};
-			scores[tag]=2;}
-		    if ((tag.indexOf('|')>=0)) knodule.handleSubjectEntry(tag);
+			tagbase=tag;
+			score=2;}
+		    if (tagbase) {
+			var knode=((tagbase.indexOf('|')>0)?
+				   (knodule.handleSubjectEntry(tagbase)):
+				   (knodule.ref(tagbase)));
+			if ((knode)&&(knode.tagString)) tag=knode.tagString();}
+		    tags[k]=tag;
+		    scores[tag]=score;
 		    k++;}
 		if (scores) {
 		    tags.sort(function(t1,t2){

@@ -509,7 +509,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		span.appendChild(document.createTextNode(" "));}
 	    span.appendChild(term_node);
 	    span.key=dterm.dterm;
-	    span.value=dterm.dterm;
+	    span.value=((dterm.tagString)?(dterm.tagString()):(dterm.dterm));
 	    span.setAttribute("dterm",dterm.dterm);}
 	else {
 	    // This is helpful for debugging
