@@ -32,8 +32,8 @@ var codex_startup_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-var _sbook_autotags=
-    ((typeof _sbook_autotags === 'undefined')?(false):(_sbook_autotags));
+var _sbook_autoindex=
+    ((typeof _sbook_autoindex === 'undefined')?(false):(_sbook_autoindex));
 
 sbook.Startup=
     (function(){
@@ -126,8 +126,8 @@ sbook.Startup=
 		function(){
 		    sbook.indexContentTags(metadata);
 		    sbook.indexInlineTags(sbook.knodule);
-		    if (_sbook_autotags)
-			sbook.indexAutoTags(_sbook_autotags,sbook.knodule);},
+		    if (_sbook_autoindex)
+			sbook.useAutoIndex(_sbook_autoindex,sbook.knodule);},
 		function(){sbook.Message("setting up clouds");},10,
 		function(){initClouds();},
 		function(){sbook.Message("configuring server");},10,
@@ -1015,12 +1015,12 @@ sbook.Startup=
 	else i++;}
      sbook.indexInlineTags=indexInlineTags;
 
-     function indexAutoTags(autotags,knodule){
+     function useAutoIndex(autoindex,knodule){
 	 var sbook_index=sbook.index;
-	 if (!(autotags)) return;
+	 if (!(autoindex)) return;
 	 if (!(sbook_index)) return;
-	 for (var tag in autotags) {
-	     var ids=autotags[tag];
+	 for (var tag in autoindex) {
+	     var ids=autoindex[tag];
 	     var starpower=tag.search(/[^*]/);
 	     // all stars or empty string, just ignore
 	     if (starpower<0) continue;
@@ -1033,7 +1033,7 @@ sbook.Startup=
 	     while (i<lim) {
 		 var node=fdjtID(ids[i++]);
 		 if (node) sbook_index.add(node.id,knode,weight,knodule);}}}
-     sbook.indexAutoTags=indexAutoTags;
+     sbook.useAutoIndex=useAutoIndex;
 
      /* Setting up the clouds */
 
