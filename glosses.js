@@ -1,4 +1,4 @@
-/* -*- Mode: Javascript; -*- */
+/* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
 var codex_glosses_id="$Id: notes.js 5410 2010-07-31 12:28:42Z haase $";
 var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
@@ -263,6 +263,10 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var cur=fdjtID("CODEXLIVEGLOSS");
 	if (cur) cur.id=null;
 	form.id="CODEXLIVEGLOSS";
+	var curinput=fdjtID("CODEXGLOSSINPUT");
+	if (curinput) curinput.id=null;
+	curinput=fdjtDOM.getChild(form,"textarea");
+	if (curinput) curinput.id="CODEXGLOSSINPUT";
 	var syncelt=fdjtDOM.getInput(form,"SYNC");
 	syncelt.value=(sbook.syncstamp+1);
 	sbook.glosstarget=target;

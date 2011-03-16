@@ -1,4 +1,4 @@
-/* -*- Mode: Javascript; -*- */
+/* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
 var codex_id="$Id$";
 var codex_version=parseInt("$Revision$".slice(10,-1));
@@ -302,11 +302,11 @@ var sbook_gloss_data=
 	    else if (scan.id) {
 		if (fdjtDOM.hasParent(scan,CodexHUD)) return false;
 		else if (fdjtDOM.hasParent(scan,".sbookmargin")) return false;
-		else if ((fdjtDOM.hasClass(scan,"sbooknofoci"))||
-			 ((sbook.nofoci)&&(sbook.nofoci.match(scan))))
+		else if ((fdjtDOM.hasClass(scan,"sbooknofocus"))||
+			 ((sbook.nofocus)&&(sbook.nofocus.match(scan))))
 		    scan=scan.parentNode;
-		else if ((fdjtDOM.hasClass(scan,"sbookfoci"))||
-			 ((sbook.foci)&&(sbook.foci.match(scan))))
+		else if ((fdjtDOM.hasClass(scan,"sbookfocus"))||
+			 ((sbook.focus)&&(sbook.focus.match(scan))))
 		    return scan;
 		else if (!(fdjtDOM.hasText(scan)))
 		    scan=scan.parentNode;

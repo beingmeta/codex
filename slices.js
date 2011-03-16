@@ -1,4 +1,4 @@
-/* -*- Mode: Javascript; -*- */
+/* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
 var codex_slices_id="$Id$";
 var codex_slices_version=parseInt("$Revision$".slice(10,-1));
@@ -201,9 +201,13 @@ var sbook_delete_icon="redx12x12.png";
 		 (fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt))),
 		((overdoc)&&(overdoc.name)&&
 		 (fdjtDOM("span.overdoc",(overdoc.name)))),
+		((overdoc)&&(overdoc.name)&&(" \u00b7 ")),
 	       	(((!(overdoc))&&(userinfo)&&
 		  ((userinfo.name)||(userinfo.userid)))&&
 		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid))))),
+		((!(overdoc))&&(userinfo)&&
+		 ((userinfo.name)||(userinfo.userid))&&
+		 (" \u2014 ")),
 		age];}
 
     function getoverdoc(info){

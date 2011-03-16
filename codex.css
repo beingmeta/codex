@@ -1274,13 +1274,9 @@ div.codexnote > hr {
 div#CODEXHUD .codexnote span.oldterm {color: blue; }
 .codexnote span.user { 
   color: green; font-size: 125%; font-style: italic;}
-.codexnote span.user:after { 
-  font-style: normal; color: silver; content: ' — ';}
 .codexnote span.overdoc { 
   color: green; font-size: 125%; font-style: normal;
   font-variant: small-caps;}
-.codexnote span.overdoc:after { 
-  font-style: normal; color: silver; content: ' — ';}
 .codexnote span.link a { color: blue; text-decoration: underline;}
 .codexnote span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}

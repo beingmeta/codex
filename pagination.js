@@ -1,4 +1,4 @@
-/* -*- Mode: Javascript; -*- */
+/* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
 var codex_pagination_id=
     "$Id$";

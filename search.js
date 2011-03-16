@@ -1,4 +1,4 @@
-/* -*- Mode: Javascript; -*- */
+/* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
 var codex_search_id="$Id$";
 var codex_search_version=parseInt("$Revision$".slice(10,-1));

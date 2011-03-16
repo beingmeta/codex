@@ -1,4 +1,4 @@
-/* -*- Mode: Javascript; -*- */
+/* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
 var codex_domscan_id="$Id$";
 var codex_domscan_version=parseInt("$Revision$".slice(10,-1));

@@ -1,4 +1,4 @@
-/* -*- Mode: Javascript; -*- */
+/* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
 var codex_startup_id="$Id$";
 var codex_startup_version=parseInt("$Revision$".slice(10,-1));
@@ -442,22 +442,10 @@ sbook.Startup=
 	    if (fdjtDOM.getMeta("sbookid")) 
 		sbook_idify=new fdjtDOM.Selector(
 		    fdjtDOM.getMeta("sbookid"));
-	    if (fdjtDOM.getMeta("sbook.notag"))
-		sbook.notag_rules=
-		new fdjtDOM.Selector(fdjtDOM.getMeta("sbook.notag"));
 	    if ((fdjtDOM.getMeta("sbookfocus"))) 
-		sbook.foci=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfocus"));
-	    else if ((fdjtDOM.getMeta("sbookfoci")))  
-		sbook.foci=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfoci"));
-	    else {}
+	      sbook.focus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfocus"));
 	    if (fdjtDOM.getMeta("sbooknofocus"))
-		sbook.nofoci=newfdjtDOM.Selector(
-		    fdjtDOM.getMeta("sbooknofocus"));
-	    else if (fdjtDOM.getMeta("sbooknofoci"))
-		sbook.nofoci=new fdjtDOM.Selector(
-		    fdjtDOM.getMeta("sbooknofoci"));
-	    else {}}
-	
+	      sbook.nofocus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknofocus"));}
 
 	function getPageSettings(){
 	    var tocmajor=fdjtDOM.getMeta("sbook.tocmajor",true);

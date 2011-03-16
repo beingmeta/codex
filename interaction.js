@@ -1,4 +1,4 @@
-/* -*- Mode: Javascript; -*- */
+/* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
 var codex_interaction_id="$Id$";
 var codex_interaction_version=parseInt("$Revision$".slice(10,-1));

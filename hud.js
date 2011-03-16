@@ -1,4 +1,4 @@
-/* -*- Mode: Javascript; -*- */
+/* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
 var codex_hud_id="$Id$";
 var codex_hud_version=parseInt("$Revision$".slice(10,-1));
@@ -238,7 +238,8 @@ var CodexMode=
 	var sbook_mode_foci=
 	    {gotopage: "CODEXPAGEINPUT",
 	     gotoloc: "CODEXLOCINPUT",
-	     search: "CODEXSEARCHINPUT"};
+	     search: "CODEXSEARCHINPUT",
+	     addgloss: "CODEXGLOSSINPUT"};
 	
 	function CodexMode(mode){
 	    if (typeof mode === 'undefined') return sbook.mode;
