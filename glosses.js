@@ -327,8 +327,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var brk=content.indexOf(' ');
 	    if (brk<0) addLink(form,content.slice(1,-1));
 	    else {
-		addLink(form,linkdata.slice(0,brk),
-			linkdata.slice(brk+1));}}
+		addLink(form,content.slice(1,brk),
+			content.slice(brk+1));}}
 	else if (content.indexOf('|')>=0) addTag(form,content);
 	else {
 	    var completions=gloss_cloud.complete(content);
