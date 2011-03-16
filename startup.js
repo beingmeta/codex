@@ -1016,18 +1016,23 @@ sbook.Startup=
      sbook.indexInlineTags=indexInlineTags;
 
      function indexAutoTags(autotags,knodule){
+	 var sbook_index=sbook.index;
 	 if (!(autotags)) return;
+	 if (!(sbook_index)) return;
 	 for (var tag in autotags) {
 	     var ids=autotags[tag];
-	     var weight=tag.search(/[^*]/);
+	     var starpower=tag.search(/[^*]/);
 	     // all stars or empty string, just ignore
-	     if (weight<0) continue;
+	     if (starpower<0) continue;
+	     var weight=((tag[0]==='~')?(1):(2*(starpower+1)));
 	     var knode=((tag.indexOf('|')>=0)?
-			(knodule.handleSubjectEntry(tag.slice(weight))):
+			(knodule.handleSubjectEntry(tag.slice(starpower))):
 			(tag[0]==='~')?(tag.slice(1)):
-			(knodule.handleSubjectEntry(tag.slice(weight))));
+			(knodule.handleSubjectEntry(tag.slice(starpower))));
 	     var i=0; var lim=ids.length;
-	     while (i<lim) sbook_index.add(ids[i++],knode,weight,knodule);}}
+	     while (i<lim) {
+		 var node=fdjtID(ids[i++]);
+		 if (node) sbook_index.add(node.id,knode,weight,knodule);}}}
      sbook.indexAutoTags=indexAutoTags;
 
      /* Setting up the clouds */

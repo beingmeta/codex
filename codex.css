@@ -1426,9 +1426,12 @@ div.codexglossform form {
 div.codexglossform form div.inputhelp {
     color: black; padding-bottom: 4px;
     display: none;}
-div.codexglossform form div.inputhelp span.bracketbutton {
-    float: right; font-family: fixed; font-size: 120%; font-weight: bold;
-    color: orange; cursor: pointer;}
+div.codexglossform form div.inputhelp .bracketbutton {
+    float: right; font-family: fixed; font-weight: bold; font-size: 120%;
+    padding: 0px; padding-left: 6px; padding-right: 6px; 
+    border: solid silver 4px; border-radius: 6px;
+    margin-bottom: 2px;
+    cursor: pointer;}
 div.codexglossform form div.inputhelp strong {font-size: 120%; color: orange;}
 div.codexglossform form.focused div.inputhelp { display: block;}
 
