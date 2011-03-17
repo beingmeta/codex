@@ -5,7 +5,7 @@ var codex_slices_version=parseInt("$Revision$".slice(10,-1));
 
 /* Copyright (C) 2009-2011 beingmeta, inc.
    This file implements the search component of a 
-    Javascript/DHTML UI for reading large structured documents (sBooks).
+   Javascript/DHTML UI for reading large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
    For more information on knodules, visit www.knodules.net
@@ -18,16 +18,16 @@ var codex_slices_version=parseInt("$Revision$".slice(10,-1));
    warranties of merchantability or fitness for any particular
    purpose.
 
-    Use and redistribution (especially embedding in other
-      CC licensed content) is permitted under the terms of the
-      Creative Commons "Attribution-NonCommercial" license:
+   Use and redistribution (especially embedding in other
+   CC licensed content) is permitted under the terms of the
+   Creative Commons "Attribution-NonCommercial" license:
 
-          http://creativecommons.org/licenses/by-nc/3.0/ 
+   http://creativecommons.org/licenses/by-nc/3.0/ 
 
-    Other uses may be allowed based on prior agreement with
-      beingmeta, inc.  Inquiries can be addressed to:
+   Other uses may be allowed based on prior agreement with
+   beingmeta, inc.  Inquiries can be addressed to:
 
-       licensing@beingmeta.com
+   licensing@beingmeta.com
 
    Enjoy!
 
@@ -47,14 +47,17 @@ var sbook_delete_icon="redx12x12.png";
 
     function renderNote(info,query,idprefix,standalone){
 	var key=info.qid||info.oid||info.id;
-	var tags=info.tags;
 	var target_id=(info.frag)||(info.id);
 	var target=((target_id)&&(fdjtID(target_id)));
 	var target_info=sbook.docinfo[target_id];
+	var head_info=target_info.head;
+	var head=((head_info)&&(head_info.elt));
 	var refiners=((query) && (query._refiners));
 	var score=((query)&&(query[key]));
 	var div=
 	    fdjtDOM(((info.maker) ? "div.codexnote.gloss" : "div.codexnote"),
+		    ((head)&&(makeTOCHead(head))),
+		    ((head_info)&&(makeIDHead(target,head_info,true))),
 		    ((standalone)&&(makelocbar(target_info))),
 		    // (makelocrule(target_info,target_info.head)),
 		    ((info.maker)&&(showglossinfo(info)))," ",
@@ -75,11 +78,12 @@ var sbook_delete_icon="redx12x12.png";
 		    ((info.audience)&&(info.audience.length)&&
 		     (info.audience.length>=div_threshold)&&
 		     (showaudience(info.audience))),
-		    ((info.tags)&&(showtags(info)))," ");
+		    (((info.tags)||(info.autotags))&&
+		     (showtags(info)))," ");
 	if (!(info.tstamp))
 	    div.title=sbook.getTitle(target,true);
 	// if (info.qid) div.about=info.qid;
-	div.about=info.frag;
+	div.about="#"+info.frag;
 	// div.setAttribute('about',"#"+info.id);
 	if (idprefix) div.id=idprefix+info.id;
 	if (info.qid) {
@@ -115,9 +119,26 @@ var sbook_delete_icon="redx12x12.png";
 	return expander_toggle(evt);}
 
     function showtags(info){
-	var tags=info.tags; var scores=tags.scores||false;
-	if ((typeof tags === 'string')||(tags instanceof String))
-	    tags=[tags];
+	var ctags=info.tags, atags=info.autotags, tags, scores;
+	if ((typeof ctags === 'string')||(ctags instanceof String))
+	    ctags=[ctags];
+	if ((atags)&&(!(atags.sorted))) {
+	    var weights=sbook.index.tagweights;
+	    atags.sort(function(t1,t2){
+		var v1=weights[t1], v2=weights[t2];
+		if ((v1)&&(v2)) {
+		    if (v1<v2) return -1;
+		    else if (v1>v2) return 1;
+		    else return 0;}
+		else if (v1) return 1;
+		else return -1;});
+	    
+	    atags.sorted=true;}
+	if (!(atags)) {tags=ctags; scores=tags.scores||false;}
+	else if (!(ctags)) {tags=atags; scores=false;}
+	else {
+	    scores=ctags.scores||false;
+	    tags=[].concat(ctags).concat(atags);}
 	var tagcount=0;
 	var countspan=fdjtDOM("span.count");
 	var span=fdjtDOM("span.tags.fdjtexpands"); var tagspan=span;
@@ -146,14 +167,14 @@ var sbook_delete_icon="redx12x12.png";
 	var span=fdjtDOM(
 	    ((tags.length>=div_threshold)?"div.audience":"span.audience"),
 	    ((tags.length>=div_threshold)&&
-		  (fdjtDOM("span.count",tags.length, " outlets"))));
+	     (fdjtDOM("span.count",tags.length, " outlets"))));
 	var i=0; var lim=tags.length;
 	// This might do some kind of more/less controls and sorted
 	// or cloudy display
 	while (i<tags.length) {
-	  var tag=tags[i]; var info=fdjtKB.ref(tag);
-	  fdjtDOM.append(span,((i>0)?" \u00b7 ":" "),info.name);
-	  i++;}
+	    var tag=tags[i]; var info=fdjtKB.ref(tag);
+	    fdjtDOM.append(span,((i>0)?" \u00b7 ":" "),info.name);
+	    i++;}
 	return span;}
     function showlinks(refs,spec){
 	var span=fdjtDOM(spec);
@@ -202,7 +223,7 @@ var sbook_delete_icon="redx12x12.png";
 		((overdoc)&&(overdoc.name)&&
 		 (fdjtDOM("span.overdoc",(overdoc.name)))),
 		((overdoc)&&(overdoc.name)&&(" \u00b7 ")),
-	       	(((!(overdoc))&&(userinfo)&&
+		(((!(overdoc))&&(userinfo)&&
 		  ((userinfo.name)||(userinfo.userid)))&&
 		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid))))),
 		((!(overdoc))&&(userinfo)&&
@@ -449,14 +470,14 @@ var sbook_delete_icon="redx12x12.png";
 		    curhead=headinfo;}
 		threadelt=fdjtDOM("div.codexthread.idthread",
 				  makeIDHead(target,headinfo,true));
-		threadelt.frag=frag;
+		threadelt.about="#"+frag;
 		threadelt.title=sbook.getTitle(target,true);
 		fdjtDOM.append(headelt,threadelt);
 		curinfo=docinfo;}
 	    fdjtDOM.append(threadelt,renderNote(note));}
 	return div;}
     sbook.UI.showSlice=showSlice;
-    
+
     function sumText(target){
 	var title=sbook.getTitle(target,true);
 	if (title.length<40) return title;
@@ -710,7 +731,7 @@ fdjt_versions.decl("codex",codex_slices_version);
 fdjt_versions.decl("codex/slices",codex_slices_version);
 
 /* Emacs local variables
-;;;  Local variables: ***
-;;;  compile-command: "cd ..; make" ***
-;;;  End: ***
+   ;;;  Local variables: ***
+   ;;;  compile-command: "cd ..; make" ***
+   ;;;  End: ***
 */

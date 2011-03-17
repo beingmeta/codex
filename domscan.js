@@ -169,7 +169,7 @@ function CodexDOMScan(root,docinfo){
 	    if (tocloc>=0) return parseInt(cname.slice(5,6));}
 	if ((sbook.notoc)&&(sbook.notoc.match(elt))) return 0;
 	if ((sbook.ignore)&&(sbook.ignore.match(elt))) return 0;
-	if ((elt.tagName==='hgroup')||(elt.tagName==='header'))
+	if ((elt.tagName==='HGROUP')||(elt.tagName==='HEADER'))
 	    return getFirstTocLevel(elt,true);
 	if (elt.tagName.search(/H\d/)==0)
 	    return parseInt(elt.tagName.slice(1,2));
@@ -286,7 +286,9 @@ function CodexDOMScan(root,docinfo){
 	    var curinfo=scanstate.curinfo;
 	    var notoc=scanstate.notoc;
 	    var header=fdjtDOM.getChild(child,"header");
-	    var nextlevel=getLevel(child)||getFirstTocLevel(header)||getFirstTocLevel(child)||
+	    var nextlevel=getLevel(child)||
+		getFirstTocLevel(header)||
+		getFirstTocLevel(child)||
 		((curlevel)?(curlevel+1):(1));
 	    handleHead(child,docinfo,scanstate,nextlevel,
 		       curhead,curinfo,curlevel,
@@ -364,7 +366,8 @@ function CodexDOMScan(root,docinfo){
 		(child.getAttribute('data-tags'));
 	    if (tags) info.tags=tags.split(';');}
 	if ((toclevel)&&(!(info.tocdone)))
-	    handleHead(child,docinfo,scanstate,toclevel,curhead,curinfo,curlevel,nodefn);
+	    handleHead(child,docinfo,scanstate,toclevel,
+		       curhead,curinfo,curlevel,nodefn);
 	var children=child.childNodes;
 	var i=0; var len=children.length;
 	while (i<len) {

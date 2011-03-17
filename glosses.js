@@ -380,7 +380,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (bracketed) {
 		fdjtUI.cancel(evt);
 		handleBracketed(form,getbracketed(target));}
-	    else if (evt.ctrlKey) {
+	    else if (!(evt.shiftKey)) {
 		fdjtUI.cancel(evt);
 		submitEvent(target);}}}
 

@@ -1019,8 +1019,12 @@ sbook.Startup=
 			(knodule.handleSubjectEntry(tag.slice(starpower))));
 	     var i=0; var lim=ids.length;
 	     while (i<lim) {
-		 var node=fdjtID(ids[i++]);
-		 if (node) sbook_index.add(node.id,knode,weight,knodule);}}}
+		 var info=sbook.docinfo[ids[i++]];
+		 if (!(info)) continue;
+		 var tagval=((typeof knode === 'string')?(knode):(knode.dterm));
+		 if (info.autotags) info.autotags.push(tagval);
+		 else info.autotags=[tagval];
+		 sbook_index.add(info.frag,knode,weight,knodule);}}}
      sbook.useAutoIndex=useAutoIndex;
 
      /* Setting up the clouds */
