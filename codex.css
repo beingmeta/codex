@@ -859,8 +859,14 @@ span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 
-div.codexslice .codexnote .tochead { display: none;}
-div.codexslice .codexnote .idhead { display: none;}
+div.codexslice .tocthread .codexnote .tochead { display: none;}
+div.codexslice .tocthread .idthread:first-child
+      .codexnote:first-child .tochead {
+    display: block;}
+div.codexslice .idthread .codexnote .idhead { display: none;}
+div.codexslice .idthread .codexnote:first-child .idhead {
+    display: block;}
+
 div.codexslice .codexnote div.detail { 
   display: none; color: ivory; clear: both;}
 div.codexslice .showdetail div.detail { display: block;}

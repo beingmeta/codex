@@ -402,7 +402,9 @@ var sbook_delete_icon="redx12x12.png";
     function sortbyloctime(x,y){
 	if (x.starts_at<y.starts_at) return -1;
 	else if (x.starts_at>y.starts_at) return 1;
-	if ((x.tstamp)&&(y.tstamp)) {
+	else if (x.ends_at<y.ends_at) return -1;
+	else if (x.ends_at>y.ends_at) return 1;
+	else if ((x.tstamp)&&(y.tstamp)) {
 	    if (x.tstamp<y.tstamp) return -1;
 	    else if (x.tstamp>y.tstamp) return 1;
 	    else return 0;}
@@ -411,71 +413,75 @@ var sbook_delete_icon="redx12x12.png";
 	else return 0;}
 
     function showSlice(results,div,scores,sort){
-	var notes=new Array(results.length);
-	var i=0; var lim=results.length;
-	while (i<lim) {
-	    var r=results[i];
-	    if (typeof r === 'string') {
-		var ref=sbook.docinfo[r]||sbook.glosses.ref(r);
-		if (!(ref)) fdjtLog("No resolution for %o",r);
-		notes[i]=ref;}
-	    else notes[i]=r;
-	    i++;}
-	if (!(sort)) {}
-	else if (scores)
-	    notes.sort(function(n1,n2){
-		var s1=(scores[n1.qid]);
-		var s2=(scores[n2.qid]);
-		if ((s1)&&(s2)) {
-		    if (s1>s2) return -1;
-		    else if (s2>s1) return 1;}
-		else if (s1) return -1;
-		else if (s2) return 1;
-		if (n1.starts_at<n2.starts_at) return -1;
-		else if (n1.starts_at>n2.starts_at) return 1;
-		else if ((n1.tstamp)&&(n2.tstamp)) {
-		    if (n1.tstamp>n2.tstamp) return -1;
-		    else if (n1.tstamp>n2.tstamp) return 1;
-		    else return 0;}
-		else if (n1.tstamp) return 1;
-		else if (n2.tstamp) return -1;
-		else return 0;});
-	else notes.sort(function(n1,n2){
+      var notes=new Array(results.length);
+      var i=0; var lim=results.length;
+      while (i<lim) {
+	var r=results[i];
+	if (typeof r === 'string') {
+	  var ref=sbook.docinfo[r]||sbook.glosses.ref(r);
+	  if (!(ref)) fdjtLog("No resolution for %o",r);
+	  notes[i]=ref;}
+	else notes[i]=r;
+	i++;}
+      if (!(sort)) {}
+      else if (scores)
+	notes.sort(function(n1,n2){
+	    var s1=(scores[n1.qid]);
+	    var s2=(scores[n2.qid]);
+	    if ((s1)&&(s2)) {
+	      if (s1>s2) return -1;
+	      else if (s2>s1) return 1;}
+	    else if (s1) return -1;
+	    else if (s2) return 1;
 	    if (n1.starts_at<n2.starts_at) return -1;
 	    else if (n1.starts_at>n2.starts_at) return 1;
+	    else if (n1.ends_at<n2.ends_at) return -1;
+	    else if (n1.ends_at>n2.ends_at) return 1;
 	    else if ((n1.tstamp)&&(n2.tstamp)) {
-		if (n1.tstamp>n2.tstamp) return -1;
-		else if (n1.tstamp>n2.tstamp) return 1;
-		else return 0;}
+	      if (n1.tstamp>n2.tstamp) return -1;
+	      else if (n1.tstamp>n2.tstamp) return 1;
+	      else return 0;}
 	    else if (n1.tstamp) return 1;
 	    else if (n2.tstamp) return -1;
 	    else return 0;});
+      else notes.sort(function(n1,n2){
+	  if (n1.starts_at<n2.starts_at) return -1;
+	  else if (n1.starts_at>n2.starts_at) return 1;
+	  else if (n1.ends_at<n2.ends_at) return -1;
+	  else if (n1.ends_at>n2.ends_at) return 1;
+	  else if ((n1.tstamp)&&(n2.tstamp)) {
+	    if (n1.tstamp>n2.tstamp) return -1;
+	    else if (n1.tstamp>n2.tstamp) return 1;
+	    else return 0;}
+	  else if (n1.tstamp) return 1;
+	  else if (n2.tstamp) return -1;
+	  else return 0;});
 	
-	var headelt=false; var threadelt=false;
-	var curhead=false; var curinfo=false;
-	var i=0; var len=notes.length; while (i<len) {
-	    var note=notes[i++];
-	    var frag=note.id||note.frag;
-	    if (!(frag)) continue;
-	    var target=fdjtID(frag);
-	    var docinfo=sbook.docinfo[target.id];
-	    var headinfo=docinfo.head;
-	    var head=document.getElementById(headinfo.frag);
-	    var tochead=makeTOCHead(head);
-	    if (curinfo!==docinfo) {
-		if (headinfo!==curhead) {
-		    headelt=fdjtDOM("div.codexthread.tocthread",tochead);
-		    headelt.frag=headinfo.frag;
-		    fdjtDOM.append(div,headelt);
-		    curhead=headinfo;}
-		threadelt=fdjtDOM("div.codexthread.idthread",
-				  makeIDHead(target,headinfo,true));
-		threadelt.about="#"+frag;
-		threadelt.title=sbook.getTitle(target,true);
-		fdjtDOM.append(headelt,threadelt);
-		curinfo=docinfo;}
-	    fdjtDOM.append(threadelt,renderNote(note));}
-	return div;}
+      var headelt=false; var threadelt=false;
+      var curhead=false; var curinfo=false;
+      var i=0; var len=notes.length; while (i<len) {
+	var note=notes[i++];
+	var frag=note.id||note.frag;
+	if (!(frag)) continue;
+	var target=fdjtID(frag);
+	var docinfo=sbook.docinfo[target.id];
+	var headinfo=docinfo.head;
+	var head=document.getElementById(headinfo.frag);
+	// var tochead=makeTOCHead(head);
+	if (curinfo!==docinfo) {
+	  if (headinfo!==curhead) {
+	    headelt=fdjtDOM("div.codexthread.tocthread"); // ,tochead
+	    headelt.frag=headinfo.frag;
+	    fdjtDOM.append(div,headelt);
+	    curhead=headinfo;}
+	  threadelt=fdjtDOM("div.codexthread.idthread");
+	  // ,makeIDHead(target,headinfo,true)
+	  threadelt.about="#"+frag;
+	  threadelt.title=sbook.getTitle(target,true);
+	  fdjtDOM.append(headelt,threadelt);
+	  curinfo=docinfo;}
+	fdjtDOM.append(threadelt,renderNote(note));}
+      return div;}
     sbook.UI.showSlice=showSlice;
 
     function sumText(target){
@@ -562,15 +568,16 @@ var sbook_delete_icon="redx12x12.png";
 	var headelt=findTOCref(div,headid,head_starts);
 	if ((!(headelt))||(headelt.tocref!==headid)) {
 	    var insertion=headelt;
-	    headelt=fdjtDOM("div.codexthread.headthread",makeTOCHead(head,head));
+	    headelt=fdjtDOM("div.codexthread.tocthread");
+	    // ,makeTOCHead(head,head)
 	    headelt.tocref=headid; headelt.starts=head_starts;
 	    if (insertion) fdjtDOM.insertBefore(insertion,headelt);
 	    else fdjtDOM.append(div,headelt);}
 	var idelt=((frag===headid)?(headelt):(findTOCref(headelt,frag,starts)));
 	if ((!(idelt))||(idelt.tocref!==frag)) {
 	    var insertion=idelt;
-	    idelt=fdjtDOM("div.codexthread.idthread",
-			  makeIDHead(about,headinfo,true));
+	    idelt=fdjtDOM("div.codexthread.idthread");
+	    // ,makeIDHead(about,headinfo,true)
 	    idelt.tocref=frag; idelt.start=starts; idelt.about="#"+frag;
 	    idelt.title=sbook.getTitle(about,true);
 	    if (insertion) fdjtDOM.insertBefore(insertion,idelt);
