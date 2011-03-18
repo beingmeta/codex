@@ -422,7 +422,7 @@ var sbook_gloss_data=
 	    fdjtDOM.dropClass(sbook.target,"sbooktarget");
 	    sbook.target=false;}
 	fdjtDOM.addClass(target,"sbooktarget");
-	fdjtState.setCookie("sbooktarget",target);
+	fdjtState.setCookie("sbooktarget",target.id);
 	sbook.target=target;
 	if (sbook.full_cloud)
 	    sbook.setCloudCuesFromTarget(sbook.full_cloud,target);

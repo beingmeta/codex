@@ -42,7 +42,7 @@ span.codexcssversion:after {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
     z-index: 100;}
 #CODEXPAGE { width: auto;}
-.sbookpaginated #CODEXPAGE {
+#CODEXPAGE {
     position: fixed;
     top: 70px; bottom: 60px; left: 0px; right: 0px;
     overflow: hidden;}
@@ -52,7 +52,7 @@ span.codexcssversion:after {
     opacity: 1.0; background-color: inherit;}
 #CODEXCANVAS {
     margin: 0px; padding: 0px; border: 0px;}
-.sbookpaginated #CODEXPAGE #CODEXCANVAS {
+#CODEXPAGE #CODEXCANVAS {
     position: absolute; left: 0; right: 0;}
 body #CODEXPAGE {}
 body.sbookpagehorizontal #CODEXPAGE #CODEXCANVAS {
@@ -1500,6 +1500,11 @@ h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
 .gutenberg { opacity: 0.5;}
 .gutenberg:hover { opacity: 1.0;}
     
+.sbookfullpage {
+    page-break-before: always;
+    page-break-after: always;
+    page-break-inside: avoid;}
+
 
 /* HTML5ish elements */
 

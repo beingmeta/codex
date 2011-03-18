@@ -268,6 +268,10 @@ var sbookPaginate=
 		// If the top of the current node is above the page,
 		//  make scantop be the page top
 		var scantop=((info.top<pagetop)?(pagetop):(info.top));
+		var topnode=curpage.topnode||false;
+		var at_top=((topnode)?
+			    ((scantop-info.margin_top)<=(topnode.top+topnode.padding_top+1)):
+			    ((scantop-info.margin_top)<=pagetop))
 		var dbginfo=((debug)&&
 			     ("P#"+(curpage.pagenum+1)+
 			      "["+pagetop+","+pagelim+
@@ -288,7 +292,7 @@ var sbookPaginate=
 		    dbginfo=scan.getAttribute("sbookpagedbg")+" // "+dbginfo;
 		if (isPageHead(scan,style)) {
 		    // Unless we're already at the top, just break
-		    if (scantop>pagetop) newtop=scan;
+		    if (!(at_top)) newtop=scan;
 		    else {}}
 		// WE'RE COMPLETELY OFF THE PAGE
 		else if (scantop>pagelim) {
@@ -426,8 +430,9 @@ var sbookPaginate=
 		if (!(newtop)) {
 		    // When we're not starting a new page, just extend the bottom
 		    //  of this one
-		    curpage.bottom=info.bottom;
-		    curpage.last=scan;}
+		    if (!(fdjtDOM.hasParent(next,scan))) {
+			curpage.bottom=info.bottom;
+			curpage.last=scan;}}
 		else {
 		    // If we starting a new page, clean up the page break
 		    var newinfo=((newtop==scan)?(info):nodeInfo(newtop));
@@ -461,12 +466,14 @@ var sbookPaginate=
 				    dbginfo=dbginfo+"~!"+curpage.bottom;}}}
 		    // If it's a clean break, make sure that the page
 		    // bottom is good
-		    else if (!(last)) {
-			// curpage.bottom=newinfo.top-1;
-		    }
+		    else if (last) {
+			if (last_info.bottom<pagelim) {
+			    curpage.bottom=last_info.bottom;}
+			else if (info.top<pagelim)
+			    curpage.bottom=info.top;
+			else {}}
 		    else {
-			var mbottom=parsePX(last_style.marginBottomWidth);
-			curpage.bottom=last_info.top+last_info.height-mbottom;}
+			if (info.top<pagelim) curpage.bottom=info.top;}
 		    if (sbook.Trace.layout) 
 			fdjtLog("New %spage break P%d[%d,%d]#%s %o, closed P%d[%d,%d] %o",
 				((splitblock)?("split "):("")),
@@ -477,7 +484,7 @@ var sbookPaginate=
 		    // Returns start and end location
 		    if (splitblock) {
 			var locinfo=getLocInfo(splitblock);
-			curpage.top=prevpage.bottom;
+			curpage.top=pagetop=prevpage.bottom;
 			if (locinfo)  {
 			    var height=newinfo.height;
 			    var above=curpage.top-newinfo.top;
@@ -487,13 +494,13 @@ var sbookPaginate=
 		    else {
 			var locinfo=getLocInfo(newtop);
 			if (locinfo) curpage.loc=locinfo.start;
-			curpage.top=newinfo.top;}
+			curpage.top=pagetop=newinfo.top;}
 		    // Initialize the first and last elements on the page
 		    curpage.first=newtop; curpage.last=newtop;
 		    // Indicate the straddling top element, if we're split
 		    if (splitblock) curpage.topedge=splitblock;
+		    else curpage.topnode=newinfo;
 		    // Initialize the scan variables of the page top and bottom
-		    pagetop=curpage.top;
 		    pagelim=curpage.limit=pagetop+pagesize;
 		    last=scan; last_info=info; last_style=style;
 		    scan=newtop; if (scan) style=getStyle(scan);
@@ -530,8 +537,7 @@ var sbookPaginate=
 		    setTimeout(stepfn,200);}
 		else {
 		    var doneat=fdjtET();
-		    if ((sbook.Trace.layout)||
-			((sbook.Trace.startup)&&(!(sbook._setup))))
+		    if ((sbook.Trace.layout)||(sbook.Trace.startup))
 			fdjtLog("Paginated %d nodes into %d pages with pagesize=%d in %s",
 				nodecount,pages.length,pagesize,
 				fdjtTime.secs2short(doneat-startedat));
@@ -575,19 +581,25 @@ var sbookPaginate=
 
 	function avoidPageFoot(elt,style){
 	    if (!(elt)) return false;
-	    if ((elt.id)&&(sbook.docinfo[elt.id])&&
-		((sbook.docinfo[elt.id]).toclevel))
-		return true;
 	    if (!(style)) style=getStyle(elt);
-	    return (style.pageBreakAfter==='avoid')||
-		((sbook_avoidpagefoot)&&(sbook_avoidpagefoot.match(elt)));}
+	    if (style.pageBreakAfter==='avoid') return true;
+	    else if (style.pageBreakAfter) return false;
+	    else if ((elt.id)&&(sbook.docinfo[elt.id])&&
+		     ((sbook.docinfo[elt.id]).toclevel))
+		return true;
+	    else return false;}
 
 	function nodeInfo(node,style){
 	    var info=getGeometry(node,sbook_body);
-	    var fontsize=((style)||getStyle(node)).fontSize;
+	    if (!(style)) style=getStyle(node);
+	    var fontsize=style.fontSize;
 	    if ((fontsize)&&(typeof fontsize === 'string'))
 		fontsize=parseInt(fontsize.slice(0,fontsize.length-2));
 	    info.fontsize=(fontsize||12);
+	    info.margin_top=parsePX(style.marginTop)||0;
+	    info.padding_top=parsePX(style.paddingTop)||0;
+	    info.margin_bottom=parsePX(style.marginBottom)||0;
+	    info.padding_bottom=parsePX(style.paddingBottom)||0;
 	    return info;}
 
 	var sbook_content_nodes=['IMG','BR','HR'];
