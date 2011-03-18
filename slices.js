@@ -141,7 +141,10 @@ var sbook_delete_icon="redx12x12.png";
 	    tags=[].concat(ctags).concat(atags);}
 	var tagcount=0;
 	var countspan=fdjtDOM("span.count");
-	var span=fdjtDOM("span.tags.fdjtexpands"); var tagspan=span;
+	var tagicon=fdjtDOM.Image
+	  (sbicon("TagIcon16x16.png"),"img.tagicon","tags");
+	var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
+	var tagspan=span;
 	var controller=false;
 	var i=0; var lim=tags.length;
 	while (i<tags.length) {
