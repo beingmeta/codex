@@ -743,7 +743,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("pageForward c=%o n=%o",sbook.curpage,sbook.pages.length);
 	if ((sbook.mode==="scanning")||(sbook.mode==="tocscan"))
 	    CodexMode(false);
-	if ((sbook.paginate)&&(sbook.colpage)) {
+	if ((sbook.paginate)&&(sbook.colpage)&&(sbook.pages)) {
 	    if (sbook.curpage===sbook.pages.length) {}
 	    else sbook.GoToPage(sbook.curpage=(sbook.curpage+1));}
 	else if ((sbook.paginate)&&(sbook.pageinfo)) {
@@ -780,7 +780,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("pageBackward c=%o n=%o",sbook.curpage,sbook.pages.length);
 	if ((sbook.mode==="scanning")||(sbook.mode==="tocscan"))
 	    CodexMode(false);
-	if ((sbook.paginate)&&(sbook.colpage)) {
+	if ((sbook.paginate)&&(sbook.colpage)&&(sbook.pages)) {
 	    if (sbook.curpage===0) {}
 	    else sbook.GoToPage(sbook.curpage=(sbook.curpage-1));}
 	else if ((sbook.paginate)&&(sbook.pageinfo)) {

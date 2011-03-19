@@ -75,10 +75,12 @@ body.sbookpagehorizontal #CODEXMASK { display: none;}
 
 #CODEXASIDE {
     position: fixed; z-index: -100;
-    top: 60px; left: 60px; right: 60px; bottom: 60px;}
+    top: 60px; left: 60px; right: 60px; bottom: 60px;
+    display: none;}
 #CODEXREF {
     position: fixed; z-index: -100;
-    top: 60px; left: 60px; right: 60px;}
+    top: 60px; left: 60px; right: 60px;
+    display: none;}
 
 body.sbookpagehorizontal #CODEXPAGE #CODEXCANVAS {
     padding-left: 0px; padding-right: 0px;}
