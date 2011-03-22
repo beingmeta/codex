@@ -79,7 +79,7 @@ var sbook=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// Whether we're debugging server interaction
 	 glosses: false,// Whether we're tracing gloss processing
-	 layout: 0,	// Whether to trace pagination
+	 layout: 1,	// Whether to trace pagination
 	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
@@ -435,25 +435,6 @@ var sbook_gloss_data=
 
     /* Navigation */
 
-    var x_offset=0; var y_offset=0;
-    function scrollTo(x,y,win){
-	if (sbook.nativescroll) (win||window).scrollTo(x,y);
-	else {
-	    window.scrollTo(0,0);
-	    sbook.page.scrollLeft=0;
-	    sbook.page.scrollTop=0;
-	    (win||sbook.pages).style.left=""+(sbook.page.offsetLeft-x)+"px";
-	    (win||sbook.pages).style.top=""+(sbook.page.offsetTop-y)+"px";}}
-    sbook.scrollTo=scrollTo;
-    function scrollPos(win){
-	if (sbook.nativescroll)
-	    return {x:(win||window).scrollX,y:(win||window).scrollY};
-	else {
-	    var x=fdjtDOM.parsePX((win||(sbook.pages)).style.left);
-	    var y=fdjtDOM.parsePX((win||sbook.pages).style.top);
-	    return {x: x,y: -y};}}
-    sbook.scrollPos=scrollPos;
-
     function resizeBody(){
 	if (sbook.nativescroll) {}
 	else {
@@ -498,10 +479,7 @@ var sbook_gloss_data=
 	if ((target===sbook.body)||(target===document.body)) return;
 	var saved_y=((fdjtDOM.isVisible(target))&&fdjtDOM.viewTop());
 	var saved_x=((fdjtDOM.isVisible(target))&&(fdjtDOM.viewLeft()));
-	window.location.hash=target.id;
-	// This resets when setting the ID moved the page unneccessarily
-	if ((fdjtDOM.viewLeft()!==saved_x)||(fdjtDOM.viewTop()!==saved_y))
-	    sbook.scrollTo(saved_x,saved_y);}
+	window.location.hash=target.id;}
     sbook.setHashID=setHashID;
 
     var syncing=false;

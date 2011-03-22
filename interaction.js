@@ -641,15 +641,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	page_x=touch.screenX; page_y=touch.screenY;
 	touch_scrolled=true;}
 
-    function scrollBody(dx,dy){
-	var curpos=sbook.scrollPos();
-	var curx=curpos.x; var cury=curpos.y;
-	if (sbook.Trace.gestures)
-	    fdjtLog("scrollBody(%o,%o)",dx,dy);
-	var newx=curx-dx; var newy=cury-dy;
-	fdjtDOM.addClass(CodexHUD,"hidebuttons");
-	sbook.scrollTo(newx,newy);}
-
     function hud_touchend(evt){
 	if (sbook.Trace.gestures) tracetouch("hud_touchend",evt);
 	var target=fdjtUI.T(evt);
@@ -1004,9 +995,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXHELP": {touchstart: sbook.dropHUD,
 			  touchmove: cancel,
 			  touchend: cancel},
-	 "#CODEXMASK": {touchstart: shared_touchstart,
-			touchmove: content_touchmove,
-			touchend: content_touchend},
 	 "#CODEXFLYLEAF": {touchend: flyleaf_tap},
 	 "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			    touchmove: cancel,touchend: cancel},

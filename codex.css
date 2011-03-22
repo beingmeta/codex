@@ -48,11 +48,15 @@ div#CODEXPAGE {
 div#CODEXPAGE div#CODEXPAGES {
     position: absolute; top: 0px; left: 0px;
     padding: 0px; margin: 0px; border: 0px;
-    -webkit-column-rule-width: 0px;
-    -webkit-column-rule-color: black;
-    -webkit-column-rule-style: solid;
     text-align: center;
     overflow: visible;}
+body.sbookpaginated div#CODEXPAGE div#CODEXPAGES {
+    column-width: 40em;
+    column-gap: 7em;
+    column-rule-width: 0px;
+    column-rule-color: black;
+    column-rule-style: solid;}
+
 div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
     text-align: left;
     padding: 0px; margin: 0px; border: 0px;
@@ -60,6 +64,7 @@ div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
 
 div#CODEXCONTENT .codexpagebreak {
     column-break-before: always;
+    break-before: always;
     -o-column-break-before: always;
     -webkit-column-break-before: always;
     -moz-column-break-before: always;}
@@ -481,11 +486,11 @@ div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
 
 div#CODEXFLYTOC div.codextoc.cur div.sub { display: none;}
 
-div.codextoc .sectname.cohi { color: gold;}
+div.codextoc .sectname.cohi { background-color: gold;}
 div.codextoc .sectname { color: darkblue; cursor: pointer;}
 div.codextoc div.sub a.sectname { 
   color: darkblue; font-size: 80%; white-space: nowrap;}
-div.codextoc div.sub a.sectname.cohi { color: gold; }
+div.codextoc div.sub a.sectname.cohi { background-color: gold; }
 
 div#CODEXHUD div.codextoc div.head { display: none;}
 div#CODEXHUD div.codextoc div.spanbar { display: none;}
