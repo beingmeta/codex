@@ -41,21 +41,30 @@ span.codexcssversion:after {
 #CODEXHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
     z-index: 100;}
-#CODEXPAGE { width: auto;}
-#CODEXPAGE {
-    position: fixed;
-    top: 70px; bottom: 60px; left: 0px; right: 0px;
-    overflow: hidden;}
-#CODEXPAGE #CODEXMASK {
-    position: absolute; z-index: 75;
-    bottom: 0px; left: 0px; right: 0px; width: 100%;
-    opacity: 1.0; background-color: inherit;}
-#CODEXCANVAS {
-    margin: 0px; padding: 0px; border: 0px;}
-#CODEXPAGE #CODEXCANVAS {
-    position: absolute; left: 0; right: 0;}
-body #CODEXPAGE {}
-body.sbookpagehorizontal #CODEXPAGE #CODEXCANVAS {
+div#CODEXPAGE {
+    position: fixed; overflow: visible;
+    padding: 0px; margin: 0px; border: 0px;
+    top: 70px; bottom: 70px; left: 50px; right: 50px;}
+div#CODEXPAGE div#CODEXPAGES {
+    /* position: absolute; */
+    padding: 0px; margin: 0px; border: 0px;
+    -webkit-column-rule-width: 0px;
+    -webkit-column-rule-color: black;
+    -webkit-column-rule-style: solid;
+    text-align: center;
+    overflow: visible;}
+div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
+    text-align: left;
+    padding: 0px; margin: 0px; border: 0px;
+    overflow: visible;}
+
+div#CODEXCONTENT .codexpagebreak {
+    column-break-before: always;
+    -o-column-break-before: always;
+    -webkit-column-break-before: always;
+    -moz-column-break-before: always;}
+
+#CODEXPAGE #CODEXPAGES {
     transition-property: transform; transition-duration: 0.5s;
     -webkit-transition-property: -webkit-transform;
     -webkit-transition-duration: 0.5s;
@@ -63,16 +72,6 @@ body.sbookpagehorizontal #CODEXPAGE #CODEXCANVAS {
     -moz-transition-duration: 0.5s;
     -o-transition-property: -o-transform;
     -o-transition-duration: 0.5s;}
-body.sbookpagehorizontal #CODEXMASK { display: none;}
-#CODEXPAGE #CODEXCANVAS {
-    transition-property: opacity; transition-duration: 0.3s;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 0.3s;
-    -moz-transition-property: opacity;
-    -moz-transition-duration: 0.3s;
-    -o-transition-property: opacity;
-    -o-transition-duration: 0.3s;}
-
 #CODEXASIDE {
     position: fixed; z-index: -100;
     top: 60px; left: 60px; right: 60px; bottom: 60px;
@@ -82,8 +81,9 @@ body.sbookpagehorizontal #CODEXMASK { display: none;}
     top: 60px; left: 60px; right: 60px;
     display: none;}
 
-body.sbookpagehorizontal #CODEXPAGE #CODEXCANVAS {
-    padding-left: 0px; padding-right: 0px;}
+/* The content */
+
+body.sbook { width: inherit;}
 
 /* The HUD */
 
@@ -711,7 +711,7 @@ div#SBOOKPAGEFOOT div#CODEXPAGELEAP:hover {
     opacity: 0.4;}
 body.hudup div#SBOOKPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.7;}
-div#CODEXCANVAS.pageswitch {
+div#CODEXPAGES.pageswitch {
     opacity: 0.0001;}
 
 div#CODEXFOOT div#SBOOKFOOTINFO {

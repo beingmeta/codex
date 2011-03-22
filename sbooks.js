@@ -442,34 +442,34 @@ var sbook_gloss_data=
 	    window.scrollTo(0,0);
 	    sbook.page.scrollLeft=0;
 	    sbook.page.scrollTop=0;
-	    (win||sbook.canvas).style.left=""+(sbook.page.offsetLeft-x)+"px";
-	    (win||sbook.canvas).style.top=""+(sbook.page.offsetTop-y)+"px";}}
+	    (win||sbook.pages).style.left=""+(sbook.page.offsetLeft-x)+"px";
+	    (win||sbook.pages).style.top=""+(sbook.page.offsetTop-y)+"px";}}
     sbook.scrollTo=scrollTo;
     function scrollPos(win){
 	if (sbook.nativescroll)
 	    return {x:(win||window).scrollX,y:(win||window).scrollY};
 	else {
-	    var x=fdjtDOM.parsePX((win||(sbook.canvas)).style.left);
-	    var y=fdjtDOM.parsePX((win||sbook.canvas).style.top);
+	    var x=fdjtDOM.parsePX((win||(sbook.pages)).style.left);
+	    var y=fdjtDOM.parsePX((win||sbook.pages).style.top);
 	    return {x: x,y: -y};}}
     sbook.scrollPos=scrollPos;
 
     function resizeBody(){
 	if (sbook.nativescroll) {}
 	else {
-	    var curx=x_offset-fdjtDOM.parsePX(sbook.canvas.style.left);
-	    var cury=y_offset-fdjtDOM.parsePX(sbook.canvas.style.top);
+	    var curx=x_offset-fdjtDOM.parsePX(sbook.pages.style.left);
+	    var cury=y_offset-fdjtDOM.parsePX(sbook.pages.style.top);
 	    // sbook.body.style.left=''; sbook.body.style.top='';
 	    var geom=fdjtDOM.getGeometry(sbook.body,sbook.body);
 	    x_offset=geom.left; y_offset=geom.top;
 	    sbook.bodyoff=[x_offset,y_offset];
-	    sbook.canvas.style.left='0px';
-	    sbook.canvas.style.top=(y_offset)+'px';}}
+	    sbook.pages.style.left='0px';
+	    sbook.pages.style.top=(y_offset)+'px';}}
     sbook.resizeBody=resizeBody;
 
     sbook.viewTop=function(){
 	if (sbook.nativescroll) return fdjtDOM.viewTop();
-	else return -(fdjtDOM.parsePX(sbook.canvas.style.top));}
+	else return -(fdjtDOM.parsePX(sbook.pages.style.top));}
     var sbookUIclasses=
 	/(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bsbookmargin\b)/;
 
@@ -549,8 +549,8 @@ var sbook_gloss_data=
 	    if (sbook.ends_at) uri=uri+"&maxloc="+encodeURIComponent(sbook.ends_at);
 	    if ((state.page)||(state.hasOwnProperty('page')))
 		uri=uri+"&page="+encodeURIComponent(state.page);
-	    if ((sbook.pages)&&(sbook.pages.length))
-		uri=uri+"&maxpage="+encodeURIComponent(sbook.pages.length);
+	    if (typeof sbook.pagecount === 'number')
+		uri=uri+"&maxpage="+encodeURIComponent(sbook.pagecount);
 	    if (sbook.Trace.dosync)
 		fdjtLog("syncPosition(call) %s: %o",uri,state);
 	    var req=new XMLHttpRequest();
@@ -627,8 +627,8 @@ var sbook_gloss_data=
 	    return;}
 	if (!(target)) return;
 	var page=((sbook.paginate)&&
-		  (sbook.pageinfo)&&
-		  (sbook.getPageAt(location)));
+		  (sbook.pagecount)&&
+		  (sbook.getPage(target)));
 	var info=((target.id)&&(sbook.docinfo[target.id]));
 	if (sbook.Trace.nav)
 	    fdjtLog("sbook.GoTo() #%o@P%o/L%o %o",
@@ -666,7 +666,7 @@ var sbook_gloss_data=
     // We try to animate the transition
     function sbookJumpTo(target){
 	if (sbook.animate) {
-	    sbook.canvas.style.opacity=0.0001;
+	    sbook.pages.style.opacity=0.0001;
 	    if (sbook.hudup) sbook.HUD.style.opacity=0.0001;
 	    fdjtDOM.addClass(document.body,"pageswitch");
 	    setTimeout(function() {
@@ -674,11 +674,11 @@ var sbook_gloss_data=
 		sbookGoTo(target);
 		fdjtDOM.dropClass(document.body,"pageswitch");
 		sbook.HUD.style.opacity=1.0;
-		sbook.canvas.style.opacity=1.0;
+		sbook.pages.style.opacity=1.0;
 		setTimeout(function(){
 		    fdjtDOM.dropClass(document.body,"pageswitch");
 		    sbook.HUD.style.opacity="";
-		    sbook.canvas.style.opacity="";},
+		    sbook.pages.style.opacity="";},
 			   200);},
 		       200);}
 	else {

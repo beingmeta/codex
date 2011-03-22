@@ -422,7 +422,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (target.name==='GOTOLOC') {
 	    min=0; max=Math.floor(sbook.ends_at/128);}
 	else if (target.name==='GOTOPAGE') {
-	    min=1; max=sbook.pages.length;}
+	    min=1; max=sbook.pagecount;}
 	else if (ch===13) fdjtUI.cancel(evt);
 	if (ch===13) {
 	    var num=parseInt(target.value);
@@ -740,31 +740,18 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function pageForward(){
 	if (sbook.Trace.gestures)
-	    fdjtLog("pageForward c=%o n=%o",sbook.curpage,sbook.pages.length);
+	    fdjtLog("pageForward c=%o n=%o",sbook.curpage,sbook.pagecount);
 	if ((sbook.mode==="scanning")||(sbook.mode==="tocscan"))
 	    CodexMode(false);
 	if ((sbook.paginate)&&(sbook.colpage)&&(sbook.pages)) {
-	    if (sbook.curpage===sbook.pages.length) {}
+	    if (sbook.curpage===sbook.pagecount) {}
 	    else sbook.GoToPage(sbook.curpage=(sbook.curpage+1));}
-	else if ((sbook.paginate)&&(sbook.pageinfo)) {
+	else if ((sbook.paginate)&&(sbook.pagecount)) {
 	    var newpage=false;
 	    if (sbook.mode==="glosses") CodexMode(true);
-	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
-		// If there isn't a valid page number, figure one out
-		//  (if possible) and advance from there.
-		var pagenum=sbook.getPage(sbook.viewTop());
-		if ((pagenum>=0)&&(pagenum<(sbook.pages.length-2)))
-		    sbook.FadeToPage(newpage=pagenum+1);}
-	    else {
-		var pagescroll=sbook.pagescroll;
-		var info=sbook.pageinfo[sbook.curpage];
-		if (sbook.page_bottom<info.bottom) 
-		    // This handles oversize pages
-		    sbook.FadeToPage(newpage=sbook.curpage,
-				     sbook.page_bottom-info.top);
-		else if (sbook.curpage===sbook.pages.length) {}
-		else sbook.FadeToPage(newpage=sbook.curpage+1);}
-	    if ((newpage)&&(sbook.mode==='allglosses'))
+	    if (sbook.curpage===sbook.pagecount) {}
+	    else sbook.GoToPage(newpage=sbook.curpage+1);
+	    if ((false)&&(newpage)&&(sbook.mode==='allglosses')) /* to fix */
 		sbook.UI.scrollGlosses(
 		    sbook.pageinfo[newpage].first,
 		    fdjtID("CODEXALLGLOSSES"),true);}
@@ -777,33 +764,19 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function pageBackward(){
 	if (sbook.Trace.gestures)
-	    fdjtLog("pageBackward c=%o n=%o",sbook.curpage,sbook.pages.length);
+	    fdjtLog("pageBackward c=%o n=%o",sbook.curpage,sbook.pagecount);
 	if ((sbook.mode==="scanning")||(sbook.mode==="tocscan"))
 	    CodexMode(false);
 	if ((sbook.paginate)&&(sbook.colpage)&&(sbook.pages)) {
 	    if (sbook.curpage===0) {}
 	    else sbook.GoToPage(sbook.curpage=(sbook.curpage-1));}
-	else if ((sbook.paginate)&&(sbook.pageinfo)) {
+	else if ((sbook.paginate)&&(sbook.pagecount)) {
 	    var newpage=false;
 	    if (sbook.mode==="glosses") CodexMode(true);
-	    if ((sbook.curpage<0)||(sbook.curpage>=sbook.pages.length)) {
-		// If there isn't a valid page number, figure one out
-		//  (if possible) and go back from there.
-		var pagenum=sbook.getPage(fdjtDOM.viewTop());
-		if ((pagenum<=(sbook.pages.length-1))&&(pagenum>0))
-		    sbook.FadeToPage(newpage=pagenum-1);}
+	    if (sbook.curpage===0) {}
 	    else {
-		var pagescroll=sbook.pagescroll;
-		var info=sbook.pageinfo[sbook.curpage];
-		if (sbook.page_top>info.top)
-		    // Move within oversize page
-		    sbook.FadeToPage(
-			newpage=sbook.curpage,
-			(sbook.page_top-info.top)-sbook.pageSize());
-		else if (sbook.curpage===0) {}
-		else {
-		    sbook.FadeToPage(newpage=sbook.curpage-1);}}
-	    if ((newpage)&&(sbook.mode==='allglosses'))
+		sbook.FadeToPage(newpage=sbook.curpage-1);}
+	    if ((false)&&(newpage)&&(sbook.mode==='allglosses')) /* to fix */
 		sbook.UI.scrollGlosses(
 		    sbook.pageinfo[newpage].first,
 		    fdjtID("CODEXALLGLOSSES"),true);}
