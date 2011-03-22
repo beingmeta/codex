@@ -167,13 +167,9 @@ var sbookPaginate=
 	    var npages=sbook.pagecount;
 	    var pbar=fdjtDOM("div.progressbar#CODEXPROGRESSBAR");
 	    var book_len=sbook.ends_at;
-	    var starts_at=info.loc;
-	    var ends_at=((sbook.pageinfo[pagenum+1])?
-			 (sbook.pageinfo[pagenum+1].loc):
-			 (book_len));
 	    pbar.style.left=(100*(pagenum/npages))+"%";
-	    pbar.style.width=((100*(npages-pagenum))/npages)+"%";
-	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF","L"+Math.floor(loc/128));
+	    pbar.style.width=(100/npages)+"%";
+	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF","L"+Math.floor(location/128));
 	    var pageno_text=fdjtDOM("span#CODEXPAGENOTEXT.pageno",pagenum+1,"/",npages);
 	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
 	    fdjtDOM.replace("CODEXPAGENO",pageno);
@@ -187,10 +183,13 @@ var sbookPaginate=
 
 	/* Pagination */
 
+	var vpages=true;
+
 	function Paginate(content){
 	    var page=sbook.page;
 	    var pages=sbook.pages;
 	    var content=sbook.content;
+	    var content_dim=getGeometry(content,pages);
 	    var vwidth=fdjtDOM.viewWidth();
 	    var height=page.offsetHeight;
 	    var width=page.offsetWidth;
@@ -203,13 +202,15 @@ var sbookPaginate=
 	    if (sbook.forced_breaks)
 		fdjtDOM.dropClass(sbook.forced_breaks,"codexpagebreak");
 	    sbook.forced_breaks=[];
+	    vpages=(!(content_dim.width>vwidth));
 	    var content_dim=getGeometry(content,pages);
-	    // Whether to use offsetTop (vs offsetLeft) to compute page numbers
-	    var usetop=(!(content_dim.width>vwidth));
-	    var scan=scanContent(content), next=scanContent(scan);
-	    function forceBreak(elt){
-		fdjtDOM.addClass(elt,"codexpagebreak");
-		var page=((usetop)?(elt.offsetTop/height):(elt.offsetLeft/vwidth));
+	    var scan=scanContent(content), next=scanContent(scan), prev=false;
+	    function forceBreak(elt,prev){
+		if (fdjtDOM.hasClass(elt,"codexpagebreak")) return;
+		if (avoidPageFoot(prev))
+		    fdjtDOM.addClass(prev,"codexpagebreak");
+		else fdjtDOM.addClass(elt,"codexpagebreak");
+		var page=((vpages)?(elt.offsetTop/height):(elt.offsetLeft/vwidth));
 		var pos=page%1;
 		if (sbook.Trace.pagination)
 		    fdjtLog("forceBreak %o ot=%o ch=%o h=%o page=%o, pos=%o",
@@ -219,27 +220,37 @@ var sbookPaginate=
 		    var top_margin=fdjtDOM.parsePX(getStyle(elt).marginTop)||0;
 		    elt.style.marginTop=(Math.floor(top_margin+delta))+"px";}
 		forced.push(elt);}
+	    function handle_known_breaks() {
+		var breaks=fdjtDOM.getChildren(content,"sbookpagebreak");
+		var i=0; var lim=breaks.length;
+		while (i<lim) forceBreak(breaks[i++],false);
+		if (sbook_forcepagehead) {
+		    var breaks=fdjtDOM.getChildren(content,sbook_forcepagehead);
+		    var i=0; var lim=breaks.length;
+		    while (i<lim) forceBreak(breaks[i++],false);}}
+	    // handle_known_breaks();
 	    while (scan) {
 		var geom=getGeometry(scan,content);
+		var next_geom=((next)&&(getGeometry(scan,content)));
 		var top=geom.top; var bottom=geom.top+geom.height;
-		var starts_at=((usetop)?(geom.top/height):(geom.left/vwidth));
-		var ends_at=((usetop)?(geom.bottom/height):(geom.right/vwidth));
+		var starts_at=((vpages)?(geom.top/height):(geom.left/vwidth));
+		var ends_at=((vpages)?(geom.bottom/height):(geom.right/vwidth));
 		var startpage=Math.floor(starts_at), endpage=Math.floor(ends_at);
-		var nextpage=((usetop)?(next.offsetTop/height):(next.offsetLeft/vwidth));
-		var break_after=((next)&&(endpage===Math.floor(nextpage)));
-		if (isPageHead(scan)) forceBreak(scan);
-		else if ((isPageBlock(scan))&&(startpage!==endpage)) forceBreak(scan);
-		else if ((next)&&(isPageFoot(scan))) {
-		    forceBreak(next); scan=next; next=scanContent(scan);}
-		else if (break_after) {
-		    if (avoidPageFoot(scan)) forceBreak(scan);
-		    else if (avoidPageHead(next)) forceBreak(scan);
-		    else {}}
+		var nextpage=((next_geom)&&
+			      ((vpages)?(next_geom.top/height):(next_geom.left/vwidth)));
+		var break_after=((next)&&(endpage!==Math.floor(nextpage)));
+		if (isPageHead(scan)) forceBreak(scan,prev);
+		else if ((isPageBlock(scan))&&(startpage!==endpage)) forceBreak(scan,prev);
+		else if ((next)&&(isPageFoot(scan))) forceBreak(next,prev);
+		else if ((break_after)&&(avoidPageFoot(scan))) forceBreak(scan,prev);
+		else {}
+		// Get the new geometry, assuming the DOM is updated synchronously
 		geom=getGeometry(scan,content);
-		
+		var newpage=Math.floor(geom.top/height);
 		if (newpage!==curpage) {
 		    pagetops[newpage]=scan;
 		    curpage=newpage;}
+		prev=scan;
 		if (scan=next) next=scanContent(scan);
 		else next=null;}
 	    var content_dim=getGeometry(content,pages);
@@ -252,6 +263,7 @@ var sbookPaginate=
 	    sbook.page_width=width;
 	    sbook.page_height=height;
 	    sbook.vwidth=vwidth;
+	    sbook.pagetops=pagetops;
 	    sbook.forced_breaks=forced;}
 
 	function clearPagination(){
@@ -456,7 +468,13 @@ var sbookPaginate=
 		fdjtDOM.transform,
 		"translate("+(-((num*(sbook.vwidth+1))+(off||0)))+"px,0px)",
 		"important");
-	    updatePageDisplay(num,);
+	    var ptop=sbook.pagetops[num];
+	    while (ptop) {
+		if ((ptop.id)&&(sbook.docinfo[ptop.id])) break;
+		else ptop=ptop.parentNode;}
+	    if (ptop) {
+		var info=sbook.docinfo[ptop.id];
+		updatePageDisplay(num,info.starts_at);}
 	    sbook.curpage=num;
 	    if (false) /* (!(nosave)) to fix */
 		sbook.setState(
