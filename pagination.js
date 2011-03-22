@@ -163,7 +163,7 @@ var sbookPaginate=
 
 	/* Updating the page display */
 
-	function updatePageDisplay(info,pagenum,pageoff) {
+	function updatePageDisplay(pagenum,location) {
 	    var npages=sbook.pagecount;
 	    var pbar=fdjtDOM("div.progressbar#CODEXPROGRESSBAR");
 	    var book_len=sbook.ends_at;
@@ -171,13 +171,10 @@ var sbookPaginate=
 	    var ends_at=((sbook.pageinfo[pagenum+1])?
 			 (sbook.pageinfo[pagenum+1].loc):
 			 (book_len));
-	    pbar.style.left=(100*(starts_at/book_len))+"%";
-	    pbar.style.width=((100*(ends_at-starts_at))/book_len)+"%";
-	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF",
-			       "L"+Math.ceil(info.loc/128));
-	    var pageno_text=
-		fdjtDOM("span#CODEXPAGENOTEXT.pageno",
-			pagenum+1,((pageoff)?"+":""),"/",npages);
+	    pbar.style.left=(100*(pagenum/npages))+"%";
+	    pbar.style.width=((100*(npages-pagenum))/npages)+"%";
+	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF","L"+Math.floor(loc/128));
+	    var pageno_text=fdjtDOM("span#CODEXPAGENOTEXT.pageno",pagenum+1,"/",npages);
 	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
 	    fdjtDOM.replace("CODEXPAGENO",pageno);
 	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
@@ -187,7 +184,6 @@ var sbookPaginate=
 	    pageno_text.title="click to jump to a particular page";
 	    fdjtDOM.addListeners
 	      (pageno_text,sbook.UI.handlers[sbook.ui]["#CODEXPAGENOTEXT"]);}
-	function updatePageDisplay(info,pagenum,pageoff) {}
 
 	/* Pagination */
 
@@ -198,7 +194,8 @@ var sbookPaginate=
 	    var vwidth=fdjtDOM.viewWidth();
 	    var height=page.offsetHeight;
 	    var width=page.offsetWidth;
-	    var forced=[];
+	    var forced=[]; var pagetops=[];
+	    var curpage=-1;
 	    content.style.maxWidth=content.style.minWidth=width+"px";
 	    pages.style.height=height+"px";
 	    pages.style[fdjtDOM.columnWidth]=width+"px";
@@ -214,7 +211,7 @@ var sbookPaginate=
 		fdjtDOM.addClass(elt,"codexpagebreak");
 		var page=((usetop)?(elt.offsetTop/height):(elt.offsetLeft/vwidth));
 		var pos=page%1;
-		if (true)
+		if (sbook.Trace.pagination)
 		    fdjtLog("forceBreak %o ot=%o ch=%o h=%o page=%o, pos=%o",
 			    elt,elt.offsetHeight,elt.clientHeight,height,page,pos);
 		if (pos>0.05) {
@@ -238,6 +235,11 @@ var sbookPaginate=
 		    if (avoidPageFoot(scan)) forceBreak(scan);
 		    else if (avoidPageHead(next)) forceBreak(scan);
 		    else {}}
+		geom=getGeometry(scan,content);
+		
+		if (newpage!==curpage) {
+		    pagetops[newpage]=scan;
+		    curpage=newpage;}
 		if (scan=next) next=scanContent(scan);
 		else next=null;}
 	    var content_dim=getGeometry(content,pages);
@@ -452,9 +454,9 @@ var sbookPaginate=
 			((caller)?"/"+caller:""),pageno,hoff);
 	    sbook.pages.style.setProperty(
 		fdjtDOM.transform,
-		"translate("+(-((num*sbook.vwidth)+(off||0)))+"px,0px)",
+		"translate("+(-((num*(sbook.vwidth+1))+(off||0)))+"px,0px)",
 		"important");
-	    updatePageDisplay();
+	    updatePageDisplay(num,);
 	    sbook.curpage=num;
 	    if (false) /* (!(nosave)) to fix */
 		sbook.setState(

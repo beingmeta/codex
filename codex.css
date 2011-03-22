@@ -56,7 +56,7 @@ div#CODEXPAGE div#CODEXPAGES {
 div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
     text-align: left;
     padding: 0px; margin: 0px; border: 0px;
-    overflow: visible;}
+    margin-right: 0px;}
 
 div#CODEXCONTENT .codexpagebreak {
     column-break-before: always;
