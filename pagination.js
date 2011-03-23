@@ -50,16 +50,16 @@ var sbookPaginate=
 	var sbook_pagescroll=false;
 	var sbook_fudge_bottom=false;
 	
-	var sbookPageHead=false;
-	var sbookPageFoot=false;
+	var pagebreakbefore=false;
+	var pagebreakafter=false;
 	
 	var pretweak_page_breaks=true;
 
 	var sbook_edge_taps=true;
 
 	var sbook_avoidpagebreak=false;
-	var sbook_forcepagehead=false;
-	var sbook_forcepagefoot=false;
+	var sbook_forcebreakbefore=false;
+	var sbook_forcebreakafter=false;
 	var sbook_avoidpagefoot=false;
 	var sbook_avoidpagehead=false;
 	var sbook_pageblock=false;
@@ -88,37 +88,18 @@ var sbookPaginate=
 
 	function readSettings(){
 	    sbook_avoidpagebreak=
-		fdjtDOM.sel(fdjtDOM.getMeta("sbookavoidbreak",true));
-	    sbook_pageblock=
-		fdjtDOM.sel(fdjtDOM.getMeta("sbookpageblock",true));
-	    sbook_forcepagehead=
-		fdjtDOM.sel(fdjtDOM.getMeta("sbookpagehead",true));
-	    sbook_forcepagefoot=
-		fdjtDOM.sel(fdjtDOM.getMeta("sbookpagefoot",true));
+		fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
+	    sbook_forcebreakbefore=
+		fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
+	    sbook_forcebreakafter=
+		fdjtDOM.sel(fdjtDOM.getMeta("forcebreakafter",true));
 	    sbook_avoidpagefoot=
-		fdjtDOM.sel(fdjtDOM.getMeta("sbookavoidfoot",true));
+		fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakafter",true));
 	    sbook_avoidpagehead=
-		fdjtDOM.sel(fdjtDOM.getMeta("sbookavoidhead",true));
+		fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakbefore",true));
 	    sbook_fullpages=
 		fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));}
 	sbookPaginate.readSettings=readSettings;
-	sbookPaginate.getSettings=function(){
-	    var result= {};
-	    if (sbook_avoidpagebreak)
-		result["sbook_avoidpagebreak"]=sbook_avoidpagebreak;
-	    if (sbook_pageblock)
-		result["sbook_pageblock"]=sbook_pageblock;
-	    if (sbook_forcepagehead)
-		result["sbook_forcepagehead"]=sbook_forcepagehead;
-	    if (sbook_forcepagefoot)
-		result["sbook_forcepagefoot"]=sbook_forcepagefoot;
-	    if (sbook_avoidpagefoot)
-		result["sbook_avoidpagefoot"]=sbook_avoidpagefoot;
-	    if (sbook_avoidpagehead)
-		result["sbook_avoidpagehead"]=sbook_avoidpagehead;
-	    if (sbook_fullpages)
-		result["sbook_fullpages"]=sbook_fullpages;
-	    return result;}
 
 	/* Adjust full pages */
 
@@ -203,9 +184,9 @@ var sbookPaginate=
 	    var debug=sbookPaginate.debug;
 	    var trace=sbook.Trace.layout;
 	    var curpage=-1;
-	    var scan=scanContent(content), next=scanContent(scan), prev=false;
-	    var geom=getGeometry(scan,content), ngeom=getGeometry(next,content), pgeom;
-	    var style=getStyle(scan,content), nstyle=getStyle(next,content), pstyle;	    
+	    var scan=scanContent(content), geom=getGeometry(scan,content), style=getStyle(scan,content);
+	    var next=scanContent(scan,style), ngeom=getGeometry(next,content), nstyle=getStyle(next,content);
+	    var prev=false, pgeom=false, pstyle=false;
 	    fdjtLog("Starting page layout");
 	    fdjtTime.timeslice([initLayout,handleDeclaredBreaks,forceBreaks]);
 	    /* Here are the parts of the process */
@@ -219,11 +200,11 @@ var sbookPaginate=
 					  (ngeom.top/height):
 					  (ngeom.left/vwidth))));
 		var break_after=((next)&&(endpage!==Math.floor(nextpage)));
-		if (isPageHead(scan,style)) forceBreak(scan,false);
-		else if ((isPageBlock(scan,style))&&(startpage!==endpage)) forceBreak(scan,prev);
-		else if ((next)&&(isPageFoot(scan,style))) forceBreak(next,prev);
-		else if ((break_after)&&(avoidPageFoot(scan,style))) forceBreak(scan,prev);
-		else if ((break_after)&&(avoidPageHead(next,nstyle))) forceBreak(scan,prev);
+		if (forceBreakBefore(scan,style)) forceBreak(scan,false);
+		else if ((avoidBreakInside(scan,style))&&(startpage!==endpage)) forceBreak(scan,prev);
+		else if ((next)&&(forceBreakAfter(scan,style))) forceBreak(next,prev);
+		else if ((break_after)&&(avoidBreakAfter(scan,style))) forceBreak(scan,prev);
+		else if ((break_after)&&(avoidBreakBefore(next,nstyle))) forceBreak(scan,prev);
 		else {}
 		// Get the new geometry, assuming the DOM is updated synchronously
 		geom=getGeometry(scan,content);
@@ -231,13 +212,13 @@ var sbookPaginate=
 		if (newpage!==curpage) {
 		    pagetops[newpage]=scan;
 		    curpage=newpage;}
-		if (sbookPaginate.debug)
+		if (debug)
 		    scan.setAttribute(
 			"sbookpagedbg",
 			_paginationInfo(scan,style,startpage,endpage,nextpage));
 		prev=scan; pgeom=geom; pstyle=style;
 		geom=ngeom; style=nstyle;
-		if (scan=next) next=scanContent(scan);
+		if (scan=next) next=scanContent(scan,style);
 		else next=null;
 		if (next) {
 		    ngeom=getGeometry(next,content);
@@ -269,7 +250,7 @@ var sbookPaginate=
 	    function forceBreak(elt,prev){
 		var oldpage=((domcol)?(elt.offsetTop/height):(elt.offsetLeft/vwidth));
 		if (hasClass(elt,"codexpagebreak")) return;
-		if ((prev)&&(avoidPageFoot(prev)))
+		if ((prev)&&((avoidBreakAfter(prev))||(avoidBreakBefore(elt))))
 		    addClass(prev,"codexpagebreak");
 		else addClass(elt,"codexpagebreak");
 		var newpage=((domcol)?(elt.offsetTop/height):(elt.offsetLeft/vwidth));
@@ -296,8 +277,8 @@ var sbookPaginate=
 		var breaks=fdjtDOM.getChildren(content,"sbookpagebreak");
 		var i=0; var lim=breaks.length;
 		while (i<lim) forceBreak(breaks[i++],false);
-		if (sbook_forcepagehead) {
-		    var breaks=fdjtDOM.getChildren(content,sbook_forcepagehead);
+		if (sbook_forcebreakbefore) {
+		    var breaks=fdjtDOM.getChildren(content,sbook_forcebreakbefore);
 		    var i=0; var lim=breaks.length;
 		    while (i<lim) forceBreak(breaks[i++],false);}}
 	    function finishUp() {
@@ -334,7 +315,7 @@ var sbookPaginate=
 	
 	/* Pagination support functions */
 
-	function isPageHead(elt,style){
+	function forceBreakBefore(elt,style){
 	    if ((sbook_tocmajor)&&(elt.id)&&
 		    ((sbook.docinfo[elt.id]).toclevel)&&
 		    (((sbook.docinfo[elt.id]).toclevel)<=sbook_tocmajor))
@@ -342,20 +323,20 @@ var sbookPaginate=
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
 	    return (style.pageBreakBefore==='always')||
-		((sbook_forcepagehead)&&(sbook_forcepagehead.match(elt)));}
+		((sbook_forcebreakbefore)&&(sbook_forcebreakbefore.match(elt)));}
 
-	function isPageFoot(elt,style){ 
+	function forceBreakAfter(elt,style){ 
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
 	    return (style.pageBreakAfter==='always')||
-		((sbook_forcepagefoot)&&(sbook_forcepagefoot.match(elt)));}
+		((sbook_forcebreakafter)&&(sbook_forcebreakafter.match(elt)));}
 
 	// We explicitly check for these classes because some browsers
 	//  which should know better (we're looking at you, Firefox) don't
 	//  represent (or handle) page-break 'avoid' values.  Sigh.
 	var page_block_classes=
 	    /(\bfullpage\b)|(\btitlepage\b)|(\bsbookfullpage\b)|(\bsbooktitlepage\b)/;
-	function isPageBlock(elt,style){
+	function avoidBreakInside(elt,style){
 	    if (!(elt)) return false;
 	    if (elt.tagName==='IMG') return true;
 	    if (!(style)) style=getStyle(elt);
@@ -363,13 +344,13 @@ var sbookPaginate=
 		(elt.className.search(page_block_classes)>=0)||
 		((sbook_avoidpagebreak)&&(sbook_avoidpagebreak.match(elt)));}
 
-	function avoidPageHead(elt,style){
+	function avoidBreakBefore(elt,style){
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
 	    return ((style.pageBreakBefore==='avoid')||
 		    ((sbook_avoidpagehead)&&(sbook_avoidpagehead.match(elt))));}
 
-	function avoidPageFoot(elt,style){
+	function avoidBreakAfter(elt,style){
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
 	    if (style.pageBreakAfter==='avoid') return true;
@@ -383,31 +364,14 @@ var sbookPaginate=
 
 	/* Scanning the content */
 
-	function scanContent(scan,skipchildren){
-	    var next;
-	    if ((skipchildren)||(scan.sbookui)||(isPageBlock(scan))) {
-		var node=scan; while (node) {
-		    if (next=nextElt(node)) break;
-		    else node=node.parentNode;}}
-	    else next=forward(scan);
-	    while ((next)&&(next.sbookui)) next=nextElt(next);
-	    if ((next)&&(!(isContentBlock(next))))
-		next=forward(next,isContentBlock);
-	    if (!(next)) {
-		var parent=scan.parentNode;
-		while ((parent)&&(!(next))) {
-		    next=nextElt(parent);
-		    parent=parent.parentNode;}}
-	    else if ((isPageHead(next))||(isPageBlock(next))) {}
-	    else if ((next.childNodes)&&(next.childNodes.length>0)) {
-		var children=next.childNodes;
-		if ((children[0].nodeType===1)&&(isContentBlock(children[0])))
-		    next=children[0];
-		else if ((children[0].nodeType===3)&&
-			 (isEmpty(children[0].nodeValue))&&
-			 (children.length>1)&&(children[1].nodeType===1)&&
-			 (isContentBlock(children[1])))
-		    next=children[1];}
+	var nextfn=fdjtDOM.next;
+	function scanContent(start,style,skipchildren){
+	    var scan=start; var next=null;
+	    // Get out of the UI
+	    if (scan.sbookui) while ((scan)&&(scan.sbookui)) scan=scan.parentNode;
+	    if (avoidBreakInside(scan,((scan===start)?(style):(getStyle(scan))))) {
+		while (!(next=nextfn(scan,isContentBlock))) scan=scan.parentNode;}
+	    else next=forward(scan,isContentBlock);
 	    if ((next)&&(sbookPaginate.debug)) {
 		if (next.id) scan.setAttribute("sbooknextnode",next.id);
 		if (scan.id) next.setAttribute("sbookprevnode",scan.id);}
@@ -439,10 +403,10 @@ var sbookPaginate=
 	function _paginationInfo(elt,style,startpage,endpage,nextpage){
 	    var info=getGeometry(elt,sbook.content);
 	    return elt.id+"/t"+(elt.toclevel||0)+
-		((isPageHead(elt,style))?"/ph":"")+
-		((isPageBlock(elt,style))?"/pb":"")+
-		((avoidPageHead(elt,style))?"/ah":"")+
-		((avoidPageFoot(elt,style))?"/af":"")+
+		((forceBreakBefore(elt,style))?"/ph":"")+
+		((avoidBreakInside(elt,style))?"/pb":"")+
+		((avoidBreakBefore(elt,style))?"/ah":"")+
+		((avoidBreakAfter(elt,style))?"/af":"")+
 		((fdjtDOM.hasText(elt,style))?"/ht":"")+
 		((endpage!==nextpage)?"/af/ba":"")+
 		"/sp="+startpage+"/ep="+endpage+"/np="+nextpage+
@@ -501,11 +465,11 @@ var sbookPaginate=
 	sbook.displaySync=displaySync;
 
 	/* External refs */
-	sbookPaginate.isPageHead=isPageHead;
-	sbookPaginate.isPageBlock=isPageBlock;
-	sbookPaginate.isPageFoot=isPageFoot;
-	sbookPaginate.avoidPageFoot=avoidPageFoot;
-	sbookPaginate.avoidPageHead=avoidPageHead;
+	sbookPaginate.forceBreakBefore=forceBreakBefore;
+	sbookPaginate.avoidBreakInside=avoidBreakInside;
+	sbookPaginate.forceBreakAfter=forceBreakAfter;
+	sbookPaginate.avoidBreakAfter=avoidBreakAfter;
+	sbookPaginate.avoidBreakBefore=avoidBreakBefore;
 	sbookPaginate.isContentBlock=isContentBlock;
 	sbookPaginate.scanContent=scanContent;
 	sbookPaginate.debug=debug_pagination;

@@ -1356,24 +1356,27 @@ div.locbar hr {
 /* Glossmarks */
 
 .codexglossmark {
-  position: absolute; right: 0px; text-align: right;
-  margin: 0px; padding: 0px; text-indent: 0px; 
-  border: solid transparent 2px;
-  max-width: 32px; max-height: 32px;
-  min-width: 32px; min-height: 32px;
-  width: 32px; height: 32px;
-  z-index: 50;
-  border-right: 0px;
-  opacity: 0.0001;}
-body.sbookpagehorizontal .codexglossmark {
+    float: right;
+    text-align: right;
+    margin: 0px; padding: 0px; text-indent: 0px; 
+    border: solid transparent 2px;
+    width: 0px; overflow: visible;
+    max-width: 32px; max-height: 32px;
+    min-width: 32px; min-height: 32px;
+    width: 32px; height: 32px;
+    z-index: 50;
+    border-right: 0px;
+    opacity: 0.0001;}
+.codexglossmark {
     position: static; float: right;}
+.codexglossmark {
+    margin-left: -50px;}
 body .codexglossmark { opacity: 0.4;}
 *:hover > .codexglossmark { opacity: 0.7;}
 body.hudup .codexglossmark { opacity: 0.9; display: block;}
 
 .codexglossmark img {
-   float: right;
-   vertical-align: top; text-align: right;}
+    float: right; vertical-align: top; text-align: right;}
 .codexglossmark img.tiny {width: 16px;}
 .codexglossmark img.big {width: 32px;}
 .codexglossmark img.tiny, span.codexglossmark img.big { display: none; }
@@ -1482,17 +1485,11 @@ div.codexglossform.submitting { opacity: 0.5;}
 
 h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
 
-.sbookpagehead { page-break-before: always;}
-.sbookpagefoot { page-break-after: always;}
-.sbookavoidhead { page-break-before: avoid;}
-.sbookavoidfoot { page-break-after: avoid;}
-.sbookavoidbreak { page-break-inside: avoid;}
-
-.sbookcolbreak {
-    column-break-before: always;
-    -o-column-break-before: always;
-    -webkit-column-break-before: always;
-    -moz-column-break-before: always;}
+.pagebreakbefore { page-break-before: always;}
+.pagebreakafter { page-break-after: always;}
+.avoidbreakbefore { page-break-before: avoid;}
+.avoidbreakafter { page-break-after: avoid;}
+.avoidbreakinside { page-break-inside: avoid;}
 
 .backmatter {
     page-break-before: always;
