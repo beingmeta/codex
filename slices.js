@@ -496,7 +496,7 @@ var sbook_delete_icon="redx12x12.png";
     function makeTOCHead(target,head){
 	if (!(head)) head=Codex.getHead(target);
 	var basespan=fdjtDOM("span");
-	basespan.title='click to jump';
+	basespan.title='this location in the structure of the book';
 	var title=Codex.getTitle(target,true);
 	var info=Codex.docinfo[target.id];
 	if (target!==head) {
@@ -505,15 +505,17 @@ var sbook_delete_icon="redx12x12.png";
 			       "a.paratext",
 			       fdjtDOM("span.spacer","\u00B6"),
 			       sumText(target));
-	    paratext.title='(click to jump) '+title;
+	    paratext.title='(click to jump to this passage) '+title;
 	    fdjtDOM(basespan,paratext," ");}
 	if (head) {
+	    var text=sumText(head);
 	    var headtext=
 		fdjtDOM.Anchor("javascript:Codex.JumpTo('"+head.id+"');",
 			       "a.headtext",
 			       fdjtDOM("span.spacer","\u00A7"),
-			       sumText(head));
+			       text);
 	    var curspan=fdjtDOM("span.head",headtext);
+	    headtext.title='jump to the section: '+text;
 	    fdjtDOM.append(basespan," ",curspan);
 	    var heads=Codex.Info(head).heads;
 	    if (heads) {
@@ -529,6 +531,9 @@ var sbook_delete_icon="redx12x12.png";
 			    fdjtDOM("span.spacer","\u00A7"),
 			    hinfo.title);
 		    var newspan=fdjtDOM("span.head"," ",anchor);
+		    anchor.title=
+			((hinfo.title)?('jump to the section: '+hinfo.title):
+			 "(jump to this section)");
 		    if (target===head) fdjtDOM(curspan,newspan);
 		    else fdjtDOM(curspan," \u22ef ",newspan);
 		    curspan=newspan;}}}

@@ -247,8 +247,8 @@ var sbookPaginate=
 		if (Codex.forced_breaks) dropClass(Codex.forced_breaks,"codexpagebreak");
 		Codex.forced_breaks=[];
 		// Set up the column layout
-		content.style.maxWidth=content.style.minWidth=(width-20)+"px";
-		content.style.marginLeft=content.style.marginRight="10px";
+		content.style.maxWidth=content.style.minWidth=(width-32)+"px";
+		content.style.marginLeft=content.style.marginRight="16px";
 		pages.style.height=height+"px";
 		pages.style[fdjtDOM.columnWidth]=width+"px";
 		pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";

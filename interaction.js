@@ -201,12 +201,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function content_tapped(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
-	var anchor=fdjtDOM.getParent(target,"A");
+	var anchor=fdjtDOM.getParent(target,"A"), href;
 	// If you tap on a relative anchor, move there using Codex
 	// rather than the browser default
-	if ((anchor)&&(anchor.href)&&(anchor.href[0]==='#')&&
-	    (document.getElementById(anchor.href.slice(1)))) {
-	    var goto=document.getElementById(anchor.href.slice(1));
+	if ((anchor)&&(anchor.href)&&
+	    (href=anchor.getAttribute("href"))&&(href[0]==='#')&&
+	    (document.getElementById(href.slice(1)))) {
+	    var goto=document.getElementById(href.slice(1));
 	    // This would be the place to provide smarts for
 	    // asides/notes/etc, so they (for example) pop up
 	    Codex.JumpTo(goto);

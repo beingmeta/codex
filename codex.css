@@ -286,7 +286,7 @@ body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
 
 body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES {
     border-color: darkblue;
-    opacity: 0.95; min-height: 50px; height: auto;
+    min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
@@ -296,10 +296,13 @@ body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES {
 body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES.noglosses {
     display: none;}
 
+body.hudup div#CODEXHUD div#CODEXHEAD div.hudpanel {
+    opacity: 0.9;}
+
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     border-color: darkblue;
-    opacity: 0.95; min-height: 50px; height: auto;
-    display: block;}
+    min-height: 50px; height: auto;
+   display: block;}
 
 div#CODEXHUD.search div#CODEXSEARCHRESULTSWRAPPER { display: none;}
 div#CODEXHUD.search div.completions#CODEXSEARCHCLOUD { display: block;}
@@ -1371,19 +1374,19 @@ div.locbar hr {
     margin: 0px; padding: 0px; text-indent: 0px; 
     border: solid transparent 2px;
     width: 0px; overflow: visible;
-    max-width: 32px; max-height: 32px;
-    min-width: 32px; min-height: 32px;
-    width: 32px; height: 32px;
+    max-height: 32px; /* max-width: 32px; */
+    min-width: 16px; min-height: 32px;
+    width: 16px; height: 32px;
     z-index: 50;
     border-right: 0px;
     opacity: 0.0001;}
 .codexglossmark {
     position: static; float: right;}
 .codexglossmark {
-    margin-right: -32px;}
+    margin-right: -16px;}
 body .codexglossmark { opacity: 0.4;}
 *:hover > .codexglossmark { opacity: 0.7;}
-body.hudup .codexglossmark { opacity: 0.9; display: block;}
+body.hudup .codexglossmark { opacity: 0.6; display: block;}
 
 .codexglossmark img {
     float: right; vertical-align: top; text-align: right;}
