@@ -127,7 +127,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var i=0; var lim=tags.length;
 	    while (i<lim) addTag(form,tags[i++],"SHARE");}
 	if ((gloss)&&((gloss.qid)||(gloss.uuid)))
-	    uuidelt=gloss.qid||gloss.uuid;
+	    uuidelt.value=gloss.qid||gloss.uuid;
+	else uuidelt.value=fdjtState.getUUID(sbook.nodeid);
 	if ((sbook.outlets)||((gloss)&&(gloss.outlets))) {
 	    var outlets=sbook.outlets;
 	    var current=((gloss)&&(gloss.outlets));
@@ -379,7 +380,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var bracketed=getbracketed(target);
 	    if (bracketed) {
 		fdjtUI.cancel(evt);
-		handleBracketed(form,getbracketed(target));}
+		handleBracketed(form,getbracketed(target,true));}
 	    else if (!(evt.shiftKey)) {
 		fdjtUI.cancel(evt);
 		submitEvent(target);}}}

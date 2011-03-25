@@ -276,15 +276,22 @@ var sbookPaginate=
 		    var top_margin=0;
 		    if (talldom) {
 			var pageoff=((oldpage+1)*height)+booktop;
-			top_margin=(pageoff-g.top);}
+			top_margin=(pageoff-g.top);
+			if ((trace)&&(typeof trace === 'number')&&(trace>1))
+			    fdjtLog("forceBreak/ g=%j height=%o page_height=%o page=%o/%o tm=%o",
+				    elt,g,height,newpage,pageoff,top_margin);}
 		    else {
-			top_margin=height-(g.top-booktop);}
+			top_margin=height-(g.top-booktop);
+		    	if ((trace)&&(typeof trace === 'number')&&(trace>1))
+			    fdjtLog("forceBreak/ g=%j height=%o page_height=%o page=%o tm=%o",
+				    elt,g,height,newpage,top_margin);}
 		    if (top_margin<0) top_margin=0;
 		    else top_margin=top_margin%height;
 		    elt.style.marginTop=(Math.floor(top_margin))+"px";}
 		else if ((trace)&&(typeof trace === 'number')&&(trace>1))
-		    fdjtLog("forceBreak %o ot=%o ch=%o h=%o page=%o, pos=%o",
-			    elt,elt.offsetHeight,elt.clientHeight,height,page,pos);
+		    fdjtLog("forceBreak g=%j height=%o page_height=%o page=%o",
+			    elt,g,height,newpage);
+		else {}
 		// Update geometries, assuming the DOM is updated synchronously
 		if (scan) geom=getGeometry(scan,content);
 		if (next) ngeom=getGeometry(next,content);

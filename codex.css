@@ -40,6 +40,7 @@ span.codexcssversion:after {
 
 #CODEXHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
+    font-family: sans,sans-serif;
     z-index: 100;}
 div#CODEXPAGE {
     position: fixed; overflow: visible;
@@ -57,10 +58,10 @@ body.sbookpaginated div#CODEXPAGE div#CODEXPAGES {
     -o-column-rule-width: 4px;
     -moz-column-rule-width: 4px;
     -webkit-column-rule-width: 4px;
-    column-rule-color: black;
-    -o-column-rule-color: black;
-    -moz-column-rule-color: black;
-    -webkit-column-rule-color: black;
+    column-rule-color: transparent;
+    -o-column-rule-color: transparent;
+    -moz-column-rule-color: transparent;
+    -webkit-column-rule-color: transparent;
     column-rule-style: solid;
     -o-column-rule-style: solid;
     -moz-column-rule-style: solid;
@@ -1379,7 +1380,7 @@ div.locbar hr {
 .codexglossmark {
     position: static; float: right;}
 .codexglossmark {
-    margin-left: -50px;}
+    margin-right: -32px;}
 body .codexglossmark { opacity: 0.4;}
 *:hover > .codexglossmark { opacity: 0.7;}
 body.hudup .codexglossmark { opacity: 0.9; display: block;}
@@ -1391,13 +1392,13 @@ body.hudup .codexglossmark { opacity: 0.9; display: block;}
 .codexglossmark img.tiny, span.codexglossmark img.big { display: none; }
 
 .codexglossbutton {
-  position: absolute; left: 0px; text-align: right;
-  margin: 0px; padding: 0px; text-indent: 0px; 
-  border: solid transparent 2px;
-  width: 32px; height: 32px; z-index: 50;
-  border-right: 0px;
-  opacity: 0.0001;
-  display: none;}
+    float: left; text-align: left;
+    margin: 0px; padding: 0px; text-indent: 0px; 
+    border: solid transparent 2px;
+    width: 32px; height: 32px; z-index: 50;
+    border-right: 0px; margin-left: -40px;
+    opacity: 0.0001;
+    display: none;}
 body.hudup .codexglossbutton { opacity: 0.5;}
 body.hudup .sbooktarget .codexglossbutton { opacity: 0.9; display: block;}
 
