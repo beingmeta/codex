@@ -79,7 +79,7 @@ var sbook=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// Whether we're debugging server interaction
 	 glosses: false,// Whether we're tracing gloss processing
-	 layout: 1,	// Whether to trace pagination
+	 layout: 0,	// Whether to trace pagination
 	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD

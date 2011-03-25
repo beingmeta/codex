@@ -171,8 +171,9 @@ var sbookPaginate=
 
 	/* Pagination */
 
-	// Whether the DOM geometry reflects conversion into columns
-	var domcol=true;
+	// Whether the DOM geometry reflects conversion into columns or not
+	// (Gecko does, Webkit doesnt)
+	var talldom=true;
 
 	function Paginate(callback){
 	    var start_time=fdjtTime(); var chunks=0;
@@ -197,14 +198,14 @@ var sbookPaginate=
 	    /* Here are the parts of the process */
 	    function scanStep() {
 		var top=geom.top; var bottom=geom.top+geom.height;
-		var starts_at=((domcol)?(geom.top/height):(geom.left/vwidth));
-		var ends_at=((domcol)?(geom.bottom/height):(geom.right/vwidth));
+		var starts_at=((talldom)?(geom.top/height):(geom.left/vwidth));
+		var ends_at=((talldom)?(geom.bottom/height):(geom.right/vwidth));
 		var startpage=Math.floor(starts_at), endpage=Math.floor(ends_at);
 		var nextpage=((ngeom)&&
-			      (Math.floor((domcol)?
+			      (Math.floor((talldom)?
 					  (ngeom.top/height):
 					  (ngeom.left/vwidth))));
-		var at_top=((domcol)?(((geom.top/height)%1)<0.001):(geom.top<2));
+		var at_top=((talldom)?(((geom.top/height)%1)<0.001):(geom.top<2));
 		var break_after=((next)&&(nextpage>endpage));
 		if (at_top) {}
 		else if (forceBreakBefore(scan,style)) forceBreak(scan,false);
@@ -214,7 +215,7 @@ var sbookPaginate=
 		else if ((break_after)&&(avoidBreakAfter(scan,style))) forceBreak(scan,prev);
 		else if ((break_after)&&(avoidBreakBefore(next,nstyle))) forceBreak(scan,prev);
 		else {}
-		var newpage=Math.floor((domcol)?(geom.top/height):(geom.left/vwidth));
+		var newpage=Math.floor((talldom)?(geom.top/height):(geom.left/vwidth));
 		if (newpage!==curpage) {
 		    pagetops[newpage]=scan;
 		    curpage=newpage;}
@@ -251,12 +252,12 @@ var sbookPaginate=
 		pages.style.height=height+"px";
 		pages.style[fdjtDOM.columnWidth]=width+"px";
 		pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";
-		// Figure out whether columns are expressed in the DOM.
+		// Figure out whether column layout is expressed in the DOM
 		var content_dim=getGeometry(content,pages);
-		domcol=(!(content_dim.width>vwidth));}
+		talldom=(!(content_dim.width>vwidth));}
 	    function forceBreak(elt,prev){
 		var g=getGeometry(elt,content);
-		var oldpage=Math.floor((domcol)?((g.top-booktop)/height):(g.left/vwidth));
+		var oldpage=Math.floor((talldom)?((g.top-booktop)/height):(g.left/vwidth));
 		if (hasClass(elt,"codexpagebreak")) return;
 		if ((prev)&&((avoidBreakAfter(prev))||(avoidBreakBefore(elt))))
 		    addClass(prev,"codexpagebreak");
@@ -266,14 +267,14 @@ var sbookPaginate=
 		// synchronous DOM updates) and go kludgier if it
 		// didn't
 		var g=getGeometry(elt,content);
-		var newpage=Math.floor((domcol)?((g.top-booktop)/height):(g.left/vwidth));
+		var newpage=Math.floor((talldom)?((g.top-booktop)/height):(g.left/vwidth));
 		if (oldpage===newpage) {
 		    // We have to kludge the margin top, and first we
 		    // get the geometry without any existing margin
 		    elt.style.marginTop='0px';
 		    g=getGeometry(elt,content);
 		    var top_margin=0;
-		    if (domcol) {
+		    if (talldom) {
 			var pageoff=((oldpage+1)*height)+booktop;
 			top_margin=(pageoff-g.top);}
 		    else {
@@ -459,7 +460,7 @@ var sbookPaginate=
 
 	function GoToPage(num,caller,nosave){
 	    var off;
-	    if (domcol) off=(num*(flip_width));
+	    if (talldom) off=(num*(flip_width));
 	    else {
 		var top=sbook.pagetops[num];
 		var geom=fdjtDOM.getGeometry(top,sbook.content);
