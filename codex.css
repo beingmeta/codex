@@ -53,6 +53,10 @@ div#CODEXPAGE div#CODEXPAGES {
 body.sbookpaginated div#CODEXPAGE div#CODEXPAGES {
     column-width: 40em;
     column-gap: 7em;
+    column-rule-width: 4px;
+    -o-column-rule-width: 4px;
+    -moz-column-rule-width: 4px;
+    -webkit-column-rule-width: 4px;
     column-rule-color: black;
     -o-column-rule-color: black;
     -moz-column-rule-color: black;

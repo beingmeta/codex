@@ -39,7 +39,7 @@ var codex_pagination_version=parseInt("$Revision$".slice(10,-1));
 
 var sbookPaginate=
     (function(){
-	var debug_pagination=true;
+	var debug_pagination=false;
 	var sbook_paginated=false;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
@@ -75,8 +75,10 @@ var sbookPaginate=
 	var forward=fdjtDOM.forward;
 	
 	var sbook_body=false;
-	var pagewidth=false;
-	var pageheight=false;
+	var page_width=false;
+	var page_height=false;
+	var page_gap=false;
+	var flipwidth=false;
 	
 	var runslice=100; var runwait=100;
 
@@ -111,8 +113,8 @@ var sbookPaginate=
 	    while (i<lim) {
 		var block=fullpages[i++];
 		var blockstyle=getStyle(block);
-		block.style.maxHeight=pageheight+'px';
-		block.style.maxWidth=pagewidth+'px';}
+		block.style.maxHeight=page_height+'px';
+		block.style.maxWidth=page_width+'px';}
 	    var adjustpages=function(){
 		i=0; while (i<lim) {
 		    var block=fullpages[i++];
@@ -179,8 +181,10 @@ var sbookPaginate=
 	    var content=sbook.content;
 	    var booktop=fdjtDOM.getGeometry(content).top;
 	    var vwidth=fdjtDOM.viewWidth();
+	    var vheight=fdjtDOM.viewHeight();
 	    var height=page.offsetHeight;
 	    var width=page.offsetWidth;
+	    var gap=vwidth-width;
 	    var forced=[]; var pagetops=[];
 	    var debug=sbookPaginate.debug;
 	    var trace=sbook.Trace.layout;
@@ -242,11 +246,11 @@ var sbookPaginate=
 		if (sbook.forced_breaks) dropClass(sbook.forced_breaks,"codexpagebreak");
 		sbook.forced_breaks=[];
 		// Set up the column layout
-		content.style.maxWidth=content.style.minWidth=width+"px";
+		content.style.maxWidth=content.style.minWidth=(width-20)+"px";
+		content.style.marginLeft=content.style.marginRight="10px";
 		pages.style.height=height+"px";
 		pages.style[fdjtDOM.columnWidth]=width+"px";
 		pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";
-		pages.style[fdjtDOM.columnRule]="4px";
 		// Figure out whether columns are expressed in the DOM.
 		var content_dim=getGeometry(content,pages);
 		domcol=(!(content_dim.width>vwidth));}
@@ -257,16 +261,17 @@ var sbookPaginate=
 		if ((prev)&&((avoidBreakAfter(prev))||(avoidBreakBefore(elt))))
 		    addClass(prev,"codexpagebreak");
 		else addClass(elt,"codexpagebreak");
+		// Some browsers don't recognize columnBreakBefore, so
+		// we check that the change actually worked (assuming
+		// synchronous DOM updates) and go kludgier if it
+		// didn't
 		var g=getGeometry(elt,content);
 		var newpage=Math.floor((domcol)?((g.top-booktop)/height):(g.left/vwidth));
-		if ((trace)&&(typeof trace === 'number')&&(trace>1))
-		    fdjtLog("forceBreak %o ot=%o ch=%o h=%o page=%o, pos=%o",
-			    elt,elt.offsetHeight,elt.clientHeight,height,page,pos);
 		if (oldpage===newpage) {
-		    // We get this because it effects the current offset
+		    // We have to kludge the margin top, and first we
+		    // get the geometry without any existing margin
 		    elt.style.marginTop='0px';
 		    g=getGeometry(elt,content);
-		    /* If the class change didn't work, put a big margin in. */
 		    var top_margin=0;
 		    if (domcol) {
 			var pageoff=((oldpage+1)*height)+booktop;
@@ -276,6 +281,9 @@ var sbookPaginate=
 		    if (top_margin<0) top_margin=0;
 		    else top_margin=top_margin%height;
 		    elt.style.marginTop=(Math.floor(top_margin))+"px";}
+		else if ((trace)&&(typeof trace === 'number')&&(trace>1))
+		    fdjtLog("forceBreak %o ot=%o ch=%o h=%o page=%o, pos=%o",
+			    elt,elt.offsetHeight,elt.clientHeight,height,page,pos);
 		// Update geometries, assuming the DOM is updated synchronously
 		if (scan) geom=getGeometry(scan,content);
 		if (next) ngeom=getGeometry(next,content);
@@ -298,8 +306,18 @@ var sbookPaginate=
 		pages.style.width=pages.style.maxWidth=
 		    pages.style.minWidth=(pagecount*vwidth)+"px";
 		sbook.page_width=width;
+		sbook.page_gap=page_gap=gap;
 		sbook.page_height=height;
+		sbook.left_margin=page.offsetLeft;
+		sbook.top_margin=page.offsetTop;
+		sbook.right_margin=vwidth-(page.offsetLeft+page.offsetWidth);
+		sbook.bottom_margin=vheight-(page.offsetTop+page.offsetHeight);
 		sbook.vwidth=vwidth;
+		sbook.vheight=vheight;
+		sbook.flip_width=flip_width=gap+
+		    getGeometry(sbook.content).width+
+		    parsePX(getStyle(sbook.content).marginLeft)+
+		    parsePX(getStyle(sbook.content).marginRight);
 		sbook.pagetops=pagetops;
 		sbook.forced_breaks=forced;}
 	    function page_progress(arg){
@@ -425,12 +443,33 @@ var sbookPaginate=
 
 	/* Movement by pages */
 
+	function getCSSLeft(node,wrapper){
+	    var scan=node;
+	    var indent=parsePX(getStyle(scan).marginLeft)||0;
+	    while ((scan=scan.parentNode)&&(scan!==wrapper)) {
+		var style=getStyle(scan);
+		indent=indent+parsePX(style.paddingLeft,0)+
+		    parsePX(style.borderLeft)+
+		    parsePX(style.marginLeft);}
+	    if (scan===wrapper) {
+		var style=getStyle(scan);
+		indent=indent+parsePX(style.paddingLeft,0)+
+		    parsePX(style.borderLeft,0);}
+	    return indent;}
+
 	function GoToPage(num,caller,nosave){
+	    var off;
+	    if (domcol) off=(num*(flip_width));
+	    else {
+		var top=sbook.pagetops[num];
+		var geom=fdjtDOM.getGeometry(top,sbook.content);
+		var pageleft=geom.left-getCSSLeft(top,sbook.content);
+		off=pageleft;}
 	    if (sbook.Trace.nav)
 		fdjtLog("GoToPage%s %o",((caller)?"/"+caller:""),pageno);
 	    sbook.pages.style.setProperty(
 		fdjtDOM.transform,
-		"translate("+(-(num*(sbook.vwidth)))+"px,0px)",
+		"translate("+(-off)+"px,0px)",
 		"important");
 	    var ptop=sbook.pagetops[num];
 	    while (ptop) {
