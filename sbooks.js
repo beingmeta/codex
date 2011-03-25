@@ -627,7 +627,7 @@ var sbook_gloss_data=
 	else sbook.setState(
 	    {target: (target.id),location: location,page: page});
 	if (typeof page === 'number') 
-	    sbook.GoToPage(page,0,"sbookGoTo",nosave||false);
+	    sbook.GoToPage(page,"sbookGoTo",nosave||false);
 	sbook.location=location;}
     sbook.GoTo=sbookGoTo;
 

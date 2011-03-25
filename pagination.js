@@ -78,7 +78,7 @@ var sbookPaginate=
 	var pagewidth=false;
 	var pageheight=false;
 	
-	var runslice=200; var runwait=50;
+	var runslice=100; var runwait=100;
 
 	sbook.pageTop=function(){return sbook_top_px;}
 	sbook.pageBottom=function(){return sbook_bottom_px;}
@@ -177,6 +177,7 @@ var sbookPaginate=
 	    var page=sbook.page;
 	    var pages=sbook.pages;
 	    var content=sbook.content;
+	    var booktop=fdjtDOM.getGeometry(content).top;
 	    var vwidth=fdjtDOM.viewWidth();
 	    var height=page.offsetHeight;
 	    var width=page.offsetWidth;
@@ -199,15 +200,16 @@ var sbookPaginate=
 			      (Math.floor((domcol)?
 					  (ngeom.top/height):
 					  (ngeom.left/vwidth))));
-		var break_after=((next)&&(endpage!==Math.floor(nextpage)));
-		if (forceBreakBefore(scan,style)) forceBreak(scan,false);
-		else if ((avoidBreakInside(scan,style))&&(startpage!==endpage)) forceBreak(scan,prev);
+		var at_top=((domcol)?(((geom.top/height)%1)<0.001):(geom.top<2));
+		var break_after=((next)&&(nextpage>endpage));
+		if (at_top) {}
+		else if (forceBreakBefore(scan,style)) forceBreak(scan,false);
+		else if ((avoidBreakInside(scan,style))&&(endpage>startpage)&&(nextpage>startpage))
+		    forceBreak(scan,prev);
 		else if ((next)&&(forceBreakAfter(scan,style))) forceBreak(next,prev);
 		else if ((break_after)&&(avoidBreakAfter(scan,style))) forceBreak(scan,prev);
 		else if ((break_after)&&(avoidBreakBefore(next,nstyle))) forceBreak(scan,prev);
 		else {}
-		// Get the new geometry, assuming the DOM is updated synchronously
-		geom=getGeometry(scan,content);
 		var newpage=Math.floor((domcol)?(geom.top/height):(geom.left/vwidth));
 		if (newpage!==curpage) {
 		    pagetops[newpage]=scan;
@@ -244,34 +246,40 @@ var sbookPaginate=
 		pages.style.height=height+"px";
 		pages.style[fdjtDOM.columnWidth]=width+"px";
 		pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";
+		pages.style[fdjtDOM.columnRule]="4px";
 		// Figure out whether columns are expressed in the DOM.
 		var content_dim=getGeometry(content,pages);
 		domcol=(!(content_dim.width>vwidth));}
 	    function forceBreak(elt,prev){
-		var oldpage=((domcol)?(elt.offsetTop/height):(elt.offsetLeft/vwidth));
+		var g=getGeometry(elt,content);
+		var oldpage=Math.floor((domcol)?((g.top-booktop)/height):(g.left/vwidth));
 		if (hasClass(elt,"codexpagebreak")) return;
 		if ((prev)&&((avoidBreakAfter(prev))||(avoidBreakBefore(elt))))
 		    addClass(prev,"codexpagebreak");
 		else addClass(elt,"codexpagebreak");
-		var newpage=((domcol)?(elt.offsetTop/height):(elt.offsetLeft/vwidth));
+		var g=getGeometry(elt,content);
+		var newpage=Math.floor((domcol)?((g.top-booktop)/height):(g.left/vwidth));
 		if ((trace)&&(typeof trace === 'number')&&(trace>1))
 		    fdjtLog("forceBreak %o ot=%o ch=%o h=%o page=%o, pos=%o",
 			    elt,elt.offsetHeight,elt.clientHeight,height,page,pos);
 		if (oldpage===newpage) {
+		    // We get this because it effects the current offset
+		    elt.style.marginTop='0px';
+		    g=getGeometry(elt,content);
 		    /* If the class change didn't work, put a big margin in. */
-		    var top_margin=parsePX(getStyle(elt).marginTop)||0;
 		    var top_margin=0;
 		    if (domcol) {
-			var page=((domcol)?(elt.offsetTop/height):(elt.offsetLeft/vwidth));
-			var pos=page%1;
-			var delta=Math.floor((1-pos)*height);
-			top_margin=top_margin+delta;}
+			var pageoff=((oldpage+1)*height)+booktop;
+			top_margin=(pageoff-g.top);}
 		    else {
-			var geom=getGeometry(elt,sbook.content);
-			var pagetop=sbook.page.offsetTop;
-			var delta=(height+sbook.page.offsetTop)-geom.top;
-			top_margin=top_margin+delta;}
+			top_margin=height-(g.top-booktop);}
+		    if (top_margin<0) top_margin=0;
+		    else top_margin=top_margin%height;
 		    elt.style.marginTop=(Math.floor(top_margin))+"px";}
+		// Update geometries, assuming the DOM is updated synchronously
+		if (scan) geom=getGeometry(scan,content);
+		if (next) ngeom=getGeometry(next,content);
+		if (prev) pgeom=getGeometry(prev,content);
 		forced.push(elt);}
 	    function handleDeclaredBreaks() {
 		var breaks=fdjtDOM.getChildren(content,"sbookpagebreak");
@@ -417,13 +425,12 @@ var sbookPaginate=
 
 	/* Movement by pages */
 
-	function GoToPage(num,off,caller,nosave){
+	function GoToPage(num,caller,nosave){
 	    if (sbook.Trace.nav)
-		fdjtLog("GoToPage%s %o, hoff=%o",
-			((caller)?"/"+caller:""),pageno,hoff);
+		fdjtLog("GoToPage%s %o",((caller)?"/"+caller:""),pageno);
 	    sbook.pages.style.setProperty(
 		fdjtDOM.transform,
-		"translate("+(-((num*(sbook.vwidth))+(off||0)))+"px,0px)",
+		"translate("+(-(num*(sbook.vwidth)))+"px,0px)",
 		"important");
 	    var ptop=sbook.pagetops[num];
 	    while (ptop) {
@@ -461,7 +468,7 @@ var sbookPaginate=
 	function displaySync(){
 	    if (sbook.preview) return false;
 	    if (sbook.pagecount)
-		sbook.GoToPage(sbook.curpage,0,"displaySync");}
+		sbook.GoToPage(sbook.curpage,"displaySync");}
 	sbook.displaySync=displaySync;
 
 	/* External refs */
@@ -589,7 +596,7 @@ var sbookPaginate=
 		    newinfo.winheight=(fdjtDOM.viewHeight());
 		    sbook_paginated=newinfo;
 		    var gotopage=sbook.getPageAt(sbook.location);
-		    sbook.GoToPage(gotopage||0,0,"sbookUpdatePagination",true);})};
+		    sbook.GoToPage(gotopage||0,"sbookUpdatePagination",true);})};
 	    adjustFullPages(computePages);}
 	
 	// fdjtDOM.trace_adjust=true;

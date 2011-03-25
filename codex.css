@@ -53,9 +53,14 @@ div#CODEXPAGE div#CODEXPAGES {
 body.sbookpaginated div#CODEXPAGE div#CODEXPAGES {
     column-width: 40em;
     column-gap: 7em;
-    column-rule-width: 0px;
     column-rule-color: black;
-    column-rule-style: solid;}
+    -o-column-rule-color: black;
+    -moz-column-rule-color: black;
+    -webkit-column-rule-color: black;
+    column-rule-style: solid;
+    -o-column-rule-style: solid;
+    -moz-column-rule-style: solid;
+    -webkit-column-rule-style: solid;}
 
 div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
     text-align: left;

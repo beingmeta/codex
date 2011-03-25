@@ -851,7 +851,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event;
 	fdjtUI.cancel(evt);
 	if (sbook.hudup) {CodexMode(false); return;}
-	
 	CodexMode.toggle("gotopage");}
     function enterLocation(evt) {
 	evt=evt||event;
