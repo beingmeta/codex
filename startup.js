@@ -80,8 +80,8 @@ sbook.Startup=
 		function(){
 		    initBody();
 		    if (sbook.animate.page)
-			fdjtDOM.addClass("CODEXCANVAS","codexanimate");
-		    sbook.canvas.style.opacity='0.25';},
+			fdjtDOM.addClass("CODEXPAGES","codexanimate");
+		    if (sbook.pages) sbook.pages.style.opacity='0.25';},
 		function(){
 		    if (sbook.Trace.startup>1)
 			fdjtLog("Initializing HUD");
@@ -112,9 +112,6 @@ sbook.Startup=
 		10,
 		function(){
 		    sbook.setupTOC(metadata[sbook.root.id]);},
-		function(){
-		    sbook.resizeBody();
-		    sbook.canvas.style.opacity='';},
 		function(){
 		    fdjtLog("processing knodule %s",sbook.knodule.name);},
 		10,
@@ -165,6 +162,7 @@ sbook.Startup=
 		    else {}},
 		initLocation,
 		function(){
+		    if (sbook.pages) sbook.pages.style.opacity='';
 		    sbook.displaySync();
 		    setInterval(sbook.serverSync,60000);
 		    _sbook_setup=sbook._setup=new Date();}],
@@ -465,28 +463,11 @@ sbook.Startup=
 
 	var note_count=1;
 	function initBody(){
-	    var page=fdjtID("CODEXPAGE");
-	    var canvas=fdjtID("CODEXCANVAS");
-	    var content=
-		((fdjtDOM.getMeta("sbook.body"))?
-		 ((fdjtID(fdjtDOM.getMeta("sbook.body")))||(document.body)):
-		 (fdjtID("SBOOKCONTENT")));
-	    if (!(content)) {
-		content=fdjtDOM("div#SBOOKCONTENT");
-		var nodes=fdjtDOM.toArray(document.body.childNodes);
-		var i=0; var lim=nodes.length;
-		while (i<lim) content.appendChild(nodes[i++]);}
-	    if (!(canvas))
-		canvas=fdjtDOM("div#CODEXCANVAS",content);
-	    if (!(page))
-		page=fdjtDOM("div#CODEXPAGE",
-			     fdjtDOM("div#CODEXASIDE"),
-			     fdjtDOM("div#CODEXREF"),
-			     fdjtDOM("div#CODEXMASK"),
-			     canvas);
-	    document.body.appendChild(page);
-	    fdjtDOM.addClass(document.body,"sbook");
-	    sbook.canvas=canvas; sbook.body=content; sbook.page=page;
+	    var content=fdjtDOM("div#CODEXCONTENT");
+	    var nodes=fdjtDOM.toArray(document.body.childNodes);
+	    var i=0; var lim=nodes.length;
+	    while (i<lim) content.appendChild(nodes[i++]);
+	    sbook.content=content;
 	    var allnotes=fdjtID("SBOOKNOTES");
 	    var allasides=fdjtID("SBOOKASIDES");
 	    var alldetails=fdjtID("SBOOKDETAILS");
@@ -499,6 +480,10 @@ sbook.Startup=
 	    if (!(allnotes)) {
 		var allnotes=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
 		fdjtDOM(content,allnotes);}
+	    document.body.appendChild(fdjtDOM("div#CODEXPAGE",fdjtDOM("div#CODEXPAGES",content)));
+	    sbook.page=fdjtID("CODEXPAGE");
+	    sbook.pages=fdjtID("CODEXPAGES");
+	    fdjtDOM.addClass(document.body,"sbook");
 	    applyMetaClass("sbookdetails");
 	    applyMetaClass("sbooknoteref");
 	    applyMetaClass("sbookbibref");

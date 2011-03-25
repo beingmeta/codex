@@ -54,7 +54,7 @@ function CodexDOMScan(root,docinfo){
   var scanstate=
     {curlevel: 0,idserial:0,location: 0,
      nodecount: 0,eltcount: 0,headcount: 0,
-     tagstack: [],taggings: [],allinfo: [],
+     tagstack: [],taggings: [],allinfo: [],locinfo: [],
      idstate: {prefix: false,count: 0},
      idstack: [{prefix: false,count: 0}],
      pool: sbook.DocInfo};
@@ -72,6 +72,7 @@ function CodexDOMScan(root,docinfo){
   rootinfo.qid="#"+root.id;
   rootinfo.elt=root;
   scanstate.allinfo.push(rootinfo);
+  scanstate.allinfo.push(0);
   /* Build the metadata */
   var i=0; while (i<children.length) {
     var child=children[i++];
@@ -82,6 +83,7 @@ function CodexDOMScan(root,docinfo){
   docinfo._eltcount=scanstate.eltcount;
   docinfo._maxloc=scanstate.location;
   docinfo._allinfo=scanstate.allinfo;
+  docinfo._locinfo=scanstate.locinfo;
   var scaninfo=scanstate.curinfo;
   /* Close off all of the open spans in the TOC */
   while (scaninfo) {
@@ -101,6 +103,7 @@ function CodexDOMScan(root,docinfo){
     this.qid="#"+id;
     docinfo[id]=this;
     scanstate.allinfo.push(this);
+    scanstate.locinfo.push(scanstate.location);
     return this;}
   CodexDOMScan.scanInfo=scanInfo;
 

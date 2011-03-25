@@ -41,21 +41,44 @@ span.codexcssversion:after {
 #CODEXHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
     z-index: 100;}
-#CODEXPAGE { width: auto;}
-#CODEXPAGE {
-    position: fixed;
-    top: 70px; bottom: 60px; left: 0px; right: 0px;
-    overflow: hidden;}
-#CODEXPAGE #CODEXMASK {
-    position: absolute; z-index: 75;
-    bottom: 0px; left: 0px; right: 0px; width: 100%;
-    opacity: 1.0; background-color: inherit;}
-#CODEXCANVAS {
-    margin: 0px; padding: 0px; border: 0px;}
-#CODEXPAGE #CODEXCANVAS {
-    position: absolute; left: 0; right: 0;}
-body #CODEXPAGE {}
-body.sbookpagehorizontal #CODEXPAGE #CODEXCANVAS {
+div#CODEXPAGE {
+    position: fixed; overflow: visible;
+    padding: 0px; margin: 0px; border: 0px;
+    top: 70px; bottom: 70px; left: 50px; right: 50px;}
+div#CODEXPAGE div#CODEXPAGES {
+    position: absolute; top: 0px; left: 0px;
+    padding: 0px; margin: 0px; border: 0px;
+    text-align: center;
+    overflow: visible;}
+body.sbookpaginated div#CODEXPAGE div#CODEXPAGES {
+    column-width: 40em;
+    column-gap: 7em;
+    column-rule-width: 4px;
+    -o-column-rule-width: 4px;
+    -moz-column-rule-width: 4px;
+    -webkit-column-rule-width: 4px;
+    column-rule-color: black;
+    -o-column-rule-color: black;
+    -moz-column-rule-color: black;
+    -webkit-column-rule-color: black;
+    column-rule-style: solid;
+    -o-column-rule-style: solid;
+    -moz-column-rule-style: solid;
+    -webkit-column-rule-style: solid;}
+
+div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
+    text-align: left;
+    padding: 0px; margin: 0px; border: 0px;
+    margin-right: 0px;}
+
+div#CODEXCONTENT .codexpagebreak {
+    column-break-before: always;
+    break-before: always;
+    -o-column-break-before: always;
+    -webkit-column-break-before: always;
+    -moz-column-break-before: always;}
+
+#CODEXPAGE #CODEXPAGES {
     transition-property: transform; transition-duration: 0.5s;
     -webkit-transition-property: -webkit-transform;
     -webkit-transition-duration: 0.5s;
@@ -63,16 +86,6 @@ body.sbookpagehorizontal #CODEXPAGE #CODEXCANVAS {
     -moz-transition-duration: 0.5s;
     -o-transition-property: -o-transform;
     -o-transition-duration: 0.5s;}
-body.sbookpagehorizontal #CODEXMASK { display: none;}
-#CODEXPAGE #CODEXCANVAS {
-    transition-property: opacity; transition-duration: 0.3s;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 0.3s;
-    -moz-transition-property: opacity;
-    -moz-transition-duration: 0.3s;
-    -o-transition-property: opacity;
-    -o-transition-duration: 0.3s;}
-
 #CODEXASIDE {
     position: fixed; z-index: -100;
     top: 60px; left: 60px; right: 60px; bottom: 60px;
@@ -82,8 +95,9 @@ body.sbookpagehorizontal #CODEXMASK { display: none;}
     top: 60px; left: 60px; right: 60px;
     display: none;}
 
-body.sbookpagehorizontal #CODEXPAGE #CODEXCANVAS {
-    padding-left: 0px; padding-right: 0px;}
+/* The content */
+
+body.sbook { width: inherit;}
 
 /* The HUD */
 
@@ -481,11 +495,11 @@ div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
 
 div#CODEXFLYTOC div.codextoc.cur div.sub { display: none;}
 
-div.codextoc .sectname.cohi { color: gold;}
+div.codextoc .sectname.cohi { background-color: gold;}
 div.codextoc .sectname { color: darkblue; cursor: pointer;}
 div.codextoc div.sub a.sectname { 
   color: darkblue; font-size: 80%; white-space: nowrap;}
-div.codextoc div.sub a.sectname.cohi { color: gold; }
+div.codextoc div.sub a.sectname.cohi { background-color: gold; }
 
 div#CODEXHUD div.codextoc div.head { display: none;}
 div#CODEXHUD div.codextoc div.spanbar { display: none;}
@@ -711,7 +725,7 @@ div#SBOOKPAGEFOOT div#CODEXPAGELEAP:hover {
     opacity: 0.4;}
 body.hudup div#SBOOKPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.7;}
-div#CODEXCANVAS.pageswitch {
+div#CODEXPAGES.pageswitch {
     opacity: 0.0001;}
 
 div#CODEXFOOT div#SBOOKFOOTINFO {
@@ -1351,24 +1365,27 @@ div.locbar hr {
 /* Glossmarks */
 
 .codexglossmark {
-  position: absolute; right: 0px; text-align: right;
-  margin: 0px; padding: 0px; text-indent: 0px; 
-  border: solid transparent 2px;
-  max-width: 32px; max-height: 32px;
-  min-width: 32px; min-height: 32px;
-  width: 32px; height: 32px;
-  z-index: 50;
-  border-right: 0px;
-  opacity: 0.0001;}
-body.sbookpagehorizontal .codexglossmark {
+    float: right;
+    text-align: right;
+    margin: 0px; padding: 0px; text-indent: 0px; 
+    border: solid transparent 2px;
+    width: 0px; overflow: visible;
+    max-width: 32px; max-height: 32px;
+    min-width: 32px; min-height: 32px;
+    width: 32px; height: 32px;
+    z-index: 50;
+    border-right: 0px;
+    opacity: 0.0001;}
+.codexglossmark {
     position: static; float: right;}
+.codexglossmark {
+    margin-left: -50px;}
 body .codexglossmark { opacity: 0.4;}
 *:hover > .codexglossmark { opacity: 0.7;}
 body.hudup .codexglossmark { opacity: 0.9; display: block;}
 
 .codexglossmark img {
-   float: right;
-   vertical-align: top; text-align: right;}
+    float: right; vertical-align: top; text-align: right;}
 .codexglossmark img.tiny {width: 16px;}
 .codexglossmark img.big {width: 32px;}
 .codexglossmark img.tiny, span.codexglossmark img.big { display: none; }
@@ -1477,17 +1494,11 @@ div.codexglossform.submitting { opacity: 0.5;}
 
 h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
 
-.sbookpagehead { page-break-before: always;}
-.sbookpagefoot { page-break-after: always;}
-.sbookavoidhead { page-break-before: avoid;}
-.sbookavoidfoot { page-break-after: avoid;}
-.sbookavoidbreak { page-break-inside: avoid;}
-
-.sbookcolbreak {
-    column-break-before: always;
-    -o-column-break-before: always;
-    -webkit-column-break-before: always;
-    -moz-column-break-before: always;}
+.pagebreakbefore { page-break-before: always;}
+.pagebreakafter { page-break-after: always;}
+.avoidbreakbefore { page-break-before: avoid;}
+.avoidbreakafter { page-break-after: avoid;}
+.avoidbreakinside { page-break-inside: avoid;}
 
 .backmatter {
     page-break-before: always;
