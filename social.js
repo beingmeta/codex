@@ -50,7 +50,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 
     /* Social UI components */
 
-    function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
+    function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
 
     function addSource(info,withgloss){
 	if (typeof info === 'string') info=fdjtKB.ref(info);
@@ -87,13 +87,13 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	    completion.setAttribute("value",info.qid);
 	    completion.setAttribute("key",info.name);
 	    fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),completion," ");
-	    if (sbook.gloss_cloud)
-	      sbook.gloss_cloud.addCompletion(completion);}
+	    if (Codex.gloss_cloud)
+	      Codex.gloss_cloud.addCompletion(completion);}
 	// This is tricky because fdjtID may not work when the full
 	//  cloud is not in the DOM for some reason
 	var searchtag=
 	  fdjtID("CODEXSEARCHSOURCE"+humid)||
-	  ((sbook.full_cloud)&&(sbook.full_cloud.getByValue(info.qid)));
+	  ((Codex.full_cloud)&&(Codex.full_cloud.getByValue(info.qid)));
 	if ((!(searchtag))||(searchtag.length===0)) {
 	  // Add entry to the search cloud
 	  var completion=fdjtDOM("span.completion.source",info.name);
@@ -101,11 +101,11 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	  completion.setAttribute("value",info.qid);
 	  completion.setAttribute("key",info.name);
 	  fdjtDOM(fdjtID("CODEXSEARCHCLOUD"),completion," ");
-	  if (sbook.full_cloud)
-	    sbook.full_cloud.addCompletion(completion);}
+	  if (Codex.full_cloud)
+	    Codex.full_cloud.addCompletion(completion);}
 	return info;};
-    sbook.UI.addSource=addSource;
-    sbook.UI.addGlossSource=function(info){addSource(info,true);};
+    Codex.UI.addSource=addSource;
+    Codex.UI.addGlossSource=function(info){addSource(info,true);};
 
     function everyone_onclick(evt)
     {
@@ -127,15 +127,15 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 		sources,glosses,selected,selected.length);
 	fdjtDOM.toggleClass(selected,"selected");
 	fdjtDOM.addClass(target,"selected");
-	sbook.UI.selectSources(glosses,false);
+	Codex.UI.selectSources(glosses,false);
 	fdjtDOM.cancel(evt);
     }
-    sbook.UI.handlers.everyone_onclick=everyone_onclick;
+    Codex.UI.handlers.everyone_onclick=everyone_onclick;
 
     function sources_onclick(evt)
     {
 	evt=evt||event||null;
-	// if (!(sbook.user)) return;
+	// if (!(Codex.user)) return;
 	var target=fdjtDOM.T(evt);
 	// var sources=fdjtDOM.getParent(target,".sbooksources");
 	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
@@ -160,15 +160,15 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	var everyone=fdjtDOM.$(".everyone",sources)[0];
 	if (new_sources.length) {
 	    if (everyone) fdjtDOM.dropClass(everyone,"selected");
-	    sbook.UI.selectSources(glosses,new_sources);}
+	    Codex.UI.selectSources(glosses,new_sources);}
 	else {
 	    if (everyone) fdjtDOM.addClass(everyone,"selected");
-	    sbook.UI.selectSources(glosses,false);}
+	    Codex.UI.selectSources(glosses,false);}
 	fdjtDOM.cancel(evt);
     }
-    sbook.UI.handlers.sources_onclick=sources_onclick;
+    Codex.UI.handlers.sources_onclick=sources_onclick;
 
-    sbook.UI.addGlossmark=function(id){
+    Codex.UI.addGlossmark=function(id){
 	var target=fdjtID(id);
 	if (!(target)) return false;
 	var glossmarkid="SBOOK_GLOSSMARK_"+id;
@@ -179,10 +179,10 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	 fdjtDOM.Image(imgsrc,"big","comments"),
 	 fdjtDOM.Image(sbicon("Asterisk16x16.png"),"tiny","+"));
 	glossmark.id=glossmarkid;
-	sbook.UI.addHandlers(glossmark,"glossmark");
+	Codex.UI.addHandlers(glossmark,"glossmark");
 	if (sbook_glossmark_qricons) {
-	    var qrhref="http://"+sbook.server+"/v3/qricon.png?"+
-		"URI="+encodeURIComponent(sbook.refuri)+
+	    var qrhref="http://"+Codex.server+"/v3/qricon.png?"+
+		"URI="+encodeURIComponent(Codex.refuri)+
 		((id)?("&FRAG="+id):"")+
 		((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
 	    var i=0; while (i<tags.length) qrhref=qrhref+"&TAGCUE="+tags[i++];
@@ -194,19 +194,19 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	return glossmark;};
 
     function openGlossmark(target,addmark) {
-	var glosses=sbook.glosses.find('frag',target.id);
+	var glosses=Codex.glosses.find('frag',target.id);
 	var sumdiv=fdjtDOM("div.codexslice.hudpanel");
 	if ((!(glosses))||(!(glosses.length)))
 	    fdjtDOM.addClass(sumdiv,"noglosses");
-	sbook.UI.setupSummaryDiv(sumdiv);
+	Codex.UI.setupSummaryDiv(sumdiv);
 	if (glosses)
-	  sbook.UI.showSlice(glosses,sumdiv,false);
+	  Codex.UI.showSlice(glosses,sumdiv,false);
 	fdjtDOM.replace("CODEXGLOSSES",sumdiv);
-	sbook.setTarget(target);
+	Codex.setTarget(target);
 	fdjtDOM.replace("SBOOKINFO",
-			sbook.glossBlock(target.id,"div.sbookgloss"));
+			Codex.glossBlock(target.id,"div.sbookgloss"));
 	CodexMode("glosses");}
-    sbook.openGlossmark=openGlossmark;
+    Codex.openGlossmark=openGlossmark;
 
 })();
 

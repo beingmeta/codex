@@ -32,7 +32,7 @@ var codex_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-var sbook=
+var Codex=
     {mode: false,hudup: false,scrolling: false,query: false,
      head: false,target: false,glosstarget: false,location: false,
      user: false,root: false,start: false,HUD: false,dosync: true,
@@ -108,47 +108,47 @@ var sbook_gloss_data=
 (function(){
 
     function initDB() {
-	if (sbook.Trace.start>1) fdjtLog("Initializing DB");
-	var refuri=(sbook.refuri||document.location.href);
+	if (Codex.Trace.start>1) fdjtLog("Initializing DB");
+	var refuri=(Codex.refuri||document.location.href);
 	if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
-	var docinfo=sbook.DocInfo=new fdjtKB.Pool(refuri+"#");
+	var docinfo=Codex.DocInfo=new fdjtKB.Pool(refuri+"#");
 	fdjtKB.addRefMap(docinfo.map);
 	fdjtKB.addRefMap(function(ref){
 	    return ((typeof ref === 'string')&&(ref[0]==='#')&&
 		    (docinfo.ref(ref.slice(1))));});
 	
 	var knodule_name=
-	    fdjtDOM.getMeta("sbook.knodule")||
+	    fdjtDOM.getMeta("codex.knodule")||
 	    fdjtDOM.getMeta("KNODULE")||
 	    refuri;
-	sbook.knodule=new Knodule(knodule_name);
-	sbook.index=new KnoduleIndex(sbook.knodule);
-	sbook.query=sbook.empty_query=sbook.index.Query([]);
-	sbook.BRICO=new Knodule("BRICO");
-	sbook.BRICO.addAlias(":@1/");
-	sbook.glosses=new fdjtKB.Pool("glosses"); {
-	    var superadd=sbook.glosses.add;
-	    sbook.glosses.addAlias("glossdb");
-	    sbook.glosses.addAlias("-UUIDTYPE=61");
-	    sbook.glosses.addAlias(":@31055/");
-	    sbook.glosses.xforms['tags']=function(tag){
+	Codex.knodule=new Knodule(knodule_name);
+	Codex.index=new KnoduleIndex(Codex.knodule);
+	Codex.query=Codex.empty_query=Codex.index.Query([]);
+	Codex.BRICO=new Knodule("BRICO");
+	Codex.BRICO.addAlias(":@1/");
+	Codex.glosses=new fdjtKB.Pool("glosses"); {
+	    var superadd=Codex.glosses.add;
+	    Codex.glosses.addAlias("glossdb");
+	    Codex.glosses.addAlias("-UUIDTYPE=61");
+	    Codex.glosses.addAlias(":@31055/");
+	    Codex.glosses.xforms['tags']=function(tag){
 		if (typeof tag==='string') {
 		    var info=
 			((tag.indexOf('|')>=0)?
-			 (sbook.knodule.handleSubjectEntry(tag)):
+			 (Codex.knodule.handleSubjectEntry(tag)):
 			 (fdjtKB.ref(tag)));
-		    if (info) return info.tagString(sbook.knodule);
+		    if (info) return info.tagString(Codex.knodule);
 		    else return tag;}
-		else return tag.tagString(sbook.knodule);};
-	    sbook.glosses.addInit(function(item) {
-		var info=sbook.docinfo[item.frag];
+		else return tag.tagString(Codex.knodule);};
+	    Codex.glosses.addInit(function(item) {
+		var info=Codex.docinfo[item.frag];
 		if (!(info))
 		    fdjtLog("Gloss refers to nonexistent '%s': %o",
 			    item.frag,item);
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
-		sbook.index.add(item,item.maker);
-		sbook.addTag2UI(item.maker);
+		Codex.index.add(item,item.maker);
+		Codex.addTag2UI(item.maker);
 		var tags=item.tags;
 		if (tags) {
 		    if (!(tags instanceof Array)) tags=[tags];
@@ -156,8 +156,8 @@ var sbook_gloss_data=
 			var i=0; var lim=tags.length;
 			while (i<lim) {
 			    var tag=tags[i++];
-			    sbook.index.add(item,tag);
-			    sbook.addTag2UI(fdjtKB.ref(tag),true);}}}
+			    Codex.index.add(item,tag);
+			    Codex.addTag2UI(fdjtKB.ref(tag),true);}}}
 		var sources=item.sources;
 		if (sources) {
 		    if (typeof sources !== 'array') sources=[sources];
@@ -165,18 +165,18 @@ var sbook_gloss_data=
 			var i=0; var lim=sources.length;
 			while (i<lim) {
 			    var source=sources[i++];
-			    sbook.index.add(item,source);
-			    sbook.UI.addGlossSource(fdjtKB.ref(source),true);}}}});
-	    sbook.glosses.index=new fdjtKB.Index();
-	    if (sbook.offline)
-		sbook.glosses.storage=new fdjtKB.OfflineKB(sbook.glosses);}
-	sbook.sourcekb=new fdjtKB.Pool("sources");{
-	    sbook.sourcekb.addAlias("@1961/");
-	    sbook.sourcekb.index=new fdjtKB.Index();
-	    if (sbook.offline)
-		sbook.sourcekb.storage=new fdjtKB.OfflineKB(sbook.sourcekb);}
-	if (sbook.Trace.start>1) fdjtLog("Initialized DB");}
-    sbook.initDB=initDB;
+			    Codex.index.add(item,source);
+			    Codex.UI.addGlossSource(fdjtKB.ref(source),true);}}}});
+	    Codex.glosses.index=new fdjtKB.Index();
+	    if (Codex.offline)
+		Codex.glosses.storage=new fdjtKB.OfflineKB(Codex.glosses);}
+	Codex.sourcekb=new fdjtKB.Pool("sources");{
+	    Codex.sourcekb.addAlias("@1961/");
+	    Codex.sourcekb.index=new fdjtKB.Index();
+	    if (Codex.offline)
+		Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);}
+	if (Codex.Trace.start>1) fdjtLog("Initialized DB");}
+    Codex.initDB=initDB;
 
     var trace1="%s %o in %o: mode%s=%o, target=%o, head=%o scanning=%o";
     var trace2="%s %o: mode%s=%o, target=%o, head=%o scanning=%o";
@@ -184,36 +184,36 @@ var sbook_gloss_data=
 	var target=fdjtUI.T(cxt);
 	if (target)
 	    fdjtLog(trace1,handler,cxt,target,
-		    ((sbook.scanning)?("(scanning)"):""),sbook.mode,
-		    sbook.target,sbook.head,sbook.scanning);
+		    ((Codex.scanning)?("(scanning)"):""),Codex.mode,
+		    Codex.target,Codex.head,Codex.scanning);
 	else fdjtLog(trace2,handler,cxt,
-		     ((sbook.scanning)?("(scanning)"):""),sbook.mode,
-		     sbook.target,sbook.head,sbook.scanning);}
-    sbook.trace=sbook_trace;
+		     ((Codex.scanning)?("(scanning)"):""),Codex.mode,
+		     Codex.target,Codex.head,Codex.scanning);}
+    Codex.trace=sbook_trace;
 
     // This is the hostname for the sbookserver.
-    sbook.server=false;
+    Codex.server=false;
     // Whether this sbook is set up for offline reading
-    sbook.offline=false;
+    Codex.offline=false;
     // This is an array for looking up sbook servers.
-    sbook.servers=[[/.sbooks.net$/g,"gloss.sbooks.net"]];
-    //sbook.servers=[];
+    Codex.servers=[[/.sbooks.net$/g,"gloss.sbooks.net"]];
+    //Codex.servers=[];
     // This is the default server
-    sbook.default_server="gloss.sbooks.net";
+    Codex.default_server="gloss.sbooks.net";
     // There be icons here!
-    function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
-    sbook.graphics="http://static.beingmeta.com/graphics/";
-    // sbook.graphics="https://www.sbooks.net/static/graphics/";
-    // sbook.graphics="https://beingmeta.s3.amazonaws.com/static/graphics/";
+    function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
+    Codex.graphics="http://static.beingmeta.com/graphics/";
+    // Codex.graphics="https://www.sbooks.net/static/graphics/";
+    // Codex.graphics="https://beingmeta.s3.amazonaws.com/static/graphics/";
 
-    sbook.getRefURI=function(target){
+    Codex.getRefURI=function(target){
 	var scan=target;
 	while (scan)
 	    if (scan.refuri) return scan.refuri;
 	else scan=scan.parentNode;
-	return sbook.refuri;}
+	return Codex.refuri;}
 
-    sbook.getDocURI=function(target){
+    Codex.getDocURI=function(target){
 	var scan=target;
 	while (scan) {
 	    var docuri=
@@ -223,9 +223,9 @@ var sbook_gloss_data=
 		 ((scan.getAttribute)&&(scan.getAttribute("data-docuri"))));
 	    if (docuri) return docuri;
 	    else scan=scan.parentNode;}
-	return sbook.docuri;}
+	return Codex.docuri;}
 
-    sbook.getRefID=function(target){
+    Codex.getRefID=function(target){
 	if (target.getAttributeNS)
 	    return (target.getAttributeNS('sbookid','http://sbooks.net/'))||
 	    (target.getAttributeNS('sbookid'))||
@@ -235,12 +235,12 @@ var sbook_gloss_data=
 
     function getHead(target){
 	/* First, find some relevant docinfo */
-	if ((target.id)&&(sbook.docinfo[target.id]))
-	    target=sbook.docinfo[target.id];
+	if ((target.id)&&(Codex.docinfo[target.id]))
+	    target=Codex.docinfo[target.id];
 	else if (target.id) {
 	    while (target)
-		if ((target.id)&&(sbook.docinfo[target.id])) {
-		    target=sbook.docinfo[target.id]; break;}
+		if ((target.id)&&(Codex.docinfo[target.id])) {
+		    target=Codex.docinfo[target.id]; break;}
 	    else target=target.parentNode;}
 	else {
 	    /* First, try scanning forward to find a non-empty node */
@@ -251,11 +251,11 @@ var sbook_gloss_data=
 		scan=fdjtDOM.forward(scan);}
 	    /* If you found something, use it */
 	    if ((scan)&&(scan.id)&&(scan!=next))
-		target=sbook.docinfo[scan.id];
+		target=Codex.docinfo[scan.id];
 	    else {
 		while (target)
-		    if ((target.id)&&(sbook.docinfo[target.id])) {
-			target=sbook.docinfo[target.id]; break;}
+		    if ((target.id)&&(Codex.docinfo[target.id])) {
+			target=Codex.docinfo[target.id]; break;}
 		else target=target.parentNode;}}
 	if (target)
 	    if (target.level)
@@ -265,9 +265,9 @@ var sbook_gloss_data=
 	    document.getElementById(target.head.frag);
 	else return false;
 	else return false;}
-    sbook.getHead=getHead;
+    Codex.getHead=getHead;
 
-    sbook.getRef=function(target){
+    Codex.getRef=function(target){
 	while (target)
 	    if (target.about) break;
 	else if ((target.getAttribute)&&(target.getAttribute("about"))) break;
@@ -279,7 +279,7 @@ var sbook_gloss_data=
 		return document.getElementById(ref.slice(1));
 	    else return document.getElementById(ref);}
 	else return false;}
-    sbook.getRefElt=function(target){
+    Codex.getRefElt=function(target){
 	while (target)
 	    if ((target.about)||
 		((target.getAttribute)&&(target.getAttribute("about"))))
@@ -287,9 +287,9 @@ var sbook_gloss_data=
 	else target=target.parentNode;
 	return target||false;}
 
-    sbook.checkTarget=function(){
-	if ((sbook.target)&&(sbook.mode==='glosses'))
-	    if (!(fdjtDOM.isVisible(sbook.target))) {
+    Codex.checkTarget=function(){
+	if ((Codex.target)&&(Codex.mode==='glosses'))
+	    if (!(fdjtDOM.isVisible(Codex.target))) {
 		CodexMode(false); CodexMode(true);}};
 
     function getTarget(scan,closest){
@@ -298,15 +298,15 @@ var sbook_gloss_data=
 	while (scan) {
 	    if (scan.sbookui)
 		return false;
-	    else if (scan===sbook.root) return target;
+	    else if (scan===Codex.root) return target;
 	    else if (scan.id) {
 		if (fdjtDOM.hasParent(scan,CodexHUD)) return false;
 		else if (fdjtDOM.hasParent(scan,".sbookmargin")) return false;
 		else if ((fdjtDOM.hasClass(scan,"sbooknofocus"))||
-			 ((sbook.nofocus)&&(sbook.nofocus.match(scan))))
+			 ((Codex.nofocus)&&(Codex.nofocus.match(scan))))
 		    scan=scan.parentNode;
 		else if ((fdjtDOM.hasClass(scan,"sbookfocus"))||
-			 ((sbook.focus)&&(sbook.focus.match(scan))))
+			 ((Codex.focus)&&(Codex.focus.match(scan))))
 		    return scan;
 		else if (!(fdjtDOM.hasText(scan)))
 		    scan=scan.parentNode;
@@ -315,12 +315,12 @@ var sbook_gloss_data=
 		else {target=scan; scan=scan.parentNode;}}
 	    else scan=scan.parentNode;}
 	return target;}
-    sbook.getTarget=getTarget;
+    Codex.getTarget=getTarget;
     
-    sbook.getTitle=function(target,tryhard) {
+    Codex.getTitle=function(target,tryhard) {
 	return target.sbooktitle||
-	    (((target.id)&&(sbook.docinfo[target.id]))?
-	     (sbook.docinfo[target.id].title):
+	    (((target.id)&&(Codex.docinfo[target.id]))?
+	     (Codex.docinfo[target.id].title):
 	     (target.title))||
 	    ((tryhard)&&
 	     (fdjtDOM.textify(target)).
@@ -331,46 +331,46 @@ var sbook_gloss_data=
     function getinfo(arg){
 	if (arg)
 	    if (typeof arg === 'string')
-		return sbook.docinfo[arg]||fdjtKB.ref(arg);
+		return Codex.docinfo[arg]||fdjtKB.ref(arg);
 	else if ((arg.qid)||(arg.oid)) return arg;
-	else if (arg.id) return sbook.docinfo[arg.id];
+	else if (arg.id) return Codex.docinfo[arg.id];
 	else return false;
 	else return false;}
-    sbook.Info=getinfo;
+    Codex.Info=getinfo;
 
     /* Navigation functions */
 
     function setHead(head){
-	if (head===null) head=sbook.root;
+	if (head===null) head=Codex.root;
 	else if (typeof head === "string") 
 	    head=getHead(fdjtID(head));
-	else head=getHead(head)||sbook.root;
-	var headinfo=sbook.docinfo[head.id];
+	else head=getHead(head)||Codex.root;
+	var headinfo=Codex.docinfo[head.id];
 	if (!(head)) return;
-	else if (head===sbook.head) {
-	    if (sbook.Trace.focus) fdjtLog("Redundant SetHead");
+	else if (head===Codex.head) {
+	    if (Codex.Trace.focus) fdjtLog("Redundant SetHead");
 	    return;}
 	else if (head) {
-	    if (sbook.Trace.focus) sbook.trace("sbook.setHead",head);
-	    CodexTOC.update("CODEXTOC4",headinfo,sbook.Info(sbook.head));
-	    CodexTOC.update("CODEXFLYTOC4",headinfo,sbook.Info(sbook.head));
+	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
+	    CodexTOC.update("CODEXTOC4",headinfo,Codex.Info(Codex.head));
+	    CodexTOC.update("CODEXFLYTOC4",headinfo,Codex.Info(Codex.head));
 	    window.title=headinfo.title+" ("+document.title+")";
-	    if (sbook.head) fdjtDOM.dropClass(sbook.head,"sbookhead");
+	    if (Codex.head) fdjtDOM.dropClass(Codex.head,"sbookhead");
 	    fdjtDOM.addClass(head,"sbookhead");
-	    sbook.setLocation(sbook.location);
-	    sbook.head=fdjtID(head.id);}
+	    Codex.setLocation(Codex.location);
+	    Codex.head=fdjtID(head.id);}
 	else {
-	    if (sbook.Trace.focus) sbook.trace("sbook.setHead",head);
+	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
 	    CodexTOCUpdate(head,"CODEXTOC4");
 	    CodexTOCUpdate(head,"CODEXFLYTOC4");
-	    sbook.head=false;}}
-    sbook.setHead=setHead;
+	    Codex.head=false;}}
+    Codex.setHead=setHead;
 
     function setLocation(location,force){
-	if ((!(force)) && (sbook.location===location)) return;
-	if (sbook.Trace.toc)
+	if ((!(force)) && (Codex.location===location)) return;
+	if (Codex.Trace.toc)
 	    fdjtLog("Setting location to %o",location);
-	var info=sbook.Info(sbook.head);
+	var info=Codex.Info(Codex.head);
 	while (info) {
 	    var tocelt=document.getElementById("CODEXTOC4"+info.frag);
 	    var flytocelt=document.getElementById("CODEXFLYTOC4"+info.frag);
@@ -379,7 +379,7 @@ var sbook_gloss_data=
 	    var bar=fdjtDOM.getFirstChild(tocelt,".progressbar");
 	    var appbar=fdjtDOM.getFirstChild(flytocelt,".progressbar");
 	    tocelt.title=flytocelt.title=Math.round(progress)+"%";
-	    if (sbook.Trace.toc)
+	    if (Codex.Trace.toc)
 		fdjtLog("For tocbar %o loc=%o start=%o end=%o progress=%o",
 			bar,location,start,end,progress);
 	    if ((bar)&& (progress>=0) && (progress<=100)) {
@@ -394,7 +394,7 @@ var sbook_gloss_data=
 	    var spanbar=spanbars[i++];
 	    var width=spanbar.ends-spanbar.starts;
 	    var ratio=(location-spanbar.starts)/width;
-	    if (sbook.Trace.toc)
+	    if (Codex.Trace.toc)
 		fdjtLog("ratio for spanbar %o[%d] is %o [%o,%o,%o]",
 			spanbar,spanbar.childNodes[0].childNodes.length,
 			ratio,spanbar.starts,location,spanbar.ends);
@@ -402,55 +402,55 @@ var sbook_gloss_data=
 		var progressbox=fdjtDOM.$(".progressbox",spanbar);
 		if (progressbox.length>0) {
 		    progressbox[0].style.left=((Math.round(ratio*10000))/100)+"%";}}}
-	sbook.location=location;}
-    sbook.setLocation=setLocation;
+	Codex.location=location;}
+    Codex.setLocation=setLocation;
 
     function setTarget(target,nogo,nosave){
-	if (sbook.Trace.focus) sbook.trace("sbook.setTarget",target);
-	if (target===sbook.target) return;
-	else if ((!target)&&(sbook.target)) {
-	    fdjtDOM.dropClass(sbook.target,"sbooktarget");
-	    sbook.target=false;
+	if (Codex.Trace.focus) Codex.trace("Codex.setTarget",target);
+	if (target===Codex.target) return;
+	else if ((!target)&&(Codex.target)) {
+	    fdjtDOM.dropClass(Codex.target,"sbooktarget");
+	    Codex.target=false;
 	    return;}
 	else if (!(target)) return;
 	else if ((inUI(target))||(!(target.id))) return;
-	else if ((target===sbook.root)||(target===sbook.body)||
+	else if ((target===Codex.root)||(target===Codex.body)||
 		 (target===document.body)) {
-	    if (!(nogo)) sbook.GoTo(target,true);
+	    if (!(nogo)) Codex.GoTo(target,true);
 	    return;}
-	if (sbook.target) {
-	    fdjtDOM.dropClass(sbook.target,"sbooktarget");
-	    sbook.target=false;}
+	if (Codex.target) {
+	    fdjtDOM.dropClass(Codex.target,"sbooktarget");
+	    Codex.target=false;}
 	fdjtDOM.addClass(target,"sbooktarget");
 	fdjtState.setCookie("sbooktarget",target.id);
-	sbook.target=target;
-	if (sbook.full_cloud)
-	    sbook.setCloudCuesFromTarget(sbook.full_cloud,target);
+	Codex.target=target;
+	if (Codex.full_cloud)
+	    Codex.setCloudCuesFromTarget(Codex.full_cloud,target);
 	if (!(nosave))
 	    setState({target: target.id,
-		      location: sbook.location,
-		      page: sbook.curpage});
- 	if (!(nogo)) sbook.GoTo(target,true);}
-    sbook.setTarget=setTarget;
+		      location: Codex.location,
+		      page: Codex.curpage});
+ 	if (!(nogo)) Codex.GoTo(target,true);}
+    Codex.setTarget=setTarget;
 
     /* Navigation */
 
     function resizeBody(){
-	if (sbook.nativescroll) {}
+	if (Codex.nativescroll) {}
 	else {
-	    var curx=x_offset-fdjtDOM.parsePX(sbook.pages.style.left);
-	    var cury=y_offset-fdjtDOM.parsePX(sbook.pages.style.top);
-	    // sbook.body.style.left=''; sbook.body.style.top='';
-	    var geom=fdjtDOM.getGeometry(sbook.body,sbook.body);
+	    var curx=x_offset-fdjtDOM.parsePX(Codex.pages.style.left);
+	    var cury=y_offset-fdjtDOM.parsePX(Codex.pages.style.top);
+	    // Codex.body.style.left=''; Codex.body.style.top='';
+	    var geom=fdjtDOM.getGeometry(Codex.body,Codex.body);
 	    x_offset=geom.left; y_offset=geom.top;
-	    sbook.bodyoff=[x_offset,y_offset];
-	    sbook.pages.style.left='0px';
-	    sbook.pages.style.top=(y_offset)+'px';}}
-    sbook.resizeBody=resizeBody;
+	    Codex.bodyoff=[x_offset,y_offset];
+	    Codex.pages.style.left='0px';
+	    Codex.pages.style.top=(y_offset)+'px';}}
+    Codex.resizeBody=resizeBody;
 
-    sbook.viewTop=function(){
-	if (sbook.nativescroll) return fdjtDOM.viewTop();
-	else return -(fdjtDOM.parsePX(sbook.pages.style.top));}
+    Codex.viewTop=function(){
+	if (Codex.nativescroll) return fdjtDOM.viewTop();
+	else return -(fdjtDOM.parsePX(Codex.pages.style.top));}
     var sbookUIclasses=
 	/(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bsbookmargin\b)/;
 
@@ -465,7 +465,7 @@ var sbook_gloss_data=
 
     function displayOffset(){
 	var toc;
-	if (sbook.mode)
+	if (Codex.mode)
 	    if (toc=fdjtID("CODEXTOC"))
 		return -((toc.offsetHeight||50)+15);
 	else return -60;
@@ -476,34 +476,34 @@ var sbook_gloss_data=
 	    ((window.location.hash[0]==='#')&&
 	     (window.location.hash.slice(1)===target.id)))
 	    return;
-	if ((target===sbook.body)||(target===document.body)) return;
+	if ((target===Codex.body)||(target===document.body)) return;
 	var saved_y=((fdjtDOM.isVisible(target))&&fdjtDOM.viewTop());
 	var saved_x=((fdjtDOM.isVisible(target))&&(fdjtDOM.viewLeft()));
 	window.location.hash=target.id;}
-    sbook.setHashID=setHashID;
+    Codex.setHashID=setHashID;
 
     var syncing=false;
     
     function setState(state){
-	if ((sbook.state===state)||
-	    ((sbook.state)&&
-	     (sbook.state.target===state.target)&&
-	     (sbook.state.location===state.location)&&
-	     (sbook.state.page===state.page)))
+	if ((Codex.state===state)||
+	    ((Codex.state)&&
+	     (Codex.state.target===state.target)&&
+	     (Codex.state.location===state.location)&&
+	     (Codex.state.page===state.page)))
 	    return;
 	if (syncing) return;
-	if (!(sbook.dosync)) return;
+	if (!(Codex.dosync)) return;
 	if (!(state.tstamp)) state.tstamp=fdjtTime.tick();
-	if (!(state.refuri)) state.refuri=sbook.refuri;
-	sbook.state=state;
+	if (!(state.refuri)) state.refuri=Codex.refuri;
+	Codex.state=state;
 	var statestring=JSON.stringify(state);
-	var uri=sbook.docuri||sbook.refuri;
-	fdjtState.setLocal("sbook.state("+uri+")",statestring);}
-    sbook.setState=setState;
+	var uri=Codex.docuri||Codex.refuri;
+	fdjtState.setLocal("codex.state("+uri+")",statestring);}
+    Codex.setState=setState;
 	    
     function serverSync(){
-	if ((sbook.user)&&(sbook.dosync)&&(navigator.onLine)) {
-	    var state=sbook.state; var synced=sbook.syncstate;
+	if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine)) {
+	    var state=Codex.state; var synced=Codex.syncstate;
 	    // Warning when syncing doesn't return?
 	    if (syncing) return;
 	    if (!(state)) return;
@@ -512,37 +512,37 @@ var sbook_gloss_data=
 		(synced.location===state.location)&&
 		(synced.page===state.page))
 		return;
-	    var refuri=((sbook.target)&&(sbook.getRefURI(sbook.target)))||
-		(sbook.refuri);
-	    var uri="https://"+sbook.server+"/v4/sync?ACTION=save"+
-		"&DOCURI="+encodeURIComponent(sbook.docuri)+
+	    var refuri=((Codex.target)&&(Codex.getRefURI(Codex.target)))||
+		(Codex.refuri);
+	    var uri="https://"+Codex.server+"/v4/sync?ACTION=save"+
+		"&DOCURI="+encodeURIComponent(Codex.docuri)+
 		"&REFURI="+encodeURIComponent(refuri);
-	    if (sbook.deviceId)
-		uri=uri+"&deviceid="+encodeURIComponent(sbook.deviceId);
-	    if (sbook.deviceName)
-		uri=uri+"&devicename="+encodeURIComponent(sbook.deviceName);
+	    if (Codex.deviceId)
+		uri=uri+"&deviceid="+encodeURIComponent(Codex.deviceId);
+	    if (Codex.deviceName)
+		uri=uri+"&devicename="+encodeURIComponent(Codex.deviceName);
 	    if (state.target) uri=uri+"&target="+encodeURIComponent(state.target);
 	    if ((state.location)||(state.hasOwnProperty('location')))
 		uri=uri+"&location="+encodeURIComponent(state.location);
-	    if (sbook.ends_at) uri=uri+"&maxloc="+encodeURIComponent(sbook.ends_at);
+	    if (Codex.ends_at) uri=uri+"&maxloc="+encodeURIComponent(Codex.ends_at);
 	    if ((state.page)||(state.hasOwnProperty('page')))
 		uri=uri+"&page="+encodeURIComponent(state.page);
-	    if (typeof sbook.pagecount === 'number')
-		uri=uri+"&maxpage="+encodeURIComponent(sbook.pagecount);
-	    if (sbook.Trace.dosync)
+	    if (typeof Codex.pagecount === 'number')
+		uri=uri+"&maxpage="+encodeURIComponent(Codex.pagecount);
+	    if (Codex.Trace.dosync)
 		fdjtLog("syncPosition(call) %s: %o",uri,state);
 	    var req=new XMLHttpRequest();
 	    syncing=state;
 	    req.onreadystatechange=function(evt){
-		sbook.syncstate=syncing;
+		Codex.syncstate=syncing;
 		syncing=false;
-		if (sbook.Trace.dosync)
+		if (Codex.Trace.dosync)
 		    fdjtLog("syncPosition(callback) reading=%o status=%o %o",
 			    evt.readyState,evt.status,evt);};
 	    req.open("GET",uri,true);
 	    req.withCredentials='yes';
 	    req.send();}}
-    sbook.serverSync=serverSync;
+    Codex.serverSync=serverSync;
 	
 
     function scrollToElt(elt,cxt){
@@ -552,8 +552,8 @@ var sbook_gloss_data=
 	    setHead(elt);
 	else if (elt.head)
 	    setHead(elt.head);
-	if (sbook.paginate)
-	    sbook.GoToPage(sbook.getPage(elt),"scrollTo");
+	if (Codex.paginate)
+	    Codex.GoToPage(Codex.getPage(elt),"scrollTo");
 	else if (fdjtDOM.isVisible(elt)) {}
 	else if ((!cxt) || (elt===cxt))
 	    fdjtUI.scrollIntoView(elt,elt.id,false,true,displayOffset());
@@ -563,17 +563,17 @@ var sbook_gloss_data=
 	var counter=0; var lim=200;
 	var forward=fdjtDOM.forward;
 	while ((elt)&&(counter<lim)) {
-	    if ((elt.id)&&(sbook.docinfo[elt.id])) break;
+	    if ((elt.id)&&(Codex.docinfo[elt.id])) break;
 	    else {counter++; elt=forward(elt);}}
-	if ((elt.id)&&(sbook.docinfo[elt.id])) {
-	    var info=sbook.docinfo[elt.id];
+	if ((elt.id)&&(Codex.docinfo[elt.id])) {
+	    var info=Codex.docinfo[elt.id];
 	    return {start: info.starts_at,end: info.ends_at,
 		    len: info.ends_at-info.starts_at};}
 	else return false;}
-    sbook.getLocInfo=getLocInfo;
+    Codex.getLocInfo=getLocInfo;
 
     function resolveLocation(loc){
-	var allinfo=sbook.docinfo._allinfo;
+	var allinfo=Codex.docinfo._allinfo;
 	var i=0; var lim=allinfo.length;
 	while (i<lim) {
 	    if (allinfo[i].starts_at<loc) i++;
@@ -582,7 +582,7 @@ var sbook_gloss_data=
 	    if (allinfo[i].starts_at>loc) break;
 	    else i++;}
 	return fdjtID(allinfo[i-1].frag);}
-    sbook.resolveLocation=resolveLocation;
+    Codex.resolveLocation=resolveLocation;
 
 
     // This moves within the document in a persistent way
@@ -604,12 +604,12 @@ var sbook_gloss_data=
 	    fdjtLog.warn("Bad sbookGoTo %o",arg);
 	    return;}
 	if (!(target)) return;
-	var page=((sbook.paginate)&&
-		  (sbook.pagecount)&&
-		  (sbook.getPage(target)));
-	var info=((target.id)&&(sbook.docinfo[target.id]));
-	if (sbook.Trace.nav)
-	    fdjtLog("sbook.GoTo() #%o@P%o/L%o %o",
+	var page=((Codex.paginate)&&
+		  (Codex.pagecount)&&
+		  (Codex.getPage(target)));
+	var info=((target.id)&&(Codex.docinfo[target.id]));
+	if (Codex.Trace.nav)
+	    fdjtLog("Codex.GoTo() #%o@P%o/L%o %o",
 		    target.id,page,((info)&&(info.starts_at)),target);
 	if (target.id) setHashID(target);
 	if (info) {
@@ -621,15 +621,15 @@ var sbook_gloss_data=
 	    setTarget(target,true,nosave||false);
 	if (nosave) {}
 	else if (noset)
-	    sbook.setState({
-		target: ((sbook.target)&&(sbook.target.id)),
+	    Codex.setState({
+		target: ((Codex.target)&&(Codex.target.id)),
 		location: location,page: page})
-	else sbook.setState(
+	else Codex.setState(
 	    {target: (target.id),location: location,page: page});
 	if (typeof page === 'number') 
-	    sbook.GoToPage(page,"sbookGoTo",nosave||false);
-	sbook.location=location;}
-    sbook.GoTo=sbookGoTo;
+	    Codex.GoToPage(page,"sbookGoTo",nosave||false);
+	Codex.location=location;}
+    Codex.GoTo=sbookGoTo;
 
     function anchorFn(evt){
 	var target=fdjtUI.T(evt);
@@ -638,31 +638,31 @@ var sbook_gloss_data=
 	if ((target)&&(target.href)&&(target.href[0]==='#')) {
 	    var goto=document.getElementById(target.href.slice(1));
 	    if (goto) {sbookGoTo(goto); fdjtUI.cancel(evt);}}}
-    sbook.anchorFn=anchorFn;
+    Codex.anchorFn=anchorFn;
 
     // This jumps and disables the HUD at the same time
     // We try to animate the transition
     function sbookJumpTo(target){
-	if (sbook.animate) {
-	    sbook.pages.style.opacity=0.0001;
-	    if (sbook.hudup) sbook.HUD.style.opacity=0.0001;
+	if (Codex.animate) {
+	    Codex.pages.style.opacity=0.0001;
+	    if (Codex.hudup) Codex.HUD.style.opacity=0.0001;
 	    fdjtDOM.addClass(document.body,"pageswitch");
 	    setTimeout(function() {
-		if (sbook.hudup) CodexMode(false);
+		if (Codex.hudup) CodexMode(false);
 		sbookGoTo(target);
 		fdjtDOM.dropClass(document.body,"pageswitch");
-		sbook.HUD.style.opacity=1.0;
-		sbook.pages.style.opacity=1.0;
+		Codex.HUD.style.opacity=1.0;
+		Codex.pages.style.opacity=1.0;
 		setTimeout(function(){
 		    fdjtDOM.dropClass(document.body,"pageswitch");
-		    sbook.HUD.style.opacity="";
-		    sbook.pages.style.opacity="";},
+		    Codex.HUD.style.opacity="";
+		    Codex.pages.style.opacity="";},
 			   200);},
 		       200);}
 	else {
-	    if (sbook.hudup) CodexMode(false);
+	    if (Codex.hudup) CodexMode(false);
 	    sbookGoTo(target);}}
-    sbook.JumpTo=sbookJumpTo;
+    Codex.JumpTo=sbookJumpTo;
 
     function getLevel(elt){
 	if (elt.toclevel) {
@@ -684,7 +684,7 @@ var sbook_gloss_data=
 	if (elt.tagName.search(/H\d/)==0)
 	    return parseInt(elt.tagName.slice(1,2));
 	else return false;}
-    sbook.getTOCLevel=getLevel;
+    Codex.getTOCLevel=getLevel;
     
 
 
@@ -698,12 +698,12 @@ fdjt_versions.decl("codex/core",codex_version);
 /*
   function sbookAddQRIcons(){
   var i=0;
-  while (i<sbook.heads.length) {
-  var head=sbook.heads[i++];
+  while (i<Codex.heads.length) {
+  var head=Codex.heads[i++];
   var id=head.id;
   var title=(head.sbookinfo)&&sbook_get_titlepath(head.sbookinfo);
-  var qrhref="https://"+sbook.server+"/v4/qricon.png?"+
-  "URI="+encodeURIComponent(sbook.docuri||sbook.refuri)+
+  var qrhref="https://"+Codex.server+"/v4/qricon.png?"+
+  "URI="+encodeURIComponent(Codex.docuri||Codex.refuri)+
   ((id)?("&FRAG="+head.id):"")+
   ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
   var qricon=fdjtDOM.Image(qrhref,".sbookqricon");

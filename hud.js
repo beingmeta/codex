@@ -52,7 +52,7 @@ var CodexMode=
 	function initHUD(){
 	    if (fdjtID("CODEXHUD")) return;
 	    else {
-		sbook.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
+		Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
 		CodexHUD.sbookui=true;
 		CodexHUD.innerHTML=sbook_hudtext;
 		fdjtDOM.prepend(document.body,CodexHUD);}
@@ -63,41 +63,41 @@ var CodexMode=
 	    // Initialize search UI
 	    var search=fdjtID("CODEXSEARCH");
 	    search.innerHTML=sbook_searchbox;
-	    sbook.empty_cloud=
+	    Codex.empty_cloud=
 		new fdjtUI.Completions(fdjtID("CODEXSEARCHCLOUD"));
 	    var login=fdjtID("SBOOKAPPLOGIN");
 	    login.innerHTML=sbook_loginform;
 
-	    if (sbook.hidehelp) sbook.setConfig("hidehelp");
+	    if (Codex.hidehelp) Codex.setConfig("hidehelp");
 
 	    fdjtID("SBOOK_RETURN_TO").value=location.href;
 
 	    // Initialize gloss UI
 	    var glosses=fdjtID("CODEXALLGLOSSES");
-	    sbook.UI.setupSummaryDiv(glosses);
-	    sbook.glosses.addEffect("maker",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit
-		(sbook.UI.addGlossSource,"newsource");});
-	    sbook.glosses.addEffect("sources",function(f,p,v){
-		sbook.sourcekb.ref(v).oninit
-		(sbook.UI.addGlossSource,"newsource");});
+	    Codex.UI.setupSummaryDiv(glosses);
+	    Codex.glosses.addEffect("maker",function(f,p,v){
+		Codex.sourcekb.ref(v).oninit
+		(Codex.UI.addGlossSource,"newsource");});
+	    Codex.glosses.addEffect("sources",function(f,p,v){
+		Codex.sourcekb.ref(v).oninit
+		(Codex.UI.addGlossSource,"newsource");});
 
 	    function initUI4Item(item){
 		if (document.getElementById(item.frag)) {
-		    sbook.UI.addToSlice(item,glosses,false);
-		    var glossmark=sbook.UI.addGlossmark(item.frag); {
+		    Codex.UI.addToSlice(item,glosses,false);
+		    var glossmark=Codex.UI.addGlossmark(item.frag); {
 			if (glossmark) {
 			    var curglosses=glossmark.glosses;
 			    curglosses.push(item.qid);}
-			if (item.tstamp>sbook.syncstamp)
-			    sbook.syncstamp=item.tstamp;
+			if (item.tstamp>Codex.syncstamp)
+			    Codex.syncstamp=item.tstamp;
 			var pic=((fdjtKB.ref(item.maker)).pic)||
 			    ((fdjtKB.ref(item.feed)).pic);
 			if (pic) {
 			    var img=fdjtDOM.getFirstChild(glossmark,"IMG.big");
 			    if (img) img.src=pic;}}
 		    if (item.tags) addTag2UI(item.tags,true);}}
-	    sbook.glosses.addInit(initUI4Item);
+	    Codex.glosses.addInit(initUI4Item);
 
 	    function addTag2UI(tag,forsearch){
 		if (!(tag)) return;
@@ -105,46 +105,46 @@ var CodexMode=
 		    var i=0; var lim=tag.length;
 		    while (i<lim) addTag2UI(tag[i++],forsearch||false);
 		    return;}
-		else if (!(sbook.gloss_cloud)) {
-		    var queue=sbook.cloud_queue;
-		    if (!(queue)) queue=sbook.cloud_queue=[];
+		else if (!(Codex.gloss_cloud)) {
+		    var queue=Codex.cloud_queue;
+		    if (!(queue)) queue=Codex.cloud_queue=[];
 		    queue.push(tag);
 		    if (forsearch) {
-			var squeue=sbook.search_cloud_queue;
-			if (!(squeue)) squeue=sbook.search_cloud_queue=[];
+			var squeue=Codex.search_cloud_queue;
+			if (!(squeue)) squeue=Codex.search_cloud_queue=[];
 			squeue.push(tag);}}
 		else {
-		    var gloss_cloud=sbook.glossCloud();
-		    var search_cloud=sbook.fullCloud();
+		    var gloss_cloud=Codex.glossCloud();
+		    var search_cloud=Codex.fullCloud();
 		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
-			gloss_tag=Knodule.HTML(tag,sbook.knodule,false,true);
+			gloss_tag=Knodule.HTML(tag,Codex.knodule,false,true);
 			fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
 			gloss_cloud.addCompletion(gloss_tag);}
 		    var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
 		    if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
-			search_tag=Knodule.HTML(tag,sbook.knodule,false,true);
+			search_tag=Knodule.HTML(tag,Codex.knodule,false,true);
 			fdjtDOM(fdjtID("CODEXSEARCHTAGS"),search_tag," ");
 			search_cloud.addCompletion(search_tag);}}}
-	    sbook.addTag2UI=addTag2UI;
+	    Codex.addTag2UI=addTag2UI;
 	    
 	    sbookFoot=fdjtID("CODEXFOOT");
 	    sbookHead=fdjtID("CODEXHEAD");
 	    sbookHelp=fdjtID("CODEXHELP");
 	    fillinFlyleaf();
 	    resizeHUD();
-	    sbook.scrollers={};
+	    Codex.scrollers={};
 	    updateScroller("CODEXGLOSSCLOUD");
 	    updateScroller("CODEXSEARCHCLOUD");
 	}
-	sbook.initHUD=initHUD;
+	Codex.initHUD=initHUD;
 	
 	function fixStaticRefs(string){
-	  if (sbook.graphics==="http://static.beingmeta.com/graphics/")
+	  if (Codex.graphics==="http://static.beingmeta.com/graphics/")
 	    return string;
 	  else return string.replace
 		 (/http:\/\/static.beingmeta.com\/graphics\//g,
-		  sbook.graphics);}
+		  Codex.graphics);}
 
 	function resizeHUD(){
 	    var vh=fdjtDOM.viewHeight();
@@ -152,7 +152,7 @@ var CodexMode=
 	    var hf=fdjtID("CODEXFOOT");
 	    var fh=fdjtDOM.getGeometry(hf).height;
 	    // fdjtLog("resizeHUD vh=%o vw=%o fh=%o",vh,vw,fh);
-	    if (!(sbook.nativescroll)) hf.style.top=(vh-fh)+'px';}
+	    if (!(Codex.nativescroll)) hf.style.top=(vh-fh)+'px';}
 
 	/* This is used for viewport-based browser, where the HUD moves
 	   to be aligned with the viewport */
@@ -176,41 +176,41 @@ var CodexMode=
 	    var navhud=createNavHUD("div#CODEXTOC.hudpanel",root_info);
 	    var toc_button=fdjtID("CODEXTOCBUTTON");
 	    toc_button.style.visibility='';
-	    sbook.TOC=navhud;
+	    Codex.TOC=navhud;
 	    fdjtDOM.replace("CODEXTOC",navhud);
 	    var flytoc=createStaticTOC("div#CODEXFLYTOC",root_info);
-	    sbook.Flytoc=flytoc;
+	    Codex.Flytoc=flytoc;
 	    fdjtDOM(fdjtID("FLYTOC"),flytoc);}
-	sbook.setupTOC=setupTOC;
+	Codex.setupTOC=setupTOC;
 
 	function createNavHUD(eltspec,root_info){
 	    var toc_div=CodexTOC(root_info,0,false,"CODEXTOC4",
 				 ((root_info.sub.length>1)));
 	    var div=fdjtDOM(eltspec||"div#CODEXTOC.hudpanel",toc_div);
-	    sbook.UI.addHandlers(div,"toc");
+	    Codex.UI.addHandlers(div,"toc");
 	    return div;}
 
 	function createStaticTOC(eltspec,root_info){
 	    var toc_div=CodexTOC(root_info,0,false,"CODEXFLYTOC4");
 	    var div=fdjtDOM(eltspec||"div#CODEXFLYTOC",toc_div);
-	    sbook.UI.addHandlers(div,"toc");
+	    Codex.UI.addHandlers(div,"toc");
 	    return div;}
 
 	/* HUD animation */
 
 	function setHUD(flag){
-	    if (sbook.Trace.gestures)
+	    if (Codex.Trace.gestures)
 		fdjtLog("setHUD %o mode=%o hudup=%o bc=%o hc=%o",
-			flag,sbook.mode,sbook.hudup,
+			flag,Codex.mode,Codex.hudup,
 			document.body.className,
 			CodexHUD.className);
 	    if (flag) {
-		sbook.hudup=true;
+		Codex.hudup=true;
 		fdjtDOM.addClass(document.body,"hudup");}
 	    else {
-		sbook.mode=false;
-		sbook.hudup=false;
-		sbook.scrolling=false;
+		Codex.mode=false;
+		Codex.hudup=false;
+		Codex.scrolling=false;
 		fdjtDOM.dropClass(CodexHUD,"flyleaf");
 		fdjtDOM.dropClass(CodexHUD,"full");
 		fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
@@ -242,45 +242,45 @@ var CodexMode=
 	     addgloss: "CODEXGLOSSINPUT"};
 	
 	function CodexMode(mode){
-	    if (typeof mode === 'undefined') return sbook.mode;
-	    if (mode==='last') mode=sbook.last_mode||'help';
+	    if (typeof mode === 'undefined') return Codex.mode;
+	    if (mode==='last') mode=Codex.last_mode||'help';
 	    if (mode==='none') mode=false;
-	    if (sbook.Trace.mode)
+	    if (Codex.Trace.mode)
 		fdjtLog("CodexMode %o, cur=%o dbc=%o",
-			mode,sbook.mode,document.body.className);
-	    if ((sbook.mode==='help')&&(!(mode))) mode=sbook.last_mode;
+			mode,Codex.mode,document.body.className);
+	    if ((Codex.mode==='help')&&(!(mode))) mode=Codex.last_mode;
 	    if (mode) {
-		if (mode!=="scanning") sbook.scanning=false;
+		if (mode!=="scanning") Codex.scanning=false;
 		if ((mode==="scanning")||(mode==="tocscan"))
 		    fdjtDOM.addClass(document.body,"sbookscanning");
 		else fdjtDOM.dropClass(document.body,"sbookscanning");
-		if (mode===sbook.mode) {}
+		if (mode===Codex.mode) {}
 		else if (mode===true) {
 		    /* True just puts up the HUD with no mode info */
-		    if (sbook_mode_foci[sbook.mode]) {
-			var input=fdjtID(sbook_mode_foci[sbook.mode]);
+		    if (sbook_mode_foci[Codex.mode]) {
+			var input=fdjtID(sbook_mode_foci[Codex.mode]);
 			input.blur();}
-		    sbook.mode=false;
-		    sbook.last_mode=true;}
+		    Codex.mode=false;
+		    Codex.last_mode=true;}
 		else if (typeof mode !== 'string') 
 		    throw new Error('mode arg not a string');
 		else {
-		  if (sbook_mode_foci[sbook.mode]) {
-		    var input=fdjtID(sbook_mode_foci[sbook.mode]);
+		  if (sbook_mode_foci[Codex.mode]) {
+		    var input=fdjtID(sbook_mode_foci[Codex.mode]);
 		    input.blur();}
-		    sbook.mode=mode;
-		    sbook.last_mode=mode;}
+		    Codex.mode=mode;
+		    Codex.last_mode=mode;}
 		// If we're switching to the inner app but the iframe
 		//  hasn't been initialized, we do it now.
 		if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
 		    sbookSetupFlyleaf();
-		// Update sbook.scrolling which is the scrolling
+		// Update Codex.scrolling which is the scrolling
 		// element in the HUD for this mode
 		if (!(typeof mode === 'string'))
-		    sbook.scrolling=false;
+		    Codex.scrolling=false;
 		else if (sbook_mode_scrollers[mode]) 
-		    sbook.scrolling=(sbook_mode_scrollers[mode]);
-		else sbook.scrolling=false;
+		    Codex.scrolling=(sbook_mode_scrollers[mode]);
+		else Codex.scrolling=false;
 		// Actually change the class on the HUD object
 		if (mode===true) {
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");
@@ -306,7 +306,7 @@ var CodexMode=
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
 		if (mode==='scanning') {
-		    sbook.hudup=false;
+		    Codex.hudup=false;
 		    fdjtDOM.dropClass(CodexHUD,"flyleaf");
 		    fdjtDOM.dropClass(CodexHUD,"full");
 		    fdjtDOM.dropClass(document.body,"hudup");}
@@ -315,16 +315,16 @@ var CodexMode=
 		// This updates scroller dimensions, we delay it
 		//  because apparently, on some browsers, the DOM
 		//  needs to catch up with CSS
-		if (sbook.scrolling)
+		if (Codex.scrolling)
 		    setTimeout(function(){
-			updateScroller(fdjtID(sbook.scrolling));},
+			updateScroller(fdjtID(Codex.scrolling));},
 			       100);
 		// If we're scanning all glosses, we sync the glosses
 		//  with the current book location.
 		if ((mode==="allglosses")&&
-		    (sbook.curinfo)&&(sbook.curinfo.first)) {
-		    sbook.UI.scrollGlosses(
-			sbook.curinfo.first,fdjtID("CODEXALLGLOSSES"));}
+		    (Codex.curinfo)&&(Codex.curinfo.first)) {
+		    Codex.UI.scrollGlosses(
+			Codex.curinfo.first,fdjtID("CODEXALLGLOSSES"));}
 		// We autofocus any input element appropriate to the
 		// mode
 		if (sbook_mode_foci[mode]) {
@@ -332,17 +332,17 @@ var CodexMode=
 		  if (input) input.focus();}
 		// Moving the focus back to the body lets keys work
 		else document.body.focus();
-		sbook.displaySync();}
+		Codex.displaySync();}
 	    else {
 		// Clearing the mode is a lot simpler, in part because
 		//  setHUD clears most of the classes when it brings
 		//  the HUD down.
-		if (sbook.mode!=='help') sbook.last_mode=sbook.mode;
+		if (Codex.mode!=='help') Codex.last_mode=Codex.mode;
 		document.body.focus();
 		fdjtDOM.dropClass(document.body,"dimmed");
 		fdjtDOM.dropClass(document.body,"sbookscanning");
 		setHUD(false);
-		sbook.displaySync();}}
+		Codex.displaySync();}}
 
 	function fadeUpHUD(){
 	    fdjtLog("Setting properties");
@@ -355,7 +355,7 @@ var CodexMode=
 		    CodexHUD.style.opacity='';},
 			   1500);},
 		       1500);}
-	sbook.fadeUpHUD=fadeUpHUD;
+	Codex.fadeUpHUD=fadeUpHUD;
 
 	function updateScroller(elt){
 	    if (typeof elt === 'string') elt=fdjtID(elt);
@@ -379,34 +379,34 @@ var CodexMode=
 		fdjtDOM.parsePX(ccstyle.paddingBottom)+
 		fdjtDOM.parsePX(ccstyle.marginTop)+
 		fdjtDOM.parsePX(ccstyle.marginBottom);
-	    if (sbook.scrolldivs) {
+	    if (Codex.scrolldivs) {
 		c.style.height=
 		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
 	    	c.style.overflow='';}
 	    else {
-		if ((!(sbook.scrollers))||(!(elt.id))) return;
-		if (sbook.Trace.scroll) {
+		if ((!(Codex.scrollers))||(!(elt.id))) return;
+		if (Codex.Trace.scroll) {
 		    fdjtLog("cco=%o ct=%o nh=%o",
 			    cc.offsetHeight,c.offsetTop,
 			    cc.offsetHeight-c.offsetTop);}
 		c.style.height=
 		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
 		c.style.overflow='hidden';
-		if ((sbook.scrollers[elt.id])&&
-		    (sbook.scrollers[elt.id].element===elt))
-		    sbook.scrollers[elt.id].refresh();
-		else sbook.scrollers[elt.id]=new iScroll(elt);}
-	    if (sbook.Trace.scroll) {
+		if ((Codex.scrollers[elt.id])&&
+		    (Codex.scrollers[elt.id].element===elt))
+		    Codex.scrollers[elt.id].refresh();
+		else Codex.scrollers[elt.id]=new iScroll(elt);}
+	    if (Codex.Trace.scroll) {
 		fdjtLog("updateScroller %o %o %o ch=%o h=%o",
 			elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);
 		fdjtLog("updateScroller e=%o,c=%o,cc=%o",
 			fdjtDOM.getStyle(elt).overflow,
 			fdjtDOM.getStyle(c).overflow,
 			fdjtDOM.getStyle(cc).overflow);
-		if ((!(sbook.nativescroll))&&
-		    (elt.id)&&(sbook.scrollers)&&
-		    (sbook.scrollers[elt.id])) {
-		    var scroller=sbook.scrollers[elt.id];
+		if ((!(Codex.nativescroll))&&
+		    (elt.id)&&(Codex.scrollers)&&
+		    (Codex.scrollers[elt.id])) {
+		    var scroller=Codex.scrollers[elt.id];
 		    fdjtLog("e=%o w=%o wo=%o,%o wc=%o,%o i=%o,%o o=%o,%o d=%o,%o m=%o,%o",
 			    scroller.element,scroller.wrapper,
 			    scroller.wrapper.offsetWidth,
@@ -417,22 +417,22 @@ var CodexMode=
 			    scroller.scrollerWidth,scroller.scrollerHeight,
 			    scroller.scrollWidth,scroller.scrollHeight,
 			    scroller.maxScrollX,scroller.maxScrollY);}}}
-	sbook.UI.updateScroller=updateScroller;
+	Codex.UI.updateScroller=updateScroller;
 
 	function CodexHUDToggle(mode,keephud){
-	    if (!(sbook.mode)) CodexMode(mode);
-	    else if (mode===sbook.mode)
+	    if (!(Codex.mode)) CodexMode(mode);
+	    else if (mode===Codex.mode)
 		if (keephud) CodexMode(true); else CodexMode(false);
 	    else if ((mode==='flyleaf')&&
-		     (sbook.mode.search(codexflyleafMode_pat)===0))
+		     (Codex.mode.search(codexflyleafMode_pat)===0))
 		if (keephud) CodexMode(true); else CodexMode(false);
 	    else CodexMode(mode);}
 	CodexMode.toggle=CodexHUDToggle;
 
-	sbook.dropHUD=function(){return CodexMode(false);}
-	sbook.toggleHUD=function(evt){
+	Codex.dropHUD=function(){return CodexMode(false);}
+	Codex.toggleHUD=function(evt){
 	    if (fdjtUI.isClickable(fdjtUI.T(evt))) return;
-	    if (sbook.mode) CodexMode(false);
+	    if (Codex.mode) CodexMode(false);
 	    else CodexMode(true);};
 	
 	/* HUD Messages */
@@ -450,7 +450,7 @@ var CodexMode=
 				   fdjtDOM("span.time",fdjtET()),
 				   message,
 				   fdjtState.argVec(arguments,1)));}
-	sbook.Message=sbookMessage;
+	Codex.Message=sbookMessage;
 
 	function sbookFlashMessage(arg0){
 	    var duration=message_timeout; var message; var args;
@@ -472,22 +472,22 @@ var CodexMode=
 				fdjtDOM("div.logentry",
 					fdjtDOM("span.time",fdjtET()),
 					message));}
-	    if (!((sbook.mode==='console')||(sbook.mode==='help')||
-		  (sbook.mode==='message'))) { 
+	    if (!((Codex.mode==='console')||(Codex.mode==='help')||
+		  (Codex.mode==='message'))) { 
 		fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
 		fdjtDOM.addClass(CodexHUD,"console");
-		var mode=sbook.mode;
+		var mode=Codex.mode;
 		sbook_message_timer=
 		    setTimeout(function() {
 			if (mode==="console") CodexMode(false);
-			else if (sbook.mode==="console") CodexMode(false);	
+			else if (Codex.mode==="console") CodexMode(false);	
 			else if (mode) {
 			    fdjtDOM.swapClass(CodexHUD,"console",mode);}},
 			       duration);}}
-	sbook.Flash=sbookFlashMessage;
+	Codex.Flash=sbookFlashMessage;
 
 	function sbookGetStableId(elt){
-	    var info=sbook.Info(elt);
+	    var info=Codex.Info(elt);
 	    // fdjtLog("Scrolling to %o with id %s/%s",target,info.frag,target.id);
 	    if ((info) && (info.frag) && (!(info.frag.search(/TMPID/)==0)))
 		return info.frag;
@@ -515,14 +515,14 @@ var CodexMode=
 		var i=0; var len=refuris.length;
 		while (i<len)
 		    if (refuris[i].value==='fillin')
-			refuris[i++].value=sbook.refuri;
+			refuris[i++].value=Codex.refuri;
 		else i++;}
 	    fillinAboutInfo();
 	    /* Get various external APPLINK uris */
-	    var offlineuri=fdjtDOM.getLink("sbook.offline")||altLink("offline");
-	    var epuburi=fdjtDOM.getLink("sbook.epub")||altLink("ebub");
-	    var mobiuri=fdjtDOM.getLink("sbook.mobi")||altLink("mobi");
-	    var zipuri=fdjtDOM.getLink("sbook.mobi")||altLink("mobi");
+	    var offlineuri=fdjtDOM.getLink("codex.offline")||altLink("offline");
+	    var epuburi=fdjtDOM.getLink("codex.epub")||altLink("ebub");
+	    var mobiuri=fdjtDOM.getLink("codex.mobi")||altLink("mobi");
+	    var zipuri=fdjtDOM.getLink("codex.mobi")||altLink("mobi");
 	    if (offlineuri) {
 		var elts=document.getElementsByName("SBOOKOFFLINELINK");
 		var i=0; while (i<elts.length) {
@@ -562,10 +562,10 @@ var CodexMode=
 	    initManageIFrame();
 	    /* If the book is offline, don't bother showing the link to the offline
 	       version. */
-	    if (sbook.offline) fdjtDOM.addClass(document.body,"sbookoffline");}
+	    if (Codex.offline) fdjtDOM.addClass(document.body,"sbookoffline");}
 
 	function altLink(type,uri){
-	    uri=uri||sbook.refuri;
+	    uri=uri||Codex.refuri;
 	    if (uri.search("http://")===0)
 		return "http://offline."+uri.slice(7);
 	    else if (uri.search("https://")===0)
@@ -590,29 +590,29 @@ var CodexMode=
 	    var about=fdjtID("APPABOUT");
 	    var title=
 		fdjtID("SBOOKTITLE")||
-		fdjtDOM.getMeta("sbook.title")||
+		fdjtDOM.getMeta("codex.title")||
 		fdjtDOM.getMeta("TITLE")||
 		fdjtDOM.getMeta("DC.title")||
 		document.title;
 	    var byline=
 		fdjtID("SBOOKBYLINE")||fdjtID("SBOOKAUTHOR")||
-		fdjtDOM.getMeta("sbook.byline")||fdjtDOM.getMeta("BYLINE")||
-		fdjtDOM.getMeta("sbook.author")||fdjtDOM.getMeta("AUTHOR");
+		fdjtDOM.getMeta("codex.byline")||fdjtDOM.getMeta("BYLINE")||
+		fdjtDOM.getMeta("codex.author")||fdjtDOM.getMeta("AUTHOR");
 	    var copyright=
 		fdjtID("SBOOKCOPYRIGHT")||
-		fdjtDOM.getMeta("sbook.copyright")||fdjtDOM.getMeta("COPYRIGHT")||
+		fdjtDOM.getMeta("codex.copyright")||fdjtDOM.getMeta("COPYRIGHT")||
 		fdjtDOM.getMeta("RIGHTS");
 	    var publisher=
 		fdjtID("SBOOKPUBLISHER")||
-		fdjtDOM.getMeta("sbook.publisher")||
+		fdjtDOM.getMeta("codex.publisher")||
 		fdjtDOM.getMeta("PUBLISHER");
 	    var description=
 		fdjtID("SBOOKDESCRIPTION")||
-		fdjtDOM.getMeta("sbook.description")||
+		fdjtDOM.getMeta("codex.description")||
 		fdjtDOM.getMeta("DESCRIPTION");
 	    var digitized=
 		fdjtID("SBOOKDIGITIZED")||
-		fdjtDOM.getMeta("sbook.digitized")||
+		fdjtDOM.getMeta("codex.digitized")||
 		fdjtDOM.getMeta("DIGITIZED");
 	    var sbookified=fdjtID("SBOOKIFIED")||fdjtDOM.getMeta("SBOOKIFIED");
 	    _sbookFillTemplate(about,".title",title);
@@ -630,8 +630,8 @@ var CodexMode=
 
 	function initManageIFrame(){
 	    var query=document.location.search||"?";
-	    var refuri=sbook.refuri;
-	    var appuri="https://"+sbook.server+"/v4/flyleaf"+query;
+	    var refuri=Codex.refuri;
+	    var appuri="https://"+Codex.server+"/v4/flyleaf"+query;
 	    if (query.search("REFURI=")<0)
 		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
 	    if (query.search("TOPURI=")<0)
@@ -643,7 +643,7 @@ var CodexMode=
 
 	CodexMode.selectApp=function(){
 	    /* initManageIFrame(); */
-	    if (sbook.mode==='sbookapp') CodexMode(false);
+	    if (Codex.mode==='sbookapp') CodexMode(false);
 	    else CodexMode('sbookapp');}
 
 	/* Scanning */
@@ -651,33 +651,33 @@ var CodexMode=
 	function CodexScan(elt,src){
 	    var cxt=false;
 	    var body=document.body;
-	    var pelt=sbook.scanning;
-	    if (sbook.Trace.mode)
+	    var pelt=Codex.scanning;
+	    if (Codex.Trace.mode)
 		fdjtLog("CodexScan() %o (src=%o) mode=%o scn=%o/%o",
-			elt,src,sbook.mode,sbook.scanning,sbook.target);
+			elt,src,Codex.mode,Codex.scanning,Codex.target);
 	    // Save the source HUD element for the preview (when provided)
-	    if (sbook.scanning!==src) {
+	    if (Codex.scanning!==src) {
 		var clone=src.cloneNode(true);
 		clone.id="CODEXSCAN";
 		fdjtDOM.replace("CODEXSCAN",clone);
-		if (sbook.nextSlice(src))
+		if (Codex.nextSlice(src))
 		    fdjtDOM.dropClass("CODEXHUD","scanend");
 		else fdjtDOM.addClass("CODEXHUD","scanend");
-		if (sbook.prevSlice(src))
+		if (Codex.prevSlice(src))
 		    fdjtDOM.dropClass("CODEXHUD","scanstart");
 		else fdjtDOM.addClass("CODEXHUD","scanstart");
-		sbook.scanning=src;}
+		Codex.scanning=src;}
 	    else {}
-	    sbook.setTarget(elt);
-	    sbook.GoTo(elt);
+	    Codex.setTarget(elt);
+	    Codex.GoTo(elt);
 	    CodexMode("scanning");}
-	sbook.Scan=CodexScan;
+	Codex.Scan=CodexScan;
 
 	/* Button methods */
 
 	function LoginButton_onclick(evt){
 	    evt=evt||event||null;
-	    if (sbook.mode==="login") CodexMode(false);
+	    if (Codex.mode==="login") CodexMode(false);
 	    else CodexMode("login");
 	    evt.cancelBubble=true;}
 

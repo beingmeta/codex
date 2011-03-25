@@ -51,11 +51,11 @@
   <img src="http://static.beingmeta.com/graphics/CompassIcon50x50.png"
        alt="toc" title="click to navigate the book as a whole"
        class="hudbutton topleft" id="CODEXTOCBUTTON"
-       hudmode="toc" onclick="sbook.UI.hudbutton(event);"/>
+       hudmode="toc" onclick="Codex.UI.hudbutton(event);"/>
   <img src="http://static.beingmeta.com/graphics/TagSearch50x50.png"
        alt="search" title="click to search tags within the book"
        class="hudbutton topright" id="CODEXSEARCHBUTTON"
-       hudmode="search" onclick="sbook.UI.hudbutton(event);"/>
+       hudmode="search" onclick="Codex.UI.hudbutton(event);"/>
   <div class="helphud topcenter">
     <span class="fortouch">tap</span><span class="notouch">click</span>
     here to see the book tools
@@ -119,23 +119,23 @@
   <div id="CODEXGOTOLOC" class="hudpanel codexgoto">
     Jump to location <input type="text" name="GOTOLOC" value=""
 			    id="CODEXLOCINPUT"
-			    onkeypress="sbook.UI.goto_keypress(event);"/>
+			    onkeypress="Codex.UI.goto_keypress(event);"/>
   </div>
   <div id="CODEXGOTOPAGE" class="hudpanel codexgoto">
     Jump to page <input type="text" name="GOTOPAGE" value=""
 			id="CODEXPAGEINPUT"
-			onkeypress="sbook.UI.goto_keypress(event);"/>
+			onkeypress="Codex.UI.goto_keypress(event);"/>
   </div>
   <div id="CODEXTOC" class="hudpanel"></div>
   <img src="http://static.beingmeta.com/graphics/ScanLeft32.png"
        id="CODEXSCANLEFT" class="codexscanbutton"
-       alt="prev" onclick="sbook.scanBackward(event);"/>
+       alt="prev" onclick="Codex.scanBackward(event);"/>
   <img src="http://static.beingmeta.com/graphics/ScanRightStop32.png"
        id="CODEXSCANEND" class="codexscanbutton"
        alt="end"/>
   <img src="http://static.beingmeta.com/graphics/ScanRight32.png"
        id="CODEXSCANRIGHT" class="codexscanbutton"
-       alt="next" onclick="sbook.scanForward(event);"/>
+       alt="next" onclick="Codex.scanForward(event);"/>
   <img src="http://static.beingmeta.com/graphics/ScanLeftStop32.png"
        id="CODEXSCANSTART" class="codexscanbutton"
        alt="beginning"/>
@@ -149,11 +149,11 @@
     <!-- This contains renderings of all the glosses, with
 	 a list of sources on top -->
     <div id="SBOOKSOURCES" class="sbooksources"
-	 onclick="sbook.UI.handlers.sources_onclick(event);">
+	 onclick="Codex.UI.handlers.sources_onclick(event);">
       <img src="http://static.beingmeta.com/graphics/sbookspeople50x50.png"
 	   class="button everyone selected"
 	   alt="show all" title="click to see all glosses"
-	   onclick="sbook.UI.handlers.everyone_onclick(event);"/>
+	   onclick="Codex.UI.handlers.everyone_onclick(event);"/>
     </div>
     <div class="scrollbox">
       <div id="CODEXALLGLOSSES" class="codexslice">
@@ -255,7 +255,7 @@
   <img src="http://static.beingmeta.com/graphics/sbookspeople50x50.png"
        alt="glosses" title="Click to browse glosses overlaid on this book"
        class="hudbutton botright" id="CODEXALLGLOSSESBUTTON"
-       hudmode="allglosses" onclick="sbook.UI.hudbutton(event);"/>
+       hudmode="allglosses" onclick="Codex.UI.hudbutton(event);"/>
 </div>
 
 <!--

@@ -49,7 +49,7 @@ var sbook_delete_icon="redx12x12.png";
 	var key=info.qid||info.oid||info.id;
 	var target_id=(info.frag)||(info.id);
 	var target=((target_id)&&(fdjtID(target_id)));
-	var target_info=sbook.docinfo[target_id];
+	var target_info=Codex.docinfo[target_id];
 	var head_info=target_info.head;
 	var head=((head_info)&&(head_info.elt));
 	var refiners=((query) && (query._refiners));
@@ -81,7 +81,7 @@ var sbook_delete_icon="redx12x12.png";
 		    (((info.tags)||(info.autotags))&&
 		     (showtags(info)))," ");
 	if (!(info.tstamp))
-	    div.title=sbook.getTitle(target,true);
+	    div.title=Codex.getTitle(target,true);
 	// if (info.qid) div.about=info.qid;
 	div.about="#"+info.frag;
 	// div.setAttribute('about',"#"+info.id);
@@ -90,7 +90,7 @@ var sbook_delete_icon="redx12x12.png";
 	    div.name=div.qref=info.qid;
 	    div.setAttribute("name",info.qid);}
 	return div;}
-    sbook.renderNote=renderNote;
+    Codex.renderNote=renderNote;
     
     var prime_thresh=7;
     function getprimetags(info){
@@ -98,7 +98,7 @@ var sbook_delete_icon="redx12x12.png";
 	var tags=info.tags;
 	if (typeof tags==='string') tags=[tags];
 	if (tags.length<=prime_thresh) return tags;
-	var tagscores=sbook.index.tagweights;
+	var tagscores=Codex.index.tagweights;
 	var prime=[].concat(info.tags);
 	prime.sort(function(t1,t2){
 	    var s1=tagscores[t1]; var s2=tagscores[t2];
@@ -123,7 +123,7 @@ var sbook_delete_icon="redx12x12.png";
 	if ((typeof ctags === 'string')||(ctags instanceof String))
 	    ctags=[ctags];
 	if ((atags)&&(!(atags.sorted))) {
-	    var weights=sbook.index.tagweights;
+	    var weights=Codex.index.tagweights;
 	    atags.sort(function(t1,t2){
 		var v1=weights[t1], v2=weights[t2];
 		if ((v1)&&(v2)) {
@@ -202,18 +202,18 @@ var sbook_delete_icon="redx12x12.png";
     function showglossinfo(info) {
 	var user=info.maker;
 	var feed=info.feed||false;
-	var userinfo=sbook.sourcekb.map[user];
-	var feedinfo=sbook.sourcekb.map[feed];
+	var userinfo=Codex.sourcekb.map[user];
+	var feedinfo=Codex.sourcekb.map[feed];
 	var agestring=timestring(info.modified||info.created);
 	var age=fdjtDOM("span.age",agestring);
-	age.title=(((user===sbook.user)||(user===sbook.user.qid))?
+	age.title=(((user===Codex.user)||(user===Codex.user.qid))?
 		   ("edit this gloss"):
 		   ("relay/reply to this gloss"));
 	// This should be made to work
 	// age.onclick=relayoredit_gloss;
 	var deleteicon=
 	    // No delete icons for the ipad right now (too small)
-	    ((user===sbook.user.oid)&&(sbook.ui!=='ios')&&
+	    ((user===Codex.user.oid)&&(Codex.ui!=='ios')&&
 	     (fdjtDOM.Image(sbicon(sbook_delete_icon),"img.delete","x",
 			    "delete this gloss")))
 	if (deleteicon) deleteicon.onclick=deletegloss_onclick;
@@ -292,7 +292,7 @@ var sbook_delete_icon="redx12x12.png";
 	var target_start=target_info.starts_at;
 	var target_end=target_info.ends_at;
 	var target_len=target_end-target_start;
-	if (!(cxt_info)) cxt_info=sbook.docinfo[document.body.id];
+	if (!(cxt_info)) cxt_info=Codex.docinfo[document.body.id];
 	var cxt_start=cxt_info.starts_at;
 	var cxt_end=cxt_info.ends_at;
 	var cxt_len=cxt_end-cxt_start;
@@ -310,7 +310,7 @@ var sbook_delete_icon="redx12x12.png";
 	var head=((target_info.toclevel)?(target_info):(target_info.head));
 	var heads=head.heads;
 	var anchor=fdjtDOM.Anchor(
-	    "javascript:sbook.JumpTo('"+(head.frag||head.id)+"');","a.headref",
+	    "javascript:Codex.JumpTo('"+(head.frag||head.id)+"');","a.headref",
 	    fdjtDOM("span.spacer","\u00A7"),
 	    head.title);
 	var title="jump to "+head.title;
@@ -321,7 +321,7 @@ var sbook_delete_icon="redx12x12.png";
 	return [" ",anchor];}
 
     function makelocspan(target_info,cxtinfo){
-	if (!(cxtinfo)) cxtinfo=sbook.docinfo[(sbook.body||document.body).id];
+	if (!(cxtinfo)) cxtinfo=Codex.docinfo[(Codex.body||document.body).id];
 	var locrule=fdjtDOM("div.locrule");
 	var cxt_start=cxtinfo.starts_at;
 	var cxt_end=cxtinfo.ends_at;
@@ -334,7 +334,7 @@ var sbook_delete_icon="redx12x12.png";
 	locrule.style.left=((location_start/cxt_len)*100)+"%";
 	return locrule;}
     function makelocrule(target_info,cxtinfo){
-	if (!(cxtinfo)) cxtinfo=sbook.docinfo[(sbook.body||document.body).id];
+	if (!(cxtinfo)) cxtinfo=Codex.docinfo[(Codex.body||document.body).id];
 	var locrule=fdjtDOM("hr.locrule");
 	var cxt_start=cxtinfo.starts_at;
 	var cxt_end=cxtinfo.ends_at;
@@ -358,19 +358,19 @@ var sbook_delete_icon="redx12x12.png";
 	    else scan=scan.parentNode;}
 	if (!(scan)) return;
 	var qref=scan.qref;
-	var frag=sbook.glosses.ref(qref).get("frag");
+	var frag=Codex.glosses.ref(qref).get("frag");
 	if (scan)
 	    fdjtAjax.jsonCall(
 		function(response){deletegloss(response,qref,frag);},
-		"https://"+sbook.server+"/v4/delete",
+		"https://"+Codex.server+"/v4/delete",
 		"gloss",scan.qref);}
     function deletegloss(response,glossid,frag){
 	if (response===glossid) {
-	    sbook.glosses.drop(glossid);
-	    sbook.allglosses=fdjtKB.remove(sbook.allglosses,glossid);
-	    if (sbook.offline)
-		fdjtState.setLocal("glosses("+sbook.refuri+")",
-				   sbook.allglosses,true);
+	    Codex.glosses.drop(glossid);
+	    Codex.allglosses=fdjtKB.remove(Codex.allglosses,glossid);
+	    if (Codex.offline)
+		fdjtState.setLocal("glosses("+Codex.refuri+")",
+				   Codex.allglosses,true);
 	    var renderings=fdjtDOM.Array(document.getElementsByName(glossid));
 	    if (renderings) {
 		var i=0; var lim=renderings.length;
@@ -390,15 +390,15 @@ var sbook_delete_icon="redx12x12.png";
 	    else scan=scan.parentNode;}
 	if (!(scan)) return;
 	var qref=scan.qref;
-	var gloss=sbook.glosses.ref(qref);
+	var gloss=Codex.glosses.ref(qref);
 	var frag=gloss.get("frag");
-	sbook.setGlossTarget(gloss);
+	Codex.setGlossTarget(gloss);
 	CodexMode("addgloss");}
 
     function sourceIcon(info){
 	if (info) return info.pic;}
     
-    function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
+    function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
 
     // Displayings sets of notes organized into threads
 
@@ -421,7 +421,7 @@ var sbook_delete_icon="redx12x12.png";
       while (i<lim) {
 	var r=results[i];
 	if (typeof r === 'string') {
-	  var ref=sbook.docinfo[r]||sbook.glosses.ref(r);
+	  var ref=Codex.docinfo[r]||Codex.glosses.ref(r);
 	  if (!(ref)) fdjtLog("No resolution for %o",r);
 	  notes[i]=ref;}
 	else notes[i]=r;
@@ -467,7 +467,7 @@ var sbook_delete_icon="redx12x12.png";
 	var frag=note.id||note.frag;
 	if (!(frag)) continue;
 	var target=fdjtID(frag);
-	var docinfo=sbook.docinfo[target.id];
+	var docinfo=Codex.docinfo[target.id];
 	var headinfo=docinfo.head;
 	var head=document.getElementById(headinfo.frag);
 	// var tochead=makeTOCHead(head);
@@ -480,28 +480,28 @@ var sbook_delete_icon="redx12x12.png";
 	  threadelt=fdjtDOM("div.codexthread.idthread");
 	  // ,makeIDHead(target,headinfo,true)
 	  threadelt.about="#"+frag;
-	  threadelt.title=sbook.getTitle(target,true);
+	  threadelt.title=Codex.getTitle(target,true);
 	  fdjtDOM.append(headelt,threadelt);
 	  curinfo=docinfo;}
 	fdjtDOM.append(threadelt,renderNote(note));}
       return div;}
-    sbook.UI.showSlice=showSlice;
+    Codex.UI.showSlice=showSlice;
 
     function sumText(target){
-	var title=sbook.getTitle(target,true);
+	var title=Codex.getTitle(target,true);
 	if (title.length<40) return title;
 	/* title.slice(0,40)+"\u22ef "; */
 	else return title;}
     
     function makeTOCHead(target,head){
-	if (!(head)) head=sbook.getHead(target);
+	if (!(head)) head=Codex.getHead(target);
 	var basespan=fdjtDOM("span");
 	basespan.title='click to jump';
-	var title=sbook.getTitle(target,true);
-	var info=sbook.docinfo[target.id];
+	var title=Codex.getTitle(target,true);
+	var info=Codex.docinfo[target.id];
 	if (target!==head) {
 	    var paratext=
-		fdjtDOM.Anchor("javascript:sbook.JumpTo('"+target.id+"');",
+		fdjtDOM.Anchor("javascript:Codex.JumpTo('"+target.id+"');",
 			       "a.paratext",
 			       fdjtDOM("span.spacer","\u00B6"),
 			       sumText(target));
@@ -509,22 +509,22 @@ var sbook_delete_icon="redx12x12.png";
 	    fdjtDOM(basespan,paratext," ");}
 	if (head) {
 	    var headtext=
-		fdjtDOM.Anchor("javascript:sbook.JumpTo('"+head.id+"');",
+		fdjtDOM.Anchor("javascript:Codex.JumpTo('"+head.id+"');",
 			       "a.headtext",
 			       fdjtDOM("span.spacer","\u00A7"),
 			       sumText(head));
 	    var curspan=fdjtDOM("span.head",headtext);
 	    fdjtDOM.append(basespan," ",curspan);
-	    var heads=sbook.Info(head).heads;
+	    var heads=Codex.Info(head).heads;
 	    if (heads) {
 		var j=heads.length-1; while (j>=0) {
 		    var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
 		    if ((!(elt))||(!(hinfo.title))||
-			(elt===sbook.root)||(elt===document.body))
+			(elt===Codex.root)||(elt===document.body))
 			continue;
 		    var anchor=
 			fdjtDOM.Anchor(
-			    "javascript:sbook.JumpTo('"+hinfo.frag+"');",
+			    "javascript:Codex.JumpTo('"+hinfo.frag+"');",
 			    "a.headtext",
 			    fdjtDOM("span.spacer","\u00A7"),
 			    hinfo.title);
@@ -538,12 +538,12 @@ var sbook_delete_icon="redx12x12.png";
 	return tochead;}
 
     function makeIDHead(target,headinfo,locrule){
-	var info=sbook.docinfo[target.id];
+	var info=Codex.docinfo[target.id];
 	var headinfo=info.head;
 	var tochead=fdjtDOM("div.idhead",
 			    ((locrule)&&(makelocrule(info,headinfo))),
 			    fdjtDOM("span",sumText(target)));
-	var title=sbook.getTitle(target,true);
+	var title=Codex.getTitle(target,true);
 	return tochead;}
 
     function findTOCref(div,ref,loc) {
@@ -560,7 +560,7 @@ var sbook_delete_icon="redx12x12.png";
 
     function addToSlice(note,div,query){
 	var frag=(note.id||note.frag);
-	var eltinfo=sbook.docinfo[frag];
+	var eltinfo=Codex.docinfo[frag];
 	var about=document.getElementById(frag);
 	var headinfo=((eltinfo.toclevel)?(eltinfo):(eltinfo.head));
 	var headid=headinfo.frag;
@@ -582,7 +582,7 @@ var sbook_delete_icon="redx12x12.png";
 	    idelt=fdjtDOM("div.codexthread.idthread");
 	    // ,makeIDHead(about,headinfo,true)
 	    idelt.tocref=frag; idelt.start=starts; idelt.about="#"+frag;
-	    idelt.title=sbook.getTitle(about,true);
+	    idelt.title=Codex.getTitle(about,true);
 	    if (insertion) fdjtDOM.insertBefore(insertion,idelt);
 	    else fdjtDOM.append(headelt,idelt);}
 	var tstamp=note.tstamp; var qid=note.qid;
@@ -609,9 +609,9 @@ var sbook_delete_icon="redx12x12.png";
 		return;}
 	    else continue;}
 	fdjtDOM.append(idelt,renderNote(note));}
-    sbook.UI.addToSlice=addToSlice;
+    Codex.UI.addToSlice=addToSlice;
 
-    sbook.nextSlice=function(start){
+    Codex.nextSlice=function(start){
 	var slice=fdjtDOM.getParent(start,".codexslice");
 	var scan=fdjtDOM.forwardElt(start); var ref=false;
 	while (scan) {
@@ -623,7 +623,7 @@ var sbook_delete_icon="redx12x12.png";
 	    else scan=fdjtDOM.forwardElt(scan);}
 	if (fdjtDOM.hasParent(scan,slice)) return scan;
 	else return false;};
-    sbook.prevSlice=function(start){
+    Codex.prevSlice=function(start){
 	var slice=fdjtDOM.getParent(start,".codexslice");
 	var scan=fdjtDOM.backwardElt(start); var ref=false;
 	while (scan) {
@@ -647,7 +647,7 @@ var sbook_delete_icon="redx12x12.png";
 	    var child=children[i++];
 	    if (child.nodeType!==1) continue;
 	    if (hasClass(child,"codexnote")) {
-		var gloss=(child.qref)&&sbook.glosses.map[child.qref];
+		var gloss=(child.qref)&&Codex.glosses.map[child.qref];
 		if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
 		else if ((fdjtKB.contains(sources,gloss.maker))||
 			 (fdjtKB.overlaps(sources,gloss.sources))) {
@@ -668,24 +668,24 @@ var sbook_delete_icon="redx12x12.png";
 	    fdjtDOM.dropClass(fdjtDOM.$(".sourced",results_div),"sourced");
 	    return;}
 	selectSourcesRecur(results_div,sources);
-	if (sbook.target) scrollGlosses(sbook.target,results_div);}
-    sbook.UI.selectSources=selectSources;
+	if (Codex.target) scrollGlosses(Codex.target,results_div);}
+    Codex.UI.selectSources=selectSources;
 
     /* Scrolling slices */
 
     function scrollGlosses(elt,glosses,top){
 	if (!(elt.id)) elt=getFirstID(elt);
-	var info=sbook.docinfo[elt.id];
+	var info=Codex.docinfo[elt.id];
 	var targetloc=((info)&&(info.starts_at))||(elt.starts_at);
 	if (targetloc) {
 	    var scrollto=getFirstElt(glosses,targetloc);
 	    if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
-		if ((sbook.scrollers)&&(glosses.id)&&
-		    (sbook.scrollers[glosses.id])) {
-		    var scroller=sbook.scrollers[glosses.id];
+		if ((Codex.scrollers)&&(glosses.id)&&
+		    (Codex.scrollers[glosses.id])) {
+		    var scroller=Codex.scrollers[glosses.id];
 		    scroller.scrollToElement(scrollto);}
 		else scrollto.scrollIntoView(true);}}}
-    sbook.UI.scrollGlosses=scrollGlosses;
+    Codex.UI.scrollGlosses=scrollGlosses;
     
     function getFirstID(node){
 	if (node.id) return node;
@@ -732,8 +732,8 @@ var sbook_delete_icon="redx12x12.png";
     /* Results handlers */
 
     function setupSummaryDiv(div){
-	sbook.UI.addHandlers(div,'summary');}
-    sbook.UI.setupSummaryDiv=setupSummaryDiv;
+	Codex.UI.addHandlers(div,'summary');}
+    Codex.UI.setupSummaryDiv=setupSummaryDiv;
     
 })();
 

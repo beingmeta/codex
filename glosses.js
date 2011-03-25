@@ -35,7 +35,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
 (function () {
 
-    function sbicon(base){return sbook.graphics+base;}
+    function sbicon(base){return Codex.graphics+base;}
 
     function getbracketed(input,erase){
 	var string=input.value;
@@ -61,7 +61,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     // set the gloss target for a particular passage
     function getGlossForm(arg) {
 	if (typeof arg === 'string')
-	    arg=fdjtID(arg)||sbook.glosses.ref(arg)||false;
+	    arg=fdjtID(arg)||Codex.glosses.ref(arg)||false;
 	if (!(arg)) return false;
 	var gloss=((arg.qid)&&(arg));
 	var passage=((gloss)?(fdjtID(gloss.frag)):(arg));
@@ -82,19 +82,19 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else form=fdjtDOM.getChildren(div,"form")[0];
 	// Get any selection to add as an excerpt
 	var sel=window.getSelection();
-	if (sbook.selection) {
-	    var sel=sbook.selection;
+	if (Codex.selection) {
+	    var sel=Codex.selection;
 	    var seltext=sel.toString();
 	    if (seltext.length) {
 		addExcerpt(form,seltext);}}
 	return div;}
-    sbook.getGlossForm=getGlossForm;
+    Codex.getGlossForm=getGlossForm;
     
     function setupGlossForm(form,passage,gloss){
 	if (form.getAttribute("sbooksetup")) return;
 	form.onsubmit=submitGloss;
-	fdjtDOM.getInput(form,"REFURI").value=sbook.refuri;
-	fdjtDOM.getInput(form,"USER").value=sbook.user.qid;
+	fdjtDOM.getInput(form,"REFURI").value=Codex.refuri;
+	fdjtDOM.getInput(form,"USER").value=Codex.user.qid;
 	fdjtDOM.getInput(form,"DOCTITLE").value=document.title;
 	fdjtDOM.getInput(form,"DOCURI").value=document.location.href;
 	fdjtDOM.getInput(form,"FRAG").value=passage.id;
@@ -104,9 +104,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    noteinput.onkeydown=addgloss_keydown;
 	    if (gloss) noteinput.value=gloss.note||"";
 	    else noteinput.value="";}
-	if (sbook.syncstamp)
-	    fdjtDOM.getInput(form,"SYNC").value=(sbook.syncstamp+1);
-	var info=sbook.docinfo[passage.id];
+	if (Codex.syncstamp)
+	    fdjtDOM.getInput(form,"SYNC").value=(Codex.syncstamp+1);
+	var info=Codex.docinfo[passage.id];
 	var loc=fdjtDOM.getInput(form,"LOCATION");
 	var loclen=fdjtDOM.getInput(form,"LOCLEN");
 	var tagline=fdjtDOM.getInput(form,"TAGLINE");
@@ -128,9 +128,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    while (i<lim) addTag(form,tags[i++],"SHARE");}
 	if ((gloss)&&((gloss.qid)||(gloss.uuid)))
 	    uuidelt.value=gloss.qid||gloss.uuid;
-	else uuidelt.value=fdjtState.getUUID(sbook.nodeid);
-	if ((sbook.outlets)||((gloss)&&(gloss.outlets))) {
-	    var outlets=sbook.outlets;
+	else uuidelt.value=fdjtState.getUUID(Codex.nodeid);
+	if ((Codex.outlets)||((gloss)&&(gloss.outlets))) {
+	    var outlets=Codex.outlets;
 	    var current=((gloss)&&(gloss.outlets));
 	    if (current) outlets=[].concat(outlets).concat(current);
 	    var seen=[];
@@ -142,7 +142,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		    form,outlet,
 		    ((current)&&(fdjtKB.contains(current,outlet))));}}
 	form.setAttribute("sbooksetup","yes");}
-    sbook.setupGlossForm=setupGlossForm;
+    Codex.setupGlossForm=setupGlossForm;
 
     function getTagline(target){
 	var attrib=
@@ -214,15 +214,15 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var info=
 	    ((typeof tag === 'string')&&
 	     ((tag.indexOf('|')>0)?
-	      (sbook.knodule.handleSubjectEntry(tag)):
-	      (fdjtKB.ref(tag)||sbook.knodule.probe(tag))));
+	      (Codex.knodule.handleSubjectEntry(tag)):
+	      (fdjtKB.ref(tag)||Codex.knodule.probe(tag))));
 	var text=((info)?
 		  ((info.toHTML)&&(info.toHTML())||info.name||info.dterm):
 		  (tag));
 	if (info) {
-	    if (info.knodule===sbook.knodule) tag=info.dterm;
+	    if (info.knodule===Codex.knodule) tag=info.dterm;
 	    else tag=info.qid||info.oid||info.dterm||tag;}
-	if ((info)&&(info.pool===sbook.sourcekb)) varname='OUTLETS';
+	if ((info)&&(info.pool===Codex.sourcekb)) varname='OUTLETS';
 	var checkspans=fdjtDOM.getChildren(tagselt,".checkspan");
 	var i=0; var lim=checkspans.length;
 	while (i<lim) {
@@ -248,17 +248,17 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (!(target)) {
 	    var cur=fdjtID("CODEXLIVEGLOSS");
 	    if (cur) cur.id=null;
-	    sbook.glosstarget=false;
+	    Codex.glosstarget=false;
 	    return;}
-	if (!gloss_cloud) sbook.glossCloud();
+	if (!gloss_cloud) Codex.glossCloud();
 	var gloss=false; var form=getGlossForm(target);
 	if ((typeof target === 'string')&&(fdjtID(target))) 
 	    target=fdjtID(target);
 	else if ((typeof target === 'string')&&
-		 (sbook.glosses.ref(target))) {
-	    gloss=sbook.glosses.ref(target);
+		 (Codex.glosses.ref(target))) {
+	    gloss=Codex.glosses.ref(target);
 	    target=fdjtID(gloss.frag);}
-	else if (target.pool===sbook.glosses) {
+	else if (target.pool===Codex.glosses) {
 	    gloss=target; target=fdjtID(gloss.frag);}
 	else {}
 	var cur=fdjtID("CODEXLIVEGLOSS");
@@ -269,11 +269,11 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	curinput=fdjtDOM.getChild(form,"textarea");
 	if (curinput) curinput.id="CODEXGLOSSINPUT";
 	var syncelt=fdjtDOM.getInput(form,"SYNC");
-	syncelt.value=(sbook.syncstamp+1);
-	sbook.glosstarget=target;
-	sbook.setTarget(target);
+	syncelt.value=(Codex.syncstamp+1);
+	Codex.glosstarget=target;
+	Codex.setTarget(target);
 	setCloudCuesFromTarget(gloss_cloud,target);}
-    sbook.setGlossTarget=setGlossTarget;
+    Codex.setGlossTarget=setGlossTarget;
 
     function setCloudCues(cloud,tags){
       	// Clear any current tagcues from the last gloss
@@ -292,16 +292,16 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		fdjtDOM.addClass(completion,"cue");
 		fdjtDOM.addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
-	var info=sbook.docinfo[target.id];
+	var info=Codex.docinfo[target.id];
 	var tags=[].concat(((info)&&(info.tags))||[]);
-	var glosses=sbook.glosses.find('frag',target.id);
+	var glosses=Codex.glosses.find('frag',target.id);
 	var i=0; var lim=glosses.length;
 	while (i<lim) {
 	    var g=glosses[i++]; var gtags=g.tags;
 	    if (gtags) tags=tags.concat(gtags);}
 	setCloudCues(cloud,tags);}
-    sbook.setCloudCues=setCloudCues;
-    sbook.setCloudCuesFromTarget=setCloudCuesFromTarget;
+    Codex.setCloudCues=setCloudCues;
+    Codex.setCloudCuesFromTarget=setCloudCuesFromTarget;
     
     /* Text handling for the gloss text input */
 
@@ -321,7 +321,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var pos=input.selectionStart;
 	    input.value=string.slice(0,pos)+"[]"+string.slice(pos);
 	    input.selectionStart=input.selectionEnd=pos+1;}}
-    sbook.UI.bracket_click=bracket_click;
+    Codex.UI.bracket_click=bracket_click;
 
     function handleBracketed(form,content){
 	if (content[0]==='!') {
@@ -390,15 +390,15 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	return addgloss_callback(req,form);}}
 
     function addgloss_callback(req,form){
-	if (sbook.Trace.network)
+	if (Codex.Trace.network)
 	  fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
 	fdjtDOM.dropClass(form.parentNode,"submitting");
 	fdjtKB.Import(JSON.parse(req.responseText));
 	clearGlossForm(form);
-	sbook.preview_target=false;
+	Codex.preview_target=false;
 	/* Turn off the target lock */
 	setGlossTarget(false);
-	sbook.setTarget(false);
+	Codex.setTarget(false);
 	CodexMode(false);}
 
     function clearGlossForm(form){
@@ -425,13 +425,13 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (gloss_cloud) return gloss_cloud;
 	var completions=fdjtID("CODEXGLOSSCLOUD");
 	completions.onclick=glosscloud_onclick;
-	sbook.gloss_cloud=gloss_cloud=new fdjtUI.Completions(
+	Codex.gloss_cloud=gloss_cloud=new fdjtUI.Completions(
 	    completions,fdjtID("SBOOKTAGINPUT"),
 	    fdjtUI.FDJT_COMPLETE_OPTIONS|
 		fdjtUI.FDJT_COMPLETE_CLOUD|
 		fdjtUI.FDJT_COMPLETE_ANYWORD);
 	return gloss_cloud;}
-    sbook.glossCloud=glossCloud;
+    Codex.glossCloud=glossCloud;
 
     function glosscloud_onclick(evt){
 	var target=fdjtUI.T(evt);
@@ -453,14 +453,14 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
-	    if (uuidelt) uuidelt.value=fdjtState.getUUID(sbook.nodeid);}
-	if (!(sbook.offline))
+	    if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
+	if (!(Codex.offline))
 	    return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));
 	if (!(navigator.onLine)) return saveGloss(form,evt);
 	// Eventually, we'll unpack the AJAX handler to let it handle
 	//  connection failures by calling saveGloss.
 	else return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));}
-    sbook.submitGloss=submitGloss;
+    Codex.submitGloss=submitGloss;
 
     function submitEvent(arg){
       var form=((arg.nodeType)?(arg):(fdjtUI.T(arg)));
@@ -472,13 +472,13 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
       submit_evt.initEvent("submit", true, true);
       form.dispatchEvent(submit_evt);
       return;}
-    sbook.UI.submitEvent=submitEvent;
+    Codex.UI.submitEvent=submitEvent;
 
     // Queues a gloss when offline
     function saveGloss(form,evt){
 	var json=fdjtAjax.formJSON(form,["tags","xrefs"],true);
 	var params=fdjtAjax.formParams(form);
-	var queued=fdjtState.getLocal("queued("+sbook.refuri+")",true);
+	var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
 	if (!(queued)) queued=[];
 	queued.push(json.uuid);
 	var glossdata=
@@ -494,23 +494,23 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    glossdata.details=json.details;
 	if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
 	if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
-	sbook.glosses.Import(glossdata);
+	Codex.glosses.Import(glossdata);
 	fdjtState.setLocal("params("+json.uuid+")",params);
-	fdjtState.setLocal("queued("+sbook.refuri+")",queued,true);
+	fdjtState.setLocal("queued("+Codex.refuri+")",queued,true);
 	// Clear the UUID
 	clearGlossForm(form);
-	sbook.preview_target=false;
+	Codex.preview_target=false;
 	if (evt) fdjtUI.cancel(evt);
 	fdjtDOM.dropClass(form.parentNode,"submitting");
 	/* Turn off the target lock */
-	setGlossTarget(false); sbook.setTarget(false); CodexMode(false);}
+	setGlossTarget(false); Codex.setTarget(false); CodexMode(false);}
 
     // Saves queued glosses
     function writeGlosses(){
-	if (!(sbook.offline)) return;
-	var queued=fdjtState.getLocal("queued("+sbook.refuri+")",true);
+	if (!(Codex.offline)) return;
+	var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
 	if ((!(queued))||(queued.length===0)) {
-	    fdjtState.dropLocal("queued("+sbook.refuri+")");
+	    fdjtState.dropLocal("queued("+Codex.refuri+")");
 	    return;}
 	var ajax_uri=fdjtID("SBOOKMARKFORM").getAttribute("ajaxaction");
 	var i=0; var lim=queued.length; var pending=[];
@@ -532,21 +532,21 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		req.send(params);}
 	    catch (ex) {failed.push(uuid);}}
 	if ((pending)&&(pending.length))
-	    fdjtState.setLocal("queued("+sbook.refuri+")",pending,true);
-	else fdjtState.dropLocal("queued("+sbook.refuri+")");
+	    fdjtState.setLocal("queued("+Codex.refuri+")",pending,true);
+	else fdjtState.dropLocal("queued("+Codex.refuri+")");
 	if ((pending)&&(pending.length>0)) return pending;
 	else return false;}
-    sbook.writeGlosses=writeGlosses;
+    Codex.writeGlosses=writeGlosses;
     
     /* Gloss display */
 
     var objectkey=fdjtKB.objectkey;
 
     function glossBlock(id,spec,xfeatures,glosses,detail){
-	var docinfo=sbook.docinfo[id];
+	var docinfo=Codex.docinfo[id];
 	var all=[].concat(xfeatures||[]);
 	var freq={}; var notes={}; var links={};
-	if (!(glosses)) glosses=sbook.glosses.find('frag',id);
+	if (!(glosses)) glosses=Codex.glosses.find('frag',id);
 	// Initialize given features
 	var i=0; var lim=all.length;
 	while (i<lim) freq[all[i++]]=1;
@@ -555,7 +555,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	while (i<lim) {
 	    var gloss=glosses[i++]; var glossid;
 	    if (typeof gloss === 'string') {
-		glossid=gloss; gloss=sbook.glosses.ref(glossid);}
+		glossid=gloss; gloss=Codex.glosses.ref(glossid);}
 	    else glossid=gloss.qid;
 	    var user=gloss.maker;
 	    var sources=gloss.audience;
@@ -614,7 +614,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		    var j=0; var jlim=sg.length;
 		    while (j<jlim) {
 			var icon=fdjtDOM.Image(sbicon("DiagLink16x16.png"));
-			var gloss=sbook.glosses.ref(sg[j++]);
+			var gloss=Codex.glosses.ref(sg[j++]);
 			var anchor=fdjtDOM.Anchor(gloss.link,"a",icon);
 			anchor.title=gloss.note;
 			fdjtDOM(span," ",anchor);}}
@@ -623,7 +623,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		    var j=0; var jlim=sg.length;
 		    var icon=fdjtDOM.Image(sbicon("remarkballoon16x13.png"));
 		    while (j<jlim) {
-			var gloss=sbook.glosses.ref(sg[j++]);
+			var gloss=Codex.glosses.ref(sg[j++]);
 			icon.title=gloss.note; fdjtDOM(span," ",icon);}}}
 	    else {
 		span=fdjtDOM("span.dterm",taginfo||tag);
@@ -632,7 +632,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    i++;}
 	info.onclick=sbookgloss_onclick;
 	return info;}
-    sbook.glossBlock=glossBlock;
+    Codex.glossBlock=glossBlock;
 
     function sbookgloss_onclick(evt){
 	var target=fdjtUI.T(evt);
@@ -640,16 +640,16 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	while (target) {
 	    if (!(target.getAttribute)) target=target.parentNode;
 	    else if (target.getAttribute("gloss")) 
-		return sbook.showGloss(target.getAttribute("gloss"));
+		return Codex.showGloss(target.getAttribute("gloss"));
 	    else if (target.getAttribute("tag"))
-		return sbook.startSearch(target.getAttribute("tag"));
+		return Codex.startSearch(target.getAttribute("tag"));
 	    else if (target.getAttribute("source"))
-		return sbook.startSearch(target.getAttribute("source"));
+		return Codex.startSearch(target.getAttribute("source"));
 	    else target=target.parentNode;}
 	fdjtUI.cancel(evt);}
 
-    sbook.setInfoTarget=function(passage){
-	var infodiv=sbook.glossBlock(passage.id,"div.sbookgloss")
+    Codex.setInfoTarget=function(passage){
+	var infodiv=Codex.glossBlock(passage.id,"div.sbookgloss")
 	fdjtDOM.replace("SBOOKTARGETINFO",infodiv);
 	fdjtDOM.adjustToFit(fdjtID("SBOOKFOOTINFO"));}
 

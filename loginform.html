@@ -1,6 +1,6 @@
 <div id="CODEXFLYLOGIN">
   <form action="https://auth.sbooks.net/admin/auth"
-	onsubmit="sbook.UI.checkLogin(event);">
+	onsubmit="Codex.UI.checkLogin(event);">
     <input TYPE="HIDDEN" NAME="RETURN_TO" ID="SBOOK_RETURN_TO"/>
     <table class="login fdjtform" cellspacing="1" id="SBOOKLOGINFORM">
       <tbody class="collapsible" id="SBOOKNATIVELOGIN">
@@ -27,7 +27,7 @@
 		     placeholder="what name to display with your comments"/>
 	    (optional)</td></tr>
 	<tr onclick="fdjtUI.CheckSpan.onclick(event);
-		     setTimeout(sbook.UI.updateLogin,200);"
+		     setTimeout(Codex.UI.updateLogin,200);"
 	    class="checkspan">
 	  <th><input TYPE="CHECKBOX" NAME="REGISTER" VALUE="YES"
 		     id="SBOOKREGISTER"/></th>

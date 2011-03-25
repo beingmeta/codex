@@ -82,11 +82,11 @@ var sbookPaginate=
 	
 	var runslice=100; var runwait=100;
 
-	sbook.pageTop=function(){return sbook_top_px;}
-	sbook.pageBottom=function(){return sbook_bottom_px;}
-	sbook.pageLeft=function(){return sbook_left_px;}
-	sbook.pageRight=function(){return sbook_right_px;}
-	sbook.pageSize=function(){return sbook.page.offsetHeight;}
+	Codex.pageTop=function(){return sbook_top_px;}
+	Codex.pageBottom=function(){return sbook_bottom_px;}
+	Codex.pageLeft=function(){return sbook_left_px;}
+	Codex.pageRight=function(){return sbook_right_px;}
+	Codex.pageSize=function(){return Codex.page.offsetHeight;}
 
 	function readSettings(){
 	    sbook_avoidpagebreak=
@@ -133,7 +133,7 @@ var sbookPaginate=
 		    i=0; while (i<lim) {
 			var block=fullpages[i++];
 			var scaleby=1.0;
-			if (false) { // (!(sbook.colpage))
+			if (false) { // (!(Codex.colpage))
 			    var bwidth=block.offsetWidth;
 			    var bheight=block.offsetHeight;
 			    scaleby=Math.min(pwidth/bwidth,pheight/bheight);
@@ -152,9 +152,9 @@ var sbookPaginate=
 	/* Updating the page display */
 
 	function updatePageDisplay(pagenum,location) {
-	    var npages=sbook.pagecount;
+	    var npages=Codex.pagecount;
 	    var pbar=fdjtDOM("div.progressbar#CODEXPROGRESSBAR");
-	    var book_len=sbook.ends_at;
+	    var book_len=Codex.ends_at;
 	    pbar.style.left=(100*(pagenum/npages))+"%";
 	    pbar.style.width=(100/npages)+"%";
 	    var locoff=fdjtDOM("span.locoff#CODEXLOCOFF","L"+Math.floor(location/128));
@@ -164,10 +164,10 @@ var sbookPaginate=
 	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
 	    locoff.title="click to jump to a particular location";
 	    fdjtDOM.addListeners
-	      (locoff,sbook.UI.handlers[sbook.ui]["#CODEXLOCOFF"]);
+	      (locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCOFF"]);
 	    pageno_text.title="click to jump to a particular page";
 	    fdjtDOM.addListeners
-	      (pageno_text,sbook.UI.handlers[sbook.ui]["#CODEXPAGENOTEXT"]);}
+	      (pageno_text,Codex.UI.handlers[Codex.ui]["#CODEXPAGENOTEXT"]);}
 
 	/* Pagination */
 
@@ -177,9 +177,9 @@ var sbookPaginate=
 
 	function Paginate(callback){
 	    var start_time=fdjtTime(); var chunks=0;
-	    var page=sbook.page;
-	    var pages=sbook.pages;
-	    var content=sbook.content;
+	    var page=Codex.page;
+	    var pages=Codex.pages;
+	    var content=Codex.content;
 	    var booktop=fdjtDOM.getGeometry(content).top;
 	    var vwidth=fdjtDOM.viewWidth();
 	    var vheight=fdjtDOM.viewHeight();
@@ -188,7 +188,7 @@ var sbookPaginate=
 	    var gap=vwidth-width;
 	    var forced=[]; var pagetops=[];
 	    var debug=sbookPaginate.debug;
-	    var trace=sbook.Trace.layout;
+	    var trace=Codex.Trace.layout;
 	    var curpage=-1;
 	    var scan=scanContent(content), geom=getGeometry(scan,content), style=getStyle(scan,content);
 	    var next=scanContent(scan,style), ngeom=getGeometry(next,content), nstyle=getStyle(next,content);
@@ -232,7 +232,7 @@ var sbookPaginate=
 		    nstyle=getStyle(next);}}
 	    function forceBreaks(){
 		var stopblock=fdjtTime()+runslice;
-		sbook.Message("Determining page layout");
+		Codex.Message("Determining page layout");
 		while ((scan)&&(fdjtTime()<stopblock)) scanStep();
 		if (scan) {
 		    chunks++;
@@ -244,8 +244,8 @@ var sbookPaginate=
 		    if (callback) callback();}}
 	    function initLayout(){
 		// Clear forced breaks
-		if (sbook.forced_breaks) dropClass(sbook.forced_breaks,"codexpagebreak");
-		sbook.forced_breaks=[];
+		if (Codex.forced_breaks) dropClass(Codex.forced_breaks,"codexpagebreak");
+		Codex.forced_breaks=[];
 		// Set up the column layout
 		content.style.maxWidth=content.style.minWidth=(width-20)+"px";
 		content.style.marginLeft=content.style.marginRight="10px";
@@ -307,27 +307,27 @@ var sbookPaginate=
 		    while (i<lim) forceBreak(breaks[i++],false);}}
 	    function finishUp() {
 		var content_dim=getGeometry(content,pages);
-		var pagecount=sbook.pagecount=
+		var pagecount=Codex.pagecount=
 		    ((content_dim.width>vwidth)?
 		     (Math.ceil(content_dim.width/vwidth)):
 		     (Math.ceil(content_dim.height/height)));
 		pages.style.width=pages.style.maxWidth=
 		    pages.style.minWidth=(pagecount*vwidth)+"px";
-		sbook.page_width=width;
-		sbook.page_gap=page_gap=gap;
-		sbook.page_height=height;
-		sbook.left_margin=page.offsetLeft;
-		sbook.top_margin=page.offsetTop;
-		sbook.right_margin=vwidth-(page.offsetLeft+page.offsetWidth);
-		sbook.bottom_margin=vheight-(page.offsetTop+page.offsetHeight);
-		sbook.vwidth=vwidth;
-		sbook.vheight=vheight;
-		sbook.flip_width=flip_width=gap+
-		    getGeometry(sbook.content).width+
-		    parsePX(getStyle(sbook.content).marginLeft)+
-		    parsePX(getStyle(sbook.content).marginRight);
-		sbook.pagetops=pagetops;
-		sbook.forced_breaks=forced;}
+		Codex.page_width=width;
+		Codex.page_gap=page_gap=gap;
+		Codex.page_height=height;
+		Codex.left_margin=page.offsetLeft;
+		Codex.top_margin=page.offsetTop;
+		Codex.right_margin=vwidth-(page.offsetLeft+page.offsetWidth);
+		Codex.bottom_margin=vheight-(page.offsetTop+page.offsetHeight);
+		Codex.vwidth=vwidth;
+		Codex.vheight=vheight;
+		Codex.flip_width=flip_width=gap+
+		    getGeometry(Codex.content).width+
+		    parsePX(getStyle(Codex.content).marginLeft)+
+		    parsePX(getStyle(Codex.content).marginRight);
+		Codex.pagetops=pagetops;
+		Codex.forced_breaks=forced;}
 	    function page_progress(arg){
 		var now=fdjtTime();
 		if (!(arg)) {}
@@ -336,13 +336,13 @@ var sbookPaginate=
 			fdjtLog("So far, laid out %d pages in %d chunks and %f seconds",arg,
 				chunks,fdjtTime.secs2short((now-start_time)/1000));}
 		else fdjtLog("Done laying out %d pages over %d chunks in %f seconds (rt~%f)",
-			     sbook.pagecount,chunks,
+			     Codex.pagecount,chunks,
 			     fdjtTime.secs2short((now-start_time)/1000),
 			     fdjtTime.secs2short(chunks*(1/runslice)));}}
 	
 	function clearPagination(){
 	    /* Reset pageination info */
-	    var pages=sbook.pages;
+	    var pages=Codex.pages;
 	    pages.style.height="";
 	    pages.style[fdjtDOM.columnWidth]="";
 	    pages.style[fdjtDOM.columnGap]="";}
@@ -351,8 +351,8 @@ var sbookPaginate=
 
 	function forceBreakBefore(elt,style){
 	    if ((sbook_tocmajor)&&(elt.id)&&
-		    ((sbook.docinfo[elt.id]).toclevel)&&
-		    (((sbook.docinfo[elt.id]).toclevel)<=sbook_tocmajor))
+		    ((Codex.docinfo[elt.id]).toclevel)&&
+		    (((Codex.docinfo[elt.id]).toclevel)<=sbook_tocmajor))
 		return true;
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
@@ -391,8 +391,8 @@ var sbookPaginate=
 	    else if ((style.pageBreakAfter)&&
 		     (style.pageBreakAfter!=="auto"))
 		return false;
-	    else if ((elt.id)&&(sbook.docinfo[elt.id])&&
-		     ((sbook.docinfo[elt.id]).toclevel))
+	    else if ((elt.id)&&(Codex.docinfo[elt.id])&&
+		     ((Codex.docinfo[elt.id]).toclevel))
 		return true;
 	    else return false;}
 
@@ -410,7 +410,7 @@ var sbookPaginate=
 		if (next.id) scan.setAttribute("sbooknextnode",next.id);
 		if (scan.id) next.setAttribute("sbookprevnode",scan.id);}
 	    return next;}
-	sbook.scanContent=scanContent;
+	Codex.scanContent=scanContent;
 
 	var sbook_block_tags=
 	    {"IMG": true, "HR": true, "P": true, "DIV": true,
@@ -435,7 +435,7 @@ var sbookPaginate=
 	/* Debugging support */
 
 	function _paginationInfo(elt,style,startpage,endpage,nextpage){
-	    var info=getGeometry(elt,sbook.content);
+	    var info=getGeometry(elt,Codex.content);
 	    return elt.id+"/t"+(elt.toclevel||0)+
 		((forceBreakBefore(elt,style))?"/ph":"")+
 		((avoidBreakInside(elt,style))?"/pb":"")+
@@ -469,54 +469,54 @@ var sbookPaginate=
 	    var off;
 	    if (talldom) off=(num*(flip_width));
 	    else {
-		var top=sbook.pagetops[num];
-		var geom=fdjtDOM.getGeometry(top,sbook.content);
-		var pageleft=geom.left-getCSSLeft(top,sbook.content);
+		var top=Codex.pagetops[num];
+		var geom=fdjtDOM.getGeometry(top,Codex.content);
+		var pageleft=geom.left-getCSSLeft(top,Codex.content);
 		off=pageleft;}
-	    if (sbook.Trace.nav)
+	    if (Codex.Trace.nav)
 		fdjtLog("GoToPage%s %o",((caller)?"/"+caller:""),pageno);
-	    sbook.pages.style.setProperty(
+	    Codex.pages.style.setProperty(
 		fdjtDOM.transform,
 		"translate("+(-off)+"px,0px)",
 		"important");
-	    var ptop=sbook.pagetops[num];
+	    var ptop=Codex.pagetops[num];
 	    while (ptop) {
-		if ((ptop.id)&&(sbook.docinfo[ptop.id])) break;
+		if ((ptop.id)&&(Codex.docinfo[ptop.id])) break;
 		else ptop=ptop.parentNode;}
 	    if (ptop) {
-		var info=sbook.docinfo[ptop.id];
+		var info=Codex.docinfo[ptop.id];
 		updatePageDisplay(num,info.starts_at);}
-	    sbook.curpage=num;
+	    Codex.curpage=num;
 	    if (false) /* (!(nosave)) to fix */
-		sbook.setState(
+		Codex.setState(
 		    {page: pageno,location: info.loc,
-		     target:((sbook.target)&&(sbook.target.id))});}
-	sbook.GoToPage=GoToPage;
-	sbook.FadeToPage=GoToPage;
+		     target:((Codex.target)&&(Codex.target.id))});}
+	Codex.GoToPage=GoToPage;
+	Codex.FadeToPage=GoToPage;
 	
 	function getPage(elt){
 	    if (typeof elt === 'string') elt=fdjtID(elt);
 	    if (!(elt)) return 0;
 	    var vwidth=fdjtDOM.viewWidth();
-	    var content_dim=fdjtDOM.getGeometry(sbook.content,sbook.pages);
-	    var geom=fdjtDOM.getGeometry(elt,sbook.content);
-	    var boxheight=sbook.page.offsetHeight;
+	    var content_dim=fdjtDOM.getGeometry(Codex.content,Codex.pages);
+	    var geom=fdjtDOM.getGeometry(elt,Codex.content);
+	    var boxheight=Codex.page.offsetHeight;
 	    return ((content_dim.width>vwidth)?
 		    (Math.floor(geom.left/vwidth)):
-		    (Math.floor(geom.top/sbook.page_height)))
+		    (Math.floor(geom.top/Codex.page_height)))
 	    return elt.offsetTop/boxheight;}
-	sbook.getPage=getPage;
+	Codex.getPage=getPage;
 	
 	function getPageAt(loc){
-	    var elt=sbook.resolveLocation(loc);
+	    var elt=Codex.resolveLocation(loc);
 	    return getPage(elt);}
-	sbook.getPageAt=getPageAt;
+	Codex.getPageAt=getPageAt;
 	
 	function displaySync(){
-	    if (sbook.preview) return false;
-	    if (sbook.pagecount)
-		sbook.GoToPage(sbook.curpage,"displaySync");}
-	sbook.displaySync=displaySync;
+	    if (Codex.preview) return false;
+	    if (Codex.pagecount)
+		Codex.GoToPage(Codex.curpage,"displaySync");}
+	Codex.displaySync=displaySync;
 
 	/* External refs */
 	sbookPaginate.forceBreakBefore=forceBreakBefore;
@@ -551,18 +551,18 @@ var sbookPaginate=
 	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
 
 	    fdjtDOM.addListeners(
-		pageinfo,sbook.UI.handlers[sbook.ui]["#CODEXPAGEINFO"]);
+		pageinfo,Codex.UI.handlers[Codex.ui]["#CODEXPAGEINFO"]);
 
 	    fdjtDOM.prepend(document.body,pagehead,pagefoot);
 	    
-	    if (sbook.nativescroll) {
+	    if (Codex.nativescroll) {
 		fdjtDOM.prepend(document.body,topleading);
 		fdjtDOM.append(document.body,bottomleading);}
 	    else {}
 	    
-	    fdjtID("CODEXPAGENEXT").onclick=sbook.Forward;
+	    fdjtID("CODEXPAGENEXT").onclick=Codex.Forward;
 
-	    if (!(sbook.nativescroll)) window.scrollTo(0,0);
+	    if (!(Codex.nativescroll)) window.scrollTo(0,0);
 
 	    // The better way to do this might be to change the stylesheet,
 	    //  but fdjtDOM doesn't currently handle that 
@@ -578,7 +578,7 @@ var sbookPaginate=
 	    pagehead.style.backgroundColor=bgcolor;
 	    pagefoot.style.backgroundColor=bgcolor;
 	    fdjtDOM.addListener(false,"resize",resizePage);}
-	sbook.initDisplay=initDisplay;
+	Codex.initDisplay=initDisplay;
 	
 	function getBGColor(arg){
 	    var color=fdjtDOM.getStyle(arg).backgroundColor;
@@ -592,7 +592,7 @@ var sbookPaginate=
 	function resizePage(){
 	    var vw=fdjtDOM.viewWidth();
 	    var vh=fdjtDOM.viewHeight();
-	    if (!(sbook.nativescroll)) {
+	    if (!(Codex.nativescroll)) {
 		window.scrollTo(0,0);
 		document.body.style.width=vw+'px';
 		document.body.style.height=vh+'px';}
@@ -601,28 +601,28 @@ var sbookPaginate=
 	/* Top level functions */
 
 	function sbookUpdatePagination(callback){
-	    var target=sbook.target;
-	    sbook.Message("Determining page layout");
-	    var body=sbook.body||document.body;
+	    var target=Codex.target;
+	    Codex.Message("Determining page layout");
+	    var body=Codex.body||document.body;
 	    fdjtDOM.addClass(document.body,"sbookpaginated");
 	    clearPagination();
 	    Paginate(callback);}
 
 	function sbookPaginate(flag,nogo){
 	    if (flag===false) {
-		if (sbook.paginate) {
-		    sbook.paginate=false;
+		if (Codex.paginate) {
+		    Codex.paginate=false;
 		    sbook_nextpage=false; sbook_pagebreak=false;
 		    fdjtDOM.dropClass(document.body,"sbookpaginated");
 		    fdjtDOM.addClass(document.body,"sbookscrolling");
 		    if (!(nogo)) {
-			var curx=fdjtDOM.viewLeft(); var cury=sbook.viewTop();
-			sbook.scrollTo(0,0);
-			sbook.scrollTo(curx,cury);}
+			var curx=fdjtDOM.viewLeft(); var cury=Codex.viewTop();
+			Codex.scrollTo(0,0);
+			Codex.scrollTo(curx,cury);}
 		    return;}
 		else return;}
 	    else {
-		sbook.paginate=true;
+		Codex.paginate=true;
 		fdjtDOM.addClass(document.body,"sbookpaginated");}
 	    if ((sbook_paginated)&&
 		(sbook_paginated.offheight===document.body.offsetHeight)&&
@@ -642,8 +642,8 @@ var sbookPaginate=
 		    newinfo.winwidth=(document.documentElement.clientWidth);
 		    newinfo.winheight=(fdjtDOM.viewHeight());
 		    sbook_paginated=newinfo;
-		    var gotopage=sbook.getPageAt(sbook.location);
-		    sbook.GoToPage(gotopage||0,"sbookUpdatePagination",true);})};
+		    var gotopage=Codex.getPageAt(Codex.location);
+		    Codex.GoToPage(gotopage||0,"sbookUpdatePagination",true);})};
 	    adjustFullPages(computePages);}
 	
 	// fdjtDOM.trace_adjust=true;
@@ -652,12 +652,12 @@ var sbookPaginate=
 
 /* Pagination utility functions */
 
-sbook.setFontSize=function(size){
-    if (sbook.body.style.fontSize!==size) {
-	sbook.body.style.fontSize=size;
+Codex.setFontSize=function(size){
+    if (Codex.body.style.fontSize!==size) {
+	Codex.body.style.fontSize=size;
 	sbookPaginate();}};
 
-sbook.setUIFontSize=function(size){
+Codex.setUIFontSize=function(size){
     if (CodexHUD.style.fontSize!==size) CodexHUD.style.fontSize=size;};
 
 fdjt_versions.decl("codex",codex_pagination_version);

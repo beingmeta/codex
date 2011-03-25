@@ -41,11 +41,11 @@ function CodexDOMScan(root,docinfo){
     if (this instanceof CodexDOMScan)
       docinfo=this;
     else docinfo=new CodexDOMScan();
-  if (!(root)) root=sbook.root||document.body;
+  if (!(root)) root=Codex.root||document.body;
   var start=new Date();
   docinfo._root=root;
   if (!(root.id)) root.id="SBOOKROOT";
-  if (sbook.Trace.startup) {
+  if (Codex.Trace.startup) {
     if (root.id) 
       fdjtLog("Scanning %s#%s for structure and metadata",root.tagName,root.id);
     else fdjtLog("Scanning DOM for structure and metadata: %o",root);}
@@ -57,7 +57,7 @@ function CodexDOMScan(root,docinfo){
      tagstack: [],taggings: [],allinfo: [],locinfo: [],
      idstate: {prefix: false,count: 0},
      idstack: [{prefix: false,count: 0}],
-     pool: sbook.DocInfo};
+     pool: Codex.DocInfo};
   var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
 		(docinfo[root.id]=new scanInfo(root.id,scanstate)));
   scanstate.curhead=root; scanstate.curinfo=rootinfo;
@@ -90,7 +90,7 @@ function CodexDOMScan(root,docinfo){
     scaninfo.ends_at=scanstate.location;
     scaninfo=scaninfo.head;}
   var done=new Date();
-  if (sbook.Trace.startup)
+  if (Codex.Trace.startup)
     fdjtLog('Gathered metadata in %f secs over %d/%d heads/nodes',
 	    (done.getTime()-start.getTime())/1000,
 	    scanstate.headcount,scanstate.eltcount);
@@ -171,8 +171,8 @@ function CodexDOMScan(root,docinfo){
       if (cname.search(/\bsbookignore\b/)>=0) return 0;
       var tocloc=cname.search(/\bsbook\dhead\b/);
       if (tocloc>=0) return parseInt(cname.slice(5,6));}
-    if ((sbook.notoc)&&(sbook.notoc.match(elt))) return 0;
-    if ((sbook.ignore)&&(sbook.ignore.match(elt))) return 0;
+    if ((Codex.notoc)&&(Codex.notoc.match(elt))) return 0;
+    if ((Codex.ignore)&&(Codex.ignore.match(elt))) return 0;
     if ((elt.tagName==='HGROUP')||(elt.tagName==='HEADER'))
       return getFirstTocLevel(elt,true);
     if (elt.tagName.search(/H\d/)==0)
@@ -203,7 +203,7 @@ function CodexDOMScan(root,docinfo){
       head.id=headid=newid;
       headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
 	(docinfo[headid]=new scanInfo(headid,scanstate));}
-    if (sbook.Trace.scan)
+    if (Codex.Trace.scan)
       fdjtLog("Scanning head item %o under %o at level %d w/id=#%s ",
 	      head,curhead,level,headid);
     /* Iniitalize the headinfo */
@@ -228,7 +228,7 @@ function CodexDOMScan(root,docinfo){
       /* Climb the stack of headers, closing off entries and setting up
 	 prev/next pointers where needed. */
       while (scaninfo) {
-	if (sbook.Trace.scan)
+	if (Codex.Trace.scan)
 	  fdjtLog("Finding head: scan=%o, info=%o, sbook_head=%o, cmp=%o",
 		  scan,scaninfo,scanlevel,scaninfo.head,
 		  (scanlevel<level));
@@ -240,7 +240,7 @@ function CodexDOMScan(root,docinfo){
 	scanstate.tagstack=scanstate.tagstack.slice(0,-1);
 	scaninfo=scaninfo.head; scan=scaninfo.elt;
 	scanlevel=((scaninfo)?(scaninfo.level):(0));}
-      if (sbook.Trace.scan)
+      if (Codex.Trace.scan)
 	fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
 		scan,scaninfo,scaninfo.level,scaninfo.head);
       /* We've found the head for this item. */
@@ -253,7 +253,7 @@ function CodexDOMScan(root,docinfo){
       newheads=newheads.concat(supinfo.heads);
     if (supinfo) newheads.push(supinfo);
     headinfo.heads=newheads;
-    if (sbook.Trace.scan)
+    if (Codex.Trace.scan)
       fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
 	      scanstate.location,head,headinfo,headinfo.head);
     /* Update the toc state */
@@ -279,7 +279,7 @@ function CodexDOMScan(root,docinfo){
       return 0;}
     else if (child.nodeType!==1) return 0;
     else {}
-    if ((sbook.ignore)&&(sbook.ignore.match(child))) return;
+    if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
     // Having a section inside a notoc zone probably indicates malformed
     //  HTML
     if (((child.tagName==='section')||(child.tagName==='article'))&&
@@ -298,7 +298,7 @@ function CodexDOMScan(root,docinfo){
       handleHead(child,docinfo,scanstate,nextlevel,
 		 curhead,curinfo,curlevel,
 		 nodefn);
-      if ((sbook.terminals)&&(sbook.terminals.match(child)))
+      if ((Codex.terminals)&&(Codex.terminals.match(child)))
 	scanstate.notoc=true;
       var headinfo=docinfo[child.id];
       headinfo.tocdone=true;
@@ -360,7 +360,7 @@ function CodexDOMScan(root,docinfo){
     if (info) info.head=curinfo;
     if ((child.sbookskip)||(child.sbookui)||
 	((child.className)&&(child.className.search(/\bsbookignore\b/)>=0))||
-	((sbook.ignore)&&(sbook.ignore.match(child))))
+	((Codex.ignore)&&(Codex.ignore.match(child))))
       return;
     if ((info)&&(toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
     if (child.id) {

@@ -13,7 +13,7 @@
       <td>
 	Font size:
 	<select name='fontsize' id='SBOOKFONTSIZE'
-		onchange='sbook.setFontSize(this.value);'>
+		onchange='Codex.setFontSize(this.value);'>
 	  <option value='50%'>Tiny</option>
 	  <option value='75%'>Small</option>
 	  <option value='80%'>Smaller</option>
@@ -22,14 +22,14 @@
 	  <option value='150%'>Large</option>
 	  <option value='200%'>Huge</option>
 	</select>
-	<a href='javascript:sbook.updatePagination();'
+	<a href='javascript:Codex.updatePagination();'
 	   style='float: right; text-align: right;'>update layout</a>
     </td></tr>
     <tr><th>Codex</th>
       <td>
 	Font size:
 	<select name='fontsize' id='SBOOKFONTSIZE'
-		onchange='sbook.setUIFontSize(this.value);'>
+		onchange='Codex.setUIFontSize(this.value);'>
 	  <option value='50%'>Tiny</option>
 	  <option value='75%'>Small</option>
 	  <option value='80%'>Smaller</option>
@@ -48,8 +48,8 @@
     </td></tr>
     <tr><th>Offline</th>
       <td>
-	Remove <a href='javascript:sbook.clearOffline(sbook.refuri);'>this book</a> or
-	<a href='javascript:sbook.clearOffline();'>all books</a>.<br/>
+	Remove <a href='javascript:Codex.clearOffline(Codex.refuri);'>this book</a> or
+	<a href='javascript:Codex.clearOffline();'>all books</a>.<br/>
 	<a href='javascript:fdjtState.clearLocal();'>Clear all sBooks data</a>.
     </td></tr>
     <tr><th>sBooks</th>

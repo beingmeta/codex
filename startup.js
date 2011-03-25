@@ -35,7 +35,7 @@ var codex_startup_version=parseInt("$Revision$".slice(10,-1));
 var _sbook_autoindex=
     ((typeof _sbook_autoindex === 'undefined')?(false):(_sbook_autoindex));
 
-sbook.Startup=
+Codex.Startup=
     (function(){
 
 	var sbook_faketouch=false;
@@ -52,7 +52,7 @@ sbook.Startup=
 	var _sbook_setup_start=false;
 	
 	function Startup(force){
-	    if (sbook._setup) return;
+	    if (Codex._setup) return;
 	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
 	    fdjtLog.console="CODEXCONSOLE";
 	    fdjtLog.consoletoo=true;
@@ -60,14 +60,14 @@ sbook.Startup=
 		    fdjt_versions.codex,sbooks_buildtime,sbooks_buildhost);
 	    if (navigator.appVersion)
 		fdjtLog("App version: %s",navigator.appVersion);
-	    if (!(sbook._setup_start)) sbook._setup_start=new Date();
+	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
 	    // Get various settings
 	    readSettings();
 	    sbookPaginate.readSettings();
 	    // Dependent setups
 	    fdjtDOM.init();
 	    // Add this as soon as possible
-	    if (sbook.paginate)
+	    if (Codex.paginate)
 		fdjtDOM.addClass(document.body,"sbookpaginated");
 	    if (sbook_showconsole)
 		fdjtDOM.addClass(document.body,"sbookconsoled");
@@ -75,99 +75,99 @@ sbook.Startup=
 	    var helphud=false;
 	    fdjtTime.timeslice
 	    ([// Setup sbook tables, databases, etc
-		sbook.initDB,
+		Codex.initDB,
 		// This wraps the body in the UI
 		function(){
 		    initBody();
-		    if (sbook.animate.page)
+		    if (Codex.animate.page)
 			fdjtDOM.addClass("CODEXPAGES","codexanimate");
-		    if (sbook.pages) sbook.pages.style.opacity='0.25';},
+		    if (Codex.pages) Codex.pages.style.opacity='0.25';},
 		function(){
-		    if (sbook.Trace.startup>1)
+		    if (Codex.Trace.startup>1)
 			fdjtLog("Initializing HUD");
-		    sbook.initHUD(); sbook.initDisplay();
-		    if (sbook.animate.hud)
+		    Codex.initHUD(); Codex.initDisplay();
+		    if (Codex.animate.hud)
 			fdjtDOM.addClass("CODEXHUD","codexanimate");
 		    helphud=fdjtID("CODEXHELP");
 		    helphud.style.opacity=0.0001;
-		    if (sbook.Trace.startup>1)
+		    if (Codex.Trace.startup>1)
 			fdjtLog("HUD Setup, sizing help");},
 		function(){CodexMode("splash");}, 
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){fdjtDOM.adjustToFit(helphud,0.2);},
 		function(){
 		    fdjtDOM.finishScale(helphud);
-		    if (sbook.Trace.startup>1)
+		    if (Codex.Trace.startup>1)
 			fdjtLog("Displaying help");
 		    helphud.style.opacity='';},
-		sbook.setupGestures,
+		Codex.setupGestures,
 		getUser,
 		function(){
-		    metadata=CodexDOMScan(sbook.root);
-		    sbook.docinfo=sbook.DocInfo.map=metadata;
-		    sbook.ends_at=sbook.docinfo[sbook.root.id].ends_at;},
+		    metadata=CodexDOMScan(Codex.root);
+		    Codex.docinfo=Codex.DocInfo.map=metadata;
+		    Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;},
 		function(){
 		    fdjtLog("building table of contents based on %d heads",
-			    sbook.docinfo._headcount);},
+			    Codex.docinfo._headcount);},
 		10,
 		function(){
-		    sbook.setupTOC(metadata[sbook.root.id]);},
+		    Codex.setupTOC(metadata[Codex.root.id]);},
 		function(){
-		    fdjtLog("processing knodule %s",sbook.knodule.name);},
+		    fdjtLog("processing knodule %s",Codex.knodule.name);},
 		10,
 		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
 		 (function(){
-		     Knodule.HTML.Setup(sbook.knodule);})),
+		     Knodule.HTML.Setup(Codex.knodule);})),
 		applyInlineTags,
-		function(){sbook.Message("indexing tags");},10,
+		function(){Codex.Message("indexing tags");},10,
 		function(){
-		    sbook.indexContentTags(metadata);
-		    sbook.indexInlineTags(sbook.knodule);
+		    Codex.indexContentTags(metadata);
+		    Codex.indexInlineTags(Codex.knodule);
 		    if (_sbook_autoindex)
-			sbook.useAutoIndex(_sbook_autoindex,sbook.knodule);},
-		function(){sbook.Message("setting up clouds");},10,
+			Codex.useAutoIndex(_sbook_autoindex,Codex.knodule);},
+		function(){Codex.Message("setting up clouds");},10,
 		function(){initClouds();},
-		function(){sbook.Message("configuring server");},10,
+		function(){Codex.Message("configuring server");},10,
 		setupGlossServer,
 		function(){
-		    if (sbook.user) sbook.Message("getting glosses");},10,
-		function (){ if (sbook.user) setupGlosses();},
+		    if (Codex.user) Codex.Message("getting glosses");},10,
+		function (){ if (Codex.user) setupGlosses();},
 		function(){
-		    if (sbook.Trace.startup>1)
+		    if (Codex.Trace.startup>1)
 			fdjtLog("Initial pagination for %ox%o",
 				fdjtDOM.viewWidth(),fdjtDOM.viewHeight());
-		    sbookPaginate(sbook.paginate);},
+		    sbookPaginate(Codex.paginate);},
 		function(){
-		    if ((sbook.user)&&(!(sbook.glossing))&&
-			(!(sbook.glossed)))
-			sbook.Message("getting glosses");},10,
+		    if ((Codex.user)&&(!(Codex.glossing))&&
+			(!(Codex.glossed)))
+			Codex.Message("getting glosses");},10,
 		function (){
-		    if ((sbook.user)&&(!(sbook.glossing))&&(!(sbook.glossed)))
+		    if ((Codex.user)&&(!(Codex.glossing))&&(!(Codex.glossed)))
 			setupGlosses();},500,
 		function(){
-		    if ((sbook.user)&&(!(sbook.glossing))&&
-			(!(sbook.glossed)))
-			sbook.Message("getting glosses");},10,
+		    if ((Codex.user)&&(!(Codex.glossing))&&
+			(!(Codex.glossed)))
+			Codex.Message("getting glosses");},10,
 		function(){
-		    if ((!(sbook.glossing))&&(!(sbook.glossed))) {
-			if (sbook.user) setupGlosses();
+		    if ((!(Codex.glossing))&&(!(Codex.glossed))) {
+			if (Codex.user) setupGlosses();
 			else gotGlosses();}},
-		function(){sbook.Message("setup completed");},10,
+		function(){Codex.Message("setup completed");},10,
 		function(){
 		    if ((fdjtState.getQuery("action"))||
 			(fdjtState.getQuery("invitation"))) {
 			CodexMode("sbookapp");}
-		    else if ((sbook.mode==='splash')&&(sbook.hidesplash)) {
+		    else if ((Codex.mode==='splash')&&(Codex.hidesplash)) {
 			CodexMode(false);}
 		    else {}},
 		initLocation,
 		function(){
-		    if (sbook.pages) sbook.pages.style.opacity='';
-		    sbook.displaySync();
-		    setInterval(sbook.serverSync,60000);
-		    _sbook_setup=sbook._setup=new Date();}],
+		    if (Codex.pages) Codex.pages.style.opacity='';
+		    Codex.displaySync();
+		    setInterval(Codex.serverSync,60000);
+		    _sbook_setup=Codex._setup=new Date();}],
 	     25,100);}
-	sbook.Startup=Startup;
+	Codex.Startup=Startup;
 
 	/* Application settings */
 
@@ -190,12 +190,12 @@ sbook.Startup=
 
 	function workOffline(refuri){
 	    var value=fdjtState.getQuery("offline")||
-		fdjtState.getLocal("sbook.offline("+refuri+")")||
-		fdjtState.getLocal("sbook.mycopy("+refuri+")")||
-		fdjtState.getLocal("sbook.offline")||
-		((fdjtDOM.getMeta("sbook.mycopyid")))||
+		fdjtState.getLocal("codex.offline("+refuri+")")||
+		fdjtState.getLocal("codex.mycopy("+refuri+")")||
+		fdjtState.getLocal("codex.offline")||
+		((fdjtDOM.getMeta("codex.mycopyid")))||
 		((fdjtDOM.getMeta("MYCOPYID")))||
-		(fdjtDOM.getMeta("sbook.offline"));
+		(fdjtDOM.getMeta("codex.offline"));
 	    if ((!(value))||(value==="no")||(value==="off")||(value==="never"))
 		return false;
 	    else if ((value==="ask")&&(window.confirm))
@@ -209,58 +209,58 @@ sbook.Startup=
 	    // Basic stuff
 	    var useragent=navigator.userAgent;
 	    var refuri=_getsbookrefuri();
-	    document.body.refuri=sbook.refuri=refuri;
-	    sbook.docuri=_getsbookdocuri();
-	    sbook.devinfo=fdjtState.versionInfo();
-	    var deviceid=fdjtState.getLocal("sbook.deviceId",false);
-	    var devicename=fdjtState.getLocal("sbook.deviceName",false);
+	    document.body.refuri=Codex.refuri=refuri;
+	    Codex.docuri=_getsbookdocuri();
+	    Codex.devinfo=fdjtState.versionInfo();
+	    var deviceid=fdjtState.getLocal("codex.deviceId",false);
+	    var devicename=fdjtState.getLocal("codex.deviceName",false);
 	    if (!(deviceid)) {
 		deviceid=fdjtState.getUUID();
-		fdjtState.setLocal("sbook.deviceId",deviceid);}
-	    sbook.deviceId=deviceid;
-	    if (devicename) sbook.deviceName=devicename;
-	    var refuris=fdjtState.getLocal("sbook.refuris",true)||[];
+		fdjtState.setLocal("codex.deviceId",deviceid);}
+	    Codex.deviceId=deviceid;
+	    if (devicename) Codex.deviceName=devicename;
+	    var refuris=fdjtState.getLocal("codex.refuris",true)||[];
 	    var offline=workOffline(refuri);
-	    sbook.offline=((offline)?(true):(false));
+	    Codex.offline=((offline)?(true):(false));
 	    if (offline)
-		fdjtState.setLocal("sbook.offline("+refuri+")",offline);
+		fdjtState.setLocal("codex.offline("+refuri+")",offline);
 	    // Get the settings for scanning the document structure
 	    getScanSettings();
 	    // Get the settings for automatic pagination
 	    getPageSettings();
 	    // Whether to hide help after startup
-	    if (fdjtState.getLocal("sbook.hidehelp")) setConfig('hidehelp');
+	    if (fdjtState.getLocal("codex.hidehelp")) setConfig('hidehelp');
 
-	    if ((sbook.graphics==="http://static.beingmeta.com/graphics/")&&
+	    if ((Codex.graphics==="http://static.beingmeta.com/graphics/")&&
 		(window.location.protocol==='https:'))
-		sbook.graphics=https_graphics;
+		Codex.graphics=https_graphics;
 	    
 	    // Whether to suppress login, etc
-	    if ((fdjtState.getLocal("sbook.nologin"))||
+	    if ((fdjtState.getLocal("codex.nologin"))||
 		(fdjtState.getQuery("nologin")))
-		sbook.nologin=true;
-	    sbook.max_excerpt=fdjtDOM.getMeta("sbook.maxexcerpt")||
-		(sbook.max_excerpt);
-	    sbook.min_excerpt=fdjtDOM.getMeta("sbook.minexcerpt")||
-		(sbook.min_excerpt);
-	    var sbooksrv=fdjtDOM.getMeta("sbook.server")||
+		Codex.nologin=true;
+	    Codex.max_excerpt=fdjtDOM.getMeta("codex.maxexcerpt")||
+		(Codex.max_excerpt);
+	    Codex.min_excerpt=fdjtDOM.getMeta("codex.minexcerpt")||
+		(Codex.min_excerpt);
+	    var sbooksrv=fdjtDOM.getMeta("codex.server")||
 		fdjtDOM.getMeta("SBOOKSERVER");
-	    if (sbooksrv) sbook.server=sbooksrv;
+	    if (sbooksrv) Codex.server=sbooksrv;
 	    else if (fdjtState.getCookie["SBOOKSERVER"])
-		sbook.server=fdjtState.getCookie["SBOOKSERVER"];
-	    else sbook.server=lookupServer(document.domain);
-	    if (!(sbook.server)) sbook.server=sbook.default_server;
-	    sbook_ajax_uri=fdjtDOM.getMeta("sbook.ajax",true);
-	    sbook.mycopyid=fdjtDOM.getMeta("sbook.mycopyid")||
+		Codex.server=fdjtState.getCookie["SBOOKSERVER"];
+	    else Codex.server=lookupServer(document.domain);
+	    if (!(Codex.server)) Codex.server=Codex.default_server;
+	    sbook_ajax_uri=fdjtDOM.getMeta("codex.ajax",true);
+	    Codex.mycopyid=fdjtDOM.getMeta("codex.mycopyid")||
 		((offline)&&(fdjtState.getLocal("mycopy("+refuri+")")))||
 		false;
-	    sbook.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")",true);
+	    Codex.syncstamp=fdjtState.getLocal("syncstamp("+refuri+")",true);
 	    
 	    if ((offline)&&
-		(!(fdjtState.getLocal("sbook.offline("+refuri+")")))) {
-		fdjtState.setLocal("sbook.offline("+refuri+")",true,true);
+		(!(fdjtState.getLocal("codex.offline("+refuri+")")))) {
+		fdjtState.setLocal("codex.offline("+refuri+")",true,true);
 		refuris.push(refuri);
-		fdjtState.setLocal("sbook.refuris",refuris,true);}
+		fdjtState.setLocal("codex.refuris",refuris,true);}
 	    
 	    var isIphone = (/iphone/gi).test(navigator.appVersion);
 	    var isIpad = (/ipad/gi).test(navigator.appVersion);
@@ -268,41 +268,41 @@ sbook.Startup=
 	    var isWebKit = navigator.appVersion.search("WebKit")>=0;
 	    var isWebTouch = isIphone || isIpad || isAndroid;
 
-	    if ((typeof sbook.colpage === 'undefined')&&
-		((sbook.devinfo.Chrome)||
-		 ((sbook.devinfo.AppleWebKit)&&
-		  (sbook.devinfo.Mobile)&&
-		  (sbook.devinfo.AppleWebKit>532))||
-		 ((sbook.devinfo.AppleWebKit)&&
-		  (sbook.devinfo.AppleWebKit>533))))
-		sbook.colpage=true;
+	    if ((typeof Codex.colpage === 'undefined')&&
+		((Codex.devinfo.Chrome)||
+		 ((Codex.devinfo.AppleWebKit)&&
+		  (Codex.devinfo.Mobile)&&
+		  (Codex.devinfo.AppleWebKit>532))||
+		 ((Codex.devinfo.AppleWebKit)&&
+		  (Codex.devinfo.AppleWebKit>533))))
+		Codex.colpage=true;
 	    if (isWebTouch) {
 		fdjtDOM.addClass(document.body,"sbooktouch");
 		viewportSetup();
-		sbook.ui="webtouch"; sbook.touch=true;}
+		Codex.ui="webtouch"; Codex.touch=true;}
 	    if ((useragent.search("Safari/")>0)&&
 		(useragent.search("Mobile/")>0)) { 
 		hide_mobile_safari_address_bar();
-		sbook.nativescroll=false;
-		sbook.scrolldivs=false;
+		Codex.nativescroll=false;
+		Codex.scrolldivs=false;
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {
 		fdjtDOM.addClass(document.body,"sbooktouch");
 		viewportSetup();
-		sbook.ui="faketouch"}
+		Codex.ui="faketouch"}
 	    else {
-		sbook.ui="mouse";}
+		Codex.ui="mouse";}
 	    
-	    sbook.allglosses=
+	    Codex.allglosses=
 		((offline)?
 		 ((fdjtState.getLocal("glosses("+refuri+")",true))||[]):
 		 []);
-	    sbook.allsources=
+	    Codex.allsources=
 		((offline)?
 		 ((fdjtState.getLocal("sources("+refuri+")",true))||{}):
 		 {});
-	    sbook.glossetc=
+	    Codex.glossetc=
 		((offline)?
 		 ((fdjtState.getLocal("glossetc("+refuri+")",true))||{}):
 		 {});}
@@ -311,24 +311,24 @@ sbook.Startup=
 	    var inputs=document.getElementsByName(name.toUpperCase());
 	    // fdjtLog("[%fs] setConfig %o=%o",fdjtET(),name,value);
 	    if ((value===true)||(typeof value === 'undefined')) {
-		fdjtState.setLocal("sbook."+name,'yes');
+		fdjtState.setLocal("codex."+name,'yes');
 		sbook[name]=true;
 		if ((inputs)&&(inputs.length)) {
 		    var i=0; var lim=inputs.length;
 		    while (i<lim) fdjtUI.CheckSpan.set(inputs[i++],true);}}
 	    else if (value===false) {
-		fdjtState.dropLocal("sbook."+name,'yes');
+		fdjtState.dropLocal("codex."+name,'yes');
 		delete sbook[name];
 		if ((inputs)&&(inputs.length)) {
 		    var i=0; var lim=inputs.length;
 		    while (i<lim) fdjtUI.CheckSpan.set(inputs[i++],false);}}
 	    else {
-		fdjtState.setLocal("sbook."+name,value);
+		fdjtState.setLocal("codex."+name,value);
 		sbook[name]=value;
 		if ((inputs)&&(inputs.length)) {
 		    var i=0; var lim=inputs.length;
 		    while (i<lim) inputs[i++].value=value;}}}
-	sbook.setConfig=setConfig;
+	Codex.setConfig=setConfig;
 
 	var viewport_spec="width=device-width,initial-scale=1.0";
 	function viewportSetup(){
@@ -353,7 +353,7 @@ sbook.Startup=
 	/* Getting settings */
 
 	function _getsbookrefuri(){
-	    var refuri=fdjtDOM.getLink("sbook.refuri",false,false)||
+	    var refuri=fdjtDOM.getLink("codex.refuri",false,false)||
 		fdjtDOM.getLink("refuri",false,false)||
 		fdjtDOM.getMeta("refuri",false,false)||
 		fdjtDOM.getLink("canonical",false,true);
@@ -366,15 +366,15 @@ sbook.Startup=
 		if (hstart>=0) locref=locref.slice(0,hstart);
 		return decodeURI(locref);}}
 	function _getsbookdocuri(){
-	    return fdjtDOM.getLink("sbook.docuri",false)||
+	    return fdjtDOM.getLink("codex.docuri",false)||
 		fdjtDOM.getLink("DOCURI",false)||
-		fdjtDOM.getMeta("sbook.docuri",false)||
+		fdjtDOM.getMeta("codex.docuri",false)||
 		fdjtDOM.getMeta("DOCURI",false)||
 		fdjtDOM.getLink("canonical",false)||
 		location.href;}
 
 	function lookupServer(string){
-	    var sbook_servers=sbook.servers;
+	    var sbook_servers=Codex.servers;
 	    var i=0;
 	    while (i<sbook_servers.length) 
 		if (sbook_servers[i][0]===string)
@@ -399,26 +399,26 @@ sbook.Startup=
 		  (elt.className.search(/\bsbookignore\b/)>=0))))
 		return true;
 	    else return false;}
-	sbook.hasTOCLevel=hasTOCLevel;
+	Codex.hasTOCLevel=hasTOCLevel;
 
 	function getScanSettings(){
-	    if (!(sbook.root))
-		if (fdjtDOM.getMeta("sbook.root"))
-		    sbook.root=fdjtID(fdjtDOM.getMeta("sbook.root"));
-	    else sbook.root=fdjtID("SBOOKCONTENT")||document.body;
-	    if (!(sbook.start))
-		if (fdjtDOM.getMeta("sbook.start"))
-		    sbook.start=fdjtID(fdjtDOM.getMeta("sbook.start"));
+	    if (!(Codex.root))
+		if (fdjtDOM.getMeta("codex.root"))
+		    Codex.root=fdjtID(fdjtDOM.getMeta("codex.root"));
+	    else Codex.root=fdjtID("SBOOKCONTENT")||document.body;
+	    if (!(Codex.start))
+		if (fdjtDOM.getMeta("codex.start"))
+		    Codex.start=fdjtID(fdjtDOM.getMeta("codex.start"));
 	    else if (fdjtID("SBOOKSTART"))
-		sbook.start=fdjtID("SBOOKSTART");
+		Codex.start=fdjtID("SBOOKSTART");
 	    else {
 		var titlepage=fdjtID("SBOOKTITLE")||fdjtID("TITLEPAGE");
 		while (titlepage)
 		    if (fdjtDOM.nextElt(titlepage)) {
-			sbook.start=fdjtDOM.nextElt(titlepage); break;}
+			Codex.start=fdjtDOM.nextElt(titlepage); break;}
 		else titlepage=titlepage.parentNode;}
 	    var i=1; while (i<9) {
-		var rules=fdjtDOM.getMeta("sbook.head"+i,true).
+		var rules=fdjtDOM.getMeta("codex.head"+i,true).
 		    concat(fdjtDOM.getMeta("sbook"+i+"head",true));
 		if ((rules)&&(rules.length)) {
 		    var j=0; var lim=rules.length;
@@ -429,26 +429,26 @@ sbook.Startup=
 			if (!(hasTOCLevel(elt))) elt.toclevel=i;}}
 		i++;}
 	    if (fdjtDOM.getMeta("sbookignore")) 
-		sbook.ignore=new fdjtDOM.Selector(
+		Codex.ignore=new fdjtDOM.Selector(
 		    fdjtDOM.getMeta("sbookignore"));
 	    if (fdjtDOM.getMeta("sbooknotoc")) 
-		sbook.notoc=new fdjtDOM.Selector(
+		Codex.notoc=new fdjtDOM.Selector(
 		    fdjtDOM.getMeta("sbooknotoc"));
 	    if (fdjtDOM.getMeta("sbookterminal"))
-		sbook.terminal_rules=new fdjtDOM.Selector(
+		Codex.terminal_rules=new fdjtDOM.Selector(
 		    fdjtDOM.getMeta("sbookterminal"));
 	    if (fdjtDOM.getMeta("sbookid")) 
 		sbook_idify=new fdjtDOM.Selector(
 		    fdjtDOM.getMeta("sbookid"));
 	    if ((fdjtDOM.getMeta("sbookfocus"))) 
-	      sbook.focus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfocus"));
+	      Codex.focus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfocus"));
 	    if (fdjtDOM.getMeta("sbooknofocus"))
-	      sbook.nofocus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknofocus"));}
+	      Codex.nofocus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknofocus"));}
 
 	function getPageSettings(){
-	    var tocmajor=fdjtDOM.getMeta("sbook.tocmajor",true);
+	    var tocmajor=fdjtDOM.getMeta("codex.tocmajor",true);
 	    if (tocmajor) sbook_tocmajor=parseInt(tocmajor);
-	    var sbook_fullpage_rules=fdjtDOM.getMeta("sbook.fullpage",true);
+	    var sbook_fullpage_rules=fdjtDOM.getMeta("codex.fullpage",true);
 	    if (sbook_fullpage_rules) {
 		var i=0; while (i<sbook_fullpage_rules.length) {
 		    sbook_fullpages.push
@@ -467,7 +467,7 @@ sbook.Startup=
 	    var nodes=fdjtDOM.toArray(document.body.childNodes);
 	    var i=0; var lim=nodes.length;
 	    while (i<lim) content.appendChild(nodes[i++]);
-	    sbook.content=content;
+	    Codex.content=content;
 	    var allnotes=fdjtID("SBOOKNOTES");
 	    var allasides=fdjtID("SBOOKASIDES");
 	    var alldetails=fdjtID("SBOOKDETAILS");
@@ -481,8 +481,8 @@ sbook.Startup=
 		var allnotes=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
 		fdjtDOM(content,allnotes);}
 	    document.body.appendChild(fdjtDOM("div#CODEXPAGE",fdjtDOM("div#CODEXPAGES",content)));
-	    sbook.page=fdjtID("CODEXPAGE");
-	    sbook.pages=fdjtID("CODEXPAGES");
+	    Codex.page=fdjtID("CODEXPAGE");
+	    Codex.pages=fdjtID("CODEXPAGES");
 	    fdjtDOM.addClass(document.body,"sbook");
 	    applyMetaClass("sbookdetails");
 	    applyMetaClass("sbooknoteref");
@@ -506,7 +506,7 @@ sbook.Startup=
 	    var i=0; var lim=noterefs.length;
 	    while (i<lim) {
 		var noteref=noterefs[i++];
-		var idcontext=sbook.getTarget(noteref.parentNode);
+		var idcontext=Codex.getTarget(noteref.parentNode);
 		if ((noteref.href)&&(noteref.href[0]==='#')) {
 		    var noteid=noteref.href.slice(1);
 		    var notenode=fdjtID(noteid);
@@ -559,7 +559,7 @@ sbook.Startup=
 		fdjtDOM.insertBefore(aside,anchor);
 		aside.codextocloc=anchor.id;
 		fdjtDOM.append(allasides,aside);}
-	    if (sbook.Trace.startup>1)
+	    if (Codex.Trace.startup>1)
 		fdjtLog("Initialized body");}
 
 	/* Changing settings */
@@ -583,34 +583,34 @@ sbook.Startup=
 	    var opts=fdjtGetSession("sbookopts");
 	    if (opts) {
 		fdjtState.setLocal("sbookopts",opts);}}
-	sbook.saveSettings=saveSettings;
+	Codex.saveSettings=saveSettings;
 
 	function getUser() {
-	    var refuri=sbook.refuri;
+	    var refuri=Codex.refuri;
 	    var loadinfo=_sbook_loadinfo||false;
-	    if (sbook.Trace.startup>1)
-		fdjtLog("Getting user for %o cur=%o",refuri,sbook.user);
-	    if (sbook.user) return;
-	    else if (sbook.nologin) return;
+	    if (Codex.Trace.startup>1)
+		fdjtLog("Getting user for %o cur=%o",refuri,Codex.user);
+	    if (Codex.user) return;
+	    else if (Codex.nologin) return;
 	    if ((loadinfo)&&
 		(setUser(loadinfo.userinfo,loadinfo.nodeid,
 			 loadinfo.sources,loadinfo.outlets,
 			 loadinfo.etc,loadinfo.sync))) 
 		return;
-	    if ((sbook.offline)&&
-		(fdjtState.getLocal("sbook.user"))&&
-		(fdjtState.getLocal("sbook.nodeid("+refuri+")"))) {
-		var refuri=sbook.refuri;
-		var user=fdjtState.getLocal("sbook.user");
-		if (sbook.trace.startup)
+	    if ((Codex.offline)&&
+		(fdjtState.getLocal("codex.user"))&&
+		(fdjtState.getLocal("codex.nodeid("+refuri+")"))) {
+		var refuri=Codex.refuri;
+		var user=fdjtState.getLocal("codex.user");
+		if (Codex.trace.startup)
 		    fdjtLog("Restoring offline user info for %o reading %o",
 			    user,refuri);
 		var userinfo=JSON.parse(fdjtState.getLocal(user));
-		var sources=fdjtState.getLocal("sbook.sources("+refuri+")",true);
-		var outlets=fdjtState.getLocal("sbook.outlets("+refuri+")",true);
-		var etc=fdjtState.getLocal("sbook.etc("+refuri+")",true);
-		var nodeid=fdjtState.getLocal("sbook.nodeid("+refuri+")");
-		var sync=fdjtState.getLocal("sbook.usersync",true);
+		var sources=fdjtState.getLocal("codex.sources("+refuri+")",true);
+		var outlets=fdjtState.getLocal("codex.outlets("+refuri+")",true);
+		var etc=fdjtState.getLocal("codex.etc("+refuri+")",true);
+		var nodeid=fdjtState.getLocal("codex.nodeid("+refuri+")");
+		var sync=fdjtState.getLocal("codex.usersync",true);
 		var etcinfo=[];
 		if (etc) {
 		    var i=0; var lim=etc.length;
@@ -623,28 +623,28 @@ sbook.Startup=
 		var user_script=fdjtDOM("SCRIPT#SBOOKGETUSERINFO");
 		user_script.language="javascript";
 		user_script.src=
-		    "https://"+sbook.server+"/v4/user.js";
+		    "https://"+Codex.server+"/v4/user.js";
 		document.body.appendChild(user_script);
 		fdjtDOM.addClass(document.body,"nosbookuser");}
 	    else fdjtDOM.addClass(document.body,"nosbookuser");}
 	
 	function setUser(userinfo,nodeid,sources,outlets,etc,sync){
-	    var persist=((sbook.offline)&&(navigator.onLine));
-	    var refuri=sbook.refuri;
-	    if (sbook.user)
-		if (userinfo.oid===sbook.user.oid) {}
+	    var persist=((Codex.offline)&&(navigator.onLine));
+	    var refuri=Codex.refuri;
+	    if (Codex.user)
+		if (userinfo.oid===Codex.user.oid) {}
 	    else throw { error: "Can't change user"};
-	    var syncstamp=sbook.syncstamp;
+	    var syncstamp=Codex.syncstamp;
 	    if ((syncstamp)&&(syncstamp>=sync)) {
 		fdjtLog.warn(
 		    "Cached user information is newer (%o) than loaded (%o)",
 		    syncstamp,sync);
 		return false;}
-	    sbook.user=fdjtKB.Import(userinfo);
+	    Codex.user=fdjtKB.Import(userinfo);
 	    if (persist) {
-		fdjtState.setLocal(sbook.user.oid,sbook.user,true);
-		fdjtState.setLocal("sbook.nodeid("+sbook.refuri+")",nodeid);
-		fdjtState.setLocal("sbook.user",sbook.user.oid);}
+		fdjtState.setLocal(Codex.user.oid,Codex.user,true);
+		fdjtState.setLocal("codex.nodeid("+Codex.refuri+")",nodeid);
+		fdjtState.setLocal("codex.user",Codex.user.oid);}
 	    gotInfo("sources",sources,persist);
 	    gotInfo("outlets",outlets,persist);
 	    gotInfo("etc",etc,persist);
@@ -660,26 +660,26 @@ sbook.Startup=
 			completion.setAttribute("value",outlet.qid);
 			completion.setAttribute("key",outlet.name);
 			fdjtDOM(fdjtID("CODEXGLOSSOUTLETS"),completion," ");
-			if (sbook.gloss_cloud)
-			    sbook.gloss_cloud.addCompletion(completion);}}}
+			if (Codex.gloss_cloud)
+			    Codex.gloss_cloud.addCompletion(completion);}}}
 	    if (sync) {
-		sbook.usersync=sync;
-		if (persist) fdjtState.setLocal("sbook.usersync",sync);}
-	    if (!(sbook.nodeid)) {
-		sbook.nodeid=nodeid;
+		Codex.usersync=sync;
+		if (persist) fdjtState.setLocal("codex.usersync",sync);}
+	    if (!(Codex.nodeid)) {
+		Codex.nodeid=nodeid;
 		if ((nodeid)&&(persist))
-		    fdjtState.setLocal("sbook.nodeid("+refuri+")",nodeid);}
+		    fdjtState.setLocal("codex.nodeid("+refuri+")",nodeid);}
 	    setupUser();
-	    return sbook.user;}
+	    return Codex.user;}
 	function gotInfo(name,info,persist) {
-	    var refuri=sbook.refuri;
+	    var refuri=Codex.refuri;
 	    if (info)
 		if (info instanceof Array) {
 		    var i=0; var lim=info.length; var qids=[];
 		    while (i<lim) {
 			if (typeof info[i] === 'string') {
 			    var qid=info[i++];
-			    if (sbook.offline) fdjtKB.load(qid);
+			    if (Codex.offline) fdjtKB.load(qid);
 			    qids.push(qid);}
 			else {
 			    var obj=fdjtKB.Import(info[i++]);
@@ -687,37 +687,37 @@ sbook.Startup=
 				fdjtState.setLocal(obj.qid,obj,true);
 			    qids.push(obj.qid);}}
 		    sbook[name]=qids;
-		    if (sbook.offline)
+		    if (Codex.offline)
 			fdjtState.setLocal
-		    ("sbook."+name+"("+refuri+")",qids,true);}
+		    ("codex."+name+"("+refuri+")",qids,true);}
 	    else {
 		var obj=fdjtKB.Import(info);
 		if (persist) 
 		    fdjtState.setLocal(obj.qid,obj,true);
 		sbook[name]=obj.qid;
 		if (persist)
-		    fdjtState.setLocal("sbook."+name+"("+refuri+")",qid,true);}}
-	sbook.setUser=setUser;
+		    fdjtState.setLocal("codex."+name+"("+refuri+")",qid,true);}}
+	Codex.setUser=setUser;
 	function setupUser(){
-	    if (sbook._user_setup) return;
-	    if (!(sbook.user)) {
+	    if (Codex._user_setup) return;
+	    if (!(Codex.user)) {
 		fdjtDOM.addClass(document.body,"nosbookuser");
 		return;}
 	    fdjtDOM.dropClass(document.body,"nosbookuser");
-	    var username=sbook.user.name;
+	    var username=Codex.user.name;
 	    fdjtID("SBOOKUSERNAME").innerHTML=username;
 	    if (fdjtID("SBOOKMARKUSER"))
-		fdjtID("SBOOKMARKUSER").value=sbook.user.oid;
+		fdjtID("SBOOKMARKUSER").value=Codex.user.oid;
 	    var pic=
-		(sbook.user.pic)||
-		((sbook.user.fbid)&&
-		 ("https://graph.facebook.com/"+sbook.user.fbid+"/picture?type=square"));
+		(Codex.user.pic)||
+		((Codex.user.fbid)&&
+		 ("https://graph.facebook.com/"+Codex.user.fbid+"/picture?type=square"));
 	    if (pic) {
 		if (fdjtID("SBOOKMARKIMAGE")) fdjtID("SBOOKMARKIMAGE").src=pic;
 		if (fdjtID("SBOOKUSERPIC")) fdjtID("SBOOKUSERPIC").src=pic;}
 	    if (fdjtID("SBOOKFRIENDLYOPTION"))
-		if (sbook.user)
-		    fdjtID("SBOOKFRIENDLYOPTION").value=sbook.user.oid;
+		if (Codex.user)
+		    fdjtID("SBOOKFRIENDLYOPTION").value=Codex.user.oid;
 	    else fdjtID("SBOOKFRIENDLYOPTION").value="";
 	    var idlinks=document.getElementsByName("IDLINK");
 	    if (idlinks) {
@@ -727,25 +727,25 @@ sbook.Startup=
 		    idlink.target='_blank';
 		    idlink.title='click to edit your personal information';
 		    idlink.href='https://auth.sbooks.net/admin/identity';}}
-	    if (sbook.user.friends) {
-		var friends=sbook.user.friends; var i=0; var lim=friends.length;
+	    if (Codex.user.friends) {
+		var friends=Codex.user.friends; var i=0; var lim=friends.length;
 		while (i<lim) {
 		    var friend=fdjtKB.ref(friends[i++]);
-		    sbook.addTag2UI(friend);}}
-	    sbook._user_setup=true;}
+		    Codex.addTag2UI(friend);}}
+	    Codex._user_setup=true;}
 
 	function setupGlosses() {
 	    var allglosses=[];
-	    sbook.glossing=fdjtTime();
-	    var latest=sbook.syncstamp||0;
+	    Codex.glossing=fdjtTime();
+	    var latest=Codex.syncstamp||0;
 	    var loaded=((_sbook_loadinfo)&&(_sbook_loadinfo.glosses))||[];
-	    var cached=fdjtState.getLocal("glosses("+sbook.refuri+")",true);
+	    var cached=fdjtState.getLocal("glosses("+Codex.refuri+")",true);
 	    if ((_sbook_loadinfo)&&(_sbook_loadinfo.sync)) {
 		if ((latest)&&(latest>_sbook_loadinfo.sync)) {
 		    fdjtLog.warn("Cached data is fresher than loaded data");
 		    return;}
-		else latest=sbook.syncstamp=(_sbook_loadinfo.sync);}
-	    sbook.glosses.Import(loaded);
+		else latest=Codex.syncstamp=(_sbook_loadinfo.sync);}
+	    Codex.glosses.Import(loaded);
 	    if (cached) allglosses=cached;
 	    if (loaded.length) {
 		var n=loaded.length; var i=0; while (i<n) {
@@ -756,146 +756,146 @@ sbook.Startup=
 		    allglosses.push(id);}}
 	    if ((_sbook_loadinfo)&&(_sbook_loadinfo.etc))
 		fdjtKB.Import(_sbook_loadinfo.etc);
-	    sbook.syncstamp=latest;
-	    sbook.allglosses=allglosses;
-	    if (sbook.offline) {
-		fdjtState.setLocal("glosses("+sbook.refuri+")",allglosses,true);
-		fdjtState.setLocal("syncstamp("+sbook.refuri+")",latest);}
+	    Codex.syncstamp=latest;
+	    Codex.allglosses=allglosses;
+	    if (Codex.offline) {
+		fdjtState.setLocal("glosses("+Codex.refuri+")",allglosses,true);
+		fdjtState.setLocal("syncstamp("+Codex.refuri+")",latest);}
 	    if ((allglosses.length===0) &&
-		(!(sbook.nologin)) && (sbook.user) && (navigator.onLine) &&
+		(!(Codex.nologin)) && (Codex.user) && (navigator.onLine) &&
 		(!(_sbook_loadinfo))) {
 		var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 		glosses_script.language="javascript";
-		glosses_script.src="https://"+sbook.server+
-		    "/v4/glosses.js?CALLBACK=sbook.Startup.initGlosses&REFURI="+
-		    encodeURIComponent(sbook.refuri);
-		if (sbook.Trace.glosses)
+		glosses_script.src="https://"+Codex.server+
+		    "/v4/glosses.js?CALLBACK=Codex.Startup.initGlosses&REFURI="+
+		    encodeURIComponent(Codex.refuri);
+		if (Codex.Trace.glosses)
 		    fdjtLog("setupGlosses/JSONP %o sync=%o",
-			    glosses_script.src,sbook.syncstamp||false);
-		if (sbook.syncstamp)
+			    glosses_script.src,Codex.syncstamp||false);
+		if (Codex.syncstamp)
 		    glosses_script.src=
-		    glosses_script.src+"&SYNCSTAMP="+sbook.syncstamp;
+		    glosses_script.src+"&SYNCSTAMP="+Codex.syncstamp;
 		document.body.appendChild(glosses_script);}
 	    else gotGlosses();}
 	
 	function go_online(evt){return offline_update();}
 	function offline_update(){
-	    sbook.writeGlosses();
-	    var uri="https://"+sbook.server+
+	    Codex.writeGlosses();
+	    var uri="https://"+Codex.server+
 		"/v4/update?REFURI="+
-		encodeURIComponent(sbook.refuri)+
+		encodeURIComponent(Codex.refuri)+
 		"&ORIGIN="+
 		encodeURIComponent(
 		    document.location.protocol+"//"+document.location.hostname);
-	    if (sbook.syncstamp) uri=uri+"&SYNCSTAMP="+(sbook.syncstamp+1);
+	    if (Codex.syncstamp) uri=uri+"&SYNCSTAMP="+(Codex.syncstamp+1);
 	    fdjtAjax.jsonCall(offline_import,uri);}
 	function offline_import(results){
 	    fdjtKB.Import(results);
 	    var i=0; var lim=results.length;
-	    var syncstamp=sbook.syncstamp; var tstamp=false;
+	    var syncstamp=Codex.syncstamp; var tstamp=false;
 	    while (i<lim) {
 		tstamp=results[i++].tstamp;
 		if ((tstamp)&&(tstamp>syncstamp)) syncstamp=tstamp;}
-	    sbook.syncstamp=syncstamp;
-	    fdjtState.setLocal("syncstamp("+sbook.refuri+")",syncstamp);}
-	sbook.update=offline_update;
+	    Codex.syncstamp=syncstamp;
+	    fdjtState.setLocal("syncstamp("+Codex.refuri+")",syncstamp);}
+	Codex.update=offline_update;
 	
 	/* This initializes the sbook state to the initial location with the
 	   document, using the hash value if there is one. */ 
 	function initLocation() {
-	    var hash=window.location.hash; var target=sbook.root;
+	    var hash=window.location.hash; var target=Codex.root;
 	    if ((typeof hash === "string") && (hash.length>0)) {
 		if ((hash[0]==='#') && (hash.length>1))
 		    target=document.getElementById(hash.slice(1));
 		else target=document.getElementById(hash);
-		if (sbook.Trace.startup>1)
+		if (Codex.Trace.startup>1)
 		    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);
-		if (target) sbook.GoTo(target,false,true);}
+		if (target) Codex.GoTo(target,false,true);}
 	    else {
-		var uri=sbook.docuri||sbook.refuri;
-		var statestring=fdjtState.getLocal("sbook.state("+uri+")");
+		var uri=Codex.docuri||Codex.refuri;
+		var statestring=fdjtState.getLocal("codex.state("+uri+")");
 		if (statestring) {
 		    var state=JSON.parse(statestring);
 		    if (state.target)
-			sbook.setTarget(state.target,(state.location),true);
-		    if (state.location) sbook.GoTo(state.location,true,true);
-		    sbook.state=state;}
-		if ((sbook.user)&&(sbook.dosync)&&(navigator.onLine))
+			Codex.setTarget(state.target,(state.location),true);
+		    if (state.location) Codex.GoTo(state.location,true,true);
+		    Codex.state=state;}
+		if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
 		    syncLocation();}}
 	
 	function syncLocation(){
-	    if (!(sbook.user)) return;
-	    var uri="https://"+sbook.server+"/v4/sync"+
-		"?DOCURI="+encodeURIComponent(sbook.docuri)+
-		"&REFURI="+encodeURIComponent(sbook.refuri);
-	    if (sbook.Trace.dosync)
+	    if (!(Codex.user)) return;
+	    var uri="https://"+Codex.server+"/v4/sync"+
+		"?DOCURI="+encodeURIComponent(Codex.docuri)+
+		"&REFURI="+encodeURIComponent(Codex.refuri);
+	    if (Codex.Trace.dosync)
 		fdjtLog("syncLocation(call) %s",uri);
 	    fdjtAjax.jsonCall(
 		function(d){
-		    if (sbook.Trace.dosync)
+		    if (Codex.Trace.dosync)
 			fdjtLog("syncLocation(response) %s: %o",uri,d);
 		    if ((!(d))||(!(d.location))) {
-			if (!(sbook.state))
-			    sbook.GoTo(sbook.start||sbook.root||sbook.body,false,false);
+			if (!(Codex.state))
+			    Codex.GoTo(Codex.start||Codex.root||Codex.body,false,false);
 			return;}
-		    else if ((!(sbook.state))||(sbook.state.tstamp<d.tstamp)) {
-			if ((d.location)&&(d.location<sbook.location)) return;
+		    else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
+			if ((d.location)&&(d.location<Codex.location)) return;
 			var msg=
 			    "Sync to L"+d.location+
 			    ((d.page)?(" (page "+d.page+")"):"")+"?";
 			if (confirm(msg)) {
-			    if (d.location) sbook.setLocation(d.location);
-			    if (d.target) sbook.setTarget(d.target,true,true);
-			    if (d.location) sbook.GoTo(d.location,true,true);
-			    sbook.state=d;}}
+			    if (d.location) Codex.setLocation(d.location);
+			    if (d.target) Codex.setTarget(d.target,true,true);
+			    if (d.location) Codex.GoTo(d.location,true,true);
+			    Codex.state=d;}}
 		    else {}},
 		uri);}
 
 	function gotGlosses(){
-	    delete sbook.glossing; sbook.glossed=fdjtTime();
-	    if (sbook.Trace.glosses) fdjtLog("gotGlosses");}
+	    delete Codex.glossing; Codex.glossed=fdjtTime();
+	    if (Codex.Trace.glosses) fdjtLog("gotGlosses");}
 
 	function initGlosses(glosses,etc){
-	    var allglosses=sbook.allglosses;
+	    var allglosses=Codex.allglosses;
 	    if (etc) {
-		if (sbook.Trace.startup)
+		if (Codex.Trace.startup)
 		    fdjtLog("Assimilating %d new glosses and %d sources",
 			    glosses.length,etc.length);
-		sbook.Message(
+		Codex.Message(
 		    fdjtString("Assimilating %d new glosses/%d sources...",
 			       glosses.length,etc.length));}
 	    else {
-		if (sbook.Trace.startup)
+		if (Codex.Trace.startup)
 		    fdjtLog("Assimilating %d new glosses",glosses.length);
-		sbook.Message(
+		Codex.Message(
 		    fdjtString(
 			"Assimilating %d new glosses...",glosses.length));}
 	    fdjtKB.Import(etc);
-	    sbook.glosses.Import(glosses);
+	    Codex.glosses.Import(glosses);
 	    var i=0; var lim=glosses.length;
-	    var latest=sbook.syncstamp||0;
+	    var latest=Codex.syncstamp||0;
 	    while (i<lim) {
 		var gloss=glosses[i++];
 		var id=gloss.qid||gloss.uuid||gloss.oid;
 		var tstamp=gloss.syncstamp||gloss.tstamp;
 		if (tstamp>latest) latest=tstamp;
 		allglosses.push(id);}
-	    sbook.syncstamp=latest;
-	    sbook.allglosses=allglosses;
-	    if (sbook.offline) {
-		fdjtState.setLocal("glosses("+sbook.refuri+")",allglosses,true);
-		fdjtState.setLocal("syncstamp("+sbook.refuri+")",latest);}
+	    Codex.syncstamp=latest;
+	    Codex.allglosses=allglosses;
+	    if (Codex.offline) {
+		fdjtState.setLocal("glosses("+Codex.refuri+")",allglosses,true);
+		fdjtState.setLocal("syncstamp("+Codex.refuri+")",latest);}
 	    gotGlosses();}
-	sbook.Startup.initGlosses=initGlosses;
+	Codex.Startup.initGlosses=initGlosses;
 
 	function applyInlineTags(){
-	    sbook.Message("Applying inline tags");
+	    Codex.Message("Applying inline tags");
 	    var tags=fdjtDOM.$(".sbooktags");
 	    var i=0; var lim=tags.length;
 	    while (i<lim) {
 		var tagelt=tags[i++];
-		var target=sbook.getTarget(tagelt);
-		var info=sbook.docinfo[target.id];
+		var target=Codex.getTarget(tagelt);
+		var info=Codex.docinfo[target.id];
 		var tagtext=fdjtDOM.textify(tagelt);
 		var tagsep=tagelt.getAttribute("tagsep")||";";
 		var tagstrings=tagtext.split(tagsep);
@@ -907,8 +907,8 @@ sbook.Startup=
 	/* Indexing tags */
 
 	function indexContentTags(docinfo){
-	    var sbook_index=sbook.index;
-	    knodule=(knodule)||(knodule=sbook.knodule);
+	    var sbook_index=Codex.index;
+	    knodule=(knodule)||(knodule=Codex.knodule);
 	    /* One pass processes all of the inline KNodes and
 	       also separates out primary and auto tags. */
 	    for (var eltid in docinfo) {
@@ -949,10 +949,10 @@ sbook.Startup=
 			else if (t1>t2) return 1;
 			else return 0;});}
 		else tags.sort();}
-	    var knodule=sbook.knodule||false;
+	    var knodule=Codex.knodule||false;
 	    sbook_index.Tags=function(item){
 		var info=docinfo[item]||
-		    sbook.glosses.ref(item)||
+		    Codex.glosses.ref(item)||
 		    fdjtKB.ref(item);
 		return ((info)&&(info.tags))||[];};
 	    for (var eltid in docinfo) {
@@ -965,11 +965,11 @@ sbook.Startup=
 		    if (scores)
 			sbook_index.add(eltid,tag,scores[tag]||1,knodule);
 		    else sbook_index.add(eltid,tag,1,knodule);}}}
-	sbook.indexContentTags=indexContentTags
+	Codex.indexContentTags=indexContentTags
 	
 	/* Inline tags */
 	function indexInlineTags(kno) {
-	    var sbook_index=sbook.index;
+	    var sbook_index=Codex.index;
 	    if (!(kno)) kno=knodule;
 	    var anchors=document.getElementsByTagName("A");
 	    if (!(anchors)) return;
@@ -986,10 +986,10 @@ sbook.Startup=
 	    var dterm=((kno)?(kno.handleEntry(tag)):(fdjtString.stdspace(tag)));
 	    sbook_index.add(cxt,dterm);}
 	else i++;}
-     sbook.indexInlineTags=indexInlineTags;
+     Codex.indexInlineTags=indexInlineTags;
 
      function useAutoIndex(autoindex,knodule){
-	 var sbook_index=sbook.index;
+	 var sbook_index=Codex.index;
 	 if (!(autoindex)) return;
 	 if (!(sbook_index)) return;
 	 for (var tag in autoindex) {
@@ -1004,73 +1004,74 @@ sbook.Startup=
 			(knodule.handleSubjectEntry(tag.slice(starpower))));
 	     var i=0; var lim=ids.length;
 	     while (i<lim) {
-		 var info=sbook.docinfo[ids[i++]];
+		 var info=Codex.docinfo[ids[i++]];
 		 if (!(info)) continue;
 		 var tagval=((typeof knode === 'string')?(knode):(knode.dterm));
 		 if (info.autotags) info.autotags.push(tagval);
 		 else info.autotags=[tagval];
 		 sbook_index.add(info.frag,knode,weight,knodule);}}}
-     sbook.useAutoIndex=useAutoIndex;
+     Codex.useAutoIndex=useAutoIndex;
 
      /* Setting up the clouds */
 
      function initClouds(){
-	 sbook.Message("setting up search cloud...");
-	 fdjtDOM.replace("CODEXSEARCHCLOUD",sbook.fullCloud().dom);
-	 sbook.Message("setting up glossing cloud...");
-	 fdjtDOM.replace("CODEXGLOSSCLOUD",sbook.glossCloud().dom);
-	 if (sbook.cloud_queue) {
+	 Codex.Message("setting up search cloud...");
+	 fdjtDOM.replace("CODEXSEARCHCLOUD",Codex.fullCloud().dom);
+	 Codex.Message("setting up glossing cloud...");
+	 fdjtDOM.replace("CODEXGLOSSCLOUD",Codex.glossCloud().dom);
+	 if (Codex.cloud_queue) {
 	     fdjtLog("Starting to sync gloss cloud");
 	     fdjtTime.slowmap(
-		 sbook.addTag2UI,sbook.cloud_queue,
+		 Codex.addTag2UI,Codex.cloud_queue,
 		 function(){
-		     sbook.cloud_queue=false;
+		     Codex.cloud_queue=false;
 		     fdjtLog("Gloss cloud synced");});}
-	 if (sbook.search_cloud_queue) {
+	 if (Codex.search_cloud_queue) {
 	     fdjtLog("Starting to sync search cloud");
 	     fdjtTime.slowmap(
-		 sbook.addTag2UI,sbook.search_cloud_queue,
+		 Codex.addTag2UI,Codex.search_cloud_queue,
 		 function(){
-		     sbook.search_cloud_queue=false;
+		     Codex.search_cloud_queue=false;
 		     fdjtLog("Search cloud synced");});}
 	 
-	 if (sbook.knodule) {
+	 if (Codex.knodule) {
 	     fdjtLog("starting to integrate knodule");
 	     fdjtTime.slowmap(
-		 sbook.addTag2UI,sbook.knodule.alldterms,
+		 Codex.addTag2UI,Codex.knodule.alldterms,
 		 function(){fdjtLog("Knodule integrated");});}
-	 sbook.sizeCloud(sbook.full_cloud);
-	 sbook.sizeCloud(sbook.gloss_cloud);}
+	 Codex.sizeCloud(Codex.full_cloud);
+	 Codex.sizeCloud(Codex.gloss_cloud);}
 	 
      /* Clearing offline data */
 
      function clearOffline(refuri){
 	 if (refuri) {
 	     var glosses=
-		 fdjtState.getLocal("sbook.glosses("+refuri+")",true);
+		 fdjtState.getLocal("codex.glosses("+refuri+")",true);
 	     var i=0; var lim=glosses.length;
 	     while (i<lim) fdjtState.dropLocal(glosses[i++]);
-	     fdjtState.dropLocal("sbook.sources("+refuri+")");
-	     fdjtState.dropLocal("sbook.outlets("+refuri+")");
-	     fdjtState.dropLocal("sbook.etc("+refuri+")");
-	     fdjtState.dropLocal("sbook.offline("+refuri+")");
-	     var refuris=fdjtState.getLocal("sbook.refuris",true);
+	     fdjtState.dropLocal("codex.sources("+refuri+")");
+	     fdjtState.dropLocal("codex.outlets("+refuri+")");
+	     fdjtState.dropLocal("codex.etc("+refuri+")");
+	     fdjtState.dropLocal("codex.offline("+refuri+")");
+	     var refuris=fdjtState.getLocal("codex.refuris",true);
 	     refuris=fdjtKB.remove(refuris,refuri);
-	     fdjtState.setLocal("sbook.refuris",refuris,true);}
+	     fdjtState.setLocal("codex.refuris",refuris,true);}
 	 else {
-	     var refuris=fdjtState.getLocal("sbook.refuris",true);
+	     var refuris=fdjtState.getLocal("codex.refuris",true);
 	     var i=0; var lim=refuris.length;
 	     while (i<lim) clearOffline(refuris[i++]);
-	     fdjtState.dropLocal("sbook.refuris");}}
-     sbook.clearOffline=clearOffline;
+	     fdjtState.dropLocal("codex.refuris");}}
+     Codex.clearOffline=clearOffline;
 
      /* Other setup */
      
      function setupGlossServer(){}
 
      return Startup;})();
-sbookStartup=sbook.Startup;
-sbook.Setup=sbook.Startup;
+sbookStartup=Codex.Startup;
+Codex.Setup=Codex.Startup;
+sbook={Start: Codex.Startup};
 
 fdjt_versions.decl("codex",codex_startup_version);
 fdjt_versions.decl("codex/startup",codex_startup_version);

@@ -34,12 +34,12 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 */
 
 (function(){
-    sbook.full_cloud=false;
-    if (!(sbook.empty_cloud)) sbook.empty_cloud=false;
-    if (!(sbook.show_refiners)) sbook.show_refiners=25;
-    if (!(sbook.search_gotlucky)) sbook.search_gotlucky=7;
+    Codex.full_cloud=false;
+    if (!(Codex.empty_cloud)) Codex.empty_cloud=false;
+    if (!(Codex.show_refiners)) Codex.show_refiners=25;
+    if (!(Codex.search_gotlucky)) Codex.search_gotlucky=7;
     
-    function sbicon(name,suffix) {return sbook.graphics+name+(suffix||"");}
+    function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
 
     /* Query functions */
 
@@ -49,18 +49,18 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 
     var Query=KnoduleIndex.Query;
 
-    sbook.getQuery=function(){return sbook.query;}
+    Codex.getQuery=function(){return Codex.query;}
     
     function setQuery(query){
-      if (sbook.Trace.search) fdjtLog("Setting working query to %o",query);
-      sbook.query=useQuery(query,fdjtID("CODEXSEARCH"));}
+      if (Codex.Trace.search) fdjtLog("Setting working query to %o",query);
+      Codex.query=useQuery(query,fdjtID("CODEXSEARCH"));}
 
-    sbook.setQuery=setQuery;
+    Codex.setQuery=setQuery;
 
     function useQuery(query,box_arg){
 	var result;
 	if (query instanceof Query) result=query;
-	else result=sbook.index.Query(query);
+	else result=Codex.index.Query(query);
 	var qstring=result.getString();
 	if ((box_arg)&&(typeof box_arg === 'string'))
 	    box_arg=document.getElementById(box_arg);
@@ -71,10 +71,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	  fdjtLog("No change in query for %o to %o: %o/%o (%o)",
 		  box,result._query,result,result._refiners,qstring);
 	  return;}
-	if (sbook.Trace.search>1)
+	if (Codex.Trace.search>1)
 	    fdjtLog("Setting query for %o to %o: %o/%o (%o)",
 		    box,result._query,result,result._refiners,qstring);
-	else if (sbook.Trace.search)
+	else if (Codex.Trace.search)
 	    fdjtLog("Setting query for %o to %o: %d results/%d refiners (%o)",
 		    box,result._query,result._results.length,
 		    result._refiners._results.length,qstring);
@@ -120,24 +120,24 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var n_refiners=
 	    ((result._refiners)&&(result._refiners._results.length))||0;
 	if (n_refiners) {
-	    var completions=sbook.queryCloud(result);
+	    var completions=Codex.queryCloud(result);
 	    refinecount.innerHTML=n_refiners+
 		((n_refiners===1)?(" association"):(" associations"));
 	    fdjtDOM.dropClass(box,"norefiners");
 	    if (cloudid) completions.id=cloudid;
-	    if (sbook.Trace.search>1)
+	    if (Codex.Trace.search>1)
 		fdjtLog("Setting search cloud for %o to %o",
 			box,completions.dom);
 	    cloudid=cloud.id;
 	    fdjtDOM.replace(cloud,completions.dom);
 	    completions.complete("");
-	    sbook.UI.updateScroller(completions.dom);}
+	    Codex.UI.updateScroller(completions.dom);}
 	else {
 	    fdjtDOM.addClass(box,"norefiners");
 	    refinecount.innerHTML="no refiners";}
 	result._box=box; box.setAttribute(qstring,qstring);
 	return result;}
-    sbook.useQuery=useQuery;
+    Codex.useQuery=useQuery;
 
     function extendQuery(query,elt){
 	var elts=[].concat(query._query);
@@ -145,27 +145,27 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    elts.push(fdjtKB.ref(elt)||elt);
 	else elts.push(elt);
 	return useQuery(query.index.Query(elts),query._box);}
-    sbook.extendQuery=extendQuery;
+    Codex.extendQuery=extendQuery;
 
-    sbook.updateQuery=function(input_elt){
+    Codex.updateQuery=function(input_elt){
 	var q=Knodule.Query.string2query(input_elt.value);
-	if ((q)!==(sbook.query._query))
-	    sbook.setQuery(q,false);};
+	if ((q)!==(Codex.query._query))
+	    Codex.setQuery(q,false);};
 
     function showSearchResults(){
-	fdjtDOM.replace("CODEXSEARCHRESULTS",sbook.query.showResults());
+	fdjtDOM.replace("CODEXSEARCHRESULTS",Codex.query.showResults());
 	CodexMode("searchresults");
 	fdjtID("CODEXSEARCHINPUT").blur();
 	fdjtID("CODEXSEARCHRESULTS").focus();
-	sbook.UI.updateScroller(fdjtID("CODEXSEARCHRESULTS"));}
-    sbook.showSearchResults=showSearchResults;
+	Codex.UI.updateScroller(fdjtID("CODEXSEARCHRESULTS"));}
+    Codex.showSearchResults=showSearchResults;
 
     /* Call this to search */
 
     function startSearch(tag){
 	setQuery([tag]);
 	CodexMode("searching");}
-    sbook.startSearch=startSearch;
+    Codex.startSearch=startSearch;
 
     /* Text input handlers */
 
@@ -182,36 +182,36 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var qstring=target.value;
 	    if (fdjtString.isEmpty(qstring)) showSearchResults();
 	    else {
-		var completeinfo=queryCloud(sbook.query);
+		var completeinfo=queryCloud(Codex.query);
 		if (completeinfo.timer) {
 		    clearTimeout(completeinfo.timer);
 		    completeinfo.timer=false;}
 		var completions=completeinfo.complete(qstring);
 		if (completions.length) {
 		    var value=completeinfo.getValue(completions[0]);
-		    sbook.query=extendQuery(sbook.query,value);}}
+		    Codex.query=extendQuery(Codex.query,value);}}
 	    fdjtDOM.cancel(evt);
-	    if ((sbook.search_gotlucky) && 
-		(sbook.query._results.length>0) &&
-		(sbook.query._results.length<=sbook.search_gotlucky))
+	    if ((Codex.search_gotlucky) && 
+		(Codex.query._results.length>0) &&
+		(Codex.query._results.length<=Codex.search_gotlucky))
 		showSearchResults();
 	    else {
 		/* Handle new info */
-		var completeinfo=queryCloud(sbook.query);
+		var completeinfo=queryCloud(Codex.query);
 		completeinfo.complete("");}
 	    return false;}
 	else if (ch==32) { /* Space */
 	    var qstring=target.value;
-	    var completeinfo=queryCloud(sbook.query);
+	    var completeinfo=queryCloud(Codex.query);
 	    var completions=completeinfo.complete(qstring);
 	    if (completions.prefix!==qstring) {
 		target.value=completions.prefix;
 		fdjtDOM.cancel(evt);
 		return;}}
 	else {
-	    var completeinfo=queryCloud(sbook.query);
+	    var completeinfo=queryCloud(Codex.query);
 	    completeinfo.docomplete(target);;}}
-    sbook.UI.handlers.search_keyup=searchInput_keyup;
+    Codex.UI.handlers.search_keyup=searchInput_keyup;
 
     /*
     function searchInput_onkeyup(evt){
@@ -227,40 +227,40 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		    _sbook_searchupdate=false;
 		    searchUpdate(target);},
 			   _sbook_searchupdate_delay,target);}}
-    sbook.UI.handlers.SearchInput_onkeyup=searchInput_onkeyup;
+    Codex.UI.handlers.SearchInput_onkeyup=searchInput_onkeyup;
     */
 
     function searchUpdate(input,cloud){
 	if (!(input)) input=fdjtID("CODEXSEARCHINPUT");
-	if (!(cloud)) cloud=queryCloud(sbook.query);
+	if (!(cloud)) cloud=queryCloud(Codex.query);
 	cloud.complete(input.value);}
-    sbook.searchUpdate=searchUpdate;
+    Codex.searchUpdate=searchUpdate;
 
     function searchInput_focus(evt){
 	evt=evt||event||null;
 	var input=fdjtDOM.T(evt);
 	sbook_search_focus=true;
-	if ((sbook.mode)&&(sbook.mode==='searchresults'))
+	if ((Codex.mode)&&(Codex.mode==='searchresults'))
 	    CodexMode("searching");
 	searchUpdate(input);}
-    sbook.UI.handlers.search_focus=searchInput_focus;
+    Codex.UI.handlers.search_focus=searchInput_focus;
 
     function searchInput_blur(evt){
 	evt=evt||event||null;
 	sbook_search_focus=false;}
-    sbook.UI.handlers.search_blur=searchInput_blur;
+    Codex.UI.handlers.search_blur=searchInput_blur;
 
     function clearSearch(evt){
 	var target=fdjtUI.T(evt||event);
 	var box=fdjtDOM.getParent(target,".searchbox");
 	var input=fdjtDOM.getChild(box,".searchinput");
-	setQuery(sbook.empty_query);
+	setQuery(Codex.empty_query);
 	input.focus();}
-    sbook.UI.handlers.clearSearch=clearSearch;
+    Codex.UI.handlers.clearSearch=clearSearch;
     
-    sbook.toggleSearch=function(evt){
+    Codex.toggleSearch=function(evt){
 	evt=evt||event;
-	if ((sbook.mode==="searching")||(sbook.mode==="searchresults"))
+	if ((Codex.mode==="searching")||(Codex.mode==="searchresults"))
 	    CodexMode(false);
 	else {
 	    CodexMode("searching");
@@ -270,7 +270,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     /* Show search results */
 
     function makelocrule(target_info,cxtinfo_arg,cxtname){
-	var cxtinfo=cxtinfo_arg||sbook.docinfo[(sbook.body||document.body).id];
+	var cxtinfo=cxtinfo_arg||Codex.docinfo[(Codex.body||document.body).id];
 	if (!(cxtname)) {
 	    if (cxtinfo_arg) cxtname="into the section";
 	    else cxtname="into the book";}
@@ -297,7 +297,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
       var scores=new Array(lim);
       while (i<lim) {
 	var r=results[i++];
-	var ref=sbook.docinfo[r]||sbook.glosses.map[r]||fdjtKB.ref(r)||r;
+	var ref=Codex.docinfo[r]||Codex.glosses.map[r]||fdjtKB.ref(r)||r;
 	if (!(ref)) continue;
 	var frag=ref.frag;
 	if (!(frag)) continue;
@@ -322,10 +322,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	  if (xend<yend) return -1;
 	  else if (xend>yend) return 1;
 	  else return 0;});
-      if (!(result)) result=sbook.query;
+      if (!(result)) result=Codex.query;
       var div=fdjtDOM("div.codexslice.sbookresults");
-      sbook.UI.addHandlers(div,'summary');
-      sbook.UI.showSlice(result._results,div,rscores);
+      Codex.UI.addHandlers(div,'summary');
+      Codex.UI.showSlice(result._results,div,rscores);
       result._results_div=div;
       return div;}
     KnoduleIndex.Query.prototype.showResults=
@@ -339,19 +339,19 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    query._cloud=fullCloud();
 	    return query._cloud;}
 	else if (!(query._refiners)) {
-	    result._cloud=sbook.empty_cloud;
+	    result._cloud=Codex.empty_cloud;
 	    return query._cloud;}
 	else {
 	    var completions=makeCloud(query._refiners._results,query._refiners._freqs);
 	    completions.onclick=Cloud_onclick;
 	    var n_refiners=query._refiners._results.length;
-	    var hide_some=(n_refiners>sbook.show_refiners);
+	    var hide_some=(n_refiners>Codex.show_refiners);
 	    if (hide_some) {
 		var cues=fdjtDOM.$(".cue",completions);
 		if (!((cues)&&(cues.length))) {
 		    var compelts=fdjtDOM.$(".completion",completions);
-		    var i=0; var lim=((compelts.length<sbook.show_refiners)?
-				      (compelts.length):(sbook.show_refiners));
+		    var i=0; var lim=((compelts.length<Codex.show_refiners)?
+				      (compelts.length):(Codex.show_refiners));
 		    while (i<lim) fdjtDOM.addClass(compelts[i++],"cue");}}
 	    else fdjtDOM.addClass(completions,"showempty");
 
@@ -359,7 +359,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		new fdjtUI.Completions(completions,fdjtID("CODEXSEARCHINPUT"));
 
 	    return query._cloud;}}
-    sbook.queryCloud=queryCloud;
+    Codex.queryCloud=queryCloud;
     KnoduleIndex.Query.prototype.getCloud=function(){return queryCloud(this);};
 
     function Cloud_onclick(evt){
@@ -367,12 +367,12 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtDOM.T(evt);
 	var completion=fdjtDOM.getParent(target,".completion");
 	if (completion) {
-	    var cinfo=sbook.query._cloud;
+	    var cinfo=Codex.query._cloud;
 	    var value=cinfo.getValue(completion);
 	    add_searchtag(value);
 	    fdjtDOM.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".resultcounts")) {
-	    showSearchResults(sbook.query);
+	    showSearchResults(Codex.query);
 	    CodexMode("searchresults");
 	    fdjtID("CODEXSEARCHINPUT").blur();
 	    fdjtID("CODEXSEARCHRESULTS").focus();
@@ -387,12 +387,12 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.toggleClass(container,"showall");
 	    fdjtDOM.cancel(evt);}
 	else {}}
-    sbook.UI.handlers.Cloud_onclick=Cloud_onclick;
+    Codex.UI.handlers.Cloud_onclick=Cloud_onclick;
 
     function makeCloud(dterms,scores,noscale){
-	var sbook_index=sbook.index;
+	var sbook_index=Codex.index;
 	var start=new Date();
-	if (sbook.Trace.clouds)
+	if (Codex.Trace.clouds)
 	    fdjtLog("Making cloud from %d dterms using scores=%o and scores=%o",
 		    dterms.length,scores,scores);
 	var spans=fdjtDOM("span");  
@@ -430,7 +430,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var freq=((scores)?(scores[dterm]||1):(1));
 	    var score=((scores) ?(scores[dterm]||false) : (false));
 	    var title=
-		((sbook.noisy_tooltips) ?
+		((Codex.noisy_tooltips) ?
 		 (dterm+": "+(((score)?("s="+score+"; "):"")+freq+"/"+count+" items")) :
 		 (dterm+": "+freq+((freq==1) ? " item" : " items")));
 	    var span=KNodeCompletion(dterm,title);
@@ -438,7 +438,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    if (freq===1) fdjtDOM.addClass(span,"singleton");
 	    if ((scores)&&(!(noscale))) {
 		var relfreq=
-		  ((freq/scores._count)/(count/sbook.docinfo._eltcount));
+		  ((freq/scores._count)/(count/Codex.docinfo._eltcount));
 		var scaling=Math.sqrt(relfreq);
 		if ((!(minscale))||(scaling<minscale)) minscale=scaling;
 		if ((!(maxscale))||(scaling>maxscale)) maxscale=scaling;
@@ -458,12 +458,12 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	   " of completions.  ");
 	fdjtDOM.prepend(completions,maxmsg);
 	var end=new Date();
-	if (sbook.Trace.clouds)
+	if (Codex.Trace.clouds)
 	    fdjtLog("Made cloud for %d dterms in %f seconds",
 		    dterms.length,(end.getTime()-start.getTime())/1000);
 
 	return completions;}
-    sbook.makeCloud=makeCloud;
+    Codex.makeCloud=makeCloud;
 
     function showempty_onclick(evt){
       var target=fdjtUI.T(evt);
@@ -472,7 +472,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.toggleClass(completions,"showempty");}
 
     function KNodeCompletion(term,title){
-	var sbook_index=sbook.index;
+	var sbook_index=Codex.index;
 	if ((typeof term === "string") && (term[0]==="\u00A7")) {
 	    var showname=term;
 	    if (showname.length>17) {
@@ -484,7 +484,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		span.title="("+term+": "+sbook_index.freq(term)+" items) "+title;
 	    else span.title=term+": "+sbook_index.freq(term)+" items";
 	    return span;}
-	var dterm=sbook.knodule.probe(term);
+	var dterm=Codex.knodule.probe(term);
 	if (!(dterm)) {}
 	else if (!(dterm.dterm)) {
 	    fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
@@ -522,23 +522,23 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	return span;}
     
     function add_searchtag(value){
-	sbook.query=sbook.extendQuery(sbook.query,value);}
+	Codex.query=Codex.extendQuery(Codex.query,value);}
 
     function fullCloud(){
-	if (sbook.full_cloud) return sbook.full_cloud;
+	if (Codex.full_cloud) return Codex.full_cloud;
 	else {
-	    var tagscores=sbook.index.tagScores();
+	    var tagscores=Codex.index.tagScores();
 	    var alltags=tagscores._all;
 	    var tagfreqs=tagscores._freq;
-	    var completions=sbook.makeCloud(alltags,tagfreqs);
+	    var completions=Codex.makeCloud(alltags,tagfreqs);
 	    var cues=fdjtDOM.getChildren(completions,".cue");
 	    completions.onclick=Cloud_onclick;
-	    sbook.full_cloud=new fdjtUI.Completions(completions);
-	    return sbook.full_cloud;}}
-    sbook.fullCloud=fullCloud;
+	    Codex.full_cloud=new fdjtUI.Completions(completions);
+	    return Codex.full_cloud;}}
+    Codex.fullCloud=fullCloud;
 
     function sizeCloud(completions,container,index){
-      if (!(index)) index=sbook.index;
+      if (!(index)) index=Codex.index;
       if (!(container)) container=completions.dom;
       var nodes=fdjtDOM.getChildren(container,".completion");
       var tagscores=index.tagScores();
@@ -552,7 +552,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
 	var score=tagscores[tag];
 	if (score) tagnode.style.fontSize=(100+(100*(score/max_score)))+"%";}}
-    sbook.sizeCloud=sizeCloud;
+    Codex.sizeCloud=sizeCloud;
 
 })();
 

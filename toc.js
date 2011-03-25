@@ -50,9 +50,9 @@ var codex_toc_version=parseInt("$Revision$".slice(10,-1));
 
 var CodexTOC=
     (function(){
-	function sbicon(base){return sbook.graphics+base;}
+	function sbicon(base){return Codex.graphics+base;}
 	function navicon(kind){
-	    if (sbook.touch) {
+	    if (Codex.touch) {
 		switch (kind) {
 		case 'right': return sbicon("GoldRightTriangle32.png");
 		case 'left': return sbicon("GoldLeftTriangle32.png");
@@ -64,7 +64,7 @@ var CodexTOC=
 		case 'left': return sbicon("GoldLeftTriangle24.png");
 		case 'start': return sbicon("GoldLeftStop24.png");
 		case 'end': return sbicon("GoldRightStop24.png");}}}
-	sbook.navicon=navicon;
+	Codex.navicon=navicon;
 
 	function CodexTOC(headinfo,depth,tocspec,prefix,headless){
 	    var progressbar=fdjtDOM("HR.progressbar");
@@ -113,13 +113,13 @@ var CodexTOC=
 		if (target.frag) break;
 		else target=target.parentNode;}
 	    if (target) {
-		var info=sbook.docinfo[target.frag];
-		sbook.GoTo(target.frag);
+		var info=Codex.docinfo[target.frag];
+		Codex.GoTo(target.frag);
 		if ((info.sub)&&(info.sub.length>2))
 		    CodexMode("toc");
 		else CodexMode("tocscan");
 		fdjtUI.cancel(evt);}}
-	sbook.tocJump=tocJump;
+	Codex.tocJump=tocJump;
 
 	function generate_subsections(headinfo) {
 	    var sub=headinfo.sub;
