@@ -84,17 +84,6 @@ var Codex=
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0},   // Whether to trace gestures
-     /* This determines whether to use columns for pagination, like
-	Monocole does */
-     // Whether to paginate
-     paginate: true,
-     // Whether to do Monocole-style column-based (horizontal) pagination
-     // If this is not specified (commented out), it attempts to determine
-     //  this automatically from browser sniffing
-     colpage: false,
-     // When vertically paginating, this postpones the attempt to
-     //  determine the actual page break
-     fastpage: false,
      version: codex_version, id: codex_id
     };
 var _sbook_setup=false;
@@ -543,7 +532,6 @@ var sbook_gloss_data=
 	    req.withCredentials='yes';
 	    req.send();}}
     Codex.serverSync=serverSync;
-	
 
     function scrollToElt(elt,cxt){
 	if ((elt.getAttribute) &&
@@ -586,7 +574,7 @@ var sbook_gloss_data=
 
 
     // This moves within the document in a persistent way
-    function sbookGoTo(arg,noset,nosave){
+    function CodexGoTo(arg,noset,nosave){
 	var target; var location;
 	if (typeof arg === 'string') {
 	    target=document.getElementById(arg);
@@ -601,7 +589,7 @@ var sbook_gloss_data=
 	    else target=getTarget(arg);
 	    location=info.start;}
 	else {
-	    fdjtLog.warn("Bad sbookGoTo %o",arg);
+	    fdjtLog.warn("Bad CodexGoTo %o",arg);
 	    return;}
 	if (!(target)) return;
 	var page=((Codex.paginate)&&
@@ -627,9 +615,9 @@ var sbook_gloss_data=
 	else Codex.setState(
 	    {target: (target.id),location: location,page: page});
 	if (typeof page === 'number') 
-	    Codex.GoToPage(page,"sbookGoTo",nosave||false);
+	    Codex.GoToPage(page,"CodexGoTo",nosave||false);
 	Codex.location=location;}
-    Codex.GoTo=sbookGoTo;
+    Codex.GoTo=CodexGoTo;
 
     function anchorFn(evt){
 	var target=fdjtUI.T(evt);
@@ -637,19 +625,19 @@ var sbook_gloss_data=
 	    if (target.href) break; else target=target.parentNode;
 	if ((target)&&(target.href)&&(target.href[0]==='#')) {
 	    var goto=document.getElementById(target.href.slice(1));
-	    if (goto) {sbookGoTo(goto); fdjtUI.cancel(evt);}}}
+	    if (goto) {CodexGoTo(goto); fdjtUI.cancel(evt);}}}
     Codex.anchorFn=anchorFn;
 
     // This jumps and disables the HUD at the same time
     // We try to animate the transition
-    function sbookJumpTo(target){
+    function CodexGoTo(target){
 	if (Codex.animate) {
 	    Codex.pages.style.opacity=0.0001;
 	    if (Codex.hudup) Codex.HUD.style.opacity=0.0001;
 	    fdjtDOM.addClass(document.body,"pageswitch");
 	    setTimeout(function() {
 		if (Codex.hudup) CodexMode(false);
-		sbookGoTo(target);
+		CodexGoTo(target);
 		fdjtDOM.dropClass(document.body,"pageswitch");
 		Codex.HUD.style.opacity=1.0;
 		Codex.pages.style.opacity=1.0;
@@ -661,8 +649,8 @@ var sbook_gloss_data=
 		       200);}
 	else {
 	    if (Codex.hudup) CodexMode(false);
-	    sbookGoTo(target);}}
-    Codex.JumpTo=sbookJumpTo;
+	    CodexGoTo(target);}}
+    Codex.JumpTo=CodexGoTo;
 
     function getLevel(elt){
 	if (elt.toclevel) {

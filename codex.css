@@ -51,7 +51,7 @@ div#CODEXPAGE div#CODEXPAGES {
     padding: 0px; margin: 0px; border: 0px;
     text-align: center;
     overflow: visible;}
-div#CODEXPAGE div#CODEXPAGES.codexpaginating {
+div#CODEXPAGE div#CODEXPAGE.codexpaginating div#CODEXPAGES {
     opacity: 0.35;}
 body.codexpageview div#CODEXPAGE div#CODEXPAGES {
     column-width: 40em;
@@ -77,14 +77,14 @@ div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
     padding: 0px; margin: 0px; border: 0px;
     margin-right: 0px;}
 
-div#CODEXCONTENT .codexpagebreak {
+body.codexpageview div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
     column-break-before: always;
     break-before: always;
     -o-column-break-before: always;
     -webkit-column-break-before: always;
     -moz-column-break-before: always;}
 
-#CODEXPAGE #CODEXPAGES {
+#CODEXPAGE.codexanimate #CODEXPAGES {
     transition-property: transform; transition-duration: 0.5s;
     -webkit-transition-property: -webkit-transform;
     -webkit-transition-duration: 0.5s;
@@ -100,6 +100,14 @@ div#CODEXCONTENT .codexpagebreak {
     position: fixed; z-index: -100;
     top: 60px; left: 60px; right: 60px;
     display: none;}
+
+div#CODEXPAGINATING {
+    position: absolute;
+    font-size: 200%; height: 3em; text-align: center;
+    top: auto; bottom: auto; left: 10%; right: 10%;
+    display: none;}
+
+.codexpaginating #CODEXPAGINATING { display: block;}
 
 /* The content */
 
@@ -568,7 +576,8 @@ div.spanbar div.progressbox {
 /* The splash HUD */
 
 div#CODEXHUD div#CODEXSPLASH.hudpanel {
-    position: fixed; text-align: center; padding: 24px;
+    position: fixed; text-align: left;
+    padding: 24px; padding-top: 0px;
     background-color: ivory; color: black; opacity: 1.0;
     top: 75px; bottom: 75px; left: 75px; right: 75px;}
 div#CODEXHUD.splash div#CODEXSPLASH.hudpanel {
@@ -586,6 +595,21 @@ div#CODEXHUD div#CODEXSPLASH .codexclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
     text-align: center; color: red;}
 div#CODEXHUD div#CODEXSPLASH.hudpanel strong { font-size: 125%;}
+
+div#CODEXSPLASH div.splashtopbanner {
+    width: 100%; height: 24px; background-color: lightblue;}
+div#CODEXSPLASH div.splashtopbanner .checkspan {
+    float: left; color: red;}
+div#CODEXSPLASH div.splashtopbanner .splashcloser {
+    font-weight: bold; font-size: 16px;
+    padding-top: 0px; margin-top: -4px;
+    padding: 4px; cursor: pointer; vertical-align: top;
+    float: right; color: red; text-align: right;}
+
+div#CODEXSPLASH div.codexhelp {
+    max-width: 40em; margin-left: auto; margin-right: auto;}
+div#CODEXSPLASH div.codexhelp p {
+    margin-left: 5em; text-indent: -5em;}
 
 /* Help HUD */
 
@@ -973,7 +997,7 @@ body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     display: block; opacity: 1.0;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: none;}
-body.hudup.codexconsoled div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
+body.hudup div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='console'] {
     display: inline;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
@@ -1217,7 +1241,17 @@ div#CODEXHUD.settings div#CODEXFLYLEAF table.settings .smallbutton {
     -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;}
 
-div#CODEXFLYLEAF table.settings td .checkspan { padding-left: 12px;}
+div#CODEXSETTINGS span.button {
+    float: right; font-size: 125%;
+    font-family: sans,sans-serif; font-weight: bold;
+    color: white; background-color: silver;
+    margin-left: 6px; padding: 4px; border: solid black 2px;
+    border-radius: 5px;
+    -o-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;}
+
+div#CODEXFLYLEAF table.settings td .checkspan { }
 
 /* Flyleaf content rules */
 
@@ -1497,6 +1531,31 @@ div.codexglossform form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
 div.codexglossform.submitting { opacity: 0.5;}
+
+/* Style variants */
+
+#CODEXHUD.codexuifontlarge {
+    font-size: 125%;}
+#CODEXHUD.codexuifontnormal {
+    font-size: 100%;}
+#CODEXHUD.codexuifontsmall {
+    font-size: 75%;}
+
+#CODEXPAGE.codexbodysizexlarge {
+    font-size: 175%;}
+#CODEXPAGE.codexbodysizelarge {
+    font-size: 135%;}
+#CODEXPAGE.codexbodysizenormal {
+    font-size: 100%;}
+#CODEXPAGE.codexbodysizesmall {
+    font-size: 80%;}
+#CODEXPAGE.codexbodysizetiny {
+    font-size: 50%;}
+
+#CODEXPAGE.codexbodystylesans {
+    font-family: sans,sans-serif;}
+#CODEXPAGE.codexbodystyleserif {
+    font-family: serif;}
 
 /* Pagination stuff */
 

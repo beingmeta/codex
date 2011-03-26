@@ -1,50 +1,66 @@
 <div id="CODEXSPLASH" class="hudpanel">
-  <h2>Welcome to Codex, <span style="white-space: nowrap;">the
-      web-based sBooks reader</span></h2>
-  <div class="codexclicktohide">click anywhere to hide this screen</div>
-  <p><strong>Codex</strong> reveals and lets you extend the layers of
-    structure, notes, and tags which enrich this sBook.</p>
-  
-  <div class="login">
-    You aren't
-    currently <a href="javascript:CodexMode('login');">logged in</a>
-    to the sBooks service, which is neccessary to save, share, or
-    overlay glosses (notes, tags, links, etc) on this book.  For free
-    content and open sharing, this service is <strong>free of
-    charge</strong>.
-  </div>
-  
-  <p>When reading, <strong>page through the book</strong>
-    by <span class="fortouch">tapping</span>
-    <span class="notouch">clicking</span> the sides of the screen or
-    swiping horizontally with one finger.</p>
-  <p><span class="fortouch">Tap</span> <span class="notouch">Click</span>
-    the top of the page to see the <strong>book tools</strong>, the
-    bottom of the page to hide them.</p>
-  <p><span class="fortouch">Tap</span> <span class="notouch">Click</span>
-  a paragraph or heading to <strong>see or add notes</strong>.</p>
-  <p>The box at the bottom of the screen shows <strong>your location within
-    the book</strong>.  <span class="fortouch">Tap</span>
-    <span class="notouch">Click</span> in this box to jump to a
-    different part of the book.</p>
-  <p>When you see
-    <img src="http://static.beingmeta.com/graphics/ScanLeft16.png"/>
-    these
-    <img src="http://static.beingmeta.com/graphics/ScanRight16.png"/>
-    arrows at the top corners of the page, you're <strong>scanning</strong>
-    through sections, glosses, or search
-    results.  <span class="fortouch">Tap</span>
-    <span class="notouch">Click</span> the arrows (or the sides of the
-    screen) to go forward and back.  You can
-    also <span class="fortouch">swipe with two
-    fingers</span><span class="notouch">use your arrow
-    keys</span>.</p>
-  <h2>Enjoy!</h2>
-  <div  style="display: none;">
-    <div class='message' id='CODEXHELPMESSAGE'>
-      <span class='head'>Working Status</span>
+  <div class="splashtopbanner">
+    <img class="splashcloser" alt="X"
+	 src="http://static.beingmeta.com/graphics/redx24x24.png"
+	 onclick="Codex.setConfig('hidesplash',Codex.hidesplash);"/>
+    <span class="checkspan"
+	  onclick="Codex.setConfig('hidesplash',Codex.hidesplash)">
+      <input TYPE="checkbox" NAME="CODEXHIDESPLASH" VALUE="yes"/>
+      Hide this after startup</span>
     </div>
+  <h2>Welcome to Codex, an sBooks reader</h2>
+  <div class="codexhelp">
+  <p><strong><span style="color: blue;">s</span>Books</strong> are
+    digital books enriched by layers of structure, semantics, and
+    annotations from your friends, colleagues, and chosen
+    communities.</p>
+
+  <p id="LOGINSPLASH"><strong onclick="CodexMode('login')">Login</strong>
+    to use the annotation and social features of sBooks.  For free
+    content and open communities, this service is <strong>free of
+      charge</strong></p>
+  
+  <p><strong>Flip pages</strong> by tapping the sides of the pages,
+    swiping right or left, or using the space, backspace, or page
+    up/down buttons your keyboard.</p>
+  
+  <p><strong>Jump</strong> through the book by clicking in the
+    progress display at the bottom of the page, or click on the page
+    number or location to jump to a particular location.</p>
+  
+  <p><strong>Add notes</strong> by selecting text or clicking on a
+    passage and then clicking on
+    the <img src="http://static.beingmeta.com/graphics/justremarkballoon16x16.png">
+    icon which appears next to it.</p>
+
+  <p><img style="float: right;"
+	  src="http://static.beingmeta.com/graphics/CompassIcon24x24.png"/>
+    <strong>Navigate</strong> the book's structure by clicking on the
+    navigation icon in the upper left.</p>
+
+  <p><img style="float: right;"
+	  src="http://static.beingmeta.com/graphics/SearchIcon24x24.png"/>
+    <strong>Search</strong> using the search icon in the upper right
+    to explore the book based on tags assigned to sections or passages
+    by your community, the author/publisher, and helpful robots.</p>
+
+  <p><img style="float: right;"
+	  src="http://static.beingmeta.com/graphics/sbookspeople24x24.png"/>
+    <strong>Reveal</strong> the glosses (notes, tags, links, etc)
+    added to the book by clicking on
+    the <img src="http://static.beingmeta.com/graphics/Asterisk16x16.png"/>
+    icons to the right or see all the glosses by clicking on the
+    overlays icon in the lower right.</p>
+
+  <p><img style="float: right;"
+	  src="http://static.beingmeta.com/graphics/ScanRight24.png"/>
+    <strong>Scan</strong> through the book by clicking double arrow
+    icons, swiping with two fingers, or using the arrow keys.
+    <em>Scanning</em> can advance through the book based on the its
+      explicit structure (chapters, sections), search results, or
+      glosses added by your community.</p>
   </div>
+  
 </div>
 </div>
 <div id="CODEXHEAD">

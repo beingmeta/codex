@@ -8,58 +8,61 @@
 </div>
 <div class='tabcontent flyleaftab' id='CODEXSETTINGS'>
   <h1>Settings</h1>
+  <span class="button" onclick="Codex.UI.saveSettings();">Save</span>
+  <span class="button" onclick="Codex.UI.applySettings();">Apply</span>
   <table class='settings'>
-    <tr><th>Content</th>
+    <tr><th><input TYPE='CHECKBOX' NAME='CODEXPAGEVIEW' VALUE='yes'/></th>
+      <td>Page view (break text into pages)</td></tr>
+    <tr><th rowspan="2">Body font</th>
       <td>
-	Font size:
-	<select name='fontsize' id='SBOOKFONTSIZE'
-		onchange='Codex.setFontSize(this.value);'>
-	  <option value='50%'>Tiny</option>
-	  <option value='75%'>Small</option>
-	  <option value='80%'>Smaller</option>
-	  <option value='100%' selected=''>Default</option>
-	  <option value='120%'>Larger</option>
-	  <option value='150%'>Large</option>
-	  <option value='200%'>Huge</option>
-	</select>
-	<a href='javascript:Codex.updatePagination();'
-	   style='float: right; text-align: right;'>update layout</a>
-    </td></tr>
-    <tr><th>Codex</th>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='xlarge'/>
+	  x-large</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='large'/>
+	  large</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='normal'/>
+	  normal</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='small'/>
+	  small</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='tiny'/>
+	  tiny</span>
+	</td></tr>
+    <tr>
       <td>
-	Font size:
-	<select name='fontsize' id='SBOOKFONTSIZE'
-		onchange='Codex.setUIFontSize(this.value);'>
-	  <option value='50%'>Tiny</option>
-	  <option value='75%'>Small</option>
-	  <option value='80%'>Smaller</option>
-	  <option value='100%' selected=''>Default</option>
-	  <option value='120%'>Larger</option>
-	  <option value='150%'>Large</option>
-	  <option value='200%'>Huge</option>
-	</select>
-	<span class="checkspan" title="show the Codex console tab">
-	  <input type="CHECKBOX" name="SHOWCONSOLE" value="yes"/>
-	  show console</span>
-	<span class="checkspan"
-	      title="faintly show the book tools when reading">
-	  <input type="CHECKBOX" name="GHOSTMODE" value="yes"/>
-	  ghost mode</span>
-    </td></tr>
-    <tr><th>Offline</th>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSTYLE' VALUE='serif'/>
+	  sans-serif</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSTYLE' VALUE='sans'/>
+	  serif</span></td></tr>
+    <tr><th>Interface font</th>
       <td>
-	Remove <a href='javascript:Codex.clearOffline(Codex.refuri);'>this book</a> or
-	<a href='javascript:Codex.clearOffline();'>all books</a>.<br/>
-	<a href='javascript:fdjtState.clearLocal();'>Clear all sBooks data</a>.
-    </td></tr>
-    <tr><th>sBooks</th>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='large'/>
+	  large</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='normal'/>
+	  normal</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='small'/>
+	  small</span></td></tr>
+    <tr><th>Animate</th>
       <td>
-	<a href='http://www.sbooks.net/' target='_blank'>Home</a> &middot; 
-	<a href='http://www.sbooks.net/books.fdcgi' target='_blank'>Browse</a> &middot; 
-	<a href='http://auth.sbooks.net/admin/identity target='_blank'>Identity</a> &middot; 
-	<a href='http://auth.sbooks.net/admin/logout'>Logout</a>
-    </td></tr>
-  </table>  
+	<span class="checkspan">
+	  <input TYPE='CHECKBOX' NAME='CODEXANIMATEPAGES' VALUE='yes'/>
+	  page flips</span>
+	<span class="checkspan">
+	  <input TYPE='CHECKBOX' NAME='CODEXANIMATEHUD' VALUE='yes'/>
+	  book tools</span></td></tr>
+    <tr><th><input TYPE='CHECKBOX' NAME='CODEXSHOWCONSOLE' VALUE='yes'/></th>
+      <td>Show the Codex console</td></tr>
+    <tr><th><input TYPE='CHECKBOX' NAME='CODEXHIDESPLASH' VALUE='yes'/></th>
+      <td>Hide the Codex splash/help page after startup</td></tr>
+  </table>
 </div>
 
 <div class='tabcontent flyleaftab' id='FLYTOC'>
