@@ -64,24 +64,25 @@ Codex.Startup=
 	    // Get various settings
 	    readSettings();
 	    sbookPaginate.readSettings();
-	    // Dependent setups
+	    // Execute and fdjt initializations
 	    fdjtDOM.init();
-	    // Add this as soon as possible
+	    // Add these as soon as possible
 	    if (Codex.paginate)
-		fdjtDOM.addClass(document.body,"sbookpaginated");
+		fdjtDOM.addClass(document.body,"codexpageview");
 	    if (sbook_showconsole)
-		fdjtDOM.addClass(document.body,"sbookconsoled");
+		fdjtDOM.addClass(document.body,"codexconsoled");
+	    fdjtDOM.addClass(document.body,"codexstartup");
 	    var metadata=false;
 	    var helphud=false;
 	    fdjtTime.timeslice
 	    ([// Setup sbook tables, databases, etc
 		Codex.initDB,
-		// This wraps the body in the UI
+		// This wraps the body in the UI and sets up
+		//  the DOM structure for pagination
 		function(){
 		    initBody();
 		    if (Codex.animate.page)
-			fdjtDOM.addClass("CODEXPAGES","codexanimate");
-		    if (Codex.pages) Codex.pages.style.opacity='0.25';},
+			fdjtDOM.addClass("CODEXPAGES","codexanimate");},
 		function(){
 		    if (Codex.Trace.startup>1)
 			fdjtLog("Initializing HUD");
@@ -103,24 +104,24 @@ Codex.Startup=
 		Codex.setupGestures,
 		getUser,
 		function(){
+		    // This scans the DOM.  It would probably be a good
+		    //  idea to do this asynchronously
 		    metadata=CodexDOMScan(Codex.root);
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
 		    Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;},
 		function(){
 		    fdjtLog("building table of contents based on %d heads",
-			    Codex.docinfo._headcount);},
-		10,
-		function(){
+			    Codex.docinfo._headcount);
 		    Codex.setupTOC(metadata[Codex.root.id]);},
-		function(){
-		    fdjtLog("processing knodule %s",Codex.knodule.name);},
 		10,
-		((Knodule)&&(Knodule.HTML)&&(Knodule.HTML.Setup)&&
+		((Knodule)&&(Knodule.HTML)&&
+		 (Knodule.HTML.Setup)&&(Codex.knodule)&&
 		 (function(){
+		     fdjtLog("processing knodule %s",Codex.knodule.name);
 		     Knodule.HTML.Setup(Codex.knodule);})),
 		applyInlineTags,
-		function(){Codex.Message("indexing tags");},10,
 		function(){
+		    Codex.Message("indexing tags");
 		    Codex.indexContentTags(metadata);
 		    Codex.indexInlineTags(Codex.knodule);
 		    if (_sbook_autoindex)
@@ -155,6 +156,7 @@ Codex.Startup=
 		function(){Codex.Message("setup completed");},10,
 		function(){
 		    if ((fdjtState.getQuery("action"))||
+			(fdjtState.getQuery("join"))||
 			(fdjtState.getQuery("invitation"))) {
 			CodexMode("sbookapp");}
 		    else if ((Codex.mode==='splash')&&(Codex.hidesplash)) {
@@ -162,7 +164,7 @@ Codex.Startup=
 		    else {}},
 		initLocation,
 		function(){
-		    if (Codex.pages) Codex.pages.style.opacity='';
+		    fdjtDOM.dropClass(document.body,"codexstartup");
 		    Codex.displaySync();
 		    setInterval(Codex.serverSync,60000);
 		    _sbook_setup=Codex._setup=new Date();}],

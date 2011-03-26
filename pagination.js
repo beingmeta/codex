@@ -604,7 +604,7 @@ var sbookPaginate=
 	    var target=Codex.target;
 	    Codex.Message("Determining page layout");
 	    var body=Codex.body||document.body;
-	    fdjtDOM.addClass(document.body,"sbookpaginated");
+	    fdjtDOM.addClass(document.body,"codexpageview");
 	    clearPagination();
 	    Paginate(callback);}
 
@@ -613,7 +613,7 @@ var sbookPaginate=
 		if (Codex.paginate) {
 		    Codex.paginate=false;
 		    sbook_nextpage=false; sbook_pagebreak=false;
-		    fdjtDOM.dropClass(document.body,"sbookpaginated");
+		    fdjtDOM.dropClass(document.body,"codexpageview");
 		    fdjtDOM.addClass(document.body,"sbookscrolling");
 		    if (!(nogo)) {
 			var curx=fdjtDOM.viewLeft(); var cury=Codex.viewTop();
@@ -623,7 +623,7 @@ var sbookPaginate=
 		else return;}
 	    else {
 		Codex.paginate=true;
-		fdjtDOM.addClass(document.body,"sbookpaginated");}
+		fdjtDOM.addClass(document.body,"codexpageview");}
 	    if ((sbook_paginated)&&
 		(sbook_paginated.offheight===document.body.offsetHeight)&&
 		(sbook_paginated.offwidth===document.body.offsetWidth)&&
@@ -642,8 +642,10 @@ var sbookPaginate=
 		    newinfo.winwidth=(document.documentElement.clientWidth);
 		    newinfo.winheight=(fdjtDOM.viewHeight());
 		    sbook_paginated=newinfo;
+		    fdjtDOM.dropClass(document.body,"codexpaginating");
 		    var gotopage=Codex.getPageAt(Codex.location);
 		    Codex.GoToPage(gotopage||0,"sbookUpdatePagination",true);})};
+	    fdjtDOM.addClass(document.body,"codexpaginating");
 	    adjustFullPages(computePages);}
 	
 	// fdjtDOM.trace_adjust=true;

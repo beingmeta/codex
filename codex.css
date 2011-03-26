@@ -51,7 +51,9 @@ div#CODEXPAGE div#CODEXPAGES {
     padding: 0px; margin: 0px; border: 0px;
     text-align: center;
     overflow: visible;}
-body.sbookpaginated div#CODEXPAGE div#CODEXPAGES {
+div#CODEXPAGE div#CODEXPAGES.codexpaginating {
+    opacity: 0.35;}
+body.codexpageview div#CODEXPAGE div#CODEXPAGES {
     column-width: 40em;
     column-gap: 7em;
     column-rule-width: 4px;
@@ -66,6 +68,9 @@ body.sbookpaginated div#CODEXPAGE div#CODEXPAGES {
     -o-column-rule-style: solid;
     -moz-column-rule-style: solid;
     -webkit-column-rule-style: solid;}
+
+body.codexstartup div#CODEXCONTENT {
+    opacity: 0.35;}
 
 div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
     text-align: left;
@@ -712,7 +717,7 @@ div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
     border-top: solid black 1px;}
-body.sbookpaginated div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+body.codexpageview div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
 body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;}
@@ -968,7 +973,7 @@ body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     display: block; opacity: 1.0;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: none;}
-body.hudup.sbookconsoled div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
+body.hudup.codexconsoled div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
     display: inline;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
@@ -1254,8 +1259,7 @@ body.sbooktouch div#CODEXHUD.toc div#CODEXTOC div.spanbar div.progressbox,
 body.sbooktouch div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.progressbox {
     height: 25px;}
 
-body.sbooktouch .codexnote .age { font-size: 125%; padding-bottom; 10px;}
-body.sbooktouch .codexnote .age { font-size: 125%; padding-bottom; 10px;}
+body.sbooktouch .codexnote .age { font-size: 125%; padding-bottom: 10px;}
 body.sbooktouch .codexnote .glossinfo img.delete { 
   width: 20px; height: 20px; padding-right: 3px;
   cursor: pointer;}
