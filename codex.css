@@ -577,7 +577,7 @@ div.spanbar div.progressbox {
 
 div#CODEXHUD div#CODEXSPLASH.hudpanel {
     position: fixed; text-align: left;
-    padding: 24px; padding-top: 0px;
+    padding: 0px; padding-bottom: 24px; 
     background-color: ivory; color: black; opacity: 1.0;
     top: 75px; bottom: 75px; left: 75px; right: 75px;}
 div#CODEXHUD.splash div#CODEXSPLASH.hudpanel {
@@ -684,7 +684,8 @@ div#CODEXHELP > div.login, div#CODEXSPLASH > div.login {
     display: none;}
 div#CODEXHELP > div.login img { vertical-align: top; height: 2ex;}
 body.nosbookuser div#CODEXHELP > div.login,
-body.nosbookuser div#CODEXSPLASH > div.login { display: block;}
+body div#CODEXSPLASH p#CODEXSPLASHLOGIN { display: none;}
+body.nosbookuser div#CODEXSPLASH p#CODEXSPLASHLOGIN { display: block;}
 div#CODEXHELP > div.oneline {
     font-size: 125%; clear: both;}
 div#CODEXHELP table {

@@ -1,10 +1,8 @@
 <div id="CODEXSPLASH" class="hudpanel">
   <div class="splashtopbanner">
-    <img class="splashcloser" alt="X"
-	 src="http://static.beingmeta.com/graphics/redx24x24.png"
-	 onclick="Codex.setConfig('hidesplash',Codex.hidesplash);"/>
-    <span class="checkspan"
-	  onclick="Codex.setConfig('hidesplash',Codex.hidesplash)">
+    <img class="splashcloser" alt="X" id="HIDESPLASHBUTTON"
+	 src="http://static.beingmeta.com/graphics/redx24x24.png"/>
+    <span class="checkspan" id="HIDESPLASHCHECKSPAN">
       <input TYPE="checkbox" NAME="CODEXHIDESPLASH" VALUE="yes"/>
       Hide this after startup</span>
     </div>
@@ -15,7 +13,9 @@
     annotations from your friends, colleagues, and chosen
     communities.</p>
 
-  <p id="LOGINSPLASH"><strong onclick="CodexMode('login')">Login</strong>
+  <p id="CODEXSPLASHLOGIN">
+    <strong style="color: blue; cursor: pointer; text-decoration: underline;"
+	    onclick="CodexMode('login')">Login</strong>
     to use the annotation and social features of sBooks.  For free
     content and open communities, this service is <strong>free of
       charge</strong></p>
@@ -36,10 +36,12 @@
   <p><img style="float: right;"
 	  src="http://static.beingmeta.com/graphics/CompassIcon24x24.png"/>
     <strong>Navigate</strong> the book's structure by clicking on the
-    navigation icon in the upper left.</p>
+    navigation icon in the upper left.  A display at the top of the
+    page will show you the arrangement and sizes of the book's
+    elements.</p>
 
   <p><img style="float: right;"
-	  src="http://static.beingmeta.com/graphics/SearchIcon24x24.png"/>
+	  src="http://static.beingmeta.com/graphics/TagSearch24x24.png"/>
     <strong>Search</strong> using the search icon in the upper right
     to explore the book based on tags assigned to sections or passages
     by your community, the author/publisher, and helpful robots.</p>
@@ -66,12 +68,12 @@
 <div id="CODEXHEAD">
   <img src="http://static.beingmeta.com/graphics/CompassIcon50x50.png"
        alt="toc" title="click to navigate the book as a whole"
-       class="hudbutton topleft" id="CODEXTOCBUTTON"
-       hudmode="toc" onclick="Codex.UI.hudbutton(event);"/>
+       class="hudbutton hudmodebutton topleft" id="CODEXTOCBUTTON"
+       hudmode="toc"/>
   <img src="http://static.beingmeta.com/graphics/TagSearch50x50.png"
        alt="search" title="click to search tags within the book"
-       class="hudbutton topright" id="CODEXSEARCHBUTTON"
-       hudmode="search" onclick="Codex.UI.hudbutton(event);"/>
+       class="hudbutton hudmodebutton topright" id="CODEXSEARCHBUTTON"
+       hudmode="search"/>
   <div class="helphud topcenter">
     <span class="fortouch">tap</span><span class="notouch">click</span>
     here to see the book tools
@@ -270,8 +272,8 @@
     overlays</div>
   <img src="http://static.beingmeta.com/graphics/sbookspeople50x50.png"
        alt="glosses" title="Click to browse glosses overlaid on this book"
-       class="hudbutton botright" id="CODEXALLGLOSSESBUTTON"
-       hudmode="allglosses" onclick="Codex.UI.hudbutton(event);"/>
+       class="hudbutton hudmodebutton botright" id="CODEXALLGLOSSESBUTTON"
+       hudmode="allglosses"/>
 </div>
 
 <!--

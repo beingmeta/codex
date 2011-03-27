@@ -78,7 +78,7 @@ var CodexPaginate=
     var page_width=false;
     var page_height=false;
     var page_gap=false;
-    var flipwidth=false;
+    var flip_width=false;
 	
     var runslice=100; var runwait=100;
 

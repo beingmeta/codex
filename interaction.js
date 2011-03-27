@@ -958,7 +958,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 glossmark: {mouseup: glossmark_tapped},
 	 glossbutton: {mouseup: glossbutton_onclick,mousedown: cancel},
 	 ".sbookmargin": {click: edge_click},
-	 "#CODEXSPLASH": {click: Codex.dropHUD},
 	 "#CODEXHELP": {click: Codex.dropHUD},
 	 "#CODEXFLYLEAF": {click: flyleaf_tap},
 	 "#CODEXPAGEINFO": {click: pageinfo_click},
@@ -968,7 +967,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#SBOOKPAGEHEAD": {click: head_click},
 	 "#CODEXHEAD": {click: head_click},	 
 	 "#SBOOKPAGEFOOT": {click: foot_click},
-	 ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton},
+	 "#HIDESPLASHCHECKSPAN" : {click: function (evt){
+	     Codex.setConfig('hidesplash',Codex.hidesplash)}},
+	 "#HIDESPLASHBUTTON" : {click: Codex.dropHUD},
+	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
+	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
 	       mouseout: fdjtUI.CoHi.onmouseout}};
 
@@ -989,9 +992,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	     touchstart: cancel,
 	     touchmove: cancel,
 	     touchend: foot_click},
-	 "#CODEXSPLASH": {touchstart: Codex.dropHUD,
-			  touchmove: cancel,
-			  touchend: cancel},
 	 "#CODEXHELP": {touchstart: Codex.dropHUD,
 			  touchmove: cancel,
 			  touchend: cancel},
@@ -1004,6 +1004,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 			  touchmove: cancel,touchend: cancel},
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#CODEXTABS": {touchstart: dont,touchmove: dont, touchend: dont},
+	 "#HIDESPLASHCHECKSPAN" : {touchstart: function (evt){
+	     Codex.setConfig('hidesplash',Codex.hidesplash)},
+				   touchmove: cancel,
+				   touchend: cancel},
+	 "#HIDESPLASHBUTTON" : {click: Codex.dropHUD,
+				touchmove: cancel,
+				touchend: cancel},
 	 glossmark: {touchend: glossmark_tapped,
 		     touchstart: cancel,
 		     touchmove: cancel},

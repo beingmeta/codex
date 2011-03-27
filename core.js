@@ -630,27 +630,10 @@ var sbook_gloss_data=
 
     // This jumps and disables the HUD at the same time
     // We try to animate the transition
-    function CodexGoTo(target){
-	if (Codex.animate) {
-	    Codex.pages.style.opacity=0.0001;
-	    if (Codex.hudup) Codex.HUD.style.opacity=0.0001;
-	    fdjtDOM.addClass(document.body,"pageswitch");
-	    setTimeout(function() {
-		if (Codex.hudup) CodexMode(false);
-		CodexGoTo(target);
-		fdjtDOM.dropClass(document.body,"pageswitch");
-		Codex.HUD.style.opacity=1.0;
-		Codex.pages.style.opacity=1.0;
-		setTimeout(function(){
-		    fdjtDOM.dropClass(document.body,"pageswitch");
-		    Codex.HUD.style.opacity="";
-		    Codex.pages.style.opacity="";},
-			   200);},
-		       200);}
-	else {
-	    if (Codex.hudup) CodexMode(false);
-	    CodexGoTo(target);}}
-    Codex.JumpTo=CodexGoTo;
+    function CodexJumpTo(target){
+      if (Codex.hudup) CodexMode(false);
+      CodexGoTo(target);}
+    Codex.JumpTo=CodexJumpTo;
 
     function getLevel(elt){
 	if (elt.toclevel) {

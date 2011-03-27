@@ -315,10 +315,10 @@ var CodexMode=
 		// This updates scroller dimensions, we delay it
 		//  because apparently, on some browsers, the DOM
 		//  needs to catch up with CSS
-		if (Codex.scrolling)
-		    setTimeout(function(){
-			updateScroller(fdjtID(Codex.scrolling));},
-			       100);
+		if (Codex.scrolling) {
+		  var scroller=fdjtID(Codex.scrolling);
+		  setTimeout(function(){updateScroller(scroller);},
+			     100);}
 		// If we're scanning all glosses, we sync the glosses
 		//  with the current book location.
 		if ((mode==="allglosses")&&
