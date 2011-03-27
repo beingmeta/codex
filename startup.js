@@ -52,97 +52,97 @@ Codex.Startup=
 	var _sbook_setup_start=false;
 	
 	function Startup(force){
-	  if (Codex._setup) return;
-	  if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
-	  fdjtLog.console="CODEXCONSOLE";
-	  fdjtLog.consoletoo=true;
-	  fdjtLog("This is Codex version %d, built at %s on %s",
-		  fdjt_versions.codex,sbooks_buildtime,sbooks_buildhost);
-	  if (navigator.appVersion)
-	    fdjtLog("App version: %s",navigator.appVersion);
-	  if (!(Codex._setup_start)) Codex._setup_start=new Date();
-	  // Get various settings
-	  readSettings();
-	  CodexPaginate.readSettings();
-	  // Execute and fdjt initializations
-	  fdjtDOM.init();
-	  // Declare this
-	  fdjtDOM.addClass(document.body,"codexstartup");
-	  var metadata=false;
-	  var helphud=false;
-	  fdjtTime.timeslice
+	    if (Codex._setup) return;
+	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
+	    fdjtLog.console="CODEXCONSOLE";
+	    fdjtLog.consoletoo=true;
+	    fdjtLog("This is Codex version %d, built at %s on %s",
+		    fdjt_versions.codex,sbooks_buildtime,sbooks_buildhost);
+	    if (navigator.appVersion)
+		fdjtLog("App version: %s",navigator.appVersion);
+	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
+	    // Get various settings
+	    readSettings();
+	    CodexPaginate.readSettings();
+	    // Execute and fdjt initializations
+	    fdjtDOM.init();
+	    // Declare this
+	    fdjtDOM.addClass(document.body,"codexstartup");
+	    var metadata=false;
+	    var helphud=false;
+	    fdjtTime.timeslice
 	    ([// Setup sbook tables, databases, etc
-	      Codex.initDB,
-	      // This wraps the body in its own block and sets up
-	      //  the DOM structure for pagination
-	      initBody,
-	      // This initializes the book tools (the HUD, or Heads Up Display)
-	      Codex.initHUD,
-	      (function(){initConfig(); CodexMode("splash");}),
-	      Codex.setupGestures,
-	      getUser,
-	      function(){
-		// This scans the DOM.  It would probably be a good
-		//  idea to do this asynchronously
-		metadata=CodexDOMScan(Codex.root);
-		Codex.docinfo=Codex.DocInfo.map=metadata;
-		Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;},
-	      // Now you're ready to paginate
-	      function(){if (Codex.paginate) Codex.repaginate();},
-	      function(){
-		fdjtLog("building table of contents based on %d heads",
-			Codex.docinfo._headcount);
-		Codex.setupTOC(metadata[Codex.root.id]);},
-	      10,
-	      ((Knodule)&&(Knodule.HTML)&&
-	       (Knodule.HTML.Setup)&&(Codex.knodule)&&
-	       (function(){
-		 fdjtLog("processing knodule %s",Codex.knodule.name);
-		 Knodule.HTML.Setup(Codex.knodule);})),
-	      applyInlineTags,
-	      function(){
-		Codex.Message("indexing tags");
-		Codex.indexContentTags(metadata);
-		Codex.indexInlineTags(Codex.knodule);
-		if (_sbook_autoindex)
-		  Codex.useAutoIndex(_sbook_autoindex,Codex.knodule);},
-	      function(){Codex.Message("setting up clouds");},10,
-	      function(){initClouds();},
-	      function(){Codex.Message("configuring server");},10,
-	      setupGlossServer,
-	      function(){
-		if (Codex.user) Codex.Message("getting glosses");},10,
-	      function (){ if (Codex.user) setupGlosses();},
-	      function(){
-		if ((Codex.user)&&(!(Codex.glossing))&&
-		    (!(Codex.glossed)))
-		  Codex.Message("getting glosses");},10,
-	      function (){
-		if ((Codex.user)&&(!(Codex.glossing))&&(!(Codex.glossed)))
-		  setupGlosses();},500,
-	      function(){
-		if ((Codex.user)&&(!(Codex.glossing))&&
-		    (!(Codex.glossed)))
-		  Codex.Message("getting glosses");},10,
-	      function(){
-		if ((!(Codex.glossing))&&(!(Codex.glossed))) {
-		  if (Codex.user) setupGlosses();
-		  else gotGlosses();}},
-	      function(){Codex.Message("setup completed");},10,
-	      function(){
-		if ((fdjtState.getQuery("action"))||
-		    (fdjtState.getQuery("join"))||
-		    (fdjtState.getQuery("invitation"))) {
-		  CodexMode("sbookapp");}
-		else if ((Codex.mode==='splash')&&(Codex.hidesplash)) {
-		  CodexMode(false);}
-		else {}},
-	      initLocation,
-	      function(){
-		  fdjtDOM.dropClass(document.body,"codexstartup");
-		  Codex.displaySync();
-		  setInterval(Codex.serverSync,60000);
-		  _sbook_setup=Codex._setup=new Date();}],
+		Codex.initDB,
+		// This wraps the body in its own block and sets up
+		//  the DOM structure for pagination
+		initBody,
+		// This initializes the book tools (the HUD, or Heads Up Display)
+		Codex.initHUD,
+		(function(){initConfig(); CodexMode("splash");}),
+		Codex.setupGestures,
+		getUser,
+		function(){
+		    // This scans the DOM.  It would probably be a good
+		    //  idea to do this asynchronously
+		    metadata=CodexDOMScan(Codex.root);
+		    Codex.docinfo=Codex.DocInfo.map=metadata;
+		    Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;},
+		// Now you're ready to paginate
+		function(){if (Codex.paginate) Codex.repaginate();},
+		function(){
+		    fdjtLog("building table of contents based on %d heads",
+			    Codex.docinfo._headcount);
+		    Codex.setupTOC(metadata[Codex.root.id]);},
+		10,
+		((Knodule)&&(Knodule.HTML)&&
+		 (Knodule.HTML.Setup)&&(Codex.knodule)&&
+		 (function(){
+		     fdjtLog("processing knodule %s",Codex.knodule.name);
+		     Knodule.HTML.Setup(Codex.knodule);})),
+		applyInlineTags,
+		function(){
+		    Codex.Message("indexing tags");
+		    Codex.indexContentTags(metadata);
+		    Codex.indexInlineTags(Codex.knodule);
+		    if (_sbook_autoindex)
+			Codex.useAutoIndex(_sbook_autoindex,Codex.knodule);},
+		function(){Codex.Message("setting up clouds");},10,
+		function(){initClouds();},
+		function(){Codex.Message("configuring server");},10,
+		setupGlossServer,
+		function(){
+		    if (Codex.user) Codex.Message("getting glosses");},10,
+		function (){ if (Codex.user) setupGlosses();},
+		function(){
+		    if ((Codex.user)&&(!(Codex.glossing))&&
+			(!(Codex.glossed)))
+			Codex.Message("getting glosses");},10,
+		function (){
+		    if ((Codex.user)&&(!(Codex.glossing))&&(!(Codex.glossed)))
+			setupGlosses();},500,
+		function(){
+		    if ((Codex.user)&&(!(Codex.glossing))&&
+			(!(Codex.glossed)))
+			Codex.Message("getting glosses");},10,
+		function(){
+		    if ((!(Codex.glossing))&&(!(Codex.glossed))) {
+			if (Codex.user) setupGlosses();
+			else gotGlosses();}},
+		function(){Codex.Message("setup completed");},10,
+		function(){
+		    if ((fdjtState.getQuery("action"))||
+			(fdjtState.getQuery("join"))||
+			(fdjtState.getQuery("invitation"))) {
+			CodexMode("sbookapp");}
+		    else if ((Codex.mode==='splash')&&(Codex.hidesplash)) {
+			CodexMode(false);}
+		    else {}},
+		initLocation,
+		function(){
+		    fdjtDOM.dropClass(document.body,"codexstartup");
+		    Codex.displaySync();
+		    setInterval(Codex.serverSync,60000);
+		    _sbook_setup=Codex._setup=new Date();}],
 	     25,100);}
 	Codex.Startup=Startup;
 
@@ -283,64 +283,64 @@ Codex.Startup=
 
 	var config_handlers={};
 	var default_config=
-	  {pageview: true,
-	   bodysize: 'normal',bodystyle: 'serif',
-	   uisize: 'normal',showconsole: false,
-	   animatepages: true,animatehud: true};
+	    {pageview: true,
+	     bodysize: 'normal',bodystyle: 'serif',
+	     uisize: 'normal',showconsole: false,
+	     animatepages: true,animatehud: true};
 	var current_config={};
 
 	var setCheckSpan=fdjtUI.CheckSpan.set;
 
 	function addConfig(name,handler){
-	  config_handlers[name]=handler;}
+	    config_handlers[name]=handler;}
 	Codex.addConfig=addConfig;
 
 	function setConfig(name,value){
-	  if (arguments.length===1) {
-	    var config=name;
-	    for (var setting in config) {
-	      if (config.hasOwnProperty(setting))
-		setConfig(setting,config[setting]);}
-	    return;}
-	  if (current_config[name]===value) return;
-	  var input_name="CODEX"+(name.toUpperCase());
-	  var inputs=document.getElementsByName(input_name);
-	  var i=0; var lim=inputs.length;
-	  while (i<lim) {
-	    var input=inputs[i++];
-	    if (input.tagName!=='INPUT') continue;
-	    if (input.type==='checkbox') {
-	      if (value) setCheckSpan(input,true);
-	      else setCheckSpan(input,false);}
-	    else if (input.type==='radio') {
-	      if (value===input.value) setCheckSpan(input,true);
-	      else setCheckSpan(input,false);}
-	    else input.value=value;}
-	  if (config_handlers[name])
-	    config_handlers[name](name,value);}
+	    if (arguments.length===1) {
+		var config=name;
+		for (var setting in config) {
+		    if (config.hasOwnProperty(setting))
+			setConfig(setting,config[setting]);}
+		return;}
+	    if (current_config[name]===value) return;
+	    var input_name="CODEX"+(name.toUpperCase());
+	    var inputs=document.getElementsByName(input_name);
+	    var i=0; var lim=inputs.length;
+	    while (i<lim) {
+		var input=inputs[i++];
+		if (input.tagName!=='INPUT') continue;
+		if (input.type==='checkbox') {
+		    if (value) setCheckSpan(input,true);
+		    else setCheckSpan(input,false);}
+		else if (input.type==='radio') {
+		    if (value===input.value) setCheckSpan(input,true);
+		    else setCheckSpan(input,false);}
+		else input.value=value;}
+	    if (config_handlers[name])
+		config_handlers[name](name,value);}
 	Codex.setConfig=setConfig;
 
 	function saveConfig(config){
-	  if (!(config)) config=current_config;
-	  else setConfig(config);
-	  var saved={};
-	  for (var setting in config) {
-	    if (config[setting]!==default_config[setting]) {
-	      saved[setting]=config[setting];}}
-	  fdjtState.setLocal('codex.config',JSON.stringify(saved));}
+	    if (!(config)) config=current_config;
+	    else setConfig(config);
+	    var saved={};
+	    for (var setting in config) {
+		if (config[setting]!==default_config[setting]) {
+		    saved[setting]=config[setting];}}
+	    fdjtState.setLocal('codex.config',JSON.stringify(saved));}
 
 	function initConfig(){
-	  var config=fdjtState.getLocal('codex.config');
-	  if (config) {
-	    for (var setting in config) {
-	      if (config.hasOwnProperty(setting)) 
-		setConfig(setting,config[setting]);}}
-	  else config={};
-	  for (var setting in default_config) {
-	    if (!(config[setting]))
-	      if (default_config.hasOwnProperty(setting))
-		setConfig(setting,default_config[setting]);}
-	  Codex.initconfig=true;}
+	    var config=fdjtState.getLocal('codex.config');
+	    if (config) {
+		for (var setting in config) {
+		    if (config.hasOwnProperty(setting)) 
+			setConfig(setting,config[setting]);}}
+	    else config={};
+	    for (var setting in default_config) {
+		if (!(config[setting]))
+		    if (default_config.hasOwnProperty(setting))
+			setConfig(setting,default_config[setting]);}
+	    Codex.initconfig=true;}
 
 	Codex.addConfig("hidesplash",function(name,value){
 	    Codex.hidesplash=true;});
@@ -458,9 +458,9 @@ Codex.Startup=
 		sbook_idify=new fdjtDOM.Selector(
 		    fdjtDOM.getMeta("sbookid"));
 	    if ((fdjtDOM.getMeta("sbookfocus"))) 
-	      Codex.focus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfocus"));
+		Codex.focus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfocus"));
 	    if (fdjtDOM.getMeta("sbooknofocus"))
-	      Codex.nofocus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknofocus"));}
+		Codex.nofocus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknofocus"));}
 
 	function getPageSettings(){
 	    var tocmajor=fdjtDOM.getMeta("codex.tocmajor",true);
@@ -500,8 +500,8 @@ Codex.Startup=
 	    var paginating=fdjtDOM("div#CODEXPAGINATING","Laying out ",
 				   fdjtDOM("div#CODEXPAGEPROGRESS","")," pages");
 	    document.body.appendChild
-	      (fdjtDOM("div#CODEXPAGE",
-		       paginating,fdjtDOM("div#CODEXPAGES",content)));
+	    (fdjtDOM("div#CODEXPAGE",
+		     paginating,fdjtDOM("div#CODEXPAGES",content)));
 	    Codex.page=fdjtID("CODEXPAGE");
 	    Codex.pages=fdjtID("CODEXPAGES");
 	    fdjtDOM.addClass(document.body,"sbook");
@@ -583,52 +583,52 @@ Codex.Startup=
 	    // Initialize the margins
 	    initMargins();
 	    if (Codex.Trace.startup>1)
-	      fdjtLog("Initialized body");}
+		fdjtLog("Initialized body");}
 	
 	/* Margin creation */
 
 	function initMargins(){
-	  var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
-	  var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
-	  topleading.sbookui=true; bottomleading.sbookui=true;
-	  
-	  var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
-	  var pageinfo=
-	    fdjtDOM("div#CODEXPAGEINFO",
-		    fdjtDOM("div.progressbar#CODEXPROGRESSBAR",""),
-		    fdjtDOM("div#CODEXPAGENO",
-			    fdjtDOM("span#CODEXPAGENOTEXT","p/n")));
-	  var pagefoot=fdjtDOM
+	    var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
+	    var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
+	    topleading.sbookui=true; bottomleading.sbookui=true;
+	    
+	    var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
+	    var pageinfo=
+		fdjtDOM("div#CODEXPAGEINFO",
+			fdjtDOM("div.progressbar#CODEXPROGRESSBAR",""),
+			fdjtDOM("div#CODEXPAGENO",
+				fdjtDOM("span#CODEXPAGENOTEXT","p/n")));
+	    var pagefoot=fdjtDOM
 	    ("div.sbookmargin#SBOOKPAGEFOOT",
 	     pageinfo," ",
 	     fdjtDOM.Image("http://static.beingmeta.com/graphics/PageNext50x50.png",
 			   "img#CODEXPAGENEXT.hudbutton.bottomright",
 			   "pagenext","go to the next result/section/page"));
-	  pagehead.sbookui=true; pagefoot.sbookui=true;
-	  sbookPageHead=pagehead; sbookPageFoot=pagefoot;
-	  
-	  fdjtDOM.addListeners(pageinfo,Codex.UI.handlers[Codex.ui]["#CODEXPAGEINFO"]);
-	  
-	  fdjtDOM.prepend(document.body,pagehead,pagefoot);
-	  
-	  fdjtID("CODEXPAGENEXT").onclick=Codex.Forward;
-	  
-	  window.scrollTo(0,0);
-	  
-	  // The better way to do this might be to change the stylesheet,
-	  //  but fdjtDOM doesn't currently handle that 
-	  var bgcolor=getBGColor(document.body)||"white";
-	  if (bgcolor==='transparent')
-	    bgcolor=fdjtDOM.getStyle(document.body).backgroundColor;
-	  if ((bgcolor)&&(bgcolor.search("rgba")>=0)) {
-	    if (bgcolor.search(/,\s*0\s*\)/)>0) bgcolor='white';
-	    else {
-	      bgcolor=bgcolor.replace("rgba","rgb");
-	      bgcolor=bgcolor.replace(/,\s*((\d+)|(\d+.\d+))\s*\)/,")");}}
-	  else if (bgcolor==="transparent") bgcolor="white";
-	  pagehead.style.backgroundColor=bgcolor;
-	  pagefoot.style.backgroundColor=bgcolor;
-	  fdjtDOM.addListener(false,"resize",CodexPaginate.resizePage);}
+	    pagehead.sbookui=true; pagefoot.sbookui=true;
+	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
+	    
+	    fdjtDOM.addListeners(pageinfo,Codex.UI.handlers[Codex.ui]["#CODEXPAGEINFO"]);
+	    
+	    fdjtDOM.prepend(document.body,pagehead,pagefoot);
+	    
+	    fdjtID("CODEXPAGENEXT").onclick=Codex.Forward;
+	    
+	    window.scrollTo(0,0);
+	    
+	    // The better way to do this might be to change the stylesheet,
+	    //  but fdjtDOM doesn't currently handle that 
+	    var bgcolor=getBGColor(document.body)||"white";
+	    if (bgcolor==='transparent')
+		bgcolor=fdjtDOM.getStyle(document.body).backgroundColor;
+	    if ((bgcolor)&&(bgcolor.search("rgba")>=0)) {
+		if (bgcolor.search(/,\s*0\s*\)/)>0) bgcolor='white';
+		else {
+		    bgcolor=bgcolor.replace("rgba","rgb");
+		    bgcolor=bgcolor.replace(/,\s*((\d+)|(\d+.\d+))\s*\)/,")");}}
+	    else if (bgcolor==="transparent") bgcolor="white";
+	    pagehead.style.backgroundColor=bgcolor;
+	    pagefoot.style.backgroundColor=bgcolor;
+	    fdjtDOM.addListener(false,"resize",CodexPaginate.onresize);}
 	
 	function getBGColor(arg){
 	    var color=fdjtDOM.getStyle(arg).backgroundColor;
@@ -636,8 +636,6 @@ Codex.Startup=
 	    else if (color==="transparent") return false;
 	    else if (color.search(/rgba/)>=0) return false;
 	    else return color;}
-
-
 
 	/* Changing settings */
 
@@ -1118,7 +1116,7 @@ Codex.Startup=
 		 function(){fdjtLog("Knodule integrated");});}
 	 Codex.sizeCloud(Codex.full_cloud);
 	 Codex.sizeCloud(Codex.gloss_cloud);}
-	 
+     
      /* Clearing offline data */
 
      function clearOffline(refuri){
