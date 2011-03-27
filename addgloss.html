@@ -12,7 +12,8 @@
     <input type="HIDDEN" name="LOCATION"/>
     <input type="HIDDEN" name="LOCLEN"/>
     <input type="HIDDEN" name="DOCTITLE"/>
-    <input type="HIDDEN" name="RELAY"/>
+    <input type="HIDDEN" name="THREAD"/>
+    <input type="HIDDEN" name="RE"/>
   </div>
   <table>
     <tr>
@@ -48,12 +49,16 @@
 	  <span class="checkspan" title="post to your social news feeds">    
 	    <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
 	  <span class="outlets" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
+	  <span class="links" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
 	  <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
       </td>
     <td class="button">
       <img src="http://static.beingmeta.com/graphics/sbgAddButton50x50.png"
 	   class="button" onclick="Codex.UI.submitEvent(event);"
 	   title="add extended text" data-mode="detail" alt="add"/>
+      <img src="http://static.beingmeta.com/graphics/sbgSaveButton50x50.png"
+	   class="button" onclick="Codex.UI.submitEvent(event);"
+	   title="add extended text" data-mode="detail" alt="save"/>
     </td></tr>
   </table>
 </form>

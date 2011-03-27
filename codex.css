@@ -597,7 +597,8 @@ div#CODEXHUD div#CODEXSPLASH .codexclicktohide {
 div#CODEXHUD div#CODEXSPLASH.hudpanel strong { font-size: 125%;}
 
 div#CODEXSPLASH div.splashtopbanner {
-    width: 100%; height: 24px; background-color: lightblue;}
+    width: 100%; height: 24px; background-color: lightblue;
+    text-align: center;}
 div#CODEXSPLASH div.splashtopbanner .checkspan {
     float: left; color: red;}
 div#CODEXSPLASH div.splashtopbanner .splashcloser {
@@ -610,6 +611,10 @@ div#CODEXSPLASH div.codexhelp {
     max-width: 40em; margin-left: auto; margin-right: auto;}
 div#CODEXSPLASH div.codexhelp p {
     margin-left: 5em; text-indent: -5em;}
+
+div#CODEXSPLASH span#CODEXSTARTUPMSG { display: none;}
+body.codexstartup div#CODEXSPLASH span#CODEXSTARTUPMSG {
+    display: inline;}
 
 /* Help HUD */
 
@@ -903,8 +908,6 @@ div.codexslice.sourced div.codexthread.sourced > div.codexthread.sourced {
 div.codexslice.onepassage .tocblock .tochead {display:none;}
 
 span.excerpt { font-size: 120%; color: gray; background-color: yellow;}
-span.excerpt:before { content: "\“"; font-size: 150%;}
-span.excerpt:after { content: "\”"; font-size: 150%;}
 span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
@@ -1295,9 +1298,6 @@ body.sbooktouch div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.progressbox 
     height: 25px;}
 
 body.sbooktouch .codexnote .age { font-size: 125%; padding-bottom: 10px;}
-body.sbooktouch .codexnote .glossinfo img.delete { 
-  width: 20px; height: 20px; padding-right: 3px;
-  cursor: pointer;}
 
 /* Sbook notes */
 
@@ -1377,6 +1377,7 @@ body.sbook a.codexnote { display: block;}
     float: right; clear: right; display: block;
     padding: 0px; margin: 0px; margin-left: 3px;
     text-align: right;}
+.codexnote .glossinfo img { padding-left: 4px; cursor: pointer; }
 .codexnote .age { 
   color: green; float: left; clear: left; font-weight: normal;
   font-size: 60%; text-decoration: none;}
@@ -1385,8 +1386,8 @@ body.sbook a.codexnote { display: block;}
   color: orange; text-decoration: none;
   padding-right: 3px;}
 .codexnote .glossinfo img.delete { 
-  width: 1em; height: 1em; padding-right: 3px;
-  cursor: pointer;}
+    padding-right: 3px;
+    cursor: pointer;}
 .codexnote a.headref {
     float: right; clear: right; 
     font-family: times,serif; font-style: italic; font-size: 80%;
@@ -1531,7 +1532,12 @@ div.codexglossform form .checkspan.private input[type='checkbox'] {
 div.codexglossform form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
+div.codexglossform td.button img[alt='save'] { display: none;}
+div.codexglossform.glossedit td.button img[alt='save'] { display: block;}
+div.codexglossform.glossedit td.button img[alt='add'] { display: none;}
+
 div.codexglossform.submitting { opacity: 0.5;}
+div.codexglossform.submitting td.button img { opacity: 0.5;}
 
 /* Style variants */
 

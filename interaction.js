@@ -968,7 +968,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXHEAD": {click: head_click},	 
 	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 "#HIDESPLASHCHECKSPAN" : {click: function (evt){
-	     Codex.setConfig('hidesplash',Codex.hidesplash)}},
+	     Codex.setConfig('hidesplash',(!(Codex.hidesplash)));
+	     fdjtUI.cancel(evt);}},
 	 "#HIDESPLASHBUTTON" : {click: Codex.dropHUD},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},

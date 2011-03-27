@@ -139,10 +139,10 @@ Codex.Startup=
 		else {}},
 	      initLocation,
 	      function(){
-		fdjtDOM.dropClass(document.body,"codexstartup");
-		Codex.displaySync();
-		setInterval(Codex.serverSync,60000);
-		_sbook_setup=Codex._setup=new Date();}],
+		  fdjtDOM.dropClass(document.body,"codexstartup");
+		  Codex.displaySync();
+		  setInterval(Codex.serverSync,60000);
+		  _sbook_setup=Codex._setup=new Date();}],
 	     25,100);}
 	Codex.Startup=Startup;
 
@@ -205,9 +205,6 @@ Codex.Startup=
 	    getScanSettings();
 	    // Get the settings for automatic pagination
 	    getPageSettings();
-	    // Whether to hide help after startup
-	    if (fdjtState.getLocal("codex.hidehelp")) setConfig('hidehelp');
-
 	    if ((Codex.graphics==="http://static.beingmeta.com/graphics/")&&
 		(window.location.protocol==='https:'))
 		Codex.graphics=https_graphics;

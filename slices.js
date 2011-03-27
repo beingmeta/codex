@@ -38,12 +38,18 @@ var sbook_small_eye_icon="EyeIcon13x10.png";
 var sbook_details_icon="detailsicon16x16.png";
 var sbook_outlink_icon="outlink16x16.png";
 var sbook_small_remark_icon="remarkballoon16x13.png";
-var sbook_delete_icon="redx12x12.png";
+var sbook_delete_icon_touch="redx24x24.png";
+var sbook_delete_icon="redx16x16.png";
+var sbook_edit_icon_touch="remarkedit32x25.png";
+var sbook_edit_icon="remarkedit20x16.png";
+var sbook_reply_icon_touch="replyballoons41x24.png";
+var sbook_reply_icon="replyballoons26x15.png";
 
 (function () {
 
     var div_threshold=7;
     var debug_locbars=false;
+    var odq="\u201c"; var cdq="\u201d";
 
     function renderNote(info,query,idprefix,standalone){
 	var key=info.qid||info.oid||info.id;
@@ -68,18 +74,14 @@ var sbook_delete_icon="redx12x12.png";
 		    ((info.audience)&&(info.audience.length)&&
 		     (info.audience.length<div_threshold)&&
 		     (showaudience(info.audience)))," ",
-		    ((info.excerpt)&&(info.excerpt.length<40)&&
-		     (fdjtDOM("span.excerpt",info.excerpt)))," ",
+		    ((info.excerpt)&&(showexcerpts(info.excerpt)))," ",
 		    ((info.links)&&(showlinks(info.links,"span.link")))," ",
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments")))," ",
-		    ((info.excerpt)&&(info.excerpt.length>=40)&&
-		     (fdjtDOM("span.excerpt",info.excerpt)))," ",
 		    ((info.audience)&&(info.audience.length)&&
 		     (info.audience.length>=div_threshold)&&
 		     (showaudience(info.audience))),
-		    (((info.tags)||(info.autotags))&&
-		     (showtags(info)))," ");
+		    (((info.tags)||(info.autotags))&&(showtags(info)))," ");
 	if (!(info.tstamp))
 	    div.title=Codex.getTitle(target,true);
 	// if (info.qid) div.about=info.qid;
@@ -194,6 +196,17 @@ var sbook_delete_icon="redx12x12.png";
 	    anchor.target='_blank';
 	    fdjtDOM(span,anchor,"\n");}
 	return span;}
+    function showexcerpts(excerpts){
+	if (typeof excerpts==='string')
+	    return fdjtDOM("span.excerpt",odq,excerpts,cdq);
+	else {
+	    var espan=fdjtDOM("div.excerpts");
+	    var i=0; var lim=excerpts.length;
+	    while (i<lim)
+		fdjtDOM(espan,
+			((i>0)&&" "),
+			fdjtDOM("span.excerpt",odq,excerpts[i++],cdq));
+	    return espan;}}
     function showscore(score){
 	var scorespan=fdjtDOM("span.score");
 	var score=query[key]; var k=0;
@@ -213,14 +226,42 @@ var sbook_delete_icon="redx12x12.png";
 	// age.onclick=relayoredit_gloss;
 	var deleteicon=
 	    // No delete icons for the ipad right now (too small)
-	    ((user===Codex.user.oid)&&(Codex.ui!=='ios')&&
-	     (fdjtDOM.Image(sbicon(sbook_delete_icon),"img.delete","x",
-			    "delete this gloss")))
+	    ((user===Codex.user.oid)&&
+	     (fdjtDOM(
+		 "span",
+		 (fdjtDOM.Image(sbicon(sbook_delete_icon),
+				"img.delete.button.mouseicon","x",
+				"delete this gloss")),
+	     (fdjtDOM.Image(sbicon(sbook_delete_icon_touch),
+			    "img.delete.button.touchicon","x",
+			    "delete this gloss")))));
 	if (deleteicon) deleteicon.onclick=deletegloss_onclick;
+	var editicon=
+	    ((user===Codex.user.oid)&&
+	     (fdjtDOM(
+		 "span",
+		 (fdjtDOM.Image(
+		     sbicon(sbook_edit_icon),"img.edit.button.mouseicon","!",
+		     "edit this gloss")),
+		 (fdjtDOM.Image(
+		     sbicon(sbook_edit_icon_touch),
+		     "img.edit.button.touchicon","!",
+		     "edit this gloss")))));
+	if (editicon) editicon.onclick=editicon_onclick;
+	var replyicon=
+	     fdjtDOM(
+		 "span",
+		 (fdjtDOM.Image(sbicon(sbook_reply_icon),
+				"img.reply.button.mouseicon","++",
+				"respond to this gloss")),
+		 (fdjtDOM.Image(sbicon(sbook_reply_icon_touch),
+				"img.reply.button.touchicon","++",
+				"respond to this gloss")));
+	replyicon.onclick=replyicon_onclick;
 	var picinfo=getpicinfo(info);
 	var overdoc=getoverdoc(info);
-
-	return [(fdjtDOM("span.glossinfo",deleteicon)),
+	
+	return [(fdjtDOM("span.glossinfo",deleteicon,editicon,replyicon)),
 		((picinfo)&&
 		 (fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt))),
 		((overdoc)&&(overdoc.name)&&
@@ -382,6 +423,19 @@ var sbook_delete_icon="redx12x12.png";
 		else glossmark.glosses=newglosses;}}
 	else alert(response);}
     
+    function editicon_onclick(evt){
+	var target=fdjtUI.T(evt);
+	var note=fdjtDOM.getParent(target,'.codexnote');
+	var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name)));
+	Codex.setGlossTarget(gloss);
+	CodexMode("addgloss");}
+    function replyicon_onclick(evt){
+	var target=fdjtUI.T(evt);
+	var note=fdjtDOM.getParent(target,'.codexnote');
+	var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name)));
+	Codex.setGlossTarget(gloss);
+	CodexMode("addgloss");}
+
     function relayoredit_gloss(evt){
 	var scan=fdjtUI.T(evt);
 	fdjtUI.cancel(evt);
