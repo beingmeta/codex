@@ -432,7 +432,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		alert("Enter a number between "+min+" and "+max+" (inclusive)");
 		return;}
 	    if (target.name==='GOTOLOC') Codex.JumpTo(128*num);
-	    else if (target.name==='GOTOPAGE') Codex.FadeToPage(num-1);
+	    else if (target.name==='GOTOPAGE') Codex.GoToPage(num-1);
 	    else {}
 	    target.value="";
 	    CodexMode(false);}}
@@ -767,7 +767,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (Codex.mode==="glosses") CodexMode(true);
 	    if (Codex.curpage===0) {}
 	    else {
-		Codex.FadeToPage(newpage=Codex.curpage-1);}
+		Codex.GoToPage(newpage=Codex.curpage-1);}
 	    if ((false)&&(newpage)&&(Codex.mode==='allglosses')) /* to fix */
 		Codex.UI.scrollGlosses(
 		    Codex.pageinfo[newpage].first,
@@ -880,7 +880,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function head_click(evt){
 	if (Codex.Trace.gestures) fdjtLog("head_click %o",evt);
 	if (fdjtUI.isClickable(evt)) return;
-	else if ((Codex.mode==='help')||(Codex.mode==='splash')) {
+	else if (Codex.mode==='help') {
 	    fdjtUI.cancel(evt);
 	    CodexMode(true);}
 	else if (Codex.mode) return;
@@ -968,9 +968,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXHEAD": {click: head_click},	 
 	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 "#HIDESPLASHCHECKSPAN" : {click: function (evt){
+	     evt=evt||event;
 	     Codex.setConfig('hidesplash',(!(Codex.hidesplash)));
-	     fdjtUI.cancel(evt);}},
-	 "#HIDESPLASHBUTTON" : {click: Codex.dropHUD},
+	     Codex.saveConfig(); fdjtUI.cancel(evt);}},
+	 "#HIDEHELPBUTTON" : {click: Codex.dropHUD},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
@@ -1006,12 +1007,14 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#CODEXTABS": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#HIDESPLASHCHECKSPAN" : {touchstart: function (evt){
-	     Codex.setConfig('hidesplash',Codex.hidesplash)},
+	     evt=evt||event;
+	     Codex.setConfig('hidesplash',Codex.hidesplash);
+	     Codex.saveConfig(); fdjtUI.cancel(evt);},
 				   touchmove: cancel,
 				   touchend: cancel},
-	 "#HIDESPLASHBUTTON" : {click: Codex.dropHUD,
-				touchmove: cancel,
-				touchend: cancel},
+	 "#HIDEHELPBUTTON" : {click: Codex.dropHUD,
+			      touchmove: cancel,
+			      touchend: cancel},
 	 glossmark: {touchend: glossmark_tapped,
 		     touchstart: cancel,
 		     touchmove: cancel},

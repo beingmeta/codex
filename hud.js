@@ -56,8 +56,13 @@ var CodexMode=
 		CodexHUD.sbookui=true;
 		CodexHUD.innerHTML=sbook_hudtext;
 		fdjtDOM.prepend(document.body,CodexHUD);}
+	    // Setup flyleaf
 	    var flyleaf=fdjtID("CODEXFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;
+	    // Setup settings
+	    var settings=fdjtID("CODEXSETTINGS");
+	    settings.innerHTML=sbook_settingstext;
+	    // Setup help text
 	    var help=fdjtID("CODEXHELP");
 	    help.innerHTML=sbook_helptext;
 	    // Initialize search UI
@@ -219,8 +224,8 @@ var CodexMode=
 	/* Mode controls */
 	
 	var CodexMode_pat=
-	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(splash)/g;
-	var codexflyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)|(help)|(console)/g;
+	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)/g;
+	var codexflyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)|(console)/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "CODEXALLGLOSSES",
 	     searchresults: "CODEXSEARCHRESULTS",
@@ -269,7 +274,7 @@ var CodexMode=
 		    var input=fdjtID(sbook_mode_foci[Codex.mode]);
 		    input.blur();}
 		    Codex.mode=mode;
-		    Codex.last_mode=mode;}
+		    if (Codex.mode!=='help') Codex.last_mode=Codex.mode;}
 		// If we're switching to the inner app but the iframe
 		//  hasn't been initialized, we do it now.
 		if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
@@ -435,67 +440,6 @@ var CodexMode=
 	    if (Codex.mode) CodexMode(false);
 	    else CodexMode(true);};
 	
-	/* HUD Messages */
-	
-	var sbook_message_timer=false;
-	
-	function sbookMessage(message){
-	    var msg=fdjtDOM("div.message",
-			    fdjtDOM("span.head",message),
-			    fdjtState.argVec(arguments,1));
-	    fdjtDOM.replace("CODEXHELPMESSAGE",fdjtDOM.clone(msg));
-	    fdjtDOM.replace("CODEXCONSOLEMESSAGE",fdjtDOM.clone(msg));
-	    fdjtDOM.append("CODEXCONSOLE",
-			   fdjtDOM("div.fdjtlog",
-				   fdjtDOM("span.time",fdjtET()),
-				   message,
-				   fdjtState.argVec(arguments,1)));}
-	Codex.Message=sbookMessage;
-
-	function sbookFlashMessage(arg0){
-	    var duration=message_timeout; var message; var args;
-	    if (!(arg0)) message=false;
-	    else if (typeof arg0 === 'number') {
-		if (arg0<0) duration=message_timeout;
-		else if (arg0<50) duration=arg0*1000;
-		else duration=arg0;
-		message=arguments[1];
-		args=fdjtState.argVec(arguments,2);}
-	    else {
-		duration=message_timeout; message=arg0;
-		args=fdjtState.argVec(arguments,1);}
-	    if (sbook_message_timer) clearTimeout(sbook_message_timer);
-	    if (message) {
-		fdjtDOM.replace("SBOOKMESSAGE",
-				fdjtDOM("div.message",fdjtDOM("div.head",message),args));
-		fdjtDOM.prepend("SBOOKMESSAGELOG",
-				fdjtDOM("div.logentry",
-					fdjtDOM("span.time",fdjtET()),
-					message));}
-	    if (!((Codex.mode==='console')||(Codex.mode==='help')||
-		  (Codex.mode==='message'))) { 
-		fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
-		fdjtDOM.addClass(CodexHUD,"console");
-		var mode=Codex.mode;
-		sbook_message_timer=
-		    setTimeout(function() {
-			if (mode==="console") CodexMode(false);
-			else if (Codex.mode==="console") CodexMode(false);	
-			else if (mode) {
-			    fdjtDOM.swapClass(CodexHUD,"console",mode);}},
-			       duration);}}
-	Codex.Flash=sbookFlashMessage;
-
-	function sbookGetStableId(elt){
-	    var info=Codex.Info(elt);
-	    // fdjtLog("Scrolling to %o with id %s/%s",target,info.frag,target.id);
-	    if ((info) && (info.frag) && (!(info.frag.search(/TMPID/)==0)))
-		return info.frag;
-	    else if ((elt.id) && (!(elt.id.search(/TMPID/)==0)))
-		return elt.id;
-	    else return false;}
-
-
 	/* The App HUD */
 	
 	function fillinFlyleaf(){
@@ -710,7 +654,7 @@ var CodexMode=
 	Codex.UI.applySettings=function(){
 	  Codex.setConfig(getSettings());};
 	Codex.UI.saveSettings=function(){
-	  Codex.setConfig(getSettings());};
+	  Codex.saveConfig(getSettings());};
 	
 	/* Button methods */
 
