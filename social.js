@@ -63,18 +63,24 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	    var icon=fdjtID("SBOOKSOURCEICON"+humid);
 	    if (!(icon)) { // Add icon to the sources bar
 		var pic=(info.pic)||
-		    ((info.fbid)&&("https://graph.facebook.com/"+info.fbid+"/picture?type=square"));
+		    ((info.fbid)&&
+		     ("https://graph.facebook.com/"+info.fbid+
+		      "/picture?type=square"));
 		var kind=info.kind;
 		if (pic) {}
-		else if (kind===':PERSON')
-		    pic=cxicon("sbooksperson50x50.png");
 		else if (kind===':CIRCLE')
 		    pic=cxicon("sbookscircle50x50.png");
 		else if (kind===':OVERDOC')
 		    pic=cxicon("sbooksoverdoc50x50.png");
-		else pic=sbook;
-		icon=fdjtDOM.Image(pic,".button.source",info.name|info.kind,
-				   ("click to show/hide glosses from "+info.name));
+		else {}
+		if (pic)
+		  icon=fdjtDOM.Image
+		    (pic,".button.source",info.name|info.kind,
+		     ("click to show/hide glosses from "+info.name));
+		else {
+		  icon=fdjtDOM("div.button.source",
+			       fdjtString.getInitials(info.name));}
+		icon.title=info.name;
 		icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
 		fdjtDOM(fdjtID("SBOOKSOURCES")," ",icon);}}
 	var sharetag=fdjtID("SBOOKSHARETAG"+humid);

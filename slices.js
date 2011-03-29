@@ -260,8 +260,9 @@ var sbook_reply_icon="replyballoons26x15.png";
 	var overdoc=getoverdoc(info);
 	
 	return [(fdjtDOM("span.glossinfo",deleteicon,editicon,replyicon)),
-		((picinfo)&&
-		 (fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt))),
+		((picinfo)?
+		 (fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt)):
+		 (getfakepic(info.maker,"div.sourcepic"))),
 		((overdoc)&&(overdoc.name)&&
 		 (fdjtDOM("span.overdoc",(overdoc.name)))),
 		((overdoc)&&(overdoc.name)&&(" \u00b7 ")),
@@ -284,10 +285,17 @@ var sbook_reply_icon="replyballoons26x15.png";
 	    return false;}
 	else return false;}
 
+    function getfakepic(maker,spec){
+      var userinfo=fdjtKB.ref(maker);
+      var pic=fdjtDOM(spec||"div.sbooksourcepic",
+		      fdjtString.getInitials(userinfo.name));
+      return pic;}
+
     function getpicinfo(info){
 	if (info.pic) return {src: info.pic,alt: info.pic};
 	else if (info.sources) {
 	    var sources=info.sources;
+	    if (typeof sources==='string') sources=[sources];
 	    var i=0; var lim=sources.length;
 	    while (i<lim) {
 		var source=fdjtKB.ref(sources[i++]);

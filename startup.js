@@ -153,9 +153,12 @@ Codex.Startup=
 	      else gotGlosses();}},
 	  function(){
 	    if ((fdjtState.getQuery("join"))||
+		(fdjtState.getQuery("joined"))||
 		(fdjtState.getQuery("action"))||
 		(fdjtState.getQuery("invitation"))) {
 	      CodexMode("sbookapp");}
+	    else if (fdjtState.getQuery("startmode")) 
+	      CodexMode(fdjtState.getQuery("startmode"));
 	    if ((!(Codex.paginate))||(Codex.paginated))
 	      startupDone();
 	    else Codex.pagewait=startupDone;}],
