@@ -1,0 +1,60 @@
+<h1>Settings</h1>
+<span class="button" onclick="Codex.UI.saveSettings();">Save</span>
+<span class="button" onclick="Codex.UI.applySettings();">Apply</span>
+<table class='settings'>
+  <tr><th><input TYPE='CHECKBOX' NAME='CODEXPAGEVIEW' VALUE='yes'/></th>
+    <td>Page view (break text into pages)</td></tr>
+  <tr><th rowspan="2">Body font</th>
+    <td>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='xlarge'/>
+	x-large</span>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='large'/>
+	large</span>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='normal'/>
+	normal</span>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='small'/>
+	small</span>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='tiny'/>
+	tiny</span>
+  </td></tr>
+  <tr>
+    <td>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXBODYSTYLE' VALUE='sans'/>
+	sans-serif</span>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXBODYSTYLE' VALUE='serif'/>
+	serif</span></td></tr>
+  <tr><th>Interface font</th>
+    <td>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='large'/>
+	large</span>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='normal'/>
+	normal</span>
+      <span class="checkspan">
+	<input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='small'/>
+	small</span></td></tr>
+  <tr><th>Animate</th>
+    <td>
+      <span class="checkspan">
+	<input TYPE='CHECKBOX' NAME='CODEXANIMATEPAGES' VALUE='yes'/>
+	page flips</span>
+      <span class="checkspan">
+	<input TYPE='CHECKBOX' NAME='CODEXANIMATEHUD' VALUE='yes'/>
+	book tools</span></td></tr>
+  <tr class="checkspan"
+      onclick="Codex.setConfig('showconsole',(!(Codex.showconsole)));">
+    <th><input TYPE='CHECKBOX' NAME='CODEXSHOWCONSOLE' VALUE='yes'/></th>
+    <td>Show the Codex console</td></tr>
+  <tr class="checkspan"
+      onclick="Codex.setConfig('hidesplash',(!(Codex.hidesplash))); fdjtUI.cancel(event);">
+    <th><input TYPE='CHECKBOX' NAME='CODEXHIDESPLASH' VALUE='yes'/></th>
+    <td>Hide the Codex splash/help page after startup</td></tr>
+</table>
