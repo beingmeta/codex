@@ -51,6 +51,9 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     /* Social UI components */
 
     function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
+    function cxicon(name,suffix) {
+	return Codex.graphics+"codex/"+name+(suffix||"");}
+    
 
     function addSource(info,withgloss){
 	if (typeof info === 'string') info=fdjtKB.ref(info);
@@ -64,11 +67,11 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 		var kind=info.kind;
 		if (pic) {}
 		else if (kind===':PERSON')
-		    pic=sbicon("sbooksperson50x50.png");
+		    pic=cxicon("sbooksperson50x50.png");
 		else if (kind===':CIRCLE')
-		    pic=sbicon("sbookscircle50x50.png");
+		    pic=cxicon("sbookscircle50x50.png");
 		else if (kind===':OVERDOC')
-		    pic=sbicon("sbooksoverdoc50x50.png");
+		    pic=cxicon("sbooksoverdoc50x50.png");
 		else pic=sbook;
 		icon=fdjtDOM.Image(pic,".button.source",info.name|info.kind,
 				   ("click to show/hide glosses from "+info.name));
@@ -173,7 +176,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	if (!(target)) return false;
 	var glossmarkid="SBOOK_GLOSSMARK_"+id;
 	if (fdjtID(glossmarkid)) return fdjtID(glossmarkid);
-	var imgsrc=(sbicon("sbookspeople32x32.png"));
+	var imgsrc=(cxicon("sbookspeople32x32.png"));
 	var glossmark=fdjtDOM
 	("span.codexglossmark",
 	 fdjtDOM.Image(imgsrc,"big","comments"),

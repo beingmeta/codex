@@ -33,8 +33,6 @@ var codex_slices_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-var sbook_eye_icon="EyeIcon25.png";
-var sbook_small_eye_icon="EyeIcon13x10.png";
 var sbook_details_icon="detailsicon16x16.png";
 var sbook_outlink_icon="outlink16x16.png";
 var sbook_small_remark_icon="remarkballoon16x13.png";
@@ -144,7 +142,7 @@ var sbook_reply_icon="replyballoons26x15.png";
 	var tagcount=0;
 	var countspan=fdjtDOM("span.count");
 	var tagicon=fdjtDOM.Image
-	  (sbicon("TagIcon16x16.png"),"img.tagicon","tags");
+	  (cxicon("TagIcon16x16.png"),"img.tagicon","tags");
 	var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
 	var tagspan=span;
 	var controller=false;
@@ -251,10 +249,10 @@ var sbook_reply_icon="replyballoons26x15.png";
 	var replyicon=
 	     fdjtDOM(
 		 "span",
-		 (fdjtDOM.Image(sbicon(sbook_reply_icon),
+		 (fdjtDOM.Image(cxicon(sbook_reply_icon),
 				"img.reply.button.mouseicon","++",
 				"respond to this gloss")),
-		 (fdjtDOM.Image(sbicon(sbook_reply_icon_touch),
+		 (fdjtDOM.Image(cxicon(sbook_reply_icon_touch),
 				"img.reply.button.touchicon","++",
 				"respond to this gloss")));
 	replyicon.onclick=replyicon_onclick;
@@ -453,6 +451,8 @@ var sbook_reply_icon="replyballoons26x15.png";
 	if (info) return info.pic;}
     
     function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
+    function cxicon(name,suffix) {
+	return Codex.graphics+"codex/"+name+(suffix||"");}
 
     // Displayings sets of notes organized into threads
 

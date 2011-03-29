@@ -47,6 +47,11 @@ Codex.Startup=
     var https_graphics=
       "https://beingmeta.s3.amazonaws.com/static/graphics/";
 
+    function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
+    function cxicon(name,suffix) {
+	return Codex.graphics+"codex/"+name+(suffix||"");}
+
+
     /* Initialization */
 	
     var _sbook_setup_start=false;
@@ -632,7 +637,7 @@ Codex.Startup=
       var pagefoot=fdjtDOM
 	("div.sbookmargin#SBOOKPAGEFOOT",
 	 pageinfo," ",
-	 fdjtDOM.Image("http://static.beingmeta.com/graphics/PageNext50x50.png",
+	 fdjtDOM.Image(cxicon("PageNext50x50.png"),
 		       "img#CODEXPAGENEXT.hudbutton.bottomright",
 		       "pagenext","go to the next result/section/page"));
       pagehead.sbookui=true; pagefoot.sbookui=true;

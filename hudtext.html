@@ -1,11 +1,11 @@
 <div id="CODEXHELP" class="hudpanel">
 </div>
 <div id="CODEXHEAD">
-  <img src="http://static.beingmeta.com/graphics/CompassIcon50x50.png"
+  <img src="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
        alt="toc" title="click to navigate the book as a whole"
        class="hudbutton hudmodebutton topleft" id="CODEXTOCBUTTON"
        hudmode="toc"/>
-  <img src="http://static.beingmeta.com/graphics/TagSearch50x50.png"
+  <img src="http://static.beingmeta.com/graphics/codex/TagSearch50x50.png"
        alt="search" title="click to search tags within the book"
        class="hudbutton hudmodebutton topright" id="CODEXSEARCHBUTTON"
        hudmode="search"/>
@@ -36,34 +36,34 @@
 	    <img alt="login" id="SBOOKUSERPIC"/></a>
 	  <a id="HELPBUTTON" href="javascript:CodexMode('help');"
 	     title="click for UI help">
-	    <img src="http://static.beingmeta.com/graphics/HelpIcon32x32.png"
+	    <img src="http://static.beingmeta.com/graphics/codex/HelpIcon32x32.png"
 		 alt="Help"/></a>
 	  -->
-      <img src="http://static.beingmeta.com/graphics/AboutTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/codex/AboutTab50h.png"
 	   alt="About" class="tab" contentid="APPABOUT"
 	   onclick="CodexMode.toggle('about',true); return fdjtUI.cancel(event);"
 	   title="information and links about this book"/>
-      <img src="http://static.beingmeta.com/graphics/TOCTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/codex/TOCTab50h.png"
 	   alt="ToC" class="tab" contentid="FLYTOC"
 	   onclick="CodexMode.toggle('flytoc',true); return fdjtUI.cancel(event);"
 	   title="Table of Contents (static)">
-      <img src="http://static.beingmeta.com/graphics/SettingsTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/codex/SettingsTab50h.png"
 	   alt="Device" class="tab" contentid="CODEXSETTINGS"
 	   onclick="CodexMode.toggle('device',true); return fdjtUI.cancel(event);"
 	   title="alter appearance and interaction"/>
-      <img src="http://static.beingmeta.com/graphics/SocialTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/codex/SocialTab50h.png"
 	   alt="sBooks" class="tab" contentid="SBOOKSAPP"
 	   onclick="CodexMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
 	   title="manage how your sBook is enhanced with added layers"/>
-      <img src="http://static.beingmeta.com/graphics/LoginTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/codex/LoginTab50h.png"
 	   alt="Login" class="tab" contentid="SBOOKAPPLOGIN"
 	   onclick="CodexMode.toggle('login',true); return fdjtUI.cancel(event);"
 	   title="login to sBooks" />
-      <img src="http://static.beingmeta.com/graphics/ConsoleTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/codex/ConsoleTab50h.png"
 	   alt="Console" class="tab" contentid="CODEXCONSOLE"
 	   onclick="CodexMode.toggle('console',true); return fdjtUI.cancel(event);"
 	   title="show console" />
-      <img src="http://static.beingmeta.com/graphics/HelpTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/codex/HelpTab50h.png"
 	   alt="Help" class="tab" contentid="CODEXHELP"
 	   onclick="CodexMode.toggle('help',true); return fdjtUI.cancel(event);"
 	   title="help about using sBooks"/>
@@ -80,16 +80,16 @@
 			onkeypress="Codex.UI.goto_keypress(event);"/>
   </div>
   <div id="CODEXTOC" class="hudpanel"></div>
-  <img src="http://static.beingmeta.com/graphics/ScanLeft32.png"
+  <img src="http://static.beingmeta.com/graphics/codex/ScanLeft32.png"
        id="CODEXSCANLEFT" class="codexscanbutton"
        alt="prev" onclick="Codex.scanBackward(event);"/>
-  <img src="http://static.beingmeta.com/graphics/ScanRightStop32.png"
+  <img src="http://static.beingmeta.com/graphics/codex/ScanRightStop32.png"
        id="CODEXSCANEND" class="codexscanbutton"
        alt="end"/>
-  <img src="http://static.beingmeta.com/graphics/ScanRight32.png"
+  <img src="http://static.beingmeta.com/graphics/codex/ScanRight32.png"
        id="CODEXSCANRIGHT" class="codexscanbutton"
        alt="next" onclick="Codex.scanForward(event);"/>
-  <img src="http://static.beingmeta.com/graphics/ScanLeftStop32.png"
+  <img src="http://static.beingmeta.com/graphics/codex/ScanLeftStop32.png"
        id="CODEXSCANSTART" class="codexscanbutton"
        alt="beginning"/>
   <div id="CODEXSCANNER" class="hudpanel">
@@ -103,7 +103,7 @@
 	 a list of sources on top -->
     <div id="SBOOKSOURCES" class="sbooksources"
 	 onclick="Codex.UI.handlers.sources_onclick(event);">
-      <img src="http://static.beingmeta.com/graphics/sbookspeople50x50.png"
+      <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
 	   class="button everyone selected"
 	   alt="show all" title="click to see all glosses"
 	   onclick="Codex.UI.handlers.everyone_onclick(event);"/>
@@ -120,7 +120,7 @@
     </div>
     <div id="CODEXGLOSSCLOUD" class="completions">
       <img class="label" alt="tags"
-	   src="http://static.beingmeta.com/graphics/TagIcon32x32.png"
+	   src="http://static.beingmeta.com/graphics/codex/TagIcon32x32.png"
 	   onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
       <div class='doc'>
 	<strong>Add a tag</strong>
@@ -148,47 +148,47 @@
   <!-- This content comes from flyleaftext.html -->
 </div>
 <div id="CODEXFOOT">
-  <img src="http://static.beingmeta.com/graphics/drophud50x50.png"
+  <img src="http://static.beingmeta.com/graphics/codex/drophud50x50.png"
        alt="drophud" title="hide the book tools"
        id="CODEXDROPHUD"
        onclick="CodexMode(false); fdjtUI.cancel(event); return false;"/>
   <div id="CODEXBUTTON" onclick="CodexMode.toggle('last');" class="help">
-    <img src="http://static.beingmeta.com/graphics/AboutIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/AboutIcon50x50.png"
 	 alt="about" title="information and links about this book"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/CompassIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
 	 alt="toc" title="information and links about this book"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/ScannerIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/ScannerIcon50x50.png"
 	 alt="scanning"
 	 title="scan this book by structure, glosses, or search results"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/SearchIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/SearchIcon50x50.png"
 	 alt="search" title="information and links about this book"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/remarkballoon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/remarkballoon50x50.png"
 	 alt="addgloss" title="information and links about this book"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/sbookspeople50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
 	 alt="allglosses" title="information and links about this book"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/HelpIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/HelpIcon50x50.png"
 	 alt="help" title="help about using sBooks"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/SocialIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/SocialIcon50x50.png"
 	 alt="sbookapp"
 	 title="manage how your sBook is enhanced with added layers"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/LoginIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/LoginIcon50x50.png"
 	 alt="login" title="login"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/SettingsIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/SettingsIcon50x50.png"
 	 alt="device" title="alter appearance and interaction"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/ConsoleIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/ConsoleIcon50x50.png"
 	 alt="console" title="see the application console"
 	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/FlyTOCIcon50x50.png"
+    <img src="http://static.beingmeta.com/graphics/codex/FlyTOCIcon50x50.png"
 	 alt="flytoc" title="Table of Contents (static)"
 	 class="hudbutton botleft"/>
   </div>
@@ -205,7 +205,7 @@
   <div class="helphud botright" data-hudmode="allglosses">
     <span class="nobreak">show<span class="arrow">&#x2192;</span></span><br/>
     overlays</div>
-  <img src="http://static.beingmeta.com/graphics/sbookspeople50x50.png"
+  <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
        alt="glosses" title="Click to browse glosses overlaid on this book"
        class="hudbutton hudmodebutton botright" id="CODEXALLGLOSSESBUTTON"
        hudmode="allglosses"/>

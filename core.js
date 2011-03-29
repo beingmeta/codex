@@ -191,6 +191,8 @@ var sbook_gloss_data=
     Codex.default_server="gloss.sbooks.net";
     // There be icons here!
     function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
+    function cxicon(name,suffix) {
+	return Codex.graphics+"codex/"+name+(suffix||"");}
     Codex.graphics="http://static.beingmeta.com/graphics/";
     // Codex.graphics="https://www.sbooks.net/static/graphics/";
     // Codex.graphics="https://beingmeta.s3.amazonaws.com/static/graphics/";

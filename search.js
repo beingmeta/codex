@@ -40,6 +40,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     if (!(Codex.search_gotlucky)) Codex.search_gotlucky=7;
     
     function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
+    function cxicon(name,suffix) {
+	return Codex.graphics+"codex/"+name+(suffix||"");}
 
     /* Query functions */
 
@@ -397,7 +399,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		    dterms.length,scores,scores);
 	var spans=fdjtDOM("span");  
 	var tagicon=fdjtDOM.Image
-	  (sbicon("TagSearch50x50.png"),
+	  (cxicon("TagSearch50x50.png"),
 	   ".cloudtoggle","show/hide all","show all tags");
 	tagicon.onclick=showempty_onclick;
 	var completions=fdjtDOM("div.completions",tagicon,spans);

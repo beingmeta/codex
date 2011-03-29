@@ -85,6 +85,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     var start_x=-1; var start_y=-1; var last_x=-1; var last_y=-1;
     
     function sbicon(base){return Codex.graphics+base;}
+    function cxicon(base) {return Codex.graphics+"codex/"+base;}
 
     /* Setup for gesture handling */
 
@@ -144,7 +145,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (!(passage)) return;
 	var img=fdjtDOM.getChild(passage,".codexglossbutton");
 	if (img) return;
-	img=fdjtDOM.Image(sbicon("remarkballoon32x32.png"),".codexglossbutton",
+	img=fdjtDOM.Image(cxicon("remarkballoon32x32.png"),".codexglossbutton",
 			  "+","click to add a gloss to this passage");
 	Codex.UI.addHandlers(img,"glossbutton");
 	fdjtDOM.prepend(passage,img);}

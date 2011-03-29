@@ -51,19 +51,20 @@ var codex_toc_version=parseInt("$Revision$".slice(10,-1));
 var CodexTOC=
     (function(){
 	function sbicon(base){return Codex.graphics+base;}
+	function cxicon(base){return Codex.graphics+"codex/"+base;}
 	function navicon(kind){
 	    if (Codex.touch) {
 		switch (kind) {
-		case 'right': return sbicon("GoldRightTriangle32.png");
-		case 'left': return sbicon("GoldLeftTriangle32.png");
-		case 'start': return sbicon("GoldLeftStop32.png");
-		case 'end': return sbicon("GoldRightStop32.png");}}
+		case 'right': return cxicon("GoldRightTriangle32.png");
+		case 'left': return cxicon("GoldLeftTriangle32.png");
+		case 'start': return cxicon("GoldLeftStop32.png");
+		case 'end': return cxicon("GoldRightStop32.png");}}
 	    else {
 		switch (kind) {
-		case 'right': return sbicon("GoldRightTriangle24.png");
-		case 'left': return sbicon("GoldLeftTriangle24.png");
-		case 'start': return sbicon("GoldLeftStop24.png");
-		case 'end': return sbicon("GoldRightStop24.png");}}}
+		case 'right': return cxicon("GoldRightTriangle24.png");
+		case 'left': return cxicon("GoldLeftTriangle24.png");
+		case 'start': return cxicon("GoldLeftStop24.png");
+		case 'end': return cxicon("GoldRightStop24.png");}}}
 	Codex.navicon=navicon;
 
 	function CodexTOC(headinfo,depth,tocspec,prefix,headless){
