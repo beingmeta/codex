@@ -626,8 +626,8 @@ var sbook_gloss_data=
 	while (target)
 	    if (target.href) break; else target=target.parentNode;
 	if ((target)&&(target.href)&&(target.href[0]==='#')) {
-	    var goto=document.getElementById(target.href.slice(1));
-	    if (goto) {CodexGoTo(goto); fdjtUI.cancel(evt);}}}
+	    var elt=document.getElementById(target.href.slice(1));
+	    if (elt) {CodexGoTo(elt); fdjtUI.cancel(evt);}}}
     Codex.anchorFn=anchorFn;
 
     // This jumps and disables the HUD at the same time

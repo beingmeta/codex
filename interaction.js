@@ -208,10 +208,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if ((anchor)&&(anchor.href)&&
 	    (href=anchor.getAttribute("href"))&&(href[0]==='#')&&
 	    (document.getElementById(href.slice(1)))) {
-	    var goto=document.getElementById(href.slice(1));
+	    var elt=document.getElementById(href.slice(1));
 	    // This would be the place to provide smarts for
 	    // asides/notes/etc, so they (for example) pop up
-	    Codex.JumpTo(goto);
+	    Codex.JumpTo(elt);
 	    fdjtUI.cancel(evt);
 	    return;}
 	var passage=Codex.getTarget(target);
