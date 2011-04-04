@@ -24,21 +24,11 @@
       <a href="https://auth.sbooks.net/admin/logout" class="logout"
 	 title="click to logout of the sBooks server">
 	logout</a>
-      <a href="javascript:CodexMode('login');" name="IDLINK"
+      <a href="javascript:CodexMode('sbookapp');" name="IDLINK"
 	 id="SBOOKUSERNAME">
 	(click to log in)</a>
     </div> <!-- .flyleafplate -->
     <div class="tabbar icons" id="CODEXTABS">
-      <!--
-	  <a name="IDLINK" href="javascript:CodexMode('login');" 
-	     id="IDBUTTON" class="userpic"
-	     title="click to login">
-	    <img alt="login" id="SBOOKUSERPIC"/></a>
-	  <a id="HELPBUTTON" href="javascript:CodexMode('help');"
-	     title="click for UI help">
-	    <img src="http://static.beingmeta.com/graphics/codex/HelpIcon32x32.png"
-		 alt="Help"/></a>
-	  -->
       <img src="http://static.beingmeta.com/graphics/codex/AboutTab50h.png"
 	   alt="About" class="tab" contentid="APPABOUT"
 	   onclick="CodexMode.toggle('about',true); return fdjtUI.cancel(event);"
@@ -56,8 +46,8 @@
 	   onclick="CodexMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
 	   title="manage how your sBook is enhanced with added layers"/>
       <img src="http://static.beingmeta.com/graphics/codex/LoginTab50h.png"
-	   alt="Login" class="tab" contentid="SBOOKAPPLOGIN"
-	   onclick="CodexMode.toggle('login',true); return fdjtUI.cancel(event);"
+	   alt="Login" class="tab" contentid="SBOOKSAPP"
+	   onclick="CodexMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
 	   title="login to sBooks" />
       <img src="http://static.beingmeta.com/graphics/codex/ConsoleTab50h.png"
 	   alt="Console" class="tab" contentid="CODEXCONSOLE"
@@ -180,7 +170,7 @@
 	 title="manage how your sBook is enhanced with added layers"
 	 class="hudbutton botleft"/>
     <img src="http://static.beingmeta.com/graphics/codex/LoginIcon50x50.png"
-	 alt="login" title="login"
+	 alt="sbookapp" title="login"
 	 class="hudbutton botleft"/>
     <img src="http://static.beingmeta.com/graphics/codex/SettingsIcon50x50.png"
 	 alt="device" title="alter appearance and interaction"

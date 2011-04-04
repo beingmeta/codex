@@ -987,6 +987,13 @@ div#CODEXHUD div#CODEXHUDBUTTONS {
     font-family: times,serif; font-variant: small-caps;
     text-align: center;}
 
+body div#CODEXHUD div#CODEXHUDBUTTONS
+   div.tabbar .tab[alt='Login'] { display: none;}
+body.nosbookuser div#CODEXHUD div#CODEXHUDBUTTONS
+   div.tabbar .tab[alt='Login'] { display: inline;}
+body.nosbookuser div#CODEXHUD div#CODEXHUDBUTTONS
+   div.tabbar .tab[alt='sBooks'] { display: none;}
+
 /* These are all modes which use the top of the screen, so we
    hide the HUDBUTTONS. */
 body.hudup div#CODEXHUD.toc div#CODEXHUDBUTTONS,
@@ -1095,7 +1102,6 @@ div#CODEXHUD div#CODEXFLYLEAF table {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
 
 div#CODEXHUD.about div#CODEXFLYHEAD div.tabbar .tab[contentid='APPABOUT'],
-div#CODEXHUD.login div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKAPPLOGIN'],
 div#CODEXHUD.device div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXSETTINGS'],
 div#CODEXHUD.flytoc div#CODEXFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
 div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXCONSOLE'],
@@ -1107,7 +1113,6 @@ div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent {
     margin-top: 0px;}
 
 div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent[id='APPABOUT'],
-div#CODEXHUD.login div#CODEXFLYLEAF div.tabcontent[id='SBOOKAPPLOGIN'],
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent[id='CODEXSETTINGS'],
 div#CODEXHUD.flytoc div#CODEXFLYLEAF div.tabcontent[id='FLYTOC'],
 div#CODEXHUD.console div#CODEXFLYLEAF div.tabcontent[id='CODEXCONSOLE'],
@@ -1163,8 +1168,6 @@ div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a {
     color: inherit; font-weight: inherit;}
 div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {
     font-weight: bold; background-color: gold;}
-
-div#CODEXFLYLEAF table.login th.or { font-size: 200%;}
 
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
  div.setting {
@@ -1444,13 +1447,10 @@ body.hudup .sbooktarget .codexglossmark:hover { opacity: 0.9;}
 
 /* Not logged in conditionalization */
 
-.tab[CONTENTID='SBOOKAPPLOGIN'] { display: none;}
-
 body.nosbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
     display: none;}
 body.nosbookuser a.logout {display: none;}
 body.nosbookuser #SBOOKLOGOUT { display: none;}
-body.nosbookuser .tab[CONTENTID='SBOOKAPPLOGIN'] { display: inline;}
 body.nosbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
 body.nosbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
   display: block;}

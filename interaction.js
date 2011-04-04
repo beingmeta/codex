@@ -113,22 +113,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if ((evt.touches)&&(evt.touches.length>1)) return;
 	else fdjtUI.nobubble(evt);}
 
-    Codex.UI.updateLogin=function(){
-	if (fdjtID("SBOOKREGISTER").checked) {
-	    fdjtDOM.addClass(fdjtID("SBOOKNATIVELOGIN"),"registering");
-	    fdjtDOM.addClass(fdjtID("SBOOKNATIVELOGIN"),"expanded");}
-	else {
-	    fdjtDOM.dropClass(fdjtID("SBOOKNATIVELOGIN"),"registering");
-	    fdjtDOM.dropClass(fdjtID("SBOOKNATIVELOGIN"),"expanded");}}
-    Codex.UI.checkLogin=function(evt){
-	if (fdjtID("SBOOKREGISTER").checked) {
-	    var tbody=fdjtID("SBOOKNATIVELOGIN");
-	    var passin=fdjtDOM.getInput(tbody,"PASSWD");
-	    var xpassin=fdjtDOM.getInput(tbody,"XPASSWD");
-	    if (passin.value!==xpassin.value) {
-		alert("Passwords don't match!");
-		return fdjtUI.cancel(evt);}}};
-
     /* New simpler UI */
 
     function inUI(node){

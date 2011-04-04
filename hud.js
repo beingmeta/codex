@@ -70,8 +70,6 @@ var CodexMode=
 	    search.innerHTML=sbook_searchbox;
 	    Codex.empty_cloud=
 		new fdjtUI.Completions(fdjtID("CODEXSEARCHCLOUD"));
-	    var login=fdjtID("SBOOKAPPLOGIN");
-	    login.innerHTML=sbook_loginform;
 
 	    if (Codex.hidehelp) Codex.setConfig("hidehelp");
 
@@ -224,8 +222,8 @@ var CodexMode=
 	/* Mode controls */
 	
 	var CodexMode_pat=
-	    /(login)|(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)/g;
-	var codexflyleafMode_pat=/(login)|(device)|(sbookapp)|(flytoc)|(about)|(console)/g;
+	    /(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)/g;
+	var codexflyleafMode_pat=/(device)|(sbookapp)|(flytoc)|(about)|(console)/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "CODEXALLGLOSSES",
 	     searchresults: "CODEXSEARCHRESULTS",
@@ -233,13 +231,7 @@ var CodexMode=
 	     addgloss: "CODEXGLOSSCLOUD",
 	     sbookapp: "MANAGEAPP",
 	     flytoc: "CODEXFLYTOC",
-	     login: "CODEXFLYLOGIN",
-	     about: "APPABOUT"
-	     /* ,
-		login: "SBOOKAPPLOGIN",
-		device: "CODEXSETTINGS",
-	     */
-	    };
+	     about: "APPABOUT"};
 	var sbook_mode_foci=
 	    {gotopage: "CODEXPAGEINPUT",
 	     gotoloc: "CODEXLOCINPUT",
@@ -660,8 +652,8 @@ var CodexMode=
 
 	function LoginButton_onclick(evt){
 	    evt=evt||event||null;
-	    if (Codex.mode==="login") CodexMode(false);
-	    else CodexMode("login");
+	    if (Codex.mode==="sbookapp") CodexMode(false);
+	    else CodexMode("sbookapp");
 	    evt.cancelBubble=true;}
 
 	return CodexMode;})();
