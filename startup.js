@@ -715,7 +715,7 @@ Codex.Startup=
 	var user_script=fdjtDOM("SCRIPT#SBOOKGETUSERINFO");
 	user_script.language="javascript";
 	user_script.src=
-	  "https://"+Codex.server+"/v4/user.js";
+	  "https://"+Codex.server+"/api/user.js";
 	document.body.appendChild(user_script);
 	fdjtDOM.addClass(document.body,"nosbookuser");}
       else fdjtDOM.addClass(document.body,"nosbookuser");}
@@ -859,7 +859,7 @@ Codex.Startup=
 	var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 	glosses_script.language="javascript";
 	glosses_script.src="https://"+Codex.server+
-	  "/v4/glosses.js?CALLBACK=Codex.Startup.initGlosses&REFURI="+
+	  "/api/glosses.js?CALLBACK=Codex.Startup.initGlosses&REFURI="+
 	  encodeURIComponent(Codex.refuri);
 	if (Codex.Trace.glosses)
 	  fdjtLog("setupGlosses/JSONP %o sync=%o",
@@ -874,7 +874,7 @@ Codex.Startup=
     function offline_update(){
       Codex.writeGlosses();
       var uri="https://"+Codex.server+
-	"/v4/update?REFURI="+
+	"/api/update?REFURI="+
 	encodeURIComponent(Codex.refuri)+
 	"&ORIGIN="+
 	encodeURIComponent
@@ -917,7 +917,7 @@ Codex.Startup=
 	
     function syncLocation(){
       if (!(Codex.user)) return;
-      var uri="https://"+Codex.server+"/v4/sync"+
+      var uri="https://"+Codex.server+"/api/sync"+
 	"?DOCURI="+encodeURIComponent(Codex.docuri)+
 	"&REFURI="+encodeURIComponent(Codex.refuri);
       if (Codex.Trace.dosync)

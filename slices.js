@@ -409,7 +409,7 @@ var sbook_reply_icon="replyballoons26x15.png";
 	if (scan)
 	    fdjtAjax.jsonCall(
 		function(response){deletegloss(response,qref,frag);},
-		"https://"+Codex.server+"/v4/delete",
+		"https://"+Codex.server+"/api/delete",
 		"gloss",scan.qref);}
     function deletegloss(response,glossid,frag){
 	if (response===glossid) {
