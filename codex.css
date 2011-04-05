@@ -627,6 +627,9 @@ div#CODEXHELP div.helptopbanner .hidespan .helpcloser {
     padding-top: 0px; margin-top: -4px;
     padding: 4px; cursor: pointer;
     vertical-align: top;}
+div#CODEXHELP #HIDESPLASHCHECKSPAN {font-size: 85%;}
+div#CODEXHELP #HIDESPLASHCHECKSPAN input[type='CHECKBOX'] {
+    margin-right: 0px;}
 
 div#CODEXHELP div.codexhelp {
     max-width: 40em; margin-left: auto; margin-right: auto;}
@@ -690,7 +693,9 @@ div#CODEXHUD div.helphud.rightmiddle {
 .helphud.botright span.arrow { float: right;}
 
 body div#CODEXHELP p#CODEXHELPLOGIN { display: none;}
-body.nosbookuser div#CODEXHELP p#CODEXHELPLOGIN { display: block;}
+body.notsbookuser div#CODEXHELP p#CODEXHELPLOGIN { display: block;}
+body.notsbookuser div#CODEXHELP p#CODEXHELPLOGGEDIN { display: none;}
+body.sbookuser div#CODEXHELP p#CODEXHELPLOGGEDIN { display: block;}
 
 /* "Leading" to fill out the top and bottom */
 
@@ -971,7 +976,9 @@ div.codexnote > div span.count { float: right;}
 
 body div#CODEXHUD div#CODEXHUDBUTTONS {
     clear: none; z-index: 150; text-align: center;
-    opacity: 0.1; display: none;}
+    opacity: 0.1;}
+body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
+    opacity: 0.5;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     display: block; opacity: 1.0;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
@@ -989,9 +996,9 @@ div#CODEXHUD div#CODEXHUDBUTTONS {
 
 body div#CODEXHUD div#CODEXHUDBUTTONS
    div.tabbar .tab[alt='Login'] { display: none;}
-body.nosbookuser div#CODEXHUD div#CODEXHUDBUTTONS
+body.notsbookuser div#CODEXHUD div#CODEXHUDBUTTONS
    div.tabbar .tab[alt='Login'] { display: inline;}
-body.nosbookuser div#CODEXHUD div#CODEXHUDBUTTONS
+body.notsbookuser div#CODEXHUD div#CODEXHUDBUTTONS
    div.tabbar .tab[alt='sBooks'] { display: none;}
 
 /* These are all modes which use the top of the screen, so we
@@ -1001,11 +1008,13 @@ body.hudup div#CODEXHUD.search div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.glosses div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.searchresults div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.tocscan div#CODEXHUDBUTTONS,
-body.hudup div#CODEXHUD.help div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.allglosses div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.addgloss div#CODEXHUDBUTTONS,
 body div#CODEXHUD.scanning div#CODEXHUDBUTTONS {
     display: none;}
+body.hudup div#CODEXHUD.help div#CODEXHUDBUTTONS {
+    display: block; opacity: 0.7;}
+
 div#CODEXHUD div#CODEXHUDBUTTONS div.sbookplate {
     margin: 0px; padding: 0px; border: 0px;
     margin-left: 60px; margin-right: 60px;
@@ -1034,13 +1043,19 @@ div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab  {
 div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
     height: 50px;}
 
-div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab {
+div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[alt='About'],
+div#CODEXHUD.flytoc div#CODEXHUDBUTTONS div.tabbar .tab[alt='ToC'],
+div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[alt='Device'],
+div#CODEXHUD.sbookapp div#CODEXHUDBUTTONS div.tabbar .tab[alt='sBooks'],
+div#CODEXHUD.login div#CODEXHUDBUTTONS div.tabbar .tab[alt='Login'],
+div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[alt='Console'],
+div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[alt='Help']{
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;
-    box-shadow: 4px 4px 4px #cccccc;
-    -webkit-box-shadow: 4px 4px 4px #cccccc;
-    -moz-box-shadow: 4px 4px 4px #cccccc;
-    -o-box-shadow: 4px 4px 4px #cccccc;}
+    box-shadow: 6px 6px 6px #cccccc;
+    -webkit-box-shadow: 6px 6px 6px #cccccc;
+    -moz-box-shadow: 6px 6px 6px #cccccc;
+    -o-box-shadow: 6px 6px 6px #cccccc;}
 
 div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent {
     margin-top: 0px;}
@@ -1051,7 +1066,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS #HELPBUTTON {
     float: right; margin: 0px; padding: 0px; border: 0px;}
 div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON img {
   margin: 0px; border: 0px; padding: 0px; max-height: 48px;}
-body.nosbookuser div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
+body.notsbookuser div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
     display: none;}
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate .applinks {
     color: blue; font-size: 80%;
@@ -1131,7 +1146,7 @@ div#CODEXHUD div#CODEXFLYHEAD #HELPBUTTON {
     float: right; margin: 0px; padding: 0px; border: 0px;}
 div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON img {
   margin: 0px; border: 0px; padding: 0px; max-height: 48px;}
-body.nosbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
+body.notsbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
     display: none;}
 div#CODEXHUD div#CODEXFLYHEAD .flyleafplate .applinks {
     color: blue; font-size: 80%;
@@ -1148,7 +1163,7 @@ div#CODEXHUD div#CODEXFLYHEAD a.login {
     font-family: helvetica,sans,sans-serif;
     background-color: gold; color: blue;
     display:none;}
-body.nosbookuser a.logout {display: none;}
+body.notsbookuser a.logout {display: none;}
 
 /* CODEXFLYLEAF content rules */
 
@@ -1447,12 +1462,12 @@ body.hudup .sbooktarget .codexglossmark:hover { opacity: 0.9;}
 
 /* Not logged in conditionalization */
 
-body.nosbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
+body.notsbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
     display: none;}
-body.nosbookuser a.logout {display: none;}
-body.nosbookuser #SBOOKLOGOUT { display: none;}
-body.nosbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
-body.nosbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
+body.notsbookuser a.logout {display: none;}
+body.notsbookuser #SBOOKLOGOUT { display: none;}
+body.notsbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
+body.notsbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
   display: block;}
 
 /* Gloss form */
@@ -1509,6 +1524,11 @@ div.codexglossform.glossedit td.button img[alt='add'] { display: none;}
 
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
+
+/* sBook splash */
+
+body.sbooksplash #SBOOKCOVERPAGE {
+    position: fixed; left: 10%; right: 10%; top: 50px;}
 
 /* Style variants */
 

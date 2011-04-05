@@ -36,6 +36,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 (function () {
 
     function sbicon(base){return Codex.graphics+base;}
+    function cxicon(base){return Codex.graphics+"codex/"+base;}
 
     function getbracketed(input,erase){
 	var string=input.value;

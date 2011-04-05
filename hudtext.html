@@ -9,7 +9,7 @@
        alt="search" title="click to search tags within the book"
        class="hudbutton hudmodebutton topright" id="CODEXSEARCHBUTTON"
        hudmode="search"/>
-  <div class="helphud topcenter">
+  <div class="helphud topcenter" style="display: none;">
     <span class="fortouch">tap</span><span class="notouch">click</span>
     here to see the book tools
   </div>
@@ -42,11 +42,11 @@
 	   onclick="CodexMode.toggle('device',true); return fdjtUI.cancel(event);"
 	   title="alter appearance and interaction"/>
       <img src="http://static.beingmeta.com/graphics/codex/SocialTab50h.png"
-	   alt="sBooks" class="tab" contentid="SBOOKSAPP"
+	   alt="sBooks" class="tab sbookuser" contentid="SBOOKSAPP"
 	   onclick="CodexMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
 	   title="manage how your sBook is enhanced with added layers"/>
       <img src="http://static.beingmeta.com/graphics/codex/LoginTab50h.png"
-	   alt="Login" class="tab" contentid="SBOOKSAPP"
+	   alt="Login" class="tab notsbookuser" contentid="SBOOKSAPP"
 	   onclick="CodexMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
 	   title="login to sBooks" />
       <img src="http://static.beingmeta.com/graphics/codex/ConsoleTab50h.png"

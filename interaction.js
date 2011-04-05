@@ -932,6 +932,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     var nobubble=fdjtUI.nobubble;
     var cancel=fdjtUI.cancel;
 
+    function hideSplashToggle(evt) {
+      evt=evt||event;
+      var newval=(!(Codex.hidesplash));
+      Codex.setConfig('hidesplash',newval);
+      Codex.saveConfig();
+      fdjtUI.cancel(evt);
+      if ((newval)&&(Codex._setup)&&
+	  ((fdjtTime()-(Codex._setup.getTime()))<30000))
+	CodexMode(false);}
     Codex.UI.handlers.mouse=
 	{window: {
 	    keyup: onkeyup,
@@ -952,10 +961,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#SBOOKPAGEHEAD": {click: head_click},
 	 "#CODEXHEAD": {click: head_click},	 
 	 "#SBOOKPAGEFOOT": {click: foot_click},
-	 "#HIDESPLASHCHECKSPAN" : {click: function (evt){
-	     evt=evt||event;
-	     Codex.setConfig('hidesplash',(!(Codex.hidesplash)));
-	     Codex.saveConfig(); fdjtUI.cancel(evt);}},
+	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 "#HIDEHELPBUTTON" : {click: Codex.dropHUD},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
@@ -991,10 +997,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 			  touchmove: cancel,touchend: cancel},
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#CODEXTABS": {touchstart: dont,touchmove: dont, touchend: dont},
-	 "#HIDESPLASHCHECKSPAN" : {touchstart: function (evt){
-	     evt=evt||event;
-	     Codex.setConfig('hidesplash',Codex.hidesplash);
-	     Codex.saveConfig(); fdjtUI.cancel(evt);},
+	 "#HIDESPLASHCHECKSPAN" : {touchstart: hideSplashToggle,
 				   touchmove: cancel,
 				   touchend: cancel},
 	 "#HIDEHELPBUTTON" : {click: Codex.dropHUD,

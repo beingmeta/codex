@@ -505,7 +505,7 @@ var sbook_gloss_data=
 		return;
 	    var refuri=((Codex.target)&&(Codex.getRefURI(Codex.target)))||
 		(Codex.refuri);
-	    var uri="https://"+Codex.server+"/api/sync?ACTION=save"+
+	    var uri="https://"+Codex.server+"/glosses/sync?ACTION=save"+
 		"&DOCURI="+encodeURIComponent(Codex.docuri)+
 		"&REFURI="+encodeURIComponent(refuri);
 	    if (Codex.deviceId)
@@ -675,7 +675,7 @@ fdjt_versions.decl("codex/core",codex_version);
   var head=Codex.heads[i++];
   var id=head.id;
   var title=(head.sbookinfo)&&sbook_get_titlepath(head.sbookinfo);
-  var qrhref="https://"+Codex.server+"/api/qricon.png?"+
+  var qrhref="https://"+Codex.server+"/glosses/qricon.png?"+
   "URI="+encodeURIComponent(Codex.docuri||Codex.refuri)+
   ((id)?("&FRAG="+head.id):"")+
   ((title) ? ("&TITLE="+encodeURIComponent(title)) : "");

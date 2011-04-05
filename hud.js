@@ -567,7 +567,7 @@ var CodexMode=
 	function initManageIFrame(){
 	    var query=document.location.search||"?";
 	    var refuri=Codex.refuri;
-	    var appuri="https://"+Codex.server+"/api/flyleaf"+query;
+	    var appuri="https://"+Codex.server+"/glosses/flyleaf"+query;
 	    if (query.search("REFURI=")<0)
 		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
 	    if (query.search("TOPURI=")<0)

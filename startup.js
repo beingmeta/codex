@@ -101,8 +101,21 @@ Codex.Startup=
 	  initBody,
 	  // This initializes the book tools (the HUD, or Heads Up Display)
 	  Codex.initHUD,
-	  (function(){initConfig(); CodexMode("help");}),
-	  Codex.setupGestures,
+	  (function(){
+	    initConfig(); CodexMode("help");
+	    if (fdjtState.getQuery("congratulations"))
+	      fdjtDOM(fdjtID("CODEXINTRO"),
+		      fdjtDOM("strong","Congratulations, "),
+		      fdjtState.getQuery("congratulations"));
+	    else if (fdjtState.getQuery("sorry"))
+	      fdjtDOM(fdjtID("CODEXINTRO"),
+		      fdjtDOM("strong","Sorry, "),
+		      fdjtState.getQuery("sorry"));
+	    else if (fdjtState.getQuery("weird")) 
+	      fdjtDOM(fdjtID("CODEXINTRO"),
+		      fdjtDOM("strong","Weird, "),
+		      fdjtState.getQuery("weird"));
+	    Codex.setupGestures();}),
 	  getUser,
 	  function(){
 	    // This scans the DOM.  It would probably be a good
@@ -153,7 +166,6 @@ Codex.Startup=
 	      else gotGlosses();}},
 	  function(){
 	    if ((fdjtState.getQuery("join"))||
-		(fdjtState.getQuery("joined"))||
 		(fdjtState.getQuery("action"))||
 		(fdjtState.getQuery("invitation"))) {
 	      CodexMode("sbookapp");}
@@ -687,14 +699,14 @@ Codex.Startup=
       if ((loadinfo)&&
 	  (setUser(loadinfo.userinfo,loadinfo.nodeid,
 		   loadinfo.sources,loadinfo.outlets,
-		   loadinfo.etc,loadinfo.sync))) 
+		   loadinfo.etc,loadinfo.sync)))
 	return;
       if ((Codex.offline)&&
 	  (fdjtState.getLocal("codex.user"))&&
 	  (fdjtState.getLocal("codex.nodeid("+refuri+")"))) {
 	var refuri=Codex.refuri;
 	var user=fdjtState.getLocal("codex.user");
-	if (Codex.trace.startup)
+	if (Codex.Trace.startup)
 	  fdjtLog("Restoring offline user info for %o reading %o",
 		  user,refuri);
 	var userinfo=JSON.parse(fdjtState.getLocal(user));
@@ -715,14 +727,17 @@ Codex.Startup=
 	var user_script=fdjtDOM("SCRIPT#SBOOKGETUSERINFO");
 	user_script.language="javascript";
 	user_script.src=
-	  "https://"+Codex.server+"/api/user.js";
+	  "https://"+Codex.server+"/glosses/user.js";
 	document.body.appendChild(user_script);
-	fdjtDOM.addClass(document.body,"nosbookuser");}
-      else fdjtDOM.addClass(document.body,"nosbookuser");}
+	fdjtDOM.addClass(document.body,"notsbookuser");}
+      else fdjtDOM.addClass(document.body,"notsbookuser");}
 	
     function setUser(userinfo,nodeid,sources,outlets,etc,sync){
       var persist=((Codex.offline)&&(navigator.onLine));
       var refuri=Codex.refuri;
+      if (userinfo) {
+	fdjtDOM.dropClass(document.body,"notsbookuser");
+	fdjtDOM.addClass(document.body,"sbookuser");}
       if (Codex.user)
 	if (userinfo.oid===Codex.user.oid) {}
 	else throw { error: "Can't change user"};
@@ -793,11 +808,16 @@ Codex.Startup=
     function setupUser(){
       if (Codex._user_setup) return;
       if (!(Codex.user)) {
-	fdjtDOM.addClass(document.body,"nosbookuser");
+	fdjtDOM.addClass(document.body,"notsbookuser");
 	return;}
-      fdjtDOM.dropClass(document.body,"nosbookuser");
+      fdjtDOM.dropClass(document.body,"notsbookuser");
       var username=Codex.user.name;
-      fdjtID("SBOOKUSERNAME").innerHTML=username;
+      if (fdjtID("SBOOKUSERNAME"))
+	fdjtID("SBOOKUSERNAME").innerHTML=username;
+      var names=document.getElementsByName("CODEXUSERNAME");
+      if (names) {
+	var i=0, lim=names.length;
+	while (i<lim) names[i++].innerHTML=username;}
       if (fdjtID("SBOOKMARKUSER"))
 	fdjtID("SBOOKMARKUSER").value=Codex.user.oid;
       var pic=
@@ -859,7 +879,7 @@ Codex.Startup=
 	var glosses_script=fdjtDOM("SCRIPT#SBOOKGETGLOSSES");
 	glosses_script.language="javascript";
 	glosses_script.src="https://"+Codex.server+
-	  "/api/glosses.js?CALLBACK=Codex.Startup.initGlosses&REFURI="+
+	  "/glosses/glosses.js?CALLBACK=Codex.Startup.initGlosses&REFURI="+
 	  encodeURIComponent(Codex.refuri);
 	if (Codex.Trace.glosses)
 	  fdjtLog("setupGlosses/JSONP %o sync=%o",
@@ -874,7 +894,7 @@ Codex.Startup=
     function offline_update(){
       Codex.writeGlosses();
       var uri="https://"+Codex.server+
-	"/api/update?REFURI="+
+	"/glosses/update?REFURI="+
 	encodeURIComponent(Codex.refuri)+
 	"&ORIGIN="+
 	encodeURIComponent
@@ -917,7 +937,7 @@ Codex.Startup=
 	
     function syncLocation(){
       if (!(Codex.user)) return;
-      var uri="https://"+Codex.server+"/api/sync"+
+      var uri="https://"+Codex.server+"/glosses/sync"+
 	"?DOCURI="+encodeURIComponent(Codex.docuri)+
 	"&REFURI="+encodeURIComponent(Codex.refuri);
       if (Codex.Trace.dosync)
