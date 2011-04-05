@@ -432,6 +432,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	"flyleaf": "CODEXFLYHEAD"};
     
     function hudbutton(evt){
+	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	var mode=target.getAttribute("hudmode");
 	if ((Codex.Trace.gestures)&&
@@ -444,7 +445,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var hudid=((mode)&&(mode_hud_map[mode]));
 	var hud=fdjtID(hudid);
 	if (mode==='flyleaf') mode=Codex.last_flyleaf||"help";
-	if (evt.type==='click') {
+	if ((evt.type==='click')||(evt.type==='touchend')) {
 	    if (hud) fdjtDOM.dropClass(hud,"hover");
 	    if (fdjtDOM.hasClass(Codex.HUD,mode)) CodexMode(false);
 	    else CodexMode(mode);}
@@ -1003,6 +1004,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#HIDEHELPBUTTON" : {click: Codex.dropHUD,
 			      touchmove: cancel,
 			      touchend: cancel},
+	 ".hudmodebutton": {touchend:hudbutton,
+			    touchdown:cancel,
+			    touchmove:cancel},
 	 glossmark: {touchend: glossmark_tapped,
 		     touchstart: cancel,
 		     touchmove: cancel},
