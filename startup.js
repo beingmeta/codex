@@ -832,7 +832,11 @@ Codex.Startup=
 	 ("https://graph.facebook.com/"+Codex.user.fbid+"/picture?type=square"));
       if (pic) {
 	if (fdjtID("SBOOKMARKIMAGE")) fdjtID("SBOOKMARKIMAGE").src=pic;
-	if (fdjtID("SBOOKUSERPIC")) fdjtID("SBOOKUSERPIC").src=pic;}
+	if (fdjtID("SBOOKUSERPIC")) fdjtID("SBOOKUSERPIC").src=pic;
+	var byname=document.getElementsByName("SBOOKUSERPIC");
+	if (byname) {
+	  var i=0; var lim=byname.length;
+	  while (i<lim) byname[i++].src=pic;}}
       if (fdjtID("SBOOKFRIENDLYOPTION"))
 	if (Codex.user)
 	  fdjtID("SBOOKFRIENDLYOPTION").value=Codex.user.oid;

@@ -8,16 +8,25 @@
       <input TYPE="checkbox" NAME="CODEXHIDESPLASH" VALUE="yes"/>
       after startup</span>
   </span>
+  <div id="CODEXHELPTITLE">About Codex, the web-based sBooks reader</div>
   <div id="CODEXSTARTUPMSG">Please wait while we process your book</div>
 </div>
 <div id="CODEXHELPBODY">
-<h2>Welcome to Codex, an sBooks reader</h2>
 <div class="codexhelp">
   <p id="CODEXINTRO"></p>
   <p><strong><span style="color: blue;">s</span>Books</strong> are
     digital books enriched by layers of structure, semantics, and
     annotations from your friends, colleagues, and chosen
     communities.</p>
+  <p>
+    <img class="right"
+      src="http://static.beingmeta.com/graphics/codex/sbookspeople24x24.png"/>
+    <strong>Glosses</strong> are notes, tags, and links overlaid on
+    the content of this book and indicated by
+    <span class="fortouch">tappable</span>
+    <span class="notouch">clickable</span>
+    <img src="http://static.beingmeta.com/graphics/Asterisk16x16.png"
+    alt="asterisk"/> icons in the text.</p>
 
   <p id="CODEXHELPLOGIN">
     <strong style="color: blue; cursor: pointer; text-decoration: underline;"
@@ -27,7 +36,8 @@
       charge</strong>.</p>
   
   <p id="CODEXHELPLOGGEDIN">
-    <strong>This book</strong> is personalized for
+    <img alt="" class="right" name="SBOOKUSERPIC">
+    <strong>This book</strong> is personalized with glosses for
     <strong name="CODEXUSERNAME">Somebody Interesting</strong>.  If
     that's not you,
     please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
@@ -37,10 +47,10 @@
   
   <p><strong class="fortouch">Tap</strong>
     <strong class="notouch">Click</strong> the <em>bottom of the
-      page</em> to see the book and the <em>top of the page</em> to use
-    the tools.  The 'H' key or
+      page</em> to hide the tools and the <em>top of the page</em> to show
+    them.  The 'H' key or
     the <img src="http://static.beingmeta.com/graphics/codex/HelpIcon16x16.png"
-	     alt="help"> icon (up top) displays this help screen.</p>
+	     alt="help"> icon displays this help.</p>
 
   <p><strong>Flip</strong> through pages
     by <span class="fortouch">tapping</span>
@@ -49,20 +59,13 @@
     using the space, backspace, or page up/down buttons on your
     keyboard.</p>
   
-  <p><img style="float: right;"
-	  src="http://static.beingmeta.com/graphics/codex/sbookspeople24x24.png"/>
-    <strong>Reveal</strong> the glosses (notes, tags, links, etc)
-    added to the book by clicking on the
-    <img src="http://static.beingmeta.com/graphics/Asterisk16x16.png"/>
-    icons in the text; reveal all of the overlaid glosses by clicking
-    on the <em>overlays icon</em> in the lower right.</p>
-
   <p><strong>Jump</strong> through the book
     by <span class="fortouch">tapping</span>
     <span class="notouch">clicking</span> in the progress display at
     the bottom of the page; <span class="fortouch">tap</span>
-    <span class="notouch">click on</span> on the page number or the location
-    (Lddd) to jump to a particular location within the text.</p>
+    <span class="notouch">click on</span> on the page number or the
+    numeric location (<tt>Lddd</tt>) to jump to a particular page or
+    location within the text.</p>
   
   <p><strong>Annotate</strong> passages with your own glosses by
     either selecting some text or
@@ -71,20 +74,20 @@
     the <img src="http://static.beingmeta.com/graphics/codex/justremarkballoon16x16.png"
 	     alt="balloon"> icon which appears to its left.</p>
 
-  <p><img style="float: right;"
+  <p><img class="right"
 	  src="http://static.beingmeta.com/graphics/codex/CompassIcon24x24.png"/>
     <strong>Navigate</strong> the book's structure by clicking on the
     <em>navigation icon</em> in the upper left; a panel at the top of
     the page discloses the arrangement and sizes of the book's
     elements.</p>
 
-  <p><img style="float: right;"
+  <p><img class="right"
 	  src="http://static.beingmeta.com/graphics/codex/TagSearch24x24.png"/>
     <strong>Search</strong> using the <em>search icon</em> in the
     upper right to find passages or sections based on tags assigned to
     by your community, the author/publisher, or helpful robots.</p>
   
-  <p><img style="float: right;"
+  <p><img class="right"
 	  src="http://static.beingmeta.com/graphics/codex/ScanRight24.png"/>
     <strong>Scan</strong> through the book by clicking the <em>double
       arrow icons</em>, swiping with two fingers, or using the arrow

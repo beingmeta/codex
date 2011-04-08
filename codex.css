@@ -641,13 +641,19 @@ div#CODEXHELP div.codexhelp {
     max-width: 40em; margin-left: auto; margin-right: auto;}
 div#CODEXHELP div.codexhelp p {
     text-align: left; margin-left: 5em; text-indent: -3em;}
+div#CODEXHELP div.codexhelp p img.right {
+    float: right; max-height: 24px;}
 
+body div#CODEXHELP #CODEXHELPTITLE {
+    font-weight: bold;}
 div#CODEXHELP #CODEXSTARTUPMSG {
     text-align: right; padding-top: 2px; padding-right: 8px;
     color: darkblue;
     display: none;}
 body.codexstartup div#CODEXHELP #CODEXSTARTUPMSG {
     display: inline;}
+body.codexstartup div#CODEXHELP #CODEXHELPTITLE {
+    display: none;}
 
 /* Help HUD */
 
