@@ -647,6 +647,8 @@ div#CODEXHELP div.codexhelp p {
     text-align: left; margin-left: 5em; text-indent: -3em;}
 div#CODEXHELP div.codexhelp p img.right {
     float: right; max-height: 24px;}
+div#CODEXHELP div.codexhelp p#CODEXHELPLOGGEDIN img.right {
+    max-height: 50px;}
 
 body div#CODEXHELP #CODEXHELPTITLE {
     font-weight: bold;}
