@@ -79,8 +79,8 @@ Codex.Startup=
       if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
       fdjtLog.console="CODEXCONSOLE";
       fdjtLog.consoletoo=true;
-      fdjtLog("This is Codex version %d, built at %s on %s",
-	      fdjt_versions.codex,sbooks_buildtime,sbooks_buildhost);
+      fdjtLog("This is Codex version %s, built at %s on %s",
+	      Codex.version,sbooks_buildtime,sbooks_buildhost);
       if (navigator.appVersion)
 	fdjtLog("App version: %s",navigator.appVersion);
       if (!(Codex._setup_start)) Codex._setup_start=new Date();
@@ -115,6 +115,11 @@ Codex.Startup=
 	      fdjtDOM(fdjtID("CODEXINTRO"),
 		      fdjtDOM("strong","Weird, "),
 		      fdjtState.getQuery("weird"));
+	    /*
+	    fdjtDOM.adjustInside
+	      (fdjtID("CODEXHELPBODY"),fdjtID("CODEXHELP"),
+	       5,70,0.95);
+	    */
 	    Codex.setupGestures();}),
 	  getUser,
 	  function(){
@@ -299,6 +304,7 @@ Codex.Startup=
 	hide_mobile_safari_address_bar();
 	Codex.nativescroll=false;
 	Codex.scrolldivs=false;
+	Codex.updatelocation=false;
 	// Have fdjtLog do it's own format conversion for the log
 	fdjtLog.doformat=true;}
       else if (sbook_faketouch) {

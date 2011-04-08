@@ -609,6 +609,9 @@ div#CODEXHUD div#CODEXHELP {
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
+div#CODEXHUD div#CODEXHELP p.head {
+    font-weight: bold; text-align: center; margin-bottom: 0.40em;}
+
 div#CODEXHUD div#CODEXHELP h2, div#CODEXHUD div#CODEXHELP h3 {
     text-align: center; margin: .25em;}
 div#CODEXHUD div#CODEXHELP h2:first-child {
@@ -617,6 +620,7 @@ div#CODEXHUD div#CODEXHELP .codexclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
     text-align: center; color: red;}
 
+div#CODEXHELP div#CODEXHELPBODY { clear: both;}
 div#CODEXHELP div.helptopbanner {
     width: 100%; height: 24px; background-color: lightblue;
     text-align: right;}

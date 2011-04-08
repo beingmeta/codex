@@ -468,8 +468,6 @@ var sbook_gloss_data=
 	     (window.location.hash.slice(1)===target.id)))
 	    return;
 	if ((target===Codex.body)||(target===document.body)) return;
-	var saved_y=((fdjtDOM.isVisible(target))&&fdjtDOM.viewTop());
-	var saved_x=((fdjtDOM.isVisible(target))&&(fdjtDOM.viewLeft()));
 	window.location.hash=target.id;}
     Codex.setHashID=setHashID;
 
@@ -601,7 +599,8 @@ var sbook_gloss_data=
 	if (Codex.Trace.nav)
 	    fdjtLog("Codex.GoTo() #%o@P%o/L%o %o",
 		    target.id,page,((info)&&(info.starts_at)),target);
-	if (target.id) setHashID(target);
+	if ((target.id)&&(Codex.updatelocation))
+	  setHashID(target);
 	if (info) {
 	    if (typeof info.level === 'number')
 		setHead(target);
