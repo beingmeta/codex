@@ -461,8 +461,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     Codex.UI.hudbutton=hudbutton;
 
     Codex.UI.dropHUD=function(evt){
-	if (Codex.Trace.gestures) fdjtLog("dropHUD %o",evt);
-	fdjtUI.cancel(evt); CodexMode(false);};
+      var target=fdjtUI.T(evt);
+      if (fdjtUI.isClickable(target)) {
+	if (Codex.Trace.gestures)
+	  fdjtLog("Clickable: don't dropHUD %o",evt);
+	return;}
+      fdjtLog("dropHUD %o",evt);
+      fdjtUI.cancel(evt); CodexMode(false);};
 
     /* Gesture state */
 
@@ -953,7 +958,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 glossmark: {mouseup: glossmark_tapped},
 	 glossbutton: {mouseup: glossbutton_onclick,mousedown: cancel},
 	 ".sbookmargin": {click: edge_click},
-	 "#CODEXHELP": {click: Codex.dropHUD},
+	 "#CODEXHELP": {click: Codex.UI.dropHUD},
 	 "#CODEXFLYLEAF": {click: flyleaf_tap},
 	 "#CODEXPAGEINFO": {click: pageinfo_click},
 	 "#CODEXPAGENOTEXT": {click: enterPageNum},
@@ -963,7 +968,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXHEAD": {click: head_click},	 
 	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
-	 "#HIDEHELPBUTTON" : {click: Codex.dropHUD},
+	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
@@ -986,7 +991,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	     touchstart: cancel,
 	     touchmove: cancel,
 	     touchend: foot_click},
-	 "#CODEXHELP": {touchstart: Codex.dropHUD,
+	 "#CODEXHELP": {touchstart: Codex.UI.dropHUD,
 			  touchmove: cancel,
 			  touchend: cancel},
 	 "#CODEXFLYLEAF": {touchend: flyleaf_tap},
@@ -1001,7 +1006,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#HIDESPLASHCHECKSPAN" : {touchstart: hideSplashToggle,
 				   touchmove: cancel,
 				   touchend: cancel},
-	 "#HIDEHELPBUTTON" : {click: Codex.dropHUD,
+	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);},
 			      touchmove: cancel,
 			      touchend: cancel},
 	 ".hudmodebutton": {touchend:hudbutton,
