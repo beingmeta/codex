@@ -297,13 +297,13 @@ body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     border-color: darkblue; display: block; overflow: auto;
-    opacity: 0.95; min-height: 50px; height: auto;
+    opacity: 0.9; min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
-    max-height: 80px;}
+    max-height: 150px;}
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
@@ -954,8 +954,7 @@ body div#CODEXHUD div.codexthread > div.locrule {
 div.tochead { 
   position: relative; width: 100%;
   background-color: silver; color: blue;
-  text-align: left; vertical-align: middle;
-  margin-bottom: 2px;}
+  text-align: left; vertical-align: middle;}
 div.tochead span.spacer {
     font-size: 125%; font-weight: bold; font-style: italic;}
 div.tochead .paratext {
@@ -965,7 +964,7 @@ div.tochead span.head {
 div.tochead span.headtext {
     white-space: nowrap; font-size: 90%;}
 div.tochead hr {
-    color: white; background-color: white; min-width: 3px;
+    color: lightblue; background-color: lightblue; min-width: 3px;
     border-right: solid gold 1px; border-left: solid gold 1px;
     position: absolute; left: 0px; height: 100%;
     border: 0px; padding: 0px; margin: 0px;}
@@ -979,12 +978,12 @@ div.idhead {
   text-align: left; vertical-align: middle;
   border-top: solid gold 1px; overflow: hidden;}
 div.idhead hr {
-    color: white; background-color: white; min-width: 3px; opacity: 0.5;
+    color: ivory; background-color: ivory; min-width: 3px;
     border-right: solid gold 1px; border-left: solid gold 1px; 
     position: absolute; left: 0px; height: 100%;
     border: 0px; padding: 0px; margin: 0px;}
-div.idhead span { z-index: 10;}
-div.idhead div { z-index: 10; opacity: 1.0;}
+div.idhead span { z-index: 10; opacity: 0.75;}
+div.idhead div { z-index: 10; opacity: 0.75;}
 
 div.codexnote { position: relative;}
 
@@ -1359,7 +1358,7 @@ div#CODEXHUD .codexnote span.oldterm {color: blue; }
 .codexnote span.audience { 
   color: silver; font-size: 75%; font-weight: normal; font-style: italic;}
 body.sbook a.codexnote { display: block;}
-.codexnote.gloss { min-height: 50px;}
+.codexnote.gloss .codexnotebody { min-height: 60px;}
 .codexnote .info { 
   float: right;}
 .codexnote div.info { 

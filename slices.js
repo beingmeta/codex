@@ -58,37 +58,40 @@ var sbook_reply_icon="replyballoons26x15.png";
 	var head=((head_info)&&(head_info.elt));
 	var refiners=((query) && (query._refiners));
 	var score=((query)&&(query[key]));
+	var body=
+	  fdjtDOM("div.codexnotebody",
+		  // (makelocrule(target_info,target_info.head)),
+		  ((info.maker)&&(showglossinfo(info)))," ",
+		  // Makes it noisy (and probably slow) on the iPad
+		  ((standalone)&&(showtocloc(target_info))),
+		  ((score)&&(showscore(score))),
+		  ((info.note)&&(fdjtDOM("span.note",info.note)))," ",
+		  ((info.audience)&&(info.audience.length)&&
+		   (info.audience.length<div_threshold)&&
+		   (showaudience(info.audience)))," ",
+		  ((info.excerpt)&&(showexcerpts(info.excerpt)))," ",
+		  ((info.links)&&(showlinks(info.links,"span.link")))," ",
+		  ((info.attachments)&&
+		   (showlinks(info.attachments,"span.attachments")))," ",
+		  ((info.audience)&&(info.audience.length)&&
+		   (info.audience.length>=div_threshold)&&
+		   (showaudience(info.audience))),
+		  (((info.tags)||(info.autotags))&&(showtags(info))));
 	var div=
-	    fdjtDOM(((info.maker) ? "div.codexnote.gloss" : "div.codexnote"),
-		    ((head)&&(makeTOCHead(head))),
-		    ((head_info)&&(makeIDHead(target,head_info,true))),
-		    ((standalone)&&(makelocbar(target_info))),
-		    // (makelocrule(target_info,target_info.head)),
-		    ((info.maker)&&(showglossinfo(info)))," ",
-		    // Makes it noisy (and probably slow) on the iPad
-		    ((standalone)&&(showtocloc(target_info))),
-		    ((score)&&(showscore(score))),
-		    ((info.note)&&(fdjtDOM("span.note",info.note)))," ",
-		    ((info.audience)&&(info.audience.length)&&
-		     (info.audience.length<div_threshold)&&
-		     (showaudience(info.audience)))," ",
-		    ((info.excerpt)&&(showexcerpts(info.excerpt)))," ",
-		    ((info.links)&&(showlinks(info.links,"span.link")))," ",
-		    ((info.attachments)&&
-		     (showlinks(info.attachments,"span.attachments")))," ",
-		    ((info.audience)&&(info.audience.length)&&
-		     (info.audience.length>=div_threshold)&&
-		     (showaudience(info.audience))),
-		    (((info.tags)||(info.autotags))&&(showtags(info)))," ");
+	  fdjtDOM(((info.maker) ? "div.codexnote.gloss" : "div.codexnote"),
+		  ((head)&&(makeTOCHead(head))),
+		  ((head_info)&&(makeIDHead(target,head_info,true))),
+		  ((standalone)&&(makelocbar(target_info))),
+		  body);
 	if (!(info.tstamp))
-	    div.title=Codex.getTitle(target,true);
+	  div.title=Codex.getTitle(target,true);
 	// if (info.qid) div.about=info.qid;
 	div.about="#"+info.frag;
 	// div.setAttribute('about',"#"+info.id);
 	if (idprefix) div.id=idprefix+info.id;
 	if (info.qid) {
-	    div.name=div.qref=info.qid;
-	    div.setAttribute("name",info.qid);}
+	  div.name=div.qref=info.qid;
+	  div.setAttribute("name",info.qid);}
 	return div;}
     Codex.renderNote=renderNote;
     
