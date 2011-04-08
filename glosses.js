@@ -398,10 +398,10 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    handleBracketed(form,content);}
 	else {
 	    var content=getbracketed(target);
-	    if ((content)&&(content[0]!=='!'))
-		addgloss_timer=setTimeout(function(){
-		    var span=getbracketed(target,false);
-		    gloss_cloud.complete(span);},100);}}
+	    if ((typeof content==='string')&& (content[0]!=='!'))
+	      addgloss_timer=setTimeout(function(){
+		  var span=getbracketed(target,false);
+		  gloss_cloud.complete(span);},200);}}
 
     function addgloss_keydown(evt){
 	evt=evt||event;
