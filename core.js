@@ -317,7 +317,8 @@ var sbook_gloss_data=
 	     (fdjtDOM.textify(target)).
 	     replace(/\n\n+/g,"\n").
 	     replace(/^\n+/,"").
-	     replace(/\n+$/,""));};
+	     replace(/\n+$/,"").
+	     replace(/\n+/g," // "));};
 
     function getinfo(arg){
 	if (arg)
