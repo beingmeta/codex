@@ -43,6 +43,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     function cxicon(name,suffix) {
 	return Codex.graphics+"codex/"+name+(suffix||"");}
 
+    var addClass=fdjtDOM.addClass;
+
     /* Query functions */
 
     /* Set on main search input */
@@ -95,7 +97,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var elts=result._query; var i=0; var lim=elts.length;
 	// Update 'notags' class
 	if (elts.length) fdjtDOM.dropClass(box,"notags");
-	else fdjtDOM.addClass(box,"notags");
+	else addClass(box,"notags");
 	// Update the query tags
 	var newtags=fdjtDOM("span.qtags");
 	while (i<lim) {
@@ -117,7 +119,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.dropClass(box,"noresults");}
 	else {
 	    resultcount.innerHTML="no results";
-	    fdjtDOM.addClass(box,"noresults");}
+	    addClass(box,"noresults");}
 	// Update the search cloud
 	var n_refiners=
 	    ((result._refiners)&&(result._refiners._results.length))||0;
@@ -135,7 +137,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    completions.complete("");
 	    Codex.UI.updateScroller(completions.dom);}
 	else {
-	    fdjtDOM.addClass(box,"norefiners");
+	    addClass(box,"norefiners");
 	    refinecount.innerHTML="no refiners";}
 	result._box=box; box.setAttribute(qstring,qstring);
 	return result;}
@@ -209,10 +211,16 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    if (completions.prefix!==qstring) {
 		target.value=completions.prefix;
 		fdjtDOM.cancel(evt);
+		setTimeout(function(){
+		    Codex.UI.updateScroller("CODEXSEARCHCLOUD");},
+		  100);
 		return;}}
 	else {
 	    var completeinfo=queryCloud(Codex.query);
-	    completeinfo.docomplete(target);;}}
+	    completeinfo.docomplete(target);
+	    setTimeout(function(){
+		Codex.UI.updateScroller("CODEXSEARCHCLOUD");},
+	      100);}}
     Codex.UI.handlers.search_keyup=searchInput_keyup;
 
     /*
@@ -344,19 +352,20 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    result._cloud=Codex.empty_cloud;
 	    return query._cloud;}
 	else {
-	    var completions=makeCloud(query._refiners._results,query._refiners._freqs);
+	    var completions=
+	      makeCloud(query._refiners._results,query._refiners._freqs);
 	    completions.onclick=Cloud_onclick;
 	    var n_refiners=query._refiners._results.length;
 	    var hide_some=(n_refiners>Codex.show_refiners);
 	    if (hide_some) {
 		var cues=fdjtDOM.$(".cue",completions);
 		if (!((cues)&&(cues.length))) {
-		    var compelts=fdjtDOM.$(".completion",completions);
-		    var i=0; var lim=((compelts.length<Codex.show_refiners)?
-				      (compelts.length):(Codex.show_refiners));
-		    while (i<lim) fdjtDOM.addClass(compelts[i++],"cue");}}
-	    else fdjtDOM.addClass(completions,"showempty");
-
+		  var compelts=fdjtDOM.$(".completion",completions);
+		  var i=0; var lim=((compelts.length<Codex.show_refiners)?
+				    (compelts.length):(Codex.show_refiners));
+		  while (i<lim) addClass(compelts[i++],"cue");}}
+	    else addClass(completions,"showempty");
+	    
 	    query._cloud=
 		new fdjtUI.Completions(completions,fdjtID("CODEXSEARCHINPUT"));
 
@@ -391,7 +400,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	else {}}
     Codex.UI.handlers.Cloud_onclick=Cloud_onclick;
 
-    function makeCloud(dterms,scores,noscale){
+    function makeCloud(dterms,scores,noscale,alphabetize){
 	var sbook_index=Codex.index;
 	var start=new Date();
 	if (Codex.Trace.clouds)
@@ -412,13 +421,14 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var copied=[].concat(dterms);
 	var bykey=sbook_index.bykey;
 	// We sort the keys by absolute frequency
-	copied.sort(function (x,y) {
+	if (alphabetize) copied.sort();
+	else copied.sort(function (x,y) {
 	    var xlen=((bykey[x])?(bykey[x].length):(0));
 	    var ylen=((bykey[y])?(bykey[y].length):(0));
 	    if (xlen==ylen)
-		if (x>y) return -1;
-	    else if (x===y) return 0;
-	    else return 1;
+	      if (x>y) return -1;
+	      else if (x===y) return 0;
+	      else return 1;
 	    else if (xlen>ylen) return -1;
 	    else return 1;});
 	// Then we scale the keys by the ratio of result frequency to
@@ -426,6 +436,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var nspans=0; var sumscale=0;
 	var minscale=false; var maxscale=false;
 	var domnodes=[]; var nodescales=[];
+	var isprime=
+	  (((Codex.knodule.prime.length)?(Codex.knodule.prime):
+	    (Codex.knodule.dterms))||
+	   false);
  	i=0; while (i<copied.length) {
 	    var dterm=copied[i++];
 	    var count=((bykey[dterm]) ? (bykey[dterm].length) : (1));
@@ -436,8 +450,9 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		 (dterm+": "+(((score)?("s="+score+"; "):"")+freq+"/"+count+" items")) :
 		 (dterm+": "+freq+((freq==1) ? " item" : " items")));
 	    var span=KNodeCompletion(dterm,title);
+	    if ((isprime)&&(isprime[dterm])) addClass(span,"cue");
 	    domnodes.push(span);
-	    if (freq===1) fdjtDOM.addClass(span,"singleton");
+	    if (freq===1) addClass(span,"singleton");
 	    if ((scores)&&(!(noscale))) {
 		var relfreq=
 		  ((freq/scores._count)/(count/Codex.docinfo._eltcount));
@@ -532,7 +547,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var tagscores=Codex.index.tagScores();
 	    var alltags=tagscores._all;
 	    var tagfreqs=tagscores._freq;
-	    var completions=Codex.makeCloud(alltags,tagfreqs);
+	    var completions=Codex.makeCloud(alltags,tagfreqs,false,true);
 	    var cues=fdjtDOM.getChildren(completions,".cue");
 	    completions.onclick=Cloud_onclick;
 	    Codex.full_cloud=new fdjtUI.Completions(completions);

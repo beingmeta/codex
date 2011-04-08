@@ -49,7 +49,7 @@ Codex.Startup=
 
     function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
     function cxicon(name,suffix) {
-	return Codex.graphics+"codex/"+name+(suffix||"");}
+      return Codex.graphics+"codex/"+name+(suffix||"");}
 
 
     /* Initialization */
@@ -116,9 +116,9 @@ Codex.Startup=
 		      fdjtDOM("strong","Weird, "),
 		      fdjtState.getQuery("weird"));
 	    /*
-	    fdjtDOM.adjustInside
+	      fdjtDOM.adjustInside
 	      (fdjtID("CODEXHELPBODY"),fdjtID("CODEXHELP"),
-	       5,70,0.95);
+	      5,70,0.95);
 	    */
 	    Codex.setupGestures();}),
 	  getUser,
@@ -1065,9 +1065,14 @@ Codex.Startup=
 	else tags.sort();}
       var knodule=Codex.knodule||false;
       sbook_index.Tags=function(item){
-	var info=docinfo[item]||
-	Codex.glosses.ref(item)||
-	fdjtKB.ref(item);
+	if (docinfo[item]) {
+	  var info=docinfo[item];
+	  if (info.alltags) return info.alltags;
+	  return (info.alltags=
+		  (KnoduleIndex.combineTags([info.tags||false,
+					     info.glosstags||false,
+					     info.autotags||false])));}
+	var info=Codex.glosses.ref(item)||fdjtKB.ref(item);
 	return ((info)&&(info.tags))||[];};
       for (var eltid in docinfo) {
 	var tags=docinfo[eltid].tags; 

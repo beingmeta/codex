@@ -121,53 +121,61 @@ var sbook_reply_icon="replyballoons26x15.png";
     function tagexpand_click(evt){
 	return expander_toggle(evt);}
 
+    var combineTags=Knodule.combineTags;
+    
     function showtags(info){
-	var ctags=info.tags, atags=info.autotags, tags, scores;
-	if ((typeof ctags === 'string')||(ctags instanceof String))
-	    ctags=[ctags];
+      var ctags=info.tags;
+      var gtags=info.glosstags;
+      var atags=info.autotags;
+      var tags; var scores;
+      if ((typeof ctags === 'string')||(ctags instanceof String))
+	ctags=[ctags];
+      if (!((atags)||(gtags))) {
+	tags=ctags; scores=tags.scores;}
+      else if (info.alltags) {
+	// This is where the combination of tags is cached
+	tags=info.alltags; scores=tags.scores;}
+      else {
+	// Sort the automatic tags if needed
 	if ((atags)&&(!(atags.sorted))) {
-	    var weights=Codex.index.tagweights;
-	    atags.sort(function(t1,t2){
-		var v1=weights[t1], v2=weights[t2];
-		if ((v1)&&(v2)) {
-		    if (v1<v2) return -1;
-		    else if (v1>v2) return 1;
-		    else return 0;}
-		else if (v1) return 1;
-		else return -1;});
-	    
-	    atags.sorted=true;}
-	if (!(atags)) {tags=ctags; scores=tags.scores||false;}
-	else if (!(ctags)) {tags=atags; scores=false;}
-	else {
-	    scores=ctags.scores||false;
-	    tags=[].concat(ctags).concat(atags);}
-	var tagcount=0;
-	var countspan=fdjtDOM("span.count");
-	var tagicon=fdjtDOM.Image
-	  (cxicon("TagIcon16x16.png"),"img.tagicon","tags");
-	var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
-	var tagspan=span;
-	var controller=false;
-	var i=0; var lim=tags.length;
-	while (i<tags.length) {
-	    var tag=tags[i]; var score=((scores)&&(scores[tag]))||false;
-	    if ((typeof tag === 'string')&&(tag.indexOf('@')>=0))
-		tag=fdjtKB.ref(tag)||tag;
-	    var togo=tags.length-i;
-	    if ((!controller)&&((!(score))||(score<=1))&&
-		(i>show_tag_thresh)&&(togo>4)) {
-		controller=fdjtDOM("span.controller",
-				   "all ",tags.length," tags",
-				   fdjtDOM("span.whenexpanded","-"),
-				   fdjtDOM("span.whencollapsed","+"));
-		var subspan=fdjtDOM("span.whenexpanded");
-		controller.onclick=tagexpand_click;
-		fdjtDOM(span," ",controller," ",subspan);
-		tagspan=subspan;}
-	    fdjtDOM.append(tagspan,((i>0)?" \u00b7 ":" "),Knodule.HTML(tag));
-	    i++;}
-	return span;}
+	  var weights=Codex.index.tagweights;
+	  atags.sort(function(t1,t2){
+	      var v1=weights[t1], v2=weights[t2];
+	      if ((v1)&&(v2)) {
+		if (v1<v2) return -1;
+		else if (v1>v2) return 1;
+		else return 0;}
+	      else if (v1) return 1;
+	      else return -1;});
+	  atags.sorted=true;}
+	tags=info.alltags=combineTags([ctags,gtags,atags]);
+	scores=tags.scores;}
+      var tagcount=0;
+      var countspan=fdjtDOM("span.count");
+      var tagicon=fdjtDOM.Image
+	(cxicon("TagIcon16x16.png"),"img.tagicon","tags");
+      var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
+      var tagspan=span;
+      var controller=false;
+      var i=0; var lim=tags.length;
+      while (i<tags.length) {
+	var tag=tags[i]; var score=((scores)&&(scores[tag]))||false;
+	if ((typeof tag === 'string')&&(tag.indexOf('@')>=0))
+	  tag=fdjtKB.ref(tag)||tag;
+	var togo=tags.length-i;
+	if ((!controller)&&((!(score))||(score<=1))&&
+	    (i>show_tag_thresh)&&(togo>4)) {
+	  controller=fdjtDOM("span.controller",
+			     "all ",tags.length," tags",
+			     fdjtDOM("span.whenexpanded","-"),
+			     fdjtDOM("span.whencollapsed","+"));
+	  var subspan=fdjtDOM("span.whenexpanded");
+	  controller.onclick=tagexpand_click;
+	  fdjtDOM(span," ",controller," ",subspan);
+	  tagspan=subspan;}
+	fdjtDOM.append(tagspan,((i>0)?" \u00b7 ":" "),Knodule.HTML(tag));
+	i++;}
+      return span;}
     function showaudience(tags){
 	if (!(tags instanceof Array)) tags=[tags];
 	var span=fdjtDOM(

@@ -140,9 +140,16 @@ var sbook_gloss_data=
 		    if ((tags)&&(tags.length)) {
 			var i=0; var lim=tags.length;
 			while (i<lim) {
-			    var tag=tags[i++];
-			    Codex.index.add(item,tag);
-			    Codex.addTag2UI(fdjtKB.ref(tag),true);}}}
+			  var tag=tags[i++]; var score=false;
+			  if (tag[0]==='*') {
+			    score=tag.search(/[^*]/);
+			    tag=tag.slice(score);}
+			  var knode=fdjtKB.ref(tag)||tag;
+			  if (info.glosstags)
+			    info.glosstags.push(knode);
+			  else info.glosstags=[knode];
+			  Codex.index.add(item,knode);
+			  Codex.addTag2UI(knode,true);}}}
 		var sources=item.sources;
 		if (sources) {
 		    if (typeof sources !== 'array') sources=[sources];
