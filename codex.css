@@ -479,6 +479,8 @@ div.codextoc div.head {
   left: 0px; right: 0px; margin: 0px;
   margin-left: 32px; margin-right: 32px;
   display: none;}
+div.codextoc > div.spanbar {
+  margin-left: 0px; margin-right: 0px;}
 
 div.codextoc div.head { min-height: 24px;}
 div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
@@ -586,7 +588,9 @@ div.spanbar div.codexhudspan[even] {}
 div.spanbar div.codexhudspan.current {
     color: yellow; background-color: yellow;}
 div#CODEXHUD div.codextoc { 
-  margin-left: 32px; margin-right: 32px;}
+  margin-left: 16px; margin-right: 16px;}
+div#CODEXHUD div.codextoc.toc0 { 
+  margin-left: 0px; margin-right: 0px;}
 
 div.spanbar { padding: 0px; margin: 0px;}
 div.spanbar div.spans { 
