@@ -466,7 +466,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (Codex.Trace.gestures)
 	  fdjtLog("Clickable: don't dropHUD %o",evt);
 	return;}
-      fdjtLog("dropHUD %o",evt);
+      if (Codex.Trace.gestures) fdjtLog("dropHUD %o",evt);
       fdjtUI.cancel(evt); CodexMode(false);};
 
     /* Gesture state */
