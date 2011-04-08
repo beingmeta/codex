@@ -54,12 +54,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else if (string[end]==='\\') end=end+2;
 	    else end++;}
 	if (start===end) return false;
-	if (erase)
-	    input.value=string.slice(0,start)+string.slice(end+1);
+	if (erase) {
+	    input.value=string.slice(0,start)+string.slice(end+1);}
 	else {}
 	return string.slice(start+1,end);}
     var addClass=fdjtDOM.addClass;
-    var dropClass=fdjtDOM.addClass;
+    var dropClass=fdjtDOM.dropClass;
     function getbracketed(input,erase){
       var bracketed=_getbracketed(input,erase||false);
       if (bracketed) addClass("CODEXADDGLOSS","tagging");
@@ -242,6 +242,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (tag.title) title=tag.title;
 	    tag=gloss_cloud.getValue(tag);
 	    var input=fdjtDOM.getInput(form,"NOTE");
+	    // This erases whatever was being typed
 	    if (input) getbracketed(input,true);}
 	var info=
 	    ((typeof tag === 'string')&&
@@ -356,26 +357,27 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     Codex.UI.bracket_click=bracket_click;
 
     function handleBracketed(form,content){
-	if (content[0]==='!') {
-	    var brk=content.indexOf(' ');
-	    if (brk<0) addLink(form,content.slice(1,-1));
-	    else {
-		addLink(form,content.slice(1,brk),
-			content.slice(brk+1));}}
-	else if (content.indexOf('|')>=0) addTag(form,content);
+      dropClass("CODEXADDGLOSS","tagging");
+      if (content[0]==='!') {
+	var brk=content.indexOf(' ');
+	if (brk<0) addLink(form,content.slice(1,-1));
 	else {
-	    var completions=gloss_cloud.complete(content);
-	    if (!(completions)) {
-		addTag(form,content);
-		return;}
-	    var i=0; var lim=completions.length;
-	    var std=fdjtString.stdspace(content);
-	    while (i<lim) {
-		var completion=completions[i++];
-		if (content===gloss_cloud.getKey(completion)) {
-		    addTag(form,completion);
-		    return;}}
-	    addTag(form,std);}}
+	  addLink(form,content.slice(1,brk),
+		  content.slice(brk+1));}}
+      else if (content.indexOf('|')>=0) addTag(form,content);
+      else {
+	var completions=gloss_cloud.complete(content);
+	if (!(completions)) {
+	  addTag(form,content);
+	  return;}
+	var i=0; var lim=completions.length;
+	var std=fdjtString.stdspace(content);
+	while (i<lim) {
+	  var completion=completions[i++];
+	  if (content===gloss_cloud.getKey(completion)) {
+	    addTag(form,completion);
+	    return;}}
+	addTag(form,std);}}
 
     function addgloss_keypress(evt){
 	var target=fdjtUI.T(evt);
@@ -471,7 +473,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (completion) {
 	    var live=fdjtID("CODEXLIVEGLOSS");
 	    var form=((live)&&(fdjtDOM.getChild(live,"form")));
-	    addTag(form,completion);}
+	    addTag(form,completion);
+	    dropClass("CODEXADDGLOSS","tagging");}
 	fdjtUI.cancel(evt);}
 
     /***** Saving (submitting/queueing) glosses *****/
