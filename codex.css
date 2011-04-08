@@ -898,6 +898,14 @@ span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 
+div.codexnote { margin-left: 20px;}
+div.codexnote div.idhead { margin-left: -10px;}
+div.codexnote div.tochead {
+    border-top: solid purple 1px;
+    margin-left: -20px;}
+
+div.codexslice .tocthread {
+    border-left: solid purple 1px;}
 div.codexslice .tocthread .codexnote .tochead { display: none;}
 div.codexslice .tocthread .idthread:first-child
       .codexnote:first-child .tochead {
@@ -923,8 +931,7 @@ div#SBOOKGLOSSES div.codexthread {
     padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
 div.codexthread .locbar { background-color: silver;}
 div.codexthread.headthread { border-top: solid gold 2px;}
-div.codexthread.idthread {
-    margin-left: 16px; border: none;}
+div.codexthread.idthread {border: none;}
 div.codexthread.idthread .codexnote {}
 div.codexslice div.codexthread div.codexnote div.locbar {border: none;}
 div.codexslice div.codexthread div.codexnote div.locbar {display:none;}
