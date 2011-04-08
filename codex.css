@@ -414,7 +414,9 @@ div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 /* The Console */
 
 div#CODEXCONSOLE h1 { font-size: 1.5em;}
-div#CODEXCONSOLE div.fdjtlog { margin-left: 40px; }
+div#CODEXCONSOLE div.fdjtlog {
+    border-top: solid black 1px;
+    margin-left: 8em; text-indent: -8em;}
 div#CODEXCONSOLE div.message {
     text-align: center; font-size: 150%;}
 
