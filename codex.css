@@ -1441,7 +1441,8 @@ body .codexglossmark { opacity: 0.4;}
 body.hudup .codexglossmark { opacity: 0.6; display: block;}
 
 .codexglossmark img {
-    float: right; vertical-align: top; text-align: right;}
+    float: right; vertical-align: top; text-align: right;
+    margin-right: -50px;}
 .codexglossmark img.tiny {width: 16px;}
 .codexglossmark img.big {width: 32px;}
 .codexglossmark img.tiny, span.codexglossmark img.big { display: none; }
@@ -1451,11 +1452,12 @@ body.hudup .codexglossmark { opacity: 0.6; display: block;}
     margin: 0px; padding: 0px; text-indent: 0px; 
     border: solid transparent 2px;
     width: 32px; height: 32px; z-index: 50;
-    border-right: 0px; margin-left: -40px;
+    border-right: 0px;
+    margin-left: -50px;
     opacity: 0.0001;
     display: none;}
 body.hudup .codexglossbutton { opacity: 0.5;}
-body.hudup .sbooktarget .codexglossbutton { opacity: 0.9; display: block;}
+body.hudup .sbooktarget .codexglossbutton { display: block;}
 
 /* Sparse glossmark display (the default) */
 
@@ -1492,39 +1494,74 @@ body.notsbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
 body.notsbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
   display: block;}
 
+/* The add gloss panel */
+
+body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
+    }
+
+div#CODEXHUD div#CODEXADDGLOSS div#CODEXTAGHELP {
+    width: 98%; margin-left: auto; margin-right: auto;
+    text-align: left; color: black;
+    margin-bottom: 1em;
+    display: none;}
+div#CODEXHUD div#CODEXADDGLOSS div#CODEXGLOSSCLOUD { display: none;}
+div#CODEXHUD div#CODEXADDGLOSS.tagging div#CODEXTAGHELP { display: block;}
+div#CODEXHUD div#CODEXADDGLOSS.tagging div#CODEXGLOSSCLOUD { display: block;}
+
 /* Gloss form */
 
 div.codexglossform { display: none;}
 div.codexglossform#CODEXLIVEGLOSS { display: block;}
 div.codexglossform form {
     padding: 0px; margin: 0px;}
+div.codexglossform form span.checkspan.excerpt {
+    white-space: normal;}
 div.codexglossform form div.inputhelp {
-    color: black; padding-bottom: 4px;
+    color: black; padding-bottom: 4px; text-align: left;
     display: none;}
-div.codexglossform form div.inputhelp .bracketbutton {
-    float: right; font-family: fixed; font-weight: bold; font-size: 120%;
-    padding: 0px; padding-left: 6px; padding-right: 6px; 
-    border: solid silver 4px; border-radius: 6px;
-    margin-bottom: 2px;
-    cursor: pointer;}
-div.codexglossform form div.inputhelp strong {font-size: 120%; color: orange;}
+div.codexglossform form .bracketbutton {
+    font-weight: bold; font-size: 110%;
+    padding: 0px; cursor: pointer;}
+div.codexglossform form .bracketbutton strong {
+    font-size: 110%; color: red;}
 div.codexglossform form.focused div.inputhelp { display: block;}
 
 div.codexglossform form textarea[name='NOTE'],
 div.codexglossform form input[type='TEXT'][name='NOTE'] {
-    height: 5ex; overflow: hidden; width: 100%;
+    min-height: 7ex; overflow: hidden;
+    width: 98%; margin-left: auto; margin-right: auto;
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
+div.codexglossform form div.inputhelp {
+    width: 98%; margin-left: auto; margin-right: auto;
+    margin-top: 0px; padding-top: 0px;}
 div.codexglossform form div.glossetc {
-    display: block; text-align: left; font-size: 12px;}
+    display: block; text-align: left; font-size: 12px;
+    width: 98%; margin-left: auto; margin-right: auto;
+    clear: both; min-height: 24px;}
+div.codexglossform form div.glossetc > .checkspan.private {
+    float: right; vertical-align: top; margin-left: 4px;
+    padding-top: 0px; margin-top: 0px;}
+div.codexglossform form div.glossetc > span.button {
+    float: right;
+    font-weight: bold; color: black;
+    border-radius: 4px; -o-border-radius: 4px;
+    -moz-border-radius: 4px; -webkit-border-radius: 4px;
+    padding: 0px; padding-right: 2px;  padding-left: 2px; 
+    margin-left: 4px; 
+    border: solid silver 2px; background-color: silver; padding: 2px;
+    text-align: center;
+    cursor: pointer;}
+div.codexglossform form div.glossetc > .bracketbutton {
+    float: right; vertical-align: top;}
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;
     font-family: sans,sans-serif;}
 div.codexglossform form .checkspan.private {
-    font-weight: bold; font-size: 90%;
+    font-weight: bold;
     border-radius: 4px; -o-border-radius: 4px;
     -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
@@ -1540,9 +1577,9 @@ div.codexglossform form .checkspan.private input[type='checkbox'] {
 div.codexglossform form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
-div.codexglossform td.button img[alt='save'] { display: none;}
-div.codexglossform.glossedit td.button img[alt='save'] { display: block;}
-div.codexglossform.glossedit td.button img[alt='add'] { display: none;}
+div.codexglossform span.savebutton { display: none;}
+div.codexglossform.glossedit span.savebutton { display: inline;}
+div.codexglossform.glossedit span.addbutton { display: none;}
 
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}

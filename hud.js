@@ -137,7 +137,7 @@ var CodexMode=
 	    fillinFlyleaf();
 	    resizeHUD();
 	    Codex.scrollers={};
-	    updateScroller("CODEXGLOSSCLOUD");
+	    // updateScroller("CODEXGLOSSCLOUD");
 	    updateScroller("CODEXSEARCHCLOUD");
 	}
 	Codex.initHUD=initHUD;
@@ -228,7 +228,7 @@ var CodexMode=
 	    {allglosses: "CODEXALLGLOSSES",
 	     searchresults: "CODEXSEARCHRESULTS",
 	     search: "CODEXSEARCHCLOUD",
-	     addgloss: "CODEXGLOSSCLOUD",
+	     // addgloss: "CODEXGLOSSCLOUD",
 	     sbookapp: "MANAGEAPP",
 	     flytoc: "CODEXFLYTOC",
 	     about: "APPABOUT"};

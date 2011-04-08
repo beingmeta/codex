@@ -38,7 +38,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     function sbicon(base){return Codex.graphics+base;}
     function cxicon(base){return Codex.graphics+"codex/"+base;}
 
-    function getbracketed(input,erase){
+    function _getbracketed(input,erase){
 	var string=input.value;
 	var pos=input.selectionStart;
 	var start=pos, end=pos, lim=string.length;
@@ -58,6 +58,13 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    input.value=string.slice(0,start)+string.slice(end+1);
 	else {}
 	return string.slice(start+1,end);}
+    var addClass=fdjtDOM.addClass;
+    var dropClass=fdjtDOM.addClass;
+    function getbracketed(input,erase){
+      var bracketed=_getbracketed(input,erase||false);
+      if (bracketed) addClass("CODEXADDGLOSS","tagging");
+      else dropClass("CODEXADDGLOSS","tagging");
+      return bracketed;}
 
     // set the gloss target for a particular passage
     function getGlossForm(arg,response) {

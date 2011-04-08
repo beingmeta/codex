@@ -15,52 +15,40 @@
     <input type="HIDDEN" name="THREAD"/>
     <input type="HIDDEN" name="RE"/>
   </div>
-  <table>
-    <tr>
-      <td>
-	<div class="inputhelp">
-	  <div class="bracketbutton"
-		onmousedown="Codex.UI.bracket_click(event);"
-		ontouchstart="Codex.UI.bracket_click(event);"
-		title="open/close bracketed tag or link">
-	    <strong>[</strong>...<strong>]</strong></div>
-	  use brackets to add
-	  <strong>[</strong>tag<strong>]</strong>s or
-	  <strong>[!</strong>http://example.com/ <em>link</em><strong>]</strong>s.
-	  Enter to save, shift-Enter for a line break.
-	</div>
-	<textarea name="NOTE"
-		  placeholder="add text, [tag]s or [!http://example.com/ links]"
-		  onfocus="fdjtDOM.aC(fdjtDOM.$P(this,'form'),'focused');"
-		  onblur="fdjtDOM.dC(fdjtDOM.$P(this,'form'),'focused');"
-		  wrap="virtual"></textarea>
-	<div class="glossetc">
-	  <span class="checkspan private"
-		onclick="fdjtUI.CheckSpan.onclick(event);"
-		title="don't share this gloss with my friends generally">
-	    <input type="CHECKBOX" name="PRIVATE" value="yes"/>
-	    <span class="checked"
-		  title="don't share this note with my personal circle (friends)">
-	      private</span>
-	    <span class="unchecked"
-		  title="share this note with my personal circle (friends)">
-	      shared</span>
-	  </span>
-	  <span class="checkspan" title="post to your social news feeds">    
-	    <input type="CHECKBOX" name="POST" value="yes" DISABLED/>push</span>
-	  <span class="outlets" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
-	  <span class="links" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
-	  <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
-      </td>
-    <td class="button">
-      <img src="http://static.beingmeta.com/graphics/codex/sbgAddButton50x50.png"
-	   class="button" onclick="Codex.UI.submitEvent(event);"
-	   title="add extended text" data-mode="detail" alt="add"/>
-      <img src="http://static.beingmeta.com/graphics/codex/sbgSaveButton50x50.png"
-	   class="button" onclick="Codex.UI.submitEvent(event);"
-	   title="add extended text" data-mode="detail" alt="save"/>
-    </td></tr>
-  </table>
+  <textarea name="NOTE"
+	    placeholder="add text, [tag]s or [!http://example.com/ links]"
+	    onfocus="fdjtDOM.aC(fdjtDOM.$P(this,'form'),'focused');"
+	    onblur="fdjtDOM.dC(fdjtDOM.$P(this,'form'),'focused');"
+	    wrap="virtual"></textarea>
+  <div class="glossetc">
+    <span class="button addbutton" onclick="Codex.UI.submitEvent(event);">
+      add it</span>
+    <span class="button savebutton" onclick="Codex.UI.submitEvent(event);">
+      save it</span>
+    <span class="checkspan private"
+	  onclick="fdjtUI.CheckSpan.onclick(event);"
+	  title="don't share this gloss with my friends generally">
+      <input type="CHECKBOX" name="PRIVATE" value="yes"/>
+      <span class="checked"
+	    title="don't share this note with my personal circle (friends)">
+	private</span>
+      <span class="unchecked"
+	    title="share this note with my personal circle (friends)">
+	shared</span>
+    </span>
+    <span class="bracketbutton"
+	  onmousedown="Codex.UI.bracket_click(event);"
+	  ontouchstart="Codex.UI.bracket_click(event);"
+	  title="open/close bracketed tag or link">
+      <strong>[</strong>tag/!link<strong>]</strong></span>
+    <!--
+    <span class="checkspan" title="post to your social news feeds">    
+      push<input type="CHECKBOX" name="POST" value="yes" DISABLED/></span>
+    -->
+    <span class="outlets" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
+    <span class="links" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
+    <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
+  </div>
 </form>
 <!--
     /* Emacs local variables
