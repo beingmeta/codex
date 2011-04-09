@@ -229,6 +229,7 @@ var CodexMode=
 	     searchresults: "CODEXSEARCHRESULTS",
 	     search: "CODEXSEARCHCLOUD",
 	     // addgloss: "CODEXGLOSSCLOUD",
+	     console: "CODEXCONSOLE",
 	     sbookapp: "MANAGEAPP",
 	     flytoc: "CODEXFLYTOC",
 	     about: "APPABOUT"};

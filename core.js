@@ -40,7 +40,7 @@ var Codex=
      last_mode: false, last_flyleaf: "about",
      // How long it takes a gesture to go from tap to hold
      holdmsecs: 500, edgeclick: 50, pagesize: 250,
-     animate: {pages:true,hud: true},
+     animate: {pages:true,hud: true}, colbreak: false,
      updatelocation: true,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
@@ -70,17 +70,17 @@ var Codex=
 	 mode: false,	// Whether to trace mode changes
 	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
-	 search: 0,	// Whether (and level) to trace searches
-	 clouds: 0,	// Whether to trace cloud generation
+	 search: 0,	// How much to trace searches
+	 clouds: 0,	// How much to trace cloud generation
 	 focus: false,	// Whether to trace target changes
 	 toc: false,	// Whether we're debugging TOC tracking
-	 network: 0,	// Whether we're debugging server interaction
+	 network: 0,	// How much to trace server interaction
 	 glosses: false,// Whether we're tracing gloss processing
-	 layout: 0,	// Whether to trace pagination
+	 layout: 0,	// How much to trace pagination
 	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 0}   // Whether to trace gestures
+	 gestures: 0}   // How much to trace gestures
     };
 var _sbook_setup=false;
 
