@@ -526,7 +526,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event||false;
 	var target=fdjtUI.T(evt);
 	if (fdjtUI.isClickable(target)) return;
-	fdjtUI.cancel(evt);
+	// fdjtUI.cancel(evt);
 	if (Codex.Trace.gestures) tracetouch("touchstart",evt);
 	touch_started=fdjtTime();
 	var touches=evt.touches;
@@ -562,7 +562,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function content_touchmove(evt){
 	// When faking touch, moves only get counted if the mouse is down.
 	if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
-	fdjtUI.cancel(evt);
+	// fdjtUI.cancel(evt);
 	touch_moves++;
 	var touches=evt.touches;
 	var touch=

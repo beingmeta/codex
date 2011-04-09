@@ -910,11 +910,11 @@ span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 
-div.codexnote { margin-left: 20px;}
-div.codexnote div.idhead { margin-left: -10px;}
+div.codexnote { margin-left: 20px; margin-right: 20px;}
+div.codexnote div.idhead {
+    margin-left: -10px; margin-right: -10px;}
 div.codexnote div.tochead {
-    border-top: solid purple 1px;
-    margin-left: -20px;}
+    margin-left: -20px; margin-right: -20px;}
 
 div.codexslice .tocthread {
     border-left: solid purple 1px;}
@@ -954,10 +954,11 @@ body div#CODEXHUD div.codexthread > div.locrule {
     width: 100%; min-height: 10px;}
 
 div.tochead { 
-  position: relative; width: 100%;
+  position: relative; /* width: 100%; */
   background-color: silver; color: blue;
+  border-top: solid lightblue 2px; border-bottom: solid lightblue 2px;
   text-align: left; vertical-align: middle;}
-div.tochead span.spacer {
+div.tochead span.spacer, div.idhead span.spacer {
     font-size: 125%; font-weight: bold; font-style: italic;}
 div.tochead .paratext {
     color: darkblue; font-style: italic; padding-left: 5px;}
@@ -968,21 +969,21 @@ div.tochead span.headtext {
 div.tochead hr {
     color: lightblue; background-color: lightblue; min-width: 3px;
     border-right: solid gold 1px; border-left: solid gold 1px;
-    position: absolute; left: 0px; height: 100%;
+    position: absolute; left: 0px; top: 0px; height: 100%; 
     border: 0px; padding: 0px; margin: 0px;}
 div.tochead span { z-index: 10;}
 div.tochead a { z-index: 10;} 
 div.tochead hr[about] { cursor: crosshair;}
 
 div.idhead { 
-  position: relative; width: 100%; white-space: nowrap;
+  position: relative; white-space: nowrap; /* width: 100%; */
   background-color: silver; color: black;
   text-align: left; vertical-align: middle;
-  border-top: solid gold 1px; overflow: hidden;}
+  overflow: hidden;}
 div.idhead hr {
-    color: ivory; background-color: ivory; min-width: 3px;
+    color: lightblue; background-color: lightblue; min-width: 3px;
     border-right: solid gold 1px; border-left: solid gold 1px; 
-    position: absolute; left: 0px; height: 100%;
+    position: absolute; left: 0px; top: 0px; height: 100%; 
     border: 0px; padding: 0px; margin: 0px;}
 div.idhead span { z-index: 10; opacity: 0.75;}
 div.idhead div { z-index: 10; opacity: 0.75;}
@@ -1360,7 +1361,9 @@ div#CODEXHUD .codexnote span.oldterm {color: blue; }
 .codexnote span.audience { 
   color: silver; font-size: 75%; font-weight: normal; font-style: italic;}
 body.sbook a.codexnote { display: block;}
-.codexnote.gloss .codexnotebody { min-height: 60px;}
+.codexnote.gloss .codexnotebody {
+    border-top: solid purple 2px;
+    min-height: 60px;}
 .codexnote .info { 
   float: right;}
 .codexnote div.info { 
@@ -1389,7 +1392,8 @@ body.sbook a.codexnote { display: block;}
 .codexnote img.xrefsbutton { border: none;}
 .codexnote .glossinfo {
     float: right; clear: right; display: block;
-    padding: 0px; margin: 0px; margin-left: 3px;
+    padding: 0px; margin: 0px;
+    margin-left: 3px; padding-top: 2px;
     text-align: right;}
 .codexnote .glossinfo img { padding-left: 4px; cursor: pointer; }
 .codexnote .age { 
@@ -1518,19 +1522,20 @@ div.codexglossform form {
     padding: 0px; margin: 0px;}
 div.codexglossform form span.checkspan.excerpt {
     white-space: normal;}
+div.codexglossform form .inputhelp {color: black; display: none;}
 div.codexglossform form div.inputhelp {
-    color: black; padding-bottom: 4px; text-align: left;
-    display: none;}
+    padding-bottom: 4px; text-align: left;}
 div.codexglossform form .bracketbutton {
     font-weight: bold; font-size: 110%;
     padding: 0px; cursor: pointer;}
 div.codexglossform form .bracketbutton strong {
     font-size: 110%; color: red;}
 div.codexglossform form.focused div.inputhelp { display: block;}
+div.codexglossform form.focused span.inputhelp { display: inline;}
 
 div.codexglossform form textarea[name='NOTE'],
 div.codexglossform form input[type='TEXT'][name='NOTE'] {
-    min-height: 7ex; overflow: hidden;
+    min-height: 1em; overflow: hidden;
     width: 98%; margin-left: auto; margin-right: auto;
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);
