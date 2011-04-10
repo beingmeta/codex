@@ -300,6 +300,7 @@ body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
+body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     border-color: darkblue; display: block; overflow: auto;
@@ -1680,11 +1681,15 @@ div.codexglossform form table td.button {
     width: 50px; text-align: center;}
 div.codexglossform form table td textarea { width: 100%;}
 
+/* The Excerpt editing dialog */
+
 div#CODEXHUD div#CODEXEXCERPT.hudpanel {
     top: 10%; right: 10%; left: 10%;
     opacity: 0.95; height: auto; width: auto;
     background-color: lightblue; color: black;
     display: none;}
+body.hudup div#CODEXHUD.editexcerpt div#CODEXEXCERPT.hudpanel {
+    display: block;}
 div#CODEXHUD div#CODEXEXCERPT.hudpanel {
     border: solid blue 4px;}
 

@@ -222,7 +222,7 @@ var CodexMode=
 	/* Mode controls */
 	
 	var CodexMode_pat=
-	    /(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)/g;
+	  /(device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)/g;
 	var codexflyleafMode_pat=/(device)|(sbookapp)|(flytoc)|(about)|(console)/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "CODEXALLGLOSSES",
