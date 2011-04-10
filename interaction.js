@@ -83,7 +83,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     var hold_timer=false;
     var hold_interval=1500;
     var start_x=-1; var start_y=-1; var last_x=-1; var last_y=-1;
-    
+    var start_t=-1; var last_t=-1;
     function sbicon(base){return Codex.graphics+base;}
     function cxicon(base) {return Codex.graphics+"codex/"+base;}
 
@@ -178,9 +178,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function clear_hold(caller){
 	if (held) {
-	    clearTimeout(held); held=false;
-	    //alert("clear_hold "+(caller||"someone"));
-	}}
+	  clearTimeout(held); held=false;
+	  if (Codex.Trace.gestures)
+	    fdjtLog("clear_hold from %s",(caller||"somewhere"));}}
 
     /* Generic content handler */
 
@@ -211,20 +211,19 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		fdjtLog("deferring content_tapped (%o) on %o",
 			evt,target,passage,Codex.mode);
 	    return;}
-	else fdjtUI.cancel(evt); 
+	// else fdjtUI.cancel(evt); 
 	// If you tap an edge, page forward or backward
 	if (edgeTap(evt)) return;
 	var sel=window.getSelection();
 	// If there's a selection, store it as an excerpt.
 	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
-	    Codex.selection=sel;
-	    var p=Codex.getTarget(sel.anchorNode)||
-		Codex.getTarget(sel.focusNode)||
-		passage;
-	    if (p) {
-		Codex.excerpt=sel;
-		return tapTarget(p);}
-	    else CodexMode(false);}
+	  var p=Codex.getTarget(sel.anchorNode)||
+	    Codex.getTarget(sel.focusNode)||
+	    passage;
+	  if (p) {
+	    Codex.excerpt=sel.toString();
+	    return;}
+	  else CodexMode(false);}
 	if (passage) {
 	    if (Codex.target===passage) {
 		if (Codex.hudup) CodexMode(false);
@@ -237,15 +236,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(false);
 	    return;}
 	else CodexMode(true);}
-
-    function glossExcerpt(passage){
-	Codex.setTarget(passage);
-	addGlossButton(passage);
-	var text=fdjtDOM.textify(passage);
-	Codex.selection=fdjtString.oneline(text);
-	Codex.glossTarget(passage);
-	CodexMode("addgloss");
-	return;}
 
     /* Tap actions */
 
@@ -518,11 +508,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else if (evt.shiftKey) n_touches=2;
 	else n_touches=1;
 	if (touch) {
+	  start_t=fdjtTime();
 	    start_x=last_x=touch.clientX;
 	    start_y=last_y=touch.clientY;
 	    page_x=touch.screenX; page_y=touch.screenY;}
 	else if (evt.clientX) { /* faketouch */
 	    if (evt.shiftKey) n_touches=2; else n_touches=1;
+	  start_t=fdjtTime();
 	    start_x=last_x=evt.clientX;
 	    start_y=last_y=evt.clientY;
 	    page_x=touch.screenX; page_y=evt.screenY;}
@@ -532,14 +524,32 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	handled=false;
 	var target=fdjtUI.T(evt);
 	shared_touchstart(evt);
-	var passage;
-	if ((!((fdjtUI.isClickable(target))||(n_touches>1)))&&
-	    (passage=Codex.getTarget(target)))
-	    held=setTimeout(function(evt){
-		glossExcerpt(passage);
-		held=false; handled=true;},
-			    500);}
-
+	var passage=Codex.getTarget(target);
+	fdjtLog("Touchstart %o on %o => %o",evt,target,passage);
+	if (passage) {
+	  var text=fdjtDOM.textify(passage).
+	    replace(/\n\n+/g,"\n").
+	    replace(/^\n+/,"").
+	    replace(/\n+$/,"").
+	    replace(/\n+/g," // ");
+	  held=setTimeout(function(){
+	      clear_hold("timeout");
+	      handled=true;
+	      Codex.setGlossTarget(passage);
+	      fdjtID("CODEXEXTRACT").passageid=passage.id;
+	      fdjtID("CODEXEXTRACT").value=text;
+	      fdjtID("CODEXEXCERPT").style.display='block';
+	      CodexMode("addgloss");},
+	    1000);}}
+    Codex.UI.useExcerpt=function(flag){
+      var text=fdjtID("CODEXEXTRACT").value;
+      var excerpt_elt=fdjtID("CODEXEXCERPT");
+      var form=fdjtID("CODEXLIVEGLOSS");
+      excerpt_elt.style.display='none';
+      if (flag) Codex.addExcerpt
+		  (form,text,
+		   excerpt_elt.passageid);};
+    
     var mouseisdown=false;
 
     function content_touchmove(evt){
@@ -570,26 +580,26 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function content_touchend(evt,tap){
 	var target=fdjtUI.T(evt);
 	if (held) clear_hold("touchend");
+	if (handled) return;
 	if (Codex.Trace.gestures) tracetouch("touchend",evt);
 	mouseisdown=false; // For faketouch
 	if (fdjtUI.isClickable(target)) return;
-	if (handled) return;
-	else if (touch_moved) {
-	    var dx=last_x-start_x; var dy=last_y-start_y;
-	    var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
-	    var ad=((adx<ady)?(ady-adx):(adx-ady));
-	    if (Codex.Trace.gestures)
-		fdjtLog("touchend/gesture l=%o,%o s=%o,%o d=%o,%o |d|=%o,%o",
-			last_x,last_y,start_x,start_y,dx,dy,adx,ady);
-	    if (adx>(ady*3)) { /* horizontal */
-		if (n_touches===1) {
-		    if (dx<0) Codex.Forward(evt);
-		    else Codex.Backward(evt);}
-		else {
-		    if (dx<0) Codex.scanForward(evt);
-		    else Codex.scanBackward(evt);}}
-	    else {}
-	    return;}
+	if (touch_moved) {
+	  var dx=last_x-start_x; var dy=last_y-start_y;
+	  var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
+	  var ad=((adx<ady)?(ady-adx):(adx-ady));
+	  if (Codex.Trace.gestures)
+	    fdjtLog("touchend/gesture l=%o,%o s=%o,%o d=%o,%o |d|=%o,%o",
+		    last_x,last_y,start_x,start_y,dx,dy,adx,ady);
+	  if (adx>(ady*3)) { /* horizontal */
+	    if (n_touches===1) {
+	      if (dx<0) Codex.Forward(evt);
+	      else Codex.Backward(evt);}
+	    else {
+	      if (dx<0) Codex.scanForward(evt);
+	      else Codex.scanBackward(evt);}}
+	  else {}
+	  return;}
 	else if (touch_scrolled) return;  // Gesture already intepreted
 	else return content_tapped(evt,target);}
 
@@ -960,8 +970,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	       mouseout: fdjtUI.CoHi.onmouseout}};
 
     Codex.UI.handlers.webtouch=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
-		  touchstart: cancel, touchmove: cancel, touchend: cancel},
+      {window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
+		touchstart: cancel, touchmove: cancel, touchend: cancel},
 	 content: {touchstart: content_touchstart,
 		   touchmove: content_touchmove,
 		   touchend: content_touchend},

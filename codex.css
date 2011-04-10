@@ -75,11 +75,11 @@ body.codexpageview div#CODEXPAGE div#CODEXPAGES {
     -moz-column-rule-style: solid;
     -webkit-column-rule-style: solid;}
 
-div#CODEXCONTENT {
-    user-select: text;
-    -o-user-select: text;
-    -moz-user-select: text;
-    -webkit-user-select: text;}
+div#CODEXCONTENT, div#CODEXCONTENT p, div#CODEXCONTENT div {
+    user-select: auto;
+    -o-user-select: auto;
+    -moz-user-select: auto;
+    -webkit-user-select: auto;}
 
 body.codexstartup div#CODEXCONTENT {
     opacity: 0.35;}
@@ -650,7 +650,8 @@ div#CODEXHELP #HIDESPLASHCHECKSPAN input[type='CHECKBOX'] {
 div#CODEXHELP div.codexhelp {
     max-width: 40em; margin-left: auto; margin-right: auto;}
 div#CODEXHELP div.codexhelp p {
-    text-align: left; margin-left: 5em; text-indent: -3em;}
+    text-align: left;
+    margin-left: 5em; margin-right: 2em; text-indent: -3em;}
 div#CODEXHELP div.codexhelp p img.right {
     float: right; max-height: 24px;}
 div#CODEXHELP div.codexhelp p#CODEXHELPLOGGEDIN img.right {
@@ -1453,8 +1454,7 @@ body .codexglossmark { opacity: 0.4;}
 body.hudup .codexglossmark { opacity: 0.6; display: block;}
 
 .codexglossmark img {
-    float: right; vertical-align: top; text-align: right;
-    margin-right: -50px;}
+    float: right; vertical-align: top; text-align: right;}
 .codexglossmark img.tiny {width: 16px;}
 .codexglossmark img.big {width: 32px;}
 .codexglossmark img.tiny, span.codexglossmark img.big { display: none; }
@@ -1679,6 +1679,30 @@ div.codexglossform form table td {
 div.codexglossform form table td.button {
     width: 50px; text-align: center;}
 div.codexglossform form table td textarea { width: 100%;}
+
+div#CODEXHUD div#CODEXEXCERPT.hudpanel {
+    top: 10%; right: 10%; left: 10%;
+    opacity: 0.95; height: auto; width: auto;
+    background-color: lightblue; color: black;
+    display: none;}
+div#CODEXHUD div#CODEXEXCERPT.hudpanel {
+    border: solid blue 4px;}
+
+div#CODEXEXCERPT div {
+    padding: 4px; margin-bottom: 1em; 
+    font-size: 125%; text-align: center;}
+div #CODEXEXCERPTCANCEL, div #CODEXEXCERPTDONE {
+    font-weight: bold;
+    background-color: silver; color: blue;
+    border: solid black 2px;
+    border-radius: 5px; -o-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;}
+div#CODEXEXCERPT div #CODEXEXCERPTCANCEL { float: left;}
+div#CODEXEXCERPT div #CODEXEXCERPTDONE { float: right;}
+div#CODEXEXCERPT textarea {
+    clear: both; font-size: 150%;
+    width: 80%; min-height: 50%;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

@@ -1,5 +1,17 @@
 <div id="CODEXHELP" class="hudpanel">
 </div>
+<div id="CODEXEXCERPT" class="hudpanel">
+  <div>
+    <span id="CODEXEXCERPTCANCEL"
+	  ontouchstart="Codex.UI.useExcerpt(false);">
+      Cancel</span>
+    <span id="CODEXEXCERPTDONE"
+	  ontouchstart="Codex.UI.useExcerpt(true);">
+      Done</span>
+    edit excerpt
+  </div>
+  <textarea rows='5' id="CODEXEXTRACT"></textarea>
+</div>
 <div id="CODEXHEAD">
   <img src="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
        alt="toc" title="click to navigate the book as a whole"

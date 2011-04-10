@@ -72,7 +72,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    arg=fdjtID(arg)||Codex.glosses.ref(arg)||false;
 	if (!(arg)) return false;
 	var gloss=((arg.qid)&&(arg));
-	if (!(gloss)) reponse=false;
+	if (!(gloss)) response=false;
 	else if ((arg.maker)&&(arg.maker!==Codex.user.qid))
 	    response=true;
 	else {}
@@ -95,12 +95,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    setupGlossForm(form,passage,gloss,response||false);}
 	else form=fdjtDOM.getChildren(div,"form")[0];
 	// Use any current selection to add as an excerpt
-	var sel=window.getSelection();
-	if (Codex.selection) {
-	    var sel=Codex.selection;
-	    var seltext=sel.toString();
-	    if (seltext.length) {
-		addExcerpt(form,seltext);}}
+	if (Codex.excerpt) {
+	  if (Codex.excerpt.length) addExcerpt(form,Codex.excerpt);
+	  Codex.excerpt=false;}
 	return div;}
     Codex.getGlossForm=getGlossForm;
     
@@ -223,6 +220,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 			      "\u201d");
 	fdjtDOM(tagselt,checkspan," ");
 	return checkspan;}
+    Codex.addExcerpt=addExcerpt;
 
     /***** Adding tags ******/
     function addTag(form,tag,varname) {
