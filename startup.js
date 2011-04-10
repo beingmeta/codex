@@ -667,7 +667,9 @@ Codex.Startup=
 	    
       fdjtDOM.prepend(document.body,pagehead,pagefoot);
 	    
-      fdjtID("CODEXPAGENEXT").onclick=Codex.Forward;
+	// Not really used anymore
+	fdjtDOM.addListeners
+	(fdjtID("CODEXPAGENEXT"),Codex.UI.handlers[Codex.ui]["#CODEXPAGENEXT"]);
 	    
       window.scrollTo(0,0);
 	    

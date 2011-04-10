@@ -458,7 +458,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     function glossCloud(){
 	if (gloss_cloud) return gloss_cloud;
 	var completions=fdjtID("CODEXGLOSSCLOUD");
-	completions.onclick=glosscloud_onclick;
+	completions.onclick=glosscloud_ontap;
 	Codex.gloss_cloud=gloss_cloud=new fdjtUI.Completions(
 	    completions,fdjtID("SBOOKTAGINPUT"),
 	    fdjtUI.FDJT_COMPLETE_OPTIONS|
@@ -467,7 +467,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	return gloss_cloud;}
     Codex.glossCloud=glossCloud;
 
-    function glosscloud_onclick(evt){
+    function glosscloud_ontap(evt){
 	var target=fdjtUI.T(evt);
 	var completion=fdjtDOM.getParent(target,'.completion');
 	if (completion) {
@@ -665,11 +665,11 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		span.setAttribute("tag",(((taginfo)&&(taginfo.qid))||tag));}
 	    fdjtDOM(info,((i>0)&&(" \u00b7 ")),span);
 	    i++;}
-	info.onclick=sbookgloss_onclick;
+	info.onclick=sbookgloss_ontap;
 	return info;}
     Codex.glossBlock=glossBlock;
 
-    function sbookgloss_onclick(evt){
+    function sbookgloss_ontap(evt){
 	var target=fdjtUI.T(evt);
 	var parent=false;
 	while (target) {

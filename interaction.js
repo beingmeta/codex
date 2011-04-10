@@ -134,7 +134,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	Codex.UI.addHandlers(img,"glossbutton");
 	fdjtDOM.prepend(passage,img);}
     
-    function glossbutton_onclick(evt){
+    function glossbutton_ontap(evt){
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	var passage=Codex.getTarget(target);
@@ -939,7 +939,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 content: {mouseup: content_tapped},
 	 hud: {click: hud_tapped},
 	 glossmark: {mouseup: glossmark_tapped},
-	 glossbutton: {mouseup: glossbutton_onclick,mousedown: cancel},
+	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 ".sbookmargin": {click: edge_click},
 	 "#CODEXHELP": {click: Codex.UI.dropHUD},
 	 "#CODEXFLYLEAF": {click: flyleaf_tap},
@@ -952,6 +952,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
+	 // Not really used any more
+	 "#CODEXPAGENEXT": {click: Codex.Forward},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
@@ -984,6 +986,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 			      touchmove: cancel,touchend: cancel},
 	 "#CODEXLOCOFF": {touchstart: enterLocation,
 			  touchmove: cancel,touchend: cancel},
+	 // Not really used any more
+	 "#CODEXPAGENEXT": {touchstart: Codex.Forward,touchmove: cancel, touchend: cancel},
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#CODEXTABS": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#HIDESPLASHCHECKSPAN" : {touchstart: hideSplashToggle,
@@ -998,7 +1002,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 glossmark: {touchend: glossmark_tapped,
 		     touchstart: cancel,
 		     touchmove: cancel},
-	 glossbutton: {touchend: glossbutton_onclick,
+	 glossbutton: {touchend: glossbutton_ontap,
 		       touchstart: cancel,
 		       touchmove: cancel}
 	};

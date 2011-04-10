@@ -354,7 +354,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	else {
 	    var completions=
 	      makeCloud(query._refiners._results,query._refiners._freqs);
-	    completions.onclick=Cloud_onclick;
+	    completions.onclick=Cloud_ontap;
 	    var n_refiners=query._refiners._results.length;
 	    var hide_some=(n_refiners>Codex.show_refiners);
 	    if (hide_some) {
@@ -373,7 +373,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     Codex.queryCloud=queryCloud;
     KnoduleIndex.Query.prototype.getCloud=function(){return queryCloud(this);};
 
-    function Cloud_onclick(evt){
+    function Cloud_ontap(evt){
 	evt=evt||event;
 	var target=fdjtDOM.T(evt);
 	var completion=fdjtDOM.getParent(target,".completion");
@@ -398,7 +398,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.toggleClass(container,"showall");
 	    fdjtDOM.cancel(evt);}
 	else {}}
-    Codex.UI.handlers.Cloud_onclick=Cloud_onclick;
+    Codex.UI.handlers.Cloud_ontap=Cloud_ontap;
 
     function makeCloud(dterms,scores,noscale,alphabetize){
 	var sbook_index=Codex.index;
@@ -410,7 +410,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var tagicon=fdjtDOM.Image
 	  (cxicon("TagSearch50x50.png"),
 	   ".cloudtoggle","show/hide all","show all tags");
-	tagicon.onclick=showempty_onclick;
+	tagicon.onclick=showempty_ontap;
 	var completions=fdjtDOM("div.completions",tagicon,spans);
 	var n_terms=dterms.length;
 	var i=0; var max_score=0;
@@ -482,7 +482,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	return completions;}
     Codex.makeCloud=makeCloud;
 
-    function showempty_onclick(evt){
+    function showempty_ontap(evt){
       var target=fdjtUI.T(evt);
       var completions=fdjtDOM.getParent(target,".completions");
       if (completions)
@@ -549,7 +549,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var tagfreqs=tagscores._freq;
 	    var completions=Codex.makeCloud(alltags,tagfreqs,false,true);
 	    var cues=fdjtDOM.getChildren(completions,".cue");
-	    completions.onclick=Cloud_onclick;
+	    completions.onclick=Cloud_ontap;
 	    Codex.full_cloud=new fdjtUI.Completions(completions);
 	    return Codex.full_cloud;}}
     Codex.fullCloud=fullCloud;

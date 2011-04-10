@@ -116,7 +116,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     Codex.UI.addSource=addSource;
     Codex.UI.addGlossSource=function(info){addSource(info,true);};
 
-    function everyone_onclick(evt)
+    function everyone_ontap(evt)
     {
 	evt=evt||event||null;
 	var target=fdjtDOM.T(evt);
@@ -139,9 +139,9 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	Codex.UI.selectSources(glosses,false);
 	fdjtDOM.cancel(evt);
     }
-    Codex.UI.handlers.everyone_onclick=everyone_onclick;
+    Codex.UI.handlers.everyone_ontap=everyone_ontap;
 
-    function sources_onclick(evt)
+    function sources_ontap(evt)
     {
 	evt=evt||event||null;
 	// if (!(Codex.user)) return;
@@ -175,7 +175,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	    Codex.UI.selectSources(glosses,false);}
 	fdjtDOM.cancel(evt);
     }
-    Codex.UI.handlers.sources_onclick=sources_onclick;
+    Codex.UI.handlers.sources_ontap=sources_ontap;
 
     Codex.UI.addGlossmark=function(id){
 	var target=fdjtID(id);

@@ -170,7 +170,7 @@ var sbook_reply_icon="replyballoons26x15.png";
 			   fdjtDOM("span.whenexpanded","-"),
 			   fdjtDOM("span.whencollapsed","+"));
 	var subspan=fdjtDOM("span.whenexpanded");
-	controller.onclick=tagexpand_click;
+	  controller.onclick=tagexpand_click;
 	fdjtDOM(span," ",controller," ",subspan);
 	tagspan=subspan;}
       fdjtDOM.append(tagspan,((i>0)?" \u00b7 ":" "),Knodule.HTML(tag));
@@ -244,7 +244,7 @@ var sbook_reply_icon="replyballoons26x15.png";
 		(fdjtDOM.Image(sbicon(sbook_delete_icon_touch),
 			       "img.delete.button.touchicon","x",
 			       "delete this gloss")))));
-    if (deleteicon) deleteicon.onclick=deletegloss_onclick;
+    if (deleteicon) deleteicon.onclick=deletegloss_ontap;
     var editicon=
       ((user===Codex.user.oid)&&
        (fdjtDOM(
@@ -256,7 +256,7 @@ var sbook_reply_icon="replyballoons26x15.png";
 			       sbicon(sbook_edit_icon_touch),
 			       "img.edit.button.touchicon","!",
 			       "edit this gloss")))));
-    if (editicon) editicon.onclick=editicon_onclick;
+    if (editicon) editicon.onclick=editicon_ontap;
     var replyicon=
       fdjtDOM(
 	      "span",
@@ -266,7 +266,7 @@ var sbook_reply_icon="replyballoons26x15.png";
 	      (fdjtDOM.Image(cxicon(sbook_reply_icon_touch),
 			     "img.reply.button.touchicon","++",
 			     "respond to this gloss")));
-    replyicon.onclick=replyicon_onclick;
+    replyicon.onclick=replyicon_ontap;
     var picinfo=getpicinfo(info);
     var overdoc=getoverdoc(info);
 	
@@ -408,7 +408,7 @@ var sbook_reply_icon="replyballoons26x15.png";
     locrule.style.left=((target_start/cxt_len)*100)+"%";
     return locrule;}
 
-  function deletegloss_onclick(evt){
+  function deletegloss_ontap(evt){
     var scan=fdjtUI.T(evt);
     fdjtUI.cancel(evt);
     while (scan) {
@@ -440,13 +440,13 @@ var sbook_reply_icon="replyballoons26x15.png";
 	else glossmark.glosses=newglosses;}}
     else alert(response);}
     
-  function editicon_onclick(evt){
+  function editicon_ontap(evt){
     var target=fdjtUI.T(evt);
     var note=fdjtDOM.getParent(target,'.codexnote');
     var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name)));
     Codex.setGlossTarget(gloss);
     CodexMode("addgloss");}
-  function replyicon_onclick(evt){
+  function replyicon_ontap(evt){
     var target=fdjtUI.T(evt);
     var note=fdjtDOM.getParent(target,'.codexnote');
     var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name)));

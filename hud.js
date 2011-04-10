@@ -651,7 +651,7 @@ var CodexMode=
 	
 	/* Button methods */
 
-	function LoginButton_onclick(evt){
+	function LoginButton_ontap(evt){
 	    evt=evt||event||null;
 	    if (Codex.mode==="sbookapp") CodexMode(false);
 	    else CodexMode("sbookapp");
