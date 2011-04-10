@@ -45,7 +45,7 @@ span.codexcssversion:after {
 div#CODEXPAGE {
     position: fixed; overflow: visible;
     padding: 0px; margin: 0px; border: 0px;
-    top: 50px; bottom: 50px; left: 50px; right: 50px;}
+    top: 60px; bottom: 60px; left: 50px; right: 50px;}
 div#CODEXPAGE div#CODEXPAGES {
     position: absolute; top: 0px; left: 0px;
     padding: 0px; margin: 0px; border: 0px;

@@ -205,7 +205,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    evt,target,passage,Codex.mode);
 	// These should have their own handlers
 	if ((fdjtUI.isClickable(target))||
-	    (fdjtDOM.hasParent(target,".codexglossbutton"))||
+	    // (fdjtDOM.hasParent(target,".codexglossbutton"))||
 	    (fdjtDOM.hasParent(target,".codexglossmark"))) {
 	    if (Codex.Trace.gestures)
 		fdjtLog("deferring content_tapped (%o) on %o",
@@ -223,16 +223,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		passage;
 	    if (p) {
 		Codex.excerpt=sel;
-		return xtapTarget(p);}
+		return tapTarget(p);}
 	    else CodexMode(false);}
 	if (passage) {
 	    if (Codex.target===passage) {
 		if (Codex.hudup) CodexMode(false);
-		else {
-		    addGlossButton(passage);
-		    CodexMode(true);}}
-	    else if ((evt.ctrlKey)||(evt.shiftKey)||(n_touches>1))
-		xtapTarget(passage);
+		else tapTarget(passage);}
 	    else if (fdjtDOM.hasClass(document.body,"sbookscanning"))
 		CodexMode(false);
 	    else tapTarget(passage);}
@@ -256,20 +252,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function tapTarget(target){
 	if (Codex.Trace.gestures)
 	    fdjtLog("Tap on target %o mode=%o",target,Codex.mode);
-	addGlossButton(target);
-	if ((Codex.mode==='glosses')&&(Codex.target===target)) {
-	    // If you're already showing glosses, hide them
-	    CodexMode(false);
-	    return;}
-	else {
-	    Codex.setTarget(target);
-	    CodexMode(true);}}
-
-    function xtapTarget(target){
-	if (Codex.Trace.gestures)
-	    fdjtLog("Tap (extended) on target %o mode=%o",target,Codex.mode);
 	Codex.setTarget(target);
-	addGlossButton(target);
 	Codex.setGlossTarget(target);
 	CodexMode("addgloss");}
 
