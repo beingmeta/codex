@@ -67,7 +67,7 @@ var Codex=
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
      Trace: {
 	 startup: 1,	// Whether to debug startup
-	 mode: true,	// Whether to trace mode changes
+	 mode: false,	// Whether to trace mode changes
 	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// How much to trace searches
@@ -80,7 +80,7 @@ var Codex=
 	 dosync: false, // Whether to trace state saves
 	 paging: false,	// Whether to trace paging (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 1}   // How much to trace gestures
+	 gestures: 0}   // How much to trace gestures
     };
 var _sbook_setup=false;
 

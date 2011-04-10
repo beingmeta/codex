@@ -359,7 +359,7 @@ var CodexPaginate=
 		    arg,chunks,
 		    fdjtTime.secs2short((now-start_time)/1000));}
 	else if ((trace)||((!(Codex._setup))&&(Codex.Trace.startup)))
-	  fdjtLog("Done laying out %d pages (%d thunks) in %f seconds (rt~%f)",
+	  fdjtLog("Done with %d pages (in %d chunks) after %f seconds (rt~%f)",
 		  Codex.pagecount,chunks,
 		  fdjtTime.secs2short((now-start_time)/1000),
 		  fdjtTime.secs2short(chunks*(1/runslice)));
@@ -599,7 +599,7 @@ var CodexPaginate=
 	    Codex.paginate=true;
 	    if (Codex.postconfig)
 	      Codex.postconfig.push(repaginate);
-	    else repaginate();}}
+	    else Codex.repaginate();}}
 	else {
 	  clearPagination();
 	  Codex.paginate=false;
@@ -612,9 +612,9 @@ var CodexPaginate=
       if (Codex.paginated) {
 	if (Codex.postconfig) {
 	  Codex.postconfig.push(function(){
-	      CodexMode(true);repaginate();});}
+	      CodexMode(true); Codex.repaginate();});}
 	else {
-	  CodexMode(true);repaginate();}}}
+	  CodexMode(true); Codex.repaginate();}}}
     Codex.addConfig("bodysize",updateLayout);
     Codex.addConfig("bodystyle",updateLayout);
 	

@@ -525,7 +525,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	shared_touchstart(evt);
 	var passage=Codex.getTarget(target);
-	fdjtLog("Touchstart %o on %o => %o",evt,target,passage);
+	if (Codex.Trace.gestures)
+	  fdjtLog("Touchstart %o on %o => %o",evt,target,passage);
 	if (passage) {
 	  var text=fdjtDOM.textify(passage).
 	    replace(/\n\n+/g,"\n").

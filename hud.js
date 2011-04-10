@@ -611,7 +611,7 @@ var CodexMode=
 	Codex.Scan=CodexScan;
 
 	Codex.addConfig("uisize",function(name,value){
-	    fdjtDOM.swapClass(CodexHUD,"codexuifont"+value,/codexuifont\w+/);});
+	    fdjtDOM.swapClass(CodexHUD,/codexuifont\w+/,"codexuifont"+value);});
 	Codex.addConfig("showconsole",function(name,value){
 	    if (value) fdjtDOM.addClass(CodexHUD,"codexshowconsole");
 	    else fdjtDOM.dropClass(CodexHUD,"codexshowconsole");});
