@@ -75,6 +75,12 @@ body.codexpageview div#CODEXPAGE div#CODEXPAGES {
     -moz-column-rule-style: solid;
     -webkit-column-rule-style: solid;}
 
+div#CODEXCONTENT {
+    user-select: text;
+    -o-user-select: text;
+    -moz-user-select: text;
+    -webkit-user-select: text;}
+
 body.codexstartup div#CODEXCONTENT {
     opacity: 0.35;}
 
