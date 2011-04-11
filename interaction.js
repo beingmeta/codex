@@ -519,6 +519,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
       start_y=last_y=evt.clientY;
       page_x=touch.screenX; page_y=evt.screenY;}
     touch_held=false; touch_moved=false; touch_scrolled=false;}
+
+  var initial_offset=false;
+
   function content_touchstart(evt){
     evt=evt||event||false;
     clear_hold("touchstart/touchover");
@@ -541,7 +544,17 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	  fdjtID("CODEXEXTRACT").passageid=passage.id;
 	  fdjtID("CODEXEXTRACT").value=text;
 	  CodexMode("editexcerpt");},
-	1000);}}
+	1000);}
+    var translation=Codex.pages.style.getPropertyValue(fdjtDOM.transform);
+    var numstart; var numend;
+    initial_offset=false;
+    if (translation) {
+      var numstart=translation.search(/[\-0123456789]+/);
+      if (numstart>0) {
+	translation=translation.slice(numstart);
+	var numend=translation.search(/[^\-0123456789]+/);
+	if (numend>0)
+	  initial_offset=parseInt(translation.slice(0,numend));}}}
   Codex.UI.useExcerpt=function(flag){
     var text=fdjtID("CODEXEXTRACT").value;
     var excerpt_elt=fdjtID("CODEXEXCERPT");
@@ -566,25 +579,29 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     if (page_x<0) page_x=touch.screenX;
     if (page_y<0) page_y=touch.screenY;
     if ((touches)&&(touches.length>n_touches)) n_touches=touches.length;
-    var tdx=touch.clientX-start_x; var tdy=touch.clientY-start_y;
-    var atdx=((tdx<0)?(-tdx):(tdx)); var atdy=((tdy<0)?(-tdy):(tdy));
     var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
     var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
-    if ((held)&&((atdx+atdy)>10)) {
-      clear_hold("touchmove"+(adx+ady)); handled=true;}
-    var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
     if (Codex.Trace.gestures>2) tracetouch("touchmove",evt);
-    if ((held)&&((adx+ady)>5)) {
+    /*
+      if ((held)&&((adx+ady)>5)) {
       clear_hold("touchmove"+(adx+ady)); handled=true;}
+    */
     if (Codex.Trace.gestures>1)
-      fdjtLog("body_touchmove d=%o,%o a=%o,%o p=%o,%o l=%o,%o n=%o scan=%o ",
-	      dx,dy,adx,ady,
+      fdjtLog("body_touchmove d=%o,%o a=%o,%o s=%o,%o c=%o,%o l=%o,%o n=%o scan=%o ",
+	      dx,dy,adx,ady,touch.screenX,touch.screenY,
 	      touch.clientX,touch.clientY,last_x,last_y,
 	      touch_moves,Codex.scanning);
     last_x=touch.clientX; last_y=touch.clientY;
     touch_moved=true;
+    /*
+      // This provides direct interaction but looks a little clunky
+    if (typeof initial_offset === 'number') {
+      var new_translation="translate("+(initial_offset+dx)+"px,0px)";
+      Codex.pages.style.setProperty
+	(fdjtDOM.transform,new_translation,"important");}
+    */
     return;}
-
+  
   function content_touchend(evt,tap){
     var target=fdjtUI.T(evt);
     if (held) clear_hold("touchend");
