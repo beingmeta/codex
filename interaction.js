@@ -221,7 +221,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	Codex.getTarget(sel.focusNode)||
 	passage;
       if (p) {
-	Codex.excerpt=sel.toString();
+	if ((Codex.mode==="addgloss")&&
+	    (fdjtID("CODEXLIVEGLOSS"))) {
+	  Codex.addExcerpt(fdjtID("CODEXLIVEGLOSS"),
+			   sel.toString(),
+			   ((Codex.glosstarget!==p)&&(p.id)));}
+	else Codex.excerpt=sel.toString();
 	return;}
       else CodexMode(false);}
     if (passage) {
