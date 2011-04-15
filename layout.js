@@ -271,7 +271,7 @@ var CodexPaginate=
 		    var style=elt.style;
 		    // We have to kludge the margin top, and first we
 		    // get the geometry without any existing margin
-		    style.setProperty("margin-top","0px");
+		    style.setProperty("margin-top","0px","important");
 		    g=getGeometry(elt);
 		    var top_margin=0;
 		    if (talldom) {
@@ -291,7 +291,8 @@ var CodexPaginate=
 				    JSON.stringify(g));}
 		    if (top_margin<0) {} // top_margin=0;
 		    else top_margin=top_margin%height;
-		    style.setProperty("margin-top",(Math.floor(top_margin))+"px");}
+		    style.setProperty("margin-top",(Math.floor(top_margin))+"px",
+				      "important");}
 		// Update geometries, assuming the DOM is updated synchronously
 		if (scan) geom=getGeometry(scan);
 		if (next) ngeom=getGeometry(next);
