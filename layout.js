@@ -347,7 +347,7 @@ var CodexPaginate=
 		Codex.forced_off=forced_off;}
 	    function getFullPages(){
 		var pages=
-		    fdjtDOM.$(".sbookfullpage,.sbookcover,.sbooktitlepage");
+		    fdjtDOM.$(".sbookfullpage,.sbookcover,.sbooktitlepage,.fullpage,.titlepage");
 		if (sbook_fullpages)
 		    pages=pages.concat(fdjtDOM.$(sbook_fullpages));
 		var i=0; var lim=pages.length;
