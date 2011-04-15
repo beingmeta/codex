@@ -437,7 +437,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var minscale=false; var maxscale=false;
 	var domnodes=[]; var nodescales=[];
 	var isprime=
-	  (((Codex.knodule.prime.length)?(Codex.knodule.prime):
+	  (((Codex.knodule.prime.length)?(Codex.knodule.primescores):
 	    (Codex.knodule.dterms))||
 	   false);
  	i=0; while (i<copied.length) {

@@ -93,9 +93,9 @@ Codex.Startup=
       fdjtDOM.addClass(document.body,"codexstartup");
       var metadata=false;
       var helphud=false;
-      fdjtTime.timeslice
+	Codex.initDB();
+	fdjtTime.timeslice
 	([// Setup sbook tables, databases, etc
-	  Codex.initDB,
 	  // This wraps the body in its own block and sets up
 	  //  the DOM structure for pagination
 	  initBody,
