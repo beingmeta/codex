@@ -71,6 +71,7 @@ var CodexPaginate=
 	var page_height=false;
 	var page_gap=false;
 	var flip_width=false;
+	var offset_left=false;
 	
 	var runslice=100; var runwait=50;
 
@@ -333,16 +334,16 @@ var CodexPaginate=
 		Codex.page_width=width;
 		Codex.page_gap=page_gap=gap;
 		Codex.page_height=height;
+		var content_style=getStyle(Codex.content);
+		Codex.offset_left=offset_left=parsePX(style.marginLeft)+parsePX(style.borderLeft)+parsePX(style.paddingLeft);
 		Codex.left_margin=page.offsetLeft;
 		Codex.top_margin=page.offsetTop;
 		Codex.right_margin=vwidth-(page.offsetLeft+page.offsetWidth);
 		Codex.bottom_margin=vheight-(page.offsetTop+page.offsetHeight);
 		Codex.vwidth=vwidth;
 		Codex.vheight=vheight;
-		Codex.flip_width=flip_width=gap+
-		    getGeometry(Codex.content).width+
-		    parsePX(getStyle(Codex.content).marginLeft)+
-		    parsePX(getStyle(Codex.content).marginRight);
+		// getGeometry(Codex.content).width+parsePX(getStyle(Codex.content).marginLeft)+parsePX(getStyle(Codex.content).marginRight)
+		Codex.flip_width=flip_width=gap+width;
 		Codex.pagetops=pagetops;
 		Codex.forced_breaks=forced;
 		Codex.forced_off=forced_off;}
@@ -536,7 +537,7 @@ var CodexPaginate=
 
 	function GoToPage(num,caller,nosave){
 	    var off;
-	    if (talldom) off=(num*(flip_width));
+	    if (talldom) off=(num*(flip_width))+page_gap/2;
 	    else {
 		var top=Codex.pagetops[num];
 		var geom=fdjtDOM.getGeometry(top,Codex.content);

@@ -880,7 +880,7 @@ div#CODEXHUD .completions .completion .sectname {
   white-space: nowrap;}
 
 div#CODEXHUD .completions .completion .variation { 
-  font-size: 115%; color: silter;}
+  font-size: 115%; color: silver;}
 div#CODEXHUD .completions .completion .dterm { 
   font-size: 95%;}
 div#CODEXHUD .dterm {
@@ -1340,7 +1340,7 @@ div.codexnote > hr {
   font-family: sans,sans-serif;}
 .codexnote a.ref span.uri {
   font-family: courier,fixed;}
-.codexnote span.oldterm, {
+.codexnote span.oldterm {
     color: blue; background-color: yellow;
     padding: 2px; border: solid blue 1px;
     border-top-left-radius: 6px; border-bottom-left-radius: 6px;
