@@ -228,6 +228,7 @@ Codex.Startup=
 
 	function readSettings(){
 	    if (typeof _sbook_loadinfo === "undefined") _sbook_loadinfo=false;
+	    if (typeof _sbook_glosses === "undefined") _sbook_glosses=false;
 	    // Basic stuff
 	    var useragent=navigator.userAgent;
 	    var refuri=_getsbookrefuri();
@@ -709,7 +710,7 @@ Codex.Startup=
 			 loadinfo.sources,loadinfo.outlets,
 			 loadinfo.etc,loadinfo.sync)))
 		return;
-	    else if (_sbook_userinfo||false)
+	    else if ((typeof _sbook_userinfo !== 'undefined')&&(_sbook_userinfo))
 		setUser(_sbook_userinfo.user,
 			_sbook_userinfo.nodeid,
 			_sbook_userinfo.sources,
