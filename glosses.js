@@ -71,16 +71,16 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (typeof arg === 'string')
 	    arg=fdjtID(arg)||Codex.glosses.ref(arg)||false;
 	if (!(arg)) return false;
-	var gloss=((arg.qid)&&(arg));
+	var gloss=((arg.maker)&&(arg));
 	if (!(gloss)) response=false;
-	else if ((arg.maker)&&(arg.maker!==Codex.user.qid))
+	else if ((arg.maker)&&(arg.maker!==Codex.user._id))
 	    response=true;
 	else {}
 	var passage=((gloss)?(fdjtID(gloss.frag)):(arg));
 	var formid=((gloss)?
 		    ((response)?
-		     ("CODEXRESPONDGLOSS_"+gloss.qid):
-		     ("CODEXEDITGLOSS_"+gloss.qid)):
+		     ("CODEXRESPONDGLOSS_"+gloss._id):
+		     ("CODEXEDITGLOSS_"+gloss._id)):
 		    ("CODEXADDGLOSS_"+passage.id));
 	var form=fdjtID(formid);
 	var div=((form)&&(form.parentNode));
@@ -105,7 +105,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (form.getAttribute("sbooksetup")) return;
 	form.onsubmit=submitGloss;
 	fdjtDOM.getInput(form,"REFURI").value=Codex.refuri;
-	fdjtDOM.getInput(form,"USER").value=Codex.user.qid;
+	fdjtDOM.getInput(form,"USER").value=Codex.user._id;
 	fdjtDOM.getInput(form,"DOCTITLE").value=document.title;
 	fdjtDOM.getInput(form,"DOCURI").value=document.location.href;
 	fdjtDOM.getInput(form,"FRAG").value=passage.id;
@@ -154,8 +154,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (typeof tags === 'string') tags=[tags];
 	    var i=0; var lim=tags.length;
 	    while (i<lim) addTag(form,tags[i++],"SHARE");}
-	if ((gloss)&&((gloss.qid)||(gloss.uuid))) {
-	    uuidelt.value=gloss.qid||gloss.uuid;
+	if ((gloss)&&(gloss._id)) {
+	    uuidelt.value=gloss._id;
 	    form.method="PUT";}
 	else uuidelt.value=fdjtState.getUUID(Codex.nodeid);
 	if ((Codex.outlets)||((gloss)&&(gloss.outlets))) {
@@ -189,7 +189,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     function addOutlet(form,outlet,checked) {
 	var outletspan=fdjtDOM.getChild(form,".outlets");
 	if (typeof outlet === 'string') outlet=fdjtKB.ref(outlet);
-	var checkbox=fdjtDOM.Checkbox(outlet,outlet.qid);
+	var checkbox=fdjtDOM.Checkbox(outlet,outlet._id);
 	var checkspan=fdjtDOM("span.checkspan.outlet",checkbox,
 			      outlet.name);
 	if (outlet.about) checkspan.title=outlet.about;
@@ -253,7 +253,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		  (tag));
 	if (info) {
 	    if (info.knodule===Codex.knodule) tag=info.dterm;
-	    else tag=info.qid||info.oid||info.dterm||tag;}
+	    else tag=info._id||info.qid||info.oid||info.dterm||tag;}
 	if ((info)&&(info.pool===Codex.sourcekb)) varname='OUTLETS';
 	var checkspans=fdjtDOM.getChildren(tagselt,".checkspan");
 	var i=0; var lim=checkspans.length;
@@ -594,7 +594,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var gloss=glosses[i++]; var glossid;
 	    if (typeof gloss === 'string') {
 		glossid=gloss; gloss=Codex.glosses.ref(glossid);}
-	    else glossid=gloss.qid;
+	    else glossid=gloss._id;
 	    var user=gloss.maker;
 	    var sources=gloss.audience;
 	    var tags=gloss.tags;
@@ -645,7 +645,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var taginfo=fdjtKB.ref(tag);
 	    if ((taginfo)&&(taginfo.kind)) {
 		var srcspan=fdjtDOM("span.source",taginfo.name||tag);
-		srcspan.setAttribute("tag",(((taginfo)&&(taginfo.qid))||tag));
+		srcspan.setAttribute("tag",(((taginfo)&&(taginfo._id))||tag));
 		span=fdjtDOM("span",srcspan);
 		if (links[tag]) {
 		    var sg=links[tag];
@@ -665,7 +665,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 			icon.title=gloss.note; fdjtDOM(span," ",icon);}}}
 	    else {
 		span=fdjtDOM("span.dterm",taginfo||tag);
-		span.setAttribute("tag",(((taginfo)&&(taginfo.qid))||tag));}
+		span.setAttribute("tag",(((taginfo)&&(taginfo._id))||tag));}
 	    fdjtDOM(info,((i>0)&&(" \u00b7 ")),span);
 	    i++;}
 	info.onclick=sbookgloss_ontap;
