@@ -327,8 +327,6 @@ var CodexPaginate=
 		    if (g.top!==off) {
 			var margin=parsePX(top.style.marginTop);
 			var new_margin=off-(g.top-margin);
-			fdjtLog("Change margin for %s@%o from %o to %o for target %o",
-				fdjtString(top),i,margin,new_margin,off);
 			top.style.marginTop=new_margin+"px";}
 		    i++;}
 		Codex.page_width=width;
