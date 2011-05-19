@@ -69,7 +69,7 @@ function CodexDOMScan(root,docinfo){
   rootinfo.level=0; rootinfo.sub=new Array();
   rootinfo.head=false; rootinfo.heads=new Array();
   rootinfo.frag=root.id;
-  rootinfo.qid="#"+root.id;
+  rootinfo._id="#"+root.id;
   rootinfo.elt=root;
   scanstate.allinfo.push(rootinfo);
   scanstate.allinfo.push(0);
@@ -100,7 +100,7 @@ function CodexDOMScan(root,docinfo){
     if (docinfo[id]) return docinfo[id];
     this.pool=scanstate.pool;
     this.frag=id;
-    this.qid="#"+id;
+    this._id="#"+id;
     docinfo[id]=this;
     scanstate.allinfo.push(this);
     scanstate.locinfo.push(scanstate.location);
@@ -210,7 +210,7 @@ function CodexDOMScan(root,docinfo){
     headinfo.starts_at=scanstate.location;
     headinfo.elt=head; headinfo.level=level;
     headinfo.sub=new Array();
-    headinfo.frag=headid; headinfo.qid="#"+headid;
+      headinfo.frag=headid; headinfo._id="#"+headid;
     headinfo.title=getTitle(head);
     headinfo.next=false; headinfo.prev=false;
     if (level>curlevel) {

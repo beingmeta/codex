@@ -780,7 +780,7 @@ Codex.Startup=
 			var completion=
 			    fdjtDOM("span.completion.outlet.cue",outlet.name);
 			completion.id="SBOOKGLOSSOUTLET"+outlet.humid;
-			completion.setAttribute("value",outlet.qid);
+			completion.setAttribute("value",outlet._id);
 			completion.setAttribute("key",outlet.name);
 			fdjtDOM(fdjtID("CODEXGLOSSOUTLETS"),completion," ");
 			if (Codex.gloss_cloud)
@@ -807,8 +807,8 @@ Codex.Startup=
 			else {
 			    var obj=fdjtKB.Import(info[i++]);
 			    if (persist) 
-				fdjtState.setLocal(obj.qid,obj,true);
-			    qids.push(obj.qid);}}
+				fdjtState.setLocal(obj._id,obj,true);
+			    qids.push(obj._id);}}
 		    sbook[name]=qids;
 		    if (Codex.offline)
 			fdjtState.setLocal
@@ -816,8 +816,8 @@ Codex.Startup=
 	    else {
 		var obj=fdjtKB.Import(info);
 		if (persist) 
-		    fdjtState.setLocal(obj.qid,obj,true);
-		sbook[name]=obj.qid;
+		    fdjtState.setLocal(obj._id,obj,true);
+		sbook[name]=obj._id;
 		if (persist)
 		    fdjtState.setLocal("codex."+name+"("+refuri+")",qid,true);}}
 	Codex.setUser=setUser;
@@ -883,7 +883,7 @@ Codex.Startup=
 	    if (loaded.length) {
 		var n=loaded.length; var i=0; while (i<n) {
 		    var gloss=loaded[i++];
-		    var id=gloss.qid||gloss.uuid||gloss.oid;
+		    var id=gloss._id;
 		    var tstamp=gloss.syncstamp||gloss.tstamp;
 		    if (tstamp>latest) latest=tstamp;
 		    allglosses.push(id);}}
@@ -1000,8 +1000,7 @@ Codex.Startup=
 	    var i=0; var lim=glosses.length;
 	    var latest=Codex.syncstamp||0;
 	    while (i<lim) {
-		var gloss=glosses[i++];
-		var id=gloss.qid||gloss.uuid||gloss.oid;
+		var gloss=glosses[i++]; var id=gloss._id;
 		var tstamp=gloss.syncstamp||gloss.tstamp;
 		if (tstamp>latest) latest=tstamp;
 		allglosses.push(id);}

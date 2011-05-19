@@ -50,7 +50,7 @@ var sbook_reply_icon="replyballoons26x15.png";
   var odq="\u201c"; var cdq="\u201d";
 
   function renderNote(info,query,idprefix,standalone){
-    var key=info.qid||info.oid||info.id;
+      var key=info._id;
     var target_id=(info.frag)||(info.id);
     var target=((target_id)&&(fdjtID(target_id)));
     var target_info=Codex.docinfo[target_id];
@@ -85,13 +85,12 @@ var sbook_reply_icon="replyballoons26x15.png";
 	      body);
     if (!(info.tstamp))
       div.title=Codex.getTitle(target,true);
-    // if (info.qid) div.about=info.qid;
     div.about="#"+info.frag;
     // div.setAttribute('about',"#"+info.id);
     if (idprefix) div.id=idprefix+info.id;
-    if (info.qid) {
-      div.name=div.qref=info.qid;
-      div.setAttribute("name",info.qid);}
+    if (info._id) {
+      div.name=div.qref=info._id;
+      div.setAttribute("name",info._id);}
     return div;}
   Codex.renderNote=renderNote;
     
@@ -228,7 +227,7 @@ var sbook_reply_icon="replyballoons26x15.png";
     var feedinfo=Codex.sourcekb.map[feed];
     var agestring=timestring(info.modified||info.created);
     var age=fdjtDOM("span.age",agestring);
-    age.title=(((user===Codex.user)||(user===Codex.user.qid))?
+    age.title=(((user===Codex.user)||(user===Codex.user._id))?
 	       ("edit this gloss"):
 	       ("relay/reply to this gloss"));
     // This should be made to work
@@ -504,8 +503,8 @@ var sbook_reply_icon="replyballoons26x15.png";
     if (!(sort)) {}
     else if (scores)
       notes.sort(function(n1,n2){
-	  var s1=(scores[n1.qid]);
-	  var s2=(scores[n2.qid]);
+	  var s1=(scores[n1._id]);
+	  var s2=(scores[n2._id]);
 	  if ((s1)&&(s2)) {
 	    if (s1>s2) return -1;
 	    else if (s2>s1) return 1;}
@@ -669,7 +668,7 @@ var sbook_reply_icon="replyballoons26x15.png";
       idthread.setAttribute("locinfo",starts);
       if (insertbefore) fdjtDOM.insertBefore(insertbefore,idthread);
       else fdjtDOM.append(headthread,idthread);}
-    var tstamp=note.tstamp; var qid=note.qid;
+    var tstamp=note.tstamp; var qid=note._id;
     var children=headthread.childNodes;
     var ishead=(frag===headid);
     var i=0; var lim=children.length;

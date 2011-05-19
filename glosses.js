@@ -253,7 +253,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		  (tag));
 	if (info) {
 	    if (info.knodule===Codex.knodule) tag=info.dterm;
-	    else tag=info._id||info.qid||info.oid||info.dterm||tag;}
+	    else tag=info._id||info.dterm||tag;}
 	if ((info)&&(info.pool===Codex.sourcekb)) varname='OUTLETS';
 	var checkspans=fdjtDOM.getChildren(tagselt,".checkspan");
 	var i=0; var lim=checkspans.length;

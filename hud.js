@@ -91,7 +91,7 @@ var CodexMode=
 		    var glossmark=Codex.UI.addGlossmark(item.frag); {
 			if (glossmark) {
 			    var curglosses=glossmark.glosses;
-			    curglosses.push(item.qid);}
+			    curglosses.push(item._id);}
 			if (item.tstamp>Codex.syncstamp)
 			    Codex.syncstamp=item.tstamp;
 			var pic=((fdjtKB.ref(item.maker)).pic)||

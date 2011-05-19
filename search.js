@@ -322,7 +322,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	  if (xfrag===yfrag) {}
 	  else if (scores[x.frag]>scores[yfrag]) return -1;
 	  else if (scores[xfrag]<scores[yfrag]) return 1;
-	  var xqid=x.qid; var yqid=y.qid;
+	  var xqid=x._id; var yqid=y._id;
 	  if (rscores[xqid]>rscores[yqid]) return -1;
 	  else if (rscores[xqid]<rscores[yqid]) return 1;
 	  var xstart=x.starts_at; var ystart=y.starts_at;
