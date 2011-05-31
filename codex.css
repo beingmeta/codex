@@ -45,7 +45,8 @@ span.codexcssversion:after {
 div#CODEXPAGE {
     position: fixed; overflow: visible;
     padding: 0px; margin: 0px; border: 0px;
-    top: 60px; bottom: 60px; left: 50px; right: 50px;}
+    left: 50px; right: 50px;
+    top: 60px; bottom: 60px;}
 div#CODEXPAGE div#CODEXPAGES {
     position: absolute; top: 0px; left: 0px;
     padding: 0px; margin: 0px; border: 0px;
@@ -60,20 +61,33 @@ body.codexpageview div#CODEXPAGE div#CODEXPAGES {
     -o-column-rule-width: 4px;
     -moz-column-rule-width: 4px;
     -webkit-column-rule-width: 4px;
+    /*
+    column-rule-width: 7em;
+    -o-column-rule-width: 7em;
+    -moz-column-rule-width: 7em;
+    -webkit-column-rule-width: 7em;
+    */
+    /*
     column-rule-color: transparent;
     -o-column-rule-color: transparent;
     -moz-column-rule-color: transparent;
     -webkit-column-rule-color: transparent;
-    /*
+    */
     column-rule-color: black;
     -o-column-rule-color: black;
     -moz-column-rule-color: black;
     -webkit-column-rule-color: black;
-    */
     column-rule-style: solid;
     -o-column-rule-style: solid;
     -moz-column-rule-style: solid;
     -webkit-column-rule-style: solid;}
+
+body.sbook.codexpageview {
+    margin-top: 0px; margin-bottom: 0px;
+    margin-left: 0px; margin-right: 0px;}
+
+div#CODEXCONTENT > * {
+    max-width: inherit;}
 
 div#CODEXCONTENT, div#CODEXCONTENT p, div#CODEXCONTENT div {
     user-select: auto;
