@@ -149,6 +149,7 @@ var CodexPaginate=
 	    var ngeom=getGeometry(next);
 	    var nstyle=getStyle(next);
 	    var prev=false, pgeom=false, pstyle=false;
+	    var colpage=Codex.colpage;
 	    if ((trace)||((!(Codex._setup))&&(Codex.Trace.startup)))
 		fdjtLog("Starting page layout");
 	    var fullpages;
@@ -240,8 +241,9 @@ var CodexPaginate=
 		content.style.maxWidth=content.style.minWidth=(width-32)+"px";
 		content.style.marginLeft=content.style.marginRight="16px";
 		pages.style.height=height+"px";
-		pages.style[fdjtDOM.columnWidth]=width+"px";
-		pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";
+		if ((colpage)||(!(talldom))) {
+		    pages.style[fdjtDOM.columnWidth]=width+"px";
+		    pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";}
 		// Figure out whether column layout is expressed in the DOM
 		var content_dim=getGeometry(content,pages);
 		// Codex.talldom=talldom=(!(content_dim.width>vwidth));
@@ -302,7 +304,9 @@ var CodexPaginate=
 		if ((trace)&&(typeof trace === 'number')&&(trace>1))
 		    fdjtLog("forcedBreak%s/after geom=%s",
 			    fdjtString(prev),JSON.stringify(geom));
-		forced.push(elt); forced_off.push(target_off);
+		pagetops.push(elt);
+		forced.push(elt);
+		forced_off.push(target_off);
 		forced_off.push();}
 	    function handleDeclaredBreaks() {
 		var breaks=fdjtDOM.getChildren(content,"sbookpagebreak");
@@ -314,6 +318,9 @@ var CodexPaginate=
 		    var i=0; var lim=breaks.length;
 		    while (i<lim) forceBreak(breaks[i++],false);}}
 	    function finishUp() {
+		if (!((colpage)||(!(talldom)))) {
+		    pages.style[fdjtDOM.columnWidth]=width+"px";
+		    pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";}
 		var content_dim=getGeometry(content,pages);
 		var pagecount=Codex.pagecount=
 		    ((content_dim.width>vwidth)?
