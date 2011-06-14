@@ -87,7 +87,7 @@ Codex.Startup=
 	    // Get various settings
 	    readSettings();
 	    CodexPaginate.readSettings();
-	    // Execute and fdjt initializations
+	    // Execute fdjt initializations
 	    fdjtDOM.init();
 	    // Declare this
 	    fdjtDOM.addClass(document.body,"codexstartup");
@@ -288,14 +288,15 @@ Codex.Startup=
 	    var isWebKit = navigator.appVersion.search("WebKit")>=0;
 	    var isWebTouch = isIphone || isIpad || isAndroid;
 
-	    if ((typeof Codex.colpage === 'undefined')&&
+	    if ((typeof Codex.colbreak === 'undefined')&&
 		((Codex.devinfo.Chrome)||
 		 ((Codex.devinfo.AppleWebKit)&&
 		  (Codex.devinfo.Mobile)&&
 		  (Codex.devinfo.AppleWebKit>532))||
 		 ((Codex.devinfo.AppleWebKit)&&
-		  (Codex.devinfo.AppleWebKit>533))))
-		Codex.colpage=true;
+		  (Codex.devinfo.AppleWebKit>533)))) {
+		Codex.colbreak=true;
+		Codex.talldom=true;}
 	    if (isWebTouch) {
 		fdjtDOM.addClass(document.body,"sbooktouch");
 		viewportSetup();
@@ -636,6 +637,10 @@ Codex.Startup=
 		fdjtDOM.insertBefore(aside,anchor);
 		aside.codextocloc=anchor.id;
 		fdjtDOM.append(allasides,aside);}
+	    var humane=fdjtDOM.$(".humane");
+	    if (humane) {
+		var i=0; var lim=humane.length;
+		while (i<lim) humane[i++].sbookui=true;}
 	    // Initialize the margins
 	    initMargins();
 	    if (Codex.Trace.startup>1)

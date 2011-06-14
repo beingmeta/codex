@@ -125,7 +125,7 @@ var CodexPaginate=
 
 	// Whether the DOM geometry reflects conversion into columns or not
 	// (Gecko does, Webkit doesnt)
-	var talldom=true;
+	var talldom=Codex.talldom;
 
 	function Paginate(callback){
 	    var start_time=fdjtTime(); var chunks=0;
@@ -149,7 +149,7 @@ var CodexPaginate=
 	    var ngeom=getGeometry(next);
 	    var nstyle=getStyle(next);
 	    var prev=false, pgeom=false, pstyle=false;
-	    var colpage=Codex.colpage;
+	    var colbreak=Codex.colbreak;
 	    if ((trace)||((!(Codex._setup))&&(Codex.Trace.startup)))
 		fdjtLog("Starting page layout");
 	    var fullpages;
@@ -233,20 +233,21 @@ var CodexPaginate=
 		Codex.forced_breaks=[];
 		// Set up the column layout
 		content.style.maxWidth=content.style.minWidth=(width-32)+"px";
-		content.style.marginLeft=content.style.marginRight="16px";
+		content.style.marginRight="16px";
+		content.style.marginLeft=(32-(Math.floor((vwidth-width)/2)))+"px";
 		pages.style.height=height+"px";
-		if ((colpage)||(!(talldom))) {
+		if ((colbreak)||(!(talldom))) {
 		    pages.style[fdjtDOM.columnWidth]=width+"px";
 		    pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";}
 		// Figure out whether column layout is expressed in the DOM
 		var content_dim=getGeometry(content,pages);
-		// Codex.talldom=talldom=(!(content_dim.width>vwidth));
+		Codex.talldom=talldom=(!(content_dim.width>vwidth));
 		// Get the fullsized pages
 		fullpages=getFullPages();}
 	    function forceBreak(elt,prev){
 		var g=getGeometry(elt);
 		var target_off;
-		var oldpage=Math.floor((colpage)?(g.left/vwidth):
+		var oldpage=Math.floor((colbreak)?(g.left/vwidth):
 				       ((g.top-booktop)/height));
 		var newpage=oldpage+1;
 		if (Codex.colbreak) {
@@ -315,7 +316,7 @@ var CodexPaginate=
 		    var i=0; var lim=breaks.length;
 		    while (i<lim) forceBreak(breaks[i++],false);}}
 	    function finishUp() {
-		if (!((colpage)||(!(talldom)))) {
+		if (!((colbreak)||(!(talldom)))) {
 		    pages.style[fdjtDOM.columnWidth]=width+"px";
 		    pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";}
 		var content_dim=getGeometry(content,pages);
@@ -553,7 +554,7 @@ var CodexPaginate=
 		fdjtLog("GoToPage%s %o",((caller)?"/"+caller:""),pageno);
 	    Codex.pages.style.setProperty
 	    (fdjtDOM.transform,
-	     "translate("+(-off)+"px,0px)",
+	     "translate("(-off)+"px,0px)",
 	     "important");
 	    var ptop=Codex.pagetops[num];
 	    while (ptop) {
