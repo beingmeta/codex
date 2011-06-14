@@ -67,16 +67,16 @@ body.codexpageview div#CODEXPAGE div#CODEXPAGES {
     -moz-column-rule-width: 7em;
     -webkit-column-rule-width: 7em;
     */
-    /*
     column-rule-color: transparent;
     -o-column-rule-color: transparent;
     -moz-column-rule-color: transparent;
     -webkit-column-rule-color: transparent;
-    */
+    /*
     column-rule-color: black;
     -o-column-rule-color: black;
     -moz-column-rule-color: black;
     -webkit-column-rule-color: black;
+    */
     column-rule-style: solid;
     -o-column-rule-style: solid;
     -moz-column-rule-style: solid;
