@@ -165,16 +165,12 @@ var CodexPaginate=
 	    /* Here are the parts of the process */
 	    function scanStep() {
 		var top=geom.top; var bottom=geom.top+geom.height;
-		var starts_at=((talldom)?(geom.top/height):(geom.left/vwidth));
-		var ends_at=((talldom)?(geom.bottom/height):(geom.right/vwidth));
+		var starts_at=(geom.top/height);
+		var ends_at=(geom.bottom/height);
 		var startpage=Math.floor(starts_at);
 		var endpage=Math.floor(ends_at);
-		var nextpage=((ngeom)&&
-			      (Math.floor((talldom)?
-					  (ngeom.top/height):
-					  (ngeom.left/vwidth))));
-		var at_top=((talldom)?(((geom.top/height)%1)<0.001):
-			    (geom.top<2));
+		var nextpage=((ngeom)&&(Math.floor((ngeom.top/height))));
+		var at_top=(((geom.top/height)%1)<0.001);
 		var break_after=((next)&&(nextpage>endpage));
 		var forcebreak=true;
 		if (forced.length===0) {
@@ -182,9 +178,7 @@ var CodexPaginate=
 		    pagetops.push(scan);}
 		if (at_top) {
 		    forced.push(scan);
-		    forced_off.push((talldom)?
-				    ((Math.floor(geom.top/height))*height):
-				    (geom.top));
+		    forced_off.push(((Math.floor(geom.top/height))*height));
 		    pagetops.push(scan);
 		    forcebreak=false;}
 		else if (forceBreakBefore(scan,style)) forceBreak(scan,false);
@@ -208,14 +202,14 @@ var CodexPaginate=
 		    scan.setAttribute(
 			"sbookpagedbg",
 			_paginationInfo(scan,style,startpage,endpage,nextpage,
-					at_top,break_after,forcebreak));
+					geom,ngeom,at_top,break_after,forcebreak));
 		prev=scan; pgeom=geom; pstyle=style;
-		geom=ngeom; style=nstyle;
-		if (scan=next) next=scanContent(scan,style);
-		else next=null;
-		if (next) {
-		    ngeom=getGeometry(next);
-		    nstyle=getStyle(next);}
+		scan=next; style=nstyle; geom=((scan)&&(getGeometry(scan)));
+		if (scan) {
+		    next=scanContent(scan,style);
+		    nstyle=((next)&&(getStyle(next)));
+		    ngeom=((next)&&(getGeometry(next)));}
+		else next=nstyle=ngeom=null; 
 		// This might be neccessary if we have to yield to
 		//   let the DOM update, which doesn't seem to be the case
 		// if (forcebreak) return forcebreak;
@@ -252,8 +246,8 @@ var CodexPaginate=
 	    function forceBreak(elt,prev){
 		var g=getGeometry(elt);
 		var target_off;
-		var oldpage=Math.floor((talldom)?((g.top-booktop)/height):
-				       (g.left/vwidth));
+		var oldpage=Math.floor((colpage)?(g.left/vwidth):
+				       ((g.top-booktop)/height));
 		var newpage=oldpage+1;
 		if (Codex.colbreak) {
 		    if (hasClass(elt,"codexpagebreak")) return;
@@ -264,35 +258,38 @@ var CodexPaginate=
 		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
 			fdjtLog("forceBreak%s@%o h=%o geom=%s",
 				fdjtString(elt),newpage,height,
-				JSON.stringify(g));}
+				JSON.stringify(g));
+		    if (debug)
+			elt.setAttribute("sbookbreakinfo",
+					 fdjtString("forceBreakCSS%s@%o h=%o geom=%s",
+						    fdjtString(elt),newpage,height,
+						    JSON.stringify(g)));}
 		else {
 		    // Some browsers don't recognize columnBreakBefore, so
 		    // we check that the change actually worked (assuming
 		    // synchronous DOM updates) and go kludgier if it
 		    // didn't
-		    var g=getGeometry(elt);
 		    var style=elt.style;
+		    var top_margin=0;
 		    // We have to kludge the margin top, and first we
 		    // get the geometry without any existing margin
 		    style.setProperty("margin-top","0px","important");
 		    g=getGeometry(elt);
-		    var top_margin=0;
-		    if (talldom) {
-			var pageoff=((newpage)*height)+booktop;
-			target_off=pageoff;
-			top_margin=(pageoff-g.top);
-			if ((trace)&&(typeof trace === 'number')&&(trace>1))
-			    fdjtLog("forceBreak%s@%o h=%o off=%o tm=%o geom=%s",
-				    fdjtString(elt),newpage,height,pageoff,top_margin,
-				    JSON.stringify(g));}
-		    else {
-			top_margin=height-(g.top-booktop);
-			target_off=booktop;
-			if ((trace)&&(typeof trace === 'number')&&(trace>1))
-			    fdjtLog("forceBreak%s@%o h=%o tm=%o geom=%s",
-				    fdjtString(elt),newpage,height,top_margin,
-				    JSON.stringify(g));}
-		    if (top_margin<0) top_margin=0;
+		    var pageoff=((newpage)*height)+booktop;
+		    target_off=pageoff;
+		    top_margin=(pageoff-g.top);
+		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
+			fdjtLog("forceBreak%s@%o h=%o off=%o tm=%o geom=%s",
+				fdjtString(elt),newpage,height,pageoff,top_margin,
+				JSON.stringify(g));
+		    if (debug)
+			elt.setAttribute("sbookbreakinfo",
+					 fdjtString("forceBreakMargin%s@%o h=%o off=%o tm=%o geom=%s",
+						    fdjtString(elt),newpage,height,pageoff,top_margin,
+						    JSON.stringify(g)));
+		    if (top_margin<0) {
+			fdjtLog("Negative top margin %d for %o",top_margin,elt);
+			top_margin=0;}
 		    else top_margin=top_margin%height;
 		    style.setProperty("margin-top",
 				      (Math.floor(top_margin))+"px",
@@ -331,10 +328,10 @@ var CodexPaginate=
 		var i=0; while (i<pagecount) {
 		    var top=forced[i]; var off=forced_off[i];
 		    if (!(top)) {i++; continue;}
+		    var margin=parsePX(top.style.marginTop);
 		    var g=fdjtDOM.getGeometry(top,content);
 		    if (g.top!==off) {
-			var margin=parsePX(top.style.marginTop);
-			var new_margin=off-(g.top-margin);
+			var new_margin=((off-(g.top-margin))%height);
 			if (new_margin<=0)
 			    top.style.marginTop="0 px";
 			else top.style.marginTop=new_margin+"px";}
@@ -508,7 +505,7 @@ var CodexPaginate=
 	
 	/* Debugging support */
 
-	function _paginationInfo(elt,style,startpage,endpage,nextpage,
+	function _paginationInfo(elt,style,startpage,endpage,nextpage,geom,ngeom,
 				 at_top,break_after,force_break){
 	    var info=getGeometry(elt,Codex.content);
 	    return elt.id+"/t"+(elt.toclevel||0)+
@@ -525,7 +522,8 @@ var CodexPaginate=
 		" ["+
 		info.width+"x"+info.height+"@"+
 		info.top+","+info.left+
-		"]";}
+		"] g=["+(JSON.stringify(geom))+
+		"] ng=["+(JSON.stringify(ngeom))+"]";}
 
 	/* Movement by pages */
 
