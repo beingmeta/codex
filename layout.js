@@ -160,7 +160,7 @@ var CodexPaginate=
 	      adjustFullPages,adjustFullPages,
 	      adjustFullPages,adjustFullPages,
 	      finishFullPages,// scaleFullPages,
-	      ((Codex.colbreak)&&(handleDeclaredBreaks)),
+	      ((Codex.colbreak)&&(handleDeclaredBreaks())),
 	      forceBreaks]);
 	    /* Here are the parts of the process */
 	    function scanStep() {
@@ -200,7 +200,7 @@ var CodexPaginate=
 		    curpage=newpage;}
 		if (debug)
 		    scan.setAttribute(
-			"sbookpagedbg",
+			"codexdbg",
 			_paginationInfo(scan,style,startpage,endpage,nextpage,
 					geom,ngeom,at_top,break_after,forcebreak));
 		prev=scan; pgeom=geom; pstyle=style;
@@ -232,9 +232,11 @@ var CodexPaginate=
 		    dropClass(Codex.forced_breaks,"codexpagebreak");
 		Codex.forced_breaks=[];
 		// Set up the column layout
-		content.style.maxWidth=content.style.minWidth=(width-32)+"px";
+		content.style.maxWidth=(width-32)+"px";
 		content.style.marginRight="16px";
-		content.style.marginLeft=(32-(Math.floor((vwidth-width)/2)))+"px";
+		if (talldom) 
+		    content.style.marginLeft=(32-(Math.floor((vwidth-width)/2)))+"px";
+		else content.style.marginLeft="0px";
 		pages.style.height=height+"px";
 		if ((colbreak)||(!(talldom))) {
 		    pages.style[fdjtDOM.columnWidth]=width+"px";
@@ -245,6 +247,23 @@ var CodexPaginate=
 		// Get the fullsized pages
 		fullpages=getFullPages();}
 	    function forceBreak(elt,prev){
+		var parent=elt.parentNode;
+		// If you're directly inside a page break, don't bother breaking
+		if ((parent===prev)&&
+		    ((hasClass((parent),"codexpagebreak"))||
+		     (hasClass((parent),"codexpagebroke")))) {
+		    addClass(elt,"codexpagebroke");
+		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
+			fdjtLog("forceBreak/skip%s@%o h=%o parent=%s",
+				fdjtString(elt),newpage,height,
+				fdjtString(parent));
+		    if (debug)
+			elt.setAttribute(
+			    "codexpagebreak",
+			    fdjtString("forceBreak/skip%s@%o h=%o parent=%s",
+				       fdjtString(elt),newpage,height,
+				       fdjtString(parent)));
+		    return;}
 		var g=getGeometry(elt);
 		var target_off;
 		var oldpage=Math.floor((colbreak)?(g.left/vwidth):
@@ -253,15 +272,20 @@ var CodexPaginate=
 		if (Codex.colbreak) {
 		    if (hasClass(elt,"codexpagebreak")) return;
 		    if ((prev)&&
-			((avoidBreakAfter(prev))||(avoidBreakBefore(elt))))
-			addClass(prev,"codexpagebreak");
+			((avoidBreakAfter(prev))||(avoidBreakBefore(elt)))) {
+			parent=prev.parentNode;
+			if (((hasClass(parent,"codexpagebreak"))||
+			     (hasClass(parent,"codexpagebroke")))&&
+			    (scanContent(parent)===prev))
+			    addClass(prev,"codexpagebroke");
+			else addClass(prev,"codexpagebreak");}
 		    else addClass(elt,"codexpagebreak");
 		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
 			fdjtLog("forceBreak%s@%o h=%o geom=%s",
 				fdjtString(elt),newpage,height,
 				JSON.stringify(g));
 		    if (debug)
-			elt.setAttribute("sbookbreakinfo",
+			elt.setAttribute("codexpagebreak",
 					 fdjtString("forceBreakCSS%s@%o h=%o geom=%s",
 						    fdjtString(elt),newpage,height,
 						    JSON.stringify(g)));}
@@ -284,10 +308,11 @@ var CodexPaginate=
 				fdjtString(elt),newpage,height,pageoff,top_margin,
 				JSON.stringify(g));
 		    if (debug)
-			elt.setAttribute("sbookbreakinfo",
-					 fdjtString("forceBreakMargin%s@%o h=%o off=%o tm=%o geom=%s",
-						    fdjtString(elt),newpage,height,pageoff,top_margin,
-						    JSON.stringify(g)));
+			elt.setAttribute(
+			    "codexpagebreak",
+			    fdjtString("forceBreakMargin%s@%o h=%o off=%o tm=%o geom=%s",
+				       fdjtString(elt),newpage,height,pageoff,top_margin,
+				       JSON.stringify(g)));
 		    if (top_margin<0) {
 			fdjtLog("Negative top margin %d for %o",top_margin,elt);
 			top_margin=0;}
@@ -307,7 +332,7 @@ var CodexPaginate=
 		forced_off.push(target_off);
 		forced_off.push();}
 	    function handleDeclaredBreaks() {
-		var breaks=fdjtDOM.getChildren(content,"sbookpagebreak");
+		var breaks=fdjtDOM.getChildren(content,"forcebreakbefore");
 		var i=0; var lim=breaks.length;
 		while (i<lim) forceBreak(breaks[i++],false);
 		if (sbook_forcebreakbefore) {
@@ -479,8 +504,8 @@ var CodexPaginate=
 		while (!(next=nextfn(scan,isContentBlock))) scan=scan.parentNode;}
 	    else next=forward(scan,isContentBlock);
 	    if ((next)&&(Paginate.debug)) {
-		if (next.id) scan.setAttribute("sbooknextnode",next.id);
-		if (scan.id) next.setAttribute("sbookprevnode",scan.id);}
+		if (next.id) scan.setAttribute("codexnextcontent",next.id);
+		if (start.id) next.setAttribute("codexprevcontent",start.id);}
 	    return next;}
 	Codex.scanContent=scanContent;
 
@@ -554,7 +579,7 @@ var CodexPaginate=
 		fdjtLog("GoToPage%s %o",((caller)?"/"+caller:""),pageno);
 	    Codex.pages.style.setProperty
 	    (fdjtDOM.transform,
-	     "translate("(-off)+"px,0px)",
+	     "translate("+(-off)+"px,0px)",
 	     "important");
 	    var ptop=Codex.pagetops[num];
 	    while (ptop) {
@@ -610,7 +635,9 @@ var CodexPaginate=
 	function repaginate(){
 	    var newinfo={};
 	    dropClass(document.body,"codexscrollview");
-	    dropClass(document.body,"codexpageview");
+	    if (Codex.colbreak)
+		addClass(document.body,"codexpageview");
+	    else dropClass(document.body,"codexpageview");
 	    addClass(Codex.page,"codexpaginating");
 	    clearPagination();
 	    Paginate(function(){

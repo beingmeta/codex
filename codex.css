@@ -1646,8 +1646,8 @@ body.sbooksplash #SBOOKCOVERPAGE {
 
 h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
 
-.pagebreakbefore { page-break-before: always;}
-.pagebreakafter { page-break-after: always;}
+.forcebreakbefore { page-break-before: always;}
+.forcebreakafter { page-break-after: always;}
 .avoidbreakbefore { page-break-before: avoid;}
 .avoidbreakafter { page-break-after: avoid;}
 .avoidbreakinside { page-break-inside: avoid;}
