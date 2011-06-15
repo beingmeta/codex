@@ -143,10 +143,10 @@ var CodexPaginate=
 	    var trace=Codex.Trace.layout;
 	    var curpage=-1;
 	    var scan=scanContent(content);
-	    var geom=getGeometry(scan);
+	    var geom=getGeometry(scan,content);
 	    var style=getStyle(scan);
 	    var next=scanContent(scan,style);
-	    var ngeom=getGeometry(next);
+	    var ngeom=getGeometry(next,content);
 	    var nstyle=getStyle(next);
 	    var prev=false, pgeom=false, pstyle=false;
 	    var colbreak=Codex.colbreak;
@@ -164,24 +164,21 @@ var CodexPaginate=
 	      forceBreaks]);
 	    /* Here are the parts of the process */
 	    function scanStep() {
-		var top=geom.top; var bottom=geom.top+geom.height;
-		var starts_at=(geom.top/height);
-		var ends_at=(geom.bottom/height);
+		var top=geom.top; var bottom=top+geom.height;
+		var starts_at=(top/height);
+		var ends_at=(bottom/height);
 		var startpage=Math.floor(starts_at);
 		var endpage=Math.floor(ends_at);
-		var nextpage=((ngeom)&&(Math.floor((ngeom.top/height))));
+		// Simulate 32 for lineheight
+		var nextpage=((ngeom)&&
+			      (Math.floor(((ngeom.top+32)/height))));
 		var at_top=(((geom.top/height)%1)<0.001);
 		var break_after=((next)&&(nextpage>endpage));
 		var forcebreak=true;
 		if (forced.length===0) {
 		    forced.push(scan); forced_off.push(booktop);
 		    pagetops.push(scan);}
-		if (at_top) {
-		    forced.push(scan);
-		    forced_off.push(((Math.floor(geom.top/height))*height));
-		    pagetops.push(scan);
-		    forcebreak=false;}
-		else if (forceBreakBefore(scan,style)) forceBreak(scan,false);
+		if (forceBreakBefore(scan,style)) forceBreak(scan,false);
 		else if (((avoidBreakInside(scan,style))||
 			  (avoidBreakAfter(scan,style)))&&
 			 (endpage>startpage)&&(nextpage>startpage))
@@ -192,6 +189,11 @@ var CodexPaginate=
 		    forceBreak(scan,prev);
 		else if ((break_after)&&(avoidBreakBefore(next,nstyle)))
 		    forceBreak(scan,prev);
+		else if (at_top) {
+		    forced.push(scan);
+		    forced_off.push(((Math.floor(geom.top/height))*height));
+		    pagetops.push(scan);
+		    forcebreak=false;}
 		else forcebreak=false;
 		var newpage=
 		    Math.floor((talldom)?(geom.top/height):(geom.left/vwidth));
@@ -204,24 +206,29 @@ var CodexPaginate=
 			_paginationInfo(scan,style,startpage,endpage,nextpage,
 					geom,ngeom,at_top,break_after,forcebreak));
 		prev=scan; pgeom=geom; pstyle=style;
-		scan=next; style=nstyle; geom=((scan)&&(getGeometry(scan)));
+		scan=next; style=nstyle;
+		geom=((scan)&&(getGeometry(scan,content)));
 		if (scan) {
 		    next=scanContent(scan,style);
 		    nstyle=((next)&&(getStyle(next)));
-		    ngeom=((next)&&(getGeometry(next)));}
+		    ngeom=((next)&&(getGeometry(next,content)));}
 		else next=nstyle=ngeom=null; 
 		// This might be neccessary if we have to yield to
 		//   let the DOM update, which doesn't seem to be the case
 		// if (forcebreak) return forcebreak;
-		return false;}
+		return forcebreak;}
 	    function forceBreaks(){
-		var stopblock=fdjtTime()+runslice;
-		while ((scan)&&(fdjtTime()<stopblock))
+		var now=fdjtTime();
+		var stopblock=now+runslice;
+		while ((scan)&&(now<stopblock)) {
 		    if (scanStep()) break;
+		    else now=fdjtTime();}
 		if (scan) {
 		    chunks++;
 		    page_progress(curpage);
-		    setTimeout(forceBreaks,runwait);}
+		    if (now<stopblock)
+			setTimeout(forceBreaks,10);
+		    else setTimeout(forceBreaks,runwait);}
 		else {
 		    finishUp(); chunks++;
 		    page_progress(true);
@@ -232,15 +239,18 @@ var CodexPaginate=
 		    dropClass(Codex.forced_breaks,"codexpagebreak");
 		Codex.forced_breaks=[];
 		// Set up the column layout
+		content.style.maxWidth=(width)+"px";
+		/*
 		content.style.maxWidth=(width-32)+"px";
 		content.style.marginRight="16px";
 		if (talldom) 
-		    content.style.marginLeft=(32-(Math.floor((vwidth-width)/2)))+"px";
+		    content.style.marginLeft=
+		    (32-(Math.floor((vwidth-width)/2)))+"px";
 		else content.style.marginLeft="0px";
+		*/
 		pages.style.height=height+"px";
-		if ((colbreak)||(!(talldom))) {
-		    pages.style[fdjtDOM.columnWidth]=width+"px";
-		    pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";}
+		pages.style[fdjtDOM.columnWidth]=width+"px";
+		pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";
 		// Figure out whether column layout is expressed in the DOM
 		var content_dim=getGeometry(content,pages);
 		Codex.talldom=talldom=(!(content_dim.width>vwidth));
@@ -264,10 +274,9 @@ var CodexPaginate=
 				       fdjtString(elt),newpage,height,
 				       fdjtString(parent)));
 		    return;}
-		var g=getGeometry(elt);
+		var g=getGeometry(elt,content);
 		var target_off;
-		var oldpage=Math.floor((colbreak)?(g.left/vwidth):
-				       ((g.top-booktop)/height));
+		var oldpage=Math.floor(((g.top-booktop)/height));
 		var newpage=oldpage+1;
 		if (Codex.colbreak) {
 		    if (hasClass(elt,"codexpagebreak")) return;
@@ -299,8 +308,8 @@ var CodexPaginate=
 		    // We have to kludge the margin top, and first we
 		    // get the geometry without any existing margin
 		    style.setProperty("margin-top","0px","important");
-		    g=getGeometry(elt);
-		    var pageoff=((newpage)*height)+booktop;
+		    g=getGeometry(elt,content);
+		    var pageoff=((newpage)*height);
 		    target_off=pageoff;
 		    top_margin=(pageoff-g.top);
 		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
@@ -321,9 +330,9 @@ var CodexPaginate=
 				      (Math.floor(top_margin))+"px",
 				      "important");}
 		// Update geometries, assuming the DOM is updated synchronously
-		if (scan) geom=getGeometry(scan);
-		if (next) ngeom=getGeometry(next);
-		if (prev) pgeom=getGeometry(prev);
+		if (scan) geom=getGeometry(scan,content);
+		if (next) ngeom=getGeometry(next,content);
+		if (prev) pgeom=getGeometry(prev,content);
 		if ((trace)&&(typeof trace === 'number')&&(trace>1))
 		    fdjtLog("forcedBreak%s/after geom=%s",
 			    fdjtString(prev),JSON.stringify(geom));
@@ -341,9 +350,8 @@ var CodexPaginate=
 		    var i=0; var lim=breaks.length;
 		    while (i<lim) forceBreak(breaks[i++],false);}}
 	    function finishUp() {
-		if (!((colbreak)||(!(talldom)))) {
-		    pages.style[fdjtDOM.columnWidth]=width+"px";
-		    pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";}
+		pages.style[fdjtDOM.columnWidth]=width+"px";
+		pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";
 		var content_dim=getGeometry(content,pages);
 		var pagecount=Codex.pagecount=
 		    ((content_dim.width>vwidth)?
@@ -569,12 +577,15 @@ var CodexPaginate=
 
 	function GoToPage(num,caller,nosave){
 	    var off;
+	    off=(num*(flip_width));
+	    /*
 	    if (talldom) off=(num*(flip_width));
 	    else {
 		var top=Codex.pagetops[num];
 		var geom=fdjtDOM.getGeometry(top,Codex.content);
 		var pageleft=geom.left-getCSSLeft(top,Codex.content);
 		off=pageleft;}
+	    */
 	    if (Codex.Trace.nav)
 		fdjtLog("GoToPage%s %o",((caller)?"/"+caller:""),pageno);
 	    Codex.pages.style.setProperty
@@ -635,9 +646,7 @@ var CodexPaginate=
 	function repaginate(){
 	    var newinfo={};
 	    dropClass(document.body,"codexscrollview");
-	    if (Codex.colbreak)
-		addClass(document.body,"codexpageview");
-	    else dropClass(document.body,"codexpageview");
+	    addClass(document.body,"codexpageview");
 	    addClass(Codex.page,"codexpaginating");
 	    clearPagination();
 	    Paginate(function(){
