@@ -165,13 +165,15 @@ var CodexPaginate=
 	    /* Here are the parts of the process */
 	    function scanStep() {
 		var top=geom.top; var bottom=top+geom.height;
-		var starts_at=(top/height);
-		var ends_at=(bottom/height);
+		var starts_at=((talldom)?(top/height):(geom.left/width));
+		var ends_at=((talldom)?(bottom/height):(geom.right/width));
 		var startpage=Math.floor(starts_at);
 		var endpage=Math.floor(ends_at);
 		// Simulate 32 for lineheight
 		var nextpage=((ngeom)&&
-			      (Math.floor(((ngeom.top+32)/height))));
+			      ((talldom)?
+			       (Math.floor(((ngeom.top+32)/height))):
+			       (Math.floor(((ngeom.left)/width)))));
 		var at_top=(((geom.top/height)%1)<0.001);
 		var break_after=((next)&&(nextpage>endpage));
 		var forcebreak=true;
@@ -191,7 +193,9 @@ var CodexPaginate=
 		    forceBreak(scan,prev);
 		else if (at_top) {
 		    forced.push(scan);
-		    forced_off.push(((Math.floor(geom.top/height))*height));
+		    if (talldom)
+			forced_off.push(((Math.floor(top/height))*height));
+		    else forced_off.push(1);
 		    pagetops.push(scan);
 		    forcebreak=false;}
 		else forcebreak=false;
@@ -338,8 +342,7 @@ var CodexPaginate=
 			    fdjtString(prev),JSON.stringify(geom));
 		pagetops.push(elt);
 		forced.push(elt);
-		forced_off.push(target_off);
-		forced_off.push();}
+		forced_off.push(target_off);}
 	    function handleDeclaredBreaks() {
 		var breaks=fdjtDOM.getChildren(content,"forcebreakbefore");
 		var i=0; var lim=breaks.length;
@@ -546,11 +549,12 @@ var CodexPaginate=
 		((at_top)?"/top":"")+
 		((break_after)?"/breaknext":"")+
 		((force_break)?"/forced":"")+
-		((forceBreakBefore(elt,style))?"/ph":"")+
-		((avoidBreakInside(elt,style))?"/pb":"")+
-		((avoidBreakBefore(elt,style))?"/ah":"")+
-		((avoidBreakAfter(elt,style))?"/af":"")+
-		((fdjtDOM.hasText(elt,style))?"/ht":"")+
+		((forceBreakBefore(elt,style))?"/fbb":"")+
+		((forceBreakAfter(elt,style))?"/fba":"")+
+		((avoidBreakInside(elt,style))?"/abi":"")+
+		((avoidBreakBefore(elt,style))?"/abb":"")+
+		((avoidBreakAfter(elt,style))?"/aba":"")+
+		((fdjtDOM.hasText(elt,style))?"/text":"")+
 		((endpage!==nextpage)?"/af/ba":"")+
 		"/sp="+startpage+"/ep="+endpage+"/np="+nextpage+
 		" ["+
