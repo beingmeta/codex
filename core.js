@@ -173,7 +173,7 @@ var sbook_gloss_data=
     var trace1="%s %o in %o: mode%s=%o, target=%o, head=%o scanning=%o";
     var trace2="%s %o: mode%s=%o, target=%o, head=%o scanning=%o";
     function sbook_trace(handler,cxt){
-	var target=fdjtUI.T(cxt);
+	var target=((cxt.nodeType)?(cxt):(fdjtUI.T(cxt)));
 	if (target)
 	    fdjtLog(trace1,handler,cxt,target,
 		    ((Codex.scanning)?("(scanning)"):""),Codex.mode,
