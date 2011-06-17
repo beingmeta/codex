@@ -31,7 +31,7 @@
 
 var CodexPaginate=
     (function(){
-	var debug_pagination=false;
+	var debug_pagination=true;
 	var sbook_paginated=false;
 	var sbook_left_px=40;
 	var sbook_right_px=40;
@@ -61,6 +61,8 @@ var CodexPaginate=
 	var getGeometry=fdjtDOM.getGeometry;
 	var getStyle=fdjtDOM.getStyle;
 	var parsePX=fdjtDOM.parsePX;
+	var geomString=fdjtDOM.geomString;
+	var insertBefore=fdjtDOM.insertBefore;
 	var hasClass=fdjtDOM.hasClass;
 	var addClass=fdjtDOM.addClass;
 	var nextElt=fdjtDOM.nextElt;
@@ -262,6 +264,10 @@ var CodexPaginate=
 		fullpages=getFullPages();}
 	    function forceBreak(elt,prev){
 		var parent=elt.parentNode;
+		var g=getGeometry(elt,content);
+		var target_off;
+		var oldpage=Math.floor((talldom)?(geom.top/height):(geom.left/vwidth));
+		var newpage=oldpage+1;
 		// If you're directly inside a page break, don't bother breaking
 		if ((parent===prev)&&
 		    ((hasClass((parent),"codexpagebreak"))||
@@ -278,10 +284,6 @@ var CodexPaginate=
 				       fdjtString(elt),newpage,height,
 				       fdjtString(parent)));
 		    return;}
-		var g=getGeometry(elt,content);
-		var target_off;
-		var oldpage=Math.floor(((g.top-booktop)/height));
-		var newpage=oldpage+1;
 		if (Codex.colbreak) {
 		    if (hasClass(elt,"codexpagebreak")) return;
 		    if ((prev)&&
@@ -296,50 +298,48 @@ var CodexPaginate=
 		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
 			fdjtLog("forceBreak%s@%o h=%o geom=%s",
 				fdjtString(elt),newpage,height,
-				JSON.stringify(g));
+				geomString(g));
 		    if (debug)
 			elt.setAttribute("codexpagebreak",
-					 fdjtString("forceBreakCSS%s@%o h=%o geom=%s",
+					 fdjtString("forceBreak/CSS%s@%o h=%o geom=%s",
 						    fdjtString(elt),newpage,height,
-						    JSON.stringify(g)));}
+						    geomString(g)));}
 		else {
 		    // Some browsers don't recognize columnBreakBefore, so
 		    // we check that the change actually worked (assuming
 		    // synchronous DOM updates) and go kludgier if it
 		    // didn't
-		    var style=elt.style;
-		    var top_margin=0;
-		    // We have to kludge the margin top, and first we
-		    // get the geometry without any existing margin
-		    style.setProperty("margin-top","0px","important");
-		    g=getGeometry(elt,content);
-		    var pageoff=((newpage)*height);
-		    target_off=pageoff;
-		    top_margin=(pageoff-g.top);
+		    var elt_top=parsePX(getStyle(elt).marginTop);
+		    var pageoff=target_off=((newpage)*height);
+		    var g=getGeometry(elt,content);
+		    var need_space=(pageoff-g.top);
 		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
-			fdjtLog("forceBreak%s@%o h=%o off=%o tm=%o geom=%s",
-				fdjtString(elt),newpage,height,pageoff,top_margin,
-				JSON.stringify(g));
+			fdjtLog("forceBreak%s@%o h=%o off=%o tm=%o ns=%o g=%s",
+				fdjtString(elt),newpage,height,
+				pageoff,elt_top,need_space,
+				geomString(g));
 		    if (debug)
 			elt.setAttribute(
 			    "codexpagebreak",
-			    fdjtString("forceBreakMargin%s@%o h=%o off=%o tm=%o geom=%s",
-				       fdjtString(elt),newpage,height,pageoff,top_margin,
-				       JSON.stringify(g)));
-		    if (top_margin<0) {
-			fdjtLog("Negative top margin %d for %o",top_margin,elt);
-			top_margin=0;}
-		    else top_margin=top_margin%height;
-		    style.setProperty("margin-top",
-				      (Math.floor(top_margin))+"px",
-				      "important");}
+			    fdjtString("forceBreak/Leading%s@%o h=%o off=%o tm=%o ns=%o geom=%s",
+				       fdjtString(elt),newpage,height,
+				       pageoff,elt_top,need_space,
+				       geomString(g)));
+		    if (need_space<0) {
+			fdjtLog("Negative space %d for %o",need_space,elt);
+			need_space=0;}
+		    else need_space=need_space%height;
+		    var leading=fdjtDOM("div.codexvlead");
+		    leading.style.marginBottom=(need_space+(elt_top||0))+"px";
+		    insertBefore(elt,leading);
+		    addClass(elt,"codexpagebroke");}
 		// Update geometries, assuming the DOM is updated synchronously
 		if (scan) geom=getGeometry(scan,content);
 		if (next) ngeom=getGeometry(next,content);
 		if (prev) pgeom=getGeometry(prev,content);
 		if ((trace)&&(typeof trace === 'number')&&(trace>1))
 		    fdjtLog("forcedBreak%s/after geom=%s",
-			    fdjtString(prev),JSON.stringify(geom));
+			    fdjtString(prev),geomString(geom));
 		pagetops.push(elt);
 		forced.push(elt);
 		forced_off.push(target_off);}
@@ -560,8 +560,8 @@ var CodexPaginate=
 		" ["+
 		info.width+"x"+info.height+"@"+
 		info.top+","+info.left+
-		"] g=["+(JSON.stringify(geom))+
-		"] ng=["+(JSON.stringify(ngeom))+"]";}
+		"] g="+(geomString(geom))+
+		" ng="+geomString(geom);}
 
 	/* Movement by pages */
 
