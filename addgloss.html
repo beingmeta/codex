@@ -22,19 +22,26 @@
 	    wrap="virtual"></textarea>
   <div class="glossetc">
     <span class="button addbutton" onclick="Codex.UI.submitEvent(event);">
-      add it</span>
+      add</span>
     <span class="button savebutton" onclick="Codex.UI.submitEvent(event);">
-      save it</span>
-    <span class="checkspan private"
+      save</span>
+    <span class="checkspan shared checked"
 	  onclick="fdjtUI.CheckSpan.onclick(event);"
-	  title="don't share this gloss with my friends generally">
-      <input type="CHECKBOX" name="PRIVATE" value="yes"/>
-      <span class="checked"
-	    title="don't share this note with my personal circle (friends)">
-	private</span>
-      <span class="unchecked"
-	    title="share this note with my personal circle (friends)">
-	shared</span>
+	  title="share this note with (some of) my social networks">
+      <input type="CHECKBOX" name="SHARED" value="yes" CHECKED/>
+      share</span>
+    <span class="sharing">
+      <span class="checkspan checked"
+	    onclick="fdjtUI.CheckSpan.onclick(event);"
+	    title="share this gloss with my Facebook friends">
+	<input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK" CHECKED/>
+	<img src="http://static.beingmeta.com/graphics/facebook16x16.png" alt="Facebook"/></span>
+      <span class="checkspan share checked"
+	    onclick="fdjtUI.CheckSpan.onclick(event);"
+	    title="share this gloss with my Twitter followers">
+	<input type="CHECKBOX" name="NETWORKS" value=":TWITTER" CHECKED/>
+	<img src="http://static.beingmeta.com/graphics/TwitterIcon32x32.png" style="width: 16px; height: 16px;"
+	     alt="Twitter"/></span>
     </span>
     <span class="bracketbutton"
 	  onmousedown="Codex.UI.bracket_click(event);"
