@@ -56,12 +56,11 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (start===end) return false;
 	if (erase) {
 	    input.value=string.slice(0,start)+string.slice(end+1);}
-	else {}
 	return string.slice(start+1,end);}
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
     function getbracketed(input,erase){
-	var bracketed=_getbracketed(input,erase||false);
+	var bracketed=_getbracketed(input,erase);
 	if (bracketed) addClass("CODEXADDGLOSS","tagging");
 	else dropClass("CODEXADDGLOSS","tagging");
 	return bracketed;}
@@ -242,7 +241,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    tag=gloss_cloud.getValue(tag);
 	    var input=fdjtDOM.getInput(form,"NOTE");
 	    // This erases whatever was being typed
-	    if (input) getbracketed(input,true);}
+	    if (input) getbracketed(input,false);}
 	var info=
 	    ((typeof tag === 'string')&&
 	     ((tag.indexOf('|')>0)?
@@ -405,6 +404,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if ((typeof content==='string')&& (content[0]!=='!'))
 		addgloss_timer=setTimeout(function(){
 		    var span=getbracketed(target,false);
+		    // fdjtLog("Completing on %s",span);
 		    gloss_cloud.complete(span);},200);}}
 
     function addgloss_keydown(evt){

@@ -1569,41 +1569,50 @@ div.codexglossform form div.inputhelp {
 div.codexglossform form div.glossetc {
     display: block; text-align: left; font-size: 12px;
     width: 98%; margin-left: auto; margin-right: auto;
-    clear: both; min-height: 24px;}
+    min-height: 24px;}
+
+div.codexglossform form div.glossetc .checkspan.sharing {
+    float: right;}
+
+div.codexglossform form div.glossetc .checkspan > img {
+    padding: 1px; border: dotted red 2px; opacity: 0.5;}
+div.codexglossform form div.glossetc .checkspan.ischecked > img {
+    border: solid green 2px; opacity: 1.0;}
+div.codexglossform form div.glossetc .checkspan.ischecked {
+    color: inherit; text-decoration: none;}
+div.codexglossform form div.glossetc .checkspan.sharing input { display: none;}
+div.codexglossform form div.glossetc .checkspan.sharing .checkspan {
+    display: none;}
+div.codexglossform form div.glossetc .checkspan.sharing.ischecked,
+div.codexglossform form div.glossetc .checkspan.sharing.ischecked .checkspan {
+    display: inline;}
+div.codexglossform form div.glossetc .checkspan .checkspan {
+    text-decoration: line-through; color: red;}
+div.codexglossform form div.glossetc .checkspan .checkspan.ischecked {
+    text-decoration: none; color: inherit;}
+
 div.codexglossform form div.glossetc > .checkspan.private {
     float: right; vertical-align: top; margin-left: 4px;
     padding-top: 0px; margin-top: 0px;}
 div.codexglossform form div.glossetc > span.button {
-    float: right;
+    float: right; 
     font-weight: bold; color: black;
     border-radius: 4px; -o-border-radius: 4px;
     -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
     margin-left: 4px; 
     border: solid silver 2px; background-color: silver; padding: 2px;
-    text-align: center;
+    text-align: center; vertical-align: top;
     cursor: pointer;}
-div.codexglossform form div.glossetc > .bracketbutton {
-    float: right; vertical-align: top;}
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;
     font-family: sans,sans-serif;}
-div.codexglossform form .checkspan.private {
-    font-weight: bold;
-    border-radius: 4px; -o-border-radius: 4px;
-    -moz-border-radius: 4px; -webkit-border-radius: 4px;
-    padding: 0px; padding-right: 2px;  padding-left: 2px; 
-    border: solid silver 2px; background-color: silver; padding: 2px;
-    text-align: center;
-    cursor: pointer;
-    background-color: white; color: green;}
-div.codexglossform form .checkspan.private.ischecked {
-    background-color: black; color: white; }
-div.codexglossform form .checkspan.private input[type='checkbox'] {
-    display: none;}
 
 div.codexglossform form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
+
+div.codexglossform span.button.savebutton { float: right;}
+div.codexglossform span.button.addbutton { float: right;}
 
 div.codexglossform span.savebutton { display: none;}
 div.codexglossform.glossedit span.savebutton { display: inline;}
@@ -1611,6 +1620,9 @@ div.codexglossform.glossedit span.addbutton { display: none;}
 
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
+
+div.codexglossform div.textbox {}
+div.codexglossform div.textbox textarea {}
 
 div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
     vertical-align: top; margin-top: 0px;}

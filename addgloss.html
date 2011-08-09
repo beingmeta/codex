@@ -15,22 +15,33 @@
     <input type="HIDDEN" name="THREAD"/>
     <input type="HIDDEN" name="RE"/>
   </div>
-  <textarea name="NOTE"
-	    placeholder="add text, [tag]s or [!http://example.com/ links]"
-	    onfocus="fdjtDOM.aC(fdjtDOM.$P(this,'form'),'focused');"
-	    onblur="fdjtDOM.dC(fdjtDOM.$P(this,'form'),'focused');"
-	    wrap="virtual"></textarea>
+  <div class="textbox">
+    <textarea name="NOTE"
+	      placeholder="add text, [tag]s or [!http://example.com/ links]"
+	      onfocus="fdjtDOM.aC(fdjtDOM.$P(this,'form'),'focused');"
+	      onblur="fdjtDOM.dC(fdjtDOM.$P(this,'form'),'focused');"
+	      wrap="virtual"></textarea>
+  </div>
   <div class="glossetc">
     <span class="button addbutton" onclick="Codex.UI.submitEvent(event);">
       add</span>
     <span class="button savebutton" onclick="Codex.UI.submitEvent(event);">
       save</span>
-    <span class="checkspan shared ischecked"
+    <span class="button bracketbutton"
+	 onmousedown="Codex.UI.bracket_click(event);"
+	 ontouchstart="Codex.UI.bracket_click(event);"
+	 title="open/close bracketed tag or link">
+      [+]</span>
+    <span class="checkspan sharing ischecked"
 	  onclick="fdjtUI.CheckSpan.onclick(event);"
 	  title="share this note with (some of) my social networks">
       <input type="CHECKBOX" name="SHARED" value="yes" CHECKED/>
-      share</span>
-    <span class="sharing">
+      <span class="checked" style="color: green;">SHARE</span>
+      <span class="unchecked" style="color: red;">PRIVATE</span>
+      <span class="checkspan"
+	    onclick="fdjtUI.CheckSpan.onclick(event);"
+	    title="post this gloss to my networks">
+	<input type="CHECKBOX" name="POST" value="yes"/>post</span>
       <span class="checkspan ischecked"
 	    onclick="fdjtUI.CheckSpan.onclick(event);"
 	    title="share this gloss with my Facebook friends">
@@ -43,11 +54,6 @@
 	<img src="http://static.beingmeta.com/graphics/TwitterIcon32x32.png" style="width: 16px; height: 16px;"
 	     alt="Twitter"/></span>
     </span>
-    <span class="bracketbutton"
-	  onmousedown="Codex.UI.bracket_click(event);"
-	  ontouchstart="Codex.UI.bracket_click(event);"
-	  title="open/close bracketed tag or link">
-      <strong>[</strong>tag/!link<strong>]</strong></span>
     <!--
     <span class="inputhelp">Add a note, [!link], or [tag]s to this
     passage.</span>
