@@ -1612,6 +1612,9 @@ div.codexglossform.glossedit span.addbutton { display: none;}
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
 
+div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
+    vertical-align: top; margin-top: 0px;}
+
 /* sBook splash */
 
 body.sbooksplash #SBOOKCOVERPAGE {

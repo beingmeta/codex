@@ -387,13 +387,13 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var form=fdjtDOM.getParent(target,"FORM");
 	var ch=evt.charCode;
 	if (addgloss_timer) clearTimeout(addgloss_timer);
-	if (ch===91) {
+	if (ch===91) { /* [ */
 	    var pos=target.selectionStart, lim=string.length;
 	    if ((pos>0)&&(string[pos-1]==='\\')) return; 
 	    fdjtUI.cancel(evt);
 	    target.value=string.slice(0,pos)+"[]"+string.slice(pos);
 	    target.selectionStart=target.selectionEnd=pos+1;}
-	else if (ch===93) {
+	else if (ch===93) { /* ] */
 	    var pos=target.selectionStart;
 	    if ((pos>0)&&(string[pos-1]==='\\')) return; 
 	    var content=getbracketed(target,true);
