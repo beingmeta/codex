@@ -199,26 +199,30 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     
     /***** Adding links ******/
     function addLink(form,url,title) {
-	var tagselt=fdjtDOM.getChild(form,'.tags');
-	var linkval=((title)?("["+url+" "+title+"]"):(url));
-	var img=fdjtDOM.Image(sbicon("outlink16x8.png"));
+	var tagselt=fdjtDOM.getChild(form,'.links');
+	var linkval=((title)?(url+" "+title):(url));
+	var livelink=
+	    fdjtDOM.Anchor(url,fdjtDOM.Image(sbicon("upoutlink16x16.png"),"*"));
 	var checkbox=fdjtDOM.Checkbox("LINKS",linkval,true);
-	var checkspan=fdjtDOM("span.checkspan",checkbox,((title)||url),img);
+	var checkspan=fdjtDOM("span.checkspan.anchor.ischecked",
+			      checkbox,
+			      fdjtDOM("span",((title)||url)),
+			      livelink);
 	checkspan.title=url;
 	fdjtDOM(tagselt,checkspan," ");
 	return checkspan;}
 
     /***** Adding excerpts ******/
     function addExcerpt(form,excerpt,id) {
-	var tagselt=fdjtDOM.getChild(form,'.tags');
+	var excerpts=fdjtDOM.getChild(form,'.excerpts');
 	var value=((id)?("[#"+id+" "+excerpt):(excerpt));
 	var checkbox=fdjtDOM.Checkbox("EXCERPT",value,true);
-	var checkspan=fdjtDOM("span.checkspan.excerpt",checkbox,
-			      "\u201c",
-			      ((id)?(fdjtDOM.Anchor("#"+id),excerpt):
-			       (excerpt)),
-			      "\u201d");
-	fdjtDOM(tagselt,checkspan," ");
+	var content=
+	    ((id)?
+	     (fdjtDOM.Anchor("#"+id,"excerpt","\u201c",excerpt,"\u201d")):
+	     (fdjtDOM("span.excerpt","\u201c",excerpt,"\u201d")));
+	var checkspan=fdjtDOM("span.checkspan",checkbox,content);
+	fdjtDOM(excerpts,checkspan," ");
 	return checkspan;}
     Codex.addExcerpt=addExcerpt;
 
@@ -265,7 +269,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (title) span.title=title;
 	span.setAttribute("varname",varname);
 	span.setAttribute("tagval",tag);
-	fdjtDOM.addClass(span,varname.toLowerCase());
+	fdjtDOM.addClass(span,((varname.toLowerCase())+"var"));
 	if (typeof text === 'string')
 	    fdjtDOM.append(span,fdjtDOM(textspec,text));
 	else fdjtDOM.append(span,text);
@@ -346,7 +350,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var string=input.value;
 	var bracketed=getbracketed(input);
 	fdjtUI.cancel(evt);
-	if (bracketed)
+	if (bracketed==="") getbracketed(input,true);
+	else if (bracketed)
 	    handleBracketed(form,getbracketed(input,true));
 	else {
 	    var pos=input.selectionStart;
@@ -357,9 +362,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
     function handleBracketed(form,content,complete){
 	dropClass("CODEXADDGLOSS","tagging");
-	if (content[0]==='!') {
+	if (content[0]==='@') {
 	    var brk=content.indexOf(' ');
-	    if (brk<0) addLink(form,content.slice(1,-1));
+	    if (brk<0) addLink(form,content.slice(1));
 	    else {
 		addLink(form,content.slice(1,brk),
 			content.slice(brk+1));}}
@@ -401,11 +406,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    handleBracketed(form,content);}
 	else {
 	    var content=getbracketed(target);
-	    if ((typeof content==='string')&& (content[0]!=='!'))
+	    if ((typeof content==='string')&& (content[0]!=='@'))
 		addgloss_timer=setTimeout(function(){
 		    var span=getbracketed(target,false);
 		    // fdjtLog("Completing on %s",span);
-		    gloss_cloud.complete(span);},200);}}
+		    if (span[0]!=='@') gloss_cloud.complete(span);},
+					  200);}}
 
     function addgloss_keydown(evt){
 	evt=evt||event;

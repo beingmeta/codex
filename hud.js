@@ -121,10 +121,14 @@ var CodexMode=
 		    var search_cloud=Codex.fullCloud();
 		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
-			gloss_tag=Knodule.HTML(tag,Codex.knodule,false,true);
-			fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
-			gloss_cloud.addCompletion(gloss_tag);}
-		    var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
+			if (!((typeof tag === 'string')&&
+			      (!(Codex.knodule.probe(tag))))) {
+			    gloss_tag=Knodule.HTML(tag,Codex.knodule,false,true);
+			    fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
+			    gloss_cloud.addCompletion(gloss_tag);}}
+		    var search_tag=
+			((forsearch)&&
+			 (search_cloud.getByValue(tag,".completion")));
 		    if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
 			search_tag=Knodule.HTML(tag,Codex.knodule,false,true);
 			fdjtDOM(fdjtID("CODEXSEARCHTAGS"),search_tag," ");

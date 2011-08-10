@@ -32,28 +32,28 @@
 	 ontouchstart="Codex.UI.bracket_click(event);"
 	 title="open/close bracketed tag or link">
       [+]</span>
-    <span class="checkspan sharing ischecked"
-	  onclick="fdjtUI.CheckSpan.onclick(event);"
-	  title="share this note with (some of) my social networks">
-      <input type="CHECKBOX" name="SHARED" value="yes" CHECKED/>
-      <span class="checked" style="color: green;">SHARE</span>
-      <span class="unchecked" style="color: red;">PRIVATE</span>
-      <span class="checkspan"
+    <div class="sharing">
+      <span class="button checkspan ischecked"
 	    onclick="fdjtUI.CheckSpan.onclick(event);"
-	    title="post this gloss to my networks">
-	<input type="CHECKBOX" name="POST" value="yes"/>post</span>
-      <span class="checkspan ischecked"
+	    title="share this gloss with my personal sBooks circle">
+	<input type="CHECKBOX" name="NETWORKS" value=":SBOOKS" CHECKED/>
+	<img src="http://static.beingmeta.com/graphics/sbicon16x16.png"
+	     style="width: 16px; height: 16px;"
+	     alt="Facebook"/></span>
+      <span class="button checkspan ischecked"
 	    onclick="fdjtUI.CheckSpan.onclick(event);"
 	    title="share this gloss with my Facebook friends">
 	<input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK" CHECKED/>
-	<img src="http://static.beingmeta.com/graphics/facebook16x16.png" alt="Facebook"/></span>
-      <span class="checkspan share ischecked"
+	<img src="http://static.beingmeta.com/graphics/facebook16x16.png"
+	     style="width: 16px; height: 16px;"
+	     alt="sBooks"/></span>
+      <span class="button checkspan ischecked"
 	    onclick="fdjtUI.CheckSpan.onclick(event);"
 	    title="share this gloss with my Twitter followers">
 	<input type="CHECKBOX" name="NETWORKS" value=":TWITTER" CHECKED/>
 	<img src="http://static.beingmeta.com/graphics/TwitterIcon32x32.png" style="width: 16px; height: 16px;"
 	     alt="Twitter"/></span>
-    </span>
+    </div>
     <!--
     <span class="inputhelp">Add a note, [!link], or [tag]s to this
     passage.</span>
@@ -65,6 +65,7 @@
     <span class="outlets" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <span class="links" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
+    <span class="excerpts" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
   </div>
 </form>
 <!--
