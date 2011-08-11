@@ -55,7 +55,7 @@ var CodexMode=
 		Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
 		CodexHUD.sbookui=true;
 		CodexHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,CodexHUD);}
+		fdjtDOM.prepend(document.body,fdjtID("HUMANE"),CodexHUD);}
 	    // Setup flyleaf
 	    var flyleaf=fdjtID("CODEXFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;
@@ -246,6 +246,9 @@ var CodexMode=
 	     search: "CODEXSEARCHINPUT",
 	     addgloss: "CODEXGLOSSINPUT"};
 	
+	var sbook_mode_help={
+	    addgloss: "#CODEXADDGLOSSHELP"};
+
 	function CodexMode(mode){
 	    if (typeof mode === 'undefined') return Codex.mode;
 	    if (mode==='last') mode=Codex.last_mode||'help';
@@ -308,6 +311,8 @@ var CodexMode=
 		if (mode==="help")
 		    fdjtDOM.addClass(document.body,"dimmed");
 		else fdjtDOM.dropClass(document.body,"dimmed");
+		var help=sbook_mode_help[mode];
+		if (help) fdjtLog.Humane(help);
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
 		if (mode==='scanning') {

@@ -1758,6 +1758,16 @@ div#CODEXEXCERPT textarea {
     clear: both; font-size: 150%;
     width: 80%; min-height: 50%;}
 
+/* Humanity */
+
+#HUMANE.humane {
+    width: 70%; max-height: 40%;
+    left: 15%; right: 15%; top: 40%; bottom: auto;}
+#HUMANE.humane.humane-show { opacity: 0.8; }
+
+.humanehelp { display: none;}
+.humane div.humanehelp { display: block; }
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
