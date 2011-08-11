@@ -33,26 +33,32 @@
 	 title="open/close bracketed tag or link">
       [+]</span>
     <div class="sharing">
-      <span class="button checkspan ischecked"
-	    onclick="fdjtUI.CheckSpan.onclick(event);"
-	    title="share this gloss with my personal sBooks circle">
-	<input type="CHECKBOX" name="NETWORKS" value=":SBOOKS" CHECKED/>
-	<img src="http://static.beingmeta.com/graphics/sbicon16x16.png"
-	     style="width: 16px; height: 16px;"
-	     alt="Facebook"/></span>
-      <span class="button checkspan ischecked"
-	    onclick="fdjtUI.CheckSpan.onclick(event);"
-	    title="share this gloss with my Facebook friends">
-	<input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK" CHECKED/>
-	<img src="http://static.beingmeta.com/graphics/facebook16x16.png"
-	     style="width: 16px; height: 16px;"
-	     alt="sBooks"/></span>
-      <span class="button checkspan ischecked"
-	    onclick="fdjtUI.CheckSpan.onclick(event);"
-	    title="share this gloss with my Twitter followers">
-	<input type="CHECKBOX" name="NETWORKS" value=":TWITTER" CHECKED/>
-	<img src="http://static.beingmeta.com/graphics/TwitterIcon32x32.png" style="width: 16px; height: 16px;"
-	     alt="Twitter"/></span>
+      <div class="networks">
+	<span class="button checkspan ischecked"
+	      onclick="fdjtUI.CheckSpan.onclick(event);"
+	      title="share this gloss with my personal sBooks circle">
+	  <input type="CHECKBOX" name="SHARED" value="yes" CHECKED/>
+	  <img src="http://static.beingmeta.com/graphics/sbicon16x16.png"
+	       style="width: 16px; height: 16px;"
+	       alt="Share"/>
+	  <span class="facebook_button">
+	    <span class="button checkspan ischecked"
+		  title="share this gloss with my Facebook friends">
+	      <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK" CHECKED/>
+	      <img src="http://static.beingmeta.com/graphics/facebook16x16.png"
+		   style="width: 16px; height: 16px;"
+		   alt="sBooks"/></span></span>
+	  <span class="twitter_button">
+	    <span class="button checkspan ischecked twitter_button"
+		  title="share this gloss with my Twitter followers">
+	      <input type="CHECKBOX" name="NETWORKS" value=":TWITTER" CHECKED/>
+	      <img src="http://static.beingmeta.com/graphics/TwitterIcon32x32.png" style="width: 16px; height: 16px;"
+		   alt="Twitter"/></span></span>
+	</span>
+      </div>
+      <div class="outlets"
+	   onclick="fdjtUI.CheckSpan.onclick(event);">
+      </div>
     </div>
     <!--
     <span class="inputhelp">Add a note, [!link], or [tag]s to this

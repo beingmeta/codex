@@ -70,6 +70,9 @@ var CodexMode=
 	    search.innerHTML=sbook_searchbox;
 	    Codex.empty_cloud=
 		new fdjtUI.Completions(fdjtID("CODEXSEARCHCLOUD"));
+	    // Setup addgloss prototype
+	    var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
+	    addgloss.innerHTML=sbook_addgloss;
 
 	    if (Codex.hidehelp) Codex.setConfig("hidehelp");
 

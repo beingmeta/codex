@@ -1530,6 +1530,7 @@ div#CODEXHUD div#CODEXADDGLOSS.tagging div#CODEXGLOSSCLOUD { display: block;}
 /* Gloss form */
 
 div.codexglossform { display: none;}
+div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
 div.codexglossform#CODEXLIVEGLOSS { display: block;}
 div.codexglossform form {
     padding: 0px; margin: 0px;}
@@ -1578,19 +1579,31 @@ div.codexglossform form div.glossetc .links span.checkspan {
 div.codexglossform form div.glossetc span.checkspan input {}
 
 div.codexglossform form div.glossetc .sharing {
-    float: right; max-width: 100px; clear: right;
+    float: right; clear: right; text-align: right;
     padding-bottom: 1ex; padding-top: 0.5ex; margin-bottom: 1ex;
     padding-right: 0px;}
-div.codexglossform form div.glossetc .sharing .checkspan input {
-    display: none;}
-
-div.codexglossform form div.glossetc .sharing .checkspan {
+div.codexglossform form div.glossetc .sharing .networks {
+    text-align: right;}
+div.codexglossform form div.glossetc .sharing .checkspan.button {
     padding-left: 4px; padding-right: 0px;}
+div.codexglossform form div.glossetc .sharing .checkspan.button input {
+    display: none;}
+div.codexglossform form div.glossetc .sharing .checkspan .checkspan {
+    display: none;}
+div.codexglossform form div.glossetc .sharing .checkspan.ischecked
+    .checkspan.button { display: inline;}
 
-div.codexglossform form div.glossetc .sharing .checkspan > img {
+span.facebook_button, span.twitter_button { display: none;}
+
+div.codexglossform form div.glossetc .sharing div.outlets div.checkspan {
+    line-height: 60%; margin-top: 1ex; max-width: 120px;}
+
+div.codexglossform form div.glossetc .sharing .checkspan.button > img {
     padding: 1px; border: dotted red 2px; opacity: 0.5;}
 div.codexglossform form div.glossetc .sharing .checkspan.ischecked > img {
     border: solid green 2px; opacity: 1.0;}
+
+
 div.codexglossform form div.glossetc .sharing .checkspan.ischecked {
     color: inherit; text-decoration: none;}
 div.codexglossform form div.glossetc .checkspan .checkspan {

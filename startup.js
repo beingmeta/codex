@@ -777,19 +777,22 @@ Codex.Startup=
 	    gotInfo("outlets",outlets,persist);
 	    gotInfo("etc",etc,persist);
 	    if (outlets) {
+		var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
+		var div=fdjtDOM.getChild(addgloss,"div.outlets");
 		var i=0; var ilim=outlets.length;
 		while (i<ilim) {
 		    var outlet=outlets[i++];
-		    var span=fdjtID("SBOOKGLOSSOUTLET"+outlet.humid);
-		    if (!(span)) {
-			var completion=
-			    fdjtDOM("span.completion.outlet.cue",outlet.name);
-			completion.id="SBOOKGLOSSOUTLET"+outlet.humid;
-			completion.setAttribute("value",outlet._id);
-			completion.setAttribute("key",outlet.name);
-			fdjtDOM(fdjtID("CODEXGLOSSOUTLETS"),completion," ");
-			if (Codex.gloss_cloud)
-			    Codex.gloss_cloud.addCompletion(completion);}}}
+		    var checkspan=
+			fdjtUI.CheckSpan(
+			    "div.checkspan.ischecked",
+			    "OUTLETS",outlet._id,true,
+			    outlet.nick||outlet.name);
+		    if ((outlet.description)&&(outlet.nick))
+			checkspan.title=outlet.name+": "+outlet.description;
+		    else if (outlet.description)
+			checkspan.title=outlet.description;
+		    else if (outlet.nick) checkspan.title=outlet.name;
+		    fdjtDOM(div,checkspan,"\n");}}
 	    if (sync) {
 		Codex.usersync=sync;
 		if (persist) fdjtState.setLocal("codex.usersync",sync);}

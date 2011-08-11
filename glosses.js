@@ -83,11 +83,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		    ("CODEXADDGLOSS_"+passage.id));
 	var form=fdjtID(formid);
 	var div=((form)&&(form.parentNode));
+	var proto=fdjtID("CODEXADDGLOSSPROTOTYPE");
 	if (!(div)) {
-	    div=fdjtDOM(((gloss)&&(!(response)))?
-			("div.codexglossform.glossedit"):
-			("div.codexglossform"));
-	    div.innerHTML=sbook_addgloss;
+	    div=proto.cloneNode(true); div.id=null;
 	    fdjtDOM(fdjtID("CODEXGLOSSFORMS"),div);
 	    form=fdjtDOM.getChildren(div,"form")[0];
 	    form.id=formid;
