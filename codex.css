@@ -327,7 +327,8 @@ body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     max-height: 150px;}
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
-    background-color: lightblue;}
+    background-color: lightblue;
+    border-style: none;}
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
@@ -1496,7 +1497,11 @@ body .codexglossmark:hover img.tiny { display: none;}
 
 .sbooktarget { }
 body.hudup .sbooktarget, body.sbookscanning .sbooktarget {
-    background-color: lightblue; cursor: pointer;}
+    background-color: lightblue; cursor: pointer; border-radius: 1em;
+    box-shadow: 1em 1em 1em #cccccc;
+    -webkit-box-shadow: 1em 1em 1em #cccccc;
+    -moz-box-shadow: 1em 1em 1em #cccccc;
+    -o-box-shadow: 1em 1em 1em #cccccc;}
 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
@@ -1573,6 +1578,9 @@ div.codexglossform form div.glossetc .tags span.checkspan {
     background-color: gold; padding: 2px; padding-top: 0px;
     border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
     border: solid yellow 2px;}
+div.codexglossform form div.glossetc div.outlets.nocontent { display: none;}
+div.codexglossform form div.glossetc div.outlets span.head {
+    color: black; font-weight: bold;}
 
 div.codexglossform form div.glossetc .links span.checkspan {
     color: blue; text-decoration: underline;}
@@ -1593,10 +1601,8 @@ div.codexglossform form div.glossetc .sharing .checkspan .checkspan {
 div.codexglossform form div.glossetc .sharing .checkspan.ischecked
     .checkspan.button { display: inline;}
 
-span.facebook_button, span.twitter_button { display: none;}
-
-div.codexglossform form div.glossetc .sharing div.outlets div.checkspan {
-    line-height: 60%; margin-top: 1ex; max-width: 120px;}
+span.facebook_share, span.twitter_share { display: none;}
+span.linkedin_share, span.google_share { display: none;}
 
 div.codexglossform form div.glossetc .sharing .checkspan.button > img {
     padding: 1px; border: dotted red 2px; opacity: 0.5;}

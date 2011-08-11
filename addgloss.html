@@ -36,42 +36,46 @@
       <div class="networks">
 	<span class="button checkspan ischecked"
 	      onclick="fdjtUI.CheckSpan.onclick(event);"
-	      title="share this gloss with my personal sBooks circle">
+	      title="share this gloss among my social networks">
 	  <input type="CHECKBOX" name="SHARED" value="yes" CHECKED/>
-	  <img src="http://static.beingmeta.com/graphics/sbicon16x16.png"
+	  <img src="http://static.beingmeta.com/graphics/earth16.png"
 	       style="width: 16px; height: 16px;"
 	       alt="Share"/>
-	  <span class="facebook_button">
+	  <span class="facebook_share">
 	    <span class="button checkspan ischecked"
 		  title="share this gloss with my Facebook friends">
-	      <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK" CHECKED/>
+	      <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK">
 	      <img src="http://static.beingmeta.com/graphics/facebook16x16.png"
 		   style="width: 16px; height: 16px;"
 		   alt="sBooks"/></span></span>
-	  <span class="twitter_button">
-	    <span class="button checkspan ischecked twitter_button"
+	  <span class="twitter_share">
+	    <span class="button checkspan ischecked"
 		  title="share this gloss with my Twitter followers">
-	      <input type="CHECKBOX" name="NETWORKS" value=":TWITTER" CHECKED/>
+	      <input type="CHECKBOX" name="NETWORKS" value=":TWITTER">
 	      <img src="http://static.beingmeta.com/graphics/TwitterIcon32x32.png" style="width: 16px; height: 16px;"
 		   alt="Twitter"/></span></span>
-	</span>
-      </div>
-      <div class="outlets"
-	   onclick="fdjtUI.CheckSpan.onclick(event);">
-      </div>
-    </div>
-    <!--
-    <span class="inputhelp">Add a note, [!link], or [tag]s to this
-    passage.</span>
-    -->
-    <!--
-    <span class="checkspan" title="post to your social news feeds">    
-      push<input type="CHECKBOX" name="POST" value="yes" DISABLED/></span>
-    -->
-    <span class="outlets" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
+	  <span class="linkedin_share">
+	    <span class="button checkspan ischecked"
+		  title="share this gloss with my LinkedIn connections">
+	      <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN">
+	      <img src="http://static.beingmeta.com/graphics/linkedinlogo32x32.png" style="width: 16px; height: 16px;"
+		   alt="LinkedIN"/></span></span>
+	  <span class="google_share">
+	    <span class="button checkspan ischecked"
+		  title="share this gloss with my Google+ connections">
+	      <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE">
+	      <img src="http://static.beingmeta.com/graphics/gpluslogo32x32.png" style="width: 16px; height: 16px;"
+		   alt="GPlus"/></span></span>
+	</span> <!-- shared=yes checkspan -->
+      </div> <!-- networks -->
+    </div> <!-- sharing -->
     <span class="links" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <span class="excerpts" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
+    <div class="outlets nocontent"
+	 onclick="fdjtUI.CheckSpan.onclick(event);">
+      <span class="head">Share with </span>
+    </div>
   </div>
 </form>
 <!--

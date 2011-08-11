@@ -273,9 +273,11 @@ var CodexMode=
 		else if (typeof mode !== 'string') 
 		    throw new Error('mode arg not a string');
 		else {
-		  if (sbook_mode_foci[Codex.mode]) {
-		    var input=fdjtID(sbook_mode_foci[Codex.mode]);
-		    input.blur();}
+		    if (sbook_mode_foci[Codex.mode]) {
+			var input=fdjtID(sbook_mode_foci[Codex.mode]);
+			input.blur();}
+		    if (sbook_mode_help[mode])
+			fdjtLog.Humane(sbook_mode_help[mode]);
 		    Codex.mode=mode;
 		    if (Codex.mode!=='help') Codex.last_mode=Codex.mode;}
 		// If we're switching to the inner app but the iframe
@@ -311,8 +313,6 @@ var CodexMode=
 		if (mode==="help")
 		    fdjtDOM.addClass(document.body,"dimmed");
 		else fdjtDOM.dropClass(document.body,"dimmed");
-		var help=sbook_mode_help[mode];
-		if (help) fdjtLog.Humane(help);
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
 		if (mode==='scanning') {
