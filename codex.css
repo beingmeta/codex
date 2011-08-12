@@ -773,14 +773,18 @@ div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     vertical-align: bottom; height: 3ex; display: none;
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
+    cursor: crosshair;
     border-top: solid black 1px;}
 body.codexpageview div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
 body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;}
-div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff { float: right;}
+div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff {
+    cursor: pointer;
+    float: right;}
 div#SBOOKPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%;
+    cursor: pointer;
     max-height: 20px;}
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top: 0px;
