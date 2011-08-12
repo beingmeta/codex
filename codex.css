@@ -326,6 +326,9 @@ body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     max-height: 150px;}
 
+body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC {
+    overflow: visible;}
+
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     background-color: lightblue;
     border-style: none;}
@@ -1766,13 +1769,24 @@ div#CODEXEXCERPT textarea {
 
 /* Humanity */
 
+.humane p {
+    display: block; text-align: left;
+    margin-left: 2em; margin-right: 2em;}
+
 #HUMANE.humane {
-    width: 70%; max-height: 40%;
-    left: 15%; right: 15%; top: 40%; bottom: auto;}
+    width: 70%; max-height: 50%;
+    left: 15%; right: 15%; top: 30%; bottom: auto;}
 #HUMANE.humane.humane-show { opacity: 0.8; }
 
 .humanehelp { display: none;}
+.humanehelp strong { color: orange;}
 .humane div.humanehelp { display: block; }
+.humane div.humanehelp h3 { margin-top: 0px;}
+.humane div.humanehelp .clicktarget { color: lightblue; }
+.humane div.humanehelp img.fullwidth {
+    width: 80%; margin-left: 10%; margin-right: 10%;}
+.humane div.humanehelp img.codextocbar {
+    width: 70%; float: right;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

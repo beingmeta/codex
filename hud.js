@@ -247,7 +247,10 @@ var CodexMode=
 	     addgloss: "CODEXGLOSSINPUT"};
 	
 	var sbook_mode_help={
-	    addgloss: "#CODEXADDGLOSSHELP"};
+	    addgloss: "#CODEXADDGLOSSHELP",
+	    toc: "#CODEXTOCHELP",
+	    tocscan: "#CODEXTOCSCANHELP",
+	    scanning: "#CODEXSCANNINGHELP"};
 
 	function CodexMode(mode){
 	    if (typeof mode === 'undefined') return Codex.mode;
