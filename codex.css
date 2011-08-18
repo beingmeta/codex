@@ -1034,9 +1034,9 @@ body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
     opacity: 0.5;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     display: block; opacity: 1.0;}
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
+body div#CODEXHUD div#CODEXHUDBUTTONS img[alt='Console'] {
     display: none;}
-body.hudup div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='console'] {
+body div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='Console'] {
     display: inline;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
@@ -1265,6 +1265,8 @@ div#CODEXFLYLEAF table.settings {
 div#CODEXFLYLEAF table.settings th {text-align: right; vertical-align: top;}
 div#CODEXFLYLEAF table.settings td {
     text-align: left; vertical-align: top; padding-left: 12px;}
+div#CODEXFLYLEAF table.settings td input[type='TEXT'] {
+    width: 100%;}
 div#CODEXHUD div#CODEXFLYLEAF table.settings .button {
     float: right; clear: right; cursor: pointer; 
     background-color: orange; color: white;

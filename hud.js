@@ -640,24 +640,27 @@ var CodexMode=
 	/* Settings apply/save handlers */
 
 	function getSettings(){
-	  var result={};
-	  var settings=fdjtID("CODEXSETTINGS");
-	  var pageview=fdjtDOM.getInputValues(settings,"CODEXPAGEVIEW");
-	  result.pageview=((pageview)&&(pageview.length));
-	  var bodysize=fdjtDOM.getInputValues(settings,"CODEXBODYSIZE");
-	  if ((bodysize)&&(bodysize.length))
-	    result.bodysize=bodysize[0];
-	  var bodystyle=fdjtDOM.getInputValues(settings,"CODEXBODYSTYLE");
-	  if ((bodystyle)&&(bodystyle.length))
-	    result.bodystyle=bodystyle[0];
-	  var uisize=fdjtDOM.getInputValues(settings,"CODEXUISIZE");
-	  if ((uisize)&&(uisize.length))
-	    result.uisize=uisize[0];
-	  var hidesplash=fdjtDOM.getInputValues(settings,"CODEXHIDESPLASH");
-	  result.hidesplash=((hidesplash)&&(hidesplash.length));
-	  var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
-	  result.showconsole=((showconsole)&&(showconsole.length));
-	  return result;}
+	    var result={};
+	    var settings=fdjtID("CODEXSETTINGS");
+	    var pageview=fdjtDOM.getInputValues(settings,"CODEXPAGEVIEW");
+	    result.pageview=
+		((pageview)&&(pageview.length)&&(true))||false;
+	    var bodysize=fdjtDOM.getInputValues(settings,"CODEXBODYSIZE");
+	    if ((bodysize)&&(bodysize.length))
+		result.bodysize=bodysize[0];
+	    var bodystyle=fdjtDOM.getInputValues(settings,"CODEXBODYSTYLE");
+	    if ((bodystyle)&&(bodystyle.length))
+		result.bodystyle=bodystyle[0];
+	    var uisize=fdjtDOM.getInputValues(settings,"CODEXUISIZE");
+	    if ((uisize)&&(uisize.length))
+		result.uisize=uisize[0];
+	    var hidesplash=fdjtDOM.getInputValues(settings,"CODEXHIDESPLASH");
+	    result.hidesplash=
+		((hidesplash)&&(hidesplash.length)&&(true))||false;
+	    var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
+	    result.showconsole=
+		((showconsole)&&(showconsole.length)&&(true))||false;
+	    return result;}
 
 	Codex.UI.applySettings=function(){
 	  Codex.setConfig(getSettings());};

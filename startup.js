@@ -235,13 +235,7 @@ Codex.Startup=
 	    document.body.refuri=Codex.refuri=refuri;
 	    Codex.docuri=_getsbookdocuri();
 	    Codex.devinfo=fdjtState.versionInfo();
-	    var deviceid=fdjtState.getLocal("codex.deviceId",false);
-	    var devicename=fdjtState.getLocal("codex.deviceName",false);
-	    if (!(deviceid)) {
-		deviceid=fdjtState.getUUID();
-		fdjtState.setLocal("codex.deviceId",deviceid);}
-	    Codex.deviceId=deviceid;
-	    if (devicename) Codex.deviceName=devicename;
+	    
 	    var refuris=fdjtState.getLocal("codex.refuris",true)||[];
 	    var offline=workOffline(refuri);
 	    Codex.offline=((offline)?(true):(false));
@@ -334,7 +328,8 @@ Codex.Startup=
 	    {pageview: true,
 	     bodysize: 'normal',bodystyle: 'serif',
 	     uisize: 'normal',showconsole: false,
-	     animatepages: true,animatehud: true};
+	     animatepages: true,animatehud: true,
+	     hidesplash: false};
 	var current_config={};
 
 	var setCheckSpan=fdjtUI.CheckSpan.set;
@@ -342,6 +337,11 @@ Codex.Startup=
 	function addConfig(name,handler){
 	    config_handlers[name]=handler;}
 	Codex.addConfig=addConfig;
+
+	function getConfig(name){
+	    if (!(name)) return current_config;
+	    else return current_config[name];}
+	Codex.getConfig=getConfig;
 
 	function setConfig(name,value){
 	    if (arguments.length===1) {
@@ -369,18 +369,22 @@ Codex.Startup=
 		    if (value===input.value) setCheckSpan(input,true);
 		    else setCheckSpan(input,false);}
 		else input.value=value;}
-	    if (config_handlers[name])
+	    if (config_handlers[name]) 
 		config_handlers[name](name,value);
 	    current_config[name]=value;}
 	Codex.setConfig=setConfig;
 
 	function saveConfig(config){
+	    fdjtLog("saveConfig %o",config);
+	    fdjtLog("current_config=%o",current_config);
 	    if (!(config)) config=current_config;
 	    else setConfig(config);
 	    var saved={};
 	    for (var setting in config) {
-		if (config[setting]!==default_config[setting]) {
+		if ((!(default_config[setting]))||
+		    (config[setting]!==default_config[setting])) {
 		    saved[setting]=config[setting];}}
+	    fdjtLog("Saving config %o",saved);
 	    fdjtState.setLocal('codex.config',JSON.stringify(saved));}
 	Codex.saveConfig=saveConfig;
 
@@ -399,10 +403,46 @@ Codex.Startup=
 	    var dopost=Codex.postconfig;
 	    Codex.postconfig=false;
 	    var i=0; var lim=dopost.length;
-	    while (i<lim) dopost[i++]();}
+	    while (i<lim) dopost[i++]();
+	    
+	    var deviceid=current_config.deviceid;
+	    var devicename=current_config.devicename;
+	    if (!(deviceid)) {
+		deviceid=fdjtState.getUUID();
+		setConfig("deviceid",deviceid);}
+	    Codex.deviceId=deviceid;
+	    if (!(devicename)) {
+		var vi=fdjtState.versionInfo(); var now=new Date();
+		devicename=vi.browser+"/"+vi.platform+"/0"+
+		    (now.getFullYear())+"/"+
+		    ((now.getMonth())+1)+"/"+
+		    (now.getDate())+"-"+(Math.floor(Math.random()*1000000));
+		setConfig('devicename',devicename);}
+	    Codex.deviceName=devicename;
+
+	    saveConfig();}
+
+	var getParent=fdjtDOM.getParent;
+	var getChild=fdjtDOM.getChild;
+
+	function updateConfig(name,id){
+	    var elt=((typeof id === 'string')&&(document.getElementById(id)))||
+		((id.nodeType)&&(getParent(id,'input')))||
+		((id.nodeType)&&(getChild(id,'input')))||
+		((id.nodeType)&&(getChild(id,'textarea')))||
+		((id.nodeType)&&(getChild(id,'select')))||
+		(id);
+	    if ((elt.type=='radio')||(elt.type=='checkbox'))
+		setConfig(name,elt.checked||false);
+	    else setConfig(name,elt.value);}
+	Codex.updateConfig=updateConfig;
 
 	Codex.addConfig("hidesplash",function(name,value){
 	    Codex.hidesplash=value;});
+	Codex.addConfig("devicename",function(name,value){
+	    Codex.deviceName=value;});
+	Codex.addConfig("deviceid",function(name,value){
+	    Codex.deviceId=value;});
 
 	/* Viewport setup */
 
@@ -854,25 +894,29 @@ Codex.Startup=
 	    var form=fdjtID("CODEXADDGLOSSPROTOTYPE");
 	    var getChild=fdjtDOM.getChild;
 	    if (Codex.user.fbid)  {
-		ss.insertRule("span.facebook_share { display: inline;}");
+		ss.insertRule("span.facebook_share { display: inline;}",
+			     ss.cssRules.length);
 		var cs=getChild(getChild(form,".facebook_share"),".checkspan");
 		fdjtUI.CheckSpan.set(cs,true);
 		var cb=getChild(cs,"input");
 		cb.setAttribute("checked","checked");}
 	    if (Codex.user.twitterid) {
-		ss.insertRule("span.twitter_share { display: inline;}");
+		ss.insertRule("span.twitter_share { display: inline;}",
+			     ss.cssRules.length);
 		var cs=getChild(getChild(form,".twitter_share"),".checkspan");
 		fdjtUI.CheckSpan.set(cs,true);
 		var cb=getChild(cs,"input");
 		cb.setAttribute("checked","checked");}
 	    if (Codex.user.linkedinid) {
-		ss.insertRule("span.linkedin_share { display: inline;}");
+		ss.insertRule("span.linkedin_share { display: inline;}",
+			     ss.cssRules.length);
 		var cs=getChild(getChild(form,".linkedin_share"),".checkspan");
 		fdjtUI.CheckSpan.set(cs,true);
 		var cb=getChild(cs,"input");
 		cb.setAttribute("checked","checked");}
 	    if (Codex.user.googleid) {
-		ss.insertRule("span.google_share { display: inline;}");
+		ss.insertRule("span.google_share { display: inline;}",
+			     ss.cssRules.length);
 		var cs=getChild(getChild(form,".google_share"),".checkspan");
 		fdjtUI.CheckSpan.set(cs,true);
 		var cb=getChild(cs,"input");
