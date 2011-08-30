@@ -134,6 +134,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if ((gloss)&&(gloss.tags)) {
 	    var tagselt=fdjtDOM.getChild(form,".tags");
 	    var tags=gloss.tags;
+	    if (typeof tags === 'string') tags=[tags];
 	    var i=0; var lim=tags.length;
 	    while (i<lim) addTag(form,tags[i++]);}
 	if ((gloss)&&(gloss.links)) {
