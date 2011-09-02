@@ -55,7 +55,7 @@ var CodexMode=
 		Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
 		CodexHUD.sbookui=true;
 		CodexHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,CodexHUD);}
+		fdjtDOM.prepend(document.body,fdjtID("HUMANE"),CodexHUD);}
 	    // Setup flyleaf
 	    var flyleaf=fdjtID("CODEXFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;
@@ -70,6 +70,9 @@ var CodexMode=
 	    search.innerHTML=sbook_searchbox;
 	    Codex.empty_cloud=
 		new fdjtUI.Completions(fdjtID("CODEXSEARCHCLOUD"));
+	    // Setup addgloss prototype
+	    var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
+	    addgloss.innerHTML=sbook_addgloss;
 
 	    if (Codex.hidehelp) Codex.setConfig("hidehelp");
 
@@ -121,10 +124,14 @@ var CodexMode=
 		    var search_cloud=Codex.fullCloud();
 		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
-			gloss_tag=Knodule.HTML(tag,Codex.knodule,false,true);
-			fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
-			gloss_cloud.addCompletion(gloss_tag);}
-		    var search_tag=((forsearch)&&(search_cloud.getByValue(tag,".completion")));
+			if (!((typeof tag === 'string')&&
+			      (!(Codex.knodule.probe(tag))))) {
+			    gloss_tag=Knodule.HTML(tag,Codex.knodule,false,true);
+			    fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
+			    gloss_cloud.addCompletion(gloss_tag);}}
+		    var search_tag=
+			((forsearch)&&
+			 (search_cloud.getByValue(tag,".completion")));
 		    if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
 			search_tag=Knodule.HTML(tag,Codex.knodule,false,true);
 			fdjtDOM(fdjtID("CODEXSEARCHTAGS"),search_tag," ");
@@ -239,6 +246,12 @@ var CodexMode=
 	     search: "CODEXSEARCHINPUT",
 	     addgloss: "CODEXGLOSSINPUT"};
 	
+	var sbook_mode_help={
+	    addgloss: "#CODEXADDGLOSSHELP",
+	    toc: "#CODEXTOCHELP",
+	    tocscan: "#CODEXTOCSCANHELP",
+	    scanning: "#CODEXSCANNINGHELP"};
+
 	function CodexMode(mode){
 	    if (typeof mode === 'undefined') return Codex.mode;
 	    if (mode==='last') mode=Codex.last_mode||'help';
@@ -263,9 +276,11 @@ var CodexMode=
 		else if (typeof mode !== 'string') 
 		    throw new Error('mode arg not a string');
 		else {
-		  if (sbook_mode_foci[Codex.mode]) {
-		    var input=fdjtID(sbook_mode_foci[Codex.mode]);
-		    input.blur();}
+		    if (sbook_mode_foci[Codex.mode]) {
+			var input=fdjtID(sbook_mode_foci[Codex.mode]);
+			input.blur();}
+		    if (sbook_mode_help[mode])
+			fdjtLog.Humane(sbook_mode_help[mode]);
 		    Codex.mode=mode;
 		    if (Codex.mode!=='help') Codex.last_mode=Codex.mode;}
 		// If we're switching to the inner app but the iframe
@@ -625,24 +640,27 @@ var CodexMode=
 	/* Settings apply/save handlers */
 
 	function getSettings(){
-	  var result={};
-	  var settings=fdjtID("CODEXSETTINGS");
-	  var pageview=fdjtDOM.getInputValues(settings,"CODEXPAGEVIEW");
-	  result.pageview=((pageview)&&(pageview.length));
-	  var bodysize=fdjtDOM.getInputValues(settings,"CODEXBODYSIZE");
-	  if ((bodysize)&&(bodysize.length))
-	    result.bodysize=bodysize[0];
-	  var bodystyle=fdjtDOM.getInputValues(settings,"CODEXBODYSTYLE");
-	  if ((bodystyle)&&(bodystyle.length))
-	    result.bodystyle=bodystyle[0];
-	  var uisize=fdjtDOM.getInputValues(settings,"CODEXUISIZE");
-	  if ((uisize)&&(uisize.length))
-	    result.uisize=uisize[0];
-	  var hidesplash=fdjtDOM.getInputValues(settings,"CODEXHIDESPLASH");
-	  result.hidesplash=((hidesplash)&&(hidesplash.length));
-	  var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
-	  result.showconsole=((showconsole)&&(showconsole.length));
-	  return result;}
+	    var result={};
+	    var settings=fdjtID("CODEXSETTINGS");
+	    var pageview=fdjtDOM.getInputValues(settings,"CODEXPAGEVIEW");
+	    result.pageview=
+		((pageview)&&(pageview.length)&&(true))||false;
+	    var bodysize=fdjtDOM.getInputValues(settings,"CODEXBODYSIZE");
+	    if ((bodysize)&&(bodysize.length))
+		result.bodysize=bodysize[0];
+	    var bodystyle=fdjtDOM.getInputValues(settings,"CODEXBODYSTYLE");
+	    if ((bodystyle)&&(bodystyle.length))
+		result.bodystyle=bodystyle[0];
+	    var uisize=fdjtDOM.getInputValues(settings,"CODEXUISIZE");
+	    if ((uisize)&&(uisize.length))
+		result.uisize=uisize[0];
+	    var hidesplash=fdjtDOM.getInputValues(settings,"CODEXHIDESPLASH");
+	    result.hidesplash=
+		((hidesplash)&&(hidesplash.length)&&(true))||false;
+	    var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
+	    result.showconsole=
+		((showconsole)&&(showconsole.length)&&(true))||false;
+	    return result;}
 
 	Codex.UI.applySettings=function(){
 	  Codex.setConfig(getSettings());};

@@ -56,12 +56,11 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (start===end) return false;
 	if (erase) {
 	    input.value=string.slice(0,start)+string.slice(end+1);}
-	else {}
 	return string.slice(start+1,end);}
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
     function getbracketed(input,erase){
-	var bracketed=_getbracketed(input,erase||false);
+	var bracketed=_getbracketed(input,erase);
 	if (bracketed) addClass("CODEXADDGLOSS","tagging");
 	else dropClass("CODEXADDGLOSS","tagging");
 	return bracketed;}
@@ -84,11 +83,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		    ("CODEXADDGLOSS_"+passage.id));
 	var form=fdjtID(formid);
 	var div=((form)&&(form.parentNode));
+	var proto=fdjtID("CODEXADDGLOSSPROTOTYPE");
 	if (!(div)) {
-	    div=fdjtDOM(((gloss)&&(!(response)))?
-			("div.codexglossform.glossedit"):
-			("div.codexglossform"));
-	    div.innerHTML=sbook_addgloss;
+	    div=proto.cloneNode(true); div.id=null;
 	    fdjtDOM(fdjtID("CODEXGLOSSFORMS"),div);
 	    form=fdjtDOM.getChildren(div,"form")[0];
 	    form.id=formid;
@@ -200,26 +197,30 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     
     /***** Adding links ******/
     function addLink(form,url,title) {
-	var tagselt=fdjtDOM.getChild(form,'.tags');
-	var linkval=((title)?("["+url+" "+title+"]"):(url));
-	var img=fdjtDOM.Image(sbicon("outlink16x8.png"));
+	var tagselt=fdjtDOM.getChild(form,'.links');
+	var linkval=((title)?(url+" "+title):(url));
+	var livelink=
+	    fdjtDOM.Anchor(url,fdjtDOM.Image(sbicon("upoutlink16x16.png"),"*"));
 	var checkbox=fdjtDOM.Checkbox("LINKS",linkval,true);
-	var checkspan=fdjtDOM("span.checkspan",checkbox,((title)||url),img);
+	var checkspan=fdjtDOM("span.checkspan.anchor.ischecked",
+			      checkbox,
+			      fdjtDOM("span",((title)||url)),
+			      livelink);
 	checkspan.title=url;
 	fdjtDOM(tagselt,checkspan," ");
 	return checkspan;}
 
     /***** Adding excerpts ******/
     function addExcerpt(form,excerpt,id) {
-	var tagselt=fdjtDOM.getChild(form,'.tags');
+	var excerpts=fdjtDOM.getChild(form,'.excerpts');
 	var value=((id)?("[#"+id+" "+excerpt):(excerpt));
 	var checkbox=fdjtDOM.Checkbox("EXCERPT",value,true);
-	var checkspan=fdjtDOM("span.checkspan.excerpt",checkbox,
-			      "\u201c",
-			      ((id)?(fdjtDOM.Anchor("#"+id),excerpt):
-			       (excerpt)),
-			      "\u201d");
-	fdjtDOM(tagselt,checkspan," ");
+	var content=
+	    ((id)?
+	     (fdjtDOM.Anchor("#"+id,"excerpt","\u201c",excerpt,"\u201d")):
+	     (fdjtDOM("span.excerpt","\u201c",excerpt,"\u201d")));
+	var checkspan=fdjtDOM("span.checkspan",checkbox,content);
+	fdjtDOM(excerpts,checkspan," ");
 	return checkspan;}
     Codex.addExcerpt=addExcerpt;
 
@@ -242,7 +243,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    tag=gloss_cloud.getValue(tag);
 	    var input=fdjtDOM.getInput(form,"NOTE");
 	    // This erases whatever was being typed
-	    if (input) getbracketed(input,true);}
+	    if (input) getbracketed(input,false);}
 	var info=
 	    ((typeof tag === 'string')&&
 	     ((tag.indexOf('|')>0)?
@@ -266,7 +267,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (title) span.title=title;
 	span.setAttribute("varname",varname);
 	span.setAttribute("tagval",tag);
-	fdjtDOM.addClass(span,varname.toLowerCase());
+	fdjtDOM.addClass(span,((varname.toLowerCase())+"var"));
 	if (typeof text === 'string')
 	    fdjtDOM.append(span,fdjtDOM(textspec,text));
 	else fdjtDOM.append(span,text);
@@ -347,7 +348,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var string=input.value;
 	var bracketed=getbracketed(input);
 	fdjtUI.cancel(evt);
-	if (bracketed)
+	if (bracketed==="") getbracketed(input,true);
+	else if (bracketed)
 	    handleBracketed(form,getbracketed(input,true));
 	else {
 	    var pos=input.selectionStart;
@@ -358,9 +360,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
     function handleBracketed(form,content,complete){
 	dropClass("CODEXADDGLOSS","tagging");
-	if (content[0]==='!') {
+	if (content[0]==='@') {
 	    var brk=content.indexOf(' ');
-	    if (brk<0) addLink(form,content.slice(1,-1));
+	    if (brk<0) addLink(form,content.slice(1));
 	    else {
 		addLink(form,content.slice(1,brk),
 			content.slice(brk+1));}}
@@ -387,13 +389,13 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var form=fdjtDOM.getParent(target,"FORM");
 	var ch=evt.charCode;
 	if (addgloss_timer) clearTimeout(addgloss_timer);
-	if (ch===91) {
+	if (ch===91) { /* [ */
 	    var pos=target.selectionStart, lim=string.length;
 	    if ((pos>0)&&(string[pos-1]==='\\')) return; 
 	    fdjtUI.cancel(evt);
 	    target.value=string.slice(0,pos)+"[]"+string.slice(pos);
 	    target.selectionStart=target.selectionEnd=pos+1;}
-	else if (ch===93) {
+	else if (ch===93) { /* ] */
 	    var pos=target.selectionStart;
 	    if ((pos>0)&&(string[pos-1]==='\\')) return; 
 	    var content=getbracketed(target,true);
@@ -402,10 +404,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    handleBracketed(form,content);}
 	else {
 	    var content=getbracketed(target);
-	    if ((typeof content==='string')&& (content[0]!=='!'))
+	    if ((typeof content==='string')&& (content[0]!=='@'))
 		addgloss_timer=setTimeout(function(){
 		    var span=getbracketed(target,false);
-		    gloss_cloud.complete(span);},200);}}
+		    // fdjtLog("Completing on %s",span);
+		    if (span[0]!=='@') gloss_cloud.complete(span);},
+					  200);}}
 
     function addgloss_keydown(evt){
 	evt=evt||event;

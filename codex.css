@@ -326,6 +326,13 @@ body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     max-height: 150px;}
 
+body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC {
+    overflow: visible;}
+
+body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
+    background-color: lightblue;
+    border-style: none;}
+
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
 body.hudup div#CODEXHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
@@ -766,14 +773,18 @@ div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     vertical-align: bottom; height: 3ex; display: none;
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
+    cursor: crosshair;
     border-top: solid black 1px;}
 body.codexpageview div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
 body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;}
-div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff { float: right;}
+div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff {
+    cursor: pointer;
+    float: right;}
 div#SBOOKPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%;
+    cursor: pointer;
     max-height: 20px;}
 div#SBOOKPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top: 0px;
@@ -894,21 +905,16 @@ div#CODEXHUD .completions .completion .sectname {
   white-space: nowrap;}
 
 div#CODEXHUD .completions .completion .variation { 
-  font-size: 115%; color: silver;}
-div#CODEXHUD .completions .completion .dterm { 
-  font-size: 95%;}
-div#CODEXHUD .dterm {
-    padding-left: 0.75em; padding-right: 0.35em;
-    border-top-left-radius: 1em;
-    -webkit-border-top-left-radius: 1em; 
-    -moz-border-radius-topleft: 1em;
-    -o-border-radius-topleft: 1em;
-    border-bottom-left-radius: 1em;
-    -webkit-border-bottom-left-radius: 1em; 
-    -moz-border-radius-bottomleft: 1em;
-    -o-border-radius-bottomleft: 1em;
-    /* border-radius: 4px; -webkit-border-radius: 4px; */
-    color: darkblue; background-color: gold;}
+  font-size: 90%; color: purple; font-style: italic;}
+div#CODEXHUD .completions .completion .dterm {}
+.completion .dterm {
+    padding-right: 0.35em; padding-left: 0.35em; 
+    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
+    color: darkblue; background-color: gold; border: solid yellow 2px;}
+.completion .dterm:before {
+    font-size: 150%; font-weight: bold; content: "·";
+    vertical-align: middle;}
+
 
 /* sbook 'slices' of summaries or glosses */
 
@@ -1028,9 +1034,9 @@ body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
     opacity: 0.5;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     display: block; opacity: 1.0;}
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS img[alt='console'] {
+body div#CODEXHUD div#CODEXHUDBUTTONS img[alt='Console'] {
     display: none;}
-body.hudup div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='console'] {
+body div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='Console'] {
     display: inline;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
@@ -1259,6 +1265,8 @@ div#CODEXFLYLEAF table.settings {
 div#CODEXFLYLEAF table.settings th {text-align: right; vertical-align: top;}
 div#CODEXFLYLEAF table.settings td {
     text-align: left; vertical-align: top; padding-left: 12px;}
+div#CODEXFLYLEAF table.settings td input[type='TEXT'] {
+    width: 100%;}
 div#CODEXHUD div#CODEXFLYLEAF table.settings .button {
     float: right; clear: right; cursor: pointer; 
     background-color: orange; color: white;
@@ -1498,7 +1506,11 @@ body .codexglossmark:hover img.tiny { display: none;}
 
 .sbooktarget { }
 body.hudup .sbooktarget, body.sbookscanning .sbooktarget {
-    color: blue; cursor: pointer;}
+    background-color: lightblue; cursor: pointer; border-radius: 1em;
+    box-shadow: 1em 1em 1em #cccccc;
+    -webkit-box-shadow: 1em 1em 1em #cccccc;
+    -moz-box-shadow: 1em 1em 1em #cccccc;
+    -o-box-shadow: 1em 1em 1em #cccccc;}
 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
@@ -1526,18 +1538,13 @@ body.notsbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     }
 
-div#CODEXHUD div#CODEXADDGLOSS div#CODEXTAGHELP {
-    width: 98%; margin-left: auto; margin-right: auto;
-    text-align: left; color: black;
-    margin-bottom: 1em;
-    display: none;}
 div#CODEXHUD div#CODEXADDGLOSS div#CODEXGLOSSCLOUD { display: none;}
-div#CODEXHUD div#CODEXADDGLOSS.tagging div#CODEXTAGHELP { display: block;}
 div#CODEXHUD div#CODEXADDGLOSS.tagging div#CODEXGLOSSCLOUD { display: block;}
 
 /* Gloss form */
 
 div.codexglossform { display: none;}
+div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
 div.codexglossform#CODEXLIVEGLOSS { display: block;}
 div.codexglossform form {
     padding: 0px; margin: 0px;}
@@ -1569,41 +1576,78 @@ div.codexglossform form div.inputhelp {
 div.codexglossform form div.glossetc {
     display: block; text-align: left; font-size: 12px;
     width: 98%; margin-left: auto; margin-right: auto;
-    clear: both; min-height: 24px;}
+    min-height: 24px;}
+
+div.codexglossform form div.glossetc .links,
+div.codexglossform form div.glossetc .tags {
+    font-size: 125%;}
+div.codexglossform form div.glossetc .excerpts {
+    font-size: 80%;}
+div.codexglossform form div.glossetc .tags span.checkspan {
+    background-color: gold; padding: 2px; padding-top: 0px;
+    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
+    border: solid yellow 2px;}
+div.codexglossform form div.glossetc div.outlets.nocontent { display: none;}
+div.codexglossform form div.glossetc div.outlets span.head {
+    color: black; font-weight: bold;}
+
+div.codexglossform form div.glossetc .links span.checkspan {
+    color: blue; text-decoration: underline;}
+div.codexglossform form div.glossetc span.checkspan input {}
+
+div.codexglossform form div.glossetc .sharing {
+    float: right; clear: right; text-align: right;
+    padding-bottom: 1ex; padding-top: 0.5ex; margin-bottom: 1ex;
+    padding-right: 0px;}
+div.codexglossform form div.glossetc .sharing .networks {
+    text-align: right;}
+div.codexglossform form div.glossetc .sharing .checkspan.button {
+    padding-left: 4px; padding-right: 0px;}
+div.codexglossform form div.glossetc .sharing .checkspan.button input {
+    display: none;}
+div.codexglossform form div.glossetc .sharing .checkspan .checkspan {
+    display: none;}
+div.codexglossform form div.glossetc .sharing .checkspan.ischecked
+    .checkspan.button { display: inline;}
+
+span.facebook_share, span.twitter_share { display: none;}
+span.linkedin_share, span.google_share { display: none;}
+
+div.codexglossform form div.glossetc .sharing .checkspan.button > img {
+    padding: 1px; border: dotted red 2px; opacity: 0.5;}
+div.codexglossform form div.glossetc .sharing .checkspan.ischecked > img {
+    border: solid green 2px; opacity: 1.0;}
+
+
+div.codexglossform form div.glossetc .sharing .checkspan.ischecked {
+    color: inherit; text-decoration: none;}
+div.codexglossform form div.glossetc .checkspan .checkspan {
+    text-decoration: line-through; color: red;}
+div.codexglossform form div.glossetc .checkspan .checkspan.ischecked {
+    text-decoration: none; color: inherit;}
+
 div.codexglossform form div.glossetc > .checkspan.private {
     float: right; vertical-align: top; margin-left: 4px;
     padding-top: 0px; margin-top: 0px;}
 div.codexglossform form div.glossetc > span.button {
-    float: right;
-    font-weight: bold; color: black;
+    float: right; 
+    font-weight: bold; color: black; font-size: 150%;
     border-radius: 4px; -o-border-radius: 4px;
     -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
     margin-left: 4px; 
     border: solid silver 2px; background-color: silver; padding: 2px;
-    text-align: center;
+    text-align: center; vertical-align: top;
     cursor: pointer;}
-div.codexglossform form div.glossetc > .bracketbutton {
-    float: right; vertical-align: top;}
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;
     font-family: sans,sans-serif;}
-div.codexglossform form .checkspan.private {
-    font-weight: bold;
-    border-radius: 4px; -o-border-radius: 4px;
-    -moz-border-radius: 4px; -webkit-border-radius: 4px;
-    padding: 0px; padding-right: 2px;  padding-left: 2px; 
-    border: solid silver 2px; background-color: silver; padding: 2px;
-    text-align: center;
-    cursor: pointer;
-    background-color: white; color: green;}
-div.codexglossform form .checkspan.private.ischecked {
-    background-color: black; color: white; }
-div.codexglossform form .checkspan.private input[type='checkbox'] {
-    display: none;}
 
 div.codexglossform form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
+
+div.codexglossform span.button.savebutton { float: right;}
+div.codexglossform span.button.addbutton { float: right;}
 
 div.codexglossform span.savebutton { display: none;}
 div.codexglossform.glossedit span.savebutton { display: inline;}
@@ -1611,6 +1655,12 @@ div.codexglossform.glossedit span.addbutton { display: none;}
 
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
+
+div.codexglossform div.textbox {}
+div.codexglossform div.textbox textarea {}
+
+div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
+    margin-top: 0px;}
 
 /* sBook splash */
 
@@ -1722,6 +1772,27 @@ div#CODEXEXCERPT div #CODEXEXCERPTDONE { float: right;}
 div#CODEXEXCERPT textarea {
     clear: both; font-size: 150%;
     width: 80%; min-height: 50%;}
+
+/* Humanity */
+
+.humane p {
+    display: block; text-align: left;
+    margin-left: 2em; margin-right: 2em;}
+
+#HUMANE.humane {
+    width: 70%; max-height: 50%;
+    left: 15%; right: 15%; top: 30%; bottom: auto;}
+#HUMANE.humane.humane-show { opacity: 0.8; }
+
+.humanehelp { display: none;}
+.humanehelp strong { color: orange;}
+.humane div.humanehelp { display: block; }
+.humane div.humanehelp h3 { margin-top: 0px;}
+.humane div.humanehelp .clicktarget { color: lightblue; }
+.humane div.humanehelp img.fullwidth {
+    width: 80%; margin-left: 10%; margin-right: 10%;}
+.humane div.humanehelp img.codextocbar {
+    width: 70%; float: right;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

@@ -118,15 +118,10 @@
   </div>
   <div id="CODEXADDGLOSS" class="codexaddgloss hudpanel">
     <div id="CODEXGLOSSFORMS">
-      <!-- This content comes from addgloss.html -->
-    </div>
-    <div id="CODEXTAGHELP">
-      Use [brackets] to enter a [<strong>tag</strong>] or an
-      [!<strong>url</strong> with title].  Start typing to
-      see <strong>matching tags</strong> and finish by
-      <span class="notouch">clicking</span>
-      <span class="fortouch">tapping</span> one or
-      using the &ldquo;<tt>]</tt>&rdquo; or <kbd>Enter</kbd> key.
+      <div class="codexglossform" id="CODEXADDGLOSSPROTOTYPE">
+	<!-- This content comes from addgloss.html -->
+      </div>
+      <!-- This is populated with copies of the prototype DIV -->
     </div>
     <div id="CODEXGLOSSCLOUD" class="completions">
       <img class="label" alt="tags"
@@ -219,6 +214,101 @@
        alt="glosses" title="Click to browse glosses overlaid on this book"
        class="hudbutton hudmodebutton botright" id="CODEXALLGLOSSESBUTTON"
        hudmode="allglosses"/>
+</div>
+<div id="CODEXADDGLOSSHELP" class="humanehelp">
+  <h3>Add your own glosses to this passage</h3>
+  <p>Type your comments, ending with <kbd>Enter</kbd> or [OK].</p>
+  <p><strong>Add links</strong>
+  as <strong>[@</strong><em><tt>http://host/..</tt></em>
+    <em>title</em><strong>]</strong>.</p>
+  <p><strong>Add tags</strong> in <strong>[</strong>brackets<strong>]</strong>
+    with help from cues based on existing tags.  Specifying synonyms
+    (e.g. <strong>[</strong>airplane|airplane|aircraft<strong>]</strong>) can
+    make your tags more useful.  You can add more structure to your
+    tags (e.g. <strong>[</strong>sloop|^sailboat|^boat<strong>]</strong>)
+    to help others use your tags to search or browse.</p>
+</div>
+<div id="CODEXTOCHELP" class="humanehelp">
+  <h3>Navigating your sBook</h3>
+  <p>The <strong>overleaf</strong> at the top of the page is a map of
+  your book's structure centered on your current reading location.  You
+  can use it to browse or navigate the book.</p>
+  <p><strong>Header stripes</strong>
+    <img class="codextocbar"
+	  src="http://static.beingmeta.com/graphics/codex/headerstripe.png"/>
+    show current section headings and
+    display a progress bar (light blue) of your relative location within the
+    section.  <span class='fortouch'>Tap</span>
+    <span class='notouch'>Click</span>
+    a <span class='taptarget'>section name</span> to jump to the
+    beginning of that
+    section; <span class='fortouch'>tap</span>
+    <span class='notouch'>click</span> the
+    <img src="http://static.beingmeta.com/graphics/codex/GoldLeftTriangle16.png"/>
+    <img src="http://static.beingmeta.com/graphics/codex/GoldRightTriangle16.png"/>
+    buttons to move forward or back by sections at any level.</p>
+  <p><strong>Layout stripes</strong> <img class="codextocbar"
+    src="http://static.beingmeta.com/graphics/codex/layoutstripe.png"/>
+    use a range of segments to show the relative position and sizes of
+    sections at a particular level.  The segment for the current
+    section is white; the red tick indicates your relative
+    position. <strong class="fortouch">Tapping</strong>
+    <strong class="notouch">Clicking</strong> a segment jumps
+    to the beginning of that section.</p>
+  <p><strong>Subsection maps</strong> appear when you're at the
+    beginning of a section with its own subsections.  It consists of a
+    layout stripe for its subsections and a cloud of subsection
+    names.</p>
+</div>
+
+<div id="CODEXTOCSCANHELP" class="humanehelp">
+  <h3>Skimming by Sections</h3>
+  <p>The <strong>overleaf</strong> at the top of the page is a
+    truncated map of the book, based on your current location.  It
+    shows the current section name and the layout of the containing
+    layers of the book's organization.</p>
+  <p>The individual segments describe sections at a given level of
+  organization.  <span class="notouch">Moving the mouse over a segment
+  in the map shows information about the chapter in a tooltip.</span>
+    <span class="notouch">Clicking</span> <span class="fortouch">Tapping</span>
+    on a segment jumps to the beginning of that section.</p>
+  
+  <p><span class='fortouch'>Tap</span>
+    <span class='notouch'>Click</span> the
+    <img src="http://static.beingmeta.com/graphics/codex/GoldLeftTriangle16.png"/>
+    <img src="http://static.beingmeta.com/graphics/codex/GoldRightTriangle16.png"/>
+    buttons to move forward or back by sections at the current level.
+  <p class="notouch">Shift-clicking in the right or left margin moves
+    forward or backward by section at the current level.</p>
+  <p class="fortouch">Swiping with two fingers advances by sections at
+    the current level, as does double-tapping the left or right edge.</p>
+</div>
+
+<div id="CODEXSCANNINGHELP" class="humanehelp">
+  <h3>Scanning Glosses or Results</h3>
+  <p>You're now <strong>skimming</strong> through a set of slices from
+    this book based on either overlaid glosses or the results of a
+    search.</p>
+  <p><strong class="fortouch">Tapping</strong>
+    <strong class="notouch">Clicking</strong> on the
+    <img src="http://static.beingmeta.com/graphics/codex/ScanLeft16.png"/>
+    <img src="http://static.beingmeta.com/graphics/codex/ScanRight16.png"/>
+    double arrows moves to the previous/next gloss or search result, as does
+    <span class="fortouch">tapping with two fingers</span>
+    <span class="notouch">shift-clicking</span> in the left or right
+    margin.</p>
+  <p class="fortouch"><strong>Swiping with two fingers</strong>
+	(right or left) also moves among the results.</p>
+  <p class="notouch"><strong>The left and right arrow keys</strong>
+	also move among the results.</p>
+  <p>The <strong>overleaf</strong> at the top of the page shows the
+    current gloss or search result.  The <em>top line</em> shows the
+    location of the result in the book's structure; the <em>second
+    line</em> shows part of the referenced passage with an indication
+    (the blue segment in the background) of the passage's location and
+    size within the passage.  <em>Under the passage</em> is either the
+    added gloss itself (with its text, tags, links, and excerpts) or
+    the content tags assigned to the passage.</p>
 </div>
 
 <!--

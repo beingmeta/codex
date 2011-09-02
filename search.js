@@ -449,7 +449,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		((Codex.noisy_tooltips) ?
 		 (dterm+": "+(((score)?("s="+score+"; "):"")+freq+"/"+count+" items")) :
 		 (dterm+": "+freq+((freq==1) ? " item" : " items")));
-	    var span=KNodeCompletion(dterm,title);
+	    var span=KNodeCompletion(dterm,title,true);
+	    if (!(span)) continue;
 	    if ((isprime)&&(isprime[dterm])) addClass(span,"cue");
 	    domnodes.push(span);
 	    if (freq===1) addClass(span,"singleton");
@@ -488,7 +489,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
       if (completions)
 	fdjtDOM.toggleClass(completions,"showempty");}
 
-    function KNodeCompletion(term,title){
+    function KNodeCompletion(term,title,just_knodes){
 	var sbook_index=Codex.index;
 	if ((typeof term === "string") && (term[0]==="\u00A7")) {
 	    var showname=term;
@@ -502,7 +503,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    else span.title=term+": "+sbook_index.freq(term)+" items";
 	    return span;}
 	var dterm=Codex.knodule.probe(term);
-	if (!(dterm)) {}
+	if (!(dterm)) {
+	    if (just_knodes) return false;}
 	else if (!(dterm.dterm)) {
 	    fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
 	    dterm=false;}
