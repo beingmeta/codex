@@ -356,8 +356,8 @@ var sbook_gloss_data=
 	    Codex.head=fdjtID(head.id);}
 	else {
 	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
-	    CodexTOCUpdate(head,"CODEXTOC4");
-	    CodexTOCUpdate(head,"CODEXFLYTOC4");
+	    CodexTOC.update(head,"CODEXTOC4");
+	    CodexTOC.update(head,"CODEXFLYTOC4");
 	    Codex.head=false;}}
     Codex.setHead=setHead;
 
