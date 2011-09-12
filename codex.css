@@ -319,10 +319,10 @@ body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     border-color: darkblue; display: block; overflow: auto;
     opacity: 0.9; min-height: 50px; height: auto;
-    box-shadow: 1em 1em 1em #cccccc;
-    -webkit-box-shadow: 1em 1em 1em #cccccc;
-    -moz-box-shadow: 1em 1em 1em #cccccc;
-    -o-box-shadow: 1em 1em 1em #cccccc;}
+    box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;}
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     max-height: 150px;}
 
@@ -399,6 +399,9 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="next"] {display: no
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: block;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
+
+div#CODEXHUD div#CODEXSCANNER div.codexnote div.idhead { display: none;}
+body.hudup div#CODEXHUD div#CODEXSCANNER div.codexnote div.idhead { display: block;}
 
 body div#CODEXHUD img.codexscanbutton {
     width: 50px; position: fixed; top: 0px; opacity: 0.8;
@@ -1780,7 +1783,8 @@ div#CODEXEXCERPT textarea {
 
 .humane p {
     display: block; text-align: left;
-    margin-left: 2em; margin-right: 2em;}
+    margin-left: 2em; margin-right: 2em;
+    max-width: inherit; min-width: inherit; width: auto;}
 
 #HUMANE.humane {
     width: 70%; max-height: 50%;
