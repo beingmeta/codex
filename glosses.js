@@ -327,8 +327,10 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		fdjtDOM.addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
 	var info=Codex.docinfo[target.id];
-	var tags=[].concat(((info)&&(info.tags))||[]);
+	var tags=[];
 	var glosses=Codex.glosses.find('frag',target.id);
+	if ((info)&&(info.tags)) tags=tags.concat(info.tags);
+	if ((info)&&(info.autotags)) tags=tags.concat(info.autotags);
 	var i=0; var lim=glosses.length;
 	while (i<lim) {
 	    var g=glosses[i++]; var gtags=g.tags;
