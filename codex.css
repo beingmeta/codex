@@ -680,10 +680,14 @@ div#CODEXHELP div.codexhelp {
 div#CODEXHELP div.codexhelp p {
     text-align: left;
     margin-left: 5em; margin-right: 2em; text-indent: -3em;}
+div#CODEXHELP div.codexhelp div.helpblock {
+    margin-bottom: 1em;}
+div#CODEXHELP div.codexhelp div.helpblock p {
+    margin-top: 2px; margin-bottom: 2px;}
 div#CODEXHELP div.codexhelp p img.right {
     float: right; max-height: 24px;}
-div#CODEXHELP div.codexhelp p#CODEXHELPLOGGEDIN img.right {
-    max-height: 50px;}
+div#CODEXHELP div.codexhelp img.left {
+    width: 24px; margin-left: -24px; vertical-align: middle;}
 
 body div#CODEXHELP #CODEXHELPTITLE {
     font-weight: bold;}
