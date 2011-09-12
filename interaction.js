@@ -233,7 +233,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (Codex.target===passage) {
 		if (Codex.hudup) CodexMode(false);
 		else tapTarget(passage);}
-	    else if (fdjtDOM.hasClass(document.body,"sbookscanning"))
+	    else if (Codex.hudup)
 		CodexMode(false);
 	    else tapTarget(passage);}
 	else if (Codex.hudup||Codex.mode) {
