@@ -40,7 +40,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
     function _getbracketed(input,erase){
 	var string=input.value;
-	var pos=input.selectionStart;
+	if ((!(string))||(string.length==0)) return false;
+	var pos=input.selectionStart||0;
 	var start=pos, end=pos, lim=string.length;
 	while (start>=0) {
 	    if (string[start]==='[') {
