@@ -306,7 +306,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	syncelt.value=(Codex.syncstamp+1);
 	Codex.glosstarget=target;
 	Codex.setTarget(target);
-	setCloudCuesFromTarget(gloss_cloud,target);}
+	setCloudCuesFromTarget(gloss_cloud,target);
+	if (curinput)
+	    gloss_cloud.complete(getbracketed(curinput,false)||"");}
     Codex.setGlossTarget=setGlossTarget;
 
     function setCloudCues(cloud,tags){
@@ -326,11 +328,17 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		fdjtDOM.addClass(completion,"cue");
 		fdjtDOM.addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
-	var info=Codex.docinfo[target.id];
 	var tags=[];
+	var info=Codex.docinfo[target.id];
 	var glosses=Codex.glosses.find('frag',target.id);
+	var knodule=Codex.knodule;
 	if ((info)&&(info.tags)) tags=tags.concat(info.tags);
-	if ((info)&&(info.autotags)) tags=tags.concat(info.autotags);
+	if ((info)&&(info.autotags)&&(info.autotags.length)) {
+	    var autotags=info.autotags; var j=0; var jlim=autotags.length;
+	    while (j<jlim) {
+		var kn=knodule.probe(autotags[j]);
+		if (kn) tags.push(kn.tagString());
+		j++;}}
 	var i=0; var lim=glosses.length;
 	while (i<lim) {
 	    var g=glosses[i++]; var gtags=g.tags;
@@ -384,7 +392,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		    return;}}
 	    if ((complete)&&(completions.length))
 		addTag(form,completions[0]);	  
-	    else addTag(form,std);}}
+	    else addTag(form,std);
+	    gloss_cloud.complete("");}}
 
     function addgloss_keypress(evt){
 	var target=fdjtUI.T(evt);

@@ -1514,7 +1514,7 @@ body .codexglossmark:hover img.tiny { display: none;}
 
 .sbooktarget { }
 body.hudup .sbooktarget, body.sbookscanning .sbooktarget {
-    background-color: lightblue; cursor: pointer; border-radius: 1em;
+    background-color: lightblue; cursor: pointer;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
@@ -1543,11 +1543,7 @@ body.notsbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
 
 /* The add gloss panel */
 
-body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
-    }
-
-div#CODEXHUD div#CODEXADDGLOSS div#CODEXGLOSSCLOUD { display: none;}
-div#CODEXHUD div#CODEXADDGLOSS.tagging div#CODEXGLOSSCLOUD { display: block;}
+body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
 /* Gloss form */
 
@@ -1644,7 +1640,7 @@ div.codexglossform form div.glossetc > span.button {
     -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
     margin-left: 4px; 
-    border: solid silver 2px; background-color: silver; padding: 2px;
+    border: solid silver 2px; background-color: white; padding: 2px;
     text-align: center; vertical-align: top;
     cursor: pointer;}
 div.codexglossform form .checkspan {
