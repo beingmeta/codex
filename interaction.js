@@ -232,7 +232,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if ((passage)&&(Codex.mode==='addgloss')) {
 	    if (passage===Codex.target) CodexMode(false);
 	    else tapTarget(passage);}
-	else if (Codex.hudup)
+	else if ((Codex.mode)||(Codex.hudup))
 	    CodexMode(false);
 	else if (passage) tapTarget(passage);
 	else CodexMode(true);}
