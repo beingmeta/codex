@@ -208,7 +208,9 @@ var CodexMode=
 
 	/* HUD animation */
 
-	function setHUD(flag){
+	function setHUD(flag,clearmode){
+	    if (typeof clearmode === 'undefined') clearmode=true;
+	    // clearmode=((Codex.mode!=='scanning')&&(Codex.mode!=='tocscan'));
 	    if (Codex.Trace.gestures)
 		fdjtLog("setHUD %o mode=%o hudup=%o bc=%o hc=%o",
 			flag,Codex.mode,Codex.hudup,
@@ -218,13 +220,15 @@ var CodexMode=
 		Codex.hudup=true;
 		fdjtDOM.addClass(document.body,"hudup");}
 	    else {
-		Codex.mode=false;
 		Codex.hudup=false;
 		Codex.scrolling=false;
-		fdjtDOM.dropClass(CodexHUD,"flyleaf");
-		fdjtDOM.dropClass(CodexHUD,"full");
-		fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
+		if (clearmode) {
+		    fdjtDOM.dropClass(CodexHUD,"flyleaf");
+		    fdjtDOM.dropClass(CodexHUD,"full");
+		    fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
+		    Codex.mode=false;}
 		fdjtDOM.dropClass(document.body,"hudup");}}
+	Codex.setHUD=setHUD;
 
 	/* Mode controls */
 	
@@ -253,7 +257,8 @@ var CodexMode=
 	    scanning: "#CODEXSCANNINGHELP"};
 
 	function CodexMode(mode){
-	    if (typeof mode === 'undefined') return Codex.mode;
+	    var oldmode=Codex.mode;
+	    if (typeof mode === 'undefined') return oldmode;
 	    if (mode==='last') mode=Codex.last_mode||'help';
 	    if (mode==='none') mode=false;
 	    if (Codex.Trace.mode)
@@ -318,11 +323,12 @@ var CodexMode=
 		else fdjtDOM.dropClass(document.body,"dimmed");
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
-		if (mode==='scanning') {
-		    Codex.hudup=false;
-		    fdjtDOM.dropClass(CodexHUD,"flyleaf");
-		    fdjtDOM.dropClass(CodexHUD,"full");
-		    fdjtDOM.dropClass(document.body,"hudup");}
+		if ((mode==='scanning')||(mode==='tocscan')) {
+		    if (mode!==oldmode) {
+			Codex.hudup=false;
+			fdjtDOM.dropClass(CodexHUD,"flyleaf");
+			fdjtDOM.dropClass(CodexHUD,"full");
+			fdjtDOM.dropClass(document.body,"hudup");}}
 		// And if we're not scanning, we just raise the hud
 		else setHUD(true);
 		// This updates scroller dimensions, we delay it

@@ -229,18 +229,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		else Codex.excerpt=sel.toString();
 		return;}
 	    else CodexMode(false);}
-	if ((passage)&&(!(Codex.mode)))
-	    tapTarget(passage);
-	else if ((passage)&&(Codex.mode==="addgloss"))
-	    tapTarget(passage);
-	if ((passage)&&(Codex.target===passage))
-	    CodexMode(false);
-	else if (passage)
-	    tapTarget(passage);
+	if ((passage)&&(Codex.mode==='addgloss')) {
+	    if (passage===Codex.target) CodexMode(false);
+	    else tapTarget(passage);}
 	else if (Codex.hudup)
 	    Codex.setHUD(false);
-	else if (Codex.mode)
-	    CodexMode(false);
+	else if (passage) tapTarget(passage);
 	else CodexMode(true);}
 
     /* Tap actions */
@@ -976,8 +970,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    ((fdjtTime()-(Codex._setup.getTime()))<30000))
 	    CodexMode(false);}
     function toggleScanHUD(evt){
-	if (!(Codex.hudup)) Codex.setHUD(true);
-	fdjtUI.cancel(evt);}
+	if (!(Codex.hudup)) Codex.setHUD(true,false);
+	else Codex.setHUD(false,false);}
     Codex.UI.handlers.mouse=
 	{window: {
 	    keyup: onkeyup,
