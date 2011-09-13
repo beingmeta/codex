@@ -40,8 +40,8 @@ var sbook_delete_icon_touch="redx24x24.png";
 var sbook_delete_icon="redx16x16.png";
 var sbook_edit_icon_touch="remarkedit32x25.png";
 var sbook_edit_icon="remarkedit20x16.png";
-var sbook_reply_icon_touch="replyballoons41x24.png";
-var sbook_reply_icon="replyballoons26x15.png";
+var sbook_reply_icon_touch="codex/replyballoons41x24.png";
+var sbook_reply_icon="codex/replyballoons26x15.png";
 
 (function () {
 
@@ -61,7 +61,7 @@ var sbook_reply_icon="replyballoons26x15.png";
 	var body=
 	    fdjtDOM("div.codexnotebody",
 		    // (makelocrule(target_info,target_info.head)),
-		    ((!(standalone))&&(info.maker)&&(showglossinfo(info)))," ",
+		    ((info.maker)&&(showglossinfo(info)))," ",
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
 		    ((info.note)&&(fdjtDOM("span.note",info.note)))," ",
@@ -222,6 +222,15 @@ var sbook_reply_icon="replyballoons26x15.png";
 	var score=query[key]; var k=0;
 	while (k<score) {fdjtDOM(scorespan,"*"); k++;}
 	return scorespan;}
+    function makebutton(fn,alt,title,mouse_icon,touch_icon){
+	var span=
+	    fdjtDOM("span.isclickable",
+		    (fdjtDOM.Image(sbicon(mouse_icon),"img.button.mouseicon",
+				   alt,title)),
+		    (fdjtDOM.Image(sbicon(touch_icon),"img.button.touchicon",
+				   alt,title)));
+	span.onclick=fn;
+	return span;}
     function showglossinfo(info) {
 	var user=info.maker;
 	var feed=info.feed||false;
@@ -237,37 +246,15 @@ var sbook_reply_icon="replyballoons26x15.png";
 	var deleteicon=
 	    // No delete icons for the ipad right now (too small)
 	    ((user===Codex.user.oid)&&
-	     (fdjtDOM(
-		 "span",
-		 (fdjtDOM.Image(sbicon(sbook_delete_icon),
-				"img.delete.button.mouseicon","x",
-				"delete this gloss")),
-		 (fdjtDOM.Image(sbicon(sbook_delete_icon_touch),
-				"img.delete.button.touchicon","x",
-				"delete this gloss")))));
-	if (deleteicon) deleteicon.onclick=deletegloss_ontap;
+	     (makebutton(deleteicon_ontap,"x","delete this gloss",
+			 sbook_delete_icon,sbook_delete_icon_touch)));
 	var editicon=
 	    ((user===Codex.user.oid)&&
-	     (fdjtDOM(
-		 "span",
-		 (fdjtDOM.Image(
-		     sbicon(sbook_edit_icon),"img.edit.button.mouseicon","!",
-		     "edit this gloss")),
-		 (fdjtDOM.Image(
-		     sbicon(sbook_edit_icon_touch),
-		     "img.edit.button.touchicon","!",
-		     "edit this gloss")))));
-	if (editicon) editicon.onclick=editicon_ontap;
+	     (makebutton(editicon_ontap,"!","edit this gloss",
+			 sbook_edit_icon,sbook_edit_icon_touch)));
 	var replyicon=
-	    fdjtDOM(
-		"span",
-		(fdjtDOM.Image(cxicon(sbook_reply_icon),
-			       "img.reply.button.mouseicon","++",
-			       "respond to this gloss")),
-		(fdjtDOM.Image(cxicon(sbook_reply_icon_touch),
-			       "img.reply.button.touchicon","++",
-			       "respond to this gloss")));
-	replyicon.onclick=replyicon_ontap;
+	    (makebutton(replyicon_ontap,"++","reply to this gloss",
+			sbook_reply_icon,sbook_reply_icon_touch));
 	var picinfo=getpicinfo(info);
 	var overdoc=getoverdoc(info);
 	
@@ -409,7 +396,7 @@ var sbook_reply_icon="replyballoons26x15.png";
 	locrule.style.left=((target_start/cxt_len)*100)+"%";
 	return locrule;}
 
-    function deletegloss_ontap(evt){
+    function deleteicon_ontap(evt){
 	var scan=fdjtUI.T(evt);
 	fdjtUI.cancel(evt);
 	while (scan) {
@@ -451,7 +438,7 @@ var sbook_reply_icon="replyballoons26x15.png";
 	var target=fdjtUI.T(evt);
 	var note=fdjtDOM.getParent(target,'.codexnote');
 	var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name)));
-	Codex.setGlossTarget(gloss);
+	Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
 	CodexMode("addgloss");}
 
     function relayoredit_gloss(evt){

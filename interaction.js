@@ -968,9 +968,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if ((newval)&&(Codex._setup)&&
 	    ((fdjtTime()-(Codex._setup.getTime()))<30000))
 	    CodexMode(false);}
-    function toggleScanHUD(evt){
-	if (!(Codex.hudup)) Codex.setHUD(true,false);
-	else Codex.setHUD(false,false);}
     Codex.UI.handlers.mouse=
 	{window: {
 	    keyup: onkeyup,
@@ -990,7 +987,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXSCANNER": {click: scanner_click},
 	 "#SBOOKPAGEHEAD": {click: head_click},
 	 "#CODEXHEAD": {click: head_click},
-	 "#CODEXSCANNER": {click: toggleScanHUD},
 	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
@@ -1021,6 +1017,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXHELP": {touchstart: Codex.UI.dropHUD,
 			touchmove: cancel,
 			touchend: cancel},
+	 "#CODEXSCANNER": {touchstart: scanner_click},
 	 // "#CODEXFLYLEAF": {touchend: flyleaf_tap},
 	 "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			    touchmove: cancel,touchend: cancel},

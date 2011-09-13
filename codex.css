@@ -404,7 +404,10 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {disp
 
 div#CODEXHUD div#CODEXSCANNER div.codexnote div.idhead { display: none;}
 div#CODEXHUD div#CODEXGLOSSES div.codexnote div.idhead { display: none;}
-body.hudup div#CODEXHUD div#CODEXSCANNER div.codexnote div.idhead { display: block;}
+body.hudup div#CODEXHUD div#CODEXSCANNER div.codexnote div.idhead {
+    display: block;}
+div#CODEXHUD div#CODEXSCANNER div.codexnote span.glossinfo span.isclickable {
+    display: none;}
 
 body div#CODEXHUD img.codexscanbutton {
     width: 50px; position: fixed; top: 0px; opacity: 0.8;
@@ -1567,6 +1570,21 @@ body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 div.codexglossform { display: none;}
 div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
 div.codexglossform#CODEXLIVEGLOSS { display: block;}
+div.codexglossform div.response {
+ margin-left: 0.5em; text-align: left; color: black;}
+div.codexglossform div.response .respmaker {font-weight: bold;}
+div.codexglossform div.response .respdate {
+    font-size: 75%; font-weight: bold; font-variant: small-caps;
+    color: purple;
+    float: right;}
+div.codexglossform div.response .respdate:before { content: "(";}
+div.codexglossform div.response .respdate:after { content: ")";}
+div.codexglossform div.response .respnote { font-style: italic;}
+div.codexglossform div.response .respnote:before { content: "“";}
+div.codexglossform div.response .respnote:after { content: "”";}
+div.codexglossform div.response .respexcerpt {
+    font-size: 80%; background-color: yellow;}
+
 div.codexglossform form {
     padding: 0px; margin: 0px;}
 div.codexglossform form span.checkspan.excerpt {

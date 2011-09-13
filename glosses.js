@@ -111,7 +111,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (noteinput) {
 	    noteinput.onkeypress=addgloss_keypress;
 	    noteinput.onkeydown=addgloss_keydown;
-	    if (gloss) noteinput.value=gloss.note||"";
+	    if ((gloss)&&(!(response))) noteinput.value=gloss.note||"";
 	    else noteinput.value="";}
 	if (Codex.syncstamp)
 	    fdjtDOM.getInput(form,"SYNC").value=(Codex.syncstamp+1);
@@ -122,6 +122,22 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var respondsto=fdjtDOM.getInput(form,"RE");
 	var thread=fdjtDOM.getInput(form,"THREAD");
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
+	var response_elt=fdjtDOM.getChild(form,"div.response");
+	if ((response_elt)&&(response)&&(gloss)) {
+	    var maker_elt=fdjtDOM.getChild(response_elt,".respmaker");
+	    var date_elt=fdjtDOM.getChild(response_elt,".respdate");
+	    var note_elt=fdjtDOM.getChild(response_elt,".respnote");
+	    var makerinfo=fdjtKB.ref(gloss.maker);
+	    fdjtDOM(maker_elt,makerinfo.name);
+	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));
+	    if (gloss.note) {
+		if (gloss.note.length>42) 
+		    fdjtDOM(note_elt,gloss.note.slice(0,42)+"…");
+		else fdjtDOM(note_elt,gloss.note);
+		note_elt.title=gloss.note;}
+	    else fdjtDOM.remove(note_elt);}
+	else {
+	    fdjtDOM.remove(response_elt); response_elt=false;}
 	if (loc) {loc.value=info.starts_at;}
 	if (loclen) {loclen.value=info.ends_at-info.starts_at;}
 	if ((response)&&(gloss)&&(gloss.thread)) {
@@ -134,12 +150,18 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (tagline) tagline.value=tagline;
 	if ((gloss)&&(gloss.tags)) {
 	    var tagselt=fdjtDOM.getChild(form,".tags");
+	    var resptags=fdjtDOM.getChild(response_elt,".resptags");
 	    var tags=gloss.tags;
 	    if (typeof tags === 'string') tags=[tags];
 	    var i=0; var lim=tags.length;
-	    while (i<lim) addTag(form,tags[i++]);}
-	if ((gloss)&&(gloss.links)) {
+	    while (i<lim) {
+		// if (resptags) gloss;
+		addTag(form,tags[i],false);
+		i++;}
+	    }
+	if ((gloss)&&(!(response))&&(gloss.links)) {
 	    var links=fdjtDOM.getChild(form,".links");
+	    var resplinks=fdjtDOM.getChild(response_elt,".resplinks");
 	    var links=gloss.links;
 	    for (url in links) {
 		if (url[0]==='_') continue;
@@ -147,6 +169,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		var title;
 		if (typeof urlinfo === 'string') title=urlinfo;
 		else title=urlinfo.title;
+		// if (resplinks) addLink();
 		addLink(form,url,title);}}
 	if ((gloss)&&(gloss.share)) {
 	    var tags=gloss.share;
@@ -155,7 +178,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    while (i<lim) addTag(form,tags[i++],"SHARE");}
 	if ((gloss)&&(gloss._id)) {
 	    uuidelt.value=gloss._id;
-	    form.method="PUT";}
+	    if (response) form.method="POST";
+	    else form.method="PUT";}
 	else uuidelt.value=fdjtState.getUUID(Codex.nodeid);
 	if ((Codex.outlets)||((gloss)&&(gloss.outlets))) {
 	    var outlets=Codex.outlets;
@@ -166,9 +190,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    while (i<lim) {
 		var outlet=outlets[i++];
 		if (fdjtKB.contains(seen,outlet)) continue;
-		else addOutlet(
-		    form,outlet,
-		    ((current)&&(fdjtKB.contains(current,outlet))));}}
+		else addOutlet(form,outlet,
+			       ((current)&&
+				(fdjtKB.contains(current,outlet))));}}
 	form.setAttribute("sbooksetup","yes");}
     Codex.setupGlossForm=setupGlossForm;
 
@@ -227,7 +251,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     Codex.addExcerpt=addExcerpt;
 
     /***** Adding tags ******/
-    function addTag(form,tag,varname) {
+    function addTag(form,tag,varname,checked) {
 	// fdjtLog("Adding %o to tags for %o",tag,form);
 	if (!(tag)) tag=form;
 	if (form.tagName!=='FORM')
@@ -265,7 +289,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (((cspan.getAttribute("varname"))===varname)&&
 		((cspan.getAttribute("tagval"))===tag))
 		return cspan;}
-	var span=fdjtUI.CheckSpan("span.checkspan",varname,tag,true);
+	var span=fdjtUI.CheckSpan("span.checkspan",varname,tag,
+				  ((typeof checked === 'undefined')||(checked)));
 	if (title) span.title=title;
 	span.setAttribute("varname",varname);
 	span.setAttribute("tagval",tag);
@@ -286,7 +311,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    Codex.glosstarget=false;
 	    return;}
 	if (!gloss_cloud) Codex.glossCloud();
-	var gloss=false; var form=getGlossForm(target);
+	var gloss=false;
+	if (!(form)) form=getGlossForm(target);
 	if ((typeof target === 'string')&&(fdjtID(target))) 
 	    target=fdjtID(target);
 	else if ((typeof target === 'string')&&
