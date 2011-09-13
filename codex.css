@@ -383,7 +383,7 @@ div#CODEXHUD.toc .hudbutton[alt='toc'] {
 /* Scanner rules */
 
 body.hudup div#CODEXHUD div#CODEXSCANNER div#CODEXSCAN {
-    margin-left: 36px; margin-right: 36px;}
+    margin-left: 36px; }
 body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
 body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="prev"] {
     position: absolute; left: 0px; top: 8px;}
@@ -951,10 +951,8 @@ span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 
 div.codexnote { margin-left: 20px; margin-right: 0px;}
-div.codexnote div.idhead {
-    margin-left: -10px; margin-right: -10px;}
-div.codexnote div.tochead {
-    margin-left: -20px; margin-right: -20px;}
+div.codexnote div.idhead { margin-left: -10px;  }
+div.codexnote div.tochead { margin-left: -20px; }
 
 div.codexslice .tocthread {
     border-left: solid purple 1px;}
