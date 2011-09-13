@@ -223,7 +223,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (p) {
 		if ((Codex.mode==="addgloss")&&
 		    (fdjtID("CODEXLIVEGLOSS"))) {
-		    Codex.addExcerpt(fdjtID("CODEXLIVEGLOSS"),
+		    Codex.addExcerpt(fdjtID("CODEXLIVEGLOSgit S"),
 				     sel.toString(),
 				     ((Codex.glosstarget!==p)&&(p.id)));}
 		else Codex.excerpt=sel.toString();
@@ -806,9 +806,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    else if ((headinfo.head)&&(headinfo.head.next)) {
 		Codex.GoTo(headinfo.head.next.elt); CodexMode("toc");}
 	    else if ((headinfo.head)&&(headinfo.head.head)&&
-		     (headinfo.head.head.next)) {
+		     (headinfo.head.head.next)) 
 		Codex.GoTo(headinfo.head.head.next.elt);
-		CodexMode("toc");}
 	    else CodexMode(false);
 	    return;}
 	var start=Codex.scanning;
@@ -832,8 +831,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",
 			head,headinfo,headinfo.prev,headinfo.head);
 	    if (headinfo.prev) Codex.GoTo(headinfo.prev.elt);
-	    else if (headinfo.head) {
-		Codex.GoTo(headinfo.head.elt); CodexMode("toc");}
+	    else if (headinfo.head) 
+		Codex.GoTo(headinfo.head.elt);
 	    else CodexMode(false);
 	    return;}
 	var scan=Codex.prevSlice(Codex.scanning);

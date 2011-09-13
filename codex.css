@@ -316,6 +316,7 @@ body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
+body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     border-color: darkblue; display: block; overflow: auto;
     opacity: 0.9; min-height: 50px; height: auto;
@@ -579,18 +580,20 @@ div.codextoc div.sub a.sectname {
 div.codextoc div.sub a.sectname.cohi { background-color: gold; }
 
 div#CODEXHUD div.codextoc div.head { display: none;}
+div#CODEXHUD div.codextoc div.head { display: none;}
 div#CODEXHUD div.codextoc div.spanbar { display: none;}
+div#CODEXHUD div.codextoc img { display: none;}
 
 div#CODEXHUD.toc div.codextoc div.spanbar { display: block;}
 div#CODEXHUD.toc div.codextoc div.head { display: block;}
-
-div#CODEXHUD.toc div.codextoc div.head { display: block;}
 div#CODEXHUD.toc div.codextoc div.spanbar { display: block;}
+div#CODEXHUD.toc div.codextoc img { display: inherit;}
 div#CODEXHUD.toc div.codextoc.cur div.sub { display: block;}
 div#CODEXHUD div#CODEXTOC.hover div.codextoc.cur div.sub { display: none;}
 
 div#CODEXHUD.tocscan div.codextoc.cxt > div.spanbar { display: block;}
 div#CODEXHUD.tocscan div.codextoc.cur > div.head { display: block;}
+div#CODEXHUD.tocscan div.codextoc.cur > img { display: inherit;}
 
 div.spanbar {
   position: relative;
