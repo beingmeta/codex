@@ -1082,7 +1082,7 @@ body.hudup div#CODEXHUD.help div#CODEXHUDBUTTONS {
 
 div#CODEXHUD div#CODEXHUDBUTTONS div.sbookplate {
     margin: 0px; padding: 0px; border: 0px;
-    margin-left: 60px; margin-right: 60px;
+    margin-left: 0px; margin-right: 0px;
     clear: both; text-align: left;
     /* background-color: gold; */
     color: black;}
@@ -1143,6 +1143,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
     position: absolute; right: 60px;
     vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif; font-weight: bold;
+    display: none;
     color: red;}
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout:visited {
     color: red;}
@@ -1150,7 +1151,16 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#SBOOKUSERNAME {
     position: absolute; left: 60px;
     vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif; font-weight: bold;
+    display: none;
     color: blue;}
+
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout,
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#SBOOKUSERNAME {
+    display: inline;}
+div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a.logout,
+div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a#SBOOKUSERNAME {
+    display: inline;}
+
 
 /* The Flyleaf */
 
