@@ -229,17 +229,18 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		else Codex.excerpt=sel.toString();
 		return;}
 	    else CodexMode(false);}
-	if (passage) {
-	    if (Codex.target===passage) {
-		if (Codex.hudup) CodexMode(false);
-		else tapTarget(passage);}
-	    else if (Codex.hudup)
-		CodexMode(false);
-	    else tapTarget(passage);}
-	else if (Codex.hudup||Codex.mode) {
-	    if (Codex.Trace.gestures) fdjtLog("Dropping HUD");
+	if ((passage)&&(!(Codex.mode)))
+	    tapTarget(passage);
+	else if ((passage)&&(Codex.mode==="addgloss"))
+	    tapTarget(passage);
+	if ((passage)&&(Codex.target===passage))
 	    CodexMode(false);
-	    return;}
+	else if (passage)
+	    tapTarget(passage);
+	else if (Codex.hudup)
+	    Codex.setHUD(false);
+	else if (Codex.mode)
+	    CodexMode(false);
 	else CodexMode(true);}
 
     /* Tap actions */
@@ -974,6 +975,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if ((newval)&&(Codex._setup)&&
 	    ((fdjtTime()-(Codex._setup.getTime()))<30000))
 	    CodexMode(false);}
+    function toggleScanHUD(evt){
+	if (!(Codex.hudup)) Codex.setHUD(true);
+	fdjtUI.cancel(evt);}
     Codex.UI.handlers.mouse=
 	{window: {
 	    keyup: onkeyup,
@@ -992,7 +996,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXLOCOFF": {click: enterLocation},
 	 "#CODEXSCANNER": {click: scanner_click},
 	 "#SBOOKPAGEHEAD": {click: head_click},
-	 "#CODEXHEAD": {click: head_click},	 
+	 "#CODEXHEAD": {click: head_click},
+	 "#CODEXSCANNER": {click: toggleScanHUD},
 	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
