@@ -335,6 +335,8 @@ Codex.Startup=
 	var setCheckSpan=fdjtUI.CheckSpan.set;
 
 	function addConfig(name,handler){
+	    if (Codex.Trace.config)
+		fdjtLog("Adding config handler for %s: %s",name,handler);
 	    config_handlers[name]=handler;}
 	Codex.addConfig=addConfig;
 
@@ -347,15 +349,22 @@ Codex.Startup=
 	    if (arguments.length===1) {
 		var config=name;
 		Codex.postconfig=[];
+		if (Codex.Trace.config) fdjtLog("batch setConfig: %s",config);
 		for (var setting in config) {
 		    if (config.hasOwnProperty(setting))
 			setConfig(setting,config[setting]);}
 		var dopost=Codex.postconfig;
 		Codex.postconfig=false;
+		if ((Codex.Trace.config)&&(!((dopost)||(dopost.length===0))))
+		    fdjtLog("batch setConfig, no post processing",config);
 		var i=0; var lim=dopost.length;
-		while (i<lim) dopost[i++]();
+		while (i<lim) {
+		    if (Codex.Trace.config)
+			fdjtLog("batch setConfig, post processing %s",dopost[i]);
+		    dopost[i++]();}
 		return;}
 	    if (current_config[name]===value) return;
+	    if (Codex.Trace.config) fdjtLog("setConfig %o=%o",name,value);
 	    var input_name="CODEX"+(name.toUpperCase());
 	    var inputs=document.getElementsByName(input_name);
 	    var i=0; var lim=inputs.length;
@@ -369,33 +378,39 @@ Codex.Startup=
 		    if (value===input.value) setCheckSpan(input,true);
 		    else setCheckSpan(input,false);}
 		else input.value=value;}
-	    if (config_handlers[name]) 
-		config_handlers[name](name,value);
+	    if (config_handlers[name]) {
+		if (Codex.Trace.config) fdjtLog("setConfig (handler=%s) %o=%o",
+						config_handlers[name],name,value);
+		config_handlers[name](name,value);}
 	    current_config[name]=value;}
 	Codex.setConfig=setConfig;
 
 	function saveConfig(config){
-	    // fdjtLog("saveConfig %o",config);
-	    // fdjtLog("current_config=%o",current_config);
+	    if (Codex.Trace.config) {
+		fdjtLog("saveConfig %o",config);
+		fdjtLog("current_config=%o",current_config);}
 	    if (!(config)) config=current_config;
+	    // Save automatically applies (seems only fair)
 	    else setConfig(config);
 	    var saved={};
 	    for (var setting in config) {
-		if ((!(default_config[setting]))||
+		if ((!(default_config.hasOwnProperty(setting)))||
 		    (config[setting]!==default_config[setting])) {
 		    saved[setting]=config[setting];}}
-	    // fdjtLog("Saving config %o",saved);
+	    if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
 	    fdjtState.setLocal('codex.config',JSON.stringify(saved));}
 	Codex.saveConfig=saveConfig;
 
 	function initConfig(){
 	    var config=fdjtState.getLocal('codex.config',true);
 	    Codex.postconfig=[];
+	    if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
 	    if (config) {
 		for (var setting in config) {
 		    if (config.hasOwnProperty(setting)) 
 			setConfig(setting,config[setting]);}}
 	    else config={};
+	    if (Codex.Trace.config) fdjtLog("initConfig (default) %o",default_config);
 	    for (var setting in default_config) {
 		if (!(config[setting]))
 		    if (default_config.hasOwnProperty(setting))
@@ -432,6 +447,7 @@ Codex.Startup=
 		((id.nodeType)&&(getChild(id,'textarea')))||
 		((id.nodeType)&&(getChild(id,'select')))||
 		(id);
+	    if (Codex.Trace.config) fdjtLog("Update config %s",name);
 	    if ((elt.type=='radio')||(elt.type=='checkbox'))
 		setConfig(name,elt.checked||false);
 	    else setConfig(name,elt.value);}
