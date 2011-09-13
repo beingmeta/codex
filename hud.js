@@ -48,6 +48,8 @@ var CodexMode=
 	var sbookSearchHUD=false;
 	// How long to let messages flash up
 	var message_timeout=5000;
+	// Whether to call displaySync on mode changes
+	var display_sync=false;
 	
 	function initHUD(){
 	    if (fdjtID("CODEXHUD")) return;
@@ -350,7 +352,7 @@ var CodexMode=
 		  if (input) input.focus();}
 		// Moving the focus back to the body lets keys work
 		else document.body.focus();
-		Codex.displaySync();}
+		if (display_sync) Codex.displaySync();}
 	    else {
 		// Clearing the mode is a lot simpler, in part because
 		//  setHUD clears most of the classes when it brings
@@ -360,7 +362,7 @@ var CodexMode=
 		fdjtDOM.dropClass(document.body,"dimmed");
 		fdjtDOM.dropClass(document.body,"sbookscanning");
 		setHUD(false);
-		Codex.displaySync();}}
+		if (display_sync) Codex.displaySync();}}
 
 	function fadeUpHUD(){
 	    fdjtLog("Setting properties");

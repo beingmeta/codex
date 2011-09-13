@@ -591,7 +591,7 @@ var CodexPaginate=
 		off=pageleft;}
 	    */
 	    if (Codex.Trace.nav)
-		fdjtLog("GoToPage%s %o",((caller)?"/"+caller:""),pageno);
+		fdjtLog("GoToPage%s %o",((caller)?"/"+caller:""),num);
 	    Codex.pages.style.setProperty
 	    (fdjtDOM.transform,
 	     "translate("+(-off)+"px,0px)",
