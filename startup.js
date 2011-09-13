@@ -375,8 +375,8 @@ Codex.Startup=
 	Codex.setConfig=setConfig;
 
 	function saveConfig(config){
-	    fdjtLog("saveConfig %o",config);
-	    fdjtLog("current_config=%o",current_config);
+	    // fdjtLog("saveConfig %o",config);
+	    // fdjtLog("current_config=%o",current_config);
 	    if (!(config)) config=current_config;
 	    else setConfig(config);
 	    var saved={};
@@ -384,7 +384,7 @@ Codex.Startup=
 		if ((!(default_config[setting]))||
 		    (config[setting]!==default_config[setting])) {
 		    saved[setting]=config[setting];}}
-	    fdjtLog("Saving config %o",saved);
+	    // fdjtLog("Saving config %o",saved);
 	    fdjtState.setLocal('codex.config',JSON.stringify(saved));}
 	Codex.saveConfig=saveConfig;
 

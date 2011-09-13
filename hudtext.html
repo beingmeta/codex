@@ -13,6 +13,7 @@
   <textarea rows='5' id="CODEXEXTRACT"></textarea>
 </div>
 <div id="CODEXHEAD">
+<!--
   <img src="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
        alt="toc" title="click to navigate the book as a whole"
        class="hudbutton hudmodebutton topleft" id="CODEXTOCBUTTON"
@@ -21,16 +22,32 @@
        alt="search" title="click to search tags within the book"
        class="hudbutton hudmodebutton topright" id="CODEXSEARCHBUTTON"
        hudmode="search"/>
-  <div class="helphud topcenter" style="display: none;">
-    <span class="fortouch">tap</span><span class="notouch">click</span>
-    here to see the book tools
-  </div>
   <div class="helphud topleft" data-hudmode="toc">
     <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
     <span class="nobreak">contents</span></div>
   <div class="helphud topright" data-hudmode="search">
     <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
     for&nbsp;tags</div>
+  -->
+  <img src="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
+       alt="toc" title="click to navigate the book as a whole"
+       class="hudbutton hudmodebutton topleft" id="CODEXTOCBUTTON"
+       hudmode="toc"/>
+  <img src="http://static.beingmeta.com/graphics/codex/TagSearch50x50.png"
+       alt="search" title="click to search tags within the book"
+       class="hudbutton hudmodebutton topright" id="CODEXSEARCHBUTTON"
+       hudmode="search"/>
+  <div class="helphud topleft" data-hudmode="toc">
+    <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
+    <span class="nobreak">contents</span></div>
+  <div class="helphud topright" data-hudmode="search">
+    <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
+    for&nbsp;tags</div>
+
+  <div class="helphud topcenter" style="display: none;">
+    <span class="fortouch">tap</span><span class="notouch">click</span>
+    here to see the book tools
+  </div>
   <div id="CODEXHUDBUTTONS">
     <div class="sbookplate">
       <a href="https://auth.sbooks.net/admin/logout" class="logout"
@@ -41,6 +58,11 @@
 	(click to log in)</a>
     </div> <!-- .flyleafplate -->
     <div class="tabbar icons" id="CODEXTABS">
+      <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
+	   alt="glosses" title="Click to browse glosses overlaid on this book"
+	   onclick="CodexMode.toggle('allglosses'); return fdjtUI.cancel(event);"
+	   class="tab" id="CODEXALLGLOSSESBUTTON"
+	   hudmode="allglosses"/>
       <img src="http://static.beingmeta.com/graphics/codex/AboutTab50h.png"
 	   alt="About" class="tab" contentid="APPABOUT"
 	   onclick="CodexMode.toggle('about',true); return fdjtUI.cancel(event);"
@@ -153,6 +175,7 @@
   <!-- This content comes from flyleaftext.html -->
 </div>
 <div id="CODEXFOOT">
+  <!--
   <img src="http://static.beingmeta.com/graphics/codex/drophud50x50.png"
        alt="drophud" title="hide the book tools"
        id="CODEXDROPHUD"
@@ -200,6 +223,7 @@
   <div class="helphud botleft" data-hudmode="flyleaf">
     <span class="nobreak"><span class="arrow">&#x2190;</span>hide</span><br/>
     tools</div>
+  -->
   <div class="helphud botcenter">
     <span class="fortouch">tap</span><span class="notouch">click</span>
     here to hide tools or<br/>jump within the document
@@ -207,26 +231,36 @@
   <div id="SBOOKFOOTINFO">
     <div id="SBOOKTARGETINFO"></div>
   </div>
+  <!--
   <div class="helphud botright" data-hudmode="allglosses">
     <span class="nobreak">all<span class="arrow">&#x2192;</span></span><br/>
     glosses</div>
+  -->
+  <!--
   <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
        alt="glosses" title="Click to browse glosses overlaid on this book"
        class="hudbutton hudmodebutton botright" id="CODEXALLGLOSSESBUTTON"
        hudmode="allglosses"/>
+  -->
 </div>
 <div id="CODEXADDGLOSSHELP" class="humanehelp">
   <h3>Add your own glosses to this passage</h3>
   <p>Type your comments, ending with <kbd>Enter</kbd> or [OK].</p>
   <p><strong>Add links</strong>
-  as <strong>[@</strong><em><tt>http://host/..</tt></em>
-    <em>title</em><strong>]</strong>.</p>
-  <p><strong>Add tags</strong> in <strong>[</strong>brackets<strong>]</strong>
-    with help from cues based on existing tags.  Specifying synonyms
-    (e.g. <strong>[</strong>airplane|airplane|aircraft<strong>]</strong>) can
-    make your tags more useful.  You can add more structure to your
-    tags (e.g. <strong>[</strong>sloop|^sailboat|^boat<strong>]</strong>)
-    to help others use your tags to search or browse.</p>
+  as <strong>[@</strong><em><tt>uri</tt></em>
+    <em>title</em><strong>]</strong>,
+    e.g. <strong>[@</strong><tt>http://www.whitehouse.gov/</tt></strong>
+    The White House<strong>]</strong>.</p>
+  <p><strong>Add tags</strong> by typing text
+  in <strong>[</strong>brackets<strong>]</strong>
+  or <span class="fortouch">tapping</span><span class="notouch">clicking</span>
+    <span class="tag">suggested tag</span>s.</p>
+  <p><strong>Add knowledge</strong> to your tags with <strong>synonyms</strong>
+    (e.g. <strong>[</strong>airplane|airplane|aircraft<strong>]</strong>)
+    or <strong>structure</strong>
+    (e.g. <strong>[</strong>sloop|^sailboat|^boat<strong>]</strong>)
+    to make them more useful for browsing or searching by yourself and
+    others.</p>
 </div>
 <div id="CODEXTOCHELP" class="humanehelp">
   <h3>Navigating your sBook</h3>

@@ -116,9 +116,8 @@ var CodexTOC=
 	    if (target) {
 		var info=Codex.docinfo[target.frag];
 		Codex.GoTo(target.frag);
-		if ((info.sub)&&(info.sub.length>2))
-		    CodexMode("toc");
-		else CodexMode("tocscan");
+		// if ((info.sub)&&(info.sub.length>2)) CodexMode("toc");
+		CodexMode("tocscan");
 		fdjtUI.cancel(evt);}}
 	Codex.tocJump=tocJump;
 
@@ -196,6 +195,8 @@ var CodexTOC=
 	CodexTOC.id="$Id$";
 	CodexTOC.version=parseInt("$Revision$".slice(10,-1));
 
+	var dropClass=fdjtDOM.dropClass;
+	var addClass=fdjtDOM.addClass;
 	function updateTOC(prefix,head,cur){
 	    if (!(prefix)) prefix="CODEXTOC4";
 	    if (cur) {
@@ -211,21 +212,26 @@ var CodexTOC=
 		    cur=cur.head;}
 		var n=tohide.length-1;
 		// Go backwards (up) to potentially accomodate some redisplayers
-		while (n>=0) {fdjtDOM.dropClass(tohide[n--],"live");}
-		fdjtDOM.dropClass(base_elt,"cur");}
+		while (n>=0) {
+		    dropClass(tohide[n--],/\b(live|cxt)\b/g);}
+		dropClass(base_elt,"cur");}
 	    if (!(head)) return;
 	    var base_elt=document.getElementById(prefix+head.frag);
-	    var toshow=[];
+	    var toshow=[]; var base_info=head;
 	    while (head) {
 		var tocelt=document.getElementById(prefix+head.frag);
 		var spans=document.getElementsByName("SBR"+head.frag);
-		fdjtDOM.addClass(spans,"live");
+		addClass(spans,"live");
 		toshow.push(tocelt);
 		head=head.head;}
 	    var n=toshow.length-1;
+	    if ((base_info.sub)&&(base_info.sub.length))
+		addClass(base_elt,"cxt");
+	    else if (toshow[1]) addClass(toshow[1],"cxt");
+	    else {}
+	    addClass(base_elt,"cur");
 	    // Go backwards to accomodate some redisplayers
-	    while (n>=0) {fdjtDOM.addClass(toshow[n--],"live");}
-	    fdjtDOM.addClass(base_elt,"cur");};
+	    while (n>=0) {addClass(toshow[n--],"live");}};
 	CodexTOC.update=updateTOC;
 
 	return CodexTOC;})();

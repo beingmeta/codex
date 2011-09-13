@@ -223,23 +223,18 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (p) {
 		if ((Codex.mode==="addgloss")&&
 		    (fdjtID("CODEXLIVEGLOSS"))) {
-		    Codex.addExcerpt(fdjtID("CODEXLIVEGLOSS"),
+		    Codex.addExcerpt(fdjtID("CODEXLIVEGLOSgit S"),
 				     sel.toString(),
 				     ((Codex.glosstarget!==p)&&(p.id)));}
 		else Codex.excerpt=sel.toString();
 		return;}
 	    else CodexMode(false);}
-	if (passage) {
-	    if (Codex.target===passage) {
-		if (Codex.hudup) CodexMode(false);
-		else tapTarget(passage);}
-	    else if (fdjtDOM.hasClass(document.body,"sbookscanning"))
-		CodexMode(false);
+	if ((passage)&&(Codex.mode==='addgloss')) {
+	    if (passage===Codex.target) CodexMode(false);
 	    else tapTarget(passage);}
-	else if (Codex.hudup||Codex.mode) {
-	    if (Codex.Trace.gestures) fdjtLog("Dropping HUD");
+	else if ((Codex.mode)||(Codex.hudup))
 	    CodexMode(false);
-	    return;}
+	else if (passage) tapTarget(passage);
 	else CodexMode(true);}
 
     /* Tap actions */
@@ -811,9 +806,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    else if ((headinfo.head)&&(headinfo.head.next)) {
 		Codex.GoTo(headinfo.head.next.elt); CodexMode("toc");}
 	    else if ((headinfo.head)&&(headinfo.head.head)&&
-		     (headinfo.head.head.next)) {
+		     (headinfo.head.head.next)) 
 		Codex.GoTo(headinfo.head.head.next.elt);
-		CodexMode("toc");}
 	    else CodexMode(false);
 	    return;}
 	var start=Codex.scanning;
@@ -837,8 +831,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",
 			head,headinfo,headinfo.prev,headinfo.head);
 	    if (headinfo.prev) Codex.GoTo(headinfo.prev.elt);
-	    else if (headinfo.head) {
-		Codex.GoTo(headinfo.head.elt); CodexMode("toc");}
+	    else if (headinfo.head) 
+		Codex.GoTo(headinfo.head.elt);
 	    else CodexMode(false);
 	    return;}
 	var scan=Codex.prevSlice(Codex.scanning);
@@ -992,7 +986,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXLOCOFF": {click: enterLocation},
 	 "#CODEXSCANNER": {click: scanner_click},
 	 "#SBOOKPAGEHEAD": {click: head_click},
-	 "#CODEXHEAD": {click: head_click},	 
+	 "#CODEXHEAD": {click: head_click},
 	 "#SBOOKPAGEFOOT": {click: foot_click},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
@@ -1023,6 +1017,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXHELP": {touchstart: Codex.UI.dropHUD,
 			touchmove: cancel,
 			touchend: cancel},
+	 "#CODEXSCANNER": {touchstart: scanner_click},
 	 // "#CODEXFLYLEAF": {touchend: flyleaf_tap},
 	 "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			    touchmove: cancel,touchend: cancel},
