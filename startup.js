@@ -77,7 +77,7 @@ Codex.Startup=
 	function Startup(force){
 	    if (Codex._setup) return;
 	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
-	    fdjtLog.console="CODEXCONSOLE";
+	    fdjtLog.console="CODEXCONSOLELOG";
 	    fdjtLog.consoletoo=true;
 	    fdjtLog("This is Codex version %s, built at %s on %s",
 		    Codex.version,sbooks_buildtime,sbooks_buildhost);

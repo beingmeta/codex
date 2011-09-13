@@ -51,6 +51,9 @@ var CodexMode=
 	// Whether to call displaySync on mode changes
 	var display_sync=false;
 	
+	// This will contain the interactive input console (for debugging)
+	var input_console;
+
 	function initHUD(){
 	    if (fdjtID("CODEXHUD")) return;
 	    else {
@@ -140,6 +143,12 @@ var CodexMode=
 			search_cloud.addCompletion(search_tag);}}}
 	    Codex.addTag2UI=addTag2UI;
 	    
+	    var console=fdjtID("CODEXCONSOLE");
+	    input_console=fdjtDOM.getChild(console,"TEXTAREA");
+	    input_button=fdjtDOM.getChild(console,"span.button");
+	    input_button.onclick=consolebutton_click;
+	    input_console.onkeypress=consoleinput_keypress;
+
 	    sbookFoot=fdjtID("CODEXFOOT");
 	    sbookHead=fdjtID("CODEXHEAD");
 	    sbookHelp=fdjtID("CODEXHELP");
@@ -147,8 +156,7 @@ var CodexMode=
 	    resizeHUD();
 	    Codex.scrollers={};
 	    // updateScroller("CODEXGLOSSCLOUD");
-	    updateScroller("CODEXSEARCHCLOUD");
-	}
+	    updateScroller("CODEXSEARCHCLOUD");}
 	Codex.initHUD=initHUD;
 	
 	function fixStaticRefs(string){
@@ -674,6 +682,25 @@ var CodexMode=
 	Codex.UI.saveSettings=function(){
 	  Codex.saveConfig(getSettings());};
 	
+	/* Console methods */
+	function console_eval(){
+	    fdjtLog("Executing %s",input_console.value);
+	    var result=eval(input_console.value);
+	    var string_result=
+		((result.nodeType)?
+		 (fdjtString("%o",result)):
+		 (fdjtString("%j",result)));
+	    fdjtLog("Result is %s",string_result);}
+	function consolebutton_click(evt){console_eval();}
+	function consoleinput_keypress(evt){
+	    evt=evt||event;
+	    var target=fdjtUI.T(evt);
+	    if (evt.keyCode===13) {
+		if (!(evt.ctrlKey)) {
+		    fdjtUI.cancel(evt);
+		    console_eval();
+		    if (evt.shiftKey) input_console.value="";}}}
+
 	/* Button methods */
 
 	function LoginButton_ontap(evt){
