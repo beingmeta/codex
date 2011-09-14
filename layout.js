@@ -180,7 +180,8 @@ var CodexPaginate=
 		var break_after=((next)&&(nextpage>endpage));
 		var forcebreak=true;
 		if (forced.length===0) {
-		    forced.push(scan); forced_off.push(booktop);
+		    forced.push(scan);
+		    forced_off.push(booktop);
 		    pagetops.push(scan);}
 		if (forceBreakBefore(scan,style)) forceBreak(scan,false);
 		else if (((avoidBreakInside(scan,style))||
@@ -195,8 +196,9 @@ var CodexPaginate=
 		    forceBreak(scan,prev);
 		else if (at_top) {
 		    forced.push(scan);
-		    if (talldom)
-			forced_off.push(((Math.floor(top/height))*height));
+		    if (talldom) {
+			if (forced_off[forced_off.length-1]!==top)
+			    forced_off.push(top);}
 		    else forced_off.push(1);
 		    pagetops.push(scan);
 		    forcebreak=false;}
@@ -265,7 +267,7 @@ var CodexPaginate=
 	    function forceBreak(elt,prev){
 		var parent=elt.parentNode;
 		var g=getGeometry(elt,content);
-		var target_off;
+		var target_off=(1+Math.floor(g.top/height))*height;
 		var oldpage=Math.floor((talldom)?(geom.top/height):(geom.left/vwidth));
 		var newpage=oldpage+1;
 		// If you're directly inside a page break, don't bother breaking
@@ -342,7 +344,8 @@ var CodexPaginate=
 			    fdjtString(prev),geomString(geom));
 		pagetops.push(elt);
 		forced.push(elt);
-		forced_off.push(target_off);}
+		if (forced_off[forced_off.length-1]!==target_off)
+		    forced_off.push(target_off);}
 	    function handleDeclaredBreaks() {
 		var breaks=fdjtDOM.getChildren(content,"forcebreakbefore");
 		var i=0; var lim=breaks.length;
@@ -614,16 +617,20 @@ var CodexPaginate=
 	    if (typeof elt === 'string') elt=fdjtID(elt);
 	    if (!(elt)) return 0;
 	    var vwidth=fdjtDOM.viewWidth();
-	    var content_dim=fdjtDOM.getGeometry(Codex.content,Codex.pages);
-	    var geom=fdjtDOM.getGeometry(elt,Codex.content);
-	    var boxheight=Codex.page.offsetHeight;
+	    var content_dim=getGeometry(Codex.content,Codex.pages);
+	    if (content_dim.width>vwidth) return Math.floor(geom.left/vwidth);
+	    var top=getGeometry(elt,Codex.content).top;
+	    var forced_off=Codex.forced_off;
+	    var scan=0; var npages=forced_off.length;
 	    if (Codex.Trace.paging)
 		fdjtLog("getPage %s: g=%s, vw=%o, bh=%o ph=%o",
 			elt,fdjtString("%j",geom),
 			vwidth,boxheight,Codex.page_height);
-	    return ((content_dim.width>vwidth)?
-		    (Math.floor(geom.left/vwidth)):
-		    (Math.floor(geom.top/Codex.page_height)));}
+	    while (scan<npages) {
+		if ((forced_off[scan])&&(forced_off[scan]>top))
+		    return scan-1;
+		else scan++;}
+	    return Math.floor(geom.top/Codex.page_height);}
 	Codex.getPage=getPage;
 	
 	function getPageAt(loc){
