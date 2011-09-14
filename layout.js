@@ -624,9 +624,9 @@ var CodexPaginate=
 	    var forced_off=Codex.forced_off;
 	    var scan=0; var npages=forced_off.length;
 	    if (Codex.Trace.paging)
-		fdjtLog("getPage %s: g=%s, vw=%o, bh=%o ph=%o",
+		fdjtLog("getPage %s: g=%s, vw=%o, ph=%o",
 			elt,fdjtString("%j",geom),
-			vwidth,boxheight,Codex.page_height);
+			vwidth,Codex.page_height);
 	    while (scan<npages) {
 	      if ((forced_off[scan])&&(forced_off[scan]>top)) {
 		if (Codex.Trace.paging)
