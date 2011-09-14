@@ -618,6 +618,7 @@ var CodexPaginate=
 	    if (!(elt)) return 0;
 	    var vwidth=fdjtDOM.viewWidth();
 	    var content_dim=getGeometry(Codex.content,Codex.pages);
+	    var geom=getGeometry(elt,Codex.content);
 	    if (content_dim.width>vwidth) return Math.floor(geom.left/vwidth);
 	    var top=getGeometry(elt,Codex.content).top;
 	    var forced_off=Codex.forced_off;
@@ -627,9 +628,13 @@ var CodexPaginate=
 			elt,fdjtString("%j",geom),
 			vwidth,boxheight,Codex.page_height);
 	    while (scan<npages) {
-		if ((forced_off[scan])&&(forced_off[scan]>top))
-		    return scan-1;
-		else scan++;}
+	      if ((forced_off[scan])&&(forced_off[scan]>top)) {
+		if (Codex.Trace.paging)
+		  fdjtLog("getPage %d: [%d,%d,%d]",
+			  scan,((scan<0)?(-1):(forced_off[scan-1])),
+			  geom.top,forced_off[scan]);
+		return scan-1;}
+	      else scan++;}
 	    return Math.floor(geom.top/Codex.page_height);}
 	Codex.getPage=getPage;
 	
