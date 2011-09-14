@@ -617,9 +617,10 @@ var CodexPaginate=
 	    var content_dim=fdjtDOM.getGeometry(Codex.content,Codex.pages);
 	    var geom=fdjtDOM.getGeometry(elt,Codex.content);
 	    var boxheight=Codex.page.offsetHeight;
-	    fdjtLog("getPage %s: g=%s, vw=%o, bh=%o ph=%o",
-		    elt,fdjtString("%j",geom),
-		    vwidth,boxheight,Codex.page_height);
+	    if (Codex.Trace.paging)
+		fdjtLog("getPage %s: g=%s, vw=%o, bh=%o ph=%o",
+			elt,fdjtString("%j",geom),
+			vwidth,boxheight,Codex.page_height);
 	    return ((content_dim.width>vwidth)?
 		    (Math.floor(geom.left/vwidth)):
 		    (Math.floor(geom.top/Codex.page_height)));}
