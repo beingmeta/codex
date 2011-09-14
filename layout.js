@@ -395,7 +395,8 @@ var CodexPaginate=
 		var pageoff=[];
 		var i=0, lim=pagetops.length;
 		while (i<lim) {
-		    pageoff[i]=getGeometry(pagetops[i]).top; i++;}
+		  pageoff[i]=getGeometry(pagetops[i],Codex.content).top;
+		  i++;}
 		Codex.pageoff=pageoff;}
 	    function getFullPages(){
 		var pages=
@@ -627,6 +628,7 @@ var CodexPaginate=
 	    if (content_dim.width>vwidth) return Math.floor(geom.left/vwidth);
 	    var top=getGeometry(elt,Codex.content).top;
 	    var pageoff=Codex.pageoff;
+	    var pagetops=Codex.pagetops;
 	    var scan=0; var npages=pageoff.length;
 	    if (Codex.Trace.paging)
 		fdjtLog("getPage %s: g=%s, vw=%o, ph=%o",
@@ -634,10 +636,14 @@ var CodexPaginate=
 			vwidth,Codex.page_height);
 	    while (scan<npages) {
 	      if ((pageoff[scan])&&(pageoff[scan]>top)) {
-		if (Codex.Trace.paging)
+		if (Codex.Trace.paging) {
 		  fdjtLog("getPage %d: [%d,%d,%d]",
-			  scan,((scan<0)?(-1):(pageoff[scan-1])),
+			  scan,((scan===0)?(-1):(pageoff[scan-1])),
 			  geom.top,pageoff[scan]);
+		  fdjtLog("pageTop %d: %s",
+			  scan-1,fdjtString("%o",pagetops[scan-1]));
+		  fdjtLog("pageTop %d: %s",
+			  scan,fdjtString(pagetops[scan]));}
 		return scan-1;}
 	      else scan++;}
 	    return Math.floor(geom.top/Codex.page_height);}
