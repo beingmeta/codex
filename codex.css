@@ -1838,6 +1838,11 @@ div#CODEXEXCERPT textarea {
 .humane div.humanehelp img.codextocbar {
     width: 70%; float: right;}
 
+/* New pagination */
+
+div.codexpage {display: none; position: fixed;}
+div.codexpage.curpage {display: block;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

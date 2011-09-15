@@ -59,6 +59,7 @@ var CodexPaginate=
 
 	var isEmpty=fdjtString.isEmpty;
 	var getGeometry=fdjtDOM.getGeometry;
+	var hasParent=fdjtDOM.hasParent;
 	var getStyle=fdjtDOM.getStyle;
 	var parsePX=fdjtDOM.parsePX;
 	var geomString=fdjtDOM.geomString;
@@ -67,6 +68,7 @@ var CodexPaginate=
 	var addClass=fdjtDOM.addClass;
 	var nextElt=fdjtDOM.nextElt;
 	var forward=fdjtDOM.forward;
+	var TOA=fdjtDOM.toArray;
 	
 	var sbook_body=false;
 	var page_width=false;
@@ -123,349 +125,175 @@ var CodexPaginate=
 	    fdjtDOM.addListeners
 	    (pageno_text,Codex.UI.handlers[Codex.ui]["#CODEXPAGENOTEXT"]);}
 
+	
 	/* Pagination */
 
-	// Whether the DOM geometry reflects conversion into columns or not
-	// (Gecko does, Webkit doesnt)
-	var talldom=Codex.talldom;
+	var dups={};
+	var fakeid_count=1;
 
-	function Paginate(callback){
-	    var start_time=fdjtTime(); var chunks=0;
-	    var page=Codex.page;
-	    var pages=Codex.pages;
-	    var content=Codex.content;
-	    var booktop=(fdjtDOM.getGeometry(content).top);
-	    var vwidth=fdjtDOM.viewWidth();
-	    var vheight=fdjtDOM.viewHeight();
-	    var height=page.offsetHeight;
-	    var width=page.offsetWidth;
-	    var gap=vwidth-width;
-	    var forced=[]; var pagetops=[]; var forced_off=[];
-	    var debug=Paginate.debug;
-	    var trace=Codex.Trace.layout;
-	    var curpage=-1;
-	    var scan=scanContent(content);
-	    var geom=getGeometry(scan,content);
-	    var style=getStyle(scan);
-	    var next=scanContent(scan,style);
-	    var ngeom=getGeometry(next,content);
-	    var nstyle=getStyle(next);
-	    var prev=false, pgeom=false, pstyle=false;
-	    var colbreak=Codex.colbreak;
-	    if ((trace)||((!(Codex._setup))&&(Codex.Trace.startup)))
-		fdjtLog("Starting page layout");
-	    var fullpages;
-	    fdjtDOM.replace("CODEXPAGEPROGRESS",
-			    fdjtDOM("span#CODEXPAGEPROGRESS","0"));
-	    fdjtTime.timeslice
-	    ([initLayout,
-	      adjustFullPages,adjustFullPages,
-	      adjustFullPages,adjustFullPages,
-	      finishFullPages,// scaleFullPages,
-	      ((Codex.colbreak)&&(handleDeclaredBreaks())),
-	      forceBreaks]);
-	    /* Here are the parts of the process */
-	    function scanStep() {
-		var top=geom.top; var bottom=top+geom.height;
-		var starts_at=((talldom)?(top/height):(geom.left/width));
-		var ends_at=((talldom)?(bottom/height):(geom.right/width));
-		var startpage=Math.floor(starts_at);
-		var endpage=Math.floor(ends_at);
-		// Simulate 32 for lineheight
-		var nextpage=((ngeom)&&
-			      ((talldom)?
-			       (Math.floor(((ngeom.top+32)/height))):
-			       (Math.floor(((ngeom.left)/width)))));
-		var at_top=(((geom.top/height)%1)<0.001);
-		var break_after=((next)&&(nextpage>endpage));
-		var forcebreak=true;
-		if (forced.length===0) {
-		    forced.push(scan);
-		    forced_off.push(booktop);
-		    pagetops.push(scan);}
-		if (forceBreakBefore(scan,style)) forceBreak(scan,false);
-		else if (((avoidBreakInside(scan,style))||
-			  (avoidBreakAfter(scan,style)))&&
-			 (endpage>startpage)&&(nextpage>startpage))
-		    forceBreak(scan,prev);
-		else if ((next)&&(forceBreakAfter(scan,style)))
-		    forceBreak(next,prev);
-		else if ((break_after)&&(avoidBreakAfter(scan,style)))
-		    forceBreak(scan,prev);
-		else if ((break_after)&&(avoidBreakBefore(next,nstyle)))
-		    forceBreak(scan,prev);
-		else if (at_top) {
-		    forced.push(scan);
-		    if (talldom) {
-			if (forced_off[forced_off.length-1]!==top)
-			    forced_off.push(top);}
-		    else forced_off.push(1);
-		    pagetops.push(scan);
-		    forcebreak=false;}
-		else forcebreak=false;
-		var newpage=
-		    Math.floor((talldom)?(geom.top/height):(geom.left/vwidth));
-		if (newpage!==curpage) {
-		    pagetops[newpage]=scan;
-		    curpage=newpage;}
-		if (debug)
-		    scan.setAttribute(
-			"codexdbg",
-			_paginationInfo(scan,style,startpage,endpage,nextpage,
-					geom,ngeom,at_top,break_after,forcebreak));
-		prev=scan; pgeom=geom; pstyle=style;
-		scan=next; style=nstyle;
-		geom=((scan)&&(getGeometry(scan,content)));
-		if (scan) {
-		    next=scanContent(scan,style);
-		    nstyle=((next)&&(getStyle(next)));
-		    ngeom=((next)&&(getGeometry(next,content)));}
-		else next=nstyle=ngeom=null; 
-		// This might be neccessary if we have to yield to
-		//   let the DOM update, which doesn't seem to be the case
-		// if (forcebreak) return forcebreak;
-		return forcebreak;}
-	    function forceBreaks(){
-		var now=fdjtTime();
-		var stopblock=now+runslice;
-		while ((scan)&&(now<stopblock)) {
-		    if (scanStep()) break;
-		    else now=fdjtTime();}
-		if (scan) {
-		    chunks++;
-		    page_progress(curpage);
-		    if (now<stopblock)
-			setTimeout(forceBreaks,10);
-		    else setTimeout(forceBreaks,runwait);}
-		else {
-		    finishUp(); chunks++;
-		    page_progress(true);
-		    if (callback) callback();}}
-	    function initLayout(){
-		// Clear forced breaks
-		if (Codex.forced_breaks)
-		    dropClass(Codex.forced_breaks,"codexpagebreak");
-		Codex.forced_breaks=[];
-		// Set up the column layout
-		content.style.maxWidth=(width)+"px";
-		/*
-		content.style.maxWidth=(width-32)+"px";
-		content.style.marginRight="16px";
-		if (talldom) 
-		    content.style.marginLeft=
-		    (32-(Math.floor((vwidth-width)/2)))+"px";
-		else content.style.marginLeft="0px";
-		*/
-		pages.style.height=height+"px";
-		pages.style[fdjtDOM.columnWidth]=width+"px";
-		pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";
-		// Figure out whether column layout is expressed in the DOM
-		var content_dim=getGeometry(content,pages);
-		Codex.talldom=talldom=(!(content_dim.width>vwidth));
-		// Get the fullsized pages
-		fullpages=getFullPages();}
-	    function forceBreak(elt,prev){
-		var parent=elt.parentNode;
-		var g=getGeometry(elt,content);
-		var target_off=(1+Math.floor(g.top/height))*height;
-		var oldpage=Math.floor((talldom)?(geom.top/height):(geom.left/vwidth));
-		var newpage=oldpage+1;
-		// If you're directly inside a page break, don't bother breaking
-		if ((parent===prev)&&
-		    ((hasClass((parent),"codexpagebreak"))||
-		     (hasClass((parent),"codexpagebroke")))) {
-		    addClass(elt,"codexpagebroke");
-		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
-			fdjtLog("forceBreak/skip%s@%o h=%o parent=%s",
-				fdjtString(elt),newpage,height,
-				fdjtString(parent));
-		    if (debug)
-			elt.setAttribute(
-			    "codexpagebreak",
-			    fdjtString("forceBreak/skip%s@%o h=%o parent=%s",
-				       fdjtString(elt),newpage,height,
-				       fdjtString(parent)));
-		    return;}
-		if (Codex.colbreak) {
-		    if (hasClass(elt,"codexpagebreak")) return;
-		    if ((prev)&&
-			((avoidBreakAfter(prev))||(avoidBreakBefore(elt)))) {
-			parent=prev.parentNode;
-			if (((hasClass(parent,"codexpagebreak"))||
-			     (hasClass(parent,"codexpagebroke")))&&
-			    (scanContent(parent)===prev))
-			    addClass(prev,"codexpagebroke");
-			else addClass(prev,"codexpagebreak");}
-		    else addClass(elt,"codexpagebreak");
-		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
-			fdjtLog("forceBreak%s@%o h=%o geom=%s",
-				fdjtString(elt),newpage,height,
-				geomString(g));
-		    if (debug)
-			elt.setAttribute("codexpagebreak",
-					 fdjtString("forceBreak/CSS%s@%o h=%o geom=%s",
-						    fdjtString(elt),newpage,height,
-						    geomString(g)));}
-		else {
-		    // Some browsers don't recognize columnBreakBefore, so
-		    // we check that the change actually worked (assuming
-		    // synchronous DOM updates) and go kludgier if it
-		    // didn't
-		    var elt_top=parsePX(getStyle(elt).marginTop);
-		    var pageoff=target_off=((newpage)*height);
-		    var g=getGeometry(elt,content);
-		    var need_space=(pageoff-g.top);
-		    if ((trace)&&(typeof trace === 'number')&&(trace>1))
-			fdjtLog("forceBreak%s@%o h=%o off=%o tm=%o ns=%o g=%s",
-				fdjtString(elt),newpage,height,
-				pageoff,elt_top,need_space,
-				geomString(g));
-		    if (debug)
-			elt.setAttribute(
-			    "codexpagebreak",
-			    fdjtString("forceBreak/Leading%s@%o h=%o off=%o tm=%o ns=%o geom=%s",
-				       fdjtString(elt),newpage,height,
-				       pageoff,elt_top,need_space,
-				       geomString(g)));
-		    if (need_space<0) {
-			fdjtLog("Negative space %d for %o",need_space,elt);
-			need_space=0;}
-		    else need_space=need_space%height;
-		    var leading=fdjtDOM("div.codexvlead");
-		    leading.style.marginBottom=(need_space+(elt_top||0))+"px";
-		    insertBefore(elt,leading);
-		    addClass(elt,"codexpagebroke");}
-		// Update geometries, assuming the DOM is updated synchronously
-		if (scan) geom=getGeometry(scan,content);
-		if (next) ngeom=getGeometry(next,content);
-		if (prev) pgeom=getGeometry(prev,content);
-		if ((trace)&&(typeof trace === 'number')&&(trace>1))
-		    fdjtLog("forcedBreak%s/after geom=%s",
-			    fdjtString(prev),geomString(geom));
-		pagetops.push(elt);
-		forced.push(elt);
-		if (forced_off[forced_off.length-1]!==target_off)
-		    forced_off.push(target_off);}
-	    function handleDeclaredBreaks() {
-		var breaks=fdjtDOM.getChildren(content,"forcebreakbefore");
-		var i=0; var lim=breaks.length;
-		while (i<lim) forceBreak(breaks[i++],false);
-		if (sbook_forcebreakbefore) {
-		    var breaks=fdjtDOM.getChildren
-		    (content,sbook_forcebreakbefore);
-		    var i=0; var lim=breaks.length;
-		    while (i<lim) forceBreak(breaks[i++],false);}}
-	    function finishUp() {
-		pages.style[fdjtDOM.columnWidth]=width+"px";
-		pages.style[fdjtDOM.columnGap]=(vwidth-width)+"px";
-		var content_dim=getGeometry(content,pages);
-		var pagecount=Codex.pagecount=
-		    ((content_dim.width>vwidth)?
-		     (Math.ceil(content_dim.width/vwidth)):
-		     (Math.ceil(content_dim.height/height)));
-		pages.style.maxWidth=(pagecount*vwidth)+"px";
-		pages.style.minWidth=((pagecount*vwidth)-gap)+"px";
-		var i=0; while (i<pagecount) {
-		    var top=forced[i]; var off=forced_off[i];
-		    if (!(top)) {i++; continue;}
-		    var margin=parsePX(top.style.marginTop);
-		    var g=fdjtDOM.getGeometry(top,content);
-		    if (g.top!==off) {
-			var new_margin=((off-(g.top-margin))%height);
-			if (new_margin<=0)
-			    top.style.marginTop="0 px";
-			else top.style.marginTop=new_margin+"px";}
-		    i++;}
-		Codex.page_width=width;
-		Codex.page_gap=page_gap=gap;
-		Codex.page_height=height;
-		var content_style=getStyle(Codex.content);
-		Codex.offset_left=offset_left=parsePX(style.marginLeft)+parsePX(style.borderLeft)+parsePX(style.paddingLeft);
-		Codex.left_margin=page.offsetLeft;
-		Codex.top_margin=page.offsetTop;
-		Codex.right_margin=vwidth-(page.offsetLeft+page.offsetWidth);
-		Codex.bottom_margin=vheight-(page.offsetTop+page.offsetHeight);
-		Codex.vwidth=vwidth;
-		Codex.vheight=vheight;
-		// getGeometry(Codex.content).width+parsePX(getStyle(Codex.content).marginLeft)+parsePX(getStyle(Codex.content).marginRight)
-		Codex.flip_width=flip_width=gap+width;
-		Codex.pagetops=pagetops;
-		Codex.forced_breaks=forced;
-		Codex.forced_off=forced_off;
-		var pageoff=[];
-		var i=0, lim=pagetops.length;
-		while (i<lim) {
-		  pageoff[i]=getGeometry(pagetops[i],Codex.content).top;
-		  i++;}
-		Codex.pageoff=pageoff;}
-	    function getFullPages(){
-		var pages=
-		    fdjtDOM.$(".sbookfullpage,.sbookcover,.sbooktitlepage,.fullpage,.titlepage");
-		if (sbook_fullpages)
-		    pages=pages.concat(fdjtDOM.$(sbook_fullpages));
-		var i=0; var lim=pages.length;
-		while (i<lim) {
-		    var block=pages[i++];
-		    block.style.maxHeight=height+'px';
-		    block.style.maxWidth=width+'px';}
-		return pages;}
-	    function adjustFullPages(){
-		var i=0; var lim=fullpages.length;
-		while (i<lim) {
-		    var block=fullpages[i++];
-		    if (block.tagName!=='IMG')
-			fdjtDOM.adjustToFit(block,0.1,24);}}
-	    function finishFullPages(){
-		var i=0; var lim=fullpages.length;
-		while (i<lim)
-		    if (fullpages[i].tagName!=='IMG')
-			fdjtDOM.finishScale(fullpages[i++]);
-		else i++;}
-	    function scaleFullPages(){
-		// Direct scaling doesn't seem to interact well with
-		// horizontal scrolling
-		// This uses CSS transformation
-		var i=0; var lim=fullpages.length;
-		while (i<lim) {
-		    var block=fullpages[i++];
-		    var scaleby=1.0;
-		    if (true) {
-			var bwidth=block.offsetWidth;
-			var bheight=block.offsetHeight;
-			scaleby=Math.min(width/bwidth,height/bheight);
-			block.style[fdjtDOM.transform]="scale("+scaleby+")";
-			block.style.transform="scale("+scaleby+")";}}
-		Codex.startupMessage("Scaled %d full-size pages",lim);}
-	    function page_progress(arg){
-		var now=fdjtTime();
-		if (!(Codex._setup)) {
-		    if (typeof arg === 'number')
-			Codex.startupMessage("Laid out %d pages so far",arg);
-		    else Codex.startupMessage("Finished page layout");}
-		if (!(arg)) {}
-		else if (typeof arg === 'number') {
-		    fdjtDOM.replace("CODEXPAGEPROGRESS",
-				    fdjtDOM("span#CODEXPAGEPROGRESS",arg));
-		    if (trace)
-			fdjtLog("So far, laid out %d pages (%d thunks) in %f seconds",
-				arg,chunks,
-				fdjtTime.secs2short((now-start_time)/1000));}
-		else if ((trace)||((!(Codex._setup))&&(Codex.Trace.startup)))
-		    fdjtLog("Done with %d pages (in %d chunks) after %f seconds (rt~%f)",
-			    Codex.pagecount,chunks,
-			    fdjtTime.secs2short((now-start_time)/1000),
-			    fdjtTime.secs2short(chunks*(1/runslice)));
-		else {}}}
+	function dupContext(node,page){
+	    if (hasParent(node,page)) return node;
+	    if ((node===document.body)||(hasClass(node,"codexpage"))||
+		(node.id==="CODEXCONTENT"))
+		return false;
+	    var id=node.id;
+	    if (!(id)) id=node.id="CODEXFAKE"+(fakeid_count++);
+	    var dup=dups[id];
+	    if ((dup)&&(hasParent(dup,page))) return dup;
+	    var parent=dupContext(node.parentNode,page);
+	    var copy=node.cloneNode(false);
+	    dropClass(copy,/\bcodexdup(dup)*\b/);
+	    dropClass(copy,/\bcodexrelocated*\b/);
+	    if (dups[id]) copy.className=copy.className+" codexdupdup";
+	    else copy.className=copy.className+" codexdup";
+	    if (copy.id) {
+		copy.setAttribute("data-baseid",copy.id);
+		copy.id=null;}
+	    dups[id]=copy;
+	    if (parent) parent.appendChild(copy);
+	    else page.appendChild(copy);
+	    return copy;}
+
+	function getRoot(node){
+	    var scan=node;
+	    while (scan) {
+		if (scan.parentNode) scan=scan.parentNode;
+		else return scan;}
+	    return node;}
+
+	var codex_reloc_serial=1;
 	
-	function clearPagination(){
-	    /* Reset pageination info */
-	    var pages=Codex.pages;
-	    pages.style.height="";
-	    pages.style[fdjtDOM.columnWidth]="";
-	    pages.style[fdjtDOM.columnGap]="";}
+	function moveNode(node,into){
+	    var classname;
+	    if (node.nodeType===1) classname=node.className;
+	    else if (node.nodeType===3) {
+		node=fdjtDOM("span.codextext",node.nodeValue);
+		classname="codextext";}
+	    if (((!(classname))||(classname.search(/\bcodexrelocated\b/)<0))&&
+		(node.parentNode)) {
+		var origin=fdjtDOM("span.codexorigin");
+		var id=origin.id="CODEXORIGIN"+(codex_reloc_serial++);
+		if (classname) node.className=classname+" codexrelocated";
+		else node.className="codexrelocated";
+		node.setAttribute("data-codexorigin",id);
+		node.parentNode.replaceChild(origin,node);}
+	    into.appendChild(node);
+	    return node;}
 	
+	function moveNodeToPage(node,page,cxts){
+	    if (hasParent(node,page)) return;
+	    var parent=node.parentNode;
+	    if ((!(parent)) || (parent===document.body) ||
+		(parent.id==="CODEXCONTENT") ||
+		(hasClass(parent,"codexpage")))
+		moveNode(node,page);
+	    else {
+		var adoptive=dupContext(parent,page);
+		moveNode(node,adoptive);}}
+
+	function restoreNode(node){
+	    var origin=node.getAttribute("data-codexorigin");
+	    if (origin) origin=document.getElementById(origin);
+	    if (origin) {
+		if (fdjtDOM.hasClass(node,"codextext"))
+		    origin.parentNode.replaceChild(node.childNodes[0],origin);
+		else origin.parentNode.replaceChild(node,origin);}
+	    dropClass(node,"codexrelocated");
+	    node.removeAttribute("data-codexorigin");}
+	
+	function Paginate(root,state){
+	    if (!(state)) state={};
+	    var page_height=(state.page_height)||
+		(state.page_height=getGeometry("CODEXPAGE").height);
+	    var pages=(state.pages)||
+		(state.pages=pages=fdjtDOM("div.codexpages"));
+	    var pagenum=(state.pagenum||(state.pagenum=0));
+	    var pagecxts=state.pagecxts||{};
+	    var page=state.page||(newPage());
+	    var prev=(state.prev)||false;
+	    var prevstyle=state.prevstyle||((prev)&&(getStyle(prev)));
+
+	    function scan(node){
+		if (node.nodeType===3) {
+		    var value=node.nodeValue;
+		    // scanText(node);
+		    if (value.length>0) moveNodeToPage(node,page,pagecxts);}
+		else if (node.nodeType===1) {
+		    var style=getStyle(node);
+		    if ((style.pageBreakBefore==='always')||
+			((classname)&&
+			 (classname.search(/\bcodexbreakbefore\b/)>=0)))
+			newPage();
+		    else if ((prevstyle)&&
+			     ((prevstyle.pageBreakAfter==='always')||
+			      ((prev.className)&&
+			       (prev.className.search((/\bcodexbreakafter\b/))))))
+			newPage();
+		    moveNodeToPage(node,page,pagecxts);
+		    var geom=getGeometry(node,page);
+		    var classname=node.className;
+		    fdjtLog("Paginate/scan %o g=%j",node,geom);
+		    if ((geom.bottom>page_height))
+			pageBreak(node,geom,style);
+		    else fdjtLog("Pagination added node %o to %o",node,page);
+		    prev=node; prevstyle=style;}
+		else {}}
+	    /*
+	    function scanText(textnode){
+		if (hasParent(textnode,page)) return;
+		var parent=dupNode(textnode.parentNode,page);
+		var moved=moveNode(textnode,parent);
+		var geom=getGeometry(moved,page);
+		if (geom.bottom>page_height) {
+		    parent.removeChild(moved);
+		    var text=textnode.nodeValue;
+		    var words=text.slice();
+		    var i=0; var n=words.length;
+		    while (i<n) {
+			var word=words[i++];
+			if (word==="") {}
+			else if (word.search(/\S/)<0)
+			    scan(fdjtDOM("span.codexword",word));
+			else .appendChild(document.createTextNode(word));}}
+		else moved.replaceChild(textnode,moved);}
+	    */
+	    function pageBreak(node,geom,style){
+		fdjtLog("pageBreak %o g=%s",node,fdjtString("%j",geom));
+		if (style.pageBreakInside==='avoid') {
+		    if ((prev)&&(prevstyle.pageBreakAfter==='avoid')) {
+			newPage(prev); moveNodeToPage(node,page,cxts);
+			prev=node; prevstyle=style;}
+		    else newPage(node);}
+		else if ((style.display==='block')||(style.display==='table')) 
+		    splitChildren(node);
+		else newPage(node);}
+	    function splitChildren(node){
+		fdjtLog("Paginate/splitChildren %o",node);
+		var children=TOA(node.childNodes);
+		var i=0; var n=children.length;
+		while (i<n) scan(children[i++]);}
+	    function splitText(node){newPage(node);}
+	    function newPage(node){
+		if (page) fdjtDOM.dropClass(page,"curpage");
+		state.page=page=fdjtDOM("div.codexpage.curpage");
+		pagenum++; state.pagenum=pagenum;
+		page.id="CODEXPAGE"+(pagenum);
+		page.setAttribute("data-pagenum",pagenum);
+		fdjtDOM(pages,page);
+		if (node) moveNodeToPage(node,page,pagecxts);
+		if (node) fdjtLog("Added new page %o around %o",page,node);
+		else fdjtLog("Added new page %o",page);
+		state.pagecxts=pagecxts={};
+		state.prev=prev=false;
+		state.prevstyle=prevstyle=false;
+		return page;}
+	    
+	    scan(root);
+	    
+	    return state;}
+
 	/* Pagination support functions */
-
+	
 	function forceBreakBefore(elt,style){
 	    if ((sbook_tocmajor)&&(elt.id)&&
 		((Codex.docinfo[elt.id]).toclevel)&&
@@ -474,13 +302,15 @@ var CodexPaginate=
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
 	    return (style.pageBreakBefore==='always')||
-		((sbook_forcebreakbefore)&&(sbook_forcebreakbefore.match(elt)));}
+		((sbook_forcebreakbefore)&&
+		 (sbook_forcebreakbefore.match(elt)));}
 
 	function forceBreakAfter(elt,style){ 
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
 	    return (style.pageBreakAfter==='always')||
-		((sbook_forcebreakafter)&&(sbook_forcebreakafter.match(elt)));}
+		((sbook_forcebreakafter)&&
+		 (sbook_forcebreakafter.match(elt)));}
 
 	// We explicitly check for these classes because some browsers
 	//  which should know better (we're looking at you, Firefox) don't
@@ -588,65 +418,19 @@ var CodexPaginate=
 		    parsePX(style.borderLeft,0);}
 	    return indent;}
 
+	var curpage=false;
+
 	function GoToPage(num,caller,nosave){
-	    var off;
-	    off=(num*(flip_width));
-	    /*
-	    if (talldom) off=(num*(flip_width));
-	    else {
-		var top=Codex.pagetops[num];
-		var geom=fdjtDOM.getGeometry(top,Codex.content);
-		var pageleft=geom.left-getCSSLeft(top,Codex.content);
-		off=pageleft;}
-	    */
-	    if (Codex.Trace.nav)
-		fdjtLog("GoToPage%s %o",((caller)?"/"+caller:""),num);
-	    Codex.pages.style.setProperty
-	    (fdjtDOM.transform,
-	     "translate("+(-off)+"px,0px)",
-	     "important");
-	    var ptop=Codex.pagetops[num];
-	    while (ptop) {
-		if ((ptop.id)&&(Codex.docinfo[ptop.id])) break;
-		else ptop=ptop.parentNode;}
-	    if (ptop) {
-		var info=Codex.docinfo[ptop.id];
-		updatePageDisplay(num,info.starts_at);}
-	    Codex.curpage=num;
-	    if (false) /* (!(nosave)) to fix */
-		Codex.setState
-	    ({page: pageno,location: info.loc,
-	      target:((Codex.target)&&(Codex.target.id))});}
+	    var pageid="CODEXPAGE"+num;
+	    var page=document.getElementById(pageid);
+	    if (curpage) fdjtDOM.dropClass(curpage,"curpage");
+	    fdjtDOM.addClass(page,"curpage");
+	    curpage=page;}
 	Codex.GoToPage=GoToPage;
 	
 	function getPage(elt){
-	    if (typeof elt === 'string') elt=fdjtID(elt);
-	    if (!(elt)) return 0;
-	    var vwidth=fdjtDOM.viewWidth();
-	    var content_dim=getGeometry(Codex.content,Codex.pages);
-	    var geom=getGeometry(elt,Codex.content);
-	    if (content_dim.width>vwidth) return Math.floor(geom.left/vwidth);
-	    var top=getGeometry(elt,Codex.content).top;
-	    var pageoff=Codex.pageoff;
-	    var pagetops=Codex.pagetops;
-	    var scan=0; var npages=pageoff.length;
-	    if (Codex.Trace.paging)
-		fdjtLog("getPage %s: g=%s, vw=%o, ph=%o",
-			elt,fdjtString("%j",geom),
-			vwidth,Codex.page_height);
-	    while (scan<npages) {
-	      if ((pageoff[scan])&&(pageoff[scan]>top)) {
-		if (Codex.Trace.paging) {
-		  fdjtLog("getPage %d: [%d,%d,%d]",
-			  scan,((scan===0)?(-1):(pageoff[scan-1])),
-			  geom.top,pageoff[scan]);
-		  fdjtLog("pageTop %d: %s",
-			  scan-1,fdjtString("%o",pagetops[scan-1]));
-		  fdjtLog("pageTop %d: %s",
-			  scan,fdjtString(pagetops[scan]));}
-		return scan-1;}
-	      else scan++;}
-	    return Math.floor(geom.top/Codex.page_height);}
+	    var parent=fdjtDOM.getParent(elt,".codexpage");
+	    return parse(parent.getAttribute("data-pagenum"));}
 	Codex.getPage=getPage;
 	
 	function getPageAt(loc){
@@ -674,27 +458,16 @@ var CodexPaginate=
 	/* Top level functions */
 	
 	function repaginate(){
-	    var newinfo={};
-	    dropClass(document.body,"codexscrollview");
-	    addClass(document.body,"codexpageview");
-	    addClass(Codex.page,"codexpaginating");
-	    clearPagination();
-	    Paginate(function(){
-		newinfo.offheight=document.body.offsetHeight;
-		newinfo.offwidth=document.body.offsetWidth;
-		newinfo.winwidth=(document.documentElement.clientWidth);
-		newinfo.winheight=(fdjtDOM.viewHeight());
-		sbook_paginated=newinfo;
-		Codex.paginated=newinfo;
-		addClass(document.body,"codexpageview");
-		dropClass(Codex.page,"codexpaginating");
-		if (Codex.location) {
-		    var gotopage=Codex.getPageAt(Codex.location);
-		    Codex.GoToPage(gotopage||0,"repaginate",true);}
-		if (Codex.pagewait) {
-		    var fn=Codex.pagewait;
-		    Codex.pagewait=false;
-		    fn();}});}
+	    var moved=TOA(document.getElementsByClassName("codexrelocated"));
+	    var i=0; var lim=moved.length;
+	    while (i<lim) restoreNode(moved[i++]);
+	    var newpages=fdjtDOM("div.codexpages#CODEXPAGES");
+	    var newinfo={"pages": newpages}; 
+	    fdjtDOM.replace("CODEXPAGES",newpages);
+	    var content=Codex.content;
+	    var nodes=TOA(content.childNodes);
+	    var i=0; var lim=nodes.length;
+	    while (i<lim) newinfo=Paginate(nodes[i++],newinfo);}
 	
 	var repaginating=false;
 	Codex.repaginate=function(){

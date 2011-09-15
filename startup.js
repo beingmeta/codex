@@ -615,9 +615,9 @@ Codex.Startup=
 		fdjtDOM(content,allnotes);}
 	    var paginating=fdjtDOM("div#CODEXPAGINATING","Laid out ",
 				   fdjtDOM("span#CODEXPAGEPROGRESS","")," pages");
-	    document.body.appendChild
-	    (fdjtDOM("div#CODEXPAGE",
-		     paginating,fdjtDOM("div#CODEXPAGES",content)));
+	    document.body.appendChild(
+		fdjtDOM("div#CODEXPAGE",paginating,content,
+			fdjtDOM("div#CODEXPAGES")));
 	    Codex.page=fdjtID("CODEXPAGE");
 	    Codex.pages=fdjtID("CODEXPAGES");
 	    fdjtDOM.addClass(document.body,"sbook");
