@@ -514,6 +514,7 @@ var CodexPaginate=
 			var dup=dups[dupid];
 			dup.className=dup.className.replace(
 				/\bcodexdup\b/,"codexdupend");}
+		    if (newinfo.page) dropClass(newinfo.page,"curpage");
 		    newinfo.done=fdjtTime();
 		    progress(newinfo);
 		    Codex.paginated=newinfo;

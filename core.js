@@ -69,8 +69,8 @@ var Codex=
      Trace: {
 	 startup: 1,	// Whether to debug startup
 	 config: false,  // Whether to trace config setup/modification/etc
-	 mode: true,	// Whether to trace mode changes
-	 nav: true,	// Whether to trace book navigation
+	 mode: false,	// Whether to trace mode changes
+	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// How much to trace searches
 	 clouds: 0,	// How much to trace cloud generation
