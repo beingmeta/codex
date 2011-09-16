@@ -83,6 +83,13 @@ var CodexPaginate=
 	var dropClass=fdjtDOM.dropClass;
 	var addClass=fdjtDOM.addClass;
 
+	/* Codex trace levels */
+	/* 0=notrace (do final summary if tracing startup)
+	   1=trace repagination chunk by chunk
+	   2=trace inserted page breaks
+	   3=trace every node consideration
+	*/
+
 	Codex.pageTop=function(){return sbook_top_px;}
 	Codex.pageBottom=function(){return sbook_bottom_px;}
 	Codex.pageLeft=function(){return sbook_left_px;}
@@ -246,11 +253,11 @@ var CodexPaginate=
 		    moveNodeToPage(node,page,dups);
 		    var geom=getGeometry(node,page);
 		    var classname=node.className;
-		    if (trace>1) fdjtLog("Paginate/loop %o g=%j",node,geom);
+		    if (trace>2) fdjtLog("PG/loop %o g=%j",node,geom);
 		    if ((geom.bottom>page_height))
 			forceBreak(node,geom,style);
-		    else if (trace>1)
-			fdjtLog("Paginate/placed %o on %o",node,page);
+		    else if (trace>2)
+			fdjtLog("PG/placed %o on %o",node,page);
 		    else {}
 		    prev=node; prevstyle=style;}
 		else {}}
@@ -278,23 +285,23 @@ var CodexPaginate=
 		    if ((avoidBreakBefore(node,style))||
 			((prev)&&(avoidBreakAfter(prev,prevstyle)))) {
 			if (trace>1)
-			    fdjtLog("PG/noinside/forceprev %o g=%j",node,geom);
+			    fdjtLog("PG/keep/forceprev %o g=%j",node,geom);
 			newPage(prev); moveNodeToPage(node,page,dups);
 			prev=node; prevstyle=style;}
 		    else {
-			if (trace>2)
-			    fdjtLog("PG/noinside/forced %o g=%j",node,geom);
+			if (trace>1)
+			    fdjtLog("PG/keep/forced %o g=%j",node,geom);
 			newPage(node);}}
 		else if ((style.display==='block')||(style.display==='table')) { 
 		    if (trace>2) fdjtLog("PG/descend %o g=%j",node,geom);
 		    splitChildren(node);}
 		else {
-		    if (trace>2) fdjtLog("PG/forced %o g=%j",node,geom);
+		    if (trace>1) fdjtLog("PG/forced %o g=%j",node,geom);
 		    newPage(node);}}
 	    function splitChildren(node){
 		var children=TOA(node.childNodes);
 		if (trace>2)
-		    fdjtLog("Paginate/splitChildren (%d) %o",
+		    fdjtLog("PG/splitChildren (%d) %o",
 			    children.length,node);
 		var i=0; var n=children.length;
 		while (i<n) loop(children[i++]);}
@@ -490,10 +497,13 @@ var CodexPaginate=
 	    var content=Codex.content;
 	    var nodes=TOA(content.childNodes);
 	    fdjtTime.slowmap(
-		function(node){
-		    newinfo=Paginate(node,newinfo);
-		    progress(newinfo);},
-		nodes,
+		function(node){newinfo=Paginate(node,newinfo);},nodes,
+		function(state,i,lim,chunks,elapsed,zerostart){
+		    if (state==='suspend') progress(newinfo);
+		    else if (state==='done')
+			fdjtLog("PG/laid out %d HTML blocks across %d pages after %dms, taking %fms over %d chunks",
+				newinfo.pagenum,lim,fdjtTime()-zerostart,
+				elapsed,chunks);},
 		function(){
 		    var dups=newinfo.dups;
 		    var i=0; var lim=dups.length;
