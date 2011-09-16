@@ -70,7 +70,7 @@ var Codex=
 	 startup: 1,	// Whether to debug startup
 	 config: false,  // Whether to trace config setup/modification/etc
 	 mode: false,	// Whether to trace mode changes
-	 nav: false,	// Whether to trace book navigation
+	 nav: true,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// How much to trace searches
 	 clouds: 0,	// How much to trace cloud generation
@@ -626,7 +626,7 @@ var sbook_gloss_data=
 		location: location,page: page})
 	else Codex.setState(
 	    {target: (target.id),location: location,page: page});
-	if (page) Codex.GoToPage(elt,"CodexGoTo",nosave||false);
+	if (page) Codex.GoToPage(target,"CodexGoTo",nosave||false);
 	Codex.location=location;}
     Codex.GoTo=CodexGoTo;
 
