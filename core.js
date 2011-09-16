@@ -78,8 +78,8 @@ var Codex=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// How much to trace server interaction
 	 glosses: false,// Whether we're tracing gloss processing
-	 layout: 1,	// How much to trace pagination
-	 dosync: false, // Whether to trace state saves
+	 layout: 0,	// How much to trace pagination
+	 dosync: true, // Whether to trace state saves
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0}   // How much to trace gestures
@@ -501,7 +501,11 @@ var sbook_gloss_data=
 	    var state=Codex.state; var synced=Codex.syncstate;
 	    // Warning when syncing doesn't return?
 	    if (syncing) return;
-	    if (!(state)) return;
+	    if (!(state)) {
+		var uri=Codex.docuri||Codex.refuri;
+		var statestring=fdjtState.getLocal("codex.state("+uri+")");
+		if (statestring) Codex.state=state=JSON.parse(statestring);
+		else state={};}
 	    if ((synced)&&
 		(synced.target===state.target)&&
 		(synced.location===state.location)&&
@@ -529,11 +533,12 @@ var sbook_gloss_data=
 	    var req=new XMLHttpRequest();
 	    syncing=state;
 	    req.onreadystatechange=function(evt){
-		Codex.syncstate=syncing;
-		syncing=false;
+		if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
+		    Codex.syncstate=syncing;
+		    syncing=false;}
 		if (Codex.Trace.dosync)
-		    fdjtLog("syncPosition(callback) reading=%o status=%o %o",
-			    evt.readyState,evt.status,evt);};
+		    fdjtLog("serverSync(callback) ready=%o status=%o %o",
+			    req.readyState,req.status,evt);};
 	    req.open("GET",uri,true);
 	    req.withCredentials='yes';
 	    req.send();}}

@@ -1035,28 +1035,36 @@ Codex.Startup=
 	    fdjtState.setLocal("syncstamp("+Codex.refuri+")",syncstamp);}
 	Codex.update=offline_update;
 	
+	function initState()
+	{
+	    var uri=Codex.docuri||Codex.refuri;
+	    var statestring=fdjtState.getLocal("codex.state("+uri+")");
+	    if (statestring) Codex.state=state=JSON.parse(statestring);
+
+	}
+
 	/* This initializes the sbook state to the initial location with the
 	   document, using the hash value if there is one. */ 
 	function initLocation() {
-	    var hash=window.location.hash; var target=Codex.root;
+	    var state=false;
+	    if (!(state)) {
+		var uri=Codex.docuri||Codex.refuri;
+		var statestring=fdjtState.getLocal("codex.state("+uri+")");
+		if (statestring) Codex.state=state=JSON.parse(statestring);
+		else state={};}
+	    var hash=window.location.hash; var target=false;
 	    if ((typeof hash === "string") && (hash.length>0)) {
 		if ((hash[0]==='#') && (hash.length>1))
 		    target=document.getElementById(hash.slice(1));
 		else target=document.getElementById(hash);
 		if (Codex.Trace.startup>1)
-		    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);
-		if (target) Codex.GoTo(target,false,true);}
-	    else {
-		var uri=Codex.docuri||Codex.refuri;
-		var statestring=fdjtState.getLocal("codex.state("+uri+")");
-		if (statestring) {
-		    var state=JSON.parse(statestring);
-		    if (state.target)
-			Codex.setTarget(state.target,(state.location),true);
-		    if (state.location) Codex.GoTo(state.location,true,true);
-		    Codex.state=state;}
-		if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
-		    syncLocation();}}
+		    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
+	    if (target) Codex.GoTo(target,false,true);
+	    else if ((state)&&(state.target))
+		Codex.GoTo(state.target,false,true);
+	    else Codex.GoTo((Codex.start||Codex.root),false,true);
+	    if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
+		syncLocation();}
 	
 	function syncLocation(){
 	    if (!(Codex.user)) return;
@@ -1068,7 +1076,7 @@ Codex.Startup=
 	    fdjtAjax.jsonCall(
 		function(d){
 		    if (Codex.Trace.dosync)
-			fdjtLog("syncLocation(response) %s: %o",uri,d);
+			fdjtLog("syncLocation(callback) %s: %j",uri,d);
 		    if ((!(d))||(!(d.location))) {
 			if (!(Codex.state))
 			    Codex.GoTo(Codex.start||Codex.root||Codex.body,false,false);
