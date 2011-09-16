@@ -1005,9 +1005,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXPAGENOTEXT": {click: enterPageNum},
 	 "#CODEXLOCOFF": {click: enterLocation},
 	 "#CODEXSCANNER": {click: scanner_click},
-	 "#SBOOKPAGEHEAD": {click: head_click},
+	 "#CODEXPAGEHEAD": {click: head_click},
 	 "#CODEXHEAD": {click: head_click},
-	 "#SBOOKPAGEFOOT": {click: foot_click},
+	 "#CODEXPAGEFOOT": {click: foot_click},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
 	 // Not really used any more
@@ -1026,11 +1026,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 hud: {touchstart: shared_touchstart,
 	       touchmove: hud_touchmove,
 	       touchend: hud_touchend},
-	 "#SBOOKPAGEHEAD": {
+	 "#CODEXPAGEHEAD": {
 	     touchstart: cancel,
 	     touchmove: cancel,
 	     touchend: head_click},
-	 "#SBOOKPAGEFOOT": {
+	 "#CODEXPAGEFOOT": {
 	     touchstart: cancel,
 	     touchmove: cancel,
 	     touchend: foot_click},

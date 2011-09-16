@@ -712,14 +712,14 @@ Codex.Startup=
 	    var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
 	    topleading.sbookui=true; bottomleading.sbookui=true;
 	    
-	    var pagehead=fdjtDOM("div.sbookmargin#SBOOKPAGEHEAD"," ");
+	    var pagehead=fdjtDOM("div.sbookmargin#CODEXPAGEHEAD"," ");
 	    var pageinfo=
 		fdjtDOM("div#CODEXPAGEINFO",
 			fdjtDOM("div.progressbar#CODEXPROGRESSBAR",""),
 			fdjtDOM("div#CODEXPAGENO",
 				fdjtDOM("span#CODEXPAGENOTEXT","p/n")));
 	    var pagefoot=fdjtDOM
-	    ("div.sbookmargin#SBOOKPAGEFOOT",
+	    ("div.sbookmargin#CODEXPAGEFOOT",
 	     pageinfo," ",
 	     fdjtDOM.Image(cxicon("PageNext50x50.png"),
 			   "img#CODEXPAGENEXT.hudbutton.bottomright",

@@ -782,40 +782,40 @@ body div.sbookmargin {
     background-color: white; z-index: 5;}
 body.sbooknopage div.sbookmargin  { display: none;}
 
-body div.sbookmargin#SBOOKPAGEHEAD,
-body div.sbookmargin#SBOOKPAGEFOOT {
+body div.sbookmargin#CODEXPAGEHEAD,
+body div.sbookmargin#CODEXPAGEFOOT {
   left: 0px; right: 0px; width: 100%; height: 60px; z-index: 75;
   text-align: center;}
-body div.sbookmargin#SBOOKPAGEHEAD { top: 0px; }
-body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
+body div.sbookmargin#CODEXPAGEHEAD { top: 0px; }
+body div.sbookmargin#CODEXPAGEFOOT { bottom: 0px; vertical-align: bottom;}
 
 /* Bottom information */
 
-div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     vertical-align: bottom; height: 3ex; display: none;
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
     cursor: crosshair;
     border-top: solid black 1px;}
-body.codexpageview div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+body.codexpageview div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
-body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;}
-div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff {
+div#CODEXPAGEFOOT div#CODEXPAGEINFO span.locoff {
     cursor: pointer;
     float: right;}
-div#SBOOKPAGEFOOT div#CODEXPAGENO {
+div#CODEXPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%;
     cursor: pointer;
     max-height: 20px;}
-div#SBOOKPAGEFOOT div#CODEXPAGEINFO div.progressbar {
+div#CODEXPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top: 0px;
     z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
-div#SBOOKPAGEFOOT div#CODEXPAGELEAP {
+div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.001;}
-div#SBOOKPAGEFOOT div#CODEXPAGELEAP:hover {
+div#CODEXPAGEFOOT div#CODEXPAGELEAP:hover {
     opacity: 0.4;}
-body.hudup div#SBOOKPAGEFOOT div#CODEXPAGELEAP {
+body.hudup div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.7;}
 div#CODEXPAGES.pageswitch {
     opacity: 0.0001;}
