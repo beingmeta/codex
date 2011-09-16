@@ -394,7 +394,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		alert("Enter a number between "+min+" and "+max+" (inclusive)");
 		return;}
 	    if (target.name==='GOTOLOC') Codex.JumpTo(128*num);
-	    else if (target.name==='GOTOPAGE') Codex.GoToPage(num-1);
+	    else if (target.name==='GOTOPAGE') Codex.GoToPage(num);
 	    else {}
 	    target.value="";
 	    CodexMode(false);}}
@@ -952,7 +952,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else offx=getOffX(evt);
 	if (!(offx)) return;
 	var offwidth=pageinfo.offsetWidth;
-	var showpage=Math.round((offx/offwidth)*Codex.pagecount)+1;
+	var showpage=Math.round((offx/offwidth)*Codex.pagecount);
 	pageinfo.title=fdjtString("%d",showpage);}
     /* This doesn't quite work on the iPad, so we're not currently
        using it. */

@@ -552,7 +552,7 @@ var sbook_gloss_data=
 	else if (elt.head)
 	    setHead(elt.head);
 	if (Codex.paginate)
-	    Codex.GoToPage(Codex.getPage(elt),"scrollTo");
+	    Codex.GoToPage(elt,"scrollTo");
 	else if (fdjtDOM.isVisible(elt)) {}
 	else if ((!cxt) || (elt===cxt))
 	    fdjtUI.scrollIntoView(elt,elt.id,false,true,displayOffset());
@@ -626,8 +626,7 @@ var sbook_gloss_data=
 		location: location,page: page})
 	else Codex.setState(
 	    {target: (target.id),location: location,page: page});
-	if (typeof page === 'number') 
-	    Codex.GoToPage(page,"CodexGoTo",nosave||false);
+	if (page) Codex.GoToPage(elt,"CodexGoTo",nosave||false);
 	Codex.location=location;}
     Codex.GoTo=CodexGoTo;
 

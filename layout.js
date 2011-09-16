@@ -58,6 +58,7 @@ var CodexPaginate=
 	var sbook_fullpages=false;
 
 	var isEmpty=fdjtString.isEmpty;
+	var hasContent=fdjtDOM.hasContent;
 	var getGeometry=fdjtDOM.getGeometry;
 	var hasParent=fdjtDOM.hasParent;
 	var getParent=fdjtDOM.getParent;
@@ -117,12 +118,12 @@ var CodexPaginate=
 	    var npages=Codex.pagecount;
 	    var pbar=fdjtDOM("div.progressbar#CODEXPROGRESSBAR");
 	    var book_len=Codex.ends_at;
-	    pbar.style.left=(100*(pagenum/npages))+"%";
+	    pbar.style.left=(100*((pagenum-1)/npages))+"%";
 	    pbar.style.width=(100/npages)+"%";
 	    var locoff=fdjtDOM
 	    ("span.locoff#CODEXLOCOFF","L"+Math.floor(location/128));
 	    var pageno_text=fdjtDOM
-	    ("span#CODEXPAGENOTEXT.pageno",pagenum+1,"/",npages);
+	    ("span#CODEXPAGENOTEXT.pageno",pagenum,"/",npages);
 	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
 	    fdjtDOM.replace("CODEXPAGENO",pageno);
 	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
@@ -194,6 +195,11 @@ var CodexPaginate=
 	    return node;}
 	
 	function moveNodeToPage(node,page,dups){
+	    if ((!(page.getAttribute("data-topid")))&&
+		(node.id)&&(Codex.docinfo[node.id])) {
+		var info=Codex.docinfo[node.id];
+		page.setAttribute("data-topid",node.id);
+		page.setAttribute("data-sbookloc",info.starts_at);}
 	    if (hasParent(node,page)) return;
 	    var parent=node.parentNode;
 	    if ((!(parent)) || (parent===document.body) ||
@@ -307,6 +313,7 @@ var CodexPaginate=
 		while (i<n) loop(children[i++]);}
 	    function splitText(node){newPage(node);}
 	    function newPage(node){
+		if ((page)&&(!(hasContent(page,true)))) return page;
 		if (page) fdjtDOM.dropClass(page,"curpage");
 		state.page=page=fdjtDOM("div.codexpage.curpage");
 		pagenum++; state.pagenum=pagenum;
@@ -449,16 +456,23 @@ var CodexPaginate=
 	    else if (typeof spec === 'number') {
 		var pageid="CODEXPAGE"+spec;
 		return document.getElementById(pageid);}
-	    else if (typeof spec === "string")
-		getPageElt(document.getElementById(spec));
+	    else if (typeof spec === "string") {
+		if (document.getElementById(spec))
+		    return getPageElt(document.getElementById(spec));
+		else return getPageElt(document.getElementById("CODEXPAGE"+spec));}
 	    else return false;}
 
-	function GoToPage(spec,caller,nosave){
+	function GoToPage(spec,caller){
 	    var page=getPageElt(spec);
-	    if (Codex.Trace.flips) fdjtLog("Flipping to %o for %o",page,spec);
-	    if (curpage) fdjtDOM.dropClass(curpage,"curpage");
 	    var pagenum=parseInt(page.getAttribute("data-pagenum"));
+	    if (Codex.Trace.flips)
+		fdjtLog("GoToPage/%s Flipping to %o (%d) for %o",
+			caller,page,pagenum,spec);
+	    if (curpage) fdjtDOM.dropClass(curpage,"curpage");
 	    fdjtDOM.addClass(page,"curpage");
+	    if (typeof spec === 'number') {
+		var location=parseInt(page.getAttribute("data-sbookloc"));
+		Codex.setLocation(location);}
 	    updatePageDisplay(pagenum,Codex.location);
 	    curpage=page; Codex.curpage=pagenum;}
 	Codex.GoToPage=GoToPage;
