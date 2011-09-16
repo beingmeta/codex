@@ -78,7 +78,7 @@ var Codex=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// How much to trace server interaction
 	 glosses: false,// Whether we're tracing gloss processing
-	 layout: 0,	// How much to trace pagination
+	 layout: 1,	// How much to trace pagination
 	 dosync: false, // Whether to trace state saves
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD

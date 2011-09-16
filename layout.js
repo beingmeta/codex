@@ -459,7 +459,8 @@ var CodexPaginate=
 	    if (curpage) fdjtDOM.dropClass(curpage,"curpage");
 	    var pagenum=parseInt(page.getAttribute("data-pagenum"));
 	    fdjtDOM.addClass(page,"curpage");
-	    curpage=page;}
+	    updatePageDisplay(pagenum,Codex.location);
+	    curpage=page; Codex.curpage=pagenum;}
 	Codex.GoToPage=GoToPage;
 	
 	function getPage(elt){
@@ -491,6 +492,8 @@ var CodexPaginate=
 	    var moved=TOA(document.getElementsByClassName("codexrelocated"));
 	    var i=0; var lim=moved.length;
 	    while (i<lim) restoreNode(moved[i++]);
+	    dropClass(document.body,"codexscrollview");
+	    addClass(document.body,"codexpageview");
 	    var newpages=fdjtDOM("div.codexpages#CODEXPAGES");
 	    var newinfo={"pages": newpages};
 	    fdjtDOM.replace("CODEXPAGES",newpages);
