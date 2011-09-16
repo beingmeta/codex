@@ -68,6 +68,7 @@ var CodexPaginate=
 	var insertBefore=fdjtDOM.insertBefore;
 	var hasClass=fdjtDOM.hasClass;
 	var addClass=fdjtDOM.addClass;
+	var dropClass=fdjtDOM.dropClass;
 	var nextElt=fdjtDOM.nextElt;
 	var forward=fdjtDOM.forward;
 	var TOA=fdjtDOM.toArray;
@@ -80,9 +81,6 @@ var CodexPaginate=
 	var offset_left=false;
 	
 	var runslice=100; var runwait=50;
-
-	var dropClass=fdjtDOM.dropClass;
-	var addClass=fdjtDOM.addClass;
 
 	/* Codex trace levels */
 	/* 0=notrace (do final summary if tracing startup)
@@ -154,8 +152,9 @@ var CodexPaginate=
 	    var copyclass=nodeclass;
 	    copyclass=copyclass.replace(/\bcodexrelocated\b/,"");
 	    copyclass=copyclass.replace(/\bcodexdup.*\b/,"");
+	    if (copyclass.length) copyclass=copyclass+" codexdup";
+	    else copyclass="codexdup";
 	    copyclass=copyclass.replace(/\s+/," ");
-	    copyclass=copyclass+" codexdup";
 	    copy.className=copyclass;
 	    if (nodeclass.search(/\bcodexdupstart\b/)<0)
 		node.className=nodeclass+" codexdupstart";
@@ -179,6 +178,7 @@ var CodexPaginate=
 	
 	function moveNode(node,into){
 	    var classname;
+	    while (node===node.parentNode.firstChild) node=node.parentNode;
 	    if (node.nodeType===1) classname=node.className;
 	    else if (node.nodeType===3) {
 		node=fdjtDOM("span.codextext",node.nodeValue);
@@ -210,12 +210,14 @@ var CodexPaginate=
 		var adoptive=dupContext(parent,page,dups);
 		moveNode(node,adoptive);}}
 
-	function restoreNode(node){
-	    var origin=node.getAttribute("data-codexorigin");
-	    if (origin) origin=document.getElementById(origin);
+	function restoreNode(node,info){
+	    var originid=node.getAttribute("data-codexorigin");
+	    var origin=((originid)&&document.getElementById(originid));
 	    if (origin) {
-		if (fdjtDOM.hasClass(node,"codextext"))
-		    origin.parentNode.replaceChild(node.childNodes[0],origin);
+		if (hasClass(node,/\bcodextext\b/g)) {
+		    if (hasClass(node,/\bcodextextsplit\b/g))
+			origin.parentNode.replaceChild(info.texts[origin],origin);
+		    else origin.parentNode.replaceChild(node.childNodes[0],origin);}
 		else origin.parentNode.replaceChild(node,origin);}
 	    dropClass(node,"codexrelocated");
 	    node.removeAttribute("data-codexorigin");}
@@ -236,6 +238,11 @@ var CodexPaginate=
 	    var started=state.started||(state.started=fdjtTime());
 	    var trace=((state.hasOwnProperty('trace'))?
 		       (state.trace||0):(Codex.Trace.layout||0));
+	    var texts=((state.texts)||(state.texts={}));
+	    var split_thresh=((state.hasOwnProperty('split_thresh'))?
+			      (state.split_thresh):(state.split_thresh=0.2));
+	    if ((typeof split_thresh === 'number') && (split_thresh<1.0)) 
+		split_thresh=Math.ceil(page_height*split_thresh);
 
 	    if (state.chunks) state.chunks=state.chunks+1;
 	    else state.chunks=1;
@@ -248,56 +255,42 @@ var CodexPaginate=
 
 	    function loop(node){
 		if (node.nodeType===3) {
-		    var value=node.nodeValue;
-		    // scanText(node);
-		    if (value.length>0) moveNodeToPage(node,page,dups);}
-		else if (node.nodeType===1) {
-		    var style=getStyle(node);
-		    if (forceBreakBefore(node,style)) newPage();
-		    else if (forceBreakAfter(prev,prevstyle)) newPage();
-		    else {}
+		    var textnode=fdjtDOM("span.codextext");
+		    node.parentNode.replaceChild(textnode,node);
+		    textnode.appendChild(node);
 		    moveNodeToPage(node,page,dups);
-		    var geom=getGeometry(node,page);
-		    var classname=node.className;
-		    if (trace>2) fdjtLog("PG/loop %o g=%j",node,geom);
-		    if ((geom.bottom>page_height))
-			forceBreak(node,geom,style);
-		    else if (trace>2)
-			fdjtLog("PG/placed %o on %o",node,page);
-		    else {}
-		    prev=node; prevstyle=style;}
-		else {}}
-	    /*
-	    function scanText(textnode){
-		if (hasParent(textnode,page)) return;
-		var parent=dupNode(textnode.parentNode,page);
-		var moved=moveNode(textnode,parent);
-		var geom=getGeometry(moved,page);
-		if (geom.bottom>page_height) {
-		    parent.removeChild(moved);
-		    var text=textnode.nodeValue;
-		    var words=text.slice();
-		    var i=0; var n=words.length;
-		    while (i<n) {
-			var word=words[i++];
-			if (word==="") {}
-			else if (word.search(/\S/)<0)
-			    scan(fdjtDOM("span.codexword",word));
-			else .appendChild(document.createTextNode(word));}}
-		else moved.replaceChild(textnode,moved);}
-	    */
+		    node=textnode;}
+		else if (node.nodeType!==1) return;
+		var style=getStyle(node);
+		if (forceBreakBefore(node,style)) newPage();
+		else if (forceBreakAfter(prev,prevstyle)) newPage();
+		else {}
+		moveNodeToPage(node,page,dups);
+		var geom=getGeometry(node,page);
+		var classname=node.className;
+		if (trace>2) fdjtLog("PG/loop %o g=%j",node,geom);
+		if ((geom.bottom>page_height))
+		    forceBreak(node,geom,style);
+		else if (trace>2)
+		    fdjtLog("PG/placed %o on %o",node,page);
+		else {}
+		prev=node; prevstyle=style;}
 	    function forceBreak(node,geom,style){
-		if (style.pageBreakInside==='avoid') {
+		if ((style.pageBreakInside==='avoid')||
+		    ((!(split_thresh))&&(hasClass(node,/\bcodextext\b/)))||
+		    ((geom.top+split_thresh)>page_height)) {
 		    if ((avoidBreakBefore(node,style))||
 			((prev)&&(avoidBreakAfter(prev,prevstyle)))) {
-			if (trace>1)
-			    fdjtLog("PG/keep/forceprev %o g=%j",node,geom);
+			if (trace>1) fdjtLog("PG/keep/forceprev %o g=%j",node,geom);
 			newPage(prev); moveNodeToPage(node,page,dups);
 			prev=node; prevstyle=style;}
 		    else {
 			if (trace>1)
 			    fdjtLog("PG/keep/forced %o g=%j",node,geom);
 			newPage(node);}}
+		else if (hasClass(node,/\bcodextext\b/)) {
+		    if (trace>2) fdjtLog("PG/splittext %o g=%j",node,geom);
+		    splitText(node);}
 		else if ((style.display==='block')||(style.display==='table')) { 
 		    if (trace>2) fdjtLog("PG/descend %o g=%j",node,geom);
 		    splitChildren(node);}
@@ -306,15 +299,49 @@ var CodexPaginate=
 		    newPage(node);}}
 	    function splitChildren(node){
 		var children=TOA(node.childNodes);
-		if (trace>2)
-		    fdjtLog("PG/splitChildren (%d) %o",
-			    children.length,node);
 		var i=0; var n=children.length;
+		if (trace>2) fdjtLog("PG/splitChildren (%d) %o",n,node);
 		while (i<n) loop(children[i++]);}
-	    function splitText(node){newPage(node);}
+	    function splitText(node){
+		var textnode=node.childNodes[0];
+		var text=textnode.nodeValue;
+		var words=text.split(/\b/g);
+		if (trace>2)
+		    fdjtLog("PG/splitText (%d chars/%d words) %o",
+			    text.length,words.length,node);
+		if (words.length<2) return newPage(node);
+		node.removeChild(textnode);
+		var i=0; var lim=words.length; var wordnodes=[];
+		while (i<lim) {
+		    var word=words[i++];
+		    if (word.search(/\S/)<0) {
+			var wordnode=document.createTextNode(word);
+			node.appendChild(wordnode);
+			wordnodes.push(wordnode);}
+		    else {
+			var wordnode=document.createTextNode(word);
+			node.appendChild(wordnode);
+			var geom=getGeometry(node);
+			if (geom.bottom>page_height) {
+			    if (trace>2) fdjtLog("PG/splitText @%d: %s",i-1,word);
+			    node.removeChild(wordnode); i--; break;}
+			wordnodes.push(wordnode);}}
+		if (i===0) {
+		    var j=0; var jlim=wordnodes.length;
+		    while (j<jlim) node.removeChild(wordnodes[j++]);
+		    node.appendChild(textnode);
+		    newPage(node);}
+		else if (i<lim) {
+		    var remaining=words.slice(i).join("");
+		    var newnode=fdjtDOM("span.codextext",remaining);
+		    if (node.getAttribute("data-codexorigin")) {
+			addClass(node,"codextextsplit");
+			texts[node.getAttribute("data-codexorigin")]=textnode;}
+		    fdjtDOM.insertAfter(node,newnode);
+		    newPage(); return loop(newnode);}}
 	    function newPage(node){
 		if ((page)&&(!(hasContent(page,true)))) return page;
-		if (page) fdjtDOM.dropClass(page,"curpage");
+		if (page) dropClass(page,"curpage");
 		state.page=page=fdjtDOM("div.codexpage.curpage");
 		pagenum++; state.pagenum=pagenum;
 		page.id="CODEXPAGE"+(pagenum);
@@ -468,8 +495,8 @@ var CodexPaginate=
 	    if (Codex.Trace.flips)
 		fdjtLog("GoToPage/%s Flipping to %o (%d) for %o",
 			caller,page,pagenum,spec);
-	    if (curpage) fdjtDOM.dropClass(curpage,"curpage");
-	    fdjtDOM.addClass(page,"curpage");
+	    if (curpage) dropClass(curpage,"curpage");
+	    addClass(page,"curpage");
 	    if (typeof spec === 'number') {
 		var location=parseInt(page.getAttribute("data-sbookloc"));
 		Codex.setLocation(location);}
@@ -508,6 +535,7 @@ var CodexPaginate=
 	    while (i<lim) restoreNode(moved[i++]);
 	    dropClass(document.body,"codexscrollview");
 	    addClass(document.body,"codexpageview");
+	    fdjtID("CODEXPAGE").style.visibility='hidden';
 	    var newpages=fdjtDOM("div.codexpages#CODEXPAGES");
 	    var newinfo={"pages": newpages};
 	    fdjtDOM.replace("CODEXPAGES",newpages);
@@ -531,6 +559,7 @@ var CodexPaginate=
 		    if (newinfo.page) dropClass(newinfo.page,"curpage");
 		    newinfo.done=fdjtTime();
 		    progress(newinfo);
+		    fdjtID("CODEXPAGE").style.visibility='visible';
 		    Codex.paginated=newinfo;
 		    Codex.pagecount=newinfo.pagenum;});}
 	

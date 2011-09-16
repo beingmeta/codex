@@ -70,7 +70,7 @@ var Codex=
 	 startup: 1,	// Whether to debug startup
 	 config: false,  // Whether to trace config setup/modification/etc
 	 mode: false,	// Whether to trace mode changes
-	 nav: true,	// Whether to trace book navigation
+	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// How much to trace searches
 	 clouds: 0,	// How much to trace cloud generation
@@ -78,8 +78,8 @@ var Codex=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// How much to trace server interaction
 	 glosses: false,// Whether we're tracing gloss processing
-	 layout: 0,	// How much to trace pagination
-	 dosync: true, // Whether to trace state saves
+	 layout: 1,	// How much to trace pagination
+	 dosync: false, // Whether to trace state saves
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0}   // How much to trace gestures
