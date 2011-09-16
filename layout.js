@@ -60,6 +60,7 @@ var CodexPaginate=
 	var isEmpty=fdjtString.isEmpty;
 	var getGeometry=fdjtDOM.getGeometry;
 	var hasParent=fdjtDOM.hasParent;
+	var getParent=fdjtDOM.getParent;
 	var getStyle=fdjtDOM.getStyle;
 	var parsePX=fdjtDOM.parsePX;
 	var geomString=fdjtDOM.geomString;
@@ -128,24 +129,29 @@ var CodexPaginate=
 	
 	/* Pagination */
 
-	var dups={};
 	var fakeid_count=1;
 
-	function dupContext(node,page){
+	function dupContext(node,page,dups){
 	    if (hasParent(node,page)) return node;
 	    if ((node===document.body)||(hasClass(node,"codexpage"))||
 		(node.id==="CODEXCONTENT"))
 		return false;
 	    var id=node.id;
-	    if (!(id)) id=node.id="CODEXFAKE"+(fakeid_count++);
+	    if (!(id)) id=node.id="CODEXFAKEID"+(fakeid_count++);
 	    var dup=dups[id];
 	    if ((dup)&&(hasParent(dup,page))) return dup;
-	    var parent=dupContext(node.parentNode,page);
+	    var parent=dupContext(node.parentNode,page,dups);
+	    var nodeclass=node.className||"";
 	    var copy=node.cloneNode(false);
-	    dropClass(copy,/\bcodexdup(dup)*\b/);
-	    dropClass(copy,/\bcodexrelocated*\b/);
-	    if (dups[id]) copy.className=copy.className+" codexdupdup";
-	    else copy.className=copy.className+" codexdup";
+	    var copyclass=nodeclass;
+	    copyclass=copyclass.replace(/\bcodexrelocated\b/,"");
+	    copyclass=copyclass.replace(/\bcodexdup.*\b/,"");
+	    copyclass=copyclass.replace(/\s+/," ");
+	    copyclass=copyclass+" codexdup";
+	    copy.className=copyclass;
+	    if (nodeclass.search(/\bcodexdupstart\b/)<0)
+		node.className=nodeclass+" codexdupstart";
+	    
 	    if (copy.id) {
 		copy.setAttribute("data-baseid",copy.id);
 		copy.id=null;}
@@ -180,7 +186,7 @@ var CodexPaginate=
 	    into.appendChild(node);
 	    return node;}
 	
-	function moveNodeToPage(node,page,cxts){
+	function moveNodeToPage(node,page,dups){
 	    if (hasParent(node,page)) return;
 	    var parent=node.parentNode;
 	    if ((!(parent)) || (parent===document.body) ||
@@ -188,7 +194,7 @@ var CodexPaginate=
 		(hasClass(parent,"codexpage")))
 		moveNode(node,page);
 	    else {
-		var adoptive=dupContext(parent,page);
+		var adoptive=dupContext(parent,page,dups);
 		moveNode(node,adoptive);}}
 
 	function restoreNode(node){
@@ -204,38 +210,48 @@ var CodexPaginate=
 	function Paginate(root,state){
 	    if (!(state)) state={};
 	    var page_height=(state.page_height)||
-		(state.page_height=getGeometry("CODEXPAGE").height);
+		(state.page_height=(getGeometry("CODEXPAGE").height));
+	    var page_width=(state.page_width)||
+		(state.page_width=(getGeometry("CODEXPAGE").width));
 	    var pages=(state.pages)||
 		(state.pages=pages=fdjtDOM("div.codexpages"));
 	    var pagenum=(state.pagenum||(state.pagenum=0));
-	    var pagecxts=state.pagecxts||{};
+	    var dups=state.dups||(state.dups={});
 	    var page=state.page||(newPage());
 	    var prev=(state.prev)||false;
 	    var prevstyle=state.prevstyle||((prev)&&(getStyle(prev)));
+	    var started=state.started||(state.started=fdjtTime());
+	    var trace=((state.hasOwnProperty('trace'))?
+		       (state.trace||0):(Codex.Trace.layout||0));
 
-	    function scan(node){
+	    if (state.chunks) state.chunks=state.chunks+1;
+	    else state.chunks=1;
+
+	    if (!(state.pagerule)) {
+		var pagerule=fdjtDOM.addCSSRule(
+		    "div.codexpage",
+		    "width: "+page_width+"px; "+"height: "+page_height+"px;");
+		state.pagerule=pagerule;}
+
+	    function loop(node){
 		if (node.nodeType===3) {
 		    var value=node.nodeValue;
 		    // scanText(node);
-		    if (value.length>0) moveNodeToPage(node,page,pagecxts);}
+		    if (value.length>0) moveNodeToPage(node,page,dups);}
 		else if (node.nodeType===1) {
 		    var style=getStyle(node);
-		    if ((style.pageBreakBefore==='always')||
-			((classname)&&
-			 (classname.search(/\bcodexbreakbefore\b/)>=0)))
-			newPage();
-		    else if ((prevstyle)&&
-			     ((prevstyle.pageBreakAfter==='always')||
-			      ((prev.className)&&
-			       (prev.className.search((/\bcodexbreakafter\b/))))))
-			newPage();
-		    moveNodeToPage(node,page,pagecxts);
+		    if (forceBreakBefore(node,style)) newPage();
+		    else if (forceBreakAfter(prev,prevstyle)) newPage();
+		    else {}
+		    moveNodeToPage(node,page,dups);
 		    var geom=getGeometry(node,page);
 		    var classname=node.className;
-		    fdjtLog("Paginate/scan %o g=%j",node,geom);
+		    if (trace>1) fdjtLog("Paginate/loop %o g=%j",node,geom);
 		    if ((geom.bottom>page_height))
-			pageBreak(node,geom,style);
-		    else fdjtLog("Pagination added node %o to %o",node,page);
+			forceBreak(node,geom,style);
+		    else if (trace>1)
+			fdjtLog("Paginate/placed %o on %o",node,page);
+		    else {}
 		    prev=node; prevstyle=style;}
 		else {}}
 	    /*
@@ -257,21 +273,31 @@ var CodexPaginate=
 			else .appendChild(document.createTextNode(word));}}
 		else moved.replaceChild(textnode,moved);}
 	    */
-	    function pageBreak(node,geom,style){
-		fdjtLog("pageBreak %o g=%s",node,fdjtString("%j",geom));
+	    function forceBreak(node,geom,style){
 		if (style.pageBreakInside==='avoid') {
-		    if ((prev)&&(prevstyle.pageBreakAfter==='avoid')) {
-			newPage(prev); moveNodeToPage(node,page,cxts);
+		    if ((avoidBreakBefore(node,style))||
+			((prev)&&(avoidBreakAfter(prev,prevstyle)))) {
+			if (trace>1)
+			    fdjtLog("PG/noinside/forceprev %o g=%j",node,geom);
+			newPage(prev); moveNodeToPage(node,page,dups);
 			prev=node; prevstyle=style;}
-		    else newPage(node);}
-		else if ((style.display==='block')||(style.display==='table')) 
-		    splitChildren(node);
-		else newPage(node);}
+		    else {
+			if (trace>2)
+			    fdjtLog("PG/noinside/forced %o g=%j",node,geom);
+			newPage(node);}}
+		else if ((style.display==='block')||(style.display==='table')) { 
+		    if (trace>2) fdjtLog("PG/descend %o g=%j",node,geom);
+		    splitChildren(node);}
+		else {
+		    if (trace>2) fdjtLog("PG/forced %o g=%j",node,geom);
+		    newPage(node);}}
 	    function splitChildren(node){
-		fdjtLog("Paginate/splitChildren %o",node);
 		var children=TOA(node.childNodes);
+		if (trace>2)
+		    fdjtLog("Paginate/splitChildren (%d) %o",
+			    children.length,node);
 		var i=0; var n=children.length;
-		while (i<n) scan(children[i++]);}
+		while (i<n) loop(children[i++]);}
 	    function splitText(node){newPage(node);}
 	    function newPage(node){
 		if (page) fdjtDOM.dropClass(page,"curpage");
@@ -280,15 +306,19 @@ var CodexPaginate=
 		page.id="CODEXPAGE"+(pagenum);
 		page.setAttribute("data-pagenum",pagenum);
 		fdjtDOM(pages,page);
-		if (node) moveNodeToPage(node,page,pagecxts);
-		if (node) fdjtLog("Added new page %o around %o",page,node);
-		else fdjtLog("Added new page %o",page);
-		state.pagecxts=pagecxts={};
+
+		if (node) moveNodeToPage(node,page,dups);
+
+		if (trace>1) {
+		    if (node)
+			fdjtLog("PG/newpage %o at %o",page,node);
+		    else fdjtLog("PG/newpage %o",page);}
+		    
 		state.prev=prev=false;
 		state.prevstyle=prevstyle=false;
 		return page;}
 	    
-	    scan(root);
+	    loop(root);
 	    
 	    return state;}
 
@@ -343,42 +373,26 @@ var CodexPaginate=
 		return true;
 	    else return false;}
 
-	/* Scanning the content */
+	function progress(info){
+	    var started=info.started;
+	    var pagenum=info.pagenum;
+	    var now=fdjtTime();
+	    if (!(pagenum)) return;
+	    if (!(Codex._setup)) {
+		if (typeof arg === 'number')
+		    Codex.startupMessage("Laid out %d pages so far",arg);
+		else Codex.startupMessage("Finished page layout");}
+	    if (info.done)
+		fdjtLog("Done with %d pages after %f seconds",
+			pagenum,fdjtTime.secs2short((now-started)/1000));
+	    else if (typeof pagenum === 'number') {
+		fdjtDOM.replace("CODEXPAGEPROGRESS",
+				fdjtDOM("span#CODEXPAGEPROGRESS",pagenum));
+		if (Codex.Trace.layout)
+		    fdjtLog("So far, laid out %d pages in %f seconds",
+			    pagenum,fdjtTime.secs2short((now-started)/1000));}
+	    else {}}
 
-	var nextfn=fdjtDOM.next;
-	function scanContent(start,style,skipchildren){
-	    var scan=start; var next=null;
-	    // Get out of the UI
-	    if (scan.sbookui) while ((scan)&&(scan.sbookui)) scan=scan.parentNode;
-	    if (avoidBreakInside(scan,((scan===start)?(style):(getStyle(scan))))) {
-		while (!(next=nextfn(scan,isContentBlock))) scan=scan.parentNode;}
-	    else next=forward(scan,isContentBlock);
-	    if ((next)&&(Paginate.debug)) {
-		if (next.id) scan.setAttribute("codexnextcontent",next.id);
-		if (start.id) next.setAttribute("codexprevcontent",start.id);}
-	    return next;}
-	Codex.scanContent=scanContent;
-
-	var sbook_block_tags=
-	    {"IMG": true, "HR": true, "P": true, "DIV": true,
-	     "UL": true,"BLOCKQUOTE":true};
-
-	function isContentBlock(node,style){
-	    var styleinfo;
-	    if (node.nodeType===1) {
-		if (node.sbookui) return false;
-		else if (sbook_block_tags[node.tagName]) return true;
-		else if (styleinfo=((style)||getStyle(node))) {
-		    if (styleinfo.position!=='static') return false;
-		    else if ((styleinfo.display==='block')||
-			     (styleinfo.display==='list-item')||
-			     (styleinfo.display==='table'))
-			return true;
-		    else return false;}
-		else if (fdjtDOM.getDisplay(node)==="inline") return false;
-		else return true;}
-	    else return false;}
-	
 	/* Debugging support */
 
 	function _paginationInfo(elt,style,startpage,endpage,nextpage,geom,ngeom,
@@ -420,17 +434,30 @@ var CodexPaginate=
 
 	var curpage=false;
 
-	function GoToPage(num,caller,nosave){
-	    var pageid="CODEXPAGE"+num;
-	    var page=document.getElementById(pageid);
+	function getPageElt(spec) {
+	    if (!(spec)) return false;
+	    else if (spec.nodeType) {
+		if (hasClass(spec,"codexpage")) return spec;
+		else return getParent(spec,".codexpage");}
+	    else if (typeof spec === 'number') {
+		var pageid="CODEXPAGE"+spec;
+		return document.getElementById(pageid);}
+	    else if (typeof spec === "string")
+		getPageElt(document.getElementById(spec));
+	    else return false;}
+
+	function GoToPage(spec,caller,nosave){
+	    var page=getPageElt(spec);
+	    if (Codex.Trace.flips) fdjtLog("Flipping to %o for %o",page,spec);
 	    if (curpage) fdjtDOM.dropClass(curpage,"curpage");
+	    var pagenum=parseInt(page.getAttribute("data-pagenum"));
 	    fdjtDOM.addClass(page,"curpage");
 	    curpage=page;}
 	Codex.GoToPage=GoToPage;
 	
 	function getPage(elt){
-	    var parent=fdjtDOM.getParent(elt,".codexpage");
-	    return parse(parent.getAttribute("data-pagenum"));}
+	    var page=getPageElt(elt);
+	    return parseInt(page.getAttribute("data-pagenum"));}
 	Codex.getPage=getPage;
 	
 	function getPageAt(loc){
@@ -439,7 +466,7 @@ var CodexPaginate=
 	Codex.getPageAt=getPageAt;
 	
 	function displaySync(){
-	    if (Codex.pagecount)
+	    if ((Codex.pagecount)&&(Codex.curpage))
 		Codex.GoToPage(Codex.curpage,"displaySync");}
 	Codex.displaySync=displaySync;
 
@@ -449,11 +476,7 @@ var CodexPaginate=
 	Paginate.forceBreakAfter=forceBreakAfter;
 	Paginate.avoidBreakAfter=avoidBreakAfter;
 	Paginate.avoidBreakBefore=avoidBreakBefore;
-	Paginate.isContentBlock=isContentBlock;
-	Paginate.scanContent=scanContent;
 	Paginate.debug=debug_pagination;
-	
-	/* Updates */
 	
 	/* Top level functions */
 	
@@ -462,17 +485,32 @@ var CodexPaginate=
 	    var i=0; var lim=moved.length;
 	    while (i<lim) restoreNode(moved[i++]);
 	    var newpages=fdjtDOM("div.codexpages#CODEXPAGES");
-	    var newinfo={"pages": newpages}; 
+	    var newinfo={"pages": newpages};
 	    fdjtDOM.replace("CODEXPAGES",newpages);
 	    var content=Codex.content;
 	    var nodes=TOA(content.childNodes);
-	    var i=0; var lim=nodes.length;
-	    while (i<lim) newinfo=Paginate(nodes[i++],newinfo);}
+	    fdjtTime.slowmap(
+		function(node){
+		    newinfo=Paginate(node,newinfo);
+		    progress(newinfo);},
+		nodes,
+		function(){
+		    var dups=newinfo.dups;
+		    var i=0; var lim=dups.length;
+		    for (dupid in dups) {
+			var dup=dups[dupid];
+			dup.className=dup.className.replace(
+				/\bcodexdup\b/,"codexdupend");}
+		    newinfo.done=fdjtTime();
+		    progress(newinfo);
+		    Codex.paginated=newinfo;
+		    Codex.pagecount=newinfo.pagenum;});}
 	
 	var repaginating=false;
 	Codex.repaginate=function(){
 	    if (repaginating) return;
-	    repaginating=setTimeout(function(){
+	    repaginating=setTimeout(
+		function(){
 		repaginate();
 		repaginating=false;},
 				    100);};

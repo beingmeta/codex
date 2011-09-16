@@ -300,7 +300,7 @@ Codex.Startup=
 		hide_mobile_safari_address_bar();
 		Codex.nativescroll=false;
 		Codex.scrolldivs=false;
-		Codex.updatelocation=false;
+		Codex.updatehash=false;
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {

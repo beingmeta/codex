@@ -1843,6 +1843,14 @@ div#CODEXEXCERPT textarea {
 div.codexpage {display: none; position: fixed;}
 div.codexpage.curpage {display: block;}
 
+div.codexdupstart {
+    padding-bottom: 0px; border-bottom: 0px; margin-bottom: 0px;}
+div.codexdup {
+    padding-top: 0px;    border-top: 0px;    margin-top: 0px;
+    padding-bottom: 0px; border-bottom: 0px; margin-bottom: 0px;}
+div.codexdupend {
+    padding-top: 0px;    border-top: 0px;    margin-top: 0px;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

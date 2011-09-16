@@ -41,7 +41,7 @@ var Codex=
      // How long it takes a gesture to go from tap to hold
      holdmsecs: 500, edgeclick: 50, pagesize: 250,
      animate: {pages:true,hud: true}, // colbreak: true,
-     updatelocation: true,
+     updatehash: true,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -65,6 +65,7 @@ var Codex=
      min_excerpt: 3, max_excerpt: false,
      focusrules: false,
      UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
+     Debug: {},
      Trace: {
 	 startup: 1,	// Whether to debug startup
 	 config: false,  // Whether to trace config setup/modification/etc
@@ -77,9 +78,9 @@ var Codex=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// How much to trace server interaction
 	 glosses: false,// Whether we're tracing gloss processing
-	 layout: 0,	// How much to trace pagination
+	 layout: 1,	// How much to trace pagination
 	 dosync: false, // Whether to trace state saves
-	 paging: false,	// Whether to trace paging (movement by pages)
+	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0}   // How much to trace gestures
     };
@@ -604,7 +605,7 @@ var sbook_gloss_data=
 	if (Codex.Trace.nav)
 	    fdjtLog("Codex.GoTo() #%o@P%o/L%o %o",
 		    target.id,page,((info)&&(info.starts_at)),target);
-	if ((target.id)&&(Codex.updatelocation))
+	if ((target.id)&&(Codex.updatehash))
 	  setHashID(target);
 	if (info) {
 	    if (typeof info.level === 'number')
