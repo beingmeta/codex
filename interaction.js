@@ -926,15 +926,34 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    offx=evt.clientX-geom.left;}
 	else offx=getOffX(evt);
 	var offwidth=pageinfo.offsetWidth;
-	var goloc=Math.round((offx/offwidth)*Codex.ends_at);
+	var gopage=Math.round((offx/offwidth)*Codex.pagecount);
 	if (Codex.Trace.gestures)
-	    fdjtLog("pageinfo_click %o off=%o/%o goloc=%o/%o",
-		    evt,offx,offwidth,goloc,Codex.ends_at);
+	    fdjtLog("pageinfo_click %o off=%o/%o gopage=%o/%o",
+		    evt,offx,offwidth,gopage,Codex.ends_at);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
-	Codex.GoTo(goloc);
+	Codex.GoToPage(gopage);
 	if ((Codex.mode==="gotoloc")||(Codex.mode==="gotopage"))
 	    CodexMode(false);}
+
+    function pageinfo_hover(evt){
+	var pageinfo=fdjtID("CODEXPAGEINFO"); var offx;
+	if (evt.offsetX) {
+	    // This is the case where we're passed an actual node
+	    //  rather than a real event
+	    var tx=fdjtDOM.getGeometry(fdjtUI.T(evt),pageinfo).left;
+	    offx=evt.offsetX+tx;}
+	else if (evt.pageX) {
+	    var geom=fdjtDOM.getGeometry(pageinfo);
+	    offx=evt.pageX-geom.left;}
+	else if (evt.clientX) {
+	    var geom=fdjtDOM.getGeometry(pageinfo);
+	    offx=evt.clientX-geom.left;}
+	else offx=getOffX(evt);
+	if (!(offx)) return;
+	var offwidth=pageinfo.offsetWidth;
+	var showpage=Math.round((offx/offwidth)*Codex.pagecount)+1;
+	pageinfo.title=fdjtString("%d",showpage);}
     /* This doesn't quite work on the iPad, so we're not currently
        using it. */
     function pageinfo_move(evt){
@@ -953,6 +972,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    ((evt.type==='mousemove')&&((evt.button)||(evt.shiftKey)))) {
 	    if ((typeof page === 'number')&&(page!==Codex.curpage))
 		Codex.GoToPage(page);}}
+    
 
     /* Rules */
 
@@ -981,7 +1001,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 ".sbookmargin": {click: edge_click},
 	 "#CODEXHELP": {click: Codex.UI.dropHUD},
 	 "#CODEXFLYLEAF": {click: flyleaf_tap},
-	 "#CODEXPAGEINFO": {click: pageinfo_click},
+	 "#CODEXPAGEINFO": {click: pageinfo_click, mousemove: pageinfo_hover},
 	 "#CODEXPAGENOTEXT": {click: enterPageNum},
 	 "#CODEXLOCOFF": {click: enterLocation},
 	 "#CODEXSCANNER": {click: scanner_click},
