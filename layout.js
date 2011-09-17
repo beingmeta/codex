@@ -138,10 +138,10 @@ var CodexPaginate=
 	var fakeid_count=1;
 
 	function dupContext(node,page,dups){
-	    if (hasParent(node,page)) return node;
 	    if ((node===document.body)||(hasClass(node,"codexpage"))||
 		(node.id==="CODEXCONTENT"))
 		return false;
+	    else if (hasParent(node,page)) return node;
 	    var id=node.id;
 	    if (!(id)) id=node.id="CODEXFAKEID"+(fakeid_count++);
 	    var dup=dups[id];
@@ -149,16 +149,11 @@ var CodexPaginate=
 	    var parent=dupContext(node.parentNode,page,dups);
 	    var nodeclass=node.className||"";
 	    var copy=node.cloneNode(false);
-	    var copyclass=nodeclass;
-	    copyclass=copyclass.replace(/\bcodexrelocated\b/,"");
-	    copyclass=copyclass.replace(/\bcodexdup.*\b/,"");
-	    if (copyclass.length) copyclass=copyclass+" codexdup";
-	    else copyclass="codexdup";
-	    copyclass=copyclass.replace(/\s+/," ");
-	    copy.className=copyclass;
+	    copy.className=
+		((nodeclass.replace(/\b(codexrelocated|codexdup.*)\b/,""))+
+		 " codexdup").replace(/\s+/," ").trim();
 	    if (nodeclass.search(/\bcodexdupstart\b/)<0)
 		node.className=nodeclass+" codexdupstart";
-	    
 	    if (copy.id) {
 		copy.setAttribute("data-baseid",copy.id);
 		copy.id=null;}
@@ -240,7 +235,7 @@ var CodexPaginate=
 		       (state.trace||0):(Codex.Trace.layout||0));
 	    var texts=((state.texts)||(state.texts={}));
 	    var split_thresh=((state.hasOwnProperty('split_thresh'))?
-			      (state.split_thresh):(state.split_thresh=0.2));
+			      (state.split_thresh):(state.split_thresh=0.1));
 	    if ((typeof split_thresh === 'number') && (split_thresh<1.0)) 
 		split_thresh=Math.ceil(page_height*split_thresh);
 
@@ -366,9 +361,9 @@ var CodexPaginate=
 	/* Pagination support functions */
 	
 	function forceBreakBefore(elt,style){
-	    if ((sbook_tocmajor)&&(elt.id)&&
-		((Codex.docinfo[elt.id]).toclevel)&&
-		(((Codex.docinfo[elt.id]).toclevel)<=sbook_tocmajor))
+	    var info; var tl;
+	    if ((sbook_tocmajor)&&(elt.id)&&(info=Codex.docinfo[elt.id])&&
+		(tl=info.toclevel)&&(tl<=sbook_tocmajor))
 		return true;
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
@@ -414,24 +409,32 @@ var CodexPaginate=
 		return true;
 	    else return false;}
 
-	function progress(info){
+	function progress(info,used,chunks){
 	    var started=info.started;
 	    var pagenum=info.pagenum;
 	    var now=fdjtTime();
 	    if (!(pagenum)) return;
 	    if (!(Codex._setup)) {
-		if (typeof arg === 'number')
-		    Codex.startupMessage("Laid out %d pages so far",arg);
-		else Codex.startupMessage("Finished page layout");}
+		if (info.done) Codex.startupMessage("Finished page layout");
+		else if (info.pagenum)
+		    Codex.startupMessage("Laid out %d pages so far",info.pagenum);
+		else Codex.startupMessage("Preparing for page layout");}
 	    if (info.done)
-		fdjtLog("Done with %d pages after %f seconds",
-			pagenum,fdjtTime.secs2short((now-started)/1000));
+		if (used)
+		    fdjtLog("Done with %d pages after %f seconds (%f running across %d chunks)",
+			    pagenum,fdjtTime.secs2short((now-started)/1000),
+			    fdjtTime.secs2short(used/1000),chunks)
+	    else fdjtLog("Done with %d pages after %f seconds",
+			 pagenum,fdjtTime.secs2short((now-started)/1000));
 	    else if (typeof pagenum === 'number') {
-		fdjtDOM.replace("CODEXPAGEPROGRESS",
-				fdjtDOM("span#CODEXPAGEPROGRESS",pagenum));
-		if (Codex.Trace.layout)
-		    fdjtLog("So far, laid out %d pages in %f seconds",
-			    pagenum,fdjtTime.secs2short((now-started)/1000));}
+		fdjtDOM.replace("CODEXPAGEPROGRESS",fdjtDOM("span#CODEXPAGEPROGRESS",pagenum));
+		if (Codex.Trace.layout) {
+		    if (used)
+			fdjtLog("So far, laid out %d pages in %f seconds (%f running across %d chunks)",
+				pagenum,fdjtTime.secs2short((now-started)/1000),
+				fdjtTime.secs2short(used/1000),chunks);
+		    else fdjtLog("So far, laid out %d pages in %f seconds (%f running across %d chunks)",
+				 pagenum,fdjtTime.secs2short((now-started)/1000));}}
 	    else {}}
 
 	/* Debugging support */
@@ -543,12 +546,12 @@ var CodexPaginate=
 	    var nodes=TOA(content.childNodes);
 	    fdjtTime.slowmap(
 		function(node){newinfo=Paginate(node,newinfo);},nodes,
-		function(state,i,lim,chunks,elapsed,zerostart){
-		    if (state==='suspend') progress(newinfo);
+		function(state,i,lim,chunks,used,zerostart){
+		    if (state==='suspend') progress(newinfo,used,chunks);
 		    else if (state==='done')
 			fdjtLog("PG/laid out %d HTML blocks across %d pages after %dms, taking %fms over %d chunks",
 				newinfo.pagenum,lim,fdjtTime()-zerostart,
-				elapsed,chunks);},
+				used,chunks);},
 		function(){
 		    var dups=newinfo.dups;
 		    var i=0; var lim=dups.length;
@@ -561,7 +564,8 @@ var CodexPaginate=
 		    progress(newinfo);
 		    fdjtID("CODEXPAGE").style.visibility='visible';
 		    Codex.paginated=newinfo;
-		    Codex.pagecount=newinfo.pagenum;});}
+		    Codex.pagecount=newinfo.pagenum;},
+		200,50);}
 	
 	var repaginating=false;
 	Codex.repaginate=function(){
