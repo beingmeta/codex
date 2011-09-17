@@ -926,13 +926,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    offx=evt.clientX-geom.left;}
 	else offx=getOffX(evt);
 	var offwidth=pageinfo.offsetWidth;
-	var goloc=Math.round((offx/offwidth)*Codex.ends_at);
+	var gopage=Math.round((offx/offwidth)*Codex.pagecount);
 	if (Codex.Trace.gestures)
-	    fdjtLog("pageinfo_click %o off=%o/%o goloc=%o/%o",
-		    evt,offx,offwidth,goloc,Codex.ends_at);
+	    fdjtLog("pageinfo_click %o off=%o/%o gopage=%o/%o",
+		    evt,offx,offwidth,gopage,Codex.pagecount);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
-	Codex.GoTo(goloc);
+	Codex.GoToPage(gopage);
 	if ((Codex.mode==="gotoloc")||(Codex.mode==="gotopage"))
 	    CodexMode(false);}
     /* This doesn't quite work on the iPad, so we're not currently
