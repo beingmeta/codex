@@ -41,7 +41,6 @@ Codex.Startup=
 	var sbook_faketouch=false;
 	var sbook_showconsole=true;
 
-	var sbook_fullpages=[];
 	var sbook_heading_qricons=false;
 
 	var https_graphics=
@@ -102,7 +101,10 @@ Codex.Startup=
 		// This initializes the book tools (the HUD, or Heads Up Display)
 		Codex.initHUD,
 		(function(){
-		    initConfig(); CodexMode("help");
+		    // Take any message passed along as a query string
+		    //  and put it in the top of the help window, then
+		    //  display the help window
+		    initConfig();
 		    if (fdjtState.getQuery("congratulations"))
 			fdjtDOM(fdjtID("CODEXINTRO"),
 				fdjtDOM("strong","Congratulations, "),
@@ -115,60 +117,64 @@ Codex.Startup=
 			fdjtDOM(fdjtID("CODEXINTRO"),
 				fdjtDOM("strong","Weird, "),
 				fdjtState.getQuery("weird"));
-		    /*
-		      fdjtDOM.adjustInside
-		      (fdjtID("CODEXHELPBODY"),fdjtID("CODEXHELP"),
-		      5,70,0.95);
-		    */
+		    CodexMode("help");
+		    // Setup the UI components
 		    Codex.setupGestures();}),
+		// Try to figure out if we already have a user
+		// (from pre-loaded loadinfo.js or user.js or stored
+		// in offline storage)
+		// creating a script to load user.js if there isn't
 		getUser,
+		// Scan the DOM for metadata.  THis is surprisingly fast,
+		//  so we don't currently try to timeslice it, though we could
 		function(){
 		    // This scans the DOM.  It would probably be a good
 		    //  idea to do this asynchronously
 		    metadata=new CodexDOMScan(Codex.root);
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
 		    Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;},
-		// Now you're ready to paginate
+		// Now you're ready to lay out the book, which is
+		//  timesliced and runs on its own.  We wait to do
+		//  this until we've scanned the DOM because we may
+		//  use results of DOM scanning in layout.
 		function(){if (Codex.paginate) Codex.repaginate();},
+		// Build the display TOC, both the dynamic (top of
+		// display) and the static (inside the flyleaf)
 		function(){
 		    startupLog("Building table of contents based on %d heads",
 			       Codex.docinfo._headcount);
 		    Codex.setupTOC(metadata[Codex.root.id]);},
-		10,
+		// Read an knowledge bases (knodules) used by the book
 		((Knodule)&&(Knodule.HTML)&&
 		 (Knodule.HTML.Setup)&&(Codex.knodule)&&
 		 (function(){
 		     startupLog("Processing knodule %s",Codex.knodule.name);
 		     Knodule.HTML.Setup(Codex.knodule);})),
-		applyInlineTags,
+		// Index tags for search
 		function(){
-		    startupLog("Indexing tag attributes");
-		    Codex.indexContentTags(metadata);
-		    startupLog("Indexing inline attributes");
-		    Codex.indexInlineTags(Codex.knodule);
+		    startupLog("Indexing tags for search");
+		    applyInlineTags();
+		    startupLog("Indexing tag attributes from the source");
+		    indexContentTags(metadata);
+		    startupLog("Indexing inline (Technorati-style) tags");
+		    indexInlineTags(Codex.knodule);
+		    // This table is generally loaded as part of the book 
 		    if (_sbook_autoindex) {
 			startupLog("Indexing automatic tags");
 			Codex.useAutoIndex(_sbook_autoindex,Codex.knodule);}},
-		function(){startupLog("Setting up tag clouds");},10,
-		function(){initClouds();},
-		function(){startupLog("Configuring gloss server");},10,
-		setupGlossServer,
 		function(){
-		    if (Codex.user) startupLog("Getting glosses");},10,
-		function(){ if (Codex.user) setupGlosses();},
+		    startupLog("Setting up tag clouds"); initClouds();},
 		function(){
-		    if ((Codex.user)&&(!(Codex.glossing))&&(!(Codex.glossed)))
-			startupLog("Getting glosses");},10,
+		    startupLog("Configuring gloss server"); setupGlossServer();},
 		function(){
-		    if ((Codex.user)&&(!(Codex.glossing))&&(!(Codex.glossed)))
-			setupGlosses();},500,
-		function(){
-		    if ((Codex.user)&&(!(Codex.glossing))&&(!(Codex.glossed)))
-			startupLog("Getting glosses");},10,
+		    if (Codex.user) startupLog("Getting glosses");
+		    if (Codex.user) setupGlosses();},
 		function(){
 		    if ((!(Codex.glossing))&&(!(Codex.glossed))) {
 			if (Codex.user) setupGlosses();
 			else gotGlosses();}},
+		// Figure out which mode to start up in, based on
+		// query args to the book.
 		function(){
 		    if ((fdjtState.getQuery("join"))||
 			(fdjtState.getQuery("action"))||
@@ -241,10 +247,12 @@ Codex.Startup=
 	    Codex.offline=((offline)?(true):(false));
 	    if (offline)
 		fdjtState.setLocal("codex.offline("+refuri+")",offline);
+	    
 	    // Get the settings for scanning the document structure
 	    getScanSettings();
-	    // Get the settings for automatic pagination
-	    getPageSettings();
+
+	    // Where to get your images from, especially to keep referenes
+	    //  inside https
 	    if ((Codex.graphics==="http://static.beingmeta.com/graphics/")&&
 		(window.location.protocol==='https:'))
 		Codex.graphics=https_graphics;
@@ -574,17 +582,6 @@ Codex.Startup=
 		Codex.focus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfocus"));
 	    if (fdjtDOM.getMeta("sbooknofocus"))
 		Codex.nofocus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknofocus"));}
-
-	function getPageSettings(){
-	    var tocmajor=fdjtDOM.getMeta("sbook.tocmajor",true);
-	    if (tocmajor) sbook_tocmajor=parseInt(tocmajor);
-	    var sbook_fullpage_rules=fdjtDOM.getMeta("sbookfullpage",true);
-	    if (sbook_fullpage_rules) {
-		var i=0; while (i<sbook_fullpage_rules.length) {
-		    sbook_fullpages.push
-		    (fdjtDOM.Selector(sbook_fullpage_rules[i++]));}}
-	    sbook_fullpages.push
-	    (fdjtDOM.Selector(".sbookfullpage, .titlepage"));}
 
 	function applyMetaClass(name){
 	    var meta=fdjtDOM.getMeta(name,true);

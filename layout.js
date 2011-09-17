@@ -45,6 +45,8 @@ var CodexPaginate=
 	var pagebreakbefore=false;
 	var pagebreakafter=false;
 	
+	var tocmajor=false;
+
 	var pretweak_page_breaks=true;
 
 	var sbook_edge_taps=true;
@@ -96,6 +98,8 @@ var CodexPaginate=
 	Codex.pageSize=function(){return Codex.page.offsetHeight;}
 
 	function readSettings(){
+	    var tocmajor_elt=fdjtDOM.getMeta("sbook.tocmajor",true);
+	    if (tocmajor_elt) tocmajor=parseInt(tocmajor_elt);
 	    sbook_avoidpagebreak=
 		fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
 	    sbook_forcebreakbefore=
@@ -257,8 +261,8 @@ var CodexPaginate=
 		    node=textnode;}
 		else if (node.nodeType!==1) return;
 		var style=getStyle(node);
-		if (forceBreakBefore(node,style)) newPage();
-		else if (forceBreakAfter(prev,prevstyle)) newPage();
+		if (forcedBreakBefore(node,style)) newPage();
+		else if (forcedBreakAfter(prev,prevstyle)) newPage();
 		else {}
 		moveNodeToPage(node,page,dups);
 		var geom=getGeometry(node,page);
@@ -360,10 +364,10 @@ var CodexPaginate=
 
 	/* Pagination support functions */
 	
-	function forceBreakBefore(elt,style){
+	function forcedBreakBefore(elt,style){
 	    var info; var tl;
-	    if ((sbook_tocmajor)&&(elt.id)&&(info=Codex.docinfo[elt.id])&&
-		(tl=info.toclevel)&&(tl<=sbook_tocmajor))
+	    if ((tocmajor)&&(elt.id)&&(info=Codex.docinfo[elt.id])&&
+		(tl=info.toclevel)&&(tl<=tocmajor))
 		return true;
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
@@ -371,7 +375,7 @@ var CodexPaginate=
 		((sbook_forcebreakbefore)&&
 		 (sbook_forcebreakbefore.match(elt)));}
 
-	function forceBreakAfter(elt,style){ 
+	function forcedBreakAfter(elt,style){ 
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
 	    return (style.pageBreakAfter==='always')||
@@ -446,8 +450,8 @@ var CodexPaginate=
 		((at_top)?"/top":"")+
 		((break_after)?"/breaknext":"")+
 		((force_break)?"/forced":"")+
-		((forceBreakBefore(elt,style))?"/fbb":"")+
-		((forceBreakAfter(elt,style))?"/fba":"")+
+		((forcedBreakBefore(elt,style))?"/fbb":"")+
+		((forcedBreakAfter(elt,style))?"/fba":"")+
 		((avoidBreakInside(elt,style))?"/abi":"")+
 		((avoidBreakBefore(elt,style))?"/abb":"")+
 		((avoidBreakAfter(elt,style))?"/aba":"")+
@@ -523,9 +527,11 @@ var CodexPaginate=
 	Codex.displaySync=displaySync;
 
 	/* External refs */
-	Paginate.forceBreakBefore=forceBreakBefore;
+	Paginate.forcedBreakBefore=forcedBreakBefore;
+	Paginate.forceBreakBefore=forcedBreakBefore;
 	Paginate.avoidBreakInside=avoidBreakInside;
-	Paginate.forceBreakAfter=forceBreakAfter;
+	Paginate.forcedBreakAfter=forcedBreakAfter;
+	Paginate.forceBreakAfter=forcedBreakAfter;
 	Paginate.avoidBreakAfter=avoidBreakAfter;
 	Paginate.avoidBreakBefore=avoidBreakBefore;
 	Paginate.debug=debug_pagination;
@@ -564,7 +570,11 @@ var CodexPaginate=
 		    progress(newinfo);
 		    fdjtID("CODEXPAGE").style.visibility='visible';
 		    Codex.paginated=newinfo;
-		    Codex.pagecount=newinfo.pagenum;},
+		    Codex.pagecount=newinfo.pagenum;
+		    if (Codex.pagewait) {
+			var fn=Codex.pagewait;
+			Codex.pagewait=false;
+			fn();}},
 		200,50);}
 	
 	var repaginating=false;
