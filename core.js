@@ -63,8 +63,13 @@ var Codex=
      mouse: true,touch: false,kbd: false,
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
-     focusrules: false,
-     UI: {handlers: {mouse: {}, kbd: {}, ios: {}}},
+     // How many past page layouts to cache
+     cachelayouts: 0,
+     // Various handlers, settings, and status information for the
+     // Codex interface
+     UI: {
+	 // This maps device types into sets of node->event handlers
+	 handlers: {mouse: {}, kbd: {}, ios: {}}},
      Debug: {},
      Trace: {
 	 startup: 1,	// Whether to debug startup
@@ -78,7 +83,7 @@ var Codex=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// How much to trace server interaction
 	 glosses: false,// Whether we're tracing gloss processing
-	 layout: 0,	// How much to trace pagination
+	 layout: 1,	// How much to trace pagination
 	 dosync: false, // Whether to trace state saves
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
