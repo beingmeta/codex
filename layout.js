@@ -122,19 +122,19 @@ var CodexPaginate=
 	    var book_len=Codex.ends_at;
 	    pbar.style.left=(100*((pagenum-1)/npages))+"%";
 	    pbar.style.width=(100/npages)+"%";
-	    var locoff=fdjtDOM
-	    ("span.locoff#CODEXLOCOFF","L"+Math.floor(location/128));
-	    var pageno_text=fdjtDOM
-	    ("span#CODEXPAGENOTEXT.pageno",pagenum,"/",npages);
+	    var locoff=fdjtDOM(
+		"span.locoff#CODEXLOCOFF","L"+Math.floor(location/128));
+	    var pageno_text=fdjtDOM(
+		"span#CODEXPAGENOTEXT.pageno",pagenum,"/",npages);
 	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
 	    fdjtDOM.replace("CODEXPAGENO",pageno);
 	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
 	    locoff.title="click to jump to a particular location";
-	    fdjtDOM.addListeners
-	    (locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCOFF"]);
+	    fdjtDOM.addListeners(
+		locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCOFF"]);
 	    pageno_text.title="click to jump to a particular page";
-	    fdjtDOM.addListeners
-	    (pageno_text,Codex.UI.handlers[Codex.ui]["#CODEXPAGENOTEXT"]);}
+	    fdjtDOM.addListeners(
+		pageno_text,Codex.UI.handlers[Codex.ui]["#CODEXPAGENOTEXT"]);}
 
 	
 	/* Pagination */
@@ -541,7 +541,8 @@ var CodexPaginate=
 	function repaginate(){
 	    var moved=TOA(document.getElementsByClassName("codexrelocated"));
 	    var i=0; var lim=moved.length;
-	    while (i<lim) restoreNode(moved[i++]);
+	    var oldinfo=Codex.paginated;
+	    while (i<lim) restoreNode(moved[i++],oldinfo);
 	    dropClass(document.body,"codexscrollview");
 	    addClass(document.body,"codexpageview");
 	    fdjtID("CODEXPAGE").style.visibility='hidden';

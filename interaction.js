@@ -908,28 +908,18 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    return;}}
 
     function pageinfo_click(evt){
-	var pageinfo=fdjtID("CODEXPAGEINFO"); var offx;
+	var pageinfo=fdjtID("CODEXPAGEINFO");
 	if ((Codex.hudup)||(Codex.mode)) {
 	    fdjtUI.cancel(evt);
 	    CodexMode(false);
 	    return;}
-	if (evt.offsetX) {
-	    // This is the case where we're passed an actual node
-	    //  rather than a real event
-	    var tx=fdjtDOM.getGeometry(fdjtUI.T(evt),pageinfo).left;
-	    offx=evt.offsetX+tx;}
-	else if (evt.pageX) {
-	    var geom=fdjtDOM.getGeometry(pageinfo);
-	    offx=evt.pageX-geom.left;}
-	else if (evt.clientX) {
-	    var geom=fdjtDOM.getGeometry(pageinfo);
-	    offx=evt.clientX-geom.left;}
-	else offx=getOffX(evt);
+	var offx=evt.offsetX;
 	var offwidth=pageinfo.offsetWidth;
-	var gopage=Math.round((offx/offwidth)*Codex.pagecount);
-	if (Codex.Trace.gestures)
-	    fdjtLog("pageinfo_click %o off=%o/%o gopage=%o/%o",
-		    evt,offx,offwidth,gopage,Codex.ends_at);
+	var gopage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
+	if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
+	    fdjtLog("pageinfo_click %o off=%o/%o=%o gopage=%o/%o",
+		    evt,offx,offwidth,offx/offwidth,
+		    gopage,Codex.pagecount);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
 	Codex.GoToPage(gopage);
@@ -937,22 +927,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(false);}
 
     function pageinfo_hover(evt){
-	var pageinfo=fdjtID("CODEXPAGEINFO"); var offx;
-	if (evt.offsetX) {
-	    // This is the case where we're passed an actual node
-	    //  rather than a real event
-	    var tx=fdjtDOM.getGeometry(fdjtUI.T(evt),pageinfo).left;
-	    offx=evt.offsetX+tx;}
-	else if (evt.pageX) {
-	    var geom=fdjtDOM.getGeometry(pageinfo);
-	    offx=evt.pageX-geom.left;}
-	else if (evt.clientX) {
-	    var geom=fdjtDOM.getGeometry(pageinfo);
-	    offx=evt.clientX-geom.left;}
-	else offx=getOffX(evt);
+	var pageinfo=fdjtID("CODEXPAGEINFO");
+	var offx=evt.offsetX;
 	if (!(offx)) return;
 	var offwidth=pageinfo.offsetWidth;
-	var showpage=Math.round((offx/offwidth)*Codex.pagecount);
+	var showpage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
 	pageinfo.title=fdjtString("%d",showpage);}
     /* This doesn't quite work on the iPad, so we're not currently
        using it. */
