@@ -313,11 +313,16 @@ var CodexPaginate=
 		var i=0; var lim=words.length; var wordnodes=[];
 		while (i<lim) {
 		    var word=words[i++];
-		    if (word.search(/\S/)<0) {
+		    if (word.search(/\w/)<0) {
+			// If the word contains no 'real' (alnum+_) characters
+			//  just keep it on this page
 			var wordnode=document.createTextNode(word);
 			node.appendChild(wordnode);
 			wordnodes.push(wordnode);}
 		    else {
+			// If the word contains some 'real'
+			//  characters, try to put it on this page and
+			//  see if it overflows.
 			var wordnode=document.createTextNode(word);
 			node.appendChild(wordnode);
 			var geom=getGeometry(node);
