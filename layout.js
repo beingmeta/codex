@@ -483,21 +483,21 @@ var CodexPaginate=
 	var curpage=false;
 
 	function getPageElt(spec) {
+	    var node;
 	    if (!(spec)) return false;
+	    else if (typeof spec === 'number')
+		return fdjtID("CODEXPAGE"+spec);
 	    else if (spec.nodeType) {
 		if (hasClass(spec,"codexpage")) return spec;
-		else return getParent(spec,".codexpage");}
-	    else if (typeof spec === 'number') {
-		var pageid="CODEXPAGE"+spec;
-		return document.getElementById(pageid);}
-	    else if (typeof spec === "string") {
-		if (document.getElementById(spec))
-		    return getPageElt(document.getElementById(spec));
-		else return getPageElt(document.getElementById("CODEXPAGE"+spec));}
-	    else return false;}
+		else return getParent(spec,"codexpage");}
+	    else if (typeof spec === "string")
+		return getPageElt(fdjtID(spec));
+	    else {
+		fdjtLog("Can't determine page from %o",spec);
+		return false;}}
 
 	function GoToPage(spec,caller){
-	    var page=getPageElt(spec);
+	    var page=getPageElt(spec)||fdjtID("CODEXPAGE1");
 	    var pagenum=parseInt(page.getAttribute("data-pagenum"));
 	    if (Codex.Trace.flips)
 		fdjtLog("GoToPage/%s Flipping to %o (%d) for %o",
@@ -512,13 +512,13 @@ var CodexPaginate=
 	Codex.GoToPage=GoToPage;
 	
 	function getPage(elt){
-	    var page=getPageElt(elt);
+	    var page=getPageElt(elt)||fdjtID("CODEXPAGE1");
 	    return parseInt(page.getAttribute("data-pagenum"));}
 	Codex.getPage=getPage;
 	
 	function getPageAt(loc){
 	    var elt=Codex.resolveLocation(loc);
-	    return getPage(elt);}
+	    return getPage(elt)||fdjtID("CODEXPAGE1");}
 	Codex.getPageAt=getPageAt;
 	
 	function displaySync(){
