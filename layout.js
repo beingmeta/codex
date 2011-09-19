@@ -179,8 +179,11 @@ var CodexPaginate=
 	    if (node.nodeType===1) classname=node.className;
 	    else if (node.nodeType===3) {
 		// Wrap text nodes in a span before moving
-		node=fdjtDOM("span.codextext",node.nodeValue);
-		classname="codextext";}
+		var tempnode=fdjtDOM("span.codextext");
+		node.parentNode.replaceChild(tempnode,node);
+		tempnode.appendChild(node);
+		classname="codextext";
+		node=tempnode;}
 	    if (!(node.getAttribute("data-codexorigin"))) {
 		// Record origin information to revert before repagination
 		var origin=fdjtDOM("span.codexorigin");
@@ -268,7 +271,7 @@ var CodexPaginate=
 		var classname=node.className;
 		if (trace>2) fdjtLog("PG/loop %o g=%j",node,geom);
 		if ((geom.bottom>page_height))
-		    forceBreak(node,geom,style);
+		    return forceBreak(node,geom,style);
 		else if (trace>2)
 		    fdjtLog("PG/placed %o on %o",node,page);
 		else {}
@@ -292,14 +295,14 @@ var CodexPaginate=
 		    loop(node);}
 		else if (hasClass(node,/\bcodextext\w*\b/)) {
 		    if (trace>2) fdjtLog("PG/splittext %o g=%j",node,geom);
-		    splitText(node);}
-		else if ((style.display==='block')||
-			 (style.display==='table')) { 
-		    if (trace>2) fdjtLog("PG/descend %o g=%j",node,geom);
-		    splitChildren(node);}
+		    splitNode(node);}
+		else if (style.display!=='inline') { 
+		    if (trace>2) fdjtLog("PG/splitnode %o g=%j",node,geom);
+		    splitNode(node);}
 		else {
 		    if (trace>1) fdjtLog("PG/forced %o g=%j",node,geom);
-		    newPage(node);}}
+		    newPage(node);}
+		prev=node; prevstyle=style;}
 	    function newPage(node){
 		if ((page)&&(!(hasContent(page,true)))) return page;
 		if (page) dropClass(page,"curpage");
@@ -320,96 +323,110 @@ var CodexPaginate=
 		state.prevstyle=prevstyle=false;
 		return page;}
 
-	    function splitChildren(node){
-		var children=TOA(node.childNodes);
-		var i=0; var n=children.length;
-		if (trace>2) fdjtLog("PG/splitChildren (%d) %o",n,node);
-		while (i<n) loop(children[i++]);}
+	    // New model:
+	    //  We can't get the geometry of inline or text elements, so we proceed as follows:
+	    //   loop should never be called on a text or inline element
+	    //   when called on a node which is split over the bottom of the page,
+	    //    call getBreakNode to get the loopable node which is athwart
+	    //      the bottom of the page; if the break occurs in the content
+	    //      between two block level elements, that content is aggregated into
+	    //      a codexrun div.
 
-	    function splitText(node,block){
-		// To split a text node, we copy and remove its
-		//  content, walking through the content word by word
-		//  to try and push the node over the edge of page.
-		// Whitespace and punctuation are just added to
-		// the current node,
-		var textnode=node.childNodes[0];
-		var text=textnode.nodeValue;
-		var words=text.split(/\b/g);
-		if (trace>2)
-		    fdjtLog("PG/splitText (%d chars/%d words) %o",
-			    text.length,words.length,node);
-		if (words.length<2) return newPage(node);
-		node.removeChild(textnode);
-		var i=0; var lim=words.length;
-		var wordnodes=[]; var wordtexts=[];
-		var word=words[0];
-		while (i<lim) {
-		    var runstart=i; var word=words[i++]; var run=word;
-		    // Accumulate whitespace and punctuation into the 'word'
-		    while ((i<lim)&&(words[i].search(/\w/)<0)) run=run+words[i++];
-		    // Add the textnode back, check geometry
-		    var wordnode=document.createTextNode(run);
-		    node.appendChild(wordnode); var geom=getGeometry(node);
-		    if (geom.bottom>page_height) {
-			// If we overflowed, remove the node, go to runstart,
-			// and break, use i to distinguish cases
-			if (trace>2) fdjtLog("PG/splitText %o@%d: %s '%s'",
-					     runstart,word,run);
-			node.removeChild(wordnode); i=runstart; break;}
-		    else {
-			// Normally, just save the nodes and the runtext
-			wordnodes.push(wordnode);
-			wordtexts.push(run);}}
-		// In any case, remove all the little text nodes
-		var j=0; var jlim=wordnodes.length;
-		while (j<jlim) node.removeChild(wordnodes[j++]);
-		if (i===0) {
-		    // If we didn't get anywhere, just push the whole text node over
-		    node.appendChild(textnode);
-		    newPage(node);}
-		else if (i<lim) {
-		    // If we have a 'split decision' (sorry), we create strings
-		    //  for each page
-		    var before=wordtexts.join("");
-		    var after=words.slice(i).join("");
-		    node.appendChild(document.createTextNode(before));
-		    var newnode=fdjtDOM("span.codextextcont",after);
-		    // If we end up splitting a node, we store the whole text
-		    //  in the 'texts' table for later recovery.
-		    var originid=node.getAttribute("data-codexorigin");
-		    // We use an originid to identify the bunch of text we're splitting
-		    // for reverting to the original (before repagination).
-		    if (!(originid)) originid=node.id="CODEXORIGIN"+(codex_reloc_serial++);
-		    texts[originid]=textnode;
-		    addClass(node,'codextextsplit');
-		    addClass(newnode,'codextextcont');
-		    fdjtDOM.insertAfter(node,newnode);
-		    // We call loop, which may split newnode further as needed
-		    return loop(newnode);}
-		else if (i===lim) {
-		    // We reached the end but we're still on the page,
-		    // so we keep the text node as it was.
-		    node.appendChild(textnode);}
-		else {}}
+	    function getBreakNode(node){
+		var geom=getGeometry(node,page);
+		if (geom.bottom<page_height) return false;
+		else if (geom.top>page_height) return true;
+		else {
+		    var children=node.childNodes;
+		    var i=0; var n=children.length; var runstart=0;
+		    while (i<n) {
+			var child=children[i]; var disp, broke;
+			if (child.nodeType!==1) i++;
+			else if ((disp=displayStyle(child))==='inline') i++;
+			else if (avoidBreakInside(child)) return child;
+			else if (disp==='block') {
+			    var broke=getBreakNode(child);
+			    if (!(broke)) {i++; runstart=i;}
+			    else if (broke.nodeType) return broke;
+			    else if (run) {
+				var run=[];
+				var runblock=fdjtDOM("div.codexrun");
+				while (runstart<i) run.push(children[runstart++]);
+				var j=0; var jlim=run.length;
+				fdjtDOM.replace(run[0],runblock);
+				while (j<jlim) runblock.appendChild(run[j++]);
+				return runblock;}
+			    else return child;}
+			else i++;}
+		    return node;}}
 	    
-	    function getBlockBreak(node){
-		if ((node.nodeType===1)&&(getDisplayStyle(node)==='block')) {
-		    var geom=getGeometry(node);
-		    if (geom.bottom<page_height) return false;
-		    else if (geom.top>page_height) return true;
+	    function splitNode(node){
+		var children=TOA(node.childNodes);
+		var i=children.length-1;
+		while (i>=0) node.removeChild(children[i--]);
+		var geom=getGeometry(node);
+		if (geom.bottom>page_height) {
+		    // If the empty version overlaps, just start a new page on the node
+		    i=0; var n=children.length; while (i<n) node.appendChild(children[i++]);
+		    newPage(node);
+		    // danger of infinite recursion?
+		    loop(node);}
+		i=0; var n=children.length; while (i<n) {
+		    var child=children[i++];
+		    if (child.nodeType!==3) {
+			// If it's just a node, append it, don't try to split it
+			//     (this is fine because we presume that we called getBreakNode
+			//      to get the smallest block to split)
+			node.appendChild(child);
+			geom=getGeometry(node);}
 		    else {
-			var children=node.childNodes;
-			var i=0; var n=children.length;
-			while (i<n) {
-			    var child=children[i++];
-			    if (child.nodeType===1) {
-				var broke=getBlockBreak(child);
-				if (!(broke)) continue;
-				else if (broke.nodeType) return broke;
-				else return node;}
-			    else continue;}
-			return node;}}
-		else return node;}
+			// This is where we split a text block by breaking it into words.
+			//  We might try handling hyphens and soft hyphens here in the future.
+			var textnode=child; var probenode=child;
+			// The main idea is that we add words until we go over the edge and
+			// then we split off the remaining text into an extra node at the top
+			// of the new page.
+			node.appendChild(probenode);
+			geom=getGeometry(node);
+			// This is the case where the text node as a whole doesn't put us over
+			// the edge, so we don't need to try splitting it apart
+			if (geom.bottom<page_height) {i++; continue;}
+			// Okay, we're going to go all Sweeney Todd and chop the text into
+			// pieces to make it fit.
+			var text=textnode.nodeValue;
+			var words=text.split(/\b/g);
+			// If there aren't any words to try, we pretty much need to break on
+			// this text node by itself (long word?), so we just fall through the
+			// conditional; a new page will start with the text node at its head.
+			if (words.length>=2) {
+			    var w=0; var wlen=words.length;
+			    while (w<wlen) {
+				// Probe with a string including the word that starts at 'w'
+				var wordstart=w++;
+				while ((w<wlen)&&(words[w].search(/\w/)<0)) w++;
+				var newprobe=document.createTextNode(words.slice(0,w).join(""));
+				node.replaceChild(newprobe,probenode); probenode=newprobe;
+				geom=getGeometry(node);
+				if (geom.bottom>page_height) { // Over the edge! Wheeeeeeee!
+				    if (wordstart===0) {
+					// Break the whole thing
+					node.replaceChild(textnode,probenode);
+					break;}
+				    // fitsnode is on this page, remainder will be on the next
+				    var remainder=document.createTextNode(
+					words.slice(wordstart).join(""));
+				    var fullnode=fdjtDOM(
+					"span.codextext",words.slice(0,wordstart).join(""));
+				    fullnode.id="CODEXORIGIN"+(codex_reloc_serial++);
+				    texts[fullnode.id]=textnode;
+				    node.replaceChild(fullnode,probenode);
+				    fdjtDOM.insertAfter(fullnode,remainder);
+				    child=remainder;
+				    break;}}}}
+		    if (geom.bottom>page_height) {
+			newPage(child); var dup=child.parentNode;
+			while (i<n) dup.appendChild(children[i++]);
+			return loop(dup);}}}
 
 	    loop(root);
 	    
