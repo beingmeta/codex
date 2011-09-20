@@ -62,6 +62,7 @@ var CodexPaginate=
 	var isEmpty=fdjtString.isEmpty;
 	var hasContent=fdjtDOM.hasContent;
 	var getGeometry=fdjtDOM.getGeometry;
+	var getDisplay=fdjtDOM.getDisplay;
 	var hasParent=fdjtDOM.hasParent;
 	var getParent=fdjtDOM.getParent;
 	var getStyle=fdjtDOM.getStyle;
@@ -171,15 +172,19 @@ var CodexPaginate=
 
 	var codex_reloc_serial=1;
 	
-	function moveNode(node,into){
-	    var classname;
+	function moveNode(arg,into,blockp){
+	    var classname; var node=arg;
 	    // If we're moving a first child, we might as well move the parent
-	    while (node===node.parentNode.firstChild)
+	    if (hasParent(node,into)) return node;
+	    while ((node.parentNode)&&(node===node.parentNode.firstChild)&&
+		   (node.parentNode!==document.body)&&
+		   (node.parentNode!==Codex.content)&&
+		   (!(hasClass(node.parentNode,"codexpage"))))
 		node=node.parentNode;
 	    if (node.nodeType===1) classname=node.className;
 	    else if (node.nodeType===3) {
 		// Wrap text nodes in a span before moving
-		var tempnode=fdjtDOM("span.codextext");
+		var tempnode=fdjtDOM(((blockp)?"div.codextext":"span.codextext"));
 		node.parentNode.replaceChild(tempnode,node);
 		tempnode.appendChild(node);
 		classname="codextext";
@@ -192,6 +197,7 @@ var CodexPaginate=
 		else node.className="codexrelocated";
 		node.setAttribute("data-codexorigin",id);
 		node.parentNode.replaceChild(origin,node);}
+	    // fdjtLog("moveNode %o into %o",node,into);
 	    into.appendChild(node);
 	    return node;}
 	
@@ -201,15 +207,17 @@ var CodexPaginate=
 		var info=Codex.docinfo[node.id];
 		page.setAttribute("data-topid",node.id);
 		page.setAttribute("data-sbookloc",info.starts_at);}
-	    if (hasParent(node,page)) return;
+	    // fdjtLog("moveNodetoPage(%o,%o)",node,page);
+	    if (hasParent(node,page)) return node;
 	    var parent=node.parentNode;
 	    if ((!(parent)) || (parent===document.body) ||
-		(parent.id==="CODEXCONTENT") ||
+		(parent===Codex.content) ||
 		(hasClass(parent,"codexpage")))
-		moveNode(node,page);
+		// You don't need to dup the parent on the new page
+		return moveNode(node,page);
 	    else {
-		var adoptive=dupContext(parent,page,dups);
-		moveNode(node,adoptive||page);}}
+		var dup_parent=dupContext(parent,page,dups);
+		return moveNode(node,dup_parent||page);}}
 
 	function restoreNode(node,info){
 	    var originid=node.getAttribute("data-codexorigin");
@@ -255,178 +263,127 @@ var CodexPaginate=
 		state.pagerule=pagerule;}
 
 	    function loop(node){
-		if (node.nodeType===3) {
-		    var textnode=fdjtDOM("span.codextext");
-		    node.parentNode.replaceChild(textnode,node);
-		    textnode.appendChild(node);
-		    moveNodeToPage(node,page,dups);
-		    node=textnode;}
-		else if (node.nodeType!==1) return;
-		var style=getStyle(node);
-		if (forcedBreakBefore(node,style)) newPage();
-		else if (forcedBreakAfter(prev,prevstyle)) newPage();
-		else {}
-		moveNodeToPage(node,page,dups);
-		var geom=getGeometry(node,page);
-		var classname=node.className;
-		if (trace>2) fdjtLog("PG/loop %o g=%j",node,geom);
-		if ((geom.bottom>page_height))
-		    return forceBreak(node,geom,style);
-		else if (trace>2)
-		    fdjtLog("PG/placed %o on %o",node,page);
-		else {}
-		prev=node; prevstyle=style;}
-	    function forceBreak(node,geom,style){
-		if ((style.pageBreakInside==='avoid')) {
-		    // If we're avoiding a break here, we just make the break happen
-		    if ((avoidBreakBefore(node,style))||
-			((prev)&&(avoidBreakAfter(prev,prevstyle)))) {
-			if (trace>1) fdjtLog("PG/keep/forceprev %o g=%j",node,geom);
-			newPage(prev); loop(node);}
-		    else {
-			if (trace>1) fdjtLog("PG/keep/forced %o g=%j",node,geom);
-			// This won't try to split 'node' any further
-			// (which it shouldn't), so you might get an
-			// overflow for really big nodes.
-			newPage(node);}}
-		else if ((split_thresh)&&((geom.top+split_thresh)>page_height)) {
-		    if (trace>2) fdjtLog("PG/forceblock %o g=%j",node,geom);
-		    newPage();
-		    loop(node);}
-		else if (hasClass(node,/\bcodextext\w*\b/)) {
-		    if (trace>2) fdjtLog("PG/splittext %o g=%j",node,geom);
-		    splitNode(node);}
-		else if (style.display!=='inline') { 
-		    if (trace>2) fdjtLog("PG/splitnode %o g=%j",node,geom);
-		    splitNode(node);}
-		else {
-		    if (trace>1) fdjtLog("PG/forced %o g=%j",node,geom);
-		    newPage(node);}
-		prev=node; prevstyle=style;}
-	    function newPage(node){
-		if ((page)&&(!(hasContent(page,true)))) return page;
-		if (page) dropClass(page,"curpage");
-		state.page=page=fdjtDOM("div.codexpage.curpage");
-		pagenum++; state.pagenum=pagenum;
-		page.id="CODEXPAGE"+(pagenum);
-		page.setAttribute("data-pagenum",pagenum);
-		fdjtDOM(pages,page);
+		var blocks=[], terminals=[];
+		node=moveNodeToPage(node,page,dups);
+		gatherBlocks(node,blocks,terminals);
+		var i=0, n=blocks.length;
+		while (i<n) {
+		    var block=blocks[i]; var terminal=terminals[i]||false;
+		    if ((forcedBreakBefore(block))&&(page.childNodes.length))
+			newPage(block);
+		    else moveNodeToPage(block,page,dups);
+		    var geom=getGeometry(block,page);
+		    if (trace>2) fdjtLog("Layout/loop %o %j",block,geom);
+		    if ((terminal)&&(geom.bottom>page_height)) {
+			if (geom.top>page_height) newPage(block);
+			// Just ignore it if it's broke
+			else if (hasClass(block,"codexbroke")) i++;
+			else blocks[i]=splitBlock(block);}
+		    else i++;}}
 
+	    function gatherBlocks(node,blocks,terminals){
+		if (node.nodeType!==1) return;
+		var disp=getDisplay(node);
+		if (disp!=='inline') {
+		    var loc=blocks.length; blocks.push(node); 
+		    if (avoidBreakInside(node)) terminals[loc]=true;
+		    else if ((disp==='block')||(disp==='table')) {
+			var children=node.childNodes;
+			var total_blocks=blocks.length;
+			var i=0; var len=children.length;
+			while (i<len) {gatherBlocks(children[i++],blocks,terminals);}
+			if (blocks.length==total_blocks) terminals[loc]=true;}
+		    else terminals[loc]=true;}}
+
+	    function newPage(node){
+		var newpage="pagetop";
+		if (!(((page)&&(!(hasContent(page,true))))||
+		      ((page)&&(page.firstChild===node)))) {
+		    if (page) dropClass(page,"curpage");
+		    state.page=page=fdjtDOM("div.codexpage.curpage");
+		    pagenum++; state.pagenum=pagenum;
+		    page.id="CODEXPAGE"+(pagenum);
+		    page.setAttribute("data-pagenum",pagenum);
+		    fdjtDOM(pages,page);
+		    newpage="newpage";}
+		
+		if (trace>1) {
+		    if (node) fdjtLog("Layout/%s %o at %o",newpage,page,node);
+		    else fdjtLog("Layout/%s %o",newpage,page);}
+		
 		if (node) moveNodeToPage(node,page,dups);
 
-		if (trace>1) {
-		    if (node)
-			fdjtLog("PG/newpage %o at %o",page,node);
-		    else fdjtLog("PG/newpage %o",page);}
-		    
 		state.prev=prev=false;
 		state.prevstyle=prevstyle=false;
 		return page;}
 
-	    // New model:
-	    //  We can't get the geometry of inline or text elements, so we proceed as follows:
-	    //   loop should never be called on a text or inline element
-	    //   when called on a node which is split over the bottom of the page,
-	    //    call getBreakNode to get the loopable node which is athwart
-	    //      the bottom of the page; if the break occurs in the content
-	    //      between two block level elements, that content is aggregated into
-	    //      a codexrun div.
-
-	    function getBreakNode(node){
-		var geom=getGeometry(node,page);
-		if (geom.bottom<page_height) return false;
-		else if (geom.top>page_height) return true;
-		else {
-		    var children=node.childNodes;
-		    var i=0; var n=children.length; var runstart=0;
-		    while (i<n) {
-			var child=children[i]; var disp, broke;
-			if (child.nodeType!==1) i++;
-			else if ((disp=displayStyle(child))==='inline') i++;
-			else if (avoidBreakInside(child)) return child;
-			else if (disp==='block') {
-			    var broke=getBreakNode(child);
-			    if (!(broke)) {i++; runstart=i;}
-			    else if (broke.nodeType) return broke;
-			    else if (run) {
-				var run=[];
-				var runblock=fdjtDOM("div.codexrun");
-				while (runstart<i) run.push(children[runstart++]);
-				var j=0; var jlim=run.length;
-				fdjtDOM.replace(run[0],runblock);
-				while (j<jlim) runblock.appendChild(run[j++]);
-				return runblock;}
-			    else return child;}
-			else i++;}
-		    return node;}}
-	    
-	    function splitNode(node){
+	    function splitBlock(node){
+		if (avoidBreakInside(node)) {
+		    if (page.firstChild===node) addClass(node,"codexbroke");
+		    else newPage(node);
+		    return node;}
 		var children=TOA(node.childNodes);
 		var i=children.length-1;
 		while (i>=0) node.removeChild(children[i--]);
 		var geom=getGeometry(node);
 		if (geom.bottom>page_height) {
-		    // If the empty version overlaps, just start a new page on the node
-		    i=0; var n=children.length; while (i<n) node.appendChild(children[i++]);
+		    // If the empty version overlaps, just start a new
+		    // page on the node after restoring all the children
+		    i=0; var n=children.length;
+		    while (i<n) node.appendChild(children[i++]);
 		    newPage(node);
-		    // danger of infinite recursion?
-		    loop(node);}
-		i=0; var n=children.length; while (i<n) {
+		    return node;}
+		var page_top=false; i=0; var n=children.length;
+		while (i<n) {
 		    var child=children[i++];
-		    if (child.nodeType!==3) {
-			// If it's just a node, append it, don't try to split it
-			//     (this is fine because we presume that we called getBreakNode
-			//      to get the smallest block to split)
-			node.appendChild(child);
-			geom=getGeometry(node);}
-		    else {
-			// This is where we split a text block by breaking it into words.
-			//  We might try handling hyphens and soft hyphens here in the future.
-			var textnode=child; var probenode=child;
-			// The main idea is that we add words until we go over the edge and
-			// then we split off the remaining text into an extra node at the top
-			// of the new page.
-			node.appendChild(probenode);
-			geom=getGeometry(node);
-			// This is the case where the text node as a whole doesn't put us over
-			// the edge, so we don't need to try splitting it apart
-			if (geom.bottom<page_height) {i++; continue;}
-			// Okay, we're going to go all Sweeney Todd and chop the text into
-			// pieces to make it fit.
-			var text=textnode.nodeValue;
-			var words=text.split(/\b/g);
-			// If there aren't any words to try, we pretty much need to break on
-			// this text node by itself (long word?), so we just fall through the
-			// conditional; a new page will start with the text node at its head.
-			if (words.length>=2) {
-			    var w=0; var wlen=words.length;
+		    node.appendChild(child);
+		    geom=getGeometry(node);
+		    if (geom.bottom>page_height) { // Over the edge
+			if ((child.nodeType===3)||
+			    ((child.nodeType===1)&&(hasClass(child,"codextext")))) {
+			    // If it's text, split it into words
+			    var text=((child.nodeType===3)?(child.nodeValue):
+				      (child.firstChild.nodeValue));
+			    var words=text.split(/\b/g);
+			    var probenode=child;
+			    // If there's only one word, no splitting today,
+			    //  just push the node itself onto the next page
+			    if (words.length<2) {page_top=child; break;}
+			    // Try to find where the page should break
+			    var w=0; var wlen=words.length; var wordstart;
 			    while (w<wlen) {
-				// Probe with a string including the word that starts at 'w'
-				var wordstart=w++;
+				wordstart=w++;
 				while ((w<wlen)&&(words[w].search(/\w/)<0)) w++;
-				var newprobe=document.createTextNode(words.slice(0,w).join(""));
-				node.replaceChild(newprobe,probenode); probenode=newprobe;
+				var newprobe=document.createTextNode(
+				    words.slice(0,w).join(""));
+				node.replaceChild(newprobe,probenode);
+				probenode=newprobe;
 				geom=getGeometry(node);
-				if (geom.bottom>page_height) { // Over the edge! Wheeeeeeee!
-				    if (wordstart===0) {
-					// Break the whole thing
-					node.replaceChild(textnode,probenode);
-					break;}
-				    // fitsnode is on this page, remainder will be on the next
-				    var remainder=document.createTextNode(
-					words.slice(wordstart).join(""));
-				    var fullnode=fdjtDOM(
-					"span.codextext",words.slice(0,wordstart).join(""));
-				    fullnode.id="CODEXORIGIN"+(codex_reloc_serial++);
-				    texts[fullnode.id]=textnode;
-				    node.replaceChild(fullnode,probenode);
-				    fdjtDOM.insertAfter(fullnode,remainder);
-				    child=remainder;
-				    break;}}}}
-		    if (geom.bottom>page_height) {
-			newPage(child); var dup=child.parentNode;
-			while (i<n) dup.appendChild(children[i++]);
-			return loop(dup);}}}
+				if (geom.bottom>page_height) break;}
+			    if ((wordstart===0)||(wordstart===wlen)) {
+				node.replaceChild(child,probenode);
+				page_top=child;}
+			    else {
+				var keep=document.createTextNode(
+				    words.slice(0,wordstart).join(""));
+				page_top=document.createTextNode(
+				    words.slice(wordstart).join(""));
+				node.replaceChild(keep,probenode);
+			    	fdjtDOM.insertAfter(keep,page_top);
+				// Save texts we've split for restoration before repaginating
+				if ((child.nodeType===1)&&(child.getAttribute("data-codexorigin"))) {
+				    var originid=child.getAttribute("data-codexorigin");
+				    texts[originid]=child.firstChild;}}}
+			// If it's an element, just push it over; this
+			// could be more clever for inline elements
+			else {page_top=child; break;}}
+		    else continue;}
+		newPage(page_top); var dup=page_top.parentNode;
+		while (i<n) dup.appendChild(children[i++]);
+		if (trace>1)
+		    fdjtLog("Layout/splitBlock %o @ %o into %o on %o",
+			    node,page_top,dup,page);
+		return dup;}
 
 	    loop(root);
 	    
@@ -462,7 +419,7 @@ var CodexPaginate=
 	    if (elt.tagName==='IMG') return true;
 	    if (!(style)) style=getStyle(elt);
 	    return (style.pageBreakInside==='avoid')||
-		(elt.className.search(page_block_classes)>=0)||
+		((elt.className)&&(elt.className.search(page_block_classes)>=0))||
 		((sbook_avoidpagebreak)&&(sbook_avoidpagebreak.match(elt)));}
 
 	function avoidBreakBefore(elt,style){
@@ -559,7 +516,7 @@ var CodexPaginate=
 		return fdjtID("CODEXPAGE"+spec);
 	    else if (spec.nodeType) {
 		if (hasClass(spec,"codexpage")) return spec;
-		else return getParent(spec,"codexpage");}
+		else return getParent(spec,".codexpage");}
 	    else if (typeof spec === "string")
 		return getPageElt(fdjtID(spec));
 	    else {
@@ -631,12 +588,12 @@ var CodexPaginate=
 	    fdjtLog("Laying out %d root nodes into %dx%d pages",
 		    nodes.length,newinfo.page_width,newinfo.page_height);
 	    fdjtTime.slowmap(
-		function(node){newinfo=Paginate(node,newinfo);},nodes,
+		function(node){if (node.nodeType===1) newinfo=Paginate(node,newinfo);},nodes,
 		function(state,i,lim,chunks,used,zerostart){
 		    if (state==='suspend') progress(newinfo,used,chunks);
 		    else if (state==='done')
-			fdjtLog("PG/laid out %d HTML blocks across %d pages after %dms, taking %fms over %d chunks",
-				newinfo.pagenum,lim,fdjtTime()-zerostart,
+			fdjtLog("Layout/%d HTML blocks across %d pages after %dms, taking %fms over %d chunks",
+				lim,newinfo.pagenum,fdjtTime()-zerostart,
 				used,chunks);},
 		function(){
 		    var dups=newinfo.dups;

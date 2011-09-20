@@ -1839,8 +1839,8 @@ div#CODEXEXCERPT textarea {
 
 /* New pagination */
 
-div.codexpage {display: none; position: fixed; text-align: left;}
-div.codexpage.curpage {display: block;}
+div.codexpage {opacity: 0; position: fixed; text-align: left;}
+div.codexpage.curpage {opacity: 1; z-index: 50;}
 
 div.codexline, div.codexword { white-space: nowrap;}
 
