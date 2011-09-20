@@ -376,7 +376,8 @@ var CodexPaginate=
 				    texts[originid]=child.firstChild;}}}
 			// If it's an element, just push it over; this
 			// could be more clever for inline elements
-			else {page_top=child; break;}}
+			else page_top=child;
+			break;}
 		    else continue;}
 		newPage(page_top); var dup=page_top.parentNode;
 		while (i<n) dup.appendChild(children[i++]);
