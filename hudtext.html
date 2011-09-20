@@ -13,22 +13,6 @@
   <textarea rows='5' id="CODEXEXTRACT"></textarea>
 </div>
 <div id="CODEXHEAD">
-<!--
-  <img src="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
-       alt="toc" title="click to navigate the book as a whole"
-       class="hudbutton hudmodebutton topleft" id="CODEXTOCBUTTON"
-       hudmode="toc"/>
-  <img src="http://static.beingmeta.com/graphics/codex/TagSearch50x50.png"
-       alt="search" title="click to search tags within the book"
-       class="hudbutton hudmodebutton topright" id="CODEXSEARCHBUTTON"
-       hudmode="search"/>
-  <div class="helphud topleft" data-hudmode="toc">
-    <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
-    <span class="nobreak">contents</span></div>
-  <div class="helphud topright" data-hudmode="search">
-    <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
-    for&nbsp;tags</div>
-  -->
   <img src="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
        alt="toc" title="click to navigate the book as a whole"
        class="hudbutton hudmodebutton topleft" id="CODEXTOCBUTTON"
@@ -122,22 +106,6 @@
   <div id="CODEXSEARCH" class="searchbox hudpanel notags">
     <!-- This content comes from sbooksearch.html -->
   </div>
-  <div id="CODEXBROWSEGLOSSES" class="hudpanel">
-    <!-- This contains renderings of all the glosses, with
-	 a list of sources on top -->
-    <div id="SBOOKSOURCES" class="sbooksources"
-	 onclick="Codex.UI.handlers.sources_ontap(event);">
-      <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
-	   class="button everyone selected"
-	   alt="show all" title="click to see all glosses"
-	   onclick="Codex.UI.handlers.everyone_ontap(event);"/>
-    </div>
-    <div class="scrollbox">
-      <div id="CODEXALLGLOSSES" class="codexslice">
-	<!-- This is filled in on demand -->
-      </div>
-    </div>
-  </div>
   <div id="CODEXADDGLOSS" class="codexaddgloss hudpanel">
     <div id="CODEXGLOSSFORMS">
       <div class="codexglossform" id="CODEXADDGLOSSPROTOTYPE">
@@ -175,55 +143,6 @@
   <!-- This content comes from flyleaftext.html -->
 </div>
 <div id="CODEXFOOT">
-  <!--
-  <img src="http://static.beingmeta.com/graphics/codex/drophud50x50.png"
-       alt="drophud" title="hide the book tools"
-       id="CODEXDROPHUD"
-       onclick="CodexMode(false); fdjtUI.cancel(event); return false;"/>
-  <div id="CODEXBUTTON" onclick="CodexMode.toggle('last');" class="help">
-    <img src="http://static.beingmeta.com/graphics/codex/AboutIcon50x50.png"
-	 alt="about" title="information and links about this book"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
-	 alt="toc" title="information and links about this book"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/ScannerIcon50x50.png"
-	 alt="scanning"
-	 title="scan this book by structure, glosses, or search results"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/SearchIcon50x50.png"
-	 alt="search" title="information and links about this book"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/remarkballoon50x50.png"
-	 alt="addgloss" title="information and links about this book"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
-	 alt="allglosses" title="information and links about this book"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/HelpIcon50x50.png"
-	 alt="help" title="help about using sBooks"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/SocialIcon50x50.png"
-	 alt="sbookapp"
-	 title="manage how your sBook is enhanced with added layers"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/LoginIcon50x50.png"
-	 alt="sbookapp" title="login"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/SettingsIcon50x50.png"
-	 alt="device" title="alter appearance and interaction"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/ConsoleIcon50x50.png"
-	 alt="console" title="see the application console"
-	 class="hudbutton botleft"/>
-    <img src="http://static.beingmeta.com/graphics/codex/FlyTOCIcon50x50.png"
-	 alt="flytoc" title="Table of Contents (static)"
-	 class="hudbutton botleft"/>
-  </div>
-  <div class="helphud botleft" data-hudmode="flyleaf">
-    <span class="nobreak"><span class="arrow">&#x2190;</span>hide</span><br/>
-    tools</div>
-  -->
   <div class="helphud botcenter">
     <span class="fortouch">tap</span><span class="notouch">click</span>
     here to hide tools or<br/>jump within the document

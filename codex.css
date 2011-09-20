@@ -315,7 +315,6 @@ body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS,
-body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     border-color: darkblue; display: block; overflow: auto;
@@ -402,10 +401,21 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: blo
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
 
-div#CODEXHUD div#CODEXSCANNER div.codexnote div.idhead { display: none;}
-div#CODEXHUD div#CODEXGLOSSES div.codexnote div.idhead { display: none;}
+div#CODEXHUD div#CODEXSCANNER div.idhead,
+div#CODEXHUD div#CODEXGLOSSES div.idhead, 
+div#CODEXHUD div#CODEXSCANNER img.glosspic,
+div#CODEXHUD div#CODEXGLOSSES img.glosspic {
+    height: 0px;}
+body.hudup div#CODEXHUD div#CODEXSCANNER div.idhead,
+body.hudup div#CODEXHUD div#CODEXGLOSSES div.idhead, 
+body div#CODEXHUD div#CODEXSCANNER:hover img.glosspic,
+body div#CODEXHUD div#CODEXGLOSSES:hover img.glosspic,
+body.hudup div#CODEXHUD div#CODEXSCANNER img.glosspic,
+body.hudup div#CODEXHUD div#CODEXGLOSSES img.glosspic {
+    height: inherit;}
+
 body.hudup div#CODEXHUD div#CODEXSCANNER div.codexnote div.idhead {
-    display: block;}
+    height: inherit;}
 div#CODEXHUD div#CODEXSCANNER div.codexnote span.glossinfo span.isclickable {
     display: none;}
 
@@ -465,7 +475,7 @@ div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
 
 div#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: fixed; right: 50px;}
 
-/* SBOOKSOURCES */
+/* CODEXSOURCES */
 
 div.sbooksources {}
 div.sbooksources img.button.source {
@@ -481,7 +491,7 @@ div.sbooksources div.button.source {
     text-align: center; vertical-align: top;
     clear: none;}
 
-div#SBOOKSOURCES {
+div#CODEXSOURCES {
     overflow-y: hidden; overflow-x: auto; white-space: nowrap;}
 
 /* The flyleaf */
@@ -1214,6 +1224,7 @@ div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent[id='APPABOUT'],
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent[id='CODEXSETTINGS'],
 div#CODEXHUD.flytoc div#CODEXFLYLEAF div.tabcontent[id='FLYTOC'],
 div#CODEXHUD.console div#CODEXFLYLEAF div.tabcontent[id='CODEXCONSOLE'],
+div#CODEXHUD.allglosses div#CODEXFLYLEAF div.tabcontent#CODEXBROWSEGLOSSES,
 div#CODEXHUD.sbookapp div#CODEXFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
     opacity: 1.0; z-index: 150; display: block;}
 
@@ -1266,6 +1277,10 @@ div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a {
     color: inherit; font-weight: inherit;}
 div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {
     font-weight: bold; background-color: gold;}
+
+div#CODEXHUD div#CODEXFLYLEAF div.tabcontent#CODEXBROWSEGLOSSES
+  div#CODEXSOURCES {
+      display: none;}
 
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
  div.setting {
@@ -1457,7 +1472,7 @@ body.sbook a.codexnote { display: block;}
     text-align: right;}
 .codexnote .glossinfo img { padding-left: 4px; cursor: pointer; }
 .codexnote .age { 
-  color: green; float: left; clear: left; font-weight: normal;
+  color: green; float: right; font-weight: normal;
   font-size: 60%; text-decoration: none;}
 .codexnote .age:hover {text-decoration: underline;} 
 .codexnote a.deletebutton { 
@@ -1560,7 +1575,7 @@ body.notsbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
 body.notsbookuser a.logout {display: none;}
 body.notsbookuser #SBOOKLOGOUT { display: none;}
 body.notsbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
-body.notsbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
+body.notsbookuser div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
   display: block;}
 
 /* The add gloss panel */

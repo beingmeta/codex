@@ -406,7 +406,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     var mode_hud_map={
 	"toc": "CODEXTOC",
 	"searching": "CODEXSEARCH",
-	"allglosses": "SBOOKSOURCES",
+	"allglosses": "CODEXSOURCES",
 	"flyleaf": "CODEXFLYHEAD"};
     
     function hudbutton(evt){

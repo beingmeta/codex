@@ -300,17 +300,17 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		var source=fdjtKB.ref(sources[i++]);
 		if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
 		    return { src: source.pic, alt: source.name,
-			     classname: "sourcepic"};}}
+			     classname: "img.glosspic.sourcepic"};}}
 	if (info.maker) {
 	    var userinfo=fdjtKB.ref(info.maker);
 	    if (userinfo.pic)
 		return { src: userinfo.pic, alt: userinfo.name,
-			 classname: "userpic"};
+			 classname: "img.glosspic.userpic"};
 	    else if (userinfo.fbid)
 		return {
 		    src: "https://graph.facebook.com/"+
 			userinfo.fbid+"/picture?type=square",
-		    classname: "userpic fbpic"};
+		    classname: "img.glosspic.userpic.fbpic"};
 	    else return false;}
 	else return false;}
 
