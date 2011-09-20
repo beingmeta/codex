@@ -300,7 +300,7 @@ var sbook_gloss_data=
 	    if (scan.sbookui)
 		return false;
 	    else if (scan===Codex.root) return target;
-	    else if (scan.id) {
+	    else if ((scan.id)||(scan.getAttribute("data-baseid"))) {
 		if (fdjtDOM.hasParent(scan,CodexHUD)) return false;
 		else if (fdjtDOM.hasParent(scan,".sbookmargin")) return false;
 		else if ((fdjtDOM.hasClass(scan,"sbooknofocus"))||
