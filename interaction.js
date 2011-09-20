@@ -225,7 +225,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    (fdjtID("CODEXLIVEGLOSS"))) {
 		    Codex.addExcerpt(fdjtID("CODEXLIVEGLOSgit S"),
 				     sel.toString(),
-				     ((Codex.glosstarget!==p)&&(p.id)));}
+				     ((Codex.glosstarget!==p)&&
+				      ((p.id)||p.getAttribute("data-baseid"))));}
 		else Codex.excerpt=sel.toString();
 		return;}
 	    else CodexMode(false);}
@@ -545,7 +546,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		clear_hold("completed");
 		handled=true;
 		Codex.setGlossTarget(passage);
-		fdjtID("CODEXEXTRACT").passageid=passage.id;
+		fdjtID("CODEXEXTRACT").passageid=
+		    (passage.id||(passage.getAttribute("data-baseid")));
 		fdjtID("CODEXEXTRACT").value=text;
 		CodexMode("editexcerpt");},
 			    1000);}
@@ -798,7 +800,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else if (Codex.scanning) CodexMode("scanning");
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
-	    var head=Codex.head; var headinfo=Codex.docinfo[head.id];
+	    var head=Codex.head;
+	    var headid=head.id||head.getAttribute("data-baseid");
+	    var headinfo=Codex.docinfo[headid];
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanForward/toc() head=%o info=%o n=%o h=%o",
 			head,headinfo,headinfo.next,headinfo.head);
@@ -826,7 +830,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else if (Codex.scanning) CodexMode("scanning");
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
-	    var head=Codex.head; var headinfo=Codex.docinfo[head.id];
+	    var head=Codex.head;
+	    var headid=head.id||head.getAttribute("data-baseid");
+	    var headinfo=Codex.docinfo[headid];
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",
 			head,headinfo,headinfo.prev,headinfo.head);

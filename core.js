@@ -231,32 +231,35 @@ var sbook_gloss_data=
 	    return (target.getAttributeNS('sbookid','http://sbooks.net/'))||
 	    (target.getAttributeNS('sbookid'))||
 	    (target.getAttributeNS('data-sbookid'))||
-	    (target.id);
+	    (target.id)||(target.getAttributeNS('data-baseid'));
 	else return target.id;};
 
     function getHead(target){
 	/* First, find some relevant docinfo */
-	if ((target.id)&&(Codex.docinfo[target.id]))
-	    target=Codex.docinfo[target.id];
-	else if (target.id) {
+	var targetid=(target.id)||(target.getAttribute("data-baseid"));
+	if ((targetid)&&(Codex.docinfo[targetid]))
+	    target=Codex.docinfo[targetid];
+	else if (targetid) {
 	    while (target)
-		if ((target.id)&&(Codex.docinfo[target.id])) {
-		    target=Codex.docinfo[target.id]; break;}
+		if ((target.id)&&(Codex.docinfo[targetid])) {
+		    target=Codex.docinfo[targetid]; break;}
 	    else target=target.parentNode;}
 	else {
 	    /* First, try scanning forward to find a non-empty node */
-	    var scan=target.firstChild; var next=target.nextNode;
+	    var scan=target.firstChild; var scanid=false; var next=target.nextNode;
 	    while ((scan)&&(scan!=next)) {
 		if (scan.id) break;
+		else if (scanid=scan.getAttribute("data-baseid")) break;
 		if ((scan.nodeType===3)&&(!(fdjtString.isEmpty(scan.nodeValue)))) break;
 		scan=fdjtDOM.forward(scan);}
 	    /* If you found something, use it */
 	    if ((scan)&&(scan.id)&&(scan!=next))
-		target=Codex.docinfo[scan.id];
+		target=Codex.docinfo[scanid];
 	    else {
 		while (target)
-		    if ((target.id)&&(Codex.docinfo[target.id])) {
-			target=Codex.docinfo[target.id]; break;}
+		    if ((targetid=((target.id)||(target.getAttribute("data-baseid"))))&&
+			(Codex.docinfo[targetid])) {
+			target=Codex.docinfo[targetid]; break;}
 		else target=target.parentNode;}}
 	if (target)
 	    if (target.level)
@@ -319,9 +322,11 @@ var sbook_gloss_data=
     Codex.getTarget=getTarget;
     
     Codex.getTitle=function(target,tryhard) {
+	var targetid;
 	return target.sbooktitle||
-	    (((target.id)&&(Codex.docinfo[target.id]))?
-	     (Codex.docinfo[target.id].title):
+	    (((targetid=(target.id||(target.getAttribute("data-baseid"))))&&
+	      (Codex.docinfo[targetid]))?
+	     (Codex.docinfo[targetid].title):
 	     (target.title))||
 	    ((tryhard)&&
 	     (fdjtDOM.textify(target)).
@@ -336,6 +341,8 @@ var sbook_gloss_data=
 		return Codex.docinfo[arg]||fdjtKB.ref(arg);
 	else if (arg._id) return arg;
 	else if (arg.id) return Codex.docinfo[arg.id];
+	else if (arg.getAttribute("data-baseid"))
+	    return Codex.docinfo[arg.getAttribute("data-baseid")];
 	else return false;
 	else return false;}
     Codex.Info=getinfo;
@@ -347,7 +354,8 @@ var sbook_gloss_data=
 	else if (typeof head === "string") 
 	    head=getHead(fdjtID(head));
 	else head=getHead(head)||Codex.root;
-	var headinfo=Codex.docinfo[head.id];
+	var headid=head.id||head.getAttribute("data-baseid");
+	var headinfo=Codex.docinfo[headid];
 	if (!(head)) return;
 	else if (head===Codex.head) {
 	    if (Codex.Trace.focus) fdjtLog("Redundant SetHead");
@@ -360,7 +368,7 @@ var sbook_gloss_data=
 	    if (Codex.head) fdjtDOM.dropClass(Codex.head,"sbookhead");
 	    fdjtDOM.addClass(head,"sbookhead");
 	    Codex.setLocation(Codex.location);
-	    Codex.head=fdjtID(head.id);}
+	    Codex.head=fdjtID(headid);}
 	else {
 	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
 	    CodexTOC.update(head,"CODEXTOC4");
@@ -415,7 +423,9 @@ var sbook_gloss_data=
 	    Codex.target=false;
 	    return;}
 	else if (!(target)) return;
-	else if ((inUI(target))||(!(target.id))) return;
+	else if ((inUI(target))||
+		 (!(target.id||target.getAttribute('data-baseid'))))
+	    return;
 	else if ((target===Codex.root)||(target===Codex.body)||
 		 (target===document.body)) {
 	    if (!(nogo)) Codex.GoTo(target,true);
@@ -424,12 +434,12 @@ var sbook_gloss_data=
 	    fdjtDOM.dropClass(Codex.target,"sbooktarget");
 	    Codex.target=false;}
 	fdjtDOM.addClass(target,"sbooktarget");
-	fdjtState.setCookie("sbooktarget",target.id);
+	fdjtState.setCookie("sbooktarget",target.id||target.getAttribute('data-sbookid'));
 	Codex.target=target;
 	if (Codex.full_cloud)
 	    Codex.setCloudCuesFromTarget(Codex.full_cloud,target);
 	if (!(nosave))
-	    setState({target: target.id,
+	    setState({target: target.id||target.getAttribute('data-sbookid'),
 		      location: Codex.location,
 		      page: Codex.curpage});
  	if (!(nogo)) Codex.GoTo(target,true);}
@@ -474,12 +484,13 @@ var sbook_gloss_data=
 	else return -40;}
 
     function setHashID(target){
-	if ((!(target.id))||(window.location.hash===target.id)||
+	var targetid=target.id||target.getAttribute("data-baseid");
+	if ((!(targetid))||(window.location.hash===targetid)||
 	    ((window.location.hash[0]==='#')&&
-	     (window.location.hash.slice(1)===target.id)))
+	     (window.location.hash.slice(1)===targetid)))
 	    return;
 	if ((target===Codex.body)||(target===document.body)) return;
-	window.location.hash=target.id;}
+	window.location.hash=targetid;}
     Codex.setHashID=setHashID;
 
     var syncing=false;
@@ -564,13 +575,15 @@ var sbook_gloss_data=
 	else fdjtUI.scrollIntoView(elt,elt.id,cxt,true,displayOffset());}
     
     function getLocInfo(elt){
+	var eltid=false;
 	var counter=0; var lim=200;
 	var forward=fdjtDOM.forward;
 	while ((elt)&&(counter<lim)) {
-	    if ((elt.id)&&(Codex.docinfo[elt.id])) break;
+	    eltid=elt.id||elt.getAttribute("data-baseid");
+	    if ((eltid)&&(Codex.docinfo[eltid])) break;
 	    else {counter++; elt=forward(elt);}}
-	if ((elt.id)&&(Codex.docinfo[elt.id])) {
-	    var info=Codex.docinfo[elt.id];
+	if ((eltid)&&(Codex.docinfo[eltid])) {
+	    var info=Codex.docinfo[eltid];
 	    return {start: info.starts_at,end: info.ends_at,
 		    len: info.ends_at-info.starts_at};}
 	else return false;}
@@ -602,6 +615,8 @@ var sbook_gloss_data=
 	else if (arg.nodeType) {
 	    var info=getLocInfo(arg);
 	    if (arg.id) target=arg;
+	    else if (arg.getAttribute("data-baseid"))
+		target=fdjtID(arg.getAttribute("data-baseid"));
 	    else target=getTarget(arg);
 	    location=info.start;}
 	else {
@@ -611,26 +626,27 @@ var sbook_gloss_data=
 	var page=((Codex.paginate)&&
 		  (Codex.pagecount)&&
 		  (Codex.getPage(target)));
-	var info=((target.id)&&(Codex.docinfo[target.id]));
+	var targetid=target.id||target.getAttribute("data-baseid");
+	var info=((targetid)&&(Codex.docinfo[targetid]));
 	if (Codex.Trace.nav)
 	    fdjtLog("Codex.GoTo() #%o@P%o/L%o %o",
-		    target.id,page,((info)&&(info.starts_at)),target);
-	if ((target.id)&&(Codex.updatehash))
+		    targetid,page,((info)&&(info.starts_at)),target);
+	if ((targetid)&&(Codex.updatehash))
 	  setHashID(target);
 	if (info) {
 	    if (typeof info.level === 'number')
 		setHead(target);
 	    else if (info.head) setHead(info.head.frag);}
 	setLocation(location);
-	if ((!(noset))&&(target.id)&&(!(inUI(target))))
+	if ((!(noset))&&(targetid)&&(!(inUI(target))))
 	    setTarget(target,true,nosave||false);
 	if (nosave) {}
 	else if (noset)
 	    Codex.setState({
-		target: ((Codex.target)&&(Codex.target.id)),
+		target: ((Codex.target)&&(Codex.targetid)),
 		location: location,page: page})
 	else Codex.setState(
-	    {target: (target.id),location: location,page: page});
+	    {target: (targetid),location: location,page: page});
 	if (page) Codex.GoToPage(target,"CodexGoTo",nosave||false);
 	Codex.location=location;}
     Codex.GoTo=CodexGoTo;

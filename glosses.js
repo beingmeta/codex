@@ -77,11 +77,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    response=true;
 	else {}
 	var passage=((gloss)?(fdjtID(gloss.frag)):(arg));
+	var passageid=((passage.id)||(passage.getAttribute("data-baseid")));
 	var formid=((gloss)?
 		    ((response)?
 		     ("CODEXRESPONDGLOSS_"+gloss._id):
 		     ("CODEXEDITGLOSS_"+gloss._id)):
-		    ("CODEXADDGLOSS_"+passage.id));
+		    ("CODEXADDGLOSS_"+passageid));
 	var form=fdjtID(formid);
 	var div=((form)&&(form.parentNode));
 	var proto=fdjtID("CODEXADDGLOSSPROTOTYPE");
@@ -100,13 +101,14 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     Codex.getGlossForm=getGlossForm;
     
     function setupGlossForm(form,passage,gloss,response){
+	var passageid=((passage.id)||(passage.getAttribute("data-baseid")));
 	if (form.getAttribute("sbooksetup")) return;
 	form.onsubmit=submitGloss;
 	fdjtDOM.getInput(form,"REFURI").value=Codex.refuri;
 	fdjtDOM.getInput(form,"USER").value=Codex.user._id;
 	fdjtDOM.getInput(form,"DOCTITLE").value=document.title;
 	fdjtDOM.getInput(form,"DOCURI").value=document.location.href;
-	fdjtDOM.getInput(form,"FRAG").value=passage.id;
+	fdjtDOM.getInput(form,"FRAG").value=passageid;
 	var noteinput=fdjtDOM.getInput(form,"NOTE");
 	if (noteinput) {
 	    noteinput.onkeypress=addgloss_keypress;
@@ -115,7 +117,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else noteinput.value="";}
 	if (Codex.syncstamp)
 	    fdjtDOM.getInput(form,"SYNC").value=(Codex.syncstamp+1);
-	var info=Codex.docinfo[passage.id];
+	var info=Codex.docinfo[passageid];
 	var loc=fdjtDOM.getInput(form,"LOCATION");
 	var loclen=fdjtDOM.getInput(form,"LOCLEN");
 	var tagline=fdjtDOM.getInput(form,"TAGLINE");
@@ -356,8 +358,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		fdjtDOM.addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
 	var tags=[];
-	var info=Codex.docinfo[target.id];
-	var glosses=Codex.glosses.find('frag',target.id);
+	var targetid=((target.id)||(target.getAttribute("data-baseid")));
+	var info=Codex.docinfo[targetid];
+	var glosses=Codex.glosses.find('frag',targetid);
 	var knodule=Codex.knodule;
 	if ((info)&&(info.tags)) tags=tags.concat(info.tags);
 	if ((info)&&(info.autotags)&&(info.autotags.length)) {
@@ -730,7 +733,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtUI.cancel(evt);}
 
     Codex.setInfoTarget=function(passage){
-	var infodiv=Codex.glossBlock(passage.id,"div.sbookgloss")
+	var passageid=((passage.id)||(passage.getAttribute("data-baseid")));
+	var infodiv=Codex.glossBlock(passageid,"div.sbookgloss")
 	fdjtDOM.replace("SBOOKTARGETINFO",infodiv);
 	fdjtDOM.adjustToFit(fdjtID("SBOOKFOOTINFO"));}
 
