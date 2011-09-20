@@ -1057,7 +1057,7 @@ Codex.Startup=
 		if (Codex.Trace.startup>1)
 		    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
 	    if (target) Codex.GoTo(target,false,true);
-	    else if ((state)&&(state.target))
+	    else if ((state)&&(state.target)&&(fdjtID(state.target)))
 		Codex.GoTo(state.target,false,true);
 	    else Codex.GoTo((Codex.start||Codex.root),false,true);
 	    if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
