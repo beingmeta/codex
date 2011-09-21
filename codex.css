@@ -1660,8 +1660,8 @@ div.locbar hr {
 /* Glossmarks */
 
 .codexglossmark {
-    float: right;
-    text-align: right;
+    position: absolute; right: 0px;
+    /* float: right; text-align: right; */
     margin: 0px; padding: 0px; text-indent: 0px; 
     border: solid transparent 2px;
     width: 0px; overflow: visible;
@@ -1671,8 +1671,6 @@ div.locbar hr {
     z-index: 50;
     border-right: 0px;
     opacity: 0.0001;}
-.codexglossmark {
-    position: static; float: right;}
 .codexglossmark {
     margin-right: -16px;}
 body .codexglossmark { opacity: 0.4;}
@@ -1722,7 +1720,7 @@ body.sbooktarget { color: inherit;}
 
 .sbooktarget span.codexglossmark img.big { width: 32px;} 
 .sbooktarget span.codexglossmark img {
-    border-top: solid blue 2px;}
+    border-top: solid steelblue 2px;}
 .sbooktarget:hover .codexglossmark { opacity: 0.5;}
 body.hudup .sbooktarget .codexglossmark:hover { opacity: 0.9;}
 
