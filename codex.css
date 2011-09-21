@@ -268,6 +268,8 @@ div.codexglossform form div.glossetc > span.button {
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;
     font-family: sans,sans-serif;}
+div.codexglossform form div.glossetc div.outlets {
+    margin-top: 0.5ex;}
 
 div.codexglossform form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
@@ -287,6 +289,9 @@ div.codexglossform div.textbox textarea {}
 
 div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
     margin-top: 0px;}
+
+div.codexglossform form div.glossetc .tags span.checkspan {
+    font-size: 80%;}
 
 /* CODEXSOURCES */
 
@@ -582,12 +587,22 @@ body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     -webkit-transition-property: height,opacity;
     -webkit-transition-duration: 1s;}
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
-body div#CODEXHUD.tocscan div.hudpanel#CODEXGLOSSES,
+body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     display: block; height: auto; opacity: 0.9; overflow: hidden;
-    max-height: 50px; border-color: silver;}
-body.hudup div#CODEXHUD.scanning div#CODEXSCANNER { max-height: inherit;}
-body div#CODEXHUD.scanning div#CODEXSCANNER:hover { max-height: inherit;}
+    border-color: silver;}
+
+body div#CODEXHUD div.hudpanel#CODEXTOC,
+body div#CODEXHUD div.hudpanel#CODEXGLOSSES,
+body div#CODEXHUD div.hudpanel#CODEXSCANNER {
+    max-height: 50px;}
+body.hudup div#CODEXHUD div.hudpanel#CODEXTOC,
+body.hudup div#CODEXHUD div.hudpanel#CODEXGLOSSES,
+body.hudup div#CODEXHUD div.hudpanel#CODEXSCANNER,
+body div#CODEXHUD div.hudpanel#CODEXTOC:hover,
+body div#CODEXHUD div.hudpanel#CODEXGLOSSES:hover,
+body div#CODEXHUD div.hudpanel#CODEXSCANNER:hover {
+    max-height: inherit;}
 
 div.hudpanel#CODEXSCANNER div.codexslice .tocthread,
 div.hudpanel#CODEXGLOSSES div.codexslice .tocthread {
@@ -693,6 +708,11 @@ body div#CODEXHUD div#CODEXGLOSSES:hover img.glosspic,
 body.hudup div#CODEXHUD div#CODEXSCANNER img.glosspic,
 body.hudup div#CODEXHUD div#CODEXGLOSSES img.glosspic {
     height: inherit;}
+body div#CODEXHUD div.hudpanel#CODEXSCANNER:hover,
+body div#CODEXHUD div.hudpanel#CODEXGLOSSES:hover,
+body.hudup div#CODEXHUD div.hudpanel#CODEXSCANNER,
+body.hudup div#CODEXHUD div.hudpanel#CODEXGLOSSES {
+    max-height: inherit, height: inherit;}
 
 div#CODEXHUD div#CODEXSCANNER div.codexnote span.glossinfo span.isclickable {
     display: none;}
@@ -1188,9 +1208,9 @@ div.tochead span.headtext {
     white-space: nowrap; font-size: 90%;}
 div.tochead hr {
     color: lightblue; background-color: lightblue; min-width: 3px;
-    border-right: solid gold 1px; border-left: solid gold 1px;
+    border: none; border-right: solid gold 1px; border-left: solid gold 1px;
     position: absolute; left: 0px; top: 0px; height: 100%; 
-    border: 0px; padding: 0px; margin: 0px;}
+    padding: 0px; margin: 0px;}
 div.tochead span { z-index: 10;}
 div.tochead a { z-index: 10;} 
 div.tochead hr[about] { cursor: crosshair;}
