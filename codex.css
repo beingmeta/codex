@@ -1883,7 +1883,7 @@ div#CODEXEXCERPT textarea {
 
 #HUMANE.humane {
     width: 70%; max-height: 50%;
-    left: 15%; right: 15%; top: 30%; bottom: auto;}
+    left: 15%; right: 15%; top: auto; bottom: 3ex;}
 #HUMANE.humane.humane-show { opacity: 0.8; }
 
 .humanehelp { display: none;}
