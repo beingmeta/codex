@@ -852,6 +852,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function scanner_click(evt){
 	evt=evt||event;
+	if (!(Codex.hudup)) {
+	    Codex.setHUD(true);
+	    fdjtUI.cancel(evt);}
 	var target=fdjtUI.T(evt);
 	if (fdjtUI.isClickable(target)) return;
 	var scanning=Codex.scanning;

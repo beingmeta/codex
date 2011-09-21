@@ -459,9 +459,11 @@ var CodexMode=
 
 	Codex.dropHUD=function(){return CodexMode(false);}
 	Codex.toggleHUD=function(evt){
-	    if (fdjtUI.isClickable(fdjtUI.T(evt))) return;
-	    if (Codex.mode) CodexMode(false);
-	    else CodexMode(true);};
+	    evt=evt||event;
+	    if ((evt)&&(fdjtUI.isClickable(fdjtUI.T(evt)))) return;
+	    fdjtLog("toggle HUD %o hudup=%o",evt,Codex.hudup);
+	    if (Codex.hudup) setHUD(false,false);
+	    else setHUD(true);};
 	
 	/* The App HUD */
 	

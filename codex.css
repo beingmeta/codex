@@ -314,19 +314,35 @@ body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
-body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS,
-body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
-body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
-    border-color: darkblue; display: block; overflow: auto;
-    opacity: 0.9; min-height: 50px; height: auto;
+body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
+body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
+body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
+    display: block; opacity: 0.9; min-height: 50px; height: auto;
+    overflow: auto; border-color: darkblue; 
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;}
+    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -webkit-transition-property: height,opacity;
+    -webkit-transition-duration: 1s;}
+body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
-    max-height: 50px; overflow: hidden;}
+    display: block; height: auto; opacity: 0.9; overflow: hidden;
+    max-height: 50px;
+    border-color: lightblue;}
 body.hudup div#CODEXHUD.scanning div#CODEXSCANNER { max-height: inherit;}
 body div#CODEXHUD.scanning div#CODEXSCANNER:hover { max-height: inherit;}
+
+div#CODEXSCANNER .hudupbutton {
+    position: absolute; right: 3px; top: 3px;
+    font-size: 24px; font-weight: bold; vertical-align: top;
+    z-index: 800;}
+div#CODEXSCANNER .hudupbutton span.up { display: none;}
+body.hudup div#CODEXSCANNER .hudupbutton span.down { display: none;}
+body.hudup div#CODEXSCANNER .hudupbutton span.up { display: inline;}
+
+div#CODEXSCANNER div.tochead, div#CODEXGLOSSES div.tochead {
+    border-top: 0px; border-bottom: 0px;}
 
 body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC {
     overflow: visible;}
@@ -382,8 +398,6 @@ div#CODEXHUD.toc .hudbutton[alt='toc'] {
 
 /* Scanner rules */
 
-body.hudup div#CODEXHUD div#CODEXSCANNER div#CODEXSCAN {
-    margin-left: 36px; }
 body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
 body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="prev"] {
     position: absolute; left: 0px; top: 8px;}
