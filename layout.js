@@ -156,6 +156,7 @@ var CodexPaginate=
 	    if (nodeclass.search(/\bcodexdupstart\b/)<0)
 		node.className=nodeclass+" codexdupstart";
 	    if (copy.id) {
+		copy.codexid=copy.id;
 		copy.setAttribute("data-baseid",copy.id);
 		copy.id=null;}
 	    dups[id]=copy;

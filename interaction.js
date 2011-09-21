@@ -226,7 +226,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    Codex.addExcerpt(fdjtID("CODEXLIVEGLOSgit S"),
 				     sel.toString(),
 				     ((Codex.glosstarget!==p)&&
-				      ((p.id)||p.getAttribute("data-baseid"))));}
+				      ((p.id)||p.codexid)));}
 		else Codex.excerpt=sel.toString();
 		return;}
 	    else CodexMode(false);}
@@ -547,7 +547,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		handled=true;
 		Codex.setGlossTarget(passage);
 		fdjtID("CODEXEXTRACT").passageid=
-		    (passage.id||(passage.getAttribute("data-baseid")));
+		    (passage.id||(passage.codexid));
 		fdjtID("CODEXEXTRACT").value=text;
 		CodexMode("editexcerpt");},
 			    1000);}
@@ -801,7 +801,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
 	    var head=Codex.head;
-	    var headid=head.id||head.getAttribute("data-baseid");
+	    var headid=head.id||head.codexid;
 	    var headinfo=Codex.docinfo[headid];
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanForward/toc() head=%o info=%o n=%o h=%o",
@@ -831,7 +831,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
 	    var head=Codex.head;
-	    var headid=head.id||head.getAttribute("data-baseid");
+	    var headid=head.id||head.codexid;
 	    var headinfo=Codex.docinfo[headid];
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",

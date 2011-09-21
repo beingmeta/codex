@@ -77,7 +77,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    response=true;
 	else {}
 	var passage=((gloss)?(fdjtID(gloss.frag)):(arg));
-	var passageid=((passage.id)||(passage.getAttribute("data-baseid")));
+	var passageid=((passage.id)||(passage.codexid));
 	var formid=((gloss)?
 		    ((response)?
 		     ("CODEXRESPONDGLOSS_"+gloss._id):
@@ -101,7 +101,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     Codex.getGlossForm=getGlossForm;
     
     function setupGlossForm(form,passage,gloss,response){
-	var passageid=((passage.id)||(passage.getAttribute("data-baseid")));
+	var passageid=((passage.id)||(passage.codexid));
 	if (form.getAttribute("sbooksetup")) return;
 	form.onsubmit=submitGloss;
 	fdjtDOM.getInput(form,"REFURI").value=Codex.refuri;
@@ -358,7 +358,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		fdjtDOM.addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
 	var tags=[];
-	var targetid=((target.id)||(target.getAttribute("data-baseid")));
+	var targetid=((target.id)||(target.codexid));
 	var info=Codex.docinfo[targetid];
 	var glosses=Codex.glosses.find('frag',targetid);
 	var knodule=Codex.knodule;
@@ -733,7 +733,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtUI.cancel(evt);}
 
     Codex.setInfoTarget=function(passage){
-	var passageid=((passage.id)||(passage.getAttribute("data-baseid")));
+	var passageid=((passage.id)||(passage.codexid));
 	var infodiv=Codex.glossBlock(passageid,"div.sbookgloss")
 	fdjtDOM.replace("SBOOKTARGETINFO",infodiv);
 	fdjtDOM.adjustToFit(fdjtID("SBOOKFOOTINFO"));}
