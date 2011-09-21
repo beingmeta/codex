@@ -77,7 +77,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 (function(){
 
     // Imports (kind of )
+    var addClass=fdjtDOM.addClass;
+    var dropClass=fdjtDOM.dropClass;
     var hasClass=fdjtDOM.hasClass;
+    var getTarget=Codex.getTarget;
+    var isClickable=fdjtUI.isClickable;
 
     var unhold=false;
     var hold_timer=false;
@@ -125,7 +129,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     /* Adding a gloss button */
 
     function addGlossButton(target){
-	var passage=Codex.getTarget(target);
+	var passage=getTarget(target);
 	if (!(passage)) return;
 	var img=fdjtDOM.getChild(passage,".codexglossbutton");
 	if (img) return;
@@ -137,7 +141,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function glossbutton_ontap(evt){
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
-	var passage=Codex.getTarget(target);
+	var passage=getTarget(target);
 	if ((Codex.mode==="addgloss")&&
 	    (Codex.glosstarget===passage))
 	    CodexMode(true);
@@ -198,13 +202,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    Codex.JumpTo(elt);
 	    fdjtUI.cancel(evt);
 	    return;}
-	var passage=Codex.getTarget(target);
+	var passage=getTarget(target);
 	// We get the passage here so we can include it in the trace message
 	if (Codex.Trace.gestures)
 	    fdjtLog("content_tapped (%o) on %o passage=%o mode=%o",
 		    evt,target,passage,Codex.mode);
 	// These should have their own handlers
-	if ((fdjtUI.isClickable(target))||
+	if ((isClickable(target))||
 	    // (fdjtDOM.hasParent(target,".codexglossbutton"))||
 	    (fdjtDOM.hasParent(target,".codexglossmark"))) {
 	    if (Codex.Trace.gestures)
@@ -217,8 +221,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var sel=window.getSelection();
 	// If there's a selection, store it as an excerpt.
 	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
-	    var p=Codex.getTarget(sel.anchorNode)||
-		Codex.getTarget(sel.focusNode)||
+	    var p=getTarget(sel.anchorNode)||
+		getTarget(sel.focusNode)||
 		passage;
 	    if (p) {
 		if ((Codex.mode==="addgloss")&&
@@ -263,7 +267,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     
     function edge_click(evt) {
 	var target=fdjtUI.T(evt);
-	if ((fdjtUI.isClickable(target))||
+	if ((isClickable(target))||
 	    (fdjtDOM.hasParent(target,".codexglossbutton"))||
 	    (fdjtDOM.hasParent(target,".codexglossmark")))
 	    return;
@@ -273,7 +277,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function hud_tapped(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
-	if (fdjtUI.isClickable(target)) return;
+	if (isClickable(target)) return;
 	else if (fdjtDOM.hasParent(target,".helphud")) {
 	    var mode=fdjtDOM.findAttrib(target,"data-hudmode")||
 		fdjtDOM.findAttrib(target,"hudmode");
@@ -416,7 +420,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if ((Codex.Trace.gestures)&&
 	    ((evt.type==='click')||(Codex.Trace.gestures>1)))
 	    fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
-		    evt,mode,(fdjtUI.isClickable(target)),
+		    evt,mode,(isClickable(target)),
 		    Codex.scanning,Codex.hudup,CodexMode());
 	fdjtUI.cancel(evt);
 	if (!(mode)) return;
@@ -424,7 +428,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var hud=fdjtID(hudid);
 	if (mode==='flyleaf') mode=Codex.last_flyleaf||"help";
 	if ((evt.type==='click')||(evt.type==='touchend')) {
-	    if (hud) fdjtDOM.dropClass(hud,"hover");
+	    if (hud) dropClass(hud,"hover");
 	    if (fdjtDOM.hasClass(Codex.HUD,mode)) CodexMode(false);
 	    else CodexMode(mode);}
 	else if ((evt.type==='mouseover')&&(Codex.mode))
@@ -432,15 +436,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else {
 	    if (!(hud)) {}
 	    else if (evt.type==='mouseover')
-		fdjtDOM.addClass(hud,"hover");
+		addClass(hud,"hover");
 	    else if (evt.type==='mouseout')
-		fdjtDOM.dropClass(hud,"hover");
+		dropClass(hud,"hover");
 	    else {}}}
     Codex.UI.hudbutton=hudbutton;
 
     Codex.UI.dropHUD=function(evt){
 	var target=fdjtUI.T(evt);
-	if (fdjtUI.isClickable(target)) {
+	if (isClickable(target)) {
 	    if (Codex.Trace.gestures)
 		fdjtLog("Clickable: don't dropHUD %o",evt);
 	    return;}
@@ -484,7 +488,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    ((touch_held)?("held "):("")),
 		    ((touch_moved)?("moved "):("")),
 		    ((touch_scrolled)?("scrolled "):("")),
-		    ((fdjtUI.isClickable(target))?("clickable "):("")),
+		    ((isClickable(target))?("clickable "):("")),
 		    ((touch)?"":"notouch "),
 		    start_x,start_y,last_x,last_y,page_x,page_y,
 		    (((touch)&&(touch.screenX))?(touch.screenX-page_x):0),
@@ -503,7 +507,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function shared_touchstart(evt){
 	evt=evt||event||false;
 	var target=fdjtUI.T(evt);
-	if (fdjtUI.isClickable(target)) return;
+	if (isClickable(target)) return;
 	// fdjtUI.cancel(evt);
 	if (Codex.Trace.gestures) tracetouch("touchstart",evt);
 	touch_started=fdjtTime();
@@ -533,7 +537,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	handled=false;
 	var target=fdjtUI.T(evt);
 	shared_touchstart(evt);
-	var passage=Codex.getTarget(target);
+	var passage=getTarget(target);
 	if (Codex.Trace.gestures)
 	    fdjtLog("Touchstart %o on %o => %o",evt,target,passage);
 	if (passage) {
@@ -614,7 +618,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (handled) return;
 	if (Codex.Trace.gestures) tracetouch("touchend",evt);
 	mouseisdown=false; // For faketouch
-	if (fdjtUI.isClickable(target)) return;
+	if (isClickable(target)) return;
 	if (touch_moved) {
 	    var dx=last_x-start_x; var dy=last_y-start_y;
 	    var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
@@ -640,7 +644,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	// When faking touch, moves only get counted if the mouse is down.
 	if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
 	var target=fdjtUI.T(evt);
-	if (fdjtUI.isClickable(target)) return;
+	if (isClickable(target)) return;
 	fdjtUI.cancel(evt);
 	touch_moves++;
 	var touch=
@@ -665,7 +669,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		      (Codex.scrollers[Codex.scrolling]));
 	// fdjtLog("hud_touchend scroller=%o(%o) moved=%o",scroller,scroller.element,scroller.moved);
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
-	else if (fdjtUI.isClickable(target)) {
+	else if (isClickable(target)) {
 	    if (Codex.ui==="faketouch") {
 		// This happens automatically when faking touch
 		fdjtUI.cancel(evt);
@@ -693,7 +697,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (held) clear_hold("glossmark_tapped");
 	var target=fdjtUI.T(evt);
 	var glossmark=fdjtDOM.getParent(target,".codexglossmark");
-	var passage=Codex.getTarget(glossmark.parentNode,true);
+	var passage=getTarget(glossmark.parentNode,true);
 	if (Codex.Trace.gestures)
 	    fdjtLog("glossmark_tapped (%o) on %o gmark=%o passage=%o mode=%o target=%o",
 		    evt,target,glossmark,passage,Codex.mode,Codex.target);
@@ -705,12 +709,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else Codex.openGlossmark(passage);}
     function glossmark_onmouseover(evt){
 	evt=evt||event||null;
-	var target=Codex.getTarget(fdjtUI.T(evt))
-	fdjtDOM.addClass(target,"sbooklivespot");}
+	var target=getTarget(fdjtUI.T(evt))
+	addClass(target,"sbooklivespot");}
     function glossmark_onmouseout(evt){
 	evt=evt||event||null;
-	var target=Codex.getTarget(fdjtUI.T(evt));
-	fdjtDOM.dropClass(target,"sbooklivespot");}
+	var target=getTarget(fdjtUI.T(evt));
+	dropClass(target,"sbooklivespot");}
 
     /* Moving forward and backward */
 
@@ -856,7 +860,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    Codex.setHUD(true);
 	    fdjtUI.cancel(evt);}
 	var target=fdjtUI.T(evt);
-	if (fdjtUI.isClickable(target)) return;
+	if (isClickable(target)) return;
 	var scanning=Codex.scanning;
 	if (!(scanning)) return;
 	var hudparent=fdjtDOM.getParent(scanning,".hudpanel");
@@ -883,7 +887,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     /* Other handlers */
 
     function flyleaf_tap(evt){
-	if (fdjtUI.isClickable(evt)) return;
+	if (isClickable(evt)) return;
 	else CodexMode(false);}
 
     function getOffX(evt){
@@ -900,7 +904,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function head_click(evt){
 	if (Codex.Trace.gestures) fdjtLog("head_click %o",evt);
-	if (fdjtUI.isClickable(evt)) return;
+	if (isClickable(evt)) return;
 	else if (Codex.mode==='help') {
 	    fdjtUI.cancel(evt);
 	    CodexMode(true);}
@@ -910,7 +914,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(true);}}
     function foot_click(evt){
 	if (Codex.Trace.gestures) fdjtLog("foot_click %o",evt);
-	if (fdjtUI.isClickable(evt)) return;
+	if (isClickable(evt)) return;
 	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);
 	    CodexMode(false);

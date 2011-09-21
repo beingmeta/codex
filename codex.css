@@ -978,14 +978,14 @@ div#CODEXHUD .helphud.topright {top: 3px; right: 60px; text-align: left;}
 div#CODEXHUD .helphud.botleft {bottom: 3px; left: 60px; text-align: right;}
 div#CODEXHUD .helphud.botright {bottom: 3px; right: 60px; text-align: left;}
 div#CODEXHUD .helphud.topcenter {
-    top: 0px; width: 30%; left: 35%; right: 35%; text-align: center;
+    top: 0px; width: 66%; left: 17%; right: 17%; text-align: center;
     border-top-left-radius: 0px; border-top-right-radius: 0px;
     -o-border-top-left-radius: 0px; -o-border-top-right-radius: 0px; 
     -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px; 
     -o-border-radius-topleft: 0px; -oborder-radius-topright: 0px;}
 
 div#CODEXHUD .helphud.botcenter {
-    bottom: 0px; width: 30%; left: 35%; right: 35%; text-align: center;
+    bottom: 0px; width: 66%; left: 17%; right: 17%; text-align: center;
     border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
     -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
     -webkit-border-bottom-left-radius: 0px; -webkit-border-bottom-right-radius: 0px; 
@@ -1316,6 +1316,7 @@ div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[alt='Device'],
 div#CODEXHUD.sbookapp div#CODEXHUDBUTTONS div.tabbar .tab[alt='sBooks'],
 div#CODEXHUD.login div#CODEXHUDBUTTONS div.tabbar .tab[alt='Login'],
 div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[alt='Console'],
+div#CODEXHUD.allglosses div#CODEXHUDBUTTONS div.tabbar .tab[alt='Glosses'],
 div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[alt='Help']{
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;
