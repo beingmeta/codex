@@ -321,11 +321,16 @@ var CodexPaginate=
 	    function splitBlock(node){
 		if (avoidBreakInside(node)) {
 		    if (page.firstChild===node) {
-			var geom=getGeometry(node,page);
-			var scalex=(geom.width/page_width);
-			var scaley=(geom.height/page_height);
-			var scale=((scalex<scaley)?(scalex):(scaley));
-			node.style[fdjtDOM.transform]='scale('+scale+')';
+			if (!(hasClass(node,"codexnotweak"))) {
+			    var geom=getGeometry(node,page,true);
+			    var h_margin=(geom.left_margin+geom.right_margin);
+			    var v_margin=(geom.top_margin+geom.bottom_margin);
+			    var scalex=((page_width-h_margin)/geom.outer_width);
+			    var scaley=((page_height-v_margin)/geom.outer_height);
+			    var scale=((scalex<scaley)?(scalex):(scaley));
+			    node.style[fdjtDOM.transform]=
+				'scale('+scale+','+scale+')';
+			    addClass(node,"codextweaked");}
 			addClass(node,"codexbroke");}
 		    else newPage(node);
 		    return node;}
