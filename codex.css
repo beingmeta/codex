@@ -1880,7 +1880,7 @@ div#CODEXEXCERPT textarea {
 
 .humane p {
     display: block; text-align: left;
-    margin-left: 2em; margin-right: 2em;
+    margin-left: 2em; margin-right: 2em; text-indent: -1em;
     max-width: inherit; min-width: inherit; width: auto;}
 
 #HUMANE.humane {

@@ -704,7 +704,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (!(glossmark)) return false;
 	fdjtUI.cancel(evt);
 	if ((Codex.mode==='glosses')&&(Codex.target===passage)) {
-	    CodexMode(true);
+	    CodexMode(false);
 	    return;}
 	else Codex.openGlossmark(passage);}
     function glossmark_onmouseover(evt){
