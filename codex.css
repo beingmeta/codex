@@ -302,7 +302,7 @@ div.sbooksources .button.source {
     border: solid transparent 2px; margin: 2px;}
 div.sbooksources img.button.source.selected,
 div.sbooksources div.button.source.selected {
-    border-color: silver;}
+    border-color: blue;}
 div.sbooksources div.button.source {
     min-height: 50px; min-width: 50px; display: inline;
     height: 50px; width: 50px; font-size: 32px;
@@ -377,11 +377,12 @@ div.codexnote div.tochead { margin-left: -20px; }
 
 div.codexslice .tocthread {}
 div.codexslice .tocthread .codexnote .tochead { display: none;}
+div.codexslice .idthread .codexnote .idhead { display: none;}
+
 div.codexslice .tocthread .idthread:first-child
       .codexnote:first-child .tochead {
     display: block;}
-div.codexslice .idthread .codexnote .idhead { display: none;}
-div.codexslice .idthread .codexnote:first-child .idhead {
+div.codexslice .idthread > .codexnote:first-child .idhead {
     display: block;}
 
 div.codexslice .codexnote div.detail { 
@@ -1463,7 +1464,7 @@ div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {
 
 div#CODEXHUD div#CODEXFLYLEAF div.tabcontent#CODEXBROWSEGLOSSES
   div#CODEXSOURCES {
-      display: none;}
+  text-align: center;}
 
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
  div.setting {
