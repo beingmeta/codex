@@ -93,6 +93,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    form.id=formid;
 	    setupGlossForm(form,passage,gloss,response||false);}
 	else form=fdjtDOM.getChildren(div,"form")[0];
+	if (gloss) {
+	    if (response) addClass(div,"glossreply");
+	    else addClass(div,"glossedit");}
 	// Use any current selection to add as an excerpt
 	if (Codex.excerpt) {
 	    if (Codex.excerpt.length) addExcerpt(form,Codex.excerpt);
@@ -396,7 +399,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var pos=input.selectionStart;
 	    input.value=string.slice(0,pos)+"[]"+string.slice(pos);
 	    input.selectionStart=input.selectionEnd=pos+1;
-	    input.focus();}}
+	    setTimeout(function(){input.focus();},100);}}
     Codex.UI.bracket_click=bracket_click;
 
     function handleBracketed(form,content,complete){

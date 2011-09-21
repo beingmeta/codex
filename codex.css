@@ -228,7 +228,8 @@ div.codexglossform form div.glossetc .sharing {
 div.codexglossform form div.glossetc .sharing .networks {
     text-align: right;}
 div.codexglossform form div.glossetc .sharing .checkspan.button {
-    width: 16px; height: 16px; padding-left: 4px; padding-right: 0px;}
+    width: 16px; height: 16px; padding-left: 4px; padding-right: 0px;
+    border: solid silver 2px;}
 div.codexglossform form div.glossetc .sharing .checkspan.button input {
     display: none;}
 div.codexglossform form div.glossetc .sharing .checkspan .checkspan {
@@ -271,13 +272,13 @@ div.codexglossform form div.glossetc > .checkspan.private {
     float: right; vertical-align: top; margin-left: 4px;
     padding-top: 0px; margin-top: 0px;}
 div.codexglossform form div.glossetc > span.button {
-    float: right; 
+    float: right;
     font-weight: bold; color: black; font-size: 150%;
+    border: solid black 2px; background-color: silver; padding: 2px;
     border-radius: 4px; -o-border-radius: 4px;
     -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
     margin-left: 4px; 
-    border: solid silver 2px; background-color: white; padding: 2px;
     text-align: center; vertical-align: top;
     cursor: pointer;}
 div.codexglossform form .checkspan {
@@ -289,12 +290,17 @@ div.codexglossform form div.glossetc div.outlets {
 div.codexglossform form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
-div.codexglossform span.button.savebutton { float: right;}
+div.codexglossform span.button.savebutton,
+div.codexglossform span.button.replybutton,
 div.codexglossform span.button.addbutton { float: right;}
 
-div.codexglossform span.savebutton { display: none;}
+div.codexglossform span.savebutton, div.codexglossform span.replybutton {
+    display: none;}
 div.codexglossform.glossedit span.savebutton { display: inline;}
-div.codexglossform.glossedit span.addbutton { display: none;}
+div.codexglossform.glossreply span.replybutton { display: inline;}
+div.codexglossform.glossedit span.addbutton,
+div.codexglossform.glossreply span.addbutton {
+    display: none;}
 
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
