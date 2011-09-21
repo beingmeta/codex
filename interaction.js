@@ -81,6 +81,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     var dropClass=fdjtDOM.dropClass;
     var hasClass=fdjtDOM.hasClass;
     var getTarget=Codex.getTarget;
+    var getParent=fdjtDOM.getParent;
     var isClickable=fdjtUI.isClickable;
 
     var unhold=false;
@@ -125,6 +126,25 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else if (node.sbookui) return true;
 	else node=node.parentNode;
 	return false;}
+
+    var gloss_focus=false;
+	gloss_blurred=false;
+    function addgloss_focus(evt){
+	evt=evt||event;
+	gloss_blurred=false;
+	var target=fdjtUI.T(evt);
+	var form=getParent(target,"FORM");
+	if (form) addClass(form,"focused");
+	gloss_focus=form;}
+    function addgloss_blur(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var form=getParent(target,"FORM");
+	if (form) dropClass(form,"focused");
+	gloss_blurred=fdjtTime();
+	gloss_focus=false;}
+    Codex.UI.addgloss_focus=addgloss_focus;
+    Codex.UI.addgloss_blur=addgloss_blur;
 
     /* Adding a gloss button */
 
@@ -190,7 +210,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function content_tapped(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
-	var anchor=fdjtDOM.getParent(target,"A"), href;
+	var anchor=getParent(target,"A"), href;
 	// If you tap on a relative anchor, move there using Codex
 	// rather than the browser default
 	if ((anchor)&&(anchor.href)&&
@@ -234,7 +254,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		else Codex.excerpt=sel.toString();
 		return;}
 	    else CodexMode(false);}
-	if ((passage)&&(Codex.mode==='addgloss')) {
+	if ((passage)&&(Codex.mode==='addgloss')&&
+	    ((gloss_focus)||((fdjtTime()-gloss_blurred)<1000))) {
 	    if (passage===Codex.target) CodexMode(false);
 	    else tapTarget(passage);}
 	else if ((Codex.mode)||(Codex.hudup))
@@ -696,7 +717,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event||null;
 	if (held) clear_hold("glossmark_tapped");
 	var target=fdjtUI.T(evt);
-	var glossmark=fdjtDOM.getParent(target,".codexglossmark");
+	var glossmark=getParent(target,".codexglossmark");
 	var passage=getTarget(glossmark.parentNode,true);
 	if (Codex.Trace.gestures)
 	    fdjtLog("glossmark_tapped (%o) on %o gmark=%o passage=%o mode=%o target=%o",
@@ -863,7 +884,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (isClickable(target)) return;
 	var scanning=Codex.scanning;
 	if (!(scanning)) return;
-	var hudparent=fdjtDOM.getParent(scanning,".hudpanel");
+	var hudparent=getParent(scanning,".hudpanel");
 	if (!(hudparent)) return;
 	else if (hudparent===fdjtID("CODEXBROWSEGLOSSES"))
 	    CodexMode("allglosses");
