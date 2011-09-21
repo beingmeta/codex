@@ -21,6 +21,10 @@
     <span class="resptags"></span> <span class="resplinks"></span>
   </div>
   <div class="textbox">
+    <input type="TEXT" name="TAG"
+	   placeholder="type a tag, with completion" value=""/>
+    <input type="TEXT" name="LINK"
+	   placeholder="type a URL and title" value=""/>
     <textarea name="NOTE"
 	      placeholder="add text, [tag]s or [@http://example.com/ links]"
 	      onfocus="Codex.UI.addgloss_focus(event);"
@@ -34,11 +38,22 @@
       reply</span>
     <span class="button savebutton" onclick="Codex.UI.submitEvent(event);">
       save</span>
+    <!--
     <span class="button bracketbutton"
 	 onmousedown="Codex.UI.bracket_click(event);"
 	 ontouchstart="Codex.UI.bracket_click(event);"
 	 title="open/close bracketed tag or link">
       [+]</span>
+    -->
+    <span onmousedown="Codex.UI.addGloss_button(event);"
+	  ontouchstart="Codex.UI.addGloss_button(event);">
+      <img src="http://static.beingmeta.com/graphics/DiagLink24x24.png"
+	   title="add a link to this gloss"
+	   class="button mouseicon" alt="link"/>
+      <img src="http://static.beingmeta.com/graphics/codex/TagIcon24.png"
+	   title="add a tag to this gloss"
+	   class="button mouseicon" alt="tag"/>
+    </span>
     <div class="sharing">
       <div class="networks">
 	<span class="button checkspan ischecked"
@@ -52,7 +67,6 @@
 		  title="share this gloss with my Facebook friends">
 	      <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK">
 	      <img src="http://static.beingmeta.com/graphics/facebook16x16.png"
-		   style="width: 16px; height: 16px;"
 		   alt="sBooks" class="logo"/>
 	      <img src="http://static.beingmeta.com/graphics/redx16x16.png"
 		   alt="X"/>
@@ -80,9 +94,8 @@
 		  title="share this gloss with my Google+ connections">
 	      <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE">
 	      <img src="http://static.beingmeta.com/graphics/redx16x16.png"
-		   style="width: 16px; height: 16px;"
 		   alt="X"/>
-	      <img src="http://static.beingmeta.com/graphics/logos/gplus32x32.png" style="width: 16px; height: 16px;"
+	      <img src="http://static.beingmeta.com/graphics/logos/gplus32x32.png"
 		   alt="Google+" class="logo"/>
 	  </span></span>
 	</span> <!-- shared=yes checkspan -->

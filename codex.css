@@ -189,7 +189,7 @@ div.codexglossform form.focused span.inputhelp { display: inline;}
 
 div.codexglossform form textarea[name='NOTE'],
 div.codexglossform form input[type='TEXT'][name='NOTE'] {
-    min-height: 1em; overflow: hidden;
+    min-height: 1em; overflow: hidden; font-size: 14px;
     width: 98%; margin-left: auto; margin-right: auto;
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);
@@ -228,7 +228,7 @@ div.codexglossform form div.glossetc .sharing {
 div.codexglossform form div.glossetc .sharing .networks {
     text-align: right;}
 div.codexglossform form div.glossetc .sharing .checkspan.button {
-    width: 16px; height: 16px; padding-left: 4px; padding-right: 0px;
+    width: 24px; height: 24px; padding-left: 4px; padding-right: 0px;
     border: solid silver 2px;}
 div.codexglossform form div.glossetc .sharing .checkspan.button input {
     display: none;}
@@ -240,9 +240,9 @@ div.codexglossform form div.glossetc .sharing .checkspan.ischecked
 div.codexglossform form div.glossetc .sharing .networks 
    .button.checkspan img {
        padding: 0px; margin: 0px;
-       width: 16px; height: 16px;}
+       width: 24px; height: 24px;}
 div.codexglossform form div.glossetc .sharing .networks 
-   .button.checkspan img.logo { width: 16px; height: 16px;}
+   .button.checkspan img.logo { width: 24px; height: 24px;}
 div.codexglossform form div.glossetc .sharing .networks 
    .button.checkspan > img[alt='X'] {
        position: relative; left: -20px; top: -2px;
@@ -271,8 +271,10 @@ div.codexglossform form div.glossetc .checkspan .checkspan.ischecked {
 div.codexglossform form div.glossetc > .checkspan.private {
     float: right; vertical-align: top; margin-left: 4px;
     padding-top: 0px; margin-top: 0px;}
+div.codexglossform form div.glossetc > .button,
+div.codexglossform form div.glossetc > span .button {
+    float: right;}
 div.codexglossform form div.glossetc > span.button {
-    float: right;
     font-weight: bold; color: black; font-size: 150%;
     border: solid black 2px; background-color: silver; padding: 2px;
     border-radius: 4px; -o-border-radius: 4px;
@@ -306,7 +308,27 @@ div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
 
 div.codexglossform div.textbox {}
+div.codexglossform div.textbox input[type="TEXT"] {
+    font-size: 16px; display: none;
+    width: 98%; position: relative; top: 0px; max-height: 2em;
+    background-position: right top;
+    background-position-x: right; background-position-y: top;
+    background-repeat: no-repeat;}
 div.codexglossform div.textbox textarea {}
+
+div.codexglossform form.addtag div.textbox textarea,
+div.codexglossform form.addlink div.textbox textarea {
+    display: none;}
+
+div.codexglossform form.addtag div.textbox input[type="TEXT"][NAME='TAG'],
+div.codexglossform form.addlink div.textbox input[type="TEXT"][NAME='LINK'] {
+    display: block;}
+div.codexglossform div.textbox input[type="TEXT"][NAME='TAG'] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/codex/TagIcon16x16.png);}
+div.codexglossform div.textbox input[type="TEXT"][NAME='LINK'] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/DiagLink16x16.png);}
 
 div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
     margin-top: 0px;}

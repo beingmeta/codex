@@ -35,6 +35,10 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
 (function () {
 
+    var addClass=fdjtDOM.addClass;
+    var hasClass=fdjtDOM.hasClass;
+    var dropClass=fdjtDOM.dropClass;
+
     function sbicon(base){return Codex.graphics+base;}
     function cxicon(base){return Codex.graphics+"codex/"+base;}
 
@@ -58,8 +62,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (erase) {
 	    input.value=string.slice(0,start)+string.slice(end+1);}
 	return string.slice(start+1,end);}
-    var addClass=fdjtDOM.addClass;
-    var dropClass=fdjtDOM.dropClass;
+
     function getbracketed(input,erase){
 	var bracketed=_getbracketed(input,erase);
 	if (bracketed) addClass("CODEXADDGLOSS","tagging");
@@ -113,11 +116,15 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM.getInput(form,"DOCURI").value=document.location.href;
 	fdjtDOM.getInput(form,"FRAG").value=passageid;
 	var noteinput=fdjtDOM.getInput(form,"NOTE");
+	var taginput=fdjtDOM.getInput(form,"TAG");
+	var linkinput=fdjtDOM.getInput(form,"LINK");
 	if (noteinput) {
 	    noteinput.onkeypress=addgloss_keypress;
 	    noteinput.onkeydown=addgloss_keydown;
 	    if ((gloss)&&(!(response))) noteinput.value=gloss.note||"";
 	    else noteinput.value="";}
+	if (taginput) taginput.onkeypress=addtag_keypress;
+	if (linkinput) linkinput.onkeypress=addlink_keypress;
 	if (Codex.syncstamp)
 	    fdjtDOM.getInput(form,"SYNC").value=(Codex.syncstamp+1);
 	var info=Codex.docinfo[passageid];
@@ -387,6 +394,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     function bracket_click (evt){
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
+	var alt=target.alt;
 	var form=fdjtDOM.getParent(target,'form');
 	var input=fdjtDOM.getInput(form,'NOTE');
 	var string=input.value;
@@ -397,10 +405,36 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    handleBracketed(form,getbracketed(input,true));
 	else {
 	    var pos=input.selectionStart;
-	    input.value=string.slice(0,pos)+"[]"+string.slice(pos);
-	    input.selectionStart=input.selectionEnd=pos+1;
+	    var tagtext="[]";
+	    if (alt==='link') tagtext="[@http]";
+	    input.value=string.slice(0,pos)+tagtext+string.slice(pos);
+	    input.selectionStart=input.selectionEnd=pos+(tagtext.length-1);
 	    setTimeout(function(){input.focus();},100);}}
     Codex.UI.bracket_click=bracket_click;
+
+    function addGloss_button(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var alt=target.alt, altclass, input;
+	var form=fdjtDOM.getParent(target,'form');
+	if (!(alt)) return;
+	if (alt==="tag") {
+	    altclass="addtag";
+	    input=fdjtDOM.getInput(form,'TAG');}
+	else if (alt==="link") {
+	    altclass="addlink";
+	    input=fdjtDOM.getInput(form,'LINK');}
+	else return;
+	if (!(hasClass(form,altclass))) {
+	    dropClass(form,/(addtag)|(addlink)/);
+	    addClass(form,altclass);
+	    input.focus();}
+	else {
+	    dropClass(form,/(addtag)|(addlink)/);
+	    if (alt==="tag") {}
+	    else if (alt==="link") {}
+	    else {}}}
+    Codex.UI.addGloss_button=addGloss_button;
 
     function handleBracketed(form,content,complete){
 	dropClass("CODEXADDGLOSS","tagging");
@@ -428,6 +462,37 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else addTag(form,std);
 	    gloss_cloud.complete("");}}
 
+    function addlink_keypress(evt){
+	var target=fdjtUI.T(evt);
+	var content=target.value;
+	var form=fdjtDOM.getParent(target,"FORM");
+	var ch=evt.charCode;
+	if (ch===13) {
+	    var brk=content.indexOf(' ');
+	    if (brk<0) addLink(form,content.slice(1));
+	    else {
+		addLink(form,content.slice(1,brk),
+			content.slice(brk+1));}
+	    target.value="";
+	    dropClass(form,"addlink");}}
+    function addtag_keypress(evt){
+	var target=fdjtUI.T(evt);
+	var content=target.value;
+	var form=fdjtDOM.getParent(target,"FORM");
+	var ch=evt.charCode;
+	if (content.length===0) return;
+	var completions=gloss_cloud.complete(content);
+	if (ch===13) {
+	    if ((content.indexOf('|')>=0)||
+		(content.indexOf('@')>=0)||
+		(completions.length===0)||
+		(evt.shiftKey))
+		addTag(form,content);
+	    else addTag(form,completions[0]);
+	    target.value="";
+	    dropClass(form,"addtag");}}
+
+    /* This handles embedded brackets */
     function addgloss_keypress(evt){
 	var target=fdjtUI.T(evt);
 	var string=target.value;
