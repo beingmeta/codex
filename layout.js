@@ -320,7 +320,13 @@ var CodexPaginate=
 
 	    function splitBlock(node){
 		if (avoidBreakInside(node)) {
-		    if (page.firstChild===node) addClass(node,"codexbroke");
+		    if (page.firstChild===node) {
+			var geom=getGeometry(node,page);
+			var scalex=(geom.width/page_width);
+			var scaley=(geom.height/page_height);
+			var scale=((scalex<scaley)?(scalex):(scaley));
+			node.style[fdjtDOM.transform]='scale('+scale+')';
+			addClass(node,"codexbroke");}
 		    else newPage(node);
 		    return node;}
 		var children=TOA(node.childNodes);
