@@ -1107,14 +1107,15 @@ div.searchbox.notags div.resultinfo span { display: none;}
 
 /* Tag clouds */
 
+div.completions .label { float: left; opacity: 0.7;}
+
 div.completions .cloudtoggle {
     float: right; display: none;}
 div.completions.noinput .cloudtoggle {
     display: block;}
 
 div#CODEXHUD div.completions {
-    padding-left: 2.5em; text-align: center; font-size: 115%;
-    display: none;}
+    text-align: center; display: none;}
 div#CODEXHUD div.completions div.doc {
     background-color: ivory; text-align: left;
     font-size: 80%; line-height: 100%;
@@ -1144,9 +1145,9 @@ div#CODEXHUD .completions span.sectname {
   border-radius: 6px;}
 div#CODEXHUD .completions.showall span.dterm {display: inline;}
 div#CODEXHUD .completions.showall span.dterm.singleton {display: none;}
-div#CODEXHUD .completions { line-height: 200%;}
+div#CODEXHUD .completions { }
 div#CODEXHUD .completions .completion.prime { 
-  font-size: 200%; font-weight: bold;}
+    font-weight: bold;}
 div#CODEXHUD .completions .completion .sectname { 
   white-space: nowrap;}
 
