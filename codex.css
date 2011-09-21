@@ -228,13 +228,28 @@ div.codexglossform form div.glossetc .sharing {
 div.codexglossform form div.glossetc .sharing .networks {
     text-align: right;}
 div.codexglossform form div.glossetc .sharing .checkspan.button {
-    padding-left: 4px; padding-right: 0px;}
+    width: 16px; height: 16px; padding-left: 4px; padding-right: 0px;}
 div.codexglossform form div.glossetc .sharing .checkspan.button input {
     display: none;}
 div.codexglossform form div.glossetc .sharing .checkspan .checkspan {
     display: none;}
 div.codexglossform form div.glossetc .sharing .checkspan.ischecked
     .checkspan.button { display: inline;}
+
+div.codexglossform form div.glossetc .sharing .networks 
+   .button.checkspan img {
+       padding: 0px; margin: 0px;
+       width: 16px; height: 16px;}
+div.codexglossform form div.glossetc .sharing .networks 
+   .button.checkspan img.logo { width: 16px; height: 16px;}
+div.codexglossform form div.glossetc .sharing .networks 
+   .button.checkspan > img[alt='X'] {
+       position: relative; left: -20px; top: -2px;
+       margin: 0px; border-width: 0px; padding: 0px;
+       display: none;}
+div.codexglossform form div.glossetc .sharing .networks 
+   .button.checkspan.checked > img[alt='X'] {
+       display: none;}
 
 span.facebook_share, span.twitter_share { display: none;}
 span.linkedin_share, span.google_share { display: none;}
