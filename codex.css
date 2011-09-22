@@ -219,6 +219,11 @@ div.codexglossform form div.glossetc div.outlets span.head {
 
 div.codexglossform form div.glossetc div.outlets span.networks {
     color: black; font-weight: normal;}
+div.codexglossform form div.glossetc div.outlets span.networks span.options {
+    display: none;}
+div.codexglossform form div.glossetc div.outlets
+   span.networks.ischecked span.options {
+    display: inline;}
 
 div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue; text-decoration: underline;}

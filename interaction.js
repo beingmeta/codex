@@ -994,10 +994,17 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function hideSplashToggle(evt) {
 	evt=evt||event;
+	var target=fdjtUI.T(evt);
 	var newval=(!(Codex.hidesplash));
-	Codex.setConfig('hidesplash',newval);
-	Codex.saveConfig();
-	fdjtUI.cancel(evt);
+	var input=getParent(target,"input");
+	if (input)
+	    setTimeout(function(){
+		Codex.setConfig('hidesplash',input.checked);
+		Codex.saveConfig();},
+		       100);
+	else {
+	    Codex.setConfig('hidesplash',newval);
+	    Codex.saveConfig();}
 	if ((newval)&&(Codex._setup)&&
 	    ((fdjtTime()-(Codex._setup.getTime()))<30000))
 	    CodexMode(false);}
