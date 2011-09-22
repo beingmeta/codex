@@ -217,8 +217,11 @@ div.codexglossform form div.glossetc div.outlets.nocontent { display: none;}
 div.codexglossform form div.glossetc div.outlets span.head {
     color: black; font-weight: bold;}
 
+div.codexglossform form div.glossetc div.outlets span.networks span.checkspan {
+    color: black; font-weight: normal;}
+
 div.codexglossform form div.glossetc .links span.checkspan {
-    color: blue; text-decoration: underline;}
+    color: darkblue; text-decoration: underline;}
 div.codexglossform form div.glossetc span.checkspan input {}
 
 div.codexglossform form div.glossetc .sharing {
@@ -275,7 +278,7 @@ div.codexglossform form div.glossetc > .button,
 div.codexglossform form div.glossetc > span .button {
     float: right;}
 div.codexglossform form div.glossetc > span.button {
-    font-weight: bold; color: black; font-size: 150%;
+    font-weight: bold; color: black; font-size: 24px;
     border: solid black 2px; background-color: silver; padding: 2px;
     border-radius: 4px; -o-border-radius: 4px;
     -moz-border-radius: 4px; -webkit-border-radius: 4px;
@@ -307,14 +310,14 @@ div.codexglossform.glossreply span.addbutton {
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
 
-div.codexglossform div.textbox {}
+div.codexglossform div.textbox {min-height: 50px;}
 div.codexglossform div.textbox input[type="TEXT"] {
     font-size: 16px; display: none;
     width: 98%; position: relative; top: 0px; max-height: 2em;
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.codexglossform div.textbox textarea {}
+div.codexglossform div.textbox textarea { min-height: 5ex;}
 
 div.codexglossform form.addtag div.textbox textarea,
 div.codexglossform form.addlink div.textbox textarea {

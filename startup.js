@@ -835,7 +835,7 @@ Codex.Startup=
 	    gotInfo("etc",etc,persist);
 	    if ((outlets)&&(outlets.length)) {
 		var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
-		var div=fdjtDOM.getChild(addgloss,"div.outlets");
+		var div=fdjtDOM.getChild(addgloss,".addoutlets");
 		fdjtDOM.dropClass(div,"nocontent");
 		var i=0; var ilim=outlets.length;
 		while (i<ilim) {
@@ -909,29 +909,29 @@ Codex.Startup=
 	    var getChild=fdjtDOM.getChild;
 	    if (Codex.user.fbid)  {
 		ss.insertRule("span.facebook_share { display: inline;}",
-			     ss.cssRules.length);
-		var cs=getChild(getChild(form,".facebook_share"),".checkspan");
+			      ss.cssRules.length);
+		var cs=getChild(form,".checkspan.facebook_share");
 		fdjtUI.CheckSpan.set(cs,true);
 		var cb=getChild(cs,"input");
 		cb.setAttribute("checked","checked");}
 	    if (Codex.user.twitterid) {
 		ss.insertRule("span.twitter_share { display: inline;}",
 			     ss.cssRules.length);
-		var cs=getChild(getChild(form,".twitter_share"),".checkspan");
+		var cs=getChild(form,".checkspan.twitter_share");
 		fdjtUI.CheckSpan.set(cs,true);
 		var cb=getChild(cs,"input");
 		cb.setAttribute("checked","checked");}
 	    if (Codex.user.linkedinid) {
 		ss.insertRule("span.linkedin_share { display: inline;}",
 			     ss.cssRules.length);
-		var cs=getChild(getChild(form,".linkedin_share"),".checkspan");
+		var cs=getChild(form,".checkspan.linkedin_share");
 		fdjtUI.CheckSpan.set(cs,true);
 		var cb=getChild(cs,"input");
 		cb.setAttribute("checked","checked");}
 	    if (Codex.user.googleid) {
 		ss.insertRule("span.google_share { display: inline;}",
 			     ss.cssRules.length);
-		var cs=getChild(getChild(form,".google_share"),".checkspan");
+		var cs=getChild(form,".checkspan.google_share");
 		fdjtUI.CheckSpan.set(cs,true);
 		var cb=getChild(cs,"input");
 		cb.setAttribute("checked","checked");}

@@ -219,10 +219,10 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	text=fdjtString.stdspace(text);
 	if (text.length>40) return text.slice(0,40)+"...";
 	else return text;}
-
+    
     /***** Adding outlets ******/
     function addOutlet(form,outlet,checked) {
-	var outletspan=fdjtDOM.getChild(form,".outlets");
+	var outletspan=fdjtDOM.getChild(form,".addoutlets");
 	if (typeof outlet === 'string') outlet=fdjtKB.ref(outlet);
 	var checkbox=fdjtDOM.Checkbox(outlet,outlet._id);
 	var checkspan=fdjtDOM("span.checkspan.outlet",checkbox,
