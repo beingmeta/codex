@@ -305,7 +305,7 @@ var sbook_gloss_data=
 	    else if (scan===Codex.root) return target;
 	    else if ((scan.id)||(scan.codexid)) {
 		if (fdjtDOM.hasParent(scan,CodexHUD)) return false;
-		else if (fdjtDOM.hasParent(scan,".sbookmargin")) return false;
+		else if (fdjtDOM.hasParent(scan,".codexmargin")) return false;
 		else if ((fdjtDOM.hasClass(scan,"sbooknofocus"))||
 			 ((Codex.nofocus)&&(Codex.nofocus.match(scan))))
 		    scan=scan.parentNode;
@@ -463,7 +463,7 @@ var sbook_gloss_data=
 	if (Codex.nativescroll) return fdjtDOM.viewTop();
 	else return -(fdjtDOM.parsePX(Codex.pages.style.top));}
     var sbookUIclasses=
-	/(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bsbookmargin\b)/;
+	/(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bcodexmargin\b)/;
 
     function inUI(elt){
 	if (elt.sbookui) return true;

@@ -611,13 +611,13 @@ Codex.Startup=
 	    if (!(allnotes)) {
 		var allnotes=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
 		fdjtDOM(content,allnotes);}
-	    var paginating=fdjtDOM("div#CODEXPAGINATING","Laid out ",
-				   fdjtDOM("span#CODEXPAGEPROGRESS","")," pages");
-	    body.appendChild(content);
-	    body.appendChild(
-		fdjtDOM("div#CODEXPAGE",paginating,fdjtDOM("div#CODEXPAGES")));
-	    Codex.page=fdjtID("CODEXPAGE");
-	    Codex.pages=fdjtID("CODEXPAGES");
+	    var page=Codex.page=fdjtDOM(
+		"div#CODEXPAGE",
+		fdjtDOM("div#CODEXPAGINATING","Laid out ",
+			fdjtDOM("span#CODEXPAGEPROGRESS",""),
+			" pages"),
+		Codex.pages=fdjtDOM("div#CODEXPAGES"));
+	    fdjtDOM(body,content,page);
 	    fdjtDOM.addClass(body,"sbook");
 	    applyMetaClass("sbookdetails");
 	    applyMetaClass("sbooknoteref");
@@ -661,9 +661,10 @@ Codex.Startup=
 	    while (i<lim) {
 		var detail=details[i++];
 		var head=fdjtDOM.getChild(detail,"summary,.sbooksummary");
-		var detailhead=((head)?(fdjtDOM.clone(head)):
-				fdjtDIV("div.sbookdetailstart",
-					(fdjtString.truncate(fdjtDOM.textify(detail),42))));
+		var detailhead=
+		    ((head)?(fdjtDOM.clone(head)):
+		     fdjtDIV("div.sbookdetailstart",
+			     (fdjtString.truncate(fdjtDOM.textify(detail),42))));
 		var anchor=fdjtDOM("A.sbookdetailref",detailhead);
 		var count=detail_count++;
 		if (!(detail.id)) detail.id="SBOOKDETAIL"+count;
@@ -710,30 +711,25 @@ Codex.Startup=
 	    var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
 	    topleading.sbookui=true; bottomleading.sbookui=true;
 	    
-	    var pagehead=fdjtDOM("div.sbookmargin#CODEXPAGEHEAD"," ");
+	    var pagehead=fdjtDOM("div.codexmargin#CODEXPAGEHEAD"," ");
+	    var pageright=fdjtDOM("div#CODEXPAGERIGHT");
+	    var pageleft=fdjtDOM("div#CODEXPAGELEFT");
+	    
 	    var pageinfo=
 		fdjtDOM("div#CODEXPAGEINFO",
 			fdjtDOM("div.progressbar#CODEXPROGRESSBAR",""),
 			fdjtDOM("div#CODEXPAGENO",
 				fdjtDOM("span#CODEXPAGENOTEXT","p/n")));
-	    var pagefoot=fdjtDOM
-	    ("div.sbookmargin#CODEXPAGEFOOT",
-	     pageinfo," ",
-	     fdjtDOM.Image(cxicon("PageNext50x50.png"),
-			   "img#CODEXPAGENEXT.hudbutton.bottomright",
-			   "pagenext","go to the next result/section/page"));
+	    var pagefoot=fdjtDOM("div.codexmargin#CODEXPAGEFOOT",pageinfo," ");
 	    pagehead.sbookui=true; pagefoot.sbookui=true;
 	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
-	    
-	    fdjtDOM.addListeners
-	    (pageinfo,Codex.UI.handlers[Codex.ui]["#CODEXPAGEINFO"]);
-	    
-	    fdjtDOM.prepend(document.body,pagehead,pagefoot);
-	    
-	    // Not really used anymore
-	    fdjtDOM.addListeners
-	    (fdjtID("CODEXPAGENEXT"),Codex.UI.handlers[Codex.ui]["#CODEXPAGENEXT"]);
-	    
+
+	    fdjtDOM.prepend(document.body,pagehead,pagefoot,pageleft,pageright);
+
+	    for (var pagelt in [pagehead,pageright,pageleft,pagefoot,pageinfo]) {
+		fdjtDOM.addListeners(
+		    pageinfo,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
+		
 	    window.scrollTo(0,0);
 	    
 	    // The better way to do this might be to change the stylesheet,
