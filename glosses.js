@@ -409,7 +409,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (alt==='link') tagtext="[@http]";
 	    input.value=string.slice(0,pos)+tagtext+string.slice(pos);
 	    input.selectionStart=input.selectionEnd=pos+(tagtext.length-1);
-	    setTimeout(function(){input.focus();},100);}}
+	    input.focus();}}
     Codex.UI.bracket_click=bracket_click;
 
     function addGloss_button(evt){
