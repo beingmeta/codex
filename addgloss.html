@@ -21,65 +21,77 @@
     <span class="resptags"></span> <span class="resplinks"></span>
   </div>
   <div class="textbox">
+    <input type="TEXT" name="TAG"
+	   placeholder="type a tag, with completion" value=""/>
+    <input type="TEXT" name="LINK"
+	   placeholder="type a URL and title" value=""/>
     <textarea name="NOTE"
 	      placeholder="add text, [tag]s or [@http://example.com/ links]"
-	      onfocus="fdjtDOM.aC(fdjtDOM.$P(this,'form'),'focused');"
-	      onblur="fdjtDOM.dC(fdjtDOM.$P(this,'form'),'focused');"
+	      onfocus="Codex.UI.addgloss_focus(event);"
+	      onblur="Codex.UI.addgloss_blur(event);"
 	      wrap="virtual"></textarea>
   </div>
   <div class="glossetc">
+    <span class="button" onclick="Codex.UI.submitEvent(event);">
+      Done</span>
+    <!--
     <span class="button addbutton" onclick="Codex.UI.submitEvent(event);">
       add</span>
+    <span class="button replybutton" onclick="Codex.UI.submitEvent(event);">
+      reply</span>
     <span class="button savebutton" onclick="Codex.UI.submitEvent(event);">
       save</span>
+    -->
+    <!--
     <span class="button bracketbutton"
 	 onmousedown="Codex.UI.bracket_click(event);"
 	 ontouchstart="Codex.UI.bracket_click(event);"
 	 title="open/close bracketed tag or link">
       [+]</span>
-    <div class="sharing">
-      <div class="networks">
-	<span class="button checkspan ischecked"
-	      onclick="fdjtUI.CheckSpan.onclick(event);"
-	      title="share this gloss among my social networks">
-	  <input type="CHECKBOX" name="SHARED" value="yes" CHECKED/>
-	  <img src="http://static.beingmeta.com/graphics/earth16.png"
-	       style="width: 16px; height: 16px;"
-	       alt="Share"/>
-	  <span class="facebook_share">
-	    <span class="button checkspan ischecked"
-		  title="share this gloss with my Facebook friends">
-	      <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK">
-	      <img src="http://static.beingmeta.com/graphics/facebook16x16.png"
-		   style="width: 16px; height: 16px;"
-		   alt="sBooks"/></span></span>
-	  <span class="twitter_share">
-	    <span class="button checkspan ischecked"
-		  title="share this gloss with my Twitter followers">
-	      <input type="CHECKBOX" name="NETWORKS" value=":TWITTER">
-	      <img src="http://static.beingmeta.com/graphics/TwitterIcon32x32.png" style="width: 16px; height: 16px;"
-		   alt="Twitter"/></span></span>
-	  <span class="linkedin_share">
-	    <span class="button checkspan ischecked"
-		  title="share this gloss with my LinkedIn connections">
-	      <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN">
-	      <img src="http://static.beingmeta.com/graphics/linkedinlogo32x32.png" style="width: 16px; height: 16px;"
-		   alt="LinkedIN"/></span></span>
-	  <span class="google_share">
-	    <span class="button checkspan ischecked"
-		  title="share this gloss with my Google+ connections">
-	      <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE">
-	      <img src="http://static.beingmeta.com/graphics/logos/gplus32x32.png" style="width: 16px; height: 16px;"
-		   alt="Google+"/></span></span>
-	</span> <!-- shared=yes checkspan -->
-      </div> <!-- networks -->
-    </div> <!-- sharing -->
+    -->
+    <span onmousedown="Codex.UI.addGloss_button(event);"
+	  ontouchstart="Codex.UI.addGloss_button(event);">
+      <img src="http://static.beingmeta.com/graphics/DiagLink32x32.png"
+	   title="add a link to this gloss"
+	   class="button mouseicon" alt="link"/>
+      <img src="http://static.beingmeta.com/graphics/codex/TagIcon32x32.png"
+	   title="add a tag to this gloss"
+	   class="button mouseicon" alt="tag"/>
+    </span>
     <span class="links" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <span class="excerpts" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
-    <div class="outlets nocontent"
+    <div class="outlets"
 	 onclick="fdjtUI.CheckSpan.onclick(event);">
       <span class="head">Share with </span>
+      <span class="addoutlets"></span>
+      <span class="networks checkspan ischecked">
+	<input type="CHECKBOX" name="SHARED" value="yes" CHECKED/>
+	<strong title="share this gloss among my social networks">
+	  networks</strong>
+	<span class="options">
+	  @<span class="checkspan ischecked facebook_share"
+		title="share this gloss with my Facebook friends">
+	    <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK">
+	    <img src="http://static.beingmeta.com/graphics/facebook16x16.png"
+		 alt="Facebook" title="Facebook friends"/></span>
+	  <span class="checkspan ischecked twitter_share"
+		title="share this gloss with my Twitter followers">
+	    <input type="CHECKBOX" name="NETWORKS" value=":TWITTER">
+	    <img src="http://static.beingmeta.com/graphics/twitter16x16.png"
+		 alt="Twitter" title="Twitter followers"/></span>
+	  <span class="checkspan ischecked linkedin_share"
+		title="share this gloss with my LinkedIn connections">
+	    <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN">
+	    <img src="http://static.beingmeta.com/graphics/linkedin16x16.png"
+		 alt="Linked In" title="Linked In connections"/></span>
+	  <span class="button checkspan ischecked google_share"
+		title="share this gloss with my Google+ connections">
+	    <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE">
+	    <img src="http://static.beingmeta.com/graphics/googleplus16x16.png"
+		 alt="Google+" title="Google Plus contacts"/></span>
+	</span>
+      </span>
     </div>
   </div>
 </form>

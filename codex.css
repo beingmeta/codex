@@ -47,6 +47,16 @@ div#CODEXPAGE {
     padding: 0px; margin: 0px; border: 0px;
     left: 50px; right: 50px;
     top: 60px; bottom: 60px;}
+div#CODEXPAGERIGHT {
+    position: fixed; overflow: visible;
+    padding: 0px; margin: 0px; border: 0px;
+    width: 50px; right: 0px;
+    top: 60px; bottom: 60px;}
+div#CODEXPAGELEFT {
+    position: fixed; overflow: visible;
+    padding: 0px; margin: 0px; border: 0px;
+    width: 50px; left: 0px;
+    top: 60px; bottom: 60px;}
 div#CODEXPAGE div#CODEXPAGES {
     position: absolute; top: 0px; left: 0px;
     padding: 0px; margin: 0px; border: 0px;
@@ -150,6 +160,316 @@ div#CODEXPAGINATING {
 
 body.sbook { width: inherit;}
 
+/* Display elements */
+
+/* Gloss form */
+
+div.codexglossform { display: none;}
+div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
+div.codexglossform#CODEXLIVEGLOSS { display: block;}
+div.codexglossform div.response {
+ margin-left: 0.5em; text-align: left; color: black;}
+div.codexglossform div.response .respmaker {font-weight: bold;}
+div.codexglossform div.response .respdate {
+    font-size: 75%; font-weight: bold; font-variant: small-caps;
+    color: purple;
+    float: right;}
+div.codexglossform div.response .respdate:before { content: "(";}
+div.codexglossform div.response .respdate:after { content: ")";}
+div.codexglossform div.response .respnote { font-style: italic;}
+div.codexglossform div.response .respnote:before { content: "“";}
+div.codexglossform div.response .respnote:after { content: "”";}
+div.codexglossform div.response .respexcerpt {
+    font-size: 80%; background-color: yellow;}
+
+div.codexglossform form {
+    padding: 0px; margin: 0px;}
+div.codexglossform form span.checkspan.excerpt {
+    white-space: normal;}
+div.codexglossform form .inputhelp {color: black; display: none;}
+div.codexglossform form div.inputhelp {
+    padding-bottom: 4px; text-align: left;}
+div.codexglossform form .bracketbutton {
+    font-weight: bold; font-size: 110%;
+    padding: 0px; cursor: pointer;}
+div.codexglossform form .bracketbutton strong {
+    font-size: 110%; color: red;}
+div.codexglossform form.focused div.inputhelp { display: block;}
+div.codexglossform form.focused span.inputhelp { display: inline;}
+
+div.codexglossform form textarea[name='NOTE'],
+div.codexglossform form input[type='TEXT'][name='NOTE'] {
+    min-height: 1em; overflow: hidden; font-size: 14px;
+    width: 98%; margin-left: auto; margin-right: auto;
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);
+    background-position: right top;
+    background-position-x: right; background-position-y: top;
+    background-repeat: no-repeat;}
+div.codexglossform form div.inputhelp {
+    width: 98%; margin-left: auto; margin-right: auto;
+    margin-top: 0px; padding-top: 0px;}
+div.codexglossform form div.glossetc {
+    display: block; text-align: left; font-size: 12px;
+    width: 98%; margin-left: auto; margin-right: auto;
+    min-height: 24px;}
+
+div.codexglossform form div.glossetc .links,
+div.codexglossform form div.glossetc .tags {
+    font-size: 125%;}
+div.codexglossform form div.glossetc .excerpts {
+    font-size: 80%;}
+div.codexglossform form div.glossetc .tags span.checkspan {
+    background-color: gold; padding: 2px; padding-top: 0px;
+    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
+    border: solid yellow 2px;}
+div.codexglossform form div.glossetc div.outlets.nocontent { display: none;}
+div.codexglossform form div.glossetc div.outlets span.head {
+    color: black; font-weight: bold;}
+
+div.codexglossform form div.glossetc div.outlets span.networks {
+    color: black; font-weight: normal;}
+div.codexglossform form div.glossetc div.outlets span.networks span.options {
+    display: none;}
+div.codexglossform form div.glossetc div.outlets
+   span.networks.ischecked span.options {
+    display: inline;}
+
+div.codexglossform form div.glossetc .links span.checkspan {
+    color: darkblue; text-decoration: underline;}
+div.codexglossform form div.glossetc span.checkspan input {}
+
+div.codexglossform form div.glossetc .sharing {
+    float: right; clear: right; text-align: right;
+    padding-bottom: 1ex; padding-top: 0.5ex; margin-bottom: 1ex;
+    padding-right: 0px;}
+div.codexglossform form div.glossetc .sharing .networks {
+    text-align: right;}
+div.codexglossform form div.glossetc .sharing .checkspan.button {
+    width: 24px; height: 24px; padding-left: 4px; padding-right: 0px;
+    border: solid silver 2px;}
+div.codexglossform form div.glossetc .sharing .checkspan.button input {
+    display: none;}
+div.codexglossform form div.glossetc .sharing .checkspan .checkspan {
+    display: none;}
+div.codexglossform form div.glossetc .sharing .checkspan.ischecked
+    .checkspan.button { display: inline;}
+
+div.codexglossform form div.glossetc .sharing .networks 
+   .button.checkspan img {
+       padding: 0px; margin: 0px;
+       width: 24px; height: 24px;}
+div.codexglossform form div.glossetc .sharing .networks 
+   .button.checkspan img.logo { width: 24px; height: 24px;}
+div.codexglossform form div.glossetc .sharing .networks 
+   .button.checkspan > img[alt='X'] {
+       position: relative; left: -20px; top: -2px;
+       margin: 0px; border-width: 0px; padding: 0px;
+       display: none;}
+div.codexglossform form div.glossetc .sharing .networks 
+   .button.checkspan.checked > img[alt='X'] {
+       display: none;}
+
+span.facebook_share, span.twitter_share { display: none;}
+span.linkedin_share, span.google_share { display: none;}
+
+div.codexglossform form div.glossetc .sharing .checkspan.button > img {
+    padding: 1px; border: dotted red 2px; opacity: 0.5;}
+div.codexglossform form div.glossetc .sharing .checkspan.ischecked > img {
+    border: solid green 2px; opacity: 1.0;}
+
+
+div.codexglossform form div.glossetc .sharing .checkspan.ischecked {
+    color: inherit; text-decoration: none;}
+div.codexglossform form div.glossetc .checkspan .checkspan {
+    text-decoration: line-through; color: red;}
+div.codexglossform form div.glossetc .checkspan .checkspan.ischecked {
+    text-decoration: none; color: inherit;}
+
+div.codexglossform form div.glossetc > .checkspan.private {
+    float: right; vertical-align: top; margin-left: 4px;
+    padding-top: 0px; margin-top: 0px;}
+div.codexglossform form div.glossetc > .button,
+div.codexglossform form div.glossetc > span .button {
+    float: right;}
+div.codexglossform form div.glossetc > span.button {
+    font-weight: bold; color: black; font-size: 24px;
+    border: solid black 2px; background-color: silver; padding: 2px;
+    border-radius: 4px; -o-border-radius: 4px;
+    -moz-border-radius: 4px; -webkit-border-radius: 4px;
+    padding: 0px; padding-right: 2px;  padding-left: 2px; 
+    margin-left: 4px; 
+    text-align: center; vertical-align: top;
+    cursor: pointer;}
+div.codexglossform form .checkspan {
+    padding-left: 2px; padding-right: 2px;
+    font-family: sans,sans-serif;}
+div.codexglossform form div.glossetc div.outlets {
+    margin-top: 0.5ex;}
+
+div.codexglossform form span.source:before, .completions span.source:before {
+    content: '@'; color: gold;}
+
+div.codexglossform span.button.savebutton,
+div.codexglossform span.button.replybutton,
+div.codexglossform span.button.addbutton { float: right;}
+
+div.codexglossform span.savebutton, div.codexglossform span.replybutton {
+    display: none;}
+div.codexglossform.glossedit span.savebutton { display: inline;}
+div.codexglossform.glossreply span.replybutton { display: inline;}
+div.codexglossform.glossedit span.addbutton,
+div.codexglossform.glossreply span.addbutton {
+    display: none;}
+
+div.codexglossform.submitting { opacity: 0.5;}
+div.codexglossform.submitting td.button img { opacity: 0.5;}
+
+div.codexglossform div.textbox {min-height: 50px;}
+div.codexglossform div.textbox input[type="TEXT"] {
+    font-size: 16px; display: none;
+    width: 98%; position: relative; top: 0px; max-height: 2em;
+    background-position: right top;
+    background-position-x: right; background-position-y: top;
+    background-repeat: no-repeat;}
+div.codexglossform div.textbox textarea { min-height: 5ex;}
+
+div.codexglossform form.addtag div.textbox textarea,
+div.codexglossform form.addlink div.textbox textarea {
+    display: none;}
+
+div.codexglossform form.addtag div.textbox input[type="TEXT"][NAME='TAG'],
+div.codexglossform form.addlink div.textbox input[type="TEXT"][NAME='LINK'] {
+    display: block;}
+div.codexglossform div.textbox input[type="TEXT"][NAME='TAG'] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/codex/TagIcon16x16.png);}
+div.codexglossform div.textbox input[type="TEXT"][NAME='LINK'] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/DiagLink16x16.png);}
+
+div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
+    margin-top: 0px;}
+
+div.codexglossform form div.glossetc .tags span.checkspan {
+    font-size: 80%;}
+
+/* CODEXSOURCES */
+
+div.sbooksources {}
+div.sbooksources img.button.source {
+    max-height: 50px;}
+div.sbooksources .button.source {
+    border: solid transparent 2px; margin: 2px;}
+div.sbooksources img.button.source.selected,
+div.sbooksources div.button.source.selected {
+    border-color: blue;}
+div.sbooksources div.button.source {
+    min-height: 50px; min-width: 50px; display: inline;
+    height: 50px; width: 50px; font-size: 32px;
+    text-align: center; vertical-align: top;
+    clear: none;}
+
+/* TOC rules */
+
+div.codextoc { display: none;}
+div.codextoc > div, div.codextoc > div.head {
+    margin-left: 32px; margin-right: 32px;}
+div.codextoc div.head {
+  position: relative; margin: 0px; padding: 0px; border: 0px;
+  left: 0px; right: 0px; margin: 0px;
+  margin-left: 32px; margin-right: 32px;
+  display: none;}
+div.codextoc > div.spanbar {
+  margin-left: 0px; margin-right: 0px;}
+
+div.codextoc div.head { min-height: 24px;}
+div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
+body.sbooktouch div.codextoc div.head { min-height: 32px;}
+body.sbooktouch div#CODEXFLYTOC div.codextoc div.head {
+    min-height: 24px;}
+
+div.codextoc div.head .progressbar { 
+  color: lightblue; background-color: lightblue;
+  padding: 0px; margin: 0px; border-right: solid red 3px;
+  position: absolute;  left: 0px; height: 100%;
+  z-index: -100; opacity: 0.5;}
+div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
+    float: right; cursor: pointer; z-index: 100;}
+div.codextoc img[alt='back'], div.codextoc img[alt='backstop'] {
+    float: left; cursor: pointer; z-index: 100;}
+
+/* Conditional display, so only the live elements are displayed */
+div.codextoc.live { display: block;}
+div.codextoc.live div.head { display: block;}
+
+div.codextoc.live div.codextoc { display: none;}
+div.codextoc.live div.codextoc.live { display: block;}
+
+div.codextoc div.sub {
+    display: none; clear: both;}
+div.codextoc.cur div.head { font-size: 125%;}
+div.codextoc.cur div.sub { display: block;}
+
+/* sbook 'slices' of summaries or glosses */
+
+div.codexslice.sourced div.codexnote { display: none;}
+div.codexslice.sourced div.codexnote.sourced { display: block;}
+
+div.codexslice.sourced div.codexthread { display: none;}
+div.codexslice.sourced div.codexthread > div { display: none;}
+div.codexslice.sourced div.codexthread.sourced { display: block;}
+div.codexslice.sourced div.codexthread.sourced > div.tochead { display: block;}
+div.codexslice.sourced div.codexthread.sourced > div.idhead { display: block;}
+div.codexslice.sourced div.codexthread.sourced > div.codexthread { display: none;}
+div.codexslice.sourced div.codexthread.sourced > div.codexthread.sourced {
+    display: block;}
+
+div.codexslice.onepassage .tocblock .tochead {display:none;}
+
+span.excerpt { font-size: 120%; color: gray; background-color: yellow;}
+span.excerpt span.content { font-size: 80%; display: none;}
+.showexcerpt span.excerpt span.content { display: inline;}
+.showexcerpt span.excerpt span.ellipsis { display: none;}
+
+div.codexnote { margin-left: 20px; margin-right: 0px;}
+div.codexnote div.idhead { margin-left: -10px;  }
+div.codexnote div.tochead { margin-left: -20px; }
+
+div.codexslice .tocthread {}
+div.codexslice .tocthread .codexnote .tochead { display: none;}
+div.codexslice .idthread .codexnote .idhead { display: none;}
+
+div.codexslice .tocthread .idthread:first-child
+      .codexnote:first-child .tochead {
+    display: block;}
+div.codexslice .idthread > .codexnote:first-child .idhead {
+    display: block;}
+
+div.codexslice .codexnote div.detail { 
+  display: none; color: ivory; clear: both;}
+div.codexslice .showdetail div.detail { display: block;}
+div.codexslice div.xrefs { display: none;}
+div.codexslice .showxrefs div.xrefs { display: block;}
+div.codexslice div.xrefs a { display: block;}
+
+div.codexthread {
+    clear: both; margin: 0px; border: none;
+    border-right: gold solid 3px;}
+div#CODEXGLOSSES div.codexthread { border-right-width: 0px;}
+div.codexthread.singleton,
+div#SBOOKGLOSSES div.codexthread {
+    border-left: none; margin-left: 0px;
+    padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
+div.codexthread .locbar { background-color: silver;}
+div.codexthread.headthread { border-top: solid gold 2px;}
+div.codexthread.idthread {border: none;}
+div.codexthread.idthread .codexnote {}
+div.codexslice div.codexthread div.codexnote div.locbar {border: none;}
+div.codexslice div.codexthread div.codexnote div.locbar {display:none;}
+div.codexslice div.codexthread div.codexnote:first-child div.locbar {
+    display:block;}
+
 /* The HUD */
 
 #CODEXHUD a { text-decoration: none;}
@@ -180,8 +500,7 @@ div#CODEXHUD.codexanimate div.hudpanel {
 
 div#CODEXHUD div#CODEXHEAD div.hudpanel,
 div#CODEXHUD div.hudpanel.codexnote {
-    max-height: 75%;
-    border-top: 0px;
+    max-height: 75%; border-top-width: 0px;
     border-top-left-radius: 0px;
     -webkit-border-top-left-radius: 0px; 
     -moz-border-radius-topleft: 0px;
@@ -197,7 +516,8 @@ div#CODEXHUD div.hudpanel div.scrollbox {
 div#CODEXHUD img.hudbutton {
     position: fixed; width: 50px; height: 50px; z-index: 200;
     border: solid transparent 2px; opacity: 0.2;}
-div#CODEXHUD img.hudbutton:hover { background-color: lightblue; border-color: blue;}
+div#CODEXHUD img.hudbutton:hover {
+    background-color: lightblue; border-color: blue;}
 body.hudup div#CODEXHUD img.hudbutton  {}
 body div#CODEXHUD img.hudbutton:hover { opacity: 0.45;}
 div#CODEXHUD .topleft {top: 0px; left: 0px;}
@@ -206,28 +526,28 @@ div#CODEXHUD .botleft {bottom: 0px; left: 0px;}
 div#CODEXHUD .botright {bottom: 0px; right: 0px;}
 
 div#CODEXHUD img.topleft {
-    border-top: 0px; border-left: 0px;
+    border-top-width: 0px; border-left-width: 0px;
     border-bottom-right-radius: 6px;
     -o-border-bottom-right-radius: 6px; 
     -webkit-border-bottom-right-radius: 6px; 
     -moz-border-radius-bottomright: 6px;
     -o-border-radius-bottomright: 6px;}
 div#CODEXHUD img.topright {
-    border-top: 0px; border-right: 0px;
+    border-top-width: 0px; border-right-width: 0px;
     border-bottom-left-radius: 6px;
     -o-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;
     -o-border-radius-bottomleft: 6px;}
 div#CODEXHUD img.botleft {
-    border-bottom: 0px; border-left: 0px;
+    border-bottom-width: 0px; border-left-width: 0px;
     border-top-right-radius: 6px;
     -o-border-top-right-radius: 6px; 
     -webkit-border-top-right-radius: 6px; 
     -moz-border-radius-topright: 6px;
     -o-border-radius-topright: 6px;}
 div#CODEXHUD img.botright {
-    border-bottom: 0px; border-right: 0px;
+    border-bottom-width: 0px; border-right-width: 0px;
     border-top-left-radius: 6px;
     -o-border-top-left-radius: 6px; 
     -webkit-border-top-left-radius: 6px; 
@@ -258,7 +578,7 @@ body #CODEXDROPHUD {
     position: fixed; left: 0px; bottom: 0px;
     height: 50px; width: 50px;
     border: solid transparent 2px;
-    border-bottom: 0px; border-left: 0px;
+    border-bottom-width: 0px; border-left-width: 0px;
     border-top-right-radius: 6px;
     -o-border-top-right-radius: 6px; 
     -webkit-border-top-right-radius: 6px; 
@@ -276,6 +596,9 @@ body #CODEXPAGENEXT {
     opacity: 0.5;}
 body #CODEXPAGENEXT:hover {opacity: 0.75;}
 body.hudup #CODEXPAGENEXT {display: none;}
+
+div#CODEXALLGLOSSES .tocthread, div#CODEXRESULTS .tocthread {
+    /* border-left: solid purple 1px; */}
 
 /* This enables the lower right pagenext button, which we're not currentl
    using
@@ -314,27 +637,64 @@ body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
-body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS,
-body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
-body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
-body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
-    border-color: darkblue; display: block; overflow: auto;
-    opacity: 0.9; min-height: 50px; height: auto;
+body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
+body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
+body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
+    display: block; opacity: 0.9; min-height: 50px; height: auto;
+    overflow: auto; border-color: darkblue;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;}
+    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -webkit-transition-property: height,opacity;
+    -webkit-transition-duration: 1s;}
+body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
+body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
-    max-height: 50px; overflow: hidden;}
-body.hudup div#CODEXHUD.scanning div#CODEXSCANNER { max-height: inherit;}
-body div#CODEXHUD.scanning div#CODEXSCANNER:hover { max-height: inherit;}
+    display: block; height: auto; opacity: 0.9; overflow: hidden;
+    border-color: silver;}
+
+body div#CODEXHUD div.hudpanel#CODEXTOC,
+body div#CODEXHUD div.hudpanel#CODEXGLOSSES,
+body div#CODEXHUD div.hudpanel#CODEXSCANNER {
+    max-height: 50px;}
+body.hudup div#CODEXHUD div.hudpanel#CODEXTOC,
+body.hudup div#CODEXHUD div.hudpanel#CODEXGLOSSES,
+body.hudup div#CODEXHUD div.hudpanel#CODEXSCANNER,
+body div#CODEXHUD div.hudpanel#CODEXTOC:hover,
+body div#CODEXHUD div.hudpanel#CODEXGLOSSES:hover,
+body div#CODEXHUD div.hudpanel#CODEXSCANNER:hover {
+    max-height: inherit;}
+
+div.hudpanel#CODEXSCANNER div.codexslice .tocthread,
+div.hudpanel#CODEXGLOSSES div.codexslice .tocthread {
+    border-left-width: 0px;}
+
+div#CODESCANNER div.codexslice .tocthread .idthread:first-child
+      .codexnote:first-child .tochead,
+div#CODEXSCANNER div.codexslice .idthread .codexnote:first-child .idhead,
+div#CODEXGLOSSES div.codexslice .tocthread .idthread:first-child
+      .codexnote:first-child .tochead,
+div#CODEXGLOSSES div.codexslice .idthread .codexnote:first-child .idhead {
+    height: 0px;}
+
+div#CODEXSCANNER .hudupbutton {
+    position: absolute; right: 3px; top: 3px;
+    font-size: 24px; font-weight: bold; vertical-align: top;
+    z-index: 800;}
+div#CODEXSCANNER .hudupbutton span.up { display: none;}
+body.hudup div#CODEXSCANNER .hudupbutton span.down { display: none;}
+body.hudup div#CODEXSCANNER .hudupbutton span.up { display: inline;}
+
+div#CODEXSCANNER div.tochead, div#CODEXGLOSSES div.tochead {
+    border-top-width: 0px; border-bottom-width: 0px;}
 
 body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC {
     overflow: visible;}
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     background-color: lightblue;
-    border-style: none;}
+    border-color: silver;}
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
@@ -345,7 +705,7 @@ body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
     display: block;}
 
 body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES {
-    border-color: darkblue;
+    border-color: silver;
     min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
@@ -383,8 +743,6 @@ div#CODEXHUD.toc .hudbutton[alt='toc'] {
 
 /* Scanner rules */
 
-body.hudup div#CODEXHUD div#CODEXSCANNER div#CODEXSCAN {
-    margin-left: 36px; }
 body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
 body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="prev"] {
     position: absolute; left: 0px; top: 8px;}
@@ -402,10 +760,22 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: blo
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
 
-div#CODEXHUD div#CODEXSCANNER div.codexnote div.idhead { display: none;}
-div#CODEXHUD div#CODEXGLOSSES div.codexnote div.idhead { display: none;}
-body.hudup div#CODEXHUD div#CODEXSCANNER div.codexnote div.idhead {
-    display: block;}
+div#CODEXHUD div#CODEXSCANNER div.idhead,
+div#CODEXHUD div#CODEXGLOSSES div.idhead, 
+div#CODEXHUD div#CODEXSCANNER img.glosspic,
+div#CODEXHUD div#CODEXGLOSSES img.glosspic {
+    height: 0px;}
+body div#CODEXHUD div#CODEXSCANNER:hover img.glosspic,
+body div#CODEXHUD div#CODEXGLOSSES:hover img.glosspic,
+body.hudup div#CODEXHUD div#CODEXSCANNER img.glosspic,
+body.hudup div#CODEXHUD div#CODEXGLOSSES img.glosspic {
+    height: inherit;}
+body div#CODEXHUD div.hudpanel#CODEXSCANNER:hover,
+body div#CODEXHUD div.hudpanel#CODEXGLOSSES:hover,
+body.hudup div#CODEXHUD div.hudpanel#CODEXSCANNER,
+body.hudup div#CODEXHUD div.hudpanel#CODEXGLOSSES {
+    max-height: inherit, height: inherit;}
+
 div#CODEXHUD div#CODEXSCANNER div.codexnote span.glossinfo span.isclickable {
     display: none;}
 
@@ -465,91 +835,34 @@ div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
 
 div#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: fixed; right: 50px;}
 
-/* SBOOKSOURCES */
-
-div.sbooksources {}
-div.sbooksources img.button.source {
-    max-height: 50px;}
-div.sbooksources .button.source {
-    border: solid transparent 2px; margin: 2px;}
-div.sbooksources img.button.source.selected,
-div.sbooksources div.button.source.selected {
-    border-color: silver;}
-div.sbooksources div.button.source {
-    min-height: 50px; min-width: 50px; display: inline;
-    height: 50px; width: 50px; font-size: 32px;
-    text-align: center; vertical-align: top;
-    clear: none;}
-
-div#SBOOKSOURCES {
+div#CODEXSOURCES {
     overflow-y: hidden; overflow-x: auto; white-space: nowrap;}
 
 /* The flyleaf */
 
 div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
-    background-color: ivory; color: #4682b4;}
+    background-color: ivory; color: #4682b4; opacity: 1.0;
+    /* Transition rules for animating slide-in */
+    transition-property: left;
+    transition-duration: 1s;
+    -webkit-transition-property: left;
+    -webkit-transition-duration: 1s;
+    -o-transition-property: left;
+    -o-transition-duration: 1s;
+    -moz-transition-property: left;
+    -moz-transition-duration: 1s;
+    /* Always on, hide by moving */
+    display: block;}
 div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
-    top: 70px; bottom: 60px; left: 0px; right: 50px;
+    top: 70px; bottom: 60px; left: -100%; width: 90%; height: auto;
     border-left: none;
     border-top-left-radius: 0px; -o-border-radius-topleft: 0px;
     -moz-border-radius-topleft: 0px; -webkit-border-top-left-radius: 0px; 
     border-bottom-left-radius: 0px; -o-border-radius-bottomleft: 0px;
     -moz-border-radius-bottomleft: 0px; -webkit-border-bottom-left-radius: 0px;}
+body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF {
+    left: 0px;}
 
-div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
-    transform: translate(-2000px,0px);
-    -o-transform: translate(-2000px,0px);
-    -moz-transform: translate(-2000px,0px);
-    -webkit-transform: translate(-2000px,0px);
-    transition-property: transform, opacity;
-    -o-transition-property: -o-transform, opacity;
-    -moz-transition-property: -moz-transform, opacity;
-    -webkit-transition-property: -webkit-transform, opacity;
-    height: auto;}
-div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF {
-    transform: none; -o-transform: none;
-    -moz-transform: none; -webkit-transform: none;}
-
-/* TOC rules */
-
-div.codextoc { display: none;}
-div.codextoc > div, div.codextoc > div.head {
-    margin-left: 32px; margin-right: 32px;}
-div.codextoc div.head {
-  position: relative; margin: 0px; padding: 0px; border: 0px;
-  left: 0px; right: 0px; margin: 0px;
-  margin-left: 32px; margin-right: 32px;
-  display: none;}
-div.codextoc > div.spanbar {
-  margin-left: 0px; margin-right: 0px;}
-
-div.codextoc div.head { min-height: 24px;}
-div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
-body.sbooktouch div.codextoc div.head { min-height: 32px;}
-body.sbooktouch div#CODEXFLYTOC div.codextoc div.head {
-    min-height: 24px;}
-
-div.codextoc div.head .progressbar { 
-  color: lightblue; background-color: lightblue;
-  padding: 0px; margin: 0px; border-right: solid red 3px;
-  position: absolute;  left: 0px; height: 100%;
-  z-index: -100; opacity: 0.5;}
-div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
-    float: right; cursor: pointer; z-index: 100;}
-div.codextoc img[alt='back'], div.codextoc img[alt='backstop'] {
-    float: left; cursor: pointer; z-index: 100;}
-
-/* Conditional display, so only the live elements are displayed */
-div.codextoc.live { display: block;}
-div.codextoc.live div.head { display: block;}
-
-div.codextoc.live div.codextoc { display: none;}
-div.codextoc.live div.codextoc.live { display: block;}
-
-div.codextoc div.sub {
-    display: none; clear: both;}
-div.codextoc.cur div.head { font-size: 125%;}
-div.codextoc.cur div.sub { display: block;}
 div#CODEXHUD.tocscan div.codextoc.cur div.sub { display: none;}
 
 body.hudup div#CODEXHUD.tocscan div.codextoc.live div.head,
@@ -726,14 +1039,14 @@ div#CODEXHUD .helphud.topright {top: 3px; right: 60px; text-align: left;}
 div#CODEXHUD .helphud.botleft {bottom: 3px; left: 60px; text-align: right;}
 div#CODEXHUD .helphud.botright {bottom: 3px; right: 60px; text-align: left;}
 div#CODEXHUD .helphud.topcenter {
-    top: 0px; width: 30%; left: 35%; right: 35%; text-align: center;
+    top: 0px; width: 66%; left: 17%; right: 17%; text-align: center;
     border-top-left-radius: 0px; border-top-right-radius: 0px;
     -o-border-top-left-radius: 0px; -o-border-top-right-radius: 0px; 
     -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px; 
     -o-border-radius-topleft: 0px; -oborder-radius-topright: 0px;}
 
 div#CODEXHUD .helphud.botcenter {
-    bottom: 0px; width: 30%; left: 35%; right: 35%; text-align: center;
+    bottom: 0px; width: 66%; left: 17%; right: 17%; text-align: center;
     border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
     -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
     -webkit-border-bottom-left-radius: 0px; -webkit-border-bottom-right-radius: 0px; 
@@ -776,46 +1089,45 @@ div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 
 body.sbookpagevertical { overflow: hidden;}
 
-body div.sbookmargin {
+body div.codexmargin {
     position: fixed; display: block;
     /* opacity: 0.5; border: solid green 1px; */
     background-color: white; z-index: 5;}
-body.sbooknopage div.sbookmargin  { display: none;}
+body.sbooknopage div.codexmargin  { display: none;}
 
-body div.sbookmargin#SBOOKPAGEHEAD,
-body div.sbookmargin#SBOOKPAGEFOOT {
+body div.codexmargin#CODEXPAGEHEAD,
+body div.codexmargin#CODEXPAGEFOOT {
   left: 0px; right: 0px; width: 100%; height: 60px; z-index: 75;
   text-align: center;}
-body div.sbookmargin#SBOOKPAGEHEAD { top: 0px; }
-body div.sbookmargin#SBOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
+body div.codexmargin#CODEXPAGEHEAD { top: 0px; }
+body div.codexmargin#CODEXPAGEFOOT { bottom: 0px; vertical-align: bottom;}
 
 /* Bottom information */
 
-div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     vertical-align: bottom; height: 3ex; display: none;
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
     cursor: crosshair;
     border-top: solid black 1px;}
-body.codexpageview div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+body.codexpageview div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
-body.hudup div#SBOOKPAGEFOOT div#CODEXPAGEINFO {
+body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;}
-div#SBOOKPAGEFOOT div#CODEXPAGEINFO span.locoff {
+div#CODEXPAGEFOOT div#CODEXPAGEINFO span.locoff {
     cursor: pointer;
     float: right;}
-div#SBOOKPAGEFOOT div#CODEXPAGENO {
-    position: absolute; bottom: 0px; width: 100%;
-    cursor: pointer;
-    max-height: 20px;}
-div#SBOOKPAGEFOOT div#CODEXPAGEINFO div.progressbar {
-    background-color: gray; border: solid black 1px; border-top: 0px;
+div#CODEXPAGEFOOT div#CODEXPAGENO {
+    position: absolute; bottom: 0px; width: 100%; max-height: 20px;}
+div#CODEXPAGEFOOT div#CODEXPAGENO span#CODEXPAGENOTEXT { cursor: pointer;}
+div#CODEXPAGEFOOT div#CODEXPAGEINFO div.progressbar {
+    background-color: gray; border: solid black 1px; border-top-width: 0px;
     z-index: 50; opacity: 0.5; height: 100%; position: absolute;}
-div#SBOOKPAGEFOOT div#CODEXPAGELEAP {
+div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.001;}
-div#SBOOKPAGEFOOT div#CODEXPAGELEAP:hover {
+div#CODEXPAGEFOOT div#CODEXPAGELEAP:hover {
     opacity: 0.4;}
-body.hudup div#SBOOKPAGEFOOT div#CODEXPAGELEAP {
+body.hudup div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.7;}
 div#CODEXPAGES.pageswitch {
     opacity: 0.0001;}
@@ -883,14 +1195,15 @@ div.searchbox.notags div.resultinfo span { display: none;}
 
 /* Tag clouds */
 
+div.completions .label { float: left; opacity: 0.7;}
+
 div.completions .cloudtoggle {
     float: right; display: none;}
 div.completions.noinput .cloudtoggle {
     display: block;}
 
 div#CODEXHUD div.completions {
-    padding-left: 2.5em; text-align: center; font-size: 115%;
-    display: none;}
+    text-align: center; display: none;}
 div#CODEXHUD div.completions div.doc {
     background-color: ivory; text-align: left;
     font-size: 80%; line-height: 100%;
@@ -920,9 +1233,9 @@ div#CODEXHUD .completions span.sectname {
   border-radius: 6px;}
 div#CODEXHUD .completions.showall span.dterm {display: inline;}
 div#CODEXHUD .completions.showall span.dterm.singleton {display: none;}
-div#CODEXHUD .completions { line-height: 200%;}
+div#CODEXHUD .completions { }
 div#CODEXHUD .completions .completion.prime { 
-  font-size: 200%; font-weight: bold;}
+    font-weight: bold;}
 div#CODEXHUD .completions .completion .sectname { 
   white-space: nowrap;}
 
@@ -937,65 +1250,6 @@ div#CODEXHUD .completions .completion .dterm {}
     font-size: 150%; font-weight: bold; content: "·";
     vertical-align: middle;}
 
-
-/* sbook 'slices' of summaries or glosses */
-
-/* Display rules */
-div.codexslice.sourced div.codexnote { display: none;}
-div.codexslice.sourced div.codexnote.sourced { display: block;}
-
-div.codexslice.sourced div.codexthread { display: none;}
-div.codexslice.sourced div.codexthread > div { display: none;}
-div.codexslice.sourced div.codexthread.sourced { display: block;}
-div.codexslice.sourced div.codexthread.sourced > div.tochead { display: block;}
-div.codexslice.sourced div.codexthread.sourced > div.idhead { display: block;}
-div.codexslice.sourced div.codexthread.sourced > div.codexthread { display: none;}
-div.codexslice.sourced div.codexthread.sourced > div.codexthread.sourced {
-    display: block;}
-
-div.codexslice.onepassage .tocblock .tochead {display:none;}
-
-span.excerpt { font-size: 120%; color: gray; background-color: yellow;}
-span.excerpt span.content { font-size: 80%; display: none;}
-.showexcerpt span.excerpt span.content { display: inline;}
-.showexcerpt span.excerpt span.ellipsis { display: none;}
-
-div.codexnote { margin-left: 20px; margin-right: 0px;}
-div.codexnote div.idhead { margin-left: -10px;  }
-div.codexnote div.tochead { margin-left: -20px; }
-
-div.codexslice .tocthread {
-    border-left: solid purple 1px;}
-div.codexslice .tocthread .codexnote .tochead { display: none;}
-div.codexslice .tocthread .idthread:first-child
-      .codexnote:first-child .tochead {
-    display: block;}
-div.codexslice .idthread .codexnote .idhead { display: none;}
-div.codexslice .idthread .codexnote:first-child .idhead {
-    display: block;}
-
-div.codexslice .codexnote div.detail { 
-  display: none; color: ivory; clear: both;}
-div.codexslice .showdetail div.detail { display: block;}
-div.codexslice div.xrefs { display: none;}
-div.codexslice .showxrefs div.xrefs { display: block;}
-div.codexslice div.xrefs a { display: block;}
-
-div.codexthread {
-    clear: both; margin: 0px; border: none;
-    border-right: gold solid 3px;}
-div#CODEXGLOSSES div.codexthread { border-right: 0px;}
-div.codexthread.singleton,
-div#SBOOKGLOSSES div.codexthread {
-    border-left: none; margin-left: 0px;
-    padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
-div.codexthread .locbar { background-color: silver;}
-div.codexthread.headthread { border-top: solid gold 2px;}
-div.codexthread.idthread {border: none;}
-div.codexthread.idthread .codexnote {}
-div.codexslice div.codexthread div.codexnote div.locbar {border: none;}
-div.codexslice div.codexthread div.codexnote div.locbar {display:none;}
-div.codexslice div.codexthread div.codexnote:first-child div.locbar {display:block;}
 
 body div#CODEXHUD div.codexthread > div.locrule {
     position: relative; left: 0px; bottom: 0px; z-index: 50;
@@ -1016,9 +1270,9 @@ div.tochead span.headtext {
     white-space: nowrap; font-size: 90%;}
 div.tochead hr {
     color: lightblue; background-color: lightblue; min-width: 3px;
-    border-right: solid gold 1px; border-left: solid gold 1px;
+    border: none; border-right: solid gold 1px; border-left: solid gold 1px;
     position: absolute; left: 0px; top: 0px; height: 100%; 
-    border: 0px; padding: 0px; margin: 0px;}
+    padding: 0px; margin: 0px;}
 div.tochead span { z-index: 10;}
 div.tochead a { z-index: 10;} 
 div.tochead hr[about] { cursor: crosshair;}
@@ -1063,7 +1317,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS {
-    margin: 0px; padding: 0px; border-bottom: 0px; min-height: 60px;
+    margin: 0px; padding: 0px; border-bottom-width: 0px; min-height: 60px;
     font-family: times,serif; font-variant: small-caps;
     text-align: center;}
 
@@ -1081,7 +1335,6 @@ body.hudup div#CODEXHUD.search div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.glosses div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.searchresults div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.tocscan div#CODEXHUDBUTTONS,
-body.hudup div#CODEXHUD.allglosses div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.addgloss div#CODEXHUDBUTTONS,
 body div#CODEXHUD.scanning div#CODEXHUDBUTTONS {
     display: none;}
@@ -1124,6 +1377,7 @@ div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[alt='Device'],
 div#CODEXHUD.sbookapp div#CODEXHUDBUTTONS div.tabbar .tab[alt='sBooks'],
 div#CODEXHUD.login div#CODEXHUDBUTTONS div.tabbar .tab[alt='Login'],
 div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[alt='Console'],
+div#CODEXHUD.allglosses div#CODEXHUDBUTTONS div.tabbar .tab[alt='Glosses'],
 div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[alt='Help']{
     border: gold solid 3px; background-color: gold;
     border-bottom: transparent solid 3px;
@@ -1173,7 +1427,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a#SBOOKUSERNAME {
 /* The Flyleaf */
 
 div#CODEXHUD div#CODEXFLYHEAD {
-    margin: 0px; padding: 0px; border-bottom: 0px;
+    margin: 0px; padding: 0px; border-bottom-width: 0px;
     height: 100px; min-height: 60px;
     font-family: times,serif; font-variant: small-caps;}
 
@@ -1216,8 +1470,9 @@ div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent[id='APPABOUT'],
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent[id='CODEXSETTINGS'],
 div#CODEXHUD.flytoc div#CODEXFLYLEAF div.tabcontent[id='FLYTOC'],
 div#CODEXHUD.console div#CODEXFLYLEAF div.tabcontent[id='CODEXCONSOLE'],
+div#CODEXHUD.allglosses div#CODEXFLYLEAF div.tabcontent#CODEXBROWSEGLOSSES,
 div#CODEXHUD.sbookapp div#CODEXFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
-    display: block;}
+    opacity: 1.0; z-index: 150; display: block;}
 
 div#CODEXHUD div#CODEXFLYLEAF div.tabcontent {
     overflow-y: auto; overflow-x: hidden;}
@@ -1268,6 +1523,10 @@ div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a {
     color: inherit; font-weight: inherit;}
 div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {
     font-weight: bold; background-color: gold;}
+
+div#CODEXHUD div#CODEXFLYLEAF div.tabcontent#CODEXBROWSEGLOSSES
+  div#CODEXSOURCES {
+  text-align: center;}
 
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
  div.setting {
@@ -1459,7 +1718,7 @@ body.sbook a.codexnote { display: block;}
     text-align: right;}
 .codexnote .glossinfo img { padding-left: 4px; cursor: pointer; }
 .codexnote .age { 
-  color: green; float: left; clear: left; font-weight: normal;
+  color: green; float: right; font-weight: normal;
   font-size: 60%; text-decoration: none;}
 .codexnote .age:hover {text-decoration: underline;} 
 .codexnote a.deletebutton { 
@@ -1489,8 +1748,8 @@ div.locbar hr {
 /* Glossmarks */
 
 .codexglossmark {
-    float: right;
-    text-align: right;
+    position: absolute; right: 0px;
+    /* float: right; text-align: right; */
     margin: 0px; padding: 0px; text-indent: 0px; 
     border: solid transparent 2px;
     width: 0px; overflow: visible;
@@ -1498,10 +1757,8 @@ div.locbar hr {
     min-width: 16px; min-height: 32px;
     width: 16px; height: 32px;
     z-index: 50;
-    border-right: 0px;
+    border-right-width: 0px;
     opacity: 0.0001;}
-.codexglossmark {
-    position: static; float: right;}
 .codexglossmark {
     margin-right: -16px;}
 body .codexglossmark { opacity: 0.4;}
@@ -1519,7 +1776,7 @@ body.hudup .codexglossmark { opacity: 0.6; display: block;}
     margin: 0px; padding: 0px; text-indent: 0px; 
     border: solid transparent 2px;
     width: 32px; height: 32px; z-index: 50;
-    border-right: 0px;
+    border-right-width: 0px;
     margin-left: -50px;
     opacity: 0.0001;
     display: none;}
@@ -1551,7 +1808,7 @@ body.sbooktarget { color: inherit;}
 
 .sbooktarget span.codexglossmark img.big { width: 32px;} 
 .sbooktarget span.codexglossmark img {
-    border-top: solid blue 2px;}
+    border-top: solid steelblue 2px;}
 .sbooktarget:hover .codexglossmark { opacity: 0.5;}
 body.hudup .sbooktarget .codexglossmark:hover { opacity: 0.9;}
 
@@ -1562,148 +1819,12 @@ body.notsbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
 body.notsbookuser a.logout {display: none;}
 body.notsbookuser #SBOOKLOGOUT { display: none;}
 body.notsbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
-body.notsbookuser div#CODEXHUD div.hud#SBOOKSOURCES img.button.login {
+body.notsbookuser div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
   display: block;}
 
 /* The add gloss panel */
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
-
-/* Gloss form */
-
-div.codexglossform { display: none;}
-div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
-div.codexglossform#CODEXLIVEGLOSS { display: block;}
-div.codexglossform div.response {
- margin-left: 0.5em; text-align: left; color: black;}
-div.codexglossform div.response .respmaker {font-weight: bold;}
-div.codexglossform div.response .respdate {
-    font-size: 75%; font-weight: bold; font-variant: small-caps;
-    color: purple;
-    float: right;}
-div.codexglossform div.response .respdate:before { content: "(";}
-div.codexglossform div.response .respdate:after { content: ")";}
-div.codexglossform div.response .respnote { font-style: italic;}
-div.codexglossform div.response .respnote:before { content: "“";}
-div.codexglossform div.response .respnote:after { content: "”";}
-div.codexglossform div.response .respexcerpt {
-    font-size: 80%; background-color: yellow;}
-
-div.codexglossform form {
-    padding: 0px; margin: 0px;}
-div.codexglossform form span.checkspan.excerpt {
-    white-space: normal;}
-div.codexglossform form .inputhelp {color: black; display: none;}
-div.codexglossform form div.inputhelp {
-    padding-bottom: 4px; text-align: left;}
-div.codexglossform form .bracketbutton {
-    font-weight: bold; font-size: 110%;
-    padding: 0px; cursor: pointer;}
-div.codexglossform form .bracketbutton strong {
-    font-size: 110%; color: red;}
-div.codexglossform form.focused div.inputhelp { display: block;}
-div.codexglossform form.focused span.inputhelp { display: inline;}
-
-div.codexglossform form textarea[name='NOTE'],
-div.codexglossform form input[type='TEXT'][name='NOTE'] {
-    min-height: 1em; overflow: hidden;
-    width: 98%; margin-left: auto; margin-right: auto;
-    background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);
-    background-position: right top;
-    background-position-x: right; background-position-y: top;
-    background-repeat: no-repeat;}
-div.codexglossform form div.inputhelp {
-    width: 98%; margin-left: auto; margin-right: auto;
-    margin-top: 0px; padding-top: 0px;}
-div.codexglossform form div.glossetc {
-    display: block; text-align: left; font-size: 12px;
-    width: 98%; margin-left: auto; margin-right: auto;
-    min-height: 24px;}
-
-div.codexglossform form div.glossetc .links,
-div.codexglossform form div.glossetc .tags {
-    font-size: 125%;}
-div.codexglossform form div.glossetc .excerpts {
-    font-size: 80%;}
-div.codexglossform form div.glossetc .tags span.checkspan {
-    background-color: gold; padding: 2px; padding-top: 0px;
-    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
-    border: solid yellow 2px;}
-div.codexglossform form div.glossetc div.outlets.nocontent { display: none;}
-div.codexglossform form div.glossetc div.outlets span.head {
-    color: black; font-weight: bold;}
-
-div.codexglossform form div.glossetc .links span.checkspan {
-    color: blue; text-decoration: underline;}
-div.codexglossform form div.glossetc span.checkspan input {}
-
-div.codexglossform form div.glossetc .sharing {
-    float: right; clear: right; text-align: right;
-    padding-bottom: 1ex; padding-top: 0.5ex; margin-bottom: 1ex;
-    padding-right: 0px;}
-div.codexglossform form div.glossetc .sharing .networks {
-    text-align: right;}
-div.codexglossform form div.glossetc .sharing .checkspan.button {
-    padding-left: 4px; padding-right: 0px;}
-div.codexglossform form div.glossetc .sharing .checkspan.button input {
-    display: none;}
-div.codexglossform form div.glossetc .sharing .checkspan .checkspan {
-    display: none;}
-div.codexglossform form div.glossetc .sharing .checkspan.ischecked
-    .checkspan.button { display: inline;}
-
-span.facebook_share, span.twitter_share { display: none;}
-span.linkedin_share, span.google_share { display: none;}
-
-div.codexglossform form div.glossetc .sharing .checkspan.button > img {
-    padding: 1px; border: dotted red 2px; opacity: 0.5;}
-div.codexglossform form div.glossetc .sharing .checkspan.ischecked > img {
-    border: solid green 2px; opacity: 1.0;}
-
-
-div.codexglossform form div.glossetc .sharing .checkspan.ischecked {
-    color: inherit; text-decoration: none;}
-div.codexglossform form div.glossetc .checkspan .checkspan {
-    text-decoration: line-through; color: red;}
-div.codexglossform form div.glossetc .checkspan .checkspan.ischecked {
-    text-decoration: none; color: inherit;}
-
-div.codexglossform form div.glossetc > .checkspan.private {
-    float: right; vertical-align: top; margin-left: 4px;
-    padding-top: 0px; margin-top: 0px;}
-div.codexglossform form div.glossetc > span.button {
-    float: right; 
-    font-weight: bold; color: black; font-size: 150%;
-    border-radius: 4px; -o-border-radius: 4px;
-    -moz-border-radius: 4px; -webkit-border-radius: 4px;
-    padding: 0px; padding-right: 2px;  padding-left: 2px; 
-    margin-left: 4px; 
-    border: solid silver 2px; background-color: white; padding: 2px;
-    text-align: center; vertical-align: top;
-    cursor: pointer;}
-div.codexglossform form .checkspan {
-    padding-left: 2px; padding-right: 2px;
-    font-family: sans,sans-serif;}
-
-div.codexglossform form span.source:before, .completions span.source:before {
-    content: '@'; color: gold;}
-
-div.codexglossform span.button.savebutton { float: right;}
-div.codexglossform span.button.addbutton { float: right;}
-
-div.codexglossform span.savebutton { display: none;}
-div.codexglossform.glossedit span.savebutton { display: inline;}
-div.codexglossform.glossedit span.addbutton { display: none;}
-
-div.codexglossform.submitting { opacity: 0.5;}
-div.codexglossform.submitting td.button img { opacity: 0.5;}
-
-div.codexglossform div.textbox {}
-div.codexglossform div.textbox textarea {}
-
-div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
-    margin-top: 0px;}
 
 /* sBook splash */
 
@@ -1820,12 +1941,12 @@ div#CODEXEXCERPT textarea {
 
 .humane p {
     display: block; text-align: left;
-    margin-left: 2em; margin-right: 2em;
+    margin-left: 2em; margin-right: 2em; text-indent: -1em;
     max-width: inherit; min-width: inherit; width: auto;}
 
 #HUMANE.humane {
     width: 70%; max-height: 50%;
-    left: 15%; right: 15%; top: 30%; bottom: auto;}
+    left: 15%; right: 15%; top: auto; bottom: 3ex;}
 #HUMANE.humane.humane-show { opacity: 0.8; }
 
 .humanehelp { display: none;}
@@ -1837,6 +1958,29 @@ div#CODEXEXCERPT textarea {
     width: 80%; margin-left: 10%; margin-right: 10%;}
 .humane div.humanehelp img.codextocbar {
     width: 70%; float: right;}
+
+/* New pagination model */
+
+div.codexpage {
+    opacity: 0; position: fixed; text-align: left;
+    transition-property: opacity; transition-duration: 0.5s;
+    -o-transition-property: opacity; -o-transition-duration: 0.5s;
+    -moz-transition-property: opacity; -moz-transition-duration: 0.5s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 0.5s;}
+div.codexpage.curpage {opacity: 1; z-index: 50;}
+
+div.codexline, div.codexword { white-space: nowrap;}
+
+div.codexdupstart {
+    padding-bottom: 0px; border-bottom-width: 0px; margin-bottom: 0px;}
+div.codexdup {
+    padding-top: 0px;    border-top-width: 0px;    margin-top: 0px;
+    padding-bottom: 0px; border-bottom-width: 0px; margin-bottom: 0px;}
+div.codexdupend {
+    padding-top: 0px;    border-top-width: 0px;    margin-top: 0px;}
+p.codexdupend, p.codexdup { text-indent: 0px;}
+
+div#CODEXPAGE.codexpaginating div.codexpage { visiblity: hidden;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

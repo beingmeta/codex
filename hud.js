@@ -51,6 +51,10 @@ var CodexMode=
 	// Whether to call displaySync on mode changes
 	var display_sync=false;
 	
+	var addClass=fdjtDOM.addClass;
+	var dropClass=fdjtDOM.dropClass;
+	var hasClass=fdjtDOM.hasClass;
+
 	// This will contain the interactive input console (for debugging)
 	var input_console;
 
@@ -228,22 +232,23 @@ var CodexMode=
 			CodexHUD.className);
 	    if (flag) {
 		Codex.hudup=true;
-		fdjtDOM.addClass(document.body,"hudup");}
+		addClass(document.body,"hudup");}
 	    else {
 		Codex.hudup=false;
 		Codex.scrolling=false;
 		if (clearmode) {
-		    fdjtDOM.dropClass(CodexHUD,"flyleaf");
-		    fdjtDOM.dropClass(CodexHUD,"full");
-		    fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
+		    var wait=false;
+		    dropClass(CodexHUD,"flyleaf");
+		    dropClass(CodexHUD,"full");
+		    dropClass(CodexHUD,CodexMode_pat);
 		    Codex.mode=false;}
-		fdjtDOM.dropClass(document.body,"hudup");}}
+		dropClass(document.body,"hudup");}}
 	Codex.setHUD=setHUD;
 
 	/* Mode controls */
 	
 	var CodexMode_pat=/\b((device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
-	var codexflyleafMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console))\b/g;
+	var codexflyleafMode_pat=/\b((device)|(sbookapp)|(flytoc)|(allglosses)|(about)|(console))\b/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "CODEXALLGLOSSES",
 	     searchresults: "CODEXSEARCHRESULTS",
@@ -277,8 +282,8 @@ var CodexMode=
 	    if (mode) {
 		if (mode!=="scanning") Codex.scanning=false;
 		if ((mode==="scanning")||(mode==="tocscan"))
-		    fdjtDOM.addClass(document.body,"sbookscanning");
-		else fdjtDOM.dropClass(document.body,"sbookscanning");
+		    addClass(document.body,"sbookscanning");
+		else dropClass(document.body,"sbookscanning");
 		if (mode===Codex.mode) {}
 		else if (mode===true) {
 		    /* True just puts up the HUD with no mode info */
@@ -311,33 +316,33 @@ var CodexMode=
 		// Actually change the class on the HUD object
 		if (mode===true) {
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");
-		    fdjtDOM.dropClass(CodexHUD,"flyleaf");}
+		    dropClass(CodexHUD,"flyleaf");}
 		else {
-		    if (mode.search(codexflyleafMode_pat)!==0)
-			fdjtDOM.dropClass(CodexHUD,"flyleaf");
+		    if (mode.search(codexflyleafMode_pat)<0)
+			dropClass(CodexHUD,"flyleaf");
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,mode);}
 		// Update the body scanning mode
 		if ((mode==="scanning")||(mode==="tocscan"))
-		    fdjtDOM.addClass(document.body,"sbookscanning");
-		else fdjtDOM.dropClass(document.body,"sbookscanning");
+		    addClass(document.body,"sbookscanning");
+		else dropClass(document.body,"sbookscanning");
 		// Update the 'flyleaf' meta mode
 		if ((mode)&&(typeof mode === 'string')) {
 		    if (mode.search(codexflyleafMode_pat)===0)
-			fdjtDOM.addClass(CodexHUD,"flyleaf");
-		    else fdjtDOM.dropClass(CodexHUD,"flyleaf");
+			addClass(CodexHUD,"flyleaf");
+		    else dropClass(CodexHUD,"flyleaf");
 		    fdjtID("CODEXBUTTON").className=mode;}
 		// Help mode (on the hud) actually dims the body
 		if (mode==="help")
-		    fdjtDOM.addClass(document.body,"dimmed");
-		else fdjtDOM.dropClass(document.body,"dimmed");
+		    addClass(document.body,"dimmed");
+		else dropClass(document.body,"dimmed");
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
 		if ((mode==='scanning')||(mode==='tocscan')) {
 		    if (mode!==oldmode) {
 			Codex.hudup=false;
-			fdjtDOM.dropClass(CodexHUD,"flyleaf");
-			fdjtDOM.dropClass(CodexHUD,"full");
-			fdjtDOM.dropClass(document.body,"hudup");}}
+			dropClass(CodexHUD,"flyleaf");
+			dropClass(CodexHUD,"full");
+			dropClass(document.body,"hudup");}}
 		// And if we're not scanning, we just raise the hud
 		else setHUD(true);
 		// This updates scroller dimensions, we delay it
@@ -367,8 +372,8 @@ var CodexMode=
 		//  the HUD down.
 		if (Codex.mode!=='help') Codex.last_mode=Codex.mode;
 		document.body.focus();
-		fdjtDOM.dropClass(document.body,"dimmed");
-		fdjtDOM.dropClass(document.body,"sbookscanning");
+		dropClass(document.body,"dimmed");
+		dropClass(document.body,"sbookscanning");
 		setHUD(false);
 		if (display_sync) Codex.displaySync();}}
 
@@ -459,9 +464,11 @@ var CodexMode=
 
 	Codex.dropHUD=function(){return CodexMode(false);}
 	Codex.toggleHUD=function(evt){
-	    if (fdjtUI.isClickable(fdjtUI.T(evt))) return;
-	    if (Codex.mode) CodexMode(false);
-	    else CodexMode(true);};
+	    evt=evt||event;
+	    if ((evt)&&(fdjtUI.isClickable(fdjtUI.T(evt)))) return;
+	    fdjtLog("toggle HUD %o hudup=%o",evt,Codex.hudup);
+	    if (Codex.hudup) setHUD(false,false);
+	    else setHUD(true);};
 	
 	/* The App HUD */
 	
@@ -497,7 +504,7 @@ var CodexMode=
 		    if (offlineuri!=='none') elt.href=offlineuri;
 		    else {
 			elt.href=false;
-			fdjtDOM.addClass(elt,"deadlink");
+			addClass(elt,"deadlink");
 			elt.title='this sBook is not available offline';}}}
 	    if (epuburi) {
 		var elts=document.getElementsByName("SBOOKEPUBLINK");
@@ -506,7 +513,7 @@ var CodexMode=
 		    if (epuburi!=='none') elt.href=epuburi;
 		    else {
 			elt.href=false;
-			fdjtDOM.addClass(elt,"deadlink");
+			addClass(elt,"deadlink");
 			elt.title='this sBook is not available as an ePub';}}}
 	    if (mobiuri) {
 		var elts=document.getElementsByName("SBOOKMOBILINK");
@@ -515,7 +522,7 @@ var CodexMode=
 		    if (mobiuri!=='none') elt.href=mobiuri;
 		    else {
 			elt.href=false;
-			fdjtDOM.addClass(elt,"deadlink");
+			addClass(elt,"deadlink");
 			elt.title='this sBook is not available as a MOBIpocket format eBook';}}}
 	    if (zipuri) {
 		var elts=document.getElementsByName("SBOOKZIPLINK");
@@ -524,12 +531,12 @@ var CodexMode=
 		    if (zipuri!=='none') elt.href=zipuri;
 		    else {
 			elt.href=false;
-			fdjtDOM.addClass(elt,"deadlink");
+			addClass(elt,"deadlink");
 			elt.title='this sBook is not available as a ZIP bundle';}}}
 	    initManageIFrame();
 	    /* If the book is offline, don't bother showing the link to the offline
 	       version. */
-	    if (Codex.offline) fdjtDOM.addClass(document.body,"sbookoffline");}
+	    if (Codex.offline) addClass(document.body,"sbookoffline");}
 
 	function altLink(type,uri){
 	    uri=uri||Codex.refuri;
@@ -628,11 +635,11 @@ var CodexMode=
 		clone.id="CODEXSCAN";
 		fdjtDOM.replace("CODEXSCAN",clone);
 		if (Codex.nextSlice(src))
-		    fdjtDOM.dropClass("CODEXHUD","scanend");
-		else fdjtDOM.addClass("CODEXHUD","scanend");
+		    dropClass("CODEXHUD","scanend");
+		else addClass("CODEXHUD","scanend");
 		if (Codex.prevSlice(src))
-		    fdjtDOM.dropClass("CODEXHUD","scanstart");
-		else fdjtDOM.addClass("CODEXHUD","scanstart");
+		    dropClass("CODEXHUD","scanstart");
+		else addClass("CODEXHUD","scanstart");
 		Codex.scanning=src;}
 	    else {}
 	    Codex.setTarget(elt);
@@ -643,14 +650,14 @@ var CodexMode=
 	Codex.addConfig("uisize",function(name,value){
 	    fdjtDOM.swapClass(CodexHUD,/codexuifont\w+/,"codexuifont"+value);});
 	Codex.addConfig("showconsole",function(name,value){
-	    if (value) fdjtDOM.addClass(CodexHUD,"codexshowconsole");
-	    else fdjtDOM.dropClass(CodexHUD,"codexshowconsole");});
+	    if (value) addClass(CodexHUD,"codexshowconsole");
+	    else dropClass(CodexHUD,"codexshowconsole");});
 	Codex.addConfig("animatepages",function(name,value){
-	    if (value) fdjtDOM.addClass(Codex.page,"codexanimate");
-	    else fdjtDOM.dropClass(Codex.page,"codexanimate");});
+	    if (value) addClass(Codex.page,"codexanimate");
+	    else dropClass(Codex.page,"codexanimate");});
 	Codex.addConfig("animatehud",function(name,value){
-	    if (value) fdjtDOM.addClass(Codex.HUD,"codexanimate");
-	    else fdjtDOM.dropClass(Codex.HUD,"codexanimate");});
+	    if (value) addClass(Codex.HUD,"codexanimate");
+	    else dropClass(Codex.HUD,"codexanimate");});
 
 	/* Settings apply/save handlers */
 

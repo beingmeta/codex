@@ -82,7 +82,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 			       fdjtString.getInitials(info.name));}
 		icon.title=info.name;
 		icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
-		fdjtDOM(fdjtID("SBOOKSOURCES")," ",icon);}}
+		fdjtDOM(fdjtID("CODEXSOURCES")," ",icon);}}
 	var sharetag=fdjtID("SBOOKSHARETAG"+humid);
 	if (!(sharetag)) { // Add entry to the share cloud
 	    var completion=fdjtDOM("span.completion.cue.source",info.name);
@@ -122,7 +122,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtDOM.T(evt);
 	// var sources=fdjtDOM.getParent(target,".sbooksources");
 	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
-	var sources=fdjtID("SBOOKSOURCES");
+	var sources=fdjtID("CODEXSOURCES");
 	var glosses=fdjtID("CODEXALLGLOSSES");
 	var new_sources=[];
 	if ((!(sources))||(!(glosses)))
@@ -148,7 +148,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtDOM.T(evt);
 	// var sources=fdjtDOM.getParent(target,".sbooksources");
 	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
-	var sources=fdjtID("SBOOKSOURCES");
+	var sources=fdjtID("CODEXSOURCES");
 	var glosses=fdjtID("CODEXALLGLOSSES");
 	var new_sources=[];
 	if ((!(sources))||(!(glosses))||(!(target.oid)))
