@@ -124,7 +124,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function inUI(node){
 	while (node)
 	    if (!(node)) return false;
-	else if (node.sbookui) return true;
+	else if (node.codexui) return true;
 	else node=node.parentNode;
 	return false;}
 
@@ -780,7 +780,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function left_margin(evt){
 	if (Codex.Trace.gestures) tracetouch("left_margin",evt);
 	if (Codex.hudup) CodexMode(false);
-	else Forward(evt);}
+	else Backward(evt);}
 
 
     function pageForward(){

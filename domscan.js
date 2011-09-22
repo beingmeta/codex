@@ -76,7 +76,7 @@ function CodexDOMScan(root,docinfo){
   /* Build the metadata */
   var i=0; while (i<children.length) {
     var child=children[i++];
-    if (!((child.sbookskip)||(child.sbookui)))
+    if (!((child.sbookskip)||(child.codexui)))
       scanner(child,scanstate,docinfo,docinfo.nodeFn||false);} 
   docinfo._nodecount=scanstate.nodecount;
   docinfo._headcount=scanstate.headcount;
@@ -358,7 +358,7 @@ function CodexDOMScan(root,docinfo){
       info.sbookhead=curhead.id;
       info.headstart=curinfo.starts_at;}
     if (info) info.head=curinfo;
-    if ((child.sbookskip)||(child.sbookui)||
+    if ((child.sbookskip)||(child.codexui)||
 	((child.className)&&(child.className.search(/\bsbookignore\b/)>=0))||
 	((Codex.ignore)&&(Codex.ignore.match(child))))
       return;

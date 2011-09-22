@@ -87,7 +87,7 @@ var Codex=
 	 dosync: false, // Whether to trace state saves
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 gestures: 1}   // How much to trace gestures
+	 gestures: 0}   // How much to trace gestures
     };
 var _sbook_setup=false;
 
@@ -300,8 +300,7 @@ var sbook_gloss_data=
 	scan=scan.target||scan.srcElement||scan;
 	var target=false;
 	while (scan) {
-	    if (scan.sbookui)
-		return false;
+	    if (scan.codexui) return false;
 	    else if (scan===Codex.root) return target;
 	    else if ((scan.id)||(scan.codexid)) {
 		if (fdjtDOM.hasParent(scan,CodexHUD)) return false;
@@ -466,10 +465,10 @@ var sbook_gloss_data=
 	/(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bcodexmargin\b)/;
 
     function inUI(elt){
-	if (elt.sbookui) return true;
+	if (elt.codexui) return true;
 	else if (fdjtDOM.hasParent(elt,CodexHUD)) return true;
 	else while (elt)
-	    if (elt.sbookui) return true;
+	    if (elt.codexui) return true;
 	else if (fdjtDOM.hasClass(elt,sbookUIclasses)) return true;
 	else elt=elt.parentNode;
 	return false;}

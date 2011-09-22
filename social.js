@@ -199,7 +199,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.addClass(target,"glossed");
 	fdjtDOM.prepend(target,glossmark);
 	glossmark.glosses=[];
-	glossmark.sbookui=true;
+	glossmark.codexui=true;
 	return glossmark;};
 
     function openGlossmark(target,addmark) {

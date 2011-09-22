@@ -62,7 +62,7 @@ var CodexMode=
 	    if (fdjtID("CODEXHUD")) return;
 	    else {
 		Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
-		CodexHUD.sbookui=true;
+		CodexHUD.codexui=true;
 		CodexHUD.innerHTML=sbook_hudtext;
 		fdjtDOM.prepend(document.body,fdjtID("HUMANE"),CodexHUD);}
 	    // Setup flyleaf

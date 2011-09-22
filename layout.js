@@ -251,6 +251,8 @@ var CodexPaginate=
 	    var texts=((state.texts)||(state.texts={}));
 	    var split_thresh=((state.hasOwnProperty('split_thresh'))?
 			      (state.split_thresh):(state.split_thresh=0.1));
+	    var float_pages=[]; var float_blocks=[];
+
 	    if ((typeof split_thresh === 'number') && (split_thresh<1.0)) 
 		split_thresh=Math.ceil(page_height*split_thresh);
 
@@ -270,7 +272,11 @@ var CodexPaginate=
 		var i=0, n=blocks.length;
 		while (i<n) {
 		    var block=blocks[i]; var terminal=terminals[i]||false;
-		    if ((forcedBreakBefore(block))&&(page.childNodes.length))
+		    if (hasClass(block,/\bsbookfloatpage\b/)) {
+			float_pages.push[block]; i++; continue;}
+		    else if (hasClass(block,/\bsbookpage\b/)) {
+			fullPage(block); i++; continue;}
+		    else if ((forcedBreakBefore(block))&&(page.childNodes.length))
 			newPage(block);
 		    else moveNodeToPage(block,page,dups);
 		    var geom=getGeometry(block,page);
@@ -284,8 +290,9 @@ var CodexPaginate=
 
 	    function gatherBlocks(node,blocks,terminals){
 		if (node.nodeType!==1) return;
-		var disp=getDisplay(node);
-		if (disp!=='inline') {
+		if (node.codexui) return;
+		var style=getStyle(node); var disp=style.display;
+		if ((style.position==='static')&&(disp!=='inline')) {
 		    var loc=blocks.length; blocks.push(node); 
 		    if (avoidBreakInside(node)) terminals[loc]=true;
 		    else if ((disp==='block')||(disp==='table')) {
@@ -296,10 +303,34 @@ var CodexPaginate=
 			if (blocks.length==total_blocks) terminals[loc]=true;}
 		    else terminals[loc]=true;}}
 
+	    function needNewPage(node){
+		if (!(page)) return true;
+		else if (!(node))
+		    return hasContent(page,true,true);
+		else if (!(hasParent(node,page)))
+		    return hasContent(page,true,true);
+		else if (page.firstChild===node)
+		    return false;
+		else if (hasContent(page,node,true))
+		    return true;
+		else return false;}
+
+	    /*
+	    function needNewPage(node){
+		fdjtLog("needNewPage(%o) page=%o",node,page);
+		var val=needNewPageCall(node);
+		fdjtLog("%s, page=%o, node=%o",
+			(val?"newpage":"nopage"),page,node);
+		return val;}
+	    */
+
 	    function newPage(node){
+		if ((float_pages)&&(float_pages.length)) {
+		    var i=0; var lim=float_pages.length;
+		    while (i<lim) fullPage(float_pages[i++]);
+		    float_pages=[];}
 		var newpage="pagetop";
-		if (!(((page)&&(!(hasContent(page,true))))||
-		      ((page)&&(page.firstChild===node)))) {
+		if (needNewPage(node)) {
 		    if (page) dropClass(page,"curpage");
 		    state.page=page=fdjtDOM("div.codexpage.curpage");
 		    pagenum++; state.pagenum=pagenum;
@@ -313,6 +344,42 @@ var CodexPaginate=
 		    else fdjtLog("Layout/%s %o",newpage,page);}
 		
 		if (node) moveNodeToPage(node,page,dups);
+
+		state.prev=prev=false;
+		state.prevstyle=prevstyle=false;
+		return page;}
+
+	    function fullPage(node){
+		var newpage="fullpagetop";
+		if ((!(page))||
+		    ((!(node))&&(!(hasContent(page,true,true))))||
+		    (((node)&&(hasParent(node,page)))?
+		     (hasContent(page,node,true)):
+		     (hasContent(page,true,true)))) {
+		    if (page) dropClass(page,"curpage");
+		    state.page=page=fdjtDOM("div.codexpage.curpage");
+		    pagenum++; state.pagenum=pagenum;
+		    page.id="CODEXPAGE"+(pagenum);
+		    page.setAttribute("data-pagenum",pagenum);
+		    fdjtDOM(pages,page);
+		    newpage="newpage";}
+		
+		if (trace>1) {
+		    if (node) fdjtLog("Layout/%s %o at %o",newpage,page,node);
+		    else fdjtLog("Layout/%s %o",newpage,page);}
+		
+		if (node) moveNodeToPage(node,page,dups);
+		
+		var geom=getGeometry(node,page,true);
+		var ewidth=page_width-(geom.left_margin+geom.right_margin);
+		var eheight=page_height-(geom.top_margin+geom.bottom_margin);
+		var hscale=ewidth/geom.width;
+		var vscale=eheight/geom.height;
+		var scale=((hscale<vscale)?(hscale):(vscale));
+		node.style[fdjtDOM.transform]='scale('+scale+','+scale+')';
+
+		// Now we make a new page for whatever comes next
+		newPage();
 
 		state.prev=prev=false;
 		state.prevstyle=prevstyle=false;

@@ -698,7 +698,7 @@ Codex.Startup=
 	    var humane=fdjtDOM.$(".humane");
 	    if (humane) {
 		var i=0; var lim=humane.length;
-		while (i<lim) humane[i++].sbookui=true;}
+		while (i<lim) humane[i++].codexui=true;}
 	    // Initialize the margins
 	    initMargins();
 	    if (Codex.Trace.startup>1)
@@ -709,7 +709,7 @@ Codex.Startup=
 	function initMargins(){
 	    var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
 	    var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
-	    topleading.sbookui=true; bottomleading.sbookui=true;
+	    topleading.codexui=true; bottomleading.codexui=true;
 	    
 	    var pagehead=fdjtDOM("div.codexmargin#CODEXPAGEHEAD"," ");
 	    var pageright=fdjtDOM("div#CODEXPAGERIGHT");
@@ -721,7 +721,7 @@ Codex.Startup=
 			fdjtDOM("div#CODEXPAGENO",
 				fdjtDOM("span#CODEXPAGENOTEXT","p/n")));
 	    var pagefoot=fdjtDOM("div.codexmargin#CODEXPAGEFOOT",pageinfo," ");
-	    pagehead.sbookui=true; pagefoot.sbookui=true;
+	    pagehead.codexui=true; pagefoot.codexui=true;
 	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
 
 	    fdjtDOM.prepend(document.body,pagehead,pagefoot,pageleft,pageright);
