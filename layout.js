@@ -232,6 +232,15 @@ var CodexPaginate=
 	    dropClass(node,"codexrelocated");
 	    node.removeAttribute("data-codexorigin");}
 	
+	function scaleImage(image,scale,geom){
+	    if (!(geom)) geom=getGeometry(image);
+	    // Set image width/height explicitly rather than
+	    // scaling because that's more portable
+	    var w=Math.round(geom.width*scale); var h=Math.round(geom.height*scale);
+	    image.width=image.style.width=image.style['max-width']=image.style['min-width']=w;
+	    image.height=image.style.height=image.style['max-height']=image.style['min-height']=h;
+	    addClass(image,"codextweaked");}
+
 	function Paginate(root,state){
 	    if (!(state)) state={};
 	    var page_height=(state.page_height)||
@@ -272,7 +281,8 @@ var CodexPaginate=
 		var i=0, n=blocks.length;
 		while (i<n) {
 		    var block=blocks[i]; var terminal=terminals[i]||false;
-		    if (hasClass(block,/\bsbookfloatpage\b/)) {
+		    if (!(block)) {i++; continue;}
+		    else if (hasClass(block,/\bsbookfloatpage\b/)) {
 			float_pages.push[block]; i++; continue;}
 		    else if (hasClass(block,/\bsbookpage\b/)) {
 			fullPage(block); i++; continue;}
@@ -284,8 +294,20 @@ var CodexPaginate=
 		    if ((terminal)&&(geom.bottom>page_height)) {
 			if (geom.top>page_height) newPage(block);
 			// Just ignore it if it's broke
-			else if (hasClass(block,"codexbroke")) i++;
-			else blocks[i]=splitBlock(block);}
+			else if (hasClass(block,"codexcantsplit")) {
+			    if (!((hasClass(block,"codextweaked"))||
+				  (hasClass(block,"codexavoidtweak"))))
+				tweakBlock(block);
+			    i++;}
+			else {
+			    blocks[i]=splitBlock(block);
+			    if (hasClass(block,"codexcantsplit")) {
+				var geom=getGeometry(block,page);
+				if (geom.bottom>page_height) {
+				    // Still over the edge, so tweak it
+				    if (!(hasClass(block,"codexavoidtweak")))
+					tweakBlock(block);}
+				i++;}}}
 		    else i++;}}
 
 	    function gatherBlocks(node,blocks,terminals){
@@ -370,13 +392,7 @@ var CodexPaginate=
 		
 		if (node) moveNodeToPage(node,page,dups);
 		
-		var geom=getGeometry(node,page,true);
-		var ewidth=page_width-(geom.left_margin+geom.right_margin);
-		var eheight=page_height-(geom.top_margin+geom.bottom_margin);
-		var hscale=ewidth/geom.width;
-		var vscale=eheight/geom.height;
-		var scale=((hscale<vscale)?(hscale):(vscale));
-		node.style[fdjtDOM.transform]='scale('+scale+','+scale+')';
+		tweakBlock(node);
 
 		// Now we make a new page for whatever comes next
 		newPage();
@@ -387,19 +403,8 @@ var CodexPaginate=
 
 	    function splitBlock(node){
 		if (avoidBreakInside(node)) {
-		    if (page.firstChild===node) {
-			if (!(hasClass(node,"codexnotweak"))) {
-			    var geom=getGeometry(node,page,true);
-			    var h_margin=(geom.left_margin+geom.right_margin);
-			    var v_margin=(geom.top_margin+geom.bottom_margin);
-			    var scalex=((page_width-h_margin)/geom.outer_width);
-			    var scaley=((page_height-v_margin)/geom.outer_height);
-			    var scale=((scalex<scaley)?(scalex):(scaley));
-			    node.style[fdjtDOM.transform]=
-				'scale('+scale+','+scale+')';
-			    addClass(node,"codextweaked");}
-			addClass(node,"codexbroke");}
-		    else newPage(node);
+		    addClass(node,"codexcantsplit");
+		    newPage(node);
 		    return node;}
 		var children=TOA(node.childNodes);
 		var i=children.length-1;
@@ -410,14 +415,17 @@ var CodexPaginate=
 		    // page on the node after restoring all the children
 		    i=0; var n=children.length;
 		    while (i<n) node.appendChild(children[i++]);
+		    addClass(node,"codexcantsplit");
 		    newPage(node);
 		    return node;}
-		var page_top=false; i=0; var n=children.length;
+		var page_top=node; i=0; var n=children.length;
 		while (i<n) {
 		    var child=children[i++];
 		    node.appendChild(child);
 		    geom=getGeometry(node);
 		    if (geom.bottom>page_height) { // Over the edge
+			// If there's nothing to leave behind, stop trying to split
+			if (!((hasContent(node,child,true)))) break;
 			if ((child.nodeType===3)||
 			    ((child.nodeType===1)&&(hasClass(child,"codextext")))) {
 			    // If it's text, split it into words
@@ -458,12 +466,62 @@ var CodexPaginate=
 			else page_top=child;
 			break;}
 		    else continue;}
-		newPage(page_top); var dup=page_top.parentNode;
-		while (i<n) dup.appendChild(children[i++]);
-		if (trace>1)
-		    fdjtLog("Layout/splitBlock %o @ %o into %o on %o",
-			    node,page_top,dup,page);
+		newPage(page_top);
+		if (page_top===node) {
+		    addClass(page_top,"codexcantsplit");
+		    if (trace) fdjtLog("Layout/cantBreak %o onto %o",node,page);}
+		else if (page_top!==node) {
+		    var dup=page_top.parentNode;
+		    while (i<n) dup.appendChild(children[i++]);
+		    if (trace>1)
+			fdjtLog("Layout/splitBlock %o @ %o into %o on %o",
+				node,page_top,dup,page);}
+		else {}
 		return dup;}
+
+	    function tweakBlock(node,avail_width,avail_height){
+		if (hasClass(node,"codextweaked")) return;
+		else if (hasClass(node,"codexavoidtweak")) return;
+		else if (node.getAttribute("style")) {
+		    addClass(node,"codexavoidtweak");
+		    return;}
+		else addClass(node,"codextweaked");
+		var geom=getGeometry(node,page,true);
+		if (!((avail_width)&&(avail_height))) {
+		    var h_margin=(geom.left_margin+geom.right_margin);
+		    var v_margin=(geom.top_margin+geom.bottom_margin);
+		    if (!(avail_width))
+			avail_width=page_width-(geom.left_margin+geom.right_margin+geom.left);
+		    if (!(avail_height))
+			avail_height=page_height-(geom.top_margin+geom.bottom_margin+geom.top);}
+		var scalex=(avail_width/geom.width);
+		var scaley=(avail_height/geom.height);
+		var scale=((scalex<scaley)?(scalex):(scaley));
+		node.style[fdjtDOM.transform]='scale('+scale+','+scale+')';
+		var ngeom=getGeometry(node,page,true);
+		if (ngeom.height===geom.height) {
+		    // If that didn't work, try some tricks
+		    if ((node.tagName==='IMG')||(node.tagName==='img'))
+			scaleImage(node,scale,ngeom);
+		    else {
+			var images=fdjtDOM.getChildren(node,"IMG");
+			if ((images)&&(images.length)) {
+			    var j=0; var jlim=images.length;
+			    while (j<jlim) {
+				var img=images[j++];
+				if (hasClass(img,/\bcodextweaked\b/)) continue;
+				else if (hasClass(img,/\bcodexavoidtweak\b/)) continue;
+				else if ((img.getAttribute('style'))||
+					 (img.getAttribute('width'))||
+					 (img.getAttribute('height'))) {
+				    addClass(img,'codexavoidtweak');
+				    continue;}
+				var igeom=getGeometry(img,page);
+				var relscale=Math.max(igeom.width/geom.width,igeom.height/geom.height);
+				scaleImage(img,scale*relscale,igeom);}}}
+		    ngeom=getGeometry(node,page,true);
+		    if (ngeom.height===geom.height) addClass(node,"codexuntweakable");}
+		addClass(node,"codextweaked");}
 
 	    loop(root);
 	    
@@ -492,8 +550,7 @@ var CodexPaginate=
 	// We explicitly check for these classes because some browsers
 	//  which should know better (we're looking at you, Firefox) don't
 	//  represent (or handle) page-break 'avoid' values.  Sigh.
-	var page_block_classes=
-	    /(\bfullpage\b)|(\btitlepage\b)|(\bsbookfullpage\b)|(\bsbooktitlepage\b)/;
+	var page_block_classes=/\b(avoidbreakinside)|(sbookpage)\b/;
 	function avoidBreakInside(elt,style){
 	    if (!(elt)) return false;
 	    if (elt.tagName==='IMG') return true;
@@ -647,12 +704,7 @@ var CodexPaginate=
 	
 	function repaginate(newinfo){
 	    var oldinfo=Codex.paginated;
-	    var moved=TOA(document.getElementsByClassName("codexrelocated"));
-	    if ((moved)&&(moved.length)) {
-		fdjtLog("Restoring original layout of %d relocated nodes and %d texts",
-			moved.length);
-		var i=0; var lim=moved.length;
-		while (i<lim) restoreNode(moved[i++],oldinfo);}
+	    if (oldinfo) depaginate(oldinfo);
 	    dropClass(document.body,"codexscrollview");
 	    addClass(document.body,"codexpageview");
 	    fdjtID("CODEXPAGE").style.visibility='hidden';
@@ -696,9 +748,8 @@ var CodexPaginate=
 		    Codex.paginating=false;},
 		200,50);}
 
-
-	Codex.depaginate=function(drop_old) {
-	    var oldinfo=Codex.paginated;
+	function depaginate(oldinfo,drop_old) {
+	    if (!(oldinfo)) oldinfo=Codex.paginated;
 	    var moved=TOA(document.getElementsByClassName("codexrelocated"));
 	    if ((moved)&&(moved.length)) {
 		fdjtLog("Restoring original layout of %d relocated nodes and %d texts",
@@ -707,17 +758,25 @@ var CodexPaginate=
 		while (i<lim) restoreNode(moved[i++],oldinfo);}
 	    if (drop_old) {
 		var newpages=fdjtDOM("div.codexpages#CODEXPAGES");
-		fdjtDOM.replace("CODEXPAGES",newpages);}};
-
+		fdjtDOM.replace("CODEXPAGES",newpages);}
+	    var tweaked=TOA(document.getElementsByClassName("codextweaked"))
+	    if ((tweaked)&&(tweaked.length)) {
+		fdjtLog("Dropping tweaks of %d relocated nodes",tweaked.length);
+		var i=0; var lim=tweaked.length;
+		while (i<lim) {
+		    var node=tweaked[i++]; node.style='';
+		    if ((node.tagName==='img')||(node.tagName==='IMG')) {
+			node.width=''; node.height='';}}}}
+	Codex.depaginate=depaginate;
 	
 	var repaginating=false;
 	Codex.repaginate=function(){
 	    if (repaginating) return;
 	    repaginating=setTimeout(
 		function(){
-		repaginate();
-		repaginating=false;},
-				    100);};
+		    repaginate();
+		    repaginating=false;},
+		100);};
 	
 	Paginate.onresize=function(evt){
 	    Codex.repaginate();};
