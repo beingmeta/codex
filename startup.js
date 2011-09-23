@@ -119,7 +119,10 @@ Codex.Startup=
 				fdjtState.getQuery("weird"));
 		    CodexMode("help");
 		    // Setup the UI components
-		    Codex.setupGestures();}),
+		    Codex.setupGestures();
+		    if (fdjtID("CODEXSPLASH"))
+			fdjtID("CODEXSPLASH").style.display='none';
+		    window.focus();}),
 		// Try to figure out if we already have a user
 		// (from pre-loaded loadinfo.js or user.js or stored
 		// in offline storage)
@@ -190,6 +193,8 @@ Codex.Startup=
 	
 	function startupDone(){
 	    initLocation();
+	    if (fdjtID("CODEXREADYSPLASH"))
+		fdjtID("CODEXREADYSPLASH").style.display='none';
 	    Codex.displaySync();
 	    setInterval(Codex.serverSync,60000);
 	    fdjtDOM.dropClass(document.body,"codexstartup");
