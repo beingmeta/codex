@@ -211,6 +211,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     function content_tapped(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
+	// Don't capture modified events
+	if ((evt.shiftKey)||(evt.ctrlKey)||(evt.altKey)) return;
 	var anchor=getParent(target,"A"), href;
 	// If you tap on a relative anchor, move there using Codex
 	// rather than the browser default
@@ -236,11 +238,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		fdjtLog("deferring content_tapped (%o) on %o",
 			evt,target,passage,Codex.mode);
 	    return;}
-	// else fdjtUI.cancel(evt); 
-	// If you tap an edge, page forward or backward
-	if (edgeTap(evt)) return;
-	var sel=window.getSelection();
 	// If there's a selection, store it as an excerpt.
+	var sel=window.getSelection();
 	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
 	    var p=getTarget(sel.anchorNode)||
 		getTarget(sel.focusNode)||
@@ -1026,13 +1025,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	{window: {
 	    keyup: onkeyup,
 	    keydown: onkeydown,
-	    keypress: onkeypress,
-	    click: edge_click},
+	    keypress: onkeypress},
 	 content: {mouseup: content_tapped},
 	 hud: {click: hud_tapped},
 	 glossmark: {mouseup: glossmark_tapped},
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
-	 ".codexmargin": {click: edge_click},
+	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {click: Codex.UI.dropHUD},
 	 "#CODEXFLYLEAF": {click: flyleaf_tap},
 	 "#CODEXPAGEINFO": {click: pageinfo_click, mousemove: pageinfo_hover},
@@ -1055,8 +1053,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     Codex.UI.handlers.webtouch=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
-		  touchstart: edge_click,
-		  touchmove: cancel, touchend: cancel},
+		  touchstart: cancel, touchmove: cancel, touchend: cancel},
 	 content: {touchstart: content_touchstart,
 		   touchmove: content_touchmove,
 		   touchend: content_touchend},
