@@ -237,8 +237,10 @@ var CodexPaginate=
 	    // Set image width/height explicitly rather than
 	    // scaling because that's more portable
 	    var w=Math.round(geom.width*scale); var h=Math.round(geom.height*scale);
-	    image.width=image.style.width=image.style['max-width']=image.style['min-width']=w;
-	    image.height=image.style.height=image.style['max-height']=image.style['min-height']=h;
+	    image.width=image.style.width=
+		image.style['max-width']=image.style['min-width']=w;
+	    image.height=image.style.height=
+		image.style['max-height']=image.style['min-height']=h;
 	    addClass(image,"codextweaked");}
 
 	function Paginate(root,state){
@@ -426,8 +428,15 @@ var CodexPaginate=
 		    if (geom.bottom>page_height) { // Over the edge
 			// If there's nothing to leave behind, stop trying to split
 			if (!((hasContent(node,child,true)))) break;
-			if ((child.nodeType===3)||
-			    ((child.nodeType===1)&&(hasClass(child,"codextext")))) {
+			else if ((child.nodeType!==3)||(child.nodeType!==1)) {
+			    // This is probably an error, so stop trying
+			    break;}
+			// If it's either text or relocated text, try to break it
+			else if ((child.nodeType===1)&&(!(hasClass(child,"codextext"))))
+			    // If it's an element, just push it over; this
+			    // could be more clever for inline elements
+			    page_top=child;
+			else {
 			    // If it's text, split it into words
 			    var text=((child.nodeType===3)?(child.nodeValue):
 				      (child.firstChild.nodeValue));
@@ -447,23 +456,22 @@ var CodexPaginate=
 				probenode=newprobe;
 				geom=getGeometry(node);
 				if (geom.bottom>page_height) break;}
-			    if ((wordstart===0)||(wordstart===wlen)) {
+			    // Done searching for the word break
+			    if ((wordstart===0)||(wordstart===wlen)) { // no dice
 				node.replaceChild(child,probenode);
 				page_top=child;}
-			    else {
+			    else { // Do the split
 				var keep=document.createTextNode(
 				    words.slice(0,wordstart).join(""));
 				page_top=document.createTextNode(
 				    words.slice(wordstart).join(""));
 				node.replaceChild(keep,probenode);
 			    	fdjtDOM.insertAfter(keep,page_top);
-				// Save texts we've split for restoration before repaginating
-				if ((child.nodeType===1)&&(child.getAttribute("data-codexorigin"))) {
+				// Save texts we've split for restoration
+				if ((child.nodeType===1)&&
+				    (child.getAttribute("data-codexorigin"))) {
 				    var originid=child.getAttribute("data-codexorigin");
 				    texts[originid]=child.firstChild;}}}
-			// If it's an element, just push it over; this
-			// could be more clever for inline elements
-			else page_top=child;
 			break;}
 		    else continue;}
 		newPage(page_top);
@@ -520,7 +528,8 @@ var CodexPaginate=
 				var relscale=Math.max(igeom.width/geom.width,igeom.height/geom.height);
 				scaleImage(img,scale*relscale,igeom);}}}
 		    ngeom=getGeometry(node,page,true);
-		    if (ngeom.height===geom.height) addClass(node,"codexuntweakable");}
+		    if (ngeom.height===geom.height)
+			addClass(node,"codexuntweakable");}
 		addClass(node,"codextweaked");}
 
 	    loop(root);
@@ -595,7 +604,9 @@ var CodexPaginate=
 	    else fdjtLog("Done with %d pages after %f seconds",
 			 pagenum,fdjtTime.secs2short((now-started)/1000));
 	    else if (typeof pagenum === 'number') {
-		fdjtDOM.replace("CODEXPAGEPROGRESS",fdjtDOM("span#CODEXPAGEPROGRESS",pagenum));
+		fdjtDOM.replace(
+		    "CODEXPAGEPROGRESS",
+		    fdjtDOM("span#CODEXPAGEPROGRESS",pagenum));
 		if (Codex.Trace.layout) {
 		    if (used)
 			fdjtLog("So far, laid out %d pages in %f seconds (%f running across %d chunks)",
@@ -765,8 +776,13 @@ var CodexPaginate=
 		var i=0; var lim=tweaked.length;
 		while (i<lim) {
 		    var node=tweaked[i++]; node.style='';
+		    dropClass(node,"codextweaked");
 		    if ((node.tagName==='img')||(node.tagName==='IMG')) {
-			node.width=''; node.height='';}}}}
+			node.width=''; node.height='';}}}
+	    dropClass(fdjt$(".codexcantsplit"),"codexcantsplit");
+	    dropClass(fdjt$(".codexcantsplit"),"codexcantsplit");
+
+	}
 	Codex.depaginate=depaginate;
 	
 	var repaginating=false;
