@@ -210,7 +210,7 @@ var CodexPaginate=
 		tempnode.appendChild(node);
 		classname="codextext";
 		node=tempnode;}
-	    if (!(node.getAttribute("data-codexorigin"))) {
+	    if ((node.parentNode)&&(!(node.getAttribute("data-codexorigin")))) {
 		// Record origin information to revert before repagination
 		var origin=fdjtDOM("span.codexorigin");
 		var id=origin.id="CODEXORIGIN"+(codex_reloc_serial++);
@@ -617,11 +617,9 @@ var CodexPaginate=
 		    var scalex=page_width/bounds.width;
 		    var scaley=page_height/bounds.height;
 		    var scale=((scalex<scaley)?(scalex):(scaley));
-		    var move_x=page_width-bounds.width;
-		    var move_y=page_height-bounds.height;
-		    var transform='scale('+scale+','+scale+') '+
-			'translate('+Math.floor(move_x)+'px,'+Math.floor(move_y)+'px)';
+		    var transform='scale('+scale+','+scale+')';
 		    boxed.style[fdjtDOM.transform]=transform;
+		    boxed.style[fdjtDOM.transform+"-origin"]='top';
 		    completed.appendChild(boxed);}}
 	    dropClass(completed,"curpage");}
 	
@@ -771,6 +769,14 @@ var CodexPaginate=
 		newinfo.page_width=getGeometry(fdjtID("CODEXPAGE")).width;
 	    fdjtLog("Laying out %d root nodes into %dx%d pages",
 		    nodes.length,newinfo.page_width,newinfo.page_height);
+	    var coverpage=fdjtID("CODEXCOVERPAGE")||fdjtID("SBOOKCOVERPAGE")||fdjtID("COVERPAGE");
+	    if (coverpage) newinfo=Paginate(node,newinfo);
+	    else {
+		var coverimage=fdjtDOM.getLink("sbook.coverpage",false,false)||
+		    fdjtDOM.getLink("coverpage",false,false);
+		if (coverimage) {
+		    var img=fdjtDOM.Image(coverimage,"img.codexcoverpage.sbookpage");
+		    newinfo=Paginate(img,newinfo);}}
 	    fdjtTime.slowmap(
 		function(node){if (node.nodeType===1) newinfo=Paginate(node,newinfo);},nodes,
 		function(state,i,lim,chunks,used,zerostart){

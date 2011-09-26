@@ -1826,11 +1826,6 @@ body.notsbookuser div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
-/* sBook splash */
-
-body.sbooksplash #SBOOKCOVERPAGE {
-    position: fixed; left: 10%; right: 10%; top: 50px;}
-
 /* Style variants */
 
 #CODEXHUD.codexuifontlarge {
@@ -2004,6 +1999,10 @@ div.codexdupend {
 p.codexdupend, p.codexdup { text-indent: 0px;}
 
 div#CODEXPAGE.codexpaginating div.codexpage { visiblity: hidden;}
+
+img.codexcoverpage {
+    display: block; max-width: 100%; max-height: 100%;
+    margin: auto;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
