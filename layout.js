@@ -608,16 +608,21 @@ var CodexPaginate=
 		if (!(page_width)) page_width=geom.width;
 		if (!(page_height)) page_height=geom.height;}
 	    if ((bounds.width>page_width)||(bounds.height>page_height)) {
-		var boxed=fdjtDOM("div",completed.childNodes);
-		var scalex=page_width/bounds.width;
-		var scaley=page_height/bounds.height;
-		var scale=((scalex<scaley)?(scalex):(scaley));
-		var move_x=page_width-bounds.width;
-		var move_y=page_height-bounds.height;
-		var transform='scale('+scale+','+scale+') '+
-		    'translate('+Math.floor(move_x)+'px,'+Math.floor(move_y)+'px)';
-		boxed.style[fdjtDOM.transform]=transform;
-		completed.appendChild(boxed);}
+		var scaled=fdjt$(".codexscale",completed);
+		if ((scaled)&&(scaled.length)) {
+		    // To be implemented: try adjusting these elements first
+		    bounds=insideBounds(completed);}
+		if ((bounds.width>page_width)||(bounds.height>page_height)) {
+		    var boxed=fdjtDOM("div",completed.childNodes);
+		    var scalex=page_width/bounds.width;
+		    var scaley=page_height/bounds.height;
+		    var scale=((scalex<scaley)?(scalex):(scaley));
+		    var move_x=page_width-bounds.width;
+		    var move_y=page_height-bounds.height;
+		    var transform='scale('+scale+','+scale+') '+
+			'translate('+Math.floor(move_x)+'px,'+Math.floor(move_y)+'px)';
+		    boxed.style[fdjtDOM.transform]=transform;
+		    completed.appendChild(boxed);}}
 	    dropClass(completed,"curpage");}
 	
 	/* Reporting progress, debugging */
