@@ -547,6 +547,8 @@ Codex.Startup=
 	    else return false;}
 	Codex.hasTOCLevel=hasTOCLevel;
 
+	var headlevels=["not","A","B","C","D","E","F","G","H","I","J","K","L"];
+
 	function getScanSettings(){
 	    if (!(Codex.root))
 		if (fdjtDOM.getMeta("sbook.root"))
@@ -563,9 +565,10 @@ Codex.Startup=
 		    if (fdjtDOM.nextElt(titlepage)) {
 			Codex.start=fdjtDOM.nextElt(titlepage); break;}
 		else titlepage=titlepage.parentNode;}
-	    var i=1; while (i<9) {
+	    var i=0; while (i<9) {
 		var rules=fdjtDOM.getMeta("sbook.head"+i,true).
-		    concat(fdjtDOM.getMeta("sbook"+i+"head",true));
+		    concat(fdjtDOM.getMeta("sbook"+i+"head",true)).
+		    concat(fdjtDOM.getMeta("sbook"+headlevels[i]+"head",true));
 		if ((rules)&&(rules.length)) {
 		    var j=0; var lim=rules.length;
 		    var elements=fdjtDOM.getChildren(document.body,rules[j++]);
