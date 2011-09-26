@@ -78,6 +78,26 @@ var CodexPaginate=
 	
 	var runslice=100; var runwait=50;
 
+	function insideBounds(box){
+	    var top=false, right=false, bottom=false, left=false;
+	    function gatherBounds(node){
+		var style=getStyle(node); var children;
+		if ((style.position==='static')&&
+		    ((node.tagName==='img')||(style.display!=='inline'))) {
+		    var geom=getGeometry(node,box);
+		    if ((left===false)||(geom.left<left)) left=geom.left;
+		    if ((top===false)||(geom.top<top)) top=geom.top;
+		    if ((right===false)||(geom.right>right)) right=geom.right;
+		    if ((bottom===false)||(geom.bottom>bottom)) bottom=geom.bottom;}
+		if ((children=node.childNodes)&&(children.length)) {
+		    var i=0; var len=children.length;
+		    while (i<len) gatherBounds(children[i++]);}}
+	    var nodes=box.childNodes;
+	    var j=0; var jlim=nodes.length;
+	    while (j<jlim) gatherBounds(nodes[j++]);
+	    return { left: left, top: top, right: right, bottom: bottom,
+		     width: right-left, height: bottom-top};}
+	
 	/* Codex trace levels */
 	/* 0=notrace (do final summary if tracing startup)
 	   1=trace repagination chunk by chunk
@@ -295,7 +315,9 @@ var CodexPaginate=
 		    if (trace>2) fdjtLog("Layout/loop %o %j",block,geom);
 		    if ((terminal)&&(geom.bottom>page_height)) {
 			if (geom.top>page_height) newPage(block);
-			// Just ignore it if it's broke
+			// Just skip this block if it can't be split,
+			// but try to tweak it if it hasn't been
+			// tweaked yet
 			else if (hasClass(block,"codexcantsplit")) {
 			    if (!((hasClass(block,"codextweaked"))||
 				  (hasClass(block,"codexavoidtweak"))))
@@ -303,6 +325,7 @@ var CodexPaginate=
 			    i++;}
 			else {
 			    blocks[i]=splitBlock(block);
+			    // If the block couldn't be split, try to tweak it
 			    if (hasClass(block,"codexcantsplit")) {
 				var geom=getGeometry(block,page);
 				if (geom.bottom>page_height) {
@@ -338,15 +361,6 @@ var CodexPaginate=
 		else if (hasContent(page,node,true))
 		    return true;
 		else return false;}
-
-	    /*
-	    function needNewPage(node){
-		fdjtLog("needNewPage(%o) page=%o",node,page);
-		var val=needNewPageCall(node);
-		fdjtLog("%s, page=%o, node=%o",
-			(val?"newpage":"nopage"),page,node);
-		return val;}
-	    */
 
 	    function newPage(node){
 		if ((float_pages)&&(float_pages.length)) {
@@ -586,6 +600,28 @@ var CodexPaginate=
 		return true;
 	    else return false;}
 
+	/* Finishing the page */
+	function finishPage(completed,page_width,page_height) {
+	    var bounds=insideBounds(completed);
+	    if (!((page_width)&&(page_height))) {
+		var geom=getGeometry(completed);
+		if (!(page_width)) page_width=geom.width;
+		if (!(page_height)) page_height=geom.height;}
+	    if ((bounds.width>page_width)||(bounds.height>page_height)) {
+		var boxed=fdjtDOM("div",completed.childNodes);
+		var scalex=page_width/bounds.width;
+		var scaley=page_height/bounds.height;
+		var scale=((scalex<scaley)?(scalex):(scaley));
+		var move_x=page_width-bounds.width;
+		var move_y=page_height-bounds.height;
+		var transform='scale('+scale+','+scale+') '+
+		    'translate('+Math.floor(move_x)+'px,'+Math.floor(move_y)+'px)';
+		boxed.style[fdjtDOM.transform]=transform;
+		completed.appendChild(boxed);}
+	    dropClass(completed,"curpage");}
+	
+	/* Reporting progress, debugging */
+	
 	function progress(info,used,chunks){
 	    var started=info.started;
 	    var pagenum=info.pagenum;
@@ -749,13 +785,21 @@ var CodexPaginate=
 		    newinfo.done=fdjtTime();
 		    progress(newinfo);
 		    fdjtID("CODEXPAGE").style.visibility='visible';
+		    {
+			var pages=fdjt$(".codexpage",newpages);
+			var i=0; var lim= pages.length;
+			while (i<lim) finishPage(pages[i++]);}
 		    Codex.paginated=newinfo;
 		    Codex.pagecount=newinfo.pagenum;
 		    if (Codex.pagewait) {
 			var fn=Codex.pagewait;
 			Codex.pagewait=false;
 			fn();}
-		    Codex.GoTo(Codex.location||Codex.target);
+		    Codex.GoTo(
+			Codex.location||Codex.target||
+			    fdjtID("SBOOKSTARTPAGE")||fdjtID("SBOOKCOVERPAGE")||
+			    fdjtID("SBOOKTITLEPAGE")||fdjtID("COVERPAGE")||
+			    fdjtID("TITLEPAGE")||fdjtID("CODEXPAGE1"));
 		    Codex.paginating=false;},
 		200,50);}
 
