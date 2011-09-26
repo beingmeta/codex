@@ -442,7 +442,7 @@ var CodexPaginate=
 		    if (geom.bottom>page_height) { // Over the edge
 			// If there's nothing to leave behind, stop trying to split
 			if (!((hasContent(node,child,true)))) break;
-			else if ((child.nodeType!==3)||(child.nodeType!==1)) {
+			else if ((child.nodeType!==3)&&(child.nodeType!==1)) {
 			    // This is probably an error, so stop trying
 			    break;}
 			// If it's either text or relocated text, try to break it
