@@ -88,7 +88,8 @@ var CodexPaginate=
 		    if ((left===false)||(geom.left<left)) left=geom.left;
 		    if ((top===false)||(geom.top<top)) top=geom.top;
 		    if ((right===false)||(geom.right>right)) right=geom.right;
-		    if ((bottom===false)||(geom.bottom>bottom)) bottom=geom.bottom;}
+		    if ((bottom===false)||(geom.bottom>bottom))
+			bottom=geom.bottom;}
 		if ((children=node.childNodes)&&(children.length)) {
 		    var i=0; var len=children.length;
 		    while (i<len) gatherBounds(children[i++]);}}
@@ -308,7 +309,8 @@ var CodexPaginate=
 			float_pages.push[block]; i++; continue;}
 		    else if (hasClass(block,/\bsbookpage\b/)) {
 			fullPage(block); i++; continue;}
-		    else if ((forcedBreakBefore(block))&&(page.childNodes.length))
+		    else if ((forcedBreakBefore(block))&&
+			     (page.childNodes.length))
 			newPage(block);
 		    else moveNodeToPage(block,page,dups);
 		    var geom=getGeometry(block,page);
@@ -585,6 +587,7 @@ var CodexPaginate=
 	function avoidBreakBefore(elt,style){
 	    if (!(elt)) return false;
 	    if (!(style)) style=getStyle(elt);
+	    var info=((elt.id)&&(Codex.docinfo[elt.id]));
 	    return ((style.pageBreakBefore==='avoid')||
 		    ((sbook_avoidpagehead)&&(sbook_avoidpagehead.match(elt))));}
 
@@ -769,16 +772,20 @@ var CodexPaginate=
 		newinfo.page_width=getGeometry(fdjtID("CODEXPAGE")).width;
 	    fdjtLog("Laying out %d root nodes into %dx%d pages",
 		    nodes.length,newinfo.page_width,newinfo.page_height);
-	    var coverpage=fdjtID("CODEXCOVERPAGE")||fdjtID("SBOOKCOVERPAGE")||fdjtID("COVERPAGE");
-	    if (coverpage) newinfo=Paginate(node,newinfo);
+	    var coverpage=fdjtID("CODEXCOVERPAGE")||
+		fdjtID("SBOOKCOVERPAGE")||
+		fdjtID("COVERPAGE");
+	    if (coverpage) newinfo=Paginate(coverpage,newinfo);
 	    else {
 		var coverimage=fdjtDOM.getLink("sbook.coverpage",false,false)||
 		    fdjtDOM.getLink("coverpage",false,false);
 		if (coverimage) {
-		    var img=fdjtDOM.Image(coverimage,"img.codexcoverpage.sbookpage");
+		    var img=fdjtDOM.Image(
+			coverimage,"img.codexcoverpage.sbookpage");
 		    newinfo=Paginate(img,newinfo);}}
 	    fdjtTime.slowmap(
-		function(node){if (node.nodeType===1) newinfo=Paginate(node,newinfo);},nodes,
+		function(node){if (node.nodeType===1)
+		    newinfo=Paginate(node,newinfo);},nodes,
 		function(state,i,lim,chunks,used,zerostart){
 		    if (state==='suspend') progress(newinfo,used,chunks);
 		    else if (state==='done')
