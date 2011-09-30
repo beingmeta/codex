@@ -538,13 +538,13 @@ var CodexPaginate=
 		var scalex=(avail_width/geom.width);
 		var scaley=(avail_height/geom.height);
 		var scale=((scalex<scaley)?(scalex):(scaley));
-		node.style[fdjtDOM.transform]='scale('+scale+','+scale+')';
-		var ngeom=getGeometry(node,page,true);
-		if (ngeom.height===geom.height) {
-		    // If that didn't work, try some tricks
-		    if ((node.tagName==='IMG')||(node.tagName==='img'))
-			scaleImage(node,scale,ngeom);
-		    else {
+		if ((node.tagName==='IMG')||(node.tagName==='img'))
+		    scaleImage(node,scale,geom);
+		else {
+		    node.style[fdjtDOM.transform]='scale('+scale+','+scale+')';
+		    var ngeom=getGeometry(node,page,true);
+		    if (ngeom.height===geom.height) {
+			// If that didn't work, try some tricks
 			var images=fdjtDOM.getChildren(node,"IMG");
 			if ((images)&&(images.length)) {
 			    var j=0; var jlim=images.length;
