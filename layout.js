@@ -453,23 +453,25 @@ var CodexPaginate=
 		    return node;}
 		var page_top=node; i=0; var n=children.length;
 		while (i<n) {
-		    var child=children[i++];
+		    var child=children[i++]; var nodetype=child.nodeType;
 		    node.appendChild(child);
 		    geom=getGeometry(node);
 		    if (geom.bottom>page_height) { // Over the edge
-			// If there's nothing to leave behind, stop trying to split
-			if (!((hasContent(node,child,true)))) break;
-			else if ((child.nodeType!==3)&&(child.nodeType!==1)) {
+			if ((nodetype!==3)&&(!((hasContent(node,child,true)))))
+			    // If there's nothing to leave behind,
+			    // stop trying to split this node at all
+			    break;
+			else if ((nodetype!==3)&&(nodetype!==1)) {
 			    // This is probably an error, so stop trying
 			    break;}
 			// If it's either text or relocated text, try to break it
-			else if ((child.nodeType===1)&&(!(hasClass(child,"codextext"))))
+			else if ((nodetype===1)&&(!(hasClass(child,"codextext"))))
 			    // If it's an element, just push it over; this
 			    // could be more clever for inline elements
 			    page_top=child;
 			else {
 			    // If it's text, split it into words
-			    var text=((child.nodeType===3)?(child.nodeValue):
+			    var text=((nodetype===3)?(child.nodeValue):
 				      (child.firstChild.nodeValue));
 			    var words=text.split(/\b/g);
 			    var probenode=child;
@@ -499,7 +501,7 @@ var CodexPaginate=
 				node.replaceChild(keep,probenode);
 			    	fdjtDOM.insertAfter(keep,page_top);
 				// Save texts we've split for restoration
-				if ((child.nodeType===1)&&
+				if ((nodetype===1)&&
 				    (child.getAttribute("data-codexorigin"))) {
 				    var originid=child.getAttribute("data-codexorigin");
 				    texts[originid]=child.firstChild;}}}
