@@ -309,18 +309,18 @@ var CodexPaginate=
 			 (avoidBreakAfter(prev))))
 			drag.push(prev);
 		    else if ((block)&&(terminal))
-			drag=[];
+			state.drag=drag=[];
 		    else {}
 		    if (!(block)) {i++; continue;}
 		    else if (hasClass(block,/\bsbookfloatpage\b/)) {
 			float_pages.push[block]; i++; continue;}
 		    else if (hasClass(block,/\bsbookpage\b/)) {
-			prev=false; drag=[];
+			prev=false; state.drag=drag=[];
 			fullPage(block);
 			i++; continue;}
 		    else if ((forcedBreakBefore(block))&&
 			     (page.childNodes.length)) {
-			prev=false; drag=[];
+			prev=false; state.drag=drag=[];
 		    	newPage(block);}
 		    else moveNodeToPage(block,page,dups);
 		    var geom=getGeometry(block,page);
@@ -398,7 +398,7 @@ var CodexPaginate=
 		if ((drag)&&(drag.length)) {
 		    var i=0; var lim=drag.length;
 		    while (i<lim) moveNodeToPage(drag[i++],page,dups);
-		    drag.length=0;}
+		    state.drag=drag=[];}
 		if (node) moveNodeToPage(node,page,dups);
 
 		state.prev=prev=false;
