@@ -276,7 +276,7 @@ var CodexPaginate=
 	    var dups=state.dups||(state.dups={});
 	    var page=state.page||(newPage());
 	    var prev=(state.prev)||false;
-	    var prevstyle=state.prevstyle||((prev)&&(getStyle(prev)));
+	    var drag=(state.drag)||(state.drag=[]);
 	    var started=state.started||(state.started=fdjtTime());
 	    var trace=((state.hasOwnProperty('trace'))?
 		       (state.trace||0):(Codex.Trace.layout||0));
@@ -304,14 +304,24 @@ var CodexPaginate=
 		var i=0, n=blocks.length;
 		while (i<n) {
 		    var block=blocks[i]; var terminal=terminals[i]||false;
+		    if ((block)&&(terminal)&&(prev)&&
+			((avoidBreakBefore(block))||
+			 (avoidBreakAfter(prev))))
+			drag.push(prev);
+		    else if ((block)&&(terminal))
+			drag=[];
+		    else {}
 		    if (!(block)) {i++; continue;}
 		    else if (hasClass(block,/\bsbookfloatpage\b/)) {
 			float_pages.push[block]; i++; continue;}
 		    else if (hasClass(block,/\bsbookpage\b/)) {
-			fullPage(block); i++; continue;}
+			prev=false; drag=[];
+			fullPage(block);
+			i++; continue;}
 		    else if ((forcedBreakBefore(block))&&
-			     (page.childNodes.length))
-			newPage(block);
+			     (page.childNodes.length)) {
+			prev=false; drag=[];
+		    	newPage(block);}
 		    else moveNodeToPage(block,page,dups);
 		    var geom=getGeometry(block,page);
 		    if (trace>2) fdjtLog("Layout/loop %o %j",block,geom);
@@ -335,7 +345,9 @@ var CodexPaginate=
 				    if (!(hasClass(block,"codexavoidtweak")))
 					tweakBlock(block);}
 				i++;}}}
-		    else i++;}}
+		    else i++;
+		    if (terminal) {
+			state.prev=prev=block;}}}
 
 	    function gatherBlocks(node,blocks,terminals){
 		if (node.nodeType!==1) return;
@@ -383,10 +395,13 @@ var CodexPaginate=
 		    if (node) fdjtLog("Layout/%s %o at %o",newpage,page,node);
 		    else fdjtLog("Layout/%s %o",newpage,page);}
 		
+		if ((drag)&&(drag.length)) {
+		    var i=0; var lim=drag.length;
+		    while (i<lim) moveNodeToPage(drag[i++],page,dups);
+		    drag.length=0;}
 		if (node) moveNodeToPage(node,page,dups);
 
 		state.prev=prev=false;
-		state.prevstyle=prevstyle=false;
 		return page;}
 
 	    function fullPage(node){
