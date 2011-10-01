@@ -137,8 +137,11 @@ var CodexPaginate=
 	    var book_len=Codex.ends_at;
 	    pbar.style.left=(100*((pagenum-1)/npages))+"%";
 	    pbar.style.width=(100/npages)+"%";
-	    var locoff=fdjtDOM(
-		"span.locoff#CODEXLOCOFF","L"+Math.floor(location/128));
+	    var locoff=
+		((typeof location==='number')?
+		 (fdjtDOM(
+		     "span.locoff#CODEXLOCOFF","L"+Math.floor(location/128))):
+		 (fdjtDOM("span.locoff#CODEXLOCOFF")));
 	    var pageno_text=fdjtDOM(
 		"span#CODEXPAGENOTEXT.pageno",pagenum,"/",npages);
 	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
@@ -535,15 +538,19 @@ var CodexPaginate=
 			avail_width=page_width-(geom.left_margin+geom.right_margin+geom.left);
 		    if (!(avail_height))
 			avail_height=page_height-(geom.top_margin+geom.bottom_margin+geom.top);}
+		// If the node doesn't have any dimensions,
+		//  something hasn't loaded, so don't try tweaking
+		if ((geom.width===0)||(geom.height===0)) return;
 		var scalex=(avail_width/geom.width);
 		var scaley=(avail_height/geom.height);
 		var scale=((scalex<scaley)?(scalex):(scaley));
-		if ((node.tagName==='IMG')||(node.tagName==='img'))
-		    scaleImage(node,scale,geom);
-		else {
-		    node.style[fdjtDOM.transform]='scale('+scale+','+scale+')';
-		    var ngeom=getGeometry(node,page,true);
-		    if (ngeom.height===geom.height) {
+		node.style[fdjtDOM.transform]='scale('+scale+','+scale+')';
+		var ngeom=getGeometry(node,page,true);
+		if (ngeom.height===geom.height) {
+		    if ((node.tagName==='IMG')||(node.tagName==='img')) {
+			node.style[fdjtDOM.transform]='';
+			scaleImage(node,scale,geom);}
+		    else {
 			// If that didn't work, try some tricks
 			var images=fdjtDOM.getChildren(node,"IMG");
 			if ((images)&&(images.length)) {
@@ -551,14 +558,22 @@ var CodexPaginate=
 			    while (j<jlim) {
 				var img=images[j++];
 				if (hasClass(img,/\bcodextweaked\b/)) continue;
-				else if (hasClass(img,/\bcodexavoidtweak\b/)) continue;
+				else if (hasClass(img,/\bcodexavoidtweak\b/))
+				    continue;
 				else if ((img.getAttribute('style'))||
 					 (img.getAttribute('width'))||
 					 (img.getAttribute('height'))) {
 				    addClass(img,'codexavoidtweak');
 				    continue;}
 				var igeom=getGeometry(img,page);
-				var relscale=Math.max(igeom.width/geom.width,igeom.height/geom.height);
+				// If the node doesn't have any
+				//  dimensions, it hasn't been loaded,
+				//  so don't try tweaking the page
+				if ((igeom.width===0)||(igeom.height===0))
+				    return;
+				var relscale=Math.max(
+				    igeom.width/geom.width,
+				    igeom.height/geom.height);
 				scaleImage(img,scale*relscale,igeom);}}}
 		    ngeom=getGeometry(node,page,true);
 		    if (ngeom.height===geom.height)
@@ -642,6 +657,7 @@ var CodexPaginate=
 		    boxed.style[fdjtDOM.transform+"-origin"]='top';
 		    completed.appendChild(boxed);}}
 	    dropClass(completed,"curpage");}
+	Paginate.finishPage=finishPage;
 	
 	/* Reporting progress, debugging */
 	
@@ -799,6 +815,7 @@ var CodexPaginate=
 		if (coverimage) {
 		    var img=fdjtDOM.Image(
 			coverimage,"img.codexcoverpage.sbookpage");
+		    fdjtDOM.prepend(Codex.content,img);
 		    newinfo=Paginate(img,newinfo);}}
 	    fdjtTime.slowmap(
 		function(node){if (node.nodeType===1)
