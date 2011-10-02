@@ -468,7 +468,8 @@ var CodexPaginate=
 			    // This is probably an error, so stop trying
 			    break;}
 			// If it's either text or relocated text, try to break it
-			else if ((nodetype===1)&&(!(hasClass(child,"codextext"))))
+			else if ((nodetype===1)&&
+				 (!(hasClass(child,"codextext"))))
 			    // If it's an element, just push it over; this
 			    // could be more clever for inline elements
 			    page_top=child;
@@ -493,9 +494,10 @@ var CodexPaginate=
 				geom=getGeometry(node);
 				if (geom.bottom>page_height) break;}
 			    // Done searching for the word break
-			    if ((wordstart===0)||(wordstart===wlen)) { // no dice
+			    if ((wordstart===0)||(wordstart===wlen)) { // no dic
 				node.replaceChild(child,probenode);
-				page_top=child;}
+				page_top=child;
+				break;}
 			    else { // Do the split
 				var keep=document.createTextNode(
 				    words.slice(0,wordstart).join(""));

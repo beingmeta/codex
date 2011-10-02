@@ -1593,7 +1593,7 @@ div#CODEXFLYLEAF table.settings td .checkspan { }
 
 /* About information */
 
-div.sbookabout { text-align: center; }
+div.sbookabout { margin-left: 70px; margin-right: 35px;}
 div.sbookabout div.title { font-size: 150%;}
 div.sbookabout div.byline { font-size: 125%; font-weight: bold;}
 div.sbookabout div.publisher { font-style: italic;}

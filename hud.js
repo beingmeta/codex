@@ -87,6 +87,9 @@ var CodexMode=
 
 	    fdjtID("SBOOK_RETURN_TO").value=location.href;
 
+	    // Iniitialize the ABOUT tab
+	    
+
 	    // Initialize gloss UI
 	    var glosses=fdjtID("CODEXALLGLOSSES");
 	    Codex.UI.setupSummaryDiv(glosses);
@@ -558,49 +561,51 @@ var CodexMode=
 	    else fdjtDOM(elt,content);}
 
 	function fillinAboutInfo(){
-	    if (fdjtID("SBOOKABOUT")) {
-		fdjtDOM.replace("APPABOUTCONTENT",fdjtID("SBOOKABOUT"));
-		return;}
 	    var about=fdjtID("APPABOUT");
-	    var title=
-		fdjtID("SBOOKTITLE")||
-		fdjtDOM.getMeta("codex.title")||
-		fdjtDOM.getMeta("TITLE")||
-		fdjtDOM.getMeta("DC.title")||
-		document.title;
-	    var byline=
-		fdjtID("SBOOKBYLINE")||fdjtID("SBOOKAUTHOR")||
-		fdjtDOM.getMeta("codex.byline")||fdjtDOM.getMeta("BYLINE")||
-		fdjtDOM.getMeta("codex.author")||fdjtDOM.getMeta("AUTHOR");
-	    var copyright=
-		fdjtID("SBOOKCOPYRIGHT")||
-		fdjtDOM.getMeta("codex.copyright")||fdjtDOM.getMeta("COPYRIGHT")||
-		fdjtDOM.getMeta("RIGHTS");
-	    var publisher=
-		fdjtID("SBOOKPUBLISHER")||
-		fdjtDOM.getMeta("codex.publisher")||
-		fdjtDOM.getMeta("PUBLISHER");
-	    var description=
-		fdjtID("SBOOKDESCRIPTION")||
-		fdjtDOM.getMeta("codex.description")||
-		fdjtDOM.getMeta("DESCRIPTION");
-	    var digitized=
-		fdjtID("SBOOKDIGITIZED")||
-		fdjtDOM.getMeta("codex.digitized")||
-		fdjtDOM.getMeta("DIGITIZED");
-	    var sbookified=fdjtID("SBOOKIFIED")||fdjtDOM.getMeta("SBOOKIFIED");
-	    _sbookFillTemplate(about,".title",title);
-	    _sbookFillTemplate(about,".byline",byline);
-	    _sbookFillTemplate(about,".publisher",publisher);
-	    _sbookFillTemplate(about,".copyright",copyright);
-	    _sbookFillTemplate(about,".description",description);
-	    _sbookFillTemplate(about,".digitized",digitized);
-	    _sbookFillTemplate(about,".sbookified",sbookified);
-	    _sbookFillTemplate(about,".about",fdjtID("SBOOKABOUT"));
-	    var cover=fdjtDOM.getLink("cover");
-	    if (cover) {
-		var cover_elt=fdjtDOM.$(".cover",about)[0];
-		if (cover_elt) fdjtDOM(cover_elt,fdjtDOM.Image(cover));}}
+	    var bookabout=fdjtID("SBOOKABOUTPAGE");
+	    var authorabout=fdjtID("SBOOKAUTHORPAGE");
+	    if (bookabout) fdjtDOM(about,bookabout);
+	    else {
+		var title=
+		    fdjtID("SBOOKTITLE")||
+		    fdjtDOM.getMeta("codex.title")||
+		    fdjtDOM.getMeta("TITLE")||
+		    fdjtDOM.getMeta("DC.title")||
+		    document.title;
+		var byline=
+		    fdjtID("SBOOKBYLINE")||fdjtID("SBOOKAUTHOR")||
+		    fdjtDOM.getMeta("codex.byline")||fdjtDOM.getMeta("BYLINE")||
+		    fdjtDOM.getMeta("codex.author")||fdjtDOM.getMeta("AUTHOR");
+		var copyright=
+		    fdjtID("SBOOKCOPYRIGHT")||
+		    fdjtDOM.getMeta("codex.copyright")||fdjtDOM.getMeta("COPYRIGHT")||
+		    fdjtDOM.getMeta("RIGHTS");
+		var publisher=
+		    fdjtID("SBOOKPUBLISHER")||
+		    fdjtDOM.getMeta("codex.publisher")||
+		    fdjtDOM.getMeta("PUBLISHER");
+		var description=
+		    fdjtID("SBOOKDESCRIPTION")||
+		    fdjtDOM.getMeta("codex.description")||
+		    fdjtDOM.getMeta("DESCRIPTION");
+		var digitized=
+		    fdjtID("SBOOKDIGITIZED")||
+		    fdjtDOM.getMeta("codex.digitized")||
+		    fdjtDOM.getMeta("DIGITIZED");
+		var sbookified=fdjtID("SBOOKIFIED")||fdjtDOM.getMeta("SBOOKIFIED");
+		_sbookFillTemplate(about,".title",title);
+		_sbookFillTemplate(about,".byline",byline);
+		_sbookFillTemplate(about,".publisher",publisher);
+		_sbookFillTemplate(about,".copyright",copyright);
+		_sbookFillTemplate(about,".description",description);
+		_sbookFillTemplate(about,".digitized",digitized);
+		_sbookFillTemplate(about,".sbookified",sbookified);
+		_sbookFillTemplate(about,".about",fdjtID("SBOOKABOUT"));
+		var cover=fdjtDOM.getLink("cover");
+		if (cover) {
+		    var cover_elt=fdjtDOM.$(".cover",about)[0];
+		    if (cover_elt) fdjtDOM(cover_elt,fdjtDOM.Image(cover));}}
+	    if (authorabout) fdjtDOM(about,authorabout);}
 
 	function initManageIFrame(){
 	    var query=document.location.search||"?";
