@@ -791,6 +791,7 @@ var CodexPaginate=
 	/* Top level functions */
 	
 	function repaginate(newinfo){
+	    if (Codex.paginating) return;
 	    var oldinfo=Codex.paginated;
 	    if (oldinfo) depaginate(oldinfo);
 	    dropClass(document.body,"codexscrollview");
@@ -798,6 +799,7 @@ var CodexPaginate=
 	    fdjtID("CODEXPAGE").style.visibility='hidden';
 	    var newpages=fdjtDOM("div.codexpages#CODEXPAGES");
 	    var newinfo=((newinfo)||{"pages": newpages});
+	    Codex.paginating=newinfo;
 	    fdjtDOM.replace("CODEXPAGES",newpages);
 	    var content=Codex.content;
 	    var nodes=TOA(content.childNodes);
