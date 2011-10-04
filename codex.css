@@ -1246,10 +1246,13 @@ div#CODEXHUD .completions .completion .dterm {}
     padding-right: 0.35em; padding-left: 0.35em; 
     border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
     color: darkblue; background-color: gold; border: solid yellow 2px;}
+/*
 .completion .dterm:before {
-    font-size: 150%; font-weight: bold; content: "·";
+    font-weight: bold; content: "·"; color: red;
     vertical-align: middle;}
-
+.completion .dterm.weak:before {
+    content: "·‘";}
+*/
 
 body div#CODEXHUD div.codexthread > div.locrule {
     position: relative; left: 0px; bottom: 0px; z-index: 50;

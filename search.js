@@ -436,10 +436,11 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var nspans=0; var sumscale=0;
 	var minscale=false; var maxscale=false;
 	var domnodes=[]; var nodescales=[];
-	var isprime=
-	  (((Codex.knodule.prime.length)?(Codex.knodule.primescores):
-	    (Codex.knodule.dterms))||
-	   false);
+	var primescores=
+	    ((Codex.knodule.prime)&&
+	     (Codex.knodule.prime.length)&&
+	     (Codex.knodule.primescores));
+	var dterms=Codex.knodule.dterms;
  	i=0; while (i<copied.length) {
 	    var dterm=copied[i++];
 	    var count=((bykey[dterm]) ? (bykey[dterm].length) : (1));
@@ -447,11 +448,18 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var score=((scores) ?(scores[dterm]||false) : (false));
 	    var title=
 		((Codex.noisy_tooltips) ?
-		 (dterm+": "+(((score)?("s="+score+"; "):"")+freq+"/"+count+" items")) :
-		 (dterm+": "+freq+((freq==1) ? " item" : " items")));
+		 (""+(((score)?("s="+score+"; "):"")+freq+"/"+count+" items")) :
+		 (""+freq+((freq==1) ? " item" : " items")));
 	    var span=KNodeCompletion(dterm,title,true);
 	    if (!(span)) continue;
-	    if ((isprime)&&(isprime[dterm])) addClass(span,"cue");
+	    // Use a knode as a cue if it is declared PRIME in the knodule,
+	    //  or if it's non-auto and has a corresondind dterm
+	    if (primescores) {
+		if (primescores[dterm]) addClass(span,"cue");}
+	    else if (dterm[0]==='~') {}
+	    else if ((dterms[dterm])&&(!((dterms[dterm]).weak)))
+		addClass(span,"cue");
+	    else {}
 	    domnodes.push(span);
 	    if (freq===1) addClass(span,"singleton");
 	    if ((scores)&&(!(noscale))) {
@@ -490,34 +498,32 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.toggleClass(completions,"showempty");}
 
     function KNodeCompletion(term,title,just_knodes){
-	var sbook_index=Codex.index;
+	var sbook_index=Codex.index; var showname=term;
 	if ((typeof term === "string") && (term[0]==="\u00A7")) {
-	    var showname=term;
 	    if (showname.length>17) {
 		showname=showname.slice(0,17)+"...";
 		title=term;}
 	    var span=fdjtDOM("span.completion",fdjtDOM("span.sectname",showname));
 	    span.key=term; span.value=term; span.anymatch=true;
-	    if (title)
-		span.title="("+term+": "+sbook_index.freq(term)+" items) "+title;
-	    else span.title=term+": "+sbook_index.freq(term)+" items";
+	    span.title=""+sbook_index.freq(term)+" items: "+term;
 	    return span;}
-	var dterm=Codex.knodule.probe(term);
+	var dterm=Codex.knodule.probe(term); var showterm=term;
 	if (!(dterm)) {
-	    if (just_knodes) return false;}
+	    if (just_knodes) return false;
+	    var knopos=title_term.indexOf('@');
+	    if ((knopos>0)&&(term.slice(1+knopos)===Codex.knodule.name)) {
+		if (title) title="("+term+") "+title; else title=term;
+		showterm=term.slice(0,knopos);}}
 	else if (!(dterm.dterm)) {
 	    fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
 	    dterm=false;}
-	var term_node=((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.raw",term)));
-	if (!(title))
-	    if (sbook_index.freq(dterm))
-		title=dterm+": "+sbook_index.freq(dterm)+" items";
-	else title=false;
+	var term_node=((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.raw",showterm)));
 	var span=fdjtDOM("span.completion");
 	if (dterm) {
-	    if (dterm.gloss)
+	    if (dterm.gloss) {
 		if (title) span.title=title+": "+dterm.gloss;
-	    else span.title=dterm.gloss;
+		else span.title=dterm.gloss;}
+	    // This would be a place to generate titles from the knodule itself
 	    else span.title=title;
 	    /* Now add variation elements */
 	    var variations=[];
@@ -534,7 +540,6 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    span.value=((dterm.tagString)?(dterm.tagString()):(dterm.dterm));
 	    span.setAttribute("dterm",dterm.dterm);}
 	else {
-	    // This is helpful for debugging
 	    span.key=term; span.value=term;
 	    span.appendChild(term_node);
 	    if (title) span.title=title;}
