@@ -42,11 +42,6 @@
 	(click to log in)</a>
     </div> <!-- .flyleafplate -->
     <div class="tabbar icons" id="CODEXTABS">
-      <img src="http://static.beingmeta.com/graphics/codex/GlossesTab50h.png"
-	   alt="Glosses" title="browse all glosses overlaid on this book"
-	   onclick="CodexMode.toggle('allglosses'); return fdjtUI.cancel(event);"
-	   class="tab" id="CODEXALLGLOSSESBUTTON"
-	   hudmode="allglosses"/>
       <img src="http://static.beingmeta.com/graphics/codex/AboutTab50h.png"
 	   alt="About" class="tab" contentid="APPABOUT"
 	   onclick="CodexMode.toggle('about',true); return fdjtUI.cancel(event);"
@@ -75,6 +70,11 @@
 	   alt="Help" class="tab" contentid="CODEXHELP"
 	   onclick="CodexMode.toggle('help',true); return fdjtUI.cancel(event);"
 	   title="help about using sBooks"/>
+      <img src="http://static.beingmeta.com/graphics/codex/GlossesTab50h.png"
+	   alt="Glosses" title="browse all glosses overlaid on this book"
+	   onclick="CodexMode.toggle('allglosses'); return fdjtUI.cancel(event);"
+	   class="tab" id="CODEXALLGLOSSESBUTTON"
+	   hudmode="allglosses"/>
     </div> <!-- .tabbar -->
   </div> <!-- id="CODEXHUDBUTTONS" -->
   <div id="CODEXGOTOLOC" class="hudpanel codexgoto">
