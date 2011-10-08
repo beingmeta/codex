@@ -825,8 +825,19 @@ body div#CODEXHUD.scanning.scanstart img#CODEXSCANLEFT.codexscanbutton,
 body div#CODEXHUD.scanning.scanend img#CODEXSCANRIGHT.codexscanbutton {
     display: none;}
 
+body div#CODEXHUD.scanning.scanstart img#CODEXSCANLEFT.codexscanbutton,
+body div#CODEXHUD.scanning.scanend img#CODEXSCANRIGHT.codexscanbutton {
+    display: none;}
+
 body div#CODEXHUD.scanning img.hudbutton#CODEXTOCBUTTON,
 body div#CODEXHUD.scanning img.hudbutton#CODEXSEARCHBUTTON {
+    display: none;}
+
+/* Don't display any buttons when you're at both the start and end */
+body div#CODEXHUD.scanning.scanstart.scanend img#CODEXSCANSTART.codexscanbutton,
+body div#CODEXHUD.scanning.scanend.scanend img#CODEXSCANEND.codexscanbutton,
+body div#CODEXHUD.scanning.scanstart.scanend img#CODEXSCANLEFT.codexscanbutton,
+body div#CODEXHUD.scanning.scanend.scanend img#CODEXSCANRIGHT.codexscanbutton {
     display: none;}
 
 /* About this book */
