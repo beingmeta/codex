@@ -726,6 +726,7 @@ body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
 
 div#CODEXHUD.search div#CODEXSEARCHRESULTSWRAPPER { display: none;}
 div#CODEXHUD.search div.completions#CODEXSEARCHCLOUD { display: block;}
+div#CODEXHUD.search div#CODEXSEARCH.norefiners div.completions#CODEXSEARCHCLOUD { display: none;}
 div#CODEXHUD.search div.codexslice#CODEXSEARCHRESULTS { display: none;}
 div#CODEXHUD.searchresults div#CODEXSEARCHCLOUDWRAPPER { display: none;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
@@ -1881,7 +1882,7 @@ h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
 
 div.codexpage .sbookpage {
     position: absolute;
-    top: 0px; bottom: 0px; left: 0px; right: 0px;
+    top: 0px; left: 0px; right: 0px;
     margin-left: auto; margin-right: auto;}
 div.codexpage .sbookpage.titlepage {
     left: 10%; right: 10%; margin-left: 10%; margin-right: 10%;}
