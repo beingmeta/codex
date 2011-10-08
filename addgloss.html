@@ -21,10 +21,15 @@
     <span class="resptags"></span> <span class="resplinks"></span>
   </div>
   <div class="textbox">
+    <!--
     <input type="TEXT" name="TAG"
 	   placeholder="type a tag, with completion" value=""/>
     <input type="TEXT" name="LINK"
 	   placeholder="type a URL and title" value=""/>
+    -->
+    <textarea name="TAG" placeholder="type a tag, with completion" value=""></textarea>
+    <textarea name="LINK" placeholder="type a URL and title" value=""></textarea>
+    <textarea name="EXCERPT" placeholder="edit an excerpt to quote" value=""></textarea>
     <textarea name="NOTE"
 	      placeholder="add text, [tag]s or [@http://example.com/ links]"
 	      onfocus="Codex.UI.addgloss_focus(event);"
@@ -57,10 +62,12 @@
       <img src="http://static.beingmeta.com/graphics/codex/TagIcon32x32.png"
 	   title="add a tag to this gloss"
 	   class="button mouseicon" alt="tag"/>
+      <img src="http://static.beingmeta.com/graphics/scissorsicon32x32.png"
+	   title="add or edit an excerpt/quotation for this gloss"
+	   class="button mouseicon" alt="excerpt"/>
     </span>
     <span class="links" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
-    <span class="excerpts" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <div class="outlets"
 	 onclick="fdjtUI.CheckSpan.onclick(event);">
       <span class="head">Share with </span>

@@ -197,7 +197,7 @@ div.codexglossform form .bracketbutton strong {
 div.codexglossform form.focused div.inputhelp { display: block;}
 div.codexglossform form.focused span.inputhelp { display: inline;}
 
-div.codexglossform form textarea[name='NOTE'],
+div.codexglossform form textarea,
 div.codexglossform form input[type='TEXT'][name='NOTE'] {
     min-height: 1em; overflow: hidden; font-size: 14px;
     width: 98%; margin-left: auto; margin-right: auto;
@@ -206,6 +206,9 @@ div.codexglossform form input[type='TEXT'][name='NOTE'] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
+div.codexglossform form textarea[name='EXCERPT'] {
+    background-color: yellow; color: black;
+    background-image:     url(https://beingmeta.s3.amazonaws.com/static/graphics/scissorsicon24x24.png);}
 div.codexglossform form div.inputhelp {
     width: 98%; margin-left: auto; margin-right: auto;
     margin-top: 0px; padding-top: 0px;}
@@ -293,11 +296,18 @@ div.codexglossform form div.glossetc > .button,
 div.codexglossform form div.glossetc > span .button {
     float: right; border: transparent solid 1px; padding: 2px;
     border-radius: 3px; -webkit-border-radius: 3px;
-    -moz-border-radius: 3px; -o-border-radius: 3px; }
-div.codexglossform form.addtag div.glossetc > span .button[alt='tag'] {
-    background-color: white; border-color: darkblue;}
-div.codexglossform form.addlink div.glossetc > span .button[alt='link'] {
-    background-color: white; border-color: darkblue;}
+    -moz-border-radius: 3px; -o-border-radius: 3px;
+    cursor: pointer;}
+div.codexglossform form div.glossetc > span .button:hover {
+    border: darkblue dotted 1px;}
+div.codexglossform form div.glossetc > span .button[alt='excerpt'] {
+    display: none;}
+div.codexglossform.hasexcerpt form div.glossetc > span .button[alt='excerpt'] {
+    display: inline;}
+div.codexglossform form.addtag div.glossetc > span .button[alt='tag'],
+div.codexglossform form.addlink div.glossetc > span .button[alt='link'],
+div.codexglossform form.excerpt div.glossetc > span .button[alt='excerpt'] {
+    background-color: white; border-color: darkblue; border-style: solid;}
 div.codexglossform form div.glossetc > span.button {
     font-weight: bold; color: black; font-size: 24px;
     border: solid black 2px; background-color: silver; padding: 2px;
@@ -331,28 +341,42 @@ div.codexglossform.glossreply span.addbutton {
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
 
-div.codexglossform div.textbox {} /* min-height: 50px; */
-div.codexglossform div.textbox input[type="TEXT"] {
+div.codexglossform div.textbox { /* min-height: 50px; */
+    transition-property: height; transition-duration: 2s;
+    -webkit-transition-property: height; -webkit-transition-duration: 2s;}
+div.codexglossform div.textbox input[type="TEXT"],
+div.codexglossform div.textbox textarea[name="LINK"],
+div.codexglossform div.textbox textarea[name="TAG"],
+div.codexglossform div.textbox textarea[name="EXCERPT"] {
     font-size: 16px; display: none;
     width: 98%; position: relative; top: 0px; max-height: 2em;
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
-div.codexglossform div.textbox textarea { min-height: 5ex;}
 
 div.codexglossform form.addtag div.textbox textarea,
+div.codexglossform form.excerpt div.textbox textarea,
 div.codexglossform form.addlink div.textbox textarea {
     display: none;}
 
-div.codexglossform form.addtag div.textbox input[type="TEXT"][NAME='TAG'],
-div.codexglossform form.addlink div.textbox input[type="TEXT"][NAME='LINK'] {
+div.codexglossform form.addtag div.textbox textarea[name='TAG'],
+div.codexglossform form.addtag div.textbox input[type="TEXT"][name='TAG'],
+div.codexglossform form.excerpt div.textbox textarea[name='EXCERPT'],
+div.codexglossform form.addlink div.textbox input[type="TEXT"][name='LINK'],
+div.codexglossform form.addlink div.textbox textarea[name='LINK'] {
     display: block;}
-div.codexglossform div.textbox input[type="TEXT"][NAME='TAG'] {
+div.codexglossform div.textbox input[type="TEXT"][name='TAG'] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/codex/TagIcon16x16.png);}
-div.codexglossform div.textbox input[type="TEXT"][NAME='LINK'] {
+div.codexglossform div.textbox textarea[name='TAG'] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/codex/TagIcon24x24.png);}
+div.codexglossform div.textbox input[type="TEXT"][name='LINK'] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/DiagLink16x16.png);}
+div.codexglossform div.textbox textarea[name='LINK'] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/DiagLink24x24.png);}
 
 div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
     margin-top: 0px;}

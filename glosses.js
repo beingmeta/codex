@@ -38,6 +38,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     var addClass=fdjtDOM.addClass;
     var hasClass=fdjtDOM.hasClass;
     var dropClass=fdjtDOM.dropClass;
+    var swapClass=fdjtDOM.swapClass;
 
     function sbicon(base){return Codex.graphics+base;}
     function cxicon(base){return Codex.graphics+"codex/"+base;}
@@ -101,7 +102,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else addClass(div,"glossedit");}
 	// Use any current selection to add as an excerpt
 	if (Codex.excerpt) {
-	    if (Codex.excerpt.length) addExcerpt(form,Codex.excerpt);
+	    if (Codex.excerpt.length) setExcerpt(form,Codex.excerpt);
 	    Codex.excerpt=false;}
 	return div;}
     Codex.getGlossForm=getGlossForm;
@@ -249,18 +250,15 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	return checkspan;}
 
     /***** Adding excerpts ******/
-    function addExcerpt(form,excerpt,id) {
-	var excerpts=fdjtDOM.getChild(form,'.excerpts');
-	var value=((id)?("[#"+id+" "+excerpt):(excerpt));
-	var checkbox=fdjtDOM.Checkbox("EXCERPT",value,true);
-	var content=
-	    ((id)?
-	     (fdjtDOM.Anchor("#"+id,"excerpt","\u201c",excerpt,"\u201d")):
-	     (fdjtDOM("span.excerpt","\u201c",excerpt,"\u201d")));
-	var checkspan=fdjtDOM("span.checkspan",checkbox,content);
-	fdjtDOM(excerpts,checkspan," ");
-	return checkspan;}
-    Codex.addExcerpt=addExcerpt;
+    function setExcerpt(form,excerpt,id) {
+	var input=fdjtDOM.getInput(form,'EXCERPT');
+	var form_elt=((form.tagName==='form')?(form):
+		      (fdjtDOM.getChild(form,"form")));
+	addClass(form,"hasexcerpt");
+	if (form_elt) swapClass(form_elt,glossmodes,"excerpt");
+	
+	input.value=excerpt;}
+    Codex.setExcerpt=setExcerpt;
 
     /***** Adding tags ******/
     function addTag(form,tag,varname,checked) {
@@ -412,6 +410,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    input.focus();}}
     Codex.UI.bracket_click=bracket_click;
 
+    var glossmodes=/(addtag)|(addlink)|(excerpt)/;
+
     function addGloss_button(evt){
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
@@ -424,15 +424,16 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else if (alt==="link") {
 	    altclass="addlink";
 	    input=fdjtDOM.getInput(form,'LINK');}
+	else if (alt==="excerpt") {
+	    altclass="excerpt";
+	    input=fdjtDOM.getInput(form,'EXCERPT');}
 	else return;
 	if (!(hasClass(form,altclass))) {
-	    dropClass(form,/(addtag)|(addlink)/);
-	    addClass(form,altclass);
+	    swapClass(form,glossmodes,altclass);
 	    input.focus();}
 	else {
-	    dropClass(form,/(addtag)|(addlink)/);
-	    if (alt==="tag") {}
-	    else if (alt==="link") {}
+	    dropClass(form,glossmodes);
+	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}
 	    else {}}}
     Codex.UI.addGloss_button=addGloss_button;
 

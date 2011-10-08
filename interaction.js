@@ -247,7 +247,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (p) {
 		if ((Codex.mode==="addgloss")&&
 		    (fdjtID("CODEXLIVEGLOSS"))) {
-		    Codex.addExcerpt(fdjtID("CODEXLIVEGLOSgit S"),
+		    Codex.setExcerpt(fdjtID("CODEXLIVEGLOSS"),
 				     sel.toString(),
 				     ((Codex.glosstarget!==p)&&
 				      ((p.id)||p.codexid)));}
@@ -594,7 +594,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var excerpt_elt=fdjtID("CODEXEXCERPT");
 	var form=fdjtID("CODEXLIVEGLOSS");
 	if (flag) {
-	    Codex.addExcerpt
+	    Codex.setExcerpt
 	    (form,text,excerpt_elt.passageid);
 	    CodexMode("addgloss");}
 	else CodexMode("false");};
