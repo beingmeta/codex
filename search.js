@@ -56,8 +56,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     Codex.getQuery=function(){return Codex.query;}
     
     function setQuery(query){
-      if (Codex.Trace.search) fdjtLog("Setting working query to %o",query);
-      Codex.query=useQuery(query,fdjtID("CODEXSEARCH"));}
+	if (Codex.Trace.search) fdjtLog("Setting working query to %o",query);
+	Codex.query=useQuery(query,fdjtID("CODEXSEARCH"));}
 
     Codex.setQuery=setQuery;
 
@@ -70,11 +70,11 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    box_arg=document.getElementById(box_arg);
 	var box=box_arg||result._box||fdjtID("CODEXSEARCH");
 	if ((query.dom)&&(box)&&(box!==query.dom))
-	  fdjtDOM.replace(box_arg,query.dom);
+	    fdjtDOM.replace(box_arg,query.dom);
 	if (qstring===box.getAttribute("qstring")) {
-	  fdjtLog("No change in query for %o to %o: %o/%o (%o)",
-		  box,result._query,result,result._refiners,qstring);
-	  return;}
+	    fdjtLog("No change in query for %o to %o: %o/%o (%o)",
+		    box,result._query,result,result._refiners,qstring);
+	    return;}
 	if (Codex.Trace.search>1)
 	    fdjtLog("Setting query for %o to %o: %o/%o (%o)",
 		    box,result._query,result,result._refiners,qstring);
@@ -123,23 +123,28 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	// Update the search cloud
 	var n_refiners=
 	    ((result._refiners)&&(result._refiners._results.length))||0;
-	if (n_refiners) {
-	    var completions=Codex.queryCloud(result);
-	    refinecount.innerHTML=n_refiners+
-		((n_refiners===1)?(" association"):(" associations"));
-	    fdjtDOM.dropClass(box,"norefiners");
-	    if (cloudid) completions.id=cloudid;
-	    if (Codex.Trace.search>1)
-		fdjtLog("Setting search cloud for %o to %o",
-			box,completions.dom);
-	    cloudid=cloud.id;
-	    fdjtDOM.replace(cloud,completions.dom);
+	var completions=Codex.queryCloud(result);
+	refinecount.innerHTML=n_refiners+
+	    ((n_refiners===1)?(" association"):(" associations"));
+	fdjtDOM.dropClass(box,"norefiners");
+	if (cloudid) completions.id=cloudid;
+	if (Codex.Trace.search>1)
+	    fdjtLog("Setting search cloud for %o to %o",
+		    box,completions.dom);
+	cloudid=cloud.id;
+	fdjtDOM.replace(cloud,completions.dom);
 	    completions.complete("");
-	    Codex.UI.updateScroller(completions.dom);}
-	else {
+	if (n_refiners===0) {
 	    addClass(box,"norefiners");
 	    refinecount.innerHTML="no refiners";}
 	result._box=box; box.setAttribute(qstring,qstring);
+	if (Codex.mode==="search") {
+	    if ((result._results.length===1)&&
+		(document.getElementById(result._results[0]))) {
+		Codex.GoTo(result._results[0]);}
+	    else if (result._results.length<7) CodexMode("searchresults");
+	    else {}}
+	Codex.UI.updateScroller(completions.dom);
 	return result;}
     Codex.useQuery=useQuery;
 
@@ -213,31 +218,31 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		fdjtDOM.cancel(evt);
 		setTimeout(function(){
 		    Codex.UI.updateScroller("CODEXSEARCHCLOUD");},
-		  100);
+			   100);
 		return;}}
 	else {
 	    var completeinfo=queryCloud(Codex.query);
 	    completeinfo.docomplete(target);
 	    setTimeout(function(){
 		Codex.UI.updateScroller("CODEXSEARCHCLOUD");},
-	      100);}}
+		       100);}}
     Codex.UI.handlers.search_keyup=searchInput_keyup;
 
     /*
-    function searchInput_onkeyup(evt){
-	evt=evt||event||null;
-	var kc=evt.keyCode;
-	if ((kc===8)||(kc===46)) {
-	    if (_sbook_searchupdate) {
-		clearTimeout(_sbook_searchupdate);
-		_sbook_searchupdate=false;}
-	    var target=fdjtDOM.T(evt);
-	    _sbook_searchupdate=
-		setTimeout(function(target){
-		    _sbook_searchupdate=false;
-		    searchUpdate(target);},
-			   _sbook_searchupdate_delay,target);}}
-    Codex.UI.handlers.SearchInput_onkeyup=searchInput_onkeyup;
+      function searchInput_onkeyup(evt){
+      evt=evt||event||null;
+      var kc=evt.keyCode;
+      if ((kc===8)||(kc===46)) {
+      if (_sbook_searchupdate) {
+      clearTimeout(_sbook_searchupdate);
+      _sbook_searchupdate=false;}
+      var target=fdjtDOM.T(evt);
+      _sbook_searchupdate=
+      setTimeout(function(target){
+      _sbook_searchupdate=false;
+      searchUpdate(target);},
+      _sbook_searchupdate_delay,target);}}
+      Codex.UI.handlers.SearchInput_onkeyup=searchInput_onkeyup;
     */
 
     function searchUpdate(input,cloud){
@@ -300,44 +305,44 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	return locrule;}
 
     function showResults(result){
-      if (result._results_div) return result._results_div;
-      var results=result._results; var rscores=result._scores;
-      var scores={}; var sorted=[];
-      var i=0; var lim=results.length;
-      var scores=new Array(lim);
-      while (i<lim) {
-	var r=results[i++];
-	var ref=Codex.docinfo[r]||Codex.glosses.map[r]||fdjtKB.ref(r)||r;
-	if (!(ref)) continue;
-	var frag=ref.frag;
-	if (!(frag)) continue;
-	sorted.push(ref);
-	if (scores[frag]) 
-	  scores[frag]=scores[frag]+(rscores[r]||1);
-	else {
-	  scores[frag]=rscores[r];}
-	i++;}
-      sorted.sort(function(x,y){
-	  var xfrag=x.frag; var yfrag=y.frag;
-	  if (xfrag===yfrag) {}
-	  else if (scores[x.frag]>scores[yfrag]) return -1;
-	  else if (scores[xfrag]<scores[yfrag]) return 1;
-	  var xqid=x._id; var yqid=y._id;
-	  if (rscores[xqid]>rscores[yqid]) return -1;
-	  else if (rscores[xqid]<rscores[yqid]) return 1;
-	  var xstart=x.starts_at; var ystart=y.starts_at;
-	  if (xstart<ystart) return -1;
-	  else if (xstart>ystart) return 1;
-	  var xend=x.ends_at; var yend=y.ends_at;
-	  if (xend<yend) return -1;
-	  else if (xend>yend) return 1;
-	  else return 0;});
-      if (!(result)) result=Codex.query;
-      var div=fdjtDOM("div.codexslice.sbookresults");
-      Codex.UI.addHandlers(div,'summary');
-      Codex.UI.showSlice(result._results,div,rscores);
-      result._results_div=div;
-      return div;}
+	if (result._results_div) return result._results_div;
+	var results=result._results; var rscores=result._scores;
+	var scores={}; var sorted=[];
+	var i=0; var lim=results.length;
+	var scores=new Array(lim);
+	while (i<lim) {
+	    var r=results[i++];
+	    var ref=Codex.docinfo[r]||Codex.glosses.map[r]||fdjtKB.ref(r)||r;
+	    if (!(ref)) continue;
+	    var frag=ref.frag;
+	    if (!(frag)) continue;
+	    sorted.push(ref);
+	    if (scores[frag]) 
+		scores[frag]=scores[frag]+(rscores[r]||1);
+	    else {
+		scores[frag]=rscores[r];}
+	    i++;}
+	sorted.sort(function(x,y){
+	    var xfrag=x.frag; var yfrag=y.frag;
+	    if (xfrag===yfrag) {}
+	    else if (scores[x.frag]>scores[yfrag]) return -1;
+	    else if (scores[xfrag]<scores[yfrag]) return 1;
+	    var xqid=x._id; var yqid=y._id;
+	    if (rscores[xqid]>rscores[yqid]) return -1;
+	    else if (rscores[xqid]<rscores[yqid]) return 1;
+	    var xstart=x.starts_at; var ystart=y.starts_at;
+	    if (xstart<ystart) return -1;
+	    else if (xstart>ystart) return 1;
+	    var xend=x.ends_at; var yend=y.ends_at;
+	    if (xend<yend) return -1;
+	    else if (xend>yend) return 1;
+	    else return 0;});
+	if (!(result)) result=Codex.query;
+	var div=fdjtDOM("div.codexslice.sbookresults");
+	Codex.UI.addHandlers(div,'summary');
+	Codex.UI.showSlice(result._results,div,rscores);
+	result._results_div=div;
+	return div;}
     KnoduleIndex.Query.prototype.showResults=
 	function(){return showResults(this);};
     
@@ -349,31 +354,29 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    query._cloud=fullCloud();
 	    return query._cloud;}
 	else if (!(query._refiners)) {
-	    result._cloud=Codex.empty_cloud;
+	    query._cloud=Codex.empty_cloud;
 	    return query._cloud;}
 	else {
 	    var completions=
-	      makeCloud(query._refiners._results,query._refiners._freqs);
-	    completions.onclick=Cloud_ontap;
+		makeCloud(query._refiners._results,query._refiners._freqs);
+	    completions.onclick=cloud_ontap;
 	    var n_refiners=query._refiners._results.length;
 	    var hide_some=(n_refiners>Codex.show_refiners);
 	    if (hide_some) {
 		var cues=fdjtDOM.$(".cue",completions);
 		if (!((cues)&&(cues.length))) {
-		  var compelts=fdjtDOM.$(".completion",completions);
-		  var i=0; var lim=((compelts.length<Codex.show_refiners)?
-				    (compelts.length):(Codex.show_refiners));
-		  while (i<lim) addClass(compelts[i++],"cue");}}
+		    var compelts=fdjtDOM.$(".completion",completions);
+		    var i=0; var lim=((compelts.length<Codex.show_refiners)?
+				      (compelts.length):(Codex.show_refiners));
+		    while (i<lim) addClass(compelts[i++],"cue");}}
 	    else addClass(completions,"showempty");
-	    
 	    query._cloud=
 		new fdjtUI.Completions(completions,fdjtID("CODEXSEARCHINPUT"));
-
 	    return query._cloud;}}
     Codex.queryCloud=queryCloud;
     KnoduleIndex.Query.prototype.getCloud=function(){return queryCloud(this);};
 
-    function Cloud_ontap(evt){
+    function cloud_ontap(evt){
 	evt=evt||event;
 	var target=fdjtDOM.T(evt);
 	var completion=fdjtDOM.getParent(target,".completion");
@@ -398,7 +401,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.toggleClass(container,"showall");
 	    fdjtDOM.cancel(evt);}
 	else {}}
-    Codex.UI.handlers.Cloud_ontap=Cloud_ontap;
+    Codex.UI.handlers.cloud_ontap=cloud_ontap;
 
     function makeCloud(dterms,scores,noscale,alphabetize){
 	var sbook_index=Codex.index;
@@ -408,8 +411,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		    dterms.length,scores,scores);
 	var spans=fdjtDOM("span");  
 	var tagicon=fdjtDOM.Image
-	  (cxicon("TagSearch50x50.png"),
-	   ".cloudtoggle","show/hide all","show all tags");
+	(cxicon("TagSearch50x50.png"),
+	 ".cloudtoggle","show/hide all","show all tags");
 	tagicon.onclick=showempty_ontap;
 	var completions=fdjtDOM("div.completions",tagicon,spans);
 	var n_terms=dterms.length;
@@ -426,9 +429,9 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var xlen=((bykey[x])?(bykey[x].length):(0));
 	    var ylen=((bykey[y])?(bykey[y].length):(0));
 	    if (xlen==ylen)
-	      if (x>y) return -1;
-	      else if (x===y) return 0;
-	      else return 1;
+		if (x>y) return -1;
+	    else if (x===y) return 0;
+	    else return 1;
 	    else if (xlen>ylen) return -1;
 	    else return 1;});
 	// Then we scale the keys by the ratio of result frequency to
@@ -450,7 +453,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		((Codex.noisy_tooltips) ?
 		 (""+(((score)?("s="+score+"; "):"")+freq+"/"+count+" items")) :
 		 (""+freq+((freq==1) ? " item" : " items")));
-	    var span=KNodeCompletion(dterm,title,true);
+	    var span=KNodeCompletion(dterm,title,false);
 	    if (!(span)) continue;
 	    // Use a knode as a cue if it is declared PRIME in the knodule,
 	    //  or if it's non-auto and has a corresondind dterm
@@ -464,24 +467,24 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    if (freq===1) addClass(span,"singleton");
 	    if ((scores)&&(!(noscale))) {
 		var relfreq=
-		  ((freq/scores._count)/(count/Codex.docinfo._eltcount));
+		    ((freq/scores._count)/(count/Codex.docinfo._eltcount));
 		var scaling=Math.sqrt(relfreq);
 		if ((!(minscale))||(scaling<minscale)) minscale=scaling;
 		if ((!(maxscale))||(scaling>maxscale)) maxscale=scaling;
 		nodescales.push(scaling);}
 	    fdjtDOM(spans,span,"\n");}
 	if (nodescales.length) {
-	  var j=0; var jlim=domnodes.length;
-	  var overscale=100/(maxscale-minscale);
-	  while (j<jlim) {
-	    var node=domnodes[j];
-	    var scale=nodescales[j];
-	    node.style.fontSize=(100+((scale-minscale)*overscale))+'%';
-	    j++;}}
+	    var j=0; var jlim=domnodes.length;
+	    var overscale=100/(maxscale-minscale);
+	    while (j<jlim) {
+		var node=domnodes[j];
+		var scale=nodescales[j];
+		node.style.fontSize=(100+((scale-minscale)*overscale))+'%';
+		j++;}}
 	var maxmsg=fdjtDOM
-	  ("div.maxcompletemsg",
-	   "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
-	   " of completions.  ");
+	("div.maxcompletemsg",
+	 "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
+	 " of completions.  ");
 	fdjtDOM.prepend(completions,maxmsg);
 	var end=new Date();
 	if (Codex.Trace.clouds)
@@ -492,10 +495,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     Codex.makeCloud=makeCloud;
 
     function showempty_ontap(evt){
-      var target=fdjtUI.T(evt);
-      var completions=fdjtDOM.getParent(target,".completions");
-      if (completions)
-	fdjtDOM.toggleClass(completions,"showempty");}
+	var target=fdjtUI.T(evt);
+	var completions=fdjtDOM.getParent(target,".completions");
+	if (completions)
+	    fdjtDOM.toggleClass(completions,"showempty");}
 
     function KNodeCompletion(term,title,just_knodes){
 	var sbook_index=Codex.index; var showname=term;
@@ -510,7 +513,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var dterm=Codex.knodule.probe(term); var showterm=term;
 	if (!(dterm)) {
 	    if (just_knodes) return false;
-	    var knopos=title_term.indexOf('@');
+	    var knopos=term.indexOf('@');
 	    if ((knopos>0)&&(term.slice(1+knopos)===Codex.knodule.name)) {
 		if (title) title="("+term+") "+title; else title=term;
 		showterm=term.slice(0,knopos);}}
@@ -554,28 +557,28 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var tagscores=Codex.index.tagScores();
 	    var alltags=tagscores._all;
 	    var tagfreqs=tagscores._freq;
-	    var completions=Codex.makeCloud(alltags,tagfreqs,false,true);
+	    var completions=Codex.makeCloud(alltags,tagfreqs,false,false);
 	    var cues=fdjtDOM.getChildren(completions,".cue");
-	    completions.onclick=Cloud_ontap;
+	    completions.onclick=cloud_ontap;
 	    Codex.full_cloud=new fdjtUI.Completions(completions);
 	    return Codex.full_cloud;}}
     Codex.fullCloud=fullCloud;
 
     function sizeCloud(completions,container,index){
-      if (!(index)) index=Codex.index;
-      if (!(container)) container=completions.dom;
-      var nodes=fdjtDOM.getChildren(container,".completion");
-      var tagscores=index.tagScores();
-      var max_score=tagscores._maxscore;
-      var alltags=tagscores._all;
-      var i=0; var lim=nodes.length;
-      while (i<lim) {
-	var tagnode=nodes[i++];
-	var tag=tagnode.value||completions.getValue(tagnode);
-        if (!(tag)) continue;
-	if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
-	var score=tagscores[tag];
-	if (score) tagnode.style.fontSize=(100+(100*(score/max_score)))+"%";}}
+	if (!(index)) index=Codex.index;
+	if (!(container)) container=completions.dom;
+	var nodes=fdjtDOM.getChildren(container,".completion");
+	var tagscores=index.tagScores();
+	var max_score=tagscores._maxscore;
+	var alltags=tagscores._all;
+	var i=0; var lim=nodes.length;
+	while (i<lim) {
+	    var tagnode=nodes[i++];
+	    var tag=tagnode.value||completions.getValue(tagnode);
+            if (!(tag)) continue;
+	    if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
+	    var score=tagscores[tag];
+	    if (score) tagnode.style.fontSize=(100+(100*(score/max_score)))+"%";}}
     Codex.sizeCloud=sizeCloud;
 
 })();

@@ -81,6 +81,7 @@ var CodexPaginate=
 	function insideBounds(box){
 	    var top=false, right=false, bottom=false, left=false;
 	    function gatherBounds(node){
+		if ((!(node))||(node.nodeType!==1)) return;
 		var style=getStyle(node); var children;
 		if ((style.position==='static')&&
 		    ((node.tagName==='img')||(style.display!=='inline'))) {
