@@ -1838,7 +1838,7 @@ body.hudup .codexglossmark { opacity: 0.6; display: block;}
     float: right; vertical-align: top; text-align: right;}
 .codexglossmark img.tiny {width: 16px;}
 .codexglossmark img.big {width: 32px;}
-.codexglossmark img.tiny, span.codexglossmark img.big { display: none; }
+.codexglossmark img.tiny, span.codexglossmark img.big { visibility: hidden;}
 
 .codexglossbutton {
     float: left; text-align: left;
@@ -1854,11 +1854,13 @@ body.hudup .sbooktarget .codexglossbutton { display: block;}
 
 /* Sparse glossmark display (the default) */
 
-body .codexglossmark img.tiny { display: block;}
-body.hudup .codexglossmark img.big { display: block;}
-body.hudup .codexglossmark img.tiny { display: none;}
-body .codexglossmark:hover img.big { display: block;}
-body .codexglossmark:hover img.tiny { display: none;}
+body .codexglossmark img.tiny { position: absolute;}
+body .codexglossmark img.big { position: absolute;}
+body .codexglossmark img.tiny { visibility: visible;}
+body.hudup .codexglossmark img.big { visibility: visible;}
+body.hudup .codexglossmark img.tiny { visibility: hidden;}
+body .codexglossmark:hover img.big { visibility: visible;}
+body .codexglossmark:hover img.tiny { visibility: hidden;}
 
 /* Displaying the sbook target */
 
