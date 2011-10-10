@@ -164,7 +164,8 @@ Codex.Startup=
 		    // This table is generally loaded as part of the book 
 		    if (_sbook_autoindex) {
 			startupLog("Indexing automatic tags");
-			Codex.useAutoIndex(_sbook_autoindex,Codex.knodule);}},
+			Codex.useAutoIndex(_sbook_autoindex,Codex.knodule);
+			_sbook_autoindex=false;}},
 		function(){
 		    startupLog("Setting up tag clouds"); initClouds();},
 		function(){
@@ -881,8 +882,8 @@ Codex.Startup=
 			    qids.push(obj._id);}}
 		    sbook[name]=qids;
 		    if (Codex.offline)
-			fdjtState.setLocal
-		    ("codex."+name+"("+refuri+")",qids,true);}
+			fdjtState.setLocal(
+			    "codex."+name+"("+refuri+")",qids,true);}
 	    else {
 		var obj=fdjtKB.Import(info);
 		if (persist) 
