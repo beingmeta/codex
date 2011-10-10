@@ -351,7 +351,7 @@ var sbook_gloss_data=
     function setHead(head){
 	if (head===null) head=Codex.root;
 	else if (typeof head === "string") 
-	    head=getHead(fdjtID(head));
+	    head=getHead(fdjtID(head))||Codex.root;
 	else head=getHead(head)||Codex.root;
 	var headid=head.id||head.codexid;
 	var headinfo=Codex.docinfo[headid];
@@ -633,7 +633,9 @@ var sbook_gloss_data=
 	if (info) {
 	    if (typeof info.level === 'number')
 		setHead(target);
-	    else if (info.head) setHead(info.head.frag);}
+	    else if (info.head) setHead(info.head.frag);
+	    else setHead(false);}
+	else setHead(false);
 	setLocation(location);
 	if ((!(noset))&&(targetid)&&(!(inUI(target))))
 	    setTarget(target,true,nosave||false);

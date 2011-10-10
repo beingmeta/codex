@@ -791,7 +791,7 @@ var CodexPaginate=
 	
 	/* Top level functions */
 	
-	function repaginate(newinfo){
+	function repaginate(why,newinfo){
 	    if (Codex.paginating) return;
 	    var oldinfo=Codex.paginated;
 	    if (oldinfo) depaginate(oldinfo);
@@ -808,8 +808,9 @@ var CodexPaginate=
 		newinfo.page_height=getGeometry(fdjtID("CODEXPAGE")).height;
 	    if (!(newinfo.page_width))
 		newinfo.page_width=getGeometry(fdjtID("CODEXPAGE")).width;
-	    fdjtLog("Laying out %d root nodes into %dx%d pages",
-		    nodes.length,newinfo.page_width,newinfo.page_height);
+	    fdjtLog("Laying out %d root nodes into %dx%d pages (%s)",
+		    nodes.length,newinfo.page_width,newinfo.page_height,
+		    (why||""));
 	    var coverpage=fdjtID("CODEXCOVERPAGE")||
 		fdjtID("SBOOKCOVERPAGE")||
 		fdjtID("COVERPAGE");
@@ -887,35 +888,35 @@ var CodexPaginate=
 	Codex.depaginate=depaginate;
 	
 	var repaginating=false;
-	Codex.repaginate=function(){
+	Codex.repaginate=function(why){
 	    if (repaginating) return;
 	    repaginating=setTimeout(
 		function(){
-		    repaginate();
+		    repaginate(why||false);
 		    repaginating=false;},
 		100);};
 	
 	Paginate.onresize=function(evt){
-	    Codex.repaginate();};
+	    Codex.repaginate("resize");};
 
-	Codex.addConfig
-	("pageview",
-	 function(name,val){
-	     if (val) {
-		 if (!(Codex.docinfo)) {
-		     // If there isn't any docinfo (during startup, for
-		     // instance), don't bother actually paginating.
-		     Codex.paginate=true;}
-		 else if (!(Codex.paginate)) {
-		     Codex.paginate=true;
-		     if (Codex.postconfig)
-			 Codex.postconfig.push(repaginate);
-		     else Codex.repaginate();}}
-	     else {
-		 clearPagination();
-		 Codex.paginate=false;
-		 dropClass(document.body,"codexpageview");
-		 addClass(document.body,"codexscrollview");}});
+	Codex.addConfig(
+	    "pageview",
+	    function(name,val){
+		if (val) {
+		    if (!(Codex.docinfo)) {
+			// If there isn't any docinfo (during startup, for
+			// instance), don't bother actually paginating.
+			Codex.paginate=true;}
+		    else if (!(Codex.paginate)) {
+			Codex.paginate=true;
+			if (Codex.postconfig)
+			    Codex.postconfig.push(repaginate);
+			else Codex.repaginate("config");}}
+		else {
+		    clearPagination();
+		    Codex.paginate=false;
+		    dropClass(document.body,"codexpageview");
+		    addClass(document.body,"codexscrollview");}});
 
 	function updateLayout(name,val){
 	    fdjtDOM.swapClass
@@ -923,9 +924,11 @@ var CodexPaginate=
 	    if (Codex.paginated) {
 		if (Codex.postconfig) {
 		    Codex.postconfig.push(function(){
-			CodexMode(true); Codex.repaginate();});}
+			CodexMode(true);
+			Codex.repaginate(name);});}
 		else {
-		    CodexMode(true); Codex.repaginate();}}}
+		    CodexMode(true);
+		    Codex.repaginate(name);}}}
 	Codex.addConfig("bodysize",updateLayout);
 	Codex.addConfig("bodystyle",updateLayout);
 	

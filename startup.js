@@ -140,7 +140,7 @@ Codex.Startup=
 		//  timesliced and runs on its own.  We wait to do
 		//  this until we've scanned the DOM because we may
 		//  use results of DOM scanning in layout.
-		function(){if (Codex.paginate) Codex.repaginate();},
+		function(){if (Codex.paginate) Codex.repaginate("initial");},
 		// Build the display TOC, both the dynamic (top of
 		// display) and the static (inside the flyleaf)
 		function(){
