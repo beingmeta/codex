@@ -307,14 +307,17 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (mode) CodexMode(mode)
 	    else CodexMode(false);
 	    return fdjtUI.cancel(evt);}
-	while (target) {
-	    if (target.about) {
-		Codex.Scan(fdjtID(target.about),target);
-		return fdjtUI.cancel(evt);}
-	    else if (target.frag) {
-		Codex.tocJump(evt,target);
-		return fdjtUI.cancel(evt);}
-	    else target=target.parentNode;}}
+	var note=((hasClass(target,"codexnote"))?(target):
+		  (getParent(target,".codexnote")));
+	if (!(note)) return;
+	if (getParent(target,".codexslice")) {
+	    Codex.Scan(fdjtID(note.about),note);
+	    return fdjtUI.cancel(evt);}
+	else if (note.name) {
+	    var gloss=fdjtKB.ref(note.name);
+	    Codex.setGlossTarget(gloss);	    
+	    CodexMode("addgloss");}
+	else if (note.about) {}}
     
     /* Mouse handlers */
 

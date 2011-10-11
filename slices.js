@@ -241,25 +241,10 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	age.title=(((user===Codex.user)||(user===Codex.user._id))?
 		   ("edit this gloss"):
 		   ("relay/reply to this gloss"));
-	// This should be made to work
-	// age.onclick=relayoredit_gloss;
-	var deleteicon=
-	    // No delete icons for the ipad right now (too small)
-	    ((user===Codex.user.oid)&&
-	     (makebutton(deleteicon_ontap,"x","delete this gloss",
-			 sbook_delete_icon,sbook_delete_icon_touch)));
-	var editicon=
-	    ((user===Codex.user.oid)&&
-	     (makebutton(editicon_ontap,"!","edit this gloss",
-			 sbook_edit_icon,sbook_edit_icon_touch)));
-	var replyicon=
-	    (makebutton(replyicon_ontap,"++","reply to this gloss",
-			sbook_reply_icon,sbook_reply_icon_touch));
 	var picinfo=getpicinfo(info);
 	var overdoc=getoverdoc(info);
 	
-	return [(fdjtDOM("span.glossinfo",deleteicon,editicon,replyicon)),
-		((picinfo)?
+	return [((picinfo)?
 		 (fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt)):
 		 (getfakepic(info.maker,"div.sourcepic"))),
 		((overdoc)&&(overdoc.name)&&
@@ -396,38 +381,6 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	locrule.style.left=((target_start/cxt_len)*100)+"%";
 	return locrule;}
 
-    function deleteicon_ontap(evt){
-	var scan=fdjtUI.T(evt);
-	fdjtUI.cancel(evt);
-	while (scan) {
-	    if (scan.qref) break;
-	    else scan=scan.parentNode;}
-	if (!(scan)) return;
-	var qref=scan.qref;
-	var frag=Codex.glosses.ref(qref).get("frag");
-	if (scan)
-	    fdjtAjax.jsonCall(
-		function(response){deletegloss(response,qref,frag);},
-		"https://"+Codex.server+"/glosses/delete",
-		"gloss",scan.qref);}
-    function deletegloss(response,glossid,frag){
-	if (response===glossid) {
-	    Codex.glosses.drop(glossid);
-	    Codex.allglosses=fdjtKB.remove(Codex.allglosses,glossid);
-	    if (Codex.offline)
-		fdjtState.setLocal("glosses("+Codex.refuri+")",
-				   Codex.allglosses,true);
-	    var renderings=fdjtDOM.Array(document.getElementsByName(glossid));
-	    if (renderings) {
-		var i=0; var lim=renderings.length;
-		while (i<lim) fdjtDOM.remove(renderings[i++]);}
-	    var glossmark=fdjtID("SBOOK_GLOSSMARK_"+frag);
-	    if (glossmark) {
-		var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
-		if (newglosses.length===0) fdjtDOM.remove(glossmark);
-		else glossmark.glosses=newglosses;}}
-	else alert(response);}
-    
     function editicon_ontap(evt){
 	var target=fdjtUI.T(evt);
 	var note=fdjtDOM.getParent(target,'.codexnote');

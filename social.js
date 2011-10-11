@@ -204,12 +204,16 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 
     function openGlossmark(target,addmark) {
 	var glosses=Codex.glosses.find('frag',target.id);
-	var sumdiv=fdjtDOM("div.codexslice.hudpanel");
+	var sumdiv=fdjtDOM("div.codexglosses.hudpanel");
 	if ((!(glosses))||(!(glosses.length)))
 	    fdjtDOM.addClass(sumdiv,"noglosses");
-	Codex.UI.setupSummaryDiv(sumdiv);
-	if (glosses)
-	  Codex.UI.showSlice(glosses,sumdiv,false);
+	// Codex.UI.setupSummaryDiv(sumdiv);
+	if (glosses) {
+	    var i=0; var n=glosses.length;
+	    while (i<n) {
+		var gloss=fdjtKB.ref(glosses[i++]);
+		var note=Codex.renderNote(gloss);
+		fdjtDOM(sumdiv,note);}}
 	fdjtDOM.replace("CODEXGLOSSES",sumdiv);
 	Codex.setTarget(target);
 	fdjtDOM.replace("SBOOKINFO",

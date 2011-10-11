@@ -39,6 +39,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     var hasClass=fdjtDOM.hasClass;
     var dropClass=fdjtDOM.dropClass;
     var swapClass=fdjtDOM.swapClass;
+    var toggleClass=fdjtDOM.toggleClass;
+    var getParent=fdjtDOM.getParent;
 
     function sbicon(base){return Codex.graphics+base;}
     function cxicon(base){return Codex.graphics+"codex/"+base;}
@@ -116,6 +118,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM.getInput(form,"DOCTITLE").value=document.title;
 	fdjtDOM.getInput(form,"DOCURI").value=document.location.href;
 	fdjtDOM.getInput(form,"FRAG").value=passageid;
+	if (gloss) {
+	    var date_elt=fdjtDOM.getChild(form,".respdate");
+	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
 	var noteinput=fdjtDOM.getInput(form,"NOTE");
 	var taginput=fdjtDOM.getInput(form,"TAG");
 	var linkinput=fdjtDOM.getInput(form,"LINK");
@@ -428,6 +433,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    altclass="excerpt";
 	    input=fdjtDOM.getInput(form,'EXCERPT');}
 	else return;
+	if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
+	else dropClass("CODEXADDGLOSS","tagging");
 	if (!(hasClass(form,altclass))) {
 	    swapClass(form,glossmodes,altclass);
 	    input.focus();}
@@ -567,6 +574,58 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var tags=fdjtDOM.getChildren(tagselt[0],".checkspan");
 	    fdjtDOM.remove(fdjtDOM.Array(tags));}}
 
+    function delete_ontap(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	fdjtUI.cancel(evt);
+	var block=getParent(target,".codexglossform");
+	if (!(block)) return;
+	var glosselt=fdjtDOM.getInput(block,'UUID');
+	if (!(glosselt)) return;
+	var qref=glosselt.value;
+	var gloss=Codex.glosses.ref(qref);
+	if (!(gloss)) return;
+	var frag=gloss.get("frag");
+	fdjtAjax.jsonCall(
+	    function(response){glossdeleted(response,qref,frag);},
+	    "https://"+Codex.server+"/glosses/delete",
+	    "gloss",qref);}
+    Codex.UI.delete_ontap=delete_ontap;
+
+    function glossdeleted(response,glossid,frag){
+	if (response===glossid) {
+	    Codex.glosses.drop(glossid);
+	    Codex.allglosses=fdjtKB.remove(Codex.allglosses,glossid);
+	    if (Codex.offline)
+		fdjtState.setLocal("glosses("+Codex.refuri+")",
+				   Codex.allglosses,true);
+	    var renderings=fdjtDOM.Array(document.getElementsByName(glossid));
+	    if (renderings) {
+		var i=0; var lim=renderings.length;
+		while (i<lim) fdjtDOM.remove(renderings[i++]);}
+	    var glossmark=fdjtID("SBOOK_GLOSSMARK_"+frag);
+	    if (glossmark) {
+		var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
+		if (newglosses.length===0) fdjtDOM.remove(glossmark);
+		else glossmark.glosses=newglosses;}}
+	else alert(response);}
+
+    function reply_ontap(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	fdjtUI.cancel(evt);
+	var block=getParent(target,".codexglossform");
+	if (!(block)) return;
+	var glosselt=fdjtDOM.getInput(block,'UUID');
+	if (!(glosselt)) return;
+	var qref=glosselt.value;
+	var gloss=Codex.glosses.ref(qref);
+	if (!(gloss)) return;
+	Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
+	CodexMode("addgloss");}
+    Codex.UI.reply_ontap=reply_ontap;
+
+
     /***** The Gloss Cloud *****/
 
     var gloss_cloud=false;
@@ -594,6 +653,17 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    addTag(form,completion);
 	    dropClass("CODEXADDGLOSS","tagging");}
 	fdjtUI.cancel(evt);}
+
+    /**** Clicking on outlets *****/
+    function outlets_tapped(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	if (getParent(target,".checkspan"))
+	    return fdjtUI.CheckSpan.onclick(evt);
+	else if (getParent(target,".outlets"))
+	    toggleClass(getParent(target,".outlets"),"expanded");
+	else {}}
+    Codex.UI.outlets_tapped=outlets_tapped;
 
     /***** Saving (submitting/queueing) glosses *****/
 
