@@ -204,12 +204,27 @@ div.codexglossform form .bracketbutton strong {
 div.codexglossform form.focused div.inputhelp { display: block;}
 div.codexglossform form.focused span.inputhelp { display: inline;}
 
-div.codexglossform form textarea {
+div.codexglossform form textarea { display: none;}
+div.codexglossform form div.textbox textarea {
     min-height: 1em; overflow: hidden; font-size: 16px;
-    position: relative; top: 0px; width: 98%;
+    margin-left: 2px; margin-right: 12px; width: 100%;
     background-position: right top;
     background-position-x: right; background-position-y: top;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;}
+
+div.codexglossform form div.button {
+    float: right; width: 32px;}
+div.codexglossform form div.textbox {
+    clear: left; margin-right: 50px;}
+
+div.codexglossform form div.altbutton img { display: none;}
+div.codexglossform form div.altbutton img[alt='Add'] {display: inline;}
+
+div.codexglossform.glossedit form  div.altbutton img[alt='Save'],
+div.codexglossform.glossreply form div.altbutton img[alt='Reply'] {
+    display: inline;}
+div.codexglossform.glossedit form div.altbutton img[alt='Add'],
+div.codexglossform.glossreply form div.altbutton img[alt='Add'] {
     display: none;}
 
 div.codexglossform form textarea[name='NOTE'] {
@@ -235,11 +250,11 @@ div.codexglossform form.addlink div.textbox textarea[name='LINK'] {
     display: block;}
 
 div.codexglossform form div.inputhelp {
-    width: 98%; margin-left: auto; margin-right: auto;
+    margin-left: 1px; margin-right: 50px;
     margin-top: 0px; padding-top: 0px;}
 div.codexglossform form div.glossetc {
     display: block; text-align: left; font-size: 12px;
-    width: 98%; margin-left: 1px; margin-right: auto;
+    margin-left: 1px; margin-right: 50px;
     min-height: 24px;}
 
 div.codexglossform form div.glossetc .links,
@@ -347,11 +362,11 @@ div.codexglossform form div.glossetc > span .button[alt='excerpt'] {
     display: none;}
 div.codexglossform.hasexcerpt form div.glossetc > span .button[alt='excerpt'] {
     display: inline;}
-div.codexglossform form.addtag div.glossetc > span .button[alt='tag'],
-div.codexglossform form.addlink div.glossetc > span .button[alt='link'],
-div.codexglossform form.excerpt div.glossetc > span .button[alt='excerpt'] {
+div.codexglossform form.addtag div.glossetc span .button[alt='tag'],
+div.codexglossform form.addlink div.glossetc span .button[alt='link'],
+div.codexglossform form.excerpt div.glossetc span .button[alt='excerpt'] {
     background-color: white; border-color: darkblue; border-style: solid;}
-div.codexglossform form div.glossetc > span.button {
+div.codexglossform form .button {
     font-weight: bold; color: black; font-size: 24px;
     border: solid black 2px; background-color: silver; padding: 2px;
     border-radius: 4px; -o-border-radius: 4px;
