@@ -310,7 +310,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var note=((hasClass(target,"codexnote"))?(target):
 		  (getParent(target,".codexnote")));
 	if (!(note)) return;
-	if (getParent(target,".codexslice")) {
+	if ((!(getParent(target,".tool")))&&
+	    (getParent(note,".codexslice"))) {
 	    Codex.Scan(fdjtID(note.about),note);
 	    return fdjtUI.cancel(evt);}
 	else if (note.name) {
