@@ -1,32 +1,34 @@
-<div class='toolbox'>
-  <div class='input'>
-    <input id="CODEXSEARCHINPUT"
-	   type="TEXT" class="autoprompt searchinput"
-	   name="QTEXT" value="" isempty="yes" autocomplete="off"
-	   onfocus="Codex.UI.handlers.search_focus(event);"
-	   onblur="Codex.UI.handlers.search_blur(event);"
-	   onkeyup="Codex.UI.handlers.search_keyup(event);"
-	   completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
-	   completions="CODEXSEARCHCLOUD"
-	   results="CODEXSEARCHRESULTS"/>
-  </div>
-  <div class="tags">
-    <img class="clearsearch" alt="X" title="clear search"
-	 src="http://static.beingmeta.com/graphics/redx16x16.png"
-	 onclick="Codex.UI.handlers.clearSearch(event); fdjtUI.cancel(event); return false;"/>
-    <span id="CODEXSEARCHTAGS" class="qtags"></span>
-  </div>
-  <div class="resultinfo">
-    <div class="noresults">No results</div>
-    <div class="noquery">Add tags to refine query</div>
-    <span class="resultcount"
-	  onclick="Codex.showSearchResults(); fdjtUI.cancel(evt);">
-    </span>
-    <span class="sep vbar">|</span>
-    <span class="refinecount"
-	  onclick="CodexMode('search'); fdjtUI.cancel(event);">
-    </span>
-  </div>
+<div class='query'>
+  <img class="clearsearch" alt="X" title="clear search"
+       src="http://static.beingmeta.com/graphics/redx24x24.png"
+       onclick="Codex.UI.handlers.clearSearch(event); fdjtUI.cancel(event); return false;"/>
+  <input id="CODEXSEARCHINPUT"
+	 type="TEXT" class="autoprompt searchinput"
+	 name="QTEXT" value="" isempty="yes" autocomplete="off"
+	 onfocus="Codex.UI.handlers.search_focus(event);"
+	 onblur="Codex.UI.handlers.search_blur(event);"
+	 onkeyup="Codex.UI.handlers.search_keyup(event);"
+	 completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
+	 placeholder="type a tag"
+	 completions="CODEXSEARCHCLOUD"
+	 results="CODEXSEARCHRESULTS"/>
+  <strong id="CODEXSEARCHLABEL">Matching </strong>
+  <span id="CODEXSEARCHPROMPT">
+    <span class='fortouch'>Tap</span>
+    <span class='notouch'>Click</span> a tag or start typing
+    to search.</span>
+  <span id="CODEXSEARCHTAGS" class="qtags"></span>
+</div>
+<div class="resultinfo">
+  <div class="noresults">No results</div>
+  <div class="noquery">Add tags to refine query</div>
+  <span class="resultcount"
+	onclick="Codex.showSearchResults(); fdjtUI.cancel(evt);">
+  </span>
+  <span class="sep vbar">|</span>
+  <span class="refinecount"
+	onclick="CodexMode('search'); fdjtUI.cancel(event);">
+  </span>
 </div>
 <div class='scrollbox'>
   <div id="CODEXSEARCHCLOUD" class="completions searchcloud">

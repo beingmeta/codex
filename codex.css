@@ -1248,10 +1248,43 @@ body.hudup div#CODEXHUD.tagging.target div#CODEXFOOT div#SBOOKFOOTINFO {
 
 div.searchbox.notags div.tags { display: none;}
 div.searchbox { text-align: center; }
-div.searchbox div.toolbox { text-align: left;}
-div.searchbox div.toolbox span.resultinfo {
-    font-size: 50%; float: right; clear: right;}
-div.searchbox div.toolbox img { float: right;}
+
+div.searchbox div.query {
+    width: 100%; text-align: left; margin-top: 2px;
+    font-size: 18px;}
+div.searchbox div.query input[type='TEXT'] {
+    max-width: 50%; min-width: 25%; font-size: 16px;}
+div.searchbox div.query input[type='TEXT'] {
+    background-position: right top;
+    background-position-x: right; background-position-y: top;
+    background-repeat: no-repeat;
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/TagIcon24x24.png);}
+
+div.searchbox div.query span#CODEXSEARCHPROMPT {
+    font-style: italic; padding-left: 1em; display: none;}
+div.searchbox.notags div.query span#CODEXSEARCHPROMPT {
+    display: inline;}
+div.searchbox div.query #CODEXSEARCHLABEL {
+    padding-left: 1em;}
+div.searchbox.notags div.query #CODEXSEARCHLABEL { display: none;}
+
+div.searchbox div.query span.dterm {
+    padding-right: 0.35em; padding-left: 0.35em; padding-top: 1ex;
+    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
+    color: darkblue; background-color: gold; border: solid yellow 2px;}
+
+div.searchbox div.query img.clearsearch {
+    float: right; padding-left: 0.5em;}
+div.searchbox div.query input[type='TEXT'] { float: right;}
+
+div.searchbox div.resultinfo {
+    width: 80%; margin-left: 10%; margin-right: 10%; min-height: 1ex;
+    clear: both; text-align: center;}
+div.searchbox div.resultinfo span.resultcount,
+div.searchbox div.resultinfo span.refinecount {
+    cursor: pointer;}
+
 div.searchbox div.toolbox div.tags {
     min-height: 1ex; clear: both; text-align: center;}
 div.searchbox .completions div.tags {
@@ -1259,12 +1292,6 @@ div.searchbox .completions div.tags {
 div.searchbox div.input {
     width: 90%; margin-left: 5%; margin-right: 5%;
     clear: both; text-align: center;}
-div.searchbox div.resultinfo {
-    width: 80%; margin-left: 10%; margin-right: 10%; min-height: 1ex;
-    clear: both; text-align: center;}
-div.searchbox div.resultinfo span.resultcount,
-div.searchbox div.resultinfo span.refinecount {
-    cursor: pointer;}
 
 div.searchbox div.tags img.clearsearch { float: right; color: red;}
 div.searchbox div.tags img.clearsearch { float: right; color: red;}

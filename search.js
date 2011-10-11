@@ -57,7 +57,15 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     
     function setQuery(query){
 	if (Codex.Trace.search) fdjtLog("Setting working query to %o",query);
-	Codex.query=useQuery(query,fdjtID("CODEXSEARCH"));}
+	var query=Codex.query=useQuery(query,fdjtID("CODEXSEARCH"));
+	if (Codex.mode==="search") {
+	    if (query._results.length===0) {}
+	    else if ((query._results.length===1)&&
+		(document.getElementById(query._results[0]))) {
+		Codex.GoTo(query._results[0]);}
+	    else if (query._results.length<7)
+		showSearchResults();
+	    else {}}}
 
     Codex.setQuery=setQuery;
 
@@ -125,7 +133,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    ((result._refiners)&&(result._refiners._results.length))||0;
 	var completions=Codex.queryCloud(result);
 	refinecount.innerHTML=n_refiners+
-	    ((n_refiners===1)?(" association"):(" associations"));
+	    ((n_refiners===1)?(" associated tag"):(" associated tags"));
 	fdjtDOM.dropClass(box,"norefiners");
 	if (cloudid) completions.id=cloudid;
 	if (Codex.Trace.search>1)
@@ -138,12 +146,6 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    addClass(box,"norefiners");
 	    refinecount.innerHTML="no refiners";}
 	result._box=box; box.setAttribute(qstring,qstring);
-	if (Codex.mode==="search") {
-	    if ((result._results.length===1)&&
-		(document.getElementById(result._results[0]))) {
-		Codex.GoTo(result._results[0]);}
-	    else if (result._results.length<7) CodexMode("searchresults");
-	    else {}}
 	Codex.UI.updateScroller(completions.dom);
 	return result;}
     Codex.useQuery=useQuery;
@@ -173,7 +175,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 
     function startSearch(tag){
 	setQuery([tag]);
-	CodexMode("searching");}
+	CodexMode("search");}
     Codex.startSearch=startSearch;
 
     /* Text input handlers */
@@ -198,7 +200,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		var completions=completeinfo.complete(qstring);
 		if (completions.length) {
 		    var value=completeinfo.getValue(completions[0]);
-		    Codex.query=extendQuery(Codex.query,value);}}
+		    setQuery(extendQuery(Codex.query,value));}}
 	    fdjtDOM.cancel(evt);
 	    if ((Codex.search_gotlucky) && 
 		(Codex.query._results.length>0) &&
@@ -256,7 +258,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var input=fdjtDOM.T(evt);
 	sbook_search_focus=true;
 	if ((Codex.mode)&&(Codex.mode==='searchresults'))
-	    CodexMode("searching");
+	    CodexMode("search");
 	searchUpdate(input);}
     Codex.UI.handlers.search_focus=searchInput_focus;
 
@@ -269,16 +271,18 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtUI.T(evt||event);
 	var box=fdjtDOM.getParent(target,".searchbox");
 	var input=fdjtDOM.getChild(box,".searchinput");
+	fdjtUI.cancel(evt);
 	setQuery(Codex.empty_query);
 	input.focus();}
     Codex.UI.handlers.clearSearch=clearSearch;
     
     Codex.toggleSearch=function(evt){
 	evt=evt||event;
-	if ((Codex.mode==="searching")||(Codex.mode==="searchresults"))
+	if ((Codex.mode==="search")||
+	    (Codex.mode==="searchresults"))
 	    CodexMode(false);
 	else {
-	    CodexMode("searching");
+	    CodexMode("search");
 	    fdjtID("CODEXSEARCHINPUT").focus();}
 	fdjtUI.cancel(evt);};
     
@@ -549,7 +553,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	return span;}
     
     function add_searchtag(value){
-	Codex.query=Codex.extendQuery(Codex.query,value);}
+	setQuery(Codex.extendQuery(Codex.query,value));}
 
     function fullCloud(){
 	if (Codex.full_cloud) return Codex.full_cloud;
