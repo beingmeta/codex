@@ -1811,9 +1811,11 @@ body.sbook a.codexnote { display: block;}
     margin-left: 3px; padding-top: 2px;
     text-align: right;}
 .codexnote .glossinfo img { padding-left: 4px; cursor: pointer; }
-.codexnote .age { 
-  color: green; float: right; font-weight: normal;
-  font-size: 60%; text-decoration: none;}
+.codexnote .tool {
+    float: right; font-weight: normal;
+    font-size: 60%; text-decoration: none;}
+.codexnote .age {
+    color: green; vertical-align: top; padding-right: 0.5em;}
 .codexnote .age:hover {text-decoration: underline;} 
 .codexnote a.deletebutton { 
   color: orange; text-decoration: none;

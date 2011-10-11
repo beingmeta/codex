@@ -237,10 +237,18 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	var userinfo=Codex.sourcekb.map[user];
 	var feedinfo=Codex.sourcekb.map[feed];
 	var agestring=timestring(info.modified||info.created);
-	var age=fdjtDOM("span.age",agestring);
-	age.title=(((user===Codex.user)||(user===Codex.user._id))?
-		   ("edit this gloss"):
-		   ("relay/reply to this gloss"));
+	var mouse_icon=
+	    ((user===Codex.user._id)?sbook_edit_icon:sbook_reply_icon);
+	var touch_icon=
+	    ((user===Codex.user._id)?sbook_edit_icon_touch:
+	     sbook_reply_icon_touch);			
+	var tool=fdjtDOM(
+	    "span.tool",fdjtDOM("span.age",agestring),
+	    fdjtDOM.Image(sbicon(mouse_icon),"img.button.mouseicon"),
+	    fdjtDOM.Image(sbicon(mouse_icon),"img.button.touchicon"));
+	tool.title=(((user===Codex.user)||(user===Codex.user._id))?
+		    ("edit this gloss"):
+		    ("relay/reply to this gloss"));
 	var picinfo=getpicinfo(info);
 	var overdoc=getoverdoc(info);
 	
@@ -256,7 +264,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		((!(overdoc))&&(userinfo)&&
 		 ((userinfo.name)||(userinfo.userid))&&
 		 (" \u2014 ")),
-		age];}
+		tool];}
 
     function getoverdoc(info){
 	if (info.sources) {
