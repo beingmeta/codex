@@ -309,16 +309,32 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    return fdjtUI.cancel(evt);}
 	var note=((hasClass(target,"codexnote"))?(target):
 		  (getParent(target,".codexnote")));
-	if (!(note)) return;
-	if ((!(getParent(target,".tool")))&&
-	    (getParent(note,".codexslice"))) {
-	    Codex.Scan(fdjtID(note.about),note);
-	    return fdjtUI.cancel(evt);}
-	else if (note.name) {
-	    var gloss=fdjtKB.ref(note.name);
+	if (note) {
+	    if ((!(getParent(target,".tool")))&&
+		(getParent(note,".codexslice"))) {
+		Codex.Scan(fdjtID(note.about),note);
+		return fdjtUI.cancel(evt);}
+	    else if (note.name) {
+		var gloss=fdjtKB.ref(note.name);
+		Codex.setGlossTarget(gloss);	    
+		CodexMode("addgloss");}
+	    else if (note.about) {
+		Codex.GoTo(note.about);}
+	    fdjtUI.cancel(evt);
+	    return;}
+	var scan=target, about=false, frag=false, gloss=false;
+	while (scan) {
+	    if (about=scan.about) break;
+	    else if (frag=scan.frag) break;
+	    else scan=scan.parentNode;}
+	if (frag) {Codex.GoTo(frag); fdjtUI.cancel(evt);}
+	else if ((about)&&(about[0]==='#')) {
+	    Codex.GoTo(about.slice(0)); fdjtUI.cancel(evt);}
+	else if ((about)&&(gloss=Codex.glosses.ref(about))) {
 	    Codex.setGlossTarget(gloss);	    
-	    CodexMode("addgloss");}
-	else if (note.about) {}}
+	    CodexMode("addgloss");
+	    fdjtUI.cancel(evt);}
+	else {}}
     
     /* Mouse handlers */
 
