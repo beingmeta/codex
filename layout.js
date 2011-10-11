@@ -794,20 +794,31 @@ var CodexPaginate=
 	function repaginate(why,newinfo){
 	    if (Codex.paginating) return;
 	    var oldinfo=Codex.paginated;
+	    var newinfo=((newinfo)||{});
+	    if (!(newinfo.page_height))
+		newinfo.page_height=getGeometry(fdjtID("CODEXPAGE")).height;
+	    if (!(newinfo.page_width))
+		newinfo.page_width=getGeometry(fdjtID("CODEXPAGE")).width;
+	    if (!(newinfo.bodysize)) newinfo.bodysize=Codex.bodysize||"normal";
+	    if (!(newinfo.bodyfamily))
+		newinfo.bodyfamily=Codex.bodyfamily||"serif";
+	    if ((oldinfo)&&(!(newinfo.forced))&&
+		(newinfo.page_width===oldinfo.page_width)&&
+		(newinfo.page_height===oldinfo.page_height)&&
+		(newinfo.bodysize===oldinfo.bodysize)&&
+		(newinfo.bodyfamily===oldinfo.bodyfamily)) {
+		fdjtLog("Skipping redundant pagination %j over %j",
+			newinfo,oldinfo);
+		return;}
 	    if (oldinfo) depaginate(oldinfo);
 	    dropClass(document.body,"codexscrollview");
 	    addClass(document.body,"codexpageview");
 	    fdjtID("CODEXPAGE").style.visibility='hidden';
 	    var newpages=fdjtDOM("div.codexpages#CODEXPAGES");
-	    var newinfo=((newinfo)||{"pages": newpages});
-	    Codex.paginating=newinfo;
+	    newinfo.pages=newpages; Codex.paginating=newinfo;
 	    fdjtDOM.replace("CODEXPAGES",newpages);
 	    var content=Codex.content;
 	    var nodes=TOA(content.childNodes);
-	    if (!(newinfo.page_height))
-		newinfo.page_height=getGeometry(fdjtID("CODEXPAGE")).height;
-	    if (!(newinfo.page_width))
-		newinfo.page_width=getGeometry(fdjtID("CODEXPAGE")).width;
 	    fdjtLog("Laying out %d root nodes into %dx%d pages (%s)",
 		    nodes.length,newinfo.page_width,newinfo.page_height,
 		    (why||""));
@@ -919,8 +930,9 @@ var CodexPaginate=
 		    addClass(document.body,"codexscrollview");}});
 
 	function updateLayout(name,val){
-	    fdjtDOM.swapClass
-	    (Codex.page,new RegExp("codex"+name+"\w*"),"codex"+name+val);
+	    fdjtDOM.swapClass(
+		Codex.page,new RegExp("codex"+name+"\w*"),"codex"+name+val);
+	    Codex[name]=val;
 	    if (Codex.paginated) {
 		if (Codex.postconfig) {
 		    Codex.postconfig.push(function(){
@@ -930,7 +942,7 @@ var CodexPaginate=
 		    CodexMode(true);
 		    Codex.repaginate(name);}}}
 	Codex.addConfig("bodysize",updateLayout);
-	Codex.addConfig("bodystyle",updateLayout);
+	Codex.addConfig("bodyfamily",updateLayout);
 	
 	// fdjtDOM.trace_adjust=true;
 

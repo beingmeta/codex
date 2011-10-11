@@ -340,7 +340,7 @@ Codex.Startup=
 	var config_handlers={};
 	var default_config=
 	    {pageview: true,
-	     bodysize: 'normal',bodystyle: 'serif',
+	     bodysize: 'normal',bodyfamily: 'serif',
 	     uisize: 'normal',showconsole: false,
 	     animatepages: true,animatehud: true,
 	     hidesplash: false};

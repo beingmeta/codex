@@ -1980,9 +1980,9 @@ body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 #CODEXPAGE.codexbodysizetiny {
     font-size: 50%;}
 
-#CODEXPAGE.codexbodystylesans {
+#CODEXPAGE.codexbodyfamilysans {
     font-family: sans,sans-serif;}
-#CODEXPAGE.codexbodystyleserif {
+#CODEXPAGE.codexbodyfamilyserif {
     font-family: serif;}
 
 /* Pagination stuff */
@@ -2103,7 +2103,7 @@ div#CODEXEXCERPT textarea {
 
 #HUMANE.humane {
     width: 70%; max-height: 50%;
-    left: 15%; right: 15%; top: auto; bottom: 3ex;}
+    left: 15%; right: 15%; top: 20%; bottom: auto;}
 #HUMANE.humane.humane-show { opacity: 0.8; }
 
 .humanehelp { display: none;}

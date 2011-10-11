@@ -675,9 +675,9 @@ var CodexMode=
 	    var bodysize=fdjtDOM.getInputValues(settings,"CODEXBODYSIZE");
 	    if ((bodysize)&&(bodysize.length))
 		result.bodysize=bodysize[0];
-	    var bodystyle=fdjtDOM.getInputValues(settings,"CODEXBODYSTYLE");
-	    if ((bodystyle)&&(bodystyle.length))
-		result.bodystyle=bodystyle[0];
+	    var bodyfamily=fdjtDOM.getInputValues(settings,"CODEXBODYFAMILY");
+	    if ((bodyfamily)&&(bodyfamily.length))
+		result.bodyfamily=bodyfamily[0];
 	    var uisize=fdjtDOM.getInputValues(settings,"CODEXUISIZE");
 	    if ((uisize)&&(uisize.length))
 		result.uisize=uisize[0];
