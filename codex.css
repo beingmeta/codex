@@ -207,14 +207,15 @@ div.codexglossform form.focused span.inputhelp { display: inline;}
 div.codexglossform form textarea { display: none;}
 div.codexglossform form div.textbox textarea {
     min-height: 1em; overflow: hidden; font-size: 16px;
-    margin-left: 2px; margin-right: 12px; width: 100%;
+    border: solid darkblue 1px;
+    margin: 0px; width: 99%; max-width: 99%;
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;}
 
 div.codexglossform form div.button {
     float: right; width: 32px;}
-div.codexglossform form div.textbox {
+div.codexglossform form div.textbox { 
     clear: left; margin-right: 50px;}
 
 div.codexglossform form div.altbutton img { display: none;}
@@ -256,6 +257,10 @@ div.codexglossform form div.glossetc {
     display: block; text-align: left; font-size: 12px;
     margin-left: 1px; margin-right: 50px;
     min-height: 24px;}
+
+div.codexglossform form div.glossetc .button {
+    float: right; width: 32px;}
+
 
 div.codexglossform form div.glossetc .links,
 div.codexglossform form div.glossetc .tags {
@@ -352,7 +357,8 @@ div.codexglossform form div.glossetc > .checkspan.private {
     padding-top: 0px; margin-top: 0px;}
 div.codexglossform form div.glossetc > .button,
 div.codexglossform form div.glossetc > span .button {
-    float: right; border: transparent solid 1px; padding: 2px;
+    float: right;
+    border: darkblue solid 1px; padding: 2px;
     border-radius: 3px; -webkit-border-radius: 3px;
     -moz-border-radius: 3px; -o-border-radius: 3px;
     cursor: pointer;}
