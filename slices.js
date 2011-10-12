@@ -392,13 +392,13 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
     function editicon_ontap(evt){
 	var target=fdjtUI.T(evt);
 	var note=fdjtDOM.getParent(target,'.codexnote');
-	var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name)));
+	var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name,Codex.glosses)));
 	Codex.setGlossTarget(gloss);
 	CodexMode("addgloss");}
     function replyicon_ontap(evt){
 	var target=fdjtUI.T(evt);
 	var note=fdjtDOM.getParent(target,'.codexnote');
-	var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name)));
+	var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name,Codex.glosses)));
 	Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
 	CodexMode("addgloss");}
 

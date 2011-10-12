@@ -609,10 +609,21 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (Codex.offline)
 		fdjtState.setLocal("glosses("+Codex.refuri+")",
 				   Codex.allglosses,true);
+	    var editform=fdjtID("CODEXEDITGLOSS_"+glossid);
+	    if (editform) {
+		var editor=editform.parentNode;
+		if (editor===fdjtID('CODEXLIVEGLOSS')) {
+		    Codex.glosstarget=false;
+		    CodexMode(false);}
+		fdjtDOM.remove(editor.parentNode);}
 	    var renderings=fdjtDOM.Array(document.getElementsByName(glossid));
 	    if (renderings) {
 		var i=0; var lim=renderings.length;
-		while (i<lim) fdjtDOM.remove(renderings[i++]);}
+		while (i<lim) {
+		    var rendering=renderings[i++];
+		    if (rendering.id==='CODEXSCAN')
+			fdjtDOM.replace(rendering,fdjtDOM("div.codexnote.deletedgloss"));
+		    else fdjtDOM.remove(rendering);}}
 	    var glossmark=fdjtID("SBOOK_GLOSSMARK_"+frag);
 	    if (glossmark) {
 		var newglosses=fdjtKB.remove(glossmark.glosses,glossid);

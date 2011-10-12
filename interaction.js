@@ -316,7 +316,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		return fdjtUI.cancel(evt);}
 	    else if ((note.name)||(note.getAttribute("name"))) {
 		var name=(note.name)||(note.getAttribute("name"));
-		var gloss=fdjtKB.ref(name);
+		var gloss=fdjtKB.ref(name,Codex.glosses);
+		if (!(gloss)) return;
 		Codex.setGlossTarget(gloss);	    
 		CodexMode("addgloss");}
 	    else if (note.about) {

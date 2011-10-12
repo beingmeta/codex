@@ -337,7 +337,7 @@ var sbook_gloss_data=
     function getinfo(arg){
 	if (arg)
 	    if (typeof arg === 'string')
-		return Codex.docinfo[arg]||fdjtKB.ref(arg);
+		return Codex.docinfo[arg]||fdjtKB.ref(arg,Codex.glosses)||fdjtKB.ref(arg);
 	else if (arg._id) return arg;
 	else if (arg.id) return Codex.docinfo[arg.id];
 	else if (arg.codexid)
