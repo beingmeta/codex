@@ -282,9 +282,15 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else {}
 	    if (tag.title) title=tag.title;
 	    tag=gloss_cloud.getValue(tag);
-	    var input=fdjtDOM.getInput(form,"NOTE");
-	    // This erases whatever was being typed
-	    if (input) getbracketed(input,false);}
+	    if (hasClass(form,"editnote")) {
+		var input=fdjtDOM.getInput(form,"NOTE");
+		// This erases whatever was being typed
+		if (input) getbracketed(input,false);}
+	    else if (hasClass(form,"addtag")) {
+		var input=fdjtDOM.getInput(form,"TAG");
+		// This erases whatever was being typed
+		if (input) input.value="";
+		setTimeout(function(){input.focus();},1500);}}
 	var info=
 	    ((typeof tag === 'string')&&
 	     ((tag.indexOf('|')>0)?
@@ -415,7 +421,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    input.focus();}}
     Codex.UI.bracket_click=bracket_click;
 
-    var glossmodes=/(addtag)|(addlink)|(excerpt)/;
+    var glossmodes=/(addtag)|(addlink)|(excerpt)|(editnote)/;
 
     function addGloss_button(evt){
 	evt=evt||event;
@@ -432,12 +438,15 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else if (alt==="excerpt") {
 	    altclass="excerpt";
 	    input=fdjtDOM.getInput(form,'EXCERPT');}
+	else if (alt==="note") {
+	    altclass="editnote";
+	    input=fdjtDOM.getInput(form,'NOTE');}
 	else return;
 	if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
 	else dropClass("CODEXADDGLOSS","tagging");
 	if (!(hasClass(form,altclass))) {
 	    swapClass(form,glossmodes,altclass);
-	    input.focus();}
+	    setTimeout(function(){input.focus();},1500);}
 	else {
 	    dropClass(form,glossmodes);
 	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}
@@ -481,8 +490,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else {
 		addLink(form,content.slice(1,brk),
 			content.slice(brk+1));}
-	    target.value="";
-	    dropClass(form,"addlink");}}
+	    fdjtUI.cancel(evt);
+	    target.value="";}}
     function addtag_keypress(evt){
 	var target=fdjtUI.T(evt);
 	var content=target.value;
@@ -497,8 +506,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		(evt.shiftKey))
 		addTag(form,content);
 	    else addTag(form,completions[0]);
+	    fdjtUI.cancel(evt);
 	    target.value="";
-	    dropClass(form,"addtag");}}
+	    gloss_cloud.complete("");}}
 
     /* This handles embedded brackets */
     function addgloss_keypress(evt){

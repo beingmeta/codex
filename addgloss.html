@@ -1,6 +1,7 @@
 <form action="https://gloss.sbooks.net/knotes"
       ajaxaction="https://gloss.sbooks.net/knotes"
-      method="POST" target="addgloss">
+      method="POST" target="addgloss"
+      class="editnote">
   <div class="hidden">
     <input type="HIDDEN" name="FRAG"/>
     <input type="HIDDEN" name="REFURI"/>
@@ -31,7 +32,8 @@
     <span class="respdate"></span> <span class="respnote"></span> 
     <span class="resptags"></span> <span class="resplinks"></span>
   </div>
-  <div class="button altbutton" onclick="Codex.UI.submitEvent(event);">
+  <div class="button altbutton submitbutton"
+       onclick="Codex.UI.submitEvent(event);">
     <img src="http://static.beingmeta.com/graphics/codex/remarkballoon32x25.png"
 	 alt="Add" title="add this gloss"/>
     <img src="http://static.beingmeta.com/graphics/remarkedit32x25.png"
@@ -40,48 +42,49 @@
 	 alt="Reply" title="add this response"/>
   </div>
   <div class="textbox">
-    <!--
-    <input type="TEXT" name="TAG"
-	   placeholder="type a tag, with completion" value=""/>
-    <input type="TEXT" name="LINK"
-	   placeholder="type a URL and title" value=""/>
-    -->
-    <textarea name="TAG" placeholder="type a tag, with completion" value=""></textarea>
-    <textarea name="LINK" placeholder="type a URL and title" value=""></textarea>
-    <textarea name="EXCERPT" placeholder="edit an excerpt to quote" value=""></textarea>
+    <textarea name="TAG"
+	      placeholder="type a tag, with completion"
+	      title="type a tag, with completion"></textarea>
+    <textarea name="LINK"
+	      placeholder="type a URL and title"
+	      title="type a URL and title"></textarea>
+    <textarea name="EXCERPT"
+	      placeholder="edit an excerpt to quote"
+	      title="edit an excerpt to quote"></textarea>
     <textarea name="NOTE"
-	      placeholder="add text, [tag]s, [@links w/title]"
+	      placeholder="add text, [tag]s, or [@links w/title]"
+	      title="add text, [tag]s, or [@links w/title]"
 	      onfocus="Codex.UI.addgloss_focus(event);"
 	      onblur="Codex.UI.addgloss_blur(event);"
 	      wrap="virtual"></textarea>
+    <div class="inputhelp linkhelp">
+      Enter a URL with an (optional) title separated by a space
+    </div>
+    <div class="inputhelp notehelp">
+      add text, [tag]s, [@links w/title]
+    </div>
+    <div class="inputhelp taghelp">
+      Enter a tag, using | to identify synonyms or relatonships.
+    </div>
+    <div class="inputhelp excerpt">
+      Edit the excerpt or select some new text from the book.
+    </div>
   </div>
   <div class="glossetc">
-    <!--
-    <span class="button addbutton" onclick="Codex.UI.submitEvent(event);">
-      add</span>
-    <span class="button replybutton" onclick="Codex.UI.submitEvent(event);">
-      reply</span>
-    <span class="button savebutton" onclick="Codex.UI.submitEvent(event);">
-      save</span>
-    -->
-    <!--
-    <span class="button bracketbutton"
-	 onmousedown="Codex.UI.bracket_click(event);"
-	 ontouchstart="Codex.UI.bracket_click(event);"
-	 title="open/close bracketed tag or link">
-      [+]</span>
-    -->
     <span onmousedown="Codex.UI.addGloss_button(event);"
 	  ontouchstart="Codex.UI.addGloss_button(event);">
-      <img src="http://static.beingmeta.com/graphics/DiagLink32x32.png"
-	   title="add a link to this gloss"
-	   class="button mouseicon" alt="link"/>
       <img src="http://static.beingmeta.com/graphics/codex/TagIcon32x32.png"
 	   title="add a tag to this gloss"
 	   class="button mouseicon" alt="tag"/>
+      <img src="http://static.beingmeta.com/graphics/DiagLink32x32.png"
+	   title="add a link to this gloss"
+	   class="button mouseicon" alt="link"/>
       <img src="http://static.beingmeta.com/graphics/codex/ExcerptIcon32x32.png"
 	   title="add or edit an excerpt/quotation for this gloss"
 	   class="button mouseicon" alt="excerpt"/>
+      <img src="http://static.beingmeta.com/graphics/codex/justremarkballoon32x32.png"
+	   title="edit the note/comment associated with this gloss"
+	   class="button mouseicon" alt="note"/>
     </span>
     <span class="links" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
