@@ -831,20 +831,24 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: blo
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
 
+div#CODEXHUD div#CODEXSCANNER .codexnote.gloss .codexnotebody,
+div#CODEXHUD div#CODEXGLOSSES .codexnote.gloss .codexnotebody {
+    min-height: 3ex;}
+div#CODEXHUD div#CODEXSCANNER:hover .codexnote.gloss .codexnotebody,
+div#CODEXHUD div#CODEXGLOSSES:hover .codexnote.gloss .codexnotebody {
+    min-height: 50px;}
+
 div#CODEXHUD div#CODEXSCANNER div.idhead,
-div#CODEXHUD div#CODEXGLOSSES div.idhead, 
+div#CODEXHUD div#CODEXGLOSSES div.idhead {
+    height: 0px;}
 div#CODEXHUD div#CODEXSCANNER img.glosspic,
 div#CODEXHUD div#CODEXGLOSSES img.glosspic {
-    height: 0px;}
+    max-height: 3ex; max-width: 3ex;}
 body div#CODEXHUD div#CODEXSCANNER:hover img.glosspic,
-body div#CODEXHUD div#CODEXGLOSSES:hover img.glosspic,
-body.hudup div#CODEXHUD div#CODEXSCANNER img.glosspic,
-body.hudup div#CODEXHUD div#CODEXGLOSSES img.glosspic {
-    height: inherit;}
+body div#CODEXHUD div#CODEXGLOSSES:hover img.glosspic {
+    max-height: inherit; max-width: inherit;}
 body div#CODEXHUD div.hudpanel#CODEXSCANNER:hover,
-body div#CODEXHUD div.hudpanel#CODEXGLOSSES:hover,
-body.hudup div#CODEXHUD div.hudpanel#CODEXSCANNER,
-body.hudup div#CODEXHUD div.hudpanel#CODEXGLOSSES {
+body div#CODEXHUD div.hudpanel#CODEXGLOSSES:hover {
     max-height: inherit, height: inherit;}
 
 div#CODEXHUD div#CODEXSCANNER div.codexnote span.glossinfo span.isclickable {
@@ -1834,7 +1838,7 @@ div#CODEXHUD .codexnote span.oldterm {color: blue; }
   color: silver; font-size: 75%; font-weight: normal; font-style: italic;}
 body.sbook a.codexnote { display: block;}
 .codexnote.gloss .codexnotebody {
-    /* min-height: 60px; */
+    min-height: 50px;
     border-top: solid purple 2px;}
 .codexnote .info { 
   float: right;}

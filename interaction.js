@@ -314,8 +314,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		(getParent(note,".codexslice"))) {
 		Codex.Scan(fdjtID(note.about),note);
 		return fdjtUI.cancel(evt);}
-	    else if (note.name) {
-		var gloss=fdjtKB.ref(note.name);
+	    else if ((note.name)||(note.getAttribute("name"))) {
+		var name=(note.name)||(note.getAttribute("name"));
+		var gloss=fdjtKB.ref(name);
 		Codex.setGlossTarget(gloss);	    
 		CodexMode("addgloss");}
 	    else if (note.about) {
@@ -907,22 +908,21 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	return scan;}
     Codex.scanBackward=scanBackward;
 
-    function scanner_click(evt){
+    function scanner_tapped(evt){
 	evt=evt||event;
-	if (!(Codex.hudup)) {
-	    Codex.setHUD(true);
-	    fdjtUI.cancel(evt);}
 	var target=fdjtUI.T(evt);
 	if (isClickable(target)) return;
+	if (getParent(target,".tool")) return;
 	var scanning=Codex.scanning;
 	if (!(scanning)) return;
 	var hudparent=getParent(scanning,".hudpanel");
-	if (!(hudparent)) return;
-	else if (hudparent===fdjtID("CODEXBROWSEGLOSSES"))
+	if (getParent(scanning,fdjtID("CODEXBROWSEGLOSSES"))) {
 	    CodexMode("allglosses");
-	else if (hudparent===fdjtID("CODEXSEARCH"))
+	    fdjtUI.cancel(evt);}
+	else if (getParent(scanning,fdjtID("CODEXSEARCH"))) {
 	    CodexMode("searchresults");
-	else {}};
+	    fdjtUI.cancel(evt);}
+	else {}}
 
     /* Entering page numbers and locations */
 
@@ -1056,7 +1056,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXPAGEINFO": {click: pageinfo_click, mousemove: pageinfo_hover},
 	 "#CODEXPAGENOTEXT": {click: enterPageNum},
 	 "#CODEXLOCOFF": {click: enterLocation},
-	 "#CODEXSCANNER": {click: scanner_click},
+	 "#CODEXSCANNER": {click: scanner_tapped},
 	 "#CODEXPAGEHEAD": {click: head_click},
 	 "#CODEXHEAD": {click: head_click},
 	 "#CODEXPAGEFOOT": {click: foot_click},
@@ -1099,7 +1099,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXHELP": {touchstart: Codex.UI.dropHUD,
 			touchmove: cancel,
 			touchend: cancel},
-	 "#CODEXSCANNER": {touchstart: scanner_click},
+	 "#CODEXSCANNER": {touchstart: scanner_tapped},
 	 // "#CODEXFLYLEAF": {touchend: flyleaf_tap},
 	 "#CODEXPAGEINFO": {touchstart: pageinfo_click,
 			    touchmove: cancel,touchend: cancel},
