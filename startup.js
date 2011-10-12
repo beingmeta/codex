@@ -291,10 +291,11 @@ Codex.Startup=
 		fdjtState.setLocal("codex.refuris",refuris,true);}
 	    
 	    var isIphone = (/iphone/gi).test(navigator.appVersion);
+	    var isTouchPad = (/Touchpad/gi).test(navigator.appVersion);
 	    var isIpad = (/ipad/gi).test(navigator.appVersion);
 	    var isAndroid = (/android/gi).test(navigator.appVersion);
 	    var isWebKit = navigator.appVersion.search("WebKit")>=0;
-	    var isWebTouch = isIphone || isIpad || isAndroid;
+	    var isWebTouch = isIphone || isIpad || isAndroid || isTouchPad;
 
 	    if ((typeof Codex.colbreak === 'undefined')&&
 		((Codex.devinfo.Chrome)||
