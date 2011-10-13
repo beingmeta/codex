@@ -373,7 +373,7 @@ var CodexMode=
 		// Clearing the mode is a lot simpler, in part because
 		//  setHUD clears most of the classes when it brings
 		//  the HUD down.
-		fdjtLog.Humane(false);
+		fdjtLog.HumaneHide();
 		if (Codex.mode!=='help') Codex.last_mode=Codex.mode;
 		document.body.focus();
 		dropClass(document.body,"dimmed");
