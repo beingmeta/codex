@@ -226,14 +226,14 @@ div.codexglossform form div.button {
 div.codexglossform form div.textbox { 
     clear: left; margin-right: 50px;}
 
-div.codexglossform form div.altbutton img { display: none;}
-div.codexglossform form div.altbutton img[alt='Add'] {display: inline;}
+div.codexglossform form div.altbutton span { display: none;}
+div.codexglossform form div.altbutton span.addbutton {display: inline;}
 
-div.codexglossform.glossedit form  div.altbutton img[alt='Save'],
-div.codexglossform.glossreply form div.altbutton img[alt='Reply'] {
+div.codexglossform.glossedit form  div.altbutton span.savebutton,
+div.codexglossform.glossreply form div.altbutton span.replybutton {
     display: inline;}
-div.codexglossform.glossedit form div.altbutton img[alt='Add'],
-div.codexglossform.glossreply form div.altbutton img[alt='Add'] {
+div.codexglossform.glossedit form div.altbutton span.addbutton,
+div.codexglossform.glossreply form div.altbutton span.addbutton {
     display: none;}
 
 div.codexglossform form textarea[name='NOTE'] {

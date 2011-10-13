@@ -34,18 +34,21 @@
   </div>
   <div class="button altbutton submitbutton"
        onclick="Codex.UI.submitEvent(event);">
-    <img src="http://static.beingmeta.com/graphics/codex/remarkballoon32x25.png"
-	 alt="Add" title="add this gloss" class="mouseicon"/>
-    <img src="http://static.beingmeta.com/graphics/codex/remarkballoon40x31.png"
-	 alt="Add" title="add this gloss" class="touchicon"/>
-    <img src="http://static.beingmeta.com/graphics/remarkedit32x25.png"
-	 alt="Save" title="save this gloss" class="touchicon"/>
-    <img src="http://static.beingmeta.com/graphics/remarkedit40x31.png"
-	 alt="Save" title="save this gloss" class="mouseicon"/>
-    <img src="http://static.beingmeta.com/graphics/codex/replyballoons32x19.png"
-	 alt="Reply" title="add this response"/>
-    <img src="http://static.beingmeta.com/graphics/codex/replyballoons40x24.png"
-	 alt="Reply" title="add this response" class="touchicon"/>
+    <span class="addbutton">
+      <img src="http://static.beingmeta.com/graphics/codex/remarkballoon32x25.png"
+	   alt="Add" title="add this gloss" class="mouseicon"/>
+      <img src="http://static.beingmeta.com/graphics/codex/remarkballoon40x31.png"
+	   alt="Add" title="add this gloss" class="touchicon"/></span>
+    <span class="savebutton">
+      <img src="http://static.beingmeta.com/graphics/codex/remarkedit32x25.png"
+	   alt="Save" title="save this gloss" class="mouseicon"/>
+      <img src="http://static.beingmeta.com/graphics/codex/remarkedit40x31.png"
+	   alt="Save" title="save this gloss" class="touchicon"/></span>
+    <span class="replybutton">
+      <img src="http://static.beingmeta.com/graphics/codex/replyballoons32x19.png"
+	   alt="Reply" title="add this response" class="mouseicon"/>
+      <img src="http://static.beingmeta.com/graphics/codex/replyballoons40x24.png"
+	   alt="Reply" title="add this response" class="touchicon"/></span>
   </div>
   <div class="textbox">
     <textarea name="TAG"
@@ -84,7 +87,7 @@
 	   class="button mouseicon" alt="tag"/>
       <img src="http://static.beingmeta.com/graphics/codex/TagIcon40x40.png"
 	   title="add a tag to this gloss"
-	   class="button" alt="tag"/>
+	   class="button touchicon" alt="tag"/>
       <img src="http://static.beingmeta.com/graphics/DiagLink24x24.png"
 	   title="add a link to this gloss"
 	   class="button mouseicon" alt="link"/>
@@ -100,11 +103,11 @@
 	   class="button touchicon" alt="excerpt"/>
       <img src="http://static.beingmeta.com/graphics/codex/justremarkballoon24x24.png"
 	   title="edit the note/comment associated with this gloss"
-	   class="button touchicon" alt="note"/>
+	   class="button mouseicon" alt="note"/>
       <img src="http://static.beingmeta.com/graphics/codex/justremarkballoon64x64.png"
 	   style="width: 40px; height: 40px;"
 	   title="edit the note/comment associated with this gloss"
-	   class="button" alt="note"/>
+	   class="button touchicon" alt="note"/>
     </span>
     <span class="links" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
     <span class="tags" onclick="fdjtUI.CheckSpan.onclick(evt);"></span>
