@@ -243,16 +243,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     function addLink(form,url,title) {
 	var tagselt=fdjtDOM.getChild(form,'.links');
 	var linkval=((title)?(url+" "+title):(url));
-	var livelink=
-	    fdjtDOM.Anchor(url,fdjtDOM.Image(sbicon("upoutlink16x16.png"),"*"));
+	var anchor=fdjtDOM.Anchor(url,"a.glosslink",((title)||url));
 	var checkbox=fdjtDOM.Checkbox("LINKS",linkval,true);
-	var checkspan=fdjtDOM("span.checkspan.anchor.ischecked",
-			      checkbox,
-			      fdjtDOM("span",((title)||url)),
-			      livelink);
-	checkspan.title=url;
-	fdjtDOM(tagselt,checkspan," ");
-	return checkspan;}
+	var aspan=fdjtDOM("span.anchor",checkbox,anchor);
+	aspan.title=url; anchor.target='_blank';
+	fdjtDOM(tagselt,aspan," ");
+	return aspan;}
 
     /***** Adding excerpts ******/
     function setExcerpt(form,excerpt,id) {
@@ -483,12 +479,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var content=target.value;
 	var form=fdjtDOM.getParent(target,"FORM");
-	var ch=evt.charCode;
+	var ch=evt.keyCode;
 	if (ch===13) {
 	    var brk=content.indexOf(' ');
-	    if (brk<0) addLink(form,content.slice(1));
+	    if (brk<0) addLink(form,content);
 	    else {
-		addLink(form,content.slice(1,brk),
+		addLink(form,content.slice(0,brk),
 			content.slice(brk+1));}
 	    fdjtUI.cancel(evt);
 	    target.value="";}}
@@ -496,7 +492,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var content=target.value;
 	var form=fdjtDOM.getParent(target,"FORM");
-	var ch=evt.charCode;
+	var ch=evt.keyCode;
 	if (content.length===0) return;
 	var completions=gloss_cloud.complete(content);
 	if (ch===13) {
