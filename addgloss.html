@@ -35,11 +35,17 @@
   <div class="button altbutton submitbutton"
        onclick="Codex.UI.submitEvent(event);">
     <img src="http://static.beingmeta.com/graphics/codex/remarkballoon32x25.png"
-	 alt="Add" title="add this gloss"/>
+	 alt="Add" title="add this gloss" class="mouseicon"/>
+    <img src="http://static.beingmeta.com/graphics/codex/remarkballoon40x31.png"
+	 alt="Add" title="add this gloss" class="touchicon"/>
     <img src="http://static.beingmeta.com/graphics/remarkedit32x25.png"
-	 alt="Save" title="save this gloss"/>
-    <img src="http://static.beingmeta.com/graphics/codex/replyballoons41x24.png"
+	 alt="Save" title="save this gloss" class="touchicon"/>
+    <img src="http://static.beingmeta.com/graphics/remarkedit40x31.png"
+	 alt="Save" title="save this gloss" class="mouseicon"/>
+    <img src="http://static.beingmeta.com/graphics/codex/replyballoons32x19.png"
 	 alt="Reply" title="add this response"/>
+    <img src="http://static.beingmeta.com/graphics/codex/replyballoons40x24.png"
+	 alt="Reply" title="add this response" class="touchicon"/>
   </div>
   <div class="textbox">
     <textarea name="TAG"
@@ -73,16 +79,30 @@
   <div class="glossetc">
     <span onmousedown="Codex.UI.addGloss_button(event);"
 	  ontouchstart="Codex.UI.addGloss_button(event);">
-      <img src="http://static.beingmeta.com/graphics/codex/TagIcon32x32.png"
+      <img src="http://static.beingmeta.com/graphics/codex/TagIcon24x24.png"
+	   title="add a tag to this gloss"
+	   class="button mouseicon" alt="tag"/>
+      <img src="http://static.beingmeta.com/graphics/codex/TagIcon40x40.png"
 	   title="add a tag to this gloss"
 	   class="button" alt="tag"/>
-      <img src="http://static.beingmeta.com/graphics/DiagLink32x32.png"
+      <img src="http://static.beingmeta.com/graphics/DiagLink24x24.png"
 	   title="add a link to this gloss"
-	   class="button" alt="link"/>
-      <img src="http://static.beingmeta.com/graphics/codex/ExcerptIcon32x32.png"
+	   class="button mouseicon" alt="link"/>
+      <img src="http://static.beingmeta.com/graphics/DiagLink40x40.png"
+	   title="add a link to this gloss"
+	   class="button touchicon" alt="link"/>
+      <img src="http://static.beingmeta.com/graphics/codex/ExcerptIcon24x24.png"
 	   title="add or edit an excerpt/quotation for this gloss"
-	   class="button" alt="excerpt"/>
-      <img src="http://static.beingmeta.com/graphics/codex/justremarkballoon32x32.png"
+	   class="button mouseicon" alt="excerpt"/>
+      <img src="http://static.beingmeta.com/graphics/codex/ExcerptIcon48x48.png"
+	   title="add or edit an excerpt/quotation for this gloss"
+	   style="width: 40px; height: 40px;"
+	   class="button touchicon" alt="excerpt"/>
+      <img src="http://static.beingmeta.com/graphics/codex/justremarkballoon24x24.png"
+	   title="edit the note/comment associated with this gloss"
+	   class="button touchicon" alt="note"/>
+      <img src="http://static.beingmeta.com/graphics/codex/justremarkballoon64x64.png"
+	   style="width: 40px; height: 40px;"
 	   title="edit the note/comment associated with this gloss"
 	   class="button" alt="note"/>
     </span>
@@ -100,22 +120,22 @@
 	<strong title="share this gloss among my social networks">
 	  networks</strong>
 	<span class="options">
-	  @<span class="checkspan ischecked facebook_share"
+	  @<span class="checkspan facebook_share"
 		title="share this gloss with my Facebook friends">
 	    <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK">
 	    <img src="http://static.beingmeta.com/graphics/facebook16x16.png"
 		 alt="Facebook" title="Facebook friends"/></span>
-	  <span class="checkspan ischecked twitter_share"
+	  <span class="checkspan twitter_share"
 		title="share this gloss with my Twitter followers">
 	    <input type="CHECKBOX" name="NETWORKS" value=":TWITTER">
 	    <img src="http://static.beingmeta.com/graphics/twitter16x16.png"
 		 alt="Twitter" title="Twitter followers"/></span>
-	  <span class="checkspan ischecked linkedin_share"
+	  <span class="checkspan linkedin_share"
 		title="share this gloss with my LinkedIn connections">
 	    <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN">
 	    <img src="http://static.beingmeta.com/graphics/linkedin16x16.png"
 		 alt="Linked In" title="Linked In connections"/></span>
-	  <span class="button checkspan ischecked google_share"
+	  <span class="checkspan google_share"
 		title="share this gloss with my Google+ connections">
 	    <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE">
 	    <img src="http://static.beingmeta.com/graphics/googleplus16x16.png"

@@ -245,7 +245,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	var tool=fdjtDOM(
 	    "span.tool",fdjtDOM("span.age",agestring),
 	    fdjtDOM.Image(sbicon(mouse_icon),"img.button.mouseicon"),
-	    fdjtDOM.Image(sbicon(mouse_icon),"img.button.touchicon"));
+	    fdjtDOM.Image(sbicon(touch_icon),"img.button.touchicon"));
 	tool.title=(((user===Codex.user)||(user===Codex.user._id))?
 		    ("edit this gloss"):
 		    ("relay/reply to this gloss"));
@@ -285,7 +285,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 
     function getpicinfo(info){
 	if (info.pic) return {src: info.pic,alt: info.pic};
-	else if (info.sources) {
+	if (info.sources) {
 	    var sources=info.sources;
 	    if (typeof sources==='string') sources=[sources];
 	    var i=0; var lim=sources.length;
@@ -293,6 +293,23 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		var source=fdjtKB.ref(sources[i++]);
 		if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
 		    return { src: source.pic, alt: source.name,
+			     classname: "img.glosspic.sourcepic"};}}
+	if (info.links) {
+	    var links=info.links;
+	    var i=0; var lim=links.length;
+	    while (i<lim) {
+		var link=links[i++];
+		if (link.href.search(/\.(jpg|png|gif|jpeg)$/i)>0)
+		    return { src: link.href, alt: "graphic",
+			     classname: "img.glosspic"};}}
+	if (info.outlets) {
+	    var outlets=info.outlets;
+	    if (typeof outlets==='string') outlets=[outlets];
+	    var i=0; var lim=outlets.length;
+	    while (i<lim) {
+		var outlet=fdjtKB.ref(outlets[i++]);
+		if ((outlet)&&(outlet.kind===':OVERDOC')&&(outlet.pic))
+		    return { src: outlet.pic, alt: outlet.name,
 			     classname: "img.glosspic.sourcepic"};}}
 	if (info.maker) {
 	    var userinfo=fdjtKB.ref(info.maker);
