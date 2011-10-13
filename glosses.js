@@ -557,7 +557,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (Codex.Trace.network)
 	    fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
 	fdjtDOM.dropClass(form.parentNode,"submitting");
-	fdjtKB.Import(JSON.parse(req.responseText));
+	Codex.glosses.Import(JSON.parse(req.responseText));
 	clearGlossForm(form);
 	Codex.preview_target=false;
 	/* Turn off the target lock */
@@ -611,7 +611,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		if (editor===fdjtID('CODEXLIVEGLOSS')) {
 		    Codex.glosstarget=false;
 		    CodexMode(false);}
-		fdjtDOM.remove(editor.parentNode);}
+		fdjtDOM.remove(editor);}
 	    var renderings=fdjtDOM.Array(document.getElementsByName(glossid));
 	    if (renderings) {
 		var i=0; var lim=renderings.length;

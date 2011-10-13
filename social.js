@@ -212,7 +212,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	    var i=0; var n=glosses.length;
 	    while (i<n) {
 		var gloss=fdjtKB.ref(glosses[i++],Codex.glosses);
-		if (!(gloss)) continue;
+		if ((!(gloss))||(!(gloss.frag))) continue;
 		var note=Codex.renderNote(gloss);
 		fdjtDOM(sumdiv,note);}}
 	fdjtDOM.replace("CODEXGLOSSES",sumdiv);
