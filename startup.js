@@ -85,7 +85,6 @@ Codex.Startup=
 	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
 	    // Get various settings
 	    readSettings();
-	    CodexLayout.readSettings();
 	    // Execute fdjt initializations
 	    fdjtDOM.init();
 	    // Declare this
@@ -134,13 +133,14 @@ Codex.Startup=
 		    // This scans the DOM.  It would probably be a good
 		    //  idea to do this asynchronously
 		    metadata=new CodexDOMScan(Codex.root);
+		    fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
 		    Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;},
 		// Now you're ready to lay out the book, which is
 		//  timesliced and runs on its own.  We wait to do
 		//  this until we've scanned the DOM because we may
 		//  use results of DOM scanning in layout.
-		function(){if (Codex.paginate) Codex.repaginate("initial");},
+		function(){if (Codex.paginate) Codex.Paginate("initial");},
 		// Build the display TOC, both the dynamic (top of
 		// display) and the static (inside the flyleaf)
 		function(){
