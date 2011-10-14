@@ -2159,8 +2159,6 @@ div.codexpage {
     -webkit-transition-property: opacity; -webkit-transition-duration: 0.5s;}
 div.codexpage.curpage {opacity: 1; z-index: 50;}
 
-div.codexline, div.codexword { white-space: nowrap;}
-
 div.codexdupstart {
     padding-bottom: 0px; border-bottom-width: 0px; margin-bottom: 0px;}
 div.codexdup {
