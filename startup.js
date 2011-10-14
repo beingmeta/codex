@@ -85,7 +85,7 @@ Codex.Startup=
 	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
 	    // Get various settings
 	    readSettings();
-	    CodexPaginate.readSettings();
+	    CodexLayout.readSettings();
 	    // Execute fdjt initializations
 	    fdjtDOM.init();
 	    // Declare this
@@ -755,7 +755,7 @@ Codex.Startup=
 	    else if (bgcolor==="transparent") bgcolor="white";
 	    pagehead.style.backgroundColor=bgcolor;
 	    pagefoot.style.backgroundColor=bgcolor;
-	    fdjtDOM.addListener(false,"resize",CodexPaginate.onresize);}
+	    fdjtDOM.addListener(false,"resize",CodexLayout.onresize);}
 	
 	function getBGColor(arg){
 	    var color=fdjtDOM.getStyle(arg).backgroundColor;
