@@ -196,16 +196,18 @@ var CodexPaginate=
 		      logfn: fdjtLog};
 	    fdjtDOM.replace("CODEXPAGES",container);
 	    
-	    var avoidpagebreak=fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
-	    if (avoidpagebreak) args.avoidpagebreak=avoidpagebreak;
+	    var avoidbreakinside=fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
+	    if (avoidbreakinside) args.avoidbreakinside=avoidbreakinside;
+
 	    var forcebreakbefore=fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
 	    if (forcebreakbefore) args.forcebreakbefore=forcebreakbefore;
 	    var forcebreakafter=fdjtDOM.sel(fdjtDOM.getMeta("forcebreakafter",true));
 	    if (forcebreakafter) args.forcebreakafter=forcebreakafter;
-	    var avoidpagefoot=fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakafter",true));
-	    if (avoidpagefoot) args.avoidpagefoot=avoidpagefoot;
-	    var avoidpagehead=fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakbefore",true));
-	    if (avoidpagehead) args.avoidpagehead=avoidpagehead;
+
+	    var avoidbreakafter=fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakafter",true));
+	    if (avoidbreakafter) args.avoidbreakafter=avoidbreakafter;
+	    var avoidbreakbefore=fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakbefore",true));
+	    if (avoidbreakbefore) args.avoidbreakbefore=avoidbreakbefore;
 	    var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
 	    if (fullpages) args.fullpages=fullpages;
 	    var floatpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfloatpage",true));
