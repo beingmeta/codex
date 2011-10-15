@@ -527,7 +527,7 @@ var sbook_gloss_data=
 		return;
 	    var refuri=((Codex.target)&&(Codex.getRefURI(Codex.target)))||
 		(Codex.refuri);
-	    var uri="https://"+Codex.server+"/glosses/sync?ACTION=save"+
+	    var uri="https://"+Codex.server+"/v1/sync?ACTION=save"+
 		"&DOCURI="+encodeURIComponent(Codex.docuri)+
 		"&REFURI="+encodeURIComponent(refuri);
 	    if (Codex.deviceId)

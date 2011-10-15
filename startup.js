@@ -1072,7 +1072,7 @@ Codex.Startup=
 	
 	function syncLocation(){
 	    if (!(Codex.user)) return;
-	    var uri="https://"+Codex.server+"/glosses/sync"+
+	    var uri="https://"+Codex.server+"/v1/sync"+
 		"?DOCURI="+encodeURIComponent(Codex.docuri)+
 		"&REFURI="+encodeURIComponent(Codex.refuri);
 	    if (Codex.Trace.dosync)
