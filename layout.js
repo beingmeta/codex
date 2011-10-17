@@ -72,7 +72,7 @@ var CodexPaginate=
 	    var content=Codex.content;
 	    var nodes=TOA(content.childNodes);
 	    fdjtLog("Laying out %d root nodes into %dx%d pages (%s)",
-		    nodes.length,layout.page_width,layout.page_height,
+		    nodes.length,layout.width,layout.height,
 		    (why||""));
 	    var coverpage=fdjtID("CODEXCOVERPAGE")||
 		fdjtID("SBOOKCOVERPAGE")||
@@ -90,7 +90,8 @@ var CodexPaginate=
 		if ((node.nodeType===1)||(node.nodeType===3)) layout.addContent(node);},
 			     nodes,
 			     function(state,i,lim,chunks,used,zerostart){
-				 if (state==='suspend') progress(layout,used,chunks);
+				 if (state==='suspend')
+				     progress(layout,used,chunks);
 				 else if (state==='done')
 				     fdjtLog("Layout/%d HTML blocks across %d pages after %dms, taking %fms over %d chunks",
 					     lim,layout.pagenum,fdjtTime()-zerostart,
