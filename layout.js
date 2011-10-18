@@ -126,11 +126,13 @@ var CodexPaginate=
 	    if (!(Codex._setup)) {
 		if (info.done) Codex.startupMessage("Finished page layout");
 		else if (info.pagenum)
-		    Codex.startupMessage("Laid out %d pages so far",info.pagenum);
+		    Codex.startupMessage(
+			"Laid out %d pages so far",info.pagenum);
 		else Codex.startupMessage("Preparing for page layout");}
 	    if (info.done)
 		if (used)
-		    fdjtLog("Done with %d pages after %f seconds (%f running across %d chunks)",
+		    fdjtLog("Done laying out %d/%d roots/blocks across %d pages after %f seconds (%f running across %d chunks)",
+			    info.root_count,info.block_count,
 			    pagenum,fdjtTime.secs2short((now-started)/1000),
 			    fdjtTime.secs2short(used/1000),chunks)
 	    else fdjtLog("Done with %d pages after %f seconds",
@@ -141,7 +143,8 @@ var CodexPaginate=
 		    fdjtDOM("span#CODEXPAGEPROGRESS",pagenum));
 		if (Codex.Trace.layout) {
 		    if (used)
-			fdjtLog("So far, laid out %d pages in %f seconds (%f running across %d chunks)",
+			fdjtLog("So far, laid out %d/%d roots/blocks into %d pages in %f seconds (%f running across %d chunks)",
+				info.root_count,info.block_count,
 				pagenum,fdjtTime.secs2short((now-started)/1000),
 				fdjtTime.secs2short(used/1000),chunks);
 		    else fdjtLog("So far, laid out %d pages in %f seconds (%f running across %d chunks)",
@@ -194,6 +197,7 @@ var CodexPaginate=
 		"width: "+width+"px; "+"height: "+height+"px;");
 	    var args={page_height: height,page_width: width,
 		      container: container,pagerule: pagerule,
+		      tracelevel: Codex.Trace.layout,
 		      logfn: fdjtLog};
 	    fdjtDOM.replace("CODEXPAGES",container);
 	    
