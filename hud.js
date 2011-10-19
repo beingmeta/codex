@@ -563,8 +563,8 @@ var CodexMode=
 
 	function fillinAboutInfo(){
 	    var about=fdjtID("APPABOUT");
-	    var bookabout=fdjtID("SBOOKABOUTPAGE");
-	    var authorabout=fdjtID("SBOOKAUTHORPAGE");
+	    var bookabout=fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
+	    var authorabout=fdjtID("SBOOKAUTHORPAGE")||fdjtID("SBOOKABOUTAUTHOR");
 	    if (bookabout) fdjtDOM(about,bookabout);
 	    else {
 		var title=

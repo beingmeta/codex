@@ -77,7 +77,10 @@ var CodexPaginate=
 	    var coverpage=fdjtID("CODEXCOVERPAGE")||
 		fdjtID("SBOOKCOVERPAGE")||
 		fdjtID("COVERPAGE");
-	    if (coverpage) layout.addContent(coverpage);
+
+	    if (coverpage) {
+		Codex.coverpage=coverpage;
+		layout.addContent(coverpage);}
 	    else {
 		var coverimage=fdjtDOM.getLink("sbook.coverpage",false,false)||
 		    fdjtDOM.getLink("coverpage",false,false);
@@ -85,35 +88,38 @@ var CodexPaginate=
 		    var img=fdjtDOM.Image(
 			coverimage,"img.codexcoverpage.sbookpage");
 		    fdjtDOM.prepend(Codex.content,img);
+		    Codex.coverpage=img;
 		    layout.addContent(img);}}
-	    fdjtTime.slowmap(function(node){
-		if ((node.nodeType===1)||(node.nodeType===3)) layout.addContent(node);},
-			     nodes,
-			     function(state,i,lim,chunks,used,zerostart){
-				 if (state==='suspend')
-				     progress(layout,used,chunks);
-				 else if (state==='done')
-				     fdjtLog("Layout/%d HTML blocks across %d pages after %dms, taking %fms over %d chunks",
-					     lim,layout.pagenum,fdjtTime()-zerostart,
-					     used,chunks);},
-			     function(){
-				 layout.Finish();
-				 progress(layout);
-				 fdjtID("CODEXPAGE").style.visibility='';
-				 fdjtID("CODEXCONTENT").style.visibility='';
-				 Codex.paginated=layout;
-				 Codex.pagecount=layout.pages.length;
-				 if (Codex.pagewait) {
-				     var fn=Codex.pagewait;
-				     Codex.pagewait=false;
-				     fn();}
-				 Codex.GoTo(
-				     Codex.location||Codex.target||
-					 fdjtID("SBOOKSTARTPAGE")||fdjtID("SBOOKCOVERPAGE")||
-					 fdjtID("SBOOKTITLEPAGE")||fdjtID("COVERPAGE")||
-					 fdjtID("TITLEPAGE")||fdjtID("CODEXPAGE1"));
-				 Codex.paginating=false;},
-			     200,50);}
+	    fdjtTime.slowmap(
+		function(node){
+		    if ((node.nodeType===1)||(node.nodeType===3))
+			layout.addContent(node);},
+		nodes,
+		function(state,i,lim,chunks,used,zerostart){
+		    if (state==='suspend')
+			progress(layout,used,chunks);
+		    else if (state==='done')
+			fdjtLog("Layout/%d HTML roots/blocks across %d pages after %dms, taking %fms over %d chunks",
+				lim,layout.block_count,layout.pagenum,
+				fdjtTime()-zerostart,
+				used,chunks);},
+		function(){
+		    layout.Finish();
+		    progress(layout);
+		    fdjtID("CODEXPAGE").style.visibility='';
+		    fdjtID("CODEXCONTENT").style.visibility='';
+		    Codex.paginated=layout;
+		    Codex.pagecount=layout.pages.length;
+		    if (Codex.pagewait) {
+			var fn=Codex.pagewait;
+			Codex.pagewait=false;
+			fn();}
+		    Codex.GoTo(
+			Codex.location||Codex.target||
+			    Codex.coverpage||Codex.titlepage||
+			    fdjtID("CODEXPAGE1"));
+		    Codex.paginating=false;},
+		200,50);}
 	Codex.Paginate=Paginate;
 
 	/* Reporting progress, debugging */

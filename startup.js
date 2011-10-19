@@ -609,6 +609,8 @@ Codex.Startup=
 	    var i=0; var lim=nodes.length;
 	    while (i<lim) content.appendChild(nodes[i++]);
 	    Codex.content=content;
+	    Codex.coverpage=fdjtID("SBOOKCOVERPAGE");
+	    Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
 	    var allnotes=fdjtID("SBOOKNOTES");
 	    var allasides=fdjtID("SBOOKASIDES");
 	    var alldetails=fdjtID("SBOOKDETAILS");
@@ -1066,7 +1068,7 @@ Codex.Startup=
 	    if (target) Codex.GoTo(target,false,true);
 	    else if ((state)&&(state.target)&&(fdjtID(state.target)))
 		Codex.GoTo(state.target,false,true);
-	    else Codex.GoTo((Codex.start||Codex.root),false,true);
+	    else Codex.GoTo((Codex.start||Codex.coverpage||Codex.titlepage||Codex.root),false,true);
 	    if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
 		syncLocation();}
 	

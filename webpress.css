@@ -2069,7 +2069,7 @@ div.codexpage .sbookpage .sbookinfo {
 .gutenberg { opacity: 0.5;}
 .gutenberg:hover { opacity: 1.0;}
     
-.sbookfullpage, .sbookcover, .sbooktitlepage {
+.sbookfullpage, .sbookcover, .sbooktitlepage, .titlepage, .sbookpage {
     margin-left: auto; margin-right: auto;
     page-break-before: always;
     page-break-after: always;
@@ -2077,6 +2077,10 @@ div.codexpage .sbookpage .sbookinfo {
 img.sbookfullpage, img.sbookcover {
     margin-left: auto; margin-right: auto;
     display: block;}
+
+.sbooktitlepage {
+    text-align: center;
+    font-size: 250%;}
 
 /* HTML5ish elements */
 
