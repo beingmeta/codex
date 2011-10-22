@@ -797,7 +797,8 @@ Codex.Startup=
 			    user,refuri);
 		var userinfo=JSON.parse(fdjtState.getLocal(user));
 		var sources=fdjtState.getLocal("codex.sources("+refuri+")",true);
-		var outlets=fdjtState.getLocal("codex.outlets("+refuri+")",true);
+		var outlets=
+		    fdjtState.getLocal("codex.outlets("+refuri+")",true);
 		var etc=fdjtState.getLocal("codex.etc("+refuri+")",true);
 		var nodeid=fdjtState.getLocal("codex.nodeid("+refuri+")");
 		var sync=fdjtState.getLocal("codex.usersync",true);
@@ -842,17 +843,18 @@ Codex.Startup=
 	    gotInfo("outlets",outlets,persist);
 	    gotInfo("etc",etc,persist);
 	    if ((outlets)&&(outlets.length)) {
+		Codex.outlets=outlets;
 		var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
-		var div=fdjtDOM.getChild(addgloss,".addoutlets");
+		var div=fdjtDOM.getChild(addgloss,".outlets");
 		fdjtDOM.dropClass(div,"nocontent");
 		var i=0; var ilim=outlets.length;
 		while (i<ilim) {
 		    var outlet=outlets[i++];
 		    var checkspan=
 			fdjtUI.CheckSpan(
-			    "span.checkspan.ischecked",
-			    "OUTLETS",outlet._id,true,
-			    "\u2192",outlet.nick||outlet.name);
+			    "span.checkspan",
+			    "SHARE",outlet._id,false,
+			    outlet.nick||outlet.name);
 		    if ((outlet.description)&&(outlet.nick))
 			checkspan.title=outlet.name+": "+outlet.description;
 		    else if (outlet.description)

@@ -17,6 +17,7 @@
     <input type="HIDDEN" name="RE"/>
   </div>
   <div class="deletebox">
+    <span class="respdate"></span>
     <span onclick="Codex.UI.reply_ontap(event);">
       Respond
       <img src="http://static.beingmeta.com/graphics/codex/remarkballoon24x19.png"
@@ -25,7 +26,6 @@
       Delete 
       <img src="http://static.beingmeta.com/graphics/redx16x16.png"
 	   alt="red x"/></span>
-    <span class="respdate"></span>
   </div>
   <div class="response">
     Repond to <span class="respmaker"></span>
@@ -51,12 +51,12 @@
 	   alt="Reply" title="add this response" class="touchicon"/></span>
   </div>
   <div class="textbox">
-    <textarea name="TAG"
-	      placeholder="type a tag, with completion"
-	      title="type a tag, with completion"></textarea>
     <textarea name="LINK"
 	      placeholder="type a URL and title"
 	      title="type a URL and title"></textarea>
+    <textarea name="TAG"
+	      placeholder="type a tag, with completion"
+	      title="type a tag, with completion"></textarea>
     <textarea name="EXCERPT"
 	      placeholder="edit an excerpt to quote"
 	      title="edit an excerpt to quote"></textarea>
@@ -111,17 +111,17 @@
     </span>
     <span class="links" onclick="fdjtUI.CheckSpan.onclick(event);"></span>
     <span class="tags" onclick="fdjtUI.CheckSpan.onclick(event);"></span>
-    <div class="outlets" onclick="Codex.UI.outlets_tapped(event);">
+    <div class="sharing" onclick="Codex.UI.outlets_tapped(event);">
       <img src="http://static.beingmeta.com/graphics/twistyclosed16x16.png"
 	   class="twisty" alt="+"/>
       <img src="http://static.beingmeta.com/graphics/twistyopen16x16.png"
 	   class="twisty" alt="-"/>
       <span class="head">Share w/</span>
-      <span class="addoutlets"></span>
+      <span class="outlets"></span>
       <span class="networks checkspan ischecked">
-	<input type="CHECKBOX" name="SHARED" value="yes" CHECKED/>
+	<input type="CHECKBOX" name="SOCIAL" value="yes" CHECKED/>
 	<strong title="share this gloss among my social networks">
-	  networks</strong>
+	  w/ networks</strong>
 	<span class="options">
 	  @<span class="checkspan facebook_share"
 		title="share this gloss with my Facebook friends">

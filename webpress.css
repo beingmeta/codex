@@ -170,21 +170,21 @@ div.codexglossform#CODEXLIVEGLOSS { display: block;}
 div.codexglossform div.response {
  margin-left: 0.5em; text-align: left; color: black;}
 div.codexglossform div.response .respmaker {font-weight: bold;}
-div.codexglossform div.response .respdate {
-    font-size: 75%; font-weight: bold; font-variant: small-caps;
-    color: purple;
-    float: right;}
-div.codexglossform div.response .respdate:before { content: "(";}
-div.codexglossform div.response .respdate:after { content: ")";}
 div.codexglossform div.response .respnote { font-style: italic;}
 div.codexglossform div.response .respnote:before { content: "“";}
 div.codexglossform div.response .respnote:after { content: "”";}
 div.codexglossform div.response .respexcerpt {
     font-size: 80%; background-color: yellow;}
+div.codexglossform div .respdate {
+    font-size: 75%; font-weight: bold; font-variant: small-caps;
+    color: purple; float: right;}
+div.codexglossform div .respdate:before { content: "(";}
+div.codexglossform div .respdate:after { content: ")";}
 
 div.codexglossform div.deletebox {
     text-align: right; color: black; display: none;
     font-variant: small-caps;}
+div.codexglossform div.deletebox .respdate {float: left;}
 div.codexglossform div.deletebox span img { vertical-align: bottom;}
 div.codexglossform div.deletebox span[onclick] { cursor: pointer;}
 div.codexglossform.glossedit div.deletebox { display: block;}
@@ -276,32 +276,32 @@ div.codexglossform form div.glossetc .tags span.checkspan {
     border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
     border: solid yellow 2px;}
 
-div.codexglossform form div.outlets {
+div.codexglossform form div.sharing {
     line-height: 16px; text-overflow: ellipsis;
     border: dotted black 1px; border-top: 0px;
     margin-right: 1ex; padding: 0.5ex;
     margin-top: 0.5ex; padding-top: 0ex;
     overflow: hidden;}
-div.codexglossform form div.outlets span { vertical-align: top;}
-div.codexglossform form div.outlets { max-height: 16px;}
-div.codexglossform form div.outlets img.twisty[alt='-'] { display: none;}
-div.codexglossform form div.outlets.expanded {
+div.codexglossform form div.sharing span { vertical-align: top;}
+div.codexglossform form div.sharing { max-height: 16px;}
+div.codexglossform form div.sharing img.twisty[alt='-'] { display: none;}
+div.codexglossform form div.sharing.expanded {
     max-height: inherit; border-style: solid;}
-div.codexglossform form div.outlets.expanded img.twisty[alt='-'] {
+div.codexglossform form div.sharing.expanded img.twisty[alt='-'] {
     display: inline;}
-div.codexglossform form div.outlets.expanded img.twisty[alt='+'] {
+div.codexglossform form div.sharing.expanded img.twisty[alt='+'] {
     display: none;}
-div.codexglossform form div.glossetc div.outlets span.head {
+div.codexglossform form div.glossetc div.sharing span.head {
     color: black; font-weight: bold; font-size: 120%;}
-div.codexglossform form div.glossetc div.outlets.nocontent { display: none;}
-div.codexglossform form div.glossetc div.outlets span.head {
+div.codexglossform form div.glossetc div.sharing.nocontent { display: none;}
+div.codexglossform form div.glossetc div.sharing span.head {
     color: black; font-weight: bold;}
 
-div.codexglossform form div.glossetc div.outlets span.networks {
+div.codexglossform form div.glossetc div.sharing span.networks {
     color: black; font-weight: normal;}
-div.codexglossform form div.glossetc div.outlets span.networks span.options {
+div.codexglossform form div.glossetc div.sharing span.networks span.options {
     display: none;}
-div.codexglossform form div.glossetc div.outlets
+div.codexglossform form div.glossetc div.sharing
    span.networks.ischecked span.options {
     display: inline;}
 
@@ -309,6 +309,7 @@ div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue; text-decoration: underline;}
 div.codexglossform form div.glossetc span.checkspan input {}
 
+/*
 div.codexglossform form div.glossetc .sharing {
     float: right; clear: right; text-align: right;
     padding-bottom: 1ex; padding-top: 0.5ex; margin-bottom: 1ex;
@@ -347,7 +348,7 @@ div.codexglossform form div.glossetc .sharing .checkspan.button > img {
     padding: 1px; border: dotted red 2px; opacity: 0.5;}
 div.codexglossform form div.glossetc .sharing .checkspan.ischecked > img {
     border: solid green 2px; opacity: 1.0;}
-
+*/
 
 div.codexglossform form div.glossetc .sharing .checkspan.ischecked {
     color: inherit; text-decoration: none;}

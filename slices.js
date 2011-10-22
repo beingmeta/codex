@@ -65,16 +65,16 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
 		    ((info.note)&&(fdjtDOM("span.note",info.note)))," ",
-		    ((info.audience)&&(info.audience.length)&&
-		     (info.audience.length<div_threshold)&&
-		     (showaudience(info.audience)))," ",
+		    ((info.shared)&&(info.shared.length)&&
+		     (info.shared.length<div_threshold)&&
+		     (showaudience(info.shared)))," ",
 		    ((info.excerpt)&&(showexcerpts(info.excerpt)))," ",
 		    ((info.links)&&(showlinks(info.links,"span.link")))," ",
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments")))," ",
-		    ((info.audience)&&(info.audience.length)&&
-		     (info.audience.length>=div_threshold)&&
-		     (showaudience(info.audience))),
+		    ((info.shared)&&(info.shared.length)&&
+		     (info.shared.length>=div_threshold)&&
+		     (showaudience(info.shared))),
 		    (((info.tags)||(info.autotags))&&(showtags(info))));
 	var div=
 	    fdjtDOM(((info.maker) ? "div.codexnote.gloss" : "div.codexnote"),
@@ -180,7 +180,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
     function showaudience(tags){
 	if (!(tags instanceof Array)) tags=[tags];
 	var span=fdjtDOM(
-	    ((tags.length>=div_threshold)?"div.audience":"span.audience"),
+	    ((tags.length>=div_threshold)?"div.shared":"span.shared"),
 	    ((tags.length>=div_threshold)&&
 	     (fdjtDOM("span.count",tags.length, " outlets"))));
 	var i=0; var lim=tags.length;
@@ -188,7 +188,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	// or cloudy display
 	while (i<tags.length) {
 	    var tag=tags[i]; var info=fdjtKB.ref(tag);
-	    fdjtDOM.append(span,((i>0)?" \u00b7 ":" "),info.name);
+	    fdjtDOM.append(span," ",fdjtDOM("span.outlet","\u2192",info.name));
 	    i++;}
 	return span;}
     function showlinks(refs,spec){
@@ -302,8 +302,8 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		if (link.href.search(/\.(jpg|png|gif|jpeg)$/i)>0)
 		    return { src: link.href, alt: "graphic",
 			     classname: "img.glosspic"};}}
-	if (info.outlets) {
-	    var outlets=info.outlets;
+	if (info.shared) {
+	    var outlets=info.shared;
 	    if (typeof outlets==='string') outlets=[outlets];
 	    var i=0; var lim=outlets.length;
 	    while (i<lim) {

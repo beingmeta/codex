@@ -199,18 +199,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (response) form.method="POST";
 	    else form.method="PUT";}
 	else uuidelt.value=fdjtState.getUUID(Codex.nodeid);
-	if ((Codex.outlets)||((gloss)&&(gloss.outlets))) {
-	    var outlets=Codex.outlets;
-	    var current=((gloss)&&(gloss.outlets));
-	    if (current) outlets=[].concat(outlets).concat(current);
-	    var seen=[];
-	    var i=0; var lim=outlets.length;
-	    while (i<lim) {
-		var outlet=outlets[i++];
-		if (fdjtKB.contains(seen,outlet)) continue;
-		else addOutlet(form,outlet,
-			       ((current)&&
-				(fdjtKB.contains(current,outlet))));}}
+	if (gloss) {
+	    clearOutlets(form);
+	    var shared=((gloss)&&(gloss.shared))||[];
+	    if (typeof shared === 'string') shared=[shared];
+	    var i=0, lim=shared.length;
+	    while (i<lim) setOutlet(form,shared[i++],true);}
 	form.setAttribute("sbooksetup","yes");}
     Codex.setupGlossForm=setupGlossForm;
 
@@ -227,17 +221,20 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else return text;}
     
     /***** Adding outlets ******/
-    function addOutlet(form,outlet,checked) {
-	var outletspan=fdjtDOM.getChild(form,".addoutlets");
-	if (typeof outlet === 'string') outlet=fdjtKB.ref(outlet);
-	var checkbox=fdjtDOM.Checkbox(outlet,outlet._id);
-	var checkspan=fdjtDOM("span.checkspan.outlet",checkbox,
-			      outlet.name);
-	if (outlet.about) checkspan.title=outlet.about;
-	if (checked) {
-	    checkbox.checked=true;
-	    fdjtDOM.addClass(checkspan,"ischecked");}
-	fdjtDOM(outletspan,checkspan," ");}
+    function setOutlet(form,outlet,checked) {
+	var outletspan=fdjtDOM.getChild(form,".outlets");
+	var inputs=fdjtDOM.getInputs(outletspan,"SHARE");
+	var i=0; var lim=inputs.length;
+	while (i<lim) {
+	    if (inputs[i].value===outlet) {
+		var checkspan=fdjtDOM.getParent(inputs[i],".checkspan");
+		fdjtUI.CheckSpan.set(checkspan,checked);
+		return;}
+	    else i++;}}
+    function clearOutlets(form){
+	var outletspan=fdjtDOM.getChild(form,".outlets");
+	var checkspans=fdjtDOM.getChildren(outletspan,".checkspan");
+	fdjtUI.CheckSpan.set(checkspans,false);}
     
     /***** Adding links ******/
     function addLink(form,url,title) {
@@ -272,7 +269,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (!(varname)) varname='TAGS';
 	if ((tag.nodeType)&&(fdjtDOM.hasClass(tag,'completion'))) {
 	    if (fdjtDOM.hasClass(tag,'outlet')) {
-		varname='OUTLETS'; textspec='span.outlet';}
+		varname='SHARED'; textspec='span.outlet';}
 	    else if (fdjtDOM.hasClass(tag,'source')) {
 		varname='SHARE'; textspec='span.source';}
 	    else {}
@@ -298,7 +295,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (info) {
 	    if (info.knodule===Codex.knodule) tag=info.dterm;
 	    else tag=info._id||info.dterm||tag;}
-	if ((info)&&(info.pool===Codex.sourcekb)) varname='OUTLETS';
+	if ((info)&&(info.pool===Codex.sourcekb)) varname='SHARED';
 	var checkspans=fdjtDOM.getChildren(tagselt,".checkspan");
 	var i=0; var lim=checkspans.length;
 	while (i<lim) {
@@ -481,6 +478,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var form=fdjtDOM.getParent(target,"FORM");
 	var ch=evt.keyCode;
 	if (ch===13) {
+	    if (fdjtString.isEmpty(content)) {
+		submitEvent(target);
+		return;}
 	    var brk=content.indexOf(' ');
 	    if (brk<0) addLink(form,content);
 	    else {
@@ -493,6 +493,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var content=target.value;
 	var form=fdjtDOM.getParent(target,"FORM");
 	var ch=evt.keyCode;
+	if ((fdjtString.isEmpty(content))&&(ch===13)) {
+	    submitEvent(target);
+	    return;}
 	if (content.length===0) return;
 	var completions=gloss_cloud.complete(content);
 	if (ch===13) {
@@ -558,7 +561,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
 	fdjtDOM.dropClass(form.parentNode,"submitting");
 	Codex.glosses.Import(JSON.parse(req.responseText));
-	clearGlossForm(form);
+	fdjtDOM.remove(form.parentNode);
+	// clearGlossForm(form);
 	Codex.preview_target=false;
 	/* Turn off the target lock */
 	setGlossTarget(false);
@@ -575,7 +579,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (taginput) taginput.value="";
 	var href=fdjtDOM.getInput(form,"HREF");
 	if (href) href.value="";
-	var tagselt=fdjtDOM.getChildren(form,"div.tags");
+	var tagselt=fdjtDOM.getChildren(form,".tags");
 	if ((tagselt)&&(tagselt.length)) {
 	    var tags=fdjtDOM.getChildren(tagselt[0],".checkspan");
 	    fdjtDOM.remove(fdjtDOM.Array(tags));}}
@@ -677,8 +681,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	if (getParent(target,".checkspan"))
 	    return fdjtUI.CheckSpan.onclick(evt);
-	else if (getParent(target,".outlets"))
-	    toggleClass(getParent(target,".outlets"),"expanded");
+	else if (getParent(target,".sharing"))
+	    toggleClass(getParent(target,".sharing"),"expanded");
 	else {}}
     Codex.UI.outlets_tapped=outlets_tapped;
 
