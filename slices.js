@@ -59,7 +59,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	var refiners=((query) && (query._refiners));
 	var score=((query)&&(query[key]));
 	var body=
-	    fdjtDOM("div.codexnotebody",
+	    fdjtDOM("div.codexcardbody",
 		    // (makelocrule(target_info,target_info.head)),
 		    ((info.maker)&&(showglossinfo(info)))," ",
 		    ((standalone)&&(showtocloc(target_info))),
@@ -77,7 +77,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		     (showaudience(info.shared))),
 		    (((info.tags)||(info.autotags))&&(showtags(info))));
 	var div=
-	    fdjtDOM(((info.maker) ? "div.codexnote.gloss" : "div.codexnote"),
+	    fdjtDOM(((info.maker) ? "div.codexcard.gloss" : "div.codexcard"),
 		    ((head)&&(makeTOCHead(head))),
 		    ((head_info)&&(makeIDHead(target,head_info,true))),
 		    ((standalone)&&(makelocbar(target_info))),
@@ -408,14 +408,14 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 
     function editicon_ontap(evt){
 	var target=fdjtUI.T(evt);
-	var note=fdjtDOM.getParent(target,'.codexnote');
-	var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name,Codex.glosses)));
+	var card=fdjtDOM.getParent(target,'.codexcard');
+	var gloss=((card)&&(card.name)&&(fdjtKB.ref(card.name,Codex.glosses)));
 	Codex.setGlossTarget(gloss);
 	CodexMode("addgloss");}
     function replyicon_ontap(evt){
 	var target=fdjtUI.T(evt);
-	var note=fdjtDOM.getParent(target,'.codexnote');
-	var gloss=((note)&&(note.name)&&(fdjtKB.ref(note.name,Codex.glosses)));
+	var card=fdjtDOM.getParent(target,'.codexcard');
+	var gloss=((card)&&(card.name)&&(fdjtKB.ref(card.name,Codex.glosses)));
 	Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
 	CodexMode("addgloss");}
 
@@ -646,7 +646,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		fdjtDOM.insertBefore(child,renderNote(note));
 		return;}
 	    // If unrelated, continue
-	    if (!((fdjtDOM.hasClass(child,"codexnote"))||
+	    if (!((fdjtDOM.hasClass(child,"codexcard"))||
 		  (fdjtDOM.hasClass(child,"codexthread"))))
 		continue;
 	    // If the same thing, replace
@@ -667,7 +667,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	while (scan) {
 	    if (((scan.about)||
 		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		((fdjtDOM.hasClass(scan,"codexnote"))||
+		((fdjtDOM.hasClass(scan,"codexcard"))||
 		 (fdjtDOM.hasClass(scan,"passage"))))
 		break;
 	    else scan=fdjtDOM.forwardElt(scan);}
@@ -679,7 +679,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	while (scan) {
 	    if (((scan.about)||
 		 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-		((fdjtDOM.hasClass(scan,"codexnote"))||
+		((fdjtDOM.hasClass(scan,"codexcard"))||
 		 (fdjtDOM.hasClass(scan,"passage"))))
 		break;
 	    else scan=fdjtDOM.backwardElt(scan);}
@@ -696,7 +696,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	while (i<children.length) {
 	    var child=children[i++];
 	    if (child.nodeType!==1) continue;
-	    if (hasClass(child,"codexnote")) {
+	    if (hasClass(child,"codexcard")) {
 		var gloss=(child.qref)&&Codex.glosses.map[child.qref];
 		if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
 		else if ((fdjtKB.contains(sources,gloss.maker))||

@@ -307,21 +307,21 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (mode) CodexMode(mode)
 	    else CodexMode(false);
 	    return fdjtUI.cancel(evt);}
-	var note=((hasClass(target,"codexnote"))?(target):
-		  (getParent(target,".codexnote")));
-	if (note) {
+	var card=((hasClass(target,"codexcard"))?(target):
+		  (getParent(target,".codexcard")));
+	if (card) {
 	    if ((!(getParent(target,".tool")))&&
-		(getParent(note,".codexslice"))) {
-		Codex.Scan(fdjtID(note.about),note);
+		(getParent(card,".codexslice"))) {
+		Codex.Scan(fdjtID(card.about),card);
 		return fdjtUI.cancel(evt);}
-	    else if ((note.name)||(note.getAttribute("name"))) {
-		var name=(note.name)||(note.getAttribute("name"));
+	    else if ((cars.name)||(card.getAttribute("name"))) {
+		var name=(card.name)||(card.getAttribute("name"));
 		var gloss=fdjtKB.ref(name,Codex.glosses);
 		if (!(gloss)) return;
 		Codex.setGlossTarget(gloss);	    
 		CodexMode("addgloss");}
-	    else if (note.about) {
-		Codex.GoTo(note.about);}
+	    else if (card.about) {
+		Codex.GoTo(card.about);}
 	    fdjtUI.cancel(evt);
 	    return;}
 	var scan=target, about=false, frag=false, gloss=false;

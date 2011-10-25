@@ -496,8 +496,8 @@ div.codextoc.cur div.sub { display: block;}
 
 /* sbook 'slices' of summaries or glosses */
 
-div.codexslice.sourced div.codexnote { display: none;}
-div.codexslice.sourced div.codexnote.sourced { display: block;}
+div.codexslice.sourced div.codexcard { display: none;}
+div.codexslice.sourced div.codexcard.sourced { display: block;}
 
 div.codexslice.sourced div.codexthread { display: none;}
 div.codexslice.sourced div.codexthread > div { display: none;}
@@ -515,24 +515,24 @@ span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 
-div.codexnote { margin-left: 20px; margin-right: 0px;}
-div.codexnote div.idhead { margin-left: -10px;  }
-div.codexnote div.tochead { margin-left: -20px; }
+div.codexcard { margin-left: 20px; margin-right: 0px;}
+div.codexcard div.idhead { margin-left: -10px;  }
+div.codexcard div.tochead { margin-left: -20px; }
 
-div.glosses div.codexnote > div.idhead { display: none;}
-div.glosses div.codexnote > div.tochead { display: none;}
+div.glosses div.codexcard > div.idhead { display: none;}
+div.glosses div.codexcard > div.tochead { display: none;}
 
 div.codexslice .tocthread {}
-div.codexslice .tocthread .codexnote .tochead { display: none;}
-div.codexslice .idthread .codexnote .idhead { display: none;}
+div.codexslice .tocthread .codexcard .tochead { display: none;}
+div.codexslice .idthread .codexcard .idhead { display: none;}
 
 div.codexslice .tocthread .idthread:first-child
-      .codexnote:first-child .tochead {
+      .codexcard:first-child .tochead {
     display: block;}
-div.codexslice .idthread > .codexnote:first-child .idhead {
+div.codexslice .idthread > .codexcard:first-child .idhead {
     display: block;}
 
-div.codexslice .codexnote div.detail { 
+div.codexslice .codexcard div.detail { 
   display: none; color: ivory; clear: both;}
 div.codexslice .showdetail div.detail { display: block;}
 div.codexslice div.xrefs { display: none;}
@@ -550,10 +550,10 @@ div#SBOOKGLOSSES div.codexthread {
 div.codexthread .locbar { background-color: silver;}
 div.codexthread.headthread { border-top: solid gold 2px;}
 div.codexthread.idthread {border: none;}
-div.codexthread.idthread .codexnote {}
-div.codexslice div.codexthread div.codexnote div.locbar {border: none;}
-div.codexslice div.codexthread div.codexnote div.locbar {display:none;}
-div.codexslice div.codexthread div.codexnote:first-child div.locbar {
+div.codexthread.idthread .codexcard {}
+div.codexslice div.codexthread div.codexcard div.locbar {border: none;}
+div.codexslice div.codexthread div.codexcard div.locbar {display:none;}
+div.codexslice div.codexthread div.codexcard:first-child div.locbar {
     display:block;}
 
 /* The HUD */
@@ -585,7 +585,7 @@ div#CODEXHUD.codexanimate div.hudpanel {
     -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;}
 
 div#CODEXHUD div#CODEXHEAD div.hudpanel,
-div#CODEXHUD div.hudpanel.codexnote {
+div#CODEXHUD div.hudpanel.codexcard {
     max-height: 75%; border-top-width: 0px;
     border-top-left-radius: 0px;
     -webkit-border-top-left-radius: 0px; 
@@ -751,11 +751,11 @@ div.hudpanel#CODEXGLOSSES div.codexslice .tocthread {
     border-left-width: 0px;}
 
 div#CODESCANNER div.codexslice .tocthread .idthread:first-child
-      .codexnote:first-child .tochead,
-div#CODEXSCANNER div.codexslice .idthread .codexnote:first-child .idhead,
+      .codexcard:first-child .tochead,
+div#CODEXSCANNER div.codexslice .idthread .codexcard:first-child .idhead,
 div#CODEXGLOSSES div.codexslice .tocthread .idthread:first-child
-      .codexnote:first-child .tochead,
-div#CODEXGLOSSES div.codexslice .idthread .codexnote:first-child .idhead {
+      .codexcard:first-child .tochead,
+div#CODEXGLOSSES div.codexslice .idthread .codexcard:first-child .idhead {
     height: 0px;}
 
 div#CODEXSCANNER .hudupbutton {
@@ -843,11 +843,11 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: blo
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
 
-div#CODEXHUD div#CODEXSCANNER .codexnote.gloss .codexnotebody,
-div#CODEXHUD div#CODEXGLOSSES .codexnote.gloss .codexnotebody {
+div#CODEXHUD div#CODEXSCANNER .codexcard.gloss .codexcardbody,
+div#CODEXHUD div#CODEXGLOSSES .codexcard.gloss .codexcardbody {
     min-height: 3ex;}
-div#CODEXHUD div#CODEXSCANNER:hover .codexnote.gloss .codexnotebody,
-div#CODEXHUD div#CODEXGLOSSES:hover .codexnote.gloss .codexnotebody {
+div#CODEXHUD div#CODEXSCANNER:hover .codexcard.gloss .codexcardbody,
+div#CODEXHUD div#CODEXGLOSSES:hover .codexcard.gloss .codexcardbody {
     min-height: 50px;}
 
 div#CODEXHUD div#CODEXSCANNER div.idhead,
@@ -860,7 +860,7 @@ body div#CODEXHUD div#CODEXSCANNER:hover img.glosspic {
 body div#CODEXHUD div.hudpanel#CODEXSCANNER:hover {
     max-height: inherit, height: inherit;}
 
-div#CODEXHUD div#CODEXSCANNER div.codexnote span.glossinfo span.isclickable {
+div#CODEXHUD div#CODEXSCANNER div.codexcard span.glossinfo span.isclickable {
     display: none;}
 
 body div#CODEXHUD img.codexscanbutton {
@@ -1451,14 +1451,14 @@ div.idhead hr {
 div.idhead span { z-index: 10; opacity: 0.75;}
 div.idhead div { z-index: 10; opacity: 0.75;}
 
-div.codexnote { position: relative;}
+div.codexcard { position: relative;}
 
-div.codexnote > hr {
+div.codexcard > hr {
     color: gold; background-color: gold; min-width: 3px; height: 100%;
     border-right: solid gold 1px; border-left: solid gold 1px;
     position: absolute; left: 0px; 
     border: 0px; padding: 0px; margin: 0px;}
-div.codexnote > div span.count { float: right;}
+div.codexcard > div span.count { float: right;}
 
 /* Buttons */
 
@@ -1793,31 +1793,31 @@ body.sbooktouch div#CODEXHUD.toc div#CODEXTOC div.spanbar div.progressbox,
 body.sbooktouch div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.progressbox {
     height: 25px;}
 
-body.sbooktouch .codexnote .age { font-size: 125%; padding-bottom: 10px;}
+body.sbooktouch .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
 /* Sbook notes */
 
-div.codexnote { position: relative;}
-div.codexnote > div { text-align: left;}
+div.codexcard { position: relative;}
+div.codexcard > div { text-align: left;}
 
-div.codexnote > hr {
+div.codexcard > hr {
     color: gold; background-color: gold; min-width: 3px; height: 100%;
     border-right: solid gold 1px; border-left: solid gold 1px;
     position: absolute; left: 0px; 
     border: 0px; padding: 0px; margin: 0px;}
 
-.codexnote { 
+.codexcard { 
     white-space: normal; clear: both;
     text-align: left; text-decoration: none;
     text-align: left;
     font-size: 90%;}
-.codexnote a.ref {
+.codexcard a.ref {
   display: block; font-weight: normal;}
-.codexnote a.ref span.title {
+.codexcard a.ref span.title {
   font-family: sans,sans-serif;}
-.codexnote a.ref span.uri {
+.codexcard a.ref span.uri {
   font-family: courier,fixed;}
-.codexnote span.oldterm {
+.codexcard span.oldterm {
     color: blue; background-color: yellow;
     padding: 2px; border: solid blue 1px;
     border-top-left-radius: 6px; border-bottom-left-radius: 6px;
@@ -1834,66 +1834,66 @@ div.codexnote > hr {
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;}
-div#CODEXHUD .codexnote span.oldterm {color: blue; }
-.codexnote span.user { 
+div#CODEXHUD .codexcard span.oldterm {color: blue; }
+.codexcard span.user { 
   color: green; font-size: 125%; font-style: italic;}
-.codexnote span.overdoc { 
+.codexcard span.overdoc { 
   color: green; font-size: 125%; font-style: normal;
   font-variant: small-caps;}
-.codexnote span.link a { color: blue; text-decoration: underline;}
-.codexnote span.tribe { 
+.codexcard span.link a { color: blue; text-decoration: underline;}
+.codexcard span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
-.codexnote span.audience { 
+.codexcard span.audience { 
   color: silver; font-size: 75%; font-weight: normal; font-style: italic;}
-body.sbook a.codexnote { display: block;}
-.codexnote.gloss .codexnotebody {
+body.sbook a.codexcard { display: block;}
+.codexcard.gloss .codexcardbody {
     min-height: 50px;
     border-top: solid purple 2px;}
-.codexnote .info { 
+.codexcard .info { 
   float: right;}
-.codexnote div.info { 
+.codexcard div.info { 
   float: right; width: 40px;}
-.codexnote .info span.score {
+.codexcard .info span.score {
   color: gold; display: none;}
-.codexnote span.tags { font-size: 80%;}
-.codexnote span.tags span.controller { cursor: pointer;}
-.codexnote span.tags.fdjtexpanded { display: block;}
-.codexnote span.tags.fdjtexpanded span.controller { float: right;}
-.codexnote span.head {
+.codexcard span.tags { font-size: 80%;}
+.codexcard span.tags span.controller { cursor: pointer;}
+.codexcard span.tags.fdjtexpanded { display: block;}
+.codexcard span.tags.fdjtexpanded span.controller { float: right;}
+.codexcard span.head {
     font-size: 75%;}
-.codexnote span.headhead {
+.codexcard span.headhead {
     color: blue; font-weight: bold;}
-.codexnote span.controller {
+.codexcard span.controller {
     font-weight: bold; color: silver;
     white-space: nowrap;}
-.codexnote span.note { font-size: 110%;}
-.codexnote img.userpic, .codexnote img.sourcepic  {
+.codexcard span.note { font-size: 110%;}
+.codexcard img.userpic, .codexcard img.sourcepic  {
     float: left; clear: left; margin-right: 3px; width: 50px;}
-.codexnote div.userpic, .codexnote div.sourcepic  {
+.codexcard div.userpic, .codexcard div.sourcepic  {
     float: left; clear: left; margin-right: 3px;
     width: 50px; height: 50px; font-size: 32px;
     text-align: center; vertical-align: top;}
-.codexnote img.detailsbutton { border: none; }
-.codexnote img.xrefsbutton { border: none;}
-.codexnote .glossinfo {
+.codexcard img.detailsbutton { border: none; }
+.codexcard img.xrefsbutton { border: none;}
+.codexcard .glossinfo {
     float: right; clear: right; display: block;
     padding: 0px; margin: 0px;
     margin-left: 3px; padding-top: 2px;
     text-align: right;}
-.codexnote .glossinfo img { padding-left: 4px; cursor: pointer; }
-.codexnote .tool {
+.codexcard .glossinfo img { padding-left: 4px; cursor: pointer; }
+.codexcard .tool {
     float: right; font-weight: normal;
     font-size: 60%; text-decoration: none;}
-.codexnote .age {
+.codexcard .age {
     color: green; vertical-align: top; padding-right: 0.5em;}
-.codexnote .age:hover {text-decoration: underline;} 
-.codexnote a.deletebutton { 
+.codexcard .age:hover {text-decoration: underline;} 
+.codexcard a.deletebutton { 
   color: orange; text-decoration: none;
   padding-right: 3px;}
-.codexnote .glossinfo img.delete { 
+.codexcard .glossinfo img.delete { 
     padding-right: 3px;
     cursor: pointer;}
-.codexnote a.headref {
+.codexcard a.headref {
     float: right; clear: right; 
     font-family: times,serif; font-style: italic; font-size: 80%;
     white-space: nowrap; padding: 2px; padding-top: 0px;

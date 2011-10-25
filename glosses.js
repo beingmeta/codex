@@ -622,7 +622,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		while (i<lim) {
 		    var rendering=renderings[i++];
 		    if (rendering.id==='CODEXSCAN')
-			fdjtDOM.replace(rendering,fdjtDOM("div.codexnote.deletedgloss"));
+			fdjtDOM.replace(rendering,fdjtDOM("div.codexcard.deletedgloss"));
 		    else fdjtDOM.remove(rendering);}}
 	    var glossmark=fdjtID("SBOOK_GLOSSMARK_"+frag);
 	    if (glossmark) {

@@ -213,8 +213,8 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	    while (i<n) {
 		var gloss=fdjtKB.ref(glosses[i++],Codex.glosses);
 		if ((!(gloss))||(!(gloss.frag))) continue;
-		var note=Codex.renderNote(gloss);
-		fdjtDOM(sumdiv,note);}}
+		var card=Codex.renderNote(gloss);
+		fdjtDOM(sumdiv,card);}}
 	fdjtDOM.replace("CODEXGLOSSES",sumdiv);
 	Codex.setTarget(target);
 	fdjtDOM.replace("SBOOKINFO",
