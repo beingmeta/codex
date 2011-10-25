@@ -195,9 +195,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var i=0; var lim=tags.length;
 	    while (i<lim) addTag(form,tags[i++],"SHARE");}
 	if ((gloss)&&(gloss._id)) {
-	    uuidelt.value=gloss._id;
-	    if (response) form.method="POST";
-	    else form.method="PUT";}
+	    uuidelt.value=gloss._id;}
 	else uuidelt.value=fdjtState.getUUID(Codex.nodeid);
 	if (gloss) {
 	    clearOutlets(form);
