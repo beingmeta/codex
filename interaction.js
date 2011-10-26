@@ -314,7 +314,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		(getParent(card,".codexslice"))) {
 		Codex.Scan(fdjtID(card.about),card);
 		return fdjtUI.cancel(evt);}
-	    else if ((cars.name)||(card.getAttribute("name"))) {
+	    else if ((card.name)||(card.getAttribute("name"))) {
 		var name=(card.name)||(card.getAttribute("name"));
 		var gloss=fdjtKB.ref(name,Codex.glosses);
 		if (!(gloss)) return;
