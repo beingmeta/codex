@@ -269,10 +269,11 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
     function getoverdoc(info){
 	if (info.sources) {
 	    var sources=info.sources;
+	    if (typeof sources === 'string') sources=[sources];
 	    var i=0; var lim=sources.length;
 	    while (i<lim) {
 		var source=fdjtKB.ref(sources[i++]);
-		if ((source)&&(source.kind===':OVERDOC'))
+		if ((source)&&(source.kind===':OVERLAY'))
 		    return source;}
 	    return false;}
 	else return false;}
@@ -291,7 +292,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	    var i=0; var lim=sources.length;
 	    while (i<lim) {
 		var source=fdjtKB.ref(sources[i++]);
-		if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
+		if ((source)&&(source.kind===':OVERLAY')&&(source.pic))
 		    return { src: source.pic, alt: source.name,
 			     classname: "img.glosspic.sourcepic"};}}
 	if (info.links) {
@@ -308,7 +309,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	    var i=0; var lim=outlets.length;
 	    while (i<lim) {
 		var outlet=fdjtKB.ref(outlets[i++]);
-		if ((outlet)&&(outlet.kind===':OVERDOC')&&(outlet.pic))
+		if ((outlet)&&(outlet.kind===':OVERLAY')&&(outlet.pic))
 		    return { src: outlet.pic, alt: outlet.name,
 			     classname: "img.glosspic.sourcepic"};}}
 	if (info.maker) {
