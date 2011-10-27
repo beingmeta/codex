@@ -281,7 +281,9 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
     function getfakepic(maker,spec){
 	var userinfo=fdjtKB.ref(maker);
 	var pic=fdjtDOM(spec||"div.sbooksourcepic",
-			fdjtString.getInitials(userinfo.name));
+			((userinfo.name)?
+			 (fdjtString.getInitials(userinfo.name)):
+			 "?"));
 	return pic;}
 
     function getpicinfo(info){
