@@ -159,7 +159,7 @@ var sbook_gloss_data=
 			  Codex.addTag2UI(knode,true);}}}
 		var sources=item.sources;
 		if (sources) {
-		    if (typeof sources !== 'array') sources=[sources];
+		    if (typeof sources === 'string') sources=[sources];
 		    if ((sources)&&(sources.length)) {
 			var i=0; var lim=sources.length;
 			while (i<lim) {
