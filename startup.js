@@ -607,7 +607,13 @@ Codex.Startup=
 	    fdjtDOM(document.head,style);
 	    Codex.stylesheet=style.sheet;
 	    var i=0; var lim=nodes.length;
-	    while (i<lim) content.appendChild(nodes[i++]);
+	    while (i<lim) {
+		var node=nodes[i++];
+		if (node.nodeType===1) {
+		    if ((node.tagName!=='LINK')&&(node.tagName!=='META')&&
+			(node.tagName!=='SCRIPT'))
+			content.appendChild(node);}
+		else content.appendChild(node);}
 	    Codex.content=content;
 	    Codex.coverpage=fdjtID("SBOOKCOVERPAGE");
 	    Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
