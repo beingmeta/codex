@@ -37,6 +37,7 @@ var CodexPaginate=
 	var addClass=fdjtDOM.addClass;
 	var dropClass=fdjtDOM.dropClass;
 	var TOA=fdjtDOM.toArray;
+	var isEmpty=fdjtString.isEmpty;
 	
 	function Paginate(why,init){
 	    if (Codex.paginating) return;
@@ -92,7 +93,10 @@ var CodexPaginate=
 		    layout.addContent(img);}}
 	    fdjtTime.slowmap(
 		function(node){
-		    if ((node.nodeType===1)||(node.nodeType===3))
+		    if (((node.nodeType===3)&&(!(isEmpty(node.nodeValue))))||
+			((node.nodeType===1)&&
+			 (node.tagName!=='LINK')&&(node.tagName!=='META')&&
+			 (node.tagName!=='SCRIPT')))
 			layout.addContent(node);},
 		nodes,
 		function(state,i,lim,chunks,used,zerostart){
@@ -255,20 +259,6 @@ var CodexPaginate=
 	
 	/* Movement by pages */
 	
-	function getCSSLeft(node,wrapper){
-	    var scan=node;
-	    var indent=parsePX(getStyle(scan).marginLeft)||0;
-	    while ((scan=scan.parentNode)&&(scan!==wrapper)) {
-		var style=getStyle(scan);
-		indent=indent+parsePX(style.paddingLeft,0)+
-		    parsePX(style.borderLeft)+
-		    parsePX(style.marginLeft);}
-	    if (scan===wrapper) {
-		var style=getStyle(scan);
-		indent=indent+parsePX(style.paddingLeft,0)+
-		    parsePX(style.borderLeft,0);}
-	    return indent;}
-
 	var curpage=false;
 	
 	function GoToPage(spec,caller){
