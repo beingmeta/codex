@@ -341,14 +341,14 @@ div.codexglossform form div.glossetc .sharing .networks
    .button.checkspan.checked > img[alt='X'] {
        display: none;}
 
-span.facebook_share, span.twitter_share { display: none;}
-span.linkedin_share, span.google_share { display: none;}
-
 div.codexglossform form div.glossetc .sharing .checkspan.button > img {
     padding: 1px; border: dotted red 2px; opacity: 0.5;}
 div.codexglossform form div.glossetc .sharing .checkspan.ischecked > img {
     border: solid green 2px; opacity: 1.0;}
 */
+
+span.facebook_share, span.twitter_share { display: none;}
+span.linkedin_share, span.google_share { display: none;}
 
 div.codexglossform form div.glossetc .sharing .checkspan.ischecked {
     color: inherit; text-decoration: none;}
