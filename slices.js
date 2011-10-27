@@ -701,7 +701,8 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		var gloss=(child.qref)&&Codex.glosses.map[child.qref];
 		if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
 		else if ((fdjtKB.contains(sources,gloss.maker))||
-			 (fdjtKB.overlaps(sources,gloss.sources))) {
+			 (fdjtKB.overlaps(sources,gloss.sources))||
+			 (fdjtKB.overlaps(sources,gloss.shared))) {
 		    fdjtDOM.addClass(child,"sourced");
 		    empty=false;}
 		else fdjtDOM.dropClass(child,"sourced");}
