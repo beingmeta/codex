@@ -41,6 +41,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     var swapClass=fdjtDOM.swapClass;
     var toggleClass=fdjtDOM.toggleClass;
     var getParent=fdjtDOM.getParent;
+    var getChild=fdjtDOM.getChild;
 
     var submitEvent=fdjtUI.submitEvent;
 
@@ -337,22 +338,38 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else if (target.pool===Codex.glosses) {
 	    gloss=target; target=fdjtID(gloss.frag);}
 	else {}
-	var cur=fdjtID("CODEXLIVEGLOSS");
-	if (cur) cur.id=null;
-	form.id="CODEXLIVEGLOSS";
-	var curinput=fdjtID("CODEXGLOSSINPUT");
-	if (curinput) curinput.id=null;
-	curinput=fdjtDOM.getChild(form,"textarea");
-	if (curinput) curinput.id="CODEXGLOSSINPUT";
-	var syncelt=fdjtDOM.getInput(form,"SYNC");
-	syncelt.value=(Codex.syncstamp+1);
 	Codex.glosstarget=target;
 	Codex.setTarget(target);
 	setCloudCuesFromTarget(gloss_cloud,target);
-	if (curinput)
-	    gloss_cloud.complete(getbracketed(curinput,false)||"");}
+	setGlossForm(form);}
     Codex.setGlossTarget=setGlossTarget;
 
+    function setGlossForm(form){
+	var cur=fdjtID("CODEXLIVEGLOSS");
+	if (cur) cur.id=null;
+	form.id="CODEXLIVEGLOSS";
+	var form_elt=getChild(form,"FORM");
+	var mode=form_elt.className;
+	var input=false;
+	var syncelt=fdjtDOM.getInput(form,"SYNC");
+	syncelt.value=(Codex.syncstamp+1);
+	if (mode==='addtag') {
+	    input=fdjtDOM.getInput(form,"TAG");
+	    gloss_cloud.complete(((input)&&(input.value))||"");}
+	else if (mode==='editnote') {
+	    input=fdjtDOM.getInput(form,"NOTE");
+	    if (input)
+		gloss_cloud.complete(getbracketed(input,false)||"");
+	    else gloss_cloud.complete("");}
+	else if (mode==='addlink') input=fdjtDOM.getInput(form,"LINK");
+	else if (mode==='excerpt') input=fdjtDOM.getInput(form,"EXCERPT");
+	else {}
+	fdjtLog("SetGlossForm (%o), focus on %o",form_elt,input);
+	if (input) {
+	    input.focus();
+	    setTimeout(function(){input.focus();},500);
+	    setTimeout(function(){input.focus();},1000);}}
+    
     function setCloudCues(cloud,tags){
 	// Clear any current tagcues from the last gloss
 	var cursoft=fdjtDOM.getChildren(cloud.dom,".cue.softcue");

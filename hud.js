@@ -264,8 +264,7 @@ var CodexMode=
 	var sbook_mode_foci=
 	    {gotopage: "CODEXPAGEINPUT",
 	     gotoloc: "CODEXLOCINPUT",
-	     search: "CODEXSEARCHINPUT",
-	     addgloss: "CODEXGLOSSINPUT"};
+	     search: "CODEXSEARCHINPUT"};
 	
 	var sbook_mode_help={
 	    addgloss: "#CODEXADDGLOSSHELP",

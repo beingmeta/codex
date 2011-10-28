@@ -1127,9 +1127,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else return;
 	if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
 	else dropClass("CODEXADDGLOSS","tagging");
+	fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
 	if (!(hasClass(form,altclass))) {
 	    swapClass(form,glossmodes,altclass);
-	    setTimeout(function(){input.focus();},1500);}
+	    input.focus();}
 	else {
 	    dropClass(form,glossmodes);
 	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}
@@ -1268,7 +1269,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	     touchend: glossform_outlets_tapped,
 	     touchstart: cancel, touchmove: cancel},
 	 "div.glossetc span.modebuttons": {
-	     touchstart: glossmode_button,
+	     touchend: glossmode_button,
 	     touchstart: cancel, touchmove: cancel}};
     
 })();
