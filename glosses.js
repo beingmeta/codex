@@ -415,37 +415,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    input.focus();}}
     Codex.UI.bracket_click=bracket_click;
 
-    var glossmodes=/(addtag)|(addlink)|(excerpt)|(editnote)/;
-
-    function addGloss_button(evt){
-	evt=evt||event;
-	var target=fdjtUI.T(evt);
-	var alt=target.alt, altclass, input;
-	var form=fdjtDOM.getParent(target,'form');
-	if (!(alt)) return;
-	if (alt==="tag") {
-	    altclass="addtag";
-	    input=fdjtDOM.getInput(form,'TAG');}
-	else if (alt==="link") {
-	    altclass="addlink";
-	    input=fdjtDOM.getInput(form,'LINK');}
-	else if (alt==="excerpt") {
-	    altclass="excerpt";
-	    input=fdjtDOM.getInput(form,'EXCERPT');}
-	else if (alt==="note") {
-	    altclass="editnote";
-	    input=fdjtDOM.getInput(form,'NOTE');}
-	else return;
-	if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
-	else dropClass("CODEXADDGLOSS","tagging");
-	if (!(hasClass(form,altclass))) {
-	    swapClass(form,glossmodes,altclass);
-	    setTimeout(function(){input.focus();},1500);}
-	else {
-	    dropClass(form,glossmodes);
-	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}
-	    else {}}}
-    Codex.UI.addGloss_button=addGloss_button;
+    var glossmodes=Codex.glossmodes;
 
     function handleBracketed(form,content,complete){
 	dropClass("CODEXADDGLOSS","tagging");

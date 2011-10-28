@@ -1104,6 +1104,37 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else {}}
     Codex.UI.outlets_tapped=glossform_outlets_tapped;
 
+    var glossmodes=Codex.glossmodes;
+
+    function glossmode_button(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var alt=target.alt, altclass, input;
+	var form=fdjtDOM.getParent(target,'form');
+	if (!(alt)) return;
+	if (alt==="tag") {
+	    altclass="addtag";
+	    input=fdjtDOM.getInput(form,'TAG');}
+	else if (alt==="link") {
+	    altclass="addlink";
+	    input=fdjtDOM.getInput(form,'LINK');}
+	else if (alt==="excerpt") {
+	    altclass="excerpt";
+	    input=fdjtDOM.getInput(form,'EXCERPT');}
+	else if (alt==="note") {
+	    altclass="editnote";
+	    input=fdjtDOM.getInput(form,'NOTE');}
+	else return;
+	if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
+	else dropClass("CODEXADDGLOSS","tagging");
+	if (!(hasClass(form,altclass))) {
+	    swapClass(form,glossmodes,altclass);
+	    setTimeout(function(){input.focus();},1500);}
+	else {
+	    dropClass(form,glossmodes);
+	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}
+	    else {}}}
+
     /* Rules */
 
     var nobubble=fdjtUI.nobubble;
@@ -1161,7 +1192,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {
-	     click: glossform_outlets_tapped}};
+	     click: glossform_outlets_tapped},
+	 "div.glossetc span.modebuttons": {
+	     click: glossmode_button}};
 
     Codex.UI.handlers.webtouch=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
@@ -1233,6 +1266,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	     touchstart: cancel, touchmove: cancel},
 	 "div.glossetc div.sharing": {
 	     touchend: glossform_outlets_tapped,
+	     touchstart: cancel, touchmove: cancel},
+	 "div.glossetc span.modebuttons": {
+	     touchstart: glossmode_button,
 	     touchstart: cancel, touchmove: cancel}};
     
 })();
