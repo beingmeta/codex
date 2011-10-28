@@ -41,9 +41,12 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     var swapClass=fdjtDOM.swapClass;
     var toggleClass=fdjtDOM.toggleClass;
     var getParent=fdjtDOM.getParent;
+    var getChildren=fdjtDOM.getChildren;
     var getChild=fdjtDOM.getChild;
 
     var submitEvent=fdjtUI.submitEvent;
+
+    var glossmodes=Codex.glossmodes;
 
     function sbicon(base){return Codex.graphics+base;}
     function cxicon(base){return Codex.graphics+"codex/"+base;}
@@ -432,8 +435,6 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    input.focus();}}
     Codex.UI.bracket_click=bracket_click;
 
-    var glossmodes=Codex.glossmodes;
-
     function handleBracketed(form,content,complete){
 	dropClass("CODEXADDGLOSS","tagging");
 	if (content[0]==='@') {
@@ -608,6 +609,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	fdjtDOM.addClass(target.parentNode,"submitting");
 	var form=(fdjtUI.T(evt));
+	var proto=fdjtID();
+	setGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
 	var uuidelt=fdjtDOM.getInput(form,"UUID");
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
@@ -619,6 +622,16 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	//  connection failures by calling saveGloss.
 	else return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));}
     Codex.submitGloss=submitGloss;
+
+    function setGlossDefaults(form,proto){
+	var shared=getChild(form,".outlets");
+	var inputs=getChildren(shared,"INPUT");
+	var mode=form.className;
+	swapClass(proto,glossmodes,mode);
+	var i=0, lim=inputs.length;
+	while (i<lim) {
+	    var input=inputs[i++];
+	    setOutlet(proto,input.value,input.checked);}}
 
     // Queues a gloss when offline
     function saveGloss(form,evt){
