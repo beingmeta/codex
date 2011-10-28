@@ -298,7 +298,7 @@ div.codexglossform form div.glossetc div.sharing span.head {
     color: black; font-weight: bold;}
 
 div.codexglossform form div.glossetc div.sharing span.networks {
-    color: black; font-weight: normal;}
+    color: black; font-weight: normal; float: right;}
 div.codexglossform form div.glossetc div.sharing span.networks span.options {
     display: none;}
 div.codexglossform form div.glossetc div.sharing
