@@ -307,7 +307,7 @@ Codex.Startup=
 		Codex.colbreak=true;
 		Codex.talldom=true;}
 	    if (isWebTouch) {
-		fdjtDOM.addClass(document.body,"sbooktouch");
+		fdjtDOM.addClass(document.body,"sbooktouchui");
 		viewportSetup();
 		Codex.ui="webtouch"; Codex.touch=true;}
 	    if ((useragent.search("Safari/")>0)&&
@@ -319,10 +319,11 @@ Codex.Startup=
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {
-		fdjtDOM.addClass(document.body,"sbooktouch");
+		fdjtDOM.addClass(document.body,"sbooktouchui");
 		viewportSetup();
 		Codex.ui="faketouch"}
 	    else {
+		fdjtDOM.addClass(document.body,"sbookmouseui");
 		Codex.ui="mouse";}
 	    
 	    Codex.allglosses=

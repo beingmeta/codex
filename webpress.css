@@ -468,8 +468,8 @@ div.codextoc > div.spanbar {
 
 div.codextoc div.head { min-height: 24px;}
 div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
-body.sbooktouch div.codextoc div.head { min-height: 32px;}
-body.sbooktouch div#CODEXFLYTOC div.codextoc div.head {
+body.sbooktouchui div.codextoc div.head { min-height: 32px;}
+body.sbooktouchui div#CODEXFLYTOC div.codextoc div.head {
     min-height: 24px;}
 
 div.codextoc div.head .progressbar { 
@@ -602,7 +602,7 @@ div#CODEXHUD div.hudpanel div.scrollbox {
 div#CODEXHUD img.hudbutton {
     position: fixed; width: 50px; height: 50px; z-index: 200;
     border: solid transparent 2px; opacity: 0.2;}
-div#CODEXHUD img.hudbutton:hover {
+body.sbooktouchui div#CODEXHUD img.hudbutton:hover {
     background-color: lightblue; border-color: blue;}
 body.hudup div#CODEXHUD img.hudbutton  {}
 body div#CODEXHUD img.hudbutton:hover { opacity: 0.45;}
@@ -672,7 +672,8 @@ body #CODEXDROPHUD {
     -o-border-radius-topright: 6px;
     opacity: 0.5;
     display: none;}
-body #CODEXDROPHUD:hover {background-color: lightblue; border-color: blue;}
+body.sbooktouchui body #CODEXDROPHUD:hover {
+    background-color: lightblue; border-color: blue;}
 body.hudup #CODEXDROPHUD {display: block;}
 
 body #CODEXPAGENEXT {
@@ -1529,7 +1530,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab  {
     border: transparent solid 3px;}
 div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
     height: 50px;}
-div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab:hover {
+body.sbooktouchui div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab:hover {
     background-color: lightblue;}
 
 div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[alt='About'],
@@ -1767,33 +1768,33 @@ div.sbookabout div.publisher { font-style: italic;}
 div.logindoc { display: none;}
 
 .fortouch { display: none;}
-body.sbooktouch .notouch { display: none;}
-body.sbooktouch div.fortouch,
-body.sbooktouch p.fortouch {
+body.sbooktouchui .notouch { display: none;}
+body.sbooktouchui div.fortouch,
+body.sbooktouchui p.fortouch {
     display: block;}
-body.sbooktouch .fortouch {display: inline;}
-body.sbooktouch li.fortouch {display: list-item;}
-body.sbooktouch span.fortouch { display: inline;}
-body.sbooktouch div.fortouch { display: block;}
-body.sbooktouch p.fortouch { display: block;}
-body.sbooktouch li.fortouch { display: list-item;}
+body.sbooktouchui .fortouch {display: inline;}
+body.sbooktouchui li.fortouch {display: list-item;}
+body.sbooktouchui span.fortouch { display: inline;}
+body.sbooktouchui div.fortouch { display: block;}
+body.sbooktouchui p.fortouch { display: block;}
+body.sbooktouchui li.fortouch { display: list-item;}
 
 body img.touchicon { display: none;}
 body img.mouseicon { display: inline;}
-body.sbooktouch img.touchicon { display: inline;}
-body.sbooktouch img.mouseicon { display: none;}
+body.sbooktouchui img.touchicon { display: inline;}
+body.sbooktouchui img.mouseicon { display: none;}
 
-body.sbooktouch div#CODEXHUD.toc div#CODEXTOC div.spanbar,
-body.sbooktouch div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar {
+body.sbooktouchui div#CODEXHUD.toc div#CODEXTOC div.spanbar,
+body.sbooktouchui div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar {
     height: 25px;}
-body.sbooktouch div#CODEXHUD.toc div#CODEXTOC div.spanbar div.codexhudspan,
-body.sbooktouch div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.codexhudspan {
+body.sbooktouchui div#CODEXHUD.toc div#CODEXTOC div.spanbar div.codexhudspan,
+body.sbooktouchui div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.codexhudspan {
     height: 20px;}
-body.sbooktouch div#CODEXHUD.toc div#CODEXTOC div.spanbar div.progressbox,
-body.sbooktouch div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.progressbox {
+body.sbooktouchui div#CODEXHUD.toc div#CODEXTOC div.spanbar div.progressbox,
+body.sbooktouchui div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.progressbox {
     height: 25px;}
 
-body.sbooktouch .codexcard .age { font-size: 125%; padding-bottom: 10px;}
+body.sbooktouchui .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
 /* Sbook notes */
 
