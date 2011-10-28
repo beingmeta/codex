@@ -174,8 +174,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(true);
 	else if (passage) {
 	    fdjtUI.cancel(evt);
-	    Codex.setGlossTarget(passage);
-	    CodexMode("addgloss");}}
+	    var form=Codex.setGlossTarget(passage);
+	    CodexMode("addgloss");
+	    Codex.setGlossForm(form);}}
 
     var excerpts=[];
 
@@ -275,8 +276,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (Codex.Trace.gestures)
 	    fdjtLog("Tap on target %o mode=%o",target,Codex.mode);
 	Codex.setTarget(target);
-	Codex.setGlossTarget(target);
-	CodexMode("addgloss");}
+	var form=Codex.setGlossTarget(target);
+	CodexMode("addgloss");
+	Codex.setGlossForm(form);}
 
     function edgeTap(evt,x){
 	if (!(evt)) evt=event||false;

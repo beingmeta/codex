@@ -344,7 +344,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	Codex.glosstarget=target;
 	Codex.setTarget(target);
 	setCloudCuesFromTarget(gloss_cloud,target);
-	setGlossForm(form);}
+	setGlossForm(form);
+	return form;}
     Codex.setGlossTarget=setGlossTarget;
 
     function setGlossForm(form){
@@ -367,11 +368,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else if (mode==='addlink') input=fdjtDOM.getInput(form,"LINK");
 	else if (mode==='excerpt') input=fdjtDOM.getInput(form,"EXCERPT");
 	else {}
-	fdjtLog("SetGlossForm (%o), focus on %o",form_elt,input);
-	if (input) {
-	    input.focus();
-	    setTimeout(function(){input.focus();},500);
-	    setTimeout(function(){input.focus();},1000);}}
+	if (input) input.focus();}
+    Codex.setGlossForm=setGlossForm;
     
     function setCloudCues(cloud,tags){
 	// Clear any current tagcues from the last gloss
