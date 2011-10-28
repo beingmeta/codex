@@ -18,11 +18,11 @@
   </div>
   <div class="deletebox">
     <span class="respdate"></span>
-    <span onclick="Codex.UI.reply_ontap(event);">
+    <span class="clickable codexglossrespond">
       Respond
       <img src="http://static.beingmeta.com/graphics/codex/remarkballoon24x19.png"
 	   alt="remark balloon"/></span>
-    <span onclick="Codex.UI.delete_ontap(event);">
+    <span class="clickable codexglossdelete">
       Delete 
       <img src="http://static.beingmeta.com/graphics/redx16x16.png"
 	   alt="red x"/></span>
@@ -32,8 +32,7 @@
     <span class="respdate"></span> <span class="respnote"></span> 
     <span class="resptags"></span> <span class="resplinks"></span>
   </div>
-  <div class="button altbutton submitbutton"
-       onclick="Codex.UI.submitEvent(event);">
+  <div class="button altbutton submitbutton">
     <span class="addbutton">
       <img src="http://static.beingmeta.com/graphics/codex/remarkballoon32x25.png"
 	   alt="Add" title="add this gloss" class="mouseicon"/>
@@ -109,9 +108,9 @@
 	   title="edit the note/comment associated with this gloss"
 	   class="button touchicon" alt="note"/>
     </span>
-    <span class="links" onclick="fdjtUI.CheckSpan.onclick(event);"></span>
-    <span class="tags" onclick="fdjtUI.CheckSpan.onclick(event);"></span>
-    <div class="sharing" onclick="Codex.UI.outlets_tapped(event);">
+    <span class="links"></span>
+    <span class="tags"></span>
+    <div class="sharing">
       <img src="http://static.beingmeta.com/graphics/twistyclosed16x16.png"
 	   class="twisty" alt="+"/>
       <img src="http://static.beingmeta.com/graphics/twistyopen16x16.png"

@@ -42,6 +42,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     var toggleClass=fdjtDOM.toggleClass;
     var getParent=fdjtDOM.getParent;
 
+    var submitEvent=fdjtUI.submitEvent;
+
     function sbicon(base){return Codex.graphics+base;}
     function cxicon(base){return Codex.graphics+"codex/"+base;}
 
@@ -95,6 +97,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (!(div)) {
 	    div=proto.cloneNode(true); div.id=null;
 	    fdjtDOM(fdjtID("CODEXGLOSSFORMS"),div);
+	    Codex.setupGestures(div);
 	    form=fdjtDOM.getChildren(div,"form")[0];
 	    form.id=formid;
 	    setupGlossForm(form,passage,gloss,response||false);}
@@ -582,69 +585,6 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var tags=fdjtDOM.getChildren(tagselt[0],".checkspan");
 	    fdjtDOM.remove(fdjtDOM.Array(tags));}}
 
-    function delete_ontap(evt){
-	evt=evt||event;
-	var target=fdjtUI.T(evt);
-	fdjtUI.cancel(evt);
-	var block=getParent(target,".codexglossform");
-	if (!(block)) return;
-	var glosselt=fdjtDOM.getInput(block,'UUID');
-	if (!(glosselt)) return;
-	var qref=glosselt.value;
-	var gloss=Codex.glosses.ref(qref);
-	if (!(gloss)) return;
-	var frag=gloss.get("frag");
-	fdjtAjax.jsonCall(
-	    function(response){glossdeleted(response,qref,frag);},
-	    "https://"+Codex.server+"/glosses/delete",
-	    "gloss",qref);}
-    Codex.UI.delete_ontap=delete_ontap;
-
-    function glossdeleted(response,glossid,frag){
-	if (response===glossid) {
-	    Codex.glosses.drop(glossid);
-	    Codex.allglosses=fdjtKB.remove(Codex.allglosses,glossid);
-	    if (Codex.offline)
-		fdjtState.setLocal("glosses("+Codex.refuri+")",
-				   Codex.allglosses,true);
-	    var editform=fdjtID("CODEXEDITGLOSS_"+glossid);
-	    if (editform) {
-		var editor=editform.parentNode;
-		if (editor===fdjtID('CODEXLIVEGLOSS')) {
-		    Codex.glosstarget=false;
-		    CodexMode(false);}
-		fdjtDOM.remove(editor);}
-	    var renderings=fdjtDOM.Array(document.getElementsByName(glossid));
-	    if (renderings) {
-		var i=0; var lim=renderings.length;
-		while (i<lim) {
-		    var rendering=renderings[i++];
-		    if (rendering.id==='CODEXSCAN')
-			fdjtDOM.replace(rendering,fdjtDOM("div.codexcard.deletedgloss"));
-		    else fdjtDOM.remove(rendering);}}
-	    var glossmark=fdjtID("SBOOK_GLOSSMARK_"+frag);
-	    if (glossmark) {
-		var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
-		if (newglosses.length===0) fdjtDOM.remove(glossmark);
-		else glossmark.glosses=newglosses;}}
-	else alert(response);}
-
-    function reply_ontap(evt){
-	evt=evt||event;
-	var target=fdjtUI.T(evt);
-	fdjtUI.cancel(evt);
-	var block=getParent(target,".codexglossform");
-	if (!(block)) return;
-	var glosselt=fdjtDOM.getInput(block,'UUID');
-	if (!(glosselt)) return;
-	var qref=glosselt.value;
-	var gloss=Codex.glosses.ref(qref);
-	if (!(gloss)) return;
-	Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
-	CodexMode("addgloss");}
-    Codex.UI.reply_ontap=reply_ontap;
-
-
     /***** The Gloss Cloud *****/
 
     var gloss_cloud=false;
@@ -673,17 +613,6 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    dropClass("CODEXADDGLOSS","tagging");}
 	fdjtUI.cancel(evt);}
 
-    /**** Clicking on outlets *****/
-    function outlets_tapped(evt){
-	evt=evt||event;
-	var target=fdjtUI.T(evt);
-	if (getParent(target,".checkspan"))
-	    return fdjtUI.CheckSpan.onclick(evt);
-	else if (getParent(target,".sharing"))
-	    toggleClass(getParent(target,".sharing"),"expanded");
-	else {}}
-    Codex.UI.outlets_tapped=outlets_tapped;
-
     /***** Saving (submitting/queueing) glosses *****/
 
     // Submits a gloss, queueing it if offline.
@@ -703,18 +632,6 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	//  connection failures by calling saveGloss.
 	else return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));}
     Codex.submitGloss=submitGloss;
-
-    function submitEvent(arg){
-	var form=((arg.nodeType)?(arg):(fdjtUI.T(arg)));
-	while (form)
-	    if (form.tagName==='FORM') break;
-	else form=form.parentNode;
-	if (!(form)) return;
-	var submit_evt = document.createEvent("HTMLEvents");
-	submit_evt.initEvent("submit", true, true);
-	form.dispatchEvent(submit_evt);
-	return;}
-    Codex.UI.submitEvent=submitEvent;
 
     // Queues a gloss when offline
     function saveGloss(form,evt){

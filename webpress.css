@@ -186,7 +186,7 @@ div.codexglossform div.deletebox {
     font-variant: small-caps;}
 div.codexglossform div.deletebox .respdate {float: left;}
 div.codexglossform div.deletebox span img { vertical-align: bottom;}
-div.codexglossform div.deletebox span[onclick] { cursor: pointer;}
+div.codexglossform div.deletebox span.clickable { cursor: pointer;}
 div.codexglossform.glossedit div.deletebox { display: block;}
 
 div.codexglossform form {

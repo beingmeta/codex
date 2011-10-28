@@ -78,12 +78,16 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     // Imports (kind of )
     var addClass=fdjtDOM.addClass;
-    var dropClass=fdjtDOM.dropClass;
     var hasClass=fdjtDOM.hasClass;
+    var dropClass=fdjtDOM.dropClass;
+    var swapClass=fdjtDOM.swapClass;
+    var toggleClass=fdjtDOM.toggleClass;
     var getTarget=Codex.getTarget;
     var getParent=fdjtDOM.getParent;
     var isClickable=fdjtUI.isClickable;
     var getGeometry=fdjtDOM.getGeometry;
+
+    var submitEvent=fdjtUI.submitEvent;
 
     var unhold=false;
     var hold_timer=false;
@@ -100,17 +104,19 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.addListeners(node,Codex.UI.handlers[mode][type]);}
     Codex.UI.addHandlers=addHandlers;
 
-    function setupGestures(){
+    function setupGestures(domnode){
 	var mode=Codex.ui;
 	if (!(mode)) Codex.ui=mode="mouse";
-	addHandlers(false,'window');
-	addHandlers(fdjtID("CODEXPAGE"),'content');
-	addHandlers(Codex.HUD,'hud');
+	if (!(domnode)) {
+	    addHandlers(false,'window');
+	    addHandlers(fdjtID("CODEXPAGE"),'content');
+	    addHandlers(Codex.HUD,'hud');}
 	var handlers=Codex.UI.handlers[mode];
 	if (mode)
-	    for (key in handlers)
-		if ((key[0]==='.')||(key[0]==='#')) {
-		    var nodes=fdjtDOM.$(key); var h=handlers[key];
+	    for (var key in handlers)
+		if ((key.indexOf('.')>=0)||(key.indexOf('#')>=0)) {
+		    var nodes=fdjtDOM.$(key,domnode);
+		    var h=handlers[key];
 		    fdjtDOM.addListeners(nodes,h);}}
     Codex.setupGestures=setupGestures;
 
@@ -449,6 +455,70 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    target.value="";
 	    CodexMode(false);}}
     Codex.UI.goto_keypress=goto_keypress;
+
+    /* ADDGLOSS interaction */
+
+    function delete_ontap(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	fdjtUI.cancel(evt);
+	var block=getParent(target,".codexglossform");
+	if (!(block)) return;
+	var glosselt=fdjtDOM.getInput(block,'UUID');
+	if (!(glosselt)) return;
+	var qref=glosselt.value;
+	var gloss=Codex.glosses.ref(qref);
+	if (!(gloss)) return;
+	var frag=gloss.get("frag");
+	fdjtAjax.jsonCall(
+	    function(response){glossdeleted(response,qref,frag);},
+	    "https://"+Codex.server+"/glosses/delete",
+	    "gloss",qref);}
+    Codex.UI.delete_ontap=delete_ontap;
+    
+    function respond_ontap(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	fdjtUI.cancel(evt);
+	var block=getParent(target,".codexglossform");
+	if (!(block)) return;
+	var glosselt=fdjtDOM.getInput(block,'UUID');
+	if (!(glosselt)) return;
+	var qref=glosselt.value;
+	var gloss=Codex.glosses.ref(qref);
+	if (!(gloss)) return;
+	Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
+	CodexMode("addgloss");}
+    Codex.UI.respond_ontap=respond_ontap;
+
+    function glossdeleted(response,glossid,frag){
+	if (response===glossid) {
+	    Codex.glosses.drop(glossid);
+	    Codex.allglosses=fdjtKB.remove(Codex.allglosses,glossid);
+	    if (Codex.offline)
+		fdjtState.setLocal("glosses("+Codex.refuri+")",
+				   Codex.allglosses,true);
+	    var editform=fdjtID("CODEXEDITGLOSS_"+glossid);
+	    if (editform) {
+		var editor=editform.parentNode;
+		if (editor===fdjtID('CODEXLIVEGLOSS')) {
+		    Codex.glosstarget=false;
+		    CodexMode(false);}
+		fdjtDOM.remove(editor);}
+	    var renderings=fdjtDOM.Array(document.getElementsByName(glossid));
+	    if (renderings) {
+		var i=0; var lim=renderings.length;
+		while (i<lim) {
+		    var rendering=renderings[i++];
+		    if (rendering.id==='CODEXSCAN')
+			fdjtDOM.replace(rendering,fdjtDOM("div.codexcard.deletedgloss"));
+		    else fdjtDOM.remove(rendering);}}
+	    var glossmark=fdjtID("SBOOK_GLOSSMARK_"+frag);
+	    if (glossmark) {
+		var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
+		if (newglosses.length===0) fdjtDOM.remove(glossmark);
+		else glossmark.glosses=newglosses;}}
+	else alert(response);}
 
     /* HUD button handling */
 
@@ -1021,6 +1091,19 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		Codex.GoToPage(page);}}
     
 
+    /* Gloss form handlers */
+
+    /**** Clicking on outlets *****/
+    function glossform_outlets_tapped(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	if (getParent(target,".checkspan"))
+	    return fdjtUI.CheckSpan.onclick(evt);
+	else if (getParent(target,".sharing"))
+	    toggleClass(getParent(target,".sharing"),"expanded");
+	else {}}
+    Codex.UI.outlets_tapped=glossform_outlets_tapped;
+
     /* Rules */
 
     var nobubble=fdjtUI.nobubble;
@@ -1070,7 +1153,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
-	       mouseout: fdjtUI.CoHi.onmouseout}};
+	       mouseout: fdjtUI.CoHi.onmouseout},
+	 // GLOSSFORM rules
+	 "span.codexglossdelete": { click: delete_ontap },
+	 "span.codexglossrespond": { click: respond_ontap },
+	 "div.submitbutton": {click: submitEvent },
+	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc div.sharing": {
+	     click: glossform_outlets_tapped}};
 
     Codex.UI.handlers.webtouch=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
@@ -1126,8 +1217,23 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		     touchmove: cancel},
 	 glossbutton: {touchend: glossbutton_ontap,
 		       touchstart: cancel,
-		       touchmove: cancel}
-	};
+		       touchmove: cancel},
+	 // GLOSSFORM rules
+	 "span.codexglossdelete": {
+	     touchend: delete_ontap, touchstart: cancel, touchmove: cancel},
+	 "span.codexglossrespond": {
+	     touchend: respond_ontap, touchstart: cancel, touchmove: cancel},
+	 "div.submitbutton": {
+	     touchend: submitEvent, touchstart: cancel, touchmove: cancel},
+	 "div.glossetc span.links": {
+	     touchend: fdjtUI.CheckSpan.onclick,
+	     touchstart: cancel, touchmove: cancel},
+	 "div.glossetc span.tags": {
+	     touchend: fdjtUI.CheckSpan.onclick,
+	     touchstart: cancel, touchmove: cancel},
+	 "div.glossetc div.sharing": {
+	     touchend: glossform_outlets_tapped,
+	     touchstart: cancel, touchmove: cancel}};
     
 })();
 
