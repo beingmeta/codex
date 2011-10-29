@@ -127,7 +127,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM.getInput(form,"FRAG").value=passageid;
 	if (gloss) {
 	    var date_elt=fdjtDOM.getChild(form,".respdate");
-	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
+	    fdjtDOM(date_elt,fdjtTime.shortString(gloss._created));}
 	var noteinput=fdjtDOM.getInput(form,"NOTE");
 	var taginput=fdjtDOM.getInput(form,"TAG");
 	var linkinput=fdjtDOM.getInput(form,"LINK");
@@ -154,7 +154,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var note_elt=fdjtDOM.getChild(response_elt,".respnote");
 	    var makerinfo=fdjtKB.ref(gloss.maker);
 	    fdjtDOM(maker_elt,makerinfo.name);
-	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));
+	    fdjtDOM(date_elt,fdjtTime.shortString(gloss._created));
 	    if (gloss.note) {
 		if (gloss.note.length>42) 
 		    fdjtDOM(note_elt,gloss.note.slice(0,42)+"…");

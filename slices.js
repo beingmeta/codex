@@ -83,7 +83,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		    ((standalone)&&(makelocbar(target_info))),
 		    body);
 	var makerinfo=((info.maker)&&(fdjtKB.ref(info.maker)));
-	var tstamp=info.tstamp||info.modified||info.created;
+	var tstamp=info.tstamp||info._modified||info._created;
 	if (tstamp)
 	    body.title="gloss from "+makerinfo.name+" at "+fdjtTime.shortString(tstamp);
 	else div.title=Codex.getTitle(target,true);
@@ -236,7 +236,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	var feed=info.feed||false;
 	var userinfo=Codex.sourcekb.map[user];
 	var feedinfo=Codex.sourcekb.map[feed];
-	var agestring=timestring(info.modified||info.created);
+	var agestring=timestring(info._modified||info._created);
 	var mouse_icon=
 	    ((user===Codex.user._id)?sbook_edit_icon:sbook_reply_icon);
 	var touch_icon=
