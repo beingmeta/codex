@@ -148,16 +148,16 @@ var sbook_gloss_data=
 		    if ((tags)&&(tags.length)) {
 			var i=0; var lim=tags.length;
 			while (i<lim) {
-			  var tag=tags[i++]; var score=false;
-			  if (tag[0]==='*') {
-			    score=tag.search(/[^*]/);
-			    tag=tag.slice(score);}
-			  var knode=fdjtKB.ref(tag)||tag;
-			  if (info.glosstags)
-			    info.glosstags.push(knode);
-			  else info.glosstags=[knode];
-			  Codex.index.add(item,knode);
-			  Codex.addTag2UI(knode,true);}}}
+			    var tag=tags[i++]; var score=false;
+			    if (tag[0]==='*') {
+				score=tag.search(/[^*]/);
+				tag=tag.slice(score);}
+			    var knode=fdjtKB.ref(tag)||tag;
+			    if (info.glosstags)
+				info.glosstags.push(knode);
+			    else info.glosstags=[knode];
+			    Codex.index.add(item,knode);
+			    Codex.addTag2UI(knode,true);}}}
 		var sources=item.sources;
 		if (sources) {
 		    if (typeof sources === 'string') sources=[sources];
@@ -510,7 +510,7 @@ var sbook_gloss_data=
 	var uri=Codex.docuri||Codex.refuri;
 	fdjtState.setLocal("codex.state("+uri+")",statestring);}
     Codex.setState=setState;
-	    
+    
     function serverSync(){
 	if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine)) {
 	    var state=Codex.state; var synced=Codex.syncstate;
@@ -600,7 +600,7 @@ var sbook_gloss_data=
 	return fdjtID(allinfo[i-1].frag);}
     Codex.resolveLocation=resolveLocation;
 
-
+    
     // This moves within the document in a persistent way
     function CodexGoTo(arg,noset,nosave){
 	var target; var location;
@@ -620,7 +620,9 @@ var sbook_gloss_data=
 	else {
 	    fdjtLog.warn("Bad CodexGoTo %o",arg);
 	    return;}
-	if (!(target)) return;
+	if (!(target)) {
+	    if (Codex.paginated) Codex.GoToPage(arg);
+	    return;}
 	var page=((Codex.paginate)&&
 		  (Codex.pagecount)&&
 		  (Codex.getPage(target)));
@@ -630,7 +632,7 @@ var sbook_gloss_data=
 	    fdjtLog("Codex.GoTo() #%o@P%o/L%o %o",
 		    targetid,page,((info)&&(info.starts_at)),target);
 	if ((targetid)&&(Codex.updatehash))
-	  setHashID(target);
+	    setHashID(target);
 	if (info) {
 	    if (typeof info.level === 'number')
 		setHead(target);
@@ -650,7 +652,7 @@ var sbook_gloss_data=
 	if (page) Codex.GoToPage(target,"CodexGoTo",nosave||false);
 	Codex.location=location;}
     Codex.GoTo=CodexGoTo;
-
+    
     function anchorFn(evt){
 	var target=fdjtUI.T(evt);
 	while (target)
