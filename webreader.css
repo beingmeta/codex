@@ -714,6 +714,8 @@ body.hudup div#CODEXHUD { } /* opacity: 0.95; */
 body.hudup div#CODEXHUD .hudbutton { opacity: 0.6;}
 body.hudup div#CODEXHUD img.hudbutton:hover { opacity: 0.8;}
 
+body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
+
 /* Mode display rules */
 
 body.hudup div#CODEXHUD.help div.hudpanel#CODEXHELP,
@@ -1926,8 +1928,8 @@ div.locbar hr {
     z-index: 50;
     border-right-width: 0px;
     opacity: 0.0001;}
-.codexglossmark {
-    margin-right: -16px;}
+.codexglossmark {margin-right: -16px;}
+
 body .codexglossmark { opacity: 0.4;}
 *:hover > .codexglossmark { opacity: 0.7;}
 body.hudup .codexglossmark { opacity: 0.6; display: block;}

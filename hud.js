@@ -364,7 +364,7 @@ var CodexMode=
 		// mode
 		if (sbook_mode_foci[mode]) {
 		  var input=fdjtID(sbook_mode_foci[mode]);
-		  if (input) input.focus();}
+		  if (input) focus(input);}
 		// Moving the focus back to the body lets keys work
 		else document.body.focus();
 		if (display_sync) Codex.displaySync();}
@@ -374,11 +374,18 @@ var CodexMode=
 		//  the HUD down.
 		fdjtLog.HumaneHide();
 		if (Codex.mode!=='help') Codex.last_mode=Codex.mode;
+		if (Codex.liveinput) {
+		    Codex.liveinput.blur();
+		    Codex.liveinput=false;}
 		document.body.focus();
 		dropClass(document.body,"dimmed");
 		dropClass(document.body,"sbookscanning");
 		setHUD(false);
 		if (display_sync) Codex.displaySync();}}
+
+	function focus(input){
+	    input.focus(); Codex.liveinput=input;}
+	Codex.focus=focus;
 
 	function fadeUpHUD(){
 	    fdjtLog("Setting properties");

@@ -32,46 +32,16 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-/* New body interaction model:
-   With mouse:
-   mouseup: 
-   if non-empty selection, save, set target, raise hud
-   otherwise toggle hud
+/* There are three basic display modes:
+    reading (minimal decoration, with 'minimal' configurable)
+    scanning (card at top, buttons on upper edges)
+    tool (lots of tools unfaded)
 
-   With touch:
-   touchstart: after 0.5s: set target, raise hud, set context mode (after ~0.5s)
-   touchmove: clear context mode (or timer)
-   touchend: clear context mode, if scrolled, 
-   if non-empty selection, save, otherwise lower hud
-*/
-
-/*
-
-  Body behavior:
-  hold either temporarily hides the HUD or temporarily engages context mode
-  (this might also be selecting some text)
-  click when Codex.mode is non-context just drops the HUD
-  click on a non-target makes it the target and enters context mode
-  click on a target opens the mark HUD
-  Marginal behavior:
-  click on top or bottom margin, either hides HUD or engages last relevant
-  mode
-  click on left or right margin goes forward or backward
-  hold on left or right margin auto-advances, springs back on release,
-  stops on mouseout/touchout
-  
-  Handling hold with mouse:
-  onmousedown enters mode, sets tick
-  onmouseup leaves mode (unless shift is down)
-  onmouseout leaves mode (unless shift or mouse is down)
-  clears mouse_focus
-  onmouseover shifts mode target when mode is live, sets mouse_focus on move
-  shiftkey down enters mode on mouse_focus
-  shiftkey up leaves mode (unless mousedown tick is set)
-
-  Hold-free mode:
-  click enters/leaves mode
-
+   Tap on content:
+    if not hudup, raise the HUD;
+    if scanning or no target, lower the HUD
+    if addgloss is live on target, lower the HUD
+    otherwise addgloss on target
 */
 
 (function(){
@@ -135,7 +105,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	return false;}
 
     var gloss_focus=false;
-	gloss_blurred=false;
+    var gloss_blurred=false;
     function addgloss_focus(evt){
 	evt=evt||event;
 	gloss_blurred=false;
@@ -261,13 +231,14 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		else Codex.excerpt=sel.toString();
 		return;}
 	    else CodexMode(false);}
-	if ((passage)&&(Codex.mode==='addgloss')&&
+	if ((Codex.hudup)&&(passage)&&(Codex.mode==='addgloss')&&
 	    ((gloss_focus)||((fdjtTime()-gloss_blurred)<1000))) {
 	    if (passage===Codex.target) CodexMode(false);
 	    else tapTarget(passage);}
+	else if (((Codex.excerpt)||(Codex.hudup))&&(passage))
+	    tapTarget(passage);
 	else if ((Codex.mode)||(Codex.hudup))
 	    CodexMode(false);
-	else if (passage) tapTarget(passage);
 	else CodexMode(true);}
 
     /* Tap actions */
@@ -430,7 +401,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		CodexMode(modearg); mode=modearg;}}
 	else {}
 	if (mode==="searching")
-	    fdjtID("CODEXSEARCHINPUT").focus();
+	    Codex.focus(fdjtID("CODEXSEARCHINPUT"));
 	else fdjtID("CODEXSEARCHINPUT").blur();
 	fdjtDOM.cancel(evt);}
     Codex.UI.handlers.onkeypress=onkeypress;
@@ -1132,7 +1103,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
 	if (!(hasClass(form,altclass))) {
 	    swapClass(form,glossmodes,altclass);
-	    input.focus();}
+	    Codex.focus(input);}
 	else {
 	    dropClass(form,glossmodes);
 	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}
