@@ -638,6 +638,12 @@ Codex.Startup=
 		Codex.pages=fdjtDOM("div#CODEXPAGES"));
 	    fdjtDOM(body,content,page);
 	    fdjtDOM.addClass(body,"sbook");
+	    var page_width=fdjtDOM.getGeometry(page).width;
+	    var view_width=fdjtDOM.viewWidth();
+	    var page_margin=(view_width-page_width)/2;
+	    if (page_margin>=50) {
+		page.style.left=page_margin+'px';
+		page.style.right=page_margin+'px';}
 	    applyMetaClass("sbookdetails");
 	    applyMetaClass("sbooknoteref");
 	    applyMetaClass("sbookbibref");

@@ -44,9 +44,32 @@ span.codexcssversion:after {
     z-index: 100;}
 div#CODEXPAGE {
     position: fixed; overflow: visible;
-    padding: 0px; margin: 0px; border: 0px;
+    padding: 0px; margin: 0px;
     left: 50px; right: 50px;
-    top: 60px; bottom: 60px;}
+    top: 60px; bottom: 60px;
+    border: solid transparent 3px;
+    border-radius: 1em; -webkit-border-radius: 1em;
+    -moz-border-radius: 1em; -o-border-radius: 1em;}
+body.hudup div#CODEXPAGE {
+    transition-property: opacity;
+    -webkit-transition-property: opacity;
+    -moz-transition-property: opacity;
+    -o-transition-property: opacity;
+    transition-duration: 1s; -webkit-transition-duration: 1s;
+    -moz-duration: 1s; -o-transition-duration: 1s;
+    border-color: gray; opacity: 0.8;}
+body.hudup div#CODEXPAGE div.codexpage {
+    transform: scale(0.9,0.9); -webkit-transform:scale(0.9,0.9);
+    -moz-transform: scale(0.9,0.9); -o-transform:scale(0.9,0.9);}
+body div#CODEXPAGE div.codexpage {
+    transform: scale(1,1); -webkit-transform:scale(1,1);
+    -moz-transform: scale(1,1); -o-transform:scale(1,1);
+    transition-property: transform;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    transition-duration: 1s; -webkit-transition-duration: 1s;
+    -moz-duration: 1s; -o-transition-duration: 1s;}
 div#CODEXPAGERIGHT {
     position: fixed; overflow: visible;
     padding: 0px; margin: 0px; border: 0px;
@@ -159,6 +182,7 @@ div#CODEXPAGINATING {
 /* The content */
 
 body.sbook { width: inherit;}
+body.sbook div#CODEXPAGE { max-width: 40em; }
 
 /* Display elements */
 
@@ -308,44 +332,6 @@ div.codexglossform form div.glossetc div.sharing
 div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue; text-decoration: underline;}
 div.codexglossform form div.glossetc span.checkspan input {}
-
-/*
-div.codexglossform form div.glossetc .sharing {
-    float: right; clear: right; text-align: right;
-    padding-bottom: 1ex; padding-top: 0.5ex; margin-bottom: 1ex;
-    padding-right: 0px;}
-div.codexglossform form div.glossetc .sharing .networks {
-    text-align: right;}
-div.codexglossform form div.glossetc .sharing .checkspan.button {
-    width: 24px; height: 24px; padding-left: 4px; padding-right: 0px;
-    border: solid silver 2px;}
-div.codexglossform form div.glossetc .sharing .checkspan.button input {
-    display: none;}
-div.codexglossform form div.glossetc .sharing .checkspan .checkspan {
-    display: none;}
-div.codexglossform form div.glossetc .sharing .checkspan.ischecked
-    .checkspan.button { display: inline;}
-
-div.codexglossform form div.glossetc .sharing .networks 
-   .button.checkspan img {
-       padding: 0px; margin: 0px;
-       width: 24px; height: 24px;}
-div.codexglossform form div.glossetc .sharing .networks 
-   .button.checkspan img.logo { width: 24px; height: 24px;}
-div.codexglossform form div.glossetc .sharing .networks 
-   .button.checkspan > img[alt='X'] {
-       position: relative; left: -20px; top: -2px;
-       margin: 0px; border-width: 0px; padding: 0px;
-       display: none;}
-div.codexglossform form div.glossetc .sharing .networks 
-   .button.checkspan.checked > img[alt='X'] {
-       display: none;}
-
-div.codexglossform form div.glossetc .sharing .checkspan.button > img {
-    padding: 1px; border: dotted red 2px; opacity: 0.5;}
-div.codexglossform form div.glossetc .sharing .checkspan.ischecked > img {
-    border: solid green 2px; opacity: 1.0;}
-*/
 
 span.facebook_share, span.twitter_share { display: none;}
 span.linkedin_share, span.google_share { display: none;}

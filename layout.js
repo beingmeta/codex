@@ -162,6 +162,12 @@ var CodexPaginate=
 	    else {}}
 	
 	CodexLayout.onresize=function(evt){
+	    var page_width=fdjtDOM.getGeometry(Codex.page).width;
+	    var view_width=fdjtDOM.viewWidth();
+	    var page_margin=(view_width-page_width)/2;
+	    if (page_margin>=50) {
+		page.style.left=page_margin+'px';
+		page.style.right=page_margin+'px';}
 	    Codex.Paginate("resize");};
 	
 	Codex.addConfig(
