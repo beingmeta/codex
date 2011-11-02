@@ -563,8 +563,10 @@ div#CODEXHUD div.hudpanel {
     opacity: 0.001; height: 0px; display: none;
     border-radius: 6px; -o-border-radius: 6px;
     -webkit-border-radius: 6px; -moz-border-radius: 6px;}
+body.hudup div#CODEXHUD div.hudpanel {opacity: 0.95;}
 div#CODEXHUD.codexanimate div.hudpanel {
-    transition-property: opacity,height; -o-transition-property: opacity,height;
+    transition-property: opacity,height;
+    -o-transition-property: opacity,height;
     -moz-transition-property: opacity,height;
     -webkit-transition-property: opacity,height; 
     transition-duration: 1.0s; -o-transition-duration: 1.0s;
@@ -715,7 +717,7 @@ body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
-    display: block; opacity: 0.9; min-height: 50px; height: auto;
+    display: block; min-height: 50px; height: auto;
     overflow: auto; border-color: darkblue;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -726,7 +728,7 @@ body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
-    display: block; height: auto; opacity: 0.9; overflow: hidden;
+    display: block; height: auto; overflow: hidden;
     border-color: silver;}
 
 body div#CODEXHUD div.hudpanel#CODEXTOC {
@@ -770,7 +772,7 @@ body.hudup div#CODEXHUD.help div.helphud { display: block;}
 body.hudup div#CODEXHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
 body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
     border-color: darkblue;
-    opacity: 0.95; min-height: 50px; height: auto;
+    min-height: 50px; height: auto;
     display: block;}
 
 body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES {
@@ -784,9 +786,6 @@ body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES {
 
 body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES.noglosses {
     display: none;}
-
-body.hudup div#CODEXHUD div#CODEXHEAD div.hudpanel {
-    opacity: 0.9;}
 
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     border-color: darkblue;
@@ -1457,6 +1456,12 @@ body div#CODEXHUD div#CODEXHUDBUTTONS {
 body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
     opacity: 0.5;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
+    transition-property: opacity;
+    -o-transition-property: opacity;
+    -moz-transition-property: opacity;
+    -webkit-transition-property: opacity; 
+    transition-duration: 1.0s; -o-transition-duration: 1.0s;
+    -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;
     display: block; opacity: 1.0;}
 body div#CODEXHUD div#CODEXHUDBUTTONS img[alt='Console'] {
     display: none;}
