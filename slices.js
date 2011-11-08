@@ -68,7 +68,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 		    ((info.shared)&&(info.shared.length)&&
 		     (info.shared.length<div_threshold)&&
 		     (showaudience(info.shared)))," ",
-		    ((info.excerpt)&&(showexcerpts(info.excerpt)))," ",
+		    ((info.excerpts)&&(showexcerpts(info.excerpts)))," ",
 		    ((info.links)&&(showlinks(info.links,"span.link")))," ",
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments")))," ",

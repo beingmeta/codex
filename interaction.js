@@ -140,8 +140,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var passage=getTarget(target);
 	if ((Codex.mode==="addgloss")&&
-	    (Codex.glosstarget===passage))
-	    CodexMode(true);
+	    (Codex.glosstarget===passage)) {
+	    fdjtUI.cancel(evt);
+	    CodexMode(true);}
 	else if (passage) {
 	    fdjtUI.cancel(evt);
 	    var form=Codex.setGlossTarget(passage);
@@ -224,18 +225,24 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (p) {
 		if ((Codex.mode==="addgloss")&&
 		    (fdjtID("CODEXLIVEGLOSS"))) {
-		    Codex.setExcerpt(fdjtID("CODEXLIVEGLOSS"),
-				     sel.toString(),
-				     ((Codex.glosstarget!==p)&&
-				      ((p.id)||p.codexid)));}
-		else Codex.excerpt=sel.toString();
+		    Codex.addExcerpt(
+			fdjtID("CODEXLIVEGLOSS"),
+			sel.toString(),
+			((Codex.glosstarget!==p)&&
+			 ((p.id)||p.codexdupid)));}
+		else {
+		    Codex.excerpt=sel.toString();
+		    tapTarget(p);}
 		return;}
 	    else CodexMode(false);}
 	if ((Codex.hudup)&&(passage)&&(Codex.mode==='addgloss')&&
 	    ((gloss_focus)||((fdjtTime()-gloss_blurred)<1000))) {
 	    if (passage===Codex.target) CodexMode(false);
 	    else tapTarget(passage);}
-	else if (((Codex.excerpt)||(Codex.hudup))&&(passage))
+	else if ((passage)&&(passage===Codex.target)&&(Codex.hudup)) {
+	    Codex.setTarget(false);
+	    CodexMode(false);}
+	else if (passage)
 	    tapTarget(passage);
 	else if ((Codex.mode)||(Codex.hudup))
 	    CodexMode(false);
@@ -247,9 +254,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (Codex.Trace.gestures)
 	    fdjtLog("Tap on target %o mode=%o",target,Codex.mode);
 	Codex.setTarget(target);
-	var form=Codex.setGlossTarget(target);
-	CodexMode("addgloss");
-	Codex.setGlossForm(form);}
+	addGlossButton(target);
+	CodexMode(true);}
 
     function edgeTap(evt,x){
 	if (!(evt)) evt=event||false;
@@ -401,7 +407,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		CodexMode(modearg); mode=modearg;}}
 	else {}
 	if (mode==="searching")
-	    Codex.focus(fdjtID("CODEXSEARCHINPUT"));
+	    Codex.setFocus(fdjtID("CODEXSEARCHINPUT"));
 	else fdjtID("CODEXSEARCHINPUT").blur();
 	fdjtDOM.cancel(evt);}
     Codex.UI.handlers.onkeypress=onkeypress;
@@ -640,7 +646,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		handled=true;
 		Codex.setGlossTarget(passage);
 		fdjtID("CODEXEXTRACT").passageid=
-		    (passage.id||(passage.codexid));
+		    (passage.id||(passage.codexdupid));
 		fdjtID("CODEXEXTRACT").value=text;
 		CodexMode("editexcerpt");},
 			    1000);}
@@ -659,8 +665,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var excerpt_elt=fdjtID("CODEXEXCERPT");
 	var form=fdjtID("CODEXLIVEGLOSS");
 	if (flag) {
-	    Codex.setExcerpt
-	    (form,text,excerpt_elt.passageid);
+	    Codex.addExcerpt(form,text,excerpt_elt.passageid);
 	    CodexMode("addgloss");}
 	else CodexMode("false");};
     
@@ -792,17 +797,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (!(glossmark)) return false;
 	fdjtUI.cancel(evt);
 	if ((Codex.mode==='glosses')&&(Codex.target===passage)) {
-	    CodexMode(false);
+	    CodexMode(true);
 	    return;}
-	else Codex.openGlossmark(passage);}
-    function glossmark_onmouseover(evt){
-	evt=evt||event||null;
-	var target=getTarget(fdjtUI.T(evt))
-	addClass(target,"sbooklivespot");}
-    function glossmark_onmouseout(evt){
-	evt=evt||event||null;
-	var target=getTarget(fdjtUI.T(evt));
-	dropClass(target,"sbooklivespot");}
+	else Codex.showGlosses(passage);}
 
     /* Moving forward and backward */
 
@@ -903,7 +900,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
 	    var head=Codex.head;
-	    var headid=head.id||head.codexid;
+	    var headid=head.id||head.codexdupid;
 	    var headinfo=Codex.docinfo[headid];
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanForward/toc() head=%o info=%o n=%o h=%o",
@@ -933,7 +930,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
 	    var head=Codex.head;
-	    var headid=head.id||head.codexid;
+	    var headid=head.id||head.codexdupid;
 	    var headinfo=Codex.docinfo[headid];
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",
@@ -1103,7 +1100,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
 	if (!(hasClass(form,altclass))) {
 	    swapClass(form,glossmodes,altclass);
-	    Codex.focus(input);}
+	    Codex.setFocus(input);}
 	else {
 	    dropClass(form,glossmodes);
 	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}

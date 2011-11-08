@@ -177,33 +177,22 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     }
     Codex.UI.handlers.sources_ontap=sources_ontap;
 
-    Codex.UI.addGlossmark=function(id){
-	var target=fdjtID(id);
-	if (!(target)) return false;
-	var glossmarkid="SBOOK_GLOSSMARK_"+id;
-	if (fdjtID(glossmarkid)) return fdjtID(glossmarkid);
+    Codex.UI.addGlossmark=function(passage){
+	var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
+	if ((glossmark)&&(glossmark.parentNode===passage))
+	    return glossmark;
 	var imgsrc=(cxicon("sbookspeople32x32.png"));
-	var glossmark=fdjtDOM
-	("span.codexglossmark",
-	 fdjtDOM.Image(imgsrc,"big","comments"),
-	 fdjtDOM.Image(sbicon("Asterisk16x16.png"),"tiny","+"));
-	glossmark.id=glossmarkid;
+	var glossmark=fdjtDOM(
+	    "span.codexglossmark",
+	    fdjtDOM.Image(imgsrc,"big","glosses"),
+	    fdjtDOM.Image(sbicon("Asterisk16x16.png"),"tiny","*"));
 	Codex.UI.addHandlers(glossmark,"glossmark");
-	if (sbook_glossmark_qricons) {
-	    var qrhref="http://"+Codex.server+"/v3/qricon.png?"+
-		"URI="+encodeURIComponent(Codex.refuri)+
-		((id)?("&FRAG="+id):"")+
-		((title) ? ("&TITLE="+encodeURIComponent(title)) : "");
-	    var i=0; while (i<tags.length) qrhref=qrhref+"&TAGCUE="+tags[i++];
-	    fdjtDOM.prepend(target,fdjtDOM.Image(qrhref,"sbookqricon"));}
-	fdjtDOM.addClass(target,"glossed");
-	fdjtDOM.prepend(target,glossmark);
-	glossmark.glosses=[];
-	glossmark.codexui=true;
+	fdjtDOM.addClass(passage,"glossed");
+	fdjtDOM.prepend(passage,glossmark);
 	return glossmark;};
-
-    function openGlossmark(target,addmark) {
-	var glosses=Codex.glosses.find('frag',target.id);
+    
+    function showGlosses(target) {
+	var glosses=Codex.glosses.find('frag',target.codexdupid||target.id);
 	var sumdiv=fdjtDOM("div.codexglosses.hudpanel");
 	if ((!(glosses))||(!(glosses.length)))
 	    fdjtDOM.addClass(sumdiv,"noglosses");
@@ -217,10 +206,8 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 		fdjtDOM(sumdiv,card);}}
 	fdjtDOM.replace("CODEXGLOSSES",sumdiv);
 	Codex.setTarget(target);
-	fdjtDOM.replace("SBOOKINFO",
-			Codex.glossBlock(target.id,"div.sbookgloss"));
 	CodexMode("glosses");}
-    Codex.openGlossmark=openGlossmark;
+    Codex.showGlosses=showGlosses;
 
 })();
 

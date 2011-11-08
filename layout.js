@@ -217,20 +217,29 @@ var CodexPaginate=
 		      logfn: fdjtLog};
 	    fdjtDOM.replace("CODEXPAGES",container);
 	    
-	    var avoidbreakinside=fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
+	    var avoidbreakinside=
+		fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
 	    if (avoidbreakinside) args.avoidbreakinside=avoidbreakinside;
 
-	    var forcebreakbefore=fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
+	    var forcebreakbefore=
+		fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
 	    if (forcebreakbefore) args.forcebreakbefore=forcebreakbefore;
-	    var forcebreakafter=fdjtDOM.sel(fdjtDOM.getMeta("forcebreakafter",true));
+
+	    var forcebreakafter=
+		fdjtDOM.sel(fdjtDOM.getMeta("forcebreakafter",true));
 	    if (forcebreakafter) args.forcebreakafter=forcebreakafter;
 
-	    var avoidbreakafter=fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakafter",true));
+	    var avoidbreakafter=
+		fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakafter",true));
 	    if (avoidbreakafter) args.avoidbreakafter=avoidbreakafter;
-	    var avoidbreakbefore=fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakbefore",true));
+
+	    var avoidbreakbefore=
+		fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakbefore",true));
 	    if (avoidbreakbefore) args.avoidbreakbefore=avoidbreakbefore;
+	    
 	    var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
 	    if (fullpages) args.fullpages=fullpages;
+	    
 	    var floatpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfloatpage",true));
 	    if (floatpages) args.floatpages=floatpages;
 
@@ -279,7 +288,12 @@ var CodexPaginate=
 		var location=parseInt(page.getAttribute("data-sbookloc"));
 		Codex.setLocation(location);}
 	    updatePageDisplay(pagenum,Codex.location);
-	    curpage=page; Codex.curpage=pagenum;}
+	    curpage=page; Codex.curpage=pagenum;
+	    var glossed=fdjtDOM.$(".glossed",page);
+	    if (glossed) {
+		var addGlossmark=Codex.UI.addGlossmark;
+		var i=0; var lim=glossed.length;
+		while (i<lim) addGlossmark(glossed[i++]);}}
 	Codex.GoToPage=GoToPage;
 	
 	function getPage(arg){

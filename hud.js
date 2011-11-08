@@ -100,22 +100,26 @@ var CodexMode=
 		Codex.sourcekb.ref(v).oninit
 		(Codex.UI.addGlossSource,"newsource");});
 
-	    function initUI4Item(item){
+	    function addGloss2UI(item){
 		if (document.getElementById(item.frag)) {
+		    var addGlossmark=Codex.UI.addGlossmark;
 		    Codex.UI.addToSlice(item,glosses,false);
-		    var glossmark=Codex.UI.addGlossmark(item.frag); {
-			if (glossmark) {
-			    var curglosses=glossmark.glosses;
-			    curglosses.push(item._id);}
-			if (item.tstamp>Codex.syncstamp)
-			    Codex.syncstamp=item.tstamp;
-			var pic=((fdjtKB.ref(item.maker)).pic)||
-			    ((fdjtKB.ref(item.feed)).pic);
-			if (pic) {
-			    var img=fdjtDOM.getFirstChild(glossmark,"IMG.big");
-			    if (img) img.src=pic;}}
+		    var node=fdjtID(item.frag);
+		    if (node) {
+			addClass(node,"glossed");
+			addGlossmark(node);}
+		    var dups=((Codex.paginated)&&(Codex.paginated.dups)&&
+			      (Codex.paginated.dups[item.frag]))
+		    if (dups) {
+			var i=0, lim=dups.length;
+			while (i<lim) {
+			    var dup=dups[i++];
+			    addClass(dup,"glossed");
+			    addGlossmark(dup);}}
+		    if (item.tstamp>Codex.syncstamp)
+			Codex.syncstamp=item.tstamp;
 		    if (item.tags) addTag2UI(item.tags,true);}}
-	    Codex.glosses.addInit(initUI4Item);
+	    Codex.glosses.addInit(addGloss2UI);
 
 	    function addTag2UI(tag,forsearch){
 		if (!(tag)) return;
@@ -385,7 +389,7 @@ var CodexMode=
 
 	function focus(input){
 	    input.focus(); Codex.liveinput=input;}
-	Codex.focus=focus;
+	Codex.setFocus=focus;
 
 	function fadeUpHUD(){
 	    fdjtLog("Setting properties");

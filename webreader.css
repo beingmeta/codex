@@ -732,6 +732,9 @@ body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     display: block; height: auto; overflow: hidden;
     border-color: silver;}
 
+body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
+    opacity: 0.95;}
+
 body div#CODEXHUD div.hudpanel#CODEXTOC {
     max-height: 50px;}
 body.hudup div#CODEXHUD div.hudpanel#CODEXTOC,
@@ -1933,7 +1936,7 @@ body.hudup .codexglossmark { opacity: 0.6; display: block;}
 .codexglossmark img.tiny, span.codexglossmark img.big { visibility: hidden;}
 
 .codexglossbutton {
-    float: left; text-align: left;
+    position: absolute; left: 0px;
     margin: 0px; padding: 0px; text-indent: 0px; 
     border: solid transparent 2px;
     width: 32px; height: 32px; z-index: 50;
@@ -1941,8 +1944,15 @@ body.hudup .codexglossmark { opacity: 0.6; display: block;}
     margin-left: -50px;
     opacity: 0.0001;
     display: none;}
+.codexglossbutton {
+    box-shadow: 0.3em 0.3em 0.3em #cccccc;
+    -webkit-box-shadow: 0.3em 0.3em 0.3em #cccccc;
+    -moz-box-shadow: 0.3em 0.3em 0.3em #cccccc;
+    -o-box-shadow: 0.3em 0.3em 0.3em #cccccc;}
 body.hudup .codexglossbutton { opacity: 0.5;}
 body.hudup .sbooktarget .codexglossbutton { display: block;}
+body.hudup .sbooktarget.codexglosstarget .codexglossbutton {
+    background-color: lightblue;}
 
 /* Sparse glossmark display (the default) */
 
@@ -1958,12 +1968,12 @@ body .codexglossmark:hover img.tiny { visibility: hidden;}
 
 .sbooktarget { }
 body.hudup .sbooktarget, body.sbookscanning .sbooktarget {
-    background-color: lightblue; cursor: pointer;
-    box-shadow: 1em 1em 1em #cccccc;
-    -webkit-box-shadow: 1em 1em 1em #cccccc;
-    -moz-box-shadow: 1em 1em 1em #cccccc;
-    -o-box-shadow: 1em 1em 1em #cccccc;}
-
+    cursor: pointer;
+    box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;}
+ 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
    */

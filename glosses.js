@@ -89,7 +89,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    response=true;
 	else {}
 	var passage=((gloss)?(fdjtID(gloss.frag)):(arg));
-	var passageid=((passage.id)||(passage.codexid));
+	var passageid=((passage.id)||(passage.codexdupid));
 	var formid=((gloss)?
 		    ((response)?
 		     ("CODEXRESPONDGLOSS_"+gloss._id):
@@ -111,13 +111,13 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else addClass(div,"glossedit");}
 	// Use any current selection to add as an excerpt
 	if (Codex.excerpt) {
-	    if (Codex.excerpt.length) setExcerpt(form,Codex.excerpt);
+	    if (Codex.excerpt.length) addExcerpt(form,Codex.excerpt);
 	    Codex.excerpt=false;}
 	return div;}
     Codex.getGlossForm=getGlossForm;
     
     function setupGlossForm(form,passage,gloss,response){
-	var passageid=((passage.id)||(passage.codexid));
+	var passageid=((passage.id)||(passage.codexdupid));
 	if (form.getAttribute("sbooksetup")) return;
 	form.onsubmit=submitGloss;
 	fdjtDOM.getInput(form,"REFURI").value=Codex.refuri;
@@ -253,15 +253,18 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	return aspan;}
 
     /***** Adding excerpts ******/
-    function setExcerpt(form,excerpt,id) {
-	var input=fdjtDOM.getInput(form,'EXCERPT');
-	var form_elt=((form.tagName==='form')?(form):
-		      (fdjtDOM.getChild(form,"form")));
-	addClass(form,"hasexcerpt");
-	if (form_elt) swapClass(form_elt,glossmodes,"excerpt");
-	
-	input.value=excerpt;}
-    Codex.setExcerpt=setExcerpt;
+    function addExcerpt(form,excerpt) {
+	var excerpts=fdjtDOM.getChild(form,'.excerpts');
+	var inputs=fdjtDOM.getInputs(excerpts,'EXCERPTS');
+	var i=0; var lim=inputs.length;
+	while (i<lim) {
+	    var input=inputs[i++];
+	    if (input.value===excerpt) {}}
+	var input=fdjtDOM.Checkbox("EXCERPTS",excerpt,true);
+	var checkspan=fdjtDOM(
+	    "span.checkspan",input,fdjtDOM("span.excerpt",excerpt));
+	fdjtDOM(excerpts,checkspan," ");}
+    Codex.addExcerpt=addExcerpt;
 
     /***** Adding tags ******/
     function addTag(form,tag,varname,checked) {
@@ -324,6 +327,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
     // The target can be either a passage or another gloss
     function setGlossTarget(target,form){
+	if (Codex.glosstarget) {
+	    dropClass(Codex.glosstarget,"codexglosstarget");}
 	if (!(target)) {
 	    var cur=fdjtID("CODEXLIVEGLOSS");
 	    if (cur) cur.id=null;
@@ -342,6 +347,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    gloss=target; target=fdjtID(gloss.frag);}
 	else {}
 	Codex.glosstarget=target;
+	addClass(target,"codexglosstarget");
 	Codex.setTarget(target);
 	setCloudCuesFromTarget(gloss_cloud,target);
 	setGlossForm(form);
@@ -389,7 +395,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		fdjtDOM.addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
 	var tags=[];
-	var targetid=((target.id)||(target.codexid));
+	var targetid=((target.id)||(target.codexdupid));
 	var info=Codex.docinfo[targetid];
 	var glosses=Codex.glosses.find('frag',targetid);
 	var knodule=Codex.knodule;
@@ -806,7 +812,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtUI.cancel(evt);}
 
     Codex.setInfoTarget=function(passage){
-	var passageid=((passage.id)||(passage.codexid));
+	var passageid=((passage.id)||(passage.codexdupid));
 	var infodiv=Codex.glossBlock(passageid,"div.sbookgloss")
 	fdjtDOM.replace("SBOOKTARGETINFO",infodiv);
 	fdjtDOM.adjustToFit(fdjtID("SBOOKFOOTINFO"));}
