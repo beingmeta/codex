@@ -242,7 +242,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else if ((passage)&&(passage===Codex.target)&&(Codex.hudup)) {
 	    Codex.setTarget(false);
 	    CodexMode(false);}
-	else if (passage)
+	else if ((passage)&&(!(((Codex.mode)||(Codex.hudup)))))
 	    tapTarget(passage);
 	else if ((Codex.mode)||(Codex.hudup))
 	    CodexMode(false);
