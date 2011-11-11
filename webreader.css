@@ -1343,6 +1343,7 @@ div.searchbox.notags div.resultinfo span { display: none;}
 /* Tag clouds */
 
 div.completions .label { float: left; opacity: 0.7;}
+div.completions .completion:hover { text-decoration: underline; }
 
 div.completions .cloudtoggle {
     float: right; display: none;}
