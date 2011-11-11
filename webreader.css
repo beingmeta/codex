@@ -1938,14 +1938,9 @@ body.hudup .codexglossmark { opacity: 0.6; display: block;}
     border: solid transparent 2px;
     width: 32px; height: 32px; z-index: 50;
     border-right-width: 0px;
-    margin-left: -50px;
+    /* margin-left: -50px; */
     opacity: 0.0001;
     display: none;}
-.codexglossbutton {
-    box-shadow: 0.3em 0.3em 0.3em #cccccc;
-    -webkit-box-shadow: 0.3em 0.3em 0.3em #cccccc;
-    -moz-box-shadow: 0.3em 0.3em 0.3em #cccccc;
-    -o-box-shadow: 0.3em 0.3em 0.3em #cccccc;}
 body.hudup .codexglossbutton { opacity: 0.5;}
 body.hudup .sbooktarget .codexglossbutton { display: block;}
 body.hudup .sbooktarget.codexglosstarget .codexglossbutton {
@@ -1965,11 +1960,7 @@ body .codexglossmark:hover img.tiny { visibility: hidden;}
 
 .sbooktarget { }
 body.hudup .sbooktarget, body.sbookscanning .sbooktarget {
-    cursor: pointer;
-    box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;}
+    cursor: pointer;}
  
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
