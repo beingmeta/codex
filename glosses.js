@@ -136,7 +136,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    noteinput.onkeydown=addgloss_keydown;
 	    if ((gloss)&&(!(response))) noteinput.value=gloss.note||"";
 	    else noteinput.value="";}
-	if (taginput) taginput.onkeypress=addtag_keypress;
+	if (taginput) taginput.onkeyup=addtag_keypress;
 	if (linkinput) linkinput.onkeypress=addlink_keypress;
 	if (Codex.syncstamp)
 	    fdjtDOM.getInput(form,"SYNC").value=(Codex.syncstamp+1);
@@ -485,13 +485,14 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var content=target.value;
 	var form=fdjtDOM.getParent(target,"FORM");
-	var ch=evt.keyCode;
+	var ch=evt.keyCode||evt.charCode;
 	if ((fdjtString.isEmpty(content))&&(ch===13)) {
 	    submitEvent(target);
 	    return;}
-	if (content.length===0) return;
-	var completions=gloss_cloud.complete(content);
-	if (ch===13) {
+	if (content.length===0) {
+	    gloss_cloud.complete("");
+	    return;}
+	else if (ch===13) {
 	    if ((content.indexOf('|')>=0)||
 		(content.indexOf('@')>=0)||
 		(completions.length===0)||
@@ -500,7 +501,10 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else addTag(form,completions[0]);
 	    fdjtUI.cancel(evt);
 	    target.value="";
-	    gloss_cloud.complete("");}}
+	    gloss_cloud.complete("");}
+	else setTimeout(function(evt){
+	    gloss_cloud.complete(target.value);},
+			100);}
 
     /* This handles embedded brackets */
     function addgloss_keypress(evt){
@@ -601,8 +605,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (completion) {
 	    var live=fdjtID("CODEXLIVEGLOSS");
 	    var form=((live)&&(fdjtDOM.getChild(live,"form")));
-	    addTag(form,completion);
-	    dropClass("CODEXADDGLOSS","tagging");}
+	    addTag(form,completion);}
 	fdjtUI.cancel(evt);}
 
     /***** Saving (submitting/queueing) glosses *****/
