@@ -663,11 +663,20 @@ var sbook_gloss_data=
     Codex.anchorFn=anchorFn;
 
     // This jumps and disables the HUD at the same time
-    // We try to animate the transition
     function CodexJumpTo(target){
       if (Codex.hudup) CodexMode(false);
       CodexGoTo(target);}
     Codex.JumpTo=CodexJumpTo;
+
+    // This jumps and disables the HUD at the same time
+    // We try to animate the transition
+    function CodexScanTo(target){
+	if (Codex.hudup) { // Figure out what mode to go to
+	    var headinfo=Codex.docinfo[target]||Codex.docinfo[target.id];
+	    if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0)))
+		CodexMode("tocscan");}
+	CodexGoTo(target);}
+    Codex.ScanTo=CodexScanTo;
 
     function getLevel(elt){
 	if (elt.toclevel) {

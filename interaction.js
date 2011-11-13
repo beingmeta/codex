@@ -314,9 +314,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (about=scan.about) break;
 	    else if (frag=scan.frag) break;
 	    else scan=scan.parentNode;}
-	if (frag) {Codex.JumpTo(frag); fdjtUI.cancel(evt);}
+	if (frag) {Codex.ScanTo(frag); fdjtUI.cancel(evt);}
 	else if ((about)&&(about[0]==='#')) {
-	    Codex.JumpTo(about.slice(0)); fdjtUI.cancel(evt);}
+	    Codex.ScanTo(about.slice(0)); fdjtUI.cancel(evt);}
 	else if ((about)&&(gloss=Codex.glosses.ref(about))) {
 	    Codex.setGlossTarget(gloss);	    
 	    CodexMode("addgloss");
