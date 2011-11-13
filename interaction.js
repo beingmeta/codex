@@ -520,7 +520,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (!(mode)) return;
 	var hudid=((mode)&&(mode_hud_map[mode]));
 	var hud=fdjtID(hudid);
-	if (mode==='flyleaf') mode=Codex.last_flyleaf||"help";
 	if ((evt.type==='click')||(evt.type==='touchend')) {
 	    if (hud) dropClass(hud,"hover");
 	    if (fdjtDOM.hasClass(Codex.HUD,mode)) CodexMode(false);

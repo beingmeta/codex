@@ -143,7 +143,7 @@ div#CODEXHUD div#CODEXFLYTOC div.spans a.codextitle { display: none;}
 div#CODEXHUD div#CODEXFLYTOC div.codextoc div.spanbar { display: block;}
 
 div#CODEXTOC div.spanbar {
-  border-top: solid blue 1px; border-right: solid blue 1px;}
+    border-top: solid blue 1px; border-right: solid blue 1px;}
 div#CODEXTOC div.codextoc.cxt div.spanbar {
     border-bottom: solid blue 1px;}
 div.spanbar div.spans { 
@@ -163,6 +163,8 @@ div.spanbar div.codexhudspan {
   background-color: transparent; clear: none; position: absolute;
   margin: 0px; padding: 0px; border: 0px;
   border-right: none; border-left: none;}
+div#CODEXFLYTOC div.spanbar div.codexhudspan {
+    border-top: solid blue 1px; border-bottom: solid blue 1px;}
 div.spanbar div.codexhudspan a.brick {
   display: block; text-decoration: none;
   border: 0px; padding: 0px;

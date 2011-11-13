@@ -255,7 +255,7 @@ var CodexMode=
 	/* Mode controls */
 	
 	var CodexMode_pat=/\b((device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
-	var codexflyleafMode_pat=/\b((device)|(sbookapp)|(flytoc)|(allglosses)|(about)|(console))\b/g;
+	var codexflyleafMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console))\b/g;
 	var sbook_mode_scrollers=
 	    {allglosses: "CODEXALLGLOSSES",
 	     searchresults: "CODEXSEARCHRESULTS",
@@ -281,6 +281,7 @@ var CodexMode=
 	    if (typeof mode === 'undefined') return oldmode;
 	    if (mode==='last') mode=Codex.last_mode||'help';
 	    if (mode==='none') mode=false;
+	    if (mode==='flyleaf') mode=Codex.flyleaf_mode||"about";
 	    if (Codex.Trace.mode)
 		fdjtLog("CodexMode %o, cur=%o dbc=%o",
 			mode,Codex.mode,document.body.className);
@@ -333,8 +334,9 @@ var CodexMode=
 		else dropClass(document.body,"sbookscanning");
 		// Update the 'flyleaf' meta mode
 		if ((mode)&&(typeof mode === 'string')) {
-		    if (mode.search(codexflyleafMode_pat)===0)
-			addClass(CodexHUD,"flyleaf");
+		    if (mode.search(codexflyleafMode_pat)===0) {
+			Codex.flyleaf_mode=mode;
+			addClass(CodexHUD,"flyleaf");}
 		    else dropClass(CodexHUD,"flyleaf");
 		    fdjtID("CODEXBUTTON").className=mode;}
 		// Help mode (on the hud) actually dims the body
@@ -360,7 +362,7 @@ var CodexMode=
 			     100);}
 		// If we're scanning all glosses, we sync the glosses
 		//  with the current book location.
-		if ((mode==="allglosses")&&
+		if ((mode==="allglosses")&&(false)&&
 		    (Codex.curinfo)&&(Codex.curinfo.first)) {
 		    Codex.UI.scrollGlosses(
 			Codex.curinfo.first,fdjtID("CODEXALLGLOSSES"));}

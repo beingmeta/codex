@@ -70,11 +70,6 @@
 	   alt="Help" class="tab" contentid="CODEXHELP"
 	   onclick="CodexMode.toggle('help',true); return fdjtUI.cancel(event);"
 	   title="help about using sBooks"/>
-      <img src="http://static.beingmeta.com/graphics/codex/GlossesTab50h.png"
-	   alt="Glosses" title="browse all glosses overlaid on this book"
-	   onclick="CodexMode.toggle('allglosses'); return fdjtUI.cancel(event);"
-	   class="tab" id="CODEXALLGLOSSESBUTTON"
-	   hudmode="allglosses"/>
     </div> <!-- .tabbar -->
   </div> <!-- id="CODEXHUDBUTTONS" -->
   <div id="CODEXGOTOLOC" class="hudpanel codexgoto">
@@ -144,6 +139,22 @@
       <!-- This is generated on demand -->
     </div>
   </div>
+  <div id="CODEXBROWSEGLOSSES" class="hudpanel">
+    <!-- This contains renderings of all the glosses, with
+	 a list of sources on top -->
+    <div id="CODEXSOURCES" class="sbooksources"
+	 onclick="Codex.UI.handlers.sources_ontap(event);">
+      <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
+	   class="button everyone selected"
+	   alt="show all" title="click to see all glosses"
+	   onclick="Codex.UI.handlers.everyone_ontap(event);"/>
+    </div>
+    <div class="scrollbox">
+      <div id="CODEXALLGLOSSES" class="codexslice">
+	<!-- This is filled in on demand -->
+      </div>
+    </div>
+  </div>
   <div id="CODEXGLOSSES" class="hudpanel">
     <!-- This is populated when a glosspoint is tapped -->
   </div>
@@ -158,6 +169,20 @@
   <!-- This content comes from flyleaftext.html -->
 </div>
 <div id="CODEXFOOT">
+  <img src="http://static.beingmeta.com/graphics/codex/AllGlosses50x50.png"
+       alt="toc" title="click to see all glosses"
+       class="hudbutton hudmodebutton botleft" id="CODEXALLGLOSSESBUTTON"
+       hudmode="allglosses"/>
+  <img src="http://static.beingmeta.com/graphics/codex/WrenchIcon50x50.png"
+       alt="search" title="click to search tags within the book"
+       class="hudbutton hudmodebutton botright" id="CODEXFLYLEAFBUTTON"
+       hudmode="flyleaf"/>
+  <div class="helphud botleft" data-hudmode="toc">
+    <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
+    <span class="nobreak">glosses</span></div>
+  <div class="helphud botright" data-hudmode="search">
+    <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
+    see&nbsp;tools</div>
   <div class="helphud botcenter">
     <span class="fortouch">tap</span><span class="notouch">click</span>
     here to hide tools or<br/>jump within the document

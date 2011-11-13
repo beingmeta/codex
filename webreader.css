@@ -624,6 +624,7 @@ body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
 body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
 body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
+body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     display: block; min-height: 50px; height: auto;
     overflow: auto; border-color: darkblue;
@@ -634,12 +635,8 @@ body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     -webkit-transition-property: height,opacity;
     -webkit-transition-duration: 1s;}
 
-/*
-body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
-body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
-    display: block; min-height: 50px; height: auto;
-    overflow: auto;}
-*/
+body.hudup div#CODEXHUD div.hudpanel#CODEXBROWSEGLOSSES {
+    max-height: 85%;}
 
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
