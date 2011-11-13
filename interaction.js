@@ -242,7 +242,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else if ((passage)&&(passage===Codex.target)&&(Codex.hudup)) {
 	    Codex.setTarget(false);
 	    CodexMode(false);}
-	else if ((passage)&&(!(((Codex.mode)||(Codex.hudup)))))
+	else if (passage)
 	    tapTarget(passage);
 	else if ((Codex.mode)||(Codex.hudup))
 	    CodexMode(false);
@@ -306,7 +306,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		Codex.setGlossTarget(gloss);	    
 		CodexMode("addgloss");}
 	    else if (card.about) {
-		Codex.GoTo(card.about);}
+		Codex.JumpTo(card.about);}
 	    fdjtUI.cancel(evt);
 	    return;}
 	var scan=target, about=false, frag=false, gloss=false;
@@ -314,9 +314,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (about=scan.about) break;
 	    else if (frag=scan.frag) break;
 	    else scan=scan.parentNode;}
-	if (frag) {Codex.GoTo(frag); fdjtUI.cancel(evt);}
+	if (frag) {Codex.JumpTo(frag); fdjtUI.cancel(evt);}
 	else if ((about)&&(about[0]==='#')) {
-	    Codex.GoTo(about.slice(0)); fdjtUI.cancel(evt);}
+	    Codex.JumpTo(about.slice(0)); fdjtUI.cancel(evt);}
 	else if ((about)&&(gloss=Codex.glosses.ref(about))) {
 	    Codex.setGlossTarget(gloss);	    
 	    CodexMode("addgloss");
