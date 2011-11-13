@@ -93,19 +93,19 @@ var CodexTOC=
 			    generate_subsections(headinfo));
 	    var sub=headinfo.sub;
 	    if (!(depth)) depth=0;
-	    head.name="SBR"+headinfo.frag;
-	    head.frag=headinfo.frag;
+	    if (head) {
+		head.name="SBR"+headinfo.frag;
+		head.frag=headinfo.frag;}
 	    toc.sbook_start=headinfo.starts_at;
 	    toc.sbook_end=headinfo.ends_at;
 	    fdjtDOM.addClass(toc,"toc"+depth);
 	    toc.id=(prefix||"CODEXTOC4")+headinfo.frag;
-	    head.name="SBR"+headinfo.frag;
-	    if ((!(sub)) || (!(sub.length))) {
+	    if ((!(sub))||(!(sub.length))) {
 		fdjtDOM.addClass(toc,"codextocleaf");
 		return toc;}
 	    var i=0; var n=sub.length;
 	    while (i<n) {
-		toc.appendChild(CodexTOC(sub[i++],depth+1,spec,prefix));}
+		toc.appendChild(CodexTOC(sub[i++],depth+1,spec,prefix,headless));}
 	    return toc;}
 	
 	function tocJump(evt,target){
@@ -165,11 +165,15 @@ var CodexTOC=
 		else {
 		    spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
 		    sectnum++;}
-		var span=generate_span
-		(sectnum,subsection,spaninfo.title,spanstart,spanend,len,
-		 ((addname)&&("SBR"+spaninfo.frag)),start);
+		var span=generate_span(
+		    sectnum,subsection,spaninfo.title,spanstart,spanend,len,
+		    ((addname)&&("SBR"+spaninfo.frag)),start);
 		lastspan=span;
 		spans.appendChild(span);
+		if (addname) {
+		    var anchor=fdjtDOM("A.codextitle",spaninfo.title);
+		    anchor.name="SBR"+spaninfo.frag;
+		    spans.appendChild(anchor);}
 		last_info=spaninfo;}
 	    if ((end-last_info.ends_at)>0) {
 		/* Add 'fake section' for the content after the last
@@ -197,24 +201,15 @@ var CodexTOC=
 
 	var dropClass=fdjtDOM.dropClass;
 	var addClass=fdjtDOM.addClass;
-	function updateTOC(prefix,head,cur){
+	var getChildren=fdjtDOM.getChildren;
+	function updateTOC(prefix,head,container){
 	    if (!(prefix)) prefix="CODEXTOC4";
-	    if (cur) {
-		// Hide the current head and its (TOC) parents
-		var tohide=[];
-		var spans=document.getElementsByName("SBR"+cur.frag);
-		var base_elt=document.getElementById(prefix+cur.frag);
-		fdjtDOM.dropClass(spans,"live");
-		while (cur) {
-		    var tocelt=document.getElementById(prefix+cur.frag);
-		    tohide.push(tocelt);
-		    // Get TOC parent
-		    cur=cur.head;}
-		var n=tohide.length-1;
-		// Go backwards (up) to potentially accomodate some redisplayers
-		while (n>=0) {
-		    dropClass(tohide[n--],/\b(live|cxt)\b/g);}
-		dropClass(base_elt,"cur");}
+	    var cur=((container)?(getChildren(container,".cur")):
+		     (getChildren(document.body,".cur")));
+	    var live=((container)?(getChildren(container,".live")):
+		      (getChildren(document.body,".live")));
+	    dropClass(cur,"cur");
+	    dropClass(live,"live");
 	    if (!(head)) return;
 	    var base_elt=document.getElementById(prefix+head.frag);
 	    var toshow=[]; var base_info=head;
@@ -231,7 +226,7 @@ var CodexTOC=
 	    else {}
 	    addClass(base_elt,"cur");
 	    // Go backwards to accomodate some redisplayers
-	    while (n>=0) {addClass(toshow[n--],"live");}};
+	    while (n>=0) {addClass(toshow[n--],"live");}}
 	CodexTOC.update=updateTOC;
 
 	return CodexTOC;})();

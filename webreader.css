@@ -440,108 +440,10 @@ div.sbooksources div.button.source {
     text-align: center; vertical-align: top;
     clear: none;}
 
-/* TOC rules */
-
-div.codextoc { display: none;}
-div.codextoc > div, div.codextoc > div.head {
-    margin-left: 32px; margin-right: 32px;}
-div.codextoc div.head {
-  position: relative; margin: 0px; padding: 0px; border: 0px;
-  left: 0px; right: 0px; margin: 0px;
-  margin-left: 32px; margin-right: 32px;
-  display: none;}
-div.codextoc > div.spanbar {
-  margin-left: 0px; margin-right: 0px;}
-
-div.codextoc div.head { min-height: 24px;}
-div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
-body.sbooktouchui div.codextoc div.head { min-height: 32px;}
-body.sbooktouchui div#CODEXFLYTOC div.codextoc div.head {
-    min-height: 24px;}
-
-div.codextoc div.head .progressbar { 
-  color: lightblue; background-color: lightblue;
-  padding: 0px; margin: 0px; border-right: solid red 3px;
-  position: absolute;  left: 0px; height: 100%;
-  z-index: -100; opacity: 0.5;}
-div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
-    float: right; cursor: pointer; z-index: 100;}
-div.codextoc img[alt='back'], div.codextoc img[alt='backstop'] {
-    float: left; cursor: pointer; z-index: 100;}
-
-/* Conditional display, so only the live elements are displayed */
-div.codextoc.live { display: block;}
-div.codextoc.live div.head { display: block;}
-
-div.codextoc.live div.codextoc { display: none;}
-div.codextoc.live div.codextoc.live { display: block;}
-
-div.codextoc div.sub {
-    display: none; clear: both;}
-div.codextoc.cur div.head { font-size: 125%;}
-div.codextoc.cur div.sub { display: block;}
-
-/* sbook 'slices' of summaries or glosses */
-
-div.codexslice.sourced div.codexcard { display: none;}
-div.codexslice.sourced div.codexcard.sourced { display: block;}
-
-div.codexslice.sourced div.codexthread { display: none;}
-div.codexslice.sourced div.codexthread > div { display: none;}
-div.codexslice.sourced div.codexthread.sourced { display: block;}
-div.codexslice.sourced div.codexthread.sourced > div.tochead { display: block;}
-div.codexslice.sourced div.codexthread.sourced > div.idhead { display: block;}
-div.codexslice.sourced div.codexthread.sourced > div.codexthread { display: none;}
-div.codexslice.sourced div.codexthread.sourced > div.codexthread.sourced {
-    display: block;}
-
-div.codexslice.onepassage .tocblock .tochead {display:none;}
-
 span.excerpt { font-size: 120%; color: gray; background-color: yellow;}
 span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
-
-div.codexcard { margin-left: 20px; margin-right: 0px;}
-div.codexcard div.idhead { margin-left: -10px;  }
-div.codexcard div.tochead { margin-left: -20px; }
-
-div.glosses div.codexcard > div.idhead { display: none;}
-div.glosses div.codexcard > div.tochead { display: none;}
-
-div.codexslice .tocthread {}
-div.codexslice .tocthread .codexcard .tochead { display: none;}
-div.codexslice .idthread .codexcard .idhead { display: none;}
-
-div.codexslice .tocthread .idthread:first-child
-      .codexcard:first-child .tochead {
-    display: block;}
-div.codexslice .idthread > .codexcard:first-child .idhead {
-    display: block;}
-
-div.codexslice .codexcard div.detail { 
-  display: none; color: ivory; clear: both;}
-div.codexslice .showdetail div.detail { display: block;}
-div.codexslice div.xrefs { display: none;}
-div.codexslice .showxrefs div.xrefs { display: block;}
-div.codexslice div.xrefs a { display: block;}
-
-div.codexthread {
-    clear: both; margin: 0px; border: none;
-    border-right: gold solid 3px;}
-div#CODEXGLOSSES div.codexthread { border-right-width: 0px;}
-div.codexthread.singleton,
-div#SBOOKGLOSSES div.codexthread {
-    border-left: none; margin-left: 0px;
-    padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
-div.codexthread .locbar { background-color: silver;}
-div.codexthread.headthread { border-top: solid gold 2px;}
-div.codexthread.idthread {border: none;}
-div.codexthread.idthread .codexcard {}
-div.codexslice div.codexthread div.codexcard div.locbar {border: none;}
-div.codexslice div.codexthread div.codexcard div.locbar {display:none;}
-div.codexslice div.codexthread div.codexcard:first-child div.locbar {
-    display:block;}
 
 /* The HUD */
 
@@ -549,6 +451,7 @@ div.codexslice div.codexthread div.codexcard:first-child div.locbar {
 #CODEXHUD a img { border: transparent;}
 #CODEXHUD a:hover img { border: inherit;}
 #CODEXHUD a:hover { text-decoration: underline;}
+#CODEXHUD a.brick:hover { text-decoration: none;}
 
 /* HUD panels */
 
@@ -584,6 +487,8 @@ div#CODEXHUD div.hudpanel.codexcard {
     -webkit-border-top-right-radius: 0px; 
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
+
+body.sbooktouchui .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
 div#CODEXHUD div.hudpanel div.scrollbox {
   overflow: auto;}
@@ -708,7 +613,6 @@ body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
 /* Mode display rules */
 
 body.hudup div#CODEXHUD.help div.hudpanel#CODEXHELP,
-body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCH,
 body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCH,
 body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
@@ -716,7 +620,6 @@ body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
-body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     display: block; min-height: 50px; height: auto;
     overflow: auto; border-color: darkblue;
@@ -726,6 +629,12 @@ body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-transition-property: height,opacity;
     -webkit-transition-duration: 1s;}
+
+body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
+body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
+    display: block; min-height: 50px; height: auto;
+    overflow: auto;}
+
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
@@ -805,6 +714,11 @@ div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
 
 div#CODEXHUD.addgloss div#CODEXADDGLOSS.tagging div.completions#CODEXGLOSSCLOUD {
     display: block;}
+
+div#CODEXGLOSSES div.codexthread { border-right-width: 0px;}
+div#SBOOKGLOSSES div.codexthread {
+    border-left: none; margin-left: 0px;
+    padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
 
 body.hudup div#CODEXHUD.addgloss .hudbutton { opacity: 0.15;}
 
@@ -971,105 +885,6 @@ div#CODEXHUD div.hudpanel#CODEXGLOSSLEAF {
     -moz-border-radius-bottomright: 0px; -webkit-border-bottom-right-radius: 0px;}
 body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXGLOSSLEAF {
     right: 0px;}
-
-/* TOCSCAN */
-
-div#CODEXHUD.tocscan div.codextoc.cur div.sub { display: none;}
-
-body.hudup div#CODEXHUD.tocscan div.codextoc.live div.head,
-body.hudup div#CODEXHUD.tocscan div.codextoc.live img {
-    height: 0px;}
-body.hudup div#CODEXHUD.tocscan div.codextoc.live.cur > div.head,
-body.hudup div#CODEXHUD.tocscan div.codextoc.live.cur > img {
-    height: inherit;}
-
-div#CODEXFLYLEAF div#FLYTOC div.codextoc {
-    display: block; font-size: 90%; text-align: left;}
-div#CODEXFLYLEAF div#FLYTOC div.codextoc img { display: none;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codextoc div.head {
-    margin-left: 0px; margin-right: 0px;
-    display: block; font-weight: bold;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codextocleaf > div.head {
-    display: block; font-weight: normal;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC hr.progressbar {
-    display: none; border: none;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.progressbox { display: none;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.live > div.head { color: blue;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
-  div.live > div.head hr.progressbar {
-      display: block;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
-  div.live > div.spanbar div.progressbox {
-      display: block;}
-
-div#CODEXFLYTOC div.codextoc.cur div.sub { display: none;}
-
-div.codextoc .sectname.cohi { background-color: gold;}
-div.codextoc .sectname { color: darkblue; cursor: pointer;}
-div.codextoc div.sub a.sectname { 
-  color: darkblue; font-size: 80%; white-space: nowrap;}
-div.codextoc div.sub a.sectname.cohi { background-color: gold; }
-
-div#CODEXHUD div.codextoc div.head { display: none;}
-div#CODEXHUD div.codextoc div.head { display: none;}
-div#CODEXHUD div.codextoc div.spanbar { display: none;}
-div#CODEXHUD div.codextoc img { display: none;}
-
-div#CODEXHUD.toc div.codextoc div.spanbar { display: block;}
-div#CODEXHUD.toc div.codextoc div.head { display: block;}
-div#CODEXHUD.toc div.codextoc div.spanbar { display: block;}
-div#CODEXHUD.toc div.codextoc img { display: inherit;}
-div#CODEXHUD.toc div.codextoc.cur div.sub { display: block;}
-div#CODEXHUD div#CODEXTOC.hover div.codextoc.cur div.sub { display: none;}
-
-div#CODEXHUD.tocscan div.codextoc.cxt > div.spanbar { display: block;}
-div#CODEXHUD.tocscan div.codextoc.cur > div.head { display: block;}
-div#CODEXHUD.tocscan div.codextoc.cur > img { display: inherit;}
-
-div.spanbar {
-  position: relative;
-  text-align: center; clear: both;
-  margin: 0px; padding: 0px; border: 0px; /* opacity: 0.5;  */
-  height: 14px; font-size: 3px;} /*   border-top: solid black 2px; */
-div.spanbar div.spans { 
-  position: relative; width: 100%; background-color: black;
-  margin: 0px; padding: 0px; border: 0px;}
-div.spanbar div.codexhudspan {
-  background-color: silver; clear: none; position: absolute;
-  margin: 0px; padding: 0px; border: 0px;
-  border-right: none; border-left: none;
-  border-top: solid blue 2px; border-bottom: solid blue 2px;
-  height: 10px; }
-div.spanbar div.codexhudspan div.brick {
-  border: 0px; padding: 0px;
-  border-right: solid black 1px; border-left: solid black 1px;
-  height: 100%;}
-div.spanbar div.codexhudspan a.brick {
-  display: block;
-  border: 0px; padding: 0px;
-  border-right: solid black 1px; border-left: solid black 1px;
-  height: 100%;}
-div.spanbar div.codexhudspan a.brick.cohi {
-  background-color: gold;}
-div.spanbar div.codexhudspan .brick.live {
-  background-color: ivory;}
-div.spanbar div.codexhudspan[odd] {}
-div.spanbar div.codexhudspan[even] {}
-div.spanbar div.codexhudspan.current {
-    color: yellow; background-color: yellow;}
-div#CODEXHUD div.codextoc { 
-  margin-left: 16px; margin-right: 16px;}
-div#CODEXHUD div.codextoc.toc0 { 
-  margin-left: 0px; margin-right: 0px;}
-
-div.spanbar { padding: 0px; margin: 0px;}
-div.spanbar div.spans { 
-  width: 100%; height: 10px; padding: 0px; margin: 0px;}
-
-div.spanbar div.progressbox { 
-  width: 3px; height: 15px; background-color: red;
-  position: absolute; z-index: 250; 
-  margin: 0px; padding: 0px; border: 0px;}
 
 /* The help HUD */
 
@@ -1441,15 +1256,6 @@ div.idhead hr {
 div.idhead span { z-index: 10; opacity: 0.75;}
 div.idhead div { z-index: 10; opacity: 0.75;}
 
-div.codexcard { position: relative;}
-
-div.codexcard > hr {
-    color: gold; background-color: gold; min-width: 3px; height: 100%;
-    border-right: solid gold 1px; border-left: solid gold 1px;
-    position: absolute; left: 0px; 
-    border: 0px; padding: 0px; margin: 0px;}
-div.codexcard > div span.count { float: right;}
-
 /* Buttons */
 
 body div#CODEXHUD div#CODEXHUDBUTTONS {
@@ -1789,112 +1595,6 @@ body.sbooktouchui div#CODEXHUD.toc div#CODEXTOC div.spanbar div.progressbox,
 body.sbooktouchui div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.progressbox {
     height: 25px;}
 
-body.sbooktouchui .codexcard .age { font-size: 125%; padding-bottom: 10px;}
-
-/* Sbook notes */
-
-div.codexcard { position: relative;}
-div.codexcard > div { text-align: left;}
-
-div.codexcard > hr {
-    color: gold; background-color: gold; min-width: 3px; height: 100%;
-    border-right: solid gold 1px; border-left: solid gold 1px;
-    position: absolute; left: 0px; 
-    border: 0px; padding: 0px; margin: 0px;}
-
-.codexcard { 
-    white-space: normal; clear: both;
-    text-align: left; text-decoration: none;
-    text-align: left;
-    font-size: 90%;}
-.codexcard a.ref {
-  display: block; font-weight: normal;}
-.codexcard a.ref span.title {
-  font-family: sans,sans-serif;}
-.codexcard a.ref span.uri {
-  font-family: courier,fixed;}
-.codexcard span.oldterm {
-    color: blue; background-color: yellow;
-    padding: 2px; border: solid blue 1px;
-    border-top-left-radius: 6px; border-bottom-left-radius: 6px;
-    border-top-right-radius: 2px; border-bottom-right-radius: 2px;
-    -webkit-border-top-left-radius: 6px;
-    -webkit-border-bottom-left-radius: 6px;
-    -webkit-border-top-right-radius: 2px;
-    -webkit-border-bottom-right-radius: 2px;
-    -o-border-top-left-radius: 6px;
-    -o-border-bottom-left-radius: 6px;
-    -o-border-top-right-radius: 2px;
-    -o-border-bottom-right-radius: 2px;
-    -moz-border-radius-topleft: 6px;
-    -moz-border-radius-bottomleft: 6px;
-    -moz-border-radius-topright: 2px;
-    -moz-border-radius-bottomright: 2px;}
-div#CODEXHUD .codexcard span.oldterm {color: blue; }
-.codexcard span.user { 
-  color: green; font-size: 125%; font-style: italic;}
-.codexcard span.overdoc { 
-  color: green; font-size: 125%; font-style: normal;
-  font-variant: small-caps;}
-.codexcard span.link a { color: blue; text-decoration: underline;}
-.codexcard span.tribe { 
-  color: darkblue; font-weight: bold; font-style: italic;}
-.codexcard span.audience { 
-  color: silver; font-size: 75%; font-weight: normal; font-style: italic;}
-body.sbook a.codexcard { display: block;}
-.codexcard.gloss .codexcardbody {
-    min-height: 50px;
-    border-top: solid purple 2px;}
-.codexcard .info { 
-  float: right;}
-.codexcard div.info { 
-  float: right; width: 40px;}
-.codexcard .info span.score {
-  color: gold; display: none;}
-.codexcard span.tags { font-size: 80%;}
-.codexcard span.tags span.controller { cursor: pointer;}
-.codexcard span.tags.fdjtexpanded { display: block;}
-.codexcard span.tags.fdjtexpanded span.controller { float: right;}
-.codexcard span.head {
-    font-size: 75%;}
-.codexcard span.headhead {
-    color: blue; font-weight: bold;}
-.codexcard span.controller {
-    font-weight: bold; color: silver;
-    white-space: nowrap;}
-.codexcard span.note { font-size: 110%;}
-.codexcard img.userpic, .codexcard img.sourcepic  {
-    float: left; clear: left; margin-right: 3px; width: 50px;}
-.codexcard div.userpic, .codexcard div.sourcepic  {
-    float: left; clear: left; margin-right: 3px;
-    width: 50px; height: 50px; font-size: 32px;
-    text-align: center; vertical-align: top;}
-.codexcard img.detailsbutton { border: none; }
-.codexcard img.xrefsbutton { border: none;}
-.codexcard .glossinfo {
-    float: right; clear: right; display: block;
-    padding: 0px; margin: 0px;
-    margin-left: 3px; padding-top: 2px;
-    text-align: right;}
-.codexcard .glossinfo img { padding-left: 4px; cursor: pointer; }
-.codexcard .tool {
-    float: right; font-weight: normal;
-    font-size: 60%; text-decoration: none;}
-.codexcard .age {
-    color: green; vertical-align: top; padding-right: 0.5em;}
-.codexcard .age:hover {text-decoration: underline;} 
-.codexcard a.deletebutton { 
-  color: orange; text-decoration: none;
-  padding-right: 3px;}
-.codexcard .glossinfo img.delete { 
-    padding-right: 3px;
-    cursor: pointer;}
-.codexcard a.headref {
-    float: right; clear: right; 
-    font-family: times,serif; font-style: italic; font-size: 80%;
-    white-space: nowrap; padding: 2px; padding-top: 0px;
-    color: lightblue;}
-
 div.locbar {
     background-color: ivory;
     width: 100%; clear: both;
@@ -1959,7 +1659,7 @@ body .codexglossmark:hover img.tiny { visibility: hidden;}
 
 /* Displaying the sbook target */
 
-.sbooktarget { }
+body.hudup .sbooktarget { background-color: lightblue; }
 body.hudup .sbooktarget, body.sbookscanning .sbooktarget {
     cursor: pointer;}
  

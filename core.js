@@ -362,8 +362,8 @@ var sbook_gloss_data=
 	    return;}
 	else if (head) {
 	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
-	    CodexTOC.update("CODEXTOC4",headinfo,Codex.Info(Codex.head));
-	    CodexTOC.update("CODEXFLYTOC4",headinfo,Codex.Info(Codex.head));
+	    CodexTOC.update("CODEXTOC4",headinfo,fdjtID("CODEXTOC"));
+	    CodexTOC.update("CODEXFLYTOC4",headinfo,fdjtID("CODEXFLYTOC"));
 	    window.title=headinfo.title+" ("+document.title+")";
 	    if (Codex.head) fdjtDOM.dropClass(Codex.head,"sbookhead");
 	    fdjtDOM.addClass(head,"sbookhead");

@@ -1,0 +1,125 @@
+div.codexcard { margin-left: 20px; margin-right: 0px;}
+div.codexcard div.idhead { margin-left: -10px;  }
+div.codexcard div.tochead { margin-left: -20px; }
+
+div.glosses div.codexcard > div.idhead { display: none;}
+div.glosses div.codexcard > div.tochead { display: none;}
+
+div.codexcard { position: relative;}
+
+div.codexcard > hr {
+    color: gold; background-color: gold; min-width: 3px; height: 100%;
+    border-right: solid gold 1px; border-left: solid gold 1px;
+    position: absolute; left: 0px; 
+    border: 0px; padding: 0px; margin: 0px;}
+div.codexcard > div span.count { float: right;}
+
+/* Sbook notes */
+
+div.codexcard { position: relative;}
+div.codexcard > div { text-align: left;}
+
+div.codexcard > hr {
+    color: gold; background-color: gold; min-width: 3px; height: 100%;
+    border-right: solid gold 1px; border-left: solid gold 1px;
+    position: absolute; left: 0px; 
+    border: 0px; padding: 0px; margin: 0px;}
+
+.codexcard { 
+    white-space: normal; clear: both;
+    text-align: left; text-decoration: none;
+    text-align: left;
+    font-size: 90%;}
+.codexcard a.ref {
+  display: block; font-weight: normal;}
+.codexcard a.ref span.title {
+  font-family: sans,sans-serif;}
+.codexcard a.ref span.uri {
+  font-family: courier,fixed;}
+.codexcard span.oldterm {
+    color: blue; background-color: yellow;
+    padding: 2px; border: solid blue 1px;
+    border-top-left-radius: 6px; border-bottom-left-radius: 6px;
+    border-top-right-radius: 2px; border-bottom-right-radius: 2px;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-top-right-radius: 2px;
+    -webkit-border-bottom-right-radius: 2px;
+    -o-border-top-left-radius: 6px;
+    -o-border-bottom-left-radius: 6px;
+    -o-border-top-right-radius: 2px;
+    -o-border-bottom-right-radius: 2px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    -moz-border-radius-topright: 2px;
+    -moz-border-radius-bottomright: 2px;}
+div#CODEXHUD .codexcard span.oldterm {color: blue; }
+.codexcard span.user { 
+  color: green; font-size: 125%; font-style: italic;}
+.codexcard span.overdoc { 
+  color: green; font-size: 125%; font-style: normal;
+  font-variant: small-caps;}
+.codexcard span.link a { color: blue; text-decoration: underline;}
+.codexcard span.tribe { 
+  color: darkblue; font-weight: bold; font-style: italic;}
+.codexcard span.audience { 
+  color: silver; font-size: 75%; font-weight: normal; font-style: italic;}
+body.sbook a.codexcard { display: block;}
+.codexcard.gloss .codexcardbody {
+    min-height: 50px;
+    border-top: solid purple 2px;}
+.codexcard .info { 
+  float: right;}
+.codexcard div.info { 
+  float: right; width: 40px;}
+.codexcard .info span.score {
+  color: gold; display: none;}
+.codexcard span.tags { font-size: 80%;}
+.codexcard span.tags span.controller { cursor: pointer;}
+.codexcard span.tags.fdjtexpanded { display: block;}
+.codexcard span.tags.fdjtexpanded span.controller { float: right;}
+.codexcard span.head {
+    font-size: 75%;}
+.codexcard span.headhead {
+    color: blue; font-weight: bold;}
+.codexcard span.controller {
+    font-weight: bold; color: silver;
+    white-space: nowrap;}
+.codexcard span.note { font-size: 110%;}
+.codexcard img.userpic, .codexcard img.sourcepic  {
+    float: left; clear: left; margin-right: 3px; width: 50px;}
+.codexcard div.userpic, .codexcard div.sourcepic  {
+    float: left; clear: left; margin-right: 3px;
+    width: 50px; height: 50px; font-size: 32px;
+    text-align: center; vertical-align: top;}
+.codexcard img.detailsbutton { border: none; }
+.codexcard img.xrefsbutton { border: none;}
+.codexcard .glossinfo {
+    float: right; clear: right; display: block;
+    padding: 0px; margin: 0px;
+    margin-left: 3px; padding-top: 2px;
+    text-align: right;}
+.codexcard .glossinfo img { padding-left: 4px; cursor: pointer; }
+.codexcard .tool {
+    float: right; font-weight: normal;
+    font-size: 60%; text-decoration: none;}
+.codexcard .age {
+    color: green; vertical-align: top; padding-right: 0.5em;}
+.codexcard .age:hover {text-decoration: underline;} 
+.codexcard a.deletebutton { 
+  color: orange; text-decoration: none;
+  padding-right: 3px;}
+.codexcard .glossinfo img.delete { 
+    padding-right: 3px;
+    cursor: pointer;}
+.codexcard a.headref {
+    float: right; clear: right; 
+    font-family: times,serif; font-style: italic; font-size: 80%;
+    white-space: nowrap; padding: 2px; padding-top: 0px;
+    color: lightblue;}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

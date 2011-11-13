@@ -1,0 +1,196 @@
+/* TOC rules */
+
+div.codextoc { display: none;}
+div.codextoc div.spanbar { height: 20px;}
+div.codextoc > div, div.codextoc > div.head {
+    margin-left: 32px; margin-right: 32px;}
+div.codextoc div.head {
+  position: relative; margin: 0px; padding: 0px; border: 0px;
+  left: 0px; right: 0px; margin: 0px;
+  margin-left: 32px; margin-right: 32px;
+  display: none;}
+div.codextoc > div.spanbar {
+  margin-left: 0px; margin-right: 0px;}
+
+div.codextoc div.head { min-height: 24px;}
+div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
+body.sbooktouchui div.codextoc div.head { min-height: 32px;}
+body.sbooktouchui div#CODEXFLYTOC div.codextoc div.head {
+    min-height: 24px;}
+
+div.codextoc div.head .progressbar { 
+  color: lightblue; background-color: lightblue;
+  padding: 0px; margin: 0px; border-right: solid red 3px;
+  position: absolute;  left: 0px; height: 100%;
+  z-index: -100; opacity: 0.5;}
+div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
+    float: right; cursor: pointer; z-index: 100;}
+div.codextoc img[alt='back'], div.codextoc img[alt='backstop'] {
+    float: left; cursor: pointer; z-index: 100;}
+
+/* Conditional display, so only the live elements are displayed */
+div.codextoc.live { display: block;}
+div.codextoc.live div.head { display: block;}
+
+div.codextoc.live div.codextoc { display: none;}
+div.codextoc.live div.codextoc.live { display: block;}
+
+div.codextoc div.sub {
+    display: none; clear: both;}
+div.codextoc.cur div.head { font-size: 125%;}
+div.codextoc.cur div.sub { display: block;}
+
+/* TOCSCAN */
+
+div#CODEXHUD.tocscan div.codextoc.cur div.sub { display: none;}
+
+body.hudup div#CODEXHUD.tocscan div.codextoc.live div.head,
+body.hudup div#CODEXHUD.tocscan div.codextoc.live img {
+    height: 0px;}
+body.hudup div#CODEXHUD.tocscan div.codextoc.live.cur > div.head,
+body.hudup div#CODEXHUD.tocscan div.codextoc.live.cur > img {
+    height: inherit;}
+
+div#CODEXFLYLEAF div#FLYTOC div.codextoc {
+    display: block; font-size: 90%; text-align: left;}
+div#CODEXFLYLEAF div#FLYTOC div.codextoc img { display: none;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codextoc div.head {
+    margin-left: 0px; margin-right: 0px;
+    display: block; font-weight: bold;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codextocleaf > div.head {
+    display: block; font-weight: normal;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC hr.progressbar {
+    display: none; border: none;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.progressbox { display: none;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.live > div.head { color: blue;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
+  div.live > div.head hr.progressbar {
+      display: block;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
+  div.live > div.spanbar div.progressbox {
+      display: block;}
+
+div#CODEXFLYTOC div.codextoc.cur div.sub { display: none;}
+
+div.codextoc .sectname.cohi { background-color: gold;}
+div.codextoc .sectname { color: darkblue; cursor: pointer;}
+div.codextoc div.sub a.sectname { 
+  color: darkblue; font-size: 80%; white-space: nowrap;}
+div.codextoc div.sub a.sectname.cohi { background-color: gold; }
+
+div#CODEXHUD div.codextoc div.head { display: none;}
+div#CODEXHUD div.codextoc div.head { display: none;}
+div#CODEXHUD div.codextoc div.spanbar { display: none;}
+div#CODEXHUD div.codextoc img { display: none;}
+
+div#CODEXHUD.toc div.codextoc div.head { display: block;}
+div#CODEXHUD.toc div.codextoc div.spanbar { display: block;}
+div#CODEXHUD.toc div.codextoc img { display: inherit;}
+div#CODEXHUD.toc div.codextoc.cur div.sub { display: block;}
+div#CODEXHUD div#CODEXTOC.hover div.codextoc.cur div.sub { display: none;}
+
+div#CODEXHUD.tocscan div.hudpanel#CODEXTOC { opacity: 0.9;}
+div#CODEXHUD.tocscan div.codextoc.cxt > div.spanbar { display: block;}
+div#CODEXHUD.tocscan div.codextoc.cur > div.head { display: block;}
+div#CODEXHUD.tocscan div.codextoc.cur > img { display: inherit;}
+div#CODEXHUD.tocscan div.codextoc div.spanbar { display: none;}
+div#CODEXHUD.tocscan div.codextoc.cxt div.spanbar { display: block;}
+
+div#CODEXTOC div.spanbar {
+  position: relative;
+  text-align: center; clear: both;
+  margin: 0px; padding: 0px; border: 0px;} /* opacity: 0.5;  */
+div.spanbar div.codexhudspan a.brick.live {
+    background-color: lightblue; opacity: 0.5;}
+div#CODEXFLYTOC div.spanbar div.codexhudspan a.brick.live {
+    background-color: blue; opacity: 0.5;}
+
+div#CODEXTOC div.spanbar { height: 40px; }
+div#CODEXTOC div.spanbar div.codexhudspan { height: 38px; z-index: 50; opacity: 0.5;}
+div#CODEXTOC div.spanbar div.progressbox { height: 40px;}
+div#CODEXTOC div.spanbar div.spans { border-top: solid blue 1px;}
+div#CODEXTOC div.spanbar div.spans a.codextitle {
+    font-size: 30px; height: 38px;}
+
+div#CODEXTOC div.codextoc.cur > div.spanbar { height: 20px; }
+div#CODEXTOC div.codextoc.cur > div.spanbar div.codexhudspan { height: 18px;}
+div#CODEXTOC div.codextoc.cur > div.spanbar div.progressbox { height: 20px;}
+div#CODEXTOC div.codextoc.cur > div.spanbar div.spans a.codextitle { display: none;}
+div#CODEXTOC div.codextoc.cur div.spanbar div.codexhudspan a.brick.cohi {
+    background-color: gold; opacity: 0.5;}
+
+div#CODEXTOC div.codextoc {
+    border-bottom-left-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px; 
+    -moz-border-radius-bottomleft: 6px;
+    -o-border-radius-bottomleft: 6px; 
+    border-bottom-right-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px; 
+    -moz-border-radius-bottomright: 6px;
+    -o-border-radius-bottomright: 6px;}
+div#CODEXTOC div.codextoc div.codextoc {
+    border-bottom-left-radius: 0px;
+    -webkit-border-bottom-left-radius: 0px; 
+    -moz-border-radius-bottomleft: 0px;
+    -o-border-radius-bottomleft: 0px; 
+    border-bottom-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px; 
+    -moz-border-radius-bottomright: 0px;
+    -o-border-radius-bottomright: 0px;}
+
+div#CODEXHUD div#CODEXFLYTOC div.spans a.codextitle { display: none;}
+
+div#CODEXHUD div#CODEXFLYTOC div.codextoc div.spanbar { display: block;}
+
+div#CODEXTOC div.spanbar {
+  border-top: solid blue 1px; border-right: solid blue 1px;}
+div#CODEXTOC div.codextoc.cxt div.spanbar {
+    border-bottom: solid blue 1px;}
+div.spanbar div.spans { 
+  position: relative; width: 100%; /* background-color: black; */
+  margin: 0px; padding: 0px; border: 0px;}
+div.codextoc div.spanbar div.spans a.codextitle {font-weight: bold;}
+div.codextoc div.spanbar div.spans a.codextitle {
+    position: absolute; top: 4px; width: 100%; z-index: 100;
+    display: none;}
+div.codextoc div.spanbar:hover div.spans a.codextitle {
+    z-index: 0;}
+div.codextoc div.spanbar:hover div.spans a.codextitle {
+    z-index: -50;}
+div.codextoc div.spanbar div.spans a.codextitle.live {
+    display: block;}
+div.spanbar div.codexhudspan {
+  background-color: transparent; clear: none; position: absolute;
+  margin: 0px; padding: 0px; border: 0px;
+  border-right: none; border-left: none;}
+div.spanbar div.codexhudspan a.brick {
+  display: block; text-decoration: none;
+  border: 0px; padding: 0px;
+  border-left: solid black 1px; /* border-right: solid black 1px; */
+  height: 100%;}
+div.spanbar div.codexhudspan[odd] {}
+div.spanbar div.codexhudspan[even] {}
+div.spanbar div.codexhudspan.current {
+    color: yellow; background-color: transparent;}
+div#CODEXHUD div.codextoc { 
+  margin-left: 16px; margin-right: 16px;}
+div#CODEXHUD div#CODEXTOC div.codextoc { 
+  margin-left: 0px; margin-right: 0px;}
+div#CODEXHUD div.codextoc.toc0 {
+  margin-left: 0px; margin-right: 0px;}
+
+div.spanbar { padding: 0px; margin: 0px;}
+div.spanbar div.spans { 
+  width: 100%; padding: 0px; margin: 0px;}
+
+div.spanbar div.progressbox { 
+  width: 3px; background-color: red;
+  position: absolute; z-index: 250; 
+  margin: 0px; padding: 0px; border: 0px;}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
+

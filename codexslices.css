@@ -1,0 +1,54 @@
+/* sbook 'slices' of summaries or glosses */
+
+div.codexslice.sourced div.codexcard { display: none;}
+div.codexslice.sourced div.codexcard.sourced { display: block;}
+
+div.codexslice.sourced div.codexthread { display: none;}
+div.codexslice.sourced div.codexthread > div { display: none;}
+div.codexslice.sourced div.codexthread.sourced { display: block;}
+div.codexslice.sourced div.codexthread.sourced > div.tochead { display: block;}
+div.codexslice.sourced div.codexthread.sourced > div.idhead { display: block;}
+div.codexslice.sourced div.codexthread.sourced > div.codexthread { display: none;}
+div.codexslice.sourced div.codexthread.sourced > div.codexthread.sourced {
+    display: block;}
+
+div.codexslice.onepassage .tocblock .tochead {display:none;}
+
+div.codexslice .tocthread {}
+div.codexslice .tocthread .codexcard .tochead { display: none;}
+div.codexslice .idthread .codexcard .idhead { display: none;}
+
+div.codexslice .tocthread .idthread:first-child
+      .codexcard:first-child .tochead {
+    display: block;}
+div.codexslice .idthread > .codexcard:first-child .idhead {
+    display: block;}
+
+div.codexslice .codexcard div.detail { 
+  display: none; color: ivory; clear: both;}
+div.codexslice .showdetail div.detail { display: block;}
+div.codexslice div.xrefs { display: none;}
+div.codexslice .showxrefs div.xrefs { display: block;}
+div.codexslice div.xrefs a { display: block;}
+
+div.codexthread {
+    clear: both; margin: 0px; border: none;
+    border-right: gold solid 3px;}
+div.codexthread.singleton {
+    border-left: none; margin-left: 0px;
+    padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
+div.codexthread .locbar { background-color: silver;}
+div.codexthread.headthread { border-top: solid gold 2px;}
+div.codexthread.idthread {border: none;}
+div.codexthread.idthread .codexcard {}
+div.codexslice div.codexthread div.codexcard div.locbar {border: none;}
+div.codexslice div.codexthread div.codexcard div.locbar {display:none;}
+div.codexslice div.codexthread div.codexcard:first-child div.locbar {
+    display:block;}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
+
