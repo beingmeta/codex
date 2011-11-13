@@ -57,7 +57,9 @@ body.hudup div#CODEXPAGE {
     -o-transition-property: opacity;
     transition-duration: 1s; -webkit-transition-duration: 1s;
     -moz-duration: 1s; -o-transition-duration: 1s;
-    border-color: gray; opacity: 0.8;}
+    opacity: 0.8;}
+body.hudup div#CODEXPAGE {
+    border-color: gray; border-style: dotted;}
 
 body.codexscalebody div#CODEXPAGE div.codexpage {
     transform: scale(1,1); -webkit-transform:scale(1,1);
@@ -620,7 +622,9 @@ body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
-body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
+body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
+body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
+body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     display: block; min-height: 50px; height: auto;
     overflow: auto; border-color: darkblue;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -630,10 +634,12 @@ body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
     -webkit-transition-property: height,opacity;
     -webkit-transition-duration: 1s;}
 
+/*
 body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     display: block; min-height: 50px; height: auto;
     overflow: auto;}
+*/
 
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,

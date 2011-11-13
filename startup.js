@@ -324,7 +324,7 @@ Codex.Startup=
 		Codex.ui="faketouch"}
 	    else {
 		fdjtDOM.addClass(document.body,"sbookmouseui");
-		fdjtDOM.addClass(document.body,"codexscalebody");
+		// fdjtDOM.addClass(document.body,"codexscalebody");
 		Codex.ui="mouse";}
 	    
 	    Codex.allglosses=
