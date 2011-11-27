@@ -725,7 +725,7 @@ div#SBOOKGLOSSES div.codexthread {
 
 body.hudup div#CODEXHUD.addgloss .hudbutton { opacity: 0.15;}
 
-div#CODEXHUD.allglosses .hudbutton[alt='glosses'],
+div#CODEXHUD.allglosses .hudbutton[alt='allglosses'],
 div#CODEXHUD.flyleaf .hudbutton[alt='flyleaf'],
 div#CODEXHUD.search .hudbutton[alt='search'],
 div#CODEXHUD.searchresults .hudbutton[alt='search'],
@@ -1111,7 +1111,8 @@ div.searchbox div.query span#CODEXSEARCHPROMPT {
 div.searchbox.notags div.query span#CODEXSEARCHPROMPT {
     display: inline;}
 div.searchbox div.query #CODEXSEARCHLABEL {
-    padding-left: 1em; font-variant: small-caps;}
+    padding-left: 1em; font-variant: small-caps;
+    float: left;}
 div.searchbox.notags div.query #CODEXSEARCHLABEL { display: none;}
 
 div.searchbox div.query span.dterm {
