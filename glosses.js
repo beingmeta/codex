@@ -649,8 +649,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	queued.push(json.uuid);
 	var glossdata=
 	    {refuri: json.refuri,frag: json.frag,
-	     maker: json.maker,uuid: json.uuid,
-	     qid: json.uuid,gloss: json.uuid};
+	     maker: json.user,_id: json.uuid,uuid: json.uuid,
+	     qid: json.uuid,gloss: json.uuid,
+	     _created: fdjtTime()};
 	glossdata.tstamp=fdjtTime.tick();
 	if ((json.note)&&(!(fdjtString.isEmpty(json.note))))
 	    glossdata.note=json.note;
@@ -678,7 +679,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if ((!(queued))||(queued.length===0)) {
 	    fdjtState.dropLocal("queued("+Codex.refuri+")");
 	    return;}
-	var ajax_uri=fdjtID("SBOOKMARKFORM").getAttribute("ajaxaction");
+	var ajax_uri=fdjtDOM.getChild(
+	    fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
+	    getAttribute("ajaxaction");
 	var i=0; var lim=queued.length; var pending=[];
 	while (i<lim) {
 	    var uuid=queued[i++];

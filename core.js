@@ -84,6 +84,7 @@ var Codex=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 network: 0,	// How much to trace server interaction
 	 glosses: false,// Whether we're tracing gloss processing
+	 offline: 0,    // Whether to trace offline restoration, etc
 	 layout: 0,	// How much to trace pagination
 	 dosync: false, // Whether to trace state saves
 	 flips: false,	// Whether to trace page flips (movement by pages)
