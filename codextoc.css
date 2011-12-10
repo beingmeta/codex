@@ -91,7 +91,6 @@ div#CODEXHUD.tocscan div.codextoc.cur > div.head { display: block;}
 div#CODEXHUD.tocscan div.codextoc.cur > img { display: inherit;}
 div#CODEXHUD.tocscan div.codextoc div.spanbar { display: none;}
 div#CODEXHUD.tocscan div.codextoc.cxt > div.spanbar { display: block;}
-div#CODEXHUD.tocscan div.codextoc.cxt div.spanbar { display: block;}
 
 div#CODEXTOC div.spanbar {
   position: relative;
