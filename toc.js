@@ -224,9 +224,9 @@ var CodexTOC=
 		addClass(base_elt,"cxt");
 	    else if (toshow[1]) addClass(toshow[1],"cxt");
 	    else {}
-	    addClass(base_elt,"cur");
 	    // Go backwards to accomodate some redisplayers
-	    while (n>=0) {addClass(toshow[n--],"live");}}
+	    while (n>=0) {addClass(toshow[n--],"live");}
+	    addClass(base_elt,"cur");}
 	CodexTOC.update=updateTOC;
 
 	return CodexTOC;})();

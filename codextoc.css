@@ -14,9 +14,6 @@ div.codextoc > div.spanbar {
 
 div.codextoc div.head { min-height: 24px;}
 div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
-body.sbooktouchui div.codextoc div.head { min-height: 32px;}
-body.sbooktouchui div#CODEXFLYTOC div.codextoc div.head {
-    min-height: 24px;}
 
 div.codextoc div.head .progressbar { 
   color: lightblue; background-color: lightblue;
@@ -90,10 +87,10 @@ div#CODEXHUD.toc div.codextoc.cur div.sub { display: block;}
 div#CODEXHUD div#CODEXTOC.hover div.codextoc.cur div.sub { display: none;}
 
 div#CODEXHUD.tocscan div.hudpanel#CODEXTOC { opacity: 0.9;}
-div#CODEXHUD.tocscan div.codextoc.cxt > div.spanbar { display: block;}
 div#CODEXHUD.tocscan div.codextoc.cur > div.head { display: block;}
 div#CODEXHUD.tocscan div.codextoc.cur > img { display: inherit;}
 div#CODEXHUD.tocscan div.codextoc div.spanbar { display: none;}
+div#CODEXHUD.tocscan div.codextoc.cxt > div.spanbar { display: block;}
 div#CODEXHUD.tocscan div.codextoc.cxt div.spanbar { display: block;}
 
 div#CODEXTOC div.spanbar {

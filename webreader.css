@@ -1589,16 +1589,6 @@ body img.mouseicon { display: inline;}
 body.sbooktouchui img.touchicon { display: inline;}
 body.sbooktouchui img.mouseicon { display: none;}
 
-body.sbooktouchui div#CODEXHUD.toc div#CODEXTOC div.spanbar,
-body.sbooktouchui div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar {
-    height: 25px;}
-body.sbooktouchui div#CODEXHUD.toc div#CODEXTOC div.spanbar div.codexhudspan,
-body.sbooktouchui div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.codexhudspan {
-    height: 20px;}
-body.sbooktouchui div#CODEXHUD.toc div#CODEXTOC div.spanbar div.progressbox,
-body.sbooktouchui div#CODEXHUD.flytoc div#CODEXFLYTOC div.spanbar div.progressbox {
-    height: 25px;}
-
 div.locbar {
     background-color: ivory;
     width: 100%; clear: both;
