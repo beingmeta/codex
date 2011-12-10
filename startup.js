@@ -82,6 +82,145 @@ Codex.Startup=
 	    fdjtDOM.replace("CODEXSTARTUPMSG",div);}
 	Codex.startupMessage=startupMessage;
 
+	/* Configuration information */
+
+	var config_handlers={};
+	var default_config=
+	    {pageview: true,
+	     bodysize: 'normal',bodyfamily: 'serif',
+	     uisize: 'normal',showconsole: false,
+	     animatepages: true,animatehud: true,
+	     hidesplash: false};
+	var current_config={};
+
+	var setCheckSpan=fdjtUI.CheckSpan.set;
+
+	function addConfig(name,handler){
+	    if (Codex.Trace.config)
+		fdjtLog("Adding config handler for %s: %s",name,handler);
+	    config_handlers[name]=handler;}
+	Codex.addConfig=addConfig;
+
+	function getConfig(name){
+	    if (!(name)) return current_config;
+	    else return current_config[name];}
+	Codex.getConfig=getConfig;
+
+	function setConfig(name,value){
+	    if (arguments.length===1) {
+		var config=name;
+		Codex.postconfig=[];
+		if (Codex.Trace.config) fdjtLog("batch setConfig: %s",config);
+		for (var setting in config) {
+		    if (config.hasOwnProperty(setting))
+			setConfig(setting,config[setting]);}
+		var dopost=Codex.postconfig;
+		Codex.postconfig=false;
+		if ((Codex.Trace.config)&&(!((dopost)||(dopost.length===0))))
+		    fdjtLog("batch setConfig, no post processing",config);
+		var i=0; var lim=dopost.length;
+		while (i<lim) {
+		    if (Codex.Trace.config)
+			fdjtLog("batch setConfig, post processing %s",dopost[i]);
+		    dopost[i++]();}
+		return;}
+	    if (current_config[name]===value) return;
+	    if (Codex.Trace.config) fdjtLog("setConfig %o=%o",name,value);
+	    var input_name="CODEX"+(name.toUpperCase());
+	    var inputs=document.getElementsByName(input_name);
+	    var i=0; var lim=inputs.length;
+	    while (i<lim) {
+		var input=inputs[i++];
+		if (input.tagName!=='INPUT') continue;
+		if (input.type==='checkbox') {
+		    if (value) setCheckSpan(input,true);
+		    else setCheckSpan(input,false);}
+		else if (input.type==='radio') {
+		    if (value===input.value) setCheckSpan(input,true);
+		    else setCheckSpan(input,false);}
+		else input.value=value;}
+	    if (config_handlers[name]) {
+		if (Codex.Trace.config) fdjtLog("setConfig (handler=%s) %o=%o",
+						config_handlers[name],name,value);
+		config_handlers[name](name,value);}
+	    current_config[name]=value;}
+	Codex.setConfig=setConfig;
+
+	function saveConfig(config){
+	    if (Codex.Trace.config) {
+		fdjtLog("saveConfig %o",config);
+		fdjtLog("current_config=%o",current_config);}
+	    if (!(config)) config=current_config;
+	    // Save automatically applies (seems only fair)
+	    else setConfig(config);
+	    var saved={};
+	    for (var setting in config) {
+		if ((!(default_config.hasOwnProperty(setting)))||
+		    (config[setting]!==default_config[setting])) {
+		    saved[setting]=config[setting];}}
+	    if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
+	    setLocal('codex.config',JSON.stringify(saved));}
+	Codex.saveConfig=saveConfig;
+
+	function initConfig(){
+	    var config=getLocal('codex.config',true);
+	    Codex.postconfig=[];
+	    if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
+	    if (config) {
+		for (var setting in config) {
+		    if (config.hasOwnProperty(setting)) 
+			setConfig(setting,config[setting]);}}
+	    else config={};
+	    if (Codex.Trace.config) fdjtLog("initConfig (default) %o",default_config);
+	    for (var setting in default_config) {
+		if (!(config[setting]))
+		    if (default_config.hasOwnProperty(setting))
+			setConfig(setting,default_config[setting]);}
+	    var dopost=Codex.postconfig;
+	    Codex.postconfig=false;
+	    var i=0; var lim=dopost.length;
+	    while (i<lim) dopost[i++]();
+	    
+	    var deviceid=current_config.deviceid;
+	    var devicename=current_config.devicename;
+	    if (!(deviceid)) {
+		deviceid=fdjtState.getUUID();
+		setConfig("deviceid",deviceid);}
+	    Codex.deviceId=deviceid;
+	    if (!(devicename)) {
+		var vi=fdjtState.versionInfo(); var now=new Date();
+		devicename=vi.browser+"/"+vi.platform+"/0"+
+		    (now.getFullYear())+"/"+
+		    ((now.getMonth())+1)+"/"+
+		    (now.getDate())+"-"+(Math.floor(Math.random()*1000000));
+		setConfig('devicename',devicename);}
+	    Codex.deviceName=devicename;
+
+	    saveConfig();}
+
+	var getParent=fdjtDOM.getParent;
+	var getChild=fdjtDOM.getChild;
+
+	function updateConfig(name,id){
+	    var elt=((typeof id === 'string')&&(document.getElementById(id)))||
+		((id.nodeType)&&(getParent(id,'input')))||
+		((id.nodeType)&&(getChild(id,'input')))||
+		((id.nodeType)&&(getChild(id,'textarea')))||
+		((id.nodeType)&&(getChild(id,'select')))||
+		(id);
+	    if (Codex.Trace.config) fdjtLog("Update config %s",name);
+	    if ((elt.type=='radio')||(elt.type=='checkbox'))
+		setConfig(name,elt.checked||false);
+	    else setConfig(name,elt.value);}
+	Codex.updateConfig=updateConfig;
+
+	Codex.addConfig("hidesplash",function(name,value){
+	    Codex.hidesplash=value;});
+	Codex.addConfig("devicename",function(name,value){
+	    Codex.deviceName=value;});
+	Codex.addConfig("deviceid",function(name,value){
+	    Codex.deviceId=value;});
+
 	function Startup(force){
 	    if (Codex._setup) return;
 	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
@@ -292,9 +431,11 @@ Codex.Startup=
 		Codex.graphics=https_graphics;
 	    
 	    // Whether to suppress login, etc
-	    if ((getLocal("sbooks.nologin"))||
-		(fdjtState.getQuery("nologin")))
+	    if ((getLocal("sbooks.nologin"))||(fdjtState.getQuery("nologin")))
 		Codex.nologin=true;
+	    if ((getLocal("sbooks.nopage"))||(fdjtState.getQuery("nopage"))) {
+		default_config.pageview=false;
+		Codex.paginate=false;}
 	    Codex.max_excerpt=fdjtDOM.getMeta("sbook.maxexcerpt")||
 		(Codex.max_excerpt);
 	    Codex.min_excerpt=fdjtDOM.getMeta("sbook.minexcerpt")||
@@ -376,7 +517,7 @@ Codex.Startup=
 	    var refuri=Codex.refuri;
 	    var sync=getLocal("sync("+refuri+")",true);
 	    if (!(sync)) return;
-	    var localglosses=getLocal("glosses("+refuri+")",true);
+	    var localglosses=getLocal("glosses("+refuri+")",true)||[];
 	    var queuedglosses=getLocal("queued("+refuri+")",true)||[];
 	    var allglosses=Codex.allglosses||[];
 	    localglosses=localglosses.concat(queuedglosses);
@@ -394,143 +535,6 @@ Codex.Startup=
 	    var etc=Codex.etc;
 	    var i=0; var lim=etc.length;
 	    while (i<lim) Codex.sourcekb.ref(etc[i++]);}
-
-	var config_handlers={};
-	var default_config=
-	    {pageview: true,
-	     bodysize: 'normal',bodyfamily: 'serif',
-	     uisize: 'normal',showconsole: false,
-	     animatepages: true,animatehud: true,
-	     hidesplash: false};
-	var current_config={};
-
-	var setCheckSpan=fdjtUI.CheckSpan.set;
-
-	function addConfig(name,handler){
-	    if (Codex.Trace.config)
-		fdjtLog("Adding config handler for %s: %s",name,handler);
-	    config_handlers[name]=handler;}
-	Codex.addConfig=addConfig;
-
-	function getConfig(name){
-	    if (!(name)) return current_config;
-	    else return current_config[name];}
-	Codex.getConfig=getConfig;
-
-	function setConfig(name,value){
-	    if (arguments.length===1) {
-		var config=name;
-		Codex.postconfig=[];
-		if (Codex.Trace.config) fdjtLog("batch setConfig: %s",config);
-		for (var setting in config) {
-		    if (config.hasOwnProperty(setting))
-			setConfig(setting,config[setting]);}
-		var dopost=Codex.postconfig;
-		Codex.postconfig=false;
-		if ((Codex.Trace.config)&&(!((dopost)||(dopost.length===0))))
-		    fdjtLog("batch setConfig, no post processing",config);
-		var i=0; var lim=dopost.length;
-		while (i<lim) {
-		    if (Codex.Trace.config)
-			fdjtLog("batch setConfig, post processing %s",dopost[i]);
-		    dopost[i++]();}
-		return;}
-	    if (current_config[name]===value) return;
-	    if (Codex.Trace.config) fdjtLog("setConfig %o=%o",name,value);
-	    var input_name="CODEX"+(name.toUpperCase());
-	    var inputs=document.getElementsByName(input_name);
-	    var i=0; var lim=inputs.length;
-	    while (i<lim) {
-		var input=inputs[i++];
-		if (input.tagName!=='INPUT') continue;
-		if (input.type==='checkbox') {
-		    if (value) setCheckSpan(input,true);
-		    else setCheckSpan(input,false);}
-		else if (input.type==='radio') {
-		    if (value===input.value) setCheckSpan(input,true);
-		    else setCheckSpan(input,false);}
-		else input.value=value;}
-	    if (config_handlers[name]) {
-		if (Codex.Trace.config) fdjtLog("setConfig (handler=%s) %o=%o",
-						config_handlers[name],name,value);
-		config_handlers[name](name,value);}
-	    current_config[name]=value;}
-	Codex.setConfig=setConfig;
-
-	function saveConfig(config){
-	    if (Codex.Trace.config) {
-		fdjtLog("saveConfig %o",config);
-		fdjtLog("current_config=%o",current_config);}
-	    if (!(config)) config=current_config;
-	    // Save automatically applies (seems only fair)
-	    else setConfig(config);
-	    var saved={};
-	    for (var setting in config) {
-		if ((!(default_config.hasOwnProperty(setting)))||
-		    (config[setting]!==default_config[setting])) {
-		    saved[setting]=config[setting];}}
-	    if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
-	    setLocal('codex.config',JSON.stringify(saved));}
-	Codex.saveConfig=saveConfig;
-
-	function initConfig(){
-	    var config=getLocal('codex.config',true);
-	    Codex.postconfig=[];
-	    if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
-	    if (config) {
-		for (var setting in config) {
-		    if (config.hasOwnProperty(setting)) 
-			setConfig(setting,config[setting]);}}
-	    else config={};
-	    if (Codex.Trace.config) fdjtLog("initConfig (default) %o",default_config);
-	    for (var setting in default_config) {
-		if (!(config[setting]))
-		    if (default_config.hasOwnProperty(setting))
-			setConfig(setting,default_config[setting]);}
-	    var dopost=Codex.postconfig;
-	    Codex.postconfig=false;
-	    var i=0; var lim=dopost.length;
-	    while (i<lim) dopost[i++]();
-	    
-	    var deviceid=current_config.deviceid;
-	    var devicename=current_config.devicename;
-	    if (!(deviceid)) {
-		deviceid=fdjtState.getUUID();
-		setConfig("deviceid",deviceid);}
-	    Codex.deviceId=deviceid;
-	    if (!(devicename)) {
-		var vi=fdjtState.versionInfo(); var now=new Date();
-		devicename=vi.browser+"/"+vi.platform+"/0"+
-		    (now.getFullYear())+"/"+
-		    ((now.getMonth())+1)+"/"+
-		    (now.getDate())+"-"+(Math.floor(Math.random()*1000000));
-		setConfig('devicename',devicename);}
-	    Codex.deviceName=devicename;
-
-	    saveConfig();}
-
-	var getParent=fdjtDOM.getParent;
-	var getChild=fdjtDOM.getChild;
-
-	function updateConfig(name,id){
-	    var elt=((typeof id === 'string')&&(document.getElementById(id)))||
-		((id.nodeType)&&(getParent(id,'input')))||
-		((id.nodeType)&&(getChild(id,'input')))||
-		((id.nodeType)&&(getChild(id,'textarea')))||
-		((id.nodeType)&&(getChild(id,'select')))||
-		(id);
-	    if (Codex.Trace.config) fdjtLog("Update config %s",name);
-	    if ((elt.type=='radio')||(elt.type=='checkbox'))
-		setConfig(name,elt.checked||false);
-	    else setConfig(name,elt.value);}
-	Codex.updateConfig=updateConfig;
-
-	Codex.addConfig("hidesplash",function(name,value){
-	    Codex.hidesplash=value;});
-	Codex.addConfig("devicename",function(name,value){
-	    Codex.deviceName=value;});
-	Codex.addConfig("deviceid",function(name,value){
-	    Codex.deviceId=value;});
 
 	/* Viewport setup */
 
@@ -674,6 +678,7 @@ Codex.Startup=
 	    Codex.content=content;
 	    Codex.coverpage=fdjtID("SBOOKCOVERPAGE");
 	    Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
+	    fdjtDOM.addClass(document.body,"codexscalebody");
 	    var allnotes=fdjtID("SBOOKNOTES");
 	    var allasides=fdjtID("SBOOKASIDES");
 	    var alldetails=fdjtID("SBOOKDETAILS");
@@ -826,7 +831,8 @@ Codex.Startup=
 	    else if (bgcolor==="transparent") bgcolor="white";
 	    pagehead.style.backgroundColor=bgcolor;
 	    pagefoot.style.backgroundColor=bgcolor;
-	    fdjtDOM.addListener(false,"resize",CodexLayout.onresize);}
+	    fdjtDOM.addListener(false,"resize",function(evt){
+		if (Codex.paginate) CodexLayout.onresize(evt||event);});}
 	
 	function getBGColor(arg){
 	    var color=fdjtDOM.getStyle(arg).backgroundColor;

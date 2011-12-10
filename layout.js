@@ -184,7 +184,8 @@ var CodexPaginate=
 			    Codex.postconfig.push(Paginate);
 			else Codex.Paginate("config");}}
 		else {
-		    clearPagination();
+		    if (Codex.paginated) Codex.paginated.Revert();
+		    Codex.paginated=false;
 		    Codex.paginate=false;
 		    dropClass(document.body,"codexpageview");
 		    addClass(document.body,"codexscrollview");}});
