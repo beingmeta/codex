@@ -208,8 +208,11 @@ var CodexTOC=
 		     (getChildren(document.body,".cur")));
 	    var live=((container)?(getChildren(container,".live")):
 		      (getChildren(document.body,".live")));
+	    var cxt=((container)?(getChildren(container,".cxt")):
+		     (getChildren(document.body,".cxt")));
 	    dropClass(cur,"cur");
 	    dropClass(live,"live");
+	    dropClass(cxt,"cxt");
 	    if (!(head)) return;
 	    var base_elt=document.getElementById(prefix+head.frag);
 	    var toshow=[]; var base_info=head;
