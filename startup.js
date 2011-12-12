@@ -1364,10 +1364,13 @@ Codex.Startup=
      
      function setupGlossServer(){}
 
+     Codex.StartupHandler=function(evt){
+	 Startup();};
+
      return Startup;})();
-sbookStartup=Codex.Startup;
-Codex.Setup=Codex.Startup;
-sbook={Start: Codex.Startup,setUser: Codex.setUser};
+sbookStartup=Codex.StartupHandler;
+Codex.Setup=Codex.StartupHandler;
+sbook={Start: Codex.StartupHandler,setUser: Codex.setUser};
 
 fdjt_versions.decl("codex",codex_startup_version);
 fdjt_versions.decl("codex/startup",codex_startup_version);
