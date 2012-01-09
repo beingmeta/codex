@@ -1173,7 +1173,6 @@ Codex.Startup=
 			    if (d.location) Codex.GoTo(d.location,true,true);
 			    Codex.state=d;}}
 		    else {}},
-
 		uri);}
 
 	function applyInlineTags(){

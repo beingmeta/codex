@@ -197,10 +197,10 @@ var sbook_gloss_data=
     // Whether this sbook is set up for offline reading
     Codex.offline=false;
     // This is an array for looking up sbook servers.
-    Codex.servers=[[/.sbooks.net$/g,"gloss.sbooks.net"]];
+    Codex.servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
     //Codex.servers=[];
     // This is the default server
-    Codex.default_server="gloss.sbooks.net";
+    Codex.default_server="glosses.sbooks.net";
     // There be icons here!
     function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
     function cxicon(name,suffix) {
