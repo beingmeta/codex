@@ -243,6 +243,7 @@ var CodexMode=
 	    else {
 		Codex.hudup=false;
 		Codex.scrolling=false;
+		if (Codex.previewing) Codex.stopPreview();
 		if (clearmode) {
 		    var wait=false;
 		    dropClass(CodexHUD,"flyleaf");
@@ -286,6 +287,8 @@ var CodexMode=
 		fdjtLog("CodexMode %o, cur=%o dbc=%o",
 			mode,Codex.mode,document.body.className);
 	    if ((Codex.mode==='help')&&(!(mode))) mode=Codex.last_mode;
+	    if ((mode!==Codex.mode)&&(Codex.previewing))
+		Codex.stopPreview();
 	    if (mode) {
 		if (mode!=="scanning") Codex.scanning=false;
 		if ((mode==="scanning")||(mode==="tocscan"))

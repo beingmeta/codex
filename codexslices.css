@@ -46,6 +46,9 @@ div.codexslice div.codexthread div.codexcard div.locbar {display:none;}
 div.codexslice div.codexthread div.codexcard:first-child div.locbar {
     display:block;}
 
+body.codexpreview div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES {
+    opacity: 0.01;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

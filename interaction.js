@@ -348,13 +348,24 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
  	else if (card.about) {
 	    Codex.JumpTo(card.about);}}
     function slice_held(evt){
-	var about=getAbout(fdjtUI.T(evt||event));
-	if (about) {
-	    Codex.startPreview(fdjtID(about));
+	var card=getCard(fdjtUI.T(evt||event));
+	if (Codex.scanning!==card) {
+	    var clone=card.cloneNode(true);
+	    clone.id="CODEXSCAN";
+	    fdjtDOM.replace("CODEXSCAN",clone);
+	    if (Codex.nextSlice(card))
+		dropClass("CODEXHUD","scanend");
+	    else addClass("CODEXHUD","scanend");
+	    if (Codex.prevSlice(card))
+		dropClass("CODEXHUD","scanstart");
+	    else addClass("CODEXHUD","scanstart");
+	    Codex.scanning=card;}
+	if (card) {
+	    Codex.startPreview(fdjtID(card.about));
 	    return fdjtUI.cancel(evt);}}
     function slice_released(evt){
-	var about=getAbout(fdjtUI.T(evt||event));
-	if (about) {
+	var card=getCard(fdjtUI.T(evt||event));
+	if (card) {
 	    Codex.stopPreview();}}
 
     /* HUD handlers */
@@ -1240,7 +1251,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	       release: toc_released,slip: toc_slipped},
 	 glossmark: {mouseup: glossmark_tapped},
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
-	 summary: {tap: slice_tapped},
+	 summary: {tap: slice_tapped, hold: slice_held,
+		   release: slice_released},
 	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {click: Codex.UI.dropHUD},
 	 "#CODEXFLYLEAF": {tap: flyleaf_tap},
