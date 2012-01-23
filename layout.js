@@ -309,6 +309,7 @@ var CodexPaginate=
 	    if (!(previewing)) previewing=curpage;
 	    if (curpage) dropClass(curpage,"curpage");
 	    addClass(page,"curpage"); previewing=page;
+	    addClass(document.body,"codexpreview");
 	    updatePageDisplay(pagenum,Codex.location);}
 	function stopPreview(caller){
 	    var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
@@ -318,6 +319,7 @@ var CodexPaginate=
 			caller||"nocaller",previewing,curpage,pagenum);
 	    dropClass(previewing,"curpage");
 	    addClass(curpage,"curpage");
+	    dropClass(document.body,"codexpreview");
 	    previewing=false;
 	    updatePageDisplay(pagenum,Codex.location);}
 	Codex.startPreview=startPreview;

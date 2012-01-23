@@ -289,24 +289,41 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function getAbout(elt){
 	while (elt) {
 	    if ((elt.name)&&(elt.name.search("SBR")===0))
-		return elt.name.slice(3);
+		return elt;
 	    else elt=elt.parentNode;}
 	return false;}
 
     function toc_tapped(evt){
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
-	    Codex.Scan(fdjtID(about),false);
+	    var ref=about.name.slice(3);
+	    Codex.Scan(fdjtID(ref),false);
 	    return fdjtUI.cancel(evt);}}
     function toc_held(evt){
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
-	    Codex.startPreview(fdjtID(about));
+	    var ref=about.name.slice(3);
+	    addClass(about.parentNode,"codexheld");
+	    addClass(getParent(about,".spanbar"),"codexvisible");
+	    fdjtLog("Added codexheld to %o, codexvisible to %o",
+		    about.parentNode,getParent(about,".spanbar"));
+	    Codex.startPreview(fdjtID(ref));
 	    return fdjtUI.cancel(evt);}}
     function toc_released(evt){
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
+	    dropClass(about.parentNode,"codexheld");
+	    dropClass(getParent(about,".spanbar"),"codexvisible");
+	    fdjtLog("Dropped codexheld from %o, codexvisible from %o",
+		    about.parentNode,getParent(about,"spanbar"));
 	    Codex.stopPreview();}}
+    function toc_slipped(evt){
+	var about=getAbout(fdjtUI.T(evt||event));
+	if (about) {
+	    dropClass(getParent(about,".spanbar"),"codexvisible");
+	    dropClass(about.parentNode,"codexheld");
+	    fdjtLog("Dropped codexheld from %o, codexvisible from %o",
+		    about.parentNode,getParent(about,"spanbar"));}}
 
     /* Slice handlers */
 
@@ -1218,7 +1235,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    keydown: onkeydown,
 	    keypress: onkeypress},
 	 content: {mouseup: content_tapped},
-	 hud: {tap: toc_tapped,hold: toc_held,release: toc_released},
+	 hud: {tap: toc_tapped,hold: toc_held,
+	       release: toc_released,slip: toc_slipped},
 	 glossmark: {mouseup: glossmark_tapped},
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped},

@@ -210,12 +210,12 @@ var CodexTOC=
 
 	function updateTOC(head,tocroot){
 	    var prefix=getTOCPrefix(tocroot.id);
-	    var cur=(getChildren(tocroot,".cur"));
-	    var live=(getChildren(tocroot,".live"));
-	    var cxt=(getChildren(tocroot,".cxt"));
-	    dropClass(cur,"cur");
-	    dropClass(live,"live");
-	    dropClass(cxt,"cxt");
+	    var cur=(getChildren(tocroot,".codexcurhead"));
+	    var live=(getChildren(tocroot,".codexlivehead"));
+	    var cxt=(getChildren(tocroot,".codexcxthead"));
+	    dropClass(cur,"codexcurhead");
+	    dropClass(live,"codexlivehead");
+	    dropClass(cxt,"codexcxthead");
 	    if (!(head)) return;
 	    var base_elt=document.getElementById(prefix+head.frag);
 	    var toshow=[]; var base_info=head;
@@ -225,12 +225,12 @@ var CodexTOC=
 		head=head.head;}
 	    var n=toshow.length-1;
 	    if ((base_info.sub)&&(base_info.sub.length))
-		addClass(base_elt,"cxt");
-	    else if (toshow[1]) addClass(toshow[1],"cxt");
+		addClass(base_elt,"codexcxthead");
+	    else if (toshow[1]) addClass(toshow[1],"codexcxthead");
 	    else {}
 	    // Go backwards to accomodate some redisplayers
-	    while (n>=0) {addClass(toshow[n--],"live");}
-	    addClass(base_elt,"cur");}
+	    while (n>=0) {addClass(toshow[n--],"codexlivehead");}
+	    addClass(base_elt,"codexcurhead");}
 	CodexTOC.updateTOC=updateTOC;
 
 	CodexTOC.setHead=function(headinfo){
@@ -239,7 +239,8 @@ var CodexTOC=
 	    while (i<lim) { updateTOC(headinfo,tocs[i++]);}
 	    var head=headinfo;
 	    while (head) {
-		addClass(document.getElementsByName("SBR"+head.frag),"live");
+		addClass(document.getElementsByName("SBR"+head.frag),
+			 "codexlivehead");
 		head=head.head;}}
 
 	return CodexTOC;})();
