@@ -363,8 +363,7 @@ var sbook_gloss_data=
 	    return;}
 	else if (head) {
 	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
-	    CodexTOC.update("CODEXTOC4",headinfo,fdjtID("CODEXTOC"));
-	    CodexTOC.update("CODEXFLYTOC4",headinfo,fdjtID("CODEXFLYTOC"));
+	    CodexTOC.setHead(headinfo);
 	    window.title=headinfo.title+" ("+document.title+")";
 	    if (Codex.head) fdjtDOM.dropClass(Codex.head,"sbookhead");
 	    fdjtDOM.addClass(head,"sbookhead");
@@ -372,8 +371,7 @@ var sbook_gloss_data=
 	    Codex.head=fdjtID(headid);}
 	else {
 	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
-	    CodexTOC.update(head,"CODEXTOC4");
-	    CodexTOC.update(head,"CODEXFLYTOC4");
+	    CodexTOC.setHead(head);
 	    Codex.head=false;}}
     Codex.setHead=setHead;
 
@@ -653,7 +651,7 @@ var sbook_gloss_data=
 	if (page) Codex.GoToPage(target,"CodexGoTo",nosave||false);
 	Codex.location=location;}
     Codex.GoTo=CodexGoTo;
-    
+
     function anchorFn(evt){
 	var target=fdjtUI.T(evt);
 	while (target)

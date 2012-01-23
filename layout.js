@@ -297,6 +297,32 @@ var CodexPaginate=
 		while (i<lim) addGlossmark(glossed[i++]);}}
 	Codex.GoToPage=GoToPage;
 	
+	var previewing=false;
+	function startPreview(spec,caller){
+	    var page=Codex.paginated.getPage(spec)||Codex.paginated.getPage(1);
+	    var pagenum=parseInt(page.getAttribute("data-pagenum"));
+	    if (previewing===page) return;
+	    if (previewing) dropClass(previewing,"curpage");
+	    if (Codex.Trace.flips)
+		fdjtLog("GoToPage/%s startPreview to %o (%d) for %o",
+			caller||"nocaller",page,pagenum,spec);
+	    if (!(previewing)) previewing=curpage;
+	    if (curpage) dropClass(curpage,"curpage");
+	    addClass(page,"curpage"); previewing=page;
+	    updatePageDisplay(pagenum,Codex.location);}
+	function stopPreview(caller){
+	    var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
+	    if (!(previewing)) return;
+	    if (Codex.Trace.flips)
+		fdjtLog("GoToPage/%s stopPreview from %o to %o (%d)",
+			caller||"nocaller",previewing,curpage,pagenum);
+	    dropClass(previewing,"curpage");
+	    addClass(curpage,"curpage");
+	    previewing=false;
+	    updatePageDisplay(pagenum,Codex.location);}
+	Codex.startPreview=startPreview;
+	Codex.stopPreview=stopPreview;
+
 	function getPage(arg){
 	    var page=Codex.paginated.getPage(arg)||Codex.paginated.getPage(1);
 	    return parseInt(page.getAttribute("data-pagenum"));}

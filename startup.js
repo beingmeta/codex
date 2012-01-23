@@ -817,6 +817,8 @@ Codex.Startup=
 		fdjtDOM.addListeners(
 		    pageinfo,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
 		
+	    fdjtUI.TapHold(pagefoot);
+
 	    window.scrollTo(0,0);
 	    
 	    // The better way to do this might be to change the stylesheet,

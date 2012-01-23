@@ -79,7 +79,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (!(mode)) Codex.ui=mode="mouse";
 	if (!(domnode)) {
 	    addHandlers(false,'window');
+	    addHandlers(document,'document');
+	    addHandlers(document.body,'body');
 	    addHandlers(fdjtID("CODEXPAGE"),'content');
+	    fdjtUI.TapHold(Codex.HUD);
 	    addHandlers(Codex.HUD,'hud');}
 	var handlers=Codex.UI.handlers[mode];
 	if (mode)
@@ -280,6 +283,61 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    (fdjtDOM.hasParent(target,".codexglossmark")))
 	    return;
 	if (edgeTap(evt)) fdjtUI.cancel(evt);}
+
+    /* TOC handlers */
+
+    function getAbout(elt){
+	while (elt) {
+	    if ((elt.name)&&(elt.name.search("SBR")===0))
+		return elt.name.slice(3);
+	    else elt=elt.parentNode;}
+	return false;}
+
+    function toc_tapped(evt){
+	var about=getAbout(fdjtUI.T(evt||event));
+	if (about) {
+	    Codex.Scan(fdjtID(about),false);
+	    return fdjtUI.cancel(evt);}}
+    function toc_held(evt){
+	var about=getAbout(fdjtUI.T(evt||event));
+	if (about) {
+	    Codex.startPreview(fdjtID(about));
+	    return fdjtUI.cancel(evt);}}
+    function toc_released(evt){
+	var about=getAbout(fdjtUI.T(evt||event));
+	if (about) {
+	    Codex.stopPreview();}}
+
+    /* Slice handlers */
+
+    function getCard(target){
+	return ((hasClass(target,"codexcard"))?(target):
+		(getParent(target,".codexcard")));}
+
+    function slice_tapped(evt){
+	var target=fdjtUI.T(evt);
+	var card=getCard(target);
+	if ((!(getParent(target,".tool")))&&
+	    (getParent(card,".codexslice"))) {
+	    Codex.Scan(fdjtID(card.about),card);
+	    return fdjtUI.cancel(evt);}
+ 	else if ((card.name)||(card.getAttribute("name"))) {
+	    var name=(card.name)||(card.getAttribute("name"));
+	    var gloss=fdjtKB.ref(name,Codex.glosses);
+	    if (!(gloss)) return;
+	    Codex.setGlossTarget(gloss);	    
+	    CodexMode("addgloss");}
+ 	else if (card.about) {
+	    Codex.JumpTo(card.about);}}
+    function slice_held(evt){
+	var about=getAbout(fdjtUI.T(evt||event));
+	if (about) {
+	    Codex.startPreview(fdjtID(about));
+	    return fdjtUI.cancel(evt);}}
+    function slice_released(evt){
+	var about=getAbout(fdjtUI.T(evt||event));
+	if (about) {
+	    Codex.stopPreview();}}
 
     /* HUD handlers */
 
@@ -984,6 +1042,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else CodexMode(false);}
 
     function getOffX(evt){
+	evt=evt||event;
 	if (typeof evt.offsetX === "number") return evt.offsetX;
 	else if ((evt.touches)&&(evt.touches.length)) {
 	    var touch=evt.touches[0];
@@ -993,6 +1052,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var geom=getGeometry(target,pinfo);
 	    var tx=geom.left;
 	    return touch.clientX-(tx+pinfo.offsetLeft);}
+	else if ((evt.clientX)) {
+	    var pinfo=fdjtID("CODEXPAGEINFO");
+	    var target=fdjtUI.T(evt);
+	    while ((target)&&(target.nodeType!==1)) target=target.parentNode;
+	    var geom=getGeometry(target,pinfo);
+	    var tx=geom.left;
+	    return evt.clientX-(tx+pinfo.offsetLeft);}
 	else return false;}
 
     function head_click(evt){
@@ -1013,7 +1079,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(false);
 	    return;}}
 
-    function pageinfo_click(evt){
+    function pageinfo_tap(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
 	if ((Codex.hudup)||(Codex.mode)) {
 	    fdjtUI.cancel(evt);
@@ -1023,7 +1089,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var offwidth=pageinfo.offsetWidth;
 	var gopage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
 	if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
-	    fdjtLog("pageinfo_click %o off=%o/%o=%o gopage=%o/%o",
+	    fdjtLog("pageinfo_tap %o off=%o/%o=%o gopage=%o/%o",
 		    evt,offx,offwidth,offx/offwidth,
 		    gopage,Codex.pagecount);
 	if (!(offx)) return;
@@ -1031,6 +1097,26 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	Codex.GoToPage(gopage);
 	if ((Codex.mode==="gotoloc")||(Codex.mode==="gotopage"))
 	    CodexMode(false);}
+
+    function pageinfo_hold(evt){
+	var pageinfo=fdjtID("CODEXPAGEINFO");
+	if ((Codex.hudup)||(Codex.mode)) {
+	    fdjtUI.cancel(evt);
+	    CodexMode(false);
+	    return;}
+	var offx=getOffX(evt);
+	var offwidth=pageinfo.offsetWidth;
+	var gopage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
+	if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
+	    fdjtLog("pageinfo_hold %o off=%o/%o=%o gopage=%o/%o",
+		    evt,offx,offwidth,offx/offwidth,
+		    gopage,Codex.pagecount);
+	if (!(offx)) return;
+	fdjtUI.cancel(evt);
+	Codex.startPreview(gopage,"pageinfo");}
+    
+    function pageinfo_release(evt){
+	Codex.stopPreview("pageinfo");}
 
     function pageinfo_hover(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
@@ -1132,25 +1218,30 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    keydown: onkeydown,
 	    keypress: onkeypress},
 	 content: {mouseup: content_tapped},
-	 hud: {click: hud_tapped},
+	 hud: {tap: toc_tapped,hold: toc_held,release: toc_released},
 	 glossmark: {mouseup: glossmark_tapped},
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
+	 summary: {tap: slice_tapped},
 	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {click: Codex.UI.dropHUD},
-	 "#CODEXFLYLEAF": {click: flyleaf_tap},
-	 "#CODEXPAGEINFO": {click: pageinfo_click, mousemove: pageinfo_hover},
-	 "#CODEXPAGENOTEXT": {click: enterPageNum},
-	 "#CODEXLOCOFF": {click: enterLocation},
-	 "#CODEXSCANNER": {click: scanner_tapped},
-	 "#CODEXPAGEHEAD": {click: head_click},
-	 "#CODEXHEAD": {click: head_click},
-	 "#CODEXPAGEFOOT": {click: foot_click},
+	 "#CODEXFLYLEAF": {tap: flyleaf_tap},
+	 "#CODEXPAGEINFO": {tap: pageinfo_tap,
+			    hold: pageinfo_hold,
+			    release: pageinfo_release,
+			    mousemove: pageinfo_hover},
+	 "#CODEXPAGENOTEXT": {tap: enterPageNum},
+	 "#CODEXLOCOFF": {tap: enterLocation},
+	 // Return to scan
+	 "#CODEXSCANNER": {tap: scanner_tapped},
+	 // Raise and lower HUD
+	 "#CODEXPAGEHEAD": {tap: head_click},
+	 "#CODEXHEAD": {tap: head_click},
+	 "#CODEXPAGEFOOT": {tap: foot_click},
+	 // Forward and backwards
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
-	 // Not really used any more
-	 "#CODEXPAGENEXT": {click: Codex.Forward},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
@@ -1196,14 +1287,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 			touchend: cancel},
 	 "#CODEXSCANNER": {touchstart: scanner_tapped},
 	 // "#CODEXFLYLEAF": {touchend: flyleaf_tap},
-	 "#CODEXPAGEINFO": {touchstart: pageinfo_click,
+	 "#CODEXPAGEINFO": {touchstart: pageinfo_tap,
 			    touchmove: cancel,touchend: cancel},
 	 "#CODEXPAGENOTEXT": {touchstart: enterPageNum,
 			      touchmove: cancel,touchend: cancel},
 	 "#CODEXLOCOFF": {touchstart: enterLocation,
 			  touchmove: cancel,touchend: cancel},
-	 // Not really used any more
-	 "#CODEXPAGENEXT": {touchstart: Codex.Forward,touchmove: cancel, touchend: cancel},
 	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#CODEXTABS": {touchstart: dont,touchmove: dont, touchend: dont},
 	 "#HIDESPLASHCHECKSPAN" : {touchstart: hideSplashToggle,

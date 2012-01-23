@@ -111,7 +111,8 @@ div#CODEXTOC div.spanbar div.spans a.codextitle {
 div#CODEXTOC div.codextoc.cur > div.spanbar { height: 20px; }
 div#CODEXTOC div.codextoc.cur > div.spanbar div.codexhudspan { height: 18px;}
 div#CODEXTOC div.codextoc.cur > div.spanbar div.progressbox { height: 20px;}
-div#CODEXTOC div.codextoc.cur > div.spanbar div.spans a.codextitle { display: none;}
+div#CODEXTOC div.codextoc.cur > div.spanbar div.spans a.codextitle {
+    display: none;}
 div#CODEXTOC div.codextoc.cur div.spanbar div.codexhudspan a.brick.cohi {
     background-color: gold; opacity: 0.5;}
 
@@ -149,12 +150,11 @@ div.codextoc div.spanbar div.spans a.codextitle {font-weight: bold;}
 div.codextoc div.spanbar div.spans a.codextitle {
     position: absolute; top: 4px; width: 100%; z-index: 100;
     display: none;}
+div.codextoc div.spanbar div.spans a.codextitle.live { display: block;}
 div.codextoc div.spanbar:hover div.spans a.codextitle {
     z-index: 0;}
 div.codextoc div.spanbar:hover div.spans a.codextitle {
     z-index: -50;}
-div.codextoc div.spanbar div.spans a.codextitle.live {
-    display: block;}
 div.spanbar div.codexhudspan {
   background-color: transparent; clear: none; position: absolute;
   margin: 0px; padding: 0px; border: 0px;
