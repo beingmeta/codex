@@ -452,8 +452,8 @@ span.excerpt span.content { font-size: 80%; display: none;}
 /* The HUD */
 
 body.codexpreview #CODEXHUD { opacity: 0.8;}
-body.codexpreview #CODEXHUD div.spanbar div.spans { opacity: 0.2;}
-body.codexpreview #CODEXHUD div.spanbar.codexvisible div.spans { opacity: 1.0;}
+body.codexpreview #CODEXHUD div.hudpanel#CODEXFLYLEAF {
+    visibility: hidden; background-color: transparent;}
 
 #CODEXHUD a { text-decoration: none;}
 #CODEXHUD a img { border: transparent;}
@@ -848,7 +848,7 @@ div#CODEXSOURCES {
 /* The flyleaf */
 
 div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
-    background-color: ivory; color: #4682b4; opacity: 1.0;
+    color: #4682b4; opacity: 1.0;
     /* Transition rules for animating slide-in */
     transition-property: left;
     transition-duration: 1s;

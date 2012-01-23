@@ -297,7 +297,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
 	    var ref=about.name.slice(3);
-	    Codex.Scan(fdjtID(ref),false);
+	    Codex.JumpTo(fdjtID(ref));
+	    CodexMode("tocscan");
 	    return fdjtUI.cancel(evt);}}
     function toc_held(evt){
 	var about=getAbout(fdjtUI.T(evt||event));

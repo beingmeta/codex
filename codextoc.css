@@ -188,6 +188,18 @@ div.spanbar div.progressbox {
   position: absolute; z-index: 250; 
   margin: 0px; padding: 0px; border: 0px;}
 
+/* Handling preview mode */
+
+body.codexpreview #CODEXHUD div.spanbar div.spans { opacity: 0.2;}
+body.codexpreview #CODEXHUD div.spanbar.codexvisible div.spans {
+    visibility: visible; opacity: 1.0;}
+body.codexpreview #CODEXHUD div.codextoc > div.head { opacity: 0.2;}
+body.codexpreview #CODEXHUD div.codextoc.codexlivehead > div.head {
+    opacity: 0.4;}
+body.codexpreview #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
+    opacity: 0.6;}
+
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
