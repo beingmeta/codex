@@ -304,7 +304,7 @@ var CodexPaginate=
 	    if (previewing===page) return;
 	    if (previewing) dropClass(previewing,"curpage");
 	    if (Codex.Trace.flips)
-		fdjtLog("GoToPage/%s startPreview to %o (%d) for %o",
+		fdjtLog("startPreview/%s to %o (%d) for %o",
 			caller||"nocaller",page,pagenum,spec);
 	    if (curpage) dropClass(curpage,"curpage");
 	    addClass(page,"curpage");
@@ -313,10 +313,10 @@ var CodexPaginate=
 	    updatePageDisplay(pagenum,Codex.location);}
 	function stopPreview(caller){
 	    var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
-	    if (!(previewing)) return;
 	    if (Codex.Trace.flips)
-		fdjtLog("GoToPage/%s stopPreview from %o to %o (%d)",
+		fdjtLog("stopPreview/%s from %o to %o (%d)",
 			caller||"nocaller",previewing,curpage,pagenum);
+	    if (!(previewing)) return;
 	    dropClass(previewing,"curpage");
 	    addClass(curpage,"curpage");
 	    dropClass(document.body,"codexpreview");
