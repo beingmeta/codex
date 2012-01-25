@@ -213,6 +213,8 @@ var CodexTOC=
 	    var cur=(getChildren(tocroot,".codexcurhead"));
 	    var live=(getChildren(tocroot,".codexlivehead"));
 	    var cxt=(getChildren(tocroot,".codexcxthead"));
+	    dropClass(tocroot,"codexcxthead");
+	    dropClass(tocroot,"codexcurhead");
 	    dropClass(cur,"codexcurhead");
 	    dropClass(live,"codexlivehead");
 	    dropClass(cxt,"codexcxthead");
