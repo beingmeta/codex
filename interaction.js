@@ -306,25 +306,25 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var ref=about.name.slice(3);
 	    addClass(about.parentNode,"codexheld");
 	    addClass(getParent(about,".spanbar"),"codexvisible");
-	    fdjtLog("Added codexheld to %o, codexvisible to %o",
-		    about.parentNode,getParent(about,".spanbar"));
-	    Codex.startPreview(fdjtID(ref));
+	    // fdjtLog("Added codexheld to %o, codexvisible to %o",
+	    //         about.parentNode,getParent(about,".spanbar"));
+	    Codex.startPreview(fdjtID(ref),"toc_held");
 	    return fdjtUI.cancel(evt);}}
     function toc_released(evt){
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
 	    dropClass(about.parentNode,"codexheld");
 	    dropClass(getParent(about,".spanbar"),"codexvisible");
-	    fdjtLog("Dropped codexheld from %o, codexvisible from %o",
-		    about.parentNode,getParent(about,"spanbar"));
-	    Codex.stopPreview();}}
+	    // fdjtLog("Dropped codexheld from %o, codexvisible from %o",
+	    //	    about.parentNode,getParent(about,"spanbar"));
+	    Codex.stopPreview("toc_released");}}
     function toc_slipped(evt){
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
+	    // fdjtLog("Dropped codexheld from %o, codexvisible from %o",
+	    //	    about.parentNode,getParent(about,"spanbar"));
 	    dropClass(getParent(about,".spanbar"),"codexvisible");
-	    dropClass(about.parentNode,"codexheld");
-	    fdjtLog("Dropped codexheld from %o, codexvisible from %o",
-		    about.parentNode,getParent(about,"spanbar"));}}
+	    dropClass(about.parentNode,"codexheld");}}
 
     /* Slice handlers */
 
@@ -361,12 +361,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    else addClass("CODEXHUD","scanstart");
 	    Codex.scanning=card;}
 	if (card) {
-	    Codex.startPreview(fdjtID(card.about));
+	    Codex.startPreview(fdjtID(card.about),"slice_held");
 	    return fdjtUI.cancel(evt);}}
     function slice_released(evt){
 	var card=getCard(fdjtUI.T(evt||event));
 	if (card) {
-	    Codex.stopPreview();}}
+	    Codex.stopPreview("slice_released");}}
 
     /* HUD handlers */
 
@@ -1083,11 +1083,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    return touch.clientX-(tx+pinfo.offsetLeft);}
 	else if ((evt.clientX)) {
 	    var pinfo=fdjtID("CODEXPAGEINFO");
-	    var target=fdjtUI.T(evt);
-	    while ((target)&&(target.nodeType!==1)) target=target.parentNode;
-	    var geom=getGeometry(target,pinfo);
-	    var tx=geom.left;
-	    return evt.clientX-(tx+pinfo.offsetLeft);}
+	    return evt.clientX-(pinfo.offsetLeft);}
 	else return false;}
 
     function head_click(evt){
@@ -1136,45 +1132,33 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var offx=getOffX(evt);
 	var offwidth=pageinfo.offsetWidth;
 	var gopage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
+	if (gopage===1)
+	    fdjtLog("gopage=%d, offx=%o",gopage,offx);
 	if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
 	    fdjtLog("pageinfo_hold %o off=%o/%o=%o gopage=%o/%o",
 		    evt,offx,offwidth,offx/offwidth,
 		    gopage,Codex.pagecount);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
-	Codex.startPreview(gopage,"pageinfo");}
+	Codex.startPreview(gopage,"pageinfo_hold");}
     
     function pageinfo_release(evt){
-	Codex.stopPreview("pageinfo");}
+	Codex.stopPreview("pageinfo_release");}
 
     function pageinfo_hover(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
+	var target=fdjtUI.T(evt);
 	var offx=evt.offsetX;
 	if (!(offx)) return;
+	var offx=offx+(getGeometry(target,pageinfo).left);
 	var offwidth=pageinfo.offsetWidth;
 	var showpage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
-	pageinfo.title=fdjtString("%d",showpage);}
-    /* This doesn't quite work on the iPad, so we're not currently
-       using it. */
-    function pageinfo_move(evt){
-	var pageinfo=fdjtID("CODEXPAGEINFO"); var offx;
-	if (evt.offsetX) {
-	    var tx=fdjtDOM.getGeometry(fdjtUI.T(evt),pageinfo).left;
-	    offx=evt.offsetX+tx;}
-	else offx=getOffX(evt);
-	var offwidth=fdjtID("CODEXPAGEINFO").offsetWidth;
-	var goloc=Math.floor((offx/offwidth)*Codex.ends_at);
-	var page=((Codex.paginate)&&Codex.getPageAt(goloc));
-	fdjtUI.cancel(evt);
-	/* 
-	fdjtLog("%o type=%o ox=%o ow=%o gl=%o p=%o",
-		evt,evt.type,offx,offwidth,goloc,page); */
-	if ((evt.type==='touchmove')||
-	    ((evt.type==='mousemove')&&((evt.button)||(evt.shiftKey)))) {
-	    if ((typeof page === 'number')&&(page!==Codex.curpage))
-		Codex.GoToPage(page);}}
+	pageinfo.title=fdjtString("%d",showpage);
+	if (fdjtUI.TapHold.ispressed()) {
+	    var page=Codex.getPage(showpage);
+	    if (hasClass(page,"curpage")) return;
+	    Codex.startPreview(showpage,"pageinfo_hover");}}
     
-
     /* Gloss form handlers */
 
     /**** Clicking on outlets *****/
@@ -1211,7 +1195,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else return;
 	if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
 	else dropClass("CODEXADDGLOSS","tagging");
-	fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
+	// fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
 	if (!(hasClass(form,altclass))) {
 	    swapClass(form,glossmodes,altclass);
 	    Codex.setFocus(input);}
