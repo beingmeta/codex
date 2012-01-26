@@ -251,6 +251,41 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(false);
 	else CodexMode(true);}
 
+    function content_mouseup(evt,target){
+	if (!(target)) target=fdjtUI.T(evt);
+	// Don't capture modified events
+	if ((evt.shiftKey)||(evt.ctrlKey)||(evt.altKey)) return;
+	var anchor=getParent(target,"A"), href;
+	// If you tap on a relative anchor, move there using Codex
+	// rather than the browser default
+	if ((anchor)&&(anchor.href)&&
+	    (href=anchor.getAttribute("href"))&&(href[0]==='#')&&
+	    (document.getElementById(href.slice(1)))) {
+	    var elt=document.getElementById(href.slice(1));
+	    // This would be the place to provide smarts for
+	    // asides/notes/etc, so they (for example) pop up
+	    Codex.JumpTo(elt);
+	    fdjtUI.cancel(evt);
+	    return;}
+	var sel=window.getSelection();
+	var passage=getTarget(target)||getTarget(sel.anchorNode)||
+	    getTarget(sel.focusNode);
+	// We get the passage here so we can include it in the trace message
+	if (Codex.Trace.gestures)
+	    fdjtLog("content_mouseup (%o) on %o passage=%o mode=%o",
+		    evt,target,passage,Codex.mode);
+	if (!(passage)) {CodexMode(false); return;}
+	// If there's a selection, store it as an excerpt.
+	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
+	    var form=Codex.setGlossTarget(passage);
+	    Codex.addExcerpt(form,sel.toString());
+	    Codex.setGlossForm(form);
+	    var form_elt=fdjtDOM.getChild(form,"form");
+	    if (form_elt) form_elt.className='';
+	    fdjtUI.cancel(evt);
+	    CodexMode("addgloss");}
+	else CodexMode(false);}
+
     /* Tap actions */
 
     function tapTarget(target){
@@ -869,6 +904,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		return;}}
 	else return hud_tapped(evt);}
 
+    /* Default click/tap */
+    function default_tap(evt){
+	var target=fdjtUI.T(evt);
+	if ((Codex.hudup)||(Codex.mode)) CodexMode(false);}
+
     /* Glossmarks */
     
     function glossmark_tapped(evt){
@@ -1198,6 +1238,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	// fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
 	if (!(hasClass(form,altclass))) {
 	    swapClass(form,glossmodes,altclass);
+	    Codex.setHUD(true);
 	    Codex.setFocus(input);}
 	else {
 	    dropClass(form,glossmodes);
@@ -1229,8 +1270,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	{window: {
 	    keyup: onkeyup,
 	    keydown: onkeydown,
-	    keypress: onkeypress},
-	 content: {mouseup: content_tapped},
+	    keypress: onkeypress,
+	    mouseup: default_tap},
+	 content: {mouseup: content_mouseup},
 	 hud: {tap: toc_tapped,hold: toc_held,
 	       release: toc_released,slip: toc_slipped},
 	 glossmark: {mouseup: glossmark_tapped},

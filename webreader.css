@@ -646,12 +646,14 @@ body.hudup div#CODEXHUD div.hudpanel#CODEXBROWSEGLOSSES {
 
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
+body div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
 body.codexpreview div#CODEXHUD.allglosses div.hudpanel#CODEXSCANNER {
     display: block; height: auto; overflow: hidden;
     border-color: silver;}
 
-body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
+body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
+body div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     opacity: 0.95;}
 
 body div#CODEXHUD div.hudpanel#CODEXTOC {
@@ -721,6 +723,8 @@ div#CODEXHUD.search div#CODEXSEARCH.norefiners div.completions#CODEXSEARCHCLOUD 
 div#CODEXHUD.search div.codexslice#CODEXSEARCHRESULTS { display: none;}
 div#CODEXHUD.searchresults div#CODEXSEARCHCLOUDWRAPPER { display: none;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
+body.codexpreview div#CODEXHUD.searchresults div.hudpanel {
+    opacity: 0.05;}
 
 div#CODEXHUD.addgloss div#CODEXADDGLOSS.tagging div.completions#CODEXGLOSSCLOUD {
     display: block;}
@@ -1360,7 +1364,9 @@ div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[alt='Help']{
     -moz-box-shadow: 6px 6px 6px #cccccc;
     -o-box-shadow: 6px 6px 6px #cccccc;}
 
-div#CODEXHUD.tocscan div#CODEXHUDBUTTONS, div#CODEXHUD.scanning div#CODEXHUDBUTTONS {
+div#CODEXHUD.tocscan div#CODEXHUDBUTTONS,
+div#CODEXHUD.scanning div#CODEXHUDBUTTONS,
+div#CODEXHUD.addgloss div#CODEXHUDBUTTONS {
     display: none;}
 
 div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent {

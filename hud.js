@@ -354,6 +354,7 @@ var CodexMode=
 			dropClass(CodexHUD,"flyleaf");
 			dropClass(CodexHUD,"full");
 			dropClass(document.body,"hudup");}}
+		else if (mode==='addgloss') {}
 		// And if we're not scanning, we just raise the hud
 		else setHUD(true);
 		// This updates scroller dimensions, we delay it
