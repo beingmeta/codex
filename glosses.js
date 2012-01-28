@@ -111,7 +111,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else addClass(div,"glossedit");}
 	// Use any current selection to add as an excerpt
 	if (Codex.excerpt) {
-	    if (Codex.excerpt.length) addExcerpt(form,Codex.excerpt);
+	    if (Codex.excerpt.length) setExcerpt(form,Codex.excerpt);
 	    Codex.excerpt=false;}
 	return div;}
     Codex.getGlossForm=getGlossForm;
@@ -210,8 +210,13 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (typeof shared === 'string') shared=[shared];
 	    var i=0, lim=shared.length;
 	    while (i<lim) setOutlet(form,shared[i++],true);}
-	form.setAttribute("sbooksetup","yes");}
+	form.setAttribute("sbooksetup","yes");
+	updateForm(form);}
     Codex.setupGlossForm=setupGlossForm;
+
+    function updateForm(form){
+	var glossetc=getChild(form,".glossetc");
+	fdjtUI.Overflow(glossetc);}
 
     function getTagline(target){
 	var attrib=
@@ -250,21 +255,27 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var aspan=fdjtDOM("span.anchor",checkbox,anchor);
 	aspan.title=url; anchor.target='_blank';
 	fdjtDOM(tagselt,aspan," ");
+	updateForm(form);
 	return aspan;}
 
     /***** Adding excerpts ******/
-    function addExcerpt(form,excerpt) {
-	var excerpts=fdjtDOM.getChild(form,'.excerpts');
-	var inputs=fdjtDOM.getInputs(excerpts,'EXCERPTS');
-	var i=0; var lim=inputs.length;
-	while (i<lim) {
-	    var input=inputs[i++];
-	    if (input.value===excerpt) {}}
-	var input=fdjtDOM.Checkbox("EXCERPTS",excerpt,true);
-	var checkspan=fdjtDOM(
-	    "span.checkspan",input,fdjtDOM("span.excerpt",excerpt));
-	fdjtDOM(excerpts,checkspan," ");}
-    Codex.addExcerpt=addExcerpt;
+    function setExcerpt(form,excerpt) {
+	var checkspan=fdjtDOM.getChild(form,'.excerpt');
+	if (!(checkspan)) {
+	    var placeholder=fdjtDOM.getChild(form,'.excerptspan');
+	    checkspan=fdjtDOM("span.checkspan.excerpt",
+			      fdjtDOM.Checkbox('EXCERPT','',false),
+			      fdjtDOM("span.text"));
+	    checkspan.onclick=fdjtUI.CheckSpan.onclick;
+	    fdjtDOM.replace(placeholder,checkspan);}
+	var input=fdjtDOM.getInput(checkspan,'EXCERPT');
+	var text=fdjtDOM.getChild(checkspan,'.text');
+	if (excerpt) {
+	    input.value=excerpt; text.innerHTML=excerpt;
+	    fdjtUI.CheckSpan.set(checkspan,true);}
+	else fdjtUI.CheckSpan.set(checkspan,false);
+	updateForm(form);}
+    Codex.setExcerpt=setExcerpt;
 
     /***** Adding tags ******/
     function addTag(form,tag,varname,checked) {
@@ -321,6 +332,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    fdjtDOM.append(span,fdjtDOM(textspec,text));
 	else fdjtDOM.append(span,text);
 	fdjtDOM.append(tagselt,span," ");
+	updateForm(form);
 	return span;}
     
     /***** Setting the gloss target ******/

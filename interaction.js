@@ -228,7 +228,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (p) {
 		if ((Codex.mode==="addgloss")&&
 		    (fdjtID("CODEXLIVEGLOSS"))) {
-		    Codex.addExcerpt(
+		    Codex.setExcerpt(
 			fdjtID("CODEXLIVEGLOSS"),
 			sel.toString(),
 			((Codex.glosstarget!==p)&&
@@ -278,7 +278,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	// If there's a selection, store it as an excerpt.
 	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
 	    var form=Codex.setGlossTarget(passage);
-	    Codex.addExcerpt(form,sel.toString());
+	    Codex.setExcerpt(form,sel.toString());
 	    Codex.setGlossForm(form);
 	    var form_elt=fdjtDOM.getChild(form,"form");
 	    if (form_elt) form_elt.className='';
@@ -786,7 +786,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var excerpt_elt=fdjtID("CODEXEXCERPT");
 	var form=fdjtID("CODEXLIVEGLOSS");
 	if (flag) {
-	    Codex.addExcerpt(form,text,excerpt_elt.passageid);
+	    Codex.setExcerpt(form,text,excerpt_elt.passageid);
 	    CodexMode("addgloss");}
 	else CodexMode("false");};
     
@@ -907,7 +907,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     /* Default click/tap */
     function default_tap(evt){
 	var target=fdjtUI.T(evt);
-	if ((Codex.hudup)||(Codex.mode)) CodexMode(false);}
+	if (((Codex.hudup)||(Codex.mode))&&
+	    (!(getParent(target,Codex.HUD))))
+	    CodexMode(false);}
 
     /* Glossmarks */
     

@@ -253,7 +253,7 @@ div.codexglossform form.excerpt div.textbox div.inputhelp.excerpthelp {
 div.codexglossform form div.button {
     float: right; width: 32px;}
 div.codexglossform form div.textbox { 
-    clear: left; margin-right: 50px;}
+    clear: left; }
 
 div.codexglossform form div.altbutton span { display: none;}
 div.codexglossform form div.altbutton span.addbutton {display: inline;}
@@ -290,7 +290,11 @@ div.codexglossform form div.inputhelp {
 div.codexglossform form div.glossetc {
     display: block; text-align: left; font-size: 12px;
     margin-left: 1px; margin-right: 50px; padding-right: 1em;
-    min-height: 24px;}
+    min-height: 24px; max-height: 50px;}
+div.codexglossform form div.glossetc .twisty { display: none;}
+div.codexglossform form div.glossetc.overflow .twisty { display: none;}
+div.codexglossform form div.glossetc.expanded .twisty { display: none;}
+div.codexglossform form div.glossetc.expanded { max-height: inherit;}
 
 div.codexglossform form div.glossetc .button {
     float: right;}
@@ -305,34 +309,26 @@ div.codexglossform form div.glossetc .tags span.checkspan {
     border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
     border: solid yellow 2px;}
 
-div.codexglossform form div.sharing {
+div.codexglossform form div.glossetc {
     line-height: 16px; text-overflow: ellipsis;
-    border: dotted black 1px; border-top: 0px;
     margin-right: 1ex; padding: 0.5ex;
-    margin-top: 0.5ex; padding-top: 0ex;
+    margin-top: 0ex; padding-top: 0ex;
     overflow: hidden;}
+div.codexglossform form div.glossetc img.twisty[alt='-'] { display: none;}
+div.codexglossform form div.glossetc.expanded {
+    max-height: inherit; border-style: solid;}
+div.codexglossform form div.glossetc.expanded img.twisty[alt='-'] {
+    display: inline;}
+div.codexglossform form div.glossetc.expanded img.twisty[alt='+'] {
+    display: none;}
+
 div.codexglossform form div.sharing span { vertical-align: top;}
 div.codexglossform form div.sharing { max-height: 16px;}
-div.codexglossform form div.sharing img.twisty[alt='-'] { display: none;}
-div.codexglossform form div.sharing.expanded {
-    max-height: inherit; border-style: solid;}
-div.codexglossform form div.sharing.expanded img.twisty[alt='-'] {
-    display: inline;}
-div.codexglossform form div.sharing.expanded img.twisty[alt='+'] {
-    display: none;}
-div.codexglossform form div.glossetc div.sharing span.head {
-    color: black; font-weight: bold; font-size: 120%;}
-div.codexglossform form div.glossetc div.sharing.nocontent { display: none;}
-div.codexglossform form div.glossetc div.sharing span.head {
-    color: black; font-weight: bold;}
 
-div.codexglossform form div.glossetc div.sharing span.networks {
+div.codexglossform form div.glossetc span.networks {
     color: black; font-weight: normal; float: right;}
-div.codexglossform form div.glossetc div.sharing span.networks span.options {
-    display: none;}
-div.codexglossform form div.glossetc div.sharing
-   span.networks.ischecked span.options {
-    display: inline;}
+div.codexglossform form div.glossetc span.networks
+   .checkspan input[type='checkbox'] { display: none;}
 
 div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue; text-decoration: underline;}
@@ -341,11 +337,10 @@ div.codexglossform form div.glossetc span.checkspan input {}
 span.facebook_share, span.twitter_share { display: none;}
 span.linkedin_share, span.google_share { display: none;}
 
-div.codexglossform form div.glossetc .sharing .checkspan.ischecked {
-    color: inherit; text-decoration: none;}
-div.codexglossform form div.glossetc .checkspan .checkspan {
+div.codexglossform form div.glossetc span.outlets .checkspan {
     text-decoration: line-through; color: red;}
-div.codexglossform form div.glossetc .checkspan .checkspan.ischecked {
+div.codexglossform form div.glossetc span.outlets .checkspan input[type='checkbox'] { display: none;}
+div.codexglossform form div.glossetc span.outlets .checkspan.ischecked {
     text-decoration: none; color: inherit;}
 
 div.codexglossform form div.glossetc > .checkspan.private {
@@ -358,6 +353,16 @@ div.codexglossform form div.glossetc > span .button {
     border-radius: 3px; -webkit-border-radius: 3px;
     -moz-border-radius: 3px; -o-border-radius: 3px;
     cursor: pointer;}
+div.codexglossform form div.glossetc > span.modebuttons .button {
+    border-top-left-radius: 0px;
+    -webkit-border-top-left-radius: 0px; 
+    -moz-border-radius-topleft: 0px;
+    -o-border-radius-topleft: 0px; 
+    border-top-right-radius: 0px;
+    -webkit-border-top-right-radius: 0px; 
+    -moz-border-radius-topright: 0px;
+    -o-border-radius-topright: 0px;
+    border-top: 0px;}
 div.codexglossform form div.glossetc > span .button:hover {
     border: darkblue dotted 1px;}
 div.codexglossform form div.glossetc > span .button[alt='excerpt'] {
