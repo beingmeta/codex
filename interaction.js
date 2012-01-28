@@ -251,6 +251,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(false);
 	else CodexMode(true);}
 
+    var isEmpty=fdjtString.isEmpty;
     function content_mouseup(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
 	// Don't capture modified events
@@ -268,6 +269,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtUI.cancel(evt);
 	    return;}
 	var sel=window.getSelection();
+	var seltext=sel.toString();
 	var passage=getTarget(target)||getTarget(sel.anchorNode)||
 	    getTarget(sel.focusNode);
 	// We get the passage here so we can include it in the trace message
@@ -276,9 +278,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    evt,target,passage,Codex.mode);
 	if (!(passage)) {CodexMode(false); return;}
 	// If there's a selection, store it as an excerpt.
-	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))) {
+	if ((seltext)&&(!(isEmpty(seltext)))) {
 	    var form=Codex.setGlossTarget(passage);
-	    Codex.setExcerpt(form,sel.toString());
+	    Codex.setExcerpt(form,seltext);
 	    Codex.setGlossForm(form);
 	    var form_elt=fdjtDOM.getChild(form,"form");
 	    if (form_elt) form_elt.className='';

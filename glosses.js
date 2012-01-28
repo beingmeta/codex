@@ -109,10 +109,6 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (gloss) {
 	    if (response) addClass(div,"glossreply");
 	    else addClass(div,"glossedit");}
-	// Use any current selection to add as an excerpt
-	if (Codex.excerpt) {
-	    if (Codex.excerpt.length) setExcerpt(form,Codex.excerpt);
-	    Codex.excerpt=false;}
 	return div;}
     Codex.getGlossForm=getGlossForm;
     
