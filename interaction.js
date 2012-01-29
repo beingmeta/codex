@@ -1305,18 +1305,16 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
-	 toc: {mouseover: fdjtUI.CoHi.onmouseover,
-	       mouseout: fdjtUI.CoHi.onmouseout},
+	 toc: {mouseover: fdjtUI.CoHi.onmouseover,mouseout: fdjtUI.CoHi.onmouseout},
 	 // GLOSSFORM rules
-	 "span.codexglossdelete": { click: delete_ontap },
-	 "span.codexglossrespond": { click: respond_ontap },
-	 "div.submitbutton": {click: submitEvent },
-	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
-	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
-	 "div.glossetc div.sharing": {
-	     click: glossform_outlets_tapped},
-	 "div.glossetc span.modebuttons": {
-	     click: glossmode_button}};
+	 "span.codexglossdelete": { tap: delete_ontap },
+	 "span.codexglossrespond": { tap: respond_ontap },
+	 "span.codexsharegloss": {tap: fdjtUI.CheckSpan.onclick},
+	 ".submitbutton": {tap: submitEvent },
+	 "div.glossetc span.links": {tap: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc span.tags": {tap: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc div.sharing": {tap: glossform_outlets_tapped},
+	 "div.glossetc span.modebuttons": {tap: glossmode_button}};
 
     Codex.UI.handlers.webtouch=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
