@@ -1295,6 +1295,8 @@ body div#CODEXHUD div#CODEXHUDBUTTONS img[alt='Console'] {
     display: none;}
 body div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='Console'] {
     display: inline;}
+body.codexpreview div#CODEXHUD div#CODEXHUDBUTTONS {
+    display: none;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;}

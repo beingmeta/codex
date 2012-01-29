@@ -636,7 +636,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var mode=target.getAttribute("hudmode");
 	if ((Codex.Trace.gestures)&&
-	    ((evt.type==='click')||(Codex.Trace.gestures>1)))
+	    ((evt.type==='tap')||
+	     (evt.type==='click')||
+	     (Codex.Trace.gestures>1)))
 	    fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
 		    evt,mode,(isClickable(target)),
 		    Codex.scanning,Codex.hudup,CodexMode());
@@ -644,7 +646,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (!(mode)) return;
 	var hudid=((mode)&&(mode_hud_map[mode]));
 	var hud=fdjtID(hudid);
-	if ((evt.type==='click')||(evt.type==='touchend')) {
+	if ((evt.type==='click')||(evt.type==='touchend')||(evt.type==='tap')) {
 	    if (hud) dropClass(hud,"hover");
 	    if (fdjtDOM.hasClass(Codex.HUD,mode)) CodexMode(false);
 	    else CodexMode(mode);}
@@ -1277,8 +1279,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    keypress: onkeypress,
 	    mouseup: default_tap},
 	 content: {mouseup: content_mouseup},
-	 hud: {tap: toc_tapped,hold: toc_held,
-	       release: toc_released,slip: toc_slipped},
+	 toc: {tap: toc_tapped,hold: toc_held,
+	       release: toc_released,slip: toc_slipped,
+	       mouseover: fdjtUI.CoHi.onmouseover,
+	       mouseout: fdjtUI.CoHi.onmouseout},
 	 glossmark: {mouseup: glossmark_tapped},
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,
@@ -1305,7 +1309,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
-	 toc: {mouseover: fdjtUI.CoHi.onmouseover,mouseout: fdjtUI.CoHi.onmouseout},
 	 // GLOSSFORM rules
 	 "span.codexglossdelete": { tap: delete_ontap },
 	 "span.codexglossrespond": { tap: respond_ontap },
@@ -1317,6 +1320,52 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "div.glossetc span.modebuttons": {tap: glossmode_button}};
 
     Codex.UI.handlers.webtouch=
+	{window: {
+	    keyup: onkeyup,
+	    keydown: onkeydown,
+	    keypress: onkeypress,
+	    touchend: default_tap},
+	 content: {mouseup: content_mouseup},
+	 toc: {tap: toc_tapped,hold: toc_held,
+	       release: toc_released,slip: toc_slipped},
+	 glossmark: {touchstart: glossmark_tapped},
+	 // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
+	 summary: {tap: slice_tapped, hold: slice_held,release: slice_released,
+		   touchstart: fdjtUI.TapHold.mousedown,touchend: fdjtUI.TapHold.mouseup,
+		   touchmove: fdjtUI.TapHold.mousemove},
+	 // ".codexmargin": {click: edge_click},
+	 "#CODEXHELP": {tap: Codex.UI.dropHUD},
+	 "#CODEXFLYLEAF": {tap: flyleaf_tap},
+	 "#CODEXPAGEINFO": {tap: pageinfo_tap,
+			    hold: pageinfo_hold,
+			    release: pageinfo_release,
+			    mousemove: pageinfo_hover},
+	 "#CODEXPAGENOTEXT": {tap: enterPageNum},
+	 "#CODEXLOCOFF": {tap: enterLocation},
+	 // Return to scan
+	 "#CODEXSCANNER": {tap: scanner_tapped},
+	 // Raise and lower HUD
+	 "#CODEXPAGEHEAD": {tap: head_click},
+	 "#CODEXHEAD": {tap: head_click},
+	 "#CODEXPAGEFOOT": {tap: foot_click},
+	 // Forward and backwards
+	 "#CODEXPAGELEFT": {touchstart: left_margin},
+	 "#CODEXPAGERIGHT": {touchstart: right_margin},
+	 "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
+	 "#HIDEHELPBUTTON" : {tap: function(evt){CodexMode(false);}},
+	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
+	 ".hudmodebutton": {tap: hudbutton},
+	 // GLOSSFORM rules
+	 "span.codexglossdelete": { tap: delete_ontap },
+	 "span.codexglossrespond": { tap: respond_ontap },
+	 "span.codexsharegloss": {tap: fdjtUI.CheckSpan.onclick},
+	 ".submitbutton": {tap: submitEvent },
+	 "div.glossetc span.links": {tap: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc span.tags": {tap: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc div.sharing": {tap: glossform_outlets_tapped},
+	 "div.glossetc span.modebuttons": {tap: glossmode_button}};
+
+    Codex.UI.handlers.oldwebtouch=
 	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
 		  touchstart: cancel, touchmove: cancel, touchend: cancel},
 	 content: {touchstart: content_touchstart,
