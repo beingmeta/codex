@@ -1194,11 +1194,14 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function pageinfo_hover(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
 	var target=fdjtUI.T(evt);
-	var offx=evt.offsetX;
-	if (!(offx)) return;
-	var offx=offx+(getGeometry(target,pageinfo).left);
+	var offx=evt.clientX-getGeometry(pageinfo).left;
 	var offwidth=pageinfo.offsetWidth;
 	var showpage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
+	/*
+	fdjtLog("cx=%o t=%o tg=%j pg=%j offx=%o offwidth=%o showpage=%o",
+		evt.clientX,target,getGeometry(target,pageinfo),getGeometry(pageinfo),
+		offx,offwidth,showpage);
+	*/
 	pageinfo.title=fdjtString("%d",showpage);
 	if (fdjtUI.TapHold.ispressed()) {
 	    var page=Codex.getPage(showpage);
@@ -1307,7 +1310,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXPAGERIGHT": {click: right_margin},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
-	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 // GLOSSFORM rules
 	 "span.codexglossdelete": { tap: delete_ontap },
@@ -1336,10 +1338,12 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {tap: Codex.UI.dropHUD},
 	 "#CODEXFLYLEAF": {tap: flyleaf_tap},
+	 "#CODEXPAGEFOOT": {touchstart: fdjtUI.TapHold.mousedown,
+			    touchend: fdjtUI.TapHold.mouseup},
 	 "#CODEXPAGEINFO": {tap: pageinfo_tap,
 			    hold: pageinfo_hold,
 			    release: pageinfo_release,
-			    mousemove: pageinfo_hover},
+			    touchmove: pageinfo_hover},
 	 "#CODEXPAGENOTEXT": {tap: enterPageNum},
 	 "#CODEXLOCOFF": {tap: enterLocation},
 	 // Return to scan
