@@ -3,7 +3,7 @@
 var codex_interaction_id="$Id$";
 var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
-/* Copyright (C) 2009-2011 beingmeta, inc.
+/* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
    large structured documents (sBooks).
 
