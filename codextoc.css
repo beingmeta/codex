@@ -200,6 +200,7 @@ body.codexpreview #CODEXHUD div.spanbar div.spans { opacity: 0.2;}
 body.codexpreview #CODEXHUD div.spanbar.codexvisible div.spans {
     visibility: visible; opacity: 1.0;}
 body.codexpreview #CODEXHUD div.codextoc > div.head { opacity: 0.2;}
+body.codexpreview #CODEXHUD div.sub { opacity: 0.1;}
 body.codexpreview #CODEXHUD div.codextoc.codexlivehead > div.head {
     opacity: 0.4;}
 body.codexpreview #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
