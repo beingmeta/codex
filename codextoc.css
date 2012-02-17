@@ -110,9 +110,11 @@ div#CODEXFLYTOC div.spanbar div.codexhudspan a.brick.codexlivehead {
 div#CODEXTOC div.spanbar { height: 40px; }
 div#CODEXTOC div.spanbar div.codexhudspan { height: 38px; z-index: 50; opacity: 0.5;}
 div#CODEXTOC div.spanbar div.progressbox { height: 40px;}
-div#CODEXTOC div.spanbar div.spans { border-top: solid blue 1px;}
+div#CODEXTOC div.spanbar div.spans {
+    font-size: 30px;
+    border-top: solid blue 1px;}
 div#CODEXTOC div.spanbar div.spans a.codextitle {
-    font-size: 30px; height: 38px;}
+    white-space: nowrap; height: 38px;}
 
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar { height: 20px; }
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan { height: 18px;}

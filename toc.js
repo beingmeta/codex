@@ -206,8 +206,9 @@ var CodexTOC=
 	    if (fourpos) return string.slice(0,fourpos+1);
 	    else return string;}
 
-	var dropClass=fdjtDOM.dropClass;
+	var hasClass=fdjtDOM.hasClass;
 	var addClass=fdjtDOM.addClass;
+	var dropClass=fdjtDOM.dropClass;
 	var getChildren=fdjtDOM.getChildren;
 
 	function updateTOC(head,tocroot){
@@ -238,15 +239,32 @@ var CodexTOC=
 	CodexTOC.updateTOC=updateTOC;
 
 	CodexTOC.setHead=function(headinfo){
+	    var livetitles=(fdjtDOM.$("a.codexlivehead.codextitle"));
+	    var i=0; var lim=livetitles.length;
+	    while (i<lim) livetitles[i++].style.fontSize='';
 	    var tocs=fdjtDOM.$(".toc0");
 	    var i=0; var lim=tocs.length;
 	    while (i<lim) { updateTOC(headinfo,tocs[i++]);}
 	    var head=headinfo;
 	    while (head) {
-		addClass(document.getElementsByName("SBR"+head.frag),
-			 "codexlivehead");
-		head=head.head;}}
+		var refs=document.getElementsByName("SBR"+head.frag);
+		addClass(refs,"codexlivehead");
+		head=head.head;}
+	    setTimeout(function(){scaleTitles(headinfo);},200);}
 
+	function scaleTitles(headinfo){
+	    // Now, autosize the titles
+	    var head=headinfo;
+	    while (head) {
+		var refs=document.getElementsByName("SBR"+head.frag);
+		var j=0; var nrefs=refs.length;
+		while (j<nrefs) {
+		    var elt=refs[j++];
+		    if ((elt.tagName==='A')&&(hasClass(elt,"codextitle"))) {
+			var cw=elt.clientWidth, sw=elt.scrollWidth;
+			if (sw>cw) elt.style.fontSize=(100*(cw/sw))+"%";}}
+		head=head.head;}}
+	    
 	return CodexTOC;})();
 
 
