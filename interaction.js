@@ -386,20 +386,25 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    Codex.JumpTo(card.about);}}
     function slice_held(evt){
 	var card=getCard(fdjtUI.T(evt||event));
-	if (Codex.scanning!==card) {
-	    var clone=card.cloneNode(true);
-	    clone.id="CODEXSCAN";
-	    fdjtDOM.replace("CODEXSCAN",clone);
-	    if (Codex.nextSlice(card))
-		dropClass("CODEXHUD","scanend");
-	    else addClass("CODEXHUD","scanend");
-	    if (Codex.prevSlice(card))
-		dropClass("CODEXHUD","scanstart");
-	    else addClass("CODEXHUD","scanstart");
-	    Codex.scanning=card;}
-	if (card) {
-	    Codex.startPreview(fdjtID(card.about),"slice_held");
-	    return fdjtUI.cancel(evt);}}
+	if (!(card)) return;
+	if (Codex.scanning===card) return;
+	var clone=card.cloneNode(true);
+	clone.id="CODEXSCAN";
+	fdjtDOM.replace("CODEXSCAN",clone);
+	dropClass(Codex.previewtarget,"codexpreviewtarget");
+	fdjtUI.Highlight.clear(Codex.previewtarget);
+	if (card.about) {
+	    var target=Codex.previewtarget=fdjtID(card.about);
+	    addClass(target,"codexpreviewtarget");}
+	if (hasClass(card,"gloss")) {
+	    var glossinfo=Codex.glosses.ref(card.name);
+	    if (!(target))
+		Codex.previewtarget=target=fdjtID(glossinfo.frag);
+	    if (glossinfo.excerpt) {
+		var range=fdjtDOM.findString(target,glossinfo.excerpt);
+		if (range) fdjtUI.Highlight(range);}}
+	Codex.startPreview(target,"slice_held");
+	return fdjtUI.cancel(evt);}
     function slice_released(evt){
 	var card=getCard(fdjtUI.T(evt||event));
 	if (card) {

@@ -664,6 +664,12 @@ var CodexMode=
 		else addClass("CODEXHUD","scanstart");
 		Codex.scanning=src;}
 	    else {}
+	    if (Codex.target) fdjtUI.Highlight.clear(Codex.target);
+	    if ((src)&&(hasClass(src,"gloss"))) {
+		var glossinfo=Codex.glosses.ref(src.name);
+		if (glossinfo.excerpt) {
+		    var range=fdjtDOM.findString(elt,glossinfo.excerpt);
+		    if (range) fdjtUI.Highlight(range);}}
 	    Codex.setTarget(elt);
 	    Codex.GoTo(elt);
 	    CodexMode("scanning");}

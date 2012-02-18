@@ -320,6 +320,10 @@ var CodexPaginate=
 	    dropClass(previewing,"curpage");
 	    addClass(curpage,"curpage");
 	    dropClass(document.body,"codexpreview");
+	    if (Codex.previewtarget) {
+		dropClass(Codex.previewtarget,"codexpreviewtarget");
+		fdjtUI.Highlight.clear(Codex.previewtarget);
+		Codex.previewtarget=false;}
 	    Codex.previewing=previewing=false;
 	    updatePageDisplay(pagenum,Codex.location);}
 	Codex.startPreview=startPreview;

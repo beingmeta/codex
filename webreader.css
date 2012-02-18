@@ -650,6 +650,7 @@ body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
 body div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
+body.codexpreview div#CODEXHUD.glosses div.hudpanel#CODEXSCANNER,
 body.codexpreview div#CODEXHUD.allglosses div.hudpanel#CODEXSCANNER,
 body.codexpreview div#CODEXHUD.searchresults div.hudpanel#CODEXSCANNER {
     display: block; height: auto; overflow: hidden;
@@ -727,6 +728,8 @@ div#CODEXHUD.search div.codexslice#CODEXSEARCHRESULTS { display: none;}
 div#CODEXHUD.searchresults div#CODEXSEARCHCLOUDWRAPPER { display: none;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
 body.codexpreview div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
+    opacity: 0.05;}
+body.codexpreview div#CODEXHUD.glosses div#CODEXGLOSSES.hudpanel {
     opacity: 0.05;}
 
 div#CODEXHUD.addgloss div#CODEXADDGLOSS.tagging div.completions#CODEXGLOSSCLOUD {
