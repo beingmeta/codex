@@ -323,10 +323,10 @@ div.codexglossform form div.glossetc.expanded img.twisty[alt='+'] {
     display: none;}
 
 div.codexglossform form div.sharing span { vertical-align: top;}
-div.codexglossform form div.sharing { max-height: 16px;}
+div.codexglossform form div.sharing { max-height: 24px;}
 
 div.codexglossform form div.glossetc span.networks {
-    color: black; font-weight: normal; float: right;}
+    color: black; font-weight: normal; float: right; text-align: right;}
 div.codexglossform form div.glossetc span.networks
    .checkspan input[type='checkbox'] { display: none;}
 
@@ -334,14 +334,11 @@ div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue; text-decoration: underline;}
 div.codexglossform form div.glossetc span.checkspan input {}
 
+span.showoutlets {
+    vertical-align: top; float: right; cursor: pointer;
+    display: none;}
 span.facebook_share, span.twitter_share { display: none;}
 span.linkedin_share, span.google_share { display: none;}
-
-div.codexglossform form div.glossetc span.outlets .checkspan {
-    text-decoration: line-through; color: red;}
-div.codexglossform form div.glossetc span.outlets .checkspan input[type='checkbox'] { display: none;}
-div.codexglossform form div.glossetc span.outlets .checkspan.ischecked {
-    text-decoration: none; color: inherit;}
 
 div.codexglossform form div.glossetc > .checkspan.private {
     float: right; vertical-align: top; margin-left: 4px;
@@ -1702,6 +1699,19 @@ body.notsbookuser div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
 /* The add gloss panel */
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
+
+div#CODEXADDGLOSS div#CODEXGLOSSOUTLETS {
+    background-color: gold;
+    transition-property: height;
+    -webkit-transition-property: height;
+    -moz-transition-property: height;
+    -o-transition-property: height;
+    transition-duration: 3s; -webkit-transition-duration: 3s;
+    -moz-duration: 3s; -o-transition-duration: 3s;
+    height: 0px;}
+div.showoutlets#CODEXADDGLOSS div#CODEXGLOSSOUTLETS { height: inherit;}
+div.showoutlets#CODEXADDGLOSS span.showoutlets {
+    background-color: gold;}
 
 /* Style variants */
 

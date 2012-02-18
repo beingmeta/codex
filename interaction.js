@@ -1221,6 +1221,16 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else {}}
     Codex.UI.outlets_tapped=glossform_outlets_tapped;
 
+    function outlet_tapped(evt){
+	var target=fdjtUI.T(evt);
+	var outletspan=fdjtDOM.getParent(target,'.outlet');
+	if (!(outletspan)) return;
+	var live=fdjtID("CODEXLIVEGLOSS");
+	var form=((live)&&(fdjtDOM.getChild(live,"form")));
+	var outlet=outletspan.value;
+	Codex.addOutletToForm(form,outlet);
+	fdjtUI.cancel(evt);}
+
     var glossmodes=Codex.glossmodes;
 
     function glossmode_button(evt){
@@ -1253,6 +1263,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    dropClass(form,glossmodes);
 	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}
 	    else {}}}
+
+    function showoutlets_tapped(evt){
+	var target=fdjtUI.T(evt);
+	fdjtDOM.toggleClass("CODEXADDGLOSS","showoutlets");}
 
     /* Rules */
 
@@ -1319,7 +1333,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "div.glossetc span.links": {tap: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc span.tags": {tap: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {tap: glossform_outlets_tapped},
-	 "div.glossetc span.modebuttons": {tap: glossmode_button}};
+	 "div.glossetc span.modebuttons": {tap: glossmode_button},
+	 "div.glossetc span.showoutlets": {tap: showoutlets_tapped},
+	 "#CODEXGLOSSOUTLETS": {tap: outlet_tapped}};
 
     Codex.UI.handlers.webtouch=
 	{window: {

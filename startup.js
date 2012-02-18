@@ -926,23 +926,24 @@ Codex.Startup=
 	    gotInfo("outlets",outlets,persist);
 	    if ((outlets)&&(outlets.length)) {
 		Codex.outlets=outlets;
-		var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
-		var div=fdjtDOM.getChild(addgloss,".outlets");
-		fdjtDOM.dropClass(div,"nocontent");
+		var ss=Codex.stylesheet;
+		ss.insertRule("span.showoutlets { display: inline;}",
+			      ss.cssRules.length);
+		// Add the outlets
+		var div=fdjtID("CODEXGLOSSOUTLETS");
 		var i=0; var ilim=outlets.length;
 		while (i<ilim) {
-		    var outlet=outlets[i++];
-		    var checkspan=
-			fdjtUI.CheckSpan(
-			    "span.checkspan",
-			    "SHARE",outlet._id,false,
-			    outlet.nick||outlet.name);
+		    var outlet=outlets[i];
+		    var span=
+			fdjtDOM("span.outlet",outlet.nick||outlet.name);
+		    span.value=outlet._id;
 		    if ((outlet.description)&&(outlet.nick))
-			checkspan.title=outlet.name+": "+outlet.description;
+			span.title=outlet.name+": "+outlet.description;
 		    else if (outlet.description)
-			checkspan.title=outlet.description;
-		    else if (outlet.nick) checkspan.title=outlet.name;
-		    fdjtDOM(div,checkspan,"\n");}}
+			span.title=outlet.description;
+		    else if (outlet.nick) span.title=outlet.name;
+		    fdjtDOM(div,((i>0)&&(" \u2014 ")),span);
+		    i++;}}
 	    setupUI4User();
 	    return Codex.user;}
 	Codex.setUser=setUser;
@@ -1003,7 +1004,6 @@ Codex.Startup=
 		fdjtUI.CheckSpan.set(cs,true);
 		var cb=getChild(cs,"input");
 		cb.setAttribute("checked","checked");}
-	    
 	    var pic=
 		(Codex.user.pic)||
 		((Codex.user.fbid)&&

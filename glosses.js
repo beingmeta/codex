@@ -205,7 +205,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var shared=((gloss)&&(gloss.shared))||[];
 	    if (typeof shared === 'string') shared=[shared];
 	    var i=0, lim=shared.length;
-	    while (i<lim) setOutlet(form,shared[i++],true);}
+	    while (i<lim) addOutlet(form,shared[i++],true);}
 	form.setAttribute("sbooksetup","yes");
 	updateForm(form);}
     Codex.setupGlossForm=setupGlossForm;
@@ -227,7 +227,8 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else return text;}
     
     /***** Adding outlets ******/
-    function setOutlet(form,outlet,checked) {
+    function addOutlet(form,outlet,checked) {
+	if (typeof checked === 'undefined') checked=true;
 	var outletspan=fdjtDOM.getChild(form,".outlets");
 	var inputs=fdjtDOM.getInputs(outletspan,"SHARE");
 	var i=0; var lim=inputs.length;
@@ -236,11 +237,17 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		var checkspan=fdjtDOM.getParent(inputs[i],".checkspan");
 		fdjtUI.CheckSpan.set(checkspan,checked);
 		return;}
-	    else i++;}}
+	    else i++;}
+	var info=Codex.sourcekb.ref(outlet);
+	var checkspan=fdjtUI.CheckSpan(
+	    "span.checkspan.outlet","SHARE",outlet,checked,
+	    info.nick||info.name);
+	if (info.description) checkspan.title=info.description;
+	fdjtDOM(outletspan," ",checkspan);}
     function clearOutlets(form){
 	var outletspan=fdjtDOM.getChild(form,".outlets");
-	var checkspans=fdjtDOM.getChildren(outletspan,".checkspan");
-	fdjtUI.CheckSpan.set(checkspans,false);}
+	fdjtDOM.replace(outletspan,fdjtDOM("span.outlets"));}
+    Codex.addOutletToForm=addOutlet;
     
     /***** Adding links ******/
     function addLink(form,url,title) {
@@ -646,7 +653,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var i=0, lim=inputs.length;
 	while (i<lim) {
 	    var input=inputs[i++];
-	    setOutlet(proto,input.value,input.checked);}}
+	    if (input.checked) addOutlet(proto,input.value,true);}}
 
     // Queues a gloss when offline
     function saveGloss(form,evt){
