@@ -54,6 +54,7 @@ var CodexMode=
 	var addClass=fdjtDOM.addClass;
 	var dropClass=fdjtDOM.dropClass;
 	var hasClass=fdjtDOM.hasClass;
+	var getParent=fdjtDOM.getParent;
 
 	// This will contain the interactive input console (for debugging)
 	var input_console;
@@ -670,6 +671,22 @@ var CodexMode=
 		if (glossinfo.excerpt) {
 		    var range=fdjtDOM.findString(elt,glossinfo.excerpt);
 		    if (range) fdjtUI.Highlight(range);}}
+	    else if ((src)&&(getParent(src,".sbookresults"))) {
+		var about=src.about, target=fdjtID(about);
+		if (target) {
+		    var info=Codex.docinfo[target.id];
+		    var terms=Codex.query._query;
+		    var spellings=info.knodeterms;
+		    var i=0; var lim=terms.length;
+		    while (i<lim) {
+			var term=terms[i++];
+			var words=spellings[term];
+			if (typeof words === 'string') words=[words];
+			var j=0; var jlim=words.length;
+			while (j<jlim) {
+			    var word=words[j++];
+			    var range=fdjtDOM.findString(target,word);
+			    if (range) fdjtUI.Highlight(range);}}}}
 	    Codex.setTarget(elt);
 	    Codex.GoTo(elt);
 	    CodexMode("scanning");}

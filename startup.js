@@ -1298,11 +1298,30 @@ Codex.Startup=
 			(knodule.handleSubjectEntry(tag.slice(starpower))));
 	     var i=0; var lim=ids.length;
 	     while (i<lim) {
-		 var info=Codex.docinfo[ids[i++]];
+		 var idinfo=ids[i++];
+		 var itemid=((typeof idinfo === 'string')?(idinfo):(idinfo[0]));
+		 var info=Codex.docinfo[itemid];
 		 if (!(info)) continue;
 		 var tagval=((typeof knode === 'string')?(knode):(knode.dterm));
 		 if (info.autotags) info.autotags.push(tagval);
 		 else info.autotags=[tagval];
+		 if (typeof idinfo === 'string') {}
+		 else if ((idinfo.length===2)&&
+			  ((!(info.knodeterms))||
+			   (!(info.knodeterms[tagval])))) {
+		     var knodeterms=info.knodeterms;
+		     if (!(knodeterms))
+			 knodeterms=info.knodeterms={};
+		     knodeterms[tagval]=idinfo[1];}
+		 else {
+		     var knodeterms=info.knodeterms;
+		     if (!(info.knodeterms)) knodeterms=info.knodeterms={};
+		     var terms=knodeterms[tagval];
+		     if (!(terms)) terms=knodeterms[tagval]=[];
+		     if (typeof terms === 'string')
+			 terms=knodeterms[tagval]=[terms];
+		     var j=1; var jlim=idinfo.length;
+		     while (j<jlim) {terms.push(idinfo[j++]);}}
 		 sbook_index.add(info.frag,knode,weight,knodule);}}}
      Codex.useAutoIndex=useAutoIndex;
 

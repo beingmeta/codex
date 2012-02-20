@@ -213,8 +213,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    evt,target,passage,Codex.mode);
 	// These should have their own handlers
 	if ((isClickable(target))||
-	    // (fdjtDOM.hasParent(target,".codexglossbutton"))||
-	    (fdjtDOM.hasParent(target,".codexglossmark"))) {
+	    // (getParent(target,".codexglossbutton"))||
+	    (getParent(target,".codexglossmark"))) {
 	    if (Codex.Trace.gestures)
 		fdjtLog("deferring content_tapped (%o) on %o",
 			evt,target,passage,Codex.mode);
@@ -316,8 +316,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function edge_click(evt) {
 	var target=fdjtUI.T(evt);
 	if ((isClickable(target))||
-	    (fdjtDOM.hasParent(target,".codexglossbutton"))||
-	    (fdjtDOM.hasParent(target,".codexglossmark")))
+	    (getParent(target,".codexglossbutton"))||
+	    (getParent(target,".codexglossmark")))
 	    return;
 	if (edgeTap(evt)) fdjtUI.cancel(evt);}
 
@@ -403,6 +403,23 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (glossinfo.excerpt) {
 		var range=fdjtDOM.findString(target,glossinfo.excerpt);
 		if (range) fdjtUI.Highlight(range);}}
+	else if (getParent(card,".sbookresults")) {
+	    var about=card.about;
+	    if (about) {
+		var info=Codex.docinfo[target.id];
+		var terms=Codex.query._query;
+		var spellings=info.knodeterms;
+		var i=0; var lim=terms.length;
+		while (i<lim) {
+		    var term=terms[i++];
+		    var words=spellings[term];
+		    if (typeof words === 'string') words=[words];
+		    var j=0; var jlim=words.length;
+		    while (j<jlim) {
+			var word=words[j++];
+			var range=fdjtDOM.findString(target,word);
+			if (range) fdjtUI.Highlight(range);}}}}
+	else {}
 	Codex.startPreview(target,"slice_held");
 	return fdjtUI.cancel(evt);}
     function slice_released(evt){
@@ -415,7 +432,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function hud_tapped(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
 	if (isClickable(target)) return;
-	else if (fdjtDOM.hasParent(target,".helphud")) {
+	else if (getParent(target,".helphud")) {
 	    var mode=fdjtDOM.findAttrib(target,"data-hudmode")||
 		fdjtDOM.findAttrib(target,"hudmode");
 	    if (mode) CodexMode(mode)

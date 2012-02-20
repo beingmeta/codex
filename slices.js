@@ -459,7 +459,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	    return 1;
 	else return -1;}
 
-    function showSlice(results,div,scores,sort){
+    function showSlice(results,div,scores,sort,cardclass){
 	var notes=new Array(results.length);
 	var i=0; var lim=results.length;
 	while (i<lim) {
