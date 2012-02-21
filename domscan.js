@@ -253,11 +253,11 @@ function CodexDOMScan(root,docinfo){
 	    scaninfo.sub.push(headinfo);} /* handled below */
 	/* Add yourself to your children's subsections */
 	var supinfo=headinfo.head;
-	if ((supinfo)&&(supinfo.pathtag)) 
-	    headinfo.pathtag=supinfo.pathtag+headinfo.sectag;
-	else headinfo.pathtag=headinfo.sectag;
+	// if ((supinfo)&&(supinfo.pathtag)) headinfo.pathtag=supinfo.pathtag+headinfo.sectag;
+	// else headinfo.pathtag=headinfo.sectag;
 	if ((supinfo)&&(supinfo.sectags))
-	    headinfo.sectags=supinfo.sectags.concat([headinfo.sectag,headinfo.pathtag]);
+	    /* headinfo.sectags=supinfo.sectags.concat([headinfo.sectag,headinfo.pathtag]); */
+	    headinfo.sectags=supinfo.sectags.concat([headinfo.sectag]);
 	else headinfo.sectags=[headinfo.sectag];
 	    
 	var newheads=new Array();

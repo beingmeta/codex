@@ -507,8 +507,12 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     function KNodeCompletion(term,title,just_knodes){
 	var sbook_index=Codex.index; var showname=term;
 	if ((typeof term === "string") && (term[0]==="\u00A7")) {
-	    if (showname.length>17) {
-		showname=showname.slice(0,17)+"...";
+	    if (showname.length>20) {
+		var start=showname.indexOf(' ',8);
+		var end=showname.lastIndexOf(' ',showname.length-8);
+		if (start<0) start=8; if (end<0) end=showname.length-8;
+		if (start<(showname.length-end)) {
+		    showname=showname.slice(0,start)+" \u2026 "+showname.slice(end);}
 		title=term;}
 	    var span=fdjtDOM("span.completion",fdjtDOM("span.sectname",showname));
 	    span.key=term; span.value=term; span.anymatch=true;
@@ -525,6 +529,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
 	    dterm=false;}
 	var term_node=((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.raw",showterm)));
+	if ((dterm)&&(fdjtString.hasSuffix(dterm.dterm,"...")))
+	    addClass(term_node,"weak");
 	var span=fdjtDOM("span.completion");
 	if (dterm) {
 	    if (dterm.gloss) {
