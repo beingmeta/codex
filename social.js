@@ -194,6 +194,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     function showGlosses(target) {
 	var glosses=Codex.glosses.find('frag',target.codexdupid||target.id);
 	var sumdiv=fdjtDOM("div.codexglosses.hudpanel");
+	var excerpt=false;
 	if ((!(glosses))||(!(glosses.length)))
 	    fdjtDOM.addClass(sumdiv,"noglosses");
 	Codex.UI.setupSummaryDiv(sumdiv);
@@ -202,10 +203,14 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	    while (i<n) {
 		var gloss=fdjtKB.ref(glosses[i++],Codex.glosses);
 		if ((!(gloss))||(!(gloss.frag))) continue;
+		if ((!excerpt)&&(gloss.excerpt)) excerpt=gloss.excerpt;
 		var card=Codex.renderNote(gloss);
 		fdjtDOM(sumdiv,card);}}
 	fdjtDOM.replace("CODEXGLOSSES",sumdiv);
 	Codex.setTarget(target);
+	if (excerpt) {
+	    var range=fdjtDOM.findString(target,excerpt);
+	    if (range) fdjtUI.Highlight(range);}
 	CodexMode("glosses");}
     Codex.showGlosses=showGlosses;
 

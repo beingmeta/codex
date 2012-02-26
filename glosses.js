@@ -730,6 +730,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var docinfo=Codex.docinfo[id];
 	var all=[].concat(xfeatures||[]);
 	var freq={}; var notes={}; var links={};
+	var excerpt=false;
 	if (!(glosses)) glosses=Codex.glosses.find('frag',id);
 	// Initialize given features
 	var i=0; var lim=all.length;
@@ -744,6 +745,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var user=gloss.maker;
 	    var sources=gloss.audience;
 	    var tags=gloss.tags;
+	    if (gloss.excerpt) {if (!(excerpt)) excerpt=gloss.excerpt;}
 	    if ((sources)&&(!(sources instanceof Array))) sources=[sources];
 	    if ((tags)&&(!(tags instanceof Array))) tags=[tags];
 	    if (freq[user]) freq[user]++;
@@ -814,6 +816,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		span.setAttribute("tag",(((taginfo)&&(taginfo._id))||tag));}
 	    fdjtDOM(info,((i>0)&&(" \u00b7 ")),span);
 	    i++;}
+	if (excerpt) {
+	    var range=fdjtDOM.findString(fdjtID(frag),excerpt);
+	    if (range) fdjtUI.Highlight(range);}
 	info.onclick=sbookgloss_ontap;
 	return info;}
     Codex.glossBlock=glossBlock;

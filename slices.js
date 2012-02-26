@@ -39,7 +39,7 @@ var sbook_small_remark_icon="remarkballoon16x13.png";
 var sbook_delete_icon_touch="redx24x24.png";
 var sbook_delete_icon="redx16x16.png";
 var sbook_edit_icon_touch="remarkedit32x25.png";
-var sbook_edit_icon="remarkedit32x25.png";
+var sbook_edit_icon="remarkedit20x16.png";
 var sbook_reply_icon_touch="codex/replyballoons41x24.png";
 var sbook_reply_icon="codex/replyballoons26x15.png";
 
