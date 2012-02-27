@@ -677,16 +677,18 @@ var CodexMode=
 		    var info=Codex.docinfo[target.id];
 		    var terms=Codex.query._query;
 		    var spellings=info.knodeterms;
-		    var i=0; var lim=terms.length;
-		    while (i<lim) {
-			var term=terms[i++];
-			var words=spellings[term];
-			if (typeof words === 'string') words=[words];
-			var j=0; var jlim=words.length;
-			while (j<jlim) {
-			    var word=words[j++];
-			    var range=fdjtDOM.findString(target,word);
-			    if (range) fdjtUI.Highlight(range);}}}}
+		    if (spellings) {
+			var i=0; var lim=terms.length;
+			while (i<lim) {
+			    var term=terms[i++];
+			    var words=spellings[term];
+			    if (!(words)) continue;
+			    if (typeof words === 'string') words=[words];
+			    var j=0; var jlim=words.length;
+			    while (j<jlim) {
+				var word=words[j++];
+				var range=fdjtDOM.findString(target,word);
+				if (range) fdjtUI.Highlight(range);}}}}}
 	    Codex.setTarget(elt);
 	    Codex.GoTo(elt);
 	    CodexMode("scanning");}

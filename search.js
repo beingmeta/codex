@@ -432,10 +432,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	else copied.sort(function (x,y) {
 	    var xlen=((bykey[x])?(bykey[x].length):(0));
 	    var ylen=((bykey[y])?(bykey[y].length):(0));
-	    if (xlen==ylen)
+	    if (xlen==ylen) {
 		if (x>y) return -1;
-	    else if (x===y) return 0;
-	    else return 1;
+		else if (x===y) return 0;
+		else return 1;}
 	    else if (xlen>ylen) return -1;
 	    else return 1;});
 	// Then we scale the keys by the ratio of result frequency to
@@ -460,12 +460,11 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var span=KNodeCompletion(dterm,title,false);
 	    if (!(span)) continue;
 	    // Use a knode as a cue if it is declared PRIME in the knodule,
-	    //  or if it's non-auto and has a corresondind dterm
+	    //  or if it's non-auto and has a corresonding dterm
 	    if (primescores) {
 		if (primescores[dterm]) addClass(span,"cue");}
 	    else if (dterm[0]==='~') {}
-	    else if ((dterms[dterm])&&(!((dterms[dterm]).weak)))
-		addClass(span,"cue");
+	    // else if ((dterms[dterm])&&(!((dterms[dterm]).weak))) addClass(span,"cue");
 	    else {}
 	    domnodes.push(span);
 	    if (freq===1) addClass(span,"singleton");

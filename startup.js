@@ -1302,10 +1302,12 @@ Codex.Startup=
 	     // all stars or empty string, just ignore
 	     if (starpower<0) continue;
 	     var weight=((tag[0]==='~')?(1):(2*(starpower+1)));
+	     var weak=(tag[0]==='~');
 	     var knode=((tag.indexOf('|')>=0)?
 			(knodule.handleSubjectEntry(tag.slice(starpower))):
 			(tag[0]==='~')?(tag.slice(1)):
 			(knodule.handleSubjectEntry(tag.slice(starpower))));
+	     if ((weak)&&(typeof knode !== 'string')) knode.weak=true;
 	     var i=0; var lim=ids.length;
 	     while (i<lim) {
 		 var idinfo=ids[i++];
