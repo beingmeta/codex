@@ -392,7 +392,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	clone.id="CODEXSCAN";
 	fdjtDOM.replace("CODEXSCAN",clone);
 	dropClass(Codex.previewtarget,"codexpreviewtarget");
-	fdjtUI.Highlight.clear(Codex.previewtarget);
+	fdjtUI.Highlight.clear(Codex.previewtarget,"highlightexcerpt");
+	fdjtUI.Highlight.clear(Codex.previewtarget,"highlightsearch");
 	if (card.about) {
 	    var target=Codex.previewtarget=fdjtID(card.about);
 	    addClass(target,"codexpreviewtarget");}
@@ -402,7 +403,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		Codex.previewtarget=target=fdjtID(glossinfo.frag);
 	    if (glossinfo.excerpt) {
 		var range=fdjtDOM.findString(target,glossinfo.excerpt);
-		if (range) fdjtUI.Highlight(range);}}
+		if (range) fdjtUI.Highlight(range,"highlightexcerpt");}}
 	else if (getParent(card,".sbookresults")) {
 	    var about=card.about;
 	    if (about) {
@@ -420,7 +421,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 			while (j<jlim) {
 			    var word=words[j++];
 			    var range=fdjtDOM.findString(target,word);
-			    if (range) fdjtUI.Highlight(range);}}}}}
+			    fdjtLog("Trying to highlight %s in %o, range=%o",word,target,range);
+			    if (range) fdjtUI.Highlight(range,"highlightsearch");}}}}}
 	else {}
 	Codex.startPreview(target,"slice_held");
 	return fdjtUI.cancel(evt);}

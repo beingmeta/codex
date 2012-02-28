@@ -426,7 +426,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		var score=scores[dterms[i++]];
 		if ((score) && (score>max_score)) max_score=score;}}
 	var copied=[].concat(dterms);
-	var bykey=sbook_index.bykey;
+	var bykey=sbook_index.items;
 	// We sort the keys by absolute frequency
 	if (alphabetize) copied.sort();
 	else copied.sort(function (x,y) {
@@ -563,9 +563,9 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     function fullCloud(){
 	if (Codex.full_cloud) return Codex.full_cloud;
 	else {
-	    var tagscores=Codex.index.tagScores();
-	    var alltags=tagscores._all;
-	    var tagfreqs=tagscores._freq;
+	    var tagscores=Codex.index.tagscores;
+	    var alltags=Codex.index._alltags;
+	    var tagfreqs=Codex.index.tagfreqs;
 	    var completions=Codex.makeCloud(alltags,tagfreqs,false,false);
 	    var cues=fdjtDOM.getChildren(completions,".cue");
 	    completions.onclick=cloud_ontap;
@@ -577,9 +577,9 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	if (!(index)) index=Codex.index;
 	if (!(container)) container=completions.dom;
 	var nodes=fdjtDOM.getChildren(container,".completion");
-	var tagscores=index.tagScores();
-	var max_score=tagscores._maxscore;
-	var alltags=tagscores._all;
+	var tagscores=index.tagscores;
+	var max_score=index.maxscore;
+	var alltags=index._alltags;
 	var i=0; var lim=nodes.length;
 	while (i<lim) {
 	    var tagnode=nodes[i++];

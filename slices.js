@@ -102,7 +102,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	var tags=info.tags;
 	if (typeof tags==='string') tags=[tags];
 	if (tags.length<=prime_thresh) return tags;
-	var tagscores=Codex.index.tagweights;
+	var tagscores=Codex.index.tagscores;
 	var prime=[].concat(info.tags);
 	prime.sort(function(t1,t2){
 	    var s1=tagscores[t1]; var s2=tagscores[t2];
@@ -139,7 +139,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	else {
 	    // Sort the automatic tags if needed
 	    if ((atags)&&(!(atags.sorted))) {
-		var weights=Codex.index.tagweights;
+		var weights=Codex.index.tagscores;
 		atags.sort(function(t1,t2){
 		    var v1=weights[t1], v2=weights[t2];
 		    if ((v1)&&(v2)) {

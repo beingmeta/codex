@@ -1901,6 +1901,11 @@ img.codexcoverpage {
     display: block; max-width: 100%; max-height: 100%;
     margin: auto;}
 
+/* Highlighting */
+
+.highlightexcerpt { background-color: yellow;}
+.highlightsearch { background-color: gold;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
