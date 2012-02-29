@@ -681,14 +681,19 @@ var CodexMode=
 			var i=0; var lim=terms.length;
 			while (i<lim) {
 			    var term=terms[i++];
-			    var words=spellings[term];
+			    var words=spellings[term]||term;
 			    if (!(words)) continue;
 			    if (typeof words === 'string') words=[words];
 			    var j=0; var jlim=words.length;
 			    while (j<jlim) {
 				var word=words[j++];
-				var range=fdjtDOM.findString(target,word);
-				if (range) fdjtUI.Highlight(range);}}}}}
+				var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gm");
+				var ranges=fdjtDOM.findMatches(target,pattern);
+				fdjtLog("Trying to highlight %s (using %o) in %o, ranges=%o",
+					word,pattern,target,ranges);
+				if ((ranges)&&(ranges.length)) {
+				    var k=0; while (k<ranges.length) 
+					fdjtUI.Highlight(ranges[k++],"highlightsearch");}}}}}}
 	    Codex.setTarget(elt);
 	    Codex.GoTo(elt);
 	    CodexMode("scanning");}
