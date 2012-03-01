@@ -147,9 +147,9 @@ var sbook_gloss_data=
 		if (tags) {
 		    if (!(tags instanceof Array)) tags=[tags];
 		    if ((tags)&&(tags.length)) {
-			var i=0; var lim=tags.length;
+			var i=0; var lim=tags.length; var score=false;
 			while (i<lim) {
-			    var tag=tags[i++]; var score=false;
+			    var tag=tags[i++]; 
 			    if (tag[0]==='*') {
 				score=tag.search(/[^*]/);
 				tag=tag.slice(score);}
@@ -157,7 +157,8 @@ var sbook_gloss_data=
 			    if (info.glosstags)
 				info.glosstags.push(knode);
 			    else info.glosstags=[knode];
-			    Codex.index.add(item,knode);
+			    if (score) score=score*2; else score=1;
+			    Codex.index.add(item,knode,score);
 			    Codex.addTag2UI(knode,true);}}}
 		var sources=item.sources;
 		if (sources) {
@@ -166,8 +167,9 @@ var sbook_gloss_data=
 			var i=0; var lim=sources.length;
 			while (i<lim) {
 			    var source=sources[i++];
-			    Codex.index.add(item,source);
-			    Codex.UI.addGlossSource(fdjtKB.ref(source),true);}}}});
+			    var ref=fdjtKB.ref(source);
+			    Codex.index.add(item,ref,1);
+			    Codex.UI.addGlossSource(ref,true);}}}});
 	    Codex.glosses.index=new fdjtKB.Index();
 	    if (Codex.offline)
 		Codex.glosses.storage=new fdjtKB.OfflineKB(Codex.glosses);}
