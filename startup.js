@@ -1239,17 +1239,6 @@ Codex.Startup=
 			else return 0;});}
 		else tags.sort();}
 	    var knodule=Codex.knodule||false;
-	    sbook_index.Tags=function(item){
-		if (docinfo[item]) {
-		    var info=docinfo[item];
-		    if (info.alltags) return info.alltags;
-		    return (info.alltags=
-			    (KnoduleIndex.combineTags([info.tags||false,
-						       info.sectags||false,
-						       info.glosstags||false,
-						       info.autotags||false])));}
-		var info=Codex.glosses.ref(item)||fdjtKB.ref(item);
-		return ((info)&&(info.tags))||[];};
 	    for (var eltid in docinfo) {
 		var info=docinfo[eltid];
 		var tags=info.tags; 
@@ -1266,7 +1255,7 @@ Codex.Startup=
 		    var k=0, ntags=sectags.length;
 		    while (k<ntags) {
 			var tag=sectags[k++];
-			sbook_index.add(eltid,tag,1,knodule);}}}}
+			sbook_index.add(eltid,tag,0,knodule);}}}}
 	Codex.indexContentTags=indexContentTags
 	
 	/* Inline tags */
@@ -1297,16 +1286,17 @@ Codex.Startup=
 	 if (!(autoindex)) return;
 	 if (!(sbook_index)) return;
 	 for (var tag in autoindex) {
+	     if (!(autoindex.hasOwnProperty(tag))) continue;
 	     var ids=autoindex[tag];
 	     var starpower=tag.search(/[^*]/);
 	     // all stars or empty string, just ignore
 	     if (starpower<0) continue;
-	     var weight=((tag[0]==='~')?(1):(2*(starpower+1)));
+	     var weight=((tag[0]==='~')?(0):(2*starpower));
 	     var weak=(tag[0]==='~');
 	     var knode=((tag.indexOf('|')>=0)?
-			(knodule.handleSubjectEntry(tag.slice(starpower))):
+			(knodule.handleSubjectEntry(tag)):
 			(tag[0]==='~')?(tag.slice(1)):
-			(knodule.handleSubjectEntry(tag.slice(starpower))));
+			(knodule.handleSubjectEntry(tag)));
 	     if ((weak)&&(typeof knode !== 'string')) knode.weak=true;
 	     var i=0; var lim=ids.length;
 	     while (i<lim) {
@@ -1334,7 +1324,7 @@ Codex.Startup=
 			 terms=knodeterms[tagval]=[terms];
 		     var j=1; var jlim=idinfo.length;
 		     while (j<jlim) {terms.push(idinfo[j++]);}}
-		 sbook_index.add(info.frag,knode,weight,knodule);}}}
+		 sbook_index.add(info.frag,knode,starpower,knodule);}}}
      Codex.useAutoIndex=useAutoIndex;
 
      /* Setting up the clouds */
