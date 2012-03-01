@@ -665,7 +665,9 @@ var CodexMode=
 		else addClass("CODEXHUD","scanstart");
 		Codex.scanning=src;}
 	    else {}
-	    if (Codex.target) fdjtUI.Highlight.clear(Codex.target);
+	    if (Codex.target) {
+		fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");
+		fdjtUI.Highlight.clear(Codex.target,"highlightsearch");}
 	    if ((src)&&(hasClass(src,"gloss"))) {
 		var glossinfo=Codex.glosses.ref(src.name);
 		if (glossinfo.excerpt) {
@@ -693,7 +695,7 @@ var CodexMode=
 					word,pattern,target,ranges);
 				if ((ranges)&&(ranges.length)) {
 				    var k=0; while (k<ranges.length) 
-					fdjtUI.Highlight(ranges[k++],"highlightsearch");}}}}}}
+					fdjtUI.Highlight(ranges[k++],"highlightsearch",term);}}}}}}
 	    Codex.setTarget(elt);
 	    Codex.GoTo(elt);
 	    CodexMode("scanning");}
