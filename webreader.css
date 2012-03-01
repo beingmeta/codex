@@ -732,6 +732,15 @@ body.codexpreview div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
 body.codexpreview div#CODEXHUD.glosses div#CODEXGLOSSES.hudpanel {
     opacity: 0.05;}
 
+div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall {
+    float: right; font-size: 150%; width: 3em; padding: 4px;
+    margin-right: 8px; margin-bottom: 6px;
+    background-color: lightgray; border: solid black 2px; border-radius: 0.5em;}
+div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall .showless { display: none;}
+div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showless {display: inline;}
+div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showmore {display: none;}
+
+
 div#CODEXHUD.addgloss div#CODEXADDGLOSS.tagging div.completions#CODEXGLOSSCLOUD {
     display: block;}
 
@@ -1230,13 +1239,10 @@ div#CODEXHUD .completions .completion .dterm {}
     padding-right: 0.35em; padding-left: 0.35em; 
     border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
     color: darkblue; background-color: gold; border: solid yellow 2px;}
-/*
-.completion .dterm:before {
-    font-weight: bold; content: "·"; color: red;
-    vertical-align: middle;}
-.completion .dterm.weak:before {
-    content: "·‘";}
-*/
+.completion .dterm.weak, .completion .rawterm {
+    padding-right: 0em; padding-left: 0em; 
+    border-top-left-radius: 0px; border-bottom-left-radius: 0px;
+    color: gray; background-color: inherit; border: none;}
 
 body div#CODEXHUD div.codexthread > div.locrule {
     position: relative; left: 0px; bottom: 0px; z-index: 50;

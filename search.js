@@ -113,9 +113,9 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    if (typeof tag === 'string') tag=fdjtKB.ref(tag)||tag;
 	    if (i>0) fdjtDOM(newtags," \u00B7 ");
 	    if (typeof tag === "string")
-		fdjtDOM(newtags,fdjtDOM("span.dterm",tag));
+		fdjtDOM(newtags,fdjtDOM("span.rawterm",tag));
 	    else if (tag.name)
-		fdjtDOM(newtags,tag.name);
+		fdjtDOM(newtags,fdjtDOM("span.dterm",tag.name));
 	    else fdjtDOM(newtags,tag);
 	    i++;}
 	if (qtags.id) newtags.id=qtags.id;
@@ -361,8 +361,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    query._cloud=Codex.empty_cloud;
 	    return query._cloud;}
 	else {
-	    var completions=
-		makeCloud(query._refiners._results,query._refiners._freqs);
+	    var refiners=query._refiners;
+	    var completions=makeCloud(refiners._results,refiners,refiners._freqs);
 	    completions.onclick=cloud_ontap;
 	    var n_refiners=query._refiners._results.length;
 	    var hide_some=(n_refiners>Codex.show_refiners);
@@ -407,82 +407,86 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	else {}}
     Codex.UI.handlers.cloud_ontap=cloud_ontap;
 
-    function makeCloud(dterms,scores,noscale,alphabetize){
+    function makeCloud(dterms,scores,freqs,ranks_arg,noscale){
 	var sbook_index=Codex.index;
+	var primescores=((Codex.knodule)&&(Codex.knodule.primescores));
 	var start=new Date();
-	if (Codex.Trace.clouds)
-	    fdjtLog("Making cloud from %d dterms using scores=%o and scores=%o",
-		    dterms.length,scores,scores);
-	var spans=fdjtDOM("span");  
-	var tagicon=fdjtDOM.Image
-	(cxicon("TagSearch50x50.png"),
-	 ".cloudtoggle","show/hide all","show all tags");
-	tagicon.onclick=showempty_ontap;
-	var completions=fdjtDOM("div.completions",tagicon,spans);
 	var n_terms=dterms.length;
-	var i=0; var max_score=0;
+	var i=0, max_score=0, min_score=false, primecues=0;
 	if (scores) {
 	    var i=0; while (i<dterms.length) {
-		var score=scores[dterms[i++]];
-		if ((score) && (score>max_score)) max_score=score;}}
+		var dterm=dterms[i++];
+		if (primescores[dterm]) primecues++;
+		var score=scores[dterm];
+		if (score) {
+		    if (min_score===false) min_score=score;
+		    else if (score<min_score) min_score=score;
+		    if (score>max_score) max_score=score;}}}
+	if (Codex.Trace.clouds)
+	    fdjtLog("Making cloud from %d dterms using scores=%o [%d,%d] and freqs=%o",
+		    dterms.length,scores,max_score,min_score,freqs);
+	// We show cues if there are too many terms and we would have any cues to show
+	//  Cues are either primescores or higher scored items
+	var usecues=(!((n_terms<17)||((max_score===min_score)&&(primescores===0))));
+	var spans=fdjtDOM("span");
+	if (usecues) {
+	    var showall=fdjtDOM("span.showall",fdjtDOM("span.showmore","more"),fdjtDOM("span.showless","less"));
+	    showall.onclick=showempty_ontap;}
+	else fdjtDOM.addClass(completions,"showempty");
+	var completions=fdjtDOM("div.completions",showall,spans);
 	var copied=[].concat(dterms);
-	var bykey=sbook_index.items;
+	var ranks=(((ranks_arg===true)||(typeof ranks_arg==='undefined'))?
+		   (sbook_index.rankTags()):
+		   (ranks_arg));
 	// We sort the keys by absolute frequency
-	if (alphabetize) copied.sort();
+	if (ranks===false) copied.sort();
 	else copied.sort(function (x,y) {
-	    var xlen=((bykey[x])?(bykey[x].length):(0));
-	    var ylen=((bykey[y])?(bykey[y].length):(0));
-	    if (xlen==ylen) {
-		if (x>y) return -1;
+	    var xrank=ranks[x]||0;
+	    var yrank=ranks[y]||0;
+	    if (xrank===yrank) {
+		if (x<y) return -1;
 		else if (x===y) return 0;
 		else return 1;}
-	    else if (xlen>ylen) return -1;
+	    else if (xrank<yrank) return -1;
 	    else return 1;});
-	// Then we scale the keys by the ratio of result frequency to
-	// absolute frequency
 	var nspans=0; var sumscale=0;
 	var minscale=false; var maxscale=false;
 	var domnodes=[]; var nodescales=[];
-	var primescores=
-	    ((Codex.knodule.prime)&&
-	     (Codex.knodule.prime.length)&&
-	     (Codex.knodule.primescores));
-	var dterms=Codex.knodule.dterms;
+	var count=scores._count;
+	var cuelim=scores._maxscore/2;
+	var cscores=sbook_index.tagscores;
+	var cfreqs=sbook_index.tagfreqs;
+	var ctotal=sbook_index._allitems.length;
  	i=0; while (i<copied.length) {
 	    var dterm=copied[i++];
-	    var count=((bykey[dterm]) ? (bykey[dterm].length) : (1));
-	    var freq=((scores)?(scores[dterm]||1):(1));
-	    var score=((scores) ?(scores[dterm]||false) : (false));
-	    var title=
-		((Codex.noisy_tooltips) ?
-		 (""+(((score)?("s="+score+"; "):"")+freq+"/"+count+" items")) :
-		 (""+freq+((freq==1) ? " item" : " items")));
+	    var freq=freqs[dterm]||1;
+	    var cfreq=cfreqs[dterm]||1;
+	    var score=scores[dterm]||freq;
+	    var scaling=Math.sqrt(score);
+	    var title=((freq===cfreq)?
+		       ("score="+score+"; "+freq+" items"):
+		       ("score="+score+"; "+freq+"/"+cfreq+" items"));
 	    var span=KNodeCompletion(dterm,title,false);
 	    if (!(span)) continue;
-	    // Use a knode as a cue if it is declared PRIME in the knodule,
-	    //  or if it's non-auto and has a corresonding dterm
-	    if (primescores) {
-		if (primescores[dterm]) addClass(span,"cue");}
-	    else if (dterm[0]==='~') {}
-	    // else if ((dterms[dterm])&&(!((dterms[dterm]).weak))) addClass(span,"cue");
-	    else {}
-	    domnodes.push(span);
 	    if (freq===1) addClass(span,"singleton");
+	    if ((usecues)&&
+		((primescores[dterm])||
+		 ((scores[dterm])&&(max_score>min_score)&&(scores[dterm]>min_score))))
+		addClass(span,"cue");
+	    domnodes.push(span);
 	    if ((scores)&&(!(noscale))) {
-		var relfreq=
-		    ((freq/scores._count)/(count/Codex.docinfo._eltcount));
-		var scaling=Math.sqrt(relfreq);
 		if ((!(minscale))||(scaling<minscale)) minscale=scaling;
 		if ((!(maxscale))||(scaling>maxscale)) maxscale=scaling;
 		nodescales.push(scaling);}
 	    fdjtDOM(spans,span,"\n");}
+	// fdjtLog("minscale=%o, maxscale=%o",minscale,maxscale);
 	if (nodescales.length) {
 	    var j=0; var jlim=domnodes.length;
-	    var overscale=100/(maxscale-minscale);
+	    var scalespan=maxscale-minscale;
 	    while (j<jlim) {
 		var node=domnodes[j];
 		var scale=nodescales[j];
-		node.style.fontSize=(100+((scale-minscale)*overscale))+'%';
+		node.style.fontSize=(100+(100*((scale-minscale)/scalespan)))+'%';
 		j++;}}
 	var maxmsg=fdjtDOM
 	("div.maxcompletemsg",
@@ -500,8 +504,9 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     function showempty_ontap(evt){
 	var target=fdjtUI.T(evt);
 	var completions=fdjtDOM.getParent(target,".completions");
-	if (completions)
-	    fdjtDOM.toggleClass(completions,"showempty");}
+	if (completions) {
+	    fdjtDOM.toggleClass(completions,"showempty");
+	    Codex.UI.updateScroller(completions);}}
 
     function KNodeCompletion(term,title,just_knodes){
 	var sbook_index=Codex.index; var showname=term;
@@ -515,7 +520,9 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		title=term;}
 	    var span=fdjtDOM("span.completion",fdjtDOM("span.sectname",showname));
 	    span.key=term; span.value=term; span.anymatch=true;
-	    span.title=""+sbook_index.freq(term)+" items: "+term;
+	    if (title)
+		span.title=title+"; "+term;
+	    else span.title=""+sbook_index.freq(term)+" items: "+term;
 	    return span;}
 	var dterm=Codex.knodule.probe(term); var showterm=term;
 	if (!(dterm)) {
@@ -527,7 +534,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	else if (!(dterm.dterm)) {
 	    fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
 	    dterm=false;}
-	var term_node=((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.raw",showterm)));
+	var term_node=((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.rawterm",showterm)));
 	if ((dterm)&&(fdjtString.hasSuffix(dterm.dterm,"...")))
 	    addClass(term_node,"weak");
 	var span=fdjtDOM("span.completion");
@@ -566,7 +573,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var tagscores=Codex.index.tagscores;
 	    var alltags=Codex.index._alltags;
 	    var tagfreqs=Codex.index.tagfreqs;
-	    var completions=Codex.makeCloud(alltags,tagfreqs,false,false);
+	    var completions=Codex.makeCloud(alltags,tagscores,tagfreqs,true);
 	    var cues=fdjtDOM.getChildren(completions,".cue");
 	    completions.onclick=cloud_ontap;
 	    Codex.full_cloud=new fdjtUI.Completions(completions);
@@ -589,6 +596,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var score=tagscores[tag];
 	    if (score) tagnode.style.fontSize=(100+(100*(score/max_score)))+"%";}}
     Codex.sizeCloud=sizeCloud;
+
+    Codex.UI.searchCloudToggle=function(){
+	fdjtDOM.toggleClass(fdjtID('CODEXSEARCHCLOUD'),'showempty');
+	Codex.UI.updateScroller(fdjtID('CODEXSEARCHCLOUD'));};
 
 })();
 
