@@ -362,7 +362,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    return query._cloud;}
 	else {
 	    var refiners=query._refiners;
-	    var completions=makeCloud(refiners._results,refiners,refiners._freqs);
+	    var completions=makeCloud(
+		refiners._results,refiners,refiners._freqs);
 	    completions.onclick=cloud_ontap;
 	    var n_refiners=query._refiners._results.length;
 	    var hide_some=(n_refiners>Codex.show_refiners);
@@ -387,7 +388,13 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	if (completion) {
 	    var cinfo=Codex.query._cloud;
 	    var value=cinfo.getValue(completion);
-	    add_searchtag(value);
+	    if (typeof value !== 'string') add_searchtag(value);
+	    else  if (value.length===0) {}
+	    else if (value[0]==='@')
+		add_searchtag(Codex.knodule.ref(value.slice(1)));
+	    else if (value.indexOf('@')>0)
+		add_searchtag(fdjtKB.ref(value));
+	    else add_searchtag(value);
 	    fdjtDOM.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".resultcounts")) {
 	    showSearchResults(Codex.query);
