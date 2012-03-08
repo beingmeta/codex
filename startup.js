@@ -1310,6 +1310,9 @@ Codex.Startup=
 		 var tagval=((typeof knode === 'string')?(knode):(knode.dterm));
 		 if (info.autotags) info.autotags.push(tagval);
 		 else info.autotags=[tagval];
+		 if (typeof knode !== 'string') {
+		     if (info.knodes) info.knodes.push(knode);
+		     else info.knodes=[knode];}
 		 if (typeof idinfo === 'string') {}
 		 else if ((idinfo.length===2)&&
 			  ((!(info.knodeterms))||
