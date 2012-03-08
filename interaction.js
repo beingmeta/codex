@@ -410,23 +410,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		var info=Codex.docinfo[target.id];
 		var terms=Codex.query._query;
 		var spellings=info.knodeterms;
-		if (spellings) {
-		    var i=0; var lim=terms.length;
-		    while (i<lim) {
-			var term=terms[i++];
-			var words=spellings[term]||term;
-			if (!(words)) continue;
-			if (typeof words === 'string') words=[words];
-			var j=0; var jlim=words.length;
-			while (j<jlim) {
-			    var word=words[j++];
-			    var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gm");
-			    var ranges=fdjtDOM.findMatches(target,pattern);
-			    fdjtLog("Trying to highlight %s (using %o) in %o, ranges=%o",
-				    word,pattern,target,ranges);
-			    if ((ranges)&&(ranges.length)) {
-				var k=0; while (k<ranges.length) 
-				    fdjtUI.Highlight(ranges[k++],"highlightsearch");}}}}}}
+		var i=0; var lim=terms.length;
+		while (i<lim) {
+		    var term=terms[i++];
+		    highlightTerm(term,target,info,spellings);}}}
 	else {}
 	Codex.startPreview(target,"slice_held");
 	return fdjtUI.cancel(evt);}
@@ -434,6 +421,36 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var card=getCard(fdjtUI.T(evt||event));
 	if (card) {
 	    Codex.stopPreview("slice_released");}}
+
+    function highlightTerm(term,target,info,spellings){
+	var words=[];
+	if (typeof term === 'string')
+	    words=spellings[term]||[term];
+	else {
+	    var knodes=info.knodes;
+	    var i=0; var lim=knodes.length;
+	    while (i<lim) {
+		var knode=knodes[i++];
+		if (fdjtKB.contains(knode._always,term)) {
+		    var dterm=knode.dterm;
+		    var spelling=spellings[dterm]||dterm;
+		    if (typeof spelling === 'string')
+			words.push(spelling);
+		    else words=words.concat(spelling);}}
+	    if (words.length===0) words=false;}
+	if (!(words)) return;
+	var j=0; var jlim=words.length;
+	while (j<jlim) {
+	    var word=words[j++];
+	    var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gm");
+	    var ranges=fdjtDOM.findMatches(target,pattern);
+	    fdjtLog("Trying to highlight %s (using %o) in %o, ranges=%o",
+		    word,pattern,target,ranges);
+	    if ((ranges)&&(ranges.length)) {
+		var k=0; while (k<ranges.length) 
+		    fdjtUI.Highlight(ranges[k++],"highlightsearch");}}}
+    Codex.highlightTerm=highlightTerm;
+	    
 
     /* HUD handlers */
 
