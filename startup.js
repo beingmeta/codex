@@ -64,6 +64,8 @@ Codex.Startup=
 	
 	var _sbook_setup_start=false;
 	
+	var addClass=fdjtDOM.addClass;
+	var dropClass=fdjtDOM.dropClass;
 	var TOA=fdjtDOM.Array;
 
 	function startupLog(){
@@ -229,13 +231,14 @@ Codex.Startup=
 	    fdjtLog("This is Codex version %s, built at %s on %s",
 		    Codex.version,sbooks_buildtime,sbooks_buildhost);
 	    if (navigator.appVersion)
-		fdjtLog("App version: %s",navigator.appVersion);
+		fdjtLog("Navigator App version: %s",navigator.appVersion);
 	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
-	    // Get various settings
+	    // Get various settings for the sBook, including
+	    // information for scanning, graphics, glosses, etc
 	    readSettings();
-	    // Execute fdjt initializations
+	    // Execute any FDJT initializations
 	    fdjtDOM.init();
-	    // Declare this
+	    // Declare this, which will show the space configuration
 	    fdjtDOM.addClass(document.body,"codexstartup");
 	    var metadata=false;
 	    var helphud=false;
@@ -245,9 +248,9 @@ Codex.Startup=
 	    initBody();
 	    // This initializes the book tools (the HUD/Heads Up Display)
 	    Codex.initHUD();
-	    // Get any local configuration information
+	    // Get any local saved configuration information
 	    initConfig();
-	    // Setup the UI components
+	    // Setup the UI components for the body and HUD
 	    Codex.setupGestures();
 	    // Init user based on locally stored user information
 	    if ((!(Codex.nologin))&&(getLocal("sync("+Codex.refuri+")")))
@@ -271,15 +274,16 @@ Codex.Startup=
 	    fdjtTime.timeslice
 	    ([// Setup sbook tables, databases, etc
 		appSplash,
-		// Scan the DOM for metadata.  THis is surprisingly fast,
+		// Scan the DOM for metadata.  This is surprisingly fast,
 		//  so we don't currently try to timeslice it, though we could
 		function(){
-		    // This scans the DOM.  It would probably be a good
-		    //  idea to do this asynchronously
+		    var scanmsg=fdjtID("CODEXSTARTUPSCAN");
+		    addClass(scanmsg,"running");
 		    metadata=new CodexDOMScan(Codex.root);
 		    fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
 		    Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;
+		    dropClass(scanmsg,"running");
 		    if (Codex.afterscan) {
 			var donefn=Codex.afterscan;
 			delete Codex.afterscan;
@@ -292,15 +296,29 @@ Codex.Startup=
 		// Build the display TOC, both the dynamic (top of
 		// display) and the static (inside the flyleaf)
 		function(){
+		    var tocmsg=fdjtID("CODEXSTARTUPTOC");
+		    if (tocmsg) {
+			tocmsg.innerHTML=fdjtString(
+			    "Building table of contents based on %d heads",
+			    Codex.docinfo._headcount);
+			addClass(tocmsg,"running");}
 		    startupLog("Building table of contents based on %d heads",
 			       Codex.docinfo._headcount);
-		    Codex.setupTOC(metadata[Codex.root.id]);},
+		    Codex.setupTOC(metadata[Codex.root.id]);
+		    dropClass(tocmsg,"running");},
 		// Read knowledge bases (knodules) used by the book
 		((Knodule)&&(Knodule.HTML)&&
 		 (Knodule.HTML.Setup)&&(Codex.knodule)&&
 		 (function(){
+		     var knomsg=fdjtID("CODEXSTARTUPKNO");
+		     var knodetails=fdjtID("CODEXSTARTUPKNODETAILS");
+		     if (knodetails) {
+			 knodetails.innerHTML=fdjtString(
+			     "Processing knodule %s",Codex.knodule.name);}
+		     addClass(knomsg,"running");
 		     startupLog("Processing knodule %s",Codex.knodule.name);
-		     Knodule.HTML.Setup(Codex.knodule);})),
+		     Knodule.HTML.Setup(Codex.knodule);
+		     dropClass(knomsg,"running");})),
 		// Process any preloaded user/gloss information
 		((_sbook_loadinfo)&&(function(){loadInfo(_sbook_loadinfo);})),
 		// Process locally stored glosses if not loading
@@ -308,6 +326,8 @@ Codex.Startup=
 		 initGlossesOffline),
 		// Index tags for search
 		function(){
+		    var tagsmsg=fdjtID("CODEXSTARTUPTAGGING");
+		    addClass(tagsmsg,"running");
 		    startupLog("Indexing tags for search");
 		    applyTagSpans();
 		    startupLog("Indexing tag attributes from the source");
@@ -318,9 +338,14 @@ Codex.Startup=
 		    if (_sbook_autoindex) {
 			startupLog("Indexing automatic tags");
 			Codex.useIndexData(_sbook_autoindex,Codex.knodule);
-			_sbook_autoindex=false;}},
+			_sbook_autoindex=false;}
+		    dropClass(tagsmsg,"running");},
 		function(){
-		    startupLog("Setting up tag clouds"); initClouds();},
+		    var cloudmsg=fdjtID("CODEXSTARTUPCLOUDS");
+		    addClass(cloudmsg,"running");
+		    startupLog("Setting up tag clouds");
+		    initClouds();
+		    dropClass(cloudmsg,"running");},
 		// Figure out which mode to start up in, based on
 		// query args to the book.
 		function(){
@@ -669,6 +694,7 @@ Codex.Startup=
 	    fdjtDOM(document.head,style);
 	    Codex.stylesheet=style.sheet;
 	    var i=0; var lim=nodes.length;
+	    // Move all of the body nodes into the content element
 	    while (i<lim) {
 		var node=nodes[i++];
 		if (node.nodeType===1) {

@@ -62,10 +62,16 @@ var CodexMode=
 	function initHUD(){
 	    if (fdjtID("CODEXHUD")) return;
 	    else {
+		var messages=fdjtDOM("div.startupmessages");
+		messages.innerHTML=sbook_messagestext;
 		Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
 		CodexHUD.codexui=true;
 		CodexHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,fdjtID("HUMANE"),CodexHUD);}
+		fdjtDOM.prepend(document.body,
+				messages,
+				fdjtDOM("div#CODEXLAYOUTMESSAGE"),
+				fdjtID("HUMANE"),
+				CodexHUD);}
 	    // Setup flyleaf
 	    var flyleaf=fdjtID("CODEXFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;

@@ -42,6 +42,7 @@ var CodexPaginate=
 	function Paginate(why,init){
 	    if (Codex.paginating) return;
 	    if (!(why)) why="because";
+	    addClass(document.body,"pagelayout");
 	    var height=getGeometry(fdjtID("CODEXPAGE")).height;
 	    var width=getGeometry(fdjtID("CODEXPAGE")).width;
 	    var bodysize=Codex.bodysize||"normal";
@@ -112,6 +113,7 @@ var CodexPaginate=
 		    progress(layout);
 		    fdjtID("CODEXPAGE").style.visibility='';
 		    fdjtID("CODEXCONTENT").style.visibility='';
+		    dropClass(document.body,"pagelayout");
 		    Codex.paginated=layout;
 		    Codex.pagecount=layout.pages.length;
 		    if (Codex.pagewait) {
@@ -134,11 +136,10 @@ var CodexPaginate=
 	    var now=fdjtTime();
 	    if (!(pagenum)) return;
 	    if (!(Codex._setup)) {
-		if (info.done) Codex.startupMessage("Finished page layout");
+		if (info.done) LayoutMessage("Finished page layout");
 		else if (info.pagenum)
-		    Codex.startupMessage(
-			"Laid out %d pages so far",info.pagenum);
-		else Codex.startupMessage("Preparing for page layout");}
+		    LayoutMessage("Laid out %d pages so far",info.pagenum);
+		else LayoutMessage("Preparing for page layout");}
 	    if (info.done)
 		if (used)
 		    fdjtLog("Done laying out %d/%d roots/blocks across %d pages after %f seconds (%f running across %d chunks)",
@@ -160,6 +161,11 @@ var CodexPaginate=
 		    else fdjtLog("So far, laid out %d pages in %f seconds (%f running across %d chunks)",
 				 pagenum,fdjtTime.secs2short((now-started)/1000));}}
 	    else {}}
+
+	function LayoutMessage(fmt){
+	    var box=fdjtID("CODEXLAYOUTMESSAGE");
+	    if (!(box)) return;
+	    box.innerHTML=fdjtString.apply(null,arguments);}
 	
 	CodexLayout.onresize=function(evt){
 	    var page_width=fdjtDOM.getGeometry(Codex.page).width;
