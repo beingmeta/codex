@@ -969,8 +969,6 @@ div#CODEXHELP div.codexhelp p img.right {
 div#CODEXHELP div.codexhelp img.left {
     width: 24px; margin-left: -24px; vertical-align: middle;}
 
-body div#CODEXHELP #CODEXHELPTITLE {
-    font-weight: bold;}
 div#CODEXHELP #CODEXSTARTUPMSG {
     text-align: right; padding-top: 2px; padding-right: 8px;
     color: darkblue;

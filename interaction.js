@@ -564,6 +564,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	// Codex.trace("sbook_onkeypress",evt);
 	if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
 	else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
+	else if ((ch===72)||(ch===104)) { // 'H' or 'h'
+	    fdjtDOM.toggleClass(document.body,'codexhelp');
+	    return false;}
 	else modearg=modechars[ch];
 	if (modearg==="flyleaf")
 	    modearg=Codex.last_flyleaf||"about";

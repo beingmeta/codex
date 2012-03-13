@@ -70,18 +70,20 @@ Codex.Startup=
 
 	function startupLog(){
 	    var args=TOA(arguments);
-	    var div=fdjtDOM("div#CODEXSTARTUPMSG",fdjtString.apply(null,args));
+	    // var div=fdjtDOM("div#CODEXSTARTUPMSG",fdjtString.apply(null,args));
 	    fdjtLog.apply(null,arguments);
-	    fdjtDOM.replace("CODEXSTARTUPMSG",div);}
+	    // fdjtDOM.replace("CODEXSTARTUPMSG",div);
+	}
 
 	function startupMessage(){
 	    var args=TOA(arguments);
-	    var div=fdjtDOM("div#CODEXSTARTUPMSG",fdjtString.apply(null,args));
+	    // var div=fdjtDOM("div#CODEXSTARTUPMSG",fdjtString.apply(null,args));
 	    if ((Codex.Trace.startup)&&
 		(typeof Codex.Trace.startup === "number")&&
 		(Codex.Trace.startup>1))
 		fdjtLog.apply(null,arguments);
-	    fdjtDOM.replace("CODEXSTARTUPMSG",div);}
+	    // fdjtDOM.replace("CODEXSTARTUPMSG",div);
+	}
 	Codex.startupMessage=startupMessage;
 
 	/* Configuration information */

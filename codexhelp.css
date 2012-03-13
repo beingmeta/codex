@@ -5,6 +5,8 @@
 body.codexhelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
     background-color: silver; border-color: black; opacity: 0.9;}
 
+body.codexhelp div#CODEXHUD img.hudbutton { opacity: 0.9;}
+
 div.helpbox {
     position: fixed;
     background-color: silver; color: black;
@@ -31,7 +33,8 @@ div#CODEXHUD div.helpbox#CODEXHELP {
     display: none;}
 body.codexhelp div#CODEXHUD div.helpbox#CODEXHELP {
     display: block; opacity: 0.9; border-color: black; z-index: 250;}
-body.codexhelp.hudup div#CODEXHUD div.helpbox#CODEXHELP {
+body.codexhelp.hudup div#CODEXHUD div.helpbox#CODEXHELP,
+body.codexhelp.sbookscanning div#CODEXHUD div.helpbox#CODEXHELP {
     display: none;}
 
 div#CODEXHUDHELP { display: none;}
@@ -40,11 +43,25 @@ body.codexhelp div#CODEXHUDHELP { display: block; }
 body.codexhelp div#CODEXHUD.addgloss div#CODEXHUDHELP { display: block; }
 body.codexhelp div#CODEXHUD.addgloss div#CODEXHELP { display: none; }
 
-body.codexhelp.hudup div#CODEXHUD.toc div#CODEXTOCHELP.helpbox {
-    opacity: 0.9; border-color: black; z-index: 250;}
-
-body.codexhelp div#CODEXHUD.addgloss div#CODEXADDGLOSSHELP.helpbox {
+body.codexhelp.hudup div#CODEXHUD.toc div#CODEXTOCHELP.helpbox,
+body.codexhelp div#CODEXHUD.addgloss div#CODEXADDGLOSSHELP.helpbox,
+body.codexhelp div#CODEXHUD.tocscan div#CODEXTOCSCANHELP.helpbox,
+body.codexhelp div#CODEXHUD.scanning div#CODEXSCANNINGHELP.helpbox,
+body.codexhelp div#CODEXHUD.search div#CODEXSEARCHINPUTHELP.helpbox,
+body.codexhelp div#CODEXHUD.scanning div#CODEXSEARCHRESULTSHELP.helpbox,
+body.codexhelp div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
     opacity: 0.9; border-color: black; z-index: 260;}
+
+/* Goto page and goto loc always display their help. */
+body div#CODEXHUD.gotopage div#CODEXHUDHELP,
+body div#CODEXHUD.gotoloc div#CODEXHUDHELP {
+    text-align: center; display: block;}
+body div#CODEXHUD.gotopage div#CODEXGOTOPAGEHELP.helpbox,
+body div#CODEXHUD.gotoloc div#CODEXGOTOLOCHELP.helpbox {
+    opacity: 0.9; border-color: black; z-index: 260;}
+
+body.codexhelp.codexpreview div#CODEXHUD div#CODEXHUDHELP {
+    opacity: 0.05;}
 
 div.helpbox p {
     /*
@@ -61,7 +78,9 @@ div.helpbox img.fullwidth {
 div.helpbox img.codextocbar {
     width: 70%; float: right;}
 
-div.helpbox blockquote p { margin-top: 3px; margin-bottom: 3px;}
+div.helpbox blockquote p {
+    margin-top: 3px; margin-bottom: 3px;
+    margin-left: 3em; margin-right: 3em; text-indent: -3em;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
