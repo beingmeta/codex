@@ -1,3 +1,71 @@
+/* Help is displayed in fixed position boxes and selectively displayed
+    based on the body class body.codexhelp and the individual state
+    CSS classes maintained in the DOM tree.  */
+
+body.codexhelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
+    background-color: silver; border-color: black; opacity: 0.9;}
+
 div.helpbox {
     position: fixed;
-    background-color: silver; color: white; opacity: 0.9;}
+    background-color: silver; color: black;
+    padding: 1em; border: solid transparent 3px;
+    border-radius: 1em; -webkit-border-radius: 1em;
+    -moz-border-radius: 1em; -o-border-radius: 1em;
+    z-index: -250;
+    opacity: 0.001;}
+
+div.helpbox.atfoot {
+    bottom: 0px; max-height: 75%; height: auto;
+    border-bottom: 0px;
+    border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
+    -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
+    -webkit-border-bottom-left-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px; 
+    -moz-border-radius-bottomleft: 0px;
+    -moz-border-radius-bottomright: 0px;
+    left: 75px; right: 75px; width: auto;}
+
+div#CODEXHUD div.helpbox#CODEXHELP {
+    bottom: 75px; top: 75px;
+    left: 100px; right: 100px;
+    display: none;}
+body.codexhelp div#CODEXHUD div.helpbox#CODEXHELP {
+    display: block; opacity: 0.9; border-color: black; z-index: 250;}
+body.codexhelp.hudup div#CODEXHUD div.helpbox#CODEXHELP {
+    display: none;}
+
+div#CODEXHUDHELP { display: none;}
+body.codexhelp div#CODEXHUDHELP { display: block; }
+
+body.codexhelp div#CODEXHUD.addgloss div#CODEXHUDHELP { display: block; }
+body.codexhelp div#CODEXHUD.addgloss div#CODEXHELP { display: none; }
+
+body.codexhelp.hudup div#CODEXHUD.toc div#CODEXTOCHELP.helpbox {
+    opacity: 0.9; border-color: black; z-index: 250;}
+
+body.codexhelp div#CODEXHUD.addgloss div#CODEXADDGLOSSHELP.helpbox {
+    opacity: 0.9; border-color: black; z-index: 260;}
+
+div.helpbox p {
+    /*
+    display: block; text-align: left;
+    margin-left: 2em; margin-right: 2em; text-indent: -1em;
+    max-width: inherit; min-width: inherit; width: auto;
+    */
+}
+
+div.helpbox h3 { margin-top: 0px;}
+div.helpbox .clicktarget { color: lightblue; }
+div.helpbox img.fullwidth {
+    width: 80%; margin-left: 10%; margin-right: 10%;}
+div.helpbox img.codextocbar {
+    width: 70%; float: right;}
+
+div.helpbox blockquote p { margin-top: 3px; margin-bottom: 3px;}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
+

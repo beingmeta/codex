@@ -71,7 +71,12 @@ var CodexMode=
 				messages,
 				fdjtDOM("div#CODEXLAYOUTMESSAGE"),
 				fdjtID("HUMANE"),
-				CodexHUD);}
+				CodexHUD);
+		// Fill in the HUD help
+		var hudhelp=fdjtID("CODEXHUDHELP");
+		hudhelp.innerHTML=sbook_hudhelp;
+		var readhelp=fdjtID("CODEXHELP");
+		readhelp.innerHTML=sbook_helptext;}
 	    // Setup flyleaf
 	    var flyleaf=fdjtID("CODEXFLYLEAF");
 	    flyleaf.innerHTML=sbook_flyleaftext;
@@ -250,6 +255,7 @@ var CodexMode=
 	    else {
 		Codex.hudup=false;
 		Codex.scrolling=false;
+		dropClass(document.body,"codexhelp");
 		if (Codex.previewing) Codex.stopPreview();
 		if (clearmode) {
 		    var wait=false;
@@ -278,12 +284,6 @@ var CodexMode=
 	     gotoloc: "CODEXLOCINPUT",
 	     search: "CODEXSEARCHINPUT"};
 	
-	var sbook_mode_help={
-	    addgloss: "#CODEXADDGLOSSHELP",
-	    toc: "#CODEXTOCHELP",
-	    tocscan: "#CODEXTOCSCANHELP",
-	    scanning: "#CODEXSCANNINGHELP"};
-
 	function CodexMode(mode){
 	    var oldmode=Codex.mode;
 	    if (typeof mode === 'undefined') return oldmode;
@@ -315,8 +315,6 @@ var CodexMode=
 		    if (sbook_mode_foci[Codex.mode]) {
 			var input=fdjtID(sbook_mode_foci[Codex.mode]);
 			input.blur();}
-		    if (sbook_mode_help[mode])
-			fdjtLog.Humane(sbook_mode_help[mode]);
 		    Codex.mode=mode;
 		    if (Codex.mode!=='help') Codex.last_mode=Codex.mode;}
 		// If we're switching to the inner app but the iframe

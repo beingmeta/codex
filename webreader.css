@@ -1918,7 +1918,7 @@ div.codexstartupmessages { display: none;}
 body.codexstartup div.codexstartupmessages { display: block;}
 div.startupmessage {
     text-align: center; font-size: 20px; font-weight: bold;
-    color: white; background-color: lightgray;
+    color: black; background-color: lightgray;
     position: fixed; opacity: 0.0;
     top: 5px; width: 60%; left: 20%; right: 20%; height: 50px;
     transition-property: opacity;
@@ -1933,7 +1933,7 @@ div.startupmessage.running { opacity: 1.0; }
 
 div#CODEXLAYOUTMESSAGE {
     text-align: center; font-size: 20px; font-weight: bold;
-    color: white; background-color: lightgray;
+    color: black; background-color: lightgray;
     position: fixed; opacity: 0.0; z-index: 300;
     bottom: 5px; width: 60%; left: 20%; right: 20%; height: 50px;
     transition-property: opacity;
@@ -1946,7 +1946,6 @@ div#CODEXLAYOUTMESSAGE {
     -moz-transition-duration: 1s;
     display: none;}
 body.pagelayout div#CODEXLAYOUTMESSAGE { display: block; opacity: 1.0;}
-
 
 /* Emacs local variables
 ;;;  Local variables: ***
