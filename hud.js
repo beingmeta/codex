@@ -667,6 +667,8 @@ var CodexMode=
 		if (Codex.prevSlice(src))
 		    dropClass("CODEXHUD","scanstart");
 		else addClass("CODEXHUD","scanstart");
+		if (pelt) dropClass(pelt,"codexscanpoint");
+		if (src) addClass(src,"codexscanpoint");
 		Codex.scanning=src;}
 	    else {}
 	    if (Codex.target) {

@@ -49,6 +49,10 @@ div.codexslice div.codexthread div.codexcard:first-child div.locbar {
 body.codexpreview div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES {
     opacity: 0.01;}
 
+div.codexslice div.codexscanpoint {
+    border-left: solid blue 16px;
+    background-color: white;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
