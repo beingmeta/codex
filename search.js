@@ -230,23 +230,6 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		       100);}}
     Codex.UI.handlers.search_keyup=searchInput_keyup;
 
-    /*
-      function searchInput_onkeyup(evt){
-      evt=evt||event||null;
-      var kc=evt.keyCode;
-      if ((kc===8)||(kc===46)) {
-      if (_sbook_searchupdate) {
-      clearTimeout(_sbook_searchupdate);
-      _sbook_searchupdate=false;}
-      var target=fdjtDOM.T(evt);
-      _sbook_searchupdate=
-      setTimeout(function(target){
-      _sbook_searchupdate=false;
-      searchUpdate(target);},
-      _sbook_searchupdate_delay,target);}}
-      Codex.UI.handlers.SearchInput_onkeyup=searchInput_onkeyup;
-    */
-
     function searchUpdate(input,cloud){
 	if (!(input)) input=fdjtID("CODEXSEARCHINPUT");
 	if (!(cloud)) cloud=queryCloud(Codex.query);
