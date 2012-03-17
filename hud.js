@@ -69,7 +69,9 @@ var CodexMode=
 		CodexHUD.innerHTML=sbook_hudtext;
 		fdjtDOM.prepend(document.body,
 				messages,
-				fdjtDOM("div#CODEXLAYOUTMESSAGE"),
+				fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
+					fdjtDOM("div.indicator"),
+					fdjtDOM("div.message")),
 				fdjtID("HUMANE"),
 				CodexHUD);
 		// Fill in the HUD help

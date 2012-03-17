@@ -1929,7 +1929,7 @@ div.startupmessage {
     -moz-transition-duration: 1s;}
 div.startupmessage.running { opacity: 1.0; }
 
-div#CODEXLAYOUTMESSAGE {
+div.fdjtprogress#CODEXLAYOUTMESSAGE {
     text-align: center; font-size: 20px; font-weight: bold;
     color: black; background-color: lightgray;
     position: fixed; opacity: 0.0; z-index: 300;

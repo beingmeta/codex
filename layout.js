@@ -137,8 +137,19 @@ var CodexPaginate=
 	    if (!(pagenum)) return;
 	    if (!(Codex._setup)) {
 		if (info.done) LayoutMessage("Finished page layout");
-		else if (info.pagenum)
-		    LayoutMessage("Laid out %d pages so far",info.pagenum);
+		else if (info.pagenum) {
+		    if ((info.lastid)&&(Codex.docinfo)&&
+			((Codex.docinfo[info.lastid]))) {
+			var docinfo=Codex.docinfo;
+			var maxloc=docinfo._maxloc;
+			var lastloc=docinfo[info.lastid].starts_at;
+			var pct=(100*lastloc)/maxloc;
+			fdjtUI.ProgressBar.setPercent(
+			    "CODEXLAYOUTPROGRESS",pct);
+			LayoutMessage("Laid out %f% of content into %d pages",
+				      pct,info.pagenum);}
+		    else LayoutMessage("Laid out %d pages so far",
+				       info.pagenum);}
 		else LayoutMessage("Preparing for page layout");}
 	    if (info.done)
 		if (used)
@@ -163,9 +174,8 @@ var CodexPaginate=
 	    else {}}
 
 	function LayoutMessage(fmt){
-	    var box=fdjtID("CODEXLAYOUTMESSAGE");
-	    if (!(box)) return;
-	    box.innerHTML=fdjtString.apply(null,arguments);}
+	    fdjtUI.ProgressBar.setMessage(
+		"CODEXLAYOUTMESSAGE",fdjtString.apply(null,arguments));}
 	
 	CodexLayout.onresize=function(evt){
 	    var page_width=fdjtDOM.getGeometry(Codex.page).width;
