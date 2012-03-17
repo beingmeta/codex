@@ -144,8 +144,8 @@ var CodexPaginate=
 			var maxloc=docinfo._maxloc;
 			var lastloc=docinfo[info.lastid].starts_at;
 			var pct=(100*lastloc)/maxloc;
-			fdjtUI.ProgressBar.setPercent(
-			    "CODEXLAYOUTPROGRESS",pct);
+			fdjtUI.ProgressBar.setProgress(
+			    "CODEXLAYOUTMESSAGE",pct);
 			LayoutMessage("Laid out %f% of content into %d pages",
 				      pct,info.pagenum);}
 		    else LayoutMessage("Laid out %d pages so far",
