@@ -301,8 +301,8 @@ var CodexMode=
 	    if (mode) {
 		if (mode!=="scanning") Codex.scanning=false;
 		if ((mode==="scanning")||(mode==="tocscan"))
-		    addClass(document.body,"sbookscanning");
-		else dropClass(document.body,"sbookscanning");
+		    addClass(document.body,"codexscanning");
+		else dropClass(document.body,"codexscanning");
 		if (mode===Codex.mode) {}
 		else if (mode===true) {
 		    /* True just puts up the HUD with no mode info */
@@ -340,8 +340,8 @@ var CodexMode=
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,mode);}
 		// Update the body scanning mode
 		if ((mode==="scanning")||(mode==="tocscan"))
-		    addClass(document.body,"sbookscanning");
-		else dropClass(document.body,"sbookscanning");
+		    addClass(document.body,"codexscanning");
+		else dropClass(document.body,"codexscanning");
 		// Update the 'flyleaf' meta mode
 		if ((mode)&&(typeof mode === 'string')) {
 		    if (mode.search(codexflyleafMode_pat)===0) {
@@ -396,7 +396,7 @@ var CodexMode=
 		    Codex.liveinput=false;}
 		document.body.focus();
 		dropClass(document.body,"dimmed");
-		dropClass(document.body,"sbookscanning");
+		dropClass(document.body,"codexscanning");
 		setHUD(false);
 		if (display_sync) Codex.displaySync();}}
 

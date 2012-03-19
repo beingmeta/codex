@@ -14,7 +14,8 @@ div.helpbox {
     border-radius: 1em; -webkit-border-radius: 1em;
     -moz-border-radius: 1em; -o-border-radius: 1em;
     z-index: -250;
-    opacity: 0.001;}
+    opacity: 0.001;
+    overflow: auto;}
 
 div.helpbox.atfoot {
     bottom: 0px; max-height: 75%; height: auto;
@@ -34,8 +35,11 @@ div#CODEXHUD div.helpbox#CODEXHELP {
 body.codexhelp div#CODEXHUD div.helpbox#CODEXHELP {
     display: block; opacity: 0.9; border-color: black; z-index: 250;}
 body.codexhelp.hudup div#CODEXHUD div.helpbox#CODEXHELP,
-body.codexhelp.sbookscanning div#CODEXHUD div.helpbox#CODEXHELP {
+body.codexhelp.codexscanning div#CODEXHUD div.helpbox#CODEXHELP {
     display: none;}
+body.codexhelp div#CODEXHUD div.helphud { display: block;}
+body.codexhelp.hudup div#CODEXHUD div.helphud { display: none;}
+body.codexhelp.codexscanning div#CODEXHUD div.helphud { display: none;}
 
 div#CODEXHUDHELP { display: none;}
 body.codexhelp div#CODEXHUDHELP { display: block; }
@@ -48,7 +52,7 @@ body.codexhelp div#CODEXHUD.addgloss div#CODEXADDGLOSSHELP.helpbox,
 body.codexhelp div#CODEXHUD.tocscan div#CODEXTOCSCANHELP.helpbox,
 body.codexhelp div#CODEXHUD.scanning div#CODEXSCANNINGHELP.helpbox,
 body.codexhelp div#CODEXHUD.search div#CODEXSEARCHINPUTHELP.helpbox,
-body.codexhelp div#CODEXHUD.scanning div#CODEXSEARCHRESULTSHELP.helpbox,
+body.codexhelp div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
 body.codexhelp div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
     opacity: 0.9; border-color: black; z-index: 260;}
 

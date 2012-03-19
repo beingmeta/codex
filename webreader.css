@@ -1679,7 +1679,7 @@ body .codexglossmark:hover img.tiny { visibility: hidden;}
 /* Displaying the sbook target */
 
 body.hudup .sbooktarget { background-color: lightblue; }
-body.hudup .sbooktarget, body.sbookscanning .sbooktarget {
+body.hudup .sbooktarget, body.codexscanning .sbooktarget {
     cursor: pointer;}
  
 /* Don't color the body
