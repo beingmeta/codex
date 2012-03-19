@@ -175,7 +175,8 @@ Codex.Startup=
 		    if (config.hasOwnProperty(setting)) 
 			setConfig(setting,config[setting]);}}
 	    else config={};
-	    if (Codex.Trace.config) fdjtLog("initConfig (default) %o",default_config);
+	    if (Codex.Trace.config)
+		fdjtLog("initConfig (default) %o",default_config);
 	    for (var setting in default_config) {
 		if (!(config[setting]))
 		    if (default_config.hasOwnProperty(setting))
@@ -240,7 +241,7 @@ Codex.Startup=
 	    readSettings();
 	    // Execute any FDJT initializations
 	    fdjtDOM.init();
-	    // Declare this, which will show the space configuration
+	    // Declare this to invoke some style constraints
 	    fdjtDOM.addClass(document.body,"codexstartup");
 	    var metadata=false;
 	    var helphud=false;
@@ -800,9 +801,10 @@ Codex.Startup=
 		    fdjtDOM.getChild(aside,"H4")||
 		    fdjtDOM.getChild(aside,"H5")||
 		    fdjtDOM.getChild(aside,"H6");
-		var asidehead=((head)?(fdjtDOM.clone(head)):
-			       fdjtDIV("div.sbookasidestart",
-				       (fdjtString.truncate(fdjtDOM.textify(aside),42))));
+		var asidehead=
+		    ((head)?(fdjtDOM.clone(head)):
+		     fdjtDIV("div.sbookasidestart",
+			     (fdjtString.truncate(fdjtDOM.textify(aside),42))));
 		var anchor=fdjtDOM("A.sbookasideref",asidehead);
 		var count=aside_count++;
 		if (!(aside.id)) aside.id="SBOOKASIDE"+count;
@@ -810,10 +812,6 @@ Codex.Startup=
 		fdjtDOM.insertBefore(aside,anchor);
 		aside.codextocloc=anchor.id;
 		fdjtDOM.append(allasides,aside);}
-	    var humane=fdjtDOM.$(".humane");
-	    if (humane) {
-		var i=0; var lim=humane.length;
-		while (i<lim) humane[i++].codexui=true;}
 	    // Initialize the margins
 	    initMargins();
 	    if (Codex.Trace.startup>1)
