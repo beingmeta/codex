@@ -335,7 +335,8 @@ var CodexPaginate=
 	    dropClass(document.body,"codexpreview");
 	    if (Codex.previewtarget) {
 		dropClass(Codex.previewtarget,"codexpreviewtarget");
-		fdjtUI.Highlight.clear(Codex.previewtarget);
+		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightexcerpt");
+		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightsearch");
 		Codex.previewtarget=false;}
 	    Codex.previewing=previewing=false;
 	    updatePageDisplay(pagenum,Codex.location);}

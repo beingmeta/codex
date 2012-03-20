@@ -818,7 +818,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    i++;}
 	if (excerpt) {
 	    var range=fdjtDOM.findString(fdjtID(frag),excerpt);
-	    if (range) fdjtUI.Highlight(range);}
+	    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
 	info.onclick=sbookgloss_ontap;
 	return info;}
     Codex.glossBlock=glossBlock;

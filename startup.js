@@ -261,7 +261,27 @@ Codex.Startup=
 	    // Start JSONP call to get initial or updated glosses, etc
 	    var notloading=false;
 	    if (Codex.nologin) {}
+	    else if (_sbook_loadinfo) {
+		var msg=fdjtID("CODEXNEWGLOSSES");
+		if (msg) {
+		    msg.innerHTML="Using preloaded glosses";
+		    addClass(msg,"running");}
+		fdjtLog("Using preloaded glosses");
+		notloading=true;}
+	    /*
+	    else if (getLocal("sync("+Codex.refuri+")")) {
+		var msg=fdjtID("CODEXNEWGLOSSES");
+		if (msg) {
+		    msg.innerHTML="Using cached offline glosses";
+		    addClass(msg,"running");}} */
 	    else if (window.navigator.onLine) {
+		var msg=fdjtID("CODEXNEWGLOSSES");
+		if (msg) {
+		    msg.innerHTML=fdjtString(
+			"Getting glosses from %s",Codex.server);
+		    addClass(msg,"running");}
+		fdjtLog("Getting new glosses from %s",Codex.server);
+		// Get any glosses
 		var script=fdjtDOM("SCRIPT#LOADSBOOKINFO");
 		script.language="javascript";
 		var uri="https://"+Codex.server+"/v1/loadinfo.js?"+
@@ -270,7 +290,6 @@ Codex.Startup=
 		if (Codex.sync) uri=uri+"&SYNC="+Codex.sync;
 		if (Codex.user) uri=uri+"&SYNCUSER="+
 		    encodeURIComponent(Codex.user._id)
-		// This is where we add a SYNC arg
 		script.src=uri;
 		document.body.appendChild(script);}
 	    else notloading=true;
@@ -294,7 +313,8 @@ Codex.Startup=
 		// Now you're ready to lay out the book, which is
 		//  timesliced and runs on its own.  We wait to do
 		//  this until we've scanned the DOM because we may
-		//  use results of DOM scanning in layout.
+		//  use results of DOM scanning in layout (for example,
+		//  heading information).
 		function(){if (Codex.paginate) Codex.Paginate("initial");},
 		// Build the display TOC, both the dynamic (top of
 		// display) and the static (inside the flyleaf)
@@ -1106,7 +1126,12 @@ Codex.Startup=
 		setLocal("glosses("+Codex.refuri+")",allglosses,true);}
 
 	function initGlosses(glosses,etc){
+	    var msg=fdjtID("CODEXNEWGLOSSES");
 	    var allglosses=Codex.allglosses;
+	    if (msg) {
+		msg.innerHTML=fdjtString(
+		    "Assimilating %d new glosses",glosses.length);
+		addClass(msg,"running");}
 	    if (etc) {
 		startupLog("Assimilating %d new glosses/%d sources...",
 			   glosses.length,etc.length);}
@@ -1123,8 +1148,10 @@ Codex.Startup=
 		allglosses.push(id);}
 	    Codex.syncstamp=latest;
 	    Codex.allglosses=allglosses;
+	    startupLog("Done assimilating %d new glosses...",glosses.length);
 	    if (Codex.offline) 
-		setLocal("glosses("+Codex.refuri+")",allglosses,true);}
+		setLocal("glosses("+Codex.refuri+")",allglosses,true);
+	    dropClass(msg,"running");}
 	Codex.Startup.initGlosses=initGlosses;
 	
 	function go_online(evt){return offline_update();}

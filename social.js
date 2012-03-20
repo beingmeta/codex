@@ -210,7 +210,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	Codex.setTarget(target);
 	if (excerpt) {
 	    var range=fdjtDOM.findString(target,excerpt);
-	    if (range) fdjtUI.Highlight(range);}
+	    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
 	CodexMode("glosses");}
     Codex.showGlosses=showGlosses;
 

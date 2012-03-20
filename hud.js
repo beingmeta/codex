@@ -680,7 +680,7 @@ var CodexMode=
 		var glossinfo=Codex.glosses.ref(src.name);
 		if (glossinfo.excerpt) {
 		    var range=fdjtDOM.findString(elt,glossinfo.excerpt);
-		    if (range) fdjtUI.Highlight(range);}}
+		    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}}
 	    else if ((src)&&(getParent(src,".sbookresults"))) {
 		var about=src.about, target=fdjtID(about);
 		if (target) {
