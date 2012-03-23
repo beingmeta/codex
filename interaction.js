@@ -425,7 +425,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function highlightTerm(term,target,info,spellings){
 	var words=[];
 	if (typeof term === 'string')
-	    words=spellings[term]||[term];
+	    words=((spellings)&&(spellings[term]))||[term];
 	else {
 	    var knodes=info.knodes;
 	    var i=0; var lim=knodes.length;
@@ -433,7 +433,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		var knode=knodes[i++];
 		if (fdjtKB.contains(knode._always,term)) {
 		    var dterm=knode.dterm;
-		    var spelling=spellings[dterm]||dterm;
+		    var spelling=((spellings)&&(spellings[dterm]))||dterm;
 		    if (typeof spelling === 'string')
 			words.push(spelling);
 		    else words=words.concat(spelling);}}
