@@ -863,7 +863,7 @@ Codex.Startup=
 		fdjtDOM.addListeners(
 		    pageinfo,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
 		
-	    fdjtUI.TapHold(pagefoot);
+	    fdjtUI.TapHold(pageinfo);
 
 	    window.scrollTo(0,0);
 	    
