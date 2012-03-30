@@ -62,7 +62,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    if (query._results.length===0) {}
 	    else if ((query._results.length===1)&&
 		(document.getElementById(query._results[0]))) {
-		Codex.GoTo(query._results[0]);}
+		Codex.GoTo(query._results[0],"setQuery");}
 	    else if (query._results.length<7)
 		showSearchResults();
 	    else {}}}

@@ -1092,12 +1092,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanForward/toc() head=%o info=%o n=%o h=%o",
 			head,headinfo,headinfo.next,headinfo.head);
-	    if (headinfo.next) Codex.GoTo(headinfo.next.elt);
+	    if (headinfo.next) Codex.GoTo(headinfo.next.elt,"scanForward");
 	    else if ((headinfo.head)&&(headinfo.head.next)) {
-		Codex.GoTo(headinfo.head.next.elt); CodexMode("toc");}
+		Codex.GoTo(headinfo.head.next.elt,"scanForward");
+		CodexMode("toc");}
 	    else if ((headinfo.head)&&(headinfo.head.head)&&
 		     (headinfo.head.head.next)) 
-		Codex.GoTo(headinfo.head.head.next.elt);
+		Codex.GoTo(headinfo.head.head.next.elt,"scanForward");
 	    else CodexMode(false);
 	    return;}
 	var start=Codex.scanning;
@@ -1122,9 +1123,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",
 			head,headinfo,headinfo.prev,headinfo.head);
-	    if (headinfo.prev) Codex.GoTo(headinfo.prev.elt);
+	    if (headinfo.prev) Codex.GoTo(headinfo.prev.elt,"scanBackward");
 	    else if (headinfo.head) 
-		Codex.GoTo(headinfo.head.elt);
+		Codex.GoTo(headinfo.head.elt,"scanBackward");
 	    else CodexMode(false);
 	    return;}
 	var scan=Codex.prevSlice(Codex.scanning);

@@ -117,7 +117,7 @@ var CodexTOC=
 		else target=target.parentNode;}
 	    if (target) {
 		var info=Codex.docinfo[target.frag];
-		Codex.GoTo(target.frag);
+		Codex.GoTo(target.frag,"tocJump");
 		// if ((info.sub)&&(info.sub.length>2)) CodexMode("toc");
 		CodexMode("tocscan");
 		fdjtUI.cancel(evt);}}

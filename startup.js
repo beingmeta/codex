@@ -1195,12 +1195,12 @@ Codex.Startup=
 		else target=document.getElementById(hash);
 		if (Codex.Trace.startup>1)
 		    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
-	    if (target) Codex.GoTo(target,true,true);
+	    if (target) Codex.GoTo(target,"initLocation",true,true);
 	    else if ((state)&&(state.target)&&(fdjtID(state.target)))
-		Codex.GoTo(state.target,true,true);
+		Codex.GoTo(state.target,"initLocation",true,true);
 	    else Codex.GoTo((Codex.start||Codex.coverpage||
 			     Codex.titlepage||Codex.root),
-			    true,true);
+			    "initLocation",true,true);
 	    if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
 		syncLocation();}
 	
@@ -1218,7 +1218,7 @@ Codex.Startup=
 		    if ((!(d))||(!(d.location))) {
 			if (!(Codex.state))
 			    Codex.GoTo(Codex.start||Codex.root||Codex.body,
-				       false,false);
+				       "syncLocation",false,false);
 			return;}
 		    else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
 			if ((d.location)&&(d.location<=Codex.location)) return;
@@ -1228,8 +1228,9 @@ Codex.Startup=
 			    ((d.page)?(" (page "+d.page+")"):"")+"?";
 			if (confirm(msg)) {
 			    if (d.location) Codex.setLocation(d.location);
-			    if (d.target) Codex.setTarget(d.target,true,true);
-			    if (d.location) Codex.GoTo(d.location,true,true);
+			    if (d.location)
+				Codex.GoTo(d.location,"syncLocation",false);
+			    if (d.target) Codex.setTarget(d.target);
 			    Codex.state=d;}}
 		    else {}},
 		uri);}

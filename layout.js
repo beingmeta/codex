@@ -117,7 +117,7 @@ var CodexPaginate=
 			Codex.location||Codex.target||
 			    Codex.coverpage||Codex.titlepage||
 			    fdjtID("CODEXPAGE1"),
-			true,true);
+			"endLayout",true,true);
 		    Codex.paginating=false;}
 		else {
 		    var root=nodes[i++];
