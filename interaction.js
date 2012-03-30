@@ -57,6 +57,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     var isClickable=fdjtUI.isClickable;
     var getGeometry=fdjtDOM.getGeometry;
 
+    var atoi=parseInt;
+
     var submitEvent=fdjtUI.submitEvent;
 
     var unhold=false;
@@ -1033,12 +1035,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(false);
 	if ((Codex.paginate)&&(Codex.colbreak)&&(Codex.pages)) {
 	    if (Codex.curpage===Codex.pagecount) {}
-	    else Codex.GoToPage(Codex.curpage=(Codex.curpage+1));}
+	    else Codex.GoToPage(
+		Codex.curpage=(Codex.curpage+1),"pageForward");}
 	else if ((Codex.paginate)&&(Codex.pagecount)) {
 	    var newpage=false;
 	    if (Codex.mode==="glosses") CodexMode(true);
 	    if (Codex.curpage===Codex.pagecount) {}
-	    else Codex.GoToPage(newpage=Codex.curpage+1);
+	    else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward");
 	    if ((false)&&(newpage)&&(Codex.mode==='allglosses')) /* to fix */
 		Codex.UI.scrollGlosses(
 		    Codex.pageinfo[newpage].first,
@@ -1057,13 +1060,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    CodexMode(false);
 	if ((Codex.paginate)&&(Codex.colbreak)&&(Codex.pages)) {
 	    if (Codex.curpage===0) {}
-	    else Codex.GoToPage(Codex.curpage=(Codex.curpage-1));}
+	    else Codex.GoToPage(
+		Codex.curpage=(Codex.curpage-1),"pageBackward");}
 	else if ((Codex.paginate)&&(Codex.pagecount)) {
 	    var newpage=false;
 	    if (Codex.mode==="glosses") CodexMode(true);
 	    if (Codex.curpage===0) {}
 	    else {
-		Codex.GoToPage(newpage=Codex.curpage-1);}
+		Codex.GoToPage(
+		    newpage=Codex.curpage-1,"pageBackward");}
 	    if ((false)&&(newpage)&&(Codex.mode==='allglosses')) /* to fix */
 		Codex.UI.scrollGlosses(
 		    Codex.pageinfo[newpage].first,
@@ -1215,7 +1220,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    gopage,Codex.pagecount);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
-	Codex.GoToPage(gopage);
+	Codex.GoToPage(gopage,"pageinfo_tap");
 	if ((Codex.mode==="gotoloc")||(Codex.mode==="gotopage"))
 	    CodexMode(false);}
 
@@ -1399,7 +1404,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 glossmark: {touchstart: glossmark_tapped},
 	 // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,release: slice_released,
-		   touchstart: fdjtUI.TapHold.mousedown,touchend: fdjtUI.TapHold.mouseup,
+		   touchstart: fdjtUI.TapHold.mousedown,
+		   touchend: fdjtUI.TapHold.mouseup,
 		   touchmove: fdjtUI.TapHold.mousemove},
 	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {tap: Codex.UI.dropHUD},

@@ -50,7 +50,8 @@ function CodexDOMScan(root,docinfo){
     if (!(root.id)) root.id="SBOOKROOT";
     if (Codex.Trace.startup) {
 	if (root.id) 
-	    fdjtLog("Scanning %s#%s for structure and metadata",root.tagName,root.id);
+	    fdjtLog("Scanning %s#%s for structure and metadata",
+		    root.tagName,root.id);
 	else fdjtLog("Scanning DOM for structure and metadata: %o",root);}
     var nodefn=docinfo.nodeFn||false;
     var children=root.childNodes, level=false;

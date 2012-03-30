@@ -41,6 +41,8 @@ var CodexPaginate=
 	var secs2short=fdjtTime.secs2short;
 	var rootloop_skip=50;
 	
+	var atoi=parseInt;
+
 	function Paginate(why,init){
 	    
 	    if (Codex.paginating) return;
@@ -114,7 +116,8 @@ var CodexPaginate=
 		    Codex.GoTo(
 			Codex.location||Codex.target||
 			    Codex.coverpage||Codex.titlepage||
-			    fdjtID("CODEXPAGE1"));
+			    fdjtID("CODEXPAGE1"),
+			true,true);
 		    Codex.paginating=false;}
 		else {
 		    var root=nodes[i++];
@@ -303,6 +306,11 @@ var CodexPaginate=
 		Codex.setLocation(location);}
 	    updatePageDisplay(pagenum,Codex.location);
 	    curpage=page; Codex.curpage=pagenum;
+	    if (page) {
+		Codex.setState(
+		    {location: atoi(page.getAttribute("data-sbookloc")),
+		     page: atoi(page.getAttribute("data-pagenum")),
+		     target: page.getAttribute("data-topid")});}
 	    var glossed=fdjtDOM.$(".glossed",page);
 	    if (glossed) {
 		var addGlossmark=Codex.UI.addGlossmark;

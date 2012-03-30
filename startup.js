@@ -1185,7 +1185,7 @@ Codex.Startup=
 	    var state=false;
 	    if (!(state)) {
 		var uri=Codex.docuri||Codex.refuri;
-		var statestring=getLocal("sbooks.state("+uri+")");
+		var statestring=getLocal("codex.state("+uri+")");
 		if (statestring) Codex.state=state=JSON.parse(statestring);
 		else state={};}
 	    var hash=window.location.hash; var target=false;
@@ -1195,11 +1195,12 @@ Codex.Startup=
 		else target=document.getElementById(hash);
 		if (Codex.Trace.startup>1)
 		    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
-	    if (target) Codex.GoTo(target,false,true);
+	    if (target) Codex.GoTo(target,true,true);
 	    else if ((state)&&(state.target)&&(fdjtID(state.target)))
-		Codex.GoTo(state.target,false,true);
+		Codex.GoTo(state.target,true,true);
 	    else Codex.GoTo((Codex.start||Codex.coverpage||
-			     Codex.titlepage||Codex.root),false,true);
+			     Codex.titlepage||Codex.root),
+			    true,true);
 	    if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
 		syncLocation();}
 	

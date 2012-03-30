@@ -632,7 +632,7 @@ var sbook_gloss_data=
 	if (Codex.Trace.nav)
 	    fdjtLog("Codex.GoTo() #%o@P%o/L%o %o",
 		    targetid,page,((info)&&(info.starts_at)),target);
-	if ((targetid)&&(Codex.updatehash))
+	if ((!(noset))&&(targetid)&&(Codex.updatehash))
 	    setHashID(target);
 	if (info) {
 	    if (typeof info.level === 'number')
