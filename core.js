@@ -555,7 +555,7 @@ var sbook_gloss_data=
 
     function scrollToElt(elt,cxt){
 	if ((elt.getAttribute) &&
-	    ((elt.tocleve)|| (elt.getAttribute("toclevel")) ||
+	    ((elt.toclevel)|| (elt.getAttribute("toclevel")) ||
 	     ((elt.sbookinfo) && (elt.sbookinfo.level))))
 	    setHead(elt);
 	else if (elt.head)
@@ -644,6 +644,9 @@ var sbook_gloss_data=
 	    Codex.setState({location: location,page: page});
 	else {}
 	if (page) Codex.GoToPage(target,"CodexGoTo");
+	else {
+	    var offinfo=fdjtDOM.getGeometry(target);
+	    window.scrollTo(0,offinfo.top-100);}
 	Codex.location=location;}
     Codex.GoTo=CodexGoTo;
 
