@@ -675,6 +675,36 @@ var sbook_gloss_data=
 	CodexGoTo(target,"CodexScanTo");}
     Codex.ScanTo=CodexScanTo;
 
+    // Preview functions
+    var oldscroll=false;
+    function CodexStartPreview(spec,caller){
+	if (Codex.paginated) 
+	    return Codex.startPagePreview(spec,caller);
+	var target=((spec.nodeType)?(spec):(fdjtID(spec)));
+	if (!(oldscroll)) oldscroll={x: 0,y: window.scrollY};
+	var offinfo=fdjtDOM.getGeometry(target);
+	if (Codex.Trace.flips)
+	    fdjtLog("startPreview/%s to %d for %o",
+		    caller||"nocaller",offinfo.top-100,spec);
+	fdjtDOM.addClass(document.body,"codexpreview");
+	Codex.previewing=target;
+	window.scrollTo(0,offinfo.top-100);}
+    Codex.startPreview=CodexStartPreview;
+    function CodexStopPreview(caller){
+	if (Codex.paginated) 
+	    return Codex.stopPagePreview(spec,caller);
+	if ((Codex.Trace.flips)&&(oldscroll))
+	    fdjtLog("stopPreview/%s returning to %d",
+		    caller||"nocaller",oldscroll.x,oldscroll.y);
+	else if (Codex.Trace.flips)
+	    fdjtLog("stopPreview/%s, no saved position",
+		    caller||"nocaller");
+	if (oldscroll) window.scrollTo(oldscroll.x,oldscroll.y);
+	fdjtDOM.dropClass(document.body,"codexpreview");
+	Codex.previewing=false;
+	oldscroll=false;}
+    Codex.stopPreview=CodexStopPreview;
+
     function getLevel(elt){
 	if (elt.toclevel) {
 	    if (elt.toclevel==='none')

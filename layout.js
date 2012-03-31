@@ -348,8 +348,8 @@ var CodexPaginate=
 		Codex.previewtarget=false;}
 	    Codex.previewing=previewing=false;
 	    updatePageDisplay(pagenum,Codex.location);}
-	Codex.startPreview=startPreview;
-	Codex.stopPreview=stopPreview;
+	Codex.startPagePreview=startPreview;
+	Codex.stopPagePreview=stopPreview;
 
 	function getPage(arg){
 	    var page=Codex.paginated.getPage(arg)||Codex.paginated.getPage(1);

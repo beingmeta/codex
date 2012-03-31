@@ -1200,7 +1200,7 @@ Codex.Startup=
 		Codex.GoTo(state.target,"initLocation",true,true);
 	    else Codex.GoTo((Codex.start||Codex.coverpage||
 			     Codex.titlepage||Codex.root),
-			    "initLocation",true,true);
+			    "initLocation",false,false);
 	    if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
 		syncLocation();}
 	
