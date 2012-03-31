@@ -653,13 +653,13 @@ var sbook_gloss_data=
 	    if (target.href) break; else target=target.parentNode;
 	if ((target)&&(target.href)&&(target.href[0]==='#')) {
 	    var elt=document.getElementById(target.href.slice(1));
-	    if (elt) {CodexGoTo(elt); fdjtUI.cancel(evt);}}}
+	    if (elt) {CodexGoTo(elt,"anchorFn"); fdjtUI.cancel(evt);}}}
     Codex.anchorFn=anchorFn;
 
     // This jumps and disables the HUD at the same time
     function CodexJumpTo(target){
-      if (Codex.hudup) CodexMode(false);
-      CodexGoTo(target);}
+	if (Codex.hudup) CodexMode(false);
+	CodexGoTo(target,"JumpTo");}
     Codex.JumpTo=CodexJumpTo;
 
     // This jumps and disables the HUD at the same time
@@ -669,7 +669,7 @@ var sbook_gloss_data=
 	    var headinfo=Codex.docinfo[target]||Codex.docinfo[target.id];
 	    if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0)))
 		CodexMode("tocscan");}
-	CodexGoTo(target);}
+	CodexGoTo(target,"CodexScanTo");}
     Codex.ScanTo=CodexScanTo;
 
     function getLevel(elt){

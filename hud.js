@@ -692,7 +692,7 @@ var CodexMode=
 			var term=terms[i++];
 			Codex.highlightTerm(term,target,info,spellings);}}}
 	    Codex.setTarget(elt);
-	    Codex.GoTo(elt);
+	    Codex.GoTo(elt,"Scan");
 	    dropClass(document.body,"codexhelp");
 	    CodexMode("scanning");}
 	Codex.Scan=CodexScan;
