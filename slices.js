@@ -786,6 +786,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
     /* Results handlers */
 
     function setupSummaryDiv(div){
+	fdjtUI.TapHold(div,Codex.touch);
 	Codex.UI.addHandlers(div,'summary');}
     Codex.UI.setupSummaryDiv=setupSummaryDiv;
     

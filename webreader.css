@@ -43,10 +43,11 @@ span.codexcssversion:after {
     font-family: sans,sans-serif;
     z-index: 100;}
 
-div#CODEXCONTENT {
-    position: absolute; overflow: auto;
+div#CODEXWINDOW {
+    position: fixed; overflow-y: auto; z-index: -50;
     margin-left: 50px; margin-right: 50px;
-    top: 50px; left: 0px; right: 0px;}
+    top: 50px; left: 0px; right: 0px; bottom: 50px;}
+div#CODEXWINDOW div#CODEXCONTENT { position: absolute;}
 
 div#CODEXPAGE {
     position: fixed; overflow: visible;
@@ -1000,14 +1001,14 @@ div#CODEXHUD .helphud.topright {top: 3px; right: 60px; text-align: left;}
 div#CODEXHUD .helphud.botleft {bottom: 3px; left: 60px; text-align: right;}
 div#CODEXHUD .helphud.botright {bottom: 3px; right: 60px; text-align: left;}
 div#CODEXHUD .helphud.topcenter {
-    top: 0px; width: 66%; left: 17%; right: 17%; text-align: center;
+    top: 0px; width: 50%; left: 25%; right: 25%; text-align: center;
     border-top-left-radius: 0px; border-top-right-radius: 0px;
     -o-border-top-left-radius: 0px; -o-border-top-right-radius: 0px; 
     -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px; 
     -o-border-radius-topleft: 0px; -oborder-radius-topright: 0px;}
 
 div#CODEXHUD .helphud.botcenter {
-    bottom: 0px; width: 66%; left: 17%; right: 17%; text-align: center;
+    bottom: 0px; width: 50%; left: 25%; right: 25%; text-align: center;
     border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
     -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
     -webkit-border-bottom-left-radius: 0px; -webkit-border-bottom-right-radius: 0px; 

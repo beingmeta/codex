@@ -83,8 +83,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    addHandlers(false,'window');
 	    addHandlers(document,'document');
 	    addHandlers(document.body,'body');
-	    addHandlers(fdjtID("CODEXPAGE"),'content');
-	    fdjtUI.TapHold(Codex.HUD);
+	    if (Codex.paginate)
+		addHandlers(fdjtID("CODEXPAGE"),'content');
+	    else addHandlers(fdjtID("CODEXCONTENT"),'content');
 	    addHandlers(Codex.HUD,'hud');}
 	var handlers=Codex.UI.handlers[mode];
 	if (mode)
@@ -690,6 +691,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if ((Codex.Trace.gestures)&&
 	    ((evt.type==='tap')||
 	     (evt.type==='click')||
+	     (evt.type==='touchend')||
+	     (evt.type==='release')||
 	     (Codex.Trace.gestures>1)))
 	    fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
 		    evt,mode,(isClickable(target)),
@@ -698,7 +701,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (!(mode)) return;
 	var hudid=((mode)&&(mode_hud_map[mode]));
 	var hud=fdjtID(hudid);
-	if ((evt.type==='click')||(evt.type==='touchend')||(evt.type==='tap')) {
+	if ((evt.type==='click')||(evt.type==='tap')||
+	    (evt.type==='touchend')||(evt.type==='release')) {
 	    if (hud) dropClass(hud,"hover");
 	    if (fdjtDOM.hasClass(Codex.HUD,mode)) CodexMode(false);
 	    else CodexMode(mode);}
@@ -1399,10 +1403,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    keydown: onkeydown,
 	    keypress: onkeypress,
 	    touchend: default_tap},
-	 content: {mouseup: content_mouseup},
+	 content: {touchend: content_mouseup},
 	 toc: {tap: toc_tapped,hold: toc_held,
 	       release: toc_released,slip: toc_slipped},
-	 glossmark: {touchstart: glossmark_tapped},
+	 glossmark: {touchstart: glossmark_tapped,
+		     touchend: cancel},
 	 // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,release: slice_released},
 	 // ".codexmargin": {click: edge_click},
@@ -1427,7 +1432,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
 	 "#HIDEHELPBUTTON" : {tap: function(evt){CodexMode(false);}},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
-	 ".hudmodebutton": {tap: hudbutton},
+	 ".hudmodebutton": {click: hudbutton},
 	 // GLOSSFORM rules
 	 "span.codexglossdelete": { tap: delete_ontap },
 	 "span.codexglossrespond": { tap: respond_ontap },
@@ -1437,79 +1442,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "div.glossetc span.tags": {tap: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {tap: glossform_outlets_tapped},
 	 "div.glossetc span.modebuttons": {tap: glossmode_button}};
-
-    Codex.UI.handlers.oldwebtouch=
-	{window: {keyup:onkeyup,keydown:onkeydown,keypress:onkeypress,
-		  touchstart: cancel, touchmove: cancel, touchend: cancel},
-	 content: {touchstart: content_touchstart,
-		   touchmove: content_touchmove,
-		   touchend: content_touchend},
-	 hud: {touchstart: shared_touchstart,
-	       touchmove: hud_touchmove,
-	       touchend: hud_touchend},
-	 "#CODEXPAGEHEAD": {
-	     touchstart: cancel,
-	     touchmove: cancel,
-	     touchend: head_click},
-	 "#CODEXPAGEFOOT": {
-	     touchstart: cancel,
-	     touchmove: cancel,
-	     touchend: foot_click},
-	 "#CODEXPAGELEFT": {
-	     touchstart: cancel,
-	     touchmove: cancel,
-	     touchend: left_margin},
-	 "#CODEXPAGERIGHT": {
-	     touchstart: cancel,
-	     touchmove: cancel,
-	     touchend: right_margin},
-	 "#CODEXHELP": {touchstart: Codex.UI.dropHUD,
-			touchmove: cancel,
-			touchend: cancel},
-	 "#CODEXSCANNER": {touchstart: scanner_tapped},
-	 // "#CODEXFLYLEAF": {touchend: flyleaf_tap},
-	 "#CODEXPAGEINFO": {touchstart: pageinfo_tap,
-			    touchmove: cancel,touchend: cancel},
-	 "#CODEXPAGENOTEXT": {touchstart: enterPageNum,
-			      touchmove: cancel,touchend: cancel},
-	 "#CODEXLOCOFF": {touchstart: enterLocation,
-			  touchmove: cancel,touchend: cancel},
-	 ".hudbutton": {touchstart: dont,touchmove: dont, touchend: dont},
-	 "#CODEXTABS": {touchstart: dont,touchmove: dont, touchend: dont},
-	 "#HIDESPLASHCHECKSPAN" : {touchstart: hideSplashToggle,
-				   touchmove: cancel,
-				   touchend: cancel},
-	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);},
-			      touchmove: cancel,
-			      touchend: cancel},
-	 ".hudmodebutton": {touchend:hudbutton,
-			    touchdown:cancel,
-			    touchmove:cancel},
-	 glossmark: {touchend: glossmark_tapped,
-		     touchstart: cancel,
-		     touchmove: cancel},
-	 glossbutton: {touchend: glossbutton_ontap,
-		       touchstart: cancel,
-		       touchmove: cancel},
-	 // GLOSSFORM rules
-	 "span.codexglossdelete": {
-	     touchend: delete_ontap, touchstart: cancel, touchmove: cancel},
-	 "span.codexglossrespond": {
-	     touchend: respond_ontap, touchstart: cancel, touchmove: cancel},
-	 "div.submitbutton": {
-	     touchend: submitEvent, touchstart: cancel, touchmove: cancel},
-	 "div.glossetc span.links": {
-	     touchend: fdjtUI.CheckSpan.onclick,
-	     touchstart: cancel, touchmove: cancel},
-	 "div.glossetc span.tags": {
-	     touchend: fdjtUI.CheckSpan.onclick,
-	     touchstart: cancel, touchmove: cancel},
-	 "div.glossetc div.sharing": {
-	     touchend: glossform_outlets_tapped,
-	     touchstart: cancel, touchmove: cancel},
-	 "div.glossetc span.modebuttons": {
-	     touchend: glossmode_button,
-	     touchstart: cancel, touchmove: cancel}};
     
 })();
 

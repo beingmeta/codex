@@ -46,7 +46,6 @@ Codex.Startup=
     (function(){
 
 	var sbook_faketouch=false;
-	var sbook_showconsole=true;
 
 	var sbook_heading_qricons=false;
 
@@ -92,7 +91,7 @@ Codex.Startup=
 	var default_config=
 	    {pageview: true,
 	     bodysize: 'normal',bodyfamily: 'serif',
-	     uisize: 'normal',showconsole: false,
+	     uisize: 'normal',showconsole: true,
 	     animatepages: true,animatehud: true,
 	     hidesplash: false};
 	var current_config={};
@@ -712,6 +711,7 @@ Codex.Startup=
 	function initBody(){
 	    var body=document.body;
 	    var content=fdjtDOM("div#CODEXCONTENT");
+	    var window=fdjtDOM("div#CODEXWINDOW",content);
 	    var nodes=fdjtDOM.toArray(body.childNodes);
 	    var style=fdjtDOM("STYLE");
 	    fdjtDOM(document.head,style);
@@ -725,6 +725,7 @@ Codex.Startup=
 			(node.tagName!=='SCRIPT'))
 			content.appendChild(node);}
 		else content.appendChild(node);}
+	    Codex.window=window;
 	    Codex.content=content;
 	    Codex.coverpage=fdjtID("SBOOKCOVERPAGE");
 	    Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
@@ -747,7 +748,7 @@ Codex.Startup=
 			fdjtDOM("span#CODEXPAGEPROGRESS",""),
 			" pages"),
 		Codex.pages=fdjtDOM("div#CODEXPAGES"));
-	    fdjtDOM(body,content,page);
+	    fdjtDOM(body,window,page);
 	    fdjtDOM.addClass(body,"sbook");
 	    var page_width=fdjtDOM.getGeometry(page).width;
 	    var view_width=fdjtDOM.viewWidth();
@@ -863,7 +864,7 @@ Codex.Startup=
 		fdjtDOM.addListeners(
 		    pageinfo,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
 		
-	    fdjtUI.TapHold(pageinfo);
+	    fdjtUI.TapHold(pageinfo,Codex.touch);
 
 	    window.scrollTo(0,0);
 	    

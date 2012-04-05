@@ -106,8 +106,9 @@ var CodexTOC=
 	    var i=0; var n=sub.length;
 	    while (i<n) {
 		toc.appendChild(CodexTOC(sub[i++],depth+1,spec,prefix,headless));}
-	    if (depth===0)
-		Codex.UI.addHandlers(toc,'toc');
+	    if (depth===0) {
+		fdjtUI.TapHold(toc,Codex.touch);
+		Codex.UI.addHandlers(toc,'toc');}
 	    return toc;}
 	
 	function tocJump(evt,target){

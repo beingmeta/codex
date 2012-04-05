@@ -99,6 +99,8 @@ var CodexMode=
 
 	    if (Codex.hidehelp) Codex.setConfig("hidehelp");
 
+	    Codex.hudtick=fdjtTime();
+
 	    fdjtID("SBOOK_RETURN_TO").value=location.href;
 
 	    // Iniitialize the ABOUT tab

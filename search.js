@@ -326,6 +326,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    else return 0;});
 	if (!(result)) result=Codex.query;
 	var div=fdjtDOM("div.codexslice.sbookresults");
+	fdjtUI.TapHold(div,Codex.touch);
 	Codex.UI.addHandlers(div,'summary');
 	Codex.UI.showSlice(result._results,div,rscores);
 	result._results_div=div;

@@ -645,8 +645,8 @@ var sbook_gloss_data=
 	else {}
 	if (page) Codex.GoToPage(target,"CodexGoTo");
 	else {
-	    var offinfo=fdjtDOM.getGeometry(target);
-	    window.scrollTo(0,offinfo.top-100);}
+	    var offinfo=fdjtDOM.getGeometry(target,Codex.content);
+	    Codex.content.style.top=(100-offinfo.top)+"px";}
 	Codex.location=location;}
     Codex.GoTo=CodexGoTo;
 
@@ -681,25 +681,27 @@ var sbook_gloss_data=
 	if (Codex.paginated) 
 	    return Codex.startPagePreview(spec,caller);
 	var target=((spec.nodeType)?(spec):(fdjtID(spec)));
-	if (!(oldscroll)) oldscroll={x: 0,y: window.scrollY};
-	var offinfo=fdjtDOM.getGeometry(target);
+	var yoff=fdjtDOM.parsePX(Codex.content.style.top)||0;
+	if (!(oldscroll)) oldscroll={x: 0,y: yoff};
+	var offinfo=fdjtDOM.getGeometry(target,Codex.content);
 	if (Codex.Trace.flips)
 	    fdjtLog("startPreview/%s to %d for %o",
 		    caller||"nocaller",offinfo.top-100,spec);
 	fdjtDOM.addClass(document.body,"codexpreview");
 	Codex.previewing=target;
-	window.scrollTo(0,offinfo.top-100);}
+	Codex.content.style.top=(100-offinfo.top)+"px";}
     Codex.startPreview=CodexStartPreview;
     function CodexStopPreview(caller){
 	if (Codex.paginated) 
-	    return Codex.stopPagePreview(spec,caller);
+	    return Codex.stopPagePreview(caller);
 	if ((Codex.Trace.flips)&&(oldscroll))
 	    fdjtLog("stopPreview/%s returning to %d",
 		    caller||"nocaller",oldscroll.x,oldscroll.y);
 	else if (Codex.Trace.flips)
 	    fdjtLog("stopPreview/%s, no saved position",
 		    caller||"nocaller");
-	if (oldscroll) window.scrollTo(oldscroll.x,oldscroll.y);
+	if (oldscroll) 
+	    Codex.content.style.top=oldscroll.y+"px";
 	fdjtDOM.dropClass(document.body,"codexpreview");
 	Codex.previewing=false;
 	oldscroll=false;}
