@@ -716,9 +716,9 @@ var CodexMode=
 	function getSettings(){
 	    var result={};
 	    var settings=fdjtID("CODEXSETTINGS");
-	    var pageview=fdjtDOM.getInputValues(settings,"CODEXPAGEVIEW");
-	    result.pageview=
-		((pageview)&&(pageview.length)&&(true))||false;
+	    var layout=fdjtDOM.getInputValues(settings,"CODEXLAYOUT");
+	    result.layout=
+		((layout)&&(layout.length)&&(layout[0]))||false;
 	    var bodysize=fdjtDOM.getInputValues(settings,"CODEXBODYSIZE");
 	    if ((bodysize)&&(bodysize.length))
 		result.bodysize=bodysize[0];

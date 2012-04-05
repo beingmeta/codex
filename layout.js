@@ -61,6 +61,7 @@ var CodexPaginate=
 		    (bodyfamily===current.bodyfamily)) {
 		    fdjtLog("Skipping redundant pagination %j",current);
 		    return;}
+		// Repaginating, start with reversion
 		Codex.paginated.revert();
 		Codex.paginated=false;}
 
@@ -187,30 +188,48 @@ var CodexPaginate=
 	    Codex.Paginate("resize");};
 	
 	Codex.addConfig(
-	    "pageview",
+	    "layout",
 	    function(name,val){
-		if (val) {
+		Codex.layout=val;
+		if (val==='bypage') {
 		    if (!(Codex.docinfo)) {
 			// If there isn't any docinfo (during startup, for
 			// instance), don't bother actually paginating.
-			Codex.paginate=true;}
-		    else if (!(Codex.paginate)) {
-			Codex.paginate=true;
+			Codex.bypage=true;}
+		    else if (!(Codex.bypage)) {
+			// set this
+			Codex.bypage=true;
 			if (Codex.postconfig)
+			    // If we're in the middle of config,
+			    // push off the work of paginating
 			    Codex.postconfig.push(Paginate);
+			// Otherwise, paginate away
 			else Codex.Paginate("config");}}
+		// 'bysection' may be a future option here
 		else {
-		    if (Codex.paginated) Codex.paginated.Revert();
-		    Codex.paginated=false;
-		    Codex.paginate=false;
+		    // If you've already paginated, revert
+		    if (Codex.paginated) {
+			Codex.paginated.Revert();
+			Codex.paginated=false;}
+		    else if (Codex.paginating) {
+			if (Codex.paginating.timer) {
+			    clearTimeout(Codex.paginating.timer);
+			    Codex.paginating.timer=false;}
+			Codex.paginating.Revert();
+			Codex.paginating=false;}
+		    else {}
+		    Codex.bypage=false;
 		    dropClass(document.body,"codexpageview");
 		    addClass(document.body,"codexscrollview");}});
 
-	function updateLayout(name,val){
+	function updateLayoutProperty(name,val){
+	    // This updates layout properties
 	    fdjtDOM.swapClass(
 		Codex.page,new RegExp("codex"+name+"\w*"),"codex"+name+val);
 	    Codex[name]=val;
 	    if (Codex.paginated) {
+		// If you're already paginated, repaginate.  Either
+		// when done with the config or immediately.
 		if (Codex.postconfig) {
 		    Codex.postconfig.push(function(){
 			CodexMode(true);
@@ -218,8 +237,8 @@ var CodexPaginate=
 		else {
 		    CodexMode(true);
 		    Codex.Paginate(name);}}}
-	Codex.addConfig("bodysize",updateLayout);
-	Codex.addConfig("bodyfamily",updateLayout);
+	Codex.addConfig("bodysize",updateLayoutProperty);
+	Codex.addConfig("bodyfamily",updateLayoutProperty);
 	
 	function getLayoutArgs(){
 	    var height=getGeometry(fdjtID("CODEXPAGE")).height;

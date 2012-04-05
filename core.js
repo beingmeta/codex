@@ -40,7 +40,7 @@ var Codex=
      last_mode: false, last_flyleaf: "about",
      // How long it takes a gesture to go from tap to hold
      holdmsecs: 500, edgeclick: 50, pagesize: 250,
-     animate: {pages:true,hud: true}, // colbreak: true,
+     animate: {pages:true,hud: true},
      glossmodes: /(addtag)|(addlink)|(excerpt)|(editnote)/,
      updatehash: true,
      // This is the base URI for this document, also known as the REFURI
@@ -553,20 +553,6 @@ var sbook_gloss_data=
 	    req.send();}}
     Codex.serverSync=serverSync;
 
-    function scrollToElt(elt,cxt){
-	if ((elt.getAttribute) &&
-	    ((elt.toclevel)|| (elt.getAttribute("toclevel")) ||
-	     ((elt.sbookinfo) && (elt.sbookinfo.level))))
-	    setHead(elt);
-	else if (elt.head)
-	    setHead(elt.head);
-	if (Codex.paginate)
-	    Codex.GoToPage(elt,"scrollTo");
-	else if (fdjtDOM.isVisible(elt)) {}
-	else if ((!cxt) || (elt===cxt))
-	    fdjtUI.scrollIntoView(elt,elt.id,false,true,displayOffset());
-	else fdjtUI.scrollIntoView(elt,elt.id,cxt,true,displayOffset());}
-    
     function getLocInfo(elt){
 	var eltid=false;
 	var counter=0; var lim=200;
@@ -619,7 +605,7 @@ var sbook_gloss_data=
 	if (!(target)) {
 	    if (Codex.paginated) Codex.GoToPage(arg);
 	    return;}
-	var page=((Codex.paginate)&&
+	var page=((Codex.paginated)&&
 		  (Codex.pagecount)&&
 		  (Codex.getPage(target)));
 	var targetid=target.id||target.codexdupid;
@@ -646,7 +632,7 @@ var sbook_gloss_data=
 	if (page) Codex.GoToPage(target,"CodexGoTo");
 	else {
 	    var offinfo=fdjtDOM.getGeometry(target,Codex.content);
-	    Codex.content.style.top=(100-offinfo.top)+"px";}
+	    Codex.content.style.top=(-offinfo.top)+"px";}
 	Codex.location=location;}
     Codex.GoTo=CodexGoTo;
 
@@ -689,7 +675,7 @@ var sbook_gloss_data=
 		    caller||"nocaller",offinfo.top-100,spec);
 	fdjtDOM.addClass(document.body,"codexpreview");
 	Codex.previewing=target;
-	Codex.content.style.top=(100-offinfo.top)+"px";}
+	Codex.content.style.top=(-offinfo.top)+"px";}
     Codex.startPreview=CodexStartPreview;
     function CodexStopPreview(caller){
 	if (Codex.paginated) 

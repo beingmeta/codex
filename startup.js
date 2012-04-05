@@ -89,7 +89,7 @@ Codex.Startup=
 
 	var config_handlers={};
 	var default_config=
-	    {pageview: true,
+	    {layout: 'bypage',
 	     bodysize: 'normal',bodyfamily: 'serif',
 	     uisize: 'normal',showconsole: true,
 	     animatepages: true,animatehud: true,
@@ -171,15 +171,18 @@ Codex.Startup=
 	    if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
 	    if (config) {
 		for (var setting in config) {
-		    if (config.hasOwnProperty(setting)) 
+		    if ((config.hasOwnProperty(setting))&&
+			(!(fdjtState.getQuery(setting))))
 			setConfig(setting,config[setting]);}}
 	    else config={};
 	    if (Codex.Trace.config)
 		fdjtLog("initConfig (default) %o",default_config);
 	    for (var setting in default_config) {
 		if (!(config[setting]))
-		    if (default_config.hasOwnProperty(setting))
-			setConfig(setting,default_config[setting]);}
+		    if (default_config.hasOwnProperty(setting)) {
+			if (fdjtState.getQuery(setting))
+			    setConfig(setting,fdjtState.getQuery(setting));
+			else setConfig(setting,default_config[setting]);}}
 	    var dopost=Codex.postconfig;
 	    Codex.postconfig=false;
 	    var i=0; var lim=dopost.length;
@@ -314,7 +317,7 @@ Codex.Startup=
 		//  this until we've scanned the DOM because we may
 		//  use results of DOM scanning in layout (for example,
 		//  heading information).
-		function(){if (Codex.paginate) Codex.Paginate("initial");},
+		function(){if (Codex.bypage) Codex.Paginate("initial");},
 		// Build the display TOC, both the dynamic (top of
 		// display) and the static (inside the flyleaf)
 		function(){
@@ -377,7 +380,8 @@ Codex.Startup=
 			CodexMode("sbookapp");}
 		    else if (fdjtState.getQuery("startmode")) 
 			CodexMode(fdjtState.getQuery("startmode"));
-		    if ((!(Codex.paginate))||(Codex.paginated))
+		    // Need to extend this for other layous
+		    if ((!(Codex.layout))||(Codex.paginated))
 			startupDone();
 		    else Codex.pagewait=startupDone;}],
 	     100,25);}
@@ -480,9 +484,7 @@ Codex.Startup=
 	    // Whether to suppress login, etc
 	    if ((getLocal("sbooks.nologin"))||(fdjtState.getQuery("nologin")))
 		Codex.nologin=true;
-	    if ((getLocal("sbooks.nopage"))||(fdjtState.getQuery("nopage"))) {
-		default_config.pageview=false;
-		Codex.paginate=false;}
+	    Codex.bypage=(Codex.layout==='bypage'); 
 	    Codex.max_excerpt=fdjtDOM.getMeta("sbook.maxexcerpt")||
 		(Codex.max_excerpt);
 	    Codex.min_excerpt=fdjtDOM.getMeta("sbook.minexcerpt")||
@@ -511,15 +513,6 @@ Codex.Startup=
 	    var isWebKit = navigator.appVersion.search("WebKit")>=0;
 	    var isWebTouch = isIphone || isIpad || isAndroid || isTouchPad;
 
-	    if ((typeof Codex.colbreak === 'undefined')&&
-		((Codex.devinfo.Chrome)||
-		 ((Codex.devinfo.AppleWebKit)&&
-		  (Codex.devinfo.Mobile)&&
-		  (Codex.devinfo.AppleWebKit>532))||
-		 ((Codex.devinfo.AppleWebKit)&&
-		  (Codex.devinfo.AppleWebKit>533)))) {
-		Codex.colbreak=true;
-		Codex.talldom=true;}
 	    if (isWebTouch) {
 		fdjtDOM.addClass(document.body,"sbooktouchui");
 		viewportSetup();
@@ -882,7 +875,7 @@ Codex.Startup=
 	    pagehead.style.backgroundColor=bgcolor;
 	    pagefoot.style.backgroundColor=bgcolor;
 	    fdjtDOM.addListener(false,"resize",function(evt){
-		if (Codex.paginate) CodexLayout.onresize(evt||event);});}
+		if (Codex.paginated) CodexLayout.onresize(evt||event);});}
 	
 	function getBGColor(arg){
 	    var color=fdjtDOM.getStyle(arg).backgroundColor;

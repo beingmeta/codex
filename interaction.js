@@ -83,7 +83,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    addHandlers(false,'window');
 	    addHandlers(document,'document');
 	    addHandlers(document.body,'body');
-	    if (Codex.paginate)
+	    if (Codex.bypage)
 		addHandlers(fdjtID("CODEXPAGE"),'content');
 	    else addHandlers(fdjtID("CODEXCONTENT"),'content');
 	    addHandlers(Codex.HUD,'hud');}
@@ -1037,11 +1037,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("pageForward c=%o n=%o",Codex.curpage,Codex.pagecount);
 	if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
 	    CodexMode(false);
-	if ((Codex.paginate)&&(Codex.colbreak)&&(Codex.pages)) {
-	    if (Codex.curpage===Codex.pagecount) {}
-	    else Codex.GoToPage(
-		Codex.curpage=(Codex.curpage+1),"pageForward");}
-	else if ((Codex.paginate)&&(Codex.pagecount)) {
+	if ((Codex.bypage)&&(Codex.pagecount)) {
 	    var newpage=false;
 	    if (Codex.mode==="glosses") CodexMode(true);
 	    if (Codex.curpage===Codex.pagecount) {}
@@ -1062,11 +1058,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("pageBackward c=%o n=%o",Codex.curpage,Codex.pagecount);
 	if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
 	    CodexMode(false);
-	if ((Codex.paginate)&&(Codex.colbreak)&&(Codex.pages)) {
-	    if (Codex.curpage===0) {}
-	    else Codex.GoToPage(
-		Codex.curpage=(Codex.curpage-1),"pageBackward");}
-	else if ((Codex.paginate)&&(Codex.pagecount)) {
+	if ((Codex.bypage)&&(Codex.pagecount)) {
 	    var newpage=false;
 	    if (Codex.mode==="glosses") CodexMode(true);
 	    if (Codex.curpage===0) {}

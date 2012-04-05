@@ -51,9 +51,16 @@
       <span class="checkspan">
 	<input TYPE='CHECKBOX' NAME='CODEXANIMATEHUD' VALUE='yes'/>
 	book tools</span></td></tr>
-  <tr class='checkspan'>
-    <th><input TYPE='CHECKBOX' NAME='CODEXPAGEVIEW' VALUE='yes'/></th>
-    <td>Page view (break text into pages)</td></tr>
+  <tr onclick="fdjtUI.CheckSpan.onclick(event);">
+    <th>Layout</th>
+    <td><span class="checkspan">
+	<input TYPE="RADIO" NAME="LAYOUT" VALUE="bpage"/>
+	by pages</span>
+      <span class="checkspan">
+	<input TYPE="RADIO" NAME="LAYOUT" VALUE="scrolling"/>
+	scrolling</span>
+    </td>
+  </tr>
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
     <th><input TYPE='CHECKBOX' NAME='CODEXHIDESPLASH' VALUE='yes'/></th>
     <td>Hide the Codex help (splash) page after book loading is
