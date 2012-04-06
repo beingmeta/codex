@@ -122,8 +122,8 @@ var CodexPaginate=
 		    Codex.paginating=false;}
 		else {
 		    var root=nodes[i++];
-		    var timeslice=layout.timeslice||CodexLayout.timeslice||100;
-		    var timeskip=layout.timeskip||CodexLayout.timeskip||100;
+		    var timeslice=layout.timeslice||CodexLayout.timeslice||200;
+		    var timeskip=layout.timeskip||CodexLayout.timeskip||50;
 		    if (((root.nodeType===3)&&(!(isEmpty(root.nodeValue))))||
 			((root.nodeType===1)&&
 			 (root.tagName!=='LINK')&&(root.tagName!=='META')&&
