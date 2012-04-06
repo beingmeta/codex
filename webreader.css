@@ -101,33 +101,6 @@ div#CODEXPAGE div#CODEXPAGES {
     overflow: visible;}
 div#CODEXPAGE div#CODEXPAGE.codexpaginating div#CODEXPAGES {
     opacity: 0.35;}
-body.codexpageview div#CODEXPAGE div#CODEXPAGES {
-    column-width: 40em;
-    column-gap: 7em;
-    column-rule-width: 4px;
-    -o-column-rule-width: 4px;
-    -moz-column-rule-width: 4px;
-    -webkit-column-rule-width: 4px;
-    /*
-    column-rule-width: 7em;
-    -o-column-rule-width: 7em;
-    -moz-column-rule-width: 7em;
-    -webkit-column-rule-width: 7em;
-    */
-    column-rule-color: transparent;
-    -o-column-rule-color: transparent;
-    -moz-column-rule-color: transparent;
-    -webkit-column-rule-color: transparent;
-    /*
-    column-rule-color: black;
-    -o-column-rule-color: black;
-    -moz-column-rule-color: black;
-    -webkit-column-rule-color: black;
-    */
-    column-rule-style: solid;
-    -o-column-rule-style: solid;
-    -moz-column-rule-style: solid;
-    -webkit-column-rule-style: solid;}
 
 body.sbook.codexpageview {
     margin-top: 0px; margin-bottom: 0px;
@@ -1367,8 +1340,6 @@ div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab  {
     border: transparent solid 3px;}
 div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
     height: 50px;}
-body.sbooktouchui div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab:hover {
-    background-color: lightblue;}
 
 div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[alt='About'],
 div#CODEXHUD.flytoc div#CODEXHUDBUTTONS div.tabbar .tab[alt='ToC'],
@@ -1379,7 +1350,7 @@ div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[alt='Console'],
 div#CODEXHUD.allglosses div#CODEXHUDBUTTONS div.tabbar .tab[alt='Glosses'],
 div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[alt='Help']{
     border: gold solid 3px; background-color: gold;
-    border-bottom: transparent solid 3px;
+    /* border-top: transparent solid 3px; */
     box-shadow: 6px 6px 6px #cccccc;
     -webkit-box-shadow: 6px 6px 6px #cccccc;
     -moz-box-shadow: 6px 6px 6px #cccccc;
@@ -1465,7 +1436,7 @@ div#CODEXHUD.flytoc div#CODEXFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
 div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXCONSOLE'],
 div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
-    border-bottom: transparent solid 3px;}
+    border-top: transparent solid 3px;}
 
 div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent {
     margin-top: 0px;}
