@@ -95,6 +95,7 @@ Codex.Startup=
 	     animatepages: true,animatehud: true,
 	     hidesplash: false};
 	var current_config={};
+	var saved_config={};
 
 	var setCheckSpan=fdjtUI.CheckSpan.set;
 
@@ -109,7 +110,7 @@ Codex.Startup=
 	    else return current_config[name];}
 	Codex.getConfig=getConfig;
 
-	function setConfig(name,value){
+	function setConfig(name,value,save){
 	    if (arguments.length===1) {
 		var config=name;
 		Codex.postconfig=[];
@@ -127,7 +128,9 @@ Codex.Startup=
 			fdjtLog("batch setConfig, post processing %s",dopost[i]);
 		    dopost[i++]();}
 		return;}
-	    if (current_config[name]===value) return;
+	    if (current_config[name]===value) {
+		if (save) saved_config[name]=value;
+		return;}
 	    if (Codex.Trace.config) fdjtLog("setConfig %o=%o",name,value);
 	    var input_name="CODEX"+(name.toUpperCase());
 	    var inputs=document.getElementsByName(input_name);
@@ -146,14 +149,15 @@ Codex.Startup=
 		if (Codex.Trace.config) fdjtLog("setConfig (handler=%s) %o=%o",
 						config_handlers[name],name,value);
 		config_handlers[name](name,value);}
-	    current_config[name]=value;}
+	    current_config[name]=value;
+	    if (save) saved_config[name]=value;}
 	Codex.setConfig=setConfig;
 
 	function saveConfig(config){
 	    if (Codex.Trace.config) {
 		fdjtLog("saveConfig %o",config);
-		fdjtLog("current_config=%o",current_config);}
-	    if (!(config)) config=current_config;
+		fdjtLog("saved_config=%o",saved_config);}
+	    if (!(config)) config=saved_config;
 	    // Save automatically applies (seems only fair)
 	    else setConfig(config);
 	    var saved={};
@@ -208,7 +212,8 @@ Codex.Startup=
 	var getParent=fdjtDOM.getParent;
 	var getChild=fdjtDOM.getChild;
 
-	function updateConfig(name,id){
+	function updateConfig(name,id,save){
+	    if (typeof save === 'undefined') save=true;
 	    var elt=((typeof id === 'string')&&(document.getElementById(id)))||
 		((id.nodeType)&&(getParent(id,'input')))||
 		((id.nodeType)&&(getChild(id,'input')))||
@@ -217,8 +222,8 @@ Codex.Startup=
 		(id);
 	    if (Codex.Trace.config) fdjtLog("Update config %s",name);
 	    if ((elt.type=='radio')||(elt.type=='checkbox'))
-		setConfig(name,elt.checked||false);
-	    else setConfig(name,elt.value);}
+		setConfig(name,elt.checked||false,save);
+	    else setConfig(name,elt.value,save);}
 	Codex.updateConfig=updateConfig;
 
 	Codex.addConfig("hidesplash",function(name,value){
@@ -307,6 +312,7 @@ Codex.Startup=
 		    fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
 		    Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;
+		    Codex.sects=Codex.docinfo._sects;
 		    dropClass(scanmsg,"running");
 		    if (Codex.afterscan) {
 			var donefn=Codex.afterscan;
@@ -317,7 +323,11 @@ Codex.Startup=
 		//  this until we've scanned the DOM because we may
 		//  use results of DOM scanning in layout (for example,
 		//  heading information).
-		function(){if (Codex.bypage) Codex.Paginate("initial");},
+		function(){
+		    if (Codex.bypage) Codex.Paginate("initial");
+		    else if (Codex.bysect) {
+			addClass(document.body,"cxBYSECT");}
+		    else addClass(document.body,"cxSCROLL");},
 		// Build the display TOC, both the dynamic (top of
 		// display) and the static (inside the flyleaf)
 		function(){
@@ -380,8 +390,10 @@ Codex.Startup=
 			CodexMode("sbookapp");}
 		    else if (fdjtState.getQuery("startmode")) 
 			CodexMode(fdjtState.getQuery("startmode"));
-		    // Need to extend this for other layous
-		    if ((!(Codex.layout))||(Codex.paginated))
+		    if ((!(Codex.layout))||
+			(Codex.layout==='scroll')||
+			(Codex.layout==='bysect')||
+			(Codex.paginated))
 			startupDone();
 		    else Codex.pagewait=startupDone;}],
 	     100,25);}

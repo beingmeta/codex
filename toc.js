@@ -146,6 +146,7 @@ var CodexTOC=
 	    var len=end-start;
 	    var subsections=headinfo.sub; var last_info;
 	    var sectnum=0; var percent=0;
+	    var head=headinfo.elt;
 	    spanbar.starts=start; spanbar.ends=end;
 	    if ((!(subsections)) || (subsections.length===0))
 		return false;
@@ -185,7 +186,7 @@ var CodexTOC=
 		(sectnum,head,headinfo.title,last_info.ends_at,end,len,start);
 		spanbar.appendChild(span);}    
 	    return spanbar;}
-	
+
 	function generate_span(sectnum,subsection,title,spanstart,spanend,len,name,pstart){
 	    var spanlen=spanend-spanstart;
 	    var anchor=fdjtDOM("A.brick","\u00A0");

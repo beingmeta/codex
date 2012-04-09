@@ -71,8 +71,8 @@ var CodexPaginate=
 	    Codex.paginating=layout;
 	    
 	    // Prepare to do the layout
-	    dropClass(document.body,"codexscrollview");
-	    addClass(document.body,"codexpageview");
+	    dropClass(document.body,"cxSCROLL");
+	    addClass(document.body,"cxBYPAGE");
 	    fdjtID("CODEXPAGE").style.visibility='hidden';
 	    fdjtID("CODEXCONTENT").style.visibility='hidden';
 	    
@@ -205,7 +205,10 @@ var CodexPaginate=
 			    Codex.postconfig.push(Paginate);
 			// Otherwise, paginate away
 			else Codex.Paginate("config");}}
-		// 'bysection' may be a future option here
+		else if (val==='bysect') {
+		    // This just uses the 'Codex.sects' array
+		    // In the future, we may set up a scanner in the foot
+		    Codex.bysect=true;}
 		else {
 		    // If you've already paginated, revert
 		    if (Codex.paginated) {
@@ -219,8 +222,8 @@ var CodexPaginate=
 			Codex.paginating=false;}
 		    else {}
 		    Codex.bypage=false;
-		    dropClass(document.body,"codexpageview");
-		    addClass(document.body,"codexscrollview");}});
+		    dropClass(document.body,"cxBYPAGE");
+		    addClass(document.body,"cxSCROLL");}});
 
 	function updateLayoutProperty(name,val){
 	    // This updates layout properties

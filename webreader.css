@@ -57,7 +57,8 @@ div#CODEXPAGE {
     border: solid transparent 3px;
     border-radius: 1em; -webkit-border-radius: 1em;
     -moz-border-radius: 1em; -o-border-radius: 1em;}
-body.codexscrollview div#CODEXPAGE { display: none;}
+body.cxSCROLL div#CODEXPAGE { display: none;}
+body.cxBYSECT div#CODEXPAGE { display: none;}
 
 body.hudup div#CODEXPAGE {
     transition-property: opacity;
@@ -102,7 +103,7 @@ div#CODEXPAGE div#CODEXPAGES {
 div#CODEXPAGE div#CODEXPAGE.codexpaginating div#CODEXPAGES {
     opacity: 0.35;}
 
-body.sbook.codexpageview {
+body.sbook.cxBYPAGE {
     margin-top: 0px; margin-bottom: 0px;
     margin-left: 0px; margin-right: 0px;}
 
@@ -125,7 +126,7 @@ div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
     padding-left: 32px; padding-right: 32px;
     margin-right: 0px;}
 
-body.codexpageview div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
+body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
     column-break-before: always;
     break-before: always;
     -o-column-break-before: always;
@@ -1045,7 +1046,7 @@ div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     width: 80%; margin-left: 10%; margin-right: 10%;
     cursor: crosshair;
     border-top: solid black 1px;}
-body.codexpageview div#CODEXPAGEFOOT div#CODEXPAGEINFO {
+body.cxBYPAGE div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
 body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;}
@@ -1621,7 +1622,7 @@ div.locbar hr {
     border-right-width: 0px;
     opacity: 0.0001;}
 .codexglossmark {margin-right: -16px;}
-body.codexscrollview .codexglossmark { right: 50px;}
+body.cxSCROLL .codexglossmark { right: 50px;}
 
 body .codexglossmark { opacity: 0.4;}
 *:hover > .codexglossmark { opacity: 0.7;}
@@ -1885,6 +1886,27 @@ div#CODEXPAGE.codexpaginating div.codexpage { visiblity: hidden;}
 img.codexcoverpage {
     display: block; max-width: 100%; max-height: 100%;
     margin: auto;}
+
+/* BYSECT layout */
+
+body.cxBYSECT div#CODEXCONTENT * { display: none;}
+body.cxBYSECT div#CODEXCONTENT section * { display: inherit;}
+body.cxBYSECT div#CODEXCONTENT.codexvisible * { display: inherit;}
+body.cxBYSECT div#CODEXCONTENT.codexvisible section { display: none;}
+body.cxBYSECT div#CODEXCONTENT.codexvisible div.sbooksection { display: none;}
+
+body.cxBYSECT div#CODEXCONTENT.codexlive section { display: none;}
+body.cxBYSECT div#CODEXCONTENT.codexlive .codexlive { display: block;}
+body.cxBYSECT div#CODEXCONTENT.codexlive section.codexvisible {
+    display: block;}
+body.cxBYSECT div#CODEXCONTENT.codexlive .codexlive > * {
+    display: none;}
+body.cxBYSECT div#CODEXCONTENT.codexlive .codexlive > .codexlive {
+    display: none;}
+
+body.cxBYSECT div#CODEXCONTENT.codexlive div.sbooksection { display: none;}
+body.cxBYSECT div#CODEXCONTENT.codexlive div.sbooksection.codexvisible {
+    display: block;}
 
 /* Highlighting */
 

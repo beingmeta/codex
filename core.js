@@ -101,6 +101,11 @@ var sbook_gloss_data=
 
 (function(){
 
+    var hasClass=fdjtDOM.hasClass;
+    var addClass=fdjtDOM.addClass;
+    var dropClass=fdjtDOM.dropClass;
+    var hasParent=fdjtDOM.hasParent;
+
     function initDB() {
 	if (Codex.Trace.start>1) fdjtLog("Initializing DB");
 	var refuri=(Codex.refuri||document.location.href);
@@ -307,12 +312,12 @@ var sbook_gloss_data=
 	    if (scan.codexui) return false;
 	    else if (scan===Codex.root) return target;
 	    else if ((scan.id)||(scan.codexdupid)) {
-		if (fdjtDOM.hasParent(scan,CodexHUD)) return false;
-		else if (fdjtDOM.hasParent(scan,".codexmargin")) return false;
-		else if ((fdjtDOM.hasClass(scan,"sbooknofocus"))||
+		if (hasParent(scan,CodexHUD)) return false;
+		else if (hasParent(scan,".codexmargin")) return false;
+		else if ((hasClass(scan,"sbooknofocus"))||
 			 ((Codex.nofocus)&&(Codex.nofocus.match(scan))))
 		    scan=scan.parentNode;
-		else if ((fdjtDOM.hasClass(scan,"sbookfocus"))||
+		else if ((hasClass(scan,"sbookfocus"))||
 			 ((Codex.focus)&&(Codex.focus.match(scan))))
 		    return scan;
 		else if (!(fdjtDOM.hasText(scan)))
@@ -367,8 +372,8 @@ var sbook_gloss_data=
 	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
 	    CodexTOC.setHead(headinfo);
 	    window.title=headinfo.title+" ("+document.title+")";
-	    if (Codex.head) fdjtDOM.dropClass(Codex.head,"sbookhead");
-	    fdjtDOM.addClass(head,"sbookhead");
+	    if (Codex.head) dropClass(Codex.head,"sbookhead");
+	    addClass(head,"sbookhead");
 	    Codex.setLocation(Codex.location);
 	    Codex.head=fdjtID(headid);}
 	else {
@@ -420,7 +425,7 @@ var sbook_gloss_data=
 	if (Codex.Trace.focus) Codex.trace("Codex.setTarget",target);
 	if (target===Codex.target) return;
 	else if ((!target)&&(Codex.target)) {
-	    fdjtDOM.dropClass(Codex.target,"sbooktarget");
+	    dropClass(Codex.target,"sbooktarget");
 	    Codex.target=false;
 	    return;}
 	else if (!(target)) return;
@@ -428,9 +433,9 @@ var sbook_gloss_data=
 	    return;
 	else {}
 	if (Codex.target) {
-	    fdjtDOM.dropClass(Codex.target,"sbooktarget");
+	    dropClass(Codex.target,"sbooktarget");
 	    Codex.target=false;}
-	fdjtDOM.addClass(target,"sbooktarget");
+	addClass(target,"sbooktarget");
 	fdjtState.setCookie(
 	    "sbooktarget",target.id||target.getAttribute('data-sbookid'));
 	Codex.target=target;
@@ -461,10 +466,10 @@ var sbook_gloss_data=
 
     function inUI(elt){
 	if (elt.codexui) return true;
-	else if (fdjtDOM.hasParent(elt,CodexHUD)) return true;
+	else if (hasParent(elt,CodexHUD)) return true;
 	else while (elt)
 	    if (elt.codexui) return true;
-	else if (fdjtDOM.hasClass(elt,sbookUIclasses)) return true;
+	else if (hasClass(elt,sbookUIclasses)) return true;
 	else elt=elt.parentNode;
 	return false;}
 
@@ -580,7 +585,39 @@ var sbook_gloss_data=
 	return fdjtID(allinfo[i-1].frag);}
     Codex.resolveLocation=resolveLocation;
 
+    function displaySect(sect,visible){
+	if (visible) {
+	    var show=sect;
+	    addClass(show,"codexvisible");
+	    show=show.parentNode;
+	    while (show) {
+		addClass(show,"codexlive");
+		show=show.parentNode;}
+	    Codex.cursect=sect;}
+	else {
+	    var hide=Codex.cursect;
+	    dropClass(hide,"codexvisible");
+	    hid=hide.parentNode;
+	    while (hide) {
+		dropClass(hide,"codexlive");
+		hide=hide.parentNode;}
+	    Codex.cursect=false;}}
+    Codex.displaySect=displaySect;
     
+    function getSect(node){
+	if (typeof node==='string') node=fdjtID(node);
+	if (!(node)) return false;
+	while (node) {
+	    if (((node.tagName==='SECTION')&&
+		 (!(hasClass(node,"sbookfauxsect"))))||
+		((node.tagName==='DIV')&&
+		 (hasClass(node,"sbooksection"))&&
+		 (!(hasClass(node,"sbookfauxsect")))))
+		return node;
+	    else node=node.parentNode;}
+	return Codex.content;}
+    Codex.getSect=getSect;
+
     // This moves within the document in a persistent way
     function CodexGoTo(arg,caller,istarget,pushstate){
 	if (typeof istarget === 'undefined') istarget=true;
@@ -630,6 +667,12 @@ var sbook_gloss_data=
 	    Codex.setState({location: location,page: page});
 	else {}
 	if (page) Codex.GoToPage(target,"CodexGoTo");
+	else if (Codex.bysect) {
+	    var sect=getSect(target);
+	    if (Codex.cursect) displaySect(Codex.cursect,false);
+	    if (sect) {
+		displaySect(sect,true);
+		Codex.cursect=sect;}}
 	else {
 	    var offinfo=fdjtDOM.getGeometry(target,Codex.content);
 	    Codex.content.style.top=(-offinfo.top)+"px";}
@@ -662,24 +705,40 @@ var sbook_gloss_data=
     Codex.ScanTo=CodexScanTo;
 
     // Preview functions
-    var oldscroll=false;
+    var oldscroll=false; var oldsect=false;
     function CodexStartPreview(spec,caller){
 	if (Codex.paginated) 
 	    return Codex.startPagePreview(spec,caller);
 	var target=((spec.nodeType)?(spec):(fdjtID(spec)));
+	if (Codex.bysect) {
+	    var sect=getSect(target);
+	    if (!(sect)) return;
+	    if (!(oldsect)) oldsect=Codex.cursect;
+	    displaySect(oldsect,false);
+	    displaySect(sect,true);
+	    Codex.previewing=target;
+	    return;}
 	var yoff=fdjtDOM.parsePX(Codex.content.style.top)||0;
 	if (!(oldscroll)) oldscroll={x: 0,y: yoff};
 	var offinfo=fdjtDOM.getGeometry(target,Codex.content);
 	if (Codex.Trace.flips)
 	    fdjtLog("startPreview/%s to %d for %o",
 		    caller||"nocaller",offinfo.top-100,spec);
-	fdjtDOM.addClass(document.body,"codexpreview");
+	addClass(document.body,"codexpreview");
 	Codex.previewing=target;
-	Codex.content.style.top=(-offinfo.top)+"px";}
+	Codex.content.style.top=(-offinfo.top)+"px";
+	return target;}
     Codex.startPreview=CodexStartPreview;
     function CodexStopPreview(caller){
 	if (Codex.paginated) 
 	    return Codex.stopPagePreview(caller);
+	if (Codex.bysect) {
+	    var sect=getSect(Codex.previewing);
+	    if (sect) displaySect(sect,false);
+	    if (oldsect) displaySect(oldsect,true);
+	    Codex.previewing=false;
+	    oldsect=false;
+	    return;}
 	if ((Codex.Trace.flips)&&(oldscroll))
 	    fdjtLog("stopPreview/%s returning to %d",
 		    caller||"nocaller",oldscroll.x,oldscroll.y);
@@ -688,7 +747,7 @@ var sbook_gloss_data=
 		    caller||"nocaller");
 	if (oldscroll) 
 	    Codex.content.style.top=oldscroll.y+"px";
-	fdjtDOM.dropClass(document.body,"codexpreview");
+	dropClass(document.body,"codexpreview");
 	Codex.previewing=false;
 	oldscroll=false;}
     Codex.stopPreview=CodexStopPreview;

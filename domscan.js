@@ -37,6 +37,8 @@ var codex_domscan_version=parseInt("$Revision$".slice(10,-1));
 function CodexDOMScan(root,docinfo){
     var stdspace=fdjtString.stdspace;
     var flatten=fdjtString.flatten;
+    var hasClass=fdjtDOM.hasClass;
+    
     if (typeof root === 'undefined') return this;
     if (!(docinfo))
 	if (this instanceof CodexDOMScan)
@@ -47,6 +49,7 @@ function CodexDOMScan(root,docinfo){
     var allheads=[];
     docinfo._root=root;
     docinfo._heads=allheads;
+    docinfo._sects=[];
     if (!(root.id)) root.id="SBOOKROOT";
     if (Codex.Trace.startup) {
 	if (root.id) 
@@ -196,7 +199,8 @@ function CodexDOMScan(root,docinfo){
 	    if (level) return level;}
 	return false;}
 
-    function handleHead(head,docinfo,scanstate,level,curhead,curinfo,curlevel,nodefn){
+    function handleHead(head,docinfo,scanstate,level,
+			curhead,curinfo,curlevel,nodefn){
 	var headid=head.id;
 	var headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
 	    (docinfo[headid]=new scanInfo(headid,scanstate));
@@ -293,12 +297,19 @@ function CodexDOMScan(root,docinfo){
 	else if (child.nodeType!==1) return 0;
 	else {}
 	if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
-	// Having a section inside a notoc zone probably indicates malformed
-	//  HTML
-	if (((child.tagName==='section')||(child.tagName==='article'))&&
-	    (!(scanstate.notoc))) {
-	    var head=fdjtDOM.findChild(child,'header')||
-		fdjtDOM.findChild(child,'hgroup,h1,h2,h3,h4,h5,h6,h7');
+	if (((child.tagName==='SECTION')&&
+	     (!(hasClass(child,"sbookfauxsect"))))||
+	    ((child.tagName==='DIV')&&(hasClass(child,"sbooksection"))&&
+	     (!(hasClass(child,"sbookfauxsect")))))
+	    docinfo._sects.push(child);
+	if (((child.tagName==='SECTION')||(child.tagName==='ARTICLE'))&&
+	    // A section inside a notoc zone indicates malformed HTML
+	    (!(scanstate.notoc))&&
+	    (child.id)&&
+	    // Disabled for now, leads to redundant TOC entries
+	    (false)) {
+	    var head=fdjtDOM.getChild(child,'header')||
+		fdjtDOM.getChild(child,'hgroup,h1,h2,h3,h4,h5,h6,h7');
 	    var curlevel=scanstate.curlevel;
 	    var curhead=scanstate.curhead;
 	    var curinfo=scanstate.curinfo;
