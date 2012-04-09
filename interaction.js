@@ -281,15 +281,21 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    evt,target,passage,Codex.mode);
 	if (!(passage)) {CodexMode(false); return;}
 	// If there's a selection, store it as an excerpt.
-	if ((seltext)&&(!(isEmpty(seltext)))) {
-	    var form=Codex.setGlossTarget(passage);
+	var form=Codex.setGlossTarget(passage);
+	var form_elt=fdjtDOM.getChild(form,"form");
+	var form_class='';
+	if ((seltext)&&(!(isEmpty(seltext)))) 
 	    Codex.setExcerpt(form,seltext);
-	    Codex.setGlossForm(form);
-	    var form_elt=fdjtDOM.getChild(form,"form");
-	    if (form_elt) form_elt.className='';
-	    fdjtUI.cancel(evt);
-	    CodexMode("addgloss");}
-	else CodexMode(false);}
+	else if (evt.shiftKey) {
+	    form_class='addtag';
+	    Codex.setHUD(true);}
+	else {
+	    form_class='editnote';
+	    Codex.setHUD(true);}
+	Codex.setGlossForm(form);
+	if (form_elt) form_elt.className=form_class;
+	fdjtUI.cancel(evt);
+	CodexMode("addgloss");}
 
     /* Tap actions */
 
@@ -1382,11 +1388,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "span.codexglossrespond": { tap: respond_ontap },
 	 "span.codexsharegloss": {tap: fdjtUI.CheckSpan.onclick},
 	 ".submitbutton": {tap: submitEvent },
-	 "div.glossetc span.links": {tap: fdjtUI.CheckSpan.onclick},
-	 "div.glossetc span.tags": {tap: fdjtUI.CheckSpan.onclick},
-	 "div.glossetc div.sharing": {tap: glossform_outlets_tapped},
-	 "div.glossetc span.modebuttons": {tap: glossmode_button},
-	 "div.glossetc span.showoutlets": {tap: showoutlets_tapped},
+	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
+	 "div.glossetc span.modebuttons": {click: glossmode_button},
+	 "div.glossetc span.showoutlets": {click: showoutlets_tapped},
 	 "#CODEXGLOSSOUTLETS": {tap: outlet_tapped}};
 
     Codex.UI.handlers.webtouch=
@@ -1430,10 +1436,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "span.codexglossrespond": { tap: respond_ontap },
 	 "span.codexsharegloss": {tap: fdjtUI.CheckSpan.onclick},
 	 ".submitbutton": {tap: submitEvent },
-	 "div.glossetc span.links": {tap: fdjtUI.CheckSpan.onclick},
-	 "div.glossetc span.tags": {tap: fdjtUI.CheckSpan.onclick},
-	 "div.glossetc div.sharing": {tap: glossform_outlets_tapped},
-	 "div.glossetc span.modebuttons": {tap: glossmode_button}};
+	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
+	 "div.glossetc span.modebuttons": {click: glossmode_button}};
     
 })();
 
