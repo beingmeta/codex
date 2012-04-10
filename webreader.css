@@ -1691,7 +1691,7 @@ body.notsbookuser div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
 div#CODEXADDGLOSS div#CODEXGLOSSOUTLETS {
-    color: gold;
+    color: white;
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
@@ -1699,6 +1699,8 @@ div#CODEXADDGLOSS div#CODEXGLOSSOUTLETS {
     transition-duration: 3s; -webkit-transition-duration: 3s;
     -moz-duration: 3s; -o-transition-duration: 3s;
     height: 0px;}
+div#CODEXADDGLOSS div#CODEXGLOSSOUTLETS span.outlet {
+    background-color: gold; color: black; white-space: nowrap;}
 div.showoutlets#CODEXADDGLOSS div#CODEXGLOSSOUTLETS { height: inherit;}
 div.showoutlets#CODEXADDGLOSS span.showoutlets {
     background-color: gold;}
