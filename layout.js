@@ -423,13 +423,21 @@ var CodexPaginate=
 	Codex.Paginate=Paginate;
 
 	CodexLayout.onresize=function(evt){
-	    var page_width=fdjtDOM.getGeometry(Codex.page).width;
+	    var content=Codex.content; var page=Codex.page;
+	    var page_width=fdjtDOM.getGeometry(page).width;
+	    var content_width=fdjtDOM.getGeometry(content).width;
 	    var view_width=fdjtDOM.viewWidth();
 	    var page_margin=(view_width-page_width)/2;
+	    var content_margin=(view_width-content_width)/2;
 	    if (page_margin>=50) {
 		page.style.left=page_margin+'px';
 		page.style.right=page_margin+'px';}
-	    Codex.Paginate("resize");};
+	    else page.style.left=page.style.right='';
+	    if (content_margin>=50) {
+		content.style.left=content_margin+'px';
+		content.style.right=content_margin+'px';}
+	    else content.style.left=content.style.right='';
+	    if (Codex.bypage) Codex.Paginate("resize");};
 	
 	Codex.addConfig(
 	    "layout",

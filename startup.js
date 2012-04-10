@@ -757,11 +757,16 @@ Codex.Startup=
 	    fdjtDOM(body,window,page);
 	    fdjtDOM.addClass(body,"sbook");
 	    var page_width=fdjtDOM.getGeometry(page).width;
+	    var content_width=fdjtDOM.getGeometry(content).width;
 	    var view_width=fdjtDOM.viewWidth();
 	    var page_margin=(view_width-page_width)/2;
+	    var content_margin=(view_width-content_width)/2;
 	    if (page_margin>=50) {
 		page.style.left=page_margin+'px';
 		page.style.right=page_margin+'px';}
+	    if (content_margin>=50) {
+		content.style.left=content_margin+'px';
+		content.style.right=content_margin+'px';}
 	    applyMetaClass("sbookdetails");
 	    applyMetaClass("sbooknoteref");
 	    applyMetaClass("sbookbibref");
