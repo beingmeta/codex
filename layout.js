@@ -244,7 +244,7 @@ var CodexSections=
 	    addClass(document.body,"codexpreview");
 	    displaySect(section,true);
 	    Codex.previewing=previewing=section;
-	    // updatePageDisplay(pagenum,Codex.location);
+	    // updateSectionDisplay(sectnum,Codex.location);
 	    return;}
 	Codex.startSectionPreview=startPreview;
 
@@ -263,7 +263,7 @@ var CodexSections=
 		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightsearch");
 		Codex.previewtarget=false;}
 	    Codex.previewing=previewing=false;
-	    // updatePageDisplay(pagenum,Codex.location);
+	    // updateSectionDisplay(sectnum,Codex.location);
 	    return;}
 	Codex.stopSectionPreview=stopPreview;
 
@@ -617,7 +617,6 @@ var CodexPaginate=
 			caller||"nocaller",page,pagenum,spec);
 	    if (curpage) dropClass(curpage,"curpage");
 	    addClass(page,"curpage");
-	    addClass(document.body,"codexpreview");
 	    Codex.previewing=previewing=page;
 	    updatePageDisplay(pagenum,Codex.location);}
 	function stopPreview(caller){
@@ -628,12 +627,6 @@ var CodexPaginate=
 	    if (!(previewing)) return;
 	    dropClass(previewing,"curpage");
 	    addClass(curpage,"curpage");
-	    dropClass(document.body,"codexpreview");
-	    if (Codex.previewtarget) {
-		dropClass(Codex.previewtarget,"codexpreviewtarget");
-		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightexcerpt");
-		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightsearch");
-		Codex.previewtarget=false;}
 	    Codex.previewing=previewing=false;
 	    updatePageDisplay(pagenum,Codex.location);}
 	Codex.startPagePreview=startPreview;

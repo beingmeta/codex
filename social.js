@@ -48,6 +48,10 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     // The user/tribe bar
     var CodexHUDsocial=false;
 
+    var hasClass=fdjtDOM.hasClass;
+    var addClass=fdjtDOM.addClass;
+    var dropClass=fdjtDOM.dropClass;
+
     /* Social UI components */
 
     function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
@@ -198,6 +202,10 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	if ((!(glosses))||(!(glosses.length)))
 	    fdjtDOM.addClass(sumdiv,"noglosses");
 	Codex.UI.setupSummaryDiv(sumdiv);
+	if (Codex.target) {
+	    if (hasClass(Codex.target,"highlightpassage")) 
+		dropClass(Codex.target,"highlightpassage");
+	    else fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");}
 	if (glosses) {
 	    var i=0; var n=glosses.length;
 	    while (i<n) {
@@ -211,6 +219,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	if (excerpt) {
 	    var range=fdjtDOM.findString(target,excerpt);
 	    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
+	else addClass(target,"highlightpassage");
 	CodexMode("glosses");}
     Codex.showGlosses=showGlosses;
 

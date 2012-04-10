@@ -1905,6 +1905,7 @@ body.cxBYSECT div#CODEXCONTENT .codexlive > section.codexvisible { display: bloc
 /* Highlighting */
 
 .highlightexcerpt { background-color: yellow;}
+.highlightpassage { background-color: yellow; opacity: 0.8;}
 .highlightsearch { background-color: gold;}
 
 /* Startup messages */

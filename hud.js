@@ -676,13 +676,17 @@ var CodexMode=
 		Codex.scanning=src;}
 	    else {}
 	    if (Codex.target) {
+		dropClass(Codex.target,"highlightpassage");
 		fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");
 		fdjtUI.Highlight.clear(Codex.target,"highlightsearch");}
 	    if ((src)&&(hasClass(src,"gloss"))) {
 		var glossinfo=Codex.glosses.ref(src.name);
 		if (glossinfo.excerpt) {
 		    var range=fdjtDOM.findString(elt,glossinfo.excerpt);
-		    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}}
+		    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
+		else {
+		    var about=src.about, target=fdjtID(about);
+		    addClass(target,"highlightpassage");}}
 	    else if ((src)&&(getParent(src,".sbookresults"))) {
 		var about=src.about, target=fdjtID(about);
 		if (target) {
@@ -690,7 +694,8 @@ var CodexMode=
 		    var terms=Codex.query._query;
 		    var spellings=info.knodeterms;
 		    var i=0; var lim=terms.length;
-		    while (i<lim) {
+		    if (lim===0) addClass(target,"highlightpassage");
+		    else while (i<lim) {
 			var term=terms[i++];
 			Codex.highlightTerm(term,target,info,spellings);}}}
 	    Codex.setTarget(elt);

@@ -819,6 +819,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (excerpt) {
 	    var range=fdjtDOM.findString(fdjtID(frag),excerpt);
 	    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
+	else addClass(fdjtID(frag),"highlightpassage");
 	info.onclick=sbookgloss_ontap;
 	return info;}
     Codex.glossBlock=glossBlock;

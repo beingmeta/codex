@@ -417,11 +417,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var glossinfo=Codex.glosses.ref(card.name);
 	    if (!(target))
 		Codex.previewtarget=target=fdjtID(glossinfo.frag);
+	    else Codex.previewtarget=target;
 	    if (glossinfo.excerpt) {
 		var range=fdjtDOM.findString(target,glossinfo.excerpt);
-		if (range) fdjtUI.Highlight(range,"highlightexcerpt");}}
+		if (range) fdjtUI.Highlight(range,"highlightexcerpt");
+		else addClass(target,"highlightpassage");}
+	    else addClass(target,"highlightpassage");}
 	else if (getParent(card,".sbookresults")) {
 	    var about=card.about;
+	    Codex.previewtarget=target=fdjtID(about);
 	    if (about) {
 		var info=Codex.docinfo[target.id];
 		var terms=Codex.query._query;
