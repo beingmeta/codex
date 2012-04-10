@@ -736,11 +736,11 @@ var CodexMode=
 		((showconsole)&&(showconsole.length)&&(true))||false;
 	    return result;}
 
-	Codex.UI.applySettings=function(){
-	  Codex.setConfig(getSettings());};
-	Codex.UI.saveSettings=function(){
-	  Codex.saveConfig(getSettings());};
-	
+	Codex.UI.settingsOK=function(){
+	    var settings=getSettings();
+	    Codex.setConfig(settings);
+	    Codex.saveConfig(settings);};
+
 	/* Console methods */
 	function console_eval(){
 	    fdjtLog("Executing %s",input_console.value);

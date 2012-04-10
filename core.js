@@ -585,39 +585,6 @@ var sbook_gloss_data=
 	return fdjtID(allinfo[i-1].frag);}
     Codex.resolveLocation=resolveLocation;
 
-    function displaySect(sect,visible){
-	if (visible) {
-	    var show=sect;
-	    addClass(show,"codexvisible");
-	    show=show.parentNode;
-	    while (show) {
-		addClass(show,"codexlive");
-		show=show.parentNode;}
-	    Codex.cursect=sect;}
-	else {
-	    var hide=Codex.cursect;
-	    dropClass(hide,"codexvisible");
-	    hid=hide.parentNode;
-	    while (hide) {
-		dropClass(hide,"codexlive");
-		hide=hide.parentNode;}
-	    Codex.cursect=false;}}
-    Codex.displaySect=displaySect;
-    
-    function getSect(node){
-	if (typeof node==='string') node=fdjtID(node);
-	if (!(node)) return false;
-	while (node) {
-	    if (((node.tagName==='SECTION')&&
-		 (!(hasClass(node,"sbookfauxsect"))))||
-		((node.tagName==='DIV')&&
-		 (hasClass(node,"sbooksection"))&&
-		 (!(hasClass(node,"sbookfauxsect")))))
-		return node;
-	    else node=node.parentNode;}
-	return Codex.content;}
-    Codex.getSect=getSect;
-
     // This moves within the document in a persistent way
     function CodexGoTo(arg,caller,istarget,pushstate){
 	if (typeof istarget === 'undefined') istarget=true;
@@ -667,12 +634,7 @@ var sbook_gloss_data=
 	    Codex.setState({location: location,page: page});
 	else {}
 	if (page) Codex.GoToPage(target,"CodexGoTo");
-	else if (Codex.bysect) {
-	    var sect=getSect(target);
-	    if (Codex.cursect) displaySect(Codex.cursect,false);
-	    if (sect) {
-		displaySect(sect,true);
-		Codex.cursect=sect;}}
+	else if (Codex.bysect) Codex.GoToSection(target,"CodexGoTo");
 	else {
 	    var offinfo=fdjtDOM.getGeometry(target,Codex.content);
 	    Codex.content.style.top=(-offinfo.top)+"px";}
@@ -709,15 +671,9 @@ var sbook_gloss_data=
     function CodexStartPreview(spec,caller){
 	if (Codex.paginated) 
 	    return Codex.startPagePreview(spec,caller);
+	else if (Codex.bysect)
+	    return Codex.startSectionPreview(spec,caller);
 	var target=((spec.nodeType)?(spec):(fdjtID(spec)));
-	if (Codex.bysect) {
-	    var sect=getSect(target);
-	    if (!(sect)) return;
-	    if (!(oldsect)) oldsect=Codex.cursect;
-	    displaySect(oldsect,false);
-	    displaySect(sect,true);
-	    Codex.previewing=target;
-	    return;}
 	var yoff=fdjtDOM.parsePX(Codex.content.style.top)||0;
 	if (!(oldscroll)) oldscroll={x: 0,y: yoff};
 	var offinfo=fdjtDOM.getGeometry(target,Codex.content);
@@ -730,15 +686,10 @@ var sbook_gloss_data=
 	return target;}
     Codex.startPreview=CodexStartPreview;
     function CodexStopPreview(caller){
-	if (Codex.paginated) 
+	if (Codex.bypage) 
 	    return Codex.stopPagePreview(caller);
-	if (Codex.bysect) {
-	    var sect=getSect(Codex.previewing);
-	    if (sect) displaySect(sect,false);
-	    if (oldsect) displaySect(oldsect,true);
-	    Codex.previewing=false;
-	    oldsect=false;
-	    return;}
+	else if (Codex.bysect)
+	    return Codex.stopSectionPreview(caller);
 	if ((Codex.Trace.flips)&&(oldscroll))
 	    fdjtLog("stopPreview/%s returning to %d",
 		    caller||"nocaller",oldscroll.x,oldscroll.y);

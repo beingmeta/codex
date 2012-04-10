@@ -312,7 +312,6 @@ Codex.Startup=
 		    fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
 		    Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;
-		    Codex.sects=Codex.docinfo._sects;
 		    dropClass(scanmsg,"running");
 		    if (Codex.afterscan) {
 			var donefn=Codex.afterscan;
@@ -326,6 +325,9 @@ Codex.Startup=
 		function(){
 		    if (Codex.bypage) Codex.Paginate("initial");
 		    else if (Codex.bysect) {
+			if (!(Codex.sectioned)) {
+			    Codex.sectioned=new CodexSections(Codex.content,Codex.docinfo);
+			    Codex.sections=Codex.sectioned.sections;}
 			addClass(document.body,"cxBYSECT");}
 		    else addClass(document.body,"cxSCROLL");},
 		// Build the display TOC, both the dynamic (top of
@@ -387,13 +389,12 @@ Codex.Startup=
 		    if ((fdjtState.getQuery("join"))||
 			(fdjtState.getQuery("action"))||
 			(fdjtState.getQuery("invitation"))) {
-			CodexMode("sbookapp");}
-		    else if (fdjtState.getQuery("startmode")) 
-			CodexMode(fdjtState.getQuery("startmode"));
-		    if ((!(Codex.layout))||
-			(Codex.layout==='scroll')||
-			(Codex.layout==='bysect')||
-			(Codex.paginated))
+			CodexMode("sbookapp");
+			startupDone("sbookapp");}
+		    else if (fdjtState.getQuery("startmode"))  {
+			var startmode=fdjtState.getQuery("startmode");
+			CodexMode(startmode); startupDone(startmode);}
+		    if ((Codex.layout!=='bypage')||(Codex.paginated))
 			startupDone();
 		    else Codex.pagewait=startupDone;}],
 	     100,25);}
@@ -423,15 +424,14 @@ Codex.Startup=
 		fdjtID("CODEXSPLASH").style.display='none';
 	    window.focus();}
      
-	function startupDone(){
+	function startupDone(mode){
 	    initLocation();
 	    if (fdjtID("CODEXREADYSPLASH"))
 		fdjtID("CODEXREADYSPLASH").style.display='none';
 	    Codex.displaySync();
 	    setInterval(Codex.serverSync,60000);
 	    fdjtDOM.dropClass(document.body,"codexstartup");
-	    if ((Codex.mode==='help')&&(Codex.hidesplash)) {
-		CodexMode(false);}
+	    CodexMode(mode||false);
 	    _sbook_setup=Codex._setup=new Date();}
 
 	/* Application settings */
@@ -535,6 +535,7 @@ Codex.Startup=
 		Codex.nativescroll=false;
 		Codex.scrolldivs=false;
 		Codex.updatehash=false;
+		default_config.layout='bysect';
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {

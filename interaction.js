@@ -57,6 +57,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     var isClickable=fdjtUI.isClickable;
     var getGeometry=fdjtDOM.getGeometry;
 
+    var parsePX=fdjtDOM.parsePX;
     var atoi=parseInt;
 
     var submitEvent=fdjtUI.submitEvent;
@@ -1052,6 +1053,18 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		Codex.UI.scrollGlosses(
 		    Codex.pageinfo[newpage].first,
 		    fdjtID("CODEXALLGLOSSES"),true);}
+	else if (Codex.bysect) {
+	    var win=Codex.window; var content=Codex.content;
+	    var section=Codex.section;
+	    var wbottom=win.scrollTop+win.offsetHeight;
+	    var cbottom=win.scrollHeight-parsePX(section.style.marginBottom);
+	    var cursection=Codex.cursect;
+	    if ((wbottom>=cbottom)&&(cursection<Codex.sections.length)) {
+		Codex.GoToSection(cursection+1,"pageForward");
+		win.scrollTop=0;}
+	    else {
+		var newscroll=win.scrollTop+(win.offsetHeight-40);
+		win.scrollTop=newscroll;}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
@@ -1075,6 +1088,16 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		Codex.UI.scrollGlosses(
 		    Codex.pageinfo[newpage].first,
 		    fdjtID("CODEXALLGLOSSES"),true);}
+	else if (Codex.bysect) {
+	    var win=Codex.window;
+	    var cursection=Codex.cursect;
+	    if ((win.scrollTop<=0)&&(cursection>1)) {
+		Codex.GoToSection(cursection-1,"pageBackward");
+		win.scrollTop=win.scrollHeight-win.offsetHeight;}
+	    else {
+		var newtop=win.scrollTop-(win.offsetHeight-40);
+		if (newtop<0) newtop=0;
+		win.scrollTop=newtop;}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();

@@ -49,7 +49,6 @@ function CodexDOMScan(root,docinfo){
     var allheads=[];
     docinfo._root=root;
     docinfo._heads=allheads;
-    docinfo._sects=[];
     if (!(root.id)) root.id="SBOOKROOT";
     if (Codex.Trace.startup) {
 	if (root.id) 
@@ -297,11 +296,6 @@ function CodexDOMScan(root,docinfo){
 	else if (child.nodeType!==1) return 0;
 	else {}
 	if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
-	if (((child.tagName==='SECTION')&&
-	     (!(hasClass(child,"sbookfauxsect"))))||
-	    ((child.tagName==='DIV')&&(hasClass(child,"sbooksection"))&&
-	     (!(hasClass(child,"sbookfauxsect")))))
-	    docinfo._sects.push(child);
 	if (((child.tagName==='SECTION')||(child.tagName==='ARTICLE'))&&
 	    // A section inside a notoc zone indicates malformed HTML
 	    (!(scanstate.notoc))&&

@@ -1,6 +1,4 @@
 <h1>Device Settings</h1>
-<span class="button" onclick="Codex.UI.saveSettings();">Save</span>
-<span class="button" onclick="Codex.UI.applySettings();">Apply</span>
 <table class='settings'>
   <tr title='A name to display for this device'>
     <th>Device name</th>
@@ -54,11 +52,14 @@
   <tr onclick="fdjtUI.CheckSpan.onclick(event);">
     <th>Layout</th>
     <td><span class="checkspan">
-	<input TYPE="RADIO" NAME="LAYOUT" VALUE="bpage"/>
+	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bypage"/>
 	by pages</span>
       <span class="checkspan">
-	<input TYPE="RADIO" NAME="LAYOUT" VALUE="scrolling"/>
-	scrolling</span>
+	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bysect"/>
+	by section</span>
+      <span class="checkspan">
+	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="scrolling"/>
+	just scroll</span>
     </td>
   </tr>
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
@@ -73,6 +74,7 @@
     <td><input TYPE='TEXT' NAME='CODEXDEVICEID' value=''/></td>
   </tr>
 </table>
+<span class="button" onclick="Codex.UI.settingsOK();">OK</span>
 
 <!--
     /* Emacs local variables

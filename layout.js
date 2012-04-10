@@ -29,6 +29,246 @@
 
 */
 
+var CodexSections=
+    (function(){
+	function is_section(node){
+	    return (node.nodeType===1) &&
+		((node.tagName==='SECTION')||
+		 ((node.tagName==='DIV')&&
+		  (fdjtDOM.hasClass(node,'sbooksection'))));}
+	
+	var TOA=fdjtDOM.toArray;
+	var getChildren=fdjtDOM.getChildren;
+	var addClass=fdjtDOM.addClass;
+	var dropClass=fdjtDOM.dropClass;
+	var hasContent=fdjtDOM.hasContent;
+	var atoi=parseInt;
+
+	var forcebreakbefore=
+	    fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
+	if (forcebreakbefore) args.forcebreakbefore=forcebreakbefore;
+	
+	function addSections(node,docinfo){
+	    if (is_section(node)) return node;
+	    else {
+		var open=false;
+		var children=fdjtDOM.toArray(node.childNodes);
+		var i=0; var lim=children.length;
+		while (i<lim) {
+		    var child=children[i++];
+		    if (is_section(child)) {if (open) open=false;}
+		    else if (child.nodeType!==1) {
+			if (!(open)) open=fdjtDOM("section.codexwrapper");
+			node.insertBefore(open,child);
+			open.appendChild(child);}
+		    else if (((child.id)&&(docinfo[child.id].toclevel))||
+			     ((forcebreakbefore)&&(forcebreakbefore.test(child)))) {
+			var info=((child.id)&&(docinfo[child.id]));
+			open=fdjtDOM("section.codexwrapper");
+			if (info) open.setAttribute("data-sbookloc",info.starts_at);
+			node.insertBefore(open,child);
+			open.appendChild(child);}
+		    else if (open) open.appendChild(child);
+		    else {
+			open=fdjtDOM("section.codexwrapper");
+			node.insertBefore(open,child);}
+		    if ((getChildren(child,"section").length)||
+			(getChildren(child,"div.sbooksection").length))
+			addSections(child,docinfo);}}}
+
+	function removeSection(sect){
+	    var parent=sect.parentNode;
+	    var children=TOA(sect.childNodes);
+	    var i=children.length-1;
+	    while (i>=0) {
+		parent.insertBefore(children[i--],sect);}
+	    parent.removeChild(sect);}
+	    
+
+	function removeSections(root){
+	    var toremove=TOA(getChildren(root,"section.codexwrapper"));
+	    var i=0; var lim=toremove.length;
+	    while (i<lim) removeSection(toremove[i++]);}
+
+	function getFirstID(node,docinfo){
+	    if ((node.id)&&(docinfo[node.id])) return node.id;
+	    else if (node.nodeType!==1) return false;
+	    else {
+		var children=node.childNodes;
+		var i=0; var lim=children.length;
+		while (i<lim) {
+		    var child=children[i++];
+		    if (child.nodeType===1) {
+			var id=getFirstID(child,docinfo);
+			if (id) return id;}}
+		return false;}}
+
+	function getLastID(node,docinfo){
+	    if ((node.id)&&(docinfo[node.id])) return node.id;
+	    else if (node.nodeType!==1) return false;
+	    else {
+		var children=node.childNodes;
+		var i=children.length-1;
+		while (i>=0) {
+		    var child=children[i--];
+		    if (child.nodeType===1) {
+			var id=getLastID(child,docinfo);
+			if (id) return id;}}
+		return false;}}
+
+	function gatherSections(root,sections,docinfo){
+	    if (typeof sections === 'undefined') sections=[];
+	    if ((root.nodeType===1)&&(root.childNodes.length)) {
+		var children=root.childNodes;
+		var remove=[];
+		var i=0; var lim=children.length;
+		while (i<lim) {
+		    var child=children[i++];
+		    if (child.nodeType!==1) continue;
+		    else if (!(is_section(child))) {
+			gatherSections(child,sections,docinfo);
+			continue;}
+		    else if (!(hasContent(child,true)))
+			remove.push(child);
+		    else {
+			var startid=getFirstID(child,docinfo);
+			var endid=getLastID(child,docinfo);
+			var startinfo=((startid)&&(docinfo[startid]));
+			var endinfo=((startid)&&(docinfo[startid]));
+			sections.push(child);
+			child.setAttribute("data-sectnum",sections.length);
+			if (startinfo) {
+			    child.setAttribute("data-sbookloc",startinfo.starts_at);
+			    child.setAttribute("data-topid",startid);}
+			if ((startinfo)&&(endinfo))
+			    child.setAttribute(
+				"data-sbooklen",endinfo.ends_at-startinfo.starts_at);
+			gatherSections(child,sections,docinfo);}}
+		var i=0; var lim=remove.length;
+		while (i<lim) removeSection(remove[i++]);
+		return sections;}}
+	
+	function CodexSections(content,docinfo){
+	    if (Codex.paginated) {
+		Codex.paginated.Revert();
+		Codex.paginated=false;}
+	    else if (Codex.paginating) {
+		if (Codex.paginating.timer) {
+		    clearTimeout(Codex.paginating.timer);
+		    Codex.paginating.timer=false;}
+		Codex.paginating.Revert();
+		Codex.paginating=false;}
+	    else {}
+	    this.root=content;
+	    addSections(content,docinfo);
+	    this.sections=[];
+	    gatherSections(content,this.sections,docinfo);
+	    return this;}
+	    
+	CodexSections.prototype.revert=function(){
+	    removeWrappers(this.root);}
+	
+	/* Movement by pages */
+	
+	var cursection=false;
+	
+	function getSection(spec,caller){
+	    if (typeof spec === "number")
+		return Codex.sections[spec-1];
+	    if (typeof spec === "string") spec=fdjtID(spec);
+	    if ((spec)&&(spec.nodeType)) {
+		if (spec.tagName==='SECTION')
+		    return spec;
+		else while (spec) {
+		    if (spec.tagName==='SECTION') return spec;
+		    else spec=spec.parentNode;}
+		return spec;}
+	    else return false;}
+	Codex.getSection=getSection;
+	
+	function displaySection(sect,visible){
+	    if (visible) {
+		var show=sect;
+		addClass(show,"codexvisible");
+		show=show.parentNode;
+		while (show) {
+		    addClass(show,"codexlive");
+		    show=show.parentNode;}}
+	    else {
+		var hide=sect;
+		dropClass(hide,"codexvisible");
+		hide=hide.parentNode;
+		while (hide) {
+		    dropClass(hide,"codexlive");
+		    hide=hide.parentNode;}}}
+	Codex.displaySection=displaySection;
+	
+	function GoToSection(spec,caller){
+	    var section=getSection(spec)||getSection(1);
+	    var sectnum=parseInt(section.getAttribute("data-sectnum"));
+	    if (Codex.Trace.flips)
+		fdjtLog("GoToSection/%s Flipping to %o (%d) for %o",
+			caller,section,sectnum,spec);
+	    if (cursection) displaySection(cursection,false);
+	    displaySection(section,true);
+	    if (typeof spec === 'number') {
+		var location=parseInt(section.getAttribute("data-sbookloc"));
+		Codex.setLocation(location);}
+	    var win=Codex.window;
+	    if (win.scrollHeight>win.offsetHeight) {
+		var padding=win.offsetHeight-(win.scrollHeight%win.offsetHeight);
+		section.style.marginBottom=padding+"px";}
+	    // updatePageDisplay(pagenum,Codex.location);
+	    cursection=section; Codex.section=section; Codex.cursect=sectnum;
+	    if (section) {
+		Codex.setState(
+		    {location: atoi(section.getAttribute("data-sbookloc")),
+		     target: section.getAttribute("data-topid")});}
+	    var glossed=fdjtDOM.$(".glossed",section);
+	    if (glossed) {
+		var addGlossmark=Codex.UI.addGlossmark;
+		var i=0; var lim=glossed.length;
+		while (i<lim) addGlossmark(glossed[i++]);}}
+	Codex.GoToSection=GoToSection;
+	
+	var previewing=false;
+	function startPreview(spec,caller){
+	    var section=getSection(spec);
+	    if (!(section)) return;
+	    var sectnum=parseInt(section.getAttribute("data-pagenum"));;
+	    if (previewing===section) return;
+	    if (Codex.Trace.flips)
+		fdjtLog("startPreview/%s to %o (%d) for %o",
+			caller||"nocaller",section,sectnum,spec);
+	    if (previewing) displaySection(previewing,false);
+	    addClass(document.body,"codexpreview");
+	    displaySect(section,true);
+	    Codex.previewing=previewing=section;
+	    // updatePageDisplay(pagenum,Codex.location);
+	    return;}
+	Codex.startSectionPreview=startPreview;
+
+	function stopPreview(caller){
+	    var pagenum=parseInt(cursection.getAttribute("data-sectnum"));
+	    if (!(previewing)) return;
+	    if (Codex.Trace.flips)
+		fdjtLog("stopPreview/%s from %o to %o (%d)",
+			caller||"nocaller",previewing,cursection,pagenum);
+	    displaySection(previewing,false);
+	    displaySection(cursection,true);
+	    dropClass(document.body,"codexpreview");
+	    if (Codex.previewtarget) {
+		dropClass(Codex.previewtarget,"codexpreviewtarget");
+		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightexcerpt");
+		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightsearch");
+		Codex.previewtarget=false;}
+	    Codex.previewing=previewing=false;
+	    // updatePageDisplay(pagenum,Codex.location);
+	    return;}
+	Codex.stopSectionPreview=stopPreview;
+
+	return CodexSections;})();
+	    
 var CodexPaginate=
     (function(){
 
@@ -47,6 +287,9 @@ var CodexPaginate=
 	    
 	    if (Codex.paginating) return;
 	    if (!(why)) why="because";
+	    if (Codex.sectioned) {
+		Codex.sectioned.revert();
+		Codex.sectioned=false;}
 	    addClass(document.body,"pagelayout");
 	    var height=getGeometry(fdjtID("CODEXPAGE")).height;
 	    var width=getGeometry(fdjtID("CODEXPAGE")).width;
@@ -72,6 +315,7 @@ var CodexPaginate=
 	    
 	    // Prepare to do the layout
 	    dropClass(document.body,"cxSCROLL");
+	    dropClass(document.body,"cxBYSECT");
 	    addClass(document.body,"cxBYPAGE");
 	    fdjtID("CODEXPAGE").style.visibility='hidden';
 	    fdjtID("CODEXCONTENT").style.visibility='hidden';
@@ -205,10 +449,6 @@ var CodexPaginate=
 			    Codex.postconfig.push(Paginate);
 			// Otherwise, paginate away
 			else Codex.Paginate("config");}}
-		else if (val==='bysect') {
-		    // This just uses the 'Codex.sects' array
-		    // In the future, we may set up a scanner in the foot
-		    Codex.bysect=true;}
 		else {
 		    // If you've already paginated, revert
 		    if (Codex.paginated) {
@@ -221,9 +461,24 @@ var CodexPaginate=
 			Codex.paginating.Revert();
 			Codex.paginating=false;}
 		    else {}
-		    Codex.bypage=false;
-		    dropClass(document.body,"cxBYPAGE");
-		    addClass(document.body,"cxSCROLL");}});
+		    if (val==='bysect') {
+			dropClass(document.body,"cxBYPAGE");
+			dropClass(document.body,"cxSCROLL");
+			addClass(document.body,"cxBYSECT");
+			if (Codex.docinfo) {
+			    Codex.sectioned=new CodexSections(Codex.content,Codex.docinfo);
+			    Codex.sections=Codex.sectioned.sections;}
+			Codex.bypage=false;
+			Codex.bysect=true;}
+		    else {
+			Codex.bypage=false;
+			Codex.bysect=false;
+			if (Codex.sectioned) {
+			    Codex.sectioned.revert();
+			    Codex.sectioned=false;}
+			dropClass(document.body,"cxBYPAGE");
+			dropClass(document.body,"cxBYSECT");
+			addClass(document.body,"cxSCROLL");}}});
 
 	function updateLayoutProperty(name,val){
 	    // This updates layout properties
@@ -340,6 +595,8 @@ var CodexPaginate=
 		while (i<lim) addGlossmark(glossed[i++]);}}
 	Codex.GoToPage=GoToPage;
 	
+	/** Previewing **/
+
 	var previewing=false;
 	function startPreview(spec,caller){
 	    var page=Codex.paginated.getPage(spec)||Codex.paginated.getPage(1);
