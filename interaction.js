@@ -280,7 +280,13 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	if (Codex.Trace.gestures)
 	    fdjtLog("content_mouseup (%o) on %o passage=%o mode=%o",
 		    evt,target,passage,Codex.mode);
-	if (!(passage)) {CodexMode(false); return;}
+	if (!(passage)) {
+	    CodexMode(false); fdjtUI.cancel(evt); return;}
+	if ((Codex.mode)&&
+	    ((!(seltext))||(isEmpty(seltext)))) {
+	    CodexMode(false);
+	    fdjtUI.cancel(evt);
+	    return;}
 	// If there's a selection, store it as an excerpt.
 	var form=Codex.setGlossTarget(passage);
 	var form_elt=fdjtDOM.getChild(form,"form");
@@ -1334,14 +1340,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    altclass="editnote";
 	    input=fdjtDOM.getInput(form,'NOTE');}
 	else return;
-	if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
-	else dropClass("CODEXADDGLOSS","tagging");
 	// fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
 	if (!(hasClass(form,altclass))) {
+	    if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
+	    else dropClass("CODEXADDGLOSS","tagging");
 	    swapClass(form,glossmodes,altclass);
 	    Codex.setHUD(true);
 	    Codex.setFocus(input);}
 	else {
+	    dropClass("CODEXADDGLOSS","tagging");
 	    dropClass(form,glossmodes);
 	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}
 	    else {}}}
