@@ -426,7 +426,7 @@ var sbook_gloss_data=
 	if (Codex.Trace.focus) Codex.trace("Codex.setTarget",target);
 	if (target===Codex.target) return;
 	else if ((!target)&&(Codex.target)) {
-	    dropClass(Codex.target,"sbooktarget");
+	    dropClass(Codex.target,"codextarget");
 	    Codex.target=false;
 	    return;}
 	else if (!(target)) return;
@@ -434,11 +434,11 @@ var sbook_gloss_data=
 	    return;
 	else {}
 	if (Codex.target) {
-	    dropClass(Codex.target,"sbooktarget");
+	    dropClass(Codex.target,"codextarget");
 	    Codex.target=false;}
-	addClass(target,"sbooktarget");
+	addClass(target,"codextarget");
 	fdjtState.setCookie(
-	    "sbooktarget",target.id||target.getAttribute('data-sbookid'));
+	    "codextarget",target.id||target.getAttribute('data-sbookid'));
 	Codex.target=target;
 	if (Codex.full_cloud)
 	    Codex.setCloudCuesFromTarget(Codex.full_cloud,target);}
@@ -608,9 +608,10 @@ var sbook_gloss_data=
 	    fdjtLog.warn("Bad CodexGoTo %o",arg);
 	    return;}
 	if (!(target)) {
-	    if (Codex.paginated) Codex.GoToPage(arg);
+	    if (Codex.paginated) Codex.GoToPage(arg,caller,pushstate);
 	    return;}
-	var page=((Codex.paginated)&&
+	var page=((Codex.bypage)&&
+		  (Codex.paginated)&&
 		  (Codex.pagecount)&&
 		  (Codex.getPage(target)));
 	var targetid=target.id||target.codexdupid;
@@ -634,8 +635,10 @@ var sbook_gloss_data=
 	else if (pushstate)
 	    Codex.setState({location: location,page: page});
 	else {}
-	if (page) Codex.GoToPage(target,"CodexGoTo");
-	else if (Codex.bysect) Codex.GoToSection(target,"CodexGoTo");
+	if (page)
+	    Codex.GoToPage(target,caller||"CodexGoTo",pushstate);
+	else if (Codex.bysect)
+	    Codex.GoToSection(target,caller||"CodexGoTo",pushstate);
 	else {
 	    var offinfo=fdjtDOM.getGeometry(target,Codex.content);
 	    Codex.content.style.top=(-offinfo.top)+"px";}

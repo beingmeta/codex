@@ -202,7 +202,8 @@ var CodexSections=
 		    hide=hide.parentNode;}}}
 	Codex.displaySection=displaySection;
 	
-	function GoToSection(spec,caller){
+	function GoToSection(spec,caller,pushstate){
+	    if (typeof pushstate === 'undefined') pushstate=false;
 	    var section=getSection(spec)||getSection(1);
 	    var sectnum=parseInt(section.getAttribute("data-sectnum"));
 	    if (Codex.Trace.flips)
@@ -219,7 +220,7 @@ var CodexSections=
 		section.style.marginBottom=padding+"px";}
 	    // updatePageDisplay(pagenum,Codex.location);
 	    cursection=section; Codex.section=section; Codex.cursect=sectnum;
-	    if (section) {
+	    if ((pushstate)&&(section)) {
 		Codex.setState(
 		    {location: atoi(section.getAttribute("data-sbookloc")),
 		     target: section.getAttribute("data-topid")});}
@@ -234,10 +235,10 @@ var CodexSections=
 	function startPreview(spec,caller){
 	    var section=getSection(spec);
 	    if (!(section)) return;
-	    var sectnum=parseInt(section.getAttribute("data-pagenum"));;
+	    var sectnum=parseInt(section.getAttribute("data-sectnum"));;
 	    if (previewing===section) return;
 	    if (Codex.Trace.flips)
-		fdjtLog("startPreview/%s to %o (%d) for %o",
+		fdjtLog("startSectionPreview/%s to %o (%d) for %o",
 			caller||"nocaller",section,sectnum,spec);
 	    if (previewing) displaySection(previewing,false);
 	    addClass(document.body,"codexpreview");
@@ -249,10 +250,10 @@ var CodexSections=
 
 	function stopPreview(caller){
 	    var pagenum=parseInt(cursection.getAttribute("data-sectnum"));
-	    if (!(previewing)) return;
 	    if (Codex.Trace.flips)
-		fdjtLog("stopPreview/%s from %o to %o (%d)",
+		fdjtLog("stopSectionPreview/%s from %o to %o (%d)",
 			caller||"nocaller",previewing,cursection,pagenum);
+	    if (!(previewing)) return;
 	    displaySection(previewing,false);
 	    displaySection(cursection,true);
 	    dropClass(document.body,"codexpreview");
@@ -361,7 +362,7 @@ var CodexPaginate=
 			Codex.location||Codex.target||
 			    Codex.coverpage||Codex.titlepage||
 			    fdjtID("CODEXPAGE1"),
-			"endLayout",true,true);
+			"endLayout",false,false);
 		    Codex.paginating=false;}
 		else {
 		    var root=nodes[i++];
@@ -569,7 +570,8 @@ var CodexPaginate=
 	
 	var curpage=false;
 	
-	function GoToPage(spec,caller){
+	function GoToPage(spec,caller,pushstate){
+	    if (typeof pushstate === 'undefined') pushstate=false;
 	    var page=Codex.paginated.getPage(spec)||Codex.paginated.getPage(1);
 	    var pagenum=parseInt(page.getAttribute("data-pagenum"));
 	    if (Codex.Trace.flips)
@@ -582,7 +584,7 @@ var CodexPaginate=
 		Codex.setLocation(location);}
 	    updatePageDisplay(pagenum,Codex.location);
 	    curpage=page; Codex.curpage=pagenum;
-	    if (page) {
+	    if ((pushstate)&&(page)) {
 		Codex.setState(
 		    {location: atoi(page.getAttribute("data-sbookloc")),
 		     page: atoi(page.getAttribute("data-pagenum")),
@@ -603,7 +605,7 @@ var CodexPaginate=
 	    if (previewing===page) return;
 	    if (previewing) dropClass(previewing,"curpage");
 	    if (Codex.Trace.flips)
-		fdjtLog("startPreview/%s to %o (%d) for %o",
+		fdjtLog("startPagePreview/%s to %o (%d) for %o",
 			caller||"nocaller",page,pagenum,spec);
 	    if (curpage) dropClass(curpage,"curpage");
 	    addClass(page,"curpage");
@@ -613,7 +615,7 @@ var CodexPaginate=
 	function stopPreview(caller){
 	    var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
 	    if (Codex.Trace.flips)
-		fdjtLog("stopPreview/%s from %o to %o (%d)",
+		fdjtLog("stopPagePreview/%s from %o to %o (%d)",
 			caller||"nocaller",previewing,curpage,pagenum);
 	    if (!(previewing)) return;
 	    dropClass(previewing,"curpage");
