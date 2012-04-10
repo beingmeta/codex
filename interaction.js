@@ -1093,7 +1093,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var cursection=Codex.cursect;
 	    if ((win.scrollTop<=0)&&(cursection>1)) {
 		Codex.GoToSection(cursection-1,"pageBackward");
-		win.scrollTop=win.scrollHeight-win.offsetHeight;}
+		if (win.offsetHeight>=win.scrollHeight) win.scrollTop=0;
+		else win.scrollTop=win.scrollHeight-(win.offsetHeight-40);}
 	    else {
 		var newtop=win.scrollTop-(win.offsetHeight-40);
 		if (newtop<0) newtop=0;
