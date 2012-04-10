@@ -141,9 +141,10 @@ var sbook_gloss_data=
 		else return tag.tagString(Codex.knodule);};
 	    Codex.glosses.addInit(function(item) {
 		var info=Codex.docinfo[item.frag];
-		if (!(info))
+		if (!(info)) {
 		    fdjtLog("Gloss refers to nonexistent '%s': %o",
 			    item.frag,item);
+		    return;}
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
 		Codex.index.add(item,item.maker);
