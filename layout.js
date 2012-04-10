@@ -242,7 +242,7 @@ var CodexSections=
 			caller||"nocaller",section,sectnum,spec);
 	    if (previewing) displaySection(previewing,false);
 	    addClass(document.body,"codexpreview");
-	    displaySect(section,true);
+	    displaySection(section,true);
 	    Codex.previewing=previewing=section;
 	    // updateSectionDisplay(sectnum,Codex.location);
 	    return;}

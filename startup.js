@@ -128,9 +128,6 @@ Codex.Startup=
 			fdjtLog("batch setConfig, post processing %s",dopost[i]);
 		    dopost[i++]();}
 		return;}
-	    if (current_config[name]===value) {
-		if (save) saved_config[name]=value;
-		return;}
 	    if (Codex.Trace.config) fdjtLog("setConfig %o=%o",name,value);
 	    var input_name="CODEX"+(name.toUpperCase());
 	    var inputs=document.getElementsByName(input_name);
@@ -145,10 +142,11 @@ Codex.Startup=
 		    if (value===input.value) setCheckSpan(input,true);
 		    else setCheckSpan(input,false);}
 		else input.value=value;}
-	    if (config_handlers[name]) {
-		if (Codex.Trace.config) fdjtLog("setConfig (handler=%s) %o=%o",
-						config_handlers[name],name,value);
-		config_handlers[name](name,value);}
+	    if (current_config[name]!==value) {
+		if (config_handlers[name]) {
+		    if (Codex.Trace.config) fdjtLog("setConfig (handler=%s) %o=%o",
+						    config_handlers[name],name,value);
+		    config_handlers[name](name,value);}}
 	    current_config[name]=value;
 	    if (save) saved_config[name]=value;}
 	Codex.setConfig=setConfig;

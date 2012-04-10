@@ -1,9 +1,5 @@
 <h1>Device Settings</h1>
 <table class='settings'>
-  <tr title='A name to display for this device'>
-    <th>Device name</th>
-    <td><input TYPE='TEXT' NAME='CODEXDEVICENAME' value=''/></td>
-  </tr>
   <tr><th rowspan="2">Body font</th>
     <td>
       <span class="checkspan">
@@ -30,6 +26,19 @@
       <span class="checkspan">
 	<input TYPE='RADIO' NAME='CODEXBODYFAMILY' VALUE='serif'/>
 	serif</span></td></tr>
+  <tr onclick="fdjtUI.CheckSpan.onclick(event);">
+    <th>Layout</th>
+    <td><span class="checkspan">
+	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bypage"/>
+	by pages</span>
+      <span class="checkspan">
+	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bysect"/>
+	by section</span>
+      <span class="checkspan">
+	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="scrolling"/>
+	just scroll</span>
+    </td>
+  </tr>
   <tr><th>Interface font</th>
     <td>
       <span class="checkspan">
@@ -49,19 +58,6 @@
       <span class="checkspan">
 	<input TYPE='CHECKBOX' NAME='CODEXANIMATEHUD' VALUE='yes'/>
 	book tools</span></td></tr>
-  <tr onclick="fdjtUI.CheckSpan.onclick(event);">
-    <th>Layout</th>
-    <td><span class="checkspan">
-	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bypage"/>
-	by pages</span>
-      <span class="checkspan">
-	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bysect"/>
-	by section</span>
-      <span class="checkspan">
-	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="scrolling"/>
-	just scroll</span>
-    </td>
-  </tr>
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
     <th><input TYPE='CHECKBOX' NAME='CODEXHIDESPLASH' VALUE='yes'/></th>
     <td>Hide the Codex help (splash) page after book loading is
@@ -69,12 +65,18 @@
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
     <th><input TYPE='CHECKBOX' NAME='CODEXSHOWCONSOLE' VALUE='yes'/></th>
     <td>Show the Codex console</td></tr>
+  <tr title='A name to display for this device when recording changes'>
+    <th>Device name</th>
+    <td><input TYPE='TEXT' NAME='CODEXDEVICENAME' value=''/></td>
+  </tr>
   <tr title='A unique id for this device.  You probably don't need to change this.'>
     <th>Device ID</th>
     <td><input TYPE='TEXT' NAME='CODEXDEVICEID' value=''/></td>
   </tr>
 </table>
 <span class="button" onclick="Codex.UI.settingsOK();">OK</span>
+<span class="button" onclick="Codex.UI.settingsCancel();">Cancel</span>
+
 
 <!--
     /* Emacs local variables

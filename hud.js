@@ -745,6 +745,9 @@ var CodexMode=
 	    var settings=getSettings();
 	    Codex.setConfig(settings);
 	    Codex.saveConfig(settings);};
+	
+	Codex.UI.settingsCancel=function(){
+	    Codex.setConfig(Codex.getConfig());};
 
 	/* Console methods */
 	function console_eval(){
