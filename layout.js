@@ -46,7 +46,6 @@ var CodexSections=
 
 	var forcebreakbefore=
 	    fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
-	if (forcebreakbefore) args.forcebreakbefore=forcebreakbefore;
 	
 	function addSections(node,docinfo){
 	    if (is_section(node)) return node;
