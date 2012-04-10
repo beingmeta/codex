@@ -327,7 +327,7 @@ div.codexglossform form div.glossetc > .checkspan.private {
     float: right; vertical-align: top; margin-left: 4px;
     padding-top: 0px; margin-top: 0px;}
 div.codexglossform form div.glossetc > .button,
-div.codexglossform form div.glossetc > span .button {
+div.codexglossform form div.glossetc span > .button {
     float: right;
     border: darkblue solid 1px; padding: 2px;
     border-radius: 3px; -webkit-border-radius: 3px;
@@ -384,9 +384,10 @@ div.codexglossform.glossedit span.addbutton,
 div.codexglossform.glossreply span.addbutton {
     display: none;}
 
-div.codexglossform form .submitbutton {
-    border: outset gold 3px; padding: 3px; height: 25px;
-    margin-right: 2px; margin-top: 2px;}
+div.codexglossform form div.glossetc > .button.submitbutton {
+    border: solid red 2px; padding: 4px; height: 25px;
+    background-color: black;
+    margin-left: 1em; margin-right: 0px; margin-top: 3px;}
 
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
@@ -1644,8 +1645,8 @@ body.hudup .codexglossmark { opacity: 0.6; display: block;}
     opacity: 0.0001;
     display: none;}
 body.hudup .codexglossbutton { opacity: 0.5;}
-body.hudup .sbooktarget .codexglossbutton { display: block;}
-body.hudup .sbooktarget.codexglosstarget .codexglossbutton {
+body.hudup .codextarget .codexglossbutton { display: block;}
+body.hudup .codextarget.codexglosstarget .codexglossbutton {
     background-color: lightblue;}
 
 /* Sparse glossmark display (the default) */
@@ -1660,20 +1661,20 @@ body .codexglossmark:hover img.tiny { visibility: hidden;}
 
 /* Displaying the sbook target */
 
-body.hudup .sbooktarget { background-color: lightblue; }
-body.hudup .sbooktarget, body.codexscanning .sbooktarget {
+body.hudup .codextarget { text-decoration: underline; }
+body.hudup .codextarget, body.codexscanning .codextarget {
     cursor: pointer;}
  
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
    */
-body.sbooktarget { color: inherit;}
+body.codextarget { color: inherit;}
 
-.sbooktarget span.codexglossmark img.big { width: 32px;} 
-.sbooktarget span.codexglossmark img {
+.codextarget span.codexglossmark img.big { width: 32px;} 
+.codextarget span.codexglossmark img {
     border-top: solid steelblue 2px;}
-.sbooktarget:hover .codexglossmark { opacity: 0.5;}
-body.hudup .sbooktarget .codexglossmark:hover { opacity: 0.9;}
+.codextarget:hover .codexglossmark { opacity: 0.5;}
+body.hudup .codextarget .codexglossmark:hover { opacity: 0.9;}
 
 /* Not logged in conditionalization */
 
@@ -1690,7 +1691,7 @@ body.notsbookuser div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
 div#CODEXADDGLOSS div#CODEXGLOSSOUTLETS {
-    background-color: gold;
+    color: gold;
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
@@ -1889,24 +1890,15 @@ img.codexcoverpage {
 
 /* BYSECT layout */
 
-body.cxBYSECT div#CODEXCONTENT * { display: none;}
-body.cxBYSECT div#CODEXCONTENT section * { display: inherit;}
-body.cxBYSECT div#CODEXCONTENT.codexvisible * { display: inherit;}
-body.cxBYSECT div#CODEXCONTENT.codexvisible section { display: none;}
-body.cxBYSECT div#CODEXCONTENT.codexvisible div.sbooksection { display: none;}
+body.cxBYSECT div#CODEXCONTENT section { display: none;}
+body.cxBYSECT div#CODEXCONTENT div.sbooksection { display: none;}
 
-body.cxBYSECT div#CODEXCONTENT.codexlive section { display: none;}
-body.cxBYSECT div#CODEXCONTENT.codexlive .codexlive { display: block;}
-body.cxBYSECT div#CODEXCONTENT.codexlive section.codexvisible {
-    display: block;}
-body.cxBYSECT div#CODEXCONTENT.codexlive .codexlive > * {
-    display: none;}
-body.cxBYSECT div#CODEXCONTENT.codexlive .codexlive > .codexlive {
-    display: none;}
+body.cxBYSECT div#CODEXCONTENT section.codexvisible { display: block;}
 
-body.cxBYSECT div#CODEXCONTENT.codexlive div.sbooksection { display: none;}
-body.cxBYSECT div#CODEXCONTENT.codexlive div.sbooksection.codexvisible {
-    display: block;}
+body.cxBYSECT div#CODEXCONTENT .codexlive { display: block;}
+body.cxBYSECT div#CODEXCONTENT .codexlive > * { display: none;}
+body.cxBYSECT div#CODEXCONTENT .codexlive > .codexlive { display: block;}
+body.cxBYSECT div#CODEXCONTENT .codexlive > section.codexvisible { display: block;}
 
 /* Highlighting */
 
