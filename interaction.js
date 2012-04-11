@@ -1070,7 +1070,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var newpage=false;
 	    if (Codex.mode==="glosses") CodexMode(true);
 	    if (Codex.curpage===Codex.pagecount) {}
-	    else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward");
+	    else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward",true);
 	    if ((false)&&(newpage)&&(Codex.mode==='allglosses')) /* to fix */
 		Codex.UI.scrollGlosses(
 		    Codex.pageinfo[newpage].first,
@@ -1082,7 +1082,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var cbottom=win.scrollHeight-parsePX(section.style.marginBottom);
 	    var cursection=Codex.cursect;
 	    if ((wbottom>=cbottom)&&(cursection<Codex.sections.length)) {
-		Codex.GoToSection(cursection+1,"pageForward");
+		Codex.GoToSection(cursection+1,"pageForward",true);
 		win.scrollTop=0;}
 	    else {
 		var newscroll=win.scrollTop+(win.offsetHeight-40);
@@ -1105,7 +1105,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (Codex.curpage===0) {}
 	    else {
 		Codex.GoToPage(
-		    newpage=Codex.curpage-1,"pageBackward");}
+		    newpage=Codex.curpage-1,"pageBackward",true);}
 	    if ((false)&&(newpage)&&(Codex.mode==='allglosses')) /* to fix */
 		Codex.UI.scrollGlosses(
 		    Codex.pageinfo[newpage].first,
@@ -1114,7 +1114,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var win=Codex.window;
 	    var cursection=Codex.cursect;
 	    if ((win.scrollTop<=0)&&(cursection>1)) {
-		Codex.GoToSection(cursection-1,"pageBackward");
+		Codex.GoToSection(cursection-1,"pageBackward",true);
 		if (win.offsetHeight>=win.scrollHeight) win.scrollTop=0;
 		else win.scrollTop=win.scrollHeight-(win.offsetHeight-40);}
 	    else {
@@ -1269,7 +1269,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    gopage,Codex.pagecount);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
-	Codex.GoToPage(gopage,"pageinfo_tap");
+	Codex.GoToPage(gopage,"pageinfo_tap",true);
 	if ((Codex.mode==="gotoloc")||(Codex.mode==="gotopage"))
 	    CodexMode(false);}
 
