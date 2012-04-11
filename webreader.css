@@ -73,7 +73,7 @@ body.hudup div#CODEXPAGE {
 body.hudup.codexpreview div#CODEXPAGE, body.codexpreview div#CODEXPAGE {
     border-color: blue; border-style: dotted;}
 
-body.codexscalebody div#CODEXPAGE div.codexpage {
+body.cxSHRINK div#CODEXPAGE div.codexpage {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);
     transition-property: transform;
@@ -82,7 +82,7 @@ body.codexscalebody div#CODEXPAGE div.codexpage {
     -o-transition-property: -o-transform;
     transition-duration: 1s; -webkit-transition-duration: 1s;
     -moz-duration: 1s; -o-transition-duration: 1s;}
-body.codexscalebody.hudup div#CODEXPAGE div.codexpage {
+body.cxSHRINK.hudup div#CODEXPAGE div.codexpage {
     transform: scale(0.9,0.9); -webkit-transform:scale(0.9,0.9);
     -moz-transform: scale(0.9,0.9); -o-transform:scale(0.9,0.9);}
 div#CODEXPAGERIGHT {
@@ -488,7 +488,7 @@ div#CODEXHUD div.hudpanel.codexcard {
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
 
-body.sbooktouchui .codexcard .age { font-size: 125%; padding-bottom: 10px;}
+body.cxTOUCH .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
 div#CODEXHUD div.hudpanel div.scrollbox {
   overflow: auto;}
@@ -496,7 +496,7 @@ div#CODEXHUD div.hudpanel div.scrollbox {
 div#CODEXHUD img.hudbutton {
     position: fixed; width: 50px; height: 50px; z-index: 200;
     border: solid transparent 2px; opacity: 0.2;}
-body.sbooktouchui div#CODEXHUD img.hudbutton:hover {
+body.cxTOUCH div#CODEXHUD img.hudbutton:hover {
     background-color: lightblue; border-color: blue;}
 body.hudup div#CODEXHUD img.hudbutton  {}
 body div#CODEXHUD img.hudbutton:hover { opacity: 0.45;}
@@ -566,7 +566,7 @@ body #CODEXDROPHUD {
     -o-border-radius-topright: 6px;
     opacity: 0.5;
     display: none;}
-body.sbooktouchui body #CODEXDROPHUD:hover {
+body.cxTOUCH body #CODEXDROPHUD:hover {
     background-color: lightblue; border-color: blue;}
 body.hudup #CODEXDROPHUD {display: block;}
 
@@ -1016,9 +1016,9 @@ div#CODEXHUD div.helphud.rightmiddle {
 .helphud.botright span.arrow { float: right;}
 
 body div#CODEXHELP p#CODEXHELPLOGIN { display: none;}
-body.notsbookuser div#CODEXHELP p#CODEXHELPLOGIN { display: block;}
-body.notsbookuser div#CODEXHELP p#CODEXHELPLOGGEDIN { display: none;}
-body.sbookuser div#CODEXHELP p#CODEXHELPLOGGEDIN { display: block;}
+body.cxNOUSER div#CODEXHELP p#CODEXHELPLOGIN { display: block;}
+body.cxNOUSER div#CODEXHELP p#CODEXHELPLOGGEDIN { display: none;}
+body.cxUSER div#CODEXHELP p#CODEXHELPLOGGEDIN { display: block;}
 
 /* "Leading" to fill out the top and bottom */
 
@@ -1306,9 +1306,9 @@ div#CODEXHUD div#CODEXHUDBUTTONS {
 
 body div#CODEXHUD div#CODEXHUDBUTTONS
    div.tabbar .tab[alt='Login'] { display: none;}
-body.notsbookuser div#CODEXHUD div#CODEXHUDBUTTONS
+body.cxNOUSER div#CODEXHUD div#CODEXHUDBUTTONS
    div.tabbar .tab[alt='Login'] { display: inline;}
-body.notsbookuser div#CODEXHUD div#CODEXHUDBUTTONS
+body.cxNOUSER div#CODEXHUD div#CODEXHUDBUTTONS
    div.tabbar .tab[alt='sBooks'] { display: none;}
 
 /* These are all modes which use the top of the screen, so we
@@ -1381,7 +1381,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS #HELPBUTTON {
     float: right; margin: 0px; padding: 0px; border: 0px;}
 div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON img {
   margin: 0px; border: 0px; padding: 0px; max-height: 48px;}
-body.notsbookuser div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
+body.cxNOUSER div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
     display: none;}
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate .applinks {
     color: blue; font-size: 80%;
@@ -1395,7 +1395,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
     color: red;}
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout:visited {
     color: red;}
-div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#SBOOKUSERNAME {
+div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#CODEXUSERNAME {
     position: absolute; left: 60px;
     vertical-align: top; padding-right: 2px;
     font-family: helvetica,sans,sans-serif; font-weight: bold;
@@ -1403,10 +1403,10 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#SBOOKUSERNAME {
     color: blue;}
 
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout,
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#SBOOKUSERNAME {
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#CODEXUSERNAME {
     display: inline;}
 div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a.logout,
-div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a#SBOOKUSERNAME {
+div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a#CODEXUSERNAME {
     display: inline;}
 
 
@@ -1472,7 +1472,7 @@ div#CODEXHUD div#CODEXFLYHEAD #HELPBUTTON {
     float: right; margin: 0px; padding: 0px; border: 0px;}
 div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON img {
   margin: 0px; border: 0px; padding: 0px; max-height: 48px;}
-body.notsbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
+body.cxNOUSER div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
     display: none;}
 div#CODEXHUD div#CODEXFLYHEAD .flyleafplate .applinks {
     color: blue; font-size: 80%;
@@ -1489,7 +1489,7 @@ div#CODEXHUD div#CODEXFLYHEAD a.login {
     font-family: helvetica,sans,sans-serif;
     background-color: gold; color: blue;
     display:none;}
-body.notsbookuser a.logout {display: none;}
+body.cxNOUSER a.logout {display: none;}
 
 /* CODEXFLYLEAF content rules */
 
@@ -1589,21 +1589,21 @@ div.sbookabout div.publisher { font-style: italic;}
 div.logindoc { display: none;}
 
 .fortouch { display: none;}
-body.sbooktouchui .notouch { display: none;}
-body.sbooktouchui div.fortouch,
-body.sbooktouchui p.fortouch {
+body.cxTOUCH .notouch { display: none;}
+body.cxTOUCH div.fortouch,
+body.cxTOUCH p.fortouch {
     display: block;}
-body.sbooktouchui .fortouch {display: inline;}
-body.sbooktouchui li.fortouch {display: list-item;}
-body.sbooktouchui span.fortouch { display: inline;}
-body.sbooktouchui div.fortouch { display: block;}
-body.sbooktouchui p.fortouch { display: block;}
-body.sbooktouchui li.fortouch { display: list-item;}
+body.cxTOUCH .fortouch {display: inline;}
+body.cxTOUCH li.fortouch {display: list-item;}
+body.cxTOUCH span.fortouch { display: inline;}
+body.cxTOUCH div.fortouch { display: block;}
+body.cxTOUCH p.fortouch { display: block;}
+body.cxTOUCH li.fortouch { display: list-item;}
 
 body img.touchicon { display: none;}
 body img.mouseicon { display: inline;}
-body.sbooktouchui img.touchicon { display: inline;}
-body.sbooktouchui img.mouseicon { display: none;}
+body.cxTOUCH img.touchicon { display: inline;}
+body.cxTOUCH img.mouseicon { display: none;}
 
 div.locbar {
     background-color: ivory;
@@ -1687,12 +1687,12 @@ body.hudup .codextarget .codexglossmark:hover { opacity: 0.9;}
 
 /* Not logged in conditionalization */
 
-body.notsbookuser div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
+body.cxNOUSER div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
     display: none;}
-body.notsbookuser a.logout {display: none;}
-body.notsbookuser #SBOOKLOGOUT { display: none;}
-body.notsbookuser .tab[CONTENTID='SBOOKSAPP'] { display: none;}
-body.notsbookuser div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
+body.cxNOUSER a.logout {display: none;}
+body.cxNOUSER #SBOOKLOGOUT { display: none;}
+body.cxNOUSER .tab[CONTENTID='SBOOKSAPP'] { display: none;}
+body.cxNOUSER div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
   display: block;}
 
 /* The add gloss panel */

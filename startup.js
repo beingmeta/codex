@@ -524,7 +524,7 @@ Codex.Startup=
 	    var isWebTouch = isIphone || isIpad || isAndroid || isTouchPad;
 
 	    if (isWebTouch) {
-		fdjtDOM.addClass(document.body,"sbooktouchui");
+		fdjtDOM.addClass(document.body,"cxTOUCH");
 		viewportSetup();
 		Codex.ui="webtouch"; Codex.touch=true;}
 	    if ((useragent.search("Safari/")>0)&&
@@ -537,13 +537,13 @@ Codex.Startup=
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {
-		fdjtDOM.addClass(document.body,"sbooktouchui");
+		fdjtDOM.addClass(document.body,"cxTOUCH");
 		viewportSetup();
 		Codex.ui="faketouch"}
 	    else {
-		fdjtDOM.addClass(document.body,"sbookmouseui");
-		// fdjtDOM.addClass(document.body,"sbooktouchui");
-		// fdjtDOM.addClass(document.body,"codexscalebody");
+		fdjtDOM.addClass(document.body,"cxMOUSE");
+		// fdjtDOM.addClass(document.body,"cxTOUCH");
+		// fdjtDOM.addClass(document.body,"cxSHRINK");
 		Codex.ui="mouse";}
 	    
 	    Codex.allglosses=[];
@@ -733,7 +733,7 @@ Codex.Startup=
 	    Codex.content=content;
 	    Codex.coverpage=fdjtID("SBOOKCOVERPAGE");
 	    Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
-	    fdjtDOM.addClass(document.body,"codexscalebody");
+	    fdjtDOM.addClass(document.body,"cxSHRINK");
 	    var allnotes=fdjtID("SBOOKNOTES");
 	    var allasides=fdjtID("SBOOKASIDES");
 	    var alldetails=fdjtID("SBOOKDETAILS");
@@ -956,15 +956,15 @@ Codex.Startup=
 		    "https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
 		    encodeURIComponent(codex.refuri)+"&CALLBACK=Codex.gotInfo";
 		document.body.appendChild(user_script);
-		fdjtDOM.addClass(document.body,"notsbookuser");}
-	    else fdjtDOM.addClass(document.body,"notsbookuser");}
+		fdjtDOM.addClass(document.body,"cxNOUSER");}
+	    else fdjtDOM.addClass(document.body,"cxNOUSER");}
 	
 	function setUser(userinfo,outlets,sync){
 	    var persist=((Codex.offline)&&(navigator.onLine));
 	    var refuri=Codex.refuri;
 	    if (userinfo) {
-		fdjtDOM.dropClass(document.body,"notsbookuser");
-		fdjtDOM.addClass(document.body,"sbookuser");}
+		fdjtDOM.dropClass(document.body,"cxNOUSER");
+		fdjtDOM.addClass(document.body,"cxUSER");}
 	    if (Codex.user)
 		if (userinfo._id===Codex.user._id) {}
 	    else throw { error: "Can't change user"};
@@ -1012,12 +1012,12 @@ Codex.Startup=
 	function setupUI4User(){
 	    if (Codex._user_setup) return;
 	    if (!(Codex.user)) {
-		fdjtDOM.addClass(document.body,"notsbookuser");
+		fdjtDOM.addClass(document.body,"cxNOUSER");
 		return;}
-	    fdjtDOM.dropClass(document.body,"notsbookuser");
+	    fdjtDOM.dropClass(document.body,"cxNOUSER");
 	    var username=Codex.user.name;
-	    if (fdjtID("SBOOKUSERNAME"))
-		fdjtID("SBOOKUSERNAME").innerHTML=username;
+	    if (fdjtID("CODEXUSERNAME"))
+		fdjtID("CODEXUSERNAME").innerHTML=username;
 	    var names=document.getElementsByName("CODEXUSERNAME");
 	    if (names) {
 		var i=0, lim=names.length;
@@ -1064,8 +1064,8 @@ Codex.Startup=
 		  "/picture?type=square"));
 	    if (pic) {
 		if (fdjtID("SBOOKMARKIMAGE")) fdjtID("SBOOKMARKIMAGE").src=pic;
-		if (fdjtID("SBOOKUSERPIC")) fdjtID("SBOOKUSERPIC").src=pic;
-		var byname=document.getElementsByName("SBOOKUSERPIC");
+		if (fdjtID("CODEXUSERPIC")) fdjtID("CODEXUSERPIC").src=pic;
+		var byname=document.getElementsByName("CODEXUSERPIC");
 		if (byname) {
 		    var i=0; var lim=byname.length;
 		    while (i<lim) byname[i++].src=pic;}}
