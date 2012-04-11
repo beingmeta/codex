@@ -982,9 +982,6 @@ Codex.Startup=
 	    gotInfo("outlets",outlets,persist);
 	    if ((outlets)&&(outlets.length)) {
 		Codex.outlets=outlets;
-		var ss=Codex.stylesheet;
-		ss.insertRule("span.showoutlets { display: inline;}",
-			      ss.cssRules.length);
 		// Add the outlets
 		var div=fdjtID("CODEXGLOSSOUTLETS");
 		var i=0; var ilim=outlets.length;

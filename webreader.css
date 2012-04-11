@@ -216,7 +216,9 @@ div.codexglossform form .bracketbutton strong {
 div.codexglossform form.focused div.inputhelp { display: block;}
 div.codexglossform form.focused span.inputhelp { display: inline;}
 
+div.codexglossform form div.inputbox { margin-right: 50px;}
 div.codexglossform form textarea { display: none;}
+div.codexglossform form div.textbox { }
 div.codexglossform form div.textbox textarea {
     min-height: 1em; overflow: hidden; font-size: 16px;
     border: solid darkblue 1px;
@@ -268,19 +270,19 @@ div.codexglossform form.addlink div.textbox textarea[name='LINK'] {
     display: block;}
 
 div.codexglossform form div.inputhelp {
-    margin-left: 1px; margin-right: 50px;
-    margin-top: 0px; padding-top: 0px;}
+    margin-left: 1px; margin-top: 0px; padding-top: 0px;}
 div.codexglossform form div.glossetc {
     display: block; text-align: left; font-size: 12px;
-    margin-left: 1px; margin-right: 50px; padding-right: 1em;
-    min-height: 24px; max-height: 50px;}
+    line-height: 16px; text-overflow: ellipsis;
+    padding: 0.5ex; padding-top: 0ex; padding-right: 1em;
+    margin-top: 0ex; margin-left: 1px;
+    min-height: 24px; max-height: 50px;
+    overflow: hidden;
+    clear: left;}
 div.codexglossform form div.glossetc .twisty { display: none;}
 div.codexglossform form div.glossetc.overflow .twisty { display: none;}
 div.codexglossform form div.glossetc.expanded .twisty { display: none;}
 div.codexglossform form div.glossetc.expanded { max-height: inherit;}
-
-div.codexglossform form div.glossetc .button {
-    float: right;}
 
 div.codexglossform form div.glossetc .links,
 div.codexglossform form div.glossetc .tags {
@@ -290,13 +292,12 @@ div.codexglossform form div.glossetc .excerpts {
 div.codexglossform form div.glossetc .tags span.checkspan {
     background-color: gold; padding: 2px; padding-top: 0px;
     border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
+    -o-border-bottom-left-radius: 1ex; -o-border-top-left-radius: 1ex; 
+    -moz-border-radius-bottomleft: 1ex; -moz-border-radius-topleft: 1ex;
+    -webkit-border-bottom-left-radius: 1ex;
+    -webkit-border-top-left-radius: 1ex; 
     border: solid yellow 2px;}
 
-div.codexglossform form div.glossetc {
-    line-height: 16px; text-overflow: ellipsis;
-    margin-right: 1ex; padding: 0.5ex;
-    margin-top: 0ex; padding-top: 0ex;
-    overflow: hidden;}
 div.codexglossform form div.glossetc img.twisty[alt='-'] { display: none;}
 div.codexglossform form div.glossetc.expanded {
     max-height: inherit; border-style: solid;}
@@ -317,9 +318,6 @@ div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue; text-decoration: underline;}
 div.codexglossform form div.glossetc span.checkspan input {}
 
-span.showoutlets {
-    vertical-align: top; float: right; cursor: pointer;
-    display: none;}
 span.facebook_share, span.twitter_share { display: none;}
 span.linkedin_share, span.google_share { display: none;}
 
@@ -384,10 +382,18 @@ div.codexglossform.glossedit span.addbutton,
 div.codexglossform.glossreply span.addbutton {
     display: none;}
 
-div.codexglossform form div.glossetc > .button.submitbutton {
-    border: solid red 2px; padding: 4px; height: 25px;
-    background-color: black;
-    margin-left: 1em; margin-right: 0px; margin-top: 3px;}
+div.codexglossform form .button.submitbutton {
+    border: solid blue 2px; padding: 4px; height: 25px;
+    margin-right: 0px; margin-top: 0px; margin-bottom: 0.5ex;
+    border-top: 0px; border-right: 0px;
+    border-radius: 0px; -webkit-border-radius: 0px;
+    -moz-border-radius: 0px; -o-border-radius: 0px;
+    border-bottom-left-radius: 6px;
+    -o-border-bottom-left-radius: 6px; 
+    -webkit-border-bottom-left-radius: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    -o-border-radius-bottomleft: 6px;
+    background-color: black;}
 
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
@@ -677,7 +683,6 @@ body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC {
     overflow: visible;}
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
-    background-color: lightblue;
     border-color: silver;}
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
@@ -724,9 +729,8 @@ div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall .showless { display: none;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showless {display: inline;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showmore {display: none;}
 
-
-div#CODEXHUD.addgloss div#CODEXADDGLOSS.tagging div.completions#CODEXGLOSSCLOUD {
-    display: block;}
+div#CODEXHUD.addgloss div#CODEXADDGLOSS.tagging
+   div.completions#CODEXGLOSSCLOUD { display: block;}
 
 div#CODEXGLOSSES div.codexthread { border-right-width: 0px;}
 div#SBOOKGLOSSES div.codexthread {
@@ -1220,6 +1224,11 @@ div#CODEXHUD .completions .completion .dterm {}
 .completion .dterm {
     padding-right: 0.35em; padding-left: 0.35em; 
     border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
+    border-bottom-left-radius: 6px; border-top-left-radius: 6px;
+    -o-border-bottom-left-radius: 6px; -o-border-top-left-radius: 6px; 
+    -moz-border-radius-bottomleft: 6px; -moz-border-radius-topleft: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-top-left-radius: 6px; 
     color: darkblue; background-color: gold; border: solid yellow 2px;}
 .completion .dterm.weak, .completion .rawterm {
     padding-right: 0em; padding-left: 0em; 
@@ -1698,12 +1707,9 @@ div#CODEXADDGLOSS div#CODEXGLOSSOUTLETS {
     -o-transition-property: height;
     transition-duration: 3s; -webkit-transition-duration: 3s;
     -moz-duration: 3s; -o-transition-duration: 3s;
-    height: 0px;}
+    overflow: hidden; height: 0px;}
 div#CODEXADDGLOSS div#CODEXGLOSSOUTLETS span.outlet {
     background-color: gold; color: black; white-space: nowrap;}
-div.showoutlets#CODEXADDGLOSS div#CODEXGLOSSOUTLETS { height: inherit;}
-div.showoutlets#CODEXADDGLOSS span.showoutlets {
-    background-color: gold;}
 
 /* Style variants */
 

@@ -1369,10 +1369,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if ((alt==="tag")||(alt==="link")||(alt==="excerpt")) {}
 	    else {}}}
 
-    function showoutlets_tapped(evt){
-	var target=fdjtUI.T(evt);
-	fdjtDOM.toggleClass("CODEXADDGLOSS","showoutlets");}
-
     /* Rules */
 
     var nobubble=fdjtUI.nobubble;
@@ -1439,7 +1435,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
 	 "div.glossetc span.modebuttons": {click: glossmode_button},
-	 "div.glossetc span.showoutlets": {click: showoutlets_tapped},
 	 "#CODEXGLOSSOUTLETS": {tap: outlet_tapped}};
 
     Codex.UI.handlers.webtouch=

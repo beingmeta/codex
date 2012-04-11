@@ -32,107 +32,108 @@
     <span class="respdate"></span> <span class="respnote"></span> 
     <span class="resptags"></span> <span class="resplinks"></span>
   </div>
-  <div class="textbox">
-    <textarea name="LINK"
-	      placeholder="type a URL and title"
-	      title="type a URL and title"></textarea>
-    <textarea name="TAG"
-	      placeholder="type a tag, with completion"
-	      title="type a tag, with completion"></textarea>
-    <textarea name="NOTE"
-	      placeholder="add text, [tag]s, or [@links w/title]"
-	      title="add text, [tag]s, or [@links w/title]"
-	      onfocus="Codex.UI.addgloss_focus(event);"
-	      onblur="Codex.UI.addgloss_blur(event);"
-	      wrap="virtual"></textarea>
-    <div class="inputhelp linkhelp">
-      Enter a URL with an (optional) title separated by a space
-    </div>
-    <div class="inputhelp notehelp">
-      add text, [tag]s, [@links w/title]
-    </div>
-    <div class="inputhelp taghelp">
-      Enter a tag, using | to identify synonyms or relatonships.
-    </div>
+  <div class="button altbutton submitbutton">
+    <span class="addbutton">
+      <img src="http://static.beingmeta.com/graphics/codex/remarkballoon32x25.png"
+	   alt="Add" title="add this gloss" class="mouseicon"/>
+      <img src="http://static.beingmeta.com/graphics/codex/remarkballoon40x31.png"
+	   alt="Add" title="add this gloss" class="touchicon"/></span>
+    <span class="savebutton">
+      <img src="http://static.beingmeta.com/graphics/codex/remarkedit32x25.png"
+	   alt="Save" title="save this gloss" class="mouseicon"/>
+      <img src="http://static.beingmeta.com/graphics/codex/remarkedit40x31.png"
+	   alt="Save" title="save this gloss" class="touchicon"/></span>
+    <span class="replybutton">
+      <img src="http://static.beingmeta.com/graphics/codex/replyballoons32x19.png"
+	   alt="Reply" title="add this response" class="mouseicon"/>
+      <img src="http://static.beingmeta.com/graphics/codex/replyballoons40x24.png"
+	   alt="Reply" title="add this response" class="touchicon"/></span>
   </div>
-  <div class="glossetc">
-    <span class="button altbutton submitbutton">
-      <span class="addbutton">
-	<img src="http://static.beingmeta.com/graphics/codex/remarkballoon32x25.png"
-	     alt="Add" title="add this gloss" class="mouseicon"/>
-	<img src="http://static.beingmeta.com/graphics/codex/remarkballoon40x31.png"
-	     alt="Add" title="add this gloss" class="touchicon"/></span>
-      <span class="savebutton">
-	<img src="http://static.beingmeta.com/graphics/codex/remarkedit32x25.png"
-	     alt="Save" title="save this gloss" class="mouseicon"/>
-	<img src="http://static.beingmeta.com/graphics/codex/remarkedit40x31.png"
-	     alt="Save" title="save this gloss" class="touchicon"/></span>
-      <span class="replybutton">
-	<img src="http://static.beingmeta.com/graphics/codex/replyballoons32x19.png"
-	     alt="Reply" title="add this response" class="mouseicon"/>
-	<img src="http://static.beingmeta.com/graphics/codex/replyballoons40x24.png"
-	     alt="Reply" title="add this response" class="touchicon"/></span>
-    </span>
-    <span class="modebuttons">
-      <img src="http://static.beingmeta.com/graphics/codex/TagIcon24x24.png"
-	   title="add tags" class="button mouseicon" alt="tag"/>
-      <img src="http://static.beingmeta.com/graphics/codex/TagIcon40x40.png"
-	   title="add tags" class="button touchicon" alt="tag"/>
-      <img src="http://static.beingmeta.com/graphics/DiagLink24x24.png"
-	   title="add web links" class="button mouseicon" alt="link"/>
-      <img src="http://static.beingmeta.com/graphics/DiagLink40x40.png"
-	   title="add web links" class="button touchicon" alt="link"/>
-      <img src="http://static.beingmeta.com/graphics/codex/justremarkballoon24x24.png"
-	   title="add/edit a comment" class="button mouseicon" alt="note"/>
-      <img src="http://static.beingmeta.com/graphics/codex/justremarkballoon64x64.png"
-	   style="width: 40px; height: 40px;"
-	   title="add/edit a comment" class="button touchicon" alt="note"/>
-    </span>
-    <img src="http://static.beingmeta.com/graphics/twistyclosed16x16.png"
-	 class="twisty" alt="+"/>
-    <img src="http://static.beingmeta.com/graphics/twistyopen16x16.png"
-	 class="twisty" alt="-"/>
-    <span class="excerptspan"></span>
-    <span class="links"></span>
-    <span class="tags"></span>
-    <span class="sharing codexsharegloss">
-      <span class="networks">
-	<span class="checkspan facebook_share"
-	      title="share (or not) this gloss with my Facebook friends">
-	  <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK">
-	  <img src="http://static.beingmeta.com/graphics/social/facebook16x16.png"
-	       alt="Facebook" class="checked"/>
-	  <img src="http://static.beingmeta.com/graphics/social/nofacebook16x16.png"
-	       alt="Facebook" class="unchecked"/>
-	</span>
-	<span class="checkspan twitter_share"
-	      title="share (or not) this gloss with my Twitter followers">
-	  <input type="CHECKBOX" name="NETWORKS" value=":TWITTER">
-	  <img src="http://static.beingmeta.com/graphics/social/twitter16x16.png"
-	       alt="Twitter" class="checked"/>
-	  <img src="http://static.beingmeta.com/graphics/social/notwitter16x16.png"
-	       alt="Twitter" class="unchecked"/>
-	</span>
-	<span class="checkspan linkedin_share"
-	      title="share this gloss with my LinkedIn connections">
-	  <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN">
-	  <img src="http://static.beingmeta.com/graphics/social/linkedin16x16.png"
-	       alt="LinkedIn" class="checked"/>
-	  <img src="http://static.beingmeta.com/graphics/social/linkedin16x16.png"
-	       alt="LinkedIn" class="unchecked"/>
-	</span>
-	<span class="checkspan google_share"
-	      title="share this gloss with my Google+ connections">
-	  <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE">
-	  <img src="http://static.beingmeta.com/graphics/social/googleplus16x16.png"
-	       alt="Google+" class="checked"/>
-	  <img src="http://static.beingmeta.com/graphics/social/googleplus16x16.png"
-	       alt="Google+" class="unchecked"/>
-	</span>
+  <div class="inputbox">
+    <div class="textbox">
+      <textarea name="LINK"
+		placeholder="type a URL and title"
+		title="type a URL and title"></textarea>
+      <textarea name="TAG"
+		placeholder="type a tag, with completion"
+		title="type a tag, with completion"></textarea>
+      <textarea name="NOTE"
+		placeholder="add text, [tag]s, or [@links w/title]"
+		title="add text, [tag]s, or [@links w/title]"
+		onfocus="Codex.UI.addgloss_focus(event);"
+		onblur="Codex.UI.addgloss_blur(event);"
+		wrap="virtual"></textarea>
+      <div class="inputhelp linkhelp">
+	Enter a URL with an (optional) title separated by a space
+      </div>
+      <div class="inputhelp notehelp">
+	add text, [tag]s, [@links w/title]
+      </div>
+      <div class="inputhelp taghelp">
+	Enter a tag, using | to identify synonyms or relatonships.
+      </div>
+    </div>
+    <div class="glossetc">
+      <span class="modebuttons">
+	<img src="http://static.beingmeta.com/graphics/codex/TagIcon24x24.png"
+	     title="add tags" class="button mouseicon" alt="tag"/>
+	<img src="http://static.beingmeta.com/graphics/codex/TagIcon40x40.png"
+	     title="add tags" class="button touchicon" alt="tag"/>
+	<img src="http://static.beingmeta.com/graphics/DiagLink24x24.png"
+	     title="add web links" class="button mouseicon" alt="link"/>
+	<img src="http://static.beingmeta.com/graphics/DiagLink40x40.png"
+	     title="add web links" class="button touchicon" alt="link"/>
+	<img src="http://static.beingmeta.com/graphics/codex/justremarkballoon24x24.png"
+	     title="add/edit a comment" class="button mouseicon" alt="note"/>
+	<img src="http://static.beingmeta.com/graphics/codex/justremarkballoon64x64.png"
+	     style="width: 40px; height: 40px;"
+	     title="add/edit a comment" class="button touchicon" alt="note"/>
       </span>
-      <span class="showoutlets">++</span>
-      <span class="outlets"></span>
-    </span>
+      <img src="http://static.beingmeta.com/graphics/twistyclosed16x16.png"
+	   class="twisty" alt="+"/>
+      <img src="http://static.beingmeta.com/graphics/twistyopen16x16.png"
+	   class="twisty" alt="-"/>
+      <span class="excerptspan"></span>
+      <span class="links"></span>
+      <span class="tags"></span>
+      <span class="sharing codexsharegloss">
+	<span class="networks">
+	  <span class="checkspan facebook_share"
+		title="share (or not) this gloss with my Facebook friends">
+	    <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK">
+	    <img src="http://static.beingmeta.com/graphics/social/facebook16x16.png"
+		 alt="Facebook" class="checked"/>
+	    <img src="http://static.beingmeta.com/graphics/social/nofacebook16x16.png"
+		 alt="Facebook" class="unchecked"/>
+	  </span>
+	  <span class="checkspan twitter_share"
+		title="share (or not) this gloss with my Twitter followers">
+	    <input type="CHECKBOX" name="NETWORKS" value=":TWITTER">
+	    <img src="http://static.beingmeta.com/graphics/social/twitter16x16.png"
+		 alt="Twitter" class="checked"/>
+	    <img src="http://static.beingmeta.com/graphics/social/notwitter16x16.png"
+		 alt="Twitter" class="unchecked"/>
+	  </span>
+	  <span class="checkspan linkedin_share"
+		title="share this gloss with my LinkedIn connections">
+	    <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN">
+	    <img src="http://static.beingmeta.com/graphics/social/linkedin16x16.png"
+		 alt="LinkedIn" class="checked"/>
+	    <img src="http://static.beingmeta.com/graphics/social/linkedin16x16.png"
+		 alt="LinkedIn" class="unchecked"/>
+	  </span>
+	  <span class="checkspan google_share"
+		title="share this gloss with my Google+ connections">
+	    <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE">
+	    <img src="http://static.beingmeta.com/graphics/social/googleplus16x16.png"
+		 alt="Google+" class="checked"/>
+	    <img src="http://static.beingmeta.com/graphics/social/googleplus16x16.png"
+		 alt="Google+" class="unchecked"/>
+	  </span>
+	</span>
+	<span class="outlets"></span>
+      </span>
+    </div>
   </div>
 </form>
 <!--
