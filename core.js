@@ -608,7 +608,17 @@ var sbook_gloss_data=
 	    fdjtLog.warn("Bad CodexGoTo %o",arg);
 	    return;}
 	if (!(target)) {
-	    if (Codex.paginated) Codex.GoToPage(arg,caller,pushstate);
+	    if (Codex.paginated)
+		Codex.GoToPage(arg,caller,pushstate);
+	    else if (Codex.bysect)
+		Codex.GoToSection(arg,caller,pushstate);
+	    else if (arg.nodeType) {
+		var scan=arg;
+		while (scan) {
+		    if (scan.offsetTop) break;
+		    else scan=scan.parentNode;}
+		if (scan) Codex.content.style.offsetTop=-(scan.offsetTop);}
+	    else {}
 	    return;}
 	var page=((Codex.bypage)&&
 		  (Codex.paginated)&&

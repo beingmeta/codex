@@ -46,7 +46,7 @@ span.codexcssversion:after {
 div#CODEXWINDOW {
     position: fixed; overflow-y: auto; z-index: -50;
     margin-left: 50px; margin-right: 50px;
-    top: 50px; left: 0px; right: 0px; bottom: 50px;}
+    top: 60px; left: 0px; right: 0px; bottom: 60px;}
 div#CODEXWINDOW div#CODEXCONTENT { position: absolute;}
 
 div#CODEXPAGE {

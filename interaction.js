@@ -1085,8 +1085,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		Codex.GoToSection(cursection+1,"pageForward",true);
 		win.scrollTop=0;}
 	    else {
-		var newscroll=win.scrollTop+(win.offsetHeight-40);
-		win.scrollTop=newscroll;}}
+		var newscroll=win.scrollTop+(win.offsetHeight-10);
+		fdjtUI.smartScroll(win,newscroll,Codex.content);}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
@@ -1118,9 +1118,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		if (win.offsetHeight>=win.scrollHeight) win.scrollTop=0;
 		else win.scrollTop=win.scrollHeight-(win.offsetHeight-40);}
 	    else {
-		var newtop=win.scrollTop-(win.offsetHeight-40);
-		if (newtop<0) newtop=0;
-		win.scrollTop=newtop;}}
+		var newscroll=win.scrollTop-(win.offsetHeight-40);
+		fdjtUI.smartScroll(win,newscroll,Codex.content);}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();

@@ -61,10 +61,12 @@ var CodexSections=
 			node.insertBefore(open,child);
 			open.appendChild(child);}
 		    else if (((child.id)&&(docinfo[child.id].toclevel))||
-			     ((forcebreakbefore)&&(forcebreakbefore.test(child)))) {
+			     ((forcebreakbefore)&&
+			      (forcebreakbefore.match(child)))) {
 			var info=((child.id)&&(docinfo[child.id]));
 			open=fdjtDOM("section.codexwrapper");
-			if (info) open.setAttribute("data-sbookloc",info.starts_at);
+			if (info) open.setAttribute(
+			    "data-sbookloc",info.starts_at);
 			node.insertBefore(open,child);
 			open.appendChild(child);}
 		    else if (open) open.appendChild(child);
