@@ -1085,8 +1085,11 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		Codex.GoToSection(cursection+1,"pageForward",true);
 		win.scrollTop=0;}
 	    else {
-		var newscroll=win.scrollTop+(win.offsetHeight-10);
-		fdjtUI.smartScroll(win,newscroll,Codex.content);}}
+		var breaks=Codex.sectioned.getPageBreaks(section);
+		var pagetop=win.scrollTop;
+		var i=0, lim=breaks.length;
+		while ((i<lim)&&(pagetop>=breaks[i])) i++;
+		win.scrollTop=breaks[i];}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
@@ -1112,14 +1115,18 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    fdjtID("CODEXALLGLOSSES"),true);}
 	else if (Codex.bysect) {
 	    var win=Codex.window;
+	    var section=Codex.section;
 	    var cursection=Codex.cursect;
 	    if ((win.scrollTop<=0)&&(cursection>1)) {
 		Codex.GoToSection(cursection-1,"pageBackward",true);
 		if (win.offsetHeight>=win.scrollHeight) win.scrollTop=0;
 		else win.scrollTop=win.scrollHeight-(win.offsetHeight-40);}
 	    else {
-		var newscroll=win.scrollTop-(win.offsetHeight-40);
-		fdjtUI.smartScroll(win,newscroll,Codex.content);}}
+		var breaks=Codex.sectioned.getPageBreaks(section);
+		var pagetop=win.scrollTop;
+		var i=breaks.length-1;
+		while ((i>=0)&&(breaks[i]>=pagetop)) i--;
+		win.scrollTop=breaks[i];}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();

@@ -37,15 +37,37 @@ var CodexSections=
 		 ((node.tagName==='DIV')&&
 		  (fdjtDOM.hasClass(node,'sbooksection'))));}
 	
+	function getGeom(elt,root){
+	    var top = elt.offsetTop;
+	    var left = elt.offsetLeft;
+	    var width=elt.offsetWidth;
+	    var height=elt.offsetHeight;
+	    var rootp=((root)&&(root.offsetParent));
+	    
+	    if (elt===root) 
+		return {left: 0,top: 0,width:width,height: height,
+			right: width,bottom: height};
+	    elt=elt.offsetParent;
+	    while (elt) {
+		if ((root)&&((elt===root)||(elt===rootp))) break;
+		top += elt.offsetTop;
+		left += elt.offsetLeft;
+		elt=elt.offsetParent;}
+	    
+	    return {left: left, top: top, width: width,height: height,
+		    right:left+width,bottom:top+height};}
+
 	var TOA=fdjtDOM.toArray;
 	var getChildren=fdjtDOM.getChildren;
 	var addClass=fdjtDOM.addClass;
 	var dropClass=fdjtDOM.dropClass;
 	var hasContent=fdjtDOM.hasContent;
+	var getStyle=fdjtDOM.getStyle;
 	var atoi=parseInt;
 
 	var forcebreakbefore=
 	    fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
+	var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
 	
 	function addSections(node,docinfo){
 	    if (is_section(node)) return node;
@@ -84,7 +106,6 @@ var CodexSections=
 	    while (i>=0) {
 		parent.insertBefore(children[i--],sect);}
 	    parent.removeChild(sect);}
-	    
 
 	function removeSections(root){
 	    var toremove=TOA(getChildren(root,"section.codexwrapper"));
@@ -149,7 +170,7 @@ var CodexSections=
 		while (i<lim) removeSection(remove[i++]);
 		return sections;}}
 	
-	function CodexSections(content,docinfo){
+	function CodexSections(content,docinfo,win){
 	    if (Codex.paginated) {
 		Codex.paginated.Revert();
 		Codex.paginated=false;}
@@ -163,29 +184,147 @@ var CodexSections=
 	    this.root=content;
 	    addSections(content,docinfo);
 	    this.sections=[];
+	    this.pagebreaks=[];
+	    this.pagetops=[];
+	    var height=this.height=win.offsetHeight;
+	    this.scaled=[];
 	    gatherSections(content,this.sections,docinfo);
+	    var fullpages=fdjtDOM.getChildren(content,"sbookfullpage")||[];
+	    if ((fullpages)&&(fullpages.length))
+		fullpages=fullpages.concat(
+		    (fdjtDOM.getChildren(content,fullpages))||[]);
+	    var i=0, lim=fullpages.length;
+	    while (i<lim) {
+		var page=fullpages[i++];
+		if ((page.offsetHeight>height)&&
+		    (!(page.style[fdjtDOM.transform]))) {
+		    scaled.push(push);
+		    page.style[fdjtDOM.transform]=
+			"scale("+(height/page.offsetHeight)+")";}}
 	    return this;}
 	    
 	CodexSections.prototype.revert=function(){
-	    removeWrappers(this.root);}
+	    removeWrappers(this.root);};
 	
+	function gatherFastBreaks(node,container,
+				  pagelim,height,
+				  breaks,tops,
+				  opts){
+	    var style=getStyle(node);
+	    var display=style.display;
+	    var fudge=((opts)&&(opts.fudge))||0.25;
+	    if ((display==='block')||(display==='table-row')||
+		(display==='list-item')||(display==='preformatted')) {
+		var geom=getGeom(node,container);
+		if (geom.bottom<pagelim) return pagelim;
+		else if (geom.top>pagelim) {
+		    breaks.push(geom.top);
+		    tops.push(node);
+		    return geom.top+height;}
+		else if (style.pageBreakInside==='avoid') {
+		    breaks.push(geom.top);
+		    tops.push(node);
+		    pagelim=geom.top+height;
+		    while (pagelim<geom.bottom) {
+			breaks.push(pagelim-20);
+			tops.push(false);
+			pagelim=(pagelim-20)+height;}
+		    return pagelim;}
+		else if ((pagelim-geom.top)<
+			 ((fudge<1)?(fudge*height):(fudge))) {
+		    breaks.push(geom.top);
+		    tops.push(node);
+		    return geom.top+height;}
+		else {
+		    var children=node.childNodes;
+		    var i=0, lim=children.length;
+		    while (i<lim)  {
+			var child=children[i++];
+			if (child.nodeType===1)
+			    pagelim=gatherFastBreaks(
+				child,container,
+				pagelim,height,
+				breaks,tops,
+				opts);}
+		    while (pagelim<geom.bottom) {
+			breaks.push(pagelim-20);
+			tops.push(false);
+			pagelim=(pagelim-20)+height;}
+		    return pagelim;}}
+	    else return pagelim;}
+
+	CodexSections.prototype.getPageBreaks=function(arg){
+	    var section=((arg.nodeType)?(arg):(this.sections[arg]));
+	    if (!(section)) return [];
+	    var sectnum=((typeof arg === 'number')?(arg):
+			 atoi(arg.getAttribute('data-sectnum')));
+	    if (this.pagebreaks[sectnum]) return this.pagebreaks[sectnum];
+	    else {
+		var breaks=[], tops=[];
+		breaks.push(0); tops.push(section);
+		var pagelim=gatherFastBreaks(
+		    section,section,this.height,this.height,
+		    breaks,tops,{});
+		this.pagebreaks[sectnum]=breaks;
+		this.pagetops[sectnum]=tops;
+		if (pagelim<this.height) {}
+		else if (section.offsetHeight<pagelim) {
+		    section.style.marginBottom=
+			(pagelim-section.offsetHeight)+"px";}
+		else {}
+		return breaks;}};
+			 
 	/* Movement by pages */
 	
 	var cursection=false;
 	
-	function getSection(spec,caller){
+	function getSectionInfo(spec,caller){
 	    if (typeof spec === "number")
-		return Codex.sections[spec-1];
+		return {section: Codex.sections[spec-1],off: 0};
 	    if (typeof spec === "string") spec=fdjtID(spec);
-	    if ((spec)&&(spec.nodeType)) {
+	    if ((spec)&&(spec.section)&&(spec.section.nodeType))
+		// Appears to be a section info object already
+		return spec;
+	    else if ((spec)&&(spec.nodeType)) {
 		if (spec.tagName==='SECTION')
-		    return spec;
-		else while (spec) {
-		    if (spec.tagName==='SECTION') return spec;
-		    else spec=spec.parentNode;}
-		return spec;}
+		    return {section: spec, off: 0,target: spec,
+			    location:
+			    parseInt(spec.getAttribute("data-sbookloc"))};
+		else {
+		    var scan=spec, box=false;
+		    while (scan) {
+			if ((box===false)&&(scan.offsetTop)) box=scan;
+			if (scan.tagName==='SECTION') {
+			    var info=((Codex.docinfo)&&
+				      ((Codex.docinfo[spec.id])||
+				       ((box)&&(Codex.docinfo[box.id]))));
+			    if (box) {
+				var breaks=Codex.sectioned.getPageBreaks(scan);
+				var off=getGeom(box,Codex.content).top;
+				var i=1, lim=breaks.length;
+				while (i<lim) {
+				    if ((off>=breaks[i-1])&& (off<breaks[i]))
+					break;
+				    else i++;}
+				return {section: scan,
+					box: box,target: spec,
+					breaks: breaks,pageoff:i-1,
+					off: breaks[i-1],
+					location:
+					(((info)&&(info.starts_at))||
+					 parseInt(spec.getAttribute(
+					     "data-sbookloc")))};}
+			    else return {section: scan, target: spec,
+					 off: 0,location:
+					 parseInt(spec.getAttribute(
+					     "data-sbookloc"))};}
+			else scan=scan.parentNode;}
+		    return false;}}
 	    else return false;}
-	Codex.getSection=getSection;
+	Codex.getSectionInfo=getSectionInfo;
+	Codex.getSection=function(){
+	    var info=getSectionInfo(spec);
+	    return ((info)&&(info.section));};
 	
 	function displaySection(sect,visible){
 	    if (visible) {
@@ -206,22 +345,29 @@ var CodexSections=
 	
 	function GoToSection(spec,caller,pushstate){
 	    if (typeof pushstate === 'undefined') pushstate=false;
-	    var section=getSection(spec)||getSection(1);
+	    var info=getSectionInfo(spec)||getSectionInfo(1);
+	    if (!(info)) {
+		fdjtLog("Warning: GoToSection couldn't map %o to section for %s",
+			spec,caller);
+		return;}
+	    var section=info.section;
 	    var sectnum=parseInt(section.getAttribute("data-sectnum"));
 	    if (Codex.Trace.flips)
 		fdjtLog("GoToSection/%s Flipping to %o (%d) for %o",
 			caller,section,sectnum,spec);
 	    if (cursection) displaySection(cursection,false);
 	    displaySection(section,true);
-	    if (typeof spec === 'number') {
-		var location=parseInt(section.getAttribute("data-sbookloc"));
-		Codex.setLocation(location);}
-	    var win=Codex.window;
-	    if (win.scrollHeight>win.offsetHeight) {
-		var padding=win.offsetHeight-(win.scrollHeight%win.offsetHeight);
-		section.style.marginBottom=padding+"px";}
-	    // updatePageDisplay(pagenum,Codex.location);
+	    if (info.location) Codex.setLocation(location);
 	    cursection=section; Codex.section=section; Codex.cursect=sectnum;
+	    var win=Codex.window; var pageoff=info.pageoff;
+	    win.scrollTop=info.off;
+	    if ((info.breaks)&&(pageoff<(info.breaks.length-1))) {
+		Codex.winmask.style.top=breaks[pageoff];
+		Codex.winmask.style.height=
+		    ((breaks[pageoff]+Codex.win.offsetHeight)-
+		     breaks[pageoff+1])+
+		    "px";}
+	    else Codex.winmask.style.height='0px';
 	    if ((pushstate)&&(section)) {
 		Codex.setState(
 		    {location: atoi(section.getAttribute("data-sbookloc")),
@@ -234,8 +380,12 @@ var CodexSections=
 	Codex.GoToSection=GoToSection;
 	
 	var previewing=false;
+	var saved_scrolltop=false;
 	function startPreview(spec,caller){
 	    var section=getSection(spec);
+	    var target=((spec.nodeType)?(spec):
+			(typeof spec === 'string')?(fdjtID(spec)):
+			(false));
 	    if (!(section)) return;
 	    var sectnum=parseInt(section.getAttribute("data-sectnum"));;
 	    if (previewing===section) return;
@@ -244,8 +394,22 @@ var CodexSections=
 			caller||"nocaller",section,sectnum,spec);
 	    if (previewing) displaySection(previewing,false);
 	    addClass(document.body,"codexpreview");
-	    displaySection(section,true);
+	    if (!(previewing))
+		saved_scrolltop=Codex.window.scrollTop;
 	    Codex.previewing=previewing=section;
+	    displaySection(section,true);
+	    if ((target)&&(target.nodeType)) {
+		var node=target;
+		while ((node)&&(!(node.offsetTop))) node=node.parentNode;
+		if (node) {
+		    var off=getGeom(node,Codex.content);
+		    var breaks=Codex.sectioned.getPageBreaks(section);
+		    var i=1, lim=breaks.length;
+		    while (i<lim) {
+			if ((off>=breaks[i-1])&&(off<breaks[i])) break;
+			else i++;}
+		    Codex.window.scrollTop=breaks[i-1];}}
+	    else Codex.window.scrollTop=0;
 	    // updateSectionDisplay(sectnum,Codex.location);
 	    return;}
 	Codex.startSectionPreview=startPreview;
@@ -258,6 +422,9 @@ var CodexSections=
 	    if (!(previewing)) return;
 	    displaySection(previewing,false);
 	    displaySection(cursection,true);
+	    if (saved_scrolltop) {
+		Codex.window.scrollTop=saved_scrolltop;
+		saved_scrolltop=false;}
 	    dropClass(document.body,"codexpreview");
 	    if (Codex.previewtarget) {
 		dropClass(Codex.previewtarget,"codexpreviewtarget");
