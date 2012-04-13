@@ -361,6 +361,8 @@ function CodexDOMScan(root,docinfo){
 	if ((scanstate.notoc)||(child.tagName==='header')) {
 	    scanstate.notoc=true; toclevel=0;}
 	scanstate.eltcount++;
+	if ((child.sbookskip)||(child.codexui))
+	    return;
 	var info=((nodefn)&&(nodefn(child)));
 	if ((!(info))&&(child.id)&&(!(info=docinfo[child.id]))) {
 	    var id=child.id;
@@ -376,10 +378,7 @@ function CodexDOMScan(root,docinfo){
 	    info.sbookhead=curhead.id;
 	    info.headstart=curinfo.starts_at;}
 	if (info) info.head=curinfo;
-	if ((child.sbookskip)||(child.codexui)||
-	    ((child.className)&&(child.className.search(/\bsbookignore\b/)>=0))||
-	    ((Codex.ignore)&&(Codex.ignore.match(child))))
-	    return;
+	if ((child.id)&&(info)&&(!(Codex.start))) Codex.start=child;
 	if ((info)&&(toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
 	if (child.id) {
 	    var tags=
@@ -388,6 +387,9 @@ function CodexDOMScan(root,docinfo){
 		(child.getAttribute('tags'))||
 		(child.getAttribute('data-tags'));
 	    if (tags) info.tags=tags.split(';');}
+	if (((child.className)&&(child.className.search(/\bsbookignore\b/)>=0))||
+	    ((Codex.ignore)&&(Codex.ignore.match(child))))
+	    return;
 	if ((toclevel)&&(!(info.tocdone)))
 	    handleHead(child,docinfo,scanstate,toclevel,
 		       curhead,curinfo,curlevel,nodefn);

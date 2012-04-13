@@ -62,7 +62,9 @@ var CodexSections=
 	var addClass=fdjtDOM.addClass;
 	var dropClass=fdjtDOM.dropClass;
 	var hasContent=fdjtDOM.hasContent;
+	var hasText=fdjtDOM.hasText;
 	var getStyle=fdjtDOM.getStyle;
+	var emptyString=fdjtString.isEmpty;
 	var atoi=parseInt;
 
 	var forcebreakbefore=
@@ -70,34 +72,33 @@ var CodexSections=
 	var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
 	
 	function addSections(node,docinfo){
-	    if (is_section(node)) return node;
-	    else {
-		var open=false;
-		var children=fdjtDOM.toArray(node.childNodes);
-		var i=0; var lim=children.length;
-		while (i<lim) {
-		    var child=children[i++];
-		    if (is_section(child)) {if (open) open=false;}
-		    else if (child.nodeType!==1) {
-			if (!(open)) open=fdjtDOM("section.codexwrapper");
-			node.insertBefore(open,child);
-			open.appendChild(child);}
-		    else if (((child.id)&&(docinfo[child.id].toclevel))||
-			     ((forcebreakbefore)&&
-			      (forcebreakbefore.match(child)))) {
-			var info=((child.id)&&(docinfo[child.id]));
-			open=fdjtDOM("section.codexwrapper");
-			if (info) open.setAttribute(
-			    "data-sbookloc",info.starts_at);
-			node.insertBefore(open,child);
-			open.appendChild(child);}
-		    else if (open) open.appendChild(child);
-		    else {
-			open=fdjtDOM("section.codexwrapper");
-			node.insertBefore(open,child);}
-		    if ((getChildren(child,"section").length)||
-			(getChildren(child,"div.sbooksection").length))
-			addSections(child,docinfo);}}}
+	    var open=false;
+	    var children=fdjtDOM.toArray(node.childNodes);
+	    var i=0; var lim=children.length;
+	    while (i<lim) {
+		var child=children[i++];
+		if (child.nodeType!==1) {
+		    if (!(open)) open=fdjtDOM("section.codexwrapper");
+		    node.insertBefore(open,child);
+		    open.appendChild(child);}
+		else if (is_section(child)) {
+		    addSections(child,docinfo);
+		    open=false;}
+		else if (((child.id)&&(docinfo[child.id])&&
+			  (docinfo[child.id].toclevel))||
+			 ((forcebreakbefore)&&
+			  (forcebreakbefore.match(child)))) {
+		    var info=((child.id)&&(docinfo[child.id]));
+		    open=fdjtDOM("section.codexwrapper");
+		    if (info) open.setAttribute(
+			"data-sbookloc",info.starts_at);
+		    node.insertBefore(open,child);
+		    open.appendChild(child);}
+		else if (open) open.appendChild(child);
+		else {
+		    open=fdjtDOM("section.codexwrapper");
+		    node.insertBefore(open,child);
+		    open.appendChild(child);}}}
 
 	function removeSection(sect){
 	    var parent=sect.parentNode;
@@ -138,6 +139,22 @@ var CodexSections=
 			if (id) return id;}}
 		return false;}}
 
+	function no_preamble(node){
+	    var children=node.childNodes;
+	    var i=0, lim=children.length;
+	    while (i<lim) {
+		var child=children[i++];
+		if ((child.nodeType===3)&&
+		    (!(emptyString(child.nodeValue))))
+		    return false;
+		else if ((child.nodeType===1)&&(is_section(child)))
+		    return true;
+		else if (child.nodeType===1)
+		    return false;
+		else {}}
+	    return false;}
+	Codex.no_preamble=no_preamble;
+
 	function gatherSections(root,sections,docinfo){
 	    if (typeof sections === 'undefined') sections=[];
 	    if ((root.nodeType===1)&&(root.childNodes.length)) {
@@ -152,6 +169,10 @@ var CodexSections=
 			continue;}
 		    else if (!(hasContent(child,true)))
 			remove.push(child);
+		    // If there's nothing between it and the next section,
+		    // skip it.
+		    else if (no_preamble(child)) {
+			gatherSections(child,sections,docinfo);}
 		    else {
 			var startid=getFirstID(child,docinfo);
 			var endid=getLastID(child,docinfo);
@@ -234,7 +255,9 @@ var CodexSections=
 			 ((fudge<1)?(fudge*height):(fudge))) {
 		    breaks.push(geom.top);
 		    tops.push(node);
-		    return geom.top+height;}
+		    pagelim=geom.top+height;
+		    return gatherFastBreaks(node,container,pagelim,height,
+					    breaks,tops,opts);}
 		else {
 		    var children=node.childNodes;
 		    var i=0, lim=children.length;
@@ -288,10 +311,10 @@ var CodexSections=
 
 	function getSectionInfo(spec,caller){
 	    if (typeof spec === "number") {
-		if (Codex.pagebreaks[spec-1])
+		if (Codex.sectioned.pagebreaks[spec-1])
 		    return {section: Codex.sections[spec-1], off: 0,
-			    breaks: Codex.pagebreaks[spec-1],
-			    tops: Codex.pagetops[spec-1],
+			    breaks: Codex.sectioned.pagebreaks[spec-1],
+			    tops: Codex.sectioned.pagetops[spec-1],
 			    pageoff: 0};
 		else return {section: Codex.sections[spec-1], off: 0};}
 	    if (typeof spec === "string") spec=fdjtID(spec);
@@ -347,9 +370,10 @@ var CodexSections=
 		    return false;}}
 	    else return false;}
 	Codex.getSectionInfo=getSectionInfo;
-	Codex.getSection=function(){
+	function getSection(){
 	    var info=getSectionInfo(spec);
-	    return ((info)&&(info.section));};
+	    return ((info)&&(info.section));}
+	Codex.getSection=getSection;
 	
 	function displaySection(sect,visible){
 	    if (visible) {
@@ -419,7 +443,8 @@ var CodexSections=
 	var previewing=false;
 	var saved_scrolltop=false;
 	function startPreview(spec,caller){
-	    var section=getSection(spec);
+	    var info=getSectionInfo(spec);
+	    var section=info.section;
 	    var target=((spec.nodeType)?(spec):
 			(typeof spec === 'string')?(fdjtID(spec)):
 			(false));
@@ -430,23 +455,15 @@ var CodexSections=
 		fdjtLog("startSectionPreview/%s to %o (%d) for %o",
 			caller||"nocaller",section,sectnum,spec);
 	    if (previewing) displaySection(previewing,false);
-	    addClass(document.body,"codexpreview");
-	    if (!(previewing))
-		saved_scrolltop=Codex.window.scrollTop;
+	    else {
+		addClass(document.body,"codexpreview");
+		saved_scrolltop=Codex.window.scrollTop;}
 	    Codex.previewing=previewing=section;
+	    displaySection(cursection,false);
 	    displaySection(section,true);
-	    if ((target)&&(target.nodeType)) {
-		var node=target;
-		while ((node)&&(!(node.offsetTop))) node=node.parentNode;
-		if (node) {
-		    var off=getGeom(node,Codex.content);
-		    var breaks=Codex.sectioned.getPageBreaks(section);
-		    var i=1, lim=breaks.length;
-		    while (i<lim) {
-			if ((off>=breaks[i-1])&&(off<breaks[i])) break;
-			else i++;}
-		    Codex.window.scrollTop=breaks[i-1];}}
-	    else Codex.window.scrollTop=0;
+	    // Recompute info now that it's displayed
+	    info=getSectionInfo(spec);
+	    Codex.window.scrollTop=(info.off)||0;
 	    // updateSectionDisplay(sectnum,Codex.location);
 	    return;}
 	Codex.startSectionPreview=startPreview;

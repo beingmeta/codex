@@ -393,7 +393,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	locrule.style.left=((location_start/cxt_len)*100)+"%";
 	return locrule;}
     function makelocrule(target_info,cxtinfo,spec){
-	if (!(cxtinfo)) cxtinfo=Codex.docinfo[(Codex.body||document.body).id];
+	if (!(cxtinfo)) cxtinfo=Codex.docinfo[Codex.content.id];
 	var locrule=fdjtDOM(spec||"hr.locrule");
 	var cxt_start=cxtinfo.starts_at;
 	var cxt_end=cxtinfo.ends_at;

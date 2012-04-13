@@ -306,10 +306,10 @@ Codex.Startup=
 		function(){
 		    var scanmsg=fdjtID("CODEXSTARTUPSCAN");
 		    addClass(scanmsg,"running");
-		    metadata=new CodexDOMScan(Codex.root);
+		    metadata=new CodexDOMScan(Codex.content);
 		    fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
-		    Codex.ends_at=Codex.docinfo[Codex.root.id].ends_at;
+		    Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
 		    dropClass(scanmsg,"running");
 		    if (Codex.afterscan) {
 			var donefn=Codex.afterscan;
@@ -341,7 +341,7 @@ Codex.Startup=
 			addClass(tocmsg,"running");}
 		    startupLog("Building table of contents based on %d heads",
 			       Codex.docinfo._headcount);
-		    Codex.setupTOC(metadata[Codex.root.id]);
+		    Codex.setupTOC(metadata[Codex.content.id]);
 		    dropClass(tocmsg,"running");},
 		// Read knowledge bases (knodules) used by the book
 		((Knodule)&&(Knodule.HTML)&&
@@ -676,12 +676,7 @@ Codex.Startup=
 		    Codex.start=fdjtID(fdjtDOM.getMeta("sbook.start"));
 	    else if (fdjtID("SBOOKSTART"))
 		Codex.start=fdjtID("SBOOKSTART");
-	    else {
-		var titlepage=fdjtID("SBOOKTITLE")||fdjtID("TITLEPAGE");
-		while (titlepage)
-		    if (fdjtDOM.nextElt(titlepage)) {
-			Codex.start=fdjtDOM.nextElt(titlepage); break;}
-		else titlepage=titlepage.parentNode;}
+	    else {}
 	    var i=0; while (i<9) {
 		var rules=fdjtDOM.getMeta("sbook.head"+i,true).
 		    concat(fdjtDOM.getMeta("sbook"+i+"head",true)).
@@ -1210,9 +1205,9 @@ Codex.Startup=
 	    if (target) Codex.GoTo(target,"initLocation",true,true);
 	    else if ((state)&&(state.target)&&(fdjtID(state.target)))
 		Codex.GoTo(state.target,"initLocation",true,true);
-	    else Codex.GoTo((Codex.start||Codex.coverpage||
-			     Codex.titlepage||Codex.root),
-			    "initLocation",false,false);
+	    else if (Codex.start||Codex.coverpage||Codex.titlepage)
+		Codex.GoTo((Codex.start||Codex.coverpage||Codex.titlepage),
+			   "initLocation",false,false);
 	    if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
 		syncLocation();}
 	

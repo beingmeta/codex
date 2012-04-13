@@ -359,10 +359,10 @@ var sbook_gloss_data=
     /* Navigation functions */
 
     function setHead(head){
-	if (head===null) head=Codex.root;
+	if (head===null) head=Codex.content;
 	else if (typeof head === "string") 
-	    head=getHead(fdjtID(head))||Codex.root;
-	else head=getHead(head)||Codex.root;
+	    head=getHead(fdjtID(head))||Codex.content;
+	else head=getHead(head)||Codex.content;
 	var headid=head.id||head.codexdupid;
 	var headinfo=Codex.docinfo[headid];
 	if (!(head)) return;
