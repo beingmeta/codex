@@ -884,6 +884,7 @@ Codex.Startup=
 	    // The better way to do this might be to change the stylesheet,
 	    //  but fdjtDOM doesn't currently handle that 
 	    var bgcolor=getBGColor(document.body)||"white";
+	    Codex.backgroundColor=bgcolor;
 	    if (bgcolor==='transparent')
 		bgcolor=fdjtDOM.getStyle(document.body).backgroundColor;
 	    if ((bgcolor)&&(bgcolor.search("rgba")>=0)) {

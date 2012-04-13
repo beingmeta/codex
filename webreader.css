@@ -49,7 +49,7 @@ div#CODEXWINDOW {
     top: 60px; left: 0px; right: 0px; bottom: 60px;}
 div#CODEXWINDOW div#CODEXCONTENT { position: absolute;}
 div#CODEXWINMASK {
-    position: absolute; width: 100%;
+    position: absolute; width: 100%; z-index: 100;
     background-color: black; opacity: 0.15;
     display: none; }
 

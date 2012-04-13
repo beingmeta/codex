@@ -1079,17 +1079,32 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var win=Codex.window; var content=Codex.content;
 	    var section=Codex.section;
 	    var wbottom=win.scrollTop+win.offsetHeight;
-	    var cbottom=win.scrollHeight-parsePX(section.style.marginBottom);
+	    var cbottom=section.offsetHeight;
+	    // -parsePX(section.style.marginBottom)
 	    var cursection=Codex.cursect;
-	    if ((wbottom>=cbottom)&&(cursection<Codex.sections.length)) {
-		Codex.GoToSection(cursection+1,"pageForward",true);
-		win.scrollTop=0;}
+	    if (wbottom>=cbottom) {
+		if (cursection>=Codex.sections.length) {
+		    fdjtLog("At end of last section");
+		    return;}
+		// Codex.sections is zero-based, while cursection is
+		// one-based, so we just call it directly.
+		var next=Codex.sections[cursection];
+		var breaks=Codex.sectioned.getPageBreaks(next);
+		// At the bottom of this section
+		var next={sectnum: cursection+1, section: next,
+			  breaks: breaks, pageoff: 0,
+			  tops: Codex.sectioned.pagetops[cursection],
+			  off: 0};
+		Codex.GoToSection(next,"pageForward",true);}
 	    else {
 		var breaks=Codex.sectioned.getPageBreaks(section);
 		var pagetop=win.scrollTop;
 		var i=0, lim=breaks.length;
 		while ((i<lim)&&(pagetop>=breaks[i])) i++;
-		win.scrollTop=breaks[i];}}
+		var next={sectnum: cursection, section: section,
+			  off: breaks[i], breaks: breaks, pageoff: i,
+			  tops: Codex.sectioned.pagetops[cursection-1]};
+		Codex.GoToSection(next,"pageForward",true);}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();
@@ -1117,16 +1132,32 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var win=Codex.window;
 	    var section=Codex.section;
 	    var cursection=Codex.cursect;
-	    if ((win.scrollTop<=0)&&(cursection>1)) {
-		Codex.GoToSection(cursection-1,"pageBackward",true);
-		if (win.offsetHeight>=win.scrollHeight) win.scrollTop=0;
-		else win.scrollTop=win.scrollHeight-(win.offsetHeight-40);}
+	    if (win.scrollTop<=0) {
+		if (cursection<=1) {
+		    // beep?
+		    fdjtLog("Already at beginning");
+		    return;}
+		// At top, go back a section
+		var newsection=Codex.sections[cursection-2];
+		var breaks=Codex.sectioned.getPageBreaks(newsection);
+		var nbreaks=((breaks)?(breaks.length):(0));
+		var next={sectnum: cursection-1,
+			  section: newsection,
+			  breaks: breaks, pageoff: nbreaks-1,
+			  tops: Codex.sectioned.pagetops[cursection-2]||false,
+			  off: ((breaks)?(breaks[nbreaks-1]):(0))};
+		Codex.GoToSection(next,"pageBackward",true);}
 	    else {
 		var breaks=Codex.sectioned.getPageBreaks(section);
 		var pagetop=win.scrollTop;
 		var i=breaks.length-1;
 		while ((i>=0)&&(breaks[i]>=pagetop)) i--;
-		win.scrollTop=breaks[i];}}
+		var next={sectnum: cursection,
+			  section: section,
+			  breaks: breaks, pageoff: i,
+			  tops: Codex.sectioned.pagetops[cursection-1],
+			  off: breaks[i]};
+		Codex.GoToSection(next,"pageBackward",true);}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();

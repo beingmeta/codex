@@ -258,15 +258,18 @@ var CodexSections=
 	    if (!(section)) return [];
 	    var sectnum=((typeof arg === 'number')?(arg):
 			 atoi(arg.getAttribute('data-sectnum')));
-	    if (this.pagebreaks[sectnum]) return this.pagebreaks[sectnum];
+	    if (this.pagebreaks[sectnum-1])
+		return this.pagebreaks[sectnum-1];
+	    else if (section.offsetHeight===0) return false;
 	    else {
 		var breaks=[], tops=[];
+		var placeholder=false;
 		breaks.push(0); tops.push(section);
 		var pagelim=gatherFastBreaks(
 		    section,section,this.height,this.height,
 		    breaks,tops,{});
-		this.pagebreaks[sectnum]=breaks;
-		this.pagetops[sectnum]=tops;
+		this.pagebreaks[sectnum-1]=breaks;
+		this.pagetops[sectnum-1]=tops;
 		if (pagelim<this.height) {}
 		else if (section.offsetHeight<pagelim) {
 		    section.style.marginBottom=
@@ -278,29 +281,52 @@ var CodexSections=
 	
 	var cursection=false;
 	
+	function sectLoc(section){
+	    return parseInt(section.getAttribute("data-sbookloc"));}
+	function sectNum(section){
+	    return parseInt(section.getAttribute("data-sectnum"));}
+
 	function getSectionInfo(spec,caller){
-	    if (typeof spec === "number")
-		return {section: Codex.sections[spec-1],off: 0};
+	    if (typeof spec === "number") {
+		if (Codex.pagebreaks[spec-1])
+		    return {section: Codex.sections[spec-1], off: 0,
+			    breaks: Codex.pagebreaks[spec-1],
+			    tops: Codex.pagetops[spec-1],
+			    pageoff: 0};
+		else return {section: Codex.sections[spec-1], off: 0};}
 	    if (typeof spec === "string") spec=fdjtID(spec);
-	    if ((spec)&&(spec.section)&&(spec.section.nodeType))
+	    if ((spec)&&(spec.section)&&(spec.section.nodeType)) {
 		// Appears to be a section info object already
-		return spec;
+		if ((!(spec.breaks))&&(spec.section.offsetHeight)) {
+		    // We have an opportunity to compute breaks
+		    var breaks=Codex.sectioned.getPageBreaks(spec.section);
+		    var sectnum=spec.sectnum||sectNum(spec.section);
+		    spec.breaks=breaks; spec.sectnum=sectnum;
+		    spec.tops=Codex.sectioned.pagetops[sectnum-1];
+		    if ((spec.pageoff)&&(spec.pageoff<0))
+			spec.off=breaks[breaks.length+spec.pageoff];
+		    return spec;}
+		else return spec;}
 	    else if ((spec)&&(spec.nodeType)) {
 		if (spec.tagName==='SECTION')
 		    return {section: spec, off: 0,target: spec,
-			    location:
-			    parseInt(spec.getAttribute("data-sbookloc"))};
+			    sectnum: sectNum(spec), location: sectLoc(spec)};
 		else {
 		    var scan=spec, box=false;
 		    while (scan) {
-			if ((box===false)&&(scan.offsetTop)) box=scan;
+			if ((box===false)&&(typeof scan.offsetTop === 'number'))
+			    box=scan;
 			if (scan.tagName==='SECTION') {
 			    var info=((Codex.docinfo)&&
 				      ((Codex.docinfo[spec.id])||
 				       ((box)&&(Codex.docinfo[box.id]))));
-			    if (box) {
+			    if ((box)&&(box.offsetHeight)) {
+				var sectnum=sectNum(scan);
 				var breaks=Codex.sectioned.getPageBreaks(scan);
-				var off=getGeom(box,Codex.content).top;
+				var off=getGeom(spec,Codex.content).top;
+				var location=((info)&&(info.starts_at))||
+				    sectLoc(scan);
+				var tops=Codex.sectioned.pagetops[sectnum-1];
 				var i=1, lim=breaks.length;
 				while (i<lim) {
 				    if ((off>=breaks[i-1])&& (off<breaks[i]))
@@ -308,16 +334,15 @@ var CodexSections=
 				    else i++;}
 				return {section: scan,
 					box: box,target: spec,
-					breaks: breaks,pageoff:i-1,
-					off: breaks[i-1],
-					location:
-					(((info)&&(info.starts_at))||
-					 parseInt(spec.getAttribute(
-					     "data-sbookloc")))};}
+					breaks: breaks, tops: tops,
+					pageoff:i-1, off: breaks[i-1],
+					location: location};}
+			    else if (box) 
+				return {section: scan,
+					box: box,target: spec,
+					location: info.location};
 			    else return {section: scan, target: spec,
-					 off: 0,location:
-					 parseInt(spec.getAttribute(
-					     "data-sbookloc"))};}
+					 off: 0,location:sectLoc(scan)};}
 			else scan=scan.parentNode;}
 		    return false;}}
 	    else return false;}
@@ -357,14 +382,26 @@ var CodexSections=
 			caller,section,sectnum,spec);
 	    if (cursection) displaySection(cursection,false);
 	    displaySection(section,true);
+	    // Now that the section is visible, we can get more information,
+	    //  so we call getSectionInfo again.  A little kludgy but
+	    //  better than the alternatives given that we're hiding sections.
+	    info=getSectionInfo(spec);
 	    if (info.location) Codex.setLocation(location);
 	    cursection=section; Codex.section=section; Codex.cursect=sectnum;
 	    var win=Codex.window; var pageoff=info.pageoff;
+	    var breaks=info.breaks; var tops=info.tops;
 	    win.scrollTop=info.off;
-	    if ((info.breaks)&&(pageoff<(info.breaks.length-1))) {
-		Codex.winmask.style.top=breaks[pageoff];
+	    if ((tops)&&(tops[pageoff+1])) {
+		Codex.winmask.style.opacity=1.0;
+		Codex.winmask.style.backgroundColor=
+		    Codex.backgroundColor||'white';}
+	    else {
+		Codex.winmask.style.opacity='';
+		Codex.winmask.style.backgroundColor='';}
+	    if ((breaks)&&(pageoff<(breaks.length-1))) {
+		Codex.winmask.style.top=breaks[pageoff+1]+"px";
 		Codex.winmask.style.height=
-		    ((breaks[pageoff]+Codex.win.offsetHeight)-
+		    ((breaks[pageoff]+win.offsetHeight)-
 		     breaks[pageoff+1])+
 		    "px";}
 	    else Codex.winmask.style.height='0px';
