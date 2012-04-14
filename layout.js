@@ -697,7 +697,8 @@ var CodexPaginate=
 			dropClass(document.body,"cxSCROLL");
 			addClass(document.body,"cxBYSECT");
 			if (Codex.docinfo) {
-			    Codex.sectioned=new CodexSections(Codex.content,Codex.docinfo);
+			    Codex.sectioned=new CodexSections(
+				Codex.content,Codex.docinfo);
 			    Codex.sections=Codex.sectioned.sections;}
 			Codex.bypage=false;
 			Codex.bysect=true;}
