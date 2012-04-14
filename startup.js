@@ -986,17 +986,22 @@ Codex.Startup=
 		var div=fdjtID("CODEXGLOSSOUTLETS");
 		var i=0; var ilim=outlets.length;
 		while (i<ilim) {
-		    var outlet=outlets[i];
-		    var span=
-			fdjtDOM("span.outlet",outlet.nick||outlet.name);
-		    span.value=outlet._id;
-		    if ((outlet.description)&&(outlet.nick))
-			span.title=outlet.name+": "+outlet.description;
-		    else if (outlet.description)
-			span.title=outlet.description;
-		    else if (outlet.nick) span.title=outlet.name;
-		    fdjtDOM(div,((i>0)&&(" \u2014 ")),span);
-		    i++;}}
+		    var outlet=outlets[i++];
+		    var humid=outlet.humid;
+		    var sourcetag=fdjtID("cxOUTLET"+humid);
+		    if (!(sourcetag)) { // Add entry to the share cloud
+			var completion=fdjtDOM("span.completion.source",outlet.name);
+			completion.id="cxOUTLET"+humid;
+			completion.setAttribute("value",outlet._id);
+			completion.setAttribute("key",outlet.name);
+			if ((outlet.description)&&(outlet.nick))
+			    completion.title=outlet.name+": "+outlet.description;
+			else if (outlet.description)
+			    completion.title=outlet.description;
+			else if (outlet.nick) completion.title=outlet.name;
+			fdjtDOM(div,completion," ");
+			if (Codex.outlet_cloud)
+			    Codex.outlet_cloud.addCompletion(completion);}}}
 	    setupUI4User();
 	    return Codex.user;}
 	Codex.setUser=setUser;
@@ -1404,6 +1409,8 @@ Codex.Startup=
 	 fdjtDOM.replace("CODEXSEARCHCLOUD",Codex.fullCloud().dom);
 	 startupMessage("setting up glossing cloud...");
 	 fdjtDOM.replace("CODEXGLOSSCLOUD",Codex.glossCloud().dom);
+	 startupMessage("setting up outlet cloud...");
+	 Codex.outletCloud();
 	 if (Codex.cloud_queue) {
 	     fdjtLog("Starting to sync gloss cloud");
 	     fdjtTime.slowmap(

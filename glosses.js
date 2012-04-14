@@ -378,17 +378,21 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var input=false;
 	var syncelt=fdjtDOM.getInput(form,"SYNC");
 	syncelt.value=(Codex.syncstamp+1);
-	if (mode==='addtag') {
-	    input=fdjtDOM.getInput(form,"TAG");
-	    gloss_cloud.complete(((input)&&(input.value))||"");}
-	else if (mode==='editnote') {
+	if (mode==='editnote') {
 	    input=fdjtDOM.getInput(form,"NOTE");
 	    if (input)
 		gloss_cloud.complete(getbracketed(input,false)||"");
 	    else gloss_cloud.complete("");}
+	else if (mode==='addtag') input=fdjtDOM.getInput(form,"TAG");
 	else if (mode==='addlink') input=fdjtDOM.getInput(form,"LINK");
 	else if (mode==='excerpt') input=fdjtDOM.getInput(form,"EXCERPT");
-	else {}
+	else if (mode==='addoutlet') input=fdjtDOM.getInput(form,"OUTLET");
+	var outlet_input=fdjtDOM.getInput(form,"OUTLET");
+	if (outlet_input)
+	    outlet_cloud.complete((outlet_input.value)||"");
+	if (mode!=='editnote') {
+	    var tag_input=fdjtDOM.getInput(form,"TAG");
+	    gloss_cloud.complete((tag_input.value)||"");}
 	if (input) input.focus();}
     Codex.setGlossForm=setGlossForm;
     
@@ -621,6 +625,36 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    var live=fdjtID("CODEXLIVEGLOSS");
 	    var form=((live)&&(fdjtDOM.getChild(live,"form")));
 	    addTag(form,completion);}
+	fdjtUI.cancel(evt);}
+
+    /***** The Gloss Cloud *****/
+
+    var outlet_cloud=false;
+    
+    /* The completions element for outlets */
+    function outletCloud(){
+	if (outlet_cloud) return outlet_cloud;
+	var completions=fdjtID("CODEXGLOSSOUTLETS");
+	completions.onclick=outletcloud_ontap;
+	Codex.outlet_cloud=outlet_cloud=
+	    new fdjtUI.Completions(
+		completions,false,
+		fdjtUI.FDJT_COMPLETE_OPTIONS|
+		    fdjtUI.FDJT_COMPLETE_CLOUD|
+		    fdjtUI.FDJT_COMPLETE_ANYWORD);
+	return outlet_cloud;}
+    Codex.outletCloud=outletCloud;
+    
+    function outletcloud_ontap(evt){
+	var target=fdjtUI.T(evt);
+	var completion=fdjtDOM.getParent(target,'.completion');
+	if (completion) {
+	    var live=fdjtID("CODEXLIVEGLOSS");
+	    var form=((live)&&(fdjtDOM.getChild(live,"form")));
+	    if (hasClass(completion,"source")) {
+		var value=completion.getAttribute("value");
+		addOutlet(form,fdjtKB.ref(value));}
+	    else {}}
 	fdjtUI.cancel(evt);}
 
     /***** Saving (submitting/queueing) glosses *****/

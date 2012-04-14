@@ -41,7 +41,7 @@ var Codex=
      // How long it takes a gesture to go from tap to hold
      holdmsecs: 500, edgeclick: 50, pagesize: 250,
      animate: {pages:true,hud: true},
-     glossmodes: /(addtag)|(addlink)|(excerpt)|(editnote)/,
+     glossmodes: /(addtag)|(addlink)|(excerpt)|(editnote)|(addoutlet)/,
      updatehash: true,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include

@@ -222,21 +222,27 @@ div.codexglossform form.focused span.inputhelp { display: inline;}
 
 div.codexglossform form div.inputbox { margin-right: 50px;}
 div.codexglossform form textarea { display: none;}
-div.codexglossform form div.textbox { }
-div.codexglossform form div.textbox textarea {
-    min-height: 1em; overflow: hidden; font-size: 16px;
+div.codexglossform form div.textbox {
+    margin-left: 0.5em;}
+div.codexglossform form div.textbox textarea,
+div.codexglossform form div.textbox input[TYPE='TEXT'] {
+    min-height: 30px; overflow: hidden; font-size: 16px;
     border: solid darkblue 1px;
-    margin: 0px; width: 99%; max-width: 99%;
+    margin: 0px; padding-left: 3px;
+    width: 99%; max-width: 99%; 
     background-position: right top;
     background-position-x: right; background-position-y: top;
-    background-repeat: no-repeat;}
+    background-repeat: no-repeat;
+    display: none;}
 div.codexglossform form div.textbox div.inputhelp {
     font-style: italic; margin-left: 2em; text-indent: -1em;
     display: none;}
+/* We've disabled input help for now */
 div.codexglossform form.editnote div.textbox div.inputhelp.notehelp,
 div.codexglossform form.addtag div.textbox div.inputhelp.taghelp,
 div.codexglossform form.addlink div.textbox div.inputhelp.linkhelp,
-div.codexglossform form.excerpt div.textbox div.inputhelp.excerpthelp {
+div.codexglossform form.excerpt div.textbox div.inputhelp.excerpthelp,
+div.codexglossform form.excerpt div.textbox div.inputhelp.outlethelp {
     display: none;}
 
 div.codexglossform form div.button {
@@ -257,20 +263,24 @@ div.codexglossform.glossreply form div.altbutton span.addbutton {
 div.codexglossform form textarea[name='NOTE'] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/justremarkballoon24x24.png);}
-div.codexglossform div.textbox textarea[name='TAG'] {
+div.codexglossform div.textbox input[name='TAG'] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/codex/TagIcon24x24.png);}
-div.codexglossform div.textbox textarea[name='LINK'] {
+div.codexglossform div.textbox input[name='LINK'] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/DiagLink24x24.png);}
+div.codexglossform div.textbox input[name='OUTLET'] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/graphics/codex/sbookspeople24x24.png);}
 div.codexglossform form textarea[name='EXCERPT'] {
     background-color: yellow; color: black;
     background-image:     url(https://beingmeta.s3.amazonaws.com/static/graphics/scissorsicon24x24.png);}
 
 div.codexglossform form.editnote div.textbox textarea[name='NOTE'],
-div.codexglossform form.addtag div.textbox textarea[name='TAG'],
-div.codexglossform form.excerpt div.textbox textarea[name='EXCERPT'],
-div.codexglossform form.addlink div.textbox textarea[name='LINK'] {
+div.codexglossform form.addtag div.textbox input[name='TAG'],
+div.codexglossform form.excerpt div.textbox inpu[name='EXCERPT'],
+div.codexglossform form.addlink div.textbox input[name='LINK'],
+div.codexglossform form.addoutlet div.textbox input[name='OUTLET'] {
     display: block;}
 
 div.codexglossform form div.inputhelp {
@@ -354,6 +364,7 @@ div.codexglossform.hasexcerpt form div.glossetc > span .button[alt='excerpt'] {
 
 div.codexglossform form.editnote div.glossetc span .button[alt='note'],
 div.codexglossform form.addtag div.glossetc span .button[alt='tag'],
+div.codexglossform form.addoutlet div.glossetc span .button[alt='outlet'],
 div.codexglossform form.addlink div.glossetc span .button[alt='link'],
 div.codexglossform form.excerpt div.glossetc span .button[alt='excerpt'] {
     background-color: white; border-color: darkblue; border-style: solid;}
@@ -397,7 +408,7 @@ div.codexglossform form .button.submitbutton {
     -webkit-border-bottom-left-radius: 6px;
     -moz-border-radius-bottomleft: 6px;
     -o-border-radius-bottomleft: 6px;
-    background-color: black;}
+    background-color: blue;}
 
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
@@ -1703,17 +1714,16 @@ body.cxNOUSER div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
-div#CODEXADDGLOSS div#CODEXGLOSSOUTLETS {
-    color: white;
+div#CODEXADDGLOSS div.completions#CODEXGLOSSOUTLETS {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
     -o-transition-property: height;
     transition-duration: 3s; -webkit-transition-duration: 3s;
-    -moz-duration: 3s; -o-transition-duration: 3s;
-    overflow: hidden; height: 0px;}
-div#CODEXADDGLOSS div#CODEXGLOSSOUTLETS span.outlet {
-    background-color: gold; color: black; white-space: nowrap;}
+    -moz-duration: 3s; -o-transition-duration: 3s;}
+body.hudup div#CODEXHUD.addgloss div#CODEXADDGLOSS.showoutlets
+  div.completions#CODEXGLOSSOUTLETS {
+    display: block;}
 
 /* Style variants */
 
