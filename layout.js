@@ -74,7 +74,9 @@ var CodexSections=
 	function addSections(node,docinfo){
 	    var open=false;
 	    var children=fdjtDOM.toArray(node.childNodes);
+	    var tracelevel=Codex.Trace.layout;
 	    var i=0; var lim=children.length;
+	    if (tracelevel>1) fdjtLog("addSections %o",node);
 	    while (i<lim) {
 		var child=children[i++];
 		if (child.nodeType!==1) {
@@ -202,6 +204,8 @@ var CodexSections=
 		Codex.paginating.Revert();
 		Codex.paginating=false;}
 	    else {}
+	    if (Codex.Trace.layout)
+		fdjtLog("Adding layout sections to %o",content);
 	    this.root=content;
 	    addSections(content,docinfo);
 	    this.sections=[];
@@ -209,11 +213,18 @@ var CodexSections=
 	    this.pagetops=[];
 	    var height=this.height=win.offsetHeight;
 	    this.scaled=[];
+	    if (Codex.Trace.layout)
+		fdjtLog("Gathering sections from %o",content);
 	    gatherSections(content,this.sections,docinfo);
+	    if (Codex.Trace.layout)
+		fdjtLog("Gathered %d sections from %o",
+			this.sections.length,content);
 	    var fullpages=fdjtDOM.getChildren(content,"sbookfullpage")||[];
 	    if ((fullpages)&&(fullpages.length))
 		fullpages=fullpages.concat(
 		    (fdjtDOM.getChildren(content,fullpages))||[]);
+	    if (Codex.Trace.layout)
+		fdjtLog("Adjusting %d fullpages",fullpages.length);
 	    var i=0, lim=fullpages.length;
 	    while (i<lim) {
 		var page=fullpages[i++];
@@ -222,10 +233,27 @@ var CodexSections=
 		    scaled.push(push);
 		    page.style[fdjtDOM.transform]=
 			"scale("+(height/page.offsetHeight)+")";}}
+	    if (Codex.Trace.layout)
+		fdjtLog("Done with initial layout of %o",content);
 	    return this;}
 	    
 	CodexSections.prototype.revert=function(){
 	    removeWrappers(this.root);};
+	
+	var forwardElt=fdjtDOM.forwardElt;
+	function getNextBlock(node){
+	    while (node=forwardElt(node)) {
+		if (node.codexui) continue;
+		else if ((node.tagName==='P')||(node.tagName==='DIV')||
+		    (node.tagName==='UL')||(node.tagName==='PRE')||
+		    (node.tagName==='BLOCKQUOTE'))
+		    return node;
+		else {
+		    var style=getStyle(node);
+		    var display=style.display;
+		    if ((display==='block')||(display==='table-row')||
+			(display==='list-item')||(display==='preformatted'))
+			return node;}}}
 	
 	function gatherFastBreaks(node,container,
 				  pagelim,height,
