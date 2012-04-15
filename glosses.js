@@ -127,6 +127,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var noteinput=fdjtDOM.getInput(form,"NOTE");
 	var taginput=fdjtDOM.getInput(form,"TAG");
 	var linkinput=fdjtDOM.getInput(form,"LINK");
+	var outletinput=fdjtDOM.getInput(form,"OUTLET");
 	if (noteinput) {
 	    noteinput.onkeypress=addgloss_keypress;
 	    noteinput.onkeydown=addgloss_keydown;
@@ -134,6 +135,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    else noteinput.value="";}
 	if (taginput) taginput.onkeyup=addtag_keypress;
 	if (linkinput) linkinput.onkeypress=addlink_keypress;
+	if (outletinput) outletinput.onkeypress=addoutlet_keypress;
 	if (Codex.syncstamp)
 	    fdjtDOM.getInput(form,"SYNC").value=(Codex.syncstamp+1);
 	var info=Codex.docinfo[passageid];
@@ -238,9 +240,20 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		fdjtUI.CheckSpan.set(checkspan,checked);
 		return;}
 	    else i++;}
-	var info=Codex.sourcekb.ref(outlet);
+	var info; var formvar="SHARE";
+	var spanspec="span.checkspan.outlet";
+	if (typeof outlet === 'string') {
+	    if ((outlet[0]==='@')||
+		((outlet[0]===':')&&(outlet[0]==='@')))
+		info=Codex.sourcekb.ref(outlet);
+	    else {
+		info={name: outlet};
+		spanspec="span.checkspan.email";
+		formvar="EMAIL";}}
+	else info=outlet;
+	
 	var checkspan=fdjtUI.CheckSpan(
-	    "span.checkspan.outlet","SHARE",outlet,checked,
+	    spanspec,formvar,outlet,checked,
 	    info.nick||info.name);
 	if (info.description) checkspan.title=info.description;
 	fdjtDOM(outletspan," ",checkspan);}
@@ -517,10 +530,36 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		(completions.length===0)||
 		(evt.shiftKey))
 		addTag(form,content);
-	    else addTag(form,completions[0]);
+	    else {
+		var completions=gloss_cloud.complete(content);
+		if (completions.length)
+		    addTag(form,completions[0]);
+		else addTag(form,content);}
 	    fdjtUI.cancel(evt);
 	    target.value="";
 	    gloss_cloud.complete("");}
+	else setTimeout(function(evt){
+	    gloss_cloud.complete(target.value);},
+			100);}
+    function addoutlet_keypress(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var content=target.value;
+	var form=fdjtDOM.getParent(target,"FORM");
+	var ch=evt.keyCode||evt.charCode;
+	if ((fdjtString.isEmpty(content))&&(ch===13)) {
+	    return;}
+	if (content.length===0) {
+	    outlet_cloud.complete("");
+	    return;}
+	else if (ch===13) {
+	    var completions=outlet_cloud.complete(content);
+	    if (completions.length)
+		addOutlet(form,completions[0].getAttribute("value"));
+	    else addOutlet(form,content);
+	    fdjtUI.cancel(evt);
+	    target.value="";
+	    outlet_cloud.complete("");}
 	else setTimeout(function(evt){
 	    gloss_cloud.complete(target.value);},
 			100);}
