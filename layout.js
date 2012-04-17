@@ -309,6 +309,9 @@ var CodexSections=
 	    if (!(section)) return [];
 	    var sectnum=((typeof arg === 'number')?(arg):
 			 atoi(arg.getAttribute('data-sectnum')));
+	    if (Codex.Trace.layout)
+		fdjtLog("Computing %dpx-high pages for section %d (%o)",
+			this.height,sectnum,section);
 	    if (this.pagebreaks[sectnum-1])
 		return this.pagebreaks[sectnum-1];
 	    else if (section.offsetHeight===0) return false;
@@ -326,7 +329,69 @@ var CodexSections=
 		    section.style.marginBottom=
 			(pagelim-section.offsetHeight)+"px";}
 		else {}
+		if (Codex.Trace.layout)
+		    fdjtLog("Found %d %dpx-high pages for section %d",
+			    breaks.length,this.height,sectnum,section);
 		return breaks;}};
+
+	CodexSections.prototype.getPageMap=function(height,callback){
+	    if (typeof height === 'undefined') height=this.height;
+	    if ((height===this.height)&&(this.pagelocs))
+		return this.pagelocs;
+	    else if (Codex.paginating) return;
+	    else {
+		var sectioned=this;
+		var pagebreaks=this.pagebreaks;
+		var pagetops=this.pagetops;
+		var pagelocs=[]; var pagenums=[];
+		Codex.paginating=this;
+		fdjtLog("Computing page breaks across %d sections (height=%d)",
+			this.sections.length,height);
+		fdjtTime.slowmap(function(section){
+		    var sectnum=parseInt(section.getAttribute("data-sectnum"));
+		    var breaks=pagebreaks[sectnum-1];
+		    var startpage=pagelocs.length;
+		    if (!(breaks)) {
+			var ostyle=section.style;
+			// Move it out of the way of any actual content
+			section.style.position="absolute";
+			section.style.visibility="hidden";
+			section.style.overflow="visible";
+			section.style.display="block";
+			section.style.zIndex=-500;
+			Codex.content.appendChild(section);
+			breaks=sectioned.getPageBreaks(section);
+			// Put it back into the content stream
+			section.style=ostyle;}
+		    var tops=pagetops[sectnum-1], pages=[];
+		    var i=0; var lim=breaks.length;
+		    while (i<lim) {
+			pagelocs.push({section: section, off: breaks[i],
+				       breaks: breaks, tops: tops,
+				       sectnum: sectnum,pageoff: i,
+				       pageno: pagelocs.length+1});
+			pages.push(pagelocs.length);
+			i++;}
+		    if (Codex.Trace.layout)
+			if (breaks.length===1)
+			    fdjtLog("Added one page (%d) for section %d (%o)",
+				    pagelocs.length,sectnum,section);
+		    else fdjtLog("Added %d pages (%d-%d) for section %d (%o)",
+				 breaks.length,startpage+1,pagelocs.length,
+				 sectnum,section);
+		    pagenums[sectnum-1]=pages;},
+				 this.sections,
+				 false,
+				 function(){
+				     sectioned.height=height;
+				     sectioned.pagelocs=pagelocs;
+				     sectioned.pagenums=pagenums;
+				     Codex.paginating=false;
+				     fdjtLog("Added %d pages for %s sections",
+					     sectioned.pagelocs.length,
+					     sectioned.sections.length);
+				     if (callback) callback(sectioned);},
+				 100);}};
 			 
 	/* Movement by pages */
 	
