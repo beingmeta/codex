@@ -1095,6 +1095,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 			  breaks: breaks, pageoff: 0,
 			  tops: Codex.sectioned.pagetops[cursection],
 			  off: 0};
+		if (Codex.pagecount)
+		    next.pagenum=Codex.sectioned.pagenums[cursection][0];
 		Codex.GoToSection(next,"pageForward",true);}
 	    else {
 		var breaks=Codex.sectioned.getPageBreaks(section);
@@ -1104,6 +1106,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		var next={sectnum: cursection, section: section,
 			  off: breaks[i], breaks: breaks, pageoff: i,
 			  tops: Codex.sectioned.pagetops[cursection-1]};
+		if (Codex.pagecount)
+		    next.pagenum=Codex.sectioned.pagenums[cursection-1][i];
 		Codex.GoToSection(next,"pageForward",true);}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
@@ -1146,6 +1150,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 			  breaks: breaks, pageoff: nbreaks-1,
 			  tops: Codex.sectioned.pagetops[cursection-2]||false,
 			  off: ((breaks)?(breaks[nbreaks-1]):(0))};
+		if (Codex.pagecount) 
+		    next.pagenum=
+		    Codex.sectioned.pagenums[cursection-2][nbreaks-1];
 		Codex.GoToSection(next,"pageBackward",true);}
 	    else {
 		var breaks=Codex.sectioned.getPageBreaks(section);
@@ -1157,6 +1164,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 			  breaks: breaks, pageoff: i,
 			  tops: Codex.sectioned.pagetops[cursection-1],
 			  off: breaks[i]};
+		if (Codex.pagecount) 
+		    next.pagenum=
+		    Codex.sectioned.pagenums[cursection-1][i];
 		Codex.GoToSection(next,"pageBackward",true);}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
@@ -1327,15 +1337,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    gopage,Codex.pagecount);
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
-	Codex.startPreview(gopage,"pageinfo_hold");}
+	Codex.startPagePreview(gopage,"pageinfo_hold");}
     
     function pageinfo_release(evt){
-	Codex.stopPreview("pageinfo_release");}
+	Codex.stopPagePreview("pageinfo_release");}
 
     function pageinfo_hover(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
 	var target=fdjtUI.T(evt);
-	var offx=evt.clientX-getGeometry(pageinfo).left;
+	var offx=getOffX(evt);
 	var offwidth=pageinfo.offsetWidth;
 	var showpage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
 	/*

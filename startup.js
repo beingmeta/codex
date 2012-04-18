@@ -327,6 +327,15 @@ Codex.Startup=
 			    Codex.sectioned=
 				new CodexSections(
 				    Codex.content,Codex.docinfo,Codex.window);
+			    Codex.sectioned.breakupPages(
+				Codex.sectioned.height,
+				function(sectioned){
+				    fdjtDOM.addClass(document.body,"cxPAGED");
+				    Codex.pagecount=sectioned.pagelocs.length;
+				    if (Codex.section) {
+					Codex.curpage=sectioned.getPageNumber();
+					Codex.updatePageDisplay(
+					    Codex.curpage,Codex.location);}});
 			    Codex.sections=Codex.sectioned.sections;}
 			addClass(document.body,"cxBYSECT");}
 		    else addClass(document.body,"cxSCROLL");},

@@ -64,6 +64,8 @@ div#CODEXPAGE {
 body.cxSCROLL div#CODEXPAGE { display: none;}
 body.cxBYSECT div#CODEXPAGE { display: none;}
 
+body.cxBYPAGE div#CODEXWINDOW { display: none;}
+
 body.hudup div#CODEXPAGE {
     transition-property: opacity;
     -webkit-transition-property: opacity;
@@ -75,6 +77,8 @@ body.hudup div#CODEXPAGE {
 body.hudup div#CODEXPAGE {
     border-color: gray; border-style: inset;}
 body.hudup.codexpreview div#CODEXPAGE, body.codexpreview div#CODEXPAGE {
+    border-color: blue; border-style: dotted;}
+body.hudup.codexpreview div#CODEXWINDOW, body.codexpreview div#CODEXWINDOW {
     border-color: blue; border-style: dotted;}
 
 body.cxSHRINK div#CODEXPAGE div.codexpage {
@@ -1061,12 +1065,15 @@ body div.codexmargin#CODEXPAGEFOOT { bottom: 0px; vertical-align: bottom;}
 /* Bottom information */
 
 div#CODEXPAGEFOOT div#CODEXPAGEINFO {
-    vertical-align: bottom; height: 3ex; display: none;
+    vertical-align: bottom; height: 3ex;
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
+    border-top: solid black 1px;
     cursor: crosshair;
-    border-top: solid black 1px;}
+    display: none;}
 body.cxBYPAGE div#CODEXPAGEFOOT div#CODEXPAGEINFO {
+    display: block;}
+body.cxBYSECT.cxPAGED div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
 body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;}
