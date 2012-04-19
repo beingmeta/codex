@@ -76,6 +76,11 @@ div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
 
 div#CODEXFLYTOC div.codextoc.codexcurhead div.sub { display: none;}
 
+div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.spanbar {
+    border-left: solid black 1px;}
+div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.spanbar div.spans {
+    left: 0px;}
+
 div.codextoc .sectname.cohi { background-color: gold;}
 div.codextoc .sectname { color: darkblue; cursor: pointer;}
 div.codextoc div.sub a.sectname { 
@@ -99,7 +104,7 @@ div#CODEXHUD.tocscan div.codextoc.codexcurhead > img { display: inherit;}
 div#CODEXHUD.tocscan div.codextoc div.spanbar { display: none;}
 div#CODEXHUD.tocscan div.codextoc.codexcxthead > div.spanbar { display: block;}
 
-div#CODEXTOC div.spanbar {
+div#CODEXTOC div.spanbar, div#FLYTOC div.spanbar {
   position: relative;  /* opacity: 0.5;  */
   text-align: center; clear: both;
   margin: 0px; padding: 0px; border: 0px;
