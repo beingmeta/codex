@@ -87,6 +87,7 @@ var Codex=
 	 offline: 0,    // Whether to trace offline restoration, etc
 	 layout: 0,	// How much to trace pagination
 	 dosync: false, // Whether to trace state saves
+	 state: true,   // Whether to trace set state
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0}   // How much to trace gestures
@@ -506,6 +507,7 @@ var sbook_gloss_data=
 	if (!(state.tstamp)) state.tstamp=fdjtTime.tick();
 	if (!(state.refuri)) state.refuri=Codex.refuri;
 	Codex.state=state;
+	if (Codex.Trace.state) fdjtLog("Setting state to %j",state);
 	var statestring=JSON.stringify(state);
 	var uri=Codex.docuri||Codex.refuri;
 	fdjtState.setLocal("codex.state("+uri+")",statestring);}

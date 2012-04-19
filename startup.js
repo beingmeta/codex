@@ -1219,6 +1219,8 @@ Codex.Startup=
 	    if (target) Codex.GoTo(target,"initLocation",true,true);
 	    else if ((state)&&(state.target)&&(fdjtID(state.target)))
 		Codex.GoTo(state.target,"initLocation",true,true);
+	    else if ((state)&&(state.location))
+		Codex.GoTo(state.location,"initLocation",false,false);
 	    else if (Codex.start||Codex.coverpage||Codex.titlepage)
 		Codex.GoTo((Codex.start||Codex.coverpage||Codex.titlepage),
 			   "initLocation",false,false);
