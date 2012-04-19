@@ -69,20 +69,14 @@ Codex.Startup=
 
 	function startupLog(){
 	    var args=TOA(arguments);
-	    // var div=fdjtDOM("div#CODEXSTARTUPMSG",fdjtString.apply(null,args));
-	    fdjtLog.apply(null,arguments);
-	    // fdjtDOM.replace("CODEXSTARTUPMSG",div);
-	}
+	    fdjtLog.apply(null,arguments);}
 
 	function startupMessage(){
 	    var args=TOA(arguments);
-	    // var div=fdjtDOM("div#CODEXSTARTUPMSG",fdjtString.apply(null,args));
 	    if ((Codex.Trace.startup)&&
 		(typeof Codex.Trace.startup === "number")&&
 		(Codex.Trace.startup>1))
-		fdjtLog.apply(null,arguments);
-	    // fdjtDOM.replace("CODEXSTARTUPMSG",div);
-	}
+		fdjtLog.apply(null,arguments);}
 	Codex.startupMessage=startupMessage;
 
 	/* Configuration information */
@@ -240,6 +234,22 @@ Codex.Startup=
 		    Codex.version,sbooks_buildtime,sbooks_buildhost);
 	    if (navigator.appVersion)
 		fdjtLog("Navigator App version: %s",navigator.appVersion);
+	    if (fdjtState.getQuery("cxtrace")) {
+		var tracing=fdjtState.getQuery("cxtrace",true);
+		var i=0; var lim=tracing.length;
+		while (i<lim) {
+		    var trace_spec=tracing[i++];
+		    var colon=trace_spec.indexOf(":");
+		    if (colon<0) {
+			if (typeof Codex.Trace[trace_spec] === 'number')
+			    Codex.Trace[trace_spec]=1;
+			else Codex.Trace[trace_spec]=true;}
+		    else {
+			var trace_name=trace_spec.substr(0,colon);
+			var trace_val=trace_spec.substr(colon+1);
+			if (typeof Codex.Trace[trace_name] === 'number')
+			    Codex.Trace[trace_name]=parseInt(trace_val);
+			else Codex.Trace[trace_name]=trace_val;}}}
 	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
 	    // Get various settings for the sBook, including
 	    // information for scanning, graphics, glosses, etc
@@ -1207,7 +1217,11 @@ Codex.Startup=
 	    if (!(state)) {
 		var uri=Codex.docuri||Codex.refuri;
 		var statestring=getLocal("codex.state("+uri+")");
-		if (statestring) Codex.state=state=JSON.parse(statestring);
+		if (statestring) {
+		    Codex.state=state=JSON.parse(statestring);
+		    if (Codex.Trace.state)
+			fdjtLog("Got state from local storage: %j",
+				state);}
 		else state={};}
 	    var hash=window.location.hash; var target=false;
 	    if ((typeof hash === "string") && (hash.length>0)) {

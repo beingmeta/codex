@@ -87,7 +87,7 @@ var Codex=
 	 offline: 0,    // Whether to trace offline restoration, etc
 	 layout: 0,	// How much to trace pagination
 	 dosync: false, // Whether to trace state saves
-	 state: true,   // Whether to trace set state
+	 state: false,  // Whether to trace set state
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 gestures: 0}   // How much to trace gestures
@@ -545,17 +545,17 @@ var sbook_gloss_data=
 		uri=uri+"&page="+encodeURIComponent(state.page);
 	    if (typeof Codex.pagecount === 'number')
 		uri=uri+"&maxpage="+encodeURIComponent(Codex.pagecount);
-	    if (Codex.Trace.dosync)
-		fdjtLog("syncPosition(call) %s: %o",uri,state);
+	    if ((Codex.Trace.dosync)||(Codex.Trace.state))
+		fdjtLog("syncState(call) %s: %j",uri,state);
 	    var req=new XMLHttpRequest();
 	    syncing=state;
 	    req.onreadystatechange=function(evt){
 		if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
 		    Codex.syncstate=syncing;
 		    syncing=false;}
-		if (Codex.Trace.dosync)
-		    fdjtLog("serverSync(callback) ready=%o status=%o %o",
-			    req.readyState,req.status,evt);};
+		if ((Codex.Trace.dosync)||(Codex.Trace.state))
+		    fdjtLog("serverSync(callback) %o ready=%o status=%o %j",
+			    evt,req.readyState,req.status,syncing);};
 	    req.open("GET",uri,true);
 	    req.withCredentials='yes';
 	    req.send();}}
