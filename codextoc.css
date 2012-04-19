@@ -16,8 +16,8 @@ div.codextoc div.head { min-height: 24px;}
 div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
 
 div.codextoc div.head .progressbar { 
-  color: lightblue; background-color: lightblue;
-  padding: 0px; margin: 0px; border-right: solid red 3px;
+  color: rgb(173,216,230); background-color: rgb(173,216,230);
+  padding: 0px; margin: 0px; border-right: solid red 1px;
   position: absolute;  left: 0px; height: 100%;
   z-index: -100; opacity: 0.5;}
 div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
@@ -31,6 +31,12 @@ div.codextoc.codexlivehead div.head { display: block;}
 
 div.codextoc.codexlivehead div.codextoc { display: none;}
 div.codextoc.codexlivehead div.codextoc.codexlivehead { display: block;}
+div.codextoc div.spanbar div.codexhudspan a.brick {
+    border: solid darkblue 1px; border-left: 0px;}
+div.codextoc div.spanbar div.codexhudspan:first-child a.brick {
+    border-left: 1px;}
+div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
+    background-color: lightblue;}
 
 div.codextoc div.sub {
     display: none; clear: both;}
@@ -59,7 +65,8 @@ div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codextocleaf > div.head {
 div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC hr.progressbar {
     display: none; border: none;}
 div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.progressbox { display: none;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codexlivehead > div.head { color: blue;}
+div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codexlivehead > div.head {
+    color: blue;}
 div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
   div.codexlivehead > div.head hr.progressbar {
       display: block;}
@@ -102,20 +109,27 @@ div#CODEXTOC div.spanbar {
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;}
-div.spanbar div.codexhudspan a.brick.codexlivehead {
-    background-color: lightblue; opacity: 0.5;}
-div#CODEXFLYTOC div.spanbar div.codexhudspan a.brick.codexlivehead {
-    background-color: blue; opacity: 0.5;}
+div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
+    border-color: lightblue; border-right-color: darkblue;
+    border-bottom: dotted 1px blue;}
 
-div#CODEXTOC div.spanbar { height: 40px; }
+div#CODEXTOC div.spanbar { height: 47px;}
+div#CODEXTOC div.spanbar > div.spans {
+    border-top: solid lightblue 7px; height: 40px; }
 div#CODEXTOC div.spanbar div.codexhudspan {
-    height: 38px; z-index: 50; opacity: 0.5;}
-div#CODEXTOC div.spanbar div.progressbox { height: 40px;}
-div#CODEXTOC div.spanbar div.spans {
-    font-size: 30px;
-    border-bottom: solid blue 1px;}
+    height: 40px; z-index: 50;}
+div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
+    height: 38px;}
+div#CODEXTOC div.spanbar div.progressbox {
+    vertical-align: top; height: 40px; border-top: solid red 7px;
+    bottom: 1px;}
+div#CODEXTOC div.spanbar div.spans { font-size: 30px;}
 div#CODEXTOC div.spanbar div.spans a.codextitle {
-    white-space: nowrap; height: 38px;}
+    white-space: nowrap; height: 36px;}
+
+div.spanbar div.progressbox { 
+    margin: 0px; padding: 0px; border: 0px; vertical-align: top;
+    width: 2px; background-color: red; position: absolute; z-index: 250; }
 
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar { height: 20px; }
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
@@ -126,7 +140,7 @@ div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.spans a.codextitle {
     display: none;}
 div#CODEXTOC div.codextoc.codexcurhead div.spanbar
    div.codexhudspan a.brick.cohi {
-       background-color: gold; opacity: 0.5;}
+       background-color: gold; } /* ... opacity: 0.5; */
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexheld a.brick {
     background-color: gold;}
 
@@ -153,10 +167,6 @@ div#CODEXHUD div#CODEXFLYTOC div.spans a.codextitle { display: none;}
 
 div#CODEXHUD div#CODEXFLYTOC div.codextoc div.spanbar { display: block;}
 
-div#CODEXTOC div.spanbar {
-    border-bottom: solid blue 1px; border-right: solid blue 1px;}
-div#CODEXTOC div.codextoc.codexcxthead div.spanbar {
-    border-bottom: solid blue 1px;}
 div.spanbar div.spans { 
   position: relative; width: 100%; /* background-color: black; */
   margin: 0px; padding: 0px; border: 0px;}
@@ -165,16 +175,12 @@ div.codextoc div.spanbar div.spans a.codextitle {
     position: absolute; top: 4px; width: 100%; z-index: 100;
     display: none;}
 div.codextoc div.spanbar div.spans a.codextitle.codexlivehead { display: block;}
-div.codextoc div.spanbar:hover div.spans a.codextitle {
-    z-index: 0;}
-div.codextoc div.spanbar:hover div.spans a.codextitle {
-    z-index: -50;}
 div.spanbar div.codexhudspan {
   background-color: transparent; clear: none; position: absolute;
   margin: 0px; padding: 0px; border: 0px;
   border-right: none; border-left: none;}
 div#CODEXFLYTOC div.spanbar div.codexhudspan {
-    border-top: solid blue 1px; border-bottom: solid blue 1px;}
+    }
 div.spanbar div.codexhudspan a.brick {
   display: block; text-decoration: none;
   border: 0px; padding: 0px;
@@ -195,11 +201,6 @@ div.spanbar { padding: 0px; margin: 0px;}
 div.spanbar div.spans { 
   width: 100%; padding: 0px; margin: 0px;}
 
-div.spanbar div.progressbox { 
-  width: 3px; background-color: red;
-  position: absolute; z-index: 250; 
-  margin: 0px; padding: 0px; border: 0px;}
-
 /* Handling preview mode */
 
 body.codexpreview #CODEXHUD div.spanbar div.spans { opacity: 0.1;}
@@ -213,6 +214,31 @@ body.codexpreview #CODEXHUD div.codextoc.codexlivehead > div.head {
 body.codexpreview #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
     opacity: 0.6;}
 
+/* The first one is special, doesn't need a top border to indicate
+   hierarchy */
+
+div#CODEXTOC div.codextoc.toc0 > div.spanbar { height: 40px;}
+div#CODEXTOC div.codextoc.toc0 > div.spanbar > div.spans {
+    border-top-width: 0px;}
+div#CODEXTOC div.codextoc.toc0 >
+   div.spanbar div.codexhudspan a.brick.codexlivehead {
+    border-top-color: darkblue;}
+div#CODEXTOC div.codextoc.toc0 >
+   div.spanbar div.progressbox {
+    height: 38px; border-top: solid transparent 1px;}
+
+/* The bottom tocspan in a stack */
+div#CODEXTOC div.codextoc.codexcxthead > div.spanbar > div.spans
+   a.brick.codexlivehead {
+       border-bottom: solid darkblue 1px;}
+div#CODEXTOC div.codextoc.codexcxthead > div.spanbar div.progressbox {
+       height: 39px;}
+
+/* No confusing underlines in the CODEXTOC */
+
+#CODEXHUD #CODEXTOC a { color: black;}
+#CODEXHUD #CODEXTOC a:visited { color: black;}
+#CODEXHUD #CODEXTOC a:hover { color: blue; text-decoration: none;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

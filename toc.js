@@ -152,8 +152,8 @@ var CodexTOC=
 		return false;
 	    var progress=fdjtDOM("div.progressbox","\u00A0");
 	    var range=false; var lastspan=false;
-	    fdjtDOM(spanbar,spans);
-	    fdjtDOM(spans,range,progress);
+	    fdjtDOM(spanbar,progress,spans);
+	    fdjtDOM(spans,range);
 	    progress.style.left="0%";
 	    if (range) range.style.left="0%";
 	    var i=0; while (i<subsections.length) {

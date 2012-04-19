@@ -956,11 +956,13 @@ var CodexPaginate=
 		    Codex.setLocation(location);}
 		updatePageDisplay(pagenum,Codex.location);
 		curpage=page; Codex.curpage=pagenum;
+		var curnode=fdjtID(page.getAttribute("data-topid"));
+		if (curnode) Codex.setHead(curnode);
 		if ((pushstate)&&(page)) {
 		    Codex.setState(
 			{location: atoi(page.getAttribute("data-sbookloc")),
 			 page: atoi(page.getAttribute("data-pagenum")),
-			 target: page.getAttribute("data-topid")});}
+			 target: Codex.target});}
 		var glossed=fdjtDOM.$(".glossed",page);
 		if (glossed) {
 		    var addGlossmark=Codex.UI.addGlossmark;
