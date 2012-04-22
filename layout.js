@@ -962,7 +962,7 @@ var CodexPaginate=
 		    Codex.setState(
 			{location: atoi(page.getAttribute("data-sbookloc")),
 			 page: atoi(page.getAttribute("data-pagenum")),
-			 target: Codex.target});}
+			 target: Codex.target.id});}
 		var glossed=fdjtDOM.$(".glossed",page);
 		if (glossed) {
 		    var addGlossmark=Codex.UI.addGlossmark;
