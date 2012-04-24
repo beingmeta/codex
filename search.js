@@ -198,9 +198,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		    clearTimeout(completeinfo.timer);
 		    completeinfo.timer=false;}
 		var completions=completeinfo.complete(qstring);
-		if (completions.length) {
-		    var value=completeinfo.getValue(completions[0]);
-		    setQuery(extendQuery(Codex.query,value));}}
+		var completion=(completeinfo.selection)||
+		    completeinfo.select(".cue");
+		var value=completeinfo.getValue(completion);
+		setQuery(extendQuery(Codex.query,value));}
 	    fdjtDOM.cancel(evt);
 	    if ((Codex.search_gotlucky) && 
 		(Codex.query._results.length>0) &&
@@ -211,17 +212,20 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		var completeinfo=queryCloud(Codex.query);
 		completeinfo.complete("");}
 	    return false;}
-	else if (ch==32) { /* Space */
+	else if (ch===9) { /* tab */
 	    var qstring=target.value;
 	    var completeinfo=queryCloud(Codex.query);
 	    var completions=completeinfo.complete(qstring);
+	    fdjtUI.cancel(evt);
 	    if (completions.prefix!==qstring) {
 		target.value=completions.prefix;
 		fdjtDOM.cancel(evt);
 		setTimeout(function(){
 		    Codex.UI.updateScroller("CODEXSEARCHCLOUD");},
 			   100);
-		return;}}
+		return;}
+	    else if (evt.shiftKey) completeinfo.selectPrevious();
+	    else completeinfo.selectNext();}
 	else {
 	    var completeinfo=queryCloud(Codex.query);
 	    completeinfo.docomplete(target);
@@ -515,7 +519,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		span.title=title+"; "+term;
 	    else span.title=""+sbook_index.freq(term)+" items: "+term;
 	    return span;}
-	var dterm=Codex.knodule.probe(term); var showterm=term;
+	var dterm=Codex.knodule.probe(term)||fdjtKB.probe(term);
+	var showterm=term;
 	if (!(dterm)) {
 	    if (just_knodes) return false;
 	    var knopos=term.indexOf('@');
@@ -525,7 +530,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	else if (!(dterm.dterm)) {
 	    fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
 	    dterm=false;}
-	var term_node=((dterm) ? (dterm.toHTML()) : (fdjtDOM("span.rawterm",showterm)));
+	var term_node=((dterm) ? (dterm.toHTML()) :
+		       (fdjtDOM("span.rawterm",showterm)));
 	if ((dterm)&&(fdjtString.hasSuffix(dterm.dterm,"...")))
 	    addClass(term_node,"weak");
 	var span=fdjtDOM("span.completion");
