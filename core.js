@@ -90,6 +90,7 @@ var Codex=
 	 state: false,  // Whether to trace set state
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
+	 highlight: 1,  // Whether to trace highlighting
 	 gestures: 0}   // How much to trace gestures
     };
 var _sbook_setup=false;
@@ -150,7 +151,8 @@ var sbook_gloss_data=
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
 		Codex.index.add(item,item.maker);
 		var maker=Codex.sourcekb.ref(item.maker);
-		Codex.addTag2GlossCloud(maker); Codex.addTag2SearchCloud(maker);
+		Codex.addTag2GlossCloud(maker);
+		// Codex.addTag2SearchCloud(maker);
 		Codex.UI.addGlossSource(maker,true);
 		var tags=item.tags;
 		if (tags) {
@@ -168,8 +170,8 @@ var sbook_gloss_data=
 			    else info.glosstags=[knode];
 			    if (score) score=score*2; else score=1;
 			    Codex.index.add(item,knode,score);
-			    Codex.addTag2GlossCloud(knode);
-			    Codex.addTag2SearchCloud(knode);}}}
+			    // Codex.addTag2SearchCloud(knode);
+			    Codex.addTag2GlossCloud(knode);}}}
 		var sources=item.sources;
 		if (sources) {
 		    if (typeof sources === 'string') sources=[sources];
@@ -451,8 +453,8 @@ var sbook_gloss_data=
 	fdjtState.setCookie(
 	    "codextarget",target.id||target.getAttribute('data-sbookid'));
 	Codex.target=target;
-	if (Codex.full_cloud)
-	    Codex.setCloudCuesFromTarget(Codex.full_cloud,target);}
+	if (Codex.search_cloud)
+	    Codex.setCloudCuesFromTarget(Codex.search_cloud,target);}
     Codex.setTarget=setTarget;
 
     /* Navigation */

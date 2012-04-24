@@ -471,13 +471,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    else words=words.concat(spelling);}}
 	    if (words.length===0) words=false;}
 	if (!(words)) return;
+	if (typeof words === 'string') words=[words];
 	var j=0; var jlim=words.length;
 	while (j<jlim) {
 	    var word=words[j++];
 	    var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gm");
 	    var ranges=fdjtDOM.findMatches(target,pattern);
-	    fdjtLog("Trying to highlight %s (using %o) in %o, ranges=%o",
-		    word,pattern,target,ranges);
+	    if (Codex.Trace.highlight)
+		fdjtLog("Trying to highlight %s (using %o) in %o, ranges=%o",
+			word,pattern,target,ranges);
 	    if ((ranges)&&(ranges.length)) {
 		var k=0; while (k<ranges.length) 
 		    fdjtUI.Highlight(ranges[k++],"highlightsearch");}}}

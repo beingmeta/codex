@@ -34,7 +34,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 */
 
 (function(){
-    Codex.full_cloud=false;
+    Codex.search_cloud=false;
     if (!(Codex.empty_cloud)) Codex.empty_cloud=false;
     if (!(Codex.show_refiners)) Codex.show_refiners=25;
     if (!(Codex.search_gotlucky)) Codex.search_gotlucky=7;
@@ -43,7 +43,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     function cxicon(name,suffix) {
 	return Codex.graphics+"codex/"+name+(suffix||"");}
 
+    var Completions=fdjtUI.Completions;
     var addClass=fdjtDOM.addClass;
+    var log=fdjtLog;
+    var kbref=fdjtKB.ref;
 
     /* Query functions */
 
@@ -56,7 +59,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     Codex.getQuery=function(){return Codex.query;}
     
     function setQuery(query){
-	if (Codex.Trace.search) fdjtLog("Setting working query to %o",query);
+	if (Codex.Trace.search) log("Setting working query to %o",query);
 	var query=Codex.query=useQuery(query,fdjtID("CODEXSEARCH"));
 	if (Codex.mode==="search") {
 	    if (query._results.length===0) {}
@@ -80,16 +83,16 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	if ((query.dom)&&(box)&&(box!==query.dom))
 	    fdjtDOM.replace(box_arg,query.dom);
 	if (qstring===box.getAttribute("qstring")) {
-	    fdjtLog("No change in query for %o to %o: %o/%o (%o)",
-		    box,result._query,result,result._refiners,qstring);
+	    log("No change in query for %o to %o: %o/%o (%o)",
+		box,result._query,result,result._refiners,qstring);
 	    return;}
 	if (Codex.Trace.search>1)
-	    fdjtLog("Setting query for %o to %o: %o/%o (%o)",
-		    box,result._query,result,result._refiners,qstring);
+	    log("Setting query for %o to %o: %o/%o (%o)",
+		box,result._query,result,result._refiners,qstring);
 	else if (Codex.Trace.search)
-	    fdjtLog("Setting query for %o to %o: %d results/%d refiners (%o)",
-		    box,result._query,result._results.length,
-		    result._refiners._results.length,qstring);
+	    log("Setting query for %o to %o: %d results/%d refiners (%o)",
+		box,result._query,result._results.length,
+		result._refiners._results.length,qstring);
 	var input=fdjtDOM.getChild(box,".searchinput");
 	var cloudid=input.getAttribute("completions");
 	var resultsid=input.getAttribute("results");
@@ -110,12 +113,24 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var newtags=fdjtDOM("span.qtags");
 	while (i<lim) {
 	    var tag=elts[i];
-	    if (typeof tag === 'string') tag=fdjtKB.ref(tag)||tag;
+	    if (typeof tag === 'string') tag=kbref(tag)||tag;
 	    if (i>0) fdjtDOM(newtags," \u00B7 ");
-	    if (typeof tag === "string")
+	    // Handle section references as tags
+	    if ((typeof tag === "string")&&(tag[0]==="\u00A7")) {
+		var showname=tag;
+		if (tag.length>20) {
+		    var start=tag.indexOf(' ',8);
+		    var end=tag.lastIndexOf(' ',showname.length-8);
+		    if (start<0) start=8; if (end<0) end=showname.length-8;
+		    if (start<(showname.length-end)) {
+			showname=showname.slice(0,start)+" \u2026 "+
+			    showname.slice(end);}
+		    title=tag;}
+		var span=fdjtDOM("span.completion",
+				 fdjtDOM("span.sectname",showname));
+		fdjtDOM(newtags,span);}
+	    else if (typeof tag === "string")
 		fdjtDOM(newtags,fdjtDOM("span.rawterm",tag));
-	    else if (tag.name)
-		fdjtDOM(newtags,fdjtDOM("span.dterm",tag.name));
 	    else fdjtDOM(newtags,tag);
 	    i++;}
 	if (qtags.id) newtags.id=qtags.id;
@@ -137,8 +152,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.dropClass(box,"norefiners");
 	if (cloudid) completions.id=cloudid;
 	if (Codex.Trace.search>1)
-	    fdjtLog("Setting search cloud for %o to %o",
-		    box,completions.dom);
+	    log("Setting search cloud for %o to %o",box,completions.dom);
 	cloudid=cloud.id;
 	fdjtDOM.replace(cloud,completions.dom);
 	    completions.complete("");
@@ -153,7 +167,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     function extendQuery(query,elt){
 	var elts=[].concat(query._query);
 	if (typeof elt === 'string') 
-	    elts.push(fdjtKB.ref(elt)||elt);
+	    elts.push(kbref(elt)||elt);
 	else elts.push(elt);
 	return useQuery(query.index.Query(elts),query._box);}
     Codex.extendQuery=extendQuery;
@@ -182,6 +196,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 
     var _sbook_searchupdate=false;
     var _sbook_searchupdate_delay=200;
+    var Selector=fdjtDOM.Selector;
     
     function searchInput_keyup(evt){
 	evt=evt||event||null;
@@ -199,7 +214,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		    completeinfo.timer=false;}
 		var completions=completeinfo.complete(qstring);
 		var completion=(completeinfo.selection)||
-		    completeinfo.select(".cue");
+		    completeinfo.select(new Selector(".cue"))||
+		    completeinfo.select();
 		var value=completeinfo.getValue(completion);
 		setQuery(extendQuery(Codex.query,value));}
 	    fdjtDOM.cancel(evt);
@@ -303,7 +319,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var scores=new Array(lim);
 	while (i<lim) {
 	    var r=results[i++];
-	    var ref=Codex.docinfo[r]||Codex.glosses.map[r]||fdjtKB.ref(r)||r;
+	    var ref=Codex.docinfo[r]||Codex.glosses.map[r]||kbref(r)||r;
 	    if (!(ref)) continue;
 	    var frag=ref.frag;
 	    if (!(frag)) continue;
@@ -343,7 +359,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
     function queryCloud(query){
 	if (query._cloud) return query._cloud;
 	else if ((query._query.length)===0) {
-	    query._cloud=fullCloud();
+	    query._cloud=searchCloud();
 	    return query._cloud;}
 	else if (!(query._refiners)) {
 	    query._cloud=Codex.empty_cloud;
@@ -352,19 +368,19 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var refiners=query._refiners;
 	    var completions=makeCloud(
 		refiners._results,refiners,refiners._freqs);
-	    completions.onclick=cloud_ontap;
+	    var cloud=completions.dom;
+	    cloud.onclick=cloud_ontap;
 	    var n_refiners=query._refiners._results.length;
 	    var hide_some=(n_refiners>Codex.show_refiners);
 	    if (hide_some) {
-		var cues=fdjtDOM.$(".cue",completions);
+		var cues=fdjtDOM.$(".cue",cloud);
 		if (!((cues)&&(cues.length))) {
-		    var compelts=fdjtDOM.$(".completion",completions);
+		    var compelts=fdjtDOM.$(".completion",cloud);
 		    var i=0; var lim=((compelts.length<Codex.show_refiners)?
 				      (compelts.length):(Codex.show_refiners));
 		    while (i<lim) addClass(compelts[i++],"cue");}}
-	    else addClass(completions,"showempty");
-	    query._cloud=
-		new fdjtUI.Completions(completions,fdjtID("CODEXSEARCHINPUT"));
+	    else addClass(cloud,"showempty");
+	    query._cloud=completions;
 	    return query._cloud;}}
     Codex.queryCloud=queryCloud;
     KnoduleIndex.Query.prototype.getCloud=function(){return queryCloud(this);};
@@ -378,10 +394,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var value=cinfo.getValue(completion);
 	    if (typeof value !== 'string') add_searchtag(value);
 	    else  if (value.length===0) {}
-	    else if (value[0]==='@')
-		add_searchtag(Codex.knodule.ref(value.slice(1)));
-	    else if (value.indexOf('@')>0)
-		add_searchtag(fdjtKB.ref(value));
+	    else if (value.indexOf('@')>=0)
+		add_searchtag(kbref(value));
+	    else if ((Codex.knodule)&&(Codex.knodule.probe(value)))
+		add_searchtag(Codex.knodule.probe(value));
 	    else add_searchtag(value);
 	    fdjtDOM.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".resultcounts")) {
@@ -402,9 +418,10 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	else {}}
     Codex.UI.handlers.cloud_ontap=cloud_ontap;
 
-    function makeCloud(dterms,scores,freqs,ranks_arg,noscale){
+    function makeCloud(dterms,scores,freqs,ranks_arg,noscale,completions){
 	var sbook_index=Codex.index;
-	var primescores=((Codex.knodule)&&(Codex.knodule.primescores));
+	var knodule=Codex.knodule
+	var primescores=((knodule)&&(knodule.primescores));
 	var start=new Date();
 	var n_terms=dterms.length;
 	var i=0, max_score=0, min_score=false, primecues=0;
@@ -418,17 +435,23 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		    else if (score<min_score) min_score=score;
 		    if (score>max_score) max_score=score;}}}
 	if (Codex.Trace.clouds)
-	    fdjtLog("Making cloud from %d dterms using scores=%o [%d,%d] and freqs=%o",
-		    dterms.length,scores,max_score,min_score,freqs);
-	// We show cues if there are too many terms and we would have any cues to show
-	//  Cues are either primescores or higher scored items
-	var usecues=(!((n_terms<17)||((max_score===min_score)&&(primescores===0))));
+	    log("Making cloud from %d dterms w/scores=%o [%d,%d] and freqs=%o",
+		dterms.length,scores,max_score,min_score,freqs);
+	// We show cues if there are too many terms and we would have
+	//  any cues to show Cues are either primescores or higher
+	//  scored items
+	var usecues=(!((n_terms<17)||
+		       ((max_score===min_score)&&(primescores===0))));
 	var spans=fdjtDOM("span");
 	if (usecues) {
-	    var showall=fdjtDOM("span.showall",fdjtDOM("span.showmore","more"),fdjtDOM("span.showless","less"));
+	    var showall=fdjtDOM(
+		"span.showall",
+		fdjtDOM("span.showmore","more"),
+		fdjtDOM("span.showless","less"));
 	    showall.onclick=showempty_ontap;}
 	else fdjtDOM.addClass(completions,"showempty");
-	var completions=fdjtDOM("div.completions",showall,spans);
+	var cloud=fdjtDOM("div.completions",showall,spans);
+	if (!(completions)) completions=new Completions(cloud);
 	var copied=[].concat(dterms);
 	var ranks=(((ranks_arg===true)||(typeof ranks_arg==='undefined'))?
 		   (sbook_index.rankTags()):
@@ -461,19 +484,24 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    var title=((freq===cfreq)?
 		       ("score="+score+"; "+freq+" items"):
 		       ("score="+score+"; "+freq+"/"+cfreq+" items"));
-	    var span=KNodeCompletion(dterm,title,false);
+	    var ref=kbref(dterm,knodule);
+	    var span=KNodeCompletion(ref||dterm,title);
 	    if (!(span)) continue;
 	    if (freq===1) addClass(span,"singleton");
 	    if ((usecues)&&
 		((primescores[dterm])||
-		 ((scores[dterm])&&(max_score>min_score)&&(scores[dterm]>min_score))))
+		 ((scores[dterm])&&(max_score>min_score)&&
+		  (scores[dterm]>min_score))))
 		addClass(span,"cue");
 	    domnodes.push(span);
 	    if ((scores)&&(!(noscale))) {
 		if ((!(minscale))||(scaling<minscale)) minscale=scaling;
 		if ((!(maxscale))||(scaling>maxscale)) maxscale=scaling;
 		nodescales.push(scaling);}
-	    fdjtDOM(spans,span,"\n");}
+	    span.setAttribute("value",dterm);
+	    fdjtDOM(spans,span,"\n");
+	    if (completions) completions.addCompletion(
+		span,false,ref||dterm);}
 	// fdjtLog("minscale=%o, maxscale=%o",minscale,maxscale);
 	if (nodescales.length) {
 	    var j=0; var jlim=domnodes.length;
@@ -481,18 +509,18 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    while (j<jlim) {
 		var node=domnodes[j];
 		var scale=nodescales[j];
-		node.style.fontSize=(100+(100*((scale-minscale)/scalespan)))+'%';
+		node.style.fontSize=
+		    (100+(100*((scale-minscale)/scalespan)))+'%';
 		j++;}}
 	var maxmsg=fdjtDOM
 	("div.maxcompletemsg",
 	 "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
 	 " of completions.  ");
-	fdjtDOM.prepend(completions,maxmsg);
+	fdjtDOM.prepend(cloud,maxmsg);
 	var end=new Date();
 	if (Codex.Trace.clouds)
 	    fdjtLog("Made cloud for %d dterms in %f seconds",
 		    dterms.length,(end.getTime()-start.getTime())/1000);
-
 	return completions;}
     Codex.makeCloud=makeCloud;
 
@@ -500,82 +528,49 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	var target=fdjtUI.T(evt);
 	var completions=fdjtDOM.getParent(target,".completions");
 	if (completions) {
+	    fdjtUI.cancel(evt);
 	    fdjtDOM.toggleClass(completions,"showempty");
 	    Codex.UI.updateScroller(completions);}}
 
-    function KNodeCompletion(term,title,just_knodes){
+    function KNodeCompletion(term,title){
 	var sbook_index=Codex.index; var showname=term;
+	var knodule=sbook_index.knodule;
 	if ((typeof term === "string") && (term[0]==="\u00A7")) {
+	    // Handle section references as tags
 	    if (showname.length>20) {
 		var start=showname.indexOf(' ',8);
 		var end=showname.lastIndexOf(' ',showname.length-8);
 		if (start<0) start=8; if (end<0) end=showname.length-8;
 		if (start<(showname.length-end)) {
-		    showname=showname.slice(0,start)+" \u2026 "+showname.slice(end);}
+		    showname=showname.slice(0,start)+" \u2026 "+
+			showname.slice(end);}
 		title=term;}
-	    var span=fdjtDOM("span.completion",fdjtDOM("span.sectname",showname));
+	    var span=fdjtDOM("span.completion",
+			     fdjtDOM("span.sectname",showname));
 	    span.key=term; span.value=term; span.anymatch=true;
 	    if (title)
 		span.title=title+"; "+term;
 	    else span.title=""+sbook_index.freq(term)+" items: "+term;
 	    return span;}
-	var dterm=Codex.knodule.probe(term)||fdjtKB.probe(term);
-	var showterm=term;
-	if (!(dterm)) {
-	    if (just_knodes) return false;
-	    var knopos=term.indexOf('@');
-	    if ((knopos>0)&&(term.slice(1+knopos)===Codex.knodule.name)) {
-		if (title) title="("+term+") "+title; else title=term;
-		showterm=term.slice(0,knopos);}}
-	else if (!(dterm.dterm)) {
-	    fdjtLog("Got bogus dterm reference for %s: %o",term,dterm);
-	    dterm=false;}
-	var term_node=((dterm) ? (dterm.toHTML()) :
-		       (fdjtDOM("span.rawterm",showterm)));
-	if ((dterm)&&(fdjtString.hasSuffix(dterm.dterm,"...")))
-	    addClass(term_node,"weak");
-	var span=fdjtDOM("span.completion");
-	if (dterm) {
-	    if (dterm.gloss) {
-		if (title) span.title=title+": "+dterm.gloss;
-		else span.title=dterm.gloss;}
-	    // This would be a place to generate titles from the knodule itself
-	    else span.title=title;
-	    /* Now add variation elements */
-	    var variations=[];
-	    var i=0; var terms=dterm.getSet('EN');
-	    while (i<terms.length) {
-		var term=terms[i++];
-		if (term===dterm.dterm) continue;
-		var vary=fdjtDOM("span.variation",term);
-		vary.key=term;
-		span.appendChild(vary);
-		span.appendChild(document.createTextNode(" "));}
-	    span.appendChild(term_node);
-	    span.key=dterm.dterm;
-	    span.value=((dterm.tagString)?(dterm.tagString()):(dterm.dterm));
-	    span.setAttribute("dterm",dterm.dterm);}
-	else {
-	    span.key=term; span.value=term;
-	    span.appendChild(term_node);
-	    if (title) span.title=title;}
+	var span=Knodule.HTML(term,knodule,false,true);
+	if (span.title) span.title=title+"; "+span.title;
+	else span.title=title+Completions.getKey(span);
 	return span;}
     
     function add_searchtag(value){
 	setQuery(Codex.extendQuery(Codex.query,value));}
 
-    function fullCloud(){
-	if (Codex.full_cloud) return Codex.full_cloud;
+    function searchCloud(){
+	if (Codex.search_cloud) return Codex.search_cloud;
 	else {
 	    var tagscores=Codex.index.tagscores;
 	    var alltags=Codex.index._alltags;
 	    var tagfreqs=Codex.index.tagfreqs;
 	    var completions=Codex.makeCloud(alltags,tagscores,tagfreqs,true);
-	    var cues=fdjtDOM.getChildren(completions,".cue");
-	    completions.onclick=cloud_ontap;
-	    Codex.full_cloud=new fdjtUI.Completions(completions);
-	    return Codex.full_cloud;}}
-    Codex.fullCloud=fullCloud;
+	    completions.dom.onclick=cloud_ontap;
+	    Codex.search_cloud=completions;
+	    return Codex.search_cloud;}}
+    Codex.searchCloud=searchCloud;
 
     function sizeCloud(completions,container,index){
 	if (!(index)) index=Codex.index;

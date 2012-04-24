@@ -1252,7 +1252,7 @@ div#CODEXHUD .completions .completion .dterm {}
     -webkit-border-bottom-left-radius: 6px;
     -webkit-border-top-left-radius: 6px; 
     color: darkblue; background-color: gold; border: solid yellow 2px;}
-.completion .dterm.weak, .completion .rawterm {
+.completion .dterm.weak, .completion .rawterm, .completion.rawterm {
     padding-right: 0em; padding-left: 0em; 
     border-top-left-radius: 0px; border-bottom-left-radius: 0px;
     color: gray; background-color: inherit; border: none;}
@@ -1955,8 +1955,6 @@ div.startupmessage {
     -moz-transition-property: opacity;
     -moz-transition-duration: 1s;}
 div.startupmessage.running { opacity: 1.0; z-index: 300;}
-
-div.startupmessage#CODEXNEWGLOSSES { top: 100px;}
 
 div.fdjtprogress#CODEXLAYOUTMESSAGE {
     text-align: center; font-size: 20px; font-weight: bold;

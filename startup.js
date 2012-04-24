@@ -277,24 +277,9 @@ Codex.Startup=
 	    var notloading=false;
 	    if (Codex.nologin) {}
 	    else if (_sbook_loadinfo) {
-		var msg=fdjtID("CODEXNEWGLOSSES");
-		if (msg) {
-		    msg.innerHTML="Using preloaded glosses";
-		    addClass(msg,"running");}
 		fdjtLog("Using preloaded glosses");
 		notloading=true;}
-	    /*
-	    else if (getLocal("sync("+Codex.refuri+")")) {
-		var msg=fdjtID("CODEXNEWGLOSSES");
-		if (msg) {
-		    msg.innerHTML="Using cached offline glosses";
-		    addClass(msg,"running");}} */
 	    else if (window.navigator.onLine) {
-		var msg=fdjtID("CODEXNEWGLOSSES");
-		if (msg) {
-		    msg.innerHTML=fdjtString(
-			"Getting glosses from %s",Codex.server);
-		    addClass(msg,"running");}
 		fdjtLog("Getting new glosses from %s",Codex.server);
 		// Get any glosses
 		var script=fdjtDOM("SCRIPT#LOADSBOOKINFO");
@@ -382,8 +367,6 @@ Codex.Startup=
 		 initGlossesOffline),
 		// Index tags for search
 		function(){
-		    var tagsmsg=fdjtID("CODEXSTARTUPTAGGING");
-		    addClass(tagsmsg,"running");
 		    startupLog("Indexing tags for search");
 		    applyTagSpans();
 		    startupLog("Indexing tag attributes from the source");
@@ -395,13 +378,15 @@ Codex.Startup=
 			startupLog("Indexing automatic tags");
 			Codex.useIndexData(_sbook_autoindex,Codex.knodule);
 			_sbook_autoindex=false;}
-		    dropClass(tagsmsg,"running");},
+		    Codex.indexed=fdjtTime();},
 		function(){
-		    var cloudmsg=fdjtID("CODEXSTARTUPCLOUDS");
-		    addClass(cloudmsg,"running");
-		    startupLog("Setting up tag clouds");
-		    initClouds();
-		    dropClass(cloudmsg,"running");},
+		    if (Codex.loaded) {
+			startupLog("Setting up tag clouds");
+			initClouds();}
+		    else {
+			Codex.whenloaded=function(){
+			    startupLog("Setting up tag clouds");
+			    initClouds();};}},
 		// Figure out which mode to start up in, based on
 		// query args to the book.
 		function(){
@@ -941,7 +926,12 @@ Codex.Startup=
 		initGlossesOffline();
 	    if (info.sources) gotInfo("sources",info.sources,persist);
 	    if (info.glosses) initGlosses(info.glosses,info.etc);
-	    if (info.sync) setLocal("sync("+refuri+")",info.sync);}
+	    if (info.sync) setLocal("sync("+refuri+")",info.sync);
+	    Codex.loaded=fdjtTime();
+	    if (Codex.whenloaded) {
+		var whenloaded=Codex.whenloaded;
+		Codex.whenloaded=false;
+		whenloaded();}}
 	Codex.loadInfo=loadInfo;
 
 	function getUser() {
@@ -1431,7 +1421,7 @@ Codex.Startup=
 
      function initClouds(){
 	 startupMessage("setting up search cloud...");
-	 fdjtDOM.replace("CODEXSEARCHCLOUD",Codex.fullCloud().dom);
+	 fdjtDOM.replace("CODEXSEARCHCLOUD",Codex.searchCloud().dom);
 	 startupMessage("setting up glossing cloud...");
 	 fdjtDOM.replace("CODEXGLOSSCLOUD",Codex.glossCloud().dom);
 	 startupMessage("setting up outlet cloud...");
@@ -1443,20 +1433,12 @@ Codex.Startup=
 		 function(){
 		     Codex.cloud_queue=false;
 		     fdjtLog("Gloss cloud synced");});}
-	 if (Codex.search_cloud_queue) {
-	     fdjtLog("Starting to sync search cloud");
-	     fdjtTime.slowmap(
-		 Codex.addTag2SearchCloud,
-		 Codex.search_cloud_queue,false,
-		 function(){
-		     Codex.search_cloud_queue=false;
-		     fdjtLog("Search cloud synced");});}
-	 
 	 if (Codex.knodule) {
 	     fdjtLog("Beginning knodule integration");
-	     fdjtTime.slowmap(Codex.addTag2GlossCloud,Codex.knodule.alldterms,false,
+	     fdjtTime.slowmap(Codex.addTag2GlossCloud,
+			      Codex.knodule.alldterms,false,
 			      function(){fdjtLog("Knodule integrated");});}
-	 Codex.sizeCloud(Codex.full_cloud);
+	 Codex.sizeCloud(Codex.search_cloud);
 	 Codex.sizeCloud(Codex.gloss_cloud);}
      
      /* Clearing offline data */

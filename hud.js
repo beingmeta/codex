@@ -136,17 +136,17 @@ var CodexMode=
 		    if (item.tstamp>Codex.syncstamp)
 			Codex.syncstamp=item.tstamp;
 		    if (item.tags) {
-			addTag2GlossCloud(item.tags);
-			addTag2SearchCloud(item.tags);}}}
+			// addTag2SearchCloud(item.tags);
+			addTag2GlossCloud(item.tags);}}}
 	    Codex.glosses.addInit(addGloss2UI);
 
 	    var tagHTML=Knodule.HTML;
 
-	    function addTag2GlossCloud(tag,forsearch){
+	    function addTag2GlossCloud(tag){
 		if (!(tag)) return;
 		else if (tag instanceof Array) {
 		    var i=0; var lim=tag.length;
-		    while (i<lim) addTag2GlossCloud(tag[i++],forsearch||false);
+		    while (i<lim) addTag2GlossCloud(tag[i++]);
 		    return;}
 		else if (!(Codex.gloss_cloud)) {
 		    // If the HUD hasn't been initialized, add the tag
@@ -159,21 +159,19 @@ var CodexMode=
 		    tag.oninit(addTag2GlossCloud,"addTag2GlossCloud");
 		else {
 		    var gloss_cloud=Codex.glossCloud();
-		    var search_cloud=Codex.fullCloud();
+		    var search_cloud=Codex.searchCloud();
 		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
-			if (!((typeof tag === 'string')&&
-			      (!(Codex.knodule.probe(tag))))) {
-			    gloss_tag=tagHTML(tag,Codex.knodule,false,true);
-			    fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
-			    gloss_cloud.addCompletion(gloss_tag,false,tag);}}}}
+			gloss_tag=tagHTML(tag,Codex.knodule,false,true);
+			fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
+			gloss_cloud.addCompletion(gloss_tag,false,tag);}}}
 	    Codex.addTag2GlossCloud=addTag2GlossCloud;
 	    
 	    function addTag2SearchCloud(tag){
 		if (!(tag)) return;
 		else if (tag instanceof Array) {
 		    var i=0; var lim=tag.length;
-		    while (i<lim) addTag2SearchCloud(tag[i++],forsearch||false);
+		    while (i<lim) addTag2SearchCloud(tag[i++]);
 		    return;}
 		else if (!(Codex.search_cloud)) {
 		    // If the HUD hasn't been initialized, add the tag
@@ -185,7 +183,7 @@ var CodexMode=
 		    // If it's uninitialized, delay adding it
 		    tag.oninit(addTag2SearchCloud,"addTag2SearchCloud");
 		else {
-		    var search_cloud=Codex.fullCloud();
+		    var search_cloud=Codex.searchCloud();
 		    var search_tag=search_cloud.getByValue(tag,".completion");
 		    if (!((search_tag)&&(search_tag.length))) {
 			search_tag=tagHTML(tag,Codex.knodule,false,true);
