@@ -149,7 +149,9 @@ var sbook_gloss_data=
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
 		Codex.index.add(item,item.maker);
-		Codex.addTag2UI(item.maker);
+		var maker=Codex.sourcekb.ref(item.maker);
+		Codex.addTag2UI(maker); Codex.addTag2Search(maker);
+		Codex.UI.addGlossSource(maker,true);
 		var tags=item.tags;
 		if (tags) {
 		    if (!(tags instanceof Array)) tags=[tags];
@@ -166,7 +168,8 @@ var sbook_gloss_data=
 			    else info.glosstags=[knode];
 			    if (score) score=score*2; else score=1;
 			    Codex.index.add(item,knode,score);
-			    Codex.addTag2UI(knode,true);}}}
+			    Codex.addTag2UI(knode);
+			    Codex.addTag2Search(knode);}}}
 		var sources=item.sources;
 		if (sources) {
 		    if (typeof sources === 'string') sources=[sources];
@@ -183,6 +186,13 @@ var sbook_gloss_data=
 	Codex.sourcekb=new fdjtKB.Pool("sources");{
 	    Codex.sourcekb.addAlias("@1961/");
 	    Codex.sourcekb.index=new fdjtKB.Index();
+	    Codex.sourcekb.forDOM=function(source){
+		var spec="span.source"+((source.kind)?".":"")+
+		    ((source.kind)?(source.kind.slice(1).toLowerCase()):"");
+		var name=source.name||source.oid||source.uuid||source.uuid;
+		var span=fdjtDOM(spec,name);
+		if (source.about) span.title=source.about;
+		return span;};
 	    if (Codex.offline)
 		Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);}
 	if (Codex.Trace.start>1) fdjtLog("Initialized DB");}

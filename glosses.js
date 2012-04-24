@@ -133,7 +133,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    noteinput.onkeydown=addgloss_keydown;
 	    if ((gloss)&&(!(response))) noteinput.value=gloss.note||"";
 	    else noteinput.value="";}
-	if (taginput) taginput.onkeyup=addtag_keypress;
+	if (taginput) taginput.onkeydown=addtag_keypress;
 	if (linkinput) linkinput.onkeypress=addlink_keypress;
 	if (outletinput) outletinput.onkeypress=addoutlet_keypress;
 	if (Codex.syncstamp)
@@ -538,6 +538,18 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    fdjtUI.cancel(evt);
 	    target.value="";
 	    gloss_cloud.complete("");}
+	else if (ch===9) { /* tab */
+	    var completions=gloss_cloud.complete(content);
+	    fdjtUI.cancel(evt);
+	    if (gloss_cloud.prefix!==content) {
+		target.value=gloss_cloud.prefix;
+		fdjtDOM.cancel(evt);
+		setTimeout(function(){
+		    Codex.UI.updateScroller("CODEXGLOSSCLOUD");},
+			   100);
+		return;}
+	    else if (evt.shiftKey) gloss_cloud.selectPrevious();
+	    else gloss_cloud.selectNext();}
 	else setTimeout(function(evt){
 	    gloss_cloud.complete(target.value);},
 			100);}

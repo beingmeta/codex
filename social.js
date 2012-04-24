@@ -87,35 +87,6 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 		icon.title=info.name;
 		icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
 		fdjtDOM(fdjtID("CODEXSOURCES")," ",icon);}}
-	var sharetag=fdjtID("SBOOKSHARETAG"+humid);
-	if (!(sharetag)) { // Add entry to the share cloud
-	    var completion=fdjtDOM("span.completion.cue.source",info.name);
-	    completion.id="SBOOKSHARETAG"+humid;
-	    completion.setAttribute("value",info._id);
-	    completion.setAttribute("key",info.name);}
-	var sourcetag=fdjtID("SBOOKSOURCETAG"+humid);
-	if (!(sourcetag)) { // Add entry to the share cloud
-	    var completion=fdjtDOM("span.completion.source",info.name);
-	    completion.id="SBOOKSOURCETAG"+humid;
-	    completion.setAttribute("value",info._id);
-	    completion.setAttribute("key",info.name);
-	    fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),completion," ");
-	    if (Codex.gloss_cloud)
-	      Codex.gloss_cloud.addCompletion(completion);}
-	// This is tricky because fdjtID may not work when the full
-	//  cloud is not in the DOM for some reason
-	var searchtag=
-	  fdjtID("CODEXSEARCHSOURCE"+humid)||
-	    ((Codex.full_cloud)&&(Codex.full_cloud.getByValue(info._id)));
-	if ((!(searchtag))||(searchtag.length===0)) {
-	  // Add entry to the search cloud
-	  var completion=fdjtDOM("span.completion.source",info.name);
-	  completion.id="CODEXSEARCHSOURCE"+humid;
-	    completion.setAttribute("value",info._id);
-	  completion.setAttribute("key",info.name);
-	  fdjtDOM(fdjtID("CODEXSEARCHCLOUD"),completion," ");
-	  if (Codex.full_cloud)
-	    Codex.full_cloud.addCompletion(completion);}
 	return info;};
     Codex.UI.addSource=addSource;
     Codex.UI.addGlossSource=function(info){addSource(info,true);};

@@ -55,6 +55,7 @@ var CodexMode=
 	var dropClass=fdjtDOM.dropClass;
 	var hasClass=fdjtDOM.hasClass;
 	var getParent=fdjtDOM.getParent;
+	var Ref=fdjtKB.Ref;
 
 	// This will contain the interactive input console (for debugging)
 	var input_console;
@@ -134,8 +135,12 @@ var CodexMode=
 			    addGlossmark(dup);}}
 		    if (item.tstamp>Codex.syncstamp)
 			Codex.syncstamp=item.tstamp;
-		    if (item.tags) addTag2UI(item.tags,true);}}
+		    if (item.tags) {
+			addTag2UI(item.tags);
+			addTag2Search(item.tags);}}}
 	    Codex.glosses.addInit(addGloss2UI);
+
+	    var tagHTML=Knodule.HTML;
 
 	    function addTag2UI(tag,forsearch){
 		if (!(tag)) return;
@@ -144,13 +149,14 @@ var CodexMode=
 		    while (i<lim) addTag2UI(tag[i++],forsearch||false);
 		    return;}
 		else if (!(Codex.gloss_cloud)) {
-		    var queue=Codex.cloud_queue;
-		    if (!(queue)) queue=Codex.cloud_queue=[];
-		    queue.push(tag);
-		    if (forsearch) {
-			var squeue=Codex.search_cloud_queue;
-			if (!(squeue)) squeue=Codex.search_cloud_queue=[];
-			squeue.push(tag);}}
+		    // If the HUD hasn't been initialized, add the tag
+		    //  to queues for addition.
+		    var queue=Codex.gloss_cloud_queue;
+		    if (!(queue)) queue=Codex.gloss_cloud_queue=[];
+		    queue.push(tag);}
+		else if ((tag instanceof Ref)&&(!(tag._init)))
+		    // If it's uninitialized, delay adding it
+		    tag.oninit(addTag2UI,"addTag2UI");
 		else {
 		    var gloss_cloud=Codex.glossCloud();
 		    var search_cloud=Codex.fullCloud();
@@ -158,17 +164,34 @@ var CodexMode=
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			if (!((typeof tag === 'string')&&
 			      (!(Codex.knodule.probe(tag))))) {
-			    gloss_tag=Knodule.HTML(tag,Codex.knodule,false,true);
+			    gloss_tag=tagHTML(tag,Codex.knodule,false,true);
 			    fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
-			    gloss_cloud.addCompletion(gloss_tag);}}
-		    var search_tag=
-			((forsearch)&&
-			 (search_cloud.getByValue(tag,".completion")));
-		    if ((forsearch)&&(!((search_tag)&&(search_tag.length)))) {
-			search_tag=Knodule.HTML(tag,Codex.knodule,false,true);
-			fdjtDOM(fdjtID("CODEXSEARCHTAGS"),search_tag," ");
-			search_cloud.addCompletion(search_tag);}}}
+			    gloss_cloud.addCompletion(gloss_tag,false,tag);}}}}
 	    Codex.addTag2UI=addTag2UI;
+	    
+	    function addTag2Search(tag){
+		if (!(tag)) return;
+		else if (tag instanceof Array) {
+		    var i=0; var lim=tag.length;
+		    while (i<lim) addTag2Search(tag[i++],forsearch||false);
+		    return;}
+		else if (!(Codex.search_cloud)) {
+		    // If the HUD hasn't been initialized, add the tag
+		    //  to queues for addition.
+		    var queue=Codex.search_cloud_queue;
+		    if (!(queue)) queue=Codex.search_cloud_queue=[];
+		    queue.push(tag);}
+		else if ((tag instanceof Ref)&&(!(tag._init)))
+		    // If it's uninitialized, delay adding it
+		    tag.oninit(addTag2Search,"addTag2Search");
+		else {
+		    var search_cloud=Codex.fullCloud();
+		    var search_tag=search_cloud.getByValue(tag,".completion");
+		    if (!((search_tag)&&(search_tag.length))) {
+			search_tag=tagHTML(tag,Codex.knodule,false,true);
+			fdjtDOM(fdjtID("CODEXSEARCHTAGS"),search_tag," ");
+			search_cloud.addCompletion(search_tag,false,tag);}}}
+	    Codex.addTag2Search=addTag2Search;
 	    
 	    var console=fdjtID("CODEXCONSOLE");
 	    input_console=fdjtDOM.getChild(console,"TEXTAREA");

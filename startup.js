@@ -1436,17 +1436,18 @@ Codex.Startup=
 	 fdjtDOM.replace("CODEXGLOSSCLOUD",Codex.glossCloud().dom);
 	 startupMessage("setting up outlet cloud...");
 	 Codex.outletCloud();
-	 if (Codex.cloud_queue) {
+	 if (Codex.gloss_cloud_queue) {
 	     fdjtLog("Starting to sync gloss cloud");
 	     fdjtTime.slowmap(
-		 Codex.addTag2UI,Codex.cloud_queue,false,
+		 Codex.addTag2UI,Codex.gloss_cloud_queue,false,
 		 function(){
 		     Codex.cloud_queue=false;
 		     fdjtLog("Gloss cloud synced");});}
 	 if (Codex.search_cloud_queue) {
 	     fdjtLog("Starting to sync search cloud");
 	     fdjtTime.slowmap(
-		 Codex.addTag2UI,Codex.search_cloud_queue,false,
+		 Codex.addTag2Search,
+		 Codex.search_cloud_queue,false,
 		 function(){
 		     Codex.search_cloud_queue=false;
 		     fdjtLog("Search cloud synced");});}
