@@ -150,7 +150,7 @@ var sbook_gloss_data=
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
 		Codex.index.add(item,item.maker);
 		var maker=Codex.sourcekb.ref(item.maker);
-		Codex.addTag2UI(maker); Codex.addTag2Search(maker);
+		Codex.addTag2GlossCloud(maker); Codex.addTag2SearchCloud(maker);
 		Codex.UI.addGlossSource(maker,true);
 		var tags=item.tags;
 		if (tags) {
@@ -168,8 +168,8 @@ var sbook_gloss_data=
 			    else info.glosstags=[knode];
 			    if (score) score=score*2; else score=1;
 			    Codex.index.add(item,knode,score);
-			    Codex.addTag2UI(knode);
-			    Codex.addTag2Search(knode);}}}
+			    Codex.addTag2GlossCloud(knode);
+			    Codex.addTag2SearchCloud(knode);}}}
 		var sources=item.sources;
 		if (sources) {
 		    if (typeof sources === 'string') sources=[sources];

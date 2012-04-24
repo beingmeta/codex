@@ -1110,7 +1110,7 @@ Codex.Startup=
 		var i=0; var lim=friends.length;
 		while (i<lim) {
 		    var friend=fdjtKB.ref(friends[i++]);
-		    Codex.addTag2UI(friend);}}
+		    Codex.addTag2GlossCloud(friend);}}
 	    Codex._user_setup=true;}
 	
 	// Processes info loaded remotely
@@ -1439,14 +1439,14 @@ Codex.Startup=
 	 if (Codex.gloss_cloud_queue) {
 	     fdjtLog("Starting to sync gloss cloud");
 	     fdjtTime.slowmap(
-		 Codex.addTag2UI,Codex.gloss_cloud_queue,false,
+		 Codex.addTag2GlossCloud,Codex.gloss_cloud_queue,false,
 		 function(){
 		     Codex.cloud_queue=false;
 		     fdjtLog("Gloss cloud synced");});}
 	 if (Codex.search_cloud_queue) {
 	     fdjtLog("Starting to sync search cloud");
 	     fdjtTime.slowmap(
-		 Codex.addTag2Search,
+		 Codex.addTag2SearchCloud,
 		 Codex.search_cloud_queue,false,
 		 function(){
 		     Codex.search_cloud_queue=false;
@@ -1454,7 +1454,7 @@ Codex.Startup=
 	 
 	 if (Codex.knodule) {
 	     fdjtLog("Beginning knodule integration");
-	     fdjtTime.slowmap(Codex.addTag2UI,Codex.knodule.alldterms,false,
+	     fdjtTime.slowmap(Codex.addTag2GlossCloud,Codex.knodule.alldterms,false,
 			      function(){fdjtLog("Knodule integrated");});}
 	 Codex.sizeCloud(Codex.full_cloud);
 	 Codex.sizeCloud(Codex.gloss_cloud);}

@@ -136,17 +136,17 @@ var CodexMode=
 		    if (item.tstamp>Codex.syncstamp)
 			Codex.syncstamp=item.tstamp;
 		    if (item.tags) {
-			addTag2UI(item.tags);
-			addTag2Search(item.tags);}}}
+			addTag2GlossCloud(item.tags);
+			addTag2SearchCloud(item.tags);}}}
 	    Codex.glosses.addInit(addGloss2UI);
 
 	    var tagHTML=Knodule.HTML;
 
-	    function addTag2UI(tag,forsearch){
+	    function addTag2GlossCloud(tag,forsearch){
 		if (!(tag)) return;
 		else if (tag instanceof Array) {
 		    var i=0; var lim=tag.length;
-		    while (i<lim) addTag2UI(tag[i++],forsearch||false);
+		    while (i<lim) addTag2GlossCloud(tag[i++],forsearch||false);
 		    return;}
 		else if (!(Codex.gloss_cloud)) {
 		    // If the HUD hasn't been initialized, add the tag
@@ -156,7 +156,7 @@ var CodexMode=
 		    queue.push(tag);}
 		else if ((tag instanceof Ref)&&(!(tag._init)))
 		    // If it's uninitialized, delay adding it
-		    tag.oninit(addTag2UI,"addTag2UI");
+		    tag.oninit(addTag2GlossCloud,"addTag2GlossCloud");
 		else {
 		    var gloss_cloud=Codex.glossCloud();
 		    var search_cloud=Codex.fullCloud();
@@ -167,13 +167,13 @@ var CodexMode=
 			    gloss_tag=tagHTML(tag,Codex.knodule,false,true);
 			    fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
 			    gloss_cloud.addCompletion(gloss_tag,false,tag);}}}}
-	    Codex.addTag2UI=addTag2UI;
+	    Codex.addTag2GlossCloud=addTag2GlossCloud;
 	    
-	    function addTag2Search(tag){
+	    function addTag2SearchCloud(tag){
 		if (!(tag)) return;
 		else if (tag instanceof Array) {
 		    var i=0; var lim=tag.length;
-		    while (i<lim) addTag2Search(tag[i++],forsearch||false);
+		    while (i<lim) addTag2SearchCloud(tag[i++],forsearch||false);
 		    return;}
 		else if (!(Codex.search_cloud)) {
 		    // If the HUD hasn't been initialized, add the tag
@@ -183,7 +183,7 @@ var CodexMode=
 		    queue.push(tag);}
 		else if ((tag instanceof Ref)&&(!(tag._init)))
 		    // If it's uninitialized, delay adding it
-		    tag.oninit(addTag2Search,"addTag2Search");
+		    tag.oninit(addTag2SearchCloud,"addTag2SearchCloud");
 		else {
 		    var search_cloud=Codex.fullCloud();
 		    var search_tag=search_cloud.getByValue(tag,".completion");
@@ -191,7 +191,7 @@ var CodexMode=
 			search_tag=tagHTML(tag,Codex.knodule,false,true);
 			fdjtDOM(fdjtID("CODEXSEARCHTAGS"),search_tag," ");
 			search_cloud.addCompletion(search_tag,false,tag);}}}
-	    Codex.addTag2Search=addTag2Search;
+	    Codex.addTag2SearchCloud=addTag2SearchCloud;
 	    
 	    var console=fdjtID("CODEXCONSOLE");
 	    input_console=fdjtDOM.getChild(console,"TEXTAREA");
