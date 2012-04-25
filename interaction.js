@@ -463,7 +463,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var i=0; var lim=knodes.length;
 	    while (i<lim) {
 		var knode=knodes[i++];
-		if (fdjtKB.contains(knode._always,term)) {
+		if ((knode===term)||
+		    (fdjtKB.contains(knode._always,term))) {
 		    var dterm=knode.dterm;
 		    var spelling=((spellings)&&(spellings[dterm]))||dterm;
 		    if (typeof spelling === 'string')
