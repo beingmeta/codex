@@ -36,7 +36,7 @@ div.codextoc div.spanbar div.codexhudspan a.brick {
 div.codextoc div.spanbar div.codexhudspan:first-child a.brick {
     border-left: 1px;}
 div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
-    background-color: lightblue;}
+    background-color: lightblue; z-index: 0;}
 
 div.codextoc div.sub {
     display: none; clear: both;}
@@ -114,13 +114,15 @@ div#CODEXTOC div.spanbar, div#FLYTOC div.spanbar {
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;}
+div#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexlivehead {
+    z-index: 0;}
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
     border-color: lightblue; border-right-color: darkblue;
-    border-bottom: dotted 1px blue;}
+    border-bottom: dotted 1px gray;}
 
-div#CODEXTOC div.spanbar { height: 47px;}
+div#CODEXTOC div.spanbar { height: 52px;}
 div#CODEXTOC div.spanbar > div.spans {
-    border-top: solid lightblue 7px; height: 40px; }
+    border-top: solid lightblue 12px; height: 40px; }
 div#CODEXTOC div.spanbar div.codexhudspan {
     height: 40px; z-index: 50;}
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
@@ -145,9 +147,9 @@ div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.spans a.codextitle {
     display: none;}
 div#CODEXTOC div.codextoc.codexcurhead div.spanbar
    div.codexhudspan a.brick.cohi {
-       background-color: gold; } /* ... opacity: 0.5; */
+       background-color: gold; opacity: 0.5;} /* ... opacity: 0.5; */
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexheld a.brick {
-    background-color: gold;}
+    background-color: gold; opacity: 0.5;}
 
 div#CODEXTOC div.codextoc {
     border-bottom-left-radius: 6px;
@@ -177,15 +179,14 @@ div.spanbar div.spans {
   margin: 0px; padding: 0px; border: 0px;}
 div.codextoc div.spanbar div.spans a.codextitle {font-weight: bold;}
 div.codextoc div.spanbar div.spans a.codextitle {
-    position: absolute; top: 4px; width: 100%; z-index: 100;
+    position: absolute; top: 4px; width: 100%; z-index: 25;
     display: none;}
 div.codextoc div.spanbar div.spans a.codextitle.codexlivehead { display: block;}
 div.spanbar div.codexhudspan {
   background-color: transparent; clear: none; position: absolute;
   margin: 0px; padding: 0px; border: 0px;
   border-right: none; border-left: none;}
-div#CODEXFLYTOC div.spanbar div.codexhudspan {
-    }
+div#CODEXFLYTOC div.spanbar div.codexhudspan { z-index: 75;}
 div.spanbar div.codexhudspan a.brick {
   display: block; text-decoration: none;
   border: 0px; padding: 0px;

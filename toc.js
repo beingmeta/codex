@@ -236,7 +236,12 @@ var CodexTOC=
 	    else if (toshow[1]) addClass(toshow[1],"codexcxthead");
 	    else {}
 	    // Go backwards to accomodate some redisplayers
-	    while (n>=0) {addClass(toshow[n--],"codexlivehead");}
+	    while (n>=0) {
+		var show=toshow[n--];
+		if ((show.tagName==='A')&&
+		    (show.className.search(/\bbrick\b/)>=0))
+		    addClass(show.parentNode,"codexlivehead");
+		addClass(show,"codexlivehead");}
 	    addClass(base_elt,"codexcurhead");}
 	CodexTOC.updateTOC=updateTOC;
 
@@ -251,6 +256,12 @@ var CodexTOC=
 	    while (head) {
 		var refs=document.getElementsByName("SBR"+head.frag);
 		addClass(refs,"codexlivehead");
+		var j=0; var jlim=refs.length;
+		while (j<jlim) {
+		    var ref=refs[j++];
+		    if ((ref.tagName==='A')&&(ref.className)&&
+			(ref.className.search(/\bbrick\b/)>=0))
+			addClass(ref.parentNode,"codexlivehead");}
 		head=head.head;}
 	    setTimeout(function(){scaleTitles(headinfo);},200);}
 
