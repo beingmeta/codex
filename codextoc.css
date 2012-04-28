@@ -103,6 +103,10 @@ div#CODEXHUD.tocscan div.codextoc.codexcurhead > div.head { display: block;}
 div#CODEXHUD.tocscan div.codextoc.codexcurhead > img { display: inherit;}
 div#CODEXHUD.tocscan div.codextoc div.spanbar { display: none;}
 div#CODEXHUD.tocscan div.codextoc.codexcxthead > div.spanbar { display: block;}
+div#CODEXHUD.tocscan div.codextoc div.spans { border-top: 0px;}
+div#CODEXHUD.tocscan div#CODEXTOC div.spanbar div.progressbox {
+    border-top: 0px;}
+div#CODEXHUD.tocscan div#CODEXTOC div.spanbar { height: 40px;}
 
 div#CODEXTOC div.spanbar, div#FLYTOC div.spanbar {
   position: relative;  /* opacity: 0.5;  */
@@ -138,7 +142,7 @@ div.spanbar div.progressbox {
     margin: 0px; padding: 0px; border: 0px; vertical-align: top;
     width: 2px; background-color: red; position: absolute; z-index: 250; }
 
-div#CODEXTOC div.codextoc.codexcurhead > div.spanbar { height: 20px; }
+div#CODEXTOC div.codextoc.codexcurhead > div.spanbar { }
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
     height: 18px;}
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.progressbox {
@@ -209,15 +213,15 @@ div.spanbar div.spans {
 
 /* Handling preview mode */
 
-body.codexpreview #CODEXHUD div.spanbar div.spans { opacity: 0.1;}
-body.codexpreview #CODEXHUD div.spanbar.codexvisible div.spans {
+body.cxPREVIEW #CODEXHUD div.spanbar div.spans { opacity: 0.1;}
+body.cxPREVIEW #CODEXHUD div.spanbar.codexvisible div.spans {
     visibility: visible; opacity: 1.0;}
-body.codexpreview #CODEXHUD div.codextoc > div.head { opacity: 0.1;}
-body.codexpreview #CODEXHUD div.codextoc.codexcurhead div.sub {
+body.cxPREVIEW #CODEXHUD div.codextoc > div.head { opacity: 0.1;}
+body.cxPREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
     opacity: 0.1; display: none;}
-body.codexpreview #CODEXHUD div.codextoc.codexlivehead > div.head {
+body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
     opacity: 0.4;}
-body.codexpreview #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
+body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
     opacity: 0.6;}
 
 /* The first one is special, doesn't need a top border to indicate

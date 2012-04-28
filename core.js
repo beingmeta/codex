@@ -76,7 +76,7 @@ var Codex=
 	 startup: 1,	// Whether to debug startup
 	 config: false,  // Whether to trace config setup/modification/etc
 	 mode: false,	// Whether to trace mode changes
-	 nav: false,	// Whether to trace book navigation
+	 nav: true,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// How much to trace searches
 	 clouds: 0,	// How much to trace cloud generation
@@ -375,9 +375,15 @@ var sbook_gloss_data=
 	if (head===null) head=Codex.content;
 	else if (typeof head === "string") 
 	    head=getHead(fdjtID(head))||Codex.content;
-	else head=getHead(head)||Codex.content;
+	else {}
 	var headid=head.id||head.codexdupid;
 	var headinfo=Codex.docinfo[headid];
+	while ((headinfo)&&(!(headinfo.level))) {
+	    headinfo=headinfo.head;
+	    head=headinfo.elt;
+	    headid=headinfo.frag;}
+	if (Codex.Trace.nav)
+	    fdjtLog("Codex.setHead #%s",headid);
 	if (!(head)) return;
 	else if (head===Codex.head) {
 	    if (Codex.Trace.focus) fdjtLog("Redundant SetHead");
@@ -644,12 +650,7 @@ var sbook_gloss_data=
 	    fdjtLog("Codex.GoTo%s() #%o@P%o/L%o %o",
 		    ((caller)?("/"+caller):""),targetid,page,
 		    ((info)&&(info.starts_at)),target);
-	if (info) {
-	    if (typeof info.level === 'number')
-		setHead(target);
-	    else if (info.head) setHead(info.head.frag);
-	    else setHead(false);}
-	else setHead(false);
+	setHead(target);
 	setLocation(location);
 	if ((istarget)&&(targetid)&&(!(inUI(target)))) setTarget(target);
 	if ((pushstate)&&(istarget))
@@ -660,9 +661,9 @@ var sbook_gloss_data=
 	    Codex.setState({location: location,page: page});
 	else {}
 	if (page)
-	    Codex.GoToPage(target,caller||"CodexGoTo",pushstate);
+	    Codex.GoToPage(target,caller||"CodexGoTo",false);
 	else if (Codex.bysect)
-	    Codex.GoToSection(target,caller||"CodexGoTo",pushstate);
+	    Codex.GoToSection(target,caller||"CodexGoTo",false);
 	else {
 	    var offinfo=fdjtDOM.getGeometry(target,Codex.content);
 	    Codex.content.style.top=(-offinfo.top)+"px";}
@@ -712,7 +713,7 @@ var sbook_gloss_data=
 			caller||"nocaller",offinfo.top-100,spec);
 	    Codex.content.style.top=(-offinfo.top)+"px";
 	    Codex.previewing=target;}
-	addClass(document.body,"codexpreview");
+	addClass(document.body,"cxPREVIEW");
 	return target;}
     Codex.startPreview=CodexStartPreview;
     function CodexStopPreview(caller){
@@ -729,7 +730,7 @@ var sbook_gloss_data=
 			caller||"nocaller");
 	    if (oldscroll) 
 		Codex.content.style.top=oldscroll.y+"px";}
-	dropClass(document.body,"codexpreview");
+	dropClass(document.body,"cxPREVIEW");
 	Codex.previewing=false;
 	if (Codex.previewtarget) {
 	    dropClass(Codex.previewtarget,"codexpreviewtarget");

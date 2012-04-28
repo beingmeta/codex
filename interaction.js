@@ -884,50 +884,43 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     
     var mouseisdown=false;
 
-    function content_touchmove(evt){
-	// When faking touch, moves only get counted if the mouse is down.
-	if ((evt.type==="mousemove")&&(!(mouseisdown))) return;
-	// fdjtUI.cancel(evt);
-	touch_moves++;
-	clear_hold("touchmove");
+    var touch_moves=0, touch_moved=false;;
+    var touch_x, touch_y, n_touches=0;
+    var start_x, start_y;
+
+    function content_touchstart(evt){
+	touch_moves=0; touch_moved=false;
 	var touches=evt.touches;
-	var touch=
-	    (((evt.touches)&&(evt.touches.length))?(evt.touches[0]):(evt));
-	if (page_x<0) page_x=touch.screenX;
-	if (page_y<0) page_y=touch.screenY;
-	if ((touches)&&(touches.length>n_touches)) n_touches=touches.length;
-	var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
-	var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
+	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
+	touch_x=start_x=touch.screenX;
+	touch_y=start_y=touch.screenY;
+	if ((touches)&&(touches.length)&&
+	    (touches.length>n_touches))
+	    n_touches=touches.length;
+	// var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
+	// var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
 	if (Codex.Trace.gestures>2) tracetouch("touchmove",evt);
-	/*
-	  if ((held)&&((adx+ady)>5)) {
-	  clear_hold("touchmove"+(adx+ady)); handled=true;}
-	*/
-	if (Codex.Trace.gestures>1)
-	    fdjtLog("body_touchmove d=%o,%o a=%o,%o s=%o,%o c=%o,%o l=%o,%o n=%o scan=%o ",
-		    dx,dy,adx,ady,touch.screenX,touch.screenY,
-		    touch.clientX,touch.clientY,last_x,last_y,
-		    touch_moves,Codex.scanning);
-	last_x=touch.clientX; last_y=touch.clientY;
 	touch_moved=true;
-	/*
-	// This provides direct interaction but looks a little clunky
-	if (typeof initial_offset === 'number') {
-	var new_translation="translate("+(initial_offset+dx)+"px,0px)";
-	Codex.pages.style.setProperty
-	(fdjtDOM.transform,new_translation,"important");}
-	*/
+	return;}
+
+    function content_touchmove(evt){
+	fdjtUI.cancel(evt);
+	touch_moves++; touch_moved=true;
+	var touches=evt.touches;
+	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
+	touch_x=touch.screenX;
+	touch_y=touch.screenY;
+	if ((touches)&&(touches.length)&&
+	    (touches.length>n_touches))
+	    n_touches=touches.length;
+	if (Codex.Trace.gestures>2) tracetouch("touchmove",evt);
 	return;}
     
-    function content_touchend(evt,tap){
+    function content_touchend(evt){
 	var target=fdjtUI.T(evt);
-	if (held) clear_hold("touchend");
-	if (handled) return;
-	if (Codex.Trace.gestures) tracetouch("touchend",evt);
-	mouseisdown=false; // For faketouch
 	if (isClickable(target)) return;
 	if (touch_moved) {
-	    var dx=last_x-start_x; var dy=last_y-start_y;
+	    var dx=touch_x-start_x; var dy=touch_y-start_y;
 	    var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
 	    var ad=((adx<ady)?(ady-adx):(adx-ady));
 	    if (Codex.Trace.gestures)
@@ -942,8 +935,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    else Codex.scanBackward(evt);}}
 	    else {}
 	    return;}
-	else if (touch_scrolled) return;  // Gesture already intepreted
-	else return content_tapped(evt,target);}
+	else content_mouseup(evt);}
 
     /* HUD touch */
 
@@ -1497,7 +1489,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    keydown: onkeydown,
 	    keypress: onkeypress,
 	    touchend: default_tap},
-	 content: {touchend: content_mouseup},
+	 content: {touchstart: content_touchstart,
+		   touchmove: content_touchmove,
+		   touchend: content_touchend},
 	 toc: {tap: toc_tapped,hold: toc_held,
 	       release: toc_released,slip: toc_slipped},
 	 glossmark: {touchstart: glossmark_tapped,

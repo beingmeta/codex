@@ -590,7 +590,7 @@ var CodexSections=
 			caller||"nocaller",section,sectnum,spec);
 	    if (previewing) displaySection(previewing,false);
 	    else {
-		addClass(document.body,"codexpreview");
+		addClass(document.body,"cxPREVIEW");
 		saved_scrolltop=Codex.window.scrollTop;}
 	    Codex.previewing=previewing=section;
 	    displaySection(cursection,false);
@@ -598,7 +598,7 @@ var CodexSections=
 	    // Recompute info now that it's displayed
 	    info=getSectionInfo(spec);
 	    Codex.window.scrollTop=(info.off)||0;
-	    addClass(document.body,"codexpreview");
+	    addClass(document.body,"cxPREVIEW");
 	    if (info.pagenum)
 		Codex.updatePageDisplay(info.pagenum,info.location);
 	    return;}
@@ -615,7 +615,7 @@ var CodexSections=
 	    if (saved_scrolltop) {
 		Codex.window.scrollTop=saved_scrolltop;
 		saved_scrolltop=false;}
-	    dropClass(document.body,"codexpreview");
+	    dropClass(document.body,"cxPREVIEW");
 	    if (Codex.previewtarget) {
 		dropClass(Codex.previewtarget,"codexpreviewtarget");
 		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightexcerpt");
@@ -956,8 +956,9 @@ var CodexPaginate=
 		    Codex.setLocation(location);}
 		updatePageDisplay(pagenum,Codex.location);
 		curpage=page; Codex.curpage=pagenum;
-		var curnode=fdjtID(page.getAttribute("data-topid"));
-		if (curnode) Codex.setHead(curnode);
+		if (pushstate) {
+		    var curnode=fdjtID(page.getAttribute("data-topid"));
+		    if (curnode) Codex.setHead(curnode);}
 		if ((pushstate)&&(page)) {
 		    Codex.setState(
 			{location: atoi(page.getAttribute("data-sbookloc")),
@@ -994,7 +995,7 @@ var CodexPaginate=
 	    if (curpage) dropClass(curpage,"curpage");
 	    addClass(page,"curpage");
 	    Codex.previewing=previewing=page;
-	    addClass(document.body,"codexpreview");
+	    addClass(document.body,"cxPREVIEW");
 	    updatePageDisplay(pagenum,Codex.location);}
 	function stopPreview(caller){
 	    if ((!(Codex.paginated))&&(Codex.sectioned)&&
@@ -1009,7 +1010,7 @@ var CodexPaginate=
 	    dropClass(previewing,"curpage");
 	    addClass(curpage,"curpage");
 	    Codex.previewing=previewing=false;
-	    dropClass(document.body,"codexpreview");
+	    dropClass(document.body,"cxPREVIEW");
 	    updatePageDisplay(pagenum,Codex.location);}
 	Codex.startPagePreview=startPreview;
 	Codex.stopPagePreview=stopPreview;

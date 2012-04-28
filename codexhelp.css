@@ -64,7 +64,7 @@ body div#CODEXHUD.gotopage div#CODEXGOTOPAGEHELP.helpbox,
 body div#CODEXHUD.gotoloc div#CODEXGOTOLOCHELP.helpbox {
     opacity: 0.9; border-color: black; z-index: 260;}
 
-body.codexhelp.codexpreview div#CODEXHUD div#CODEXHUDHELP {
+body.codexhelp.cxPREVIEW div#CODEXHUD div#CODEXHUDHELP {
     opacity: 0.05;}
 
 div.helpbox p {

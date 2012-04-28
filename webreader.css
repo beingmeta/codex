@@ -76,9 +76,9 @@ body.hudup div#CODEXPAGE {
     opacity: 0.8;}
 body.hudup div#CODEXPAGE {
     border-color: gray; border-style: inset;}
-body.hudup.codexpreview div#CODEXPAGE, body.codexpreview div#CODEXPAGE {
+body.hudup.cxPREVIEW div#CODEXPAGE, body.cxPREVIEW div#CODEXPAGE {
     border-color: blue; border-style: dotted;}
-body.hudup.codexpreview div#CODEXWINDOW, body.codexpreview div#CODEXWINDOW {
+body.hudup.cxPREVIEW div#CODEXWINDOW, body.cxPREVIEW div#CODEXWINDOW {
     border-color: blue; border-style: dotted;}
 
 body.cxSHRINK div#CODEXPAGE div.codexpage {
@@ -462,8 +462,8 @@ span.excerpt span.content { font-size: 80%; display: none;}
 
 /* The HUD */
 
-body.codexpreview #CODEXHUD { opacity: 0.8;}
-body.codexpreview #CODEXHUD div.hudpanel#CODEXFLYLEAF {
+body.cxPREVIEW #CODEXHUD { opacity: 0.8;}
+body.cxPREVIEW #CODEXHUD div.hudpanel#CODEXFLYLEAF {
     visibility: hidden; background-color: transparent;}
 
 #CODEXHUD a { text-decoration: none;}
@@ -651,6 +651,19 @@ body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-transition-property: height,opacity;
     -webkit-transition-duration: 1s;}
+body.hudup.cxPREVIEW div#CODEXHUD.help div.hudpanel#CODEXHELP,
+body.hudup.cxPREVIEW div#CODEXHUD.search div.hudpanel#CODEXSEARCH,
+body.hudup.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCH,
+body.hudup.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
+body.hudup.cxPREVIEW div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
+body.hudup.cxPREVIEW div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
+body.hudup.cxPREVIEW div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
+body.hudup.cxPREVIEW div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
+body.hudup.cxPREVIEW div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
+body.hudup.cxPREVIEW div#CODEXHUD.toc div.hudpanel#CODEXTOC,
+body.hudup.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
+body.hudup.cxPREVIEW div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
+    border-color: transparent;}
 
 body.hudup div#CODEXHUD div.hudpanel#CODEXBROWSEGLOSSES {
     max-height: 85%;}
@@ -659,9 +672,9 @@ body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
 body div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
-body.codexpreview div#CODEXHUD.glosses div.hudpanel#CODEXSCANNER,
-body.codexpreview div#CODEXHUD.allglosses div.hudpanel#CODEXSCANNER,
-body.codexpreview div#CODEXHUD.searchresults div.hudpanel#CODEXSCANNER {
+body.cxPREVIEW div#CODEXHUD.glosses div.hudpanel#CODEXSCANNER,
+body.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSCANNER,
+body.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSCANNER {
     display: block; height: auto; overflow: hidden;
     border-color: silver;}
 
@@ -735,9 +748,9 @@ div#CODEXHUD.search div#CODEXSEARCH.norefiners div.completions#CODEXSEARCHCLOUD 
 div#CODEXHUD.search div.codexslice#CODEXSEARCHRESULTS { display: none;}
 div#CODEXHUD.searchresults div#CODEXSEARCHCLOUDWRAPPER { display: none;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
-body.codexpreview div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
+body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
     opacity: 0.05;}
-body.codexpreview div#CODEXHUD.glosses div#CODEXGLOSSES.hudpanel {
+body.cxPREVIEW div#CODEXHUD.glosses div#CODEXGLOSSES.hudpanel {
     opacity: 0.05;}
 
 div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall {
@@ -1315,7 +1328,7 @@ body div#CODEXHUD div#CODEXHUDBUTTONS img[alt='Console'] {
     display: none;}
 body div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='Console'] {
     display: inline;}
-body.codexpreview div#CODEXHUD div#CODEXHUDBUTTONS {
+body.cxPREVIEW div#CODEXHUD div#CODEXHUDBUTTONS {
     display: none;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
