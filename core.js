@@ -76,7 +76,7 @@ var Codex=
 	 startup: 1,	// Whether to debug startup
 	 config: false,  // Whether to trace config setup/modification/etc
 	 mode: false,	// Whether to trace mode changes
-	 nav: true,	// Whether to trace book navigation
+	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// How much to trace searches
 	 clouds: 0,	// How much to trace cloud generation
@@ -90,7 +90,7 @@ var Codex=
 	 state: false,  // Whether to trace set state
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
-	 highlight: 1,  // Whether to trace highlighting
+	 highlight: 0,  // Whether to trace highlighting
 	 gestures: 0}   // How much to trace gestures
     };
 var _sbook_setup=false;

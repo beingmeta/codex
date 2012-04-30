@@ -817,9 +817,9 @@ body div#CODEXHUD div.hudpanel#CODEXSCANNER:hover {
 
 div#CODEXHUD div#CODEXSCANNER div.codexcard span.glossinfo span.isclickable {
     display: none;}
-
 body div#CODEXHUD img.codexscanbutton {
-    width: 50px; position: fixed; top: 0px; opacity: 0.8;
+    width: 100px; height: 100px;
+    position: fixed; bottom: 50%; opacity: 0.5;
     display: none;}
 body div#CODEXHUD img.codexscanbutton#CODEXNEXTSCAN,
 body div#CODEXHUD img.codexscanbutton#CODEXENDSCAN {

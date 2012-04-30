@@ -812,67 +812,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     /* Touch handling */
 
-    function shared_touchstart(evt){
-	evt=evt||event||false;
-	var target=fdjtUI.T(evt);
-	if (isClickable(target)) return;
-	// fdjtUI.cancel(evt);
-	if (Codex.Trace.gestures) tracetouch("touchstart",evt);
-	touch_started=fdjtTime();
-	var touches=evt.touches;
-	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
-	if (touches) n_touches=touches.length;
-	else if (evt.shiftKey) n_touches=2;
-	else n_touches=1;
-	if (touch) {
-	    start_t=fdjtTime();
-	    start_x=last_x=touch.clientX;
-	    start_y=last_y=touch.clientY;
-	    page_x=touch.screenX; page_y=touch.screenY;}
-	else if (evt.clientX) { /* faketouch */
-	    if (evt.shiftKey) n_touches=2; else n_touches=1;
-	    start_t=fdjtTime();
-	    start_x=last_x=evt.clientX;
-	    start_y=last_y=evt.clientY;
-	    page_x=touch.screenX; page_y=evt.screenY;}
-	touch_held=false; touch_moved=false; touch_scrolled=false;}
-
-    var initial_offset=false;
-
-    function content_touchstart(evt){
-	evt=evt||event||false;
-	clear_hold("touchstart/touchover");
-	handled=false;
-	var target=fdjtUI.T(evt);
-	shared_touchstart(evt);
-	var passage=getTarget(target);
-	if (Codex.Trace.gestures)
-	    fdjtLog("Touchstart %o on %o => %o",evt,target,passage);
-	if (passage) {
-	    var text=fdjtDOM.textify(passage).
-		replace(/\n\n+/g,"\n").
-		replace(/^\n+/,"").
-		replace(/\n+$/,"").
-		replace(/\n+/g," // ");
-	    held=setTimeout(function(){
-		clear_hold("completed");
-		handled=true;
-		Codex.setGlossTarget(passage);
-		fdjtID("CODEXEXTRACT").passageid=
-		    (passage.id||(passage.codexdupid));
-		fdjtID("CODEXEXTRACT").value=text;
-		CodexMode("editexcerpt");},
-			    1000);}
-	var translation=Codex.pages.style.getPropertyValue(fdjtDOM.transform);
-	var numstart; var numend;
-	initial_offset=false;
-	if (translation) {
-	    var numstart=translation.search(/[\-0123456789]+/);
-	    if (numstart>0) {
-		translation=translation.slice(numstart);
-		var numend=translation.search(/[^\-0123456789]+/);
-		if (numend>0)
-		    initial_offset=parseInt(translation.slice(0,numend));}}}
     Codex.UI.useExcerpt=function(flag){
 	var text=fdjtID("CODEXEXTRACT").value;
 	var excerpt_elt=fdjtID("CODEXEXCERPT");
@@ -894,9 +833,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
 	touch_x=start_x=touch.screenX;
 	touch_y=start_y=touch.screenY;
-	if ((touches)&&(touches.length)&&
-	    (touches.length>n_touches))
-	    n_touches=touches.length;
+	if ((touches)&&(touches.length)) n_touches=touches.length;
 	// var dx=touch.screenX-page_x; var dy=touch.screenY-page_y;
 	// var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
 	if (Codex.Trace.gestures>2) tracetouch("touchmove",evt);
@@ -927,13 +864,14 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		fdjtLog("touchend/gesture l=%o,%o s=%o,%o d=%o,%o |d|=%o,%o",
 			last_x,last_y,start_x,start_y,dx,dy,adx,ady);
 	    if (adx>(ady*3)) { /* horizontal */
+		fdjtUI.cancel(evt);
 		if (n_touches===1) {
 		    if (dx<0) Codex.Forward(evt);
 		    else Codex.Backward(evt);}
 		else {
 		    if (dx<0) Codex.scanForward(evt);
 		    else Codex.scanBackward(evt);}}
-	    else {}
+	    else content_mouseup(evt);
 	    return;}
 	else content_mouseup(evt);}
 
@@ -1196,7 +1134,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var ref=((scan)&&(Codex.getRef(scan)));
 	if (Codex.Trace.nav) 
 	    fdjtLog("scanForward() from %o/%o to %o/%o under %o",
-		    start,Codex.getRef(start),scan,ref,slice);
+		    start,Codex.getRef(start),scan,ref,Codex.scanning);
 	if ((ref)&&(scan)) Codex.Scan(ref,scan);
 	return scan;}
     Codex.scanForward=scanForward;
@@ -1222,7 +1160,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var ref=((scan)&&(Codex.getRef(scan)));
 	if (Codex.Trace.nav) 
 	    fdjtLog("scanBackward() from %o/%o to %o/%o under %o",
-		    start,Codex.getRef(start),scan,ref,slice);
+		    start,Codex.getRef(start),scan,ref,Codex.scanning);
 	if ((ref)&&(scan)) Codex.Scan(ref,scan);
 	return scan;}
     Codex.scanBackward=scanBackward;
