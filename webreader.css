@@ -1947,7 +1947,7 @@ body.cxBYSECT div#CODEXWINMASK { display: block;}
 /* Highlighting */
 
 .highlightexcerpt { background-color: yellow;}
-.highlightpassage { background-color: yellow; opacity: 0.8;}
+.highlightpassage { background-color: #FFFF6B;}
 .highlightsearch { background-color: gold;}
 
 /* Startup messages */
