@@ -389,6 +389,7 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event;
 	var target=fdjtDOM.T(evt);
 	var completion=fdjtDOM.getParent(target,".completion");
+	if (Codex.Trace.gestures) log("cloud tap on %o",completion);
 	if (completion) {
 	    var cinfo=Codex.query._cloud;
 	    var value=cinfo.getValue(completion);
@@ -399,13 +400,13 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    else if ((Codex.knodule)&&(Codex.knodule.probe(value)))
 		add_searchtag(Codex.knodule.probe(value));
 	    else add_searchtag(value);
-	    fdjtDOM.cancel(evt);}
+	    fdjtUI.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".resultcounts")) {
 	    showSearchResults(Codex.query);
 	    CodexMode("searchresults");
 	    fdjtID("CODEXSEARCHINPUT").blur();
 	    fdjtID("CODEXSEARCHRESULTS").focus();
-	    fdjtDOM.cancel(evt);}
+	    fdjtUI.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".refinercounts")) {
 	    var completions=fdjtDOM.getParent(target,".completions");
 	    fdjtDOM.toggleClass(completions,"showempty");

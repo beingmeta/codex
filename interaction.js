@@ -1425,8 +1425,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	{window: {
 	    keyup: onkeyup,
 	    keydown: onkeydown,
-	    keypress: onkeypress,
-	    touchend: default_tap},
+	    keypress: onkeypress},
 	 content: {touchstart: content_touchstart,
 		   touchmove: content_touchmove,
 		   touchend: content_touchend},
@@ -1460,10 +1459,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click: hudbutton},
 	 // GLOSSFORM rules
-	 "span.codexglossdelete": { tap: delete_ontap },
-	 "span.codexglossrespond": { tap: respond_ontap },
-	 "span.codexsharegloss": {tap: fdjtUI.CheckSpan.onclick},
-	 ".submitbutton": {tap: submitEvent },
+	 "span.codexglossdelete": { click: delete_ontap },
+	 "span.codexglossrespond": { click: respond_ontap },
+	 "span.codexsharegloss": {click: fdjtUI.CheckSpan.onclick},
+	 ".submitbutton": {click: submitEvent },
 	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},

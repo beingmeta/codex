@@ -590,10 +590,10 @@ var CodexSections=
 			caller||"nocaller",section,sectnum,spec);
 	    if (previewing) displaySection(previewing,false);
 	    else {
+		displaySection(cursection,false);
 		addClass(document.body,"cxPREVIEW");
 		saved_scrolltop=Codex.window.scrollTop;}
 	    Codex.previewing=previewing=section;
-	    displaySection(cursection,false);
 	    displaySection(section,true);
 	    // Recompute info now that it's displayed
 	    info=getSectionInfo(spec);
