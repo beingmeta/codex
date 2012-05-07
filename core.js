@@ -388,17 +388,19 @@ var sbook_gloss_data=
 	else if (head===Codex.head) {
 	    if (Codex.Trace.focus) fdjtLog("Redundant SetHead");
 	    return;}
-	else if (head) {
-	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
+	else if (headinfo) {
+	    if (Codex.Trace.focus)
+		Codex.trace("Codex.setHead",head);
 	    CodexTOC.setHead(headinfo);
 	    window.title=headinfo.title+" ("+document.title+")";
 	    if (Codex.head) dropClass(Codex.head,"sbookhead");
 	    addClass(head,"sbookhead");
 	    Codex.setLocation(Codex.location);
-	    Codex.head=fdjtID(headid);}
+	    Codex.head=fdjtID(headid);
+	    CodexTOC.setHead(headinfo);}
 	else {
-	    if (Codex.Trace.focus) Codex.trace("Codex.setHead",head);
-	    CodexTOC.setHead(head);
+	    if (Codex.Trace.focus)
+		Codex.trace("Codex.setFalseHead",head);
 	    Codex.head=false;}}
     Codex.setHead=setHead;
 
