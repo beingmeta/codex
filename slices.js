@@ -273,7 +273,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	    var i=0; var lim=sources.length;
 	    while (i<lim) {
 		var source=fdjtKB.ref(sources[i++]);
-		if ((source)&&(source.kind===':OVERLAY'))
+		if ((source)&&(source.kind===':OVERDOC'))
 		    return source;}
 	    return false;}
 	else return false;}
@@ -294,7 +294,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	    var i=0; var lim=sources.length;
 	    while (i<lim) {
 		var source=fdjtKB.ref(sources[i++]);
-		if ((source)&&(source.kind===':OVERLAY')&&(source.pic))
+		if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
 		    return { src: source.pic, alt: source.name,
 			     classname: "img.glosspic.sourcepic"};}}
 	if (info.links) {
