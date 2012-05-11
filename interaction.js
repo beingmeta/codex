@@ -62,6 +62,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 
     var submitEvent=fdjtUI.submitEvent;
 
+    var reticle=fdjtUI.Reticle;
+
     var unhold=false;
     var hold_timer=false;
     var hold_interval=1500;
@@ -729,6 +731,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
 		    evt,mode,(isClickable(target)),
 		    Codex.scanning,Codex.hudup,CodexMode());
+	if (reticle.live) reticle.flash();
 	fdjtUI.cancel(evt);
 	if (!(mode)) return;
 	var hudid=((mode)&&(mode_hud_map[mode]));
