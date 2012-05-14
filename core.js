@@ -37,7 +37,7 @@ var Codex=
      // Keeping track of paginated context
      curpage: false,curoff: false,curinfo: false, curbottom: false,
      // For tracking UI state
-     last_mode: false, last_flyleaf: "about",
+     last_mode: false, last_flyleaf: "about", demo: false,
      // How long it takes a gesture to go from tap to hold
      holdmsecs: 500, edgeclick: 50, pagesize: 250,
      animate: {pages:true,hud: true},

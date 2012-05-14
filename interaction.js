@@ -1172,7 +1172,16 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	if (isClickable(target)) return;
-	if (getParent(target,".tool")) return;
+	if ((getParent(target,".tool"))) {
+	    var card=getCard(target);
+	    if ((card)&&((card.name)||(card.getAttribute("name")))) {
+		var name=(card.name)||(card.getAttribute("name"));
+		var gloss=fdjtKB.ref(name,Codex.glosses);
+		if (!(gloss)) return;
+		Codex.setGlossTarget(gloss);	    
+		CodexMode("addgloss");
+		return;}
+	    else return;}
 	var scanning=Codex.scanning;
 	if (!(scanning)) return;
 	var hudparent=getParent(scanning,".hudpanel");
@@ -1402,7 +1411,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXPAGENOTEXT": {tap: enterPageNum},
 	 "#CODEXLOCOFF": {tap: enterLocation},
 	 // Return to scan
-	 "#CODEXSCANNER": {tap: scanner_tapped},
+	 "#CODEXSCANNER": {click: scanner_tapped},
 	 // Raise and lower HUD
 	 "#CODEXPAGEHEAD": {tap: head_click},
 	 "#CODEXHEAD": {tap: head_click},
@@ -1414,10 +1423,10 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 // GLOSSFORM rules
-	 "span.codexglossdelete": { tap: delete_ontap },
-	 "span.codexglossrespond": { tap: respond_ontap },
+	 "span.codexglossdelete": { click: delete_ontap },
+	 "span.codexglossrespond": { click: respond_ontap },
 	 "span.codexsharegloss": {tap: fdjtUI.CheckSpan.onclick},
-	 ".submitbutton": {tap: submitEvent },
+	 ".submitbutton": {click: submitEvent },
 	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},

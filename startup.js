@@ -271,8 +271,11 @@ Codex.Startup=
 	    // Setup the UI components for the body and HUD
 	    Codex.setupGestures();
 	    // Setup the reticle (if desired)
-	    if ((fdjtState.getQuery("reticle"))&&
-		(typeof (document.body.style["pointer-events"]) != "undefined"))
+	    if ((typeof (document.body.style["pointer-events"])
+		 != "undefined")&&
+		((Codex.demo)||(fdjtState.getLocal("codex.demo"))||
+		 (fdjtState.getCookie("sbooksdemo"))||
+		 (fdjtState.getQuery("demo"))))
 		fdjtUI.Reticle.setup();
 	    // Init user based on locally stored user information
 	    if ((!(Codex.nologin))&&(getLocal("sync("+Codex.refuri+")")))
