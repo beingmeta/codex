@@ -178,7 +178,9 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	    Codex.setQuery(q,false);};
 
     function showSearchResults(){
-	fdjtDOM.replace("CODEXSEARCHRESULTS",Codex.query.showResults());
+	var results=Codex.query.showResults();
+	// addClass(results,"hudpanel");
+	fdjtDOM.replace("CODEXSEARCHRESULTS",results);
 	CodexMode("searchresults");
 	fdjtID("CODEXSEARCHINPUT").blur();
 	fdjtID("CODEXSEARCHRESULTS").focus();

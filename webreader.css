@@ -509,9 +509,13 @@ div#CODEXHUD div.hudpanel.codexcard {
 
 body.cxTOUCH .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
+body div#CODEXHUD div.hudpanel#CODEXSEARCHRESULTS,
+body div#CODEXHUD div.hudpanel#CODEXSEARCHCLOUD,
 body #CODEXHUD div.hudpanel#CODEXBROWSEGLOSSES {
     top: 100px; bottom: 100px; left: 100px; right: 100px;
     display: none;}
+body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
+body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES {
     overflow: auto; border-color: darkblue; height: auto;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -577,6 +581,53 @@ div#CODEXHUD #CODEXFOOT {
 div#CODEXHUD #CODEXHEAD {
     position: fixed; left: 0px; right: 0px; width: 100%;
     top: 0px; z-index: 100;}
+
+body div#CODEXHUD #CODEXHEART.hudpanel {
+    position: fixed; left: 100px; right: 100px; 
+    top: 50%; bottom: 50%; height: 0px;
+    border-radius: 1em; -o-border-radius: 1em;
+    -moz-border-radius: 1em; -webkit-border-radius: 1em;
+    transition-property: height,top,bottom;
+    transition-duration: 1s;
+    -o-transition-property: height,top,bottom;
+    -o-transition-duration: 1s;
+    -moz-transition-property: height,top,bottom;
+    -moz-transition-duration: 1s;
+    -webkit-transition-property: height,top,bottom;
+    -webkit-transition-duration: 1s;
+    border: solid transparent 3px;
+    z-index: -100; opacity: 0.0;}
+body div#CODEXHUD #CODEXHEART > div {
+    opacity: 0.0; height: 0px; overflow: auto;
+    transition-property: opacity; transition-duration: 1s;
+    -o-transition-property: opacity; -o-transition-duration: 1s;
+    -moz-transition-property: opacity; -moz-transition-duration: 1s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
+/*
+body div#CODEXHUD.allglosses #CODEXHEART div {
+    position: absolute; opacity: 0.0; 
+    top: 0px; bottom: 0px; left: 0px; right: 0px;
+    transition-property: opacity; transition-duration: 1s;
+    -o-transition-property: opacity; -o-transition-duration: 1s;
+    -moz-transition-property: opacity; -moz-transition-duration: 1s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
+*/
+
+body div#CODEXHUD.allglosses div#CODEXHEART.hudpanel,
+body div#CODEXHUD.search div#CODEXHEART.hudpanel,
+body div#CODEXHUD.searchresults div#CODEXHEART.hudpanel {
+    display: block;}
+
+body.hudup div#CODEXHUD.allglosses #CODEXHEART.hudpanel,
+body.hudup div#CODEXHUD.search #CODEXHEART.hudpanel,
+body.hudup div#CODEXHUD.searchresults #CODEXHEART.hudpanel {
+    top: 100px; bottom: 100px; height: auto; border-color: blue;
+    z-index: 100; opacity: 1.0;}
+
+body div#CODEXHUD.allglosses #CODEXHEART > div#CODEXALLGLOSSES,
+body div#CODEXHUD.search #CODEXHEART > div#CODEXSEARCHCLOUD,
+body div#CODEXHUD.searchresults #CODEXHEART > div#CODEXSEARCHRESULTS {
+    opacity: 0.9; height: 100%; overflow: auto;}
 
 /* The lower left HUD icon */
 
@@ -651,8 +702,6 @@ body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
 body.hudup div#CODEXHUD.help div.hudpanel#CODEXHELP,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCH,
 body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCH,
-body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
-body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS

@@ -96,7 +96,7 @@
     <div id="CODEXSCAN"></div>
   </div>
   <div id="CODEXSEARCH" class="searchbox hudpanel notags">
-    <!-- This content comes from sbooksearch.html -->
+    <!-- This content comes from searchbox.html -->
   </div>
   <div id="CODEXADDGLOSS" class="codexaddgloss hudpanel">
     <div id="CODEXGLOSSFORMS">
@@ -160,11 +160,19 @@
 <img src="http://static.beingmeta.com/graphics/codex/ScanLeftStop32.png"
      id="CODEXSTARTSCAN" class="codexscanbutton"
      alt="beginning"/>
-<div id="CODEXBROWSEGLOSSES" class="hudpanel">
-  <!-- This contains renderings of all the glosses -->
+<div id="CODEXHEART" class="hudpanel">
   <div id="CODEXALLGLOSSES" class="codexslice">
     <!-- This is filled in on demand -->
   </div>
+  <div id="CODEXSEARCHCLOUD" class="completions searchcloud">
+    <span class="showall" onclick="Codex.UI.searchCloudToggle();">
+      ALL</span>
+    <span class="count">no query refinements</span>
+    <div id="CODEXSEARCHSOURCES"></div>
+    <div id="CODEXSEARCHTAGS"></div>
+    <div id="CODEXSEARCHCLOUDSOURCES"></div>
+  </div>
+  <div id="CODEXSEARCHRESULTS" class="codexslice"></div>
 </div>
 <div id="CODEXFLYLEAF" class="hudpanel">
   <!-- This content comes from flyleaftext.html -->

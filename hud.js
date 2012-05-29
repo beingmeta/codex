@@ -296,9 +296,9 @@ var CodexMode=
 	var CodexMode_pat=/\b((device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
 	var codexflyleafMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console))\b/g;
 	var sbook_mode_scrollers=
-	    {allglosses: "CODEXALLGLOSSES",
-	     searchresults: "CODEXSEARCHRESULTS",
-	     search: "CODEXSEARCHCLOUD",
+	    {//allglosses: "CODEXALLGLOSSES",
+	     //searchresults: "CODEXSEARCHRESULTS",
+	     //search: "CODEXSEARCHCLOUD",
 	     // addgloss: "CODEXGLOSSCLOUD",
 	     console: "CODEXCONSOLE",
 	     sbookapp: "MANAGEAPP",
