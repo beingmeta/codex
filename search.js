@@ -218,6 +218,8 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 		var completion=(completeinfo.selection)||
 		    completeinfo.select(new Selector(".cue"))||
 		    completeinfo.select();
+		// Signal error?
+		if (!(completion)) return;
 		var value=completeinfo.getValue(completion);
 		setQuery(extendQuery(Codex.query,value));}
 	    fdjtDOM.cancel(evt);
