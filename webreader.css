@@ -509,6 +509,23 @@ div#CODEXHUD div.hudpanel.codexcard {
 
 body.cxTOUCH .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
+body #CODEXHUD div.hudpanel#CODEXBROWSEGLOSSES {
+    top: 100px; bottom: 100px; left: 100px; right: 100px;
+    display: none;}
+body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES {
+    overflow: auto; border-color: darkblue; height: auto;
+    box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -webkit-transition-property: height,opacity;
+    -webkit-transition-duration: 1s;
+    display: block; opacity: 1.0;}
+body.hudup.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSOURCES {
+    opacity: 0.01;}
+body.hudup.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES {
+    opacity: 0.01;}
+
 div#CODEXHUD div.hudpanel div.scrollbox {
   overflow: auto;}
 
@@ -641,7 +658,7 @@ body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
 body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
 body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
-body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
+body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXSOURCES,
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     display: block; min-height: 50px; height: auto;
     overflow: auto; border-color: darkblue;
@@ -661,12 +678,10 @@ body.hudup.cxPREVIEW div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup.cxPREVIEW div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
 body.hudup.cxPREVIEW div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
 body.hudup.cxPREVIEW div#CODEXHUD.toc div.hudpanel#CODEXTOC,
+body.hudup.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSOURCES,
 body.hudup.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
 body.hudup.cxPREVIEW div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     border-color: transparent;}
-
-body.hudup div#CODEXHUD div.hudpanel#CODEXBROWSEGLOSSES {
-    max-height: 85%;}
 
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
@@ -1352,6 +1367,7 @@ body.hudup div#CODEXHUD.toc div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.search div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.glosses div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.searchresults div#CODEXHUDBUTTONS,
+body.hudup div#CODEXHUD.allglosses div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.tocscan div#CODEXHUDBUTTONS,
 body.hudup div#CODEXHUD.addgloss div#CODEXHUDBUTTONS,
 body div#CODEXHUD.scanning div#CODEXHUDBUTTONS {
@@ -1491,7 +1507,6 @@ div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent[id='APPABOUT'],
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent[id='CODEXSETTINGS'],
 div#CODEXHUD.flytoc div#CODEXFLYLEAF div.tabcontent[id='FLYTOC'],
 div#CODEXHUD.console div#CODEXFLYLEAF div.tabcontent[id='CODEXCONSOLE'],
-div#CODEXHUD.allglosses div#CODEXFLYLEAF div.tabcontent#CODEXBROWSEGLOSSES,
 div#CODEXHUD.sbookapp div#CODEXFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
     opacity: 1.0; z-index: 150; display: block;}
 
@@ -1544,10 +1559,6 @@ div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a {
     color: inherit; font-weight: inherit;}
 div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {
     font-weight: bold; background-color: gold;}
-
-div#CODEXHUD div#CODEXFLYLEAF div.tabcontent#CODEXBROWSEGLOSSES
-  div#CODEXSOURCES {
-  text-align: center;}
 
 div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
  div.setting {

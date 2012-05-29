@@ -131,21 +131,12 @@
       <!-- This is generated on demand -->
     </div>
   </div>
-  <div id="CODEXBROWSEGLOSSES" class="hudpanel">
-    <!-- This contains renderings of all the glosses, with
-	 a list of sources on top -->
-    <div id="CODEXSOURCES" class="sbooksources"
-	 onclick="Codex.UI.handlers.sources_ontap(event);">
-      <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
-	   class="button everyone selected"
-	   alt="show all" title="click to see all glosses"
-	   onclick="Codex.UI.handlers.everyone_ontap(event);"/>
-    </div>
-    <div class="scrollbox">
-      <div id="CODEXALLGLOSSES" class="codexslice">
-	<!-- This is filled in on demand -->
-      </div>
-    </div>
+  <div id="CODEXSOURCES" class="hudpanel sbooksources"
+       onclick="Codex.UI.handlers.sources_ontap(event);">
+    <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
+	 class="button everyone selected"
+	 alt="show all" title="click to see all glosses"
+	 onclick="Codex.UI.handlers.everyone_ontap(event);"/>
   </div>
   <div id="CODEXGLOSSES" class="hudpanel">
     <!-- This is populated when a glosspoint is tapped -->
@@ -169,6 +160,12 @@
 <img src="http://static.beingmeta.com/graphics/codex/ScanLeftStop32.png"
      id="CODEXSTARTSCAN" class="codexscanbutton"
      alt="beginning"/>
+<div id="CODEXBROWSEGLOSSES" class="hudpanel">
+  <!-- This contains renderings of all the glosses -->
+  <div id="CODEXALLGLOSSES" class="codexslice">
+    <!-- This is filled in on demand -->
+  </div>
+</div>
 <div id="CODEXFLYLEAF" class="hudpanel">
   <!-- This content comes from flyleaftext.html -->
 </div>
