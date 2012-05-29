@@ -1092,7 +1092,7 @@ Codex.Startup=
 		    var idlink=idlinks[i++];
 		    idlink.target='_blank';
 		    idlink.title='click to edit your personal information';
-		    idlink.href='https://auth.sbooks.net/admin/identity';}}
+		    idlink.href='https://auth.sbooks.net/my/profile';}}
 	    if (Codex.user.friends) {
 		var friends=Codex.user.friends;
 		var i=0; var lim=friends.length;
