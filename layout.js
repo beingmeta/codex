@@ -906,6 +906,14 @@ var CodexPaginate=
 	    var floatpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfloatpage",true));
 	    if (floatpages) args.floatpages=floatpages;
 
+	    if (fdjtDOM.getMeta("dontbreakblocks"))
+		args.break_blocks=false;
+	    else arg.break_blocks=true;
+	    
+	    if (fdjtDOM.getMeta("dontscalepages"))
+		args.scale_pages=false;
+	    else arg.scale_pages=true;
+
 	    return args;}
 	CodexLayout.getLayoutArgs=getLayoutArgs;
 
