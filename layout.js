@@ -908,11 +908,11 @@ var CodexPaginate=
 
 	    if (fdjtDOM.getMeta("dontbreakblocks"))
 		args.break_blocks=false;
-	    else arg.break_blocks=true;
+	    else args.break_blocks=true;
 	    
 	    if (fdjtDOM.getMeta("dontscalepages"))
 		args.scale_pages=false;
-	    else arg.scale_pages=true;
+	    else args.scale_pages=true;
 
 	    return args;}
 	CodexLayout.getLayoutArgs=getLayoutArgs;
