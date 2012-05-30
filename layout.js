@@ -175,6 +175,11 @@ var CodexSections=
 		    // skip it.
 		    else if (no_preamble(child)) {
 			gatherSections(child,sections,docinfo);}
+		    /*
+		    else if ((no_subsections(child))||
+			     (oversize_section(child,this.height))) {
+			var leaves=getLeaves(child);}
+		    */
 		    else {
 			var startid=getFirstID(child,docinfo);
 			var endid=getLastID(child,docinfo);
@@ -210,6 +215,7 @@ var CodexSections=
 	    addSections(content,docinfo);
 	    this.sections=[];
 	    this.pagebreaks=[];
+	    this.leaves=[];
 	    this.pagetops=[];
 	    var height=this.height=win.offsetHeight;
 	    this.scaled=[];
@@ -415,6 +421,88 @@ var CodexSections=
 		if (offset<breaks[i]) return pagenums[i-1];
 		else i++;}
 	    return pagenums[i-1];}
+
+	/* Getting leaves, which are page-height sections */
+
+	CodexSections.prototype.getLeaves=function(arg){
+	    var section=((arg.nodeType)?(arg):(this.sections[arg]));
+	    if (!(section)) return [];
+	    var sectnum=((typeof arg === 'number')?(arg):
+			 atoi(arg.getAttribute('data-sectnum')));
+	    if (Codex.Trace.layout)
+		fdjtLog("Computing %dpx-high leaves for section %d (%o)",
+			this.height,sectnum,section);
+	    if (this.leaves[sectnum-1])
+		return this.leaves[sectnum-1];
+	    else if (section.offsetHeight===0) return [];
+	    else if (section.offsetHeight<this.height)  {
+		addClass(section,"codexleaf");
+		addClass(section,"codexsimpleleaf");
+		return this.leaves[sectnum-1]=[section];}
+	    else {
+		var leaves=[], tops=[];
+		var placeholder=false;
+		gatherLeaves(section,this.height,leaves,tops);
+		this.leaves[sectnum-1]=leaves;
+		if (Codex.Trace.layout)
+		    fdjtLog("Found %d %dpx-high leaves for section %d (%o)",
+			    leaves.length,this.height,sectnum,section);
+		return leaves;}};
+
+	function gatherBlocks(node){
+	    var blocks=[];
+	    var children=fdjtDOM.TOA(node.childNodes);
+	    var i=0; var lim=children.length; var run=[];
+	    while (i<lim) {
+		var child=children[i++];
+		if (child.nodeType!==1) run.push(child);
+		else {
+		    var style=getStyle(child);
+		    var display=style.display;
+		    var fudge=((opts)&&(opts.fudge))||0.25;
+		    if ((display==='block')||(display==='table-row')||
+			(display==='list-item')||(display==='preformatted')) {
+			if (run.length) {
+			    var rundiv=fdjtDOM("div.codexrun");
+			    fdjtDOM.replace(run[0],rundiv);
+			    fdjtDOM.append(rundiv,run);
+			    blocks.push(rundiv);
+			    run=[];}
+			blocks.push(child);}
+		    else run.push(child);}}
+	    return blocks;}
+
+	function gatherLeaves(node,page_height){
+	    var blocks=gatherBlocks(node); var leaves=[];
+	    var i=0; var lim=blocks.length;
+	    var curpage=[]; var pages=[]; var oversize=[];
+	    var pagetop=false;
+	    while (i<lim) {
+		var child=children[i++];
+		// gatherBlocks should just return DOM elements,
+		//  so we don't need to check nodeType
+		var geom=getGeometry(child,node);
+		if (pagetop===false) pagetop=geom.top;
+		if (geom.bottom>(pagetop+page_height)) {
+		    if (curpage.length) {
+			pages.push(curpage);
+			oversize.push(false);}
+		    else {
+			pages.push([child]);
+			oversize.push(true);}
+		    pagetop=false;}
+		else curpage.push(child);}
+	    i=0; lim=pages.length;
+	    while (i<lim) {
+		var nodes=pages[i];
+		var leaf=fdjtDOM((oversize[i])?
+				  ("section.codexleaf.oversize"):
+				  ("section.codexleaf"));
+		leaves.push(leaf);
+		fdjtDOM.replace(nodes[0],leaf);
+		fdjtDOM.append(leaf,nodes);
+		i++;}
+	    return leaves;}
 
 	/* Movement by pages */
 	
