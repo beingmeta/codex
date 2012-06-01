@@ -54,31 +54,31 @@ body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > div.he
 body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > img {
     height: inherit;}
 
-div#CODEXFLYLEAF div#FLYTOC div.codextoc {
+div#CODEXHEART div#FLYTOC div.codextoc {
     display: block; font-size: 90%; text-align: left;}
-div#CODEXFLYLEAF div#FLYTOC div.codextoc img { display: none;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codextoc div.head {
+div#CODEXHEART div#FLYTOC div.codextoc img { display: none;}
+div#CODEXHUD div#CODEXHEART div#FLYTOC div.codextoc div.head {
     margin-left: 0px; margin-right: 0px;
     display: block; font-weight: bold;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codextocleaf > div.head {
+div#CODEXHUD div#CODEXHEART div#FLYTOC div.codextocleaf > div.head {
     display: block; font-weight: normal;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC hr.progressbar {
+div#CODEXHUD div#CODEXHEART div#FLYTOC hr.progressbar {
     display: none; border: none;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.progressbox { display: none;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC div.codexlivehead > div.head {
+div#CODEXHUD div#CODEXHEART div#FLYTOC div.progressbox { display: none;}
+div#CODEXHUD div#CODEXHEART div#FLYTOC div.codexlivehead > div.head {
     color: blue;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
+div#CODEXHUD div#CODEXHEART div#FLYTOC
   div.codexlivehead > div.head hr.progressbar {
       display: block;}
-div#CODEXHUD div#CODEXFLYLEAF div#FLYTOC
+div#CODEXHUD div#CODEXHEART div#FLYTOC
   div.codexlivehead > div.spanbar div.progressbox {
       display: block;}
 
 div#CODEXFLYTOC div.codextoc.codexcurhead div.sub { display: none;}
 
-div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.spanbar {
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.spanbar {
     border-left: solid black 1px;}
-div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.spanbar div.spans {
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.spanbar div.spans {
     left: 0px;}
 
 div.codextoc .sectname.cohi { background-color: gold;}

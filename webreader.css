@@ -463,7 +463,7 @@ span.excerpt span.content { font-size: 80%; display: none;}
 /* The HUD */
 
 body.cxPREVIEW #CODEXHUD { opacity: 0.8;}
-body.cxPREVIEW #CODEXHUD div.hudpanel#CODEXFLYLEAF {
+body.cxPREVIEW #CODEXHUD div.hudpanel#CODEXHEART {
     visibility: hidden; background-color: transparent;}
 
 #CODEXHUD a { text-decoration: none;}
@@ -603,6 +603,11 @@ body div#CODEXHUD #CODEXHEART > div {
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
+/* We're using height=0, rather than display=none (the default) to
+   hide tabcontent. */
+body div#CODEXHUD #CODEXHEART > div.tabcontent {
+    display: block;}
+
 /*
 body div#CODEXHUD.allglosses #CODEXHEART div {
     position: absolute; opacity: 0.0; 
@@ -613,21 +618,25 @@ body div#CODEXHUD.allglosses #CODEXHEART div {
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
 */
 
-body div#CODEXHUD.allglosses div#CODEXHEART.hudpanel,
-body div#CODEXHUD.search div#CODEXHEART.hudpanel,
-body div#CODEXHUD.searchresults div#CODEXHEART.hudpanel {
+body.hudup div#CODEXHUD.openheart div#CODEXHEART.hudpanel {
     display: block;}
 
-body.hudup div#CODEXHUD.allglosses #CODEXHEART.hudpanel,
-body.hudup div#CODEXHUD.search #CODEXHEART.hudpanel,
-body.hudup div#CODEXHUD.searchresults #CODEXHEART.hudpanel {
+body.hudup div#CODEXHUD.openheart #CODEXHEART.hudpanel {
     top: 100px; bottom: 100px; height: auto; border-color: blue;
     z-index: 100; opacity: 1.0;}
 
 body div#CODEXHUD.allglosses #CODEXHEART > div#CODEXALLGLOSSES,
 body div#CODEXHUD.search #CODEXHEART > div#CODEXSEARCHCLOUD,
-body div#CODEXHUD.searchresults #CODEXHEART > div#CODEXSEARCHRESULTS {
-    opacity: 0.9; height: 100%; overflow: auto;}
+body div#CODEXHUD.searchresults #CODEXHEART > div#CODEXSEARCHRESULTS,
+body div#CODEXHUD.about #CODEXHEART > div.tabcontent[id='APPABOUT'],
+body div#CODEXHUD.device #CODEXHEART > div.tabcontent[id='CODEXSETTINGS'],
+body div#CODEXHUD.flytoc #CODEXHEART > div.tabcontent[id='FLYTOC'],
+body div#CODEXHUD.console #CODEXHEART > div.tabcontent[id='CODEXCONSOLE'],
+body div#CODEXHUD.sbookapp div#CODEXHEART div.tabcontent[id='SBOOKSAPP'] {
+    opacity: 0.9; height: 100%; z-index: 150; overflow: auto;}
+
+div#CODEXHUD.about div#CODEXHEART div.tabcontent {
+    margin-top: 0px;}
 
 /* The lower left HUD icon */
 
@@ -702,7 +711,6 @@ body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
 body.hudup div#CODEXHUD.help div.hudpanel#CODEXHELP,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCH,
 body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCH,
-body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
 body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
@@ -722,7 +730,6 @@ body.hudup.cxPREVIEW div#CODEXHUD.search div.hudpanel#CODEXSEARCH,
 body.hudup.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCH,
 body.hudup.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
 body.hudup.cxPREVIEW div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
-body.hudup.cxPREVIEW div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF,
 body.hudup.cxPREVIEW div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
 body.hudup.cxPREVIEW div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
 body.hudup.cxPREVIEW div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
@@ -836,7 +843,6 @@ div#SBOOKGLOSSES div.codexthread {
 body.hudup div#CODEXHUD.addgloss .hudbutton { opacity: 0.15;}
 
 div#CODEXHUD.allglosses .hudbutton[alt='allglosses'],
-div#CODEXHUD.flyleaf .hudbutton[alt='flyleaf'],
 div#CODEXHUD.search .hudbutton[alt='search'],
 div#CODEXHUD.searchresults .hudbutton[alt='search'],
 div#CODEXHUD.toc .hudbutton[alt='toc'] {
@@ -932,13 +938,13 @@ div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 /* The Console */
 
 div#CODEXCONSOLE h1 { font-size: 1.5em;}
-div#CODEXCONSOLE div#CODEXCONSOLELOG { margin-left: 8em;}
+div#CODEXCONSOLE div#CODEXCONSOLELOG { margin-left: 4em;}
 div#CODEXCONSOLE div.fdjtlog {
     border-top: solid black 1px;}
 div#CODEXCONSOLE div.message {
     text-align: center; font-size: 150%;}
 
-div#CODEXCONSOLE div#CODEXCONSOLEINPUT { margin-left: 8em;}
+div#CODEXCONSOLE div#CODEXCONSOLEINPUT { margin-left: 4em;}
 div#CODEXCONSOLE div#CODEXCONSOLEINPUT span.button { float: right;}
 div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
 
@@ -948,31 +954,6 @@ div#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: fixed; right: 50px;}
 
 div#CODEXSOURCES {
     overflow-y: hidden; overflow-x: auto; white-space: nowrap;}
-
-/* The flyleaf */
-
-div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
-    color: #4682b4; opacity: 1.0;
-    /* Transition rules for animating slide-in */
-    transition-property: left;
-    transition-duration: 1s;
-    -webkit-transition-property: left;
-    -webkit-transition-duration: 1s;
-    -o-transition-property: left;
-    -o-transition-duration: 1s;
-    -moz-transition-property: left;
-    -moz-transition-duration: 1s;
-    /* Always on, hide by moving */
-    display: block;}
-div#CODEXHUD div.hudpanel#CODEXFLYLEAF {
-    top: 70px; bottom: 60px; left: -100%; width: 90%; height: auto;
-    border-left: none;
-    border-top-left-radius: 0px; -o-border-radius-topleft: 0px;
-    -moz-border-radius-topleft: 0px; -webkit-border-top-left-radius: 0px; 
-    border-bottom-left-radius: 0px; -o-border-radius-bottomleft: 0px;
-    -moz-border-radius-bottomleft: 0px; -webkit-border-bottom-left-radius: 0px;}
-body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXFLYLEAF {
-    left: 0px;}
 
 /* The glossleaf */
 
@@ -996,9 +977,6 @@ div#CODEXHUD div.hudpanel#CODEXGLOSSLEAF {
     -moz-border-radius-topright: 0px; -webkit-border-top-right-radius: 0px; 
     border-bottom-right-radius: 0px; -o-border-radius-bottomright: 0px;
     -moz-border-radius-bottomright: 0px; -webkit-border-bottom-right-radius: 0px;}
-body.hudup div#CODEXHUD.flyleaf div.hudpanel#CODEXGLOSSLEAF {
-    right: 0px;}
-
 /* The help HUD */
 
 div#CODEXHUD div#CODEXHELP.hudpanel {
@@ -1472,7 +1450,7 @@ div#CODEXHUD.scanning div#CODEXHUDBUTTONS,
 div#CODEXHUD.addgloss div#CODEXHUDBUTTONS {
     display: none;}
 
-div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent {
+div#CODEXHUD.about div#CODEXHEART div.tabcontent {
     margin-top: 0px;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
@@ -1538,7 +1516,7 @@ div#CODEXHUD div#CODEXFLYHEAD div.tabbar .tab {
 div#CODEXHUD div#CODEXFLYHEAD div.tabbar .tab  {
     border: transparent solid 3px;}
 
-div#CODEXHUD div#CODEXFLYLEAF table {
+div#CODEXHUD div#CODEXHEART table {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
 
 div#CODEXHUD.about div#CODEXFLYHEAD div.tabbar .tab[contentid='APPABOUT'],
@@ -1549,20 +1527,10 @@ div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
     border-top: transparent solid 3px;}
 
-div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent {
-    margin-top: 0px;}
-
-div#CODEXHUD.about div#CODEXFLYLEAF div.tabcontent[id='APPABOUT'],
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent[id='CODEXSETTINGS'],
-div#CODEXHUD.flytoc div#CODEXFLYLEAF div.tabcontent[id='FLYTOC'],
-div#CODEXHUD.console div#CODEXFLYLEAF div.tabcontent[id='CODEXCONSOLE'],
-div#CODEXHUD.sbookapp div#CODEXFLYLEAF div.tabcontent[id='SBOOKSAPP'] {
-    opacity: 1.0; z-index: 150; display: block;}
-
-div#CODEXHUD div#CODEXFLYLEAF div.tabcontent {
+div#CODEXHUD div#CODEXHEART div.tabcontent {
     overflow-y: auto; overflow-x: hidden;}
-div#CODEXHUD div#CODEXFLYLEAF div.tabcontent#SBOOKSAPP { overflow: visible;}
-div#CODEXHUD div#CODEXFLYLEAF div.tabcontent#SBOOKSAPP iframe {
+div#CODEXHUD div#CODEXHEART div.tabcontent#SBOOKSAPP { overflow: visible;}
+div#CODEXHUD div#CODEXHEART div.tabcontent#SBOOKSAPP iframe {
   width: 100%; height: 100%; border: 0px; margin: 0px; padding: 0px;}
 
 div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
@@ -1592,54 +1560,47 @@ body.cxNOUSER a.logout {display: none;}
 
 /* CODEXFLYLEAF content rules */
 
-div#CODEXHUD div#CODEXFLYLEAF a,
-div#CODEXHUD div#CODEXFLYLEAF a:visited { 
+div#CODEXHUD div#CODEXHEART a,
+div#CODEXHUD div#CODEXHEART a:visited { 
   color: darkblue; text-decoration: none;}
-div#CODEXHUD div#CODEXFLYLEAF a:hover { text-decoration: underline;}
-div#CODEXHUD div#CODEXFLYLEAF .flyleafplate a,
-div#CODEXHUD div#CODEXFLYLEAF .flyleafplate a:visited {
+div#CODEXHUD div#CODEXHEART a:hover { text-decoration: underline;}
+div#CODEXHUD div#CODEXHEART .flyleafplate a,
+div#CODEXHUD div#CODEXHEART .flyleafplate a:visited {
     text-decoration: none; color: blue;}
-div#CODEXHUD div#CODEXFLYLEAF .flyleafplate a:hover {
+div#CODEXHUD div#CODEXHEART .flyleafplate a:hover {
     text-decoration: underline;}
 
-div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.head { color: black; } 
-div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC div.head { padding-left: 4px;} 
-div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a {
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.head { color: black; } 
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.head { padding-left: 4px;} 
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC a {
     color: inherit; font-weight: inherit;}
-div#CODEXHUD div#CODEXFLYLEAF div#CODEXFLYTOC a.cohi {
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC a.cohi {
     font-weight: bold; background-color: gold;}
 
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
+div#CODEXHUD.device div#CODEXHEART div.tabcontent#CODEXSETTINGS
  div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
+div#CODEXHUD.device div#CODEXHEART div.tabcontent#CODEXSETTINGS
  div.setting span.checkspan {
      font-size: 125%; color: orange;}
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
+div#CODEXHUD.device div#CODEXHEART div.tabcontent#CODEXSETTINGS
   div.setting span.checkspan input[type='CHECKBOX'] {
       width: 16px; height: 16px; color: orange; background-color: orange;
       vertical-align: bottom;}
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
+div#CODEXHUD.device div#CODEXHEART div.tabcontent#CODEXSETTINGS
   div.setting div.explanation { 
       font-style: italic; clear: both; margin-left: 3em;}
-div#CODEXHUD.device div#CODEXFLYLEAF div.tabcontent#CODEXSETTINGS
-  div.setting .button {
-      float: right; clear: right; cursor: pointer; 
-      background-color: orange; color: white;
-      font-weight: bold; font-variant: small-caps;
-      padding: 4px; border: solid orange 2px;
-      border-radius: 6px;
-      -o-border-radius: 6px; 
-      -webkit-border-radius: 6px; 
-      -moz-border-radius: 6px;}
-div#CODEXFLYLEAF table.settings {
+div#CODEXHEART table.settings {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
-div#CODEXFLYLEAF table.settings th {text-align: right; vertical-align: top;}
-div#CODEXFLYLEAF table.settings td {
+div#CODEXHEART table.settings th {text-align: right; vertical-align: top;}
+div#CODEXHEART table.settings td {
     text-align: left; vertical-align: top; padding-left: 12px;}
-div#CODEXFLYLEAF table.settings td input[type='TEXT'] {
+div#CODEXHEART table.settings td input[type='TEXT'] {
     width: 100%;}
-div#CODEXHUD div#CODEXFLYLEAF table.settings .button {
+div#CODEXHUD div#CODEXHEART table.settings tr.buttons td {
+    text-align: right;}
+/*
+{
     float: right; clear: right; cursor: pointer; 
     background-color: orange; color: white;
     font-weight: bold; font-variant: small-caps;
@@ -1648,7 +1609,8 @@ div#CODEXHUD div#CODEXFLYLEAF table.settings .button {
     -o-border-radius: 6px; 
     -webkit-border-radius: 6px; 
     -moz-border-radius: 6px;}
-div#CODEXHUD.settings div#CODEXFLYLEAF table.settings .smallbutton {
+*/
+div#CODEXHUD.settings div#CODEXHEART table.settings .smallbutton {
     cursor: pointer;
     margin-left: 4px; margin-right: 4px; padding: 3px;
     background-color: gold; color: darkblue;
@@ -1668,7 +1630,7 @@ div#CODEXSETTINGS span.button {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;}
 
-div#CODEXFLYLEAF table.settings td .checkspan { }
+div#CODEXHEART table.settings td .checkspan { }
 
 /* Flyleaf content rules */
 

@@ -80,9 +80,9 @@ var CodexMode=
 		hudhelp.innerHTML=sbook_hudhelp;
 		var readhelp=fdjtID("CODEXHELP");
 		readhelp.innerHTML=sbook_helptext;}
-	    // Setup flyleaf
-	    var flyleaf=fdjtID("CODEXFLYLEAF");
-	    flyleaf.innerHTML=sbook_flyleaftext;
+	    // Setup heart
+	    var heart=fdjtID("CODEXHEART");
+	    heart.innerHTML=sbook_hudheart;
 	    // Setup settings
 	    var settings=fdjtID("CODEXSETTINGS");
 	    settings.innerHTML=sbook_settingstext;
@@ -200,10 +200,10 @@ var CodexMode=
 	    sbookFoot=fdjtID("CODEXFOOT");
 	    sbookHead=fdjtID("CODEXHEAD");
 	    sbookHelp=fdjtID("CODEXHELP");
-	    fillinFlyleaf();
+	    fillinTabs();
 	    resizeHUD();
 	    Codex.scrollers={};
-	    // updateScroller("CODEXGLOSSCLOUD");
+	    updateScroller("CODEXGLOSSCLOUD");
 	    updateScroller("CODEXSEARCHCLOUD");}
 	Codex.initHUD=initHUD;
 	
@@ -284,7 +284,7 @@ var CodexMode=
 		if (Codex.previewing) Codex.stopPreview();
 		if (clearmode) {
 		    var wait=false;
-		    dropClass(CodexHUD,"flyleaf");
+		    dropClass(CodexHUD,"openheart");
 		    dropClass(CodexHUD,"full");
 		    dropClass(CodexHUD,CodexMode_pat);
 		    Codex.mode=false;}
@@ -294,7 +294,7 @@ var CodexMode=
 	/* Mode controls */
 	
 	var CodexMode_pat=/\b((device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
-	var codexflyleafMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console))\b/g;
+	var codexHeartMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses))\b/g;
 	var sbook_mode_scrollers=
 	    {//allglosses: "CODEXALLGLOSSES",
 	     //searchresults: "CODEXSEARCHRESULTS",
@@ -314,7 +314,7 @@ var CodexMode=
 	    if (typeof mode === 'undefined') return oldmode;
 	    if (mode==='last') mode=Codex.last_mode||'help';
 	    if (mode==='none') mode=false;
-	    if (mode==='flyleaf') mode=Codex.flyleaf_mode||"about";
+	    if (mode==='heart') mode=Codex.heart_mode||"about";
 	    if (Codex.Trace.mode)
 		fdjtLog("CodexMode %o, cur=%o dbc=%o",
 			mode,Codex.mode,document.body.className);
@@ -356,21 +356,21 @@ var CodexMode=
 		// Actually change the class on the HUD object
 		if (mode===true) {
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");
-		    dropClass(CodexHUD,"flyleaf");}
+		    dropClass(CodexHUD,"openheart");}
 		else {
-		    if (mode.search(codexflyleafMode_pat)<0)
-			dropClass(CodexHUD,"flyleaf");
+		    if (mode.search(codexHeartMode_pat)<0)
+			dropClass(CodexHUD,"openheart");
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,mode);}
 		// Update the body scanning mode
 		if ((mode==="scanning")||(mode==="tocscan"))
 		    addClass(document.body,"codexscanning");
 		else dropClass(document.body,"codexscanning");
-		// Update the 'flyleaf' meta mode
+		// Update the 'heart' meta mode
 		if ((mode)&&(typeof mode === 'string')) {
-		    if (mode.search(codexflyleafMode_pat)===0) {
-			Codex.flyleaf_mode=mode;
-			addClass(CodexHUD,"flyleaf");}
-		    else dropClass(CodexHUD,"flyleaf");
+		    if (mode.search(codexHeartMode_pat)===0) {
+			Codex.heart_mode=mode;
+			addClass(CodexHUD,"openheart");}
+		    else dropClass(CodexHUD,"openheart");
 		    fdjtID("CODEXBUTTON").className=mode;}
 		// Help mode (on the hud) actually dims the body
 		if (mode==="help")
@@ -381,7 +381,7 @@ var CodexMode=
 		if ((mode==='scanning')||(mode==='tocscan')) {
 		    if (mode!==oldmode) {
 			Codex.hudup=false;
-			dropClass(CodexHUD,"flyleaf");
+			dropClass(CodexHUD,"openheart");
 			dropClass(CodexHUD,"full");
 			dropClass(document.body,"hudup");}}
 		else if (mode==='addgloss') {}
@@ -500,14 +500,15 @@ var CodexMode=
 			    scroller.scrollerWidth,scroller.scrollerHeight,
 			    scroller.scrollWidth,scroller.scrollHeight,
 			    scroller.maxScrollX,scroller.maxScrollY);}}}
+	function updateScroller(elt){}
 	Codex.UI.updateScroller=updateScroller;
 
 	function CodexHUDToggle(mode,keephud){
 	    if (!(Codex.mode)) CodexMode(mode);
 	    else if (mode===Codex.mode)
 		if (keephud) CodexMode(true); else CodexMode(false);
-	    else if ((mode==='flyleaf')&&
-		     (Codex.mode.search(codexflyleafMode_pat)===0))
+	    else if ((mode==='heart')&&
+		     (Codex.mode.search(codexHeartMode_pat)===0))
 		if (keephud) CodexMode(true); else CodexMode(false);
 	    else CodexMode(mode);}
 	CodexMode.toggle=CodexHUDToggle;
@@ -522,7 +523,7 @@ var CodexMode=
 	
 	/* The App HUD */
 	
-	function fillinFlyleaf(){
+	function fillinTabs(){
 	    var hidehelp=fdjtID("SBOOKHIDEHELP");
 	    var dohidehelp=fdjtState.getCookie("sbookhidehelp");
 	    if (!(hidehelp)) {}

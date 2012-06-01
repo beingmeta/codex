@@ -581,7 +581,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     // We have a big table of command characters which lead to modes
     var modechars={
 	63: "searching",102: "searching",
-	65: "flyleaf", 97: "flyleaf",
+	65: "openheart", 97: "openheart",
 	83: "searching",115: "searching",
 	80: "gotopage",112: "gotopage",
 	76: "gotoloc",108: "gotoloc",
@@ -605,8 +605,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    fdjtDOM.toggleClass(document.body,'codexhelp');
 	    return false;}
 	else modearg=modechars[ch];
-	if (modearg==="flyleaf")
-	    modearg=Codex.last_flyleaf||"about";
+	if (modearg==="openheart")
+	    modearg=Codex.last_heartmode||"about";
 	if (modearg==="humane") {
 	    fdjtLog.Humane();
 	    return;}
@@ -716,7 +716,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	"toc": "CODEXTOC",
 	"searching": "CODEXSEARCH",
 	"allglosses": "CODEXSOURCES",
-	"flyleaf": "CODEXFLYHEAD"};
+	"openheart": "CODEXFLYHEAD"};
     
     function hudbutton(evt){
 	evt=evt||event;
@@ -1403,7 +1403,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		   release: slice_released},
 	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {click: Codex.UI.dropHUD},
-	 "#CODEXFLYLEAF": {tap: flyleaf_tap},
+	 ".codexheart": {tap: flyleaf_tap},
 	 "#CODEXPAGEINFO": {tap: pageinfo_tap,
 			    hold: pageinfo_hold,
 			    release: pageinfo_release,
@@ -1449,7 +1449,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 summary: {tap: slice_tapped, hold: slice_held,release: slice_released},
 	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {tap: Codex.UI.dropHUD},
-	 "#CODEXFLYLEAF": {tap: flyleaf_tap},
 	 "#CODEXPAGEFOOT": {},
 	 "#CODEXPAGEINFO": {tap: pageinfo_tap,
 			    hold: pageinfo_hold,

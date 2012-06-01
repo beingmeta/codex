@@ -342,7 +342,7 @@ Codex.Startup=
 			addClass(document.body,"cxBYSECT");}
 		    else addClass(document.body,"cxSCROLL");},
 		// Build the display TOC, both the dynamic (top of
-		// display) and the static (inside the flyleaf)
+		// display) and the static (inside the hudheart)
 		function(){
 		    var tocmsg=fdjtID("CODEXSTARTUPTOC");
 		    if (tocmsg) {
