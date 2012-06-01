@@ -254,23 +254,9 @@ body.cxTOUCH .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
 body div#CODEXHUD div.hudpanel#CODEXSEARCHRESULTS,
 body div#CODEXHUD div.hudpanel#CODEXSEARCHCLOUD,
-body #CODEXHUD div.hudpanel#CODEXBROWSEGLOSSES {
-    top: 100px; bottom: 100px; left: 100px; right: 100px;
-    display: none;}
 body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
-body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES {
-    overflow: auto; border-color: darkblue; height: auto;
-    box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -webkit-transition-property: height,opacity;
-    -webkit-transition-duration: 1s;
-    display: block; opacity: 1.0;}
 body.hudup.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSOURCES {
-    opacity: 0.01;}
-body.hudup.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES {
     opacity: 0.01;}
 
 div#CODEXHUD div.hudpanel div.scrollbox {
@@ -478,7 +464,6 @@ body.hudup.cxPREVIEW div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
 body.hudup.cxPREVIEW div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
 body.hudup.cxPREVIEW div#CODEXHUD.toc div.hudpanel#CODEXTOC,
 body.hudup.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSOURCES,
-body.hudup.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXBROWSEGLOSSES,
 body.hudup.cxPREVIEW div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     border-color: transparent;}
 
