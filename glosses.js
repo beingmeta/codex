@@ -180,8 +180,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    while (i<lim) {
 		// if (resptags) gloss;
 		addTag(form,tags[i],false);
-		i++;}
-	    }
+		i++;}}
 	if ((gloss)&&(!(response))&&(gloss.links)) {
 	    var links=fdjtDOM.getChild(form,".links");
 	    var resplinks=fdjtDOM.getChild(response_elt,".resplinks");
@@ -199,7 +198,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    if (typeof tags === 'string') tags=[tags];
 	    var i=0; var lim=tags.length;
 	    while (i<lim) addTag(form,tags[i++],"SHARE");}
-	if ((gloss)&&(gloss._id)) {
+	if ((!(response))&&(gloss)&&(gloss._id)) {
 	    uuidelt.value=gloss._id;}
 	else uuidelt.value=fdjtState.getUUID(Codex.nodeid);
 	if (gloss) {
