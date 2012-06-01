@@ -535,7 +535,9 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	if (completions) {
 	    fdjtUI.cancel(evt);
 	    fdjtDOM.toggleClass(completions,"showempty");
-	    Codex.UI.updateScroller(completions);}}
+	    setTimeout(function(){
+		Codex.UI.updateScroller(completions);},
+		       100);}}
 
     function KNodeCompletion(term,title){
 	var sbook_index=Codex.index; var showname=term;
