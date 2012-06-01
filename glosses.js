@@ -233,29 +233,28 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	if (typeof checked === 'undefined') checked=true;
 	var outletspan=fdjtDOM.getChild(form,".outlets");
 	var inputs=fdjtDOM.getInputs(outletspan,"SHARE");
-	var i=0; var lim=inputs.length;
+	var i=0; var lim=inputs.length; var formvar="SHARE";
+	var outlet_id=((typeof outlet === 'string')?(outlet):(outlet._id));
+	if (typeof outlet === 'string') {
+	    if ((outlet[0]==='@')||
+		((outlet[0]===':')&&(outlet[0]==='@')))
+		outlet=Codex.sourcekb.ref(outlet);
+	    else {
+		outlet={name: outlet};
+		spanspec="span.checkspan.email";
+		formvar="EMAIL";}}
+	else info=outlet;
 	while (i<lim) {
-	    if (inputs[i].value===outlet) {
+	    if (inputs[i].value===outlet_id) {
 		var checkspan=fdjtDOM.getParent(inputs[i],".checkspan");
 		fdjtUI.CheckSpan.set(checkspan,checked);
 		return;}
 	    else i++;}
-	var info; var formvar="SHARE";
 	var spanspec="span.checkspan.outlet";
-	if (typeof outlet === 'string') {
-	    if ((outlet[0]==='@')||
-		((outlet[0]===':')&&(outlet[0]==='@')))
-		info=Codex.sourcekb.ref(outlet);
-	    else {
-		info={name: outlet};
-		spanspec="span.checkspan.email";
-		formvar="EMAIL";}}
-	else info=outlet;
-	
 	var checkspan=fdjtUI.CheckSpan(
-	    spanspec,formvar,outlet,checked,
-	    info.nick||info.name);
-	if (info.description) checkspan.title=info.description;
+	    spanspec,formvar,outlet_id,checked,
+	    outlet.nick||outlet.name);
+	if (outlet.description) checkspan.title=outlet.description;
 	fdjtDOM(outletspan," ",checkspan);}
     function clearOutlets(form){
 	var outletspan=fdjtDOM.getChild(form,".outlets");

@@ -1427,8 +1427,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "span.codexglossrespond": { click: respond_ontap },
 	 "span.codexsharegloss": {tap: fdjtUI.CheckSpan.onclick},
 	 ".submitbutton": {click: submitEvent },
-	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
-	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
+	 "div.glossetc": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
 	 "div.glossetc span.modebuttons": {click: glossmode_button},
 	 "#CODEXGLOSSOUTLETS": {tap: outlet_tapped}};

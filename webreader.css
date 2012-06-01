@@ -315,6 +315,10 @@ div.codexglossform form div.glossetc .tags span.checkspan {
     -webkit-border-bottom-left-radius: 1ex;
     -webkit-border-top-left-radius: 1ex; 
     border: solid yellow 2px;}
+div.codexglossform form div.glossetc span.checkspan {
+    text-decoration: line-through;}
+div.codexglossform form div.glossetc span.checkspan.ischecked {
+    text-decoration: none;}
 
 div.codexglossform form div.glossetc img.twisty[alt='-'] { display: none;}
 div.codexglossform form div.glossetc.expanded {
@@ -463,8 +467,10 @@ span.excerpt span.content { font-size: 80%; display: none;}
 /* The HUD */
 
 body.cxPREVIEW #CODEXHUD { opacity: 0.8;}
-body.cxPREVIEW #CODEXHUD div.hudpanel#CODEXHEART {
-    visibility: hidden; background-color: transparent;}
+body.hudup.cxPREVIEW #CODEXHUD div.hudpanel#CODEXHEART {
+    opacity: 0.0; background-color: transparent;}
+body.hudup.cxPREVIEW #CODEXHUD.openheart div.hudpanel#CODEXHEART {
+    opacity: 0.0; background-color: transparent;}
 
 #CODEXHUD a { text-decoration: none;}
 #CODEXHUD a img { border: transparent;}

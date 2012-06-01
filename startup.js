@@ -313,9 +313,9 @@ Codex.Startup=
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
 		    Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
 		    dropClass(scanmsg,"running");
-		    if (Codex.afterscan) {
-			var donefn=Codex.afterscan;
-			delete Codex.afterscan;
+		    if (Codex.scandone) {
+			var donefn=Codex.scandone;
+			delete Codex.scandone;
 			donefn();}},
 		// Now you're ready to lay out the book, which is
 		//  timesliced and runs on its own.  We wait to do
@@ -905,8 +905,9 @@ Codex.Startup=
 	/* Loading meta info (user, glosses, etc) */
 
 	function loadInfo(info) {
-	    if (!(Codex.docinfo)) /* Scan not done */
+	    if (!(Codex.docinfo)) { /* Scan not done */
 		Codex.scandone=function(){loadInfo(info);};
+		return;}
 	    else if (info.loaded) return;
 	    var refuri=Codex.refuri;
 	    if ((Codex.offline)&&
