@@ -354,15 +354,16 @@ body.hudup div#CODEXHUD.openheart #CODEXHEART.hudpanel {
     top: 100px; bottom: 100px; height: auto; border-color: blue;
     z-index: 100; opacity: 1.0;}
 
-body div#CODEXHUD.allglosses #CODEXHEART > div#CODEXALLGLOSSES,
-body div#CODEXHUD.search #CODEXHEART > div#CODEXSEARCHCLOUD,
-body div#CODEXHUD.searchresults #CODEXHEART > div#CODEXSEARCHRESULTS,
-body div#CODEXHUD.about #CODEXHEART > div.tabcontent[id='APPABOUT'],
-body div#CODEXHUD.device #CODEXHEART > div.tabcontent[id='CODEXSETTINGS'],
-body div#CODEXHUD.flytoc #CODEXHEART > div.tabcontent[id='FLYTOC'],
-body div#CODEXHUD.console #CODEXHEART > div.tabcontent[id='CODEXCONSOLE'],
-body div#CODEXHUD.sbookapp div#CODEXHEART div.tabcontent[id='SBOOKSAPP'] {
+body div#CODEXHUD.allglosses #CODEXHEART > div#CODEXALLGLOSSES_SCROLLER,
+body div#CODEXHUD.search #CODEXHEART > div#CODEXSEARCHCLOUD_SCROLLER,
+body div#CODEXHUD.searchresults #CODEXHEART > div#CODEXSEARCHRESULTS_SCROLLER,
+body div#CODEXHUD.about #CODEXHEART > div.tabcontent#APPABOUT_SCROLLER,
+body div#CODEXHUD.device #CODEXHEART > div.tabcontent#CODEXSETTINGS_SCROLLER,
+body div#CODEXHUD.flytoc #CODEXHEART > div.tabcontent#FLYTOC_SCROLLER,
+body div#CODEXHUD.console #CODEXHEART > div.tabcontent#CODEXCONSOLE_SCROLLER,
+body div#CODEXHUD.sbookapp div#CODEXHEART div.tabcontent#SBOOKSAPP_SCROLLER {
     opacity: 0.9; height: 100%; z-index: 150; overflow: auto;}
+div.scroller > div { }
 
 div#CODEXHUD.about div#CODEXHEART div.tabcontent {
     margin-top: 0px;}

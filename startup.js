@@ -58,7 +58,7 @@ Codex.Startup=
 
 	var getLocal=fdjtState.getLocal;
 	var setLocal=fdjtState.setLocal;
-
+	var getMeta=fdjtDOM.getMeta;
 	/* Initialization */
 	
 	var _sbook_setup_start=false;
@@ -178,6 +178,8 @@ Codex.Startup=
 		    if (default_config.hasOwnProperty(setting)) {
 			if (fdjtState.getQuery(setting))
 			    setConfig(setting,fdjtState.getQuery(setting));
+			else if (getMeta("codex."+setting))
+			    setConfig(setting,getMeta("codex."+setting));
 			else setConfig(setting,default_config[setting]);}}
 	    var dopost=Codex.postconfig;
 	    Codex.postconfig=false;
@@ -460,10 +462,10 @@ Codex.Startup=
 		getLocal("offline("+refuri+")")||
 		getLocal("mycopyid("+refuri+")")||
 		getLocal("sbooks.offline")||
-		((fdjtDOM.getMeta("sbook.mycopyid")))||
-		((fdjtDOM.getMeta("sbooks.mycopyid")))||
-		((fdjtDOM.getMeta("MYCOPYID")))||
-		(fdjtDOM.getMeta("sbook.offline"));
+		((getMeta("sbook.mycopyid")))||
+		((getMeta("sbooks.mycopyid")))||
+		((getMeta("MYCOPYID")))||
+		(getMeta("sbook.offline"));
 	    if ((!(value))||(value==="no")||(value==="off")||(value==="never"))
 		return false;
 	    else if ((value==="ask")&&(window.confirm))
@@ -499,23 +501,20 @@ Codex.Startup=
 	    if ((getLocal("sbooks.nologin"))||(fdjtState.getQuery("nologin")))
 		Codex.nologin=true;
 	    Codex.bypage=(Codex.layout==='bypage'); 
-	    Codex.max_excerpt=fdjtDOM.getMeta("sbook.maxexcerpt")||
-		(Codex.max_excerpt);
-	    Codex.min_excerpt=fdjtDOM.getMeta("sbook.minexcerpt")||
-		(Codex.min_excerpt);
-	    var sbooksrv=fdjtDOM.getMeta("sbook.server")||
-		fdjtDOM.getMeta("SBOOKSERVER");
+	    Codex.max_excerpt=getMeta("sbook.maxexcerpt")||(Codex.max_excerpt);
+	    Codex.min_excerpt=getMeta("sbook.minexcerpt")||(Codex.min_excerpt);
+	    var sbooksrv=getMeta("sbook.server")||getMeta("SBOOKSERVER");
 	    if (sbooksrv) Codex.server=sbooksrv;
 	    else if (fdjtState.getCookie["SBOOKSERVER"])
 		Codex.server=fdjtState.getCookie["SBOOKSERVER"];
 	    else Codex.server=lookupServer(document.domain);
 	    if (!(Codex.server)) Codex.server=Codex.default_server;
-	    sbook_ajax_uri=fdjtDOM.getMeta("sbook.ajax",true);
+	    sbook_ajax_uri=getMeta("sbook.ajax",true);
 
 	    refuris.push(refuri);
 
 	    if ((!(Codex.nologin))&&(Codex.offline)) {
-		Codex.mycopyid=fdjtDOM.getMeta("sbook.mycopyid")||
+		Codex.mycopyid=getMeta("sbook.mycopyid")||
 		    ((offline)&&(getLocal("mycopy("+refuri+")")))||
 		    false;
 		setLocal("sbooks.refuris",refuris,true);}	    
@@ -597,14 +596,13 @@ Codex.Startup=
 	var viewport_spec="width=device-width,initial-scale=1.0";
 	function viewportSetup(){
 	    var head=fdjtDOM.getHEAD();
-	    var viewport=fdjtDOM.getMeta("viewport",false,false,true);
+	    var viewport=getMeta("viewport",false,false,true);
 	    if (!(viewport)) {
 		viewport=document.createElement("META");
 		viewport.setAttribute("name","viewport");
 		head.appendChild(viewport);}
 	    viewport.setAttribute("content",viewport_spec);
-	    var isapp=fdjtDOM.getMeta
-	    ("apple-mobile-web-app-capable",false,false,true);
+	    var isapp=getMeta("apple-mobile-web-app-capable",false,false,true);
 	    if (!(isapp)) {
 		isapp=document.createElement("META");
 		isapp.setAttribute("name","apple-mobile-web-app-capable");
@@ -619,9 +617,9 @@ Codex.Startup=
 	function _getsbookrefuri(){
 	    var refuri=fdjtDOM.getLink("sbook.refuri",false,false)||
 		fdjtDOM.getLink("refuri",false,false)||
-		fdjtDOM.getMeta("sbook.refuri",false,false)||
-		fdjtDOM.getMeta("refuri",false,false)||
-		fdjtDOM.getLink("canonical",false,true);
+		getMeta("sbook.refuri",false,false)||
+		getMeta("refuri",false,false)||
+		getLink("canonical",false,true);
 	    if (refuri) return decodeURI(refuri);
 	    else {
 		var locref=document.location.href;
@@ -633,8 +631,8 @@ Codex.Startup=
 	function _getsbookdocuri(){
 	    return fdjtDOM.getLink("sbook.docuri",false)||
 		fdjtDOM.getLink("docuri",false)||
-		fdjtDOM.getMeta("sbook.docuri",false)||
-		fdjtDOM.getMeta("docuri",false)||
+		getMeta("sbook.docuri",false)||
+		getMeta("docuri",false)||
 		fdjtDOM.getLink("canonical",false)||
 		location.href;}
 
@@ -670,19 +668,19 @@ Codex.Startup=
 
 	function getScanSettings(){
 	    if (!(Codex.root))
-		if (fdjtDOM.getMeta("sbook.root"))
-		    Codex.root=fdjtID(fdjtDOM.getMeta("sbook.root"));
+		if (getMeta("sbook.root"))
+		    Codex.root=fdjtID(getMeta("sbook.root"));
 	    else Codex.root=fdjtID("SBOOKCONTENT")||document.body;
 	    if (!(Codex.start))
-		if (fdjtDOM.getMeta("sbook.start"))
-		    Codex.start=fdjtID(fdjtDOM.getMeta("sbook.start"));
+		if (getMeta("sbook.start"))
+		    Codex.start=fdjtID(getMeta("sbook.start"));
 	    else if (fdjtID("SBOOKSTART"))
 		Codex.start=fdjtID("SBOOKSTART");
 	    else {}
 	    var i=0; while (i<9) {
-		var rules=fdjtDOM.getMeta("sbook.head"+i,true).
-		    concat(fdjtDOM.getMeta("sbook"+i+"head",true)).
-		    concat(fdjtDOM.getMeta("sbook"+headlevels[i]+"head",true));
+		var rules=getMeta("sbook.head"+i,true).
+		    concat(getMeta("sbook"+i+"head",true)).
+		    concat(getMeta("sbook"+headlevels[i]+"head",true));
 		if ((rules)&&(rules.length)) {
 		    var j=0; var lim=rules.length;
 		    var elements=fdjtDOM.getChildren(document.body,rules[j++]);
@@ -691,22 +689,22 @@ Codex.Startup=
 			var elt=elements[k++];
 			if (!(hasTOCLevel(elt))) elt.toclevel=i;}}
 		i++;}
-	    if (fdjtDOM.getMeta("sbookignore")) 
-		Codex.ignore=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookignore"));
-	    if (fdjtDOM.getMeta("sbooknotoc")) 
-		Codex.notoc=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknotoc"));
-	    if (fdjtDOM.getMeta("sbookterminal"))
-		Codex.terminal_rules=
-		new fdjtDOM.Selector(fdjtDOM.getMeta("sbookterminal"));
-	    if (fdjtDOM.getMeta("sbookid")) 
-		sbook_idify=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookid"));
-	    if ((fdjtDOM.getMeta("sbookfocus"))) 
-		Codex.focus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbookfocus"));
-	    if (fdjtDOM.getMeta("sbooknofocus"))
-		Codex.nofocus=new fdjtDOM.Selector(fdjtDOM.getMeta("sbooknofocus"));}
+	    if (getMeta("sbookignore")) 
+		Codex.ignore=new fdjtDOM.Selector(getMeta("sbookignore"));
+	    if (getMeta("sbooknotoc")) 
+		Codex.notoc=new fdjtDOM.Selector(getMeta("sbooknotoc"));
+	    if (getMeta("sbookterminal"))
+		Codex.terminal_rules=new fdjtDOM.Selector(
+		    getMeta("sbookterminal"));
+	    if (getMeta("sbookid")) 
+		sbook_idify=new fdjtDOM.Selector(getMeta("sbookid"));
+	    if ((getMeta("sbookfocus"))) 
+		Codex.focus=new fdjtDOM.Selector(getMeta("sbookfocus"));
+	    if (getMeta("sbooknofocus"))
+		Codex.nofocus=new fdjtDOM.Selector(getMeta("sbooknofocus"));}
 
 	function applyMetaClass(name){
-	    var meta=fdjtDOM.getMeta(name,true);
+	    var meta=getMeta(name,true);
 	    var i=0; var lim=meta.length;
 	    while (i<lim) fdjtDOM.addClass(fdjtDOM.$(meta[i++]),name);}
 

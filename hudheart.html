@@ -1,6 +1,9 @@
-<div id="CODEXALLGLOSSES" class="codexslice">
-  <!-- This is filled in on demand -->
+<div id="CODEXALLGLOSSES_SCROLLER" class="scroller">
+  <div id="CODEXALLGLOSSES" class="codexslice">
+    <!-- This is filled in on startup -->
+  </div>
 </div>
+<div id="CODEXSEARCHCLOUD_SCROLLER" class="scroller">
 <div id="CODEXSEARCHCLOUD" class="completions searchcloud">
   <span class="showall" onclick="Codex.UI.searchCloudToggle();">
     ALL</span>
@@ -9,8 +12,12 @@
   <div id="CODEXSEARCHTAGS"></div>
   <div id="CODEXSEARCHCLOUDSOURCES"></div>
 </div>
+</div>
+<div id="CODEXSEARCHRESULTS_SCROLLER" class="scroller">
 <div id="CODEXSEARCHRESULTS" class="codexslice"></div>
-<div id='CODEXCONSOLE' class="tabcontent flyleaftab sbookconsole">
+</div>
+<div id="CODEXCONSOLE_SCROLLER" class="scroller">
+<div id="CODEXCONSOLE" class="tabcontent flyleaftab sbookconsole">
   <h1>Codex Console</h1>
   <div class='message' id='CODEXCONSOLEMESSAGE'></div>
   <div id="CODEXCONSOLELOG" class='sbookmessagelog'></div>
@@ -19,11 +26,15 @@
     <textarea id="CODEXCONSOLETEXTINPUT"></textarea>
   </div>
 </div>
-<div class='tabcontent flyleaftab' id='CODEXSETTINGS'>
 </div>
-<div class='tabcontent flyleaftab' id='FLYTOC'>
+<div id="CODEXSETTINGS_SCROLLER" class="scroller">
+<div class="tabcontent flyleaftab" id="CODEXSETTINGS"></div>
 </div>
-<div class='tabcontent flyleaftab sbookabout' id='APPABOUT'>
+<div id="FLYTOC_SCROLLER" class="scroller">
+<div class="tabcontent flyleaftab" id="FLYTOC"></div>
+</div>
+<div id="APPABOUT_SCROLLER" class="scroller">
+<div class="tabcontent flyleaftab sbookabout" id="APPABOUT">
   <div id='APPABOUTCONTENT'>
     <div class='title'></div>
     <div class='byline'></div>
@@ -36,8 +47,11 @@
     <div class='about'></div>
   </div>
 </div>
-<div class='tabcontent flyleaftab' id='SBOOKSAPP'>
+</div>
+<div id="SBOOKSAPP_SCROLLER" class="scroller">
+<div class="tabcontent flyleaftab" id="SBOOKSAPP">
   <iframe id="MANAGEAPP" frameborder="0" scrolling="auto"/>
+</div>
 </div>
 <!--
     /* Emacs local variables

@@ -1185,7 +1185,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var scanning=Codex.scanning;
 	if (!(scanning)) return;
 	var hudparent=getParent(scanning,".hudpanel");
-	if (getParent(scanning,fdjtID("CODEXBROWSEGLOSSES"))) {
+	if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
 	    CodexMode("allglosses");
 	    fdjtUI.cancel(evt);}
 	else if (getParent(scanning,fdjtID("CODEXSEARCH"))) {

@@ -295,16 +295,16 @@ var CodexMode=
 	
 	var CodexMode_pat=/\b((device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
 	var codexHeartMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses))\b/g;
-	var sbook_mode_scrollers=
-	    {//allglosses: "CODEXALLGLOSSES",
-	     //searchresults: "CODEXSEARCHRESULTS",
-	     //search: "CODEXSEARCHCLOUD",
-	     // addgloss: "CODEXGLOSSCLOUD",
+	var codex_mode_scrollers=
+	    {allglosses: "CODEXALLGLOSSES",
+	     searchresults: "CODEXSEARCHRESULTS",
+	     search: "CODEXSEARCHCLOUD",
+	     addgloss: "CODEXGLOSSCLOUD",
 	     console: "CODEXCONSOLE",
 	     sbookapp: "MANAGEAPP",
 	     flytoc: "CODEXFLYTOC",
 	     about: "APPABOUT"};
-	var sbook_mode_foci=
+	var codex_mode_foci=
 	    {gotopage: "CODEXPAGEINPUT",
 	     gotoloc: "CODEXLOCINPUT",
 	     search: "CODEXSEARCHINPUT"};
@@ -329,16 +329,16 @@ var CodexMode=
 		if (mode===Codex.mode) {}
 		else if (mode===true) {
 		    /* True just puts up the HUD with no mode info */
-		    if (sbook_mode_foci[Codex.mode]) {
-			var input=fdjtID(sbook_mode_foci[Codex.mode]);
+		    if (codex_mode_foci[Codex.mode]) {
+			var input=fdjtID(codex_mode_foci[Codex.mode]);
 			input.blur();}
 		    Codex.mode=false;
 		    Codex.last_mode=true;}
 		else if (typeof mode !== 'string') 
 		    throw new Error('mode arg not a string');
 		else {
-		    if (sbook_mode_foci[Codex.mode]) {
-			var input=fdjtID(sbook_mode_foci[Codex.mode]);
+		    if (codex_mode_foci[Codex.mode]) {
+			var input=fdjtID(codex_mode_foci[Codex.mode]);
 			input.blur();}
 		    Codex.mode=mode;
 		    if (Codex.mode!=='help') Codex.last_mode=Codex.mode;}
@@ -350,8 +350,8 @@ var CodexMode=
 		// element in the HUD for this mode
 		if (!(typeof mode === 'string'))
 		    Codex.scrolling=false;
-		else if (sbook_mode_scrollers[mode]) 
-		    Codex.scrolling=(sbook_mode_scrollers[mode]);
+		else if (codex_mode_scrollers[mode]) 
+		    Codex.scrolling=(codex_mode_scrollers[mode]);
 		else Codex.scrolling=false;
 		// Actually change the class on the HUD object
 		if (mode===true) {
@@ -402,8 +402,8 @@ var CodexMode=
 			Codex.curinfo.first,fdjtID("CODEXALLGLOSSES"));}
 		// We autofocus any input element appropriate to the
 		// mode
-		if (sbook_mode_foci[mode]) {
-		  var input=fdjtID(sbook_mode_foci[mode]);
+		if (codex_mode_foci[mode]) {
+		  var input=fdjtID(codex_mode_foci[mode]);
 		  if (input) focus(input);}
 		// Moving the focus back to the body lets keys work
 		else document.body.focus();
@@ -500,7 +500,15 @@ var CodexMode=
 			    scroller.scrollerWidth,scroller.scrollerHeight,
 			    scroller.scrollWidth,scroller.scrollHeight,
 			    scroller.maxScrollX,scroller.maxScrollY);}}}
-	function updateScroller(elt){}
+	// function updateScroller(elt){}
+	function updateScroller(elt){
+	    if (Codex.scrolldivs) return;
+	    if (typeof elt === 'string') elt=fdjtID(elt);
+	    if (!(elt)) return;
+	    if ((Codex.scrollers[elt.id])&&
+		(Codex.scrollers[elt.id].element===elt))
+		Codex.scrollers[elt.id].refresh();
+	    else Codex.scrollers[elt.id]=new iScroll(elt);}
 	Codex.UI.updateScroller=updateScroller;
 
 	function CodexHUDToggle(mode,keephud){
