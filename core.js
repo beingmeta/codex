@@ -343,13 +343,21 @@ var sbook_gloss_data=
 	return target;}
     Codex.getTarget=getTarget;
     
+    var isEmpty=fdjtString.isEmpty;
+
+    function notEmpty(arg){
+	if (typeof arg === 'string') {
+	    if (isEmpty(arg)) return false;
+	    else return arg;}
+	else return false;}
+
     Codex.getTitle=function(target,tryhard) {
 	var targetid;
 	return target.sbooktitle||
 	    (((targetid=(target.id||(target.codexdupid)))&&
 	      (Codex.docinfo[targetid]))?
-	     (Codex.docinfo[targetid].title):
-	     (target.title))||
+	     (notEmpty(Codex.docinfo[targetid].title)):
+	     (notEmpty(target.title)))||
 	    ((tryhard)&&
 	     (fdjtDOM.textify(target)).
 	     replace(/\n\n+/g,"\n").
