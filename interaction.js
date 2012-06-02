@@ -232,16 +232,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		getTarget(sel.focusNode)||
 		passage;
 	    if (p) {
-		if ((Codex.mode==="addgloss")&&
-		    (fdjtID("CODEXLIVEGLOSS"))) {
-		    Codex.setExcerpt(
-			fdjtID("CODEXLIVEGLOSS"),
-			sel.toString(),
-			((Codex.glosstarget!==p)&&
-			 ((p.id)||p.codexdupid)));}
+		if ((Codex.mode==="addgloss")&&(fdjtID("CODEXLIVEGLOSS"))) {
+		    Codex.setExcerpt(fdjtID("CODEXLIVEGLOSS"),sel.toString());}
 		else {
 		    Codex.excerpt=sel.toString();
 		    tapTarget(p);}
+		if (sel.removeAllRanges) sel.removeAllRanges();
+		else if (sel.empty) sel.empty();
+		else if (sel.clear) sel.clear();
+		else {}
 		return;}
 	    else CodexMode(false);}
 	if ((Codex.hudup)&&(passage)&&(Codex.mode==='addgloss')&&
@@ -859,6 +858,14 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
     function content_touchend(evt){
 	var target=fdjtUI.T(evt);
 	if (isClickable(target)) return;
+	/*
+	var sel=window.getSelection();
+	fdjtLog("content_touchend t=%o s=%o",target,sel);
+	if ((sel)&&(sel.anchorNode)&&(!(emptySelection(sel)))&&
+	    (Codex.mode==="addgloss")&&(fdjtID("CODEXLIVEGLOSS"))) {
+	    Codex.setExcerpt(fdjtID("CODEXLIVEGLOSS"),sel.toString());
+	    return;}
+	*/
 	if (touch_moved) {
 	    var dx=touch_x-start_x; var dy=touch_y-start_y;
 	    var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
@@ -1432,11 +1439,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "div.glossetc span.modebuttons": {click: glossmode_button},
 	 "#CODEXGLOSSOUTLETS": {tap: outlet_tapped}};
 
+    function justselect(evt){
+	if (!(window.getSelection())) fdjtUI.cancel(evt);}
+
     Codex.UI.handlers.webtouch=
 	{window: {
 	    keyup: onkeyup,
 	    keydown: onkeydown,
-	    keypress: onkeypress},
+	    keypress: onkeypress,
+	    touchmove: justselect},
 	 content: {touchstart: content_touchstart,
 		   touchmove: content_touchmove,
 		   touchend: content_touchend},

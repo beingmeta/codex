@@ -1067,7 +1067,8 @@ var CodexPaginate=
 		    while (i<lim) addGlossmark(glossed[i++]);}}
 	    else if ((Codex.sectioned)&&
 		     (Codex.sectioned.pagelocs)) {
-		Codex.GoToSection(Codex.sectioned.pagelocs[spec-1]);}}
+		Codex.GoToSection(Codex.sectioned.pagelocs[spec-1]);
+		if (Codex.iscroll) Codex.iscroll.refresh();}}
 	Codex.GoToPage=GoToPage;
 	
 	/** Previewing **/

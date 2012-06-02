@@ -357,13 +357,20 @@ body.hudup div#CODEXHUD.openheart #CODEXHEART.hudpanel {
 body div#CODEXHUD.allglosses #CODEXHEART > div#CODEXALLGLOSSES_SCROLLER,
 body div#CODEXHUD.search #CODEXHEART > div#CODEXSEARCHCLOUD_SCROLLER,
 body div#CODEXHUD.searchresults #CODEXHEART > div#CODEXSEARCHRESULTS_SCROLLER,
-body div#CODEXHUD.about #CODEXHEART > div.tabcontent#APPABOUT_SCROLLER,
-body div#CODEXHUD.device #CODEXHEART > div.tabcontent#CODEXSETTINGS_SCROLLER,
-body div#CODEXHUD.flytoc #CODEXHEART > div.tabcontent#FLYTOC_SCROLLER,
-body div#CODEXHUD.console #CODEXHEART > div.tabcontent#CODEXCONSOLE_SCROLLER,
-body div#CODEXHUD.sbookapp div#CODEXHEART div.tabcontent#SBOOKSAPP_SCROLLER {
+body div#CODEXHUD.about #CODEXHEART > div#APPABOUT_SCROLLER,
+body div#CODEXHUD.device #CODEXHEART > div#CODEXSETTINGS_SCROLLER,
+body div#CODEXHUD.flytoc #CODEXHEART > div#FLYTOC_SCROLLER,
+body div#CODEXHUD.console #CODEXHEART > div#CODEXCONSOLE_SCROLLER,
+body div#CODEXHUD.sbookapp div#CODEXHEART div#SBOOKSAPP_SCROLLER {
     opacity: 0.9; height: 100%; z-index: 150; overflow: auto;}
 div.scroller > div { }
+
+body div#CODEXHUD.about #CODEXHEART div.tabcontent#APPABOUT,
+body div#CODEXHUD.device #CODEXHEART div.tabcontent#CODEXSETTINGS,
+body div#CODEXHUD.flytoc #CODEXHEART div.tabcontent#FLYTOC,
+body div#CODEXHUD.console #CODEXHEART div.tabcontent#CODEXCONSOLE,
+body div#CODEXHUD.sbookapp div#CODEXHEART div.tabcontent#SBOOKSAPP {
+    display: block;}
 
 div#CODEXHUD.about div#CODEXHEART div.tabcontent {
     margin-top: 0px;}

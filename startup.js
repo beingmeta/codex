@@ -336,6 +336,12 @@ Codex.Startup=
 				function(sectioned){
 				    fdjtDOM.addClass(document.body,"cxPAGED");
 				    Codex.pagecount=sectioned.pagelocs.length;
+				    if (!(Codex.nativescroll)) {
+					if (!(Codex.iscroll)) {
+					    var is=new iScroll("CODEXCONTENT");
+					    Codex.iscroll=is;
+					    is.doubletouch=true;}
+					else Codex.iscroll.refresh();}
 				    if (Codex.section) {
 					Codex.curpage=sectioned.getPageNumber();
 					Codex.updatePageDisplay(
