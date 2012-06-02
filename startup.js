@@ -396,14 +396,6 @@ Codex.Startup=
 		// Figure out which mode to start up in, based on
 		// query args to the book.
 		function(){
-		    if ((fdjtState.getQuery("join"))||
-			(fdjtState.getQuery("action"))||
-			(fdjtState.getQuery("invitation"))) {
-			CodexMode("sbookapp");
-			startupDone("sbookapp");}
-		    else if (fdjtState.getQuery("startmode"))  {
-			var startmode=fdjtState.getQuery("startmode");
-			CodexMode(startmode); startupDone(startmode);}
 		    if ((Codex.layout!=='bypage')||(Codex.paginated))
 			startupDone();
 		    else Codex.pagewait=startupDone;}],
@@ -441,8 +433,18 @@ Codex.Startup=
 	    Codex.displaySync();
 	    setInterval(Codex.serverSync,60000);
 	    fdjtDOM.dropClass(document.body,"codexstartup");
+	    if (mode) {}
+	    else if ((fdjtState.getQuery("join"))||
+		     (fdjtState.getQuery("action"))||
+		     (fdjtState.getQuery("invitation"))) 
+		mode="sbookapp";
+	    else if (fdjtState.getQuery("startmode"))
+		mode=fdjtState.getQuery("startmode");
+	    else {}
 	    CodexMode(mode||false);
-	    _sbook_setup=Codex._setup=new Date();}
+	    _sbook_setup=Codex._setup=new Date();
+	    var msg=fdjtState.getQuery("APPMESSAGE");
+	    if (msg) alert(msg);}
 
 	/* Application settings */
 
