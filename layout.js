@@ -61,6 +61,7 @@ var CodexSections=
 	var getChildren=fdjtDOM.getChildren;
 	var addClass=fdjtDOM.addClass;
 	var dropClass=fdjtDOM.dropClass;
+	var hasClass=fdjtDOM.hasClass;
 	var hasContent=fdjtDOM.hasContent;
 	var hasText=fdjtDOM.hasText;
 	var getStyle=fdjtDOM.getStyle;
@@ -69,38 +70,119 @@ var CodexSections=
 
 	var forcebreakbefore=
 	    fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
+	var forcebreakafter=
+	    fdjtDOM.sel(fdjtDOM.getMeta("forcebreakafter",true));
+	var avoidbreakbefore=
+	    fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakbefore",true));
+	var avoidbreakafter=
+	    fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakafter",true));
 	var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
 	
-	function addSections(node,docinfo){
+	function avoidBreakBefore(elt){
+	    if (hasClass(elt,"avoidbreakbefore")) return true;
+	    var style=getStyle(elt);
+	    if (style.pageBreakBefore==='avoid') return true;
+	    if (avoidbreakbefore) return avoidbreakbefore.match(elt);
+	    else return false;}
+	function avoidBreakAfter(elt,docinfo){
+	    if ((docinfo)&&(elt.id)&&(docinfo[elt.id])&&
+		(docinfo[elt.id].toclevel))
+		return true;
+	    if (hasClass(elt,"avoidbreakafter")) return true;
+	    var style=getStyle(elt);
+	    if (style.pageBreakAfter==='avoid') return true;
+	    if (avoidbreakafter) return avoidbreakafter.match(elt);
+	    else return false;}
+	function forceBreakBefore(elt){
+	    if (hasClass(elt,"forcebreakbefore")) return true;
+	    var style=getStyle(elt);
+	    if (style.pageBreakBefore==='force') return true;
+	    if (forcebreakbefore) return forcebreakbefore.match(elt);
+	    else return false;}
+	function forceBreakAfter(elt){
+	    if (hasClass(elt,"forcebreakafter")) return true;
+	    var style=getStyle(elt);
+	    if (style.pageBreakAfter==='force') return true;
+	    if (forcebreakafter) return forcebreakafter.match(elt);
+	    else return false;}
+
+	function addSections(node,docinfo,page_height){
 	    var open=false;
 	    var children=fdjtDOM.toArray(node.childNodes);
+	    var last_child=false; var tail=[];
 	    var tracelevel=Codex.Trace.layout;
 	    var i=0; var lim=children.length;
-	    if (tracelevel>1) fdjtLog("addSections %o",node);
+	    if (tracelevel>1)
+		fdjtLog("addSections %o ph=%o",node,page_height);
 	    while (i<lim) {
 		var child=children[i++];
+		if ((open)&&(tracelevel>2)) {
+		    fdjtLog("expandSections o=%o oh=%o ph=%o",
+			    open,((open)&&(open.offsetHeight)),page_height);}
+		if ((open)&&(page_height)&&
+		    (open.offsetHeight>page_height)) {
+		    addClass(open,"codexoverflow");
+		    dropClass(open,"codexvisible");
+		    open=false;}
+		else if ((last_child)&&(forceBreakAfter(last_child))) {
+		    dropClass(open,"codexvisible");
+		    open=false;}
 		if (child.nodeType!==1) {
-		    if (!(open)) open=fdjtDOM("section.codexwrapper");
+		    if (!(open))
+			open=fdjtDOM("section.codexwrapper.codexvisible");
 		    node.insertBefore(open,child);
-		    open.appendChild(child);}
+		    open.appendChild(child);
+		    if (last_child) tail.push(child);}
 		else if (is_section(child)) {
-		    addSections(child,docinfo);
+		    addClass(child,"codexlive");
+		    addSections(child,docinfo,page_height);
+		    dropClass(child,"codexlive");
+		    if (open) dropClass(open,"codexvisible");
 		    open=false;}
 		else if (((child.id)&&(docinfo[child.id])&&
-			  (docinfo[child.id].toclevel))||
-			 ((forcebreakbefore)&&
-			  (forcebreakbefore.match(child)))) {
+			  (docinfo[child.id].toclevel)&&
+			  ((!(this.tocdepth))||
+			   (docinfo[child.id].toclevel<this.tocdepth)))||
+			 (forceBreakBefore(child))) {
 		    var info=((child.id)&&(docinfo[child.id]));
-		    open=fdjtDOM("section.codexwrapper");
+		    if (open) dropClass(open,"codexvisible");
+		    open=fdjtDOM("section.codexwrapper.codexvisible");
 		    if (info) open.setAttribute(
 			"data-sbookloc",info.starts_at);
 		    node.insertBefore(open,child);
-		    open.appendChild(child);}
-		else if (open) open.appendChild(child);
+		    open.appendChild(child);
+		    last_child=false; tail=[];}
+		else if (open) {
+		    var info=((child.id)&&(docinfo[child.id]));
+		    open.appendChild(child);
+		    if ((open)&&(page_height)&&
+			(open.offsetHeight>page_height)) {
+			var newsect=fdjtDOM(
+			    "section.codexwrapper.codexvisible");
+			fdjtDOM.insertAfter(open,newsect);
+			if ((last_child)&&
+			    ((avoidBreakBefore(child))||
+			     (avoidBreakAfter(last_child)))) {
+			    if (tracelevel>2) {
+				fdjtLog("breakSection o=%o oh=%o at %o for %o",
+					open,((open)&&(open.offsetHeight)),
+					last_child,child);}
+			    fdjtDOM(newsect,tail,child);}
+			else {
+			    if (tracelevel>2) {
+				fdjtLog("breakSection o=%o oh=%o at %o",
+					open,((open)&&(open.offsetHeight)),
+					last_child,child);}
+			    fdjtDOM(newsect,child);}
+			if (open) dropClass(open,"codexvisible");
+			open=newsect;}
+		    last_child=child; tail=[child];}
 		else {
-		    open=fdjtDOM("section.codexwrapper");
+		    if (open) dropClass(open,"codexvisible");
+		    open=fdjtDOM("section.codexwrapper.codexvisible");
 		    node.insertBefore(open,child);
-		    open.appendChild(child);}}}
+		    open.appendChild(child);}}
+	    if (open) dropClass(open,"codexvisible");}
 
 	function removeSection(sect){
 	    var parent=sect.parentNode;
@@ -212,12 +294,12 @@ var CodexSections=
 	    if (Codex.Trace.layout)
 		fdjtLog("Adding layout sections to %o",content);
 	    this.root=content;
-	    addSections(content,docinfo);
+	    var height=this.height=win.offsetHeight;
+	    addSections(content,docinfo,height*0.9);
 	    this.sections=[];
 	    this.pagebreaks=[];
 	    this.leaves=[];
 	    this.pagetops=[];
-	    var height=this.height=win.offsetHeight;
 	    this.scaled=[];
 	    if (Codex.Trace.layout)
 		fdjtLog("Gathering sections from %o",content);
@@ -321,6 +403,11 @@ var CodexSections=
 	    if (this.pagebreaks[sectnum-1])
 		return this.pagebreaks[sectnum-1];
 	    else if (section.offsetHeight===0) return false;
+	    else if (section.offsetHeight<this.height) {
+		var breaks=[0];
+		this.pagebreaks[sectnum-1]=breaks;
+		this.pagetops[sectnum-1]=[section];
+		return breaks;}
 	    else {
 		var breaks=[], tops=[];
 		var placeholder=false;
@@ -336,8 +423,9 @@ var CodexSections=
 			(pagelim-section.offsetHeight)+"px";}
 		else {}
 		if (Codex.Trace.layout)
-		    fdjtLog("Found %d %dpx-high pages for section %d",
-			    breaks.length,this.height,sectnum,section);
+		    fdjtLog("Found %d %dpx-high pages for section %d (h=%o)",
+			    breaks.length,this.height,sectnum,section,
+			   section.offsetHeight);
 		return breaks;}};
 
 	CodexSections.prototype.breakupPages=function(height,callback){
@@ -429,15 +517,18 @@ var CodexSections=
 	    if (!(section)) return [];
 	    var sectnum=((typeof arg === 'number')?(arg):
 			 atoi(arg.getAttribute('data-sectnum')));
+	    if (this.leaves[sectnum-1])
+		return this.leaves[sectnum-1];
 	    if (Codex.Trace.layout)
 		fdjtLog("Computing %dpx-high leaves for section %d (%o)",
 			this.height,sectnum,section);
-	    if (this.leaves[sectnum-1])
-		return this.leaves[sectnum-1];
-	    else if (section.offsetHeight===0) return [];
+	    if (section.offsetHeight===0) return [];
 	    else if (section.offsetHeight<this.height)  {
 		addClass(section,"codexleaf");
 		addClass(section,"codexsimpleleaf");
+		if (Codex.Trace.layout)
+		    fdjtLog("Section %d (%o) fits on a single %dpx-high leaf",
+			    sectnum,section,this.height);
 		return this.leaves[sectnum-1]=[section];}
 	    else {
 		var leaves=[], tops=[];
@@ -445,8 +536,9 @@ var CodexSections=
 		gatherLeaves(section,this.height,leaves,tops);
 		this.leaves[sectnum-1]=leaves;
 		if (Codex.Trace.layout)
-		    fdjtLog("Found %d %dpx-high leaves for section %d (%o)",
-			    leaves.length,this.height,sectnum,section);
+		    fdjtLog("Found %d %dpx-high leaves for section %d (%o) h=%d",
+			    leaves.length,this.height,sectnum,section,
+			    section.offsetHeight);
 		return leaves;}};
 
 	function gatherBlocks(node){
