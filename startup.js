@@ -58,6 +58,7 @@ Codex.Startup=
 
 	var getLocal=fdjtState.getLocal;
 	var setLocal=fdjtState.setLocal;
+	var getQuery=fdjtState.getQuery;
 	var getMeta=fdjtDOM.getMeta;
 	/* Initialization */
 	
@@ -168,7 +169,7 @@ Codex.Startup=
 	    if (config) {
 		for (var setting in config) {
 		    if ((config.hasOwnProperty(setting))&&
-			(!(fdjtState.getQuery(setting))))
+			(!(getQuery(setting))))
 			setConfig(setting,config[setting]);}}
 	    else config={};
 	    if (Codex.Trace.config)
@@ -176,8 +177,8 @@ Codex.Startup=
 	    for (var setting in default_config) {
 		if (!(config[setting]))
 		    if (default_config.hasOwnProperty(setting)) {
-			if (fdjtState.getQuery(setting))
-			    setConfig(setting,fdjtState.getQuery(setting));
+			if (getQuery(setting))
+			    setConfig(setting,getQuery(setting));
 			else if (getMeta("codex."+setting))
 			    setConfig(setting,getMeta("codex."+setting));
 			else setConfig(setting,default_config[setting]);}}
@@ -229,15 +230,15 @@ Codex.Startup=
 
 	function Startup(force){
 	    if (Codex._setup) return;
-	    if ((!force)&&(fdjtState.getQuery("nosbooks"))) return; 
+	    if ((!force)&&(getQuery("nosbooks"))) return; 
 	    fdjtLog.console="CODEXCONSOLELOG";
 	    fdjtLog.consoletoo=true;
 	    fdjtLog("This is Codex version %s, built at %s on %s",
 		    Codex.version,sbooks_buildtime,sbooks_buildhost);
 	    if (navigator.appVersion)
 		fdjtLog("Navigator App version: %s",navigator.appVersion);
-	    if (fdjtState.getQuery("cxtrace")) {
-		var tracing=fdjtState.getQuery("cxtrace",true);
+	    if (getQuery("cxtrace")) {
+		var tracing=getQuery("cxtrace",true);
 		var i=0; var lim=tracing.length;
 		while (i<lim) {
 		    var trace_spec=tracing[i++];
@@ -277,7 +278,7 @@ Codex.Startup=
 		 != "undefined")&&
 		((Codex.demo)||(fdjtState.getLocal("codex.demo"))||
 		 (fdjtState.getCookie("sbooksdemo"))||
-		 (fdjtState.getQuery("demo"))))
+		 (getQuery("demo"))))
 		fdjtUI.Reticle.setup();
 	    // Init user based on locally stored user information
 	    if ((!(Codex.nologin))&&(getLocal("sync("+Codex.refuri+")")))
@@ -406,19 +407,20 @@ Codex.Startup=
 	    // Take any message passed along as a query string
 	    //  and put it in the top of the help window, then
 	    //  display the help window
-	    if (fdjtState.getQuery("congratulations"))
+	    if (getQuery("congratulations"))
 		fdjtDOM(fdjtID("CODEXINTRO"),
 			fdjtDOM("strong","Congratulations, "),
-			fdjtState.getQuery("congratulations"));
-	    else if (fdjtState.getQuery("sorry"))
+			getQuery("congratulations"));
+	    else if (getQuery("sorry"))
 		fdjtDOM(fdjtID("CODEXINTRO"),
 			fdjtDOM("strong","Sorry, "),
-			fdjtState.getQuery("sorry"));
-	    else if (fdjtState.getQuery("weird")) 
+			getQuery("sorry"));
+	    else if (getQuery("weird")) 
 		fdjtDOM(fdjtID("CODEXINTRO"),
 			fdjtDOM("strong","Weird, "),
-			fdjtState.getQuery("weird"));
-	    if (fdjtState.getQuery("ACTION"))
+			getQuery("weird"));
+	    if ((getQuery("ACTION"))||
+		(getQuery("OVERLAY")))
 		CodexMode("sbookapp");
 	    else CodexMode("help");
 	    // Hide the splash page, if any
@@ -434,16 +436,17 @@ Codex.Startup=
 	    setInterval(Codex.serverSync,60000);
 	    fdjtDOM.dropClass(document.body,"codexstartup");
 	    if (mode) {}
-	    else if ((fdjtState.getQuery("join"))||
-		     (fdjtState.getQuery("action"))||
-		     (fdjtState.getQuery("invitation"))) 
+	    else if ((getQuery("join"))||
+		     (getQuery("action"))||
+		     (getQuery("invitation"))||
+		     (getQuery("overlay"))) 
 		mode="sbookapp";
-	    else if (fdjtState.getQuery("startmode"))
-		mode=fdjtState.getQuery("startmode");
+	    else if (getQuery("startmode"))
+		mode=getQuery("startmode");
 	    else {}
 	    CodexMode(mode||false);
 	    _sbook_setup=Codex._setup=new Date();
-	    var msg=fdjtState.getQuery("APPMESSAGE");
+	    var msg=getQuery("APPMESSAGE");
 	    if (msg) alert(msg);}
 
 	/* Application settings */
@@ -466,7 +469,7 @@ Codex.Startup=
 		sbook[unset[i++]]=false;}}
 
 	function workOffline(refuri){
-	    var value=fdjtState.getQuery("offline")||
+	    var value=getQuery("offline")||
 		getLocal("offline("+refuri+")")||
 		getLocal("mycopyid("+refuri+")")||
 		getLocal("sbooks.offline")||
@@ -506,7 +509,7 @@ Codex.Startup=
 		Codex.graphics=https_graphics;
 	    
 	    // Whether to suppress login, etc
-	    if ((getLocal("sbooks.nologin"))||(fdjtState.getQuery("nologin")))
+	    if ((getLocal("sbooks.nologin"))||(getQuery("nologin")))
 		Codex.nologin=true;
 	    Codex.bypage=(Codex.layout==='bypage'); 
 	    Codex.max_excerpt=getMeta("sbook.maxexcerpt")||(Codex.max_excerpt);
