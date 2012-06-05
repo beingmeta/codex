@@ -301,7 +301,7 @@ var CodexMode=
 	     search: "CODEXSEARCHCLOUD",
 	     addgloss: "CODEXGLOSSCLOUD",
 	     console: "CODEXCONSOLE",
-	     sbookapp: "MANAGEAPP",
+	     // sbookapp: "MANAGEAPP",
 	     flytoc: "CODEXFLYTOC",
 	     about: "APPABOUT"};
 	var codex_mode_foci=

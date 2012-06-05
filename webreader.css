@@ -361,7 +361,7 @@ body div#CODEXHUD.about #CODEXHEART > div#APPABOUT_SCROLLER,
 body div#CODEXHUD.device #CODEXHEART > div#CODEXSETTINGS_SCROLLER,
 body div#CODEXHUD.flytoc #CODEXHEART > div#FLYTOC_SCROLLER,
 body div#CODEXHUD.console #CODEXHEART > div#CODEXCONSOLE_SCROLLER,
-body div#CODEXHUD.sbookapp div#CODEXHEART div#SBOOKSAPP_SCROLLER {
+body div#CODEXHUD.sbookapp div#CODEXHEART div#SBOOKSAPP {
     opacity: 0.9; height: 100%; z-index: 150; overflow: auto;}
 div.scroller > div { }
 
