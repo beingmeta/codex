@@ -383,17 +383,19 @@ Codex.Startup=
 		 initGlossesOffline),
 		function(){
 		    fdjtLog("Finding and applying Technorati-style tags");
-		    applyAnchorTags();
+		    applyAnchorTags();},
+		function(){
 		    fdjtLog("Finding and applying tags spans");
-		    applyTagSpans();
+		    applyTagSpans();},
+		function(){
 		    if (_sbook_autoindex) {
 			startupLog("Indexing precompiled tags");
 			Codex.useIndexData(
 			    _sbook_autoindex,Codex.knodule,false,indexingDone);
-			_sbook_autoindex=false;}
-		    else {
-			startupLog("Indexing assigned tags");
-			Codex.indexAssignedTags(metadata,indexingDone);}},
+			_sbook_autoindex=false;}},
+		function(){
+		    startupLog("Indexing assigned tags");
+		    Codex.indexAssignedTags(metadata,indexingDone);},
 		// Figure out which mode to start up in, based on
 		// query args to the book.
 		function(){
