@@ -301,7 +301,7 @@ var CodexMode=
 	     search: "CODEXSEARCHCLOUD",
 	     addgloss: "CODEXGLOSSCLOUD",
 	     console: "CODEXCONSOLE",
-	     // sbookapp: "MANAGEAPP",
+	     // sbookapp: "SBOOKSAPP",
 	     flytoc: "CODEXFLYTOC",
 	     about: "APPABOUT"};
 	var codex_mode_foci=
@@ -344,7 +344,7 @@ var CodexMode=
 		    if (Codex.mode!=='help') Codex.last_mode=Codex.mode;}
 		// If we're switching to the inner app but the iframe
 		//  hasn't been initialized, we do it now.
-		if ((mode==="sbookapp")&&(!(fdjtID("MANAGEAPP").src)))
+		if ((mode==="sbookapp")&&(!(fdjtID("SBOOKSAPP").src)))
 		    sbookSetupFlyleaf();
 		// Update Codex.scrolling which is the scrolling
 		// element in the HUD for this mode
@@ -674,7 +674,7 @@ var CodexMode=
 		encodeURIComponent(document.location.href);
 	    if (document.title) {
 		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
-	    fdjtID("MANAGEAPP").src=appuri;}
+	    fdjtID("SBOOKSAPP").src=appuri;}
 
 	CodexMode.selectApp=function(){
 	    /* initManageIFrame(); */

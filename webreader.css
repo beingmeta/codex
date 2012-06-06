@@ -334,7 +334,7 @@ body div#CODEXHUD #CODEXHEART > div {
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
 /* We're using height=0, rather than display=none (the default) to
    hide tabcontent. */
-body div#CODEXHUD #CODEXHEART > div.tabcontent {
+body div#CODEXHUD #CODEXHEART > .tabcontent {
     display: block;}
 
 /*
@@ -361,18 +361,18 @@ body div#CODEXHUD.about #CODEXHEART > div#APPABOUT_SCROLLER,
 body div#CODEXHUD.device #CODEXHEART > div#CODEXSETTINGS_SCROLLER,
 body div#CODEXHUD.flytoc #CODEXHEART > div#FLYTOC_SCROLLER,
 body div#CODEXHUD.console #CODEXHEART > div#CODEXCONSOLE_SCROLLER,
-body div#CODEXHUD.sbookapp div#CODEXHEART div#SBOOKSAPP {
+body div#CODEXHUD.sbookapp div#CODEXHEART iframe#SBOOKSAPP {
     opacity: 0.9; height: 100%; z-index: 150; overflow: auto;}
 div.scroller > div { }
 
-body div#CODEXHUD.about #CODEXHEART div.tabcontent#APPABOUT,
-body div#CODEXHUD.device #CODEXHEART div.tabcontent#CODEXSETTINGS,
-body div#CODEXHUD.flytoc #CODEXHEART div.tabcontent#FLYTOC,
-body div#CODEXHUD.console #CODEXHEART div.tabcontent#CODEXCONSOLE,
-body div#CODEXHUD.sbookapp div#CODEXHEART div.tabcontent#SBOOKSAPP {
+body div#CODEXHUD.about #CODEXHEART .tabcontent#APPABOUT,
+body div#CODEXHUD.device #CODEXHEART .tabcontent#CODEXSETTINGS,
+body div#CODEXHUD.flytoc #CODEXHEART .tabcontent#FLYTOC,
+body div#CODEXHUD.console #CODEXHEART .tabcontent#CODEXCONSOLE,
+body div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP {
     display: block;}
 
-div#CODEXHUD.about div#CODEXHEART div.tabcontent {
+div#CODEXHUD.about div#CODEXHEART .tabcontent {
     margin-top: 0px;}
 
 /* The lower left HUD icon */
@@ -1186,7 +1186,7 @@ div#CODEXHUD.scanning div#CODEXHUDBUTTONS,
 div#CODEXHUD.addgloss div#CODEXHUDBUTTONS {
     display: none;}
 
-div#CODEXHUD.about div#CODEXHEART div.tabcontent {
+div#CODEXHUD.about div#CODEXHEART .tabcontent {
     margin-top: 0px;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
@@ -1263,10 +1263,10 @@ div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
     border-top: transparent solid 3px;}
 
-div#CODEXHUD div#CODEXHEART div.tabcontent {
+div#CODEXHUD div#CODEXHEART .tabcontent {
     overflow-y: auto; overflow-x: hidden;}
-div#CODEXHUD div#CODEXHEART div.tabcontent#SBOOKSAPP { overflow: visible;}
-div#CODEXHUD div#CODEXHEART div.tabcontent#SBOOKSAPP iframe {
+div#CODEXHUD div#CODEXHEART .tabcontent#SBOOKSAPP { overflow: visible;}
+div#CODEXHUD div#CODEXHEART .tabcontent#SBOOKSAPP {
   width: 100%; height: 100%; border: 0px; margin: 0px; padding: 0px;}
 
 div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
@@ -1313,17 +1313,17 @@ div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC a {
 div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC a.cohi {
     font-weight: bold; background-color: gold;}
 
-div#CODEXHUD.device div#CODEXHEART div.tabcontent#CODEXSETTINGS
+div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
  div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
-div#CODEXHUD.device div#CODEXHEART div.tabcontent#CODEXSETTINGS
+div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
  div.setting span.checkspan {
      font-size: 125%; color: orange;}
-div#CODEXHUD.device div#CODEXHEART div.tabcontent#CODEXSETTINGS
+div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
   div.setting span.checkspan input[type='CHECKBOX'] {
       width: 16px; height: 16px; color: orange; background-color: orange;
       vertical-align: bottom;}
-div#CODEXHUD.device div#CODEXHEART div.tabcontent#CODEXSETTINGS
+div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
   div.setting div.explanation { 
       font-style: italic; clear: both; margin-left: 3em;}
 div#CODEXHEART table.settings {
