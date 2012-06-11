@@ -441,6 +441,8 @@ Codex.Startup=
 	    else if ((getQuery("join"))||
 		     (getQuery("action"))||
 		     (getQuery("invitation"))||
+		     (getQuery("invite"))||
+		     (getQuery("signature"))||
 		     (getQuery("overlay"))) 
 		mode="sbookapp";
 	    else if (getQuery("startmode"))
