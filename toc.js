@@ -275,7 +275,7 @@ var CodexTOC=
 		    var elt=refs[j++];
 		    if ((elt.tagName==='A')&&(hasClass(elt,"codextitle"))) {
 			var cw=elt.clientWidth, sw=elt.scrollWidth;
-			if (sw>cw) elt.style.fontSize=(100*(cw/sw))+"%";}}
+			if (sw>cw) elt.style.fontSize=(80*(cw/sw))+"%";}}
 		head=head.head;}}
 	    
 	return CodexTOC;})();

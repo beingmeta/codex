@@ -280,7 +280,6 @@ var CodexMode=
 	    else {
 		Codex.hudup=false;
 		Codex.scrolling=false;
-		// dropClass(document.body,"codexhelp");
 		if (Codex.previewing) Codex.stopPreview();
 		if (clearmode) {
 		    var wait=false;

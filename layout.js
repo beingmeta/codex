@@ -798,6 +798,7 @@ var CodexPaginate=
 			coverimage,"img.codexcoverpage.sbookpage");
 		    fdjtDOM.prepend(Codex.content,img);
 		    Codex.coverpage=img;
+		    // img.setAttribute("data-loclen",200);
 		    layout.addContent(img);}}
 
 	    var i=0; var lim=nodes.length;

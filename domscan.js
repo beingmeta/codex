@@ -146,17 +146,20 @@ function CodexDOMScan(root,docinfo){
 
     function textWidth(elt){
 	if (elt.nodeType===3) return elt.nodeValue.length;
-	else if (elt.nodeType===1) {
-	    var children=elt.childNodes; var loc=0;
+	else if (elt.nodeType!==1) return 0;
+	else if (elt.getAttribute("data-loclen"))
+	    return parseInt(elt.getAttribute("data-loclen"));
+	else {
+	    var children=elt.childNodes; var width=0;
 	    var i=0; var len=children.length;
 	    while (i<len) {
 		var child=children[i++];
-		if (child.nodeType===3) loc=loc+child.nodeValue.length;
+		if (child.nodeType===3)
+		    width=width+child.nodeValue.length;
 		else if (child.nodeType===1)
-		    loc=loc+textWidth(child);
+		    width=width+textWidth(child);
 		else {}}
-	    return loc;}
-	else return 0;}
+	    return width;}}
 
     function getLevel(elt){
 	if (elt.toclevel) {
@@ -274,8 +277,8 @@ function CodexDOMScan(root,docinfo){
 	scanstate.curinfo=headinfo;
 	scanstate.curlevel=level;
 	if (headinfo)
-	    headinfo.ends_at=scanstate.location+fdjtDOM.textWidth(head);
-	scanstate.location=scanstate.location+fdjtDOM.textWidth(head);}
+	    headinfo.ends_at=scanstate.location+textWidth(head);
+	scanstate.location=scanstate.location+textWidth(head);}
 
     function scanner(child,scanstate,docinfo,nodefn){
 	var location=scanstate.location;
@@ -400,7 +403,11 @@ function CodexDOMScan(root,docinfo){
 		    content.length;}
 	    else if (grandchild.nodeType===1) {
 		scanner(grandchild,scanstate,docinfo,nodefn);}}
-	if (info) info.ends_at=scanstate.location;}}
+	if (info) info.ends_at=scanstate.location;
+	if ((toclevel)&&
+	    ((child.tagName==='SECTION')||(child.tagName==='ARTICLE'))) {
+	    scanstate.curhead=curhead; scanstate.curinfo=curinfo;
+	    scanstate.curlevel=curlevel;}}}
 
 fdjt_versions.decl("codex",codex_domscan_version);
 fdjt_versions.decl("codex/domscan",codex_domscan_version);
