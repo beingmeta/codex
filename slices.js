@@ -719,7 +719,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
     function selectSources(results_div,sources){
 	if (!(sources)) {
 	    fdjtDOM.dropClass(results_div,"sourced");
-	    fdjtDOM.dropClass(fdjtDOM.$(".sourced",results_div),"sourced");
+	    fdjtDOM.dropClass(fdjt$(".sourced",results_div),"sourced");
 	    return;}
 	selectSourcesRecur(results_div,sources);
 	if (Codex.target) scrollGlosses(Codex.target,results_div);}

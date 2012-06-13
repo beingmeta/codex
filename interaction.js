@@ -1038,11 +1038,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var newpage=false;
 	    if (Codex.mode==="glosses") CodexMode(true);
 	    if (Codex.curpage===Codex.pagecount) {}
-	    else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward",true);
-	    if ((false)&&(newpage)&&(Codex.mode==='allglosses')) /* to fix */
-		Codex.UI.scrollGlosses(
-		    Codex.pageinfo[newpage].first,
-		    fdjtID("CODEXALLGLOSSES"),true);}
+	    else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward",true);}
 	else if (Codex.bysect) {
 	    var win=Codex.window; var content=Codex.content;
 	    var section=Codex.section;
@@ -1094,12 +1090,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    if (Codex.mode==="glosses") CodexMode(true);
 	    if (Codex.curpage===0) {}
 	    else {
-		Codex.GoToPage(
-		    newpage=Codex.curpage-1,"pageBackward",true);}
-	    if ((false)&&(newpage)&&(Codex.mode==='allglosses')) /* to fix */
-		Codex.UI.scrollGlosses(
-		    Codex.pageinfo[newpage].first,
-		    fdjtID("CODEXALLGLOSSES"),true);}
+		Codex.GoToPage(newpage=Codex.curpage-1,"pageBackward",true);}}
 	else if (Codex.bysect) {
 	    var win=Codex.window;
 	    var section=Codex.section;

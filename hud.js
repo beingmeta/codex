@@ -394,12 +394,6 @@ var CodexMode=
 		  var scroller=fdjtID(Codex.scrolling);
 		  setTimeout(function(){updateScroller(scroller);},
 			     100);}
-		// If we're scanning all glosses, we sync the glosses
-		//  with the current book location.
-		if ((mode==="allglosses")&&(false)&&
-		    (Codex.curinfo)&&(Codex.curinfo.first)) {
-		    Codex.UI.scrollGlosses(
-			Codex.curinfo.first,fdjtID("CODEXALLGLOSSES"));}
 		// We autofocus any input element appropriate to the
 		// mode
 		if (codex_mode_foci[mode]) {
