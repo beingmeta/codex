@@ -392,8 +392,7 @@ var sbook_gloss_data=
 	    headid=headinfo.frag;}
 	if (Codex.Trace.nav)
 	    fdjtLog("Codex.setHead #%s",headid);
-	if (!(head)) return;
-	else if (head===Codex.head) {
+	if (head===Codex.head) {
 	    if (Codex.Trace.focus) fdjtLog("Redundant SetHead");
 	    return;}
 	else if (headinfo) {
@@ -409,6 +408,7 @@ var sbook_gloss_data=
 	else {
 	    if (Codex.Trace.focus)
 		Codex.trace("Codex.setFalseHead",head);
+	    CodexTOC.setHead(headinfo);
 	    Codex.head=false;}}
     Codex.setHead=setHead;
 
@@ -456,6 +456,7 @@ var sbook_gloss_data=
 	if (target===Codex.target) return;
 	else if ((!target)&&(Codex.target)) {
 	    dropClass(Codex.target,"codextarget");
+	    dropClass(Codex.target,"codexnewtarget");
 	    Codex.target=false;
 	    return;}
 	else if (!(target)) return;
@@ -464,8 +465,13 @@ var sbook_gloss_data=
 	else {}
 	if (Codex.target) {
 	    dropClass(Codex.target,"codextarget");
+	    dropClass(Codex.target,"codexnewtarget");
 	    Codex.target=false;}
 	addClass(target,"codextarget");
+	addClass(target,"codexnewtarget");
+	setTimeout(function(){
+	    dropClass(target,"codexnewtarget");},
+		   5000);
 	fdjtState.setCookie(
 	    "codextarget",target.id||target.getAttribute('data-sbookid'));
 	Codex.target=target;

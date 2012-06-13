@@ -252,6 +252,10 @@ var CodexTOC=
 	    var tocs=fdjtDOM.$(".toc0");
 	    var i=0; var lim=tocs.length;
 	    while (i<lim) { updateTOC(headinfo,tocs[i++]);}
+	    if (!(headinfo)) {
+		addClass(tocs,"codexlivehead");
+		addClass(tocs,"codexcurhead");
+		return;}
 	    var head=headinfo;
 	    while (head) {
 		var refs=document.getElementsByName("SBR"+head.frag);

@@ -1063,7 +1063,7 @@ var CodexPaginate=
 		curpage=page; Codex.curpage=pagenum;
 		if (pushstate) {
 		    var curnode=fdjtID(page.getAttribute("data-topid"));
-		    if (curnode) Codex.setHead(curnode);}
+		    Codex.setHead(curnode);}
 		if ((pushstate)&&(page)) {
 		    Codex.setState(
 			{location: atoi(page.getAttribute("data-sbookloc")),
