@@ -1428,6 +1428,8 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		   release: slice_released},
 	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {click: Codex.UI.dropHUD},
+	 "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
+	 ".helphud": {click: Codex.UI.dropHUD},
 	 ".codexheart": {tap: flyleaf_tap},
 	 "#CODEXPAGEINFO": {tap: pageinfo_tap,
 			    hold: pageinfo_hold,

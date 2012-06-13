@@ -139,11 +139,14 @@ Codex.Startup=
 		else input.value=value;}
 	    if (current_config[name]!==value) {
 		if (config_handlers[name]) {
-		    if (Codex.Trace.config) fdjtLog("setConfig (handler=%s) %o=%o",
-						    config_handlers[name],name,value);
+		    if (Codex.Trace.config)
+			fdjtLog("setConfig (handler=%s) %o=%o",
+				config_handlers[name],name,value);
 		    config_handlers[name](name,value);}}
 	    current_config[name]=value;
-	    if (save) saved_config[name]=value;}
+	    if (save) {
+		saved_config[name]=value;
+		saveConfig(saved_config);}}
 	Codex.setConfig=setConfig;
 
 	function saveConfig(config){
@@ -273,6 +276,9 @@ Codex.Startup=
 	    initConfig();
 	    // Setup the UI components for the body and HUD
 	    Codex.setupGestures();
+	    // Maybe display the help page
+	    if (!(Codex.hidesplash))
+		fdjtDOM.addClass(document.body,"codexhelp");
 	    // Setup the reticle (if desired)
 	    if ((typeof (document.body.style["pointer-events"])
 		 != "undefined")&&
@@ -447,7 +453,9 @@ Codex.Startup=
 		mode="sbookapp";
 	    else if (getQuery("startmode"))
 		mode=getQuery("startmode");
-	    else {}
+	    else if (Codex.hidesplash)
+		dropClass(document.body,"codexhelp");
+	    else addClass(document.body,"codexhelp");
 	    CodexMode(mode||false);
 	    _sbook_setup=Codex._setup=new Date();
 	    var msg=getQuery("APPMESSAGE");

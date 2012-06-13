@@ -32,17 +32,17 @@
     </div>
     <div class="helpblock">
       <p><strong>Flip forward and backward</strong> through pages
-	by <span class="fortouch">tapping</span>
-	<span class="notouch">clicking</span> the sides of the
-	display<span class="fortouch">,swiping right or left,</span> or
+	by <em><span class="fortouch">tapping</span>
+	  <span class="notouch">clicking</span> the sides of the
+	  display<span class="fortouch">,swiping right or left,</span></em> or
 	using the space, backspace, or page up/down buttons on your
 	keyboard.</p>
-      <p><strong>Add glosses</strong> of your own by selecting text
-	and then adding a note, tags, or links using the dialog at the top
-	of the page.</p>
+      <p><strong>Add your own glosses</strong> by <em>selecting
+	text</em> and using the popup at the top of the page to
+	add <strong>a note, tags, or links</strong>.</p>
       <p><strong>Jump</strong> through the book
-      by <span class="fortouch">tapping</span>
-	<span class="notouch">clicking</span> in the <em>linear book
+      by <em><span class="fortouch">tapping</span>
+	<span class="notouch">clicking</span></em> in the <em>linear book
 	  map</em> at the <strong>bottom of the page</strong>.</p>
       <p><strong class="fortouch">Tap the top</strong>
 	<strong class="notouch">Click on the top</strong> of the page
@@ -52,7 +52,32 @@
 	<strong class="notouch">Click on the bottom</strong> of the page
 	to return to the text.</p>
     </div>
-    
+    <div class="helpblock">    
+      <p>In general, when you've <em><span class="fortouch">
+      tapped </span> <span class="notouch"> clicked </span></em>
+      something to <strong>show more information</strong>, you
+      can <em> <span class="fortouch">
+      tap </span> <span class="notouch"> click </span> it again</em>
+      (provided it's still there) to <strong>hide that
+      information</strong>.</p>
+      </div>
+  </div>
+  <div id="BOTTOMHUDHELP">
+    <p><em><span class="notouch">Click</span><span class="fortouch">Tap</span>
+	    the question mark</em>
+	    <img src="http://static.beingmeta.com/graphics/codex/HelpIcon16x16.png"
+	    alt="icon"/> at the bottom right to <strong>hide this
+	    help</strong>.  You can always <strong>get help for the
+	    current context</strong> by <em> <span class="notouch">
+	    clicking </span> <span class="fortouch">
+	    tapping </span> </em> the question mark
+	    <img src="http://static.beingmeta.com/graphics/codex/HelpIcon16x16.png"
+	    alt="icon"/> at the bottom right.</p>
+    <p class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+      <input TYPE="checkbox" NAME="CODEXHIDESPLASH" VALUE="yes"
+	     onchange="Codex.setConfig('hidesplash',fdjtID('HELPHIDESPLASHCHECKBOX').checked,true);"
+	     ID="HELPHIDESPLASHCHECKBOX">
+      Hide this help after startup.</p>
   </div>
 </div>
 <!--

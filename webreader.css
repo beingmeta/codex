@@ -1335,6 +1335,9 @@ div#CODEXHEART table.settings td input[type='TEXT'] {
     width: 100%;}
 div#CODEXHUD div#CODEXHEART table.settings tr.buttons td {
     text-align: right;}
+div#CODEXHUD div#CODEXHEART table.settings tr.buttons td
+  span#CODEXSETTINGSMESSAGE {
+      float: left; color: red;}
 /*
 {
     float: right; clear: right; cursor: pointer; 

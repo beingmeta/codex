@@ -280,7 +280,7 @@ var CodexMode=
 	    else {
 		Codex.hudup=false;
 		Codex.scrolling=false;
-		dropClass(document.body,"codexhelp");
+		// dropClass(document.body,"codexhelp");
 		if (Codex.previewing) Codex.stopPreview();
 		if (clearmode) {
 		    var wait=false;
@@ -768,10 +768,16 @@ var CodexMode=
 	Codex.UI.settingsOK=function(){
 	    var settings=getSettings();
 	    Codex.setConfig(settings);
-	    Codex.saveConfig(settings);};
+	    Codex.saveConfig(settings);
+	    fdjtDOM.replace("CODEXSETTINGSMESSAGE",
+			    fdjtDOM("span#CODEXSETTINGSMESSAGE",
+				    "Your new settings have been saved."));};
 	
 	Codex.UI.settingsCancel=function(){
-	    Codex.setConfig(Codex.getConfig());};
+	    Codex.setConfig(Codex.getConfig());
+	    fdjtDOM.replace("CODEXSETTINGSMESSAGE",
+			    fdjtDOM("span#CODEXSETTINGSMESSAGE",
+				    "The current settings have been restored."));};
 
 	/* Console methods */
 	function console_eval(){

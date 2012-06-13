@@ -86,6 +86,11 @@ div.helpbox blockquote p {
     margin-top: 3px; margin-bottom: 3px;
     margin-left: 3em; margin-right: 3em; text-indent: -3em;}
 
+div#BOTTOMHUDHELP {
+    position: absolute; bottom: 0px; left: 40px; right: 40px;}
+div#BOTTOMHUDHELP p { text-indent: 0px; }
+div#BOTTOMHUDHELP p.checkspan { text-align: center; }
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
