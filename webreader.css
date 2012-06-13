@@ -1474,7 +1474,7 @@ body.codextarget { color: inherit;}
 
 .codextarget span.codexglossmark img.big { width: 32px;} 
 .codextarget span.codexglossmark img {
-    border-top: solid steelblue 2px;}
+    border-left: solid steelblue 2px;}
 .codextarget:hover .codexglossmark { opacity: 0.5;}
 body.hudup .codextarget .codexglossmark:hover { opacity: 0.9;}
 

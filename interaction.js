@@ -961,6 +961,31 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    return;}
 	else Codex.showGlosses(passage);}
 
+    var glossmark_hovering=false;
+
+    function glossmark_hoverstart(evt){
+	if (glossmark_hovering) {
+	    clearInterval(glossmark_hovering);
+	    glossmark_hovering=false;}
+	var target=fdjtUI.T(evt);
+	var glossmark=((hasClass(target,"codexglossmark"))?(target):
+		       (getParent(target,".codexglossmark")));
+	if (!(glossmark)) return;
+	var bigimage=fdjtDOM.getChild(glossmark,"img.big");
+	if (!(bigimage)) return;
+	glossmark_hovering=fdjtUI.ImageSwap(bigimage,750);}
+
+    function glossmark_hoverdone(evt){
+	if (glossmark_hovering) {
+	    clearInterval(glossmark_hovering);
+	    glossmark_hovering=false;}
+	var target=fdjtUI.T(evt);
+	var glossmark=((hasClass(target,"codexglossmark"))?(target):
+		       (getParent(target,".codexglossmark")));
+	if (!(glossmark)) return;
+	var bigimage=fdjtDOM.getChild(glossmark,"img.big");
+	if (bigimage) fdjtUI.ImageSwap.reset(bigimage);}
+
     /* Moving forward and backward */
 
     var last_motion=false;
@@ -1404,7 +1429,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	       release: toc_released,slip: toc_slipped,
 	       mouseover: fdjtUI.CoHi.onmouseover,
 	       mouseout: fdjtUI.CoHi.onmouseout},
-	 glossmark: {mouseup: glossmark_tapped},
+	 glossmark: {mouseup: glossmark_tapped,
+		     mouseover: glossmark_hoverstart,
+		     mouseout: glossmark_hoverdone},
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,
 		   release: slice_released},

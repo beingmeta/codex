@@ -124,7 +124,7 @@ var CodexMode=
 		    var node=fdjtID(item.frag);
 		    if (node) {
 			addClass(node,"glossed");
-			addGlossmark(node);}
+			addGlossmark(node,item);}
 		    var dups=((Codex.paginated)&&(Codex.paginated.dups)&&
 			      (Codex.paginated.dups[item.frag]))
 		    if (dups) {
@@ -132,7 +132,7 @@ var CodexMode=
 			while (i<lim) {
 			    var dup=dups[i++];
 			    addClass(dup,"glossed");
-			    addGlossmark(dup);}}
+			    addGlossmark(dup,item);}}
 		    if (item.tstamp>Codex.syncstamp)
 			Codex.syncstamp=item.tstamp;
 		    if (item.tags) {

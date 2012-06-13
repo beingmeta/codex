@@ -58,7 +58,6 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     function cxicon(name,suffix) {
 	return Codex.graphics+"codex/"+name+(suffix||"");}
     
-
     function addSource(info,withgloss){
 	if (typeof info === 'string') info=fdjtKB.ref(info);
 	var humid=info.humid;
@@ -91,8 +90,7 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     Codex.UI.addSource=addSource;
     Codex.UI.addGlossSource=function(info){addSource(info,true);};
 
-    function everyone_ontap(evt)
-    {
+    function everyone_ontap(evt){
 	evt=evt||event||null;
 	var target=fdjtDOM.T(evt);
 	// var sources=fdjtDOM.getParent(target,".sbooksources");
@@ -112,12 +110,10 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	fdjtDOM.toggleClass(selected,"selected");
 	fdjtDOM.addClass(target,"selected");
 	Codex.UI.selectSources(glosses,false);
-	fdjtDOM.cancel(evt);
-    }
+	fdjtDOM.cancel(evt);}
     Codex.UI.handlers.everyone_ontap=everyone_ontap;
 
-    function sources_ontap(evt)
-    {
+    function sources_ontap(evt){
 	evt=evt||event||null;
 	// if (!(Codex.user)) return;
 	var target=fdjtDOM.T(evt);
@@ -148,19 +144,52 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	else {
 	    if (everyone) fdjtDOM.addClass(everyone,"selected");
 	    Codex.UI.selectSources(glosses,false);}
-	fdjtDOM.cancel(evt);
-    }
+	fdjtDOM.cancel(evt);}
     Codex.UI.handlers.sources_ontap=sources_ontap;
 
-    Codex.UI.addGlossmark=function(passage){
+    function geticon(source){
+	return ((source.pic)||(source.fb_pic)||
+		(source.twitter_pic)||(source.gplus_pic)||
+		((source.fbid)&&
+		 ("https://graph.facebook.com/"+
+		  source.fbid+"/picture?type=square")));}
+
+    function extendGlossmark(glossmark,glosses,bigimage){
+	var Sources=Codex.sourcekb; var Glosses=Codex.glosses;
+	if (!(bigimage)) bigimage=fdjtDOM.getChild(glossmark,".big");
+	var images=bigimage.getAttribute("data-images").split(";");
+	if ((images.length===1)&&(images[0]==="")) images=[];
+	var i=0; var lim=glosses.length;
+	while (i<lim) {
+	    var gloss=Glosses.ref(glosses[i++]);
+	    var maker=Sources.ref(gloss.maker);
+	    var maker_img=geticon(maker);
+	    if (maker_img) images.push(maker_img);
+	    var outlets=gloss.sources||[];
+	    if (typeof outlets === 'string') outlets=[outlets];
+	    var j=0, jlim=outlets.length; while (j<jlim) {
+		var outlet=Sources.ref(outlets[j++]);
+		var outlet_img=geticon(outlet);
+		if (outlet_img) images.push(outlet_img);}}
+	bigimage.setAttribute("data-images",images.join(";"));
+	return glossmark;}
+    
+    Codex.UI.addGlossmark=function(passage,gloss){
+        var Glosses=Codex.glosses;
 	var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
-	if ((glossmark)&&(glossmark.parentNode===passage))
-	    return glossmark;
-	var imgsrc=(cxicon("sbookspeople32x32.png"));
+	if ((glossmark)&&(glossmark.parentNode===passage)) {
+	    if (gloss) extendGlossmark(glossmark,[gloss]);
+	    return glossmark;}
+	var imgsrc=(sbicon("sbwedge32x32.png"));
+	var bigimage=fdjtDOM.Image(imgsrc,"big","glosses");
 	var glossmark=fdjtDOM(
 	    "span.codexglossmark",
-	    fdjtDOM.Image(imgsrc,"big","glosses"),
-	    fdjtDOM.Image(sbicon("Asterisk16x16.png"),"tiny","*"));
+	    bigimage,fdjtDOM.Image(sbicon("sbwedge18x18.png"),"tiny","*"));
+	// Get all the glosses from the index
+	var glosses=Glosses.index(false,"frag",passage.id);
+	bigimage.defaultsrc=imgsrc;
+	bigimage.setAttribute("data-images","");
+	extendGlossmark(glossmark,glosses,bigimage);
 	Codex.UI.addHandlers(glossmark,"glossmark");
 	fdjtDOM.addClass(passage,"glossed");
 	fdjtDOM.prepend(passage,glossmark);
