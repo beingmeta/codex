@@ -128,9 +128,11 @@ var CodexSections=
 		    dropClass(open,"codexvisible");
 		    open=false;}
 		if (child.nodeType!==1) {
-		    if (!(open))
+		    // Basically replace it with a section wrapping
+		    //  the non-element node
+		    if (!(open)) {
 			open=fdjtDOM("section.codexwrapper.codexvisible");
-		    node.insertBefore(open,child);
+			node.insertBefore(open,child);}
 		    open.appendChild(child);
 		    if (last_child) tail.push(child);}
 		else if (is_section(child)) {
@@ -138,6 +140,7 @@ var CodexSections=
 		    addSections(child,docinfo,page_height);
 		    dropClass(child,"codexlive");
 		    if (open) dropClass(open,"codexvisible");
+		    last_child=child; tail=[child];
 		    open=false;}
 		else if (((child.id)&&(docinfo[child.id])&&
 			  (docinfo[child.id].toclevel)&&
@@ -146,6 +149,7 @@ var CodexSections=
 			 (forceBreakBefore(child))) {
 		    var info=((child.id)&&(docinfo[child.id]));
 		    if (open) dropClass(open,"codexvisible");
+		    // Starting a new section
 		    open=fdjtDOM("section.codexwrapper.codexvisible");
 		    if (info) open.setAttribute(
 			"data-sbookloc",info.starts_at);
@@ -157,6 +161,7 @@ var CodexSections=
 		    open.appendChild(child);
 		    if ((open)&&(page_height)&&
 			(open.offsetHeight>page_height)) {
+			// Starting a new section
 			var newsect=fdjtDOM(
 			    "section.codexwrapper.codexvisible");
 			fdjtDOM.insertAfter(open,newsect);
@@ -181,7 +186,10 @@ var CodexSections=
 		    if (open) dropClass(open,"codexvisible");
 		    open=fdjtDOM("section.codexwrapper.codexvisible");
 		    node.insertBefore(open,child);
-		    open.appendChild(child);}}
+		    if (last_child) {
+			fdjtDOM(open,tail,child);
+			last_child=false; tail=[];}
+		    else open.appendChild(child);}}
 	    if (open) dropClass(open,"codexvisible");}
 
 	function removeSection(sect){
@@ -251,7 +259,7 @@ var CodexSections=
 		    else if (!(is_section(child))) {
 			gatherSections(child,sections,docinfo);
 			continue;}
-		    else if (!(hasContent(child,true)))
+		    else if (!(hasContent(child,true,true)))
 			remove.push(child);
 		    // If there's nothing between it and the next section,
 		    // skip it.
@@ -447,6 +455,9 @@ var CodexSections=
 		    var sectnum=parseInt(section.getAttribute("data-sectnum"));
 		    var breaks=pagebreaks[sectnum-1];
 		    var startpage=pagelocs.length;
+		    var parent=section.parentNode;
+		    var placeholder=fdjtDOM("div");
+		    parent.insertBefore(placeholder,section);
 		    if (!(breaks)) {
 			var ostyle=section.style;
 			// Move it out of the way of any actual content
@@ -462,7 +473,8 @@ var CodexSections=
 			section.style.visibility="";
 			section.style.overflow="";
 			section.style.display="";
-			section.style.zIndex="";}
+			section.style.zIndex="";
+			parent.replaceChild(section,placeholder);}
 		    var tops=pagetops[sectnum-1], pages=[];
 		    var i=0; var lim=breaks.length;
 		    while (i<lim) {
