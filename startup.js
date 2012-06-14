@@ -352,7 +352,8 @@ Codex.Startup=
 				    if (Codex.section) {
 					Codex.curpage=sectioned.getPageNumber();
 					Codex.updatePageDisplay(
-					    Codex.curpage,Codex.location);}});
+					    Codex.curpage,Codex.location);}
+				    else Codex.updatePageDisplay(1,0);});
 			    Codex.sections=Codex.sectioned.sections;}
 			addClass(document.body,"cxBYSECT");}
 		    else addClass(document.body,"cxSCROLL");},

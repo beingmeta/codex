@@ -302,6 +302,13 @@ var CodexSections=
 	    if (Codex.Trace.layout)
 		fdjtLog("Adding layout sections to %o",content);
 	    this.root=content;
+
+	    var coverpage=Codex.getCoverPage();
+	    if (coverpage) {
+		var coversect=fdjtDOM("section.fullpage#COVERSECTION",
+				      coverpage);
+		fdjtDOM.prepend(content,coversect);}
+
 	    var height=this.height=win.offsetHeight;
 	    if (Codex.layout==='byspage')
 		addSections(content,docinfo,height*0.9);
@@ -499,7 +506,7 @@ var CodexSections=
 				     sectioned.pagelocs=pagelocs;
 				     sectioned.pagenums=pagenums;
 				     Codex.paginating=false;
-				     fdjtLog("Added %d pages for %s sections",
+				     fdjtLog("Added %d pages for %d sections",
 					     sectioned.pagelocs.length,
 					     sectioned.sections.length);
 				     if (callback) callback(sectioned);},
@@ -528,15 +535,36 @@ var CodexSections=
 	
 	var cursection=false;
 	
-	function sectLoc(section){
-	    return parseInt(section.getAttribute("data-sbookloc"));}
+	var forwardElt=fdjtDOM.forwardElt;
+
 	function sectNum(section){
-	    return parseInt(section.getAttribute("data-sectnum"));}
+	    if (section.getAttribute("data-sectnum"))
+		return parseInt(section.getAttribute("data-sectnum"));
+	    var parent=section.parentNode;
+	    if ((parent.getAttribute("data-sectnum"))&&
+		(forwardElt(parent)===section))
+		return parent.getAttribute("data-sectnum");
+	    var first_child=forwardElt(section);
+	    if (first_child.getAttribute("data-sectnum"))
+		return first_child.getAttribute("data-sectnum");
+	    else return false;}
+	function sectLoc(section){
+	    if (section.getAttribute("data-sectloc"))
+		return parseInt(section.getAttribute("data-sectloc"));
+	    var parent=section.parentNode;
+	    if ((parent.getAttribute("data-sectloc"))&&
+		(forwardElt(parent)===section))
+		return parent.getAttribute("data-sectloc");
+	    var first_child=forwardElt(section);
+	    if (first_child.getAttribute("data-sectloc"))
+		return first_child.getAttribute("data-sectloc");
+	    else return false;}
 
 	function getSectionInfo(spec,caller){
 	    var sectioned=Codex.sectioned;
 	    if (typeof spec === "number") {
-		if (sectioned.pagebreaks[spec-1])
+		if ((sectioned.pagebreaks)&&
+		    (sectioned.pagebreaks[spec-1]))
 		    return {section: Codex.sections[spec-1], off: 0,
 			    breaks: sectioned.pagebreaks[spec-1],
 			    tops: sectioned.pagetops[spec-1],
@@ -615,20 +643,25 @@ var CodexSections=
 	Codex.getSection=getSection;
 	
 	function displaySection(sect,visible){
+	    if ((!(sect.getAttribute("data-sectnum")))&&
+		((fdjtDOM.forwardElt(sect)).getAttribute("data-sectnum"))) 
+		sect=fdjtDOM.forwardElt(sect);
 	    if (visible) {
 		var show=sect;
 		addClass(show,"codexvisible");
 		show=show.parentNode;
 		while (show) {
 		    addClass(show,"codexlive");
-		    show=show.parentNode;}}
+		    show=show.parentNode;}
+		return sect;}
 	    else {
 		var hide=sect;
 		dropClass(hide,"codexvisible");
 		hide=hide.parentNode;
 		while (hide) {
 		    dropClass(hide,"codexlive");
-		    hide=hide.parentNode;}}}
+		    hide=hide.parentNode;}
+		return false;}}
 	Codex.displaySection=displaySection;
 	
 	function GoToSection(spec,caller,pushstate){
@@ -638,19 +671,18 @@ var CodexSections=
 		fdjtLog("Warning: GoToSection couldn't map %o to section for %s",
 			spec,caller);
 		return;}
-	    var section=info.section;
-	    var sectnum=parseInt(section.getAttribute("data-sectnum"));
+	    var section=info.section; var sectnum=sectNum(section);
 	    if (Codex.Trace.flips)
 		fdjtLog("GoToSection/%s Flipping to %o (%d) for %o",
-			caller,section,sectnum,spec);
+			caller,display,sectnum,spec);
 	    if (cursection) displaySection(cursection,false);
-	    displaySection(section,true);
+	    cursection=displaySection(section,true);
 	    // Now that the section is visible, we can get more information,
 	    //  so we call getSectionInfo again.  A little kludgy but
 	    //  better than the alternatives given that we're hiding sections.
 	    info=getSectionInfo(spec);
 	    if (info.location) Codex.setLocation(location);
-	    cursection=section; Codex.section=section; Codex.cursect=sectnum;
+	    Codex.section=cursection; Codex.cursect=sectnum;
 	    if (info.pagenum) Codex.curpage=info.pagenum;
 	    var win=Codex.window; var pageoff=info.pageoff;
 	    var breaks=info.breaks; var tops=info.tops;
@@ -796,23 +828,9 @@ var CodexPaginate=
 		    (why||""));
 
 	    /* Lay out the coverpage */
-	    var coverpage=fdjtID("CODEXCOVERPAGE")||
-		fdjtID("SBOOKCOVERPAGE")||
-		fdjtID("COVERPAGE");
-	    if (coverpage) {
-		Codex.coverpage=coverpage;
-		layout.addContent(coverpage);}
-	    else {
-		var coverimage=fdjtDOM.getLink("sbook.coverpage",false,false)||
-		    fdjtDOM.getLink("coverpage",false,false);
-		if (coverimage) {
-		    var img=fdjtDOM.Image(
-			coverimage,"img.codexcoverpage.sbookpage");
-		    fdjtDOM.prepend(Codex.content,img);
-		    Codex.coverpage=img;
-		    // img.setAttribute("data-loclen",200);
-		    layout.addContent(img);}}
-
+	    var coverpage=Codex.getCoverPage();
+	    if (coverpage) layout.addContent(coverpage);
+	    
 	    var i=0; var lim=nodes.length;
 	    function rootloop(){
 		if (i>=lim) {

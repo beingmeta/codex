@@ -57,7 +57,7 @@ var Codex=
      // This is the time of the last update
      syncstamp: false,
      // Whether to use native scrolling for body content
-     nativescroll: false,
+     nativescroll: true,
      // Whether to use native scrolling for embedded DIVs
      scrolldivs: true,
      // Dominant interaction mode
@@ -779,7 +779,23 @@ var sbook_gloss_data=
 	else return false;}
     Codex.getTOCLevel=getLevel;
     
-
+    function getCoverPage(){
+	if (Codex.coverpage) return Codex.coverpage;
+	var coverpage=fdjtID("CODEXCOVERPAGE")||
+	    fdjtID("SBOOKCOVERPAGE")||
+	    fdjtID("COVERPAGE");
+	if (!(coverpage)) {
+	    var coverimage=fdjtDOM.getLink("sbook.coverpage",false,false)||
+		fdjtDOM.getLink("coverpage",false,false);
+	    if (coverimage) {
+		coverpage=fdjtDOM.Image(
+		    coverimage,"img.codexcoverpage.sbookpage#CODEXCOVERPAGE");
+		fdjtDOM.prepend(Codex.content,coverpage);}
+	    // This should generate a textual cover page
+	    else {}}
+	if (coverpage) Codex.coverpage=coverpage;
+	return coverpage;}
+    Codex.getCoverPage=getCoverPage;
 
 })();
 
