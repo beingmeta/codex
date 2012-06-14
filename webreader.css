@@ -1474,8 +1474,6 @@ body.hudup .codextarget, body.codexscanning .codextarget {
 section.codexnewtarget { color: inherit;}
 section.codexnewtarget :first-child { color: blue;}
 
-
-
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
    */
