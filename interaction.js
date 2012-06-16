@@ -1056,24 +1056,37 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		var next=Codex.sections[cursection];
 		var breaks=Codex.sectioned.getPageBreaks(next);
 		// At the bottom of this section
-		var next={sectnum: cursection+1, section: next,
-			  breaks: breaks, pageoff: 0,
-			  tops: Codex.sectioned.pagetops[cursection],
-			  off: 0};
+		next={sectnum: cursection+1, section: next,
+		      breaks: breaks, pageoff: 0,
+		      tops: Codex.sectioned.pagetops[cursection],
+		      off: 0};
 		if (Codex.pagecount)
 		    next.pagenum=Codex.sectioned.pagenums[cursection][0];
 		Codex.GoToSection(next,"pageForward",true);}
 	    else {
-		var breaks=Codex.sectioned.getPageBreaks(section);
-		var pagetop=win.scrollTop;
-		var i=0, lim=breaks.length;
-		while ((i<lim)&&(pagetop>=breaks[i])) i++;
-		var next={sectnum: cursection, section: section,
+		var breaks=Codex.sectioned.getPageBreaks(section); var next=false;
+		if (breaks.length<2) {
+		    // This is the case where the section has been CSS-scaled,
+		    //  which doesn't get reflected in the offsetHeight.
+		    var next=Codex.sections[cursection];
+		    var breaks=Codex.sectioned.getPageBreaks(next);
+		    next={sectnum: cursection+1, section: next,
+			  breaks: breaks, pageoff: 0,
+			  tops: Codex.sectioned.pagetops[cursection],
+			  off: 0};
+		    if (Codex.pagecount)
+			next.pagenum=Codex.sectioned.pagenums[cursection][0];
+		    Codex.GoToSection(next,"pageForward",true);}
+		else {
+		    var pagetop=win.scrollTop;
+		    var i=0, lim=breaks.length;
+		    while ((i<lim)&&(pagetop>=breaks[i])) i++;
+		    next={sectnum: cursection, section: section,
 			  off: breaks[i], breaks: breaks, pageoff: i,
 			  tops: Codex.sectioned.pagetops[cursection-1]};
-		if (Codex.pagecount)
-		    next.pagenum=Codex.sectioned.pagenums[cursection-1][i];
-		Codex.GoToSection(next,"pageForward",true);}}
+		    if (Codex.pagecount)
+			next.pagenum=Codex.sectioned.pagenums[cursection-1][i];
+		    Codex.GoToSection(next,"pageForward",true);}}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
 	    if (delta<0) delta=fdjtDOM.viewHeight();

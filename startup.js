@@ -560,7 +560,7 @@ Codex.Startup=
 		Codex.nativescroll=false;
 		Codex.scrolldivs=false;
 		Codex.updatehash=false;
-		default_config.layout='bysect';
+		default_config.layout='fastpage';
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {
@@ -736,8 +736,9 @@ Codex.Startup=
 	function initBody(){
 	    var body=document.body;
 	    var content=fdjtDOM("div#CODEXCONTENT");
-	    var mask=fdjtDOM("div#CODEXWINMASK");
-	    var window=fdjtDOM("div#CODEXWINDOW",mask,content);
+	    var headmask=fdjtDOM("div.codexwinmask#CODEXWINMASKHEAD");
+	    var footmask=fdjtDOM("div.codexwinmask#CODEXWINMASKFOOT");
+	    var window=fdjtDOM("div#CODEXWINDOW",headmask,footmask,content);
 	    var nodes=fdjtDOM.toArray(body.childNodes);
 	    var style=fdjtDOM("STYLE");
 	    fdjtDOM(document.head,style);
@@ -753,7 +754,8 @@ Codex.Startup=
 		else content.appendChild(node);}
 	    Codex.window=window;
 	    Codex.content=content;
-	    Codex.winmask=mask;
+	    Codex.winmaskhead=headmask;
+	    Codex.winmaskfoot=footmask;
 	    Codex.coverpage=fdjtID("SBOOKCOVERPAGE");
 	    Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
 	    fdjtDOM.addClass(document.body,"cxSHRINK");
