@@ -147,6 +147,7 @@ var CodexSections=
 		    else sect=child;
 		    if ((page_height)&&(sect.offsetHeight>page_height)) {
 			var scale=page_height/sect.offsetHeight;
+			addClass(sect,"codexscaled");
 			sect.style[fdjtDOM.transform]='scale('+scale+')';
 			sect.style[fdjtDOM.transformOrigin]='top center';}
 		    open=false;}
@@ -353,7 +354,8 @@ var CodexSections=
 		var page=fullpages[i++];
 		if ((page.offsetHeight>height)&&
 		    (!(page.style[fdjtDOM.transform]))) {
-		    scaled.push(push);
+		    scaled.push(page);
+		    addClass(page,"codexscaled");
 		    page.style[fdjtDOM.transform]=
 			"scale("+(height/page.offsetHeight)+")";}}
 	    if (Codex.Trace.layout)
@@ -453,13 +455,15 @@ var CodexSections=
 		return breaks;}
 	    else if ((autoscale)&&
 		     (section.offsetHeight<(this.height*autoscale))&&
-		     (!(getStyle(section)[fdjtDOM.transform]))) {
+		     ((hasClass(section,"codexscaled"))||
+		      (!(getStyle(section)[fdjtDOM.transform])))) {
 		// Use scaling to fit oversize pages if they're not
 		// *too* oversize (as defined by autoscale).
 		var scaling=this.height/section.offsetHeight;
 		var breaks=[0];
 		this.pagebreaks[sectnum-1]=breaks;
 		this.pagetops[sectnum-1]=[section];
+		addClass(section,"codexscaled");
 		section.style[fdjtDOM.transformOrigin]='center top';
 		section.style[fdjtDOM.transform]='scale('+scaling+')';
 		return breaks;}
