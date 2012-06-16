@@ -88,7 +88,10 @@ div.helpbox blockquote p {
 
 div#BOTTOMHUDHELP {
     position: absolute; bottom: 0px; left: 40px; right: 40px;}
-div#BOTTOMHUDHELP p { text-indent: 0px; }
+div#BOTTOMHUDHELP p {
+    text-indent: 0px; margin-bottom: 1px; margin-top: 1px;
+    max-width: 40em; margin-left: auto; margin-right: auto;
+    text-align: center;}
 div#BOTTOMHUDHELP p.checkspan { text-align: center; }
 
 /* Emacs local variables
