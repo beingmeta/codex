@@ -67,6 +67,7 @@ var CodexSections=
 	var getStyle=fdjtDOM.getStyle;
 	var emptyString=fdjtString.isEmpty;
 	var atoi=parseInt;
+	var floor=Math.floor;
 
 	var forcebreakbefore=
 	    fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
@@ -76,6 +77,8 @@ var CodexSections=
 	    fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakbefore",true));
 	var avoidbreakafter=
 	    fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakafter",true));
+	var avoidbreakinside=
+	    fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
 	var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
 	
 	function avoidBreakBefore(elt){
@@ -83,6 +86,12 @@ var CodexSections=
 	    var style=getStyle(elt);
 	    if (style.pageBreakBefore==='avoid') return true;
 	    if (avoidbreakbefore) return avoidbreakbefore.match(elt);
+	    else return false;}
+	function avoidBreakInside(elt){
+	    if (hasClass(elt,"avoidbreakinside")) return true;
+	    var style=getStyle(elt);
+	    if (style.pageBreakInside==='avoid') return true;
+	    if (avoidbreakinside) return avoidbreakinside.match(elt);
 	    else return false;}
 	function avoidBreakAfter(elt,docinfo){
 	    if ((docinfo)&&(elt.id)&&(docinfo[elt.id])&&
@@ -106,8 +115,8 @@ var CodexSections=
 	    if (forcebreakafter) return forcebreakafter.match(elt);
 	    else return false;}
 
-	function addSections(node,docinfo,page_height){
-	    var open=false;
+	function addSections(node,docinfo,page_height,splits){
+	    var open=false; var inserted=false;
 	    var children=fdjtDOM.toArray(node.childNodes);
 	    var last_child=false; var tail=[];
 	    var tracelevel=Codex.Trace.layout;
@@ -115,7 +124,7 @@ var CodexSections=
 	    if (tracelevel>1)
 		fdjtLog("addSections %o ph=%o",node,page_height);
 	    while (i<lim) {
-		var child=children[i++];
+		var child=inserted||children[i++]; inserted=false;
 		if ((open)&&(tracelevel>2)) {
 		    fdjtLog("expandSections o=%o oh=%o ph=%o",
 			    open,((open)&&(open.offsetHeight)),page_height);}
@@ -147,6 +156,7 @@ var CodexSections=
 		    else sect=child;
 		    if ((page_height)&&(sect.offsetHeight>page_height)) {
 			var scale=page_height/sect.offsetHeight;
+			if (tracelevel>1) fdjtLog("Scaling node %o by %o",sect,scale);
 			addClass(sect,"codexscaled");
 			sect.style[fdjtDOM.transform]='scale('+scale+')';
 			sect.style[fdjtDOM.transformOrigin]='top center';}
@@ -156,8 +166,9 @@ var CodexSections=
 		    //  open section
 		    if (open) {dropClass(open,"codexvisible"); open=false;}
 		    addClass(child,"codexlive");
-		    // Recur into this section
-		    addSections(child,docinfo,page_height);
+		    if (!(avoidBreakInside(child))) {
+			// Recur into this section
+			addSections(child,docinfo,page_height,splits);}
 		    // And then we're done!
 		    dropClass(child,"codexlive");
 		    last_child=child; tail=[child];}
@@ -169,6 +180,7 @@ var CodexSections=
 		    var info=((child.id)&&(docinfo[child.id]));
 		    if (open) dropClass(open,"codexvisible");
 		    // Starting a new section
+		    if (tracelevel>1) fdjtLog("Starting new section starting with %o",child);
 		    open=fdjtDOM("section.codexwrapper.codexvisible");
 		    if (info) open.setAttribute(
 			"data-sbookloc",info.starts_at);
@@ -177,22 +189,38 @@ var CodexSections=
 		    last_child=false; tail=[];}
 		else if (open) {
 		    var info=((child.id)&&(docinfo[child.id]));
+		    var split=false;
+		    // Get this now and use it to determine whether or
+		    //  not to try to break the node.
+		    var open_height=open.offsetHeight;
 		    open.appendChild(child);
-		    if ((open)&&(page_height)&&
-			(open.offsetHeight>page_height)) {
-			// Starting a new section
-			var newsect=fdjtDOM(
-			    "section.codexwrapper.codexvisible");
+		    if ((open)&&(page_height)&&(open.offsetHeight>page_height)) {
+			// We have an overflow; this is where we might split
+			var newsect=fdjtDOM("section.codexwrapper.codexvisible");
 			fdjtDOM.insertAfter(open,newsect);
-			if ((last_child)&&
-			    ((avoidBreakBefore(child))||
-			     (avoidBreakAfter(last_child)))) {
+			if ((splits)&&(open_height<(page_height*0.8))&&
+			    (!(avoidBreakInside(child)))) {
+			    var tmp_height=((open.offsetHeight<(page_height*1.1))?
+					    (page_height*0.9):(page_height));
+			    split=splitBlock(child,open,newsect,floor(page_height),splits);
+			    if (split) { fdjtDOM.insertAfter(open,split); inserted=split;}}
+			else if ((last_child)&&
+				 ((avoidBreakBefore(child))||
+				  (avoidBreakAfter(last_child)))) {
+			    // To keep with layout constraints, we
+			    // can't just start the new page with
+			    // *child*, but we need to drag along
+			    // *last_child* and whatever non-element
+			    // nodes followed it (the contains of
+			    // *tail*).
 			    if (tracelevel>2) {
 				fdjtLog("breakSection o=%o oh=%o at %o for %o",
 					open,((open)&&(open.offsetHeight)),
 					last_child,child);}
 			    fdjtDOM(newsect,tail,child);}
 			else {
+			    // Just start a new page/section
+			    // containing just *child*
 			    if (tracelevel>2) {
 				fdjtLog("breakSection o=%o oh=%o at %o",
 					open,((open)&&(open.offsetHeight)),
@@ -210,6 +238,106 @@ var CodexSections=
 			last_child=false; tail=[];}
 		    else open.appendChild(child);}}
 	    if (open) dropClass(open,"codexvisible");}
+
+	function splitBlock(block,page,nextpage,page_height,splits){
+	    var id=block.id;
+	    if (!(id)) id=block.id=fdjtState.getUUID();
+	    var children=splits[id]=fdjtDOM.toArray(block.childNodes);
+	    var clone=block.cloneNode(false); var split=false; clone.id=null;
+	    var tracelevel=this.tracelevel||Codex.Trace.layout;
+	    if (tracelevel>1)
+		fdjtLog("Trying to split block %o between %o and %o (ph=%o)",
+			block,page,nextpage,page_height);
+	    nextpage.appendChild(clone);
+	    var i=0; var lim=children.length;
+	    while (i<lim) {block.removeChild(children[i++]);}
+	    if (page.offsetHeight>page_height) {
+		// Even when empty, it's over the edge, so give up
+		i=0; while (i<lim) {block.appendChild(children[i++]);}
+		nextpage.removeChild(clone);
+		nextpage.appendChild(block);
+		return false;}
+	    i=0; while (i<lim) {
+		var child=children[i];
+		block.appendChild(child); 
+		if (child.nodeType!==3) {
+		    if (page.offsetHeight>page_height) break;
+		    else i++;}
+		else if (page.offsetHeight>page_height) {
+		    split=splitTextChild(child,block,page,nextpage,page_height,tracelevel);
+		    // If we split, that means that the remainder of
+		    // the children go in the clone, so we increment i
+		    if (split) {clone.appendChild(split); i++;}
+		    break;}
+		else i++;}
+	    if (tracelevel>1)
+		fdjtLog("Split block %o at %o (%d)",block,children[i],i);
+	    if (i===0) {
+		while (i<lim) {block.appendChild(children[i++]);}
+		nextpage.removeChild(clone);
+		nextpage.appendChild(block);
+		return false;}
+	    while (i<lim) clone.appendChild(children[i++]);
+	    addClass(block,"codexsplit");
+	    addClass(clone,"codexsplitoff");
+	    clone.setAttribute("data-originated",id);
+	    return clone;}
+
+	function splitTextChild(child,node,page,nextpage,page_height,tracelevel){
+	    var text=child.nodeValue;
+	    var breaks=text.split(/\b/g), words=[];
+	    var word=false; var bi=0, blen=breaks.length;
+	    if (tracelevel>1)
+		fdjtLog("Trying to split text block %o in %o",child,node);
+	    if (blen<2) return false;;
+	    while (bi<blen) {
+		var s=breaks[bi++];
+		if (!(word)) word=s;
+		else if (s.search(/\s/)===0) {
+		    words.push(word);
+		    if (bi<blen) word=s+breaks[bi++];}
+		else word=word+s;}
+	    if (word) words.push(word);
+	    // If there's only one word, no splitting today,
+	    if (words.length<2) return false;
+	    var w=0; var wlen=words.length;
+	    var pagebreak=floor(wlen/2);
+	    var top=wlen; var bot=0;
+	    var foundbreak=false;
+	    var probenode=false;
+	    // We do a binary search and test for being at the edge by
+	    // adding the next word; if that pushes us *child* over
+	    // *page_height*, we know we're at the edge.
+	    while ((pagebreak>=bot)&&(pagebreak<top)) {
+		var newprobe=document.createTextNode(words.slice(0,pagebreak).join(""));
+		if (probenode) node.replaceChild(newprobe,probenode);
+		else node.replaceChild(newprobe,child);
+		probenode=newprobe;
+		if (page.offsetHeight>page_height) {
+		    top=pagebreak; pagebreak=bot+floor((pagebreak-bot)/2);}
+		else {
+		    var nextw=document.createTextNode(words[pagebreak]);
+		    node.appendChild(nextw);
+		    var atedge=(page.offsetHeight>page_height);
+		    node.removeChild(nextw);
+		    if (atedge) {foundbreak=true; break;}
+		    else {
+			bot=pagebreak+1;
+			pagebreak=pagebreak+floor((top-pagebreak)/2);}}}
+	    if (pagebreak+1===top) foundbreak=true;
+	    // We're done searching for the page break
+	    if ((pagebreak===0)||(pagebreak===wlen-1)) foundbreak=false;
+	    if (foundbreak) { // Do the split
+		var splitoff=document.createTextNode(
+		    // This is the text pushed onto the new page
+		    words.slice(pagebreak).join(""));
+		if (tracelevel>1)
+		    fdjtLog("Split text block after %s",
+			    words.slice(0,pagebreak).join(""));
+		return splitoff;}
+	    else {
+		node.replaceChild(child,probenode);
+		return false;}}
 
 	function removeSection(sect){
 	    var parent=sect.parentNode;
@@ -329,8 +457,9 @@ var CodexSections=
 		fdjtDOM.prepend(content,coversect);}
 
 	    var height=this.height=win.offsetHeight;
+	    var splits=this.splits={};
 	    if (Codex.layout==='fastpage')
-		addSections(content,docinfo,height*0.95);
+		addSections(content,docinfo,height*0.95,splits);
 	    else addSections(content,docinfo,false);
 	    this.sections=[];
 	    this.pagebreaks=[];
@@ -505,9 +634,9 @@ var CodexSections=
 		    var breaks=pagebreaks[sectnum-1];
 		    var startpage=pagelocs.length;
 		    var parent=section.parentNode;
-		    var placeholder=fdjtDOM("div");
-		    parent.insertBefore(placeholder,section);
 		    if (!(breaks)) {
+			var placeholder=fdjtDOM("div");
+			parent.insertBefore(placeholder,section);
 			var ostyle=section.style;
 			// Move it out of the way of any actual content
 			section.style.position="absolute";
