@@ -644,9 +644,9 @@ var sbook_gloss_data=
 	    fdjtLog.warn("Bad CodexGoTo %o",arg);
 	    return;}
 	if (!(target)) {
-	    if (Codex.paginated)
+	    if (Codex.layout instanceof CodexLayout)
 		Codex.GoToPage(arg,caller,pushstate);
-	    else if (Codex.bysect)
+	    else if (Codex.layout instanceof CodexSections)
 		Codex.GoToSection(arg,caller,pushstate);
 	    else if (arg.nodeType) {
 		var scan=arg;
@@ -656,10 +656,8 @@ var sbook_gloss_data=
 		if (scan) Codex.content.style.offsetTop=-(scan.offsetTop);}
 	    else {}
 	    return;}
-	var page=((Codex.bypage)&&
-		  (Codex.paginated)&&
-		  (Codex.pagecount)&&
-		  (Codex.getPage(target)));
+	var page=((Codex.bypage)&&(Codex.layout)&&
+		  (Codex.pagecount)&&(Codex.getPage(target)));
 	var targetid=target.id||target.codexdupid;
 	var info=((targetid)&&(Codex.docinfo[targetid]));
 	if (Codex.Trace.nav)
@@ -715,9 +713,9 @@ var sbook_gloss_data=
     var oldscroll=false; var oldsect=false;
     function CodexStartPreview(spec,caller){
 	var target=((spec.nodeType)?(spec):(fdjtID(spec)));
-	if (Codex.paginated) 
+	if (Codex.layout instanceof CodexLayout) 
 	    Codex.startPagePreview(spec,caller);
-	else if (Codex.bysect)
+	else if (Codex.layout instanceof CodexSections)
 	    Codex.startSectionPreview(spec,caller);
 	else {
 	    // This is the scrolling-based version

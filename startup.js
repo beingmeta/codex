@@ -330,19 +330,19 @@ Codex.Startup=
 		//  timesliced and runs on its own.  We wait to do
 		//  this until we've scanned the DOM because we may
 		//  use results of DOM scanning in layout (for example,
-		//  heading information).
+		//  heading information). 
 		function(){
 		    if (Codex.bypage) Codex.Paginate("initial");
 		    else if (Codex.bysect) {
-			if (!(Codex.sectioned)) {
-			    Codex.sectioned=
+			if (!(Codex.layout)) {
+			    Codex.layout=
 				new CodexSections(
 				    Codex.content,Codex.docinfo,Codex.window);
-			    Codex.sectioned.breakupPages(
-				Codex.sectioned.height,
-				function(sectioned){
+			    Codex.layout.breakupPages(
+				Codex.layout.height,
+				function(layout){
 				    fdjtDOM.addClass(document.body,"cxPAGED");
-				    Codex.pagecount=sectioned.pagelocs.length;
+				    Codex.pagecount=layout.pagelocs.length;
 				    if (!(Codex.nativescroll)) {
 					if (!(Codex.iscroll)) {
 					    var is=new iScroll("CODEXCONTENT");
@@ -350,11 +350,11 @@ Codex.Startup=
 					    is.doubletouch=true;}
 					else Codex.iscroll.refresh();}
 				    if (Codex.section) {
-					Codex.curpage=sectioned.getPageNumber();
+					Codex.curpage=layout.getPageNumber();
 					Codex.updatePageDisplay(
 					    Codex.curpage,Codex.location);}
 				    else Codex.updatePageDisplay(1,0);});
-			    Codex.sections=Codex.sectioned.sections;}
+			    Codex.sections=Codex.layout.sections;}
 			addClass(document.body,"cxBYSECT");}
 		    else addClass(document.body,"cxSCROLL");},
 		// Build the display TOC, both the dynamic (top of
@@ -406,8 +406,7 @@ Codex.Startup=
 		// Figure out which mode to start up in, based on
 		// query args to the book.
 		function(){
-		    if ((Codex.layout!=='bypage')||(Codex.paginated))
-			startupDone();
+		    if (Codex.layout) startupDone();
 		    else Codex.pagewait=startupDone;}],
 	     100,25);}
 	Codex.Startup=Startup;
@@ -524,7 +523,7 @@ Codex.Startup=
 	    // Whether to suppress login, etc
 	    if ((getLocal("sbooks.nologin"))||(getQuery("nologin")))
 		Codex.nologin=true;
-	    Codex.bypage=(Codex.layout==='bypage'); 
+	    Codex.bypage=(Codex.page_style==='bypage'); 
 	    Codex.max_excerpt=getMeta("sbook.maxexcerpt")||(Codex.max_excerpt);
 	    Codex.min_excerpt=getMeta("sbook.minexcerpt")||(Codex.min_excerpt);
 	    var sbooksrv=getMeta("sbook.server")||getMeta("SBOOKSERVER");
@@ -917,7 +916,8 @@ Codex.Startup=
 	    pagehead.style.backgroundColor=bgcolor;
 	    pagefoot.style.backgroundColor=bgcolor;
 	    fdjtDOM.addListener(false,"resize",function(evt){
-		if (Codex.paginated) CodexLayout.onresize(evt||event);});}
+		if ((Codex.layout)&&(Codex.layout.onresize))
+		    Codex.layout.onresize(evt||event);});}
 	
 	function getBGColor(arg){
 	    var color=fdjtDOM.getStyle(arg).backgroundColor;

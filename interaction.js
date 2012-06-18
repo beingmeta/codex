@@ -1054,28 +1054,28 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		// Codex.sections is zero-based, while cursection is
 		// one-based, so we just call it directly.
 		var next=Codex.sections[cursection];
-		var breaks=Codex.sectioned.getPageBreaks(next);
+		var breaks=Codex.layout.getPageBreaks(next);
 		// At the bottom of this section
 		next={sectnum: cursection+1, section: next,
 		      breaks: breaks, pageoff: 0,
-		      tops: Codex.sectioned.pagetops[cursection],
+		      tops: Codex.layout.pagetops[cursection],
 		      off: 0};
 		if (Codex.pagecount)
-		    next.pagenum=Codex.sectioned.pagenums[cursection][0];
+		    next.pagenum=Codex.layout.pagenums[cursection][0];
 		Codex.GoToSection(next,"pageForward",true);}
 	    else {
-		var breaks=Codex.sectioned.getPageBreaks(section); var next=false;
+		var breaks=Codex.layout.getPageBreaks(section); var next=false;
 		if (breaks.length<2) {
 		    // This is the case where the section has been CSS-scaled,
 		    //  which doesn't get reflected in the offsetHeight.
 		    var next=Codex.sections[cursection];
-		    var breaks=Codex.sectioned.getPageBreaks(next);
+		    var breaks=Codex.layout.getPageBreaks(next);
 		    next={sectnum: cursection+1, section: next,
 			  breaks: breaks, pageoff: 0,
-			  tops: Codex.sectioned.pagetops[cursection],
+			  tops: Codex.layout.pagetops[cursection],
 			  off: 0};
 		    if (Codex.pagecount)
-			next.pagenum=Codex.sectioned.pagenums[cursection][0];
+			next.pagenum=Codex.layout.pagenums[cursection][0];
 		    Codex.GoToSection(next,"pageForward",true);}
 		else {
 		    var pagetop=win.scrollTop;
@@ -1083,9 +1083,9 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    while ((i<lim)&&(pagetop>=breaks[i])) i++;
 		    next={sectnum: cursection, section: section,
 			  off: breaks[i], breaks: breaks, pageoff: i,
-			  tops: Codex.sectioned.pagetops[cursection-1]};
+			  tops: Codex.layout.pagetops[cursection-1]};
 		    if (Codex.pagecount)
-			next.pagenum=Codex.sectioned.pagenums[cursection-1][i];
+			next.pagenum=Codex.layout.pagenums[cursection-1][i];
 		    Codex.GoToSection(next,"pageForward",true);}}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;
@@ -1116,30 +1116,30 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 		    return;}
 		// At top, go back a section
 		var newsection=Codex.sections[cursection-2];
-		var breaks=Codex.sectioned.getPageBreaks(newsection);
+		var breaks=Codex.layout.getPageBreaks(newsection);
 		var nbreaks=((breaks)?(breaks.length):(0));
 		var next={sectnum: cursection-1,
 			  section: newsection,
 			  breaks: breaks, pageoff: nbreaks-1,
-			  tops: Codex.sectioned.pagetops[cursection-2]||false,
+			  tops: Codex.layout.pagetops[cursection-2]||false,
 			  off: ((breaks)?(breaks[nbreaks-1]):(0))};
 		if (Codex.pagecount) 
 		    next.pagenum=
-		    Codex.sectioned.pagenums[cursection-2][nbreaks-1];
+		    Codex.layout.pagenums[cursection-2][nbreaks-1];
 		Codex.GoToSection(next,"pageBackward",true);}
 	    else {
-		var breaks=Codex.sectioned.getPageBreaks(section);
+		var breaks=Codex.layout.getPageBreaks(section);
 		var pagetop=win.scrollTop;
 		var i=breaks.length-1;
 		while ((i>=0)&&(breaks[i]>=pagetop)) i--;
 		var next={sectnum: cursection,
 			  section: section,
 			  breaks: breaks, pageoff: i,
-			  tops: Codex.sectioned.pagetops[cursection-1],
+			  tops: Codex.layout.pagetops[cursection-1],
 			  off: breaks[i]};
 		if (Codex.pagecount) 
 		    next.pagenum=
-		    Codex.sectioned.pagenums[cursection-1][i];
+		    Codex.layout.pagenums[cursection-1][i];
 		Codex.GoToSection(next,"pageBackward",true);}}
 	else {
 	    var delta=fdjtDOM.viewHeight()-50;

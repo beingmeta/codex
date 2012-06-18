@@ -125,8 +125,8 @@ var CodexMode=
 		    if (node) {
 			addClass(node,"glossed");
 			addGlossmark(node,item);}
-		    var dups=((Codex.paginated)&&(Codex.paginated.dups)&&
-			      (Codex.paginated.dups[item.frag]))
+		    var dups=((Codex.layout)&&(Codex.layout.dups)&&
+			      (Codex.layout.dups[item.frag]))
 		    if (dups) {
 			var i=0, lim=dups.length;
 			while (i<lim) {
