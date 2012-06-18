@@ -2,6 +2,58 @@
     based on the body class body.codexhelp and the individual state
     CSS classes maintained in the DOM tree.  */
 
+/* The help HUD */
+
+div#CODEXHUD div#CODEXHELP.hudpanel {
+    position: fixed; text-align: left;
+    padding: 0px; padding-bottom: 24px; 
+    background-color: ivory; color: black; opacity: 1.0;
+    top: 75px; bottom: 75px; left: 75px; right: 75px;}
+div#CODEXHUD.help div#CODEXHELP.hudpanel {
+    display: block; height: inherit; border-color: blue;}
+div#CODEXHUD div#CODEXHELP {
+    transition-property: opacity; transition-duration: 1s;
+    -o-transition-property: opacity; -o-transition-duration: 1s;
+    -moz-transition-property: opacity; -moz-transition-duration: 1s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
+div#CODEXHUD div#CODEXHELP p.head {
+    font-weight: bold; text-align: center; margin-bottom: 0.40em;}
+
+div#CODEXHUD div#CODEXHELP h2, div#CODEXHUD div#CODEXHELP h3 {
+    text-align: center; margin: .25em;}
+div#CODEXHUD div#CODEXHELP h2:first-child {
+    margin-top: 0px; margin-bottom: 0px;}
+div#CODEXHUD div#CODEXHELP .codexclicktohide {
+    margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
+    text-align: center; color: red;}
+
+div#CODEXHELP div#CODEXHELPBODY { clear: both;}
+div#CODEXHELP div.codexhelp {
+    position: absolute; left: auto; right: auto;
+    top: 0px; bottom: 40px; max-width: 40em;
+    margin-left: auto; margin-right: auto;
+    overflow: auto;}
+div#CODEXHELP div.codexhelp p {
+    text-align: left;
+    margin-left: 5em; margin-right: 2em; text-indent: -3em;}
+div#CODEXHELP div.codexhelp div.helpblock {
+    margin-bottom: 1em;}
+div#CODEXHELP div.codexhelp div.helpblock p {
+    margin-top: 2px; margin-bottom: 2px;}
+div#CODEXHELP div.codexhelp p img.right {
+    float: right; max-height: 24px;}
+div#CODEXHELP div.codexhelp img.left {
+    width: 24px; margin-left: -24px; vertical-align: middle;}
+
+div#CODEXHELP #CODEXSTARTUPMSG {
+    text-align: right; padding-top: 2px; padding-right: 8px;
+    color: darkblue;
+    display: none;}
+body.codexstartup div#CODEXHELP #CODEXSTARTUPMSG {
+    display: inline;}
+body.codexstartup div#CODEXHELP #CODEXHELPTITLE {
+    display: none;}
+
 body.codexhelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
     background-color: silver; border-color: black; opacity: 0.9;}
 
@@ -31,6 +83,7 @@ div.helpbox.atfoot {
 div#CODEXHUD div.helpbox#CODEXHELP {
     bottom: 75px; top: 75px;
     left: 100px; right: 100px;
+    font-size: 90%;
     display: none;}
 body.codexhelp div#CODEXHUD div.helpbox#CODEXHELP {
     display: block; opacity: 0.9; border-color: black; z-index: 250;}
@@ -74,6 +127,7 @@ div.helpbox p {
     max-width: inherit; min-width: inherit; width: auto;
     */
 }
+div.helpbox p img { height: 16px;}
 
 div.helpbox h3 { margin-top: 0px;}
 div.helpbox .clicktarget { color: lightblue; }
@@ -87,12 +141,66 @@ div.helpbox blockquote p {
     margin-left: 3em; margin-right: 3em; text-indent: -3em;}
 
 div#BOTTOMHUDHELP {
-    position: absolute; bottom: 0px; left: 40px; right: 40px;}
+    position: absolute; bottom: 0px; left: 20px; right: 20px;}
 div#BOTTOMHUDHELP p {
     text-indent: 0px; margin-bottom: 1px; margin-top: 1px;
     max-width: 40em; margin-left: auto; margin-right: auto;
     text-align: center;}
 div#BOTTOMHUDHELP p.checkspan { text-align: center; }
+
+/* Help HUD */
+
+div#CODEXHUD .helphud {
+    position: fixed; background-color: ivory; z-index: 100;
+    border: solid black 1px; padding: 3px; border-radius: 6px;
+    font-family: sans,sans-serif;
+    -o-border-radius: 6px; -webkit-border-radius: 6px; 
+    -o-border-radius: 6px;
+    display: none;}
+div#CODEXHUD .helphud.topleft {top: 3px; left: 60px; text-align: right;}
+div#CODEXHUD .helphud.topright {top: 3px; right: 60px; text-align: left;}
+div#CODEXHUD .helphud.botleft {bottom: 3px; left: 60px; text-align: right;}
+div#CODEXHUD .helphud.botright {bottom: 3px; right: 60px; text-align: left;}
+div#CODEXHUD .helphud.topcenter {
+    top: 0px; width: 50%; left: 25%; right: 25%; text-align: center;
+    border-top-left-radius: 0px; border-top-right-radius: 0px;
+    -o-border-top-left-radius: 0px; -o-border-top-right-radius: 0px; 
+    -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px; 
+    -o-border-radius-topleft: 0px; -oborder-radius-topright: 0px;}
+
+div#CODEXHUD .helphud.botcenter {
+    bottom: 0px; width: 50%; left: 25%; right: 25%; text-align: center;
+    border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
+    -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
+    -webkit-border-bottom-left-radius: 0px; -webkit-border-bottom-right-radius: 0px; 
+    -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px;}
+
+div#CODEXHUD div.helphud.leftmiddle {
+    position: fixed; max-width: 50px; padding-left: 3px;
+    top: 40%; left: 0px; text-align: left; padding-right: 2px;
+    border-top-left-radius: 0px; border-bottom-left-radius: 0px;
+    -o-border-top-left-radius: 0px; -o-border-bottom-left-radius: 0px; 
+    -webkit-border-top-left-radius: 0px; -webkit-border-bottom-left-radius: 0px; 
+    -moz-border-radius-topleft: 0px; -moz-border-radius-bottomleft: 0px;}
+
+div#CODEXHUD div.helphud.rightmiddle {
+    position: fixed; max-width: 50px; padding-right: 3px;
+    top: 40%; right: 0px; text-align: right; padding-left: 2px;
+    border-top-right-radius: 0px; border-bottom-right-radius: 0px;
+    -o-border-top-right-radius: 0px; -o-border-bottom-right-radius: 0px; 
+    -webkit-border-top-right-radius: 0px; -webkit-border-bottom-right-radius: 0px; 
+    -moz-border-radius-topright: 0px; -moz-border-radius-bottomright: 0px;}
+
+.helphud span.arrow { font-weight: bold; vertical-align: top;}
+.helphud.topleft span.arrow { float: left;}
+.helphud.topright span.arrow { float: right;}
+.helphud.botleft span.arrow { float: left;}
+.helphud.botright span.arrow { float: right;}
+
+body div#CODEXHELP p#CODEXHELPLOGIN { display: none;}
+body.cxNOUSER div#CODEXHELP p#CODEXHELPLOGIN { display: block;}
+body.cxNOUSER div#CODEXHELP p#CODEXHELPLOGGEDIN { display: none;}
+body.cxUSER div#CODEXHELP p#CODEXHELPLOGGEDIN { display: block;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
