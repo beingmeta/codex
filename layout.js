@@ -171,16 +171,17 @@ var CodexSections=
 	    var children=fdjtDOM.toArray(node.childNodes);
 	    var last_child=false; var tail=[];
 	    var tracelevel=Codex.Trace.layout;
+	    var content=Codex.content;
 	    var i=0; var lim=children.length;
 	    if (tracelevel>1)
 		fdjtLog("addSections %o ph=%o",node,page_height);
 	    while (i<lim) {
 		var child=inserted||children[i++]; inserted=false;
 		if ((open)&&(tracelevel>2)) {
-		    fdjtLog("expandSections o=%o oh=%o ph=%o",
-			    open,((open)&&(open.offsetHeight)),page_height);}
+		    fdjtLog("expandSections o=%o ch=%o ph=%o",
+			    open,content.offsetHeight,page_height);}
 		if ((open)&&(page_height)&&
-		    (open.offsetHeight>page_height)) {
+		    (content.offsetHeight>page_height)) {
 		    addClass(open,"codexoverflow");
 		    dropClass(open,"codexvisible");
 		    open=false;}
@@ -243,16 +244,18 @@ var CodexSections=
 		    var split=false;
 		    // Get this now and use it to determine whether or
 		    //  not to try to break the node.
-		    var open_height=open.offsetHeight;
+		    var open_height=content.offsetHeight;
 		    open.appendChild(child);
-		    if ((open)&&(page_height)&&(open.offsetHeight>page_height)) {
+		    if ((open)&&(page_height)&&
+			((content.offsetHeight)>page_height)) {
 			// We have an overflow; this is where we might split
 			var newsect=fdjtDOM("section.codexwrapper.codexvisible");
 			fdjtDOM.insertAfter(open,newsect);
 			if ((splits)&&(open_height<(page_height*0.8))&&
 			    (!(avoidBreakInside(child)))) {
-			    var tmp_height=((open.offsetHeight<(page_height*1.1))?
-					    (page_height*0.9):(page_height));
+			    var tmp_height=
+				(((content.offsetHeight)<(page_height*1.1))?
+				 (page_height*0.9):(page_height));
 			    split=splitBlock(child,open,newsect,floor(page_height),splits);
 			    if (split) {
 				var id=(child.id)||(child.id=fdjtState.getUUID());
@@ -270,16 +273,16 @@ var CodexSections=
 			    // nodes followed it (the contains of
 			    // *tail*).
 			    if (tracelevel>2) {
-				fdjtLog("breakSection o=%o oh=%o at %o for %o",
-					open,((open)&&(open.offsetHeight)),
+				fdjtLog("breakSection o=%o ch=%o at %o for %o",
+					open,content.offsetHeight,
 					last_child,child);}
 			    fdjtDOM(newsect,tail,child);}
 			else {
 			    // Just start a new page/section
 			    // containing just *child*
 			    if (tracelevel>2) {
-				fdjtLog("breakSection o=%o oh=%o at %o",
-					open,((open)&&(open.offsetHeight)),
+				fdjtLog("breakSection o=%o ch=%o at %o",
+					open,content.offsetHeight,
 					last_child,child);}
 			    fdjtDOM(newsect,child);}
 			if (open) dropClass(open,"codexvisible");
