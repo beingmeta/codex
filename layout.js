@@ -164,7 +164,7 @@ var CodexSections=
 		fdjtLog("Done with initial layout of %o",content);
 	    return this;}
 	    
-	function addSections(node,docinfo,page_height){
+	function addSections(node,docinfo,page_height,toplevel){
 	    var open=false; var inserted=false;
 	    var splits=this.splits;
 	    if (typeof page_height === 'undefined') page_height=this.height; 
@@ -199,7 +199,7 @@ var CodexSections=
 			 (hasClass(child,"fullpage"))||
 			 ((fullpages)&&(fullpages.test(child)))) {
 		    if (open) dropClass(open,"codexvisible");
-		    var sect=fdjtDOM("section.codexwrapper.codexvisible");
+		    var sect;
 		    if (!(is_section(child))) {
 			sect=fdjtDOM("section.codexwrapper.codexvisible");
 			node.insertBefore(sect,child);
@@ -433,6 +433,15 @@ var CodexSections=
 
 	/* Gathering sections from a root for use in selective section/page display */
 
+	function just_whitespace(sect){
+	    var c=sect.childNodes;
+	    var i=0; var lim=c.length;
+	    while (i<lim) {
+		var child=c[i++];
+		if ((child.nodeType!==3)||(!(emptyString(child.nodeValue))))
+		    return false;}
+	    return true;}
+
 	function gatherSections(root,sections,docinfo){
 	    if (typeof sections === 'undefined') sections=[];
 	    if ((root.nodeType===1)&&(root.childNodes.length)) {
@@ -445,17 +454,12 @@ var CodexSections=
 		    else if (!(is_section(child))) {
 			gatherSections(child,sections,docinfo);
 			continue;}
-		    else if (!(hasContent(child,true,true)))
-			remove.push(child);
+		    else if (just_whitespace(child)) {
+			remove.push(child); continue;}
 		    // If there's nothing between it and the next section,
 		    // skip it.
 		    else if (no_preamble(child)) {
 			gatherSections(child,sections,docinfo);}
-		    /*
-		    else if ((no_subsections(child))||
-			     (oversize_section(child,this.height))) {
-			var leaves=getLeaves(child);}
-		    */
 		    else {
 			var startid=getFirstID(child,docinfo);
 			var endid=getLastID(child,docinfo);
@@ -466,12 +470,13 @@ var CodexSections=
 			if (startinfo) {
 			    child.setAttribute("data-sbookloc",startinfo.starts_at);
 			    child.setAttribute("data-topid",startid);}
-			if ((startinfo)&&(endinfo))
+			if ((startinfo)&&(endinfo)&&
+			    (typeof startinfo.starts_at === 'number')&&
+			    (typeof startinfo.ends_at === 'number'))
 			    child.setAttribute(
 				"data-sbooklen",endinfo.ends_at-startinfo.starts_at);
 			gatherSections(child,sections,docinfo);}}
-		var i=0; var lim=remove.length;
-		while (i<lim) removeSection(remove[i++]);
+		// var i=0; var lim=remove.length; while (i<lim) removeSection(remove[i++]);
 		return sections;}}
 
 	function getFirstID(node,docinfo){
