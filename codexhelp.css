@@ -27,9 +27,8 @@ div#CODEXHUD div#CODEXHELP .codexclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
     text-align: center; color: red;}
 
-div#CODEXHELP div#CODEXHELPBODY { clear: both;}
 div#CODEXHELP div.codexhelp {
-    position: absolute; left: auto; right: auto;
+    position: absolute; left: 0px; right: 0px;
     top: 0px; bottom: 40px; max-width: 40em;
     margin-left: auto; margin-right: auto;
     overflow: auto;}
