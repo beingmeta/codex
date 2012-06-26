@@ -188,7 +188,7 @@ var CodexSections=
 		    dropClass(open,"codexvisible");
 		    open=false;}
 		else if ((last_child)&&(forceBreakAfter(last_child))) {
-		    dropClass(open,"codexvisible");
+		    if (open) dropClass(open,"codexvisible");
 		    open=false;}
 		if (child.nodeType!==1) {
 		    // Basically replace it with a section wrapping
@@ -202,20 +202,24 @@ var CodexSections=
 		else if ((hasClass(child,"sbookpage"))||
 			 (hasClass(child,"fullpage"))||
 			 ((fullpages)&&(fullpages.test(child)))) {
-		    if (open) dropClass(open,"codexvisible");
+		    if (open) {
+			dropClass(open,"codexvisible");
+			open=false;}
 		    var sect;
 		    if (!(is_section(child))) {
 			sect=fdjtDOM("section.codexwrapper.codexvisible");
-			sections.push(open);
 			node.insertBefore(sect,child);
 			sect.appendChild(child);}
-		    else sect=child;
+		    else {
+			sect=child; addClass(sect,"codexvisible");}
 		    if ((page_height)&&(sect.offsetHeight>page_height)) {
 			var scale=page_height/sect.offsetHeight;
 			if (tracelevel>1) fdjtLog("Scaling node %o by %o",sect,scale);
 			addClass(sect,"codexscaled");
 			sect.style[fdjtDOM.transform]='scale('+scale+')';
 			sect.style[fdjtDOM.transformOrigin]='top center';}
+		    sections.push(sect);
+		    dropClass(sect,"codexvisible");
 		    open=false;}
 		else if (is_section(child)) {
 		    // Display of sections is disjoint, so we're done with the
