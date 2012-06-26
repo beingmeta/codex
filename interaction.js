@@ -1382,15 +1382,15 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else if (alt==="note") {
 	    altclass="editnote";
 	    input=fdjtDOM.getInput(form,'NOTE');}
-	else if (alt==="outlet") {
-	    altclass="addoutlet";
+	else if (alt==="sharing") {
+	    altclass="sharing";
 	    input=fdjtDOM.getInput(form,'OUTLET');}
 	else return;
 	// fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
 	if (!(hasClass(form,altclass))) {
 	    if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
 	    else dropClass("CODEXADDGLOSS","tagging");
-	    if (alt==="outlet") addClass("CODEXADDGLOSS","showoutlets");
+	    if (alt==="sharing") addClass("CODEXADDGLOSS","showoutlets");
 	    else dropClass("CODEXADDGLOSS","showoutlets");
 	    swapClass(form,glossmodes,altclass);
 	    Codex.setHUD(true);
