@@ -893,7 +893,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		if (notes[tag]) {
 		    var sg=notes[tag];
 		    var j=0; var jlim=sg.length;
-		    var icon=fdjtDOM.Image(cxsvgicon("Remark.svg"));
+		    var icon=fdjtDOM.Image(cxsvgicon("remark.svg"));
 		    while (j<jlim) {
 			var gloss=Codex.glosses.ref(sg[j++]);
 			icon.title=gloss.note; fdjtDOM(span," ",icon);}}}
