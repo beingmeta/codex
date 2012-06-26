@@ -1496,8 +1496,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "#CODEXPAGEFOOT": {},
 	 "#CODEXPAGEINFO": {tap: pageinfo_tap,
 			    hold: pageinfo_hold,
-			    release: pageinfo_release,
-			    touchmove: pageinfo_hover},
+			    release: pageinfo_release},
 	 "#CODEXPAGENOTEXT": {tap: enterPageNum},
 	 "#CODEXLOCOFF": {tap: enterLocation},
 	 // Return to scan

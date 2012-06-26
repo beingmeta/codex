@@ -920,8 +920,8 @@ var CodexSections=
 		return;}
 	    var section=info.section; var sectnum=sectNum(section);
 	    if (Codex.Trace.flips)
-		fdjtLog("GoToSection/%s Flipping to %o (%d) for %o",
-			caller,display,sectnum,spec);
+		fdjtLog("GoToSection/%s Flipping to %o (%d) from %o for %o",
+			caller,section,sectnum,cursection,spec);
 	    if (cursection) displaySection(cursection,false);
 	    cursection=displaySection(section,true);
 	    // Now that the section is visible, we can get more information,
@@ -1008,7 +1008,7 @@ var CodexSections=
 	    var sectnum=parseInt(cursection.getAttribute("data-sectnum"));
 	    if (Codex.Trace.flips)
 		fdjtLog("stopSectionPreview/%s from %o to %o (%d)",
-			caller||"nocaller",previewing,cursection,pagenum);
+			caller||"nocaller",previewing,cursection,sectnum);
 	    if (!(previewing)) return;
 	    displaySection(previewing,false);
 	    displaySection(cursection,true);
@@ -1320,8 +1320,10 @@ var CodexPaginate=
 		 (fdjtDOM("span.locoff#CODEXLOCOFF")));
 	    var pageno_text=fdjtDOM(
 		"span#CODEXPAGENOTEXT.pageno",pagenum,"/",npages);
-	    var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
-	    fdjtDOM.replace("CODEXPAGENO",pageno);
+	    fdjtDOM.replace("CODEXPAGENOTEXT",pageno_text);
+	    fdjtDOM.replace("CODEXLOCOFF",locoff);
+	    // var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
+	    // fdjtDOM.replace("CODEXPAGENO",pageno);
 	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
 	    locoff.title="click to jump to a particular location";
 	    fdjtDOM.addListeners(
