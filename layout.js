@@ -145,7 +145,14 @@ var CodexSections=
 
 	    var height=this.height=
 		fdjtDOM.getGeometry("CODEXWINDOW",false,true).inner_height;
+	    var width=this.width=
+		fdjtDOM.getGeometry("CODEXWINDOW",false,true).inner_width;
 	    var splits=this.splits={};
+
+	    var scaled=this.scaled=[];
+	    CodexLayout.applyPageScaling(
+		fdjtDOM.$(".sbookpagescaled,.pagescaled"),scaled,width,height);
+	    
 	    this.dups={};
 	    this.pagebreaks=[];
 	    this.leaves=[];
@@ -213,7 +220,7 @@ var CodexSections=
 		    else {
 			sect=child; addClass(sect,"codexvisible");}
 		    if ((page_height)&&(sect.offsetHeight>page_height)) {
-			var scale=page_height/sect.offsetHeight;
+			var scale=(page_height*0.9)/sect.offsetHeight;
 			if (tracelevel>1) fdjtLog("Scaling node %o by %o",sect,scale);
 			addClass(sect,"codexscaled");
 			sect.style[fdjtDOM.transform]='scale('+scale+')';
@@ -249,6 +256,18 @@ var CodexSections=
 			"data-sbookloc",info.starts_at);
 		    node.insertBefore(open,child);
 		    open.appendChild(child);
+		    if ((page_height)&&(open.offsetHeight>page_height)) {
+			var scale=(page_height*0.9)/open.offsetHeight;
+			if ((scale>0.8)||
+			    (hasClass(child,"sbookpage"))||
+			    (hasClass(child,"fullpage"))||
+			    ((fullpages)&&(fullpages.test(child)))) {
+			    if (tracelevel>1) fdjtLog("Scaling node %o by %o",sect,scale);
+			    addClass(open,"codexscaled");
+			    open.style[fdjtDOM.transform]='scale('+scale+')';
+			    open.style[fdjtDOM.transformOrigin]='top center';}
+			dropClass(open,"codexvisible");
+			open=false;}
 		    last_child=false; tail=[];}
 		else if (open) {
 		    var info=((child.id)&&(docinfo[child.id]));
@@ -436,6 +455,7 @@ var CodexSections=
 		while (i<lim) root.appendChild(restore[i++]);}
 	    fdjtDOM.remove(fdjtDOM.getChildren(".codexsplit"));
 	    fdjtDOM.remove(fdjtDOM.getChildren(".codexsplitend"));
+	    CodexLayout.revertPageScaling(this.scaled);
 	    removeSections(this.root);};
 	
 	function removeSection(sect){
@@ -474,6 +494,9 @@ var CodexSections=
 		    else if (!(is_section(child))) {
 			gatherSections(child,sections,docinfo);
 			continue;}
+		    else if ((hasClass(child,"codexwrapper"))&&
+			     (just_whitespace(child)))
+			remove.push(child);
 		    else if (!(hasContent(child,true,true))) {
 			continue;}
 		    // If there's nothing between it and the next section,
@@ -545,6 +568,17 @@ var CodexSections=
 	/* Gathering page break offset locations in long (overflow)
 	   sections */
 
+	function getFirstContent(node){
+	    var children=node.childNodes;
+	    var i=0; var lim=children.length;
+	    while (i<lim) {
+		var child=children[i++];
+		if (child.nodeType===1) return child;
+		else if ((child.nodeType===3)&&
+			 (!(emptyString(child.nodeValue))))
+		    return child;}
+	    return false;}
+
 	function gatherFastBreaks(node,container,
 				  pagelim,height,
 				  breaks,tops,
@@ -563,7 +597,8 @@ var CodexSections=
 		    return geom.top+height;}
 		else if (style.pageBreakInside==='avoid') {
 		    // If it's the first element, we already pushed it's position
-		    if (geom.top!==0) {
+		    if (!((geom.top===0)||
+			  (node===getFirstContent(tops[tops.length-1])))) {
 			breaks.push(geom.top);
 			tops.push(node);}
 		    pagelim=geom.top+height;
@@ -618,10 +653,15 @@ var CodexSections=
 		this.pagebreaks[sectnum-1]=breaks;
 		this.pagetops[sectnum-1]=[section];
 		return breaks;}
+	    else if (hasClass(section,"codexscaled")) {
+		var breaks=[0];
+		this.pagebreaks[sectnum-1]=breaks;
+		this.pagetops[sectnum-1]=[section];
+		return breaks;}
 	    else if ((autoscale)&&
 		     (section.offsetHeight<(this.height*autoscale))&&
-		     ((hasClass(section,"codexscaled"))||
-		      (!(getStyle(section)[fdjtDOM.transform])))) {
+		     (!((hasClass(section,"codexscaled"))||
+			(getStyle(section)[fdjtDOM.transform])))) {
 		// Use scaling to fit oversize pages if they're not
 		// *too* oversize (as defined by autoscale).
 		var scaling=this.height/section.offsetHeight;
