@@ -13,12 +13,14 @@
   <textarea rows='5' id="CODEXEXTRACT"></textarea>
 </div>
 <div id="CODEXHEAD">
-  <img src="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
+  <img src="http://static.beingmeta.com/graphics/svg/codex/CompassIcon.svg"
+       bmp="http://static.beingmeta.com/graphics/codex/CompassIcon50x50.png"
        alt="toc" title="click to navigate the book as a whole"
        class="hudbutton hudmodebutton topleft"
        id="CODEXTOCBUTTON"
        hudmode="toc"/>
-  <img src="http://static.beingmeta.com/graphics/codex/TagSearch50x50.png"
+  <img src="http://static.beingmeta.com/graphics/svg/codex/TagSearch.svg"
+       bmp="http://static.beingmeta.com/graphics/codex/TagSearch50x50.png"
        alt="search" title="click to search tags within the book"
        class="hudbutton hudmodebutton topright"
        id="CODEXSEARCHBUTTON"
@@ -44,36 +46,36 @@
 	(click to log in)</a>
     </div> <!-- .flyleafplate -->
     <div class="tabbar icons" id="CODEXTABS">
-      <img src="http://static.beingmeta.com/graphics/codex/AboutTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/svg/codex/AboutTab.svg"
+	   bmp="http://static.beingmeta.com/graphics/codex/AboutTab50h.png"
 	   alt="About" class="tab" contentid="APPABOUT"
 	   onclick="CodexMode.toggle('about',true); return fdjtUI.cancel(event);"
 	   title="information and links about this book"/>
-      <img src="http://static.beingmeta.com/graphics/codex/TOCTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/svg/codex/TOCTab.svg"
+	   bmp="http://static.beingmeta.com/graphics/codex/TOCTab50h.png"
 	   alt="ToC" class="tab" contentid="FLYTOC"
 	   onclick="CodexMode.toggle('flytoc',true); return fdjtUI.cancel(event);"
 	   title="Table of Contents (static)">
-      <img src="http://static.beingmeta.com/graphics/codex/OverlaysTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/svg/codex/OverlaysTab.svg"
+	   bmp="http://static.beingmeta.com/graphics/codex/OverlaysTab50h.png"
 	   alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
 	   onclick="CodexMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
 	   title="manage how your sBook is enhanced with added layers"/>
-      <img src="http://static.beingmeta.com/graphics/codex/SettingsTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/svg/codex/SettingsTab.svg"
+	   bmp="http://static.beingmeta.com/graphics/codex/SettingsTab50h.png"
 	   alt="Device" class="tab" contentid="CODEXSETTINGS"
 	   onclick="CodexMode.toggle('device',true); return fdjtUI.cancel(event);"
 	   title="alter appearance and interaction"/>
-      <img src="http://static.beingmeta.com/graphics/codex/LoginTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/svg/codex/LoginTab.svg"
+	   bmp="http://static.beingmeta.com/graphics/codex/LoginTab50h.png"
 	   alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
 	   onclick="CodexMode.toggle('sbookapp',true); return fdjtUI.cancel(event);"
 	   title="login to sBooks" />
-      <img src="http://static.beingmeta.com/graphics/codex/ConsoleTab50h.png"
+      <img src="http://static.beingmeta.com/graphics/svg/codex/ConsoleTab.svg"
+	   bmp="http://static.beingmeta.com/graphics/codex/ConsoleTab50h.png"
 	   alt="Console" class="tab" contentid="CODEXCONSOLE"
 	   onclick="CodexMode.toggle('console',true); return fdjtUI.cancel(event);"
 	   title="show console" />
-      <!--
-      <img src="http://static.beingmeta.com/graphics/codex/HelpTab50h.png"
-	   alt="Help" class="tab" contentid="CODEXHELP"
-	   onclick="CodexMode.toggle('help',true); return fdjtUI.cancel(event);"
-	   title="help about using sBooks"/>
-      -->
     </div> <!-- .tabbar -->
   </div> <!-- id="CODEXHUDBUTTONS" -->
   <div id="CODEXGOTOLOC" class="hudpanel codexgoto">
@@ -108,7 +110,8 @@
     <div id="CODEXGLOSSOUTLETS" class="completions showempty"></div>
     <div id="CODEXGLOSSCLOUD" class="completions">
       <img class="label" alt="tags"
-	   src="http://static.beingmeta.com/graphics/codex/TagIcon32x32.png"
+	   src="http://static.beingmeta.com/graphics/svg/codex/TagIcon.svg"
+	   bmp="http://static.beingmeta.com/graphics/codex/TagIcon32x32.png"
 	   onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
       <div class='doc'>
 	<strong>Add a tag</strong>
@@ -133,7 +136,8 @@
   </div>
   <div id="CODEXSOURCES" class="hudpanel sbooksources"
        onclick="Codex.UI.handlers.sources_ontap(event);">
-    <img src="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
+    <img src="http://static.beingmeta.com/graphics/svg/codex/sbookspeople.svg"
+	 bmp="http://static.beingmeta.com/graphics/codex/sbookspeople50x50.png"
 	 class="button everyone selected"
 	 alt="show all" title="click to see all glosses"
 	 onclick="Codex.UI.handlers.everyone_ontap(event);"/>
@@ -148,27 +152,33 @@
 <div class="helphud rightmiddle">
   next page
 </div>
-<img src="http://static.beingmeta.com/graphics/codex/ScanLeft32.png"
+<img src="http://static.beingmeta.com/graphics/svg/codex/ScanLeft.svg"
+     bmp="http://static.beingmeta.com/graphics/codex/ScanLeft32.png"
      id="CODEXPREVSCAN" class="codexscanbutton"
      alt="prev" onclick="Codex.scanBackward(event);"/>
-<img src="http://static.beingmeta.com/graphics/codex/ScanRightStop32.png"
+<img src="http://static.beingmeta.com/graphics/svg/codex/ScanRightStop.svg"
+     bmp="http://static.beingmeta.com/graphics/codex/ScanRightStop32.png"
      id="CODEXENDSCAN" class="codexscanbutton"
      alt="end"/>
-<img src="http://static.beingmeta.com/graphics/codex/ScanRight32.png"
+<img src="http://static.beingmeta.com/graphics/svg/codex/ScanRight.svg"
+     bmp="http://static.beingmeta.com/graphics/codex/ScanRight32.png"
      id="CODEXNEXTSCAN" class="codexscanbutton"
      alt="next" onclick="Codex.scanForward(event);"/>
-<img src="http://static.beingmeta.com/graphics/codex/ScanLeftStop32.png"
+<img src="http://static.beingmeta.com/graphics/svg/codex/ScanLeftStop.svg"
+     bmp="http://static.beingmeta.com/graphics/codex/ScanLeftStop32.png"
      id="CODEXSTARTSCAN" class="codexscanbutton"
      alt="beginning"/>
 <div id="CODEXHEART" class="hudpanel">
 </div>
 <div id="CODEXFOOT">
-  <img src="http://static.beingmeta.com/graphics/codex/AllGlosses50x50.png"
+  <img src="http://static.beingmeta.com/graphics/svg/codex/AllGlosses.svg"
+       bmp="http://static.beingmeta.com/graphics/codex/AllGlosses50x50.png"
        alt="allglosses" title="click to see all glosses"
        class="hudbutton hudmodebutton botleft"
        id="CODEXALLGLOSSESBUTTON"
        hudmode="allglosses"/>
-  <img src="http://static.beingmeta.com/graphics/codex/HelpIcon50x50.png"
+  <img src="http://static.beingmeta.com/graphics/svg/codex/HelpIcon.svg"
+       bmp="http://static.beingmeta.com/graphics/codex/HelpIcon50x50.png"
        alt="help" title="click/tap to toggle help"
        onclick="fdjtDOM.toggleClass(document.body,'codexhelp');"
        class="hudbutton hudmodebutton botright"

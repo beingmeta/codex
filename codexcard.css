@@ -60,6 +60,7 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
   color: green; font-size: 125%; font-style: normal;
   font-variant: small-caps;}
 .codexcard span.link a { color: blue; text-decoration: underline;}
+.codexcard span.link img { height: 1.5ex; vertical-align: baseline;}
 .codexcard span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
 .codexcard span.audience { 
@@ -75,6 +76,7 @@ body.sbook a.codexcard { display: block;}
 .codexcard .info span.score {
   color: gold; display: none;}
 .codexcard span.tags { font-size: 80%;}
+.codexcard span.tags img.tagicon { height: 3ex;}
 .codexcard span.tags span.controller { cursor: pointer;}
 .codexcard span.tags.fdjtexpanded { display: block;}
 .codexcard span.tags.fdjtexpanded span.controller { float: right;}
@@ -103,6 +105,7 @@ body.sbook a.codexcard { display: block;}
 .codexcard .tool {
     float: right; font-weight: normal;
     font-size: 60%; text-decoration: none;}
+.codexcard .tool img { height: 5ex;}
 .codexcard .age {
     color: green; vertical-align: top; padding-right: 0.5em;}
 .codexcard .age:hover {text-decoration: underline;} 

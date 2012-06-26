@@ -33,6 +33,9 @@
 
 /* Gloss form */
 
+div#CODEXADDGLOSS div.codexglossform {
+    min-height: 50px;}
+
 div.codexglossform { display: none;}
 div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
 div.codexglossform#CODEXLIVEGLOSS { display: block;}
@@ -50,13 +53,15 @@ div.codexglossform div .respdate {
 div.codexglossform div .respdate:before { content: "(";}
 div.codexglossform div .respdate:after { content: ")";}
 
-div.codexglossform div.deletebox {
+div.codexglossform div.glosseditbox {
     text-align: right; color: black; display: none;
-    font-variant: small-caps;}
-div.codexglossform div.deletebox .respdate {float: left;}
-div.codexglossform div.deletebox span img { vertical-align: bottom;}
-div.codexglossform div.deletebox span.clickable { cursor: pointer;}
-div.codexglossform.glossedit div.deletebox { display: block;}
+    font-variant: small-caps;
+    height: 3ex;}
+div.codexglossform div.glosseditbox .respdate {float: left;}
+div.codexglossform div.glosseditbox img { vertical-align: top; height: 2ex;}
+div.codexglossform div.glosseditbox span img { vertical-align: bottom;}
+div.codexglossform div.glosseditbox span.clickable { cursor: pointer;}
+div.codexglossform.glossedit div.glosseditbox { display: block;}
 
 div.codexglossform form {
     padding: 0px; margin: 0px;}
@@ -106,11 +111,11 @@ div.codexglossform form div.textbox {
 div.codexglossform form div.altbutton span { display: none;}
 div.codexglossform form div.altbutton span.addbutton {display: inline;}
 
-div.codexglossform.glossedit form  div.altbutton span.savebutton,
-div.codexglossform.glossreply form div.altbutton span.replybutton {
+div.codexglossform.glossedit form .savebutton,
+div.codexglossform.glossreply form .replybutton {
     display: inline;}
-div.codexglossform.glossedit form div.altbutton span.addbutton,
-div.codexglossform.glossreply form div.altbutton span.addbutton {
+div.codexglossform.glossedit form .addbutton,
+div.codexglossform.glossreply form .addbutton {
     display: none;}
 
 div.codexglossform form textarea[name='NOTE'] {
@@ -184,6 +189,7 @@ div.codexglossform form div.glossetc span.networks {
     color: black; font-weight: normal; float: right; text-align: right;}
 div.codexglossform form div.glossetc span.networks
    .checkspan input[type='checkbox'] { display: none;}
+div.codexglossform form div.glossetc span.networks img { height: 3ex; }
 
 div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue; text-decoration: underline;}
@@ -212,6 +218,10 @@ div.codexglossform form div.glossetc > span.modebuttons .button {
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;
     border-top: 0px;}
+div.codexglossform form div.glossetc > span.modebuttons img.button {
+    height: 25px;}
+div.codexglossform form div.glossetc > span.modebuttons .button img {
+    height: 25px;}
 div.codexglossform form div.glossetc > span .button:hover {
     border: darkblue dotted 1px;}
 div.codexglossform form div.glossetc > span .button[alt='excerpt'] {
@@ -221,7 +231,7 @@ div.codexglossform.hasexcerpt form div.glossetc > span .button[alt='excerpt'] {
 
 div.codexglossform form.editnote div.glossetc span .button[alt='note'],
 div.codexglossform form.addtag div.glossetc span .button[alt='tag'],
-div.codexglossform form.addoutlet div.glossetc span .button[alt='outlet'],
+div.codexglossform form.addoutlet div.glossetc span .button[alt='sharing'],
 div.codexglossform form.addlink div.glossetc span .button[alt='link'],
 div.codexglossform form.excerpt div.glossetc span .button[alt='excerpt'] {
     background-color: white; border-color: darkblue; border-style: solid;}
@@ -234,6 +244,25 @@ div.codexglossform form .button {
     margin-left: 4px; 
     text-align: center; vertical-align: top;
     cursor: pointer;}
+
+div.codexglossform form .submitbutton {
+    float: right;
+    padding-top: 0px; padding-right: 0px;
+    height: 32px;}
+div.codexglossform form .submitbutton .button {
+    border-top: none; border-right: none;
+    padding-top: 0px; padding-right: 0px;
+    margin-top: 0px; margin-right: 0px;
+    border: solid darkblue 2px; border-right: 0px; border-top: 0px;
+    background-color: blue;
+    border-radius: 0px; -webkit-border-radius: 0px;
+    -moz-border-radius: 0px; -o-border-radius: 0px;
+    border-bottom-left-radius: 0.5ex;
+    -webkit-border-bottom-left-radius: 0.5ex; 
+    -moz-border-radius-botleft: 0.5ex;
+    -o-border-radius-botleft: 0.5ex; 
+    height: 100%;}
+
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;
     font-family: sans,sans-serif;}
@@ -241,31 +270,18 @@ div.codexglossform form .checkspan {
 div.codexglossform form span.source:before, .completions span.source:before {
     content: '@'; color: gold;}
 
-div.codexglossform span.button.savebutton,
-div.codexglossform span.button.replybutton,
-div.codexglossform span.button.addbutton {
+div.codexglossform .button.savebutton,
+div.codexglossform .button.replybutton,
+div.codexglossform .button.addbutton {
     float: right;}
 
-div.codexglossform span.savebutton, div.codexglossform span.replybutton {
+div.codexglossform .savebutton, div.codexglossform .replybutton {
     display: none;}
-div.codexglossform.glossedit span.savebutton { display: inline;}
-div.codexglossform.glossreply span.replybutton { display: inline;}
+div.codexglossform.glossedit .savebutton { display: inline;}
+div.codexglossform.glossreply .replybutton { display: inline;}
 div.codexglossform.glossedit span.addbutton,
-div.codexglossform.glossreply span.addbutton {
+div.codexglossform.glossreply .addbutton {
     display: none;}
-
-div.codexglossform form .button.submitbutton {
-    border: solid blue 2px; padding: 4px; height: 25px;
-    margin-right: 0px; margin-top: 0px; margin-bottom: 0.5ex;
-    border-top: 0px; border-right: 0px;
-    border-radius: 0px; -webkit-border-radius: 0px;
-    -moz-border-radius: 0px; -o-border-radius: 0px;
-    border-bottom-left-radius: 6px;
-    -o-border-bottom-left-radius: 6px; 
-    -webkit-border-bottom-left-radius: 6px;
-    -moz-border-radius-bottomleft: 6px;
-    -o-border-radius-bottomleft: 6px;
-    background-color: blue;}
 
 div.codexglossform.submitting { opacity: 0.5;}
 div.codexglossform.submitting td.button img { opacity: 0.5;}
@@ -291,4 +307,10 @@ div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
 
 div.codexglossform form div.glossetc .tags span.checkspan {
     font-size: 80%;}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
 

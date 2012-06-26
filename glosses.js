@@ -49,7 +49,9 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     var glossmodes=Codex.glossmodes;
 
     function sbicon(base){return Codex.graphics+base;}
+    function sbsvgicon(base){return Codex.graphics+"svg/"+base;}
     function cxicon(base){return Codex.graphics+"codex/"+base;}
+    function cxsvgicon(base){return Codex.graphics+"svg/codex/"+base;}
 
     function _getbracketed(input,erase){
 	var string=input.value;
@@ -399,7 +401,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else if (mode==='excerpt') input=fdjtDOM.getInput(form,"EXCERPT");
 	else if (mode==='addoutlet') input=fdjtDOM.getInput(form,"OUTLET");
 	var outlet_input=fdjtDOM.getInput(form,"OUTLET");
-	if (outlet_input)
+	if ((outlet_input)&&(outlet_cloud))
 	    outlet_cloud.complete((outlet_input.value)||"");
 	if (mode!=='editnote') {
 	    var tag_input=fdjtDOM.getInput(form,"TAG");
@@ -557,9 +559,10 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var content=target.value;
 	var form=fdjtDOM.getParent(target,"FORM");
 	var ch=evt.keyCode||evt.charCode;
-	if ((fdjtString.isEmpty(content))&&(ch===13)) {
+	if (!(outlet_cloud)) return;
+	else if ((fdjtString.isEmpty(content))&&(ch===13)) {
 	    return;}
-	if (content.length===0) {
+	if ((content.length===0)&&(outlet_cloud)) {
 	    outlet_cloud.complete("");
 	    return;}
 	else if (ch===13) {
@@ -676,7 +679,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	    addTag(form,completion);}
 	fdjtUI.cancel(evt);}
 
-    /***** The Gloss Cloud *****/
+    /***** The Outlet Cloud *****/
 
     var outlet_cloud=false;
     
@@ -882,7 +885,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		    var sg=links[tag];
 		    var j=0; var jlim=sg.length;
 		    while (j<jlim) {
-			var icon=fdjtDOM.Image(sbicon("DiagLink16x16.png"));
+			var icon=fdjtDOM.Image(sbsvgicon("DiagLink.svg"));
 			var gloss=Codex.glosses.ref(sg[j++]);
 			var anchor=fdjtDOM.Anchor(gloss.link,"a",icon);
 			anchor.title=gloss.note;
@@ -890,7 +893,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 		if (notes[tag]) {
 		    var sg=notes[tag];
 		    var j=0; var jlim=sg.length;
-		    var icon=fdjtDOM.Image(cxicon("remarkballoon16x13.png"));
+		    var icon=fdjtDOM.Image(cxsvgicon("Remark.svg"));
 		    while (j<jlim) {
 			var gloss=Codex.glosses.ref(sg[j++]);
 			icon.title=gloss.note; fdjtDOM(span," ",icon);}}}

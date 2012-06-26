@@ -197,9 +197,11 @@ body.sbook div#CODEXPAGE { max-width: 40em; }
 /* CODEXSOURCES */
 
 div.sbooksources {}
-div.sbooksources img.button.source {
-    max-height: 50px;}
-div.sbooksources .button.source {
+div.sbooksources img.button {
+    height: 50px; max-width: 50px; border-radius: 10%;}
+div.sbooksources img.button.everyone {}
+div.sbooksources img.button.everyone.selected { background-color: silver; }
+div.sbooksources .button {
     border: solid transparent 2px; margin: 2px;}
 div.sbooksources img.button.source.selected,
 div.sbooksources div.button.source.selected {
@@ -823,6 +825,7 @@ div.searchbox div.query input[type='TEXT'] {
     background-repeat: no-repeat;
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/graphics/TagIcon24x24.png);}
+div.searchbox div.query img.clearsearch { height: 2ex;}
 div.searchbox div.query span.ampersand {
     float: right; font-weight: bold; font-size: 150%;
     padding-left: 1em; }

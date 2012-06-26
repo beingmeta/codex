@@ -55,8 +55,11 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     /* Social UI components */
 
     function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
+    function sbsvgicon(name,suffix) {return Codex.graphics+"svg/"+name+(suffix||"");}
     function cxicon(name,suffix) {
 	return Codex.graphics+"codex/"+name+(suffix||"");}
+    function cxsvgicon(name,suffix) {
+	return Codex.graphics+"svg/codex/"+name+(suffix||"");}
     
     function addSource(info,withgloss){
 	if (typeof info === 'string') info=fdjtKB.ref(info);
@@ -72,9 +75,9 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 		var kind=info.kind;
 		if (pic) {}
 		else if (kind===':CIRCLE')
-		    pic=cxicon("sbookscircle50x50.png");
+		    pic=cxsvgicon("sbookscircle.svg");
 		else if (kind===':OVERDOC')
-		    pic=cxicon("sbooksoverdoc50x50.png");
+		    pic=cxsvgicon("sbooksmetapub.svg");
 		else {}
 		if (pic)
 		  icon=fdjtDOM.Image
@@ -180,11 +183,11 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
 	if ((glossmark)&&(glossmark.parentNode===passage)) {
 	    if (gloss) extendGlossmark(glossmark,[gloss]);
 	    return glossmark;}
-	var imgsrc=(sbicon("sbwedge32x32.png"));
+	var imgsrc=(sbsvgicon("sbwedge.svg"));
 	var bigimage=fdjtDOM.Image(imgsrc,"big","glosses");
 	var glossmark=fdjtDOM(
 	    "span.codexglossmark",
-	    bigimage,fdjtDOM.Image(sbicon("sbwedge18x18.png"),"tiny","*"));
+	    bigimage,fdjtDOM.Image(sbsvgicon("sbwedge.svg"),"tiny","*"));
 	// Get all the glosses from the index
 	var glosses=Glosses.index(false,"frag",passage.id);
 	bigimage.defaultsrc=imgsrc;

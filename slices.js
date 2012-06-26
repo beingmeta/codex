@@ -33,15 +33,12 @@ var codex_slices_version=parseInt("$Revision$".slice(10,-1));
 
 */
 
-var sbook_details_icon="detailsicon16x16.png";
-var sbook_outlink_icon="outlink16x16.png";
-var sbook_small_remark_icon="remarkballoon16x13.png";
-var sbook_delete_icon_touch="redx24x24.png";
-var sbook_delete_icon="redx16x16.png";
-var sbook_edit_icon_touch="remarkedit32x25.png";
-var sbook_edit_icon="remarkedit20x16.png";
-var sbook_reply_icon_touch="codex/replyballoons41x24.png";
-var sbook_reply_icon="codex/replyballoons26x15.png";
+var sbook_details_icon="svg/codex/detailsicon.png";
+var sbook_outlink_icon="svg/outlink.svg";
+var sbook_remark_icon="svg/codex/remark.svg";
+var sbook_delete_icon="svg/codex/remark_delete.svg";
+var sbook_edit_icon="svg/codex/remark_edit.svg";
+var sbook_reply_icon="svg/codex/respond.svg";
 
 (function () {
 
@@ -153,8 +150,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	    scores=tags.scores;}
 	var tagcount=0;
 	var countspan=fdjtDOM("span.count");
-	var tagicon=fdjtDOM.Image
-	(cxicon("TagIcon16x16.png"),"img.tagicon","tags");
+	var tagicon=fdjtDOM.Image(cxsvgicon("TagIcon.svg"),"img.tagicon","tags");
 	var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
 	var tagspan=span;
 	var controller=false;
@@ -196,7 +192,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	for (url in refs) {
 	    if (url[0]==='_') continue;
 	    var urlinfo=refs[url];
-	    var title; var icon=sbicon("outlink16x8.png");
+	    var title; var icon=sbicon(sbook_outlink_icon);
 	    if (typeof urlinfo === 'string') title=urlinfo;
 	    else {
 		title=urlinfo.title;
@@ -225,9 +221,7 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
     function makebutton(fn,alt,title,mouse_icon,touch_icon){
 	var span=
 	    fdjtDOM("span.isclickable",
-		    (fdjtDOM.Image(sbicon(mouse_icon),"img.button.mouseicon",
-				   alt,title)),
-		    (fdjtDOM.Image(sbicon(touch_icon),"img.button.touchicon",
+		    (fdjtDOM.Image(sbicon(mouse_icon),"img.button",
 				   alt,title)));
 	span.onclick=fn;
 	return span;}
@@ -237,15 +231,10 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	var userinfo=Codex.sourcekb.map[user];
 	var feedinfo=Codex.sourcekb.map[feed];
 	var agestring=timestring(info._modified||info._created);
-	var mouse_icon=
-	    ((user===Codex.user._id)?sbook_edit_icon:sbook_reply_icon);
-	var touch_icon=
-	    ((user===Codex.user._id)?sbook_edit_icon_touch:
-	     sbook_reply_icon_touch);			
+	var icon=((user===Codex.user._id)?sbook_edit_icon:sbook_reply_icon);
 	var tool=fdjtDOM(
 	    "span.tool",fdjtDOM("span.age",agestring),
-	    fdjtDOM.Image(sbicon(mouse_icon),"img.button.mouseicon"),
-	    fdjtDOM.Image(sbicon(touch_icon),"img.button.touchicon"));
+	    fdjtDOM.Image(sbicon(icon),"img.button"));
 	tool.title=(((user===Codex.user)||(user===Codex.user._id))?
 		    ("edit this gloss"):
 		    ("relay/reply to this gloss"));
@@ -439,8 +428,11 @@ var sbook_reply_icon="codex/replyballoons26x15.png";
 	if (info) return info.pic;}
     
     function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
+    function sbsvgicon(name,suffix) {return Codex.graphics+"svg/"+name+(suffix||"");}
     function cxicon(name,suffix) {
 	return Codex.graphics+"codex/"+name+(suffix||"");}
+    function cxsvgicon(name,suffix) {
+	return Codex.graphics+"svg/codex/"+name+(suffix||"");}
 
     // Displayings sets of notes organized into threads
 
