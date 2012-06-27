@@ -1044,7 +1044,7 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    var win=Codex.window; var content=Codex.content;
 	    var section=Codex.section;
 	    var wbottom=win.scrollTop+win.offsetHeight;
-	    var cbottom=section.offsetHeight;
+	    var cbottom=section.offsetHeight+section.offsetTop;
 	    // -parsePX(section.style.marginBottom)
 	    var cursection=Codex.cursect;
 	    if (wbottom>=cbottom) {
