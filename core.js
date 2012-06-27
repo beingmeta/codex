@@ -85,7 +85,7 @@ var Codex=
 	 network: 0,	// How much to trace server interaction
 	 glosses: false,// Whether we're tracing gloss processing
 	 offline: 0,    // Whether to trace offline restoration, etc
-	 layout: 0,	// How much to trace document layout
+	 layout: 1,	// How much to trace document layout
 	 dosync: false, // Whether to trace state saves
 	 state: false,  // Whether to trace set state
 	 flips: false,	// Whether to trace page flips (movement by pages)

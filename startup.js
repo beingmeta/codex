@@ -342,6 +342,7 @@ Codex.Startup=
 				Codex.layout.height,
 				function(layout){
 				    fdjtDOM.addClass(document.body,"cxPAGED");
+				    fdjtDOM.dropClass(document.body,"cxLAYOUT");
 				    Codex.pagecount=layout.pagelocs.length;
 				    if (!(Codex.nativescroll)) {
 					if (!(Codex.iscroll)) {

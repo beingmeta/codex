@@ -29,6 +29,8 @@
 
 */
 
+/* Reporting progress, debugging */
+	
 var CodexSections=
     (function(){
 	var TOA=fdjtDOM.toArray;
@@ -43,8 +45,11 @@ var CodexSections=
 	var emptyString=fdjtString.isEmpty;
 	var atoi=parseInt;
 	var floor=Math.floor;
+	var secs2short=fdjtTime.secs2short;
 
-
+	function layoutMessage(msg){
+	    fdjtUI.ProgressBar.setMessage("CODEXLAYOUTMESSAGE",msg);}
+	
 	function is_section(node){
 	    return (node.nodeType===1) &&
 		((node.tagName==='SECTION')||
@@ -83,41 +88,46 @@ var CodexSections=
 	    fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
 	var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
 	
-	function avoidBreakBefore(elt){
+	function avoidBreakBefore(elt,style){
 	    if (hasClass(elt,"avoidbreakbefore")) return true;
-	    var style=getStyle(elt);
+	    if (!(style)) style=getStyle(elt);
 	    if (style.pageBreakBefore==='avoid') return true;
 	    if (avoidbreakbefore) return avoidbreakbefore.match(elt);
 	    else return false;}
-	function avoidBreakInside(elt){
+	function avoidBreakInside(elt,style){
 	    if (hasClass(elt,"avoidbreakinside")) return true;
-	    var style=getStyle(elt);
+	    if (!(style)) style=getStyle(elt);
 	    if (style.pageBreakInside==='avoid') return true;
 	    if (avoidbreakinside) return avoidbreakinside.match(elt);
 	    else return false;}
-	function avoidBreakAfter(elt,docinfo){
+	function avoidBreakAfter(elt,docinfo,style){
 	    if ((docinfo)&&(elt.id)&&(docinfo[elt.id])&&
 		(docinfo[elt.id].toclevel))
 		return true;
 	    if (hasClass(elt,"avoidbreakafter")) return true;
-	    var style=getStyle(elt);
+	    if (!(style)) style=getStyle(elt);
 	    if (style.pageBreakAfter==='avoid') return true;
 	    if (avoidbreakafter) return avoidbreakafter.match(elt);
 	    else return false;}
-	function forceBreakBefore(elt){
+	function forceBreakBefore(elt,style){
 	    if (hasClass(elt,"forcebreakbefore")) return true;
-	    var style=getStyle(elt);
+	    if (!(style)) style=getStyle(elt);
 	    if (style.pageBreakBefore==='force') return true;
 	    if (forcebreakbefore) return forcebreakbefore.match(elt);
 	    else return false;}
-	function forceBreakAfter(elt){
+	function forceBreakAfter(elt,style){
 	    if (hasClass(elt,"forcebreakafter")) return true;
-	    var style=getStyle(elt);
+	    if (!(style)) style=getStyle(elt);
 	    if (style.pageBreakAfter==='force') return true;
 	    if (forcebreakafter) return forcebreakafter.match(elt);
 	    else return false;}
-
-	function CodexSections(content,docinfo,win){
+	function isTransformed(elt){
+	    var tv=elt.style[fdjtDOM.transform];
+	    if ((tv)&&(tv!=='none')) return true;
+	    else return false;}
+	
+	function CodexSections(content,docinfo,opts){
+	    if (!(opts)) opts={};
 	    if (Codex.layout) {
 		if (CodexLayout instanceof CodexSections) {
 		    return Codex.layout;}
@@ -130,10 +140,11 @@ var CodexSections=
 		else {
 		    Codex.layout.Revert();
 		    Codex.layout=false;}}
-	    if (Codex.Trace.layout)
-		fdjtLog("Adding layout sections to %o",content);
+
+	    var tracelevel=this.tracelevel=opts.tracelevel||Codex.Trace.layout;
 
 	    this.root=content;
+	    this.lastid=false;
 
 	    Codex.layout=this;
 
@@ -149,32 +160,46 @@ var CodexSections=
 		fdjtDOM.getGeometry("CODEXWINDOW",false,true).inner_width;
 	    var splits=this.splits={};
 
+	    var started=this.started=fdjtTime();
+
 	    var scaled=this.scaled=[];
+
 	    CodexLayout.applyPageScaling(
 		fdjtDOM.$(".sbookpagescaled,.pagescaled"),scaled,width,height);
 	    
-	    this.dups={};
+	    addClass(document.body,"cxLAYOUT");
+
+	    var dups=this.dups={};
 	    this.pagebreaks=[];
-	    this.leaves=[];
 	    this.pagetops=[];
 	    this.scaled=[];
+
+	    if (opts.tocdepth) this.tocdepth=opts.tocdepth;
+
+	    if (Codex.Trace.layout)
+		fdjtLog("Adding layout sections to %o",content);
+	    
+	    layoutMessage("Laying out initial sections");
+
 	    if (Codex.page_style==='fastpage')
-		// This splits based on height
+		// This also splits based on height
 		this.roots=this.addSections(content,docinfo,height);
 	    else this.roots=this.addSections(content,docinfo,false);
+	    if (Codex.Trace.layout)
+		fdjtLog("Added %d layout sections to %o",
+			fdjtDOM.$("section.codexwrapper").length,content);
+	    
 	    if (Codex.Trace.layout)
 		fdjtLog("Gathering sections from %o",content);
 	    this.sections=gatherSections(content,[],docinfo);
 	    if (Codex.Trace.layout)
 		fdjtLog("Gathered %d sections from %o",
 			this.sections.length,content);
-	    if (Codex.Trace.layout)
-		fdjtLog("Done with initial layout of %o",content);
 	    return this;}
 	    
 	function addSections(node,docinfo,page_height,toplevel){
 	    var open=false; var inserted=false;
-	    var splits=this.splits;
+	    var splits=this.splits; var dups=this.dups;
 	    if (typeof page_height === 'undefined') page_height=this.height; 
 	    var children=fdjtDOM.toArray(node.childNodes);
 	    var last_child=false; var tail=[];
@@ -236,7 +261,7 @@ var CodexSections=
 		    addClass(child,"codexlive");
 		    if (!(avoidBreakInside(child))) {
 			// Recur into this section
-			addSections(child,docinfo,page_height,splits);}
+			this.addSections(child,docinfo,page_height,splits);}
 		    // And then we're done!
 		    dropClass(child,"codexlive");
 		    last_child=child; tail=[child];}
@@ -248,7 +273,7 @@ var CodexSections=
 		    var info=((child.id)&&(docinfo[child.id]));
 		    if (open) dropClass(open,"codexvisible");
 		    // Starting a new section
-		    if (tracelevel>1)
+		    if (tracelevel>2)
 			fdjtLog("Starting new section starting with %o",child);
 		    open=fdjtDOM("section.codexwrapper.codexvisible");
 		    sections.push(open);
@@ -293,7 +318,7 @@ var CodexSections=
 				    (child.id=fdjtState.getUUID());
 				if (this.dupfn) this.dupfn(split,child);
 				if (dups[id]) dups[id].push(split);
-				else dups[i]=[split];}
+				else dups[id]=[split];}
 			    if (split) {
 				fdjtDOM.insertAfter(open,split);
 				inserted=split;}}
@@ -333,7 +358,16 @@ var CodexSections=
 		    if (last_child) {
 			fdjtDOM(open,tail,child);
 			last_child=false; tail=[];}
-		    else open.appendChild(child);}}
+		    else open.appendChild(child);}
+		if ((child.nodeType===1)&&(child.id)&&(docinfo[child.id])) {
+		    var starts=docinfo[child.id].starts_at;
+		    if (starts) {
+			var pct=(100*starts)/Codex.ends_at;
+			fdjtUI.ProgressBar.setProgress("CODEXLAYOUTMESSAGE",pct);
+			var msg=fdjtString("Done with %s%% of initial layout in %s",
+					   fdjtString.precString(pct,2),
+					   secs2short((fdjtTime()-this.started)/1000));
+			layoutMessage(msg);}}}
 	    if (open) dropClass(open,"codexvisible");
 	    return sections;}
 	CodexSections.prototype.addSections=addSections;
@@ -433,8 +467,7 @@ var CodexSections=
 		    // This is the text pushed onto the new page
 		    words.slice(pagebreak).join(""));
 		if (tracelevel>1)
-		    fdjtLog("Split text block after %s",
-			    words.slice(0,pagebreak).join(""));
+		    fdjtLog("Split text block after %s",words.slice(0,pagebreak).join(""));
 		return splitoff;}
 	    else {
 		node.replaceChild(child,probenode);
@@ -579,7 +612,7 @@ var CodexSections=
 		    return child;}
 	    return false;}
 
-	function gatherFastBreaks(node,container,
+	function gatherFastBreaks(prev,node,container,
 				  pagelim,height,
 				  breaks,tops,
 				  opts){
@@ -590,8 +623,24 @@ var CodexSections=
 	    if ((display==='block')||(display==='table-row')||
 		(display==='list-item')||(display==='preformatted')) {
 		var geom=getGeom(node,container);
-		if (geom.bottom<pagelim) return pagelim;
+		if (geom.bottom<pagelim)
+		    return pagelim;
+		else if ((geom.top>pagelim)&&(prev)&&
+			 (avoidBreakAfter(prev))) {
+		    var pgeom=getGeom(prev,container);
+		    breaks.push(pgeom.top);
+		    tops.push(prev);
+		    if (geom.bottom>(pgeom.top+height))
+			return gatherFastBreaks(
+			    false,node,container,pagelim,height,
+			    breaks,tops,opts);
+		    else return pgeom.top+height;}
 		else if (geom.top>pagelim) {
+		    breaks.push(geom.top);
+		    tops.push(node);
+		    return geom.top+height;}
+		else if ((style.pageBreakBefore==='always')||
+			 (forceBreakBefore(node))) {
 		    breaks.push(geom.top);
 		    tops.push(node);
 		    return geom.top+height;}
@@ -611,22 +660,33 @@ var CodexSections=
 			 ((fudge<1)?(fudge*height):(fudge))) {
 		    // If it's at the top, we already pushed it's location
 		    if (geom.top!==0) {
-			breaks.push(geom.top);
-			tops.push(node);}
-		    pagelim=geom.top+height;
-		    return gatherFastBreaks(node,container,pagelim,height,
+			if ((prev)&&(avoidBreakAfter(prev))) {
+			    var pgeom=getGeom(prev,container);
+			    breaks.push(pgeom.top);
+			    tops.push(prev);
+			    if (geom.bottom>(pgeom.top+height))
+				return gatherFastBreaks(
+				    false,node,container,pagelim,height,
+				    breaks,tops,opts);
+			    else pagelim=pgeom.top+height;}
+			else {
+			    breaks.push(geom.top);
+			    tops.push(node);
+			    pagelim=geom.top+height;}}
+		    return gatherFastBreaks(prev,node,container,pagelim,height,
 					    breaks,tops,opts);}
 		else {
-		    var children=node.childNodes;
+		    var children=node.childNodes; var last_child=prev;
 		    var i=0, lim=children.length;
 		    while (i<lim)  {
 			var child=children[i++];
-			if (child.nodeType===1)
+			if (child.nodeType===1) {
 			    pagelim=gatherFastBreaks(
-				child,container,
+				last_child,child,container,
 				pagelim,height,
 				breaks,tops,
-				opts);}
+				opts);
+			    last_child=child;}}
 		    while (pagelim<geom.bottom) {
 			breaks.push(pagelim-scrollover);
 			tops.push(false);
@@ -638,11 +698,11 @@ var CodexSections=
 	CodexSections.prototype.scrollover=20;
 	CodexSections.prototype.getPageBreaks=function(arg){
 	    var section=((arg.nodeType)?(arg):(this.sections[arg]));
-	    var autoscale=this.autoscale;
+	    var autoscale=this.autoscale; var geom=false;
 	    if (!(section)) return [];
 	    var sectnum=((typeof arg === 'number')?(arg):
 			 atoi(arg.getAttribute('data-sectnum')));
-	    if (Codex.Trace.layout)
+	    if (Codex.Trace.layout>1)
 		fdjtLog("Computing %dpx-high pages for section %d (%o)",
 			this.height,sectnum,section);
 	    if (this.pagebreaks[sectnum-1])
@@ -659,12 +719,12 @@ var CodexSections=
 		this.pagetops[sectnum-1]=[section];
 		return breaks;}
 	    else if ((autoscale)&&
+		     (section.offsetHeight>this.height)&&
 		     (section.offsetHeight<(this.height*autoscale))&&
-		     (!((hasClass(section,"codexscaled"))||
-			(getStyle(section)[fdjtDOM.transform])))) {
+		     (!(isTransformed(section)))) {
 		// Use scaling to fit oversize pages if they're not
 		// *too* oversize (as defined by autoscale).
-		var scaling=this.height/section.offsetHeight;
+		var scaling=(this.height*0.95)/section.offsetHeight;
 		var breaks=[0];
 		this.pagebreaks[sectnum-1]=breaks;
 		this.pagetops[sectnum-1]=[section];
@@ -677,7 +737,7 @@ var CodexSections=
 		var placeholder=false;
 		breaks.push(0); tops.push(section);
 		var pagelim=gatherFastBreaks(
-		    section,section,this.height,this.height,
+		    false,section,Codex.content,this.height,this.height,
 		    breaks,tops,{scrollover: this.scrollover});
 		this.pagebreaks[sectnum-1]=breaks;
 		this.pagetops[sectnum-1]=tops;
@@ -686,7 +746,7 @@ var CodexSections=
 		    section.style.marginBottom=
 			(pagelim+this.scrollover-section.offsetHeight)+"px";}
 		else {}
-		if (Codex.Trace.layout)
+		if (Codex.Trace.layout>1)
 		    fdjtLog("Found %d %dpx-high pages for section %d (h=%o)",
 			    breaks.length,this.height,sectnum,section,
 			   section.offsetHeight);
@@ -703,8 +763,9 @@ var CodexSections=
 		var pagetops=this.pagetops;
 		var pagelocs=[]; var pagenums=[];
 		Codex.layout=this;
-		fdjtLog("Computing page breaks across %d sections (height=%d)",
-			this.sections.length,height);
+		if (Codex.Trace.layout)
+		    fdjtLog("Computing page breaks across %d sections (height=%d)",
+			    this.sections.length,height);
 		fdjtTime.slowmap(function(section){
 		    var sectnum=parseInt(section.getAttribute("data-sectnum"));
 		    var breaks=pagebreaks[sectnum-1];
@@ -738,7 +799,7 @@ var CodexSections=
 				       pagenum: pagelocs.length+1});
 			pages.push(pagelocs.length);
 			i++;}
-		    if (Codex.Trace.layout)
+		    if (Codex.Trace.layout>1)
 			if (breaks.length===1)
 			    fdjtLog("Added one page (%d) for section %d (%o)",
 				    pagelocs.length,sectnum,section);
