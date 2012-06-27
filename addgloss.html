@@ -86,7 +86,8 @@
       <span class="networks">
 	<span class="checkspan facebook_share"
 	      title="share (or not) this gloss with my Facebook friends">
-	  <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK">
+	  <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK"
+		 onchange="Codex.UI.changeGlossNetwork(event);">
 	  <img src="http://static.beingmeta.com/graphics/social/facebook64x64.png"
 	       alt="Facebook" class="checked"/>
 	  <img src="http://static.beingmeta.com/graphics/social/nofacebook64x64.png"
@@ -94,7 +95,8 @@
 	</span>
 	<span class="checkspan twitter_share"
 	      title="share (or not) this gloss with my Twitter followers">
-	  <input type="CHECKBOX" name="NETWORKS" value=":TWITTER">
+	  <input type="CHECKBOX" name="NETWORKS" value=":TWITTER"
+		 onchange="Codex.UI.changeGlossNetwork(event);">
 	  <img src="http://static.beingmeta.com/graphics/social/twitter64x64.png"
 	       alt="Twitter" class="checked"/>
 	  <img src="http://static.beingmeta.com/graphics/social/notwitter64x64.png"
@@ -102,7 +104,8 @@
 	</span>
 	<span class="checkspan linkedin_share"
 	      title="share this gloss with my LinkedIn connections">
-	  <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN">
+	  <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN"
+		 onchange="Codex.UI.changeGlossNetwork(event);">
 	  <img src="http://static.beingmeta.com/graphics/social/linkedin64x64.png"
 	       alt="LinkedIn" class="checked"/>
 	  <img src="http://static.beingmeta.com/graphics/social/linkedin64x64.png"
@@ -110,7 +113,8 @@
 	</span>
 	<span class="checkspan google_share"
 	      title="share this gloss with my Google+ connections">
-	  <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE">
+	  <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE"
+		 onchange="Codex.UI.changeGlossNetwork(event);">
 	  <img src="http://static.beingmeta.com/graphics/social/googleplus64x64.png"
 	       alt="Google+" class="checked"/>
 	  <img src="http://static.beingmeta.com/graphics/social/googleplus64x64.png"

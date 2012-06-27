@@ -187,8 +187,7 @@ div.codexglossform form div.sharing { max-height: 24px;}
 
 div.codexglossform form div.glossetc span.networks {
     color: black; font-weight: normal; float: right; text-align: right;}
-div.codexglossform form div.glossetc span.networks
-   .checkspan input[type='checkbox'] { display: none;}
+div#CODEXHUD span.networks .checkspan input[type='checkbox'] { display: none;}
 div.codexglossform form div.glossetc span.networks img { height: 3ex; }
 
 div.codexglossform form div.glossetc .links span.checkspan {

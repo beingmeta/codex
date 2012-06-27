@@ -1401,6 +1401,8 @@ div.completions#CODEXGLOSSOUTLETS {
 body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
   div.completions#CODEXGLOSSOUTLETS {
     display: block;}
+div#CODEXGLOSSOUTLETS span.networks { float: right;}
+div#CODEXGLOSSOUTLETS span.networks img { height: 32px;}
 
 /* Style variants */
 

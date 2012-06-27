@@ -1404,6 +1404,17 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    dropClass("CODEXHEART","showoutlets");
 	    dropClass(form,glossmodes);}}
 
+    /* Changing gloss networks */
+
+    function changeGlossNetwork(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var alternate=((fdjtDOM.hasParent(target,".codexglossform"))?
+		       ("CODEXNETWORKBUTTONS"):(("CODEXLIVEGLOSS")));
+	var doppels=fdjtDOM.getInputsFor(alternate,'NETWORKS',target.value);
+	fdjtUI.CheckSpan.set(doppels,target.checked);}
+    Codex.UI.changeGlossNetwork=changeGlossNetwork;
+
     /* Rules */
 
     var nobubble=fdjtUI.nobubble;

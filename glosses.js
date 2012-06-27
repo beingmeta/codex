@@ -352,7 +352,16 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM.append(tagselt,span," ");
 	updateForm(form);
 	return span;}
-    
+
+    Codex.setGlossNetwork=function(form,network,checked){
+	if (typeof form === 'string') form=fdjtID(form);
+	if (!(form)) return;
+	var input=fdjtDOM.getInput(form,'NETWORKS',network);
+	if (!(input)) return;
+	var cs=fdjtDOM.getParent(input,".checkspan");
+	if (!(cs)) return;
+	fdjtUI.CheckSpan.set(cs,checked);};
+
     /***** Setting the gloss target ******/
 
     // The target can be either a passage or another gloss
@@ -393,6 +402,15 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	var input=false;
 	var syncelt=fdjtDOM.getInput(form,"SYNC");
 	syncelt.value=(Codex.syncstamp+1);
+	{ // Update the big network buttons in the OUTLETS cloud
+	    var networks=fdjtDOM.getInputs(form,'NETWORKS');
+	    var altnetworks=fdjtID("CODEXNETWORKBUTTONS");
+	    var i=0; var lim=networks.length;
+	    while (i<lim) {
+		var input=inputs[i++];
+		var doppels=fdjtDOM.getInputsFor('NETWORKS',input.value);
+		fdjtUI.CheckSpan.set(doppels,input.checked);}}
+	/* Get the input appropriate to the mode. */
 	if (mode==='editnote') {
 	    input=fdjtDOM.getInput(form,"NOTE");
 	    if (input)
@@ -402,6 +420,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	else if (mode==='addlink') input=fdjtDOM.getInput(form,"LINK");
 	else if (mode==='excerpt') input=fdjtDOM.getInput(form,"EXCERPT");
 	else if (mode==='addoutlet') input=fdjtDOM.getInput(form,"OUTLET");
+	/* Do completions based on those input's values */
 	var outlet_input=fdjtDOM.getInput(form,"OUTLET");
 	if ((outlet_input)&&(outlet_cloud))
 	    outlet_cloud.complete((outlet_input.value)||"");
