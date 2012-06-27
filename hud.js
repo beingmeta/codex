@@ -160,11 +160,19 @@ var CodexMode=
 		else {
 		    var gloss_cloud=Codex.glossCloud();
 		    var search_cloud=Codex.searchCloud();
-		    var gloss_tag=gloss_cloud.getByValue(tag,".completion");
+		    var ref=((tag instanceof Ref)?(tag):
+			     ((fdjtKB.probe(tag,Codex.knodule))||
+			      (fdjtKB.ref(tag,Codex.knodule))));
+		    var ref_tag=(((ref)&&(ref.tagString))&&(ref.tagString(Codex.knodule)))||
+			((ref)&&((ref._id)||(ref.uuid)||(ref.oid)))||
+			(tag);
+		    var gloss_tag=gloss_cloud.getByValue(ref_tag,".completion");
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			gloss_tag=tagHTML(tag,Codex.knodule,false,true);
-			fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
-			gloss_cloud.addCompletion(gloss_tag,false,tag);}}}
+			if ((ref)&&(ref.pool===Codex.sourcekb))
+			    fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),gloss_tag," ");
+			else fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
+			gloss_cloud.addCompletion(gloss_tag);}}}
 	    Codex.addTag2GlossCloud=addTag2GlossCloud;
 	    
 	    function addTag2SearchCloud(tag){
@@ -293,12 +301,11 @@ var CodexMode=
 	/* Mode controls */
 	
 	var CodexMode_pat=/\b((device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
-	var codexHeartMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses))\b/g;
+	var codexHeartMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses)|(addgloss))\b/g;
 	var codex_mode_scrollers=
 	    {allglosses: "CODEXALLGLOSSES",
 	     searchresults: "CODEXSEARCHRESULTS",
 	     search: "CODEXSEARCHCLOUD",
-	     addgloss: "CODEXGLOSSCLOUD",
 	     console: "CODEXCONSOLE",
 	     // sbookapp: "SBOOKSAPP",
 	     flytoc: "CODEXFLYTOC",

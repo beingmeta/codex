@@ -1388,16 +1388,20 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	else return;
 	// fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
 	if (!(hasClass(form,altclass))) {
-	    if (alt==="tag") addClass("CODEXADDGLOSS","tagging");
-	    else dropClass("CODEXADDGLOSS","tagging");
-	    if (alt==="sharing") addClass("CODEXADDGLOSS","showoutlets");
-	    else dropClass("CODEXADDGLOSS","showoutlets");
+	    if (alt==="tag") {
+		addClass("CODEXHEART","tagging");
+		Codex.UI.updateScroller("CODEXGLOSSCLOUD");}
+	    else dropClass("CODEXHEART","tagging");
+	    if (alt==="sharing") {
+		addClass("CODEXHEART","showoutlets");
+		Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
+	    else dropClass("CODEXHEART","showoutlets");
 	    swapClass(form,glossmodes,altclass);
 	    Codex.setHUD(true);
 	    Codex.setFocus(input);}
 	else {
-	    dropClass("CODEXADDGLOSS","tagging");
-	    dropClass("CODEXADDGLOSS","showoutlets");
+	    dropClass("CODEXHEART","tagging");
+	    dropClass("CODEXHEART","showoutlets");
 	    dropClass(form,glossmodes);}}
 
     /* Rules */

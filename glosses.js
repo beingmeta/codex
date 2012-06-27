@@ -76,8 +76,10 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 
     function getbracketed(input,erase){
 	var bracketed=_getbracketed(input,erase);
-	if (bracketed) addClass("CODEXADDGLOSS","tagging");
-	else dropClass("CODEXADDGLOSS","tagging");
+	if (bracketed) {
+	    addClass("CODEXHEART","tagging");
+	    Codex.UI.updateScroller("CODEXGLOSSCLOUD");}
+	else dropClass("CODEXHEART","tagging");
 	return bracketed;}
 
     // set the gloss target for a particular passage
@@ -472,7 +474,7 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
     Codex.UI.bracket_click=bracket_click;
 
     function handleBracketed(form,content,complete){
-	dropClass("CODEXADDGLOSS","tagging");
+	dropClass("CODEXHEART","tagging");
 	if (content[0]==='@') {
 	    var brk=content.indexOf(' ');
 	    if (brk<0) addLink(form,content.slice(1));

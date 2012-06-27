@@ -342,7 +342,7 @@ body div#CODEXHUD #CODEXHEART.hudpanel {
     -webkit-transition-duration: 1s;
     border: solid transparent 3px;
     z-index: -100; opacity: 0.0;}
-body div#CODEXHUD #CODEXHEART > div {
+body div#CODEXHUD #CODEXHEART > div, body div#CODEXHUD #CODEXHEART > iframe {
     opacity: 0.0; height: 0px; overflow: auto;
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
@@ -352,16 +352,6 @@ body div#CODEXHUD #CODEXHEART > div {
    hide tabcontent. */
 body div#CODEXHUD #CODEXHEART > .tabcontent {
     display: block;}
-
-/*
-body div#CODEXHUD.allglosses #CODEXHEART div {
-    position: absolute; opacity: 0.0; 
-    top: 0px; bottom: 0px; left: 0px; right: 0px;
-    transition-property: opacity; transition-duration: 1s;
-    -o-transition-property: opacity; -o-transition-duration: 1s;
-    -moz-transition-property: opacity; -moz-transition-duration: 1s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
-*/
 
 body.hudup div#CODEXHUD.openheart div#CODEXHEART.hudpanel {
     display: block;}
@@ -377,6 +367,8 @@ body div#CODEXHUD.about #CODEXHEART > div#APPABOUT_SCROLLER,
 body div#CODEXHUD.device #CODEXHEART > div#CODEXSETTINGS_SCROLLER,
 body div#CODEXHUD.flytoc #CODEXHEART > div#FLYTOC_SCROLLER,
 body div#CODEXHUD.console #CODEXHEART > div#CODEXCONSOLE_SCROLLER,
+body div#CODEXHUD.addgloss #CODEXHEART.tagging > div#CODEXGLOSSCLOUD_SCROLLER,
+body div#CODEXHUD.addgloss #CODEXHEART.showoutlets > div#CODEXGLOSSOUTLETS_SCROLLER,
 body div#CODEXHUD.sbookapp div#CODEXHEART iframe#SBOOKSAPP {
     opacity: 0.9; height: 100%; z-index: 150; overflow: auto;}
 div.scroller > div { }
@@ -484,7 +476,7 @@ body.hudup.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCH,
 body.hudup.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
 body.hudup.cxPREVIEW div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup.cxPREVIEW div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
-body.hudup.cxPREVIEW div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS
+body.hudup.cxPREVIEW div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS,
 body.hudup.cxPREVIEW div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
 body.hudup.cxPREVIEW div#CODEXHUD.toc div.hudpanel#CODEXTOC,
 body.hudup.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSOURCES,
@@ -584,7 +576,7 @@ div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall .showless { display: none;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showless {display: inline;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showmore {display: none;}
 
-div#CODEXHUD.addgloss div#CODEXADDGLOSS.tagging
+div#CODEXHUD.addgloss div#CODEXHEART.tagging
    div.completions#CODEXGLOSSCLOUD { display: block;}
 
 div#CODEXGLOSSES div.codexthread { border-right-width: 0px;}
@@ -1165,8 +1157,8 @@ div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
 
 div#CODEXHUD div#CODEXHEART .tabcontent {
     overflow-y: auto; overflow-x: hidden;}
-div#CODEXHUD div#CODEXHEART .tabcontent#SBOOKSAPP { overflow: visible;}
-div#CODEXHUD div#CODEXHEART .tabcontent#SBOOKSAPP {
+div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP { overflow: visible;}
+div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP {
   width: 100%; height: 100%; border: 0px; margin: 0px; padding: 0px;}
 
 div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
@@ -1399,14 +1391,14 @@ body.cxNOUSER div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
-div#CODEXADDGLOSS div.completions#CODEXGLOSSOUTLETS {
+div.completions#CODEXGLOSSOUTLETS {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
     -o-transition-property: height;
     transition-duration: 3s; -webkit-transition-duration: 3s;
     -moz-duration: 3s; -o-transition-duration: 3s;}
-body.hudup div#CODEXHUD.addgloss div#CODEXADDGLOSS.showoutlets
+body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
   div.completions#CODEXGLOSSOUTLETS {
     display: block;}
 
