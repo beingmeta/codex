@@ -38,6 +38,7 @@ function CodexDOMScan(root,docinfo){
     var stdspace=fdjtString.stdspace;
     var flatten=fdjtString.flatten;
     var hasClass=fdjtDOM.hasClass;
+    var hasPrefix=fdjtString.hasPrefix;
     
     if (typeof root === 'undefined') return this;
     if (!(docinfo))
@@ -378,7 +379,9 @@ function CodexDOMScan(root,docinfo){
 	    info.sbookhead=curhead.id;
 	    info.headstart=curinfo.starts_at;}
 	if (info) info.head=curinfo;
-	if ((child.id)&&(info)&&(!(Codex.start))) Codex.start=child;
+	if ((child.id)&&(info)&&(!(Codex.start))&&
+	    (!(child.codexui))&&(!(hasPrefix(child.id,"CODEX"))))
+	    Codex.start=child;
 	if ((info)&&(toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
 	if (child.id) {
 	    var tags=

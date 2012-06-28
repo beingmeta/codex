@@ -287,7 +287,8 @@ var CodexSections=
 			    (hasClass(child,"sbookpage"))||
 			    (hasClass(child,"fullpage"))||
 			    ((fullpages)&&(fullpages.test(child)))) {
-			    if (tracelevel>1) fdjtLog("Scaling node %o by %o",sect,scale);
+			    if (tracelevel>1)
+				fdjtLog("Scaling node %o by %o",sect,scale);
 			    addClass(open,"codexscaled");
 			    open.style[fdjtDOM.transform]='scale('+scale+')';
 			    open.style[fdjtDOM.transformOrigin]='top center';}
@@ -528,8 +529,8 @@ var CodexSections=
 			gatherSections(child,sections,docinfo);
 			continue;}
 		    else if ((hasClass(child,"codexwrapper"))&&
-			     (just_whitespace(child)))
-			remove.push(child);
+			     (just_whitespace(child))) {
+			remove.push(child); continue;}
 		    else if (!(hasContent(child,true,true))) {
 			continue;}
 		    // If there's nothing between it and the next section,
@@ -832,6 +833,7 @@ var CodexSections=
 	    else section=getSection(section);
 	    if (typeof offset === 'undefined') offset=Codex.window.scrollTop;
 	    var sectnum=sectNum(section);
+	    if (!(sectnum)) return false;
 	    var breaks=Codex.layout.pagebreaks[sectnum-1];
 	    var pagenums=Codex.layout.pagenums[sectnum-1];
 	    var i=1, lim=breaks.length; while (i<lim) {
@@ -1392,7 +1394,6 @@ var CodexPaginate=
 	    pageno_text.title="click to jump to a particular page";
 	    fdjtDOM.addListeners(
 		pageno_text,Codex.UI.handlers[Codex.ui]["#CODEXPAGENOTEXT"]);}
-
 	
 	/* Movement by pages */
 	

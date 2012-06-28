@@ -351,7 +351,7 @@ Codex.Startup=
 					    is.doubletouch=true;}
 					else Codex.iscroll.refresh();}
 				    if (Codex.section) {
-					Codex.curpage=layout.getPageNumber();
+					Codex.curpage=layout.getPageNumber()||1;
 					Codex.updatePageDisplay(
 					    Codex.curpage,Codex.location);}
 				    else Codex.updatePageDisplay(1,0);});
@@ -1261,14 +1261,16 @@ Codex.Startup=
 		else target=document.getElementById(hash);
 		if (Codex.Trace.startup>1)
 		    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
-	    if (target) Codex.GoTo(target,"initLocation",true,true);
+	    if (target) Codex.GoTo(target,"initLocation/hash",true,true);
 	    else if ((state)&&(state.target)&&(fdjtID(state.target)))
-		Codex.GoTo(state.target,"initLocation",true,true);
+		Codex.GoTo(state.target,"initLocation/state.target",true,true);
 	    else if ((state)&&(state.location))
-		Codex.GoTo(state.location,"initLocation",false,false);
+		Codex.GoTo(state.location,"initLocation/state.locaion",
+			   false,false);
 	    else if (Codex.start||Codex.coverpage||Codex.titlepage)
 		Codex.GoTo((Codex.start||Codex.coverpage||Codex.titlepage),
-			   "initLocation",false,false);
+			   "initLocation/start/cover/titlepage",
+			   false,false);
 	    if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
 		syncLocation();}
 	
