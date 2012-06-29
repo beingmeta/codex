@@ -359,6 +359,14 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	    else elt=elt.parentNode;}
 	return false;}
 
+	function getTitleSpan(toc,ref){
+	    var titles=fdjtDOM.getChildren(toc,".codextitle");
+	    var i=0; var lim=titles.length;
+	    while (i<lim) {
+		var title=titles[i++];
+		if (title.name===ref) return title;}
+	    return false;}
+
     function toc_tapped(evt){
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
@@ -370,27 +378,33 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
 	    var ref=about.name.slice(3);
+	    var toc=getParent(about,".codextoc");
+	    var title=getTitleSpan(toc,about.name);
+	    addClass(title,"codexpreviewtitle");
 	    addClass(about.parentNode,"codexheld");
 	    addClass(getParent(about,".spanbar"),"codexvisible");
-	    // fdjtLog("Added codexheld to %o, codexvisible to %o",
-	    //         about.parentNode,getParent(about,".spanbar"));
-	    Codex.startPreview(fdjtID(ref),"toc_held");
+	    addClass(toc,"codexheld");
+	    Codex.startPreview(fdjtID(ref),"codexheld");
 	    return fdjtUI.cancel(evt);}}
     function toc_released(evt){
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
+	    var toc=getParent(about,".codextoc");
+	    var title=getTitleSpan(toc,about.name);
+	    dropClass(title,"codexpreviewtitle");
 	    dropClass(about.parentNode,"codexheld");
 	    dropClass(getParent(about,".spanbar"),"codexvisible");
-	    // fdjtLog("Dropped codexheld from %o, codexvisible from %o",
-	    //	    about.parentNode,getParent(about,"spanbar"));
+	    dropClass(toc,"codexheld");
 	    Codex.stopPreview("toc_released");}}
     function toc_slipped(evt){
 	var about=getAbout(fdjtUI.T(evt||event));
 	if (about) {
-	    // fdjtLog("Dropped codexheld from %o, codexvisible from %o",
-	    //	    about.parentNode,getParent(about,"spanbar"));
+	    var toc=getParent(about,".codextoc");
+	    var title=getTitleSpan(toc,about.name);
+	    dropClass(title,"codexpreviewtitle");
 	    dropClass(getParent(about,".spanbar"),"codexvisible");
-	    dropClass(about.parentNode,"codexheld");}}
+	    dropClass(about.parentNode,"codexheld");
+	    dropClass(toc,"codexheld");}}
 
     /* Slice handlers */
 

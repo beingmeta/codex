@@ -187,7 +187,8 @@ var CodexTOC=
 		spanbar.appendChild(span);}    
 	    return spanbar;}
 
-	function generate_span(sectnum,subsection,title,spanstart,spanend,len,name,pstart){
+	function generate_span(sectnum,subsection,title,
+			       spanstart,spanend,len,name,pstart){
 	    var spanlen=spanend-spanstart;
 	    var anchor=fdjtDOM("A.brick","\u00A0");
 	    var span=fdjtDOM("DIV.codexhudspan",anchor);
