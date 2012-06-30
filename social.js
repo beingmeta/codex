@@ -1,5 +1,7 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
+/* ###################### codex/social.js ###################### */
+
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
     large structured documents (sBooks).
