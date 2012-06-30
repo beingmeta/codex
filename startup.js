@@ -738,7 +738,7 @@ Codex.Startup=
 	    var content=fdjtDOM("div#CODEXCONTENT");
 	    var headmask=fdjtDOM("div.codexwinmask#CODEXWINMASKHEAD");
 	    var footmask=fdjtDOM("div.codexwinmask#CODEXWINMASKFOOT");
-	    var window=fdjtDOM("div#CODEXWINDOW",headmask,footmask,content);
+	    var win=fdjtDOM("div#CODEXWINDOW",headmask,footmask,content);
 	    var nodes=fdjtDOM.toArray(body.childNodes);
 	    var style=fdjtDOM("STYLE");
 	    fdjtDOM(document.head,style);
@@ -752,7 +752,7 @@ Codex.Startup=
 			(node.tagName!=='SCRIPT'))
 			content.appendChild(node);}
 		else content.appendChild(node);}
-	    Codex.window=window;
+	    Codex.window=win;
 	    Codex.content=content;
 	    Codex.winmaskhead=headmask;
 	    Codex.winmaskfoot=footmask;
@@ -777,9 +777,10 @@ Codex.Startup=
 			fdjtDOM("span#CODEXPAGEPROGRESS",""),
 			" pages"),
 		Codex.pages=fdjtDOM("div#CODEXPAGES"));
-	    fdjtDOM(body,window,page);
+	    fdjtDOM(body,win,page);
 	    fdjtDOM.addClass(body,"sbook");
 	    var page_width=fdjtDOM.getGeometry(page).width;
+	    var page_height=fdjtDOM.getGeometry(page).height;
 	    var content_width=fdjtDOM.getGeometry(content).width;
 	    var view_width=fdjtDOM.viewWidth();
 	    var page_margin=(view_width-page_width)/2;

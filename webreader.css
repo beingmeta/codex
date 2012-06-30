@@ -44,11 +44,12 @@ span.codexcssversion:after {
     z-index: 100;}
 
 div#CODEXWINDOW {
-    position: fixed; overflow-y: auto; z-index: -50;
-    margin-left: 50px; margin-right: 50px;
+    position: fixed;
     top: 60px; left: 0px; right: 0px; bottom: 60px;
-    border: solid transparent 3px;}
-div#CODEXWINDOW div#CODEXCONTENT { position: absolute;}
+    margin: 0px; margin-left: 50px; margin-right: 50px;
+    border: solid transparent 3px;
+    overflow-y: auto; z-index: -50;}
+div#CODEXWINDOW div#CODEXCONTENT { position: absolute; }
 div.codexwinmask {
     position: absolute; width: 100%; z-index: 100;
     background-color: black; opacity: 0.15;}
@@ -735,6 +736,7 @@ body div.codexmargin {
     position: fixed; display: block;
     /* opacity: 0.5; border: solid green 1px; */
     background-color: white; z-index: 5;}
+
 body.sbooknopage div.codexmargin  { display: none;}
 
 body div.codexmargin#CODEXPAGEHEAD,
