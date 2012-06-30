@@ -49,19 +49,14 @@ var CodexTOC=
     (function(){
 	function sbicon(base){return Codex.graphics+base;}
 	function cxicon(base){return Codex.graphics+"codex/"+base;}
+	var cxicon=Codex.icon;
 	function navicon(kind){
-	    if (Codex.touch) {
-		switch (kind) {
-		case 'right': return cxicon("GoldRightTriangle32.png");
-		case 'left': return cxicon("GoldLeftTriangle32.png");
-		case 'start': return cxicon("GoldLeftStop32.png");
-		case 'end': return cxicon("GoldRightStop32.png");}}
-	    else {
-		switch (kind) {
-		case 'right': return cxicon("GoldRightTriangle24.png");
-		case 'left': return cxicon("GoldLeftTriangle24.png");
-		case 'start': return cxicon("GoldLeftStop24.png");
-		case 'end': return cxicon("GoldRightStop24.png");}}}
+	    switch (kind) {
+	    case 'right': return cxicon("ScanRight",32,32);
+	    case 'left': return cxicon("ScanLeft",32,32);
+	    case 'start': return cxicon("ScanLeftStop",32,32);
+	    case 'end': return cxicon("ScanRightStop",32,32);
+	    default: return false;}}
 	Codex.navicon=navicon;
 
 	function CodexTOC(headinfo,depth,tocspec,prefix,headless){

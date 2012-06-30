@@ -1,0 +1,33 @@
+#!/bin/bash
+for x in *Tab.svg; do convert -scale 50x64 $x `basename $x .svg`.png; done
+for x in Scan*.svg;
+    do convert -scale 64x64 $x `basename $x .svg`64x64.png; \
+       convert -scale 32x32 $x `basename $x .svg`32x32.png; \
+       convert -scale 16x16 $x `basename $x .svg`16x16.png; \
+    done
+for x in Scan*.svg; do convert -scale 32x32 $x `basename $x .svg`64x64.png; done
+for x in Scan*.svg; do convert -scale 16x16 $x `basename $x .svg`64x64.png; done
+for x in twisty*.svg; do convert -scale 32x32 $x `basename $x .svg`32x32.png; done
+for x in CompassIcon AllGlosses TagSearch HelpIcon; \
+    do convert -scale 50x50 $x.svg ${x}50x50.png; \
+       convert -scale 32x32 $x.svg ${x}32x32.png; \
+       convert -scale 12x12 $x.svg ${x}12x12.png; \
+    done
+for x in 16x16 32x32 50x50 64x64; \
+   do convert -scale $x sbwedge.svg sbwedge${x}.png; \
+      convert -scale $x redx.svg redx${x}.png; \
+   done
+for x in 16x16 24x24 32x32 40x40 50x50 64x64 128x128; \
+   do convert -scale $x sbookscircle.svg sbookscircle${x}.png; done
+for x in 16x16 24x24 32x32 40x40 50x50 64x64 128x128; \
+   do convert -scale $x sbooksmetapub.svg sbooksmetapub${x}.png; done
+for file in remark_*.svg; \
+    do convert -scale 64x64 ${file} `basename ${file} .svg`64x64.png; \
+       convert -scale 32x32 ${file} `basename ${file} .svg`32x32.png; \
+       convert -scale 24x24 ${file} `basename ${file} .svg`24x24.png; \
+       convert -scale 16x16 ${file} `basename ${file} .svg`16x16.png; done;
+convert -scale 128x128 TagIcon.svg TagIcon128x128.png
+convert -scale 24x24 TagIcon.svg TagIcon24x24.png
+convert -scale 24x24 DiagLink.svg DiagLink24x24.png
+convert -scale 24x24 remark.svg remark24x24.png
+convert -scale 50x50 sbookspeople.svg sbookspeople50x50.png

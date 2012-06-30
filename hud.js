@@ -63,7 +63,7 @@ var CodexMode=
 	    else {
 		var messages=fdjtDOM("div.startupmessages");
 		messages.innerHTML=sbook_messagestext;
-		Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
+		var hud=Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
 		CodexHUD.codexui=true;
 		CodexHUD.innerHTML=sbook_hudtext;
 		fdjtDOM.prepend(document.body,

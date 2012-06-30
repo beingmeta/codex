@@ -230,6 +230,7 @@ var sbook_gloss_data=
     Codex.svg=document.implementation.hasFeature(
 	"http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")||
 	navigator.mimeTypes["image/svg+xml"];
+    if (fdjtState.getQuery("nosvg")) Codex.svg=false;
     Codex.icon=function(base,width,height){
 	return Codex.graphics+base+
 	    ((Codex.svg)?(".svg"):
