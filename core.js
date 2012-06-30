@@ -232,7 +232,10 @@ var sbook_gloss_data=
 	navigator.mimeTypes["image/svg+xml"];
     Codex.icon=function(base,width,height){
 	return Codex.graphics+base+
-	    ((Codex.svg)?(".svg"):(width+"x"+height+".png"));}
+	    ((Codex.svg)?(".svg"):
+	     ((((width)&&(height))?(width+"x"+height):
+	       (width)?(width+"w"):(height)?(height+"h"):"")+
+	      ".png"));}
 
     Codex.getRefURI=function(target){
 	var scan=target;
