@@ -51,13 +51,6 @@
 
     /* Social UI components */
 
-    function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
-    function sbsvgicon(name,suffix) {return Codex.graphics+"svg/"+name+(suffix||"");}
-    function cxicon(name,suffix) {
-	return Codex.graphics+"codex/"+name+(suffix||"");}
-    function cxsvgicon(name,suffix) {
-	return Codex.graphics+"svg/codex/"+name+(suffix||"");}
-    
     function addSource(info,withgloss){
 	if (typeof info === 'string') info=fdjtKB.ref(info);
 	var humid=info.humid;
@@ -72,9 +65,9 @@
 		var kind=info.kind;
 		if (pic) {}
 		else if (kind===':CIRCLE')
-		    pic=cxsvgicon("sbookscircle.svg");
+		    pic=cxicon("sbookscircle",64,64);
 		else if (kind===':OVERDOC')
-		    pic=cxsvgicon("sbooksmetapub.svg");
+		    pic=cxicon("sbooksmetapub",64,64);
 		else {}
 		if (pic)
 		  icon=fdjtDOM.Image
@@ -180,11 +173,11 @@
 	if ((glossmark)&&(glossmark.parentNode===passage)) {
 	    if (gloss) extendGlossmark(glossmark,[gloss]);
 	    return glossmark;}
-	var imgsrc=(sbsvgicon("sbwedge.svg"));
+	var imgsrc=(cxicon("sbwedge",64,64));
 	var bigimage=fdjtDOM.Image(imgsrc,"big","glosses");
 	var glossmark=fdjtDOM(
 	    "span.codexglossmark",
-	    bigimage,fdjtDOM.Image(sbsvgicon("sbwedge.svg"),"tiny","*"));
+	    bigimage,fdjtDOM.Image(cxicon("sbwedge",32,32),"tiny","*"));
 	// Get all the glosses from the index
 	var glosses=Glosses.index(false,"frag",passage.id);
 	bigimage.defaultsrc=imgsrc;

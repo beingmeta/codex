@@ -52,6 +52,7 @@ var CodexMode=
 	var dropClass=fdjtDOM.dropClass;
 	var hasClass=fdjtDOM.hasClass;
 	var getParent=fdjtDOM.getParent;
+	var hasSuffix=fdjtString.hasSuffix;
 	var Ref=fdjtKB.Ref;
 
 	// This will contain the interactive input console (for debugging)
@@ -97,12 +98,18 @@ var CodexMode=
 
 	    if (Codex.hidehelp) Codex.setConfig("hidehelp");
 
+	    if (!(Codex.svg)) {
+		var images=fdjtDOM.getChildren(hud,"img");
+		var i=0; var lim=images.length;
+		while (i<lim) {
+		    var img=images[i++];
+		    if ((img.src)&&(hasSuffix(img.src,".svg"))&&
+			(img.getAttribute('bmp')))
+			img.src=img.getAttribute('bmp');}}
+
 	    Codex.hudtick=fdjtTime();
 
 	    fdjtID("SBOOK_RETURN_TO").value=location.href;
-
-	    // Iniitialize the ABOUT tab
-	    
 
 	    // Initialize gloss UI
 	    var glosses=fdjtID("CODEXALLGLOSSES");

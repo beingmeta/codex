@@ -30,18 +30,13 @@
 
 */
 
-var sbook_details_icon="svg/codex/detailsicon.png";
-var sbook_outlink_icon="svg/outlink.svg";
-var sbook_remark_icon="svg/codex/remark.svg";
-var sbook_delete_icon="svg/codex/remark_delete.svg";
-var sbook_edit_icon="svg/codex/remark_edit.svg";
-var sbook_reply_icon="svg/codex/respond.svg";
-
 (function () {
 
     var div_threshold=7;
     var debug_locbars=false;
     var odq="\u201c"; var cdq="\u201d";
+
+    var cxicon=Codex.icon;
 
     function renderNote(info,query,idprefix,standalone){
 	var key=info._id;
@@ -147,7 +142,8 @@ var sbook_reply_icon="svg/codex/respond.svg";
 	    scores=tags.scores;}
 	var tagcount=0;
 	var countspan=fdjtDOM("span.count");
-	var tagicon=fdjtDOM.Image(cxsvgicon("TagIcon.svg"),"img.tagicon","tags");
+	var tagicon=fdjtDOM.Image(cxicon("TagIcon",32,32),
+				  "img.tagicon","tags");
 	var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
 	var tagspan=span;
 	var controller=false;
@@ -189,7 +185,7 @@ var sbook_reply_icon="svg/codex/respond.svg";
 	for (url in refs) {
 	    if (url[0]==='_') continue;
 	    var urlinfo=refs[url];
-	    var title; var icon=sbicon(sbook_outlink_icon);
+	    var title; var icon=cxicon("outlink",32,32);
 	    if (typeof urlinfo === 'string') title=urlinfo;
 	    else {
 		title=urlinfo.title;
@@ -215,10 +211,10 @@ var sbook_reply_icon="svg/codex/respond.svg";
 	var score=query[key]; var k=0;
 	while (k<score) {fdjtDOM(scorespan,"*"); k++;}
 	return scorespan;}
-    function makebutton(fn,alt,title,mouse_icon,touch_icon){
+    function makebutton(fn,alt,title,icon_name){
 	var span=
 	    fdjtDOM("span.isclickable",
-		    (fdjtDOM.Image(sbicon(mouse_icon),"img.button",
+		    (fdjtDOM.Image(cxicon(icon_name,32,32),"img.button",
 				   alt,title)));
 	span.onclick=fn;
 	return span;}
@@ -228,10 +224,10 @@ var sbook_reply_icon="svg/codex/respond.svg";
 	var userinfo=Codex.sourcekb.map[user];
 	var feedinfo=Codex.sourcekb.map[feed];
 	var agestring=timestring(info._modified||info._created);
-	var icon=((user===Codex.user._id)?sbook_edit_icon:sbook_reply_icon);
+	var icon=((user===Codex.user._id)?("remark_edit"):("remark_respond"));
 	var tool=fdjtDOM(
 	    "span.tool",fdjtDOM("span.age",agestring),
-	    fdjtDOM.Image(sbicon(icon),"img.button"));
+	    fdjtDOM.Image(cxicon(icon,32,32),"img.button"));
 	tool.title=(((user===Codex.user)||(user===Codex.user._id))?
 		    ("edit this gloss"):
 		    ("relay/reply to this gloss"));
@@ -424,13 +420,6 @@ var sbook_reply_icon="svg/codex/respond.svg";
     function sourceIcon(info){
 	if (info) return info.pic;}
     
-    function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
-    function sbsvgicon(name,suffix) {return Codex.graphics+"svg/"+name+(suffix||"");}
-    function cxicon(name,suffix) {
-	return Codex.graphics+"codex/"+name+(suffix||"");}
-    function cxsvgicon(name,suffix) {
-	return Codex.graphics+"svg/codex/"+name+(suffix||"");}
-
     // Displayings sets of notes organized into threads
 
     function sortbyloctime(x,y){

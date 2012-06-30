@@ -45,10 +45,7 @@
 
     var glossmodes=Codex.glossmodes;
 
-    function sbicon(base){return Codex.graphics+base;}
-    function sbsvgicon(base){return Codex.graphics+"svg/"+base;}
-    function cxicon(base){return Codex.graphics+"codex/"+base;}
-    function cxsvgicon(base){return Codex.graphics+"svg/codex/"+base;}
+    var cxicon=Codex.icon;
 
     function _getbracketed(input,erase){
 	var string=input.value;
@@ -400,12 +397,12 @@
 	var syncelt=fdjtDOM.getInput(form,"SYNC");
 	syncelt.value=(Codex.syncstamp+1);
 	{ // Update the big network buttons in the OUTLETS cloud
-	    var networks=fdjtDOM.getInputs(form,'NETWORKS');
+	    var inputs=fdjtDOM.getInputs(form,'NETWORKS');
 	    var altnetworks=fdjtID("CODEXNETWORKBUTTONS");
-	    var i=0; var lim=networks.length;
+	    var i=0; var lim=inputs.length;
 	    while (i<lim) {
 		var input=inputs[i++];
-		var doppels=fdjtDOM.getInputsFor('NETWORKS',input.value);
+		var doppels=fdjtDOM.getInputsFor(altnetworks,'NETWORKS',input.value);
 		fdjtUI.CheckSpan.set(doppels,input.checked);}}
 	/* Get the input appropriate to the mode. */
 	if (mode==='editnote') {
@@ -903,7 +900,7 @@
 		    var sg=links[tag];
 		    var j=0; var jlim=sg.length;
 		    while (j<jlim) {
-			var icon=fdjtDOM.Image(sbsvgicon("DiagLink.svg"));
+			var icon=fdjtDOM.Image(cxicon("DiagLink",32,32));
 			var gloss=Codex.glosses.ref(sg[j++]);
 			var anchor=fdjtDOM.Anchor(gloss.link,"a",icon);
 			anchor.title=gloss.note;
@@ -911,7 +908,7 @@
 		if (notes[tag]) {
 		    var sg=notes[tag];
 		    var j=0; var jlim=sg.length;
-		    var icon=fdjtDOM.Image(cxsvgicon("remark.svg"));
+		    var icon=fdjtDOM.Image(cxicon("remark",32,32));
 		    while (j<jlim) {
 			var gloss=Codex.glosses.ref(sg[j++]);
 			icon.title=gloss.note; fdjtDOM(span," ",icon);}}}
