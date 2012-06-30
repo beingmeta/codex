@@ -26,8 +26,10 @@ for file in remark_*.svg; \
        convert -scale 32x32 ${file} `basename ${file} .svg`32x32.png; \
        convert -scale 24x24 ${file} `basename ${file} .svg`24x24.png; \
        convert -scale 16x16 ${file} `basename ${file} .svg`16x16.png; done;
-convert -scale 128x128 TagIcon.svg TagIcon128x128.png
-convert -scale 24x24 TagIcon.svg TagIcon24x24.png
-convert -scale 24x24 DiagLink.svg DiagLink24x24.png
+for scale in 128x128 64x64 50x50 32x32 24x24 16x16;
+    do convert -scale ${scale} TagIcon.svg TagIcon${scale}.png; \
+       convert -scale ${scale} DiagLink.svg DiagLink${scale}.png; \
+       convert -scale ${scale} sbookspeople.svg sbookspeople${scale}.png; \
+       done
 convert -scale 24x24 remark.svg remark24x24.png
-convert -scale 50x50 sbookspeople.svg sbookspeople50x50.png
+
