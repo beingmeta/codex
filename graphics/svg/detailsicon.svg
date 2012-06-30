@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="256px" height="256px" viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
+<symbol  id="Stack_of_Paper" viewBox="-16.104 -14.914 32.208 29.827">
+	<g>
+		<path fill="#FFFFFF" stroke="#000000" stroke-width="0.4086" d="M-15.878,2.027c0,0,2.062-11.389,15.894-16.715l15.303,9.023
+			c0,0-13.098,4.29-16.041,16.716L-15.878,2.027z"/>
+		<path fill="#FFFFFF" stroke="#000000" stroke-width="0.4086" d="M-15.732,3.801c0,0,2.064-11.391,15.895-16.716l15.305,9.022
+			c0,0-13.098,4.29-16.042,16.717L-15.732,3.801z"/>
+		<g>
+			<path fill="#FFFFFF" stroke="#000000" stroke-width="0.4086" d="M-15.584,5.571c0,0,2.06-11.39,15.893-16.716l15.303,9.025
+				c0,0-13.095,4.288-16.039,16.715L-15.584,5.571z"/>
+			<line fill="none" stroke="#000000" stroke-width="0.4086" x1="-2.19" y1="8.975" x2="-11.021" y2="3.946"/>
+			<line fill="none" stroke="#000000" stroke-width="0.4086" x1="-1.016" y1="6.311" x2="-9.846" y2="1.283"/>
+			<line fill="none" stroke="#000000" stroke-width="0.4086" x1="1.044" y1="3.945" x2="-7.782" y2="-1.084"/>
+			<line fill="none" stroke="#000000" stroke-width="0.4086" x1="3.253" y1="1.578" x2="-5.579" y2="-3.45"/>
+			<line fill="none" stroke="#000000" stroke-width="0.4086" x1="5.753" y1="-0.344" x2="-3.078" y2="-5.375"/>
+			<line fill="none" stroke="#000000" stroke-width="0.4086" x1="8.697" y1="-2.119" x2="-0.135" y2="-7.149"/>
+		</g>
+	</g>
+</symbol>
+<use xlink:href="#Stack_of_Paper"  width="32.208" height="29.827" x="-16.104" y="-14.914" transform="matrix(6.846 0 0 -8.0631 119.7495 129.75)" overflow="visible"/>
+</svg>
