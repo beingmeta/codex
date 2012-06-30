@@ -48,6 +48,7 @@
     var hasClass=fdjtDOM.hasClass;
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
+    var cxicon=Codex.icon;
 
     /* Social UI components */
 
