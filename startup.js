@@ -1,8 +1,5 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-var codex_startup_id="$Id$";
-var codex_startup_version=parseInt("$Revision$".slice(10,-1));
-
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
    large structured documents (sBooks).
@@ -236,7 +233,7 @@ Codex.Startup=
 	    if ((!force)&&(getQuery("nosbooks"))) return; 
 	    fdjtLog.console="CODEXCONSOLELOG";
 	    fdjtLog.consoletoo=true;
-	    fdjtLog("This is Codex version %s, built at %s on %s",
+	    fdjtLog("This is Codex version %s, built %s on %s",
 		    Codex.version,sbooks_buildtime,sbooks_buildhost);
 	    if (navigator.appVersion)
 		fdjtLog("Navigator App version: %s",navigator.appVersion);
@@ -1550,9 +1547,6 @@ Codex.Startup=
 sbookStartup=Codex.StartupHandler;
 Codex.Setup=Codex.StartupHandler;
 sbook={Start: Codex.StartupHandler,setUser: Codex.setUser};
-
-fdjt_versions.decl("codex",codex_startup_version);
-fdjt_versions.decl("codex/startup",codex_startup_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

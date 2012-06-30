@@ -1,8 +1,5 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-var codex_hud_id="$Id$";
-var codex_hud_version=parseInt("$Revision$".slice(10,-1));
-
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
    large structured documents (sBooks).
@@ -813,9 +810,6 @@ var CodexMode=
 	    evt.cancelBubble=true;}
 
 	return CodexMode;})();
-
-fdjt_versions.decl("codex",codex_hud_version);
-fdjt_versions.decl("codex/hud",codex_hud_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

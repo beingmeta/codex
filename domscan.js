@@ -1,8 +1,5 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-var codex_domscan_id="$Id$";
-var codex_domscan_version=parseInt("$Revision$".slice(10,-1));
-
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
    large structured documents (sBooks).
@@ -411,9 +408,6 @@ function CodexDOMScan(root,docinfo){
 	    ((child.tagName==='SECTION')||(child.tagName==='ARTICLE'))) {
 	    scanstate.curhead=curhead; scanstate.curinfo=curinfo;
 	    scanstate.curlevel=curlevel;}}}
-
-fdjt_versions.decl("codex",codex_domscan_version);
-fdjt_versions.decl("codex/domscan",codex_domscan_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

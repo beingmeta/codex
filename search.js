@@ -1,8 +1,5 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-var codex_search_id="$Id$";
-var codex_search_version=parseInt("$Revision$".slice(10,-1));
-
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements the search component of a 
    Javascript/DHTML UI for reading large structured documents (sBooks).
@@ -601,10 +598,6 @@ var codex_search_version=parseInt("$Revision$".slice(10,-1));
 	Codex.UI.updateScroller(fdjtID('CODEXSEARCHCLOUD'));};
 
 })();
-
-
-fdjt_versions.decl("codex",codex_search_version);
-fdjt_versions.decl("codex/search",codex_search_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

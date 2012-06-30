@@ -1,8 +1,5 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-var codex_social_id="$Id$";
-var codex_social_version=parseInt("$Revision$".slice(10,-1));
-
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
     large structured documents (sBooks).
@@ -227,9 +224,6 @@ var codex_social_version=parseInt("$Revision$".slice(10,-1));
     Codex.showGlosses=showGlosses;
 
 })();
-
-fdjt_versions.decl("codex",codex_social_version);
-fdjt_versions.decl("codex/social",codex_social_version);
 
 /* Emacs local variables
 ;;;  Local variables: ***

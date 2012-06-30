@@ -1,8 +1,5 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-var codex_slices_id="$Id$";
-var codex_slices_version=parseInt("$Revision$".slice(10,-1));
-
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements the search component of a 
    Javascript/DHTML UI for reading large structured documents (sBooks).
@@ -783,9 +780,6 @@ var sbook_reply_icon="svg/codex/respond.svg";
     Codex.UI.setupSummaryDiv=setupSummaryDiv;
     
 })();
-
-fdjt_versions.decl("codex",codex_slices_version);
-fdjt_versions.decl("codex/slices",codex_slices_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

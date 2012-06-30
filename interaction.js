@@ -1,8 +1,5 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-var codex_interaction_id="$Id$";
-var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
-
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
    large structured documents (sBooks).
@@ -1552,9 +1549,6 @@ var codex_interaction_version=parseInt("$Revision$".slice(10,-1));
 	 "div.glossetc span.modebuttons": {click: glossmode_button}};
     
 })();
-
-fdjt_versions.decl("codex",codex_interaction_version);
-fdjt_versions.decl("codex/interaction",codex_interaction_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

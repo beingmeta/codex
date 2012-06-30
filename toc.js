@@ -1,8 +1,5 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-var codex_toc_id="$Id$";
-var codex_toc_version=parseInt("$Revision$".slice(10,-1));
-
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements a Javascript/DHTML UI for reading
    large structured documents (sBooks).
@@ -284,10 +281,6 @@ var CodexTOC=
 		head=head.head;}}
 	    
 	return CodexTOC;})();
-
-
-fdjt_versions.decl("codex",codex_toc_version);
-fdjt_versions.decl("codex/toc",codex_toc_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***

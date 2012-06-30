@@ -1,8 +1,5 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-var codex_glosses_id="$Id: notes.js 5410 2010-07-31 12:28:42Z haase $";
-var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
-
 /* Copyright (C) 2009-2012 beingmeta, inc.
    This file implements the search component of a 
    Javascript/DHTML UI for reading large structured documents (sBooks).
@@ -952,9 +949,6 @@ var codex_glosses_version=parseInt("$Revision: 5410 $".slice(10,-1));
 	fdjtDOM.adjustToFit(fdjtID("SBOOKFOOTINFO"));}
 
 })();
-
-fdjt_versions.decl("codex",codex_glosses_version);
-fdjt_versions.decl("codex/glosses",codex_glosses_version);
 
 /* Emacs local variables
    ;;;  Local variables: ***
