@@ -51,9 +51,7 @@ Codex.Startup=
 	var https_graphics=
 	    "https://beingmeta.s3.amazonaws.com/static/graphics/";
 
-	function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
-	function cxicon(name,suffix) {
-	    return Codex.graphics+"codex/"+name+(suffix||"");}
+	var cxicon=Codex.icon;
 
 	var getLocal=fdjtState.getLocal;
 	var setLocal=fdjtState.setLocal;

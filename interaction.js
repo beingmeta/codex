@@ -68,8 +68,7 @@
     var hold_interval=1500;
     var start_x=-1; var start_y=-1; var last_x=-1; var last_y=-1;
     var start_t=-1; var last_t=-1;
-    function sbicon(base){return Codex.graphics+base;}
-    function cxicon(base) {return Codex.graphics+"codex/"+base;}
+    var cxicon=Codex.icon;
 
     /* Setup for gesture handling */
 

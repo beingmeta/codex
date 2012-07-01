@@ -225,9 +225,6 @@ var sbook_gloss_data=
     // This is the default server
     Codex.default_server="glosses.sbooks.net";
     // There be icons here!
-    function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
-    function cxicon(name,suffix) {
-	return Codex.graphics+"codex/"+name+(suffix||"");}
     Codex.graphics="http://static.beingmeta.com/codex/graphics/";
     Codex.svg=document.implementation.hasFeature(
 	"http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")||

@@ -38,9 +38,7 @@
     if (!(Codex.show_refiners)) Codex.show_refiners=25;
     if (!(Codex.search_gotlucky)) Codex.search_gotlucky=7;
     
-    function sbicon(name,suffix) {return Codex.graphics+name+(suffix||"");}
-    function cxicon(name,suffix) {
-	return Codex.graphics+"codex/"+name+(suffix||"");}
+    var cxicon=Codex.icon;
 
     var Completions=fdjtUI.Completions;
     var addClass=fdjtDOM.addClass;

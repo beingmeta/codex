@@ -49,8 +49,6 @@
 
 var CodexTOC=
     (function(){
-	function sbicon(base){return Codex.graphics+base;}
-	function cxicon(base){return Codex.graphics+"codex/"+base;}
 	var cxicon=Codex.icon;
 	function navicon(kind){
 	    switch (kind) {
