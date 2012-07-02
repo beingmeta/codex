@@ -33,26 +33,32 @@
    inkscape:pageopacity="0"
    inkscape:pageshadow="2"
    inkscape:window-width="640"
-   inkscape:window-height="480"
+   inkscape:window-height="836"
    id="namedview3115"
    showgrid="false"
    inkscape:zoom="0.71515152"
    inkscape:cx="128"
    inkscape:cy="165"
-   inkscape:window-x="829"
-   inkscape:window-y="24"
+   inkscape:window-x="889"
+   inkscape:window-y="168"
    inkscape:window-maximized="0"
    inkscape:current-layer="Layer_1" />
 <g
    id="Layer_1">
-	<text
-   transform="matrix(1 0 0 1 0 307.5)"
-   font-family="'MyriadPro-Bold'"
-   font-size="72"
-   id="text3063"><tspan
-     style="font-size:60px"
-     id="tspan3179">overlays</tspan></text>
+	
 
+
+<text
+   xml:space="preserve"
+   style="font-size:60px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+   x="10.389829"
+   y="305.60742"
+   id="text3092"
+   sodipodi:linespacing="125%"><tspan
+     sodipodi:role="line"
+     id="tspan3094"
+     x="10.389829"
+     y="305.60742">settings</tspan></text>
 </g>
 <g
    id="Layer_3">
