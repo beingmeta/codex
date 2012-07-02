@@ -213,23 +213,18 @@
 	var score=query[key]; var k=0;
 	while (k<score) {fdjtDOM(scorespan,"*"); k++;}
 	return scorespan;}
-    function makebutton(fn,alt,title,icon_name){
-	var span=
-	    fdjtDOM("span.isclickable",
-		    (fdjtDOM.Image(cxicon(icon_name,32,32),"img.button",
-				   alt,title)));
-	span.onclick=fn;
-	return span;}
     function showglossinfo(info) {
 	var user=info.maker;
 	var feed=info.feed||false;
 	var userinfo=Codex.sourcekb.map[user];
 	var feedinfo=Codex.sourcekb.map[feed];
 	var agestring=timestring(info._modified||info._created);
-	var icon=((user===Codex.user._id)?("remark_edit"):("remark_respond"));
 	var tool=fdjtDOM(
 	    "span.tool",fdjtDOM("span.age",agestring),
-	    fdjtDOM.Image(cxicon(icon,32,32),"img.button"));
+	    fdjtDOM.Image(((user===Codex.user._id)?
+			   (cxicon("remark_edit")):
+			   (cxicon("remark_respond"))),
+			  "img.button"));
 	tool.title=(((user===Codex.user)||(user===Codex.user._id))?
 		    ("edit this gloss"):
 		    ("relay/reply to this gloss"));
