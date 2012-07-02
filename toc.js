@@ -221,7 +221,7 @@ var CodexTOC=
 	    var toshow=[]; var base_info=head;
 	    while (head) {
 		var tocelt=document.getElementById(prefix+head.frag);
-		toshow.push(tocelt);
+		if (tocelt) toshow.push(tocelt);
 		head=head.head;}
 	    var n=toshow.length-1;
 	    if ((base_info.sub)&&(base_info.sub.length))

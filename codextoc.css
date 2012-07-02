@@ -21,9 +21,9 @@ div.codextoc div.head .progressbar {
   position: absolute;  left: 0px; height: 100%;
   z-index: -100; opacity: 0.5;}
 div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
-    float: right; cursor: pointer; z-index: 100;}
+    height: 1em; float: right; cursor: pointer; z-index: 100;}
 div.codextoc img[alt='back'], div.codextoc img[alt='backstop'] {
-    float: left; cursor: pointer; z-index: 100;}
+    height: 1em; float: left; cursor: pointer; z-index: 100;}
 
 /* Conditional display, so only the live elements are displayed */
 div.codextoc.codexlivehead { display: block;}

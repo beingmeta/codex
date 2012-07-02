@@ -427,20 +427,21 @@ var sbook_gloss_data=
 	while (info) {
 	    var tocelt=document.getElementById("CODEXTOC4"+info.frag);
 	    var flytocelt=document.getElementById("CODEXFLYTOC4"+info.frag);
-	    var start=tocelt.sbook_start; var end=tocelt.sbook_end;
+	    var start=info.starts_at; var end=info.ends_at;
 	    var progress=((location-start)*100)/(end-start);
-	    var bar=fdjtDOM.getFirstChild(tocelt,".progressbar");
-	    var appbar=fdjtDOM.getFirstChild(flytocelt,".progressbar");
-	    tocelt.title=flytocelt.title=Math.round(progress)+"%";
+	    var bar=false, appbar=false;
+	    if (tocelt) {
+		bar=fdjtDOM.getFirstChild(tocelt,".progressbar");
+		tocelt.title=Math.round(progress)+"%";}
+	    if (flytocelt) {
+		appbar=fdjtDOM.getFirstChild(flytocelt,".progressbar");
+		flytocelt.title=Math.round(progress)+"%";}
 	    if (Codex.Trace.toc)
-		fdjtLog("For tocbar %o loc=%o start=%o end=%o progress=%o",
-			bar,location,start,end,progress);
-	    if ((bar)&& (progress>=0) && (progress<=100)) {
-		// bar.style.width=((progress)+10)+"%";
-		// appbar.style.width=((progress)+10)+"%";
-		bar.style.width=(progress)+"%";
-		appbar.style.width=(progress)+"%";
-	    }
+		fdjtLog("For tocbar %o/%o loc=%o start=%o end=%o progress=%o",
+			bar,appbar,location,start,end,progress);
+	    if ((progress>=0) && (progress<=100)) {
+		if (bar) bar.style.width=(progress)+"%";
+		if (appbar) appbar.style.width=(progress)+"%";}
 	    info=info.head;}
 	var spanbars=fdjtDOM.$(".spanbar");
 	var i=0; while (i<spanbars.length) {
