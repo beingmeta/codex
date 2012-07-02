@@ -47,7 +47,7 @@
 	</g>
 </g>
 <g id="Layer_3">
-	<text transform="matrix(1 0 0 1 6.9932 54.2061)"><tspan x="0" y="0" fill="#EC1C24" font-family="'MyriadWebPro-Bold'" font-size="72">M</tspan><tspan x="61.991" y="0" fill="#F6921E" font-family="'MyriadWebPro-Bold'" font-size="72">E</tspan><tspan x="100.87" y="0" fill="#00A551" font-family="'MyriadWebPro-Bold'" font-size="72">T</tspan><tspan x="140.901" y="0" fill="#2E3191" font-family="'MyriadWebPro-Bold'" font-size="72">A</tspan></text>
-	<text transform="matrix(1 0 0 1 55.4995 192.2568)" font-family="'MyriadWebPro-Bold'" font-size="72">PUB</text>
+	<text transform="matrix(1 0 0 1 6.9932 54.2061)"><tspan x="0" y="0" fill="#EC1C24" font-family="Verdana" font-weight="bold" font-size="60">M</tspan><tspan x="61.991" y="0" fill="#F6921E" font-family="Verdana" font-weight="bold" font-size="60">E</tspan><tspan x="100.87" y="0" fill="#00A551" font-family="Verdana" font-weight="bold" font-size="60">T</tspan><tspan x="140.901" y="0" fill="#2E3191" font-family="Verdana" font-weight="bold" font-size="60">A</tspan></text>
+	<text transform="matrix(1 0 0 1 55.4995 192.2568)" font-family="Verdana" font-size="60" font-weight="bold">PUB</text>
 </g>
 </svg>
