@@ -1,106 +1,36 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Layer_1"
-   x="0px"
-   y="0px"
-   width="100px"
-   height="100px"
-   viewBox="0 0 100 100"
-   enable-background="new 0 0 100 100"
-   xml:space="preserve"
-   inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="TagIcon.svg"><metadata
-   id="metadata33"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-   id="defs31" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="735"
-   inkscape:window-height="752"
-   id="namedview29"
-   showgrid="false"
-   inkscape:zoom="2.36"
-   inkscape:cx="50"
-   inkscape:cy="50"
-   inkscape:window-x="0"
-   inkscape:window-y="0"
-   inkscape:window-maximized="0"
-   inkscape:current-layer="Layer_1" />
-<polygon
-   fill="#FFF01F"
-   stroke="#FFF45F"
-   points="78.699,59.377 40.965,21.515 79.513,20.846 "
-   id="polygon3" />
-<path
-   fill="#7E7F00"
-   stroke="#000000"
-   d="M72.066,34.41c1.694-1.687,1.666-4.45-0.048-6.167c-1.724-1.716-4.483-1.745-6.168-0.058  c-1.686,1.697-1.666,4.46,0.058,6.176C67.622,36.078,70.382,36.107,72.066,34.41z"
-   id="path5" />
-<polygon
-   fill="#FFF01F"
-   stroke="#FFF45F"
-   points="39.871,98.742 1.604,60.424 40.714,21.263 78.98,59.58 "
-   id="polygon7" />
-<text
-   transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,0,0)"
-   font-size="48"
-   id="text9"
-   sodipodi:linespacing="125%"
-   style="font-size:47.99953842px;line-height:125%;stroke:#000000;stroke-width:2.99997115;font-family:Papyrus"
-   x="52.612026"
-   y="35.077827"><tspan
-     style="font-size:60px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;stroke-width:2.99997115;font-family:Verdana;-inkscape-font-specification:Verdana"
-     id="tspan3010">T</tspan></text>
-
-<g
-   id="g11">
-	<g
-   id="g13">
-		<path
-   fill="none"
-   d="M48.974,26.856c3.333,0,7.333-0.333,10.333,0.333c4.333,1,6.667,4.333,11.667,3.667"
-   id="path15" />
-		<path
-   d="M48.234,27.993c4.821-0.055,9.288-0.428,13.701,1.867c2.943,1.531,5.45,2.335,8.788,2.111    c1.945-0.131,3.175-2.411,0.504-2.231c-3.788,0.254-6.206-2.332-9.609-3.308c-3.875-1.112-7.92-0.758-11.902-0.713    C48.222,25.736,45.623,28.022,48.234,27.993L48.234,27.993z"
-   id="path17" />
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="Layer_1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" inkscape:version="0.48.3.1 r9886" sodipodi:docname="TagIcon.svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="100px"
+	 viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+<sodipodi:namedview  inkscape:current-layer="Layer_1" inkscape:window-maximized="0" inkscape:window-y="0" inkscape:window-x="0" inkscape:cx="50" inkscape:zoom="2.36" inkscape:cy="50" showgrid="false" inkscape:window-width="735" inkscape:pageshadow="2" inkscape:pageopacity="0" guidetolerance="10" gridtolerance="10" objecttolerance="10" pagecolor="#ffffff" borderopacity="1" inkscape:window-height="752" id="namedview29" bordercolor="#666666">
+	</sodipodi:namedview>
+<g>
+	<polygon id="polygon3" fill="#FFF01F" stroke="#231F20" points="78.699,59.377 40.965,21.515 79.514,20.846 	"/>
+	<path id="path5" fill="#7E7F00" stroke="#000000" d="M72.066,34.41c1.693-1.687,1.666-4.45-0.049-6.167
+		c-1.724-1.716-4.482-1.745-6.168-0.058c-1.686,1.697-1.666,4.46,0.059,6.176C67.622,36.078,70.382,36.107,72.066,34.41z"/>
+	<polygon id="polygon7" fill="#FFF01F" stroke="#231F20" points="39.871,98.742 1.604,60.424 40.714,21.263 78.98,59.58 	"/>
+	<text transform="matrix(0.7071 0.7071 -0.7071 0.7071 12.3984 62.0059)" font-family="'Verdana'" font-size="60">T</text>
+	
+		<text transform="matrix(0.7071 0.7071 -0.7071 0.7071 12.3984 62.0059)" fill="none" stroke="#000000" stroke-width="3" font-family="'Verdana'" font-size="60">T</text>
+	<g id="g11">
+		<g id="g13">
+			<path id="path15" fill="none" d="M48.974,26.856c3.333,0,7.333-0.333,10.333,0.333c4.334,1,6.668,4.333,11.668,3.667"/>
+			<path id="path17" d="M48.234,27.993c4.821-0.055,9.288-0.428,13.702,1.867c2.942,1.531,5.449,2.335,8.787,2.111
+				c1.945-0.131,3.176-2.411,0.504-2.231c-3.787,0.254-6.205-2.332-9.608-3.308c-3.875-1.112-7.92-0.758-11.902-0.713
+				C48.222,25.736,45.623,28.022,48.234,27.993L48.234,27.993z"/>
+		</g>
 	</g>
-</g>
-<g
-   id="g19">
-	<g
-   id="g21">
-		<path
-   fill="none"
-   d="M79.5,30.5c7.333-2,10.667-5.667,10-12.667c-0.333-5.667-2.333-12,5-14"
-   id="path23" />
-		<path
-   d="M79.775,31.528c4.093-1.217,8.918-3.113,10.724-7.364c2.325-5.477-2.829-16.893,4.276-19.303    c2.253-0.764,1.756-2.838-0.551-2.056c-4.816,1.633-7.211,4.326-7.142,9.55c0.041,3.122,0.739,6.167,0.435,9.3    c-0.442,4.547-4.367,6.648-8.293,7.816C76.925,30.156,77.453,32.219,79.775,31.528L79.775,31.528z"
-   id="path25" />
+	<g id="g19">
+		<g id="g21">
+			<path id="path23" fill="none" d="M79.5,30.5c7.333-2,10.667-5.667,10-12.667c-0.333-5.667-2.333-12,5-14"/>
+			<path id="path25" d="M79.775,31.528c4.093-1.217,8.918-3.113,10.724-7.364c2.325-5.477-2.829-16.893,4.276-19.303
+				c2.252-0.764,1.756-2.838-0.551-2.056c-4.816,1.633-7.211,4.326-7.143,9.55c0.041,3.122,0.738,6.167,0.436,9.3
+				c-0.442,4.547-4.367,6.647-8.293,7.816C76.925,30.156,77.453,32.219,79.775,31.528L79.775,31.528z"/>
+		</g>
 	</g>
+	<ellipse id="ellipse27" stroke="#000000" stroke-width="2" cx="50.138" cy="25.863" rx="3.167" ry="3.5"/>
 </g>
-<ellipse
-   stroke="#000000"
-   stroke-width="2"
-   cx="50.138"
-   cy="25.863"
-   rx="3.167"
-   ry="3.5"
-   id="ellipse27" />
 </svg>
