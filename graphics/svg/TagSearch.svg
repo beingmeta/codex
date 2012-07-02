@@ -53,9 +53,9 @@
 			"/>
 	</g>
 	
-		<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 156.2139 212.9844)" filter="url(#AI_GaussianBlur_7)" font-family="'Verdana'" font-size="150">T</text>
+		<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 156.2139 212.9844)" filter="url(#AI_GaussianBlur_7)" font-family="Verdana" font-size="150">T</text>
 	
-		<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 156.2139 212.9844)" fill="none" stroke="#000000" stroke-width="3" font-family="'Verdana'" font-size="150">T</text>
+		<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 156.2139 212.9844)" fill="none" stroke="#000000" stroke-width="3" font-family="Verdana" font-size="150">T</text>
 	<g id="g11" filter="url(#AI_GaussianBlur_7)">
 		<g>
 			<path d="M71.182,123.396c-0.139-12.051-1.07-23.217,4.666-34.252c3.828-7.357,5.84-13.625,5.279-21.969
@@ -84,9 +84,9 @@
 			c-1.716,1.724-1.745,4.482-0.058,6.168c1.696,1.686,4.459,1.666,6.176-0.059C159.309,66.983,159.338,64.224,157.641,62.539z"/>
 		<polygon id="polygon7_1_" fill="#FFF01F" stroke="#231F20" points="221.973,94.734 183.654,133.002 144.494,93.892 
 			182.811,55.625 		"/>
-		<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 185.2363 122.207)" font-family="'Verdana'" font-size="60">T</text>
+		<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 185.2363 122.207)" font-family="Verdana" font-size="60">T</text>
 		
-			<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 185.2363 122.207)" fill="none" stroke="#000000" stroke-width="3" font-family="'Verdana'" font-size="60">T</text>
+			<text transform="matrix(0.7071 -0.7071 0.7071 0.7071 185.2363 122.207)" fill="none" stroke="#000000" stroke-width="3" font-family="Verdana" font-size="60">T</text>
 		<g id="g11_1_">
 			<g id="g13_1_">
 				<path id="path15_1_" fill="none" d="M150.086,85.631c0-3.332-0.332-7.332,0.334-10.332c1-4.334,4.332-6.668,3.666-11.668"/>

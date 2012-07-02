@@ -12,9 +12,9 @@
 	<path id="path5" fill="#7E7F00" stroke="#000000" d="M72.066,34.41c1.693-1.687,1.666-4.45-0.049-6.167
 		c-1.724-1.716-4.482-1.745-6.168-0.058c-1.686,1.697-1.666,4.46,0.059,6.176C67.622,36.078,70.382,36.107,72.066,34.41z"/>
 	<polygon id="polygon7" fill="#FFF01F" stroke="#231F20" points="39.871,98.742 1.604,60.424 40.714,21.263 78.98,59.58 	"/>
-	<text transform="matrix(0.7071 0.7071 -0.7071 0.7071 12.3984 62.0059)" font-family="'Verdana'" font-size="60">T</text>
+	<text transform="matrix(0.7071 0.7071 -0.7071 0.7071 12.3984 62.0059)" font-family="Verdana" font-size="60">T</text>
 	
-		<text transform="matrix(0.7071 0.7071 -0.7071 0.7071 12.3984 62.0059)" fill="none" stroke="#000000" stroke-width="3" font-family="'Verdana'" font-size="60">T</text>
+		<text transform="matrix(0.7071 0.7071 -0.7071 0.7071 12.3984 62.0059)" fill="none" stroke="#000000" stroke-width="3" font-family="Verdana" font-size="60">T</text>
 	<g id="g11">
 		<g id="g13">
 			<path id="path15" fill="none" d="M48.974,26.856c3.333,0,7.333-0.333,10.333,0.333c4.334,1,6.668,4.333,11.668,3.667"/>
