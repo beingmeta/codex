@@ -16,6 +16,7 @@ for x in CompassIcon AllGlosses TagSearch HelpIcon; \
 for x in 16x16 32x32 50x50 64x64; \
    do convert -scale $x svg/sbwedge.svg sbwedge${x}.png; \
       convert -scale $x svg/redx.svg redx${x}.png; \
+      convert -scale $x svg/remark.svg remark${x}.png; \
       convert -scale $x svg/outlink.svg outlink${x}.png; \
    done
 for x in 16x16 24x24 32x32 40x40 50x50 64x64 128x128; \
