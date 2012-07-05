@@ -84,6 +84,7 @@ var Codex=
 	 clouds: 0,	// How much to trace cloud generation
 	 focus: false,	// Whether to trace target changes
 	 toc: false,	// Whether we're debugging TOC tracking
+	 offline: 0,	// How much to trace offline persistence
 	 network: 0,	// How much to trace server interaction
 	 glosses: false,// Whether we're tracing gloss processing
 	 offline: 0,    // Whether to trace offline restoration, etc
