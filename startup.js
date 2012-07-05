@@ -95,7 +95,7 @@ Codex.Startup=
 	var setCheckSpan=fdjtUI.CheckSpan.set;
 
 	function addConfig(name,handler){
-	    if (Codex.Trace.config)
+	    if (Codex.Trace.config>1)
 		fdjtLog("Adding config handler for %s: %s",name,handler);
 	    config_handlers[name]=handler;}
 	Codex.addConfig=addConfig;
@@ -115,11 +115,11 @@ Codex.Startup=
 			setConfig(setting,config[setting]);}
 		var dopost=Codex.postconfig;
 		Codex.postconfig=false;
-		if ((Codex.Trace.config)&&(!((dopost)||(dopost.length===0))))
+		if ((Codex.Trace.config>1)&&(!((dopost)||(dopost.length===0))))
 		    fdjtLog("batch setConfig, no post processing",config);
 		var i=0; var lim=dopost.length;
 		while (i<lim) {
-		    if (Codex.Trace.config)
+		    if (Codex.Trace.config>1)
 			fdjtLog("batch setConfig, post processing %s",dopost[i]);
 		    dopost[i++]();}
 		return;}
@@ -166,7 +166,7 @@ Codex.Startup=
 	Codex.saveConfig=saveConfig;
 
 	function initConfig(){
-	    var config=getLocal('codex.config',true);
+	    var config=saved_config=getLocal('codex.config',true);
 	    Codex.postconfig=[];
 	    if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
 	    if (config) {
@@ -190,11 +190,13 @@ Codex.Startup=
 	    var i=0; var lim=dopost.length;
 	    while (i<lim) dopost[i++]();
 	    
+	    current_config=config;
+
 	    var deviceid=current_config.deviceid;
 	    var devicename=current_config.devicename;
 	    if (!(deviceid)) {
 		deviceid=fdjtState.getUUID();
-		setConfig("deviceid",deviceid);}
+		setConfig("deviceid",deviceid,true);}
 	    Codex.deviceId=deviceid;
 	    if (!(devicename)) {
 		var vi=fdjtState.versionInfo(); var now=new Date();
@@ -202,7 +204,7 @@ Codex.Startup=
 		    (now.getFullYear())+"/"+
 		    ((now.getMonth())+1)+"/"+
 		    (now.getDate())+"-"+(Math.floor(Math.random()*1000000));
-		setConfig('devicename',devicename);}
+		setConfig('devicename',devicename,true);}
 	    Codex.deviceName=devicename;
 
 	    saveConfig();}
@@ -245,13 +247,17 @@ Codex.Startup=
 	    userSetup();}
 
 	function appSetup() {
+
+	    // Execute any FDJT initializations
+	    fdjtDOM.init();
+
 	    // Get various settings for the sBook, including
 	    // information for scanning, graphics, glosses, etc
 	    readSettings();
-	    // Execute any FDJT initializations
-	    fdjtDOM.init();
+
 	    // Declare this to invoke some style constraints
 	    fdjtDOM.addClass(document.body,"codexstartup");
+
 	    var metadata=false;
 	    var helphud=false;
 	    // Initialize the databases
@@ -260,20 +266,46 @@ Codex.Startup=
 	    initBody();
 	    // This initializes the book tools (the HUD/Heads Up Display)
 	    Codex.initHUD();
+
 	    // Get any local saved configuration information
+	    //  We do this after the HUD is setup so that the settings
+	    //   panel gets initialized appropriately.
 	    initConfig();
+	    Codex.offline=((!(Codex.force_online))&&
+			   ((Codex.force_offline)||(workOffline())));
+	    setCheckSpan(fdjtID("CODEXOFFLINECHECKBOX"),Codex.offline);
+	    addConfig(
+		"offline",
+		function(name,value){
+		    if ((value)&&(Codex.offline)) return;
+		    else if ((!(value))&&(!(Codex.offline))) return;
+		    else if (value) {
+			/* This should save all of the current state,
+			   but that's a little tricky right now. */}
+		    else if (!(value)) {
+			if (getConfig("local"))
+			    clearOffline(Codex.refuri);
+			else clearOffline();}
+		    Codex.offline=value;});
+	    if ((Codex.offline)&&(!(Codex.sourcekb.storage)))
+		Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);
+	    if ((Codex.offline)&&(!Codex.glosses.storage))
+		Codex.glosses.storage=new fdjtKB.OfflineKB(Codex.glosses);
 	    // Setup the UI components for the body and HUD
 	    Codex.setupGestures();
+	    
 	    // Maybe display the help page
 	    if (!(Codex.hidesplash))
 		fdjtDOM.addClass(document.body,"codexhelp");
+
 	    // Setup the reticle (if desired)
 	    if ((typeof (document.body.style["pointer-events"])
 		 != "undefined")&&
 		((Codex.demo)||(fdjtState.getLocal("codex.demo"))||
 		 (fdjtState.getCookie("sbooksdemo"))||
-		 (getQuery("demo"))))
+		 (getQuery("demo")))) {
 		fdjtUI.Reticle.setup();}
+	}
 	
 	function userSetup(){
 	    // Start JSONP call to get initial or updated glosses, etc
@@ -284,7 +316,8 @@ Codex.Startup=
 		if (Codex.Trace.offline) 
 		    fdjtLog("Local info for %o (%s) from %o",
 			    Codex.user._id,Codex.user.name,Codex.sync);
-		_sbook_loadinfo=false;}
+		if (getLocal("glosses("+Codex.refuri+")"))
+		    _sbook_loadinfo=false;}
 	    else if (_sbook_loadinfo) {
 		var info=_sbook_loadinfo;
 		if (info.userinfo)
@@ -525,21 +558,21 @@ Codex.Startup=
 		sbook[unset[i++]]=false;}}
 
 	function workOffline(refuri){
-	    var value=getQuery("offline")||
-		getLocal("offline("+refuri+")")||
-		getLocal("mycopyid("+refuri+")")||
-		getLocal("sbooks.offline")||
-		((getMeta("sbook.mycopyid")))||
-		((getMeta("sbooks.mycopyid")))||
-		((getMeta("MYCOPYID")))||
-		(getMeta("sbook.offline"))||
-		(getMeta("Codex.offline"));
-	    if ((!(value))||(value==="no")||(value==="off")||(value==="never"))
+	    if (Codex.force_online) return false;
+	    else if (Codex.force_offline) return true;
+	    var config_val=getConfig("offline");
+	    if (typeof config_val !== 'undefined') return config_val;
+	    var value=(getMeta("sbook.offline"))||(getMeta("Codex.offline"));
+	    if ((value===0)||(value==="0")||
+		(value==="no")||(value==="off")||
+		(value==="never"))
 		return false;
-	    else if ((value==="ask")&&(window.confirm))
-		return window.confirm(
+	    else if (window.confirm) {
+		var result=window.confirm(
 		    "Store personal information for offline/faster reading?");
-	    else return true;}
+		setConfig("offline",result,true);
+		return result;}
+	    else return false;}
 	
 	var glossref_classes=false;
 
@@ -553,11 +586,15 @@ Codex.Startup=
 	    Codex.docuri=_getsbookdocuri();
 	    Codex.devinfo=fdjtState.versionInfo();
 	    
-	    var refuris=getLocal("sbooks.refuris",true)||[];
-	    var offline=workOffline(refuri);
-	    Codex.offline=((offline)?(true):(false));
-	    if (offline) fdjtState.setLocal("offline("+refuri+")","yes");
-	    
+	    if (fdjtState.getQuery("offline")) {
+		var qval=fdjtState.getQuery("offline");
+		if ((qval===false)||(qval===0)||(qval==="no")||(qval==="off")||
+		    (qval==="never")||(qval==="0"))
+		    Codex.force_online=true;
+		else Codex.force_offline=true;}
+		
+	    var refuris=getLocal("codex.refuris",true)||[];
+
 	    // Get the settings for scanning the document structure
 	    getScanSettings();
 
@@ -568,7 +605,7 @@ Codex.Startup=
 		Codex.graphics=https_graphics;
 	    
 	    // Whether to suppress login, etc
-	    if ((getLocal("sbooks.nologin"))||(getQuery("nologin")))
+	    if ((getLocal("codex.nologin"))||(getQuery("nologin")))
 		Codex.nologin=true;
 	    Codex.bypage=(Codex.page_style==='bypage'); 
 	    Codex.max_excerpt=getMeta("sbook.maxexcerpt")||(Codex.max_excerpt);
@@ -583,12 +620,12 @@ Codex.Startup=
 
 	    refuris.push(refuri);
 
-	    if ((!(Codex.nologin))&&(Codex.offline)) {
+	    if (!((Codex.nologin)||(Codex.force_online))) {
 		Codex.mycopyid=getMeta("sbook.mycopyid")||
-		    ((offline)&&(getLocal("mycopy("+refuri+")")))||
-		    false;
-		setLocal("sbooks.refuris",refuris,true);}	    
-
+		    (getLocal("mycopy("+refuri+")"))||
+		    false;}
+	    setLocal("codex.refuris",refuris,true);
+	    
 	    var isIphone = (/iphone/gi).test(navigator.appVersion);
 	    var isTouchPad = (/Touchpad/gi).test(navigator.appVersion);
 	    var isIpad = (/ipad/gi).test(navigator.appVersion);
@@ -634,10 +671,9 @@ Codex.Startup=
 	    if (!(sync)) return;
 	    if (!(user)) return;
 	    var userinfo=getLocal(user,true);
-	    var outlets=Codex.outlets=getLocal(
-		"sbooks.outlets("+refuri+")",true)||[];
+	    var outlets=Codex.outlets=getLocal("outlets("+refuri+")",true)||[];
 	    fdjtLog("initOffline userinfo=%j",userinfo);
-	    Codex.allsources=getLocal("sbooks.sources("+refuri+")",true)||[];
+	    Codex.allsources=getLocal("sources("+refuri+")",true)||[];
 	    Codex.sourcekb.Import(Codex.allsources);
 	    if (userinfo) setUser(userinfo,outlets,sync);
 	    if (nodeid) setNodeID(nodeid);
@@ -982,6 +1018,11 @@ Codex.Startup=
 	/* Loading meta info (user, glosses, etc) */
 
 	function loadInfo(info) {
+	    if (!(Codex.user)) {
+		if (info.userinfo)
+		    setUser(info.userinfo,info.outlets,info.sync);
+		if (info.nodeid) setNodeID(info.nodeid);
+		Codex.sync=info.sync;}
 	    if (!(Codex.docinfo)) { /* Scan not done */
 		Codex.scandone=function(){loadInfo(info);};
 		return;}
@@ -1024,8 +1065,8 @@ Codex.Startup=
 	    else if ((typeof _sbook_userinfo !== 'undefined')&&
 		     gotUser(_sbook_userinfo))
 		return Codex.user;
-	    if (getLocal("sbooks.user")) {
-		var user=getLocal("sbooks.user");
+	    if (getLocal("codex.user")) {
+		var user=getLocal("codex.user");
 		if (Codex.Trace.startup)
 		    fdjtLog("Restoring offline user info for %o reading %o",
 			    user,refuri);
@@ -1033,7 +1074,7 @@ Codex.Startup=
 		var sources=getLocal("sources("+refuri+")",true);
 		var outlets=getLocal("outlets("+refuri+")",true);
 		var nodeid=getLocal("nodeid("+refuri+")");
-		var sync=getLocal("sbooks.usersync",true);
+		var sync=getLocal("codex.usersync",true);
 		gotUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
 		return;}
 	    else if (!(fdjtID("SBOOKGETUSERINFO"))) {
@@ -1064,7 +1105,7 @@ Codex.Startup=
 	    Codex.user=fdjtKB.Import(userinfo);
 	    if (persist) {
 		setLocal(Codex.user._id,Codex.user,true);
-		setLocal("sbooks.user",Codex.user._id);
+		setLocal("codex.user",Codex.user._id);
 		setLocal("user("+refuri+")",Codex.user._id);}
 	    gotInfo("outlets",outlets,persist);
 	    if ((outlets)&&(outlets.length)) {
@@ -1216,15 +1257,14 @@ Codex.Startup=
 			    qids.push(obj._id);}}
 		    sbook[name]=qids;
 		    if (Codex.offline)
-			setLocal(
-			    "sbooks."+name+"("+refuri+")",qids,true);}
+			setLocal(name+"("+refuri+")",qids,true);}
 	    else {
 		var obj=fdjtKB.Import(info);
 		if (persist) 
 		    setLocal(obj._id,obj,true);
 		sbook[name]=obj._id;
 		if (persist)
-		    setLocal("sbooks."+name+"("+refuri+")",qid,true);}}
+		    setLocal(name+"("+refuri+")",qid,true);}}
 
 	function setupGlosses(newglosses) {
 	    var allglosses=Codex.allglosses||[];
@@ -1292,7 +1332,7 @@ Codex.Startup=
 
 	function initState() {
 	    var uri=Codex.docuri||Codex.refuri;
-	    var statestring=getLocal("sbooks.state("+uri+")");
+	    var statestring=getLocal("state("+uri+")");
 	    if (statestring) Codex.state=state=JSON.parse(statestring);}
 	
 	/* This initializes the sbook state to the initial location with the
@@ -1301,7 +1341,7 @@ Codex.Startup=
 	    var state=false;
 	    if (!(state)) {
 		var uri=Codex.docuri||Codex.refuri;
-		var statestring=getLocal("codex.state("+uri+")");
+		var statestring=getLocal("state("+uri+")");
 		if (statestring) {
 		    Codex.state=state=JSON.parse(statestring);
 		    if (Codex.Trace.state)
@@ -1568,28 +1608,36 @@ Codex.Startup=
 	
 	/* Clearing offline data */
 
-	function clearOffline(refuri){
+	function clearOffline(refuri,global){
 	    var dropLocal=fdjtState.dropLocal;
 	    if (refuri) {
 		var glosses=getLocal("glosses("+refuri+")",true);
 		var i=0; var lim=glosses.length;
 		while (i<lim) fdjtState.dropLocal(glosses[i++]);
 		dropLocal("sources("+refuri+")");
+		dropLocal("glosses("+refuri+")");
 		dropLocal("outlets("+refuri+")");
 		dropLocal("queued("+refuri+")");
+		dropLocal("state("+refuri+")");
 		dropLocal("sync("+refuri+")");
 		dropLocal("user("+refuri+")");
 		dropLocal("sync("+refuri+")");
+		dropLocal("nodeid("+refuri+")");
 		dropLocal("etc("+refuri+")");
 		dropLocal("offline("+refuri+")");
-		var refuris=getLocal("sbooks.refuris",true);
+		var refuris=getLocal("codex.refuris",true);
 		refuris=fdjtKB.remove(refuris,refuri);
-		setLocal("sbooks.refuris",refuris,true);}
+		setLocal("codex.refuris",refuris,true);}
 	    else {
-		var refuris=getLocal("sbooks.refuris",true);
+		var refuris=getLocal("codex.refuris",true);
 		var i=0; var lim=refuris.length;
 		while (i<lim) clearOffline(refuris[i++]);
-		dropLocal("sbooks.refuris");}}
+		dropLocal("codex.user");
+		dropLocal("codex.refuris");
+		var local=fdjtState.listLocal();
+		i=0; lim=local.length; while (i<lim) {
+		    var key=local[i++];
+		    if (key[0]==='@') dropLocal(key);}}}
 	Codex.clearOffline=clearOffline;
 
 	/* Other setup */

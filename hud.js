@@ -780,6 +780,10 @@ var CodexMode=
 	    var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
 	    result.showconsole=
 		((showconsole)&&(showconsole.length)&&(true))||false;
+	    var isoffline=fdjtDOM.getInputValues(settings,"CODEXOFFLINE");
+	    result.offline=((isoffline)&&(isoffline.length)&&(isoffline[0]))||
+		false;
+	    
 	    return result;}
 
 	Codex.UI.settingsOK=function(){

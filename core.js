@@ -45,6 +45,8 @@ var Codex=
      animate: {pages:true,hud: true},
      glossmodes: /(addtag)|(addlink)|(excerpt)|(editnote)|(sharing)/,
      updatehash: true, iscroll: false,
+     // Whether to store glosses, etc for offline/faster access
+     offline: false,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -76,7 +78,7 @@ var Codex=
      Debug: {},
      Trace: {
 	 startup: 1,	// Whether to debug startup
-	 config: false,  // Whether to trace config setup/modification/etc
+	 config: 0,  // Whether to trace config setup/modification/etc
 	 mode: false,	// Whether to trace mode changes
 	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
@@ -218,8 +220,6 @@ var sbook_gloss_data=
 
     // This is the hostname for the sbookserver.
     Codex.server=false;
-    // Whether this sbook is set up for offline reading
-    Codex.offline=false;
     // This is an array for looking up sbook servers.
     Codex.servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
     //Codex.servers=[];
@@ -553,7 +553,7 @@ var sbook_gloss_data=
 	if (Codex.Trace.state) fdjtLog("Setting state to %j",state);
 	var statestring=JSON.stringify(state);
 	var uri=Codex.docuri||Codex.refuri;
-	fdjtState.setLocal("codex.state("+uri+")",statestring);}
+	fdjtState.setLocal("state("+uri+")",statestring);}
     Codex.setState=setState;
     
     function serverSync(){
@@ -563,7 +563,7 @@ var sbook_gloss_data=
 	    if (syncing) return;
 	    if (!(state)) {
 		var uri=Codex.docuri||Codex.refuri;
-		var statestring=fdjtState.getLocal("codex.state("+uri+")");
+		var statestring=fdjtState.getLocal("state("+uri+")");
 		if (statestring) Codex.state=state=JSON.parse(statestring);
 		else state={};}
 	    if ((synced)&&
