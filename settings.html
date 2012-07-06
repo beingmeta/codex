@@ -3,7 +3,10 @@
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
     <th><input TYPE='RADIO' NAME='CODEXOFFLINE' VALUE='yes'
 	       ID='CODEXOFFLINECHECKBOX'/></th>
-    <td>Save personal information and glosses on this computer</td>
+    <td>Save personal information and glosses on this computer
+      <button onclick="Codex.forceSync(); return fdjtUI.cancel(event);">
+	Sync</button>
+    </td>
   </tr>
   <tr><th rowspan="2">Body font</th>
     <td>

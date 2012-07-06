@@ -126,7 +126,6 @@ div.helpbox p {
     max-width: inherit; min-width: inherit; width: auto;
     */
 }
-div.helpbox p img { height: 16px;}
 
 div.helpbox h3 { margin-top: 0px;}
 div.helpbox .clicktarget { color: lightblue; }
@@ -196,10 +195,14 @@ div#CODEXHUD div.helphud.rightmiddle {
 .helphud.botleft span.arrow { float: left;}
 .helphud.botright span.arrow { float: right;}
 
-body div#CODEXHELP p#CODEXHELPLOGIN { display: none;}
-body.cxNOUSER div#CODEXHELP p#CODEXHELPLOGIN { display: block;}
-body.cxNOUSER div#CODEXHELP p#CODEXHELPLOGGEDIN { display: none;}
+body div#CODEXHELP p#CODEXHELPLOGGEDIN { display: none;}
+body div#CODEXHELP p#CODEXHELPNEEDLOGIN {
+    color: red; font-weight: bold; margin-top: 1em;}
 body.cxUSER div#CODEXHELP p#CODEXHELPLOGGEDIN { display: block;}
+body.cxUSER div#CODEXHELP p#CODEXHELPNEEDLOGIN { display: none;}
+body div#CODEXHELP p#CODEXHELPDISCONNECTED { display: none;}
+body.cxUSER.cxDISCONN div#CODEXHELP p#CODEXHELPDISCONNECTED {
+    margin-top: 1em; color: red; font-weight: bold; display: block;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

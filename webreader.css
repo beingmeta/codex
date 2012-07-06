@@ -370,7 +370,8 @@ body div#CODEXHUD.flytoc #CODEXHEART > div#FLYTOC_SCROLLER,
 body div#CODEXHUD.console #CODEXHEART > div#CODEXCONSOLE_SCROLLER,
 body div#CODEXHUD.addgloss #CODEXHEART.tagging > div#CODEXGLOSSCLOUD_SCROLLER,
 body div#CODEXHUD.addgloss #CODEXHEART.showoutlets > div#CODEXGLOSSOUTLETS_SCROLLER,
-body div#CODEXHUD.sbookapp div#CODEXHEART iframe#SBOOKSAPP {
+body div#CODEXHUD.sbookapp div#CODEXHEART iframe#SBOOKSAPP,
+body div#CODEXHUD.login div#CODEXHEART iframe#SBOOKSAPP{
     opacity: 0.9; height: 100%; z-index: 150; overflow: auto;}
 div.scroller > div { }
 
@@ -378,7 +379,8 @@ body div#CODEXHUD.about #CODEXHEART .tabcontent#APPABOUT,
 body div#CODEXHUD.device #CODEXHEART .tabcontent#CODEXSETTINGS,
 body div#CODEXHUD.flytoc #CODEXHEART .tabcontent#FLYTOC,
 body div#CODEXHUD.console #CODEXHEART .tabcontent#CODEXCONSOLE,
-body div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP {
+body div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP,
+body div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSAPP {
     display: block;}
 
 div#CODEXHUD.about div#CODEXHEART .tabcontent {
@@ -439,6 +441,7 @@ div#CODEXHUD div#CODEXBUTTON.allglosses img[alt='allglosses'],
 div#CODEXHUD div#CODEXBUTTON.help img[alt='help'],
 div#CODEXHUD div#CODEXBUTTON.about img[alt='about'],
 div#CODEXHUD div#CODEXBUTTON.sbookapp img[alt='sbookapp'],
+div#CODEXHUD div#CODEXBUTTON.login img[alt='login'],
 div#CODEXHUD div#CODEXBUTTON.flytoc img[alt='flytoc'],
 div#CODEXHUD div#CODEXBUTTON.scanning img[alt='scanning'],
 div#CODEXHUD div#CODEXBUTTON.device img[alt='device'] {
@@ -1017,6 +1020,10 @@ body.cxNOUSER div#CODEXHUD div#CODEXHUDBUTTONS
    div.tabbar .tab[alt='Login'] { display: inline;}
 body.cxNOUSER div#CODEXHUD div#CODEXHUDBUTTONS
    div.tabbar .tab[alt='sBooks'] { display: none;}
+body.cxDISCONN div#CODEXHUD div#CODEXHUDBUTTONS
+   div.tabbar .tab[alt='Login'] { display: inline;}
+body.cxDISCONN div#CODEXHUD div#CODEXHUDBUTTONS
+   div.tabbar .tab[alt='sBooks'] { display: none;}
 
 /* These are all modes which use the top of the screen, so we
    hide the HUDBUTTONS. */
@@ -1159,8 +1166,11 @@ div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
 
 div#CODEXHUD div#CODEXHEART .tabcontent {
     overflow-y: auto; overflow-x: hidden;}
-div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP { overflow: visible;}
-div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP {
+div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP,
+div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSAPP {
+    overflow: visible;}
+div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP,
+div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSAPP {
   width: 100%; height: 100%; border: 0px; margin: 0px; padding: 0px;}
 
 div#CODEXHUD div#CODEXFLYHEAD #IDBUTTON {
@@ -1225,6 +1235,7 @@ div#CODEXHEART table.settings {
 div#CODEXHEART table.settings th {text-align: right; vertical-align: top;}
 div#CODEXHEART table.settings td {
     text-align: left; vertical-align: top; padding-left: 12px;}
+div#CODEXHEART table.settings td button { float: right;}
 div#CODEXHEART table.settings td input[type='TEXT'] {
     width: 100%;}
 div#CODEXHUD div#CODEXHEART table.settings tr.buttons td {

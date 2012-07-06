@@ -166,7 +166,7 @@ Codex.Startup=
 	Codex.saveConfig=saveConfig;
 
 	function initConfig(){
-	    var config=saved_config=getLocal('codex.config',true);
+	    var config=saved_config=getLocal('codex.config',true)||{};
 	    Codex.postconfig=[];
 	    if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
 	    if (config) {
@@ -665,12 +665,12 @@ Codex.Startup=
 	    var sync=getLocal("sync("+refuri+")",true);
 	    var user=getLocal("user("+refuri+")");
 	    var nodeid=getLocal("nodeid("+refuri+")");
+	    var userinfo=user&&getLocal(user,true);
 	    if (Codex.Trace.offline)
-		fdjtLog("initOffline (%s) user=%s sync=%s nodeid=%s",
-			user,sync,nodeid);
+		fdjtLog("initOffline user=%s sync=%s nodeid=%s info=%j",
+			user,sync,nodeid,userinfo);
 	    if (!(sync)) return;
 	    if (!(user)) return;
-	    var userinfo=getLocal(user,true);
 	    var outlets=Codex.outlets=getLocal("outlets("+refuri+")",true)||[];
 	    fdjtLog("initOffline userinfo=%j",userinfo);
 	    Codex.allsources=getLocal("sources("+refuri+")",true)||[];
@@ -1047,7 +1047,7 @@ Codex.Startup=
 		initGlossesOffline();
 	    if (info.sources) gotInfo("sources",info.sources,persist);
 	    if (info.glosses) initGlosses(info.glosses,info.etc);
-	    if ((info.sync)&&((!(Codex.sync))||(info.sync>Codex.sync))) {
+	    if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
 		setLocal("sync("+refuri+")",info.sync);
 		Codex.sync=info.sync;}
 	    Codex.loaded=info.loaded=fdjtTime();}
@@ -1242,7 +1242,7 @@ Codex.Startup=
 	// Processes info loaded remotely
 	function gotInfo(name,info,persist) {
 	    var refuri=Codex.refuri;
-	    if (info)
+	    if (info) {
 		if (info instanceof Array) {
 		    var i=0; var lim=info.length; var qids=[];
 		    while (i<lim) {
@@ -1255,16 +1255,16 @@ Codex.Startup=
 			    if (persist) 
 				setLocal(obj._id,obj,true);
 			    qids.push(obj._id);}}
-		    sbook[name]=qids;
+		    Codex[name]=qids;
 		    if (Codex.offline)
 			setLocal(name+"("+refuri+")",qids,true);}
-	    else {
-		var obj=fdjtKB.Import(info);
-		if (persist) 
-		    setLocal(obj._id,obj,true);
-		sbook[name]=obj._id;
-		if (persist)
-		    setLocal(name+"("+refuri+")",qid,true);}}
+		else {
+		    var obj=fdjtKB.Import(info);
+		    if (persist) 
+			setLocal(obj._id,obj,true);
+		    Codex[name]=obj._id;
+		    if (persist)
+			setLocal(name+"("+refuri+")",qid,true);}}}
 
 	function setupGlosses(newglosses) {
 	    var allglosses=Codex.allglosses||[];
@@ -1375,29 +1375,35 @@ Codex.Startup=
 		"&REFURI="+encodeURIComponent(Codex.refuri);
 	    if (Codex.Trace.dosync)
 		fdjtLog("syncLocation(call) %s",uri);
-	    fdjtAjax.jsonCall(
-		function(d){
-		    if (Codex.Trace.dosync)
-			fdjtLog("syncLocation(callback) %s: %j",uri,d);
-		    if ((!(d))||(!(d.location))) {
-			if (!(Codex.state))
-			    Codex.GoTo(Codex.start||Codex.root||Codex.body,
-				       "syncLocation",false,false);
-			return;}
-		    else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
-			if ((d.location)&&(d.location<=Codex.location)) return;
-			if (d.page===Codex.curpage) return;
-			var msg=
-			    "Sync to L"+d.location+
-			    ((d.page)?(" (page "+d.page+")"):"")+"?";
-			if (confirm(msg)) {
-			    if (d.location) Codex.setLocation(d.location);
-			    if (d.location)
-				Codex.GoTo(d.location,"syncLocation",false);
-			    if (d.target) Codex.setTarget(d.target);
-			    Codex.state=d;}}
-		    else {}},
-		uri);}
+	    fdjtAjax(function(req){
+			 var d=JSON.parse(req.responseText);
+			 Codex.setConnected(true);
+			 Codex.syncstart=true;
+			 if (Codex.Trace.dosync)
+			     fdjtLog("syncLocation(callback) %s: %j",uri,d);
+			 if ((!(d))||(!(d.location))) {
+			     if (!(Codex.state))
+				 Codex.GoTo(Codex.start||Codex.root||Codex.body,
+					    "syncLocation",false,false);
+			     return;}
+			 else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
+			     if ((d.location)&&(d.location<=Codex.location)) return;
+			     if (d.page===Codex.curpage) return;
+			     var msg=
+				 "Sync to L"+d.location+
+				 ((d.page)?(" (page "+d.page+")"):"")+"?";
+			     if (confirm(msg)) {
+				 if (d.location) Codex.setLocation(d.location);
+				 if (d.location)
+				     Codex.GoTo(d.location,"syncLocation",false);
+				 if (d.target) Codex.setTarget(d.target);
+				 Codex.state=d;}}
+			 else {}},
+		     uri,false,
+		     function(req){
+			 if ((req.readyState == 4)&&(navigator.onLine))
+			     Codex.setConnected(false);});}
+	Codex.syncLocation=syncLocation;
 
 	/* Indexing tags */
 	

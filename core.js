@@ -36,6 +36,8 @@ var Codex=
      head: false,target: false,glosstarget: false,location: false,
      user: false,root: false,start: false,HUD: false,dosync: true,
      _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
+     // Whether we have a real connection to the server
+     connected: false,
      // Keeping track of paginated context
      curpage: false,curoff: false,curinfo: false, curbottom: false,
      // For tracking UI state
@@ -556,6 +558,18 @@ var sbook_gloss_data=
 	fdjtState.setLocal("state("+uri+")",statestring);}
     Codex.setState=setState;
     
+    function setConnected(val){
+	if ((val)&&(!(Codex.connected))) {
+	    var onconnect=Codex._onconnect;
+	    Codex._onconnect=false;
+	    if ((onconnect)&&(onconnect.length)) {
+		var i=0; var lim=onconnect.length;
+		while (i<lim) (onconnect[i++])();}}
+	fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,
+			  ((val)?("cxCONN"):("cxDISCONN")));
+	Codex.connected=val;}
+    Codex.setConnected=setConnected;
+
     function serverSync(){
 	if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine)) {
 	    var state=Codex.state; var synced=Codex.syncstate;
@@ -595,7 +609,10 @@ var sbook_gloss_data=
 	    req.onreadystatechange=function(evt){
 		if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
 		    Codex.syncstate=syncing;
+		    setConnected(true);
 		    syncing=false;}
+		else if (navigator.onLine) setConnected(false);
+		else {}
 		if ((Codex.Trace.dosync)||(Codex.Trace.state))
 		    fdjtLog("serverSync(callback) %o ready=%o status=%o %j",
 			    evt,req.readyState,req.status,syncing);};
@@ -603,6 +620,15 @@ var sbook_gloss_data=
 	    req.withCredentials='yes';
 	    req.send();}}
     Codex.serverSync=serverSync;
+
+    function forceSync(){
+	if (Codex.connected) Codex.update();
+	else if (Codex._onconnect)
+	    Codex._onconnect.push(function(){Codex.update();});
+	else Codex._onconnect=[function(){Codex.update();}];
+	if (!(Codex.syncstart)) Codex.syncLocation();
+	else serverSync();}
+    Codex.forceSync=forceSync;
 
     function getLocInfo(elt){
 	var eltid=false;
