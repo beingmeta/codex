@@ -69,6 +69,7 @@ Codex.Startup=
 	var TOA=fdjtDOM.Array;
 
 	function startupLog(){
+	    if (!(Codex.Trace.startup)) return;
 	    var args=TOA(arguments);
 	    fdjtLog.apply(null,arguments);}
 
@@ -468,10 +469,10 @@ Codex.Startup=
 		    loadInfo(_sbook_newinfo);
 		    _sbook_newinfo=false;})),
 		function(){
-		    fdjtLog("Finding and applying Technorati-style tags");
+		    startupLog("Finding and applying Technorati-style tags");
 		    applyAnchorTags();},
 		function(){
-		    fdjtLog("Finding and applying tags spans");
+		    startupLog("Finding and applying tags spans");
 		    applyTagSpans();},
 		function(){
 		    if (_sbook_autoindex) {
@@ -686,6 +687,7 @@ Codex.Startup=
 	    var refuri=Codex.refuri;
 	    var sync=getLocal("sync("+refuri+")",true);
 	    if (!(sync)) return;
+	    fdjtLog("Starting initializing glosses from offline storage");
 	    var localglosses=getLocal("glosses("+refuri+")",true)||[];
 	    var queuedglosses=getLocal("queued("+refuri+")",true)||[];
 	    var allglosses=Codex.allglosses||[];
@@ -703,7 +705,8 @@ Codex.Startup=
 		    fdjtLog("Restored %o: %j",glossid,gloss);}
 	    var etc=Codex.etc;
 	    var i=0; var lim=etc.length;
-	    while (i<lim) Codex.sourcekb.ref(etc[i++]);}
+	    while (i<lim) Codex.sourcekb.ref(etc[i++]);
+	    fdjtLog("Done initializing glosses from offline storage");}
 
 	/* Viewport setup */
 
