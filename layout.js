@@ -1201,9 +1201,8 @@ var CodexPaginate=
 		    LayoutMessage(fdjtString(
 			"Finished laying out %d pages in %s",
 			pagenum,secs2short((info.done-info.started)/1000)));
-		    if (tracelevel)
-			fdjtLog("Finished laying out %d pages in %s",
-				pagenum,secs2short((info.done-info.started)/1000));}
+		    fdjtLog("Finished laying out %d pages in %s",
+			    pagenum,secs2short((info.done-info.started)/1000));}
 		else {
 		    if ((info.lastid)&&(Codex.docinfo)&&
 			((Codex.docinfo[info.lastid]))) {

@@ -356,6 +356,12 @@ body div#CODEXHUD #CODEXHEART > .tabcontent {
 
 body.hudup div#CODEXHUD.openheart div#CODEXHEART.hudpanel {
     display: block;}
+body.hudup div#CODEXHUD.openheart.addgloss div#CODEXHEART.hudpanel {
+    display: none;}
+body.hudup div#CODEXHUD.openheart.addgloss div#CODEXHEART.hudpanel.showoutlets {
+    display: block;}
+body.hudup div#CODEXHUD.openheart.addgloss div#CODEXHEART.hudpanel.tagging {
+    display: block;}
 
 body.hudup div#CODEXHUD.openheart #CODEXHEART.hudpanel {
     top: 100px; bottom: 100px; height: auto; border-color: blue;
