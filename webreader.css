@@ -671,6 +671,13 @@ body div#CODEXHUD.scanning img.hudbutton#CODEXSEARCHBUTTON {
 
 /* About this book */
 
+div#APPABOUT div.links {
+    height: 1em; border-bottom: solid purple 3px; margin-bottom: 1em;}
+a.metadata {
+    float: right; font-weight: bold; font-size: 80%;}
+a.reviews {
+    float: left; font-weight: bold; font-size: 80%;}
+
 div#SBOOKABOUT { display: none;}
 div#SBOOKABOUT { display: none; text-align: left;}
 div#CODEXHUD div#SBOOKABOUT {
@@ -1658,6 +1665,23 @@ div.fdjtprogress#CODEXLAYOUTMESSAGE {
     display: none;}
 body.cxLAYOUT div#CODEXLAYOUTMESSAGE {
     display: block; opacity: 0.8;}
+
+/* CODEXSPLASH page */
+
+div#CODEXSPLASH {
+    position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px;
+    width: 100%;  top: 50px; bottom: 50px;
+    background-color: blue; opacity: 0.5;
+    text-align: center;
+    display: none;}
+div#CODEXSPLASH img.coverpage {
+    position: absolute; top: 0px; bottom: 0px; 
+    margin: 0px; padding: 0px;
+    height: 100%;
+    left: auto; right: auto;}
+
+body.codexstartup div#CODEXSPLASH { display: block; }
+    
 
 /* Emacs local variables
 ;;;  Local variables: ***

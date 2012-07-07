@@ -828,7 +828,10 @@ Codex.Startup=
 	    var content=fdjtDOM("div#CODEXCONTENT");
 	    var headmask=fdjtDOM("div.codexwinmask#CODEXWINMASKHEAD");
 	    var footmask=fdjtDOM("div.codexwinmask#CODEXWINMASKFOOT");
+	    var splash=fdjtID("CODEXSPLASH");
 	    var win=fdjtDOM("div#CODEXWINDOW",headmask,footmask,content);
+	    // We'll put it back
+	    fdjtDOM.remove(splash);
 	    var nodes=fdjtDOM.toArray(body.childNodes);
 	    var style=fdjtDOM("STYLE");
 	    fdjtDOM(document.head,style);
@@ -867,7 +870,7 @@ Codex.Startup=
 			fdjtDOM("span#CODEXPAGEPROGRESS",""),
 			" pages"),
 		Codex.pages=fdjtDOM("div#CODEXPAGES"));
-	    fdjtDOM(body,win,page);
+	    fdjtDOM(body,splash,win,page);
 	    fdjtDOM.addClass(body,"sbook");
 	    var page_width=fdjtDOM.getGeometry(page).width;
 	    var page_height=fdjtDOM.getGeometry(page).height;

@@ -631,6 +631,23 @@ var CodexMode=
 	    var about=fdjtID("APPABOUT");
 	    var bookabout=fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
 	    var authorabout=fdjtID("SBOOKAUTHORPAGE")||fdjtID("SBOOKABOUTAUTHOR");
+	    var metadata=fdjtDOM.Anchor(
+		"https://www.sbooks.net/publish/metadata?REFURI="+
+		    encodeURIComponent(Codex.refuri),
+		"metadata",
+		"edit metadata");
+	    metadata.target="_blank";
+	    metadata.title=
+		"View (and possibly edit) the metadata for this book";
+	    var reviews=fdjtDOM.Anchor(null,
+//		"https://www.sbooks.net/publish/reviews?REFURI="+
+//		    encodeURIComponent(Codex.refuri),
+		"reviews",
+		"see/add reviews");
+	    reviews.target="_blank";
+	    reviews.title="Sorry, not yet implemented";
+	    fdjtDOM(about,fdjtDOM("div.links",metadata,reviews));
+
 	    if (bookabout) fdjtDOM(about,bookabout);
 	    else {
 		var title=
