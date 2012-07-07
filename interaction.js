@@ -256,6 +256,7 @@
 
     var isEmpty=fdjtString.isEmpty;
     var last_tap=false;
+    var last_text=false;
 
     function content_mouseup(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
@@ -288,7 +289,8 @@
 	// Always go and add gloss if text is selected.  Otherwise,
 	// lower the HUD if it's up or add a gloss on an apparent
 	// double click.
-	if ((!(seltext))||(isEmpty(seltext))) {
+	if ((!(seltext))||(isEmpty(seltext))||
+	    ((Codex.mode==="addgloss")&&(seltext===last_text))) {
 	    if (Codex.mode) {
 		CodexMode(false); fdjtUI.cancel(evt); return;}
 	    else if (last_tap) {
@@ -302,8 +304,9 @@
 	var form=Codex.setGlossTarget(passage);
 	var form_elt=fdjtDOM.getChild(form,"form");
 	var form_class='';
-	if ((seltext)&&(!(isEmpty(seltext)))) 
-	    Codex.setExcerpt(form,seltext);
+	if ((seltext)&&(!(isEmpty(seltext))))  {
+	    last_text=seltext;
+	    Codex.setExcerpt(form,seltext);}
 	else if (evt.shiftKey) {
 	    form_class='addtag';
 	    Codex.setHUD(true);}

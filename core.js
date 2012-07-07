@@ -79,7 +79,7 @@ var Codex=
 	 handlers: {mouse: {}, kbd: {}, ios: {}}},
      Debug: {},
      Trace: {
-	 startup: 1,	// Whether to debug startup
+	 startup: 0,	// Whether to debug startup
 	 config: 0,  // Whether to trace config setup/modification/etc
 	 mode: false,	// Whether to trace mode changes
 	 nav: false,	// Whether to trace book navigation
@@ -330,7 +330,7 @@ var sbook_gloss_data=
 		CodexMode(false); CodexMode(true);}};
 
     function getTarget(scan,closest){
-	scan=scan.target||scan.srcElement||scan;
+	scan=((scan.nodeType)?(scan):(scan.target||scan.srcElement||scan));
 	var target=false;
 	while (scan) {
 	    if (scan.codexui) return false;
@@ -344,8 +344,7 @@ var sbook_gloss_data=
 		else if ((hasClass(scan,"sbookfocus"))||
 			 ((Codex.focus)&&(Codex.focus.match(scan))))
 		    return scan;
-		else if (!(fdjtDOM.hasText(scan)))
-		    scan=scan.parentNode;
+		// else if (!(fdjtDOM.hasText(scan))) scan=scan.parentNode;
 		else if (closest) return scan;
 		else if (target) scan=scan.parentNode;
 		else {target=scan; scan=scan.parentNode;}}
