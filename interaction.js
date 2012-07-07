@@ -285,7 +285,19 @@
 	// If we're not over any content, just toggle out of the HUD.
 	if (!(passage)) {
 	    CodexMode(false);
-	    fdjtUI.cancel(evt); return;}
+	    fdjtUI.cancel(evt);
+	    return;}
+	var id=passage.codexdupid||passage.id;
+	if ((id)&&(Codex.docinfo[id])) {
+	    var info=Codex.docinfo[id];
+	    if (info.starts_at) {
+		// If we were really clever, we might look at the
+		//  selection object to get an even more precise
+		//  location.  Not now.
+		Codex.setLocation(info.starts_at);
+		if (Codex.updatePageDisplay)
+		    Codex.updatePageDisplay(Codex.curpage,Codex.location);}}
+	
 	// Always go and add gloss if text is selected.  Otherwise,
 	// lower the HUD if it's up or add a gloss on an apparent
 	// double click.

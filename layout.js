@@ -1382,7 +1382,9 @@ var CodexPaginate=
 	    if (typeof location==='number') {
 		var max_loc=Codex.ends_at;
 		var pct=(100*location)/max_loc;
-		var prec=Math.round(Math.log(max_loc)/Math.log(128))-2;
+		// This is (very roughly) intended to be the precision needed
+		//  for line level (40 character) accuracy.
+		var prec=Math.round(Math.log(max_loc/40)/Math.log(10))-2;
 		if (prec<0) prec=0;
 		locoff=fdjtDOM(
 		    "span.locoff#CODEXLOCOFF",
