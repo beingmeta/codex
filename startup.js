@@ -975,7 +975,8 @@ Codex.Startup=
 		fdjtDOM("div#CODEXPAGEINFO",
 			fdjtDOM("div.progressbar#CODEXPROGRESSBAR",""),
 			fdjtDOM("div#CODEXPAGENO",
-				fdjtDOM("span#CODEXPAGENOTEXT","p/n")));
+				fdjtDOM("span#CODEXPAGENOTEXT","p/n")),
+			fdjtDOM("span.locoff#CODEXLOCOFF","??%"));
 	    var pagefoot=fdjtDOM("div.codexmargin#CODEXPAGEFOOT",pageinfo," ");
 	    pagehead.codexui=true; pagefoot.codexui=true;
 	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;

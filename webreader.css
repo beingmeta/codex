@@ -765,8 +765,8 @@ body.cxBYSECT.cxPAGED div#CODEXPAGEFOOT div#CODEXPAGEINFO {
 body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;}
 div#CODEXPAGEFOOT div#CODEXPAGEINFO span.locoff {
-    cursor: pointer;
-    float: right;}
+    position: absolute; bottom: 3px; right: 3px;
+    cursor: pointer;}
 div#CODEXPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%; max-height: 20px;}
 div#CODEXPAGEFOOT div#CODEXPAGENO span#CODEXPAGENOTEXT { cursor: pointer;}

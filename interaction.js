@@ -639,22 +639,28 @@
 	var target=fdjtUI.T(evt);
 	var ch=evt.charCode||evt.keyCode;
 	var max=false; var min=false;
+	var handled=false;
 	if (target.name==='GOTOLOC') {
 	    min=0; max=Math.floor(Codex.ends_at/128);}
 	else if (target.name==='GOTOPAGE') {
 	    min=1; max=Codex.pagecount;}
 	else if (ch===13) fdjtUI.cancel(evt);
 	if (ch===13) {
-	    var num=parseInt(target.value);
-	    fdjtUI.cancel(evt);
-	    if ((typeof num !== 'number')||(num<min)||(num>max)) {
-		alert("Enter a number between "+min+" and "+max+" (inclusive)");
-		return;}
-	    if (target.name==='GOTOLOC') Codex.JumpTo(128*num);
-	    else if (target.name==='GOTOPAGE') Codex.GoToPage(num);
+	    if (target.name==='GOTOPAGE') {
+		var num=parseInt(target.value);
+		if (typeof num === 'number') {
+		    handled=true; Codex.GoToPage(num);}
+		else {}}
+	    else if (target.name==='GOTOLOC') {
+		var locstring=target.value;
+		var pct=parseFloat(locstring);
+		if ((typeof pct === 'number')&&(pct>=0)&&(pct<=100)) {
+		    var loc=Math.floor((pct/100)*Codex.ends_at);
+		    Codex.JumpTo(loc); handled=true;}}
 	    else {}
-	    target.value="";
-	    CodexMode(false);}}
+	    if (handled) {
+		target.value="";
+		CodexMode(false);}}}
     Codex.UI.goto_keypress=goto_keypress;
 
     /* ADDGLOSS interaction */

@@ -1378,11 +1378,17 @@ var CodexPaginate=
 	    
 	    pbar.style.left=(100*((pagenum-1)/npages))+"%";
 	    pbar.style.width=(100/npages)+"%";
-	    var locoff=
-		((typeof location==='number')?
-		 (fdjtDOM(
-		     "span.locoff#CODEXLOCOFF","L"+Math.floor(location/128))):
-		 (fdjtDOM("span.locoff#CODEXLOCOFF")));
+	    var locoff;
+	    if (typeof location==='number') {
+		var max_loc=Codex.ends_at;
+		var pct=(100*location)/max_loc;
+		var prec=Math.round(Math.log(max_loc)/Math.log(128))-2;
+		if (prec<0) prec=0;
+		locoff=fdjtDOM(
+		    "span.locoff#CODEXLOCOFF",
+		    fdjtString.precString(pct,prec)+"%");
+		locoff.title=location+"/"+max_loc;}
+	    else locoff=fdjtDOM("span.locoff#CODEXLOCOFF");
 	    var pageno_text=fdjtDOM(
 		"span#CODEXPAGENOTEXT.pageno",pagenum,"/",npages);
 	    fdjtDOM.replace("CODEXPAGENOTEXT",pageno_text);
@@ -1390,7 +1396,10 @@ var CodexPaginate=
 	    // var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
 	    // fdjtDOM.replace("CODEXPAGENO",pageno);
 	    fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
-	    locoff.title="click to jump to a particular location";
+	    locoff.title=
+		((locoff.title)||"")+
+		((locoff.title)?("; "):(""))+
+		"click to jump to a percentage location in the book";
 	    fdjtDOM.addListeners(
 		locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCOFF"]);
 	    pageno_text.title="click to jump to a particular page";
