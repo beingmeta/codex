@@ -1115,7 +1115,7 @@ var CodexPaginate=
 	    if (Codex.layout) {
 		Codex.layout.revert();
 		Codex.layout=false;}
-	    addClass(document.body,"pagelayout");
+	    addClass(document.body,"cxLAYOUT");
 	    var height=getGeometry(fdjtID("CODEXPAGE")).height;
 	    var width=getGeometry(fdjtID("CODEXPAGE")).width;
 	    var bodysize=Codex.bodysize||"normal";
@@ -1163,7 +1163,7 @@ var CodexPaginate=
 		    layout_progress(layout);
 		    fdjtID("CODEXPAGE").style.visibility='';
 		    fdjtID("CODEXCONTENT").style.visibility='';
-		    dropClass(document.body,"pagelayout");
+		    dropClass(document.body,"cxLAYOUT");
 		    Codex.layout=layout;
 		    Codex.pagecount=layout.pages.length;
 		    if (Codex.pagewait) {

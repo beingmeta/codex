@@ -234,7 +234,7 @@ Codex.Startup=
 	    Codex.deviceId=value;});
 
 	function syncStartup(){
-		    fdjtLog.console="CODEXCONSOLELOG";
+	    fdjtLog.console="CODEXCONSOLELOG";
 	    fdjtLog.consoletoo=true;
 	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
 	    fdjtLog("This is Codex version %s, built %s on %s, starting %s",
@@ -243,8 +243,11 @@ Codex.Startup=
 	    if (navigator.appVersion)
 		fdjtLog("Navigator App version: %s",navigator.appVersion);
 	    if (getQuery("cxtrace")) traceSetup();
+	    if (Codex.Trace.startup) fdjtLog("Starting app setup");
 	    appSetup();
-	    userSetup();}
+	    if (Codex.Trace.startup) fdjtLog("Starting user setup");
+	    userSetup();
+	    if (Codex.Trace.startup) fdjtLog("Done with synchronous setup");}
 
 	function appSetup() {
 
@@ -295,7 +298,7 @@ Codex.Startup=
 	    Codex.setupGestures();
 	    
 	    // Maybe display the help page
-	    if (!(Codex.hidesplash))
+	    if ((!(fdjtID("CODEXSPLASH")))||(Codex.hidesplash===false))
 		fdjtDOM.addClass(document.body,"codexhelp");
 
 	    // Setup the reticle (if desired)
@@ -304,8 +307,7 @@ Codex.Startup=
 		((Codex.demo)||(fdjtState.getLocal("codex.demo"))||
 		 (fdjtState.getCookie("sbooksdemo"))||
 		 (getQuery("demo")))) {
-		fdjtUI.Reticle.setup();}
-	}
+		fdjtUI.Reticle.setup();}}
 	
 	function userSetup(){
 	    // Start JSONP call to get initial or updated glosses, etc
@@ -505,9 +507,10 @@ Codex.Startup=
 			fdjtDOM("strong","Weird, "),
 			getQuery("weird"));
 	    if ((getQuery("ACTION"))||
+		(getQuery("JOIN"))||
 		(getQuery("OVERLAY")))
 		CodexMode("sbookapp");
-	    else CodexMode("help");
+	    else {}
 	    // Hide the splash page, if any
 	    if (fdjtID("CODEXSPLASH"))
 		fdjtID("CODEXSPLASH").style.display='none';

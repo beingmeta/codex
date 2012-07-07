@@ -89,6 +89,8 @@ body.codexhelp div#CODEXHUD div.helpbox#CODEXHELP {
 body.codexhelp.hudup div#CODEXHUD div.helpbox#CODEXHELP,
 body.codexhelp.codexscanning div#CODEXHUD div.helpbox#CODEXHELP {
     display: none;}
+body.codexstartup.codexhelp.hudup div#CODEXHUD div.helpbox#CODEXHELP {
+    display: block;}
 body.codexhelp div#CODEXHUD div.helphud { display: block;}
 body.codexhelp.hudup div#CODEXHUD div.helphud { display: none;}
 body.codexhelp.codexscanning div#CODEXHUD div.helphud { display: none;}
