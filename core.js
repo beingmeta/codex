@@ -234,7 +234,7 @@ var sbook_gloss_data=
 	navigator.mimeTypes["image/svg+xml"];
     if (fdjtState.getQuery("nosvg")) Codex.svg=false;
     Codex.icon=function(base,width,height){
-	return Codex.graphics+base+
+	return Codex.graphics+((Codex.svn)?"svg/":"")+base+
 	    ((Codex.svg)?(".svg"):
 	     ((((width)&&(height))?(width+"x"+height):
 	       (width)?(width+"w"):(height)?(height+"h"):"")+
