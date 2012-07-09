@@ -1,39 +1,39 @@
 %128x128.png: svg/%.svg
-	convert -scale 128x128 $< $@
+	convert -background transparent -scale 128x128 $< $@
 %128x128.gif: svg/%.svg
-	convert -scale 128x128 $< $@
+	convert -background transparent -scale 128x128 $< $@
 %64x64.png: svg/%.svg
-	convert -scale 64x64 $< $@
+	convert -background transparent -scale 64x64 $< $@
 %64x64.gif: svg/%.svg
-	convert -scale 64x64 $< $@
+	convert -background transparent -scale 64x64 $< $@
 %50x50.png: svg/%.svg
-	convert -scale 50x50 $< $@
+	convert -background transparent -scale 50x50 $< $@
 %50x50.gif: svg/%.svg
-	convert -scale 50x50 $< $@
+	convert -background transparent -scale 50x50 $< $@
 %40x40.png: svg/%.svg
-	convert -scale 40x40 $< $@
+	convert -background transparent -scale 40x40 $< $@
 %40x40.gif: svg/%.svg
-	convert -scale 40x40 $< $@
+	convert -background transparent -scale 40x40 $< $@
 %32x32.png: svg/%.svg
-	convert -scale 32x32 $< $@
+	convert -background transparent -scale 32x32 $< $@
 %32x32.gif: svg/%.svg
-	convert -scale 32x32 $< $@
+	convert -background transparent -scale 32x32 $< $@
 %24x24.png: svg/%.svg
-	convert -scale 24x24 $< $@
+	convert -background transparent -scale 24x24 $< $@
 %24x24.gif: svg/%.svg
-	convert -scale 24x24 $< $@
+	convert -background transparent -scale 24x24 $< $@
 %16x16.png: svg/%.svg
-	convert -scale 16x16 $< $@
+	convert -background transparent -scale 16x16 $< $@
 %16x16.gif: svg/%.svg
-	convert -scale 16x16 $< $@
+	convert -background transparent -scale 16x16 $< $@
 %12x12.png: svg/%.svg
-	convert -scale 8x8 $< $@
+	convert -background transparent -scale 8x8 $< $@
 %12x12.gif: svg/%.svg
-	convert -scale 8x8 $< $@
+	convert -background transparent -scale 8x8 $< $@
 %8x8.png: svg/%.svg
-	convert -scale 8x8 $< $@
+	convert -background transparent -scale 8x8 $< $@
 %8x8.gif: svg/%.svg
-	convert -scale 8x8 $< $@
+	convert -background transparent -scale 8x8 $< $@
 
 sbwedge: sbwedge8x8.png sbwedge12x12.png sbwedge16x16.png sbwedge24x24.png \
 	 sbwedge32x32.png sbwedge40x40.png sbwedge50x50.png sbwedge64x64.png \
