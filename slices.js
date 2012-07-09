@@ -73,7 +73,7 @@
 		    ((head_info)&&(makeIDHead(target,head_info,true))),
 		    ((standalone)&&(makelocbar(target_info))),
 		    body);
-	var makerinfo=((info.maker)&&(fdjtKB.ref(info.maker)));
+	var makerinfo=((info.maker)&&(Codex.sourcekb.load(info.maker)));
 	var tstamp=info.tstamp||info._modified||info._created;
 	if (tstamp)
 	    body.title="gloss from "+makerinfo.name+" at "+fdjtTime.shortString(tstamp);
@@ -216,8 +216,8 @@
     function showglossinfo(info) {
 	var user=info.maker;
 	var feed=info.feed||false;
-	var userinfo=Codex.sourcekb.map[user];
-	var feedinfo=Codex.sourcekb.map[feed];
+	var userinfo=(user)&&(Codex.sourcekb.load(user));
+	var feedinfo=(feed)&&(Codex.sourcekb.load(feed));
 	var agestring=timestring(info._modified||info._created);
 	var tool=fdjtDOM(
 	    "span.tool",fdjtDOM("span.age",agestring),
