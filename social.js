@@ -79,8 +79,8 @@
 		else {
 		  icon=fdjtDOM("div.button.source",
 			       fdjtString.getInitials(info.name));}
-		icon.title=info.name;
-		icon.oid=info.oid; icon.id="SBOOKSOURCEICON"+humid;
+		icon.title=info.name; icon.oid=info._id;
+		icon.id="SBOOKSOURCEICON"+humid;
 		fdjtDOM(fdjtID("CODEXSOURCES")," ",icon);}}
 	return info;};
     Codex.UI.addSource=addSource;
