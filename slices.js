@@ -74,7 +74,7 @@
 		    ((standalone)&&(makelocbar(target_info))),
 		    body);
 	var makerinfo=((info.maker)&&(Codex.sourcekb.load(info.maker)));
-	var tstamp=info.tstamp||info._modified||info._created;
+	var tstamp=info.tstamp||info.modified||info.created;
 	if (tstamp)
 	    body.title="gloss from "+makerinfo.name+" at "+fdjtTime.shortString(tstamp);
 	else div.title=Codex.getTitle(target,true);
@@ -218,7 +218,7 @@
 	var feed=info.feed||false;
 	var userinfo=(user)&&(Codex.sourcekb.load(user));
 	var feedinfo=(feed)&&(Codex.sourcekb.load(feed));
-	var agestring=timestring(info._modified||info._created);
+	var agestring=timestring(info.modified||info.created);
 	var tool=fdjtDOM(
 	    "span.tool",fdjtDOM("span.age",agestring),
 	    fdjtDOM.Image(((user===Codex.user._id)?

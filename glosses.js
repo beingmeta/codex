@@ -123,7 +123,7 @@
 	fdjtDOM.getInput(form,"FRAG").value=passageid;
 	if (gloss) {
 	    var date_elt=fdjtDOM.getChild(form,".respdate");
-	    fdjtDOM(date_elt,fdjtTime.shortString(gloss._created));}
+	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
 	var noteinput=fdjtDOM.getInput(form,"NOTE");
 	var taginput=fdjtDOM.getInput(form,"TAG");
 	var linkinput=fdjtDOM.getInput(form,"LINK");
@@ -152,7 +152,7 @@
 	    var note_elt=fdjtDOM.getChild(response_elt,".respnote");
 	    var makerinfo=fdjtKB.ref(gloss.maker);
 	    fdjtDOM(maker_elt,makerinfo.name);
-	    fdjtDOM(date_elt,fdjtTime.shortString(gloss._created));
+	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));
 	    if (gloss.note) {
 		if (gloss.note.length>42) 
 		    fdjtDOM(note_elt,gloss.note.slice(0,42)+"…");
@@ -769,7 +769,7 @@
 	    {refuri: json.refuri,frag: json.frag,
 	     maker: json.user,_id: json.uuid,uuid: json.uuid,
 	     qid: json.uuid,gloss: json.uuid,
-	     _created: fdjtTime()};
+	     created: fdjtTime()};
 	glossdata.tstamp=fdjtTime.tick();
 	if ((json.note)&&(!(fdjtString.isEmpty(json.note))))
 	    glossdata.note=json.note;
