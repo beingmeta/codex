@@ -224,7 +224,9 @@ function CodexDOMScan(root,docinfo){
 	headinfo.frag=headid; headinfo._id="#"+headid;
 	headinfo.title=getTitle(head);
 	headinfo.next=false; headinfo.prev=false;
-	headinfo.sectag="\u00a7"+stdspace(headinfo.title);
+	if (headinfo.title)
+	    headinfo.sectag="\u00a7"+stdspace(headinfo.title);
+	else headinfo.sectag="\u00a7Anonymous Section";
 	if (level>curlevel) {
 	    /* This is the simple case where we are a subhead
 	       of the current head. */
