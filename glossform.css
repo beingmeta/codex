@@ -153,6 +153,12 @@ div.codexglossform form div.glossetc.overflow .twisty { display: none;}
 div.codexglossform form div.glossetc.expanded .twisty { display: none;}
 div.codexglossform form div.glossetc.expanded { max-height: inherit;}
 
+div.codexglossform form div.glossetc .notespan {
+    color: purple; font-weight: bold;}
+div.codexglossform form div.glossetc span.excerpt {
+    font-style: italic;}
+div.codexglossform form div.glossetc span.checkspan.excerpt.ischecked {
+    font-weight: normal;}
 div.codexglossform form div.glossetc .links,
 div.codexglossform form div.glossetc .tags {
     font-size: 125%;}

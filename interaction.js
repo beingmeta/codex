@@ -566,7 +566,7 @@
     function onkeydown(evt){
 	evt=evt||event||null;
 	var kc=evt.keyCode;
-	// Codex.trace("sbook_onkeydown",evt);
+	// fdjtLog("sbook_onkeydown %o",evt);
 	if (evt.keyCode===27) { /* Escape works anywhere */
 	    if (Codex.mode) {
 		Codex.last_mode=Codex.mode;
@@ -588,6 +588,16 @@
 	else if ((kc===8)||(kc===45)) Codex.Backward(evt);
 	// Home goes to the current head.
 	else if (kc===36) Codex.JumpTo(Codex.head);
+	else if ((kc===13)&&(Codex.mode==="addgloss")) {
+	    var glossformdiv=fdjtID("CODEXLIVEGLOSS");
+	    var glossform=(glossformdiv)&&
+		(fdjtDOM.getChild(glossformdiv,"FORM"));
+	    var glossmode=glossform.className;
+	    if ((!(glossmode))||(glossmode==="focused")) {
+		var input=fdjtDOM.getInput(glossform,"NOTE");
+		addClass(glossform,"editnote");
+		input.focus();}
+	    else submitEvent(glossform);}
 	else return;
 	fdjtUI.cancel(evt);}
 

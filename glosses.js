@@ -40,8 +40,12 @@
     var swapClass=fdjtDOM.swapClass;
     var toggleClass=fdjtDOM.toggleClass;
     var getParent=fdjtDOM.getParent;
+    var hasParent=fdjtDOM.hasParent;
     var getChildren=fdjtDOM.getChildren;
     var getChild=fdjtDOM.getChild;
+    var getInput=fdjtDOM.getInput;
+    var getInputs=fdjtDOM.getInputs;
+    var getInputsFor=fdjtDOM.getInputsFor;
 
     var submitEvent=fdjtUI.submitEvent;
 
@@ -102,10 +106,10 @@
 	    div=proto.cloneNode(true); div.id=null;
 	    fdjtDOM(fdjtID("CODEXGLOSSFORMS"),div);
 	    Codex.setupGestures(div);
-	    form=fdjtDOM.getChildren(div,"form")[0];
+	    form=getChildren(div,"form")[0];
 	    form.id=formid;
 	    setupGlossForm(form,passage,gloss,response||false);}
-	else form=fdjtDOM.getChildren(div,"form")[0];
+	else form=getChildren(div,"form")[0];
 	if (gloss) {
 	    if (response) addClass(div,"glossreply");
 	    else addClass(div,"glossedit");}
@@ -116,40 +120,44 @@
 	var passageid=((passage.id)||(passage.codexdupid));
 	if (form.getAttribute("sbooksetup")) return;
 	form.onsubmit=submitGloss;
-	fdjtDOM.getInput(form,"REFURI").value=Codex.refuri;
-	fdjtDOM.getInput(form,"USER").value=Codex.user._id;
-	fdjtDOM.getInput(form,"DOCTITLE").value=document.title;
-	fdjtDOM.getInput(form,"DOCURI").value=document.location.href;
-	fdjtDOM.getInput(form,"FRAG").value=passageid;
+	getInput(form,"REFURI").value=Codex.refuri;
+	getInput(form,"USER").value=Codex.user._id;
+	getInput(form,"DOCTITLE").value=document.title;
+	getInput(form,"DOCURI").value=document.location.href;
+	getInput(form,"FRAG").value=passageid;
 	if (gloss) {
-	    var date_elt=fdjtDOM.getChild(form,".respdate");
+	    var date_elt=getChild(form,".respdate");
 	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
-	var noteinput=fdjtDOM.getInput(form,"NOTE");
-	var taginput=fdjtDOM.getInput(form,"TAG");
-	var linkinput=fdjtDOM.getInput(form,"LINK");
-	var outletinput=fdjtDOM.getInput(form,"OUTLET");
+	var noteinput=getInput(form,"NOTE");
+	var notespan=getChild(form,".notespan");
+	var taginput=getInput(form,"TAG");
+	var linkinput=getInput(form,"LINK");
+	var outletinput=getInput(form,"OUTLET");
+	fdjtDOM.addListener(form,"keyup",glossform_keyup);
 	if (noteinput) {
-	    noteinput.onkeypress=addgloss_keypress;
-	    noteinput.onkeydown=addgloss_keydown;
-	    if ((gloss)&&(!(response))) noteinput.value=gloss.note||"";
+	    noteinput.onkeypress=noteinput_keypress;
+	    noteinput.onkeydown=noteinput_keydown;
+	    if ((gloss)&&(!(response))) {
+		noteinput.value=gloss.note||"";
+		if (notespan) notespan.innerHTML=noteinput.value;}
 	    else noteinput.value="";}
 	if (taginput) taginput.onkeydown=addtag_keypress;
 	if (linkinput) linkinput.onkeypress=addlink_keypress;
 	if (outletinput) outletinput.onkeypress=addoutlet_keypress;
 	if (Codex.syncstamp)
-	    fdjtDOM.getInput(form,"SYNC").value=(Codex.syncstamp+1);
+	    getInput(form,"SYNC").value=(Codex.syncstamp+1);
 	var info=Codex.docinfo[passageid];
-	var loc=fdjtDOM.getInput(form,"LOCATION");
-	var loclen=fdjtDOM.getInput(form,"LOCLEN");
-	var tagline=fdjtDOM.getInput(form,"TAGLINE");
-	var respondsto=fdjtDOM.getInput(form,"RE");
-	var thread=fdjtDOM.getInput(form,"THREAD");
-	var uuidelt=fdjtDOM.getInput(form,"UUID");
-	var response_elt=fdjtDOM.getChild(form,"div.response");
+	var loc=getInput(form,"LOCATION");
+	var loclen=getInput(form,"LOCLEN");
+	var tagline=getInput(form,"TAGLINE");
+	var respondsto=getInput(form,"RE");
+	var thread=getInput(form,"THREAD");
+	var uuidelt=getInput(form,"UUID");
+	var response_elt=getChild(form,"div.response");
 	if ((response_elt)&&(response)&&(gloss)) {
-	    var maker_elt=fdjtDOM.getChild(response_elt,".respmaker");
-	    var date_elt=fdjtDOM.getChild(response_elt,".respdate");
-	    var note_elt=fdjtDOM.getChild(response_elt,".respnote");
+	    var maker_elt=getChild(response_elt,".respmaker");
+	    var date_elt=getChild(response_elt,".respdate");
+	    var note_elt=getChild(response_elt,".respnote");
 	    var makerinfo=fdjtKB.ref(gloss.maker);
 	    fdjtDOM(maker_elt,makerinfo.name);
 	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));
@@ -172,8 +180,8 @@
 	var tagline=getTagline(passage);
 	if (tagline) tagline.value=tagline;
 	if ((gloss)&&(gloss.tags)) {
-	    var tagselt=fdjtDOM.getChild(form,".tags");
-	    var resptags=fdjtDOM.getChild(response_elt,".resptags");
+	    var tagselt=getChild(form,".tags");
+	    var resptags=getChild(response_elt,".resptags");
 	    var tags=gloss.tags;
 	    if (typeof tags === 'string') tags=[tags];
 	    var i=0; var lim=tags.length;
@@ -182,8 +190,8 @@
 		addTag(form,tags[i],false);
 		i++;}}
 	if ((gloss)&&(!(response))&&(gloss.links)) {
-	    var links=fdjtDOM.getChild(form,".links");
-	    var resplinks=fdjtDOM.getChild(response_elt,".resplinks");
+	    var links=getChild(form,".links");
+	    var resplinks=getChild(response_elt,".resplinks");
 	    var links=gloss.links;
 	    for (url in links) {
 		if (url[0]==='_') continue;
@@ -230,8 +238,8 @@
     /***** Adding outlets ******/
     function addOutlet(form,outlet,checked) {
 	if (typeof checked === 'undefined') checked=true;
-	var outletspan=fdjtDOM.getChild(form,".outlets");
-	var inputs=fdjtDOM.getInputs(outletspan,"SHARE");
+	var outletspan=getChild(form,".outlets");
+	var inputs=getInputs(outletspan,"SHARE");
 	var i=0; var lim=inputs.length; var formvar="SHARE";
 	var outlet_id=((typeof outlet === 'string')?(outlet):(outlet._id));
 	if (typeof outlet === 'string') {
@@ -245,7 +253,7 @@
 	else info=outlet;
 	while (i<lim) {
 	    if (inputs[i].value===outlet_id) {
-		var checkspan=fdjtDOM.getParent(inputs[i],".checkspan");
+		var checkspan=getParent(inputs[i],".checkspan");
 		fdjtUI.CheckSpan.set(checkspan,checked);
 		return;}
 	    else i++;}
@@ -256,13 +264,13 @@
 	if (outlet.description) checkspan.title=outlet.description;
 	fdjtDOM(outletspan," ",checkspan);}
     function clearOutlets(form){
-	var outletspan=fdjtDOM.getChild(form,".outlets");
+	var outletspan=getChild(form,".outlets");
 	fdjtDOM.replace(outletspan,fdjtDOM("span.outlets"));}
     Codex.addOutletToForm=addOutlet;
     
     /***** Adding links ******/
     function addLink(form,url,title) {
-	var tagselt=fdjtDOM.getChild(form,'.links');
+	var tagselt=getChild(form,'.links');
 	var linkval=((title)?(url+" "+title):(url));
 	var anchor=fdjtDOM.Anchor(url,"a.glosslink",((title)||url));
 	var checkbox=fdjtDOM.Checkbox("LINKS",linkval,true);
@@ -274,16 +282,16 @@
 
     /***** Adding excerpts ******/
     function setExcerpt(form,excerpt) {
-	var checkspan=fdjtDOM.getChild(form,'.excerpt');
+	var checkspan=getChild(form,'.excerpt');
 	if (!(checkspan)) {
-	    var placeholder=fdjtDOM.getChild(form,'.excerptspan');
+	    var placeholder=getChild(form,'.excerptspan');
 	    checkspan=fdjtDOM("span.checkspan.excerpt",
 			      fdjtDOM.Checkbox('EXCERPT','',false),
 			      fdjtDOM("span.text"));
 	    checkspan.onclick=fdjtUI.CheckSpan.onclick;
 	    fdjtDOM.replace(placeholder,checkspan);}
-	var input=fdjtDOM.getInput(checkspan,'EXCERPT');
-	var text=fdjtDOM.getChild(checkspan,'.text');
+	var input=getInput(checkspan,'EXCERPT');
+	var text=getChild(checkspan,'.text');
 	if (excerpt) {
 	    input.value=excerpt; text.innerHTML=excerpt;
 	    fdjtUI.CheckSpan.set(checkspan,true);}
@@ -296,8 +304,8 @@
 	// fdjtLog("Adding %o to tags for %o",tag,form);
 	if (!(tag)) tag=form;
 	if (form.tagName!=='FORM')
-	    form=fdjtDOM.getParent(form,'form')||form;
-	var tagselt=fdjtDOM.getChild(form,'.tags');
+	    form=getParent(form,'form')||form;
+	var tagselt=getChild(form,'.tags');
 	var info; var title=false; var textspec='span.term';
 	if (!(varname)) varname='TAGS';
 	if ((tag.nodeType)&&(fdjtDOM.hasClass(tag,'completion'))) {
@@ -309,11 +317,11 @@
 	    if (tag.title) title=tag.title;
 	    tag=gloss_cloud.getValue(tag);
 	    if (hasClass(form,"editnote")) {
-		var input=fdjtDOM.getInput(form,"NOTE");
+		var input=getInput(form,"NOTE");
 		// This erases whatever was being typed
 		if (input) getbracketed(input,false);}
 	    else if (hasClass(form,"addtag")) {
-		var input=fdjtDOM.getInput(form,"TAG");
+		var input=getInput(form,"TAG");
 		// This erases whatever was being typed
 		if (input) input.value="";
 		setTimeout(function(){input.focus();},1500);}}
@@ -329,7 +337,7 @@
 	    if (info.knodule===Codex.knodule) tag=info.dterm;
 	    else tag=info._id||info.dterm||tag;}
 	if ((info)&&(info.pool===Codex.sourcekb)) varname='SHARED';
-	var checkspans=fdjtDOM.getChildren(tagselt,".checkspan");
+	var checkspans=getChildren(tagselt,".checkspan");
 	var i=0; var lim=checkspans.length;
 	while (i<lim) {
 	    var cspan=checkspans[i++];
@@ -352,9 +360,9 @@
     Codex.setGlossNetwork=function(form,network,checked){
 	if (typeof form === 'string') form=fdjtID(form);
 	if (!(form)) return;
-	var input=fdjtDOM.getInput(form,'NETWORKS',network);
+	var input=getInput(form,'NETWORKS',network);
 	if (!(input)) return;
-	var cs=fdjtDOM.getParent(input,".checkspan");
+	var cs=getParent(input,".checkspan");
 	if (!(cs)) return;
 	fdjtUI.CheckSpan.set(cs,checked);};
 
@@ -396,39 +404,39 @@
 	var form_elt=getChild(form,"FORM");
 	var mode=form_elt.className;
 	var input=false;
-	var syncelt=fdjtDOM.getInput(form,"SYNC");
+	var syncelt=getInput(form,"SYNC");
 	syncelt.value=(Codex.syncstamp+1);
 	{ // Update the big network buttons in the OUTLETS cloud
-	    var inputs=fdjtDOM.getInputs(form,'NETWORKS');
+	    var inputs=getInputs(form,'NETWORKS');
 	    var altnetworks=fdjtID("CODEXNETWORKBUTTONS");
 	    var i=0; var lim=inputs.length;
 	    while (i<lim) {
 		var input=inputs[i++];
-		var doppels=fdjtDOM.getInputsFor(altnetworks,'NETWORKS',input.value);
+		var doppels=getInputsFor(altnetworks,'NETWORKS',input.value);
 		fdjtUI.CheckSpan.set(doppels,input.checked);}}
 	/* Get the input appropriate to the mode. */
 	if (mode==='editnote') {
-	    input=fdjtDOM.getInput(form,"NOTE");
+	    input=getInput(form,"NOTE");
 	    if (input)
 		gloss_cloud.complete(getbracketed(input,false)||"");
 	    else gloss_cloud.complete("");}
-	else if (mode==='addtag') input=fdjtDOM.getInput(form,"TAG");
-	else if (mode==='addlink') input=fdjtDOM.getInput(form,"LINK");
-	else if (mode==='excerpt') input=fdjtDOM.getInput(form,"EXCERPT");
-	else if (mode==='addoutlet') input=fdjtDOM.getInput(form,"OUTLET");
+	else if (mode==='addtag') input=getInput(form,"TAG");
+	else if (mode==='addlink') input=getInput(form,"LINK");
+	else if (mode==='excerpt') input=getInput(form,"EXCERPT");
+	else if (mode==='addoutlet') input=getInput(form,"OUTLET");
 	/* Do completions based on those input's values */
-	var outlet_input=fdjtDOM.getInput(form,"OUTLET");
+	var outlet_input=getInput(form,"OUTLET");
 	if ((outlet_input)&&(outlet_cloud))
 	    outlet_cloud.complete((outlet_input.value)||"");
 	if (mode!=='editnote') {
-	    var tag_input=fdjtDOM.getInput(form,"TAG");
+	    var tag_input=getInput(form,"TAG");
 	    gloss_cloud.complete((tag_input.value)||"");}
 	if (input) input.focus();}
     Codex.setGlossForm=setGlossForm;
     
     function setCloudCues(cloud,tags){
 	// Clear any current tagcues from the last gloss
-	var cursoft=fdjtDOM.getChildren(cloud.dom,".cue.softcue");
+	var cursoft=getChildren(cloud.dom,".cue.softcue");
 	var i=0; var lim=cursoft.length;
 	while (i<lim) {
 	    var cur=cursoft[i++];
@@ -471,8 +479,8 @@
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	var alt=target.alt;
-	var form=fdjtDOM.getParent(target,'form');
-	var input=fdjtDOM.getInput(form,'NOTE');
+	var form=getParent(target,'form');
+	var input=getInput(form,'NOTE');
 	var string=input.value;
 	var bracketed=getbracketed(input);
 	fdjtUI.cancel(evt);
@@ -517,7 +525,7 @@
     function addlink_keypress(evt){
 	var target=fdjtUI.T(evt);
 	var content=target.value;
-	var form=fdjtDOM.getParent(target,"FORM");
+	var form=getParent(target,"FORM");
 	var ch=evt.keyCode;
 	if (ch===13) {
 	    if (fdjtString.isEmpty(content)) {
@@ -533,7 +541,7 @@
     function addtag_keypress(evt){
 	var target=fdjtUI.T(evt);
 	var content=target.value;
-	var form=fdjtDOM.getParent(target,"FORM");
+	var form=getParent(target,"FORM");
 	var ch=evt.keyCode||evt.charCode;
 	if ((fdjtString.isEmpty(content))&&(ch===13)) {
 	    submitEvent(target);
@@ -574,7 +582,7 @@
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	var content=target.value;
-	var form=fdjtDOM.getParent(target,"FORM");
+	var form=getParent(target,"FORM");
 	var ch=evt.keyCode||evt.charCode;
 	if (!(outlet_cloud)) return;
 	else if ((fdjtString.isEmpty(content))&&(ch===13)) {
@@ -595,10 +603,10 @@
 			100);}
 
     /* This handles embedded brackets */
-    function addgloss_keypress(evt){
+    function noteinput_keypress(evt){
 	var target=fdjtUI.T(evt);
 	var string=target.value;
-	var form=fdjtDOM.getParent(target,"FORM");
+	var form=getParent(target,"FORM");
 	var ch=evt.charCode;
 	if (addgloss_timer) clearTimeout(addgloss_timer);
 	if (ch===91) { /* [ */
@@ -623,20 +631,59 @@
 		    if (span[0]!=='@') gloss_cloud.complete(span);},
 					  200);}}
 
-    function addgloss_keydown(evt){
+    function noteinput_keydown(evt){
 	evt=evt||event;
 	var kc=evt.keyCode;
 	var target=fdjtUI.T(evt);
-	var form=fdjtDOM.getParent(target,'form');
+	var form=getParent(target,'form');
 	if (kc===13) {
+	    if (!(target.offsetHeight)) {
+		if (fdjtString.isEmpty(target.value))
+		    addClass(form,"noteinput");
+		else {
+		    fdjtUI.cancel(evt);
+		    submitEvent(form);}}
+	    else if (fdjtString.isEmpty(target.value)) {
+		fdjtUI.cancel(evt);
+		submitEvent(form);}
+	    else {
+		var bracketed=getbracketed(target);
+		if (bracketed) {
+		    fdjtUI.cancel(evt);
+		    handleBracketed(form,getbracketed(target,true),true);}
+		else if (evt.ctrlKey) {
+		    fdjtUI.cancel(evt);
+		    submitEvent(target);}
+		else if (!(evt.shiftKey)) {
+		    fdjtUI.cancel(evt);
+		    var notespan=getChild(form,".notespan");
+		    if (notespan) notespan.innerHTML=target.value;
+		    dropClass(form,"editnote");}
+		else fdjtUI.cancelBubble(evt);}}}
+
+    function glossform_keyup(evt){
+	evt=evt||event;
+	var kc=evt.keyCode;
+	var target=fdjtUI.T(evt);
+	if ((hasParent(target,"INPUT"))||(hasParent(target,"TEXTAREA"))) {
+	    fdjtUI.cancel(evt);
+	    return;}
+	var form=getParent(target,'form');
+	if ((kc===13)&&((!(form.className))||(form.className===""))) {
 	    var bracketed=getbracketed(target);
 	    if (bracketed) {
 		fdjtUI.cancel(evt);
 		handleBracketed(form,getbracketed(target,true),true);}
+	    else if (evt.ctrlKey) {
+		fdjtUI.cancel(evt);
+		submitEvent(target);}
 	    else if (!(evt.shiftKey)) {
 		fdjtUI.cancel(evt);
-		submitEvent(target);}}}
-
+		var notespan=getChild(form,".notespan");
+		if (notespan) notespan.innerHTML=target.value;
+		dropClass(form,"editnote");}
+	    else {}}}
+    
     function get_addgloss_callback(form){
 	return function(req){
 	    return addgloss_callback(req,form);}}
@@ -656,17 +703,17 @@
 
     function clearGlossForm(form){
 	// Clear the UUID, and other fields
-	var uuid=fdjtDOM.getInput(form,"UUID");
+	var uuid=getInput(form,"UUID");
 	if (uuid) uuid.value="";
-	var note=fdjtDOM.getInput(form,"NOTE");
+	var note=getInput(form,"NOTE");
 	if (note) note.value="";
-	var taginput=fdjtDOM.getInput(form,"TAG");
+	var taginput=getInput(form,"TAG");
 	if (taginput) taginput.value="";
-	var href=fdjtDOM.getInput(form,"HREF");
+	var href=getInput(form,"HREF");
 	if (href) href.value="";
-	var tagselt=fdjtDOM.getChildren(form,".tags");
+	var tagselt=getChildren(form,".tags");
 	if ((tagselt)&&(tagselt.length)) {
-	    var tags=fdjtDOM.getChildren(tagselt[0],".checkspan");
+	    var tags=getChildren(tagselt[0],".checkspan");
 	    fdjtDOM.remove(fdjtDOM.Array(tags));}}
 
     /***** The Gloss Cloud *****/
@@ -689,10 +736,10 @@
     
     function glosscloud_ontap(evt){
 	var target=fdjtUI.T(evt);
-	var completion=fdjtDOM.getParent(target,'.completion');
+	var completion=getParent(target,'.completion');
 	if (completion) {
 	    var live=fdjtID("CODEXLIVEGLOSS");
-	    var form=((live)&&(fdjtDOM.getChild(live,"form")));
+	    var form=((live)&&(getChild(live,"form")));
 	    addTag(form,completion);}
 	fdjtUI.cancel(evt);}
 
@@ -716,10 +763,10 @@
     
     function outletcloud_ontap(evt){
 	var target=fdjtUI.T(evt);
-	var completion=fdjtDOM.getParent(target,'.completion');
+	var completion=getParent(target,'.completion');
 	if (completion) {
 	    var live=fdjtID("CODEXLIVEGLOSS");
-	    var form=((live)&&(fdjtDOM.getChild(live,"form")));
+	    var form=((live)&&(getChild(live,"form")));
 	    if (hasClass(completion,"source")) {
 		var value=completion.getAttribute("value");
 		addOutlet(form,fdjtKB.ref(value));}
@@ -736,7 +783,7 @@
 	var form=(fdjtUI.T(evt));
 	var proto=fdjtID();
 	setGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
-	var uuidelt=fdjtDOM.getInput(form,"UUID");
+	var uuidelt=getInput(form,"UUID");
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
 	    if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
@@ -797,8 +844,7 @@
 	if ((!(queued))||(queued.length===0)) {
 	    fdjtState.dropLocal("queued("+Codex.refuri+")");
 	    return;}
-	var ajax_uri=fdjtDOM.getChild(
-	    fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
+	var ajax_uri=getChild(fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
 	    getAttribute("ajaxaction");
 	var i=0; var lim=queued.length; var pending=[];
 	while (i<lim) {
