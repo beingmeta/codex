@@ -108,7 +108,7 @@ body.codexhelp div#CODEXHUD.scanning div#CODEXSCANNINGHELP.helpbox,
 body.codexhelp div#CODEXHUD.search div#CODEXSEARCHINPUTHELP.helpbox,
 body.codexhelp div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
 body.codexhelp div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
-    opacity: 0.9; border-color: black; z-index: 260;}
+    opacity: 0.9; border-color: black; z-index: 260; display: block;}
 
 /* Goto page and goto loc always display their help. */
 body div#CODEXHUD.gotopage div#CODEXHUDHELP,

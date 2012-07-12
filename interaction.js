@@ -1271,6 +1271,9 @@
 		CodexMode("addgloss");
 		return;}
 	    else return;}
+	if (!(getParent(target,".tochead"))) {
+	    fdjtDOM.toggleClass("CODEXSCANNER","expanded");
+	    return;}
 	var scanning=Codex.scanning;
 	if (!(scanning)) return;
 	var hudparent=getParent(scanning,".hudpanel");
