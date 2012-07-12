@@ -617,13 +617,13 @@
 	    gloss_cloud.complete("");
 	    return;}
 	else if (ch===13) {
+	    var completions=gloss_cloud.complete(content);
 	    if ((content.indexOf('|')>=0)||
 		(content.indexOf('@')>=0)||
 		(completions.length===0)||
 		(evt.shiftKey))
 		addTag(form,content);
 	    else {
-		var completions=gloss_cloud.complete(content);
 		if (completions.length)
 		    addTag(form,completions[0]);
 		else addTag(form,content);}
