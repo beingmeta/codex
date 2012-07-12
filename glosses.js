@@ -461,7 +461,7 @@
 	form.id="CODEXLIVEGLOSS";
 	var form_elt=getChild(form,"FORM");
 	var mode=form_elt.className;
-	var input=false;
+	var input=false; var note_input=getInput(form,"NOTE");
 	var syncelt=getInput(form,"SYNC");
 	syncelt.value=(Codex.syncstamp+1);
 	{ // Update the big network buttons in the OUTLETS cloud
@@ -474,7 +474,7 @@
 		fdjtUI.CheckSpan.set(doppels,input.checked);}}
 	/* Get the input appropriate to the mode. */
 	if (mode==='editnote') {
-	    input=getInput(form,"NOTE");
+	    input=note_input;
 	    if (input)
 		gloss_cloud.complete(getbracketed(input,false)||"");
 	    else gloss_cloud.complete("");}
@@ -489,7 +489,8 @@
 	if (mode!=='editnote') {
 	    var tag_input=getInput(form,"TAG");
 	    gloss_cloud.complete((tag_input.value)||"");}
-	if (input) input.focus();}
+	if (input) input.focus();
+	else if (noteinput) noteinput.focus();}
     Codex.setGlossForm=setGlossForm;
     
     function setCloudCues(cloud,tags){
@@ -694,16 +695,9 @@
 	var kc=evt.keyCode;
 	var target=fdjtUI.T(evt);
 	var form=getParent(target,'form');
-	if (kc===13) {
-	    if (!(target.offsetHeight)) {
-		if (fdjtString.isEmpty(target.value))
-		    addClass(form,"noteinput");
-		else {
-		    fdjtUI.cancel(evt);
-		    submitEvent(form);}}
-	    else if (fdjtString.isEmpty(target.value)) {
-		fdjtUI.cancel(evt);
-		submitEvent(form);}
+	var mode=getGlossMode(form);
+	if (kc===13) { // newline/enter
+	    if (!(mode)) {submitEvent(form);}
 	    else {
 		var bracketed=getbracketed(target);
 		if (bracketed) {
@@ -717,7 +711,17 @@
 		    var notespan=getChild(form,".notespan");
 		    if (notespan) notespan.innerHTML=target.value;
 		    dropClass(form,"editnote");}
-		else fdjtUI.cancelBubble(evt);}}}
+		else fdjtUI.cancelBubble(evt);}}
+	else if (mode) {}
+	else if ((kc===35)||(kc===91)) // # or [
+	    setGlossMode("addtag",form);
+	else if (kc===32) // Space
+	    setGlossMode("editnode",form);
+	else if ((kc===47)||(kc===58)) // /or :
+	    setGlossMode("addlink",form);
+	else if ((kc===64)) // @
+	    setGlossMode("sharing",form);
+	else {}}
 
     function glossform_keyup(evt){
 	evt=evt||event;

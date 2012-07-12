@@ -583,21 +583,30 @@
 	else if (kc===39) Codex.scanForward(evt); /* arrow right */
 	// Don't interrupt text input for space, etc
 	else if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
-	else if (kc===32) Codex.Forward(evt); // Space
+	else if ((!(Codex.mode))&&(kc===32)) // Space
+	    Codex.Forward(evt);
 	// backspace or delete
-	else if ((kc===8)||(kc===45)) Codex.Backward(evt);
+	else if ((!(Codex.mode))&&((kc===8)||(kc===45)))
+	    Codex.Backward(evt);
 	// Home goes to the current head.
 	else if (kc===36) Codex.JumpTo(Codex.head);
-	else if ((kc===13)&&(Codex.mode==="addgloss")) {
-	    var glossformdiv=fdjtID("CODEXLIVEGLOSS");
-	    var glossform=(glossformdiv)&&
-		(fdjtDOM.getChild(glossformdiv,"FORM"));
-	    var glossmode=glossform.className;
-	    if ((!(glossmode))||(glossmode==="focused")) {
-		var input=fdjtDOM.getInput(glossform,"NOTE");
-		addClass(glossform,"editnote");
-		input.focus();}
-	    else submitEvent(glossform);}
+	else if (Codex.mode==="addgloss") {
+	    var mode=Codex.getGlossMode();
+	    if (mode) return;
+	    var formdiv=fdjtID("CODEXLIVEGLOSS");
+	    var form=(formdiv)&&(fdjtDOM.getChild(formdiv,"FORM"));
+	    if (!(form)) return;
+	    if (kc===13) { // return/newline
+		submitEvent(form);}
+	    else if ((kc===35)||(kc===91)) // # or [
+		Codex.setGlossMode("addtag",form);
+	    else if (kc===32) // Space
+		Codex.setGlossMode("editnote",form);
+	    else if ((kc===47)||(kc===58)) // /or :
+		Codex.setGlossMode("addlink",form);
+	    else if ((kc===64)) // @
+		Codex.setGlossMode("sharing",form);
+	    else {}}
 	else return;
 	fdjtUI.cancel(evt);}
 
