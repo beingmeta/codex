@@ -325,8 +325,8 @@
 	else {
 	    form_class='editnote';
 	    Codex.setHUD(true);}
-	Codex.setGlossForm(form);
 	if (form_elt) form_elt.className=form_class;
+	Codex.setGlossForm(form);
 	fdjtUI.cancel(evt);
 	CodexMode("addgloss");}
 

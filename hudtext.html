@@ -1,5 +1,15 @@
 <div id="CODEXHELP" class="helpbox"></div>
 <div id="CODEXHUDHELP"></div>
+<div id="CODEXKEYBOARDHELPBOX" class="closed">
+  <span class="keep" onclick="Codex.keyboardHelp(true);">keep</span>
+  <span class="close" onclick="Codex.keyboardHelp(false);">close</span>
+  <div id="CODEXKEYBOARDHELP"></div>
+  <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+    <input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
+	   CHECKED>
+    Show keyboard help
+  </div>
+</div>
 <div id="CODEXEXCERPT" class="hudpanel">
   <div>
     <span id="CODEXEXCERPTCANCEL"

@@ -68,10 +68,15 @@
 	book tools</span></td></tr>
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
     <th><input TYPE='CHECKBOX' NAME='CODEXSTARTUPHELP' VALUE='yes'
-	       onchange="fdjtUI.CheckSpan.set('STARTUPHELPCHECKBOX',fdjtID('CODEXSTARTUPHELPSETTING').checked);"
 	       id="CODEXSTARTUPHELPSETTING"
 	       CHECKED/></th>
     <td>Show the sReader help page on startup</td></tr>
+  <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+    <th><input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
+	       onchange="fdjtUI.CheckSpan.set('STARTUPHELPCHECKBOX',fdjtID('CODEXSTARTUPHELPSETTING').checked);"
+	       id="CODEXKEYBOARDHELPSETTING"
+	       CHECKED/></th>
+    <td>Show keyboard help for sReader</td></tr>
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
     <th><input TYPE='CHECKBOX' NAME='CODEXSHOWCONSOLE' VALUE='yes'/></th>
     <td>Show the sReader console</td></tr>

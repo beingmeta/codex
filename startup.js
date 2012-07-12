@@ -89,7 +89,7 @@ Codex.Startup=
 	     bodysize: 'normal',bodyfamily: 'serif',
 	     uisize: 'normal',showconsole: true,
 	     animatepages: true,animatehud: true,
-	     startuphelp: true};
+	     startuphelp: true,keyboardhelp: true};
 	var current_config={};
 	var saved_config={};
 
@@ -228,7 +228,15 @@ Codex.Startup=
 	Codex.updateConfig=updateConfig;
 
 	Codex.addConfig("startuphelp",function(name,value){
-	    Codex.startuphelp=value;});
+	    Codex.startuphelp=value;
+	    fdjtUI.CheckSpan.set(
+		document.getElementsByName("CODEXSTARTUPHELP"),
+		value);});
+	Codex.addConfig("keyboardhelp",function(name,value){
+	    Codex.keyboardhelp=value;
+	    fdjtUI.CheckSpan.set(
+		document.getElementsByName("CODEXKEYBOARDHELP"),
+		value);});
 	Codex.addConfig("devicename",function(name,value){
 	    Codex.deviceName=value;});
 	Codex.addConfig("deviceid",function(name,value){
@@ -648,6 +656,7 @@ Codex.Startup=
 		Codex.scrolldivs=false;
 		Codex.updatehash=false;
 		default_config.layout='fastpage';
+		default_config.keyboardhelp=false;
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (sbook_faketouch) {

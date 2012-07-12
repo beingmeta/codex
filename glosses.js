@@ -76,6 +76,7 @@
 	if (!(form)) return;
 	if (!(mode)) {
 	    fdjtDOM.dropClass(form,glossmodes);
+	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");
 	    return;}
 	if ((mode==="tag")||(mode==="addtag")) {
 	    modeclass="addtag";
@@ -89,7 +90,10 @@
 	else if ((mode==="sharing")||(mode==="share")) {
 	    modeclass="sharing";
 	    input=fdjtDOM.getInput(form,'OUTLET');}
-	else return;
+	else {
+	    fdjtDOM.dropClass(form,glossmodes);
+	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");
+	    return;}
 	if (Codex.Trace.mode)
 	    fdjtLog("setGlossMode gm=%s input=%o",modeclass,input);
 	if ((!(modeclass))||((toggle)&&(hasClass(form,modeclass)))) {
@@ -107,7 +111,7 @@
 	    else dropClass("CODEXHEART","showoutlets");
 	    swapClass(form,glossmodes,modeclass);
 	    Codex.setHUD(true);
-	    Codex.setFocus(input);}}
+	    if (input) Codex.setFocus(input);}}
     Codex.setGlossMode=setGlossMode;
 
     function _getbracketed(input,erase){
@@ -461,7 +465,7 @@
 	form.id="CODEXLIVEGLOSS";
 	var form_elt=getChild(form,"FORM");
 	var mode=form_elt.className;
-	var input=false; var note_input=getInput(form,"NOTE");
+	var input=false; var noteinput=getInput(form,"NOTE");
 	var syncelt=getInput(form,"SYNC");
 	syncelt.value=(Codex.syncstamp+1);
 	{ // Update the big network buttons in the OUTLETS cloud
@@ -474,7 +478,7 @@
 		fdjtUI.CheckSpan.set(doppels,input.checked);}}
 	/* Get the input appropriate to the mode. */
 	if (mode==='editnote') {
-	    input=note_input;
+	    input=noteinput;
 	    if (input)
 		gloss_cloud.complete(getbracketed(input,false)||"");
 	    else gloss_cloud.complete("");}
@@ -482,6 +486,10 @@
 	else if (mode==='addlink') input=getInput(form,"LINK");
 	else if (mode==='excerpt') input=getInput(form,"EXCERPT");
 	else if (mode==='addoutlet') input=getInput(form,"OUTLET");
+	else {
+	    input=noteinput;
+	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");}
+	    
 	/* Do completions based on those input's values */
 	var outlet_input=getInput(form,"OUTLET");
 	if ((outlet_input)&&(outlet_cloud))
@@ -490,7 +498,7 @@
 	    var tag_input=getInput(form,"TAG");
 	    gloss_cloud.complete((tag_input.value)||"");}
 	if (input) input.focus();
-	else if (noteinput) noteinput.focus();}
+	else {}}
     Codex.setGlossForm=setGlossForm;
     
     function setCloudCues(cloud,tags){

@@ -98,8 +98,6 @@ var CodexMode=
 	    var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
 	    addgloss.innerHTML=sbook_addgloss;
 
-	    if (Codex.hidehelp) Codex.setConfig("hidehelp");
-
 	    if (!(Codex.svg)) {
 		var images=fdjtDOM.getChildren(hud,"img");
 		var i=0; var lim=images.length;
@@ -835,6 +833,40 @@ var CodexMode=
 		    fdjtUI.cancel(evt);
 		    console_eval();
 		    if (evt.shiftKey) input_console.value="";}}}
+
+	function keyboardHelp(arg,force){
+	    if (arg===true) {
+		if (Codex.keyboardHelp.timer) {
+		    clearTimeout(Codex.keyboardHelp.timer);
+		    Codex.keyboardHelp.timer=false;}
+		dropClass("CODEXKEYBOARDHELPBOX","closing");
+		dropClass("CODEXKEYBOARDHELPBOX","closed");
+		return;}
+	    else if (arg===false) {
+		if (Codex.keyboardHelp.timer) {
+		    clearTimeout(Codex.keyboardHelp.timer);
+		    Codex.keyboardHelp.timer=false;}
+		addClass("CODEXKEYBOARDHELPBOX","closed");
+		dropClass("CODEXKEYBOARDHELPBOX","closing");
+		return;}
+	    if ((!force)&&(!(Codex.keyboardhelp))) return;
+	    if (typeof arg === 'string') arg=fdjtID(arg);
+	    if ((!(arg))||(!(arg.nodeType))) return;
+	    var box=fdjtID("CODEXKEYBOARDHELPBOX");
+	    var content=arg.cloneNode(true);
+	    content.id="CODEXKEYBOARDHELP";
+	    fdjtDOM.replace("CODEXKEYBOARDHELP",content);
+	    fdjtDOM.dropClass(box,"closed");
+	    Codex.keyboardHelp.timer=
+		setTimeout(function(){
+		    fdjtDOM.addClass(box,"closing");
+		    Codex.keyboardHelp.timer=
+			setTimeout(function(){
+			    Codex.keyboardHelp.timer=false;
+			    fdjtDOM.swapClass(box,"closing","closed");},
+				   5000);},
+			   5000);};
+	Codex.keyboardHelp=keyboardHelp;
 
 	/* Button methods */
 

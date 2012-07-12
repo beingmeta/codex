@@ -40,7 +40,7 @@ span.codexcssversion:after {
 
 #CODEXHUD {
     position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
-    font-family: sans,sans-serif;
+    font-family: verdana,helvetica,sans,sans-serif;
     z-index: 100;}
 
 div#CODEXWINDOW {
@@ -175,7 +175,7 @@ body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
 
 div#CODEXPAGINATING {
     position: absolute;
-    font-family: sans,sans-serif;
+    font-family: verdana,helvetica,sans,sans-serif;
     font-size: 200%; font-weight: bold;
     height: 3em; text-align: center;
     top: 5em; left: 10%; right: 10%;
@@ -1024,7 +1024,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
 
 div#CODEXHUD div#CODEXHUDBUTTONS {
     margin: 0px; padding: 0px; border-bottom-width: 0px; min-height: 60px;
-    font-family: times,serif; font-variant: small-caps;
+    font-family: verdana,helvetica,times,serif; font-variant: small-caps;
     text-align: center;}
 
 body div#CODEXHUD div#CODEXHUDBUTTONS
@@ -1118,7 +1118,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate .applinks {
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
     position: absolute; right: 60px;
     vertical-align: top; padding-right: 2px;
-    font-family: helvetica,sans,sans-serif; font-weight: bold;
+    font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     display: none;
     color: red;}
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout:visited {
@@ -1126,7 +1126,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout:visited {
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#CODEXUSERNAME {
     position: absolute; left: 60px;
     vertical-align: top; padding-right: 2px;
-    font-family: helvetica,sans,sans-serif; font-weight: bold;
+    font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     display: none;
     color: blue;}
 
@@ -1200,13 +1200,13 @@ div#CODEXHUD div#CODEXFLYHEAD .flyleafplate .applinks {
 
 div#CODEXHUD div#CODEXFLYHEAD .flyleafplate a.logout {
     float: right; vertical-align: top; padding-right: 2px;
-    font-family: helvetica,sans,sans-serif; font-weight: bold;
+    font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     background-color: gold; color: red;}
 div#CODEXHUD div#CODEXFLYHEAD .flyleafplate a.logout:visited {
     color: red;}
 div#CODEXHUD div#CODEXFLYHEAD a.login {
     float: right; vertical-align: top; padding-right: 2px;
-    font-family: helvetica,sans,sans-serif;
+    font-family: verdana,helvetica,sans,sans-serif;
     background-color: gold; color: blue;
     display:none;}
 body.cxNOUSER a.logout {display: none;}
@@ -1279,7 +1279,7 @@ div#CODEXHUD.settings div#CODEXHEART table.settings .smallbutton {
 
 div#CODEXSETTINGS span.button {
     float: right; font-size: 125%; cursor: pointer;
-    font-family: sans,sans-serif; font-weight: bold;
+    font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     color: white; background-color: silver;
     margin-left: 6px; padding: 4px; border: solid black 2px;
     border-radius: 5px;

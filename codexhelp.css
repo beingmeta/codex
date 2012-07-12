@@ -29,13 +29,13 @@ div#CODEXHUD div#CODEXHELP .codexclicktohide {
 
 div#CODEXHELP div.codexhelp {
     position: absolute; left: 0px; right: 0px;
-    top: 0px; bottom: 40px; max-width: 40em;
-    margin-left: auto; margin-right: auto;
+    top: 0px; bottom: 40px; 
     overflow: auto;}
 div#CODEXHELP div.codexhelp p {
     text-align: left;
     margin-left: 5em; margin-right: 2em; text-indent: -3em;}
 div#CODEXHELP div.codexhelp div.helpblock {
+    max-width: 40em; margin-left: auto; margin-right: auto;
     margin-bottom: 1em;}
 div#CODEXHELP div.codexhelp div.helpblock p {
     margin-top: 2px; margin-bottom: 2px;}
@@ -146,7 +146,7 @@ div#BOTTOMHUDHELP p {
     text-indent: 0px; margin-bottom: 1px; margin-top: 1px;
     max-width: 40em; margin-left: auto; margin-right: auto;
     text-align: center;}
-div#BOTTOMHUDHELP p.checkspan { text-align: center; }
+DIV#CODEXHELP div.codexhelp p.checkspan { text-align: center; }
 
 /* Help HUD */
 
@@ -205,6 +205,45 @@ body.cxUSER div#CODEXHELP p#CODEXHELPNEEDLOGIN { display: none;}
 body div#CODEXHELP p#CODEXHELPDISCONNECTED { display: none;}
 body.cxUSER.cxDISCONN div#CODEXHELP p#CODEXHELPDISCONNECTED {
     margin-top: 1em; color: red; font-weight: bold; display: block;}
+
+div#CODEXHUD div#CODEXKEYBOARDHELPBOX {
+    position: fixed; text-align: center;
+    top: 150px; left: 75px; right: 75px;
+    font-size: 120%; font-family: helvetica,sans,sans-serif;
+    background-color: lightgray; color: black; opacity: 0.95;
+    border-radius: 1em; -webkit-border-radius: 1em;
+    -moz-border-radius: 1em; -o-border-radius: 1em;
+    border: solid gray 4px;
+    transition-property: opacity; transition-duration: 5s;
+    -o-transition-property: opacity; -o-transition-duration: 5s;
+    -moz-transition-property: opacity; -moz-transition-duration: 5s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 5s;}
+
+div#CODEXHUD div#CODEXKEYBOARDHELPBOX div#CODEXKEYBOARDHELP {
+    margin: 2em;}
+
+div#CODEXHUD div#CODEXKEYBOARDHELPBOX span.keep {
+    color: green; float: left; margin-left: 1em; font-weight: bold;
+    cursor: pointer;}
+div#CODEXHUD div#CODEXKEYBOARDHELPBOX span.keep:hover,
+div#CODEXHUD div#CODEXKEYBOARDHELPBOX span.close:hover {
+    text-decoration: underline; }
+div#CODEXHUD div#CODEXKEYBOARDHELPBOX span.close {
+    color: red; float: right; margin-right: 1em; font-weight: bold;
+    cursor: pointer;}
+
+div#CODEXHUD div#CODEXKEYBOARDHELPBOX.closing {
+    opacity: 0.05;}
+div#CODEXHUD div#CODEXKEYBOARDHELPBOX.closed {
+    opacity: 1.0; display: none;}
+
+div#CODEXHUD div#CODEXKEYBOARDHELPBOX.closing
+ div#CODEXKEYBOARDHELP {
+     opacity: 0.8;}
+
+div#CODEXHUD div#CODEXKEYBOARDHELP kbd {
+    font-family: verdana,helvetica,sans,sans-serif;
+    font-size: 120%; font-weight: bold;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
