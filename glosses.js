@@ -53,6 +53,63 @@
 
     var cxicon=Codex.icon;
 
+    function getGlossMode(arg){
+	if (!(arg)) arg=fdjtID("CODEXLIVEGLOSS");
+	if (typeof arg === 'string') arg=fdjtID(arg);
+	if ((!(arg))||(!(arg.nodeType))) return false;
+	if (arg.tagName!=="FORM") arg=getChild(arg,"FORM");
+	var classname=arg.className;
+	var match=glossmodes.exec(classname);
+	if ((!(match))||(match.length==0)||(!(match[0])))
+	    return false;
+	else return match[0];}
+    Codex.getGlossMode=getGlossMode;
+
+    function setGlossMode(mode,arg,toggle){
+	if (!(arg)) arg=fdjtID("CODEXLIVEGLOSS");
+	if (typeof arg === 'string') arg=fdjtID(arg);
+	if ((!(arg))||(!(arg.nodeType))) return;
+	var form=((arg.tagName==="FORM")?(arg):
+		  ((fdjtDOM.getParent(arg,"form"))||
+		   (fdjtDOM.getChild(arg,"form"))));
+	var modeclass=false; var input=false;
+	if (!(form)) return;
+	if (!(mode)) {
+	    fdjtDOM.dropClass(form,glossmodes);
+	    return;}
+	if ((mode==="tag")||(mode==="addtag")) {
+	    modeclass="addtag";
+	    input=fdjtDOM.getInput(form,'TAG');}
+	else if ((mode==="link")||(mode==="addlink")) {
+	    modeclass="addlink";
+	    input=fdjtDOM.getInput(form,'LINK');}
+	else if ((mode==="note")||(mode==="editnote")) {
+	    modeclass="editnote";
+	    input=fdjtDOM.getInput(form,'NOTE');}
+	else if ((mode==="sharing")||(mode==="share")) {
+	    modeclass="sharing";
+	    input=fdjtDOM.getInput(form,'OUTLET');}
+	else return;
+	if (Codex.Trace.mode)
+	    fdjtLog("setGlossMode gm=%s input=%o",modeclass,input);
+	if ((!(modeclass))||((toggle)&&(hasClass(form,modeclass)))) {
+	    dropClass("CODEXHEART","tagging");
+	    dropClass("CODEXHEART","showoutlets");
+	    dropClass(form,glossmodes);}
+	else {
+	    if (modeclass==="addtag") {
+		addClass("CODEXHEART","tagging");
+		Codex.UI.updateScroller("CODEXGLOSSCLOUD");}
+	    else dropClass("CODEXHEART","tagging");
+	    if (modeclass==="sharing") {
+		addClass("CODEXHEART","showoutlets");
+		Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
+	    else dropClass("CODEXHEART","showoutlets");
+	    swapClass(form,glossmodes,modeclass);
+	    Codex.setHUD(true);
+	    Codex.setFocus(input);}}
+    Codex.setGlossMode=setGlossMode;
+
     function _getbracketed(input,erase){
 	var string=input.value;
 	if ((!(string))||(string.length==0)) return false;
@@ -344,8 +401,9 @@
 	    if (((cspan.getAttribute("varname"))===varname)&&
 		((cspan.getAttribute("tagval"))===tag))
 		return cspan;}
-	var span=fdjtUI.CheckSpan("span.checkspan",varname,tag,
-				  ((typeof checked === 'undefined')||(checked)));
+	var span=fdjtUI.CheckSpan
+	("span.checkspan",varname,tag,
+	 ((typeof checked === 'undefined')||(checked)));
 	if (title) span.title=title;
 	span.setAttribute("varname",varname);
 	span.setAttribute("tagval",tag);
