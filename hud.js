@@ -791,9 +791,9 @@ var CodexMode=
 	    var uisize=fdjtDOM.getInputValues(settings,"CODEXUISIZE");
 	    if ((uisize)&&(uisize.length))
 		result.uisize=uisize[0];
-	    var hidesplash=fdjtDOM.getInputValues(settings,"CODEXHIDESPLASH");
-	    result.hidesplash=
-		((hidesplash)&&(hidesplash.length)&&(true))||false;
+	    var startuphelp=fdjtDOM.getInputValues(settings,"CODEXSTARTUPHELP");
+	    result.startuphelp=
+		((startuphelp)&&(startuphelp.length))||false;
 	    var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
 	    result.showconsole=
 		((showconsole)&&(showconsole.length)&&(true))||false;

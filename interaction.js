@@ -1410,7 +1410,8 @@
     function glossmode_button(evt){
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
-	var alt=target.alt, altclass, input;
+	var alt=target.alt;
+	
 	var form=fdjtDOM.getParent(target,'form');
 	if (!(alt)) return;
 	if (alt==="tag") {
@@ -1463,18 +1464,18 @@
     var nobubble=fdjtUI.nobubble;
     var cancel=fdjtUI.cancel;
 
-    function hideSplashToggle(evt) {
+    function startupHelpToggle(evt) {
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
-	var newval=(!(Codex.hidesplash));
+	var newval=(!(Codex.startuphelp));
 	var input=getParent(target,"input");
 	if (input)
 	    setTimeout(function(){
-		Codex.setConfig('hidesplash',input.checked);
+		Codex.setConfig('startuphelp',input.checked);
 		Codex.saveConfig();},
 		       100);
 	else {
-	    Codex.setConfig('hidesplash',newval);
+	    Codex.setConfig('startuphelp',newval);
 	    Codex.saveConfig();}
 	if ((newval)&&(Codex._setup)&&
 	    ((fdjtTime()-(Codex._setup.getTime()))<30000))
@@ -1516,7 +1517,7 @@
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
-	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
+	 "#STARTUPHELPCHECKSPAN" : {click: startupHelpToggle},
 	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 // GLOSSFORM rules
@@ -1566,7 +1567,7 @@
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {touchstart: left_margin},
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},
-	 "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
+	 "#STARTUPHELPCHECKSPAN" : {tap: startupHelpToggle},
 	 "#HIDEHELPBUTTON" : {tap: function(evt){CodexMode(false);}},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click: hudbutton},

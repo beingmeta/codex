@@ -85,11 +85,12 @@
 </div>
 <div id="BOTTOMHUDHELP">
   <p class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
-    <input TYPE="checkbox" NAME="CODEXHIDESPLASH" VALUE="yes"
+    <input TYPE="checkbox" NAME="CODEXSTARTUPHELP" VALUE="yes"
 
-	   onchange="Codex.setConfig('hidesplash',fdjtID('HELPHIDESPLASHCHECKBOX').checked,true);"
-	   ID="HELPHIDESPLASHCHECKBOX">
-    Hide this help after startup.</p>
+	   onchange="Codex.setConfig('startuphelp',fdjtID('STARTUPHELPCHECKBOX').checked,true);"
+	   ID="STARTUPHELPCHECKBOX"
+	   CHECKED>
+    Show this help page on startup</p>
 </div>
 <!--
     /* Emacs local variables

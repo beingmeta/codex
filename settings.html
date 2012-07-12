@@ -67,12 +67,14 @@
 	<input TYPE='CHECKBOX' NAME='CODEXANIMATEHUD' VALUE='yes'/>
 	book tools</span></td></tr>
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
-    <th><input TYPE='CHECKBOX' NAME='CODEXHIDESPLASH' VALUE='yes'/></th>
-    <td>Hide the Codex help (splash) page after book loading is
-    finished</td></tr>
+    <th><input TYPE='CHECKBOX' NAME='CODEXSTARTUPHELP' VALUE='yes'
+	       onchange="fdjtUI.CheckSpan.set('STARTUPHELPCHECKBOX',fdjtID('CODEXSTARTUPHELPSETTING').checked);"
+	       id="CODEXSTARTUPHELPSETTING"
+	       CHECKED/></th>
+    <td>Show the sReader help page on startup</td></tr>
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
     <th><input TYPE='CHECKBOX' NAME='CODEXSHOWCONSOLE' VALUE='yes'/></th>
-    <td>Show the Codex console</td></tr>
+    <td>Show the sReader console</td></tr>
   <tr title='A name to display for this device when recording changes'>
     <th>Device name</th>
     <td><input TYPE='TEXT' NAME='CODEXDEVICENAME' value=''/></td>

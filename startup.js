@@ -89,7 +89,7 @@ Codex.Startup=
 	     bodysize: 'normal',bodyfamily: 'serif',
 	     uisize: 'normal',showconsole: true,
 	     animatepages: true,animatehud: true,
-	     hidesplash: false};
+	     startuphelp: true};
 	var current_config={};
 	var saved_config={};
 
@@ -179,7 +179,7 @@ Codex.Startup=
 	    if (Codex.Trace.config)
 		fdjtLog("initConfig (default) %o",default_config);
 	    for (var setting in default_config) {
-		if (!(config[setting]))
+		if (!(config.hasOwnProperty(setting)))
 		    if (default_config.hasOwnProperty(setting)) {
 			if (getQuery(setting))
 			    setConfig(setting,getQuery(setting));
@@ -227,8 +227,8 @@ Codex.Startup=
 	    else setConfig(name,elt.value,save);}
 	Codex.updateConfig=updateConfig;
 
-	Codex.addConfig("hidesplash",function(name,value){
-	    Codex.hidesplash=value;});
+	Codex.addConfig("startuphelp",function(name,value){
+	    Codex.startuphelp=value;});
 	Codex.addConfig("devicename",function(name,value){
 	    Codex.deviceName=value;});
 	Codex.addConfig("deviceid",function(name,value){
@@ -299,7 +299,7 @@ Codex.Startup=
 	    Codex.setupGestures();
 	    
 	    // Maybe display the help page
-	    if ((!(fdjtID("CODEXSPLASH")))||(Codex.hidesplash===false))
+	    if (Codex.startuphelp)
 		fdjtDOM.addClass(document.body,"codexhelp");
 
 	    // Setup the reticle (if desired)
@@ -534,9 +534,9 @@ Codex.Startup=
 		mode="sbookapp";
 	    else if (getQuery("startmode"))
 		mode=getQuery("startmode");
-	    else if (Codex.hidesplash)
-		dropClass(document.body,"codexhelp");
-	    else addClass(document.body,"codexhelp");
+	    else if (Codex.startuphelp)
+		addClass(document.body,"codexhelp");
+	    else dropClass(document.body,"codexhelp");
 	    CodexMode(mode||false);
 	    _sbook_setup=Codex._setup=new Date();
 	    var msg=getQuery("APPMESSAGE");
