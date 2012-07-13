@@ -34,22 +34,38 @@
 	convert -background transparent -scale 8x8 $< $@
 %8x8.gif: svg/%.svg
 	convert -background transparent -scale 8x8 $< $@
+%Tab.png: svg/%Tab.svg
+	convert -background transparent -scale 39x50 $< $@
 
-sbwedge: sbwedge8x8.png sbwedge12x12.png sbwedge16x16.png sbwedge24x24.png \
-	 sbwedge32x32.png sbwedge40x40.png sbwedge50x50.png sbwedge64x64.png \
-	 sbwedge8x8.gif sbwedge12x12.gif sbwedge16x16.gif sbwedge24x24.gif \
-	 sbwedge32x32.gif sbwedge40x40.gif sbwedge50x50.gif sbwedge64x64.gif
-tagicon: TagIcon8x8.png TagIcon12x12.png TagIcon16x16.png TagIcon24x24.png \
-	 TagIcon32x32.png TagIcon40x40.png TagIcon50x50.png TagIcon64x64.png \
-	 TagIcon8x8.gif TagIcon12x12.gif TagIcon16x16.gif TagIcon24x24.gif \
-	 TagIcon32x32.gif TagIcon40x40.gif TagIcon50x50.gif TagIcon64x64.gif
-diaglink: DiagLink8x8.png DiagLink12x12.png DiagLink16x16.png DiagLink24x24.png \
-	DiagLink32x32.png DiagLink40x40.png DiagLink50x50.png DiagLink64x64.png \
-	DiagLink8x8.gif DiagLink12x12.gif DiagLink16x16.gif DiagLink24x24.gif \
-	DiagLink32x32.gif DiagLink40x40.gif DiagLink50x50.gif DiagLink64x64.gif
-compass: CompassIcon8x8.png CompassIcon12x12.png CompassIcon16x16.png CompassIcon24x24.png \
-	CompassIcon32x32.png CompassIcon40x40.png CompassIcon50x50.png CompassIcon64x64.png \
-	CompassIcon8x8.gif CompassIcon12x12.gif CompassIcon16x16.gif CompassIcon24x24.gif \
-	CompassIcon32x32.gif CompassIcon40x40.gif CompassIcon50x50.gif CompassIcon64x64.gif
+all: addglossicons scanicons tagicons diaglinks hudbuttons tabs misc
 
+addglossicons: remark_add64x64.png remark_edit64x64.png \
+	remark_share64x64.png  remark_tag64x64.png remark_link64x64.png \
+	remark_text64x64.png remark24x24.png remark32x32.png \
+	remark_respond32x32.png remark_respond64x64.png
+scanicons: ScanLeft16x16.png ScanLeftStop16x16.png \
+	ScanRight16x16.png ScanRightStop16x16.png \
+	ScanLeft32x32.png ScanLeftStop32x32.png \
+	ScanRight32x32.png ScanRightStop32x32.png \
+	ScanLeft64x64.png ScanLeftStop64x64.png \
+	ScanRight64x64.png ScanRightStop64x64.png
+tagicons: TagIcon16x16.png TagIcon24x24.png TagIcon32x32.png  \
+	TagIcon50x50.png TagIcon64x64.png TagIcon128x128.png 
+diaglinks: DiagLink8x8.png DiagLink12x12.png DiagLink16x16.png \
+	DiagLink24x24.png DiagLink32x32.png DiagLink40x40.png \
+	DiagLink50x50.png DiagLink64x64.png DiagLink8x8.gif \
+	DiagLink12x12.gif DiagLink16x16.gif DiagLink24x24.gif \
+	DiagLink32x32.gif DiagLink40x40.gif DiagLink50x50.gif \
+	DiagLink64x64.gif
+hudbuttons: CompassIcon32x32.png CompassIcon50x50.png \
+	AllGlosses32x32.png AllGlosses50x50.png \
+	TagSearch32x32.png TagSearch50x50.png \
+	HelpIcon32x32.png HelpIcon50x50.png
+tabs: AboutTab.png TOCTab.png LoginTab.png ConsoleTab.png OverlaysTab.png \
+	SettingsTab.png
+
+misc: redx32x32.png outlink32x32.png \
+	sbwedge32x32.png sbwedge64x64.png \
+	twistyclosed32x32.png twistyopen32x32.png \
+	sbookspeople24x24.png sbookspeople50x50.png
 
