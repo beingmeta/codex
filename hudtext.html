@@ -22,6 +22,18 @@
   </div>
   <textarea rows='5' id="CODEXEXTRACT"></textarea>
 </div>
+<div id="CODEXSCANNER">
+  <span class="expander"
+	onclick="fdjtDOM.toggleClass('CODEXSCANNER','expanded');">
+    <img src="http://static.beingmeta.com/codex/graphics/svg/twistyclosed.svg"
+	 bmp="http://static.beingmeta.com/codex/graphics/twistyclosed32x32.svg"
+	 alt="+"/>
+    <img src="http://static.beingmeta.com/codex/graphics/svg/twistyopen.svg"
+	 bmp="http://static.beingmeta.com/codex/graphics/twistyopen.svg"
+	 alt="-"/>
+  </span>
+  <div id="CODEXSCAN"></div>
+</div>
 <div id="CODEXHEAD">
   <img src="http://static.beingmeta.com/codex/graphics/svg/CompassIcon.svg"
        bmp="http://static.beingmeta.com/codex/graphics/CompassIcon50x50.png"
@@ -58,7 +70,7 @@
     <div class="tabbar icons" id="CODEXTABS">
       <img src="http://static.beingmeta.com/codex/graphics/svg/AboutTab.svg"
 	   bmp="http://static.beingmeta.com/codex/graphics/AboutTab.png"
-	   alt="About" class="tab" contentid="APPABOUT"
+	   alt="About" class="tab" contentid="CODEXABOUTBOOK"
 	   onclick="CodexMode.toggle('about'); return fdjtUI.cancel(event);"
 	   title="information and links about this book"/>
       <img src="http://static.beingmeta.com/codex/graphics/svg/TOCTab.svg"
@@ -99,18 +111,6 @@
 			onkeypress="Codex.UI.goto_keypress(event);"/>
   </div>
   <div id="CODEXTOC" class="hudpanel"></div>
-  <div id="CODEXSCANNER" class="hudpanel">
-    <span class="expander"
-	  onclick="fdjtDOM.toggleClass('CODEXSCANNER','expanded');">
-      <img src="http://static.beingmeta.com/codex/graphics/svg/twistyclosed.svg"
-	   bmp="http://static.beingmeta.com/codex/graphics/twistyclosed32x32.svg"
-	   alt="+"/>
-      <img src="http://static.beingmeta.com/codex/graphics/svg/twistyopen.svg"
-	   bmp="http://static.beingmeta.com/codex/graphics/twistyopen.svg"
-	   alt="-"/>
-    </span>
-    <div id="CODEXSCAN"></div>
-  </div>
   <div id="CODEXSEARCH" class="searchbox hudpanel notags">
     <!-- This content comes from searchbox.html -->
   </div>
@@ -166,7 +166,7 @@
      bmp="http://static.beingmeta.com/codex/graphics/ScanLeftStop64x64.png"
      id="CODEXSTARTSCAN" class="codexscanbutton"
      alt="beginning"/>
-<div id="CODEXHEART" class="hudpanel">
+<div id="CODEXHEART">
 </div>
 <div id="CODEXFOOT">
   <img src="http://static.beingmeta.com/codex/graphics/svg/AllGlosses.svg"

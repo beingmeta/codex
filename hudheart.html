@@ -1,117 +1,99 @@
-<div id="CODEXALLGLOSSES_SCROLLER" class="scroller">
-  <div id="CODEXALLGLOSSES" class="codexslice">
-    <!-- This is filled in on startup -->
-  </div>
+<div id="CODEXALLGLOSSES" class="codexslice hudpanel">
+  <!-- This is filled in on startup -->
 </div>
-<div id="CODEXSEARCHCLOUD_SCROLLER" class="scroller">
-  <div id="CODEXSEARCHCLOUD" class="completions searchcloud">
-    <span class="showall" onclick="Codex.UI.searchCloudToggle();">
-      ALL</span>
-    <span class="count">no query refinements</span>
-    <div id="CODEXSEARCHSOURCES"></div>
-    <div id="CODEXSEARCHTAGS"></div>
-    <div id="CODEXSEARCHCLOUDSOURCES"></div>
-  </div>
+<div id="CODEXSEARCHCLOUD" class="completions searchcloud hudpanel">
+  <span class="showall" onclick="Codex.UI.searchCloudToggle();">
+    ALL</span>
+  <span class="count">no query refinements</span>
+  <div id="CODEXSEARCHSOURCES"></div>
+  <div id="CODEXSEARCHTAGS"></div>
+  <div id="CODEXSEARCHCLOUDSOURCES"></div>
 </div>
-<div id="CODEXSEARCHRESULTS_SCROLLER" class="scroller">
-  <div id="CODEXSEARCHRESULTS" class="codexslice"></div>
-</div>
-<div id="CODEXGLOSSOUTLETS_SCROLLER" class="scroller">
-  <div id="CODEXGLOSSOUTLETS" class="completions showempty">
-    <span id="CODEXNETWORKBUTTONS" class="networks"
-	  onclick="fdjtUI.CheckSpan.onclick(event);">
-      <span class="checkspan facebook_share"
-	    title="share (or not) this gloss with my Facebook friends">
-	<input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK" id="CODEXFACEBOOKSHARE"
-	       onchange="Codex.UI.changeGlossNetwork(event);"/>
-	<img src="http://static.beingmeta.com/graphics/social/facebook64x64.png"
-	     alt="Facebook" class="checked"/>
-	<img src="http://static.beingmeta.com/graphics/social/nofacebook64x64.png"
-	     alt="Facebook" class="unchecked"/>
-      </span>
-      <span class="checkspan twitter_share"
-	    title="share (or not) this gloss with my Twitter followers">
-	<input type="CHECKBOX" name="NETWORKS" value=":TWITTER" id="CODEXTWITTERSHARE"
-	       onchange="Codex.UI.changeGlossNetwork(event);"/>
-	<img src="http://static.beingmeta.com/graphics/social/twitter64x64.png"
-	     alt="Twitter" class="checked"/>
-	<img src="http://static.beingmeta.com/graphics/social/notwitter64x64.png"
-	     alt="Twitter" class="unchecked"/>
-      </span>
-      <span class="checkspan linkedin_share"
-	    title="share this gloss with my LinkedIn connections">
-	<input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN" id="CODEXLINKEDINSHARE"
-	       onchange="Codex.UI.changeGlossNetwork(event);">
-	<img src="http://static.beingmeta.com/graphics/social/linkedin64x64.png"
-	     alt="LinkedIn" class="checked"/>
-	<img src="http://static.beingmeta.com/graphics/social/linkedin64x64.png"
-	     alt="LinkedIn" class="unchecked"/>
-      </span>
-      <span class="checkspan google_share"
-	    title="share this gloss with my Google+ connections">
-	<input type="CHECKBOX" name="NETWORKS" value=":GOOGLE" id="CODEXGOOGLESHARE"
-	       onchange="Codex.UI.changeGlossNetwork(event);"/>
-	<img src="http://static.beingmeta.com/graphics/social/googleplus64x64.png"
-	     alt="Google+" class="checked"/>
-	<img src="http://static.beingmeta.com/graphics/social/googleplus64x64.png"
-	     alt="Google+" class="unchecked"/>
-      </span>
+<div id="CODEXSEARCHRESULTS" class="codexslice hudpanel"></div>
+<div id="CODEXGLOSSOUTLETS" class="completions showempty hudpanel">
+  <span id="CODEXNETWORKBUTTONS" class="networks"
+	onclick="fdjtUI.CheckSpan.onclick(event);">
+    <span class="checkspan facebook_share"
+	  title="share (or not) this gloss with my Facebook friends">
+      <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK" id="CODEXFACEBOOKSHARE"
+	     onchange="Codex.UI.changeGlossNetwork(event);"/>
+      <img src="http://static.beingmeta.com/graphics/social/facebook64x64.png"
+	   alt="Facebook" class="checked"/>
+      <img src="http://static.beingmeta.com/graphics/social/nofacebook64x64.png"
+	   alt="Facebook" class="unchecked"/>
     </span>
+    <span class="checkspan twitter_share"
+	  title="share (or not) this gloss with my Twitter followers">
+      <input type="CHECKBOX" name="NETWORKS" value=":TWITTER" id="CODEXTWITTERSHARE"
+	     onchange="Codex.UI.changeGlossNetwork(event);"/>
+      <img src="http://static.beingmeta.com/graphics/social/twitter64x64.png"
+	   alt="Twitter" class="checked"/>
+      <img src="http://static.beingmeta.com/graphics/social/notwitter64x64.png"
+	   alt="Twitter" class="unchecked"/>
+    </span>
+    <span class="checkspan linkedin_share"
+	  title="share this gloss with my LinkedIn connections">
+      <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN" id="CODEXLINKEDINSHARE"
+	     onchange="Codex.UI.changeGlossNetwork(event);">
+      <img src="http://static.beingmeta.com/graphics/social/linkedin64x64.png"
+	   alt="LinkedIn" class="checked"/>
+      <img src="http://static.beingmeta.com/graphics/social/linkedin64x64.png"
+	   alt="LinkedIn" class="unchecked"/>
+    </span>
+    <span class="checkspan google_share"
+	  title="share this gloss with my Google+ connections">
+      <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE" id="CODEXGOOGLESHARE"
+	     onchange="Codex.UI.changeGlossNetwork(event);"/>
+      <img src="http://static.beingmeta.com/graphics/social/googleplus64x64.png"
+	   alt="Google+" class="checked"/>
+      <img src="http://static.beingmeta.com/graphics/social/googleplus64x64.png"
+	   alt="Google+" class="unchecked"/>
+    </span>
+  </span>
+</div>
+<div id="CODEXGLOSSCLOUD" class="completions showempty hudpanel">
+  <img class="label" alt="tags"
+       src="http://static.beingmeta.com/codex/graphics/svg/TagIcon.svg"
+       bmp="http://static.beingmeta.com/codex/graphics/TagIcon128x128.png"
+       onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
+  <div class='doc'>
+    <strong>Add a tag</strong>
+    by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
+    a displayed <em>cue</em> or <em>completion</em>.   Start typing to <em>see completions</em>;
+    <tt><strong><em>Shift</em>-enter</strong></tt> to pick the
+    first visible completion.
+  </div>
+  <div id="CODEXGLOSSTAGS"></div>
+  <div id="CODEXGLOSSCLOUDSOURCES"></div>
+</div>
+<div id="CODEXCONSOLE" class="tabcontent flyleaftab sbookconsole hudpanel">
+  <h1>Codex Console</h1>
+  <div class='message' id='CODEXCONSOLEMESSAGE'></div>
+  <div id="CODEXCONSOLELOG" class='sbookmessagelog'></div>
+  <div id="CODEXCONSOLEINPUT">
+    <span class="button" onclick="Codex.consolefn();">run</span>
+    <textarea id="CODEXCONSOLETEXTINPUT"
+	      ontouchstart="fdjtID('CODEXCONSOLETEXTINPUT').focus()">
+    </textarea>
   </div>
 </div>
-<div id="CODEXGLOSSCLOUD_SCROLLER" class="scroller">
-  <div id="CODEXGLOSSCLOUD" class="completions showempty">
-    <img class="label" alt="tags"
-	 src="http://static.beingmeta.com/codex/graphics/svg/TagIcon.svg"
-	 bmp="http://static.beingmeta.com/codex/graphics/TagIcon128x128.png"
-	 onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
-    <div class='doc'>
-      <strong>Add a tag</strong>
-      by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
-      a displayed <em>cue</em> or <em>completion</em>.   Start typing to <em>see completions</em>;
-      <tt><strong><em>Shift</em>-enter</strong></tt> to pick the
-      first visible completion.
-    </div>
-    <div id="CODEXGLOSSTAGS"></div>
-    <div id="CODEXGLOSSCLOUDSOURCES"></div>
-  </div>
-</div>
-<div id="CODEXCONSOLE_SCROLLER" class="scroller">
-  <div id="CODEXCONSOLE" class="tabcontent flyleaftab sbookconsole">
-    <h1>Codex Console</h1>
-    <div class='message' id='CODEXCONSOLEMESSAGE'></div>
-    <div id="CODEXCONSOLELOG" class='sbookmessagelog'></div>
-    <div id="CODEXCONSOLEINPUT">
-      <span class="button" onclick="Codex.consolefn();">run</span>
-      <textarea id="CODEXCONSOLETEXTINPUT"
-		ontouchstart="fdjtID('CODEXCONSOLETEXTINPUT').focus()">
-      </textarea>
-    </div>
-  </div>
-</div>
-<div id="CODEXSETTINGS_SCROLLER" class="scroller">
-  <div class="tabcontent flyleaftab" id="CODEXSETTINGS"></div>
-</div>
-<div id="FLYTOC_SCROLLER" class="scroller">
-  <div class="tabcontent flyleaftab" id="FLYTOC"></div>
-</div>
-<div id="APPABOUT_SCROLLER" class="scroller">
-  <div class="tabcontent flyleaftab sbookabout" id="APPABOUT">
-    <div id='APPABOUTCONTENT'>
-      <div class='title'></div>
-      <div class='byline'></div>
-      <div class='cover'></div>
-      <div class='publisher'></div>
-      <div class='copyright'></div>
-      <div class='description'></div>
-      <div class='digitized'></div>
-      <div class='sbookified'></div>
-      <div class='about'></div>
-    </div>
+<div class="tabcontent flyleaftab hudpanel" id="CODEXSETTINGS"></div>
+<div class="tabcontent flyleaftab hudpanel" id="FLYTOC"></div>
+<div class="tabcontent flyleaftab sbookabout hudpanel" id="CODEXABOUTBOOK">
+  <div id='CODEXABOUTBOOKCONTENT'>
+    <div class='title'></div>
+    <div class='byline'></div>
+    <div class='cover'></div>
+    <div class='publisher'></div>
+    <div class='copyright'></div>
+    <div class='description'></div>
+    <div class='digitized'></div>
+    <div class='sbookified'></div>
+    <div class='about'></div>
   </div>
 </div>
 <iframe id="SBOOKSAPP" frameborder="0" scrolling="auto"
-	class="tabcontent flyleaftab"/>
+	class="hudpanel tabcontent flyleaftab"/>
 <!--
     /* Emacs local variables
     ;;;  Local variables: ***

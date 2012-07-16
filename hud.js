@@ -311,6 +311,7 @@ var CodexMode=
 	
 	var CodexMode_pat=/\b((device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
 	var codexHeartMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses)|(addgloss)|(login))\b/g;
+	var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(glosses)|(allglosses)|(addgloss))\b/g;
 	var codex_mode_scrollers=
 	    {allglosses: "CODEXALLGLOSSES",
 	     searchresults: "CODEXSEARCHRESULTS",
@@ -318,7 +319,7 @@ var CodexMode=
 	     console: "CODEXCONSOLE",
 	     // sbookapp: "SBOOKSAPP",
 	     flytoc: "CODEXFLYTOC",
-	     about: "APPABOUT"};
+	     about: "CODEXABOUTBOOK"};
 	var codex_mode_foci=
 	    {gotopage: "CODEXPAGEINPUT",
 	     gotoloc: "CODEXLOCINPUT",
@@ -375,22 +376,26 @@ var CodexMode=
 		else {
 		    if (mode.search(codexHeartMode_pat)<0)
 			dropClass(CodexHUD,"openheart");
+		    else {
+			Codex.heart_mode=mode;
+			addClass(CodexHUD,"openheart");}
+		    if (mode.search(codexHeadMode_pat)<0)
+			dropClass(CodexHUD,"openhead");
+		    else {
+			Codex.head_mode=mode;
+			addClass(CodexHUD,"openhead");}
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,mode);}
 		// Update the body scanning mode
 		if ((mode==="scanning")||(mode==="tocscan"))
 		    addClass(document.body,"codexscanning");
 		else dropClass(document.body,"codexscanning");
-		// Update the 'heart' meta mode
-		if ((mode)&&(typeof mode === 'string')) {
-		    if (mode.search(codexHeartMode_pat)===0) {
-			Codex.heart_mode=mode;
-			addClass(CodexHUD,"openheart");}
-		    else dropClass(CodexHUD,"openheart");
-		    fdjtID("CODEXBUTTON").className=mode;}
 		// Help mode (on the hud) actually dims the body
+		// Help mode might not exist anymore
+		/*
 		if (mode==="help")
 		    addClass(document.body,"dimmed");
 		else dropClass(document.body,"dimmed");
+		*/
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
 		if ((mode==='scanning')||(mode==='tocscan')) {
@@ -626,7 +631,7 @@ var CodexMode=
 	    else fdjtDOM(elt,content);}
 
 	function fillinAboutInfo(){
-	    var about=fdjtID("APPABOUT");
+	    var about=fdjtID("CODEXABOUTBOOK");
 	    var bookabout=fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
 	    var authorabout=fdjtID("SBOOKAUTHORPAGE")||fdjtID("SBOOKABOUTAUTHOR");
 	    var metadata=fdjtDOM.Anchor(
