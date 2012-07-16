@@ -502,7 +502,7 @@ body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
 body div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
-    display: block; height: auto; overflow: hidden;
+    display: block; height: auto; max-height: inherit; overflow: hidden;
     border-color: silver;}
 
 body div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
