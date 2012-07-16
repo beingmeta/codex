@@ -39,6 +39,7 @@
     var odq="\u201c"; var cdq="\u201d";
 
     var cxicon=Codex.icon;
+    var Ellipsis=fdjtUI.Ellipsis;
 
     function renderNote(info,query,idprefix,standalone){
 	var key=info._id;
@@ -55,7 +56,7 @@
 		    ((info.maker)&&(showglossinfo(info)))," ",
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
-		    ((info.note)&&(fdjtDOM("span.note",info.note)))," ",
+		    ((info.note)&&Ellipsis("span.note",info.note,140))," ",
 		    ((info.shared)&&(info.shared.length)&&
 		     (info.shared.length<div_threshold)&&
 		     (showaudience(info.shared)))," ",
@@ -76,7 +77,9 @@
 	var makerinfo=((info.maker)&&(Codex.sourcekb.load(info.maker)));
 	var tstamp=info.tstamp||info.modified||info.created;
 	if (tstamp)
-	    body.title="gloss from "+makerinfo.name+" at "+fdjtTime.shortString(tstamp);
+	    body.title=
+	    "gloss from "+(((makerinfo)&&(makerinfo.name))||"someone")+
+	    " at "+fdjtTime.shortString(tstamp);
 	else div.title=Codex.getTitle(target,true);
 	div.about="#"+info.frag;
 	// div.setAttribute('about',"#"+info.id);
@@ -199,15 +202,17 @@
 	return span;}
     function showexcerpts(excerpts){
 	if (typeof excerpts==='string')
-	    return fdjtDOM("span.excerpt",odq,excerpts,cdq);
+	    return Ellipsis("span.excerpt",excerpts,140);
+	else if (excerpts.length===1)
+	    return Ellipsis("span.excerpt",excerpts[0],140);
 	else {
-	    var espan=fdjtDOM("div.excerpts");
+	    var ediv=fdjtDOM("div.excerpts");
 	    var i=0; var lim=excerpts.length;
 	    while (i<lim)
-		fdjtDOM(espan,
+		fdjtDOM(ediv,
 			((i>0)&&" "),
 			fdjtDOM("span.excerpt",odq,excerpts[i++],cdq));
-	    return espan;}}
+	    return ediv;}}
     function showscore(score){
 	var scorespan=fdjtDOM("span.score");
 	var score=query[key]; var k=0;

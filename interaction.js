@@ -427,6 +427,10 @@
 
     function slice_tapped(evt){
 	var target=fdjtUI.T(evt);
+	if (getParent(target,".ellipsis")) {
+	    fdjtUI.Ellipsis.toggle(target);
+	    fdjtUI.cancel(evt);
+	    return;}
 	var card=getCard(target);
 	if ((!(getParent(target,".tool")))&&
 	    (getParent(card,".codexslice"))) {
@@ -752,7 +756,8 @@
 		while (i<lim) {
 		    var rendering=renderings[i++];
 		    if (rendering.id==='CODEXSCAN')
-			fdjtDOM.replace(rendering,fdjtDOM("div.codexcard.deletedgloss"));
+			fdjtDOM.replace(
+			    rendering,fdjtDOM("div.codexcard.deletedgloss"));
 		    else fdjtDOM.remove(rendering);}}
 	    var glossmark=fdjtID("SBOOK_GLOSSMARK_"+frag);
 	    if (glossmark) {
@@ -1271,19 +1276,32 @@
 		CodexMode("addgloss");
 		return;}
 	    else return;}
-	if (!(getParent(target,".tochead"))) {
-	    fdjtDOM.toggleClass("CODEXSCANNER","expanded");
+	if (getParent(target,".tochead")) {
+	    // Tapping the tochead returns to results/glosses/etc
+ 	    var scanning=Codex.scanning;
+	    if (!(scanning)) return;
+	    var hudparent=getParent(scanning,".hudpanel");
+	    if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
+		CodexMode("allglosses");
+		fdjtUI.cancel(evt);}
+	    else if (getParent(scanning,fdjtID("CODEXSEARCH"))) {
+		CodexMode("searchresults");
+		fdjtUI.cancel(evt);}
+	    else {}
 	    return;}
-	var scanning=Codex.scanning;
-	if (!(scanning)) return;
-	var hudparent=getParent(scanning,".hudpanel");
-	if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
-	    CodexMode("allglosses");
-	    fdjtUI.cancel(evt);}
-	else if (getParent(scanning,fdjtID("CODEXSEARCH"))) {
-	    CodexMode("searchresults");
-	    fdjtUI.cancel(evt);}
-	else {}}
+	if (getParent(target,".ellipsis")) {
+	    var ellipsis=getParent(target,".ellipsis");
+	    if (ellipsis) {
+		if (hasClass(ellipsis,"expanded")) {
+		    dropClass(ellipsis,"expanded");}
+		else {
+		    addClass(ellipsis,"expanded");
+		    fdjtDOM.addClass("CODEXSCANNER","expanded");}
+		fdjtUI.cancel(evt);
+		return;}}
+	// In all other cases, just toggle the scanner expansion
+	fdjtDOM.toggleClass("CODEXSCANNER","expanded");
+	return;}
 
     /* Entering page numbers and locations */
 

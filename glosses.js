@@ -46,6 +46,7 @@
     var getInput=fdjtDOM.getInput;
     var getInputs=fdjtDOM.getInputs;
     var getInputsFor=fdjtDOM.getInputsFor;
+    var Ellipsis=fdjtUI.Ellipsis;
 
     var submitEvent=fdjtUI.submitEvent;
 
@@ -354,7 +355,8 @@
 	var input=getInput(checkspan,'EXCERPT');
 	var text=getChild(checkspan,'.text');
 	if (excerpt) {
-	    input.value=excerpt; text.innerHTML=excerpt;
+	    input.value=excerpt;
+	    fdjtDOM.replace(text,Ellipsis("span.text",excerpt,140));
 	    fdjtUI.CheckSpan.set(checkspan,true);}
 	else fdjtUI.CheckSpan.set(checkspan,false);
 	updateForm(form);}
@@ -717,7 +719,10 @@
 		else if (!(evt.shiftKey)) {
 		    fdjtUI.cancel(evt);
 		    var notespan=getChild(form,".notespan");
-		    if (notespan) notespan.innerHTML=target.value;
+		    if (notespan)
+			fdjtDOM.replace(
+			    notespan,
+			    Ellipsis("span.notespan",target.value,140));
 		    dropClass(form,"editnote");}
 		else fdjtUI.cancelBubble(evt);}}
 	else if (mode) {}

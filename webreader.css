@@ -213,10 +213,16 @@ div.sbooksources div.button.source {
     text-align: center; vertical-align: top;
     clear: none;}
 
-span.excerpt { font-size: 120%; color: gray; background-color: yellow;}
+span.excerpt {
+    font-size: 120%; color: gray;
+    font-family: times,serif;
+    background-color: yellow;}
 span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
+span.excerpt.ellipsis span.elision {
+    color: purple; font-family: veranda,helvetica,sans,sans-serif;
+    font-style: italic;}
 
 /* The HUD */
 
@@ -239,25 +245,28 @@ div#CODEXHUD div.hudpanel {
     border: solid transparent 3px;}
 /* Being on top */
 div#CODEXHUD div.hudpanel {
-    position: fixed; top: 0px; left: 75px; right: 75px;
+    position: fixed; left: 75px; right: 75px;
     text-align: center;
     overflow: hidden;}
+div#CODEXHEAD div.hudpanel { top: 0px; }
+/* Being invisible */
 div#CODEXHUD div.hudpanel {
-    opacity: 0.001; height: 0px; display: none;
+    opacity: 0.001; display: none;
     border-radius: 6px; -o-border-radius: 6px;
     -webkit-border-radius: 6px; -moz-border-radius: 6px;}
+/* Being visible when the HUD is up */
 body.hudup div#CODEXHUD div.hudpanel {opacity: 0.95;}
+/* When animating, transition opacity and height */
 div#CODEXHUD.codexanimate div.hudpanel {
-    transition-property: opacity,height;
-    -o-transition-property: opacity,height;
-    -moz-transition-property: opacity,height;
-    -webkit-transition-property: opacity,height; 
+    transition-property: opacity;
+    -o-transition-property: opacity;
+    -moz-transition-property: opacity;
+    -webkit-transition-property: opacity; 
     transition-duration: 1.0s; -o-transition-duration: 1.0s;
     -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;}
 
-div#CODEXHUD div#CODEXHEAD div.hudpanel,
-div#CODEXHUD div.hudpanel.codexcard {
-    max-height: 75%; border-top-width: 0px;
+div#CODEXHUD div#CODEXHEAD div.hudpanel {
+    border-top-width: 0px;
     border-top-left-radius: 0px;
     -webkit-border-top-left-radius: 0px; 
     -moz-border-radius-topleft: 0px;
@@ -266,6 +275,9 @@ div#CODEXHUD div.hudpanel.codexcard {
     -webkit-border-top-right-radius: 0px; 
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
+
+body.hudup div#CODEXHEAD div.hudpanel {
+    max-height: 75%;}
 
 body.cxTOUCH .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
@@ -463,6 +475,19 @@ body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
 
 /* Mode display rules */
 
+body div#CODEXHEAD div.hudpanel { max-height: 50px;}
+
+body.hudup div#CODEXHEAD div.hudpanel {
+    min-height: 50px; height: auto;
+    overflow: auto; border-color: darkblue;
+    box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;}
+
+body.hudup.cxPREVIEW div#CODEXHEAD div.hudpanel {
+    border-color: transparent;}
+
 body.hudup div#CODEXHUD.help div.hudpanel#CODEXHELP,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCH,
 body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCH,
@@ -472,38 +497,14 @@ body.hudup div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
 body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC,
 body.hudup div#CODEXHUD.allglosses div.hudpanel#CODEXSOURCES,
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
-    display: block; min-height: 50px; height: auto;
-    overflow: auto; border-color: darkblue;
-    box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    -webkit-transition-property: height,opacity;
-    -webkit-transition-duration: 1s;}
-body.hudup.cxPREVIEW div#CODEXHUD.help div.hudpanel#CODEXHELP,
-body.hudup.cxPREVIEW div#CODEXHUD.search div.hudpanel#CODEXSEARCH,
-body.hudup.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCH,
-body.hudup.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
-body.hudup.cxPREVIEW div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
-body.hudup.cxPREVIEW div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
-body.hudup.cxPREVIEW div#CODEXHUD.editexcerpt div.hudpanel#CODEXADDGLOSS,
-body.hudup.cxPREVIEW div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
-body.hudup.cxPREVIEW div#CODEXHUD.toc div.hudpanel#CODEXTOC,
-body.hudup.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSOURCES,
-body.hudup.cxPREVIEW div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
-    border-color: transparent;}
+    display: block; }
 
 body div#CODEXHUD.tocscan div.hudpanel#CODEXTOC,
 body div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES,
-body div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS,
-body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
-body.cxPREVIEW div#CODEXHUD.glosses div.hudpanel#CODEXSCANNER,
-body.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSCANNER,
-body.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSCANNER {
+body div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     display: block; height: auto; overflow: hidden;
     border-color: silver;}
 
-body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER,
 body div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     opacity: 0.95;}
 
@@ -513,25 +514,37 @@ body.hudup div#CODEXHUD div.hudpanel#CODEXTOC,
 body div#CODEXHUD div.hudpanel#CODEXTOC:hover {
     max-height: inherit;}
 
-div.hudpanel#CODEXSCANNER div.codexslice .tocthread,
-div.hudpanel#CODEXGLOSSES div.codexslice .tocthread {
-    border-left-width: 0px;}
-
-div#CODESCANNER div.codexslice .tocthread .idthread:first-child
-      .codexcard:first-child .tochead,
-div#CODEXSCANNER div.codexslice .idthread .codexcard:first-child .idhead,
-div#CODEXGLOSSES div.codexslice .tocthread .idthread:first-child
-      .codexcard:first-child .tochead,
 div#CODEXGLOSSES div.codexslice .idthread .codexcard:first-child .idhead {
     height: 0px;}
 
-div#CODEXSCANNER .hudupbutton {
-    position: absolute; right: 3px; top: 3px;
-    font-size: 24px; font-weight: bold; vertical-align: top;
-    z-index: 800;}
-div#CODEXSCANNER .hudupbutton span.up { display: none;}
-body.hudup div#CODEXSCANNER .hudupbutton span.down { display: none;}
-body.hudup div#CODEXSCANNER .hudupbutton span.up { display: inline;}
+div.hudpanel#CODEXGLOSSES div.codexslice .tocthread {
+    border-left-width: 0px;}
+
+/* The CODEXSCANNER */
+
+div#CODEXHUD div.hudpanel#CODEXSCANNER {
+    height: 50px; overflow: hidden;}
+
+body.hudup div.hudpanel#CODEXSCANNER {
+    height: 75px; overflow: hidden;}
+
+body.cxPREVIEW div#CODEXHUD.glosses div.hudpanel#CODEXSCANNER,
+body.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSCANNER,
+body.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSCANNER,
+body div#CODEXHUD.scanning div.hudpanel#CODEXSCANNER {
+    display: block; overflow: hidden; border-color: silver;
+    opacity: 0.95;}
+
+div#CODEXHUD div#CODEXSCANNER.expanded, body.hudup div#CODEXSCANNER.expanded,
+div#CODEXHEAD div#CODEXSCANNER.expanded {
+    height: inherit; max-height: inherit; overflow: auto;}
+
+div#CODEXSCANNER .ellipsis.expanded .elided {display: none;}
+div#CODEXSCANNER .ellipsis.expanded .elision {display: inline;}
+div#CODEXSCANNER.expanded .ellipsis.expanded .elided {display: inline;}
+div#CODEXSCANNER.expanded .ellipsis.expanded .elision {display: none;}
+
+/* This is the twisty control */
 div#CODEXSCANNER span.expander {
     position: absolute; left: 0px; top: 1.2em;}
 div#CODEXSCANNER span.expander img { width: 24px; height: 24px;}
@@ -988,7 +1001,8 @@ div.tochead hr {
     position: absolute; left: 0px; top: 0px; height: 100%; 
     padding: 0px; margin: 0px;}
 div.tochead span { z-index: 10;}
-div.tochead a { z-index: 10;} 
+div.tochead a { z-index: 10; color: blue;} 
+div.tochead a:hover { z-index: 10; color: darkblue;} 
 div.tochead hr[about] { cursor: crosshair;}
 
 div.idhead { 
