@@ -193,7 +193,7 @@
     
     function showGlosses(target) {
 	var glosses=Codex.glosses.find('frag',target.codexdupid||target.id);
-	var sumdiv=fdjtDOM("div.codexglosses.hudpanel");
+	var sumdiv=fdjtDOM("div.codexglosses.hudpanel#CODEXGLOSSES");
 	var excerpt=false;
 	if ((!(glosses))||(!(glosses.length)))
 	    fdjtDOM.addClass(sumdiv,"noglosses");
