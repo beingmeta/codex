@@ -135,7 +135,7 @@ div#CODEXHUD.search div#CODEXSEARCHCLOUD,
 div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS,
 div#CODEXHUD.addgloss div#CODEXADDGLOSS,
 div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSCLOUD,
-div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXGLOSSOUTLETS,
+div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXOUTLETCLOUD,
 div#CODEXHUD.console div#CODEXCONSOLE,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP {
     position: static; display: block;
@@ -213,7 +213,7 @@ body div#CODEXHUD.device #CODEXHEART > div#CODEXSETTINGS_SCROLLER,
 body div#CODEXHUD.flytoc #CODEXHEART > div#FLYTOC_SCROLLER,
 body div#CODEXHUD.console #CODEXHEART > div#CODEXCONSOLE_SCROLLER,
 body div#CODEXHUD.addgloss #CODEXHEART.tagging > div#CODEXGLOSSCLOUD_SCROLLER,
-body div#CODEXHUD.addgloss #CODEXHEART.showoutlets > div#CODEXGLOSSOUTLETS_SCROLLER,
+body div#CODEXHUD.addgloss #CODEXHEART.showoutlets > div#CODEXOUTLETCLOUD_SCROLLER,
 body div#CODEXHUD.sbookapp div#CODEXHEART iframe#SBOOKSAPP,
 body div#CODEXHUD.login div#CODEXHEART iframe#SBOOKSAPP{
     opacity: 0.9; height: 100%; z-index: 150; overflow: auto;}

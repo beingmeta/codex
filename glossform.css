@@ -12,6 +12,8 @@ div#CODEXADDGLOSS div.codexglossform {
 div.codexglossform { display: none;}
 div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
 div.codexglossform#CODEXLIVEGLOSS { display: block;}
+div.codexglossform div.editgloss {
+ margin-left: 0.5em; text-align: left; color: black;}
 div.codexglossform div.response {
  margin-left: 0.5em; text-align: left; color: black;}
 div.codexglossform div.response .respmaker {font-weight: bold;}
@@ -23,18 +25,20 @@ div.codexglossform div.response .respexcerpt {
 div.codexglossform div .respdate {
     font-size: 75%; font-weight: bold; font-variant: small-caps;
     color: purple; float: right;}
-div.codexglossform div .respdate:before { content: "(";}
+div.codexglossform div .respdate:before { content: "(From You, ";}
 div.codexglossform div .respdate:after { content: ")";}
 
 div.codexglossform div.glosseditbox {
     text-align: right; color: black; display: none;
     font-variant: small-caps;
     height: 3ex;}
+div.codexglossform div.glosseditbox .codexglossedit {float: left;}
 div.codexglossform div.glosseditbox .respdate {float: left;}
 div.codexglossform div.glosseditbox img { vertical-align: top; height: 2ex;}
 div.codexglossform div.glosseditbox span img { vertical-align: bottom;}
 div.codexglossform div.glosseditbox span.clickable { cursor: pointer;}
 div.codexglossform.glossedit div.glosseditbox { display: block;}
+div.codexglossform.glossedit span.editmsg { display: inline;}
 
 div.codexglossform form {
     padding: 0px; margin: 0px;}
@@ -243,7 +247,7 @@ div.codexglossform form .checkspan {
     font-family: sans,sans-serif;}
 
 div.codexglossform form span.source:before, .completions span.source:before {
-    content: '@'; color: gold;}
+    content: '@'; color: darkblue;}
 
 div.codexglossform .button.savebutton,
 div.codexglossform .button.replybutton,
@@ -287,7 +291,11 @@ div.codexglossform form div.glossetc .tags span.checkspan {
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
-div.completions#CODEXGLOSSOUTLETS {
+div.completions#CODEXOUTLETCLOUD div#CODEXGLOSSOUTLETS {
+    margin-left: 50px; margin-right: 50px;}
+div.completions#CODEXGLOSSCLOUD > div {
+    margin-left: 50px; margin-right: 50px;}
+div.completions#CODEXOUTLETCLOUD {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
@@ -295,10 +303,10 @@ div.completions#CODEXGLOSSOUTLETS {
     transition-duration: 3s; -webkit-transition-duration: 3s;
     -moz-duration: 3s; -o-transition-duration: 3s;}
 body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
-  div.completions#CODEXGLOSSOUTLETS {
+  div.completions#CODEXOUTLETCLOUD {
     display: block;}
-div#CODEXGLOSSOUTLETS span.networks { float: right;}
-div#CODEXGLOSSOUTLETS span.networks img { height: 32px;}
+div#CODEXOUTLETCLOUD span.networks { float: right;}
+div#CODEXOUTLETCLOUD span.networks img { height: 32px;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

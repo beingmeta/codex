@@ -108,7 +108,7 @@
 	    else dropClass("CODEXHEART","tagging");
 	    if (modeclass==="sharing") {
 		addClass("CODEXHEART","showoutlets");
-		Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
+		Codex.UI.updateScroller("CODEXOUTLETCLOUD");}
 	    else dropClass("CODEXHEART","showoutlets");
 	    swapClass(form,glossmodes,modeclass);
 	    Codex.setHUD(true);
@@ -825,7 +825,7 @@
     /* The completions element for outlets */
     function outletCloud(){
 	if (outlet_cloud) return outlet_cloud;
-	var completions=fdjtID("CODEXGLOSSOUTLETS");
+	var completions=fdjtID("CODEXOUTLETCLOUD");
 	completions.onclick=outletcloud_ontap;
 	Codex.outlet_cloud=outlet_cloud=
 	    new fdjtUI.Completions(

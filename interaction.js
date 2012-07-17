@@ -1458,7 +1458,7 @@
 	    else dropClass("CODEXHEART","tagging");
 	    if (alt==="sharing") {
 		addClass("CODEXHEART","showoutlets");
-		Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
+		Codex.UI.updateScroller("CODEXOUTLETCLOUD");}
 	    else dropClass("CODEXHEART","showoutlets");
 	    swapClass(form,glossmodes,altclass);
 	    Codex.setHUD(true);
@@ -1548,7 +1548,7 @@
 	 "div.glossetc": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
 	 "div.glossetc span.modebuttons": {click: glossmode_button},
-	 "#CODEXGLOSSOUTLETS": {tap: outlet_tapped}};
+	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped}};
 
     function justselect(evt){
 	if (!(window.getSelection())) fdjtUI.cancel(evt);}
