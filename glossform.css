@@ -283,6 +283,23 @@ div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
 div.codexglossform form div.glossetc .tags span.checkspan {
     font-size: 80%;}
 
+/* The add gloss panel */
+
+body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
+
+div.completions#CODEXGLOSSOUTLETS {
+    transition-property: height;
+    -webkit-transition-property: height;
+    -moz-transition-property: height;
+    -o-transition-property: height;
+    transition-duration: 3s; -webkit-transition-duration: 3s;
+    -moz-duration: 3s; -o-transition-duration: 3s;}
+body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
+  div.completions#CODEXGLOSSOUTLETS {
+    display: block;}
+div#CODEXGLOSSOUTLETS span.networks { float: right;}
+div#CODEXGLOSSOUTLETS span.networks img { height: 32px;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

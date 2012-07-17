@@ -56,6 +56,24 @@ div.codexslice div.codexscanpoint {
     border-left: solid blue 16px;
     background-color: white;}
 
+/* CODEXSOURCES */
+
+div.codexsources {}
+div.codexsources img.button {
+    height: 50px; max-width: 50px; border-radius: 10%;}
+div.codexsources img.button.everyone {}
+div.codexsources img.button.everyone.selected { background-color: silver; }
+div.codexsources .button {
+    border: solid transparent 2px; margin: 2px;}
+div.codexsources img.button.source.selected,
+div.codexsources div.button.source.selected {
+    border-color: blue;}
+div.codexsources div.button.source {
+    min-height: 50px; min-width: 50px; display: inline;
+    height: 50px; width: 50px; font-size: 32px;
+    text-align: center; vertical-align: top;
+    clear: none;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

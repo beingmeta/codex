@@ -10,18 +10,6 @@
     Show keyboard help
   </div>
 </div>
-<div id="CODEXEXCERPT" class="hudpanel">
-  <div>
-    <span id="CODEXEXCERPTCANCEL"
-	  ontouchstart="Codex.UI.useExcerpt(false);">
-      Cancel</span>
-    <span id="CODEXEXCERPTDONE"
-	  ontouchstart="Codex.UI.useExcerpt(true);">
-      Done</span>
-    edit excerpt
-  </div>
-  <textarea rows='5' id="CODEXEXTRACT"></textarea>
-</div>
 <div id="CODEXSCANNER">
   <span class="expander"
 	onclick="fdjtDOM.toggleClass('CODEXSCANNER','expanded');">
@@ -132,7 +120,7 @@
       <!-- This is generated on demand -->
     </div>
   </div>
-  <div id="CODEXSOURCES" class="hudpanel sbooksources"
+  <div id="CODEXSOURCES" class="hudpanel codexsources"
        onclick="Codex.UI.handlers.sources_ontap(event);">
     <img src="http://static.beingmeta.com/codex/graphics/svg/sbookspeople.svg"
 	 bmp="http://static.beingmeta.com/codex/graphics/sbookspeople50x50.png"

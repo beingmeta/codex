@@ -1,0 +1,110 @@
+/* -*- Mode: CSS; character-encoding: utf-8; -*- */
+
+/* Copyright (C) 2009-2012 beingmeta, inc. */
+
+@charset "UTF-8";
+
+/* The Flyleaf */
+
+div#CODEXHUD div#CODEXHEART table {
+    width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
+
+div#CODEXHUD.about div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXABOUTBOOK'],
+div#CODEXHUD.device div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXSETTINGS'],
+div#CODEXHUD.flytoc div#CODEXFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
+div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXCONSOLE'],
+div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
+    border: gold solid 3px; background-color: gold;
+    border-top: transparent solid 3px;}
+
+div#CODEXHUD div#CODEXHEART .tabcontent {
+    overflow-y: auto; overflow-x: hidden;}
+div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP,
+div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSAPP {
+    overflow: visible;}
+div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP,
+div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSAPP {
+  width: 100%; height: 100%; border: 0px; margin: 0px; padding: 0px;}
+
+body.cxNOUSER a.logout {display: none;}
+
+/* CODEXHEART content rules */
+
+div#CODEXHUD div#CODEXHEART a,
+div#CODEXHUD div#CODEXHEART a:visited { 
+  color: darkblue; text-decoration: none;}
+div#CODEXHUD div#CODEXHEART a:hover { text-decoration: underline;}
+div#CODEXHUD div#CODEXHEART .flyleafplate a,
+div#CODEXHUD div#CODEXHEART .flyleafplate a:visited {
+    text-decoration: none; color: blue;}
+div#CODEXHUD div#CODEXHEART .flyleafplate a:hover {
+    text-decoration: underline;}
+
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.head { color: black; } 
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.head { padding-left: 4px;} 
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC a {
+    color: inherit; font-weight: inherit;}
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC a.cohi {
+    font-weight: bold; background-color: gold;}
+
+div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
+ div.setting {
+     clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
+div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
+ div.setting span.checkspan {
+     font-size: 125%; color: orange;}
+div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
+  div.setting span.checkspan input[type='CHECKBOX'] {
+      width: 16px; height: 16px; color: orange; background-color: orange;
+      vertical-align: bottom;}
+div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
+  div.setting div.explanation { 
+      font-style: italic; clear: both; margin-left: 3em;}
+div#CODEXHEART table.settings {
+    width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
+div#CODEXHEART table.settings th {text-align: right; vertical-align: top;}
+div#CODEXHEART table.settings td {
+    text-align: left; vertical-align: top; padding-left: 12px;}
+div#CODEXHEART table.settings td button { float: right;}
+div#CODEXHEART table.settings td input[type='TEXT'] {
+    width: 100%;}
+div#CODEXHUD div#CODEXHEART table.settings tr.buttons td {
+    text-align: right;}
+div#CODEXHUD div#CODEXHEART table.settings tr.buttons td
+  span#CODEXSETTINGSMESSAGE {
+      float: left; color: red;}
+
+div#CODEXHUD.settings div#CODEXHEART table.settings .smallbutton {
+    cursor: pointer;
+    margin-left: 4px; margin-right: 4px; padding: 3px;
+    background-color: gold; color: darkblue;
+    font-size: 80%; font-weight: bold;
+    border-radius: 4px;
+    -o-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    -moz-border-radius: 4px;}
+
+div#CODEXSETTINGS span.button {
+    float: right; font-size: 125%; cursor: pointer;
+    font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
+    color: white; background-color: silver;
+    margin-left: 6px; padding: 4px; border: solid black 2px;
+    border-radius: 5px;
+    -o-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;}
+
+div#CODEXHEART table.settings td .checkspan { }
+
+div#CODEXABOUTBOOK div.links {
+    height: 1em; border-bottom: solid purple 3px; margin-bottom: 1em;}
+div#CODEXABOUTBOOK div.links a.metadata {
+    float: right; font-weight: bold; font-size: 80%;}
+div#CODEXABOUTBOOK div.links a.reviews {
+    float: left; font-weight: bold; font-size: 80%;}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

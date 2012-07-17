@@ -4,26 +4,24 @@
 
 @charset "UTF-8";
 
-div.codexcard { margin-left: 20px; margin-right: 0px;}
+.codexcard { 
+    white-space: normal; clear: both;
+    text-align: left; text-decoration: none;
+    text-align: left;
+    font-size: 90%;}
+
+div.codexcard {
+    margin-left: 20px; margin-right: 0px;}
 div.codexcard div.idhead { margin-left: -10px;  }
 div.codexcard div.tochead { margin-left: -20px; }
 
 div.glosses div.codexcard > div.idhead { display: none;}
 div.glosses div.codexcard > div.tochead { display: none;}
 
-div.codexcard { position: relative;}
-
-div.codexcard > hr {
-    color: gold; background-color: gold; min-width: 3px; height: 100%;
-    border-right: solid gold 1px; border-left: solid gold 1px;
-    position: absolute; left: 0px; 
-    border: 0px; padding: 0px; margin: 0px;}
-div.codexcard > div span.count { float: right;}
-
 /* Sbook notes */
 
-div.codexcard { position: relative;}
 div.codexcard > div { text-align: left;}
+div.codexcard > div span.count { float: right;}
 
 div.codexcard > hr {
     color: gold; background-color: gold; min-width: 3px; height: 100%;
@@ -31,11 +29,6 @@ div.codexcard > hr {
     position: absolute; left: 0px; 
     border: 0px; padding: 0px; margin: 0px;}
 
-.codexcard { 
-    white-space: normal; clear: both;
-    text-align: left; text-decoration: none;
-    text-align: left;
-    font-size: 90%;}
 .codexcard a.ref {
   display: block; font-weight: normal;}
 .codexcard a.ref span.title {

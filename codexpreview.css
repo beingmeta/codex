@@ -1,0 +1,46 @@
+/* -*- Mode: CSS; character-encoding: utf-8; -*- */
+
+/* Copyright (C) 2009-2012 beingmeta, inc. */
+
+@charset "UTF-8";
+
+body.cxPREVIEW #CODEXHEAD { display: none; }
+body.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD { display: none; }
+
+body.cxPREVIEW #CODEXHUD.toc #CODEXHEAD {
+    background-color: transparent;
+    border-color: transparent;}
+body.cxPREVIEW #CODEXHUD.toc #CODEXHEAD .hudpanel {
+    background-color: transparent;}
+
+body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER,
+body.cxPREVIEW #CODEXHUD.searchresults #CODEXSCANNER {
+    display: block;}
+
+/* HUD Preview rules */
+
+body.cxPREVIEW #CODEXHUD { opacity: 0.8;}
+body.hudup.cxPREVIEW #CODEXHEART {
+    opacity: 0.0; background-color: transparent;
+    border-color: transparent;}
+body.hudup.cxPREVIEW #CODEXHUD.openheart #CODEXHEART {
+    opacity: 0.0; background-color: transparent;
+    border-color: transparent;}
+
+body.hudup.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSOURCES {
+    opacity: 0.01;}
+
+body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
+    opacity: 0.05;}
+body.cxPREVIEW div#CODEXHUD.glosses div#CODEXGLOSSES.hudpanel {
+    opacity: 0.05;}
+
+body.cxPREVIEW div#CODEXHUD div#CODEXHUDBUTTONS {
+    display: none;}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/
+

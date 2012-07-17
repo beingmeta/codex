@@ -1,0 +1,190 @@
+/* -*- Mode: CSS; character-encoding: utf-8; -*- */
+
+/* Copyright (C) 2009-2012 beingmeta, inc. */
+
+@charset "UTF-8";
+
+/* The SEARCHBOX */
+
+div.searchbox.notags div.tags { display: none;}
+div.searchbox { text-align: center; }
+
+div.searchbox div.query {
+    width: 100%; text-align: right; margin-top: 2px;
+    font-size: 18px;}
+div.searchbox div.query input[type='TEXT'] {
+    max-width: 50%; min-width: 25%; font-size: 16px;}
+div.searchbox div.query input[type='TEXT'] {
+    background-position: right top;
+    background-position-x: right; background-position-y: top;
+    background-repeat: no-repeat;
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/codex/graphics/TagIcon24x24.png);}
+div.searchbox div.query img.clearsearch { height: 2ex;}
+div.searchbox div.query span.ampersand {
+    float: right; font-weight: bold; font-size: 150%;
+    padding-left: 1em; }
+div.searchbox.notags div.query span.ampersand { display: none;}
+
+div.searchbox div.query span#CODEXSEARCHPROMPT {
+    float: left; font-style: italic; padding-left: 1em; display: none;}
+div.searchbox.notags div.query span#CODEXSEARCHPROMPT {
+    display: inline;}
+div.searchbox div.query #CODEXSEARCHLABEL {
+    padding-left: 1em; font-variant: small-caps;
+    float: left;}
+div.searchbox.notags div.query #CODEXSEARCHLABEL { display: none;}
+
+div.searchbox div.query span.dterm {
+    padding-right: 0.35em; padding-left: 1ex;
+    padding-top: 0px; padding-bottom: 0px;
+    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
+    color: darkblue; background-color: gold; border: solid yellow 2px;}
+
+div.searchbox div.query img.clearsearch {
+    float: right; padding-left: 0.5em;}
+div.searchbox div.query input[type='TEXT'] { float: right;}
+
+div.searchbox div.resultinfo {
+    margin-right: 32px; min-height: 1ex;
+    clear: both; text-align: right;}
+div.searchbox div.resultinfo span.resultcount,
+div.searchbox div.resultinfo span.refinecount {
+    cursor: pointer;}
+div#CODEXHUD.search div.searchbox div.resultinfo span.refinecount {
+    font-weight: bold;}
+div#CODEXHUD.searchresults div.searchbox div.resultinfo span.resultcount {
+    font-weight: bold;}
+
+div.searchbox div.toolbox div.tags {
+    min-height: 1ex; clear: both; text-align: center;}
+div.searchbox .completions div.tags {
+    min-height: 1ex; clear: both; text-align: center;}
+div.searchbox div.input {
+    width: 90%; margin-left: 5%; margin-right: 5%;
+    clear: both; text-align: center;}
+
+div.searchbox div.tags img.clearsearch { float: right; color: red;}
+div.searchbox div.tags img.clearsearch { float: right; color: red;}
+
+div.searchbox div.input { }
+div.searchbox div.input input[type='TEXT'] {
+    width: 100%; font-size: 150%;}
+
+div.searchbox div.resultinfo div.noresults { display: none;}
+div.searchbox div.resultinfo div.noquery { display: none;}
+div.searchbox.noresults div.resultinfo div.noresults { display: none;}
+div.searchbox.noresults div.resultinfo span { display: none;}
+div.searchbox.notags div.resultinfo div.noquery { display: none;}
+div.searchbox.noresults div.resultinfo span { display: none;}
+div.searchbox.notags div.resultinfo span { display: none;}
+
+/* Tag clouds */
+
+div.completions .label { float: left; opacity: 0.7;}
+div.completions .completion:hover { text-decoration: underline; }
+
+div.completions .cloudtoggle {
+    float: right; display: none;}
+div.completions.noinput .cloudtoggle {
+    display: block;}
+
+div#CODEXHUD div.completions {
+    text-align: center; display: none;}
+div#CODEXHUD div.completions div.doc {
+    background-color: ivory; text-align: left;
+    font-size: 80%; line-height: 100%;
+    font-style: italic; color: black;
+    padding-left: 1.5em; padding-right: 1.5em;
+    margin: 0.5em; margin-right: 5em;
+    border: solid black 2px; border-radius: 6px;
+    -o-border-radius: 6px; -webkit-border-radius: 6px; 
+    -moz-border-radius: 6px;
+    /* Hide this for now */
+    display: none;}
+
+div#CODEXHUD .completions span.sep { 
+  font-size: 200%; font-weight: bold; 
+  color: purple; vertical-align: middle;}
+div#CODEXHUD .completions span.completion {
+    cursor: pointer; padding-right: 0.5em;}
+div#CODEXHUD .completions span.sectname {
+  white-space: nowrap;
+  font-weight: bold; font-style: italic;  font-size: 70%;
+  background-color: ivory; color: purple; max-width: 25%;
+  padding: 0px; padding-left: 3px; padding-right: 3px; 
+  margin: 0px; margin-left: 3px; margin-right: 3px; 
+  -o-border-radius: 6px; 
+  -webkit-border-radius: 6px; 
+  -moz-border-radius: 6px; 
+  border-radius: 6px;}
+div#CODEXHUD .completions.showall span.dterm {display: inline;}
+div#CODEXHUD .completions.showall span.dterm.singleton {display: none;}
+div#CODEXHUD .completions { }
+div#CODEXHUD .completions .completion.prime { 
+    font-weight: bold;}
+div#CODEXHUD .completions .completion .sectname { 
+  white-space: nowrap;}
+
+div#CODEXHUD .completions .completion .variation { 
+  font-size: 90%; color: purple; font-style: italic;}
+div#CODEXHUD .completions .completion .dterm {}
+.completion .dterm {
+    padding-right: 0.35em; padding-left: 0.35em; 
+    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
+    border-bottom-left-radius: 6px; border-top-left-radius: 6px;
+    -o-border-bottom-left-radius: 6px; -o-border-top-left-radius: 6px; 
+    -moz-border-radius-bottomleft: 6px; -moz-border-radius-topleft: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-top-left-radius: 6px; 
+    color: darkblue; background-color: gold; border: solid yellow 2px;}
+.completion .dterm.weak, .completion .rawterm, .completion.rawterm {
+    padding-right: 0em; padding-left: 0em; 
+    border-top-left-radius: 0px; border-bottom-left-radius: 0px;
+    color: gray; background-color: inherit; border: none;}
+
+body div#CODEXHUD div.codexthread > div.locrule {
+    position: relative; left: 0px; bottom: 0px; z-index: 50;
+    width: 100%; min-height: 10px;}
+
+div.tochead { 
+  position: relative; /* width: 100%; */
+  background-color: silver; color: blue;
+  border-top: solid lightblue 2px; border-bottom: solid lightblue 2px;
+  text-align: left; vertical-align: middle;}
+div.tochead span.spacer, div.idhead span.spacer {
+    font-size: 125%; font-weight: bold; font-style: italic;}
+div.tochead .paratext {
+    color: darkblue; font-style: italic; padding-left: 5px;}
+div.tochead span.head {
+    font-size: 80%; opacity: 0.75; padding-left: 5px;}
+div.tochead span.headtext {
+    white-space: nowrap; font-size: 90%;}
+div.tochead hr {
+    color: lightblue; background-color: lightblue; min-width: 3px;
+    border: none; border-right: solid gold 1px; border-left: solid gold 1px;
+    position: absolute; left: 0px; top: 0px; height: 100%; 
+    padding: 0px; margin: 0px;}
+div.tochead span { z-index: 10;}
+div.tochead a { z-index: 10; color: blue;} 
+div.tochead a:hover { z-index: 10; color: darkblue;} 
+div.tochead hr[about] { cursor: crosshair;}
+
+div.idhead { 
+  position: relative; white-space: nowrap; /* width: 100%; */
+  background-color: silver; color: black;
+  text-align: left; vertical-align: middle;
+  overflow: hidden;}
+div.idhead hr {
+    color: lightblue; background-color: lightblue; min-width: 3px;
+    border-right: solid gold 1px; border-left: solid gold 1px; 
+    position: absolute; left: 0px; top: 0px; height: 100%; 
+    border: 0px; padding: 0px; margin: 0px;}
+div.idhead span { z-index: 10; opacity: 0.75;}
+div.idhead div { z-index: 10; opacity: 0.75;}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ..; make" ***
+;;;  End: ***
+*/

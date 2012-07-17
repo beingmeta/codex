@@ -771,8 +771,7 @@
     var mode_hud_map={
 	"toc": "CODEXTOC",
 	"searching": "CODEXSEARCH",
-	"allglosses": "CODEXSOURCES",
-	"openheart": "CODEXFLYHEAD"};
+	"allglosses": "CODEXSOURCES"};
     
     function hudbutton(evt){
 	evt=evt||event;
@@ -872,15 +871,6 @@
 
     /* Touch handling */
 
-    Codex.UI.useExcerpt=function(flag){
-	var text=fdjtID("CODEXEXTRACT").value;
-	var excerpt_elt=fdjtID("CODEXEXCERPT");
-	var form=fdjtID("CODEXLIVEGLOSS");
-	if (flag) {
-	    Codex.setExcerpt(form,text,excerpt_elt.passageid);
-	    CodexMode("addgloss");}
-	else CodexMode("false");};
-    
     var mouseisdown=false;
 
     var touch_moves=0, touch_moved=false;;

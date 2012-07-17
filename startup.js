@@ -1134,6 +1134,8 @@ Codex.Startup=
 		var i=0; var ilim=outlets.length;
 		while (i<ilim) {
 		    var outlet=outlets[i++];
+		    if (typeof outlet === 'string')
+			outlet=fdjtKB.load(outlet);
 		    var humid=outlet.humid;
 		    var sourcetag=fdjtID("cxOUTLET"+humid);
 		    if (!(sourcetag)) { // Add entry to the share cloud

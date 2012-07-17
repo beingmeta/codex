@@ -89,7 +89,7 @@
     function everyone_ontap(evt){
 	evt=evt||event||null;
 	var target=fdjtDOM.T(evt);
-	// var sources=fdjtDOM.getParent(target,".sbooksources");
+	// var sources=fdjtDOM.getParent(target,".codexsources");
 	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
 	var sources=fdjtID("CODEXSOURCES");
 	var glosses=fdjtID("CODEXALLGLOSSES");
@@ -113,7 +113,7 @@
 	evt=evt||event||null;
 	// if (!(Codex.user)) return;
 	var target=fdjtDOM.T(evt);
-	// var sources=fdjtDOM.getParent(target,".sbooksources");
+	// var sources=fdjtDOM.getParent(target,".codexsources");
 	// var glosses=fdjtDOM.getParent(target,".sbookglosses");
 	var sources=fdjtID("CODEXSOURCES");
 	var glosses=fdjtID("CODEXALLGLOSSES");
