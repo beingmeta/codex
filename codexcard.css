@@ -1,3 +1,9 @@
+/* -*- Mode: CSS; character-encoding: utf-8; -*- */
+
+/* Copyright (C) 2009-2012 beingmeta, inc. */
+
+@charset "UTF-8";
+
 div.codexcard { margin-left: 20px; margin-right: 0px;}
 div.codexcard div.idhead { margin-left: -10px;  }
 div.codexcard div.tochead { margin-left: -20px; }

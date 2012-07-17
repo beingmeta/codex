@@ -1,3 +1,36 @@
+/* -*- Mode: CSS; character-encoding: utf-8; -*- */
+
+/* Copyright (C) 2009-2012 beingmeta, inc.
+   This file implements a Javascript/DHTML UI for reading
+    large structured documents (sBooks).
+
+   For more information on sbooks, visit www.sbooks.net
+   For more information on knodules, visit www.knodules.net
+   For more information about beingmeta, visit www.beingmeta.com
+
+   This library uses the FDJT (www.fdjt.org) toolkit.
+
+   This program comes with absolutely NO WARRANTY, including implied
+   warranties of merchantability or fitness for any particular
+   purpose.
+
+    Use and redistribution (especially embedding in other
+      CC licensed content) is permitted under the terms of the
+      Creative Commons "Attribution-NonCommercial" license:
+
+          http://creativecommons.org/licenses/by-nc/3.0/ 
+
+    Other uses may be allowed based on prior agreement with
+      beingmeta, inc.  Inquiries can be addressed to:
+
+       licensing@biz.beingmeta.com
+
+   Enjoy!
+
+*/
+
+@charset "UTF-8";
+
 /* Help is displayed in fixed position boxes and selectively displayed
     based on the body class body.codexhelp and the individual state
     CSS classes maintained in the DOM tree.  */

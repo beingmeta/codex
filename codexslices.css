@@ -1,4 +1,10 @@
-/* sbook 'slices' of summaries or glosses */
+/* -*- Mode: CSS; character-encoding: utf-8; -*- */
+
+/* Copyright (C) 2009-2012 beingmeta, inc. */
+
+@charset "UTF-8";
+
+/* codex 'slices' of summaries or glosses */
 
 div.codexslice.sourced div.codexcard { display: none;}
 div.codexslice.sourced div.codexcard.sourced { display: block;}
