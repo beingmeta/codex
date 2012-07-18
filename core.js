@@ -461,6 +461,16 @@ var sbook_gloss_data=
 	Codex.location=location;}
     Codex.setLocation=setLocation;
 
+    function location2pct {
+	var max_loc=Codex.ends_at;
+	var pct=(100*location)/max_loc;
+	// This is (very roughly) intended to be the precision needed
+	//  for line level (40 character) accuracy.
+	var prec=Math.round(Math.log(max_loc/40)/Math.log(10))-2;
+	if (prec<0) prec=0;
+	return fdjtString.precString(pct,prec)+"%";}
+    Codex.location2pct=location2pct;
+
     function setTarget(target){
 	if (Codex.Trace.focus) Codex.trace("Codex.setTarget",target);
 	if (target===Codex.target) return;

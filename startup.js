@@ -1411,7 +1411,7 @@ Codex.Startup=
 			     if ((d.location)&&(d.location<=Codex.location)) return;
 			     if (d.page===Codex.curpage) return;
 			     var msg=
-				 "Sync to L"+d.location+
+				 "Sync to L"+Codex.location2pct(d.location)+
 				 ((d.page)?(" (page "+d.page+")"):"")+"?";
 			     if (confirm(msg)) {
 				 if (d.location) Codex.setLocation(d.location);
