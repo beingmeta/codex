@@ -461,7 +461,7 @@ var sbook_gloss_data=
 	Codex.location=location;}
     Codex.setLocation=setLocation;
 
-    function location2pct {
+    function location2pct(location) {
 	var max_loc=Codex.ends_at;
 	var pct=(100*location)/max_loc;
 	// This is (very roughly) intended to be the precision needed
