@@ -659,6 +659,10 @@ Codex.Startup=
 		default_config.keyboardhelp=false;
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
+	    else if ((useragent.search(/Android/gi)>0)&&
+		     (useragent.search("Mobile/")>0)) {
+		Codex.nativescroll=false;
+		Codex.scrolldivs=false;}
 	    else if (sbook_faketouch) {
 		fdjtDOM.addClass(document.body,"cxTOUCH");
 		viewportSetup();
