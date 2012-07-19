@@ -22,9 +22,14 @@
     div.fdjtprogress#CODEXLAYOUTMESSAGE {
 	left: 50px; right: 50px;}
 
-    div#CODEXPAGE { left: 10px; right: 10px;}
+    div#CODEXPAGE { left: 1.5em; right: 1.5em;}
 
-    .codexglossmark {margin-right: -8px;}
+    .codexglossmark {margin-right: -2em; margin-top: -1ex;}
+    body .codexglossmark:hover, body .codexglossmark.hover {
+	margin-right: -8px; }
+
+    div.helpbox.atfoot { left: 55px; right: 55px;}
+    div#CODEXHUD div#CODEXHELP.hudpanel { left: 55px; right: 55px;}
 }
 
 
