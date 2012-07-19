@@ -27,7 +27,6 @@
 #CODEXSCANNER { display: none; }
 #CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; }
 
-
 #CODEXHEAD, #CODEXHEAD .hudpanel, #CODEXSCANNER {
     border-radius: 1em; -webkit-border-radius: 1em;
     -o-border-radius: 1em; -moz-border-radius: 1em;
@@ -128,13 +127,26 @@ div#CODEXHUD.codexanimate div.hudpanel {
 
 /* Mode display rules */
 
+/* Head rules */
+div#CODEXHUD.toc div#CODEXTOC,
+div#CODEXHUD.tocscan div#CODEXTOC,
+div#CODEXHUD.allglosses div#CODEXSOURCES,
+div#CODEXHUD.glosses div#CODEXGLOSSES,
+div#CODEXHUD.addgloss div#CODEXADDGLOSS,
+div#CODEXHUD.search div#CODEXSEARCH,
+div#CODEXHUD.searchresults div#CODEXSEARCH,
+div#CODEXHUD.gotoloc div#CODEXGOTOLOC,
+div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
+    position: static; display: block;
+    opacity: 0.98;}
+
+/* Heart rules */
 div#CODEXHUD.allglosses div#CODEXALLGLOSSES,
 div#CODEXHUD.flytoc div#CODEXFLYTOC,
 div#CODEXHUD.about div#CODEXABOUTBOOK,
 div#CODEXHUD.settings div#CODEXSETTINGS,
 div#CODEXHUD.search div#CODEXSEARCHCLOUD,
 div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS,
-div#CODEXHUD.addgloss div#CODEXADDGLOSS,
 div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSCLOUD,
 div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXOUTLETCLOUD,
 div#CODEXHUD.console div#CODEXCONSOLE,
@@ -142,24 +154,12 @@ div#CODEXHUD.sbooksapp iframe#SBOOKSAPP {
     position: static; display: block;
     opacity: 0.98;}
 
-div#CODEXHUD.toc div#CODEXTOC,
-div#CODEXHUD.tocscan div#CODEXTOC,
-div#CODEXHUD.allglosses div#CODEXSOURCES,
-div#CODEXHUD.glosses div#CODEXGLOSSES,
-div#CODEXHUD.search div#CODEXSEARCH,
-div#CODEXHUD.searchresults div#CODEXSEARCH,
-div#CODEXHUD.addgloss div#CODEXADDGLOSS,
-div#CODEXHUD.gotoloc div#CODEXGOTOLOC,
-div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
-    position: static; display: block;}
-
 body.cxTOUCH .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
 body div#CODEXHUD div.hudpanel#CODEXSEARCHRESULTS,
 body div#CODEXHUD div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
-
 div#CODEXHUD div.hudpanel div.scrollbox {
   overflow: auto;}
 
@@ -205,20 +205,6 @@ div#CODEXHUD img.botright {
     -webkit-border-top-left-radius: 6px; 
     -moz-border-radius-topleft: 6px;
     -o-border-radius-topleft: 6px;}
-
-body div#CODEXHUD.allglosses #CODEXHEART > div#CODEXALLGLOSSES_SCROLLER,
-body div#CODEXHUD.search #CODEXHEART > div#CODEXSEARCHCLOUD_SCROLLER,
-body div#CODEXHUD.searchresults #CODEXHEART > div#CODEXSEARCHRESULTS_SCROLLER,
-body div#CODEXHUD.about #CODEXHEART > div#CODEXABOUTBOOK_SCROLLER,
-body div#CODEXHUD.device #CODEXHEART > div#CODEXSETTINGS_SCROLLER,
-body div#CODEXHUD.flytoc #CODEXHEART > div#FLYTOC_SCROLLER,
-body div#CODEXHUD.console #CODEXHEART > div#CODEXCONSOLE_SCROLLER,
-body div#CODEXHUD.addgloss #CODEXHEART.tagging > div#CODEXGLOSSCLOUD_SCROLLER,
-body div#CODEXHUD.addgloss #CODEXHEART.showoutlets > div#CODEXOUTLETCLOUD_SCROLLER,
-body div#CODEXHUD.sbookapp div#CODEXHEART iframe#SBOOKSAPP,
-body div#CODEXHUD.login div#CODEXHEART iframe#SBOOKSAPP{
-    opacity: 0.9; height: 100%; z-index: 150; overflow: auto;}
-div.scroller > div { }
 
 body div#CODEXHUD.about #CODEXHEART .tabcontent#CODEXABOUTBOOK,
 body div#CODEXHUD.device #CODEXHEART .tabcontent#CODEXSETTINGS,
@@ -356,11 +342,10 @@ body.hudup div#CODEXHUD img.hudbutton:hover { opacity: 0.8;}
 
 body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
 
-/* Mode display rules */
+/* CODEXGLOSSES rules */
 
 div#CODEXGLOSSES div.codexslice .idthread .codexcard:first-child .idhead {
     height: 0px;}
-
 div.hudpanel#CODEXGLOSSES div.codexslice .tocthread {
     border-left-width: 0px;}
 
@@ -395,9 +380,6 @@ div#CODEXSCANNER div.tochead, div#CODEXGLOSSES div.tochead {
 
 body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC {
     overflow: visible;}
-
-body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
-    border-color: silver;}
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
@@ -540,13 +522,20 @@ div#CODEXHUD div#SBOOKABOUT div.textblock {
 div#CODEXHUD div#SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
 div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
+/* CODEXADDGLOSS rules */
+
+div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
+    opacity: 0.95; margin-left: 0px; margin-right: 0px;
+    border-color: silver;}
 
 /* The Console */
 
-div#CODEXCONSOLE h1 { font-size: 1.5em; text-align: center;}
+div#CODEXCONSOLE h1 {
+    font-size: 1.5em; text-align: center;
+    margin-top: 4px; margin-bottom: 1em;}
 div#CODEXCONSOLE div#CODEXCONSOLELOG { }
 div#CODEXCONSOLE div.fdjtlog {
-    border-top: solid black 1px;}
+    margin-left: 0.5em; border-top: solid black 1px;}
 div#CODEXCONSOLE div.message {
     text-align: center; font-size: 150%;}
 
