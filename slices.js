@@ -592,7 +592,9 @@
     function addToSlice(note,div,query){
 	var frag=(note.id||note.frag);
 	var eltinfo=Codex.docinfo[frag];
+	if (!(eltinfo)) return;
 	var about=document.getElementById(frag);
+	if (!(about)) return;
 	var headinfo=((eltinfo.toclevel)?(eltinfo):(eltinfo.head));
 	var headid=headinfo.frag;
 	var head=document.getElementById(headid);

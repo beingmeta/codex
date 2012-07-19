@@ -192,7 +192,7 @@
 	return glossmark;};
     
     function showGlosses(target) {
-	var glosses=Codex.glosses.find('frag',target.codexdupid||target.id);
+	var glosses=Codex.glosses.find('frag',target.codexbaseid||target.id);
 	var sumdiv=fdjtDOM("div.codexglosses.hudpanel#CODEXGLOSSES");
 	var excerpt=false;
 	if ((!(glosses))||(!(glosses.length)))

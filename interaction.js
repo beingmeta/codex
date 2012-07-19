@@ -287,7 +287,7 @@
 	    CodexMode(false);
 	    fdjtUI.cancel(evt);
 	    return;}
-	var id=passage.codexdupid||passage.id;
+	var id=passage.codexbaseid||passage.id;
 	if ((id)&&(Codex.docinfo[id])) {
 	    var info=Codex.docinfo[id];
 	    if (info.starts_at) {
@@ -1202,7 +1202,7 @@
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
 	    var head=Codex.head;
-	    var headid=head.id||head.codexdupid;
+	    var headid=head.codexbaseid||head.id;
 	    var headinfo=Codex.docinfo[headid];
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanForward/toc() head=%o info=%o n=%o h=%o",
@@ -1233,7 +1233,7 @@
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
 	    var head=Codex.head;
-	    var headid=head.id||head.codexdupid;
+	    var headid=head.codexbaseid||head.id;
 	    var headinfo=Codex.docinfo[headid];
 	    if (Codex.Trace.nav) 
 		fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",

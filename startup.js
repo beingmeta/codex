@@ -246,12 +246,12 @@ Codex.Startup=
 	    fdjtLog.console="CODEXCONSOLELOG";
 	    fdjtLog.consoletoo=true;
 	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
-	    fdjtLog("This is Codex version %s, built %s on %s, starting %s",
+	    fdjtLog("This is Codex version %s, built %s on %s, launched %s",
 		    Codex.version,sbooks_buildtime,sbooks_buildhost,
 		    Codex._setup_start.toString());
 	    if (navigator.appVersion)
 		fdjtLog("Navigator App version: %s",navigator.appVersion);
-	    if (getQuery("cxtrace")) traceSetup();
+	    if (getQuery("cxtrace")) setupTrace();
 	    if (Codex.Trace.startup) fdjtLog("Starting app setup");
 	    appSetup();
 	    if (Codex.Trace.startup) fdjtLog("Starting user setup");
@@ -367,7 +367,7 @@ Codex.Startup=
 		return;}
 	    else return;}
 
-	function traceSetup(){
+	function setupTrace(){
 	    var tracing=getQuery("cxtrace",true);
 	    var i=0; var lim=tracing.length;
 	    while (i<lim) {
@@ -638,15 +638,25 @@ Codex.Startup=
 		    false;}
 	    setLocal("codex.refuris",refuris,true);
 	    
-	    var isIphone = (/iphone/gi).test(navigator.appVersion);
+	    deviceSetup();
+
+	    Codex.allglosses=[];
+	    Codex.allsources=[];
+	    Codex.etc=[];}
+
+	function deviceSetup(){
+	    var useragent=navigator.userAgent;
+	    var body=document.body;
+
+	    var isiPhone = (/iphone/gi).test(navigator.appVersion);
 	    var isTouchPad = (/Touchpad/gi).test(navigator.appVersion);
-	    var isIpad = (/ipad/gi).test(navigator.appVersion);
+	    var isiPad = (/ipad/gi).test(navigator.appVersion);
 	    var isAndroid = (/android/gi).test(navigator.appVersion);
 	    var isWebKit = navigator.appVersion.search("WebKit")>=0;
-	    var isWebTouch = isIphone || isIpad || isAndroid || isTouchPad;
+	    var isWebTouch = isiPhone || isiPad || isAndroid || isTouchPad;
 
 	    if (isWebTouch) {
-		fdjtDOM.addClass(document.body,"cxTOUCH");
+		fdjtDOM.addClass(body,"cxTOUCH");
 		viewportSetup();
 		Codex.ui="webtouch"; Codex.touch=true;}
 	    if ((useragent.search("Safari/")>0)&&
@@ -662,20 +672,29 @@ Codex.Startup=
 	    else if ((useragent.search(/Android/gi)>0)&&
 		     (useragent.search("Mobile/")>0)) {
 		Codex.nativescroll=false;
+		Codex.updatehash=false;
 		Codex.scrolldivs=false;}
 	    else if (sbook_faketouch) {
-		fdjtDOM.addClass(document.body,"cxTOUCH");
+		fdjtDOM.addClass(body,"cxTOUCH");
 		viewportSetup();
 		Codex.ui="faketouch"}
 	    else {
-		fdjtDOM.addClass(document.body,"cxMOUSE");
+		fdjtDOM.addClass(body,"cxMOUSE");
 		// fdjtDOM.addClass(document.body,"cxTOUCH");
 		// fdjtDOM.addClass(document.body,"cxSHRINK");
 		Codex.ui="mouse";}
-	    
-	    Codex.allglosses=[];
-	    Codex.allsources=[];
-	    Codex.etc=[];}
+	    var opt_string=
+		fdjtString.stdspace(
+		    ((isiPhone)?(" iPhone"):(""))+
+			((isTouchPad)?(" TouchPad"):(""))+
+			((isiPad)?(" iPad"):(""))+
+			((isAndroid)?(" Android"):(""))+
+			((isWebKit)?(" WebKit"):(""))+
+			((isWebTouch)?(" touch"):(""))+
+			((!(isWebTouch))?(" mouse"):("")));
+	    fdjtLog("Device: %s %dx%d ui=%s, body.className=\"%s\"",
+		    opt_string,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),
+		    Codex.ui,body.className);}
 
 	function initUserOffline(){
 	    var refuri=Codex.refuri;
