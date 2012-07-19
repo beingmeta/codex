@@ -13,7 +13,7 @@ div.searchbox div.query {
     width: 100%; text-align: right; margin-top: 2px;
     font-size: 18px;}
 div.searchbox div.query input[type='TEXT'] {
-    max-width: 50%; min-width: 25%; font-size: 16px;}
+    max-width: 50%; min-width: 33%; font-size: 20px;}
 div.searchbox div.query input[type='TEXT'] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
@@ -46,7 +46,7 @@ div.searchbox div.query img.clearsearch {
 div.searchbox div.query input[type='TEXT'] { float: right;}
 
 div.searchbox div.resultinfo {
-    margin-right: 32px; min-height: 1ex;
+    margin-right: 32px; min-height: 1ex; margin-bottom: 1ex;
     clear: both; text-align: right;}
 div.searchbox div.resultinfo span.resultcount,
 div.searchbox div.resultinfo span.refinecount {

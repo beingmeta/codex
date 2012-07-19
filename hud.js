@@ -311,7 +311,7 @@ var CodexMode=
 	
 	var CodexMode_pat=/\b((device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
 	var codexHeartMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login))\b/g;
-	var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(glosses)|(allglosses)|(addgloss))\b/g;
+	var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(glosses)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan))\b/g;
 	var codex_mode_scrollers=
 	    {allglosses: "CODEXALLGLOSSES",
 	     searchresults: "CODEXSEARCHRESULTS",

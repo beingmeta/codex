@@ -23,10 +23,11 @@
     border: solid transparent 4px; padding: 0px;
     border-top: 0px;}
 #CODEXHEAD { left: 50px; right: 50px; }
+#CODEXHUD.openhead #CODEXHEAD, #CODEXSCANNER  { left: 100px; right: 100px; }
 #CODEXSCANNER { display: none; }
+#CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; }
 
-#CODEXHUD.openhead #CODEXHEAD, #CODEXHUD.tocscan #CODEXHEAD, #CODEXSCANNER {
-    left: 100px; right: 100px; }
+
 #CODEXHEAD, #CODEXHEAD .hudpanel, #CODEXSCANNER {
     border-radius: 1em; -webkit-border-radius: 1em;
     -o-border-radius: 1em; -moz-border-radius: 1em;
@@ -542,8 +543,8 @@ div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
 /* The Console */
 
-div#CODEXCONSOLE h1 { font-size: 1.5em;}
-div#CODEXCONSOLE div#CODEXCONSOLELOG { margin-left: 4em;}
+div#CODEXCONSOLE h1 { font-size: 1.5em; text-align: center;}
+div#CODEXCONSOLE div#CODEXCONSOLELOG { }
 div#CODEXCONSOLE div.fdjtlog {
     border-top: solid black 1px;}
 div#CODEXCONSOLE div.message {
