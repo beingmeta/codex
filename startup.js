@@ -677,8 +677,7 @@ Codex.Startup=
 		default_config.keyboardhelp=false;
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
-	    else if ((useragent.search(/Android/gi)>0)&&
-		     (useragent.search("Mobile/")>0)) {
+	    else if (useragent.search(/Android/gi)>0) {
 		Codex.nativescroll=false;
 		Codex.updatehash=false;
 		Codex.scrolldivs=false;}
@@ -699,8 +698,14 @@ Codex.Startup=
 			((isAndroid)?(" Android"):(""))+
 			((isWebKit)?(" WebKit"):(""))+
 			((isWebTouch)?(" touch"):(""))+
-			((!(isWebTouch))?(" mouse"):("")));
-	    fdjtLog("Device: %s %dx%d ui=%s, body.className=\"%s\"",
+			((!(isWebTouch))?(" mouse"):(""))+
+			((Codex.nativescroll)?(" nativescroll"):
+			 (" iscroll"))+
+			((Codex.updatehash)?(" updatehash"):
+			 (" leavehash"))+
+			((Codex.scrolldivs)?(" scrolldivs"):
+			 (" noscrolldivs")));
+	    fdjtLog("Device: %s %dx%d ui=%s, body=\"%s\"",
 		    opt_string,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),
 		    Codex.ui,body.className);}
 

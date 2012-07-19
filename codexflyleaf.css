@@ -11,7 +11,7 @@ div#CODEXHUD div#CODEXHEART table {
 
 div#CODEXHUD.about div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXABOUTBOOK'],
 div#CODEXHUD.device div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXSETTINGS'],
-div#CODEXHUD.flytoc div#CODEXFLYHEAD div.tabbar .tab[contentid='FLYTOC'],
+div#CODEXHUD.flytoc div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXFLYTOC'],
 div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXCONSOLE'],
 div#CODEXHUD.sbookapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;

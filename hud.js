@@ -258,9 +258,9 @@ var CodexMode=
 	    toc_button.style.visibility='';
 	    Codex.TOC=navhud;
 	    fdjtDOM.replace("CODEXTOC",navhud);
-	    var flytoc=createStaticTOC("div#CODEXFLYTOC",root_info);
+	    var flytoc=createStaticTOC("div#CODEXFLYTOC.hudpanel",root_info);
 	    Codex.Flytoc=flytoc;
-	    fdjtDOM(fdjtID("FLYTOC"),flytoc);}
+	    fdjtDOM.replace("CODEXFLYTOC",flytoc);}
 	Codex.setupTOC=setupTOC;
 
 	function createNavHUD(eltspec,root_info){
@@ -318,6 +318,7 @@ var CodexMode=
 	     search: "CODEXSEARCHCLOUD",
 	     console: "CODEXCONSOLE",
 	     // sbookapp: "SBOOKSAPP",
+	     device: "CODEXSETTINGS",
 	     flytoc: "CODEXFLYTOC",
 	     about: "CODEXABOUTBOOK"};
 	var codex_mode_foci=
@@ -412,8 +413,10 @@ var CodexMode=
 		//  needs to catch up with CSS
 		if (Codex.scrolling) {
 		  var scroller=fdjtID(Codex.scrolling);
-		  setTimeout(function(){updateScroller(scroller);},
-			     100);}
+		    fdjtLog("Updating scroller for #%s s=%o",
+			    Codex.scrolling,scroller);
+		    setTimeout(function(){updateScroller(scroller);},
+			       100);}
 		// We autofocus any input element appropriate to the
 		// mode
 		if (codex_mode_foci[mode]) {
@@ -454,75 +457,23 @@ var CodexMode=
 		       1500);}
 	Codex.fadeUpHUD=fadeUpHUD;
 
-	function updateScroller(elt){
-	    if (typeof elt === 'string') elt=fdjtID(elt);
-	    var c=elt.parentNode; var cc=c.parentNode;
-	    // Remove all constraint
-	    c.style.height=''; c.style.overflow='visible';
-	    // Compute bounds to get height
-	    var cstyle=fdjtDOM.getStyle(c);
-	    var ccstyle=fdjtDOM.getStyle(cc);
-	    var cbounds=
-		fdjtDOM.parsePX(cstyle.borderTopWidth)+
-		fdjtDOM.parsePX(cstyle.borderBottomWidth)+
-		fdjtDOM.parsePX(cstyle.paddingTop)+
-		fdjtDOM.parsePX(cstyle.paddingBottom)+
-		fdjtDOM.parsePX(cstyle.marginTop)+
-		fdjtDOM.parsePX(cstyle.marginBottom);
-	    var ccbounds=
-		fdjtDOM.parsePX(ccstyle.borderTopWidth)+
-		fdjtDOM.parsePX(ccstyle.borderBottomWidth)+
-		fdjtDOM.parsePX(ccstyle.paddingTop)+
-		fdjtDOM.parsePX(ccstyle.paddingBottom)+
-		fdjtDOM.parsePX(ccstyle.marginTop)+
-		fdjtDOM.parsePX(ccstyle.marginBottom);
-	    if (Codex.scrolldivs) {
-		c.style.height=
-		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
-	    	c.style.overflow='';}
-	    else {
-		if ((!(Codex.scrollers))||(!(elt.id))) return;
-		if (Codex.Trace.scroll) {
-		    fdjtLog("cco=%o ct=%o nh=%o",
-			    cc.offsetHeight,c.offsetTop,
-			    cc.offsetHeight-c.offsetTop);}
-		c.style.height=
-		    ((cc.offsetHeight-(ccbounds+cbounds))-c.offsetTop)+'px';
-		c.style.overflow='hidden';
-		if ((Codex.scrollers[elt.id])&&
-		    (Codex.scrollers[elt.id].element===elt))
-		    Codex.scrollers[elt.id].refresh();
-		else Codex.scrollers[elt.id]=new iScroll(elt);}
-	    if (Codex.Trace.scroll) {
-		fdjtLog("updateScroller %o %o %o ch=%o h=%o",
-			elt,c,cc,cc.offsetHeight-c.offsetTop,elt.offsetHeight);
-		fdjtLog("updateScroller e=%o,c=%o,cc=%o",
-			fdjtDOM.getStyle(elt).overflow,
-			fdjtDOM.getStyle(c).overflow,
-			fdjtDOM.getStyle(cc).overflow);
-		if ((!(Codex.nativescroll))&&
-		    (elt.id)&&(Codex.scrollers)&&
-		    (Codex.scrollers[elt.id])) {
-		    var scroller=Codex.scrollers[elt.id];
-		    fdjtLog("e=%o w=%o wo=%o,%o wc=%o,%o i=%o,%o o=%o,%o d=%o,%o m=%o,%o",
-			    scroller.element,scroller.wrapper,
-			    scroller.wrapper.offsetWidth,
-			    scroller.wrapper.offsetHeight,
-			    scroller.wrapper.clientWidth,
-			    scroller.wrapper.clientHeight,
-			    elt.offsetWidth,elt.offsetHeight,
-			    scroller.scrollerWidth,scroller.scrollerHeight,
-			    scroller.scrollWidth,scroller.scrollHeight,
-			    scroller.maxScrollX,scroller.maxScrollY);}}}
 	// function updateScroller(elt){}
 	function updateScroller(elt){
 	    if (Codex.scrolldivs) return;
 	    if (typeof elt === 'string') elt=fdjtID(elt);
+	    fdjtLog("updateScroller elt=%o",elt);
 	    if (!(elt)) return;
 	    if ((Codex.scrollers[elt.id])&&
-		(Codex.scrollers[elt.id].element===elt))
-		Codex.scrollers[elt.id].refresh();
-	    else Codex.scrollers[elt.id]=new iScroll(elt);}
+		(Codex.scrollers[elt.id].element===elt)) {
+		var scroller=Codex.scrollers[elt.id];
+		if (Codex.Trace.scroll)
+		    fdjtLog("updateScroller/refresh %o",scroller);
+		scroller.refresh();}
+	    else {
+		var scroller=new iScroll(elt);
+		if (Codex.Trace.scroll)
+		    fdjtLog("updateScroller/create %o",scroller);
+		Codex.scrollers[elt.id]=scroller;}}
 	Codex.UI.updateScroller=updateScroller;
 
 	function CodexHUDToggle(mode,keephud){

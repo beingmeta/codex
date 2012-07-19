@@ -60,23 +60,23 @@ body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > div.he
 body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > img {
     height: inherit;}
 
-div#CODEXHEART div#FLYTOC div.codextoc {
+div#CODEXHEART div#CODEXFLYTOC div.codextoc {
     display: block; font-size: 90%; text-align: left;}
-div#CODEXHEART div#FLYTOC div.codextoc img { display: none;}
-div#CODEXHUD div#CODEXHEART div#FLYTOC div.codextoc div.head {
+div#CODEXHEART div#CODEXFLYTOC div.codextoc img { display: none;}
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.codextoc div.head {
     margin-left: 0px; margin-right: 0px;
     display: block; font-weight: bold;}
-div#CODEXHUD div#CODEXHEART div#FLYTOC div.codextocleaf > div.head {
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.codextocleaf > div.head {
     display: block; font-weight: normal;}
-div#CODEXHUD div#CODEXHEART div#FLYTOC hr.progressbar {
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC hr.progressbar {
     display: none; border: none;}
-div#CODEXHUD div#CODEXHEART div#FLYTOC div.progressbox { display: none;}
-div#CODEXHUD div#CODEXHEART div#FLYTOC div.codexlivehead > div.head {
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.progressbox { display: none;}
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.codexlivehead > div.head {
     color: blue;}
-div#CODEXHUD div#CODEXHEART div#FLYTOC
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC
   div.codexlivehead > div.head hr.progressbar {
       display: block;}
-div#CODEXHUD div#CODEXHEART div#FLYTOC
+div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC
   div.codexlivehead > div.spanbar div.progressbox {
       display: block;}
 
@@ -114,7 +114,7 @@ div#CODEXHUD.tocscan div#CODEXTOC div.spanbar div.progressbox {
     border-top: 0px;}
 div#CODEXHUD.tocscan div#CODEXTOC div.spanbar { height: 40px;}
 
-div#CODEXTOC div.spanbar, div#FLYTOC div.spanbar {
+div#CODEXTOC div.spanbar, div#CODEXFLYTOC div.spanbar {
   position: relative;  /* opacity: 0.5;  */
   text-align: center; clear: both;
   margin: 0px; padding: 0px; border: 0px;

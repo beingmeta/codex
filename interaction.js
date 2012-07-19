@@ -865,7 +865,6 @@
     function hud_touchend(evt){
 	if (Codex.Trace.gestures) tracetouch("hud_touchend",evt);
 	var target=fdjtUI.T(evt);
-	mouseisdown=false; // For faketouch
 	var scroller=((Codex.scrolling)&&(Codex.scrollers)&&
 		      (Codex.scrollers[Codex.scrolling]));
 	if ((scroller)&&(scroller.motion)&&(scroller.motion>10)) return;
