@@ -96,6 +96,7 @@ div#CODEXSETTINGS span.button {
 
 div#CODEXHEART table.settings td .checkspan { }
 
+div#CODEXHUD #CODEXABOUTBOOK.hudpanel { text-align: left;}
 div#CODEXABOUTBOOK div.links {
     height: 1em; border-bottom: solid purple 3px; margin-bottom: 1em;}
 div#CODEXABOUTBOOK div.links a.metadata {
