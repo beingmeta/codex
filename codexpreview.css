@@ -7,6 +7,10 @@
 body.cxPREVIEW #CODEXHEAD { display: none; }
 body.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD { display: none; }
 
+body.cxPREVIEW #CODEXHUD.openhead.toc #CODEXHEAD,
+body.cxPREVIEW #CODEXHUD.tocscan #CODEXHEAD {
+    display: block; }
+
 body.cxPREVIEW #CODEXHUD.toc #CODEXHEAD {
     background-color: transparent;
     border-color: transparent;}
