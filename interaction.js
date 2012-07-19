@@ -247,6 +247,8 @@
 		    Codex.updatePageDisplay(Codex.curpage,Codex.location);}}
 	
 	if (!(passage)) {
+	    if ((Codex.mode)||(Codex.hudup)) {
+		CodexMode(false); return;}
 	    if (x>(fdjtDOM.viewWidth()/3))
 		Codex.Forward(evt);
 	    else Codex.Backward(evt);
@@ -265,6 +267,8 @@
 	    clearTimeout(tap_timer);
 	    tap_timer=false; tap_target=false;
 	    addgloss=true;}
+	else if ((Codex.mode)||(Codex.hudup)) {
+	    CodexMode(false); return;}
 	else {
 	    var cmd=((x>(fdjtDOM.viewWidth()/3))?
 		     (Codex.Forward):(Codex.Backward));
@@ -951,8 +955,10 @@
 	else last_motion=now;
 	if (Codex.Trace.nav)
 	    fdjtLog("Forward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
+	/* 
 	if ((Codex.mode==="glosses")||(Codex.mode==="addgloss"))
-	    CodexMode(true);
+	CodexMode(true); else */
+	CodexMode(false);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
 	    scanForward();
 	else pageForward();}
@@ -968,8 +974,9 @@
 	if (evt) fdjtUI.cancel(evt);
 	if ((last_motion)&&((now-last_motion)<100)) return;
 	else last_motion=now;
-	if ((Codex.mode==="glosses")||(Codex.mode==="addgloss"))
-	    CodexMode(true);
+	/* if ((Codex.mode==="glosses")||(Codex.mode==="addgloss"))
+	   CodexMode(true); else */
+	CodexMode(false);
 	if (Codex.Trace.nav)
 	    fdjtLog("Backward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
