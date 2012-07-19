@@ -725,6 +725,7 @@ var sbook_gloss_data=
 	    Codex.GoToSection(target,caller||"CodexGoTo",false);
 	else {
 	    var offinfo=fdjtDOM.getGeometry(target,Codex.content);
+	    if (Codex.previewing) Codex.stopPreview();
 	    Codex.content.style.top=(-offinfo.top)+"px";}
 	Codex.location=location;}
     Codex.GoTo=CodexGoTo;

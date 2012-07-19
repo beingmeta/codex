@@ -1064,12 +1064,6 @@
 	    else target=target.parentNode;}
 	fdjtUI.cancel(evt);}
 
-    Codex.setInfoTarget=function(passage){
-	var passageid=((passage.codexbaseid)||(passage.id));
-	var infodiv=Codex.glossBlock(passageid,"div.sbookgloss")
-	fdjtDOM.replace("SBOOKTARGETINFO",infodiv);
-	fdjtDOM.adjustToFit(fdjtID("SBOOKFOOTINFO"));}
-
 })();
 
 /* Emacs local variables

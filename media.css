@@ -14,7 +14,14 @@
     body.hudup #CODEXHUD.openhead img.hudbutton[alt="search"] {
 	display: none;}
 
-    #CODEXHEART {left: 10px; right: 10px;}
+    #CODEXHEART {left: 20px; right: 20px;}
+
+    div.fdjtprogress#CODEXLAYOUTMESSAGE {
+	left: 50px; right: 50px;}
+
+    div#CODEXPAGE { left: 10px; right: 10px;}
+
+    .codexglossmark {margin-right: -8px;}
 }
 
 

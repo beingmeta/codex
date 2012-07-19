@@ -575,6 +575,27 @@ body div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='Console'] {
 div#CODEXHUD.about div#CODEXHEART .tabcontent {
     margin-top: 0px;}
 
+/* The page layout message/progress indicator */
+
+div.fdjtprogress#CODEXLAYOUTMESSAGE {
+    text-align: center; font-size: 20px; font-weight: bold;
+    color: black; background-color: lightgray;
+    position: fixed; opacity: 0.0; z-index: 300;
+    bottom: 0px; left: 100px; right: 100px; height: 50px;
+    padding-top: 15px;
+    transition-property: opacity;
+    transition-duration: 1s;
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 1s;
+    -o-transition-property: opacity;
+    -o-transition-duration: 1s;
+    -moz-transition-property: opacity;
+    -moz-transition-duration: 1s;
+    display: none;}
+body.cxLAYOUT div#CODEXLAYOUTMESSAGE {
+    display: block; opacity: 0.8;}
+
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

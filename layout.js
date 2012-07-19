@@ -978,6 +978,7 @@ var CodexSections=
 	
 	function GoToSection(spec,caller,pushstate){
 	    if (typeof pushstate === 'undefined') pushstate=false;
+	    if (Codex.previewing) stopPreview("GoToSection");
 	    var info=getSectionInfo(spec)||getSectionInfo(1);
 	    if (!(info)) {
 		fdjtLog("Warning: GoToSection couldn't map %o to section for %s",
@@ -1240,11 +1241,11 @@ var CodexPaginate=
 	    var view_width=fdjtDOM.viewWidth();
 	    var page_margin=(view_width-page_width)/2;
 	    var content_margin=(view_width-content_width)/2;
-	    if (page_margin>=50) {
+	    if (page_margin!==50) {
 		page.style.left=page_margin+'px';
 		page.style.right=page_margin+'px';}
 	    else page.style.left=page.style.right='';
-	    if (content_margin>=50) {
+	    if (content_margin!==50) {
 		content.style.left=content_margin+'px';
 		content.style.right=content_margin+'px';}
 	    else content.style.left=content.style.right='';
@@ -1413,6 +1414,7 @@ var CodexPaginate=
 	
 	function GoToPage(spec,caller,pushstate){
 	    if (typeof pushstate === 'undefined') pushstate=false;
+	    if (Codex.previewing) stopPreview("GoToPage");
 	    if ((Codex.layout)&&
 		(Codex.layout.pagelocs)) {
 		Codex.GoToSection(Codex.layout.pagelocs[spec-1]);
@@ -1464,6 +1466,10 @@ var CodexPaginate=
 		fdjtLog("startPagePreview/%s to %o (%d) for %o",
 			caller||"nocaller",page,pagenum,spec);
 	    if (curpage) dropClass(curpage,"curpage");
+	    else {
+		var curpages=fdjtDOM.$(".curpage");
+		if ((curpages)&&(curpages.length))
+		    dropClass(curpages,"curpage");}
 	    addClass(page,"curpage");
 	    Codex.previewing=previewing=page;
 	    addClass(document.body,"cxPREVIEW");
