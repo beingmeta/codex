@@ -202,7 +202,9 @@
     function content_mousedown(){
 	gesture_start=fdjtTime();}
 
-    function content_mouseup(evt,target){
+    function content_mouseup(evt,target,x,y){
+	if (typeof x !== 'number') x=evt.clientX;
+	if (typeof y !== 'number') y=evt.clientY;
 	var now=fdjtTime();
 	var addgloss=false;
 	if (!(target)) target=fdjtUI.T(evt);
@@ -245,7 +247,7 @@
 		    Codex.updatePageDisplay(Codex.curpage,Codex.location);}}
 	
 	if (!(passage)) {
-	    if (evt.clientX>(fdjtDOM.viewWidth()/3))
+	    if (x>(fdjtDOM.viewWidth()/3))
 		Codex.Forward(evt);
 	    else Codex.Backward(evt);
 	    gesture_start=false;
@@ -264,7 +266,7 @@
 	    tap_timer=false; tap_target=false;
 	    addgloss=true;}
 	else {
-	    var cmd=((evt.clientX>(fdjtDOM.viewWidth()/3))?
+	    var cmd=((x>(fdjtDOM.viewWidth()/3))?
 		     (Codex.Forward):(Codex.Backward));
 	    if (tap_timer) clearTimeout(tap_timer);
 	    tap_target=passage;
@@ -286,39 +288,6 @@
 	Codex.setGlossForm(form);
 	fdjtUI.cancel(evt);
 	CodexMode("addgloss");}
-
-    /* Tap actions */
-
-    function tapTarget(target){
-	if (Codex.Trace.gestures)
-	    fdjtLog("Tap on target %o mode=%o",target,Codex.mode);
-	Codex.setTarget(target);
-	addGlossButton(target);
-	CodexMode(true);}
-
-    function edgeTap(evt,x){
-	if (!(evt)) evt=event||false;
-	var pageom=getGeometry(Codex.page,document.body);
-	if (typeof x !== 'number') x=((evt)&&getOffX(evt));
-	if (typeof x !== 'number') x=last_x;
-	if (typeof x === 'number') {
-	    if (Codex.Trace.gestures)
-		fdjtLog("edgeTap %o x=%o w=%o g=%j",evt,x,
-			fdjtDOM.viewWidth(),pageom);
-	    if (x<0) {Backward(evt); return true;}
-	    else if (x>pageom.width) {
-		Forward(evt); return true;}
-	    else return false}
-	else return false;}
-    Codex.edgeTap=edgeTap;
-    
-    function edge_click(evt) {
-	var target=fdjtUI.T(evt);
-	if ((isClickable(target))||
-	    (getParent(target,".codexglossbutton"))||
-	    (getParent(target,".codexglossmark")))
-	    return;
-	if (edgeTap(evt)) fdjtUI.cancel(evt);}
 
     /* TOC handlers */
 
@@ -779,52 +748,10 @@
     var touch_started=false; var touch_ref=false;
     var page_x=-1; var page_y=-1; var sample_t=-1;
     var touch_moves=0;
-    var touch_timer=false;
     var touch_held=false;
     var touch_moved=false;
     var touch_scrolled=false;
     var n_touches=0;
-
-    var doubletap=false, tripletap=false;
-
-    function cleartouch(){
-	touch_started=false; touch_ref=false;
-	start_x=start_y=last_x=last_y=-1;
-	page_x=page_y=sample_t=-1; touch_moves=0;
-	touch_timer=false; touch_held=false;
-	touch_moved=false; touch_scrolled=false;
-	doubletap=false; tripletap=false;}
-
-    function tracetouch(handler,evt){
-	evt=evt||event;
-	var touches=evt.touches;
-	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
-	var target=fdjtUI.T(evt); var ref=Codex.getRef(target);
-	if (touch_started)
-	    fdjtLog("%s(%o) n=%o %sts=%o %s@%o\n\t+%o %s%s%s%s%s%s%s s=%o,%o l=%o,%o p=%o,%o d=%o,%o ref=%o tt=%o tm=%o",
-		    handler,evt,((touches)&&(touches.length)),
-		    ((!(touch))?(""):
-		     ("c="+touch.clientX+","+touch.clientY+";s="+touch.screenX+","+touch.screenY+" ")),
-		    touch_started,evt.type,target,
-		    fdjtTime()-touch_started,
-		    ((Codex.mode)?(Codex.mode+" "):""),
-		    ((Codex.scanning)?"scanning ":""),
-		    ((touch_held)?("held "):("")),
-		    ((touch_moved)?("moved "):("")),
-		    ((touch_scrolled)?("scrolled "):("")),
-		    ((isClickable(target))?("clickable "):("")),
-		    ((touch)?"":"notouch "),
-		    start_x,start_y,last_x,last_y,page_x,page_y,
-		    (((touch)&&(touch.screenX))?(touch.screenX-page_x):0),
-		    (((touch)&&(touch.screenY))?(touch.screenY-page_y):0),
-		    touch_ref,touch_timer,touch_moves);
-	else fdjtLog("%s(%o) n=%o %s%s c=%o,%o p=%o,%o ts=%o %s@%o ref=%o",
-		     handler,evt,((touches)&&(touches.length)),
-		     ((Codex.mode)?(Codex.mode+" "):""),
-		     ((Codex.scanning)?"scanning ":""),
-		     touch.clientX,touch.clientY,touch.screenX,touch.screenY,
-		     touch_started,evt.type,target,ref);
-	if (ref) fdjtLog("%s(%o) ref=%o from %o",handler,evt,ref,target);}
 
     /* Touch handling */
 
@@ -839,7 +766,7 @@
 	touch_x=start_x=touch.screenX;
 	touch_y=start_y=touch.screenY;
 	if ((touches)&&(touches.length)) n_touches=touches.length;
-	if (Codex.Trace.gestures>2) tracetouch("touchmove",evt);
+	if (Codex.Trace.gestures>1) tracetouch("touchstart",evt);
 	gesture_start=fdjtTime();
 	touch_moved=false;
 	return;}
@@ -876,9 +803,43 @@
 		else {
 		    if (dx<0) Codex.scanForward(evt);
 		    else Codex.scanBackward(evt);}}
-	    else content_mouseup(evt);
+	    else content_mouseup(evt,target,touch_x,touch_y);
 	    return;}
-	else content_mouseup(evt);}
+	else content_mouseup(evt,target,touch_x,touch_y);}
+
+    /* Tracing touch */
+    
+    function tracetouch(handler,evt){
+	evt=evt||event;
+	var touches=evt.touches;
+	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
+	var target=fdjtUI.T(evt); var ref=Codex.getRef(target);
+	if (touch_started)
+	    fdjtLog("%s(%o) n=%o %sts=%o %s@%o\n\t+%o %s%s%s%s%s%s%s s=%o,%o l=%o,%o p=%o,%o d=%o,%o ref=%o tm=%o",
+		    handler,evt,((touches)&&(touches.length)),
+		    ((!(touch))?(""):
+		     ("c="+touch.clientX+","+touch.clientY+";s="+touch.screenX+","+touch.screenY+" ")),
+		    touch_started,evt.type,target,
+		    fdjtTime()-touch_started,
+		    ((Codex.mode)?(Codex.mode+" "):""),
+		    ((Codex.scanning)?"scanning ":""),
+		    ((touch_held)?("held "):("")),
+		    ((touch_moved)?("moved "):("")),
+		    ((touch_scrolled)?("scrolled "):("")),
+		    ((isClickable(target))?("clickable "):("")),
+		    ((touch)?"":"notouch "),
+		    start_x,start_y,last_x,last_y,page_x,page_y,
+		    (((touch)&&(touch.screenX))?(touch.screenX-page_x):0),
+		    (((touch)&&(touch.screenY))?(touch.screenY-page_y):0),
+		    touch_ref,touch_moves);
+	else fdjtLog("%s(%o) n=%o %s%s c=%o,%o p=%o,%o ts=%o %s@%o ref=%o",
+		     handler,evt,((touches)&&(touches.length)),
+		     ((Codex.mode)?(Codex.mode+" "):""),
+		     ((Codex.scanning)?"scanning ":""),
+		     touch.clientX,touch.clientY,touch.screenX,touch.screenY,
+		     touch_started,evt.type,target,ref);
+	if (ref) fdjtLog("%s(%o) ref=%o from %o",handler,evt,ref,target);}
+
 
     /* HUD touch */
 
@@ -1463,7 +1424,6 @@
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,
 		   release: slice_released},
-	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {click: Codex.UI.dropHUD},
 	 "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
 	 ".helphud": {click: Codex.UI.dropHUD},
@@ -1514,7 +1474,6 @@
 		     touchend: cancel},
 	 // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,release: slice_released},
-	 // ".codexmargin": {click: edge_click},
 	 "#CODEXHELP": {click: Codex.UI.dropHUD},
 	 "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
 	 ".helphud": {click: Codex.UI.dropHUD},
