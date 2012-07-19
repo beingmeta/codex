@@ -43,7 +43,7 @@ var Codex=
      // For tracking UI state
      last_mode: false, last_heartmode: "about", demo: false,
      // How long it takes a gesture to go from tap to hold
-     holdmsecs: 500, edgeclick: 50, pagesize: 250,
+     taptapmsecs: 500, holdmsecs: 500, edgeclick: 50, pagesize: 250,
      animate: {pages:true,hud: true},
      glossmodes: /(addtag)|(addlink)|(excerpt)|(editnote)|(sharing)/,
      updatehash: true, iscroll: false,

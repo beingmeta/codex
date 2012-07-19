@@ -89,7 +89,8 @@ Codex.Startup=
 	     bodysize: 'normal',bodyfamily: 'serif',
 	     uisize: 'normal',showconsole: true,
 	     animatepages: true,animatehud: true,
-	     startuphelp: true,keyboardhelp: true};
+	     startuphelp: true,keyboardhelp: true,
+	     holdmsecs: 750,taptapmsecs: 500};
 	var current_config={};
 	var saved_config={};
 
@@ -241,6 +242,13 @@ Codex.Startup=
 	    Codex.deviceName=value;});
 	Codex.addConfig("deviceid",function(name,value){
 	    Codex.deviceId=value;});
+
+	Codex.addConfig("holdmsecs",function(name,value){
+	    Codex.holdmsecs=value;
+	    fdjtUI.TapHold.interval=value;});
+	Codex.addConfig("taptapmsecs",function(name,value){
+	    Codex.taptapmsecs=value;});
+
 
 	function syncStartup(){
 	    fdjtLog.console="CODEXCONSOLELOG";

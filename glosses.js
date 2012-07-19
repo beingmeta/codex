@@ -180,7 +180,9 @@
     
     function setupGlossForm(form,passage,gloss,response){
 	var passageid=((passage.codexbaseid)||(passage.id));
-	if (form.getAttribute("sbooksetup")) return;
+	var info=Codex.docinfo[passageid];
+	if (form.getAttribute("sbooksetup")) return false;;
+	if (!(info)) return false;
 	form.onsubmit=submitGloss;
 	getInput(form,"REFURI").value=Codex.refuri;
 	getInput(form,"USER").value=Codex.user._id;
@@ -208,7 +210,6 @@
 	if (outletinput) outletinput.onkeypress=addoutlet_keypress;
 	if (Codex.syncstamp)
 	    getInput(form,"SYNC").value=(Codex.syncstamp+1);
-	var info=Codex.docinfo[passageid];
 	var loc=getInput(form,"LOCATION");
 	var loclen=getInput(form,"LOCLEN");
 	var tagline=getInput(form,"TAGLINE");
@@ -278,7 +279,8 @@
 	    var i=0, lim=shared.length;
 	    while (i<lim) addOutlet(form,shared[i++],true);}
 	form.setAttribute("sbooksetup","yes");
-	updateForm(form);}
+	updateForm(form);
+	return form;}
     Codex.setupGlossForm=setupGlossForm;
 
     function updateForm(form){

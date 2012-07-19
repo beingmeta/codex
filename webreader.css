@@ -295,6 +295,7 @@ body .codexglossmark { opacity: 0.4;}
 body.hudup .codexglossmark { opacity: 0.6; display: block;}
 
 .codexglossmark img {
+    position: static;
     float: right; vertical-align: top; text-align: right;}
 .codexglossmark img.tiny {width: 16px;}
 .codexglossmark img.big {width: 32px;}
