@@ -80,6 +80,7 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
 #CODEXHEART, #CODEXHEART div.hudpanel {
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;}
+#CODEXHEART div.hudpanel { margin-left: 0.7em; margin-right: 0.7em;}
 
 body.hudup #CODEXHEART { display: block;}
 
@@ -150,7 +151,7 @@ div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS,
 div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSCLOUD,
 div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXOUTLETCLOUD,
 div#CODEXHUD.console div#CODEXCONSOLE,
-div#CODEXHUD.sbooksapp iframe#SBOOKSAPP {
+div#CODEXHUD.sbookapp iframe#SBOOKSAPP {
     position: static; display: block;
     opacity: 0.98;}
 
