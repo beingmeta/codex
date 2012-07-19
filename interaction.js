@@ -1259,7 +1259,7 @@
 	var offx=getOffX(evt);
 	var offwidth=pageinfo.offsetWidth;
 	var gopage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
-	//if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
+	if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
 	    fdjtLog("pageinfo_tap %o off=%o/%o=%o gopage=%o/%o",
 		    evt,offx,offwidth,offx/offwidth,
 		    gopage,Codex.pagecount);
@@ -1298,9 +1298,9 @@
 	var offwidth=pageinfo.offsetWidth;
 	var showpage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
 	if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
-	    fdjtLog("pageinfo_hover %o off=%o/%o=%o showpage=%o/%o",
+	    fdjtLog("pageinfo_hover %o off=%o/%o=%o showpage=%o/%o pressed=%o",
 		    evt,offx,offwidth,offx/offwidth,
-		    showpage,Codex.pagecount);
+		    showpage,Codex.pagecount,fdjtUI.TapHold.ispressed());
 	pageinfo.title=fdjtString("%d",showpage);
 	if (fdjtUI.TapHold.ispressed()) {
 	    var page=Codex.getPage(showpage);

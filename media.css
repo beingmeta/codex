@@ -10,6 +10,9 @@
     #CODEXHEAD { left: 0px; right: 0px; }
     body.hudup #CODEXHUD.openhead #CODEXHEAD, #CODEXSCANNER  {
 	left: 0px; right: 0px; }
+    #CODEXHUD.openhead.tocscan #CODEXHEAD {
+	left: 50px; right: 50px;}
+
     body.hudup #CODEXHUD.openhead img.hudbutton[alt="toc"],
     body.hudup #CODEXHUD.openhead img.hudbutton[alt="search"] {
 	display: none;}
