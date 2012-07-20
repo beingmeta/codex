@@ -54,6 +54,7 @@ var CodexMode=
 	var dropClass=fdjtDOM.dropClass;
 	var hasClass=fdjtDOM.hasClass;
 	var getParent=fdjtDOM.getParent;
+	var getChild=fdjtDOM.getChild;
 	var hasSuffix=fdjtString.hasSuffix;
 	var Ref=fdjtKB.Ref;
 
@@ -164,7 +165,8 @@ var CodexMode=
 		    var ref=((tag instanceof Ref)?(tag):
 			     ((fdjtKB.probe(tag,Codex.knodule))||
 			      (fdjtKB.ref(tag,Codex.knodule))));
-		    var ref_tag=(((ref)&&(ref.tagString))&&(ref.tagString(Codex.knodule)))||
+		    var ref_tag=(((ref)&&(ref.tagString))&&
+				 (ref.tagString(Codex.knodule)))||
 			((ref)&&((ref._id)||(ref.uuid)||(ref.oid)))||
 			(tag);
 		    var gloss_tag=gloss_cloud.getByValue(ref_tag,".completion");
@@ -177,6 +179,8 @@ var CodexMode=
 			gloss_cloud.addCompletion(gloss_tag);}}}
 	    Codex.addTag2GlossCloud=addTag2GlossCloud;
 	    
+	    var cloudEntry=Codex.cloudEntry;
+
 	    function addTag2SearchCloud(tag){
 		if (!(tag)) return;
 		else if (tag instanceof Array) {
@@ -195,14 +199,18 @@ var CodexMode=
 		else {
 		    var search_cloud=Codex.searchCloud();
 		    var div=search_cloud.dom;
-		    var tag_string=((tag.tagString)?(tag.tagString()):(tag));
+		    var tagstring=((tag.tagString)?(tag.tagString()):(tag));
 		    var search_tag=
 			search_cloud.getByValue(tagstring,".completion");
 		    var container=div;
 		    var ref=((typeof tag === 'string')?
 			     (fdjtKB.ref(tag,Codex.knodule)):
 			     (tag));
-		    if ((!(ref))||(ref.weak))
+		    if (!(ref)) {
+			if (tag[0]==="\u00a7")
+			    container=getChild(div,".sections");
+			else container=div;}
+		    else if (ref.weak)
 			container=getChild(div,".weak");
 		    else if (ref.prime)
 			container=getChild(div,".weak");
@@ -211,7 +219,7 @@ var CodexMode=
 		    else {}
 		    if (!(container)) container=div;
 		    if (!((search_tag)&&(search_tag.length))) {
-			search_tag=tagHTML(tag,Codex.knodule,false,true);
+			search_tag=cloudEntry(tag,Codex.knodule,false,true);
 			fdjtDOM(container,search_tag," ");
 			search_cloud.addCompletion(search_tag,false,tag);}}}
 	    Codex.addTag2SearchCloud=addTag2SearchCloud;

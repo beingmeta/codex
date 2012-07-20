@@ -504,7 +504,7 @@
 	    var tagstring=((ref)?(ref._qid||ref.tagString()):(dterm));
 	    var known=completions.getByValue(tagstring);
 	    if (known.length) known=known[0]; else known=false;
-	    var span=known||KNodeCompletion(ref||dterm,title);
+	    var span=known||cloudEntry(ref||dterm,title);
 	    if (!(span)) continue;
 	    if (freq===1) addClass(span,"singleton");
 	    if ((usecues)&&
@@ -562,9 +562,9 @@
 		Codex.UI.updateScroller(completions);},
 		       100);}}
 
-    function KNodeCompletion(term,title){
+    function cloudEntry(term,title){
 	var sbook_index=Codex.index; var showname=term;
-	var knodule=sbook_index.knodule;
+	var knodule=Codex.knodule;
 	if ((typeof term === "string") && (term[0]==="\u00A7")) {
 	    // Handle section references as tags
 	    if (showname.length>20) {
@@ -586,6 +586,7 @@
 	if (span.title) span.title=title+"; "+span.title;
 	else span.title=title+Completions.getKey(span);
 	return span;}
+    Codex.cloudEntry=cloudEntry;
     
     function add_searchtag(value){
 	setQuery(Codex.extendQuery(Codex.query,value));}

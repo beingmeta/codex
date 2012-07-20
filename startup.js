@@ -1577,6 +1577,7 @@ Codex.Startup=
 	    /* One pass processes all of the inline KNodes and
 	       also separates out primary and auto tags. */
 	    var tagged=[]; var toindex=[];
+	    var addTag2Search=Codex.addTag2SearchCloud;
 	    for (var eltid in docinfo) {
 		var info=docinfo[eltid], tags=info.tags;
 		if (tags) tagged.push(tags);
@@ -1637,14 +1638,16 @@ Codex.Startup=
 				var tag=tags[k++];
 				if (scores)
 				    ix.add(eltid,tag,scores[tag]||1,knodule);
-				else ix.add(eltid,tag,1,knodule);}}
+				else ix.add(eltid,tag,1,knodule);
+				addTag2Search(tag);}}
 			var sectags=info.sectags||
 			    ((info.head)&&(info.head.sectags));
 			if (sectags) {
 			    var k=0, ntags=sectags.length;
 			    while (k<ntags) {
 				var tag=sectags[k++];
-				ix.add(eltid,tag,0,knodule);}}},
+				ix.add(eltid,tag,0,knodule);
+				addTag2Search(tag);}}},
 				     toindex,false,whendone);});}
 	Codex.indexAssignedTags=indexAssignedTags;
 	
