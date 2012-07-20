@@ -104,10 +104,6 @@ var _sbook_setup=false;
 
 var CodexHUD=false;
 
-var sbook_gloss_data=
-    ((typeof sbook_gloss_data === 'undefined')?(false):
-     (sbook_gloss_data));
-
 (function(){
 
     var hasClass=fdjtDOM.hasClass;
