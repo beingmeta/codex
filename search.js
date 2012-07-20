@@ -153,6 +153,7 @@
 	if (Codex.Trace.search>1)
 	    log("Setting search cloud for %o to %o",box,completions.dom);
 	cloudid=cloud.id;
+	addClass(completions.dom,"hudpanel");
 	fdjtDOM.replace(cloud,completions.dom);
 	    completions.complete("");
 	if (n_refiners===0) {
@@ -178,7 +179,7 @@
 
     function showSearchResults(){
 	var results=Codex.query.showResults();
-	// addClass(results,"hudpanel");
+	addClass(results,"hudpanel");
 	fdjtDOM.replace("CODEXSEARCHRESULTS",results);
 	CodexMode("searchresults");
 	fdjtID("CODEXSEARCHINPUT").blur();
