@@ -666,7 +666,8 @@ Codex.Startup=
 	    if (isWebTouch) {
 		fdjtDOM.addClass(body,"cxTOUCH");
 		viewportSetup();
-		Codex.ui="webtouch"; Codex.touch=true;}
+		Codex.ui="webtouch";
+		Codex.touch=true;}
 	    if ((useragent.search("Safari/")>0)&&
 		(useragent.search("Mobile/")>0)) { 
 		hide_mobile_safari_address_bar();
@@ -678,13 +679,14 @@ Codex.Startup=
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
 	    else if (useragent.search(/Android/gi)>0) {
+		default_config.keyboardhelp=false;
 		Codex.nativescroll=false;
 		Codex.updatehash=false;
 		Codex.scrolldivs=false;}
 	    else if (sbook_faketouch) {
 		fdjtDOM.addClass(body,"cxTOUCH");
 		viewportSetup();
-		Codex.ui="faketouch"}
+		Codex.ui="faketouch";}
 	    else {
 		fdjtDOM.addClass(body,"cxMOUSE");
 		// fdjtDOM.addClass(document.body,"cxTOUCH");
@@ -755,19 +757,21 @@ Codex.Startup=
 
 	/* Viewport setup */
 
-	var viewport_spec="width=device-width,initial-scale=1.0";
+	var viewport_spec=
+	    "width=device-width,initial-scale=1.0,user-scalable=no";
 	function viewportSetup(){
 	    var head=fdjtDOM.getHEAD();
 	    var viewport=getMeta("viewport",false,false,true);
 	    if (!(viewport)) {
 		viewport=document.createElement("META");
 		viewport.setAttribute("name","viewport");
+		viewport.setAttribute("content",viewport_spec);
 		head.appendChild(viewport);}
-	    viewport.setAttribute("content",viewport_spec);
 	    var isapp=getMeta("apple-mobile-web-app-capable",false,false,true);
 	    if (!(isapp)) {
 		isapp=document.createElement("META");
 		isapp.setAttribute("name","apple-mobile-web-app-capable");
+		isapp.setAttribute("content","yes");
 		head.appendChild(isapp);}}
 
 	function hide_mobile_safari_address_bar(){
