@@ -145,8 +145,8 @@ var CodexHUD=false;
 		    return;}
 		if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
 		if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
-		Codex.index.add(item,item.maker);
 		var maker=Codex.sourcekb.ref(item.maker);
+		Codex.index.add(item,maker,1);
 		Codex.addTag2GlossCloud(maker);
 		Codex.addTag2SearchCloud(maker);
 		Codex.UI.addGlossSource(maker,true);
