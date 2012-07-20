@@ -174,7 +174,7 @@ var CodexMode=
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			gloss_tag=tagHTML(tag,Codex.knodule,false,true);
 			if ((ref)&&(ref.pool===Codex.sourcekb))
-			    fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),gloss_tag," ");
+			    fdjtDOM(fdjtID("CODEXGLOSSTAGSOURCES"),gloss_tag," ");
 			else fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
 			gloss_cloud.addCompletion(gloss_tag);}}}
 	    Codex.addTag2GlossCloud=addTag2GlossCloud;
