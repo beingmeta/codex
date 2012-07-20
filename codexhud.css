@@ -92,7 +92,11 @@ body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
     overflow: auto;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART {
-    top: 100px; bottom: 100px; height: auto;}
+    top: 100px; bottom: 100px; height: auto;
+    box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;}
 body #CODEXHUD.addgloss #CODEXHEART.tagging,
 body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
     top: 150px; bottom: 50px; height: auto;}
