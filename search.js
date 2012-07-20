@@ -42,6 +42,8 @@
 
     var Completions=fdjtUI.Completions;
     var addClass=fdjtDOM.addClass;
+    var getChildren=fdjtDOM.getChildren;
+    var getChild=fdjtDOM.getChild;
     var log=fdjtLog;
     var kbref=fdjtKB.ref;
 
@@ -90,16 +92,16 @@
 	    log("Setting query for %o to %o: %d results/%d refiners (%o)",
 		box,result._query,result._results.length,
 		result._refiners._results.length,qstring);
-	var input=fdjtDOM.getChild(box,".searchinput");
+	var input=getChild(box,".searchinput");
 	var cloudid=input.getAttribute("completions");
 	var resultsid=input.getAttribute("results");
-	var qtags=fdjtDOM.getChild(box,".qtags");
+	var qtags=getChild(box,".qtags");
 	var cloud=((cloudid)&&(fdjtID(cloudid)))||
-	    fdjtDOM.getChild(box,".searchcloud");
+	    getChild(box,".searchcloud");
 	var results=((resultsid)&&(fdjtID(resultsid)))||
-	    fdjtDOM.getChild(box,".searchresults");
-	var resultcount=fdjtDOM.getChild(box,".resultcount");
-	var refinecount=fdjtDOM.getChild(box,".refinecount");
+	    getChild(box,".searchresults");
+	var resultcount=getChild(box,".resultcount");
+	var refinecount=getChild(box,".refinecount");
 	// Update (clear) the input field
 	input.value='';
 	var elts=result._query; var i=0; var lim=elts.length;
@@ -274,7 +276,7 @@
     function clearSearch(evt){
 	var target=fdjtUI.T(evt||event);
 	var box=fdjtDOM.getParent(target,".searchbox");
-	var input=fdjtDOM.getChild(box,".searchinput");
+	var input=getChild(box,".searchinput");
 	fdjtUI.cancel(evt);
 	setQuery(Codex.empty_query);
 	input.focus();}
@@ -420,9 +422,11 @@
 	else {}}
     Codex.UI.handlers.cloud_ontap=cloud_ontap;
 
-    function makeCloud(dterms,scores,freqs,ranks_arg,noscale,completions){
+    function makeCloud(dterms,scores,freqs,ranks_arg,noscale,
+		       completions,init_cloud) {
 	var sbook_index=Codex.index;
-	var knodule=Codex.knodule
+	var knodule=Codex.knodule;
+	var cloud=init_cloud||false;
 	var primescores=((knodule)&&(knodule.primescores));
 	var start=new Date();
 	var n_terms=dterms.length;
@@ -451,8 +455,18 @@
 		fdjtDOM("span.showmore","more"),
 		fdjtDOM("span.showless","less"));
 	    showall.onclick=showempty_ontap;}
-	else fdjtDOM.addClass(completions,"showempty");
-	var cloud=fdjtDOM("div.completions",showall,spans);
+	if (cloud) {
+	    fdjtDOM.addClass(cloud,"completions");
+	    if (!(getChild(cloud,".showall")))
+		fdjtDOM.prepend(cloud,showall);
+	    fdjtDOM.append(cloud,spans);}
+	else cloud=fdjtDOM("div.completions",showall,spans);
+	if (!(usecues)) fdjtDOM.addClass(cloud,"showempty");
+	var prime=getChild(cloud,".prime")||spans;
+	var normal=getChild(cloud,".normal")||spans;
+	var weak=getChild(cloud,".weak")||spans;
+	var sources=getChild(cloud,".sources")||spans;
+	var sections=getChild(cloud,".sections")||spans;
 	if (!(completions)) completions=new Completions(cloud);
 	var copied=[].concat(dterms);
 	var ranks=(((ranks_arg===true)||(typeof ranks_arg==='undefined'))?
@@ -487,7 +501,10 @@
 		       ("score="+score+"; "+freq+" items"):
 		       ("score="+score+"; "+freq+"/"+cfreq+" items"));
 	    var ref=kbref(dterm,knodule);
-	    var span=KNodeCompletion(ref||dterm,title);
+	    var tagstring=((ref)?(ref._qid||ref.tagString()):(dterm));
+	    var known=completions.getByValue(tagstring);
+	    if (known.length) known=known[0]; else known=false;
+	    var span=known||KNodeCompletion(ref||dterm,title);
 	    if (!(span)) continue;
 	    if (freq===1) addClass(span,"singleton");
 	    if ((usecues)&&
@@ -500,10 +517,19 @@
 		if ((!(minscale))||(scaling<minscale)) minscale=scaling;
 		if ((!(maxscale))||(scaling>maxscale)) maxscale=scaling;
 		nodescales.push(scaling);}
-	    span.setAttribute("value",dterm);
-	    fdjtDOM(spans,span,"\n");
-	    if (completions) completions.addCompletion(
-		span,false,ref||dterm);}
+	    span.setAttribute("value",tagstring);
+	    var container=spans;
+	    if (!(ref)) {
+		if (dterm[0]==="\u00A7") container=sections;
+		else container=spans;}
+	    else if (ref.pool===Codex.sourcekb) container=sources;
+	    else if (ref.prime) container=prime;
+	    else if (ref.weak) container=weak;
+	    else container=normal;
+	    fdjtDOM(container,span,"\n");
+	    if ((completions)&&(!(known)))
+		completions.addCompletion(
+		    span,false,ref||dterm);}
 	// fdjtLog("minscale=%o, maxscale=%o",minscale,maxscale);
 	if (nodescales.length) {
 	    var j=0; var jlim=domnodes.length;
@@ -570,7 +596,9 @@
 	    var tagscores=Codex.index.tagscores;
 	    var alltags=Codex.index._alltags;
 	    var tagfreqs=Codex.index.tagfreqs;
-	    var completions=Codex.makeCloud(alltags,tagscores,tagfreqs,true);
+	    var completions=Codex.makeCloud(
+		alltags,tagscores,tagfreqs,true,false,false,
+		fdjtID("CODEXSEARCHCLOUD"));
 	    completions.dom.onclick=cloud_ontap;
 	    Codex.search_cloud=completions;
 	    return Codex.search_cloud;}}
@@ -579,7 +607,7 @@
     function sizeCloud(completions,container,index){
 	if (!(index)) index=Codex.index;
 	if (!(container)) container=completions.dom;
-	var nodes=fdjtDOM.getChildren(container,".completion");
+	var nodes=getChildren(container,".completion");
 	var tagscores=index.tagscores;
 	var max_score=index.maxscore;
 	var alltags=index._alltags;

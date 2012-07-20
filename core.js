@@ -130,20 +130,13 @@ var CodexHUD=false;
 	Codex.query=Codex.empty_query=Codex.index.Query([]);
 	Codex.BRICO=new Knodule("BRICO");
 	Codex.BRICO.addAlias(":@1/");
+	Codex.BRICO.addAlias("@1/");
 	Codex.glosses=new fdjtKB.Pool("glosses"); {
 	    var superadd=Codex.glosses.add;
 	    Codex.glosses.addAlias("glossdb");
 	    Codex.glosses.addAlias("-UUIDTYPE=61");
 	    Codex.glosses.addAlias(":@31055/");
-	    Codex.glosses.xforms['tags']=function(tag){
-		if (typeof tag==='string') {
-		    var info=
-			((tag.indexOf('|')>=0)?
-			 (Codex.knodule.handleSubjectEntry(tag)):
-			 (fdjtKB.ref(tag)));
-		    if (info) return info.tagString(Codex.knodule);
-		    else return tag;}
-		else return tag.tagString(Codex.knodule);};
+	    Codex.glosses.addAlias("@31055/");
 	    Codex.glosses.addInit(function(item) {
 		var info=Codex.docinfo[item.frag];
 		if (!(info)) {
@@ -155,11 +148,14 @@ var CodexHUD=false;
 		Codex.index.add(item,item.maker);
 		var maker=Codex.sourcekb.ref(item.maker);
 		Codex.addTag2GlossCloud(maker);
-		// Codex.addTag2SearchCloud(maker);
+		Codex.addTag2SearchCloud(maker);
 		Codex.UI.addGlossSource(maker,true);
+		var maker_knodule=new Knodule(item.maker);
+		maker_knodule.description=maker.name;
 		var tags=item.tags;
 		if (tags) {
-		    if (!(tags instanceof Array)) tags=[tags];
+		    if ((typeof tags === 'string')||(!(tags.length)))
+			tags=[tags];
 		    if ((tags)&&(tags.length)) {
 			var i=0; var lim=tags.length; var score=false;
 			while (i<lim) {
@@ -167,13 +163,15 @@ var CodexHUD=false;
 			    if (tag[0]==='*') {
 				score=tag.search(/[^*]/);
 				tag=tag.slice(score);}
-			    var knode=fdjtKB.ref(tag)||tag;
+			    else score=false;
+			    var knode=fdjtKB.probe(tag,Codex.knodule)||
+				maker_knodule.handleSubjectEntry(tag);
 			    if (info.glosstags)
 				info.glosstags.push(knode);
 			    else info.glosstags=[knode];
 			    if (score) score=score*2; else score=1;
 			    Codex.index.add(item,knode,score);
-			    // Codex.addTag2SearchCloud(knode);
+			    Codex.addTag2SearchCloud(knode);
 			    Codex.addTag2GlossCloud(knode);}}}
 		var sources=item.sources;
 		if (sources) {

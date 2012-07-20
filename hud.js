@@ -138,10 +138,7 @@ var CodexMode=
 			    addClass(dup,"glossed");
 			    addGlossmark(dup,item);}}
 		    if (item.tstamp>Codex.syncstamp)
-			Codex.syncstamp=item.tstamp;
-		    if (item.tags) {
-			// addTag2SearchCloud(item.tags);
-			addTag2GlossCloud(item.tags);}}}
+			Codex.syncstamp=item.tstamp;}}
 	    Codex.glosses.addInit(addGloss2UI);
 
 	    var tagHTML=Knodule.HTML;
@@ -174,7 +171,8 @@ var CodexMode=
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			gloss_tag=tagHTML(tag,Codex.knodule,false,true);
 			if ((ref)&&(ref.pool===Codex.sourcekb))
-			    fdjtDOM(fdjtID("CODEXGLOSSTAGSOURCES"),gloss_tag," ");
+			    fdjtDOM(fdjtID("CODEXGLOSSTAGSOURCES"),
+				    gloss_tag," ");
 			else fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
 			gloss_cloud.addCompletion(gloss_tag);}}}
 	    Codex.addTag2GlossCloud=addTag2GlossCloud;
@@ -196,10 +194,25 @@ var CodexMode=
 		    tag.oninit(addTag2SearchCloud,"addTag2SearchCloud");
 		else {
 		    var search_cloud=Codex.searchCloud();
-		    var search_tag=search_cloud.getByValue(tag,".completion");
+		    var div=search_cloud.dom;
+		    var tag_string=((tag.tagString)?(tag.tagString()):(tag));
+		    var search_tag=
+			search_cloud.getByValue(tagstring,".completion");
+		    var container=div;
+		    var ref=((typeof tag === 'string')?
+			     (fdjtKB.ref(tag,Codex.knodule)):
+			     (tag));
+		    if ((!(ref))||(ref.weak))
+			container=getChild(div,".weak");
+		    else if (ref.prime)
+			container=getChild(div,".weak");
+		    else if (ref.pool===Codex.sourcekb)
+			container=getChild(div,".sources");
+		    else {}
+		    if (!(container)) container=div;
 		    if (!((search_tag)&&(search_tag.length))) {
 			search_tag=tagHTML(tag,Codex.knodule,false,true);
-			fdjtDOM(fdjtID("CODEXSEARCHTAGS"),search_tag," ");
+			fdjtDOM(container,search_tag," ");
 			search_cloud.addCompletion(search_tag,false,tag);}}}
 	    Codex.addTag2SearchCloud=addTag2SearchCloud;
 	    
@@ -220,11 +233,11 @@ var CodexMode=
 	Codex.initHUD=initHUD;
 	
 	function fixStaticRefs(string){
-	  if (Codex.graphics==="http://static.beingmeta.com/graphics/")
-	    return string;
-	  else return string.replace
-		 (/http:\/\/static.beingmeta.com\/graphics\//g,
-		  Codex.graphics);}
+	    if (Codex.graphics==="http://static.beingmeta.com/graphics/")
+		return string;
+	    else return string.replace
+	    (/http:\/\/static.beingmeta.com\/graphics\//g,
+	     Codex.graphics);}
 
 	function resizeHUD(){
 	    var vh=fdjtDOM.viewHeight();
@@ -393,9 +406,9 @@ var CodexMode=
 		// Help mode (on the hud) actually dims the body
 		// Help mode might not exist anymore
 		/*
-		if (mode==="help")
-		    addClass(document.body,"dimmed");
-		else dropClass(document.body,"dimmed");
+		  if (mode==="help")
+		  addClass(document.body,"dimmed");
+		  else dropClass(document.body,"dimmed");
 		*/
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
@@ -412,16 +425,17 @@ var CodexMode=
 		//  because apparently, on some browsers, the DOM
 		//  needs to catch up with CSS
 		if (Codex.scrolling) {
-		  var scroller=fdjtID(Codex.scrolling);
-		    fdjtLog("Updating scroller for #%s s=%o",
-			    Codex.scrolling,scroller);
+		    var scroller=fdjtID(Codex.scrolling);
+		    if (Codex.Trace.scroll)
+			fdjtLog("Updating scroller for #%s s=%o",
+				Codex.scrolling,scroller);
 		    setTimeout(function(){updateScroller(scroller);},
 			       100);}
 		// We autofocus any input element appropriate to the
 		// mode
 		if (codex_mode_foci[mode]) {
-		  var input=fdjtID(codex_mode_foci[mode]);
-		  if (input) focus(input);}
+		    var input=fdjtID(codex_mode_foci[mode]);
+		    if (input) focus(input);}
 		// Moving the focus back to the body lets keys work
 		else document.body.focus();
 		if (display_sync) Codex.displaySync();}
@@ -576,7 +590,7 @@ var CodexMode=
 	    if ((elt)&&(elt.length>0)) elt=elt[0];
 	    else return;
 	    if (typeof content === 'string')
-	      elt.innerHTML=content;
+		elt.innerHTML=content;
 	    else if (content.cloneNode)
 		fdjtDOM.replace(elt,content.cloneNode(true));
 	    else fdjtDOM(elt,content);}
@@ -594,10 +608,10 @@ var CodexMode=
 	    metadata.title=
 		"View (and possibly edit) the metadata for this book";
 	    var reviews=fdjtDOM.Anchor(null,
-//		"https://www.sbooks.net/publish/reviews?REFURI="+
-//		    encodeURIComponent(Codex.refuri),
-		"reviews",
-		"see/add reviews");
+				       //		"https://www.sbooks.net/publish/reviews?REFURI="+
+				       //		    encodeURIComponent(Codex.refuri),
+				       "reviews",
+				       "see/add reviews");
 	    reviews.target="_blank";
 	    reviews.title="Sorry, not yet implemented";
 	    fdjtDOM(about,fdjtDOM("div.links",metadata,reviews));
