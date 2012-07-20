@@ -95,7 +95,7 @@ body.hudup #CODEXHUD.openheart #CODEXHEART {
     top: 100px; bottom: 100px; height: auto;}
 body #CODEXHUD.addgloss #CODEXHEART.tagging,
 body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
-    top: 150px; bottom: 150px; height: auto;}
+    top: 150px; bottom: 50px; height: auto;}
 
 div#CODEXHUD #CODEXFOOT {
     position: fixed; left: 0px; right: 0px; width: 100%;
@@ -163,6 +163,8 @@ body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 div#CODEXHUD div.hudpanel div.scrollbox {
   overflow: auto;}
+
+div.completions.hudpanel { line-height: 150%;}
 
 /* HUD buttons */
 
