@@ -1292,7 +1292,6 @@
 		    evt,offx,offwidth,offx/offwidth,
 		    gopage,Codex.pagecount);
 	if (!(offx)) return;
-	fdjtUI.cancel(evt);
 	Codex.startPagePreview(gopage,"pageinfo_hold");}
     
     function pageinfo_release(evt){
@@ -1309,7 +1308,7 @@
 		    evt,offx,offwidth,offx/offwidth,
 		    showpage,Codex.pagecount,fdjtUI.TapHold.ispressed());
 	pageinfo.title=fdjtString("%d",showpage);
-	if (fdjtUI.TapHold.ispressed()) {
+	if (Codex.previewing) {
 	    var page=Codex.getPage(showpage);
 	    if (hasClass(page,"curpage")) return;
 	    Codex.startPreview(showpage,"pageinfo_hover");}}
