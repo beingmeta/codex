@@ -159,6 +159,8 @@ var CodexMode=
 		else if ((tag instanceof Ref)&&(!(tag._init)))
 		    // If it's uninitialized, delay adding it
 		    tag.oninit(addTag2GlossCloud,"addTag2GlossCloud");
+		// Skip weak tags
+		else if ((tag instanceof Ref)&&(tag.weak)) return;
 		else {
 		    var gloss_cloud=Codex.glossCloud();
 		    var search_cloud=Codex.searchCloud();
