@@ -168,7 +168,8 @@
 		controller.onclick=tagexpand_click;
 		fdjtDOM(span," ",controller," ",subspan);
 		tagspan=subspan;}
-	    fdjtDOM.append(tagspan,((i>0)?" \u00b7 ":" "),Knodule.HTML(tag));
+	    fdjtDOM.append(tagspan,((i>0)?" \u00b7 ":" "),
+			   Knodule.HTML(tag,Codex.knodule));
 	    i++;}
 	return span;}
     function showaudience(tags){
