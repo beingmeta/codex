@@ -1,0 +1,1 @@
+--encoding=utf-8 -MPv --rexclude='(TAGS)|(.s3opts)|(.s3opts)|(.s3root)|(.svn.*)|(.*/svn/.*)|(.git.*)|(.*/.git/.*)|(.*/[.].*)|(.*~)|(.*/originals/.*)|(originals/.*)|(tmp/.*)|(.*/tmp/.*)|(.*~)'
