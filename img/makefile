@@ -1,40 +1,40 @@
-%128x128.png: svg/%.svg
+%128x128.png: ../svg/%.svg
 	convert -background transparent -scale 128x128 $< $@
-%128x128.gif: svg/%.svg
+%128x128.gif: ../svg/%.svg
 	convert -background transparent -scale 128x128 $< $@
-%64x64.png: svg/%.svg
+%64x64.png: ../svg/%.svg
 	convert -background transparent -scale 64x64 $< $@
-%64x64.gif: svg/%.svg
+%64x64.gif: ../svg/%.svg
 	convert -background transparent -scale 64x64 $< $@
-%50x50.png: svg/%.svg
+%50x50.png: ../svg/%.svg
 	convert -background transparent -scale 50x50 $< $@
-%50x50.gif: svg/%.svg
+%50x50.gif: ../svg/%.svg
 	convert -background transparent -scale 50x50 $< $@
-%40x40.png: svg/%.svg
+%40x40.png: ../svg/%.svg
 	convert -background transparent -scale 40x40 $< $@
-%40x40.gif: svg/%.svg
+%40x40.gif: ../svg/%.svg
 	convert -background transparent -scale 40x40 $< $@
-%32x32.png: svg/%.svg
+%32x32.png: ../svg/%.svg
 	convert -background transparent -scale 32x32 $< $@
-%32x32.gif: svg/%.svg
+%32x32.gif: ../svg/%.svg
 	convert -background transparent -scale 32x32 $< $@
-%24x24.png: svg/%.svg
+%24x24.png: ../svg/%.svg
 	convert -background transparent -scale 24x24 $< $@
-%24x24.gif: svg/%.svg
+%24x24.gif: ../svg/%.svg
 	convert -background transparent -scale 24x24 $< $@
-%16x16.png: svg/%.svg
+%16x16.png: ../svg/%.svg
 	convert -background transparent -scale 16x16 $< $@
-%16x16.gif: svg/%.svg
+%16x16.gif: ../svg/%.svg
 	convert -background transparent -scale 16x16 $< $@
-%12x12.png: svg/%.svg
+%12x12.png: ../svg/%.svg
 	convert -background transparent -scale 8x8 $< $@
-%12x12.gif: svg/%.svg
+%12x12.gif: ../svg/%.svg
 	convert -background transparent -scale 8x8 $< $@
-%8x8.png: svg/%.svg
+%8x8.png: ../svg/%.svg
 	convert -background transparent -scale 8x8 $< $@
-%8x8.gif: svg/%.svg
+%8x8.gif: ../svg/%.svg
 	convert -background transparent -scale 8x8 $< $@
-%Tab.png: svg/%Tab.svg
+%Tab.png: ../svg/%Tab.svg
 	convert -background transparent -scale 39x50 $< $@
 
 all: addglossicons scanicons tagicons diaglinks hudbuttons tabs misc

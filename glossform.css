@@ -67,6 +67,7 @@ div.codexglossform form div.textbox input[TYPE='TEXT'] {
     width: 99%; max-width: 99%; 
     background-position: right top;
     background-position-x: right; background-position-y: top;
+    background-size: 24px 24px;
     background-repeat: no-repeat;
     display: none;}
 div.codexglossform form div.textbox div.inputhelp {
@@ -97,16 +98,19 @@ div.codexglossform.glossreply form .addbutton {
 
 div.codexglossform form textarea[name='NOTE'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/codex/graphics/remark24x24.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/codex/svg/remark.svg);}
+body.cxNOSVG div.codexglossform form textarea[name='NOTE'] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/codex/img/remark24x24.png);}
 div.codexglossform div.textbox input[name='TAG'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/codex/graphics/TagIcon24x24.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/codex/img/TagIcon24x24.png);}
 div.codexglossform div.textbox input[name='LINK'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/codex/graphics/DiagLink24x24.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/codex/img/DiagLink24x24.png);}
 div.codexglossform div.textbox input[name='OUTLET'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/codex/graphics/sbookspeople24x24.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/codex/img/sbookspeople24x24.png);}
 
 div.codexglossform form.editnote div.textbox textarea[name='NOTE'],
 div.codexglossform form.addtag div.textbox input[name='TAG'],
@@ -276,10 +280,10 @@ div.codexglossform form.addlink div.textbox textarea[name='LINK'] {
     display: block;}
 div.codexglossform div.textbox input[type="TEXT"][name='TAG'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/codex/graphics/TagIcon16x16.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/codex/img/TagIcon16x16.png);}
 div.codexglossform div.textbox input[type="TEXT"][name='LINK'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/codex/graphics/DiagLink16x16.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/codex/img/DiagLink16x16.png);}
 
 div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
     margin-top: 0px;}

@@ -51,8 +51,7 @@ Codex.Startup=
 
 	var sbook_heading_qricons=false;
 
-	var https_graphics=
-	    "https://beingmeta.s3.amazonaws.com/static/graphics/";
+	var https_root="https://beingmeta.s3.amazonaws.com/static/codex/";
 
 	var cxicon=Codex.icon;
 
@@ -620,9 +619,9 @@ Codex.Startup=
 
 	    // Where to get your images from, especially to keep referenes
 	    //  inside https
-	    if ((Codex.graphics==="http://static.beingmeta.com/graphics/")&&
+	    if ((Codex.root==="http://static.beingmeta.com/")&&
 		(window.location.protocol==='https:'))
-		Codex.graphics=https_graphics;
+		Codex.root=https_root;
 	    
 	    // Whether to suppress login, etc
 	    if ((getLocal("codex.nologin"))||(getQuery("nologin")))

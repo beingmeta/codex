@@ -243,11 +243,11 @@ var CodexMode=
 	Codex.initHUD=initHUD;
 	
 	function fixStaticRefs(string){
-	    if (Codex.graphics==="http://static.beingmeta.com/graphics/")
+	    if (Codex.root==="http://static.beingmeta.com/codex/")
 		return string;
 	    else return string.replace
-	    (/http:\/\/static.beingmeta.com\/graphics\//g,
-	     Codex.graphics);}
+	    (/http:\/\/static.beingmeta.com\/codex\//g,
+	     Codex.root);}
 
 	function resizeHUD(){
 	    var vh=fdjtDOM.viewHeight();
