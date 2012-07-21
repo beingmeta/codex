@@ -65,6 +65,14 @@
 		    ((info.fbid)&&
 		     ("https://graph.facebook.com/"+info.fbid+
 		      "/picture?type=square"));
+		if ((pic)&&(window.applicationCache)) {
+		    var cache=window.applicationCache;
+		    if (cache.add) cache.add(pic);
+		    // This gets an "operation is insecure error.
+		    else if (cache.mozAdd) {} // cache.mozAdd(pic);
+		    // We could probably use local storage to handle this
+		    // case, but that would be hairy.
+		    else {}}
 		var kind=info.kind;
 		if (pic) {}
 		else if (kind===':CIRCLE')
