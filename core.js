@@ -222,14 +222,14 @@ var CodexHUD=false;
     // This is the default server
     Codex.default_server="glosses.sbooks.net";
     // There be icons here!
-    Codex.root="http://static.beingmeta.com/codex/";
+    Codex.root="http://static.beingmeta.com/g/codex/";
     Codex.svg=document.implementation.hasFeature(
 	"http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")||
 	navigator.mimeTypes["image/svg+xml"];
     if (fdjtState.getQuery("nosvg")) Codex.svg=false;
     Codex.icon=function(base,width,height){
-	return Codex.root+((Codex.svg)?"svg/":"img/")+base+
-	    ((Codex.svg)?(".svg"):
+	return Codex.root+base+
+	    ((Codex.svg)?(".svgz"):
 	     ((((width)&&(height))?(width+"x"+height):
 	       (width)?(width+"w"):(height)?(height+"h"):"")+
 	      ".png"));}

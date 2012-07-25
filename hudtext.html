@@ -13,24 +13,24 @@
 <div id="CODEXSCANNER">
   <span class="expander"
 	onclick="fdjtDOM.toggleClass('CODEXSCANNER','expanded');">
-    <img src="http://static.beingmeta.com/codex/svg/twistyclosed.svg"
-	 bmp="http://static.beingmeta.com/codex/img/twistyclosed32x32.svg"
+    <img src="http://static.beingmeta.com/g/codex/twistyclosed.svgz"
+	 bmp="http://static.beingmeta.com/g/codex/twistyclosed32x32.png"
 	 alt="+"/>
-    <img src="http://static.beingmeta.com/codex/svg/twistyopen.svg"
-	 bmp="http://static.beingmeta.com/codex/img/twistyopen.svg"
+    <img src="http://static.beingmeta.com/g/codex/twistyopen.svgz"
+	 bmp="http://static.beingmeta.com/g/codex/twistyopen32x32.png"
 	 alt="-"/>
   </span>
   <div id="CODEXSCAN"></div>
 </div>
 <div id="CODEXHEAD">
-  <img src="http://static.beingmeta.com/codex/svg/CompassIcon.svg"
-       bmp="http://static.beingmeta.com/codex/img/CompassIcon50x50.png"
+  <img src="http://static.beingmeta.com/g/codex/CompassIcon.svgz"
+       bmp="http://static.beingmeta.com/g/codex/CompassIcon50x50.png"
        alt="toc" title="navigate sections"
        class="hudbutton hudmodebutton topleft"
        id="CODEXTOCBUTTON"
        hudmode="toc"/>
-  <img src="http://static.beingmeta.com/codex/svg/TagSearch.svg"
-       bmp="http://static.beingmeta.com/codex/img/TagSearch50x50.png"
+  <img src="http://static.beingmeta.com/g/codex/TagSearch.svgz"
+       bmp="http://static.beingmeta.com/g/codex/TagSearch50x50.png"
        alt="search" title="search tags"
        class="hudbutton hudmodebutton topright"
        id="CODEXSEARCHBUTTON"
@@ -56,33 +56,33 @@
 	(click to log in)</a>
     </div> <!-- .flyleafplate -->
     <div class="tabbar icons" id="CODEXTABS">
-      <img src="http://static.beingmeta.com/codex/svg/AboutTab.svg"
-	   bmp="http://static.beingmeta.com/codex/img/AboutTab.png"
+      <img src="http://static.beingmeta.com/g/codex/AboutTab.svgz"
+	   bmp="http://static.beingmeta.com/g/codex/AboutTab.png"
 	   alt="About" class="tab" contentid="CODEXABOUTBOOK"
 	   onclick="CodexMode.toggle('about'); return fdjtUI.cancel(event);"
 	   title="information about this book"/>
-      <img src="http://static.beingmeta.com/codex/svg/TOCTab.svg"
-	   bmp="http://static.beingmeta.com/codex/img/TOCTab.png"
+      <img src="http://static.beingmeta.com/g/codex/TOCTab.svgz"
+	   bmp="http://static.beingmeta.com/g/codex/TOCTab.png"
 	   alt="ToC" class="tab" contentid="CODEXFLYTOC"
 	   onclick="CodexMode.toggle('flytoc'); return fdjtUI.cancel(event);"
 	   title="Table of Contents (static)">
-      <img src="http://static.beingmeta.com/codex/svg/OverlaysTab.svg"
-	   bmp="http://static.beingmeta.com/codex/img/OverlaysTab.png"
+      <img src="http://static.beingmeta.com/g/codex/OverlaysTab.svgz"
+	   bmp="http://static.beingmeta.com/g/codex/OverlaysTab.png"
 	   alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
 	   onclick="CodexMode.toggle('sbookapp'); return fdjtUI.cancel(event);"
 	   title="manage added layers for your sBook"/>
-      <img src="http://static.beingmeta.com/codex/svg/SettingsTab.svg"
-	   bmp="http://static.beingmeta.com/codex/img/SettingsTab.png"
+      <img src="http://static.beingmeta.com/g/codex/SettingsTab.svgz"
+	   bmp="http://static.beingmeta.com/g/codex/SettingsTab.png"
 	   alt="Device" class="tab" contentid="CODEXSETTINGS"
 	   onclick="CodexMode.toggle('device'); return fdjtUI.cancel(event);"
 	   title="alter appearance and interaction"/>
-      <img src="http://static.beingmeta.com/codex/svg/ConsoleTab.svg"
-	   bmp="http://static.beingmeta.com/codex/img/ConsoleTab.png"
+      <img src="http://static.beingmeta.com/g/codex/ConsoleTab.svgz"
+	   bmp="http://static.beingmeta.com/g/codex/ConsoleTab.png"
 	   alt="Console" class="tab" contentid="CODEXCONSOLE"
 	   onclick="CodexMode.toggle('console'); return fdjtUI.cancel(event);"
 	   title="show debugging console" />
-      <img src="http://static.beingmeta.com/codex/svg/LoginTab.svg"
-	   bmp="http://static.beingmeta.com/codex/img/LoginTab.png"
+      <img src="http://static.beingmeta.com/g/codex/LoginTab.svgz"
+	   bmp="http://static.beingmeta.com/g/codex/LoginTab.png"
 	   alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
 	   onclick="CodexMode.toggle('sbookapp'); return fdjtUI.cancel(event);"
 	   title="login to sBooks" />
@@ -122,8 +122,8 @@
   </div>
   <div id="CODEXSOURCES" class="hudpanel codexsources"
        onclick="Codex.UI.handlers.sources_ontap(event);">
-    <img src="http://static.beingmeta.com/codex/svg/sbookspeople.svg"
-	 bmp="http://static.beingmeta.com/codex/img/sbookspeople50x50.png"
+    <img src="http://static.beingmeta.com/g/codex/sbookspeople.svgz"
+	 bmp="http://static.beingmeta.com/g/codex/sbookspeople50x50.png"
 	 class="button everyone selected"
 	 alt="show all" title="show all glosses"
 	 onclick="Codex.UI.handlers.everyone_ontap(event);"/>
@@ -138,33 +138,33 @@
 <div class="helphud rightmiddle">
   next page
 </div>
-<img src="http://static.beingmeta.com/codex/svg/ScanLeft.svg"
-     bmp="http://static.beingmeta.com/codex/img/ScanLeft64x64.png"
+<img src="http://static.beingmeta.com/g/codex/ScanLeft.svgz"
+     bmp="http://static.beingmeta.com/g/codex/ScanLeft64x64.png"
      id="CODEXPREVSCAN" class="codexscanbutton"
      alt="prev" onclick="Codex.scanBackward(event);"/>
-<img src="http://static.beingmeta.com/codex/svg/ScanRightStop.svg"
-     bmp="http://static.beingmeta.com/codex/img/ScanRightStop64x64.png"
+<img src="http://static.beingmeta.com/g/codex/ScanRightStop.svgz"
+     bmp="http://static.beingmeta.com/g/codex/ScanRightStop64x64.png"
      id="CODEXENDSCAN" class="codexscanbutton"
      alt="end"/>
-<img src="http://static.beingmeta.com/codex/svg/ScanRight.svg"
-     bmp="http://static.beingmeta.com/codex/img/ScanRight64x64.png"
+<img src="http://static.beingmeta.com/g/codex/ScanRight.svgz"
+     bmp="http://static.beingmeta.com/g/codex/ScanRight64x64.png"
      id="CODEXNEXTSCAN" class="codexscanbutton"
      alt="next" onclick="Codex.scanForward(event);"/>
-<img src="http://static.beingmeta.com/codex/svg/ScanLeftStop.svg"
-     bmp="http://static.beingmeta.com/codex/img/ScanLeftStop64x64.png"
+<img src="http://static.beingmeta.com/g/codex/ScanLeftStop.svgz"
+     bmp="http://static.beingmeta.com/g/codex/ScanLeftStop64x64.png"
      id="CODEXSTARTSCAN" class="codexscanbutton"
      alt="beginning"/>
 <div id="CODEXHEART">
 </div>
 <div id="CODEXFOOT">
-  <img src="http://static.beingmeta.com/codex/svg/AllGlosses.svg"
-       bmp="http://static.beingmeta.com/codex/img/AllGlosses50x50.png"
+  <img src="http://static.beingmeta.com/g/codex/AllGlosses.svgz"
+       bmp="http://static.beingmeta.com/g/codex/AllGlosses50x50.png"
        alt="allglosses" title="show all glosses"
        class="hudbutton hudmodebutton botleft"
        id="CODEXALLGLOSSESBUTTON"
        hudmode="allglosses"/>
-  <img src="http://static.beingmeta.com/codex/svg/HelpIcon.svg"
-       bmp="http://static.beingmeta.com/codex/img/HelpIcon50x50.png"
+  <img src="http://static.beingmeta.com/g/codex/HelpIcon.svgz"
+       bmp="http://static.beingmeta.com/g/codex/HelpIcon50x50.png"
        alt="help" title="show contextual help"
        onclick="fdjtDOM.toggleClass(document.body,'codexhelp');"
        class="hudbutton hudmodebutton botright"

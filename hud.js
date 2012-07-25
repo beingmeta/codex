@@ -104,7 +104,9 @@ var CodexMode=
 		var i=0; var lim=images.length;
 		while (i<lim) {
 		    var img=images[i++];
-		    if ((img.src)&&(hasSuffix(img.src,".svg"))&&
+		    if ((img.src)&&
+			((hasSuffix(img.src,".svg"))||
+			 (hasSuffix(img.src,".svgz")))&&
 			(img.getAttribute('bmp')))
 			img.src=img.getAttribute('bmp');}}
 

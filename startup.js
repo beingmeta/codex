@@ -51,7 +51,7 @@ Codex.Startup=
 
 	var sbook_heading_qricons=false;
 
-	var https_root="https://beingmeta.s3.amazonaws.com/static/codex/";
+	var https_root="https://beingmeta.s3.amazonaws.com/static/g/codex/";
 
 	var cxicon=Codex.icon;
 
@@ -619,7 +619,7 @@ Codex.Startup=
 
 	    // Where to get your images from, especially to keep referenes
 	    //  inside https
-	    if ((Codex.root==="http://static.beingmeta.com/")&&
+	    if ((Codex.root==="http://static.beingmeta.com/g/codex/")&&
 		(window.location.protocol==='https:'))
 		Codex.root=https_root;
 	    

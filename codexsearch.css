@@ -19,7 +19,7 @@ div.searchbox div.query input[type='TEXT'] {
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/codex/img/TagIcon24x24.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/g/codex/TagIcon24x24.png);}
 div.searchbox div.query img.clearsearch { height: 2ex;}
 div.searchbox div.query span.ampersand {
     float: right; font-weight: bold; font-size: 150%;
