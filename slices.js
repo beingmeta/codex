@@ -147,7 +147,7 @@
 	    scores=tags.scores;}
 	var tagcount=0;
 	var countspan=fdjtDOM("span.count");
-	var tagicon=fdjtDOM.Image(cxicon("TagIcon",32,32),
+	var tagicon=fdjtDOM.Image(cxicon("TagIcon",64,64),
 				  "img.tagicon","tags");
 	var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
 	var tagspan=span;
@@ -191,7 +191,7 @@
 	for (url in refs) {
 	    if (url[0]==='_') continue;
 	    var urlinfo=refs[url];
-	    var title; var icon=cxicon("outlink",32,32);
+	    var title; var icon=cxicon("outlink",64,64);
 	    if (typeof urlinfo === 'string') title=urlinfo;
 	    else {
 		title=urlinfo.title;

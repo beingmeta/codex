@@ -188,7 +188,7 @@
 	var bigimage=fdjtDOM.Image(imgsrc,"big","glosses");
 	var glossmark=fdjtDOM(
 	    "span.codexglossmark",
-	    bigimage,fdjtDOM.Image(cxicon("sbwedge",32,32),"tiny","*"));
+	    bigimage,fdjtDOM.Image(cxicon("sbwedge",64,64),"tiny","*"));
 	// Get all the glosses from the index
 	var glosses=Glosses.index(false,"frag",passage.id);
 	bigimage.defaultsrc=imgsrc;

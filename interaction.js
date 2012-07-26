@@ -136,7 +136,7 @@
 	if (!(passage)) return;
 	var img=fdjtDOM.getChild(passage,".codexglossbutton");
 	if (img) return;
-	img=fdjtDOM.Image(cxicon("remark",32,32),".codexglossbutton",
+	img=fdjtDOM.Image(cxicon("remark",64,64),".codexglossbutton",
 			  "+","click to add a gloss to this passage");
 	Codex.UI.addHandlers(img,"glossbutton");
 	fdjtDOM.prepend(passage,img);}

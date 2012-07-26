@@ -1025,7 +1025,7 @@
 		    var sg=links[tag];
 		    var j=0; var jlim=sg.length;
 		    while (j<jlim) {
-			var icon=fdjtDOM.Image(cxicon("DiagLink",32,32));
+			var icon=fdjtDOM.Image(cxicon("DiagLink",64,64));
 			var gloss=Codex.glosses.ref(sg[j++]);
 			var anchor=fdjtDOM.Anchor(gloss.link,"a",icon);
 			anchor.title=gloss.note;
@@ -1033,7 +1033,7 @@
 		if (notes[tag]) {
 		    var sg=notes[tag];
 		    var j=0; var jlim=sg.length;
-		    var icon=fdjtDOM.Image(cxicon("remark",32,32));
+		    var icon=fdjtDOM.Image(cxicon("remark",64,64));
 		    while (j<jlim) {
 			var gloss=Codex.glosses.ref(sg[j++]);
 			icon.title=gloss.note; fdjtDOM(span," ",icon);}}}
