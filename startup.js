@@ -1502,7 +1502,9 @@ Codex.Startup=
 		    var itemid=((typeof idinfo === 'string')?(idinfo):(idinfo[0]));
 		    var info=Codex.docinfo[itemid];
 		    if (!(info)) continue;
-		    var tagval=((typeof knode === 'string')?(knode):(knode.dterm));
+		    var tagval=((typeof knode === 'string')?
+				(knode):
+				(knode.dterm));
 		    if (info.autotags) info.autotags.push(tagval);
 		    else info.autotags=[tagval];
 		    if (typeof knode !== 'string') {

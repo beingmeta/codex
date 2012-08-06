@@ -137,7 +137,8 @@ var CodexHUD=false;
 	    Codex.glosses.addAlias("-UUIDTYPE=61");
 	    Codex.glosses.addAlias(":@31055/");
 	    Codex.glosses.addAlias("@31055/");
-	    Codex.glosses.addInit(function(item) {
+	    Codex.glosses.addInit(function initGloss(item) {
+		var elt=document.getElementById(item.frag);
 		var info=Codex.docinfo[item.frag];
 		if (!(info)) {
 		    fdjtLog("Gloss refers to nonexistent '%s': %o",
@@ -152,7 +153,7 @@ var CodexHUD=false;
 		Codex.UI.addGlossSource(maker,true);
 		var maker_knodule=new Knodule(item.maker);
 		maker_knodule.description=maker.name;
-		var tags=item.tags;
+		var tags=item.tags; var knodes=[];
 		if (tags) {
 		    if ((typeof tags === 'string')||(!(tags.length)))
 			tags=[tags];
@@ -164,15 +165,20 @@ var CodexHUD=false;
 				score=tag.search(/[^*]/);
 				tag=tag.slice(score);}
 			    else score=false;
-			    var knode=fdjtKB.probe(tag,Codex.knodule)||
-				maker_knodule.handleSubjectEntry(tag);
+			    var knode=
+				((tag.indexOf('@')>=0)&&
+				 (fdjtKB.probe(tag,Codex.knodule)))||
+				(maker_knodule.handleSubjectEntry(tag));
 			    if (info.glosstags)
 				info.glosstags.push(knode);
 			    else info.glosstags=[knode];
+			    knodes.push(knode);
 			    if (score) score=score*2; else score=1;
 			    Codex.index.add(item,knode,score);
+			    Codex.index.add(info.frag,knode,score);
 			    Codex.addTag2SearchCloud(knode);
-			    Codex.addTag2GlossCloud(knode);}}}
+			    Codex.addTag2GlossCloud(knode);}}
+		    item.tags=knodes;}
 		var sources=item.sources;
 		if (sources) {
 		    if (typeof sources === 'string') sources=[sources];
