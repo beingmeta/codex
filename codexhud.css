@@ -25,7 +25,7 @@
 #CODEXHEAD { left: 50px; right: 50px; }
 #CODEXHUD.openhead #CODEXHEAD, #CODEXSCANNER  { left: 100px; right: 100px; }
 #CODEXSCANNER { display: none; }
-#CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; }
+/* #CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; } */
 
 #CODEXHEAD, #CODEXHEAD .hudpanel, #CODEXSCANNER {
     border-radius: 1em; -webkit-border-radius: 1em;
