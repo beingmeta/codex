@@ -204,12 +204,6 @@ span.note.ellipsis span.elision {
     color: purple; font-family: veranda,helvetica,sans,sans-serif;
     font-style: italic;}
 
-span.dterm {
-    padding-right: 0.35em; padding-left: 1ex;
-    padding-top: 0px; padding-bottom: 0px;
-    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
-    color: darkblue; background-color: gold; border: solid yellow 2px;}
-
 /* The HUD */
 
 /* "Leading" to fill out the top and bottom */

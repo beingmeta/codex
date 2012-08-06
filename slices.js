@@ -53,7 +53,8 @@
 	var body=
 	    fdjtDOM("div.codexcardbody",
 		    // (makelocrule(target_info,target_info.head)),
-		    ((info.maker)&&(showglossinfo(info)))," ",
+		    ((info.maker)?(showglossinfo(info)):(showdocinfo(info))),
+		    " ",
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
 		    ((info.note)&&Ellipsis("span.note",info.note,140))," ",
@@ -69,7 +70,9 @@
 		     (showaudience(info.shared))),
 		    (((info.tags)||(info.autotags))&&(showtags(info))));
 	var div=
-	    fdjtDOM(((info.maker) ? "div.codexcard.gloss" : "div.codexcard"),
+	    fdjtDOM(((info.maker) ?
+		     "div.codexcard.gloss" :
+		     "div.codexcard.passage"),
 		    ((head)&&(makeTOCHead(head))),
 		    ((head_info)&&(makeIDHead(target,head_info,true))),
 		    ((standalone)&&(makelocbar(target_info))),
@@ -250,6 +253,8 @@
 		 ((userinfo.name)||(userinfo.userid))&&
 		 (" \u2014 ")),
 		tool];}
+    function showdocinfo(info) {
+	return fdjtDOM("span.marker",((info.toclevel)?("\u00a7"):("\u00b6")));}
 
     function getoverdoc(info){
 	if (info.sources) {
@@ -440,6 +445,8 @@
 	    return 1;
 	else return -1;}
 
+    var scanInfo=CodexDOMScan.scanInfo;
+
     function showSlice(results,div,scores,sort,cardclass){
 	var notes=new Array(results.length);
 	var i=0; var lim=results.length;
@@ -453,7 +460,10 @@
 	    i++;}
 	if (!(sort)) {}
 	else if (scores)
-	    notes.sort(function(n1,n2){
+	    notes.sort(function sortbyscore(n1,n2){
+		// Sort by score first (any score beats no score)
+		//  and then by location within the book and then
+		//  by timestamp.
 		var s1=(scores[n1._id]);
 		var s2=(scores[n2._id]);
 		if ((s1)&&(s2)) {
@@ -461,6 +471,11 @@
 		    else if (s2>s1) return 1;}
 		else if (s1) return -1;
 		else if (s2) return 1;
+		// This should put passage matches first, so that they
+		// appear just beneath the idhead
+		if (n1.frag===n2.frag) {
+		    if (n1 instanceof scanInfo) return -1;
+		    else if (n2 instanceof scanInfo) return 1;}
 		if (n1.starts_at<n2.starts_at) return -1;
 		else if (n1.starts_at>n2.starts_at) return 1;
 		else if (n1.ends_at<n2.ends_at) return -1;
@@ -473,10 +488,15 @@
 		else if (n2.tstamp) return -1;
 		else return 0;});
 	else notes.sort(function(n1,n2){
-	    if (n1.starts_at<n2.starts_at) return 1;
-	    else if (n1.starts_at>n2.starts_at) return -1;
-	    else if (n1.ends_at<n2.ends_at) return 1;
-	    else if (n1.ends_at>n2.ends_at) return -1;
+	    // This puts passage matches first, so that they
+	    // appear just beneath the passage reference.
+	    if (n1.frag===n2.frag) {
+		if (n1 instanceof scanInfo) return -1;
+		else if (n2 instanceof scanInfo) return 1;}
+	    if (n1.starts_at<n2.starts_at) return -1;
+	    else if (n1.starts_at>n2.starts_at) return 1;
+	    else if (n1.ends_at<n2.ends_at) return -1;
+	    else if (n1.ends_at>n2.ends_at) return 1;
 	    else if ((n1.tstamp)&&(n2.tstamp)) {
 		if (n1.tstamp>n2.tstamp) return -1;
 		else if (n1.tstamp>n2.tstamp) return 1;

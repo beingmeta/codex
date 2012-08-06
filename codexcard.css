@@ -10,6 +10,9 @@
     text-align: left;
     font-size: 90%;}
 
+.codexcard.passage span.marker {
+    font-weight: bold; font-size: 150%; color: black;}
+
 div.codexcard {
     margin-left: 20px; margin-right: 0px;}
 div.codexcard div.idhead { margin-left: -10px;  }
@@ -68,6 +71,9 @@ body.sbook a.codexcard { display: block;}
 .codexcard.gloss .codexcardbody {
     min-height: 50px;
     border-top: solid purple 2px;}
+.codexcard.passage .codexcardbody {
+    background-color: white;
+    border-top: solid purple 1px;}
 .codexcard .info { 
   float: right;}
 .codexcard div.info { 
@@ -77,7 +83,7 @@ body.sbook a.codexcard { display: block;}
 .codexcard span.tags { font-size: 80%;}
 .codexcard span.tags img.tagicon { height: 3ex;}
 .codexcard span.tags span.controller { cursor: pointer;}
-.codexcard span.tags.fdjtexpanded { display: block;}
+.codexcard.gloss span.tags.fdjtexpanded { display: block;}
 .codexcard span.tags.fdjtexpanded span.controller { float: right;}
 .codexcard span.head {
     font-size: 75%;}

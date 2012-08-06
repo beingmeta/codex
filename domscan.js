@@ -106,7 +106,8 @@ function CodexDOMScan(root,docinfo){
 	if (docinfo[id]) return docinfo[id];
 	this.pool=scanstate.pool;
 	this.frag=id;
-	this._id="#"+id;
+	// this._id="#"+id;
+	this._id=id;
 	docinfo[id]=this;
 	scanstate.allinfo.push(this);
 	scanstate.locinfo.push(scanstate.location);

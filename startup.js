@@ -1527,7 +1527,7 @@ Codex.Startup=
 			var j=1; var jlim=idinfo.length;
 			while (j<jlim) {terms.push(idinfo[j++]);}}
 		    sbook_index.add(
-			info.frag,knode,starpower||baseweight||0,
+			info._id,knode,starpower||baseweight||0,
 			knodule);}}
 	    if (whendone) whendone();}
 	Codex.useIndexData=useIndexData;

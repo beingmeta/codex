@@ -137,7 +137,7 @@
 	// Update the results display
 	if (result._results.length) {
 	    resultcount.innerHTML=result._results.length+
-		" passage"+((result._results.length===1)?"":"s");
+		" result"+((result._results.length===1)?"":"s");
 	    fdjtDOM.dropClass(box,"noresults");}
 	else {
 	    resultcount.innerHTML="no results";

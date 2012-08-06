@@ -175,7 +175,7 @@ var CodexHUD=false;
 			    knodes.push(knode);
 			    if (score) score=score*2; else score=1;
 			    Codex.index.add(item,knode,score);
-			    Codex.index.add(info.frag,knode,score);
+			    Codex.index.add(info,knode,score);
 			    Codex.addTag2SearchCloud(knode);
 			    Codex.addTag2GlossCloud(knode);}}
 		    item.tags=knodes;}
