@@ -13,6 +13,18 @@
   <span id="CODEXNETWORKBUTTONS" class="networks"
 	onclick="fdjtUI.CheckSpan.onclick(event);">
     <span class="checkspan facebook_share"
+	  title="post this gloss to the networks I've allowed">
+      <input type="CHECKBOX" name="POSTGLOSS" value="yes"
+	     onchange="Codex.UI.changeGlossPosting(event);"
+	     id="CODEXPOSTGLOSS"/>
+      <img src="http://static.beingmeta.com/g/codex/postgloss.svgz"
+	   bmp="http://static.beingmeta.com/g/codex/postgloss64x64.png"
+	   alt="!!" class="checked"/>
+      <img src="http://static.beingmeta.com/g/codex/dontpostgloss.svgz"
+	   bmp="http://static.beingmeta.com/g/codex/dontpostgloss64x64.png"
+	   alt="XX" class="unchecked"/>
+    </span>
+    <span class="checkspan facebook_share"
 	  title="share (or not) this gloss with my Facebook friends">
       <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK"
 	     id="CODEXFACEBOOKSHARE"

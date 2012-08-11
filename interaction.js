@@ -1390,6 +1390,14 @@
 	fdjtUI.CheckSpan.set(doppels,target.checked);}
     Codex.UI.changeGlossNetwork=changeGlossNetwork;
 
+    function changeGlossPosting(evt){
+	var target=fdjtUI.T(evt=(evt||event));
+	var alternate=((fdjtDOM.hasParent(target,".codexglossform"))?
+		       ("CODEXNETWORKBUTTONS"):(("CODEXLIVEGLOSS")));
+	var doppels=fdjtDOM.getInputs(alternate,'POSTGLOSS');
+	fdjtUI.CheckSpan.set(doppels,target.checked);}
+    Codex.UI.changeGlossPosting=changeGlossPosting;
+
     /* Rules */
 
     var nobubble=fdjtUI.nobubble;
