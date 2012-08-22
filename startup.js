@@ -360,7 +360,7 @@ Codex.Startup=
 		    fdjtLog("Getting glosses from %s for %s (%s)",
 			    Codex.server,Codex.user._id,Codex.user.name);
 		else fdjtLog("Getting glosses from %s",Codex.server);
-		// Get any glosses
+		// Get any glosses, and do it old school
 		var script=fdjtDOM("SCRIPT#LOADSBOOKINFO");
 		script.language="javascript";
 		var uri="https://"+Codex.server+"/v1/loadinfo.js?"+
@@ -368,7 +368,9 @@ Codex.Startup=
 		    "CALLBACK=Codex.loadInfo";
 		if (Codex.sync) uri=uri+"&SYNC="+Codex.sync;
 		if (Codex.user) uri=uri+"&SYNCUSER="+
-		    encodeURIComponent(Codex.user._id)
+		    encodeURIComponent(Codex.user._id);
+		if (Codex.mycopyid) uri=uri+"&MYCOPYID="+
+		    encodeURIComponent(Codex.mycopyid);
 		script.src=uri;
 		document.body.appendChild(script);
 		return;}
