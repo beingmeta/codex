@@ -53,6 +53,7 @@
     var toggleClass=fdjtDOM.toggleClass;
     var getTarget=Codex.getTarget;
     var getParent=fdjtDOM.getParent;
+    var hasParent=fdjtDOM.hasParent;
     var isClickable=fdjtUI.isClickable;
     var getGeometry=fdjtDOM.getGeometry;
 
@@ -282,16 +283,29 @@
 	if (tap_timer) clearTimeout(tap_timer);
 	tap_timer=false; tap_target=false;
 
-	var form=Codex.setGlossTarget(passage);
-	var form_elt=fdjtDOM.getChild(form,"form");
-	var mode=((evt.shiftKey)?("addtag"):("editnote"));
-	if ((seltext)&&(!(isEmpty(seltext))))  {
-	    last_text=seltext;
-	    Codex.setExcerpt(form,seltext);}
-	Codex.setGlossMode(mode,form);
-	Codex.setGlossForm(form);
-	fdjtUI.cancel(evt);
-	CodexMode("addgloss");}
+	if ((Codex.glosstarget)&&
+	    ((hasParent(passage,Codex.glosstarget))||
+	     (hasParent(Codex.glosstarget,passage)))&&
+	    (fdjtID("CODEXLIVEGLOSS"))) {
+	    var lg=fdjtID("CODEXLIVEGLOSS");
+	    var form=fdjtDOM.getChild(lg,"form");
+	    if ((seltext)&&(!(isEmpty(seltext))))  {
+		last_text=seltext;
+		Codex.setExcerpt(form,seltext);}
+	    fdjtUI.cancel(evt);
+	    CodexMode("addgloss");}
+	else {
+	    var form=Codex.setGlossTarget(passage);
+	    var form_elt=fdjtDOM.getChild(form,"form");
+	    var mode=((evt.shiftKey)?("addtag"):("editnote"));
+	    if ((seltext)&&(!(isEmpty(seltext))))  {
+		last_text=seltext;
+		Codex.setExcerpt(form,seltext);}
+	    Codex.setGlossMode(mode,form);
+	    Codex.setGlossForm(form);
+	    fdjtUI.cancel(evt);
+	    CodexMode("addgloss");}
+    }
 
     /* TOC handlers */
 
