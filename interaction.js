@@ -644,6 +644,9 @@
 	var qref=glosselt.value;
 	var gloss=Codex.glosses.ref(qref);
 	if (!(gloss)) return;
+	if ((window.confirm)&&
+	    (!(window.confirm("Really delete this gloss?"))))
+	    return;
 	var frag=gloss.get("frag");
 	fdjtAjax.jsonCall(
 	    function(response){glossdeleted(response,qref,frag);},
