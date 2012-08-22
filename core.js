@@ -34,7 +34,8 @@
 var Codex=
     {mode: false,hudup: false,scrolling: false,query: false,
      head: false,target: false,glosstarget: false,location: false,
-     user: false,root: false,start: false,HUD: false,dosync: true,
+     root: false,start: false,HUD: false,dosync: true,
+     user: false, loggedin: false,
      _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
      // Whether we have a real connection to the server
      connected: false,
