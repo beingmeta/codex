@@ -1555,22 +1555,42 @@ Codex.Startup=
 	function applyAnchorTags(kno) {
 	    var sbook_index=Codex.index; var docinfo=Codex.docinfo;
 	    var getTarget=Codex.getTarget;
+	    var getNodeID=fdjtDOM.getNodeID;
 	    var anchors=document.getElementsByTagName("A");
 	    if (!(anchors)) return;
 	    var i=0; var len=anchors.length;
 	    while (i<len) {
 		if (anchors[i].rel==='tag') {
 		    var elt=anchors[i++];
-		    var href=elt.href;
 		    var cxt=elt;
 		    while (cxt) if (cxt.id) break; else cxt=cxt.parentNode;
-		    if (!((href)&&(cxt))) return;
-		    var tagstart=(href.search(/[^\/]+$/));
-		    var tag=((tagstart<0)?(href):(href.slice(tagstart)));
-		    var info=docinfo[cxt.id];
-		    if (info.tags) info.tags.push(tag);
-		    else info.tags=[tag];}
-	    else i++;}}
+		    // Nowhere to store it?
+		    if (!(cxt)) return;
+		    var eltid=elt.id||getNodeID(elt);
+		    var href=elt.href; var name=elt.name; var tag=false;
+		    if (name) { // DTerm style
+			var def=elt.getAttribute('data-def')||
+			    elt.getAttribute('data-def');
+			var title=elt.title;
+			if (def) {
+			    if (def[0]==='|') tag=tag+def;
+			    else tag=tag+"|"+def;}
+			else if (title) {
+			    if (title[0]==='|') tag=name+title;
+			    else if (title.indexOf('|')>0) {
+				tag=name+"|"+title;
+			    else tag=name+"|~"+title+"|"+title;}
+			else tag=name+"|="+title;}
+		    else if (href) {
+			// Technorati style
+			var tagstart=(href.search(/[^\/]+$/));
+			tag=((tagstart<0)?(href):(href.slice(tagstart)));}
+		    else {}
+		    if (tag) {
+			var info=docinfo[cxt.id];
+			if (info.tags) info.tags.push(tag);
+			else info.tags=[tag];}}
+		else i++;}}
 	
 	/* Indexing tags */
 	
