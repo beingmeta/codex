@@ -664,7 +664,7 @@
 	var frag=gloss.get("frag");
 	fdjtAjax.jsonCall(
 	    function(response){glossdeleted(response,qref,frag);},
-	    "https://"+Codex.server+"/glosses/delete",
+	    "https://"+Codex.server+"/v1/delete",
 	    "gloss",qref);}
     Codex.UI.delete_ontap=delete_ontap;
     

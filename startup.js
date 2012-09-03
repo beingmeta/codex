@@ -34,7 +34,7 @@
 /* Newer startup model:
    gotInfo(info)
    info has { user: {}, outlets: [], glosses: [] }
-   if _sbook_loadinfo, do gotInfo(_sbook_loadinfo);
+   if _sbook_loadinfo, do loadInfo(_sbook_loadinfo);
    else do a JSONP call.
 */
 
@@ -1106,7 +1106,9 @@ Codex.Startup=
 		 (getLocal("queued("+refuri+")"))))
 		initGlossesOffline();
 	    if (info.sources) gotInfo("sources",info.sources,persist);
+	    if (info.outlets) gotInfo("outlets",info.outlets,persist);
 	    if (info.glosses) initGlosses(info.glosses,info.etc);
+	    Codex.add2OutletCloud(info.outlets);
 	    if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
 		setLocal("sync("+refuri+")",info.sync);
 		Codex.sync=info.sync;}
@@ -1578,7 +1580,7 @@ Codex.Startup=
 			else if (title) {
 			    if (title[0]==='|') tag=name+title;
 			    else if (title.indexOf('|')>0) {
-				tag=name+"|"+title;
+				tag=name+"|"+title;}
 			    else tag=name+"|~"+title+"|"+title;}
 			else tag=name+"|="+title;}
 		    else if (href) {
