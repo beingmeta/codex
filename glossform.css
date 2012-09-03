@@ -31,7 +31,7 @@ div.codexglossform div .respdate:after { content: ")";}
 div.codexglossform div.glosseditbox {
     text-align: right; color: black; display: none;
     font-variant: small-caps;
-    height: 3ex;}
+    height: 32px;}
 div.codexglossform div.glosseditbox .codexglossedit {float: left;}
 div.codexglossform div.glosseditbox .respdate {float: left;}
 div.codexglossform div.glosseditbox img { vertical-align: top; height: 2ex;}

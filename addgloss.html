@@ -1,5 +1,5 @@
-<form action="https://glosses.sbooks.net/v1/knotes"
-      ajaxaction="https://glosses.sbooks.net/v1/knotes"
+<form action="https://glosses.sbooks.net/glosses"
+      ajaxaction="https://glosses.sbooks.net/glosses"
       method="POST" target="addgloss"
       class="editnote">
   <div class="hidden">
@@ -116,36 +116,44 @@
 	      title="share (or not) this gloss with my Facebook friends">
 	  <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK"
 		 onchange="Codex.UI.changeGlossNetwork(event);">
-	  <img src="http://static.beingmeta.com/g/codex/facebook64x64.png"
+	  <img src="http://static.beingmeta.com/g/codex/facebook.svgz"
+	       bmp="http://static.beingmeta.com/g/codex/facebook64x64.png"
 	       alt="Facebook" class="checked"/>
-	  <img src="http://static.beingmeta.com/g/codex/nofacebook64x64.png"
+	  <img src="http://static.beingmeta.com/g/codex/nofacebook.svgz"
+	       src="http://static.beingmeta.com/g/codex/nofacebook64x64.png"
 	       alt="Facebook" class="unchecked"/>
 	</span>
 	<span class="checkspan twitter_share"
 	      title="share (or not) this gloss with my Twitter followers">
 	  <input type="CHECKBOX" name="NETWORKS" value=":TWITTER"
 		 onchange="Codex.UI.changeGlossNetwork(event);">
-	  <img src="http://static.beingmeta.com/g/codex/twitter64x64.png"
+	  <img src="http://static.beingmeta.com/g/codex/twitter.svgz"
+	       bmp="http://static.beingmeta.com/g/codex/twitter64x64.png"
 	       alt="Twitter" class="checked"/>
-	  <img src="http://static.beingmeta.com/g/codex/notwitter64x64.png"
+	  <img src="http://static.beingmeta.com/g/codex/notwitter.svgz"
+	       bmp="http://static.beingmeta.com/g/codex/notwitter64x64.png"
 	       alt="Twitter" class="unchecked"/>
 	</span>
 	<span class="checkspan linkedin_share"
 	      title="share this gloss with my LinkedIn connections">
 	  <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN"
 		 onchange="Codex.UI.changeGlossNetwork(event);">
-	  <img src="http://static.beingmeta.com/g/codex/linkedin64x64.png"
+	  <img src="http://static.beingmeta.com/g/codex/linkedin.svgz"
+	       bmp="http://static.beingmeta.com/g/codex/linkedin64x64.png"
 	       alt="LinkedIn" class="checked"/>
-	  <img src="http://static.beingmeta.com/g/codex/linkedin64x64.png"
+	  <img src="http://static.beingmeta.com/g/codex/nolinkedin.svgz"
+	       bmp="http://static.beingmeta.com/g/codex/nolinkedin64x64.png"
 	       alt="LinkedIn" class="unchecked"/>
 	</span>
 	<span class="checkspan google_share"
 	      title="share this gloss with my Google+ connections">
 	  <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE"
 		 onchange="Codex.UI.changeGlossNetwork(event);">
-	  <img src="http://static.beingmeta.com/g/codex/googleplus64x64.png"
+	  <img src="http://static.beingmeta.com/g/codex/googleplus.svgz"
+	       bmp="http://static.beingmeta.com/g/codex/googleplus64x64.png"
 	       alt="Google+" class="checked"/>
-	  <img src="http://static.beingmeta.com/g/codex/nogoogleplus64x64.png"
+	  <img src="http://static.beingmeta.com/g/codex/nogoogleplus.svgz"
+	       bmp="http://static.beingmeta.com/g/codex/nogoogleplus64x64.png"
 	       alt="Google+" class="unchecked"/>
 	</span>
       </span>
