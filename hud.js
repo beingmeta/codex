@@ -183,6 +183,31 @@ var CodexMode=
 			gloss_cloud.addCompletion(gloss_tag);}}}
 	    Codex.addTag2GlossCloud=addTag2GlossCloud;
 	    
+	    function add2OutletCloud(tag){
+		if (typeof tag === 'string') tag=Codex.sourcekb.ref(tag);
+		if (!(tag)) return;
+		else if (tag instanceof Array) {
+		    var i=0; var lim=tag.length;
+		    while (i<lim) add2OutletCloud(tag[i++]);
+		    return;}
+		else if (!(Codex.outlet_cloud)) {
+		    // If the HUD hasn't been initialized, add the tag
+		    //  to queues for addition.
+		    var queue=Codex.outlet_cloud_queue;
+		    if (!(queue)) queue=Codex.outlet_cloud_queue=[];
+		    queue.push(tag);
+		    return;}
+		else if ((tag instanceof Ref)&&(!(tag._init)))
+		    // If it's uninitialized, delay adding it
+		    tag.oninit(add2OutletCloud,"add2OutletCloud");
+		var outlet_cloud=Codex.outletCloud();
+		var value=tag._id;
+		var completion=outlet_cloud.getByValue(value,".completion");
+		if (!(completion)) {
+		    gloss_tag=tagHTML(tag,Codex.sourcekb,false,true);
+		    outlet_cloud.addCompletion(gloss_tag);}}
+	    Codex.add2OutletCloud=add2OutletCloud;
+	    
 	    var cloudEntry=Codex.cloudEntry;
 
 	    function addTag2SearchCloud(tag){
