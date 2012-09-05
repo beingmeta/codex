@@ -273,7 +273,8 @@
 	var pic=fdjtDOM(spec||"div.sbooksourcepic",
 			((userinfo.name)?
 			 (fdjtString.getInitials(userinfo.name)):
-			 "?"));
+			 "??"));
+	fdjtDOM.addClass(pic,"sbooknopic");
 	return pic;}
 
     function getpicinfo(info){
