@@ -1581,8 +1581,8 @@ Codex.Startup=
 			    if (title[0]==='|') tag=name+title;
 			    else if (title.indexOf('|')>0) {
 				tag=name+"|"+title;}
-			    else tag=name+"|~"+title+"|"+title;}
-			else tag=name+"|="+title;}
+			    else tag=name+"|~"+title;}
+			else tag=name;}
 		    else if (href) {
 			// Technorati style
 			var tagstart=(href.search(/[^\/]+$/));
