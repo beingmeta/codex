@@ -1083,6 +1083,10 @@ Codex.Startup=
 		    setUser(info.userinfo,info.outlets,info.sync);
 		if (info.nodeid) setNodeID(info.nodeid);
 		Codex.sync=info.sync;}
+	    else if (info.wronguser) {
+		Codex.setConnected(false);
+		alert(fdjtString("This book is personalized for %s but the user %s is logged in to sBooks.  This book will remain offline until user %s logs back in.",
+				 Codex.user.name,info.wronguser.name,Codex.user.name));}
 	    if (!(Codex.docinfo)) { /* Scan not done */
 		Codex.scandone=function(){loadInfo(info);};
 		return;}

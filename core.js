@@ -600,6 +600,7 @@ var CodexHUD=false;
 	    var uri="https://"+Codex.server+"/v1/sync?ACTION=save"+
 		"&DOCURI="+encodeURIComponent(Codex.docuri)+
 		"&REFURI="+encodeURIComponent(refuri);
+	    if (Codex.user) uri=uri+"SYNCUSER="+encodeURIComponent(Codex.user);
 	    if (Codex.deviceId)
 		uri=uri+"&deviceid="+encodeURIComponent(Codex.deviceId);
 	    if (Codex.deviceName)
