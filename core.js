@@ -230,10 +230,12 @@ var CodexHUD=false;
     Codex.default_server="glosses.sbooks.net";
     // There be icons here!
     Codex.root="http://static.beingmeta.com/g/codex/";
-    Codex.svg=document.implementation.hasFeature(
+    Codex.withsvg=document.implementation.hasFeature(
 	"http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")||
 	navigator.mimeTypes["image/svg+xml"];
+    Codex.svg=false;
     if (fdjtState.getQuery("nosvg")) Codex.svg=false;
+    else if (fdjtState.getQuery("withsvg")) Codex.svg=true;
     Codex.icon=function(base,width,height){
 	return Codex.root+base+
 	    ((Codex.svg)?(".svgz"):
