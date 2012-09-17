@@ -232,7 +232,7 @@ body.cxPREVIEW #CODEXHUD div.spanbar.codexvisible div.spans {
     visibility: visible; opacity: 1.0;}
 body.cxPREVIEW #CODEXHUD div.codextoc > div.head { opacity: 0.1;}
 body.cxPREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
-    opacity: 0.1; display: none;}
+    opacity: 0.0;}
 body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
     opacity: 0.4;}
 body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
