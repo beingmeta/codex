@@ -87,7 +87,14 @@
 		else {
 		  icon=fdjtDOM("div.button.source",
 			       fdjtString.getInitials(info.name));}
-		icon.title=info.name; icon.oid=info._id;
+		var title=
+		    ((kind===':CIRCLE')?("the reading circle "):
+		     (kind===':OVERDOC')?("the reading guide "):
+		     ("the overlay "))+
+		    ((info.name)?("“"+(info.name)+"”"):"")+
+		    ((info.about)?": ":"")+
+		    ((info.about)?(info.about):"");
+		icon.title=title; icon.oid=info._id;
 		icon.id="SBOOKSOURCEICON"+humid;
 		fdjtDOM(fdjtID("CODEXSOURCES")," ",icon);}}
 	return info;};
