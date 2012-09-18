@@ -76,9 +76,9 @@
 		var kind=info.kind;
 		if (pic) {}
 		else if (kind===':CIRCLE')
-		    pic=cxicon("sbookscircle",64,64);
+		    pic=cxicon("readingcircle",64,64);
 		else if (kind===':OVERDOC')
-		    pic=cxicon("sbooksmetapub",64,64);
+		    pic=cxicon("sideguide",64,64);
 		else {}
 		if (pic)
 		  icon=fdjtDOM.Image

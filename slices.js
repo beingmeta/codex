@@ -150,7 +150,7 @@
 	    scores=tags.scores;}
 	var tagcount=0;
 	var countspan=fdjtDOM("span.count");
-	var tagicon=fdjtDOM.Image(cxicon("TagIcon",64,64),
+	var tagicon=fdjtDOM.Image(cxicon("tagicon",64,64),
 				  "img.tagicon","tags");
 	var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
 	var tagspan=span;
@@ -231,8 +231,8 @@
 	var tool=fdjtDOM(
 	    "span.tool",fdjtDOM("span.age",agestring),
 	    fdjtDOM.Image(((user===Codex.user._id)?
-			   (cxicon("remark_edit")):
-			   (cxicon("remark_respond"))),
+			   (cxicon("remark_edit",32,32)):
+			   (cxicon("remark_respond",32,32))),
 			  "img.button"));
 	tool.title=(((user===Codex.user)||(user===Codex.user._id))?
 		    ("edit this gloss"):

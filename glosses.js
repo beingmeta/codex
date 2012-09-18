@@ -1025,7 +1025,7 @@
 		    var sg=links[tag];
 		    var j=0; var jlim=sg.length;
 		    while (j<jlim) {
-			var icon=fdjtDOM.Image(cxicon("DiagLink",64,64));
+			var icon=fdjtDOM.Image(cxicon("diaglink",64,64));
 			var gloss=Codex.glosses.ref(sg[j++]);
 			var anchor=fdjtDOM.Anchor(gloss.link,"a",icon);
 			anchor.title=gloss.note;
