@@ -104,10 +104,10 @@ body.cxNOSVG div.codexglossform form textarea[name='NOTE'] {
     url(https://beingmeta.s3.amazonaws.com/static/g/codex/remark24x24.png);}
 div.codexglossform div.textbox input[name='TAG'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/TagIcon24x24.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/g/codex/tagicon24x24.png);}
 div.codexglossform div.textbox input[name='LINK'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/DiagLink24x24.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/g/codex/diaglink24x24.png);}
 div.codexglossform div.textbox input[name='OUTLET'] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/g/codex/sbookspeople24x24.png);}
@@ -280,10 +280,10 @@ div.codexglossform form.addlink div.textbox textarea[name='LINK'] {
     display: block;}
 div.codexglossform div.textbox input[type="TEXT"][name='TAG'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/TagIcon16x16.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/g/codex/tagicon16x16.png);}
 div.codexglossform div.textbox input[type="TEXT"][name='LINK'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/DiagLink16x16.png);}
+    url(https://beingmeta.s3.amazonaws.com/static/g/codex/diaglink16x16.png);}
 
 div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
     margin-top: 0px;}
