@@ -635,7 +635,11 @@ var CodexMode=
 	function fillinAboutInfo(){
 	    var about=fdjtID("CODEXABOUTBOOK");
 	    var bookabout=fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
-	    var authorabout=fdjtID("SBOOKAUTHORPAGE")||fdjtID("SBOOKABOUTAUTHOR");
+	    var authorabout=fdjtID("SBOOKAUTHORPAGE")||
+		fdjtID("SBOOKABOUTAUTHOR");
+	    var acknowledgements=
+		fdjtID("SBOOKACKNOWLEDGEMENTSPAGE")||
+		fdjtID("SBOOKACKNOWLEDGEMENTS");
 	    var metadata=fdjtDOM.Anchor(
 		"https://www.sbooks.net/publish/metadata?REFURI="+
 		    encodeURIComponent(Codex.refuri),
@@ -644,14 +648,15 @@ var CodexMode=
 	    metadata.target="_blank";
 	    metadata.title=
 		"View (and possibly edit) the metadata for this book";
-	    var reviews=fdjtDOM.Anchor(null,
-				       //		"https://www.sbooks.net/publish/reviews?REFURI="+
-				       //		    encodeURIComponent(Codex.refuri),
-				       "reviews",
-				       "see/add reviews");
+	    var reviews=fdjtDOM.Anchor(
+		null,
+		// "https://www.sbooks.net/publish/reviews?REFURI="+
+		//		    encodeURIComponent(Codex.refuri),
+		"reviews",
+		"see/add reviews");
 	    reviews.target="_blank";
 	    reviews.title="Sorry, not yet implemented";
-	    fdjtDOM(about,fdjtDOM("div.links",metadata,reviews));
+	    // fdjtDOM(about,fdjtDOM("div.links",metadata,reviews));
 
 	    if (bookabout) fdjtDOM(about,bookabout);
 	    else {
@@ -694,7 +699,9 @@ var CodexMode=
 		if (cover) {
 		    var cover_elt=fdjtDOM.$(".cover",about)[0];
 		    if (cover_elt) fdjtDOM(cover_elt,fdjtDOM.Image(cover));}}
-	    if (authorabout) fdjtDOM(about,authorabout);}
+	    if (authorabout) fdjtDOM(about,authorabout);
+	    if (acknowledgements)
+		fdjtDOM(about,acknowledgements.cloneNode(true));}
 
 	function initManageIFrame(){
 	    var query=document.location.search||"?";
