@@ -361,7 +361,7 @@ Codex.Startup=
 			    Codex.server,Codex.user._id,Codex.user.name);
 		else fdjtLog("Getting glosses from %s",Codex.server);
 		// Get any glosses, and do it old school
-		var script=fdjtDOM("SCRIPT#LOADSBOOKINFO");
+		var script=fdjtDOM("script");
 		script.language="javascript";
 		var uri="https://"+Codex.server+"/v1/loadinfo.js?"+
 		    "REFURI="+encodeURIComponent(Codex.refuri)+"&"+
@@ -1084,9 +1084,9 @@ Codex.Startup=
 		if (info.nodeid) setNodeID(info.nodeid);
 		Codex.sync=info.sync;}
 	    else if (info.wronguser) {
-		Codex.setConnected(false);
-		alert(fdjtString("This book is personalized for %s but the user %s is logged in to sBooks.  This book will remain offline until user %s logs back in.",
-				 Codex.user.name,info.wronguser.name,Codex.user.name));}
+		Codex.clearOffline(Codex.refuri);
+		window.location=window.location.href;
+		return;}
 	    if (!(Codex.docinfo)) { /* Scan not done */
 		Codex.scandone=function(){loadInfo(info);};
 		return;}
