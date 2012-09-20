@@ -409,7 +409,7 @@ Codex.Startup=
 		    var scanmsg=fdjtID("CODEXSTARTUPSCAN");
 		    addClass(scanmsg,"running");
 		    metadata=new CodexDOMScan(Codex.content);
-		    fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
+		    // fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
 		    Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
 		    dropClass(scanmsg,"running");
