@@ -489,14 +489,22 @@ body div#CODEXHUD img.codexscanbutton {
     width: 100px; height: 100px;
     position: fixed; bottom: 50%; opacity: 0.5;
     display: none;}
+body div#CODEXHUD img.codexpagebutton {
+    width: 50px; height: 100px;
+    position: fixed; bottom: 50%; opacity: 0.3;}
+body div#CODEXHUD img.codexpagebutton:hover { opacity: 0.7; }
+body.hudup div#CODEXHUD img.codexpagebutton { opacity: 0.7; }
 body div#CODEXHUD img.codexscanbutton#CODEXNEXTSCAN,
-body div#CODEXHUD img.codexscanbutton#CODEXENDSCAN {
+body div#CODEXHUD img.codexscanbutton#CODEXENDSCAN,
+body div#CODEXHUD img.codexpagebutton#CODEXNEXTPAGE {
     right: 0px;}
 body div#CODEXHUD img.codexscanbutton#CODEXPREVSCAN,
-body div#CODEXHUD img.codexscanbutton#CODEXSTARTSCAN {
+body div#CODEXHUD img.codexscanbutton#CODEXSTARTSCAN,
+body div#CODEXHUD img.codexpagebutton#CODEXPREVPAGE {
     left: 0px;}
 
 body div#CODEXHUD.scanning img.codexscanbutton {display: block;}
+body div#CODEXHUD.scanning img.codexpagebutton { display: none;}
 body div#CODEXHUD.scanning img.codexscanbutton#CODEXSTARTSCAN,
 body div#CODEXHUD.scanning img.codexscanbutton#CODEXENDSCAN {
     display: none;}
