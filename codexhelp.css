@@ -239,7 +239,8 @@ body div#CODEXHELP p#CODEXHELPDISCONNECTED { display: none;}
 body.cxUSER.cxDISCONN div#CODEXHELP p#CODEXHELPDISCONNECTED {
     margin-top: 1em; color: red; font-weight: bold; display: block;}
 
-div#CODEXMAINHELP p .action { font-size: 150%;}
+div#CODEXMAINHELP p .action { font-weight: bold; font-size: 150%;}
+div#CODEXMAINHELP p .result { font-weight: bold; font-style: italic;}
 div#CODEXMAINHELP table {
     margin-left: 10%; margin-right: 10%;}
 div#CODEXMAINHELP table td.icon { width: 32px;}
