@@ -163,11 +163,12 @@ Codex.Startup=
 		    (config[setting]!==default_config[setting])) {
 		    saved[setting]=config[setting];}}
 	    if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
-	    setLocal('codex.config',JSON.stringify(saved));}
+	    setLocal("config("+Codex.refuri+")",JSON.stringify(saved));}
 	Codex.saveConfig=saveConfig;
 
 	function initConfig(){
-	    var config=saved_config=getLocal('codex.config',true)||{};
+	    var config=saved_config=
+		getLocal("config("+Codex.refuri+")",true)||{};
 	    Codex.postconfig=[];
 	    if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
 	    if (config) {
@@ -1712,6 +1713,7 @@ Codex.Startup=
 		var glosses=getLocal("glosses("+refuri+")",true);
 		var i=0; var lim=glosses.length;
 		while (i<lim) fdjtState.dropLocal(glosses[i++]);
+		dropLocal("config("+refuri+")");
 		dropLocal("sources("+refuri+")");
 		dropLocal("glosses("+refuri+")");
 		dropLocal("outlets("+refuri+")");
