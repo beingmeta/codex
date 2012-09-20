@@ -58,24 +58,24 @@ div#CODEXHUD div#CODEXHELP h2:first-child {
     margin-top: 0px; margin-bottom: 0px;}
 div#CODEXHUD div#CODEXHELP .codexclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
-    text-align: center; color: red;}
-
-div#CODEXHELP div.codexhelp {
+    text-align: center; color: red;}div#CODEXHELP div.codexhelp {
     position: absolute; left: 0px; right: 0px;
     top: 0px; bottom: 40px; 
     overflow: auto;}
 div#CODEXHELP div.codexhelp p {
-    text-align: left;
-    margin-left: 5em; margin-right: 2em; text-indent: -3em;}
+    text-align: left; margin-left: 32px; margin-right: 2em;
+    text-indent: -32px;}
 div#CODEXHELP div.codexhelp div.helpblock {
     max-width: 40em; margin-left: auto; margin-right: auto;
     margin-bottom: 1em;}
 div#CODEXHELP div.codexhelp div.helpblock p {
-    margin-top: 2px; margin-bottom: 2px;}
+    margin-top: 2px; margin-bottom: 2px; clear: both;}
 div#CODEXHELP div.codexhelp p img.right {
-    float: right; max-height: 24px;}
-div#CODEXHELP div.codexhelp img.left {
-    width: 24px; margin-left: -24px; vertical-align: middle;}
+    float: right; max-height: 32px; margin-right: -32px;
+    vertical-align: top;}
+div#CODEXHELP div.codexhelp p img.left {
+    float: left; width: 32px; margin-left: -70px;
+    vertical-align: top;}
 
 div#CODEXHELP #CODEXSTARTUPMSG {
     text-align: right; padding-top: 2px; padding-right: 8px;
@@ -238,6 +238,13 @@ body.cxUSER div#CODEXHELP p#CODEXHELPNEEDLOGIN { display: none;}
 body div#CODEXHELP p#CODEXHELPDISCONNECTED { display: none;}
 body.cxUSER.cxDISCONN div#CODEXHELP p#CODEXHELPDISCONNECTED {
     margin-top: 1em; color: red; font-weight: bold; display: block;}
+
+div#CODEXMAINHELP p .action { font-size: 150%;}
+div#CODEXMAINHELP table {
+    margin-left: 10%; margin-right: 10%;}
+div#CODEXMAINHELP table td.icon { width: 32px;}
+div#CODEXMAINHELP table td.textleft { text-align: left;}
+div#CODEXMAINHELP table td.textright { text-align: right;}
 
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX {
     position: fixed; text-align: center;

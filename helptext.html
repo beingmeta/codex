@@ -1,35 +1,23 @@
 <!-- This is the help text for reading the book as a whole (it get's
      displayed when there isn't an active reading mode) -->
-<div class="codexhelp">
+<div class="codexhelp" id="CODEXMAINHELP">
   <!--
-  <p class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
-    <input TYPE="checkbox" NAME="CODEXSTARTUPHELP" VALUE="yes"
-	   
-	   onchange="Codex.setConfig('startuphelp',fdjtID('STARTUPHELPCHECKBOX').checked,true);"
-	   ID="STARTUPHELPCHECKBOX"
-	   CHECKED>
-    Show this help page on startup</p>
-  -->
+      <p class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+	<input TYPE="checkbox" NAME="CODEXSTARTUPHELP" VALUE="yes"
+	       
+	       onchange="Codex.setConfig('startuphelp',fdjtID('STARTUPHELPCHECKBOX').checked,true);"
+	       ID="STARTUPHELPCHECKBOX"
+	       CHECKED>
+	Show this help page on startup</p>
+      -->
   <p id="CODEXINTRO"></p>
   <div class="helpblock">
-    <p><strong><span style="color: blue;">s</span>Books</strong> are
-      digital books enriched by layers of structure, semantics, and
-      annotations from your friends, colleagues, and chosen
-      communities.</p>
-    <p><strong>Glosses</strong> are notes, tags, and links overlaid on
-      the content of this book and indicated by
-      <span class="fortouch">tappable</span>
-      <span class="notouch">clickable</span>
-      <img svg="http://static.beingmeta.com/g/codex/sbwedge.svgz"
-	   src="http://static.beingmeta.com/g/codex/sbwedge16x16.png"
-	   class="inline"
-	   alt="asterisk"/> icons in the text or margins.</p>
     <p id="CODEXHELPNEEDLOGIN">
       <strong style="color: blue; cursor: pointer; text-decoration:
-	      underline;" onclick="CodexMode('login')">Login</strong>
-	      to use the annotation and social features of sBooks.
-	      sBooks is <strong>free of charge</strong> for free
-	      online content and open online communities.</p>
+		     underline;" onclick="CodexMode('login')">Login</strong>
+      to use the annotation and social features of sBooks.
+      sBooks is <strong>free of charge</strong> for free
+      online content and open online communities.</p>
     <p id="CODEXHELPDISCONNECTED">
       You are not logged into sBooks, which limits your
       ability to update or save glosses.
@@ -45,53 +33,73 @@
 	      target="_blank">profile here</a>.</p>
   </div>
   <div class="helpblock">
-    <p><strong>Flip forward and backward</strong> through pages
-      by <em><span class="fortouch">tapping</span>
-	<span class="notouch">clicking</span> the sides of the
-	display<span class="fortouch">,swiping right or left,</span></em> or
-      using the space, backspace, or page up/down buttons on your
-      keyboard.</p>
-    <p><strong>Add your own glosses</strong> by <em>selecting
-	text</em> and using the popup at the top of the page to
-      add <strong>a note, tags, or links</strong>.</p>
-    <p><strong>Jump</strong> through the book
-      by <em><span class="fortouch">tapping</span>
-	<span class="notouch">clicking</span></em> in the <em>linear book
-	map</em> at the <strong>bottom of the page</strong>.</p>
-    <p><strong class="fortouch">Tap the top</strong>
-      <strong class="notouch">Click on the top</strong> of the page
-      to see <strong>book tools</strong> providing extra
-      information, settings, and other options.</p>
-    <p><strong class="fortouch">Tap the bottom</strong>
-      <strong class="notouch">Click on the bottom</strong> of the page
-      to return to the text.</p>
+    <p><img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
+	    src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
+	    alt="help/question mark" class="left"/>
+      <span class="action">
+	<span class="fortouch">Tap</span> <span class="notouch">Click</span>
+	the help icon</span> for this and other help.</p>
+    <p><img svg="http://static.beingmeta.com/g/codex/page_right.svgz"
+	    src="http://static.beingmeta.com/g/codex/page_right50h.png"
+	    alt="help/question mark" class="right"/>
+      <img svg="http://static.beingmeta.com/g/codex/page_left.svgz"
+	   src="http://static.beingmeta.com/g/codex/page_left50h.png"
+	   alt="help/question mark" class="left"/>
+      <span class="action">
+	<span class="fortouch">Tap</span> <span class="notouch">Click</span>
+	the edges</span> of the window to move by pages.</p>
+    <p><span class="action">
+	<span class="fortouch">Tap</span> <span class="notouch">Click</span>
+	the top</span> of the window to focus on the interface.</p>
+    <p><span class="action">
+	<span class="fortouch">Tap</span> <span class="notouch">Click</span>
+	the bottom</span> of the window to return to reading the
+      text.</p>
   </div>
-  <div class="helpblock">    
-    <p>In general, when <em><span class="fortouch">
-	  tapping</span> <span class="notouch">clicking</span></em> an
-      icon <strong>reveals extra information</strong>,
-      <em> <span class="fortouch">tapping</span>
-	<span class="notouch">clicking</span> again</em>
-      <strong>hides it</strong>.</p>
-    <p>Use the icons in the corners to (clockwise): navigate
-      <img svg="http://static.beingmeta.com/g/codex/compass.svgz"
-	   src="http://static.beingmeta.com/g/codex/compass32x32.png"
-	   class="inline"
-	   alt="compass image"/> the book's structure, search
-      <img svg="http://static.beingmeta.com/g/codex/tagsearch.svgz"
-	   src="http://static.beingmeta.com/g/codex/tagsearch32x32.png"
-	   class="inline"
-	   alt="magnifying glass and tag"/> for social or automatic tags,
-      view overlays
-      <img svg="http://static.beingmeta.com/g/codex/allglosses.svgz"
-	   src="http://static.beingmeta.com/g/codex/allglosses32x32.png"
-	   class="inline"
-	   alt="people talking"/> applied to this book, or see help
-      <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
-	   src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
-	   class="inline"
-	   alt="people talking"/> for the current context.</p>
+  <div class="helpblock">
+    <p><span class="action">
+	<span class="fortouch">Tap</span> <span class="notouch">Click</span>
+	in the corners</span> to:</p>
+    <table>
+      <tr><td class="icon">
+	  <img svg="http://static.beingmeta.com/g/codex/compass.svgz"
+	       src="http://static.beingmeta.com/g/codex/compass32x32.png"
+	       alt="compass"/></td>
+	<td class="textleft">Browse by sections</td>
+	<td class="textright">Search by tags or concepts</td>
+	<td class="icon">
+	  <img svg="http://static.beingmeta.com/g/codex/tagsearch.svgz"
+	       src="http://static.beingmeta.com/g/codex/tagsearch32x32.png"
+	       alt="compass"/></td>
+      </tr>
+      <tr><td class="icon">
+	  <img svg="http://static.beingmeta.com/g/codex/allglosses.svgz"
+	       src="http://static.beingmeta.com/g/codex/allglosses32x32.png"
+	       alt="people talking"/></td>
+	<td class="textleft">Browse people's glosses</td>
+	<td class="textright">Toggle contextual help</td>
+	<td class="icon">
+	  <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
+	       src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
+	       alt="help/question mark"/></td>
+      </tr>
+    </table>
   </div>
+  <div class="helpblock">
+    <p><strong><span style="color: blue;">s</span>Books</strong> are
+      digital books enriched by layers of structure, semantics, and
+      annotations from your friends, colleagues, and chosen
+      communities.</p>
+    <p><strong>Glosses</strong> are notes, tags, and links overlaid on
+      the content of this book and indicated by
+      <span class="fortouch">tappable</span>
+      <span class="notouch">clickable</span>
+      <img svg="http://static.beingmeta.com/g/codex/sbwedge.svgz"
+	   src="http://static.beingmeta.com/g/codex/sbwedge16x16.png"
+	   class="inline"
+	   alt="asterisk"/> icons in the text or margins.</p>
+  </div>
+</div>
 </div>
 <div id="BOTTOMHUDHELP">
   <p class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
