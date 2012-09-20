@@ -1353,10 +1353,14 @@ var CodexPaginate=
 	    if (avoidbreakbefore) args.avoidbreakbefore=avoidbreakbefore;
 	    
 	    var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
-	    if (fullpages) args.fullpages=fullpages;
+	    if (fullpages) fullpages.push("sbookfullpage");
+	    else fullpages=["sbookfullpage"];
+	    args.fullpages=fullpages;
 	    
 	    var floatpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfloatpage",true));
-	    if (floatpages) args.floatpages=floatpages;
+	    if (floatpages) floatpages.push("sbookfloatpage");
+	    else floatpages=["sbookfloatpage"];
+	    args.floatpages=floatpages;
 
 	    if (fdjtDOM.getMeta("dontbreakblocks"))
 		args.break_blocks=false;
