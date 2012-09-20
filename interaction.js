@@ -525,8 +525,14 @@
 	    else {}
 	    return;}
 	else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
-	else if (kc===34) Codex.Forward(evt);   /* page down */
-	else if (kc===33) Codex.Backward(evt);  /* page up */
+	else if (kc===34) Codex.pageForward(evt);   /* page down */
+	else if (kc===33) Codex.pageBackward(evt);  /* page up */
+	else if (kc===40) { /* arrow down */
+	    Codex.setHUD(false);
+	    Codex.pageForward(evt);}
+	else if (kc===38) {  /* arrow up */
+	    Codex.setHUD(false);
+	    Codex.pageBackward(evt);}
 	else if (kc===37) Codex.scanBackward(evt); /* arrow left */
 	else if (kc===39) Codex.scanForward(evt); /* arrow right */
 	// Don't interrupt text input for space, etc
