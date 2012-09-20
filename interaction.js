@@ -1339,6 +1339,7 @@
     /* Gloss form handlers */
 
     /**** Clicking on outlets *****/
+    
     function glossform_outlets_tapped(evt){
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
@@ -1473,8 +1474,9 @@
 	 // Return to scan
 	 "#CODEXSCANNER": {click: scanner_tapped},
 	 // Raise and lower HUD
-	 "#CODEXPAGEHEAD": {tap: head_click},
-	 "#CODEXHEAD": {tap: head_click},
+	 "#CODEXPAGEHEAD": {click: head_click},
+	 "#CODEXTABS": {click: head_click},
+	 "#CODEXHEAD": {click: head_click},
 	 "#CODEXPAGEFOOT": {tap: foot_click},
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {click: left_margin},
@@ -1522,8 +1524,9 @@
 	 // Return to scan
 	 "#CODEXSCANNER": {tap: scanner_tapped},
 	 // Raise and lower HUD
-	 "#CODEXPAGEHEAD": {tap: head_click},
-	 "#CODEXHEAD": {tap: head_click},
+	 "#CODEXPAGEHEAD": {touchstart: head_click},
+	 "#CODEXTABS": {touchstart: head_click},
+	 "#CODEXHEAD": {touchstart: head_click},
 	 "#CODEXFOOT": {tap: foot_click},
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {touchstart: left_margin},
