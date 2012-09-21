@@ -577,8 +577,10 @@ var CodexHUD=false;
 	    if ((onconnect)&&(onconnect.length)) {
 		var i=0; var lim=onconnect.length;
 		while (i<lim) (onconnect[i++])();}}
-	fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,
-			  ((val)?("cxCONN"):("cxDISCONN")));
+	if (((val)&&(!(Codex.connected)))||
+	    ((!(val))&&(Codex.connected)))
+	    fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,
+			      ((val)?("cxCONN"):("cxDISCONN")));
 	Codex.connected=val;}
     Codex.setConnected=setConnected;
 
