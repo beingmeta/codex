@@ -359,7 +359,7 @@ var CodexMode=
 
 	/* Mode controls */
 	
-	var CodexMode_pat=/\b((device)|(sbookapp)|(help)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
+	var CodexMode_pat=/\b((device)|(sbookapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
 	var codexHeartMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login))\b/g;
 	var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(glosses)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan))\b/g;
 	var codex_mode_scrollers=
@@ -379,13 +379,12 @@ var CodexMode=
 	function CodexMode(mode){
 	    var oldmode=Codex.mode;
 	    if (typeof mode === 'undefined') return oldmode;
-	    if (mode==='last') mode=Codex.last_mode||'help';
+	    if (mode==='last') mode=Codex.last_mode;
 	    if (mode==='none') mode=false;
 	    if (mode==='heart') mode=Codex.heart_mode||"about";
 	    if (Codex.Trace.mode)
 		fdjtLog("CodexMode %o, cur=%o dbc=%o",
 			mode,Codex.mode,document.body.className);
-	    if ((Codex.mode==='help')&&(!(mode))) mode=Codex.last_mode;
 	    if ((mode!==Codex.mode)&&(Codex.previewing))
 		Codex.stopPreview();
 	    if (mode) {
@@ -407,8 +406,7 @@ var CodexMode=
 		    if (codex_mode_foci[Codex.mode]) {
 			var input=fdjtID(codex_mode_foci[Codex.mode]);
 			input.blur();}
-		    Codex.mode=mode;
-		    if (Codex.mode!=='help') Codex.last_mode=Codex.mode;}
+		    Codex.mode=mode;}
 		// If we're switching to the inner app but the iframe
 		//  hasn't been initialized, we do it now.
 		if ((mode==="sbookapp")&&(!(fdjtID("SBOOKSAPP").src)))
@@ -440,13 +438,6 @@ var CodexMode=
 		if ((mode==="scanning")||(mode==="tocscan"))
 		    addClass(document.body,"codexscanning");
 		else dropClass(document.body,"codexscanning");
-		// Help mode (on the hud) actually dims the body
-		// Help mode might not exist anymore
-		/*
-		  if (mode==="help")
-		  addClass(document.body,"dimmed");
-		  else dropClass(document.body,"dimmed");
-		*/
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
 		if ((mode==='scanning')||(mode==='tocscan')) {
@@ -481,7 +472,7 @@ var CodexMode=
 		//  setHUD clears most of the classes when it brings
 		//  the HUD down.
 		fdjtLog.HumaneHide();
-		if (Codex.mode!=='help') Codex.last_mode=Codex.mode;
+		Codex.last_mode=Codex.mode;
 		if (Codex.liveinput) {
 		    Codex.liveinput.blur();
 		    Codex.liveinput=false;}

@@ -1262,18 +1262,21 @@
 	    return evt.clientX-(pinfo.offsetLeft);}
 	else return false;}
 
-    function head_click(evt){
-	if (Codex.Trace.gestures) fdjtLog("head_click %o",evt);
+    function head_tap(evt){
+	if (Codex.Trace.gestures) fdjtLog("head_tap %o",evt);
 	if (isClickable(evt)) return;
-	else if (Codex.mode==='help') {
+	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(true);}
-	else if (Codex.mode) return;
+	    fdjtDOM.dropClass(document.body,"codexhelp");
+	    CodexMode(false);}
+	else if (fdjtDOM.hasClass(document.body,"codexhelp")) {
+	    fdjtUI.cancel(evt);
+	    fdjtDOM.dropClass(document.body,"codexhelp");}
 	else {
 	    fdjtUI.cancel(evt);
 	    CodexMode(true);}}
-    function foot_click(evt){
-	if (Codex.Trace.gestures) fdjtLog("foot_click %o",evt);
+    function foot_tap(evt){
+	if (Codex.Trace.gestures) fdjtLog("foot_tap %o",evt);
 	if (isClickable(evt)) return;
 	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);
@@ -1474,10 +1477,10 @@
 	 // Return to scan
 	 "#CODEXSCANNER": {click: scanner_tapped},
 	 // Raise and lower HUD
-	 "#CODEXPAGEHEAD": {click: head_click},
-	 "#CODEXTABS": {click: head_click},
-	 "#CODEXHEAD": {click: head_click},
-	 "#CODEXPAGEFOOT": {tap: foot_click},
+	 "#CODEXPAGEHEAD": {click: head_tap},
+	 "#CODEXTABS": {click: head_tap},
+	 "#CODEXHEAD": {click: head_tap},
+	 "#CODEXPAGEFOOT": {tap: foot_tap},
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
@@ -1524,10 +1527,10 @@
 	 // Return to scan
 	 "#CODEXSCANNER": {tap: scanner_tapped},
 	 // Raise and lower HUD
-	 "#CODEXPAGEHEAD": {touchstart: head_click},
-	 "#CODEXTABS": {touchstart: head_click},
-	 "#CODEXHEAD": {touchstart: head_click},
-	 "#CODEXFOOT": {tap: foot_click},
+	 "#CODEXPAGEHEAD": {touchstart: head_tap},
+	 "#CODEXTABS": {touchstart: head_tap},
+	 "#CODEXHEAD": {touchstart: head_tap},
+	 "#CODEXFOOT": {tap: foot_tap},
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {touchstart: left_margin},
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},
