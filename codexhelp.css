@@ -101,6 +101,13 @@ div.helpbox {
     opacity: 0.001;
     overflow: auto;}
 
+div.helpbox img.closebutton {
+    position: absolute; width: 24px; height: 24px;
+    top: 2px; right: 6px;
+    padding: 2px;
+    border: solid red 2px; 
+    color: red;}
+
 div.helpbox.atfoot {
     bottom: 0px; max-height: 75%; height: auto;
     border-bottom: 0px;

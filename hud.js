@@ -873,6 +873,12 @@ var CodexMode=
 			   5000);};
 	Codex.keyboardHelp=keyboardHelp;
 
+	/* Setting/clearing help mode */
+	Codex.hideHelp=function(){
+	    fdjtDOM.dropClass(document.body,"codexhelp");};
+	Codex.showHelp=function(){
+	    fdjtDOM.addClass(document.body,"codexhelp");};
+
 	/* Button methods */
 
 	function LoginButton_ontap(evt){
