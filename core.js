@@ -627,7 +627,9 @@ var CodexHUD=false;
 		    Codex.syncstate=syncing;
 		    setConnected(true);
 		    syncing=false;}
-		else if (navigator.onLine) setConnected(false);
+		else if ((req.readyState===4)&&
+			 (navigator.onLine))
+		    setConnected(false);
 		else {}
 		if ((Codex.Trace.dosync)||(Codex.Trace.state))
 		    fdjtLog("serverSync(callback) %o ready=%o status=%o %j",
