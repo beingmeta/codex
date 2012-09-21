@@ -122,7 +122,16 @@ function CodexDOMScan(root,docinfo){
 	    (head.getAttribute('toctitle'))||
 	    (head.getAttribute('data-toctitle'))||
 	    (head.title);
-	if (!(title)) title=gatherText(head);
+	if (!(title)) {
+	    var head1=fdjtDOM.getFirstChild(head,"H1,H2,H3,H4,H5,H6");
+	    if (head1) title=head1.toctitle||
+		((head1.getAttributeNS)&&
+		 (head1.getAttributeNS('toctitle','http://sbooks.net')))||
+		(head1.getAttribute('toctitle'))||
+		(head1.getAttribute('data-toctitle'))||
+		(head1.title);
+	    if ((!(title))&&(head1)) title=gatherText(head1);
+	    else title=gatherText(head);}
 	if (typeof title === "string") {
 	    var std=stdspace(title);
 	    if (std==="") return false;
