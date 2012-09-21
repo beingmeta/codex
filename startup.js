@@ -315,7 +315,10 @@ Codex.Startup=
 	    Codex.setupGestures();
 	    
 	    // Maybe display the help page
-	    if (Codex.startuphelp)
+	    if ((Codex.startuphelp)&&
+		(!((getQuery("ACTION"))||
+		   (getQuery("JOIN"))||
+		   (getQuery("OVERLAY")))))
 		fdjtDOM.addClass(document.body,"codexhelp");
 
 	    // Setup the reticle (if desired)
@@ -1112,6 +1115,7 @@ Codex.Startup=
 		initGlossesOffline();
 	    if (info.sources) gotInfo("sources",info.sources,persist);
 	    if (info.outlets) gotInfo("outlets",info.outlets,persist);
+	    if (info.overlays) gotInfo("overlays",info.overlays,persist);
 	    if (info.glosses) initGlosses(info.glosses,info.etc);
 	    Codex.add2OutletCloud(info.outlets);
 	    if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
