@@ -561,8 +561,32 @@ Codex.Startup=
 	    CodexMode(mode||false);
 	    _sbook_setup=Codex._setup=new Date();
 	    var msg=getQuery("APPMESSAGE");
-	    if (msg) alert(msg);}
-
+	    if (msg) {
+		var uuid_end=false;
+		if ((msg.slice(0,2)==="#{")&&
+		    ((uuid_end=msg.indexOf('}'))>0)) {
+		    var msgid="MSG_"+msg.slice(2,uuid_end);
+		    if (fdjtState.getLocal(msgid)) {}
+		    else {
+			fdjtState.setLocal(msgid,"seen");
+			alert(msg.slice(uuid_end+1));}}
+		else alert(msg);}
+	    var msg=getQuery("SBOOKSMESSAGE");
+	    if (msg) {
+		var uuid_end=false;
+		if ((msg.slice(0,2)==="#{")&&
+		    ((uuid_end=msg.indexOf('}'))>0)) {
+		    var msgid="MSG_"+msg.slice(2,uuid_end);
+		    if (fdjtState.getLocal(msgid)) {}
+		    else {
+			fdjtState.setLocal(msgid,"seen");
+			alert(msg.slice(uuid_end+1));}}
+		else alert(msg);}
+	    var msg=fdjtState.getCookie("SBOOKSMESSAGE");
+	    if (msg) {
+		alert(msg);
+		fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}}
+	
 	/* Application settings */
 
 	var optrules=
