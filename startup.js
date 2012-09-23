@@ -58,6 +58,7 @@ Codex.Startup=
 	var getLocal=fdjtState.getLocal;
 	var setLocal=fdjtState.setLocal;
 	var getQuery=fdjtState.getQuery;
+	var getCookie=fdjtState.getCookie;
 	var getMeta=fdjtDOM.getMeta;
 	/* Initialization */
 	
@@ -560,8 +561,8 @@ Codex.Startup=
 	    else dropClass(document.body,"codexhelp");
 	    CodexMode(mode||false);
 	    _sbook_setup=Codex._setup=new Date();
-	    var msg=getQuery("APPMESSAGE");
-	    if (msg) {
+	    var msg=false;
+	    if (msg=getQuery("APPMESSAGE")) {
 		var uuid_end=false;
 		if ((msg.slice(0,2)==="#{")&&
 		    ((uuid_end=msg.indexOf('}'))>0)) {
@@ -571,8 +572,7 @@ Codex.Startup=
 			fdjtState.setLocal(msgid,"seen");
 			alert(msg.slice(uuid_end+1));}}
 		else alert(msg);}
-	    var msg=getQuery("SBOOKSMESSAGE");
-	    if (msg) {
+	    if (msg=getQuery("SBOOKSMESSAGE")) {
 		var uuid_end=false;
 		if ((msg.slice(0,2)==="#{")&&
 		    ((uuid_end=msg.indexOf('}'))>0)) {
@@ -582,8 +582,10 @@ Codex.Startup=
 			fdjtState.setLocal(msgid,"seen");
 			alert(msg.slice(uuid_end+1));}}
 		else alert(msg);}
-	    var msg=fdjtState.getCookie("SBOOKSMESSAGE");
-	    if (msg) {
+	    if (msg=getCookie("APPMESSAGE")) {
+		alert(msg);
+		fdjtState.clearCookie("APPMESSAGE","sbooks.net","/");}
+	    if (msg=getCookie("SBOOKSMESSAGE")) {
 		alert(msg);
 		fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}}
 	
