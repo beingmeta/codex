@@ -498,12 +498,13 @@ div.codexpage.curpage {opacity: 1; z-index: 50;}
 
 div.codexdupstart {
     padding-bottom: 0px; border-bottom-width: 0px; margin-bottom: 0px;}
-div.codexdup {
+div.codexdup, p.codexdup {
     padding-top: 0px;    border-top-width: 0px;    margin-top: 0px;
-    padding-bottom: 0px; border-bottom-width: 0px; margin-bottom: 0px;}
+    padding-bottom: 0px; border-bottom-width: 0px; margin-bottom: 0px;
+    text-indent: 0px;}
 div.codexdupend {
-    padding-top: 0px;    border-top-width: 0px;    margin-top: 0px;}
-p.codexdupend, p.codexdup { text-indent: 0px;}
+    padding-top: 0px;    border-top-width: 0px;    margin-top: 0px;
+    text-indent: 0px;}
 
 div#CODEXPAGE.codexpaginating div.codexpage { visiblity: hidden;}
 
@@ -555,16 +556,17 @@ div.startupmessage.running { opacity: 1.0; z-index: 300;}
 div#CODEXSPLASH {
     position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px;
     width: 100%;  top: 50px; bottom: 50px;
-    background-color: blue; opacity: 0.5;
-    text-align: center;
-    display: none;}
+    background-color: silver; opacity: 0.9;
+    text-align: center;}
 div#CODEXSPLASH img.coverpage {
     position: absolute; top: 0px; bottom: 0px; 
     margin: 0px; padding: 0px;
     height: 100%;
     left: auto; right: auto;}
-
-body.codexstartup div#CODEXSPLASH { display: block; }
+div#CODEXSPLASH div.title {
+    position: absolute; top: 10%; font-weight: bold; font-size: 32px;}
+div#CODEXSPLASH div.byline {
+    position: absolute; top: 50%; font-style: italic; font-size: 32px;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
