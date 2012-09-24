@@ -98,7 +98,7 @@ div.codexglossform.glossreply form .addbutton {
 
 div.codexglossform form textarea[name='NOTE'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/remark.svg);}
+    url(https://beingmeta.s3.amazonaws.com/static/g/codex/remark.svgz);}
 body.cxNOSVG div.codexglossform form textarea[name='NOTE'] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/g/codex/remark24x24.png);}
