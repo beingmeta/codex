@@ -534,9 +534,6 @@ Codex.Startup=
 		(getQuery("OVERLAY")))
 		CodexMode("sbookapp");
 	    else {}
-	    // Hide the splash page, if any
-	    if (fdjtID("CODEXSPLASH"))
-		fdjtID("CODEXSPLASH").style.display='none';
 	    window.focus();}
 	
 	function startupDone(mode){
@@ -546,6 +543,9 @@ Codex.Startup=
 	    Codex.displaySync();
 	    setInterval(Codex.serverSync,60000);
 	    fdjtDOM.dropClass(document.body,"codexstartup");
+	    // Hide the splash page, if any
+	    if (fdjtID("CODEXSPLASH"))
+		fdjtID("CODEXSPLASH").style.display='none';
 	    if (mode) {}
 	    else if ((getQuery("join"))||
 		     (getQuery("action"))||
