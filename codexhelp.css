@@ -65,6 +65,7 @@ div#CODEXHUD div#CODEXHELP .codexclicktohide {
 div#CODEXHELP div.codexhelp p {
     text-align: left; margin-left: 32px; margin-right: 2em;
     text-indent: -32px;}
+div#CODEXHELP div.codexhelp td p { margin-top: 0px; margin-bottom: 0px;}
 div#CODEXHELP div.codexhelp div.helpblock {
     max-width: 40em; margin-left: auto; margin-right: auto;
     margin-bottom: 1em;}
@@ -247,11 +248,16 @@ body div#CODEXHELP p#CODEXHELPDISCONNECTED { display: none;}
 body.cxUSER.cxDISCONN div#CODEXHELP p#CODEXHELPDISCONNECTED {
     margin-top: 1em; color: red; font-weight: bold; display: block;}
 
+div#CODEXMAINHELP > table.fdjt { width: auto; }
+
 div#CODEXMAINHELP p .action { font-weight: bold; font-size: 150%;}
 div#CODEXMAINHELP p .result { font-weight: bold; font-style: italic;}
 div#CODEXMAINHELP table {
     margin-left: 10%; margin-right: 10%;}
+div#CODEXMAINHELP table table {
+    margin-left: 2%; margin-right: 2%;}
 div#CODEXMAINHELP table td.icon { width: 32px;}
+div#CODEXMAINHELP table td.icon img { width: 32px;}
 div#CODEXMAINHELP table td.textleft { text-align: left;}
 div#CODEXMAINHELP table td.textright { text-align: right;}
 
