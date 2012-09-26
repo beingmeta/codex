@@ -104,9 +104,10 @@ div.helpbox {
 
 div.helpbox img.closebutton {
     position: absolute; width: 24px; height: 24px;
-    top: 2px; right: 6px;
-    padding: 2px;
+    top: 6px; right: 6px; padding: 2px;
     border: solid red 2px; 
+    border-radius: 6px; -webkit-border-radius: 6px;
+    -moz-border-radius: 6px; -o-border-radius: 6px;
     color: red;}
 
 div.helpbox.atfoot {
