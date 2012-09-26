@@ -1320,8 +1320,8 @@ var CodexPaginate=
 	Codex.addConfig("bodyfamily",updateLayoutProperty);
 	
 	function getLayoutArgs(){
-	    var height=getGeometry(fdjtID("CODEXPAGE")).height;
-	    var width=getGeometry(fdjtID("CODEXPAGE")).width;
+	    var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
+	    var width=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_width;
 	    var container=fdjtDOM("div.codexpages#CODEXPAGES");
 	    var pagerule=fdjtDOM.addCSSRule(
 		"div.codexpage",
