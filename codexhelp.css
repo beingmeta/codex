@@ -197,8 +197,8 @@ div#CODEXHUD .helphud {
     position: fixed; background-color: ivory; z-index: 100;
     border: solid black 1px; padding: 3px; border-radius: 6px;
     font-family: sans,sans-serif;
-    -o-border-radius: 6px; -webkit-border-radius: 6px; 
-    -o-border-radius: 6px;
+    border-radius: 6px; -o-border-radius: 6px; 
+    -moz-border-radius: 6px; -webkit-border-radius: 6px; 
     display: none;}
 div#CODEXHUD .helphud.topleft {top: 3px; left: 60px; text-align: right;}
 div#CODEXHUD .helphud.topright {top: 3px; right: 60px; text-align: left;}
@@ -212,11 +212,9 @@ div#CODEXHUD .helphud.topcenter {
     -o-border-radius-topleft: 0px; -oborder-radius-topright: 0px;}
 
 div#CODEXHUD .helphud.botcenter {
-    bottom: 0px; width: 50%; left: 25%; right: 25%; text-align: center;
-    border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
-    -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
-    -webkit-border-bottom-left-radius: 0px; -webkit-border-bottom-right-radius: 0px; 
-    -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px;}
+    bottom: 25px;
+    width: 50%; left: 25%; right: 25%;
+    text-align: center;}
 
 div#CODEXHUD div.helphud.leftmiddle {
     position: fixed; max-width: 50px; padding-left: 3px;

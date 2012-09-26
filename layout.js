@@ -1321,7 +1321,7 @@ var CodexPaginate=
 	
 	function getLayoutArgs(){
 	    var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
-	    var width=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_width;
+	    var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
 	    var container=fdjtDOM("div.codexpages#CODEXPAGES");
 	    var pagerule=fdjtDOM.addCSSRule(
 		"div.codexpage",
