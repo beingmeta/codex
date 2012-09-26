@@ -1323,6 +1323,7 @@
     function pageinfo_release(evt){
 	Codex.stopPagePreview("pageinfo_release");}
 
+    var showing_page=false;
     function pageinfo_hover(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
 	var target=fdjtUI.T(evt);
@@ -1333,7 +1334,11 @@
 	    fdjtLog("pageinfo_hover %o off=%o/%o=%o showpage=%o/%o pressed=%o",
 		    evt,offx,offwidth,offx/offwidth,
 		    showpage,Codex.pagecount,fdjtUI.TapHold.ispressed());
-	pageinfo.title=fdjtString("%d",showpage);
+	if (showpage!==showing_page) {
+	    pageinfo.title=
+		fdjtString("page %d: click to go there, hold to preview",
+			   showpage);
+	    showing_page=showpage;}
 	if (Codex.previewing) {
 	    var page=Codex.getPage(showpage);
 	    if (hasClass(page,"curpage")) return;
