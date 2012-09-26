@@ -105,6 +105,19 @@ div#CODEXHUD #CODEXFOOT {
     position: fixed; left: 0px; right: 0px; width: 100%;
     bottom: 0px; z-index: 100;}
 
+div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    position: absolute; bottom: 0px;
+    left: 100px; right: 100px; height: 50px;
+    text-align: center; font-size: 200%; font-weight: bold;
+    border: solid black 1px; border-bottom: none;
+    border-radius: 1em; -o-border-radius: 1em;
+    -moz-border-radius: 1em; -webkit-border-radius: 1em;
+    background-color: ivory;
+    display: none;}
+
+body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    display: block;}
+
 #CODEXHUD.scanning #CODEXSCANNER {display: block;}
 
 /* HUD panels */

@@ -99,6 +99,7 @@ var CodexTOC=
 	    while (i<n) {
 		toc.appendChild(CodexTOC(sub[i++],depth+1,spec,prefix,headless));}
 	    if (depth===0) {
+		toc.title="Tap to go to this section; hold to preview it";
 		fdjtUI.TapHold(toc,Codex.touch);
 		Codex.UI.addHandlers(toc,'toc');}
 	    return toc;}
@@ -189,7 +190,8 @@ var CodexTOC=
 	    span.style.left=left+"%";
 	    span.style.width=width+"%";
 	    span.title=(title||"section")+
-		" ("+Math.round(left)+"%-"+(Math.round(left+width))+"%)";
+		" ("+Math.round(left)+"%-"+(Math.round(left+width))+"%); "+
+		"tap to jump here, hold to preview";
 	    span.frag=subsection.id;
 	    if (name) anchor.name=name;
 	    return span;}

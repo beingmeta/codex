@@ -1425,6 +1425,14 @@
 	fdjtUI.CheckSpan.set(doppels,target.checked);}
     Codex.UI.changeGlossPosting=changeGlossPosting;
 
+    /* Back to the text */
+
+    function back_to_reading(evt){
+	evt=evt||event;
+	fdjtUI.cancel(evt);
+	CodexMode(false);
+	fdjtDOM.dropClass(document.body,"codexhelp");}
+
     /* Rules */
 
     var nobubble=fdjtUI.nobubble;
@@ -1457,7 +1465,8 @@
 	 toc: {tap: toc_tapped,hold: toc_held,
 	       release: toc_released,slip: toc_slipped,
 	       mouseover: fdjtUI.CoHi.onmouseover,
-	       mouseout: fdjtUI.CoHi.onmouseout},
+	       mouseout: fdjtUI.CoHi.onmouseout,
+	       click: cancel},
 	 glossmark: {mouseup: glossmark_tapped,
 		     mouseover: glossmark_hoverstart,
 		     mouseout: glossmark_hoverdone},
@@ -1495,7 +1504,8 @@
 	 "div.glossetc": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
 	 "div.glossetc span.modebuttons": {click: glossmode_button},
-	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped}};
+	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
+	 "#CODEXSHOWTEXT": {click: back_to_reading}};
 
     function justselect(evt){
 	if (!(window.getSelection())) fdjtUI.cancel(evt);}
@@ -1536,6 +1546,7 @@
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},
 	 "#STARTUPHELPCHECKSPAN" : {tap: startupHelpToggle},
 	 "#HIDEHELPBUTTON" : {tap: function(evt){CodexMode(false);}},
+	 "#CODEXSHOWTEXT": {click: back_to_reading},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click: hudbutton},
 	 // GLOSSFORM rules

@@ -38,7 +38,7 @@ div.codextoc.codexlivehead div.head { display: block;}
 div.codextoc.codexlivehead div.codextoc { display: none;}
 div.codextoc.codexlivehead div.codextoc.codexlivehead { display: block;}
 div.codextoc div.spanbar div.codexhudspan a.brick {
-    border: solid darkblue 1px; border-left: 0px;}
+    border: solid darkblue 1px; border-left: 0px; cursor: pointer;}
 div.codextoc div.spanbar div.codexhudspan:first-child a.brick {
     border-left: 1px;}
 div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {

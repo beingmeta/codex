@@ -479,6 +479,7 @@ var CodexMode=
 		document.body.focus();
 		dropClass(document.body,"dimmed");
 		dropClass(document.body,"codexscanning");
+		dropClass(document.body,"codexhelp");
 		setHUD(false);
 		if (display_sync) Codex.displaySync();}}
 
