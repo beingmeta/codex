@@ -99,7 +99,7 @@ var Codex=
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 highlight: 0,  // Whether to trace highlighting
-	 gestures: 2}   // How much to trace gestures
+	 gestures: 0}   // How much to trace gestures
     };
 var _sbook_setup=false;
 
