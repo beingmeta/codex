@@ -497,14 +497,22 @@ div.codexpage {
 div.codexpage.curpage {opacity: 1; z-index: 50;}
 
 div.codexdupstart {
-    padding-bottom: 0px; border-bottom-width: 0px; margin-bottom: 0px;}
+    padding-bottom: 0px !important;
+    border-bottom-width: 0px !important;
+    margin-bottom: 0px !important;}
 div.codexdup, p.codexdup {
-    padding-top: 0px;    border-top-width: 0px;    margin-top: 0px;
-    padding-bottom: 0px; border-bottom-width: 0px; margin-bottom: 0px;
-    text-indent: 0px;}
-div.codexdupend {
-    padding-top: 0px;    border-top-width: 0px;    margin-top: 0px;
-    text-indent: 0px;}
+    padding-top: 0px !important;
+    border-top-width: 0px !important;
+    margin-top: 0px !important;
+    padding-bottom: 0px !important;
+    border-bottom-width: 0px !important;
+    margin-bottom: 0px !important;
+    text-indent: 0px !important;}
+div.codexdupend, p.codexdupend {
+    padding-top: 0px !important;
+    border-top-width: 0px !important;
+    margin-top: 0px !important;
+    text-indent: 0px !important;}
 
 div#CODEXPAGE.codexpaginating div.codexpage { visiblity: hidden;}
 
