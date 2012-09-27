@@ -1239,6 +1239,7 @@ var CodexPaginate=
 	    var page_width=fdjtDOM.getGeometry(page).width;
 	    var content_width=fdjtDOM.getGeometry(content).width;
 	    var view_width=fdjtDOM.viewWidth();
+	    var view_height=fdjtDOM.viewHeight();
 	    var page_margin=(view_width-page_width)/2;
 	    var content_margin=(view_width-content_width)/2;
 	    if (page_margin!==50) {
@@ -1249,6 +1250,7 @@ var CodexPaginate=
 		content.style.left=content_margin+'px';
 		content.style.right=content_margin+'px';}
 	    else content.style.left=content.style.right='';
+	    fdjtID("CODEXHEART").style.maxHeight=(view-height-100)+'px';
 	    if (Codex.bypage) Codex.Paginate("resize");};
 	
 	Codex.addConfig(
