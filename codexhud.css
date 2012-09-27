@@ -81,6 +81,7 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;}
 #CODEXHEART div.hudpanel { margin-left: 0.7em; margin-right: 0.7em;}
+#CODEXHEART div.hudpanel.completions { margin: 1em;}
 
 body.hudup #CODEXHEART { display: block;}
 
@@ -179,9 +180,11 @@ body div#CODEXHUD div.hudpanel#CODEXSEARCHCLOUD,
 body.hudup div#CODEXHUD.searchresults div.hudpanel#CODEXSEARCHRESULTS,
 body.hudup div#CODEXHUD.search div.hudpanel#CODEXSEARCHCLOUD,
 div#CODEXHUD div.hudpanel div.scrollbox {
-  overflow: auto;}
+  overflow: visible;}
 
-div.completions.hudpanel { line-height: 150%;}
+div.completions.hudpanel { line-height: 120%;}
+div.completions.hudpanel .prime { line-height: 250%;}
+div.completions.hudpanel .normal { line-height: 250%;}
 
 /* HUD buttons */
 

@@ -237,12 +237,12 @@ var CodexMode=
 			     (tag));
 		    if (!(ref)) {
 			if (tag[0]==="\u00a7")
-			    container=getChild(div,".sections");
-			else container=div;}
+			    container=getChild(div,".sections")||container;
+			else container=getChild(div,".words")||div;}
 		    else if (ref.weak)
 			container=getChild(div,".weak");
 		    else if (ref.prime)
-			container=getChild(div,".weak");
+			container=getChild(div,".prime");
 		    else if (ref.pool===Codex.sourcekb)
 			container=getChild(div,".sources");
 		    else {}
