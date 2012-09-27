@@ -327,7 +327,19 @@ body .codexglossmark:hover img.tiny { visibility: hidden;}
 
 /* Displaying the sbook target */
 
-body.hudup .codextarget { }
+body.hudup .codextarget, body.codexscanning .codextarget {
+    background-color: lightyellow;
+    transition-property: color,background-color;
+    transition-duration: 3s;
+    -o-transition-property: color,background-color;
+    -o-transition-duration: 3s;
+    -moz-transition-property: color,background-color;
+    -moz-transition-duration: 3s;
+    -webkit-transition-property: color,background-color;
+    -webkit-transition-duration: 3s;}
+
+body.hudup .codextarget.codexnewtarget {
+    background-color: inherit; }
 body.hudup .codextarget, body.codexscanning .codextarget {
     cursor: pointer;}
  
