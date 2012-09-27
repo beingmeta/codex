@@ -124,8 +124,13 @@
     function showtags(info){
 	var ctags=info.tags;
 	var gtags=info.glosstags;
+	var knodes=info.knodes;
+	var dterms=[];
 	var atags=info.autotags;
 	var tags; var scores;
+	if (knodes) {
+	    var i=0; var lim=knodes.length;
+	    while (i<lim) dterms.push(knodes[i++].tagString());}
 	if ((typeof ctags === 'string')||(ctags instanceof String))
 	    ctags=[ctags];
 	if (!((atags)||(gtags))) {
@@ -146,7 +151,7 @@
 		    else if (v1) return 1;
 		    else return -1;});
 		atags.sorted=true;}
-	    tags=info.alltags=combineTags([ctags,gtags,atags]);
+	    tags=info.alltags=combineTags([ctags,dterms,gtags,atags]);
 	    scores=tags.scores;}
 	var tagcount=0;
 	var countspan=fdjtDOM("span.count");
