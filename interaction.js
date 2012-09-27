@@ -325,43 +325,70 @@
 	    return false;}
 
     function toc_tapped(evt){
-	var about=getAbout(fdjtUI.T(evt||event));
+	evt=evt||event;
+	var about=getAbout(fdjtUI.T(evt));
 	if (about) {
 	    var ref=about.name.slice(3);
+	    if (Codex.Trace.gestures)
+		fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
 	    Codex.JumpTo(fdjtID(ref));
 	    CodexMode("tocscan");
-	    return fdjtUI.cancel(evt);}}
+	    return fdjtUI.cancel(evt);}
+    	else if (Codex.Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
+	else {}}
     function toc_held(evt){
-	var about=getAbout(fdjtUI.T(evt||event));
+	evt=evt||event;
+	var about=getAbout(fdjtUI.T(evt));
 	if (about) {
 	    var ref=about.name.slice(3);
 	    var toc=getParent(about,".codextoc");
 	    var title=getTitleSpan(toc,about.name);
+	    if (Codex.Trace.gestures)
+		fdjtLog("toc_held %o about=%o ref=%s toc=%o title=%s",
+			evt,about,ref,toc,title);
 	    addClass(title,"codexpreviewtitle");
 	    addClass(about.parentNode,"codexheld");
 	    addClass(getParent(about,".spanbar"),"codexvisible");
 	    addClass(toc,"codexheld");
 	    Codex.startPreview(fdjtID(ref),"codexheld");
-	    return fdjtUI.cancel(evt);}}
+	    return fdjtUI.cancel(evt);}
+	else if (Codex.Trace.gestures) fdjtLog("toc_held %o noabout", evt);
+	else {}}
     function toc_released(evt){
-	var about=getAbout(fdjtUI.T(evt||event));
+	evt=evt||event;
+	var about=getAbout(fdjtUI.T(evt));
 	if (about) {
 	    var toc=getParent(about,".codextoc");
 	    var title=getTitleSpan(toc,about.name);
+	    if (Codex.Trace.gestures)
+		fdjtLog("toc_released %o about=%o toc=%o title=%s",
+			evt,about,toc,title);
 	    dropClass(title,"codexpreviewtitle");
 	    dropClass(about.parentNode,"codexheld");
 	    dropClass(getParent(about,".spanbar"),"codexvisible");
 	    dropClass(toc,"codexheld");
-	    Codex.stopPreview("toc_released");}}
+	    Codex.stopPreview("toc_released");}
+	else if (Codex.Trace.gestures)
+	    fdjtLog("toc_released %o noabout",evt);
+	else {}}
     function toc_slipped(evt){
-	var about=getAbout(fdjtUI.T(evt||event));
+	evt=evt||event;
+	var about=getAbout(fdjtUI.T(evt));
+	if ((!about)&&(Codex.Trace.gestures))
+	    fdjtLog("toc_slipped %o noabout",evt);
 	if (about) {
 	    var toc=getParent(about,".codextoc");
 	    var title=getTitleSpan(toc,about.name);
+	    if (Codex.Trace.gestures)
+		fdjtLog("toc_slipped %o about=%o toc=%o title=%s",
+			evt,about,toc,title);
 	    dropClass(title,"codexpreviewtitle");
 	    dropClass(getParent(about,".spanbar"),"codexvisible");
 	    dropClass(about.parentNode,"codexheld");
-	    dropClass(toc,"codexheld");}}
+	    dropClass(toc,"codexheld");}
+	else if (Codex.Trace.gestures)
+	    fdjtLog("toc_slipped %o noabout",evt);
+	else {}}
 
     /* Slice handlers */
 
@@ -1262,9 +1289,15 @@
 	    return evt.clientX-(pinfo.offsetLeft);}
 	else return false;}
 
+    var hasParent=fdjtDOM.hasParent;
+
     function head_tap(evt){
-	if (Codex.Trace.gestures) fdjtLog("head_tap %o",evt);
-	if (isClickable(evt)) return;
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	if (Codex.Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
+	if ((isClickable(target))||
+	    (hasParent(target,".codextoc")))
+	    return;
 	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);
 	    fdjtDOM.dropClass(document.body,"codexhelp");

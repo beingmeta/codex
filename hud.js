@@ -692,8 +692,10 @@ var CodexMode=
 		    var cover_elt=fdjtDOM.$(".cover",about)[0];
 		    if (cover_elt) fdjtDOM(cover_elt,fdjtDOM.Image(cover));}}
 	    if (authorabout) fdjtDOM(about,authorabout);
-	    if (acknowledgements)
-		fdjtDOM(about,acknowledgements.cloneNode(true));}
+	    if (acknowledgements) {
+		var clone=acknowledgements.cloneNode(true);
+		clone.id=null;
+		fdjtDOM(about,clone);}}
 
 	function initManageIFrame(){
 	    var query=document.location.search||"?";

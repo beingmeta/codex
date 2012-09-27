@@ -82,7 +82,7 @@ var Codex=
      Trace: {
 	 startup: 0,	// Whether to debug startup
 	 config: 0,  // Whether to trace config setup/modification/etc
-	 mode: false,	// Whether to trace mode changes
+	 mode: true,	// Whether to trace mode changes
 	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// How much to trace searches
@@ -99,7 +99,7 @@ var Codex=
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 highlight: 0,  // Whether to trace highlighting
-	 gestures: 0}   // How much to trace gestures
+	 gestures: 2}   // How much to trace gestures
     };
 var _sbook_setup=false;
 
@@ -768,6 +768,7 @@ var CodexHUD=false;
     var oldscroll=false; var oldsect=false;
     function CodexStartPreview(spec,caller){
 	var target=((spec.nodeType)?(spec):(fdjtID(spec)));
+	fdjtLog("startPreview %o (%s)",target,caller);
 	if (Codex.layout instanceof CodexLayout) 
 	    Codex.startPagePreview(spec,caller);
 	else if (Codex.layout instanceof CodexSections)

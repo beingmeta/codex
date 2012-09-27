@@ -186,10 +186,8 @@ div.completions.hudpanel { line-height: 150%;}
 /* HUD buttons */
 
 div#CODEXHUD img.hudbutton {
-    position: fixed; width: 50px; height: 50px; z-index: 200;
+    position: fixed; width: 50px; height: 50px; z-index: 0;
     border: solid transparent 2px; opacity: 0.2;}
-body.cxTOUCH div#CODEXHUD img.hudbutton:hover {
-    background-color: lightblue; border-color: blue;}
 body.hudup div#CODEXHUD img.hudbutton  {}
 body div#CODEXHUD img.hudbutton:hover { opacity: 0.45;}
 div#CODEXHUD .topleft {top: 0px; left: 0px;}
@@ -398,8 +396,8 @@ div#CODEXSCANNER.expanded span.expander img[alt='+'] { display: none;}
 div#CODEXSCANNER div.tochead, div#CODEXGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
 
-body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC {
-    overflow: visible;}
+body div#CODEXHUD div.hudpanel#CODEXTOC { z-index: 100; }
+body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC { overflow: visible; }
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
