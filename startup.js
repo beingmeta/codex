@@ -955,18 +955,7 @@ Codex.Startup=
 		Codex.pages=fdjtDOM("div#CODEXPAGES"));
 	    fdjtDOM(body,splash,win,page);
 	    fdjtDOM.addClass(body,"sbook");
-	    var page_width=fdjtDOM.getGeometry(page).width;
-	    var page_height=fdjtDOM.getGeometry(page).height;
-	    var content_width=fdjtDOM.getGeometry(content).width;
-	    var view_width=fdjtDOM.viewWidth();
-	    var page_margin=(view_width-page_width)/2;
-	    var content_margin=(view_width-content_width)/2;
-	    if (page_margin>=50) {
-		page.style.left=page_margin+'px';
-		page.style.right=page_margin+'px';}
-	    if (content_margin>=50) {
-		content.style.left=content_margin+'px';
-		content.style.right=content_margin+'px';}
+	    sizePage(page,content);
 	    applyMetaClass("sbookdetails");
 	    applyMetaClass("sbooknoteref");
 	    applyMetaClass("sbookbibref");
@@ -1048,6 +1037,23 @@ Codex.Startup=
 	    initMargins();
 	    if (Codex.Trace.startup>1)
 		fdjtLog("Initialized body");}
+
+	function sizePage(page,content){
+	    content.style.left=page.style.left='';
+	    content.style.right=page.style.right='';
+	    var page_width=fdjtDOM.getGeometry(page).width;
+	    var page_height=fdjtDOM.getGeometry(page).height;
+	    var content_width=fdjtDOM.getGeometry(content).width;
+	    var view_width=fdjtDOM.viewWidth();
+	    var page_margin=(view_width-page_width)/2;
+	    var content_margin=(view_width-content_width)/2;
+	    if (page_margin>=50) {
+		page.style.left=page_margin+'px';
+		page.style.right=page_margin+'px';}
+	    if (content_margin>=50) {
+		content.style.left=content_margin+'px';
+		content.style.right=content_margin+'px';}}
+	Codex.sizePage=sizePage;
 	
 	/* Margin creation */
 
@@ -1096,6 +1102,7 @@ Codex.Startup=
 	    pagefoot.style.backgroundColor=bgcolor;
 	    fdjtDOM.addListener(window,"resize",function(evt){
 		Codex.resizeBody();
+		Codex.sizePage(Codex.page,Codex.content);
 		Codex.resizeHUD();
 		if ((Codex.layout)&&(Codex.layout.onresize))
 		    Codex.layout.onresize(evt||event);});}
