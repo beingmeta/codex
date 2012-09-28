@@ -62,9 +62,6 @@
 	var query=Codex.query=useQuery(query,fdjtID("CODEXSEARCH"));
 	if (Codex.mode==="search") {
 	    if (query._results.length===0) {}
-	    else if ((query._results.length===1)&&
-		(document.getElementById(query._results[0]))) {
-		Codex.GoTo(query._results[0],"setQuery");}
 	    else if (query._results.length<7)
 		showSearchResults();
 	    else {}}}
@@ -497,7 +494,8 @@
 	    else container=normal;
 	    if ((completions)&&(!(span.parentNode)))
 		completions.addCompletion(span,false,ref||dterm);
-	    container.appendChild(span);}
+	    container.appendChild(span);
+	    container.appendChild(document.createTextNode(" "));}
 	// fdjtLog("minscale=%o, maxscale=%o",minscale,maxscale);
 	if (nodescales.length) {
 	    var j=0; var jlim=domnodes.length;
