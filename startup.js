@@ -1552,8 +1552,8 @@ Codex.Startup=
 		    var info=Codex.docinfo[frag];
 		    // Pointer to non-existent node.  Warn here?
 		    if (!(info)) continue;
-		    var tagval=((typeof knode === 'string')?
-				(knode):(knode.dterm));
+		    var tagval=((typeof knode === 'string')?(knode):
+				(knode._qid||knode.dterm));
 		    if (info.autotags) info.autotags.push(tagval);
 		    else info.autotags=[tagval];
 		    if (typeof knode !== 'string') {
