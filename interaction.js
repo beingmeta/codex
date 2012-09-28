@@ -774,6 +774,11 @@
 	if ((evt.type==='click')||(evt.type==='tap')||
 	    (evt.type==='touchend')||(evt.type==='release')) {
 	    if (hud) dropClass(hud,"hover");
+	    if (Codex.scanning) {
+		if (mode==="search") {
+		    CodexMode("searchresults"); return;}
+		else if (mode==="allglosses") {
+		    CodexMode("allglosses"); return;}}
 	    if (fdjtDOM.hasClass(Codex.HUD,mode)) CodexMode(false);
 	    else CodexMode(mode);}
 	else if ((evt.type==='mouseover')&&(Codex.mode))
@@ -1228,20 +1233,8 @@
 		CodexMode("addgloss");
 		return;}
 	    else return;}
-	if (getParent(target,".tochead")) {
-	    // Tapping the tochead returns to results/glosses/etc
- 	    var scanning=Codex.scanning;
-	    if (!(scanning)) return;
-	    var hudparent=getParent(scanning,".hudpanel");
-	    if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
-		CodexMode("allglosses");
-		fdjtUI.cancel(evt);}
-	    else if (getParent(scanning,fdjtID("CODEXSEARCH"))) {
-		CodexMode("searchresults");
-		fdjtUI.cancel(evt);}
-	    else {}
-	    return;}
-	if (getParent(target,".ellipsis")) {
+	if ((hasClass(target,"ellipsis"))||
+	    (getParent(target,".ellipsis"))) {
 	    var ellipsis=getParent(target,".ellipsis");
 	    if (ellipsis) {
 		if (hasClass(ellipsis,"expanded")) {
@@ -1251,8 +1244,17 @@
 		    fdjtDOM.addClass("CODEXSCANNER","expanded");}
 		fdjtUI.cancel(evt);
 		return;}}
-	// In all other cases, just toggle the scanner expansion
-	fdjtDOM.toggleClass("CODEXSCANNER","expanded");
+	// Tapping the tochead returns to results/glosses/etc
+ 	var scanning=Codex.scanning;
+	if (!(scanning)) return;
+	var hudparent=getParent(scanning,".hudpanel");
+	if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
+	    CodexMode("allglosses");
+	    fdjtUI.cancel(evt);}
+	else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) {
+	    CodexMode("searchresults");
+	    fdjtUI.cancel(evt);}
+	else {}
 	return;}
 
     /* Entering page numbers and locations */
@@ -1573,7 +1575,7 @@
 	 "#CODEXPAGENOTEXT": {tap: enterPageNum},
 	 "#CODEXLOCOFF": {tap: enterLocation},
 	 // Return to scan
-	 "#CODEXSCANNER": {tap: scanner_tapped},
+	 "#CODEXSCANNER": {touchstart: scanner_tapped},
 	 // Raise and lower HUD
 	 "#CODEXPAGEHEAD": {touchstart: head_tap},
 	 "#CODEXTABS": {touchstart: head_tap},

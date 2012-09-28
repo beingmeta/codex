@@ -19,7 +19,7 @@
 
 #CODEXHEAD, #CODEXSCANNER {
     position: fixed; z-index: 100;
-    top: 0px; max-height: 50px; 
+    top: 0px; max-height: 60px;
     border: solid transparent 4px; padding: 0px;
     border-top: 0px;}
 #CODEXHEAD { left: 50px; right: 50px; }
@@ -27,7 +27,8 @@
 #CODEXSCANNER { display: none; }
 /* #CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; } */
 
-#CODEXHEAD, #CODEXHEAD .hudpanel, #CODEXSCANNER {
+#CODEXHEAD, #CODEXHEAD .hudpanel, #CODEXSCANNER,
+#CODEXSCANNER .codexcard, #CODEXSCANNER .codexcardbody {
     border-radius: 1em; -webkit-border-radius: 1em;
     -o-border-radius: 1em; -moz-border-radius: 1em;
     border-top-width: 0px;
@@ -40,6 +41,8 @@
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
 
+#CODEXSCANNER .codexcard { margin-bottom: 0.5em;}
+
 #CODEXHUD.openhead #CODEXHEAD {display: block;}
 body.hudup #CODEXHEAD {display: block;}
 body.hudup #CODEXHEAD #CODEXHUDBUTTONS {
@@ -50,7 +53,7 @@ body #CODEXHUD.tocscan #CODEXHEAD,
 body #CODEXHUD.scanning #CODEXSCANNER,
 body #CODEXHUD.allglosses #CODEXSCANNER {
     background-color: ivory;
-    max-height: 75%; height: auto;
+    max-height: inherit; height: auto;
     overflow: auto; border-color: darkblue;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -391,7 +394,7 @@ div#CODEXSCANNER.expanded .ellipsis.expanded .elision {display: none;}
 /* This is the twisty control */
 div#CODEXSCANNER span.expander {
     position: absolute; left: 0px; top: 1.2em;}
-div#CODEXSCANNER span.expander img { width: 24px; height: 24px;}
+div#CODEXSCANNER span.expander img { width: 40px; height: 40px;}
 div#CODEXSCANNER span.expander img[alt='-'] { display: none;}
 div#CODEXSCANNER.expanded span.expander img[alt='-'] { display: inline;}
 div#CODEXSCANNER.expanded span.expander img[alt='+'] { display: none;}
@@ -478,13 +481,13 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: blo
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
 
-div#CODEXHUD div#CODEXSCANNER .codexcard.gloss .codexcardbody {
-    min-height: 3ex;}
-div#CODEXHUD div#CODEXSCANNER.expanded .codexcard.gloss .codexcardbody {
-    min-height: 50px;}
+div#CODEXHUD div#CODEXSCANNER .codexcardbody { min-height: 40px; }
+
+div#CODEXHUD div#CODEXSCANNER.expanded .controller { display: none;}
+div#CODEXHUD div#CODEXSCANNER.expanded span.whenexpanded { display: inline;}
 
 div#CODEXHUD div#CODEXSCANNER div.codexcard {
-    margin-left: 24px;}
+    margin-left: 40px;}
 
 div#CODEXHUD div#CODEXSCANNER div.idhead,
 div#CODEXHUD div#CODEXGLOSSES div.idhead {
@@ -538,7 +541,7 @@ body div#CODEXHUD.scanning.scanstart.scanend img.codexscanbutton#CODEXPREVSCAN {
     display: none;}
 
 body div#CODEXHUD.scanning img.hudbutton#CODEXTOCBUTTON,
-body div#CODEXHUD.scanning img.hudbutton#CODEXSEARCHBUTTON {
+body div#CODEXHUD.tocscan img.hudbutton#CODEXSEARCHBUTTON {
     display: none;}
 
 div#CODEXHUD div#SBOOKABOUT {

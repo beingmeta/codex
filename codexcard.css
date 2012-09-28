@@ -15,8 +15,8 @@
 
 div.codexcard {
     margin-left: 20px; margin-right: 0px;}
-div.codexcard div.idhead { margin-left: -10px;  }
-div.codexcard div.tochead { margin-left: -20px; }
+div.codexcard div.idhead { margin-left: -20px;  }
+div.codexcard div.tochead { margin-left: -40px; }
 
 div.glosses div.codexcard > div.idhead { display: none;}
 div.glosses div.codexcard > div.tochead { display: none;}
