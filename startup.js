@@ -705,7 +705,7 @@ Codex.Startup=
 		Codex.nativescroll=false;
 		Codex.scrolldivs=false;
 		Codex.updatehash=false;
-		default_config.layout='fastpage';
+		// default_config.layout='fastpage';
 		default_config.keyboardhelp=false;
 		// Have fdjtLog do it's own format conversion for the log
 		fdjtLog.doformat=true;}
