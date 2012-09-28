@@ -266,7 +266,8 @@ var CodexMode=
 	    resizeHUD();
 	    Codex.scrollers={};
 	    updateScroller("CODEXGLOSSCLOUD");
-	    updateScroller("CODEXSEARCHCLOUD");}
+	    updateScroller("CODEXSEARCHCLOUD");
+	    fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));}
 	Codex.initHUD=initHUD;
 	
 	function fixStaticRefs(string){
