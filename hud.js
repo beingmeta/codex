@@ -283,6 +283,7 @@ var CodexMode=
 	    var fh=fdjtDOM.getGeometry(hf).height;
 	    // fdjtLog("resizeHUD vh=%o vw=%o fh=%o",vh,vw,fh);
 	    if (!(Codex.nativescroll)) hf.style.top=(vh-fh)+'px';}
+	Codex.resizeHUD=resizeHUD;
 
 	/* This is used for viewport-based browser, where the HUD moves
 	   to be aligned with the viewport */

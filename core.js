@@ -613,7 +613,8 @@ var CodexHUD=false;
 	    if (state.target) uri=uri+"&target="+encodeURIComponent(state.target);
 	    if ((state.location)||(state.hasOwnProperty('location')))
 		uri=uri+"&location="+encodeURIComponent(state.location);
-	    if (Codex.ends_at) uri=uri+"&maxloc="+encodeURIComponent(Codex.ends_at);
+	    if (Codex.ends_at)
+		uri=uri+"&maxloc="+encodeURIComponent(Codex.ends_at);
 	    if ((state.page)||(state.hasOwnProperty('page')))
 		uri=uri+"&page="+encodeURIComponent(state.page);
 	    if (typeof Codex.pagecount === 'number')

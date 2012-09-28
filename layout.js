@@ -478,7 +478,7 @@ var CodexSections=
 
 	/* Cleanup */
 
-	CodexSections.prototype.revert=function(){
+	CodexSections.prototype.Revert=function(){
 	    var splits=this.splits;
 	    for (key in splits) {
 		var root=document.getElementById(key);
@@ -1114,7 +1114,7 @@ var CodexPaginate=
 	    if (((Codex.layout)&&(!(Codex.layout.done)))) return;
 	    if (!(why)) why="because";
 	    if (Codex.layout) {
-		Codex.layout.revert();
+		Codex.layout.Revert();
 		Codex.layout=false;}
 	    addClass(document.body,"cxLAYOUT");
 	    var height=getGeometry(fdjtID("CODEXPAGE")).height;
@@ -1131,7 +1131,7 @@ var CodexPaginate=
 		    fdjtLog("Skipping redundant pagination %j",current);
 		    return;}
 		// Repaginating, start with reversion
-		Codex.layout.revert();
+		Codex.layout.Revert();
 		Codex.layout=false;}
 
 	    // Create a new layout
@@ -1250,7 +1250,7 @@ var CodexPaginate=
 		content.style.left=content_margin+'px';
 		content.style.right=content_margin+'px';}
 	    else content.style.left=content.style.right='';
-	    fdjtID("CODEXHEART").style.maxHeight=(view-height-100)+'px';
+	    fdjtID("CODEXHEART").style.maxHeight=(view_height-100)+'px';
 	    if (Codex.bypage) Codex.Paginate("resize");};
 	
 	Codex.addConfig(
@@ -1297,7 +1297,7 @@ var CodexPaginate=
 			Codex.bypage=false;
 			Codex.bysect=false;
 			if (Codex.layout) {
-			    Codex.layout.revert();
+			    Codex.layout.Revert();
 			    Codex.layout=false;}
 			dropClass(document.body,"cxBYPAGE");
 			dropClass(document.body,"cxBYSECT");

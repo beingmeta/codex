@@ -1094,7 +1094,9 @@ Codex.Startup=
 	    else if (bgcolor==="transparent") bgcolor="white";
 	    pagehead.style.backgroundColor=bgcolor;
 	    pagefoot.style.backgroundColor=bgcolor;
-	    fdjtDOM.addListener(false,"resize",function(evt){
+	    fdjtDOM.addListener(window,"resize",function(evt){
+		Codex.resizeBody();
+		Codex.resizeHUD();
 		if ((Codex.layout)&&(Codex.layout.onresize))
 		    Codex.layout.onresize(evt||event);});}
 	
