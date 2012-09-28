@@ -425,22 +425,31 @@
 
     function makeCloud(dterms,scores,freqs,ranks_arg,noscale,
 		       completions,init_cloud) {
+	var start=new Date();
 	var sbook_index=Codex.index;
 	var knodule=Codex.knodule;
 	var cloud=init_cloud||false;
 	var primescores=((knodule)&&(knodule.primescores));
-	var start=new Date();
-	var n_terms=dterms.length;
+	var n_terms=dterms.length, n_normal=0, normals={};
 	var i=0, max_score=0, min_score=false, primecues=0;
 	if (scores) {
 	    var i=0; while (i<dterms.length) {
 		var dterm=dterms[i++];
+		var knode=knodule.probe(dterm);
 		if (primescores[dterm]) primecues++;
+		if ((knode)&&(!(knode.weak))) {
+		    normals[dterm]=true; n_normal++;}
 		var score=scores[dterm];
 		if (score) {
 		    if (min_score===false) min_score=score;
 		    else if (score<min_score) min_score=score;
 		    if (score>max_score) max_score=score;}}}
+	else {
+	    var i=0; while (i<dterms.length) {
+		var dterm=dterms[i++]; var knode=map[dterm];
+		if ((primescores)&&(primescores[dterm])) primecues++;
+		if ((knode)&&(!(knode.weak))) {
+		    normals[dterm]=true; n_normal++;}}}
 	if (Codex.Trace.clouds)
 	    log("Making cloud from %d dterms w/scores=%o [%d,%d] and freqs=%o",
 		dterms.length,scores,max_score,min_score,freqs);
@@ -448,8 +457,15 @@
 	//  any cues to show Cues are either primescores or higher
 	//  scored items
 	var usecues=(!((n_terms<17)||
-		       ((max_score===min_score)&&(primescores===0))));
-	var spans=fdjtDOM("span");
+		       ((max_score===min_score)&&
+			(primescores===0)&&
+			(n_normal>17))));
+	var spans=[fdjtDOM("span.prime")," ",
+		   fdjtDOM("span.normal")," ",
+		   fdjtDOM("span.sections")," ",
+		   fdjtDOM("span.weak")," ",
+		   fdjtDOM("span.words")," ",
+		   fdjtDOM("span.sources")];
 	if (usecues) {
 	    var showall=fdjtDOM(
 		"span.showall",
@@ -467,6 +483,7 @@
 	var normal=getChild(cloud,".normal")||spans;
 	var weak=getChild(cloud,".weak")||spans;
 	var sources=getChild(cloud,".sources")||spans;
+	var words=getChild(cloud,".words")||spans;
 	var sections=getChild(cloud,".sections")||spans;
 	if (!(completions)) completions=new Completions(cloud);
 	var copied=[].concat(dterms);
@@ -510,6 +527,7 @@
 	    if (freq===1) addClass(span,"singleton");
 	    if ((usecues)&&
 		((primescores[dterm])||
+		 ((n_normal<17)&&(normals[dterm]))||
 		 ((scores[dterm])&&(max_score>min_score)&&
 		  (scores[dterm]>min_score))))
 		addClass(span,"cue");
@@ -519,15 +537,15 @@
 		if ((!(maxscale))||(scaling>maxscale)) maxscale=scaling;
 		nodescales.push(scaling);}
 	    span.setAttribute("value",tagstring);
-	    var container=spans;
+	    var container=words;
 	    if (!(ref)) {
 		if (dterm[0]==="\u00A7") container=sections;
-		else container=spans;}
+		else container=words;}
 	    else if (ref.pool===Codex.sourcekb) container=sources;
 	    else if (ref.prime) container=prime;
 	    else if (ref.weak) container=weak;
 	    else container=normal;
-	    fdjtDOM(container,span,"\n");
+	    fdjtDOM(container,spans,"\n");
 	    if ((completions)&&(!(known)))
 		completions.addCompletion(
 		    span,false,ref||dterm);}
