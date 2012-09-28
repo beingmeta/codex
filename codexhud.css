@@ -111,13 +111,24 @@ div#CODEXHUD #CODEXFOOT {
 
 div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     position: absolute; bottom: 0px;
-    left: 100px; right: 100px; height: 50px;
-    text-align: center; font-size: 200%; font-weight: bold;
+    left: 100px; right: 100px; height: 40px;
+    text-align: center; font-weight: bold;
     border: solid black 1px; border-bottom: none;
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;
     background-color: ivory;
+    padding-top: 10px;
     display: none;}
+
+@media screen and (min-width: 800px) {
+    div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT { font-size: 200%; }
+}
+@media screen and (min-width: 600px) and (max-width: 800px) {
+    div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT { font-size: 150%; }
+}
+@media screen and (min-width: 300px) and (max-width: 600px) {
+    div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT { font-size: 125%; }
+}
 
 body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
