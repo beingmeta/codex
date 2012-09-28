@@ -84,7 +84,8 @@ body.sbook a.codexcard { display: block;}
 .codexcard span.tags img.tagicon { height: 3ex;}
 .codexcard span.tags span.controller { cursor: pointer;}
 .codexcard.gloss span.tags.fdjtexpanded { display: block;}
-.codexcard span.tags.fdjtexpanded span.controller { float: right;}
+.codexcard span.tags.fdjtexpanded span.controller {
+    color: black; float: right;}
 .codexcard span.head {
     font-size: 75%;}
 .codexcard span.headhead {
