@@ -630,13 +630,11 @@
 	    var span=fdjtDOM("span.completion",
 			     fdjtDOM("span.sectname",showname));
 	    span.key=term; span.value=term; span.anymatch=true;
-	    if (title)
-		span.title=title+"; "+term;
-	    else span.title=""+sbook_index.freq(term)+" items: "+term;
+	    span.title=""+sbook_index.freq(term)+" items: "+term;
 	    return span;}
 	var span=Knodule.HTML(term,knodule,false,true);
 	if (span.title) span.title=title+"; "+span.title;
-	else span.title=title+Completions.getKey(span);
+	else span.title=title+"; "+Completions.getKey(span);
 	return span;}
     Codex.cloudEntry=cloudEntry;
     

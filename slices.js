@@ -169,9 +169,9 @@
 	    if ((!controller)&&((!(score))||(score<=1))&&
 		(i>show_tag_thresh)&&(togo>4)) {
 		controller=fdjtDOM("span.controller",
-				   "all ",tags.length," tags",
 				   fdjtDOM("span.whenexpanded","-"),
-				   fdjtDOM("span.whencollapsed","+"));
+				   fdjtDOM("span.whencollapsed","+"),
+				   "all ",tags.length," tags");
 		var subspan=fdjtDOM("span.whenexpanded");
 		controller.onclick=tagexpand_click;
 		fdjtDOM(span," ",controller," ",subspan);
