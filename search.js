@@ -64,7 +64,7 @@
 	    if (query._results.length===0) {}
 	    else if (query._results.length<7)
 		showSearchResults();
-	    else {}}}
+	    else {fdjtID("CODEXSEARCHINPUT").focus();}}}
 
     Codex.setQuery=setQuery;
 
