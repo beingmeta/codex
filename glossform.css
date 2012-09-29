@@ -153,9 +153,11 @@ div.codexglossform form div.glossetc .tags span.checkspan {
     -webkit-border-bottom-left-radius: 1ex;
     -webkit-border-top-left-radius: 1ex; 
     border: solid yellow 2px;}
-div.codexglossform form div.glossetc span.checkspan {
+div.codexglossform form div.glossetc span.checkspan.waschecked {
     text-decoration: line-through;}
 div.codexglossform form div.glossetc span.checkspan.ischecked {
+    text-decoration: none;}
+div.codexglossform form div.glossetc span.checkspan.waschecked.ischecked {
     text-decoration: none;}
 
 div.codexglossform form div.glossetc img.twisty[alt='-'] { display: none;}

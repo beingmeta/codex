@@ -1282,6 +1282,13 @@ Codex.Startup=
 	    var ss=Codex.stylesheet;
 	    var form=fdjtID("CODEXADDGLOSSPROTOTYPE");
 	    var buttons=fdjtID("CODEXNETWORKBUTTONS");
+	    var outlets=Codex.outlets;
+	    if (outlets) {
+		var i=0, lim=outlets.length;
+		while (i<lim) {
+		    var outlet=outlets[i++];
+		    if (i>5) continue;
+		    Codex.addOutletToForm(form,outlet,false);}}
 	    var getChild=fdjtDOM.getChild;
 	    if (Codex.user.fbid)  {
 		ss.insertRule("div#CODEXHUD span.facebook_share { display: inline;}",
@@ -1339,10 +1346,6 @@ Codex.Startup=
 		if (byname) {
 		    var i=0; var lim=byname.length;
 		    while (i<lim) byname[i++].src=pic;}}
-	    if (fdjtID("SBOOKFRIENDLYOPTION"))
-		if (Codex.user)
-		    fdjtID("SBOOKFRIENDLYOPTION").value=Codex.user._id;
-	    else fdjtID("SBOOKFRIENDLYOPTION").value="";
 	    var idlinks=document.getElementsByName("IDLINK");
 	    if (idlinks) {
 		var i=0; var len=idlinks.length;

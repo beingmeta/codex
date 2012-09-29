@@ -319,14 +319,19 @@
 	    if (inputs[i].value===outlet_id) {
 		var checkspan=getParent(inputs[i],".checkspan");
 		fdjtUI.CheckSpan.set(checkspan,checked);
-		return;}
+		return checkspan;}
 	    else i++;}
 	var spanspec="span.checkspan.outlet";
 	var checkspan=fdjtUI.CheckSpan(
 	    spanspec,formvar,outlet_id,checked,
 	    outlet.nick||outlet.name);
-	if (outlet.description) checkspan.title=outlet.description;
-	fdjtDOM(outletspan," ",checkspan);}
+	if ((outlet.nick)&&(outlet.description))
+	    checkspan.title=outlet.name+": "+outlet.description;
+	else if (outlet.description)
+	    checkspan.title=outlet.description;
+	else checkspan.title=outlet.name;
+	fdjtDOM(outletspan," ",checkspan);
+	return checkspan;}
     function clearOutlets(form){
 	var outletspan=getChild(form,".outlets");
 	fdjtDOM.replace(outletspan,fdjtDOM("span.outlets"));}
@@ -859,31 +864,65 @@
 	fdjtDOM.addClass(target.parentNode,"submitting");
 	var form=(fdjtUI.T(evt));
 	var proto=fdjtID();
-	setGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
+	if (!((hasParent(form,".glossedit"))||(hasParent(form,".glossreply"))))
+	    // Only save defaults if adding a new gloss (what about reply?)
+	    saveGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
 	var uuidelt=getInput(form,"UUID");
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
 	    if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
 	if (!(Codex.offline))
 	    return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));
-	if (!(navigator.onLine)) return saveGloss(form,evt);
+	if (!(navigator.onLine)) return queueGloss(form,evt);
 	// Eventually, we'll unpack the AJAX handler to let it handle
-	//  connection failures by calling saveGloss.
+	//  connection failures by calling queueGloss.
 	else return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));}
     Codex.submitGloss=submitGloss;
 
-    function setGlossDefaults(form,proto){
-	var shared=getChild(form,".outlets");
-	var inputs=getChildren(shared,"INPUT");
+    var getInput=fdjtDOM.getInput;
+    var getInputs=fdjtDOM.getInputs;
+    var getInputFor=fdjtDOM.getInputFor;
+    var setCheckSpan=fdjtUI.CheckSpan.set;
+
+    // We save gloss defaults on the prototype gloss form hidden in the DOM
+    function saveGlossDefaults(form,proto){
+	// Save gloss mode (??)
 	var mode=form.className;
 	swapClass(proto,glossmodes,mode);
-	var i=0, lim=inputs.length;
+	// Save post setting
+	var post=getInput(form,"POSTGLOSS");
+	var proto_post=getInput(form,"POSTGLOSS");
+	setCheckSpan(proto_post,post.checked);
+	// Save network settings
+	var networks=getInputs(form,"NETWORKS");
+	var i=0, lim=networks.length;
+	while (i<lim) {
+	    var input=networks[i++];
+	    var proto_input=getInputFor(form,"NETWORKS",input.value);
+	    setCheckSpan(proto_input,input.checked);}
+	// Save outlets
+	clearOutlets(proto);
+	var shared=getChild(form,".outlets");
+	var inputs=getChildren(shared,"INPUT");
+	// Here's the logic: we save all checked outlets and any
+	// others up to 5.
+	var i=0, lim=inputs.length, n_added=0;
 	while (i<lim) {
 	    var input=inputs[i++];
-	    if (input.checked) addOutlet(proto,input.value,true);}}
+	    if (input.checked) {
+		var checkspan=addOutlet(proto,input.value,input.checked);
+		addClass(checkspan,"waschecked");
+		n_added++;}}
+	if (n_added<6) {
+	    i=0; while (i<lim) {
+		var input=inputs[i++];
+		if (n_added>5) continue;
+		if (!(input.checked)) {
+		    var checkspan=addOutlet(proto,input.value,input.checked);
+		    n_added++;}}}}
 
     // Queues a gloss when offline
-    function saveGloss(form,evt){
+    function queueGloss(form,evt){
 	var json=fdjtAjax.formJSON(form,["tags","xrefs"],true);
 	var params=fdjtAjax.formParams(form);
 	var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
