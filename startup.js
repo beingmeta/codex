@@ -365,7 +365,7 @@ Codex.Startup=
 		    fdjtLog("Getting glosses from %s for %s (%s)",
 			    Codex.server,Codex.user._id,Codex.user.name);
 		else fdjtLog("Getting glosses from %s",Codex.server);
-		// Get any glosses, and do it old school
+		// Get all or updated glosses, doing it old school (JSONP)
 		var script=fdjtDOM("script");
 		script.language="javascript";
 		var uri="https://"+Codex.server+"/v1/loadinfo.js?"+
@@ -643,7 +643,7 @@ Codex.Startup=
 		    (qval==="never")||(qval==="0"))
 		    Codex.force_online=true;
 		else Codex.force_offline=true;}
-		
+	    
 	    var refuris=getLocal("codex.refuris",true)||[];
 
 	    // Get the settings for scanning the document structure
@@ -765,7 +765,8 @@ Codex.Startup=
 	    var refuri=Codex.refuri;
 	    var sync=getLocal("sync("+refuri+")",true);
 	    if (!(sync)) return;
-	    fdjtLog("Starting initializing glosses from offline storage");
+	    if (Codex.Trace.glosses)
+		fdjtLog("Starting initializing glosses from offline storage");
 	    var localglosses=getLocal("glosses("+refuri+")",true)||[];
 	    var queuedglosses=getLocal("queued("+refuri+")",true)||[];
 	    var allglosses=Codex.allglosses||[];
@@ -784,7 +785,9 @@ Codex.Startup=
 	    var etc=Codex.etc;
 	    var i=0; var lim=etc.length;
 	    while (i<lim) Codex.sourcekb.ref(etc[i++]);
-	    fdjtLog("Done initializing glosses from offline storage");}
+	    if (Codex.Trace.glosses)
+		fdjtLog("Initialized %d glosses (%d etc) from offline storage",
+			localglosses.length,etc.length);}
 
 	/* Viewport setup */
 
@@ -1148,6 +1151,15 @@ Codex.Startup=
 		((getLocal("sync("+refuri+")"))||
 		 (getLocal("queued("+refuri+")"))))
 		initGlossesOffline();
+	    if (Codex.Trace.glosses) {
+		fdjtLog("loadInfo for %d %sglosses (sync=%d)",
+			((info.glosses)?(info.glosses.length):(0)),
+			((Codex.sync)?("updated "):("")),
+			info.sync)
+		fdjtLog("loadInfo got %d sources, %d outlets, and %d overlays",
+			((info.sources)?(info.sources.length):(0)),
+			((info.outlets)?(info.outlets.length):(0)),
+			((info.overlays)?(info.overlays.length):(0)));}
 	    if (info.sources) gotInfo("sources",info.sources,persist);
 	    if (info.outlets) gotInfo("outlets",info.outlets,persist);
 	    if (info.overlays) gotInfo("overlays",info.overlays,persist);
@@ -1484,29 +1496,29 @@ Codex.Startup=
 	    if (Codex.Trace.dosync)
 		fdjtLog("syncLocation(call) %s",uri);
 	    fdjtAjax(function(req){
-			 var d=JSON.parse(req.responseText);
-			 Codex.setConnected(true);
-			 Codex.syncstart=true;
-			 if (Codex.Trace.dosync)
-			     fdjtLog("syncLocation(callback) %s: %j",uri,d);
-			 if ((!(d))||(!(d.location))) {
-			     if (!(Codex.state))
-				 Codex.GoTo(Codex.start||Codex.root||Codex.body,
-					    "syncLocation",false,false);
-			     return;}
-			 else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
-			     if ((d.location)&&(d.location<=Codex.location)) return;
-			     if (d.page===Codex.curpage) return;
-			     var msg=
-				 "Sync to L"+Codex.location2pct(d.location)+
-				 ((d.page)?(" (page "+d.page+")"):"")+"?";
-			     if (confirm(msg)) {
-				 if (d.location) Codex.setLocation(d.location);
-				 if (d.location)
-				     Codex.GoTo(d.location,"syncLocation",false);
-				 if (d.target) Codex.setTarget(d.target);
-				 Codex.state=d;}}
-			 else {}},
+		var d=JSON.parse(req.responseText);
+		Codex.setConnected(true);
+		Codex.syncstart=true;
+		if (Codex.Trace.dosync)
+		    fdjtLog("syncLocation(callback) %s: %j",uri,d);
+		if ((!(d))||(!(d.location))) {
+		    if (!(Codex.state))
+			Codex.GoTo(Codex.start||Codex.root||Codex.body,
+				   "syncLocation",false,false);
+		    return;}
+		else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
+		    if ((d.location)&&(d.location<=Codex.location)) return;
+		    if (d.page===Codex.curpage) return;
+		    var msg=
+			"Sync to L"+Codex.location2pct(d.location)+
+			((d.page)?(" (page "+d.page+")"):"")+"?";
+		    if (confirm(msg)) {
+			if (d.location) Codex.setLocation(d.location);
+			if (d.location)
+			    Codex.GoTo(d.location,"syncLocation",false);
+			if (d.target) Codex.setTarget(d.target);
+			Codex.state=d;}}
+		else {}},
 		     uri,false,
 		     function(req){
 			 if ((req.readyState == 4)&&(navigator.onLine))
@@ -1645,80 +1657,97 @@ Codex.Startup=
 	    /* One pass processes all of the inline KNodes and
 	       also separates out primary and auto tags. */
 	    var tagged=[]; var toindex=[];
-	    var addTag2Search=Codex.addTag2SearchCloud;
 	    for (var eltid in docinfo) {
 		var info=docinfo[eltid], tags=info.tags;
 		if (tags) tagged.push(tags);
 		if ((tags)||(info.sectags)||
 		    ((info.head)&&(info.head.sectags)))
 		    toindex.push(info);}
-	    fdjtLog("There are %d tagged nodes and %d nodes to index",
-		    tagged.length,toindex.length);
+	    if ((Codex.Trace.indexing)&&
+		((Codex.Trace.indexing>1)||
+		 (tagged.length>7)))
+		fdjtLog("Indexing inline tags for %d nodes (%d assigned)",
+			toindex.length,tagged.length);
 	    fdjtTime.slowmap(
-		function(tags){
-		    var k=0; var ntags=tags.length;
-		    var scores=tags.scores||false;
-		    if (!(scores)) tags.scores=scores={};
-		    while (k<ntags) {
-			var tag=tags[k]; var score=1; var tagbase=false;
-			if (tag[0]==='*') {
-			    var tagstart=tag.search(/[^*]+/);
-			    score=2*(tagstart+1);
-			    tagbase=tag.slice(tagstart);}
-			else if (tag[0]==='~') {
-			    var tagstart=tag.search(/[^~]+/);
-			    tag=tag.slice(tagstart);
-			    if (tagstart>1) {
-				if (!(scores)) tags.scores=scores={};
-				score=1/tagstart;}
-			    else score=1;}
-			else {
-			    tagbase=tag;
-			    score=2;}
-			if (tagbase) {
-			    var knode=((tagbase.indexOf('|')>0)?
-				       (knodule.handleSubjectEntry(tagbase)):
-				       (knodule.ref(tagbase)));
-			    if ((knode)&&(knode.tagString))
-				tag=knode.tagString();}
-			tags[k]=tag;
-			scores[tag]=score;
-			k++;}
-		    if (scores) {
-			tags.sort(function(t1,t2){
-			    var s1=scores[t1]||1; var s2=scores[t2]||1;
-			    if (s1>s2) return -1;
-			    else if (s1<s2) return 1;
-			    else if (t1<t2) return -1;
-			    else if (t1>t2) return 1;
-			    else return 0;});}
-		    else tags.sort();},
+		process_inline_tags,
 		tagged,false,
 		function(){
-		    fdjtLog("Indexing %d nodes",toindex.length);
-		    fdjtTime.slowmap(function(info){
-			var eltid=info.frag;
-			var tags=info.tags||[]; 
-			if (tags) {
-			    var scores=tags.scores;
-			    var k=0; var ntags=tags.length;
-			    while (k<ntags) {
-				var tag=tags[k++];
-				if (scores)
-				    ix.add(eltid,tag,scores[tag]||1,knodule);
-				else ix.add(eltid,tag,1,knodule);
-				addTag2Search(tag);}}
-			var sectags=info.sectags||
-			    ((info.head)&&(info.head.sectags));
-			if (sectags) {
-			    var k=0, ntags=sectags.length;
-			    while (k<ntags) {
-				var tag=sectags[k++];
-				ix.add(eltid,tag,0,knodule);
-				addTag2Search(tag);}}},
-				     toindex,false,whendone);});}
+		    if ((Codex.Trace.indexing>1)&&(tagged.length))
+			fdjtLog("Finished processing inline tags for %d nodes",
+				tagged.length);
+		    fdjtTime.slowmap(
+			index_inline_tags(ix,knodule),
+			toindex,false,
+			function(){
+			    if ((Codex.Trace.indexing)&&
+				((Codex.Trace.indexing>1)||
+				 (tagged.length>7)))
+				fdjtLog("Done inline indexing for %d nodes",
+					toindex.length);
+			    whendone();});});}
 	Codex.indexAssignedTags=indexAssignedTags;
 	
+	function process_inline_tags(tags){
+	    var k=0; var ntags=tags.length;
+	    var scores=tags.scores||false;
+	    if (!(scores)) tags.scores=scores={};
+	    while (k<ntags) {
+		var tag=tags[k]; var score=1; var tagbase=false;
+		if (tag[0]==='*') {
+		    var tagstart=tag.search(/[^*]+/);
+		    score=2*(tagstart+1);
+		    tagbase=tag.slice(tagstart);}
+		else if (tag[0]==='~') {
+		    var tagstart=tag.search(/[^~]+/);
+		    tag=tag.slice(tagstart);
+		    if (tagstart>1) {
+			if (!(scores)) tags.scores=scores={};
+			score=1/tagstart;}
+		    else score=1;}
+		else {
+		    tagbase=tag;
+		    score=2;}
+		if (tagbase) {
+		    var knode=((tagbase.indexOf('|')>0)?
+			       (knodule.handleSubjectEntry(tagbase)):
+			       (knodule.ref(tagbase)));
+		    if ((knode)&&(knode.tagString))
+			tag=knode.tagString();}
+		tags[k]=tag;
+		scores[tag]=score;
+		k++;}
+	    if (scores) {
+		tags.sort(function(t1,t2){
+		    var s1=scores[t1]||1; var s2=scores[t2]||1;
+		    if (s1>s2) return -1;
+		    else if (s1<s2) return 1;
+		    else if (t1<t2) return -1;
+		    else if (t1>t2) return 1;
+		    else return 0;});}
+	    else tags.sort();}
+
+	function index_inline_tags(ix,knodule){
+	    var addTag2Search=Codex.addTag2SearchCloud;
+	    return function (info){
+		var eltid=info.frag;
+		var tags=info.tags||[]; 
+		if (tags) {
+		    var scores=tags.scores;
+		    var k=0; var ntags=tags.length;
+		    while (k<ntags) {
+			var tag=tags[k++];
+			if (scores)
+			    ix.add(eltid,tag,scores[tag]||1,knodule);
+			else ix.add(eltid,tag,1,knodule);
+			addTag2Search(tag);}}
+		var sectags=info.sectags||
+		    ((info.head)&&(info.head.sectags));
+		if (sectags) {
+		    var k=0, ntags=sectags.length;
+		    while (k<ntags) {
+			var tag=sectags[k++];
+			ix.add(eltid,tag,0,knodule);
+			addTag2Search(tag);}}};}
 	
 	/* Setting up the clouds */
 	

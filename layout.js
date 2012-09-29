@@ -1200,10 +1200,12 @@ var CodexPaginate=
 		if (!(pagenum)) return;
 		if (info.done) {
 		    LayoutMessage(fdjtString(
-			"Finished laying out %d pages in %s",
-			pagenum,secs2short((info.done-info.started)/1000)));
-		    fdjtLog("Finished laying out %d pages in %s",
-			    pagenum,secs2short((info.done-info.started)/1000));}
+			"Finished laying out %d %dx%d pages in %s",
+			pagenum,
+			secs2short((info.done-info.started)/1000)));
+		    fdjtLog("Finished laying out %d %dx%d pages in %s",
+			    pagenum,info.width,info.height,
+			    secs2short((info.done-info.started)/1000));}
 		else {
 		    if ((info.lastid)&&(Codex.docinfo)&&
 			((Codex.docinfo[info.lastid]))) {

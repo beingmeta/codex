@@ -81,8 +81,8 @@ var Codex=
      Debug: {},
      Trace: {
 	 startup: 0,	// Whether to debug startup
-	 config: 0,  // Whether to trace config setup/modification/etc
-	 mode: true,	// Whether to trace mode changes
+	 config: 0,     // Whether to trace config setup/modification/etc
+	 mode: false,	// Whether to trace mode changes
 	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// How much to trace searches
@@ -91,7 +91,7 @@ var Codex=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 offline: 0,	// How much to trace offline persistence
 	 network: 0,	// How much to trace server interaction
-	 glosses: false,// Whether we're tracing gloss processing
+	 glosses: 1,    // How much we're tracing gloss processing
 	 offline: 0,    // Whether to trace offline restoration, etc
 	 layout: 0,	// How much to trace document layout
 	 dosync: false, // Whether to trace state saves
@@ -99,6 +99,7 @@ var Codex=
 	 flips: false,	// Whether to trace page flips (movement by pages)
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 highlight: 0,  // Whether to trace highlighting
+	 indexing: 0,   // How much to trace document indexing
 	 gestures: 0}   // How much to trace gestures
     };
 var _sbook_setup=false;
