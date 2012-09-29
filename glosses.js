@@ -413,10 +413,14 @@
 	    var cspan=checkspans[i++];
 	    if (((cspan.getAttribute("varname"))===varname)&&
 		((cspan.getAttribute("tagval"))===tag))
+		if ((typeof checked === 'undefined')||(checked))
+		    addClass(cspan,"waschecked");
 		return cspan;}
 	var span=fdjtUI.CheckSpan
 	("span.checkspan",varname,tag,
 	 ((typeof checked === 'undefined')||(checked)));
+	if ((typeof checked === 'undefined')||(checked))
+	    addClass(span,"waschecked");
 	if (title) span.title=title;
 	span.setAttribute("varname",varname);
 	span.setAttribute("tagval",tag);
