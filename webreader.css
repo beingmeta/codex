@@ -501,7 +501,7 @@ div.codexglossform form table td textarea { width: 100%;}
 /* New pagination model */
 
 div.codexpage {
-    opacity: 0; position: fixed; text-align: left;
+    opacity: 0; position: absolute; text-align: left;
     transition-property: opacity; transition-duration: 0.5s;
     -o-transition-property: opacity; -o-transition-duration: 0.5s;
     -moz-transition-property: opacity; -moz-transition-duration: 0.5s;
