@@ -1429,6 +1429,7 @@
 	    input=fdjtDOM.getInput(form,'OUTLET');}
 	else return;
 	// fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
+	fdjtUI.cancel(evt);
 	if (!(hasClass(form,altclass))) {
 	    if (alt==="tag") {
 		addClass("CODEXHEART","tagging");
@@ -1445,6 +1446,10 @@
 	    dropClass("CODEXHEART","tagging");
 	    dropClass("CODEXHEART","showoutlets");
 	    dropClass(form,glossmodes);}}
+
+    function submitGloss(evt){
+	fdjtUI.cancel(evt);
+	return fdjtUI.submitEvent(evt);}
 
     /* Changing gloss networks */
 
@@ -1540,7 +1545,7 @@
 	 "span.codexglossdelete": { click: delete_ontap },
 	 "span.codexglossrespond": { click: respond_ontap },
 	 "span.codexsharegloss": {tap: fdjtUI.CheckSpan.onclick},
-	 ".submitbutton": {click: submitEvent },
+	 ".submitbutton": {click: submitGloss },
 	 "div.glossetc": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
 	 "div.glossetc span.modebuttons": {click: glossmode_button},
@@ -1593,7 +1598,7 @@
 	 "span.codexglossdelete": { click: delete_ontap },
 	 "span.codexglossrespond": { click: respond_ontap },
 	 "span.codexsharegloss": {click: fdjtUI.CheckSpan.onclick},
-	 ".submitbutton": {click: submitEvent },
+	 ".submitbutton": {click: submitGloss },
 	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
