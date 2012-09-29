@@ -134,6 +134,9 @@ div.codexglossform form div.glossetc.overflow .twisty { display: none;}
 div.codexglossform form div.glossetc.expanded .twisty { display: none;}
 div.codexglossform form div.glossetc.expanded { max-height: inherit;}
 
+body.hudup div.codexglossform form div.glossetc {
+    overflow: visible; max-height: inherit;}
+
 div.codexglossform form div.glossetc .notespan {
     color: purple; font-weight: bold;}
 div.codexglossform form div.glossetc span.excerpt {
