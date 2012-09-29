@@ -506,7 +506,7 @@
 	if (mode!=='editnote') {
 	    var tag_input=getInput(form,"TAG");
 	    gloss_cloud.complete((tag_input.value)||"");}
-	if (input) input.focus();
+	if (input) setTimeout(function(){input.focus();},1500);
 	else {}}
     Codex.setGlossForm=setGlossForm;
     
