@@ -441,6 +441,10 @@ body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     min-height: 50px; height: auto;
    display: block;}
 
+div#CODEXHUD div.completions { line-height: 150%;}
+div#CODEXHUD div.completions .completion { white-space: nowrap;}
+div#CODEXHUD div.completions img.label { width: 64px; height: 64px;}
+
 div#CODEXHUD.search div#CODEXSEARCHRESULTSWRAPPER { display: none;}
 div#CODEXHUD.search div.completions#CODEXSEARCHCLOUD { display: block;}
 div#CODEXHUD.search div#CODEXSEARCH.norefiners div.completions#CODEXSEARCHCLOUD { display: none;}
