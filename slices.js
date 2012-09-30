@@ -40,6 +40,7 @@
 
     var cxicon=Codex.icon;
     var Ellipsis=fdjtUI.Ellipsis;
+    var addListener=fdjtDOM.addListener;
 
     function renderNote(info,query,idprefix,standalone){
 	var key=info._id;
@@ -199,13 +200,13 @@
 	for (url in refs) {
 	    if (url[0]==='_') continue;
 	    var urlinfo=refs[url];
-	    var title; var icon=cxicon("outlink",64,64);
+	    var title; var icon=cxicon("diaglink",64,64);
 	    if (typeof urlinfo === 'string') title=urlinfo;
 	    else {
 		title=urlinfo.title;
 		icon=urlinfo.icon;}
 	    var image=fdjtDOM.Image(icon);
-	    var anchor=(fdjtDOM.Anchor(url,{title:url},title,image));
+	    var anchor=(fdjtDOM.Anchor(url,{title:url},image,title));
 	    anchor.target='_blank';
 	    fdjtDOM(span,anchor,"\n");}
 	return span;}
@@ -234,14 +235,19 @@
 	var feedinfo=(feed)&&(Codex.sourcekb.load(feed));
 	var agestring=timestring(info.modified||info.created);
 	var tool=fdjtDOM(
-	    "span.tool",fdjtDOM("span.age",agestring),
-	    fdjtDOM.Image(((user===Codex.user._id)?
-			   (cxicon("remark_edit",32,32)):
-			   (cxicon("remark_respond",32,32))),
-			  "img.button"));
-	tool.title=(((user===Codex.user)||(user===Codex.user._id))?
-		    ("edit this gloss"):
-		    ("relay/reply to this gloss"));
+	    "span.tool",
+	    fdjtDOM("span.age",agestring),
+	    fdjtDOM.Image(
+		(((user===Codex.user)||(user===Codex.user._id))?
+		 (cxicon("remark_edit",32,32)):
+		 (cxicon("remark_respond",32,32))),
+		"img.button",
+		(((user===Codex.user)||(user===Codex.user._id))?
+		 ("edit"):("reply")),
+		(((user===Codex.user)||(user===Codex.user._id))?
+		 ("edit this gloss"):("relay/reply to this gloss"))));
+	addListener(tool,"tap",relayoredit_gloss);
+	
 	var picinfo=getpicinfo(info);
 	var overdoc=getoverdoc(info);
 	
@@ -427,7 +433,6 @@
 	if (!(scan)) return;
 	var qref=scan.qref;
 	var gloss=Codex.glosses.ref(qref);
-	var frag=gloss.get("frag");
 	Codex.setGlossTarget(gloss);
 	CodexMode("addgloss");}
 
