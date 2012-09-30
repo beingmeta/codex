@@ -276,7 +276,9 @@
 	var box=fdjtDOM.getParent(target,".searchbox");
 	var input=getChild(box,".searchinput");
 	fdjtUI.cancel(evt);
-	setQuery(Codex.empty_query);
+	if (Codex.query._query.length===0) {
+	    CodexMode(false); return;}
+	else setQuery(Codex.empty_query);
 	input.focus();}
     Codex.UI.handlers.clearSearch=clearSearch;
     
