@@ -84,12 +84,18 @@ var CodexMode=
 	    // Setup heart
 	    var heart=fdjtID("CODEXHEART");
 	    heart.innerHTML=sbook_hudheart;
+	    CodexHUD.heart=heart;
 	    // Setup settings
 	    var settings=fdjtID("CODEXSETTINGS");
 	    settings.innerHTML=sbook_settingstext;
+	    CodexHUD.settings=settings;
 	    // Setup help text
 	    var help=fdjtID("CODEXHELP");
 	    help.innerHTML=sbook_helptext;
+	    CodexHUD.help=help;
+	    // Other HUD parts
+	    CodexHUD.head=fdjtID("CODEXHEAD");
+	    CodexHUD.foot=fdjtID("CODEXFOOT");
 	    // Initialize search UI
 	    var search=fdjtID("CODEXSEARCH");
 	    search.innerHTML=sbook_searchbox;
