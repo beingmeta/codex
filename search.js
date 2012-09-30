@@ -444,8 +444,7 @@
 	    // there are a small number of real concepts to use
 	    ((info.normals._count)<17) ||
 		// there's are a lot of weak terms
-		((n_terms/info.normals._count)>4)
-	    );
+		((n_terms/info.normals._count)>4));
 	if (cloud) {
 	    fdjtDOM.addClass(cloud,"completions");
 	    if (!(getChild(cloud,".showall")))
