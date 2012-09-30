@@ -162,6 +162,10 @@ div.codexglossform form div.glossetc span.checkspan.ischecked {
     text-decoration: none;}
 div.codexglossform form div.glossetc span.checkspan.waschecked.ischecked {
     text-decoration: none;}
+div.codexglossform form div.glossetc .outlets .checkspan.outlet:before {
+    content: "→";}
+div.codexglossform form div.glossetc .links .checkspan.anchor img {
+    height: 2ex;}
 
 div.codexglossform form div.glossetc img.twisty[alt='-'] { display: none;}
 div.codexglossform form div.glossetc.expanded {
@@ -180,7 +184,7 @@ div#CODEXHUD span.networks .checkspan input[type='checkbox'] { display: none;}
 div.codexglossform form div.glossetc span.networks img { height: 3ex; }
 
 div.codexglossform form div.glossetc .links span.checkspan {
-    color: darkblue; text-decoration: underline;}
+    color: darkblue;}
 div.codexglossform form div.glossetc span.checkspan input {}
 
 span.facebook_share, span.twitter_share { display: none;}

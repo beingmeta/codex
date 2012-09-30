@@ -62,7 +62,7 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
   color: green; font-size: 125%; font-style: normal;
   font-variant: small-caps;}
 .codexcard span.link a { color: blue; text-decoration: underline;}
-.codexcard span.link img { height: 1.5ex; vertical-align: baseline;}
+.codexcard span.link img { height: 2ex; vertical-align: baseline;}
 .codexcard span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
 .codexcard span.audience { 

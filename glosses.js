@@ -48,6 +48,8 @@
     var getInputsFor=fdjtDOM.getInputsFor;
     var Ellipsis=fdjtUI.Ellipsis;
 
+    var setCheckSpan=fdjtUI.CheckSpan.set;
+
     var submitEvent=fdjtUI.submitEvent;
 
     var glossmodes=Codex.glossmodes;
@@ -273,7 +275,9 @@
 	    uuidelt.value=gloss._id;}
 	else uuidelt.value=fdjtState.getUUID(Codex.nodeid);
 	if (gloss) {
-	    clearOutlets(form);
+	    // Set the default outlets to unchecked before
+	    //  adding/setting the assigned outlets.
+	    resetOutlets(form);
 	    var shared=((gloss)&&(gloss.shared))||[];
 	    if (typeof shared === 'string') shared=[shared];
 	    var i=0, lim=shared.length;
@@ -332,18 +336,28 @@
 	else checkspan.title=outlet.name;
 	fdjtDOM(outletspan," ",checkspan);
 	return checkspan;}
+    Codex.addOutletToForm=addOutlet;
+
     function clearOutlets(form){
 	var outletspan=getChild(form,".outlets");
 	fdjtDOM.replace(outletspan,fdjtDOM("span.outlets"));}
-    Codex.addOutletToForm=addOutlet;
+    function resetOutlets(form){
+	var outletspan=getChild(form,".outlets");
+	var outlets=getChildren(outletspan,".checkspan");
+	var i=0, lim=outlets.length;
+	while (i<lim) {
+	    var span=outlets[i++];
+	    setCheckSpan(span,false);}}
     
     /***** Adding links ******/
     function addLink(form,url,title) {
 	var tagselt=getChild(form,'.links');
 	var linkval=((title)?(url+" "+title):(url));
+	var img=fdjtDOM.Image(cxicon("diaglink",32,32),"img");
 	var anchor=fdjtDOM.Anchor(url,"a.glosslink",((title)||url));
 	var checkbox=fdjtDOM.Checkbox("LINKS",linkval,true);
-	var aspan=fdjtDOM("span.anchor",checkbox,anchor);
+	var aspan=fdjtDOM("span.checkspan.ischecked.waschecked.anchor",
+			  checkbox,img,anchor);
 	aspan.title=url; anchor.target='_blank';
 	fdjtDOM(tagselt,aspan," ");
 	updateForm(form);
@@ -882,11 +896,6 @@
 	//  connection failures by calling queueGloss.
 	else return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));}
     Codex.submitGloss=submitGloss;
-
-    var getInput=fdjtDOM.getInput;
-    var getInputs=fdjtDOM.getInputs;
-    var getInputFor=fdjtDOM.getInputFor;
-    var setCheckSpan=fdjtUI.CheckSpan.set;
 
     // We save gloss defaults on the prototype gloss form hidden in the DOM
     function saveGlossDefaults(form,proto){
