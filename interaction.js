@@ -1298,6 +1298,7 @@
 	var target=fdjtUI.T(evt);
 	if (Codex.Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
 	if ((isClickable(target))||
+	    (target!==CodexHUD.head)||
 	    (hasParent(target,".codextoc")))
 	    return;
 	else if (Codex.mode) {
