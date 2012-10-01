@@ -636,9 +636,11 @@ var CodexHUD=false;
 		if ((Codex.Trace.dosync)||(Codex.Trace.state))
 		    fdjtLog("serverSync(callback) %o ready=%o status=%o %j",
 			    evt,req.readyState,req.status,syncing);};
-	    req.open("GET",uri,true);
-	    req.withCredentials='yes';
-	    req.send();}}
+	    req.withCredentials=true;
+	    try {
+		req.open("GET",uri,true);
+		req.send();}
+	    catch (ex) {Codex.dosync=false;}}}
     Codex.serverSync=serverSync;
 
     function forceSync(){

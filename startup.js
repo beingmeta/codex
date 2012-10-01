@@ -265,6 +265,7 @@ Codex.Startup=
 	    appSetup();
 	    if (Codex.Trace.startup) fdjtLog("Starting user setup");
 	    userSetup();
+	    document.domain="sbooks.net"; document.origin="sbooks.net";
 	    if (Codex.Trace.startup) fdjtLog("Done with synchronous setup");}
 
 	function appSetup() {
@@ -1498,34 +1499,36 @@ Codex.Startup=
 		"&REFURI="+encodeURIComponent(Codex.refuri);
 	    if (Codex.Trace.dosync)
 		fdjtLog("syncLocation(call) %s",uri);
-	    fdjtAjax(function(req){
-		var d=JSON.parse(req.responseText);
-		Codex.setConnected(true);
-		Codex.syncstart=true;
-		if (Codex.Trace.dosync)
-		    fdjtLog("syncLocation(callback) %s: %j",uri,d);
-		if ((!(d))||(!(d.location))) {
-		    if (!(Codex.state))
-			Codex.GoTo(Codex.start||Codex.root||Codex.body,
-				   "syncLocation",false,false);
-		    return;}
-		else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
-		    if ((d.location)&&(d.location<=Codex.location)) return;
-		    if (d.page===Codex.curpage) return;
-		    var msg=
-			"Sync to L"+Codex.location2pct(d.location)+
-			((d.page)?(" (page "+d.page+")"):"")+"?";
-		    if (confirm(msg)) {
-			if (d.location) Codex.setLocation(d.location);
-			if (d.location)
-			    Codex.GoTo(d.location,"syncLocation",false);
-			if (d.target) Codex.setTarget(d.target);
-			Codex.state=d;}}
-		else {}},
-		     uri,false,
-		     function(req){
-			 if ((req.readyState == 4)&&(navigator.onLine))
-			     Codex.setConnected(false);});}
+	    try {
+		fdjtAjax(function(req){
+		    var d=JSON.parse(req.responseText);
+		    Codex.setConnected(true);
+		    Codex.syncstart=true;
+		    if (Codex.Trace.dosync)
+			fdjtLog("syncLocation(callback) %s: %j",uri,d);
+		    if ((!(d))||(!(d.location))) {
+			if (!(Codex.state))
+			    Codex.GoTo(Codex.start||Codex.root||Codex.body,
+				       "syncLocation",false,false);
+			return;}
+		    else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
+			if ((d.location)&&(d.location<=Codex.location)) return;
+			if (d.page===Codex.curpage) return;
+			var msg=
+			    "Sync to L"+Codex.location2pct(d.location)+
+			    ((d.page)?(" (page "+d.page+")"):"")+"?";
+			if (confirm(msg)) {
+			    if (d.location) Codex.setLocation(d.location);
+			    if (d.location)
+				Codex.GoTo(d.location,"syncLocation",false);
+			    if (d.target) Codex.setTarget(d.target);
+			    Codex.state=d;}}
+		    else {}},
+			 uri,false,
+			 function(req){
+			     if ((req.readyState == 4)&&(navigator.onLine))
+				 Codex.setConnected(false);});}
+	    catch (ex) {Codex.dosync=false;}}
 	Codex.syncLocation=syncLocation;
 
 	/* Indexing tags */
@@ -1821,7 +1824,9 @@ Codex.Startup=
 	return Startup;})();
 sbookStartup=Codex.StartupHandler;
 Codex.Setup=Codex.StartupHandler;
-sbook={Start: Codex.StartupHandler,setUser: Codex.setUser};
+sbook={Start: Codex.Startup,
+       setUser: Codex.setUser,
+       Startup: Codex.Startup};
 
 /* Emacs local variables
    ;;;  Local variables: ***
