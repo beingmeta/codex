@@ -1,6 +1,7 @@
 <form action="https://glosses.sbooks.net/glosses"
       ajaxaction="https://glosses.sbooks.net/glosses"
       method="POST" target="addgloss"
+      accept-charset="utf-8"
       class="editnote">
   <div class="hidden">
     <input type="HIDDEN" name="FRAG"/>
@@ -15,6 +16,8 @@
     <input type="HIDDEN" name="DOCTITLE"/>
     <input type="HIDDEN" name="THREAD"/>
     <input type="HIDDEN" name="RE"/>
+    <!-- Force IE to send the form in UTF-8 -->
+    <input type="HIDDEN" name="IEHACK" VALUE="&#9760;"/>
   </div>
   <div class="glosseditbox">
     <span class="respdate"></span>
