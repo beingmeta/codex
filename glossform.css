@@ -277,7 +277,7 @@ div.codexglossform.glossreply .addbutton {
 
 div.codexglossform.submitting {
     opacity: 0.5;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     -webkit-opacity: 0.50;
     -khtml-opacity: 0.50;
@@ -285,7 +285,7 @@ div.codexglossform.submitting {
     -o-opacity: 0.50;}
 div.codexglossform.submitting td.button img {
     opacity: 0.5;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     -webkit-opacity: 0.50;
     -khtml-opacity: 0.50;

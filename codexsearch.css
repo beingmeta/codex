@@ -83,7 +83,7 @@ div.searchbox.notags div.resultinfo span { display: none;}
 
 div.completions .label {
     float: left; opacity: 0.7;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
     -webkit-opacity: 0.70;
     -khtml-opacity: 0.70;
@@ -166,7 +166,7 @@ div.tochead .paratext {
     color: darkblue; font-style: italic; padding-left: 5px;}
 div.tochead span.head {
     font-size: 80%; padding-left: 5px; opacity: 0.75; 
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
     filter: alpha(opacity=75);
     -webkit-opacity: 0.75;
     -khtml-opacity: 0.75;
@@ -196,7 +196,7 @@ div.idhead hr {
     border: 0px; padding: 0px; margin: 0px;}
 div.idhead span {
     z-index: 10; opacity: 0.75;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
     filter: alpha(opacity=75);
     -webkit-opacity: 0.75;
     -khtml-opacity: 0.75;
@@ -204,7 +204,7 @@ div.idhead span {
     -o-opacity: 0.75;}
 div.idhead div {
     z-index: 10; opacity: 0.75;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
     filter: alpha(opacity=75);
     -webkit-opacity: 0.75;
     -khtml-opacity: 0.75;

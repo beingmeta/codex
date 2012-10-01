@@ -19,7 +19,7 @@ body.cxBYSECT.cxPAGED div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
 body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     -webkit-opacity: 0.50;
     -khtml-opacity: 0.50;
@@ -34,7 +34,7 @@ div#CODEXPAGEFOOT div#CODEXPAGENO span#CODEXPAGENOTEXT { cursor: pointer;}
 div#CODEXPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top-width: 0px;
     z-index: 50; height: 100%; position: absolute; opacity: 0.5; 
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     -webkit-opacity: 0.50;
     -khtml-opacity: 0.50;
@@ -42,7 +42,7 @@ div#CODEXPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     -o-opacity: 0.50;}
 div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.001;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
     -webkit-opacity: 0.01;
     -khtml-opacity: 0.01;
@@ -50,7 +50,7 @@ div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     -o-opacity: 0.01;}
 div#CODEXPAGEFOOT div#CODEXPAGELEAP:hover {
     opacity: 0.4;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
     filter: alpha(opacity=40);
     -webkit-opacity: 0.40;
     -khtml-opacity: 0.40;
@@ -58,7 +58,7 @@ div#CODEXPAGEFOOT div#CODEXPAGELEAP:hover {
     -o-opacity: 0.40;}
 body.hudup div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     opacity: 0.7;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
     -webkit-opacity: 0.70;
     -khtml-opacity: 0.70;

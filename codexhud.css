@@ -80,7 +80,7 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     z-index: -100; 
     display: none;
     opacity: 0.0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     -webkit-opacity: 0;
     -khtml-opacity: 0;
@@ -100,7 +100,7 @@ body #CODEXHUD.addgloss #CODEXHEART.tagging,
 body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
     background-color: ivory; border-color: blue;
     z-index: 100; overflow: auto; opacity: 1.0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     -webkit-opacity: 1;
     -khtml-opacity: 1;
@@ -159,7 +159,7 @@ div#CODEXHUD .hudpanel {
 /* Being invisible */
 div#CODEXHUD .hudpanel {
     display: none; opacity: 0.001; 
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
     -webkit-opacity: 0.01;
     -khtml-opacity: 0.01;
@@ -168,7 +168,7 @@ div#CODEXHUD .hudpanel {
 /* Being visible when the HUD is up */
 body.hudup div#CODEXHUD div.hudpanel {
     opacity: 0.95;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
     -webkit-opacity: 0.95;
     -khtml-opacity: 0.95;
@@ -196,7 +196,7 @@ div#CODEXHUD.searchresults div#CODEXSEARCH,
 div#CODEXHUD.gotoloc div#CODEXGOTOLOC,
 div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
     position: static; display: block; opacity: 0.98;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
     filter: alpha(opacity=98);
     -webkit-opacity: 0.98;
     -khtml-opacity: 0.98;
@@ -216,7 +216,7 @@ div#CODEXHUD.console div#CODEXCONSOLE,
 div#CODEXHUD.sbookapp iframe#SBOOKSAPP {
     position: static; display: block;
     opacity: 0.98;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
     filter: alpha(opacity=98);
     -webkit-opacity: 0.98;
     -khtml-opacity: 0.98;
@@ -241,7 +241,7 @@ div.completions.hudpanel .normal { line-height: 250%;}
 div#CODEXHUD img.hudbutton {
     position: fixed; width: 50px; height: 50px; z-index: 0;
     border: solid transparent 2px; opacity: 0.2;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter: alpha(opacity=20);
     -webkit-opacity: 0.20;
     -khtml-opacity: 0.20;
@@ -250,7 +250,7 @@ div#CODEXHUD img.hudbutton {
 body.hudup div#CODEXHUD img.hudbutton  {}
 body div#CODEXHUD img.hudbutton:hover {
     opacity: 0.45;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=45)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=45)";
     filter: alpha(opacity=45);
     -webkit-opacity: 0.45;
     -khtml-opacity: 0.45;
@@ -423,7 +423,7 @@ div#CODEXHUD div#CODEXBUTTON.device img[alt='device'] {
 body.hudup div#CODEXHUD { }
 body.hudup div#CODEXHUD .hudbutton {
     opacity: 0.6;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
     filter: alpha(opacity=60);
     -webkit-opacity: 0.60;
     -khtml-opacity: 0.60;
@@ -431,7 +431,7 @@ body.hudup div#CODEXHUD .hudbutton {
     -o-opacity: 0.60;}
 body.hudup div#CODEXHUD img.hudbutton:hover {
     opacity: 0.8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
     -webkit-opacity: 0.80;
     -khtml-opacity: 0.80;
@@ -455,7 +455,7 @@ body.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSCANNER,
 body div#CODEXHUD.scanning div#CODEXSCANNER {
     display: block; overflow: hidden; border-color: silver;
     opacity: 0.95;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
     -webkit-opacity: 0.95;
     -khtml-opacity: 0.95;
@@ -539,7 +539,7 @@ div#SBOOKGLOSSES div.codexthread {
 
 body.hudup div#CODEXHUD.addgloss .hudbutton {
     opacity: 0.15;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
     filter: alpha(opacity=15);
     -webkit-opacity: 0.15;
     -khtml-opacity: 0.15;
@@ -597,7 +597,7 @@ body div#CODEXHUD img.codexscanbutton {
     width: 100px; height: 100px;
     position: fixed; bottom: 50%; 
     display: none; opacity: 0.5;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     -webkit-opacity: 0.50;
     -khtml-opacity: 0.50;
@@ -606,7 +606,7 @@ body div#CODEXHUD img.codexscanbutton {
 body div#CODEXHUD img.codexpagebutton {
     width: 50px; height: 100px;
     position: fixed; bottom: 50%; opacity: 0.3;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
     filter: alpha(opacity=30);
     -webkit-opacity: 0.30;
     -khtml-opacity: 0.30;
@@ -614,7 +614,7 @@ body div#CODEXHUD img.codexpagebutton {
     -o-opacity: 0.30;}
 body div#CODEXHUD img.codexpagebutton:hover {
     opacity: 0.7;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
     -webkit-opacity: 0.70;
     -khtml-opacity: 0.70;
@@ -622,7 +622,7 @@ body div#CODEXHUD img.codexpagebutton:hover {
     -o-opacity: 0.70; }
 body.hudup div#CODEXHUD img.codexpagebutton {
     opacity: 0.7;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
     -webkit-opacity: 0.70;
     -khtml-opacity: 0.70;
@@ -676,7 +676,7 @@ div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     opacity: 0.95; margin-left: 0px; margin-right: 0px;
     border-color: silver;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
     -webkit-opacity: 0.95;
     -khtml-opacity: 0.95;
@@ -710,7 +710,7 @@ div#CODEXSOURCES {
 
 body div#CODEXHUD div#CODEXHUDBUTTONS {
     clear: none; z-index: 150; text-align: center; opacity: 0.1;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
     filter: alpha(opacity=10);
     -webkit-opacity: 0.10;
     -khtml-opacity: 0.10;
@@ -718,7 +718,7 @@ body div#CODEXHUD div#CODEXHUDBUTTONS {
     -o-opacity: 0.10;}
 body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
     opacity: 0.5;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     -webkit-opacity: 0.50;
     -khtml-opacity: 0.50;
@@ -732,7 +732,7 @@ body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     transition-duration: 1.0s; -o-transition-duration: 1.0s;
     -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;
     display: block; opacity: 1.0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     -webkit-opacity: 1.00;
     -khtml-opacity: 1.00;
@@ -764,7 +764,7 @@ div.fdjtprogress#CODEXLAYOUTMESSAGE {
     -moz-transition-duration: 1s;
     display: none;
     opacity: 0.0; 
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     -webkit-opacity: 0;
     -khtml-opacity: 0;
@@ -772,7 +772,7 @@ div.fdjtprogress#CODEXLAYOUTMESSAGE {
     -o-opacity: 0;}
 body.cxLAYOUT div#CODEXLAYOUTMESSAGE {
     display: block; opacity: 0.8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
     -webkit-opacity: 0.80;
     -khtml-opacity: 0.80;
