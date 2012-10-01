@@ -23,21 +23,56 @@ body.cxPREVIEW #CODEXHUD.searchresults #CODEXSCANNER {
 
 /* HUD Preview rules */
 
-body.cxPREVIEW #CODEXHUD { opacity: 0.8;}
+body.cxPREVIEW #CODEXHUD {
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"
+    filter: alpha(opacity=80);
+    -webkit-opacity: 0.80;
+    -khtml-opacity: 0.80;
+    -moz-opacity: 0.80;
+    -o-opacity: 0.80;}
 body.hudup.cxPREVIEW #CODEXHEART {
-    opacity: 0.0; background-color: transparent;
-    border-color: transparent;}
+    background-color: transparent; border-color: transparent; opacity: 0.0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"
+    filter: alpha(opacity=0);
+    -webkit-opacity: 0;
+    -khtml-opacity: 0;
+    -moz-opacity: 0;
+    -o-opacity: 0;}
 body.hudup.cxPREVIEW #CODEXHUD.openheart #CODEXHEART {
-    opacity: 0.0; background-color: transparent;
-    border-color: transparent;}
+    background-color: transparent; border-color: transparent; opacity: 0.0; 
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"
+    filter: alpha(opacity=0);
+    -webkit-opacity: 0;
+    -khtml-opacity: 0;
+    -moz-opacity: 0;
+    -o-opacity: 0;}
 
 body.hudup.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSOURCES {
-    opacity: 0.01;}
+    opacity: 0.01;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)"
+    filter: alpha(opacity=1);
+    -webkit-opacity: 0.01;
+    -khtml-opacity: 0.01;
+    -moz-opacity: 0.01;
+    -o-opacity: 0.01;}
 
 body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
-    opacity: 0.05;}
+    opacity: 0.05;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)"
+    filter: alpha(opacity=5);
+    -webkit-opacity: 0.05;
+    -khtml-opacity: 0.05;
+    -moz-opacity: 0.05;
+    -o-opacity: 0.05;}
 body.cxPREVIEW div#CODEXHUD.glosses div#CODEXGLOSSES.hudpanel {
-    opacity: 0.05;}
+    opacity: 0.05;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)"
+    filter: alpha(opacity=5);
+    -webkit-opacity: 0.05;
+    -khtml-opacity: 0.05;
+    -moz-opacity: 0.05;
+    -o-opacity: 0.05;}
 
 body.cxPREVIEW div#CODEXHUD div#CODEXHUDBUTTONS {
     display: none;}

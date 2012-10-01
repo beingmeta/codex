@@ -41,7 +41,14 @@ div#CODEXHUD div#CODEXHELP.hudpanel {
     position: fixed; text-align: left;
     padding: 0px; padding-bottom: 24px; 
     background-color: ivory; color: black; opacity: 1.0;
-    top: 75px; bottom: 75px; left: 75px; right: 75px;}
+    top: 75px; bottom: 75px; left: 75px; right: 75px;
+
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+    filter: alpha(opacity=100);
+    -webkit-opacity: 1;
+    -khtml-opacity: 1;
+    -moz-opacity: 1;
+    -o-opacity: 1;}
 div#CODEXHUD.help div#CODEXHELP.hudpanel {
     display: block; height: inherit; border-color: blue;}
 div#CODEXHUD div#CODEXHELP {
@@ -88,9 +95,23 @@ body.codexstartup div#CODEXHELP #CODEXHELPTITLE {
     display: none;}
 
 body.codexhelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
-    background-color: silver; border-color: black; opacity: 0.9;}
+    background-color: silver; border-color: black;
+    opacity: 0.9;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
 
-body.codexhelp div#CODEXHUD img.hudbutton { opacity: 0.9;}
+body.codexhelp div#CODEXHUD img.hudbutton {
+    opacity: 0.9;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
 
 div.helpbox {
     position: fixed;
@@ -100,6 +121,12 @@ div.helpbox {
     -moz-border-radius: 1em; -o-border-radius: 1em;
     z-index: -250;
     opacity: 0.001;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)"
+    filter: alpha(opacity=1);
+    -webkit-opacity: 0.01;
+    -khtml-opacity: 0.01;
+    -moz-opacity: 0.01;
+    -o-opacity: 0.01;
     overflow: auto;}
 
 div.helpbox img.closebutton {
@@ -126,7 +153,13 @@ div#CODEXHUD div.helpbox#CODEXHELP {
     left: 100px; right: 100px;
     display: none;}
 body.codexhelp div#CODEXHUD div.helpbox#CODEXHELP {
-    display: block; opacity: 0.9; border-color: black; z-index: 250;}
+    display: block; border-color: black; z-index: 250; opacity: 0.9; 
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
 body.codexhelp.hudup div#CODEXHUD div.helpbox#CODEXHELP,
 body.codexhelp.codexscanning div#CODEXHUD div.helpbox#CODEXHELP {
     display: none;}
@@ -149,7 +182,13 @@ body.codexhelp div#CODEXHUD.scanning div#CODEXSCANNINGHELP.helpbox,
 body.codexhelp div#CODEXHUD.search div#CODEXSEARCHINPUTHELP.helpbox,
 body.codexhelp div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
 body.codexhelp div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
-    opacity: 0.9; border-color: black; z-index: 260; display: block;}
+    border-color: black; z-index: 260; display: block; opacity: 0.9; 
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
 
 /* Goto page and goto loc always display their help. */
 body div#CODEXHUD.gotopage div#CODEXHUDHELP,
@@ -157,10 +196,22 @@ body div#CODEXHUD.gotoloc div#CODEXHUDHELP {
     text-align: center; display: block;}
 body div#CODEXHUD.gotopage div#CODEXGOTOPAGEHELP.helpbox,
 body div#CODEXHUD.gotoloc div#CODEXGOTOLOCHELP.helpbox {
-    opacity: 0.9; border-color: black; z-index: 260;}
+    border-color: black; z-index: 260; opacity: 0.9; 
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
 
 body.codexhelp.cxPREVIEW div#CODEXHUD div#CODEXHUDHELP {
-    opacity: 0.05;}
+    opacity: 0.05;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)"
+    filter: alpha(opacity=5);
+    -webkit-opacity: 0.05;
+    -khtml-opacity: 0.05;
+    -moz-opacity: 0.05;
+    -o-opacity: 0.05;}
 
 div.helpbox p {
     /*
@@ -264,15 +315,21 @@ div#CODEXHUD div#CODEXKEYBOARDHELPBOX {
     position: fixed; text-align: center;
     top: 150px; left: 75px; right: 75px;
     font-size: 120%; font-family: helvetica,sans,sans-serif;
-    background-color: lightgray; color: black; opacity: 0.95;
+    background-color: lightgray; color: black; 
     border-radius: 1em; -webkit-border-radius: 1em;
     -moz-border-radius: 1em; -o-border-radius: 1em;
     border: solid gray 4px;
     transition-property: opacity; transition-duration: 5s;
     -o-transition-property: opacity; -o-transition-duration: 5s;
     -moz-transition-property: opacity; -moz-transition-duration: 5s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 5s;}
-
+    -webkit-transition-property: opacity; -webkit-transition-duration: 5s;
+    opacity: 0.95;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)"
+    filter: alpha(opacity=95);
+    -webkit-opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -o-opacity: 0.95;} 
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX div#CODEXKEYBOARDHELP {
     margin: 2em;}
 
@@ -287,13 +344,31 @@ div#CODEXHUD div#CODEXKEYBOARDHELPBOX span.close {
     cursor: pointer;}
 
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX.closing {
-    opacity: 0.05;}
+    opacity: 0.05;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)"
+    filter: alpha(opacity=5);
+    -webkit-opacity: 0.05;
+    -khtml-opacity: 0.05;
+    -moz-opacity: 0.05;
+    -o-opacity: 0.05;}
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX.closed {
-    opacity: 1.0; display: none;}
+    opacity: 1.0; display: none;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+    filter: alpha(opacity=100);
+    -webkit-opacity: 1.00;
+    -khtml-opacity: 1.00;
+    -moz-opacity: 1.00;
+    -o-opacity: 1.00;}
 
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX.closing
- div#CODEXKEYBOARDHELP {
-     opacity: 0.8;}
+div#CODEXKEYBOARDHELP {
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"
+    filter: alpha(opacity=80);
+    -webkit-opacity: 0.80;
+    -khtml-opacity: 0.80;
+    -moz-opacity: 0.80;
+    -o-opacity: 0.80;}
 
 div#CODEXHUD div#CODEXKEYBOARDHELP kbd {
     font-family: verdana,helvetica,sans,sans-serif;

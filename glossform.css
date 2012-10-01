@@ -275,8 +275,22 @@ div.codexglossform.glossedit span.addbutton,
 div.codexglossform.glossreply .addbutton {
     display: none;}
 
-div.codexglossform.submitting { opacity: 0.5;}
-div.codexglossform.submitting td.button img { opacity: 0.5;}
+div.codexglossform.submitting {
+    opacity: 0.5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    filter: alpha(opacity=50);
+    -webkit-opacity: 0.50;
+    -khtml-opacity: 0.50;
+    -moz-opacity: 0.50;
+    -o-opacity: 0.50;}
+div.codexglossform.submitting td.button img {
+    opacity: 0.5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    filter: alpha(opacity=50);
+    -webkit-opacity: 0.50;
+    -khtml-opacity: 0.50;
+    -moz-opacity: 0.50;
+    -o-opacity: 0.50;}
 
 div.codexglossform div.textbox { /* min-height: 50px; */
     transition-property: height; transition-duration: 2s;

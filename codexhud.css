@@ -77,8 +77,15 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     -webkit-transition-property: height,top,bottom;
     -webkit-transition-duration: 1s;
     border: solid transparent 3px;
-    z-index: -100; opacity: 0.0;
-    display: none;}
+    z-index: -100; 
+    display: none;
+    opacity: 0.0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"
+    filter: alpha(opacity=0);
+    -webkit-opacity: 0;
+    -khtml-opacity: 0;
+    -moz-opacity: 0;
+    -o-opacity: 0;}
 
 #CODEXHEART, #CODEXHEART div.hudpanel {
     border-radius: 1em; -o-border-radius: 1em;
@@ -92,8 +99,13 @@ body.hudup #CODEXHUD.openheart #CODEXHEART,
 body #CODEXHUD.addgloss #CODEXHEART.tagging,
 body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
     background-color: ivory; border-color: blue;
-    z-index: 100; opacity: 1.0;
-    overflow: auto;}
+    z-index: 100; overflow: auto; opacity: 1.0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+    filter: alpha(opacity=100);
+    -webkit-opacity: 1;
+    -khtml-opacity: 1;
+    -moz-opacity: 1;
+    -o-opacity: 1;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART {
     height: auto; top: 100px; /* bottom: 100px; */
@@ -146,9 +158,22 @@ div#CODEXHUD .hudpanel {
     text-align: center; overflow: hidden;}
 /* Being invisible */
 div#CODEXHUD .hudpanel {
-    opacity: 0.001; display: none;}
+    display: none; opacity: 0.001; 
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)"
+    filter: alpha(opacity=1);
+    -webkit-opacity: 0.01;
+    -khtml-opacity: 0.01;
+    -moz-opacity: 0.01;
+    -o-opacity: 0.01;}
 /* Being visible when the HUD is up */
-body.hudup div#CODEXHUD div.hudpanel {opacity: 0.95;}
+body.hudup div#CODEXHUD div.hudpanel {
+    opacity: 0.95;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)"
+    filter: alpha(opacity=95);
+    -webkit-opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -o-opacity: 0.95;}
 /* When animating, transition opacity and height */
 div#CODEXHUD.codexanimate div.hudpanel {
     transition-property: opacity;
@@ -170,8 +195,13 @@ div#CODEXHUD.search div#CODEXSEARCH,
 div#CODEXHUD.searchresults div#CODEXSEARCH,
 div#CODEXHUD.gotoloc div#CODEXGOTOLOC,
 div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
-    position: static; display: block;
-    opacity: 0.98;}
+    position: static; display: block; opacity: 0.98;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)"
+    filter: alpha(opacity=98);
+    -webkit-opacity: 0.98;
+    -khtml-opacity: 0.98;
+    -moz-opacity: 0.98;
+    -o-opacity: 0.98;}
 
 /* Heart rules */
 div#CODEXHUD.allglosses div#CODEXALLGLOSSES,
@@ -185,7 +215,13 @@ div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXOUTLETCLOUD,
 div#CODEXHUD.console div#CODEXCONSOLE,
 div#CODEXHUD.sbookapp iframe#SBOOKSAPP {
     position: static; display: block;
-    opacity: 0.98;}
+    opacity: 0.98;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)"
+    filter: alpha(opacity=98);
+    -webkit-opacity: 0.98;
+    -khtml-opacity: 0.98;
+    -moz-opacity: 0.98;
+    -o-opacity: 0.98;}
 
 body.cxTOUCH .codexcard .age { font-size: 125%; padding-bottom: 10px;}
 
@@ -204,9 +240,22 @@ div.completions.hudpanel .normal { line-height: 250%;}
 
 div#CODEXHUD img.hudbutton {
     position: fixed; width: 50px; height: 50px; z-index: 0;
-    border: solid transparent 2px; opacity: 0.2;}
+    border: solid transparent 2px; opacity: 0.2;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)"
+    filter: alpha(opacity=20);
+    -webkit-opacity: 0.20;
+    -khtml-opacity: 0.20;
+    -moz-opacity: 0.20;
+    -o-opacity: 0.20;}
 body.hudup div#CODEXHUD img.hudbutton  {}
-body div#CODEXHUD img.hudbutton:hover { opacity: 0.45;}
+body div#CODEXHUD img.hudbutton:hover {
+    opacity: 0.45;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=45)"
+    filter: alpha(opacity=45);
+    -webkit-opacity: 0.45;
+    -khtml-opacity: 0.45;
+    -moz-opacity: 0.45;
+    -o-opacity: 0.45;}
 div#CODEXHUD .topleft {top: 0px; left: 0px;}
 div#CODEXHUD .topright {top: 0px; right: 0px;}
 div#CODEXHUD .botleft {bottom: 0px; left: 0px;}
@@ -371,9 +420,23 @@ div#CODEXHUD div#CODEXBUTTON.device img[alt='device'] {
 
 /* HUDUP rules */
 
-body.hudup div#CODEXHUD { } /* opacity: 0.95; */
-body.hudup div#CODEXHUD .hudbutton { opacity: 0.6;}
-body.hudup div#CODEXHUD img.hudbutton:hover { opacity: 0.8;}
+body.hudup div#CODEXHUD { }
+body.hudup div#CODEXHUD .hudbutton {
+    opacity: 0.6;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"
+    filter: alpha(opacity=60);
+    -webkit-opacity: 0.60;
+    -khtml-opacity: 0.60;
+    -moz-opacity: 0.60;
+    -o-opacity: 0.60;}
+body.hudup div#CODEXHUD img.hudbutton:hover {
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"
+    filter: alpha(opacity=80);
+    -webkit-opacity: 0.80;
+    -khtml-opacity: 0.80;
+    -moz-opacity: 0.80;
+    -o-opacity: 0.80;}
 
 body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
 
@@ -391,7 +454,13 @@ body.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSCANNER,
 body.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSCANNER,
 body div#CODEXHUD.scanning div#CODEXSCANNER {
     display: block; overflow: hidden; border-color: silver;
-    opacity: 0.95;}
+    opacity: 0.95;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)"
+    filter: alpha(opacity=95);
+    -webkit-opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -o-opacity: 0.95;}
 
 div#CODEXHUD div#CODEXSCANNER.expanded, body.hudup div#CODEXSCANNER.expanded,
 div#CODEXHEAD div#CODEXSCANNER.expanded {
@@ -468,7 +537,14 @@ div#SBOOKGLOSSES div.codexthread {
     border-left: none; margin-left: 0px;
     padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
 
-body.hudup div#CODEXHUD.addgloss .hudbutton { opacity: 0.15;}
+body.hudup div#CODEXHUD.addgloss .hudbutton {
+    opacity: 0.15;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)"
+    filter: alpha(opacity=15);
+    -webkit-opacity: 0.15;
+    -khtml-opacity: 0.15;
+    -moz-opacity: 0.15;
+    -o-opacity: 0.15;}
 
 div#CODEXHUD.allglosses .hudbutton[alt='allglosses'],
 div#CODEXHUD.search .hudbutton[alt='search'],
@@ -519,13 +595,39 @@ div#CODEXHUD div#CODEXSCANNER div.codexcard span.glossinfo span.isclickable {
     display: none;}
 body div#CODEXHUD img.codexscanbutton {
     width: 100px; height: 100px;
-    position: fixed; bottom: 50%; opacity: 0.5;
-    display: none;}
+    position: fixed; bottom: 50%; 
+    display: none; opacity: 0.5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    filter: alpha(opacity=50);
+    -webkit-opacity: 0.50;
+    -khtml-opacity: 0.50;
+    -moz-opacity: 0.50;
+    -o-opacity: 0.50;}
 body div#CODEXHUD img.codexpagebutton {
     width: 50px; height: 100px;
-    position: fixed; bottom: 50%; opacity: 0.3;}
-body div#CODEXHUD img.codexpagebutton:hover { opacity: 0.7; }
-body.hudup div#CODEXHUD img.codexpagebutton { opacity: 0.7; }
+    position: fixed; bottom: 50%; opacity: 0.3;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"
+    filter: alpha(opacity=30);
+    -webkit-opacity: 0.30;
+    -khtml-opacity: 0.30;
+    -moz-opacity: 0.30;
+    -o-opacity: 0.30;}
+body div#CODEXHUD img.codexpagebutton:hover {
+    opacity: 0.7;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"
+    filter: alpha(opacity=70);
+    -webkit-opacity: 0.70;
+    -khtml-opacity: 0.70;
+    -moz-opacity: 0.70;
+    -o-opacity: 0.70; }
+body.hudup div#CODEXHUD img.codexpagebutton {
+    opacity: 0.7;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"
+    filter: alpha(opacity=70);
+    -webkit-opacity: 0.70;
+    -khtml-opacity: 0.70;
+    -moz-opacity: 0.70;
+    -o-opacity: 0.70; }
 body div#CODEXHUD img.codexscanbutton#CODEXNEXTSCAN,
 body div#CODEXHUD img.codexscanbutton#CODEXENDSCAN,
 body div#CODEXHUD img.codexpagebutton#CODEXNEXTPAGE {
@@ -573,7 +675,13 @@ div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
 div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     opacity: 0.95; margin-left: 0px; margin-right: 0px;
-    border-color: silver;}
+    border-color: silver;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)"
+    filter: alpha(opacity=95);
+    -webkit-opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -o-opacity: 0.95;}
 
 /* The Console */
 
@@ -601,10 +709,21 @@ div#CODEXSOURCES {
 /* Buttons */
 
 body div#CODEXHUD div#CODEXHUDBUTTONS {
-    clear: none; z-index: 150; text-align: center;
-    opacity: 0.1;}
+    clear: none; z-index: 150; text-align: center; opacity: 0.1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)"
+    filter: alpha(opacity=10);
+    -webkit-opacity: 0.10;
+    -khtml-opacity: 0.10;
+    -moz-opacity: 0.10;
+    -o-opacity: 0.10;}
 body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
-    opacity: 0.5;}
+    opacity: 0.5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+    filter: alpha(opacity=50);
+    -webkit-opacity: 0.50;
+    -khtml-opacity: 0.50;
+    -moz-opacity: 0.50;
+    -o-opacity: 0.50;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     transition-property: opacity;
     -o-transition-property: opacity;
@@ -612,7 +731,13 @@ body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     -webkit-transition-property: opacity; 
     transition-duration: 1.0s; -o-transition-duration: 1.0s;
     -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;
-    display: block; opacity: 1.0;}
+    display: block; opacity: 1.0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+    filter: alpha(opacity=100);
+    -webkit-opacity: 1.00;
+    -khtml-opacity: 1.00;
+    -moz-opacity: 1.00;
+    -o-opacity: 1.00;}
 body div#CODEXHUD div#CODEXHUDBUTTONS img[alt='Console'] {
     display: none;}
 body div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='Console'] {
@@ -626,7 +751,7 @@ div#CODEXHUD.about div#CODEXHEART .tabcontent {
 div.fdjtprogress#CODEXLAYOUTMESSAGE {
     text-align: center; font-size: 20px; font-weight: bold;
     color: black; background-color: lightgray;
-    position: fixed; opacity: 0.0; z-index: 300;
+    position: fixed; z-index: 300;
     bottom: 0px; left: 100px; right: 100px; height: 50px;
     padding-top: 15px;
     transition-property: opacity;
@@ -637,9 +762,22 @@ div.fdjtprogress#CODEXLAYOUTMESSAGE {
     -o-transition-duration: 1s;
     -moz-transition-property: opacity;
     -moz-transition-duration: 1s;
-    display: none;}
+    display: none;
+    opacity: 0.0; 
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"
+    filter: alpha(opacity=0);
+    -webkit-opacity: 0;
+    -khtml-opacity: 0;
+    -moz-opacity: 0;
+    -o-opacity: 0;}
 body.cxLAYOUT div#CODEXLAYOUTMESSAGE {
-    display: block; opacity: 0.8;}
+    display: block; opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"
+    filter: alpha(opacity=80);
+    -webkit-opacity: 0.80;
+    -khtml-opacity: 0.80;
+    -moz-opacity: 0.80;
+    -o-opacity: 0.80;}
 
 
 /* Emacs local variables
