@@ -74,6 +74,7 @@ body.sbook a.codexcard { display: block;}
 .codexcard.passage .codexcardbody {
     background-color: white;
     border-top: solid purple 1px;}
+.codexcard span.controller { cursor: pointer;}
 .codexcard .info { 
   float: right;}
 .codexcard div.info { 
@@ -82,7 +83,6 @@ body.sbook a.codexcard { display: block;}
   color: gold; display: none;}
 .codexcard span.tags { font-size: 80%;}
 .codexcard span.tags img.tagicon { height: 3ex;}
-.codexcard span.tags span.controller { cursor: pointer;}
 .codexcard.gloss span.tags.fdjtexpanded { display: block;}
 .codexcard span.tags.fdjtexpanded span.controller {
     color: black; float: right;}

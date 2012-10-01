@@ -108,7 +108,7 @@ body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
     -o-opacity: 1;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART {
-    height: auto; top: 100px; /* bottom: 100px; */
+    height: auto; top: 100px; bottom: 100px;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -522,7 +522,7 @@ div#CODEXHUD.searchresults div#CODEXSEARCHCLOUDWRAPPER { display: none;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
 
 div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall {
-    float: right; font-size: 150%; width: 3em; padding: 4px;
+    float: right; font-size: 150%; width: 3em; padding: 8px;
     margin-right: 8px; margin-bottom: 6px;
     background-color: lightgray; border: solid black 2px; border-radius: 0.5em;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall .showless { display: none;}
