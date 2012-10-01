@@ -643,6 +643,12 @@ body div#CODEXHUD.scanning img.codexscanbutton#CODEXSTARTSCAN,
 body div#CODEXHUD.scanning img.codexscanbutton#CODEXENDSCAN {
     display: none;}
 
+body div#CODEXHUD.glosses img.codexscanbutton {display: block;}
+body div#CODEXHUD.glosses img.codexpagebutton { display: none;}
+body div#CODEXHUD.glosses img.codexscanbutton#CODEXSTARTSCAN,
+body div#CODEXHUD.glosses img.codexscanbutton#CODEXENDSCAN {
+    display: none;}
+
 body div#CODEXHUD.scanning.scanstart img.codexscanbutton#CODEXSTARTSCAN,
 body div#CODEXHUD.scanning.scanend img.codexscanbutton#CODEXENDSCAN {
     display: block;}

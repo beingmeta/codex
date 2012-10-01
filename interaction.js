@@ -1165,6 +1165,20 @@
     function scanForward(){
 	if (Codex.mode==="scanning") {}
 	else if (Codex.mode==="tocscan") {}
+	else if (Codex.mode==="glosses") {
+	    var ids=Codex.docinfo._ids;
+	    var id=((Codex.target)&&(Codex.target.id));
+	    var glosses=Codex.glosses;
+	    var i, lim=ids.length;
+	    if ((id)&&((i=fdjtKB.position(ids,id))>0)) {
+		i++; while (i<lim) {
+		    var g=glosses.index(false,'frag',ids[i]);
+		    if ((g)&&(g.length)) {
+			var passage=fdjtID(ids[i]);
+			Codex.GoTo(passage,"scanForward/glosses",true);
+			Codex.showGlosses(passage);
+			return;}
+		    else i++;}}}
 	else if (Codex.scanning) CodexMode("scanning");
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
@@ -1196,6 +1210,20 @@
     function scanBackward(){
 	if (Codex.mode==="scanning") {}
 	else if (Codex.mode==="tocscan") {}
+	else if (Codex.mode==="glosses") {
+	    var ids=Codex.docinfo._ids;
+	    var id=((Codex.target)&&(Codex.target.id));
+	    var glosses=Codex.glosses;
+	    var i, lim=ids.length;
+	    if ((id)&&((i=fdjtKB.position(ids,id))>0)) {
+		i--; while (i>=0) {
+		    var g=glosses.index(false,'frag',ids[i]);
+		    if ((g)&&(g.length)) {
+			var passage=fdjtID(ids[i]);
+			Codex.GoTo(passage,"scanBackward/glosses",true);
+			Codex.showGlosses(passage);
+			return;}
+		    else i--;}}}
 	else if (Codex.scanning) CodexMode("scanning");
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
