@@ -198,6 +198,10 @@
 	    bigimage,fdjtDOM.Image(cxicon("sbwedge",64,64),"tiny","*"));
 	// Get all the glosses from the index
 	var glosses=Glosses.index(false,"frag",passage.id);
+	glossmark.title=
+	    ((glosses.length>1)?
+	     ("See "+glosses.length+" glosses on this passage"):
+	     ("See the gloss on this passage"));
 	bigimage.defaultsrc=imgsrc;
 	bigimage.setAttribute("data-images","");
 	extendGlossmark(glossmark,glosses,bigimage);
