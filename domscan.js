@@ -46,9 +46,10 @@ function CodexDOMScan(root,docinfo){
     else docinfo=new CodexDOMScan();
     if (!(root)) root=Codex.root||document.body;
     var start=new Date();
-    var allheads=[];
+    var allheads=[], allids=[];
     docinfo._root=root;
     docinfo._heads=allheads;
+    docinfo._ids=allids;
     if (!(root.id)) root.id="SBOOKROOT";
     if (Codex.Trace.startup) {
 	if (root.id) 
@@ -308,43 +309,9 @@ function CodexDOMScan(root,docinfo){
 	else if (child.nodeType!==1) return 0;
 	else {}
 	if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
-	if (((child.tagName==='SECTION')||(child.tagName==='ARTICLE'))&&
-	    // A section inside a notoc zone indicates malformed HTML
-	    (!(scanstate.notoc))&&
-	    (child.id)&&
-	    // Disabled for now, leads to redundant TOC entries
-	    (false)) {
-	    var head=fdjtDOM.getChild(child,'header')||
-		fdjtDOM.getChild(child,'hgroup,h1,h2,h3,h4,h5,h6,h7');
-	    var curlevel=scanstate.curlevel;
-	    var curhead=scanstate.curhead;
-	    var curinfo=scanstate.curinfo;
-	    var notoc=scanstate.notoc;
-	    var header=fdjtDOM.getChild(child,"header");
-	    var nextlevel=getLevel(child)||
-		getFirstTocLevel(header)||
-		getFirstTocLevel(child)||
-		((curlevel)?(curlevel+1):(1));
-	    handleHead(child,docinfo,scanstate,nextlevel,
-		       curhead,curinfo,curlevel,
-		       nodefn);
-	    if ((Codex.terminals)&&(Codex.terminals.match(child)))
-		scanstate.notoc=true;
-	    var headinfo=docinfo[child.id];
-	    headinfo.tocdone=true;
-	    scanstate.curhead=child; scanstate.curinfo=headinfo;
-	    scanstate.curlevel=nextlevel;
-	    var children=child.childNodes;
-	    var i=0; var lim=children.length;
-	    while (i<lim) {
-		var child=children[i++];
-		if (child.nodeType===1)
-		    scanner(child,scanstate,docinfo,nodefn);}
-	    // Put everything back
-	    scanstate.curlevel=curlevel; scanstate.notoc=notoc;
-	    scanstate.curhead=curhead; scanstate.curinfo=curinfo;
-	    return;}
 	// Get the location in the TOC for this out of context node
+	//  These get generated, for example, when the content of an
+	//  authorial footnote is moved elsewhere in the document.
 	var tocloc=(child.codextocloc)||(child.getAttribute("data-tocloc"));
 	if ((tocloc)&&(docinfo[tocloc])) {
 	    var tocinfo=docinfo[tocloc];
@@ -377,7 +344,7 @@ function CodexDOMScan(root,docinfo){
 	    return;
 	var info=((nodefn)&&(nodefn(child)));
 	if ((!(info))&&(child.id)&&(!(info=docinfo[child.id]))) {
-	    var id=child.id;
+	    var id=child.id; allids.push(id);
 	    info=new scanInfo(id,scanstate);}
 	if ((info)&&(info.elt)&&(child.id)&&(info.elt!==child)) {
 	    var newid=child.id+"x"+scanstate.location;
