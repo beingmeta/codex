@@ -481,6 +481,8 @@ var CodexHUD=false;
 	else if ((!target)&&(Codex.target)) {
 	    dropClass(Codex.target,"codextarget");
 	    dropClass(Codex.target,"codexnewtarget");
+	    fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");
+	    fdjtUI.Highlight.clear(Codex.target,"highlightsearch");
 	    Codex.target=false;
 	    return;}
 	else if (!(target)) return;
@@ -490,6 +492,8 @@ var CodexHUD=false;
 	if (Codex.target) {
 	    dropClass(Codex.target,"codextarget");
 	    dropClass(Codex.target,"codexnewtarget");
+	    fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");
+	    fdjtUI.Highlight.clear(Codex.target,"highlightsearch");
 	    Codex.target=false;}
 	addClass(target,"codextarget");
 	addClass(target,"codexnewtarget");
