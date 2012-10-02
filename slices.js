@@ -239,8 +239,8 @@
 	    fdjtDOM("span.age",agestring),
 	    fdjtDOM.Image(
 		(((user===Codex.user)||(user===Codex.user._id))?
-		 (cxicon("remark_edit",32,32)):
-		 (cxicon("remark_respond",32,32))),
+		 (cxicon("remark_edit_titled",40,40)):
+		 (cxicon("remark_respond_titled",40,40))),
 		"img.button",
 		(((user===Codex.user)||(user===Codex.user._id))?
 		 ("edit"):("reply")),

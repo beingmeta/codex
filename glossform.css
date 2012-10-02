@@ -23,20 +23,27 @@ div.codexglossform div.response .respnote:after { content: "”";}
 div.codexglossform div.response .respexcerpt {
     font-size: 80%; background-color: yellow;}
 div.codexglossform div .respdate {
-    font-size: 75%; font-weight: bold; font-variant: small-caps;
-    color: purple; float: right;}
+    font-weight: bold; font-variant: small-caps;
+    color: purple;}
 div.codexglossform div .respdate:before { content: "(From You, ";}
 div.codexglossform div .respdate:after { content: ")";}
 
 div.codexglossform div.glosseditbox {
-    text-align: right; color: black; display: none;
+    text-align: right; color: black; 
     font-variant: small-caps;
-    height: 32px;}
+    height: 5ex;
+    display: none;}
 div.codexglossform div.glosseditbox .codexglossedit {float: left;}
 div.codexglossform div.glosseditbox .respdate {float: left;}
-div.codexglossform div.glosseditbox img { vertical-align: top; height: 2ex;}
-div.codexglossform div.glosseditbox span img { vertical-align: bottom;}
-div.codexglossform div.glosseditbox span.clickable { cursor: pointer;}
+div.codexglossform div.glosseditbox img {
+    vertical-align: top; height: 3ex; width: 3ex;
+    margin-top: 3px;}
+div.codexglossform div.glosseditbox img[alt='red x'] {
+    height: 2.5ex; width: 2.5ex;}
+div.codexglossform div.glosseditbox span.clickable {
+    cursor: pointer; font-size: 125%; vertical-align: top;
+    margin-right: 0.5ex;}
+
 div.codexglossform.glossedit div.glosseditbox { display: block;}
 div.codexglossform.glossedit span.editmsg { display: inline;}
 
@@ -86,14 +93,20 @@ div.codexglossform form div.button {
 div.codexglossform form div.textbox { 
     clear: left; }
 
-div.codexglossform form div.altbutton span { display: none;}
-div.codexglossform form div.altbutton span.addbutton {display: inline;}
+div.codexglossform form .submitbutton div {
+    font-weight: bold; padding-right: 2px;}
+div.codexglossform form .submitbutton .edit,
+div.codexglossform form .submitbutton .reply {
+    display: none;}
 
-div.codexglossform.glossedit form .savebutton,
-div.codexglossform.glossreply form .replybutton {
+div.codexglossform.glossedit form .submitbutton .edit,
+div.codexglossform.glossreply form .submitbutton .reply {
     display: inline;}
-div.codexglossform.glossedit form .addbutton,
-div.codexglossform.glossreply form .addbutton {
+div.codexglossform.glossedit form .submitbutton div.edit,
+div.codexglossform.glossreply form .submitbutton div.reply {
+    display: block;}
+div.codexglossform.glossedit form .submitbutton .add,
+div.codexglossform.glossreply form .submitbutton .add {
     display: none;}
 
 div.codexglossform form textarea[name='NOTE'] {
@@ -238,13 +251,24 @@ div.codexglossform form .button {
     cursor: pointer;}
 
 div.codexglossform form .submitbutton {
-    float: right;
-    padding-top: 0px; padding-right: 0px;
+    float: right; text-align: right;
+    padding-top: 0px; padding-right: 2px;
+    box-shadow: -4px 4px 2px 2px;
+    -o-box-shadow: -4px 4px 2px 2px;
+    -moz-box-shadow: -4px 4px 2px 2px;
+    -khtml-box-shadow: -4px 4px 2px 2px;
+    -webkit-box-shadow: -4px 4px 2px 2px;
+    border-radius: 0px; -webkit-border-radius: 0px;
+    -moz-border-radius: 0px; -o-border-radius: 0px;
+    border-bottom-left-radius: 0.5ex;
+    -webkit-border-bottom-left-radius: 0.5ex; 
+    -moz-border-radius-botleft: 0.5ex;
+    -o-border-radius-botleft: 0.5ex; 
     height: 50px;}
 div.codexglossform form .submitbutton .button {
     border-top: none; border-right: none;
-    padding-top: 0px; padding-right: 0px;
-    margin-top: 0px; margin-right: 0px;
+    padding-top: 0px; padding-right: 0px; padding-left: 0px;
+    margin-top: 0px; margin-right: 0px; margin-left: 0px;
     border: solid darkblue 2px; border-right: 0px; border-top: 0px;
     background-color: blue;
     border-radius: 0px; -webkit-border-radius: 0px;
@@ -253,6 +277,7 @@ div.codexglossform form .submitbutton .button {
     -webkit-border-bottom-left-radius: 0.5ex; 
     -moz-border-radius-botleft: 0.5ex;
     -o-border-radius-botleft: 0.5ex; 
+    margin-bottom: 0.5ex;
     height: 100%;}
 
 div.codexglossform form .checkspan {
@@ -266,14 +291,6 @@ div.codexglossform .button.savebutton,
 div.codexglossform .button.replybutton,
 div.codexglossform .button.addbutton {
     float: right;}
-
-div.codexglossform .savebutton, div.codexglossform .replybutton {
-    display: none;}
-div.codexglossform.glossedit .savebutton { display: inline;}
-div.codexglossform.glossreply .replybutton { display: inline;}
-div.codexglossform.glossedit span.addbutton,
-div.codexglossform.glossreply .addbutton {
-    display: none;}
 
 div.codexglossform.submitting {
     opacity: 0.5;

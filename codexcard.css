@@ -114,7 +114,7 @@ body.sbook a.codexcard { display: block;}
 .codexcard .tool {
     float: right; font-weight: normal;
     font-size: 60%; text-decoration: none;}
-.codexcard .tool img { height: 5ex;}
+.codexcard .tool img { height: 40px; width: 40px;}
 .codexcard .age {
     color: green; vertical-align: top; padding-right: 0.5em;}
 .codexcard .age:hover {text-decoration: underline;} 
