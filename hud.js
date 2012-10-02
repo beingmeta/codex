@@ -105,6 +105,8 @@ var CodexMode=
 	    var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
 	    addgloss.innerHTML=sbook_addgloss;
 
+	    CodexHUD.sbooksapp=fdjtID("SBOOKSAPP");
+	    
 	    if (!(Codex.svg)) {
 		var images=fdjtDOM.getChildren(hud,"img");
 		var i=0; var lim=images.length;
@@ -447,7 +449,7 @@ var CodexMode=
 		// If we're switching to the inner app but the iframe
 		//  hasn't been initialized, we do it now.
 		if ((mode==="sbookapp")&&(!(fdjtID("SBOOKSAPP").src)))
-		    sbookSetupFlyleaf();
+		    initFlyleafApp();
 		// Update Codex.scrolling which is the scrolling
 		// element in the HUD for this mode
 		if (!(typeof mode === 'string'))
@@ -627,7 +629,8 @@ var CodexMode=
 		    else {
 			elt.href=false;
 			addClass(elt,"deadlink");
-			elt.title='this sBook is not available as a MOBIpocket format eBook';}}}
+			elt.title=
+			    'this sBook is not available as a MOBIpocket format eBook';}}}
 	    if (zipuri) {
 		var elts=document.getElementsByName("SBOOKZIPLINK");
 		var i=0; while (i<elts.length) {
@@ -636,10 +639,10 @@ var CodexMode=
 		    else {
 			elt.href=false;
 			addClass(elt,"deadlink");
-			elt.title='this sBook is not available as a ZIP bundle';}}}
-	    initManageIFrame();
-	    /* If the book is offline, don't bother showing the link to the offline
-	       version. */
+			elt.title=
+			    'this sBook is not available as a ZIP bundle';}}}
+	    /* If the book is offline, don't bother showing the link
+	       to the offline version. */
 	    if (Codex.offline) addClass(document.body,"sbookoffline");}
 
 	function altLink(type,uri){
@@ -734,7 +737,9 @@ var CodexMode=
 		clone.id=null;
 		fdjtDOM(about,clone);}}
 
-	function initManageIFrame(){
+	var flyleaf_app_init=false;
+	function initFlyleafApp(){
+	    if (flyleaf_app_init) return;
 	    var query=document.location.search||"?";
 	    var refuri=Codex.refuri;
 	    var appuri="https://"+Codex.server+"/flyleaf"+query;
@@ -745,10 +750,11 @@ var CodexMode=
 		encodeURIComponent(document.location.href);
 	    if (document.title) {
 		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
-	    fdjtID("SBOOKSAPP").src=appuri;}
+	    fdjtID("SBOOKSAPP").src=appuri;
+	    flyleaf_app_init=true;}
+	Codex.initFlyleafApp=initFlyleafApp;
 
 	CodexMode.selectApp=function(){
-	    /* initManageIFrame(); */
 	    if (Codex.mode==='sbookapp') CodexMode(false);
 	    else CodexMode('sbookapp');}
 

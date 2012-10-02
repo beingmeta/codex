@@ -266,7 +266,8 @@ Codex.Startup=
 	    if (Codex.Trace.startup) fdjtLog("Starting user setup");
 	    userSetup();
 	    document.domain="sbooks.net"; document.origin="sbooks.net";
-	    if (Codex.Trace.startup) fdjtLog("Done with synchronous setup");}
+	    if (Codex.Trace.startup)
+		fdjtLog("Done with synchronous startup");}
 
 	function appSetup() {
 
@@ -345,7 +346,9 @@ Codex.Startup=
 	    else if (_sbook_loadinfo) {
 		var info=_sbook_loadinfo;
 		if (info.userinfo)
-		    setUser(info.userinfo,info.outlets,info.sync);
+		    setUser(info.userinfo,
+			    info.outlets,info.overlays,
+			    info.sync);
 		if (info.nodeid) setNodeID(info.nodeid);
 		Codex.sync=info.sync;
 		if (Codex.Trace.offline>1) 
@@ -519,26 +522,65 @@ Codex.Startup=
 	Codex.Startup=Startup;
 	
 	function appSplash(){
+	    var intro=fdjtID("CODEXINTRO");
 	    // Take any message passed along as a query string
 	    //  and put it in the top of the help window, then
 	    //  display the help window
 	    if (getQuery("congratulations"))
-		fdjtDOM(fdjtID("CODEXINTRO"),
-			fdjtDOM("strong","Congratulations, "),
+		fdjtDOM(intro,fdjtDOM("strong","Congratulations, "),
 			getQuery("congratulations"));
 	    else if (getQuery("sorry"))
-		fdjtDOM(fdjtID("CODEXINTRO"),
-			fdjtDOM("strong","Sorry, "),
+		fdjtDOM(intro,fdjtDOM("strong","Sorry, "),
 			getQuery("sorry"));
 	    else if (getQuery("weird")) 
-		fdjtDOM(fdjtID("CODEXINTRO"),
-			fdjtDOM("strong","Weird, "),
+		fdjtDOM(intro,fdjtDOM("strong","Weird, "),
 			getQuery("weird"));
+	    // This is the case where we're accessing the book but
+	    //  have arguments to pass to the flyleaf app.  The most
+	    //  common case here is accepting an invitation to join a
+	    //  group.  It will probably be common for people to use
+	    //  the invitation link to get to the book, but we don't
+	    //  want to always present them with the invitation.  So
+	    //  this gets a little hairy.
 	    if ((getQuery("ACTION"))||
 		(getQuery("JOIN"))||
-		(getQuery("OVERLAY")))
-		CodexMode("sbookapp");
-	    else {}
+		(getQuery("OVERLAY"))) {
+		// We have args to pass to the flyleaf app, 
+		// so we initialize it:
+		Codex.initFlyleafApp();
+		var appframe=fdjtID("SBOOKSAPP");
+		var appwindow=((appframe)&&(appframe.contentWindow));
+		if ((Codex.overlays)&&(getQuery("JOIN"))&&
+		    (Codex.contains(Codex.overlays,getQuery("JOIN")))) {
+		    // Check that it's not redundant
+		    var ref=fdjtKB.ref(getQuery("JOIN"));
+		    if (ref.name)
+			fdjtDOM(intro,"You've already added the overlay "+
+				ref.name);
+		    fdjtDOM(intro,"You've already added the overlay.");}
+		else if (appwindow.postMessage) {
+		    // If you have postMessage, use it to change modes
+		    //  when the sbook app is read.
+		    fdjtDOM.addListener(window,"message",function(evt){
+			var origin=evt.origin;
+			if (Codex.Trace.messages)
+			    fdjtLog("Got a message from %s with payload %s",
+				    origin,evt.data);
+			if (origin.search(/https:\/\/[^\/]+.sbooks.net/)!==0) {
+			    fdjtLog.warn("Rejecting insecure message from %s",
+					origin);
+			    return;}
+			if (evt.data==="sbooksapp") {
+			    dropClass(document.body,"codexhelp");
+			    CodexMode("sbookapp");}
+			else if (evt.data)
+			    fdjtDOM("CODEXINTRO",evt.data);
+			else {}});}
+		else {
+		    Codex.joining=getQuery("JOIN");
+		    CodexMode("sbookapp");}}
+	    if ((!(Codex.mode))&&(Codex.startuphelp))
+		addClass(document.body,"codexhelp");
 	    window.focus();}
 	
 	function startupDone(mode){
@@ -552,19 +594,12 @@ Codex.Startup=
 	    if (fdjtID("CODEXSPLASH"))
 		fdjtID("CODEXSPLASH").style.display='none';
 	    if (mode) {}
-	    else if ((getQuery("join"))||
-		     (getQuery("action"))||
-		     (getQuery("invitation"))||
-		     (getQuery("invite"))||
-		     (getQuery("signature"))||
-		     (getQuery("overlay"))) 
-		mode="sbookapp";
 	    else if (getQuery("startmode"))
 		mode=getQuery("startmode");
 	    else if (Codex.startuphelp)
 		addClass(document.body,"codexhelp");
 	    else dropClass(document.body,"codexhelp");
-	    CodexMode(mode||false);
+	    if (mode) CodexMode(mode);
 	    _sbook_setup=Codex._setup=new Date();
 	    var msg=false;
 	    if (msg=getQuery("APPMESSAGE")) {
@@ -759,10 +794,12 @@ Codex.Startup=
 	    if (!(sync)) return;
 	    if (!(user)) return;
 	    var outlets=Codex.outlets=getLocal("outlets("+refuri+")",true)||[];
+	    var overlays=Codex.overlays=
+		getLocal("overlays("+refuri+")",true)||[];
 	    fdjtLog("initOffline userinfo=%j",userinfo);
 	    Codex.allsources=getLocal("sources("+refuri+")",true)||[];
 	    Codex.sourcekb.Import(Codex.allsources);
-	    if (userinfo) setUser(userinfo,outlets,sync);
+	    if (userinfo) setUser(userinfo,outlets,overlays,sync);
 	    if (nodeid) setNodeID(nodeid);
 	    Codex.sync=sync;}
 
@@ -787,6 +824,7 @@ Codex.Startup=
 		gloss.load();
 		if (Codex.Trace.offline>1)
 		    fdjtLog("Restored %o: %j",glossid,gloss);}
+	    // Load everything in etc
 	    var etc=Codex.etc;
 	    var i=0; var lim=etc.length;
 	    while (i<lim) Codex.sourcekb.ref(etc[i++]);
@@ -1127,7 +1165,9 @@ Codex.Startup=
 	function loadInfo(info) {
 	    if (!(Codex.user)) {
 		if (info.userinfo)
-		    setUser(info.userinfo,info.outlets,info.sync);
+		    setUser(info.userinfo,
+			    info.outlets,info.overlays,
+			    info.sync);
 		if (info.nodeid) setNodeID(info.nodeid);
 		Codex.sync=info.sync;}
 	    else if (info.wronguser) {
@@ -1217,7 +1257,7 @@ Codex.Startup=
 		fdjtDOM.addClass(document.body,"cxNOUSER");}
 	    else fdjtDOM.addClass(document.body,"cxNOUSER");}
 	
-	function setUser(userinfo,outlets,sync){
+	function setUser(userinfo,outlets,overlays,sync){
 	    var persist=((Codex.offline)&&(navigator.onLine));
 	    var refuri=Codex.refuri;
 	    if (userinfo) {
@@ -1233,6 +1273,8 @@ Codex.Startup=
 		    cursync,sync);
 		return false;}
 	    Codex.user=fdjtKB.Import(userinfo);
+	    if (outlets) Codex.outlets=outlets;
+	    if (overlays) Codex.overlays=overlays;
 	    if (persist) {
 		setLocal(Codex.user._id,Codex.user,true);
 		setLocal("codex.user",Codex.user._id);
