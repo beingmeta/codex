@@ -285,6 +285,8 @@
 	    if (typeof shared === 'string') shared=[shared];
 	    var i=0, lim=shared.length;
 	    while (i<lim) addOutlet(form,shared[i++],true);}
+	if ((gloss)&&(gloss.excerpt))
+	    Codex.setExcerpt(form,gloss.excerpt);
 	form.setAttribute("sbooksetup","yes");
 	updateForm(form);
 	return form;}
@@ -360,7 +362,7 @@
 	var anchor=fdjtDOM.Anchor(url,"a.glosslink",((title)||url));
 	var checkbox=fdjtDOM.Checkbox("LINKS",linkval,true);
 	var aspan=fdjtDOM("span.checkspan.ischecked.waschecked.anchor",
-			  checkbox,img,anchor);
+			  img,checkbox,anchor);
 	aspan.title=url; anchor.target='_blank';
 	fdjtDOM(tagselt,aspan," ");
 	updateForm(form);
@@ -371,10 +373,13 @@
 	var checkspan=getChild(form,'.excerpt');
 	if (!(checkspan)) {
 	    var placeholder=getChild(form,'.excerptspan');
-	    checkspan=fdjtDOM("span.checkspan.excerpt",
+	    var redx=fdjtDOM.Image(cxicon("redx",32,32),"img.redx","x");
+	    checkspan=fdjtDOM("span.checkspan.excerpt.ischecked",
 			      fdjtDOM.Checkbox('EXCERPT','',false),
-			      fdjtDOM("span.text"));
-	    checkspan.onclick=fdjtUI.CheckSpan.onclick;
+			      fdjtDOM("span.text"),
+			      redx);
+	    checkspan.title="Click to delete or restore";
+	    // checkspan.onclick=fdjtUI.CheckSpan.onclick;
 	    fdjtDOM.replace(placeholder,checkspan);}
 	var input=getInput(checkspan,'EXCERPT');
 	var text=getChild(checkspan,'.text');

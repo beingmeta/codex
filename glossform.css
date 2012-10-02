@@ -50,7 +50,13 @@ div.codexglossform.glossedit span.editmsg { display: inline;}
 div.codexglossform form {
     padding: 0px; margin: 0px;}
 div.codexglossform form span.checkspan.excerpt {
-    white-space: normal;}
+    white-space: normal; text-decoration: line-through;}
+div.codexglossform form span.checkspan.excerpt.ischecked {
+    white-space: normal; text-decoration: none;}
+div.codexglossform form span.checkspan.excerpt img.redx {
+    height: 1.5ex; vertical-align: middle; padding-left: 0.5ex;}
+div.codexglossform form span.checkspan.excerpt input {
+    display: none;}
 div.codexglossform form .inputhelp {color: black; display: none;}
 div.codexglossform form div.inputhelp {
     padding-bottom: 4px; text-align: left;}
@@ -158,7 +164,7 @@ div.codexglossform form div.glossetc span.checkspan.excerpt.ischecked {
     font-weight: normal;}
 div.codexglossform form div.glossetc .links,
 div.codexglossform form div.glossetc .tags {
-    font-size: 125%;}
+    font-size: 125%; padding-left: 1em;}
 div.codexglossform form div.glossetc .excerpts {
     font-size: 80%;}
 div.codexglossform form div.glossetc .tags span.checkspan {
@@ -175,10 +181,14 @@ div.codexglossform form div.glossetc span.checkspan.ischecked {
     text-decoration: none;}
 div.codexglossform form div.glossetc span.checkspan.waschecked.ischecked {
     text-decoration: none;}
+div.codexglossform form div.glossetc .outlets { padding-left: 1em;}
 div.codexglossform form div.glossetc .outlets .checkspan.outlet:before {
-    content: "→";}
+    content: "→"; font-weight: bold; font-size: 150%;}
+div.codexglossform form div.glossetc .links { padding-left: 1em;}
 div.codexglossform form div.glossetc .links .checkspan.anchor img {
     height: 2ex;}
+div.codexglossform form div.glossetc .links .checkspan.anchor input {
+    margin-left: 0px;}
 
 div.codexglossform form div.glossetc img.twisty[alt='-'] { display: none;}
 div.codexglossform form div.glossetc.expanded {
