@@ -368,7 +368,11 @@ Codex.Startup=
 		else fdjtLog("Getting glosses from %s",Codex.server);
 		// Get all or updated glosses, doing it old school (JSONP)
 		var script=fdjtDOM("script");
-		script.language="javascript";
+		script.setAttribute("language","javascript");
+		script.setAttribute("type","text/javascript");
+		script.setAttribute("charset","utf-8");
+		script.setAttribute("async","async");
+		// script.setAttribute("crossorigin","use-credentials");
 		var uri="https://"+Codex.server+"/v1/loadinfo.js?"+
 		    "REFURI="+encodeURIComponent(Codex.refuri)+"&"+
 		    "CALLBACK=Codex.loadInfo";
@@ -1130,6 +1134,11 @@ Codex.Startup=
 		Codex.clearOffline(Codex.refuri);
 		window.location=window.location.href;
 		return;}
+	    if (info.mycopyid) {
+		if ((Codex.mycopyid)&&
+		    (info.mycopid!==Codex.mycopyid))
+		    fdjtLog.warn("Mismatched mycopyids");
+		else Codex.mycopyid=info.mycopyid;}
 	    if (!(Codex.docinfo)) { /* Scan not done */
 		Codex.scandone=function(){loadInfo(info);};
 		return;}

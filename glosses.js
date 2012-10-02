@@ -45,6 +45,7 @@
     var getChild=fdjtDOM.getChild;
     var getInput=fdjtDOM.getInput;
     var getInputs=fdjtDOM.getInputs;
+    var getInputFor=fdjtDOM.getInputFor;
     var getInputsFor=fdjtDOM.getInputsFor;
     var Ellipsis=fdjtUI.Ellipsis;
 
@@ -191,6 +192,8 @@
 	getInput(form,"DOCTITLE").value=document.title;
 	getInput(form,"DOCURI").value=document.location.href;
 	getInput(form,"FRAG").value=passageid;
+	if (Codex.mycopyid)
+	    getInput(form,"MYCOPYID").value=Codex.mycopyid;
 	if (gloss) {
 	    var date_elt=getChild(form,".respdate");
 	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
