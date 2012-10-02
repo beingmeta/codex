@@ -189,32 +189,61 @@ var CodexMode=
 			gloss_cloud.addCompletion(gloss_tag);}}}
 	    Codex.addTag2GlossCloud=addTag2GlossCloud;
 	    
-	    function add2OutletCloud(tag){
-		if (typeof tag === 'string') tag=Codex.sourcekb.ref(tag);
-		if (!(tag)) return;
-		else if (tag instanceof Array) {
-		    var i=0; var lim=tag.length;
-		    while (i<lim) add2OutletCloud(tag[i++]);
-		    return;}
-		else if (!(Codex.outlet_cloud)) {
+	    function addOutlets2UI(outlets){
+		if (typeof outlets === 'string')
+		    outlets=Codex.sourcekb.ref(outlets);
+		if (!(outlets)) return;
+		if (!(outlets instanceof Array)) outlets=[outlets];
+		if (!(Codex.outlet_cloud)) {
 		    // If the HUD hasn't been initialized, add the tag
 		    //  to queues for addition.
 		    var queue=Codex.outlet_cloud_queue;
 		    if (!(queue)) queue=Codex.outlet_cloud_queue=[];
-		    queue.push(tag);
+		    queue=Codex.outlet_cloud_queue=queue.concat(outlets);
 		    return;}
-		else if ((tag instanceof Ref)&&(!(tag._init)))
-		    // If it's uninitialized, delay adding it
-		    tag.oninit(add2OutletCloud,"add2OutletCloud");
-		var outlet_cloud=Codex.outletCloud();
-		var value=tag._id;
-		var completion=outlet_cloud.getByValue(value,".completion");
-		if (!(completion)) {
-		    gloss_tag=tagHTML(tag,Codex.sourcekb,false,true);
-		    outlet_cloud.addCompletion(gloss_tag);}}
-	    Codex.add2OutletCloud=add2OutletCloud;
+		else {
+		    var i=0; var lim=outlets.length;
+		    var loaded=[];
+		    while (i<lim) {
+			var outlet=outlets[i++];
+			if (typeof outlet === 'string')
+			    outlet=fdjtKB.ref(outlet);
+			if ((outlet instanceof Ref)&&(!(outlet._init)))
+			    outlet.oninit(addOutlets2UI,"addOutlets2UI");
+			else loaded.push(outlet);}
+		    var cloud=Codex.outletCloud()
+		    var form=fdjtID("CODEXADDGLOSSPROTOTYPE");
+		    i=0; lim=loaded.length; while (i<lim) {
+			var outlet=loaded[i++];
+			if (i<=5)
+			    Codex.addOutletToForm(form,outlet,false);
+			addOutlet2Cloud(outlet,cloud);}
+		    return;}}
+	    Codex.addOutlets2UI=addOutlets2UI;
 	    
-	    var cloudEntry=Codex.cloudEntry;
+	    /* Initializing outlets */
+	    
+	    function addOutlet2Cloud(outlet,cloud) {
+		if (typeof outlet === 'string')
+		    outlet=fdjtKB.load(outlet);
+		var humid=outlet.humid;
+		var sourcetag=fdjtID("cxOUTLET"+humid);
+		if (!(sourcetag)) { // Add entry to the share cloud
+		    var completion=fdjtDOM(
+			"span.completion.source",outlet.name);
+		    completion.id="cxOUTLET"+humid;
+		    completion.setAttribute("value",outlet._id);
+		    completion.setAttribute("key",outlet.name);
+		    if ((outlet.description)&&(outlet.nick))
+			completion.title=outlet.name+": "+
+			outlet.description;
+		    else if (outlet.description)
+			completion.title=outlet.description;
+		    else if (outlet.nick) completion.title=outlet.name;
+		    fdjtDOM(cloud.dom,completion," ");
+		    if (cloud) cloud.addCompletion(completion);}}
+	
+	var cloudEntry=Codex.cloudEntry;
 
 	    function addTag2SearchCloud(tag){
 		if (!(tag)) return;

@@ -1162,19 +1162,21 @@ Codex.Startup=
 		 (getLocal("queued("+refuri+")"))))
 		initGlossesOffline();
 	    if (Codex.Trace.glosses) {
-		fdjtLog("loadInfo for %d %sglosses (sync=%d)",
+		fdjtLog("loadInfo for %d %sglosses and %d refs (sync=%d)",
 			((info.glosses)?(info.glosses.length):(0)),
 			((Codex.sync)?("updated "):("")),
+			((info.etc)?(info.etc.length):(0)),
 			info.sync)
 		fdjtLog("loadInfo got %d sources, %d outlets, and %d overlays",
 			((info.sources)?(info.sources.length):(0)),
 			((info.outlets)?(info.outlets.length):(0)),
 			((info.overlays)?(info.overlays.length):(0)));}
+	    if ((info.glosses)||(info.etc))
+		initGlosses(info.glosses,info.etc);
 	    if (info.sources) gotInfo("sources",info.sources,persist);
 	    if (info.outlets) gotInfo("outlets",info.outlets,persist);
 	    if (info.overlays) gotInfo("overlays",info.overlays,persist);
-	    if (info.glosses) initGlosses(info.glosses,info.etc);
-	    Codex.add2OutletCloud(info.outlets);
+	    Codex.addOutlets2UI(info.outlets);
 	    if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
 		setLocal("sync("+refuri+")",info.sync);
 		Codex.sync=info.sync;}
@@ -1235,31 +1237,6 @@ Codex.Startup=
 		setLocal(Codex.user._id,Codex.user,true);
 		setLocal("codex.user",Codex.user._id);
 		setLocal("user("+refuri+")",Codex.user._id);}
-	    gotInfo("outlets",outlets,persist);
-	    if ((outlets)&&(outlets.length)) {
-		Codex.outlets=outlets;
-		// Add the outlets
-		var div=fdjtID("CODEXGLOSSOUTLETS");
-		var i=0; var ilim=outlets.length;
-		while (i<ilim) {
-		    var outlet=outlets[i++];
-		    if (typeof outlet === 'string')
-			outlet=fdjtKB.load(outlet);
-		    var humid=outlet.humid;
-		    var sourcetag=fdjtID("cxOUTLET"+humid);
-		    if (!(sourcetag)) { // Add entry to the share cloud
-			var completion=fdjtDOM("span.completion.source",outlet.name);
-			completion.id="cxOUTLET"+humid;
-			completion.setAttribute("value",outlet._id);
-			completion.setAttribute("key",outlet.name);
-			if ((outlet.description)&&(outlet.nick))
-			    completion.title=outlet.name+": "+outlet.description;
-			else if (outlet.description)
-			    completion.title=outlet.description;
-			else if (outlet.nick) completion.title=outlet.name;
-			fdjtDOM(div,completion," ");
-			if (Codex.outlet_cloud)
-			    Codex.outlet_cloud.addCompletion(completion);}}}
 	    setupUI4User();
 	    return Codex.user;}
 	Codex.setUser=setUser;
@@ -1292,13 +1269,6 @@ Codex.Startup=
 	    var ss=Codex.stylesheet;
 	    var form=fdjtID("CODEXADDGLOSSPROTOTYPE");
 	    var buttons=fdjtID("CODEXNETWORKBUTTONS");
-	    var outlets=Codex.outlets;
-	    if (outlets) {
-		var i=0, lim=outlets.length;
-		while (i<lim) {
-		    var outlet=outlets[i++];
-		    if (i>5) continue;
-		    Codex.addOutletToForm(form,outlet,false);}}
 	    var getChild=fdjtDOM.getChild;
 	    if (Codex.user.fbid)  {
 		ss.insertRule("div#CODEXHUD span.facebook_share { display: inline;}",
@@ -1772,11 +1742,18 @@ Codex.Startup=
 	    startupMessage("setting up glossing cloud...");
 	    fdjtDOM.replace("CODEXGLOSSCLOUD",Codex.glossCloud().dom);
 	    startupMessage("setting up outlet cloud...");
-	    Codex.outletCloud();
+	    fdjtDOM.replace("CODEXOUTLETCLOUD",Codex.outletCloud().dom);
 	    if (Codex.gloss_cloud_queue) {
 		fdjtLog("Starting to sync gloss cloud");
 		fdjtTime.slowmap(
 		    Codex.addTag2GlossCloud,Codex.gloss_cloud_queue,false,
+		    function(){
+			Codex.cloud_queue=false;
+			fdjtLog("Gloss cloud synced");});}
+	    if (Codex.outlet_cloud_queue) {
+		fdjtLog("Starting to sync outlet cloud");
+		fdjtTime.slowmap(
+		    Codex.addOutlets2UI,Codex.outlet_cloud_queue,false,
 		    function(){
 			Codex.cloud_queue=false;
 			fdjtLog("Gloss cloud synced");});}
