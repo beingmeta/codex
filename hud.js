@@ -398,15 +398,15 @@ var CodexMode=
 
 	/* Mode controls */
 	
-	var CodexMode_pat=/\b((device)|(sbookapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
-	var codexHeartMode_pat=/\b((device)|(sbookapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login))\b/g;
+	var CodexMode_pat=/\b((device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
+	var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login))\b/g;
 	var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(glosses)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan))\b/g;
 	var codex_mode_scrollers=
 	    {allglosses: "CODEXALLGLOSSES",
 	     searchresults: "CODEXSEARCHRESULTS",
 	     search: "CODEXSEARCHCLOUD",
 	     console: "CODEXCONSOLE",
-	     // sbookapp: "SBOOKSAPP",
+	     // sbooksapp: "SBOOKSAPP",
 	     device: "CODEXSETTINGS",
 	     flytoc: "CODEXFLYTOC",
 	     about: "CODEXABOUTBOOK"};
@@ -448,7 +448,7 @@ var CodexMode=
 		    Codex.mode=mode;}
 		// If we're switching to the inner app but the iframe
 		//  hasn't been initialized, we do it now.
-		if ((mode==="sbookapp")&&(!(fdjtID("SBOOKSAPP").src)))
+		if ((mode==="sbooksapp")&&(!(fdjtID("SBOOKSAPP").src)))
 		    initFlyleafApp();
 		// Update Codex.scrolling which is the scrolling
 		// element in the HUD for this mode
@@ -755,8 +755,8 @@ var CodexMode=
 	Codex.initFlyleafApp=initFlyleafApp;
 
 	CodexMode.selectApp=function(){
-	    if (Codex.mode==='sbookapp') CodexMode(false);
-	    else CodexMode('sbookapp');}
+	    if (Codex.mode==='sbooksapp') CodexMode(false);
+	    else CodexMode('sbooksapp');}
 
 	/* Scanning */
 
@@ -929,8 +929,8 @@ var CodexMode=
 
 	function LoginButton_ontap(evt){
 	    evt=evt||event||null;
-	    if (Codex.mode==="sbookapp") CodexMode(false);
-	    else CodexMode("sbookapp");
+	    if (Codex.mode==="sbooksapp") CodexMode(false);
+	    else CodexMode("sbooksapp");
 	    evt.cancelBubble=true;}
 
 	return CodexMode;})();

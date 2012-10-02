@@ -572,13 +572,13 @@ Codex.Startup=
 			    return;}
 			if (evt.data==="sbooksapp") {
 			    dropClass(document.body,"codexhelp");
-			    CodexMode("sbookapp");}
+			    CodexMode("sbooksapp");}
 			else if (evt.data)
 			    fdjtDOM("CODEXINTRO",evt.data);
 			else {}});}
 		else {
 		    Codex.joining=getQuery("JOIN");
-		    CodexMode("sbookapp");}}
+		    CodexMode("sbooksapp");}}
 	    if ((!(Codex.mode))&&(Codex.startuphelp))
 		addClass(document.body,"codexhelp");
 	    window.focus();}

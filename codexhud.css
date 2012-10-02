@@ -213,7 +213,7 @@ div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS,
 div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSCLOUD,
 div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXOUTLETCLOUD,
 div#CODEXHUD.console div#CODEXCONSOLE,
-div#CODEXHUD.sbookapp iframe#SBOOKSAPP {
+div#CODEXHUD.sbooksapp iframe#SBOOKSAPP {
     position: static; display: block;
     opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
@@ -294,7 +294,7 @@ body div#CODEXHUD.about #CODEXHEART .tabcontent#CODEXABOUTBOOK,
 body div#CODEXHUD.device #CODEXHEART .tabcontent#CODEXSETTINGS,
 body div#CODEXHUD.flytoc #CODEXHEART .tabcontent#CODEXFLYTOC,
 body div#CODEXHUD.console #CODEXHEART .tabcontent#CODEXCONSOLE,
-body div#CODEXHUD.sbookapp div#CODEXHEART .tabcontent#SBOOKSAPP,
+body div#CODEXHUD.sbooksapp div#CODEXHEART .tabcontent#SBOOKSAPP,
 body div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSAPP {
     display: block;}
 
@@ -386,7 +386,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
 div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[alt='About'],
 div#CODEXHUD.flytoc div#CODEXHUDBUTTONS div.tabbar .tab[alt='ToC'],
 div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[alt='Device'],
-div#CODEXHUD.sbookapp div#CODEXHUDBUTTONS div.tabbar .tab[alt='sBooks'],
+div#CODEXHUD.sbooksapp div#CODEXHUDBUTTONS div.tabbar .tab[alt='sBooks'],
 div#CODEXHUD.login div#CODEXHUDBUTTONS div.tabbar .tab[alt='Login'],
 div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[alt='Console'],
 div#CODEXHUD.allglosses div#CODEXHUDBUTTONS div.tabbar .tab[alt='Glosses'],
@@ -411,7 +411,7 @@ div#CODEXHUD div#CODEXBUTTON.addgloss img[alt='addgloss'],
 div#CODEXHUD div#CODEXBUTTON.allglosses img[alt='allglosses'],
 div#CODEXHUD div#CODEXBUTTON.help img[alt='help'],
 div#CODEXHUD div#CODEXBUTTON.about img[alt='about'],
-div#CODEXHUD div#CODEXBUTTON.sbookapp img[alt='sbookapp'],
+div#CODEXHUD div#CODEXBUTTON.sbooksapp img[alt='sbooksapp'],
 div#CODEXHUD div#CODEXBUTTON.login img[alt='login'],
 div#CODEXHUD div#CODEXBUTTON.flytoc img[alt='flytoc'],
 div#CODEXHUD div#CODEXBUTTON.scanning img[alt='scanning'],
