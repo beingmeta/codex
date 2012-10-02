@@ -91,7 +91,7 @@ var Codex=
 	 toc: false,	// Whether we're debugging TOC tracking
 	 offline: 0,	// How much to trace offline persistence
 	 network: 0,	// How much to trace server interaction
-	 glosses: 1,    // How much we're tracing gloss processing
+	 glosses: 0,    // How much we're tracing gloss processing
 	 offline: 0,    // Whether to trace offline restoration, etc
 	 layout: 0,	// How much to trace document layout
 	 dosync: false, // Whether to trace state saves
