@@ -98,7 +98,8 @@ body.cxSHRINK div#CODEXPAGE div.codexpage {
     -o-transition-property: -o-transform;
     transition-duration: 1s; -webkit-transition-duration: 1s;
     -moz-duration: 1s; -o-transition-duration: 1s;}
-body.cxSHRINK.hudup div#CODEXPAGE div.codexpage {
+body.cxSHRINK.hudup div#CODEXPAGE div.codexpage,
+body.cxSHRINK.cxPREVIEW div#CODEXPAGE div.codexpage {
     transform: scale(0.9,0.9); -webkit-transform:scale(0.9,0.9);
     -moz-transform: scale(0.9,0.9); -o-transform:scale(0.9,0.9);}
 
