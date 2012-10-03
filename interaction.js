@@ -1325,9 +1325,8 @@
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	if (Codex.Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
-	if ((isClickable(target))||
-	    (target!==CodexHUD.head)||
-	    (hasParent(target,".codextoc")))
+	if (!((target===CodexHUD.head)||
+	      (target===CodexHUD.tabs)))
 	    return;
 	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);
@@ -1336,6 +1335,10 @@
 	else if (fdjtDOM.hasClass(document.body,"codexhelp")) {
 	    fdjtUI.cancel(evt);
 	    fdjtDOM.dropClass(document.body,"codexhelp");}
+	else if (Codex.hudup) {
+	    fdjtUI.cancel(evt);
+	    fdjtDOM.dropClass(document.body,"codexhelp");
+	    CodexMode(false);}
 	else {
 	    fdjtUI.cancel(evt);
 	    CodexMode(true);}}
@@ -1388,6 +1391,7 @@
     
     function pageinfo_release(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
+	pageinfo.title="";
 	Codex.stopPagePreview("pageinfo_release");}
 
     var showing_page=false;
@@ -1403,8 +1407,9 @@
 		    showpage,Codex.pagecount,fdjtUI.TapHold.ispressed());
 	if (showpage!==showing_page) {
 	    pageinfo.title=
-		fdjtString("click to go to page %d, hold to glimpse a preview",
-			   showpage);
+		fdjtString(
+		    "click to go to page %d, hold to glimpse its preview",
+		    showpage);
 	    showing_page=showpage;}
 	if (Codex.previewing) {
 	    var page=Codex.getPage(showpage);
