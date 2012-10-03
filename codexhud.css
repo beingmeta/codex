@@ -119,7 +119,7 @@ body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
 
 div#CODEXHUD #CODEXFOOT {
     position: fixed; left: 0px; right: 0px; width: 100%;
-    bottom: 0px; z-index: 100;}
+    bottom: 0px; z-index: 300;}
 
 div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     position: absolute; bottom: 0px;
@@ -130,6 +130,7 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     -moz-border-radius: 1em; -webkit-border-radius: 1em;
     background-color: ivory;
     padding-top: 10px;
+    cursor: pointer;
     display: none;}
 
 @media screen and (min-width: 800px) {

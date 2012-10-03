@@ -4,13 +4,16 @@
        alt="close" class="closebutton"
        onclick="Codex.hideHelp();"/>
   <h3>Navigating your sBook</h3>
-  <p>The <strong>overleaf</strong> at the top of the page shows a map of
-    your book centered on the current location.  You can use it to
-    browse or navigate the book.  <strong class="fortouch">Tapping</strong>
-    <strong class="notouch">Clicking</strong> on the map jumps to the
-    corresponding location in the book; <strong>pressing or
-    holding</strong> lets you preview the location without actually
-    jumping there.</p>
+  <div class="helpblock">
+    <p>The <strong>overleaf</strong> at the top of the page shows a map of
+      your book centered on the current location.  You can use it to
+      browse or navigate the book.</p>
+    <p><strong class="fortouch">Tapping</strong>
+      <strong class="notouch">Clicking</strong> on the map jumps to the
+      corresponding location in the book;</p>
+    <p><strong>Pressing or holding</strong> lets you glimpse the
+      location without actually jumping there.</p>
+  </div>
   <p><strong>Layout stripes</strong> <img class="codextocbar"
     src="http://static.beingmeta.com/codex/screenshots/headerstripe.png"/>
     display the arrangement and sizes of divisions at a particular
@@ -174,27 +177,51 @@
        alt="close" class="closebutton"
        onclick="Codex.hideHelp();"/>
   <h3>Searching your sBook</h3>
-  <p>You are searching for passages or glosses within the book, using
+  <p>You are searching for passages or glosses within your book, using
     either <span class="dterm">tags</span>
-    or <span class="rawterm">literals</span>.</p>
+    or <span class="rawterm">literals</span>.  As you type or edit in
+    the search box, the cloud of tags and phrases will grow or shrink
+    to display matching phrases, tags, or synonyms of tags.</p>
+  <p><strong class="fortouch">Tapping</strong>
+    <strong class="notouch">Clicking</strong>
+    <em>adds a phrase or tag</em> to the current search, generating
+    both results and an updated cloud of phrases and tags.  Tags may
+    be related to other tags (for
+    example, <span class="dterm">dachshund</span>
+    to <span class="dterm">dog</span>) and those relationships are
+    used in your search.</p>
+  <p>Once you have specified <em>at least one tag or phrase</em>, you
+    can see the matching results by
+    either <span class="fortouch">tapping</span>
+    <span class="notouch">clicking</span> on the result count or
+    using the <kbd>Enter</kbd> key in an empty input box.  If there
+    are few enough results, it will switch to them automatically.</p>
 </div>
 <div id="CODEXSEARCHRESULTSHELP" class="helpbox atfoot">
   <img svg="http://static.beingmeta.com/g/codex/hide_help.svgz"
        src="http://static.beingmeta.com/g/codex/hide_help24x24.png"
-       alt="close" class="closebutton"
-       onclick="Codex.hideHelp();"/>
+       alt="close" class="closebutton" onclick="Codex.hideHelp();"/>
   <h3>Browsing search results</h3>
   <blockquote>
-    <p>These are the results of your search, ordered by relevance and
-      position within the book.</p>
-    <p><strong class="fortouch">tap</strong>
-      <strong class="notouch">click</strong> a result to jump to that
-      part of the book and start <em>scanning</em> through the book
-      using the results.</p>
-    <p><strong class="notouch">Holding the mouse
-	button down over</strong><strong class="fortouch">Pressing
-	on</strong> a result shows you a preview of the matching text
-      without actually going there.</p>
+    <p>These are the <em>results of your search</em>, ordered by
+      relevance and position within the book.  You can return to
+      the <strong>tag/phrase cloud</strong>
+      by <span class="fortouch">tapping</span>
+      <span class="notouch">clicking</span> in the text box or on the
+      “<em>DDD associated tags</em>” beneath it.</p>
+    <p><strong class="fortouch">Tap</strong>
+      <strong class="notouch">Click</strong> a result to jump to that
+      part of the book and begin <strong>scanning</strong> the book
+      based on the results.  When scanning, you can use the
+      double-arrow buttons on the edges to move through the results
+      (you can also use <span class="fortouch">two-fingered
+      swipes</span>
+      <span class="notouch">your keyboard's arrow keys</span>).
+    </p>
+    <p><strong class="notouch">Holding the mouse button down
+	on</strong><strong class="fortouch">Pressing and holding
+	</strong> a result shows you a glimpse of the result's context
+	without leaving the list of results.</p>
   </blockquote>
 </div>
 <div id="CODEXALLGLOSSESHELP" class="helpbox atfoot">
@@ -202,21 +229,35 @@
        src="http://static.beingmeta.com/g/codex/hide_help24x24.png"
        alt="close" class="closebutton"
        onclick="Codex.hideHelp();"/>
+  <h3>Browsing all glosses</h3>
   <blockquote>
     <p>These are all of the glosses overlaid on your copy of this
       book.</p>
-    <p><strong>Icons at the top of the page</strong> show the
-      creators or overlays of the glosses; click to see only the glosses
-      made by a particular person or shared in a particular
-      overlay.</p>
+    <p><strong>The pictures or icons at the top of the page</strong>
+      show the <em>creators or overlays</em> for all of the
+      glosses; <span class="fortouch">tap</span>
+      <span class="notouch">click</span> to limit the list to glosses
+      added by a particular person or shared thorough a particular
+      overlay.  <span class="notouch">Using the <kbd>Shift</kbd>
+      key adds that individual or overlay to the displayed list.</span>
+      <span class="fortouch">Tap</span>
+      <span class="notouch">Click</span> again to clear your
+      selection.
+    </p>
     <p><strong class="fortouch">Tap</strong>
-      <strong class="notouch">Click</strong> a gloss to jump to that
-      relevant part of the book and start <em>scanning</em> through the
-      book using the glosses.</p>
-    <p><strong class="notouch">Holding the
-	mouse button down over</strong><strong class="fortouch">Pressing
-	on</strong> a result shows you a preview of the matching text
-      without actually going there.</p>
+      <strong class="notouch">Click</strong> a gloss to jump to the
+      location where it has been applied; you can then begin
+      <strong>scanning</strong> the book based on the selected
+      glosses.  When scanning, you can use the double-arrow buttons on
+      the edges to move through the glosses (you can also
+      use <span class="fortouch">two-fingered swipes</span>
+      <span class="notouch">your keyboard's arrow keys</span>).
+    </p>
+    <p><strong class="notouch">Holding the mouse button down
+	on</strong><strong class="fortouch">Pressing and holding
+	</strong> a gloss will show you a glimpse of the gloss's
+	context without actually leaving the list of glosses.</p>
+
   </blockquote>
 </div>
 

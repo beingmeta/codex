@@ -96,6 +96,7 @@ var CodexMode=
 	    // Other HUD parts
 	    CodexHUD.head=fdjtID("CODEXHEAD");
 	    CodexHUD.foot=fdjtID("CODEXFOOT");
+	    CodexHUD.tabs=fdjtID("CODEXTABS");
 	    // Initialize search UI
 	    var search=fdjtID("CODEXSEARCH");
 	    search.innerHTML=sbook_searchbox;
