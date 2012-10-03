@@ -551,7 +551,7 @@ Codex.Startup=
 		var appframe=fdjtID("SBOOKSAPP");
 		var appwindow=((appframe)&&(appframe.contentWindow));
 		if ((Codex.overlays)&&(getQuery("JOIN"))&&
-		    (Codex.contains(Codex.overlays,getQuery("JOIN")))) {
+		    (fdjtKB.contains(Codex.overlays,getQuery("JOIN")))) {
 		    // Check that it's not redundant
 		    var ref=fdjtKB.ref(getQuery("JOIN"));
 		    if (ref.name)
