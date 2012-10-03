@@ -1381,10 +1381,13 @@
 	    fdjtLog("pageinfo_hold %o off=%o/%o=%o gopage=%o/%o",
 		    evt,offx,offwidth,offx/offwidth,
 		    gopage,Codex.pagecount);
+	pageinfo.title=
+	    fdjtString("Release to return to page %d",Codex.curpage);
 	if (!(offx)) return;
 	Codex.startPagePreview(gopage,"pageinfo_hold");}
     
     function pageinfo_release(evt){
+	var pageinfo=fdjtID("CODEXPAGEINFO");
 	Codex.stopPagePreview("pageinfo_release");}
 
     var showing_page=false;
@@ -1400,7 +1403,7 @@
 		    showpage,Codex.pagecount,fdjtUI.TapHold.ispressed());
 	if (showpage!==showing_page) {
 	    pageinfo.title=
-		fdjtString("page %d: click to go there, hold to preview",
+		fdjtString("click to go to page %d, hold to glimpse a preview",
 			   showpage);
 	    showing_page=showpage;}
 	if (Codex.previewing) {
