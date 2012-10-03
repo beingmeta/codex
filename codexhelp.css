@@ -298,10 +298,9 @@ body div#CODEXHELP p#CODEXHELPDISCONNECTED { display: none;}
 body.cxUSER.cxDISCONN div#CODEXHELP p#CODEXHELPDISCONNECTED {
     margin-top: 1em; color: red; font-weight: bold; display: block;}
 
-div#CODEXMAINHELP a.showmethebook {
-    color: red; font-weight: bold; font-size: 125%;
-    text-decoration: underline;
-    padding-left: 1em; float: left;}
+div#CODEXMAINHELP div.helphud#HIDETHISHELP {
+    position: absolute;
+    top: 40px; right: 4px; width: 70px;}
 
 div#CODEXMAINHELP > div {
     max-width: 50em; margin-left: auto; margin-right: auto;}
