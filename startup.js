@@ -1212,15 +1212,18 @@ Codex.Startup=
 	Codex.updatedInfo=function(data){
 	    loadInfo(data);
 	    updating=false;};
-	function updateInfo(){
+	function updateInfo(callback){
 	    if (updating) return;
 	    if (!(navigator.onLine)) return;
+	    if (!(callback)) callback="Codex.updatedInfo";
 	    var elt=fdjtID("CODEXUPDATEINFO");
 	    var update_script=fdjtDOM("script#CODEXUPDATEINFO");
 	    var uri="https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
 		encodeURIComponent(Codex.refuri)+"&CALLBACK=Codex.updatedInfo";
 	    if (Codex.mycopyid)
 		uri=uri+"&MCOPYID="+encodeURIComponent(Codex.mycopyid);
+	    if (Codex.sync) uri=uri+"&SYNC="+(Codex.sync+1);
+	    if (Codex.user) uri=uri+"&SYNCUSER="+Codex.user._id;
 	    update_script.language="javascript";
 	    update_script.type="text/javascript";
 	    update_script.setAttribute("charset","utf-8");
@@ -1257,14 +1260,9 @@ Codex.Startup=
 		var sync=getLocal("codex.usersync",true);
 		gotUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
 		return;}
-	    else if (!(fdjtID("SBOOKLOADINFO"))) {
-		var user_script=fdjtDOM("SCRIPT#SBOOKLOADINFO");
-		user_script.language="javascript";
-		user_script.type="text/javascript";
-		user_script.src=
-		    "https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
-		    encodeURIComponent(Codex.refuri)+"&CALLBACK=Codex.gotInfo";
-		document.body.appendChild(user_script);
+	    else if ((!(fdjtID("SBOOKLOADINFO")))&&
+		     (!(fdjtID("CODEXLOADINFO")))) {
+		updateInfo("Codex.gotInfo");
 		fdjtDOM.addClass(document.body,"cxNOUSER");}
 	    else fdjtDOM.addClass(document.body,"cxNOUSER");}
 	
@@ -1468,11 +1466,7 @@ Codex.Startup=
 	
 	function go_online(evt){return offline_update();}
 	function offline_update(){
-	    Codex.writeGlosses();
-	    var uri="https://"+Codex.server+
-		"/v1/loadinfo.js?REFURI="+encodeURIComponent(Codex.refuri);
-	    if (Codex.sync) uri=uri+"&SYNC="+(Codex.sync+1);
-	    fdjtAjax.jsonCall(Codex.loadInfo,uri);}
+	    Codex.writeGlosses(); updateInfo();}
 	function offline_import(results){
 	    fdjtKB.Import(results);
 	    var i=0; var lim=results.length;
