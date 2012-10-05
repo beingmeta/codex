@@ -1,4 +1,4 @@
-<div id="CODEXHELP" class="helpbox"></div>
+<div id="CODEXMAINHELP" class="helpbox"></div>
 <div id="CODEXHUDHELP"></div>
 <div id="CODEXKEYBOARDHELPBOX" class="closed">
   <span class="keep" onclick="Codex.keyboardHelp(true);">keep</span>
@@ -186,7 +186,6 @@
   <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
        src="http://static.beingmeta.com/g/codex/helpicon50x50.png"
        alt="help" title="show contextual help"
-       onclick="fdjtDOM.toggleClass(document.body,'codexhelp');"
        class="hudbutton hudmodebutton botright clickable"
        id="CODEXHELPBUTTON"/>
   <div id="CODEXSHOWTEXT">
@@ -201,8 +200,9 @@
     help</div>
   <div class="helphud botcenter">
     <span style="font-size: 200%; font-weight: bold; float: left;">
-    &#x2193;</span>
-    this progress bar shows and can change where you are in the book
+    &#x2193;</span> this progress bar shows position in the whole book;
+    <span class="fortouch">tapping</span><span class="notouch">clicking</span>
+    a point jumps to the corresponding page
   </div>
 </div>
 

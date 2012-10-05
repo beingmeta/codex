@@ -37,7 +37,7 @@
 
 /* The help HUD */
 
-div#CODEXHUD div#CODEXHELP.hudpanel {
+div#CODEXHUD div#CODEXMAINHELP.hudpanel {
     position: fixed; text-align: left;
     padding: 0px; padding-bottom: 24px; 
     background-color: ivory; color: black; opacity: 1.0;
@@ -49,30 +49,30 @@ div#CODEXHUD div#CODEXHELP.hudpanel {
     -khtml-opacity: 1;
     -moz-opacity: 1;
     -o-opacity: 1;}
-div#CODEXHUD.help div#CODEXHELP.hudpanel {
+div#CODEXHUD.help div#CODEXMAINHELP.hudpanel {
     display: block; height: inherit; border-color: blue;}
-div#CODEXHUD div#CODEXHELP {
+div#CODEXHUD div#CODEXMAINHELP {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
-div#CODEXHUD div#CODEXHELP p.head {
+div#CODEXHUD div#CODEXMAINHELP p.head {
     font-weight: bold; text-align: center; margin-bottom: 0.40em;}
 
-div#CODEXHUD div#CODEXHELP h2, div#CODEXHUD div#CODEXHELP h3 {
+div#CODEXHUD div#CODEXMAINHELP h2, div#CODEXHUD div#CODEXMAINHELP h3 {
     text-align: center; margin: .25em;}
-div#CODEXHUD div#CODEXHELP h2:first-child {
+div#CODEXHUD div#CODEXMAINHELP h2:first-child {
     margin-top: 0px; margin-bottom: 0px;}
-div#CODEXHUD div#CODEXHELP .codexclicktohide {
+div#CODEXHUD div#CODEXMAINHELP .codexclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
-    text-align: center; color: red;}div#CODEXHELP div.codexhelp {
+    text-align: center; color: red;}div#CODEXMAINHELP div.codexhelp {
     position: absolute; left: 0px; right: 0px;
     top: 0px; bottom: 40px; 
     overflow: auto;}
-div#CODEXHELP div.codexhelp p {
+div#CODEXMAINHELP div.codexhelp p {
     text-align: left; margin-left: 32px; margin-right: 2em;
     text-indent: -32px;}
-div#CODEXHELP div.codexhelp td p {
+div#CODEXMAINHELP div.codexhelp td p {
     margin-left: 0px; text-indent: 0px;
     margin-top: 0px; margin-bottom: 0px;}
 
@@ -92,16 +92,16 @@ div.helpbox p img.left {
     vertical-align: top;}
 div.helpbox kbd { font-weight: bold; }
 
-div#CODEXHELP #CODEXSTARTUPMSG {
+div#CODEXMAINHELP #CODEXSTARTUPMSG {
     text-align: right; padding-top: 2px; padding-right: 8px;
     color: darkblue;
     display: none;}
-body.codexstartup div#CODEXHELP #CODEXSTARTUPMSG {
+body.codexstartup div#CODEXMAINHELP #CODEXSTARTUPMSG {
     display: inline;}
-body.codexstartup div#CODEXHELP #CODEXHELPTITLE {
+body.codexstartup div#CODEXMAINHELP #CODEXHELPTITLE {
     display: none;}
 
-body.codexhelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
+body.codexstartuphelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
     background-color: silver; border-color: black;
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -110,6 +110,9 @@ body.codexhelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
     -khtml-opacity: 0.90;
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
+
+body.hudup.codexhelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
+    background-color: silver; border-color: black;}
 
 body.codexhelp div#CODEXHUD img.hudbutton {
     opacity: 0.9;
@@ -134,7 +137,8 @@ div.helpbox {
     -khtml-opacity: 0.01;
     -moz-opacity: 0.01;
     -o-opacity: 0.01;
-    overflow: auto;}
+    overflow: auto;
+    display: none;}
 
 div.helpbox img.closebutton {
     position: absolute; width: 24px; height: 24px;
@@ -156,11 +160,14 @@ div.helpbox.atfoot {
     left: 75px; right: 75px; width: auto;
     padding-bottom: 50px;}
 
-div#CODEXHUD div.helpbox#CODEXHELP {
+div#CODEXHUD div#CODEXMAINHELP.helpbox {
     bottom: 75px; top: 75px;
     left: 100px; right: 100px;
     display: none;}
-body.codexhelp div#CODEXHUD div.helpbox#CODEXHELP {
+
+div#CODEXHUD div.helpbox {
+    border-color: black; z-index: 250;}
+body.codexstartuphelp div#CODEXHUD div.helpbox#CODEXMAINHELP {
     display: block; border-color: black; z-index: 250; opacity: 0.9; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -168,20 +175,23 @@ body.codexhelp div#CODEXHUD div.helpbox#CODEXHELP {
     -khtml-opacity: 0.90;
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
-body.codexhelp.hudup div#CODEXHUD div.helpbox#CODEXHELP,
-body.codexhelp.codexscanning div#CODEXHUD div.helpbox#CODEXHELP {
+body.codexstartuphelp.hudup div#CODEXHUD div.helpbox#CODEXMAINHELP,
+body.codexstartuphelp.codexscanning div#CODEXHUD div.helpbox#CODEXMAINHELP {
     display: none;}
-body.codexstartup.codexhelp.hudup div#CODEXHUD div.helpbox#CODEXHELP {
+body.codexstartup.codexstartuphelp.hudup div#CODEXHUD div.helpbox#CODEXMAINHELP {
     display: block;}
-body.codexhelp div#CODEXHUD div.helphud { display: block;}
-body.codexhelp.hudup div#CODEXHUD div.helphud { display: none;}
-body.codexhelp.codexscanning div#CODEXHUD div.helphud { display: none;}
+body.codexstartuphelp div#CODEXHUD div.helphud { display: block;}
+body.codexstartuphelp.hudup div#CODEXHUD div.helphud { display: none;}
+body.codexstartuphelp.codexscanning div#CODEXHUD div.helphud { display: none;}
 
 div#CODEXHUDHELP { display: none;}
-body.codexhelp div#CODEXHUDHELP { display: block; }
+body.codexstartuphelp div#CODEXHUDHELP { display: block; }
+body.hudup.codexhelp div#CODEXHUDHELP { display: block; }
 
 body.codexhelp div#CODEXHUD.addgloss div#CODEXHUDHELP { display: block; }
-body.codexhelp div#CODEXHUD.addgloss div#CODEXHELP { display: none; }
+body.codexstartuphelp div#CODEXHUD.addgloss div#CODEXMAINHELP,
+body.codexstartuphelp.codexscanning div#CODEXHUD.addgloss div#CODEXMAINHELP {
+    display: none; }
 
 body.codexhelp.hudup div#CODEXHUD.toc div#CODEXTOCHELP.helpbox,
 body.codexhelp div#CODEXHUD.addgloss div#CODEXADDGLOSSHELP.helpbox,
@@ -196,7 +206,8 @@ body.codexhelp div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
     -webkit-opacity: 0.90;
     -khtml-opacity: 0.90;
     -moz-opacity: 0.90;
-    -o-opacity: 0.90;}
+    -o-opacity: 0.90;
+    display: block;}
 
 /* Goto page and goto loc always display their help. */
 body div#CODEXHUD.gotopage div#CODEXHUDHELP,
@@ -248,7 +259,7 @@ div#BOTTOMHUDHELP p {
     max-width: 40em; margin-left: auto; margin-right: auto;
     text-align: center;
     color: red;}
-DIV#CODEXHELP div.codexhelp p.checkspan { text-align: center; }
+DIV#CODEXMAINHELP div.codexhelp p.checkspan { text-align: center; }
 
 /* Help HUD */
 
@@ -297,13 +308,13 @@ div#CODEXHUD div.helphud.rightmiddle {
 .helphud.botleft span.arrow { float: left;}
 .helphud.botright span.arrow { float: right;}
 
-body div#CODEXHELP p#CODEXHELPLOGGEDIN { display: none;}
-body div#CODEXHELP p#CODEXHELPNEEDLOGIN {
+body div#CODEXMAINHELP p#CODEXHELPLOGGEDIN { display: none;}
+body div#CODEXMAINHELP p#CODEXHELPNEEDLOGIN {
     color: red; font-weight: bold; margin-top: 1em;}
-body.cxUSER div#CODEXHELP p#CODEXHELPLOGGEDIN { display: block;}
-body.cxUSER div#CODEXHELP p#CODEXHELPNEEDLOGIN { display: none;}
-body div#CODEXHELP p#CODEXHELPDISCONNECTED { display: none;}
-body.cxUSER.cxDISCONN div#CODEXHELP p#CODEXHELPDISCONNECTED {
+body.cxUSER div#CODEXMAINHELP p#CODEXHELPLOGGEDIN { display: block;}
+body.cxUSER div#CODEXMAINHELP p#CODEXHELPNEEDLOGIN { display: none;}
+body div#CODEXMAINHELP p#CODEXHELPDISCONNECTED { display: none;}
+body.cxUSER.cxDISCONN div#CODEXMAINHELP p#CODEXHELPDISCONNECTED {
     margin-top: 1em; color: red; font-weight: bold; display: block;}
 
 div#CODEXMAINHELP div.helphud#HIDETHISHELP {

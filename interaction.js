@@ -798,7 +798,6 @@
 	    if (Codex.Trace.gestures)
 		fdjtLog("Clickable: don't dropHUD %o",evt);
 	    return;}
-	dropClass(document.body,"codexhelp");
 	if (Codex.Trace.gestures) fdjtLog("dropHUD %o",evt);
 	fdjtUI.cancel(evt); CodexMode(false);};
 
@@ -1330,14 +1329,12 @@
 	    return;
 	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);
-	    fdjtDOM.dropClass(document.body,"codexhelp");
 	    CodexMode(false);}
-	else if (fdjtDOM.hasClass(document.body,"codexhelp")) {
+	else if (fdjtDOM.hasClass(document.body,"codexstartuphelp")) {
 	    fdjtUI.cancel(evt);
-	    fdjtDOM.dropClass(document.body,"codexhelp");}
+	    fdjtDOM.dropClass(document.body,"codexstartuphelp");}
 	else if (Codex.hudup) {
 	    fdjtUI.cancel(evt);
-	    fdjtDOM.dropClass(document.body,"codexhelp");
 	    CodexMode(false);}
 	else {
 	    fdjtUI.cancel(evt);
@@ -1513,7 +1510,7 @@
 	evt=evt||event;
 	fdjtUI.cancel(evt);
 	CodexMode(false);
-	fdjtDOM.dropClass(document.body,"codexhelp");}
+	fdjtDOM.dropClass(document.body,"codexstartuphelp");}
 
     /* Rules */
 
@@ -1536,6 +1533,22 @@
 	if ((newval)&&(Codex._setup)&&
 	    ((fdjtTime()-(Codex._setup.getTime()))<30000))
 	    CodexMode(false);}
+
+    function toggleHelp(evt){
+	evt=evt||event;
+	fdjtUI.cancel(evt);
+	if (Codex.mode) {
+	    if (Codex.cxthelp) {
+		dropClass(document.body,"codexhelp");
+		Codex.cxthelp=false;}
+	    else {
+		addClass(document.body,"codexhelp");
+		Codex.cxthelp=true;}}
+	else if (hasClass(document.body,"codexstartuphelp"))
+	    dropClass(document.body,"codexstartuphelp");
+	else addClass(document.body,"codexstartuphelp");}
+    Codex.toggleHelp=toggleHelp;
+
     Codex.UI.handlers.mouse=
 	{window: {
 	    keyup: onkeyup,
@@ -1555,7 +1568,7 @@
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,
 		   release: slice_released},
-	 "#CODEXHELP": {click: Codex.UI.dropHUD},
+	 "#CODEXMAINHELP": {click: Codex.UI.dropHUD},
 	 "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
 	 ".helphud": {click: Codex.UI.dropHUD},
 	 ".codexheart": {tap: flyleaf_tap},
@@ -1576,7 +1589,6 @@
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
 	 "#STARTUPHELPCHECKSPAN" : {click: startupHelpToggle},
-	 "#HIDEHELPBUTTON" : {click: function(evt){CodexMode(false);}},
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 // GLOSSFORM rules
 	 "span.codexglossdelete": { click: delete_ontap },
@@ -1587,6 +1599,8 @@
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
 	 "div.glossetc span.modebuttons": {click: glossmode_button},
 	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
+	 "#CODEXHELPBUTTON": {
+	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
 	 "#CODEXSHOWTEXT": {click: back_to_reading}};
 
     function justselect(evt){
@@ -1607,7 +1621,7 @@
 		     touchend: cancel},
 	 // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,release: slice_released},
-	 "#CODEXHELP": {click: Codex.UI.dropHUD},
+	 "#CODEXMAINHELP": {click: Codex.UI.dropHUD},
 	 "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
 	 ".helphud": {click: Codex.UI.dropHUD},
 	 "#CODEXPAGEFOOT": {},
@@ -1627,7 +1641,7 @@
 	 "#CODEXPAGELEFT": {touchstart: left_margin},
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},
 	 "#STARTUPHELPCHECKSPAN" : {tap: startupHelpToggle},
-	 "#HIDEHELPBUTTON" : {tap: function(evt){CodexMode(false);}},
+	 "#CODEXHELPBUTTON": {click: toggleHelp},
 	 "#CODEXSHOWTEXT": {click: back_to_reading},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click: hudbutton},

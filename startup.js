@@ -89,7 +89,8 @@ Codex.Startup=
 	     bodysize: 'normal',bodyfamily: 'serif',
 	     uisize: 'normal',showconsole: true,
 	     animatepages: true,animatehud: true,
-	     startuphelp: true,keyboardhelp: true,
+	     startuphelp: true,contexthelp: true,
+	     keyboardhelp: true,
 	     holdmsecs: 750,taptapmsecs: 500};
 	var current_config={};
 	var saved_config={};
@@ -234,6 +235,11 @@ Codex.Startup=
 	    fdjtUI.CheckSpan.set(
 		document.getElementsByName("CODEXSTARTUPHELP"),
 		value);});
+	Codex.addConfig("contexthelp",function(name,value){
+	    Codex.cxthelp=value;
+	    fdjtUI.CheckSpan.set(
+		document.getElementsByName("CODEXCONTEXTHELP"),
+		value);});
 	Codex.addConfig("keyboardhelp",function(name,value){
 	    Codex.keyboardhelp=value;
 	    fdjtUI.CheckSpan.set(
@@ -322,6 +328,9 @@ Codex.Startup=
 		(!((getQuery("ACTION"))||
 		   (getQuery("JOIN"))||
 		   (getQuery("OVERLAY")))))
+		fdjtDOM.addClass(document.body,"codexstartuphelp");
+
+	    if (Codex.cxthelp)
 		fdjtDOM.addClass(document.body,"codexhelp");
 
 	    // Setup the reticle (if desired)
@@ -556,7 +565,6 @@ Codex.Startup=
 					origin);
 			    return;}
 			if (evt.data==="sbooksapp") {
-			    dropClass(document.body,"codexhelp");
 			    CodexMode("sbooksapp");}
 			else if (evt.data)
 			    fdjtDOM("CODEXINTRO",evt.data);
@@ -565,7 +573,7 @@ Codex.Startup=
 		    Codex.joining=getQuery("JOIN");
 		    CodexMode("sbooksapp");}}
 	    if ((!(Codex.mode))&&(Codex.startuphelp))
-		addClass(document.body,"codexhelp");
+		addClass(document.body,"codexstartuphelp");
 	    window.focus();}
 	
 	function startupDone(mode){
@@ -582,8 +590,8 @@ Codex.Startup=
 	    else if (getQuery("startmode"))
 		mode=getQuery("startmode");
 	    else if (Codex.startuphelp)
-		addClass(document.body,"codexhelp");
-	    else dropClass(document.body,"codexhelp");
+		addClass(document.body,"codexstartuphelp");
+	    else dropClass(document.body,"codexstartuphelp");
 	    if (mode) CodexMode(mode);
 	    _sbook_setup=Codex._setup=new Date();
 	    var msg=false;

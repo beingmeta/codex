@@ -240,7 +240,8 @@ div.completions.hudpanel .normal { line-height: 250%;}
 /* HUD buttons */
 
 div#CODEXHUD img.hudbutton {
-    position: fixed; width: 50px; height: 50px; z-index: 0;
+    position: fixed; z-index: 0; cursor: pointer;
+    width: 50px; height: 50px;
     border: solid transparent 2px; opacity: 0.2;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter: alpha(opacity=20);
@@ -290,6 +291,9 @@ div#CODEXHUD img.botright {
     -webkit-border-top-left-radius: 6px; 
     -moz-border-radius-topleft: 6px;
     -o-border-radius-topleft: 6px;}
+
+img.closebutton, img.codexpagebutton, img.codexscanbutton {
+    cursor: pointer; }
 
 body div#CODEXHUD.about #CODEXHEART .tabcontent#CODEXABOUTBOOK,
 body div#CODEXHUD.device #CODEXHEART .tabcontent#CODEXSETTINGS,

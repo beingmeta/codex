@@ -79,7 +79,7 @@ var CodexMode=
 		// Fill in the HUD help
 		var hudhelp=fdjtID("CODEXHUDHELP");
 		hudhelp.innerHTML=sbook_hudhelp;
-		var readhelp=fdjtID("CODEXHELP");
+		var readhelp=fdjtID("CODEXMAINHELP");
 		readhelp.innerHTML=sbook_helptext;}
 	    // Setup heart
 	    var heart=fdjtID("CODEXHEART");
@@ -90,7 +90,7 @@ var CodexMode=
 	    settings.innerHTML=sbook_settingstext;
 	    CodexHUD.settings=settings;
 	    // Setup help text
-	    var help=fdjtID("CODEXHELP");
+	    var help=fdjtID("CODEXMAINHELP");
 	    help.innerHTML=sbook_helptext;
 	    CodexHUD.help=help;
 	    // Other HUD parts
@@ -299,7 +299,7 @@ var CodexMode=
 
 	    sbookFoot=fdjtID("CODEXFOOT");
 	    sbookHead=fdjtID("CODEXHEAD");
-	    sbookHelp=fdjtID("CODEXHELP");
+	    sbookHelp=fdjtID("CODEXMAINHELP");
 	    fillinTabs();
 	    resizeHUD();
 	    Codex.scrollers={};
@@ -518,8 +518,8 @@ var CodexMode=
 		    Codex.liveinput=false;}
 		document.body.focus();
 		dropClass(document.body,"dimmed");
+		dropClass(document.body,"codexstartuphelp");
 		dropClass(document.body,"codexscanning");
-		dropClass(document.body,"codexhelp");
 		setHUD(false);
 		if (display_sync) Codex.displaySync();}}
 
@@ -808,7 +808,6 @@ var CodexMode=
 			Codex.highlightTerm(term,target,info,spellings);}}}
 	    Codex.setTarget(elt);
 	    Codex.GoTo(elt,"Scan");
-	    dropClass(document.body,"codexhelp");
 	    CodexMode("scanning");}
 	Codex.Scan=CodexScan;
 	
@@ -844,6 +843,9 @@ var CodexMode=
 	    var startuphelp=fdjtDOM.getInputValues(settings,"CODEXSTARTUPHELP");
 	    result.startuphelp=
 		((startuphelp)&&(startuphelp.length))||false;
+	    var contexthelp=fdjtDOM.getInputValues(settings,"CODEXCONTEXTHELP");
+	    result.contexthelp=
+		((contexthelp)&&(contexthelp.length))||false;
 	    var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
 	    result.showconsole=
 		((showconsole)&&(showconsole.length)&&(true))||false;
