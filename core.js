@@ -94,6 +94,7 @@ var Codex=
 	 glosses: 0,    // How much we're tracing gloss processing
 	 offline: 0,    // Whether to trace offline restoration, etc
 	 layout: 0,	// How much to trace document layout
+	 knodules: 0,	// How much to trace knodule processing
 	 dosync: false, // Whether to trace state saves
 	 state: false,  // Whether to trace set state
 	 flips: false,	// Whether to trace page flips (movement by pages)

@@ -369,23 +369,8 @@ Codex.Startup=
 		    fdjtLog("Getting glosses from %s for %s (%s)",
 			    Codex.server,Codex.user._id,Codex.user.name);
 		else fdjtLog("Getting glosses from %s",Codex.server);
-		// Get all or updated glosses, doing it old school (JSONP)
-		var script=fdjtDOM("script");
-		script.setAttribute("language","javascript");
-		script.setAttribute("type","text/javascript");
-		script.setAttribute("charset","utf-8");
-		script.setAttribute("async","async");
-		// script.setAttribute("crossorigin","use-credentials");
-		var uri="https://"+Codex.server+"/v1/loadinfo.js?"+
-		    "REFURI="+encodeURIComponent(Codex.refuri)+"&"+
-		    "CALLBACK=Codex.loadInfo";
-		if (Codex.sync) uri=uri+"&SYNC="+Codex.sync;
-		if (Codex.user) uri=uri+"&SYNCUSER="+
-		    encodeURIComponent(Codex.user._id);
-		if (Codex.mycopyid) uri=uri+"&MYCOPYID="+
-		    encodeURIComponent(Codex.mycopyid);
-		script.src=uri;
-		document.body.appendChild(script);
+		updateInfo();
+		setInterval(updateInfo,300000);
 		return;}
 	    else return;}
 
@@ -828,9 +813,8 @@ Codex.Startup=
 	    var etc=Codex.etc;
 	    var i=0; var lim=etc.length;
 	    while (i<lim) Codex.sourcekb.ref(etc[i++]);
-	    if (Codex.Trace.glosses)
-		fdjtLog("Initialized %d glosses (%d etc) from offline storage",
-			localglosses.length,etc.length);}
+	    fdjtLog("Initialized %d glosses (%d etc) from offline storage",
+		    localglosses.length,etc.length);}
 
 	/* Viewport setup */
 
@@ -1213,6 +1197,7 @@ Codex.Startup=
 			((info.overlays)?(info.overlays.length):(0)));}
 	    if ((info.glosses)||(info.etc))
 		initGlosses(info.glosses,info.etc);
+	    if (info.etc) gotInfo("etc",info.etc,persist);
 	    if (info.sources) gotInfo("sources",info.sources,persist);
 	    if (info.outlets) gotInfo("outlets",info.outlets,persist);
 	    if (info.overlays) gotInfo("overlays",info.overlays,persist);
@@ -1222,6 +1207,31 @@ Codex.Startup=
 		Codex.sync=info.sync;}
 	    Codex.loaded=info.loaded=fdjtTime();}
 	Codex.loadInfo=loadInfo;
+
+	var updating=false;
+	Codex.updatedInfo=function(data){
+	    loadInfo(data);
+	    updating=false;};
+	function updateInfo(){
+	    if (updating) return;
+	    if (!(navigator.onLine)) return;
+	    var elt=fdjtID("CODEXUPDATEINFO");
+	    var update_script=fdjtDOM("script#CODEXUPDATEINFO");
+	    var uri="https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
+		encodeURIComponent(codex.refuri)+"&CALLBACK=Codex.updatedInfo";
+	    if (Codex.mycopyid)
+		uri=uri+"&MCOPYID="+encodeURIComponent(Codex.mycopyid);
+	    update_script.language="javascript";
+	    update_script.type="text/javascript";
+	    script.setAttribute("charset","utf-8");
+	    script.setAttribute("async","async");
+	    if (Codex.mycopyid)
+		script.setAttribute("crossorigin","anonymous");
+	    else script.setAttribute("crossorigin","use-credentials");
+	    update_script.src=uri;
+	    updating=true;
+	    if (elt) fdjtDOM.replace(elt,update_script);
+	    else document.body.appendChild(update_script);}
 
 	function getUser() {
 	    var refuri=Codex.refuri;
@@ -1247,9 +1257,10 @@ Codex.Startup=
 		var sync=getLocal("codex.usersync",true);
 		gotUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
 		return;}
-	    else if (!(fdjtID("SBOOKGETUSERINFO"))) {
-		var user_script=fdjtDOM("SCRIPT#SBOOKGETUSERINFO");
+	    else if (!(fdjtID("SBOOKLOADINFO"))) {
+		var user_script=fdjtDOM("SCRIPT#SBOOKLOADINFO");
 		user_script.language="javascript";
+		user_script.type="text/javascript";
 		user_script.src=
 		    "https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
 		    encodeURIComponent(codex.refuri)+"&CALLBACK=Codex.gotInfo";
@@ -1786,24 +1797,31 @@ Codex.Startup=
 	    startupMessage("setting up outlet cloud...");
 	    fdjtDOM.replace("CODEXOUTLETCLOUD",Codex.outletCloud().dom);
 	    if (Codex.gloss_cloud_queue) {
-		fdjtLog("Starting to sync gloss cloud");
+		if (Codex.Trace.clouds)
+		    fdjtLog("Starting to sync gloss cloud");
 		fdjtTime.slowmap(
 		    Codex.addTag2GlossCloud,Codex.gloss_cloud_queue,false,
 		    function(){
 			Codex.cloud_queue=false;
-			fdjtLog("Gloss cloud synced");});}
+			if (Codex.Trace.clouds)
+			    fdjtLog("Gloss cloud synced");});}
 	    if (Codex.outlet_cloud_queue) {
-		fdjtLog("Starting to sync outlet cloud");
+		if (Codex.Trace.clouds)
+		    fdjtLog("Starting to sync outlet cloud");
 		fdjtTime.slowmap(
 		    Codex.addOutlets2UI,Codex.outlet_cloud_queue,false,
 		    function(){
 			Codex.cloud_queue=false;
-			fdjtLog("Gloss cloud synced");});}
+			if (Codex.Trace.clouds)
+			    fdjtLog("Outlet cloud synced");});}
 	    if (Codex.knodule) {
-		fdjtLog("Beginning knodule integration");
+		if (Codex.Trace.knodules)
+		    fdjtLog("Beginning knodule integration");
 		fdjtTime.slowmap(Codex.addTag2GlossCloud,
 				 Codex.knodule.alldterms,false,
-				 function(){fdjtLog("Knodule integrated");});}
+				 function(){
+				     if (Codex.Trace.knodules)
+					 fdjtLog("Knodule integrated");});}
 	    Codex.sizeCloud(Codex.search_cloud);
 	    Codex.sizeCloud(Codex.gloss_cloud);}
 	
