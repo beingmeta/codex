@@ -1218,16 +1218,16 @@ Codex.Startup=
 	    var elt=fdjtID("CODEXUPDATEINFO");
 	    var update_script=fdjtDOM("script#CODEXUPDATEINFO");
 	    var uri="https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
-		encodeURIComponent(codex.refuri)+"&CALLBACK=Codex.updatedInfo";
+		encodeURIComponent(Codex.refuri)+"&CALLBACK=Codex.updatedInfo";
 	    if (Codex.mycopyid)
 		uri=uri+"&MCOPYID="+encodeURIComponent(Codex.mycopyid);
 	    update_script.language="javascript";
 	    update_script.type="text/javascript";
-	    script.setAttribute("charset","utf-8");
-	    script.setAttribute("async","async");
+	    update_script.setAttribute("charset","utf-8");
+	    update_script.setAttribute("async","async");
 	    if (Codex.mycopyid)
-		script.setAttribute("crossorigin","anonymous");
-	    else script.setAttribute("crossorigin","use-credentials");
+		update_script.setAttribute("crossorigin","anonymous");
+	    else update_script.setAttribute("crossorigin","use-credentials");
 	    update_script.src=uri;
 	    updating=true;
 	    if (elt) fdjtDOM.replace(elt,update_script);
@@ -1263,7 +1263,7 @@ Codex.Startup=
 		user_script.type="text/javascript";
 		user_script.src=
 		    "https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
-		    encodeURIComponent(codex.refuri)+"&CALLBACK=Codex.gotInfo";
+		    encodeURIComponent(Codex.refuri)+"&CALLBACK=Codex.gotInfo";
 		document.body.appendChild(user_script);
 		fdjtDOM.addClass(document.body,"cxNOUSER");}
 	    else fdjtDOM.addClass(document.body,"cxNOUSER");}
