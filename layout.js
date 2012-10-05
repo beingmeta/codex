@@ -1423,7 +1423,7 @@ var CodexPaginate=
 	function GoToPage(spec,caller,pushstate){
 	    if (typeof pushstate === 'undefined') pushstate=false;
 	    if (Codex.previewing) stopPreview("GoToPage");
-	    dropClass(document.body,"codexstartuphelp");
+	    dropClass(document.body,"codexreadinghelp");
 	    if ((Codex.layout)&&
 		(Codex.layout.pagelocs)) {
 		Codex.GoToSection(Codex.layout.pagelocs[spec-1]);

@@ -328,7 +328,7 @@ Codex.Startup=
 		(!((getQuery("ACTION"))||
 		   (getQuery("JOIN"))||
 		   (getQuery("OVERLAY")))))
-		fdjtDOM.addClass(document.body,"codexstartuphelp");
+		fdjtDOM.addClass(document.body,"codexreadinghelp");
 
 	    if (Codex.cxthelp)
 		fdjtDOM.addClass(document.body,"codexhelp");
@@ -573,7 +573,7 @@ Codex.Startup=
 		    Codex.joining=getQuery("JOIN");
 		    CodexMode("sbooksapp");}}
 	    if ((!(Codex.mode))&&(Codex.startuphelp))
-		addClass(document.body,"codexstartuphelp");
+		addClass(document.body,"codexreadinghelp");
 	    window.focus();}
 	
 	function startupDone(mode){
@@ -590,8 +590,8 @@ Codex.Startup=
 	    else if (getQuery("startmode"))
 		mode=getQuery("startmode");
 	    else if (Codex.startuphelp)
-		addClass(document.body,"codexstartuphelp");
-	    else dropClass(document.body,"codexstartuphelp");
+		addClass(document.body,"codexreadinghelp");
+	    else dropClass(document.body,"codexreadinghelp");
 	    if (mode) CodexMode(mode);
 	    _sbook_setup=Codex._setup=new Date();
 	    var msg=false;

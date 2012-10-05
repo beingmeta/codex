@@ -1330,9 +1330,9 @@
 	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);
 	    CodexMode(false);}
-	else if (fdjtDOM.hasClass(document.body,"codexstartuphelp")) {
+	else if (fdjtDOM.hasClass(document.body,"codexreadinghelp")) {
 	    fdjtUI.cancel(evt);
-	    fdjtDOM.dropClass(document.body,"codexstartuphelp");}
+	    fdjtDOM.dropClass(document.body,"codexreadinghelp");}
 	else if (Codex.hudup) {
 	    fdjtUI.cancel(evt);
 	    CodexMode(false);}
@@ -1510,7 +1510,7 @@
 	evt=evt||event;
 	fdjtUI.cancel(evt);
 	CodexMode(false);
-	fdjtDOM.dropClass(document.body,"codexstartuphelp");}
+	fdjtDOM.dropClass(document.body,"codexreadinghelp");}
 
     /* Rules */
 
@@ -1544,9 +1544,9 @@
 	    else {
 		addClass(document.body,"codexhelp");
 		Codex.cxthelp=true;}}
-	else if (hasClass(document.body,"codexstartuphelp"))
-	    dropClass(document.body,"codexstartuphelp");
-	else addClass(document.body,"codexstartuphelp");}
+	else if (hasClass(document.body,"codexreadinghelp"))
+	    dropClass(document.body,"codexreadinghelp");
+	else addClass(document.body,"codexreadinghelp");}
     Codex.toggleHelp=toggleHelp;
 
     Codex.UI.handlers.mouse=
@@ -1568,7 +1568,7 @@
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,
 		   release: slice_released},
-	 "#CODEXMAINHELP": {click: Codex.UI.dropHUD},
+	 "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
 	 "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
 	 ".helphud": {click: Codex.UI.dropHUD},
 	 ".codexheart": {tap: flyleaf_tap},
@@ -1621,7 +1621,7 @@
 		     touchend: cancel},
 	 // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
 	 summary: {tap: slice_tapped, hold: slice_held,release: slice_released},
-	 "#CODEXMAINHELP": {click: Codex.UI.dropHUD},
+	 "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
 	 "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
 	 ".helphud": {click: Codex.UI.dropHUD},
 	 "#CODEXPAGEFOOT": {},

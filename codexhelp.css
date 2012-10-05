@@ -37,7 +37,7 @@
 
 /* The help HUD */
 
-div#CODEXHUD div#CODEXMAINHELP.hudpanel {
+div#CODEXHUD div#CODEXSTARTPAGE.hudpanel {
     position: fixed; text-align: left;
     padding: 0px; padding-bottom: 24px; 
     background-color: ivory; color: black; opacity: 1.0;
@@ -49,30 +49,30 @@ div#CODEXHUD div#CODEXMAINHELP.hudpanel {
     -khtml-opacity: 1;
     -moz-opacity: 1;
     -o-opacity: 1;}
-div#CODEXHUD.help div#CODEXMAINHELP.hudpanel {
+div#CODEXHUD.help div#CODEXSTARTPAGE.hudpanel {
     display: block; height: inherit; border-color: blue;}
-div#CODEXHUD div#CODEXMAINHELP {
+div#CODEXHUD div#CODEXSTARTPAGE {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
-div#CODEXHUD div#CODEXMAINHELP p.head {
+div#CODEXHUD div#CODEXSTARTPAGE p.head {
     font-weight: bold; text-align: center; margin-bottom: 0.40em;}
 
-div#CODEXHUD div#CODEXMAINHELP h2, div#CODEXHUD div#CODEXMAINHELP h3 {
+div#CODEXHUD div#CODEXSTARTPAGE h2, div#CODEXHUD div#CODEXSTARTPAGE h3 {
     text-align: center; margin: .25em;}
-div#CODEXHUD div#CODEXMAINHELP h2:first-child {
+div#CODEXHUD div#CODEXSTARTPAGE h2:first-child {
     margin-top: 0px; margin-bottom: 0px;}
-div#CODEXHUD div#CODEXMAINHELP .codexclicktohide {
+div#CODEXHUD div#CODEXSTARTPAGE .codexclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
-    text-align: center; color: red;}div#CODEXMAINHELP div.codexhelp {
+    text-align: center; color: red;}div#CODEXSTARTPAGE div.codexhelp {
     position: absolute; left: 0px; right: 0px;
     top: 0px; bottom: 40px; 
     overflow: auto;}
-div#CODEXMAINHELP div.codexhelp p {
+div#CODEXSTARTPAGE div.codexhelp p {
     text-align: left; margin-left: 32px; margin-right: 2em;
     text-indent: -32px;}
-div#CODEXMAINHELP div.codexhelp td p {
+div#CODEXSTARTPAGE div.codexhelp td p {
     margin-left: 0px; text-indent: 0px;
     margin-top: 0px; margin-bottom: 0px;}
 
@@ -92,16 +92,16 @@ div.helpbox p img.left {
     vertical-align: top;}
 div.helpbox kbd { font-weight: bold; }
 
-div#CODEXMAINHELP #CODEXSTARTUPMSG {
+div#CODEXSTARTPAGE #CODEXSTARTUPMSG {
     text-align: right; padding-top: 2px; padding-right: 8px;
     color: darkblue;
     display: none;}
-body.codexstartup div#CODEXMAINHELP #CODEXSTARTUPMSG {
+body.codexstartup div#CODEXSTARTPAGE #CODEXSTARTUPMSG {
     display: inline;}
-body.codexstartup div#CODEXMAINHELP #CODEXHELPTITLE {
+body.codexstartup div#CODEXSTARTPAGE #CODEXHELPTITLE {
     display: none;}
 
-body.codexstartuphelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
+body.codexreadinghelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
     background-color: silver; border-color: black;
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -160,14 +160,14 @@ div.helpbox.atfoot {
     left: 75px; right: 75px; width: auto;
     padding-bottom: 50px;}
 
-div#CODEXHUD div#CODEXMAINHELP.helpbox {
+div#CODEXHUD div#CODEXSTARTPAGE.helpbox {
     bottom: 75px; top: 75px;
     left: 100px; right: 100px;
     display: none;}
 
 div#CODEXHUD div.helpbox {
     border-color: black; z-index: 250;}
-body.codexstartuphelp div#CODEXHUD div.helpbox#CODEXMAINHELP {
+body.codexreadinghelp div#CODEXHUD div.helpbox#CODEXSTARTPAGE {
     display: block; border-color: black; z-index: 250; opacity: 0.9; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -175,22 +175,22 @@ body.codexstartuphelp div#CODEXHUD div.helpbox#CODEXMAINHELP {
     -khtml-opacity: 0.90;
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
-body.codexstartuphelp.hudup div#CODEXHUD div.helpbox#CODEXMAINHELP,
-body.codexstartuphelp.codexscanning div#CODEXHUD div.helpbox#CODEXMAINHELP {
+body.codexreadinghelp.hudup div#CODEXHUD div.helpbox#CODEXSTARTPAGE,
+body.codexreadinghelp.codexscanning div#CODEXHUD div.helpbox#CODEXSTARTPAGE {
     display: none;}
-body.codexstartup.codexstartuphelp.hudup div#CODEXHUD div.helpbox#CODEXMAINHELP {
+body.codexstartup.codexreadinghelp.hudup div#CODEXHUD div.helpbox#CODEXSTARTPAGE {
     display: block;}
-body.codexstartuphelp div#CODEXHUD div.helphud { display: block;}
-body.codexstartuphelp.hudup div#CODEXHUD div.helphud { display: none;}
-body.codexstartuphelp.codexscanning div#CODEXHUD div.helphud { display: none;}
+body.codexreadinghelp div#CODEXHUD div.helphud { display: block;}
+body.codexreadinghelp.hudup div#CODEXHUD div.helphud { display: none;}
+body.codexreadinghelp.codexscanning div#CODEXHUD div.helphud { display: none;}
 
 div#CODEXHUDHELP { display: none;}
-body.codexstartuphelp div#CODEXHUDHELP { display: block; }
+body.codexreadinghelp div#CODEXHUDHELP { display: block; }
 body.hudup.codexhelp div#CODEXHUDHELP { display: block; }
 
 body.codexhelp div#CODEXHUD.addgloss div#CODEXHUDHELP { display: block; }
-body.codexstartuphelp div#CODEXHUD.addgloss div#CODEXMAINHELP,
-body.codexstartuphelp.codexscanning div#CODEXHUD.addgloss div#CODEXMAINHELP {
+body.codexreadinghelp div#CODEXHUD.addgloss div#CODEXSTARTPAGE,
+body.codexreadinghelp.codexscanning div#CODEXHUD.addgloss div#CODEXSTARTPAGE {
     display: none; }
 
 body.codexhelp.hudup div#CODEXHUD.toc div#CODEXTOCHELP.helpbox,
@@ -259,7 +259,7 @@ div#BOTTOMHUDHELP p {
     max-width: 40em; margin-left: auto; margin-right: auto;
     text-align: center;
     color: red;}
-DIV#CODEXMAINHELP div.codexhelp p.checkspan { text-align: center; }
+DIV#CODEXSTARTPAGE div.codexhelp p.checkspan { text-align: center; }
 
 /* Help HUD */
 
@@ -308,35 +308,35 @@ div#CODEXHUD div.helphud.rightmiddle {
 .helphud.botleft span.arrow { float: left;}
 .helphud.botright span.arrow { float: right;}
 
-body div#CODEXMAINHELP p#CODEXHELPLOGGEDIN { display: none;}
-body div#CODEXMAINHELP p#CODEXHELPNEEDLOGIN {
+body div#CODEXSTARTPAGE p#CODEXHELPLOGGEDIN { display: none;}
+body div#CODEXSTARTPAGE p#CODEXHELPNEEDLOGIN {
     color: red; font-weight: bold; margin-top: 1em;}
-body.cxUSER div#CODEXMAINHELP p#CODEXHELPLOGGEDIN { display: block;}
-body.cxUSER div#CODEXMAINHELP p#CODEXHELPNEEDLOGIN { display: none;}
-body div#CODEXMAINHELP p#CODEXHELPDISCONNECTED { display: none;}
-body.cxUSER.cxDISCONN div#CODEXMAINHELP p#CODEXHELPDISCONNECTED {
+body.cxUSER div#CODEXSTARTPAGE p#CODEXHELPLOGGEDIN { display: block;}
+body.cxUSER div#CODEXSTARTPAGE p#CODEXHELPNEEDLOGIN { display: none;}
+body div#CODEXSTARTPAGE p#CODEXHELPDISCONNECTED { display: none;}
+body.cxUSER.cxDISCONN div#CODEXSTARTPAGE p#CODEXHELPDISCONNECTED {
     margin-top: 1em; color: red; font-weight: bold; display: block;}
 
-div#CODEXMAINHELP div.helphud#HIDETHISHELP {
+div#CODEXSTARTPAGE div.helphud#HIDETHISHELP {
     position: absolute;
     top: 40px; right: 4px; width: 70px;}
 
-div#CODEXMAINHELP > div {
+div#CODEXSTARTPAGE > div {
     max-width: 50em; margin-left: auto; margin-right: auto;}
 
-div#CODEXMAINHELP p .action {
+div#CODEXSTARTPAGE p .action {
     font-weight: bold; font-size: 125%;}
-div#CODEXMAINHELP p .result {
+div#CODEXSTARTPAGE p .result {
     font-weight: normal; font-size: 125%;
     font-style: italic;}
-div#CODEXMAINHELP table {
+div#CODEXSTARTPAGE table {
     margin-left: 10%; margin-right: 10%;}
-div#CODEXMAINHELP table table {
+div#CODEXSTARTPAGE table table {
     margin-left: 2%; margin-right: 2%;}
-div#CODEXMAINHELP table td.icon { width: 32px;}
-div#CODEXMAINHELP table td.icon img { width: 32px;}
-div#CODEXMAINHELP table td.textleft { text-align: left;}
-div#CODEXMAINHELP table td.textright { text-align: right;}
+div#CODEXSTARTPAGE table td.icon { width: 32px;}
+div#CODEXSTARTPAGE table td.icon img { width: 32px;}
+div#CODEXSTARTPAGE table td.textleft { text-align: left;}
+div#CODEXSTARTPAGE table td.textright { text-align: right;}
 
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX {
     position: fixed; text-align: center;

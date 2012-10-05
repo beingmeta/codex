@@ -79,7 +79,7 @@ var CodexMode=
 		// Fill in the HUD help
 		var hudhelp=fdjtID("CODEXHUDHELP");
 		hudhelp.innerHTML=sbook_hudhelp;
-		var readhelp=fdjtID("CODEXMAINHELP");
+		var readhelp=fdjtID("CODEXSTARTPAGE");
 		readhelp.innerHTML=sbook_helptext;}
 	    // Setup heart
 	    var heart=fdjtID("CODEXHEART");
@@ -90,7 +90,7 @@ var CodexMode=
 	    settings.innerHTML=sbook_settingstext;
 	    CodexHUD.settings=settings;
 	    // Setup help text
-	    var help=fdjtID("CODEXMAINHELP");
+	    var help=fdjtID("CODEXSTARTPAGE");
 	    help.innerHTML=sbook_helptext;
 	    CodexHUD.help=help;
 	    // Other HUD parts
@@ -299,7 +299,7 @@ var CodexMode=
 
 	    sbookFoot=fdjtID("CODEXFOOT");
 	    sbookHead=fdjtID("CODEXHEAD");
-	    sbookHelp=fdjtID("CODEXMAINHELP");
+	    sbookHelp=fdjtID("CODEXSTARTPAGE");
 	    fillinTabs();
 	    resizeHUD();
 	    Codex.scrollers={};
@@ -518,7 +518,7 @@ var CodexMode=
 		    Codex.liveinput=false;}
 		document.body.focus();
 		dropClass(document.body,"dimmed");
-		dropClass(document.body,"codexstartuphelp");
+		dropClass(document.body,"codexreadinghelp");
 		dropClass(document.body,"codexscanning");
 		setHUD(false);
 		if (display_sync) Codex.displaySync();}}
