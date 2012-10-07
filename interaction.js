@@ -478,8 +478,18 @@
 		if ((knode===term)||
 		    (fdjtKB.contains(knode._always,term))) {
 		    var dterm=knode.dterm;
-		    var spelling=((spellings)&&(spellings[dterm]))||dterm;
-		    if (typeof spelling === 'string')
+		    var spelling=((spellings)&&(spellings[dterm]));
+		    if (!(spelling)) {
+			var dterm_len=dterm.length;
+			if (dterm[dterm_len-1]==="…")
+			    words.push(dterm.slice(0,dterm_len-1));
+			else if ((dterm_len>5)&&
+				 (dterm[dterm_len-1]===".")&&
+				 (dterm[dterm_len-2]===".")&&
+				 (dterm[dterm_len-3]==="."))
+			    words.push(dterm.slice(0,dterm_len-3));
+			else words.push(dterm);}
+		    else if (typeof spelling === 'string')
 			words.push(spelling);
 		    else words=words.concat(spelling);}}
 	    if (words.length===0) words=false;}

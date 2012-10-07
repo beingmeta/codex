@@ -9,7 +9,15 @@ Activities:
   TOC:
     Check that it appears
     Hold to preview, tap to jump
-    
+    Tapping on head with subsections shows subsections
+    Tapping body or foot returns to content
+  Search:
+   Dialog pops up, input gets focus
+   Typing displays tags, some initial tags(?)
+   Hold previews, tap starts scan
+   In scan, twisty opens, fwd/back works, clicking result
+    body returns to list
+   Scan highlighting works
   All Glosses:
     Check appearance (links, tags, outlets, note, etc)
       in display pane
@@ -17,4 +25,6 @@ Activities:
     Check appearance in scanner (in both cases)
     Check that edit/reply works from scanner
     Check that edit/reply works from allglosses
-    
+   In scan, twisty opens, fwd/back works, clicking result
+    body returns to list
+   Scan highlighting works    
