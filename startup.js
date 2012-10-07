@@ -809,18 +809,19 @@ Codex.Startup=
 	    Codex.localglosses=localglosses;
 	    Codex.allglosses=allglosses.concat(localglosses);
 	    Codex.etc=getLocal("etc("+refuri+")",true)||[];
+	    // Load everything in etc
+	    var etc=Codex.etc;
+	    var i=0; var lim=etc.length;
+	    var sourcekb=Codex.sourcekb;
+	    while (i<lim) sourcekb.load(etc[i++]);
+	    // Load all the glosses
 	    var i=0; var lim=localglosses.length;
 	    var glossdb=Codex.glosses;
 	    while (i<lim) {
 		var glossid=localglosses[i++];
-		var gloss=glossdb.ref(glossid);
-		gloss.load();
+		var gloss=glossdb.load(glossid);
 		if (Codex.Trace.offline>1)
 		    fdjtLog("Restored %o: %j",glossid,gloss);}
-	    // Load everything in etc
-	    var etc=Codex.etc;
-	    var i=0; var lim=etc.length;
-	    while (i<lim) Codex.sourcekb.ref(etc[i++]);
 	    fdjtLog("Initialized %d glosses (%d etc) from offline storage",
 		    localglosses.length,etc.length);}
 
@@ -1440,8 +1441,9 @@ Codex.Startup=
 		    allglosses.push(id);}}
 	    Codex.syncstamp=latest;
 	    Codex.allglosses=allglosses;
-	    if (Codex.offline) 
-		setLocal("glosses("+Codex.refuri+")",allglosses,true);}
+	    if (Codex.offline) {
+		setLocal("etc("+Codex.refuri+")",Codex.etc,true);
+		setLocal("glosses("+Codex.refuri+")",allglosses,true);}}
 
 	function initGlosses(glosses,etc){
 	    var msg=fdjtID("CODEXNEWGLOSSES");
@@ -1467,8 +1469,9 @@ Codex.Startup=
 	    Codex.syncstamp=latest;
 	    Codex.allglosses=allglosses;
 	    startupLog("Done assimilating %d new glosses...",glosses.length);
-	    if (Codex.offline) 
+	    if (Codex.offline) {
 		setLocal("glosses("+Codex.refuri+")",allglosses,true);
+		setLocal("etc("+Codex.refuri+")",etc,true);}
 	    dropClass(msg,"running");}
 	Codex.Startup.initGlosses=initGlosses;
 	

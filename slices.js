@@ -181,18 +181,18 @@
 			   Knodule.HTML(tag,Codex.knodule));
 	    i++;}
 	return span;}
-    function showaudience(tags){
-	if (!(tags instanceof Array)) tags=[tags];
+    function showaudience(outlets){
+	if (!(outlets instanceof Array)) outlets=[outlets];
 	var span=fdjtDOM(
-	    ((tags.length>=div_threshold)?"div.shared":"span.shared"),
-	    ((tags.length>=div_threshold)&&
-	     (fdjtDOM("span.count",tags.length, " outlets"))));
-	var i=0; var lim=tags.length;
+	    ((outlets.length>=div_threshold)?"div.shared":"span.shared"),
+	    ((outlets.length>=div_threshold)&&
+	     (fdjtDOM("span.count",outlets.length, " outlets"))));
+	var i=0; var lim=outlets.length;
 	// This might do some kind of more/less controls and sorted
 	// or cloudy display
-	while (i<tags.length) {
-	    var tag=tags[i]; var info=fdjtKB.ref(tag);
-	    fdjtDOM.append(span," ",fdjtDOM("span.outlet","\u2192",info.name));
+	while (i<outlets.length) {
+	    var outlet=outlets[i]; var info=fdjtKB.ref(outlet);
+	    fdjtDOM.append(span," ",fdjtDOM("span.outlet",info.name));
 	    i++;}
 	return span;}
     function showlinks(refs,spec){
