@@ -13,10 +13,13 @@
 .codexcard.passage span.marker {
     font-weight: bold; font-size: 150%; color: black;}
 
-div.codexcard {
-    margin-left: 20px; margin-right: 0px;}
-div.codexcard div.idhead { margin-left: -20px;  }
-div.codexcard div.tochead { margin-left: -40px; }
+div.codexcard { margin-left: 20px; margin-right: 0px; }
+div.codexcard > div.idhead, div.codexcard > div.tochead {
+    max-height: 3ex; white-space: nowrap;
+    text-overflow: ellipsis; overflow: hidden;}
+
+div.codexcard > div.idhead { margin-left: -10px;}
+div.codexcard > div.tochead { margin-left: -20px; }
 
 div.glosses div.codexcard > div.idhead { display: none;}
 div.glosses div.codexcard > div.tochead { display: none;}

@@ -582,8 +582,9 @@ div#CODEXHUD div#CODEXSCANNER .codexcardbody { min-height: 40px; }
 div#CODEXHUD div#CODEXSCANNER.expanded .controller { display: none;}
 div#CODEXHUD div#CODEXSCANNER.expanded span.whenexpanded { display: inline;}
 
-div#CODEXHUD div#CODEXSCANNER div.codexcard {
-    margin-left: 40px;}
+div#CODEXHUD div#CODEXSCANNER div.codexcard {margin-left: 40px;}
+div#CODEXHUD div#CODEXSCANNER div.codexcard > div.tochead { margin-left: -40px;}
+div#CODEXHUD div#CODEXSCANNER div.codexcard > div.idhead { margin-left: -20px;}
 
 div#CODEXHUD div#CODEXSCANNER div.idhead,
 div#CODEXHUD div#CODEXGLOSSES div.idhead {
