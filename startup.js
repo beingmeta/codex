@@ -1625,8 +1625,9 @@ Codex.Startup=
 			// If it's the regular case, we just assume that
 			if (!(info.knodeterms)) {
 			    knodeterms=info.knodeterms={};
-			    terms=[];}
-			else terms=knodeterms[tagval]||[];
+			    knodeterms[tagval]=terms=[];}
+			else if (terms=knodeterms[tagval]) {}
+			else knodeterms[tagval]=terms=[];
 			var j=1; var jlim=idinfo.length;
 			while (j<jlim) {terms.push(idinfo[j++]);}}
 		    sbook_index.add(
