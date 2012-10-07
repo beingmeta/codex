@@ -326,13 +326,22 @@
 
     function toc_tapped(evt){
 	evt=evt||event;
-	var about=getAbout(fdjtUI.T(evt));
+	var tap_target=fdjtUI.T(evt);
+	var about=getAbout(tap_target);
+	var cur_target=Codex.target;
 	if (about) {
 	    var ref=about.name.slice(3);
+	    var target=fdjtID(ref);
+	    var info=Codex.docinfo[ref];
+	    var toc=getParent(tap_target,".codextoc");
+	    var show_fulltoc=
+		((info.sub)&&(info.sub.length>2))&&
+		(!(hasClass(toc,"codexlivehead")));
 	    if (Codex.Trace.gestures)
 		fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
-	    Codex.JumpTo(fdjtID(ref));
-	    CodexMode("tocscan");
+	    Codex.JumpTo(target);
+	    if (show_fulltoc) CodexMode("toc");
+	    else CodexMode("tocscan");
 	    return fdjtUI.cancel(evt);}
     	else if (Codex.Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
 	else {}}

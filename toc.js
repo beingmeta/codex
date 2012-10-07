@@ -104,19 +104,6 @@ var CodexTOC=
 		Codex.UI.addHandlers(toc,'toc');}
 	    return toc;}
 	
-	function tocJump(evt,target){
-	    if (!(target)) target=fdjtUI.T(evt);
-	    while (target) {
-		if (target.frag) break;
-		else target=target.parentNode;}
-	    if (target) {
-		var info=Codex.docinfo[target.frag];
-		Codex.GoTo(target.frag,"tocJump");
-		// if ((info.sub)&&(info.sub.length>2)) CodexMode("toc");
-		CodexMode("tocscan");
-		fdjtUI.cancel(evt);}}
-	Codex.tocJump=tocJump;
-
 	function generate_subsections(headinfo) {
 	    var sub=headinfo.sub;
 	    if ((!(sub)) || (!(sub.length))) return false;
@@ -154,7 +141,8 @@ var CodexTOC=
 		var subsection=document.getElementById(spaninfo.frag);
 		var spanstart; var spanend; var addname=true;
 		if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
-		    /* Add 'fake section' for the precursor of the first actual section */
+		    /* Add 'fake section' for the precursor of the
+		     * first actual section */
 		    spanstart=start;  spanend=spaninfo.starts_at;
 		    spaninfo=headinfo;
 		    subsection=document.getElementById(headinfo.frag);

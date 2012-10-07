@@ -6,7 +6,13 @@ How to do a Codex/sReader QA:
 Activities:
   Read books: Blake (Songs), Paine (Common Sense), Rousseau (Origin), F&P (NEYM)
    Look for layout problems
+  TOC:
+    Check that it appears
+    Hold to preview, tap to jump
+    
   All Glosses:
+    Check appearance (links, tags, outlets, note, etc)
+      in display pane
     Hold to preview, click to scan
     Check appearance in scanner (in both cases)
     Check that edit/reply works from scanner
