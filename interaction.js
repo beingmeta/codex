@@ -477,18 +477,21 @@
 		var knode=knodes[i++];
 		if ((knode===term)||
 		    (fdjtKB.contains(knode._always,term))) {
-		    var dterm=knode.dterm;
-		    var spelling=((spellings)&&(spellings[dterm]));
+		    var qid=knode._qid; var dterm=knode.dterm;
+		    var spelling=
+			((spellings)&&
+			 ((spellings[qid])||(spellings[dterm])));
 		    if (!(spelling)) {
-			var dterm_len=dterm.length;
-			if (dterm[dterm_len-1]==="…")
-			    words.push(dterm.slice(0,dterm_len-1));
-			else if ((dterm_len>5)&&
-				 (dterm[dterm_len-1]===".")&&
-				 (dterm[dterm_len-2]===".")&&
-				 (dterm[dterm_len-3]==="."))
-			    words.push(dterm.slice(0,dterm_len-3));
-			else words.push(dterm);}
+			var synonyms=knode.EN;
+			if (!(synonyms)) {}
+			else if (typeof synonyms === 'string')
+			    words.push(synonyms);
+			else words=words.concat(synonyms);
+			var hooks=knode.hooks;
+			if (!(hooks)) {}
+			else if (typeof hooks === 'string')
+			    words.push(hooks);
+			else words=words.concat(hooks);}
 		    else if (typeof spelling === 'string')
 			words.push(spelling);
 		    else words=words.concat(spelling);}}
@@ -507,7 +510,6 @@
 		var k=0; while (k<ranges.length) 
 		    fdjtUI.Highlight(ranges[k++],"highlightsearch");}}}
     Codex.highlightTerm=highlightTerm;
-	    
 
     /* HUD handlers */
 
