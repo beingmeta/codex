@@ -15,7 +15,8 @@ div.codexglossform#CODEXLIVEGLOSS { display: block;}
 div.codexglossform div.editgloss {
  margin-left: 0.5em; text-align: left; color: black;}
 div.codexglossform div.response {
- margin-left: 0.5em; text-align: left; color: black;}
+ margin-left: 0.5em; margin-right: 60px;
+ text-align: left; color: black;}
 div.codexglossform div.response .respmaker {font-weight: bold;}
 div.codexglossform div.response .respnote { font-style: italic;}
 div.codexglossform div.response .respnote:before { content: "“";}
@@ -262,7 +263,7 @@ div.codexglossform form .button {
 
 div.codexglossform form .submitbutton {
     float: right; text-align: right;
-    padding-top: 0px; padding-right: 2px;
+    padding-top: 0px; padding-right: 0px;
     box-shadow: -4px 4px 2px 2px;
     -o-box-shadow: -4px 4px 2px 2px;
     -moz-box-shadow: -4px 4px 2px 2px;
@@ -277,7 +278,7 @@ div.codexglossform form .submitbutton {
     height: 50px;}
 div.codexglossform form .submitbutton .button {
     border-top: none; border-right: none;
-    padding-top: 0px; padding-right: 0px; padding-left: 0px;
+    padding-top: 0px; padding-left: 0px; padding-right: 2px;
     margin-top: 0px; margin-right: 0px; margin-left: 0px;
     border: solid darkblue 2px; border-right: 0px; border-top: 0px;
     background-color: blue;
@@ -289,6 +290,17 @@ div.codexglossform form .submitbutton .button {
     -o-border-radius-botleft: 0.5ex; 
     margin-bottom: 0.5ex;
     height: 100%;}
+div.codexglossform.glossedit form .submitbutton .button {
+    border-top-left-radius: 0.5ex;
+    -webkit-border-top-left-radius: 0.5ex; 
+    -moz-border-radius-topleft: 0.5ex;
+    -o-border-radius-topleft: 0.5ex;
+    border-top: 2px;}
+div.codexglossform.glossedit form .submitbutton {
+    border-top-left-radius: 0.5ex;
+    -webkit-border-top-left-radius: 0.5ex; 
+    -moz-border-radius-topleft: 0.5ex;
+    -o-border-radius-topleft: 0.5ex;}
 
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;
