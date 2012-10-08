@@ -704,6 +704,9 @@ Codex.Startup=
 
 	    refuris.push(refuri);
 
+	    var prefix=getMeta("SBOOK.prefix");
+	    if (prefix) Codex.baseid=prefix;
+
 	    if (!((Codex.nologin)||(Codex.force_online))) {
 		Codex.mycopyid=getMeta("sbook.mycopyid")||
 		    (getLocal("mycopy("+refuri+")"))||
