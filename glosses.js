@@ -152,7 +152,7 @@
 	if (typeof arg === 'string')
 	    arg=fdjtID(arg)||Codex.glosses.ref(arg)||false;
 	if (!(arg)) return false;
-	var gloss=((arg.maker)&&(arg));
+	var gloss=((!(arg.nodeType))&&(arg.maker)&&(arg));
 	if (!(gloss)) response=false;
 	else if ((arg.maker)&&(arg.maker!==Codex.user._id))
 	    response=true;
@@ -173,12 +173,12 @@
 	    Codex.setupGestures(div);
 	    form=getChildren(div,"form")[0];
 	    form.id=formid;
-	    setupGlossForm(form,passage,gloss,response||false);}
+	    form=setupGlossForm(form,passage,gloss,response||false);}
 	else form=getChildren(div,"form")[0];
 	if (gloss) {
 	    if (response) addClass(div,"glossreply");
 	    else addClass(div,"glossedit");}
-	return div;}
+	if (form) return div; else return false;}
     Codex.getGlossForm=getGlossForm;
     
     function setupGlossForm(form,passage,gloss,response){
@@ -477,6 +477,7 @@
 	if (!gloss_cloud) Codex.glossCloud();
 	var gloss=false;
 	if (!(form)) form=getGlossForm(target);
+	if (!(form)) return false;
 	if ((typeof target === 'string')&&(fdjtID(target))) 
 	    target=fdjtID(target);
 	else if ((typeof target === 'string')&&
@@ -762,7 +763,7 @@
 	else if ((kc===35)||(kc===91)) // # or [
 	    setGlossMode("addtag",form);
 	else if (kc===32) // Space
-	    setGlossMode("editnode",form);
+	    setGlossMode("editnote",form);
 	else if ((kc===47)||(kc===58)) // /or :
 	    setGlossMode("addlink",form);
 	else if ((kc===64)) // @

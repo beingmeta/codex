@@ -153,6 +153,9 @@
 	else if (passage) {
 	    fdjtUI.cancel(evt);
 	    var form=Codex.setGlossTarget(passage);
+	    if (!(form)) {
+		alert("There was a problem adding a gloss on this passage");
+		return;}
 	    CodexMode("addgloss");
 	    Codex.setGlossForm(form);}}
 
@@ -296,6 +299,9 @@
 	    CodexMode("addgloss");}
 	else {
 	    var form=Codex.setGlossTarget(passage);
+	    if (!(form)) {
+		alert("There was a problem adding a gloss on this passage");
+		return;}
 	    var form_elt=fdjtDOM.getChild(form,"form");
 	    var mode=((evt.shiftKey)?("addtag"):("editnote"));
 	    if ((seltext)&&(!(isEmpty(seltext))))  {
@@ -420,7 +426,10 @@
 	    var name=(card.name)||(card.getAttribute("name"));
 	    var gloss=fdjtKB.ref(name,Codex.glosses);
 	    if (!(gloss)) return;
-	    Codex.setGlossTarget(gloss);	    
+	    var form=Codex.setGlossTarget(gloss);	    
+	    if (!(form)) {
+		alert("There was a problem adding a gloss on this passage");
+		return;}
 	    CodexMode("addgloss");}
  	else if (card.about) {
 	    Codex.JumpTo(card.about);}}
@@ -533,7 +542,10 @@
 		var name=(card.name)||(card.getAttribute("name"));
 		var gloss=fdjtKB.ref(name,Codex.glosses);
 		if (!(gloss)) return;
-		Codex.setGlossTarget(gloss);	    
+		var form=Codex.setGlossTarget(gloss);	    
+		if (!(form)) {
+		    alert("There was a problem adding a gloss on this passage");
+		    return;}
 		CodexMode("addgloss");}
 	    else if (card.about) {
 		Codex.JumpTo(card.about);}
@@ -548,7 +560,10 @@
 	else if ((about)&&(about[0]==='#')) {
 	    Codex.ScanTo(about.slice(0)); fdjtUI.cancel(evt);}
 	else if ((about)&&(gloss=Codex.glosses.ref(about))) {
-	    Codex.setGlossTarget(gloss);	    
+	    var form=Codex.setGlossTarget(gloss);	    
+	    if (!(form)) {
+		alert("There was a problem adding a gloss on this passage");
+		return;}
 	    CodexMode("addgloss");
 	    fdjtUI.cancel(evt);}
 	else {}}
@@ -733,7 +748,10 @@
 	var qref=glosselt.value;
 	var gloss=Codex.glosses.ref(qref);
 	if (!(gloss)) return;
-	Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
+	var form=Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
+	if (!(form)) {
+	    alert("There was a problem adding a gloss on this passage");
+	    return;}
 	CodexMode("addgloss");}
     Codex.UI.respond_ontap=respond_ontap;
 
