@@ -242,13 +242,23 @@ div.completions.hudpanel .normal { line-height: 250%;}
 div#CODEXHUD img.hudbutton {
     position: fixed; z-index: 0; cursor: pointer;
     width: 50px; height: 50px;
-    border: solid transparent 2px; opacity: 0.2;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-    filter: alpha(opacity=20);
-    -webkit-opacity: 0.20;
-    -khtml-opacity: 0.20;
-    -moz-opacity: 0.20;
-    -o-opacity: 0.20;}
+    border: solid transparent 2px; opacity: 0.10;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+    filter: alpha(opacity=10);
+    -webkit-opacity: 0.10;
+    -khtml-opacity: 0.10;
+    -moz-opacity: 0.10;
+    -o-opacity: 0.10;}
+div#CODEXHUD:hover img.hudbutton {
+    opacity: 0.30;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+    filter: alpha(opacity=30);
+    -webkit-opacity: 0.30;
+    -khtml-opacity: 0.30;
+    -moz-opacity: 0.30;
+    -o-opacity: 0.30;}
+    
+
 body.hudup div#CODEXHUD img.hudbutton  {}
 body div#CODEXHUD img.hudbutton:hover {
     opacity: 0.45;
