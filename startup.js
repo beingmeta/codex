@@ -1846,6 +1846,7 @@ Codex.Startup=
 		dropLocal("sources("+refuri+")");
 		dropLocal("glosses("+refuri+")");
 		dropLocal("outlets("+refuri+")");
+		dropLocal("overlays("+refuri+")");
 		dropLocal("queued("+refuri+")");
 		dropLocal("state("+refuri+")");
 		dropLocal("sync("+refuri+")");

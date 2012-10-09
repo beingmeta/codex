@@ -55,7 +55,7 @@ div.codexglossform form span.checkspan.excerpt {
 div.codexglossform form span.checkspan.excerpt.ischecked {
     white-space: normal; text-decoration: none;}
 div.codexglossform form span.checkspan.excerpt img.redx {
-    height: 1.5ex; vertical-align: middle; padding-left: 0.5ex;}
+    height: 1.5ex; width: auto; vertical-align: middle; padding-left: 0.5ex;}
 div.codexglossform form span.checkspan.excerpt input {
     display: none;}
 div.codexglossform form .inputhelp {color: black; display: none;}
@@ -187,7 +187,7 @@ div.codexglossform form div.glossetc .outlets .checkspan.outlet:before {
     content: "→"; font-weight: bold; font-size: 150%;}
 div.codexglossform form div.glossetc .links { padding-left: 1em;}
 div.codexglossform form div.glossetc .links .checkspan.anchor img {
-    height: 2ex;}
+    height: 2ex; width: auto;}
 div.codexglossform form div.glossetc .links .checkspan.anchor input {
     margin-left: 0px;}
 
@@ -205,7 +205,8 @@ div.codexglossform form div.sharing { max-height: 24px;}
 div.codexglossform form div.glossetc span.networks {
     color: black; font-weight: normal; float: right; text-align: right;}
 div#CODEXHUD span.networks .checkspan input[type='checkbox'] { display: none;}
-div.codexglossform form div.glossetc span.networks img { height: 3ex; }
+div.codexglossform form div.glossetc span.networks img {
+    height: 3ex; width: auto;}
 
 div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue;}
@@ -236,7 +237,7 @@ div.codexglossform form div.glossetc > span.modebuttons .button {
     border-top: 0px;}
 div.codexglossform form div.glossetc > span.modebuttons img.button,
 div.codexglossform form div.glossetc > span.modebuttons .button img {
-    background-color: ivory; height: 40px;
+    background-color: ivory; height: 40px; height: auto;
     opacity: 0.3;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
     filter: alpha(opacity=30);
@@ -308,7 +309,7 @@ div.codexglossform form .submitbutton .button {
     -moz-border-radius-botleft: 0.5ex;
     -o-border-radius-botleft: 0.5ex; 
     margin-bottom: 0.5ex;
-    height: 100%;}
+    height: 100%; width: auto;}
 div.codexglossform.glossedit form .submitbutton .button {
     border-top-left-radius: 0.5ex;
     -webkit-border-top-left-radius: 0.5ex; 
@@ -394,7 +395,7 @@ body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
   div.completions#CODEXOUTLETCLOUD {
     display: block;}
 div#CODEXOUTLETCLOUD span.networks { float: right;}
-div#CODEXOUTLETCLOUD span.networks img { height: 32px;}
+div#CODEXOUTLETCLOUD span.networks img { height: 32px; width: auto;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

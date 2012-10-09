@@ -396,7 +396,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab {
 div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab  {
     border: transparent solid 3px;}
 div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
-    height: 50px;}
+    height: 50px; width: auto;}
 
 div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[alt='About'],
 div#CODEXHUD.flytoc div#CODEXHUDBUTTONS div.tabbar .tab[alt='ToC'],
@@ -610,7 +610,7 @@ body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded {
 div#CODEXHUD div#CODEXSCANNER div.codexcard span.glossinfo span.isclickable {
     display: none;}
 body div#CODEXHUD img.codexscanbutton {
-    width: 100px; height: 100px;
+    width: 50px; height: 100px;
     position: fixed; bottom: 50%; 
     display: none; opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";

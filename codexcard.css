@@ -65,7 +65,7 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
   color: green; font-size: 125%; font-style: normal;
   font-variant: small-caps;}
 .codexcard span.link a { color: blue; text-decoration: underline;}
-.codexcard span.link img { height: 2ex; vertical-align: baseline;}
+.codexcard span.link img { height: 2ex; width: auto; vertical-align: baseline;}
 .codexcard span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
 .codexcard span.audience { 
@@ -85,7 +85,7 @@ body.sbook a.codexcard { display: block;}
 .codexcard .info span.score {
   color: gold; display: none;}
 .codexcard span.tags { font-size: 80%;}
-.codexcard span.tags img.tagicon { height: 3ex;}
+.codexcard span.tags img.tagicon { height: 3ex; width: auto;}
 .codexcard.gloss span.tags.fdjtexpanded { display: block;}
 .codexcard span.tags.fdjtexpanded span.controller {
     color: black; float: right;}
@@ -98,7 +98,8 @@ body.sbook a.codexcard { display: block;}
     white-space: nowrap;}
 .codexcard span.note { font-size: 110%;}
 .codexcard img.userpic, .codexcard img.sourcepic  {
-    float: left; clear: left; margin-right: 3px; width: 50px;}
+    float: left; clear: left; margin-right: 3px;
+    width: 50px; height: auto;}
 .codexcard div.userpic, .codexcard div.sourcepic  {
     float: left; clear: left; margin-right: 3px;
     width: 50px; height: 50px; font-size: 32px;
