@@ -1153,15 +1153,88 @@ var CodexPaginate=
 		    nodes.length,layout.width,layout.height,
 		    (why||""));
 
+	    // Get the document info
+	    var docinfo=Codex.docinfo;
+
 	    /* Lay out the coverpage */
 	    var coverpage=Codex.getCoverPage();
 	    if (coverpage) layout.addContent(coverpage);
 	    
+	    var textWidth=fdjtDOM.textWidth;
+	    var hasText=fdjtDOM.hasText;
+
+
+	    function getPageTop(node) {
+		if (hasClass(node,"codexpage")) {}
+		else if ((node.id)&&(docinfo[node.id])) {
+		    if (hasText(node)) return node;}
+		else if ((node.codexbaseid)&&(docinfo[node.codexbaseid])) {
+		    if (hasText(node)) return node;}
+		else {}
+		var children=node.childNodes;
+		if (children) {
+		    var i=0; var lim=children.length;
+		    while (i<lim) {
+			var child=children[i++];
+			if (child.nodeType===1) {
+			    var first=getPageTop(child);
+			    if (first) return first;}}}
+		return false;}
+
+	    function getDupNode(under,id){
+		var children;
+		if (under.nodeType!==1) return false;
+		else if (under.codexbaseid===id) return under;
+		if (!(children=under.childNodes))
+		    return false;
+		else if (!(children.length)) return false;
+		else {
+		    var i=0, lim=children.length;
+		    while (i<lim) {
+			var found=getDupNode(children[i++],id);
+			if (found) return found;}}}
+
+	    function getLocOff(pages,topstart,topnode){
+		var id=topstart.id; var locoff=0;
+		var pagescan=topstart, pagenum, elt=topstart;
+		while (pagescan) {
+		    if (hasClass(pagescan,"codexpage")) {
+			break;}
+		    else pagescan=pagescan.parentNode;}
+		if (!(pagescan)) return locoff;
+		else pagenum=parseInt(pagescan.getAttribute("data-pagenum"));
+		while ((elt)&&(elt!==topnode)) {
+		    var width=textWidth(elt);
+		    if (width) locoff=locoff+width;
+		    pagescan=pages[++pagenum];
+		    if (pagescan) elt=getDupNode(pagescan,id);}
+		return locoff;}
+		
+	    function getPageTops(pages){
+		var j=0, jlim=pages.length, running=0;
+		while (j<jlim) {
+		    var page=pages[j++];
+		    var topnode=getPageTop(page);
+		    if (topnode) {
+			var topstart=document.getElementById(
+			    topnode.codexbaseid||topnode.id);
+			var locoff=((topstart===topnode)?(0):
+				    (getLocOff(pages,topstart,topnode)));
+			var id=topstart.id; var info=docinfo[id];
+			page.setAttribute("data-topid",id);
+			page.setAttribute(
+			    "data-sbookloc",info.starts_at+locoff);
+			running=info.starts_at+locoff;}
+		    else {
+			page.setAttribute("data-sbookloc",running);}}}
+
 	    var i=0; var lim=nodes.length;
 	    function rootloop(){
 		if (i>=lim) {
 		    layout.Finish();
 		    layout_progress(layout);
+		    var pages=layout.pages;
+		    getPageTops(layout.pages);
 		    fdjtID("CODEXPAGE").style.visibility='';
 		    fdjtID("CODEXCONTENT").style.visibility='';
 		    dropClass(document.body,"cxLAYOUT");
