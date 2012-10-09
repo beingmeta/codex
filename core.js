@@ -781,7 +781,8 @@ var CodexHUD=false;
     var oldscroll=false; var oldsect=false;
     function CodexStartPreview(spec,caller){
 	var target=((spec.nodeType)?(spec):(fdjtID(spec)));
-	fdjtLog("startPreview %o (%s)",target,caller);
+	if (Codex.Trace.flips)
+	    fdjtLog("startPreview %o (%s)",target,caller);
 	if (Codex.layout instanceof CodexLayout) 
 	    Codex.startPagePreview(spec,caller);
 	else if (Codex.layout instanceof CodexSections)

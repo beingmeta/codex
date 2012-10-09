@@ -799,7 +799,11 @@ Codex.Startup=
 	    if (nodeid) setNodeID(nodeid);
 	    Codex.sync=sync;}
 
+	var offline_init=false;
+
 	function initGlossesOffline(){
+	    if (offline_init) return false;
+	    else offline_init=true;
 	    var refuri=Codex.refuri;
 	    var sync=getLocal("sync("+refuri+")",true);
 	    if (!(sync)) return;
