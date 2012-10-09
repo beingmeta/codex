@@ -1439,11 +1439,15 @@ var CodexPaginate=
 	    else floatpages=["sbookfloatpage"];
 	    args.floatpages=floatpages;
 
-	    if (fdjtDOM.getMeta("dontbreakblocks"))
+	    if ((fdjtDOM.getMeta("dontbreakblocks"))||
+		(fdjtDOM.getMeta("keepblocks"))||
+		(fdjtDOM.getMeta("Codex.dontbreakblocks"))||
+		(fdjtDOM.getMeta("Codex.keepblocks")))
 		args.break_blocks=false;
 	    else args.break_blocks=true;
 	    
-	    if (fdjtDOM.getMeta("dontscalepages"))
+	    if ((fdjtDOM.getMeta("dontscalepages"))||
+		(fdjtDOM.getMeta("Codex.dontscalepages")))
 		args.scale_pages=false;
 	    else args.scale_pages=true;
 

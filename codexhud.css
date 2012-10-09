@@ -600,7 +600,7 @@ div#CODEXHUD div#CODEXSCANNER div.idhead,
 div#CODEXHUD div#CODEXGLOSSES div.idhead {
     height: 0px;}
 div#CODEXHUD div#CODEXSCANNER img.glosspic {
-    max-height: 3ex; max-width: 3ex;}
+    max-height: 5ex; max-width: 5ex;}
 
 body div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic {
     max-height: inherit; max-width: inherit;}
