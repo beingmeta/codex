@@ -427,6 +427,7 @@ var CodexMode=
 		Codex.stopPreview();
 	    if (hide_startup_help) {
 		dropClass(document.body,"codexstartuphelp");
+		Codex.cxthelp=hasClass(document.body,"codexhelp");
 		hide_startup_help=false;}
 	    if (mode) {
 		if ((mode==="scanning")||(mode==="tocscan"))
@@ -546,6 +547,7 @@ var CodexMode=
 		dropClass(document.body,"dimmed");
 		dropClass(document.body,"codexhelp");
 		dropClass(document.body,"codexscanning");
+		Codex.cxthelp=false;
 		setHUD(false);
 		if (display_sync) Codex.displaySync();}}
 

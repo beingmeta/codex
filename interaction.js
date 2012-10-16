@@ -1622,7 +1622,7 @@
 	 "#CODEXPAGEHEAD": {click: head_tap},
 	 "#CODEXTABS": {click: head_tap},
 	 "#CODEXHEAD": {click: head_tap},
-	 "#CODEXPAGEFOOT": {click: foot_tap},
+	 "#CODEXPAGEFOOT": {tap: foot_tap},
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
@@ -1676,7 +1676,7 @@
 	 "#CODEXPAGEHEAD": {touchstart: head_tap},
 	 "#CODEXTABS": {touchstart: head_tap},
 	 "#CODEXHEAD": {touchstart: head_tap},
-	 "#CODEXFOOT": {touchstart: foot_tap},
+	 "#CODEXFOOT": {tap: foot_tap},
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {touchstart: left_margin},
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},

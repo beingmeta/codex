@@ -573,9 +573,12 @@ Codex.Startup=
 	    if (mode) {}
 	    else if (getQuery("startmode"))
 		mode=getQuery("startmode");
-	    else if (Codex.startuphelp)
+	    else if (Codex.startuphelp) {
 		addClass(document.body,"codexhelp");
-	    else dropClass(document.body,"codexhelp");
+		Codex.cxthelp=true;}
+	    else {
+		dropClass(document.body,"codexhelp");
+		Codex.cxthelp=false;}
 	    if (mode) CodexMode(mode);
 	    _sbook_setup=Codex._setup=new Date();
 	    var msg=false;
@@ -1118,7 +1121,7 @@ Codex.Startup=
 		fdjtDOM.addListeners(
 		    pageinfo,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
 	    
-	    fdjtUI.TapHold(pageinfo,Codex.touch);
+	    fdjtUI.TapHold(fdjtID("CODEXFOOT"),Codex.touch);
 
 	    window.scrollTo(0,0);
 	    
