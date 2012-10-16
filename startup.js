@@ -87,9 +87,9 @@ Codex.Startup=
 	var default_config=
 	    {layout: 'bypage',
 	     bodysize: 'normal',bodyfamily: 'serif',
-	     uisize: 'normal',showconsole: true,
+	     uisize: 'normal',showconsole: false,
 	     animatepages: true,animatehud: true,
-	     startuphelp: true,contexthelp: true,
+	     startuphelp: true,contexthelp: false,
 	     keyboardhelp: true,
 	     holdmsecs: 750,taptapmsecs: 500};
 	var current_config={};
@@ -676,7 +676,13 @@ Codex.Startup=
 		    (qval==="never")||(qval==="0"))
 		    Codex.force_online=true;
 		else Codex.force_offline=true;}
-	    
+	    else if (fdjtDOM.getMeta("sbook.offline")) {
+		var mval=fdjtDOM.getMeta("sbook.offline");
+		if ((mval===false)||(mval===0)||(mval==="no")||(mval==="off")||
+		    (mval==="never")||(mval==="0"))
+		    Codex.force_online=true;
+		else Codex.force_offline=true;}
+
 	    var refuris=getLocal("codex.refuris",true)||[];
 
 	    // Get the settings for scanning the document structure
