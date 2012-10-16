@@ -1741,6 +1741,7 @@ Codex.Startup=
 	function process_inline_tags(tags){
 	    var k=0; var ntags=tags.length;
 	    var scores=tags.scores||false;
+	    var knodule=Codex.knodule;
 	    if (!(scores)) tags.scores=scores={};
 	    while (k<ntags) {
 		var tag=tags[k]; var score=1; var tagbase=false;

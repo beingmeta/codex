@@ -1257,7 +1257,7 @@ var CodexPaginate=
 		    if (((root.nodeType===3)&&(!(isEmpty(root.nodeValue))))||
 			((root.nodeType===1)&&
 			 (root.tagName!=='LINK')&&(root.tagName!=='META')&&
-			 (root.tagName!=='SCRIPT'))) 
+			 (root.tagName!=='SCRIPT')&&(root.tagName!=='BASE'))) 
 			layout.addContent(root,timeslice,timeskip,
 					  layout.tracelevel,
 					  layout_progress,rootloop);

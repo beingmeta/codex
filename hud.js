@@ -54,6 +54,7 @@ var CodexMode=
 	var dropClass=fdjtDOM.dropClass;
 	var hasClass=fdjtDOM.hasClass;
 	var getParent=fdjtDOM.getParent;
+	var getGeometry=fdjtDOM.getGeometry;
 	var getChild=fdjtDOM.getChild;
 	var hasSuffix=fdjtString.hasSuffix;
 	var Ref=fdjtKB.Ref;
@@ -95,6 +96,7 @@ var CodexMode=
 	    CodexHUD.help=help;
 	    // Other HUD parts
 	    CodexHUD.head=fdjtID("CODEXHEAD");
+	    CodexHUD.heart=fdjtID("CODEXHEART");
 	    CodexHUD.foot=fdjtID("CODEXFOOT");
 	    CodexHUD.tabs=fdjtID("CODEXTABS");
 	    // Initialize search UI
@@ -428,7 +430,6 @@ var CodexMode=
 	    if ((mode!==Codex.mode)&&(Codex.previewing))
 		Codex.stopPreview();
 	    if (mode) {
-		if (mode!=="scanning") Codex.scanning=false;
 		if ((mode==="scanning")||(mode==="tocscan"))
 		    addClass(document.body,"codexscanning");
 		else dropClass(document.body,"codexscanning");
@@ -489,6 +490,30 @@ var CodexMode=
 		else if (mode==='addgloss') {}
 		// And if we're not scanning, we just raise the hud
 		else setHUD(true);
+
+		// This updates scanning state
+		if ((Codex.scanning)&&(mode!=="scanning")) {
+		    // Scroll the scanned content (glosses, search
+		    // results, etc) to reflect any motion
+		    var heart=CodexHUD.heart;
+		    var height=heart.offsetHeight;
+		    var scrolltop=heart.scrollTop;
+		    var scrollbottom=heart.scrollTop+height;
+		    var scanning=Codex.scanning;
+		    var inner=getGeometry(scanning,heart);
+
+		    if (inner.height<=0) {} /* Not displayed */
+		    else if ((inner.top<scrolltop)||(inner.bottom>scrollbottom)) {
+			// Scroll into view
+			if (inner.height>height) heart.scrollTop=inner.top;
+			else if (inner.height>height/2)
+			    heart.scrollTop=Math.floor(inner.top-(height/2));
+			else {
+			    var gap=height-inner.height;
+			    heart.scrollTop=inner.top-gap/2;}}
+		    else {} // Already in view
+		    Codex.scanning=false;}
+
 		// This updates scroller dimensions, we delay it
 		//  because apparently, on some browsers, the DOM
 		//  needs to catch up with CSS
@@ -499,6 +524,7 @@ var CodexMode=
 				Codex.scrolling,scroller);
 		    setTimeout(function(){updateScroller(scroller);},
 			       100);}
+
 		// We autofocus any input element appropriate to the
 		// mode
 		if (codex_mode_foci[mode]) {
@@ -506,6 +532,7 @@ var CodexMode=
 		    if (input) focus(input);}
 		// Moving the focus back to the body lets keys work
 		else document.body.focus();
+		
 		if (display_sync) Codex.displaySync();}
 	    else {
 		// Clearing the mode is a lot simpler, in part because
@@ -768,17 +795,22 @@ var CodexMode=
 	    if (Codex.Trace.mode)
 		fdjtLog("CodexScan() %o (src=%o) mode=%o scn=%o/%o",
 			elt,src,Codex.mode,Codex.scanning,Codex.target);
-	    // Save the source HUD element for the preview (when provided)
+	    // Copy the description of what we're scanning into the
+	    // scanner (at the top of the page during scanning and
+	    // preview)
 	    if (Codex.scanning!==src) {
 		var clone=src.cloneNode(true);
 		clone.id="CODEXSCAN";
 		fdjtDOM.replace("CODEXSCAN",clone);
+		// This all makes sure that the >| and |< buttons
+		// appear appropriately
 		if (Codex.nextSlice(src))
 		    dropClass("CODEXHUD","scanend");
 		else addClass("CODEXHUD","scanend");
 		if (Codex.prevSlice(src))
 		    dropClass("CODEXHUD","scanstart");
 		else addClass("CODEXHUD","scanstart");
+		// This marks where we are currently scanning
 		if (pelt) dropClass(pelt,"codexscanpoint");
 		if (src) addClass(src,"codexscanpoint");
 		Codex.scanning=src;}
