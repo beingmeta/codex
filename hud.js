@@ -33,12 +33,9 @@
 
 var CodexMode=
     (function(){
-	// The foot HUD
-	var sbookHead=false; var head_height=false;
-	// The foot HUD
-	var sbookFoot=false; var foot_height=false;
-	// The HELP HUD, and its margins
-	var sbookHelp=false; var help_top=false; var help_bottom=false;
+	// Helpful dimensions
+	var head_height=false, foot_height=false;
+	var help_top=false, help_bottom=false;
 	// The BOX HUD (contains scrollable content) and its margins
 	var box_top=false; var box_bottom=false;
 	// This is the HUD where all glosses are displayed
@@ -64,24 +61,29 @@ var CodexMode=
 
 	function initHUD(){
 	    if (fdjtID("CODEXHUD")) return;
-	    else {
-		var messages=fdjtDOM("div.startupmessages");
-		messages.innerHTML=sbook_messagestext;
-		var hud=Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
-		CodexHUD.codexui=true;
-		CodexHUD.innerHTML=sbook_hudtext;
-		fdjtDOM.prepend(document.body,
-				messages,
-				fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
-					fdjtDOM("div.indicator"),
-					fdjtDOM("div.message")),
-				fdjtID("HUMANE"),
-				CodexHUD);
-		// Fill in the HUD help
-		var hudhelp=fdjtID("CODEXHUDHELP");
-		hudhelp.innerHTML=sbook_hudhelp;
-		var readhelp=fdjtID("CODEXSTARTPAGE");
-		readhelp.innerHTML=sbook_helptext;}
+	    var messages=fdjtDOM("div.startupmessages");
+	    messages.innerHTML=sbook_messagestext;
+	    var hud=Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
+	    CodexHUD.codexui=true;
+	    CodexHUD.innerHTML=sbook_hudtext;
+	    fdjtDOM.prepend(document.body,
+			    messages,
+			    fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
+				    fdjtDOM("div.indicator"),
+				    fdjtDOM("div.message")),
+			    fdjtID("HUMANE"),
+			    CodexHUD);
+	    // Fill in the HUD help
+	    var hudhelp=fdjtID("CODEXHUDHELP");
+	    hudhelp.innerHTML=sbook_hudhelp;
+	    // Set up the start page and the reader help
+	    var startpage=CodexHUD.startpage=fdjtID("CODEXSTARTPAGE");
+	    // Set up the help page
+	    var help=CodexHUD.help=fdjtID("CODEXHELP");
+	    help.innerHTML=sbook_helptext;
+	    // Set up the app splash page
+	    var splash=CodexHUD.appsplash=fdjtID("CODEXAPPSPLASH");
+	    splash.innerHTML=sbook_splashtext;
 	    // Setup heart
 	    var heart=fdjtID("CODEXHEART");
 	    heart.innerHTML=sbook_hudheart;
@@ -90,10 +92,6 @@ var CodexMode=
 	    var settings=fdjtID("CODEXSETTINGS");
 	    settings.innerHTML=sbook_settingstext;
 	    CodexHUD.settings=settings;
-	    // Setup help text
-	    var help=fdjtID("CODEXSTARTPAGE");
-	    help.innerHTML=sbook_helptext;
-	    CodexHUD.help=help;
 	    // Other HUD parts
 	    CodexHUD.head=fdjtID("CODEXHEAD");
 	    CodexHUD.heart=fdjtID("CODEXHEART");
@@ -247,8 +245,8 @@ var CodexMode=
 		    else if (outlet.nick) completion.title=outlet.name;
 		    fdjtDOM(cloud.dom,completion," ");
 		    if (cloud) cloud.addCompletion(completion);}}
-	
-	var cloudEntry=Codex.cloudEntry;
+	    
+	    var cloudEntry=Codex.cloudEntry;
 
 	    function addTag2SearchCloud(tag){
 		if (!(tag)) return;
@@ -299,9 +297,6 @@ var CodexMode=
 	    input_button.onclick=consolebutton_click;
 	    input_console.onkeypress=consoleinput_keypress;
 
-	    sbookFoot=fdjtID("CODEXFOOT");
-	    sbookHead=fdjtID("CODEXHEAD");
-	    sbookHelp=fdjtID("CODEXSTARTPAGE");
 	    fillinTabs();
 	    resizeHUD();
 	    Codex.scrollers={};
@@ -417,6 +412,7 @@ var CodexMode=
 	    {gotopage: "CODEXPAGEINPUT",
 	     gotoloc: "CODEXLOCINPUT",
 	     search: "CODEXSEARCHINPUT"};
+	var hide_startup_help=true;
 	
 	function CodexMode(mode){
 	    var oldmode=Codex.mode;
@@ -429,6 +425,9 @@ var CodexMode=
 			mode,Codex.mode,document.body.className);
 	    if ((mode!==Codex.mode)&&(Codex.previewing))
 		Codex.stopPreview();
+	    if (hide_startup_help) {
+		dropClass(document.body,"codexstartuphelp");
+		hide_startup_help=false;}
 	    if (mode) {
 		if ((mode==="scanning")||(mode==="tocscan"))
 		    addClass(document.body,"codexscanning");
@@ -545,7 +544,7 @@ var CodexMode=
 		    Codex.liveinput=false;}
 		document.body.focus();
 		dropClass(document.body,"dimmed");
-		dropClass(document.body,"codexreadinghelp");
+		dropClass(document.body,"codexhelp");
 		dropClass(document.body,"codexscanning");
 		setHUD(false);
 		if (display_sync) Codex.displaySync();}}
@@ -875,9 +874,6 @@ var CodexMode=
 	    var startuphelp=fdjtDOM.getInputValues(settings,"CODEXSTARTUPHELP");
 	    result.startuphelp=
 		((startuphelp)&&(startuphelp.length))||false;
-	    var contexthelp=fdjtDOM.getInputValues(settings,"CODEXCONTEXTHELP");
-	    result.contexthelp=
-		((contexthelp)&&(contexthelp.length))||false;
 	    var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
 	    result.showconsole=
 		((showconsole)&&(showconsole.length)&&(true))||false;

@@ -1500,7 +1500,7 @@ var CodexPaginate=
 	function GoToPage(spec,caller,pushstate){
 	    if (typeof pushstate === 'undefined') pushstate=false;
 	    if (Codex.previewing) stopPreview("GoToPage");
-	    dropClass(document.body,"codexreadinghelp");
+	    dropClass(document.body,"codexhelp");
 	    if ((Codex.layout)&&
 		(Codex.layout.pagelocs)) {
 		Codex.GoToSection(Codex.layout.pagelocs[spec-1]);

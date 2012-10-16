@@ -1369,9 +1369,9 @@
 	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);
 	    CodexMode(false);}
-	else if (fdjtDOM.hasClass(document.body,"codexreadinghelp")) {
+	else if (fdjtDOM.hasClass(document.body,"codexhelp")) {
 	    fdjtUI.cancel(evt);
-	    fdjtDOM.dropClass(document.body,"codexreadinghelp");}
+	    fdjtDOM.dropClass(document.body,"codexhelp");}
 	else if (Codex.hudup) {
 	    fdjtUI.cancel(evt);
 	    CodexMode(false);}
@@ -1381,14 +1381,14 @@
     function foot_tap(evt){
 	if (Codex.Trace.gestures) fdjtLog("foot_tap %o",evt);
 	if (isClickable(evt)) return;
-	else if (Codex.mode) {
+	else if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
 	    fdjtUI.cancel(evt);
 	    CodexMode(false);
 	    return;}}
 
     function pageinfo_tap(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
-	if ((Codex.hudup)||(Codex.mode)) {
+	if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
 	    fdjtUI.cancel(evt);
 	    CodexMode(false);
 	    return;}
@@ -1402,8 +1402,7 @@
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
 	Codex.GoToPage(gopage,"pageinfo_tap",true);
-	if ((Codex.mode==="gotoloc")||(Codex.mode==="gotopage"))
-	    CodexMode(false);}
+	CodexMode(false);}
 
     function pageinfo_hold(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
@@ -1549,7 +1548,7 @@
 	evt=evt||event;
 	fdjtUI.cancel(evt);
 	CodexMode(false);
-	fdjtDOM.dropClass(document.body,"codexreadinghelp");}
+	fdjtDOM.dropClass(document.body,"codexhelp");}
 
     /* Rules */
 
@@ -1576,16 +1575,16 @@
     function toggleHelp(evt){
 	evt=evt||event;
 	fdjtUI.cancel(evt);
-	if (Codex.mode) {
-	    if (Codex.cxthelp) {
-		dropClass(document.body,"codexhelp");
-		Codex.cxthelp=false;}
-	    else {
-		addClass(document.body,"codexhelp");
-		Codex.cxthelp=true;}}
-	else if (hasClass(document.body,"codexreadinghelp"))
-	    dropClass(document.body,"codexreadinghelp");
-	else addClass(document.body,"codexreadinghelp");}
+	if ((Codex.cxthelp)||
+	    (fdjtDOM.hasClass(document.body,"codexstartuphelp"))||
+	    fdjtDOM.hasClass(document.body,"codexhelp")) {
+	    fdjtDOM.dropClass(document.body,"codexstartuphelp");
+	    fdjtDOM.dropClass(document.body,"codexhelp");
+	    Codex.cxthelp=false;}
+	else {
+	    fdjtDOM.addClass(document.body,"codexhelp");
+	    Codex.cxthelp=true;}
+	return false;}
     Codex.toggleHelp=toggleHelp;
 
     Codex.UI.handlers.mouse=
@@ -1623,7 +1622,7 @@
 	 "#CODEXPAGEHEAD": {click: head_tap},
 	 "#CODEXTABS": {click: head_tap},
 	 "#CODEXHEAD": {click: head_tap},
-	 "#CODEXPAGEFOOT": {tap: foot_tap},
+	 "#CODEXPAGEFOOT": {click: foot_tap},
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
@@ -1639,6 +1638,8 @@
 	 "div.glossetc span.modebuttons": {click: glossmode_button},
 	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
 	 "#CODEXHELPBUTTON": {
+	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
+	 "#CODEXHELP": {
 	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
 	 "#CODEXSHOWTEXT": {click: back_to_reading}};
 
@@ -1675,12 +1676,13 @@
 	 "#CODEXPAGEHEAD": {touchstart: head_tap},
 	 "#CODEXTABS": {touchstart: head_tap},
 	 "#CODEXHEAD": {touchstart: head_tap},
-	 "#CODEXFOOT": {tap: foot_tap},
+	 "#CODEXFOOT": {touchstart: foot_tap},
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {touchstart: left_margin},
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},
 	 "#STARTUPHELPCHECKSPAN" : {tap: startupHelpToggle},
 	 "#CODEXHELPBUTTON": {click: toggleHelp},
+	 "#CODEXHELP": {click: toggleHelp},
 	 "#CODEXSHOWTEXT": {click: back_to_reading},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click: hudbutton},

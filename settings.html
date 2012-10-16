@@ -1,6 +1,6 @@
 <h1>Device Settings</h1>
-<table class='settings'>
-  <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+<table class='settings' onclick="fdjtUI.CheckSpan.onclick(event);">
+  <tr class="checkspan">
     <th><input TYPE='RADIO' NAME='CODEXOFFLINE' VALUE='yes'
 	       ID='CODEXOFFLINECHECKBOX'/></th>
     <td>Save personal information and glosses on this computer
@@ -71,12 +71,6 @@
 	       id="CODEXSTARTUPHELPSETTING"
 	       CHECKED/></th>
     <td>Show the sReader help page on startup</td></tr>
-  <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
-    <th><input TYPE='CHECKBOX' NAME='CODEXCONTEXTHELP' VALUE='yes'
-	       id="CODEXCONTEXTHELPSETTING"
-	       CHECKED/></th>
-    <td>Show contextual help when available (usually at the bottom
-      of the window)</td></tr>
   <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
     <th><input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
 	       onchange="fdjtUI.CheckSpan.set('STARTUPHELPCHECKBOX',fdjtID('CODEXSTARTUPHELPSETTING').checked);"

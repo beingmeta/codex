@@ -89,8 +89,7 @@ Codex.Startup=
 	     bodysize: 'normal',bodyfamily: 'serif',
 	     uisize: 'normal',showconsole: false,
 	     animatepages: true,animatehud: true,
-	     startuphelp: true,contexthelp: false,
-	     keyboardhelp: true,
+	     startuphelp: true,keyboardhelp: true,
 	     holdmsecs: 750,taptapmsecs: 500};
 	var current_config={};
 	var saved_config={};
@@ -140,7 +139,8 @@ Codex.Startup=
 		    if (value===input.value) setCheckSpan(input,true);
 		    else setCheckSpan(input,false);}
 		else input.value=value;}
-	    if (current_config[name]!==value) {
+	    if (!((current_config[name])&&
+		  (current_config[name]===value))) {
 		if (config_handlers[name]) {
 		    if (Codex.Trace.config)
 			fdjtLog("setConfig (handler=%s) %o=%o",
@@ -194,8 +194,6 @@ Codex.Startup=
 	    var i=0; var lim=dopost.length;
 	    while (i<lim) dopost[i++]();
 	    
-	    current_config=config;
-
 	    var deviceid=current_config.deviceid;
 	    var devicename=current_config.devicename;
 	    if (!(deviceid)) {
@@ -234,11 +232,6 @@ Codex.Startup=
 	    Codex.startuphelp=value;
 	    fdjtUI.CheckSpan.set(
 		document.getElementsByName("CODEXSTARTUPHELP"),
-		value);});
-	Codex.addConfig("contexthelp",function(name,value){
-	    Codex.cxthelp=value;
-	    fdjtUI.CheckSpan.set(
-		document.getElementsByName("CODEXCONTEXTHELP"),
 		value);});
 	Codex.addConfig("keyboardhelp",function(name,value){
 	    Codex.keyboardhelp=value;
@@ -323,16 +316,6 @@ Codex.Startup=
 	    // Setup the UI components for the body and HUD
 	    Codex.setupGestures();
 	    
-	    // Maybe display the help page
-	    if ((Codex.startuphelp)&&
-		(!((getQuery("ACTION"))||
-		   (getQuery("JOIN"))||
-		   (getQuery("OVERLAY")))))
-		fdjtDOM.addClass(document.body,"codexreadinghelp");
-
-	    if (Codex.cxthelp)
-		fdjtDOM.addClass(document.body,"codexhelp");
-
 	    // Setup the reticle (if desired)
 	    if ((typeof (document.body.style["pointer-events"])
 		 != "undefined")&&
@@ -572,8 +555,9 @@ Codex.Startup=
 		else {
 		    Codex.joining=getQuery("JOIN");
 		    CodexMode("sbooksapp");}}
-	    if ((!(Codex.mode))&&(Codex.startuphelp))
-		addClass(document.body,"codexreadinghelp");
+	    if ((!(Codex.mode))&&(Codex.startuphelp)) {
+		addClass(document.body,"codexstartuphelp");
+		Codex.cxthelp=true;}
 	    window.focus();}
 	
 	function startupDone(mode){
@@ -590,8 +574,8 @@ Codex.Startup=
 	    else if (getQuery("startmode"))
 		mode=getQuery("startmode");
 	    else if (Codex.startuphelp)
-		addClass(document.body,"codexreadinghelp");
-	    else dropClass(document.body,"codexreadinghelp");
+		addClass(document.body,"codexhelp");
+	    else dropClass(document.body,"codexhelp");
 	    if (mode) CodexMode(mode);
 	    _sbook_setup=Codex._setup=new Date();
 	    var msg=false;
