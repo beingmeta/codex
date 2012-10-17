@@ -898,7 +898,7 @@
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
 	    if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
-	if (!(Codex.offline))
+	if (!(Codex.saveglosses))
 	    return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));
 	if (!(navigator.onLine)) return queueGloss(form,evt);
 	// Eventually, we'll unpack the AJAX handler to let it handle
@@ -977,7 +977,7 @@
 
     // Saves queued glosses
     function writeGlosses(){
-	if (!(Codex.offline)) return;
+	if (!(Codex.saveglosses)) return;
 	var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
 	if ((!(queued))||(queued.length===0)) {
 	    fdjtState.dropLocal("queued("+Codex.refuri+")");

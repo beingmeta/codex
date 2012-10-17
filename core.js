@@ -49,7 +49,7 @@ var Codex=
      glossmodes: /(addtag)|(addlink)|(excerpt)|(editnote)|(sharing)/,
      updatehash: true, iscroll: false,
      // Whether to store glosses, etc for offline/faster access
-     offline: false,
+     saveglosses: false,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -89,10 +89,9 @@ var Codex=
 	 clouds: 0,	// How much to trace cloud generation
 	 focus: false,	// Whether to trace target changes
 	 toc: false,	// Whether we're debugging TOC tracking
-	 offline: 0,	// How much to trace offline persistence
+	 storage: 0,	// How much to trace offline persistence
 	 network: 0,	// How much to trace server interaction
 	 glosses: 0,    // How much we're tracing gloss processing
-	 offline: 0,    // Whether to trace offline restoration, etc
 	 layout: 0,	// How much to trace document layout
 	 knodules: 0,	// How much to trace knodule processing
 	 dosync: false, // Whether to trace state saves
@@ -194,7 +193,7 @@ var CodexHUD=false;
 			    Codex.index.add(item,ref,1);
 			    Codex.UI.addGlossSource(ref,true);}}}});
 	    Codex.glosses.index=new fdjtKB.Index();
-	    if (Codex.offline)
+	    if (Codex.saveglosses)
 		Codex.glosses.storage=new fdjtKB.OfflineKB(Codex.glosses);}
 	Codex.sourcekb=new fdjtKB.Pool("sources");{
 	    Codex.sourcekb.addAlias("@1961/");
@@ -206,7 +205,7 @@ var CodexHUD=false;
 		var span=fdjtDOM(spec,name);
 		if (source.about) span.title=source.about;
 		return span;};
-	    if (Codex.offline)
+	    if (Codex.saveglosses)
 		Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);}
 	if (Codex.Trace.start>1) fdjtLog("Initialized DB");}
     Codex.initDB=initDB;

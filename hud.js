@@ -672,7 +672,7 @@ var CodexMode=
 			    'this sBook is not available as a ZIP bundle';}}}
 	    /* If the book is offline, don't bother showing the link
 	       to the offline version. */
-	    if (Codex.offline) addClass(document.body,"sbookoffline");}
+	    if (Codex.saveglosses) addClass(document.body,"sbookoffline");}
 
 	function altLink(type,uri){
 	    uri=uri||Codex.refuri;
@@ -879,8 +879,8 @@ var CodexMode=
 	    var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
 	    result.showconsole=
 		((showconsole)&&(showconsole.length)&&(true))||false;
-	    var isoffline=fdjtDOM.getInputValues(settings,"CODEXOFFLINE");
-	    result.offline=((isoffline)&&(isoffline.length)&&(isoffline[0]))||
+	    var isoffline=fdjtDOM.getInputValues(settings,"CODEXLOCAL");
+	    result.saveglosses=((isoffline)&&(isoffline.length)&&(isoffline[0]))||
 		false;
 	    
 	    return result;}

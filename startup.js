@@ -293,25 +293,26 @@ Codex.Startup=
 	    //  We do this after the HUD is setup so that the settings
 	    //   panel gets initialized appropriately.
 	    initConfig();
-	    Codex.offline=((!(Codex.force_online))&&
-			   ((Codex.force_offline)||(workOffline())));
-	    setCheckSpan(fdjtID("CODEXOFFLINECHECKBOX"),Codex.offline);
+	    Codex.saveglosses=
+		((!(Codex.force_online))&&
+		 ((Codex.force_offline)||(workOffline())));
+	    setCheckSpan(fdjtID("CODEXLOCALCHECKBOX"),Codex.saveglosses);
 	    addConfig(
-		"offline",
+		"localstorage",
 		function(name,value){
-		    if ((value)&&(Codex.offline)) return;
-		    else if ((!(value))&&(!(Codex.offline))) return;
+		    if ((value)&&(Codex.saveglosses)) return;
+		    else if ((!(value))&&(!(Codex.saveglosses))) return;
 		    else if (value) {
 			/* This should save all of the current state,
 			   but that's a little tricky right now. */}
 		    else if (!(value)) {
-			if (getConfig("local"))
+			if (getConfig("localstorage"))
 			    clearOffline(Codex.refuri);
 			else clearOffline();}
-		    Codex.offline=value;});
-	    if ((Codex.offline)&&(!(Codex.sourcekb.storage)))
+		    Codex.saveglosses=value;});
+	    if ((Codex.saveglosses)&&(!(Codex.sourcekb.storage)))
 		Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);
-	    if ((Codex.offline)&&(!Codex.glosses.storage))
+	    if ((Codex.saveglosses)&&(!Codex.glosses.storage))
 		Codex.glosses.storage=new fdjtKB.OfflineKB(Codex.glosses);
 	    // Setup the UI components for the body and HUD
 	    Codex.setupGestures();
@@ -330,7 +331,7 @@ Codex.Startup=
 	    else if (getLocal("user("+Codex.refuri+")")) {
 		initUserOffline();
 		Codex.sync=getLocal("sync("+Codex.refuri+")",true);
-		if (Codex.Trace.offline) 
+		if (Codex.Trace.storage) 
 		    fdjtLog("Local info for %o (%s) from %o",
 			    Codex.user._id,Codex.user.name,Codex.sync);
 		if (getLocal("glosses("+Codex.refuri+")"))
@@ -343,11 +344,11 @@ Codex.Startup=
 			    info.sync);
 		if (info.nodeid) setNodeID(info.nodeid);
 		Codex.sync=info.sync;
-		if (Codex.Trace.offline>1) 
+		if (Codex.Trace.storage>1) 
 		    fdjtLog("Cached loadinfo.js for %o (%s) from %o: %j",
 			    Codex.user._id,Codex.user.name,Codex.sync,
 			    Codex.user);
-		if (Codex.Trace.offline) 
+		if (Codex.Trace.storage) 
 		    fdjtLog("Cached loadinfo.js for %o (%s) from %o",
 			    Codex.user._id,Codex.user.name,Codex.sync);}
 	    else {}
@@ -631,7 +632,7 @@ Codex.Startup=
 	function workOffline(refuri){
 	    if (Codex.force_online) return false;
 	    else if (Codex.force_offline) return true;
-	    var config_val=getConfig("offline");
+	    var config_val=getConfig("localstorage");
 	    if (typeof config_val !== 'undefined') return config_val;
 	    var value=(getMeta("sbook.offline"))||(getMeta("Codex.offline"));
 	    if ((value===0)||(value==="0")||
@@ -641,7 +642,7 @@ Codex.Startup=
 	    else if (window.confirm) {
 		var result=window.confirm(
 		    "Store personal information for offline/faster reading?");
-		setConfig("offline",result,true);
+		setConfig("localstorage",result,true);
 		return result;}
 	    else return false;}
 	
@@ -777,7 +778,7 @@ Codex.Startup=
 	    var user=getLocal("user("+refuri+")");
 	    var nodeid=getLocal("nodeid("+refuri+")");
 	    var userinfo=user&&getLocal(user,true);
-	    if (Codex.Trace.offline)
+	    if (Codex.Trace.storage)
 		fdjtLog("initOffline user=%s sync=%s nodeid=%s info=%j",
 			user,sync,nodeid,userinfo);
 	    if (!(sync)) return;
@@ -820,7 +821,7 @@ Codex.Startup=
 	    while (i<lim) {
 		var glossid=localglosses[i++];
 		var gloss=glossdb.load(glossid);
-		if (Codex.Trace.offline>1)
+		if (Codex.Trace.storage>1)
 		    fdjtLog("Restored %o: %j",glossid,gloss);}
 	    fdjtLog("Initialized %d glosses (%d etc) from offline storage",
 		    localglosses.length,etc.length);}
@@ -1184,11 +1185,11 @@ Codex.Startup=
 		_sbook_newinfo=info;
 		return;}
 	    var refuri=Codex.refuri;
-	    if ((Codex.offline)&&
+	    if ((Codex.saveglosses)&&
 		(info)&&(info.userinfo)&&(Codex.user)&&
 		(info.userinfo._id!==Codex.user._id)) {
 		clearOffline(refuri);}
-	    var persist=((Codex.offline)&&(navigator.onLine));
+	    var persist=((Codex.saveglosses)&&(navigator.onLine));
 	    info.loaded=fdjtTime();
 	    if ((!(Codex.localglosses))&&
 		((getLocal("sync("+refuri+")"))||
@@ -1276,7 +1277,7 @@ Codex.Startup=
 	    else fdjtDOM.addClass(document.body,"cxNOUSER");}
 	
 	function setUser(userinfo,outlets,overlays,sync){
-	    var persist=((Codex.offline)&&(navigator.onLine));
+	    var persist=((Codex.saveglosses)&&(navigator.onLine));
 	    var refuri=Codex.refuri;
 	    if (userinfo) {
 		fdjtDOM.dropClass(document.body,"cxNOUSER");
@@ -1305,7 +1306,7 @@ Codex.Startup=
 	    var refuri=Codex.refuri;
 	    if (!(Codex.nodeid)) {
 		Codex.nodeid=nodeid;
-		if ((nodeid)&&(Codex.offline))
+		if ((nodeid)&&(Codex.saveglosses))
 		    setLocal("nodeid("+refuri+")",nodeid);}}
 	Codex.setNodeID=setNodeID;
 
@@ -1411,7 +1412,7 @@ Codex.Startup=
 		    while (i<lim) {
 			if (typeof info[i] === 'string') {
 			    var qid=info[i++];
-			    if (Codex.offline) fdjtKB.load(qid);
+			    if (Codex.saveglosses) fdjtKB.load(qid);
 			    qids.push(qid);}
 			else {
 			    var obj=fdjtKB.Import(info[i++]);
@@ -1419,7 +1420,7 @@ Codex.Startup=
 				setLocal(obj._id,obj,true);
 			    qids.push(obj._id);}}
 		    Codex[name]=qids;
-		    if (Codex.offline)
+		    if (Codex.saveglosses)
 			setLocal(name+"("+refuri+")",qids,true);}
 		else {
 		    var obj=fdjtKB.Import(info);
@@ -1441,7 +1442,7 @@ Codex.Startup=
 		    allglosses.push(id);}}
 	    Codex.syncstamp=latest;
 	    Codex.allglosses=allglosses;
-	    if (Codex.offline) {
+	    if (Codex.saveglosses) {
 		setLocal("etc("+Codex.refuri+")",Codex.etc,true);
 		setLocal("glosses("+Codex.refuri+")",allglosses,true);}}
 
@@ -1469,7 +1470,7 @@ Codex.Startup=
 	    Codex.syncstamp=latest;
 	    Codex.allglosses=allglosses;
 	    startupLog("Done assimilating %d new glosses...",glosses.length);
-	    if (Codex.offline) {
+	    if (Codex.saveglosses) {
 		setLocal("glosses("+Codex.refuri+")",allglosses,true);
 		setLocal("etc("+Codex.refuri+")",etc,true);}
 	    dropClass(msg,"running");}

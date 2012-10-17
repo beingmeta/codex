@@ -759,7 +759,7 @@
 	if (response===glossid) {
 	    Codex.glosses.drop(glossid);
 	    Codex.allglosses=fdjtKB.remove(Codex.allglosses,glossid);
-	    if (Codex.offline)
+	    if (Codex.saveglosses)
 		fdjtState.setLocal("glosses("+Codex.refuri+")",
 				   Codex.allglosses,true);
 	    var editform=fdjtID("CODEXEDITGLOSS_"+glossid);
