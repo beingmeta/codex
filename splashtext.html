@@ -6,48 +6,76 @@
     <td><p><span class="action">
 	  <span class="fortouch">Tap</span> <span class="notouch">Click</span>
 	  the help icon in bottom right</span>
-	for <span class="result">help with using the sBooks reader
-	  application for this book.</span></p></td></tr>
+	  for <span class="result">help with using the sBooks reader
+	  web application (you are here).</span></p></td></tr>
   <tr><th></th><td><p id="CODEXINTRO"></p></td></tr>
   <tr><th><img svg="http://static.beingmeta.com/g/codex/sbookslogo.svgz"
 	       src="http://static.beingmeta.com/g/codex/sbookslogo32x32.png"
-	       alt="corners of browser" class="left"/></th>
+	       alt="sBooks" class="left"/></th>
     <td><p>
 	<strong><span style="color: blue;">s</span>Books</strong> are
 	digital books enriched with comments, tags, or links from your
-	friends, community, or elsewhere.</p></td></tr>
+	friends, communities, and the rest of humanity.</p></td></tr>
+  <tr id="CODEXLOGGEDIN" class="codexloggedin">
+    <th><img alt="" class="left" name="CODEXUSERPIC"></th>
+    <td>
+      <p><strong>This book</strong> is personalized with glosses for
+	<strong name="CODEXUSERNAME">Somebody Interesting</strong>.
+	If that's not you,
+	please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
+	if it is you, you can view and update
+	your <a href="https://auth.sbooks.net/my/profile"
+		target="_blank">profile here</a>.</p>
+    </td>
+  </tr>
 </table>
-<!-- Login/register form
-     (Resets flyleaf url, use postMessage to prime new login) -->
-<!-- Add to personal circle form
-     (_blank target) -->
-<!-- Create reading circle form
-     (Resets flyleaf URL) -->
-<div class="helpblock">
-  <p id="CODEXHELPNEEDLOGIN">
-    <strong style="color: blue; cursor: pointer; text-decoration:
-		   underline;" onclick="CodexMode('login')">Login</strong>
-    to use the annotation and social features of sBooks.
-    sBooks is <strong>free of charge</strong> for free
-    online content and open online communities.</p>
-  <p id="CODEXHELPDISCONNECTED">
-    You are not logged into sBooks, which limits your
-    ability to update or save glosses.
-    <a href="javascript:CodexMode('login')">Login here.</a></p>
-</div>
-<div>
-  <table class="fdjt textual">
-    <tr id="CODEXHELPLOGGEDIN">
-      <th><img alt="" class="left" name="CODEXUSERPIC"></th>
-      <td>
-	<p><strong>This book</strong> is personalized with glosses for
-	  <strong name="CODEXUSERNAME">Somebody Interesting</strong>.
-	  If that's not you,
-	  please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
-	  if it is you, you can view and update
-	  your <a href="https://auth.sbooks.net/my/profile"
-		  target="_blank">profile here</a>.</p>
-      </td>
-    </tr>
-  </table>
-</div>
+<form action="https://glosses.sbooks.net/flyleaf"
+      target="FLYLEAF" NAME="CODEXFLYFORM" method="POST">
+  <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="TAB" VALUE="create"/>
+  <input TYPE="HIDDEN" NAME="KIND" VALUE=":CIRCLE"/>
+  <dl>
+    <dt><input TYPE="SUBMIT" NAME="ACTION" VALUE="Gather"/></dt>
+    <dd><input TYPE="TEXT" NAME="GUESTS" VALUE="" placeholder="email
+	       addresses"/><br/> into a <strong>reading
+	       circle</strong> at <strong><span style="color:
+	       blue;">s</span>Books</strong>.  Members of a reading
+	       circle can see one another's glosses on this book,
+	       sharing insights, opinions, and reactions.</dd>
+  </dl>
+</form>
+<form action="https://glosses.sbooks.net/flyleaf"
+      target="FLYLEAF" NAME="CODEXFLYFORM" method="POST">
+  <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="TAB" VALUE="invite"/>
+  <input TYPE="HIDDEN" NAME="JOIN" VALUE=":PERSONALCIRCLE"/>
+  <dl>
+    <dt><input TYPE="SUBMIT" NAME="ACTION" VALUE="Invite"/></dt>
+    <dd><input TYPE="TEXT" NAME="GUESTS" VALUE="" placeholder="email
+	       addresses"/><br/> to join your <strong>personal
+	       circle</strong> at <strong><span style="color:
+	       blue;">s</span>Books</strong>.  This will allow you to
+	       see one another's notes, tags, and links (glosses).</dd>
+  </dl>
+</form>
+<form action="https://glosses.sbooks.net/flyleaf"
+      target="FLYLEAF" NAME="CODEXFLYFORM" method="POST">
+  <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="TAB" VALUE="create"/>
+  <input TYPE="HIDDEN" NAME="KIND" VALUE=":CIRCLE"/>
+  <dl>
+    <dt><input TYPE="SUBMIT" NAME="ACTION" VALUE="Gather"/></dt>
+    <dd><input TYPE="TEXT" NAME="GUESTS" VALUE="" placeholder="email
+	       addresses"/><br/> into a <strong>reading
+	       circle</strong> at <strong><span style="color:
+	       blue;">s</span>Books</strong>.  Members of a reading
+	       circle can see one another's glosses on this book,
+	       sharing insights, opinions, and reactions.</dd>
+  </dl>
+</form>

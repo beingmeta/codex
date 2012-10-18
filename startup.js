@@ -249,8 +249,9 @@ Codex.Startup=
 	Codex.addConfig("taptapmsecs",function(name,value){
 	    Codex.taptapmsecs=value;});
 
-
 	function syncStartup(){
+	    // This is the startup code which is run
+	    //  synchronously, before the time-sliced processing
 	    fdjtLog.console="CODEXCONSOLELOG";
 	    fdjtLog.consoletoo=true;
 	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
@@ -259,16 +260,19 @@ Codex.Startup=
 		    Codex._setup_start.toString());
 	    if (navigator.appVersion)
 		fdjtLog("Navigator App version: %s",navigator.appVersion);
-	    if (getQuery("cxtrace")) setupTrace();
-	    if (Codex.Trace.startup) fdjtLog("Starting app setup");
+	    // This lets trace configurations be passed as query
+	    // arguments, for handy debugging.
+	    if (getQuery("cxtrace")) readTraceSettings();
 	    appSetup();
-	    if (Codex.Trace.startup) fdjtLog("Starting user setup");
 	    userSetup();
-	    document.domain="sbooks.net"; document.origin="sbooks.net";
-	    if (Codex.Trace.startup)
-		fdjtLog("Done with synchronous startup");}
+	    if (Codex.Trace.startup) fdjtLog("Done with synchronous startup");}
 
 	function appSetup() {
+
+	    if (Codex.Trace.startup) fdjtLog("Starting app setup");
+
+	    // Initialize domain and origin for browsers which care
+	    document.domain="sbooks.net"; document.origin="sbooks.net";
 
 	    // Execute any FDJT initializations
 	    fdjtDOM.init();
@@ -277,8 +281,7 @@ Codex.Startup=
 	    // information for scanning, graphics, glosses, etc
 	    readSettings();
 
-	    // Declare this to invoke some style constraints
-	    fdjtDOM.addClass(document.body,"codexstartup");
+	    // Setup the "splash page" we show while 
 
 	    var metadata=false;
 	    var helphud=false;
@@ -323,9 +326,15 @@ Codex.Startup=
 		((Codex.demo)||(fdjtState.getLocal("codex.demo"))||
 		 (fdjtState.getCookie("sbooksdemo"))||
 		 (getQuery("demo")))) {
-		fdjtUI.Reticle.setup();}}
+		fdjtUI.Reticle.setup();}
+
+	    // Set up what the user sees during setup
+	    appSplash();
+
+	}
 	
 	function userSetup(){
+	    if (Codex.Trace.startup) fdjtLog("Starting user setup");
 	    // Start JSONP call to get initial or updated glosses, etc
 	    if (Codex.nologin) {}
 	    else if (getLocal("user("+Codex.refuri+")")) {
@@ -367,7 +376,7 @@ Codex.Startup=
 		return;}
 	    else return;}
 
-	function setupTrace(){
+	function readTraceSettings(){
 	    var tracing=getQuery("cxtrace",true);
 	    var i=0; var lim=tracing.length;
 	    while (i<lim) {
@@ -386,14 +395,12 @@ Codex.Startup=
 
 	function Startup(force){
 	    if (Codex._setup) return;
-	    if ((!force)&&(getQuery("nosbooks"))) return; 
+	    if ((!force)&&(getQuery("nocodex"))) return;
 	    // This is all of the startup that we need to do synchronously
 	    syncStartup();
 	    // The rest of the stuff we timeslice
 	    fdjtTime.timeslice
-	    ([// Setup sbook tables, databases, etc
-		appSplash,
-		// Scan the DOM for metadata.  This is surprisingly fast,
+	    ([  // Scan the DOM for metadata.  This is surprisingly fast,
 		//  so we don't currently try to timeslice it, though we could
 		function(){
 		    var scanmsg=fdjtID("CODEXSTARTUPSCAN");
@@ -550,15 +557,17 @@ Codex.Startup=
 			    return;}
 			if (evt.data==="sbooksapp") {
 			    CodexMode("sbooksapp");}
+			else if (evt.data==="loggedin") {
+			    if (!(Codex.user)) userSetup();}
 			else if (evt.data)
 			    fdjtDOM("CODEXINTRO",evt.data);
 			else {}});}
 		else {
 		    Codex.joining=getQuery("JOIN");
 		    CodexMode("sbooksapp");}}
-	    if ((!(Codex.mode))&&(Codex.startuphelp)) {
-		addClass(document.body,"codexstartuphelp");
-		Codex.cxthelp=true;}
+	    // This makes the splash page visible and applies some
+	    // other styling
+	    fdjtDOM.addClass(document.body,"codexstartup");
 	    window.focus();}
 	
 	function startupDone(mode){
