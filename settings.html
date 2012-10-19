@@ -1,103 +1,103 @@
 <h1>Device Settings</h1>
-<table class='settings' onclick="fdjtUI.CheckSpan.onclick(event);">
-  <tr class="checkspan">
-    <th><input TYPE='RADIO' NAME='CODEXLOCAL' VALUE='yes'
-	       ID='CODEXLOCALCHECKBOX'/></th>
-    <td>Save personal information and glosses on this computer
-      <button onclick="Codex.forceSync(); return fdjtUI.cancel(event);">
-	Sync</button>
-    </td>
-  </tr>
-  <tr><th rowspan="2">Body font</th>
-    <td>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='xlarge'/>
-	x-large</span>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='large'/>
-	large</span>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='normal'/>
-	normal</span>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='small'/>
-	small</span>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='tiny'/>
-	tiny</span>
-  </td></tr>
-  <tr>
-    <td>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXBODYFAMILY' VALUE='sans'/>
-	sans-serif</span>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXBODYFAMILY' VALUE='serif'/>
-	serif</span></td></tr>
-  <tr onclick="fdjtUI.CheckSpan.onclick(event);">
-    <th>Layout</th>
-    <td><span class="checkspan">
-	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bypage"/>
-	by pages</span>
-      <span class="checkspan">
-	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bysect"/>
-	by section</span>
-      <span class="checkspan">
-	<input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="scrolling"/>
-	just scroll</span>
-    </td>
-  </tr>
-  <tr><th>Interface font</th>
-    <td>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='large'/>
-	large</span>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='normal'/>
-	normal</span>
-      <span class="checkspan">
-	<input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='small'/>
-	small</span></td></tr>
-  <tr><th>Animation</th>
-    <td>
-      <span class="checkspan">
-	<input TYPE='CHECKBOX' NAME='CODEXANIMATEPAGES' VALUE='yes'/>
-	page flips</span>
-      <span class="checkspan">
-	<input TYPE='CHECKBOX' NAME='CODEXANIMATEHUD' VALUE='yes'/>
-	book tools</span></td></tr>
-  <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
-    <th><input TYPE="CHECKBOX" NAME="CODEXHIDESPLASH" VALUE="yes"
-	       id="CODEXHIDESPLASHSETTING"
-	       CHECKED/></th>
-    <td>Hide the application splash page after startup</td></tr>
-  <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
-    <th><input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
-	       onchange="fdjtUI.CheckSpan.set('HIDESPLASHCHECKBOX',fdjtID('CODEXHIDESPLASHSETTING').checked);"
-	       id="CODEXKEYBOARDHELPSETTING"
-	       CHECKED/></th>
-    <td>Show keyboard help for sReader</td></tr>
-  <tr class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
-    <th><input TYPE='CHECKBOX' NAME='CODEXSHOWCONSOLE' VALUE='yes'/></th>
-    <td>Show the sReader console</td></tr>
-  <tr title='A name to display for this device when recording changes'>
-    <th>Device name</th>
-    <td><input TYPE='TEXT' NAME='CODEXDEVICENAME' value=''/></td>
-  </tr>
-  <tr title='A unique id for this device.  You probably don't need to change this.'>
-    <th>Device ID</th>
-    <td><input TYPE='TEXT' NAME='CODEXDEVICEID' value='' DISABLED/></td>
-  </tr>
-  <tr class="buttons">
-    <th/>
-    <td>
-      <span class="button" onclick="Codex.UI.settingsOK();">OK</span>
-      <span class="button" onclick="Codex.UI.settingsCancel();">Cancel</span>
-      <span ID="CODEXSETTINGSMESSAGE"></span>
+<form onsubmit="fdjtUI.cancel(event); return false;">
+  <table class='settings' onclick="fdjtUI.CheckSpan.onclick(event);">
+    <tr class="checkspan">
+      <th><input TYPE='RADIO' NAME='CODEXLOCAL' VALUE='yes'
+		 ID='CODEXLOCALCHECKBOX'/></th>
+      <td>Save personal information and glosses on this computer
+	<button onclick="Codex.forceSync(); return fdjtUI.cancel(event);">
+	  Sync</button>
       </td>
-  </tr>
-</table>
-
+    </tr>
+    <tr><th rowspan="2">Body font</th>
+      <td>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='xlarge'/>
+	  x-large</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='large'/>
+	  large</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='normal'/>
+	  normal</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='small'/>
+	  small</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='tiny'/>
+	  tiny</span>
+    </td></tr>
+    <tr>
+      <td>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYFAMILY' VALUE='sans'/>
+	  sans-serif</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXBODYFAMILY' VALUE='serif'/>
+	  serif</span></td></tr>
+    <tr>
+      <th>Layout</th>
+      <td><span class="checkspan">
+	  <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bypage"/>
+	  by pages</span>
+	<span class="checkspan">
+	  <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bysect"/>
+	  by section</span>
+	<span class="checkspan">
+	  <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="scrolling"/>
+	  just scroll</span>
+      </td>
+    </tr>
+    <tr><th>Interface font</th>
+      <td>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='large'/>
+	  large</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='normal'/>
+	  normal</span>
+	<span class="checkspan">
+	  <input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='small'/>
+	  small</span></td></tr>
+    <tr><th>Animation</th>
+      <td>
+	<span class="checkspan">
+	  <input TYPE='CHECKBOX' NAME='CODEXANIMATEPAGES' VALUE='yes'/>
+	  page flips</span>
+	<span class="checkspan">
+	  <input TYPE='CHECKBOX' NAME='CODEXANIMATEHUD' VALUE='yes'/>
+	  book tools</span></td></tr>
+    <tr class="checkspan">
+      <th><input TYPE="CHECKBOX" NAME="CODEXHIDESPLASH" VALUE="yes"
+		 id="CODEXHIDESPLASHSETTING"
+		 CHECKED/></th>
+      <td>Hide the application splash page after startup</td></tr>
+    <tr class="checkspan">
+      <th><input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
+		 id="CODEXKEYBOARDHELPSETTING"
+		 CHECKED/></th>
+      <td>Show keyboard help for sReader</td></tr>
+    <tr class="checkspan">
+      <th><input TYPE='CHECKBOX' NAME='CODEXSHOWCONSOLE' VALUE='yes'/></th>
+      <td>Show the sReader console</td></tr>
+    <tr title='A name to display for this device when recording changes'>
+      <th>Device name</th>
+      <td><input TYPE='TEXT' NAME='CODEXDEVICENAME' value=''/></td>
+    </tr>
+    <tr title='A unique id for this device.  You probably don't need to change this.'>
+      <th>Device ID</th>
+      <td><input TYPE='TEXT' NAME='CODEXDEVICEID' value='' DISABLED/></td>
+    </tr>
+    <tr class="buttons">
+      <th/>
+      <td>
+	<span class="button" onclick="Codex.UI.settingsOK();">OK</span>
+	<span class="button" onclick="Codex.UI.settingsCancel();">Cancel</span>
+	<span ID="CODEXSETTINGSMESSAGE"></span>
+      </td>
+    </tr>
+  </table>
+</form>
 
 <!--
     /* Emacs local variables

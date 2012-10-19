@@ -259,8 +259,9 @@ div#CODEXHELP .action {
 div#CODEXHELP .result {
     font-weight: normal; font-size: 125%;
     font-style: italic;}
-div#CODEXHELP table {
-    margin-left: 10%; margin-right: 10%; width: 80%;}
+div#CODEXHELP > table {
+    margin-left: 10%; margin-right: 10%; width: 80%;
+    margin-top: 1em;}
 div#CODEXHELP table table {
     margin-left: 2%; margin-right: 2%;}
 div#CODEXHELP table td.icon { width: 32px;}

@@ -477,7 +477,9 @@ var CodexMode=
 		else dropClass(document.body,"codexscanning");
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
-		if ((mode==='scanning')||(mode==='tocscan')) {
+		if ((mode==='scanning')||
+		    (mode==='tocscan')||
+		    (mode==='status')) {
 		    if (mode!==oldmode) {
 			Codex.hudup=false;
 			dropClass(CodexHUD,"openheart");
