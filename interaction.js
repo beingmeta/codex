@@ -1555,18 +1555,18 @@
     var nobubble=fdjtUI.nobubble;
     var cancel=fdjtUI.cancel;
 
-    function startupHelpToggle(evt) {
+    function hideSplashToggle(evt) {
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
-	var newval=(!(Codex.startuphelp));
+	var newval=(!(Codex.hidesplash));
 	var input=getParent(target,"input");
 	if (input)
 	    setTimeout(function(){
-		Codex.setConfig('startuphelp',input.checked);
+		Codex.setConfig("hidesplash",input.checked);
 		Codex.saveConfig();},
 		       100);
 	else {
-	    Codex.setConfig('startuphelp',newval);
+	    Codex.setConfig("hidesplash",newval);
 	    Codex.saveConfig();}
 	if ((newval)&&(Codex._setup)&&
 	    ((fdjtTime()-(Codex._setup.getTime()))<30000))
@@ -1575,10 +1575,7 @@
     function toggleHelp(evt){
 	evt=evt||event;
 	fdjtUI.cancel(evt);
-	if ((Codex.cxthelp)||
-	    (fdjtDOM.hasClass(document.body,"codexstartuphelp"))||
-	    fdjtDOM.hasClass(document.body,"codexhelp")) {
-	    fdjtDOM.dropClass(document.body,"codexstartuphelp");
+	if (Codex.cxthelp) {
 	    fdjtDOM.dropClass(document.body,"codexhelp");
 	    Codex.cxthelp=false;}
 	else {
@@ -1626,7 +1623,7 @@
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
-	 "#STARTUPHELPCHECKSPAN" : {click: startupHelpToggle},
+	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 // GLOSSFORM rules
 	 "span.codexglossdelete": { click: delete_ontap },
@@ -1680,7 +1677,7 @@
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {touchstart: left_margin},
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},
-	 "#STARTUPHELPCHECKSPAN" : {tap: startupHelpToggle},
+	 "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
 	 "#CODEXHELPBUTTON": {click: toggleHelp},
 	 "#CODEXHELP": {click: toggleHelp},
 	 "#CODEXSHOWTEXT": {click: back_to_reading},

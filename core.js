@@ -118,6 +118,13 @@ var CodexHUD=false;
 	if (Codex.Trace.start>1) fdjtLog("Initializing DB");
 	var refuri=(Codex.refuri||document.location.href);
 	if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
+
+	// Global lists
+	Codex.allglosses=[];
+	Codex.allsources=[];
+	// These are all references outside of the glosses
+	Codex.etc=[];
+
 	var docinfo=Codex.DocInfo=new fdjtKB.Pool(refuri+"#");
 	fdjtKB.addRefMap(docinfo.map);
 	fdjtKB.addRefMap(function(ref){
@@ -846,23 +853,30 @@ var CodexHUD=false;
 	else return false;}
     Codex.getTOCLevel=getLevel;
     
-    function getCoverPage(){
-	if (Codex.coverpage) return Codex.coverpage;
-	var coverpage=fdjtID("CODEXCOVERPAGE")||
+    function getCover(){
+	if (Codex.cover) return Codex.cover;
+	var cover=fdjtID("CODEXCOVERPAGE")||
 	    fdjtID("SBOOKCOVERPAGE")||
 	    fdjtID("COVERPAGE");
-	if (!(coverpage)) {
-	    var coverimage=fdjtDOM.getLink("sbook.coverpage",false,false)||
-		fdjtDOM.getLink("coverpage",false,false);
-	    if (coverimage) {
-		coverpage=fdjtDOM.Image(
-		    coverimage,"img.codexcoverpage.sbookpage#CODEXCOVERPAGE");
-		fdjtDOM.prepend(Codex.content,coverpage);}
-	    // This should generate a textual cover page
-	    else {}}
-	if (coverpage) Codex.coverpage=coverpage;
-	return coverpage;}
-    Codex.getCoverPage=getCoverPage;
+	if (cover) {}
+	else if (Codex.coverpage) {
+	    cover=fdjtDOM.Image(
+		Codex.coverpage,"img.codexcoverpage.sbookpage#CODEXCOVERPAGE");
+	    fdjtDOM.prepend(Codex.content,cover);}
+	// This should generate a textual cover page
+	else {
+	    cover=fdjtDOM("div.codexfullpage#CODEXCOVERPAGE","\n"
+			  ((Codex.booktitle)?
+			   (fdjtDOM("h1.title",Codex.booktitle)):
+			   null),
+			  "\n",
+			  ((Codex.bookauthor)?
+			   (fdjtDOM("h1.author",Codex.bookauthor)):
+			   null));
+	    fdjtDOM.prepend(Codex.content,cover);}
+	if (cover) Codex.cover=cover;
+	return cover;}
+    Codex.getCover=getCover;
 
 })();
 

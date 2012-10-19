@@ -1,81 +1,70 @@
-<table class="fdjt textual">
-  <tr><th>
-      <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
-	   src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
-	   alt="help/question mark" class="left"/></th>
-    <td><p><span class="action">
-	  <span class="fortouch">Tap</span> <span class="notouch">Click</span>
-	  the help icon in bottom right</span>
-	  for <span class="result">help with using the sBooks reader
-	  web application (you are here).</span></p></td></tr>
-  <tr><th></th><td><p id="CODEXINTRO"></p></td></tr>
-  <tr><th><img svg="http://static.beingmeta.com/g/codex/sbookslogo.svgz"
-	       src="http://static.beingmeta.com/g/codex/sbookslogo32x32.png"
-	       alt="sBooks" class="left"/></th>
-    <td><p>
-	<strong><span style="color: blue;">s</span>Books</strong> are
-	digital books enriched with comments, tags, or links from your
-	friends, communities, and the rest of humanity.</p></td></tr>
-  <tr id="CODEXLOGGEDIN" class="codexloggedin">
-    <th><img alt="" class="left" name="CODEXUSERPIC"></th>
-    <td>
-      <p><strong>This book</strong> is personalized with glosses for
-	<strong name="CODEXUSERNAME">Somebody Interesting</strong>.
-	If that's not you,
-	please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
-	if it is you, you can view and update
-	your <a href="https://auth.sbooks.net/my/profile"
-		target="_blank">profile here</a>.</p>
-    </td>
-  </tr>
-</table>
+<img svg="http://static.beingmeta.com/g/codex/redx.svgz"
+     src="http://static.beingmeta.com/g/codex/redx24x24.png"
+     alt="close" class="closebutton"
+     onclick="CodexMode(false);"/>
 <form action="https://glosses.sbooks.net/flyleaf"
-      target="FLYLEAF" NAME="CODEXFLYFORM" method="POST">
+      target="SBOOKSAPP" NAME="CODEXFLYFORM" method="POST"
+      onsubmit="CodexMode('sbooksapp');">
+  <img class="coverpage" id="CODEXSTATUSCOVER"/>
+  <h1>Welcome to <span style="color: blue;">s</span>Books</h1>
   <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
   <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
   <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
   <input TYPE="HIDDEN" NAME="TAB" VALUE="create"/>
   <input TYPE="HIDDEN" NAME="KIND" VALUE=":CIRCLE"/>
-  <dl>
-    <dt><input TYPE="SUBMIT" NAME="ACTION" VALUE="Gather"/></dt>
-    <dd><input TYPE="TEXT" NAME="GUESTS" VALUE="" placeholder="email
-	       addresses"/><br/> into a <strong>reading
-	       circle</strong> at <strong><span style="color:
-	       blue;">s</span>Books</strong>.  Members of a reading
-	       circle can see one another's glosses on this book,
-	       sharing insights, opinions, and reactions.</dd>
-  </dl>
-</form>
-<form action="https://glosses.sbooks.net/flyleaf"
-      target="FLYLEAF" NAME="CODEXFLYFORM" method="POST">
-  <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="TAB" VALUE="invite"/>
-  <input TYPE="HIDDEN" NAME="JOIN" VALUE=":PERSONALCIRCLE"/>
-  <dl>
-    <dt><input TYPE="SUBMIT" NAME="ACTION" VALUE="Invite"/></dt>
-    <dd><input TYPE="TEXT" NAME="GUESTS" VALUE="" placeholder="email
-	       addresses"/><br/> to join your <strong>personal
-	       circle</strong> at <strong><span style="color:
-	       blue;">s</span>Books</strong>.  This will allow you to
-	       see one another's notes, tags, and links (glosses).</dd>
-  </dl>
-</form>
-<form action="https://glosses.sbooks.net/flyleaf"
-      target="FLYLEAF" NAME="CODEXFLYFORM" method="POST">
-  <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="TAB" VALUE="create"/>
-  <input TYPE="HIDDEN" NAME="KIND" VALUE=":CIRCLE"/>
-  <dl>
-    <dt><input TYPE="SUBMIT" NAME="ACTION" VALUE="Gather"/></dt>
-    <dd><input TYPE="TEXT" NAME="GUESTS" VALUE="" placeholder="email
-	       addresses"/><br/> into a <strong>reading
-	       circle</strong> at <strong><span style="color:
-	       blue;">s</span>Books</strong>.  Members of a reading
-	       circle can see one another's glosses on this book,
-	       sharing insights, opinions, and reactions.</dd>
-  </dl>
-</form>
+  <p><img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
+	  src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
+	  alt="help/question mark" class="left"/></th>
+<span class="fortouch">Tap</span> <span class="notouch">Click</span>
+the help icon in bottom right for help with using this
+sBooks reader web application.</p>
+<p id="CODEXINTRO"></p>
+<p><img svg="http://static.beingmeta.com/g/codex/sbookslogo.svgz"
+	src="http://static.beingmeta.com/g/codex/sbookslogo32x32.png"
+	alt="sBooks" class="left"/></th>
+<strong><span style="color: blue;">s</span>Books</strong> are digital
+books personally enriched with comments, tags, or links from your
+friends and communities as well as (selectively) experts, critics, or
+teachers.</p>
+<p class="codexuser">
+  <img alt="" class="left" name="CODEXUSERPIC">
+  <strong>This book</strong> is personalized with glosses for
+  <strong name="CODEXUSERNAME">Somebody Interesting</strong>.
+  If that's not you,
+  please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
+  if it is you, you can view and update
+  your <a href="https://auth.sbooks.net/my/profile"
+	  target="_blank">profile here</a>.</p>
+<p><input type="SUBMIT" name="ACTION" value="Login"/>
+  to sBooks to be able to save and share your notes, tags, and
+  links with friends, colleagues, and your communities.</p>
+<p><input TYPE="SUBMIT" NAME="ACTION" VALUE="Invite"/>
+  <input TYPE="TEXT" NAME="GUESTS" VALUE="" placeholder="your friends"/>
+  to join your <strong>personal circle</strong> at
+  <strong><span style="color: blue;">s</span>Books</strong>.
+  This will allow you to see one another's notes, tags, and links
+  (glosses).</p>
+<p><input TYPE="SUBMIT" NAME="ACTION" VALUE="Gather"/>
+  <input TYPE="TEXT" NAME="GUESTS" VALUE="" placeholder="a tribe"/>
+  into a <strong>reading circle</strong> at
+  <strong><span style="color: blue;">s</span>Books</strong>.
+  Members of a reading circle can see one another's glosses
+  on this book, sharing insights, opinions, and reactions.</p>
+
+<div id="CODEXSTATUSFOOT">
+  <p class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+    <input TYPE="checkbox" NAME="CODEXHIDESPLASH" VALUE="yes"
+	   onchange="Codex.setConfig('hidesplash',fdjtID('HIDESPLASHCHECKBOX').checked,true);"
+	   ID="HIDESPLASHCHECKBOX"
+	   "CHECKED"/>
+    Hide this page after startup</p>
+</div>
+
+
+<!--
+    /* Emacs local variables
+    ;;;  Local variables: ***
+    ;;;  compile-command: "cd ..; make" ***
+    ;;;  End: ***
+    */
+  -->

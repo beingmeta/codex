@@ -81,8 +81,8 @@ var CodexMode=
 	    // Set up the help page
 	    var help=CodexHUD.help=fdjtID("CODEXHELP");
 	    help.innerHTML=sbook_helptext;
-	    // Set up the app splash page
-	    var splash=CodexHUD.appsplash=fdjtID("CODEXAPPSPLASH");
+	    // Set up the app splash/status page
+	    var splash=CodexHUD.appstatus=fdjtID("CODEXAPPSTATUS");
 	    splash.innerHTML=sbook_splashtext;
 	    // Setup heart
 	    var heart=fdjtID("CODEXHEART");
@@ -396,7 +396,7 @@ var CodexMode=
 
 	/* Mode controls */
 	
-	var CodexMode_pat=/\b((device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
+	var CodexMode_pat=/\b((status)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
 	var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login))\b/g;
 	var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(glosses)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan))\b/g;
 	var codex_mode_scrollers=
@@ -425,10 +425,6 @@ var CodexMode=
 			mode,Codex.mode,document.body.className);
 	    if ((mode!==Codex.mode)&&(Codex.previewing))
 		Codex.stopPreview();
-	    if (hide_startup_help) {
-		dropClass(document.body,"codexstartuphelp");
-		Codex.cxthelp=hasClass(document.body,"codexhelp");
-		hide_startup_help=false;}
 	    if (mode) {
 		if ((mode==="scanning")||(mode==="tocscan"))
 		    addClass(document.body,"codexscanning");
@@ -873,15 +869,14 @@ var CodexMode=
 	    var uisize=fdjtDOM.getInputValues(settings,"CODEXUISIZE");
 	    if ((uisize)&&(uisize.length))
 		result.uisize=uisize[0];
-	    var startuphelp=fdjtDOM.getInputValues(settings,"CODEXSTARTUPHELP");
-	    result.startuphelp=
-		((startuphelp)&&(startuphelp.length))||false;
+	    var hidesplash=fdjtDOM.getInputValues(settings,"CODEXHIDESPLASH");
+	    result.hidesplash=((hidesplash)&&(hidesplash.length))||false;
 	    var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
 	    result.showconsole=
 		((showconsole)&&(showconsole.length)&&(true))||false;
 	    var isoffline=fdjtDOM.getInputValues(settings,"CODEXLOCAL");
-	    result.saveglosses=((isoffline)&&(isoffline.length)&&(isoffline[0]))||
-		false;
+	    result.saveglosses=
+		((isoffline)&&(isoffline.length)&&(isoffline[0]))||false;
 	    
 	    return result;}
 
