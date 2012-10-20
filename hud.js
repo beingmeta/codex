@@ -297,6 +297,25 @@ var CodexMode=
 	    input_button.onclick=consolebutton_click;
 	    input_console.onkeypress=consoleinput_keypress;
 
+	    var appframe=fdjtID("SBOOKSAPP");
+	    var appwindow=((appframe)&&(appframe.contentWindow));
+	    if (appwindow.postMessage) {
+		fdjtDOM.addListener(window,"message",function(evt){
+		    var origin=evt.origin;
+		    if (Codex.Trace.messages)
+			fdjtLog("Got a message from %s with payload %s",
+				origin,evt.data);
+		    if (origin.search(/https:\/\/[^\/]+.sbooks.net/)!==0) {
+			fdjtLog.warn("Rejecting insecure message from %s",
+				     origin);
+			return;}
+		    if (evt.data==="sbooksapp") {
+			CodexMode("sbooksapp");}
+		    else if (evt.data==="loggedin") {
+			if (!(Codex.user)) Codex.userSetup();}
+		    else if (evt.data)
+			fdjtDOM("CODEXINTRO",evt.data);
+		    else {}});}
 	    fillinTabs();
 	    resizeHUD();
 	    Codex.scrollers={};

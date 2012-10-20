@@ -390,6 +390,7 @@ Codex.Startup=
 		setInterval(updateInfo,300000);
 		return;}
 	    else return;}
+	Codex.userSetup=userSetup;
 
 	function readTraceSettings(){
 	    var tracing=getQuery("cxtrace",true);
@@ -558,25 +559,9 @@ Codex.Startup=
 			fdjtDOM(intro,"You've already added the overlay "+
 				ref.name);
 		    fdjtDOM(intro,"You've already added the overlay.");}
-		else if (appwindow.postMessage) {
-		    // If you have postMessage, use it to change modes
-		    //  when the sbook app is read.
-		    fdjtDOM.addListener(window,"message",function(evt){
-			var origin=evt.origin;
-			if (Codex.Trace.messages)
-			    fdjtLog("Got a message from %s with payload %s",
-				    origin,evt.data);
-			if (origin.search(/https:\/\/[^\/]+.sbooks.net/)!==0) {
-			    fdjtLog.warn("Rejecting insecure message from %s",
-					origin);
-			    return;}
-			if (evt.data==="sbooksapp") {
-			    CodexMode("sbooksapp");}
-			else if (evt.data==="loggedin") {
-			    if (!(Codex.user)) userSetup();}
-			else if (evt.data)
-			    fdjtDOM("CODEXINTRO",evt.data);
-			else {}});}
+		// If you have postMessage, it will be used to change
+		//  modes when the sbook app actually loads
+		else if (appwindow.postMessage) {}
 		else {
 		    Codex.joining=getQuery("JOIN");
 		    CodexMode("sbooksapp");}}
