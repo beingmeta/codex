@@ -300,6 +300,8 @@ var CodexMode=
 	    var appframe=fdjtID("SBOOKSAPP");
 	    var appwindow=((appframe)&&(appframe.contentWindow));
 	    if (appwindow.postMessage) {
+		if (Codex.Trace.messages)
+		    fdjtLog("Setting up message listener");
 		fdjtDOM.addListener(window,"message",function(evt){
 		    var origin=evt.origin;
 		    if (Codex.Trace.messages)
@@ -316,8 +318,34 @@ var CodexMode=
 		    else if (evt.data)
 			fdjtDOM("CODEXINTRO",evt.data);
 		    else {}});}
+
+
+	    // Set up the splash form
+	    var splashform=fdjtID("CODEXSPLASHFORM");
+	    var docinput=fdjtDOM.getInput(splashform,"DOCURI");
+	    if (docinput) docinput.value=Codex.docuri;
+	    var refinput=fdjtDOM.getInput(splashform,"REFURI");
+	    if (refinput) refinput.value=Codex.refuri;
+	    var topinput=fdjtDOM.getInput(splashform,"TOPURI");
+	    if (topinput) topinput.value=document.location.href;
+	    if ((Codex.user)&&(Codex.user.email)) {
+		var nameinput=fdjtDOM.getInput(splashform,"USERNAME");
+		if (nameinput) nameinput.value=Codex.user.email;}
+	    var query=document.location.search||"?";
+	    var appuri="https://"+Codex.server+"/flyleaf"+query;
+	    var refuri=Codex.refuri;
+	    if (query.search("REFURI=")<0)
+		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
+	    if (query.search("TOPURI=")<0)
+		appuri=appuri+"&TOPURI="+
+		encodeURIComponent(document.location.href);
+	    if (document.title) {
+		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
+	    fdjtID("CODEXSPLASH_RETURN_TO").value=appuri;
+	    
 	    fillinTabs();
 	    resizeHUD();
+
 	    Codex.scrollers={};
 	    updateScroller("CODEXGLOSSCLOUD");
 	    updateScroller("CODEXSEARCHCLOUD");
@@ -465,7 +493,9 @@ var CodexMode=
 		    Codex.mode=mode;}
 		// If we're switching to the inner app but the iframe
 		//  hasn't been initialized, we do it now.
-		if ((mode==="sbooksapp")&&(!(fdjtID("SBOOKSAPP").src)))
+		if ((mode==="sbooksapp")&&
+		    (!(fdjtID("SBOOKSAPP").src))&&
+		    (!(Codex.appinit)))
 		    initFlyleafApp();
 		// Update Codex.scrolling which is the scrolling
 		// element in the HUD for this mode
@@ -786,6 +816,7 @@ var CodexMode=
 	var flyleaf_app_init=false;
 	function initFlyleafApp(){
 	    if (flyleaf_app_init) return;
+	    if (Codex.appinit) return;
 	    var query=document.location.search||"?";
 	    var refuri=Codex.refuri;
 	    var appuri="https://"+Codex.server+"/flyleaf"+query;

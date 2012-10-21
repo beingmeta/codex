@@ -456,7 +456,8 @@ body.cxNOUSER .tab[CONTENTID='SBOOKSAPP'] { display: none;}
 body.cxNOUSER div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
   display: block;}
 
-.cxnouser, .cxwithuser, .cxdisconn, .cxwithconn { display: none;}
+.cxwithuser, .cxdisconn, .cxwithconn { display: none;}
+body.cxUSER .cxnouser { display: none;}
 
 body.cxNOUSER span.cxnouser, body.cxNOUSER a.cxnouser,
 body.cxNOUSER em.cxnouser, body.cxNOUSER strong.cxnouser {

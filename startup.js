@@ -596,7 +596,7 @@ Codex.Startup=
 		    if (fdjtState.getLocal(msgid)) {}
 		    else {
 			fdjtState.setLocal(msgid,"seen");
-			alert(msg.slice(uuid_end+1));}}
+			fdjtUI.alert(msg.slice(uuid_end+1));}}
 		else alert(msg);}
 	    if (msg=getQuery("SBOOKSMESSAGE")) {
 		var uuid_end=false;
@@ -606,13 +606,13 @@ Codex.Startup=
 		    if (fdjtState.getLocal(msgid)) {}
 		    else {
 			fdjtState.setLocal(msgid,"seen");
-			alert(msg.slice(uuid_end+1));}}
+			fdjtUI.alert(msg.slice(uuid_end+1));}}
 		else alert(msg);}
 	    if (msg=getCookie("APPMESSAGE")) {
-		alert(msg);
+		fdjtUI.alert(msg);
 		fdjtState.clearCookie("APPMESSAGE","sbooks.net","/");}
 	    if (msg=getCookie("SBOOKSMESSAGE")) {
-		alert(msg);
+		fdjtUI.alert(msg);
 		fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}}
 	
 	/* Application settings */
@@ -1190,13 +1190,16 @@ Codex.Startup=
 	/* Loading meta info (user, glosses, etc) */
 
 	function loadInfo(info) {
+	    if ((_sbook_loadinfo!==info)&&(Codex.user))
+		Codex.setConnected(true);
 	    if (!(Codex.user)) {
 		if (info.userinfo)
 		    setUser(info.userinfo,
 			    info.outlets,info.overlays,
 			    info.sync);
+		else addClass(document.body,"cxNOUSER");
 		if (info.nodeid) setNodeID(info.nodeid);
-		Codex.sync=info.sync;}
+		if (info.sync) Codex.sync=info.sync;}
 	    else if (info.wronguser) {
 		Codex.clearOffline(Codex.refuri);
 		window.location=window.location.href;
@@ -1325,6 +1328,7 @@ Codex.Startup=
 		    cursync,sync);
 		return false;}
 	    Codex.user=fdjtKB.Import(userinfo);
+	    if (persist) setConfig("localstorage",true,true);
 	    if (outlets) Codex.outlets=outlets;
 	    if (overlays) Codex.overlays=overlays;
 	    if (persist) {
@@ -1358,6 +1362,19 @@ Codex.Startup=
 		while (i<lim) names[i++].innerHTML=username;}
 	    if (fdjtID("SBOOKMARKUSER"))
 		fdjtID("SBOOKMARKUSER").value=Codex.user._id;
+
+	    // Initialize the splashform, which provides easy login
+	    // and social features
+	    var splashform=fdjtID("CODEXSPLASHFORM");
+	    var docinput=fdjtDOM.getInput(splashform,"DOCURI");
+	    if (docinput) docinput.value=Codex.docuri;
+	    var refinput=fdjtDOM.getInput(splashform,"REFURI");
+	    if (refinput) refinput.value=Codex.refuri;
+	    var topinput=fdjtDOM.getInput(splashform,"TOPURI");
+	    if (topinput) topinput.value=document.location.href;
+	    var xquery=fdjtDOM.getInput(splashform,"XQUERY");
+	    var query=document.location.query;
+	    if (xquery) xquery.value=(((query)&&(query!=="?"))?(query):"");
 
 	    /* Initialize add gloss prototype */
 	    var ss=Codex.stylesheet;
