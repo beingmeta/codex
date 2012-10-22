@@ -1154,8 +1154,6 @@ Codex.Startup=
 	    for (var pagelt in [pagehead,pageright,pageleft,pagefoot,pageinfo]) {
 		fdjtDOM.addListeners(
 		    pageinfo,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
-	    
-	    fdjtUI.TapHold(fdjtID("CODEXFOOT"),Codex.touch);
 
 	    window.scrollTo(0,0);
 	    

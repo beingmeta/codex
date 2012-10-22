@@ -342,7 +342,9 @@ var CodexMode=
 	    if (document.title) {
 		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
 	    fdjtID("CODEXSPLASH_RETURN_TO").value=appuri;
-	    
+	    	    
+	    fdjtUI.TapHold(CodexHUD.foot,Codex.touch);
+
 	    fillinTabs();
 	    resizeHUD();
 
