@@ -97,10 +97,10 @@
 		    fdjtDOM.addListeners(nodes,h);}}
     Codex.setupGestures=setupGestures;
 
-    var dont=fdjtUI.nobubble;
+    var dont=fdjtUI.noBubble;
     function passmultitouch(evt){
 	if ((evt.touches)&&(evt.touches.length>1)) return;
-	else fdjtUI.nobubble(evt);}
+	else fdjtUI.noBubble(evt);}
 
     /* New simpler UI */
 
@@ -1552,8 +1552,14 @@
 
     /* Rules */
 
-    var nobubble=fdjtUI.nobubble;
+    var noBubble=fdjtUI.noBubble;
     var cancel=fdjtUI.cancel;
+
+    function hideSplash(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	if (fdjtUI.isClickable(target)) return;
+	else CodexMode(false);}
 
     function hideSplashToggle(evt) {
 	evt=evt||event;
@@ -1624,6 +1630,13 @@
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
+	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
+	 "#CODEXHELPBUTTON": {
+	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
+	 "#CODEXHELP": {
+	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
+	 "#CODEXSHOWTEXT": {click: back_to_reading},
+	 "#CODEXAPPSTATUS": {click: hideSplash},
 	 ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
 	 // GLOSSFORM rules
 	 "span.codexglossdelete": { click: delete_ontap },
@@ -1632,13 +1645,7 @@
 	 ".submitbutton": {click: submitGloss },
 	 "div.glossetc": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
-	 "div.glossetc span.modebuttons": {click: glossmode_button},
-	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
-	 "#CODEXHELPBUTTON": {
-	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
-	 "#CODEXHELP": {
-	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
-	 "#CODEXSHOWTEXT": {click: back_to_reading}};
+	 "div.glossetc span.modebuttons": {click: glossmode_button}};
 
     function justselect(evt){
 	if (!(window.getSelection())) fdjtUI.cancel(evt);}
@@ -1681,6 +1688,7 @@
 	 "#CODEXHELPBUTTON": {click: toggleHelp},
 	 "#CODEXHELP": {click: toggleHelp},
 	 "#CODEXSHOWTEXT": {click: back_to_reading},
+	 "#CODEXAPPSTATUS": {click: hideSplash},
 	 /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
 	 ".hudmodebutton": {click: hudbutton},
 	 // GLOSSFORM rules
