@@ -456,6 +456,49 @@ body.cxNOUSER .tab[CONTENTID='SBOOKSAPP'] { display: none;}
 body.cxNOUSER div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
   display: block;}
 
+.cxwithuser, .cxdisconn, .cxwithconn { display: none;}
+body.cxUSER .cxnouser { display: none;}
+
+body.cxNOUSER span.cxnouser, body.cxNOUSER a.cxnouser,
+body.cxNOUSER em.cxnouser, body.cxNOUSER strong.cxnouser {
+    display: inline; }
+
+body.cxNOUSER p.cxnouser, body.cxNOUSER div.cxnouser,
+body.cxNOUSER blockquote.cxnouser { display: block; }
+
+body.cxNOUSER tr.cxnouser { display: table-row; }
+body.cxNOUSER tbody.cxnouser { display: table-row-group; }
+
+body.cxUSER span.cxwithuser, body.cxUSER a.cxwithuser,
+body.cxUSER em.cxwithuser, body.cxUSER strong.cxwithuser {
+    display: inline; }
+
+body.cxDISCONN span.cxdisconn, body.cxDISCONN a.cxdisconn,
+body.cxDISCONN em.cxdisconn, body.cxDISCONN strong.cxdisconn {
+    display: inline; }
+
+body.cxDISCONN p.cxdisconn, body.cxDISCONN div.cxdisconn,
+body.cxDISCONN blockquote.cxdisconn { display: block; }
+
+body.cxDISCONN tr.cxdisconn { display: table-row; }
+body.cxDISCONN tbody.cxdisconn { display: table-row-group; }
+
+body.cxUSER p.cxwithuser, body.cxUSER div.cxwithuser,
+body.cxUSER blockquote.cxwithuser { display: block; }
+
+body.cxUSER tr.cxwithuser { display: table-row; }
+body.cxUSER tbody.cxwithuser { display: table-row-group; }
+
+body.cxCONN span.cxwithconn, body.cxCONN a.cxwithconn,
+body.cxCONN em.cxwithconn, body.cxCONN strong.cxwithconn {
+    display: inline; }
+
+body.cxCONN p.cxwithconn, body.cxCONN div.cxwithconn,
+body.cxCONN blockquote.cxwithconn { display: block; }
+
+body.cxCONN tr.cxwithconn { display: table-row; }
+body.cxCONN tbody.cxwithconn { display: table-row-group; }
+
 /* Style variants */
 
 #CODEXHUD.codexuifontlarge {

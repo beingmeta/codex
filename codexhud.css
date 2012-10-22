@@ -151,7 +151,8 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT { font-size: 125%; }
 }
 
-body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
+body div#CODEXHUD.status #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
 
 #CODEXHUD.scanning #CODEXSCANNER {display: block;}
@@ -213,16 +214,16 @@ div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
     -o-opacity: 0.98;}
 
 /* Heart rules */
-div#CODEXHUD.allglosses div#CODEXALLGLOSSES,
-div#CODEXHUD.flytoc div#CODEXFLYTOC,
-div#CODEXHUD.about div#CODEXABOUTBOOK,
-div#CODEXHUD.settings div#CODEXSETTINGS,
-div#CODEXHUD.search div#CODEXSEARCHCLOUD,
-div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS,
-div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSCLOUD,
-div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXOUTLETCLOUD,
-div#CODEXHUD.console div#CODEXCONSOLE,
-div#CODEXHUD.sbooksapp iframe#SBOOKSAPP {
+div#CODEXHUD.allglosses div#CODEXALLGLOSSES.hudpanel,
+div#CODEXHUD.flytoc div#CODEXFLYTOC.hudpanel,
+div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
+div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
+div#CODEXHUD.search div#CODEXSEARCHCLOUD.hudpanel,
+div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS.hudpanel,
+div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSCLOUD.hudpanel,
+div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXOUTLETCLOUD.hudpanel,
+div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
+div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     position: static; display: block;
     opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
@@ -622,13 +623,13 @@ body div#CODEXHUD img.codexscanbutton {
     -o-opacity: 0.50;}
 body div#CODEXHUD img.codexpagebutton {
     width: 50px; height: 100px;
-    position: fixed; bottom: 50%; opacity: 0.3;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-    filter: alpha(opacity=30);
-    -webkit-opacity: 0.30;
-    -khtml-opacity: 0.30;
-    -moz-opacity: 0.30;
-    -o-opacity: 0.30;}
+    position: fixed; bottom: 50%; opacity: 0.15;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
+    filter: alpha(opacity=15);
+    -webkit-opacity: 0.15;
+    -khtml-opacity: 0.15;
+    -moz-opacity: 0.15;
+    -o-opacity: 0.15;}
 body div#CODEXHUD img.codexpagebutton:hover {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
@@ -848,6 +849,82 @@ body.cxLAYOUT div#CODEXLAYOUTMESSAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 
+/* Status stuff */
+
+div#CODEXHUD div.hudpanel#CODEXAPPSTATUS {
+    position: fixed;
+    top: 70px; bottom: 70px; left: 70px; right: 70px;
+    padding-top: 3px; padding-left: 3px; padding-bottom: 1em;
+    background-color: lightgray; color: black;
+    overflow: auto;
+    border: solid transparent 3px;
+    border-radius: 1em; -o-border-radius: 1em;
+    -moz-border-radius: 1em; -webkit-border-radius: 1em;
+    opacity: 0.0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    -webkit-opacity: 0;
+    -khtml-opacity: 0;
+    -moz-opacity: 0;
+    -o-opacity: 0;
+    display: none;}
+
+/* Visibility rules */
+body div#CODEXHUD div#CODEXAPPSTATUS {
+    display: none;}
+body div#CODEXHUD.status div#CODEXAPPSTATUS {
+    display: block; border-color: blue; opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
+    filter: alpha(opacity=95);
+    -webkit-opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -o-opacity: 0.95;}
+body.codexhelp div#CODEXHUD.status div#CODEXAPPSTATUS,
+body.hudup.codexhelp div#CODEXHUD.status div#CODEXAPPSTATUS {
+    display: none;}
+body div#CODEXHUD.status img#CODEXHELPBUTTON.hudbutton {
+    opacity: 0.90;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
+
+div#CODEXAPPSTATUS img.closebutton { float: left;}
+div#CODEXAPPSTATUS img.cover {
+    float: right;
+    max-width: 25%; max-height: 25%;
+    min-width: 5em; height: auto;
+    padding-right: 6px;
+    display: none;}
+
+div#CODEXAPPSTATUS p, div#CODEXAPPSTATUS h1 {
+    clear: left; text-align: left;}
+div#CODEXAPPSTATUS p, div#CODEXAPPSTATUS h1 {
+    margin-left: 10%; margin-right: 5%;
+    margin-top: 0.5ex; margin-bottom: 0.5ex;}
+
+div#CODEXAPPSTATUS .left { float: left; padding-right: 5px;}
+div#CODEXAPPSTATUS img { vertical-align: top;}
+
+div#CODEXAPPSTATUS form {
+    margin-top: 1em; max-width: 40em;
+    margin-left: 10%; margin-right: 5%;}
+div#CODEXAPPSTATUS form button {}
+div#CODEXAPPSTATUS form table th {
+    white-space: nowrap;}
+div#CODEXAPPSTATUS form table td.text:first-line {
+    font-weight: bold;}
+
+div#CODEXAPPSTATUS #CODEXSTATUSFOOT {
+    position: absolute; bottom: 0px; left: 0px; right: 0px; height: 1.5em;
+    text-align: center;}
+div#CODEXAPPSTATUS #CODEXSTATUSFOOT p {
+    margin-left: 0px; margin-bottom: 0px; margin-top: 0px;
+    padding-bottom: 0px; padding-top: 0px;
+    text-align: center;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

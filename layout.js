@@ -150,7 +150,7 @@ var CodexSections=
 
 	    Codex.layout=this;
 
-	    var coverpage=Codex.getCoverPage();
+	    var coverpage=Codex.getCover();
 	    if (coverpage) {
 		var coversect=
 		    fdjtDOM("section.fullpage#COVERSECTION",coverpage);
@@ -1157,7 +1157,7 @@ var CodexPaginate=
 	    var docinfo=Codex.docinfo;
 
 	    /* Lay out the coverpage */
-	    var coverpage=Codex.getCoverPage();
+	    var coverpage=Codex.getCover();
 	    if (coverpage) layout.addContent(coverpage);
 	    
 	    var textWidth=fdjtDOM.textWidth;
@@ -1246,7 +1246,7 @@ var CodexPaginate=
 			fn();}
 		    Codex.GoTo(
 			Codex.location||Codex.target||
-			    Codex.coverpage||Codex.titlepage||
+			    Codex.cover||Codex.titlepage||
 			    fdjtID("CODEXPAGE1"),
 			"endLayout",false,false);
 		    Codex.layout.running=false;}

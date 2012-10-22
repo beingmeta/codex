@@ -81,8 +81,8 @@ var CodexMode=
 	    // Set up the help page
 	    var help=CodexHUD.help=fdjtID("CODEXHELP");
 	    help.innerHTML=sbook_helptext;
-	    // Set up the app splash page
-	    var splash=CodexHUD.appsplash=fdjtID("CODEXAPPSPLASH");
+	    // Set up the app splash/status page
+	    var splash=CodexHUD.appstatus=fdjtID("CODEXAPPSTATUS");
 	    splash.innerHTML=sbook_splashtext;
 	    // Setup heart
 	    var heart=fdjtID("CODEXHEART");
@@ -297,8 +297,57 @@ var CodexMode=
 	    input_button.onclick=consolebutton_click;
 	    input_console.onkeypress=consoleinput_keypress;
 
+	    var appframe=fdjtID("SBOOKSAPP");
+	    var appwindow=((appframe)&&(appframe.contentWindow));
+	    if (appwindow.postMessage) {
+		if (Codex.Trace.messages)
+		    fdjtLog("Setting up message listener");
+		fdjtDOM.addListener(window,"message",function(evt){
+		    var origin=evt.origin;
+		    if (Codex.Trace.messages)
+			fdjtLog("Got a message from %s with payload %s",
+				origin,evt.data);
+		    if (origin.search(/https:\/\/[^\/]+.sbooks.net/)!==0) {
+			fdjtLog.warn("Rejecting insecure message from %s",
+				     origin);
+			return;}
+		    if (evt.data==="sbooksapp") {
+			CodexMode("sbooksapp");}
+		    else if (evt.data==="loggedin") {
+			if (!(Codex.user)) Codex.userSetup();}
+		    else if (evt.data)
+			fdjtDOM("CODEXINTRO",evt.data);
+		    else {}});}
+
+
+	    // Set up the splash form
+	    var splashform=fdjtID("CODEXSPLASHFORM");
+	    var docinput=fdjtDOM.getInput(splashform,"DOCURI");
+	    if (docinput) docinput.value=Codex.docuri;
+	    var refinput=fdjtDOM.getInput(splashform,"REFURI");
+	    if (refinput) refinput.value=Codex.refuri;
+	    var topinput=fdjtDOM.getInput(splashform,"TOPURI");
+	    if (topinput) topinput.value=document.location.href;
+	    if ((Codex.user)&&(Codex.user.email)) {
+		var nameinput=fdjtDOM.getInput(splashform,"USERNAME");
+		if (nameinput) nameinput.value=Codex.user.email;}
+	    var query=document.location.search||"?";
+	    var appuri="https://"+Codex.server+"/flyleaf"+query;
+	    var refuri=Codex.refuri;
+	    if (query.search("REFURI=")<0)
+		appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
+	    if (query.search("TOPURI=")<0)
+		appuri=appuri+"&TOPURI="+
+		encodeURIComponent(document.location.href);
+	    if (document.title) {
+		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
+	    fdjtID("CODEXSPLASH_RETURN_TO").value=appuri;
+	    	    
+	    fdjtUI.TapHold(CodexHUD.foot,Codex.touch);
+
 	    fillinTabs();
 	    resizeHUD();
+
 	    Codex.scrollers={};
 	    updateScroller("CODEXGLOSSCLOUD");
 	    updateScroller("CODEXSEARCHCLOUD");
@@ -396,7 +445,7 @@ var CodexMode=
 
 	/* Mode controls */
 	
-	var CodexMode_pat=/\b((device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
+	var CodexMode_pat=/\b((status)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
 	var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login))\b/g;
 	var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(glosses)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan))\b/g;
 	var codex_mode_scrollers=
@@ -425,10 +474,6 @@ var CodexMode=
 			mode,Codex.mode,document.body.className);
 	    if ((mode!==Codex.mode)&&(Codex.previewing))
 		Codex.stopPreview();
-	    if (hide_startup_help) {
-		dropClass(document.body,"codexstartuphelp");
-		Codex.cxthelp=hasClass(document.body,"codexhelp");
-		hide_startup_help=false;}
 	    if (mode) {
 		if ((mode==="scanning")||(mode==="tocscan"))
 		    addClass(document.body,"codexscanning");
@@ -450,7 +495,9 @@ var CodexMode=
 		    Codex.mode=mode;}
 		// If we're switching to the inner app but the iframe
 		//  hasn't been initialized, we do it now.
-		if ((mode==="sbooksapp")&&(!(fdjtID("SBOOKSAPP").src)))
+		if ((mode==="sbooksapp")&&
+		    (!(fdjtID("SBOOKSAPP").src))&&
+		    (!(Codex.appinit)))
 		    initFlyleafApp();
 		// Update Codex.scrolling which is the scrolling
 		// element in the HUD for this mode
@@ -481,7 +528,9 @@ var CodexMode=
 		else dropClass(document.body,"codexscanning");
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
-		if ((mode==='scanning')||(mode==='tocscan')) {
+		if ((mode==='scanning')||
+		    (mode==='tocscan')||
+		    (mode==='status')) {
 		    if (mode!==oldmode) {
 			Codex.hudup=false;
 			dropClass(CodexHUD,"openheart");
@@ -769,6 +818,7 @@ var CodexMode=
 	var flyleaf_app_init=false;
 	function initFlyleafApp(){
 	    if (flyleaf_app_init) return;
+	    if (Codex.appinit) return;
 	    var query=document.location.search||"?";
 	    var refuri=Codex.refuri;
 	    var appuri="https://"+Codex.server+"/flyleaf"+query;
@@ -873,15 +923,14 @@ var CodexMode=
 	    var uisize=fdjtDOM.getInputValues(settings,"CODEXUISIZE");
 	    if ((uisize)&&(uisize.length))
 		result.uisize=uisize[0];
-	    var startuphelp=fdjtDOM.getInputValues(settings,"CODEXSTARTUPHELP");
-	    result.startuphelp=
-		((startuphelp)&&(startuphelp.length))||false;
+	    var hidesplash=fdjtDOM.getInputValues(settings,"CODEXHIDESPLASH");
+	    result.hidesplash=((hidesplash)&&(hidesplash.length))||false;
 	    var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
 	    result.showconsole=
 		((showconsole)&&(showconsole.length)&&(true))||false;
 	    var isoffline=fdjtDOM.getInputValues(settings,"CODEXLOCAL");
-	    result.saveglosses=((isoffline)&&(isoffline.length)&&(isoffline[0]))||
-		false;
+	    result.saveglosses=
+		((isoffline)&&(isoffline.length)&&(isoffline[0]))||false;
 	    
 	    return result;}
 

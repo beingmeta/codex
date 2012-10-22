@@ -53,6 +53,7 @@ Codex.Startup=
 
 	var https_root="https://beingmeta.s3.amazonaws.com/static/g/codex/";
 
+	// Imported functions
 	var cxicon=Codex.icon;
 
 	var getLocal=fdjtState.getLocal;
@@ -60,14 +61,15 @@ Codex.Startup=
 	var getQuery=fdjtState.getQuery;
 	var getCookie=fdjtState.getCookie;
 	var getMeta=fdjtDOM.getMeta;
-	/* Initialization */
-	
-	var _sbook_setup_start=false;
-	
 	var addClass=fdjtDOM.addClass;
 	var dropClass=fdjtDOM.dropClass;
 	var TOA=fdjtDOM.Array;
 
+
+	/* Initialization */
+	
+	var _sbook_setup_start=false;
+	
 	function startupLog(){
 	    if (!(Codex.Trace.startup)) return;
 	    var args=TOA(arguments);
@@ -89,7 +91,7 @@ Codex.Startup=
 	     bodysize: 'normal',bodyfamily: 'serif',
 	     uisize: 'normal',showconsole: false,
 	     animatepages: true,animatehud: true,
-	     startuphelp: true,keyboardhelp: true,
+	     hidesplash: false,keyboardhelp: true,
 	     holdmsecs: 750,taptapmsecs: 500};
 	var current_config={};
 	var saved_config={};
@@ -228,10 +230,10 @@ Codex.Startup=
 	    else setConfig(name,elt.value,save);}
 	Codex.updateConfig=updateConfig;
 
-	Codex.addConfig("startuphelp",function(name,value){
-	    Codex.startuphelp=value;
+	Codex.addConfig("hidesplash",function(name,value){
+	    Codex.hidesplash=value;
 	    fdjtUI.CheckSpan.set(
-		document.getElementsByName("CODEXSTARTUPHELP"),
+		document.getElementsByName("CODEXHIDESPLASH"),
 		value);});
 	Codex.addConfig("keyboardhelp",function(name,value){
 	    Codex.keyboardhelp=value;
@@ -249,8 +251,9 @@ Codex.Startup=
 	Codex.addConfig("taptapmsecs",function(name,value){
 	    Codex.taptapmsecs=value;});
 
-
 	function syncStartup(){
+	    // This is the startup code which is run
+	    //  synchronously, before the time-sliced processing
 	    fdjtLog.console="CODEXCONSOLELOG";
 	    fdjtLog.consoletoo=true;
 	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
@@ -259,35 +262,50 @@ Codex.Startup=
 		    Codex._setup_start.toString());
 	    if (navigator.appVersion)
 		fdjtLog("Navigator App version: %s",navigator.appVersion);
-	    if (getQuery("cxtrace")) setupTrace();
-	    if (Codex.Trace.startup) fdjtLog("Starting app setup");
+	    // This lets trace configurations be passed as query
+	    // arguments, for handy debugging.
+	    if (getQuery("cxtrace")) readTraceSettings();
+
+	    deviceSetup();
 	    appSetup();
-	    if (Codex.Trace.startup) fdjtLog("Starting user setup");
 	    userSetup();
-	    document.domain="sbooks.net"; document.origin="sbooks.net";
+
 	    if (Codex.Trace.startup)
-		fdjtLog("Done with synchronous startup");}
+		fdjtLog("Done with synchronous startup");
+
+	    // Hide the loading splash page, if any
+	    if (fdjtID("CODEXSPLASH"))
+		fdjtID("CODEXSPLASH").style.display='none';
+
+	    CodexMode("status");}
 
 	function appSetup() {
+
+	    if (Codex.Trace.startup) fdjtLog("Starting app setup");
+
+	    // Initialize domain and origin for browsers which care
+	    document.domain="sbooks.net"; document.origin="sbooks.net";
 
 	    // Execute any FDJT initializations
 	    fdjtDOM.init();
 
-	    // Get various settings for the sBook, including
-	    // information for scanning, graphics, glosses, etc
+	    // Get various settings for the sBook from the HTML (META
+	    // tags, etc), including settings or guidance for
+	    // scanning, graphics, layout, glosses, etc.
 	    readSettings();
 
-	    // Declare this to invoke some style constraints
-	    fdjtDOM.addClass(document.body,"codexstartup");
-
-	    var metadata=false;
-	    var helphud=false;
 	    // Initialize the databases
 	    Codex.initDB();
+
 	    // Modifies the DOM in various ways
 	    initBody();
 	    // This initializes the book tools (the HUD/Heads Up Display)
 	    Codex.initHUD();
+
+	    if (Codex.coverpage) {
+		var status_cover=fdjtID("CODEXSTATUSCOVER");
+		status_cover.src=Codex.coverpage;
+		status_cover.style.display='block';}
 
 	    // Get any local saved configuration information
 	    //  We do this after the HUD is setup so that the settings
@@ -323,9 +341,15 @@ Codex.Startup=
 		((Codex.demo)||(fdjtState.getLocal("codex.demo"))||
 		 (fdjtState.getCookie("sbooksdemo"))||
 		 (getQuery("demo")))) {
-		fdjtUI.Reticle.setup();}}
+		fdjtUI.Reticle.setup();}
+
+	    // Set up what the user sees during setup
+	    appstatus();
+
+	}
 	
 	function userSetup(){
+	    if (Codex.Trace.startup) fdjtLog("Starting user setup");
 	    // Start JSONP call to get initial or updated glosses, etc
 	    if (Codex.nologin) {}
 	    else if (getLocal("user("+Codex.refuri+")")) {
@@ -366,8 +390,9 @@ Codex.Startup=
 		setInterval(updateInfo,300000);
 		return;}
 	    else return;}
+	Codex.userSetup=userSetup;
 
-	function setupTrace(){
+	function readTraceSettings(){
 	    var tracing=getQuery("cxtrace",true);
 	    var i=0; var lim=tracing.length;
 	    while (i<lim) {
@@ -386,14 +411,12 @@ Codex.Startup=
 
 	function Startup(force){
 	    if (Codex._setup) return;
-	    if ((!force)&&(getQuery("nosbooks"))) return; 
+	    if ((!force)&&(getQuery("nocodex"))) return;
 	    // This is all of the startup that we need to do synchronously
 	    syncStartup();
 	    // The rest of the stuff we timeslice
 	    fdjtTime.timeslice
-	    ([// Setup sbook tables, databases, etc
-		appSplash,
-		// Scan the DOM for metadata.  This is surprisingly fast,
+	    ([  // Scan the DOM for metadata.  This is surprisingly fast,
 		//  so we don't currently try to timeslice it, though we could
 		function(){
 		    var scanmsg=fdjtID("CODEXSTARTUPSCAN");
@@ -499,7 +522,7 @@ Codex.Startup=
 	     100,25);}
 	Codex.Startup=Startup;
 	
-	function appSplash(){
+	function appstatus(){
 	    var intro=fdjtID("CODEXINTRO");
 	    // Take any message passed along as a query string
 	    //  and put it in the top of the help window, then
@@ -536,29 +559,16 @@ Codex.Startup=
 			fdjtDOM(intro,"You've already added the overlay "+
 				ref.name);
 		    fdjtDOM(intro,"You've already added the overlay.");}
-		else if (appwindow.postMessage) {
-		    // If you have postMessage, use it to change modes
-		    //  when the sbook app is read.
-		    fdjtDOM.addListener(window,"message",function(evt){
-			var origin=evt.origin;
-			if (Codex.Trace.messages)
-			    fdjtLog("Got a message from %s with payload %s",
-				    origin,evt.data);
-			if (origin.search(/https:\/\/[^\/]+.sbooks.net/)!==0) {
-			    fdjtLog.warn("Rejecting insecure message from %s",
-					origin);
-			    return;}
-			if (evt.data==="sbooksapp") {
-			    CodexMode("sbooksapp");}
-			else if (evt.data)
-			    fdjtDOM("CODEXINTRO",evt.data);
-			else {}});}
+		// If you have postMessage, it will be used to change
+		//  modes when the sbook app actually loads
+		else if (appwindow.postMessage) {}
 		else {
 		    Codex.joining=getQuery("JOIN");
 		    CodexMode("sbooksapp");}}
-	    if ((!(Codex.mode))&&(Codex.startuphelp)) {
-		addClass(document.body,"codexstartuphelp");
-		Codex.cxthelp=true;}
+	    // This makes the splash page visible and applies some
+	    // other styling
+	    fdjtDOM.addClass(document.body,"codexstartup");
+	    fdjtDOM.addClass(document.body,"codexappstatus");
 	    window.focus();}
 	
 	function startupDone(mode){
@@ -568,18 +578,13 @@ Codex.Startup=
 	    Codex.displaySync();
 	    setInterval(Codex.serverSync,60000);
 	    fdjtDOM.dropClass(document.body,"codexstartup");
-	    // Hide the splash page, if any
-	    if (fdjtID("CODEXSPLASH"))
-		fdjtID("CODEXSPLASH").style.display='none';
+	    fdjtDOM.dropClass(document.body,"codexappstatus");
 	    if (mode) {}
 	    else if (getQuery("startmode"))
 		mode=getQuery("startmode");
-	    else if (Codex.startuphelp) {
-		addClass(document.body,"codexhelp");
-		Codex.cxthelp=true;}
-	    else {
-		dropClass(document.body,"codexhelp");
-		Codex.cxthelp=false;}
+	    else if (Codex.hidesplash) 
+		CodexMode(false);
+	    else {}
 	    if (mode) CodexMode(mode);
 	    _sbook_setup=Codex._setup=new Date();
 	    var msg=false;
@@ -591,7 +596,7 @@ Codex.Startup=
 		    if (fdjtState.getLocal(msgid)) {}
 		    else {
 			fdjtState.setLocal(msgid,"seen");
-			alert(msg.slice(uuid_end+1));}}
+			fdjtUI.alert(msg.slice(uuid_end+1));}}
 		else alert(msg);}
 	    if (msg=getQuery("SBOOKSMESSAGE")) {
 		var uuid_end=false;
@@ -601,13 +606,13 @@ Codex.Startup=
 		    if (fdjtState.getLocal(msgid)) {}
 		    else {
 			fdjtState.setLocal(msgid,"seen");
-			alert(msg.slice(uuid_end+1));}}
+			fdjtUI.alert(msg.slice(uuid_end+1));}}
 		else alert(msg);}
 	    if (msg=getCookie("APPMESSAGE")) {
-		alert(msg);
+		fdjtUI.alert(msg);
 		fdjtState.clearCookie("APPMESSAGE","sbooks.net","/");}
 	    if (msg=getCookie("SBOOKSMESSAGE")) {
-		alert(msg);
+		fdjtUI.alert(msg);
 		fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}}
 	
 	/* Application settings */
@@ -676,8 +681,8 @@ Codex.Startup=
 	    // Get the settings for scanning the document structure
 	    getScanSettings();
 
-	    // Where to get your images from, especially to keep referenes
-	    //  inside https
+	    /* Where to get your images from, especially to keep
+	       references inside https */
 	    if ((Codex.root==="http://static.beingmeta.com/g/codex/")&&
 		(window.location.protocol==='https:'))
 		Codex.root=https_root;
@@ -698,6 +703,10 @@ Codex.Startup=
 
 	    refuris.push(refuri);
 
+	    var coverpage=fdjtDOM.getLink("sbook.coverpage",false,false)||
+		fdjtDOM.getLink("coverpage",false,false);
+	    if (coverpage) Codex.coverpage=coverpage;
+	    
 	    var prefix=getMeta("SBOOK.prefix");
 	    if (prefix) Codex.baseid=prefix;
 
@@ -707,11 +716,7 @@ Codex.Startup=
 		    false;}
 	    setLocal("codex.refuris",refuris,true);
 	    
-	    deviceSetup();
-
-	    Codex.allglosses=[];
-	    Codex.allsources=[];
-	    Codex.etc=[];}
+	}
 
 	function deviceSetup(){
 	    var useragent=navigator.userAgent;
@@ -951,16 +956,41 @@ Codex.Startup=
 	    var content=fdjtDOM("div#CODEXCONTENT");
 	    var headmask=fdjtDOM("div.codexwinmask#CODEXWINMASKHEAD");
 	    var footmask=fdjtDOM("div.codexwinmask#CODEXWINMASKFOOT");
-	    var splash=fdjtID("CODEXSPLASH");
 	    var win=fdjtDOM("div#CODEXWINDOW",headmask,footmask,content);
-	    // We'll put it back
-	    fdjtDOM.remove(splash);
-	    var nodes=fdjtDOM.toArray(body.childNodes);
+	    // Get any author provided splash page
+	    var splash=fdjtID("CODEXSPLASH");
+	
+	    // Save those DOM elements in a handy place
+	    Codex.window=win;
+	    Codex.content=content;
+	    Codex.winmaskhead=headmask;
+	    Codex.winmaskfoot=footmask;
+
+	    // Move the publisher-provided splash page directly into
+	    //  the body (if neccessary)
+	    if ((splash)&&(splash.parentNode!==body))
+		fdjtDOM.prepend(body,splash);
+	    var children=body.childNodes, nodes=[];
+	    var i=0, lim=children.length;
+	    if (splash) {
+		// Gather all of the nodes except the splash page
+		while (i<lim) {
+		    //  We're trying to minimize display artifacts during
+		    //   startup and this shuffling about might help in
+		    //   some browsers.
+		    var child=children[i++];
+		    if (child===splash) {i++; break;}
+		    else nodes.push(child);}}
+	    // Now copy the rest of the nodes into the array
+	    while (i<lim) nodes.push(children[i++]);
+	    
+	    // Create a custom stylesheet for the app
 	    var style=fdjtDOM("STYLE");
 	    fdjtDOM(document.head,style);
 	    Codex.stylesheet=style.sheet;
+
 	    var i=0; var lim=nodes.length;
-	    // Move all of the body nodes into the content element
+	    // Now, move all of the body nodes into the content element
 	    while (i<lim) {
 		var node=nodes[i++];
 		if (node.nodeType===1) {
@@ -968,13 +998,14 @@ Codex.Startup=
 			(node.tagName!=='SCRIPT'))
 			content.appendChild(node);}
 		else content.appendChild(node);}
-	    Codex.window=win;
-	    Codex.content=content;
-	    Codex.winmaskhead=headmask;
-	    Codex.winmaskfoot=footmask;
-	    Codex.coverpage=fdjtID("SBOOKCOVERPAGE");
+
+	    // Initialize cover and titlepage (if specified)
+	    Codex.cover=Codex.getCover();
 	    Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
+
 	    fdjtDOM.addClass(document.body,"cxSHRINK");
+
+	    // Gather special content
 	    var allnotes=fdjtID("SBOOKNOTES");
 	    var allasides=fdjtID("SBOOKASIDES");
 	    var alldetails=fdjtID("SBOOKDETAILS");
@@ -987,13 +1018,15 @@ Codex.Startup=
 	    if (!(allnotes)) {
 		var allnotes=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
 		fdjtDOM(content,allnotes);}
+	    
 	    var page=Codex.page=fdjtDOM(
 		"div#CODEXPAGE",
 		fdjtDOM("div#CODEXPAGINATING","Laid out ",
 			fdjtDOM("span#CODEXPAGEPROGRESS",""),
 			" pages"),
 		Codex.pages=fdjtDOM("div#CODEXPAGES"));
-	    fdjtDOM(body,splash,win,page);
+	    
+	    fdjtDOM(body,win,page);
 	    fdjtDOM.addClass(body,"sbook");
 	    sizePage(page,content);
 	    applyMetaClass("sbookdetails");
@@ -1121,8 +1154,6 @@ Codex.Startup=
 	    for (var pagelt in [pagehead,pageright,pageleft,pagefoot,pageinfo]) {
 		fdjtDOM.addListeners(
 		    pageinfo,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
-	    
-	    fdjtUI.TapHold(fdjtID("CODEXFOOT"),Codex.touch);
 
 	    window.scrollTo(0,0);
 	    
@@ -1157,13 +1188,16 @@ Codex.Startup=
 	/* Loading meta info (user, glosses, etc) */
 
 	function loadInfo(info) {
+	    if ((_sbook_loadinfo!==info)&&(Codex.user))
+		Codex.setConnected(true);
 	    if (!(Codex.user)) {
 		if (info.userinfo)
 		    setUser(info.userinfo,
 			    info.outlets,info.overlays,
 			    info.sync);
+		else addClass(document.body,"cxNOUSER");
 		if (info.nodeid) setNodeID(info.nodeid);
-		Codex.sync=info.sync;}
+		if (info.sync) Codex.sync=info.sync;}
 	    else if (info.wronguser) {
 		Codex.clearOffline(Codex.refuri);
 		window.location=window.location.href;
@@ -1292,6 +1326,7 @@ Codex.Startup=
 		    cursync,sync);
 		return false;}
 	    Codex.user=fdjtKB.Import(userinfo);
+	    if (persist) setConfig("localstorage",true,true);
 	    if (outlets) Codex.outlets=outlets;
 	    if (overlays) Codex.overlays=overlays;
 	    if (persist) {
@@ -1325,6 +1360,19 @@ Codex.Startup=
 		while (i<lim) names[i++].innerHTML=username;}
 	    if (fdjtID("SBOOKMARKUSER"))
 		fdjtID("SBOOKMARKUSER").value=Codex.user._id;
+
+	    // Initialize the splashform, which provides easy login
+	    // and social features
+	    var splashform=fdjtID("CODEXSPLASHFORM");
+	    var docinput=fdjtDOM.getInput(splashform,"DOCURI");
+	    if (docinput) docinput.value=Codex.docuri;
+	    var refinput=fdjtDOM.getInput(splashform,"REFURI");
+	    if (refinput) refinput.value=Codex.refuri;
+	    var topinput=fdjtDOM.getInput(splashform,"TOPURI");
+	    if (topinput) topinput.value=document.location.href;
+	    var xquery=fdjtDOM.getInput(splashform,"XQUERY");
+	    var query=document.location.query;
+	    if (xquery) xquery.value=(((query)&&(query!=="?"))?(query):"");
 
 	    /* Initialize add gloss prototype */
 	    var ss=Codex.stylesheet;
@@ -1523,8 +1571,8 @@ Codex.Startup=
 	    else if ((state)&&(state.location))
 		Codex.GoTo(state.location,"initLocation/state.locaion",
 			   false,false);
-	    else if (Codex.start||Codex.coverpage||Codex.titlepage)
-		Codex.GoTo((Codex.start||Codex.coverpage||Codex.titlepage),
+	    else if (Codex.start||Codex.cover||Codex.titlepage)
+		Codex.GoTo((Codex.start||Codex.cover||Codex.titlepage),
 			   "initLocation/start/cover/titlepage",
 			   false,false);
 	    if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))

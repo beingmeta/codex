@@ -1,53 +1,115 @@
-<table class="fdjt textual">
-  <tr><th>
-      <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
-	   src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
-	   alt="help/question mark" class="left"/></th>
-    <td><p><span class="action">
-	  <span class="fortouch">Tap</span> <span class="notouch">Click</span>
-	  the help icon in bottom right</span>
-	for <span class="result">help with using the sBooks reader
-	  application for this book.</span></p></td></tr>
-  <tr><th></th><td><p id="CODEXINTRO"></p></td></tr>
-  <tr><th><img svg="http://static.beingmeta.com/g/codex/sbookslogo.svgz"
-	       src="http://static.beingmeta.com/g/codex/sbookslogo32x32.png"
-	       alt="corners of browser" class="left"/></th>
-    <td><p>
-	<strong><span style="color: blue;">s</span>Books</strong> are
-	digital books enriched with comments, tags, or links from your
-	friends, community, or elsewhere.</p></td></tr>
-</table>
-<!-- Login/register form
-     (Resets flyleaf url, use postMessage to prime new login) -->
-<!-- Add to personal circle form
-     (_blank target) -->
-<!-- Create reading circle form
-     (Resets flyleaf URL) -->
-<div class="helpblock">
-  <p id="CODEXHELPNEEDLOGIN">
-    <strong style="color: blue; cursor: pointer; text-decoration:
-		   underline;" onclick="CodexMode('login')">Login</strong>
-    to use the annotation and social features of sBooks.
-    sBooks is <strong>free of charge</strong> for free
-    online content and open online communities.</p>
-  <p id="CODEXHELPDISCONNECTED">
-    You are not logged into sBooks, which limits your
-    ability to update or save glosses.
-    <a href="javascript:CodexMode('login')">Login here.</a></p>
-</div>
-<div>
-  <table class="fdjt textual">
-    <tr id="CODEXHELPLOGGEDIN">
-      <th><img alt="" class="left" name="CODEXUSERPIC"></th>
-      <td>
-	<p><strong>This book</strong> is personalized with glosses for
-	  <strong name="CODEXUSERNAME">Somebody Interesting</strong>.
-	  If that's not you,
-	  please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
-	  if it is you, you can view and update
-	  your <a href="https://auth.sbooks.net/my/profile"
-		  target="_blank">profile here</a>.</p>
-      </td>
-    </tr>
+<img svg="http://static.beingmeta.com/g/codex/redx.svgz"
+     src="http://static.beingmeta.com/g/codex/redx24x24.png"
+     alt="close" class="closebutton"
+     onclick="CodexMode(false);"/>
+<img class="cover" id="CODEXSTATUSCOVER"/>
+<h1>Welcome to <span style="color: blue;">s</span>Books</h1>
+<p id="CODEXINTRO"></p>
+<p><img svg="http://static.beingmeta.com/g/codex/sbookslogo.svgz"
+	src="http://static.beingmeta.com/g/codex/sbookslogo32x32.png"
+	alt="sBooks" class="left"/>
+  <strong><span style="color: blue;">s</span>Books</strong>
+  are digital books personally customized with comments, tags, or links
+  from your friends, communities, and networks as well as (selectively)
+  experts, critics, or teachers.</p>
+<p><img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
+	src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
+	alt="help/question mark" class="left"/>
+	This <strong><span style="color: blue;">s</span>Books
+	reader</strong> web application makes it easy to navigate,
+	search, and annotate your book.<br/>
+  <strong><span class="fortouch">Tap</span> <span class="notouch">Click</span>
+  </strong> the help icon in bottom right for help with using the sBooks web
+  application.</p>
+<form action="https://glosses.sbooks.net/flyleaf" target="SBOOKSAPP"
+      NAME="CODEXSPLASHFORM" ID="CODEXSPLASHFORM"
+      method="POST"
+      onsubmit="Codex.appinit=true; CodexMode('sbooksapp');">
+  <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE=""
+	 ID="CODEXSPLASH_RETURN_TO"/>
+  <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
+  <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="XQUERY" VALUE=""/>
+  <table class="fdjtform">
+    <tr class="cxwithuser">
+      <th class="image"><img alt="" class="left" name="CODEXUSERPIC"/></th>
+      <td><strong>This book</strong> is personalized with glosses for
+	<strong name="CODEXUSERNAME">Somebody Interesting</strong>.
+	If that's not you,
+	please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
+	if it is you, you can view and update
+	your <a href="https://auth.sbooks.net/my/profile"
+		target="_blank">profile here</a>.</td></tr>
+    <tbody class="cxnouser">
+      <tr>
+	<td class="text" colspan="2">
+	  To save and share your notes, tags, and links, you need to
+	  be logged into sBooks.  An sBooks account is free and can be
+	  linked to your existing social networks or used to create a new
+	  one around the books you love.</td></tr>
+      <tr>
+	<th><input type="SUBMIT" name="ACTION" value="Login"/>&nbsp;with</th>
+	<td><input type="TEXT" name="USERNAME" value=""
+		   placeholder="email address"/></td></tr>
+      <tr><th>or&nbsp;use</th>
+	<td>
+	  <button name="AUTHORITY" value=":FACEBOOK">
+            <img src="http://static.beingmeta.com/g/codex/facebook32x32.png"
+         	 alt="Facebook" class="noautoscale"/>
+	  </button>
+	  <button NAME="AUTHORITY" VALUE=":GPLUS">
+	    <img src="http://static.beingmeta.com/g/codex/googleplus32x32.png"
+		 alt="Google" title="login using Google"/>
+	  </button>
+	  <button NAME="AUTHORITY" VALUE=":TWITTER">
+	    <img src="http://static.beingmeta.com/g/codex/twitter32x32.png"
+		 alt="Twitter" title="login with Twitter"/>
+	  </button>
+      </td></tr>
+    </tbody>
+    <tbody class="cxwithconn">
+      <tr><th class="button" rowspan="2">
+	  <button name="ACTION" value=":MAKEFRIEND">Invite</button><br/>
+	  your<br/>friends</th>
+	<td class="textbox">
+	  <input TYPE="TEXT" NAME="FRIENDS" VALUE=""
+		 onkeypress="fdjtUI.submitOnEnter(event);"
+		 placeholder="email adddresses"/></td></tr>
+      <tr><td>to join your <strong>personal circle</strong> at
+	  <strong><span style="color: blue;">s</span>Books</strong>.
+	  This will allow you to see one another's notes, tags, and links
+	  (glosses).</td></tr>
+    </tbody>
+    <tbody class="cxwithconn">
+      <tr><th class="button" rowspan="2">
+	  <button NAME="ACTION" VALUE=":MAKECIRCLE">Gather</button><br/>
+	  a tribe</th>
+	<td class="textbox">
+	  <input TYPE="TEXT" NAME="INVITING" VALUE=""
+		 onkeypress="fdjtUI.submitOnEnter(event);"
+		 placeholder="email addresses"/></td></tr>
+      <tr><td>into a <strong>reading circle</strong> at
+	  <strong><span style="color: blue;">s</span>Books</strong>.
+	  Members of a reading circle can see one another's glosses
+	  on this book, sharing insights, opinions, and reactions.</td></tr>
+    </tbody>
   </table>
+</form>
+<div id="CODEXSTATUSFOOT">
+  <p class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+    <input TYPE="checkbox" NAME="CODEXHIDESPLASH" VALUE="yes"
+	   ID="HIDESPLASHCHECKBOX"
+	   onchange="fdjtUI.Delayed(function(){var checked=fdjtID('HIDESPLASHCHECKBOX').checked; Codex.setConfig('hidesplash',checked,true);});"
+	   "CHECKED"/>
+    Hide this page after startup (<em>if not needed</em>)</p>
 </div>
+
+<!--
+    /* Emacs local variables
+    ;;;  Local variables: ***
+    ;;;  compile-command: "cd ..; make" ***
+    ;;;  End: ***
+    */
+  -->
