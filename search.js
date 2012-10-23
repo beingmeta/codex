@@ -470,17 +470,29 @@
 	var cfreqs=sbook_index.tagfreqs;
 	var ctotal=sbook_index._allitems.length;
 	var normals=((info.n_primes<17)&&(info.normals));
+	var topcloud=(freqs===cfreqs)
  	i=0; while (i<dterms.length) {
-	    var dterm=dterms[i++];
+	    var dterm=dterms[i++]; 
 	    var container=words; // The default
 	    var ref=kbref(dterm,knodule);
 	    var span=dtermSpan(completions,
 			       dterm,ref,freqs,cfreqs,scores,
-			       ((info.n_primes>17)||
-				(info.normals._count>42)),
+			       (info.n_primes>17),
 			       cuelim);
 	    if (!(span)) continue;
-	    var scaling=Math.sqrt(scores[dterm]||freqs[dterm]||1);
+	    var scaling=
+		((scores[dterm])?(1+Math.log(scores[dterm])):
+		 (freqs[dterm])?(1+Math.log(freqs[dterm])):
+		 (1));
+	    /*
+	    if (topcloud) {
+		if (scores[dterm]) scaling=Math.log(scores[dterm]);
+		else if (freqs[dterm]) scaling=Math.log(freqs[dterm]);
+		else scaling=1;}
+	    else if (scores[dterm]) scaling=scores[dterm]/cscores[dterm];
+	    else if (freqs[dterm]) scaling=freqs[dterm]/cfreqs[dterm];
+	    else scaling=1;
+	    */
 	    domnodes.push(span);
 	    if ((scores)&&(!(noscale))) {
 		if ((!(minscale))||(scaling<minscale)) minscale=scaling;
@@ -498,9 +510,9 @@
 	    container.appendChild(span);
 	    container.appendChild(document.createTextNode(" "));}
 	// fdjtLog("minscale=%o, maxscale=%o",minscale,maxscale);
+	var scalespan=maxscale-minscale;
 	if (nodescales.length) {
 	    var j=0; var jlim=domnodes.length;
-	    var scalespan=maxscale-minscale;
 	    while (j<jlim) {
 		var node=domnodes[j];
 		var scale=nodescales[j];
