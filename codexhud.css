@@ -154,6 +154,8 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
 body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body div#CODEXHUD.status #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
+body.codexhelp div#CODEXHUD.status #CODEXFOOT #CODEXSHOWTEXT {
+    display: none;}
 
 #CODEXHUD.scanning #CODEXSCANNER {display: block;}
 
@@ -873,7 +875,7 @@ div#CODEXHUD div.hudpanel#CODEXAPPSTATUS {
 body div#CODEXHUD div#CODEXAPPSTATUS {
     display: none;}
 body div#CODEXHUD.status div#CODEXAPPSTATUS {
-    display: block; border-color: blue; opacity: 0.8;
+    display: block; border-color: blue; opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
     -webkit-opacity: 0.95;
