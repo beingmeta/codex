@@ -1313,7 +1313,6 @@
 	// Tapping the tochead returns to results/glosses/etc
  	var scanning=Codex.scanning;
 	if (!(scanning)) return;
-	var hudparent=getParent(scanning,".hudpanel");
 	if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
 	    CodexMode("allglosses");
 	    fdjtUI.cancel(evt);}

@@ -546,20 +546,22 @@ var CodexMode=
 		    // results, etc) to reflect any motion
 		    var heart=CodexHUD.heart;
 		    var height=heart.offsetHeight;
-		    var scrolltop=heart.scrollTop;
-		    var scrollbottom=heart.scrollTop+height;
 		    var scanning=Codex.scanning;
-		    var inner=getGeometry(scanning,heart);
+		    var content=getParent(scanning,".hudpanel");
+		    var scrolltop=content.scrollTop;
+		    var scrollbottom=content.scrollTop+height;
+		    var inner=getGeometry(scanning,content);
+
 
 		    if (inner.height<=0) {} /* Not displayed */
 		    else if ((inner.top<scrolltop)||(inner.bottom>scrollbottom)) {
 			// Scroll into view
-			if (inner.height>height) heart.scrollTop=inner.top;
+			if (inner.height>height) content.scrollTop=inner.top;
 			else if (inner.height>height/2)
-			    heart.scrollTop=Math.floor(inner.top-(height/2));
+			    content.scrollTop=Math.floor(inner.top-(height/2));
 			else {
 			    var gap=height-inner.height;
-			    heart.scrollTop=inner.top-gap/2;}}
+			    content.scrollTop=Math.floor(inner.top-(gap/2));}}
 		    else {} // Already in view
 		    Codex.scanning=false;}
 
