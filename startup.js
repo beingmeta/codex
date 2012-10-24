@@ -596,7 +596,7 @@ Codex.Startup=
 		    if (fdjtState.getLocal(msgid)) {}
 		    else {
 			fdjtState.setLocal(msgid,"seen");
-			fdjtUI.alert(msg.slice(uuid_end+1));}}
+			fdjtUI.alertFor(20,msg.slice(uuid_end+1));}}
 		else alert(msg);}
 	    if (msg=getQuery("SBOOKSMESSAGE")) {
 		var uuid_end=false;
@@ -606,13 +606,13 @@ Codex.Startup=
 		    if (fdjtState.getLocal(msgid)) {}
 		    else {
 			fdjtState.setLocal(msgid,"seen");
-			fdjtUI.alert(msg.slice(uuid_end+1));}}
+			fdjtUI.alertFor(20,msg.slice(uuid_end+1));}}
 		else alert(msg);}
 	    if (msg=getCookie("APPMESSAGE")) {
-		fdjtUI.alert(msg);
+		fdjtUI.alertFor(20,msg);
 		fdjtState.clearCookie("APPMESSAGE","sbooks.net","/");}
 	    if (msg=getCookie("SBOOKSMESSAGE")) {
-		fdjtUI.alert(msg);
+		fdjtUI.alertFor(20,msg);
 		fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}}
 	
 	/* Application settings */
