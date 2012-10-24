@@ -815,11 +815,13 @@ Codex.Startup=
 	    Codex.localglosses=localglosses;
 	    Codex.allglosses=allglosses.concat(localglosses);
 	    Codex.etc=getLocal("etc("+refuri+")",true)||[];
+	    Codex.outlets=getLocal("outlets("+refuri+")",true)||[];
 	    // Load everything in etc
-	    var etc=Codex.etc;
+	    var etc=Codex.etc; var outlets=Codex.outlets;
 	    var i=0; var lim=etc.length;
 	    var sourcekb=Codex.sourcekb;
 	    while (i<lim) sourcekb.load(etc[i++]);
+	    i=0; lim=outlets.length; while (i<lim) sourcekb.load(outlets[i++]);
 	    // Load all the glosses
 	    var i=0; var lim=localglosses.length;
 	    var glossdb=Codex.glosses;
