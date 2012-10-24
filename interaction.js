@@ -1216,7 +1216,9 @@
 			Codex.GoTo(passage,"scanForward/glosses",true);
 			Codex.showGlosses(passage);
 			return;}
-		    else i++;}}}
+		    else i++;}}
+	    CodexMode(false);
+	    return;}
 	else if (Codex.scanning) CodexMode("scanning");
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
@@ -1261,7 +1263,9 @@
 			Codex.GoTo(passage,"scanBackward/glosses",true);
 			Codex.showGlosses(passage);
 			return;}
-		    else i--;}}}
+		    else i--;}}
+	    CodexMode(false);
+	    return;}
 	else if (Codex.scanning) CodexMode("scanning");
 	else CodexMode("tocscan");
 	if (Codex.mode==="tocscan") {
