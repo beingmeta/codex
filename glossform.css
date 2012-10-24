@@ -237,7 +237,7 @@ div.codexglossform form div.glossetc > span.modebuttons .button {
     border-top: 0px;}
 div.codexglossform form div.glossetc > span.modebuttons img.button,
 div.codexglossform form div.glossetc > span.modebuttons .button img {
-    background-color: ivory; height: 40px; height: auto;
+    background-color: ivory; height: 40px; width: auto;
     opacity: 0.3;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
     filter: alpha(opacity=30);
