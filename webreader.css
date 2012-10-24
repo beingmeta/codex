@@ -92,10 +92,10 @@ body.hudup.cxPREVIEW div#CODEXWINDOW, body.cxPREVIEW div#CODEXWINDOW {
 body.cxSHRINK div#CODEXPAGE div.codexpage {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);
-    transition-property: transform;
-    -webkit-transition-property: -webkit-transform;
-    -moz-transition-property: -moz-transform;
-    -o-transition-property: -o-transform;
+    transition-property: opacity,transform;
+    -webkit-transition-property: -webkit-opacity,-webkit-transform;
+    -moz-transition-property: -moz-opacity,-moz-transform;
+    -o-transition-property: -o-opacity,-o-transform;
     transition-duration: 1s; -webkit-transition-duration: 1s;
     -moz-duration: 1s; -o-transition-duration: 1s;}
 body.cxSHRINK.hudup div#CODEXPAGE div.codexpage,

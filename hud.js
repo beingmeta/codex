@@ -437,6 +437,7 @@ var CodexMode=
 		if (clearmode) {
 		    var wait=false;
 		    dropClass(CodexHUD,"openheart");
+		    dropClass(CodexHUD,"openhead");
 		    dropClass(CodexHUD,"full");
 		    dropClass(CodexHUD,CodexMode_pat);
 		    Codex.mode=false;}
@@ -506,26 +507,7 @@ var CodexMode=
 		else if (codex_mode_scrollers[mode]) 
 		    Codex.scrolling=(codex_mode_scrollers[mode]);
 		else Codex.scrolling=false;
-		// Actually change the class on the HUD object
-		if (mode===true) {
-		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");
-		    dropClass(CodexHUD,"openheart");}
-		else {
-		    if (mode.search(codexHeartMode_pat)<0)
-			dropClass(CodexHUD,"openheart");
-		    else {
-			Codex.heart_mode=mode;
-			addClass(CodexHUD,"openheart");}
-		    if (mode.search(codexHeadMode_pat)<0)
-			dropClass(CodexHUD,"openhead");
-		    else {
-			Codex.head_mode=mode;
-			addClass(CodexHUD,"openhead");}
-		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,mode);}
-		// Update the body scanning mode
-		if ((mode==="scanning")||(mode==="tocscan"))
-		    addClass(document.body,"codexscanning");
-		else dropClass(document.body,"codexscanning");
+
 		// Scanning is a funny mode in that the HUD is down
 		//  for it.  We handle all of this stuff here.
 		if ((mode==='scanning')||
@@ -539,52 +521,28 @@ var CodexMode=
 		else if (mode==='addgloss') {}
 		// And if we're not scanning, we just raise the hud
 		else setHUD(true);
-
-		// This updates scanning state
-		if ((Codex.scanning)&&(mode!=="scanning")) {
-		    // Scroll the scanned content (glosses, search
-		    // results, etc) to reflect any motion
-		    var heart=CodexHUD.heart;
-		    var height=heart.offsetHeight;
-		    var scanning=Codex.scanning;
-		    var content=getParent(scanning,".hudpanel");
-		    var scrolltop=content.scrollTop;
-		    var scrollbottom=content.scrollTop+height;
-		    var inner=getGeometry(scanning,content);
-
-
-		    if (inner.height<=0) {} /* Not displayed */
-		    else if ((inner.top<scrolltop)||(inner.bottom>scrollbottom)) {
-			// Scroll into view
-			if (inner.height>height) content.scrollTop=inner.top;
-			else if (inner.height>height/2)
-			    content.scrollTop=Math.floor(inner.top-(height/2));
-			else {
-			    var gap=height-inner.height;
-			    content.scrollTop=Math.floor(inner.top-(gap/2));}}
-		    else {} // Already in view
-		    Codex.scanning=false;}
-
-		// This updates scroller dimensions, we delay it
-		//  because apparently, on some browsers, the DOM
-		//  needs to catch up with CSS
-		if (Codex.scrolling) {
-		    var scroller=fdjtID(Codex.scrolling);
-		    if (Codex.Trace.scroll)
-			fdjtLog("Updating scroller for #%s s=%o",
-				Codex.scrolling,scroller);
-		    setTimeout(function(){updateScroller(scroller);},
-			       100);}
-
-		// We autofocus any input element appropriate to the
-		// mode
-		if (codex_mode_foci[mode]) {
-		    var input=fdjtID(codex_mode_foci[mode]);
-		    if (input) focus(input);}
-		// Moving the focus back to the body lets keys work
-		else document.body.focus();
+		// Update the body scanning mode
+		if ((mode==="scanning")||(mode==="tocscan"))
+		    addClass(document.body,"codexscanning");
+		else dropClass(document.body,"codexscanning");
+		// Actually change the class on the HUD object
+		if (mode===true) {
+		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");
+		    dropClass(CodexHUD,"openhead");
+		    dropClass(CodexHUD,"openheart");}
+		else {
+		    if (mode.search(codexHeartMode_pat)<0) {
+			dropClass(CodexHUD,"openheart");}
+		    if (mode.search(codexHeadMode_pat)<0)
+			dropClass(CodexHUD,"openhead");
+		    if (mode.search(codexHeartMode_pat)>=0) {
+			Codex.heart_mode=mode;
+			addClass(CodexHUD,"openheart");}
+		    if (mode.search(codexHeadMode_pat)>=0) {
+			Codex.head_mode=mode;
+			addClass(CodexHUD,"openhead");}}
 		
-		if (display_sync) Codex.displaySync();}
+		changeMode(mode);}
 	    else {
 		// Clearing the mode is a lot simpler, in part because
 		//  setHUD clears most of the classes when it brings
@@ -595,16 +553,66 @@ var CodexMode=
 		    Codex.liveinput.blur();
 		    Codex.liveinput=false;}
 		document.body.focus();
+		dropClass(CodexHUD,"openheart");
+		dropClass(CodexHUD,"openhead");
 		dropClass(document.body,"dimmed");
 		dropClass(document.body,"codexhelp");
 		dropClass(document.body,"codexscanning");
 		Codex.cxthelp=false;
-		setHUD(false);
-		if (display_sync) Codex.displaySync();}}
+		if (display_sync) Codex.displaySync();
+		setHUD(false);}}
 
 	function focus(input){
 	    input.focus(); Codex.liveinput=input;}
 	Codex.setFocus=focus;
+
+	function changeMode(mode){	
+	    fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
+	    fdjtDOM.addClass(CodexHUD,mode);
+	    // This updates scanning state
+	    if ((Codex.scanning)&&(mode!=="scanning")) {
+		// Scroll the scanned content (glosses, search
+		// results, etc) to reflect any motion
+		var heart=CodexHUD.heart;
+		var height=heart.offsetHeight;
+		var scanning=Codex.scanning;
+		var content=getParent(scanning,".hudpanel");
+		var scrolltop=content.scrollTop;
+		var scrollbottom=content.scrollTop+height;
+		var inner=getGeometry(scanning,content);
+		
+		if (inner.height<=0) {} /* Not displayed */
+		else if ((inner.top<scrolltop)||(inner.bottom>scrollbottom)) {
+		    // Scroll into view
+		    if (inner.height>height) content.scrollTop=inner.top;
+		    else if (inner.height>height/2)
+			content.scrollTop=Math.floor(inner.top-(height/2));
+		    else {
+			var gap=height-inner.height;
+			content.scrollTop=Math.floor(inner.top-(gap/2));}}
+		else {} // Already in view
+		Codex.scanning=false;}
+	    
+	    // This updates scroller dimensions, we delay it
+	    //  because apparently, on some browsers, the DOM
+	    //  needs to catch up with CSS
+	    if (Codex.scrolling) {
+		var scroller=fdjtID(Codex.scrolling);
+		if (Codex.Trace.scroll)
+		    fdjtLog("Updating scroller for #%s s=%o",
+			    Codex.scrolling,scroller);
+		setTimeout(function(){updateScroller(scroller);},
+			   100);}
+	    
+	    // We autofocus any input element appropriate to the
+	    // mode
+	    if (codex_mode_foci[mode]) {
+		var input=fdjtID(codex_mode_foci[mode]);
+		if (input) focus(input);}
+	    // Moving the focus back to the body lets keys work
+	    else document.body.focus();
+	    
+	    if (display_sync) Codex.displaySync();}
 
 	function fadeUpHUD(){
 	    fdjtLog("Setting properties");
