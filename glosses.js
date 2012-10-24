@@ -867,6 +867,9 @@
 		fdjtUI.FDJT_COMPLETE_OPTIONS|
 		    fdjtUI.FDJT_COMPLETE_CLOUD|
 		    fdjtUI.FDJT_COMPLETE_ANYWORD);
+	var queue=Codex.outlet_cloud_queue;
+	Codex.outlet_cloud_queue=[];
+	Codex.addOutlets2UI(queue);
 	return outlet_cloud;}
     Codex.outletCloud=outletCloud;
     
