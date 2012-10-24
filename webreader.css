@@ -329,7 +329,7 @@ div.locbar hr {
     -khtml-opacity: 0.0001;
     -moz-opacity: 0.0001;
     -o-opacity: 0.0001;}
-.codexglossmark {margin-right: -32px;}
+.codexglossmark {margin-right: -48px;}
 body.cxSCROLL .codexglossmark { right: 20px;}
 
 body .codexglossmark {
@@ -340,7 +340,7 @@ body .codexglossmark {
     -khtml-opacity: 0.40;
     -moz-opacity: 0.40;
     -o-opacity: 0.40;}
-*:hover > .codexglossmark {
+*:hover > .codexglossmark, *.hover > .codexglossmark {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -400,6 +400,8 @@ body.hudup .codexglossmark img.big { visibility: visible;}
 body.hudup .codexglossmark img.tiny { visibility: hidden;}
 body .codexglossmark:hover img.big { visibility: visible;}
 body .codexglossmark:hover img.tiny { visibility: hidden;}
+body .codexglossmark.hover img.big { visibility: visible;}
+body .codexglossmark.hover img.tiny { visibility: hidden;}
 
 /* Displaying the sbook target */
 
@@ -439,7 +441,7 @@ body.codextarget { color: inherit;}
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-body.hudup .codextarget .codexglossmark:hover {
+body.hudup .codextarget .codexglossmark:hover, body.hudup .codextarget .codexglossmark.hover {
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
