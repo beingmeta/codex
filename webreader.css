@@ -70,10 +70,10 @@ body.cxBYPAGE div#CODEXWINDOW { display: none;}
 
 body.hudup div#CODEXPAGE {
     transition-property: opacity;
-    -webkit-transition-property: opacity;
+    /* -webkit-transition-property: opacity; -webkit-transition-duration: 1s; */
     -moz-transition-property: opacity;
     -o-transition-property: opacity;
-    transition-duration: 1s; -webkit-transition-duration: 1s;
+    transition-duration: 1s; 
     -moz-duration: 1s; -o-transition-duration: 1s;
     opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
@@ -93,7 +93,7 @@ body.cxSHRINK div#CODEXPAGE div.codexpage {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);
     transition-property: opacity,transform;
-    -webkit-transition-property: -webkit-opacity,-webkit-transform;
+    /* -webkit-transition-property: -webkit-opacity,-webkit-transform; */
     -moz-transition-property: -moz-opacity,-moz-transform;
     -o-transition-property: -o-opacity,-o-transform;
     transition-duration: 0.3s; -webkit-transition-duration: 0.3s;
@@ -107,10 +107,10 @@ body.cxSHRINK.cxBYSECT div#CODEXCONTENT {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);
     transition-property: transform;
-    -webkit-transition-property: -webkit-transform;
+    /* -webkit-transition-property: -webkit-transform; -webkit-transition-duration: 1s; */
     -moz-transition-property: -moz-transform;
     -o-transition-property: -o-transform;
-    transition-duration: 1s; -webkit-transition-duration: 1s;
+    transition-duration: 1s; 
     -moz-duration: 1s; -o-transition-duration: 1s;}
 body.cxSHRINK.cxBYSECT.cxLAYOUT.hudup div#CODEXCONTENT {
     transform: scale(1,1); -webkit-transform:scale(1,1);
@@ -178,8 +178,7 @@ body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
 
 #CODEXPAGE.codexanimate #CODEXPAGES {
     transition-property: transform; transition-duration: 0.5s;
-    -webkit-transition-property: -webkit-transform;
-    -webkit-transition-duration: 0.5s;
+    /* -webkit-transition-property: -webkit-transform; -webkit-transition-duration: 0.5s; */
     -moz-transition-property: -moz-transform;
     -moz-transition-duration: 0.5s;
     -o-transition-property: -o-transform;
@@ -661,7 +660,7 @@ div.codexpage {
     transition-property: opacity; transition-duration: 0.25s;
     -o-transition-property: opacity; -o-transition-duration: 0.25s;
     -moz-transition-property: opacity; -moz-transition-duration: 0.25s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 0.25s;
+    /* -webkit-transition-property: opacity; -webkit-transition-duration: 0.25s; */
     opacity: 0; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -735,8 +734,7 @@ div.startupmessage {
     top: 0px; left: 100px; right: 100px; height: 50px;
     transition-property: opacity;
     transition-duration: 1s;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 1s;
+    /* -webkit-transition-property: opacity; -webkit-transition-duration: 1s; */
     -o-transition-property: opacity;
     -o-transition-duration: 1s;
     -moz-transition-property: opacity;
