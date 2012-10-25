@@ -391,12 +391,15 @@
 	updateForm(form);}
     Codex.setExcerpt=setExcerpt;
 
+    var Ref=fdjtKB.Ref;
+
     /***** Adding tags ******/
-    function addTag(form,tag,varname,checked) {
+    function addTag(form,tag,varname,checked,knodule) {
 	// fdjtLog("Adding %o to tags for %o",tag,form);
 	if (!(tag)) tag=form;
 	if (form.tagName!=='FORM')
 	    form=getParent(form,'form')||form;
+	if (!(knodule)) knodule=Codex.getMakerKnodule(Codex.user);
 	var tagselt=getChild(form,'.tags');
 	var info; var title=false; var textspec='span.term';
 	if (!(varname)) varname='TAGS';
@@ -417,30 +420,36 @@
 		// This erases whatever was being typed
 		if (input) input.value="";
 		setTimeout(function(){input.focus();},1500);}}
-	var info=
-	    ((typeof tag === 'string')&&
-	     ((tag.indexOf('|')>0)?
-	      (Codex.knodule.handleSubjectEntry(tag)):
-	      (fdjtKB.ref(tag)||Codex.knodule.probe(tag))));
-	var text=((info)?
-		  ((info.toHTML)&&(info.toHTML())||info.name||info.dterm):
-		  (tag));
-	if (info) {
-	    if (info.knodule===Codex.knodule) tag=info.dterm;
-	    else tag=info._id||info.dterm||tag;}
-	if ((info)&&(info.pool===Codex.sourcekb)) varname='SHARED';
+	var ref=
+	    ((tag instanceof Ref)?(tag):
+	     ((typeof tag === 'string')&&
+	      ((tag.indexOf('|')>0)?
+	       (knodule.handleSubjectEntry(tag)):
+	       (tag.indexOf('@')>=0)?(fdjtKB.ref(tag)):
+	       (knodule.probe(tag)))));
+	var text=
+	    ((ref)?
+	     (((ref.toHTML)&&(ref.toHTML()))||
+	      ref.name||ref.dterm||ref.EN||ref._qid||ref._id):
+	     (typeof tag === "string")?(tag):
+	     (tag.toString()));
+	var tagval=tag;
+	if (ref) {
+	    if (ref.knodule===knodule) tagval=ref.dterm;
+	    else tagval=ref._qid||ref._id||ref.dterm||ref.name||tag;}
+	if ((ref)&&(ref.pool===Codex.sourcekb)) varname='SHARED';
 	var checkspans=getChildren(tagselt,".checkspan");
 	var i=0; var lim=checkspans.length;
 	while (i<lim) {
 	    var cspan=checkspans[i++];
 	    if (((cspan.getAttribute("varname"))===varname)&&
-		((cspan.getAttribute("tagval"))===tag))
+		((cspan.getAttribute("tagval"))===tagval)) {
 		if ((typeof checked === 'undefined')||(checked))
 		    addClass(cspan,"waschecked");
-		return cspan;}
-	var span=fdjtUI.CheckSpan
-	("span.checkspan",varname,tag,
-	 ((typeof checked === 'undefined')||(checked)));
+		return cspan;}}
+	var span=fdjtUI.CheckSpan(
+	    "span.checkspan",varname,tagval,
+	    ((typeof checked === 'undefined')||(checked)));
 	if ((typeof checked === 'undefined')||(checked))
 	    addClass(span,"waschecked");
 	if (title) span.title=title;

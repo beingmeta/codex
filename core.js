@@ -161,8 +161,7 @@ var CodexHUD=false;
 		Codex.addTag2GlossCloud(maker);
 		Codex.addTag2SearchCloud(maker);
 		Codex.UI.addGlossSource(maker,true);
-		var maker_knodule=new Knodule(item.maker);
-		maker_knodule.description=maker.name;
+		var maker_knodule=Codex.getMakerKnodule(item.maker);
 		var tags=item.tags; var knodes=[];
 		if (tags) {
 		    if ((typeof tags === 'string')||(!(tags.length)))
@@ -177,8 +176,8 @@ var CodexHUD=false;
 			    else score=false;
 			    var knode=
 				((tag.indexOf('@')>=0)&&
-				 (fdjtKB.probe(tag,Codex.knodule)))||
-				(maker_knodule.handleSubjectEntry(tag));
+				 (fdjtKB.ref(tag,Codex.knodule)))||
+				(maker_knodule.handleEntry(tag));
 			    if (info.glosstags)
 				info.glosstags.push(knode);
 			    else info.glosstags=[knode];
@@ -216,6 +215,21 @@ var CodexHUD=false;
 		Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);}
 	if (Codex.Trace.start>1) fdjtLog("Initialized DB");}
     Codex.initDB=initDB;
+
+    function getMakerKnodule(arg){
+	var result;
+	if (!(arg)) arg=Codex.user;
+	if (!(arg)) return (Codex.knodule);
+	else if ((arg.maker)&&(arg.maker._qid))
+	    result=new Knodule(arg.maker._qid);
+	else if (arg._qid)
+	    result=new Knodule(arg._qid);
+	else if (arg._id)
+	    result=new Knodule(arg._i);
+	else result=Codex.knodule;
+	result.description=arg.name;
+	return result;}
+    Codex.getMakerKnodule=getMakerKnodule;
 
     var trace1="%s %o in %o: mode%s=%o, target=%o, head=%o scanning=%o";
     var trace2="%s %o: mode%s=%o, target=%o, head=%o scanning=%o";
