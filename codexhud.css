@@ -684,6 +684,8 @@ body div#CODEXHUD.scanning.scanstart.scanend img.codexscanbutton#CODEXPREVSCAN {
     display: none;}
 
 body div#CODEXHUD.scanning img.hudbutton#CODEXTOCBUTTON,
+body div#CODEXHUD.scanning img.hudbutton#CODEXSEARCHBUTTON,
+body div#CODEXHUD.tocscan img.hudbutton#CODEXTOCBUTTON,
 body div#CODEXHUD.tocscan img.hudbutton#CODEXSEARCHBUTTON {
     display: none;}
 
