@@ -87,6 +87,7 @@
 	    if (Codex.bypage)
 		addHandlers(fdjtID("CODEXPAGE"),'content');
 	    else addHandlers(fdjtID("CODEXCONTENT"),'content');
+	    fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
 	    addHandlers(Codex.HUD,'hud');}
 	var handlers=Codex.UI.handlers[mode];
 	if (mode)

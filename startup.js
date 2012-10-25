@@ -1149,8 +1149,8 @@ Codex.Startup=
 			fdjtDOM("span.locoff#CODEXLOCOFF","??%"));
 	    var pagefoot=fdjtDOM("div.codexmargin#CODEXPAGEFOOT",pageinfo," ");
 	    pagehead.codexui=true; pagefoot.codexui=true;
-	    sbookPageHead=pagehead; sbookPageFoot=pagefoot;
-
+	    Codex.pagehead=pagehead; Codex.pagefoot=pagefoot;
+	    
 	    fdjtDOM.prepend(document.body,pagehead,pagefoot,pageleft,pageright);
 
 	    for (var pagelt in [pagehead,pageright,pageleft,pagefoot,pageinfo]) {
