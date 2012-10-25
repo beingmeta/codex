@@ -758,6 +758,7 @@ Codex.Startup=
 		// fdjtDOM.addClass(document.body,"cxTOUCH");
 		// fdjtDOM.addClass(document.body,"cxSHRINK");
 		Codex.ui="mouse";}
+	    if (!(Codex.nativescroll)) fdjtDOM.addClass(body,"cxISCROLL");
 	    var opt_string=
 		fdjtString.stdspace(
 		    ((isiPhone)?(" iPhone"):(""))+

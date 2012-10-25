@@ -80,6 +80,7 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     border: solid transparent 3px;
     z-index: -100; 
     opacity: 0.0;
+    overflow: auto; /* tryout */
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     -webkit-opacity: 0;
@@ -95,6 +96,8 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
 /* #CODEXHEART div.hudpanel.completions { margin: 1em;} */
 
 body.hudup #CODEXHEART { display: block;}
+div#CODEXHUD #CODEXHEART .hudpanel { overflow: auto;}
+body.cxISCROLL div#CODEXHUD #CODEXHEART .hudpanel { overflow: hidden;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART,
 body #CODEXHUD.addgloss #CODEXHEART.tagging,
@@ -112,6 +115,10 @@ body #CODEXHUD.addgloss #CODEXHEART.tagging > div,
 body #CODEXHUD.addgloss #CODEXHEART.showoutlets > div {
     margin-top: 0px; margin-bottom: 0px;
     overflow: auto; max-height: 100%;}
+body.cxISCROLL.hudup #CODEXHUD.openheart #CODEXHEART > div,
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.tagging > div,
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.showoutlets > div  {
+    overflow: hidden; max-height: inherit;}
 
 #CODEXHEART > div > h1:first-child { margin-top: 0px;}
 
