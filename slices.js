@@ -269,7 +269,7 @@
 		 (getfakepic(info.maker,"div.sourcepic"))),
 		((overdoc)&&(overdoc.name)&&
 		 (fdjtDOM("span.overdoc",(overdoc.name)))),
-		((overdoc)&&(overdoc.name)&&(" \u00b7 ")),
+		/* ((overdoc)&&(overdoc.name)&&(" \u00b7 ")), */
 		(((!(overdoc))&&(userinfo)&&
 		  ((userinfo.name)||(userinfo.userid)))&&
 		 (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid))))),

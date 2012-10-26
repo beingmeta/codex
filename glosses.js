@@ -907,11 +907,12 @@
 	    // Only save defaults if adding a new gloss (what about reply?)
 	    saveGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
 	var uuidelt=getInput(form,"UUID");
-	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
+	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length<=5))) {
 	    fdjtLog.warn('missing UUID');
 	    if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
 	if (!(Codex.saveglosses))
 	    return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));
+	var ref=Codex.glosses.ref
 	if (!(navigator.onLine)) return queueGloss(form,evt);
 	// Eventually, we'll unpack the AJAX handler to let it handle
 	//  connection failures by calling queueGloss.
