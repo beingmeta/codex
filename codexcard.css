@@ -64,12 +64,20 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
 .codexcard span.overdoc { 
   color: green; font-size: 125%; font-style: normal;
   font-variant: small-caps;}
-.codexcard span.link a { color: blue; text-decoration: underline;}
-.codexcard span.link img { height: 2ex; width: auto; vertical-align: baseline;}
+.codexcard span.links:before { content: " //"; }
+.codexcard span.audience:before { content: " //"; }
+.codexcard .links a { color: blue; text-decoration: underline;}
+.codexcard .links img { height: 2ex; width: auto; vertical-align: baseline;}
 .codexcard span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
-.codexcard span.audience { 
-  color: silver; font-size: 75%; font-weight: normal; font-style: italic;}
+.codexcard span.audience { font-weight: normal; }
+.codexcard span.audience .outlet,
+.codexcard span.audience .tribe {
+    font-size: 90%; font-style: italic; padding-right: 1ex;}
+.codexcard span.audience .outlet { color: slategray; }
+.codexcard span.audience .outlet { color: forestgreen; }
+.codexcard .audience .outlet:before {
+    content: "→ "; font-weight: bold;}
 body.sbook a.codexcard { display: block;}
 .codexcard.gloss .codexcardbody {
     min-height: 50px;
@@ -133,9 +141,6 @@ body.sbook a.codexcard { display: block;}
     font-family: times,serif; font-style: italic; font-size: 80%;
     white-space: nowrap; padding: 2px; padding-top: 0px;
     color: lightblue;}
-
-.codexcard .shared .outlet:before {
-    content: "→"; font-weight: bold; font-size: 150%;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

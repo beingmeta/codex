@@ -51,25 +51,29 @@
 	var head=((head_info)&&(head_info.elt));
 	var refiners=((query) && (query._refiners));
 	var score=((query)&&(query[key]));
+	var excerpt_len=((info.excerpt)?(info.excerpt.length):(0));
+	var note_len=((info.note)?(info.note.length):(0));
+	var overdoc=getoverdoc(info);
+	var shared=(info.shared);
+	if (typeof shared === 'string') shared=[shared];
+	if (overdoc) shared=fdjtKB.remove(shared,(overdoc._qid||overdoc._id));
 	var body=
 	    fdjtDOM("div.codexcardbody",
 		    // (makelocrule(target_info,target_info.head)),
-		    ((info.maker)?(showglossinfo(info)):(showdocinfo(info))),
-		    " ",
+		    ((info.maker)?(showglossinfo(info)):(showdocinfo(info)))," ",
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
-		    ((info.note)&&Ellipsis("span.note",info.note,140))," ",
-		    ((info.shared)&&(info.shared.length)&&
-		     (info.shared.length<div_threshold)&&
-		     (showaudience(info.shared)))," ",
-		    ((info.excerpt)&&(showexcerpts(info.excerpt)))," ",
-		    ((info.links)&&(showlinks(info.links,"span.link")))," ",
+		    ((info.excerptlen<info.notelen)?
+		     ((info.excerptlen>0)&&(showexcerpts(info.excerpt))):
+		     ((info.notelen>0)&&(Ellipsis("span.note",info.note,140))))," ",
+		    ((info.excerptlen>=info.notelen)?
+		     ((info.excerptlen>0)&&(showexcerpts(info.excerpt))):
+		     ((info.notelen>0)&&(Ellipsis("span.note",info.note,140))))," ",
+		    (((info.tags)||(info.autotags))&&(showtags(info)))," ",
+		    ((info.links)&&(showlinks(info.links)))," ",
 		    ((info.attachments)&&
 		     (showlinks(info.attachments,"span.attachments")))," ",
-		    ((info.shared)&&(info.shared.length)&&
-		     (info.shared.length>=div_threshold)&&
-		     (showaudience(info.shared))),
-		    (((info.tags)||(info.autotags))&&(showtags(info))));
+		    ((shared)&&(shared.length)&&(showaudience(shared))));
 	var div=
 	    fdjtDOM(((info.maker) ?
 		     "div.codexcard.gloss" :
@@ -181,22 +185,31 @@
 			   Knodule.HTML(tag,Codex.knodule));
 	    i++;}
 	return span;}
-    function showaudience(outlets){
+    function showaudience(outlets,spec){
 	if (!(outlets instanceof Array)) outlets=[outlets];
-	var span=fdjtDOM(
-	    ((outlets.length>=div_threshold)?"div.shared":"span.shared"),
-	    ((outlets.length>=div_threshold)&&
-	     (fdjtDOM("span.count",outlets.length, " outlets"))));
+	if (outlets.length===0) return false;
+	var span=fdjtDOM(spec||((outlets.length>1)?("div.audience"):("span.audience")),
+			 ((outlets.length>1)&&(fdjtDOM("span.count",outlets.length, " outlets"))),
+			 " ");
 	var i=0; var lim=outlets.length;
 	// This might do some kind of more/less controls and sorted
 	// or cloudy display
 	while (i<outlets.length) {
 	    var outlet=outlets[i]; var info=fdjtKB.ref(outlet);
-	    fdjtDOM.append(span," ",fdjtDOM("span.outlet",info.name));
+	    var outlet_span=fdjtDOM("span.outlet",info.name);
+	    if (info.about) 
+		outlet_span.title="Shared with “"+info.name+"” — "+info.about;
+	    else outlet_span.title="Shared with “"+info.name+"”";
+	    fdjtDOM.append(span," ",outlet_span);
 	    i++;}
 	return span;}
     function showlinks(refs,spec){
-	var span=fdjtDOM(spec);
+	var count=0;
+	for (var url in refs) if (url[0]==='_') continue; else count++;
+	if (count===0) return false;
+	var span=fdjtDOM(spec||((count>1)?("div.links"):("span.links")),
+			 ((count>1)&&(fdjtDOM("span.count",count, " links"))),
+			 " ");
 	for (url in refs) {
 	    if (url[0]==='_') continue;
 	    var urlinfo=refs[url];
@@ -206,7 +219,7 @@
 		title=urlinfo.title;
 		icon=urlinfo.icon;}
 	    var image=fdjtDOM.Image(icon);
-	    var anchor=(fdjtDOM.Anchor(url,{title:url},image,title));
+	    var anchor=(fdjtDOM.Anchor(url,{title:"Link to "+url},image,title));
 	    anchor.target='_blank';
 	    fdjtDOM(span,anchor,"\n");}
 	return span;}
