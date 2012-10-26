@@ -401,7 +401,8 @@ var CodexHUD=false;
 	     replace(/\n\n+/g,"\n").
 	     replace(/^\n+/,"").
 	     replace(/\n+$/,"").
-	     replace(/\n+/g," // "));};
+	     replace(/\n+/g," // ").
+	     replace(/^\s*\/\//,""));};
 
     function getinfo(arg){
 	if (arg)
