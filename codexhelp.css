@@ -277,10 +277,6 @@ div#CODEXHUD div#CODEXHELP.hudpanel {
     border-radius: 1em; -webkit-border-radius: 1em;
     -moz-border-radius: 1em; -o-border-radius: 1em;
     border: solid gray 4px;
-    transition-property: opacity; transition-duration: 5s;
-    -o-transition-property: opacity; -o-transition-duration: 5s;
-    -moz-transition-property: opacity; -moz-transition-duration: 5s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 5s;
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
@@ -288,6 +284,11 @@ div#CODEXHUD div#CODEXHELP.hudpanel {
     -khtml-opacity: 0.95;
     -moz-opacity: 0.95;
     -o-opacity: 0.95;} 
+div#CODEXHUD.cxANIMATE div#CODEXHELP.hudpanel {
+    transition-property: opacity; transition-duration: 5s;
+    -o-transition-property: opacity; -o-transition-duration: 5s;
+    -moz-transition-property: opacity; -moz-transition-duration: 5s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 5s;}
 
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX.hudpanel {
     position: fixed; text-align: center;
@@ -297,10 +298,6 @@ div#CODEXHUD div#CODEXKEYBOARDHELPBOX.hudpanel {
     border-radius: 1em; -webkit-border-radius: 1em;
     -moz-border-radius: 1em; -o-border-radius: 1em;
     border: solid gray 4px;
-    transition-property: opacity; transition-duration: 5s;
-    -o-transition-property: opacity; -o-transition-duration: 5s;
-    -moz-transition-property: opacity; -moz-transition-duration: 5s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 5s;
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
@@ -308,6 +305,12 @@ div#CODEXHUD div#CODEXKEYBOARDHELPBOX.hudpanel {
     -khtml-opacity: 0.95;
     -moz-opacity: 0.95;
     -o-opacity: 0.95;} 
+div#CODEXHUD.cxANIMATE div#CODEXKEYBOARDHELPBOX.hudpanel {
+    transition-property: opacity; transition-duration: 5s;
+    -o-transition-property: opacity; -o-transition-duration: 5s;
+    -moz-transition-property: opacity; -moz-transition-duration: 5s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 5s;}
+
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX div#CODEXKEYBOARDHELP {
     margin: 2em;}
 

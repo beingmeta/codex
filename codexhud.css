@@ -69,14 +69,6 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     position: fixed;
     top: 50%; bottom: 50%; height: 0px;
     left: 100px; right: 100px;
-    transition-property: height,top,bottom;
-    transition-duration: 3s;
-    -o-transition-property: height,top,bottom;
-    -o-transition-duration: 3s;
-    -moz-transition-property: height,top,bottom;
-    -moz-transition-duration: 3s;
-    -webkit-transition-property: height,top,bottom;
-    -webkit-transition-duration: 3s;
     padding-top: 1em; padding-bottom: 1em;
     border: solid transparent 3px;
     z-index: -100; 
@@ -89,6 +81,16 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     -moz-opacity: 0;
     -o-opacity: 0;
     display: none;}
+
+#CODEXHUD.cxANIMATE #CODEXHEART {
+    transition-property: height,top,bottom;
+    transition-duration: 3s;
+    -o-transition-property: height,top,bottom;
+    -o-transition-duration: 3s;
+    -moz-transition-property: height,top,bottom;
+    -moz-transition-duration: 3s;
+    -webkit-transition-property: height,top,bottom;
+    -webkit-transition-duration: 3s;}
 
 #CODEXHEART, #CODEXHEART div.hudpanel {
     border-radius: 1em; -o-border-radius: 1em;
@@ -195,7 +197,7 @@ body.hudup div#CODEXHUD div.hudpanel {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 /* When animating, transition opacity and height */
-div#CODEXHUD.codexanimate div.hudpanel {
+div#CODEXHUD.cxANIMATE div.hudpanel {
     transition-property: opacity;
     -o-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -763,12 +765,6 @@ body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
-    transition-property: opacity;
-    -o-transition-property: opacity;
-    -moz-transition-property: opacity;
-    -webkit-transition-property: opacity; 
-    transition-duration: 1.0s; -o-transition-duration: 1.0s;
-    -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;
     display: block; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
@@ -776,6 +772,14 @@ body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     -khtml-opacity: 1.00;
     -moz-opacity: 1.00;
     -o-opacity: 1.00;}
+body.hudup div#CODEXHUD.cxANIMATE div#CODEXHUDBUTTONS {
+    transition-property: opacity;
+    -o-transition-property: opacity;
+    -moz-transition-property: opacity;
+    -webkit-transition-property: opacity; 
+    transition-duration: 1.0s; -o-transition-duration: 1.0s;
+    -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;}
+
 body div#CODEXHUD div#CODEXHUDBUTTONS img[alt='Console'] {
     display: none;}
 body div#CODEXHUD.codexshowconsole div#CODEXHUDBUTTONS img[alt='Console'] {
@@ -807,7 +811,7 @@ div#CODEXHUD div#CODEXSTARTPAGE.hudpanel {
     border: solid blue 3px;
     border-radius: 1em; -webkit-border-radius: 1em;
     -moz-border-radius: 1em; -o-border-radius: 1em;}
-div#CODEXHUD div#CODEXSTARTPAGE {
+div#CODEXHUD.cxANIMATE div#CODEXSTARTPAGE {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
@@ -838,14 +842,6 @@ div.fdjtprogress#CODEXLAYOUTMESSAGE {
     position: fixed; z-index: 300;
     bottom: 0px; left: 100px; right: 100px; height: 50px;
     padding-top: 15px;
-    transition-property: opacity;
-    transition-duration: 1s;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 1s;
-    -o-transition-property: opacity;
-    -o-transition-duration: 1s;
-    -moz-transition-property: opacity;
-    -moz-transition-duration: 1s;
     display: none;
     opacity: 0.0; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -862,6 +858,17 @@ body.cxLAYOUT div#CODEXLAYOUTMESSAGE {
     -khtml-opacity: 0.80;
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
+
+#CODEXHUD.cxANIMATE div.fdjtprogress#CODEXLAYOUTMESSAGE {
+    transition-property: opacity;
+    transition-duration: 1s;
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 1s;
+    -o-transition-property: opacity;
+    -o-transition-duration: 1s;
+    -moz-transition-property: opacity;
+    -moz-transition-duration: 1s;
+}
 
 /* Status stuff */
 

@@ -269,17 +269,18 @@ div.codexglossform form.addlink div.glossetc span .button[alt='link'],
 div.codexglossform form.excerpt div.glossetc span .button[alt='excerpt'] {
     height: 40px; width: 40px; opacity: 1.0;
     background-color: white; border-color: darkblue; border-style: solid;
+    -webkit-opacity: 1.0;
+    -khtml-opacity: 1.0;
+    -moz-opacity: 1.0;
+    -o-opacity: 1.0;}
+body.cxANIMATE div.codexglossform form.editnote div.glossetc span .button {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
     -khtml-transition-property: opacity; -khtml-transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    filter: alpha(opacity=100);
-    -webkit-opacity: 1.0;
-    -khtml-opacity: 1.0;
-    -moz-opacity: 1.0;
-    -o-opacity: 1.0;}
+    filter: alpha(opacity=100);}
 
 div.codexglossform form .submitbutton {
     float: right; text-align: right;
@@ -351,7 +352,7 @@ div.codexglossform.submitting td.button img {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 
-div.codexglossform div.textbox { /* min-height: 50px; */
+body.cxANIMATE div.codexglossform div.textbox {
     transition-property: height; transition-duration: 2s;
     -o-transition-property: height; -o-transition-duration: 2s;
     -moz-transition-property: height; -moz-transition-duration: 2s;
@@ -384,7 +385,7 @@ div.completions#CODEXOUTLETCLOUD div#CODEXGLOSSOUTLETS {
     margin-left: 50px; margin-right: 50px;}
 div.completions#CODEXGLOSSCLOUD > div {
     margin-left: 50px; margin-right: 50px;}
-div.completions#CODEXOUTLETCLOUD {
+div#CODEXHUD.cxANIMATE div.completions#CODEXOUTLETCLOUD {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;

@@ -68,7 +68,7 @@ body.cxBYSECT div#CODEXPAGE { display: none;}
 
 body.cxBYPAGE div#CODEXWINDOW { display: none;}
 
-body.hudup div#CODEXPAGE {
+body.cxANIMATE.hudup div#CODEXPAGE {
     transition-property: opacity;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
     -moz-transition-property: opacity;
@@ -89,23 +89,22 @@ body.hudup.cxPREVIEW div#CODEXPAGE, body.cxPREVIEW div#CODEXPAGE {
 body.hudup.cxPREVIEW div#CODEXWINDOW, body.cxPREVIEW div#CODEXWINDOW {
     border-color: blue; border-style: dotted;}
 
-body.cxSHRINK div#CODEXPAGE div.codexpage {
-    transform: scale(1,1); -webkit-transform:scale(1,1);
-    -moz-transform: scale(1,1); -o-transform:scale(1,1);
+body.cxANIMATE div#CODEXPAGE div.codexpage {
     transition-property: opacity,transform;
     -webkit-transition-property: -webkit-opacity,-webkit-transform;
     -moz-transition-property: -moz-opacity,-moz-transform;
     -o-transition-property: -o-opacity,-o-transform;
     transition-duration: 0.3s; -webkit-transition-duration: 0.3s;
     -moz-duration: 0.3s; -o-transition-duration: 0.3s;}
+body.cxSHRINK div#CODEXPAGE div.codexpage {
+    transform: scale(1,1); -webkit-transform:scale(1,1);
+    -moz-transform: scale(1,1); -o-transform:scale(1,1);}
 body.cxSHRINK.cxSCANNING div#CODEXPAGE div.codexpage,
 body.cxSHRINK.cxPREVIEW div#CODEXPAGE div.codexpage {
     transform: scale(0.9,0.9); -webkit-transform:scale(0.9,0.9);
     -moz-transform: scale(0.9,0.9); -o-transform:scale(0.9,0.9);}
 
-body.cxSHRINK.cxBYSECT div#CODEXCONTENT {
-    transform: scale(1,1); -webkit-transform:scale(1,1);
-    -moz-transform: scale(1,1); -o-transform:scale(1,1);
+body.cxANIMATE.cxSHRINK.cxBYSECT div#CODEXCONTENT {
     transition-property: transform;
     -webkit-transition-property: -webkit-transform;
     -webkit-transition-duration: 1s; 
@@ -113,6 +112,9 @@ body.cxSHRINK.cxBYSECT div#CODEXCONTENT {
     -o-transition-property: -o-transform;
     transition-duration: 1s; 
     -moz-duration: 1s; -o-transition-duration: 1s;}
+body.cxSHRINK.cxBYSECT div#CODEXCONTENT {
+    transform: scale(1,1); -webkit-transform:scale(1,1);
+    -moz-transform: scale(1,1); -o-transform:scale(1,1);}
 body.cxSHRINK.cxBYSECT.cxLAYOUT.hudup div#CODEXCONTENT {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);}
@@ -177,7 +179,7 @@ body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
     -webkit-column-break-before: always;
     -moz-column-break-before: always;}
 
-#CODEXPAGE.codexanimate #CODEXPAGES {
+body.cxANIMATE #CODEXPAGE #CODEXPAGES {
     transition-property: transform; transition-duration: 0.5s;
     -webkit-transition-property: -webkit-transform;
     -webkit-transition-duration: 0.5s;
@@ -406,7 +408,7 @@ body .codexglossmark.hover img.tiny { visibility: hidden;}
 
 /* Displaying the sbook target */
 
-body.hudup .codextarget, body.cxSCANNING .codextarget {
+body.cxANIMATE.hudup .codextarget, body.cxSCANNING .codextarget {
     transition-property: color,background-color;
     transition-duration: 3s;
     -o-transition-property: color,background-color;
@@ -664,10 +666,6 @@ div.codexglossform form table td textarea { width: 100%;}
 
 div.codexpage {
     position: absolute; text-align: left;
-    transition-property: opacity; transition-duration: 0.25s;
-    -o-transition-property: opacity; -o-transition-duration: 0.25s;
-    -moz-transition-property: opacity; -moz-transition-duration: 0.25s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 0.25s;
     opacity: 0; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -675,6 +673,12 @@ div.codexpage {
     -khtml-opacity: 0.00;
     -moz-opacity: 0.00;
     -o-opacity: 0.00;}
+body.cxANIMATE div.codexpage {
+    transition-property: opacity; transition-duration: 0.25s;
+    -o-transition-property: opacity; -o-transition-duration: 0.25s;
+    -moz-transition-property: opacity; -moz-transition-duration: 0.25s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 0.25s;}
+
 div.codexpage.curpage {
     opacity: 1; z-index: 50;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -739,13 +743,6 @@ div.startupmessage {
     color: black; background-color: lightgray;
     position: fixed; z-index: -50;
     top: 0px; left: 100px; right: 100px; height: 50px;
-    transition-property: opacity;
-    transition-duration: 1s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
-    -o-transition-property: opacity;
-    -o-transition-duration: 1s;
-    -moz-transition-property: opacity;
-    -moz-transition-duration: 1s;
     opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -753,6 +750,15 @@ div.startupmessage {
     -khtml-opacity: 0;
     -moz-opacity: 0;
     -o-opacity: 0;}
+body.cxANIMATE div.startupmessage {
+    transition-property: opacity;
+    transition-duration: 1s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
+    -o-transition-property: opacity;
+    -o-transition-duration: 1s;
+    -moz-transition-property: opacity;
+    -moz-transition-duration: 1s;}
+
 div.startupmessage.running {
     z-index: 300; opacity: 1.0; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";

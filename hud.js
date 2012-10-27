@@ -907,11 +907,11 @@ var CodexMode=
 	    if (value) addClass(CodexHUD,"codexshowconsole");
 	    else dropClass(CodexHUD,"codexshowconsole");});
 	Codex.addConfig("animatepages",function(name,value){
-	    if (value) addClass(Codex.page,"codexanimate");
-	    else dropClass(Codex.page,"codexanimate");});
+	    if (value) addClass(document.body,"cxANIMATE");
+	    else dropClass(Codex.page,"cxANIMATE");});
 	Codex.addConfig("animatehud",function(name,value){
-	    if (value) addClass(Codex.HUD,"codexanimate");
-	    else dropClass(Codex.HUD,"codexanimate");});
+	    if (value) addClass(Codex.HUD,"cxANIMATE");
+	    else dropClass(Codex.HUD,"cxANIMATE");});
 
 	/* Settings apply/save handlers */
 
