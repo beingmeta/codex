@@ -906,11 +906,13 @@ var CodexMode=
 	Codex.addConfig("showconsole",function(name,value){
 	    if (value) addClass(CodexHUD,"codexshowconsole");
 	    else dropClass(CodexHUD,"codexshowconsole");});
-	Codex.addConfig("animatepages",function(name,value){
-	    if (value) addClass(document.body,"cxANIMATE");
+	Codex.addConfig("animatecontent",function(name,value){
+	    if (Codex.dontanimate) {}
+	    else if (value) addClass(document.body,"cxANIMATE");
 	    else dropClass(Codex.page,"cxANIMATE");});
 	Codex.addConfig("animatehud",function(name,value){
-	    if (value) addClass(Codex.HUD,"cxANIMATE");
+	    if (Codex.dontanimate) {}
+	    else if (value) addClass(Codex.HUD,"cxANIMATE");
 	    else dropClass(Codex.HUD,"cxANIMATE");});
 
 	/* Settings apply/save handlers */
@@ -938,6 +940,18 @@ var CodexMode=
 	    var isoffline=fdjtDOM.getInputValues(settings,"CODEXLOCAL");
 	    result.saveglosses=
 		((isoffline)&&(isoffline.length)&&(isoffline[0]))||false;
+	    var animatecontent=fdjtDOM.getInputValues(
+		settings,"CODEXANIMATECONTENT");
+	    result.animatecontent=
+		((animatecontent)&&(animatecontent.length)&&
+		 (animatecontent[0]))||
+		false;
+	    var animatehud=fdjtDOM.getInputValues(
+		settings,"CODEXANIMATEHUD");
+	    result.animatehud=
+		((animatehud)&&(animatehud.length)&&
+		 (animatehud[0]))||
+		false;
 	    
 	    return result;}
 

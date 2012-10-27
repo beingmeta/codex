@@ -90,7 +90,7 @@ Codex.Startup=
 	    {layout: 'bypage',
 	     bodysize: 'normal',bodyfamily: 'serif',
 	     uisize: 'normal',showconsole: false,
-	     animatepages: true,animatehud: true,
+	     animatecontent: true,animatehud: true,
 	     hidesplash: false,keyboardhelp: true,
 	     holdmsecs: 750,taptapmsecs: 500};
 	var current_config={};
