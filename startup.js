@@ -740,6 +740,8 @@ Codex.Startup=
 		Codex.nativescroll=false;
 		Codex.scrolldivs=false;
 		Codex.updatehash=false;
+		// Animation seems to increase crashes
+		Codex.dontanimate=true;
 		// default_config.layout='fastpage';
 		default_config.keyboardhelp=false;
 		// Have fdjtLog do it's own format conversion for the log
