@@ -28,6 +28,10 @@ div.glosses div.codexcard > div.tochead { display: none;}
 
 div.codexcard > div { text-align: left;}
 div.codexcard > div span.count { float: right;}
+div.codexcard > div .audience span.count,
+div.codexcard > div .links span.count {
+    float: none; padding-right: 1ex; font-style: italic;
+    opacity: 0.7;}
 
 div.codexcard > hr {
     color: gold; background-color: gold; min-width: 3px; height: 100%;

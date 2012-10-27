@@ -474,6 +474,8 @@ div#CODEXGLOSSES div.codexslice .idthread .codexcard:first-child .idhead {
 div.hudpanel#CODEXGLOSSES div.codexslice .tocthread {
     border-left-width: 0px;}
 
+div#CODEXALLGLOSSES div.codexcard .audience { display: none;}
+
 /* The CODEXSCANNER */
 
 body.cxPREVIEW div#CODEXHUD.glosses div.hudpanel#CODEXSCANNER,

@@ -63,12 +63,12 @@
 		    ((info.maker)?(showglossinfo(info)):(showdocinfo(info)))," ",
 		    ((standalone)&&(showtocloc(target_info))),
 		    ((score)&&(showscore(score))),
-		    ((info.excerptlen<info.notelen)?
-		     ((info.excerptlen>0)&&(showexcerpts(info.excerpt))):
-		     ((info.notelen>0)&&(Ellipsis("span.note",info.note,140))))," ",
-		    ((info.excerptlen>=info.notelen)?
-		     ((info.excerptlen>0)&&(showexcerpts(info.excerpt))):
-		     ((info.notelen>0)&&(Ellipsis("span.note",info.note,140))))," ",
+		    ((excerpt_len<note_len)?
+		     ((excerpt_len>0)&&(showexcerpts(info.excerpt))):
+		     ((note_len>0)&&(Ellipsis("span.note",info.note,140))))," ",
+		    ((excerpt_len>=note_len)?
+		     ((excerpt_len>0)&&(showexcerpts(info.excerpt))):
+		     ((note_len>0)&&(Ellipsis("span.note",info.note,140))))," ",
 		    (((info.tags)||(info.autotags))&&(showtags(info)))," ",
 		    ((info.links)&&(showlinks(info.links)))," ",
 		    ((info.attachments)&&
