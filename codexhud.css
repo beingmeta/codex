@@ -65,6 +65,7 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
 body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     display: none; position: absolute;}
 
+body #CODEXHUD.openhead #CODEXHEAD,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded,
 body #CODEXHUD.tocscan #CODEXSCANNER.expanded {
     max-height: inherit;}
