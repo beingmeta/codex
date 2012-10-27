@@ -54,7 +54,7 @@ body #CODEXHUD.tocscan #CODEXHEAD,
 body #CODEXHUD.scanning #CODEXSCANNER,
 body #CODEXHUD.allglosses #CODEXSCANNER {
     background-color: ivory;
-    max-height: inherit; height: auto;
+    height: auto;
     overflow: hidden; border-color: darkblue;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -64,6 +64,10 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     display: block; position: static;}
 body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     display: none; position: absolute;}
+
+body #CODEXHUD.scanning #CODEXSCANNER.expanded,
+body #CODEXHUD.tocscan #CODEXSCANNER.expanded {
+    max-height: inherit;}
 
 #CODEXHEART {
     position: fixed;

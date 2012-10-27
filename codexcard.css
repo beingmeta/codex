@@ -28,9 +28,13 @@ div.glosses div.codexcard > div.tochead { display: none;}
 
 div.codexcard > div { text-align: left;}
 div.codexcard > div span.count { float: right;}
+
+div.codexcard div.audience, div.codexcard div.links {
+    text-align: right;}
 div.codexcard > div .audience span.count,
 div.codexcard > div .links span.count {
-    float: none; padding-right: 1ex; font-style: italic;
+    float: right; padding-left: 1ex;
+    font-style: italic;
     opacity: 0.70;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
