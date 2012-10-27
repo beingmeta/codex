@@ -680,6 +680,12 @@ body div#CODEXHUD.scanning img.codexscanbutton#CODEXSTARTSCAN,
 body div#CODEXHUD.scanning img.codexscanbutton#CODEXENDSCAN {
     display: none;}
 
+body div#CODEXHUD.tocscan img.codexscanbutton {display: block;}
+body div#CODEXHUD.tocscan img.codexpagebutton { display: none;}
+body div#CODEXHUD.tocscan img.codexscanbutton#CODEXSTARTSCAN,
+body div#CODEXHUD.tocscan img.codexscanbutton#CODEXENDSCAN {
+    display: none;}
+
 body div#CODEXHUD.glosses img.codexscanbutton {display: block;}
 body div#CODEXHUD.glosses img.codexpagebutton { display: none;}
 body div#CODEXHUD.glosses img.codexscanbutton#CODEXSTARTSCAN,
