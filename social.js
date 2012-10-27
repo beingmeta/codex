@@ -227,7 +227,7 @@
 		var gloss=fdjtKB.ref(glosses[i++],Codex.glosses);
 		if ((!(gloss))||(!(gloss.frag))) continue;
 		if ((!excerpt)&&(gloss.excerpt)) excerpt=gloss.excerpt;
-		var card=Codex.renderNote(gloss);
+		var card=Codex.renderCard(gloss);
 		fdjtDOM(sumdiv,card);}}
 	fdjtDOM.replace("CODEXGLOSSES",sumdiv);
 	Codex.setTarget(target);

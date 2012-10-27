@@ -42,7 +42,7 @@
     var Ellipsis=fdjtUI.Ellipsis;
     var addListener=fdjtDOM.addListener;
 
-    function renderNote(info,query,idprefix,standalone){
+    function renderCard(info,query,idprefix,standalone){
 	var key=info._id;
 	var target_id=(info.frag)||(info.id);
 	var target=((target_id)&&(fdjtID(target_id)));
@@ -96,7 +96,7 @@
 	    div.name=div.qref=info._id;
 	    div.setAttribute("name",info._id);}
 	return div;}
-    Codex.renderNote=renderNote;
+    Codex.renderCard=renderCard;
     
     var prime_thresh=7;
     function getprimetags(info){
@@ -552,7 +552,7 @@
 		threadelt.title=Codex.getTitle(target,true);
 		fdjtDOM.append(headelt,threadelt);
 		curinfo=docinfo;}
-	    fdjtDOM.append(threadelt,renderNote(note));}
+	    fdjtDOM.append(threadelt,renderCard(note));}
 	return div;}
     Codex.UI.showSlice=showSlice;
 
@@ -673,7 +673,7 @@
 	    var child=children[i++];
 	    if (child.nodeType!==1) continue;
 	    if ((ishead)&&(fdjtDOM.hasClass(child,"codexthread"))) {
-		fdjtDOM.insertBefore(child,renderNote(note));
+		fdjtDOM.insertBefore(child,renderCard(note));
 		return;}
 	    // If unrelated, continue
 	    if (!((fdjtDOM.hasClass(child,"codexcard"))||
@@ -681,14 +681,14 @@
 		continue;
 	    // If the same thing, replace
 	    if (child.qref===qid) {
-		fdjtDOM.replace(child,renderNote(note));
+		fdjtDOM.replace(child,renderCard(note));
 		return;}
 	    // if you're earlier, insert yourself and return
 	    if (tstamp<=child.tstamp) {
-		fdjtDOM.insertBefore(child,renderNote(note));
+		fdjtDOM.insertBefore(child,renderCard(note));
 		return;}
 	    else continue;}
-	fdjtDOM.append(idthread,renderNote(note));}
+	fdjtDOM.append(idthread,renderCard(note));}
     Codex.UI.addToSlice=addToSlice;
 
     Codex.nextSlice=function(start){
