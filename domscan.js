@@ -244,9 +244,18 @@ function CodexDOMScan(root,docinfo){
 	    headinfo.head=curinfo;
 	    if (!(curinfo.intro_ends_at))
 		curinfo.intro_ends_at=scanstate.location;
-	    curinfo.sub.push(headinfo);}
-	else {
-	    /* We're not a subhead, so we're popping up at least one level. */
+	    curinfo.sub.push(headinfo);
+	    /* There is one special case here, were there is a
+	       previous head/section (created by a whole block
+	       wrapped in a section/article/etc block. */
+	    if (scanstate.lastlevel===level) {
+		headinfo.prev=scanstate.lastinfo;
+		scanstate.lastinfo.next=headinfo;
+		delete scanstate.lastlevel;
+		delete scanstate.lasthead;
+		delete scanstate.lastinfo;}}
+	else { /* We're not a subhead, so
+		  we're popping up at least one level. */
 	    var scan=curhead;
 	    var scaninfo=curinfo;
 	    var scanlevel=curinfo.level;
@@ -342,10 +351,12 @@ function CodexDOMScan(root,docinfo){
 	scanstate.eltcount++;
 	if ((child.sbookskip)||(child.codexui))
 	    return;
-	var info=((nodefn)&&(nodefn(child)));
-	if ((!(info))&&(child.id)&&(!(info=docinfo[child.id]))) {
+	var info=((nodefn)&&(nodefn(child)))||
+	    ((child.id)&&(docinfo[child.id]));
+	if ((!(info))&&(child.id)) {
 	    var id=child.id; allids.push(id);
-	    info=new scanInfo(id,scanstate);}
+	    info=new scanInfo(id,scanstate);
+	    docinfo[id]=info;}
 	if ((info)&&(info.elt)&&(child.id)&&(info.elt!==child)) {
 	    var newid=child.id+"x"+scanstate.location;
 	    fdjtLog.warn("Duplicate ID=%o newid=%o",child.id,newid);
@@ -387,8 +398,13 @@ function CodexDOMScan(root,docinfo){
 	if (info) info.ends_at=scanstate.location;
 	if ((toclevel)&&
 	    ((child.tagName==='SECTION')||(child.tagName==='ARTICLE'))) {
+	    scanstate.lasthead=child; scanstate.lastinfo=info;
+	    scanstate.lastlevel=toclevel;
 	    scanstate.curhead=curhead; scanstate.curinfo=curinfo;
-	    scanstate.curlevel=curlevel;}}}
+	    scanstate.curlevel=curlevel;}
+	else if (toclevel) {
+	    scanstate.lasthead=child; scanstate.lastinfo=info;
+	    scanstate.lastlevel=toclevel;}}}
 
 /* Emacs local variables
    ;;;  Local variables: ***

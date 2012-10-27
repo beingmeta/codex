@@ -305,7 +305,8 @@ var CodexHUD=false;
 	    else target=target.parentNode;}
 	else {
 	    /* First, try scanning forward to find a non-empty node */
-	    var scan=target.firstChild; var scanid=false; var next=target.nextNode;
+	    var scan=target.firstChild; var scanid=false;
+	    var next=target.nextNode;
 	    while ((scan)&&(scan!=next)) {
 		if ((scan.id)||(scan.codexbaseid)) break;
 		if ((scan.nodeType===3)&&

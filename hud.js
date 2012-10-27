@@ -477,8 +477,8 @@ var CodexMode=
 		Codex.stopPreview();
 	    if (mode) {
 		if ((mode==="scanning")||(mode==="tocscan"))
-		    addClass(document.body,"codexscanning");
-		else dropClass(document.body,"codexscanning");
+		    addClass(document.body,"cxSCANNING");
+		else dropClass(document.body,"cxSCANNING");
 		if (mode===Codex.mode) {}
 		else if (mode===true) {
 		    /* True just puts up the HUD with no mode info */
@@ -521,10 +521,6 @@ var CodexMode=
 		else if (mode==='addgloss') {}
 		// And if we're not scanning, we just raise the hud
 		else setHUD(true);
-		// Update the body scanning mode
-		if ((mode==="scanning")||(mode==="tocscan"))
-		    addClass(document.body,"codexscanning");
-		else dropClass(document.body,"codexscanning");
 		// Actually change the class on the HUD object
 		if (mode===true) {
 		    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");
@@ -557,7 +553,8 @@ var CodexMode=
 		dropClass(CodexHUD,"openhead");
 		dropClass(document.body,"dimmed");
 		dropClass(document.body,"codexhelp");
-		dropClass(document.body,"codexscanning");
+		dropClass(document.body,"cxPREVIEW");
+		dropClass(document.body,"cxSCANNING");
 		Codex.cxthelp=false;
 		if (display_sync) Codex.displaySync();
 		setHUD(false);}}
@@ -602,7 +599,7 @@ var CodexMode=
 		    fdjtLog("Updating scroller for #%s s=%o",
 			    Codex.scrolling,scroller);
 		setTimeout(function(){updateScroller(scroller);},
-			   100);}
+			   2000);}
 	    
 	    // We autofocus any input element appropriate to the
 	    // mode

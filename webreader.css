@@ -70,7 +70,7 @@ body.cxBYPAGE div#CODEXWINDOW { display: none;}
 
 body.hudup div#CODEXPAGE {
     transition-property: opacity;
-    /* -webkit-transition-property: opacity; -webkit-transition-duration: 1s; */
+    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
     -moz-transition-property: opacity;
     -o-transition-property: opacity;
     transition-duration: 1s; 
@@ -82,7 +82,7 @@ body.hudup div#CODEXPAGE {
     -khtml-opacity: 0.80;
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
-body.hudup div#CODEXPAGE {
+body.cxPREVIEW div#CODEXPAGE, body.cxSCANNING div#CODEXPAGE {
     border-color: gray; border-style: inset;}
 body.hudup.cxPREVIEW div#CODEXPAGE, body.cxPREVIEW div#CODEXPAGE {
     border-color: blue; border-style: dotted;}
@@ -93,12 +93,12 @@ body.cxSHRINK div#CODEXPAGE div.codexpage {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);
     transition-property: opacity,transform;
-    /* -webkit-transition-property: -webkit-opacity,-webkit-transform; */
+    -webkit-transition-property: -webkit-opacity,-webkit-transform;
     -moz-transition-property: -moz-opacity,-moz-transform;
     -o-transition-property: -o-opacity,-o-transform;
     transition-duration: 0.3s; -webkit-transition-duration: 0.3s;
     -moz-duration: 0.3s; -o-transition-duration: 0.3s;}
-body.cxSHRINK.hudup div#CODEXPAGE div.codexpage,
+body.cxSHRINK.cxSCANNING div#CODEXPAGE div.codexpage,
 body.cxSHRINK.cxPREVIEW div#CODEXPAGE div.codexpage {
     transform: scale(0.9,0.9); -webkit-transform:scale(0.9,0.9);
     -moz-transform: scale(0.9,0.9); -o-transform:scale(0.9,0.9);}
@@ -107,7 +107,8 @@ body.cxSHRINK.cxBYSECT div#CODEXCONTENT {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);
     transition-property: transform;
-    /* -webkit-transition-property: -webkit-transform; -webkit-transition-duration: 1s; */
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 1s; 
     -moz-transition-property: -moz-transform;
     -o-transition-property: -o-transform;
     transition-duration: 1s; 
@@ -178,7 +179,8 @@ body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
 
 #CODEXPAGE.codexanimate #CODEXPAGES {
     transition-property: transform; transition-duration: 0.5s;
-    /* -webkit-transition-property: -webkit-transform; -webkit-transition-duration: 0.5s; */
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 0.5s;
     -moz-transition-property: -moz-transform;
     -moz-transition-duration: 0.5s;
     -o-transition-property: -o-transform;
@@ -404,7 +406,7 @@ body .codexglossmark.hover img.tiny { visibility: hidden;}
 
 /* Displaying the sbook target */
 
-body.hudup .codextarget, body.codexscanning .codextarget {
+body.hudup .codextarget, body.cxSCANNING .codextarget {
     background-color: lightyellow;
     transition-property: color,background-color;
     transition-duration: 3s;
@@ -417,12 +419,16 @@ body.hudup .codextarget, body.codexscanning .codextarget {
 
 body.hudup .codextarget.codexnewtarget {
     background-color: inherit; }
-body.hudup .codextarget, body.codexscanning .codextarget {
+body.hudup .codextarget, body.cxSCANNING .codextarget {
     cursor: pointer;}
  
 .codexnewtarget {color: blue;}
-section.codexnewtarget { color: inherit;}
-section.codexnewtarget :first-child { color: blue;}
+div.sbooksection.codexnewtarget, section.codexnewtarget,
+div.sbooksection.codexnewtarget > *, section.codexnewtarget > * {
+    color: inherit;}
+section.codexnewtarget > *:first-child,
+div.sbooksection.codexnewtarget > *:first-child {
+    color: blue;}
 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
@@ -431,7 +437,8 @@ body.codextarget { color: inherit;}
 
 .codextarget span.codexglossmark img.big { width: 32px; height: auto;}  
 .codextarget span.codexglossmark img {
-    border-left: solid steelblue 2px;}
+    border: solid steelblue 2px;
+    border-left: solid transparent 2px;}
 .codextarget:hover .codexglossmark {
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -660,7 +667,7 @@ div.codexpage {
     transition-property: opacity; transition-duration: 0.25s;
     -o-transition-property: opacity; -o-transition-duration: 0.25s;
     -moz-transition-property: opacity; -moz-transition-duration: 0.25s;
-    /* -webkit-transition-property: opacity; -webkit-transition-duration: 0.25s; */
+    -webkit-transition-property: opacity; -webkit-transition-duration: 0.25s;
     opacity: 0; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -734,7 +741,7 @@ div.startupmessage {
     top: 0px; left: 100px; right: 100px; height: 50px;
     transition-property: opacity;
     transition-duration: 1s;
-    /* -webkit-transition-property: opacity; -webkit-transition-duration: 1s; */
+    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
     -o-transition-property: opacity;
     -o-transition-duration: 1s;
     -moz-transition-property: opacity;
