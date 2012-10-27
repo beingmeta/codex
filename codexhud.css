@@ -259,7 +259,7 @@ div.completions.hudpanel .normal { line-height: 250%;}
 /* HUD buttons */
 
 div#CODEXHUD img.hudbutton {
-    position: fixed; z-index: 0; cursor: pointer;
+    position: fixed; z-index: 100; cursor: pointer;
     width: 50px; height: 50px;
     border: solid transparent 2px; opacity: 0.10;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";

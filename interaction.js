@@ -1683,7 +1683,7 @@
 	 // Raise and lower HUD
 	 "#CODEXPAGEHEAD": {touchstart: head_tap},
 	 "#CODEXTABS": {touchstart: head_tap},
-	 "#CODEXHEAD": {touchstart: head_tap},
+	 "#CODEXHEAD": {click: head_tap},
 	 "#CODEXFOOT": {tap: foot_tap},
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {touchstart: left_margin},

@@ -97,7 +97,7 @@ var Codex=
 	 dosync: false, // Whether to trace state saves
 	 state: false,  // Whether to trace set state
 	 flips: false,	// Whether to trace page flips (movement by pages)
-	 messages: true, // Whether to trace inter-window messages
+	 messages: false, // Whether to trace inter-window messages
 	 scroll: false,	// Whether to trace scrolling within the HUD
 	 highlight: 0,  // Whether to trace highlighting
 	 indexing: 0,   // How much to trace document indexing
