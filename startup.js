@@ -61,6 +61,7 @@ Codex.Startup=
 	var getQuery=fdjtState.getQuery;
 	var getCookie=fdjtState.getCookie;
 	var getMeta=fdjtDOM.getMeta;
+	var getLink=fdjtDOM.getLink;
 	var addClass=fdjtDOM.addClass;
 	var dropClass=fdjtDOM.dropClass;
 	var TOA=fdjtDOM.Array;
@@ -188,8 +189,8 @@ Codex.Startup=
 		    if (default_config.hasOwnProperty(setting)) {
 			if (getQuery(setting))
 			    setConfig(setting,getQuery(setting));
-			else if (getMeta("codex."+setting))
-			    setConfig(setting,getMeta("codex."+setting));
+			else if (getMeta("Codex."+setting))
+			    setConfig(setting,getMeta("Codex."+setting));
 			else setConfig(setting,default_config[setting]);}}
 	    var dopost=Codex.postconfig;
 	    Codex.postconfig=false;
@@ -289,6 +290,12 @@ Codex.Startup=
 	    // Execute any FDJT initializations
 	    fdjtDOM.init();
 
+	    fdjtDOM.addAppSchema("SBOOK","http://sbooks.net/");
+	    fdjtDOM.addAppSchema("Codex","http://codex.sbooks.net/");
+	    fdjtDOM.addAppSchema("DC","http://purl.org/dc/elements/1.1/");
+	    fdjtDOM.addAppSchema("DCTERMS","http://purl.org/dc/terms/");
+	    fdjtDOM.addAppSchema("OLIB","http://openlibrary.org/");
+	    
 	    // Get various settings for the sBook from the HTML (META
 	    // tags, etc), including settings or guidance for
 	    // scanning, graphics, layout, glosses, etc.
@@ -639,7 +646,7 @@ Codex.Startup=
 	    else if (Codex.force_offline) return true;
 	    var config_val=getConfig("localstorage");
 	    if (typeof config_val !== 'undefined') return config_val;
-	    var value=(getMeta("sbook.offline"))||(getMeta("Codex.offline"));
+	    var value=(getMeta("Codex.offline"))||(getMeta("SBOOK.offline"));
 	    if ((value===0)||(value==="0")||
 		(value==="no")||(value==="off")||
 		(value==="never"))
@@ -669,8 +676,8 @@ Codex.Startup=
 		    (qval==="never")||(qval==="0"))
 		    Codex.force_online=true;
 		else Codex.force_offline=true;}
-	    else if (fdjtDOM.getMeta("sbook.offline")) {
-		var mval=fdjtDOM.getMeta("sbook.offline");
+	    else if (fdjtDOM.getMeta("SBOOK.offline")) {
+		var mval=fdjtDOM.getMeta("SBOOK.offline");
 		if ((mval===false)||(mval===0)||(mval==="no")||(mval==="off")||
 		    (mval==="never")||(mval==="0"))
 		    Codex.force_online=true;
@@ -691,27 +698,27 @@ Codex.Startup=
 	    if ((getLocal("codex.nologin"))||(getQuery("nologin")))
 		Codex.nologin=true;
 	    Codex.bypage=(Codex.page_style==='bypage'); 
-	    Codex.max_excerpt=getMeta("sbook.maxexcerpt")||(Codex.max_excerpt);
-	    Codex.min_excerpt=getMeta("sbook.minexcerpt")||(Codex.min_excerpt);
-	    var sbooksrv=getMeta("sbook.server")||getMeta("SBOOKSERVER");
+	    Codex.max_excerpt=getMeta("SBOOK.maxexcerpt")||(Codex.max_excerpt);
+	    Codex.min_excerpt=getMeta("SBOOK.minexcerpt")||(Codex.min_excerpt);
+	    var sbooksrv=getMeta("SBOOK.server")||getMeta("SBOOKSERVER");
 	    if (sbooksrv) Codex.server=sbooksrv;
 	    else if (fdjtState.getCookie["SBOOKSERVER"])
 		Codex.server=fdjtState.getCookie["SBOOKSERVER"];
 	    else Codex.server=lookupServer(document.domain);
 	    if (!(Codex.server)) Codex.server=Codex.default_server;
-	    sbook_ajax_uri=getMeta("sbook.ajax",true);
+	    sbook_ajax_uri=getMeta("SBOOK.ajax",true);
 
 	    refuris.push(refuri);
 
-	    var coverpage=fdjtDOM.getLink("sbook.coverpage",false,false)||
-		fdjtDOM.getLink("coverpage",false,false);
+	    var coverpage=fdjtDOM.getLink("SBOOK.coverpage",false,true)||
+		fdjtDOM.getLink("~coverpage",false,true);
 	    if (coverpage) Codex.coverpage=coverpage;
 	    
 	    var prefix=getMeta("SBOOK.prefix");
 	    if (prefix) Codex.baseid=prefix;
 
 	    if (!((Codex.nologin)||(Codex.force_online))) {
-		Codex.mycopyid=getMeta("sbook.mycopyid")||
+		Codex.mycopyid=getMeta("SBOOK.mycopyid")||
 		    (getLocal("mycopy("+refuri+")"))||
 		    false;}
 	    setLocal("codex.refuris",refuris,true);
@@ -862,10 +869,10 @@ Codex.Startup=
 	/* Getting settings */
 
 	function _getsbookrefuri(){
-	    var refuri=fdjtDOM.getLink("sbook.refuri",false,false)||
-		fdjtDOM.getLink("refuri",false,false)||
-		getMeta("sbook.refuri",false,false)||
-		getMeta("refuri",false,false)||
+	    var refuri=fdjtDOM.getLink("SBOOK.refuri",false,true)||
+		fdjtDOM.getLink("refuri",false,true)||
+		getMeta("SBOOK.refuri",false,true)||
+		getMeta("refuri",false,true)||
 		getLink("canonical",false,true);
 	    if (refuri) return decodeURI(refuri);
 	    else {
@@ -876,10 +883,8 @@ Codex.Startup=
 		if (hstart>=0) locref=locref.slice(0,hstart);
 		return decodeURI(locref);}}
 	function _getsbookdocuri(){
-	    return fdjtDOM.getLink("sbook.docuri",false)||
+	    return fdjtDOM.getLink("SBOOK.docuri",false)||
 		fdjtDOM.getLink("docuri",false)||
-		getMeta("sbook.docuri",false)||
-		getMeta("docuri",false)||
 		fdjtDOM.getLink("canonical",false)||
 		location.href;}
 
@@ -915,17 +920,17 @@ Codex.Startup=
 
 	function getScanSettings(){
 	    if (!(Codex.root))
-		if (getMeta("sbook.root"))
-		    Codex.root=fdjtID(getMeta("sbook.root"));
+		if (getMeta("SBOOK.root"))
+		    Codex.root=fdjtID(getMeta("SBOOK.root"));
 	    else Codex.root=fdjtID("SBOOKCONTENT")||document.body;
 	    if (!(Codex.start))
-		if (getMeta("sbook.start"))
-		    Codex.start=fdjtID(getMeta("sbook.start"));
+		if (getMeta("SBOOK.start"))
+		    Codex.start=fdjtID(getMeta("SBOOK.start"));
 	    else if (fdjtID("SBOOKSTART"))
 		Codex.start=fdjtID("SBOOKSTART");
 	    else {}
 	    var i=0; while (i<9) {
-		var rules=getMeta("sbook.head"+i,true).
+		var rules=getMeta("sbookhead"+i,true).
 		    concat(getMeta("sbook"+i+"head",true)).
 		    concat(getMeta("sbook"+headlevels[i]+"head",true));
 		if ((rules)&&(rules.length)) {
@@ -936,6 +941,9 @@ Codex.Startup=
 			var elt=elements[k++];
 			if (!(hasTOCLevel(elt))) elt.toclevel=i;}}
 		i++;}
+	    var ignored=false;
+	    // These are all meta class definit6ions, which is why
+	    //  they don't have regular schema prefixes
 	    if (getMeta("sbookignore")) 
 		Codex.ignore=new fdjtDOM.Selector(getMeta("sbookignore"));
 	    if (getMeta("sbooknotoc")) 

@@ -132,8 +132,8 @@ var CodexHUD=false;
 		    (docinfo.ref(ref.slice(1))));});
 	
 	var knodule_name=
-	    fdjtDOM.getMeta("codex.knodule")||
-	    fdjtDOM.getMeta("KNODULE")||
+	    fdjtDOM.getMeta("SBOOK.knodule")||
+	    fdjtDOM.getMeta("~KNODULE")||
 	    refuri;
 	Codex.knodule=new Knodule(knodule_name);
 	Codex.index=new KnoduleIndex(Codex.knodule);
@@ -881,7 +881,7 @@ var CodexHUD=false;
 	    fdjtDOM.prepend(Codex.content,cover);}
 	// This should generate a textual cover page
 	else {
-	    cover=fdjtDOM("div.codexfullpage#CODEXCOVERPAGE","\n"
+	    cover=fdjtDOM("div.codexfullpage#CODEXCOVERPAGE","\n",
 			  ((Codex.booktitle)?
 			   (fdjtDOM("h1.title",Codex.booktitle)):
 			   null),

@@ -684,10 +684,10 @@ var CodexMode=
 		else i++;}
 	    fillinAboutInfo();
 	    /* Get various external APPLINK uris */
-	    var offlineuri=fdjtDOM.getLink("codex.offline")||altLink("offline");
-	    var epuburi=fdjtDOM.getLink("codex.epub")||altLink("ebub");
-	    var mobiuri=fdjtDOM.getLink("codex.mobi")||altLink("mobi");
-	    var zipuri=fdjtDOM.getLink("codex.mobi")||altLink("mobi");
+	    var offlineuri=fdjtDOM.getLink("Codex.offline")||altLink("offline");
+	    var epuburi=fdjtDOM.getLink("Codex.epub")||altLink("ebub");
+	    var mobiuri=fdjtDOM.getLink("Codex.mobi")||altLink("mobi");
+	    var zipuri=fdjtDOM.getLink("Codex.mobi")||altLink("mobi");
 	    if (offlineuri) {
 		var elts=document.getElementsByName("SBOOKOFFLINELINK");
 		var i=0; while (i<elts.length) {
@@ -779,31 +779,44 @@ var CodexMode=
 	    else {
 		var title=
 		    fdjtID("SBOOKTITLE")||
-		    fdjtDOM.getMeta("codex.title")||
-		    fdjtDOM.getMeta("TITLE")||
+		    fdjtDOM.getMeta("Codex.title")||
+		    fdjtDOM.getMeta("SBOOK.title")||
 		    fdjtDOM.getMeta("DC.title")||
+		    fdjtDOM.getMeta("~TITLE")||
 		    document.title;
 		var byline=
 		    fdjtID("SBOOKBYLINE")||fdjtID("SBOOKAUTHOR")||
-		    fdjtDOM.getMeta("codex.byline")||fdjtDOM.getMeta("BYLINE")||
-		    fdjtDOM.getMeta("codex.author")||fdjtDOM.getMeta("AUTHOR");
+		    fdjtDOM.getMeta("Codex.byline")||
+		    fdjtDOM.getMeta("Codex.author")||
+		    fdjtDOM.getMeta("SBOOK.byline")||
+		    fdjtDOM.getMeta("SBOOK.author")||
+		    fdjtDOM.getMeta("BYLINE")||
+		    fdjtDOM.getMeta("AUTHOR");
 		var copyright=
 		    fdjtID("SBOOKCOPYRIGHT")||
-		    fdjtDOM.getMeta("codex.copyright")||fdjtDOM.getMeta("COPYRIGHT")||
+		    fdjtDOM.getMeta("Codex.copyright")||
+		    fdjtDOM.getMeta("Codex.rights")||
+		    fdjtDOM.getMeta("SBOOK.copyright")||
+		    fdjtDOM.getMeta("SBOOK.rights")||
+		    fdjtDOM.getMeta("COPYRIGHT")||
 		    fdjtDOM.getMeta("RIGHTS");
 		var publisher=
 		    fdjtID("SBOOKPUBLISHER")||
-		    fdjtDOM.getMeta("codex.publisher")||
+		    fdjtDOM.getMeta("Codex.publisher")||
+		    fdjtDOM.getMeta("SBOOK.publisher")||		    
 		    fdjtDOM.getMeta("PUBLISHER");
 		var description=
 		    fdjtID("SBOOKDESCRIPTION")||
-		    fdjtDOM.getMeta("codex.description")||
+		    fdjtDOM.getMeta("Codex.description")||
+		    fdjtDOM.getMeta("SBOOK.description")||
 		    fdjtDOM.getMeta("DESCRIPTION");
 		var digitized=
 		    fdjtID("SBOOKDIGITIZED")||
-		    fdjtDOM.getMeta("codex.digitized")||
+		    fdjtDOM.getMeta("Codex.digitized")||
+		    fdjtDOM.getMeta("SBOOK.digitized")||
 		    fdjtDOM.getMeta("DIGITIZED");
-		var sbookified=fdjtID("SBOOKIFIED")||fdjtDOM.getMeta("SBOOKIFIED");
+		var sbookified=fdjtID("SBOOK.converted")||
+		    fdjtDOM.getMeta("SBOOK.converted");
 		_sbookFillTemplate(about,".title",title);
 		_sbookFillTemplate(about,".byline",byline);
 		_sbookFillTemplate(about,".publisher",publisher);
