@@ -120,9 +120,9 @@ body.codexhelp div#CODEXHUD > div#CODEXHELP {display: block;}
 body.codexhelp div#CODEXHUD .hudbutton {
     opacity: 0.5;}
 body.codexhelp.hudup div#CODEXHUD div#CODEXHELP, 
-body.codexhelp.codexscanning div#CODEXHUD div#CODEXHELP,
+body.codexhelp.cxSCANNING div#CODEXHUD div#CODEXHELP,
 body.codexhelp.hudup div#CODEXHUD .helphud,
-body.codexhelp.codexscanning div#CODEXHUD .helphud {
+body.codexhelp.cxSCANNING div#CODEXHUD .helphud {
     display: none;}
 body.codexhelp.hudup div#CODEXHUD.status div#CODEXHELP {
     display: block;}
@@ -132,7 +132,7 @@ body.hudup.codexhelp div#CODEXHUDHELP { display: block; }
 
 body.codexhelp div#CODEXHUD.addgloss div#CODEXHUDHELP { display: block; }
 body.codexhelp div#CODEXHUD.addgloss div#CODEXSTARTPAGE,
-body.codexhelp.codexscanning div#CODEXHUD.addgloss div#CODEXSTARTPAGE {
+body.codexhelp.cxSCANNING div#CODEXHUD.addgloss div#CODEXSTARTPAGE {
     display: none; }
 
 body.codexhelp.hudup div#CODEXHUD.toc div#CODEXTOCHELP.helpbox,
