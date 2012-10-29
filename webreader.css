@@ -66,6 +66,7 @@ div#CODEXPAGE {
 body.cxSCROLL div#CODEXPAGE { display: none;}
 body.cxBYSECT div#CODEXPAGE { display: none;}
 
+body.cxBYPAGE { overflow: hidden; }
 body.cxBYPAGE div#CODEXWINDOW { display: none;}
 
 body.cxANIMATE.hudup div#CODEXPAGE {

@@ -13,9 +13,9 @@
     #CODEXHUD.openhead.tocscan #CODEXHEAD {
 	left: 50px; right: 50px;}
 
-    body.hudup #CODEXHUD.openhead.toc img.hudbutton[alt="toc"],
-    body.hudup #CODEXHUD.openhead.search img.hudbutton[alt="search"],
-    body.hudup #CODEXHUD.openhead.search img.hudbutton[alt="searchresults"] {
+    body.hudup #CODEXHUD.openhead img.hudbutton[alt="toc"],
+    body.hudup #CODEXHUD.openhead img.hudbutton[alt="search"],
+    body.hudup #CODEXHUD.openhead img.hudbutton[alt="searchresults"] {
 	display: none;}
 
     #CODEXHEART {left: 20px; right: 20px;}
