@@ -154,9 +154,7 @@
 	else if (passage) {
 	    fdjtUI.cancel(evt);
 	    var form=Codex.setGlossTarget(passage);
-	    if (!(form)) {
-		alert("There was a problem adding a gloss on this passage");
-		return;}
+	    if (!(form)) return;
 	    CodexMode("addgloss");
 	    Codex.setGlossForm(form);}}
 
@@ -204,10 +202,12 @@
     var tap_timer=false;
     var last_text=false;
 
-    function content_mousedown(){
+    function content_mousedown(evt){
+	evt=evt||event;
 	gesture_start=fdjtTime();}
 
     function content_mouseup(evt,target,x,y){
+	evt=evt||event;
 	if (typeof x !== 'number') x=evt.clientX;
 	if (typeof y !== 'number') y=evt.clientY;
 	var now=fdjtTime();
@@ -231,10 +231,7 @@
 	    gesture_start=false;
 	    return;}
 
-	var sel=window.getSelection();
-	var seltext=sel.toString();
-	var passage=getTarget(target)||getTarget(sel.anchorNode)||
-	    getTarget(sel.focusNode);
+	var passage=getTarget(target);
 	// We get the passage here so we can include it in the trace message
 	if (Codex.Trace.gestures)
 	    fdjtLog("content_mouseup (%o) on %o passage=%o mode=%o",
@@ -251,68 +248,33 @@
 		if (Codex.updatePageDisplay)
 		    Codex.updatePageDisplay(Codex.curpage,Codex.location);}}
 	
-	if (!(passage)) {
-	    if ((Codex.mode)||(Codex.hudup)) {
-		CodexMode(false); return;}
+	if (Codex.hudup) {
+	    CodexMode(false);
+	    fdjtUI.cancel(evt);
+	    return;}
+	else if (!(passage)) {
+	    if (Codex.mode) {CodexMode(false); return;}
 	    if (x>(fdjtDOM.viewWidth()/3))
 		Codex.Forward(evt);
 	    else Codex.Backward(evt);
 	    gesture_start=false;
+	    fdjtUI.cancel(evt);
 	    return;}
-	
-	if ((seltext)&&(!(isEmpty(seltext)))&&(seltext!==last_text)) 
-	    addgloss=true;
-	else if ((gesture_start)&&((now-gesture_start)>Codex.holdmsecs)) {
-	    // Hold, just set target and hash
-	    Codex.setTarget(passage);
-	    if (id) location.hash=id;}
-	else if (Codex.mode==="addgloss") { // Toggle gloss off
-	    CodexMode(false); fdjtUI.cancel(evt); return;}
-	else if ((tap_timer)&&(tap_target===passage)) { // Double tap
-	    clearTimeout(tap_timer);
-	    tap_timer=false; tap_target=false;
-	    addgloss=true;}
-	else if ((Codex.mode)||(Codex.hudup)) {
-	    CodexMode(false); return;}
-	else {
-	    var cmd=((x>(fdjtDOM.viewWidth()/3))?
-		     (Codex.Forward):(Codex.Backward));
-	    if (tap_timer) clearTimeout(tap_timer);
-	    tap_target=passage;
-	    tap_timer=setTimeout(function(){cmd(evt);},
-				 Codex.taptapmsecs);}
-	gesture_start=false;
-	if (!(addgloss)) return;
-	    
-	if (tap_timer) clearTimeout(tap_timer);
-	tap_timer=false; tap_target=false;
-
-	if ((Codex.glosstarget)&&
-	    ((hasParent(passage,Codex.glosstarget))||
-	     (hasParent(Codex.glosstarget,passage)))&&
-	    (fdjtID("CODEXLIVEGLOSS"))) {
-	    var lg=fdjtID("CODEXLIVEGLOSS");
-	    var form=fdjtDOM.getChild(lg,"form");
-	    if ((seltext)&&(!(isEmpty(seltext))))  {
-		last_text=seltext;
-		Codex.setExcerpt(form,seltext);}
+	else if ((Codex.glosstarget)&&
+		 ((hasParent(passage,Codex.glosstarget))||
+		  (hasParent(Codex.glosstarget,passage)))&&
+		 (fdjtID("CODEXLIVEGLOSS"))) {
 	    fdjtUI.cancel(evt);
 	    CodexMode("addgloss");}
 	else {
 	    var form=Codex.setGlossTarget(passage);
-	    if (!(form)) {
-		alert("There was a problem adding a gloss on this passage");
-		return;}
+	    if (!(form)) return;
 	    var form_elt=fdjtDOM.getChild(form,"form");
 	    var mode=((evt.shiftKey)?("addtag"):("editnote"));
-	    if ((seltext)&&(!(isEmpty(seltext))))  {
-		last_text=seltext;
-		Codex.setExcerpt(form,seltext);}
 	    Codex.setGlossMode(mode,form);
 	    Codex.setGlossForm(form);
 	    fdjtUI.cancel(evt);
-	    CodexMode("addgloss");}
-    }
+	    CodexMode("addgloss");}}
 
     /* TOC handlers */
 
@@ -428,9 +390,7 @@
 	    var gloss=fdjtKB.ref(name,Codex.glosses);
 	    if (!(gloss)) return;
 	    var form=Codex.setGlossTarget(gloss);	    
-	    if (!(form)) {
-		alert("There was a problem adding a gloss on this passage");
-		return;}
+	    if (!(form)) return;
 	    CodexMode("addgloss");}
  	else if (card.about) {
 	    Codex.JumpTo(card.about);}}
@@ -544,9 +504,7 @@
 		var gloss=fdjtKB.ref(name,Codex.glosses);
 		if (!(gloss)) return;
 		var form=Codex.setGlossTarget(gloss);	    
-		if (!(form)) {
-		    alert("There was a problem adding a gloss on this passage");
-		    return;}
+		if (!(form)) return;
 		CodexMode("addgloss");}
 	    else if (card.about) {
 		Codex.JumpTo(card.about);}
@@ -562,9 +520,7 @@
 	    Codex.ScanTo(about.slice(0)); fdjtUI.cancel(evt);}
 	else if ((about)&&(gloss=Codex.glosses.ref(about))) {
 	    var form=Codex.setGlossTarget(gloss);	    
-	    if (!(form)) {
-		alert("There was a problem adding a gloss on this passage");
-		return;}
+	    if (!(form)) return;
 	    CodexMode("addgloss");
 	    fdjtUI.cancel(evt);}
 	else {}}
@@ -750,9 +706,7 @@
 	var gloss=Codex.glosses.ref(qref);
 	if (!(gloss)) return;
 	var form=Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
-	if (!(form)) {
-	    alert("There was a problem adding a gloss on this passage");
-	    return;}
+	if (!(form)) return;
 	CodexMode("addgloss");}
     Codex.UI.respond_ontap=respond_ontap;
 
@@ -1300,7 +1254,8 @@
 		var name=(card.name)||(card.getAttribute("name"));
 		var gloss=fdjtKB.ref(name,Codex.glosses);
 		if (!(gloss)) return;
-		Codex.setGlossTarget(gloss);	    
+		var form=Codex.setGlossTarget(gloss);
+		if (!(form)) return;
 		CodexMode("addgloss");
 		return;}
 	    else return;}
@@ -1651,15 +1606,12 @@
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
 	 "div.glossetc span.modebuttons": {click: glossmode_button}};
 
-    function justselect(evt){
-	if (!(window.getSelection())) fdjtUI.cancel(evt);}
-
     Codex.UI.handlers.webtouch=
 	{window: {
 	    keyup: onkeyup,
 	    keydown: onkeydown,
 	    keypress: onkeypress,
-	    touchmove: justselect},
+	    touchmove: cancel},
 	 content: {touchstart: content_touchstart,
 		   touchmove: content_touchmove,
 		   touchend: content_touchend},

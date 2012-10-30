@@ -482,11 +482,16 @@
 	    var cur=fdjtID("CODEXLIVEGLOSS");
 	    if (cur) cur.id=null;
 	    Codex.glosstarget=false;
+	    if (Codex.selecting) {
+		Codex.selecting.clear();
+		Codex.selecting=false;}
 	    return;}
 	if (!gloss_cloud) Codex.glossCloud();
 	var gloss=false;
 	if (!(form)) form=getGlossForm(target);
-	if (!(form)) return false;
+	if (!(form)) {
+	    fdjtUI.alert("There was a problem adding a gloss");
+	    return false;}
 	if ((typeof target === 'string')&&(fdjtID(target))) 
 	    target=fdjtID(target);
 	else if ((typeof target === 'string')&&
@@ -501,6 +506,14 @@
 	Codex.setTarget(target);
 	setCloudCuesFromTarget(gloss_cloud,target);
 	setGlossForm(form);
+	if (Codex.selecting) {
+	    Codex.selecting.clear();
+	    Codex.selecting=false;}
+	Codex.selecting=fdjtSelecting(target);
+	// if ((gloss)&&(gloss.excerpt)) Codex.selecting.setSelection(gloss.excerpt);
+	Codex.selecting.onchange=function(sel){
+	    var string=this.getString();
+	    Codex.setExcerpt(form,string);};
 	return form;}
     Codex.setGlossTarget=setGlossTarget;
 

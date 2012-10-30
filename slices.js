@@ -428,13 +428,15 @@
 	var target=fdjtUI.T(evt);
 	var card=fdjtDOM.getParent(target,'.codexcard');
 	var gloss=((card)&&(card.name)&&(fdjtKB.ref(card.name,Codex.glosses)));
-	Codex.setGlossTarget(gloss);
+	var form=Codex.setGlossTarget(gloss);
+	if (!(form)) return;
 	CodexMode("addgloss");}
     function replyicon_ontap(evt){
 	var target=fdjtUI.T(evt);
 	var card=fdjtDOM.getParent(target,'.codexcard');
 	var gloss=((card)&&(card.name)&&(fdjtKB.ref(card.name,Codex.glosses)));
-	Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
+	var form=Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
+	if (!(form)) return;
 	CodexMode("addgloss");}
 
     function relayoredit_gloss(evt){
@@ -446,7 +448,8 @@
 	if (!(scan)) return;
 	var qref=scan.qref;
 	var gloss=Codex.glosses.ref(qref);
-	Codex.setGlossTarget(gloss);
+	var form=Codex.setGlossTarget(gloss);
+	if (!(form)) return;
 	CodexMode("addgloss");}
 
     function sourceIcon(info){
