@@ -503,14 +503,15 @@
 	else {}
 	Codex.glosstarget=target;
 	addClass(target,"codexglosstarget");
-	Codex.setTarget(target);
+	Codex.GoTo(target,"addgloss",true);
 	setCloudCuesFromTarget(gloss_cloud,target);
 	setGlossForm(form);
 	if (Codex.selecting) {
 	    Codex.selecting.clear();
 	    Codex.selecting=false;}
 	Codex.selecting=fdjtSelecting(target);
-	// if ((gloss)&&(gloss.excerpt)) Codex.selecting.setSelection(gloss.excerpt);
+	if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
+	    Codex.selecting.setString(gloss.excerpt);
 	Codex.selecting.onchange=function(sel){
 	    var string=this.getString();
 	    Codex.setExcerpt(form,string);};
