@@ -333,13 +333,14 @@
 	var spanspec="span.checkspan.outlet";
 	var checkspan=fdjtUI.CheckSpan(
 	    spanspec,formvar,outlet_id,checked,
-	    outlet.nick||outlet.name);
+	    "→",outlet.nick||outlet.name);
 	if ((outlet.nick)&&(outlet.description))
 	    checkspan.title=outlet.name+": "+outlet.description;
 	else if (outlet.description)
 	    checkspan.title=outlet.description;
 	else checkspan.title=outlet.name;
 	fdjtDOM(outletspan," ",checkspan);
+	fdjtDOM.dropClass(outletspan,"empty");
 	return checkspan;}
     Codex.addOutletToForm=addOutlet;
 
@@ -356,31 +357,23 @@
     
     /***** Adding links ******/
     function addLink(form,url,title) {
-	var tagselt=getChild(form,'.links');
+	var linkselt=getChild(form,'.links');
 	var linkval=((title)?(url+" "+title):(url));
 	var img=fdjtDOM.Image(cxicon("diaglink",32,32),"img");
 	var anchor=fdjtDOM.Anchor(url,"a.glosslink",((title)||url));
 	var checkbox=fdjtDOM.Checkbox("LINKS",linkval,true);
 	var aspan=fdjtDOM("span.checkspan.ischecked.waschecked.anchor",
-			  img,checkbox,anchor);
+			  img,checkbox,anchor,
+			  fdjtDOM.Image(cxicon("redx",32,32),"img.redx","x"));
 	aspan.title=url; anchor.target='_blank';
-	fdjtDOM(tagselt,aspan," ");
+	fdjtDOM(linkselt,aspan," ");
+	fdjtDOM.dropClass(linkselt,"empty");
 	updateForm(form);
 	return aspan;}
 
     /***** Adding excerpts ******/
     function setExcerpt(form,excerpt) {
 	var checkspan=getChild(form,'.excerpt');
-	if (!(checkspan)) {
-	    var placeholder=getChild(form,'.excerptspan');
-	    var redx=fdjtDOM.Image(cxicon("redx",32,32),"img.redx","x");
-	    checkspan=fdjtDOM("span.checkspan.excerpt.ischecked",
-			      fdjtDOM.Checkbox('EXCERPT','',false),
-			      fdjtDOM("span.text"),
-			      redx);
-	    checkspan.title="Click to delete or restore";
-	    // checkspan.onclick=fdjtUI.CheckSpan.onclick;
-	    fdjtDOM.replace(placeholder,checkspan);}
 	var input=getInput(checkspan,'EXCERPT');
 	var text=getChild(checkspan,'.text');
 	if (excerpt) {
@@ -460,6 +453,7 @@
 	    fdjtDOM.append(span,fdjtDOM(textspec,text));
 	else fdjtDOM.append(span,text);
 	fdjtDOM.append(tagselt,span," ");
+	fdjtDOM.dropClass(tagselt,"empty");
 	updateForm(form);
 	return span;}
 
@@ -775,11 +769,6 @@
 		    submitEvent(target);}
 		else if (!(evt.shiftKey)) {
 		    fdjtUI.cancel(evt);
-		    var notespan=getChild(form,".notespan");
-		    if (notespan)
-			fdjtDOM.replace(
-			    notespan,
-			    Ellipsis("span.notespan",target.value,140));
 		    dropClass(form,"editnote");}
 		else fdjtUI.cancelBubble(evt);}}
 	else if (mode) {}

@@ -74,8 +74,6 @@ body #CODEXHUD.tocscan #CODEXSCANNER.expanded {
     position: fixed;
     top: 50%; bottom: 50%; height: 0px;
     left: 100px; right: 100px;
-    padding-top: 1em; padding-bottom: 1em;
-    border: solid transparent 3px;
     z-index: -100; 
     opacity: 0.0;
     overflow: auto; /* tryout */
@@ -110,6 +108,8 @@ body.cxISCROLL div#CODEXHUD #CODEXHEART .hudpanel { overflow: hidden;}
 body.hudup #CODEXHUD.openheart #CODEXHEART,
 body #CODEXHUD.addgloss #CODEXHEART.tagging,
 body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
+    padding-top: 1em; padding-bottom: 1em;
+    border: solid transparent 3px;
     background-color: ivory; border-color: blue;
     z-index: 100; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";

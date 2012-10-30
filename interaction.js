@@ -1549,6 +1549,11 @@
 	return false;}
     Codex.toggleHelp=toggleHelp;
 
+    function editglossnote(evt){
+	evt=evt||event;
+	setGlossMode("editnote");
+	fdjtUI.cancel(evt);}
+
     Codex.UI.handlers.mouse=
 	{window: {
 	    keyup: onkeyup,
@@ -1604,7 +1609,8 @@
 	 ".submitbutton": {click: submitGloss },
 	 "div.glossetc": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
-	 "div.glossetc span.modebuttons": {click: glossmode_button}};
+	 "div.glossetc span.modebuttons": {click: glossmode_button},
+	 "div.glossetc div.notetext": {click: editglossnote}};
 
     Codex.UI.handlers.webtouch=
 	{window: {
@@ -1655,7 +1661,8 @@
 	 "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
 	 "div.glossetc div.sharing": {click: glossform_outlets_tapped},
-	 "div.glossetc span.modebuttons": {click: glossmode_button}};
+	 "div.glossetc span.modebuttons": {click: glossmode_button},
+	 "div.glossetc div.notetext": {click: editglossnote}};
     
 })();
 

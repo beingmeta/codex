@@ -33,6 +33,12 @@
 	   src="http://static.beingmeta.com/g/codex/remark_delete64x64.png"
 	   alt="red x"/></span>
   </div>
+  <div class="response">
+    Repond to <span class="respmaker"></span>
+    <span class="respdate"></span> <span class="respnote"></span> 
+    <span class="resptags"></span> <span class="resplinks"></span>
+  </div>
+  <div class="glossbox">
   <div class="altbutton submitbutton">
     <img svg="http://static.beingmeta.com/g/codex/remark_add.svgz"
 	 src="http://static.beingmeta.com/g/codex/remark_add64x64.png"
@@ -49,11 +55,6 @@
     <div class="add">Add</div>
     <div class="edit">Save</div>
     <div class="reply">Reply</div>
-  </div>
-  <div class="response">
-    Repond to <span class="respmaker"></span>
-    <span class="respdate"></span> <span class="respnote"></span> 
-    <span class="resptags"></span> <span class="resplinks"></span>
   </div>
   <div class="inputbox">
     <div class="textbox">
@@ -168,13 +169,19 @@
 	       alt="Google+" class="unchecked"/>
 	</span>
       </span>
-      <span class="notespan"></span>
-      <span class="excerptspan"></span>
-      <span class="links"></span>
-      <span class="tags"></span>
-      <span class="sharing codexsharegloss">
-	<span class="outlets"></span>
+      <span class="excerpt checkspan empty">
+	<input TYPE="CHECKBOX" NAME="EXCERPT" VALUE=""/>
+	<span class="text"></span>
+	<img src="http://static.beingmeta.com/g/codex/redx64x64.png"
+	     svg="http://static.beingmeta.com/g/codex/redx.svgz"
+	     class="redx" alt="x"/>
       </span>
+      <span class="links empty"><span class="head">links</span></span>
+      <span class="tags empty"><span class="head">tags</span></span>
+      <span class="sharing codexsharegloss">
+	<span class="outlets empty"><span class="head">share</span></span>
+      </span>
+    </div>
     </div>
   </div>
 </form>
