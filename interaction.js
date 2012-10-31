@@ -202,21 +202,20 @@
     var tap_timer=false;
     var last_text=false;
 
+    var touch_timer=false; var timer_started=false;
     function content_mousedown(evt){
 	evt=evt||event;
-	gesture_start=fdjtTime();}
-
-    function content_mouseup(evt,target,x,y){
-	evt=evt||event;
-	if (typeof x !== 'number') x=evt.clientX;
-	if (typeof y !== 'number') y=evt.clientY;
+	var sX=evt.screenX, sY=evt.screenY;
+	var cX=evt.clientX, cY=evt.clientY;
 	var now=fdjtTime();
 	var addgloss=false;
-	if (!(target)) target=fdjtUI.T(evt);
+	var target=fdjtUI.T(evt);
+
 	// Don't capture modified events, except with shift key
 	if ((evt.ctrlKey)||(evt.altKey)) {
 	    gesture_start=false;
 	    return;}
+
 	var anchor=getParent(target,"A"), href;
 	// If you tap on a relative anchor, move there using Codex
 	// rather than the browser default
@@ -231,10 +230,12 @@
 	    gesture_start=false;
 	    return;}
 
+	if (fdjtUI.isClickable(fdjtUI.T(evt))) return;
+
 	var passage=getTarget(target);
 	// We get the passage here so we can include it in the trace message
 	if (Codex.Trace.gestures)
-	    fdjtLog("content_mouseup (%o) on %o passage=%o mode=%o",
+	    fdjtLog("new_mousedown (%o) on %o passage=%o mode=%o",
 		    evt,target,passage,Codex.mode);
 	var id=((passage)&&(passage.codexbaseid||passage.id));
 	// Update our location
@@ -267,14 +268,34 @@
 	    fdjtUI.cancel(evt);
 	    CodexMode("addgloss");}
 	else {
-	    var form=Codex.setGlossTarget(passage);
-	    if (!(form)) return;
-	    var form_elt=fdjtDOM.getChild(form,"form");
-	    var mode=((evt.shiftKey)?("addtag"):("editnote"));
-	    Codex.setGlossMode(mode,form);
-	    Codex.setGlossForm(form);
-	    fdjtUI.cancel(evt);
-	    CodexMode("addgloss");}}
+	    timer_started=true;
+	    touch_timer=
+		setTimeout(function(){
+		    var form=Codex.setGlossTarget(passage);
+		    if (!(form)) return;
+		    var form_elt=fdjtDOM.getChild(form,"form");
+		    var mode=((evt.shiftKey)?("addtag"):("editnote"));
+		    Codex.setGlossMode(mode,form);
+		    Codex.setGlossForm(form);
+		    fakeMouseDown(sX,sY,cX,cY);
+		    CodexMode("addgloss");},
+			   Codex.holdmsecs);}}
+	    
+    function fakeMouseDown(sX,sY,cX,cY){
+	var evt = document.createEvent("MouseEvent");
+	var target=document.elementFromPoint(cX,cY);
+	evt.initMouseEvent("mousedown", true, true,window,1,
+			   sX,sY,cX,cY);	
+	target.dispatchEvent(evt);}
+
+    function content_mouseup(evt){
+	evt=evt||event;
+	if (timer_started) {
+	    timer_started=false;
+	    if (touch_timer) {
+		clearTimeout(touch_timer);
+		touch_timer=false;}
+	    else fdjtUI.cancel(evt);}}
 
     /* TOC handlers */
 
@@ -821,11 +842,15 @@
 	if (Codex.Trace.gestures>1) tracetouch("touchstart",evt);
 	gesture_start=fdjtTime();
 	touch_moved=false;
+	if (n_touches===1) content_mousedown(evt);
 	return;}
 
     function content_touchmove(evt){
 	fdjtUI.cancel(evt);
 	touch_moves++; touch_moved=true;
+	if (touch_timer) {
+	    clearTimeout(touch_timer);
+	    touch_timer=false;}
 	var touches=evt.touches;
 	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
 	touch_x=touch.screenX;
@@ -838,7 +863,16 @@
     
     function content_touchend(evt){
 	var target=fdjtUI.T(evt);
-	if (isClickable(target)) return;
+	if ((touch_timer_started)&&(!(touch_timer))) {
+	    touch_timer_started=false;
+	    return;}
+	if (isClickable(target)) {
+	    if (touch_timer) clearTimeout(touch_timer);
+	    touch_timer=touch_timer_started=false;
+	    return;}
+	if (!(touch_timer)) {
+	    touch_timer_started=false;
+	    return;}
 	// Identify swipes
 	if (touch_moved) {
 	    var dx=touch_x-start_x; var dy=touch_y-start_y;
@@ -848,6 +882,8 @@
 		fdjtLog("touchend/gesture l=%o,%o s=%o,%o d=%o,%o |d|=%o,%o",
 			last_x,last_y,start_x,start_y,dx,dy,adx,ady);
 	    if (adx>(ady*3)) { /* horizontal */
+		if (touch_timer) clearTimeout(touch_timer);
+		touch_timer=touch_timer_started=false;
 		fdjtUI.cancel(evt);
 		if (n_touches===1) {
 		    if (dx<0) Codex.Forward(evt);
@@ -855,9 +891,9 @@
 		else {
 		    if (dx<0) Codex.scanForward(evt);
 		    else Codex.scanBackward(evt);}}
-	    else content_mouseup(evt,target,touch_x,touch_y);
+	    else content_mouseup(evt);
 	    return;}
-	else content_mouseup(evt,target,touch_x,touch_y);}
+	else content_mouseup(evt);}
 
     /* Tracing touch */
     
@@ -1579,7 +1615,7 @@
 	       mouseover: fdjtUI.CoHi.onmouseover,
 	       mouseout: fdjtUI.CoHi.onmouseout,
 	       click: cancel},
-	 glossmark: {mouseup: glossmark_tapped,
+	 glossmark: {mouseup: glossmark_tapped, mousedown: cancel,
 		     mouseover: glossmark_hoverstart,
 		     mouseout: glossmark_hoverdone},
 	 glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
