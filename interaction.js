@@ -249,7 +249,7 @@
 		if (Codex.updatePageDisplay)
 		    Codex.updatePageDisplay(Codex.curpage,Codex.location);}}
 	
-	if (Codex.hudup) {
+	if ((Codex.hudup)&&(Codex.mode!=="addgloss")) {
 	    CodexMode(false);
 	    fdjtUI.cancel(evt);
 	    return;}
