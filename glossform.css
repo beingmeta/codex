@@ -47,6 +47,8 @@ div.codexglossform div.glosseditbox span.clickable {
 div.codexglossform.glossedit div.glosseditbox { display: block;}
 div.codexglossform.glossedit span.editmsg { display: inline;}
 
+div.codexglossform form .checkspan.excerpt { display: none; }
+
 div.codexglossform form {
     padding: 0px; margin: 0px;}
 div.codexglossform form .checkspan.excerpt {
