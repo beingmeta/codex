@@ -286,7 +286,7 @@
 	    var i=0, lim=shared.length;
 	    while (i<lim) addOutlet(form,shared[i++],true);}
 	if ((gloss)&&(gloss.excerpt))
-	    Codex.setExcerpt(form,gloss.excerpt);
+	    Codex.setExcerpt(form,gloss.excerpt,gloss.exoff);
 	form.setAttribute("sbooksetup","yes");
 	updateForm(form);
 	return form;}
@@ -372,18 +372,23 @@
 	return aspan;}
 
     /***** Adding excerpts ******/
-    function setExcerpt(form,excerpt) {
+    function setExcerpt(form,excerpt,off) {
 	var checkspan=getChild(form,'.excerpt');
 	var input=getInput(checkspan,'EXCERPT');
+	var exoff=getInput(form,'EXOFF');
 	var text=getChild(checkspan,'.text');
 	if (fdjtString.isEmpty(excerpt)) excerpt=false;
 	if (excerpt) {
 	    input.value=excerpt;
+	    if (exoff) {
+		if (off) exoff.value=off;
+		else exoff.value="";}
 	    fdjtDOM.dropClass(checkspan,"empty");
 	    fdjtDOM.replace(text,Ellipsis("span.text",excerpt,140));
 	    fdjtUI.CheckSpan.set(checkspan,true);}
 	else {
 	    fdjtDOM.addClass(checkspan,"empty");
+	    if (exoff) exoff.value="";
 	    fdjtUI.CheckSpan.set(checkspan,false);}
 	updateForm(form);}
     Codex.setExcerpt=setExcerpt;
@@ -517,7 +522,8 @@
 	    Codex.selecting.setString(gloss.excerpt);
 	Codex.selecting.onchange=function(sel){
 	    var string=this.getString();
-	    Codex.setExcerpt(form,string);};
+	    var off=this.getOffset();
+	    Codex.setExcerpt(form,string,off);};
 	return form;}
     Codex.setGlossTarget=setGlossTarget;
 
