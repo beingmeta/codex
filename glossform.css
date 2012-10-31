@@ -11,7 +11,9 @@ div#CODEXADDGLOSS div.codexglossform {
 
 div.codexglossform { display: none;}
 div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
-div.codexglossform#CODEXLIVEGLOSS { display: block;}
+div.codexglossform#CODEXLIVEGLOSS {
+    background-color: lightyellow;
+    display: block;}
 div.codexglossform div.editgloss {
  margin-left: 0.5em; text-align: left; color: black;}
 div.codexglossform div.response {
