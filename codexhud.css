@@ -87,13 +87,13 @@ body #CODEXHUD.tocscan #CODEXSCANNER.expanded {
 
 #CODEXHUD.cxANIMATE #CODEXHEART {
     transition-property: height,top,bottom;
-    transition-duration: 3s;
+    transition-duration: 1.5s;
     -o-transition-property: height,top,bottom;
-    -o-transition-duration: 3s;
+    -o-transition-duration: 1.5s;
     -moz-transition-property: height,top,bottom;
-    -moz-transition-duration: 3s;
+    -moz-transition-duration: 1.5s;
     -webkit-transition-property: height,top,bottom;
-    -webkit-transition-duration: 3s;}
+    -webkit-transition-duration: 1.5s;}
 
 #CODEXHEART, #CODEXHEART div.hudpanel {
     border-radius: 1em; -o-border-radius: 1em;
