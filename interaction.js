@@ -436,6 +436,8 @@
 	if (card) {
 	    Codex.stopPreview("slice_released");}}
 
+    /* Highlighting terms in passages (for scanning, etc) */
+
     function highlightTerm(term,target,info,spellings){
 	var words=[];
 	if (typeof term === 'string')
@@ -525,8 +527,6 @@
 	    fdjtUI.cancel(evt);}
 	else {}}
     
-    /* Mouse handlers */
-
     /* Keyboard handlers */
 
     // We use keydown to handle navigation functions and keypress
@@ -966,30 +966,41 @@
 	    return;}
 	else Codex.showGlosses(passage);}
 
-    var glossmark_hovering=false;
+    var glossmark_animated=false;
+    var glossmark_image=false;
+    function animate_glossmark(target,enable){
+	if (glossmark_animated) {
+	    clearInterval(glossmark_animated);
+	    glossmark_animated=false;
+	    if (glossmark_image)
+		fdjtUI.ImageSwap.reset(glossmark_image);}
+	if ((target)&&(enable)) {
+	    var glossmark=((hasClass(target,"codexglossmark"))?(target):
+			   (getParent(target,".codexglossmark")));
+	    if (!(glossmark)) return;
+	    var bigimage=fdjtDOM.getChild(glossmark,"img.big");
+	    if (!(bigimage)) return;
+	    glossmark_image=bigimage;
+	    glossmark_animated=fdjtUI.ImageSwap(bigimage,750);}}
 
     function glossmark_hoverstart(evt){
-	if (glossmark_hovering) {
-	    clearInterval(glossmark_hovering);
-	    glossmark_hovering=false;}
+	evt=evt||event;
 	var target=fdjtUI.T(evt);
-	var glossmark=((hasClass(target,"codexglossmark"))?(target):
-		       (getParent(target,".codexglossmark")));
-	if (!(glossmark)) return;
-	var bigimage=fdjtDOM.getChild(glossmark,"img.big");
-	if (!(bigimage)) return;
-	glossmark_hovering=fdjtUI.ImageSwap(bigimage,750);}
+	if (!(fdjtDOM.getParent(target,".codextarget")))
+	    animate_glossmark(target,true);}
 
     function glossmark_hoverdone(evt){
-	if (glossmark_hovering) {
-	    clearInterval(glossmark_hovering);
-	    glossmark_hovering=false;}
+	evt=evt||event;
 	var target=fdjtUI.T(evt);
-	var glossmark=((hasClass(target,"codexglossmark"))?(target):
-		       (getParent(target,".codexglossmark")));
-	if (!(glossmark)) return;
-	var bigimage=fdjtDOM.getChild(glossmark,"img.big");
-	if (bigimage) fdjtUI.ImageSwap.reset(bigimage);}
+	if (!(fdjtDOM.getParent(target,".codextarget")))
+	    animate_glossmark(target,false);}
+
+    function setTargetUI(target){
+	if (target) {
+	    var glossmark=fdjtDOM.getChild(target,".codexglossmark");
+	    if (glossmark) animate_glossmark(glossmark,true);}
+	else animate_glossmark(false,false);}
+    Codex.UI.setTarget=setTargetUI;
 
     /* Moving forward and backward */
 
