@@ -202,7 +202,6 @@
 	var taginput=getInput(form,"TAG");
 	var linkinput=getInput(form,"LINK");
 	var outletinput=getInput(form,"OUTLET");
-	fdjtDOM.addListener(form,"keyup",glossform_keyup);
 	if (noteinput) {
 	    noteinput.onkeypress=noteinput_keypress;
 	    noteinput.onkeydown=noteinput_keydown;
@@ -802,29 +801,6 @@
 	    setGlossMode("sharing",form);
 	else {}}
 
-    function glossform_keyup(evt){
-	evt=evt||event;
-	var kc=evt.keyCode;
-	var target=fdjtUI.T(evt);
-	if ((hasParent(target,"INPUT"))||(hasParent(target,"TEXTAREA"))) {
-	    fdjtUI.cancel(evt);
-	    return;}
-	var form=getParent(target,'form');
-	if ((kc===13)&&((!(form.className))||(form.className===""))) {
-	    var bracketed=getbracketed(target);
-	    if (bracketed) {
-		fdjtUI.cancel(evt);
-		handleBracketed(form,getbracketed(target,true),true);}
-	    else if (evt.ctrlKey) {
-		fdjtUI.cancel(evt);
-		submitEvent(target);}
-	    else if (!(evt.shiftKey)) {
-		fdjtUI.cancel(evt);
-		var notespan=getChild(form,".notespan");
-		if (notespan) notespan.innerHTML=target.value;
-		dropClass(form,"editnote");}
-	    else {}}}
-    
     function get_addgloss_callback(form){
 	return function(req){
 	    return addgloss_callback(req,form);}}
