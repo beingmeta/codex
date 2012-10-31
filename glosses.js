@@ -339,7 +339,7 @@
 	else if (outlet.description)
 	    checkspan.title=outlet.description;
 	else checkspan.title=outlet.name;
-	fdjtDOM(outletspan," ",checkspan);
+	fdjtDOM(outletspan,checkspan," ");
 	fdjtDOM.dropClass(outletspan,"empty");
 	return checkspan;}
     Codex.addOutletToForm=addOutlet;
