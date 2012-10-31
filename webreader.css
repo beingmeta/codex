@@ -450,7 +450,8 @@ body.codextarget { color: inherit;}
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-body.hudup .codextarget .codexglossmark:hover, body.hudup .codextarget .codexglossmark.hover {
+body.hudup .codextarget .codexglossmark:hover,
+body.hudup .codextarget .codexglossmark.hover {
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
