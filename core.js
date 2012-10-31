@@ -44,7 +44,7 @@ var Codex=
      // For tracking UI state
      last_mode: false, last_heartmode: "about", demo: false,
      // How long it takes a gesture to go from tap to hold
-     taptapmsecs: 500, holdmsecs: 500, edgeclick: 50, pagesize: 250,
+     taptapmsecs: 500, holdmsecs: 200, edgeclick: 50, pagesize: 250,
      dontanimate: false,
      glossmodes: /(addtag)|(addlink)|(excerpt)|(editnote)|(sharing)/,
      updatehash: true, iscroll: false,
@@ -511,6 +511,7 @@ var CodexHUD=false;
 	    fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");
 	    fdjtUI.Highlight.clear(Codex.target,"highlightsearch");
 	    Codex.target=false;
+	    if (Codex.UI.setTarget) Codex.UI.setTarget(false);
 	    return;}
 	else if (!(target)) return;
 	else if ((inUI(target))||(!(target.id||target.codexbaseid)))
@@ -530,6 +531,7 @@ var CodexHUD=false;
 	fdjtState.setCookie(
 	    "codextarget",target.id||target.getAttribute('data-sbookid'));
 	Codex.target=target;
+	if (Codex.UI.setTarget) Codex.UI.setTarget(target);
 	if (Codex.search_cloud)
 	    Codex.setCloudCuesFromTarget(Codex.search_cloud,target);}
     Codex.setTarget=setTarget;
