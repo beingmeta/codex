@@ -998,7 +998,8 @@
     function setTargetUI(target){
 	if (target) {
 	    var glossmark=fdjtDOM.getChild(target,".codexglossmark");
-	    if (glossmark) animate_glossmark(glossmark,true);}
+	    if (glossmark) animate_glossmark(glossmark,true);
+	    else animate_glossmark(false,false);}
 	else animate_glossmark(false,false);}
     Codex.UI.setTarget=setTargetUI;
 
