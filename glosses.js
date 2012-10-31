@@ -507,7 +507,12 @@
 	if (Codex.selecting) {
 	    Codex.selecting.clear();
 	    Codex.selecting=false;}
-	Codex.selecting=fdjtSelecting(target);
+	var dups=[target];
+	if ((Codex.layout)&&(Codex.layout.dups)&&
+	    (Codex.layout.dups[target.id]))
+	    dups=dups.concat(Codex.layout.dups[target.id]);
+	Codex.selecting=
+	    fdjtSelecting(dups,{ontap: gloss_selecting_ontap});
 	if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
 	    Codex.selecting.setString(gloss.excerpt);
 	Codex.selecting.onchange=function(sel){
@@ -515,6 +520,11 @@
 	    Codex.setExcerpt(form,string);};
 	return form;}
     Codex.setGlossTarget=setGlossTarget;
+
+    var selecting_ontap=fdjtSelecting.tap_handler;
+    function gloss_selecting_ontap(evt){
+	if (Codex.mode!=="addgloss") CodexMode("addgloss");
+	else selecting_ontap(evt);}
 
     function setGlossForm(form){
 	var cur=fdjtID("CODEXLIVEGLOSS");
