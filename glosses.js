@@ -376,11 +376,15 @@
 	var checkspan=getChild(form,'.excerpt');
 	var input=getInput(checkspan,'EXCERPT');
 	var text=getChild(checkspan,'.text');
+	if (fdjtString.isEmpty(excerpt)) excerpt=false;
 	if (excerpt) {
 	    input.value=excerpt;
+	    fdjtDOM.dropClass(checkspan,"empty");
 	    fdjtDOM.replace(text,Ellipsis("span.text",excerpt,140));
 	    fdjtUI.CheckSpan.set(checkspan,true);}
-	else fdjtUI.CheckSpan.set(checkspan,false);
+	else {
+	    fdjtDOM.addClass(checkspan,"empty");
+	    fdjtUI.CheckSpan.set(checkspan,false);}
 	updateForm(form);}
     Codex.setExcerpt=setExcerpt;
 
