@@ -906,7 +906,7 @@
 	    // Only save defaults if adding a new gloss (what about reply?)
 	    saveGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
 	var uuidelt=getInput(form,"UUID");
-	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length<=5))) {
+	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
 	    if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
 	if (!(Codex.saveglosses))
