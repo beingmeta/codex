@@ -475,6 +475,27 @@ var CodexMode=
 			mode,Codex.mode,document.body.className);
 	    if ((mode!==Codex.mode)&&(Codex.previewing))
 		Codex.stopPreview();
+	    if ((Codex.mode==="addgloss")&&(mode!==Codex.mode)) {
+		var live=fdjtID("CODEXLIVEGLOSS");
+		if ((live)&&(hasClass(live,"modified"))) {
+		    if (window.confirm("Save gloss changes?")) {
+			var form=fdjtDOM.getChild(live,"form");
+			fdjtUI.forceSubmit(form);}
+		    else if (hasClass(live,"glossreply"))
+			fdjtUI.alertFor(
+			    10,"Responding to the same gloss ",
+			    "while this page is open will return you to your ",
+			    "unsaved changes.");
+		    else if (hasClass(live,"glossedit"))
+			fdjtUI.alertFor(
+			    10,"Editing the same gloss while this page ",
+			    "is open will return you to your unsaved changes.");
+		    else fdjtUI.alertFor(
+			10,"Adding a gloss to the same passage ",
+			"while this page is open will return you to your ",
+			"unsaved changes.");}
+		else if (live) Codex.cancelGloss(live);
+		else {}}
 	    if (mode) {
 		if ((mode==="scanning")||(mode==="tocscan"))
 		    addClass(document.body,"cxSCANNING");

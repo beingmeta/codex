@@ -291,6 +291,8 @@
 	    fdjtDOM.addListener(cancel_button,"click",cancelGloss);
 	form.setAttribute("sbooksetup","yes");
 	updateForm(form);
+	var container=getParent(form,".codexglossform");
+	if (container) dropClass(container,"modified");
 	return form;}
     Codex.setupGlossForm=setupGlossForm;
 
@@ -933,6 +935,21 @@
 	//  connection failures by calling queueGloss.
 	else return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));}
     Codex.submitGloss=submitGloss;
+
+    function finishGloss(glossdiv){
+	if (!(glossdiv)) glossdiv=fdjtID("CODEXLIVEGLOSS");
+	if (!(glossdiv)) {
+	    fdjtLog.warn("finishGloss called with no gloss to finish");
+	    return;}
+	var form=((glossdiv.tagName==="FORM")?(glossdiv):
+		  (getChild(glossdiv,"FORM")));
+	if (!(form)) {
+	    fdjtLog.warn("finishGloss can't find the form to submit");
+	    return;}
+	var submit_event = document.createEvent("HTMLEvents");
+	submit_event.initEvent('submit',false,true);
+	form.dispatchEvent(submit_event);}
+    Codex.finishGloss=finishGloss;
 
     function cancelGloss(arg){
 	var evt=arg||event||null;
