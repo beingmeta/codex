@@ -267,18 +267,23 @@
 		 (fdjtID("CODEXLIVEGLOSS"))) {
 	    fdjtUI.cancel(evt);
 	    CodexMode("addgloss");}
+	else if ((Codex.glosstarget)&&
+		 (Codex.mode==="addgloss")) {
+	    fdjtUI.cancel(evt);
+	    CodexMode(false);}
 	else {
+	    var form=Codex.setGlossTarget(passage);
+	    if (!(form)) return;
+	    else fdjtUI.cancel(evt);
+	    var form_elt=fdjtDOM.getChild(form,"form");
+	    var mode=((evt.shiftKey)?("addtag"):("editnote"));
+	    Codex.setGlossMode(mode,form);
+	    Codex.setGlossForm(form);
+	    CodexMode("addgloss");
 	    timer_started=true;
 	    touch_timer=
 		setTimeout(function(){
-		    var form=Codex.setGlossTarget(passage);
-		    if (!(form)) return;
-		    var form_elt=fdjtDOM.getChild(form,"form");
-		    var mode=((evt.shiftKey)?("addtag"):("editnote"));
-		    Codex.setGlossMode(mode,form);
-		    Codex.setGlossForm(form);
-		    fakeMouseDown(sX,sY,cX,cY);
-		    CodexMode("addgloss");},
+		    fakeMouseDown(sX,sY,cX,cY);},
 			   Codex.holdmsecs);}}
 	    
     function fakeMouseDown(sX,sY,cX,cY){
@@ -291,11 +296,11 @@
     function content_mouseup(evt){
 	evt=evt||event;
 	if (timer_started) {
+	    fdjtUI.cancel(evt);
 	    timer_started=false;
 	    if (touch_timer) {
 		clearTimeout(touch_timer);
-		touch_timer=false;}
-	    else fdjtUI.cancel(evt);}}
+		touch_timer=false;}}}
 
     /* TOC handlers */
 
@@ -423,8 +428,7 @@
 	clone.id="CODEXSCAN";
 	fdjtDOM.replace("CODEXSCAN",clone);
 	dropClass(Codex.previewtarget,"codexpreviewtarget");
-	fdjtUI.Highlight.clear(Codex.previewtarget,"highlightexcerpt");
-	fdjtUI.Highlight.clear(Codex.previewtarget,"highlightsearch");
+	Codex.clearHighlights(Codex.previewtarget);
 	if (card.about) {
 	    var target=Codex.previewtarget=fdjtID(card.about);
 	    addClass(target,"codexpreviewtarget");}
@@ -434,7 +438,8 @@
 		Codex.previewtarget=target=fdjtID(glossinfo.frag);
 	    else Codex.previewtarget=target;
 	    if (glossinfo.excerpt) {
-		var range=fdjtDOM.findString(target,glossinfo.excerpt);
+		var range=fdjtDOM.findString(
+		    target,glossinfo.excerpt,glossinfo.exoff);
 		if (range) fdjtUI.Highlight(range,"highlightexcerpt");
 		else addClass(target,"highlightpassage");}
 	    else addClass(target,"highlightpassage");}

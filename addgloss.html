@@ -51,9 +51,13 @@
 	 src="http://static.beingmeta.com/g/codex/remark_respond64x64.png"
 	 alt="Reply" title="respond to this gloss (thread)"
 	 class="button replybutton reply"/>
-    <div class="add">Add</div>
-    <div class="edit">Save</div>
-    <div class="reply">Reply</div>
+  </div>
+  <div class="cancelbutton"
+       title="close this gloss and cancel any changes">
+    <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
+	 src="http://static.beingmeta.com/g/codex/redx64x64.png"
+	 title="close this gloss and cancel any changes"
+	 alt="cancel"/>
   </div>
   <div class="inputbox">
     <div class="textbox">
@@ -109,6 +113,9 @@
       <img svg="http://static.beingmeta.com/g/codex/twistyopen.svgz"
 	   src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
 	   class="twisty" alt="-"/>
+      <span class="showmode add">Add</span>
+      <span class="showmode edit">Edit</span>
+      <span class="showmode respond">Respond</span>
       <span class="networks">
 	<span class="checkspan postgloss ischecked">
 	  <input type="CHECKBOX" name="POSTGLOSS" value="yes"
@@ -176,14 +183,13 @@
       </span>
     </div>
   </div>
-      <div class="excerpt checkspan empty">
-	<input TYPE="CHECKBOX" NAME="EXCERPT" VALUE=""/>
-	<img src="http://static.beingmeta.com/g/codex/redx64x64.png"
-	     svg="http://static.beingmeta.com/g/codex/redx.svgz"
-	     class="redx" alt="x"/>
-	<span class="text"></span>
-      </div>
-
+  <div class="excerpt checkspan empty">
+    <input TYPE="CHECKBOX" NAME="EXCERPT" VALUE=""/>
+    <img src="http://static.beingmeta.com/g/codex/redx64x64.png"
+	 svg="http://static.beingmeta.com/g/codex/redx.svgz"
+	 class="redx" alt="x"/>
+    <span class="text"></span>
+  </div>
 </form>
 <!--
     /* Emacs local variables

@@ -79,7 +79,7 @@
 	var modeclass=false; var input=false;
 	if (!(form)) return;
 	if (!(mode)) {
-	    fdjtDOM.dropClass(form,glossmodes);
+	    dropClass(form,glossmodes);
 	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");
 	    return;}
 	if ((mode==="tag")||(mode==="addtag")) {
@@ -95,7 +95,7 @@
 	    modeclass="sharing";
 	    input=fdjtDOM.getInput(form,'OUTLET');}
 	else {
-	    fdjtDOM.dropClass(form,glossmodes);
+	    dropClass(form,glossmodes);
 	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");
 	    return;}
 	if (Codex.Trace.mode)
@@ -286,6 +286,9 @@
 	    while (i<lim) addOutlet(form,shared[i++],true);}
 	if ((gloss)&&(gloss.excerpt))
 	    Codex.setExcerpt(form,gloss.excerpt,gloss.exoff);
+	var cancel_button=fdjtDOM.getChild(form,".cancelbutton");
+	if (cancel_button)
+	    fdjtDOM.addListener(cancel_button,"click",cancelGloss);
 	form.setAttribute("sbooksetup","yes");
 	updateForm(form);
 	return form;}
@@ -310,6 +313,8 @@
     /***** Adding outlets ******/
     function addOutlet(form,outlet,checked) {
 	if (typeof checked === 'undefined') checked=true;
+	var wrapper=getParent(form,".codexglossform");
+	addClass(wrapper,"modified");
 	var outletspan=getChild(form,".outlets");
 	var inputs=getInputs(outletspan,"SHARE");
 	var i=0; var lim=inputs.length; var formvar="SHARE";
@@ -339,7 +344,7 @@
 	    checkspan.title=outlet.description;
 	else checkspan.title=outlet.name;
 	fdjtDOM(outletspan,checkspan," ");
-	fdjtDOM.dropClass(outletspan,"empty");
+	dropClass(outletspan,"empty");
 	return checkspan;}
     Codex.addOutletToForm=addOutlet;
 
@@ -364,9 +369,11 @@
 	var aspan=fdjtDOM("span.checkspan.ischecked.waschecked.anchor",
 			  img,checkbox,anchor,
 			  fdjtDOM.Image(cxicon("redx",32,32),"img.redx","x"));
+	var wrapper=getParent(form,".codexglossform");
+	addClass(wrapper,"modified");
 	aspan.title=url; anchor.target='_blank';
 	fdjtDOM(linkselt,aspan," ");
-	fdjtDOM.dropClass(linkselt,"empty");
+	dropClass(linkselt,"empty");
 	updateForm(form);
 	return aspan;}
 
@@ -382,13 +389,15 @@
 	    if (exoff) {
 		if (off) exoff.value=off;
 		else exoff.value="";}
-	    fdjtDOM.dropClass(checkspan,"empty");
+	    dropClass(checkspan,"empty");
 	    fdjtDOM.replace(text,Ellipsis("span.text",excerpt,140));
 	    fdjtUI.CheckSpan.set(checkspan,true);}
 	else {
-	    fdjtDOM.addClass(checkspan,"empty");
+	    addClass(checkspan,"empty");
 	    if (exoff) exoff.value="";
 	    fdjtUI.CheckSpan.set(checkspan,false);}
+	var wrapper=getParent(form,".codexglossform");
+	addClass(wrapper,"modified");
 	updateForm(form);}
     Codex.setExcerpt=setExcerpt;
 
@@ -401,13 +410,15 @@
 	if (form.tagName!=='FORM')
 	    form=getParent(form,'form')||form;
 	if (!(knodule)) knodule=Codex.getMakerKnodule(Codex.user);
+	var wrapper=getParent(form,".codexglossform");
+	addClass(wrapper,"modified");
 	var tagselt=getChild(form,'.tags');
 	var info; var title=false; var textspec='span.term';
 	if (!(varname)) varname='TAGS';
-	if ((tag.nodeType)&&(fdjtDOM.hasClass(tag,'completion'))) {
-	    if (fdjtDOM.hasClass(tag,'outlet')) {
+	if ((tag.nodeType)&&(hasClass(tag,'completion'))) {
+	    if (hasClass(tag,'outlet')) {
 		varname='SHARED'; textspec='span.outlet';}
-	    else if (fdjtDOM.hasClass(tag,'source')) {
+	    else if (hasClass(tag,'source')) {
 		varname='SHARE'; textspec='span.source';}
 	    else {}
 	    if (tag.title) title=tag.title;
@@ -456,12 +467,12 @@
 	if (title) span.title=title;
 	span.setAttribute("varname",varname);
 	span.setAttribute("tagval",tag);
-	fdjtDOM.addClass(span,((varname.toLowerCase())+"var"));
+	addClass(span,((varname.toLowerCase())+"var"));
 	if (typeof text === 'string')
 	    fdjtDOM.append(span,fdjtDOM(textspec,text));
 	else fdjtDOM.append(span,text);
 	fdjtDOM.append(tagselt,span," ");
-	fdjtDOM.dropClass(tagselt,"empty");
+	dropClass(tagselt,"empty");
 	updateForm(form);
 	return span;}
 
@@ -508,9 +519,11 @@
 	Codex.GoTo(target,"addgloss",true);
 	setCloudCuesFromTarget(gloss_cloud,target);
 	setGlossForm(form);
+	// Clear current selection and set up new selection
 	if (Codex.selecting) {
 	    Codex.selecting.clear();
 	    Codex.selecting=false;}
+	Codex.clearHighlights(target);
 	var dups=[target];
 	if ((Codex.layout)&&(Codex.layout.dups)&&
 	    (Codex.layout.dups[target.id]))
@@ -534,6 +547,7 @@
     function setGlossForm(form){
 	var cur=fdjtID("CODEXLIVEGLOSS");
 	if (cur) cur.id=null;
+	if (!(form)) return;
 	form.id="CODEXLIVEGLOSS";
 	var form_elt=getChild(form,"FORM");
 	var mode=form_elt.className;
@@ -579,16 +593,16 @@
 	var i=0; var lim=cursoft.length;
 	while (i<lim) {
 	    var cur=cursoft[i++];
-	    fdjtDOM.dropClass(cur,"cue");
-	    fdjtDOM.dropClass(cur,"softcue");}
+	    dropClass(cur,"cue");
+	    dropClass(cur,"softcue");}
 	// Get the tags on this element as cues
 	var newcues=cloud.getByValue(tags);
 	var i=0; var lim=newcues.length;
 	while (i<lim) {
 	    var completion=newcues[i++];
-	    if (!(fdjtDOM.hasClass(completion,"cue"))) {
-		fdjtDOM.addClass(completion,"cue");
-		fdjtDOM.addClass(completion,"softcue");}}}
+	    if (!(hasClass(completion,"cue"))) {
+		addClass(completion,"cue");
+		addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
 	var tags=[];
 	var targetid=((target.codexbaseid)||(target.id));
@@ -747,6 +761,8 @@
 	var string=target.value;
 	var form=getParent(target,"FORM");
 	var ch=evt.charCode;
+	var wrapper=getParent(form,".codexglossform");
+	addClass(wrapper,"modified");
 	if (addgloss_timer) clearTimeout(addgloss_timer);
 	if (ch===91) { /* [ */
 	    var pos=target.selectionStart, lim=string.length;
@@ -808,7 +824,7 @@
     function addgloss_callback(req,form){
 	if (Codex.Trace.network)
 	    fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
-	fdjtDOM.dropClass(form.parentNode,"submitting");
+	dropClass(form.parentNode,"submitting");
 	Codex.glosses.Import(JSON.parse(req.responseText));
 	fdjtDOM.remove(form.parentNode);
 	// clearGlossForm(form);
@@ -899,7 +915,7 @@
     function submitGloss(evt){
 	evt=evt||event||null;
 	var target=fdjtUI.T(evt);
-	fdjtDOM.addClass(target.parentNode,"submitting");
+	addClass(target.parentNode,"submitting");
 	var form=(fdjtUI.T(evt));
 	var proto=fdjtID();
 	if (!((hasParent(form,".glossedit"))||(hasParent(form,".glossreply"))))
@@ -917,6 +933,19 @@
 	//  connection failures by calling queueGloss.
 	else return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));}
     Codex.submitGloss=submitGloss;
+
+    function cancelGloss(arg){
+	var evt=arg||event||null;
+	var target=((!arg)?(fdjtID("CODEXLIVEGLOSS")):
+		    (arg.nodeType)?(arg):(fdjtUI.T(arg)));
+	var glossform=(target)&&
+	    (fdjtDOM.getParent(target,".codexglossform"));
+	setGlossTarget(false);
+	CodexMode(false);
+	if ((arg)&&((arg.cancelable)||(arg.bubbles))) {
+	    fdjtUI.cancel(evt);}
+	if (glossform) fdjtDOM.remove(glossform);}
+    Codex.cancelGloss=cancelGloss;
 
     // We save gloss defaults on the prototype gloss form hidden in the DOM
     function saveGlossDefaults(form,proto){
@@ -983,7 +1012,7 @@
 	clearGlossForm(form);
 	Codex.preview_target=false;
 	if (evt) fdjtUI.cancel(evt);
-	fdjtDOM.dropClass(form.parentNode,"submitting");
+	dropClass(form.parentNode,"submitting");
 	/* Turn off the target lock */
 	setGlossTarget(false); Codex.setTarget(false); CodexMode(false);}
 
@@ -1029,7 +1058,7 @@
 	var docinfo=Codex.docinfo[id];
 	var all=[].concat(xfeatures||[]);
 	var freq={}; var notes={}; var links={};
-	var excerpt=false;
+	var excerpt=false, exoff=0;
 	if (!(glosses)) glosses=Codex.glosses.find('frag',id);
 	// Initialize given features
 	var i=0; var lim=all.length;
@@ -1044,7 +1073,8 @@
 	    var user=gloss.maker;
 	    var sources=gloss.audience;
 	    var tags=gloss.tags;
-	    if (gloss.excerpt) {if (!(excerpt)) excerpt=gloss.excerpt;}
+	    if ((gloss.excerpt)&&(!(excerpt))) {
+		excerpt=gloss.excerpt; exoff=gloss.exoff;}
 	    if ((sources)&&(!(sources instanceof Array))) sources=[sources];
 	    if ((tags)&&(!(tags instanceof Array))) tags=[tags];
 	    if (freq[user]) freq[user]++;
@@ -1116,7 +1146,7 @@
 	    fdjtDOM(info,((i>0)&&(" \u00b7 ")),span);
 	    i++;}
 	if (excerpt) {
-	    var range=fdjtDOM.findString(fdjtID(frag),excerpt);
+	    var range=fdjtDOM.findString(fdjtID(frag),excerpt,exoff);
 	    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
 	else addClass(fdjtID(frag),"highlightpassage");
 	info.onclick=sbookgloss_ontap;

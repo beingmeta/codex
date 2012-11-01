@@ -888,12 +888,12 @@ var CodexMode=
 	    else {}
 	    if (Codex.target) {
 		dropClass(Codex.target,"highlightpassage");
-		fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");
-		fdjtUI.Highlight.clear(Codex.target,"highlightsearch");}
+		Codex.clearHighlights(Codex.target);}
 	    if ((src)&&(hasClass(src,"gloss"))) {
 		var glossinfo=Codex.glosses.ref(src.name);
 		if (glossinfo.excerpt) {
-		    var range=fdjtDOM.findString(elt,glossinfo.excerpt);
+		    var range=fdjtDOM.findString(
+			elt,glossinfo.excerpt,glossinfo.exoff);
 		    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
 		else {
 		    var about=src.about, target=fdjtID(about);

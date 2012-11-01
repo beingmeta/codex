@@ -217,10 +217,7 @@
 	if ((!(glosses))||(!(glosses.length)))
 	    fdjtDOM.addClass(sumdiv,"noglosses");
 	Codex.UI.setupSummaryDiv(sumdiv);
-	if (Codex.target) {
-	    if (hasClass(Codex.target,"highlightpassage")) 
-		dropClass(Codex.target,"highlightpassage");
-	    else fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");}
+	if (Codex.target) Codex.clearHighlights(Codex.target);
 	if (glosses) {
 	    var i=0; var n=glosses.length;
 	    while (i<n) {

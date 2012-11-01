@@ -1084,8 +1084,7 @@ var CodexSections=
 	    dropClass(document.body,"cxPREVIEW");
 	    if (Codex.previewtarget) {
 		dropClass(Codex.previewtarget,"codexpreviewtarget");
-		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightexcerpt");
-		fdjtUI.Highlight.clear(Codex.previewtarget,"highlightsearch");
+		Codex.clearHighlights(Codex.previewtarget);
 		Codex.previewtarget=false;}
 	    Codex.previewing=previewing=false;
 	    if (Codex.curpage)

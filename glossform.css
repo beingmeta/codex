@@ -7,7 +7,7 @@
 /* Gloss form */
 
 div#CODEXADDGLOSS div.codexglossform {
-    min-height: 50px;}
+    min-height: 70px;}
 
 div#CODEXADDGLOSS div.codexglossform {
     border-radius: 1em; -webkit-border-radius: 1em;
@@ -68,6 +68,7 @@ div.codexglossform.glossedit span.editmsg { display: inline;}
 
 div.codexglossform form {
     padding: 0px; margin: 0px;}
+div.codexglossform form .excerpt.empty { display: none;}
 div.codexglossform form .checkspan.excerpt {
     white-space: normal; text-decoration: line-through;}
 div.codexglossform form .checkspan.excerpt.ischecked {
@@ -88,7 +89,7 @@ div.codexglossform form .bracketbutton strong {
 div.codexglossform form.focused div.inputhelp { display: block;}
 div.codexglossform form.focused span.inputhelp { display: inline;}
 
-div.codexglossform form div.inputbox { margin-right: 60px;}
+div.codexglossform form div.inputbox { margin-right: 50px;}
 div.codexglossform form textarea { display: none;}
 div.codexglossform form div.textbox {
     margin-left: 0.5em;}
@@ -143,21 +144,35 @@ div.codexglossform form div.button {
     float: right; width: 40px;}
 div.codexglossform form div.textbox { 
     clear: left; }
+div.codexglossform .cancelbutton {
+    position: absolute; right: 4px; bottom: 4px;
+    width: 40px; text-align: right;
+    cursor: pointer;}
+div.codexglossform .cancelbutton img {
+    height: 24px; width: 24px;}
 
 div.codexglossform form .submitbutton div {
-    font-weight: bold; padding-right: 2px;}
+    font-weight: bold; padding-right: 2px;
+    font-size: 80%;}
 div.codexglossform form .submitbutton .edit,
 div.codexglossform form .submitbutton .reply {
     display: none;}
 
-div.codexglossform.glossedit form .submitbutton .edit,
-div.codexglossform.glossreply form .submitbutton .reply {
+div.codexglossform div.glossetc span.showmode {
+    border-left: solid black 1px; margin-left: 2px;
+    padding-left: 2px; padding-top: 2px;
+    color: black; font-weight: bold; font-size: 120%;
+    float: right;}
+div.codexglossform form .showmode {display: none;}
+div.codexglossform form .showmode.add {display: inline;}
+div.codexglossform.glossedit form .showmode.edit,
+div.codexglossform.glossreply form .showmode.respond {
     display: inline;}
-div.codexglossform.glossedit form .submitbutton div.edit,
-div.codexglossform.glossreply form .submitbutton div.reply {
+div.codexglossform.glossedit form .showmode.edit,
+div.codexglossform.glossreply form .showmode.respond {
     display: block;}
-div.codexglossform.glossedit form .submitbutton .add,
-div.codexglossform.glossreply form .submitbutton .add {
+div.codexglossform.glossedit form .showmode.add,
+div.codexglossform.glossreply form .showmode.add {
     display: none;}
 
 div.codexglossform form textarea[name='NOTE'] {
@@ -354,12 +369,10 @@ div.codexglossform form .submitbutton {
     -webkit-border-bottom-left-radius: 0.5ex; 
     -moz-border-radius-botleft: 0.5ex;
     -o-border-radius-botleft: 0.5ex; 
-    height: 50px;}
+    height: 40px;}
 div.codexglossform form .submitbutton .button {
-    border-top: none; border-right: none;
-    padding-top: 0px; padding-left: 0px; padding-right: 2px;
-    margin-top: 0px; margin-right: 0px; margin-left: 0px;
-    border: solid darkblue 2px; border-right: 0px; border-top: 0px;
+    margin: 0px; padding: 0px; border: solid darkblue 2px;
+    padding-right: 2px; border-right: 0px; border-top: 0px;
     background-color: blue;
     border-radius: 0px; -webkit-border-radius: 0px;
     -moz-border-radius: 0px; -o-border-radius: 0px;
@@ -367,19 +380,19 @@ div.codexglossform form .submitbutton .button {
     -webkit-border-bottom-left-radius: 0.5ex; 
     -moz-border-radius-botleft: 0.5ex;
     -o-border-radius-botleft: 0.5ex; 
-    margin-bottom: 0.5ex;
     height: 100%; width: auto;}
+div.codexglossform.glossreply form .submitbutton .button {
+    border-top-left-radius: 0.5ex;
+    -webkit-border-top-left-radius: 0.5ex; 
+    -moz-border-radius-topleft: 0.5ex;
+    -o-border-radius-topleft: 0.5ex;
+    border-top: solid darkblue 2px;}
 div.codexglossform.glossedit form .submitbutton .button {
     border-top-left-radius: 0.5ex;
     -webkit-border-top-left-radius: 0.5ex; 
     -moz-border-radius-topleft: 0.5ex;
     -o-border-radius-topleft: 0.5ex;
-    border-top: 2px;}
-div.codexglossform.glossedit form .submitbutton {
-    border-top-left-radius: 0.5ex;
-    -webkit-border-top-left-radius: 0.5ex; 
-    -moz-border-radius-topleft: 0.5ex;
-    -o-border-radius-topleft: 0.5ex;}
+    border-top: solid darkblue 2px;}
 
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;

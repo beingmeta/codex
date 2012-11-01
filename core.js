@@ -508,8 +508,7 @@ var CodexHUD=false;
 	else if ((!target)&&(Codex.target)) {
 	    dropClass(Codex.target,"codextarget");
 	    dropClass(Codex.target,"codexnewtarget");
-	    fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");
-	    fdjtUI.Highlight.clear(Codex.target,"highlightsearch");
+	    clearHighlights(Codex.target);
 	    Codex.target=false;
 	    if (Codex.UI.setTarget) Codex.UI.setTarget(false);
 	    return;}
@@ -520,8 +519,7 @@ var CodexHUD=false;
 	if (Codex.target) {
 	    dropClass(Codex.target,"codextarget");
 	    dropClass(Codex.target,"codexnewtarget");
-	    fdjtUI.Highlight.clear(Codex.target,"highlightexcerpt");
-	    fdjtUI.Highlight.clear(Codex.target,"highlightsearch");
+	    Codex.clearHighlights(Codex.target);
 	    Codex.target=false;}
 	addClass(target,"codextarget");
 	addClass(target,"codexnewtarget");
@@ -535,6 +533,22 @@ var CodexHUD=false;
 	if (Codex.search_cloud)
 	    Codex.setCloudCuesFromTarget(Codex.search_cloud,target);}
     Codex.setTarget=setTarget;
+
+    function clearHighlights(target){
+	dropClass(target,"highlightpassage");
+	fdjtUI.Highlight.clear(target,"highlightexcerpt");
+	fdjtUI.Highlight.clear(target,"highlightsearch");
+	if ((Codex.layout)&&(Codex.layout.dups)&&
+	    (Codex.layout.dups[target.id])) {
+	    var dups=Codex.layout.dups[target.id];
+	    var i=0, lim=dups.length;
+	    while (i<lim) {
+		var dup=dups[i++];
+		dropClass(dup,"highlightpassage");
+		fdjtUI.Highlight.clear(dups,"highlightexcerpt");
+		fdjtUI.Highlight.clear(dups,"highlightsearch");}}}
+    Codex.clearHighlights=clearHighlights;
+
 
     /* Navigation */
 
@@ -843,8 +857,7 @@ var CodexHUD=false;
 	if (Codex.previewtarget) {
 	    dropClass(Codex.previewtarget,"codexpreviewtarget");
 	    dropClass(Codex.previewtarget,"highlightpassage");
-	    fdjtUI.Highlight.clear(Codex.previewtarget,"highlightexcerpt");
-	    fdjtUI.Highlight.clear(Codex.previewtarget,"highlightsearch");
+	    Codex.clearTargets(Codex.previewtarget);
 	    Codex.previewtarget=false;}
 	oldscroll=false;}
     Codex.stopPreview=CodexStopPreview;
