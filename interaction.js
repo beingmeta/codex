@@ -278,20 +278,26 @@
 	    else fdjtUI.cancel(evt);
 	    var form_elt=fdjtDOM.getChild(form,"form");
 	    var mode=((evt.shiftKey)?("addtag"):("editnote"));
+	    var ctrl=evt.ctrlKey||false;
+	    var alt=evt.altKey||false;
+	    var shift=evt.shiftKey||false;
+	    var meta=evt.metaKey||false;
+	    var button=evt.button||0;
 	    Codex.setGlossMode(mode,form);
 	    Codex.setGlossForm(form);
 	    CodexMode("addgloss");
 	    timer_started=true;
 	    touch_timer=
 		setTimeout(function(){
-		    fakeMouseDown(sX,sY,cX,cY);},
+		    fakeMouseDown(
+			sX,sY,cX,cY,ctrl,alt,shift,meta,button);},
 			   Codex.holdmsecs);}}
 	    
-    function fakeMouseDown(sX,sY,cX,cY){
+    function fakeMouseDown(sX,sY,cX,cY,ctrl,alt,shift,meta,button){
 	var evt = document.createEvent("MouseEvent");
 	var target=document.elementFromPoint(cX,cY);
 	evt.initMouseEvent("mousedown", true, true,window,1,
-			   sX,sY,cX,cY);	
+			   sX,sY,cX,cY,ctrl,alt,shift,meta,button,null);	
 	target.dispatchEvent(evt);}
 
     function content_mouseup(evt){
