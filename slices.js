@@ -173,12 +173,13 @@
 	    var togo=tags.length-i;
 	    if ((!controller)&&((!(score))||(score<=1))&&
 		(i>show_tag_thresh)&&(togo>4)) {
-		controller=fdjtDOM("span.controller",
+		controller=fdjtDOM("span.controller.clickable",
 				   fdjtDOM("span.whenexpanded","-"),
 				   fdjtDOM("span.whencollapsed","+"),
 				   "all ",tags.length," tags");
 		var subspan=fdjtDOM("span.whenexpanded");
-		controller.onclick=tagexpand_click;
+		controller.setAttribute(
+		    "onclick","fdjtUI.Expansion.toggle(event);");
 		fdjtDOM(span," ",controller," ",subspan);
 		tagspan=subspan;}
 	    fdjtDOM.append(tagspan,((i>0)?" \u00b7 ":" "),

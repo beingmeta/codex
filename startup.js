@@ -1864,9 +1864,9 @@ Codex.Startup=
 	    startupMessage("setting up search cloud...");
 	    fdjtDOM.replace("CODEXSEARCHCLOUD",Codex.searchCloud().dom);
 	    startupMessage("setting up glossing cloud...");
-	    fdjtDOM.replace("CODEXGLOSSCLOUD",Codex.glossCloud().dom);
+	    Codex.glossCloud();
 	    startupMessage("setting up outlet cloud...");
-	    fdjtDOM.replace("CODEXOUTLETCLOUD",Codex.outletCloud().dom);
+	    Codex.outletCloud();
 	    if (Codex.gloss_cloud_queue) {
 		if (Codex.Trace.clouds)
 		    fdjtLog("Starting to sync gloss cloud");

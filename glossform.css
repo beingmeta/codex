@@ -22,6 +22,9 @@ div#CODEXADDGLOSS div.codexglossform {
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
 
+div.codexglossform form div.rightcol {
+    position: absolute;
+    top: 0px; bottom: 0px; right: 0px; width: 50px;}
 
 div.codexglossform { display: none;}
 div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
@@ -64,8 +67,6 @@ div.codexglossform div.glosseditbox span.clickable {
 div.codexglossform.glossedit div.glosseditbox { display: block;}
 div.codexglossform.glossedit span.editmsg { display: inline;}
 
-/* div.codexglossform form .checkspan.excerpt { display: none; } */
-
 div.codexglossform form {
     padding: 0px; margin: 0px;}
 div.codexglossform form .excerpt.empty { display: none;}
@@ -90,7 +91,6 @@ div.codexglossform form.focused div.inputhelp { display: block;}
 div.codexglossform form.focused span.inputhelp { display: inline;}
 
 div.codexglossform form div.inputbox { margin-right: 50px;}
-div.codexglossform form textarea { display: none;}
 div.codexglossform form div.textbox {
     margin-left: 0.5em;}
 div.codexglossform form div.textbox textarea,
@@ -102,25 +102,7 @@ div.codexglossform form div.textbox input[TYPE='TEXT'] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-size: 24px 24px;
-    background-repeat: no-repeat;
-    display: none;}
-div.codexglossform form div.textbox div.inputhelp {
-    font-style: italic; margin-left: 2em; text-indent: -1em;
-    display: none;}
-/* We've disabled input help for now */
-div.codexglossform form.editnote div.textbox div.inputhelp.notehelp,
-div.codexglossform form.addtag div.textbox div.inputhelp.taghelp,
-div.codexglossform form.addlink div.textbox div.inputhelp.linkhelp,
-div.codexglossform form.sharing div.textbox div.inputhelp.outlethelp {
-    display: none;}
-
-div.codexglossform div.notetext {
-    font-weight: normal; color: purple; text-align: left;}
-
-div.codexglossform form.editnote div.notetext,
-div.codexglossform form.addtag div.notetext,
-div.codexglossform form.addlink div.notetext {
-    display: none;}
+    background-repeat: no-repeat;}
 
 div.codexglossform form div.glossbox {}
 /* { border-top: solid darkblue 2px;
@@ -144,18 +126,11 @@ div.codexglossform form div.button {
 div.codexglossform form div.textbox { 
     clear: left; }
 div.codexglossform .cancelbutton {
-    position: absolute; right: 4px; bottom: 4px;
-    width: 40px; text-align: right;
+    position: absolute; right: 6px; bottom: 3px;
+    height: 28px; width: 28px;
+    border: solid red 2px;
+    border-radius: 16px;
     cursor: pointer;}
-div.codexglossform .cancelbutton img {
-    height: 24px; width: 24px;}
-
-div.codexglossform form .submitbutton div {
-    font-weight: bold; padding-right: 2px;
-    font-size: 80%;}
-div.codexglossform form .submitbutton .edit,
-div.codexglossform form .submitbutton .reply {
-    display: none;}
 
 div.codexglossform div.glossetc span.showmode {
     border-left: solid black 1px; margin-left: 2px;
@@ -190,18 +165,12 @@ div.codexglossform div.textbox input[name='OUTLET'] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/g/codex/sbookspeople24x24.png);}
 
-div.codexglossform form.editnote div.textbox textarea[name='NOTE'],
-div.codexglossform form.addtag div.textbox input[name='TAG'],
-div.codexglossform form.excerpt div.textbox inpu[name='EXCERPT'],
-div.codexglossform form.addlink div.textbox input[name='LINK'] {
-    display: block;}
-
 div.codexglossform form div.inputhelp {
     margin-left: 1px; margin-top: 0px; padding-top: 0px;}
 div.codexglossform form div.glossetc {
     display: block; text-align: left; font-size: 12px;
     line-height: 16px; text-overflow: ellipsis;
-    padding: 0.5ex; padding-top: 0ex; padding-right: 1em;
+    padding: 0.5ex; padding-top: 0ex;
     margin-top: 0ex; margin-left: 1px;
     min-height: 24px; max-height: 50px;
     overflow: hidden;
@@ -289,108 +258,63 @@ span.linkedin_share, span.google_share { display: none;}
 div.codexglossform form div.glossetc > .checkspan.private {
     float: right; vertical-align: top; margin-left: 4px;
     padding-top: 0px; margin-top: 0px;}
-div.codexglossform form div.glossetc > .button,
-div.codexglossform form div.glossetc span > .button {
-    float: right;
-    border: darkblue solid 1px; padding: 2px;
-    border-radius: 3px; -webkit-border-radius: 3px;
-    -moz-border-radius: 3px; -o-border-radius: 3px;
-    cursor: pointer;}
-div.codexglossform form div.glossetc > span.modebuttons .button {
-    border-top-left-radius: 0px;
-    -webkit-border-top-left-radius: 0px; 
-    -moz-border-radius-topleft: 0px;
-    -o-border-radius-topleft: 0px; 
-    border-top-right-radius: 0px;
-    -webkit-border-top-right-radius: 0px; 
-    -moz-border-radius-topright: 0px;
-    -o-border-radius-topright: 0px;
-    border-top: 0px;}
-div.codexglossform form div.glossetc > span.modebuttons img.button,
-div.codexglossform form div.glossetc > span.modebuttons .button img {
-    background-color: ivory; height: 40px; width: auto;
-    opacity: 0.3;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-    filter: alpha(opacity=30);
-    -webkit-opacity: 0.30;
-    -khtml-opacity: 0.30;
-    -moz-opacity: 0.30;
-    -o-opacity: 0.30;}
-div.codexglossform form div.glossetc > span .button:hover {
-    border: darkblue dotted 1px; border-top: 0px;}
-div.codexglossform form div.glossetc > span .button[alt='excerpt'] {
-    display: none;}
-div.codexglossform.hasexcerpt form div.glossetc > span .button[alt='excerpt'] {
-    display: inline;}
 
 div.codexglossform form .button {
     font-weight: bold; color: black; font-size: 24px;
-    border: solid black 2px; background-color: silver; padding: 2px;
+    border: solid black 2px; background-color: silver;
     border-radius: 4px; -o-border-radius: 4px;
     -moz-border-radius: 4px; -webkit-border-radius: 4px;
     padding: 0px; padding-right: 2px;  padding-left: 2px; 
-    margin-left: 4px; 
     text-align: center; vertical-align: top;
+    cursor: pointer;}
+
+div.codexglossform form div.glossetc > .button,
+div.codexglossform form div.glossetc span > .button {
+    border: darkblue silver 2px; cursor: pointer;
+    border-radius: 3px; -webkit-border-radius: 3px;
+    -moz-border-radius: 3px; -o-border-radius: 3px;}
+
+div.codexglossform form div.glossetc > span.modebuttons { float: right; }
+div.codexglossform form div.glossetc > span.modebuttons img.button,
+div.codexglossform form div.glossetc > span.modebuttons .button img {
+    background-color: transparent; border-color: transparent;
+    height: 40px; width: auto; margin-bottom: 3px;
+    border-radius: 6px; -webkit-border-radius: 6px;
+    -moz-border-radius: 6px; -o-border-radius: 6px;
     cursor: pointer;}
 
 div.codexglossform form.editnote div.glossetc span .button[alt='note'],
 div.codexglossform form.addtag div.glossetc span .button[alt='tag'],
 div.codexglossform form.sharing div.glossetc span .button[alt='sharing'],
-div.codexglossform form.addlink div.glossetc span .button[alt='link'],
-div.codexglossform form.excerpt div.glossetc span .button[alt='excerpt'] {
-    height: 40px; width: 40px; opacity: 1.0;
-    background-color: white; border-color: darkblue; border-style: solid;
-    -webkit-opacity: 1.0;
-    -khtml-opacity: 1.0;
-    -moz-opacity: 1.0;
-    -o-opacity: 1.0;}
-body.cxANIMATE div.codexglossform form.editnote div.glossetc span .button {
+div.codexglossform form.addlink div.glossetc span .button[alt='link'] {
+    height: 40px; width: 40px; background-color: silver;
+    border: darkblue solid 2px;}
+body.cxANIMATE div.codexglossform form div.glossetc span .button {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
     -khtml-transition-property: opacity; -khtml-transition-duration: 1s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    filter: alpha(opacity=100);}
+    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
 
 div.codexglossform form .submitbutton {
     float: right; text-align: center;
-    padding-top: 0px; padding-right: 0px;
-    box-shadow: -4px 4px 2px 2px;
-    -o-box-shadow: -4px 4px 2px 2px;
-    -moz-box-shadow: -4px 4px 2px 2px;
-    -khtml-box-shadow: -4px 4px 2px 2px;
-    -webkit-box-shadow: -4px 4px 2px 2px;
-    border-radius: 0px; -webkit-border-radius: 0px;
-    -moz-border-radius: 0px; -o-border-radius: 0px;
-    border-bottom-left-radius: 0.5ex;
-    -webkit-border-bottom-left-radius: 0.5ex; 
-    -moz-border-radius-botleft: 0.5ex;
-    -o-border-radius-botleft: 0.5ex; 
+    padding-top: 3px; padding-right: 3px;
     height: 40px;}
 div.codexglossform form .submitbutton .button {
-    margin: 0px; padding: 0px; border: solid darkblue 2px;
-    padding-right: 2px; border-right: 0px; border-top: 0px;
-    background-color: blue;
+    margin: 0px; padding: 0px; border: none;
+    background-color: transparent;
     border-radius: 0px; -webkit-border-radius: 0px;
     -moz-border-radius: 0px; -o-border-radius: 0px;
-    border-bottom-left-radius: 0.5ex;
-    -webkit-border-bottom-left-radius: 0.5ex; 
-    -moz-border-radius-botleft: 0.5ex;
-    -o-border-radius-botleft: 0.5ex; 
     height: 100%; width: auto;}
-div.codexglossform.glossreply form .submitbutton .button {
-    border-top-left-radius: 0.5ex;
-    -webkit-border-top-left-radius: 0.5ex; 
-    -moz-border-radius-topleft: 0.5ex;
-    -o-border-radius-topleft: 0.5ex;
-    border-top: solid darkblue 2px;}
-div.codexglossform.glossedit form .submitbutton .button {
-    border-top-left-radius: 0.5ex;
-    -webkit-border-top-left-radius: 0.5ex; 
-    -moz-border-radius-topleft: 0.5ex;
-    -o-border-radius-topleft: 0.5ex;
-    border-top: solid darkblue 2px;}
+div.codexglossform form .submitbutton .edit,
+div.codexglossform form .submitbutton .reply {
+    display: none;}
+div.codexglossform.editgloss form .submitbutton .edit,
+div.codexglossform.response form .submitbutton .reply {
+    display: block;}
+div.codexglossform.editgloss form .submitbutton .add,
+div.codexglossform.response form .submitbutton .add {
+    display: block;}
 
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;
@@ -427,12 +351,6 @@ body.cxANIMATE div.codexglossform div.textbox {
     -moz-transition-property: height; -moz-transition-duration: 2s;
     -khtml-transition-property: height; -khtml-transition-duration: 2s;
     -webkit-transition-property: height; -webkit-transition-duration: 2s;}
-div.codexglossform form.addtag div.textbox textarea[name='TAG'],
-div.codexglossform form.addtag div.textbox input[type="TEXT"][name='TAG'],
-div.codexglossform form.excerpt div.textbox textarea[name='EXCERPT'],
-div.codexglossform form.addlink div.textbox input[type="TEXT"][name='LINK'],
-div.codexglossform form.addlink div.textbox textarea[name='LINK'] {
-    display: block;}
 div.codexglossform div.textbox input[type="TEXT"][name='TAG'] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/g/codex/tagicon16x16.png);}
@@ -452,7 +370,7 @@ body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
 div.completions#CODEXGLOSSOUTLETS div#CODEXOUTLETCLOUD {
     margin-left: 50px; margin-right: 50px;}
-div.completions#CODEXGLOSSCLOUD > div {
+div.completions#CODEXGLOSSTAGS > div {
     margin-left: 50px; margin-right: 50px;}
 div#CODEXHUD.cxANIMATE div.completions#CODEXGLOSSOUTLETS {
     transition-property: height;
@@ -464,15 +382,29 @@ div#CODEXHUD.cxANIMATE div.completions#CODEXGLOSSOUTLETS {
 body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
   div.completions#CODEXOUTLETCLOUD {
     display: block;}
+body.hudup div#CODEXHUD.addgloss div#CODEXHEART.addlink
+  div#CODEXURLENTRY {
+    display: block;}
 div#CODEXGLOSSOUTLETS span.networks { float: right;}
 div#CODEXGLOSSOUTLETS span.networks img { height: 32px; width: auto;}
 
-div#CODEXGLOSSOUTLETS > div.inputbox {
-    text-align: left; margin-bottom: 1ex;}
-div#CODEXGLOSSOUTLETS > div.inputbox span.head {
-    color: black; font-weight: bold;}
-div#CODEXGLOSSOUTLETS > div.inputbox input[type="TEXT"] {
-    width: 50%;}
+div#CODEXGLOSSOUTLETS > div.inputbox, div#CODEXGLOSSTAGS > div.inputbox {
+    text-align: center; margin-bottom: 1ex;}
+div.inputbox img.label { float: right; height: 2em; width: auto;}
+div.inputbox span.head {color: black; font-weight: bold;}
+div.hudpanel > div.inputbox input[type="TEXT"] {
+    background-position: right top;
+    background-position-x: right; background-position-y: top;
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    font-size: 24px;
+    width: 95%;}
+div#CODEXGLOSSTAGS > div.inputbox input[TYPE="TEXT"] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/g/codex/tagicon64x64.png);}
+div#CODEXGLOSSOUTLETS > div.inputbox input[TYPE="TEXT"] {
+    background-image:
+    url(https://beingmeta.s3.amazonaws.com/static/g/codex/sbookspeople64x64.png);}
 
 /* Emacs local variables
 ;;;  Local variables: ***

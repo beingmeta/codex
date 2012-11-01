@@ -1,6 +1,22 @@
 <div id="CODEXALLGLOSSES" class="codexslice hudpanel">
   <!-- This is filled in on startup -->
 </div>
+<div id="CODEXURLENTRY" class="hudpanel">
+  <table class="fdjtform">
+    <tr><th>URL</th>
+      <td><input TYPE="TEXT" NAME="URLREF" VALUE=""
+		 ID="CODEXURLINPUT"
+		 placeholder="an external URL relevant to this gloss"/>
+	</td>
+      <td><button id="CODEXADDLINKOK">Link!</button></td></tr>
+    <tr><th>Title</th>
+      <td><textarea
+	     NAME="URLTITLE" VALUE=""
+	     ID="CODEXURLTITLE"
+	     placeholder="how this reference is related to your gloss"></textarea></td>
+      <td><button id="CODEXADDLINKCANCEL">Cancel</button></td></tr>
+  </table>
+</div>
 <div id="CODEXSEARCHCLOUD" class="completions searchcloud hudpanel">
   <div id="CODEXPRIMETAGS" class="prime"></div>
   <div id="CODEXSEARCHTAGS" class="normal"></div>
@@ -12,6 +28,12 @@
 <div id="CODEXSEARCHRESULTS" class="codexslice hudpanel"></div>
 <div id="CODEXGLOSSOUTLETS" class="hudpanel">
   <div class="inputbox">
+    <input TYPE="TEXT" NAME="OUTLET" VALUE=""
+	   placeholder="Type a group or individual name"
+	   autocomplete="off"
+	   ID="CODEXOUTLETINPUT"/>
+  </div>
+  <div id="CODEXOUTLETCLOUD" class="completions showempty">
   <span id="CODEXNETWORKBUTTONS" class="networks"
 	onclick="fdjtUI.CheckSpan.onclick(event);">
     <span class="checkspan postgloss ischecked">
@@ -66,27 +88,19 @@
 	   alt="Google+" class="unchecked"/>
     </span>
   </span>
-  <span class="head">Share w/</span>
-  <input TYPE="TEXT" NAME="OUTLET" VALUE=""
-	 ID="CODEXOUTLETINPUT"/>
-  </div>
-  <div id="CODEXOUTLETCLOUD" class="completions showempty">
   </div>
 </div>
-<div id="CODEXGLOSSCLOUD" class="completions showempty hudpanel">
-  <img class="label" alt="tags"
-       svg="http://static.beingmeta.com/g/codex/tagicon.svgz"
-       src="http://static.beingmeta.com/g/codex/tagicon128x128.png"
-       onclick="fdjtDOM.toggleClass(fdjtID('SBOOKGLOSSCLOUD'),'showempty');"/>
-  <div class='doc'>
-    <strong>Add a tag</strong>
-    by <strong class='fortouch'>tapping</strong><strong class='notouch'>clicking</strong>
-    a displayed <em>cue</em> or <em>completion</em>.   Start typing to <em>see completions</em>;
-    <tt><strong><em>Shift</em>-enter</strong></tt> to pick the
-    first visible completion.
+<div id="CODEXGLOSSTAGS" class="hudpanel">
+  <div class="inputbox">
+    <input TYPE="TEXT" NAME="TAG" VALUE=""
+	   placeholder="Type or define a tag, with completion"
+	   autocomplete="off"
+	   ID="CODEXTAGINPUT"/>
   </div>
-  <div id="CODEXGLOSSTAGS"></div>
-  <div id="CODEXGLOSSTAGSOURCES"></div>
+  <div id="CODEXGLOSSCLOUD" class="completions showempty">
+    <div id="CODEXGLOSSCLOUDTAGS"></div>
+    <div id="CODEXGLOSSCLOUDSOURCES"></div>
+  </div>
 </div>
 <div id="CODEXCONSOLE" class="tabcontent flyleaftab sbookconsole hudpanel">
   <h1>Codex Console</h1>

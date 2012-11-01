@@ -107,7 +107,8 @@ body.cxISCROLL div#CODEXHUD #CODEXHEART .hudpanel { overflow: hidden;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART,
 body #CODEXHUD.addgloss #CODEXHEART.tagging,
-body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
+body #CODEXHUD.addgloss #CODEXHEART.showoutlets,
+body #CODEXHUD.addgloss #CODEXHEART.addlink {
     padding-top: 1em; padding-bottom: 1em;
     border: solid transparent 3px;
     background-color: ivory; border-color: blue;
@@ -120,12 +121,14 @@ body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
     -o-opacity: 1;}
 body.hudup #CODEXHUD.openheart #CODEXHEART > div,
 body #CODEXHUD.addgloss #CODEXHEART.tagging > div,
-body #CODEXHUD.addgloss #CODEXHEART.showoutlets > div {
+body #CODEXHUD.addgloss #CODEXHEART.showoutlets > div,
+body #CODEXHUD.addgloss #CODEXHEART.addlink > div {
     margin-top: 0px; margin-bottom: 0px;
     overflow: auto; max-height: 100%;}
 body.cxISCROLL.hudup #CODEXHUD.openheart #CODEXHEART > div,
 body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.tagging > div,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.showoutlets > div  {
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.showoutlets > div,
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.addlink > div {
     overflow: hidden; max-height: inherit;}
 
 #CODEXHEART > div > h1:first-child { margin-top: 0px;}
@@ -139,6 +142,8 @@ body.hudup #CODEXHUD.openheart #CODEXHEART {
 body #CODEXHUD.addgloss #CODEXHEART.tagging,
 body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
     top: 150px; bottom: 50px; height: auto;}
+body #CODEXHUD.addgloss #CODEXHEART.addlink {
+    top: 150px; height: auto;}
 
 div#CODEXHUD #CODEXFOOT {
     position: fixed; left: 0px; right: 0px; width: 100%;
@@ -237,8 +242,9 @@ div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
 div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.hudpanel,
 div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS.hudpanel,
-div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSCLOUD.hudpanel,
+div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXGLOSSOUTLETS.hudpanel,
+div#CODEXHUD.addgloss div#CODEXHEART.addlink div#CODEXURLENTRY.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     position: static; display: block;
@@ -565,8 +571,9 @@ div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall .showless { display: none;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showless {display: inline;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showmore {display: none;}
 
-div#CODEXHUD.addgloss div#CODEXHEART.tagging
-   div.completions#CODEXGLOSSCLOUD { display: block;}
+div#CODEXHUD.addgloss div#CODEXHEART.tagging #CODEXGLOSSTAGS,
+div#CODEXHUD.addgloss div#CODEXHEART.tagging #CODEXGLOSSCLOUD {
+    display: block;}
 
 div#CODEXGLOSSES div.codexthread { border-right-width: 0px;}
 div#SBOOKGLOSSES div.codexthread {

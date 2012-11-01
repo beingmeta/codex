@@ -38,74 +38,47 @@
     <span class="respdate"></span> <span class="respnote"></span> 
     <span class="resptags"></span> <span class="resplinks"></span>
   </div>
-  <div class="altbutton submitbutton">
-    <img svg="http://static.beingmeta.com/g/codex/remark_add.svgz"
-	 src="http://static.beingmeta.com/g/codex/remark_add64x64.png"
-	 alt="Add" title="add this gloss"
-	 class="button addbutton add"/>
-    <img svg="http://static.beingmeta.com/g/codex/remark_edit.svgz"
-	 src="http://static.beingmeta.com/g/codex/remark_edit64x64.png"
-	 alt="Save" title="save this gloss"
-	 class="button savebutton edit"/>
-    <img svg="http://static.beingmeta.com/g/codex/remark_respond.svgz"
-	 src="http://static.beingmeta.com/g/codex/remark_respond64x64.png"
-	 alt="Reply" title="respond to this gloss (thread)"
-	 class="button replybutton reply"/>
-  </div>
-  <div class="cancelbutton"
-       title="close this gloss and cancel any changes">
+  <div class="rightcol">
+    <div class="altbutton submitbutton">
+      <img svg="http://static.beingmeta.com/g/codex/remark_add.svgz"
+	   src="http://static.beingmeta.com/g/codex/remark_add64x64.png"
+	   alt="Add" title="add this gloss"
+	   class="button addbutton add"/>
+      <img svg="http://static.beingmeta.com/g/codex/remark_edit.svgz"
+	   src="http://static.beingmeta.com/g/codex/remark_edit64x64.png"
+	   alt="Save" title="save this gloss"
+	   class="button savebutton edit"/>
+      <img svg="http://static.beingmeta.com/g/codex/remark_respond.svgz"
+	   src="http://static.beingmeta.com/g/codex/remark_respond64x64.png"
+	   alt="Reply" title="respond to this gloss (thread)"
+	   class="button replybutton reply"/>
+    </div>
     <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
 	 src="http://static.beingmeta.com/g/codex/redx64x64.png"
 	 title="close this gloss and cancel any changes"
+	 class="cancelbutton"
 	 alt="cancel"/>
   </div>
   <div class="inputbox">
     <div class="textbox">
-      <input TYPE="TEXT" name="LINK"
-	     placeholder="type a URL and title separated by a space"
-	     class="fdjturlinput"
-	     title="type a URL and title"/>
-      <input TYPE="TEXT" name="TAG"
-	     placeholder="type a tag"
-	     title="type a tag, with completion"/>
-      <input TYPE="TEXT" name="OUTLET"
-	     placeholder="type an email address or a name"
-	     title="type an email address or a name"/>
       <textarea name="NOTE"
 		placeholder="add text, [tag]s, or [@links w/title]"
 		title="add text, [tag]s, or [@links w/title]"
 		onfocus="Codex.UI.addgloss_focus(event);"
 		onblur="Codex.UI.addgloss_blur(event);"
 		wrap="virtual"></textarea>
-      <div class="inputhelp nomodehelp" id="ADDGLOSSKEYBOARDHELP">
-	<kbd>Enter</kbd> to save and close, <kbd>Space</kbd> to edit
-	text, <kbd>#</kbd> to add a tag, <kbd>/</kbd> to add a link,
-	<kbd>@</kbd> to share this gloss.
-      </div>
-      <div class="inputhelp linkhelp">
-	Enter a URL followed by an (optional) title (separate with a space)
-      </div>
-      <div class="inputhelp notehelp">
-	add text, [tag]s, [@links w/title]
-      </div>
-      <div class="inputhelp taghelp">
-	Enter a tag, using | to identify synonyms or relatonships.
-      </div>
     </div>
     <div class="glossetc">
       <span class="modebuttons">
-	<img svg="http://static.beingmeta.com/g/codex/remark_share.svgz"
-	     src="http://static.beingmeta.com/g/codex/remark_share64x64.png"
-	     title="add outlets/share this gloss" class="button" alt="sharing"/>
 	<img svg="http://static.beingmeta.com/g/codex/remark_tag.svgz"
 	     src="http://static.beingmeta.com/g/codex/remark_tag64x64.png"
 	     title="add tags" class="button" alt="tag"/>
 	<img svg="http://static.beingmeta.com/g/codex/remark_link.svgz"
 	     src="http://static.beingmeta.com/g/codex/remark_link64x64.png"
 	     title="add web links" class="button" alt="link"/>
-	<img svg="http://static.beingmeta.com/g/codex/remark_text.svgz"
-	     src="http://static.beingmeta.com/g/codex/remark_text64x64.png"
-	     title="add/edit a comment" class="button" alt="note"/>
+	<img svg="http://static.beingmeta.com/g/codex/remark_share.svgz"
+	     src="http://static.beingmeta.com/g/codex/remark_share64x64.png"
+	     title="add outlets/share this gloss" class="button" alt="sharing"/>
       </span>
       <img svg="http://static.beingmeta.com/g/codex/twistyclosed.svgz"
 	   src="http://static.beingmeta.com/g/codex/twistyclosed64x64.png"
@@ -113,9 +86,6 @@
       <img svg="http://static.beingmeta.com/g/codex/twistyopen.svgz"
 	   src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
 	   class="twisty" alt="-"/>
-      <span class="showmode add">Add</span>
-      <span class="showmode edit">Edit</span>
-      <span class="showmode respond">Respond</span>
       <span class="networks">
 	<span class="checkspan postgloss ischecked">
 	  <input type="CHECKBOX" name="POSTGLOSS" value="yes"

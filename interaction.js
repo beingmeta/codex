@@ -56,6 +56,7 @@
     var hasParent=fdjtDOM.hasParent;
     var isClickable=fdjtUI.isClickable;
     var getGeometry=fdjtDOM.getGeometry;
+    var getChild=fdjtDOM.getChild;
 
     var parsePX=fdjtDOM.parsePX;
     var atoi=parseInt;
@@ -766,32 +767,132 @@
 		else glossmark.glosses=newglosses;}}
 	else alert(response);}
 
-    function addoutlet_keypress(evt){
+    function addoutlet_keydown(evt){
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	var content=target.value;
 	var glossdiv=fdjtID("CODEXLIVEGLOSS");
 	if (!(glossdiv)) return;
-	var form=getParent(glossdiv,"FORM");
+	var form=getChild(glossdiv,"FORM");
 	var outlet_cloud=Codex.outletCloud();
 	var ch=evt.keyCode||evt.charCode;
 	if ((fdjtString.isEmpty(content))&&(ch===13)) {
+	    if (outlet_cloud.selection) 
+		Codex.addOutlet2Form(
+		    form,outlet_cloud.selection.getAttribute("value"));
+	    else Codex.setGlossMode("editnote");
 	    return;}
-	if ((content.length===0)&&(outlet_cloud)) {
+	else if ((ch===13)&&(outlet_cloud.selection)) {
+	    Codex.addOutlet2Form(form,outlet_cloud.selection);
 	    outlet_cloud.complete("");
-	    return;}
+	    target.value="";}
 	else if (ch===13) {
 	    var completions=outlet_cloud.complete(content);
 	    if (completions.length)
-		addOutlet(form,completions[0].getAttribute("value"));
-	    else addOutlet(form,content);
+		Codex.addOutlet2Form(
+		    form,completions[0].getAttribute("value"));
+	    else Codex.addOutlet2Form(form,content);
 	    fdjtUI.cancel(evt);
 	    target.value="";
 	    outlet_cloud.complete("");}
+	else if (ch===9) { /* tab */
+	    var completions=outlet_cloud.complete(content);
+	    fdjtUI.cancel(evt);
+	    if ((outlet_cloud.prefix)&&
+		(outlet_cloud.prefix!==content)) {
+		target.value=outlet_cloud.prefix;
+		fdjtDOM.cancel(evt);
+		setTimeout(function(){
+		    Codex.UI.updateScroller("CODEXGLOSSOUTLETS");},
+			   100);
+		return;}
+	    else if (evt.shiftKey) outlet_cloud.selectPrevious();
+	    else outlet_cloud.selectNext();}
 	else setTimeout(function(evt){
 	    outlet_cloud.complete(target.value);},
 			100);}
 
+    function addtag_keydown(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var content=target.value;
+	var glossdiv=fdjtID("CODEXLIVEGLOSS");
+	if (!(glossdiv)) return;
+	var form=getChild(glossdiv,"FORM");
+	var gloss_cloud=Codex.glossCloud();
+	var ch=evt.keyCode||evt.charCode;
+	if ((fdjtString.isEmpty(content))&&(ch===13)) {
+	    if (gloss_cloud.selection) 
+		Codex.addTag2Form(form,gloss_cloud.selection);
+	    else Codex.setGlossMode("editnote");
+	    return;}
+	else if ((ch===13)&&(gloss_cloud.selection)) {
+	    Codex.addTag2Form(form,gloss_cloud.selection);
+	    gloss_cloud.complete("");
+	    target.value="";}
+	else if (ch===13) {
+	    var completions=gloss_cloud.complete(content);
+	    if ((content.indexOf('|')>=0)||
+		(content.indexOf('@')>=0)||
+		(completions.length===0)||
+		(evt.shiftKey))
+		Codex.addTag2Form(form,content);
+	    else {
+		if (completions.length)
+		    Codex.addTag2Form(form,completions[0]);
+		else Codex.addTag2Form(form,content);}
+	    fdjtUI.cancel(evt);
+	    target.value="";
+	    gloss_cloud.complete("");}
+	else if (ch===9) { /* tab */
+	    var completions=gloss_cloud.complete(content);
+	    fdjtUI.cancel(evt);
+	    if ((gloss_cloud.prefix)&&
+		(gloss_cloud.prefix!==content)) {
+		target.value=gloss_cloud.prefix;
+		fdjtDOM.cancel(evt);
+		setTimeout(function(){
+		    Codex.UI.updateScroller("CODEXGLOSSTAGS");},
+			   100);
+		return;}
+	    else if (evt.shiftKey) gloss_cloud.selectPrevious();
+	    else gloss_cloud.selectNext();}
+	else setTimeout(function(evt){
+	    gloss_cloud.complete(target.value);},
+			100);}
+
+    function addlink_action(evt){
+	var linkinput=fdjtID("CODEXURLINPUT");
+	var titleinput=fdjtID("CODEXURLTITLE");
+	var livegloss=fdjtID("CODEXLIVEGLOSS");
+	if (!(livegloss)) return;
+	var form=getChild(livegloss,"FORM");
+	Codex.addLink2Form(form,linkinput.value,titleinput.value);
+	linkinput.value="";
+	titleinput.value="";
+	Codex.setGlossMode("editnote");}
+    function addlink_cancel(evt){
+	var linkinput=fdjtID("CODEXURLINPUT");
+	var titleinput=fdjtID("CODEXURLTITLE");
+	var livegloss=fdjtID("CODEXLIVEGLOSS");
+	if (!(livegloss)) return;
+	linkinput.value="";
+	titleinput.value="";
+	Codex.setGlossMode("editnote");}
+    function addlink_keydown(evt){
+	evt=evt||event;
+	var ch=evt.keyCode||evt.charCode;
+	if (ch!==13) return;
+	fdjtUI.cancel(evt);
+	var linkinput=fdjtID("CODEXURLINPUT");
+	var titleinput=fdjtID("CODEXURLTITLE");
+	var livegloss=fdjtID("CODEXLIVEGLOSS");
+	if (!(livegloss)) return;
+	var form=getChild(livegloss,"FORM");
+	Codex.addLink2Form(form,linkinput.value,titleinput.value);
+	linkinput.value="";
+	titleinput.value="";
+	Codex.setGlossMode("editnote");}
 
     /* HUD button handling */
 
@@ -1511,7 +1612,7 @@
 	var live=fdjtID("CODEXLIVEGLOSS");
 	var form=((live)&&(fdjtDOM.getChild(live,"form")));
 	var outlet=outletspan.value;
-	Codex.addOutletToForm(form,outlet);
+	Codex.addOutlet2Form(form,outlet);
 	fdjtUI.cancel(evt);}
 
     var glossmodes=Codex.glossmodes;
@@ -1525,10 +1626,10 @@
 	if (!(alt)) return;
 	if (alt==="tag") {
 	    altclass="addtag";
-	    input=fdjtDOM.getInput(form,'TAG');}
+	    input=fdjtID("CODEXTAGINPUT");}
 	else if (alt==="link") {
 	    altclass="addlink";
-	    input=fdjtDOM.getInput(form,'LINK');}
+	    input=fdjtID("CODEXURLINPUT");}
 	else if (alt==="excerpt") {
 	    altclass="excerpt";
 	    input=fdjtDOM.getInput(form,'EXCERPT');}
@@ -1544,18 +1645,22 @@
 	if (!(hasClass(form,altclass))) {
 	    if (alt==="tag") {
 		addClass("CODEXHEART","tagging");
-		Codex.UI.updateScroller("CODEXGLOSSCLOUD");}
+		Codex.UI.updateScroller("CODEXGLOSSTAGS");}
 	    else dropClass("CODEXHEART","tagging");
 	    if (alt==="sharing") {
 		addClass("CODEXHEART","showoutlets");
 		Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
 	    else dropClass("CODEXHEART","showoutlets");
+	    if (alt==="link") 
+		addClass("CODEXHEART","addlink");
+	    else dropClass("CODEXHEART","addlink");
 	    swapClass(form,glossmodes,altclass);
 	    Codex.setHUD(true);
 	    Codex.setFocus(input);}
 	else {
 	    dropClass("CODEXHEART","tagging");
 	    dropClass("CODEXHEART","showoutlets");
+	    dropClass("CODEXHEART","addlink");
 	    dropClass(form,glossmodes);}}
 
     function submitGloss(evt){
@@ -1674,7 +1779,12 @@
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
-	 "#CODEXOUTLETINPUT": {keyup: addoutlet_keypress},
+	 "#CODEXTAGINPUT": {keydown: addtag_keydown},
+	 "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
+	 "#CODEXURLINPUT": {click: addlink_keydown},
+	 "#CODEXURLTITLE": {click: addlink_keydown},
+	 "#CODEXADDLINKOK": {click: addlink_action},
+	 "#CODEXADDLINKCANCEL": {click: addlink_cancel},
 	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
 	 "#CODEXHELPBUTTON": {
 	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
@@ -1727,7 +1837,12 @@
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {touchstart: left_margin},
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},
-	 "#CODEXOUTLETINPUT": {keyup: addoutlet_keypress},
+	 "#CODEXTAGINPUT": {keydown: addtag_keydown},
+	 "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
+	 "#CODEXURLINPUT": {click: addlink_keydown},
+	 "#CODEXURLTITLE": {click: addlink_keydown},
+	 "#CODEXADDLINKOK": {click: addlink_action},
+	 "#CODEXADDLINKCANCEL": {click: addlink_cancel},
 	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
 	 "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
 	 "#CODEXHELPBUTTON": {click: toggleHelp},

@@ -186,9 +186,10 @@ var CodexMode=
 		    if (!((gloss_tag)&&(gloss_tag.length))) {
 			gloss_tag=tagHTML(tag,Codex.knodule,false,true);
 			if ((ref)&&(ref.pool===Codex.sourcekb))
-			    fdjtDOM(fdjtID("CODEXGLOSSTAGSOURCES"),
+			    fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),
 				    gloss_tag," ");
-			else fdjtDOM(fdjtID("CODEXGLOSSTAGS"),gloss_tag," ");
+			else fdjtDOM(fdjtID("CODEXGLOSSCLOUDTAGS"),
+				     gloss_tag," ");
 			gloss_cloud.addCompletion(gloss_tag);}}}
 	    Codex.addTag2GlossCloud=addTag2GlossCloud;
 	    
@@ -219,7 +220,7 @@ var CodexMode=
 		    i=0; lim=loaded.length; while (i<lim) {
 			var outlet=loaded[i++];
 			if (i<=5)
-			    Codex.addOutletToForm(form,outlet,false);
+			    Codex.addOutlet2Form(form,outlet,false);
 			addOutlet2Cloud(outlet,cloud);}
 		    return;}}
 	    Codex.addOutlets2UI=addOutlets2UI;
@@ -349,7 +350,7 @@ var CodexMode=
 	    resizeHUD();
 
 	    Codex.scrollers={};
-	    updateScroller("CODEXGLOSSCLOUD");
+	    updateScroller("CODEXGLOSSTAGS");
 	    updateScroller("CODEXSEARCHCLOUD");
 	    fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));}
 	Codex.initHUD=initHUD;

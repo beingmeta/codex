@@ -80,14 +80,13 @@
 	if (!(form)) return;
 	if (!(mode)) {
 	    dropClass(form,glossmodes);
-	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");
 	    return;}
 	if ((mode==="tag")||(mode==="addtag")) {
 	    modeclass="addtag";
-	    input=fdjtDOM.getInput(form,'TAG');}
+	    input=fdjtID("CODEXTAGINPUT");}
 	else if ((mode==="link")||(mode==="addlink")) {
 	    modeclass="addlink";
-	    input=fdjtDOM.getInput(form,'LINK');}
+	    input=fdjtID("CODEXURLINPUT");}
 	else if ((mode==="note")||(mode==="editnote")) {
 	    modeclass="editnote";
 	    input=fdjtDOM.getInput(form,'NOTE');}
@@ -96,23 +95,26 @@
 	    input=fdjtID("CODEXOUTLETINPUT");}
 	else {
 	    dropClass(form,glossmodes);
-	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");
 	    return;}
 	if (Codex.Trace.mode)
 	    fdjtLog("setGlossMode gm=%s input=%o",modeclass,input);
 	if ((!(modeclass))||((toggle)&&(hasClass(form,modeclass)))) {
 	    dropClass("CODEXHEART","tagging");
 	    dropClass("CODEXHEART","showoutlets");
+	    dropClass("CODEXHEART","addlink");
 	    dropClass(form,glossmodes);}
 	else {
 	    if (modeclass==="addtag") {
 		addClass("CODEXHEART","tagging");
-		Codex.UI.updateScroller("CODEXGLOSSCLOUD");}
+		Codex.UI.updateScroller("CODEXGLOSSTAGS");}
 	    else dropClass("CODEXHEART","tagging");
 	    if (modeclass==="sharing") {
 		addClass("CODEXHEART","showoutlets");
 		Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
 	    else dropClass("CODEXHEART","showoutlets");
+	    if (modeclass==="addlink") {
+		addClass("CODEXHEART","addlink");}
+	    else dropClass("CODEXHEART","addlink");
 	    swapClass(form,glossmodes,modeclass);
 	    Codex.setHUD(true);
 	    if (input) Codex.setFocus(input);}}
@@ -143,7 +145,7 @@
 	var bracketed=_getbracketed(input,erase);
 	if (bracketed) {
 	    addClass("CODEXHEART","tagging");
-	    Codex.UI.updateScroller("CODEXGLOSSCLOUD");}
+	    Codex.UI.updateScroller("CODEXGLOSSTAGS");}
 	else dropClass("CODEXHEART","tagging");
 	return bracketed;}
 
@@ -199,8 +201,8 @@
 	    fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
 	var noteinput=getInput(form,"NOTE");
 	var notespan=getChild(form,".notespan");
-	var taginput=getInput(form,"TAG");
-	var linkinput=getInput(form,"LINK");
+	var taginput=fdjtID("CODEXTAGINPUT");
+	var linkinput=fdjtID("CODEXLINKINPUT");
 	if (noteinput) {
 	    noteinput.onkeypress=noteinput_keypress;
 	    noteinput.onkeydown=noteinput_keydown;
@@ -208,7 +210,7 @@
 		noteinput.value=gloss.note||"";
 		if (notespan) notespan.innerHTML=noteinput.value;}
 	    else noteinput.value="";}
-	if (taginput) taginput.onkeydown=addtag_keypress;
+	// if (taginput) taginput.onkeydown=addtag_keypress;
 	if (linkinput) linkinput.onkeypress=addlink_keypress;
 	if (Codex.syncstamp)
 	    getInput(form,"SYNC").value=(Codex.syncstamp+1);
@@ -346,7 +348,7 @@
 	fdjtDOM(outletspan,checkspan," ");
 	dropClass(outletspan,"empty");
 	return checkspan;}
-    Codex.addOutletToForm=addOutlet;
+    Codex.addOutlet2Form=addOutlet;
 
     function clearOutlets(form){
 	var outletspan=getChild(form,".outlets");
@@ -376,6 +378,7 @@
 	dropClass(linkselt,"empty");
 	updateForm(form);
 	return aspan;}
+    Codex.addLink2Form=addLink;
 
     /***** Adding excerpts ******/
     function setExcerpt(form,excerpt,off) {
@@ -475,6 +478,7 @@
 	dropClass(tagselt,"empty");
 	updateForm(form);
 	return span;}
+    Codex.addTag2Form=addTag;
 
     Codex.setGlossNetwork=function(form,network,checked){
 	if (typeof form === 'string') form=fdjtID(form);
@@ -568,20 +572,16 @@
 	    if (input)
 		gloss_cloud.complete(getbracketed(input,false)||"");
 	    else gloss_cloud.complete("");}
-	else if (mode==='addtag') input=getInput(form,"TAG");
-	else if (mode==='addlink') input=getInput(form,"LINK");
+	else if (mode==='addtag') input=fdjtID("CODEXTAGINPUT");
+	else if (mode==='addlink') input=fdjtID("CODEXURLINPUT");
 	else if (mode==='excerpt') input=getInput(form,"EXCERPT");
 	else if (mode==='addoutlet') input=fdjtID("CODEXOUTLETINPUT");
-	else {
-	    input=noteinput;
-	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");}
+	else {input=noteinput;}
 	    
 	/* Do completions based on those input's values */
 	Codex.outletCloud().complete();
+	Codex.glossCloud().complete();
 
-	if (mode!=='editnote') {
-	    var tag_input=getInput(form,"TAG");
-	    gloss_cloud.complete((tag_input.value)||"");}
 	if (input) setTimeout(function(){input.focus();},1500);
 	else {}}
     Codex.setGlossForm=setGlossForm;
@@ -690,46 +690,6 @@
 			content.slice(brk+1));}
 	    fdjtUI.cancel(evt);
 	    target.value="";}}
-    function addtag_keypress(evt){
-	var target=fdjtUI.T(evt);
-	var content=target.value;
-	var form=getParent(target,"FORM");
-	var ch=evt.keyCode||evt.charCode;
-	if ((fdjtString.isEmpty(content))&&(ch===13)) {
-	    submitEvent(target);
-	    return;}
-	if (content.length===0) {
-	    gloss_cloud.complete("");
-	    return;}
-	else if (ch===13) {
-	    var completions=gloss_cloud.complete(content);
-	    if ((content.indexOf('|')>=0)||
-		(content.indexOf('@')>=0)||
-		(completions.length===0)||
-		(evt.shiftKey))
-		addTag(form,content);
-	    else {
-		if (completions.length)
-		    addTag(form,completions[0]);
-		else addTag(form,content);}
-	    fdjtUI.cancel(evt);
-	    target.value="";
-	    gloss_cloud.complete("");}
-	else if (ch===9) { /* tab */
-	    var completions=gloss_cloud.complete(content);
-	    fdjtUI.cancel(evt);
-	    if (gloss_cloud.prefix!==content) {
-		target.value=gloss_cloud.prefix;
-		fdjtDOM.cancel(evt);
-		setTimeout(function(){
-		    Codex.UI.updateScroller("CODEXGLOSSCLOUD");},
-			   100);
-		return;}
-	    else if (evt.shiftKey) gloss_cloud.selectPrevious();
-	    else gloss_cloud.selectNext();}
-	else setTimeout(function(evt){
-	    gloss_cloud.complete(target.value);},
-			100);}
 
     /* This handles embedded brackets */
     function noteinput_keypress(evt){
@@ -816,8 +776,6 @@
 	if (uuid) uuid.value="";
 	var note=getInput(form,"NOTE");
 	if (note) note.value="";
-	var taginput=getInput(form,"TAG");
-	if (taginput) taginput.value="";
 	var href=getInput(form,"HREF");
 	if (href) href.value="";
 	var tagselt=getChildren(form,".tags");
@@ -836,7 +794,7 @@
 	completions.onclick=glosscloud_ontap;
 	Codex.gloss_cloud=gloss_cloud=
 	    new fdjtUI.Completions(
-		completions,fdjtID("SBOOKTAGINPUT"),
+		completions,fdjtID("CODEXTAGINPUT"),
 		fdjtUI.FDJT_COMPLETE_OPTIONS|
 		    fdjtUI.FDJT_COMPLETE_CLOUD|
 		    fdjtUI.FDJT_COMPLETE_ANYWORD);
