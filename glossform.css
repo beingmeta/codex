@@ -119,8 +119,7 @@ div.codexglossform div.notetext {
 
 div.codexglossform form.editnote div.notetext,
 div.codexglossform form.addtag div.notetext,
-div.codexglossform form.addlink div.notetext,
-div.codexglossform form.sharing div.notetext {
+div.codexglossform form.addlink div.notetext {
     display: none;}
 
 div.codexglossform form div.glossbox {}
@@ -194,8 +193,7 @@ div.codexglossform div.textbox input[name='OUTLET'] {
 div.codexglossform form.editnote div.textbox textarea[name='NOTE'],
 div.codexglossform form.addtag div.textbox input[name='TAG'],
 div.codexglossform form.excerpt div.textbox inpu[name='EXCERPT'],
-div.codexglossform form.addlink div.textbox input[name='LINK'],
-div.codexglossform form.sharing div.textbox input[name='OUTLET'] {
+div.codexglossform form.addlink div.textbox input[name='LINK'] {
     display: block;}
 
 div.codexglossform form div.inputhelp {
@@ -452,11 +450,11 @@ div.codexglossform form div.glossetc .tags span.checkspan {
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
-div.completions#CODEXOUTLETCLOUD div#CODEXGLOSSOUTLETS {
+div.completions#CODEXGLOSSOUTLETS div#CODEXOUTLETCLOUD {
     margin-left: 50px; margin-right: 50px;}
 div.completions#CODEXGLOSSCLOUD > div {
     margin-left: 50px; margin-right: 50px;}
-div#CODEXHUD.cxANIMATE div.completions#CODEXOUTLETCLOUD {
+div#CODEXHUD.cxANIMATE div.completions#CODEXGLOSSOUTLETS {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
@@ -466,8 +464,15 @@ div#CODEXHUD.cxANIMATE div.completions#CODEXOUTLETCLOUD {
 body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
   div.completions#CODEXOUTLETCLOUD {
     display: block;}
-div#CODEXOUTLETCLOUD span.networks { float: right;}
-div#CODEXOUTLETCLOUD span.networks img { height: 32px; width: auto;}
+div#CODEXGLOSSOUTLETS span.networks { float: right;}
+div#CODEXGLOSSOUTLETS span.networks img { height: 32px; width: auto;}
+
+div#CODEXGLOSSOUTLETS > div.inputbox {
+    text-align: left; margin-bottom: 1ex;}
+div#CODEXGLOSSOUTLETS > div.inputbox span.head {
+    color: black; font-weight: bold;}
+div#CODEXGLOSSOUTLETS > div.inputbox input[type="TEXT"] {
+    width: 50%;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

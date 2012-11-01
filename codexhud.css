@@ -238,7 +238,7 @@ div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.hudpanel,
 div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSCLOUD.hudpanel,
-div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXOUTLETCLOUD.hudpanel,
+div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXGLOSSOUTLETS.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     position: static; display: block;

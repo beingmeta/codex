@@ -93,7 +93,7 @@
 	    input=fdjtDOM.getInput(form,'NOTE');}
 	else if ((mode==="sharing")||(mode==="share")) {
 	    modeclass="sharing";
-	    input=fdjtDOM.getInput(form,'OUTLET');}
+	    input=fdjtID("CODEXOUTLETINPUT");}
 	else {
 	    dropClass(form,glossmodes);
 	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");
@@ -111,7 +111,7 @@
 	    else dropClass("CODEXHEART","tagging");
 	    if (modeclass==="sharing") {
 		addClass("CODEXHEART","showoutlets");
-		Codex.UI.updateScroller("CODEXOUTLETCLOUD");}
+		Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
 	    else dropClass("CODEXHEART","showoutlets");
 	    swapClass(form,glossmodes,modeclass);
 	    Codex.setHUD(true);
@@ -201,7 +201,6 @@
 	var notespan=getChild(form,".notespan");
 	var taginput=getInput(form,"TAG");
 	var linkinput=getInput(form,"LINK");
-	var outletinput=getInput(form,"OUTLET");
 	if (noteinput) {
 	    noteinput.onkeypress=noteinput_keypress;
 	    noteinput.onkeydown=noteinput_keydown;
@@ -211,7 +210,6 @@
 	    else noteinput.value="";}
 	if (taginput) taginput.onkeydown=addtag_keypress;
 	if (linkinput) linkinput.onkeypress=addlink_keypress;
-	if (outletinput) outletinput.onkeypress=addoutlet_keypress;
 	if (Codex.syncstamp)
 	    getInput(form,"SYNC").value=(Codex.syncstamp+1);
 	var loc=getInput(form,"LOCATION");
@@ -573,15 +571,14 @@
 	else if (mode==='addtag') input=getInput(form,"TAG");
 	else if (mode==='addlink') input=getInput(form,"LINK");
 	else if (mode==='excerpt') input=getInput(form,"EXCERPT");
-	else if (mode==='addoutlet') input=getInput(form,"OUTLET");
+	else if (mode==='addoutlet') input=fdjtID("CODEXOUTLETINPUT");
 	else {
 	    input=noteinput;
 	    Codex.keyboardHelp("ADDGLOSSKEYBOARDHELP");}
 	    
 	/* Do completions based on those input's values */
-	var outlet_input=getInput(form,"OUTLET");
-	if ((outlet_input)&&(outlet_cloud))
-	    outlet_cloud.complete((outlet_input.value)||"");
+	Codex.outletCloud().complete();
+
 	if (mode!=='editnote') {
 	    var tag_input=getInput(form,"TAG");
 	    gloss_cloud.complete((tag_input.value)||"");}
@@ -733,29 +730,6 @@
 	else setTimeout(function(evt){
 	    gloss_cloud.complete(target.value);},
 			100);}
-    function addoutlet_keypress(evt){
-	evt=evt||event;
-	var target=fdjtUI.T(evt);
-	var content=target.value;
-	var form=getParent(target,"FORM");
-	var ch=evt.keyCode||evt.charCode;
-	if (!(outlet_cloud)) return;
-	else if ((fdjtString.isEmpty(content))&&(ch===13)) {
-	    return;}
-	if ((content.length===0)&&(outlet_cloud)) {
-	    outlet_cloud.complete("");
-	    return;}
-	else if (ch===13) {
-	    var completions=outlet_cloud.complete(content);
-	    if (completions.length)
-		addOutlet(form,completions[0].getAttribute("value"));
-	    else addOutlet(form,content);
-	    fdjtUI.cancel(evt);
-	    target.value="";
-	    outlet_cloud.complete("");}
-	else setTimeout(function(evt){
-	    gloss_cloud.complete(target.value);},
-			100);}
 
     /* This handles embedded brackets */
     function noteinput_keypress(evt){
@@ -889,7 +863,7 @@
 	completions.onclick=outletcloud_ontap;
 	Codex.outlet_cloud=outlet_cloud=
 	    new fdjtUI.Completions(
-		completions,false,
+		completions,fdjtID("CODEXOUTLETINPUT"),
 		fdjtUI.FDJT_COMPLETE_OPTIONS|
 		    fdjtUI.FDJT_COMPLETE_CLOUD|
 		    fdjtUI.FDJT_COMPLETE_ANYWORD);

@@ -766,6 +766,33 @@
 		else glossmark.glosses=newglosses;}}
 	else alert(response);}
 
+    function addoutlet_keypress(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var content=target.value;
+	var glossdiv=fdjtID("CODEXLIVEGLOSS");
+	if (!(glossdiv)) return;
+	var form=getParent(glossdiv,"FORM");
+	var outlet_cloud=Codex.outletCloud();
+	var ch=evt.keyCode||evt.charCode;
+	if ((fdjtString.isEmpty(content))&&(ch===13)) {
+	    return;}
+	if ((content.length===0)&&(outlet_cloud)) {
+	    outlet_cloud.complete("");
+	    return;}
+	else if (ch===13) {
+	    var completions=outlet_cloud.complete(content);
+	    if (completions.length)
+		addOutlet(form,completions[0].getAttribute("value"));
+	    else addOutlet(form,content);
+	    fdjtUI.cancel(evt);
+	    target.value="";
+	    outlet_cloud.complete("");}
+	else setTimeout(function(evt){
+	    outlet_cloud.complete(target.value);},
+			100);}
+
+
     /* HUD button handling */
 
     var mode_hud_map={
@@ -1510,7 +1537,7 @@
 	    input=fdjtDOM.getInput(form,'NOTE');}
 	else if (alt==="sharing") {
 	    altclass="sharing";
-	    input=fdjtDOM.getInput(form,'OUTLET');}
+	    input=fdjtID("CODEXOUTLETINPUT");}
 	else return;
 	// fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
 	fdjtUI.cancel(evt);
@@ -1521,7 +1548,7 @@
 	    else dropClass("CODEXHEART","tagging");
 	    if (alt==="sharing") {
 		addClass("CODEXHEART","showoutlets");
-		Codex.UI.updateScroller("CODEXOUTLETCLOUD");}
+		Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
 	    else dropClass("CODEXHEART","showoutlets");
 	    swapClass(form,glossmodes,altclass);
 	    Codex.setHUD(true);
@@ -1647,6 +1674,7 @@
 	 "#CODEXPAGELEFT": {click: left_margin},
 	 "#CODEXPAGERIGHT": {click: right_margin},
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
+	 "#CODEXOUTLETINPUT": {keyup: addoutlet_keypress},
 	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
 	 "#CODEXHELPBUTTON": {
 	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
@@ -1699,6 +1727,8 @@
 	 // Forward and backwards
 	 "#CODEXPAGELEFT": {touchstart: left_margin},
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},
+	 "#CODEXOUTLETINPUT": {keyup: addoutlet_keypress},
+	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
 	 "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
 	 "#CODEXHELPBUTTON": {click: toggleHelp},
 	 "#CODEXHELP": {click: toggleHelp},
