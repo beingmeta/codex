@@ -288,7 +288,8 @@
 	    Codex.setExcerpt(form,gloss.excerpt,gloss.exoff);
 	var cancel_button=fdjtDOM.getChild(form,".cancelbutton");
 	if (cancel_button)
-	    fdjtDOM.addListener(cancel_button,"click",cancelGloss);
+	    fdjtDOM.addListener(
+		cancel_button,"click",cancelGloss_handler);
 	form.setAttribute("sbooksetup","yes");
 	updateForm(form);
 	var container=getParent(form,".codexglossform");
@@ -429,12 +430,7 @@
 	    if (hasClass(form,"editnote")) {
 		var input=getInput(form,"NOTE");
 		// This erases whatever was being typed
-		if (input) getbracketed(input,false);}
-	    else if (hasClass(form,"addtag")) {
-		var input=getInput(form,"TAG");
-		// This erases whatever was being typed
-		if (input) input.value="";
-		setTimeout(function(){input.focus();},1500);}}
+		if (input) getbracketed(input,false);}}
 	var ref=
 	    ((tag instanceof Ref)?(tag):
 	     ((typeof tag === 'string')&&
@@ -882,6 +878,18 @@
 	submit_event.initEvent('submit',false,true);
 	form.dispatchEvent(submit_event);}
     Codex.finishGloss=finishGloss;
+
+    function cancelGloss_handler(evt){
+	evt=evt||event;
+	var target=fdjtUI.T(evt);
+	var glossform=(target)&&
+	    (fdjtDOM.getParent(target,".codexglossform"));
+	if (fdjtDOM.hasClass(glossform,"modified")) {
+	    if (window.confirm("Save the changes to this gloss?"))
+		finishGloss(target);
+	    else cancelGloss(target);}
+	else cancelGloss(target);
+	fdjtUI.cancel(evt);}
 
     function cancelGloss(arg){
 	var evt=arg||event||null;
