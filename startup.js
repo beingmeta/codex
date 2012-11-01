@@ -801,7 +801,8 @@ Codex.Startup=
 	    var outlets=Codex.outlets=getLocal("outlets("+refuri+")",true)||[];
 	    var overlays=Codex.overlays=
 		getLocal("overlays("+refuri+")",true)||[];
-	    fdjtLog("initOffline userinfo=%j",userinfo);
+	    if (Codex.Trace.startup)
+		fdjtLog("initOffline userinfo=%j",userinfo);
 	    Codex.allsources=getLocal("sources("+refuri+")",true)||[];
 	    Codex.sourcekb.Import(Codex.allsources);
 	    if (userinfo) setUser(userinfo,outlets,overlays,sync);
@@ -840,8 +841,9 @@ Codex.Startup=
 		var gloss=glossdb.load(glossid);
 		if (Codex.Trace.storage>1)
 		    fdjtLog("Restored %o: %j",glossid,gloss);}
-	    fdjtLog("Initialized %d glosses (%d etc) from offline storage",
-		    localglosses.length,etc.length);}
+	    if ((localglosses.length)||(etc.length))
+		fdjtLog("Initialized %d glosses (%d etc) from offline storage",
+			localglosses.length,etc.length);}
 
 	/* Viewport setup */
 
