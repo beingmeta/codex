@@ -356,6 +356,18 @@ var CodexHUD=false;
 	    if (!(fdjtDOM.isVisible(Codex.target))) {
 		CodexMode(false); CodexMode(true);}};
 
+    function getDups(id){
+	if (!(id)) return false;
+	else if (typeof id === "string") {
+	    if ((Codex.layout)&&(Codex.layout.dups)) {
+		var dups=Codex.layout.dups;
+		var d=dups[id];
+		if (d) return [document.getElementById(id)].concat(d);
+		else return document.getElementById(id);}
+	    else return document.getElementById(id);}
+	else return getDups(id.codexbaseid||id.id);}
+    Codex.getDups=getDups;
+
     function getTarget(scan,closest){
 	scan=((scan.nodeType)?(scan):(scan.target||scan.srcElement||scan));
 	var target=false;
@@ -505,50 +517,70 @@ var CodexHUD=false;
     function setTarget(target){
 	if (Codex.Trace.focus) Codex.trace("Codex.setTarget",target);
 	if (target===Codex.target) return;
-	else if ((!target)&&(Codex.target)) {
-	    dropClass(Codex.target,"codextarget");
-	    dropClass(Codex.target,"codexnewtarget");
-	    clearHighlights(Codex.target);
-	    Codex.target=false;
+	else if ((Codex.target)&&
+		 (Codex.target.id===target.codexbaseid))
+	    return;
+	if (Codex.target) {
+	    var old_target=Codex.target, oldid=old_target.id;
+	    var old_targets=getDups(oldid);
+	    dropClass(old_targets,"codextarget");
+	    dropClass(old_targets,"codexnewtarget");
+	    clearHighlights(old_targets);
+	    Codex.target=false;}
+	if (!(target)) {
 	    if (Codex.UI.setTarget) Codex.UI.setTarget(false);
 	    return;}
-	else if (!(target)) return;
 	else if ((inUI(target))||(!(target.id||target.codexbaseid)))
 	    return;
 	else {}
-	if (Codex.target) {
-	    dropClass(Codex.target,"codextarget");
-	    dropClass(Codex.target,"codexnewtarget");
-	    Codex.clearHighlights(Codex.target);
-	    Codex.target=false;}
-	addClass(target,"codextarget");
-	addClass(target,"codexnewtarget");
+	var targetid=target.codexbaseid||target.id;
+	var primary=((targetid)&&(fdjtID(targetid)))||target;
+	var targets=getDups(targetid);
+	addClass(targets,"codextarget");
+	addClass(targets,"codexnewtarget");
 	setTimeout(function(){
-	    dropClass(target,"codexnewtarget");},
+	    dropClass(targets,"codexnewtarget");},
 		   5000);
 	fdjtState.setCookie(
-	    "codextarget",target.id||target.getAttribute('data-sbookid'));
-	Codex.target=target;
-	if (Codex.UI.setTarget) Codex.UI.setTarget(target);
+	    "codextarget",targetid||target.getAttribute('data-sbookid'));
+	Codex.target=primary;
+	if (Codex.UI.setTarget) Codex.UI.setTarget(primary);
 	if (Codex.search_cloud)
-	    Codex.setCloudCuesFromTarget(Codex.search_cloud,target);}
+	    Codex.setCloudCuesFromTarget(Codex.search_cloud,primary);}
     Codex.setTarget=setTarget;
 
     function clearHighlights(target){
-	dropClass(target,"highlightpassage");
-	fdjtUI.Highlight.clear(target,"highlightexcerpt");
-	fdjtUI.Highlight.clear(target,"highlightsearch");
-	if ((Codex.layout)&&(Codex.layout.dups)&&
-	    (Codex.layout.dups[target.id])) {
-	    var dups=Codex.layout.dups[target.id];
-	    var i=0, lim=dups.length;
+	if (typeof target === "string") target=fdjtID(target);
+	if (!(target)) return;
+	else if (target.length) {
+	    dropClass(target,"highlightpassage");
+	    var i=0, lim=target.length;
 	    while (i<lim) {
-		var dup=dups[i++];
-		dropClass(dup,"highlightpassage");
-		fdjtUI.Highlight.clear(dups,"highlightexcerpt");
-		fdjtUI.Highlight.clear(dups,"highlightsearch");}}}
+		var node=target[i++];
+		fdjtUI.Highlight.clear(node,"highlightexcerpt");
+		fdjtUI.Highlight.clear(node,"highlightsearch");}}
+	else {
+	    dropClass(target,"highlightpassage");
+	    fdjtUI.Highlight.clear(target,"highlightexcerpt");
+	    fdjtUI.Highlight.clear(target,"highlightsearch");}}
     Codex.clearHighlights=clearHighlights;
 
+    function findExcerpt(node,excerpt,off){
+	if (typeof node === "string") node=document.getElementById(node);
+	if (!(node)) return false;
+	if (node.nodeType) node=getDups(node);
+	var found=fdjtDOM.findString(node,excerpt,off||0);
+	if (found) return found;
+	var trimmed=fdjtString.trim(excerpt);
+	var regex_string=trimmed.replace(/\s+/g,"(\\s+)");
+	var pattern=new RegExp("(\\s*)"+regex_string+"(\\s*)","g");
+	var matches=fdjtDOM.findMatches(node,pattern,off||0,1);
+	if ((matches)&&(matches.length)) return matches[0];
+	// We could do this more intelligently
+	if (off>7) matches=fdjtDOM.findMatches(node,pattern,off-7,1);
+	if ((matches)&&(matches.length)) return matches[0];
+	else return false;}
+    Codex.findExcerpt=findExcerpt;
 
     /* Navigation */
 
@@ -741,8 +773,7 @@ var CodexHUD=false;
 	else if (arg.nodeType) {
 	    var info=getLocInfo(arg);
 	    if (arg.id) target=arg;
-	    else if (arg.codexbaseid)
-		target=fdjtID(arg.codexbaseid);
+	    else if (arg.codexbaseid) target=arg;
 	    else target=getTarget(arg);
 	    location=info.start;}
 	else {
@@ -855,9 +886,10 @@ var CodexHUD=false;
 	dropClass(document.body,"cxPREVIEW");
 	Codex.previewing=false;
 	if (Codex.previewTarget) {
-	    dropClass(Codex.previewTarget,"codexpreviewtarget");
-	    dropClass(Codex.previewTarget,"highlightpassage");
-	    Codex.clearHighlights(Codex.previewTarget);
+	    var targets=getDups(Codex.previewTarget);
+	    dropClass(targets,"codexpreviewtarget");
+	    dropClass(targets,"highlightpassage");
+	    Codex.clearHighlights(targets);
 	    Codex.previewTarget=false;}
 	oldscroll=false;}
     Codex.stopPreview=CodexStopPreview;

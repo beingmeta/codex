@@ -137,18 +137,10 @@ var CodexMode=
 		if (document.getElementById(item.frag)) {
 		    var addGlossmark=Codex.UI.addGlossmark;
 		    Codex.UI.addToSlice(item,glosses,false);
-		    var node=fdjtID(item.frag);
-		    if (node) {
-			addClass(node,"glossed");
-			addGlossmark(node,item);}
-		    var dups=((Codex.layout)&&(Codex.layout.dups)&&
-			      (Codex.layout.dups[item.frag]))
-		    if (dups) {
-			var i=0, lim=dups.length;
-			while (i<lim) {
-			    var dup=dups[i++];
-			    addClass(dup,"glossed");
-			    addGlossmark(dup,item);}}
+		    var nodes=Codex.getDups(item.frag);
+		    addClass(nodes,"glossed");
+		    var i=0, lim=nodes.length; while (i<lim) {
+			addGlossmark(nodes[i++],item);}
 		    if (item.tstamp>Codex.syncstamp)
 			Codex.syncstamp=item.tstamp;}}
 	    Codex.glosses.addInit(addGloss2UI);
@@ -888,7 +880,7 @@ var CodexMode=
 
 	/* Scanning */
 
-	function CodexScan(elt,src){
+	function CodexScan(elt,src,backward){
 	    var cxt=false;
 	    var body=document.body;
 	    var pelt=Codex.scanning;
@@ -915,15 +907,17 @@ var CodexMode=
 		if (src) addClass(src,"codexscanpoint");
 		Codex.scanning=src;}
 	    else {}
-	    if (Codex.target) {
-		dropClass(Codex.target,"highlightpassage");
-		Codex.clearHighlights(Codex.target);}
+	    var highlights=[];
+	    if (Codex.target)
+		Codex.clearHighlights(Codex.getDups(Codex.target));
 	    if ((src)&&(hasClass(src,"gloss"))) {
 		var glossinfo=Codex.glosses.ref(src.name);
 		if (glossinfo.excerpt) {
-		    var range=fdjtDOM.findString(
-			elt,glossinfo.excerpt,glossinfo.exoff);
-		    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
+		    var searching=Codex.getDups(elt.id);
+		    var range=Codex.findExcerpt(
+			searching,glossinfo.excerpt,glossinfo.exoff);
+		    if (range) highlights=
+			fdjtUI.Highlight(range,"highlightexcerpt");}
 		else {
 		    var about=src.about, target=fdjtID(about);
 		    addClass(target,"highlightpassage");}}
@@ -937,9 +931,34 @@ var CodexMode=
 		    if (lim===0) addClass(target,"highlightpassage");
 		    else while (i<lim) {
 			var term=terms[i++];
-			Codex.highlightTerm(term,target,info,spellings);}}}
+			var h=Codex.highlightTerm(term,target,info,spellings);
+			highlights=highlight.concat(h);}}}
 	    Codex.setTarget(elt);
-	    Codex.GoTo(elt,"Scan");
+	    delete Codex.scanpoints;
+	    delete Codex.scanoff;
+	    if ((highlights)&&(highlights.length===1)&&
+		(getParent(highlights[0],elt)))
+		Codex.GoTo(elt,"Scan");
+	    else if ((highlights)&&(highlights.length)) {
+		var possible=Codex.getDups(elt.id);
+		if (possible.length) {
+		    var scanpoints=[];
+		    var i=0, lim=possible.length;
+		    while (i<lim) {
+			var poss=possible[i++];
+			var j=0, jlim=highlights.length;
+			while (j<jlim) {
+			    if (getParent(highlights[j++],poss)) {
+				scanpoints.push(poss); break;}}}
+		    if (scanpoints.length)
+			Codex.scanpoints=scanpoints;
+		    else Codex.scanpoints=possible;
+		    if (backward) 
+			Codex.scanoff=Codex.scanpoints.length-1;
+		    else Codex.scanoff=0;
+		    Codex.GoTo(Codex.scanpoints[Codex.scanoff]);}
+		else Codex.GoTo(elt,"Scan");}
+	    else Codex.GoTo(elt,"Scan");
 	    CodexMode("scanning");}
 	Codex.Scan=CodexScan;
 	

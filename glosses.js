@@ -524,10 +524,7 @@
 	    Codex.selecting.clear();
 	    Codex.selecting=false;}
 	Codex.clearHighlights(target);
-	var dups=[target];
-	if ((Codex.layout)&&(Codex.layout.dups)&&
-	    (Codex.layout.dups[target.id]))
-	    dups=dups.concat(Codex.layout.dups[target.id]);
+	var dups=Codex.getDups(target);
 	Codex.selecting=
 	    fdjtSelecting(dups,{ontap: gloss_selecting_ontap});
 	if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))

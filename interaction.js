@@ -436,8 +436,10 @@
 	clone.id="CODEXSCAN";
 	fdjtDOM.replace("CODEXSCAN",clone);
 	if (Codex.previewTarget) {
-	    dropClass(Codex.previewTarget,"codexpreviewtarget");
-	    Codex.clearHighlights(Codex.previewTarget);}
+	    var nodes=Codex.getDups(Codex.previewTarget);
+	    dropClass(nodes,"codexpreviewtarget");
+	    Codex.clearHighlights(nodes);
+	    Codex.previewTarget=false;}
 	if (card.about) {
 	    var target=Codex.previewTarget=fdjtID(card.about);
 	    addClass(target,"codexpreviewtarget");}
@@ -447,13 +449,8 @@
 		Codex.previewTarget=target=fdjtID(glossinfo.frag);
 	    else Codex.previewTarget=target;
 	    if (glossinfo.excerpt) {
-		var dups=((target.id)&&
-			  (Codex.layout)&&(Codex.layout.dups)&&
-			  (Codex.layout.dups[target.id]));
-		var searching=((!(dups))?(target):
-			       (dups.nodeType)?[target,dups]:
-			       ([target].concat(dups)));
-		var range=fdjtDOM.findString(
+		var searching=Codex.getDups(target.id);
+		var range=Codex.findExcerpt(
 		    searching,glossinfo.excerpt,glossinfo.exoff);
 		if (range) {
 		    var starts=range.startContainer;
@@ -537,11 +534,7 @@
 	while (j<jlim) {
 	    var word=words[j++];
 	    var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gm");
-	    var dups=((target.id)&&(Codex.layout)&&(Codex.layout.dups)&&
-		      (Codex.layout.dups[target.id]));
-	    var searching=((dups)&&(dups.nodeType)&&([target,dups]))||
-		((dups)&&(dups.length)&&([target].concat(dups)))||
-		target;
+	    var searching=Codex.getDups(target);
 	    var ranges=fdjtDOM.findMatches(searching,pattern);
 	    if (Codex.Trace.highlight)
 		fdjtLog("Trying to highlight %s (using %o) in %o, ranges=%o",
@@ -1417,6 +1410,11 @@
 		Codex.GoTo(headinfo.head.head.next.elt,"scanForward");
 	    else CodexMode(false);
 	    return;}
+	if ((Codex.scanpoints)&&
+	    ((Codex.scanoff+1)<Codex.scanpoints.length)) {
+	    Codex.scanoff++;
+	    Codex.GoTo(Codex.scanpoints[Codex.scanoff]);
+	    return;}
 	var start=Codex.scanning;
 	var scan=Codex.nextSlice(start);
 	var ref=((scan)&&(Codex.getRef(scan)));
@@ -1460,12 +1458,16 @@
 		Codex.GoTo(headinfo.head.elt,"scanBackward");
 	    else CodexMode(false);
 	    return;}
+	if ((Codex.scanpoints)&&(Codex.scanoff>0)) {
+	    Codex.scanoff--;
+	    Codex.GoTo(Codex.scanpoints[Codex.scanoff]);
+	    return;}
 	var scan=Codex.prevSlice(Codex.scanning);
 	var ref=((scan)&&(Codex.getRef(scan)));
 	if (Codex.Trace.nav) 
 	    fdjtLog("scanBackward() from %o/%o to %o/%o under %o",
 		    start,Codex.getRef(start),scan,ref,Codex.scanning);
-	if ((ref)&&(scan)) Codex.Scan(ref,scan);
+	if ((ref)&&(scan)) Codex.Scan(ref,scan,true);
 	return scan;}
     Codex.scanBackward=scanBackward;
 
