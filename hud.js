@@ -504,9 +504,10 @@ var CodexMode=
 		else if (live) Codex.cancelGloss(live);
 		else {}}
 	    if (mode) {
-		if ((mode==="scanning")||(mode==="tocscan"))
-		    addClass(document.body,"cxSCANNING");
-		else dropClass(document.body,"cxSCANNING");
+		if ((mode==="scanning")||(mode==="tocscan")||
+		    (mode==="addgloss"))
+		    addClass(document.body,"cxSHRINK");
+		else dropClass(document.body,"cxSHRINK");
 		if (mode===Codex.mode) {}
 		else if (mode===true) {
 		    /* True just puts up the HUD with no mode info */
@@ -582,7 +583,7 @@ var CodexMode=
 		dropClass(document.body,"dimmed");
 		dropClass(document.body,"codexhelp");
 		dropClass(document.body,"cxPREVIEW");
-		dropClass(document.body,"cxSCANNING");
+		dropClass(document.body,"cxSHRINK");
 		Codex.cxthelp=false;
 		if (display_sync) Codex.displaySync();
 		setHUD(false);}}

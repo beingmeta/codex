@@ -434,16 +434,17 @@
 	var clone=card.cloneNode(true);
 	clone.id="CODEXSCAN";
 	fdjtDOM.replace("CODEXSCAN",clone);
-	dropClass(Codex.previewtarget,"codexpreviewtarget");
-	Codex.clearHighlights(Codex.previewtarget);
+	if (Codex.previewTarget) {
+	    dropClass(Codex.previewTarget,"codexpreviewtarget");
+	    Codex.clearHighlights(Codex.previewTarget);}
 	if (card.about) {
-	    var target=Codex.previewtarget=fdjtID(card.about);
+	    var target=Codex.previewTarget=fdjtID(card.about);
 	    addClass(target,"codexpreviewtarget");}
 	if (hasClass(card,"gloss")) {
 	    var glossinfo=Codex.glosses.ref(card.name);
 	    if (!(target))
-		Codex.previewtarget=target=fdjtID(glossinfo.frag);
-	    else Codex.previewtarget=target;
+		Codex.previewTarget=target=fdjtID(glossinfo.frag);
+	    else Codex.previewTarget=target;
 	    if (glossinfo.excerpt) {
 		var range=fdjtDOM.findString(
 		    target,glossinfo.excerpt,glossinfo.exoff);
@@ -452,7 +453,7 @@
 	    else addClass(target,"highlightpassage");}
 	else if (getParent(card,".sbookresults")) {
 	    var about=card.about;
-	    Codex.previewtarget=target=fdjtID(about);
+	    Codex.previewTarget=target=fdjtID(about);
 	    if (about) {
 		var info=Codex.docinfo[target.id];
 		var terms=Codex.query._query;

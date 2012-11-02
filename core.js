@@ -854,11 +854,11 @@ var CodexHUD=false;
 		Codex.content.style.top=oldscroll.y+"px";}
 	dropClass(document.body,"cxPREVIEW");
 	Codex.previewing=false;
-	if (Codex.previewtarget) {
-	    dropClass(Codex.previewtarget,"codexpreviewtarget");
-	    dropClass(Codex.previewtarget,"highlightpassage");
-	    Codex.clearTargets(Codex.previewtarget);
-	    Codex.previewtarget=false;}
+	if (Codex.previewTarget) {
+	    dropClass(Codex.previewTarget,"codexpreviewtarget");
+	    dropClass(Codex.previewTarget,"highlightpassage");
+	    Codex.clearHighlights(Codex.previewTarget);
+	    Codex.previewTarget=false;}
 	oldscroll=false;}
     Codex.stopPreview=CodexStopPreview;
 

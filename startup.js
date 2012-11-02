@@ -764,8 +764,6 @@ Codex.Startup=
 		Codex.ui="faketouch";}
 	    else {
 		fdjtDOM.addClass(body,"cxMOUSE");
-		// fdjtDOM.addClass(document.body,"cxTOUCH");
-		// fdjtDOM.addClass(document.body,"cxSHRINK");
 		Codex.ui="mouse";}
 	    if (!(Codex.nativescroll)) fdjtDOM.addClass(body,"cxISCROLL");
 	    var opt_string=
@@ -1017,8 +1015,6 @@ Codex.Startup=
 	    // Initialize cover and titlepage (if specified)
 	    Codex.cover=Codex.getCover();
 	    Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
-
-	    fdjtDOM.addClass(document.body,"cxSHRINK");
 
 	    // Gather special content
 	    var allnotes=fdjtID("SBOOKNOTES");

@@ -89,12 +89,9 @@ body.cxANIMATE.hudup div#CODEXPAGE {
     -khtml-opacity: 0.80;
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
-body.cxPREVIEW div#CODEXPAGE, body.cxSCANNING div#CODEXPAGE {
+body.cxPREVIEW div#CODEXPAGE, body.cxSHRINK div#CODEXPAGE,
+body.cxPREVIEW div#CODEXWINDOW, body.cxSHRINK div#CODEXWINDOW {
     border-color: gray; border-style: inset;}
-body.hudup.cxPREVIEW div#CODEXPAGE, body.cxPREVIEW div#CODEXPAGE {
-    border-color: blue; border-style: dotted;}
-body.hudup.cxPREVIEW div#CODEXWINDOW, body.cxPREVIEW div#CODEXWINDOW {
-    border-color: blue; border-style: dotted;}
 
 body.cxANIMATE div#CODEXPAGE div.codexpage {
     transition-property: opacity,transform;
@@ -103,16 +100,18 @@ body.cxANIMATE div#CODEXPAGE div.codexpage {
     -o-transition-property: -o-opacity,-o-transform;
     transition-duration: 0.3s; -webkit-transition-duration: 0.3s;
     -moz-duration: 0.3s; -o-transition-duration: 0.3s;}
-body.cxSHRINK div#CODEXPAGE div.codexpage {
+body div#CODEXPAGE div.codexpage {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);}
-body.cxSHRINK.cxADDGLOSS div#CODEXPAGE div.codexpage,
-body.cxSHRINK.cxSCANNING div#CODEXPAGE div.codexpage,
-body.cxSHRINK.cxPREVIEW div#CODEXPAGE div.codexpage {
+body.cxNOSHRINK div#CODEXPAGE div.codexpage {
+    transform: inherit; -webkit-transform: inherit;
+    -moz-transform: inherit; -o-transform: inherit;}
+body.cxSHRINK div#CODEXPAGE div.codexpage,
+body.cxPREVIEW div#CODEXPAGE div.codexpage {
     transform: scale(0.9,0.9); -webkit-transform:scale(0.9,0.9);
     -moz-transform: scale(0.9,0.9); -o-transform:scale(0.9,0.9);}
 
-body.cxANIMATE.cxSHRINK.cxBYSECT div#CODEXCONTENT {
+body.cxANIMATE.cxBYSECT div#CODEXCONTENT {
     transition-property: transform;
     -webkit-transition-property: -webkit-transform;
     -webkit-transition-duration: 1s; 
@@ -120,10 +119,10 @@ body.cxANIMATE.cxSHRINK.cxBYSECT div#CODEXCONTENT {
     -o-transition-property: -o-transform;
     transition-duration: 1s; 
     -moz-duration: 1s; -o-transition-duration: 1s;}
-body.cxSHRINK.cxBYSECT div#CODEXCONTENT {
+body.cxBYSECT div#CODEXCONTENT {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);}
-body.cxSHRINK.cxBYSECT.cxLAYOUT.hudup div#CODEXCONTENT {
+body.cxBYSECT.cxLAYOUT.hudup div#CODEXCONTENT {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);}
 
@@ -416,7 +415,7 @@ body .codexglossmark.hover img.tiny { visibility: hidden;}
 
 /* Displaying the sbook target */
 
-body.cxANIMATE.hudup .codextarget, body.cxSCANNING .codextarget {
+body.cxANIMATE.hudup .codextarget, body.cxSHRINK .codextarget {
     transition-property: color,background-color;
     transition-duration: 3s;
     -o-transition-property: color,background-color;
@@ -425,9 +424,9 @@ body.cxANIMATE.hudup .codextarget, body.cxSCANNING .codextarget {
     -moz-transition-duration: 3s;
     -webkit-transition-property: color,background-color;
     -webkit-transition-duration: 3s;}
-body.hudup .codextarget, body.cxSCANNING .codextarget {
+body.hudup .codextarget, body.cxSHRINK .codextarget {
     background-color: lightyellow;}
-body.hudup .codextarget, body.cxSCANNING .codextarget {
+body.hudup .codextarget, body.cxSHRINK .codextarget {
     cursor: pointer;}
 
 body.hudup .codextarget.codexnewtarget {

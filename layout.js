@@ -1083,10 +1083,10 @@ var CodexSections=
 		Codex.window.scrollTop=saved_scrolltop;
 		saved_scrolltop=false;}
 	    dropClass(document.body,"cxPREVIEW");
-	    if (Codex.previewtarget) {
-		dropClass(Codex.previewtarget,"codexpreviewtarget");
-		Codex.clearHighlights(Codex.previewtarget);
-		Codex.previewtarget=false;}
+	    if (Codex.previewTarget) {
+		dropClass(Codex.previewTarget,"codexpreviewtarget");
+		Codex.clearHighlights(Codex.previewTarget);
+		Codex.previewTarget=false;}
 	    Codex.previewing=previewing=false;
 	    if (Codex.curpage)
 		Codex.updatePageDisplay(Codex.curpage,Codex.location);
