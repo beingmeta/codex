@@ -37,6 +37,7 @@ var CodexSections=
     (function(){
 	var TOA=fdjtDOM.toArray;
 	var getChildren=fdjtDOM.getChildren;
+	var getParent=fdjtDOM.getParent;
 	var addClass=fdjtDOM.addClass;
 	var dropClass=fdjtDOM.dropClass;
 	var swapClass=fdjtDOM.swapClass;
@@ -1098,6 +1099,7 @@ var CodexPaginate=
     (function(){
 
 	var getGeometry=fdjtDOM.getGeometry;
+	var getParent=fdjtDOM.getParent;
 	var hasClass=fdjtDOM.hasClass;
 	var addClass=fdjtDOM.addClass;
 	var dropClass=fdjtDOM.dropClass;
@@ -1508,7 +1510,11 @@ var CodexPaginate=
 		Codex.GoToSection(Codex.layout.pagelocs[spec-1]);
 		if (Codex.iscroll) Codex.iscroll.refresh();}
 	    else if (Codex.layout) {
-		var page=Codex.layout.getPage(spec)||
+		var page=((spec.nodeType)&&
+			  (Codex.layout.pages)&&(Codex.curpage)&&
+			  (onCurrentPage(spec))&&
+			  (Codex.layout.pages[Codex.curpage-1]))||
+		    Codex.layout.getPage(spec)||
 		    Codex.layout.getPage(1);
 		var pagenum=parseInt(page.getAttribute("data-pagenum"));
 		if (Codex.Trace.flips)
@@ -1536,6 +1542,19 @@ var CodexPaginate=
 		    while (i<lim) addGlossmark(glossed[i++]);}}}
 	Codex.GoToPage=GoToPage;
 	
+	// This checks if a node or its dups are on the current page 
+	function onCurrentPage(node){
+	    if (getParent(node,".curpage")) return true;
+	    var dups=((node.id)&&(Codex.layout.dups[node.id]));
+	    if (!(dups)) return false;
+	    else if (dups.nodeType) return getParent(dups,".curpage");
+	    else {
+		var i=0, lim=dups.length;
+		while (i<lim) {
+		    if (getParent(dups[i],".curpage")) return true;
+		    else i++;}
+		return false;}}
+
 	/** Previewing **/
 
 	var previewing=false;
@@ -1585,6 +1604,23 @@ var CodexPaginate=
 	    if ((Codex.bysect)&&(Codex.layout.pagelocs)) 
 		return Codex.layout.getPageNumber(arg);
 	    else if (!(Codex.layout)) return -1;
+	    var node=((arg.nodeType)?(arg):
+		      (typeof arg === "string")?
+		      (fdjtID(arg)):(false));
+	    if ((node)&&(node.id)&&(Codex.layout)&&
+		(Codex.curpage)&&(Codex.layout.pages)) {
+		var pagenode=Codex.layout.pages[Codex.curpage-1];
+		if (getParent(node,pagenode)) return Codex.curpage;
+		var dups=((Codex.layout.dups)&&(Codex.layout.dups[node.id]));
+		if (!(dups)) {}
+		else if (dups.nodeType) {
+		    if (getParent(dups,pagenode))
+			return Codex.curpage;}
+		else  {
+		    var i=0, lim=dups.length; while (i<lim) {
+			if (getParent(dups[i],pagenode))
+			    return Codex.curpage;
+			else i++;}}}
 	    var page=Codex.layout.getPage(arg)||Codex.layout.getPage(1);
 	    return parseInt(page.getAttribute("data-pagenum"));}
 	Codex.getPage=getPage;
