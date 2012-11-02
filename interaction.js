@@ -447,9 +447,20 @@
 		Codex.previewTarget=target=fdjtID(glossinfo.frag);
 	    else Codex.previewTarget=target;
 	    if (glossinfo.excerpt) {
+		var dups=((target.id)&&
+			  (Codex.layout)&&(Codex.layout.dups)&&
+			  (Codex.layout.dups[target.id]));
+		var searching=((!(dups))?(target):
+			       (dups.nodeType)?[target,dups]:
+			       ([target].concat(dups)));
 		var range=fdjtDOM.findString(
-		    target,glossinfo.excerpt,glossinfo.exoff);
-		if (range) fdjtUI.Highlight(range,"highlightexcerpt");
+		    searching,glossinfo.excerpt,glossinfo.exoff);
+		if (range) {
+		    var starts=range.startContainer;
+		    if (!(getParent(starts,target)))
+			target=getTargetDup(starts,target);
+		    if (!(hasClass(starts,"highlightexcerpt"))) {
+			fdjtUI.Highlight(range,"highlightexcerpt");}}
 		else addClass(target,"highlightpassage");}
 	    else addClass(target,"highlightpassage");}
 	else if (getParent(card,".sbookresults")) {
@@ -460,9 +471,15 @@
 		var terms=Codex.query._query;
 		var spellings=info.knodeterms;
 		var i=0; var lim=terms.length;
+		var dup_target=false;
 		while (i<lim) {
 		    var term=terms[i++];
-		    highlightTerm(term,target,info,spellings);}}}
+		    var highlights=highlightTerm(term,target,info,spellings);
+		    if (!(dup_target))
+			if ((highlights)&&(highlights.length)&&
+			    (!(getParent(highlights[0],target))))
+			    dup_target=getTargetDup(highlights[0],target);}
+		if (dup_target) target=dup_target;}}
 	else {}
 	Codex.startPreview(target,"slice_held");
 	return fdjtUI.cancel(evt);}
@@ -471,10 +488,21 @@
 	if (card) {
 	    Codex.stopPreview("slice_released");}}
 
+    function getTargetDup(scan,target){
+	var targetid=target.id;
+	while (scan) {
+	    if (hasClass(scan,"codexpage")) return scan;
+	    else if ((scan.getAttribute)&&
+		     ((scan.id===targetid)||
+		      (scan.getAttribute("data-baseid")===targetid))) 
+		return scan;
+	    else scan=scan.parentNode;}
+	return target;}
+
     /* Highlighting terms in passages (for scanning, etc) */
 
     function highlightTerm(term,target,info,spellings){
-	var words=[];
+	var words=[]; var highlights=[];
 	if (typeof term === 'string')
 	    words=((spellings)&&(spellings[term]))||[term];
 	else {
@@ -503,19 +531,27 @@
 			words.push(spelling);
 		    else words=words.concat(spelling);}}
 	    if (words.length===0) words=false;}
-	if (!(words)) return;
+	if (!(words)) return [];
 	if (typeof words === 'string') words=[words];
 	var j=0; var jlim=words.length;
 	while (j<jlim) {
 	    var word=words[j++];
 	    var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gm");
-	    var ranges=fdjtDOM.findMatches(target,pattern);
+	    var dups=((target.id)&&(Codex.layout)&&(Codex.layout.dups)&&
+		      (Codex.layout.dups[target.id]));
+	    var searching=((dups)&&(dups.nodeType)&&([target,dups]))||
+		((dups)&&(dups.length)&&([target].concat(dups)))||
+		target;
+	    var ranges=fdjtDOM.findMatches(searching,pattern);
 	    if (Codex.Trace.highlight)
 		fdjtLog("Trying to highlight %s (using %o) in %o, ranges=%o",
 			word,pattern,target,ranges);
 	    if ((ranges)&&(ranges.length)) {
-		var k=0; while (k<ranges.length) 
-		    fdjtUI.Highlight(ranges[k++],"highlightsearch");}}}
+		var k=0; while (k<ranges.length) {
+		    var h=fdjtUI.Highlight(
+			ranges[k++],"highlightsearch");
+		    highlights=highlights.concat(h);}}}
+	return highlights;}
     Codex.highlightTerm=highlightTerm;
 
     /* HUD handlers */

@@ -1565,7 +1565,9 @@ var CodexPaginate=
 			Codex.layout.pagelocs[spec-1],caller);
 		else Codex.startSectionPreview(spec,caller);
 		return;}
-	    var page=Codex.layout.getPage(spec)||Codex.layout.getPage(1);
+	    var page=((spec.nodeType)&&(getParent(spec,".codexpage")))||
+		Codex.layout.getPage(spec)||
+		Codex.layout.getPage(1);
 	    var pagenum=parseInt(page.getAttribute("data-pagenum"));
 	    if (previewing===page) return;
 	    if (previewing) dropClass(previewing,"curpage");
