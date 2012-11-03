@@ -64,7 +64,8 @@ div.codexglossform div.glosseditbox span.clickable {
     cursor: pointer; vertical-align: top;
     margin-right: 0.5ex;}
 
-div.codexglossform.glossedit div.glosseditbox { display: block;}
+div.codexglossform.glossedit div.glosseditbox {display: block; height: 24px;}
+div.codexglossform.glossedit div.rightcol { top: 24px;}
 div.codexglossform.glossedit span.editmsg { display: inline;}
 
 div.codexglossform form {
