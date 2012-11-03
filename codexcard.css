@@ -80,6 +80,10 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
   font-variant: small-caps;}
 .codexcard span.links:before { content: " //"; }
 .codexcard span.audience:before { content: " //"; }
+.codexcard .private {
+    background-color: red; color: white; vertical-align: top;
+    padding-right: 3px; padding-left: 3px;
+    font-weight: bold; font-variant: small-caps;}
 .codexcard .links a { color: blue; text-decoration: underline;}
 .codexcard .links img { height: 2ex; width: auto; vertical-align: baseline;}
 .codexcard span.tribe { 
@@ -139,7 +143,7 @@ body.sbook a.codexcard { display: block;}
 .codexcard .glossinfo img { padding-left: 4px; cursor: pointer; }
 .codexcard .tool {
     float: right; font-weight: normal;
-    font-size: 60%; text-decoration: none;}
+    font-size: 70%; text-decoration: none;}
 .codexcard .tool img { height: 40px; width: 40px;}
 .codexcard .age {
     color: green; vertical-align: top; padding-right: 0.5em;}

@@ -250,6 +250,7 @@
 	var agestring=timestring(info.modified||info.created);
 	var tool=fdjtDOM(
 	    "span.tool",
+	    ((info.private)&&(fdjtDOM("span.private","Private")))," ",
 	    fdjtDOM("span.age",agestring),
 	    fdjtDOM.Image(
 		(((user===Codex.user)||(user===Codex.user._id))?
