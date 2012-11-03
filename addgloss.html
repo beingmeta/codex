@@ -87,6 +87,7 @@
 	   src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
 	   class="twisty" alt="-"/>
       <span class="networks">
+	<!--
 	<span class="checkspan postgloss ischecked">
 	  <input type="CHECKBOX" name="POSTGLOSS" value="yes"
 		 onchange="Codex.UI.changeGlossPosting(event);"
@@ -100,32 +101,31 @@
 	       title="don't post this gloss (it will still be visible to the networks I've allowed to see it)"
 	       alt="XX" class="unchecked"/>
 	</span>
-	<span class="checkspan facebook_share"
-	      title="share (or not) this gloss with my Facebook friends">
-	  <input type="CHECKBOX" name="NETWORKS" value=":FACEBOOK"
-		 onchange="Codex.UI.changeGlossNetwork(event);">
+	-->
+	<span class="checkspan facebook_share">
+	  <input type="CHECKBOX" name="POST" value=":FACEBOOK">
 	  <img svg="http://static.beingmeta.com/g/codex/facebook.svgz"
 	       src="http://static.beingmeta.com/g/codex/facebook64x64.png"
+	       title="this gloss will be posted to my Facebook timeline"
 	       alt="Facebook" class="checked"/>
 	  <img svg="http://static.beingmeta.com/g/codex/nofacebook.svgz"
 	       src="http://static.beingmeta.com/g/codex/nofacebook64x64.png"
+	       title="this gloss won't be posted to my Facebook timeline"
 	       alt="Facebook" class="unchecked"/>
 	</span>
-	<span class="checkspan twitter_share"
-	      title="share (or not) this gloss with my Twitter followers">
-	  <input type="CHECKBOX" name="NETWORKS" value=":TWITTER"
-		 onchange="Codex.UI.changeGlossNetwork(event);">
+	<span class="checkspan twitter_share">
+	  <input type="CHECKBOX" name="POST" value=":TWITTER">
 	  <img svg="http://static.beingmeta.com/g/codex/twitter.svgz"
 	       src="http://static.beingmeta.com/g/codex/twitter64x64.png"
+	       title="this gloss will be posted to my Twitter feed"
 	       alt="Twitter" class="checked"/>
 	  <img svg="http://static.beingmeta.com/g/codex/notwitter.svgz"
 	       src="http://static.beingmeta.com/g/codex/notwitter64x64.png"
+	       title="this gloss won't be posted to my Twitter feed"
 	       alt="Twitter" class="unchecked"/>
 	</span>
-	<span class="checkspan linkedin_share"
-	      title="share this gloss with my LinkedIn connections">
-	  <input type="CHECKBOX" name="NETWORKS" value=":LINKEDIN"
-		 onchange="Codex.UI.changeGlossNetwork(event);">
+	<span class="checkspan linkedin_share">
+	  <input type="CHECKBOX" name="POST" value=":LINKEDIN">
 	  <img svg="http://static.beingmeta.com/g/codex/linkedin.svgz"
 	       src="http://static.beingmeta.com/g/codex/linkedin64x64.png"
 	       alt="LinkedIn" class="checked"/>
@@ -133,10 +133,8 @@
 	       src="http://static.beingmeta.com/g/codex/nolinkedin64x64.png"
 	       alt="LinkedIn" class="unchecked"/>
 	</span>
-	<span class="checkspan google_share"
-	      title="share this gloss with my Google+ connections">
-	  <input type="CHECKBOX" name="NETWORKS" value=":GOOGLE"
-		 onchange="Codex.UI.changeGlossNetwork(event);">
+	<span class="checkspan google_share">
+	  <input type="CHECKBOX" name="POST" value=":GOOGLE">
 	  <img svg="http://static.beingmeta.com/g/codex/googleplus.svgz"
 	       src="http://static.beingmeta.com/g/codex/googleplus64x64.png"
 	       alt="Google+" class="checked"/>
@@ -144,6 +142,16 @@
 	       src="http://static.beingmeta.com/g/codex/nogoogleplus64x64.png"
 	       alt="Google+" class="unchecked"/>
 	</span>
+	<span class="checkspan private">
+	  <input type="CHECKBOX" name="PRIVATE" value="yes">
+	  <span class="checked"
+		title="this gloss won't be shared with my associated networks">
+	    Private</span>
+	  <span class="unchecked"
+		title="this gloss will be shared with my associated networks">
+	    Shared</span>
+	</span>
+
       </span>
       <input TYPE="HIDDEN" NAME="EXOFF" VALUE=""/>
       <span class="links empty"><span class="head">links</span></span>

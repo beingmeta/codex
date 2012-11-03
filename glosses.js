@@ -330,6 +330,10 @@
 		outlet={name: outlet};
 		spanspec="span.checkspan.email";
 		formvar="EMAIL";}}
+	else if (outlet.nodeType) {
+	    formvar="NETWORK"
+	    outlet_id=outlet.getAttribute("value");
+	    outlet={name: outlet.getAttribute("key")||outlet_id};}
 	else info=outlet;
 	while (i<lim) {
 	    if (inputs[i].value===outlet_id) {
@@ -832,8 +836,8 @@
 	    var form=((live)&&(getChild(live,"form")));
 	    if (hasClass(completion,"source")) {
 		var value=completion.getAttribute("value");
-		addOutlet(form,fdjtKB.ref(value));}
-	    else {}}
+		if (value) addOutlet(form,fdjtKB.ref(value));}
+	    else addOutlet(form,completion);}
 	fdjtUI.cancel(evt);}
 
     /***** Saving (submitting/queueing) glosses *****/

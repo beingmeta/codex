@@ -248,6 +248,17 @@ div#CODEXHUD span.networks .checkspan input[type='checkbox'] { display: none;}
 div.codexglossform form div.glossetc span.networks img {
     height: 3ex; width: auto;}
 
+div#CODEXHUD span.networks .checkspan.private {
+    color: white; font-weight: bold; font-variant: small-caps;
+    font-size: 12px;
+    background-color: green;
+    vertical-align: top;}
+div#CODEXHUD span.networks .checkspan.private.ischecked {
+    background-color: red; color: white;}
+div#CODEXHUD span.networks .checkspan.private span {
+    padding-left: 1ex; padding-right: 1ex;
+    vertical-align: top;}
+
 div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue;}
 div.codexglossform form div.glossetc span.checkspan input {}
@@ -385,8 +396,11 @@ body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
 body.hudup div#CODEXHUD.addgloss div#CODEXHEART.addlink
   div#CODEXURLENTRY {
     display: block;}
-div#CODEXGLOSSOUTLETS span.networks { float: right;}
-div#CODEXGLOSSOUTLETS span.networks img { height: 32px; width: auto;}
+div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS {}
+div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS span.completion {
+    float: right;}
+div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS img {
+    height: 32px; width: auto;}
 
 div#CODEXGLOSSOUTLETS > div.inputbox, div#CODEXGLOSSTAGS > div.inputbox {
     text-align: center; margin-bottom: 1ex;}

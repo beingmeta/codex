@@ -1390,50 +1390,22 @@ Codex.Startup=
 	    var form=fdjtID("CODEXADDGLOSSPROTOTYPE");
 	    var buttons=fdjtID("CODEXNETWORKBUTTONS");
 	    var getChild=fdjtDOM.getChild;
-	    if (Codex.user.fbid)  {
-		ss.insertRule("div#CODEXHUD span.facebook_share { display: inline;}",
-			      ss.cssRules.length);
-		var cs=getChild(form,".checkspan.facebook_share");
-		fdjtUI.CheckSpan.set(cs,true);
-		var cb=getChild(cs,"input");
-		cb.setAttribute("checked","checked");
-	    	var cs=getChild(buttons,".checkspan.facebook_share");
-		fdjtUI.CheckSpan.set(cs,true);
-		var cb=getChild(cs,"input");
-		cb.setAttribute("checked","checked");}
-	    if (Codex.user.twitterid) {
-		ss.insertRule("div#CODEXHUD span.twitter_share { display: inline;}",
-			      ss.cssRules.length);
-		var cs=getChild(form,".checkspan.twitter_share");
-		fdjtUI.CheckSpan.set(cs,true);
-		var cb=getChild(cs,"input");
-		cb.setAttribute("checked","checked");
-	    	var cs=getChild(buttons,".checkspan.twitter_share");
-		fdjtUI.CheckSpan.set(cs,true);
-		var cb=getChild(cs,"input");
-		cb.setAttribute("checked","checked");}
-	    if (Codex.user.linkedinid) {
-		ss.insertRule("div#CODEXHUD span.linkedin_share { display: inline;}",
-			      ss.cssRules.length);
-		var cs=getChild(form,".checkspan.linkedin_share");
-		fdjtUI.CheckSpan.set(cs,true);
-		var cb=getChild(cs,"input");
-		cb.setAttribute("checked","checked");
-		var cs=getChild(buttons,".checkspan.linkedin_share");
-		fdjtUI.CheckSpan.set(cs,true);
-		var cb=getChild(cs,"input");
-		cb.setAttribute("checked","checked");}
-	    if (Codex.user.googleid) {
-		ss.insertRule("div#CODEXHUD span.google_share { display: inline;}",
-			      ss.cssRules.length);
-		var cs=getChild(form,".checkspan.google_share");
-		fdjtUI.CheckSpan.set(cs,true);
-		var cb=getChild(cs,"input");
-		cb.setAttribute("checked","checked");
-		var cs=getChild(buttons,".checkspan.google_share");
-		fdjtUI.CheckSpan.set(cs,true);
-		var cb=getChild(cs,"input");
-		cb.setAttribute("checked","checked");}
+	    if (Codex.user.fbid)  
+		ss.insertRule(
+		    "div#CODEXHUD span.facebook_share { display: inline;}",
+		    ss.cssRules.length);
+	    if (Codex.user.twitterid) 
+		ss.insertRule(
+		    "div#CODEXHUD span.twitter_share { display: inline;}",
+		    ss.cssRules.length);
+	    if (Codex.user.linkedinid) 
+		ss.insertRule(
+		    "div#CODEXHUD span.linkedin_share { display: inline;}",
+		    ss.cssRules.length);
+	    if (Codex.user.googleid) 
+		ss.insertRule(
+		    "div#CODEXHUD span.google_share { display: inline;}",
+		    ss.cssRules.length);
 	    var pic=
 		(Codex.user.pic)||
 		((Codex.user.fbid)&&
