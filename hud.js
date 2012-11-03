@@ -496,9 +496,9 @@ var CodexMode=
 		else if (live) Codex.cancelGloss(live);
 		else {}}
 	    if (mode) {
-		if ((mode==="scanning")||(mode==="tocscan")||
-		    (mode==="addgloss"))
+		if ((mode==="scanning")||(mode==="tocscan"))
 		    addClass(document.body,"cxSHRINK");
+		else if (mode==="addgloss") {}
 		else dropClass(document.body,"cxSHRINK");
 		if (mode===Codex.mode) {}
 		else if (mode===true) {

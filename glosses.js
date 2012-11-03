@@ -532,7 +532,8 @@
 	Codex.clearHighlights(target);
 	var dups=Codex.getDups(target);
 	Codex.selecting=
-	    fdjtSelecting(dups,{ontap: gloss_selecting_ontap});
+	    fdjtSelecting(dups,{ontap: gloss_selecting_ontap,
+				onrelease: gloss_selecting_onrelease});
 	if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
 	    Codex.selecting.setString(gloss.excerpt);
 	Codex.selecting.onchange=function(sel){
@@ -546,6 +547,10 @@
     function gloss_selecting_ontap(evt){
 	if (Codex.mode!=="addgloss") CodexMode("addgloss");
 	else selecting_ontap(evt);}
+    function gloss_selecting_onrelease(evt){
+	Codex.UI.content_release(evt);
+	if (Codex.mode==="addgloss")
+	    fdjtDOM.addClass(document.body,"cxSHRINK");}
 
     function setGlossForm(form){
 	var cur=fdjtID("CODEXLIVEGLOSS");
@@ -887,11 +892,13 @@
 	var target=fdjtUI.T(evt);
 	var glossform=(target)&&
 	    (fdjtDOM.getParent(target,".codexglossform"));
+	/* 
 	if (fdjtDOM.hasClass(glossform,"modified")) {
 	    if (window.confirm("Save the changes to this gloss?"))
 		finishGloss(target);
 	    else cancelGloss(target);}
-	else cancelGloss(target);
+	*/
+	cancelGloss(target);
 	fdjtUI.cancel(evt);}
 
     function cancelGloss(arg){

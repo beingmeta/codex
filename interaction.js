@@ -277,6 +277,12 @@
 	    var form=Codex.setGlossTarget(passage);
 	    if (!(form)) return;
 	    else fdjtUI.cancel(evt);
+	    timer_started=true;
+	    touch_timer=
+		setTimeout(function(){
+		    fakeMouseDown(
+			sX,sY,cX,cY,ctrl,alt,shift,meta,button);},
+			   200);
 	    var form_elt=fdjtDOM.getChild(form,"form");
 	    var mode=((evt.shiftKey)?("addtag"):("editnote"));
 	    var ctrl=evt.ctrlKey||false;
@@ -286,13 +292,7 @@
 	    var button=evt.button||0;
 	    Codex.setGlossMode(mode,form);
 	    Codex.setGlossForm(form);
-	    CodexMode("addgloss");
-	    timer_started=true;
-	    touch_timer=
-		setTimeout(function(){
-		    fakeMouseDown(
-			sX,sY,cX,cY,ctrl,alt,shift,meta,button);},
-			   Codex.holdmsecs);}}
+	    CodexMode("addgloss");}}
 	    
     function fakeMouseDown(sX,sY,cX,cY,ctrl,alt,shift,meta,button){
 	var evt = document.createEvent("MouseEvent");
@@ -309,6 +309,7 @@
 	    if (touch_timer) {
 		clearTimeout(touch_timer);
 		touch_timer=false;}}}
+    Codex.UI.content_release=content_mouseup;
 
     /* TOC handlers */
 
