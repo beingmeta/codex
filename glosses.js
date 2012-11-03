@@ -283,7 +283,9 @@
 	    var shared=((gloss)&&(gloss.shared))||[];
 	    if (typeof shared === 'string') shared=[shared];
 	    var i=0, lim=shared.length;
-	    while (i<lim) addOutlet(form,shared[i++],true);}
+	    while (i<lim) addOutlet(form,shared[i++],true);
+	    var private_span=getChild(form,".private");
+	    setCheckSpan(private_span,gloss.private);}
 	if ((gloss)&&(gloss.excerpt))
 	    Codex.setExcerpt(form,gloss.excerpt,gloss.exoff);
 	var cancel_button=fdjtDOM.getChild(form,".cancelbutton");
@@ -338,7 +340,7 @@
 	while (i<lim) {
 	    if (inputs[i].value===outlet_id) {
 		var checkspan=getParent(inputs[i],".checkspan");
-		fdjtUI.CheckSpan.set(checkspan,checked);
+		setCheckSpan(checkspan,checked);
 		return checkspan;}
 	    else i++;}
 	var spanspec="span.checkspan.outlet";
@@ -399,11 +401,11 @@
 		else exoff.value="";}
 	    dropClass(checkspan,"empty");
 	    fdjtDOM.replace(text,Ellipsis("span.text",excerpt,140));
-	    fdjtUI.CheckSpan.set(checkspan,true);}
+	    setCheckSpan(checkspan,true);}
 	else {
 	    addClass(checkspan,"empty");
 	    if (exoff) exoff.value="";
-	    fdjtUI.CheckSpan.set(checkspan,false);}
+	    setCheckSpan(checkspan,false);}
 	var wrapper=getParent(form,".codexglossform");
 	addClass(wrapper,"modified");
 	updateForm(form);}
@@ -487,7 +489,7 @@
 	if (!(input)) return;
 	var cs=getParent(input,".checkspan");
 	if (!(cs)) return;
-	fdjtUI.CheckSpan.set(cs,checked);};
+	setCheckSpan(cs,checked);};
 
     /***** Setting the gloss target ******/
 
@@ -562,7 +564,7 @@
 	    while (i<lim) {
 		var input=inputs[i++];
 		var doppels=getInputsFor(altnetworks,'NETWORKS',input.value);
-		fdjtUI.CheckSpan.set(doppels,input.checked);}}
+		setCheckSpan(doppels,input.checked);}}
 	/* Get the input appropriate to the mode. */
 	if (mode==='editnote') {
 	    input=noteinput;
