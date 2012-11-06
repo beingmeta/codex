@@ -256,6 +256,11 @@
 		// if (resptags) gloss;
 		addTag(form,tags[i],false);
 		i++;}}
+	if ((gloss)&&(!(response))&&(gloss.posted)) {
+	    var wasposted=getChild(form,".wasposted");
+	    if (wasposted) wasposted.disabled=false;
+	    var postgloss=getChild(form,".postgloss");
+	    fdjtUI.setCheckspan(postgloss,true);}
 	if ((gloss)&&(!(response))&&(gloss.links)) {
 	    var links=getChild(form,".links");
 	    var resplinks=getChild(response_elt,".resplinks");
