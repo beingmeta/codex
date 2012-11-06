@@ -966,6 +966,13 @@ div#CODEXAPPSTATUS #CODEXSTATUSFOOT p {
     padding-bottom: 0px; padding-top: 0px;
     text-align: center;}
 
+img.codexclosehud {
+    position: absolute; border-radius: 50%; border: solid red 3px;
+    width: 32px; height: 32px;
+    display: none;}
+div#CODEXHUD.openhead img.codexclosehud {
+    right: 55px; top: 2px; display: block;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***

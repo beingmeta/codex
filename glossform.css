@@ -343,12 +343,12 @@ div.codexglossform form .submitbutton .button {
 div.codexglossform form .submitbutton .edit,
 div.codexglossform form .submitbutton .reply {
     display: none;}
-div.codexglossform.editgloss form .submitbutton .edit,
-div.codexglossform.response form .submitbutton .reply {
+div.codexglossform.glossedit form .submitbutton .edit,
+div.codexglossform.glossreply form .submitbutton .reply {
     display: block;}
-div.codexglossform.editgloss form .submitbutton .add,
-div.codexglossform.response form .submitbutton .add {
-    display: block;}
+div.codexglossform.glossedit form .submitbutton .add,
+div.codexglossform.glossreply form .submitbutton .add {
+    display: none;}
 
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;
