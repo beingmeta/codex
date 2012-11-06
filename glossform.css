@@ -245,7 +245,14 @@ div.codexglossform form div.sharing { max-height: 24px;}
 
 div.codexglossform form div.glossetc span.networks {
     color: black; font-weight: normal; float: right; text-align: right;}
+div.codexglossform form div.glossetc span.networks .checkspan {
+    float: left;}
+div.codexglossform form div.glossetc span.networks .checkspan.postgloss {
+    padding-right: 1ex;}
+div.codexglossform.private .checkspan.postgloss { display: none;}
 div#CODEXHUD span.networks .checkspan input[type='checkbox'] { display: none;}
+div#CODEXHUD span.networks .checkspan.postgloss input[type='checkbox'] {
+    display: inline;}
 div.codexglossform form div.glossetc span.networks img {
     height: 3ex; width: auto;}
 

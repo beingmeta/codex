@@ -1727,11 +1727,24 @@
 
     function changeGlossPosting(evt){
 	var target=fdjtUI.T(evt=(evt||event));
-	var alternate=((fdjtDOM.hasParent(target,".codexglossform"))?
-		       ("CODEXNETWORKBUTTONS"):(("CODEXLIVEGLOSS")));
-	var doppels=fdjtDOM.getInputs(alternate,'POSTGLOSS');
-	fdjtUI.CheckSpan.set(doppels,target.checked);}
+	var glossdiv=fdjtDOM.getParent(target,".codexglossform");
+	if (target.checked) fdjtDOM.addClass(glossdiv,"posted");
+	else fdjtDOM.dropClass(glossdiv,"posted");}
     Codex.UI.changeGlossPosting=changeGlossPosting;
+
+    function changeGlossPrivacy(evt){
+	var target=fdjtUI.T(evt=(evt||event));
+	var glossdiv=fdjtDOM.getParent(target,".codexglossform");
+	var postgloss=fdjtDOM.getChild(glossdiv,".postgloss");
+	var postinput=(postgloss)&&(fdjtDOM.getInput(postgloss,"POSTGLOSS"));
+	if (postgloss) {
+	    if (target.checked) {
+	    	if (postinput) postinput.disabled=true;}
+	    else {
+		if (postinput) postinput.disabled=false;}}
+	if (target.checked) fdjtDOM.addClass(glossdiv,"private");
+	else fdjtDOM.dropClass(glossdiv,"private");}
+    Codex.UI.changeGlossPrivacy=changeGlossPrivacy;
 
     /* Back to the text */
 

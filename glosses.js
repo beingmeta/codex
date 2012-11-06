@@ -283,7 +283,7 @@
 	    var shared=((gloss)&&(gloss.shared))||[];
 	    if (typeof shared === 'string') shared=[shared];
 	    var i=0, lim=shared.length;
-	    while (i<lim) addOutlet(form,shared[i++],true);
+	    while (i<lim) addOutlet(form,shared[i++],"SHARE",true);
 	    var private_span=getChild(form,".private");
 	    setCheckSpan(private_span,gloss.private);}
 	if ((gloss)&&(gloss.excerpt))
@@ -316,13 +316,14 @@
 	else return text;}
     
     /***** Adding outlets ******/
-    function addOutlet(form,outlet,checked) {
+    function addOutlet(form,outlet,formvar,checked) {
+	if (typeof formvar === 'undefined') formvar="SHARE";
 	if (typeof checked === 'undefined') checked=true;
 	var wrapper=getParent(form,".codexglossform");
 	addClass(wrapper,"modified");
 	var outletspan=getChild(form,".outlets");
-	var inputs=getInputs(outletspan,"SHARE");
-	var i=0; var lim=inputs.length; var formvar="SHARE";
+	var inputs=getInputs(outletspan,formvar);
+	var i=0; var lim=inputs.length;
 	var outlet_id=((typeof outlet === 'string')?(outlet):(outlet._id));
 	if (typeof outlet === 'string') {
 	    if ((outlet[0]==='@')||
@@ -333,7 +334,7 @@
 		spanspec="span.checkspan.email";
 		formvar="EMAIL";}}
 	else if (outlet.nodeType) {
-	    formvar="NETWORK"
+	    formvar="NETWORK";
 	    outlet_id=outlet.getAttribute("value");
 	    outlet={name: outlet.getAttribute("key")||outlet_id};}
 	else info=outlet;
@@ -343,9 +344,11 @@
 		setCheckSpan(checkspan,checked);
 		return checkspan;}
 	    else i++;}
-	var spanspec="span.checkspan.outlet";
+	var spanspec=((formvar)?
+		      ("span.checkspan.outlet."+formvar.toLowerCase()):
+		      ("span.checkspan.outlet"));
 	var checkspan=fdjtUI.CheckSpan(
-	    spanspec,formvar,outlet_id,checked,
+	    spanspec,formvar||"SHARE",outlet_id,checked,
 	    "→",outlet.nick||outlet.name);
 	if ((outlet.nick)&&(outlet.description))
 	    checkspan.title=outlet.name+": "+outlet.description;
@@ -843,7 +846,11 @@
 	    var form=((live)&&(getChild(live,"form")));
 	    if (hasClass(completion,"source")) {
 		var value=completion.getAttribute("value");
-		if (value) addOutlet(form,fdjtKB.ref(value));}
+		if (value) addOutlet(form,fdjtKB.ref(value),"SHARE");}
+	    else if (hasClass(completion,"network")) 
+		addOutlet(form,completion,"NETWORK");
+	    else if (hasClass(completion,"email")) 
+		if (value) addOutlet(form,completion,"EMAIL");
 	    else addOutlet(form,completion);}
 	fdjtUI.cancel(evt);}
 
