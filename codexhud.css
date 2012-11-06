@@ -244,7 +244,7 @@ div#CODEXHUD.search div#CODEXSEARCHCLOUD.hudpanel,
 div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXGLOSSOUTLETS.hudpanel,
-div#CODEXHUD.addgloss div#CODEXHEART.addlink div#CODEXURLENTRY.hudpanel,
+div#CODEXHUD.addgloss div#CODEXHEART.addlink div#CODEXGLOSSATTACH.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     position: static; display: block;

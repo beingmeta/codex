@@ -258,7 +258,7 @@ div.codexglossform form div.glossetc span.networks img {
 
 div#CODEXHUD span.networks .checkspan.private {
     color: white; font-weight: bold; font-variant: small-caps;
-    font-size: 12px;
+    font-size: 15px;
     background-color: green;
     vertical-align: top;}
 div#CODEXHUD span.networks .checkspan.private.ischecked {
@@ -402,8 +402,17 @@ body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
   div.completions#CODEXOUTLETCLOUD {
     display: block;}
 body.hudup div#CODEXHUD.addgloss div#CODEXHEART.addlink
-  div#CODEXURLENTRY {
+  div#CODEXGLOSSATTACH {
     display: block;}
+
+div#CODEXGLOSSATTACH tr.choosetype { display: none;}
+div#CODEXGLOSSATTACH tr.detail, div#CODEXGLOSSATTACH tr.upload {
+    display: none;}
+div#CODEXGLOSSATTACH.detail tr.detail, div#CODEXGLOSSATTACH.upload tr.upload {
+    display: table-row;}
+div#CODEXGLOSSATTACH.detail tr.url, div#CODEXGLOSSATTACH.upload tr.url {
+    display: none;}
+
 div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS {}
 div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS span.completion {
     float: right;}

@@ -86,7 +86,7 @@
 	    input=fdjtID("CODEXTAGINPUT");}
 	else if ((mode==="link")||(mode==="addlink")) {
 	    modeclass="addlink";
-	    input=fdjtID("CODEXURLINPUT");}
+	    input=fdjtID("CODEXATTACHURL");}
 	else if ((mode==="note")||(mode==="editnote")) {
 	    modeclass="editnote";
 	    input=fdjtDOM.getInput(form,'NOTE');}
@@ -585,7 +585,7 @@
 		gloss_cloud.complete(getbracketed(input,false)||"");
 	    else gloss_cloud.complete("");}
 	else if (mode==='addtag') input=fdjtID("CODEXTAGINPUT");
-	else if (mode==='addlink') input=fdjtID("CODEXURLINPUT");
+	else if (mode==='addlink') input=fdjtID("CODEXATTACHURL");
 	else if (mode==='excerpt') input=getInput(form,"EXCERPT");
 	else if (mode==='addoutlet') input=fdjtID("CODEXOUTLETINPUT");
 	else {input=noteinput;}

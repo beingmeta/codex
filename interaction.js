@@ -900,8 +900,19 @@
 			100);}
 
     function addlink_action(evt){
-	var linkinput=fdjtID("CODEXURLINPUT");
-	var titleinput=fdjtID("CODEXURLTITLE");
+	var linkinput=fdjtID("CODEXATTACHURL");
+	var titleinput=fdjtID("CODEXATTACHTITLE");
+	var livegloss=fdjtID("CODEXLIVEGLOSS");
+	if (!(livegloss)) return;
+	var form=getChild(livegloss,"FORM");
+	Codex.addLink2Form(form,linkinput.value,titleinput.value);
+	linkinput.value="";
+	titleinput.value="";
+	Codex.setGlossMode("editnote");}
+    function addlink_submit(evt){
+	fdjtUI.cancel(evt);
+	var linkinput=fdjtID("CODEXATTACHURL");
+	var titleinput=fdjtID("CODEXATTACHTITLE");
 	var livegloss=fdjtID("CODEXLIVEGLOSS");
 	if (!(livegloss)) return;
 	var form=getChild(livegloss,"FORM");
@@ -910,8 +921,8 @@
 	titleinput.value="";
 	Codex.setGlossMode("editnote");}
     function addlink_cancel(evt){
-	var linkinput=fdjtID("CODEXURLINPUT");
-	var titleinput=fdjtID("CODEXURLTITLE");
+	var linkinput=fdjtID("CODEXATTACHURL");
+	var titleinput=fdjtID("CODEXATTACHTITLE");
 	var livegloss=fdjtID("CODEXLIVEGLOSS");
 	if (!(livegloss)) return;
 	linkinput.value="";
@@ -922,8 +933,8 @@
 	var ch=evt.keyCode||evt.charCode;
 	if (ch!==13) return;
 	fdjtUI.cancel(evt);
-	var linkinput=fdjtID("CODEXURLINPUT");
-	var titleinput=fdjtID("CODEXURLTITLE");
+	var linkinput=fdjtID("CODEXATTACHURL");
+	var titleinput=fdjtID("CODEXATTACHTITLE");
 	var livegloss=fdjtID("CODEXLIVEGLOSS");
 	if (!(livegloss)) return;
 	var form=getChild(livegloss,"FORM");
@@ -1676,7 +1687,7 @@
 	    input=fdjtID("CODEXTAGINPUT");}
 	else if (alt==="link") {
 	    altclass="addlink";
-	    input=fdjtID("CODEXURLINPUT");}
+	    input=fdjtID("CODEXATTACHURL");}
 	else if (alt==="excerpt") {
 	    altclass="excerpt";
 	    input=fdjtDOM.getInput(form,'EXCERPT');}
@@ -1841,10 +1852,11 @@
 	 "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
 	 "#CODEXTAGINPUT": {keydown: addtag_keydown},
 	 "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
-	 "#CODEXURLINPUT": {click: addlink_keydown},
-	 "#CODEXURLTITLE": {click: addlink_keydown},
-	 "#CODEXADDLINKOK": {click: addlink_action},
-	 "#CODEXADDLINKCANCEL": {click: addlink_cancel},
+	 "#CODEXATTACHFORM": {submit: addlink_submit},
+	 "#CODEXATTACHURL": {click: addlink_keydown},
+	 "#CODEXATTACHTITLE": {click: addlink_keydown},
+	 "#CODEXATTACHOK": {click: addlink_action},
+	 "#CODEXATTACHCANCEL": {click: addlink_cancel},
 	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
 	 "#CODEXHELPBUTTON": {
 	     click: toggleHelp, mousedown: cancel,mouseup: cancel},
@@ -1899,10 +1911,11 @@
 	 "#CODEXPAGERIGHT": {touchstart: right_margin},
 	 "#CODEXTAGINPUT": {keydown: addtag_keydown},
 	 "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
-	 "#CODEXURLINPUT": {click: addlink_keydown},
-	 "#CODEXURLTITLE": {click: addlink_keydown},
-	 "#CODEXADDLINKOK": {click: addlink_action},
-	 "#CODEXADDLINKCANCEL": {click: addlink_cancel},
+	 "#CODEXATTACHFORM": {submit: addlink_submit},
+	 "#CODEXATTACHURL": {click: addlink_keydown},
+	 "#CODEXATTACHTITLE": {click: addlink_keydown},
+	 "#CODEXATTACHOK": {click: addlink_action},
+	 "#CODEXATTACHCANCEL": {click: addlink_cancel},
 	 "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
 	 "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
 	 "#CODEXHELPBUTTON": {click: toggleHelp},
