@@ -7,7 +7,7 @@
 /* Gloss form */
 
 div#CODEXADDGLOSS div.codexglossform {
-    min-height: 70px;}
+    min-height: 80px;}
 
 div#CODEXADDGLOSS div.codexglossform {
     border-radius: 1em; -webkit-border-radius: 1em;
@@ -24,7 +24,18 @@ div#CODEXADDGLOSS div.codexglossform {
 
 div.codexglossform form div.rightcol {
     position: absolute;
-    top: 0px; bottom: 0px; right: 0px; width: 50px;}
+    top: 0px; bottom: 0px; right: 0px; width: 75px;}
+div.codexglossform form div.rightcol > div {
+    white-space: nowrap; float: right;}
+div.codexglossform form div.rightcol > div img {
+    width: 2ex; height: auto;}
+div.codexglossform form div.rightcol > div.cancelbutton {
+    color: red; font-size: 80%;}
+div.codexglossform form div.rightcol > div.cancelbutton {
+    position: absolute; bottom: 2px; right: 2px;}
+div.codexglossform form div.rightcol > div.cancelbutton > img {
+    width: 1.5ex; height: auto;}
+
 
 div.codexglossform { display: none;}
 div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
@@ -91,7 +102,7 @@ div.codexglossform form .bracketbutton strong {
 div.codexglossform form.focused div.inputhelp { display: block;}
 div.codexglossform form.focused span.inputhelp { display: inline;}
 
-div.codexglossform form div.inputbox { margin-right: 50px;}
+div.codexglossform form div.inputbox { margin-right: 75px;}
 div.codexglossform form div.textbox {
     margin-left: 0.5em;}
 div.codexglossform form div.textbox textarea,
@@ -126,12 +137,6 @@ div.codexglossform form div.button {
     float: right; width: 40px;}
 div.codexglossform form div.textbox { 
     clear: left; }
-div.codexglossform .cancelbutton {
-    position: absolute; right: 6px; bottom: 3px;
-    height: 28px; width: 28px;
-    border: solid red 2px;
-    border-radius: 16px;
-    cursor: pointer;}
 
 div.codexglossform div.glossetc span.showmode {
     border-left: solid black 1px; margin-left: 2px;
@@ -213,7 +218,7 @@ div.codexglossform form div.glossetc span.checkspan.waschecked.ischecked {
 div.codexglossform form div.glossetc .outlets { padding-left: 1px;}
 div.codexglossform form div.glossetc .links { padding-left: 1px;}
 div.codexglossform form div.glossetc .checkspan img {
-    height: 1.5ex; width: auto; vertical-align: baseline;
+    height: 2ex; width: auto; vertical-align: baseline;
     padding-left: 3px;}
 div.codexglossform form div.glossetc .checkspan input {
     margin-left: 0px;}
@@ -240,32 +245,42 @@ div.codexglossform form div.glossetc.expanded img.twisty[alt='-'] {
 div.codexglossform form div.glossetc.expanded img.twisty[alt='+'] {
     display: none;}
 
-div.codexglossform form div.sharing span { vertical-align: top;}
-div.codexglossform form div.sharing { max-height: 24px;}
+div.codexglossform div.sharing span { vertical-align: top;}
+div.codexglossform div.sharing { max-height: 24px;}
 
-div.codexglossform form div.glossetc span.networks {
+div.codexglossform div.glossetc .networks {
     color: black; font-weight: normal; float: right; text-align: right;}
-div.codexglossform form div.glossetc span.networks .checkspan {
+div.codexglossform div.glossetc .networks .checkspan {
     float: left;}
-div.codexglossform form div.glossetc span.networks .checkspan.postgloss {
+div.codexglossform div.glossetc .networks .checkspan.postgloss {
     padding-right: 1ex;}
 div.codexglossform.private .checkspan.postgloss { display: none;}
-div#CODEXHUD span.networks .checkspan input[type='checkbox'] { display: none;}
-div#CODEXHUD span.networks .checkspan.postgloss input[type='checkbox'] {
+div#CODEXHUD .networks .checkspan input[type='checkbox'] { display: none;}
+div#CODEXHUD .networks .checkspan.postgloss input[type='checkbox'] {
     display: inline;}
-div.codexglossform form div.glossetc span.networks img {
+div.codexglossform div.glossetc .networks img {
     height: 3ex; width: auto;}
-
-div#CODEXHUD span.networks .checkspan.private {
+div#CODEXHUD .networks .checkspan.private {
     color: white; font-weight: bold; font-variant: small-caps;
     font-size: 15px;
     background-color: green;
     vertical-align: top;}
-div#CODEXHUD span.networks .checkspan.private.ischecked {
+div#CODEXHUD .networks .checkspan.private.ischecked {
     background-color: red; color: white;}
 div#CODEXHUD span.networks .checkspan.private span {
     padding-left: 1ex; padding-right: 1ex;
     vertical-align: top;}
+
+div.codexglossform .checkspan.postgloss {
+    font-variant: small-caps; vertical-align: top;}
+div.codexglossform .checkspan.postgloss img {
+    height: 2ex; width: auto; padding: 0px; margin: 0px; border: 0px;
+    vertical-align: top;}
+div.codexglossform .checkspan.postgloss input {
+    margin: 0px; border: 0px; padding: 0px;
+    vertical-align: middle;}
+
+div.codexglossform div.rightcol .checkspan.postgloss {}
 
 div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue;}
@@ -318,7 +333,7 @@ body.cxANIMATE div.codexglossform form div.glossetc span .button {
 div.codexglossform form .submitbutton {
     float: right; text-align: center;
     padding-top: 3px; padding-right: 3px;
-    height: 40px;}
+    height: 50px;}
 div.codexglossform form .submitbutton .button {
     margin: 0px; padding: 0px; border: none;
     background-color: transparent;

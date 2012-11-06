@@ -41,23 +41,30 @@
   <div class="rightcol">
     <div class="altbutton submitbutton">
       <img svg="http://static.beingmeta.com/g/codex/remark_add.svgz"
-	   src="http://static.beingmeta.com/g/codex/remark_add64x64.png"
+	   src="http://static.beingmeta.com/g/codex/remark_add50x50.png"
 	   alt="Add" title="add this gloss"
 	   class="button addbutton add"/>
       <img svg="http://static.beingmeta.com/g/codex/remark_edit.svgz"
-	   src="http://static.beingmeta.com/g/codex/remark_edit64x64.png"
+	   src="http://static.beingmeta.com/g/codex/remark_edit50x50.png"
 	   alt="Save" title="save this gloss"
 	   class="button savebutton edit"/>
       <img svg="http://static.beingmeta.com/g/codex/remark_respond.svgz"
-	   src="http://static.beingmeta.com/g/codex/remark_respond64x64.png"
+	   src="http://static.beingmeta.com/g/codex/remark_respond50x50.png"
 	   alt="Reply" title="respond to this gloss (thread)"
 	   class="button replybutton reply"/>
     </div>
-    <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
-	 src="http://static.beingmeta.com/g/codex/redx64x64.png"
-	 title="close this gloss and cancel any changes"
-	 class="cancelbutton"
-	 alt="cancel"/>
+    <div class="checkspan postgloss">
+      <input TYPE="HIDDEN" name="WASPOSTED" VALUE="yes"
+	     DISABLED="DISABLED"/>
+      Post
+      <input type="CHECKBOX" name="POSTGLOSS" value="yes"
+	     onchange="Codex.UI.changeGlossPosting(event);"/></div>
+    <div class="checkspan cancelbutton"
+	 title="close this gloss and cancel any changes">
+      Close
+      <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
+	   src="http://static.beingmeta.com/g/codex/redx64x64.png"/>
+    </div>
   </div>
   <div class="inputbox">
     <div class="textbox">
@@ -87,11 +94,6 @@
 	   src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
 	   class="twisty" alt="-"/>
       <span class="networks">
-	<span class="checkspan postgloss">
-	  <input TYPE="HIDDEN" name="WASPOSTED" VALUE="yes"
-		 DISABLED="DISABLED"/>
-	  <input type="CHECKBOX" name="POSTGLOSS" value="yes"
-		 onchange="Codex.UI.changeGlossPosting(event);"/>Post</span>
 	<span class="checkspan private">
 	  <input type="CHECKBOX" name="PRIVATE" value="yes"
 		 onchange="Codex.UI.changeGlossPrivacy(event);"/>
