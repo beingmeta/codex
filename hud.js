@@ -1083,6 +1083,26 @@ var CodexMode=
 			   5000);};
 	Codex.keyboardHelp=keyboardHelp;
 
+	/* Showing a particular gloss */
+
+	Codex.showGloss=function showGloss(uuid){
+	    if (!(Codex.glosses.ref(uuid))) return false;
+	    var elts=document.getElementsByName(uuid);
+	    if (!(elts)) return false;
+	    else if (!(elts.length)) return false;
+	    else {
+		var allglosses=fdjtID("CODEXALLGLOSSES");
+		var hasParent=fdjtDOM.hasParent;
+		var i=0, lim=elts.length;
+		while (i<lim) {
+		    var src=elts[i++];
+		    if (hasParent(src,allglosses)) {
+			var elt=fdjtID(src.about);
+			CodexMode("allglosses");
+			Codex.Scan(elt,src);
+			return true;}}
+		return false;}};
+
 	/* Setting/clearing help mode */
 	Codex.hideHelp=function(){
 	    fdjtDOM.dropClass(document.body,"codexhelp");};
