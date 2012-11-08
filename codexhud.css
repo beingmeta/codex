@@ -95,7 +95,7 @@ body #CODEXHUD.tocscan #CODEXSCANNER.expanded {
     -webkit-transition-property: height,top,bottom;
     -webkit-transition-duration: 1.5s;}
 
-#CODEXHEART, #CODEXHEART div.hudpanel {
+#CODEXHEART {
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;}
 #CODEXHEART div.hudpanel { margin-left: 0.7em; margin-right: 0.7em;}

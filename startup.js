@@ -1275,6 +1275,10 @@ Codex.Startup=
 	    var update_script=fdjtDOM("script#CODEXUPDATEINFO");
 	    var uri="https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
 		encodeURIComponent(Codex.refuri)+"&CALLBACK=Codex.updatedInfo";
+	    var glosses=fdjtState.getQuery("GLOSS");
+	    if ((glosses)&&(glosses.length)) {
+		var i=0, lim=glosses.length; while (i<lim)
+		    uri=uri+"&GLOSS="+glosses[i++];}
 	    if (Codex.mycopyid)
 		uri=uri+"&MCOPYID="+encodeURIComponent(Codex.mycopyid);
 	    if (Codex.sync) uri=uri+"&SYNC="+(Codex.sync+1);
