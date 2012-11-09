@@ -353,6 +353,8 @@ Codex.Startup=
 	    // Set up what the user sees during setup
 	    appstatus();
 
+	    
+
 	}
 	
 	function userSetup(){
@@ -572,6 +574,20 @@ Codex.Startup=
 		else {
 		    Codex.joining=getQuery("JOIN");
 		    CodexMode("sbooksapp");}}
+	    else if (getQuery("GLOSS"))
+		Codex.glosshash=getQuery("GLOSS")[0];
+	    else if ((location.hash)&&(location.hash.length>=36)) {
+		var hash=location.hash;
+		if (hash[0]==="#") hash=hash.slice(1);
+		if (hash.search("X")===0)
+		    Codex.glosshash=hash.slice(2);
+		else if (hash.search("GL")===0)
+		    Codex.glosshash=hash.slice(2);
+		else if ((hash.search("FBX")===0)||(hash.search("TWX")===0)||
+			 (hash.search("GPX")===0))
+		    Codex.glosshash=hash.slice(3);
+		else Codex.glosshash=hash;}
+		
 	    // This makes the splash page visible and applies some
 	    // other styling
 	    fdjtDOM.addClass(document.body,"codexstartup");
@@ -579,7 +595,11 @@ Codex.Startup=
 	    window.focus();}
 	
 	function startupDone(mode){
-	    initLocation();
+	    if ((Codex.glosshash)&&(Codex.glosses.ref(Codex.glosshash))) {
+		if (Codex.showGloss(Codex.glosshash))
+		    Codex.glosshash=false;
+		else initLocation();}
+	    else initLocation();
 	    if (fdjtID("CODEXREADYSPLASH"))
 		fdjtID("CODEXREADYSPLASH").style.display='none';
 	    Codex.displaySync();
@@ -1260,7 +1280,10 @@ Codex.Startup=
 	    if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
 		setLocal("sync("+refuri+")",info.sync);
 		Codex.sync=info.sync;}
-	    Codex.loaded=info.loaded=fdjtTime();}
+	    Codex.loaded=info.loaded=fdjtTime();
+	    if (Codex.glosshash) {
+		if (Codex.showGloss(Codex.glosshash))
+		    Codex.glosshash=false;}}
 	Codex.loadInfo=loadInfo;
 
 	var updating=false;
