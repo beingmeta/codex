@@ -121,8 +121,10 @@ body.codexhelp div#CODEXHUD .hudbutton {
     opacity: 0.5;}
 body.codexhelp.hudup div#CODEXHUD div#CODEXHELP, 
 body.codexhelp.cxSHRINK div#CODEXHUD div#CODEXHELP,
+body.codexhelp.cxPREVIEW div#CODEXHUD div#CODEXHELP,
 body.codexhelp.hudup div#CODEXHUD .helphud,
-body.codexhelp.cxSHRINK div#CODEXHUD .helphud {
+body.codexhelp.cxSHRINK div#CODEXHUD .helphud,
+body.codexhelp.cxPREVIEW div#CODEXHUD .helphud {
     display: none;}
 body.codexhelp.hudup div#CODEXHUD.status div#CODEXHELP {
     display: block;}
@@ -271,7 +273,8 @@ div#CODEXHELP table td.textright { text-align: right;}
 
 div#CODEXHUD div#CODEXHELP.hudpanel {
     position: fixed; text-align: center;
-    top: 75px; left: 75px; right: 75px; bottom: 75px; height: auto; width: auto;
+    top: 75px; left: 75px; right: 75px; bottom: 75px;
+    height: auto; width: auto;
     font-family: helvetica,sans,sans-serif;
     background-color: lightgray; color: black; 
     border-radius: 1em; -webkit-border-radius: 1em;
