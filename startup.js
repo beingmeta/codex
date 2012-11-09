@@ -168,12 +168,12 @@ Codex.Startup=
 		    (config[setting]!==default_config[setting])) {
 		    saved[setting]=config[setting];}}
 	    if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
-	    setLocal("config("+Codex.refuri+")",JSON.stringify(saved));}
+	    setLocal("codex.config",JSON.stringify(saved));}
 	Codex.saveConfig=saveConfig;
 
 	function initConfig(){
 	    var config=saved_config=
-		getLocal("config("+Codex.refuri+")",true)||{};
+		getLocal("codex.config",true)||{};
 	    Codex.postconfig=[];
 	    if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
 	    if (config) {
@@ -314,6 +314,33 @@ Codex.Startup=
 		status_cover.src=Codex.coverpage;
 		status_cover.style.display='block';}
 
+	    var saveprops=["sources","outlets","etc","overlays","sync","user",
+			   "sync","nodeid"];
+	    addConfig(
+		"localstorage",
+		function(name,value){
+		    var refuri=Codex.refuri;
+		    if ((value)&&(Codex.saveglosses)) return;
+		    else if ((!(value))&&(!(Codex.saveglosses))) return;
+		    else if (value) {
+			if (!(Codex.sourcekb.storage))
+			    Codex.sourcekb.storage=
+			    new fdjtKB.OfflineKB(Codex.sourcekb);
+			if (!Codex.glosses.storage)
+			    Codex.glosses.storage=
+			    new fdjtKB.OfflineKB(Codex.glosses);
+			for (var prop in saveprops) {
+			    if (Codex[prop]) setLocal(
+				prop+"("+refuri+")",Codex[prop],true);}
+			if ((Codex.allglosses)&&(Codex.allglosses.length))
+			    setLocal("glosses("+refuri+")",Codex.allglosses);}
+		    else if (!(value)) {
+			if (getConfig("localstorage"))
+			    clearOffline(Codex.refuri);
+			else clearOffline();}
+		    Codex.saveglosses=value;
+		    setCheckSpan(fdjtID("CODEXLOCALCHECKBOX"),value);});
+
 	    // Get any local saved configuration information
 	    //  We do this after the HUD is setup so that the settings
 	    //   panel gets initialized appropriately.
@@ -321,24 +348,7 @@ Codex.Startup=
 	    Codex.saveglosses=
 		((!(Codex.force_online))&&
 		 ((Codex.force_offline)||(workOffline())));
-	    setCheckSpan(fdjtID("CODEXLOCALCHECKBOX"),Codex.saveglosses);
-	    addConfig(
-		"localstorage",
-		function(name,value){
-		    if ((value)&&(Codex.saveglosses)) return;
-		    else if ((!(value))&&(!(Codex.saveglosses))) return;
-		    else if (value) {
-			/* This should save all of the current state,
-			   but that's a little tricky right now. */}
-		    else if (!(value)) {
-			if (getConfig("localstorage"))
-			    clearOffline(Codex.refuri);
-			else clearOffline();}
-		    Codex.saveglosses=value;});
-	    if ((Codex.saveglosses)&&(!(Codex.sourcekb.storage)))
-		Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);
-	    if ((Codex.saveglosses)&&(!Codex.glosses.storage))
-		Codex.glosses.storage=new fdjtKB.OfflineKB(Codex.glosses);
+
 	    // Setup the UI components for the body and HUD
 	    Codex.setupGestures();
 	    
@@ -671,12 +681,14 @@ Codex.Startup=
 		(value==="no")||(value==="off")||
 		(value==="never"))
 		return false;
-	    else if (window.confirm) {
-		var result=window.confirm(
-		    "Store personal information for offline/faster reading?");
-		setConfig("localstorage",result,true);
-		return result;}
-	    else return false;}
+	    else fdjtUI.choose(
+		[{label: "No, thanks"},
+		 {label: "Yes, keep locally",
+		  handler:
+		  function(){
+		      setConfig("localstorage",true,true);}}],
+		"Store personal information for offline/faster reading?");
+	    return false;}
 	
 	var glossref_classes=false;
 
@@ -1899,7 +1911,6 @@ Codex.Startup=
 		var glosses=getLocal("glosses("+refuri+")",true);
 		var i=0; var lim=glosses.length;
 		while (i<lim) fdjtState.dropLocal(glosses[i++]);
-		dropLocal("config("+refuri+")");
 		dropLocal("sources("+refuri+")");
 		dropLocal("glosses("+refuri+")");
 		dropLocal("outlets("+refuri+")");
@@ -1919,6 +1930,7 @@ Codex.Startup=
 		var refuris=getLocal("codex.refuris",true);
 		var i=0; var lim=refuris.length;
 		while (i<lim) clearOffline(refuris[i++]);
+		dropLocal("codex.config");
 		dropLocal("codex.user");
 		dropLocal("codex.refuris");
 		var local=fdjtState.listLocal();

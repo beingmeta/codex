@@ -471,28 +471,14 @@ var CodexMode=
 	    if ((Codex.mode==="addgloss")&&(mode!==Codex.mode)) {
 		var live=fdjtID("CODEXLIVEGLOSS");
 		if ((live)&&(hasClass(live,"modified"))) {
-		    if (window.confirm("Save the changes to this gloss?")) {
-			var form=fdjtDOM.getChild(live,"form");
-			fdjtUI.forceSubmit(form);}
-		    // We may want to provide the later options in
-		    // some other way, so we'll leave them in place
-		    // (for example, they could be choices in the
-		    // confirmation dialog if we use something besides
-		    // window.confirm)
-		    else if (true) Codex.cancelGloss(live);
-		    else if (hasClass(live,"glossreply"))
-			fdjtUI.alertFor(
-			    10,"Responding to the same gloss ",
-			    "while this page is open will return you to your ",
-			    "unsaved changes.");
-		    else if (hasClass(live,"glossedit"))
-			fdjtUI.alertFor(
-			    10,"Editing the same gloss while this page ",
-			    "is open will return you to your unsaved changes.");
-		    else fdjtUI.alertFor(
-			10,"Adding a gloss to the same passage ",
-			"while this page is open will return you to your ",
-			"unsaved changes.");}
+		    fdjtUI.choose([
+			{label: "Discard",
+			 handler: function(){Codex.cancelGloss(live);}},
+			{label: "Save",
+			 handler: function(){
+			     var form=fdjtDOM.getChild(live,"form");
+			     fdjtUI.forceSubmit(form);}}],
+				  "Save the changes to this gloss?");}
 		else if (live) Codex.cancelGloss(live);
 		else {}}
 	    if (mode) {
