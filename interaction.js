@@ -213,7 +213,7 @@
 	var target=fdjtUI.T(evt);
 
 	// Don't capture modified events, except with shift key
-	if ((evt.ctrlKey)||(evt.altKey)) {
+	if ((evt.ctrlKey)||(evt.altKey)||(evt.button)) {
 	    gesture_start=false;
 	    return;}
 

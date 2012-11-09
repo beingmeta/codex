@@ -623,8 +623,8 @@ Codex.Startup=
 		    if (fdjtState.getLocal(msgid)) {}
 		    else {
 			fdjtState.setLocal(msgid,"seen");
-			fdjtUI.alertFor(20,msg.slice(uuid_end+1));}}
-		else alert(msg);}
+			fdjtUI.alertFor(10,msg.slice(uuid_end+1));}}
+		else fdjtUI.alertFor(10,msg);}
 	    if (msg=getQuery("SBOOKSMESSAGE")) {
 		var uuid_end=false;
 		if ((msg.slice(0,2)==="#{")&&
@@ -633,13 +633,13 @@ Codex.Startup=
 		    if (fdjtState.getLocal(msgid)) {}
 		    else {
 			fdjtState.setLocal(msgid,"seen");
-			fdjtUI.alertFor(20,msg.slice(uuid_end+1));}}
-		else alert(msg);}
+			fdjtUI.alertFor(10,msg.slice(uuid_end+1));}}
+		else fdjtUI.alertFor(10,msg);}
 	    if (msg=getCookie("APPMESSAGE")) {
-		fdjtUI.alertFor(20,msg);
+		fdjtUI.alertFor(10,msg);
 		fdjtState.clearCookie("APPMESSAGE","sbooks.net","/");}
 	    if (msg=getCookie("SBOOKSMESSAGE")) {
-		fdjtUI.alertFor(20,msg);
+		fdjtUI.alertFor(10,msg);
 		fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}}
 	
 	/* Application settings */
@@ -731,7 +731,7 @@ Codex.Startup=
 	    refuris.push(refuri);
 
 	    var coverpage=fdjtDOM.getLink("SBOOK.coverpage",false,true)||
-		fdjtDOM.getLink("~coverpage",false,true);
+		fdjtDOM.getLink("coverpage",false,true);
 	    if (coverpage) Codex.coverpage=coverpage;
 	    
 	    var prefix=getMeta("SBOOK.prefix");
