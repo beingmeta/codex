@@ -315,13 +315,13 @@ Codex.Startup=
 		status_cover.style.display='block';}
 
 	    var saveprops=["sources","outlets","etc","overlays","sync","user",
-			   "sync","nodeid"];
+			   "sync","nodeid","state"];
 	    addConfig(
 		"localstorage",
 		function(name,value){
 		    var refuri=Codex.refuri;
-		    if ((value)&&(Codex.saveglosses)) return;
-		    else if ((!(value))&&(!(Codex.saveglosses))) return;
+		    if ((value)&&(Codex.persist)) return;
+		    else if ((!(value))&&(!(Codex.persist))) return;
 		    else if (value) {
 			if (!(Codex.sourcekb.storage))
 			    Codex.sourcekb.storage=
@@ -338,14 +338,14 @@ Codex.Startup=
 			if (getConfig("localstorage"))
 			    clearOffline(Codex.refuri);
 			else clearOffline();}
-		    Codex.saveglosses=value;
+		    Codex.persist=value;
 		    setCheckSpan(fdjtID("CODEXLOCALCHECKBOX"),value);});
 
 	    // Get any local saved configuration information
 	    //  We do this after the HUD is setup so that the settings
 	    //   panel gets initialized appropriately.
 	    initConfig();
-	    Codex.saveglosses=
+	    Codex.persist=
 		((!(Codex.force_online))&&
 		 ((Codex.force_offline)||(workOffline())));
 
@@ -1262,11 +1262,11 @@ Codex.Startup=
 		_sbook_newinfo=info;
 		return;}
 	    var refuri=Codex.refuri;
-	    if ((Codex.saveglosses)&&
+	    if ((Codex.persist)&&
 		(info)&&(info.userinfo)&&(Codex.user)&&
 		(info.userinfo._id!==Codex.user._id)) {
 		clearOffline(refuri);}
-	    var persist=((Codex.saveglosses)&&(navigator.onLine));
+	    var persist=((Codex.persist)&&(navigator.onLine));
 	    info.loaded=fdjtTime();
 	    if ((!(Codex.localglosses))&&
 		((getLocal("sync("+refuri+")"))||
@@ -1361,7 +1361,7 @@ Codex.Startup=
 	    else fdjtDOM.addClass(document.body,"cxNOUSER");}
 	
 	function setUser(userinfo,outlets,overlays,sync){
-	    var persist=((Codex.saveglosses)&&(navigator.onLine));
+	    var persist=((Codex.persist)&&(navigator.onLine));
 	    var refuri=Codex.refuri;
 	    if (userinfo) {
 		fdjtDOM.dropClass(document.body,"cxNOUSER");
@@ -1391,7 +1391,7 @@ Codex.Startup=
 	    var refuri=Codex.refuri;
 	    if (!(Codex.nodeid)) {
 		Codex.nodeid=nodeid;
-		if ((nodeid)&&(Codex.saveglosses))
+		if ((nodeid)&&(Codex.persist))
 		    setLocal("nodeid("+refuri+")",nodeid);}}
 	Codex.setNodeID=setNodeID;
 
@@ -1482,7 +1482,7 @@ Codex.Startup=
 		    while (i<lim) {
 			if (typeof info[i] === 'string') {
 			    var qid=info[i++];
-			    if (Codex.saveglosses) fdjtKB.load(qid);
+			    if (Codex.persist) fdjtKB.load(qid);
 			    qids.push(qid);}
 			else {
 			    var obj=fdjtKB.Import(info[i++]);
@@ -1490,7 +1490,7 @@ Codex.Startup=
 				setLocal(obj._id,obj,true);
 			    qids.push(obj._id);}}
 		    Codex[name]=qids;
-		    if (Codex.saveglosses)
+		    if (Codex.persist)
 			setLocal(name+"("+refuri+")",qids,true);}
 		else {
 		    var obj=fdjtKB.Import(info);
@@ -1512,7 +1512,7 @@ Codex.Startup=
 		    allglosses.push(id);}}
 	    Codex.syncstamp=latest;
 	    Codex.allglosses=allglosses;
-	    if (Codex.saveglosses) {
+	    if (Codex.persist) {
 		setLocal("etc("+Codex.refuri+")",Codex.etc,true);
 		setLocal("glosses("+Codex.refuri+")",allglosses,true);}}
 
@@ -1540,7 +1540,7 @@ Codex.Startup=
 	    Codex.syncstamp=latest;
 	    Codex.allglosses=allglosses;
 	    startupLog("Done assimilating %d new glosses...",glosses.length);
-	    if (Codex.saveglosses) {
+	    if (Codex.persist) {
 		setLocal("glosses("+Codex.refuri+")",allglosses,true);
 		setLocal("etc("+Codex.refuri+")",etc,true);}
 	    dropClass(msg,"running");}
@@ -1625,13 +1625,17 @@ Codex.Startup=
 			var msg=
 			    "Sync to L"+Codex.location2pct(d.location)+
 			    ((d.page)?(" (page "+d.page+")"):"")+"?";
-			if (confirm(msg)) {
-			    if (d.location) Codex.setLocation(d.location);
-			    if (d.location)
-				Codex.GoTo(d.location,"syncLocation",false);
-			    if (d.target) Codex.setTarget(d.target);
-			    Codex.state=d;}}
-		    else {}},
+			fdjtUI.choose([
+			    {label: "No"},
+			    {label: "Yes, go to that location",
+			     handler: function() {
+				 if (d.location) Codex.setLocation(d.location);
+				 if (d.location)
+				     Codex.GoTo(d.location,"syncLocation",
+						false);
+				 if (d.target) Codex.setTarget(d.target);}}],
+				      msg);}
+		    Codex.state=d;},
 			 uri,false,
 			 function(req){
 			     if ((req.readyState == 4)&&(navigator.onLine))

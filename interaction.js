@@ -749,14 +749,17 @@
 	var qref=glosselt.value;
 	var gloss=Codex.glosses.ref(qref);
 	if (!(gloss)) return;
-	if ((window.confirm)&&
-	    (!(window.confirm("Really delete this gloss?"))))
-	    return;
-	var frag=gloss.get("frag");
-	fdjtAjax.jsonCall(
-	    function(response){glossdeleted(response,qref,frag);},
-	    "https://"+Codex.server+"/v1/delete",
-	    "gloss",qref);}
+	fdjtUI.choose([
+	    {label: "No"},
+	    {label: "Yes, delete it",
+	     handler: function(){
+		 var frag=gloss.get("frag");
+		 fdjtAjax.jsonCall(
+		     function(response){glossdeleted(response,qref,frag);},
+		     "https://"+Codex.server+"/v1/delete",
+		     "gloss",qref);}}],
+		      "Really delete this gloss?");
+	return;}
     Codex.UI.delete_ontap=delete_ontap;
     
     function respond_ontap(evt){
@@ -779,7 +782,7 @@
 	if (response===glossid) {
 	    Codex.glosses.drop(glossid);
 	    Codex.allglosses=fdjtKB.remove(Codex.allglosses,glossid);
-	    if (Codex.saveglosses)
+	    if (Codex.persist)
 		fdjtState.setLocal("glosses("+Codex.refuri+")",
 				   Codex.allglosses,true);
 	    var editform=fdjtID("CODEXEDITGLOSS_"+glossid);

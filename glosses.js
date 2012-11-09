@@ -875,7 +875,7 @@
 	if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
 	    fdjtLog.warn('missing UUID');
 	    if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
-	if (!(Codex.saveglosses))
+	if (!(Codex.persist))
 	    return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));
 	var ref=Codex.glosses.ref
 	if (!(navigator.onLine)) return queueGloss(form,evt);
@@ -997,7 +997,7 @@
 
     // Saves queued glosses
     function writeGlosses(){
-	if (!(Codex.saveglosses)) return;
+	if (!(Codex.persist)) return;
 	var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
 	if ((!(queued))||(queued.length===0)) {
 	    fdjtState.dropLocal("queued("+Codex.refuri+")");
