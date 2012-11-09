@@ -371,7 +371,7 @@ Codex.Startup=
 	    if (Codex.Trace.startup) fdjtLog("Starting user setup");
 	    // Start JSONP call to get initial or updated glosses, etc
 	    if (Codex.nologin) {}
-	    else if (getLocal("user("+Codex.refuri+")")) {
+	    else if (getLocal("codex.user")) {
 		initUserOffline();
 		Codex.sync=getLocal("sync("+Codex.refuri+")",true);
 		if (Codex.Trace.storage) 
@@ -819,8 +819,8 @@ Codex.Startup=
 
 	function initUserOffline(){
 	    var refuri=Codex.refuri;
+	    var user=getLocal("codex.user");
 	    var sync=getLocal("sync("+refuri+")",true);
-	    var user=getLocal("user("+refuri+")");
 	    var nodeid=getLocal("nodeid("+refuri+")");
 	    var userinfo=user&&getLocal(user,true);
 	    if (Codex.Trace.storage)
@@ -1381,8 +1381,7 @@ Codex.Startup=
 	    if (overlays) Codex.overlays=overlays;
 	    if (persist) {
 		setLocal(Codex.user._id,Codex.user,true);
-		setLocal("codex.user",Codex.user._id);
-		setLocal("user("+refuri+")",Codex.user._id);}
+		setLocal("codex.user",Codex.user._id);}
 	    setupUI4User();
 	    return Codex.user;}
 	Codex.setUser=setUser;
