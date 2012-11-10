@@ -82,7 +82,7 @@ var Codex=
      Trace: {
 	 startup: 0,	// Whether to debug startup
 	 config: 0,     // Whether to trace config setup/modification/etc
-	 mode: true,	// Whether to trace mode changes
+	 mode: false,	// Whether to trace mode changes
 	 nav: false,	// Whether to trace book navigation
 	 scan: false,	// Whether to trace DOM scanning
 	 search: 0,	// How much to trace searches
@@ -924,11 +924,11 @@ var CodexHUD=false;
 	if (cover) {}
 	else if (Codex.coverpage) {
 	    cover=fdjtDOM.Image(
-		Codex.coverpage,"img.codexcoverpage.sbookpage#CODEXCOVERPAGE");
+		Codex.coverpage,"img.codexfullpage.codexcoverpage.sbookpage#CODEXCOVERPAGE");
 	    fdjtDOM.prepend(Codex.content,cover);}
 	// This should generate a textual cover page
 	else {
-	    cover=fdjtDOM("div.codexfullpage#CODEXCOVERPAGE","\n",
+	    cover=fdjtDOM("div.codexcoverpage.codexfullpage#CODEXCOVERPAGE","\n",
 			  ((Codex.booktitle)?
 			   (fdjtDOM("h1.title",Codex.booktitle)):
 			   null),

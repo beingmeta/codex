@@ -167,9 +167,6 @@ var CodexSections=
 
 	    var scaled=this.scaled=[];
 
-	    CodexLayout.applyPageScaling(
-		fdjtDOM.$(".sbookpagescaled,.pagescaled"),scaled,width,height);
-	    
 	    addClass(document.body,"cxLAYOUT");
 
 	    var dups=this.dups={};
@@ -492,7 +489,6 @@ var CodexSections=
 		while (i<lim) root.appendChild(restore[i++]);}
 	    fdjtDOM.remove(fdjtDOM.getChildren(".codexsplit"));
 	    fdjtDOM.remove(fdjtDOM.getChildren(".codexsplitend"));
-	    CodexLayout.revertPageScaling(this.scaled);
 	    removeSections(this.root);};
 	
 	function removeSection(sect){
