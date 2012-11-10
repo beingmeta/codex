@@ -429,6 +429,7 @@ Codex.Startup=
 		    else Codex.Trace[trace_name]=trace_val;}}}
 
 	function Startup(force){
+	    var metadata=false;
 	    if (Codex._setup) return;
 	    if ((!force)&&(getQuery("nocodex"))) return;
 	    // This is all of the startup that we need to do synchronously

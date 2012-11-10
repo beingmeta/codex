@@ -342,7 +342,7 @@
 	    formvar="NETWORK";
 	    outlet_id=outlet.getAttribute("value");
 	    outlet={name: outlet.getAttribute("key")||outlet_id};}
-	else info=outlet;
+	else {}
 	while (i<lim) {
 	    if (inputs[i].value===outlet_id) {
 		var checkspan=getParent(inputs[i],".checkspan");

@@ -58,6 +58,7 @@ var CodexMode=
 
 	// This will contain the interactive input console (for debugging)
 	var input_console;
+	var input_button;
 
 	function initHUD(){
 	    if (fdjtID("CODEXHUD")) return;

@@ -120,8 +120,7 @@
 		    if (start<0) start=8; if (end<0) end=showname.length-8;
 		    if (start<(showname.length-end)) {
 			showname=showname.slice(0,start)+" \u2026 "+
-			    showname.slice(end);}
-		    title=tag;}
+			    showname.slice(end);}}
 		var span=fdjtDOM("span.completion",
 				 fdjtDOM("span.sectname",showname));
 		fdjtDOM(newtags,span);}
@@ -629,7 +628,7 @@
 
     function cloudEntry(term,title){
 	var sbook_index=Codex.index; var showname=term;
-	var knodule=Codex.knodule;
+	var knodule=Codex.knodule; var title="";
 	if ((typeof term === "string") && (term[0]==="\u00A7")) {
 	    // Handle section references as tags
 	    if (showname.length>20) {
