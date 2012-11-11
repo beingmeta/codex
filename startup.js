@@ -354,11 +354,11 @@ Codex.Startup=
 		 (getQuery("demo")))) {
 		fdjtUI.Reticle.setup();}
 
+	    // Initialize page information, etc
+	    initState();
+
 	    // Set up what the user sees during setup
 	    appstatus();
-
-	    
-
 	}
 	
 	function userSetup(){
@@ -1558,12 +1558,13 @@ Codex.Startup=
 	function initState() {
 	    var uri=Codex.docuri||Codex.refuri;
 	    var statestring=getLocal("state("+uri+")");
-	    if (statestring) Codex.state=state=JSON.parse(statestring);}
+	    if (statestring)
+		Codex.state=state=JSON.parse(statestring);}
 	
 	/* This initializes the sbook state to the initial location with the
 	   document, using the hash value if there is one. */ 
 	function initLocation() {
-	    var state=false;
+	    var state=Codex.state;
 	    if (!(state)) {
 		var uri=Codex.docuri||Codex.refuri;
 		var statestring=getLocal("state("+uri+")");
@@ -1581,11 +1582,12 @@ Codex.Startup=
 		if (Codex.Trace.startup>1)
 		    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
 	    if (target) Codex.GoTo(target,"initLocation/hash",true,true);
-	    else if ((state)&&(state.target)&&(fdjtID(state.target)))
-		Codex.GoTo(state.target,"initLocation/state.target",true,true);
-	    else if ((state)&&(state.location))
+	    else if ((state)&&(state.location)) {
 		Codex.GoTo(state.location,"initLocation/state.locaion",
 			   false,false);
+		if (state.target) Codex.setTarget(state.target);}
+	    else if ((state)&&(state.target)&&(fdjtID(state.target)))
+		Codex.GoTo(state.target,"initLocation/state.target",true,true);
 	    else if (Codex.start||Codex.cover||Codex.titlepage)
 		Codex.GoTo((Codex.start||Codex.cover||Codex.titlepage),
 			   "initLocation/start/cover/titlepage",
