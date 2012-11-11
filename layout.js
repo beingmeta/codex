@@ -33,7 +33,7 @@
 
 /* Reporting progress, debugging */
 	
-var CodexSections=
+Codex.SectionLayout=
     (function(){
 	var TOA=fdjtDOM.toArray;
 	var getChildren=fdjtDOM.getChildren;
@@ -132,7 +132,7 @@ var CodexSections=
 	function CodexSections(content,docinfo,opts){
 	    if (!(opts)) opts={};
 	    if (Codex.layout) {
-		if (CodexLayout instanceof CodexSections) {
+		if (CodexLayout instanceof Codex.SectionLayout) {
 		    return Codex.layout;}
 		else if (!(Codex.layout.done)) {
 		    if (Codex.layout.timer) {
@@ -1093,7 +1093,7 @@ var CodexSections=
 
 	return CodexSections;})();
 	    
-var CodexPaginate=
+Codex.Paginate=
     (function(){
 
 	var getGeometry=fdjtDOM.getGeometry;
@@ -1362,7 +1362,7 @@ var CodexPaginate=
 			dropClass(document.body,"cxSCROLL");
 			addClass(document.body,"cxBYSECT");
 			if (Codex.docinfo) {
-			    Codex.layout=new CodexSections(
+			    Codex.layout=new Codex.SectionLayout(
 				Codex.content,Codex.docinfo);
 			    Codex.sections=Codex.layout.sections;}
 			Codex.bypage=false;

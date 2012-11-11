@@ -81,6 +81,8 @@ var Codex=
      Debug: {},
      /* This is where HTML source strings for UI components are placed */
      HTML: {},
+     /* This is where we store pointers into the dom */
+     DOM: {},
      Trace: {
 	 startup: 0,	// Whether to debug startup
 	 config: 0,     // Whether to trace config setup/modification/etc
@@ -105,9 +107,6 @@ var Codex=
 	 indexing: 0,   // How much to trace document indexing
 	 gestures: 0}   // How much to trace gestures
     };
-var _sbook_setup=false;
-
-var CodexHUD=false;
 
 (function(){
 
@@ -381,7 +380,7 @@ var CodexHUD=false;
 	    else if (id=(scan.id||scan.codexbaseid)) {
 		if (id.search("CODEXTMP")===0) {}
 		else if ((prefix)&&(id.search(prefix)!==0)) {}
-		else if (hasParent(scan,CodexHUD)) return false;
+		else if (hasParent(scan,Codex.HUD)) return false;
 		else if (hasParent(scan,".codexmargin")) return false;
 		else if ((hasClass(scan,"sbooknofocus"))||
 			 ((Codex.nofocus)&&(Codex.nofocus.match(scan)))) {}
@@ -452,17 +451,17 @@ var CodexHUD=false;
 	else if (headinfo) {
 	    if (Codex.Trace.focus)
 		Codex.trace("Codex.setHead",head);
-	    CodexTOC.setHead(headinfo);
+	    Codex.TOC.setHead(headinfo);
 	    window.title=headinfo.title+" ("+document.title+")";
 	    if (Codex.head) dropClass(Codex.head,"sbookhead");
 	    addClass(head,"sbookhead");
 	    Codex.setLocation(Codex.location);
 	    Codex.head=fdjtID(headid);
-	    CodexTOC.setHead(headinfo);}
+	    Codex.TOC.setHead(headinfo);}
 	else {
 	    if (Codex.Trace.focus)
 		Codex.trace("Codex.setFalseHead",head);
-	    CodexTOC.setHead(headinfo);
+	    Codex.TOC.setHead(headinfo);
 	    Codex.head=false;}}
     Codex.setHead=setHead;
 
@@ -607,7 +606,7 @@ var CodexHUD=false;
 
     function inUI(elt){
 	if (elt.codexui) return true;
-	else if (hasParent(elt,CodexHUD)) return true;
+	else if (hasParent(elt,Codex.HUD)) return true;
 	else while (elt)
 	    if (elt.codexui) return true;
 	else if (hasClass(elt,sbookUIclasses)) return true;
@@ -784,7 +783,7 @@ var CodexHUD=false;
 	if (!(target)) {
 	    if (Codex.layout instanceof CodexLayout)
 		Codex.GoToPage(arg,caller,pushstate);
-	    else if (Codex.layout instanceof CodexSections)
+	    else if (Codex.layout instanceof Codex.SectionLayout)
 		Codex.GoToSection(arg,caller,pushstate);
 	    else if (arg.nodeType) {
 		var scan=arg;
@@ -856,7 +855,7 @@ var CodexHUD=false;
 	    fdjtLog("startPreview %o (%s)",target,caller);
 	if (Codex.layout instanceof CodexLayout) 
 	    Codex.startPagePreview(spec,caller);
-	else if (Codex.layout instanceof CodexSections)
+	else if (Codex.layout instanceof Codex.SectionLayout)
 	    Codex.startSectionPreview(spec,caller);
 	else {
 	    // This is the scrolling-based version

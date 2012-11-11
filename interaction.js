@@ -1572,8 +1572,8 @@
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	if (Codex.Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
-	if (!((target===CodexHUD.head)||
-	      (target===CodexHUD.tabs)))
+	if (!((target===Codex.DOM.head)||
+	      (target===Codex.DOM.tabs)))
 	    return;
 	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);

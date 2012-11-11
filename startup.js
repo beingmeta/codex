@@ -38,12 +38,6 @@
    else do a JSONP call.
 */
 
-var _sbook_autoindex=
-    ((typeof _sbook_autoindex === 'undefined')?(false):(_sbook_autoindex));
-/* This is used to temporarily store additional loadinfo which is
-   received before the app-cached loadinfo is processed. */
-var _sbook_newinfo=false;
-
 Codex.Startup=
     (function(){
 
@@ -259,7 +253,7 @@ Codex.Startup=
 	    fdjtLog.consoletoo=true;
 	    if (!(Codex._setup_start)) Codex._setup_start=new Date();
 	    fdjtLog("This is Codex version %s, built %s on %s, launched %s",
-		    Codex.version,sbooks_buildtime,sbooks_buildhost,
+		    Codex.version,Codex.buildtime,Codex.buildhost,
 		    Codex._setup_start.toString());
 	    if (navigator.appVersion)
 		fdjtLog("Navigator App version: %s",navigator.appVersion);
@@ -377,10 +371,14 @@ Codex.Startup=
 		if (Codex.Trace.storage) 
 		    fdjtLog("Local info for %o (%s) from %o",
 			    Codex.user._id,Codex.user.name,Codex.sync);
-		if (getLocal("glosses("+Codex.refuri+")"))
-		    _sbook_loadinfo=false;}
-	    else if (_sbook_loadinfo) {
-		var info=_sbook_loadinfo;
+		// If we have local glosses, ignore any cached
+		// _sbook_loadinfo because we've already processed it
+		if ((Codex.sync)&&
+		    (getLocal("glosses("+Codex.refuri+")"))&&
+		    (window._sbook_loadinfo))
+		    window._sbook_loadinfo=false;}
+	    else if (window._sbook_loadinfo) {
+		var info=window._sbook_loadinfo;
 		if (info.userinfo)
 		    setUser(info.userinfo,
 			    info.outlets,info.overlays,
@@ -441,7 +439,7 @@ Codex.Startup=
 		function(){
 		    var scanmsg=fdjtID("CODEXSTARTUPSCAN");
 		    addClass(scanmsg,"running");
-		    metadata=new CodexDOMScan(Codex.content);
+		    metadata=new Codex.DOMScan(Codex.content);
 		    // fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
 		    Codex.docinfo=Codex.DocInfo.map=metadata;
 		    Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
@@ -460,7 +458,7 @@ Codex.Startup=
 		    else if (Codex.bysect) {
 			if (!(Codex.layout)) {
 			    Codex.layout=
-				new CodexSections(
+				new Codex.SectionLayout(
 				    Codex.content,Codex.docinfo,Codex.window);
 			    Codex.layout.breakupPages(
 				Codex.layout.height,
@@ -511,14 +509,14 @@ Codex.Startup=
 		// Process locally stored (offline data) glosses
 		((getLocal("sync("+Codex.refuri+")"))&&initGlossesOffline),
 		// Process any preloaded (app cached) glosses
-		((_sbook_loadinfo)&&(function(){
-		    loadInfo(_sbook_loadinfo);
-		    _sbook_loadinfo=false;})),
+		((window._sbook_loadinfo)&&(function(){
+		    loadInfo(window._sbook_loadinfo);
+		    window._sbook_loadinfo=false;})),
 		// Process anything we got via JSONP ahead of processing
 		//  _sbook_loadinfo
-		((_sbook_newinfo)&&(function(){
-		    loadInfo(_sbook_newinfo);
-		    _sbook_newinfo=false;})),
+		((window._sbook_newinfo)&&(function(){
+		    loadInfo(window._sbook_newinfo);
+		    window._sbook_newinfo=false;})),
 		function(){
 		    startupLog("Finding and applying Technorati-style tags");
 		    applyAnchorTags();},
@@ -526,11 +524,11 @@ Codex.Startup=
 		    startupLog("Finding and applying tags spans");
 		    applyTagSpans();},
 		function(){
-		    if (_sbook_autoindex) {
+		    if (window._sbook_autoindex) {
 			startupLog("Indexing precompiled tags");
 			Codex.useIndexData(
-			    _sbook_autoindex,Codex.knodule,false,indexingDone);
-			_sbook_autoindex=false;}},
+			    window._sbook_autoindex,Codex.knodule,false,indexingDone);
+			window._sbook_autoindex=false;}},
 		function(){
 		    startupLog("Indexing assigned tags");
 		    Codex.indexAssignedTags(metadata,indexingDone);},
@@ -624,7 +622,7 @@ Codex.Startup=
 		CodexMode(false);
 	    else {}
 	    if (mode) CodexMode(mode);
-	    _sbook_setup=Codex._setup=new Date();
+	    Codex._setup=new Date();
 	    var msg=false;
 	    if (msg=getQuery("APPMESSAGE")) {
 		var uuid_end=false;
@@ -694,8 +692,6 @@ Codex.Startup=
 	var glossref_classes=false;
 
 	function readSettings(){
-	    if (typeof _sbook_loadinfo === "undefined") _sbook_loadinfo=false;
-	    if (typeof _sbook_glosses === "undefined") _sbook_glosses=false;
 	    // Basic stuff
 	    var useragent=navigator.userAgent;
 	    var refuri=_getsbookrefuri();
@@ -739,8 +735,7 @@ Codex.Startup=
 		Codex.server=fdjtState.getCookie["SBOOKSERVER"];
 	    else Codex.server=lookupServer(document.domain);
 	    if (!(Codex.server)) Codex.server=Codex.default_server;
-	    sbook_ajax_uri=getMeta("SBOOK.ajax",true);
-
+	    
 	    refuris.push(refuri);
 
 	    var coverpage=fdjtDOM.getLink("SBOOK.coverpage",false,true)||
@@ -984,8 +979,6 @@ Codex.Startup=
 	    if (getMeta("sbookterminal"))
 		Codex.terminal_rules=new fdjtDOM.Selector(
 		    getMeta("sbookterminal"));
-	    if (getMeta("sbookid")) 
-		sbook_idify=new fdjtDOM.Selector(getMeta("sbookid"));
 	    if ((getMeta("sbookfocus"))) 
 		Codex.focus=new fdjtDOM.Selector(getMeta("sbookfocus"));
 	    if (getMeta("sbooknofocus"))
@@ -1232,7 +1225,7 @@ Codex.Startup=
 	/* Loading meta info (user, glosses, etc) */
 
 	function loadInfo(info) {
-	    if ((_sbook_loadinfo!==info)&&(Codex.user))
+	    if ((window._sbook_loadinfo!==info)&&(Codex.user))
 		Codex.setConnected(true);
 	    if (!(Codex.user)) {
 		if (info.userinfo)
@@ -1255,12 +1248,12 @@ Codex.Startup=
 		Codex.scandone=function(){loadInfo(info);};
 		return;}
 	    else if (info.loaded) return;
-	    if (_sbook_loadinfo) {
+	    if (window._sbook_loadinfo) {
 		// This means that we have more information from the gloss
 		// server before the local app has gotten around to
 		// processing  the app-cached loadinfo.js
 		// In this case, we put it in _sbook_new_loadinfo
-		_sbook_newinfo=info;
+		window._sbook_newinfo=info;
 		return;}
 	    var refuri=Codex.refuri;
 	    if ((Codex.persist)&&
@@ -1333,7 +1326,7 @@ Codex.Startup=
 
 	function getUser() {
 	    var refuri=Codex.refuri;
-	    var loadinfo=_sbook_loadinfo||false;
+	    var loadinfo=window._sbook_loadinfo||false;
 	    if (Codex.Trace.startup>1)
 		fdjtLog("Getting user for %o cur=%o",refuri,Codex.user);
 	    if (Codex.user) return Codex.user;

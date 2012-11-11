@@ -56,6 +56,8 @@ var CodexMode=
 	var hasSuffix=fdjtString.hasSuffix;
 	var Ref=fdjtKB.Ref;
 
+	var CodexHUD=false;
+
 	// This will contain the interactive input console (for debugging)
 	var input_console;
 	var input_button;
@@ -65,39 +67,39 @@ var CodexMode=
 	    var messages=fdjtDOM("div.startupmessages");
 	    messages.innerHTML=Codex.HTML.messages;
 	    var hud=Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
-	    CodexHUD.codexui=true;
-	    CodexHUD.innerHTML=Codex.HTML.hud;
+	    hud.codexui=true;
+	    hud.innerHTML=Codex.HTML.hud;
 	    fdjtDOM.prepend(document.body,
 			    messages,
 			    fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
 				    fdjtDOM("div.indicator"),
 				    fdjtDOM("div.message")),
 			    fdjtID("HUMANE"),
-			    CodexHUD);
+			    hud);
 	    // Fill in the HUD help
 	    var hudhelp=fdjtID("CODEXHUDHELP");
 	    hudhelp.innerHTML=Codex.HTML.hudhelp;
 	    // Set up the start page and the reader help
-	    var startpage=CodexHUD.startpage=fdjtID("CODEXSTARTPAGE");
+	    var startpage=Codex.HUD.startpage=fdjtID("CODEXSTARTPAGE");
 	    // Set up the help page
-	    var help=CodexHUD.help=fdjtID("CODEXHELP");
+	    var help=Codex.DOM.help=fdjtID("CODEXHELP");
 	    help.innerHTML=Codex.HTML.help;
 	    // Set up the app splash/status page
-	    var splash=CodexHUD.appstatus=fdjtID("CODEXAPPSTATUS");
+	    var splash=Codex.DOM.appstatus=fdjtID("CODEXAPPSTATUS");
 	    splash.innerHTML=Codex.HTML.splash;
 	    // Setup heart
 	    var heart=fdjtID("CODEXHEART");
 	    heart.innerHTML=Codex.HTML.hudheart;
-	    CodexHUD.heart=heart;
+	    Codex.DOM.heart=heart;
 	    // Setup settings
 	    var settings=fdjtID("CODEXSETTINGS");
 	    settings.innerHTML=Codex.HTML.settings;
-	    CodexHUD.settings=settings;
+	    Codex.DOM.settings=settings;
 	    // Other HUD parts
-	    CodexHUD.head=fdjtID("CODEXHEAD");
-	    CodexHUD.heart=fdjtID("CODEXHEART");
-	    CodexHUD.foot=fdjtID("CODEXFOOT");
-	    CodexHUD.tabs=fdjtID("CODEXTABS");
+	    Codex.DOM.head=fdjtID("CODEXHEAD");
+	    Codex.DOM.heart=fdjtID("CODEXHEART");
+	    Codex.DOM.foot=fdjtID("CODEXFOOT");
+	    Codex.DOM.tabs=fdjtID("CODEXTABS");
 	    // Initialize search UI
 	    var search=fdjtID("CODEXSEARCH");
 	    search.innerHTML=Codex.HTML.searchbox;
@@ -107,7 +109,7 @@ var CodexMode=
 	    var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
 	    addgloss.innerHTML=Codex.HTML.addgloss;
 
-	    CodexHUD.sbooksapp=fdjtID("SBOOKSAPP");
+	    Codex.DOM.sbooksapp=fdjtID("SBOOKSAPP");
 	    
 	    if (!(Codex.svg)) {
 		var images=fdjtDOM.getChildren(hud,"img");
@@ -337,7 +339,7 @@ var CodexMode=
 		appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
 	    fdjtID("CODEXSPLASH_RETURN_TO").value=appuri;
 	    	    
-	    fdjtUI.TapHold(CodexHUD.foot,Codex.touch);
+	    fdjtUI.TapHold(Codex.DOM.foot,Codex.touch);
 
 	    fillinTabs();
 	    resizeHUD();
@@ -386,7 +388,7 @@ var CodexMode=
 	    var navhud=createNavHUD("div#CODEXTOC.hudpanel",root_info);
 	    var toc_button=fdjtID("CODEXTOCBUTTON");
 	    toc_button.style.visibility='';
-	    Codex.TOC=navhud;
+	    Codex.DOM.toc=navhud;
 	    fdjtDOM.replace("CODEXTOC",navhud);
 	    var flytoc=createStaticTOC("div#CODEXFLYTOC.hudpanel",root_info);
 	    Codex.Flytoc=flytoc;
@@ -400,13 +402,13 @@ var CodexMode=
 		else if (scan.sub.length>1) {
 		    root_info=scan; break;}
 		else scan=scan.sub[0];}
-	    var toc_div=CodexTOC(root_info,0,false,"CODEXTOC4",true);
+	    var toc_div=Codex.TOC(root_info,0,false,"CODEXTOC4",true);
 	    var div=fdjtDOM(eltspec||"div#CODEXTOC.hudpanel",toc_div);
 	    Codex.UI.addHandlers(div,"toc");
 	    return div;}
 
 	function createStaticTOC(eltspec,root_info){
-	    var toc_div=CodexTOC(root_info,0,false,"CODEXFLYTOC4");
+	    var toc_div=Codex.TOC(root_info,0,false,"CODEXFLYTOC4");
 	    var div=fdjtDOM(eltspec||"div#CODEXFLYTOC",toc_div);
 	    Codex.UI.addHandlers(div,"toc");
 	    return div;}
@@ -578,7 +580,7 @@ var CodexMode=
 	    if ((Codex.scanning)&&(mode!=="scanning")) {
 		// Scroll the scanned content (glosses, search
 		// results, etc) to reflect any motion
-		var heart=CodexHUD.heart;
+		var heart=CodexHUD.DOM.heart;
 		var height=heart.offsetHeight;
 		var scanning=Codex.scanning;
 		var content=getParent(scanning,".hudpanel");

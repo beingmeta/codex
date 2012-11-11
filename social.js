@@ -42,11 +42,6 @@
     var sbook_glossmark=false;
     var sbook_glossmark_qricons=false;
 
-    // The glosses element
-    var CodexHUDglosses=false;
-    // The user/tribe bar
-    var CodexHUDsocial=false;
-
     var hasClass=fdjtDOM.hasClass;
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;

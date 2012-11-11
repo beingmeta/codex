@@ -474,7 +474,7 @@
 	    return 1;
 	else return -1;}
 
-    var scanInfo=CodexDOMScan.scanInfo;
+    var scanInfo=Codex.DOMScan.scanInfo;
 
     function showSlice(results,div,scores,sort,cardclass){
 	var notes=new Array(results.length);

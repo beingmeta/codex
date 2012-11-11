@@ -47,7 +47,7 @@
 
 /* Building the DIV */
 
-var CodexTOC=
+Codex.TOC=
     (function(){
 	var cxicon=Codex.icon;
 	function navicon(kind){
@@ -183,8 +183,6 @@ var CodexTOC=
 	    span.frag=subsection.id;
 	    if (name) anchor.name=name;
 	    return span;}
-	CodexTOC.id="$Id$";
-	CodexTOC.version=parseInt("$Revision$".slice(10,-1));
 
 	function getTOCPrefix(string){
 	    var fourpos=string.indexOf("4");
@@ -228,7 +226,7 @@ var CodexTOC=
 	    addClass(base_elt,"codexcurhead");}
 	CodexTOC.updateTOC=updateTOC;
 
-	CodexTOC.setHead=function(headinfo){
+	CodexTOC.setHead=function setHead(headinfo){
 	    var livetitles=(fdjtDOM.$("a.codexlivehead.codextitle"));
 	    var i=0; var lim=livetitles.length;
 	    while (i<lim) livetitles[i++].style.fontSize='';
