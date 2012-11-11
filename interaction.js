@@ -1224,6 +1224,31 @@
 	else animate_glossmark(false,false);}
     Codex.UI.setTarget=setTargetUI;
 
+    /* Various actions */
+
+    function clearOfflineAction(evt){
+	evt=evt||event;
+	fdjtUI.cancel(evt);
+	Codex.clearOffline(Codex.refuri);
+	fdjtUI.alertFor(10,"Cleared locally stored glosses and other information");
+	return false;}
+    Codex.UI.clearOfflineAction=clearOfflineAction;
+
+    function forceSyncAction(evt){
+	evt=evt||event;
+	fdjtUI.cancel(evt);
+	Codex.forceSync();
+	if (!(navigator.onLine))
+	    fdjtUI.alertFor(
+		20,"You're currently offline; information will be synchronized when you're back online");
+	else if (!(Codex.connected))
+	    fdjtUI.alertFor(
+		20,"You're not currently logged into sBooks.  Information will be synchronized when you've logged in.");
+	else fdjtUI.alertFor(10,"Sychronizing gloses, etc with the remote server");
+	return false;}
+    Codex.UI.forceSyncAction=forceSyncAction;
+
+
     /* Moving forward and backward */
 
     var last_motion=false;
