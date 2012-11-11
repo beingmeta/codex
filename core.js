@@ -355,7 +355,7 @@ var Codex=
     Codex.checkTarget=function(){
 	if ((Codex.target)&&(Codex.mode==='glosses'))
 	    if (!(fdjtDOM.isVisible(Codex.target))) {
-		CodexMode(false); CodexMode(true);}};
+		Codex.setMode(false); Codex.setMode(true);}};
 
     function getDups(id){
 	if (!(id)) return false;
@@ -833,7 +833,7 @@ var Codex=
 
     // This jumps and disables the HUD at the same time
     function CodexJumpTo(target){
-	if (Codex.hudup) CodexMode(false);
+	if (Codex.hudup) Codex.setMode(false);
 	CodexGoTo(target,"JumpTo");}
     Codex.JumpTo=CodexJumpTo;
 
@@ -843,7 +843,7 @@ var Codex=
 	if (Codex.hudup) { // Figure out what mode to go to
 	    var headinfo=Codex.docinfo[target]||Codex.docinfo[target.id];
 	    if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0)))
-		CodexMode("tocscan");}
+		Codex.setMode("tocscan");}
 	CodexGoTo(target,"CodexScanTo");}
     Codex.ScanTo=CodexScanTo;
 

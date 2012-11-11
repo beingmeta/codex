@@ -1387,10 +1387,10 @@ Codex.Paginate=
 		// when done with the config or immediately.
 		if (Codex.postconfig) {
 		    Codex.postconfig.push(function(){
-			CodexMode(true);
+			Codex.setMode(true);
 			Codex.Paginate(name);});}
 		else {
-		    CodexMode(true);
+		    Codex.setMode(true);
 		    Codex.Paginate(name);}}}
 	Codex.addConfig("bodysize",updateLayoutProperty);
 	Codex.addConfig("bodyfamily",updateLayoutProperty);

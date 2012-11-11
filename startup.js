@@ -272,7 +272,7 @@ Codex.Startup=
 	    if (fdjtID("CODEXSPLASH"))
 		fdjtID("CODEXSPLASH").style.display='none';
 
-	    CodexMode("status");}
+	    Codex.setMode("status");}
 
 	function appSetup() {
 
@@ -582,7 +582,7 @@ Codex.Startup=
 		else if (appwindow.postMessage) {}
 		else {
 		    Codex.joining=getQuery("JOIN");
-		    CodexMode("sbooksapp");}}
+		    Codex.setMode("sbooksapp");}}
 	    else if (getQuery("GLOSS"))
 		Codex.glosshash=getQuery("GLOSS")[0];
 	    else if ((location.hash)&&(location.hash.length>=36)) {
@@ -619,9 +619,9 @@ Codex.Startup=
 	    else if (getQuery("startmode"))
 		mode=getQuery("startmode");
 	    else if (Codex.hidesplash) 
-		CodexMode(false);
+		Codex.setMode(false);
 	    else {}
-	    if (mode) CodexMode(mode);
+	    if (mode) Codex.setMode(mode);
 	    Codex._setup=new Date();
 	    var msg=false;
 	    if (msg=getQuery("APPMESSAGE")) {

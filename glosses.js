@@ -553,7 +553,7 @@
 
     var selecting_ontap=fdjtSelecting.tap_handler;
     function gloss_selecting_ontap(evt){
-	if (Codex.mode!=="addgloss") CodexMode("addgloss");
+	if (Codex.mode!=="addgloss") Codex.setMode("addgloss");
 	else selecting_ontap(evt);}
     function gloss_selecting_onrelease(evt){
 	Codex.UI.content_release(evt);
@@ -780,7 +780,7 @@
 	/* Turn off the target lock */
 	setGlossTarget(false);
 	Codex.setTarget(false);
-	CodexMode(false);}
+	Codex.setMode(false);}
 
     function clearGlossForm(form){
 	// Clear the UUID, and other fields
@@ -920,7 +920,7 @@
 	var glossform=(target)&&
 	    (fdjtDOM.getParent(target,".codexglossform"));
 	setGlossTarget(false);
-	CodexMode(false);
+	Codex.setMode(false);
 	if ((arg)&&((arg.cancelable)||(arg.bubbles))) {
 	    fdjtUI.cancel(evt);}
 	if (glossform) fdjtDOM.remove(glossform);}
@@ -993,7 +993,7 @@
 	if (evt) fdjtUI.cancel(evt);
 	dropClass(form.parentNode,"submitting");
 	/* Turn off the target lock */
-	setGlossTarget(false); Codex.setTarget(false); CodexMode(false);}
+	setGlossTarget(false); Codex.setTarget(false); Codex.setMode(false);}
 
     // Saves queued glosses
     function writeGlosses(){

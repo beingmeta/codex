@@ -432,14 +432,14 @@
 	var gloss=((card)&&(card.name)&&(fdjtKB.ref(card.name,Codex.glosses)));
 	var form=Codex.setGlossTarget(gloss);
 	if (!(form)) return;
-	CodexMode("addgloss");}
+	Codex.setMode("addgloss");}
     function replyicon_ontap(evt){
 	var target=fdjtUI.T(evt);
 	var card=fdjtDOM.getParent(target,'.codexcard');
 	var gloss=((card)&&(card.name)&&(fdjtKB.ref(card.name,Codex.glosses)));
 	var form=Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
 	if (!(form)) return;
-	CodexMode("addgloss");}
+	Codex.setMode("addgloss");}
 
     function relayoredit_gloss(evt){
 	var scan=fdjtUI.T(evt);
@@ -452,7 +452,7 @@
 	var gloss=Codex.glosses.ref(qref);
 	var form=Codex.setGlossTarget(gloss);
 	if (!(form)) return;
-	CodexMode("addgloss");}
+	Codex.setMode("addgloss");}
 
     function sourceIcon(info){
 	if (info) return info.pic;}

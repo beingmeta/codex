@@ -61,7 +61,7 @@
 	 onclick="if (Codex.refuri) Codex.clearOffline(Codex.refuri);"
 	 title="logout">
 	logout</a>
-      <a href="javascript:CodexMode('sbooksapp');" name="IDLINK"
+      <a href="javascript:Codex.setMode('sbooksapp');" name="IDLINK"
 	 id="CODEXUSERNAME">
 	(click to log in)</a>
     </div> <!-- .flyleafplate -->
@@ -69,32 +69,32 @@
       <img svg="http://static.beingmeta.com/g/codex/about_tab.svgz"
 	   src="http://static.beingmeta.com/g/codex/about_tab.png"
 	   alt="About" class="tab" contentid="CODEXABOUTBOOK"
-	   onclick="CodexMode.toggle('about'); return fdjtUI.cancel(event);"
+	   onclick="Codex.setMode.toggle('about'); return fdjtUI.cancel(event);"
 	   title="information about this book"/>
       <img svg="http://static.beingmeta.com/g/codex/toc_tab.svgz"
 	   src="http://static.beingmeta.com/g/codex/toc_tab.png"
 	   alt="ToC" class="tab" contentid="CODEXFLYTOC"
-	   onclick="CodexMode.toggle('flytoc'); return fdjtUI.cancel(event);"
+	   onclick="Codex.setMode.toggle('flytoc'); return fdjtUI.cancel(event);"
 	   title="Table of Contents (static)">
       <img svg="http://static.beingmeta.com/g/codex/manage_tab.svgz"
 	   src="http://static.beingmeta.com/g/codex/manage_tab.png"
 	   alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
-	   onclick="CodexMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
+	   onclick="Codex.setMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
 	   title="manage added layers for your sBook"/>
       <img svg="http://static.beingmeta.com/g/codex/settings_tab.svgz"
 	   src="http://static.beingmeta.com/g/codex/settings_tab.png"
 	   alt="Device" class="tab" contentid="CODEXSETTINGS"
-	   onclick="CodexMode.toggle('device'); return fdjtUI.cancel(event);"
+	   onclick="Codex.setMode.toggle('device'); return fdjtUI.cancel(event);"
 	   title="alter appearance and interaction"/>
       <img svg="http://static.beingmeta.com/g/codex/console_tab.svgz"
 	   src="http://static.beingmeta.com/g/codex/console_tab.png"
 	   alt="Console" class="tab" contentid="CODEXCONSOLE"
-	   onclick="CodexMode.toggle('console'); return fdjtUI.cancel(event);"
+	   onclick="Codex.setMode.toggle('console'); return fdjtUI.cancel(event);"
 	   title="show debugging console" />
       <img svg="http://static.beingmeta.com/g/codex/login_tab.svgz"
 	   src="http://static.beingmeta.com/g/codex/login_tab.png"
 	   alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
-	   onclick="CodexMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
+	   onclick="Codex.setMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
 	   title="login to sBooks" />
     </div> <!-- .tabbar -->
   </div> <!-- id="CODEXHUDBUTTONS" -->

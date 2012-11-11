@@ -107,7 +107,7 @@
 	if ((!(sources))||(!(glosses)))
 	    return; /* Warning? */
 	if (fdjtDOM.hasClass(target,"selected")) {
-	    CodexMode(false);
+	    Codex.setMode(false);
 	    fdjtDOM.cancel(evt);
 	    return;}
 	var selected=fdjtDOM.$(".selected",sources);
@@ -227,7 +227,7 @@
 	    var range=fdjtDOM.findString(target,excerpt);
 	    if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
 	else addClass(target,"highlightpassage");
-	CodexMode("glosses");}
+	Codex.setMode("glosses");}
     Codex.showGlosses=showGlosses;
 
 })();

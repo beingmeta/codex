@@ -31,7 +31,7 @@
 
 */
 
-var CodexMode=
+Codex.setMode=
     (function(){
 	// Helpful dimensions
 	var head_height=false, foot_height=false;

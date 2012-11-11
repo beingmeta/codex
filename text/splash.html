@@ -1,7 +1,7 @@
 <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
      src="http://static.beingmeta.com/g/codex/redx24x24.png"
      alt="close" class="closebutton"
-     onclick="CodexMode(false);"/>
+     onclick="Codex.setMode(false);"/>
 <img class="cover" id="CODEXSTATUSCOVER"/>
 <h1>Welcome to <span style="color: blue;">s</span>Books</h1>
 <p id="CODEXINTRO"></p>
@@ -24,7 +24,7 @@
 <form action="https://glosses.sbooks.net/flyleaf" target="SBOOKSAPP"
       NAME="CODEXSPLASHFORM" ID="CODEXSPLASHFORM"
       method="POST"
-      onsubmit="Codex.appinit=true; CodexMode('sbooksapp');">
+      onsubmit="Codex.appinit=true; Codex.setMode('sbooksapp');">
   <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE=""
 	 ID="CODEXSPLASH_RETURN_TO"/>
   <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>

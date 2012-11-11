@@ -151,12 +151,12 @@
 	if ((Codex.mode==="addgloss")&&
 	    (Codex.glosstarget===passage)) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(true);}
+	    Codex.setMode(true);}
 	else if (passage) {
 	    fdjtUI.cancel(evt);
 	    var form=Codex.setGlossTarget(passage);
 	    if (!(form)) return;
-	    CodexMode("addgloss");
+	    Codex.setMode("addgloss");
 	    Codex.setGlossForm(form);}}
 
     var excerpts=[];
@@ -252,11 +252,11 @@
 	
 	if (((Codex.hudup)||(Codex.mode))&&
 	    (Codex.mode!=="addgloss")) {
-	    CodexMode(false);
+	    Codex.setMode(false);
 	    fdjtUI.cancel(evt);
 	    return;}
 	else if (!(passage)) {
-	    if (Codex.mode) {CodexMode(false); return;}
+	    if (Codex.mode) {Codex.setMode(false); return;}
 	    if (x>(fdjtDOM.viewWidth()/3))
 		Codex.Forward(evt);
 	    else Codex.Backward(evt);
@@ -268,11 +268,11 @@
 		  (hasParent(Codex.glosstarget,passage)))&&
 		 (fdjtID("CODEXLIVEGLOSS"))) {
 	    fdjtUI.cancel(evt);
-	    CodexMode("addgloss");}
+	    Codex.setMode("addgloss");}
 	else if ((Codex.glosstarget)&&
 		 (Codex.mode==="addgloss")) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(false);}
+	    Codex.setMode(false);}
 	else {
 	    var form=Codex.setGlossTarget(passage);
 	    if (!(form)) return;
@@ -292,7 +292,7 @@
 	    var button=evt.button||0;
 	    Codex.setGlossMode(mode,form);
 	    Codex.setGlossForm(form);
-	    CodexMode("addgloss");}}
+	    Codex.setMode("addgloss");}}
 	    
     function fakeMouseDown(sX,sY,cX,cY,ctrl,alt,shift,meta,button){
 	var evt = document.createEvent("MouseEvent");
@@ -344,8 +344,8 @@
 	    if (Codex.Trace.gestures)
 		fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
 	    Codex.JumpTo(target);
-	    if (show_fulltoc) CodexMode("toc");
-	    else CodexMode("tocscan");
+	    if (show_fulltoc) Codex.setMode("toc");
+	    else Codex.setMode("tocscan");
 	    return fdjtUI.cancel(evt);}
     	else if (Codex.Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
 	else {}}
@@ -426,7 +426,7 @@
 	    if (!(gloss)) return;
 	    var form=Codex.setGlossTarget(gloss);	    
 	    if (!(form)) return;
-	    CodexMode("addgloss");}
+	    Codex.setMode("addgloss");}
  	else if (card.about) {
 	    Codex.JumpTo(card.about);}}
     function slice_held(evt){
@@ -556,8 +556,8 @@
 	else if (getParent(target,".helphud")) {
 	    var mode=fdjtDOM.findAttrib(target,"data-hudmode")||
 		fdjtDOM.findAttrib(target,"hudmode");
-	    if (mode) CodexMode(mode)
-	    else CodexMode(false);
+	    if (mode) Codex.setMode(mode)
+	    else Codex.setMode(false);
 	    return fdjtUI.cancel(evt);}
 	var card=((hasClass(target,"codexcard"))?(target):
 		  (getParent(target,".codexcard")));
@@ -572,7 +572,7 @@
 		if (!(gloss)) return;
 		var form=Codex.setGlossTarget(gloss);	    
 		if (!(form)) return;
-		CodexMode("addgloss");}
+		Codex.setMode("addgloss");}
 	    else if (card.about) {
 		Codex.JumpTo(card.about);}
 	    fdjtUI.cancel(evt);
@@ -588,7 +588,7 @@
 	else if ((about)&&(gloss=Codex.glosses.ref(about))) {
 	    var form=Codex.setGlossTarget(gloss);	    
 	    if (!(form)) return;
-	    CodexMode("addgloss");
+	    Codex.setMode("addgloss");
 	    fdjtUI.cancel(evt);}
 	else {}}
     
@@ -603,10 +603,10 @@
 	if (evt.keyCode===27) { /* Escape works anywhere */
 	    if (Codex.mode) {
 		Codex.last_mode=Codex.mode;
-		CodexMode(false);
+		Codex.setMode(false);
 		Codex.setTarget(false);
 		fdjtID("CODEXSEARCHINPUT").blur();}
-	    else if (Codex.last_mode) CodexMode(Codex.last_mode);
+	    else if (Codex.last_mode) Codex.setMode(Codex.last_mode);
 	    else {}
 	    return;}
 	else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
@@ -694,12 +694,12 @@
 	if (modearg==="humane") {
 	    fdjtLog.Humane();
 	    return;}
-	var mode=CodexMode();
+	var mode=Codex.setMode();
 	if (modearg) {
 	    if (mode===modearg) {
-		CodexMode(false); mode=false;}
+		Codex.setMode(false); mode=false;}
 	    else {
-		CodexMode(modearg); mode=modearg;}}
+		Codex.setMode(modearg); mode=modearg;}}
 	else {}
 	if (mode==="searching")
 	    Codex.setFocus(fdjtID("CODEXSEARCHINPUT"));
@@ -733,7 +733,7 @@
 	    else {}
 	    if (handled) {
 		target.value="";
-		CodexMode(false);}}}
+		Codex.setMode(false);}}}
     Codex.UI.goto_keypress=goto_keypress;
 
     /* ADDGLOSS interaction */
@@ -775,7 +775,7 @@
 	if (!(gloss)) return;
 	var form=Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
 	if (!(form)) return;
-	CodexMode("addgloss");}
+	Codex.setMode("addgloss");}
     Codex.UI.respond_ontap=respond_ontap;
 
     function glossdeleted(response,glossid,frag){
@@ -790,7 +790,7 @@
 		var editor=editform.parentNode;
 		if (editor===fdjtID('CODEXLIVEGLOSS')) {
 		    Codex.glosstarget=false;
-		    CodexMode(false);}
+		    Codex.setMode(false);}
 		fdjtDOM.remove(editor);}
 	    var renderings=fdjtDOM.Array(document.getElementsByName(glossid));
 	    if (renderings) {
@@ -965,7 +965,7 @@
 	     (Codex.Trace.gestures>1)))
 	    fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
 		    evt,mode,(isClickable(target)),
-		    Codex.scanning,Codex.hudup,CodexMode());
+		    Codex.scanning,Codex.hudup,Codex.setMode());
 	if (reticle.live) reticle.flash();
 	fdjtUI.cancel(evt);
 	if (!(mode)) return;
@@ -976,11 +976,11 @@
 	    if (hud) dropClass(hud,"hover");
 	    if (Codex.scanning) {
 		if (mode==="search") {
-		    CodexMode("searchresults"); return;}
+		    Codex.setMode("searchresults"); return;}
 		else if (mode==="allglosses") {
-		    CodexMode("allglosses"); return;}}
-	    if (fdjtDOM.hasClass(Codex.HUD,mode)) CodexMode(false);
-	    else CodexMode(mode);}
+		    Codex.setMode("allglosses"); return;}}
+	    if (fdjtDOM.hasClass(Codex.HUD,mode)) Codex.setMode(false);
+	    else Codex.setMode(mode);}
 	else if ((evt.type==='mouseover')&&(Codex.mode))
 	    return;
 	else {
@@ -999,7 +999,7 @@
 		fdjtLog("Clickable: don't dropHUD %o",evt);
 	    return;}
 	if (Codex.Trace.gestures) fdjtLog("dropHUD %o",evt);
-	fdjtUI.cancel(evt); CodexMode(false);};
+	fdjtUI.cancel(evt); Codex.setMode(false);};
 
     /* Gesture state */
 
@@ -1167,7 +1167,7 @@
 	var target=fdjtUI.T(evt);
 	if (((Codex.hudup)||(Codex.mode))&&
 	    (!(getParent(target,Codex.HUD))))
-	    CodexMode(false);}
+	    Codex.setMode(false);}
 
     /* Glossmarks */
     
@@ -1183,7 +1183,7 @@
 	if (!(glossmark)) return false;
 	fdjtUI.cancel(evt);
 	if ((Codex.mode==='glosses')&&(Codex.target===passage)) {
-	    CodexMode(true);
+	    Codex.setMode(true);
 	    return;}
 	else Codex.showGlosses(passage);}
 
@@ -1238,15 +1238,15 @@
 	    fdjtLog("Forward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
 	/* 
 	if ((Codex.mode==="glosses")||(Codex.mode==="addgloss"))
-	CodexMode(true); else */
-	CodexMode(false);
+	Codex.setMode(true); else */
+	Codex.setMode(false);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
 	    scanForward();
 	else pageForward();}
     Codex.Forward=Forward;
     function right_margin(evt){
 	if (Codex.Trace.gestures) tracetouch("right_margin",evt);
-	if (Codex.hudup) CodexMode(false);
+	if (Codex.hudup) Codex.setMode(false);
 	else Forward(evt);}
 
     function Backward(evt){
@@ -1256,8 +1256,8 @@
 	if ((last_motion)&&((now-last_motion)<100)) return;
 	else last_motion=now;
 	/* if ((Codex.mode==="glosses")||(Codex.mode==="addgloss"))
-	   CodexMode(true); else */
-	CodexMode(false);
+	   Codex.setMode(true); else */
+	Codex.setMode(false);
 	if (Codex.Trace.nav)
 	    fdjtLog("Backward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
 	if (((evt)&&(evt.shiftKey))||(n_touches>1))
@@ -1266,7 +1266,7 @@
     Codex.Backward=Backward;
     function left_margin(evt){
 	if (Codex.Trace.gestures) tracetouch("left_margin",evt);
-	if (Codex.hudup) CodexMode(false);
+	if (Codex.hudup) Codex.setMode(false);
 	else Backward(evt);}
 
 
@@ -1274,10 +1274,10 @@
 	if (Codex.Trace.gestures)
 	    fdjtLog("pageForward c=%o n=%o",Codex.curpage,Codex.pagecount);
 	if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
-	    CodexMode(false);
+	    Codex.setMode(false);
 	if ((Codex.bypage)&&(Codex.pagecount)) {
 	    var newpage=false;
-	    if (Codex.mode==="glosses") CodexMode(true);
+	    if (Codex.mode==="glosses") Codex.setMode(true);
 	    if (Codex.curpage===Codex.pagecount) {}
 	    else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward",true);}
 	else if (Codex.bysect) {
@@ -1338,10 +1338,10 @@
 	if (Codex.Trace.gestures)
 	    fdjtLog("pageBackward c=%o n=%o",Codex.curpage,Codex.pagecount);
 	if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
-	    CodexMode(false);
+	    Codex.setMode(false);
 	if ((Codex.bypage)&&(Codex.pagecount)) {
 	    var newpage=false;
-	    if (Codex.mode==="glosses") CodexMode(true);
+	    if (Codex.mode==="glosses") Codex.setMode(true);
 	    if (Codex.curpage===0) {}
 	    else {
 		Codex.GoToPage(newpage=Codex.curpage-1,"pageBackward",true);}}
@@ -1405,10 +1405,10 @@
 			Codex.showGlosses(passage);
 			return;}
 		    else i++;}}
-	    CodexMode(false);
+	    Codex.setMode(false);
 	    return;}
-	else if (Codex.scanning) CodexMode("scanning");
-	else CodexMode("tocscan");
+	else if (Codex.scanning) Codex.setMode("scanning");
+	else Codex.setMode("tocscan");
 	if (Codex.mode==="tocscan") {
 	    var head=Codex.head;
 	    var headid=head.codexbaseid||head.id;
@@ -1419,11 +1419,11 @@
 	    if (headinfo.next) Codex.GoTo(headinfo.next.elt,"scanForward");
 	    else if ((headinfo.head)&&(headinfo.head.next)) {
 		Codex.GoTo(headinfo.head.next.elt,"scanForward");
-		CodexMode("toc");}
+		Codex.setMode("toc");}
 	    else if ((headinfo.head)&&(headinfo.head.head)&&
 		     (headinfo.head.head.next)) 
 		Codex.GoTo(headinfo.head.head.next.elt,"scanForward");
-	    else CodexMode(false);
+	    else Codex.setMode(false);
 	    return;}
 	if ((Codex.scanpoints)&&
 	    ((Codex.scanoff+1)<Codex.scanpoints.length)) {
@@ -1457,10 +1457,10 @@
 			Codex.showGlosses(passage);
 			return;}
 		    else i--;}}
-	    CodexMode(false);
+	    Codex.setMode(false);
 	    return;}
-	else if (Codex.scanning) CodexMode("scanning");
-	else CodexMode("tocscan");
+	else if (Codex.scanning) Codex.setMode("scanning");
+	else Codex.setMode("tocscan");
 	if (Codex.mode==="tocscan") {
 	    var head=Codex.head;
 	    var headid=head.codexbaseid||head.id;
@@ -1471,7 +1471,7 @@
 	    if (headinfo.prev) Codex.GoTo(headinfo.prev.elt,"scanBackward");
 	    else if (headinfo.head) 
 		Codex.GoTo(headinfo.head.elt,"scanBackward");
-	    else CodexMode(false);
+	    else Codex.setMode(false);
 	    return;}
 	if ((Codex.scanpoints)&&(Codex.scanoff>0)) {
 	    Codex.scanoff--;
@@ -1498,7 +1498,7 @@
 		if (!(gloss)) return;
 		var form=Codex.setGlossTarget(gloss);
 		if (!(form)) return;
-		CodexMode("addgloss");
+		Codex.setMode("addgloss");
 		return;}
 	    else return;}
 	if ((hasClass(target,"ellipsis"))||
@@ -1516,10 +1516,10 @@
  	var scanning=Codex.scanning;
 	if (!(scanning)) return;
 	if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
-	    CodexMode("allglosses");
+	    Codex.setMode("allglosses");
 	    fdjtUI.cancel(evt);}
 	else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) {
-	    CodexMode("searchresults");
+	    Codex.setMode("searchresults");
 	    fdjtUI.cancel(evt);}
 	else {}
 	return;}
@@ -1530,26 +1530,26 @@
 	evt=evt||event;
 	if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(false);
+	    Codex.setMode(false);
 	    return;}
 	fdjtUI.cancel(evt);
-	if (Codex.hudup) {CodexMode(false); return;}
-	CodexMode.toggle("gotopage");}
+	if (Codex.hudup) {Codex.setMode(false); return;}
+	Codex.setMode.toggle("gotopage");}
     function enterLocation(evt) {
 	evt=evt||event;
 	if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(false);
+	    Codex.setMode(false);
 	    return;}
 	fdjtUI.cancel(evt);
-	if (Codex.hudup) {CodexMode(false); return;}
-	CodexMode.toggle("gotoloc");}
+	if (Codex.hudup) {Codex.setMode(false); return;}
+	Codex.setMode.toggle("gotoloc");}
     
     /* Other handlers */
 
     function flyleaf_tap(evt){
 	if (isClickable(evt)) return;
-	else CodexMode(false);}
+	else Codex.setMode(false);}
 
     function getOffX(evt){
 	evt=evt||event;
@@ -1577,29 +1577,29 @@
 	    return;
 	else if (Codex.mode) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(false);}
+	    Codex.setMode(false);}
 	else if (fdjtDOM.hasClass(document.body,"codexhelp")) {
 	    fdjtUI.cancel(evt);
 	    fdjtDOM.dropClass(document.body,"codexhelp");}
 	else if (Codex.hudup) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(false);}
+	    Codex.setMode(false);}
 	else {
 	    fdjtUI.cancel(evt);
-	    CodexMode(true);}}
+	    Codex.setMode(true);}}
     function foot_tap(evt){
 	if (Codex.Trace.gestures) fdjtLog("foot_tap %o",evt);
 	if (isClickable(evt)) return;
 	else if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(false);
+	    Codex.setMode(false);
 	    return;}}
 
     function pageinfo_tap(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
 	if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(false);
+	    Codex.setMode(false);
 	    return;}
 	var offx=getOffX(evt);
 	var offwidth=pageinfo.offsetWidth;
@@ -1611,13 +1611,13 @@
 	if (!(offx)) return;
 	fdjtUI.cancel(evt);
 	Codex.GoToPage(gopage,"pageinfo_tap",true);
-	CodexMode(false);}
+	Codex.setMode(false);}
 
     function pageinfo_hold(evt){
 	var pageinfo=fdjtID("CODEXPAGEINFO");
 	if ((Codex.hudup)||(Codex.mode)) {
 	    fdjtUI.cancel(evt);
-	    CodexMode(false);
+	    Codex.setMode(false);
 	    return;}
 	var offx=getOffX(evt);
 	var offwidth=pageinfo.offsetWidth;
@@ -1773,7 +1773,7 @@
     function back_to_reading(evt){
 	evt=evt||event;
 	fdjtUI.cancel(evt);
-	CodexMode(false);
+	Codex.setMode(false);
 	fdjtDOM.dropClass(document.body,"codexhelp");}
 
     /* Rules */
@@ -1785,7 +1785,7 @@
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	if (fdjtUI.isClickable(target)) return;
-	else CodexMode(false);}
+	else Codex.setMode(false);}
 
     function hideSplashToggle(evt) {
 	evt=evt||event;
@@ -1802,7 +1802,7 @@
 	    Codex.saveConfig();}
 	if ((newval)&&(Codex._setup)&&
 	    ((fdjtTime()-(Codex._setup.getTime()))<30000))
-	    CodexMode(false);}
+	    Codex.setMode(false);}
 
     function toggleHelp(evt){
 	evt=evt||event;

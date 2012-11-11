@@ -177,7 +177,7 @@
 	var results=Codex.query.showResults();
 	addClass(results,"hudpanel");
 	fdjtDOM.replace("CODEXSEARCHRESULTS",results);
-	CodexMode("searchresults");
+	Codex.setMode("searchresults");
 	fdjtID("CODEXSEARCHINPUT").blur();
 	fdjtID("CODEXSEARCHRESULTS").focus();
 	Codex.UI.updateScroller(fdjtID("CODEXSEARCHRESULTS"));}
@@ -187,7 +187,7 @@
 
     function startSearch(tag){
 	setQuery([tag]);
-	CodexMode("search");}
+	Codex.setMode("search");}
     Codex.startSearch=startSearch;
 
     /* Text input handlers */
@@ -261,7 +261,7 @@
 	var input=fdjtDOM.T(evt);
 	sbook_search_focus=true;
 	if ((Codex.mode)&&(Codex.mode==='searchresults'))
-	    CodexMode("search");
+	    Codex.setMode("search");
 	searchUpdate(input);}
     Codex.UI.handlers.search_focus=searchInput_focus;
 
@@ -276,7 +276,7 @@
 	var input=getChild(box,".searchinput");
 	fdjtUI.cancel(evt);
 	if (Codex.query._query.length===0) {
-	    CodexMode(false); return;}
+	    Codex.setMode(false); return;}
 	else setQuery(Codex.empty_query);
 	input.focus();}
     Codex.UI.handlers.clearSearch=clearSearch;
@@ -285,9 +285,9 @@
 	evt=evt||event;
 	if ((Codex.mode==="search")||
 	    (Codex.mode==="searchresults"))
-	    CodexMode(false);
+	    Codex.setMode(false);
 	else {
-	    CodexMode("search");
+	    Codex.setMode("search");
 	    fdjtID("CODEXSEARCHINPUT").focus();}
 	fdjtUI.cancel(evt);};
     
@@ -405,7 +405,7 @@
 	    fdjtUI.cancel(evt);}
 	else if (fdjtDOM.inherits(target,".resultcounts")) {
 	    showSearchResults(Codex.query);
-	    CodexMode("searchresults");
+	    Codex.setMode("searchresults");
 	    fdjtID("CODEXSEARCHINPUT").blur();
 	    fdjtID("CODEXSEARCHRESULTS").focus();
 	    fdjtUI.cancel(evt);}
