@@ -79,6 +79,8 @@ var Codex=
 	 // This maps device types into sets of node->event handlers
 	 handlers: {mouse: {}, kbd: {}, ios: {}}},
      Debug: {},
+     /* This is where HTML source strings for UI components are placed */
+     HTML: {},
      Trace: {
 	 startup: 0,	// Whether to debug startup
 	 config: 0,     // Whether to trace config setup/modification/etc

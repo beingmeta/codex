@@ -63,10 +63,10 @@ var CodexMode=
 	function initHUD(){
 	    if (fdjtID("CODEXHUD")) return;
 	    var messages=fdjtDOM("div.startupmessages");
-	    messages.innerHTML=sbook_messagestext;
+	    messages.innerHTML=Codex.HTML.messages;
 	    var hud=Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
 	    CodexHUD.codexui=true;
-	    CodexHUD.innerHTML=sbook_hudtext;
+	    CodexHUD.innerHTML=Codex.HTML.hud;
 	    fdjtDOM.prepend(document.body,
 			    messages,
 			    fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
@@ -76,22 +76,22 @@ var CodexMode=
 			    CodexHUD);
 	    // Fill in the HUD help
 	    var hudhelp=fdjtID("CODEXHUDHELP");
-	    hudhelp.innerHTML=sbook_hudhelp;
+	    hudhelp.innerHTML=Codex.HTML.hudhelp;
 	    // Set up the start page and the reader help
 	    var startpage=CodexHUD.startpage=fdjtID("CODEXSTARTPAGE");
 	    // Set up the help page
 	    var help=CodexHUD.help=fdjtID("CODEXHELP");
-	    help.innerHTML=sbook_helptext;
+	    help.innerHTML=Codex.HTML.help;
 	    // Set up the app splash/status page
 	    var splash=CodexHUD.appstatus=fdjtID("CODEXAPPSTATUS");
-	    splash.innerHTML=sbook_splashtext;
+	    splash.innerHTML=Codex.HTML.splash;
 	    // Setup heart
 	    var heart=fdjtID("CODEXHEART");
-	    heart.innerHTML=sbook_hudheart;
+	    heart.innerHTML=Codex.HTML.hudheart;
 	    CodexHUD.heart=heart;
 	    // Setup settings
 	    var settings=fdjtID("CODEXSETTINGS");
-	    settings.innerHTML=sbook_settingstext;
+	    settings.innerHTML=Codex.HTML.settings;
 	    CodexHUD.settings=settings;
 	    // Other HUD parts
 	    CodexHUD.head=fdjtID("CODEXHEAD");
@@ -100,12 +100,12 @@ var CodexMode=
 	    CodexHUD.tabs=fdjtID("CODEXTABS");
 	    // Initialize search UI
 	    var search=fdjtID("CODEXSEARCH");
-	    search.innerHTML=sbook_searchbox;
+	    search.innerHTML=Codex.HTML.searchbox;
 	    Codex.empty_cloud=
 		new fdjtUI.Completions(fdjtID("CODEXSEARCHCLOUD"));
 	    // Setup addgloss prototype
 	    var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
-	    addgloss.innerHTML=sbook_addgloss;
+	    addgloss.innerHTML=Codex.HTML.addgloss;
 
 	    CodexHUD.sbooksapp=fdjtID("SBOOKSAPP");
 	    
