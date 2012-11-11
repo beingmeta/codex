@@ -1528,11 +1528,19 @@
 
     function enterPageNum(evt) {
 	evt=evt||event;
+	if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
+	    fdjtUI.cancel(evt);
+	    CodexMode(false);
+	    return;}
 	fdjtUI.cancel(evt);
 	if (Codex.hudup) {CodexMode(false); return;}
 	CodexMode.toggle("gotopage");}
     function enterLocation(evt) {
 	evt=evt||event;
+	if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
+	    fdjtUI.cancel(evt);
+	    CodexMode(false);
+	    return;}
 	fdjtUI.cancel(evt);
 	if (Codex.hudup) {CodexMode(false); return;}
 	CodexMode.toggle("gotoloc");}
