@@ -7,7 +7,7 @@
 /* Gloss form */
 
 div#CODEXADDGLOSS div.codexglossform {
-    min-height: 80px;}
+    min-height: 50px;}
 
 div#CODEXADDGLOSS div.codexglossform {
     border-radius: 1em; -webkit-border-radius: 1em;
@@ -36,7 +36,6 @@ div.codexglossform form div.rightcol > div.cancelbutton {
 div.codexglossform form div.rightcol > div.cancelbutton > img {
     width: 1.5ex; height: auto;}
 
-
 div.codexglossform { display: none;}
 div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
 div.codexglossform#CODEXLIVEGLOSS {
@@ -58,6 +57,12 @@ div.codexglossform div .respdate {
     color: purple;}
 div.codexglossform div .respdate:before { content: "(From You, ";}
 div.codexglossform div .respdate:after { content: ")";}
+
+div.codexglossform.codexstartgloss form div.glossetc,
+div.codexglossform.codexstartgloss form div.excerpt,
+div.codexglossform.codexstartgloss form div.excerpt.ischecked,
+div.codexglossform.codexstartgloss form div.checkspan.postgloss {
+    display: none;}
 
 div.codexglossform div.glosseditbox {
     text-align: right; color: black; 

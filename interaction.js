@@ -273,7 +273,9 @@
 		 (Codex.mode==="addgloss")) {
 	    fdjtUI.cancel(evt);
 	    Codex.setMode(false);}
-	else if ((passage===document.body)||(!(passage.id))||(inUI(passage))) {}
+	else if ((passage===document.body)||
+		 (!(passage.id))||
+		 (inUI(passage))) {}
 	else {
 	    var form=Codex.setGlossTarget(passage);
 	    if (!(form)) return;
@@ -291,8 +293,11 @@
 	    var shift=evt.shiftKey||false;
 	    var meta=evt.metaKey||false;
 	    var button=evt.button||0;
+	    
 	    Codex.setGlossMode(mode,form);
 	    Codex.setGlossForm(form);
+	    var wrapper=getParent(form,"div.codexglossform");
+	    fdjtDOM.addClass(wrapper,"codexstartgloss");
 	    Codex.setMode("addgloss");}}
 	    
     function fakeMouseDown(sX,sY,cX,cY,ctrl,alt,shift,meta,button){
@@ -309,7 +314,9 @@
 	    timer_started=false;
 	    if (touch_timer) {
 		clearTimeout(touch_timer);
-		touch_timer=false;}}}
+		touch_timer=false;}}
+	if (Codex.mode==="addgloss") {
+	    dropClass(fdjtID("CODEXLIVEGLOSS"),"codexstartgloss");}}
     Codex.UI.content_release=content_mouseup;
 
     /* TOC handlers */
