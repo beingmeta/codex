@@ -592,10 +592,7 @@
 	    
 	/* Do completions based on those input's values */
 	Codex.outletCloud().complete();
-	Codex.glossCloud().complete();
-
-	if (input) setTimeout(function(){input.focus();},1500);
-	else {}}
+	Codex.glossCloud().complete();}
     Codex.setGlossForm=setGlossForm;
     
     function setCloudCues(cloud,tags){
@@ -639,7 +636,7 @@
 
     var addgloss_timer=false;
     
-    function bracket_click (evt){
+    function bracket_click(evt){
 	evt=evt||event;
 	var target=fdjtUI.T(evt);
 	var alt=target.alt;

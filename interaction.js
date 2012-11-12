@@ -316,7 +316,9 @@
 		clearTimeout(touch_timer);
 		touch_timer=false;}}
 	if (Codex.mode==="addgloss") {
-	    dropClass(fdjtID("CODEXLIVEGLOSS"),"codexstartgloss");}}
+	    dropClass(fdjtID("CODEXLIVEGLOSS"),"codexstartgloss");
+	    var form=fdjtDOM.$1("form",fdjtID("CODEXLIVEGLOSS"));
+	    if (form) Codex.setGlossMode(form.className);}}
     Codex.UI.content_release=content_mouseup;
 
     /* TOC handlers */
@@ -982,7 +984,7 @@
 	if ((evt.type==='click')||(evt.type==='tap')||
 	    (evt.type==='touchend')||(evt.type==='release')) {
 	    if (hud) dropClass(hud,"hover");
-	    if (Codex.scanning) {
+	    if ((Codex.scanning)&&(!(Codex.hudup))) {
 		if (mode==="search") {
 		    Codex.setMode("searchresults"); return;}
 		else if (mode==="allglosses") {
@@ -1056,15 +1058,15 @@
     
     function content_touchend(evt){
 	var target=fdjtUI.T(evt);
-	if ((touch_timer_started)&&(!(touch_timer))) {
-	    touch_timer_started=false;
+	if ((timer_started)&&(!(touch_timer))) {
+	    timer_started=false;
 	    return;}
 	if (isClickable(target)) {
 	    if (touch_timer) clearTimeout(touch_timer);
-	    touch_timer=touch_timer_started=false;
+	    touch_timer=timer_started=false;
 	    return;}
 	if (!(touch_timer)) {
-	    touch_timer_started=false;
+	    timer_started=false;
 	    return;}
 	// Identify swipes
 	if (touch_moved) {
@@ -1076,7 +1078,7 @@
 			last_x,last_y,start_x,start_y,dx,dy,adx,ady);
 	    if (adx>(ady*3)) { /* horizontal */
 		if (touch_timer) clearTimeout(touch_timer);
-		touch_timer=touch_timer_started=false;
+		touch_timer=timer_started=false;
 		fdjtUI.cancel(evt);
 		if (n_touches===1) {
 		    if (dx<0) Codex.Forward(evt);
