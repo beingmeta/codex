@@ -415,7 +415,7 @@
 	    if (exoff) exoff.value="";
 	    setCheckSpan(checkspan,false);}
 	var wrapper=getParent(form,".codexglossform");
-	addClass(wrapper,"modified");
+	// addClass(wrapper,"modified");
 	updateForm(form);}
     Codex.setExcerpt=setExcerpt;
 
