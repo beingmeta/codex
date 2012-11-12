@@ -681,7 +681,9 @@ Codex.Startup=
 		(value==="never"))
 		return false;
 	    else fdjtUI.choose(
-		[{label: "No, thanks"},
+		[{label: "No, thanks",
+		  handler: function(){
+		      setConfig("localstorage",false,true);}},
 		 {label: "Yes, keep locally",
 		  handler:
 		  function(){
