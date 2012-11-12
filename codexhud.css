@@ -935,8 +935,9 @@ body div#CODEXHUD.status img#CODEXHELPBUTTON.hudbutton {
 div#CODEXAPPSTATUS img.closebutton { float: left;}
 div#CODEXAPPSTATUS img.cover {
     float: right;
-    max-width: 25%; max-height: 25%;
-    min-width: 5em; height: auto;
+    max-width: 10em; min-width: 5em;
+    min-height: 6ex; max-height: 12ex;
+    height: auto;
     padding-right: 6px;
     display: none;}
 
@@ -958,10 +959,10 @@ div#CODEXAPPSTATUS form table th {
 div#CODEXAPPSTATUS form table td.text:first-line {
     font-weight: bold;}
 
-div#CODEXAPPSTATUS #CODEXSTATUSFOOT {
-    position: absolute; bottom: 0px; left: 0px; right: 0px; height: 1.5em;
+div#CODEXAPPSTATUS #CODEXSTATUSCONFIG {
+    position: absolute; top: 0px; left: 0px; right: 0px; height: 1.5em;
     text-align: center;}
-div#CODEXAPPSTATUS #CODEXSTATUSFOOT p {
+div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p {
     margin-left: 0px; margin-bottom: 0px; margin-top: 0px;
     padding-bottom: 0px; padding-top: 0px;
     text-align: center;}
