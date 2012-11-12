@@ -273,6 +273,7 @@
 		 (Codex.mode==="addgloss")) {
 	    fdjtUI.cancel(evt);
 	    Codex.setMode(false);}
+	else if ((passage===document.body)||(!(passage.id))||(inUI(passage))) {}
 	else {
 	    var form=Codex.setGlossTarget(passage);
 	    if (!(form)) return;
@@ -806,7 +807,7 @@
 		var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
 		if (newglosses.length===0) fdjtDOM.remove(glossmark);
 		else glossmark.glosses=newglosses;}}
-	else alert(response);}
+	else fdjtUI.alert(response);}
 
     function addoutlet_keydown(evt){
 	evt=evt||event;
@@ -1230,7 +1231,7 @@
 	evt=evt||event;
 	fdjtUI.cancel(evt);
 	Codex.clearOffline(Codex.refuri);
-	fdjtUI.alertFor(10,"Cleared locally stored glosses and other information");
+	fdjtUI.alertFor(5,"Cleared locally stored glosses and other information");
 	return false;}
     Codex.UI.clearOfflineAction=clearOfflineAction;
 
@@ -1240,11 +1241,11 @@
 	Codex.forceSync();
 	if (!(navigator.onLine))
 	    fdjtUI.alertFor(
-		20,"You're currently offline; information will be synchronized when you're back online");
+		15,"You're currently offline; information will be synchronized when you're back online");
 	else if (!(Codex.connected))
 	    fdjtUI.alertFor(
-		20,"You're not currently logged into sBooks.  Information will be synchronized when you've logged in.");
-	else fdjtUI.alertFor(10,"Sychronizing gloses, etc with the remote server");
+		15,"You're not currently logged into sBooks.  Information will be synchronized when you've logged in.");
+	else fdjtUI.alertFor(7,"Sychronizing gloses, etc with the remote server");
 	return false;}
     Codex.UI.forceSyncAction=forceSyncAction;
 
