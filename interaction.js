@@ -311,7 +311,7 @@
 			   200);
 	    fdjtDOM.addClass(form_div,"codexstartgloss");
 	    form.className=mode;
-	    Codex.setGlossForm(form);
+	    Codex.setGlossForm(form_div);
 	    Codex.setMode("addgloss");}}
  
     function fakeMouseDown(sX,sY,cX,cY,ctrl,alt,shift,meta,button){
