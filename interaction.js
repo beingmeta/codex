@@ -65,12 +65,11 @@
 
     var reticle=fdjtUI.Reticle;
 
-    var unhold=false;
-    var hold_timer=false;
+    /* For tracking gestures */
     var start_x=-1; var start_y=-1; var last_x=-1; var last_y=-1;
     var start_t=-1; var last_t=-1;
     var cxicon=Codex.icon;
-
+    
     /* Setup for gesture handling */
 
     function addHandlers(node,type){
@@ -121,6 +120,8 @@
 	var target=fdjtUI.T(evt);
 	var form=getParent(target,"FORM");
 	if (form) addClass(form,"focused");
+	var div=((form)&&(getParent(form,".codexglossform")));
+	if (div) dropClass(div,"codexstartgloss");
 	gloss_focus=form;}
     function addgloss_blur(evt){
 	evt=evt||event;
@@ -203,7 +204,6 @@
     var tap_timer=false;
     var last_text=false;
 
-    var touch_timer=false; var timer_started=false;
     function content_mousedown(evt){
 	evt=evt||event;
 	var sX=evt.screenX, sY=evt.screenY;
@@ -237,7 +237,7 @@
 	// We get the passage here so we can include it in the trace message
 	if (Codex.Trace.gestures)
 	    fdjtLog("content_mousedown (%o) on %o p=%o m=%o x=%o/%o y=%o/%o",
-		    evt,target,passage,Codex.mode,cX,sS,cY,sY);
+		    evt,target,passage,Codex.mode,cX,sX,cY,sY);
 	var id=((passage)&&(passage.codexbaseid||passage.id));
 	// Update our location
 	if ((id)&&(Codex.docinfo[id])) {
@@ -291,7 +291,6 @@
 	    var form=fdjtDOM.getChild(form_div,"form");
 	    if (!(form)) return;
 	    else fdjtUI.cancel(evt);
-	    timer_started=true;
 	    if (Codex.Trace.gestures)
 		fdjtLog("content_mousedown/addgloss (%o) %o, p=%o f=%o/%o",
 			evt,target,passage,form_div,form);
@@ -301,37 +300,14 @@
 	    var shift=evt.shiftKey||false;
 	    var meta=evt.metaKey||false;
 	    var button=evt.button||0;
-	    touch_timer=
-		setTimeout(function(){
-		    if (Codex.Trace.gestures)
-			fdjtLog("cdown/timeout (%o) %o, p=%o f=%o",evt,target,
-				passage,form,button);
-		    fakeMouseDown(
-			sX,sY,cX,cY,ctrl,alt,shift,meta,button);},
-			   200);
+	    fdjtUI.TapHold.fakePress(evt,100);
 	    fdjtDOM.addClass(form_div,"codexstartgloss");
 	    form.className=mode;
 	    Codex.setGlossForm(form_div);
 	    Codex.setMode("addgloss");}}
  
-    function fakeMouseDown(sX,sY,cX,cY,ctrl,alt,shift,meta,button){
-	var evt = document.createEvent("MouseEvent");
-	var target=document.elementFromPoint(cX,cY);
-	if (Codex.Trace.gestures)
-	    fdjtLog("fakeMouseDown t=%o s=%o,%o c=%o,%o a,s,m,b=%o,%o,%o,%o",
-		    evt,target,sx,xy,cx,cy,alt,shift,meta,button);
-	evt.initMouseEvent("mousedown", true, true,window,1,
-			   sX,sY,cX,cY,ctrl,alt,shift,meta,button,null);	
-	target.dispatchEvent(evt);}
-
     function content_mouseup(evt){
 	evt=evt||event;
-	if (timer_started) {
-	    fdjtUI.cancel(evt);
-	    timer_started=false;
-	    if (touch_timer) {
-		clearTimeout(touch_timer);
-		touch_timer=false;}}
 	if (Codex.mode==="addgloss") {
 	    dropClass(fdjtID("CODEXLIVEGLOSS"),"codexstartgloss");
 	    var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
@@ -1060,9 +1036,6 @@
     function content_touchmove(evt){
 	fdjtUI.cancel(evt);
 	touch_moves++; touch_moved=true;
-	if (touch_timer) {
-	    clearTimeout(touch_timer);
-	    touch_timer=false;}
 	var touches=evt.touches;
 	var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
 	touch_x=touch.screenX;
@@ -1075,16 +1048,7 @@
     
     function content_touchend(evt){
 	var target=fdjtUI.T(evt);
-	if ((timer_started)&&(!(touch_timer))) {
-	    timer_started=false;
-	    return;}
-	if (isClickable(target)) {
-	    if (touch_timer) clearTimeout(touch_timer);
-	    touch_timer=timer_started=false;
-	    return;}
-	if (!(touch_timer)) {
-	    timer_started=false;
-	    return;}
+	if (isClickable(target)) return;
 	// Identify swipes
 	if (touch_moved) {
 	    var dx=touch_x-start_x; var dy=touch_y-start_y;
@@ -1094,8 +1058,6 @@
 		fdjtLog("touchend/gesture l=%o,%o s=%o,%o d=%o,%o |d|=%o,%o",
 			last_x,last_y,start_x,start_y,dx,dy,adx,ady);
 	    if (adx>(ady*3)) { /* horizontal */
-		if (touch_timer) clearTimeout(touch_timer);
-		touch_timer=timer_started=false;
 		fdjtUI.cancel(evt);
 		if (n_touches===1) {
 		    if (dx<0) Codex.Forward(evt);
@@ -1155,8 +1117,6 @@
 	if (page_x<0) page_x=touch.screenX;
 	if (page_y<0) page_y=touch.screenY;
 	if (Codex.Trace.gestures>1) tracetouch("hud_touchmove",evt);
-	if ((hold_timer)&&((adx+ady)>4)) {
-	    clearTimeout(hold_timer); hold_timer=false;}
 	last_x=touch.clientX; last_y=touch.clientY;
 	touch_moved=true;
 	page_x=touch.screenX; page_y=touch.screenY;
