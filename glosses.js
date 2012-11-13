@@ -322,13 +322,10 @@
     
     /***** Adding outlets ******/
     function addOutlet(form,outlet,formvar,checked) {
-	if (typeof formvar === 'undefined') formvar="SHARE";
 	if (typeof checked === 'undefined') checked=true;
 	var wrapper=getParent(form,".codexglossform");
 	addClass(wrapper,"modified");
 	var outletspan=getChild(form,".outlets");
-	var inputs=getInputs(outletspan,formvar);
-	var i=0; var lim=inputs.length;
 	var outlet_id=((typeof outlet === 'string')?(outlet):(outlet._id));
 	if (typeof outlet === 'string') {
 	    if ((outlet[0]==='@')||
@@ -337,21 +334,22 @@
 	    else {
 		outlet={name: outlet};
 		spanspec="span.checkspan.email";
-		formvar="EMAIL";}}
+		if (!(formvar)) formvar="EMAIL";}}
 	else if (outlet.nodeType) {
-	    formvar="NETWORK";
+	    if (!(formvar)) formvar="NETWORK";
 	    outlet_id=outlet.getAttribute("value");
 	    outlet={name: outlet.getAttribute("key")||outlet_id};}
 	else {}
+	if (!(formvar)) formvar="SHARE";
+	var inputs=getInputs(outletspan,formvar);
+	var i=0; var lim=inputs.length;
 	while (i<lim) {
 	    if (inputs[i].value===outlet_id) {
 		var checkspan=getParent(inputs[i],".checkspan");
 		setCheckSpan(checkspan,checked);
 		return checkspan;}
 	    else i++;}
-	var spanspec=((formvar)?
-		      ("span.checkspan.outlet."+formvar.toLowerCase()):
-		      ("span.checkspan.outlet"));
+	var spanspec=("span.checkspan.outlet."+formvar.toLowerCase());
 	var checkspan=fdjtUI.CheckSpan(
 	    spanspec,formvar||"SHARE",outlet_id,checked,
 	    "→",outlet.nick||outlet.name);
@@ -959,7 +957,8 @@
 	while (i<lim) {
 	    var input=inputs[i++];
 	    if (input.checked) {
-		var checkspan=addOutlet(proto,input.value,input.checked);
+		var checkspan=addOutlet(
+		    proto,input.value,input.name,input.checked);
 		addClass(checkspan,"waschecked");
 		n_added++;}}
 	if (n_added<6) {
@@ -967,7 +966,8 @@
 		var input=inputs[i++];
 		if (n_added>5) continue;
 		if (!(input.checked)) {
-		    var checkspan=addOutlet(proto,input.value,input.checked);
+		    var checkspan=addOutlet(
+			proto,input.value,input.name,input.checked);
 		    n_added++;}}}}
 
     // Queues a gloss when offline
