@@ -162,7 +162,8 @@ Codex.Startup=
 		    (config[setting]!==default_config[setting])) {
 		    saved[setting]=config[setting];}}
 	    if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
-	    setLocal("codex.config",JSON.stringify(saved));}
+	    setLocal("codex.config",JSON.stringify(saved));
+	    saved_config=saved;}
 	Codex.saveConfig=saveConfig;
 
 	function initConfig(){
