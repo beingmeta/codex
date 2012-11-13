@@ -418,7 +418,7 @@ Codex.setMode=
 	function setHUD(flag,clearmode){
 	    if (typeof clearmode === 'undefined') clearmode=true;
 	    // clearmode=((Codex.mode!=='scanning')&&(Codex.mode!=='tocscan'));
-	    if (Codex.Trace.gestures)
+	    if ((Codex.Trace.gestures)||(Codex.Trace.mode))
 		fdjtLog("setHUD %o mode=%o hudup=%o bc=%o hc=%o",
 			flag,Codex.mode,Codex.hudup,
 			document.body.className,
