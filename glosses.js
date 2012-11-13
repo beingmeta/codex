@@ -541,7 +541,8 @@
 	var dups=Codex.getDups(target);
 	Codex.selecting=
 	    fdjtSelecting(dups,{ontap: gloss_selecting_ontap,
-				onrelease: gloss_selecting_onrelease});
+				onrelease: gloss_selecting_onrelease,
+				fortouch: Codex.touch});
 	if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
 	    Codex.selecting.setString(gloss.excerpt);
 	Codex.selecting.onchange=function(sel){
