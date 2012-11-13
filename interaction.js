@@ -236,8 +236,8 @@
 	var passage=getTarget(target);
 	// We get the passage here so we can include it in the trace message
 	if (Codex.Trace.gestures)
-	    fdjtLog("new_mousedown (%o) on %o passage=%o mode=%o",
-		    evt,target,passage,Codex.mode);
+	    fdjtLog("content_mousedown (%o) on %o p=%o m=%o x=%o/%o y=%o/%o",
+		    evt,target,passage,Codex.mode,cX,sS,cY,sY);
 	var id=((passage)&&(passage.codexbaseid||passage.id));
 	// Update our location
 	if ((id)&&(Codex.docinfo[id])) {
@@ -250,14 +250,19 @@
 		if (Codex.updatePageDisplay)
 		    Codex.updatePageDisplay(Codex.curpage,Codex.location);}}
 	
-	if (((Codex.hudup)||(Codex.mode))&&
-	    (Codex.mode!=="addgloss")) {
+	if (((Codex.hudup)||(Codex.mode))&&(Codex.mode!=="addgloss")) {
+	    if (Codex.Trace.gestures)
+		fdjtLog("cdown/showcontent (%o) t=%o h=%o m=%o",evt,target,
+			Codex.hudup,Codex.mode);
 	    Codex.setMode(false);
 	    fdjtUI.cancel(evt);
 	    return;}
 	else if (!(passage)) {
+	    if (Codex.Trace.gestures)
+		fdjtLog("cdown/nopassage (%o) %o, m=%o, x=%o, y=%o",evt,target,
+			Codex.mode,cX,cY);
 	    if (Codex.mode) {Codex.setMode(false); return;}
-	    if (x>(fdjtDOM.viewWidth()/3))
+	    if (cX>(fdjtDOM.viewWidth()/3))
 		Codex.Forward(evt);
 	    else Codex.Backward(evt);
 	    gesture_start=false;
@@ -267,42 +272,54 @@
 		 ((hasParent(passage,Codex.glosstarget))||
 		  (hasParent(Codex.glosstarget,passage)))&&
 		 (fdjtID("CODEXLIVEGLOSS"))) {
+	    if (Codex.Trace.gestures)
+		fdjtLog("cdown/reveal (%o) %o, p=%o, gt=%o",evt,target,
+			passage,Codex.glosstarget);
 	    fdjtUI.cancel(evt);
 	    Codex.setMode("addgloss");}
-	else if ((Codex.glosstarget)&&
-		 (Codex.mode==="addgloss")) {
+	else if ((Codex.glosstarget)&&(Codex.mode==="addgloss")) {
+	    if (Codex.Trace.gestures)
+		fdjtLog("cdown/close (%o) %o, p=%o, gt=%o",evt,target,
+			passage,Codex.glosstarget);
 	    fdjtUI.cancel(evt);
 	    Codex.setMode(false);}
-	else if ((passage===document.body)||
-		 (!(passage.id))||
-		 (inUI(passage))) {}
+	else if ((passage===document.body)||(!(passage.id))||(inUI(passage))) {
+	    if (Codex.Trace.gestures)
+		fdjtLog("cdown/nocontent (%o) %o, p=%o",evt,target,passage);}
 	else {
-	    var form=Codex.setGlossTarget(passage);
+	    var form_div=Codex.setGlossTarget(passage);
+	    var form=fdjtDOM.getChild(form_div,"form");
 	    if (!(form)) return;
 	    else fdjtUI.cancel(evt);
 	    timer_started=true;
-	    touch_timer=
-		setTimeout(function(){
-		    fakeMouseDown(
-			sX,sY,cX,cY,ctrl,alt,shift,meta,button);},
-			   200);
-	    var form_elt=fdjtDOM.getChild(form,"form");
+	    if (Codex.Trace.gestures)
+		fdjtLog("content_mousedown/addgloss (%o) %o, p=%o f=%o/%o",
+			evt,target,passage,form_div,form);
 	    var mode=((evt.shiftKey)?("addtag"):("editnote"));
 	    var ctrl=evt.ctrlKey||false;
 	    var alt=evt.altKey||false;
 	    var shift=evt.shiftKey||false;
 	    var meta=evt.metaKey||false;
 	    var button=evt.button||0;
-	    
-	    Codex.setGlossMode(mode,form);
+	    touch_timer=
+		setTimeout(function(){
+		    if (Codex.Trace.gestures)
+			fdjtLog("cdown/timeout (%o) %o, p=%o f=%o",evt,target,
+				passage,form,button);
+		    fakeMouseDown(
+			sX,sY,cX,cY,ctrl,alt,shift,meta,button);},
+			   200);
+	    fdjtDOM.addClass(form_div,"codexstartgloss");
+	    form.className=mode;
 	    Codex.setGlossForm(form);
-	    var wrapper=getParent(form,"div.codexglossform");
-	    fdjtDOM.addClass(wrapper,"codexstartgloss");
 	    Codex.setMode("addgloss");}}
-	    
+ 
     function fakeMouseDown(sX,sY,cX,cY,ctrl,alt,shift,meta,button){
 	var evt = document.createEvent("MouseEvent");
 	var target=document.elementFromPoint(cX,cY);
+	if (Codex.Trace.gestures)
+	    fdjtLog("fakeMouseDown t=%o s=%o,%o c=%o,%o a,s,m,b=%o,%o,%o,%o",
+		    evt,target,sx,xy,cx,cy,alt,shift,meta,button);
 	evt.initMouseEvent("mousedown", true, true,window,1,
 			   sX,sY,cX,cY,ctrl,alt,shift,meta,button,null);	
 	target.dispatchEvent(evt);}
@@ -317,7 +334,7 @@
 		touch_timer=false;}}
 	if (Codex.mode==="addgloss") {
 	    dropClass(fdjtID("CODEXLIVEGLOSS"),"codexstartgloss");
-	    var form=fdjtDOM.$1("form",fdjtID("CODEXLIVEGLOSS"));
+	    var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
 	    if (form) Codex.setGlossMode(form.className);}}
     Codex.UI.content_release=content_mouseup;
 
