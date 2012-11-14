@@ -110,6 +110,7 @@ Codex.setMode=
 	    addgloss.innerHTML=Codex.HTML.addgloss;
 
 	    Codex.DOM.sbooksapp=fdjtID("SBOOKSAPP");
+	    Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
 	    
 	    if (!(Codex.svg)) {
 		var images=fdjtDOM.getChildren(hud,"img");
@@ -580,7 +581,7 @@ Codex.setMode=
 	    if ((Codex.scanning)&&(mode!=="scanning")) {
 		// Scroll the scanned content (glosses, search
 		// results, etc) to reflect any motion
-		var heart=CodexHUD.DOM.heart;
+		var heart=Codex.DOM.heart;
 		var height=heart.offsetHeight;
 		var scanning=Codex.scanning;
 		var content=getParent(scanning,".hudpanel");

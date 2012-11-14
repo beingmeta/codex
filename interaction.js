@@ -412,8 +412,20 @@
 	return ((hasClass(target,"codexcard"))?(target):
 		(getParent(target,".codexcard")));}
 
+    var scroll_pos={};
+
+    function getScrollPos(slice){
+	if ((!(slice))||(!(slice.id))) return false;
+	else if (Codex.scrollers[slice.id])
+	    return Codex.scrollers[slice.id].scrollStartY;
+	else return slice.scrollTop;}
+
     function slice_tapped(evt){
 	var target=fdjtUI.T(evt);
+	var slice=getParent(card,".codexslice");
+	// if (scrolled(slice)) return;
+	if (Codex.Trace.gestures)
+	    fdjtLog("slice_held %o: %o",evt,target);
 	if (getParent(target,".ellipsis")) {
 	    fdjtUI.Ellipsis.toggle(target);
 	    fdjtUI.cancel(evt);
@@ -435,6 +447,11 @@
     function slice_held(evt){
 	var card=getCard(fdjtUI.T(evt||event));
 	if (!(card)) return;
+	var slice=getParent(card,".codexslice");
+	// if (scrolled(slice)) return;
+	if (Codex.Trace.gestures)
+	    fdjtLog("slice_held %o: %o, scanning=%o",
+		    evt,card,Codex.scanning);
 	if (Codex.scanning===card) return;
 	var clone=card.cloneNode(true);
 	clone.id="CODEXSCAN";
@@ -486,8 +503,9 @@
 	return fdjtUI.cancel(evt);}
     function slice_released(evt){
 	var card=getCard(fdjtUI.T(evt||event));
-	if (card) {
-	    Codex.stopPreview("slice_released");}}
+	if (Codex.Trace.gestures)
+	    fdjtLog("slice_released %o: %o, scanning=%o",evt,card);
+	if (card) {Codex.stopPreview("slice_released");}}
 
     function getTargetDup(scan,target){
 	var targetid=target.id;
@@ -555,6 +573,8 @@
 
     function hud_tapped(evt,target){
 	if (!(target)) target=fdjtUI.T(evt);
+	if (Codex.Trace.gestures)
+	    fdjtLog("hud_tapped %o: %o",evt,target);
 	if (isClickable(target)) return;
 	else if (getParent(target,".helphud")) {
 	    var mode=fdjtDOM.findAttrib(target,"data-hudmode")||
@@ -1914,7 +1934,9 @@
 	 glossmark: {touchstart: glossmark_tapped,
 		     touchend: cancel},
 	 // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
-	 summary: {tap: slice_tapped, hold: slice_held,release: slice_released},
+	 summary: {tap: slice_tapped,
+		   hold: slice_held,
+		   release: slice_released},
 	 "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
 	 "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
 	 ".helphud": {click: Codex.UI.dropHUD},

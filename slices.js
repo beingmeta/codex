@@ -818,7 +818,7 @@
     /* Results handlers */
 
     function setupSummaryDiv(div){
-	fdjtUI.TapHold(div,Codex.touch);
+	fdjtUI.TapHold(div,Codex.touch,500,20);
 	Codex.UI.addHandlers(div,'summary');}
     Codex.UI.setupSummaryDiv=setupSummaryDiv;
     
