@@ -688,8 +688,11 @@ Codex.Startup=
 		 {label: "Yes, keep locally",
 		  handler:
 		  function(){
-		      setConfig("localstorage",true,true);}}],
-		"Store personal information for offline/faster reading?");
+		      setConfig("localstorage",true,true);}},
+		{label: "Ask me later",
+		  handler:
+		  function(){setConfig("localstorage",false,false);}}],
+		"Store personal information on this computer for offline reading and faster loading?");
 	    return false;}
 	
 	var glossref_classes=false;
