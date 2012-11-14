@@ -966,6 +966,8 @@ div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p {
     margin-left: 0px; margin-bottom: 0px; margin-top: 0px;
     padding-bottom: 0px; padding-top: 0px;
     text-align: center;}
+div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p.checkspan {
+    margin-left: 50px; margin-right: 50px;}
 
 img.codexclosehud {
     position: absolute; border-radius: 50%; border: solid red 3px;
