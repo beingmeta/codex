@@ -524,6 +524,8 @@ var Codex=
 	if (Codex.target) {
 	    var old_target=Codex.target, oldid=old_target.id;
 	    var old_targets=getDups(oldid);
+	    dropClass(old_target,"codextarget");
+	    dropClass(old_target,"codexnewtarget");
 	    dropClass(old_targets,"codextarget");
 	    dropClass(old_targets,"codexnewtarget");
 	    clearHighlights(old_targets);
