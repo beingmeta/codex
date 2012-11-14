@@ -922,7 +922,7 @@ Codex.setMode=
 		    else while (i<lim) {
 			var term=terms[i++];
 			var h=Codex.highlightTerm(term,target,info,spellings);
-			highlights=highlight.concat(h);}}}
+			highlights=highlights.concat(h);}}}
 	    Codex.setTarget(elt);
 	    delete Codex.scanpoints;
 	    delete Codex.scanoff;
