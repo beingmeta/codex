@@ -1012,13 +1012,13 @@ Codex.setMode=
 	    Codex.saveConfig(settings);
 	    fdjtDOM.replace("CODEXSETTINGSMESSAGE",
 			    fdjtDOM("span#CODEXSETTINGSMESSAGE",
-				    "Your new settings have been saved."));};
+				    "Your settings have been saved."));};
 	
 	Codex.UI.settingsCancel=function(){
 	    Codex.setConfig(Codex.getConfig());
 	    fdjtDOM.replace("CODEXSETTINGSMESSAGE",
 			    fdjtDOM("span#CODEXSETTINGSMESSAGE",
-				    "The current settings have been restored."));};
+				    "Your changes have been discarded."));};
 
 	/* Console methods */
 	function console_eval(){

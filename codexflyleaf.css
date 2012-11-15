@@ -75,6 +75,9 @@ div#CODEXHUD div#CODEXHEART table.settings tr.buttons td
   span#CODEXSETTINGSMESSAGE {
       float: left; color: red;}
 
+table.settings .checkspan.ischecked {
+    font-weight: normal; color: rgb(0,61,111); font-size: 110%;}
+
 div#CODEXHUD.settings div#CODEXHEART table.settings .smallbutton {
     cursor: pointer;
     margin-left: 4px; margin-right: 4px; padding: 3px;
