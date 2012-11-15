@@ -34,9 +34,6 @@
 
     div.helpbox.atfoot { left: 55px; right: 55px;}
     div#CODEXHUD div#CODEXSTARTPAGE.hudpanel { left: 55px; right: 55px;}
-
-    div#CODEXHUD.openhead img.codexclosehud {
-	top: 84px; right: 4px; z-index: 300; opacity: 0.7;}
 }
 
 

@@ -23,8 +23,6 @@
     border: solid transparent 4px; padding: 0px;
     border-top: 0px;}
 #CODEXHEAD { left: 50px; right: 50px; }
-/* #CODEXHUD.openhead #CODEXHEAD, #CODEXSCANNER  {
-    left: 100px; right: 100px; } */
 #CODEXSCANNER { display: none; }
 /* #CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; } */
 
@@ -969,11 +967,18 @@ div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p.checkspan {
     margin-left: 50px; margin-right: 50px;}
 
 img.codexclosehud {
-    position: absolute; border-radius: 50%; border: solid red 3px;
+    border-radius: 50%; border: solid red 3px;
     width: 32px; height: 32px;
     display: none;}
-div#CODEXHUD.openhead img.codexclosehud {
-    right: 55px; top: 2px; display: block;}
+#CODEXSHOWTEXT img.codexclosehud {
+    margin-left: 5px;
+    vertical-align: middle;
+    display: inline-block;}
+img.codexclosehud#CODEXSTOPSCAN {
+    position: fixed; right: 0px; top: 0px;}
+#CODEXHUD.tocscan img.codexclosehud#CODEXSTOPSCAN,
+#CODEXHUD.scanning img.codexclosehud#CODEXSTOPSCAN {
+    z-index: 500; display: block;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
