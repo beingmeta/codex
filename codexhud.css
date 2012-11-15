@@ -158,6 +158,9 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     cursor: pointer;
     display: none;}
 
+body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    display: block;}
+
 @media screen and (min-width: 800px) {
     div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT { font-size: 200%; }
 }
