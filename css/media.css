@@ -10,27 +10,27 @@
     #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
     body.hudup #CODEXHUD.openhead #CODEXHEAD,
     body #CODEXHUD.openhead.addgloss #CODEXHEAD,{
-	left: 0px; right: 0px; }
+        left: 0px; right: 0px; }
     #CODEXHUD.openhead.tocscan #CODEXHEAD {
-	left: 50px; right: 50px;}
+        left: 50px; right: 50px;}
 
     body.hudup #CODEXHUD.openhead img.hudbutton[alt="toc"],
     body.hudup #CODEXHUD.openhead img.hudbutton[alt="search"],
     body.hudup #CODEXHUD.openhead img.hudbutton[alt="searchresults"] {
-	display: none;}
+        display: none;}
 
     #CODEXHEART {left: 20px; right: 20px;}
 
     div.fdjtprogress#CODEXLAYOUTMESSAGE {
-	left: 50px; right: 50px;}
+        left: 50px; right: 50px;}
 
     div#CODEXPAGE { left: 1.5em; right: 1.5em;}
 
     /*
     .codexglossmark {margin-right: -2em; margin-top: -1ex;}
     body .codexglossmark:hover, body .codexglossmark.hover {
-	margin-right: -8px; }
-	*/
+        margin-right: -8px; }
+        */
 
     div.helpbox.atfoot { left: 55px; right: 55px;}
     div#CODEXHUD div#CODEXSTARTPAGE.hudpanel { left: 55px; right: 55px;}
@@ -40,5 +40,6 @@
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
+;;;  indent-tabs-mode: nil ***
 ;;;  End: ***
 */

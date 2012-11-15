@@ -4,15 +4,15 @@
        src="http://static.beingmeta.com/g/codex/redx64x64.png"
        onclick="Codex.UI.handlers.clearSearch(event); fdjtUI.cancel(event); return false;"/>
   <input id="CODEXSEARCHINPUT"
-	 type="TEXT" class="autoprompt searchinput"
-	 name="QTEXT" value="" isempty="yes" autocomplete="off"
-	 onfocus="Codex.UI.handlers.search_focus(event);"
-	 onblur="Codex.UI.handlers.search_blur(event);"
-	 onkeydown="Codex.UI.handlers.search_keyup(event);"
-	 completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
-	 placeholder="type or click tags"
-	 completions="CODEXSEARCHCLOUD"
-	 results="CODEXSEARCHRESULTS"/>
+         type="TEXT" class="autoprompt searchinput"
+         name="QTEXT" value="" isempty="yes" autocomplete="off"
+         onfocus="Codex.UI.handlers.search_focus(event);"
+         onblur="Codex.UI.handlers.search_blur(event);"
+         onkeydown="Codex.UI.handlers.search_keyup(event);"
+         completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
+         placeholder="type or click tags"
+         completions="CODEXSEARCHCLOUD"
+         results="CODEXSEARCHRESULTS"/>
   <span class="ampersand">&amp;</span>
   <strong id="CODEXSEARCHLABEL">Searching for </strong>
   <span id="CODEXSEARCHPROMPT">
@@ -25,17 +25,18 @@
   <div class="noresults">No results</div>
   <div class="noquery">Add tags to refine query</div>
   <span class="resultcount"
-	onclick="Codex.showSearchResults(); fdjtUI.cancel(event);">
+        onclick="Codex.showSearchResults(); fdjtUI.cancel(event);">
   </span>
   <span class="sep vbar">|</span>
   <span class="refinecount"
-	onclick="Codex.setMode('search'); fdjtUI.cancel(event);">
+        onclick="Codex.setMode('search'); fdjtUI.cancel(event);">
   </span>
 </div>
 <!--
      /* Emacs local variables
      ;;;  Local variables: ***
      ;;;  compile-command: "cd ../..; make" ***
+     ;;;  indent-tabs-mode: nil ***
      ;;;  End: ***
      */
     -->

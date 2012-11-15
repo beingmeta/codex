@@ -804,46 +804,47 @@ div#CODEXSPLASH div.byline {
 
 @media screen and (min-width: 300px) and (max-width: 500px) {
     div#CODEXPAGE {
-	left: 25px; right: 25px;}
+        left: 25px; right: 25px;}
     }
 @media screen and (max-width: 300px) {
     div#CODEXPAGE {
-	left: 10px; right: 10px;}
+        left: 10px; right: 10px;}
     }
 
 @media screen and (min-height: 300px) and (max-height: 500px) {
     div#CODEXPAGE {
-	top: 25px; bottom: 25px;}
+        top: 25px; bottom: 25px;}
     body div.codexmargin#CODEXPAGEHEAD, body div.codexmargin#CODEXPAGEFOOT {
-	height: 25px;}
+        height: 25px;}
     body div#CODEXHUD div#CODEXHUDBUTTONS {
-	opacity: 0;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	filter: alpha(opacity=0);
-	-webkit-opacity: 0.00;
-	-khtml-opacity: 0.00;
-	-moz-opacity: 0.00;
-	-o-opacity: 0.00;}
+        opacity: 0;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        filter: alpha(opacity=0);
+        -webkit-opacity: 0.00;
+        -khtml-opacity: 0.00;
+        -moz-opacity: 0.00;
+        -o-opacity: 0.00;}
 
     }
 @media screen and (max-height: 300px) {
     div#CODEXPAGE {
-	top: 10px; bottom: 10px;}
+        top: 10px; bottom: 10px;}
     body div.codexmargin#CODEXPAGEHEAD, body div.codexmargin#CODEXPAGEFOOT {
-	height: 10px;}
+        height: 10px;}
     body div#CODEXHUD div#CODEXHUDBUTTONS {
-	opacity: 0;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	filter: alpha(opacity=0);
-	-webkit-opacity: 0.00;
-	-khtml-opacity: 0.00;
-	-moz-opacity: 0.00;
-	-o-opacity: 0.00;}
+        opacity: 0;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        filter: alpha(opacity=0);
+        -webkit-opacity: 0.00;
+        -khtml-opacity: 0.00;
+        -moz-opacity: 0.00;
+        -o-opacity: 0.00;}
     }
 
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
+;;;  indent-tabs-mode: nil ***
 ;;;  End: ***
 */
 

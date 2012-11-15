@@ -7,19 +7,19 @@
   <div id="CODEXKEYBOARDHELP"></div>
   <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
     <input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
-	   CHECKED>
+           CHECKED>
     Show keyboard help
   </div>
 </div>
 <div id="CODEXSCANNER">
   <span class="expander"
-	onclick="fdjtDOM.toggleClass('CODEXSCANNER','expanded');">
+        onclick="fdjtDOM.toggleClass('CODEXSCANNER','expanded');">
     <img svg="http://static.beingmeta.com/g/codex/twistyclosed.svgz"
-	 src="http://static.beingmeta.com/g/codex/twistyclosed64x64.png"
-	 alt="+"/>
+         src="http://static.beingmeta.com/g/codex/twistyclosed64x64.png"
+         alt="+"/>
     <img svg="http://static.beingmeta.com/g/codex/twistyopen.svgz"
-	 src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
-	 alt="-"/>
+         src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
+         alt="-"/>
   </span>
   <div id="CODEXSCAN"></div>
 </div>
@@ -59,57 +59,57 @@
   <div id="CODEXHUDBUTTONS">
     <div class="sbookplate">
       <a href="https://auth.sbooks.net/admin/logout" class="logout"
-	 onclick="if (Codex.refuri) Codex.clearOffline(Codex.refuri);"
-	 title="logout">
-	logout</a>
+         onclick="if (Codex.refuri) Codex.clearOffline(Codex.refuri);"
+         title="logout">
+        logout</a>
       <a href="javascript:Codex.setMode('sbooksapp');" name="IDLINK"
-	 id="CODEXUSERNAME">
-	(click to log in)</a>
+         id="CODEXUSERNAME">
+        (click to log in)</a>
     </div> <!-- .flyleafplate -->
     <div class="tabbar icons" id="CODEXTABS">
       <img svg="http://static.beingmeta.com/g/codex/about_tab.svgz"
-	   src="http://static.beingmeta.com/g/codex/about_tab.png"
-	   alt="About" class="tab" contentid="CODEXABOUTBOOK"
-	   onclick="Codex.setMode.toggle('about'); return fdjtUI.cancel(event);"
-	   title="information about this book"/>
+           src="http://static.beingmeta.com/g/codex/about_tab.png"
+           alt="About" class="tab" contentid="CODEXABOUTBOOK"
+           onclick="Codex.setMode.toggle('about'); return fdjtUI.cancel(event);"
+           title="information about this book"/>
       <img svg="http://static.beingmeta.com/g/codex/toc_tab.svgz"
-	   src="http://static.beingmeta.com/g/codex/toc_tab.png"
-	   alt="ToC" class="tab" contentid="CODEXFLYTOC"
-	   onclick="Codex.setMode.toggle('flytoc'); return fdjtUI.cancel(event);"
-	   title="Table of Contents (static)">
+           src="http://static.beingmeta.com/g/codex/toc_tab.png"
+           alt="ToC" class="tab" contentid="CODEXFLYTOC"
+           onclick="Codex.setMode.toggle('flytoc'); return fdjtUI.cancel(event);"
+           title="Table of Contents (static)">
       <img svg="http://static.beingmeta.com/g/codex/manage_tab.svgz"
-	   src="http://static.beingmeta.com/g/codex/manage_tab.png"
-	   alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
-	   onclick="Codex.setMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
-	   title="manage added layers for your sBook"/>
+           src="http://static.beingmeta.com/g/codex/manage_tab.png"
+           alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
+           onclick="Codex.setMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
+           title="manage added layers for your sBook"/>
       <img svg="http://static.beingmeta.com/g/codex/settings_tab.svgz"
-	   src="http://static.beingmeta.com/g/codex/settings_tab.png"
-	   alt="Device" class="tab" contentid="CODEXSETTINGS"
-	   onclick="Codex.setMode.toggle('device'); return fdjtUI.cancel(event);"
-	   title="alter appearance and interaction"/>
+           src="http://static.beingmeta.com/g/codex/settings_tab.png"
+           alt="Device" class="tab" contentid="CODEXSETTINGS"
+           onclick="Codex.setMode.toggle('device'); return fdjtUI.cancel(event);"
+           title="alter appearance and interaction"/>
       <img svg="http://static.beingmeta.com/g/codex/console_tab.svgz"
-	   src="http://static.beingmeta.com/g/codex/console_tab.png"
-	   alt="Console" class="tab" contentid="CODEXCONSOLE"
-	   onclick="Codex.setMode.toggle('console'); return fdjtUI.cancel(event);"
-	   title="show debugging console" />
+           src="http://static.beingmeta.com/g/codex/console_tab.png"
+           alt="Console" class="tab" contentid="CODEXCONSOLE"
+           onclick="Codex.setMode.toggle('console'); return fdjtUI.cancel(event);"
+           title="show debugging console" />
       <img svg="http://static.beingmeta.com/g/codex/login_tab.svgz"
-	   src="http://static.beingmeta.com/g/codex/login_tab.png"
-	   alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
-	   onclick="Codex.setMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
-	   title="login to sBooks" />
+           src="http://static.beingmeta.com/g/codex/login_tab.png"
+           alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
+           onclick="Codex.setMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
+           title="login to sBooks" />
     </div> <!-- .tabbar -->
   </div> <!-- id="CODEXHUDBUTTONS" -->
   <div id="CODEXGOTOLOC" class="hudpanel codexgoto">
     Jump to percentage <input type="text" name="GOTOLOC" value=""
-			      class="fdjtnumberinput"
-			      id="CODEXLOCINPUT"
-			      onkeypress="Codex.UI.goto_keypress(event);"/>
+                              class="fdjtnumberinput"
+                              id="CODEXLOCINPUT"
+                              onkeypress="Codex.UI.goto_keypress(event);"/>
   </div>
   <div id="CODEXGOTOPAGE" class="hudpanel codexgoto">
     Jump to page <input type="text" name="GOTOPAGE" value=""
-			class="fdjtnumberinput"
-			id="CODEXPAGEINPUT"
-			onkeypress="Codex.UI.goto_keypress(event);"/>
+                        class="fdjtnumberinput"
+                        id="CODEXPAGEINPUT"
+                        onkeypress="Codex.UI.goto_keypress(event);"/>
   </div>
   <div id="CODEXTOC" class="hudpanel"></div>
   <div id="CODEXSEARCH" class="searchbox hudpanel notags">
@@ -118,7 +118,7 @@
   <div id="CODEXADDGLOSS" class="codexaddgloss hudpanel">
     <div id="CODEXGLOSSFORMS">
       <div class="codexglossform" id="CODEXADDGLOSSPROTOTYPE">
-	<!-- This content comes from addgloss.html -->
+        <!-- This content comes from addgloss.html -->
       </div>
       <!-- This is populated with copies of the prototype DIV -->
     </div>
@@ -136,10 +136,10 @@
   <div id="CODEXSOURCES" class="hudpanel codexsources"
        onclick="Codex.UI.handlers.sources_ontap(event);">
     <img svg="http://static.beingmeta.com/g/codex/sbookspeople.svgz"
-	 src="http://static.beingmeta.com/g/codex/sbookspeople50x50.png"
-	 class="button everyone selected"
-	 alt="show all" title="show all glosses"
-	 onclick="Codex.UI.handlers.everyone_ontap(event);"/>
+         src="http://static.beingmeta.com/g/codex/sbookspeople50x50.png"
+         class="button everyone selected"
+         alt="show all" title="show all glosses"
+         onclick="Codex.UI.handlers.everyone_ontap(event);"/>
   </div>
   <div id="CODEXGLOSSES" class="hudpanel">
     <!-- This is populated when a glosspoint is tapped -->
@@ -197,8 +197,8 @@
     <span class="fortouch">Tap</span><span class="notouch">Click</span>
     here to hide the app
     <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
-	 src="http://static.beingmeta.com/g/codex/redx128x128.png"
-	 class="codexclosehud" alt="close"/>
+         src="http://static.beingmeta.com/g/codex/redx128x128.png"
+         class="codexclosehud" alt="close"/>
   </div>
   <div class="helphud botleft" data-hudmode="toc">
     <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
@@ -220,6 +220,7 @@
     /* Emacs local variables
     ;;;  Local variables: ***
     ;;;  compile-command: "cd ../..; make" ***
+    ;;;  indent-tabs-mode: nil ***
     ;;;  End: ***
     */
   -->

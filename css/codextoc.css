@@ -219,11 +219,11 @@ div.spanbar div.spans {
   margin: 0px; padding: 0px; border: 0px;}
 div.codextoc div.spanbar div.spans
     a.codextitle {
-	font-weight: bold;}
+        font-weight: bold;}
 div.codextoc div.spanbar div.spans
     a.codextitle {
-	position: absolute; top: 4px; width: 100%; z-index: 25;
-	display: none;}
+        position: absolute; top: 4px; width: 100%; z-index: 25;
+        display: none;}
 div.codextoc div.spanbar div.spans
     a.codextitle.codexlivehead { display: block;}
 body.cxPREVIEW div.codextoc.codexheld div.spanbar div.spans
@@ -336,6 +336,7 @@ div#CODEXTOC div.codextoc.codexcxthead > div.spanbar div.progressbox {
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ..; make" ***
+;;;  indent-tabs-mode: nil ***
 ;;;  End: ***
 */
 
