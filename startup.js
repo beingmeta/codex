@@ -309,10 +309,10 @@ Codex.Startup=
 		status_cover.src=Codex.coverpage;
 		status_cover.style.display='block';}
 
-	    var saveprops=["sources","outlets","etc","overlays","sync","user",
+	    var saveprops=["sources","outlets","etc","overlays","sync",
 			   "sync","nodeid","state"];
 	    addConfig(
-		"localstorage",
+		"persist",
 		function(name,value){
 		    var refuri=Codex.refuri;
 		    if ((value)&&(Codex.persist)) return;
@@ -324,13 +324,16 @@ Codex.Startup=
 			if (!Codex.glosses.storage)
 			    Codex.glosses.storage=
 			    new fdjtKB.OfflineKB(Codex.glosses);
-			for (var prop in saveprops) {
+			var props=saveprops, i=0, lim=props.length;
+			while (i<lim) {
+			    var prop=saveprops[i++];
 			    if (Codex[prop]) setLocal(
 				prop+"("+refuri+")",Codex[prop],true);}
 			if ((Codex.allglosses)&&(Codex.allglosses.length))
-			    setLocal("glosses("+refuri+")",Codex.allglosses);}
+			    setLocal("glosses("+refuri+")",Codex.allglosses,
+				     true);}
 		    else if (!(value)) {
-			if (getConfig("localstorage"))
+			if (getConfig("persist"))
 			    clearOffline(Codex.refuri);
 			else clearOffline();}
 		    Codex.persist=value;
@@ -674,7 +677,7 @@ Codex.Startup=
 	function workOffline(refuri){
 	    if (Codex.force_online) return false;
 	    else if (Codex.force_offline) return true;
-	    var config_val=getConfig("localstorage");
+	    var config_val=getConfig("persist");
 	    if (typeof config_val !== 'undefined') return config_val;
 	    var value=(getMeta("Codex.offline"))||(getMeta("SBOOK.offline"));
 	    if ((value===0)||(value==="0")||
@@ -684,14 +687,14 @@ Codex.Startup=
 	    else fdjtUI.choose(
 		[{label: "No, thanks",
 		  handler: function(){
-		      setConfig("localstorage",false,true);}},
+		      setConfig("persist",false,true);}},
 		 {label: "Yes, keep locally",
 		  handler:
 		  function(){
-		      setConfig("localstorage",true,true);}},
+		      setConfig("persist",true,true);}},
 		{label: "Ask me later",
 		  handler:
-		  function(){setConfig("localstorage",false,false);}}],
+		  function(){setConfig("persist",false,false);}}],
 		"Store glosses on this computer?");
 	    return false;}
 	
@@ -1290,7 +1293,7 @@ Codex.Startup=
 	    if (info.overlays) gotInfo("overlays",info.overlays,persist);
 	    Codex.addOutlets2UI(info.outlets);
 	    if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
-		setLocal("sync("+refuri+")",info.sync);
+		if (Codex.persist) setLocal("sync("+refuri+")",info.sync);
 		Codex.sync=info.sync;}
 	    Codex.loaded=info.loaded=fdjtTime();
 	    if (Codex.glosshash) {
@@ -1376,7 +1379,7 @@ Codex.Startup=
 		    cursync,sync);
 		return false;}
 	    Codex.user=fdjtKB.Import(userinfo);
-	    if (persist) setConfig("localstorage",true,true);
+	    if (persist) setConfig("persist",true,true);
 	    if (outlets) Codex.outlets=outlets;
 	    if (overlays) Codex.overlays=overlays;
 	    if (persist) {
@@ -1914,18 +1917,8 @@ Codex.Startup=
 		var glosses=getLocal("glosses("+refuri+")",true);
 		var i=0; var lim=glosses.length;
 		while (i<lim) fdjtState.dropLocal(glosses[i++]);
-		dropLocal("sources("+refuri+")");
-		dropLocal("glosses("+refuri+")");
-		dropLocal("outlets("+refuri+")");
-		dropLocal("overlays("+refuri+")");
-		dropLocal("queued("+refuri+")");
-		dropLocal("state("+refuri+")");
-		dropLocal("sync("+refuri+")");
-		dropLocal("user("+refuri+")");
-		dropLocal("sync("+refuri+")");
-		dropLocal("nodeid("+refuri+")");
-		dropLocal("etc("+refuri+")");
-		dropLocal("offline("+refuri+")");
+		var props=saveprops, i=0, lim=props.length;
+		while (i<lim) dropLocal(props[i++]+"("+refuri+")");
 		var refuris=getLocal("codex.refuris",true);
 		refuris=fdjtKB.remove(refuris,refuri);
 		setLocal("codex.refuris",refuris,true);}
