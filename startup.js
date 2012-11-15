@@ -1623,20 +1623,18 @@ Codex.Startup=
 		    else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
 			if ((d.location)&&(d.location<=Codex.location)) return;
 			if (d.page===Codex.curpage) return;
-			var msg=
-			    "Sync to L"+Codex.location2pct(d.location)+
-			    ((d.page)?(" (page "+d.page+")"):"")+"?";
+			var msg1="Sync to L"+Codex.location2pct(d.location);
+			var msg2=((d.page)&&("(page "+d.page+")"));
 			fdjtUI.choose([
 			    {label: "No"},
 			    {label: "Yes, sync",
 			     handler: function() {
-				 if (d.location) Codex.setLocation(d.location);
-				 if (d.location)
-				     Codex.GoTo(d.location,"syncLocation",
-						false);
-				 if (d.target) Codex.setTarget(d.target);}}],
-				      msg);}
-		    Codex.state=d;},
+				 if ((d.location)&&(d.target)) {
+				     Codex.GoTo(
+					 d.location,"sync",d.target,true);
+				     Codex.setState(d);}}}],
+				      fdjtDOM("div",msg1),
+				      fdjtDOM("div.smaller",msg2));}},
 			 uri,false,
 			 function(req){
 			     if ((req.readyState == 4)&&(navigator.onLine))

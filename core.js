@@ -772,7 +772,8 @@ var Codex=
 	    location=info.start;}
 	else if (typeof arg === 'number') {
 	    location=arg;
-	    target=resolveLocation(arg);}
+	    target=(((istarget.nodeType)&&(istarget.id))?(istarget):
+		    (resolveLocation(arg)));}
 	else if (arg.nodeType) {
 	    var info=getLocInfo(arg);
 	    if (arg.id) target=arg;
