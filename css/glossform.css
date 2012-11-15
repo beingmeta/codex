@@ -134,10 +134,6 @@ div.codexglossform form div.excerpt {
     font-size: 80%; font-style: italic; font-weight: normal;}
 div.codexglossform form div.excerpt span.text {
     background-color: yellow;}
-div.codexglossform form .excerpt span.text:before {
-    font-size: 150%; content: "“";}
-div.codexglossform form .excerpt span.text:after {
-    font-size: 150%; content: "”";}
 div.codexglossform form div.excerpt.ischecked {
     display: block;}
 

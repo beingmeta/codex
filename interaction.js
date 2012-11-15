@@ -300,7 +300,7 @@
             var shift=evt.shiftKey||false;
             var meta=evt.metaKey||false;
             var button=evt.button||0;
-            fdjtUI.TapHold.fakePress(evt,100);
+            fdjtUI.TapHold.fakePress(evt,250);
             fdjtDOM.addClass(form_div,"codexstartgloss");
             form.className=mode;
             Codex.setGlossForm(form_div);

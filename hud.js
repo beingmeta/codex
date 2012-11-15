@@ -483,8 +483,11 @@ Codex.setMode=
                              var form=fdjtDOM.getChild(live,"form");
                              fdjtUI.forceSubmit(form);}}],
                                   "Save the changes to this gloss?");}
-                else if (live) Codex.cancelGloss(live);
-                else {}}
+                else if ((live)&&
+			 (fdjtDOM.getInput(live,"EXCERPT"))&&
+			 ((fdjtDOM.getInput(live,"EXCERPT")).checked))
+		    Codex.setGlossTarget(false);
+                else Codex.cancelGloss(live);}
             if (mode) {
                 if ((mode==="scanning")||(mode==="tocscan"))
                     addClass(document.body,"cxSHRINK");
