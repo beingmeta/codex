@@ -154,7 +154,7 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;
     background-color: ivory;
-    padding-top: 10px;
+    padding-top: 10px; padding-bottom: 10px;
     cursor: pointer;
     display: none;}
 
@@ -963,7 +963,8 @@ div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p {
     padding-bottom: 0px; padding-top: 0px;
     text-align: center;}
 div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p.checkspan {
-    background-color: ivory; opacity: 0.7;
+    background-color: ivory;
+    color: rgba(0,0,0,0.6); opacity: 0.8;
     padding-bottom: 0.3ex; padding-top: 0px; 
     margin-left: 50px; margin-right: 50px;
     border-bottom-right-radius: 6px; 
@@ -974,6 +975,9 @@ div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p.checkspan {
     -o-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;}
+div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p.checkspan.ischecked {
+    font-weight: normal; color: rgba(0,0,0,1);}
+
 img.codexclosehud {
     border-radius: 50%; border: solid red 3px;
     width: 32px; height: 32px;

@@ -47,7 +47,8 @@ div.codextoc.codexlivehead div.head { display: block;}
 div.codextoc.codexlivehead div.codextoc { display: none;}
 div.codextoc.codexlivehead div.codextoc.codexlivehead { display: block;}
 div.codextoc div.spanbar div.codexhudspan a.brick {
-    border: solid darkblue 1px; border-left: 0px; cursor: pointer;}
+    border: solid darkblue 1px; border-left: 0px;
+    cursor: crosshair;}
 div.codextoc div.spanbar div.codexhudspan:first-child a.brick {
     border-left: 1px;}
 div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
@@ -97,7 +98,7 @@ div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.spanbar div.spans {
     left: 0px;}
 
 div.codextoc .sectname.cohi { background-color: gold;}
-div.codextoc .sectname { color: darkblue; cursor: pointer;}
+div.codextoc .sectname { color: darkblue; cursor: crosshair;}
 div.codextoc div.sub a.sectname { 
   color: darkblue; font-size: 80%; white-space: nowrap;}
 div.codextoc div.sub a.sectname.cohi { background-color: gold; }

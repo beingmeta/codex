@@ -27,10 +27,11 @@ body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     -o-opacity: 0.50;}
 div#CODEXPAGEFOOT div#CODEXPAGEINFO span.locoff {
     position: absolute; bottom: 3px; right: 3px;
-    cursor: pointer;}
+    cursor: text;}
 div#CODEXPAGEFOOT div#CODEXPAGENO {
     position: absolute; bottom: 0px; width: 100%; max-height: 20px;}
-div#CODEXPAGEFOOT div#CODEXPAGENO span#CODEXPAGENOTEXT { cursor: pointer;}
+div#CODEXPAGEFOOT div#CODEXPAGENO span#CODEXPAGENOTEXT {
+    cursor: text;}
 div#CODEXPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top-width: 0px;
     z-index: 50; height: 100%; position: absolute; opacity: 0.5; 
