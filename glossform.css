@@ -24,7 +24,7 @@ div#CODEXADDGLOSS div.codexglossform {
 
 div.codexglossform form div.rightcol {
     position: absolute;
-    top: 0px; bottom: 0px; right: 0px; width: 75px;}
+    top: 0px; bottom: 0px; right: 0px; width: 60px;}
 div.codexglossform form div.rightcol > div {
     white-space: nowrap; float: right;}
 div.codexglossform form div.rightcol > div img {
@@ -107,7 +107,7 @@ div.codexglossform form .bracketbutton strong {
 div.codexglossform form.focused div.inputhelp { display: block;}
 div.codexglossform form.focused span.inputhelp { display: inline;}
 
-div.codexglossform form div.inputbox { margin-right: 75px;}
+div.codexglossform form div.inputbox { margin-right: 60px;}
 div.codexglossform form div.textbox {
     margin-left: 0.5em;}
 div.codexglossform form div.textbox textarea,
@@ -131,9 +131,9 @@ div.codexglossform form div.excerpt {
     font-size: 80%; font-style: italic; font-weight: normal;}
 div.codexglossform form div.excerpt span.text {
     background-color: yellow;}
-div.codexglossform form div.excerpt span.text:before {
+div.codexglossform form .excerpt span.text:before {
     font-size: 150%; content: "“";}
-div.codexglossform form div.excerpt span.text:after {
+div.codexglossform form .excerpt span.text:after {
     font-size: 150%; content: "”";}
 div.codexglossform form div.excerpt.ischecked {
     display: block;}
@@ -201,6 +201,10 @@ div.codexglossform form div.glossetc .notespan {
     color: purple; font-weight: bold;}
 div.codexglossform form div.glossetc .excerpt {
     font-style: italic;}
+div.codexglossform form div.glossetc .excerpt .elision,
+div.codexglossform form div.glossetc .excerpt .delision {
+    font-style: normal; color: black; font-size: 80%;
+    white-space: nowrap;}
 div.codexglossform form div.glossetc .checkspan.excerpt.ischecked {
     font-weight: normal;}
 div.codexglossform form div.glossetc .links,
@@ -258,21 +262,22 @@ div.codexglossform div.glossetc .networks {
 div.codexglossform div.glossetc .networks .checkspan {
     float: left;}
 div.codexglossform div.glossetc .networks .checkspan.postgloss {
-    padding-right: 1ex;}
+    font-size: 80%; padding-right: 1ex;}
 div.codexglossform.private .checkspan.postgloss { display: none;}
 div#CODEXHUD .networks .checkspan input[type='checkbox'] { display: none;}
 div#CODEXHUD .networks .checkspan.postgloss input[type='checkbox'] {
     display: inline;}
 div.codexglossform div.glossetc .networks img {
     height: 3ex; width: auto;}
-div#CODEXHUD .networks .checkspan.private {
+div#CODEXHUD .codexglossform .checkspan.private {
     color: white; font-weight: bold; font-variant: small-caps;
-    font-size: 15px;
+    font-size: 12px;
     background-color: green;
     vertical-align: top;}
-div#CODEXHUD .networks .checkspan.private.ischecked {
+div#CODEXHUD .codexglossform .checkspan.private input { display: none; }
+div#CODEXHUD .codexglossform .checkspan.private.ischecked {
     background-color: red; color: white;}
-div#CODEXHUD span.networks .checkspan.private span {
+div#CODEXHUD .codexglossform .checkspan.private span {
     padding-left: 1ex; padding-right: 1ex;
     vertical-align: top;}
 

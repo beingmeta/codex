@@ -406,7 +406,7 @@
 		if (off) exoff.value=off;
 		else exoff.value="";}
 	    dropClass(checkspan,"empty");
-	    fdjtDOM.replace(text,Ellipsis("span.text",excerpt,140));
+	    fdjtDOM.replace(text,Ellipsis("span.text",excerpt,[25,15]));
 	    setCheckSpan(checkspan,true);}
 	else {
 	    addClass(checkspan,"empty");
@@ -541,7 +541,7 @@
 	    fdjtSelecting(dups,{ontap: gloss_selecting_ontap,
 				onrelease: gloss_selecting_onrelease,
 				fortouch: Codex.touch,
-				holdthresh: 100,
+				holdthresh: 250,
 			       	movethresh: 250});
 	if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
 	    Codex.selecting.setString(gloss.excerpt);

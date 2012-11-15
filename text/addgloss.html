@@ -53,12 +53,24 @@
 	   alt="Reply" title="respond to this gloss (thread)"
 	   class="button replybutton reply"/>
     </div>
-    <div class="checkspan postgloss">
-      <input TYPE="HIDDEN" name="WASPOSTED" VALUE="yes"
-	     DISABLED="DISABLED"/>
-      Post
-      <input type="CHECKBOX" name="POSTGLOSS" value="yes"
-	     onchange="Codex.UI.changeGlossPosting(event);"/></div>
+    <div class="glossexposure">
+      <div class="checkspan private">
+	<input type="CHECKBOX" name="PRIVATE" value="yes"
+	       onchange="Codex.UI.changeGlossPrivacy(event);"/>
+	<span class="checked"
+	      title="this gloss won't be shared with my associated networks">
+	  Private</span>
+	<span class="unchecked"
+	      title="this gloss will be shared with my associated networks">
+	  Shared</span>
+      </div>
+      <div class="checkspan postgloss">
+	<input TYPE="HIDDEN" name="WASPOSTED" VALUE="yes"
+	       DISABLED="DISABLED"/>
+	<input type="CHECKBOX" name="POSTGLOSS" value="yes"
+	       onchange="Codex.UI.changeGlossPosting(event);"/>
+	Post</div>
+    </div>
   </div>
   <div class="inputbox">
     <div class="textbox">
@@ -88,17 +100,13 @@
 	   src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
 	   class="twisty" alt="-"/>
       <span class="networks">
-	<span class="checkspan private">
-	  <input type="CHECKBOX" name="PRIVATE" value="yes"
-		 onchange="Codex.UI.changeGlossPrivacy(event);"/>
-	  <span class="checked"
-		title="this gloss won't be shared with my associated networks">
-	    Private</span>
-	  <span class="unchecked"
-		title="this gloss will be shared with my associated networks">
-	    Shared</span>
-	</span>
-
+      </span>
+      <span class="excerpt checkspan empty">
+	<input TYPE="CHECKBOX" NAME="EXCERPT" VALUE=""/>
+	<img src="http://static.beingmeta.com/g/codex/redx64x64.png"
+	     svg="http://static.beingmeta.com/g/codex/redx.svgz"
+	     class="redx" alt="x"/>
+	<span class="text"></span>
       </span>
       <input TYPE="HIDDEN" NAME="EXOFF" VALUE=""/>
       <span class="links empty"><span class="head">links</span></span>
@@ -107,13 +115,6 @@
 	<span class="outlets empty"><span class="head">share&nbsp;w/&nbsp;</span></span>
       </span>
     </div>
-  </div>
-  <div class="excerpt checkspan empty">
-    <input TYPE="CHECKBOX" NAME="EXCERPT" VALUE=""/>
-    <img src="http://static.beingmeta.com/g/codex/redx64x64.png"
-	 svg="http://static.beingmeta.com/g/codex/redx.svgz"
-	 class="redx" alt="x"/>
-    <span class="text"></span>
   </div>
 </form>
 <!--
