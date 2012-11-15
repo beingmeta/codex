@@ -7,8 +7,9 @@
 @charset "UTF-8";
 
 @media screen and (max-width: 800px) {
-    #CODEXHEAD { left: 0px; right: 0px; }
-    body.hudup #CODEXHUD.openhead #CODEXHEAD, #CODEXSCANNER  {
+    #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
+    body.hudup #CODEXHUD.openhead #CODEXHEAD,
+    body #CODEXHUD.openhead.addgloss #CODEXHEAD,{
 	left: 0px; right: 0px; }
     #CODEXHUD.openhead.tocscan #CODEXHEAD {
 	left: 50px; right: 50px;}

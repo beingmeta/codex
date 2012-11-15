@@ -23,8 +23,8 @@
     border: solid transparent 4px; padding: 0px;
     border-top: 0px;}
 #CODEXHEAD { left: 50px; right: 50px; }
-#CODEXHUD.openhead #CODEXHEAD, #CODEXSCANNER  {
-    left: 100px; right: 100px; }
+/* #CODEXHUD.openhead #CODEXHEAD, #CODEXSCANNER  {
+    left: 100px; right: 100px; } */
 #CODEXSCANNER { display: none; }
 /* #CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; } */
 
@@ -265,8 +265,7 @@ div.completions.hudpanel .normal { line-height: 250%;}
 /* HUD buttons */
 
 div#CODEXHUD img.hudbutton {
-    position: fixed; z-index: 100; cursor: pointer;
-    width: 50px; height: 50px;
+    position: fixed; width: 50px; height: 50px;
     border: solid transparent 2px; opacity: 0.10;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
     filter: alpha(opacity=10);
@@ -327,8 +326,8 @@ div#CODEXHUD img.botright {
     -moz-border-radius-topleft: 6px;
     -o-border-radius-topleft: 6px;}
 
-img.closebutton, img.codexpagebutton, img.codexscanbutton {
-    cursor: pointer; }
+img.closebutton, img.codexpagebutton, img.codexscanbutton, img.hudbutton {
+    cursor: pointer; z-index: 100;}
 
 body div#CODEXHUD.about #CODEXHEART .tabcontent#CODEXABOUTBOOK,
 body div#CODEXHUD.device #CODEXHEART .tabcontent#CODEXSETTINGS,
