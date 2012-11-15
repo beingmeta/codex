@@ -121,8 +121,7 @@ body.hudup #CODEXHUD.openheart #CODEXHEART > div,
 body #CODEXHUD.addgloss #CODEXHEART.tagging > div,
 body #CODEXHUD.addgloss #CODEXHEART.showoutlets > div,
 body #CODEXHUD.addgloss #CODEXHEART.addlink > div {
-    margin-top: 0px; margin-bottom: 0px;
-    overflow: auto; max-height: 100%;}
+    margin-top: 0px; margin-bottom: 0px;}
 body.cxISCROLL.hudup #CODEXHUD.openheart #CODEXHEART > div,
 body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.tagging > div,
 body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.showoutlets > div,
@@ -169,10 +168,7 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT { font-size: 125%; }
 }
 
-body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body div#CODEXHUD.status #CODEXFOOT #CODEXSHOWTEXT {
-    display: block;}
-body.codexhelp div#CODEXHUD.status #CODEXFOOT #CODEXSHOWTEXT {
     display: none;}
 
 #CODEXHUD.scanning #CODEXSCANNER {display: block;}
@@ -910,13 +906,13 @@ div#CODEXHUD div.hudpanel#CODEXAPPSTATUS {
 body div#CODEXHUD div#CODEXAPPSTATUS {
     display: none;}
 body div#CODEXHUD.status div#CODEXAPPSTATUS {
-    display: block; border-color: blue; opacity: 0.95;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
-    filter: alpha(opacity=95);
-    -webkit-opacity: 0.95;
-    -khtml-opacity: 0.95;
-    -moz-opacity: 0.95;
-    -o-opacity: 0.95;}
+    display: block; border-color: blue; opacity: 0.98;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
+    filter: alpha(opacity=98);
+    -webkit-opacity: 0.98;
+    -khtml-opacity: 0.98;
+    -moz-opacity: 0.98;
+    -o-opacity: 0.98;}
 body.codexhelp div#CODEXHUD.status div#CODEXAPPSTATUS,
 body.hudup.codexhelp div#CODEXHUD.status div#CODEXAPPSTATUS {
     display: none;}
@@ -964,8 +960,17 @@ div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p {
     padding-bottom: 0px; padding-top: 0px;
     text-align: center;}
 div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p.checkspan {
-    margin-left: 50px; margin-right: 50px;}
-
+    background-color: ivory; opacity: 0.7;
+    padding-bottom: 0.3ex; padding-top: 0px; 
+    margin-left: 50px; margin-right: 50px;
+    border-bottom-right-radius: 6px; 
+    -o-border-bottom-right-radius: 6px; 
+    -webkit-border-bottom-right-radius: 6px; 
+    -moz-border-radius-bottomright: 6px;
+    border-bottom-left-radius: 6px;
+    -o-border-bottom-left-radius: 6px; 
+    -webkit-border-bottom-left-radius: 6px; 
+    -moz-border-radius-bottomleft: 6px;}
 img.codexclosehud {
     border-radius: 50%; border: solid red 3px;
     width: 32px; height: 32px;

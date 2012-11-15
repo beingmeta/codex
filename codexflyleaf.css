@@ -18,7 +18,7 @@ div#CODEXHUD.sbooksapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border-top: transparent solid 3px;}
 
 div#CODEXHUD div#CODEXHEART .tabcontent {
-    overflow-y: auto; overflow-x: hidden;}
+    overflow-y: hidden; overflow-x: hidden;}
 div#CODEXHUD.sbooksapp div#CODEXHEART .tabcontent#SBOOKSAPP,
 div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSAPP {
     overflow: visible;}

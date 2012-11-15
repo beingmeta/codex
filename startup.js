@@ -692,7 +692,7 @@ Codex.Startup=
 		{label: "Ask me later",
 		  handler:
 		  function(){setConfig("localstorage",false,false);}}],
-		"Store personal information on this computer for offline reading and faster loading?");
+		"Store glosses on this computer?");
 	    return false;}
 	
 	var glossref_classes=false;
@@ -1628,7 +1628,7 @@ Codex.Startup=
 			    ((d.page)?(" (page "+d.page+")"):"")+"?";
 			fdjtUI.choose([
 			    {label: "No"},
-			    {label: "Yes, go to that location",
+			    {label: "Yes, sync",
 			     handler: function() {
 				 if (d.location) Codex.setLocation(d.location);
 				 if (d.location)
