@@ -257,6 +257,25 @@
             Codex.setMode(false);
             fdjtUI.cancel(evt);
             return;}
+        else if (Codex.mode==="addgloss") {
+            var live=fdjtID("CODEXLIVEGLOSS");
+            if ((live)&&(hasClass(live,"modified"))) {
+                fdjtUI.choose([
+                    {label: "Discard",
+                     handler: function(){Codex.cancelGloss(live);}},
+                    {label: "Save",
+                     handler: function(){
+                         var form=fdjtDOM.getChild(live,"form");
+                         fdjtUI.forceSubmit(form);}}],
+                              "Save the changes to this gloss?");}
+            else if ((live)&&
+		     (fdjtDOM.getInput(live,"EXCERPT"))&&
+		     ((fdjtDOM.getInput(live,"EXCERPT")).checked))
+		Codex.setGlossTarget(false);
+            else Codex.cancelGloss(live);
+            Codex.setMode(false);
+            fdjtUI.cancel(evt);
+            return;}
         else if (!(passage)) {
             if (Codex.Trace.gestures)
                 fdjtLog("cdown/nopassage (%o) %o, m=%o, x=%o, y=%o",evt,target,
