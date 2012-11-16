@@ -262,6 +262,7 @@
 		 (hasClass(Codex.glossform,"glossreply"))) {
 	    Codex.setGlossTarget(passage,Codex.glossform);
 	    fdjtUI.cancel(evt);
+            fdjtUI.TapHold.fakePress(evt,250);
 	    Codex.setMode("addgloss");
 	    return;}
         else if ((Codex.mode==="addgloss")&&
@@ -322,11 +323,6 @@
                 fdjtLog("content_mousedown/addgloss (%o) %o, p=%o f=%o/%o",
                         evt,target,passage,form_div,form);
             var mode=((evt.shiftKey)?("addtag"):("editnote"));
-            var ctrl=evt.ctrlKey||false;
-            var alt=evt.altKey||false;
-            var shift=evt.shiftKey||false;
-            var meta=evt.metaKey||false;
-            var button=evt.button||0;
             fdjtUI.TapHold.fakePress(evt,250);
             fdjtDOM.addClass(form_div,"codexstartgloss");
             form.className=mode;
@@ -1889,7 +1885,7 @@
             keyup: onkeyup,
             keydown: onkeydown,
             keypress: onkeypress,
-            mouseup: default_tap},
+            click: default_tap},
          content: {mousedown: content_mousedown,
                    mouseup: content_mouseup},
          toc: {tap: toc_tapped,hold: toc_held,

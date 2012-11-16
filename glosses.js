@@ -534,6 +534,10 @@
         else if (target.pool===Codex.glosses) {
             gloss=target; target=fdjtID(gloss.frag);}
         else {}
+	if ((gloss)&&(form)&&(!(form.nodeType))) {
+	    // Passing a non-false non-node as a form forces a
+	    // response, even if the user is the maker of the gloss
+	    form=getGlossForm(gloss,true);}
 	// Handle or create the form
 	if (form) {
 	    var frag=fdjtDOM.getInput(form,"FRAG");

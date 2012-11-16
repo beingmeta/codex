@@ -261,8 +261,10 @@
                 (((user===Codex.user)||(user===Codex.user._id))?
                  ("edit"):("reply")),
                 (((user===Codex.user)||(user===Codex.user._id))?
-                 ("edit this gloss"):("relay/reply to this gloss"))));
+                 ("tap to edit this gloss, hold to reply"):
+		 ("relay/reply to this gloss"))));
         addListener(tool,"tap",relayoredit_gloss);
+	addListener(tool,"hold",relayoredit_gloss);
         
         var picinfo=getpicinfo(info);
         var overdoc=getoverdoc(info);
@@ -451,7 +453,7 @@
         if (!(scan)) return;
         var qref=scan.qref;
         var gloss=Codex.glosses.ref(qref);
-        var form=Codex.setGlossTarget(gloss);
+        var form=Codex.setGlossTarget(gloss,evt.type==="hold");
         if (!(form)) return;
         Codex.setMode("addgloss");}
 
