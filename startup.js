@@ -1630,7 +1630,7 @@ Codex.Startup=
                         var msg2=((d.page)&&("(page "+d.page+")"));
                         fdjtUI.choose([
                             {label: "No"},
-                            {label: "Yes, sync",
+                            {label: "Yes, sync",selected: true,
                              handler: function() {
                                  if ((d.location)&&(d.target)) {
                                      Codex.GoTo(
