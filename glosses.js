@@ -78,6 +78,13 @@
                    (fdjtDOM.getChild(arg,"form"))));
         var modeclass=false; var input=false;
         if (!(form)) return;
+	if (Codex.Trace.mode) {
+	    var frag=fdjtDOM.getInput(form,"FRAG");
+	    var uuid=fdjtDOM.getInput(form,"UUID");
+	    fdjtLog("setGlossMode %o%s: #%s #U%s",
+		    mode,((toggle)?(" (toggle)"):("")),
+		    ((frag)&&(frag.value)),
+		    ((uuid)&&(uuid.value)));}
         if (!(mode)) {
             dropClass(form,glossmodes);
             return;}
@@ -644,27 +651,6 @@
 
     var addgloss_timer=false;
     
-    function bracket_click(evt){
-        evt=evt||event;
-        var target=fdjtUI.T(evt);
-        var alt=target.alt;
-        var form=getParent(target,'form');
-        var input=getInput(form,'NOTE');
-        var string=input.value;
-        var bracketed=getbracketed(input);
-        fdjtUI.cancel(evt);
-        if (bracketed==="") getbracketed(input,true);
-        else if (bracketed)
-            handleBracketed(form,getbracketed(input,true));
-        else {
-            var pos=input.selectionStart;
-            var tagtext="[]";
-            if (alt==='link') tagtext="[@http]";
-            input.value=string.slice(0,pos)+tagtext+string.slice(pos);
-            input.selectionStart=input.selectionEnd=pos+(tagtext.length-1);
-            input.focus();}}
-    Codex.UI.bracket_click=bracket_click;
-
     function handleBracketed(form,content,complete){
         dropClass("CODEXHEART","tagging");
         if (content[0]==='@') {

@@ -324,14 +324,17 @@
             fdjtDOM.addClass(form_div,"codexstartgloss");
             form.className=mode;
             Codex.setGlossForm(form_div);
-            Codex.setMode("addgloss");}}
+            Codex.setMode("addgloss");
+	    setTimeout(initGlossMode,100);}}
  
+    function initGlossMode(){
+        dropClass(fdjtID("CODEXLIVEGLOSS"),"codexstartgloss");
+        var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
+        if (form) Codex.setGlossMode(form.className);}
+
     function content_mouseup(evt){
         evt=evt||event;
-        if (Codex.mode==="addgloss") {
-            dropClass(fdjtID("CODEXLIVEGLOSS"),"codexstartgloss");
-            var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
-            if (form) Codex.setGlossMode(form.className);}}
+        if (Codex.mode==="addgloss") initGlossMode();}
     Codex.UI.content_release=content_mouseup;
 
     /* TOC handlers */
