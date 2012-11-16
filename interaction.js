@@ -257,7 +257,8 @@
             Codex.setMode(false);
             fdjtUI.cancel(evt);
             return;}
-        else if (Codex.mode==="addgloss") {
+        else if ((Codex.mode==="addgloss")&&
+		 (!(hasParent(target,Codex.glosstarget)))) {
             var live=fdjtID("CODEXLIVEGLOSS");
             if ((live)&&(hasClass(live,"modified"))) {
                 fdjtUI.choose([
@@ -793,7 +794,7 @@
         if (!(gloss)) return;
         fdjtUI.choose([
             {label: "No"},
-            {label: "Yes, delete it",
+            {label: "Yes, delete it",selected: true,
              handler: function(){
                  var frag=gloss.get("frag");
                  fdjtAjax.jsonCall(
