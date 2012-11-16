@@ -257,6 +257,13 @@
             Codex.setMode(false);
             fdjtUI.cancel(evt);
             return;}
+	else if ((passage)&&(Codex.glosstarget)&&(Codex.glossform)&&
+		 (!(hasParent(target,Codex.glosstarget)))&&
+		 (hasClass(Codex.glossform,"glossreply"))) {
+	    Codex.setGlossTarget(passage,Codex.glossform);
+	    fdjtUI.cancel(evt);
+	    Codex.setMode("addgloss");
+	    return;}
         else if ((Codex.mode==="addgloss")&&
 		 (!(hasParent(target,Codex.glosstarget)))) {
             var live=fdjtID("CODEXLIVEGLOSS");
@@ -334,6 +341,7 @@
 
     function content_mouseup(evt){
         evt=evt||event;
+	fdjtUI.cancel(evt);
         if (Codex.mode==="addgloss") initGlossMode();}
     Codex.UI.content_release=content_mouseup;
 

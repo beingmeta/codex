@@ -14,9 +14,9 @@
     <input type="HIDDEN" name="LOCATION"/>
     <input type="HIDDEN" name="LOCLEN"/>
     <input type="HIDDEN" name="DOCTITLE"/>
-    <input type="HIDDEN" name="THREAD"/>
     <input type="HIDDEN" name="MYCOPYID"/>
     <input type="HIDDEN" name="RE"/>
+    <input type="HIDDEN" name="THREAD"/>
     <!-- Force IE to send the form in UTF-8 -->
     <input type="HIDDEN" name="IEHACK" VALUE="&#9760;"/>
   </div>
@@ -40,7 +40,7 @@
   </div>
   <div class="codexglossformbody">
     <div class="rightcol">
-      <div class="altbutton submitbutton">
+      <div class="altbutton submitbutton" tabindex="1">
         <img svg="http://static.beingmeta.com/g/codex/remark_add.svgz"
              src="http://static.beingmeta.com/g/codex/remark_add50x50.png"
              alt="Add" title="add this gloss"
@@ -55,7 +55,7 @@
              class="button replybutton reply"/>
       </div>
       <div class="glossexposure">
-        <div class="checkspan private">
+        <div class="checkspan private" tabindex="5">
           <input type="CHECKBOX" name="PRIVATE" value="yes"
                  onchange="Codex.UI.changeGlossPrivacy(event);"/>
           <span class="checked"
@@ -65,7 +65,7 @@
                 title="this gloss will be shared with my associated networks">
             Shared</span>
         </div>
-        <div class="checkspan postgloss">
+        <div class="checkspan postgloss" tabindex="6">
           <input TYPE="HIDDEN" name="WASPOSTED" VALUE="yes"
                  DISABLED="DISABLED"/>
           Post<input type="CHECKBOX" name="POSTGLOSS" value="yes"
@@ -79,20 +79,20 @@
                   title="add text, [tag]s, or [@links w/title]"
                   onfocus="Codex.UI.addgloss_focus(event);"
                   onblur="Codex.UI.addgloss_blur(event);"
-                  wrap="virtual"></textarea>
+                  autofocus="autofocus"
+                  wrap="virtual"
+                  tabindex="0"></textarea>
       </div>
       <div class="glossetc">
-        <span class="modebuttons"><!--
-                                    --><img svg="http://static.beingmeta.com/g/codex/remark_tag.svgz"
-                                            src="http://static.beingmeta.com/g/codex/remark_tag64x64.png"
-                                            title="add tags" class="button" alt="tag"/><!--
-                                                                                         --><img svg="http://static.beingmeta.com/g/codex/remark_link.svgz"
+        <span class="modebuttons"><img svg="http://static.beingmeta.com/g/codex/remark_tag.svgz"
+                                       src="http://static.beingmeta.com/g/codex/remark_tag64x64.png"
+                                       title="add tags" class="button" alt="tag"
+                                       tabindex="2"/><img svg="http://static.beingmeta.com/g/codex/remark_link.svgz"
                                                                                                  src="http://static.beingmeta.com/g/codex/remark_link64x64.png"
-                                                                                                 title="add web links" class="button" alt="link"/><!--
-                                                                                                                                                    --><img svg="http://static.beingmeta.com/g/codex/remark_share.svgz"
+                                                                                                 title="add web links" class="button" alt="link"
+                                                                                                 tabindex="3"/><img svg="http://static.beingmeta.com/g/codex/remark_share.svgz"
                                                                                                                                                             src="http://static.beingmeta.com/g/codex/remark_share64x64.png"
-                                                                                                                                                            title="add outlets/share this gloss" class="button" alt="sharing"/><!--
-                                                                                                                                                                                                                                 --></span>
+                                                                                                                                                            title="add outlets/share this gloss" class="button" alt="sharing" tabindex="4"/></span>
         <img svg="http://static.beingmeta.com/g/codex/twistyclosed.svgz"
              src="http://static.beingmeta.com/g/codex/twistyclosed64x64.png"
              class="twisty" alt="+"/>

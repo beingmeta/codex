@@ -208,8 +208,6 @@
             fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
         var noteinput=getInput(form,"NOTE");
         var notespan=getChild(form,".notespan");
-        var taginput=fdjtID("CODEXTAGINPUT");
-        var linkinput=fdjtID("CODEXLINKINPUT");
         if (noteinput) {
             noteinput.onkeypress=noteinput_keypress;
             noteinput.onkeydown=noteinput_keydown;
@@ -217,8 +215,6 @@
                 noteinput.value=gloss.note||"";
                 if (notespan) notespan.innerHTML=noteinput.value;}
             else noteinput.value="";}
-        // if (taginput) taginput.onkeydown=addtag_keypress;
-        if (linkinput) linkinput.onkeypress=addlink_keypress;
         if (Codex.syncstamp)
             getInput(form,"SYNC").value=(Codex.syncstamp+1);
         var loc=getInput(form,"LOCATION");
@@ -245,12 +241,13 @@
             fdjtDOM.remove(response_elt); response_elt=false;}
         if (loc) {loc.value=info.starts_at;}
         if (loclen) {loclen.value=info.ends_at-info.starts_at;}
-        if ((response)&&(gloss)&&(gloss.thread)) {
-            thread.thread=gloss.thread;
-            respondsto.value=gloss.respondsto||gloss.thread;}
+        if ((response)&&(gloss)) {
+	    thread.disabled=false; respondsto.disabled=false;
+            thread.value=gloss.thread||gloss._id;
+            respondsto.value=gloss._id;}
         else {
-            fdjtDOM.remove(respondsto);
-            fdjtDOM.remove(thread);}
+	    respondsto.disabled=true;
+	    thread.disabled=true;}
         var tagline=getTagline(passage);
         if (tagline) tagline.value=tagline;
         if ((gloss)&&(gloss.tags)) {
@@ -298,7 +295,7 @@
             while (i<lim) addOutlet(form,shared[i++],"SHARE",true);
             var private_span=getChild(form,".private");
             setCheckSpan(private_span,gloss.private);}
-        if ((gloss)&&(gloss.excerpt))
+        if (((gloss)&&(gloss.excerpt)))
             Codex.setExcerpt(form,gloss.excerpt,gloss.exoff);
         var cancel_button=fdjtDOM.getChild(form,".cancelbutton");
         if (cancel_button)
@@ -415,6 +412,13 @@
             dropClass(checkspan,"empty");
             fdjtDOM.replace(text,Ellipsis("span.text",excerpt,[25,15]));
             setCheckSpan(checkspan,true);}
+	else if ((off)&&(off<0)) {
+	    // This clears the entry altogether
+            addClass(checkspan,"empty");
+            if (exoff) exoff.value="";
+	    input.value="";
+	    if (text) fdjtDOM.replace(text,fdjtDOM("span.text"));
+            setCheckSpan(checkspan,false);}
         else {
             addClass(checkspan,"empty");
             if (exoff) exoff.value="";
@@ -520,10 +524,7 @@
             return;}
         if (!gloss_cloud) Codex.glossCloud();
         var gloss=false;
-        if (!(form)) form=getGlossForm(target);
-        if (!(form)) {
-            fdjtUI.alert("There was a problem adding a gloss");
-            return false;}
+	// Identify when the target is a gloss
         if ((typeof target === 'string')&&(fdjtID(target))) 
             target=fdjtID(target);
         else if ((typeof target === 'string')&&
@@ -533,6 +534,19 @@
         else if (target.pool===Codex.glosses) {
             gloss=target; target=fdjtID(gloss.frag);}
         else {}
+	// Handle or create the form
+	if (form) {
+	    var frag=fdjtDOM.getInput(form,"FRAG");
+	    if (frag.value!==target.id) {
+		setExcerpt(form,false);
+		fdjtDOM.addClass(form,"modified");
+		frag.value=target.id;}}
+	else {
+	    if (gloss) form=getGlossForm(gloss);
+	    else form=getGlossForm(target);
+            if (!(form)) {
+		fdjtUI.alert("There was a problem adding a gloss");
+		return false;}}
         Codex.glosstarget=target;
         addClass(target,"codexglosstarget");
         Codex.GoTo(target,"addgloss",true);
@@ -578,33 +592,22 @@
     function setGlossForm(form){
         var cur=fdjtID("CODEXLIVEGLOSS");
         if (cur) cur.id=null;
-        if (!(form)) return;
+        if (!(form)) {
+	    Codex.glossform=false;
+	    return;}
         form.id="CODEXLIVEGLOSS";
+	Codex.glossform=form;
         var form_elt=getChild(form,"FORM");
         var mode=form_elt.className;
-        var input=false; var noteinput=getInput(form,"NOTE");
+	var noteinput=getInput(form,"NOTE");
         var syncelt=getInput(form,"SYNC");
         syncelt.value=(Codex.syncstamp+1);
-        { // Update the big network buttons in the OUTLETS cloud
-            var inputs=getInputs(form,'NETWORKS');
-            var altnetworks=fdjtID("CODEXNETWORKBUTTONS");
-            var i=0; var lim=inputs.length;
-            while (i<lim) {
-                var input=inputs[i++];
-                var doppels=getInputsFor(altnetworks,'NETWORKS',input.value);
-                setCheckSpan(doppels,input.checked);}}
         /* Get the input appropriate to the mode. */
         if (mode==='editnote') {
-            input=noteinput;
-            if (input)
-                gloss_cloud.complete(getbracketed(input,false)||"");
+            if (noteinput)
+                gloss_cloud.complete(getbracketed(noteinput,false)||"");
             else gloss_cloud.complete("");}
-        else if (mode==='addtag') input=fdjtID("CODEXTAGINPUT");
-        else if (mode==='addlink') input=fdjtID("CODEXATTACHURL");
-        else if (mode==='excerpt') input=getInput(form,"EXCERPT");
-        else if (mode==='addoutlet') input=fdjtID("CODEXOUTLETINPUT");
-        else {input=noteinput;}
-            
+        
         /* Do completions based on those input's values */
         Codex.outletCloud().complete();
         Codex.glossCloud().complete();}
@@ -971,8 +974,9 @@
         glossdata.tstamp=fdjtTime.tick();
         if ((json.note)&&(!(fdjtString.isEmpty(json.note))))
             glossdata.note=json.note;
-        if ((json.excerpt)&&(!(fdjtString.isEmpty(json.excerpt))))
+        if ((json.excerpt)&&(!(fdjtString.isEmpty(json.excerpt)))) {
             glossdata.excerpt=json.excerpt;
+	    glossdata.exoff=json.exoff;}
         if ((json.details)&&(!(fdjtString.isEmpty(json.details))))
             glossdata.details=json.details;
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
