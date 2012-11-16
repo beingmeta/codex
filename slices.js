@@ -81,7 +81,8 @@
                     ((head)&&(makeTOCHead(head))),
                     ((head_info)&&(makeIDHead(target,head_info,true))),
                     ((standalone)&&(makelocbar(target_info))),
-                    body);
+                    body,
+		    fdjtDOM("fdjtclearfloats"));
         var makerinfo=((info.maker)&&(Codex.sourcekb.load(info.maker)));
         var tstamp=info.tstamp||info.modified||info.created;
         if (tstamp)

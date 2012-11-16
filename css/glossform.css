@@ -6,8 +6,6 @@
 
 /* Gloss form */
 
-div#CODEXADDGLOSS div.codexglossform {
-    min-height: 90px;}
 div#CODEXADDGLOSS div.codexglossform.private,
 div#CODEXADDGLOSS div.codexglossform.codexstartgloss {
     min-height: 50px;}
@@ -25,9 +23,11 @@ div#CODEXADDGLOSS div.codexglossform {
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
 
-div.codexglossform form div.rightcol {
+/* div.codexglossform form div.rightcol {
     position: absolute;
-    top: 0px; bottom: 0px; right: 0px; width: 70px;}
+    top: 0px; bottom: 0px; right: 0px; width: 70px;} */
+div.codexglossform form div.rightcol {
+    float: right; width: 65px; margin-right: 5px;}
 div.codexglossform form div.rightcol > div {
     white-space: nowrap; float: right;}
 div.codexglossform form div.rightcol > div img {
@@ -110,7 +110,8 @@ div.codexglossform form .bracketbutton strong {
 div.codexglossform form.focused div.inputhelp { display: block;}
 div.codexglossform form.focused span.inputhelp { display: inline;}
 
-div.codexglossform form div.inputbox { margin-right: 70px;}
+div.codexglossform form div.inputbox {
+    margin-right: 70px;}
 div.codexglossform form div.textbox {
     margin-left: 0.5em;}
 div.codexglossform form div.textbox textarea,

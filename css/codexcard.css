@@ -98,7 +98,6 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
     content: "→ "; font-weight: bold;}
 body.sbook a.codexcard { display: block;}
 .codexcard.gloss .codexcardbody {
-    min-height: 50px;
     border-top: solid purple 2px;}
 .codexcard.passage .codexcardbody {
     background-color: white;

@@ -38,82 +38,85 @@
     <span class="respdate"></span> <span class="respnote"></span> 
     <span class="resptags"></span> <span class="resplinks"></span>
   </div>
-  <div class="rightcol">
-    <div class="altbutton submitbutton">
-      <img svg="http://static.beingmeta.com/g/codex/remark_add.svgz"
-           src="http://static.beingmeta.com/g/codex/remark_add50x50.png"
-           alt="Add" title="add this gloss"
-           class="button addbutton add"/>
-      <img svg="http://static.beingmeta.com/g/codex/remark_edit.svgz"
-           src="http://static.beingmeta.com/g/codex/remark_edit50x50.png"
-           alt="Save" title="save this gloss"
-           class="button savebutton edit"/>
-      <img svg="http://static.beingmeta.com/g/codex/remark_respond.svgz"
-           src="http://static.beingmeta.com/g/codex/remark_respond50x50.png"
-           alt="Reply" title="respond to this gloss (thread)"
-           class="button replybutton reply"/>
-    </div>
-    <div class="glossexposure">
-      <div class="checkspan private">
-        <input type="CHECKBOX" name="PRIVATE" value="yes"
-               onchange="Codex.UI.changeGlossPrivacy(event);"/>
-        <span class="checked"
-              title="this gloss won't be shared with my associated networks">
-          Private</span>
-        <span class="unchecked"
-              title="this gloss will be shared with my associated networks">
-          Shared</span>
+  <div class="codexglossformbody">
+    <div class="rightcol">
+      <div class="altbutton submitbutton">
+        <img svg="http://static.beingmeta.com/g/codex/remark_add.svgz"
+             src="http://static.beingmeta.com/g/codex/remark_add50x50.png"
+             alt="Add" title="add this gloss"
+             class="button addbutton add"/>
+        <img svg="http://static.beingmeta.com/g/codex/remark_edit.svgz"
+             src="http://static.beingmeta.com/g/codex/remark_edit50x50.png"
+             alt="Save" title="save this gloss"
+             class="button savebutton edit"/>
+        <img svg="http://static.beingmeta.com/g/codex/remark_respond.svgz"
+             src="http://static.beingmeta.com/g/codex/remark_respond50x50.png"
+             alt="Reply" title="respond to this gloss (thread)"
+             class="button replybutton reply"/>
       </div>
-      <div class="checkspan postgloss">
-        <input TYPE="HIDDEN" name="WASPOSTED" VALUE="yes"
-               DISABLED="DISABLED"/>
-        Post<input type="CHECKBOX" name="POSTGLOSS" value="yes"
-                   onchange="Codex.UI.changeGlossPosting(event);"/></div>
+      <div class="glossexposure">
+        <div class="checkspan private">
+          <input type="CHECKBOX" name="PRIVATE" value="yes"
+                 onchange="Codex.UI.changeGlossPrivacy(event);"/>
+          <span class="checked"
+                title="this gloss won't be shared with my associated networks">
+            Private</span>
+          <span class="unchecked"
+                title="this gloss will be shared with my associated networks">
+            Shared</span>
+        </div>
+        <div class="checkspan postgloss">
+          <input TYPE="HIDDEN" name="WASPOSTED" VALUE="yes"
+                 DISABLED="DISABLED"/>
+          Post<input type="CHECKBOX" name="POSTGLOSS" value="yes"
+                     onchange="Codex.UI.changeGlossPosting(event);"/></div>
+      </div>
     </div>
-  </div>
-  <div class="inputbox">
-    <div class="textbox">
-      <textarea name="NOTE"
-                placeholder="add text, [tag]s, or [@links w/title]"
-                title="add text, [tag]s, or [@links w/title]"
-                onfocus="Codex.UI.addgloss_focus(event);"
-                onblur="Codex.UI.addgloss_blur(event);"
-                wrap="virtual"></textarea>
+    <div class="inputbox">
+      <div class="textbox">
+        <textarea name="NOTE"
+                  placeholder="add text, [tag]s, or [@links w/title]"
+                  title="add text, [tag]s, or [@links w/title]"
+                  onfocus="Codex.UI.addgloss_focus(event);"
+                  onblur="Codex.UI.addgloss_blur(event);"
+                  wrap="virtual"></textarea>
+      </div>
+      <div class="glossetc">
+        <span class="modebuttons"><!--
+                                    --><img svg="http://static.beingmeta.com/g/codex/remark_tag.svgz"
+                                            src="http://static.beingmeta.com/g/codex/remark_tag64x64.png"
+                                            title="add tags" class="button" alt="tag"/><!--
+                                                                                         --><img svg="http://static.beingmeta.com/g/codex/remark_link.svgz"
+                                                                                                 src="http://static.beingmeta.com/g/codex/remark_link64x64.png"
+                                                                                                 title="add web links" class="button" alt="link"/><!--
+                                                                                                                                                    --><img svg="http://static.beingmeta.com/g/codex/remark_share.svgz"
+                                                                                                                                                            src="http://static.beingmeta.com/g/codex/remark_share64x64.png"
+                                                                                                                                                            title="add outlets/share this gloss" class="button" alt="sharing"/><!--
+                                                                                                                                                                                                                                 --></span>
+        <img svg="http://static.beingmeta.com/g/codex/twistyclosed.svgz"
+             src="http://static.beingmeta.com/g/codex/twistyclosed64x64.png"
+             class="twisty" alt="+"/>
+        <img svg="http://static.beingmeta.com/g/codex/twistyopen.svgz"
+             src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
+             class="twisty" alt="-"/>
+        <span class="networks">
+        </span>
+        <span class="excerpt checkspan empty">
+          <input TYPE="CHECKBOX" NAME="EXCERPT" VALUE=""/>
+          <img src="http://static.beingmeta.com/g/codex/redx64x64.png"
+               svg="http://static.beingmeta.com/g/codex/redx.svgz"
+               class="redx" alt="x"/>
+          <span class="text"></span>
+        </span>
+        <input TYPE="HIDDEN" NAME="EXOFF" VALUE=""/>
+        <span class="links empty"><span class="head">links</span></span>
+        <span class="tags empty"><span class="head">tags</span></span>
+        <span class="sharing codexsharegloss">
+          <span class="outlets empty"><span class="head">share&nbsp;w/&nbsp;</span></span>
+        </span>
+      </div>
     </div>
-    <div class="glossetc">
-      <span class="modebuttons"><!--
-        --><img svg="http://static.beingmeta.com/g/codex/remark_tag.svgz"
-             src="http://static.beingmeta.com/g/codex/remark_tag64x64.png"
-             title="add tags" class="button" alt="tag"/><!--
-        --><img svg="http://static.beingmeta.com/g/codex/remark_link.svgz"
-                src="http://static.beingmeta.com/g/codex/remark_link64x64.png"
-                title="add web links" class="button" alt="link"/><!--
-        --><img svg="http://static.beingmeta.com/g/codex/remark_share.svgz"
-                src="http://static.beingmeta.com/g/codex/remark_share64x64.png"
-                title="add outlets/share this gloss" class="button" alt="sharing"/><!--
-      --></span>
-      <img svg="http://static.beingmeta.com/g/codex/twistyclosed.svgz"
-           src="http://static.beingmeta.com/g/codex/twistyclosed64x64.png"
-           class="twisty" alt="+"/>
-      <img svg="http://static.beingmeta.com/g/codex/twistyopen.svgz"
-           src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
-           class="twisty" alt="-"/>
-      <span class="networks">
-      </span>
-      <span class="excerpt checkspan empty">
-        <input TYPE="CHECKBOX" NAME="EXCERPT" VALUE=""/>
-        <img src="http://static.beingmeta.com/g/codex/redx64x64.png"
-             svg="http://static.beingmeta.com/g/codex/redx.svgz"
-             class="redx" alt="x"/>
-        <span class="text"></span>
-      </span>
-      <input TYPE="HIDDEN" NAME="EXOFF" VALUE=""/>
-      <span class="links empty"><span class="head">links</span></span>
-      <span class="tags empty"><span class="head">tags</span></span>
-      <span class="sharing codexsharegloss">
-        <span class="outlets empty"><span class="head">share&nbsp;w/&nbsp;</span></span>
-      </span>
-    </div>
+    <div class="fdjtclearfloats"></div>
   </div>
 </form>
 <!--
