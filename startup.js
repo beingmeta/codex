@@ -956,10 +956,10 @@ Codex.Startup=
         var headlevels=["not","A","B","C","D","E","F","G","H","I","J","K","L"];
 
         function getScanSettings(){
-            if (!(Codex.root))
+            if (!(Codex.docroot))
                 if (getMeta("SBOOK.root"))
-                    Codex.root=fdjtID(getMeta("SBOOK.root"));
-            else Codex.root=fdjtID("SBOOKCONTENT")||document.body;
+                    Codex.docroot=fdjtID(getMeta("SBOOK.root"));
+            else Codex.docroot=fdjtID("SBOOKCONTENT")||document.body;
             if (!(Codex.start))
                 if (getMeta("SBOOK.start"))
                     Codex.start=fdjtID(getMeta("SBOOK.start"));
@@ -1620,7 +1620,7 @@ Codex.Startup=
                         fdjtLog("syncLocation(callback) %s: %j",uri,d);
                     if ((!(d))||(!(d.location))) {
                         if (!(Codex.state))
-                            Codex.GoTo(Codex.start||Codex.root||Codex.body,
+                            Codex.GoTo(Codex.start||Codex.docroot||Codex.body,
                                        "syncLocation",false,false);
                         return;}
                     else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {

@@ -45,7 +45,7 @@ Codex.DOMScan=(function(){
             if (this instanceof CodexDOMScan)
                 docinfo=this;
         else docinfo=new CodexDOMScan();
-        if (!(root)) root=Codex.root||document.body;
+        if (!(root)) root=Codex.docroot||document.body;
         var start=new Date();
         var allheads=[], allids=[];
         docinfo._root=root;

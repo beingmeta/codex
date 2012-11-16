@@ -600,7 +600,7 @@
                 var j=heads.length-1; while (j>=0) {
                     var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
                     if ((!(elt))||(!(hinfo.title))||
-                        (elt===Codex.root)||(elt===document.body))
+                        (elt===Codex.docroot)||(elt===document.body))
                         continue;
                     var anchor=
                         fdjtDOM.Anchor(

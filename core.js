@@ -376,7 +376,8 @@ var Codex=
         var prefix=Codex.baseid;
         while (scan) {
             if (scan.codexui) return false;
-            else if (scan===Codex.root) return target;
+            else if (scan===Codex.docroot) return target;
+	    else if (scan===document.body) return target;
             else if (id=(scan.id||scan.codexbaseid)) {
                 if (id.search("CODEXTMP")===0) {}
                 else if ((prefix)&&(id.search(prefix)!==0)) {}
