@@ -60,7 +60,10 @@ Codex.Startup=
         var dropClass=fdjtDOM.dropClass;
         var TOA=fdjtDOM.Array;
 
-
+        var saveprops=Codex.saveprops=
+            ["sources","outlets","etc","overlays","sync",
+             "sync","nodeid","state"];
+        
         /* Initialization */
         
         var _sbook_setup_start=false;
@@ -309,8 +312,6 @@ Codex.Startup=
                 status_cover.src=Codex.coverpage;
                 status_cover.style.display='block';}
 
-            var saveprops=["sources","outlets","etc","overlays","sync",
-                           "sync","nodeid","state"];
             addConfig(
                 "persist",
                 function(name,value){
