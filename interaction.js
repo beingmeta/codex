@@ -1934,7 +1934,7 @@
          "#CODEXHELP": {
              click: toggleHelp, mousedown: cancel,mouseup: cancel},
          "#CODEXSHOWTEXT": {click: back_to_reading},
-         "#CODEXAPPSTATUS": {click: hideSplash},
+         "#CODEXAPPSPLASH": {click: hideSplash},
          ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
          // GLOSSFORM rules
          "span.codexglossdelete": { click: delete_ontap },
@@ -1996,7 +1996,7 @@
          "#CODEXHELPBUTTON": {click: toggleHelp},
          "#CODEXHELP": {click: toggleHelp},
          "#CODEXSHOWTEXT": {click: back_to_reading},
-         "#CODEXAPPSTATUS": {click: hideSplash},
+         "#CODEXAPPSPLASH": {click: hideSplash},
          /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
          ".hudmodebutton": {click: hudbutton},
          // GLOSSFORM rules

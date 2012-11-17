@@ -171,7 +171,7 @@ body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT { font-size: 125%; }
 }
 
-body div#CODEXHUD.status #CODEXFOOT #CODEXSHOWTEXT {
+body div#CODEXHUD.splash #CODEXFOOT #CODEXSHOWTEXT {
     display: none;}
 
 #CODEXHUD.scanning #CODEXSCANNER {display: block;}
@@ -885,12 +885,36 @@ body.cxLAYOUT div#CODEXLAYOUTMESSAGE {
     -moz-transition-duration: 1s;
 }
 
-/* Status stuff */
+/* Visibility rules */
+body div#CODEXHUD div#CODEXAPPSPLASH {
+    display: none;}
+body div#CODEXHUD.splash div#CODEXAPPSPLASH {
+    display: block; border-color: blue; opacity: 0.98;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
+    filter: alpha(opacity=98);
+    -webkit-opacity: 0.98;
+    -khtml-opacity: 0.98;
+    -moz-opacity: 0.98;
+    -o-opacity: 0.98;}
+body.codexhelp div#CODEXHUD.splash div#CODEXAPPSPLASH,
+body.hudup.codexhelp div#CODEXHUD.splash div#CODEXAPPSPLASH {
+    display: none;}
+body div#CODEXHUD.splash img#CODEXHELPBUTTON.hudbutton {
+    opacity: 0.90;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
 
-div#CODEXHUD div.hudpanel#CODEXAPPSTATUS {
+/* The APP status page */
+
+div#CODEXHUD div.hudpanel#CODEXAPPSPLASH {
     position: fixed;
     top: 70px; bottom: 70px; left: 70px; right: 70px;
-    padding-top: 3px; padding-left: 3px; padding-bottom: 1em;
+    padding-top: 0px; padding-left: 0.5ex; padding-right: 0.5ex;
+    padding-bottom: 1em;
     background-color: lightgray; color: black;
     overflow: auto;
     border: solid transparent 3px;
@@ -905,71 +929,26 @@ div#CODEXHUD div.hudpanel#CODEXAPPSTATUS {
     -o-opacity: 0;
     display: none;}
 
-/* Visibility rules */
-body div#CODEXHUD div#CODEXAPPSTATUS {
-    display: none;}
-body div#CODEXHUD.status div#CODEXAPPSTATUS {
-    display: block; border-color: blue; opacity: 0.98;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
-    filter: alpha(opacity=98);
-    -webkit-opacity: 0.98;
-    -khtml-opacity: 0.98;
-    -moz-opacity: 0.98;
-    -o-opacity: 0.98;}
-body.codexhelp div#CODEXHUD.status div#CODEXAPPSTATUS,
-body.hudup.codexhelp div#CODEXHUD.status div#CODEXAPPSTATUS {
-    display: none;}
-body div#CODEXHUD.status img#CODEXHELPBUTTON.hudbutton {
-    opacity: 0.90;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-    filter: alpha(opacity=90);
-    -webkit-opacity: 0.90;
-    -khtml-opacity: 0.90;
-    -moz-opacity: 0.90;
-    -o-opacity: 0.90;}
-
-div#CODEXAPPSTATUS img.closebutton,
-div#CODEXAPPSTATUS img.cover {
-    position: absolute; top: 4px;}
-div#CODEXAPPSTATUS img.closebutton { left: 6px;}
-div#CODEXAPPSTATUS img.cover {
-    right: 6px;
-    max-width: 10em; min-width: 5em;
-    min-height: 6ex; max-height: 12ex;
-    height: auto; padding-right: 6px;
-    z-index: -40; opacity: 0.7;
-    display: none;}
-
-div#CODEXAPPSTATUS p, div#CODEXAPPSTATUS h1 {
-    clear: left; text-align: left;}
-div#CODEXAPPSTATUS p, div#CODEXAPPSTATUS h1 {
+div#CODEXAPPSPLASH p, div#CODEXAPPSPLASH h1 {
+    clear: left; text-align: left; text-indent: 0px;}
+div#CODEXAPPSPLASH p, div#CODEXAPPSPLASH h1 {
     margin-left: 10%; margin-right: 5%;
     margin-top: 1ex; margin-bottom: 0.5ex;}
+div#CODEXAPPSPLASH .left { float: left; padding-right: 5px;}
+div#CODEXAPPSPLASH img { vertical-align: top;}
 
-div#CODEXAPPSTATUS .left { float: left; padding-right: 5px;}
-div#CODEXAPPSTATUS img { vertical-align: top;}
+/* Stuff at the top */
 
-div#CODEXAPPSTATUS form {
-    margin-top: 1em; max-width: 40em;
-    margin-left: 10%; margin-right: 5%;}
-div#CODEXAPPSTATUS form button {}
-div#CODEXAPPSTATUS form table th {
-    white-space: nowrap;}
-div#CODEXAPPSTATUS form table td.text:first-line {
-    font-weight: bold;}
-
-div#CODEXAPPSTATUS #CODEXSTATUSCONFIG {
-    position: absolute; top: 0px; left: 0px; right: 0px; height: 1.5em;
-    text-align: center;}
-div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p {
-    margin-left: 0px; margin-bottom: 0px; margin-top: 0px;
+div#CODEXAPPSPLASH p.checkspan#CODEXSPLASHCONFIG {
+    margin-left: 15%; margin-right: 15%; clear: none;
+    margin-bottom: 0px; margin-top: 0px;
     padding-bottom: 0px; padding-top: 0px;
+    text-indent: 0px;
     text-align: center;}
-div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p.checkspan {
+div#CODEXAPPSPLASH p.checkspan#CODEXSPLASHCONFIG {
     background-color: ivory; max-width: inherit;
     color: rgba(0,0,0,0.6); opacity: 0.8;
     padding-bottom: 0.3ex; padding-top: 0px; 
-    margin-left: 50px; margin-right: 50px;
     border-bottom-right-radius: 6px; 
     -o-border-bottom-right-radius: 6px; 
     -webkit-border-bottom-right-radius: 6px; 
@@ -978,8 +957,24 @@ div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p.checkspan {
     -o-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;}
-div#CODEXAPPSTATUS #CODEXSTATUSCONFIG p.checkspan.ischecked {
+div#CODEXAPPSPLASH p.checkspan#CODEXSPLASHCONFIG.ischecked {
     font-weight: normal; color: rgba(0,0,0,1);}
+
+div#CODEXAPPSPLASH img.closebutton {
+    float: left; max-width: 12%; padding-top: 0.5ex;}
+div#CODEXAPPSPLASH img.cover {
+    float: right; max-width: 12%; padding-top: 0.5ex;}
+
+div#CODEXAPPSPLASH form {
+    margin-top: 1em; max-width: 40em;
+    margin-left: 10%; margin-right: 5%;}
+div#CODEXAPPSPLASH form button {}
+div#CODEXAPPSPLASH form table th {
+    white-space: nowrap;}
+div#CODEXAPPSPLASH form table td.text:first-line {
+    font-weight: bold;}
+
+/* Close HUD buttons */
 
 img.codexclosehud {
     border-radius: 50%; border: solid red 3px;

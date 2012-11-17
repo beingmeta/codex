@@ -85,7 +85,7 @@ Codex.setMode=
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
             help.innerHTML=Codex.HTML.help;
             // Set up the app splash/status page
-            var splash=Codex.DOM.appstatus=fdjtID("CODEXAPPSTATUS");
+            var splash=Codex.DOM.appsplash=fdjtID("CODEXAPPSPLASH");
             splash.innerHTML=Codex.HTML.splash;
             // Setup heart
             var heart=fdjtID("CODEXHEART");
@@ -443,7 +443,7 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexMode_pat=/\b((status)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
+        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
         var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login))\b/g;
         var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(glosses)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan))\b/g;
         var codex_mode_scrollers=

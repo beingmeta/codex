@@ -276,7 +276,9 @@ Codex.Startup=
             if (fdjtID("CODEXSPLASH"))
                 fdjtID("CODEXSPLASH").style.display='none';
 
-            Codex.setMode("status");}
+            Codex.setMode("splash");
+
+            fdjtDOM.adjustFonts(fdjtID("CODEXAPPSPLASH"));}
 
         function appSetup() {
 
@@ -363,7 +365,7 @@ Codex.Startup=
             initState();
 
             // Set up what the user sees during setup
-            appstatus();
+            appsplash();
         }
         
         function userSetup(){
@@ -545,7 +547,7 @@ Codex.Startup=
              100,25);}
         Codex.Startup=Startup;
         
-        function appstatus(){
+        function appsplash(){
             var intro=fdjtID("CODEXINTRO");
             // Take any message passed along as a query string
             //  and put it in the top of the help window, then
@@ -605,7 +607,6 @@ Codex.Startup=
             // This makes the splash page visible and applies some
             // other styling
             fdjtDOM.addClass(document.body,"codexstartup");
-            fdjtDOM.addClass(document.body,"codexappstatus");
             window.focus();}
         
         function startupDone(mode){
@@ -619,7 +620,7 @@ Codex.Startup=
             Codex.displaySync();
             setInterval(Codex.serverSync,60000);
             fdjtDOM.dropClass(document.body,"codexstartup");
-            fdjtDOM.dropClass(document.body,"codexappstatus");
+            fdjtDOM.dropClass(document.body,"codexappsplash");
             if (mode) {}
             else if (getQuery("startmode"))
                 mode=getQuery("startmode");
