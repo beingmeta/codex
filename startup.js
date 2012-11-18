@@ -260,7 +260,8 @@ Codex.Startup=
                     Codex.version,Codex.buildtime,Codex.buildhost,
                     Codex._setup_start.toString());
             if (navigator.appVersion)
-                fdjtLog("Navigator App version: %s",navigator.appVersion);
+                fdjtLog("Navigator App version: %s (%s)",
+                        navigator.appVersion,navigator.userAgent);
             // This lets trace configurations be passed as query
             // arguments, for handy debugging.
             if (getQuery("cxtrace")) readTraceSettings();
