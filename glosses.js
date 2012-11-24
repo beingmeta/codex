@@ -34,6 +34,14 @@
 
 (function () {
 
+    var fdjtString=fdjt.String;
+    var fdjtState=fdjt.State;
+    var fdjtTime=fdjt.Time;
+    var fdjtLog=fdjt.Log;
+    var fdjtDOM=fdjt.DOM;
+    var fdjtUI=fdjt.UI;
+    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+
     var addClass=fdjtDOM.addClass;
     var hasClass=fdjtDOM.hasClass;
     var dropClass=fdjtDOM.dropClass;
@@ -563,11 +571,12 @@
         Codex.clearHighlights(target);
         var dups=Codex.getDups(target);
         Codex.selecting=
-            fdjtSelecting(dups,{ontap: gloss_selecting_ontap,
-                                onrelease: gloss_selecting_onrelease,
-                                fortouch: Codex.touch,
-                                holdthresh: 250,
-                                movethresh: 250});
+            fdjt.UI.Selecting(
+                dups,{ontap: gloss_selecting_ontap,
+                      onrelease: gloss_selecting_onrelease,
+                      fortouch: Codex.touch,
+                      holdthresh: 250,
+                      movethresh: 250});
         if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
             Codex.selecting.setString(gloss.excerpt);
         Codex.selecting.onchange=function(sel){
@@ -577,7 +586,7 @@
         return form;}
     Codex.setGlossTarget=setGlossTarget;
 
-    var selecting_ontap=fdjtSelecting.tap_handler;
+    var selecting_ontap=fdjt.UI.Selecting.tap_handler;
     function gloss_selecting_ontap(evt){
         if (Codex.mode!=="addgloss") Codex.setMode("addgloss");
         else {

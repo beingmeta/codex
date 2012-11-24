@@ -34,6 +34,11 @@
 /* Scanning the document for Metadata */
 
 Codex.DOMScan=(function(){
+    var fdjtString=fdjt.String;
+    var fdjtLog=fdjt.Log;
+    var fdjtDOM=fdjt.DOM;
+    var fdjtID=fdjt.ID;
+
     function CodexDOMScan(root,docinfo){
         var stdspace=fdjtString.stdspace;
         var flatten=fdjtString.flatten;

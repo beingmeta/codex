@@ -41,6 +41,14 @@
 Codex.Startup=
     (function(){
 
+        var fdjtString=fdjt.String;
+        var fdjtState=fdjt.State;
+        var fdjtTime=fdjt.Time;
+        var fdjtLog=fdjt.Log;
+        var fdjtDOM=fdjt.DOM;
+        var fdjtUI=fdjt.UI;
+        var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+        
         var sbook_faketouch=false;
 
         var sbook_heading_qricons=false;

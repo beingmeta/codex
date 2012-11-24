@@ -33,6 +33,14 @@
 */
 
 (function(){
+    var fdjtString=fdjt.String;
+    var fdjtState=fdjt.State;
+    var fdjtTime=fdjt.Time;
+    var fdjtLog=fdjt.Log;
+    var fdjtDOM=fdjt.DOM;
+    var fdjtUI=fdjt.UI;
+    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+
     Codex.search_cloud=false;
     if (!(Codex.empty_cloud)) Codex.empty_cloud=false;
     if (!(Codex.show_refiners)) Codex.show_refiners=25;

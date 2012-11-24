@@ -35,6 +35,12 @@
         
 Codex.SectionLayout=
     (function(){
+        var fdjtDOM=fdjt.DOM;
+        var fdjtString=fdjt.String;
+        var fdjtUI=fdjt.UI;
+        var fdjtLog=fdjt.Log;
+        var fdjtTime=fdjt.Time;
+
         var TOA=fdjtDOM.toArray;
         var getChildren=fdjtDOM.getChildren;
         var getParent=fdjtDOM.getParent;
@@ -1095,6 +1101,15 @@ Codex.SectionLayout=
             
 Codex.Paginate=
     (function(){
+
+        var fdjtString=fdjt.String;
+        var fdjtState=fdjt.State;
+        var fdjtTime=fdjt.Time;
+        var fdjtLog=fdjt.Log;
+        var fdjtDOM=fdjt.DOM;
+        var fdjtUI=fdjt.UI;
+        var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+        var CodexLayout=fdjt.CodexLayout;
 
         var getGeometry=fdjtDOM.getGeometry;
         var getParent=fdjtDOM.getParent;

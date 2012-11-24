@@ -34,6 +34,14 @@
 
 (function () {
 
+    var fdjtString=fdjt.String;
+    var fdjtState=fdjt.State;
+    var fdjtTime=fdjt.Time;
+    var fdjtLog=fdjt.Log;
+    var fdjtDOM=fdjt.DOM;
+    var fdjtUI=fdjt.UI;
+    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+
     var div_threshold=7;
     var debug_locbars=false;
     var odq="\u201c"; var cdq="\u201d";
@@ -754,7 +762,7 @@
     function selectSources(results_div,sources){
         if (!(sources)) {
             fdjtDOM.dropClass(results_div,"sourced");
-            fdjtDOM.dropClass(fdjt$(".sourced",results_div),"sourced");
+            fdjtDOM.dropClass(fdjt.$(".sourced",results_div),"sourced");
             return;}
         selectSourcesRecur(results_div,sources);
         if (Codex.target) scrollGlosses(Codex.target,results_div);}

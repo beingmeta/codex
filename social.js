@@ -33,6 +33,14 @@
 
 (function(){
 
+    var fdjtString=fdjt.String;
+    var fdjtState=fdjt.State;
+    var fdjtTime=fdjt.Time;
+    var fdjtLog=fdjt.Log;
+    var fdjtDOM=fdjt.DOM;
+    var fdjtUI=fdjt.UI;
+    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+
     var sbook_sources=false;
     var sbook_glosses_target=false;
     var sbookGlossesHUD=false;

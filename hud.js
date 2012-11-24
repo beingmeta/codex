@@ -33,6 +33,15 @@
 
 Codex.setMode=
     (function(){
+        var fdjtString=fdjt.String;
+        var fdjtState=fdjt.State;
+        var fdjtTime=fdjt.Time;
+        var fdjtLog=fdjt.Log;
+        var fdjtDOM=fdjt.DOM;
+        var fdjtUI=fdjt.UI;
+        var fdjtKB=fdjt.KB;
+        var fdjtID=fdjt.ID;
+        
         // Helpful dimensions
         var head_height=false, foot_height=false;
         var help_top=false, help_bottom=false;

@@ -49,6 +49,14 @@
 
 Codex.TOC=
     (function(){
+        var fdjtString=fdjt.String;
+        var fdjtState=fdjt.State;
+        var fdjtTime=fdjt.Time;
+        var fdjtLog=fdjt.Log;
+        var fdjtDOM=fdjt.DOM;
+        var fdjtUI=fdjt.UI;
+        var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+        
         var cxicon=Codex.icon;
         function navicon(kind){
             switch (kind) {
