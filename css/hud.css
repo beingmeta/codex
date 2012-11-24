@@ -73,8 +73,8 @@ body #CODEXHUD.tocscan #CODEXSCANNER.expanded {
     top: 50%; bottom: 50%; height: 0px;
     left: 100px; right: 100px;
     z-index: -100; 
+    overflow: auto;
     opacity: 0.0;
-    overflow: auto; /* tryout */
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     -webkit-opacity: 0;
