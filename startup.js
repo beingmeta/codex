@@ -297,7 +297,7 @@ Codex.Startup=
             document.domain="sbooks.net"; document.origin="sbooks.net";
 
             // Execute any FDJT initializations
-            fdjtDOM.init();
+            fdjt.Init();
 
             fdjtDOM.addAppSchema("SBOOK","http://sbooks.net/");
             fdjtDOM.addAppSchema("Codex","http://codex.sbooks.net/");
@@ -484,9 +484,11 @@ Codex.Startup=
                                     Codex.pagecount=layout.pagelocs.length;
                                     if (!(Codex.nativescroll)) {
                                         if (!(Codex.iscroll)) {
-                                            var is=new iScroll("CODEXCONTENT");
+                                            var content=fdjtID("CODEXCONTENT");
+                                            var is=new iScroll(content);
                                             Codex.iscroll=is;
-                                            is.doubletouch=true;}
+                                            // is.doubletouch=true;
+                                        }
                                         else Codex.iscroll.refresh();}
                                     if (Codex.section) {
                                         Codex.curpage=layout.getPageNumber()||1;
@@ -1623,7 +1625,7 @@ Codex.Startup=
             if (Codex.Trace.dosync)
                 fdjtLog("syncLocation(call) %s",uri);
             try {
-                fdjtAjax(function(req){
+                fdjt.Ajax(function(req){
                     var d=JSON.parse(req.responseText);
                     Codex.setConnected(true);
                     Codex.syncstart=true;
@@ -1649,10 +1651,10 @@ Codex.Startup=
                                      Codex.setState(d);}}}],
                                       fdjtDOM("div",msg1),
                                       fdjtDOM("div.smaller",msg2));}},
-                         uri,false,
-                         function(req){
-                             if ((req.readyState == 4)&&(navigator.onLine))
-                                 Codex.setConnected(false);});}
+                          uri,false,
+                          function(req){
+                              if ((req.readyState == 4)&&(navigator.onLine))
+                                  Codex.setConnected(false);});}
             catch (ex) {Codex.dosync=false;}}
         Codex.syncLocation=syncLocation;
 

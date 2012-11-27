@@ -102,10 +102,10 @@ var Codex=
          state: false,  // Whether to trace set state
          flips: false,  // Whether to trace page flips (movement by pages)
          messages: false, // Whether to trace inter-window messages
-         scroll: false, // Whether to trace scrolling within the HUD
+         iscroll: false, // Whether to trace HUD scrolling with iScroll
          highlight: 0,  // Whether to trace highlighting
          indexing: 0,   // How much to trace document indexing
-         gestures: 1}   // How much to trace gestures
+         gestures: 0}   // How much to trace gestures
     };
 
 (function(){

@@ -101,7 +101,6 @@ body #CODEXHUD.tocscan #CODEXSCANNER.expanded {
 
 body.hudup #CODEXHEART { display: block;}
 div#CODEXHUD #CODEXHEART .hudpanel { overflow: auto;}
-body.cxISCROLL div#CODEXHUD #CODEXHEART .hudpanel { overflow: hidden;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART,
 body #CODEXHUD.addgloss #CODEXHEART.tagging,
@@ -117,18 +116,24 @@ body #CODEXHUD.addgloss #CODEXHEART.addlink {
     -khtml-opacity: 1;
     -moz-opacity: 1;
     -o-opacity: 1;}
-body.hudup #CODEXHUD.openheart #CODEXHEART > div,
-body #CODEXHUD.addgloss #CODEXHEART.tagging > div,
-body #CODEXHUD.addgloss #CODEXHEART.showoutlets > div,
-body #CODEXHUD.addgloss #CODEXHEART.addlink > div {
+body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
+body #CODEXHUD.addgloss #CODEXHEART.tagging div.hudpanel,
+body #CODEXHUD.addgloss #CODEXHEART.showoutlets div.hudpanel,
+body #CODEXHUD.addgloss #CODEXHEART.addlink div.hudpanel {
     margin-top: 0px; margin-bottom: 0px;}
-body.cxISCROLL.hudup #CODEXHUD.openheart #CODEXHEART > div,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.tagging > div,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.showoutlets > div,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.addlink > div {
-    overflow: hidden; max-height: inherit;}
 
-#CODEXHEART > div > h1:first-child { margin-top: 0px;}
+body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART,
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.tagging,
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.showoutlets,
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.addlink {
+    padding-top: 0px; padding-bottom: 0px;}
+body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART #CODEXHEARTCONTENT,
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.tagging #CODEXHEARTCONTENT,
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.showoutlets #CODEXHEARTCONTENT,
+body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.addlink #CODEXHEARTCONTENT {
+    padding-top: 1em; padding-bottom: 1em;}
+
+#CODEXHEART div.hudpanel > h1:first-child { margin-top: 0px;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART {
     height: auto; top: 100px; bottom: 100px;
@@ -240,9 +245,10 @@ div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.hudpanel,
 div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSTAGS.hudpanel,
+div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXGLOSSOUTLETS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.addlink div#CODEXGLOSSATTACH.hudpanel,
-div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
+div_WRAPPER#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     position: static; display: block;
     opacity: 0.98;

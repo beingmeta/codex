@@ -600,9 +600,9 @@ Codex.setMode=
             // This updates scroller dimensions, we delay it
             //  because apparently, on some browsers, the DOM
             //  needs to catch up with CSS
-            if (Codex.scrolling) {
+            if ((Codex.scrolling)&&(!(Codex.scrolldivs))) {
                 var scroller=fdjtID(Codex.scrolling);
-                if (Codex.Trace.scroll)
+                if (Codex.Trace.iscroll)
                     fdjtLog("Updating scroller for #%s s=%o",
                             Codex.scrolling,scroller);
                 setTimeout(function(){updateScroller(scroller);},
@@ -634,20 +634,44 @@ Codex.setMode=
         // function updateScroller(elt){}
         function updateScroller(elt){
             if (Codex.scrolldivs) return;
+            if (Codex.Trace.iscroll) fdjtLog("updateScroller elt=%o",elt);
             if (typeof elt === 'string') elt=fdjtID(elt);
-            fdjtLog("updateScroller elt=%o",elt);
             if (!(elt)) return;
-            if ((Codex.scrollers[elt.id])&&
-                (Codex.scrollers[elt.id].element===elt)) {
-                var scroller=Codex.scrollers[elt.id];
-                if (Codex.Trace.scroll)
+            var eltid=elt.id;
+            if (!(eltid)) return;
+            if ((Codex.scrollers[eltid])&&
+                (Codex.scrollers[eltid].scroller===elt)) {
+                var scroller=Codex.scrollers[eltid];
+                if (Codex.Trace.iscroll)
                     fdjtLog("updateScroller/refresh %o",scroller);
                 scroller.refresh();}
             else {
-                var scroller=new iScroll(elt);
-                if (Codex.Trace.scroll)
-                    fdjtLog("updateScroller/create %o",scroller);
-                Codex.scrollers[elt.id]=scroller;}}
+                var newid=eltid+"_WRAPPER";
+                var wrapper=fdjtID(newid);
+                if (!(wrapper)) {
+                    wrapper=fdjtDOM("div#"+newid);
+                    elt.parentNode.replaceChild(wrapper,elt);
+                    wrapper.appendChild(elt);}
+                if (hasClass(elt,"hudpanel")) {
+                    addClass(wrapper,"hudpanel");
+                    dropClass(elt,"hudpanel");}
+                var scroller=new iScroll(wrapper);
+                if (Codex.Trace.iscroll)
+                    fdjtLog("updateScroller/create %o for %o around %o",
+                            scroller,wrapper,elt);
+                Codex.scrollers[eltid]=scroller;}}
+        function updateScroller(elt){
+            if (Codex.scrolldivs) return;
+            if (Codex.heartscroller) Codex.heartscroller.refresh();
+            else {
+                var heart=fdjtID("CODEXHEART");
+                var contents=fdjtID("CODEXHEARTCONTENTS")
+                if (!(contents)) {
+                    contents=fdjtDOM("div#CODEXHEARTCONTENTS");
+                    fdjtDOM(contents,fdjtDOM.Array(heart.childNodes));
+                    fdjtDOM(heart,contents);}
+                Codex.heartscroller=new iScroll(heart);
+                Codex.heartscroller.refresh();}}
         Codex.UI.updateScroller=updateScroller;
 
         function CodexHUDToggle(mode,keephud){
