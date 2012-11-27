@@ -445,7 +445,8 @@
 
     function getCard(target){
         return ((hasClass(target,"codexcard"))?(target):
-                (getParent(target,".codexcard")));}
+                (getParent(target,".codexcard")))||
+            getChild(target,".codexcard");}
 
     var scroll_pos={};
 
@@ -481,13 +482,12 @@
             Codex.JumpTo(card.about);}}
     function slice_held(evt){
         var card=getCard(fdjtUI.T(evt||event));
-        if (!(card)) return;
-        var slice=getParent(card,".codexslice");
-        // if (scrolled(slice)) return;
         if (Codex.Trace.gestures)
             fdjtLog("slice_held %o: %o, scanning=%o",
                     evt,card,Codex.scanning);
+        if (!(card)) return;
         if (Codex.scanning===card) return;
+        var slice=getParent(card,".codexslice");
         var clone=card.cloneNode(true);
         clone.id="CODEXSCAN";
         fdjtDOM.replace("CODEXSCAN",clone);
@@ -538,9 +538,10 @@
         return fdjtUI.cancel(evt);}
     function slice_released(evt){
         var card=getCard(fdjtUI.T(evt||event));
-        if (Codex.Trace.gestures)
-            fdjtLog("slice_released %o: %o, scanning=%o",evt,card);
-        if (card) {Codex.stopPreview("slice_released");}}
+        if (Codex.Trace.gestures) {
+            var card=getCard(fdjtUI.T(evt||event));
+            fdjtLog("slice_released %o: %o, scanning=%o",evt,card);}
+        Codex.stopPreview("slice_released");}
 
     function getTargetDup(scan,target){
         var targetid=target.id;
@@ -1735,7 +1736,7 @@
         evt=evt||event;
         var target=fdjtUI.T(evt);
         if (getParent(target,".checkspan"))
-            return fdjtUI.CheckSpan.onclick(evt);
+            return fdjt.UI.CheckSpan.onclick(evt);
         else if (getParent(target,".sharing"))
             toggleClass(getParent(target,".sharing"),"expanded");
         else {}}
@@ -1947,11 +1948,11 @@
          // GLOSSFORM rules
          "span.codexglossdelete": { click: delete_ontap },
          "span.codexglossrespond": { click: respond_ontap },
-         "span.codexsharegloss": {tap: fdjtUI.CheckSpan.onclick},
+         "span.codexsharegloss": {tap: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {click: back_to_reading},
-         ".glossexposure": {click: fdjtUI.CheckSpan.onclick},
+         ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
          ".submitbutton": {click: submitGloss },
-         "div.glossetc": {click: fdjtUI.CheckSpan.onclick},
+         "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
          "div.glossetc span.modebuttons": {click: glossmode_button},
          "div.glossetc div.notetext": {click: editglossnote}};
@@ -1960,8 +1961,7 @@
         {window: {
             keyup: onkeyup,
             keydown: onkeydown,
-            keypress: onkeypress,
-            touchmove: cancel},
+            keypress: onkeypress},
          content: {touchstart: content_touchstart,
                    touchmove: content_touchmove,
                    touchend: content_touchend},
@@ -2010,12 +2010,12 @@
          // GLOSSFORM rules
          "span.codexglossdelete": { click: delete_ontap },
          "span.codexglossrespond": { click: respond_ontap },
-         "span.codexsharegloss": {click: fdjtUI.CheckSpan.onclick},
+         "span.codexsharegloss": {click: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {click: back_to_reading},
          ".submitbutton": {click: submitGloss },
-         ".glossexposure": {click: fdjtUI.CheckSpan.onclick},
-         "div.glossetc span.links": {click: fdjtUI.CheckSpan.onclick},
-         "div.glossetc span.tags": {click: fdjtUI.CheckSpan.onclick},
+         ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
+         "div.glossetc span.links": {click: fdjt.UI.CheckSpan.onclick},
+         "div.glossetc span.tags": {click: fdjt.UI.CheckSpan.onclick},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
          "div.glossetc span.modebuttons": {click: glossmode_button},
          "div.glossetc div.notetext": {click: editglossnote}};
