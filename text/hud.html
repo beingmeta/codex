@@ -5,7 +5,7 @@
   <span class="keep" onclick="Codex.keyboardHelp(true);">keep</span>
   <span class="close" onclick="Codex.keyboardHelp(false);">close</span>
   <div id="CODEXKEYBOARDHELP"></div>
-  <div class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);">
+  <div class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);">
     <input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
            CHECKED>
     Show keyboard help
@@ -70,32 +70,32 @@
       <img svg="http://static.beingmeta.com/g/codex/about_tab.svgz"
            src="http://static.beingmeta.com/g/codex/about_tab.png"
            alt="About" class="tab" contentid="CODEXABOUTBOOK"
-           onclick="Codex.setMode.toggle('about'); return fdjtUI.cancel(event);"
+           onclick="Codex.setMode.toggle('about'); return fdjt.UI.cancel(event);"
            title="information about this book"/>
       <img svg="http://static.beingmeta.com/g/codex/toc_tab.svgz"
            src="http://static.beingmeta.com/g/codex/toc_tab.png"
            alt="ToC" class="tab" contentid="CODEXFLYTOC"
-           onclick="Codex.setMode.toggle('flytoc'); return fdjtUI.cancel(event);"
+           onclick="Codex.setMode.toggle('flytoc'); return fdjt.UI.cancel(event);"
            title="Table of Contents (static)">
       <img svg="http://static.beingmeta.com/g/codex/manage_tab.svgz"
            src="http://static.beingmeta.com/g/codex/manage_tab.png"
            alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
-           onclick="Codex.setMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
+           onclick="Codex.setMode.toggle('sbooksapp'); return fdjt.UI.cancel(event);"
            title="manage added layers for your sBook"/>
       <img svg="http://static.beingmeta.com/g/codex/settings_tab.svgz"
            src="http://static.beingmeta.com/g/codex/settings_tab.png"
            alt="Device" class="tab" contentid="CODEXSETTINGS"
-           onclick="Codex.setMode.toggle('device'); return fdjtUI.cancel(event);"
+           onclick="Codex.setMode.toggle('device'); return fdjt.UI.cancel(event);"
            title="alter appearance and interaction"/>
       <img svg="http://static.beingmeta.com/g/codex/console_tab.svgz"
            src="http://static.beingmeta.com/g/codex/console_tab.png"
            alt="Console" class="tab" contentid="CODEXCONSOLE"
-           onclick="Codex.setMode.toggle('console'); return fdjtUI.cancel(event);"
+           onclick="Codex.setMode.toggle('console'); return fdjt.UI.cancel(event);"
            title="show debugging console" />
       <img svg="http://static.beingmeta.com/g/codex/login_tab.svgz"
            src="http://static.beingmeta.com/g/codex/login_tab.png"
            alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
-           onclick="Codex.setMode.toggle('sbooksapp'); return fdjtUI.cancel(event);"
+           onclick="Codex.setMode.toggle('sbooksapp'); return fdjt.UI.cancel(event);"
            title="login to sBooks" />
     </div> <!-- .tabbar -->
   </div> <!-- id="CODEXHUDBUTTONS" -->

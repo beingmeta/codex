@@ -3,12 +3,12 @@
      alt="close" class="closebutton"
      onclick="Codex.setMode(false);"/>
 <img class="cover" id="CODEXSTATUSCOVER"/>
-<p class="checkspan" onclick="fdjtUI.CheckSpan.onclick(event);"
+<p class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);"
    id="CODEXSPLASHCONFIG">
   <span class="adjustfont">
   <input TYPE="checkbox" NAME="CODEXHIDESPLASH" VALUE="yes"
          ID="HIDESPLASHCHECKBOX"
-         onchange="fdjtUI.Delayed(function(){var checked=fdjtID('HIDESPLASHCHECKBOX').checked; Codex.setConfig('hidesplash',checked,true);});"
+         onchange="fdjt.UI.Delayed(function(){var checked=fdjt.ID('HIDESPLASHCHECKBOX').checked; Codex.setConfig('hidesplash',checked,true);});"
          "CHECKED"/>Hide this page after startup (<em>if not needed</em>)</span></p>
 <h1>Welcome to <span style="color: blue;">s</span>Books</h1>
 <p id="CODEXINTRO"></p>
@@ -82,7 +82,7 @@
           your<br/>friends</th>
         <td class="textbox">
           <input TYPE="TEXT" NAME="FRIENDS" VALUE=""
-                 onkeypress="fdjtUI.submitOnEnter(event);"
+                 onkeypress="fdjt.UI.submitOnEnter(event);"
                  placeholder="email addresses"/></td></tr>
       <tr><td>to join your <strong>personal circle</strong> at
           <strong><span style="color: blue;">s</span>Books</strong>.
@@ -95,7 +95,7 @@
           a tribe</th>
         <td class="textbox">
           <input TYPE="TEXT" NAME="INVITING" VALUE=""
-                 onkeypress="fdjtUI.submitOnEnter(event);"
+                 onkeypress="fdjt.UI.submitOnEnter(event);"
                  placeholder="email addresses"/></td></tr>
       <tr><td>into a <strong>reading circle</strong> at
           <strong><span style="color: blue;">s</span>Books</strong>.

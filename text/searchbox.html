@@ -2,7 +2,7 @@
   <img class="clearsearch" alt="X" title="clear search"
        svg="http://static.beingmeta.com/g/codex/redx.svgz"
        src="http://static.beingmeta.com/g/codex/redx64x64.png"
-       onclick="Codex.UI.handlers.clearSearch(event); fdjtUI.cancel(event); return false;"/>
+       onclick="Codex.UI.handlers.clearSearch(event); fdjt.UI.cancel(event); return false;"/>
   <input id="CODEXSEARCHINPUT"
          type="TEXT" class="autoprompt searchinput"
          name="QTEXT" value="" isempty="yes" autocomplete="off"
@@ -25,11 +25,11 @@
   <div class="noresults">No results</div>
   <div class="noquery">Add tags to refine query</div>
   <span class="resultcount"
-        onclick="Codex.showSearchResults(); fdjtUI.cancel(event);">
+        onclick="Codex.showSearchResults(); fdjt.UI.cancel(event);">
   </span>
   <span class="sep vbar">|</span>
   <span class="refinecount"
-        onclick="Codex.setMode('search'); fdjtUI.cancel(event);">
+        onclick="Codex.setMode('search'); fdjt.UI.cancel(event);">
   </span>
 </div>
 <!--

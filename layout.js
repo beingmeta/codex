@@ -38,6 +38,7 @@ Codex.SectionLayout=
         var fdjtDOM=fdjt.DOM;
         var fdjtString=fdjt.String;
         var fdjtUI=fdjt.UI;
+        var fdjtID=fdjt.ID;
         var fdjtLog=fdjt.Log;
         var fdjtTime=fdjt.Time;
 
@@ -138,7 +139,7 @@ Codex.SectionLayout=
         function CodexSections(content,docinfo,opts){
             if (!(opts)) opts={};
             if (Codex.layout) {
-                if (CodexLayout instanceof Codex.SectionLayout) {
+                if (Codex.layout instanceof Codex.SectionLayout) {
                     return Codex.layout;}
                 else if (!(Codex.layout.done)) {
                     if (Codex.layout.timer) {
