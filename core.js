@@ -105,7 +105,7 @@ var Codex=
          scroll: false, // Whether to trace scrolling within the HUD
          highlight: 0,  // Whether to trace highlighting
          indexing: 0,   // How much to trace document indexing
-         gestures: 0}   // How much to trace gestures
+         gestures: 1}   // How much to trace gestures
     };
 
 (function(){
@@ -793,7 +793,7 @@ var Codex=
             fdjtLog.warn("Bad CodexGoTo %o",arg);
             return;}
         if (!(target)) {
-            if (Codex.layout instanceof CodexLayout)
+            if (Codex.layout instanceof fdjt.CodexLayout)
                 Codex.GoToPage(arg,caller,pushstate);
             else if (Codex.layout instanceof Codex.SectionLayout)
                 Codex.GoToSection(arg,caller,pushstate);
@@ -865,7 +865,7 @@ var Codex=
         var target=((spec.nodeType)?(spec):(fdjtID(spec)));
         if (Codex.Trace.flips)
             fdjtLog("startPreview %o (%s)",target,caller);
-        if (Codex.layout instanceof CodexLayout) 
+        if (Codex.layout instanceof fdjt.CodexLayout) 
             Codex.startPagePreview(spec,caller);
         else if (Codex.layout instanceof Codex.SectionLayout)
             Codex.startSectionPreview(spec,caller);
