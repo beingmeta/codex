@@ -188,7 +188,7 @@
                                    "all ",tags.length," tags");
                 var subspan=fdjtDOM("span.whenexpanded");
                 controller.setAttribute(
-                    "onclick","fdjtUI.Expansion.toggle(event);");
+                    "onclick","fdjt.UI.Expansion.toggle(event);");
                 fdjtDOM(span," ",controller," ",subspan);
                 tagspan=subspan;}
             fdjtDOM.append(tagspan,((i>0)?" \u00b7 ":" "),
@@ -272,7 +272,7 @@
                  ("tap to edit this gloss, hold to reply"):
 		 ("relay/reply to this gloss"))));
         addListener(tool,"tap",relayoredit_gloss);
-	addListener(tool,"hold",relayoredit_gloss);
+	// addListener(tool,"hold",relayoredit_gloss);
         
         var picinfo=getpicinfo(info);
         var overdoc=getoverdoc(info);
