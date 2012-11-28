@@ -1226,7 +1226,7 @@
         if (!(glossmark)) return false;
         fdjtUI.cancel(evt);
         if ((Codex.mode==='glosses')&&(Codex.target===passage)) {
-            Codex.setMode(true);
+            Codex.setMode(false);
             return;}
         else Codex.showGlosses(passage);}
 
