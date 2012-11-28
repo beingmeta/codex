@@ -527,8 +527,9 @@ Codex.Startup=
                 // Figure out which mode to start up in, based on
                 // query args to the book.
                 function(){
-                    if (Codex.layout) startupDone();
-                    else Codex.pagewait=startupDone;}],
+                    if (!(Codex.bypage)) startupDone();
+                    else if (Codex.layout) startupDone();
+                    else Codex.layoutdone=startupDone;}],
              100,25);}
         Codex.Startup=Startup;
         
@@ -989,17 +990,11 @@ Codex.Startup=
         function initBody(){
             var body=document.body;
             var content=fdjtDOM("div#CODEXCONTENT");
-            var headmask=fdjtDOM("div.codexwinmask#CODEXWINMASKHEAD");
-            var footmask=fdjtDOM("div.codexwinmask#CODEXWINMASKFOOT");
-            var win=fdjtDOM("div#CODEXWINDOW",headmask,footmask,content);
             // Get any author provided splash page
             var splash=fdjtID("CODEXSPLASH");
         
             // Save those DOM elements in a handy place
-            Codex.window=win;
             Codex.content=content;
-            Codex.winmaskhead=headmask;
-            Codex.winmaskfoot=footmask;
 
             // Move the publisher-provided splash page directly into
             //  the body (if neccessary)
@@ -1008,7 +1003,8 @@ Codex.Startup=
             var children=body.childNodes, nodes=[];
             var i=0, lim=children.length;
             if (splash) {
-                // Gather all of the nodes except the splash page
+                // Gather all of the nodes before the splash page.
+                //   There should really be any, but we'll check anyway.
                 while (i<lim) {
                     //  We're trying to minimize display artifacts during
                     //   startup and this shuffling about might help in
@@ -1059,7 +1055,7 @@ Codex.Startup=
                         " pages"),
                 Codex.pages=fdjtDOM("div#CODEXPAGES"));
             
-            fdjtDOM(body,win,page);
+            fdjtDOM(body,content,page);
             fdjtDOM.addClass(body,"sbook");
             sizePage(page,content);
             applyMetaClass("sbookdetails");

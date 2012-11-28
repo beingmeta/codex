@@ -187,9 +187,9 @@ Codex.Paginate=
                     dropClass(document.body,"cxLAYOUT");
                     Codex.layout=layout;
                     Codex.pagecount=layout.pages.length;
-                    if (Codex.pagewait) {
-                        var fn=Codex.pagewait;
-                        Codex.pagewait=false;
+                    if (Codex.layoutdone) {
+                        var fn=Codex.layoutdone;
+                        Codex.layoutdone=false;
                         fn();}
                     Codex.GoTo(
                         Codex.location||Codex.target||

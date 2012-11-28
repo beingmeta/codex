@@ -777,6 +777,14 @@ body div#CODEXHUD div#CODEXHUDBUTTONS {
     -khtml-opacity: 0.10;
     -moz-opacity: 0.10;
     -o-opacity: 0.10;}
+body.cxSCROLL div#CODEXHUD div#CODEXHUDBUTTONS {
+    clear: none; z-index: 150; text-align: center; opacity: 0.00;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=00)";
+    filter: alpha(opacity=00);
+    -webkit-opacity: 0.00;
+    -khtml-opacity: 0.00;
+    -moz-opacity: 0.00;
+    -o-opacity: 0.00;}
 body div#CODEXHUD div#CODEXHUDBUTTONS:hover {
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";

@@ -44,23 +44,6 @@ body.sbook {
 span.codexcssversion:after {
     content: "$Id$";}
 
-div#CODEXWINDOW {
-    position: fixed;
-    top: 60px; left: 0px; right: 0px; bottom: 60px;
-    margin: 0px; margin-left: 50px; margin-right: 50px;
-    border: solid transparent 3px;
-    overflow-y: auto; z-index: -50;}
-div#CODEXWINDOW div#CODEXCONTENT { position: absolute; }
-div.codexwinmask {
-    position: absolute; width: 100%; z-index: 100;
-    background-color: black; opacity: 0.15;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
-    filter: alpha(opacity=15);
-    -webkit-opacity: 0.15;
-    -khtml-opacity: 0.15;
-    -moz-opacity: 0.15;
-    -o-opacity: 0.15;}
-
 div#CODEXPAGE {
     position: fixed; overflow: visible;
     padding: 0px; margin: 0px;
@@ -72,7 +55,7 @@ div#CODEXPAGE {
 body.cxSCROLL div#CODEXPAGE, img.codexpagebutton { display: none;}
 
 body.cxBYPAGE { overflow: hidden; }
-body.cxBYPAGE div#CODEXWINDOW { display: none;}
+body.cxBYPAGE div#CODEXCONTENT { display: none;}
 
 body.cxANIMATE.hudup div#CODEXPAGE {
     transition-property: opacity;
@@ -88,8 +71,7 @@ body.cxANIMATE.hudup div#CODEXPAGE {
     -khtml-opacity: 0.80;
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
-body.cxPREVIEW div#CODEXPAGE, body.cxSHRINK div#CODEXPAGE,
-body.cxPREVIEW div#CODEXWINDOW, body.cxSHRINK div#CODEXWINDOW {
+body.cxPREVIEW div#CODEXPAGE, body.cxSHRINK div#CODEXPAGE {
     border-color: gray; border-style: inset;}
 
 body.cxANIMATE div#CODEXPAGE div.codexpage {
@@ -137,6 +119,9 @@ div#CODEXPAGE div#CODEXPAGE.codexpaginating div#CODEXPAGES {
 body.sbook.cxBYPAGE {
     margin-top: 0px; margin-bottom: 0px;
     margin-left: 0px; margin-right: 0px;}
+
+body.sbook.cxSCROLL div#CODEXCONTENT {
+    padding-left: 3em; padding-right: 3em;}
 
 div#CODEXCONTENT > * {
     max-width: inherit;}
@@ -253,6 +238,7 @@ body div.codexmargin#CODEXPAGEFOOT {
   text-align: center;}
 body div.codexmargin#CODEXPAGEHEAD { top: 0px; }
 body div.codexmargin#CODEXPAGEFOOT { bottom: 0px; vertical-align: bottom;}
+body.cxSCROLL #CODEXPAGEFOOT, body.cxSCROLL #CODEXPAGEHEAD { display: none;}
 
 div#CODEXPAGES.pageswitch {
     opacity: 0.0001;
@@ -323,8 +309,8 @@ div.locbar hr {
     -khtml-opacity: 0.0001;
     -moz-opacity: 0.0001;
     -o-opacity: 0.0001;}
-.codexglossmark {margin-right: -48px;}
-body.cxSCROLL .codexglossmark { right: 20px;}
+body.cxBYPAGE .codexglossmark {margin-right: -48px;}
+body.cxSCROLL .codexglossmark { right: 5px;}
 
 body .codexglossmark {
     opacity: 0.4;

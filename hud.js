@@ -150,7 +150,8 @@ Codex.setMode=
                 if (document.getElementById(item.frag)) {
                     var addGlossmark=Codex.UI.addGlossmark;
                     Codex.UI.addToSlice(item,glosses,false);
-                    var nodes=Codex.getDups(item.frag);
+                    var nodes=(Codex.bypage)?(Codex.getDups(item.frag)):
+                        [document.getElementById(item.frag)];
                     addClass(nodes,"glossed");
                     var i=0, lim=nodes.length; while (i<lim) {
                         addGlossmark(nodes[i++],item);}
