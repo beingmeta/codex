@@ -883,12 +883,12 @@
             fdjtLog.warn('missing UUID');
             if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
         if (!(Codex.persist))
-            return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));
+            return fdjt.Ajax.onsubmit(evt,get_addgloss_callback(target));
         var ref=Codex.glosses.ref
         if (!(navigator.onLine)) return queueGloss(form,evt);
         // Eventually, we'll unpack the AJAX handler to let it handle
         //  connection failures by calling queueGloss.
-        else return fdjtAjax.onsubmit(evt,get_addgloss_callback(target));}
+        else return fdjt.Ajax.onsubmit(evt,get_addgloss_callback(target));}
     Codex.submitGloss=submitGloss;
 
     function finishGloss(glossdiv){
@@ -974,8 +974,8 @@
 
     // Queues a gloss when offline
     function queueGloss(form,evt){
-        var json=fdjtAjax.formJSON(form,["tags","xrefs"],true);
-        var params=fdjtAjax.formParams(form);
+        var json=fdjt.Ajax.formJSON(form,["tags","xrefs"],true);
+        var params=fdjt.Ajax.formParams(form);
         var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
         if (!(queued)) queued=[];
         queued.push(json.uuid);
