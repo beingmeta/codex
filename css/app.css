@@ -697,6 +697,9 @@ img.codexcoverpage {
 .highlightexcerpt { background-color: yellow;}
 .highlightpassage { background-color: #FFFF6B;}
 .highlightsearch { background-color: gold;}
+.codexpreviewtarget { color: red; }
+section.codexpreviewtarget { color: inherit; }
+section.codexpreviewtarget [id]:first-child { color: red; }
 
 /* Startup messages */
 

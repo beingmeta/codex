@@ -372,8 +372,8 @@ var Codex=
                 var dups=Codex.layout.dups;
                 var d=dups[id];
                 if (d) return [document.getElementById(id)].concat(d);
-                else return document.getElementById(id);}
-            else return document.getElementById(id);}
+                else return [document.getElementById(id)];}
+            else return [document.getElementById(id)];}
         else return getDups(id.codexbaseid||id.id);}
     Codex.getDups=getDups;
 
@@ -824,9 +824,11 @@ var Codex=
         if (page)
             Codex.GoToPage(target,caller||"CodexGoTo",false);
         else {
-            var offinfo=fdjtDOM.getGeometry(target,Codex.content);
             if (Codex.previewing) Codex.stopPreview();
-            Codex.content.style.top=(-offinfo.top)+"px";}
+            var offinfo=fdjtDOM.getGeometry(target,Codex.content);
+            var use_top=offinfo.top-((fdjtDOM.viewHeight()-50)/2);
+            if (use_top<0) use_top=0;
+            window.scrollTo(0,use_top);}
         Codex.location=location;}
     Codex.GoTo=CodexGoTo;
 
@@ -865,15 +867,20 @@ var Codex=
             Codex.startPagePreview(spec,caller);
         else {
             // This is the scrolling-based version
-            var yoff=fdjtDOM.parsePX(Codex.content.style.top)||0;
+            var yoff=window.scrollTop||0;
             if (!(oldscroll)) oldscroll={x: 0,y: yoff};
             var offinfo=fdjtDOM.getGeometry(target,Codex.content);
             if (Codex.Trace.flips)
                 fdjtLog("startPreview/%s to %d for %o",
                         caller||"nocaller",offinfo.top-100,spec);
-            Codex.content.style.top=(-offinfo.top)+"px";
+            // Codex.content.style.top=(-offinfo.top)+"px";
+            var use_top=offinfo.top-((fdjtDOM.viewHeight()-50)/2);
+            if (use_top<0) use_top=0;
+            window.scrollTo(0,use_top);
             Codex.previewing=target;}
+        Codex.previewTarget=target;
         addClass(document.body,"cxPREVIEW");
+        addClass(target,"codexpreviewtarget");
         return target;}
     Codex.startPreview=CodexStartPreview;
     function CodexStopPreview(caller){
@@ -886,8 +893,8 @@ var Codex=
             else if (Codex.Trace.flips)
                 fdjtLog("stopPreview/%s, no saved position",
                         caller||"nocaller");
-            if (oldscroll) 
-                Codex.content.style.top=oldscroll.y+"px";}
+            // if (oldscroll) Codex.content.style.top=oldscroll.y+"px";
+            window.scrollTo(0,oldscroll.y);}
         dropClass(document.body,"cxPREVIEW");
         Codex.previewing=false;
         if (Codex.previewTarget) {
