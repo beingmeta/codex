@@ -15,8 +15,6 @@ div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     display: none;}
 body.cxBYPAGE div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     display: block;}
-body.cxBYSECT.cxPAGED div#CODEXPAGEFOOT div#CODEXPAGEINFO {
-    display: block;}
 body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";

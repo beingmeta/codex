@@ -1,9 +1,9 @@
 <h1>Device Settings</h1>
 <form onsubmit="fdjt.UI.cancel(event); return false;">
-  <table class='settings' onclick="fdjt.UI.CheckSpan.onclick(event);">
+  <table class="settings" onclick="fdjt.UI.CheckSpan.onclick(event);">
     <tr class="checkspan">
-      <th><input TYPE='RADIO' NAME='CODEXLOCAL' VALUE='yes'
-                 ID='CODEXLOCALCHECKBOX'/></th>
+      <th><input TYPE="RADIO" NAME="CODEXLOCAL" VALUE="yes"
+                 ID="CODEXLOCALCHECKBOX"/></th>
       <td>Save personal information and glosses on this computer</td>
       <td><button onclick="Codex.UI.forceSyncAction(event);">
           Sync</button>
@@ -13,29 +13,27 @@
     <tr><th rowspan="2">Body font</th>
       <td colspan="2">
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='xlarge'/>x-large</span>
+          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="xlarge"/>x-large</span>
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='large'/>large</span>
+          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="large"/>large</span>
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='normal'/>normal</span>
+          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="normal"/>normal</span>
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='small'/>small</span>
+          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="small"/>small</span>
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXBODYSIZE' VALUE='tiny'/>tiny</span>
+          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="tiny"/>tiny</span>
     </td></tr>
     <tr>
       <td colspan="2">
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXBODYFAMILY' VALUE='sans'/>sans-serif</span>
+          <input TYPE="RADIO" NAME="CODEXBODYFAMILY" VALUE="sans"/>sans-serif</span>
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXBODYFAMILY' VALUE='serif'/>serif</span></td></tr>
+          <input TYPE="RADIO" NAME="CODEXBODYFAMILY" VALUE="serif"/>serif</span></td></tr>
     <tr>
       <th>Layout</th>
       <td colspan="2">
         <span class="checkspan">
           <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bypage"/>by pages</span>
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bysect"/>by section</span>
         <span class="checkspan">
           <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="scrolling"/>just scroll</span>
       </td>
@@ -43,17 +41,17 @@
     <tr><th>Interface font</th>
       <td colspan="2">
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='large'/>large</span>
+          <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="large"/>large</span>
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='normal'/>normal</span>
+          <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="normal"/>normal</span>
         <span class="checkspan">
-          <input TYPE='RADIO' NAME='CODEXUISIZE' VALUE='small'/>small</span></td></tr>
+          <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="small"/>small</span></td></tr>
     <tr><th>Animation</th>
       <td colspan="2">
         <span class="checkspan">
-          <input TYPE='CHECKBOX' NAME='CODEXANIMATECONTENT' VALUE='yes'/>content (page flips, etc)</span>
+          <input TYPE="CHECKBOX" NAME="CODEXANIMATECONTENT" VALUE="yes"/>content (page flips, etc)</span>
         <span class="checkspan">
-          <input TYPE='CHECKBOX' NAME='CODEXANIMATEHUD' VALUE='yes'/>interface (HUD, etc)</span></td></tr>
+          <input TYPE="CHECKBOX" NAME="CODEXANIMATEHUD" VALUE="yes"/>interface (HUD, etc)</span></td></tr>
     <tr class="checkspan">
       <th><input TYPE="CHECKBOX" NAME="CODEXHIDESPLASH" VALUE="yes"
                  id="CODEXHIDESPLASHSETTING"
@@ -67,17 +65,17 @@
       <td colspan="2">
         Show keyboard help for sReader</td></tr>
     <tr class="checkspan">
-      <th><input TYPE='CHECKBOX' NAME='CODEXSHOWCONSOLE' VALUE='yes'/></th>
+      <th><input TYPE="CHECKBOX" NAME="CODEXSHOWCONSOLE" VALUE="yes"/></th>
       <td colspan="2">Show the sReader console</td></tr>
-    <tr title='A name to display for this device when recording changes'>
+    <tr title="A name to display for this device when recording changes">
       <th>Device name</th>
       <td colspan="2">
-        <input TYPE='TEXT' NAME='CODEXDEVICENAME' value=''/></td>
+        <input TYPE="TEXT" NAME="CODEXDEVICENAME" value=""/></td>
     </tr>
-    <tr title='A unique id for this device.  You probably don't need to change this.'>
+    <tr title="A unique id for this device.  You probably don't need to change this.">
       <th>Device ID</th>
       <td colspan="2">
-        <input TYPE='TEXT' NAME='CODEXDEVICEID' value='' DISABLED/></td>
+        <input TYPE="TEXT" NAME="CODEXDEVICEID" value="" DISABLED/></td>
     </tr>
     <tr class="buttons">
       <th/>

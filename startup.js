@@ -471,32 +471,6 @@ Codex.Startup=
                 //  heading information).
                 function(){
                     if (Codex.bypage) Codex.Paginate("initial");
-                    else if (Codex.bysect) {
-                        if (!(Codex.layout)) {
-                            Codex.layout=
-                                new Codex.SectionLayout(
-                                    Codex.content,Codex.docinfo,Codex.window);
-                            Codex.layout.breakupPages(
-                                Codex.layout.height,
-                                function(layout){
-                                    fdjtDOM.addClass(document.body,"cxPAGED");
-                                    fdjtDOM.dropClass(document.body,"cxLAYOUT");
-                                    Codex.pagecount=layout.pagelocs.length;
-                                    if (!(Codex.nativescroll)) {
-                                        if (!(Codex.iscroll)) {
-                                            var content=fdjtID("CODEXCONTENT");
-                                            var is=new iScroll(content);
-                                            Codex.iscroll=is;
-                                            // is.doubletouch=true;
-                                        }
-                                        else Codex.iscroll.refresh();}
-                                    if (Codex.section) {
-                                        Codex.curpage=layout.getPageNumber()||1;
-                                        Codex.updatePageDisplay(
-                                            Codex.curpage,Codex.location);}
-                                    else Codex.updatePageDisplay(1,0);});
-                            Codex.sections=Codex.layout.sections;}
-                        addClass(document.body,"cxBYSECT");}
                     else addClass(document.body,"cxSCROLL");},
                 // Build the display TOC, both the dynamic (top of
                 // display) and the static (inside the hudheart)

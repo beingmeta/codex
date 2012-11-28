@@ -795,8 +795,6 @@ var Codex=
         if (!(target)) {
             if (Codex.layout instanceof fdjt.CodexLayout)
                 Codex.GoToPage(arg,caller,pushstate);
-            else if (Codex.layout instanceof Codex.SectionLayout)
-                Codex.GoToSection(arg,caller,pushstate);
             else if (arg.nodeType) {
                 var scan=arg;
                 while (scan) {
@@ -825,8 +823,6 @@ var Codex=
         else {}
         if (page)
             Codex.GoToPage(target,caller||"CodexGoTo",false);
-        else if (Codex.bysect)
-            Codex.GoToSection(target,caller||"CodexGoTo",false);
         else {
             var offinfo=fdjtDOM.getGeometry(target,Codex.content);
             if (Codex.previewing) Codex.stopPreview();
@@ -867,8 +863,6 @@ var Codex=
             fdjtLog("startPreview %o (%s)",target,caller);
         if (Codex.layout instanceof fdjt.CodexLayout) 
             Codex.startPagePreview(spec,caller);
-        else if (Codex.layout instanceof Codex.SectionLayout)
-            Codex.startSectionPreview(spec,caller);
         else {
             // This is the scrolling-based version
             var yoff=fdjtDOM.parsePX(Codex.content.style.top)||0;
@@ -885,8 +879,6 @@ var Codex=
     function CodexStopPreview(caller){
         if (Codex.bypage) 
             Codex.stopPagePreview(caller);
-        else if (Codex.bysect)
-            Codex.stopSectionPreview(caller);
         else {
             if ((Codex.Trace.flips)&&(oldscroll))
                 fdjtLog("stopPreview/%s returning to %d",
