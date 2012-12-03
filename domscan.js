@@ -45,6 +45,8 @@ Codex.DOMScan=(function(){
         var flatten=fdjtString.flatten;
         var hasClass=fdjtDOM.hasClass;
         var hasPrefix=fdjtString.hasPrefix;
+        var getChildren=fdjtDOM.getChildren;
+        var textWidth=fdjtDOM.textWidth;
         var prefix=Codex.prefix;
         
         var start=false;
@@ -409,12 +411,6 @@ Codex.DOMScan=(function(){
                      ((classname)&&(Codex.terminals)&&
                      (Codex.terminals.match(child)))||
                      (tag.search(/p|h\d|pre/i)===0)) {
-                if (info) {
-                    var tagspans=getChildren(child,".sbooktag");
-                    if ((tagspans)&&(tagspan.length)) {
-                        var tags=info.tags=info.tags||[];
-                        var i=0, lim=tagspans.length;
-                        while (i<lim) tags.push(tagspans[i++].innerText);}}
                 scanstate.location=scanstate.location+textWidth(child);}
             else {
                 var children=child.childNodes;

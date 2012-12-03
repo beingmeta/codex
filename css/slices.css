@@ -60,6 +60,7 @@ div.codexslice div.codexthread div.codexcard:first-child div.locbar {
 
 div.codexslice div.codexscanpoint {
     border-left: solid blue 16px;
+    margin-left: 4px;    
     background-color: white;}
 
 /* CODEXSOURCES */

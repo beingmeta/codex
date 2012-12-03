@@ -517,13 +517,17 @@ Codex.Startup=
                     applyTagSpans();},
                 function(){
                     if (window._sbook_autoindex) {
-                        startupLog("Indexing precompiled tags");
+                        startupLog("Processing precompiled index");
                         Codex.useIndexData(
-                            window._sbook_autoindex,Codex.knodule,false,indexingDone);
-                        window._sbook_autoindex=false;}},
-                function(){
-                    startupLog("Indexing assigned tags");
-                    Codex.indexAssignedTags(metadata,indexingDone);},
+                            window._sbook_autoindex,
+                            Codex.knodule,false,
+                            function(){
+                                startupLog("Indexing assigned tags");
+                                Codex.indexAssignedTags(metadata,indexingDone);});
+                        window._sbook_autoindex=false;}
+                    else {
+                        startupLog("Indexing assigned tags");
+                        Codex.indexAssignedTags(metadata,indexingDone);}},
                 // Figure out which mode to start up in, based on
                 // query args to the book.
                 function(){
@@ -1699,7 +1703,7 @@ Codex.Startup=
         
         /* Applying various tagging schemes */
 
-        function applyTagSpans(){
+        function applyTagSpans() {
             startupMessage("Applying inline tags");
             var tags=fdjtDOM.$(".sbooktags");
             var i=0; var lim=tags.length;
@@ -1713,7 +1717,17 @@ Codex.Startup=
                 if (tagstrings.length) {
                     if (info.tags)
                         info.tags=info.tags.concat(tagstrings);
-                    else info.tags=tagstrings;}}}
+                    else info.tags=tagstrings;}}
+            var tags=fdjtDOM.$(".sbooktag");
+            var i=0; var lim=tags.length;
+            while (i<lim) {
+                var tagelt=tags[i++];
+                var target=Codex.getTarget(tagelt);
+                var info=Codex.docinfo[target.id];
+                var tagtext=fdjtDOM.textify(tagelt);
+                if (info.tags)
+                    info.tags=info.tags.concat(tagtext);
+                else info.tags=[tagtext];}}
         
         function applyAnchorTags(kno) {
             var sbook_index=Codex.index; var docinfo=Codex.docinfo;
@@ -1795,8 +1809,10 @@ Codex.Startup=
         function process_inline_tags(tags){
             var k=0; var ntags=tags.length;
             var scores=tags.scores||false;
+            var knodes=tags.knodes||false;
             var knodule=Codex.knodule;
             if (!(scores)) tags.scores=scores={};
+            if (!(knodes)) tags.knodes=knodes={};
             while (k<ntags) {
                 var tag=tags[k]; var score=1; var tagbase=false;
                 if (tag[0]==='*') {
@@ -1818,7 +1834,8 @@ Codex.Startup=
                                (knodule.handleSubjectEntry(tagbase)):
                                (knodule.ref(tagbase)));
                     if ((knode)&&(knode.tagString))
-                        tag=knode.tagString();}
+                        tag=knode.tagString();
+                    if (knode) knodes[tag]=knode;}
                 tags[k]=tag;
                 scores[tag]=score;
                 k++;}
@@ -1839,15 +1856,18 @@ Codex.Startup=
                 var tags=info.tags||[]; 
                 if (tags) {
                     var scores=tags.scores;
+                    var knodes=tags.knodes;
                     var k=0; var ntags=tags.length;
                     while (k<ntags) {
-                        var tag=tags[k++];
+                        var tag=tags[k++], knode=knodes[tag];
+                        if (knode) {
+                            if (info.knodes) info.knodes.push(knode);
+                            else info.knodes=[knode];}
                         if (scores)
                             ix.add(eltid,tag,scores[tag]||1,knodule);
                         else ix.add(eltid,tag,1,knodule);
                         addTag2Search(tag);}}
-                var sectags=info.sectags||
-                    ((info.head)&&(info.head.sectags));
+                var sectags=info.sectags||((info.head)&&(info.head.sectags));
                 if (sectags) {
                     var k=0, ntags=sectags.length;
                     while (k<ntags) {
