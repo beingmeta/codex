@@ -739,9 +739,11 @@ Codex.Startup=
                 fdjtDOM.getLink("coverpage",false,true);
             if (coverpage) Codex.coverpage=coverpage;
             
-            var prefix=getMeta("SBOOK.prefix");
-            if (prefix) Codex.baseid=prefix;
-
+            var baseid=getMeta("SBOOK.baseid")||getMeta("SBOOK.prefix");
+            if (baseid) Codex.baseid=baseid;
+            var prefix=getMeta("SBOOK.prefix")||baseid;
+            if (prefix) Codex.prefix=prefix;
+            
             if (!((Codex.nologin)||(Codex.force_online))) {
                 Codex.mycopyid=getMeta("SBOOK.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
@@ -974,8 +976,7 @@ Codex.Startup=
             if (getMeta("sbooknotoc")) 
                 Codex.notoc=new fdjtDOM.Selector(getMeta("sbooknotoc"));
             if (getMeta("sbookterminal"))
-                Codex.terminal_rules=new fdjtDOM.Selector(
-                    getMeta("sbookterminal"));
+                Codex.terminals=new fdjtDOM.Selector(getMeta("sbookterminal"));
             if ((getMeta("sbookfocus"))) 
                 Codex.focus=new fdjtDOM.Selector(getMeta("sbookfocus"));
             if (getMeta("sbooknofocus"))

@@ -37,14 +37,18 @@ Codex.DOMScan=(function(){
     var fdjtString=fdjt.String;
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
-    var fdjtID=fdjt.ID;
 
     function CodexDOMScan(root,docinfo){
+        var fdjtID=fdjt.ID;
+        var md5ID=fdjt.WSN.md5ID;
         var stdspace=fdjtString.stdspace;
         var flatten=fdjtString.flatten;
         var hasClass=fdjtDOM.hasClass;
         var hasPrefix=fdjtString.hasPrefix;
+        var prefix=Codex.prefix;
         
+        var start=false;
+
         if (typeof root === 'undefined') return this;
         if (!(docinfo))
             if (this instanceof CodexDOMScan)
@@ -283,18 +287,20 @@ Codex.DOMScan=(function(){
                 if (Codex.Trace.scan)
                     fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
                             scan,scaninfo,scaninfo.level,scaninfo.head);
-                /* We've found the head for this item. */
+                /* We've found the enclosing head for this head, so we
+                   establish the links. */
                 headinfo.head=scaninfo;
-                scaninfo.sub.push(headinfo);} /* handled below */
-            /* Add yourself to your children's subsections */
+                scaninfo.sub.push(headinfo);}
+            /* If we have a head, we get its tags. */
             var supinfo=headinfo.head;
             if ((supinfo)&&(supinfo.sectags))
                 headinfo.sectags=supinfo.sectags.concat([headinfo.sectag]);
             else headinfo.sectags=[headinfo.sectag];
             
+            /* We create an array of all the heads, which lets us
+               replace many recursions with iterations. */
             var newheads=new Array();
-            if (supinfo.heads)
-                newheads=newheads.concat(supinfo.heads);
+            if (supinfo.heads) newheads=newheads.concat(supinfo.heads);
             if (supinfo) newheads.push(supinfo);
             headinfo.heads=newheads;
             if (Codex.Trace.scan)
@@ -323,7 +329,18 @@ Codex.DOMScan=(function(){
                 return 0;}
             else if (child.nodeType!==1) return 0;
             else {}
+            var tag=child.tagName, classname=child.className, id=child.id;
             if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
+            if ((classname)&&(classname.search(/\bsbookignore\b/)>=0))
+                return;
+            if (prefix) {
+                if (id) {if (id.search(prefix)!==0) id=false;}}
+            else if ((!(id))&&(tag.search(/p|h\d|blockquote|li/i)===0)) {
+                var baseid="WSN_"+md5ID(child), id=baseid, count=1;
+                while (document.getElementById[id])
+                    id=baseid+"_"+(count++);
+                child.id=id;}
+            else {}
             // Get the location in the TOC for this out of context node
             //  These get generated, for example, when the content of an
             //  authorial footnote is moved elsewhere in the document.
@@ -352,18 +369,15 @@ Codex.DOMScan=(function(){
             var toclevel=((child.id)&&(getLevel(child)));
             // The header functionality (for its contents too) is handled by the
             // section
-            if ((scanstate.notoc)||(child.tagName==='header')) {
+            if ((scanstate.notoc)||(tag==='header')) {
                 scanstate.notoc=true; toclevel=0;}
             scanstate.eltcount++;
-            if ((child.sbookskip)||(child.codexui))
-                return;
-            var info=((nodefn)&&(nodefn(child)))||
-                ((child.id)&&(docinfo[child.id]));
-            if ((!(info))&&(child.id)) {
-                var id=child.id; allids.push(id);
-                info=new scanInfo(id,scanstate);
+            if ((child.codexui)||((id)&&(id.search("CODEX")===0))) return;
+            var info=((nodefn)&&(nodefn(child)))||(id&&(docinfo[id]));
+            if ((!(info))&&(id)) {
+                allids.push(id); info=new scanInfo(id,scanstate);
                 docinfo[id]=info;}
-            if ((info)&&(info.elt)&&(child.id)&&(info.elt!==child)) {
+            if ((info)&&(info.elt)&&(id)&&(info.elt!==child)) {
                 var newid=child.id+"x"+scanstate.location;
                 fdjtLog.warn("Duplicate ID=%o newid=%o",child.id,newid);
                 child.id=id=newid;
@@ -374,34 +388,48 @@ Codex.DOMScan=(function(){
                 info.sbookhead=curhead.id;
                 info.headstart=curinfo.starts_at;}
             if (info) info.head=curinfo;
-            if ((child.id)&&(info)&&(!(Codex.start))&&
-                (!(child.codexui))&&(!(hasPrefix(child.id,"CODEX"))))
-                Codex.start=child;
+            // Set the first content node
+            if ((id)&&(info)&&(!start)) Codex.start=start=child;
+            // And the initial content level
             if ((info)&&(toclevel)&&(!(info.toclevel))) info.toclevel=toclevel;
-            if (child.id) {
+            if ((id)&&(info)) {
                 var tags=
                     ((child.getAttributeNS)&&
                      (child.getAttributeNS('tags','http://sbooks.net/')))||
                     (child.getAttribute('tags'))||
                     (child.getAttribute('data-tags'));
                 if (tags) info.tags=tags.split(';');}
-            if (((child.className)&&(child.className.search(/\bsbookignore\b/)>=0))||
+            if (((classname)&&(classname.search(/\bsbookignore\b/)>=0))||
                 ((Codex.ignore)&&(Codex.ignore.match(child))))
                 return;
             if ((toclevel)&&(!(info.tocdone)))
                 handleHead(child,docinfo,scanstate,toclevel,
                            curhead,curinfo,curlevel,nodefn);
-            var children=child.childNodes;
-            var i=0; var len=children.length;
-            while (i<len) {
-                var grandchild=children[i++];
-                if (grandchild.nodeType===3) {
-                    var content=stdspace(grandchild.nodeValue);
-                    scanstate.location=scanstate.location+
-                        content.length;}
-                else if (grandchild.nodeType===1) {
-                    scanner(grandchild,scanstate,docinfo,nodefn);}}
+            else if (((classname)&&(classname.search(/\bsbookterminal\b/)>=0))||
+                     ((classname)&&(Codex.terminals)&&
+                     (Codex.terminals.match(child)))||
+                     (tag.search(/p|h\d|pre/i)===0)) {
+                if (info) {
+                    var tagspans=getChildren(child,".sbooktag");
+                    if ((tagspans)&&(tagspan.length)) {
+                        var tags=info.tags=info.tags||[];
+                        var i=0, lim=tagspans.length;
+                        while (i<lim) tags.push(tagspans[i++].innerText);}}
+                scanstate.location=scanstate.location+textWidth(child);}
+            else {
+                var children=child.childNodes;
+                var i=0; var len=children.length;
+                while (i<len) {
+                    var grandchild=children[i++];
+                    if (grandchild.nodeType===3) {
+                        var content=stdspace(grandchild.nodeValue);
+                        scanstate.location=scanstate.location+
+                            content.length;}
+                    else if (grandchild.nodeType===1) {
+                        scanner(grandchild,scanstate,docinfo,nodefn);}}}
             if (info) info.ends_at=scanstate.location;
+            if ((info)&&((info.ends_at-info.starts_at)<2000)) 
+                info.wsnid=md5ID(child);
             if ((toclevel)&&
                 ((child.tagName==='SECTION')||(child.tagName==='ARTICLE'))) {
                 scanstate.lasthead=child; scanstate.lastinfo=info;
