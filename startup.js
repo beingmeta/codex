@@ -294,7 +294,10 @@ Codex.Startup=
             if (Codex.Trace.startup) fdjtLog("Starting app setup");
 
             // Initialize domain and origin for browsers which care
-            document.domain="sbooks.net"; document.origin="sbooks.net";
+            try {document.domain="sbooks.net";}
+            catch (ex) {fdjtLog.warn("Error setting document.domain");};
+            try {document.origin="sbooks.net";}
+            catch (ex) {fdjtLog.warn("Error setting document.origin");};
 
             // Execute any FDJT initializations
             fdjt.Init();
