@@ -346,12 +346,14 @@ Codex.Paginate=
                 fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
             if (avoidbreakinside) args.avoidbreakinside=avoidbreakinside;
 
-            var forcebreakbefore=
-                fdjtDOM.sel(fdjtDOM.getMeta("forcebreakbefore",true));
+            var abb=fdjtDOM.getMeta("alwaysbreakbefore",true);
+            var fbb=fdjtDOM.getMeta("forcebreakbefore",true);
+            var forcebreakbefore=fdjtDOM.sel(abb.concat(fbb));
             if (forcebreakbefore) args.forcebreakbefore=forcebreakbefore;
 
-            var forcebreakafter=
-                fdjtDOM.sel(fdjtDOM.getMeta("forcebreakafter",true));
+            var aba=fdjtDOM.getMeta("alwaysbreakafter",true);
+            var fba=fdjtDOM.getMeta("forcebreakafter",true);
+            var forcebreakafter=fdjtDOM.sel(aba.concat(fba));
             if (forcebreakafter) args.forcebreakafter=forcebreakafter;
 
             var avoidbreakafter=
@@ -372,13 +374,12 @@ Codex.Paginate=
             else floatpages=["sbookfloatpage"];
             args.floatpages=floatpages;
 
-            var scaletopage=fdjtDOM.sel(fdjtDOM.getMeta("sbookfloatpage",true));
-            if ((scaletopage)&&(scaletopage.length)) {
-                scaletpage.push("sbookscaletopage");
-                scaletpage.push("sbookpagescaled");}
-            else scaletopage=["sbookscaletopage","sbookpagescaled"];
-            args.scaletopage=scaletopage;
-
+            var scaletopage=fdjtDOM.getMeta("sbookscaletopage",true);;
+            if ((scaletopage)&&(scaletopage.length)) 
+                scaletopage.push("sbookscaletopage");
+            else scaletopage=["sbookscaletopage"];
+            args.scaletopage=scaletopage=fdjtDOM.sel(scaletopage);
+            
             if ((fdjtDOM.getMeta("Codex.dontbreakblocks"))||
                 (fdjtDOM.getMeta("Codex.keepblocks"))||
                 (fdjtDOM.getMeta("~=Codex.dontbreakblocks"))||
