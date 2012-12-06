@@ -1853,7 +1853,6 @@ Codex.Startup=
             else tags.sort();}
 
         function index_inline_tags(ix,knodule){
-            var addTag2Search=Codex.addTag2SearchCloud;
             return function (info){
                 var eltid=info.frag;
                 var tags=info.tags||[]; 
@@ -1868,15 +1867,13 @@ Codex.Startup=
                             else info.knodes=[knode];}
                         if (scores)
                             ix.add(eltid,tag,scores[tag]||1,knodule);
-                        else ix.add(eltid,tag,1,knodule);
-                        addTag2Search(tag);}}
+                        else ix.add(eltid,tag,1,knodule);}}
                 var sectags=info.sectags||((info.head)&&(info.head.sectags));
                 if (sectags) {
                     var k=0, ntags=sectags.length;
                     while (k<ntags) {
                         var tag=sectags[k++];
-                        ix.add(eltid,tag,0,knodule);
-                        addTag2Search(tag);}}};}
+                        ix.add(eltid,tag,0,knodule);}}};}
         
         /* Setting up the clouds */
         

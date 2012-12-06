@@ -62,6 +62,7 @@
     // completions="CODEXSEARCHCLOUD"
 
     var Query=KnoduleIndex.Query;
+    var KNode=Knodule.KNode;
 
     Codex.getQuery=function(){return Codex.query;}
     
@@ -636,7 +637,7 @@
 
     function cloudEntry(term,title){
         var sbook_index=Codex.index; var showname=term;
-        var knodule=Codex.knodule; var title="";
+        var knodule=Codex.knodule; var title=false;
         if ((typeof term === "string") && (term[0]==="\u00A7")) {
             // Handle section references as tags
             if (showname.length>20) {
@@ -651,10 +652,15 @@
                              fdjtDOM("span.sectname",showname));
             span.key=term; span.value=term; span.anymatch=true;
             span.title=""+sbook_index.freq(term)+" items: "+term;
+            if (title) span.title=span.title+"; "+title;
             return span;}
         var span=Knodule.HTML(term,knodule,false,true);
-        if (span.title) span.title=title+"; "+span.title;
-        else span.title=title+"; "+Completions.getKey(span);
+        var knode=((term instanceof KNode)?(term):(knodule.probe(term)));
+        var freq=((knode)?(sbook_index.freq(knode._qid)):
+                  (sbook_index.freq(term)));
+        span.title=(""+freq+" items; ")+
+            (((span.title)&&(span.title.length))?(span.title):
+             (Completions.getKey(span)));
         return span;}
     Codex.cloudEntry=cloudEntry;
     
