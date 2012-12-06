@@ -209,6 +209,7 @@
         getInput(form,"DOCTITLE").value=document.title;
         getInput(form,"DOCURI").value=document.location.href;
         getInput(form,"FRAG").value=passageid;
+        if (info.wsnid) getInput(form,"WSNID").value=info.wsnid;
         if (Codex.mycopyid)
             getInput(form,"MYCOPYID").value=Codex.mycopyid;
         if (gloss) {

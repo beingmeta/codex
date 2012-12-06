@@ -424,7 +424,7 @@ Codex.DOMScan=(function(){
                     else if (grandchild.nodeType===1) {
                         scanner(grandchild,scanstate,docinfo,nodefn);}}}
             if (info) info.ends_at=scanstate.location;
-            if ((info)&&((info.ends_at-info.starts_at)<2000)) 
+            if ((info)&&((info.ends_at-info.starts_at)<5000)) 
                 info.wsnid=md5ID(child);
             if ((toclevel)&&
                 ((child.tagName==='SECTION')||(child.tagName==='ARTICLE'))) {
