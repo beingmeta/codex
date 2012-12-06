@@ -407,10 +407,10 @@ Codex.DOMScan=(function(){
             if ((toclevel)&&(!(info.tocdone)))
                 handleHead(child,docinfo,scanstate,toclevel,
                            curhead,curinfo,curlevel,nodefn);
-            else if (((classname)&&(classname.search(/\bsbookterminal\b/)>=0))||
-                     ((classname)&&(Codex.terminals)&&
-                     (Codex.terminals.match(child)))||
-                     (tag.search(/p|h\d|pre/i)===0)) {
+            if (((classname)&&(classname.search(/\bsbookterminal\b/)>=0))||
+                ((classname)&&(Codex.terminals)&&
+                 (Codex.terminals.match(child)))||
+                (tag.search(/p|h\d|pre/i)===0)) {
                 scanstate.location=scanstate.location+textWidth(child);}
             else {
                 var children=child.childNodes;

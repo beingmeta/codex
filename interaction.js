@@ -1823,6 +1823,7 @@
 		     click: cancel, mousedown: cancel,
                      mouseover: glossmark_hoverstart,
                      mouseout: glossmark_hoverdone},
+
          glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
          summary: {tap: slice_tapped, hold: slice_held,
                    release: slice_released},
