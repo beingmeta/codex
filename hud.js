@@ -440,6 +440,7 @@ Codex.setMode=
                 Codex.hudup=false;
                 Codex.scrolling=false;
                 if (Codex.previewing) Codex.stopPreview();
+                dropClass(document.body,"cxSHRINK");
                 if (clearmode) {
                     var wait=false;
                     dropClass(CodexHUD,"openheart");
