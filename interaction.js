@@ -263,6 +263,7 @@
                 if (Codex.updatePageDisplay)
                     Codex.updatePageDisplay(Codex.curpage,Codex.location);}}
         
+        // If there's a mode, clear it
         if (((Codex.hudup)||(Codex.mode))&&(Codex.mode!=="addgloss")) {
             if (Codex.Trace.gestures)
                 fdjtLog("cdown/showcontent (%o) t=%o h=%o m=%o",evt,target,
@@ -270,6 +271,7 @@
             Codex.setMode(false);
             fdjtUI.cancel(evt);
             return;}
+        // If there isn't a passage, move forward or backward
         else if (!(passage)) {
             if (Codex.Trace.gestures)
                 fdjtLog("cdown/nopassage (%o) %o, m=%o, x=%o, y=%o",evt,target,
@@ -281,35 +283,50 @@
             gesture_start=false;
             fdjtUI.cancel(evt);
             return;}
+        // If there's a live reply (gloss target/form) but the passage
+        // isn't related to it's passage, move the target/form to the
+        // new passage.  This enables threads which reference
+        // different passages.
 	else if ((passage)&&(Codex.glosstarget)&&(Codex.glossform)&&
-		 (!(hasParent(target,Codex.glosstarget)))&&
-		 (hasClass(Codex.glossform,"glossreply"))) {
+		 (hasClass(Codex.glossform,"glossreply"))&&
+		 (!((hasParent(passage,Codex.glosstarget))||
+                    (hasParent(Codex.glosstarget,passage))))) {
 	    Codex.setGlossTarget(passage,Codex.glossform);
 	    fdjtUI.cancel(evt);
             fdjtUI.TapHold.fakePress(evt,250);
 	    Codex.setMode("addgloss");
 	    return;}
-        else if ((Codex.mode==="addgloss")&&
+        else if ((Codex.glosstarget)&&
 		 (!((hasParent(passage,Codex.glosstarget))||
                     (hasParent(Codex.glosstarget,passage))))) {
-            var live=fdjtID("CODEXLIVEGLOSS");
-            if ((live)&&(hasClass(live,"modified"))) {
-                fdjtUI.choose([
-                    {label: "Discard",
-                     handler: function(){Codex.cancelGloss(live);}},
-                    {label: "Save",
-                     handler: function(){
-                         var form=fdjtDOM.getChild(live,"form");
-                         fdjtUI.forceSubmit(form);}}],
-                              "Save the changes to this gloss?");}
-            else if ((live)&&
-		     (fdjtDOM.getInput(live,"EXCERPT"))&&
-		     ((fdjtDOM.getInput(live,"EXCERPT")).checked))
-		Codex.setGlossTarget(false);
-            else Codex.cancelGloss(live);
-            Codex.setMode(false);
-            fdjtUI.cancel(evt);
-            return;}
+            // If we're adding a (non-reply) gloss and tap an
+            // unrelated, we either lower the HUD (shrinking the gloss
+            // form and growing the page), or we cancel the gloss.
+            if (Codex.hudup) {
+                Codex.setHUD(false,false);
+                fdjtUI.cancel(evt);}
+            else {
+                var live=fdjtID("CODEXLIVEGLOSS");
+                if ((live)&&(hasClass(live,"modified"))) {
+                    fdjtUI.choose([
+                        {label: "Discard",
+                         handler: function(){
+                             Codex.cancelGloss(live);
+                             Codex.setMode(false);}},
+                        {label: "Save",
+                         handler: function(){
+                             var form=fdjtDOM.getChild(live,"form");
+                             fdjtUI.forceSubmit(form);}}],
+                                  "Save the changes to this gloss?");}
+                else if (live) {
+                    Codex.cancelGloss(live);
+                    Codex.setMode(false);}
+                else Codex.setMode(false);
+                fdjtUI.cancel(evt);
+                return;}}
+        /*
+        // This case should be handled by the fdjtselecting wrapper
+        //  on the passage
         else if ((Codex.glosstarget)&&
                  ((hasParent(passage,Codex.glosstarget))||
                   (hasParent(Codex.glosstarget,passage)))&&
@@ -321,40 +338,57 @@
                         passage,Codex.glosstarget);
             fdjtUI.cancel(evt);
             Codex.setMode("addgloss");}
+        */
+        /*
+        // This should be handled by the 'unrelated passage' code above 
         else if ((Codex.glosstarget)&&(Codex.mode==="addgloss")) {
             if (Codex.Trace.gestures)
                 fdjtLog("cdown/close (%o) %o, p=%o, gt=%o",evt,target,
                         passage,Codex.glosstarget);
             fdjtUI.cancel(evt);
             Codex.setMode(false);}
+        */
         else if ((passage===document.body)||(!(passage.id))||(inUI(passage))) {
             if (Codex.Trace.gestures)
                 fdjtLog("cdown/nocontent (%o) %o, p=%o",evt,target,passage);}
+        // Finally, we open a gloss unless the action is a simple tap
         else {
-            var form_div=Codex.setGlossTarget(passage);
-            var form=fdjtDOM.getChild(form_div,"form");
-            if (!(form)) return;
-            else fdjtUI.cancel(evt);
-            if (Codex.Trace.gestures)
-                fdjtLog("content_mousedown/addgloss (%o) %o, p=%o f=%o/%o",
-                        evt,target,passage,form_div,form);
-            var mode=((evt.shiftKey)?("addtag"):("editnote"));
-            fdjtUI.TapHold.fakePress(evt,250);
-            form.className=mode;
-            Codex.setGlossForm(form_div);
-            Codex.setMode("addgloss");}}
+            addgloss_timer=
+                setTimeout(function(){
+                    var form_div=Codex.setGlossTarget(passage);
+                    var form=fdjtDOM.getChild(form_div,"form");
+                    addgloss_timer=false;
+                    if (!(form)) return;
+                    else fdjtUI.cancel(evt);
+                    if (Codex.Trace.gestures)
+                        fdjtLog("content_mousedown/addgloss (%o) %o, p=%o f=%o/%o",
+                                evt,target,passage,form_div,form);
+                    var mode=((evt.shiftKey)?("addtag"):("editnote"));
+                    fdjtUI.TapHold.fakePress(evt,250);
+                    form.className=mode;
+                    Codex.setGlossForm(form_div);
+                    Codex.setMode("addgloss");},
+                          200);}}
  
-    function initGlossMode(){
-        var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
-        if (form) Codex.setGlossMode(form.className);}
-    Codex.initGlossMode=initGlossMode;
-
     function content_mouseup(evt){
         evt=evt||event;
 	fdjtUI.cancel(evt);
-        if (Codex.mode==="addgloss") initGlossMode();}
+        if (addgloss_timer) {
+            clearTimeout(addgloss_timer); addgloss_timer=false;
+            if (Codex.hudup) Codex.setHUD(false);
+            else Codex.setHUD(true);}
+        if (Codex.hudup) initGlossMode();}
     Codex.UI.content_release=content_mouseup;
 
+    function initGlossMode(){
+        var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
+        if (form) {
+            var input=fdjtDOM.getInput(form,"NOTE");
+            if (input) input.focus();
+            Codex.setGlossMode(form.className);}}
+    Codex.initGlossMode=initGlossMode;
+
+        // This overrides the default_tap handler
     function content_click(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
