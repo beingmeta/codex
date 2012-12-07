@@ -395,8 +395,6 @@ body.cxANIMATE.hudup .codextarget, body.cxSHRINK .codextarget {
     -webkit-transition-property: color,background-color;
     -webkit-transition-duration: 3s;}
 body.hudup .codextarget, body.cxSHRINK .codextarget {
-    background-color: lightyellow;}
-body.hudup .codextarget, body.cxSHRINK .codextarget {
     cursor: pointer;}
 
 body.hudup .codextarget.codexnewtarget {
