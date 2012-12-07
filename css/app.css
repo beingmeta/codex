@@ -414,8 +414,8 @@ body.codextarget { color: inherit;}
 
 .codextarget span.codexglossmark img.big { width: 32px; height: auto;}  
 .codextarget span.codexglossmark img {
-    border: solid steelblue 2px;
-    border-left: solid transparent 2px;}
+    border: solid transparent 2px;
+    border-top: solid blue 2px;}
 .codextarget:hover .codexglossmark {
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
