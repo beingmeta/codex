@@ -1001,6 +1001,8 @@ Codex.Startup=
             // Get any author provided splash page
             var splash=fdjtID("CODEXSPLASH");
         
+            body.setAttribute("tabindex",1);
+
             // Save those DOM elements in a handy place
             Codex.content=content;
 

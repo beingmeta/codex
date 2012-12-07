@@ -448,7 +448,8 @@ Codex.setMode=
                     dropClass(CodexHUD,"full");
                     dropClass(CodexHUD,CodexMode_pat);
                     Codex.mode=false;}
-                dropClass(document.body,"hudup");}}
+                dropClass(document.body,"hudup");
+                document.body.focus();}}
         Codex.setHUD=setHUD;
 
         /* Mode controls */
