@@ -596,7 +596,8 @@
         fdjtUI.cancel(evt);}
     function gloss_selecting_onrelease(evt){
         Codex.UI.content_release(evt);
-        return Codex.setHUD(true,false);}
+        Codex.setMode("addgloss");
+        Codex.setHUD(true);}
 
     function setGlossForm(form){
         var cur=fdjtID("CODEXLIVEGLOSS");

@@ -272,7 +272,7 @@
             fdjtUI.cancel(evt);
             return;}
         // If there isn't a passage, move forward or backward
-        else if (!(passage)) {
+        else if ((!(passage))||(passage===document.body)||(inUI(passage))) {
             if (Codex.Trace.gestures)
                 fdjtLog("cdown/nopassage (%o) %o, m=%o, x=%o, y=%o",evt,target,
                         Codex.mode,cX,cY);
@@ -324,21 +324,9 @@
                 else Codex.setMode(false);
                 fdjtUI.cancel(evt);
                 return;}}
-        /*
-        // This case should be handled by the fdjtselecting wrapper
-        //  on the passage
-        else if ((Codex.glosstarget)&&
-                 ((hasParent(passage,Codex.glosstarget))||
-                  (hasParent(Codex.glosstarget,passage)))&&
-                 (fdjtID("CODEXLIVEGLOSS"))) {
-            if (Codex.mode==="addgloss") return;
-            var div=fdjtID("CODEXLIVEGLOSS");
-            if (Codex.Trace.gestures)
-                fdjtLog("cdown/reveal (%o) %o, p=%o, gt=%o",evt,target,
-                        passage,Codex.glosstarget);
-            fdjtUI.cancel(evt);
-            Codex.setMode("addgloss");}
-        */
+        else if (Codex.glosstarget) {
+            /* This case should be handled by the fdjtselecting wrapper
+               on the passage */}
         /*
         // This should be handled by the 'unrelated passage' code above 
         else if ((Codex.glosstarget)&&(Codex.mode==="addgloss")) {
@@ -348,9 +336,6 @@
             fdjtUI.cancel(evt);
             Codex.setMode(false);}
         */
-        else if ((passage===document.body)||(!(passage.id))||(inUI(passage))) {
-            if (Codex.Trace.gestures)
-                fdjtLog("cdown/nocontent (%o) %o, p=%o",evt,target,passage);}
         // Finally, we open a gloss unless the action is a simple tap
         else {
             addgloss_timer=
@@ -376,7 +361,11 @@
         if (addgloss_timer) {
             clearTimeout(addgloss_timer); addgloss_timer=false;
             if (Codex.hudup) Codex.setHUD(false);
-            else Codex.setHUD(true);}
+            else {
+                var target=fdjtUI.T(evt);
+                var passage=getTarget(target);
+                if (passage) Codex.setTarget(passage);
+                Codex.setHUD(true);}}
         if (Codex.hudup) initGlossMode();}
     Codex.UI.content_release=content_mouseup;
 
