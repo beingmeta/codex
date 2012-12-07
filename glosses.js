@@ -591,15 +591,11 @@
     function gloss_selecting_ontap(evt){
         if (Codex.mode!=="addgloss") Codex.setMode("addgloss");
         else if (Codex.hudup) 
-            return selecting_ontap(evt);
-        else {
-            selecting_ontap(evt);
-            Codex.setHUD(true,false);
-            Codex.initGlossMode();}}
+            return Codex.setHUD(false,false);
+        else return Codex.setHUD(true,false);}
     function gloss_selecting_onrelease(evt){
         Codex.UI.content_release(evt);
-        if (Codex.mode==="addgloss")
-            fdjtDOM.addClass(document.body,"cxSHRINK");}
+        return Codex.setHUD(true,false);}
 
     function setGlossForm(form){
         var cur=fdjtID("CODEXLIVEGLOSS");
