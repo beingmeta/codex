@@ -590,14 +590,12 @@
     var selecting_ontap=fdjt.UI.Selecting.tap_handler;
     function gloss_selecting_ontap(evt){
         if (Codex.mode!=="addgloss") Codex.setMode("addgloss");
+        else if (Codex.hudup) 
+            return selecting_ontap(evt);
         else {
-            var gloss_div=fdjtID("CODEXLIVEGLOSS");
-            if (hasClass(gloss_div,"codexstartgloss")) {
-                dropClass(gloss_div,"codexstartgloss");
-                addClass(document.body,"cxSHRINK");
-                var form=fdjtDOM.getChild(gloss_div,"form");
-                Codex.setGlossMode(form,form.className);}
-            else selecting_ontap(evt);}}
+            selecting_ontap(evt);
+            Codex.setHUD(true,false);
+            Codex.initGlossMode();}}
     function gloss_selecting_onrelease(evt){
         Codex.UI.content_release(evt);
         if (Codex.mode==="addgloss")

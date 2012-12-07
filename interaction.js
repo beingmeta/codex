@@ -31,16 +31,19 @@
 
 */
 
-/* There are three basic display modes:
+/* There are four basic display modes:
     reading (minimal decoration, with 'minimal' configurable)
     scanning (card at top, buttons on upper edges)
+    addgloss (addgloss form at top, text highlighted)
     tool (lots of tools unfaded)
 
    Tap on content:
-    if not hudup, raise the HUD;
-    if scanning or no target, lower the HUD
-    if addgloss is live on target, lower the HUD
-    otherwise addgloss on target
+    if not hudup and no mode, raise the HUD;
+    if not hudup and mode, clear the mode
+    if hudup, drop the HUD
+   Hold on content:
+    if adding gloss to target, raise the hud
+    otherwise, start adding gloss to target
 */
 
 (function(){
@@ -92,9 +95,12 @@
             addHandlers(false,'window');
             addHandlers(document,'document');
             addHandlers(document.body,'body');
-            if (Codex.bypage)
-                addHandlers(fdjtID("CODEXPAGE"),'content');
-            else addHandlers(fdjtID("CODEXCONTENT"),'content');
+            if (Codex.bypage) {
+                // fdjtUI.TapHold(Codex.page,Codex.touch);
+                addHandlers(fdjtID("CODEXPAGE"),'content');}
+            else {
+                // fdjtUI.TapHold(Codex.content,Codex.touch);
+                addHandlers(fdjtID("CODEXCONTENT"),'content');}
             fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
             addHandlers(Codex.HUD,'hud');}
         var handlers=Codex.UI.handlers[mode];
@@ -129,7 +135,7 @@
         var form=getParent(target,"FORM");
         if (form) addClass(form,"focused");
         var div=((form)&&(getParent(form,".codexglossform")));
-        if (div) dropClass(div,"codexstartgloss");
+        if (!(Codex.hudup)) Codex.setHUD(true,false);
         gloss_focus=form;}
     function addgloss_blur(evt){
         evt=evt||event;
@@ -168,17 +174,6 @@
             Codex.setMode("addgloss");
             Codex.setGlossForm(form);}}
 
-    var excerpts=[];
-
-    /* New handlers */
-
-    function emptySelection(sel){
-        return ((!(sel))||
-                (!(sel.focusNode))||
-                (!(sel.anchorNode))||
-                ((sel.anchorNode===sel.focusNode)&&
-                 (sel.anchorOffset===sel.focusOffset)));}
-
     /* Functionality:
        on selection:
        save but keep selection,
@@ -192,6 +187,16 @@
        (simpler) on tap:
        if hudup, drop it
        otherwise, set target and raise HUD
+    */
+
+    /*
+      Tap on content:
+      if not hudup and no mode, raise the HUD;
+      if not hudup and mode, clear the mode
+      if hudup, drop the HUD
+      Hold on content:
+      if adding gloss to target, raise the hud
+      otherwise, start adding gloss to target
     */
 
     /* Holding */
@@ -265,6 +270,17 @@
             Codex.setMode(false);
             fdjtUI.cancel(evt);
             return;}
+        else if (!(passage)) {
+            if (Codex.Trace.gestures)
+                fdjtLog("cdown/nopassage (%o) %o, m=%o, x=%o, y=%o",evt,target,
+                        Codex.mode,cX,cY);
+            if (Codex.mode) {Codex.setMode(false); return;}
+            if (cX>(fdjtDOM.viewWidth()/3))
+                Codex.Forward(evt);
+            else Codex.Backward(evt);
+            gesture_start=false;
+            fdjtUI.cancel(evt);
+            return;}
 	else if ((passage)&&(Codex.glosstarget)&&(Codex.glossform)&&
 		 (!(hasParent(target,Codex.glosstarget)))&&
 		 (hasClass(Codex.glossform,"glossreply"))) {
@@ -274,7 +290,8 @@
 	    Codex.setMode("addgloss");
 	    return;}
         else if ((Codex.mode==="addgloss")&&
-		 (!(hasParent(target,Codex.glosstarget)))) {
+		 (!((hasParent(passage,Codex.glosstarget))||
+                    (hasParent(Codex.glosstarget,passage))))) {
             var live=fdjtID("CODEXLIVEGLOSS");
             if ((live)&&(hasClass(live,"modified"))) {
                 fdjtUI.choose([
@@ -293,21 +310,12 @@
             Codex.setMode(false);
             fdjtUI.cancel(evt);
             return;}
-        else if (!(passage)) {
-            if (Codex.Trace.gestures)
-                fdjtLog("cdown/nopassage (%o) %o, m=%o, x=%o, y=%o",evt,target,
-                        Codex.mode,cX,cY);
-            if (Codex.mode) {Codex.setMode(false); return;}
-            if (cX>(fdjtDOM.viewWidth()/3))
-                Codex.Forward(evt);
-            else Codex.Backward(evt);
-            gesture_start=false;
-            fdjtUI.cancel(evt);
-            return;}
         else if ((Codex.glosstarget)&&
                  ((hasParent(passage,Codex.glosstarget))||
                   (hasParent(Codex.glosstarget,passage)))&&
                  (fdjtID("CODEXLIVEGLOSS"))) {
+            if (Codex.mode==="addgloss") return;
+            var div=fdjtID("CODEXLIVEGLOSS");
             if (Codex.Trace.gestures)
                 fdjtLog("cdown/reveal (%o) %o, p=%o, gt=%o",evt,target,
                         passage,Codex.glosstarget);
@@ -332,22 +340,27 @@
                         evt,target,passage,form_div,form);
             var mode=((evt.shiftKey)?("addtag"):("editnote"));
             fdjtUI.TapHold.fakePress(evt,250);
-            fdjtDOM.addClass(form_div,"codexstartgloss");
             form.className=mode;
             Codex.setGlossForm(form_div);
-            Codex.setMode("addgloss");
-	    setTimeout(initGlossMode,100);}}
+            Codex.setMode("addgloss");}}
  
     function initGlossMode(){
-        dropClass(fdjtID("CODEXLIVEGLOSS"),"codexstartgloss");
         var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
         if (form) Codex.setGlossMode(form.className);}
+    Codex.initGlossMode=initGlossMode;
 
     function content_mouseup(evt){
         evt=evt||event;
 	fdjtUI.cancel(evt);
         if (Codex.mode==="addgloss") initGlossMode();}
     Codex.UI.content_release=content_mouseup;
+
+    function content_click(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        if (isClickable(target)) return;
+        else fdjtUI.cancel(evt);}
+
 
     /* TOC handlers */
 
@@ -1813,7 +1826,8 @@
             keypress: onkeypress,
             click: default_tap},
          content: {mousedown: content_mousedown,
-                   mouseup: content_mouseup},
+                   mouseup: content_mouseup,
+                   click: content_click},
          toc: {tap: toc_tapped,hold: toc_held,
                release: toc_released,slip: toc_slipped,
                mouseover: fdjtUI.CoHi.onmouseover,
