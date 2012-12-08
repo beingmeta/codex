@@ -198,14 +198,16 @@
     function showaudience(outlets,spec){
         if (!(outlets instanceof Array)) outlets=[outlets];
         if (outlets.length===0) return false;
-        var span=fdjtDOM(spec||((outlets.length>1)?("div.audience"):("span.audience")),
-                         ((outlets.length>1)&&(fdjtDOM("span.count",outlets.length, " outlets"))),
-                         " ");
+        var span=fdjtDOM(
+            spec||((outlets.length>1)?("div.audience"):("span.audience")),
+            ((outlets.length>1)&&
+             (fdjtDOM("span.count",outlets.length, " outlets"))),
+            " ");
         var i=0; var lim=outlets.length;
         // This might do some kind of more/less controls and sorted
         // or cloudy display
         while (i<outlets.length) {
-            var outlet=outlets[i]; var info=fdjtKB.ref(outlet);
+            var outlet=outlets[i]; var info=fdjtKB.load(outlet);
             var outlet_span=fdjtDOM("span.outlet",info.name);
             if (info.about) 
                 outlet_span.title="Shared with “"+info.name+"” — "+info.about;
@@ -299,14 +301,14 @@
             if (typeof sources === 'string') sources=[sources];
             var i=0; var lim=sources.length;
             while (i<lim) {
-                var source=fdjtKB.ref(sources[i++]);
+                var source=fdjtKB.load(sources[i++]);
                 if ((source)&&(source.kind===':OVERDOC'))
                     return source;}
             return false;}
         else return false;}
 
     function getfakepic(maker,spec){
-        var userinfo=fdjtKB.ref(maker);
+        var userinfo=fdjtKB.load(maker);
         var pic=fdjtDOM(spec||"div.sbooksourcepic",
                         ((userinfo.name)?
                          (fdjtString.getInitials(userinfo.name)):
@@ -321,7 +323,7 @@
             if (typeof sources==='string') sources=[sources];
             var i=0; var lim=sources.length;
             while (i<lim) {
-                var source=fdjtKB.ref(sources[i++]);
+                var source=fdjtKB.load(sources[i++]);
                 if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
                     return { src: source.pic, alt: source.name,
                              classname: "img.glosspic.sourcepic"};}}
@@ -338,12 +340,12 @@
             if (typeof outlets==='string') outlets=[outlets];
             var i=0; var lim=outlets.length;
             while (i<lim) {
-                var outlet=fdjtKB.ref(outlets[i++]);
+                var outlet=fdjtKB.load(outlets[i++]);
                 if ((outlet)&&(outlet.kind===':OVERLAY')&&(outlet.pic))
                     return { src: outlet.pic, alt: outlet.name,
                              classname: "img.glosspic.sourcepic"};}}
         if (info.maker) {
-            var userinfo=fdjtKB.ref(info.maker);
+            var userinfo=fdjtKB.load(info.maker);
             if (userinfo.pic)
                 return { src: userinfo.pic, alt: userinfo.name,
                          classname: "img.glosspic.userpic"};
@@ -440,14 +442,14 @@
     function editicon_ontap(evt){
         var target=fdjtUI.T(evt);
         var card=fdjtDOM.getParent(target,'.codexcard');
-        var gloss=((card)&&(card.name)&&(fdjtKB.ref(card.name,Codex.glosses)));
+        var gloss=((card)&&(card.name)&&(fdjtKB.load(card.name,Codex.glosses)));
         var form=Codex.setGlossTarget(gloss);
         if (!(form)) return;
         Codex.setMode("addgloss");}
     function replyicon_ontap(evt){
         var target=fdjtUI.T(evt);
         var card=fdjtDOM.getParent(target,'.codexcard');
-        var gloss=((card)&&(card.name)&&(fdjtKB.ref(card.name,Codex.glosses)));
+        var gloss=((card)&&(card.name)&&(fdjtKB.load(card.name,Codex.glosses)));
         var form=Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
         if (!(form)) return;
         Codex.setMode("addgloss");}
