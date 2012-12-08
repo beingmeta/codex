@@ -199,7 +199,7 @@ div.codexglossform form div.glossetc {
     display: block; text-align: left; font-size: 12px;
     line-height: 16px; text-overflow: ellipsis;
     padding: 0.5ex; padding-top: 0ex;
-    margin-top: 0ex; margin-left: 1px;
+    margin-top: 0.4ex; margin-left: 1px;
     min-height: 24px; max-height: 50px;
     overflow: hidden;
     clear: left;}
@@ -251,13 +251,14 @@ div.codexglossform form div.glossetc .checkspan input {
 div.codexglossform form div.glossetc .checkspan.anchor input {
     display: none;}
 
-div.codexglossform form div.glossetc .outlets.empty {
-    display: none;}
-div.codexglossform form div.glossetc .links.empty {
-    display: none;}
-div.codexglossform form div.glossetc .tags.empty {
-    display: none;}
-div.codexglossform form div.glossetc .excerpt.empty {
+div.codexglossform form div.glossetc .outlets.empty,
+div.codexglossform form div.glossetc .links.empty,
+div.codexglossform form div.glossetc .tags.empty,
+div.codexglossform form div.glossetc .excerpt.empty,
+body.hudup div.codexglossform form div.glossetc .outlets.empty,
+body.hudup div.codexglossform form div.glossetc .links.empty,
+body.hudup div.codexglossform form div.glossetc .tags.empty,
+body.hudup div.codexglossform form div.glossetc .excerpt.empty {
     display: none;}
 
 div.codexglossform form div.glossetc span.head {
