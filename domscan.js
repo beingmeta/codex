@@ -335,8 +335,7 @@ Codex.DOMScan=(function(){
             if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
             if ((classname)&&(classname.search(/\bsbookignore\b/)>=0))
                 return;
-            if (prefix) {
-                if (id) {if (id.search(prefix)!==0) id=false;}}
+            if ((child.codexui)||((id)&&(id.search("CODEX")===0))) return;
             else if ((!(id))&&(tag.search(/p|h\d|blockquote|li/i)===0)) {
                 var baseid="WSN_"+md5ID(child), id=baseid, count=1;
                 while (document.getElementById[id])
@@ -374,7 +373,6 @@ Codex.DOMScan=(function(){
             if ((scanstate.notoc)||(tag==='header')) {
                 scanstate.notoc=true; toclevel=0;}
             scanstate.eltcount++;
-            if ((child.codexui)||((id)&&(id.search("CODEX")===0))) return;
             var info=((nodefn)&&(nodefn(child)))||(id&&(docinfo[id]));
             if ((!(info))&&(id)) {
                 allids.push(id); info=new scanInfo(id,scanstate);
