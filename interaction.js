@@ -105,6 +105,7 @@
                 // fdjtUI.TapHold(Codex.content,Codex.touch);
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
             fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
+            fdjtUI.TapHold(fdjtID("CODEXEXPANDSCANNER"),Codex.touch);
             addHandlers(Codex.HUD,'hud');}
         var handlers=Codex.UI.handlers[mode];
         if (mode)
@@ -1525,6 +1526,7 @@
         evt=evt||event;
         var target=fdjtUI.T(evt);
         if (isClickable(target)) return;
+        if (hasParent(target,fdjt.ID("CODEXEXPANDSCANNER"))) return;
         if ((getParent(target,".tool"))) {
             var card=getCard(target);
             if ((card)&&((card.name)||(card.getAttribute("name")))) {
@@ -1824,6 +1826,13 @@
         Codex.setMode(false);
         fdjtDOM.dropClass(document.body,"codexhelp");}
 
+    function scanner_expand_hold(evt){
+        fdjtDOM.addClass("CODEXSCANNER","expanded");}
+    function scanner_expand_tap(evt){
+        fdjtDOM.toggleClass("CODEXSCANNER","expanded");}
+    function scanner_expand_release(evt){
+        fdjtDOM.dropClass("CODEXSCANNER","expanded");}
+
     /* Rules */
 
     var noBubble=fdjtUI.noBubble;
@@ -1887,7 +1896,6 @@
 		     click: cancel, mousedown: cancel,
                      mouseover: glossmark_hoverstart,
                      mouseout: glossmark_hoverdone},
-
          glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
          summary: {tap: slice_tapped, hold: slice_held,
                    release: slice_released},
@@ -1904,6 +1912,11 @@
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
          "#CODEXSCANNER": {click: scanner_tapped},
+         // Expanding/contracting the scanner
+         "#CODEXEXPANDSCANNER": {
+             tap: scanner_expand_tap,
+             hold: scanner_expand_hold,
+             release: scanner_expand_release},
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {click: head_tap},
          "#CODEXTABS": {click: head_tap},
@@ -1968,6 +1981,11 @@
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
          "#CODEXSCANNER": {touchstart: scanner_tapped},
+         // Expanding/contracting the scanner
+         "#CODEXEXPANDSCANNER": {
+             tap: scanner_expand_tap,
+             hold: scanner_expand_hold,
+             release: scanner_expand_release},
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {touchstart: head_tap},
          "#CODEXTABS": {touchstart: head_tap},
