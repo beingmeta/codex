@@ -484,9 +484,7 @@ Codex.setMode=
             if ((mode!==Codex.mode)&&(Codex.previewing))
                 Codex.stopPreview();
             if (mode) {
-                if ((mode==="scanning")||(mode==="tocscan"))
-                    addClass(document.body,"cxSHRINK");
-                else if (mode==="addgloss") {}
+                if (mode==="addgloss") {}
                 else dropClass(document.body,"cxSHRINK");
                 if (mode===Codex.mode) {}
                 else if (mode===true) {

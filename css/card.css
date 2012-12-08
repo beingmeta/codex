@@ -75,6 +75,7 @@ div.codexcard > hr {
 div#CODEXHUD .codexcard span.oldterm {color: blue; }
 .codexcard span.user { 
   color: green; font-size: 125%; font-style: italic;}
+.codexcard span.outlet { color: green;}
 .codexcard span.overdoc { 
   color: green; font-size: 125%; font-style: normal;
   font-variant: small-caps;}
@@ -145,7 +146,8 @@ body.sbook a.codexcard { display: block;}
     font-size: 70%; text-decoration: none;}
 .codexcard .tool img { height: 40px; width: 40px;}
 .codexcard .age {
-    color: green; vertical-align: top; padding-right: 0.5em;}
+    color: rgb(18, 141, 238);
+    vertical-align: top; padding-right: 0.5em;}
 .codexcard .age:hover {text-decoration: underline;} 
 .codexcard a.deletebutton { 
   color: orange; text-decoration: none;

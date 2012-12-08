@@ -66,7 +66,10 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
 
 body #CODEXHUD.openhead #CODEXHEAD,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded,
-body #CODEXHUD.tocscan #CODEXSCANNER.expanded {
+body #CODEXHUD.tocscan #CODEXSCANNER.expanded,
+body #CODEXHUD.scanning #CODEXSCANNER.expanded,
+body #CODEXHUD.tocscan #CODEXSCANNER:hover,
+body #CODEXHUD.scanning #CODEXSCANNER:hover {
     max-height: inherit;}
 
 #CODEXHEART {
@@ -122,6 +125,10 @@ body #CODEXHUD.addgloss #CODEXHEART.tagging div.hudpanel,
 body #CODEXHUD.addgloss #CODEXHEART.showoutlets div.hudpanel,
 body #CODEXHUD.addgloss #CODEXHEART.addlink div.hudpanel {
     margin-top: 0px; margin-bottom: 0px;}
+body.hudup #CODEXHUD.allglosses.openheart #CODEXHEART,
+body.hudup #CODEXHUD.searchresults.openheart #CODEXHEART {
+    padding-top: 0px;}
+
 
 body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.tagging,
@@ -513,8 +520,12 @@ div#CODEXHEAD div#CODEXSCANNER.expanded {
 
 div#CODEXSCANNER .ellipsis.expanded .elided {display: none;}
 div#CODEXSCANNER .ellipsis.expanded .elision {display: inline;}
-div#CODEXSCANNER.expanded .ellipsis.expanded .elided {display: inline;}
-div#CODEXSCANNER.expanded .ellipsis.expanded .elision {display: none;}
+div#CODEXSCANNER.expanded .ellipsis.expanded .elided,
+div#CODEXSCANNER:hover .ellipsis.expanded .elided {
+    display: inline;}
+div#CODEXSCANNER.expanded .ellipsis.expanded .elision,
+div#CODEXSCANNER:hover .ellipsis.expanded .elision {
+    display: none;}
 
 /* This is the twisty control */
 div#CODEXSCANNER span.expander {
@@ -523,6 +534,11 @@ div#CODEXSCANNER span.expander img { width: 40px; height: 40px;}
 div#CODEXSCANNER span.expander img[alt='-'] { display: none;}
 div#CODEXSCANNER.expanded span.expander img[alt='-'] { display: inline;}
 div#CODEXSCANNER.expanded span.expander img[alt='+'] { display: none;}
+div#CODEXSCANNER:hover span.expander img[alt='-'] {
+    opacity: 0.5; display: inline;}
+div#CODEXSCANNER.expanded:hover span.expander img[alt='-'] {
+    opacity: 1.0;}
+div#CODEXSCANNER:hover span.expander img[alt='+'] { display: none;}
 
 div#CODEXSCANNER div.tochead, div#CODEXGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
@@ -621,8 +637,12 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {disp
 
 div#CODEXHUD div#CODEXSCANNER .codexcardbody { min-height: 40px; }
 
-div#CODEXHUD div#CODEXSCANNER.expanded .controller { display: none;}
-div#CODEXHUD div#CODEXSCANNER.expanded span.whenexpanded { display: inline;}
+div#CODEXHUD div#CODEXSCANNER.expanded .controller,
+div#CODEXHUD div#CODEXSCANNER:hover .controller{
+    display: none;}
+div#CODEXHUD div#CODEXSCANNER.expanded span.whenexpanded,
+div#CODEXHUD div#CODEXSCANNER:hover span.whenexpanded {
+    display: inline;}
 
 div#CODEXHUD div#CODEXSCANNER div.codexcard {margin-left: 40px;}
 div#CODEXHUD div#CODEXSCANNER div.codexcard > div.tochead { margin-left: -40px;}
@@ -634,9 +654,11 @@ div#CODEXHUD div#CODEXGLOSSES div.idhead {
 div#CODEXHUD div#CODEXSCANNER img.glosspic {
     max-height: 5ex; max-width: 5ex;}
 
-body div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic {
+body div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic,
+body div#CODEXHUD div#CODEXSCANNER:hover img.glosspic {
     max-height: inherit; max-width: inherit;}
-body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded {
+body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded,
+body div#CODEXHUD div.hudpanel#CODEXSCANNER:hover {
     max-height: inherit, height: inherit;}
 
 div#CODEXHUD div#CODEXSCANNER div.codexcard span.glossinfo span.isclickable {
