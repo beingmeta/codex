@@ -696,8 +696,16 @@ img.codexcoverpage {
 .highlightpassage { background-color: #FFFF6B;}
 .highlightsearch { background-color: gold;}
 .codexpreviewtarget { color: red; }
-section.codexpreviewtarget { color: inherit; }
-section.codexpreviewtarget [id]:first-child { color: red; }
+section.codexpreviewtarget, div.html5section.codexpreviewtarget,
+section.codexpreviewtarget p, div.html5section.codexpreviewtarget p,
+section.codexpreviewtarget h1, div.html5section.codexpreviewtarget h1,
+section.codexpreviewtarget h2, div.html5section.codexpreviewtarget h2,
+section.codexpreviewtarget h3, div.html5section.codexpreviewtarget h3,
+section.codexpreviewtarget h4, div.html5section.codexpreviewtarget h4,
+section.codexpreviewtarget h5, div.html5section.codexpreviewtarget h5,
+section.codexpreviewtarget h6, div.html5section.codexpreviewtarget h6,
+section.codexpreviewtarget h7, div.html5section.codexpreviewtarget h7 {
+    color: rgb(122,34,95); } 
 
 /* Startup messages */
 

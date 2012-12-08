@@ -81,6 +81,9 @@
     var start_t=-1; var last_t=-1;
     var cxicon=Codex.icon;
     
+    var addgloss_timer=false;
+    var preview_timer=false;
+
     /* Setup for gesture handling */
 
     function addHandlers(node,type){
@@ -271,6 +274,10 @@
             Codex.setMode(false);
             fdjtUI.cancel(evt);
             return;}
+        else if (Codex.previewing) {
+            Codex.stopPreview("content_mousedown");
+            fdjtUI.cancel(evt);
+            return;}
         // If there isn't a passage, move forward or backward
         else if ((!(passage))||(passage===document.body)||(inUI(passage))) {
             if (Codex.Trace.gestures)
@@ -426,6 +433,8 @@
     function toc_held(evt){
         evt=evt||event;
         var about=getAbout(fdjtUI.T(evt));
+        if (preview_timer) {
+            clearTimeout(preview_timer); preview_timer=false;}
         if (about) {
             var ref=about.name.slice(3);
             var toc=getParent(about,".codextoc");
@@ -444,6 +453,8 @@
     function toc_released(evt){
         evt=evt||event;
         var about=getAbout(fdjtUI.T(evt));
+        if (preview_timer) {
+            clearTimeout(preview_timer); preview_timer=false;}
         if (about) {
             var toc=getParent(about,".codextoc");
             var title=getTitleSpan(toc,about.name);
@@ -528,13 +539,14 @@
         clone.id="CODEXSCAN";
         fdjtDOM.replace("CODEXSCAN",clone);
         if (Codex.previewTarget) {
-            var nodes=Codex.getDups(Codex.previewTarget);
-            dropClass(nodes,"codexpreviewtarget");
-            Codex.clearHighlights(nodes);
+            var drop=Codex.getDups(Codex.previewTarget);
+            dropClass(drop,"codexpreviewtarget");
+            Codex.clearHighlights(drop);
             Codex.previewTarget=false;}
         if (card.about) {
             var target=Codex.previewTarget=fdjtID(card.about);
-            addClass(target,"codexpreviewtarget");}
+            var dups=Codex.getDups("codexpreviewtarget");
+            addClass(dups,"codexpreviewtarget");}
         if (hasClass(card,"gloss")) {
             var glossinfo=Codex.glosses.ref(card.name);
             if (!(target))
@@ -550,8 +562,10 @@
                         target=getTargetDup(starts,target);
                     if (!(hasClass(starts,"highlightexcerpt"))) {
                         fdjtUI.Highlight(range,"highlightexcerpt");}}
-                else addClass(target,"highlightpassage");}
-            else addClass(target,"highlightpassage");}
+                else addClass(searching,"highlightpassage");}
+            else {
+                var dups=Codex.getDups(target);
+                addClass(dups,"highlightpassage");}}
         else if (getParent(card,".sbookresults")) {
             var about=card.about;
             Codex.previewTarget=target=fdjtID(about);
@@ -1636,6 +1650,9 @@
 
     function pageinfo_hold(evt){
         var pageinfo=fdjtID("CODEXPAGEINFO");
+        if (preview_timer) {
+            clearTimeout(preview_timer);
+            preview_timer=false;}
         if ((Codex.hudup)||(Codex.mode)) {
             fdjtUI.cancel(evt);
             Codex.setMode(false);
@@ -1656,8 +1673,18 @@
     
     function pageinfo_release(evt){
         var pageinfo=fdjtID("CODEXPAGEINFO");
+        if (preview_timer) {
+            clearTimeout(preview_timer);
+            preview_timer=false;}
         pageinfo.title="";
         Codex.stopPagePreview("pageinfo_release");}
+
+    function pageinfo_slip(evt){
+        preview_timer=setTimeout(function(){
+            var pageinfo=fdjtID("CODEXPAGEINFO");
+            pageinfo.title=""; preview_timer=false;
+            Codex.stopPagePreview("pageinfo_slip");},
+                                 400);}
 
     var showing_page=false;
     function pageinfo_hover(evt){
@@ -1852,7 +1879,7 @@
                    mouseup: content_mouseup,
                    click: content_click},
          toc: {tap: toc_tapped,hold: toc_held,
-               release: toc_released,slip: toc_slipped,
+               release: toc_released, slip: toc_slipped,
                mouseover: fdjtUI.CoHi.onmouseover,
                mouseout: fdjtUI.CoHi.onmouseout,
                click: cancel},
@@ -1871,6 +1898,7 @@
          "#CODEXPAGEINFO": {tap: pageinfo_tap,
                             hold: pageinfo_hold,
                             release: pageinfo_release,
+                            slip: pageinfo_slip,
                             mousemove: pageinfo_hover},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCOFF": {tap: enterLocation},
@@ -1921,7 +1949,7 @@
                    touchmove: content_touchmove,
                    touchend: content_touchend},
          toc: {tap: toc_tapped,hold: toc_held,
-               release: toc_released,slip: toc_slipped},
+               slip: toc_slipped, release: toc_released},
          glossmark: {touchstart: glossmark_tapped,
                      touchend: cancel},
          // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
@@ -1934,7 +1962,8 @@
          "#CODEXPAGEFOOT": {},
          "#CODEXPAGEINFO": {tap: pageinfo_tap,
                             hold: pageinfo_hold,
-                            release: pageinfo_release},
+                            release: pageinfo_release,
+                            slip: pageinfo_slip},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan

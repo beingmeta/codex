@@ -878,9 +878,13 @@ var Codex=
             if (use_top<0) use_top=0;
             window.scrollTo(0,use_top);
             Codex.previewing=target;}
+        if (Codex.previewTarget) {
+            var drop=Codex.getDups(Codex.previewTarget);
+            dropClass(drop,"codexpreviewtarget");}
         Codex.previewTarget=target;
         addClass(document.body,"cxPREVIEW");
-        addClass(target,"codexpreviewtarget");
+        var dups=Codex.getDups(target);
+        addClass(dups,"codexpreviewtarget");
         return target;}
     Codex.startPreview=CodexStartPreview;
     function CodexStopPreview(caller){
