@@ -261,8 +261,6 @@
         var agestring=timestring(info.modified||info.created);
         var tool=fdjtDOM(
             "span.tool",
-            ((info.private)&&(fdjtDOM("span.private","Private")))," ",
-            fdjtDOM("span.age",agestring),
             fdjtDOM.Image(
                 (((user===Codex.user)||(user===Codex.user._id))?
                  (cxicon("remark_edit_titled",40,40)):
@@ -272,7 +270,9 @@
                  ("edit"):("reply")),
                 (((user===Codex.user)||(user===Codex.user._id))?
                  ("tap to edit this gloss, hold to reply"):
-		 ("relay/reply to this gloss"))));
+		 ("relay/reply to this gloss"))),
+            ((info.private)&&(fdjtDOM("span.private","Private")))," ",
+            fdjtDOM("span.age",agestring));
         addListener(tool,"tap",relayoredit_gloss);
 	// addListener(tool,"hold",relayoredit_gloss);
         

@@ -142,8 +142,9 @@ body.sbook a.codexcard { display: block;}
     text-align: right;}
 .codexcard .glossinfo img { padding-left: 4px; cursor: pointer; }
 .codexcard .tool {
-    float: right; font-weight: normal;
+    font-weight: normal;
     font-size: 70%; text-decoration: none;}
+.codexcard .tool > * { float: right; }
 .codexcard .tool img { height: 40px; width: 40px;}
 .codexcard .age {
     color: rgb(18, 141, 238);

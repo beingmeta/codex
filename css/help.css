@@ -53,6 +53,7 @@ div.helpbox p img.left {
     margin-left: -70px;
     vertical-align: top;}
 div.helpbox kbd { font-weight: bold; }
+div.helpbox img.inline { background-color: gray; }
 
 div#CODEXSTARTPAGE #CODEXSTARTUPMSG {
     text-align: right; padding-top: 2px; padding-right: 8px;
@@ -123,6 +124,8 @@ body.codexhelp.hudup div#CODEXHUD div#CODEXHELP,
 body.codexhelp.cxSHRINK div#CODEXHUD div#CODEXHELP,
 body.codexhelp.cxPREVIEW div#CODEXHUD div#CODEXHELP,
 body.codexhelp.hudup div#CODEXHUD .helphud,
+body.codexhelp div#CODEXHUD.scanning div#CODEXHELP,
+body.codexhelp div#CODEXHUD.scanning .helphud,
 body.codexhelp.cxSHRINK div#CODEXHUD .helphud,
 body.codexhelp.cxPREVIEW div#CODEXHUD .helphud {
     display: none;}
@@ -193,7 +196,7 @@ div.helpbox img.codextocbar {
 
 div.helpbox blockquote p {
     margin-top: 3px; margin-bottom: 3px;
-    margin-left: 3em; margin-right: 3em; text-indent: -3em;}
+    margin-left: 1em; margin-right: 1em; text-indent: -1em;}
 
 div#BOTTOMHUDHELP {
     position: absolute;

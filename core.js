@@ -599,6 +599,7 @@ var Codex=
     function resizeBody(){
         if (Codex.nativescroll) {}
         else {
+            /*
             var curx=x_offset-fdjtDOM.parsePX(Codex.pages.style.left);
             var cury=y_offset-fdjtDOM.parsePX(Codex.pages.style.top);
             // Codex.body.style.left=''; Codex.body.style.top='';
@@ -606,7 +607,9 @@ var Codex=
             x_offset=geom.left; y_offset=geom.top;
             Codex.bodyoff=[x_offset,y_offset];
             Codex.pages.style.left='0px';
-            Codex.pages.style.top=(y_offset)+'px';}}
+            Codex.pages.style.top=(y_offset)+'px';
+            */
+        }}
     Codex.resizeBody=resizeBody;
 
     Codex.viewTop=function(){

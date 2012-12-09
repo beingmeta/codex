@@ -8,6 +8,8 @@
 
 @media screen and (max-width: 800px) {
     #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
+    img.codexclosehud#CODEXSTOPSCAN {
+        bottom: 50px; top: auto;}
     body.hudup #CODEXHUD.openhead #CODEXHEAD,
     body #CODEXHUD.openhead.addgloss #CODEXHEAD,{
         left: 0px; right: 0px; }
