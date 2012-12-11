@@ -946,7 +946,7 @@ var Codex=
                 Codex.coverpage,"img.codexfullpage.codexcoverpage.sbookpage#CODEXCOVERPAGE");
             fdjtDOM.prepend(Codex.content,cover);}
         // This should generate a textual cover page
-        else {
+        else if (!(fdjt.ID("CODEXTITLEPAGE"))) {
             cover=fdjtDOM("div.codexcoverpage.codexfullpage#CODEXCOVERPAGE","\n",
                           ((Codex.booktitle)?
                            (fdjtDOM("h1.title",Codex.booktitle)):
