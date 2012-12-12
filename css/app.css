@@ -648,7 +648,10 @@ div.codexpage {
     -webkit-opacity: 0.00;
     -khtml-opacity: 0.00;
     -moz-opacity: 0.00;
-    -o-opacity: 0.00;}
+    -o-opacity: 0.00;
+    display: none;}
+div.codexpage.curpage, div.codexpage.lastpage, div.codexpage.nextpage {
+    display: block;}
 body.cxANIMATE div.codexpage {
     transition-property: opacity; transition-duration: 0.25s;
     -o-transition-property: opacity; -o-transition-duration: 0.25s;

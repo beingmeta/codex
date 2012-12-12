@@ -456,7 +456,11 @@ Codex.Paginate=
                 if (Codex.Trace.flips)
                     fdjtLog("GoToPage/%s Flipping to %o (%d) for %o",
                             caller,page,pagenum,spec);
-                if (curpage) dropClass(curpage,"curpage");
+                if (curpage) {
+                    dropClass(curpage,"nextpage");
+                    addClass(curpage,"lastpage");
+                    dropClass(curpage,"curpage");}
+                addClass(page,"nextpage");
                 addClass(page,"curpage");
                 if (typeof spec === 'number') {
                     var location=parseInt(page.getAttribute("data-sbookloc"));
