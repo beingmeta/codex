@@ -422,7 +422,7 @@
             var toc=getParent(tap_target,".codextoc");
             var show_fulltoc=
                 ((info.sub)&&(info.sub.length>2))&&
-                (!(hasClass(toc,"codexlivehead")));
+                (info.elt!==Codex.head);
             if (Codex.Trace.gestures)
                 fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
             Codex.JumpTo(target);
