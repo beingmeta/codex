@@ -1030,6 +1030,10 @@ Codex.Startup=
             fdjtDOM(document.head,style);
             Codex.stylesheet=style.sheet;
 
+            // Initialize cover and titlepage (if specified)
+            Codex.cover=Codex.getCover();
+            Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
+
             var i=0; var lim=nodes.length;
             // Now, move all of the body nodes into the content element
             while (i<lim) {
@@ -1039,10 +1043,6 @@ Codex.Startup=
                         (node.tagName!=='SCRIPT'))
                         content.appendChild(node);}
                 else content.appendChild(node);}
-
-            // Initialize cover and titlepage (if specified)
-            Codex.cover=Codex.getCover();
-            Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
 
             // Gather special content
             var allnotes=fdjtID("SBOOKNOTES");
