@@ -90,6 +90,11 @@ Codex.Paginate=
             fdjtID("CODEXPAGE").style.visibility='hidden';
             fdjtID("CODEXCONTENT").style.visibility='hidden';
             
+            // Now make the content (temporarily) the save width as
+            // the page
+            var saved_width=Codex.content.style.width;
+            Codex.content.style.width=getGeometry(Codex.page).width+"px";
+
             // Now walk the content
             var content=Codex.content;
             var nodes=TOA(content.childNodes);
@@ -99,7 +104,10 @@ Codex.Paginate=
 
             // Do the adjust font bit.  We rely on Codex.content
             //  having the same width as Codex.page
-            fdjt.UI.adjustFont(content);
+            fdjt.DOM.adjustFonts(content);
+
+            // Now reset the width
+            Codex.content.style.width=saved_width;
 
             // Get the document info
             var docinfo=Codex.docinfo;
@@ -110,7 +118,6 @@ Codex.Paginate=
             
             var textWidth=fdjtDOM.textWidth;
             var hasText=fdjtDOM.hasText;
-
 
             function getPageTop(node) {
                 if (hasClass(node,"codexpage")) {}
@@ -275,8 +282,8 @@ Codex.Paginate=
             else content.style.left=content.style.right='';
             fdjtID("CODEXHEART").style.maxHeight=(view_height-100)+'px';
             if (Codex.bypage) Codex.Paginate("resize");
-            else fdjt.UI.adjustFont.update(Codex.content);
-            fdjt.UI.adjustFont(Codex.HUD);};
+            else fdjt.DOM.adjustFonts(Codex.content);
+            fdjt.DOM.adjustFonts(Codex.HUD);};
         
         Codex.addConfig(
             "layout",
@@ -313,7 +320,7 @@ Codex.Paginate=
                         Codex.layout=false;}
                     dropClass(document.body,"cxBYPAGE");
                     addClass(document.body,"cxSCROLL");
-                    fdjt.UI.adjustFont(Codex.content);}});
+                    fdjt.DOM.adjustFonts(Codex.content);}});
 
         function updateLayoutProperty(name,val){
             // This updates layout properties
