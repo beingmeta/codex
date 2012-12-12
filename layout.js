@@ -58,20 +58,17 @@ Codex.Paginate=
         var atoi=parseInt;
 
         function Paginate(why,init){
-            
             if (((Codex.layout)&&(!(Codex.layout.done)))) return;
             if (!(why)) why="because";
-            if (Codex.layout) {
-                Codex.layout.Revert();
-                Codex.layout=false;}
             addClass(document.body,"cxLAYOUT");
+            var forced=((init)&&(init.forced));
             var height=getGeometry(fdjtID("CODEXPAGE")).height;
             var width=getGeometry(fdjtID("CODEXPAGE")).width;
             var bodysize=Codex.bodysize||"normal";
             var bodyfamily=Codex.bodyfamily||"serif";
             if (Codex.layout) {
                 var current=Codex.layout;
-                if ((!(init.forced))&&
+                if ((!(forced))&&
                     (width===current.page_width)&&
                     (height===current.page_height)&&
                     (bodysize===current.bodysize)&&
@@ -99,6 +96,10 @@ Codex.Paginate=
             fdjtLog("Laying out %d root nodes into %dx%d pages (%s)",
                     nodes.length,layout.width,layout.height,
                     (why||""));
+
+            // Do the adjust font bit.  We rely on Codex.content
+            //  having the same width as Codex.page
+            fdjt.UI.adjustFont(content);
 
             // Get the document info
             var docinfo=Codex.docinfo;
@@ -273,7 +274,9 @@ Codex.Paginate=
                 content.style.right=content_margin+'px';}
             else content.style.left=content.style.right='';
             fdjtID("CODEXHEART").style.maxHeight=(view_height-100)+'px';
-            if (Codex.bypage) Codex.Paginate("resize");};
+            if (Codex.bypage) Codex.Paginate("resize");
+            else fdjt.UI.adjustFont.update(Codex.content);
+            fdjt.UI.adjustFont(Codex.HUD);};
         
         Codex.addConfig(
             "layout",
@@ -309,7 +312,8 @@ Codex.Paginate=
                         Codex.layout.Revert();
                         Codex.layout=false;}
                     dropClass(document.body,"cxBYPAGE");
-                    addClass(document.body,"cxSCROLL");}});
+                    addClass(document.body,"cxSCROLL");
+                    fdjt.UI.adjustFont(Codex.content);}});
 
         function updateLayoutProperty(name,val){
             // This updates layout properties
@@ -526,6 +530,9 @@ Codex.Paginate=
             if ((Codex.pagecount)&&(Codex.curpage))
                 Codex.GoToPage(Codex.curpage,"displaySync");}
         Codex.displaySync=displaySync;
+
+        // We handle this ourselves
+        fdjt.UI.adjustFont.onresize=false;
 
         return Paginate;})();
 
