@@ -388,7 +388,6 @@ var Codex=
 	    else if (scan===document.body) return target;
             else if (id=(scan.id||scan.codexbaseid)) {
                 if (id.search("CODEXTMP")===0) {}
-                else if ((prefix)&&(id.search(prefix)!==0)) {}
                 else if (hasParent(scan,Codex.HUD)) return false;
                 else if (hasParent(scan,".codexmargin")) return false;
                 else if ((hasClass(scan,"sbooknofocus"))||
