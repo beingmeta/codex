@@ -287,7 +287,7 @@ Codex.Startup=
 
             Codex.setMode("splash");
 
-            fdjtDOM.adjustFonts(fdjtID("CODEXAPPSPLASH"));}
+            fdjtDOM.adjustFonts(fdjtID("CODEXHUD"));}
 
         function appSetup() {
 
@@ -1147,6 +1147,8 @@ Codex.Startup=
                 fdjtDOM.append(allasides,aside);}
             // Initialize the margins
             initMargins();
+            // Adjust fonts
+            fdjt.UI.adjustFont.update(content);
             if (Codex.Trace.startup>1)
                 fdjtLog("Initialized body");}
 
