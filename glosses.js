@@ -777,10 +777,15 @@
         if (Codex.Trace.network)
             fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
         dropClass(form.parentNode,"submitting");
-        Codex.glosses.Import(JSON.parse(req.responseText));
+        var json=JSON.parse(req.responseText);
+        var ref=Codex.glosses.Import(json);
         fdjtDOM.remove(form.parentNode);
-        // clearGlossForm(form);
-        Codex.preview_target=false;
+        var reps=document.getElementsByName(json.uuid);
+        var i=0, lim=reps.length;
+        while (i<lim) {
+            var rep=reps[i++];
+            if (hasClass(rep,"codexcard"))
+                fdjtDOM.replace(rep,Codex.renderCard(ref));}
         /* Turn off the target lock */
         setGlossTarget(false);
         Codex.setTarget(false);
@@ -996,7 +1001,6 @@
         fdjtState.setLocal("queued("+Codex.refuri+")",queued,true);
         // Clear the UUID
         clearGlossForm(form);
-        Codex.preview_target=false;
         if (evt) fdjtUI.cancel(evt);
         dropClass(form.parentNode,"submitting");
         /* Turn off the target lock */
