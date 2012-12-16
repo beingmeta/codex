@@ -280,7 +280,10 @@
             fdjtUI.cancel(evt);
             return;}
         // If there isn't a passage, move forward or backward
-        else if ((!(passage))||(passage===document.body)||(inUI(passage))) {
+        else if ((!(passage))||(passage===document.body)||
+                 (passage===Codex.content)||
+                 (hasClass(passage,"codexpage"))||
+                 (inUI(passage))) {
             if (Codex.Trace.gestures)
                 fdjtLog("cdown/nopassage (%o) %o, m=%o, x=%o, y=%o",evt,target,
                         Codex.mode,cX,cY);
