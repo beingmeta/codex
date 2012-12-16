@@ -498,6 +498,7 @@ Codex.Paginate=
                 Codex.layout.getPage(spec)||
                 Codex.layout.getPage(1);
             var pagenum=parseInt(page.getAttribute("data-pagenum"));
+            var pageloc=parseInt(page.getAttribute("data-sbookloc"));
             if (previewing===page) return;
             if (previewing) dropClass(previewing,"curpage");
             if (Codex.Trace.flips)
@@ -511,7 +512,7 @@ Codex.Paginate=
             addClass(page,"curpage");
             Codex.previewing=previewing=page;
             addClass(document.body,"cxPREVIEW");
-            updatePageDisplay(pagenum,Codex.location);}
+            updatePageDisplay(pagenum,pageloc);}
         function stopPreview(caller){
             var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
             if (Codex.Trace.flips)
