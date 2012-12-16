@@ -338,15 +338,6 @@
         else if (Codex.glosstarget) {
             /* This case should be handled by the fdjtselecting wrapper
                on the passage */}
-        /*
-        // This should be handled by the 'unrelated passage' code above 
-        else if ((Codex.glosstarget)&&(Codex.mode==="addgloss")) {
-            if (Codex.Trace.gestures)
-                fdjtLog("cdown/close (%o) %o, p=%o, gt=%o",evt,target,
-                        passage,Codex.glosstarget);
-            fdjtUI.cancel(evt);
-            Codex.setMode(false);}
-        */
         // Finally, we open a gloss unless the action is a simple tap
         else {
             addgloss_timer=
@@ -372,11 +363,12 @@
         if (addgloss_timer) {
             clearTimeout(addgloss_timer); addgloss_timer=false;
             if (Codex.hudup) Codex.setHUD(false);
-            else {
+            else if (false) {
                 var target=fdjtUI.T(evt);
                 var passage=getTarget(target);
                 if (passage) Codex.setTarget(passage);
-                Codex.setHUD(true);}}
+                Codex.setHUD(true);}
+            else {}}
         if (Codex.hudup) initGlossMode();}
     Codex.UI.content_release=content_mouseup;
 
