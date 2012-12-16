@@ -7,7 +7,7 @@
 /* Bottom information */
 
 div#CODEXPAGEFOOT div#CODEXPAGEINFO {
-    vertical-align: bottom; height: 3ex;
+    vertical-align: bottom; height: 3ex; text-align: center;
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
     border-top: solid black 1px;
@@ -26,9 +26,11 @@ body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
 div#CODEXPAGEFOOT div#CODEXPAGEINFO span.locoff {
     position: absolute; bottom: 3px; right: 3px;
     cursor: text;}
-div#CODEXPAGEFOOT div#CODEXPAGENO {
-    position: absolute; bottom: 0px; width: 100%; max-height: 20px;}
-div#CODEXPAGEFOOT div#CODEXPAGENO span#CODEXPAGENOTEXT {
+div#CODEXPAGEFOOT span#CODEXPAGENO {
+    position: absolute;
+    bottom: 0px; left: auto; right: auto;
+    max-height: 20px;}
+div#CODEXPAGEFOOT span#CODEXPAGENO span#CODEXPAGENOTEXT {
     cursor: text;}
 div#CODEXPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top-width: 0px;
@@ -63,6 +65,22 @@ body.hudup div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
+
+/* Page spans */
+
+div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans {
+  position: absolute; top: 0px; width: 100%; height: 100%; z-index: 10;}
+div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span {
+  opacity: 0.0; overflow: hidden; z-index: 20; height: 100%;
+  display: inline-block;}
+div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
+  background-color: lightblue; color: transparent; height: 100%;
+  visibility: visible; opacity: 1.0;
+  overflow: visible; z-index: 50;}
+body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.preview {
+  background-color: gold; overflow: visible;
+  visibility: visible; opacity: 1.0;
+  z-index: 100;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

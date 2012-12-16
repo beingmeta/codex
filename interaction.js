@@ -1623,23 +1623,6 @@
             Codex.setMode(false);
             return;}}
 
-    function pageinfo_tap(evt){
-        var pageinfo=fdjtID("CODEXPAGEINFO");
-        if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
-            fdjtUI.cancel(evt);
-            Codex.setMode(false);
-            return;}
-        var offx=getOffX(evt);
-        var offwidth=pageinfo.offsetWidth;
-        var gopage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
-        if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
-            fdjtLog("pageinfo_tap %o off=%o/%o=%o gopage=%o/%o",
-                    evt,offx,offwidth,offx/offwidth,
-                    gopage,Codex.pagecount);
-        if (!(offx)) return;
-        fdjtUI.cancel(evt);
-        Codex.GoToPage(gopage,"pageinfo_tap",true);
-        Codex.setMode(false);}
 
     var previewing_page=false;
     function pageinfo_hold(evt){
@@ -1651,57 +1634,42 @@
             fdjtUI.cancel(evt);
             Codex.setMode(false);
             return;}
-        var offx=getOffX(evt);
-        if (typeof offx !== "number") return;
-        var offwidth=pageinfo.offsetWidth;
-        var gopage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
-        if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
-            fdjtLog("pageinfo_hold %o off=%o/%o=%o gopage: %o=>%o/%o",
-                    evt,offx,offwidth,offx/offwidth,
-                    previewing_page,gopage,Codex.pagecount);
+        var target=fdjtUI.T(evt);
+        if (target.nodeType===3) target=target.parentNode;
+        if (((hasParent(target,pageinfo))&&(target.tagName==="span")))
+            return;
+        var gopage=parseInt(target.innerHTML);
         if (previewing_page===gopage) return;
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
-            fdjtLog("pageinfo_hold %o off=%o/%o=%o gopage: %o=>%o/%o",
-                    evt,offx,offwidth,offx/offwidth,
-                    previewing_page,gopage,Codex.pagecount);
+            fdjtLog("pageinfo_span_hold %o t=%o gopage: %o=>%o/%o",
+                    evt,target,previewing_page,gopage,Codex.pagecount);
         previewing_page=gopage;
         pageinfo.title=
             fdjtString("Release to return to page %d",Codex.curpage);
-        Codex.startPreview(gopage,"pageinfo_hold");}
-    
-    function pageinfo_release(evt){
+        Codex.startPreview(gopage,"pageinfo_span_hold");}
+    function pageinfo_tap(evt){
         var pageinfo=fdjtID("CODEXPAGEINFO");
         if (preview_timer) {
             clearTimeout(preview_timer);
             preview_timer=false;}
-        pageinfo.title="";
-        Codex.stopPagePreview("pageinfo_release");}
-
+        if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
+            fdjtUI.cancel(evt);
+            Codex.setMode(false);
+            return;}
+        var target=fdjtUI.T(evt);
+        if (target.nodeType===3) target=target.parentNode;
+        if (((hasParent(target,pageinfo))&&(target.tagName==="span")))
+            return;
+        var gopage=parseInt(target.innerHTML);
+        if (previewing_page===gopage) return;
+        Codex.GoToPage(gopage,"pageinfo_tap",true);
+        Codex.setMode(false);}
     function pageinfo_slip(evt){
         preview_timer=setTimeout(function(){
             var pageinfo=fdjtID("CODEXPAGEINFO");
             pageinfo.title=""; preview_timer=false;
             Codex.stopPagePreview("pageinfo_slip");},
                                  400);}
-
-    function pageinfo_hover(evt){
-        var pageinfo=fdjtID("CODEXPAGEINFO");
-        var target=fdjtUI.T(evt);
-        var offx=getOffX(evt);
-        if (typeof offx !== "number") return;
-        var offwidth=pageinfo.offsetWidth;
-        var showpage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
-        if (showpage===previewing_page) return;
-        if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
-            fdjtLog("pageinfo_hover %o off=%o/%o=%o showpage=%o/%o pressed=%o",
-                    evt,offx,offwidth,offx/offwidth,
-                    showpage,Codex.pagecount,fdjtUI.TapHold.ispressed());
-        pageinfo.title=
-            fdjtString("Page %d: click to jump, hold to glimpse/preview",
-                       showpage);
-        if (Codex.previewing) {
-            previewing_page=showpage;
-            Codex.startPreview(showpage,"pageinfo_hover");}}
     
     /* Gloss form handlers */
 
@@ -1898,9 +1866,8 @@
          ".codexheart": {tap: flyleaf_tap},
          "#CODEXPAGEINFO": {tap: pageinfo_tap,
                             hold: pageinfo_hold,
-                            release: pageinfo_release,
-                            slip: pageinfo_slip,
-                            mousemove: pageinfo_hover},
+                            release: pageinfo_slip,
+                            slip: pageinfo_slip},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
@@ -1968,9 +1935,8 @@
          "#CODEXPAGEFOOT": {},
          "#CODEXPAGEINFO": {tap: pageinfo_tap,
                             hold: pageinfo_hold,
-                            release: pageinfo_release,
-                            slip: pageinfo_slip,
-                            touchmove: pageinfo_hover},
+                            release: pageinfo_slip,
+                            slip: pageinfo_slip},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan

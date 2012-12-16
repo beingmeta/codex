@@ -47,6 +47,7 @@ Codex.Paginate=
 
         var getGeometry=fdjtDOM.getGeometry;
         var getParent=fdjtDOM.getParent;
+        var getChildren=fdjtDOM.getChildren;
         var hasClass=fdjtDOM.hasClass;
         var addClass=fdjtDOM.addClass;
         var dropClass=fdjtDOM.dropClass;
@@ -195,6 +196,7 @@ Codex.Paginate=
                     dropClass(document.body,"cxLAYOUT");
                     Codex.layout=layout;
                     Codex.pagecount=layout.pages.length;
+                    setupPageInfo();
                     if (Codex.layoutdone) {
                         var fn=Codex.layoutdone;
                         Codex.layoutdone=false;
@@ -411,13 +413,15 @@ Codex.Paginate=
 
         /* Updating the page display */
 
-        function updatePageDisplay(pagenum,location) {
+        function updatePageDisplay(pagenum,location,classname) {
+            if (!(classname)) classname="current";
             var npages=Codex.pagecount;
-            var pbar=fdjtDOM("div.progressbar#CODEXPROGRESSBAR");
             var book_len=Codex.ends_at;
-            
-            pbar.style.left=(100*((pagenum-1)/npages))+"%";
-            pbar.style.width=(100/npages)+"%";
+            var page_elt=fdjt.ID("CODEXPAGESPAN"+pagenum);
+            var cur=getChildren("CODEXPAGEINFO","."+classname);
+            if (cur[0]!==page_elt) {
+                dropClass(cur,classname);
+                addClass(page_elt,classname);}
             var locoff;
             if (typeof location==='number') {
                 var max_loc=Codex.ends_at;
@@ -435,9 +439,6 @@ Codex.Paginate=
                 "span#CODEXPAGENOTEXT.pageno",pagenum,"/",npages);
             fdjtDOM.replace("CODEXPAGENOTEXT",pageno_text);
             fdjtDOM.replace("CODEXLOCOFF",locoff);
-            // var pageno=fdjtDOM("div#CODEXPAGENO",locoff,pageno_text);
-            // fdjtDOM.replace("CODEXPAGENO",pageno);
-            fdjtDOM.replace("CODEXPROGRESSBAR",pbar);
             locoff.title=
                 ((locoff.title)||"")+
                 ((locoff.title)?("; "):(""))+
@@ -447,6 +448,24 @@ Codex.Paginate=
             pageno_text.title="click to jump to a particular page";
             fdjtDOM.addListeners(
                 pageno_text,Codex.UI.handlers[Codex.ui]["#CODEXPAGENOTEXT"]);}
+        Codex.updatePageDisplay=updatePageDisplay;
+        
+        /* Page info */
+        
+        function setupPageInfo(){
+            var i=0, n=Codex.pagecount; var html=[];
+            var spanwidth=
+                (fdjtID("CODEXPAGEINFO").offsetWidth)/n;
+            var pagespanrule=fdjtDOM.addCSSRule(
+                "div.pagespans > span","width: "+spanwidth+"px;");
+            while (i<n) {
+                html.push("<span id='CODEXPAGESPAN"+(i+1)+"'"+
+                          "title='p"+(i+1)+". Hold to glimpse, tap to jump'"+
+                          ">"+(i+1)+"</span>");
+                i++;}
+            var spans=fdjtID("CODEXPAGESPANS");
+            spans.innerHTML=html.join("");}
+        Codex.setupPageInfo=setupPageInfo;
         
         /* Movement by pages */
         
@@ -512,7 +531,7 @@ Codex.Paginate=
             addClass(page,"curpage");
             Codex.previewing=previewing=page;
             addClass(document.body,"cxPREVIEW");
-            updatePageDisplay(pagenum,pageloc);}
+            updatePageDisplay(pagenum,pageloc,"preview");}
         function stopPreview(caller){
             var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
             if (Codex.Trace.flips)
@@ -523,11 +542,9 @@ Codex.Paginate=
             addClass(curpage,"curpage");
             Codex.previewing=previewing=false;
             dropClass(document.body,"cxPREVIEW");
-            updatePageDisplay(pagenum,Codex.location);}
+            updatePageDisplay(pagenum,Codex.location,"current");}
         Codex.startPagePreview=startPreview;
         Codex.stopPagePreview=stopPreview;
-
-        Codex.updatePageDisplay=updatePageDisplay;
 
         function getPage(arg){
             if (!(Codex.layout)) return -1;
