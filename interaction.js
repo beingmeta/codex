@@ -1590,17 +1590,13 @@
 
     function getOffX(evt){
         evt=evt||event;
-        if ((evt.touches)&&(evt.touches.length)) {
-            var touch=evt.touches[0];
-            var pinfo=fdjtID("CODEXPAGEINFO");
-            var target=touch.target;
-            while ((target)&&(target.nodeType!==1)) target=target.parentNode;
-            var geom=getGeometry(target,pinfo);
-            var tx=geom.left;
-            return touch.clientX-(tx+pinfo.offsetLeft);}
-        else if ((evt.clientX)) {
-            var pinfo=fdjtID("CODEXPAGEINFO");
-            return evt.clientX-(pinfo.offsetLeft);}
+        var pinfo=fdjtID("CODEXPAGEINFO");
+        if (evt.clientX) 
+            return evt.clientX-pinfo.offsetLeft;
+        var touches=((evt.changedTouches)&&(evt.changedTouches.length)&&
+                     (evt.changedTouches))||
+            ((evt.touches)&&(evt.touches.length)&&(evt.touches));
+        if (touches) return touches[0].screenX-pinfo.offsetLeft; 
         else return false;}
 
     var hasParent=fdjtDOM.hasParent;
@@ -1650,6 +1646,7 @@
         Codex.GoToPage(gopage,"pageinfo_tap",true);
         Codex.setMode(false);}
 
+    var previewing_page=false;
     function pageinfo_hold(evt){
         var pageinfo=fdjtID("CODEXPAGEINFO");
         if (preview_timer) {
@@ -1660,18 +1657,18 @@
             Codex.setMode(false);
             return;}
         var offx=getOffX(evt);
+        if (typeof offx !== "number") return;
         var offwidth=pageinfo.offsetWidth;
         var gopage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
-        if (gopage===1)
-            fdjtLog("gopage=%d, offx=%o",gopage,offx);
+        if (previewing_page===gopage) return;
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
-            fdjtLog("pageinfo_hold %o off=%o/%o=%o gopage=%o/%o",
+            fdjtLog("pageinfo_hold %o off=%o/%o=%o gopage: %o=>%o/%o",
                     evt,offx,offwidth,offx/offwidth,
-                    gopage,Codex.pagecount);
+                    previewing_page,gopage,Codex.pagecount);
+        previewing_page=gopage;
         pageinfo.title=
             fdjtString("Release to return to page %d",Codex.curpage);
-        if (!(offx)) return;
-        Codex.startPagePreview(gopage,"pageinfo_hold");}
+        Codex.startPreview(gopage,"pageinfo_hold");}
     
     function pageinfo_release(evt){
         var pageinfo=fdjtID("CODEXPAGEINFO");
@@ -1688,26 +1685,23 @@
             Codex.stopPagePreview("pageinfo_slip");},
                                  400);}
 
-    var showing_page=false;
     function pageinfo_hover(evt){
         var pageinfo=fdjtID("CODEXPAGEINFO");
         var target=fdjtUI.T(evt);
         var offx=getOffX(evt);
+        if (typeof offx !== "number") return;
         var offwidth=pageinfo.offsetWidth;
         var showpage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
+        if (showpage===previewing_page) return;
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
             fdjtLog("pageinfo_hover %o off=%o/%o=%o showpage=%o/%o pressed=%o",
                     evt,offx,offwidth,offx/offwidth,
                     showpage,Codex.pagecount,fdjtUI.TapHold.ispressed());
-        if (showpage!==showing_page) {
-            pageinfo.title=
-                fdjtString(
-                    "click to go to page %d, hold to glimpse its preview",
-                    showpage);
-            showing_page=showpage;}
+        previewing_page=showpage;
+        pageinfo.title=
+            fdjtString("Page %d: click to jump, hold to glimpse/preview",
+                       showpage);
         if (Codex.previewing) {
-            var page=Codex.getPage(showpage);
-            if (hasClass(page,"curpage")) return;
             Codex.startPreview(showpage,"pageinfo_hover");}}
     
     /* Gloss form handlers */
@@ -1976,7 +1970,8 @@
          "#CODEXPAGEINFO": {tap: pageinfo_tap,
                             hold: pageinfo_hold,
                             release: pageinfo_release,
-                            slip: pageinfo_slip},
+                            slip: pageinfo_slip,
+                            touchmove: pageinfo_hover},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
