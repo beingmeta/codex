@@ -1655,6 +1655,10 @@
         if (typeof offx !== "number") return;
         var offwidth=pageinfo.offsetWidth;
         var gopage=Math.floor((offx/offwidth)*Codex.pagecount)+1;
+        if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
+            fdjtLog("pageinfo_hold %o off=%o/%o=%o gopage: %o=>%o/%o",
+                    evt,offx,offwidth,offx/offwidth,
+                    previewing_page,gopage,Codex.pagecount);
         if (previewing_page===gopage) return;
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
             fdjtLog("pageinfo_hold %o off=%o/%o=%o gopage: %o=>%o/%o",
@@ -1692,11 +1696,11 @@
             fdjtLog("pageinfo_hover %o off=%o/%o=%o showpage=%o/%o pressed=%o",
                     evt,offx,offwidth,offx/offwidth,
                     showpage,Codex.pagecount,fdjtUI.TapHold.ispressed());
-        previewing_page=showpage;
         pageinfo.title=
             fdjtString("Page %d: click to jump, hold to glimpse/preview",
                        showpage);
         if (Codex.previewing) {
+            previewing_page=showpage;
             Codex.startPreview(showpage,"pageinfo_hover");}}
     
     /* Gloss form handlers */
