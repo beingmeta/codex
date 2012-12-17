@@ -7,7 +7,7 @@
 /* Bottom information */
 
 div#CODEXPAGEFOOT div#CODEXPAGEINFO {
-    vertical-align: bottom; height: 3ex; text-align: center;
+    vertical-align: bottom; text-align: center; height: 40px; 
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%;
     border-top: solid black 1px;
@@ -27,8 +27,6 @@ div#CODEXPAGEFOOT div#CODEXPAGEINFO span.locoff {
     position: absolute; bottom: 3px; right: 3px;
     cursor: text;}
 div#CODEXPAGEFOOT span#CODEXPAGENO {
-    position: absolute;
-    bottom: 0px; left: auto; right: auto;
     max-height: 20px;}
 div#CODEXPAGEFOOT span#CODEXPAGENO span#CODEXPAGENOTEXT {
     cursor: text;}
