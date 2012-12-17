@@ -589,12 +589,12 @@
 
     var selecting_ontap=fdjt.UI.Selecting.tap_handler;
     function gloss_selecting_ontap(evt){
-        if (Codex.mode!=="addgloss") Codex.setMode("addgloss");
-        else if (Codex.hudup)
-            return Codex.setHUD(false,false);
-        else return Codex.setHUD(true,false);
-        fdjtUI.cancel(evt);}
+        if (Codex.mode!=="addgloss") {
+            Codex.setMode("addgloss");
+            fdjtUI.cancel(evt);}
+        else return selecting_ontap(evt);}
     function gloss_selecting_onrelease(evt){
+        evt=evt||event;
         Codex.UI.content_release(evt);
         Codex.setMode("addgloss");
         Codex.setHUD(true);}
