@@ -638,6 +638,8 @@ Codex.setMode=
             if (typeof elt === 'string') elt=fdjtID(elt);
             if (!(elt)) return;
             var eltid=elt.id;
+            while ((elt)&&(!(eltid))) {
+                elt=elt.parentNode; eltid=elt.id;}
             if (!(eltid)) return;
             if ((Codex.scrollers[eltid])&&
                 (Codex.scrollers[eltid].scroller===elt)) {
