@@ -1798,6 +1798,29 @@
     function scanner_expand_release(evt){
         fdjtDOM.dropClass("CODEXSCANNER","expanded");}
 
+    /* Tracking text input */
+
+    function codexfocus(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var input=getParent(target,'textarea');
+        if (!(input)) {
+            input=getParent(target,'input');
+            if (input.type.search(textinput_type)!==0) input=false;}
+        if (input) {
+            Codex.textinput=input;
+            if (Codex.touch) Codex.dont_resize=true;}}
+    function codexblur(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var input=getParent(target,'textarea');
+        if (!(input)) {
+            input=getParent(target,'input');
+            if (input.type.search(textinput_type)!==0) input=false;}
+        if ((input)&&(input===Codex.textinput)) {
+            Codex.textinput=false;
+            if (Codex.touch) Codex.dont_resize=false;}}
+
     /* Rules */
 
     var noBubble=fdjtUI.noBubble;
@@ -1848,7 +1871,9 @@
             keyup: onkeyup,
             keydown: onkeydown,
             keypress: onkeypress,
-            click: default_tap},
+            click: default_tap,
+            focus: codexfocus,
+            blur: codexblur},
          content: {mousedown: content_mousedown,
                    mouseup: content_mouseup,
                    click: content_click},
@@ -1921,7 +1946,9 @@
         {window: {
             keyup: onkeyup,
             keydown: onkeydown,
-            keypress: onkeypress},
+            keypress: onkeypress,
+            focus: codexfocus,
+            blur: codexblur},
          content: {touchstart: content_touchstart,
                    touchmove: content_touchmove,
                    touchend: content_touchend},

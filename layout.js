@@ -274,6 +274,7 @@ Codex.Paginate=
             var view_height=fdjtDOM.viewHeight();
             var page_margin=(view_width-page_width)/2;
             var content_margin=(view_width-content_width)/2;
+            if (Codex.dont_resize) return;
             if (page_margin!==50) {
                 page.style.left=page_margin+'px';
                 page.style.right=page_margin+'px';}
