@@ -363,12 +363,16 @@
         if (addgloss_timer) {
             clearTimeout(addgloss_timer); addgloss_timer=false;
             if (Codex.hudup) Codex.setHUD(false);
-            else if (false) {
-                var target=fdjtUI.T(evt);
-                var passage=getTarget(target);
-                if (passage) Codex.setTarget(passage);
-                Codex.setHUD(true);}
-            else {}}
+            else {
+                var x=getOffX(evt); var w=fdjtDOM.viewWidth();
+                if (x<w/2) Codex.pageBackward();
+                else if (x>w/2) Codex.pageForward();
+                else if (false) {
+                    var target=fdjtUI.T(evt);
+                    var passage=getTarget(target);
+                    if (passage) Codex.setTarget(passage);
+                    Codex.setHUD(true);}
+                else {}}}
         if (Codex.hudup) initGlossMode();}
     Codex.UI.content_release=content_mouseup;
 
