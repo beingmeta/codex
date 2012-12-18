@@ -592,6 +592,9 @@
         if (Codex.mode!=="addgloss") {
             Codex.setMode("addgloss");
             fdjtUI.cancel(evt);}
+        else if (Codex.hudup) {
+            Codex.setHUD(false,false);
+            fdjtUI.cancel(evt);}
         else return selecting_ontap(evt);}
     function gloss_selecting_onrelease(evt){
         evt=evt||event;

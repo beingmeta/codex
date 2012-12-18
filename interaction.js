@@ -363,6 +363,7 @@
         if (addgloss_timer) {
             clearTimeout(addgloss_timer); addgloss_timer=false;
             if (Codex.hudup) Codex.setHUD(false);
+            else if (Codex.mode==="addgloss") {}
             else {
                 var x=getOffX(evt); var w=fdjtDOM.viewWidth();
                 if (x<w/2) Codex.pageBackward();
