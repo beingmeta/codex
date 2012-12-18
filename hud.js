@@ -367,13 +367,7 @@ Codex.setMode=
             (/http:\/\/static.beingmeta.com\/codex\//g,
              Codex.root);}
 
-        function resizeHUD(){
-            var vh=fdjtDOM.viewHeight();
-            var vw=fdjtDOM.viewWidth();
-            var hf=fdjtID("CODEXFOOT");
-            var fh=fdjtDOM.getGeometry(hf).height;
-            // fdjtLog("resizeHUD vh=%o vw=%o fh=%o",vh,vw,fh);
-            if (!(Codex.nativescroll)) hf.style.top=(vh-fh)+'px';}
+        function resizeHUD(){}
         Codex.resizeHUD=resizeHUD;
 
         /* This is used for viewport-based browser, where the HUD moves
