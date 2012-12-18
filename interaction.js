@@ -229,10 +229,21 @@
         var addgloss=false;
         var target=fdjtUI.T(evt);
 
+        if ((evt.changedTouches)&&(evt.changedTouches.length)) {
+            var touch=evt.changedTouches[0];
+            var sX=touch.screenX, sY=touch.screenY;
+            var cX=touch.clientX, cY=touch.clientY;}
+
         // Don't capture modified events, except with shift key
         if ((evt.ctrlKey)||(evt.altKey)||(evt.button)) {
             gesture_start=false;
             return;}
+
+        var passage=getTarget(target);
+        // We get the passage here so we can include it in the trace message
+        if (Codex.Trace.gestures)
+            fdjtLog("content_mousedown (%o) on %o p=%o m=%o x=%o/%o y=%o/%o",
+                    evt,target,passage,Codex.mode,cX,sX,cY,sY);
 
         var anchor=getParent(target,"A"), href;
         // If you tap on a relative anchor, move there using Codex
@@ -240,6 +251,7 @@
         if ((anchor)&&(anchor.href)&&
             (href=anchor.getAttribute("href"))&&(href[0]==='#')&&
             (document.getElementById(href.slice(1)))) {
+            if (Codex.Trace.gestures) fdjtLog("cdown: follow link");
             var elt=document.getElementById(href.slice(1));
             // This would be the place to provide smarts for
             // asides/notes/etc, so they (for example) pop up
@@ -248,13 +260,10 @@
             gesture_start=false;
             return;}
 
-        if (fdjtUI.isClickable(fdjtUI.T(evt))) return;
+        if (fdjtUI.isClickable(target)) {
+            if (Codex.Trace.gestures) fdjtLog("cdown: skip clickable");
+            return;}
 
-        var passage=getTarget(target);
-        // We get the passage here so we can include it in the trace message
-        if (Codex.Trace.gestures)
-            fdjtLog("content_mousedown (%o) on %o p=%o m=%o x=%o/%o y=%o/%o",
-                    evt,target,passage,Codex.mode,cX,sX,cY,sY);
         var id=((passage)&&(passage.codexbaseid||passage.id));
         // Update our location
         if ((id)&&(Codex.docinfo[id])) {
@@ -270,25 +279,28 @@
         // If there's a mode, clear it
         if (((Codex.hudup)||(Codex.mode))&&(Codex.mode!=="addgloss")) {
             if (Codex.Trace.gestures)
-                fdjtLog("cdown/showcontent (%o) t=%o h=%o m=%o",evt,target,
-                        Codex.hudup,Codex.mode);
+                fdjtLog("cdown:clearmode h=%o m=%o",Codex.hudup,Codex.mode);
             Codex.setMode(false);
             fdjtUI.cancel(evt);
             return;}
         else if (Codex.previewing) {
+            if (Codex.Trace.gestures)
+                fdjtLog("cdown:stopPreview p=%o t=%o",
+                        Codex.previewing,Codex.previewTarget);
             Codex.stopPreview("content_mousedown");
             fdjtUI.cancel(evt);
             return;}
         // If there isn't a passage, move forward or backward
-        else if ((!(passage))||(passage===document.body)||
+        else if ((Codex.mode!=="addgloss")&&
+                 ((!(passage))||(passage===document.body)||
                  (passage===Codex.content)||
                  (hasClass(passage,"codexpage"))||
-                 (inUI(passage))) {
+                  (inUI(passage)))) {
             if (Codex.Trace.gestures)
-                fdjtLog("cdown/nopassage (%o) %o, m=%o, x=%o, y=%o",evt,target,
-                        Codex.mode,cX,cY);
+                fdjtLog("cdown/nopassage (%o) %o, m=%o, @%o,%o, vw=%o",
+                        evt,target,Codex.mode,cX,cY,fdjtDOM.viewWidth());
             if (Codex.mode) {Codex.setMode(false); return;}
-            if (cX>(fdjtDOM.viewWidth()/3))
+            if (cX>(fdjtDOM.viewWidth()/2))
                 Codex.Forward(evt);
             else Codex.Backward(evt);
             gesture_start=false;
@@ -302,6 +314,9 @@
 		 (hasClass(Codex.glossform,"glossreply"))&&
 		 (!((hasParent(passage,Codex.glosstarget))||
                     (hasParent(Codex.glosstarget,passage))))) {
+            if (Codex.Trace.gestures)
+                fdjtLog("cdown/newtarget, current reply to %o",
+                        Codex.glosstarget);
 	    Codex.setGlossTarget(passage,Codex.glossform);
 	    fdjtUI.cancel(evt);
             fdjtUI.TapHold.fakePress(evt,250);
@@ -313,7 +328,10 @@
             // If we're adding a (non-reply) gloss and tap an
             // unrelated, we either lower the HUD (shrinking the gloss
             // form and growing the page), or we cancel the gloss.
+            if (Codex.Trace.gestures)
+                fdjtLog("cdown/current gloss %o",Codex.glosstarget);
             if (Codex.hudup) {
+                if (Codex.Trace.gestures) fdjtLog("cdown/lower HUD");
                 Codex.setHUD(false,false);
                 fdjtUI.cancel(evt);}
             else {
@@ -333,6 +351,7 @@
                     Codex.cancelGloss(live);
                     Codex.setMode(false);}
                 else Codex.setMode(false);
+                if (Codex.Trace.gestures) fdjtLog("cdown: cancel gloss");
                 fdjtUI.cancel(evt);
                 return;}}
         else if (Codex.glosstarget) {
@@ -340,6 +359,7 @@
                on the passage */}
         // Finally, we open a gloss unless the action is a simple tap
         else {
+            if (Codex.Trace.gestures) fdjtLog("cdown: start addgloss timer");
             addgloss_timer=
                 setTimeout(function(){
                     var form_div=Codex.setGlossTarget(passage);
@@ -362,10 +382,19 @@
 	fdjtUI.cancel(evt);
         if (addgloss_timer) {
             clearTimeout(addgloss_timer); addgloss_timer=false;
-            if (Codex.hudup) Codex.setHUD(false);
-            else if (Codex.mode==="addgloss") {}
+            if (Codex.hudup) {
+                if (Codex.Trace.gestures)
+                    fdjtLog("content_mousedown: %o, clearing hudup",evt);
+                Codex.setHUD(false);}
+            else if (Codex.mode==="addgloss") {
+                if (Codex.Trace.gestures)
+                    fdjtLog("content_mousedown: %o, addgloss ignore",evt);}
             else {
                 var x=getOffX(evt); var w=fdjtDOM.viewWidth();
+                if (Codex.Trace.gestures)
+                    fdjtLog("content_mousedown: %s page %s x=%o, w=%o",
+                            evt,((x<w/2)?("forward"):("back")),
+                            x,w);
                 if (x<w/2) Codex.pageBackward();
                 else if (x>w/2) Codex.pageForward();
                 else if (false) {
@@ -374,6 +403,8 @@
                     if (passage) Codex.setTarget(passage);
                     Codex.setHUD(true);}
                 else {}}}
+        if ((Codex.hudup)&&(Codex.Trace.gestures))
+            fdjtLog("content_mousedown: %o: initGlossMode",evt);
         if (Codex.hudup) initGlossMode();}
     Codex.UI.content_release=content_mouseup;
 
@@ -1807,7 +1838,7 @@
         var input=getParent(target,'textarea');
         if (!(input)) {
             input=getParent(target,'input');
-            if (input.type.search(textinput_type)!==0) input=false;}
+            if (input.type.search(fdjtDOM.text_types)!==0) input=false;}
         if (input) {
             Codex.textinput=input;
             if (Codex.touch) Codex.dont_resize=true;}}
@@ -1817,7 +1848,7 @@
         var input=getParent(target,'textarea');
         if (!(input)) {
             input=getParent(target,'input');
-            if (input.type.search(textinput_type)!==0) input=false;}
+            if (input.type.search(fdjtDOM.text_types)!==0) input=false;}
         if ((input)&&(input===Codex.textinput)) {
             Codex.textinput=false;
             if (Codex.touch) Codex.dont_resize=false;}}
