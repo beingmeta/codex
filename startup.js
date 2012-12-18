@@ -1212,6 +1212,7 @@ Codex.Startup=
             pagehead.style.backgroundColor=bgcolor;
             pagefoot.style.backgroundColor=bgcolor;
             fdjtDOM.addListener(window,"resize",function(evt){
+                if (Codex.dont_resize) return;
                 Codex.resizeBody();
                 Codex.sizePage(Codex.page,Codex.content);
                 Codex.resizeHUD();
