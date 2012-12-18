@@ -1180,9 +1180,10 @@ Codex.Startup=
             
             var pageinfo=
                 fdjtDOM("div#CODEXPAGEINFO",
-                        fdjtDOM("span#CODEXPAGENO",
-                                fdjtDOM("span#CODEXPAGENOTEXT","p/n")),
-                        fdjtDOM("span.locoff#CODEXLOCOFF","??%"),
+                        fdjtDOM("div.textfoot",
+                                fdjtDOM("span#CODEXPAGENO",
+                                        fdjtDOM("span#CODEXPAGENOTEXT","p/n")),
+                                fdjtDOM("span.locoff#CODEXLOCOFF","??%")),
                         fdjtDOM("div.pagespans#CODEXPAGESPANS"));
             var pagefoot=fdjtDOM("div.codexmargin#CODEXPAGEFOOT",pageinfo," ");
             pagehead.codexui=true; pagefoot.codexui=true;
