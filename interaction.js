@@ -1836,19 +1836,20 @@
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var input=getParent(target,'textarea');
-        if (!(input)) {
-            input=getParent(target,'input');
-            if (input.type.search(fdjtDOM.text_types)!==0) input=false;}
-        if (input) {
-            Codex.textinput=input;
-            if (Codex.touch) Codex.dont_resize=true;}}
+        if (!(input)) input=getParent(target,'input');
+        if ((!(input))||(typeof input.type !== "string")||
+            (input.type.search(fdjtDOM.text_types)!==0))
+            return;
+        Codex.textinput=input;
+        if (Codex.touch) Codex.dont_resize=true;}
     function codexblur(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var input=getParent(target,'textarea');
-        if (!(input)) {
-            input=getParent(target,'input');
-            if (input.type.search(fdjtDOM.text_types)!==0) input=false;}
+        if (!(input)) input=getParent(target,'input');
+        if ((!(input))||(typeof input.type !== "string")||
+            (input.type.search(fdjtDOM.text_types)!==0))
+            return;
         if ((input)&&(input===Codex.textinput)) {
             Codex.textinput=false;
             if (Codex.touch) Codex.dont_resize=false;}}
