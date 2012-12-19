@@ -61,6 +61,7 @@ Codex.Paginate=
         function Paginate(why,init){
             if (((Codex.layout)&&(!(Codex.layout.done)))) return;
             if (!(why)) why="because";
+            dropClass(document.body,"cxSCROLL");
             addClass(document.body,"cxLAYOUT");
             var forced=((init)&&(init.forced));
             var height=getGeometry(fdjtID("CODEXPAGE")).height;
@@ -206,7 +207,8 @@ Codex.Paginate=
                             Codex.cover||Codex.titlepage||
                             fdjtID("CODEXPAGE1"),
                         "endLayout",false,false);
-                    Codex.layout.running=false;}
+                    Codex.layout.running=false;
+                    return false;}
                 else {
                     var root=nodes[i++];
                     var timeslice=layout.timeslice||CodexLayout.timeslice||200;
@@ -218,7 +220,7 @@ Codex.Paginate=
                         layout.addContent(root,timeslice,timeskip,
                                           layout.tracelevel,
                                           layout_progress,rootloop);
-                    else rootloop();}}
+                    else return rootloop();}}
 
                 /* Reporting progress, debugging */
         
