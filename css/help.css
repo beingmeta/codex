@@ -189,10 +189,12 @@ div.helpbox p {
 
 div.helpbox h3 { margin-top: 0px;}
 div.helpbox .clicktarget { color: lightblue; }
-div.helpbox img.fullwidth {
+div.helpbox img.screenshot {
     width: 80%; margin-left: 10%; margin-right: 10%;}
-div.helpbox img.codextocbar {
+div.helpbox img.screenshot.right {
     width: 70%; float: right;}
+div.helpbox img.screenshot.left {
+    width: 70%; float: left;}
 
 div.helpbox blockquote p {
     margin-top: 3px; margin-bottom: 3px;
