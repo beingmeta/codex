@@ -74,10 +74,10 @@ Codex.setMode=
         function initHUD(){
             if (fdjtID("CODEXHUD")) return;
             var messages=fdjtDOM("div.startupmessages");
-            messages.innerHTML=Codex.HTML.messages;
+            messages.innerHTML=fixStaticRefs(Codex.HTML.messages);
             var hud=Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
             hud.codexui=true;
-            hud.innerHTML=Codex.HTML.hud;
+            hud.innerHTML=fixStaticRefs(Codex.HTML.hud);
             fdjtDOM.prepend(document.body,
                             messages,
                             fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
@@ -87,22 +87,22 @@ Codex.setMode=
                             hud);
             // Fill in the HUD help
             var hudhelp=fdjtID("CODEXHUDHELP");
-            hudhelp.innerHTML=Codex.HTML.hudhelp;
+            hudhelp.innerHTML=fixStaticRefs(Codex.HTML.hudhelp);
             // Set up the start page and the reader help
             var startpage=Codex.HUD.startpage=fdjtID("CODEXSTARTPAGE");
             // Set up the help page
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
-            help.innerHTML=Codex.HTML.help;
+            help.innerHTML=fixStaticRefs(Codex.HTML.help);
             // Set up the app splash/status page
             var splash=Codex.DOM.appsplash=fdjtID("CODEXAPPSPLASH");
-            splash.innerHTML=Codex.HTML.splash;
+            splash.innerHTML=fixStaticRefs(Codex.HTML.splash);
             // Setup heart
             var heart=fdjtID("CODEXHEART");
-            heart.innerHTML=Codex.HTML.hudheart;
+            heart.innerHTML=fixStaticRefs(Codex.HTML.hudheart);
             Codex.DOM.heart=heart;
             // Setup settings
             var settings=fdjtID("CODEXSETTINGS");
-            settings.innerHTML=Codex.HTML.settings;
+            settings.innerHTML=fixStaticRefs(Codex.HTML.settings);
             Codex.DOM.settings=settings;
             // Other HUD parts
             Codex.DOM.head=fdjtID("CODEXHEAD");
@@ -111,12 +111,12 @@ Codex.setMode=
             Codex.DOM.tabs=fdjtID("CODEXTABS");
             // Initialize search UI
             var search=fdjtID("CODEXSEARCH");
-            search.innerHTML=Codex.HTML.searchbox;
+            search.innerHTML=fixStaticRefs(Codex.HTML.searchbox);
             Codex.empty_cloud=
                 new fdjtUI.Completions(fdjtID("CODEXSEARCHCLOUD"));
             // Setup addgloss prototype
             var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
-            addgloss.innerHTML=Codex.HTML.addgloss;
+            addgloss.innerHTML=fixStaticRefs(Codex.HTML.addgloss);
 
             Codex.DOM.sbooksapp=fdjtID("SBOOKSAPP");
             Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
@@ -361,11 +361,11 @@ Codex.setMode=
         Codex.initHUD=initHUD;
         
         function fixStaticRefs(string){
-            if (Codex.root==="http://static.beingmeta.com/codex/")
+            if (Codex.root==="http://static.beingmeta.com/g/codex/")
                 return string;
-            else return string.replace
-            (/http:\/\/static.beingmeta.com\/codex\//g,
-             Codex.root);}
+            else return string.replace(
+                    /http:\/\/static.beingmeta.com\/g\/codex\//g,
+                Codex.root);}
 
         function resizeHUD(){}
         Codex.resizeHUD=resizeHUD;
@@ -771,7 +771,7 @@ Codex.setMode=
             if ((elt)&&(elt.length>0)) elt=elt[0];
             else return;
             if (typeof content === 'string')
-                elt.innerHTML=content;
+                elt.innerHTML=fixStaticRefs(content);
             else if (content.cloneNode)
                 fdjtDOM.replace(elt,content.cloneNode(true));
             else fdjtDOM(elt,content);}
