@@ -650,6 +650,7 @@ div.codexpage {
     -moz-opacity: 0.00;
     -o-opacity: 0.00;
     display: none;}
+div.codexpage { padding: 2px; border: 0px; margin: 0px;}
 div.codexpage.curpage, div.codexpage.lastpage, div.codexpage.nextpage {
     display: block;}
 div.codexpage.previewpage {

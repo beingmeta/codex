@@ -75,7 +75,7 @@ div#CODEXPAGEFOOT div#CODEXPAGEINFO div.textfoot > span {
 
 div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans {
   position: absolute; bottom: 0px;
-  width: 100%; height: 20px; z-index: 10;}
+  width: 100%; height: 40px; z-index: 10;}
 div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span {
   opacity: 0.0; overflow: hidden; z-index: 20; height: 40px;
   display: inline-block;
@@ -88,6 +88,10 @@ div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
   overflow: visible; z-index: 50;}
 body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans {
   top: 0px; bottom: auto;}
+body div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
+    vertical-align: bottom; height: 20px;}
+body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
+    height: 40px;}
 body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
   overflow: visible; visibility: visible; z-index: 60; color: black;
   opacity: 1.0;

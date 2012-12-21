@@ -533,6 +533,8 @@ Codex.Paginate=
             if (curpage) addClass(curpage,"hidepage");
             // Using this timeout here avoids some glitches
             setTimeout(function(){
+                dropClass(getChildren(Codex.pages,".previewpage"),
+                          "previewpage");
                 addClass(page,"previewpage");
                 Codex.previewing=previewing=page;
                 addClass(document.body,"cxPREVIEW");},
@@ -546,6 +548,8 @@ Codex.Paginate=
             if (!(previewing)) return;
             dropClass(previewing,"previewpage");
             dropClass(curpage,"hidepage");
+            dropClass(getChildren(Codex.pages,".previewpage"),
+                      "previewpage");
             Codex.previewing=previewing=false;
             dropClass(document.body,"cxPREVIEW");
             updatePageDisplay(pagenum,Codex.location,"current");}
