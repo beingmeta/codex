@@ -490,6 +490,11 @@ Codex.Paginate=
                     dropClass(curpage,"curpage");}
                 addClass(page,"nextpage");
                 addClass(page,"curpage");
+                var lastpage=curpage, nextpage=page;
+                setTimeout(function(){
+                    dropClass(lastpage,"lastpage");
+                    dropClass(nextpage,"nextpage");},
+                           300);
                 if (typeof spec === 'number') {
                     var location=parseInt(page.getAttribute("data-sbookloc"));
                     Codex.setLocation(location);}
@@ -521,18 +526,17 @@ Codex.Paginate=
             var pagenum=parseInt(page.getAttribute("data-pagenum"));
             var pageloc=parseInt(page.getAttribute("data-sbookloc"));
             if (previewing===page) return;
-            if (previewing) dropClass(previewing,"curpage");
+            if (previewing) dropClass(previewing,"previewpage");
             if (Codex.Trace.flips)
                 fdjtLog("startPagePreview/%s to %o (%d) for %o",
                         caller||"nocaller",page,pagenum,spec);
-            if (curpage) dropClass(curpage,"curpage");
-            else {
-                var curpages=fdjtDOM.$(".curpage");
-                if ((curpages)&&(curpages.length))
-                    dropClass(curpages,"curpage");}
-            addClass(page,"curpage");
-            Codex.previewing=previewing=page;
-            addClass(document.body,"cxPREVIEW");
+            if (curpage) addClass(curpage,"hidepage");
+            // Using this timeout here avoids some glitches
+            setTimeout(function(){
+                addClass(page,"previewpage");
+                Codex.previewing=previewing=page;
+                addClass(document.body,"cxPREVIEW");},
+                       100);
             updatePageDisplay(pagenum,pageloc,"preview");}
         function stopPreview(caller){
             var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
@@ -540,8 +544,8 @@ Codex.Paginate=
                 fdjtLog("stopPagePreview/%s from %o to %o (%d)",
                         caller||"nocaller",previewing,curpage,pagenum);
             if (!(previewing)) return;
-            dropClass(previewing,"curpage");
-            addClass(curpage,"curpage");
+            dropClass(previewing,"previewpage");
+            dropClass(curpage,"hidepage");
             Codex.previewing=previewing=false;
             dropClass(document.body,"cxPREVIEW");
             updatePageDisplay(pagenum,Codex.location,"current");}
