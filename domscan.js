@@ -336,7 +336,8 @@ Codex.DOMScan=(function(){
             if ((classname)&&(classname.search(/\bsbookignore\b/)>=0))
                 return;
             if ((child.codexui)||((id)&&(id.search("CODEX")===0))) return;
-            else if ((!(id))&&(tag.search(/p|h\d|blockquote|li/i)===0)) {
+            else if ((!(id))&&(!(Codex.baseid))&&
+                     (tag.search(/p|h\d|blockquote|li/i)===0)) {
                 var baseid="WSN_"+md5ID(child), id=baseid, count=1;
                 while (document.getElementById[id])
                     id=baseid+"_"+(count++);
