@@ -1058,12 +1058,14 @@ Codex.Startup=
                 var allnotes=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
                 fdjtDOM(content,allnotes);}
             
+            var pages=Codex.pages=fdjtID("CODEXPAGES")||
+                fdjtDOM("div#CODEXPAGES");
             var page=Codex.page=fdjtDOM(
                 "div#CODEXPAGE",
                 fdjtDOM("div#CODEXPAGINATING","Laid out ",
                         fdjtDOM("span#CODEXPAGEPROGRESS",""),
                         " pages"),
-                Codex.pages=fdjtDOM("div#CODEXPAGES"));
+                pages);
             
             fdjtDOM(body,content,page);
             fdjtDOM.addClass(body,"sbook");

@@ -356,6 +356,7 @@ Codex.Paginate=
                       tracelevel: Codex.Trace.layout,
                       logfn: fdjtLog};
             fdjtDOM.replace("CODEXPAGES",container);
+            Codex.pages=container;
             
             var avoidbreakinside=
                 fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
@@ -527,18 +528,16 @@ Codex.Paginate=
             var pageloc=parseInt(page.getAttribute("data-sbookloc"));
             if (previewing===page) return;
             if (previewing) dropClass(previewing,"previewpage");
+            dropClass(getChildren(Codex.pages,".previewpage"),
+                      "previewpage");
             if (Codex.Trace.flips)
                 fdjtLog("startPagePreview/%s to %o (%d) for %o",
                         caller||"nocaller",page,pagenum,spec);
             if (curpage) addClass(curpage,"hidepage");
             // Using this timeout here avoids some glitches
-            setTimeout(function(){
-                dropClass(getChildren(Codex.pages,".previewpage"),
-                          "previewpage");
-                addClass(page,"previewpage");
-                Codex.previewing=previewing=page;
-                addClass(document.body,"cxPREVIEW");},
-                       100);
+            addClass(page,"previewpage");
+            Codex.previewing=previewing=page;
+            addClass(document.body,"cxPREVIEW");
             updatePageDisplay(pagenum,pageloc,"preview");}
         function stopPreview(caller){
             var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
