@@ -358,9 +358,13 @@ Codex.Paginate=
             fdjtDOM.replace("CODEXPAGES",container);
             Codex.pages=container;
             
+            var avoidbreakclasses=
+                /\b(sbookfullpage)|(sbooktitlepage)|(stanza)\b/;
             var avoidbreakinside=
                 fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
-            if (avoidbreakinside) args.avoidbreakinside=avoidbreakinside;
+            if (avoidbreakinside) args.avoidbreakinside=
+                [avoidbreakclasses,avoidbreakinside];
+            else args.avoidbreakinside=avoidbreakclasses;
 
             var abb=fdjtDOM.getMeta("alwaysbreakbefore",true);
             var fbb=fdjtDOM.getMeta("forcebreakbefore",true);
