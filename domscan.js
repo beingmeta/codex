@@ -201,8 +201,8 @@ Codex.DOMScan=(function(){
                 var cname=elt.className;
                 if (cname.search(/\bsbooknotoc\b/)>=0) return 0;
                 if (cname.search(/\bsbookignore\b/)>=0) return 0;
-                var tocloc=cname.search(/\bsbook\dhead\b/);
-                if (tocloc>=0) return parseInt(cname.slice(5,6));}
+                var tocloc=cname.search(/\bsbook\d+head\b/);
+                if (tocloc>=0) return parseInt(cname.slice(5,cname.length-4));}
             if ((Codex.notoc)&&(Codex.notoc.match(elt))) return 0;
             if ((Codex.ignore)&&(Codex.ignore.match(elt))) return 0;
             if ((elt.tagName==='HGROUP')||(elt.tagName==='HEADER'))
