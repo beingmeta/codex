@@ -455,6 +455,7 @@ div#CODEXGLOSSATTACH.detail tr.detail, div#CODEXGLOSSATTACH.upload tr.upload {
     display: table-row;}
 div#CODEXGLOSSATTACH.detail tr.url, div#CODEXGLOSSATTACH.upload tr.url {
     display: none;}
+div#CODEXGLOSSATTACH table.fdjtform td input[type="TEXT"] { width: 95%;}
 
 div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS {}
 div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS span.completion {

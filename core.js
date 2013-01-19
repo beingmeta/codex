@@ -927,11 +927,32 @@ var Codex=
             else return parseInt(attrval);}
         if (elt.className) {
             var cname=elt.className;
-            var tocloc=cname.search(/sbook\dhead/);
-            if (tocloc>=0) return parseInt(cname.slice(5,6));}
+            if (cname.search(/\bsbooknotoc\b/)>=0) return 0;
+            if (cname.search(/\bsbookignore\b/)>=0) return 0;
+            var tocloc=cname.search(/\bsbook\d+head\b/);
+            if (tocloc>=0)
+                return parseInt(cname.slice(tocloc+5));}
+        if ((Codex.notoc)&&(Codex.notoc.match(elt))) return 0;
+        if ((Codex.ignore)&&(Codex.ignore.match(elt))) return 0;
+        if ((elt.tagName==='HGROUP')||(elt.tagName==='HEADER'))
+            return getFirstTocLevel(elt,true);
         if (elt.tagName.search(/H\d/)==0)
             return parseInt(elt.tagName.slice(1,2));
         else return false;}
+
+    function getFirstTocLevel(node,notself){
+        if (node.nodeType!==1) return false;
+        var level=((!(notself))&&(getLevel(node)));
+        if (level) return level;
+        var children=node.childNodes;
+        var i=0; var lim=children.length;
+        while (i<lim) {
+            var child=children[i++];
+            if (child.nodeType!==1) continue;
+            level=getFirstTocLevel(child);
+            if (level) return level;}
+        return false;}
+
     Codex.getTOCLevel=getLevel;
     
     function getCover(){

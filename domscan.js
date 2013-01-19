@@ -38,6 +38,8 @@ Codex.DOMScan=(function(){
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
 
+    var getLevel=Codex.getTOCLevel;
+
     function CodexDOMScan(root,docinfo){
         var fdjtID=fdjt.ID;
         var md5ID=fdjt.WSN.md5ID;
@@ -144,12 +146,18 @@ Codex.DOMScan=(function(){
                     (head1.getAttribute('data-toctitle'))||
                     (head1.title);
                 if ((!(title))&&(head1)) title=gatherText(head1);
-                else title=gatherText(head);}
+                else title=gatherText(head);
+                if ((title)&&(title.length>40))
+                    title=title.slice(0,40)+"...";}
             if (typeof title === "string") {
                 var std=stdspace(title);
                 if (std==="") return false;
                 else return std;}
-            else return fdjtDOM.textify(title,true);}
+            else {
+                var title=fdjtDOM.textify(title,true);
+                if ((title)&&(title.length>40))
+                    return title.slice(0,40)+"...";
+                else return title;}}
 
         function gatherText(head,s) {
             if (!(s)) s="";
@@ -183,46 +191,6 @@ Codex.DOMScan=(function(){
                         width=width+textWidth(child);
                     else {}}
                 return width;}}
-
-        function getLevel(elt){
-            if (elt.toclevel) {
-                if (elt.toclevel==='none')
-                    return elt.toclevel=false;
-                else return elt.toclevel;}
-            var attrval=
-                ((elt.getAttributeNS)&&
-                 (elt.getAttributeNS('toclevel','http://sbooks.net')))||
-                (elt.getAttribute('toclevel'))||
-                (elt.getAttribute('data-toclevel'));
-            if (attrval) {
-                if (attrval==='none') return false;
-                else return parseInt(attrval);}
-            if (elt.className) {
-                var cname=elt.className;
-                if (cname.search(/\bsbooknotoc\b/)>=0) return 0;
-                if (cname.search(/\bsbookignore\b/)>=0) return 0;
-                var tocloc=cname.search(/\bsbook\d+head\b/);
-                if (tocloc>=0) return parseInt(cname.slice(5,cname.length-4));}
-            if ((Codex.notoc)&&(Codex.notoc.match(elt))) return 0;
-            if ((Codex.ignore)&&(Codex.ignore.match(elt))) return 0;
-            if ((elt.tagName==='HGROUP')||(elt.tagName==='HEADER'))
-                return getFirstTocLevel(elt,true);
-            if (elt.tagName.search(/H\d/)==0)
-                return parseInt(elt.tagName.slice(1,2));
-            else return false;}
-
-        function getFirstTocLevel(node,notself){
-            if (node.nodeType!==1) return false;
-            var level=((!(notself))&&(getLevel(node)));
-            if (level) return level;
-            var children=node.childNodes;
-            var i=0; var lim=children.length;
-            while (i<lim) {
-                var child=children[i++];
-                if (child.nodeType!==1) continue;
-                level=getFirstTocLevel(child);
-                if (level) return level;}
-            return false;}
 
         function handleHead(head,docinfo,scanstate,level,
                             curhead,curinfo,curlevel,nodefn){
@@ -425,15 +393,11 @@ Codex.DOMScan=(function(){
             if (info) info.ends_at=scanstate.location;
             if ((info)&&((info.ends_at-info.starts_at)<5000)) 
                 info.wsnid=md5ID(child);
-            if ((toclevel)&&
-                ((child.tagName==='SECTION')||(child.tagName==='ARTICLE'))) {
-                scanstate.lasthead=child; scanstate.lastinfo=info;
-                scanstate.lastlevel=toclevel;
-                scanstate.curhead=curhead; scanstate.curinfo=curinfo;
-                scanstate.curlevel=curlevel;}
-            else if (toclevel) {
+            if (toclevel) {
                 scanstate.lasthead=child; scanstate.lastinfo=info;
                 scanstate.lastlevel=toclevel;}}}
+    
+    CodexDOMScan.getTOCLevel=getLevel;
     return CodexDOMScan;})();
 
 /* Emacs local variables
