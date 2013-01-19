@@ -2040,8 +2040,7 @@
          ".codexclosehud": {click: back_to_reading},
          ".submitbutton": {click: submitGloss },
          ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
-         "div.glossetc span.links": {click: fdjt.UI.CheckSpan.onclick},
-         "div.glossetc span.tags": {click: fdjt.UI.CheckSpan.onclick},
+         "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
          "div.glossetc span.modebuttons": {click: glossmode_button},
          "div.glossetc div.notetext": {click: editglossnote}};
