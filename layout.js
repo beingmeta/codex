@@ -463,6 +463,7 @@ Codex.Paginate=
             var i=0, n=Codex.pagecount; var html=[];
             var spanwidth=
                 (fdjtID("CODEXPAGEINFO").offsetWidth)/n;
+            if (spanwidth<1) spanwidth=1;
             var pagespanrule=fdjtDOM.addCSSRule(
                 "div.pagespans > span","width: "+spanwidth+"px;");
             while (i<n) {
@@ -471,7 +472,11 @@ Codex.Paginate=
                           ">"+(i+1)+"</span>");
                 i++;}
             var spans=fdjtID("CODEXPAGESPANS");
-            spans.innerHTML=html.join("");}
+            spans.innerHTML=html.join("");
+            var outer_width=getGeometry(spans);
+            var inner_width=fdjt.DOM.getInsideBounds(spans);
+            var tweak=outer_width/inner_width;
+            spans.style[fdjt.DOM.transform]="scale("+tweak+",1)";}
         Codex.setupPageInfo=setupPageInfo;
         
         /* Movement by pages */
@@ -548,6 +553,7 @@ Codex.Paginate=
             if (Codex.Trace.flips)
                 fdjtLog("stopPagePreview/%s from %o to %o (%d)",
                         caller||"nocaller",previewing,curpage,pagenum);
+            var newpage=false;
             if (!(previewing)) return;
             dropClass(previewing,"previewpage");
             dropClass(curpage,"hidepage");
@@ -555,7 +561,8 @@ Codex.Paginate=
                       "previewpage");
             Codex.previewing=previewing=false;
             dropClass(document.body,"cxPREVIEW");
-            updatePageDisplay(pagenum,Codex.location,"current");}
+            updatePageDisplay(pagenum,Codex.location,"current");
+            if (typeof newpage === "number") Codex.GoToPage(newpage);}
         Codex.startPagePreview=startPreview;
         Codex.stopPagePreview=stopPreview;
 
