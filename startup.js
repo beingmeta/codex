@@ -1629,9 +1629,12 @@ Codex.Startup=
                             {label: "No"},
                             {label: "Yes, sync",selected: true,
                              handler: function() {
-                                 if ((d.location)&&(d.target)) {
-                                     Codex.GoTo(
-                                         d.location,"sync",d.target,true);
+                                 if ((d.location)||(d.target)) {
+                                     if (d.location)
+                                         Codex.GoTo(d.location,"sync",
+                                                    d.target,true);
+                                     else Codex.GoTo(d.target,"sync",
+                                                     d.target,true);
                                      Codex.setState(d);}}}],
                                       fdjtDOM("div",msg1),
                                       fdjtDOM("div.smaller",msg2));}},
