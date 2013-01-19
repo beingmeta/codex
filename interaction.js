@@ -374,8 +374,10 @@
                     fdjtUI.TapHold.fakePress(evt,250);
                     form.className=mode;
                     Codex.setGlossForm(form_div);
-                    Codex.setMode("addgloss");},
-                          200);}}
+                    Codex.setMode("addgloss");
+                    var input=fdjt.DOM.getInput(form,"NOTE");
+                    if (input) input.focus();},
+                           200);}}
  
     function content_mouseup(evt){
         evt=evt||event;

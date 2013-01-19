@@ -607,6 +607,7 @@ Codex.setMode=
             if (codex_mode_foci[mode]) {
                 var input=fdjtID(codex_mode_foci[mode]);
                 if (input) focus(input);}
+            else if (mode==="addgloss") {}
             // Moving the focus back to the body lets keys work
             else document.body.focus();
             
