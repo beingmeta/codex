@@ -116,9 +116,9 @@ body.hudup #CODEXHEARTHOLDER {
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;}
 
-body.hudup #CODEXHEARTHOLDER #CODEXRIBBON {
+#CODEXHUD #CODEXRIBBON {
     position: absolute; top: 0px; left: 0px; right: 0px; height: 0px;}
-body.hudup #CODEXHEARTHOLDER #CODEXHEART {
+#CODEXHUD #CODEXHEART {
     position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;}
 
 div#CODEXHUD #CODEXHEART { overflow: auto;}
@@ -136,6 +136,18 @@ body #CODEXHUD.addgloss.addglosslink #CODEXHEARTHOLDER {
     -khtml-opacity: 1;
     -moz-opacity: 1;
     -o-opacity: 1;}
+
+div#CODEXHUD.search div#CODEXRIBBON,
+div#CODEXHUD.searchresults div#CODEXRIBBON,
+div#CODEXHUD.addglosstag div#CODEXRIBBON,
+div#CODEXHUD.addglossoutlet div#CODEXRIBBON {
+    border-bottom: solid blue 2px;
+    height: 35px;}
+div#CODEXHUD.search div#CODEXHEART,
+div#CODEXHUD.searchresults div#CODEXHEART,
+div#CODEXHUD.addglosstag div#CODEXHEART,
+div#CODEXHUD.addglossoutlet div#CODEXHEART {
+    top: 37px;}
 
 div#CODEXHUD div#CODEXHEART .hudpanel { overflow: auto;}
 

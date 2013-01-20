@@ -430,6 +430,13 @@ div.codexglossform form div.glossetc .tags span.checkspan {
 
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
+div#CODEXHUD div#CODEXGLOSSTAGINPUT { display: none;}
+div#CODEXHUD.addglosstag div#CODEXGLOSSTAGINPUT {
+    display: block;}
+div#CODEXHUD div#CODEXGLOSSOUTLETINPUT { display: none;}
+div#CODEXHUD.addglossoutlet div#CODEXGLOSSOUTLETINPUT {
+    display: block;}
+
 div.completions#CODEXGLOSSOUTLETS div#CODEXOUTLETCLOUD {
     margin-left: 50px; margin-right: 50px;}
 div.completions#CODEXGLOSSTAGS > div {
@@ -463,21 +470,21 @@ div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS span.completion {
 div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS img {
     height: 32px; width: auto;}
 
-div#CODEXGLOSSOUTLETS > div.inputbox, div#CODEXGLOSSTAGS > div.inputbox {
+div#CODEXRIBBON > div.inputbox {
     text-align: center; margin-bottom: 1ex;}
 div.inputbox img.label { float: right; height: 2em; width: auto;}
 div.inputbox span.head {color: black; font-weight: bold;}
-div.hudpanel > div.inputbox input[type="TEXT"] {
+div#CODEXRIBBON div.inputbox input[type="TEXT"] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
-    background-size: 32px 32px;
+    background-size: 24px 24px;
     background-repeat: no-repeat;
-    font-size: 24px;
-    width: 95%;}
-div#CODEXGLOSSTAGS > div.inputbox input[TYPE="TEXT"] {
+    font-size: 20px;
+    width: 90%;}
+div#CODEXRIBBON div.inputbox#CODEXGLOSSTAGINPUT input[TYPE="TEXT"] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/g/codex/tagicon64x64.png);}
-div#CODEXGLOSSOUTLETS > div.inputbox input[TYPE="TEXT"] {
+div#CODEXRIBBON div.inputbox#CODEXGLOSSOUTLETINPUT input[TYPE="TEXT"] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/g/codex/sbookspeople64x64.png);}
 

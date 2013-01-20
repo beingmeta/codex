@@ -88,17 +88,10 @@ div#CODEXHUD.search div.resultinfo span.refinecount {
 div#CODEXHUD.searchresults div.resultinfo span.resultcount {
     font-weight: bold;}
 
-div#CODEXHUD.search div#CODEXRIBBON,
-div#CODEXHUD.searchresults div#CODEXRIBBON {
-    border-bottom: solid blue 2px;
-    height: 30px;}
 div#CODEXHUD div#CODEXSEARCHINFO { display: none;}
 div#CODEXHUD.search div#CODEXSEARCHINFO,
 div#CODEXHUD.searchresults div#CODEXSEARCHINFO {
     display: block;}
-div#CODEXHUD.search div#CODEXHEART,
-div#CODEXHUD.searchresults div#CODEXHEART {
-    top: 32px;}
 
 /* Tag clouds */
 
