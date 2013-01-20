@@ -479,6 +479,7 @@ div#CODEXRIBBON div.inputbox input[type="TEXT"] {
     background-position-x: right; background-position-y: top;
     background-size: 24px 24px;
     background-repeat: no-repeat;
+    padding-bottom: 1px; padding-top: 1px;
     font-size: 20px;
     width: 90%;}
 div#CODEXRIBBON div.inputbox#CODEXGLOSSTAGINPUT input[TYPE="TEXT"] {
