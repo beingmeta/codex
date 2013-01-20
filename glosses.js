@@ -114,22 +114,22 @@
         if (Codex.Trace.mode)
             fdjtLog("setGlossMode gm=%s input=%o",modeclass,input);
         if ((!(modeclass))||((toggle)&&(hasClass(form,modeclass)))) {
-            dropClass("CODEXHEART","tagging");
-            dropClass("CODEXHEART","showoutlets");
-            dropClass("CODEXHEART","addlink");
+            dropClass("CODEXHUD","addglosstag");
+            dropClass("CODEXHUD","addglossoutlet");
+            dropClass("CODEXHUD","addglosslink");
             dropClass(form,glossmodes);}
         else {
             if (modeclass==="addtag") {
-                addClass("CODEXHEART","tagging");
+                addClass("CODEXHUD","addglosstag");
                 Codex.UI.updateScroller("CODEXGLOSSTAGS");}
-            else dropClass("CODEXHEART","tagging");
+            else dropClass("CODEXHUD","addglosstag");
             if (modeclass==="sharing") {
-                addClass("CODEXHEART","showoutlets");
+                addClass("CODEXHUD","addglossoutlet");
                 Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
-            else dropClass("CODEXHEART","showoutlets");
+            else dropClass("CODEXHUD","addglossoutlet");
             if (modeclass==="addlink") {
-                addClass("CODEXHEART","addlink");}
-            else dropClass("CODEXHEART","addlink");
+                addClass("CODEXHUD","addglosslink");}
+            else dropClass("CODEXHUD","addglosslink");
             swapClass(form,glossmodes,modeclass);
             Codex.setHUD(true);
             if (input) Codex.setFocus(input);}}
@@ -159,9 +159,9 @@
     function getbracketed(input,erase){
         var bracketed=_getbracketed(input,erase);
         if (bracketed) {
-            addClass("CODEXHEART","tagging");
+            addClass("CODEXHUD","addglosstag");
             Codex.UI.updateScroller("CODEXGLOSSTAGS");}
-        else dropClass("CODEXHEART","tagging");
+        else dropClass("CODEXHUD","addglosstag");
         return bracketed;}
 
     // set the gloss target for a particular passage
@@ -668,7 +668,7 @@
     var addgloss_timer=false;
     
     function handleBracketed(form,content,complete){
-        dropClass("CODEXHEART","tagging");
+        dropClass("CODEXHUD","addglosstag");
         if (content[0]==='@') {
             var brk=content.indexOf(' ');
             if (brk<0) addLink(form,content.slice(1));

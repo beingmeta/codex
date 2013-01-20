@@ -72,22 +72,30 @@ body.cxMOUSE #CODEXHUD.tocscan #CODEXSCANNER:hover,
 body.cxMOUSE #CODEXHUD.scanning #CODEXSCANNER:hover {
     max-height: inherit;}
 
-#CODEXHEART {
+#CODEXHEARTHOLDER {
     position: fixed;
     top: 50%; bottom: 50%; height: 0px;
     left: 100px; right: 100px;
     z-index: -100; 
-    overflow: auto;
+    overflow: hidden;
     opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
-    -webkit-opacity: 0;
-    -khtml-opacity: 0;
-    -moz-opacity: 0;
-    -o-opacity: 0;
+    -webkit-opacity: 0; -khtml-opacity: 0;
+    -moz-opacity: 0; -o-opacity: 0;
+    border-radius: 1em; -o-border-radius: 1em;
+    -moz-border-radius: 1em; -webkit-border-radius: 1em;
     display: none;}
+body.hudup #CODEXHEARTHOLDER {
+    display: block; opacity: 1.0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    -webkit-opacity: 1;
+    -khtml-opacity: 1;
+    -moz-opacity: 1;
+    -o-opacity: 1;}
 
-#CODEXHUD.cxANIMATE #CODEXHEART {
+#CODEXHUD.cxANIMATE #CODEXHEARTHOLDER {
     transition-property: height,top,bottom;
     transition-duration: 1.5s;
     -o-transition-property: height,top,bottom;
@@ -97,19 +105,29 @@ body.cxMOUSE #CODEXHUD.scanning #CODEXSCANNER:hover {
     -webkit-transition-property: height,top,bottom;
     -webkit-transition-duration: 1.5s;}
 
-#CODEXHEART {
+#CODEXHEARTHOLDER #CODEXRIBBON {
+    border-radius: 0px; -o-border-radius: 0px;
+    -moz-border-radius: 0px; -webkit-border-radius: 0px;
+    border-top-left-radius: 1em; -o-border-top-left-radius: 1em;
+    -moz-border-radius-topleft: 1em; -webkit-border-top-left-radius: 1em;
+    border-top-right-radius: 1em; -o-border-top-right-radius: 1em;
+    -moz-border-radius-topright: 1em; -webkit-border-top-right-radius: 1em;}
+#CODEXHEARTHOLDER #CODEXHEART {
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;}
 #CODEXHEART div.hudpanel { margin-left: 0.7em; margin-right: 0.7em;}
 
-body.hudup #CODEXHEART { display: block;}
-div#CODEXHUD #CODEXHEART .hudpanel { overflow: auto;}
+body.hudup #CODEXHEARTHOLDER #CODEXRIBBON {
+    position: absolute; top: 0px; left: 0px; right: 0px; height: 0px;}
+body.hudup #CODEXHEARTHOLDER #CODEXHEART {
+    position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;}
 
-body.hudup #CODEXHUD.openheart #CODEXHEART,
-body #CODEXHUD.addgloss #CODEXHEART.tagging,
-body #CODEXHUD.addgloss #CODEXHEART.showoutlets,
-body #CODEXHUD.addgloss #CODEXHEART.addlink {
-    padding-top: 1em; padding-bottom: 1em;
+div#CODEXHUD #CODEXHEART { overflow: auto;}
+
+body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.addglosstag #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.addglossoutlet #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.addglosslink #CODEXHEARTHOLDER {
     border: solid transparent 3px;
     background-color: ivory; border-color: blue;
     z-index: 100; opacity: 1.0;
@@ -119,10 +137,19 @@ body #CODEXHUD.addgloss #CODEXHEART.addlink {
     -khtml-opacity: 1;
     -moz-opacity: 1;
     -o-opacity: 1;}
+
+div#CODEXHUD div#CODEXHEART .hudpanel { overflow: auto;}
+
+body.hudup #CODEXHUD.openheart #CODEXHEART,
+body #CODEXHUD.addgloss.addglosstag #CODEXHEART,
+body #CODEXHUD.addgloss.addglossoutlet #CODEXHEART,
+body #CODEXHUD.addgloss.addglosslink #CODEXHEART {
+    padding-top: 1ex; padding-bottom: 1em;}
+
 body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
-body #CODEXHUD.addgloss #CODEXHEART.tagging div.hudpanel,
-body #CODEXHUD.addgloss #CODEXHEART.showoutlets div.hudpanel,
-body #CODEXHUD.addgloss #CODEXHEART.addlink div.hudpanel {
+body #CODEXHUD.addgloss.addglosstag #CODEXHEART div.hudpanel,
+body #CODEXHUD.addgloss.addglossoutlet #CODEXHEART div.hudpanel,
+body #CODEXHUD.addgloss.addglosslink #CODEXHEART div.hudpanel {
     margin-top: 0px; margin-bottom: 0px;}
 body.hudup #CODEXHUD.allglosses.openheart #CODEXHEART,
 body.hudup #CODEXHUD.searchresults.openheart #CODEXHEART {
@@ -130,28 +157,28 @@ body.hudup #CODEXHUD.searchresults.openheart #CODEXHEART {
 
 
 body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.tagging,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.showoutlets,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.addlink {
+body.cxISCROLL #CODEXHUD.addgloss.addglosstag #CODEXHEART,
+body.cxISCROLL #CODEXHUD.addgloss.addglossoutlet #CODEXHEART,
+body.cxISCROLL #CODEXHUD.addgloss.addglosslink #CODEXHEART {
     padding-top: 0px; padding-bottom: 0px;}
 body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.tagging #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.showoutlets #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss #CODEXHEART.addlink #CODEXHEARTCONTENT {
+body.cxISCROLL #CODEXHUD.addgloss.addglosstag #CODEXHEART #CODEXHEARTCONTENT,
+body.cxISCROLL #CODEXHUD.addgloss.addglossoutlet #CODEXHEART #CODEXHEARTCONTENT,
+body.cxISCROLL #CODEXHUD.addgloss.addglosslink #CODEXHEART #CODEXHEARTCONTENT {
     padding-top: 1em; padding-bottom: 1em;}
 
 #CODEXHEART div.hudpanel > h1:first-child { margin-top: 0px;}
 
-body.hudup #CODEXHUD.openheart #CODEXHEART {
+body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER {
     height: auto; top: 100px; bottom: 100px;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
-body #CODEXHUD.addgloss #CODEXHEART.tagging,
-body #CODEXHUD.addgloss #CODEXHEART.showoutlets {
+body #CODEXHUD.addgloss.addglosstag #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.addglossoutlet #CODEXHEARTHOLDER {
     top: 150px; bottom: 50px; height: auto;}
-body #CODEXHUD.addgloss #CODEXHEART.addlink {
+body #CODEXHUD.addgloss.addglosslink #CODEXHEARTHOLDER {
     top: 150px; height: auto;}
 
 div#CODEXHUD #CODEXFOOT {
@@ -249,10 +276,11 @@ div#CODEXHUD.allglosses div#CODEXALLGLOSSES.hudpanel,
 div#CODEXHUD.flytoc div#CODEXFLYTOC.hudpanel,
 div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
 div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
-div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSTAGS.hudpanel,
-div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSTAGS.hudpanel,
-div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXGLOSSOUTLETS.hudpanel,
-div#CODEXHUD.addgloss div#CODEXHEART.addlink div#CODEXGLOSSATTACH.hudpanel,
+div#CODEXHUD.addgloss.addglosstag div#CODEXHEART div#CODEXGLOSSTAGS.hudpanel,
+div#CODEXHUD.addgloss.addglossoutlet div#CODEXHEART div#CODEXGLOSSOUTLETS.hudpanel,
+div#CODEXHUD.addgloss.addglosslink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
+div#CODEXHUD.search div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
+div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
 div_WRAPPER#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     position: static; display: block;
@@ -590,11 +618,11 @@ div#CODEXHUD div.completions .weak, div#CODEXHUD div.completions .words {
 div#CODEXHUD div.completions .completion { white-space: nowrap;}
 div#CODEXHUD div.completions img.label { width: 64px; height: 64px;}
 
-div#CODEXHUD.search div#CODEXSEARCHRESULTSWRAPPER { display: none;}
 div#CODEXHUD.search div.completions#CODEXSEARCHCLOUD { display: block;}
-div#CODEXHUD.search div#CODEXSEARCH.norefiners div.completions#CODEXSEARCHCLOUD { display: none;}
+div#CODEXHUD.search div#CODEXSEARCH.norefiners
+   div.completions#CODEXSEARCHCLOUD { display: none;}
 div#CODEXHUD.search div.codexslice#CODEXSEARCHRESULTS { display: none;}
-div#CODEXHUD.searchresults div#CODEXSEARCHCLOUDWRAPPER { display: none;}
+div#CODEXHUD.searchresults div.codexslice#CODEXSEARCHRESULTS { display: block;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
 
 div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall {
@@ -605,8 +633,8 @@ div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall .showless { display: none;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showless {display: inline;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showmore {display: none;}
 
-div#CODEXHUD.addgloss div#CODEXHEART.tagging #CODEXGLOSSTAGS,
-div#CODEXHUD.addgloss div#CODEXHEART.tagging #CODEXGLOSSCLOUD {
+div#CODEXHUD.addgloss.addglosstag div#CODEXHEART #CODEXGLOSSTAGS,
+div#CODEXHUD.addgloss.addglosstag div#CODEXHEART #CODEXGLOSSCLOUD {
     display: block;}
 
 div#CODEXGLOSSES div.codexthread { border-right-width: 0px;}

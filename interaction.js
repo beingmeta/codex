@@ -1791,23 +1791,23 @@
         fdjtUI.cancel(evt);
         if (!(hasClass(form,altclass))) {
             if (alt==="tag") {
-                addClass("CODEXHEART","tagging");
+                addClass("CODEXHUD","addglosstag");
                 Codex.UI.updateScroller("CODEXGLOSSTAGS");}
-            else dropClass("CODEXHEART","tagging");
+            else dropClass("CODEXHUD","addglosstag");
             if (alt==="sharing") {
-                addClass("CODEXHEART","showoutlets");
+                addClass("CODEXHUD","addglossoutlet");
                 Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
-            else dropClass("CODEXHEART","showoutlets");
+            else dropClass("CODEXHUD","addglossoutlet");
             if (alt==="link") 
-                addClass("CODEXHEART","addlink");
-            else dropClass("CODEXHEART","addlink");
+                addClass("CODEXHUD","addglosslink");
+            else dropClass("CODEXHUD","addglosslink");
             swapClass(form,glossmodes,altclass);
             Codex.setHUD(true);
             Codex.setFocus(input);}
         else {
-            dropClass("CODEXHEART","tagging");
-            dropClass("CODEXHEART","showoutlets");
-            dropClass("CODEXHEART","addlink");
+            dropClass("CODEXHUD","addglosstag");
+            dropClass("CODEXHUD","addglossoutlet");
+            dropClass("CODEXHUD","addglosslink");
             dropClass(form,glossmodes);}}
 
     function submitGloss(evt){

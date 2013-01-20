@@ -85,7 +85,6 @@
         if ((box_arg)&&(typeof box_arg === 'string'))
             box_arg=document.getElementById(box_arg);
         var box=box_arg||result._box||fdjtID("CODEXSEARCH");
-        var block=fdjtID("CODEXSEARCHBLOCK");
         if ((query.dom)&&(box)&&(box!==query.dom))
             fdjtDOM.replace(box_arg,query.dom);
         if (qstring===box.getAttribute("qstring")) {
@@ -110,14 +109,14 @@
             getChild(block,".searchresults");
         var info=((infoid)&&(fdjtID(infoid)))||
             getChild(block,".searchresults");
-        var resultcount=getChild(block,".resultcount");
-        var refinecount=getChild(block,".refinecount");
+        var resultcount=getChild(info,".resultcount");
+        var refinecount=getChild(info,".refinecount");
         // Update (clear) the input field
         input.value='';
         var elts=result._query; var i=0; var lim=elts.length;
         // Update 'notags' class
-        if (elts.length) fdjtDOM.dropClass([box,block],"notags");
-        else addClass([box,block],"notags");
+        if (elts.length) fdjtDOM.dropClass([box,info],"notags");
+        else addClass([box,info],"notags");
         // Update the query tags
         var newtags=fdjtDOM("span.qtags");
         while (i<lim) {
@@ -147,10 +146,10 @@
         if (result._results.length) {
             resultcount.innerHTML=result._results.length+
                 " result"+((result._results.length===1)?"":"s");
-            fdjtDOM.dropClass([box,block],"noresults");}
+            fdjtDOM.dropClass([box,info],"noresults");}
         else {
             resultcount.innerHTML="no results";
-            addClass([box,block],"noresults");}
+            addClass([box,info],"noresults");}
         // Update the search cloud
         var n_refiners=
             ((result._refiners)&&(result._refiners._results.length))||0;

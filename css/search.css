@@ -13,12 +13,12 @@ div.searchbox div.query {
     width: 100%; text-align: left; margin-top: 2px;
     font-size: 18px;}
 div.searchbox div.query span#CODEXSEARCHPROMPT {
-    float: left; padding-left: 1em; padding-right: 1em;
+    padding-left: 1em; padding-right: 0.5em;
     font-style: italic; display: none;}
 div.searchbox.notags div.query span#CODEXSEARCHPROMPT {
     display: inline;}
 div.searchbox div.query #CODEXSEARCHLABEL {
-    float: left; padding-left: 1em; padding-right: 1em;
+    padding-left: 1em; padding-right: 0.5em;
     font-variant: small-caps;}
 div.searchbox.notags div.query #CODEXSEARCHLABEL { display: none;}
 
@@ -65,40 +65,40 @@ div.searchbox div.input { }
 div.searchbox div.input input[type='TEXT'] {
     width: 100%; font-size: 150%;}
 
-div#CODEXSEARCHBLOCK div.resultinfo .noresults { display: none;}
-div#CODEXSEARCHBLOCK.noresults div.resultinfo div.noresults { display: block;}
-div#CODEXSEARCHBLOCK.noresults.notags div.resultinfo .noresults {
+div.resultinfo .noresults { display: none;}
+div.resultinfo.noresults div.noresults { display: block;}
+div.resultinfo.noresults.notags .noresults {
     display: none;}
 
-div#CODEXSEARCHBLOCK div.resultinfo .noquery { display: none;}
-div#CODEXSEARCHBLOCK.notags div.resultinfo div.noquery { display: block;}
+div.resultinfo div.noquery { display: none;}
+div.resultinfo.notags div.noquery { display: block;}
 
-div#CODEXSEARCHBLOCK.noresults div.resultinfo span { display: none;}
-div#CODEXSEARCHBLOCK.notags div.resultinfo span { display: none;}
+div.resultinfo.noresults span { display: none;}
+div.resultinfo.notags span { display: none;}
 
-div#CODEXSEARCHBLOCK div.resultinfo {
-    padding-right: 32px; min-height: 1ex; margin-bottom: 1ex;
-    clear: both; text-align: right;}
-div#CODEXSEARCHBLOCK div.resultinfo span.resultcount,
-div#CODEXSEARCHBLOCK div.resultinfo span.refinecount {
+div#CODEXHUD div.resultinfo {
+    min-height: 1ex; margin-bottom: 1ex;
+    font-size: 120%;
+    clear: both; text-align: center;}
+div#CODEXHUD div.resultinfo span.resultcount,
+div#CODEXHUD div.resultinfo span.refinecount {
     cursor: pointer;}
-div#CODEXHUD.search div#CODEXSEARCHBLOCK div.resultinfo span.refinecount {
+div#CODEXHUD.search div.resultinfo span.refinecount {
     font-weight: bold;}
-div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK
-  div.resultinfo span.resultcount {
+div#CODEXHUD.searchresults div.resultinfo span.resultcount {
     font-weight: bold;}
 
-div#CODEXSEARCHBLOCK div.resultinfo {
-    position: absolute; top: 0px; left: 0px; right: 0px;
+div#CODEXHUD.search div#CODEXRIBBON,
+div#CODEXHUD.searchresults div#CODEXRIBBON {
     border-bottom: solid blue 2px;
-    font-size: 24px; height: 40px;}
-div#CODEXSEARCHBLOCK #CODEXSEARCHCLOUD,
-div#CODEXSEARCHBLOCK #CODEXSEARCHRESULTS {
-    position: absolute; top: 50px; bottom: 0px; left: 0px; right: 0px;
-    overflow: auto;}
-div#CODEXHUD.search div#CODEXSEARCHBLOCK #CODEXSEARCHCLOUD,
-div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK #CODEXSEARCHRESULTS {
+    height: 30px;}
+div#CODEXHUD div#CODEXSEARCHINFO { display: none;}
+div#CODEXHUD.search div#CODEXSEARCHINFO,
+div#CODEXHUD.searchresults div#CODEXSEARCHINFO {
     display: block;}
+div#CODEXHUD.search div#CODEXHEART,
+div#CODEXHUD.searchresults div#CODEXHEART {
+    top: 32px;}
 
 /* Tag clouds */
 

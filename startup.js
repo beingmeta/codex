@@ -1660,11 +1660,12 @@ Codex.Startup=
         /* Using the autoindex generated during book building */
         function useIndexData(autoindex,knodule,baseweight,whendone){
             var sbook_index=Codex.index;
+            var ntags=0, nitems=0;
             if (!(autoindex)) return;
             if (!(sbook_index)) return;
             for (var tag in autoindex) {
                 if (!(autoindex.hasOwnProperty(tag))) continue;
-                var ids=autoindex[tag];
+                var ids=autoindex[tag]; ntags++;
                 var starpower=tag.search(/[^*]/);
                 // all stars or empty string, just ignore
                 if (starpower<0) continue;
@@ -1676,7 +1677,7 @@ Codex.Startup=
                            (knodule.handleSubjectEntry(tag)));
                 if ((literal)&&(typeof knode !== 'string'))
                     knode.literal=knode.weak=true;
-                var i=0; var lim=ids.length;
+                var i=0; var lim=ids.length; nitems=nitems+lim;
                 while (i<lim) {
                     var idinfo=ids[i++];
                     var frag=((typeof idinfo === 'string')?
@@ -1710,6 +1711,8 @@ Codex.Startup=
                     sbook_index.add(
                         info._id,knode,starpower||baseweight||0,
                         knodule);}}
+            fdjtLog("Assimilated index data for %d keys over %d items",
+                    ntags,nitems);
             if (whendone) whendone();}
         Codex.useIndexData=useIndexData;
         

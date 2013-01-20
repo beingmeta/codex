@@ -626,37 +626,6 @@ Codex.setMode=
                        1500);}
         Codex.fadeUpHUD=fadeUpHUD;
 
-        // function updateScroller(elt){}
-        function updateScroller(elt){
-            if (Codex.scrolldivs) return;
-            if (Codex.Trace.iscroll) fdjtLog("updateScroller elt=%o",elt);
-            if (typeof elt === 'string') elt=fdjtID(elt);
-            if (!(elt)) return;
-            var eltid=elt.id;
-            while ((elt)&&(!(eltid))) {
-                elt=elt.parentNode; eltid=elt.id;}
-            if (!(eltid)) return;
-            if ((Codex.scrollers[eltid])&&
-                (Codex.scrollers[eltid].scroller===elt)) {
-                var scroller=Codex.scrollers[eltid];
-                if (Codex.Trace.iscroll)
-                    fdjtLog("updateScroller/refresh %o",scroller);
-                scroller.refresh();}
-            else {
-                var newid=eltid+"_WRAPPER";
-                var wrapper=fdjtID(newid);
-                if (!(wrapper)) {
-                    wrapper=fdjtDOM("div#"+newid);
-                    elt.parentNode.replaceChild(wrapper,elt);
-                    wrapper.appendChild(elt);}
-                if (hasClass(elt,"hudpanel")) {
-                    addClass(wrapper,"hudpanel");
-                    dropClass(elt,"hudpanel");}
-                var scroller=new iScroll(wrapper);
-                if (Codex.Trace.iscroll)
-                    fdjtLog("updateScroller/create %o for %o around %o",
-                            scroller,wrapper,elt);
-                Codex.scrollers[eltid]=scroller;}}
         function updateScroller(elt){
             if (Codex.scrolldivs) return;
             if (Codex.heartscroller) Codex.heartscroller.refresh();
