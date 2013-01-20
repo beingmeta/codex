@@ -250,8 +250,6 @@ div#CODEXHUD.allglosses div#CODEXALLGLOSSES.hudpanel,
 div#CODEXHUD.flytoc div#CODEXFLYTOC.hudpanel,
 div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
 div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
-div#CODEXHUD.search div#CODEXSEARCHCLOUD.hudpanel,
-div#CODEXHUD.searchresults div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.tagging div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss div#CODEXHEART.showoutlets div#CODEXGLOSSOUTLETS.hudpanel,
@@ -266,6 +264,31 @@ div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     -khtml-opacity: 0.98;
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
+
+div#CODEXHEART div#CODEXSEARCHBLOCK.hudpanel {
+    margin-left: 0px; margin-right: 0px;}
+div#CODEXHUD.search div#CODEXSEARCHBLOCK.hudpanel,
+div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK.hudpanel {
+    position: absolute; display: block; overflow: hidden;
+    top: 0px; bottom: 0px; left: 0px; right: 0px;
+    opacity: 0.98;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
+    filter: alpha(opacity=98);
+    -webkit-opacity: 0.98;
+    -khtml-opacity: 0.98;
+    -moz-opacity: 0.98;
+    -o-opacity: 0.98;}
+div#CODEXSEARCHBLOCK div.resultinfo {
+    position: absolute; top: 0px; left: 0px; right: 0px;
+    border-bottom: solid blue 2px;
+    font-size: 24px; height: 40px;}
+div#CODEXSEARCHBLOCK #CODEXSEARCHCLOUD,
+div#CODEXSEARCHBLOCK #CODEXSEARCHRESULTS {
+    position: absolute; top: 50px; bottom: 0px; left: 0px; right: 0px;
+    overflow: auto;}
+div#CODEXHUD.search div#CODEXSEARCHBLOCK #CODEXSEARCHCLOUD,
+div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK #CODEXSEARCHRESULTS {
+    display: block;}
 
 body.cxTOUCH .codexcard .age {
     font-size: 125%; padding-bottom: 2px;}

@@ -85,6 +85,7 @@
         if ((box_arg)&&(typeof box_arg === 'string'))
             box_arg=document.getElementById(box_arg);
         var box=box_arg||result._box||fdjtID("CODEXSEARCH");
+        var block=fdjtID("CODEXSEARCHBLOCK");
         if ((query.dom)&&(box)&&(box!==query.dom))
             fdjtDOM.replace(box_arg,query.dom);
         if (qstring===box.getAttribute("qstring")) {
@@ -101,19 +102,22 @@
         var input=getChild(box,".searchinput");
         var cloudid=input.getAttribute("completions");
         var resultsid=input.getAttribute("results");
+        var infoid=input.getAttribute("info");
         var qtags=getChild(box,".qtags");
         var cloud=((cloudid)&&(fdjtID(cloudid)))||
-            getChild(box,".searchcloud");
+            getChild(block,".searchcloud");
         var results=((resultsid)&&(fdjtID(resultsid)))||
-            getChild(box,".searchresults");
-        var resultcount=getChild(box,".resultcount");
-        var refinecount=getChild(box,".refinecount");
+            getChild(block,".searchresults");
+        var info=((infoid)&&(fdjtID(infoid)))||
+            getChild(block,".searchresults");
+        var resultcount=getChild(block,".resultcount");
+        var refinecount=getChild(block,".refinecount");
         // Update (clear) the input field
         input.value='';
         var elts=result._query; var i=0; var lim=elts.length;
         // Update 'notags' class
-        if (elts.length) fdjtDOM.dropClass(box,"notags");
-        else addClass(box,"notags");
+        if (elts.length) fdjtDOM.dropClass([box,block],"notags");
+        else addClass([box,block],"notags");
         // Update the query tags
         var newtags=fdjtDOM("span.qtags");
         while (i<lim) {
@@ -143,10 +147,10 @@
         if (result._results.length) {
             resultcount.innerHTML=result._results.length+
                 " result"+((result._results.length===1)?"":"s");
-            fdjtDOM.dropClass(box,"noresults");}
+            fdjtDOM.dropClass([box,block],"noresults");}
         else {
             resultcount.innerHTML="no results";
-            addClass(box,"noresults");}
+            addClass([box,block],"noresults");}
         // Update the search cloud
         var n_refiners=
             ((result._refiners)&&(result._refiners._results.length))||0;

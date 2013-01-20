@@ -12,25 +12,15 @@
          completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
          placeholder="type or click tags"
          completions="CODEXSEARCHCLOUD"
-         results="CODEXSEARCHRESULTS"/>
+         results="CODEXSEARCHRESULTS"
+         info="CODEXSEARCHINFO"/>
   <span class="ampersand">&amp;</span>
   <strong id="CODEXSEARCHLABEL">Searching for </strong>
   <span id="CODEXSEARCHPROMPT">
     <span class='fortouch'>Tap</span>
     <span class='notouch'>Click</span> a tag or start typing
-    to search.</span>
+    to begin a search.</span>
   <span id="CODEXSEARCHTAGS" class="qtags"></span>
-</div>
-<div class="resultinfo">
-  <div class="noresults">No results</div>
-  <div class="noquery">Add tags to refine query</div>
-  <span class="resultcount"
-        onclick="Codex.showSearchResults(); fdjt.UI.cancel(event);">
-  </span>
-  <span class="sep vbar">|</span>
-  <span class="refinecount"
-        onclick="Codex.setMode('search'); fdjt.UI.cancel(event);">
-  </span>
 </div>
 <!--
      /* Emacs local variables
