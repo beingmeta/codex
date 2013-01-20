@@ -633,7 +633,6 @@
                             makelocrule(info,headinfo),
                             fdjtDOM("span.spacer","\u00b6"),
                             fdjtDOM("span",sumText(target)));
-        var title=Codex.getTitle(target,true);
         return tochead;}
 
     function findTOCref(div,ref,loc) {

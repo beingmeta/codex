@@ -420,7 +420,7 @@ var Codex=
              (notEmpty(target.title)))||
             ((tryhard)&&
              (fdjtDOM.textify(target)).
-             replace(/\n\n+/g,"\n").
+             replace(/\n(\s*\n)+/g,"\n").
              replace(/^\n+/,"").
              replace(/\n+$/,"").
              replace(/\n+/g," // ").
