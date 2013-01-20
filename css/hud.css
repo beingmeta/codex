@@ -101,7 +101,6 @@ body.cxMOUSE #CODEXHUD.scanning #CODEXSCANNER:hover {
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;}
 #CODEXHEART div.hudpanel { margin-left: 0.7em; margin-right: 0.7em;}
-/* #CODEXHEART div.hudpanel.completions { margin: 1em;} */
 
 body.hudup #CODEXHEART { display: block;}
 div#CODEXHUD #CODEXHEART .hudpanel { overflow: auto;}
@@ -266,7 +265,8 @@ div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     -o-opacity: 0.98;}
 
 div#CODEXHEART div#CODEXSEARCHBLOCK.hudpanel {
-    margin-left: 0px; margin-right: 0px;}
+    margin-left: 0px; margin-right: 0px;
+    background-color: transparent;}
 div#CODEXHUD.search div#CODEXSEARCHBLOCK.hudpanel,
 div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK.hudpanel {
     position: absolute; display: block; overflow: hidden;
@@ -278,17 +278,6 @@ div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK.hudpanel {
     -khtml-opacity: 0.98;
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
-div#CODEXSEARCHBLOCK div.resultinfo {
-    position: absolute; top: 0px; left: 0px; right: 0px;
-    border-bottom: solid blue 2px;
-    font-size: 24px; height: 40px;}
-div#CODEXSEARCHBLOCK #CODEXSEARCHCLOUD,
-div#CODEXSEARCHBLOCK #CODEXSEARCHRESULTS {
-    position: absolute; top: 50px; bottom: 0px; left: 0px; right: 0px;
-    overflow: auto;}
-div#CODEXHUD.search div#CODEXSEARCHBLOCK #CODEXSEARCHCLOUD,
-div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK #CODEXSEARCHRESULTS {
-    display: block;}
 
 body.cxTOUCH .codexcard .age {
     font-size: 125%; padding-bottom: 2px;}
@@ -595,7 +584,9 @@ body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     min-height: 50px; height: auto;
    display: block;}
 
-div#CODEXHUD div.completions { line-height: 150%;}
+div#CODEXHUD div.completions { line-height: 200%;}
+div#CODEXHUD div.completions .weak, div#CODEXHUD div.completions .words {
+    line-height: 150%; font-size: 80%;}
 div#CODEXHUD div.completions .completion { white-space: nowrap;}
 div#CODEXHUD div.completions img.label { width: 64px; height: 64px;}
 

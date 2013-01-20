@@ -31,7 +31,7 @@ div.searchbox div.query .clearsearch { margin: 0.5ex;}
 
 div.searchbox div.query input[type='TEXT'] {
     max-width: 50%; min-width: 33%;
-    font-size: 20px; width: 90%;}
+    font-size: 20px;}
 div.searchbox div.query input[type='TEXT'] {
     background-position: left top;
     background-position-x: right; background-position-y: top;
@@ -87,6 +87,18 @@ div#CODEXHUD.search div#CODEXSEARCHBLOCK div.resultinfo span.refinecount {
 div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK
   div.resultinfo span.resultcount {
     font-weight: bold;}
+
+div#CODEXSEARCHBLOCK div.resultinfo {
+    position: absolute; top: 0px; left: 0px; right: 0px;
+    border-bottom: solid blue 2px;
+    font-size: 24px; height: 40px;}
+div#CODEXSEARCHBLOCK #CODEXSEARCHCLOUD,
+div#CODEXSEARCHBLOCK #CODEXSEARCHRESULTS {
+    position: absolute; top: 50px; bottom: 0px; left: 0px; right: 0px;
+    overflow: auto;}
+div#CODEXHUD.search div#CODEXSEARCHBLOCK #CODEXSEARCHCLOUD,
+div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK #CODEXSEARCHRESULTS {
+    display: block;}
 
 /* Tag clouds */
 
