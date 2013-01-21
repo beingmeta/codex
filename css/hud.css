@@ -126,6 +126,10 @@ body.hudup #CODEXHEARTHOLDER {
     position: absolute; top: 0px; left: 0px; right: 0px; height: 0px;}
 #CODEXHUD #CODEXHEART {
     position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;}
+div#CODEXHUD #CODEXHEART div.hudpanel { background-color: transparent;}
+
+/* body.hudup #CODEXHEART { display: block;} */
+/* div#CODEXHUD #CODEXHEART .hudpanel { overflow: auto;} */
 
 div#CODEXHUD #CODEXHEART { overflow: auto;}
 
