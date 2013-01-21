@@ -350,6 +350,14 @@ div#CODEXHUD img.hudbutton {
     -khtml-opacity: 0.30;
     -moz-opacity: 0.30;
     -o-opacity: 0.30;}
+.hudup.cxMOUSE div#CODEXHUD:hover img.hudbutton {
+    opacity: 0.99;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
+    filter: alpha(opacity=99);
+    -webkit-opacity: 0.99;
+    -khtml-opacity: 0.99;
+    -moz-opacity: 0.99;
+    -o-opacity: 0.99;}
     
 
 body.hudup div#CODEXHUD img.hudbutton  {}
@@ -876,6 +884,7 @@ body.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
+body.hudup.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover,
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     display: block; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";

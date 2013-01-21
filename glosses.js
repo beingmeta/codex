@@ -65,6 +65,9 @@
 
     var cxicon=Codex.icon;
 
+    // The gloss mode is stored in two places:
+    //  * the class of the gloss FORM element
+    //  * as the class gloss+mode on CODEXHUD (e.g. glossaddtag)
     function getGlossMode(arg){
         if (!(arg)) arg=fdjtID("CODEXLIVEGLOSS");
         if (typeof arg === 'string') arg=fdjtID(arg);
@@ -112,35 +115,6 @@
         Codex.setHUD(true);
         if (input) Codex.setFocus(input);}
     Codex.setGlossMode=setGlossMode;
-
-    function _getbracketed(input,erase){
-        var string=input.value;
-        if ((!(string))||(string.length==0)) return false;
-        var pos=input.selectionStart||0;
-        var start=pos, end=pos, lim=string.length;
-        while (start>=0) {
-            if (string[start]==='[') {
-                if ((start>0)&&(string[start-1]==='\\')) {
-                    start--; continue;}
-                break;}
-            else start--;}
-        if (start<0) return false;
-        while (end<lim) {
-            if (string[end]===']') break;
-            else if (string[end]==='\\') end=end+2;
-            else end++;}
-        if (start===end) return false;
-        if (erase) {
-            input.value=string.slice(0,start)+string.slice(end+1);}
-        return string.slice(start+1,end);}
-
-    function getbracketed(input,erase){
-        var bracketed=_getbracketed(input,erase);
-        if (bracketed) {
-            addClass("CODEXHUD","addglosstag");
-            Codex.UI.updateScroller("CODEXGLOSSTAGS");}
-        else dropClass("CODEXHUD","addglosstag");
-        return bracketed;}
 
     // set the gloss target for a particular passage
     function getGlossForm(arg,response) {
@@ -193,15 +167,15 @@
         if (gloss) {
             var date_elt=getChild(form,".respdate");
             fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
-        var noteinput=getInput(form,"NOTE");
+        var glossinput=getInput(form,"NOTE");
         var notespan=getChild(form,".notespan");
-        if (noteinput) {
-            noteinput.onkeypress=noteinput_keypress;
-            noteinput.onkeydown=noteinput_keydown;
+        if (glossinput) {
+            glossinput.onkeypress=glossinput_keypress;
+            glossinput.onkeydown=glossinput_keydown;
             if ((gloss)&&(!(response))) {
-                noteinput.value=gloss.note||"";
-                if (notespan) notespan.innerHTML=noteinput.value;}
-            else noteinput.value="";}
+                glossinput.value=gloss.note||"";
+                if (notespan) notespan.innerHTML=glossinput.value;}
+            else glossinput.value="";}
         if (Codex.syncstamp)
             getInput(form,"SYNC").value=(Codex.syncstamp+1);
         var menu=getChild(form,".addglossmenu");
@@ -297,6 +271,101 @@
         return form;}
     Codex.setupGlossForm=setupGlossForm;
 
+    /***** Setting the gloss target ******/
+
+    // The target can be either a passage or another gloss
+    function setGlossTarget(target,form){
+        if (Codex.glosstarget) {
+            dropClass(Codex.glosstarget,"codexglosstarget");}
+        dropClass("CODEXHUD",/\bgloss\w+\b/);
+        if (!(target)) {
+            var cur=fdjtID("CODEXLIVEGLOSS");
+            if (cur) cur.id=null;
+            Codex.glosstarget=false;
+            if (Codex.selecting) {
+                Codex.selecting.clear();
+                Codex.selecting=false;}
+            return;}
+        if (!gloss_cloud) Codex.glossCloud();
+        var gloss=false;
+	// Identify when the target is a gloss
+        if ((typeof target === 'string')&&(fdjtID(target))) 
+            target=fdjtID(target);
+        else if ((typeof target === 'string')&&
+                 (Codex.glosses.ref(target))) {
+            gloss=Codex.glosses.ref(target);
+            target=fdjtID(gloss.frag);}
+        else if (target.pool===Codex.glosses) {
+            gloss=target; target=fdjtID(gloss.frag);}
+        else {}
+	if ((gloss)&&(form)&&(!(form.nodeType))) {
+	    // Passing a non-false non-node as a form forces a
+	    // response, even if the user is the maker of the gloss
+	    form=getGlossForm(gloss,true);}
+	// Handle or create the form
+	if (form) {
+	    var frag=fdjtDOM.getInput(form,"FRAG");
+	    if (frag.value!==target.id) {
+		setExcerpt(form,false);
+		fdjtDOM.addClass(form,"modified");
+		frag.value=target.id;}}
+	else {
+	    if (gloss) form=getGlossForm(gloss);
+	    else form=getGlossForm(target);
+            if (!(form)) {
+		fdjtUI.alert("There was a problem adding a gloss");
+		return false;}}
+        Codex.glosstarget=target;
+        addClass(target,"codexglosstarget");
+        Codex.GoTo(target,"addgloss",true);
+        setCloudCuesFromTarget(gloss_cloud,target);
+        setGlossForm(form);
+        // Clear current selection and set up new selection
+        if (Codex.selecting) {
+            Codex.selecting.clear();
+            Codex.selecting=false;}
+        Codex.clearHighlights(target);
+        var dups=Codex.getDups(target);
+        Codex.selecting=
+            fdjt.UI.Selecting(
+                dups,{ontap: gloss_selecting_ontap,
+                      onrelease: gloss_selecting_onrelease,
+                      fortouch: Codex.touch,
+                      holdthresh: 250,
+                      movethresh: 250});
+        if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
+            Codex.selecting.setString(gloss.excerpt);
+        Codex.selecting.onchange=function(sel){
+            var string=this.getString();
+            var off=this.getOffset();
+            Codex.setExcerpt(form,string,off);};
+        return form;}
+    Codex.setGlossTarget=setGlossTarget;
+
+    function setGlossForm(form){
+        var cur=fdjtID("CODEXLIVEGLOSS");
+        if (cur) cur.id=null;
+        if (!(form)) {
+	    Codex.glossform=false;
+	    return;}
+        form.id="CODEXLIVEGLOSS";
+	Codex.glossform=form;
+        var form_elt=getChild(form,"FORM");
+        var mode=form_elt.className;
+	var glossinput=getInput(form,"NOTE");
+        var syncelt=getInput(form,"SYNC");
+        syncelt.value=(Codex.syncstamp+1);
+        /* Get the input appropriate to the mode. */
+        if (mode==='editnote') {
+            if (glossinput)
+                gloss_cloud.complete(getbracketed(glossinput,false)||"");
+            else gloss_cloud.complete("");}
+        
+        /* Do completions based on those input's values */
+        Codex.outletCloud().complete();
+        Codex.glossCloud().complete();}
+    Codex.setGlossForm=setGlossForm;
+
     function updateForm(form){
         var glossetc=getChild(form,".glossetc");
         fdjtUI.Overflow(glossetc);}
@@ -314,6 +383,7 @@
         else return text;}
     
     /***** Adding outlets ******/
+
     function addOutlet(form,outlet,formvar,checked) {
         if (typeof checked === 'undefined') checked=true;
         var wrapper=getParent(form,".codexglossform");
@@ -368,6 +438,7 @@
             setCheckSpan(span,false);}}
     
     /***** Adding links ******/
+    
     function addLink(form,url,title) {
         var linkselt=getChild(form,'.links');
         var linkval=((title)?(url+" "+title):(url));
@@ -387,6 +458,7 @@
     Codex.addLink2Form=addLink;
 
     /***** Adding excerpts ******/
+    
     function setExcerpt(form,excerpt,off) {
         var checkspan=getChild(form,'.excerpt');
         if (!(checkspan)) {
@@ -435,9 +507,10 @@
         updateForm(form);}
     Codex.setExcerpt=setExcerpt;
 
+    /***** Adding tags ******/
+
     var Ref=fdjtKB.Ref;
 
-    /***** Adding tags ******/
     function addTag(form,tag,varname,checked,knodule) {
         // fdjtLog("Adding %o to tags for %o",tag,form);
         if (!(tag)) tag=form;
@@ -515,77 +588,6 @@
         if (!(cs)) return;
         setCheckSpan(cs,checked);};
 
-    /***** Setting the gloss target ******/
-
-    // The target can be either a passage or another gloss
-    function setGlossTarget(target,form){
-        if (Codex.glosstarget) {
-            dropClass(Codex.glosstarget,"codexglosstarget");}
-        dropClass("CODEXHUD",/\bgloss\w+\b/);
-        if (!(target)) {
-            var cur=fdjtID("CODEXLIVEGLOSS");
-            if (cur) cur.id=null;
-            Codex.glosstarget=false;
-            if (Codex.selecting) {
-                Codex.selecting.clear();
-                Codex.selecting=false;}
-            return;}
-        if (!gloss_cloud) Codex.glossCloud();
-        var gloss=false;
-	// Identify when the target is a gloss
-        if ((typeof target === 'string')&&(fdjtID(target))) 
-            target=fdjtID(target);
-        else if ((typeof target === 'string')&&
-                 (Codex.glosses.ref(target))) {
-            gloss=Codex.glosses.ref(target);
-            target=fdjtID(gloss.frag);}
-        else if (target.pool===Codex.glosses) {
-            gloss=target; target=fdjtID(gloss.frag);}
-        else {}
-	if ((gloss)&&(form)&&(!(form.nodeType))) {
-	    // Passing a non-false non-node as a form forces a
-	    // response, even if the user is the maker of the gloss
-	    form=getGlossForm(gloss,true);}
-	// Handle or create the form
-	if (form) {
-	    var frag=fdjtDOM.getInput(form,"FRAG");
-	    if (frag.value!==target.id) {
-		setExcerpt(form,false);
-		fdjtDOM.addClass(form,"modified");
-		frag.value=target.id;}}
-	else {
-	    if (gloss) form=getGlossForm(gloss);
-	    else form=getGlossForm(target);
-            if (!(form)) {
-		fdjtUI.alert("There was a problem adding a gloss");
-		return false;}}
-        Codex.glosstarget=target;
-        addClass(target,"codexglosstarget");
-        Codex.GoTo(target,"addgloss",true);
-        setCloudCuesFromTarget(gloss_cloud,target);
-        setGlossForm(form);
-        // Clear current selection and set up new selection
-        if (Codex.selecting) {
-            Codex.selecting.clear();
-            Codex.selecting=false;}
-        Codex.clearHighlights(target);
-        var dups=Codex.getDups(target);
-        Codex.selecting=
-            fdjt.UI.Selecting(
-                dups,{ontap: gloss_selecting_ontap,
-                      onrelease: gloss_selecting_onrelease,
-                      fortouch: Codex.touch,
-                      holdthresh: 250,
-                      movethresh: 250});
-        if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
-            Codex.selecting.setString(gloss.excerpt);
-        Codex.selecting.onchange=function(sel){
-            var string=this.getString();
-            var off=this.getOffset();
-            Codex.setExcerpt(form,string,off);};
-        return form;}
-    Codex.setGlossTarget=setGlossTarget;
-
     var selecting_ontap=fdjt.UI.Selecting.tap_handler;
     function gloss_selecting_ontap(evt){
         if (Codex.mode!=="addgloss") {
@@ -601,30 +603,6 @@
         Codex.setMode("addgloss");
         Codex.setHUD(true);}
 
-    function setGlossForm(form){
-        var cur=fdjtID("CODEXLIVEGLOSS");
-        if (cur) cur.id=null;
-        if (!(form)) {
-	    Codex.glossform=false;
-	    return;}
-        form.id="CODEXLIVEGLOSS";
-	Codex.glossform=form;
-        var form_elt=getChild(form,"FORM");
-        var mode=form_elt.className;
-	var noteinput=getInput(form,"NOTE");
-        var syncelt=getInput(form,"SYNC");
-        syncelt.value=(Codex.syncstamp+1);
-        /* Get the input appropriate to the mode. */
-        if (mode==='editnote') {
-            if (noteinput)
-                gloss_cloud.complete(getbracketed(noteinput,false)||"");
-            else gloss_cloud.complete("");}
-        
-        /* Do completions based on those input's values */
-        Codex.outletCloud().complete();
-        Codex.glossCloud().complete();}
-    Codex.setGlossForm=setGlossForm;
-    
     function setCloudCues(cloud,tags){
         // Clear any current tagcues from the last gloss
         var cursoft=getChildren(cloud.dom,".cue.softcue");
@@ -666,6 +644,35 @@
 
     var addgloss_timer=false;
     
+    function _getbracketed(input,erase){
+        var string=input.value;
+        if ((!(string))||(string.length==0)) return false;
+        var pos=input.selectionStart||0;
+        var start=pos, end=pos, lim=string.length;
+        while (start>=0) {
+            if (string[start]==='[') {
+                if ((start>0)&&(string[start-1]==='\\')) {
+                    start--; continue;}
+                break;}
+            else start--;}
+        if (start<0) return false;
+        while (end<lim) {
+            if (string[end]===']') break;
+            else if (string[end]==='\\') end=end+2;
+            else end++;}
+        if (start===end) return false;
+        if (erase) {
+            input.value=string.slice(0,start)+string.slice(end+1);}
+        return string.slice(start+1,end);}
+
+    function getbracketed(input,erase){
+        var bracketed=_getbracketed(input,erase);
+        if (bracketed) {
+            addClass("CODEXHUD","addglosstag");
+            Codex.UI.updateScroller("CODEXGLOSSTAGS");}
+        else dropClass("CODEXHUD","addglosstag");
+        return bracketed;}
+
     function handleBracketed(form,content,complete){
         dropClass("CODEXHUD","addglosstag");
         if (content[0]==='@') {
@@ -692,25 +699,8 @@
             else addTag(form,std);
             gloss_cloud.complete("");}}
 
-    function addlink_keypress(evt){
-        var target=fdjtUI.T(evt);
-        var content=target.value;
-        var form=getParent(target,"FORM");
-        var ch=evt.keyCode;
-        if (ch===13) {
-            if (fdjtString.isEmpty(content)) {
-                submitEvent(target);
-                return;}
-            var brk=content.indexOf(' ');
-            if (brk<0) addLink(form,content);
-            else {
-                addLink(form,content.slice(0,brk),
-                        content.slice(brk+1));}
-            fdjtUI.cancel(evt);
-            target.value="";}}
-
     /* This handles embedded brackets */
-    function noteinput_keypress(evt){
+    function glossinput_keypress(evt){
         var target=fdjtUI.T(evt);
         var string=target.value;
         var form=getParent(target,"FORM");
@@ -740,7 +730,7 @@
                     if (span[0]!=='@') gloss_cloud.complete(span);},
                                           200);}}
 
-    function noteinput_keydown(evt){
+    function glossinput_keydown(evt){
         evt=evt||event;
         var kc=evt.keyCode;
         var target=fdjtUI.T(evt);
@@ -1042,123 +1032,6 @@
         else return false;}
     Codex.writeGlosses=writeGlosses;
     
-    /* Gloss display */
-
-    var objectkey=fdjtKB.objectkey;
-
-    function glossBlock(id,spec,xfeatures,glosses,detail){
-        var docinfo=Codex.docinfo[id];
-        var all=[].concat(xfeatures||[]);
-        var freq={}; var notes={}; var links={};
-        var excerpt=false, exoff=0;
-        if (!(glosses)) glosses=Codex.glosses.find('frag',id);
-        // Initialize given features
-        var i=0; var lim=all.length;
-        while (i<lim) freq[all[i++]]=1;
-        // Scan glosses
-        var i=0; var lim=glosses.length;
-        while (i<lim) {
-            var gloss=glosses[i++]; var glossid;
-            if (typeof gloss === 'string') {
-                glossid=gloss; gloss=Codex.glosses.ref(glossid);}
-            else glossid=gloss._id;
-            var user=gloss.maker;
-            var sources=gloss.audience;
-            var tags=gloss.tags;
-            if ((gloss.excerpt)&&(!(excerpt))) {
-                excerpt=gloss.excerpt; exoff=gloss.exoff;}
-            if ((sources)&&(!(sources instanceof Array))) sources=[sources];
-            if ((tags)&&(!(tags instanceof Array))) tags=[tags];
-            if (freq[user]) freq[user]++;
-            else {freq[user]=1; all.push(user);}
-            if (gloss.note) {
-                if (notes[user]) fdjtKB.add(notes,user,glossid,true);
-                else notes[user]=[glossid];}
-            if (gloss.link) {
-                if (links[user]) fdjtKB.add(links,user,glossid,true);
-                else links[user]=[glossid];}
-            if (sources) {
-                var j=0; var jlim=sources.length;
-                while (j<jlim) {
-                    var source=sources[j++];
-                    if (freq[source]) freq[source]++;
-                    else {freq[source]=1; all.push(source);}
-                    if (gloss.note) {
-                        if (notes[source])
-                            fdjtKB.add(notes,source,glossid,true);
-                        else notes[source]=[glossid];}
-                    if (gloss.link) {
-                        if (links[source])
-                            fdjtKB.add(links,source,glossid,true);
-                        else links[source]=[glossid];}}}
-            if (tags) {
-                var j=0; var jlim=tags.length;
-                while (j<jlim) {
-                    var tag=tags[j++];
-                    if (typeof tag === 'object') tag=objectkey(tag);
-                    if (freq[tag]) freq[tag]++;
-                    else {freq[tag]=1; all.push(tag);}}}}
-        var tags=docinfo.tags;
-        if ((tags)&&(!(tags instanceof Array))) tags=[tags];
-        if (tags) {
-            var i=0; var lim=tags.length;
-            while (i<lim) {
-                var tag=tags[i++];
-                if (typeof tag === 'object') tag=objectkey(tag);
-                if (freq[tag]) freq[tag]++;
-                else {freq[tag]=1; all.push(tag);}}}
-        var info=fdjtDOM(spec||"div.sbookgloss");
-        var i=0; var lim=all.length;
-        while (i<lim) {
-            var tag=all[i]; var span=false;
-            var taginfo=fdjtKB.ref(tag);
-            if ((taginfo)&&(taginfo.kind)) {
-                var srcspan=fdjtDOM("span.source",taginfo.name||tag);
-                srcspan.setAttribute("tag",(((taginfo)&&(taginfo._id))||tag));
-                span=fdjtDOM("span",srcspan);
-                if (links[tag]) {
-                    var sg=links[tag];
-                    var j=0; var jlim=sg.length;
-                    while (j<jlim) {
-                        var icon=fdjtDOM.Image(cxicon("diaglink",64,64));
-                        var gloss=Codex.glosses.ref(sg[j++]);
-                        var anchor=fdjtDOM.Anchor(gloss.link,"a",icon);
-                        anchor.title=gloss.note;
-                        fdjtDOM(span," ",anchor);}}
-                if (notes[tag]) {
-                    var sg=notes[tag];
-                    var j=0; var jlim=sg.length;
-                    var icon=fdjtDOM.Image(cxicon("remark",64,64));
-                    while (j<jlim) {
-                        var gloss=Codex.glosses.ref(sg[j++]);
-                        icon.title=gloss.note; fdjtDOM(span," ",icon);}}}
-            else {
-                span=fdjtDOM("span.dterm",taginfo||tag);
-                span.setAttribute("tag",(((taginfo)&&(taginfo._id))||tag));}
-            fdjtDOM(info,((i>0)&&(" \u00b7 ")),span);
-            i++;}
-        if (excerpt) {
-            var range=fdjtDOM.findString(fdjtID(frag),excerpt,exoff);
-            if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
-        else addClass(fdjtID(frag),"highlightpassage");
-        info.onclick=sbookgloss_ontap;
-        return info;}
-    Codex.glossBlock=glossBlock;
-
-    function sbookgloss_ontap(evt){
-        var target=fdjtUI.T(evt);
-        var parent=false;
-        while (target) {
-            if (!(target.getAttribute)) target=target.parentNode;
-            else if (target.getAttribute("gloss")) 
-                return Codex.showGloss(target.getAttribute("gloss"));
-            else if (target.getAttribute("tag"))
-                return Codex.startSearch(target.getAttribute("tag"));
-            else if (target.getAttribute("source"))
-                return Codex.startSearch(target.getAttribute("source"));
-            else target=target.parentNode;}
-        fdjtUI.cancel(evt);}
-
 })();
 
 /* Emacs local variables

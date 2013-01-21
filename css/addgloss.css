@@ -234,7 +234,7 @@ div.codexglossform form div.glossetc span.checkspan.waschecked.ischecked {
 div.codexglossform form div.glossetc .outlets { padding-left: 1px;}
 div.codexglossform form div.glossetc .links { padding-left: 1px;}
 div.codexglossform form div.glossetc .checkspan img {
-    height: 2ex; width: auto; vertical-align: baseline;
+    height: 1.5ex; width: auto; vertical-align: baseline;
     padding-left: 3px;}
 div.codexglossform form div.glossetc .checkspan input {
     margin-left: 0px;}
