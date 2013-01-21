@@ -521,6 +521,7 @@
     function setGlossTarget(target,form){
         if (Codex.glosstarget) {
             dropClass(Codex.glosstarget,"codexglosstarget");}
+        dropClass("CODEXHUD",/\bgloss\w+\b/);
         if (!(target)) {
             var cur=fdjtID("CODEXLIVEGLOSS");
             if (cur) cur.id=null;

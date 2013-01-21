@@ -6,8 +6,10 @@
 
 /* Gloss form */
 
+div.codexglossformbody { position: relative; }
+
 div#CODEXADDGLOSS div.codexglossform {
-    min-height: 50px; max-height: 50px;}
+    min-height: 40px; max-height: 150px;}
 
 body.hudup div#CODEXADDGLOSS div.codexglossform {
     max-height: inherit;}
@@ -39,7 +41,9 @@ div.codexglossform div.editgloss {
  margin-left: 0.5em; text-align: left; color: black;}
 div.codexglossform div.response {
  margin-left: 0.5em; margin-right: 70px;
- text-align: left; color: black;}
+ text-align: left; color: black;
+ max-height: 30px;}
+body.hudup div.codexglossform div.response { max-height: inherit;}
 div.codexglossform div.response .respmaker {font-weight: bold;}
 div.codexglossform div.response .respnote { font-style: italic;}
 div.codexglossform div.response .respnote:before { content: "“";}
@@ -84,7 +88,6 @@ div.codexglossform div.glosseditbox span.clickable {
     margin-right: 0.5ex;}
 
 div.codexglossform.glossedit div.glosseditbox {display: block; height: 24px;}
-div.codexglossform.glossedit div.addglossmenu { top: 24px;}
 div.codexglossform.glossedit span.editmsg { display: inline;}
 
 div.codexglossform form {
@@ -483,7 +486,7 @@ div#CODEXRIBBON div.inputbox#CODEXGLOSSOUTLETINPUT input[TYPE="TEXT"] {
 /* New menu stuff */
 
 div.codexglossform form div.addglossmenu {
-    position: absolute; top: 2px; right: 0px;
+    position: absolute; top: 0px; right: 0px;
     width: 50px; margin-right: 5px; margin-left: 5px;
     z-index: 800;}
 
