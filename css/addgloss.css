@@ -183,10 +183,12 @@ div.codexglossform form div.glossetc {
     line-height: 16px; text-overflow: ellipsis;
     padding: 0.5ex; padding-top: 0px; padding-right: 5px;
     margin-top: 0.4ex; margin-left: 1px;
-    min-height: 24px; max-height: 50px;
     overflow: hidden;
     clear: left;}
 div.codexglossform form div.glossetc div.glossexposure { float: right;}
+div.codexglossform form div.glossetc div.glossexposure { display: none;}
+div.codexglossform form.addoutlet div.glossetc div.glossexposure {
+    display: block;}
 
 div.codexglossform form div.glossetc .twisty { display: none;}
 div.codexglossform form div.glossetc.overflow .twisty { display: none;}
