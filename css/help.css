@@ -126,6 +126,7 @@ body.codexhelp.cxPREVIEW div#CODEXHUD div#CODEXHELP,
 body.codexhelp.hudup div#CODEXHUD .helphud,
 body.codexhelp div#CODEXHUD.scanning div#CODEXHELP,
 body.codexhelp div#CODEXHUD.scanning .helphud,
+body.codexhelp div#CODEXHUD.addgloss .helphud,
 body.codexhelp.cxSHRINK div#CODEXHUD .helphud,
 body.codexhelp.cxPREVIEW div#CODEXHUD .helphud {
     display: none;}

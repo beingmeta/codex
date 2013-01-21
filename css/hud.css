@@ -22,7 +22,7 @@
     top: 0px; max-height: 60px;
     border: solid transparent 4px; padding: 0px;
     border-top: 0px;}
-#CODEXHEAD, #CODEXSCANNER { left: 50px; right: 50px; }
+#CODEXHEAD, #CODEXSCANNER { left: 60px; right: 60px; }
 
 #CODEXSCANNER { display: none; }
 /* #CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; } */
@@ -422,7 +422,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate .applinks {
     font-weight: normal; font-variant: small-caps;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
-    position: absolute; right: 60px;
+    position: absolute; right: 0px;
     vertical-align: top; padding-right: 2px;
     font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     display: none;
@@ -430,7 +430,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout:visited {
     color: red;}
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#CODEXUSERNAME {
-    position: absolute; left: 60px;
+    position: absolute; left: 0px;
     vertical-align: top; padding-right: 2px;
     font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     display: none;
