@@ -1802,6 +1802,8 @@
         var menu=fdjtDOM.getParent(target,'.addglossmenu');
         var form=fdjtDOM.getParent(target,'form');
         
+        addClass(target,"held");
+
         if (alt==="hamburger") {
             addClass(menu,"expanded");
             return;}}
@@ -1812,6 +1814,7 @@
         var menu=fdjtDOM.getParent(target,'.addglossmenu');
         var form=fdjtDOM.getParent(target,'form');
         var alt=target.alt;
+        dropClass(target,"held");
         if (Codex.glossmodes.exec(alt))
             Codex.setGlossMode(alt,form);
         dropClass(menu,"expanded");}
@@ -1820,6 +1823,7 @@
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var menu=fdjtDOM.getParent(target,'.addglossmenu');
+        dropClass(target,"held");
         if (!(slip_timeout)) {
             slip_timeout=setTimeout(function(){
                 dropClass(menu,"expanded");},
@@ -2018,6 +2022,7 @@
          ".addglossmenu": {
              tap: glossmode_tap,
              hold: glossmode_hold,
+             slip: glossmode_slip,
              release: glossmode_release},
          ".submitbutton": {click: submitGloss },
          "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
@@ -2089,6 +2094,11 @@
          ".codexclosehud": {click: back_to_reading},
          ".submitbutton": {click: submitGloss },
          ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
+         ".addglossmenu": {
+             tap: glossmode_tap,
+             hold: glossmode_hold,
+             slip: glossmode_slip,
+             release: glossmode_release},
          "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
          "div.glossetc div.notetext": {click: editglossnote}};

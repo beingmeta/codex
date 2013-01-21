@@ -490,7 +490,10 @@ div.codexglossform form div.addglossmenu {
 div.codexglossform form div.addglossmenu > img {
     width: 40px; height: 40px; padding: 2px; margin-bottom: 4px;
     display: none; }
-div.codexglossform form div.addglossmenu > img[alt="hamburger"] { display: block; }
+div.codexglossform form div.addglossmenu > img.held {
+    background-color: lightgreen; border-color: green;}
+div.codexglossform form div.addglossmenu > img[alt="hamburger"] {
+    display: block; }
 div.codexglossform form div.addglossmenu.expanded > img {
     display: block; opacity: 0.90;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
