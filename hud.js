@@ -109,7 +109,7 @@ Codex.setMode=
             Codex.DOM.heart=fdjtID("CODEXHEART");
             Codex.DOM.foot=fdjtID("CODEXFOOT");
             Codex.DOM.tabs=fdjtID("CODEXTABS");
-            // Initialize search UI
+           // Initialize search UI
             var search=fdjtID("CODEXSEARCH");
             search.innerHTML=fixStaticRefs(Codex.HTML.searchbox);
             Codex.empty_cloud=
@@ -467,7 +467,7 @@ Codex.setMode=
         var hide_startup_help=true;
         
         function CodexMode(mode){
-            var oldmode=Codex.mode;
+             var oldmode=Codex.mode;
             if (typeof mode === 'undefined') return oldmode;
             if (mode==='last') mode=Codex.last_mode;
             if (mode==='none') mode=false;
@@ -477,7 +477,10 @@ Codex.setMode=
                         mode,Codex.mode,document.body.className);
             if ((mode!==Codex.mode)&&(Codex.previewing))
                 Codex.stopPreview();
-            if (mode) {
+            if ((Codex.mode==="addgloss")&&(mode!=="addgloss")&&
+                (hasClass("CODEXLIVEGLOSS","modified")))
+                Codex.submitGloss(fdjt.ID("CODEXLIVEGLOSS"));
+           if (mode) {
                 if (mode==="addgloss") {}
                 else dropClass(document.body,"cxSHRINK");
                 if (mode===Codex.mode) {}

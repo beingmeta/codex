@@ -482,6 +482,8 @@
                 exoff.value="";
                 exoff.disabled=true;}
             updateForm(form);
+            var wrapper=getParent(form,".codexglossform");
+            addClass(wrapper,"modified");
             return;}
         var input=getInput(checkspan,'EXCERPT');
         var exoff=getInput(form,'EXOFF');
@@ -507,7 +509,7 @@
             if (exoff) exoff.value="";
             setCheckSpan(checkspan,false);}
         var wrapper=getParent(form,".codexglossform");
-        // addClass(wrapper,"modified");
+        addClass(wrapper,"modified");
         updateForm(form);}
     Codex.setExcerpt=setExcerpt;
 
@@ -871,11 +873,22 @@
     /***** Saving (submitting/queueing) glosses *****/
 
     // Submits a gloss, queueing it if offline.
-    function submitGloss(evt){
-        evt=evt||event||null;
-        var target=fdjtUI.T(evt);
-        addClass(target.parentNode,"submitting");
-        var form=(fdjtUI.T(evt));
+    function submitGloss(arg){
+        var div=false, form=false;
+        if (typeof arg === "undefined") {
+            div=fdjtID("CODEXLIVEGLOSS");
+            if (!(div)) return;
+            form=getChild(div,"FORM");}
+        else {
+            if (!(arg.nodeType)) arg=fdjtUI.T(arg);
+            if ((arg.nodeType)&&(arg.nodeType===1)&&
+                (arg.tagName==="FORM")) {
+                form=arg; div=getParent(form,".codexglossform");}
+            else if ((arg.nodeType)&&(arg.nodeType===1)&&
+                     (arg.tagName==="DIV")&&(hasClass(arg,"codexglossform"))) {
+                div=arg; form=getChild(div,"FORM");}}
+        if (!(form)) return;
+        addClass(div,"submitting");
         if (!((hasParent(form,".glossedit"))||(hasParent(form,".glossreply"))))
             // Only save defaults if adding a new gloss (what about reply?)
             saveGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
@@ -884,8 +897,9 @@
             fdjtLog.warn('missing UUID');
             if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
         var sent=((navigator.onLine)&&
-                  (fdjt.Ajax.onsubmit(evt,get_addgloss_callback(target))));
-        if (!(sent)) queueGloss(form,evt);}
+                  (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form))));
+        if (!(sent)) queueGloss(form,evt);
+        else dropClass(div,"modified");}
     Codex.submitGloss=submitGloss;
 
     function cancelGloss_handler(evt){
