@@ -271,6 +271,7 @@
         return form;}
     Codex.setupGlossForm=setupGlossForm;
 
+
     /***** Setting the gloss target ******/
 
     // The target can be either a passage or another gloss
@@ -382,6 +383,7 @@
         if (text.length>40) return text.slice(0,40)+"...";
         else return text;}
     
+
     /***** Adding outlets ******/
 
     function addOutlet(form,outlet,formvar,checked) {
@@ -437,6 +439,7 @@
             var span=outlets[i++];
             setCheckSpan(span,false);}}
     
+
     /***** Adding links ******/
     
     function addLink(form,url,title) {
@@ -457,6 +460,7 @@
         return aspan;}
     Codex.addLink2Form=addLink;
 
+
     /***** Adding excerpts ******/
     
     function setExcerpt(form,excerpt,off) {
@@ -507,6 +511,7 @@
         updateForm(form);}
     Codex.setExcerpt=setExcerpt;
 
+
     /***** Adding tags ******/
 
     var Ref=fdjtKB.Ref;
@@ -796,6 +801,7 @@
             var tags=getChildren(tagselt[0],".checkspan");
             fdjtDOM.remove(fdjtDOM.Array(tags));}}
 
+
     /***** The Gloss Cloud *****/
 
     var gloss_cloud=false;
@@ -823,6 +829,7 @@
             addTag(form,completion);}
         fdjtUI.cancel(evt);}
 
+
     /***** The Outlet Cloud *****/
 
     var outlet_cloud=false;
@@ -860,6 +867,7 @@
             else addOutlet(form,completion);}
         fdjtUI.cancel(evt);}
 
+
     /***** Saving (submitting/queueing) glosses *****/
 
     // Submits a gloss, queueing it if offline.
@@ -868,7 +876,6 @@
         var target=fdjtUI.T(evt);
         addClass(target.parentNode,"submitting");
         var form=(fdjtUI.T(evt));
-        var proto=fdjtID();
         if (!((hasParent(form,".glossedit"))||(hasParent(form,".glossreply"))))
             // Only save defaults if adding a new gloss (what about reply?)
             saveGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
@@ -876,41 +883,16 @@
         if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
             fdjtLog.warn('missing UUID');
             if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
-        if (!(Codex.persist))
-            return fdjt.Ajax.onsubmit(evt,get_addgloss_callback(target));
-        var ref=Codex.glosses.ref
-        if (!(navigator.onLine)) return queueGloss(form,evt);
-        // Eventually, we'll unpack the AJAX handler to let it handle
-        //  connection failures by calling queueGloss.
-        else return fdjt.Ajax.onsubmit(evt,get_addgloss_callback(target));}
+        var sent=((navigator.onLine)&&
+                  (fdjt.Ajax.onsubmit(evt,get_addgloss_callback(target))));
+        if (!(sent)) queueGloss(form,evt);}
     Codex.submitGloss=submitGloss;
-
-    function finishGloss(glossdiv){
-        if (!(glossdiv)) glossdiv=fdjtID("CODEXLIVEGLOSS");
-        if (!(glossdiv)) {
-            fdjtLog.warn("finishGloss called with no gloss to finish");
-            return;}
-        var form=((glossdiv.tagName==="FORM")?(glossdiv):
-                  (getChild(glossdiv,"FORM")));
-        if (!(form)) {
-            fdjtLog.warn("finishGloss can't find the form to submit");
-            return;}
-        var submit_event = document.createEvent("HTMLEvents");
-        submit_event.initEvent('submit',false,true);
-        form.dispatchEvent(submit_event);}
-    Codex.finishGloss=finishGloss;
 
     function cancelGloss_handler(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var glossform=(target)&&
             (fdjtDOM.getParent(target,".codexglossform"));
-        /* 
-        if (fdjtDOM.hasClass(glossform,"modified")) {
-            if (window.confirm("Save the changes to this gloss?"))
-                finishGloss(target);
-            else cancelGloss(target);}
-        */
         cancelGloss(target);
         fdjtUI.cancel(evt);}
 
@@ -966,13 +948,24 @@
                         proto,input.value,input.name,input.checked);
                     n_added++;}}}}
 
+    var queued_glosses=[], queued_data={};
+
     // Queues a gloss when offline
     function queueGloss(form,evt){
-        var json=fdjt.Ajax.formJSON(form,["tags","xrefs"],true);
+        // We use the JSON to update the local database and save the
+        // params to send when we get online
+        var json=fdjt.Ajax.formJSON(form,true);
         var params=fdjt.Ajax.formParams(form);
-        var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
-        if (!(queued)) queued=[];
-        queued.push(json.uuid);
+        if (Codex.persist) {
+            var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
+            if (!(queued)) queued=[];
+            queued.push(json.uuid);
+            fdjtState.setLocal("params("+json.uuid+")",params);
+            fdjtState.setLocal("queued("+Codex.refuri+")",queued,true);}
+        else {
+            queued_glosses.push(json.uuid);
+            queued_data[json.uuid]=params;}
+        // Now save it to the in-memory database
         var glossdata=
             {refuri: json.refuri,frag: json.frag,
              maker: json.user,_id: json.uuid,uuid: json.uuid,
@@ -989,8 +982,6 @@
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
         if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
         Codex.glosses.Import(glossdata);
-        fdjtState.setLocal("params("+json.uuid+")",params);
-        fdjtState.setLocal("queued("+Codex.refuri+")",queued,true);
         // Clear the UUID
         clearGlossForm(form);
         if (evt) fdjtUI.cancel(evt);
@@ -1000,18 +991,25 @@
 
     // Saves queued glosses
     function writeGlosses(){
-        if (!(Codex.persist)) return;
-        var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
-        if ((!(queued))||(queued.length===0)) {
+        var queued=queued_glosses;
+        // Copy the persistent data queue into the memory queue
+        if (Codex.persist) {
+            var lqueued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
+            if (lqueued) {
+                var i=0, lim=lqueued.length; while (i<lim) {
+                    var uuid=lqueued[i++];
+                    queued.push(uuid); queued_data[uuid]=
+                        fdjtState.getLocal("params("+uuid+")");}}}
+        if (queued.length===0) {
             fdjtState.dropLocal("queued("+Codex.refuri+")");
             return;}
         var ajax_uri=getChild(fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
             getAttribute("ajaxaction");
         var i=0; var lim=queued.length; var pending=[];
         while (i<lim) {
-            var uuid=queued[i++];
-            var params=fdjtState.getLocal("params("+uuid+")");
-            if (params) pending.push(uuid);
+            var uuid=queued[i++]; var params=queued_data[uuid];
+            if (!(params)) continue;
+            else pending.push(uuid);
             var req=new XMLHttpRequest();
             req.open('POST',ajax_uri);
             req.withCredentials='yes';
