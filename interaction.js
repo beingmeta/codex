@@ -137,15 +137,16 @@
         gloss_blurred=false;
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
-        if (form) addClass(form,"focused");
         var div=((form)&&(getParent(form,".codexglossform")));
+        if (div) addClass(div,"focused");
         if (!(Codex.hudup)) Codex.setHUD(true,false);
         gloss_focus=form;}
     function addgloss_blur(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
-        if (form) dropClass(form,"focused");
+        var div=((form)&&(getParent(form,".codexglossform")));
+        if (div) dropClass(div,"focused");
         gloss_blurred=fdjtTime();
         gloss_focus=false;}
     Codex.UI.addgloss_focus=addgloss_focus;
@@ -793,7 +794,7 @@
             else if ((kc===47)||(kc===58)) // /or :
                 Codex.setGlossMode("addlink",form);
             else if ((kc===64)) // @
-                Codex.setGlossMode("sharing",form);
+                Codex.setGlossMode("addoutlet",form);
             else {}}
         else return;
         fdjtUI.cancel(evt);}
@@ -1764,51 +1765,65 @@
 
     var glossmodes=Codex.glossmodes;
 
-    function glossmode_button(evt){
+    function glossmode_tap(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var alt=target.alt;
         
-        var form=fdjtDOM.getParent(target,'form');
         if (!(alt)) return;
-        if (alt==="tag") {
-            altclass="addtag";
-            input=fdjtID("CODEXTAGINPUT");}
-        else if (alt==="link") {
-            altclass="addlink";
-            input=fdjtID("CODEXATTACHURL");}
-        else if (alt==="excerpt") {
-            altclass="excerpt";
-            input=fdjtDOM.getInput(form,'EXCERPT');}
-        else if (alt==="note") {
-            altclass="editnote";
-            input=fdjtDOM.getInput(form,'NOTE');}
-        else if (alt==="sharing") {
-            altclass="sharing";
-            input=fdjtID("CODEXOUTLETINPUT");}
-        else return;
-        // fdjtLog("glossmode_button gm=%s input=%o",altclass,input);
-        fdjtUI.cancel(evt);
-        if (!(hasClass(form,altclass))) {
-            if (alt==="tag") {
-                addClass("CODEXHUD","addglosstag");
-                Codex.UI.updateScroller("CODEXGLOSSTAGS");}
-            else dropClass("CODEXHUD","addglosstag");
-            if (alt==="sharing") {
-                addClass("CODEXHUD","addglossoutlet");
-                Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
-            else dropClass("CODEXHUD","addglossoutlet");
-            if (alt==="link") 
-                addClass("CODEXHUD","addglosslink");
-            else dropClass("CODEXHUD","addglosslink");
-            swapClass(form,glossmodes,altclass);
-            Codex.setHUD(true);
-            Codex.setFocus(input);}
-        else {
-            dropClass("CODEXHUD","addglosstag");
-            dropClass("CODEXHUD","addglossoutlet");
-            dropClass("CODEXHUD","addglosslink");
-            dropClass(form,glossmodes);}}
+
+        var menu=fdjtDOM.getParent(target,'.addglossmenu');
+        var form=fdjtDOM.getParent(target,'form');
+        
+        if (alt==="hamburger") {
+            Codex.setGlossMode(false,form);
+            toggleClass(menu,"expanded");
+            return;}
+        if (alt===form.className) {
+            Codex.setGlossMode(false,form);
+            dropClass(menu,"expanded");
+            return;}
+        Codex.setGlossMode(alt,form);
+        dropClass(menu,"expanded");}
+
+    var slip_timeout=false;
+
+    function glossmode_hold(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var alt=target.alt;
+        
+        if (!(alt)) return;
+
+        if (slip_timeout) {
+            clearTimeout(slip_timeout);
+            slip_timeout=false;}
+
+        var menu=fdjtDOM.getParent(target,'.addglossmenu');
+        var form=fdjtDOM.getParent(target,'form');
+        
+        if (alt==="hamburger") {
+            addClass(menu,"expanded");
+            return;}}
+
+    function glossmode_release(evt) {
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var menu=fdjtDOM.getParent(target,'.addglossmenu');
+        var form=fdjtDOM.getParent(target,'form');
+        var alt=target.alt;
+        if (Codex.glossmodes.exec(alt))
+            Codex.setGlossMode(alt,form);
+        dropClass(menu,"expanded");}
+
+    function glossmode_slip(evt) {
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var menu=fdjtDOM.getParent(target,'.addglossmenu');
+        if (!(slip_timeout)) {
+            slip_timeout=setTimeout(function(){
+                dropClass(menu,"expanded");},
+                                    500);}}
 
     function submitGloss(evt){
         fdjtUI.cancel(evt);
@@ -1998,12 +2013,15 @@
          "span.codexglossdelete": { click: delete_ontap },
          "span.codexglossrespond": { click: respond_ontap },
          "span.codexsharegloss": {tap: fdjt.UI.CheckSpan.onclick},
-         ".codexclosehud": {click: back_to_reading},
          ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
+         ".codexclosehud": {click: back_to_reading},
+         ".addglossmenu": {
+             tap: glossmode_tap,
+             hold: glossmode_hold,
+             release: glossmode_release},
          ".submitbutton": {click: submitGloss },
          "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
-         "div.glossetc span.modebuttons": {click: glossmode_button},
          "div.glossetc div.notetext": {click: editglossnote}};
 
     Codex.UI.handlers.webtouch=
@@ -2073,7 +2091,6 @@
          ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
          "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
-         "div.glossetc span.modebuttons": {click: glossmode_button},
          "div.glossetc div.notetext": {click: editglossnote}};
     
 })();

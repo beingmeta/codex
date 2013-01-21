@@ -18,6 +18,8 @@
     <input type="HIDDEN" name="MYCOPYID"/>
     <input type="HIDDEN" name="RE"/>
     <input type="HIDDEN" name="THREAD"/>
+    <input TYPE="HIDDEN" NAME="EXCERPT" VALUE=""/>
+    <input TYPE="HIDDEN" NAME="EXOFF" VALUE=""/>
     <!-- Force IE to send the form in UTF-8 -->
     <input type="HIDDEN" name="IEHACK" VALUE="&#9760;"/>
   </div>
@@ -40,38 +42,26 @@
     <span class="resptags"></span> <span class="resplinks"></span>
   </div>
   <div class="codexglossformbody">
-    <div class="rightcol">
-      <div class="altbutton submitbutton" tabindex="1">
-        <img svg="http://static.beingmeta.com/g/codex/remark_add.svgz"
-             src="http://static.beingmeta.com/g/codex/remark_add50x50.png"
-             alt="Add" title="add this gloss"
-             class="button addbutton add"/>
-        <img svg="http://static.beingmeta.com/g/codex/remark_edit.svgz"
-             src="http://static.beingmeta.com/g/codex/remark_edit50x50.png"
-             alt="Save" title="save this gloss"
-             class="button savebutton edit"/>
-        <img svg="http://static.beingmeta.com/g/codex/remark_respond.svgz"
-             src="http://static.beingmeta.com/g/codex/remark_respond50x50.png"
-             alt="Reply" title="respond to this gloss (thread)"
-             class="button replybutton reply"/>
-      </div>
-      <div class="glossexposure">
-        <div class="checkspan private" tabindex="5">
-          <input type="CHECKBOX" name="PRIVATE" value="yes"
-                 onchange="Codex.UI.changeGlossPrivacy(event);"/>
-          <span class="checked"
-                title="this gloss won't be shared with my associated networks">
-            Private</span>
-          <span class="unchecked"
-                title="this gloss will be shared with my associated networks">
-            Shared</span>
-        </div>
-        <div class="checkspan postgloss" tabindex="6">
-          <input TYPE="HIDDEN" name="WASPOSTED" VALUE="yes"
-                 DISABLED="DISABLED"/>
-          Post<input type="CHECKBOX" name="POSTGLOSS" value="yes"
-                     onchange="Codex.UI.changeGlossPosting(event);"/></div>
-      </div>
+    <div class="addglossmenu">
+      <img svg="http://static.beingmeta.com/g/codex/hamburger.svgz"
+           src="http://static.beingmeta.com/g/codex/hamburger64x64.png"
+           class="button" alt="hamburger"/>
+      <img svg="http://static.beingmeta.com/g/codex/remark_tag.svgz"
+           src="http://static.beingmeta.com/g/codex/remark_tag64x64.png"
+           title="add tags" class="button" alt="addtag"
+           tabindex="2"/>
+      <img svg="http://static.beingmeta.com/g/codex/remark_link.svgz"
+           src="http://static.beingmeta.com/g/codex/remark_link64x64.png"
+           title="add web links" class="button" alt="addlink"
+           tabindex="3"/>
+      <img svg="http://static.beingmeta.com/g/codex/remark_share.svgz"
+           src="http://static.beingmeta.com/g/codex/remark_share64x64.png"
+           title="add outlets/share this gloss" class="button" alt="addoutlet"
+           tabindex="4"/>
+      <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
+           src="http://static.beingmeta.com/g/codex/redx64x64.png"
+           title="delete gloss" class="button" alt="deletegloss"
+           tabindex="5"/>
     </div>
     <div class="inputbox">
       <div class="textbox">
@@ -83,40 +73,25 @@
                   wrap="virtual"
                   tabindex="0"></textarea>
       </div>
-      <div class="glossetc">
-        <span class="modebuttons"><img svg="http://static.beingmeta.com/g/codex/remark_tag.svgz"
-                                       src="http://static.beingmeta.com/g/codex/remark_tag64x64.png"
-                                       title="add tags" class="button" alt="tag"
-                                       tabindex="2"/><img svg="http://static.beingmeta.com/g/codex/remark_link.svgz"
-                                                                                                 src="http://static.beingmeta.com/g/codex/remark_link64x64.png"
-                                                                                                 title="add web links" class="button" alt="link"
-                                                                                                 tabindex="3"/><img svg="http://static.beingmeta.com/g/codex/remark_share.svgz"
-                                                                                                                                                            src="http://static.beingmeta.com/g/codex/remark_share64x64.png"
-                                                                                                                                                            title="add outlets/share this gloss" class="button" alt="sharing" tabindex="4"/></span>
-        <img svg="http://static.beingmeta.com/g/codex/twistyclosed.svgz"
-             src="http://static.beingmeta.com/g/codex/twistyclosed64x64.png"
-             class="twisty" alt="+"/>
-        <img svg="http://static.beingmeta.com/g/codex/twistyopen.svgz"
-             src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
-             class="twisty" alt="-"/>
-        <span class="networks">
-        </span>
-        <span class="excerpt checkspan empty">
-          <input TYPE="CHECKBOX" NAME="EXCERPT" VALUE=""/>
-          <img src="http://static.beingmeta.com/g/codex/redx64x64.png"
-               svg="http://static.beingmeta.com/g/codex/redx.svgz"
-               class="redx" alt="x"/>
-          <span class="text"></span>
-        </span>
-        <input TYPE="HIDDEN" NAME="EXOFF" VALUE=""/>
-        <span class="links empty"><span class="head">links</span></span>
-        <span class="tags empty"><span class="head">tags</span></span>
-        <span class="sharing codexsharegloss">
-          <span class="outlets empty"><span class="head">share&nbsp;w/&nbsp;</span></span>
-        </span>
-      </div>
     </div>
-    <div class="fdjtclearfloats"></div>
+    <div class="glossetc">
+      <div class="glossexposure"
+           onclick="fdjt.UI.CheckSpan.onclick(event); Codex.setGlossMode('addoutlet');">
+        <div class="checkspan private" tabindex="5">
+          <input type="CHECKBOX" name="PRIVATE" value="yes"
+                 onchange="Codex.UI.changeGlossPrivacy(event);"/>
+          <span class="checked"
+                title="this gloss won't be shared with my associated networks">
+            Private</span>
+          <span class="unchecked"
+                title="this gloss will be shared with my associated networks">
+            Shared</span>
+        </div>
+      </div>
+      <span class="tags empty"></span>    
+      <span class="links empty"></span>
+      <span class="outlets empty"></span>
+    </div>
   </div>
 </form>
 <!--

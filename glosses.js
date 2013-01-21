@@ -84,7 +84,7 @@
         var form=((arg.tagName==="FORM")?(arg):
                   ((fdjtDOM.getParent(arg,"form"))||
                    (fdjtDOM.getChild(arg,"form"))));
-        var modeclass=false; var input=false;
+        var input=false;
         if (!(form)) return;
 	if (Codex.Trace.mode) {
 	    var frag=fdjtDOM.getInput(form,"FRAG");
@@ -93,46 +93,24 @@
 		    mode,((toggle)?(" (toggle)"):("")),
 		    ((frag)&&(frag.value)),
 		    ((uuid)&&(uuid.value)));}
+        if ((toggle)&&(mode===form.className)) mode=false;
         if (!(mode)) {
             dropClass(form,glossmodes);
+            dropClass("CODEXHUD",/\bgloss\w+\b/);
             return;}
-        if ((mode==="tag")||(mode==="addtag")) {
-            modeclass="addtag";
-            input=fdjtID("CODEXTAGINPUT");}
-        else if ((mode==="link")||(mode==="addlink")) {
-            modeclass="addlink";
-            input=fdjtID("CODEXATTACHURL");}
-        else if ((mode==="note")||(mode==="editnote")) {
-            modeclass="editnote";
-            input=fdjtDOM.getInput(form,'NOTE');}
-        else if ((mode==="sharing")||(mode==="share")) {
-            modeclass="sharing";
-            input=fdjtID("CODEXOUTLETINPUT");}
+        if (mode==="addtag") input=fdjtID("CODEXTAGINPUT");
+        else if (mode==="addlink") input=fdjtID("CODEXATTACHURL");
+        else if (mode==="addoutlet") input=fdjtID("CODEXOUTLETINPUT");
         else {
             dropClass(form,glossmodes);
+            dropClass("CODEXHUD",/\bgloss\w+\b/);
             return;}
         if (Codex.Trace.mode)
-            fdjtLog("setGlossMode gm=%s input=%o",modeclass,input);
-        if ((!(modeclass))||((toggle)&&(hasClass(form,modeclass)))) {
-            dropClass("CODEXHUD","addglosstag");
-            dropClass("CODEXHUD","addglossoutlet");
-            dropClass("CODEXHUD","addglosslink");
-            dropClass(form,glossmodes);}
-        else {
-            if (modeclass==="addtag") {
-                addClass("CODEXHUD","addglosstag");
-                Codex.UI.updateScroller("CODEXGLOSSTAGS");}
-            else dropClass("CODEXHUD","addglosstag");
-            if (modeclass==="sharing") {
-                addClass("CODEXHUD","addglossoutlet");
-                Codex.UI.updateScroller("CODEXGLOSSOUTLETS");}
-            else dropClass("CODEXHUD","addglossoutlet");
-            if (modeclass==="addlink") {
-                addClass("CODEXHUD","addglosslink");}
-            else dropClass("CODEXHUD","addglosslink");
-            swapClass(form,glossmodes,modeclass);
-            Codex.setHUD(true);
-            if (input) Codex.setFocus(input);}}
+            fdjtLog("setGlossMode gm=%s input=%o",mode,input);
+        form.className=mode;
+        swapClass("CODEXHUD",/\bgloss\w+\b/,"gloss"+mode);
+        Codex.setHUD(true);
+        if (input) Codex.setFocus(input);}
     Codex.setGlossMode=setGlossMode;
 
     function _getbracketed(input,erase){
@@ -226,6 +204,8 @@
             else noteinput.value="";}
         if (Codex.syncstamp)
             getInput(form,"SYNC").value=(Codex.syncstamp+1);
+        var menu=getChild(form,".addglossmenu");
+        fdjt.UI.TapHold(menu,Codex.touch);
         var loc=getInput(form,"LOCATION");
         var loclen=getInput(form,"LOCLEN");
         var tagline=getInput(form,"TAGLINE");
@@ -409,6 +389,24 @@
     /***** Adding excerpts ******/
     function setExcerpt(form,excerpt,off) {
         var checkspan=getChild(form,'.excerpt');
+        if (!(checkspan)) {
+            // This is for the case where the excerpt
+            //  doesn't actually appear (the new default)
+            var input=getInput(form,'EXCERPT');
+            var exoff=getInput(form,'EXOFF');
+            if ((!(excerpt))||(fdjtString.isEmpty(excerpt))) {
+                input.value=""; exoff.value="";
+                input.disabled=exoff.disabled=true;
+                return;}
+            input.disabled=exoff.disabled=false;
+            input.value=excerpt;
+            if (typeof off === "number")
+                exoff.value=off;
+            else {
+                exoff.value="";
+                exoff.disabled=true;}
+            updateForm(form);
+            return;}
         var input=getInput(checkspan,'EXCERPT');
         var exoff=getInput(form,'EXOFF');
         var text=getChild(checkspan,'.text');
@@ -765,11 +763,11 @@
         else if ((kc===35)||(kc===91)) // # or [
             setGlossMode("addtag",form);
         else if (kc===32) // Space
-            setGlossMode("editnote",form);
+            setGlossMode(false,form);
         else if ((kc===47)||(kc===58)) // /or :
             setGlossMode("addlink",form);
         else if ((kc===64)) // @
-            setGlossMode("sharing",form);
+            setGlossMode("addoutlet",form);
         else {}}
 
     function get_addgloss_callback(form){

@@ -46,7 +46,7 @@ var Codex=
      // How long it takes a gesture to go from tap to hold
      taptapmsecs: 500, holdmsecs: 200, edgeclick: 50, pagesize: 250,
      dontanimate: false,
-     glossmodes: /(addtag)|(addlink)|(excerpt)|(editnote)|(sharing)/,
+     glossmodes: /(addtag)|(addlink)|(addoutlet)/,
      updatehash: true, iscroll: false,
      // Whether to store glosses, etc for offline/faster access
      persist: false,

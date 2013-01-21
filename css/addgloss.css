@@ -12,11 +12,10 @@ div#CODEXADDGLOSS div.codexglossform {
 body.hudup div#CODEXADDGLOSS div.codexglossform {
     max-height: inherit;}
 
+div.codexglossform form div.inputbox { margin-top: 2px;}
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[type="TEXT"] {
-    min-height: inherit; max-height: 15px;}
-body.hudup div.codexglossform form div.textbox textarea {
-    min-height: 30px; max-height: inherit;}
+    min-height: 40px; padding: 2px;}
 
 div#CODEXADDGLOSS div.codexglossform {
     border-radius: 1em; -webkit-border-radius: 1em;
@@ -30,22 +29,6 @@ div#CODEXADDGLOSS div.codexglossform {
     -webkit-border-top-right-radius: 0px; 
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
-
-/* div.codexglossform form div.rightcol {
-    position: absolute;
-    top: 0px; bottom: 0px; right: 0px; width: 70px;} */
-div.codexglossform form div.rightcol {
-    float: right; width: 65px; margin-right: 5px;}
-div.codexglossform form div.rightcol > div {
-    white-space: nowrap; float: right;}
-div.codexglossform form div.rightcol > div img {
-    width: 2ex; height: auto;}
-div.codexglossform form div.rightcol > div.cancelbutton {
-    color: red; font-size: 80%;}
-div.codexglossform form div.rightcol > div.cancelbutton {
-    position: absolute; bottom: 2px; right: 2px;}
-div.codexglossform form div.rightcol > div.cancelbutton > img {
-    width: 1.5ex; height: auto;}
 
 div.codexglossform { display: none;}
 div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
@@ -101,7 +84,7 @@ div.codexglossform div.glosseditbox span.clickable {
     margin-right: 0.5ex;}
 
 div.codexglossform.glossedit div.glosseditbox {display: block; height: 24px;}
-div.codexglossform.glossedit div.rightcol { top: 24px;}
+div.codexglossform.glossedit div.addglossmenu { top: 24px;}
 div.codexglossform.glossedit span.editmsg { display: inline;}
 
 div.codexglossform form {
@@ -128,7 +111,7 @@ div.codexglossform form.focused div.inputhelp { display: block;}
 div.codexglossform form.focused span.inputhelp { display: inline;}
 
 div.codexglossform form div.inputbox {
-    margin-right: 70px;}
+    margin-right: 60px;}
 div.codexglossform form div.textbox {
     margin-left: 0.5em;}
 div.codexglossform form div.textbox textarea,
@@ -198,11 +181,13 @@ div.codexglossform form div.inputhelp {
 div.codexglossform form div.glossetc {
     display: block; text-align: left; font-size: 12px;
     line-height: 16px; text-overflow: ellipsis;
-    padding: 0.5ex; padding-top: 0ex;
+    padding: 0.5ex; padding-top: 0px; padding-right: 5px;
     margin-top: 0.4ex; margin-left: 1px;
     min-height: 24px; max-height: 50px;
     overflow: hidden;
     clear: left;}
+div.codexglossform form div.glossetc div.glossexposure { float: right;}
+
 div.codexglossform form div.glossetc .twisty { display: none;}
 div.codexglossform form div.glossetc.overflow .twisty { display: none;}
 div.codexglossform form div.glossetc.expanded .twisty { display: none;}
@@ -261,6 +246,12 @@ body.hudup div.codexglossform form div.glossetc .tags.empty,
 body.hudup div.codexglossform form div.glossetc .excerpt.empty {
     display: none;}
 
+div.codexglossform form div.glossetc .outlets { display: none; }
+div.codexglossform form.addoutlet div.glossetc .outlets { display: inline; }
+div.codexglossform form.addoutlet div.glossetc .tags,
+div.codexglossform form.addoutlet div.glossetc .links {
+    display: none; }
+
 div.codexglossform form div.glossetc span.head {
     padding-left: 0.5ex; font-weight: bold; color: black;}
 
@@ -307,8 +298,6 @@ div.codexglossform .checkspan.postgloss img {
 div.codexglossform .checkspan.postgloss input {
     margin: 0px; border: 0px; padding: 0px;
     vertical-align: middle;}
-
-div.codexglossform div.rightcol .checkspan.postgloss {}
 
 div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue;}
@@ -488,6 +477,49 @@ div#CODEXRIBBON div.inputbox#CODEXGLOSSTAGINPUT input[TYPE="TEXT"] {
 div#CODEXRIBBON div.inputbox#CODEXGLOSSOUTLETINPUT input[TYPE="TEXT"] {
     background-image:
     url(https://beingmeta.s3.amazonaws.com/static/g/codex/sbookspeople64x64.png);}
+
+/* New menu stuff */
+
+div.codexglossform form div.addglossmenu {
+    position: absolute; top: 2px; right: 0px;
+    width: 50px; margin-right: 5px; margin-left: 5px;
+    z-index: 800;}
+
+div.codexglossform form div.addglossmenu > img {
+    width: 40px; height: 40px; padding: 2px; margin-bottom: 4px;
+    display: none; }
+div.codexglossform form div.addglossmenu > img[alt="hamburger"] { display: block; }
+div.codexglossform form div.addglossmenu.expanded > img {
+    display: block; opacity: 0.90;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
+div.codexglossform form div.addglossmenu.expanded > img[alt="hamburger"] {
+    opacity: 0.95;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
+    filter: alpha(opacity=95);
+    -webkit-opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -o-opacity: 0.95;}
+
+div.codexglossform form.addtag div.addglossmenu > img[alt="hamburger"] {
+    display: none; }
+div.codexglossform form.addtag div.addglossmenu > img[alt="addtag"] {
+    display: block; }
+
+div.codexglossform form.addlink div.addglossmenu > img[alt="hamburger"] {
+    display: none; }
+div.codexglossform form.addlink div.addglossmenu > img[alt="addlink"] {
+    display: block; }
+
+div.codexglossform form.addoutlet div.addglossmenu > img[alt="hamburger"] {
+    display: none; }
+div.codexglossform form.addoutlet div.addglossmenu > img[alt="addoutlet"] {
+    display: block; }
 
 /* Emacs local variables
 ;;;  Local variables: ***
