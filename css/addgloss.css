@@ -53,8 +53,6 @@ div.codexglossform div.response .respexcerpt {
 div.codexglossform div .respdate {
     font-weight: bold; font-variant: small-caps;
     color: purple;}
-div.codexglossform div .respdate:before { content: "(From You, ";}
-div.codexglossform div .respdate:after { content: ")";}
 
 div.codexglossform form div.glossetc .modebuttons,
 div.codexglossform form div.glossetc .networks,
@@ -70,25 +68,6 @@ body.hudup div.codexglossform form div.glossetc .links,
 body.hudup div.codexglossform form div.glossetc .sharing,
 body.hudup div.codexglossform form div.checkspan.postgloss {
     display: inline;}
-
-div.codexglossform div.glosseditbox {
-    text-align: right; color: black; 
-    font-variant: small-caps;
-    font-size: 80%;
-    display: none;}
-div.codexglossform div.glosseditbox .codexglossedit {float: left;}
-div.codexglossform div.glosseditbox .respdate {float: left;}
-div.codexglossform div.glosseditbox img {
-    vertical-align: top; height: 3ex; width: 3ex;
-    margin-top: 3px;}
-div.codexglossform div.glosseditbox img[alt='red x'] {
-    height: 2.5ex; width: 2.5ex;}
-div.codexglossform div.glosseditbox span.clickable {
-    cursor: pointer; vertical-align: top;
-    margin-right: 0.5ex;}
-
-div.codexglossform.glossedit div.glosseditbox {display: block; height: 24px;}
-div.codexglossform.glossedit span.editmsg { display: inline;}
 
 div.codexglossform form {
     padding: 0px; margin: 0px;}
@@ -188,9 +167,17 @@ div.codexglossform form div.glossetc {
     margin-top: 0.4ex; margin-left: 1px;
     overflow: hidden;
     clear: left;}
-div.codexglossform form div.glossetc div.glossexposure { float: right;}
-div.codexglossform form div.glossetc div.glossexposure { display: none;}
-div.codexglossform form.addoutlet div.glossetc div.glossexposure {
+
+div.codexglossform form .glossetc .glossexposure,
+div.codexglossform form .glossetc .glossdate {
+    padding: 0px; padding-bottom: 1ex; padding-left: 1ex;
+    float: right; display: none;}
+div.codexglossform .glossetc .glossdate {
+  font-variant: small-caps; color: purple;}
+
+div.codexglossform form.addoutlet .glossetc .glossexposure,
+div.codexglossform.glossedit form .glossetc .glossexposure,
+div.codexglossform.glossedit form .glossetc .glossdate {
     display: block;}
 
 div.codexglossform form div.glossetc .twisty { display: none;}

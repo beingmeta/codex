@@ -23,19 +23,6 @@
     <!-- Force IE to send the form in UTF-8 -->
     <input type="HIDDEN" name="IEHACK" VALUE="&#9760;"/>
   </div>
-  <div class="glosseditbox">
-    <span class="respdate"></span>
-    <span class="clickable codexglossrespond">
-      Respond
-      <img svg="http://static.beingmeta.com/g/codex/remark_respond.svgz"
-           src="http://static.beingmeta.com/g/codex/remark_respond64x64.png"
-           alt="remark balloon"/></span>
-    <span class="clickable codexglossdelete">
-      Delete 
-      <img svg="http://static.beingmeta.com/g/codex/remark_delete.svgz"
-           src="http://static.beingmeta.com/g/codex/remark_delete64x64.png"
-           alt="red x"/></span>
-  </div>
   <div class="response">
     Response to <span class="respmaker"></span>
     <span class="respdate"></span> <span class="respnote"></span> 
@@ -58,10 +45,14 @@
            src="http://static.beingmeta.com/g/codex/remark_share64x64.png"
            title="add outlets/share this gloss" class="button" alt="addoutlet"
            tabindex="4"/>
+      <img svg="http://static.beingmeta.com/g/codex/remark_respond.svgz"
+           src="http://static.beingmeta.com/g/codex/remark_respond64x64.png"
+           title="respond to this gloss" class="button" alt="glossreply"
+           tabindex="5"/>
       <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
            src="http://static.beingmeta.com/g/codex/redx64x64.png"
            title="delete gloss" class="button" alt="deletegloss"
-           tabindex="5"/>
+           tabindex="6"/>
     </div>
     <div class="inputbox">
       <div class="textbox">
@@ -88,6 +79,7 @@
             Shared</span>
         </div>
       </div>
+      <span class="glossdate"></span>
       <span class="tags empty"></span>    
       <span class="links empty"></span>
       <span class="outlets empty"></span>

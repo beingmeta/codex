@@ -165,7 +165,7 @@
         if (Codex.mycopyid)
             getInput(form,"MYCOPYID").value=Codex.mycopyid;
         if (gloss) {
-            var date_elt=getChild(form,".respdate");
+            var date_elt=getChild(form,".glossdate");
             fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
         var glossinput=getInput(form,"NOTE");
         var notespan=getChild(form,".notespan");
