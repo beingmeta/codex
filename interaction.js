@@ -1761,7 +1761,11 @@
         Codex.addOutlet2Form(form,outlet);
         fdjtUI.cancel(evt);}
 
+
+    /* The addgloss menu */
+
     var glossmodes=Codex.glossmodes;
+    var slip_timeout=false;
 
     function glossmode_tap(evt){
         evt=evt||event;
@@ -1775,31 +1779,20 @@
         
         if (alt==="hamburger") {
             Codex.setGlossMode(false,form);
-            toggleClass(menu,"expanded");
-            return;}
-        if (alt==="deletegloss") {
-            var div=getParent(form,".codexglossform");
-            // This keeps it from being saved when it loses the focus
-            dropClass(div,"modified");
-            dropClass(menu,"expanded");
-            var uuid=fdjtDOM.getInputValues(form,"UUID")[0];
-            fdjt.UI.choose([{label: "Cancel"},
-                            {label: "Delete",
-                             handler: function(){
-                                 delete_gloss(uuid);
-                                 Codex.setMode(false);
-                                 fdjtDOM.remove(div);},
-                             isdefault: true}],
-                           "Delete this gloss?");
-            return;}
-        if (alt===form.className) {
+            toggleClass(menu,"expanded");}
+        else if (alt==="glossdelete") 
+            addgloss_delete(menu,form);
+        else if (alt==="glossrespond") 
+            addgloss_respond(menu,form);
+        else if (alt===form.className) {
             Codex.setGlossMode(false,form);
-            dropClass(menu,"expanded");
-            return;}
-        Codex.setGlossMode(alt,form);
-        dropClass(menu,"expanded");}
-
-    var slip_timeout=false;
+            dropClass(menu,"expanded");}
+        else if (Codex.glossmodes.exec(alt)) {
+            Codex.setGlossMode(alt,form);
+            dropClass(menu,"expanded");}
+        else fdjtLog.warn("Bad alt=%s in glossmode_tap",alt);
+        fdjtUI.cancel(evt);
+        return;}
 
     function glossmode_hold(evt){
         evt=evt||event;
@@ -1828,22 +1821,13 @@
         var form=fdjtDOM.getParent(target,'form');
         var alt=target.alt;
         dropClass(target,"held");
-        if (alt==="deletegloss") {
-            // This keeps it from being saved when it loses the focus
-            dropClass(div,"modified");
-            dropClass(menu,"expanded");
-            var uuid=fdjtDOM.getInputValues(form,"UUID")[0];
-            fdjt.UI.choose([{label: "Cancel"},
-                            {label: "Delete",
-                             handler: function(){
-                                 delete_gloss(uuid);
-                                 Codex.setMode(false);
-                                 fdjtDOM.remove(div);},
-                             isdefault: true}],
-                           "Delete this gloss?");
-            return;}
-        if (Codex.glossmodes.exec(alt))
+        if (alt==="glossdelete") 
+            addgloss_delete(menu,form);
+        if (alt==="glossrespond") 
+            addgloss_respond(menu,form);
+        else if (Codex.glossmodes.exec(alt))
             Codex.setGlossMode(alt,form);
+        else fdjtLog.warn("Bad alt=%s in glossmode_release",alt);
         dropClass(menu,"expanded");}
 
     function glossmode_slip(evt) {
@@ -1856,8 +1840,42 @@
                 dropClass(menu,"expanded");},
                                     500);}}
 
-    /* Changing gloss networks */
+    function addgloss_delete(menu,form,div){
+        if (!(form)) getParent(menu,"FORM");
+        if (!(div)) getParent(form,".codexglossform")
+        // This keeps it from being saved when it loses the focus
+        dropClass(div,"modified");
+        dropClass(menu,"expanded");
+        var uuid=fdjtDOM.getInputValues(form,"UUID")[0];
+        var gloss=Codex.glosses.ref(uuid);
+        fdjt.UI.choose([{label: "Cancel"},
+                        {label: "Delete",
+                         handler: function(){
+                             delete_gloss(uuid);
+                             Codex.setMode(false);
+                             fdjtDOM.remove(div);},
+                         isdefault: true}],
+                       "Delete this gloss?",
+                       fdjtDOM(
+                           "div.smaller",
+                           "(Created ",
+                           fdjtTime.shortString(gloss.created),
+                           ")"));}
 
+    function addgloss_respond(target){
+        var block=getParent(target,".codexglossform");
+        if (!(block)) return;
+        var glosselt=fdjtDOM.getInput(block,'UUID');
+        if (!(glosselt)) return;
+        var qref=glosselt.value;
+        var gloss=Codex.glosses.probe(qref);
+        if (!(gloss)) return;
+        var form=Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
+        if (!(form)) return;
+        Codex.setMode("addgloss");}
+    
+    /* Changing gloss networks */
+    
     function changeGlossNetwork(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);

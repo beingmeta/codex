@@ -149,6 +149,7 @@
         if (gloss) {
             if (response) addClass(div,"glossreply");
             else addClass(div,"glossedit");}
+        else addClass(div,"glossadd");
         if (form) return div; else return false;}
     Codex.getGlossForm=getGlossForm;
     
@@ -859,17 +860,16 @@
                     gloss_cloud.complete(span);},
                 200);}}
     
-    function get_addgloss_callback(form){
+    function get_addgloss_callback(form,keep){
         return function(req){
-            return addgloss_callback(req,form);}}
+            return addgloss_callback(req,form,keep);}}
 
-    function addgloss_callback(req,form){
+    function addgloss_callback(req,form,keep){
         if (Codex.Trace.network)
             fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
         dropClass(form.parentNode,"submitting");
         var json=JSON.parse(req.responseText);
         var ref=Codex.glosses.Import(json);
-        fdjtDOM.remove(form.parentNode);
         var reps=document.getElementsByName(json.uuid);
         var i=0, lim=reps.length;
         while (i<lim) {
@@ -877,9 +877,11 @@
             if (hasClass(rep,"codexcard"))
                 fdjtDOM.replace(rep,Codex.renderCard(ref));}
         /* Turn off the target lock */
-        setGlossTarget(false);
-        Codex.setTarget(false);
-        Codex.setMode(false);}
+        if (!(keep)) {
+            fdjtDOM.remove(form.parentNode);
+            setGlossTarget(false);
+            Codex.setTarget(false);
+            Codex.setMode(false);}}
 
     function clearGlossForm(form){
         // Clear the UUID, and other fields
@@ -971,7 +973,7 @@
     /***** Saving (submitting/queueing) glosses *****/
 
     // Submits a gloss, queueing it if offline.
-    function submitGloss(arg){
+    function submitGloss(arg,keep){
         var div=false, form=false;
         if (typeof arg === "undefined") {
             div=fdjtID("CODEXLIVEGLOSS");
@@ -1005,7 +1007,7 @@
             else addLink(form,note.slice(0,brk),note.slice(brk+1));
             note.value="";}
         var sent=((navigator.onLine)&&
-                  (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form))));
+                  (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form,keep))));
         if (!(sent)) queueGloss(form,evt);
         else dropClass(div,"modified");}
     Codex.submitGloss=submitGloss;
