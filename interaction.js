@@ -319,7 +319,7 @@
              (hasParent(Codex.glosstarget,passage))) {
             // You're editing the excerpt, so simply let the
             // fdjtSelecting handlers interpret this
-            Codex.setMode("addgloss");
+            fdjtUI.TapHold.fakePress(evt,250);
             gesture_start=false;
 	    return;}
 
