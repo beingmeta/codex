@@ -239,7 +239,6 @@
                 var title;
                 if (typeof urlinfo === 'string') title=urlinfo;
                 else title=urlinfo.title;
-                // if (resplinks) addLink();
                 addLink(form,url,title);}}
         if ((gloss)&&(gloss.share)) {
             var tags=gloss.share;
@@ -567,10 +566,13 @@
         if (title) span.title=title;
         span.setAttribute("varname",varname);
         span.setAttribute("tagval",tag);
+        addClass(span,("glosstag"));
         addClass(span,((varname.toLowerCase())+"var"));
         if (typeof text === 'string')
             fdjtDOM.append(span,fdjtDOM(textspec,text));
         else fdjtDOM.append(span,text);
+        fdjtDOM.append(
+            span,fdjtDOM.Image(cxicon("redx",32,32),"img.redx","x"));
         fdjtDOM.append(tagselt,span," ");
         dropClass(tagselt,"empty");
         updateForm(form);
@@ -656,6 +658,9 @@
                 else if ((start>0)&&(string[start-1]==='['))
                     break;
                 else start--;}
+            else if ((string[start]===']')&&(start>0)&&
+                     (string[start-1]===']'))
+                return false;
             else start--;}
         if (start<0) return false;
         while (end<lim) {
@@ -665,7 +670,7 @@
             else end++;}
         if (start===end) return false;
         if (erase) {
-            input.value=string.slice(0,start)+string.slice(end+1);}
+            input.value=string.slice(0,start-1)+string.slice(end+2);}
         return string.slice(start+1,end);}
 
     function getbracketed(input,erase){
@@ -679,6 +684,48 @@
     function linkp(string){
         return ((string[0]==="@")||(string.search(uri_prefix)===0));}
     
+    function setbracketed(input,replacement,atend){
+        var string=input.value;
+        if ((!(string))||(string.length==0)) return false;
+        var pos=input.selectionStart||0;
+        var start=pos, end=pos, lim=string.length;
+        while (start>=0) {
+            if (string[start]==='[') {
+                if ((start>0)&&(string[start-1]==='\\')) {
+                    start--; continue;}
+                else if ((start>0)&&(string[start-1]==='['))
+                    break;
+                else start--;}
+            else start--;}
+        if (start<0) return false;
+        while (end<lim) {
+            if ((string[end]===']')&&(string[end+1]=="]")) {
+                break;}
+            else if (string[end]==='\\') end=end+2;
+            else end++;}
+        if (start===end) return false;
+        input.value=string.slice(0,start-1)+
+            "[["+replacement+"]]"+
+            string.slice(end+2);
+        if (atend) input.selectionStart=
+            input.selectionEnd=start+replacement.length+4;
+        return true;}
+
+    function getTagString(span,content){
+        var tagval=span.getAttribute("tagval");
+        if (tagval) {
+            var at=tagval.indexOf('@');
+            if ((Codex.knodule)&&(at>0)&&
+                (tagval.slice(at+1)===Codex.knodule.name))
+                return tagval.slice(0,at);
+            else return tagval;}
+        else {
+            var bar=content.indexOf('|');
+            if (bar>0) return content.slice(0,bar);
+            else return content;}}
+
+    var stdspace=fdjtString.stdspace;
+
     function handleBracketed(form,content,complete){
         dropClass("CODEXHUD","glosstagging");
         if ((content[0]==='@')||(content.search(uri_prefix)===0)) {
@@ -687,24 +734,48 @@
             if (brk<0) addLink(form,content.slice(start));
             else {
                 addLink(form,content.slice(start,brk),
-                        content.slice(brk+1));}}
-        else if (content.indexOf('|')>=0) addTag(form,content);
+                        content.slice(brk+1));}
+            return false;}
+        else if (content.indexOf('|')>=0) {
+            var span=addTag(form,content);
+            return getTagString(span,stdspace(content));}
         else {
             var completions=gloss_cloud.complete(content);
-            if (!(completions)) {
-                addTag(form,content);
-                return;}
-            var i=0; var lim=completions.length;
-            var std=fdjtString.stdspace(content);
-            while (i<lim) {
-                var completion=completions[i++];
-                if (content===gloss_cloud.getKey(completion)) {
-                    addTag(form,completion);
-                    return;}}
-            if ((complete)&&(completions.length))
-                addTag(form,completions[0]);      
-            else addTag(form,std);
-            gloss_cloud.complete("");}}
+            var std=stdspace(content);
+            if ((!(completions))||(completions.length===0)) {
+                addTag(form,std);
+                gloss_cloud.complete("");
+                return std;}
+            else {
+                var completion=false;
+                if (completions.length===1)
+                    completion=completions[0];
+                else if ((completions.exact)&&
+                         (completions.exact.length===1))
+                    completion=completions.exact[0];
+                else {
+                    // Multiple completions
+                    completion=completions[0];
+                    var i=0, lim=completions.length;
+                    while (i<lim) {
+                        var c=completions[i++];
+                        if (c!==completion) {completion=false; break;}}}
+                if (completion===completions[0]) {
+                    var ks=gloss_cloud.getKey(completions.matches[0]);
+                    if (ks.toLowerCase().search(std.toLowerCase())!==0) {
+                        // Don't use non-prefix matches
+                        addTag(form,std);
+                        gloss_cloud.complete("");
+                        return std;}}
+                if (completion) {
+                    var span=addTag(form,completion);
+                    gloss_cloud.complete("");
+                    return getTagString(
+                        span,gloss_cloud.getKey(completion));}
+                else {
+                    addTag(form,std);
+                    gloss_cloud.complete("");
+                    return std;}}}}
 
     /* This handles embedded brackets */
     function glossinput_keypress(evt){
@@ -728,7 +799,8 @@
             var content=getbracketed(target);
             if (!(content)) return;
             fdjtUI.cancel(evt);
-            handleBracketed(form,content);}
+            var replace=handleBracketed(form,content);
+            if (replace) setbracketed(target,replace,2);}
         else if (ch===13) {fdjtUI.cancel(evt);}
         else {
             var content=getbracketed(target);
@@ -756,7 +828,11 @@
             if (bracketed) {
                 // If you're in a [[]], handle entry/completion
                 fdjtUI.cancel(evt);
-                handleBracketed(form,getbracketed(target,true),true);}
+                if (evt.ctrlKey)
+                    handleBracketed(form,getbracketed(target,true));
+                else {
+                    var replace=handleBracketed(form,getbracketed(target));
+                    if (replace) setbracketed(target,replace,2);}}
             else if (evt.shiftKey) {
                 // This inserts a hard newline
                 fdjtUI.cancel(evt);
@@ -846,7 +922,14 @@
         if (completion) {
             var live=fdjtID("CODEXLIVEGLOSS");
             var form=((live)&&(getChild(live,"form")));
-            addTag(form,completion);}
+            var span=addTag(form,completion);
+            if (!(hasClass("CODEXHUD","glossaddtag"))) {
+                // This means we have a bracketed reference
+                var tagstring=getTagString(
+                    span,gloss_cloud.getKey(completion));
+                var input=getInput(form,"NOTE");
+                if ((input)&&(tagstring))
+                    setbracketed(input,tagstring,2);}}
         fdjtUI.cancel(evt);}
 
 

@@ -205,13 +205,7 @@ div.codexglossform form div.glossetc .links,
 div.codexglossform form div.glossetc .tags {}
 
 div.codexglossform form div.glossetc .tags span.checkspan {
-    padding: 2px; padding-top: 0px;
-    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
-    -o-border-bottom-left-radius: 1ex; -o-border-top-left-radius: 1ex; 
-    -moz-border-radius-bottomleft: 1ex; -moz-border-radius-topleft: 1ex;
-    -webkit-border-bottom-left-radius: 1ex;
-    -webkit-border-top-left-radius: 1ex; 
-    border: solid yellow 2px;}
+    padding: 2px; padding-top: 0px;}
 div.codexglossform form div.glossetc span.checkspan.waschecked {
     text-decoration: line-through;}
 div.codexglossform form div.glossetc span.checkspan.ischecked {
@@ -225,7 +219,8 @@ div.codexglossform form div.glossetc .checkspan img {
     padding-left: 3px;}
 div.codexglossform form div.glossetc .checkspan input {
     margin-left: 0px;}
-div.codexglossform form div.glossetc .checkspan.anchor input {
+div.codexglossform form div.glossetc .checkspan.anchor input,
+div.codexglossform form div.glossetc .checkspan.glosstag input {
     display: none;}
 
 div.codexglossform form div.glossetc .outlets.empty,
