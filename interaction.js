@@ -148,7 +148,8 @@
         var div=((form)&&(getParent(form,".codexglossform")));
         if (div) dropClass(div,"focused");
         gloss_blurred=fdjtTime();
-        if ((div)&&(hasClass(div,"modified"))) Codex.submitGloss(div);
+        // Restore this without removal of the gloss
+        // if ((div)&&(hasClass(div,"modified"))) Codex.submitGloss(div);
         gloss_focus=false;}
     Codex.UI.addgloss_focus=addgloss_focus;
     Codex.UI.addgloss_blur=addgloss_blur;
@@ -725,6 +726,7 @@
     function onkeydown(evt){
         evt=evt||event||null;
         var kc=evt.keyCode;
+        var target=fdjtUI.T(evt);
         // fdjtLog("sbook_onkeydown %o",evt);
         if (evt.keyCode===27) { /* Escape works anywhere */
             if (Codex.mode) {
@@ -735,6 +737,9 @@
             else if (Codex.last_mode) Codex.setMode(Codex.last_mode);
             else {}
             return;}
+        else if ((target.tagName==="TEXTAREA")||
+                 (target.tagName==="INPUT"))
+            return;
         else if ((evt.ctrlKey)&&(Codex.previewing)) {
             var previewing=Codex.previewing;
             Codex.stopPreview("control_key");

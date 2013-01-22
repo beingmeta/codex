@@ -357,10 +357,7 @@
         var syncelt=getInput(form,"SYNC");
         syncelt.value=(Codex.syncstamp+1);
         /* Get the input appropriate to the mode. */
-        if (mode==='editnote') {
-            if (glossinput)
-                gloss_cloud.complete(getbracketed(glossinput,false)||"");
-            else gloss_cloud.complete("");}
+        gloss_cloud.complete(getbracketed(glossinput,false)||"");
         
         /* Do completions based on those input's values */
         Codex.outletCloud().complete();
@@ -536,11 +533,7 @@
                 varname='SHARE'; textspec='span.source';}
             else {}
             if (tag.title) title=tag.title;
-            tag=gloss_cloud.getValue(tag);
-            if (hasClass(form,"editnote")) {
-                var input=getInput(form,"NOTE");
-                // This erases whatever was being typed
-                if (input) getbracketed(input,false);}}
+            tag=gloss_cloud.getValue(tag);}
         var ref=
             ((tag instanceof Ref)?(tag):
              ((typeof tag === 'string')&&
@@ -649,6 +642,8 @@
     
     /* Text handling for the gloss text input */
 
+    // This is use for delaying completion calls and keeping them from
+    // clobbering one another
     var addgloss_timer=false;
     
     function _getbracketed(input,erase){
@@ -660,11 +655,14 @@
             if (string[start]==='[') {
                 if ((start>0)&&(string[start-1]==='\\')) {
                     start--; continue;}
-                break;}
+                else if ((start>0)&&(string[start-1]==='['))
+                    break;
+                else start--;}
             else start--;}
         if (start<0) return false;
         while (end<lim) {
-            if (string[end]===']') break;
+            if ((string[end]===']')&&(string[end+1]=="]")) {
+                break;}
             else if (string[end]==='\\') end=end+2;
             else end++;}
         if (start===end) return false;
@@ -674,19 +672,27 @@
 
     function getbracketed(input,erase){
         var bracketed=_getbracketed(input,erase);
-        if (bracketed) {
-            addClass("CODEXHUD","addglosstag");
+        if ((bracketed)&&(!(linkp(bracketed)))) {
+            addClass("CODEXHUD","glosstagging");
             Codex.UI.updateScroller("CODEXGLOSSTAGS");}
-        else dropClass("CODEXHUD","addglosstag");
+        else dropClass("CODEXHUD","glosstagging");
         return bracketed;}
 
+    function linkp(string){
+        return ((string[0]==="@")||
+                (string.search("http:")===0)||
+                (string.search("https:")===0));}
+    
     function handleBracketed(form,content,complete){
-        dropClass("CODEXHUD","addglosstag");
-        if (content[0]==='@') {
+        dropClass("CODEXHUD","glosstagging");
+        if ((content[0]==='@')||
+            (content.search("http:")===0)||
+            (content.search("https:")===0)) {
+            var start=(content[0]==='@');
             var brk=content.indexOf(' ');
-            if (brk<0) addLink(form,content.slice(1));
+            if (brk<0) addLink(form,content.slice(start));
             else {
-                addLink(form,content.slice(1,brk),
+                addLink(form,content.slice(start,brk),
                         content.slice(brk+1));}}
         else if (content.indexOf('|')>=0) addTag(form,content);
         else {
@@ -714,27 +720,32 @@
         var ch=evt.charCode;
         var wrapper=getParent(form,".codexglossform");
         addClass(wrapper,"modified");
-        if (addgloss_timer) clearTimeout(addgloss_timer);
+        if (addgloss_timer) {
+            clearTimeout(addgloss_timer);
+            addgloss_timer=false;}
         if (ch===91) { /* [ */
             var pos=target.selectionStart, lim=string.length;
             if ((pos>0)&&(string[pos-1]==='\\')) return; 
             fdjtUI.cancel(evt);
-            target.value=string.slice(0,pos)+"[]"+string.slice(pos);
-            target.selectionStart=target.selectionEnd=pos+1;}
+            fdjtDOM.insertText(target,"[]",1);}
         else if (ch===93) { /* ] */
             var pos=target.selectionStart;
             if ((pos>0)&&(string[pos-1]==='\\')) return; 
-            var content=getbracketed(target,true);
+            var content=getbracketed(target);
             if (!(content)) return;
             fdjtUI.cancel(evt);
             handleBracketed(form,content);}
+        else if (ch===13) {fdjtUI.cancel(evt);}
         else {
             var content=getbracketed(target);
-            if ((typeof content==='string')&& (content[0]!=='@'))
+            if ((typeof content==='string')&& (!(linkp(content))))
+                // This timer ensures that the character typed
+                // actually gets into the box before we do anything
                 addgloss_timer=setTimeout(function(){
+                    addgloss_timer=false;
                     var span=getbracketed(target,false);
-                    // fdjtLog("Completing on %s",span);
-                    if (span[0]!=='@') gloss_cloud.complete(span);},
+                    if (!(linkp(content)))
+                        gloss_cloud.complete(span);},
                                           200);}}
 
     function glossinput_keydown(evt){
@@ -743,31 +754,35 @@
         var target=fdjtUI.T(evt);
         var form=getParent(target,'form');
         var mode=getGlossMode(form);
+        if (addgloss_timer) {
+            clearTimeout(addgloss_timer);
+            addgloss_timer=false;}
         if (kc===13) { // newline/enter
-            if (!(mode)) {submitEvent(form);}
+            var bracketed=getbracketed(target);
+            if (bracketed) {
+                // If you're in a [[]], handle entry/completion
+                fdjtUI.cancel(evt);
+                handleBracketed(form,getbracketed(target,true),true);}
+            else if (evt.shiftKey) {
+                // This inserts a hard newline
+                fdjtUI.cancel(evt);
+                fdjtDOM.insertText(target,'\n');}
             else {
-                var bracketed=getbracketed(target);
-                if (bracketed) {
-                    fdjtUI.cancel(evt);
-                    handleBracketed(form,getbracketed(target,true),true);}
-                else if (evt.ctrlKey) {
-                    fdjtUI.cancel(evt);
-                    submitEvent(target);}
-                else if (!(evt.shiftKey)) {
-                    fdjtUI.cancel(evt);
-                    dropClass(form,"editnote");}
-                else fdjtUI.cancelBubble(evt);}}
+                fdjtUI.cancel(evt);
+                submitEvent(target);}}
         else if (mode) {}
-        else if ((kc===35)||(kc===91)) // # or [
-            setGlossMode("addtag",form);
-        else if (kc===32) // Space
-            setGlossMode(false,form);
-        else if ((kc===47)||(kc===58)) // /or :
-            setGlossMode("addlink",form);
-        else if ((kc===64)) // @
-            setGlossMode("addoutlet",form);
-        else {}}
-
+        else {
+            var content=getbracketed(target);
+            if (!(typeof content==='string')) {}
+            else addgloss_timer=setTimeout(
+                function(){
+                    // This timer ensures that the character typed
+                    // actually gets into the box before we do anything
+                    addgloss_timer=false;
+                    var span=getbracketed(target,false);
+                    gloss_cloud.complete(span);},
+                200);}}
+    
     function get_addgloss_callback(form){
         return function(req){
             return addgloss_callback(req,form);}}

@@ -135,6 +135,7 @@ div#CODEXHUD #CODEXHEART { overflow: auto;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.glosstagging #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
     border: solid transparent 3px;
@@ -163,12 +164,14 @@ div#CODEXHUD div#CODEXHEART .hudpanel { overflow: auto;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
+body #CODEXHUD.addgloss.glosstagging #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
     padding-top: 1ex; padding-bottom: 1em;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEART div.hudpanel,
+body #CODEXHUD.addgloss.glosstagging #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEART div.hudpanel {
     margin-top: 0px; margin-bottom: 0px;}
@@ -179,11 +182,13 @@ body.hudup #CODEXHUD.searchresults.openheart #CODEXHEART {
 
 body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
+body.cxISCROLL #CODEXHUD.addgloss.glosstagging #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
     padding-top: 0px; padding-bottom: 0px;}
 body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddtag #CODEXHEART #CODEXHEARTCONTENT,
+body.cxISCROLL #CODEXHUD.addgloss.glosstagging #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART #CODEXHEARTCONTENT {
     padding-top: 1em; padding-bottom: 1em;}
@@ -197,6 +202,7 @@ body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER {
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.glosstagging #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER {
     top: 150px; bottom: 50px; height: auto;}
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
@@ -298,6 +304,7 @@ div#CODEXHUD.flytoc div#CODEXFLYTOC.hudpanel,
 div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
 div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
 div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART div#CODEXGLOSSTAGS.hudpanel,
+div#CODEXHUD.addgloss.glosstagging div#CODEXHEART div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss.glossaddoutlet div#CODEXHEART div#CODEXGLOSSOUTLETS.hudpanel,
 div#CODEXHUD.addgloss.glossaddlink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
 div#CODEXHUD.search div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
@@ -662,8 +669,10 @@ div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall .showless { display: none;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showless {display: inline;}
 div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showmore {display: none;}
 
+div#CODEXHUD.addgloss.glosstagging div#CODEXHEART #CODEXGLOSSTAGS,
 div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSTAGS,
-div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSCLOUD {
+div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSCLOUD,
+div#CODEXHUD.addgloss.glosstagging div#CODEXHEART #CODEXGLOSSCLOUD {
     display: block;}
 
 div#CODEXGLOSSES div.codexthread { border-right-width: 0px;}
