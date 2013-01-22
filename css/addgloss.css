@@ -424,11 +424,9 @@ div#CODEXHUD.cxANIMATE div.completions#CODEXGLOSSOUTLETS {
     -o-transition-property: height;
     transition-duration: 3s; -webkit-transition-duration: 3s;
     -moz-duration: 3s; -o-transition-duration: 3s;}
-body.hudup div#CODEXHUD.addgloss div#CODEXHEART.showoutlets
-  div.completions#CODEXOUTLETCLOUD {
+body.hudup div#CODEXHUD.addgloss.glossaddoutlet div.completions#CODEXOUTLETCLOUD {
     display: block;}
-body.hudup div#CODEXHUD.addgloss div#CODEXHEART.addlink
-  div#CODEXGLOSSATTACH {
+body.hudup div#CODEXHUD.addgloss.glossaddlink div#CODEXGLOSSATTACH {
     display: block;}
 
 div#CODEXGLOSSATTACH tr.choosetype { display: none;}
