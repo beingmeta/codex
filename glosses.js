@@ -65,6 +65,8 @@
 
     var cxicon=Codex.icon;
 
+    var uri_prefix=/(http:)|(https:)|(ftp:)|(urn:)/;
+
     // The gloss mode is stored in two places:
     //  * the class of the gloss FORM element
     //  * as the class gloss+mode on CODEXHUD (e.g. glossaddtag)
@@ -220,7 +222,6 @@
             if (typeof tags === 'string') tags=[tags];
             var i=0; var lim=tags.length;
             while (i<lim) {
-                // if (resptags) gloss;
                 addTag(form,tags[i],false);
                 i++;}}
         if ((gloss)&&(!(response))&&(gloss.posted)) {
@@ -521,6 +522,7 @@
         if (form.tagName!=='FORM')
             form=getParent(form,'form')||form;
         if (!(knodule)) knodule=Codex.getMakerKnodule(Codex.user);
+        if (typeof checked==="undefined") checked=true;
         var wrapper=getParent(form,".codexglossform");
         addClass(wrapper,"modified");
         var tagselt=getChild(form,'.tags');
@@ -558,14 +560,10 @@
             var cspan=checkspans[i++];
             if (((cspan.getAttribute("varname"))===varname)&&
                 ((cspan.getAttribute("tagval"))===tagval)) {
-                if ((typeof checked === 'undefined')||(checked))
-                    addClass(cspan,"waschecked");
+                if (checked) addClass(cspan,"waschecked");
                 return cspan;}}
-        var span=fdjtUI.CheckSpan(
-            "span.checkspan",varname,tagval,
-            ((typeof checked === 'undefined')||(checked)));
-        if ((typeof checked === 'undefined')||(checked))
-            addClass(span,"waschecked");
+        var span=fdjtUI.CheckSpan("span.checkspan",varname,tagval,checked);
+        if (checked) addClass(span,"waschecked");
         if (title) span.title=title;
         span.setAttribute("varname",varname);
         span.setAttribute("tagval",tag);
@@ -679,17 +677,13 @@
         return bracketed;}
 
     function linkp(string){
-        return ((string[0]==="@")||
-                (string.search("http:")===0)||
-                (string.search("https:")===0));}
+        return ((string[0]==="@")||(string.search(uri_prefix)===0));}
     
     function handleBracketed(form,content,complete){
         dropClass("CODEXHUD","glosstagging");
-        if ((content[0]==='@')||
-            (content.search("http:")===0)||
-            (content.search("https:")===0)) {
+        if ((content[0]==='@')||(content.search(uri_prefix)===0)) {
             var start=(content[0]==='@');
-            var brk=content.indexOf(' ');
+            var brk=content.search(/\s/);
             if (brk<0) addLink(form,content.slice(start));
             else {
                 addLink(form,content.slice(start,brk),
@@ -767,6 +761,15 @@
                 // This inserts a hard newline
                 fdjtUI.cancel(evt);
                 fdjtDOM.insertText(target,'\n');}
+            else if (evt.ctrlKey) {
+                var note=target.value;
+                fdjtUI.cancel(evt);
+                if (note.search(uri_prefix)===0) {
+                    var brk=note.search(/\s/);
+                    if (brk<0) addLink(form,note);
+                    else addLink(form,note.slice(0,brk),note.slice(brk+1));}
+                else addTag(form,note,"TAGS",true,Codex.knodule);
+                target.value="";}
             else {
                 fdjtUI.cancel(evt);
                 submitEvent(target);}}
@@ -904,13 +907,23 @@
                 div=arg; form=getChild(div,"FORM");}}
         if (!(form)) return;
         addClass(div,"submitting");
-        if (!((hasParent(form,".glossedit"))||(hasParent(form,".glossreply"))))
-            // Only save defaults if adding a new gloss (what about reply?)
+        if (!((hasParent(form,".glossedit"))||
+              (hasParent(form,".glossreply"))))
+            // Only save defaults if adding a new gloss
             saveGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
         var uuidelt=getInput(form,"UUID");
         if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
             fdjtLog.warn('missing UUID');
             if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
+        var note_input=getInputs(form,"NOTE")[0];
+        if (note.value.search(uri_prefix)===0) {
+            // This is a convenience kludge where notes that look like
+            // URLs are stored as links.
+            var note=note.value;
+            var brk=note.search(/\s/);
+            if (brk<0) addLink(form,note);
+            else addLink(form,note.slice(0,brk),note.slice(brk+1));
+            note.value="";}
         var sent=((navigator.onLine)&&
                   (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form))));
         if (!(sent)) queueGloss(form,evt);
