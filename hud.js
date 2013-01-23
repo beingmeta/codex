@@ -614,6 +614,15 @@ Codex.setMode=
             // Moving the focus back to the body lets keys work
             else document.body.focus();
             
+            if (mode==="allglosses") {
+                if (Codex.point)
+                    Codex.UI.scrollGlosses(
+                        Codex.point,fdjt.ID("CODEXALLGLOSSES"));}
+            else if (mode==="searchresults") {
+                if (Codex.point)
+                    Codex.UI.scrollGlosses(
+                        Codex.point,fdjt.ID("CODEXSEARCHRESULTS"));}
+            else {}
             if (display_sync) Codex.displaySync();}
 
         function fadeUpHUD(){

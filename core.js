@@ -813,6 +813,7 @@ var Codex=
             fdjtLog("Codex.GoTo%s() #%o@P%o/L%o %o",
                     ((caller)?("/"+caller):""),targetid,page,
                     ((info)&&(info.starts_at)),target);
+        if (info) Codex.point=target;
         setHead(target);
         setLocation(location);
         if ((istarget)&&(targetid)&&(!(inUI(target)))) setTarget(target);
