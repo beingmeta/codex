@@ -149,7 +149,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
         var div=((form)&&(getParent(form,".codexglossform")));
-        if (div) addClass(div,"focused");
+        if (div) {
+            addClass(div,"focused");
+            Codex.setGlossMode(false);}
         if (!(Codex.hudup)) Codex.setHUD(true,false);
         gloss_focus=form;}
     function addgloss_blur(evt){
@@ -315,8 +317,19 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             gesture_start=false
             fdjtUI.cancel(evt);
             return;}
-        // If there's a mode and no passage, clear the mode
-        if (((Codex.hudup)||(Codex.mode))&&(!(passage))) {
+
+        if ((passage===Codex.glosstarget)||
+             (hasParent(passage,Codex.glosstarget))||
+             (hasParent(Codex.glosstarget,passage))) {
+            // You're editing the excerpt, so simply let the
+            // fdjtSelecting handlers interpret this, though lower the
+            // HUD to clear things up.
+            Codex.setHUD(false,false);
+            fdjtUI.TapHold.fakePress(evt,250);
+            gesture_start=false;
+	    return;}
+
+        if ((Codex.hudup)||(Codex.mode)) {
             if (Codex.Trace.gestures)
                 fdjtLog("ctouch: clearmode h=%o m=%o",
                         Codex.hudup,Codex.mode);
@@ -325,16 +338,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtUI.cancel(evt);
             return;}
 
-        if ((passage===Codex.glosstarget)||
-             (hasParent(passage,Codex.glosstarget))||
-             (hasParent(Codex.glosstarget,passage))) {
-            // You're editing the excerpt, so simply let the
-            // fdjtSelecting handlers interpret this
-            fdjtUI.TapHold.fakePress(evt,250);
-            gesture_start=false;
-	    return;}
-
-        if ((passage)&&((Codex.mode==="addgloss")||(!(Codex.mode)))) {
+        if (passage) {
             var glosstarget=Codex.glosstarget;
             if (Codex.Trace.gestures)
                 if (glosstarget)
@@ -366,7 +370,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return;}
         else {
             // If there isn't a passage or the hud is down, we take it
-            // immediatley as a page flip
+            // immediately as a page flip
             if (Codex.Trace.gestures)
                 fdjtLog("ctouch/nopassage (%o) %o, m=%o, @%o,%o, vw=%o",
                         evt,target,Codex.mode,cX,cY,fdjtDOM.viewWidth());
