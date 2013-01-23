@@ -653,7 +653,7 @@ div.codexpage {
 div.codexpage { padding: 2px; border: 0px; margin: 0px;}
 div.codexpage.curpage, div.codexpage.lastpage, div.codexpage.nextpage {
     display: block;}
-div.codexpage.previewpage {
+div.codexpage.previewpage, div.codexpage.curpage.hidepage.previewpage {
     display: block; opacity: 1.0;}
 div.codexpage.curpage.hidepage { display: none; opacity: 0.0;}
 body.cxANIMATE div.codexpage {
