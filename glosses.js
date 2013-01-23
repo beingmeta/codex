@@ -753,43 +753,49 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (content.indexOf('|')>=0) {
             var span=addTag(form,content);
             return getTagString(span,stdspace(content));}
+        else return handleTagInput(content,form,true);}
+
+    function handleTagInput(content,form,exact){
+        var completions=gloss_cloud.complete(content);
+        var std=stdspace(content);
+        if ((!(completions))||(completions.length===0)) {
+            addTag(form,std);
+            gloss_cloud.complete("");
+            return std;}
         else {
-            var completions=gloss_cloud.complete(content);
-            var std=stdspace(content);
-            if ((!(completions))||(completions.length===0)) {
-                addTag(form,std);
-                gloss_cloud.complete("");
-                return std;}
+            var completion=false;
+            if (completions.length===1)
+                completion=completions[0];
+            else if ((completions.exact)&&
+                     (completions.exact.length===1))
+                completion=completions.exact[0];
             else {
-                var completion=false;
-                if (completions.length===1)
-                    completion=completions[0];
-                else if ((completions.exact)&&
-                         (completions.exact.length===1))
-                    completion=completions.exact[0];
-                else {
-                    // Multiple completions
-                    completion=completions[0];
-                    var i=0, lim=completions.length;
-                    while (i<lim) {
-                        var c=completions[i++];
-                        if (c!==completion) {completion=false; break;}}}
-                if (completion===completions[0]) {
-                    var ks=gloss_cloud.getKey(completions.matches[0]);
-                    if (ks.toLowerCase().search(std.toLowerCase())!==0) {
-                        // Don't use non-prefix matches
-                        addTag(form,std);
-                        gloss_cloud.complete("");
-                        return std;}}
-                if (completion) {
-                    var span=addTag(form,completion);
-                    gloss_cloud.complete("");
-                    return getTagString(
-                        span,gloss_cloud.getKey(completion));}
-                else {
+                // Multiple completions
+                completion=completions[0];
+                var i=0, lim=completions.length;
+                while (i<lim) {
+                    var c=completions[i++];
+                    if (c!==completion) {completion=false; break;}}}
+            if ((completion)&&(completion===completions[0])) {
+                var ks=gloss_cloud.getKey(completions.matches[0]);
+                if ((exact)?(ks.toLowerCase()!==std.toLowerCase()):
+                    (ks.toLowerCase().search()!==0)) {
+                    // When exact is true, count on exact matches;
+                    // even if it is false, don't except non-prefix
+                    // matches
                     addTag(form,std);
                     gloss_cloud.complete("");
-                    return std;}}}}
+                    return std;}}
+            if (completion) {
+                var span=addTag(form,completion);
+                gloss_cloud.complete("");
+                return getTagString(
+                    span,gloss_cloud.getKey(completion));}
+            else {
+                addTag(form,std);
+                gloss_cloud.complete("");
+                return std;}}}
+    Codex.handleTagInput=handleTagInput;
 
     /* This handles embedded brackets */
     function glossinput_keypress(evt){
@@ -1014,14 +1020,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtLog.warn('missing UUID');
             if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
         var note_input=getInputs(form,"NOTE")[0];
-        if (note.value.search(uri_prefix)===0) {
+        if (note_input.value.search(uri_prefix)===0) {
             // This is a convenience kludge where notes that look like
             // URLs are stored as links.
-            var note=note.value;
+            var note=note_input.value;
             var brk=note.search(/\s/);
             if (brk<0) addLink(form,note);
             else addLink(form,note.slice(0,brk),note.slice(brk+1));
-            note.value="";}
+            noteinput.value="";}
         var sent=((navigator.onLine)&&
                   (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form,keep))));
         if (!(sent)) queueGloss(form,evt);

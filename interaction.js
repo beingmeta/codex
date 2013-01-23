@@ -1025,23 +1025,20 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((fdjtString.isEmpty(content))&&(ch===13)) {
             if (gloss_cloud.selection) 
                 Codex.addTag2Form(form,gloss_cloud.selection);
-            else Codex.setGlossMode("editnote");
+            else Codex.setGlossMode(false);
+            gloss_cloud.clearSelection();
             return;}
         else if ((ch===13)&&(gloss_cloud.selection)) {
             Codex.addTag2Form(form,gloss_cloud.selection);
             gloss_cloud.complete("");
+            gloss_cloud.clearSelection();
             target.value="";}
         else if (ch===13) {
             var completions=gloss_cloud.complete(content);
             if ((content.indexOf('|')>=0)||
-                (content.indexOf('@')>=0)||
-                (completions.length===0)||
-                (evt.shiftKey))
+                (content.indexOf('@')>=0))
                 Codex.addTag2Form(form,content);
-            else {
-                if (completions.length)
-                    Codex.addTag2Form(form,completions[0]);
-                else Codex.addTag2Form(form,content);}
+            else Codex.handleTagInput(content,form,true);
             fdjtUI.cancel(evt);
             target.value="";
             gloss_cloud.complete("");}

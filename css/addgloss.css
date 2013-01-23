@@ -412,10 +412,10 @@ div.codexglossform form div.glossetc .tags span.checkspan {
 body.hudup div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
 
 div#CODEXHUD div#CODEXGLOSSTAGINPUT { display: none;}
-div#CODEXHUD.glossaddtag div#CODEXGLOSSTAGINPUT {
+div#CODEXHUD.addgloss.glossaddtag div#CODEXGLOSSTAGINPUT {
     display: block;}
 div#CODEXHUD div#CODEXGLOSSOUTLETINPUT { display: none;}
-div#CODEXHUD.glossaddoutlet div#CODEXGLOSSOUTLETINPUT {
+div#CODEXHUD.addgloss.glossaddoutlet div#CODEXGLOSSOUTLETINPUT {
     display: block;}
 
 div.completions#CODEXOUTLETCLOUD div#CODEXOUTLETCLOUD {

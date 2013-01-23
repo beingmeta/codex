@@ -380,7 +380,7 @@ Codex.setMode=
                 else {}
                 if (!(container)) container=div;
                 if (!((search_tag)&&(search_tag.length))) {
-                    search_tag=cloudEntry(tag,Codex.knodule,false,true);
+                    search_tag=Codex.cloudEntry(tag,Codex.knodule,false,true);
                     fdjtDOM(container,search_tag," ");
                     search_cloud.addCompletion(search_tag,false,tag);}}}
         Codex.addTag2SearchCloud=addTag2SearchCloud;
@@ -583,6 +583,7 @@ Codex.setMode=
 
         function changeMode(mode){      
             fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
+            fdjtDOM.dropClass(CodexHUD,CodexSubMode_pat);
             fdjtDOM.addClass(CodexHUD,mode);
             // This updates scanning state
             if ((Codex.scanning)&&(mode!=="scanning")) {
