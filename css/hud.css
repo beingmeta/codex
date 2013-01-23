@@ -156,7 +156,7 @@ div#CODEXHUD.search div#CODEXHEART,
 div#CODEXHUD.searchresults div#CODEXHEART,
 div#CODEXHUD.glossaddtag div#CODEXHEART,
 div#CODEXHUD.glossaddoutlet div#CODEXHEART {
-    top: 37px;}
+    top: 37px; margin-top: 0px;}
 
 div#CODEXHUD div#CODEXHEART .hudpanel { overflow: auto;}
 
@@ -165,6 +165,7 @@ body #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
+    margin-top: 1ex; margin-bottom: 1ex;
     padding-top: 1ex; padding-bottom: 1em;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
