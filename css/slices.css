@@ -30,9 +30,11 @@ div.codexslice.onepassage .tocblock .tochead {display:none;}
 div.codexslice .tocthread {}
 div.codexslice .tocthread .codexcard .tochead { display: none;}
 div.codexslice .idthread .codexcard .idhead { display: none;}
+div.codexslice .tocthread > .codexcard .idhead { display: none;}
 
-div.codexslice .tocthread .idthread:first-child
-      .codexcard:first-child .tochead {
+div.codexslice .tocthread > .codexcard:first-child .tochead {
+    display: block;}
+div.codexslice .tocthread > .idthread:first-child .codexcard:first-child .tochead {
     display: block;}
 div.codexslice .idthread > .codexcard:first-child .idhead {
     display: block;}
