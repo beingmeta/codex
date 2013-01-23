@@ -412,10 +412,13 @@
                 setCheckSpan(checkspan,checked);
                 return checkspan;}
             else i++;}
-        var spanspec=("span.checkspan.outlet."+formvar.toLowerCase());
+        var spanspec=(
+            "span.checkspan.waschecked.ischecked.outlet."+
+                formvar.toLowerCase());
         var checkspan=fdjtUI.CheckSpan(
             spanspec,formvar||"SHARE",outlet_id,checked,
-            "→",outlet.nick||outlet.name);
+            "→",outlet.nick||outlet.name,
+            fdjtDOM.Image(cxicon("redx",32,32),"img.redx","x"));
         if ((outlet.nick)&&(outlet.description))
             checkspan.title=outlet.name+": "+outlet.description;
         else if (outlet.description)

@@ -221,11 +221,8 @@ Codex.setMode=
                             outlet.oninit(addOutlets2UI,"addOutlets2UI");
                         else loaded.push(outlet);}
                     var cloud=Codex.outletCloud()
-                    var form=fdjtID("CODEXADDGLOSSPROTOTYPE");
                     i=0; lim=loaded.length; while (i<lim) {
                         var outlet=loaded[i++];
-                        if (i<=5)
-                            Codex.addOutlet2Form(form,outlet,false);
                         addOutlet2Cloud(outlet,cloud);}
                     return;}}
             Codex.addOutlets2UI=addOutlets2UI;

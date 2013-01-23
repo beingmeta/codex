@@ -220,6 +220,7 @@ div.codexglossform form div.glossetc .checkspan img {
 div.codexglossform form div.glossetc .checkspan input {
     margin-left: 0px;}
 div.codexglossform form div.glossetc .checkspan.anchor input,
+div.codexglossform form div.glossetc .checkspan.outlet input,
 div.codexglossform form div.glossetc .checkspan.glosstag input {
     display: none;}
 
@@ -413,11 +414,11 @@ div#CODEXHUD div#CODEXGLOSSOUTLETINPUT { display: none;}
 div#CODEXHUD.glossaddoutlet div#CODEXGLOSSOUTLETINPUT {
     display: block;}
 
-div.completions#CODEXGLOSSOUTLETS div#CODEXOUTLETCLOUD {
+div.completions#CODEXOUTLETCLOUD div#CODEXOUTLETCLOUD {
     margin-left: 50px; margin-right: 50px;}
 div.completions#CODEXGLOSSTAGS > div {
     margin-left: 50px; margin-right: 50px;}
-div#CODEXHUD.cxANIMATE div.completions#CODEXGLOSSOUTLETS {
+div#CODEXHUD.cxANIMATE div.completions#CODEXOUTLETCLOUD {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
@@ -438,10 +439,10 @@ div#CODEXGLOSSATTACH.detail tr.url, div#CODEXGLOSSATTACH.upload tr.url {
     display: none;}
 div#CODEXGLOSSATTACH table.fdjtform td input[type="TEXT"] { width: 95%;}
 
-div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS {}
-div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS span.completion {
+div#CODEXOUTLETCLOUD span#CODEXNETWORKBUTTONS { }
+div#CODEXOUTLETCLOUD span#CODEXNETWORKBUTTONS span.completion {
     float: right;}
-div#CODEXGLOSSOUTLETS span#CODEXNETWORKBUTTONS img {
+div#CODEXOUTLETCLOUD span#CODEXNETWORKBUTTONS img {
     height: 32px; width: auto;}
 
 div#CODEXRIBBON > div.inputbox {
