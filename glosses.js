@@ -404,7 +404,7 @@
             outlet={name: outlet.getAttribute("key")||outlet_id};}
         else {}
         if (!(formvar)) formvar="SHARE";
-        var inputs=getInputs(outletspan,formvar);
+        var inputs=getInputs(form,formvar);
         var i=0; var lim=inputs.length;
         while (i<lim) {
             if (inputs[i].value===outlet_id) {

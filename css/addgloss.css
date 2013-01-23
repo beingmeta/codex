@@ -62,7 +62,6 @@ div.codexglossform form div.glossetc .sharing,
 div.codexglossform form div.checkspan.postgloss {
     display: none;}
 body.hudup div.codexglossform form div.glossetc .modebuttons,
-body.hudup div.codexglossform form div.glossetc .networks,
 body.hudup div.codexglossform form div.glossetc .tags,
 body.hudup div.codexglossform form div.glossetc .links,
 body.hudup div.codexglossform form div.glossetc .sharing,
@@ -234,8 +233,10 @@ body.hudup div.codexglossform form div.glossetc .tags.empty,
 body.hudup div.codexglossform form div.glossetc .excerpt.empty {
     display: none;}
 
-div.codexglossform form div.glossetc .outlets { display: none; }
-div.codexglossform form.addoutlet div.glossetc .outlets { display: inline; }
+div.codexglossform form div.glossetc .outlets,
+div.codexglossform form div.glossetc .networks { display: none; }
+div.codexglossform form.addoutlet div.glossetc .outlets,
+div.codexglossform form.addoutlet div.glossetc .networks { display: inline; }
 div.codexglossform form.addoutlet div.glossetc .tags,
 div.codexglossform form.addoutlet div.glossetc .links {
     display: none; }
@@ -258,10 +259,16 @@ div.codexglossform div.glossetc .networks {
     color: black; font-weight: normal; float: right; text-align: right;}
 div.codexglossform div.glossetc .networks .checkspan {
     float: left;}
+div#CODEXHUD .networks .checkspan input[type='checkbox'] { display: none;}
+div#CODEXHUD .networks .checkspan img {
+    height: 32px; width: auto;}
+
+span.facebook_share, span.twitter_share { display: none;}
+span.linkedin_share, span.google_share { display: none;}
+
 div.codexglossform div.glossetc .networks .checkspan.postgloss {
     font-size: 80%; padding-right: 1ex;}
 div.codexglossform.private .checkspan.postgloss { display: none;}
-div#CODEXHUD .networks .checkspan input[type='checkbox'] { display: none;}
 div#CODEXHUD .networks .checkspan.postgloss input[type='checkbox'] {
     display: inline;}
 div.codexglossform div.glossetc .networks img {
@@ -290,9 +297,6 @@ div.codexglossform .checkspan.postgloss input {
 div.codexglossform form div.glossetc .links span.checkspan {
     color: darkblue;}
 div.codexglossform form div.glossetc span.checkspan input {}
-
-span.facebook_share, span.twitter_share { display: none;}
-span.linkedin_share, span.google_share { display: none;}
 
 div.codexglossform form div.glossetc > .checkspan.private {
     float: right; vertical-align: top; margin-left: 4px;
