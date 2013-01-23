@@ -1853,7 +1853,9 @@
                          handler: function(){
                              delete_gloss(uuid);
                              Codex.setMode(false);
-                             fdjtDOM.remove(div);},
+                             fdjtDOM.remove(div);
+                             Codex.setGlossTarget(false);
+                             Codex.setTarget(false);},
                          isdefault: true}],
                        "Delete this gloss?",
                        fdjtDOM(
