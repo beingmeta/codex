@@ -11,6 +11,7 @@ div.codexslice button, div.codexslice input[TYPE="SUBMIT"],
 div.codexslice img.button, div.codexslice .tool {
     cursor: pointer; }
 div.codexslice input[TYPE="TEXT"], div.codexslice textarea { cursor: text; }
+div.codexslice .codexcard .tool img { display: none; }
 
 div.codexslice.sourced div.codexcard { display: none;}
 div.codexslice.sourced div.codexcard.sourced { display: block;}
