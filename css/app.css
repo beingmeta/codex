@@ -1,7 +1,7 @@
 /* -*- Mode: CSS; character-encoding: utf-8; -*- */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
-   This file implements a Javascript/DHTML UI for reading
+   This file implements a Javascript/DHTML web application for reading
     large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -610,33 +610,6 @@ div.codexglossform form table td.button {
 div.codexglossform form table td textarea { width: 100%;}
 
 /* Humanity */
-
-.humane p {
-    display: block; text-align: left;
-    margin-left: 2em; margin-right: 2em; text-indent: -1em;
-    max-width: inherit; min-width: inherit; width: auto;}
-
-#HUMANE.humane {
-    width: 70%; max-height: 50%;
-    left: 15%; right: 15%; top: 20%; bottom: auto;}
-#HUMANE.humane.humane-show {
-    opacity: 0.8; 
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-    filter: alpha(opacity=80);
-    -webkit-opacity: 0.80;
-    -khtml-opacity: 0.80;
-    -moz-opacity: 0.80;
-    -o-opacity: 0.80;}
-
-.humanehelp { display: none;}
-.humanehelp strong { color: orange;}
-.humane div.humanehelp { display: block; }
-.humane div.humanehelp h3 { margin-top: 0px;}
-.humane div.humanehelp .clicktarget { color: lightblue; }
-.humane div.humanehelp img.fullwidth {
-    width: 80%; height: auto; margin-left: 10%; margin-right: 10%;}
-.humane div.humanehelp img.codextocbar {
-    width: 70%; height: auto; float: right;}
 
 /* New pagination model */
 

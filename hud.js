@@ -3,7 +3,12 @@
 /* ###################### codex/hud.js ###################### */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
-   This file implements a Javascript/DHTML UI for reading
+
+   This file provides initialization and some interaction for the
+   Codex HUD (Heads Up Display), an overlay on the book content
+   provided by the Codex e-reader web application.
+
+   This file is part of Codex, a Javascript/DHTML web application for reading
    large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -31,6 +36,15 @@
 
 */
 
+/* Initialize these here, even though they should always be
+   initialized before hand.  This will cause various code checkers to
+   not generate unbound variable warnings when called on individual
+   files. */
+var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+
 Codex.setMode=
     (function(){
         var fdjtString=fdjt.String;
@@ -43,16 +57,6 @@ Codex.setMode=
         var fdjtID=fdjt.ID;
         
         // Helpful dimensions
-        var head_height=false, foot_height=false;
-        var help_top=false, help_bottom=false;
-        // The BOX HUD (contains scrollable content) and its margins
-        var box_top=false; var box_bottom=false;
-        // This is the HUD where all glosses are displayed
-        var sbookGlossesHUD=false;
-        // This is the HUD for tag searching
-        var sbookSearchHUD=false;
-        // How long to let messages flash up
-        var message_timeout=5000;
         // Whether to call displaySync on mode changes
         var display_sync=false;
         
@@ -68,14 +72,15 @@ Codex.setMode=
         var CodexHUD=false;
 
         // This will contain the interactive input console (for debugging)
-        var input_console;
-        var input_button;
+        var hud=false, input_console=false, input_button=false;
+        var allglosses=false, sbooksapp=false, console=false;
 
         function initHUD(){
             if (fdjtID("CODEXHUD")) return;
             var messages=fdjtDOM("div.startupmessages");
             messages.innerHTML=fixStaticRefs(Codex.HTML.messages);
-            var hud=Codex.HUD=CodexHUD=fdjtDOM("div#CODEXHUD");
+            if (Codex.Trace.startup) fdjtLog("Initializing HUD layout");
+            Codex.HUD=CodexHUD=hud=fdjtDOM("div#CODEXHUD");
             hud.codexui=true;
             hud.innerHTML=fixStaticRefs(Codex.HTML.hud);
             fdjtDOM.prepend(document.body,
@@ -83,13 +88,10 @@ Codex.setMode=
                             fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
                                     fdjtDOM("div.indicator"),
                                     fdjtDOM("div.message")),
-                            fdjtID("HUMANE"),
                             hud);
             // Fill in the HUD help
             var hudhelp=fdjtID("CODEXHUDHELP");
             hudhelp.innerHTML=fixStaticRefs(Codex.HTML.hudhelp);
-            // Set up the start page and the reader help
-            var startpage=Codex.HUD.startpage=fdjtID("CODEXSTARTPAGE");
             // Set up the help page
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
             help.innerHTML=fixStaticRefs(Codex.HTML.help);
@@ -98,7 +100,7 @@ Codex.setMode=
             splash.innerHTML=fixStaticRefs(Codex.HTML.splash);
             // Setup heart
             var heart=fdjtID("CODEXHEART");
-            heart.innerHTML=fixStaticRefs(Codex.HTML.hudheart);
+            heart.innerHTML=fixStaticRefs(Codex.HTML.heart);
             Codex.DOM.heart=heart;
             // Setup settings
             var settings=fdjtID("CODEXSETTINGS");
@@ -109,7 +111,7 @@ Codex.setMode=
             Codex.DOM.heart=fdjtID("CODEXHEART");
             Codex.DOM.foot=fdjtID("CODEXFOOT");
             Codex.DOM.tabs=fdjtID("CODEXTABS");
-           // Initialize search UI
+            // Initialize search UI
             var search=fdjtID("CODEXSEARCH");
             search.innerHTML=fixStaticRefs(Codex.HTML.searchbox);
             Codex.empty_cloud=
@@ -118,12 +120,12 @@ Codex.setMode=
             var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
             addgloss.innerHTML=fixStaticRefs(Codex.HTML.addgloss);
 
-            Codex.DOM.sbooksapp=fdjtID("SBOOKSAPP");
-            Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
-            
+            if (Codex.Trace.startup) fdjtLog("Done with static HUD init");
+
             if (!(Codex.svg)) {
                 var images=fdjtDOM.getChildren(hud,"img");
                 var i=0; var lim=images.length;
+                if (Codex.Trace.startup) fdjtLog("Switching images to SVG");
                 while (i<lim) {
                     var img=images[i++];
                     if ((img.src)&&
@@ -137,171 +139,31 @@ Codex.setMode=
             fdjtID("SBOOK_RETURN_TO").value=location.href;
 
             // Initialize gloss UI
-            var glosses=fdjtID("CODEXALLGLOSSES");
-            Codex.UI.setupSummaryDiv(glosses);
+            Codex.DOM.allglosses=allglosses=fdjtID("CODEXALLGLOSSES");
+            if (Codex.Trace.startup>1)
+                fdjtLog("Setting up gloss UI %o",allglosses);
+
+            Codex.UI.setupSummaryDiv(allglosses);
             Codex.glosses.addEffect("maker",function(f,p,v){
                 Codex.sourcekb.ref(v).oninit
                 (Codex.UI.addGlossSource,"newsource");});
             Codex.glosses.addEffect("sources",function(f,p,v){
                 Codex.sourcekb.ref(v).oninit
                 (Codex.UI.addGlossSource,"newsource");});
-
-            function addGloss2UI(item){
-                if (document.getElementById(item.frag)) {
-                    var addGlossmark=Codex.UI.addGlossmark;
-                    Codex.UI.addToSlice(item,glosses,false);
-                    var nodes=Codex.getDups(item.frag);
-                    addClass(nodes,"glossed");
-                    var i=0, lim=nodes.length; while (i<lim) {
-                        addGlossmark(nodes[i++],item);}
-                    if (item.tstamp>Codex.syncstamp)
-                        Codex.syncstamp=item.tstamp;}}
             Codex.glosses.addInit(addGloss2UI);
+            
+            Codex.DOM.console=fdjtID("CODEXCONSOLE");
+            if (Codex.Trace.startup>1) fdjtLog("Setting up console %o",console);
 
-            var tagHTML=Knodule.HTML;
-
-            function addTag2GlossCloud(tag){
-                if (!(tag)) return;
-                else if (tag instanceof Array) {
-                    var i=0; var lim=tag.length;
-                    while (i<lim) addTag2GlossCloud(tag[i++]);
-                    return;}
-                else if (!(Codex.gloss_cloud)) {
-                    // If the HUD hasn't been initialized, add the tag
-                    //  to queues for addition.
-                    var queue=Codex.gloss_cloud_queue;
-                    if (!(queue)) queue=Codex.gloss_cloud_queue=[];
-                    queue.push(tag);}
-                else if ((tag instanceof Ref)&&(!(tag._init)))
-                    // If it's uninitialized, delay adding it
-                    tag.oninit(addTag2GlossCloud,"addTag2GlossCloud");
-                // Skip weak tags
-                else if ((tag instanceof Ref)&&(tag.weak)) return;
-                else {
-                    var gloss_cloud=Codex.glossCloud();
-                    var search_cloud=Codex.searchCloud();
-                    var ref=((tag instanceof Ref)?(tag):
-                             ((fdjtKB.probe(tag,Codex.knodule))||
-                              (fdjtKB.ref(tag,Codex.knodule))));
-                    var ref_tag=(((ref)&&(ref.tagString))&&
-                                 (ref.tagString(Codex.knodule)))||
-                        ((ref)&&((ref._id)||(ref.uuid)||(ref.oid)))||
-                        (tag);
-                    var gloss_tag=gloss_cloud.getByValue(ref_tag,".completion");
-                    if (!((gloss_tag)&&(gloss_tag.length))) {
-                        gloss_tag=tagHTML(tag,Codex.knodule,false,true);
-                        if ((ref)&&(ref.pool===Codex.sourcekb))
-                            fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),
-                                    gloss_tag," ");
-                        else fdjtDOM(fdjtID("CODEXGLOSSCLOUDTAGS"),
-                                     gloss_tag," ");
-                        gloss_cloud.addCompletion(gloss_tag);}}}
-            Codex.addTag2GlossCloud=addTag2GlossCloud;
-            
-            function addOutlets2UI(outlets){
-                if (typeof outlets === 'string')
-                    outlets=Codex.sourcekb.ref(outlets);
-                if (!(outlets)) return;
-                if (!(outlets instanceof Array)) outlets=[outlets];
-                if (!(Codex.outlet_cloud)) {
-                    // If the HUD hasn't been initialized, add the tag
-                    //  to queues for addition.
-                    var queue=Codex.outlet_cloud_queue;
-                    if (!(queue)) queue=Codex.outlet_cloud_queue=[];
-                    queue=Codex.outlet_cloud_queue=queue.concat(outlets);
-                    return;}
-                else {
-                    var i=0; var lim=outlets.length;
-                    var loaded=[];
-                    while (i<lim) {
-                        var outlet=outlets[i++];
-                        if (typeof outlet === 'string')
-                            outlet=fdjtKB.ref(outlet);
-                        if ((outlet instanceof Ref)&&(!(outlet._init)))
-                            outlet.oninit(addOutlets2UI,"addOutlets2UI");
-                        else loaded.push(outlet);}
-                    var cloud=Codex.outletCloud()
-                    i=0; lim=loaded.length; while (i<lim) {
-                        var outlet=loaded[i++];
-                        addOutlet2Cloud(outlet,cloud);}
-                    return;}}
-            Codex.addOutlets2UI=addOutlets2UI;
-            
-            /* Initializing outlets */
-            
-            function addOutlet2Cloud(outlet,cloud) {
-                if (typeof outlet === 'string')
-                    outlet=fdjtKB.load(outlet);
-                var humid=outlet.humid;
-                var sourcetag=fdjtID("cxOUTLET"+humid);
-                if (!(sourcetag)) { // Add entry to the share cloud
-                    var completion=fdjtDOM(
-                        "span.completion.source",outlet.name);
-                    completion.id="cxOUTLET"+humid;
-                    completion.setAttribute("value",outlet._id);
-                    completion.setAttribute("key",outlet.name);
-                    if ((outlet.description)&&(outlet.nick))
-                        completion.title=outlet.name+": "+
-                        outlet.description;
-                    else if (outlet.description)
-                        completion.title=outlet.description;
-                    else if (outlet.nick) completion.title=outlet.name;
-                    fdjtDOM(cloud.dom,completion," ");
-                    if (cloud) cloud.addCompletion(completion);}}
-            
-            var cloudEntry=Codex.cloudEntry;
-
-            function addTag2SearchCloud(tag){
-                if (!(tag)) return;
-                else if (tag instanceof Array) {
-                    var i=0; var lim=tag.length;
-                    while (i<lim) addTag2SearchCloud(tag[i++]);
-                    return;}
-                else if (!(Codex.search_cloud)) {
-                    // If the HUD hasn't been initialized, add the tag
-                    //  to queues for addition.
-                    var queue=Codex.search_cloud_queue;
-                    if (!(queue)) queue=Codex.search_cloud_queue=[];
-                    queue.push(tag);}
-                else if ((tag instanceof Ref)&&(!(tag._init)))
-                    // If it's uninitialized, delay adding it
-                    tag.oninit(addTag2SearchCloud,"addTag2SearchCloud");
-                else {
-                    var search_cloud=Codex.searchCloud();
-                    var div=search_cloud.dom;
-                    var tagstring=((tag.tagString)?(tag.tagString()):(tag));
-                    var search_tag=
-                        search_cloud.getByValue(tagstring,".completion");
-                    var container=div;
-                    var ref=((typeof tag === 'string')?
-                             (fdjtKB.ref(tag,Codex.knodule)):
-                             (tag));
-                    if (!(ref)) {
-                        if (tag[0]==="\u00a7")
-                            container=getChild(div,".sections")||container;
-                        else container=getChild(div,".words")||div;}
-                    else if (ref.weak)
-                        container=getChild(div,".weak");
-                    else if (ref.prime)
-                        container=getChild(div,".prime");
-                    else if (ref.pool===Codex.sourcekb)
-                        container=getChild(div,".sources");
-                    else {}
-                    if (!(container)) container=div;
-                    if (!((search_tag)&&(search_tag.length))) {
-                        search_tag=cloudEntry(tag,Codex.knodule,false,true);
-                        fdjtDOM(container,search_tag," ");
-                        search_cloud.addCompletion(search_tag,false,tag);}}}
-            Codex.addTag2SearchCloud=addTag2SearchCloud;
-            
-            var console=fdjtID("CODEXCONSOLE");
-            input_console=fdjtDOM.getChild(console,"TEXTAREA");
-            input_button=fdjtDOM.getChild(console,"span.button");
+            Codex.DOM.input_console=input_console=fdjtDOM.getChild(console,"TEXTAREA");
+            Codex.DOM.input_button=input_button=fdjtDOM.getChild(console,"span.button");
             input_button.onclick=consolebutton_click;
             input_console.onkeypress=consoleinput_keypress;
 
-            var appframe=fdjtID("SBOOKSAPP");
-            var appwindow=((appframe)&&(appframe.contentWindow));
+            Codex.DOM.sbooksapp=sbooksapp=fdjtID("SBOOKSAPP");
+            if (Codex.Trace.startup>1) fdjtLog("Setting up appframe %o",sbooksapp);
+            
+            var appwindow=((sbooksapp)&&(sbooksapp.contentWindow));
             if (appwindow.postMessage) {
                 if (Codex.Trace.messages)
                     fdjtLog("Setting up message listener");
@@ -325,6 +187,8 @@ Codex.setMode=
 
             // Set up the splash form
             var splashform=fdjtID("CODEXSPLASHFORM");
+            if (Codex.Trace.startup>1) fdjtLog("Setting up splash %o",splashform);
+
             var docinput=fdjtDOM.getInput(splashform,"DOCURI");
             if (docinput) docinput.value=Codex.docuri;
             var refinput=fdjtDOM.getInput(splashform,"REFURI");
@@ -345,16 +209,23 @@ Codex.setMode=
             if (document.title) {
                 appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
             fdjtID("CODEXSPLASH_RETURN_TO").value=appuri;
-                    
+            
+            if (Codex.Trace.startup>1)
+                fdjtLog("Setting up taphold for foot %o",Codex.DOM.foot);
             fdjtUI.TapHold(Codex.DOM.foot,Codex.touch);
-
+            
+            if (Codex.Trace.startup) fdjtLog("Filling in tabs");
             fillinTabs();
+            
+            /* Currently a no-op */
             resizeHUD();
 
+            if (Codex.Trace.startup) fdjtLog("Updating scrollers");
             Codex.scrollers={};
-            updateScroller("CODEXGLOSSTAGS");
             updateScroller("CODEXSEARCHCLOUD");
-            fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));}
+            updateScroller("CODEXGLOSSCLOUD");
+            fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));
+            fdjtLog("Initialized basic HUD layout");}
         Codex.initHUD=initHUD;
         
         function fixStaticRefs(string){
@@ -367,11 +238,156 @@ Codex.setMode=
         function resizeHUD(){}
         Codex.resizeHUD=resizeHUD;
 
+        /* Various UI methods */
+        function addGloss2UI(item){
+            if (document.getElementById(item.frag)) {
+                var addGlossmark=Codex.UI.addGlossmark;
+                Codex.UI.addToSlice(item,allglosses,false);
+                var nodes=Codex.getDups(item.frag);
+                addClass(nodes,"glossed");
+                var i=0, lim=nodes.length; while (i<lim) {
+                    addGlossmark(nodes[i++],item);}
+                if (item.tstamp>Codex.syncstamp)
+                    Codex.syncstamp=item.tstamp;}}
+
+        var tagHTML=Knodule.HTML;
+
+        function addTag2GlossCloud(tag){
+            if (!(tag)) return;
+            else if (tag instanceof Array) {
+                var i=0; var lim=tag.length;
+                while (i<lim) addTag2GlossCloud(tag[i++]);
+                return;}
+            else if (!(Codex.gloss_cloud)) {
+                // If the HUD hasn't been initialized, add the tag
+                //  to queues for addition.
+                var queue=Codex.gloss_cloud_queue;
+                if (!(queue)) queue=Codex.gloss_cloud_queue=[];
+                queue.push(tag);}
+            else if ((tag instanceof Ref)&&(!(tag._init)))
+                // If it's uninitialized, delay adding it
+                tag.oninit(addTag2GlossCloud,"addTag2GlossCloud");
+            // Skip weak tags
+            else if ((tag instanceof Ref)&&(tag.weak)) return;
+            else {
+                var gloss_cloud=Codex.glossCloud();
+                var ref=((tag instanceof Ref)?(tag):
+                         ((fdjtKB.probe(tag,Codex.knodule))||
+                          (fdjtKB.ref(tag,Codex.knodule))));
+                var ref_tag=(((ref)&&(ref.tagString))&&
+                             (ref.tagString(Codex.knodule)))||
+                    ((ref)&&((ref._id)||(ref.uuid)||(ref.oid)))||
+                    (tag);
+                var gloss_tag=gloss_cloud.getByValue(ref_tag,".completion");
+                if (!((gloss_tag)&&(gloss_tag.length))) {
+                    gloss_tag=tagHTML(tag,Codex.knodule,false,true);
+                    if ((ref)&&(ref.pool===Codex.sourcekb))
+                        fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),
+                                gloss_tag," ");
+                    else fdjtDOM(fdjtID("CODEXGLOSSCLOUDTAGS"),
+                                 gloss_tag," ");
+                    gloss_cloud.addCompletion(gloss_tag);}}}
+        Codex.addTag2GlossCloud=addTag2GlossCloud;
+        
+        function addOutlets2UI(outlets){
+            if (typeof outlets === 'string')
+                outlets=Codex.sourcekb.ref(outlets);
+            if (!(outlets)) return;
+            if (!(outlets instanceof Array)) outlets=[outlets];
+            if (!(Codex.outlet_cloud)) {
+                // If the HUD hasn't been initialized, add the tag
+                //  to queues for addition.
+                var queue=Codex.outlet_cloud_queue;
+                if (!(queue)) queue=Codex.outlet_cloud_queue=[];
+                queue=Codex.outlet_cloud_queue=queue.concat(outlets);
+                return;}
+            else {
+                var i=0; var lim=outlets.length;
+                var loaded=[];
+                while (i<lim) {
+                    var outlet=outlets[i++];
+                    if (typeof outlet === 'string')
+                        outlet=fdjtKB.ref(outlet);
+                    if ((outlet instanceof Ref)&&(!(outlet._init)))
+                        outlet.oninit(addOutlets2UI,"addOutlets2UI");
+                    else loaded.push(outlet);}
+                var cloud=Codex.outletCloud();
+                i=0; lim=loaded.length; while (i<lim) {
+                    var addoutlet=loaded[i++];
+                    addOutlet2Cloud(addoutlet,cloud);}
+                return;}}
+        Codex.addOutlets2UI=addOutlets2UI;
+        
+        /* Initializing outlets */
+        
+        function addOutlet2Cloud(outlet,cloud) {
+            if (typeof outlet === 'string')
+                outlet=fdjtKB.load(outlet);
+            var humid=outlet.humid;
+            var sourcetag=fdjtID("cxOUTLET"+humid);
+            if (!(sourcetag)) { // Add entry to the share cloud
+                var completion=fdjtDOM(
+                    "span.completion.source",outlet.name);
+                completion.id="cxOUTLET"+humid;
+                completion.setAttribute("value",outlet._id);
+                completion.setAttribute("key",outlet.name);
+                if ((outlet.description)&&(outlet.nick))
+                    completion.title=outlet.name+": "+
+                    outlet.description;
+                else if (outlet.description)
+                    completion.title=outlet.description;
+                else if (outlet.nick) completion.title=outlet.name;
+                fdjtDOM(cloud.dom,completion," ");
+                if (cloud) cloud.addCompletion(completion);}}
+        
+        var cloudEntry=Codex.cloudEntry;
+
+        function addTag2SearchCloud(tag){
+            if (!(tag)) return;
+            else if (tag instanceof Array) {
+                var i=0; var lim=tag.length;
+                while (i<lim) addTag2SearchCloud(tag[i++]);
+                return;}
+            else if (!(Codex.search_cloud)) {
+                // If the HUD hasn't been initialized, add the tag
+                //  to queues for addition.
+                var queue=Codex.search_cloud_queue;
+                if (!(queue)) queue=Codex.search_cloud_queue=[];
+                queue.push(tag);}
+            else if ((tag instanceof Ref)&&(!(tag._init)))
+                // If it's uninitialized, delay adding it
+                tag.oninit(addTag2SearchCloud,"addTag2SearchCloud");
+            else {
+                var search_cloud=Codex.searchCloud();
+                var div=search_cloud.dom;
+                var tagstring=((tag.tagString)?(tag.tagString()):(tag));
+                var search_tag=
+                    search_cloud.getByValue(tagstring,".completion");
+                var container=div;
+                var ref=((typeof tag === 'string')?
+                         (fdjtKB.ref(tag,Codex.knodule)):
+                         (tag));
+                if (!(ref)) {
+                    if (tag[0]==="\u00a7")
+                        container=getChild(div,".sections")||container;
+                    else container=getChild(div,".words")||div;}
+                else if (ref.weak)
+                    container=getChild(div,".weak");
+                else if (ref.prime)
+                    container=getChild(div,".prime");
+                else if (ref.pool===Codex.sourcekb)
+                    container=getChild(div,".sources");
+                else {}
+                if (!(container)) container=div;
+                if (!((search_tag)&&(search_tag.length))) {
+                    search_tag=cloudEntry(tag,Codex.knodule,false,true);
+                    fdjtDOM(container,search_tag," ");
+                    search_cloud.addCompletion(search_tag,false,tag);}}}
+        Codex.addTag2SearchCloud=addTag2SearchCloud;
+
+
         /* This is used for viewport-based browser, where the HUD moves
            to be aligned with the viewport */
-        
-        var sbook_sync_off=false;
-        var sbook_sync_height=false;
         
         function getBounds(elt){
             var style=fdjtDOM.getStyle(elt);
@@ -461,10 +477,9 @@ Codex.setMode=
             {gotopage: "CODEXPAGEINPUT",
              gotoloc: "CODEXLOCINPUT",
              search: "CODEXSEARCHINPUT"};
-        var hide_startup_help=true;
         
         function CodexMode(mode){
-             var oldmode=Codex.mode;
+            var oldmode=Codex.mode;
             if (typeof mode === 'undefined') return oldmode;
             if (mode==='last') mode=Codex.last_mode;
             if (mode==='none') mode=false;
@@ -477,7 +492,7 @@ Codex.setMode=
             if ((Codex.mode==="addgloss")&&(mode!=="addgloss")&&
                 (hasClass("CODEXLIVEGLOSS","modified")))
                 Codex.submitGloss(fdjt.ID("CODEXLIVEGLOSS"));
-           if (mode) {
+            if (mode) {
                 if (mode==="addgloss") {}
                 else dropClass(document.body,"cxSHRINK");
                 if (mode===Codex.mode) {}
@@ -494,8 +509,8 @@ Codex.setMode=
                     throw new Error('mode arg not a string');
                 else {
                     if (codex_mode_foci[Codex.mode]) {
-                        var input=fdjtID(codex_mode_foci[Codex.mode]);
-                        input.blur();}
+                        var modeinput=fdjtID(codex_mode_foci[Codex.mode]);
+                        modeinput.blur();}
                     Codex.mode=mode;}
                 // If we're switching to the inner app but the iframe
                 //  hasn't been initialized, we do it now.
@@ -505,7 +520,7 @@ Codex.setMode=
                     initFlyleafApp();
                 // Update Codex.scrolling which is the scrolling
                 // element in the HUD for this mode
-                if (!(typeof mode === 'string'))
+                if (typeof mode !== 'string')
                     Codex.scrolling=false;
                 else if (codex_mode_scrollers[mode]) 
                     Codex.scrolling=(codex_mode_scrollers[mode]);
@@ -546,7 +561,6 @@ Codex.setMode=
                 // Clearing the mode is a lot simpler, in part because
                 //  setHUD clears most of the classes when it brings
                 //  the HUD down.
-                fdjtLog.HumaneHide();
                 Codex.last_mode=Codex.mode;
                 if (Codex.liveinput) {
                     Codex.liveinput.blur();
@@ -640,10 +654,12 @@ Codex.setMode=
 
         function updateScroller(elt){
             if (Codex.scrolldivs) return;
+            if ((elt)&&(Codex.Trace.scrolling))
+                fdjtLog("Updating scroller for %o",elt);
             if (Codex.heartscroller) Codex.heartscroller.refresh();
             else {
                 var heart=fdjtID("CODEXHEART");
-                var contents=fdjtID("CODEXHEARTCONTENTS")
+                var contents=fdjtID("CODEXHEARTCONTENTS");
                 if (!(contents)) {
                     contents=fdjtDOM("div#CODEXHEARTCONTENTS");
                     fdjtDOM(contents,fdjtDOM.Array(heart.childNodes));
@@ -662,7 +678,7 @@ Codex.setMode=
             else CodexMode(mode);}
         CodexMode.toggle=CodexHUDToggle;
 
-        Codex.dropHUD=function(){return CodexMode(false);}
+        Codex.dropHUD=function(){return CodexMode(false);};
         Codex.toggleHUD=function(evt){
             evt=evt||event;
             if ((evt)&&(fdjtUI.isClickable(fdjtUI.T(evt)))) return;
@@ -675,18 +691,19 @@ Codex.setMode=
         function fillinTabs(){
             var hidehelp=fdjtID("SBOOKHIDEHELP");
             var dohidehelp=fdjtState.getCookie("sbookhidehelp");
+            var i=0, elts=null, elt=false;
             if (!(hidehelp)) {}
             else if (dohidehelp==='no') hidehelp.checked=false;
             else if (dohidehelp) hidehelp.checked=true;
             else hidehelp.checked=false;
             if (hidehelp)
-                hidehelp.onchange=function(evt){
+                hidehelp.onchange=function(){
                     if (hidehelp.checked)
                         fdjtState.setCookie("sbookhidehelp",true,false,"/");
                     else fdjtState.setCookie("sbookhidehelp","no",false,"/");};
             var refuris=document.getElementsByName("REFURI");
             if (refuris) {
-                var i=0; var len=refuris.length;
+                i=0; var len=refuris.length;
                 while (i<len)
                     if (refuris[i].value==='fillin')
                         refuris[i++].value=Codex.refuri;
@@ -698,27 +715,27 @@ Codex.setMode=
             var mobiuri=fdjtDOM.getLink("Codex.mobi")||altLink("mobi");
             var zipuri=fdjtDOM.getLink("Codex.mobi")||altLink("mobi");
             if (offlineuri) {
-                var elts=document.getElementsByName("SBOOKOFFLINELINK");
-                var i=0; while (i<elts.length) {
-                    var elt=elts[i++];
+                elts=document.getElementsByName("SBOOKOFFLINELINK");
+                i=0; while (i<elts.length) {
+                    elt=elts[i++];
                     if (offlineuri!=='none') elt.href=offlineuri;
                     else {
                         elt.href=false;
                         addClass(elt,"deadlink");
                         elt.title='this sBook is not available offline';}}}
             if (epuburi) {
-                var elts=document.getElementsByName("SBOOKEPUBLINK");
-                var i=0; while (i<elts.length) {
-                    var elt=elts[i++];
+                elts=document.getElementsByName("SBOOKEPUBLINK");
+                i=0; while (i<elts.length) {
+                    elt=elts[i++];
                     if (epuburi!=='none') elt.href=epuburi;
                     else {
                         elt.href=false;
                         addClass(elt,"deadlink");
                         elt.title='this sBook is not available as an ePub';}}}
             if (mobiuri) {
-                var elts=document.getElementsByName("SBOOKMOBILINK");
-                var i=0; while (i<elts.length) {
-                    var elt=elts[i++];
+                elts=document.getElementsByName("SBOOKMOBILINK");
+                i=0; while (i<elts.length) {
+                    elt=elts[i++];
                     if (mobiuri!=='none') elt.href=mobiuri;
                     else {
                         elt.href=false;
@@ -726,9 +743,9 @@ Codex.setMode=
                         elt.title=
                             'this sBook is not available as a MOBIpocket format eBook';}}}
             if (zipuri) {
-                var elts=document.getElementsByName("SBOOKZIPLINK");
-                var i=0; while (i<elts.length) {
-                    var elt=elts[i++];
+                elts=document.getElementsByName("SBOOKZIPLINK");
+                i=0; while (i<elts.length) {
+                    elt=elts[i++];
                     if (zipuri!=='none') elt.href=zipuri;
                     else {
                         elt.href=false;
@@ -864,14 +881,13 @@ Codex.setMode=
 
         CodexMode.selectApp=function(){
             if (Codex.mode==='sbooksapp') CodexMode(false);
-            else CodexMode('sbooksapp');}
+            else CodexMode('sbooksapp');};
 
         /* Scanning */
 
         function CodexScan(elt,src,backward){
-            var cxt=false;
-            var body=document.body;
             var pelt=Codex.scanning;
+            var i=0, lim=0;
             if (Codex.Trace.mode)
                 fdjtLog("CodexScan() %o (src=%o) mode=%o scn=%o/%o",
                         elt,src,Codex.mode,Codex.scanning,Codex.target);
@@ -906,16 +922,14 @@ Codex.setMode=
                         searching,glossinfo.excerpt,glossinfo.exoff);
                     if (range) highlights=
                         fdjtUI.Highlight(range,"highlightexcerpt");}
-                else {
-                    var about=src.about, target=fdjtID(about);
-                    addClass(target,"highlightpassage");}}
+                else addClass(fdjtID(src.about),"highlightpassage");}
             else if ((src)&&(getParent(src,".sbookresults"))) {
                 var about=src.about, target=fdjtID(about);
                 if (target) {
                     var info=Codex.docinfo[target.id];
                     var terms=Codex.query._query;
                     var spellings=info.knodeterms;
-                    var i=0; var lim=terms.length;
+                    i=0; lim=terms.length;
                     if (lim===0) addClass(target,"highlightpassage");
                     else while (i<lim) {
                         var term=terms[i++];
@@ -931,7 +945,7 @@ Codex.setMode=
                 var possible=Codex.getDups(elt.id);
                 if (possible.length) {
                     var scanpoints=[];
-                    var i=0, lim=possible.length;
+                    i=0; lim=possible.length;
                     while (i<lim) {
                         var poss=possible[i++];
                         var j=0, jlim=highlights.length;
@@ -1027,10 +1041,11 @@ Codex.setMode=
                  (fdjtString("%o",result)):
                  (fdjtString("%j",result)));
             fdjtLog("Result is %s",string_result);}
-        function consolebutton_click(evt){console_eval();}
+        function consolebutton_click(evt){
+            if (Codex.Trace.gesture>1) fdjtLog("consolebutton_click %o",evt);
+            console_eval();}
         function consoleinput_keypress(evt){
             evt=evt||event;
-            var target=fdjtUI.T(evt);
             if (evt.keyCode===13) {
                 if (!(evt.ctrlKey)) {
                     fdjtUI.cancel(evt);
@@ -1068,7 +1083,7 @@ Codex.setMode=
                             Codex.keyboardHelp.timer=false;
                             fdjtDOM.swapClass(box,"closing","closed");},
                                    5000);},
-                           5000);};
+                           5000);}
         Codex.keyboardHelp=keyboardHelp;
 
         /* Showing a particular gloss */
@@ -1079,7 +1094,6 @@ Codex.setMode=
             if (!(elts)) return false;
             else if (!(elts.length)) return false;
             else {
-                var allglosses=fdjtID("CODEXALLGLOSSES");
                 var hasParent=fdjtDOM.hasParent;
                 var i=0, lim=elts.length;
                 while (i<lim) {
@@ -1096,14 +1110,6 @@ Codex.setMode=
             fdjtDOM.dropClass(document.body,"codexhelp");};
         Codex.showHelp=function(){
             fdjtDOM.addClass(document.body,"codexhelp");};
-
-        /* Button methods */
-
-        function LoginButton_ontap(evt){
-            evt=evt||event||null;
-            if (Codex.mode==="sbooksapp") CodexMode(false);
-            else CodexMode("sbooksapp");
-            evt.cancelBubble=true;}
 
         return CodexMode;})();
 

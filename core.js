@@ -3,7 +3,7 @@
 /* ###################### codex/core.js ###################### */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
-   This file implements a Javascript/DHTML UI for reading
+   This file implements a Javascript/DHTML web application for reading
    large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -30,6 +30,14 @@
    Enjoy!
 
 */
+
+/* Initialize these here, even though they should always be
+   initialized before hand.  This will cause various code checkers to
+   not generate unbound variable warnings when called on individual
+   files. */
+var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 var Codex=
     {mode: false,hudup: false,scrolling: false,query: false,
@@ -84,7 +92,7 @@ var Codex=
      /* This is where we store pointers into the dom */
      DOM: {},
      Trace: {
-         startup: 0,    // Whether to debug startup
+         startup: 0,    // Whether to trace startup
          config: 0,     // Whether to trace config setup/modification/etc
          mode: false,   // Whether to trace mode changes
          nav: false,    // Whether to trace book navigation

@@ -3,7 +3,11 @@
 /* ###################### codex/domscan.js ###################### */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
-   This file implements a Javascript/DHTML UI for reading
+
+   This file implements extraction of map and metadata from the loaded
+   DOM.
+
+   This file is part of Codex, a Javascript/DHTML web application for reading
    large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -31,7 +35,14 @@
 
 */
 
-/* Scanning the document for Metadata */
+/* Initialize these here, even though they should always be
+   initialized before hand.  This will cause various code checkers to
+   not generate unbound variable warnings when called on individual
+   files. */
+var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.DOMScan=(function(){
     var fdjtString=fdjt.String;

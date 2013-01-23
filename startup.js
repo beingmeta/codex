@@ -3,7 +3,11 @@
 /* ###################### codex/startup.js ###################### */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
-   This file implements a Javascript/DHTML UI for reading
+
+   This file specifies the startup of the Codex web application,
+   initializing both internal data structures and the DOM.
+
+   This file is part of Codex, a Javascript/DHTML web application for reading
    large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -31,12 +35,14 @@
 
 */
 
-/* Newer startup model:
-   gotInfo(info)
-   info has { user: {}, outlets: [], glosses: [] }
-   if _sbook_loadinfo, do loadInfo(_sbook_loadinfo);
-   else do a JSONP call.
-*/
+/* Initialize these here, even though they should always be
+   initialized before hand.  This will cause various code checkers to
+   not generate unbound variable warnings when called on individual
+   files. */
+var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.Startup=
     (function(){

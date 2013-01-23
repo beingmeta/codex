@@ -3,8 +3,12 @@
 /* ###################### codex/search.js ###################### */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
-   This file implements the search component of a 
-   Javascript/DHTML UI for reading large structured documents (sBooks).
+
+   This file implements the search component for the e-reader web
+   application, and relies heavily on the Knodules module.
+
+   This file is part of Codex, a Javascript/DHTML web application for reading
+   large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
    For more information on knodules, visit www.knodules.net
@@ -31,6 +35,15 @@
    Enjoy!
 
 */
+
+/* Initialize these here, even though they should always be
+   initialized before hand.  This will cause various code checkers to
+   not generate unbound variable warnings when called on individual
+   files. */
+var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 (function(){
     var fdjtString=fdjt.String;

@@ -3,7 +3,11 @@
 /* ###################### codex/interaction.js ###################### */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
-   This file implements a Javascript/DHTML UI for reading
+
+   This file implements most of the interaction handling for the
+   e-reader web application.
+
+   This file is part of Codex, a Javascript/DHTML web application for reading
    large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -30,6 +34,15 @@
    Enjoy!
 
 */
+
+/* Initialize these here, even though they should always be
+   initialized before hand.  This will cause various code checkers to
+   not generate unbound variable warnings when called on individual
+   files. */
+var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 /* There are four basic display modes:
     reading (minimal decoration, with 'minimal' configurable)
@@ -99,10 +112,8 @@
             addHandlers(document,'document');
             addHandlers(document.body,'body');
             if (Codex.bypage) {
-                // fdjtUI.TapHold(Codex.page,Codex.touch);
                 addHandlers(fdjtID("CODEXPAGE"),'content');}
             else {
-                // fdjtUI.TapHold(Codex.content,Codex.touch);
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
             fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
             fdjtUI.TapHold(fdjtID("CODEXEXPANDSCANNER"),Codex.touch);
@@ -814,8 +825,7 @@
         70: "searching",
         100: "device",68: "device",
         110: "toc",78: "toc",
-        116: "flytoc",84: "flytoc",
-        72: "help", 104: "humane",
+        116: "flytoc",84: "flytoc", 72: "help", 
         103: "allglosses",71: "allglosses",
         67: "console", 99: "console"};
 
@@ -833,9 +843,6 @@
         else modearg=modechars[ch];
         if (modearg==="openheart")
             modearg=Codex.last_heartmode||"about";
-        if (modearg==="humane") {
-            fdjtLog.Humane();
-            return;}
         var mode=Codex.setMode();
         if (modearg) {
             if (mode===modearg) {

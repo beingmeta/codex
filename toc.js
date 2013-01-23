@@ -3,7 +3,11 @@
 /* ###################### codex/toc.js ###################### */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
-   This file implements a Javascript/DHTML UI for reading
+
+   This file implements the "dynamic table of contents" for the Codex
+   e-reader web application.
+
+   This file is part of Codex, a Javascript/DHTML web application for reading
    large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -31,21 +35,14 @@
 
 */
 
-/* New NAV hud design
-   One big DIV for the whole TOC, use CSS to change what's visible
-   General structure:
-   div.codextoc.toc0
-   div.head (contains section name)
-   div.spanbar (contains spanbar)
-   div.sub (contains all the subsections names)
-   div.codextoc.toc1 (tree for first section)
-   div.codextoc.toc1 (tree for second section)
-   Controlling display:
-   .cur class on current head
-   .live class on div.codextoc and parents
-*/
-
-/* Building the DIV */
+/* Initialize these here, even though they should always be
+   initialized before hand.  This will cause various code checkers to
+   not generate unbound variable warnings when called on individual
+   files. */
+var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.TOC=
     (function(){

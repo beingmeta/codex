@@ -1,9 +1,0 @@
-;;; -*- Mode: scheme; -*-
-
-(use-module '{logger fdweb xhtml})
-
-(define (main (path_info #f) (http_accept #f))
-  (%watch path_info http_accept)
-  (req/set! 'doctype #f)
-  (req/set! 'status 303)
-  (httpheader "Location: /codex/graphics/svg/" path_info ".svg"))
