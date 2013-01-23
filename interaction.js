@@ -729,6 +729,7 @@
         var target=fdjtUI.T(evt);
         // fdjtLog("sbook_onkeydown %o",evt);
         if (evt.keyCode===27) { /* Escape works anywhere */
+            if (Codex.previewing) Codex.stopPreview("escape_key");
             if (Codex.mode) {
                 Codex.last_mode=Codex.mode;
                 Codex.setMode(false);
@@ -742,9 +743,13 @@
             return;
         else if ((evt.ctrlKey)&&(Codex.previewing)) {
             var previewing=Codex.previewing;
+            var target=Codex.previewTarget;
             Codex.stopPreview("control_key");
             Codex.setHUD(false);
-            Codex.GoTo(previewing);
+            if (target) Codex.GoTo(target);
+            else if (hasClass(previewing,"codexpage")) 
+                Codex.GoToPage(previewing);
+            else Codex.GoTo(previewing);
             return false;}
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (kc===34) Codex.pageForward(evt);   /* page down */
