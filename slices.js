@@ -809,14 +809,18 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function getFirstElt(glosses,location){
         var children=glosses.childNodes; var last=false;
+        var docinfo=Codex.docinfo;
         var i=0; var lim=children.length;
         while (i<lim) {
-            var child=children[i++];
+            var child=children[i++]; var info, start;
             if (child.nodeType!==1) continue;
-            else if (!(child.starts)) continue;
-            else if (child.starts===location)
+            else if (!(child.frag)) continue;
+            else if (!(docinfo[child.frag])) continue;
+            info=docinfo[child.frag];
+            start=info.starts_at
+            if (start===location)
                 return child;
-            else if (child.starts>location) {
+            else if (start>location) {
                 if (last)
                     return getFirstElt(last,location)||last;
                 else return last;}
