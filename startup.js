@@ -201,8 +201,9 @@ Codex.Startup=
             saved_config=saved;}
         Codex.saveConfig=saveConfig;
 
-        function initConfig(){
-            if (navigator.onLine) fetchConfig();
+        function initConfig(fetch){
+            if (typeof fetch === "undefined") fetch=true;
+            if ((navigator.onLine)&&(fetch)) fetchConfig();
             var config=saved_config=getLocal("codex.config",true)||{};
             Codex.postconfig=[];
             if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
@@ -238,7 +239,7 @@ Codex.Startup=
                     try {
                         var config=JSON.parse(req.responseText);
                         fdjtState.setLocal("codex.config",req.responseText);
-                        initConfig();
+                        initConfig(false);
                         saveConfig(config,false);}
                     catch (ex) {}}
                 else {}
@@ -254,7 +255,7 @@ Codex.Startup=
         var getChild=fdjtDOM.getChild;
 
         function updateConfig(name,id,save){
-            if (typeof save === 'undefined') save=true;
+            if (typeof save === 'undefined') save=false;
             var elt=((typeof id === 'string')&&(document.getElementById(id)))||
                 ((id.nodeType)&&(getParent(id,'input')))||
                 ((id.nodeType)&&(getChild(id,'input')))||
