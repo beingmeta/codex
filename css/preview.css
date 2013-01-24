@@ -65,7 +65,7 @@ body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-body.cxPREVIEW div#CODEXHUD.glosses div#CODEXGLOSSES.hudpanel {
+body.cxPREVIEW div#CODEXHUD.glosses div#CODEXPASSAGEGLOSSES.hudpanel {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);

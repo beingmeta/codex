@@ -229,7 +229,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     
     function showGlosses(target) {
         var glosses=Codex.glosses.find('frag',target.codexbaseid||target.id);
-        var sumdiv=fdjtDOM("div.codexglosses.codexslice.hudpanel#CODEXGLOSSES");
+        var sumdiv=fdjtDOM("div.codexglosses.codexslice.hudpanel#CODEXPASSAGEGLOSSES");
         var excerpt=false;
         if ((!(glosses))||(!(glosses.length)))
             fdjtDOM.addClass(sumdiv,"noglosses");
@@ -243,7 +243,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if ((!excerpt)&&(gloss.excerpt)) excerpt=gloss.excerpt;
                 var card=Codex.renderCard(gloss);
                 fdjtDOM(sumdiv,card);}}
-        fdjtDOM.replace("CODEXGLOSSES",sumdiv);
+        fdjtDOM.replace("CODEXPASSAGEGLOSSES",sumdiv);
         Codex.setTarget(target);
         if (excerpt) {
             var range=fdjtDOM.findString(target,excerpt);

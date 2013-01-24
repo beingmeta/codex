@@ -295,7 +295,7 @@ div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
 
 /* Heart rules */
 div#CODEXHUD.allglosses div#CODEXALLGLOSSES.hudpanel,
-div#CODEXHUD.glosses div#CODEXGLOSSES.hudpanel,
+div#CODEXHUD.glosses div#CODEXPASSAGEGLOSSES.hudpanel,
 div#CODEXHUD.flytoc div#CODEXFLYTOC.hudpanel,
 div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
 div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
@@ -563,13 +563,13 @@ body.hudup.cxMOUSE div#CODEXHUD img.hudbutton:hover {
 
 body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
 
-/* CODEXGLOSSES rules */
+/* CODEXPASSAGEGLOSSES rules */
 
-div#CODEXGLOSSES div.codexslice .idthread .codexcard:first-child .idhead {
+div#CODEXPASSAGEGLOSSES div.codexslice .idthread .codexcard:first-child .idhead {
     height: 0px;}
-div.hudpanel#CODEXGLOSSES div.codexslice .tocthread {
+div.hudpanel#CODEXPASSAGEGLOSSES div.codexslice .tocthread {
     border-left-width: 0px;}
-div#CODEXGLOSSES div.codexcard { margin-left: 0px;}
+div#CODEXPASSAGEGLOSSES div.codexcard { margin-left: 0px;}
 
 div#CODEXALLGLOSSES div.codexcard .audience { display: none;}
 
@@ -605,7 +605,7 @@ div#CODEXSCANNER span.expander img[alt='-'] { display: none;}
 div#CODEXSCANNER.expanded span.expander img[alt='-'] { display: inline;}
 div#CODEXSCANNER.expanded span.expander img[alt='+'] { display: none;}
 
-div#CODEXSCANNER div.tochead, div#CODEXGLOSSES div.tochead {
+div#CODEXSCANNER div.tochead, div#CODEXPASSAGEGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
 
 body div#CODEXHUD div.hudpanel#CODEXTOC { z-index: 100; }
@@ -619,7 +619,7 @@ body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
     min-height: 50px; height: auto;
     display: block;}
 
-body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES {
+body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXPASSAGEGLOSSES {
     border-color: silver;
     min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
@@ -628,7 +628,7 @@ body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES {
     -o-box-shadow: 1em 1em 1em #cccccc;
     display: block;}
 
-body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXGLOSSES.noglosses {
+body.hudup div#CODEXHUD.glosses div.hudpanel#CODEXPASSAGEGLOSSES.noglosses {
     display: none;}
 
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
@@ -663,7 +663,7 @@ div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSCLOUD,
 div#CODEXHUD.addgloss.glosstagging div#CODEXHEART #CODEXGLOSSCLOUD {
     display: block;}
 
-div#CODEXGLOSSES div.codexthread { border-right-width: 0px;}
+div#CODEXPASSAGEGLOSSES div.codexthread { border-right-width: 0px;}
 div#SBOOKGLOSSES div.codexthread {
     border-left: none; margin-left: 0px;
     padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
@@ -715,7 +715,7 @@ div#CODEXHUD div#CODEXSCANNER div.codexcard > div.tochead { margin-left: -40px;}
 div#CODEXHUD div#CODEXSCANNER div.codexcard > div.idhead { margin-left: -20px;}
 
 div#CODEXHUD div#CODEXSCANNER div.idhead,
-div#CODEXHUD div#CODEXGLOSSES div.idhead {
+div#CODEXHUD div#CODEXPASSAGEGLOSSES div.idhead {
     height: 0px;}
 div#CODEXHUD div#CODEXSCANNER img.glosspic {
     max-height: 5ex; max-width: 5ex;}
