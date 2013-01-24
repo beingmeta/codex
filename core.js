@@ -730,8 +730,7 @@ var Codex=
                     Codex.syncstate=syncing;
                     setConnected(true);
                     syncing=false;}
-                else if ((req.readyState===4)&&
-                         (navigator.onLine))
+                else if ((req.readyState===4)&&(navigator.onLine))
                     setConnected(false);
                 else {}
                 if ((Codex.Trace.dosync)||(Codex.Trace.state))

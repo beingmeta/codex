@@ -497,7 +497,7 @@ Codex.Paginate=
         var curpage=false;
         
         function GoToPage(spec,caller,pushstate){
-            if (typeof pushstate === 'undefined') pushstate=false;
+            if (typeof pushstate === 'undefined') pushstate=true;
             if (Codex.previewing) stopPreview("GoToPage");
             dropClass(document.body,"codexhelp");
             if (Codex.layout) {

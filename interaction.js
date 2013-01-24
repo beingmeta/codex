@@ -290,6 +290,24 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 fdjtLog("ctouch: Skipping clickable item");
             return;}
 
+        // If we're previewing, stop it
+        if (Codex.previewing) {
+            if (Codex.Trace.gestures)
+                fdjtLog("ctouch: stopPreview p=%o t=%o",
+                        Codex.previewing,Codex.previewTarget);
+            // Any key stops a preview (and is ignored)
+            var previewing=Codex.previewing;
+            var target=Codex.previewTarget;
+            Codex.stopPreview("content_touched");
+            Codex.setHUD(false);
+            if (target) Codex.GoTo(target,"preview_secondtouch");
+            else if (hasClass(previewing,"codexpage")) 
+                Codex.GoToPage(previewing,"preview_secondtouch");
+            else Codex.GoTo(previewing,"preview_secondtouch");
+            fdjt.UI.cancel(evt);
+            gesture_start=false
+            return false;}
+
         var id=((passage)&&(passage.codexbaseid||passage.id));
         // Update our location
         if ((id)&&(Codex.docinfo[id])) {
@@ -308,16 +326,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         evt,target,passage);
             passage=false;}
         
-        // If we're previewing, stop it
-        if (Codex.previewing) {
-            if (Codex.Trace.gestures)
-                fdjtLog("ctouch: stopPreview p=%o t=%o",
-                        Codex.previewing,Codex.previewTarget);
-            Codex.stopPreview("content_touched");
-            gesture_start=false
-            fdjtUI.cancel(evt);
-            return;}
-
         if ((passage===Codex.glosstarget)||
              (hasParent(passage,Codex.glosstarget))||
              (hasParent(Codex.glosstarget,passage))) {
@@ -761,10 +769,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var target=Codex.previewTarget;
             Codex.stopPreview("onkeydown");
             Codex.setHUD(false);
-            if (target) Codex.GoTo(target);
+            if (target) Codex.GoTo(target,"preview_keydown");
             else if (hasClass(previewing,"codexpage")) 
-                Codex.GoToPage(previewing);
-            else Codex.GoTo(previewing);
+                Codex.GoToPage(previewing,"preview_keydown");
+            else Codex.GoTo(previewing,"preview_keydown");
             fdjt.UI.cancel(evt);
             return false;}
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
