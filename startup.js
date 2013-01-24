@@ -166,7 +166,8 @@ Codex.Startup=
                 saveConfig(saved_config);}}
         Codex.setConfig=setConfig;
 
-        function saveConfig(config){
+        function saveConfig(config,toserver){
+            if (typeof toserver === "undefined") toserver=true;
             if (Codex.Trace.config) {
                 fdjtLog("saveConfig %o",config);
                 fdjtLog("saved_config=%o",saved_config);}
@@ -180,12 +181,29 @@ Codex.Startup=
                     saved[setting]=config[setting];}}
             if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
             setLocal("codex.config",JSON.stringify(saved));
+            if ((toserver)&&(navigator.onLine)) {
+                var req=new XMLHttpRequest();
+                req.onreadystatechange=function(evt){
+                    if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
+                        Codex.setConnected(true);
+                        saved_config=JSON.parse(req.responseText);}
+                    else if ((req.readyState===4)&&(navigator.onLine))
+                        Codex.setConnected(false);
+                    else {}
+                    if ((Codex.Trace.dosync)||(Codex.Trace.state))
+                        fdjtLog("configSave(callback) %o ready=%o status=%o %j",
+                                evt,req.readyState,req.status,saved_config);};
+                var uri="https://auth.sbooks.net/admin/codexconfig?"+
+                    encodeURIComponent(JSON.stringify(saved));
+                req.withCredentials=true;
+                try { req.open("GET",uri,true); req.send(); }
+                catch (ex) {}}
             saved_config=saved;}
         Codex.saveConfig=saveConfig;
 
         function initConfig(){
-            var config=saved_config=
-                getLocal("codex.config",true)||{};
+            if (navigator.onLine) fetchConfig();
+            var config=saved_config=getLocal("codex.config",true)||{};
             Codex.postconfig=[];
             if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
             if (config) {
@@ -209,23 +227,29 @@ Codex.Startup=
             var i=0; var lim=dopost.length;
             while (i<lim) dopost[i++]();
             
-            var deviceid=current_config.deviceid;
             var devicename=current_config.devicename;
-            if (!(deviceid)) {
-                deviceid=fdjtState.getUUID();
-                setConfig("deviceid",deviceid,true);}
-            Codex.deviceId=deviceid;
-            if (!(devicename)) {
-                var vi=fdjtState.versionInfo(); var now=new Date();
-                devicename=vi.browser+"/"+vi.platform+"/0"+
-                    (now.getFullYear())+"/"+
-                    ((now.getMonth())+1)+"/"+
-                    (now.getDate())+"-"+(Math.floor(Math.random()*1000000));
-                setConfig('devicename',devicename,true);}
-            Codex.deviceName=devicename;
+            if ((devicename)&&(!(fdjtString.isEmpty(devicename))))
+                Codex.deviceName=devicename;}
 
-            saveConfig();}
-
+        function fetchConfig(){
+            var req=new XMLHttpRequest();
+            req.onreadystatechange=function(evt){
+                if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
+                    try {
+                        var config=JSON.parse(req.responseText);
+                        fdjtState.setLocal("codex.config",req.responseText);
+                        initConfig();
+                        saveConfig(config,false);}
+                    catch (ex) {}}
+                else {}
+                if ((Codex.Trace.dosync)||(Codex.Trace.state))
+                    fdjtLog("configSave(callback) %o ready=%o status=%o %j",
+                            evt,req.readyState,req.status,saved_config);};
+            var uri="https://auth.sbooks.net/admin/codexconfig";
+            req.withCredentials=true;
+            try { req.open("GET",uri,true); req.send(); }
+            catch (ex) {}}
+        
         var getParent=fdjtDOM.getParent;
         var getChild=fdjtDOM.getChild;
 
@@ -254,9 +278,8 @@ Codex.Startup=
                 document.getElementsByName("CODEXKEYBOARDHELP"),
                 value);});
         Codex.addConfig("devicename",function(name,value){
-            Codex.deviceName=value;});
-        Codex.addConfig("deviceid",function(name,value){
-            Codex.deviceId=value;});
+            if (fdjtString.isEmpty(value)) Codex.deviceName=false;
+            else Codex.deviceName=value;});
 
         Codex.addConfig("holdmsecs",function(name,value){
             Codex.holdmsecs=value;

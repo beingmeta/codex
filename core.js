@@ -708,8 +708,6 @@ var Codex=
                 "&REFURI="+encodeURIComponent(refuri);
             if (Codex.user)
                 uri=uri+"&SYNCUSER="+encodeURIComponent(Codex.user._id);
-            if (Codex.deviceId)
-                uri=uri+"&deviceid="+encodeURIComponent(Codex.deviceId);
             if (Codex.deviceName)
                 uri=uri+"&devicename="+encodeURIComponent(Codex.deviceName);
             if (state.target) uri=uri+"&target="+encodeURIComponent(state.target);
