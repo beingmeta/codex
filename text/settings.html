@@ -1,6 +1,8 @@
 <h1>Device Settings</h1>
 <form onsubmit="fdjt.UI.cancel(event); return false;">
-  <table class="settings" onclick="fdjt.UI.CheckSpan.onclick(event);">
+  <table class="settings"
+         onclick="fdjt.UI.CheckSpan.onclick(event); Codex.UI.settingsUpdate(event);"
+         onblur="Codex.UI.settingsUpdate(event);">
     <tr class="checkspan">
       <th><input TYPE="RADIO" NAME="CODEXLOCAL" VALUE="yes"
                  ID="CODEXLOCALCHECKBOX"/></th>
@@ -80,8 +82,8 @@
     <tr class="buttons">
       <th/>
       <td colspan="2">
-        <span class="button" onclick="Codex.UI.settingsOK();">OK</span>
-        <span class="button" onclick="Codex.UI.settingsCancel();">Cancel</span>
+        <span class="button" onclick="Codex.UI.settingsSave(event);">Save</span>
+        <span class="button" onclick="Codex.UI.settingsReset(event);">Reset</span>
         <span ID="CODEXSETTINGSMESSAGE"></span>
       </td>
     </tr>

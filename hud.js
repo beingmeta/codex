@@ -1019,7 +1019,31 @@ Codex.setMode=
             
             return result;}
 
+        Codex.UI.settingsUpdate=function(){
+            var settings=getSettings();
+            Codex.setConfig(settings);};
+
+        Codex.UI.settingsSave=function(evt){
+            if (typeof evt === "undefined") evt=event;
+            if (evt) fdjt.UI.cancel(evt);
+            var settings=getSettings();
+            Codex.setConfig(settings);
+            Codex.saveConfig(settings);
+            fdjtDOM.replace("CODEXSETTINGSMESSAGE",
+                            fdjtDOM("span#CODEXSETTINGSMESSAGE",
+                                    "Your settings have been saved."));};
+
+        Codex.UI.settingsReset=function(evt){
+            if (typeof evt === "undefined") evt=event;
+            if (evt) fdjt.UI.cancel(evt);
+            Codex.setConfig(saved_config);
+            fdjtDOM.replace("CODEXSETTINGSMESSAGE",
+                            fdjtDOM("span#CODEXSETTINGSMESSAGE",
+                                    "Your settings have been reset."));};
+
         Codex.UI.settingsOK=function(){
+            if (typeof evt === "undefined") evt=event;
+            if (evt) fdjt.UI.cancel(evt);
             var settings=getSettings();
             Codex.setConfig(settings);
             Codex.saveConfig(settings);
@@ -1028,6 +1052,8 @@ Codex.setMode=
                                     "Your settings have been saved."));};
         
         Codex.UI.settingsCancel=function(){
+            if (typeof evt === "undefined") evt=event;
+            if (evt) fdjt.UI.cancel(evt);
             Codex.setConfig(Codex.getConfig());
             fdjtDOM.replace("CODEXSETTINGSMESSAGE",
                             fdjtDOM("span#CODEXSETTINGSMESSAGE",

@@ -6,6 +6,9 @@
 
 @charset "UTF-8";
 
+@media screen and (max-width: 600px) {
+    div#CODEXHUD #CODEXHEART { font-size: 80%; }
+
 @media screen and (max-width: 800px) {
     #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
     div#CODEXHEAD div#CODEXHUDBUTTONS {

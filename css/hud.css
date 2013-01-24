@@ -142,7 +142,8 @@ body.hudup #CODEXHEARTHOLDER {
     position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;}
 div#CODEXHUD #CODEXHEART div.hudpanel { background-color: transparent;}
 
-div#CODEXHUD #CODEXHEART { overflow: auto;}
+div#CODEXHUD #CODEXHEART {
+    font-size: 100%; overflow: auto;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTHOLDER,
