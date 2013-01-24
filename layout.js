@@ -398,20 +398,20 @@ Codex.Paginate=
             if (avoidbreakbefore) args.avoidbreakbefore=avoidbreakbefore;
             
             var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
-            if (fullpages) fullpages.push("sbookfullpage");
-            else fullpages=["sbookfullpage"];
+            if (fullpages) fullpages.concat([".sbookfullpage",".sbooktitlepage",".sbookpage"]);
+            else fullpages=[".sbookfullpage",".sbooktitlepage",".sbookpage"];
             args.fullpages=fullpages;
             
             var floatpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfloatpage",true));
             if (floatpages) floatpages.push("sbookfloatpage");
-            else floatpages=["sbookfloatpage"];
+            else floatpages=[".sbookfloatpage"];
             args.floatpages=floatpages;
 
             var scaletopage=fdjtDOM.getMeta("sbookscaletopage",true);;
             if ((scaletopage)&&(scaletopage.length)) 
-                scaletopage.push("sbookscaletopage");
-            else scaletopage=["sbookscaletopage"];
-            args.scaletopage=scaletopage=fdjtDOM.sel(scaletopage);
+                scaletopage.concat([".sbookscaletopage",".sbookpagescaled"]);
+            else scaletopage=[".sbookscaletopage",".sbookpagescaled"];
+            args.scaletopage=scaletopage=scaletopage;
             
             if ((fdjtDOM.getMeta("Codex.dontbreakblocks"))||
                 (fdjtDOM.getMeta("Codex.keepblocks"))||
