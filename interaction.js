@@ -750,7 +750,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 Codex.setMode(false);
                 Codex.setTarget(false);
                 fdjtID("CODEXSEARCHINPUT").blur();}
-            else if (Codex.last_mode) Codex.setMode(Codex.last_mode);
             else {}
             return;}
         else if ((target.tagName==="TEXTAREA")||
