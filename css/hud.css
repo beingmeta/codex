@@ -74,7 +74,7 @@ body #CODEXHUD.openhead #CODEXHEAD,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded,
 body #CODEXHUD.tocscan #CODEXSCANNER.expanded,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded {
-    max-height: 50%; overflow: auto;}
+    max-height: 50%; overflow: visible;}
 
 #CODEXHEARTHOLDER {
     position: fixed;
@@ -126,9 +126,6 @@ body.hudup #CODEXHEARTHOLDER {
     position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;}
 div#CODEXHUD #CODEXHEART div.hudpanel { background-color: transparent;}
 
-/* body.hudup #CODEXHEART { display: block;} */
-/* div#CODEXHUD #CODEXHEART .hudpanel { overflow: auto;} */
-
 div#CODEXHUD #CODEXHEART { overflow: auto;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER,
@@ -165,7 +162,7 @@ body #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
-    margin-top: 1ex; margin-bottom: 1ex;
+    margin-top: 1.5ex; margin-bottom: 1.5ex; margin-right: 1px;
     padding-top: 1ex; padding-bottom: 1em;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
@@ -572,6 +569,7 @@ div#CODEXGLOSSES div.codexslice .idthread .codexcard:first-child .idhead {
     height: 0px;}
 div.hudpanel#CODEXGLOSSES div.codexslice .tocthread {
     border-left-width: 0px;}
+div#CODEXGLOSSES div.codexcard { margin-left: 0px;}
 
 div#CODEXALLGLOSSES div.codexcard .audience { display: none;}
 

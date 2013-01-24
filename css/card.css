@@ -145,7 +145,7 @@ body.sbook a.codexcard { display: block;}
     font-weight: normal;
     font-size: 70%; text-decoration: none;}
 .codexcard .tool > * { float: right; }
-.codexcard .tool img { height: 40px; width: 40px;}
+.codexcard .tool img { height: 40px; width: 40px; opacity: 0.3;}
 .codexcard .age {
     color: rgb(18, 141, 238);
     vertical-align: top; padding-right: 0.5em;}
