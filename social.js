@@ -229,7 +229,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     
     function showGlosses(target) {
         var glosses=Codex.glosses.find('frag',target.codexbaseid||target.id);
-        var sumdiv=fdjtDOM("div.codexglosses.hudpanel#CODEXGLOSSES");
+        var sumdiv=fdjtDOM("div.codexglosses.codexslice.hudpanel#CODEXGLOSSES");
         var excerpt=false;
         if ((!(glosses))||(!(glosses.length)))
             fdjtDOM.addClass(sumdiv,"noglosses");
