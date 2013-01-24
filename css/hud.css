@@ -74,7 +74,7 @@ body #CODEXHUD.openhead #CODEXHEAD,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded,
 body #CODEXHUD.tocscan #CODEXSCANNER.expanded,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded {
-    max-height: inherit;}
+    max-height: 50%; overflow: auto;}
 
 #CODEXHEARTHOLDER {
     position: fixed;
@@ -283,7 +283,6 @@ div#CODEXHUD.cxANIMATE div.hudpanel {
 div#CODEXHUD.toc div#CODEXTOC,
 div#CODEXHUD.tocscan div#CODEXTOC,
 div#CODEXHUD.allglosses div#CODEXSOURCES,
-div#CODEXHUD.glosses div#CODEXGLOSSES,
 div#CODEXHUD.addgloss div#CODEXADDGLOSS,
 div#CODEXHUD.search div#CODEXSEARCH,
 div#CODEXHUD.searchresults div#CODEXSEARCH,
@@ -299,6 +298,7 @@ div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
 
 /* Heart rules */
 div#CODEXHUD.allglosses div#CODEXALLGLOSSES.hudpanel,
+div#CODEXHUD.glosses div#CODEXGLOSSES.hudpanel,
 div#CODEXHUD.flytoc div#CODEXFLYTOC.hudpanel,
 div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
 div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,

@@ -868,7 +868,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 target.value="";}
             else {
                 fdjtUI.cancel(evt);
-                submitEvent(target);}}
+                submitGloss(form);}}
         else if (mode) {}
         else {
             var content=getbracketed(target);
