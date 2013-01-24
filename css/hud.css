@@ -23,6 +23,22 @@
     border: solid transparent 4px; padding: 0px;
     border-top: 0px;}
 #CODEXHEAD, #CODEXSCANNER { left: 60px; right: 60px; }
+#CODEXHUD #CODEXHEAD, #CODEXHUD.openhead.openheart #CODEXHEAD {
+    opacity: 0.99;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
+    filter: alpha(opacity=99);
+    -webkit-opacity: 0.99;
+    -khtml-opacity: 0.99;
+    -moz-opacity: 0.99;
+    -o-opacity: 0.99;}
+#CODEXHUD.openheart #CODEXHEAD {
+    opacity: 0.33;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
+    filter: alpha(opacity=33);
+    -webkit-opacity: 0.33;
+    -khtml-opacity: 0.33;
+    -moz-opacity: 0.33;
+    -o-opacity: 0.33;}
 
 #CODEXSCANNER { display: none; }
 /* #CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; } */
@@ -342,13 +358,13 @@ div.completions.hudpanel .normal { line-height: 250%;}
 
 div#CODEXHUD img.hudbutton {
     position: fixed; width: 50px; height: 50px;
-    border: solid transparent 2px; opacity: 0.10;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
-    filter: alpha(opacity=10);
-    -webkit-opacity: 0.10;
-    -khtml-opacity: 0.10;
-    -moz-opacity: 0.10;
-    -o-opacity: 0.10;}
+    border: solid transparent 2px; opacity: 0.20;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    filter: alpha(opacity=20);
+    -webkit-opacity: 0.20;
+    -khtml-opacity: 0.20;
+    -moz-opacity: 0.20;
+    -o-opacity: 0.20;}
 .cxMOUSE div#CODEXHUD:hover img.hudbutton {
     opacity: 0.30;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
@@ -856,7 +872,7 @@ div#CODEXSOURCES {
 /* Buttons */
 
 body div#CODEXHUD div#CODEXHUDBUTTONS {
-    clear: none; z-index: 150; text-align: center; opacity: 0.1;
+    clear: none; z-index: 100; text-align: center; opacity: 0.10;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
     filter: alpha(opacity=10);
     -webkit-opacity: 0.10;
