@@ -8,10 +8,17 @@
 
 @media screen and (max-width: 800px) {
     #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
+    div#CODEXHEAD div#CODEXHUDBUTTONS {
+        margin-left: 60px; margin-right: 60px;}
+    div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
+        right: 60px;}
+    div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.username {
+        left: 60px;}
+    #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
     img.codexclosehud#CODEXSTOPSCAN {
         bottom: 50px; top: auto;}
     body.hudup #CODEXHUD.openhead #CODEXHEAD,
-    body #CODEXHUD.openhead.addgloss #CODEXHEAD,{
+    body #CODEXHUD.openhead.addgloss #CODEXHEAD {
         left: 0px; right: 0px; }
     #CODEXHUD.openhead.tocscan #CODEXHEAD {
         left: 50px; right: 50px;}

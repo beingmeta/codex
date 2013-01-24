@@ -444,7 +444,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
     color: red;}
 div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout:visited {
     color: red;}
-div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#CODEXUSERNAME {
+div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.username {
     position: absolute; left: 0px;
     vertical-align: top; padding-right: 2px;
     font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
@@ -452,10 +452,10 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#CODEXUSERNAME {
     color: blue;}
 
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout,
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a#CODEXUSERNAME {
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.username {
     display: inline;}
 .cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a.logout,
-.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a#CODEXUSERNAME {
+.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a.username {
     display: inline;}
 
 
