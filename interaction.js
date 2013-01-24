@@ -755,15 +755,17 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if ((target.tagName==="TEXTAREA")||
                  (target.tagName==="INPUT"))
             return;
-        else if ((evt.ctrlKey)&&(Codex.previewing)) {
+        else if (Codex.previewing) {
+            // Any key stops a preview (and is ignored)
             var previewing=Codex.previewing;
             var target=Codex.previewTarget;
-            Codex.stopPreview("control_key");
+            Codex.stopPreview("onkeydown");
             Codex.setHUD(false);
             if (target) Codex.GoTo(target);
             else if (hasClass(previewing,"codexpage")) 
                 Codex.GoToPage(previewing);
             else Codex.GoTo(previewing);
+            fdjt.UI.cancel(evt);
             return false;}
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (kc===34) Codex.pageForward(evt);   /* page down */
@@ -1907,6 +1909,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     Codex.UI.changeGlossPosting=changeGlossPosting;
 
     function changeGlossPrivacy(evt){
+        evt=evt||event;
         var target=fdjtUI.T(evt=(evt||event));
         var glossdiv=fdjtDOM.getParent(target,".codexglossform");
         var postgloss=fdjtDOM.getChild(glossdiv,".postgloss");
@@ -1919,6 +1922,15 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (target.checked) fdjtDOM.addClass(glossdiv,"private");
         else fdjtDOM.dropClass(glossdiv,"private");}
     Codex.UI.changeGlossPrivacy=changeGlossPrivacy;
+
+    function exposureClicked(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var form=getParent(target,"FORM");
+        if (form.className==="addoutlet")
+            fdjt.UI.CheckSpan.onclick(evt);
+        else Codex.setGlossMode("addoutlet");}
+    Codex.UI.exposureClicked=exposureClicked;
 
     /* Back to the text */
 

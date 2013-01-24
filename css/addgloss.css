@@ -170,11 +170,14 @@ div.codexglossform form div.glossetc {
 div.codexglossform form .glossetc .glossexposure,
 div.codexglossform form .glossetc .glossdate {
     padding: 0px; padding-bottom: 1ex; padding-left: 1ex;
-    float: right; display: none;}
+    float: right;
+    display: none;}
 div.codexglossform .glossetc .glossdate {
   font-variant: small-caps; color: purple;}
 
+body.hudup div.codexglossform form .glossetc .glossexposure,
 div.codexglossform form.addoutlet .glossetc .glossexposure,
+div.codexglossform.foxued form .glossetc .glossexposure,
 div.codexglossform.glossedit form .glossetc .glossexposure,
 div.codexglossform.glossedit form .glossetc .glossdate {
     display: block;}
