@@ -394,7 +394,7 @@ var Codex=
             if (scan.codexui) return false;
             else if (scan===Codex.docroot) return target;
 	    else if (scan===document.body) return target;
-            else if (id=(scan.id||scan.codexbaseid)) {
+            else if ((id=(scan.id||scan.codexbaseid))&&(Codex.docinfo[id])) {
                 if (id.search("CODEXTMP")===0) {}
                 else if (hasParent(scan,Codex.HUD)) return false;
                 else if (hasParent(scan,".codexmargin")) return false;
@@ -449,7 +449,9 @@ var Codex=
     /* Navigation functions */
 
     function setHead(head){
-        if (head===null) head=Codex.content;
+        if (!(head)) {
+            if (Codex.mode==="tocscan") Codex.setMode(false);
+            return;}
         else if (typeof head === "string") 
             head=getHead(fdjtID(head))||Codex.content;
         else {}
@@ -832,7 +834,8 @@ var Codex=
         if (page)
             Codex.GoToPage(target,caller||"CodexGoTo",false);
         else {
-            if (Codex.previewing) Codex.stopPreview();
+            if (Codex.previewing)
+                Codex.stopPreview(((caller)?("goto/"+caller):("goto")));
             var offinfo=fdjtDOM.getGeometry(target,Codex.content);
             var use_top=offinfo.top-((fdjtDOM.viewHeight()-50)/2);
             if (use_top<0) use_top=0;
