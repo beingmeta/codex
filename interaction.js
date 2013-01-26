@@ -299,6 +299,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var previewing=Codex.previewing;
             var target=Codex.previewTarget;
             Codex.stopPreview("content_touched");
+            fdjtUI.TapHold.clear();
             Codex.setHUD(false);
             if (target) Codex.GoTo(target,"preview_secondtouch");
             else if (hasClass(previewing,"codexpage")) 
@@ -752,7 +753,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var target=fdjtUI.T(evt);
         // fdjtLog("sbook_onkeydown %o",evt);
         if (evt.keyCode===27) { /* Escape works anywhere */
-            if (Codex.previewing) Codex.stopPreview("escape_key");
+            if (Codex.previewing) {
+                Codex.stopPreview("escape_key");
+                fdjtUI.TapHold.clear();}
             if (Codex.mode) {
                 Codex.last_mode=Codex.mode;
                 Codex.setMode(false);
@@ -768,6 +771,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var previewing=Codex.previewing;
             var target=Codex.previewTarget;
             Codex.stopPreview("onkeydown");
+            fdjtUI.TapHold.clear();
             Codex.setHUD(false);
             if (target) Codex.GoTo(target,"preview_keydown");
             else if (hasClass(previewing,"codexpage")) 
