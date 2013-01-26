@@ -1030,7 +1030,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             noteinput.value="";}
         var sent=((navigator.onLine)&&
                   (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form,keep))));
-        if (!(sent)) queueGloss(form,evt);
+        if (!(sent)) queueGloss(form,((arg)&&(arg.type)&&(arg)));
         else dropClass(div,"modified");}
     Codex.submitGloss=submitGloss;
 
