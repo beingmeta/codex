@@ -322,7 +322,7 @@ div#CODEXHUD.addgloss.glossaddoutlet div#CODEXHEART div#CODEXOUTLETCLOUD.hudpane
 div#CODEXHUD.addgloss.glossaddlink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
 div#CODEXHUD.search div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
 div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
-div_WRAPPER#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
+div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     position: static; display: block;
     opacity: 0.98;
