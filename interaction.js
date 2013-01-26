@@ -92,6 +92,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     /* For tracking gestures */
     var start_x=-1; var start_y=-1; var last_x=-1; var last_y=-1;
     var start_t=-1; var last_t=-1;
+    var double_touch=false;
     var cxicon=Codex.icon;
     
     var addgloss_timer=false;
@@ -290,24 +291,42 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 fdjtLog("ctouch: Skipping clickable item");
             return;}
 
-        // If we're previewing, stop it
+        // If we're previewing, stop it and go to the page we're previewing
+        //  (which was touched)
         if (Codex.previewing) {
             if (Codex.Trace.gestures)
                 fdjtLog("ctouch: stopPreview p=%o t=%o",
                         Codex.previewing,Codex.previewTarget);
             // Any key stops a preview (and is ignored)
             var previewing=Codex.previewing;
-            var target=Codex.previewTarget;
+            var ptarget=Codex.previewTarget;
             Codex.stopPreview("content_touched");
             fdjtUI.TapHold.clear();
             Codex.setHUD(false);
-            if (target) Codex.GoTo(target,"preview_secondtouch");
+            if ((target)&&(target.id)&&(Codex.docinfo[target.id]))
+                Codex.GoTo(target,"preview_secondtouch");
+            else if ((ptarget)&&(ptarget.id)&&(Codex.docinfo[ptarget.id]))
+                Codex.GoTo(ptarget,"preview_secondtouch");
             else if (hasClass(previewing,"codexpage")) 
                 Codex.GoToPage(previewing,"preview_secondtouch");
             else Codex.GoTo(previewing,"preview_secondtouch");
             fdjt.UI.cancel(evt);
             gesture_start=false
             return false;}
+
+        if (evt.touches) {
+            var now=fdjtTime();
+            if (Codex.Trace.gestures)
+                fdjtLog("double_touch dt=%o now=%o",double_touch,now);
+            if (evt.touches.length>1) {
+                double_touch=now;
+                if (addgloss_timer) {
+                    clearTimeout(addgloss_timer);
+                    addgloss_timer=false;}
+                gesture_start=false;
+	        return;}
+            else if ((now-double_touch)>2000) double_touch=false;
+            else {}}
 
         var id=((passage)&&(passage.codexbaseid||passage.id));
         // Update our location
@@ -328,8 +347,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             passage=false;}
         
         if ((passage===Codex.glosstarget)||
-             (hasParent(passage,Codex.glosstarget))||
-             (hasParent(Codex.glosstarget,passage))) {
+            (hasParent(passage,Codex.glosstarget))||
+            (hasParent(Codex.glosstarget,passage))) {
             // You're editing the excerpt, so simply let the
             // fdjtSelecting handlers interpret this, though lower the
             // HUD to clear things up.
@@ -338,7 +357,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             gesture_start=false;
 	    return;}
 
-        if ((Codex.hudup)||(Codex.mode)) {
+        if (((Codex.hudup)||(Codex.mode))&&
+            (Codex.mode!=="scanning")&&
+            (Codex.mode!=="tocscan")) {
             if (Codex.Trace.gestures)
                 fdjtLog("ctouch: clearmode h=%o m=%o",
                         Codex.hudup,Codex.mode);
@@ -347,7 +368,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtUI.cancel(evt);
             return;}
 
-        if (passage) {
+        if (double_touch) {}
+        else if (passage) {
             var glosstarget=Codex.glosstarget;
             if (Codex.Trace.gestures)
                 if (glosstarget)
@@ -1197,11 +1219,32 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
         touch_x=start_x=touch.screenX;
         touch_y=start_y=touch.screenY;
+        // If we're previewing, stop it and go to the page we're previewing
+        //  (which was touched)
         if ((Codex.previewing)&&(touches)&&(touches.length>1)) {
+            if (Codex.Trace.gestures)
+                fdjtLog("ctouch: stopPreview p=%o t=%o",
+                        Codex.previewing,Codex.previewTarget);
+            // Any key stops a preview (and is ignored)
             var previewing=Codex.previewing;
-            Codex.stopPreview("content_touchstart",true);
+            var ptarget=Codex.previewTarget;
+            var target=fdjtUI.T(evt);
+            fdjtLog("stopping preview, p=%o, pt=%o, t=%o",
+                    previewing,ptarget,target);
+            Codex.stopPreview("content_touched");
+            fdjtUI.TapHold.clear();
             Codex.setHUD(false);
-            Codex.GoTo(previewing);}
+            if ((target)&&(target.id)&&(getTarget(target)))
+                Codex.GoTo(getTarget(target),"preview_secondtouch");
+            else if ((ptarget)&&(ptarget.id)&&(Codex.docinfo[ptarget.id]))
+                Codex.GoTo(ptarget,"preview_secondtouch");
+            else if (hasClass(previewing,"codexpage")) 
+                Codex.GoToPage(previewing,"preview_secondtouch");
+            else Codex.GoTo(previewing,"preview_secondtouch");
+            fdjt.UI.cancel(evt);
+            gesture_start=false
+            return false;}
+
         if ((touches)&&(touches.length)) n_touches=touches.length;
         if (Codex.Trace.gestures>1) tracetouch("touchstart",evt);
         gesture_start=fdjtTime();
@@ -1226,7 +1269,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var target=fdjtUI.T(evt);
         if (isClickable(target)) return;
         // Identify swipes
-        if (touch_moved) {
+        if ((touch_moved)&&(gesture_start)) {
             var dx=touch_x-start_x; var dy=touch_y-start_y;
             var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
             var ad=((adx<ady)?(ady-adx):(adx-ady));
