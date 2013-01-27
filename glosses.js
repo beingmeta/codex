@@ -188,6 +188,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (glossinput) {
             glossinput.onkeypress=glossinput_keypress;
             glossinput.onkeydown=glossinput_keydown;
+            glossinput.onfocus=Codex.UI.addgloss_focus;
+            glossinput.onblur=Codex.UI.addgloss_blur;
             if ((gloss)&&(!(response))) {
                 glossinput.value=gloss.note||"";
                 if (notespan) notespan.innerHTML=glossinput.value;}
@@ -844,8 +846,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             clearTimeout(addgloss_timer);
             addgloss_timer=false;}
         if (kc===13) { // newline/enter
-            var bracketed=getbracketed(target);
-            if (bracketed) {
+            var bracketed;
+            if (fdjtString.isEmpty(target.value)) {
+                fdjtUI.cancel(evt);
+                submitGloss(form);}
+            else if (bracketed=getbracketed(target)) {
                 // If you're in a [[]], handle entry/completion
                 fdjtUI.cancel(evt);
                 if (evt.ctrlKey)

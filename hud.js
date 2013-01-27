@@ -562,9 +562,8 @@ Codex.setMode=
                 //  setHUD clears most of the classes when it brings
                 //  the HUD down.
                 Codex.last_mode=Codex.mode;
-                if (Codex.liveinput) {
-                    Codex.liveinput.blur();
-                    Codex.liveinput=false;}
+                if (Codex.textinput) {
+                    Codex.setFocus(false);}
                 document.body.focus();
                 dropClass(CodexHUD,"openheart");
                 dropClass(CodexHUD,"openhead");
@@ -576,10 +575,6 @@ Codex.setMode=
                 Codex.cxthelp=false;
                 if (display_sync) Codex.displaySync();
                 setHUD(false);}}
-
-        function focus(input){
-            input.focus(); Codex.liveinput=input;}
-        Codex.setFocus=focus;
 
         function changeMode(mode){      
             fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
@@ -624,7 +619,7 @@ Codex.setMode=
             // mode
             if (codex_mode_foci[mode]) {
                 var input=fdjtID(codex_mode_foci[mode]);
-                if (input) focus(input);}
+                if (input) Codex.setFocus(input);}
             else if (mode==="addgloss") {}
             // Moving the focus back to the body lets keys work
             else document.body.focus();
@@ -886,7 +881,7 @@ Codex.setMode=
 
         /* Scanning */
 
-        function CodexScan(elt,src,backward){
+        function CodexScan(elt,src,backward,expanded){
             var pelt=Codex.scanning;
             var i=0, lim=0;
             if (Codex.Trace.mode)
@@ -910,6 +905,8 @@ Codex.setMode=
                 // This marks where we are currently scanning
                 if (pelt) dropClass(pelt,"codexscanpoint");
                 if (src) addClass(src,"codexscanpoint");
+                if (expanded) addClass("CODEXSCANNER","expanded");
+                else dropClass("CODEXSCANNER","expanded");
                 Codex.scanning=src;}
             else {}
             var highlights=[];

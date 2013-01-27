@@ -154,6 +154,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             addClass(div,"focused");
             Codex.setGlossMode(false);}
         if (!(Codex.hudup)) Codex.setHUD(true,false);
+        Codex.dont_resize=true;
         gloss_focus=form;}
     function addgloss_blur(evt){
         evt=evt||event;
@@ -162,6 +163,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var div=((form)&&(getParent(form,".codexglossform")));
         if (div) dropClass(div,"focused");
         gloss_blurred=fdjtTime();
+        Codex.dont_resize=false;
         // Restore this without removal of the gloss
         // if ((div)&&(hasClass(div,"modified"))) Codex.submitGloss(div);
         gloss_focus=false;}
@@ -325,6 +327,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     addgloss_timer=false;}
                 gesture_start=false;
 	        return;}
+            else if (!(double_touch)) {}
             else if ((now-double_touch)>2000) double_touch=false;
             else {}}
 
@@ -346,9 +349,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         evt,target,passage);
             passage=false;}
         
-        if ((passage===Codex.glosstarget)||
-            (hasParent(passage,Codex.glosstarget))||
-            (hasParent(Codex.glosstarget,passage))) {
+        if ((passage)&&
+            ((passage===Codex.glosstarget)||
+             (hasParent(passage,Codex.glosstarget))||
+             (hasParent(Codex.glosstarget,passage)))) {
             // You're editing the excerpt, so simply let the
             // fdjtSelecting handlers interpret this, though lower the
             // HUD to clear things up.
@@ -580,7 +584,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var card=getCard(target);
         if ((!(getParent(target,".tool")))&&
             (getParent(card,".codexslice"))) {
-            Codex.Scan(fdjtID(card.about),card);
+            Codex.Scan(fdjtID(card.about),card,false,true);
             return fdjtUI.cancel(evt);}
         else if ((card.name)||(card.getAttribute("name"))) {
             var name=(card.name)||(card.getAttribute("name"));
@@ -1269,23 +1273,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var target=fdjtUI.T(evt);
         if (isClickable(target)) return;
         // Identify swipes
-        if ((touch_moved)&&(gesture_start)) {
-            var dx=touch_x-start_x; var dy=touch_y-start_y;
-            var adx=((dx<0)?(-dx):(dx)); var ady=((dy<0)?(-dy):(dy));
-            var ad=((adx<ady)?(ady-adx):(adx-ady));
-            if (Codex.Trace.gestures)
-                fdjtLog("touchend/gesture l=%o,%o s=%o,%o d=%o,%o |d|=%o,%o",
-                        last_x,last_y,start_x,start_y,dx,dy,adx,ady);
-            if (adx>(ady*3)) { /* horizontal */
-                fdjtUI.cancel(evt);
-                if (n_touches===1) {
-                    if (dx<0) Codex.Forward(evt);
-                    else Codex.Backward(evt);}
-                else {
-                    if (dx<0) Codex.scanForward(evt);
-                    else Codex.scanBackward(evt);}}
-            else content_release(evt);
-            return;}
         else content_release(evt);}
 
     /* Tracing touch */
@@ -2004,6 +1991,25 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     /* Tracking text input */
 
+    function setFocus(target){
+        if (!(target)) {
+            var cur=Codex.textinput;
+            Codex.textinput=false;
+            Codex.dont_resize=false;
+            if (cur) cur.blur();
+            setTimeout(function(){
+                document.body.blur();
+                setTimeout(function(){
+                    document.body.focus();},0);},
+                       0);
+            return;}
+        else if (Codex.textinput===target) return;
+        else {
+            Codex.textinput=target;
+            Codex.dont_resize=true;
+            target.focus();}}
+    Codex.setFocus=setFocus;
+
     function codexfocus(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -2012,19 +2018,16 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((!(input))||(typeof input.type !== "string")||
             (input.type.search(fdjtDOM.text_types)!==0))
             return;
-        Codex.textinput=input;
-        if (Codex.touch) Codex.dont_resize=true;}
+        setFocus(input);}
     function codexblur(evt){
         evt=evt||event;
-        var target=fdjtUI.T(evt);
+        var target=((evt.nodeType)?(evt):(fdjtUI.T(evt)));
         var input=getParent(target,'textarea');
         if (!(input)) input=getParent(target,'input');
         if ((!(input))||(typeof input.type !== "string")||
             (input.type.search(fdjtDOM.text_types)!==0))
             return;
-        if ((input)&&(input===Codex.textinput)) {
-            Codex.textinput=false;
-            if (Codex.touch) Codex.dont_resize=false;}}
+        setFocus(false);}
 
     /* Rules */
 

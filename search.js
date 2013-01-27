@@ -284,6 +284,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function searchInput_focus(evt){
         evt=evt||event||null;
         var input=fdjtDOM.T(evt);
+        Codex.setFocus(input);
         sbook_search_focus=true;
         if ((Codex.mode)&&(Codex.mode==='searchresults'))
             Codex.setMode("search");
@@ -292,6 +293,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function searchInput_blur(evt){
         evt=evt||event||null;
+        Codex.setFocus(false);
         sbook_search_focus=false;}
     Codex.UI.handlers.search_blur=searchInput_blur;
 
