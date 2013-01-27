@@ -298,6 +298,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var cur=fdjtID("CODEXLIVEGLOSS");
             if (cur) cur.id=null;
             Codex.glosstarget=false;
+            Codex.glossform=false;
             if (Codex.selecting) {
                 Codex.selecting.clear();
                 Codex.selecting=false;}
