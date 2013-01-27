@@ -853,7 +853,7 @@ Codex.Startup=
             var refuri=Codex.refuri;
             var user=getLocal("codex.user");
             var sync=getLocal("sync("+refuri+")",true);
-            var nodeid=getLocal("nodeid("+refuri+")");
+            var nodeid=getLocal("nodeid("+refuri+")",true);
             var userinfo=user&&getLocal(user,true);
             if (Codex.Trace.storage)
                 fdjtLog("initOffline user=%s sync=%s nodeid=%s info=%j",
@@ -1380,7 +1380,7 @@ Codex.Startup=
                 var userinfo=JSON.parse(getLocal(user));
                 var sources=getLocal("sources("+refuri+")",true);
                 var outlets=getLocal("outlets("+refuri+")",true);
-                var nodeid=getLocal("nodeid("+refuri+")");
+                var nodeid=getLocal("nodeid("+refuri+")",true);
                 var sync=getLocal("codex.usersync",true);
                 gotUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
                 return;}
@@ -1421,7 +1421,7 @@ Codex.Startup=
             if (!(Codex.nodeid)) {
                 Codex.nodeid=nodeid;
                 if ((nodeid)&&(Codex.persist))
-                    setLocal("nodeid("+refuri+")",nodeid);}}
+                    setLocal("nodeid("+refuri+")",nodeid,true);}}
         Codex.setNodeID=setNodeID;
 
         function setupUI4User(){
