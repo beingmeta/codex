@@ -336,6 +336,7 @@ div.codexglossform form div.glossetc > span.modebuttons .button img {
 
 div.codexglossform form.editnote div.glossetc span .button[alt='note'],
 div.codexglossform form.addtag div.glossetc span .button[alt='tag'],
+div.codexglossform form.editdetail div.glossetc span .button[alt='editdetail'],
 div.codexglossform form.sharing div.glossetc span .button[alt='sharing'],
 div.codexglossform form.addlink div.glossetc span .button[alt='link'] {
     height: 40px; width: 40px; background-color: silver;
@@ -426,6 +427,12 @@ div#CODEXHUD div#CODEXGLOSSOUTLETINPUT { display: none;}
 div#CODEXHUD.addgloss.glossaddoutlet div#CODEXGLOSSOUTLETINPUT {
     display: block;}
 
+div#CODEXHUD div#CODEXGLOSSDETAIL textarea {
+    position: absolute; top: 15px; bottom: 15px; left: 15px; right: 15px;
+    padding: 0.5em; border-radius: 1em;
+    -webkit-border-radius: 1em; -khtml-border-radius: 1em;
+    -moz-border-radius: 1em; -o-border-radius: 1em;}
+
 div.completions#CODEXOUTLETCLOUD div#CODEXOUTLETCLOUD {
     margin-left: 50px; margin-right: 50px;}
 div.completions#CODEXGLOSSTAGS > div {
@@ -515,6 +522,11 @@ div.codexglossform form.addtag div.addglossmenu > img[alt="addtag"] {
 div.codexglossform form.addlink div.addglossmenu > img[alt="hamburger"] {
     display: none; }
 div.codexglossform form.addlink div.addglossmenu > img[alt="addlink"] {
+    display: block; }
+
+div.codexglossform form.editdetail div.addglossmenu > img[alt="hamburger"] {
+    display: none; }
+div.codexglossform form.editdetail div.addglossmenu > img[alt="editdetail"] {
     display: block; }
 
 div.codexglossform form.addoutlet div.addglossmenu > img[alt="hamburger"] {

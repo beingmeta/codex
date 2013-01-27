@@ -147,6 +147,7 @@ div#CODEXHUD #CODEXHEART {
 
 body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
@@ -192,7 +193,6 @@ body.hudup #CODEXHUD.allglosses.openheart #CODEXHEART,
 body.hudup #CODEXHUD.searchresults.openheart #CODEXHEART {
     padding-top: 0px;}
 
-
 body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glosstagging #CODEXHEART,
@@ -216,10 +216,11 @@ body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER {
     -o-box-shadow: 1em 1em 1em #cccccc;}
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER {
+body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTHOLDER {
     top: 150px; bottom: 50px; height: auto;}
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
-    top: 150px; height: auto;}
+    top: 150px; height: auto; min-height: 100px;}
 
 div#CODEXHUD #CODEXFOOT {
     position: fixed; left: 0px; right: 0px; width: 100%;
@@ -320,6 +321,7 @@ div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss.glosstagging div#CODEXHEART div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss.glossaddoutlet div#CODEXHEART div#CODEXOUTLETCLOUD.hudpanel,
 div#CODEXHUD.addgloss.glossaddlink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
+div#CODEXHUD.addgloss.glosseditdetail div#CODEXHEART div#CODEXGLOSSDETAIL.hudpanel,
 div#CODEXHUD.search div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
 div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,

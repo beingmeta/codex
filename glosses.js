@@ -112,6 +112,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 		    ((frag)&&(frag.value)),
 		    ((uuid)&&(uuid.value)));}
         if ((toggle)&&(mode===form.className)) mode=false;
+        if (form.className==="editdetail") {
+            var detail_elt=getInput(form,"DETAIL");
+            if (detail_elt)
+                detail_elt.value=fdjt.ID("CODEXGLOSSDETAILTEXT").value;}
         if (!(mode)) {
             dropClass(form,glossmodes);
             dropClass("CODEXHUD",/\bgloss\w+\b/);
@@ -119,6 +123,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (mode==="addtag") input=fdjtID("CODEXTAGINPUT");
         else if (mode==="addlink") input=fdjtID("CODEXATTACHURL");
         else if (mode==="addoutlet") input=fdjtID("CODEXOUTLETINPUT");
+        else if (mode==="editdetail") input=fdjtID("CODEXGLOSSDETAILTEXT");
         else {
             dropClass(form,glossmodes);
             dropClass("CODEXHUD",/\bgloss\w+\b/);
@@ -203,6 +208,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var respondsto=getInput(form,"RE");
         var thread=getInput(form,"THREAD");
         var uuidelt=getInput(form,"UUID");
+        var detailelt=getInput(form,"DETAIL");
         var response_elt=getChild(form,"div.response");
         if ((response_elt)&&(response)&&(gloss)) {
             var maker_elt=getChild(response_elt,".respmaker");
@@ -255,6 +261,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if (typeof urlinfo === 'string') title=urlinfo;
                 else title=urlinfo.title;
                 addLink(form,url,title);}}
+        if ((gloss)&&(gloss.detail))
+            detailelt.value=gloss.detail;
         if ((gloss)&&(gloss.share)) {
             var tags=gloss.share;
             if (typeof tags === 'string') tags=[tags];
@@ -366,6 +374,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 	    Codex.glossform=false;
 	    return;}
         form.id="CODEXLIVEGLOSS";
+        if ((Codex.glossform)&&
+            (Codex.glossform.className==="editdetail")) {
+            var oldform=Codex.glossform;
+            var detail_elt=getInput(oldform,"DETAIL");
+            detail_elt.value=fdjt.ID("CODEXGLOSSDETAILTEXT").value;
+            detail_elt=getInput(form,"DETAIL");
+            fdjt.ID("CODEXGLOSSDETAILTEXT").value=detail_elt.value;}
 	Codex.glossform=form;
         var form_elt=getChild(form,"FORM");
         var mode=form_elt.className;
@@ -1018,6 +1033,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                      (arg.tagName==="DIV")&&(hasClass(arg,"codexglossform"))) {
                 div=arg; form=getChild(div,"FORM");}}
         if (!(form)) return;
+        if (form.className==="editdetail") {
+            var detail_elt=getInput(form,"DETAIL");
+            if (detail_elt) {
+                detail_elt.value=
+                    fdjt.ID("CODEXGLOSSDETAILTEXT").value;
+                fdjt.ID("CODEXGLOSSDETAILTEXT").value="";}}
         addClass(div,"submitting");
         if (!((hasParent(form,".glossedit"))||
               (hasParent(form,".glossreply"))))
