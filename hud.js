@@ -478,7 +478,7 @@ Codex.setMode=
              gotoloc: "CODEXLOCINPUT",
              search: "CODEXSEARCHINPUT"};
         
-        function CodexMode(mode){
+        function CodexMode(mode,nohud){
             var oldmode=Codex.mode;
             if (typeof mode === 'undefined') return oldmode;
             if (mode==='last') mode=Codex.last_mode;
@@ -537,6 +537,7 @@ Codex.setMode=
                         dropClass(CodexHUD,"full");
                         dropClass(document.body,"hudup");}}
                 else if (mode==='addgloss') {}
+                else if (nohud) {}
                 // And if we're not scanning, we just raise the hud
                 else setHUD(true);
                 // Actually change the class on the HUD object

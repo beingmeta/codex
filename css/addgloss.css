@@ -9,16 +9,20 @@
 div.codexglossformbody { position: relative; }
 
 div#CODEXADDGLOSS div.codexglossform {
-    min-height: 40px; max-height: 150px;}
-
-body.hudup div#CODEXADDGLOSS div.codexglossform {
-    max-height: inherit;}
+    min-height: 40px; max-height: 50px;}
+body.hudup div#CODEXADDGLOSS div.codexglossform,
+div#CODEXADDGLOSS div.codexglossform.focused {
+    min-height: 50px; max-height: 150px;}
 
 div.codexglossform form div.inputbox { margin-top: 2px;}
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[type="TEXT"] {
-    min-height: 40px; padding: 2px;}
-
+    min-height: 30px; padding: 2px;}
+body.hudup div.codexglossform form div.textbox textarea,
+body.hudup div.codexglossform form div.textbox input[type="TEXT"],
+div.codexglossform.focused form div.textbox textarea,
+div.codexglossform.focused form div.textbox input[type="TEXT"] {
+    min-height: 40px; max-height: inherit;}
 div#CODEXADDGLOSS div.codexglossform {
     border-radius: 1em; -webkit-border-radius: 1em;
     -o-border-radius: 1em; -moz-border-radius: 1em;
@@ -479,8 +483,11 @@ div.codexglossform form div.addglossmenu {
     z-index: 800;}
 
 div.codexglossform form div.addglossmenu > img {
-    width: 40px; height: 40px; padding: 2px; margin-bottom: 4px;
+    width: 30px; height: 30px; padding: 2px; margin-bottom: 4px;
     display: none; }
+body.hudup div.codexglossform form div.addglossmenu > img,
+div.codexglossform.focused form div.addglossmenu > img {
+    width: 40px; height: 40px;}
 div.codexglossform form div.addglossmenu > img.held {
     background-color: lightgreen; border-color: green;}
 div.codexglossform form div.addglossmenu > img[alt="hamburger"] {

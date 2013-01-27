@@ -316,6 +316,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             gesture_start=false
             return false;}
 
+        // Detect touches with two fingers, which we may treat especially
         if (evt.touches) {
             var now=fdjtTime();
             if (Codex.Trace.gestures)
@@ -349,13 +350,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         evt,target,passage);
             passage=false;}
         
-        if ((passage)&&
-            ((passage===Codex.glosstarget)||
-             (hasParent(passage,Codex.glosstarget))||
-             (hasParent(Codex.glosstarget,passage)))) {
+        if ((passage)&&(hasParent(passage,".fdjtselecting"))) {
             // You're editing the excerpt, so simply let the
             // fdjtSelecting handlers interpret this, though lower the
             // HUD to clear things up.
+            Codex.setMode("addgloss");
             Codex.setHUD(false,false);
             fdjtUI.TapHold.fakePress(evt,250);
             gesture_start=false;
@@ -395,8 +394,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     var mode=((evt.shiftKey)&&("addtag"));
                     fdjtUI.TapHold.fakePress(evt,250);
                     Codex.setGlossForm(form_div);
-                    Codex.setMode("addgloss");
-                    if (mode) form.className=mode;},
+                    if (mode) form.className=mode;
+                    Codex.setMode("addgloss",true);},
                            200);}
         else if (Codex.hudup) {
             // If the HUD is up, bring it down
@@ -419,7 +418,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event;
 	fdjtUI.cancel(evt);
         if (addgloss_timer) {
-            // The timer hasn't run out, so it's a tap not a hold
+            // The timer hasn't run out, so it's a tap rather than a hold
             clearTimeout(addgloss_timer); addgloss_timer=false;
             if (Codex.hudup) {
                 if (Codex.Trace.gestures)
@@ -432,7 +431,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 // Page turn
                 var x=getOffX(evt); var w=fdjtDOM.viewWidth();
                 if (Codex.Trace.gestures)
-                    fdjtLog("creleae: %s page %s x=%o, w=%o",
+                    fdjtLog("crelease: %s page %s x=%o, w=%o",
                             evt,((x<w/2)?("forward"):("back")),
                             x,w);
                 if (x<w/3) Codex.pageBackward();

@@ -173,7 +173,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (!(info)) return false;
         form.onsubmit=submitGloss;
         getInput(form,"REFURI").value=Codex.refuri;
-        getInput(form,"USER").value=Codex.user._id;
         getInput(form,"DOCTITLE").value=document.title;
         getInput(form,"DOCURI").value=document.location.href;
         getInput(form,"FRAG").value=passageid;
@@ -617,7 +616,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event;
         Codex.UI.content_release(evt);
         Codex.setMode("addgloss");
-        Codex.setHUD(true);}
+        Codex.setHUD(true);
+        var input=((Codex.glossform)&&
+                   ((getInputs(Codex.glossform,"NOTE"))[0]));
+        if (input) Codex.setFocus(input);}
 
     function setCloudCues(cloud,tags){
         // Clear any current tagcues from the last gloss
