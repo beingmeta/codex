@@ -581,6 +581,16 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtUI.cancel(evt);
             return;}
         var card=getCard(target);
+        if (getParent(target,".detail")) {
+            var name=(card.name)||(card.getAttribute("name"));
+            var gloss=fdjtKB.ref(name,Codex.glosses), detail;
+            if ((gloss)&&((detail=gloss.detail))) {
+                if (detail[0]==='<')
+                    fdjt.ID("CODEXGLOSSDETAIL").innerHTML=gloss.detail;
+                else fdjt.ID("CODEXGLOSSDETAIL").innerHTML=
+                    "<pre>\n"+gloss.detail+"\n</pre>";
+                Codex.setMode("glossdetail");
+                return;}}
         if ((!(getParent(target,".tool")))&&
             (getParent(card,".codexslice"))) {
             Codex.Scan(fdjtID(card.about),card,false,true);
@@ -2136,6 +2146,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
              click: toggleHelp, mousedown: cancel,mouseup: cancel},
          "#CODEXSHOWTEXT": {click: back_to_reading},
          "#CODEXAPPSPLASH": {click: hideSplash},
+         "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
          // GLOSSFORM rules
          "span.codexglossdelete": { click: delete_ontap },
@@ -2209,6 +2220,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXHELP": {click: toggleHelp},
          "#CODEXSHOWTEXT": {click: back_to_reading},
          "#CODEXAPPSPLASH": {click: hideSplash},
+         "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
          ".hudmodebutton": {click: hudbutton},
          // GLOSSFORM rules

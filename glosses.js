@@ -114,8 +114,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((toggle)&&(mode===form.className)) mode=false;
         if (form.className==="editdetail") {
             var detail_elt=getInput(form,"DETAIL");
-            if (detail_elt)
-                detail_elt.value=fdjt.ID("CODEXGLOSSDETAILTEXT").value;}
+            detail_elt.value=fdjt.ID("CODEXDETAILTEXT").value;}
         if (!(mode)) {
             dropClass(form,glossmodes);
             dropClass("CODEXHUD",/\bgloss\w+\b/);
@@ -123,7 +122,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (mode==="addtag") input=fdjtID("CODEXTAGINPUT");
         else if (mode==="addlink") input=fdjtID("CODEXATTACHURL");
         else if (mode==="addoutlet") input=fdjtID("CODEXOUTLETINPUT");
-        else if (mode==="editdetail") input=fdjtID("CODEXGLOSSDETAILTEXT");
+        else if (mode==="editdetail") {
+            input=fdjtID("CODEXDETAILTEXT");
+            var detail_elt=getInput(form,"DETAIL");
+            fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
         else {
             dropClass(form,glossmodes);
             dropClass("CODEXHUD",/\bgloss\w+\b/);
@@ -378,9 +380,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             (Codex.glossform.className==="editdetail")) {
             var oldform=Codex.glossform;
             var detail_elt=getInput(oldform,"DETAIL");
-            detail_elt.value=fdjt.ID("CODEXGLOSSDETAILTEXT").value;
+            detail_elt.value=fdjt.ID("CODEXDETAILTEXT").value;
             detail_elt=getInput(form,"DETAIL");
-            fdjt.ID("CODEXGLOSSDETAILTEXT").value=detail_elt.value;}
+            fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
 	Codex.glossform=form;
         var form_elt=getChild(form,"FORM");
         var mode=form_elt.className;
@@ -1037,8 +1039,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var detail_elt=getInput(form,"DETAIL");
             if (detail_elt) {
                 detail_elt.value=
-                    fdjt.ID("CODEXGLOSSDETAILTEXT").value;
-                fdjt.ID("CODEXGLOSSDETAILTEXT").value="";}}
+                    fdjt.ID("CODEXDETAILTEXT").value;
+                fdjt.ID("CODEXDETAILTEXT").value="";}}
         addClass(div,"submitting");
         if (!((hasParent(form,".glossedit"))||
               (hasParent(form,".glossreply"))))

@@ -321,7 +321,8 @@ div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss.glosstagging div#CODEXHEART div#CODEXGLOSSTAGS.hudpanel,
 div#CODEXHUD.addgloss.glossaddoutlet div#CODEXHEART div#CODEXOUTLETCLOUD.hudpanel,
 div#CODEXHUD.addgloss.glossaddlink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
-div#CODEXHUD.addgloss.glosseditdetail div#CODEXHEART div#CODEXGLOSSDETAIL.hudpanel,
+div#CODEXHUD.addgloss.glosseditdetail div#CODEXHEART div#CODEXGLOSSEDITDETAIL.hudpanel,
+div#CODEXHUD.glossdetail div#CODEXHEART div#CODEXGLOSSDETAIL.hudpanel,
 div#CODEXHUD.search div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
 div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
@@ -356,6 +357,10 @@ body.cxTOUCH .codexcard .age {
 div.completions.hudpanel { line-height: 120%;}
 div.completions.hudpanel .prime { line-height: 250%;}
 div.completions.hudpanel .normal { line-height: 250%;}
+
+div#CODEXGLOSSDETAIL.hudpanel {
+    text-align: left;
+    margin-left: 1em; margin-right: 1em;}
 
 /* HUD buttons */
 

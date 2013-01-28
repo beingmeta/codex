@@ -427,7 +427,7 @@ div#CODEXHUD div#CODEXGLOSSOUTLETINPUT { display: none;}
 div#CODEXHUD.addgloss.glossaddoutlet div#CODEXGLOSSOUTLETINPUT {
     display: block;}
 
-div#CODEXHUD div#CODEXGLOSSDETAIL textarea {
+div#CODEXHUD div#CODEXGLOSSEDITDETAIL textarea {
     position: absolute; top: 15px; bottom: 15px; left: 15px; right: 15px;
     padding: 0.5em; border-radius: 1em;
     -webkit-border-radius: 1em; -khtml-border-radius: 1em;

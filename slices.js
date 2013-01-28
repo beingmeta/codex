@@ -62,6 +62,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var cxicon=Codex.icon;
     var Ellipsis=fdjtUI.Ellipsis;
     var addListener=fdjtDOM.addListener;
+    var hasParent=fdjtDOM.hasParent;
 
     function renderCard(info,query,idprefix,standalone){
         var key=info._id;
@@ -85,6 +86,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     ((standalone)&&(showtocloc(target_info))),
                     ((score)&&(showscore(score))),
                     ((note_len>0)&&(Ellipsis("span.note",info.note,140)))," ",
+                    ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
                     (((info.tags)||(info.autotags))&&(showtags(info)))," ",
                     ((info.links)&&(showlinks(info.links)))," ",
@@ -270,6 +272,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var agestring=timestring(info.modified||info.created);
         var tool=fdjtDOM(
             "span.tool",
+            fdjtDOM("span.age",agestring)," ",
             fdjtDOM.Image(
                 (((user===Codex.user)||(user===Codex.user._id))?
                  (cxicon("remark_edit_titled",40,40)):
@@ -280,10 +283,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 (((user===Codex.user)||(user===Codex.user._id))?
                  ("tap to edit this gloss, hold to reply"):
 		 ("relay/reply to this gloss"))),
-            ((info.private)&&(fdjtDOM("span.private","Private")))," ",
-            fdjtDOM("span.age",agestring));
-        addListener(tool,"tap",relayoredit_gloss);
-	// addListener(tool,"hold",relayoredit_gloss);
+            ((info.private)&&(fdjtDOM("span.private","Private"))));
+        addListener(tool,"tap",glossaction);
+	addListener(tool,"release",glossaction);
         
         var picinfo=getpicinfo(info);
         var overdoc=getoverdoc(info);
@@ -448,23 +450,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         locrule.style.left=((target_start/cxt_len)*100)+"%";
         return locrule;}
 
-    function editicon_ontap(evt){
-        var target=fdjtUI.T(evt);
-        var card=fdjtDOM.getParent(target,'.codexcard');
-        var gloss=((card)&&(card.name)&&(fdjtKB.load(card.name,Codex.glosses)));
-        var form=Codex.setGlossTarget(gloss);
-        if (!(form)) return;
-        Codex.setMode("addgloss");}
-    function replyicon_ontap(evt){
-        var target=fdjtUI.T(evt);
-        var card=fdjtDOM.getParent(target,'.codexcard');
-        var gloss=((card)&&(card.name)&&(fdjtKB.load(card.name,Codex.glosses)));
-        var form=Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
-        if (!(form)) return;
-        Codex.setMode("addgloss");}
-
-    function relayoredit_gloss(evt){
-        var scan=fdjtUI.T(evt);
+    function glossaction(evt){
+        var target=fdjtUI.T(evt), scan=target;
         fdjtUI.cancel(evt);
         while (scan) {
             if (scan.qref) break;

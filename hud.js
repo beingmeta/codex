@@ -460,8 +460,8 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage))\b/g;
-        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(glosses)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login))\b/g;
+        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(glossdetail)|(showdetail)|(showaside))\b/g;
+        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(glosses)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login)|(glossdetail)|(showdetail)|(showaside))\b/g;
         var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan))\b/g;
         var CodexSubMode_pat=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
         var codex_mode_scrollers=
