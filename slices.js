@@ -101,7 +101,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     ((head_info)&&(makeIDHead(target,head_info,true))),
                     ((standalone)&&(makelocbar(target_info))),
                     body,
-		    fdjtDOM("fdjtclearfloats"));
+		    fdjtDOM("div.fdjtclearfloats"));
         var makerinfo=((info.maker)&&(Codex.sourcekb.load(info.maker)));
         var tstamp=info.tstamp||info.modified||info.created;
         if (tstamp)
