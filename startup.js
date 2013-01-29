@@ -49,6 +49,7 @@ Codex.Startup=
 
         var fdjtString=fdjt.String;
         var fdjtState=fdjt.State;
+        var fdjtAjax=fdjt.Ajax;
         var fdjtTime=fdjt.Time;
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
@@ -72,6 +73,7 @@ Codex.Startup=
         var getLink=fdjtDOM.getLink;
         var addClass=fdjtDOM.addClass;
         var dropClass=fdjtDOM.dropClass;
+        var getChildren=fdjtDOM.getChildren;
         var TOA=fdjtDOM.Array;
 
         var saveprops=Codex.saveprops=
@@ -435,11 +437,11 @@ Codex.Startup=
                 if (info.nodeid) setNodeID(info.nodeid);
                 Codex.sync=info.sync;
                 if (Codex.Trace.storage>1) 
-                    fdjtLog("Cached loadinfo.js for %o (%s) from %o: %j",
+                    fdjtLog("App cached loadinfo.js for %o (%s) from %o: %j",
                             Codex.user._id,Codex.user.name,Codex.sync,
                             Codex.user);
-                if (Codex.Trace.storage) 
-                    fdjtLog("Cached loadinfo.js for %o (%s) from %o",
+                else if (Codex.Trace.storage) 
+                    fdjtLog("App cached loadinfo.js for %o (%s) from %o",
                             Codex.user._id,Codex.user.name,Codex.sync);}
             else {}
             if (Codex.nologin) return;
@@ -1339,12 +1341,11 @@ Codex.Startup=
             updating=false;};
         function updateInfo(callback){
             if (updating) return;
+            updating=true;
             if (!(navigator.onLine)) return;
             if (!(callback)) callback="Codex.updatedInfo";
-            var elt=fdjtID("CODEXUPDATEINFO");
-            var update_script=fdjtDOM("script#CODEXUPDATEINFO");
             var uri="https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
-                encodeURIComponent(Codex.refuri)+"&CALLBACK=Codex.updatedInfo";
+                encodeURIComponent(Codex.refuri);
             var glosses=fdjtState.getQuery("GLOSS");
             if ((glosses)&&(glosses.length)) {
                 var i=0, lim=glosses.length; while (i<lim)
@@ -1353,6 +1354,28 @@ Codex.Startup=
                 uri=uri+"&MCOPYID="+encodeURIComponent(Codex.mycopyid);
             if (Codex.sync) uri=uri+"&SYNC="+(Codex.sync+1);
             if (Codex.user) uri=uri+"&SYNCUSER="+Codex.user._id;
+            var ajax_uri=uri+"&CALLBACK=return";
+            try { fdjtAjax(function(req){
+                Codex.updatedInfo(JSON.parse(req.responseText));},
+                           ajax_uri,[],
+                           function (req){
+                               if (req.readyState===4) {
+                                   fdjtLog.warn("Ajax call to %s failed on callback, falling back to JSONP",
+                                                uri);
+                                   updateInfoJSONP(uri);}});}
+            catch (ex) {
+                fdjtLog.warn("Ajax call to %s failed on transmission, falling back to JSONP",uri);
+                updateInfoJSONP(uri);}}
+        function updateInfoJSONP(uri,callback){
+            if (!(navigator.onLine)) return;
+            if (!(callback)) callback="Codex.updatedInfo";
+            var elt=fdjtID("CODEXUPDATEINFO");
+            if (uri.indexOf('?')>0) {
+                if (uri[uri.length-1]!=='&') uri=uri+"&";}
+            else uri=uri+"?";
+            uri=uri+"CALLBACK="+callback;
+            var elt=fdjtID("CODEXUPDATEINFO");
+            var update_script=fdjtDOM("script#CODEXUPDATEINFO");
             update_script.language="javascript";
             update_script.type="text/javascript";
             update_script.setAttribute("charset","utf-8");
@@ -1361,7 +1384,6 @@ Codex.Startup=
                 update_script.setAttribute("crossorigin","anonymous");
             else update_script.setAttribute("crossorigin","use-credentials");
             update_script.src=uri;
-            updating=true;
             if (elt) fdjtDOM.replace(elt,update_script);
             else document.body.appendChild(update_script);}
 
