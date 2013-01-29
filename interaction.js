@@ -1049,10 +1049,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else fdjtUI.alert(response);}
 
     function delete_gloss(uuid){
-        var gloss=Codex.glosses.ref(uuid);
+        var gloss=Codex.glosses.probe(uuid);
         // If this isn't defined, the gloss hasn't been saved so we
         //  don't try to delete it.
-        if (gloss) {
+        if ((gloss)&&(gloss.created)) {
             var frag=gloss.get("frag");
             fdjt.Ajax.jsonCall(
                 function(response){glossdeleted(response,uuid,frag);},
@@ -1951,7 +1951,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         dropClass(div,"modified");
         dropClass(menu,"expanded");
         var uuid=fdjtDOM.getInputValues(form,"UUID")[0];
-        var gloss=Codex.glosses.ref(uuid);
+        var gloss=Codex.glosses.probe(uuid);
+        if ((!(gloss))||(!(gloss.created))) {
+            delete_gloss(uuid);
+            Codex.setMode(false);
+            fdjtDOM.remove(div);
+            Codex.setGlossTarget(false);
+            Codex.setTarget(false);
+            return;}
         fdjt.UI.choose([{label: "Cancel"},
                         {label: "Delete",
                          handler: function(){
