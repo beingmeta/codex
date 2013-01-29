@@ -1030,12 +1030,17 @@ Codex.Startup=
             var content=fdjtDOM("div#CODEXCONTENT");
             // Get any author provided splash page
             var splash=fdjtID("CODEXSPLASH");
-        
+            var i, lim;
+
             body.setAttribute("tabindex",1);
 
             // Save those DOM elements in a handy place
             Codex.content=content;
 
+            // Interpet links
+            var notelinks="a[rel='sbooknote'],a[rel='footnote'],a[rel='endnote']";
+            addClass(getChildren(body,notelinks),"sbooknote");
+            
             // Move the publisher-provided splash page directly into
             //  the body (if neccessary)
             if ((splash)&&(splash.parentNode!==body))
@@ -1052,7 +1057,7 @@ Codex.Startup=
                     var child=children[i++];
                     if (child===splash) {i++; break;}
                     else nodes.push(child);}}
-            // Now copy the rest of the nodes into the array
+            // Now copy the rest of the nodes from the body into the array
             while (i<lim) nodes.push(children[i++]);
             
             // Create a custom stylesheet for the app
@@ -1097,7 +1102,7 @@ Codex.Startup=
                         " pages"),
                 pages);
             
-            fdjtDOM(body,content,page);
+            fdjtDOM.append(body,fdjtDOM("div#CODEXBODY",content,page));
             fdjtDOM.addClass(body,"sbook");
             sizePage(page,content);
             applyMetaClass("sbookdetails");
@@ -1137,7 +1142,7 @@ Codex.Startup=
                         (!(fdjtDOM.hasParent(notenode,".sbookbackmatter"))))
                         fdjtDOM.append(allnotes,notenode);}}
             // Move all the details to the end
-            var details=fdjtDOM.$("detail,.sbookdetail");
+            var details=fdjtDOM.$("detail,.sbookdetail,.html5detail");
             var i=0; var lim=details.length;
             while (i<lim) {
                 var detail=details[i++];

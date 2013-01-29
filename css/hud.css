@@ -299,6 +299,7 @@ div#CODEXHUD.toc div#CODEXTOC,
 div#CODEXHUD.tocscan div#CODEXTOC,
 div#CODEXHUD.allglosses div#CODEXSOURCES,
 div#CODEXHUD.addgloss div#CODEXADDGLOSS,
+div#CODEXHUD.shownote div#CODEXNOTETEXT,
 div#CODEXHUD.search div#CODEXSEARCH,
 div#CODEXHUD.searchresults div#CODEXSEARCH,
 div#CODEXHUD.gotoloc div#CODEXGOTOLOC,
@@ -313,6 +314,7 @@ div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
 
 /* Heart rules */
 div#CODEXHUD.allglosses div#CODEXALLGLOSSES.hudpanel,
+div#CODEXHUD.showaside div#CODEXASIDETEXT.hudpanel,
 div#CODEXHUD.glosses div#CODEXPASSAGEGLOSSES.hudpanel,
 div#CODEXHUD.flytoc div#CODEXFLYTOC.hudpanel,
 div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
@@ -362,6 +364,9 @@ div#CODEXGLOSSDETAIL.hudpanel {
     text-align: left;
     margin-left: 1em; margin-right: 1em;}
 
+div#CODEXHUD div#CODEXNOTETEXT.hupanel .notelabel {
+    font-size: 150%; font-weight: bold; float: left;}
+
 /* HUD buttons */
 
 div#CODEXHUD img.hudbutton {
@@ -389,7 +394,6 @@ div#CODEXHUD img.hudbutton {
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
-    
 
 body.hudup div#CODEXHUD img.hudbutton  {}
 body.cxMOUSE div#CODEXHUD img.hudbutton:hover {

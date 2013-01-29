@@ -590,6 +590,44 @@ img.sbookfullpage, img.sbookcover {
 
 /* HTML5ish elements */
 
+body.sbook details,
+body.sbook .html5details {
+    display: block;}
+body.sbook details > summary ,
+body.sbook .html5details > summary {
+    display: block;}
+body.sbook #CODEXBODY details,
+body.sbook #CODEXBODY .html5details {
+    display: inline;}
+body.sbook #CODEXBODY details > *,
+body.sbook #CODEXBODY .html5details > * { display: none;}
+body.sbook #CODEXBODY details > summary,
+body.sbook #CODEXBODY .html5details > summary {
+    color: blue; text-decoration: underline;
+    display: inline; font-size: 80%;}
+
+body.sbook #CODEXBODY aside > *,
+body.sbook #CODEXBODY .html5aside > * { display: none;}
+body.sbook #CODEXBODY aside > hgroup:first-child,
+body.sbook #CODEXBODY aside > h1:first-child,
+body.sbook #CODEXBODY aside > h2:first-child,
+body.sbook #CODEXBODY aside > h3:first-child {
+    margin-left: 2em; margin-right: 2em; padding: 1em;
+    border: solid black 2px;
+    display: block;}
+
+body.sbook #CODEXBODY .sbooknote {display: none;}
+
+a[rel='sbooknote'], a[rel='footnote'], a[rel='endnote'] {
+    font-size: 80%; vertical-align: top;
+    padding-right: 1ex; padding-left: 1ex;
+    border: solid blue 1px; background-color: lightblue; color: darkblue;
+    border-radius: 1ex; -webkit-border-radius: 1ex;
+    -khtml-border-radius: 1ex; -moz-border-radius: 1ex;
+    -o-border-radius: 1ex;}
+
+/* Block elements */
+
 body.sbook div#SBOOKDETAILS,
 body.sbook div#SBOOKASIDES,
 body.sbook div#SBOOKNOTES {
@@ -608,8 +646,6 @@ div.codexglossform form table td {
 div.codexglossform form table td.button {
     width: 50px; text-align: center;}
 div.codexglossform form table td textarea { width: 100%;}
-
-/* Humanity */
 
 /* New pagination model */
 

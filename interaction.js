@@ -264,7 +264,30 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((anchor)&&(anchor.href)&&(href=anchor.getAttribute("href"))) {
             if (Codex.Trace.gestures)
                 fdjtLog("ctouch: follow link %s",href);
-            if ((href[0]==='#')&&(document.getElementById(href.slice(1)))) {
+            var rel=anchor.rel;
+            if ((href[0]==="#")&&
+                (rel.search(/\b((sbooknote)|(footnote)|(endnote))\b/)>=0)) {
+                var noteshud=fdjtID("CODEXNOTETEXT");
+                var target=fdjt.ID(href.slice(1));
+                var label=fdjtDOM("span.notelabel");
+                label.innerHTML=anchor.innerHTML;
+                fdjtDOM.removeChildren(noteshud);
+                fdjtDOM.append(noteshud,label,target.cloneNode(true));
+                Codex.setMode("shownote");
+                fdjtUI.cancel(evt);
+                gesture_start=false;
+                return;}
+            else if ((href[0]==="#")&&
+                     (rel.search(/\b((sidebar)|(breakout)|(tangent))\b/)>=0)) {
+                var asidehud=fdjtID("CODEXASIDETEXT");
+                var target=fdjt.ID(href.slice(1));
+                fdjtDOM.removeChildren(asidehud);
+                fdjtDOM.append(asidehud,target.cloneNode(true));
+                Codex.setMode("showaside");
+                fdjtUI.cancel(evt);
+                gesture_start=false;
+                return;}
+            else if ((href[0]==='#')&&(document.getElementById(href.slice(1)))) {
                 // It's an internal jump, so we follow that
                 var elt=document.getElementById(href.slice(1));
                 // This would be the place to provide smarts for
@@ -281,6 +304,22 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if (!(anchor.target)) anchor.target="_blank";
                 gesture_start=false;
                 return;}}
+
+        var detail=getParent(target,"detail,.html5detail,.sbookdetail");
+        if (detail) {
+            var clone=detail.cloneNode(true);
+            var notehud=fdjt.ID("CODEXNOTETEXT");
+            fdjtDOM.removeChildren(notehud);
+            fdjtDOM.append(notehud,clone);
+            Codex.setMode("shownote");}
+
+        var aside=getParent(target,"aside,.html5aside,.sbookaside");
+        if (aside) {
+            var clone=aside.cloneNode(true);
+            var asidehud=fdjt.ID("CODEXASIDETEXT");
+            fdjtDOM.removeChildren(asidehud);
+            fdjtDOM.append(asidehud,clone);
+            Codex.setMode("showaside");}
 
         var passage=getTarget(target);
         // We get the passage here so we can include it in the trace message
