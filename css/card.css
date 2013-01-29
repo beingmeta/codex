@@ -145,7 +145,10 @@ body.sbook a.codexcard { display: block;}
     font-weight: normal;
     font-size: 70%; text-decoration: none;}
 .codexcard .tool > * { float: right; }
-.codexcard .tool img { height: 40px; width: 40px; opacity: 0.3; clear: right;}
+.codexcard .tool img {
+    height: 40px; width: 40px; opacity: 0.3; clear: right;
+    /* This makes it overlap the date, tightening things up generally */
+    margin-right: 3px; margin-top: -1.5ex;}
 .codexcard span.detail {
     background-color: lightblue; color: black;
     padding: 2px; margin-top: 2px;
