@@ -74,6 +74,7 @@ Codex.Startup=
         var addClass=fdjtDOM.addClass;
         var dropClass=fdjtDOM.dropClass;
         var getChildren=fdjtDOM.getChildren;
+        var $1=fdjtDOM.getFirstChild;
         var TOA=fdjtDOM.Array;
 
         var saveprops=Codex.saveprops=
@@ -1076,6 +1077,28 @@ Codex.Startup=
             Codex.cover=Codex.getCover();
             Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
 
+            // Move all the notes together
+            var notesblock=fdjtID("SBOOKNOTES");
+            if (!(notesblock)) {
+                notesblock=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
+                fdjtDOM(content,notesblock);}
+            applyMetaClass("sbooknote");
+            var note_counter=1;
+            var allnotes=getChildren(content,".sbooknote");
+            i=0, lim=allnotes.length; while (i<lim) {
+                var notable=allnotes[i++];
+                if (!(notable.id)) notable.id="CODEXNOTE"+(note_counter++);
+                var noteref=notable.id+"_REF";
+                if (!(document.getElementById(noteref))) {
+                    var label=getChild(notable,"label")||getChild(notable,"summary")||
+                        getChild(notable,".sbooklabel")||getChild(notable,".sbooksummary")||
+                        getChild(notable,"span")||"Note";
+                    var anchor=fdjtDOM.Anchor("#"+notable.id,"A",label); anchor.rel="sbooknote";
+                    anchor.id=noteref;
+                    fdjtDOM.replace(notable,anchor);
+                    fdjtDOM.append(notesblock,notable,"\n");}
+                else fdjtDOM.append(notesblock,notable,"\n");}
+
             var i=0; var lim=nodes.length;
             // Now, move all of the body nodes into the content element
             while (i<lim) {
@@ -1086,20 +1109,8 @@ Codex.Startup=
                         content.appendChild(node);}
                 else content.appendChild(node);}
 
-            // Gather special content
-            var allnotes=fdjtID("SBOOKNOTES");
-            var allasides=fdjtID("SBOOKASIDES");
-            var alldetails=fdjtID("SBOOKDETAILS");
-            if (!(alldetails)) {
-                var alldetails=fdjtDOM("div#SBOOKDETAILS");
-                fdjtDOM(content,alldetails);}
-            if (!(allasides)) {
-                var allasides=fdjtDOM("div#SBOOKASIDES");
-                fdjtDOM(content,allasides);}
-            if (!(allnotes)) {
-                var allnotes=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
-                fdjtDOM(content,allnotes);}
-            
+            fdjtDOM.append(content,"\n",notesblock,"\n");
+
             var pages=Codex.pages=fdjtID("CODEXPAGES")||
                 fdjtDOM("div#CODEXPAGES");
             var page=Codex.page=fdjtDOM(
@@ -1112,83 +1123,6 @@ Codex.Startup=
             fdjtDOM.append(body,fdjtDOM("div#CODEXBODY",content,page));
             fdjtDOM.addClass(body,"sbook");
             sizePage(page,content);
-            applyMetaClass("sbookdetails");
-            applyMetaClass("sbooknoteref");
-            applyMetaClass("sbookbibref");
-            applyMetaClass("sbookxnote");
-            applyMetaClass("sbookaside");
-            applyMetaClass("sbookbackmatter");
-            var sbookxnotes=fdjtDOM.$("sbookxnote");
-            // Add refs for all of the xnotes
-            var i=0; var lim=sbookxnotes.length;
-            while (i<lim) {
-                var note=sbookxnotes[i++];
-                var anchor=fdjtDOM("A.sbooknoteref","\u2193");
-                var count=note_count++;
-                anchor.id="SBOOKNOTEREF"+count;
-                if (!(note.id)) note.id="SBOOKNOTE"+count;
-                anchor.href="#"+note.id;
-                fdjtDOM.insertBefore(note,anchor);}
-            // Move all the notes to the end
-            var noterefs=fdjtDOM.$(".sbooknoteref,.sbookbibref");
-            var i=0; var lim=noterefs.length;
-            while (i<lim) {
-                var noteref=noterefs[i++];
-                var idcontext=Codex.getTarget(noteref.parentNode);
-                if ((noteref.href)&&(noteref.href[0]==='#')) {
-                    var noteid=noteref.href.slice(1);
-                    var notenode=fdjtID(noteid);
-                    if (!(notenode)) continue;
-                    if ((noteref.id)||(idcontext)) {
-                        var backanchor=fdjtDOM("A.sbooknotebackref","\u2191");
-                        backanchor.href="#"+noteref.id||(idcontext.id);
-                        fdjtDOM.prepend(notenode,backanchor);}
-                    if ((idcontext)&&(fdjtDOM.hasClass(noteref,"sbooknoteref")))
-                        notenode.codextocloc=idcontext.id;
-                    if ((fdjtDOM.hasClass(noteref,"sbooknoteref"))&&
-                        (!(fdjtDOM.hasParent(notenode,".sbookbackmatter"))))
-                        fdjtDOM.append(allnotes,notenode);}}
-            // Move all the details to the end
-            var details=fdjtDOM.$("detail,.sbookdetail,.html5detail");
-            var i=0; var lim=details.length;
-            while (i<lim) {
-                var detail=details[i++];
-                var head=fdjtDOM.getChild(detail,"summary,.sbooksummary");
-                var detailhead=
-                    ((head)?(fdjtDOM.clone(head)):
-                     fdjtDIV("div.sbookdetailstart",
-                             (fdjtString.truncate(fdjtDOM.textify(detail),42))));
-                var anchor=fdjtDOM("A.sbookdetailref",detailhead);
-                var count=detail_count++;
-                if (!(detail.id)) detail.id="SBOOKDETAIL"+count;
-                anchor.href="#"+detail.id; anchor.id="SBOOKDETAILREF"+count;
-                fdjtDOM.replace(detail,anchor);
-                detail.codextocloc=anchor.id;
-                fdjtDOM.append(alldetails,detail);}
-            // Move all the asides to the end
-            var asides=fdjtDOM.$("aside,.sbookaside");
-            var i=0; var lim=asides.length;
-            while (i<lim) {
-                var aside=asides[i++];
-                var head=fdjtDOM.getChild(aside,".sbookasidehead")||
-                    fdjtDOM.getChild(aside,"HEADER")||
-                    fdjtDOM.getChild(aside,"H1")||
-                    fdjtDOM.getChild(aside,"H2")||
-                    fdjtDOM.getChild(aside,"H3")||
-                    fdjtDOM.getChild(aside,"H4")||
-                    fdjtDOM.getChild(aside,"H5")||
-                    fdjtDOM.getChild(aside,"H6");
-                var asidehead=
-                    ((head)?(fdjtDOM.clone(head)):
-                     fdjtDIV("div.sbookasidestart",
-                             (fdjtString.truncate(fdjtDOM.textify(aside),42))));
-                var anchor=fdjtDOM("A.sbookasideref",asidehead);
-                var count=aside_count++;
-                if (!(aside.id)) aside.id="SBOOKASIDE"+count;
-                anchor.href="#"+aside.id; anchor.id="SBOOKASIDEREF"+count;
-                fdjtDOM.insertBefore(aside,anchor);
-                aside.codextocloc=anchor.id;
-                fdjtDOM.append(allasides,aside);}
             // Initialize the margins
             initMargins();
             if (Codex.Trace.startup>1)

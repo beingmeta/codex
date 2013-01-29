@@ -266,7 +266,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (Codex.Trace.gestures)
                 fdjtLog("ctouch: follow link %s",href);
             var rel=anchor.rel;
-            if ((href[0]==="#")&&
+            if ((href[0]==="#")&&(rel)&&
                 (rel.search(/\b((sbooknote)|(footnote)|(endnote))\b/)>=0)) {
                 var noteshud=fdjtID("CODEXNOTETEXT");
                 var target=fdjt.ID(href.slice(1));
@@ -282,9 +282,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 gesture_start=false;
                 clicked=fdjtTime();
                 return;}
-            else if ((href[0]==="#")&&
+            else if ((href[0]==="#")&&(rel)&&
                      (rel.search(/\b((sidebar)|(breakout)|(tangent))\b/)>=0)) {
-                var asidehud=fdjtID("CODEXASIDETEXT");
+                var asidehud=fdjtID("CODEXASIDE");
                 var target=fdjt.ID(href.slice(1));
                 fdjtDOM.removeChildren(asidehud);
                 fdjtDOM.append(asidehud,target.cloneNode(true));
@@ -312,21 +312,23 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 gesture_start=false;
                 return;}}
 
-        var detail=getParent(target,"detail,.html5detail,.sbookdetail");
-        if (detail) {
-            var clone=detail.cloneNode(true);
-            var notehud=fdjt.ID("CODEXNOTETEXT");
+        var details=getParent(target,"details,.html5details,.sbookdetails");
+        if (details) {
+            var notehud=fdjt.ID("CODEXASIDE");
             fdjtDOM.removeChildren(notehud);
-            fdjtDOM.append(notehud,clone);
-            Codex.setMode("shownote");}
+            notehud.innerHTML=details.innerHTML;
+            Codex.setMode("showaside");
+            clicked=fdjtTime();
+            return;}
 
         var aside=getParent(target,"aside,.html5aside,.sbookaside");
         if (aside) {
-            var clone=aside.cloneNode(true);
-            var asidehud=fdjt.ID("CODEXASIDETEXT");
+            var asidehud=fdjt.ID("CODEXASIDE");
             fdjtDOM.removeChildren(asidehud);
-            fdjtDOM.append(asidehud,clone);
-            Codex.setMode("showaside");}
+            asidehud.innerHTML=aside.innerHTML;
+            Codex.setMode("showaside");
+            clicked=fdjtTime();
+            return;}
 
         var passage=getTarget(target);
         // We get the passage here so we can include it in the trace message
