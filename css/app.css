@@ -618,13 +618,16 @@ body.sbook #CODEXBODY aside > h3:first-child {
 
 body.sbook #CODEXBODY .sbooknote {display: none;}
 
-a[rel='sbooknote'], a[rel='footnote'], a[rel='endnote'] {
-    font-size: 80%; vertical-align: top;
-    padding-right: 1ex; padding-left: 1ex;
-    border: solid blue 1px; background-color: lightblue; color: darkblue;
+body.sbook a[rel='sbooknote'], body.sbook a[rel='footnote'], body.sbook a[rel='endnote'] {
+    font-size: 80%; vertical-align: super; margin-left: 0.5ex;
+    color: darkblue; text-decoration: overline; font-variant: small-caps;
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -khtml-border-radius: 1ex; -moz-border-radius: 1ex;
     -o-border-radius: 1ex;}
+body.sbook a[rel='sbooknote']:hover,
+body.sbook a[rel='footnote']:hover,
+body.sbook a[rel='endnote']:hover {
+    text-decoration: overline;}
 
 /* Block elements */
 

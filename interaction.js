@@ -239,6 +239,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var tap_target=false;
     var tap_timer=false;
     var last_text=false;
+    var clicked=false;
 
     function content_touched(evt){
         evt=evt||event;
@@ -269,13 +270,17 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 (rel.search(/\b((sbooknote)|(footnote)|(endnote))\b/)>=0)) {
                 var noteshud=fdjtID("CODEXNOTETEXT");
                 var target=fdjt.ID(href.slice(1));
-                var label=fdjtDOM("span.notelabel");
+                var label=fdjtDOM("span.sbooknotelabel");
                 label.innerHTML=anchor.innerHTML;
                 fdjtDOM.removeChildren(noteshud);
-                fdjtDOM.append(noteshud,label,target.cloneNode(true));
+                var shownote=target.cloneNode(true); shownote.id=null;
+                dropClass(shownote,/\bcodex\S+/g);
+                fdjtDOM.prepend(shownote,label);
+                fdjtDOM.append(noteshud,shownote);
                 Codex.setMode("shownote");
                 fdjtUI.cancel(evt);
                 gesture_start=false;
+                clicked=fdjtTime();
                 return;}
             else if ((href[0]==="#")&&
                      (rel.search(/\b((sidebar)|(breakout)|(tangent))\b/)>=0)) {
@@ -286,6 +291,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 Codex.setMode("showaside");
                 fdjtUI.cancel(evt);
                 gesture_start=false;
+                clicked=fdjtTime();
                 return;}
             else if ((href[0]==='#')&&(document.getElementById(href.slice(1)))) {
                 // It's an internal jump, so we follow that
@@ -296,6 +302,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 Codex.JumpTo(elt);
                 fdjtUI.cancel(evt);
                 gesture_start=false;
+                clicked=fdjtTime();
                 return;}
             else {
                 // We force links to leave the page, hoping people
@@ -494,7 +501,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function content_click(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        if (isClickable(target)) return;
+        if ((clicked)&&((fdjtTime()-clicked)<3000)) fdjtUI.cancel(evt);
+        else if (isClickable(target)) return;
         else fdjtUI.cancel(evt);}
 
 

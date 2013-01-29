@@ -364,8 +364,15 @@ div#CODEXGLOSSDETAIL.hudpanel {
     text-align: left;
     margin-left: 1em; margin-right: 1em;}
 
-div#CODEXHUD div#CODEXNOTETEXT.hupanel .notelabel {
-    font-size: 150%; font-weight: bold; float: left;}
+div#CODEXHUD div#CODEXNOTETEXT {
+    padding-left: 2em; padding-right: 2em;
+    text-align: left;}
+div#CODEXHUD div#CODEXNOTETEXT p { margin-top: 1ex; margin-bottom: 1ex;}
+div#CODEXHUD div#CODEXNOTETEXT p:first-child { margin-top: 2px; }
+div#CODEXNOTETEXT span.sbooknotelabel {
+    font-size: 150%; color: darkblue;
+    position: relative; left: -1em;
+    padding-right: 0.3ex;}
 
 /* HUD buttons */
 

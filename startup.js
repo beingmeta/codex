@@ -1040,8 +1040,13 @@ Codex.Startup=
             Codex.content=content;
 
             // Interpet links
-            var notelinks="a[rel='sbooknote'],a[rel='footnote'],a[rel='endnote']";
-            addClass(getChildren(body,notelinks),"sbooknote");
+            var notelinks=getChildren(body,"a[rel='sbooknote'],a[rel='footnote'],a[rel='endnote']");
+            i=0, lim=notelinks.length; while (i<lim) {
+                var ref=notelinks[i++];
+                var href=ref.href;
+                if (!(fdjtDOM.hasText(ref))) ref.innerHTML="Note";
+                if ((href)&&(href[0]==="#")) {
+                    addClass(fdjt.ID(href.slice(1)),"sbooknote");}}
             
             // Move the publisher-provided splash page directly into
             //  the body (if neccessary)
