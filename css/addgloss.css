@@ -456,7 +456,8 @@ div#CODEXGLOSSATTACH.detail tr.detail, div#CODEXGLOSSATTACH.upload tr.upload {
     display: table-row;}
 div#CODEXGLOSSATTACH.detail tr.url, div#CODEXGLOSSATTACH.upload tr.url {
     display: none;}
-div#CODEXGLOSSATTACH table.fdjtform td input[type="TEXT"] { width: 95%;}
+div#CODEXGLOSSATTACH table.fdjtform td input[type="TEXT"],
+div#CODEXGLOSSATTACH table.fdjtform td input[type="URL"] { width: 95%;}
 
 div#CODEXOUTLETCLOUD span#CODEXNETWORKBUTTONS { }
 div#CODEXOUTLETCLOUD span#CODEXNETWORKBUTTONS span.completion {

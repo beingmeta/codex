@@ -190,7 +190,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var i=0; var lim=glosses.length;
         while (i<lim) {
             var gloss=Glosses.ref(glosses[i++]);
-            var maker=Sources.ref(gloss.maker);
+            var maker=Sources.ref(gloss.maker||"anonymous");
             var maker_img=geticon(maker);
             if (maker_img) images.push(maker_img);
             var outlets=gloss.sources||[];

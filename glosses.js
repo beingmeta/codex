@@ -184,8 +184,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         getInput(form,"DOCURI").value=document.location.href;
         getInput(form,"FRAG").value=passageid;
         if (info.wsnid) getInput(form,"WSNID").value=info.wsnid;
-        if (Codex.mycopyid)
-            getInput(form,"MYCOPYID").value=Codex.mycopyid;
+        if (Codex.user) getInput(form,"MAKER").value=Codex.user._id;
+        if (Codex.mycopyid) getInput(form,"MYCOPYID").value=Codex.mycopyid;
         if (gloss) {
             var date_elt=getChild(form,".glossdate");
             fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
@@ -1059,7 +1059,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (brk<0) addLink(form,note);
             else addLink(form,note.slice(0,brk),note.slice(brk+1));
             noteinput.value="";}
-        var sent=((navigator.onLine)&&
+        var sent=((navigator.onLine)&&(Codex.connected)&&
                   (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form,keep))));
         if (!(sent)) queueGloss(form,((arg)&&(arg.type)&&(arg)));
         else dropClass(div,"modified");}

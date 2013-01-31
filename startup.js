@@ -1425,6 +1425,8 @@ Codex.Startup=
                 ss.insertRule(
                     "div#CODEXHUD span.google_share { display: inline;}",
                     ss.cssRules.length);
+            var maker=fdjtDOM.getInput(form,"MAKER");
+            if (maker) maker.value=Codex.user._id;
             var pic=
                 (Codex.user.pic)||
                 ((Codex.user.fbid)&&

@@ -173,11 +173,13 @@ var Codex=
                     return;}
                 if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
                 if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
+                if (!(item.maker)) item.maker=(Codex.user)?(Codex.user._id):"@1961/0";
                 var maker=Codex.sourcekb.ref(item.maker);
-                Codex.index.add(item,maker,1);
-                Codex.addTag2GlossCloud(maker);
-                Codex.addTag2SearchCloud(maker);
-                Codex.UI.addGlossSource(maker,true);
+                if (maker) {
+                    Codex.index.add(item,maker,1);
+                    Codex.addTag2GlossCloud(maker);
+                    Codex.addTag2SearchCloud(maker);
+                    Codex.UI.addGlossSource(maker,true);}
                 var maker_knodule=Codex.getMakerKnodule(item.maker);
                 var tags=item.tags; var knodes=[];
                 if (tags) {
@@ -228,6 +230,8 @@ var Codex=
                 var span=fdjtDOM(spec,name);
                 if (source.about) span.title=source.about;
                 return span;};
+            var anonymous=Codex.sourcekb.ref("@1961/1");
+            anonymous.name="anonymous";
             if (Codex.persist)
                 Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);}
         if (Codex.Trace.start>1) fdjtLog("Initialized DB");}
