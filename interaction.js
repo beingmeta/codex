@@ -1932,6 +1932,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             toggleClass(menu,"expanded");}
         else if (alt==="glossdelete") 
             addgloss_delete(menu,form);
+        else if (alt==="glosspush") {
+            Codex.submitGloss(form,true);
+            dropClass(menu,"expanded");}
         else if (alt==="glossrespond") 
             addgloss_respond(menu,form);
         else if (alt===form.className) {
@@ -1973,7 +1976,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         dropClass(target,"held");
         if (alt==="glossdelete") 
             addgloss_delete(menu,form);
-        if (alt==="glossrespond") 
+        else if (alt==="glosspush")
+            Codex.submitGloss(form,true);
+        else if (alt==="glossrespond") 
             addgloss_respond(menu,form);
         else if (Codex.glossmodes.exec(alt))
             Codex.setGlossMode(alt,form);

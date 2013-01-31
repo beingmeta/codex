@@ -275,8 +275,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtDOM("span.age",agestring)," ",
             fdjtDOM.Image(
                 (((user===Codex.user)||(user===Codex.user._id))?
-                 (cxicon("remark_edit_titled",40,40)):
-                 (cxicon("remark_respond_titled",40,40))),
+                 (cxicon("gloss_edit_titled",40,40)):
+                 (cxicon("gloss_respond_titled",40,40))),
                 "img.button",
                 (((user===Codex.user)||(user===Codex.user._id))?
                  ("edit"):("reply")),

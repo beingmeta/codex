@@ -1067,6 +1067,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var queue_gloss=false; var choices=[];
             if (navigator.onLine) 
                 choices.push({label: "Login",
+                              isdefault: true,
                               handler: function(){
                                   setTimeout(function(){Codex.setMode("login");},0);
                                   var resubmit=function(){submitGloss(arg,keep);};
@@ -1075,18 +1076,23 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                                   login_message=true;}});
             if (Codex.user) 
                 choices.push({label: "Queue",
+                              isdefault: ((!(navigator.onLine))&&(Codex.persist)),
                               handler: function(){
-                                  if (!(Codex.persist)) Codex.setConfig("persist",true);
+                                  if (!(Codex.persist)) Codex.setConfig("persist",true,true);
                                   login_message=true;
-                                  submitGloss(arg,keep);}});
+                                  if (!((navigator.onLine)&&(Codex.connected)))
+                                      queueGloss(arg,false,keep);
+                                  else submitGloss(arg,keep);}});
             else {
                 choices.push({label: "Cache",
+                              isdefault: ((!(navigator.onLine))&&(Codex.persist)),
                               handler: function(){
-                                  if (!(Codex.persist)) Codex.setConfig("persist",true);
+                                  if (!(Codex.persist)) Codex.setConfig("persist",true,true);
                                   login_message=true;
-                                  submitGloss(arg,keep);}});
+                                  queueGloss(arg,false,keep);}});
                 if (!(Codex.persist))
                     choices.push({label: "Lose",
+                                  isdefault: ((!(navigator.onLine))&&(!(Codex.persist))),
                                   handler: function(){
                                       tempGloss(form); login_message=true;}});}
             choices.push({label: "Cancel",
@@ -1120,9 +1126,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                                     "lose your changes when this page closes,",
                                     "or cancel the change you were about to make."))));
             return;}
-        var sent=((navigator.onLine)&&(Codex.connected)&&
+        var sent=((navigator.onLine)&&(Codex.connected)&&(Codex.user)&&
                   (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form,keep))));
-        if (!(sent)) queueGloss(form,((arg)&&(arg.type)&&(arg)));
+        if (!(sent)) queueGloss(form,((arg)&&(arg.type)&&(arg)),keep);
         else dropClass(div,"modified");}
     Codex.submitGloss=submitGloss;
 
@@ -1189,7 +1195,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var queued_glosses=[], queued_data={};
 
     // Queues a gloss when offline
-    function queueGloss(form,evt){
+    function queueGloss(form,evt,keep){
         // We use the JSON to update the local database and save the
         // params to send when we get online
         var json=fdjt.Ajax.formJSON(form,true);
@@ -1220,12 +1226,15 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
         if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
         Codex.glosses.Import(glossdata);
-        // Clear the UUID
-        clearGlossForm(form);
         if (evt) fdjtUI.cancel(evt);
         dropClass(form.parentNode,"submitting");
         /* Turn off the target lock */
-        setGlossTarget(false); Codex.setTarget(false); Codex.setMode(false);}
+        if (!(keep)) {
+            // Clear the UUID
+            clearGlossForm(form);
+            setGlossTarget(false);
+            Codex.setTarget(false);
+            Codex.setMode(false);}}
 
     // Creates a gloss which will go away when the page closes
     function tempGloss(form,evt){
