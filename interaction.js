@@ -59,6 +59,27 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     otherwise, start adding gloss to target
 */
 
+/* New content interaction rules, based on assuming taphold for content */
+/*
+  tap: if previewing, stop and jump to the previewed location
+  tap: if over anchor, detail, aside, etc, and fdjtselecting, treat it like a click below,
+  tap: if over fdjtselecting, go to addgloss mode with the hud up, and pass event
+   on to the fdjtselecting region
+  tap: if on anchor, detail, aside, etc, either treat it especially (and set clicked to
+    the current time) or ignore it (and let click handle it)
+  tap: otherwise, go forward or backward based on the x position
+
+  hold: if previewing, stop and jump to the previewed location
+  hold: if over fdjtselecting, switch to addgloss with HUD down and pass it on.
+  hold: if not over fdjtselecting:
+    if not over a passage, toggle the HUD
+    if over a passage, and no current glosstarget,
+      start selecting, fake a press, create a gloss;
+    if over a passage, and current glosstarget is a reply, retarget the reply;
+    if over a passage, and current glosstarget hasn't been modified or save,
+     retarget the gloss
+ */
+
 (function(){
 
     var fdjtString=fdjt.String;
