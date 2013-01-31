@@ -521,7 +521,7 @@ Codex.setMode=
                     Codex.mode=mode;}
                 // If we're switching to the inner app but the iframe
                 //  hasn't been initialized, we do it now.
-                if ((mode==="sbooksapp")&&
+                if (((mode==="sbooksapp")||(mode==="login"))&&
                     (!(fdjtID("SBOOKSAPP").src))&&
                     (!(Codex.appinit)))
                     initFlyleafApp();

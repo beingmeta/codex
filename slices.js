@@ -82,7 +82,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var body=
             fdjtDOM("div.codexcardbody",
                     // (makelocrule(target_info,target_info.head)),
-                    ((info.maker)?(showglossinfo(info)):(showdocinfo(info)))," ",
+                    (((info.maker)||(info.tstamp))?(showglossinfo(info)):(showdocinfo(info)))," ",
                     ((standalone)&&(showtocloc(target_info))),
                     ((score)&&(showscore(score))),
                     ((note_len>0)&&(Ellipsis("span.note",info.note,140)))," ",
@@ -269,7 +269,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var feed=info.feed||false;
         var userinfo=(user)&&(Codex.sourcekb.load(user));
         var feedinfo=(feed)&&(Codex.sourcekb.load(feed));
-        var agestring=timestring(info.modified||info.created);
+        var agestring=timestring(info.modified||info.created||info.tstamp);
         var tool=fdjtDOM(
             "span.tool",
             fdjtDOM("span.age",agestring)," ",
@@ -321,7 +321,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function getfakepic(maker,spec){
         var userinfo=fdjtKB.load(maker);
         var pic=fdjtDOM(spec||"div.sbooksourcepic",
-                        ((userinfo.name)?
+                        (((userinfo)&&(userinfo.name))?
                          (fdjtString.getInitials(userinfo.name)):
                          "?"));
         fdjtDOM.addClass(pic,"sbooknopic");

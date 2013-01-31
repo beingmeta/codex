@@ -684,7 +684,9 @@ var Codex=
             Codex._onconnect=false;
             if ((onconnect)&&(onconnect.length)) {
                 var i=0; var lim=onconnect.length;
-                while (i<lim) (onconnect[i++])();}}
+                while (i<lim) (onconnect[i++])();}
+            if (fdjtState.getLocal("queued("+Codex.refuri+")"))
+                Codex.writeQueuedGlosses();}
         if (((val)&&(!(Codex.connected)))||
             ((!(val))&&(Codex.connected)))
             fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,

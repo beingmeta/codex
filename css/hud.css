@@ -368,7 +368,8 @@ div#CODEXHUD.glossdetail div#CODEXHEART div#CODEXGLOSSDETAIL.hudpanel,
 div#CODEXHUD.search div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
 div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
-div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
+div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel,
+div#CODEXHUD.login iframe#SBOOKSAPP.hudpanel {
     position: static; display: block;
     opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";

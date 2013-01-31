@@ -1196,7 +1196,11 @@ Codex.Startup=
                     setUser(info.userinfo,
                             info.outlets,info.overlays,
                             info.sync);
-                else addClass(document.body,"cxNOUSER");
+                else {
+                    if (fdjtState.getLocal("queued("+Codex.refuri+")"))
+                        Codex.glosses.Import(
+                            fdjtState.getLocal("queued("+Codex.refuri+")",true));
+                    addClass(document.body,"cxNOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);
                 if (info.sync) Codex.sync=info.sync;}
             else if (info.wronguser) {

@@ -1019,6 +1019,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     /***** Saving (submitting/queueing) glosses *****/
 
+    var login_message=false;
+
     // Submits a gloss, queueing it if offline.
     function submitGloss(arg,keep){
         var div=false, form=false;
@@ -1059,6 +1061,65 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (brk<0) addLink(form,note);
             else addLink(form,note.slice(0,brk),note.slice(brk+1));
             noteinput.value="";}
+        if ((!(login_message))&&
+            ((!(navigator.onLine))||(!(Codex.connected)))&&
+            ((!(Codex.user))||(!(Codex.persist)))) {
+            var queue_gloss=false; var choices=[];
+            if (navigator.onLine) 
+                choices.push({label: "Login",
+                              handler: function(){
+                                  setTimeout(function(){Codex.setMode("login");},0);
+                                  var resubmit=function(){submitGloss(arg,keep);};
+                                  if (Codex._onconnect) Codex._onconnect.push(resubmit);
+                                  else Codex._onconnect=[resubmit];
+                                  login_message=true;}});
+            if (Codex.user) 
+                choices.push({label: "Queue",
+                              handler: function(){
+                                  if (!(Codex.persist)) Codex.setConfig("persist",true);
+                                  login_message=true;
+                                  submitGloss(arg,keep);}});
+            else {
+                choices.push({label: "Cache",
+                              handler: function(){
+                                  if (!(Codex.persist)) Codex.setConfig("persist",true);
+                                  login_message=true;
+                                  submitGloss(arg,keep);}});
+                if (!(Codex.persist))
+                    choices.push({label: "Lose",
+                                  handler: function(){
+                                      tempGloss(form); login_message=true;}});}
+            choices.push({label: "Cancel",
+                          handler: function(){
+                              fdjtDOM.remove(form.parentNode);
+                              setGlossTarget(false);
+                              Codex.setTarget(false);
+                              Codex.setMode(false);}});
+            fdjtUI.choose(choices,
+                          ((navigator.onLine)&&(!(Codex.user))&&
+                           (fdjtDOM("p.smaller",
+                                    "This book isn't currently associated with an sBooks account, ",
+                                    "so any highlights or glosses you add will not be permanently saved ",
+                                    "until you login.  You may either login now, cache your changes ",
+                                    "on this machine until you do login, ",
+                                    "lose your changes when this page closes, ",
+                                    "or cancel the change you're about to make."))),
+                          (((navigator.onLine)&&(Codex.user)&&
+                            (fdjtDOM("p.smaller",
+                                     "You aren't currently logged into your sBooks account from ",
+                                     "this machine, so any highlights or glosses you add wont'be saved ",
+                                     "until you do.  In addition, you won't get updated glosses from ",
+                                     "your networks or overlays.  You may either login now, queue any ",
+                                     "changes you make until you do login, or cancel the change you were ",
+                                     "trying to make.")))),
+                          ((!(navigator.onLine))&&(!(Codex.persist))&&
+                           (fdjtDOM("p.smaller",
+                                    "You are currently offline and you've elected to not save ",
+                                    "highlights or glosses locally on this computer.  You can either ",
+                                    "queue your changes by storing information locally, ",
+                                    "lose your changes when this page closes,",
+                                    "or cancel the change you were about to make."))));
+            return;}
         var sent=((navigator.onLine)&&(Codex.connected)&&
                   (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form,keep))));
         if (!(sent)) queueGloss(form,((arg)&&(arg.type)&&(arg)));
@@ -1143,6 +1204,35 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             queued_glosses.push(json.uuid);
             queued_data[json.uuid]=params;}
         // Now save it to the in-memory database
+        var glossdata=
+            {refuri: json.refuri,frag: json.frag,
+             maker: json.user,_id: json.uuid,uuid: json.uuid,
+             qid: json.uuid,gloss: json.uuid,
+             created: ((json.created)||(fdjtTime()))};
+        glossdata.tstamp=fdjtTime.tick();
+        if ((json.note)&&(!(fdjtString.isEmpty(json.note))))
+            glossdata.note=json.note;
+        if ((json.excerpt)&&(!(fdjtString.isEmpty(json.excerpt)))) {
+            glossdata.excerpt=json.excerpt;
+	    glossdata.exoff=json.exoff;}
+        if ((json.details)&&(!(fdjtString.isEmpty(json.details))))
+            glossdata.details=json.details;
+        if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
+        if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
+        Codex.glosses.Import(glossdata);
+        // Clear the UUID
+        clearGlossForm(form);
+        if (evt) fdjtUI.cancel(evt);
+        dropClass(form.parentNode,"submitting");
+        /* Turn off the target lock */
+        setGlossTarget(false); Codex.setTarget(false); Codex.setMode(false);}
+
+    // Creates a gloss which will go away when the page closes
+    function tempGloss(form,evt){
+        // We use the JSON to update the local database and save the
+        // params to send when we get online
+        var json=fdjt.Ajax.formJSON(form,true);
+        // save it to the in-memory database
         var glossdata=
             {refuri: json.refuri,frag: json.frag,
              maker: json.user,_id: json.uuid,uuid: json.uuid,
