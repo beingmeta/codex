@@ -17,13 +17,15 @@
 
 /* Major HUD components, head and heart */
 
-#CODEXHEAD, #CODEXSCANNER {
-    position: fixed; z-index: 100;
-    top: 0px; max-height: 60px;
-    border: solid transparent 4px; padding: 0px;
-    border-top: 0px;}
-#CODEXHEAD, #CODEXSCANNER { left: 60px; right: 60px; }
-#CODEXHUD #CODEXHEAD, #CODEXHUD.openhead.openheart #CODEXHEAD {
+#CODEXHEAD, #CODEXSCANNER, #CODEXFOOT {
+    position: fixed; left: 60px; right: 60px; z-index: 100;
+    max-height: 60px; border: solid transparent 4px; padding: 0px;}
+#CODEXHEAD, #CODEXSCANNER {top: 0px; border-top: 0px;}
+#CODEXFOOT {bottom: 0px; border-bottom: 0px;}
+
+#CODEXHUD #CODEXHEAD,
+#CODEXHUD.openfoot #CODEXFOOT,
+#CODEXHUD.openhead.openheart #CODEXHEAD {
     opacity: 0.99;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
     filter: alpha(opacity=99);
@@ -31,7 +33,16 @@
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
-#CODEXHUD.openheart #CODEXHEAD {
+#CODEXHUD.openheart #CODEXHEAD,
+#CODEXHUD.openheart #CODEXFOOT {
+    opacity: 0.33;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
+    filter: alpha(opacity=33);
+    -webkit-opacity: 0.33;
+    -khtml-opacity: 0.33;
+    -moz-opacity: 0.33;
+    -o-opacity: 0.33;}
+#CODEXHUD.openfoot #CODEXFOOT {
     opacity: 0.33;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
     filter: alpha(opacity=33);
@@ -41,7 +52,6 @@
     -o-opacity: 0.33;}
 
 #CODEXSCANNER { display: none; }
-/* #CODEXHEAD .hudpanel { margin-left: 1em; margin-right: 1em; } */
 
 #CODEXHEAD, #CODEXHEAD .hudpanel, #CODEXSCANNER,
 #CODEXSCANNER .codexcard, #CODEXSCANNER .codexcardbody {
@@ -56,6 +66,18 @@
     -webkit-border-top-right-radius: 0px; 
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
+#CODEXFOOT, #CODEXFOOT .hudpanel {
+    border-radius: 1em; -webkit-border-radius: 1em;
+    -o-border-radius: 1em; -moz-border-radius: 1em;
+    border-bottom-width: 0px;
+    border-bottom-left-radius: 0px;
+    -webkit-border-bottom-left-radius: 0px; 
+    -moz-border-radius-bottomleft: 0px;
+    -o-border-radius-bottomleft: 0px; 
+    border-bottom-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px; 
+    -moz-border-radius-bottomright: 0px;
+    -o-border-radius-bottomright: 0px;}
 
 #CODEXSCANNER .codexcard { margin-bottom: 0.5em;}
 
@@ -74,8 +96,8 @@ body #CODEXHUD.allglosses #CODEXSCANNER {
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     height: auto;}
-body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
-    display: block; position: static;}
+body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
+    position: static;}
 body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     display: none; position: absolute;}
 body #CODEXHUD.tocscan #CODEXHEAD,
@@ -85,6 +107,25 @@ body #CODEXHUD.allglosses #CODEXSCANNER {
 body #CODEXHUD.addgloss #CODEXHEAD {
     overflow: visible;
     z-index: 500;}
+
+body.cxTOUCH.hudup #CODEXHUD.openhead.toc #CODEXHEAD,
+body.cxTOUCH.hudup #CODEXHUD.openhead.tocscan #CODEXHEAD,
+body.cxTOUCH #CODEXHUD.openhead.tocscan #CODEXHEAD,
+body.cxTOUCH.hudup #CODEXHUD.tocscan #CODEXHEAD,
+body.cxTOUCH #CODEXHUD.tocscan #CODEXHEAD {
+    border: 0px; height: 0px;}
+
+body.hudup #CODEXHUD #CODEXFOOT {
+    height: auto; max-height: 50%;}
+body #CODEXHUD.openfoot #CODEXFOOT,
+body.cxTOUCH #CODEXHUD.toc #CODEXFOOT,
+body.cxTOUCH #CODEXHUD.tocscan #CODEXFOOT {
+    background-color: ivory; border-color: darkblue;
+    box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    height: auto; max-height: 50%;}
 
 body #CODEXHUD.openhead #CODEXHEAD,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded,
@@ -223,8 +264,7 @@ body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
     top: 150px; height: auto; min-height: 100px;}
 
 div#CODEXHUD #CODEXFOOT {
-    position: fixed; left: 0px; right: 0px; width: 100%;
-    bottom: 0px; z-index: 300;}
+    position: fixed; bottom: 0px; z-index: 300;}
 
 div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     position: absolute;

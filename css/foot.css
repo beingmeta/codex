@@ -6,15 +6,15 @@
 
 /* Bottom information */
 
-div#CODEXPAGEFOOT div#CODEXPAGEINFO {
+div#CODEXFOOT div#CODEXPAGEINFO {
     vertical-align: bottom; text-align: center; height: 40px; 
     position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 100;
     width: 80%; margin-left: 10%; margin-right: 10%; border: 0px;
     cursor: crosshair;
     display: none;}
-body.cxBYPAGE div#CODEXPAGEFOOT div#CODEXPAGEINFO {
+body.cxBYPAGE div#CODEXFOOT div#CODEXPAGEINFO {
     display: block;}
-body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
+body.hudup div#CODEXFOOT div#CODEXPAGEINFO {
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
@@ -22,15 +22,15 @@ body.hudup div#CODEXPAGEFOOT div#CODEXPAGEINFO {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-div#CODEXPAGEFOOT div#CODEXPAGEINFO span.locoff {
+div#CODEXFOOT div#CODEXPAGEINFO span.locoff {
     position: absolute; bottom: 0px; right: 3px;
     cursor: text;}
-div#CODEXPAGEFOOT span#CODEXPAGENO {
+div#CODEXFOOT span#CODEXPAGENO {
     position: absolute; right: 50%; bottom: 0px;
     max-height: 20px;}
-div#CODEXPAGEFOOT span#CODEXPAGENO span#CODEXPAGENOTEXT {
+div#CODEXFOOT span#CODEXPAGENO span#CODEXPAGENOTEXT {
     cursor: text;}
-div#CODEXPAGEFOOT div#CODEXPAGEINFO div.progressbar {
+div#CODEXFOOT div#CODEXPAGEINFO div.progressbar {
     background-color: gray; border: solid black 1px; border-top-width: 0px;
     z-index: 50; height: 100%; position: absolute; opacity: 0.5; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -39,7 +39,7 @@ div#CODEXPAGEFOOT div#CODEXPAGEINFO div.progressbar {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-div#CODEXPAGEFOOT div#CODEXPAGELEAP {
+div#CODEXFOOT div#CODEXPAGELEAP {
     opacity: 0.001;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
@@ -47,7 +47,7 @@ div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     -khtml-opacity: 0.01;
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
-div#CODEXPAGEFOOT div#CODEXPAGELEAP:hover {
+div#CODEXFOOT div#CODEXPAGELEAP:hover {
     opacity: 0.4;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
     filter: alpha(opacity=40);
@@ -55,7 +55,7 @@ div#CODEXPAGEFOOT div#CODEXPAGELEAP:hover {
     -khtml-opacity: 0.40;
     -moz-opacity: 0.40;
     -o-opacity: 0.40;}
-body.hudup div#CODEXPAGEFOOT div#CODEXPAGELEAP {
+body.hudup div#CODEXFOOT div#CODEXPAGELEAP {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -64,35 +64,43 @@ body.hudup div#CODEXPAGEFOOT div#CODEXPAGELEAP {
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
 
+body.cxTOUCH #CODEXHUD.toc div#CODEXFOOT div#CODEXPAGEINFO,
+body.cxTOUCH #CODEXHUD.tocscan div#CODEXFOOT div#CODEXPAGEINFO {
+    top: 0px; bottom: auto;}
+body.cxTOUCH #CODEXHUD.toc div#CODEXFOOT div#CODEXPAGEINFO div.textfoot,
+body.cxTOUCH #CODEXHUD.tocscan div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
+    top: 0px; bottom: auto;
+    border-top: 0px; border-bottom: solid black 1px;}
+
 /* Page spans */
 
-div#CODEXPAGEFOOT div#CODEXPAGEINFO div.textfoot {
+div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
   position: absolute; bottom: 0px; height: 20px; width: 100%;
   border-top: solid black 1px;
   pointer-events: none;}
-div#CODEXPAGEFOOT div#CODEXPAGEINFO div.textfoot > span {
+div#CODEXFOOT div#CODEXPAGEINFO div.textfoot > span {
   z-index: 50; pointer-events: all;}
 
-div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans {
+div#CODEXFOOT div#CODEXPAGEINFO .pagespans {
   position: absolute; bottom: 0px;
   width: 100%; height: 40px; z-index: 10;}
-div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span {
+div#CODEXFOOT div#CODEXPAGEINFO .pagespans span {
   opacity: 0.0; overflow: hidden; z-index: 20; height: 40px;
   display: inline-block;
   vertical-align: top;}
-body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span {
+body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span {
     height: 40px;}
-div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
+div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
   background-color: lightblue; color: transparent; 
   visibility: visible; opacity: 1.0; 
   overflow: visible; z-index: 50;}
-body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans {
+body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans {
   top: 0px; bottom: auto;}
-body div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
+body div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
     vertical-align: bottom; height: 20px;}
-body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
+body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
     height: 40px;}
-body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
+body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
   overflow: visible; visibility: visible; z-index: 60; color: black;
   opacity: 1.0;
   ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -101,7 +109,7 @@ body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.current {
   -khtml-opacity: 1.00;
   -moz-opacity: 1.00;
   -o-opacity: 1.00;}
-body.cxPREVIEW div#CODEXPAGEFOOT div#CODEXPAGEINFO .pagespans span.preview {
+body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.preview {
   background-color: gold; overflow: visible;
   visibility: visible; opacity: 1.0;
   z-index: 100;}

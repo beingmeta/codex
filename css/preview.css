@@ -11,7 +11,7 @@ body.cxPREVIEW #CODEXHUD.openhead.toc #CODEXHEAD,
 body.cxPREVIEW #CODEXHUD.tocscan #CODEXHEAD {
     display: block; }
 
-body.cxPREVIEW #CODEXHUD.toc #CODEXHEAD {
+body.cxPREVIEW #CODEXHUD.toc #CODEXHEAD, body.cxPREVIEW #CODEXHUD.toc #CODEXFOOT {
     background-color: transparent;
     border-color: transparent;}
 body.cxPREVIEW #CODEXHUD.toc #CODEXHEAD .hudpanel {

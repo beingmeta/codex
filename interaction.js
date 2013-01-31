@@ -119,13 +119,26 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
             fdjtUI.TapHold(fdjtID("CODEXEXPANDSCANNER"),Codex.touch);
             addHandlers(Codex.HUD,'hud');}
-        var handlers=Codex.UI.handlers[mode];
-        if (mode)
-            for (var key in handlers)
-                if ((key.indexOf('.')>=0)||(key.indexOf('#')>=0)) {
-                    var nodes=fdjtDOM.$(key,domnode);
-                    var h=handlers[key];
-                    fdjtDOM.addListeners(nodes,h);}}
+        if (mode) {
+            var handlers=Codex.UI.handlers[mode];
+            var keys=[], seen=[];
+            for (var key in handlers) {
+                if ((handlers.hasOwnProperty(key))&&
+                    ((key.indexOf('.')>=0)||(key.indexOf('#')>=0)))
+                    keys.push(key);}
+            // Appropximate sort for selector priority
+            keys=keys.sort(function(kx,ky){return ky.length-kx.length;});
+            var i=0, lim=keys.length;
+            while (i<lim) {
+                key=keys[i++];
+                var nodes=fdjtDOM.$(key,domnode);
+                var h=handlers[key];
+                var j=0, jlim=nodes.length;
+                while (j<jlim) {
+                    var node=nodes[j++];
+                    if (seen.indexOf(node)<0) { 
+                        seen.push(node);
+                        fdjtDOM.addListeners(node,h);}}}}}
     Codex.setupGestures=setupGestures;
 
     var dont=fdjtUI.noBubble;
@@ -542,6 +555,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
             Codex.JumpTo(target);
             if (show_fulltoc) Codex.setMode("toc");
+            else if (Codex.mode==="tocscan")
+                Codex.setMode(false);
             else Codex.setMode("tocscan");
             return fdjtUI.cancel(evt);}
         else if (Codex.Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);

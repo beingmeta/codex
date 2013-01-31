@@ -66,6 +66,8 @@ div#CODEXHUD.tocscan div.codextoc.codexcurhead div.sub { display: none;}
 body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead div.head,
 body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead img {
     height: 0px;}
+body.hudup.cxPREVIEW div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > div.head,
+body.hudup.cxPREVIEW div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > img,
 body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > div.head,
 body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > img {
     height: inherit;}
@@ -259,7 +261,7 @@ div.spanbar div.spans {
 /* Handling preview mode */
 
 body.cxPREVIEW #CODEXHUD div.spanbar div.spans {
-    opacity: 0.1;
+    opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
     filter: alpha(opacity=10);
     -webkit-opacity: 0.10;
@@ -276,7 +278,7 @@ body.cxPREVIEW #CODEXHUD div.spanbar.codexvisible div.spans {
     -moz-opacity: 1.00;
     -o-opacity: 1.00;}
 body.cxPREVIEW #CODEXHUD div.codextoc > div.head {
-    opacity: 0.1;
+    opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
     filter: alpha(opacity=10);
     -webkit-opacity: 0.10;
@@ -292,7 +294,7 @@ body.cxPREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
     -moz-opacity: 0;
     -o-opacity: 0;}
 body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
-    opacity: 0.4;
+    opacity: 0.1;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
     filter: alpha(opacity=40);
     -webkit-opacity: 0.40;
@@ -300,7 +302,7 @@ body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
     -moz-opacity: 0.40;
     -o-opacity: 0.40;}
 body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
-    opacity: 0.6;
+    opacity: 0.4;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
     filter: alpha(opacity=60);
     -webkit-opacity: 0.60;

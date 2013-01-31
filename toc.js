@@ -86,8 +86,8 @@ Codex.TOC=
             var toc=fdjtDOM(spec,
                             next_button,back_button,
                             ((head)&&(fdjtDOM("DIV.head",progressbar,head))),
-                            generate_spanbar(headinfo),
-                            generate_subsections(headinfo));
+                            generate_subsections(headinfo),
+                            generate_spanbar(headinfo));
             var sub=headinfo.sub;
             if (!(depth)) depth=0;
             if (head) {

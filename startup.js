@@ -56,8 +56,6 @@ Codex.Startup=
         var fdjtUI=fdjt.UI;
         var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
         
-        var sbook_faketouch=false;
-
         var sbook_heading_qricons=false;
 
         var https_root="https://beingmeta.s3.amazonaws.com/static/g/codex/";
@@ -801,7 +799,7 @@ Codex.Startup=
             var isiPad = (/ipad/gi).test(navigator.appVersion);
             var isAndroid = (/android/gi).test(navigator.appVersion);
             var isWebKit = navigator.appVersion.search("WebKit")>=0;
-            var isWebTouch = isiPhone || isiPad || isAndroid || isTouchPad;
+            var isWebTouch = isiPhone || isiPad || isAndroid || isTouchPad || fdjtState.getQuery("webtouch");
 
             if (isWebTouch) {
                 fdjtDOM.addClass(body,"cxTOUCH");
@@ -825,10 +823,6 @@ Codex.Startup=
                 Codex.nativescroll=false;
                 Codex.updatehash=false;
                 Codex.scrolldivs=false;}
-            else if (sbook_faketouch) {
-                fdjtDOM.addClass(body,"cxTOUCH");
-                viewportSetup();
-                Codex.ui="faketouch";}
             else {
                 fdjtDOM.addClass(body,"cxMOUSE");
                 Codex.ui="mouse";}
@@ -1155,23 +1149,14 @@ Codex.Startup=
             var pagehead=fdjtDOM("div.codexmargin#CODEXPAGEHEAD"," ");
             var pageright=fdjtDOM("div#CODEXPAGERIGHT");
             var pageleft=fdjtDOM("div#CODEXPAGELEFT");
-            
-            var pageinfo=
-                fdjtDOM("div#CODEXPAGEINFO",
-                        fdjtDOM("div.textfoot",
-                                fdjtDOM("span#CODEXPAGENO",
-                                        fdjtDOM("span#CODEXPAGENOTEXT","p/n")),
-                                fdjtDOM("span.locoff#CODEXLOCOFF","??%")),
-                        fdjtDOM("div.pagespans#CODEXPAGESPANS"));
-            var pagefoot=fdjtDOM("div.codexmargin#CODEXPAGEFOOT",pageinfo," ");
+            var pagefoot=fdjtDOM("div.codexmargin#CODEXPAGEFOOT"," ");
             pagehead.codexui=true; pagefoot.codexui=true;
             Codex.pagehead=pagehead; Codex.pagefoot=pagefoot;
             
             fdjtDOM.prepend(document.body,pagehead,pagefoot,pageleft,pageright);
 
-            for (var pagelt in [pagehead,pageright,pageleft,pagefoot,pageinfo]) {
-                fdjtDOM.addListeners(
-                    pageinfo,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
+            for (var pagelt in [pagehead,pageright,pageleft,pagefoot]) {
+                fdjtDOM.addListeners(pagelt,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
 
             window.scrollTo(0,0);
             

@@ -111,6 +111,10 @@ Codex.setMode=
             Codex.DOM.heart=fdjtID("CODEXHEART");
             Codex.DOM.foot=fdjtID("CODEXFOOT");
             Codex.DOM.tabs=fdjtID("CODEXTABS");
+
+            // Initialize the pageinfo
+            var pageinfo=Codex.DOM.pageinfo=fdjtID("CODEXPAGEINFO");
+            
             // Initialize search UI
             var search=fdjtID("CODEXSEARCH");
             search.innerHTML=fixStaticRefs(Codex.HTML.searchbox);
@@ -225,6 +229,9 @@ Codex.setMode=
             updateScroller("CODEXSEARCHCLOUD");
             updateScroller("CODEXGLOSSCLOUD");
             fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));
+
+            if (Codex.touch) fdjtDOM.append(Codex.DOM.foot,fdjt.ID("CODEXTOC"));
+
             fdjtLog("Initialized basic HUD layout");}
         Codex.initHUD=initHUD;
         
