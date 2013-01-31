@@ -879,6 +879,8 @@ Codex.setMode=
                 encodeURIComponent(document.location.href);
             if (document.title) {
                 appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
+            if (Codex.user) {
+                appuri=appuri+"&BOOKUSER="+encodeURIComponent(Codex.user._id);}
             fdjtID("SBOOKSAPP").src=appuri;
             flyleaf_app_init=true;}
         Codex.initFlyleafApp=initFlyleafApp;

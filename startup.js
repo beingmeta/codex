@@ -162,7 +162,7 @@ Codex.Startup=
                                 config_handlers[name],name,value);
                     config_handlers[name](name,value);}}
             current_config[name]=value;
-            if (save) {
+            if ((save)&&(saved_config[name]!==value)) {
                 saved_config[name]=value;
                 saveConfig(saved_config);}}
         Codex.setConfig=setConfig;
@@ -378,10 +378,7 @@ Codex.Startup=
                         if ((Codex.allglosses)&&(Codex.allglosses.length))
                             setLocal("glosses("+refuri+")",Codex.allglosses,
                                      true);}
-                    else if (!(value)) {
-                        if (getConfig("persist"))
-                            clearOffline(Codex.refuri);
-                        else clearOffline();}
+                    else if (!(value)) clearOffline();
                     Codex.persist=value;
                     setCheckSpan(fdjtID("CODEXLOCALCHECKBOX"),value);});
 
@@ -1356,6 +1353,8 @@ Codex.Startup=
                     "Cached user information is newer (%o) than loaded (%o)",
                     cursync,sync);
                 return false;}
+            if ((navigator.onLine)&&(fdjtState.getLocal("queued("+Codex.refuri+")")))
+                Codex.writeQueuedGlosses();
             Codex.user=fdjtKB.Import(userinfo);
             if (persist) setConfig("persist",true,true);
             if (outlets) Codex.outlets=outlets;
@@ -1530,7 +1529,7 @@ Codex.Startup=
         
         function go_online(evt){return offline_update();}
         function offline_update(){
-            Codex.writeGlosses(); updateInfo();}
+            Codex.writeQueuedGlosses(); updateInfo();}
         function offline_import(results){
             fdjtKB.Import(results);
             var i=0; var lim=results.length;

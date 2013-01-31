@@ -173,8 +173,8 @@ var Codex=
                     return;}
                 if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
                 if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
-                if (!(item.maker)) item.maker=(Codex.user)?(Codex.user._id):"@1961/0";
-                var maker=Codex.sourcekb.ref(item.maker);
+                if ((!(item.maker))&&(Codex.user)) item.maker=(Codex.user._id);
+                var maker=(item.maker)&&(Codex.sourcekb.ref(item.maker));
                 if (maker) {
                     Codex.index.add(item,maker,1);
                     Codex.addTag2GlossCloud(maker);
@@ -205,8 +205,7 @@ var Codex=
                             Codex.index.add(item,knode,score);
                             Codex.index.add(info,knode,score);
                             Codex.addTag2SearchCloud(knode);
-                            Codex.addTag2GlossCloud(knode);}}
-                    item.tags=knodes;}
+                            Codex.addTag2GlossCloud(knode);}}}
                 var sources=item.sources;
                 if (sources) {
                     if (typeof sources === 'string') sources=[sources];
@@ -230,7 +229,8 @@ var Codex=
                 var span=fdjtDOM(spec,name);
                 if (source.about) span.title=source.about;
                 return span;};
-            var anonymous=Codex.sourcekb.ref("@1961/1");
+            var anonymous=Codex.sourcekb.ref("@1961/0");
+            Codex.anonymous=anonymous;
             anonymous.name="anonymous";
             if (Codex.persist)
                 Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);}

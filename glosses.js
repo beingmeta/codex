@@ -924,7 +924,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (hasClass(rep,"codexcard"))
                 fdjtDOM.replace(rep,Codex.renderCard(ref));}
         /* Turn off the target lock */
-        if (!(keep)) {
+        if ((form)&&(!(keep))) {
             fdjtDOM.remove(form.parentNode);
             setGlossTarget(false);
             Codex.setTarget(false);
@@ -1167,7 +1167,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         setGlossTarget(false); Codex.setTarget(false); Codex.setMode(false);}
 
     // Saves queued glosses
-    function writeGlosses(){
+    function writeQueuedGlosses(){
         var queued=queued_glosses;
         // Copy the persistent data queue into the memory queue
         if (Codex.persist) {
@@ -1194,7 +1194,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if ((req.readyState === 4) &&
                     (req.status>=200) && (req.status<300)) {
                     fdjtState.dropLocal("params("+uuid+")");
-                    oncallback(req);}};
+                    addgloss_callback(req,false,false);}};
             try {
                 req.setRequestHeader
                 ("Content-type", "application/x-www-form-urlencoded");
@@ -1205,7 +1205,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else fdjtState.dropLocal("queued("+Codex.refuri+")");
         if ((pending)&&(pending.length>0)) return pending;
         else return false;}
-    Codex.writeGlosses=writeGlosses;
+    Codex.writeQueuedGlosses=writeQueuedGlosses;
     
 })();
 
