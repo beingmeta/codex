@@ -300,7 +300,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     /***** Setting the gloss target ******/
 
     // The target can be either a passage or another gloss
-    function setGlossTarget(target,form){
+    function setGlossTarget(target,form,selecting){
         if (Codex.glosstarget) {
             dropClass(Codex.glosstarget,"codexglosstarget");}
         dropClass("CODEXHUD",/\bgloss\w+\b/);
@@ -319,7 +319,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((typeof target === 'string')&&(fdjtID(target))) 
             target=fdjtID(target);
         else if ((typeof target === 'string')&&
-                 (Codex.glosses.ref(target))) {
+                 (Codex.glosses.probe(target))) {
             gloss=Codex.glosses.ref(target);
             target=fdjtID(gloss.frag);}
         else if (target.pool===Codex.glosses) {
@@ -353,7 +353,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.selecting=false;}
         Codex.clearHighlights(target);
         var dups=Codex.getDups(target);
-        Codex.selecting=
+        if (selecting)
+            Codex.selecting=selecting;
+        else Codex.selecting=
             fdjt.UI.Selecting(
                 dups,{ontap: gloss_selecting_ontap,
                       onrelease: gloss_selecting_onrelease,
@@ -362,6 +364,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                       movethresh: 250});
         if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
             Codex.selecting.setString(gloss.excerpt);
+        else if (selecting) {
+            var string=selecting.getString();
+            var off=selecting.getOffset();
+            Codex.setExcerpt(form,string,off);}
+        else {}
         Codex.selecting.onchange=function(sel){
             var string=this.getString();
             var off=this.getOffset();

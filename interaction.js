@@ -137,6 +137,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 addHandlers(fdjtID("CODEXPAGE"),'content');}
             else {
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
+            fdjtUI.TapHold(fdjt.ID("CODEXBODY"),Codex.touch);
             fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
             fdjtUI.TapHold(fdjtID("CODEXEXPANDSCANNER"),Codex.touch);
             addHandlers(Codex.HUD,'hud');}
@@ -275,6 +276,236 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var last_text=false;
     var clicked=false;
 
+    function content_tapped(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var sX=evt.screenX, sY=evt.screenY;
+        var cX=evt.clientX, cY=evt.clientY;
+        var now=fdjtTime(), touch=false;
+
+        // Detect touches with two fingers, which we may treat especially
+        if ((evt.touches)||(evt.shiftKey)) {
+            var now=fdjtTime();
+            if (Codex.Trace.gestures)
+                fdjtLog("double_touch dt=%o now=%o",double_touch,now);
+            if ((evt.touches.length>1)||(evt.shiftKey)) {
+                double_touch=now;
+                if (addgloss_timer) {
+                    clearTimeout(addgloss_timer);
+                    addgloss_timer=false;}
+                gesture_start=false;
+	        return;}
+            else if (!(double_touch)) {}
+            else if ((now-double_touch)>2000) double_touch=false;
+            else {}}
+        
+        // If we're previewing, stop it and go to the page we're previewing
+        //  (which was touched)
+        if (Codex.previewing) {
+            if (Codex.Trace.gestures)
+                fdjtLog("ctouch: stopPreview p=%o t=%o",
+                        Codex.previewing,Codex.previewTarget);
+            // Any key stops a preview (and is ignored)
+            var previewing=Codex.previewing;
+            var ptarget=Codex.previewTarget;
+            Codex.stopPreview("content_touched");
+            fdjtUI.TapHold.clear();
+            Codex.setHUD(false);
+            if ((target)&&(target.id)&&(Codex.docinfo[target.id]))
+                Codex.GoTo(target,"preview_secondtouch");
+            else if ((ptarget)&&(ptarget.id)&&(Codex.docinfo[ptarget.id]))
+                Codex.GoTo(ptarget,"preview_secondtouch");
+            else if (hasClass(previewing,"codexpage")) 
+                Codex.GoToPage(previewing,"preview_secondtouch");
+            else Codex.GoTo(previewing,"preview_secondtouch");
+            fdjt.UI.cancel(evt);
+            clicked=fdjtTime();
+            gesture_start=false
+            return false;}
+
+        if ((Codex.hudup)||(Codex.mode)) {
+            Codex.setMode(false); Codex.setHUD(false);
+            fdjtUI.cancel(evt);
+            gesture_start=false;
+            clicked=fdjtTime();
+            return false;}
+
+        // Handle various click-like operations, overriding to sBook
+        //  navigation where appropriate.  Set *clicked* to the
+        //  current time when you do so, letting the content_click handler
+        //  appropriately ignore its invocation.
+        var anchor=getParent(target,"A"), href;
+        // If you tap on a relative anchor, move there using Codex
+        // rather than the browser default
+        if ((anchor)&&(anchor.href)&&(href=anchor.getAttribute("href"))) {
+            if (Codex.Trace.gestures)
+                fdjtLog("ctouch: follow link %s",href);
+            var rel=anchor.rel;
+            if ((href[0]==="#")&&(rel)&&
+                (rel.search(/\b((sbooknote)|(footnote)|(endnote))\b/)>=0)) {
+                var noteshud=fdjtID("CODEXNOTETEXT");
+                var target=fdjt.ID(href.slice(1));
+                var label=fdjtDOM("span.sbooknotelabel");
+                label.innerHTML=anchor.innerHTML;
+                fdjtDOM.removeChildren(noteshud);
+                var shownote=target.cloneNode(true); shownote.id=null;
+                dropClass(shownote,/\bcodex\S+/g);
+                fdjtDOM.prepend(shownote,label);
+                fdjtDOM.append(noteshud,shownote);
+                Codex.setMode("shownote");
+                fdjtUI.cancel(evt);
+                gesture_start=false;
+                clicked=fdjtTime();
+                return;}
+            else if ((href[0]==="#")&&(rel)&&
+                     (rel.search(/\b((sidebar)|(breakout)|(tangent))\b/)>=0)) {
+                var asidehud=fdjtID("CODEXASIDE");
+                var target=fdjt.ID(href.slice(1));
+                fdjtDOM.removeChildren(asidehud);
+                fdjtDOM.append(asidehud,target.cloneNode(true));
+                Codex.setMode("showaside");
+                fdjtUI.cancel(evt);
+                gesture_start=false;
+                clicked=fdjtTime();
+                return;}
+            else if ((href[0]==='#')&&
+                     (document.getElementById(href.slice(1)))) {
+                // It's an internal jump, so we follow that
+                var elt=document.getElementById(href.slice(1));
+                // This would be the place to provide smarts for
+                // asides/notes/etc, so they (for example) pop up
+                // rather than simply jumping
+                Codex.JumpTo(elt);
+                fdjtUI.cancel(evt);
+                gesture_start=false;
+                clicked=fdjtTime();
+                return;}
+            else {
+                // We force links to leave the page, hoping people
+                //  won't find it obnoxious.  We could also open up
+                //  a little iframe in some circumstances
+                if (!(anchor.target)) anchor.target="_blank";
+                gesture_start=false;
+                return;}}
+
+        var details=getParent(target,"details,.html5details,.sbookdetails");
+        if (details) {
+            var notehud=fdjt.ID("CODEXASIDE");
+            fdjtDOM.removeChildren(notehud);
+            notehud.innerHTML=details.innerHTML;
+            Codex.setMode("showaside");
+            clicked=fdjtTime();
+            return;}
+        
+        var aside=getParent(target,"aside,.html5aside,.sbookaside");
+        if (aside) {
+            var asidehud=fdjt.ID("CODEXASIDE");
+            fdjtDOM.removeChildren(asidehud);
+            asidehud.innerHTML=aside.innerHTML;
+            Codex.setMode("showaside");
+            clicked=fdjtTime();
+            return;}        
+        
+        // If we tap a fdjtselecting region, it's handlers should cancel
+        //  this handler.
+
+        // So we're doing a page flip.
+        var now=fdjtTime(), touch=false;
+        if ((evt.changedTouches)&&(evt.changedTouches.length)) {
+            touch=evt.changedTouches[0];
+            sX=touch.screenX, sY=touch.screenY;
+            cX=touch.clientX, cY=touch.clientY;}
+        
+        // If there isn't a passage or the hud is down, we take it
+        // immediately as a page flip
+        if (Codex.Trace.gestures)
+            fdjtLog("ctouch/nopassage (%o) %o, m=%o, @%o,%o, vw=%o",
+                    evt,target,Codex.mode,cX,cY,fdjtDOM.viewWidth());
+        if (cX<(fdjtDOM.viewWidth()/3))
+            Codex.Backward(evt);
+        else Codex.Forward(evt);
+        fdjtUI.cancel(evt); gesture_start=false;
+        return;}
+
+    var selectors=[];
+    var slip_timer=false;
+    function content_held(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var passage=Codex.getTarget(target);
+        // Already selecting, return
+        if ((hasParent(target,".fdjtselecting"))||(!(passage))||
+            (selectors[passage.id])) {
+            if (slip_timer) {
+                clearTimeout(slip_timer); slip_timer=false;}
+            return;}
+        var dups=Codex.getDups(passage);
+        var selecting=
+            fdjt.UI.Selecting(
+                dups,{ontap: gloss_selecting_ontap,
+                      // onrelease: gloss_selecting_onrelease,
+                      fortouch: Codex.touch,
+                      holdthresh: 250,
+                      movethresh: 250});
+        selectors.push(selecting);
+        selectors[passage.id]=selecting;
+        // This makes a selection start on the region we just created.
+        fdjtUI.TapHold.fakePress(evt,250);}
+
+    function abortSelect(except){
+        var i=0, lim=selectors.length;
+        while (i<lim) {
+            var sel=selectors[i++];
+            if (sel!==except) sel.clear();}
+        selectors=[];}
+
+    function content_slipped(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        if (slip_timer) return;
+        slip_timer=setTimeout(abortSelect,2000);}
+
+    function content_released(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        if (!(hasParent(target,".fdjtselecting"))) {
+            abortSelect(); return;}
+        var passage=Codex.getTarget(target);
+        if (Codex.glosstarget===passage) {
+            if (Codex.mode==="addgloss") Codex.setHUD(true);
+            else Codex.setMode("addgloss");
+            return;}
+        var selecting=selectors[passage.id]; abortSelect(selecting);
+        var form_div=Codex.setGlossTarget(
+            passage,((Codex.mode==="addgloss")&&(Codex.glossform)),selecting);
+        var form=fdjtDOM.getChild(form_div,"form");
+        if (!(form)) return;
+        else fdjtUI.cancel(evt);
+        if (Codex.Trace.gestures)
+            fdjtLog("c_released/addgloss (%o) %o, p=%o f=%o/%o",
+                    evt,target,passage,form_div,form);
+        var mode=((evt.shiftKey)&&("addtag"));
+        Codex.setGlossForm(form_div);
+        if (mode) form.className=mode;
+        Codex.setMode("addgloss",true);
+        var input=fdjtDOM.getInputs(form,"NOTE")[0];
+        if (input) input.focus();}
+
+    var selecting_ontap=fdjt.UI.Selecting.tap_handler;
+    function gloss_selecting_ontap(evt){
+        if (Codex.mode!=="addgloss") {
+            Codex.setMode("addgloss");
+            fdjtUI.cancel(evt);}
+        else return selecting_ontap(evt);}
+    function gloss_selecting_onrelease(evt){
+        evt=evt||event;
+        Codex.UI.content_release(evt);
+        Codex.setMode("addgloss");
+        Codex.setHUD(true);
+        var input=((Codex.glossform)&&
+                   ((fdjtDOM.getInputs(Codex.glossform,"NOTE"))[0]));
+        if (input) Codex.setFocus(input);}
+
     function content_touched(evt){
         evt=evt||event;
         var sX=evt.screenX, sY=evt.screenY;
@@ -283,10 +514,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var addgloss=false;
         var target=fdjtUI.T(evt);
 
-        if ((evt.changedTouches)&&(evt.changedTouches.length)) {
-            var touch=evt.changedTouches[0];
-            var sX=touch.screenX, sY=touch.screenY;
-            var cX=touch.clientX, cY=touch.clientY;}
 
         // Don't capture modified events (except for shift)
         if ((evt.ctrlKey)||(evt.altKey)||(evt.button)) {
@@ -375,28 +602,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 fdjtLog("ctouch: Skipping clickable item");
             return;}
 
-        // If we're previewing, stop it and go to the page we're previewing
-        //  (which was touched)
-        if (Codex.previewing) {
-            if (Codex.Trace.gestures)
-                fdjtLog("ctouch: stopPreview p=%o t=%o",
-                        Codex.previewing,Codex.previewTarget);
-            // Any key stops a preview (and is ignored)
-            var previewing=Codex.previewing;
-            var ptarget=Codex.previewTarget;
-            Codex.stopPreview("content_touched");
-            fdjtUI.TapHold.clear();
-            Codex.setHUD(false);
-            if ((target)&&(target.id)&&(Codex.docinfo[target.id]))
-                Codex.GoTo(target,"preview_secondtouch");
-            else if ((ptarget)&&(ptarget.id)&&(Codex.docinfo[ptarget.id]))
-                Codex.GoTo(ptarget,"preview_secondtouch");
-            else if (hasClass(previewing,"codexpage")) 
-                Codex.GoToPage(previewing,"preview_secondtouch");
-            else Codex.GoTo(previewing,"preview_secondtouch");
-            fdjt.UI.cancel(evt);
-            gesture_start=false
-            return false;}
 
         // Detect touches with two fingers, which we may treat especially
         if (evt.touches) {
@@ -2201,8 +2406,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             click: default_tap,
             focus: codexfocus,
             blur: codexblur},
-         content: {mousedown: content_touched,
-                   mouseup: content_release,
+         content: {tap: content_tapped,
+                   hold: content_held,
+                   slip: content_slipped,
+                   release: content_released,
                    click: content_click},
          toc: {tap: toc_tapped,hold: toc_held,
                release: toc_released, slip: toc_slipped,
@@ -2281,9 +2488,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             keypress: onkeypress,
             focus: codexfocus,
             blur: codexblur},
-         content: {touchstart: content_touchstart,
-                   touchmove: content_touchmove,
-                   touchend: content_touchend},
+         content: {tap: content_tapped,
+                   hold: content_held,
+                   slip: content_slipped,
+                   release: content_released,
+                   //touchstart: content_touchstart,
+                   //touchmove: content_touchmove,
+                   //touchend: content_touchend
+                   click: content_click},
          toc: {tap: toc_tapped,hold: toc_held,
                slip: toc_slipped, release: toc_released},
          glossmark: {touchstart: glossmark_tapped,
