@@ -352,16 +352,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.selecting.clear();
             Codex.selecting=false;}
         Codex.clearHighlights(target);
-        var dups=Codex.getDups(target);
         if (selecting)
             Codex.selecting=selecting;
-        else Codex.selecting=
-            fdjt.UI.Selecting(
-                dups,{ontap: gloss_selecting_ontap,
-                      onrelease: gloss_selecting_onrelease,
-                      fortouch: Codex.touch,
-                      holdthresh: 250,
-                      movethresh: 250});
+        else Codex.selecting=selectText(target);
         if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
             Codex.selecting.setString(gloss.excerpt);
         else if (selecting) {
@@ -375,6 +368,24 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.setExcerpt(form,string,off);};
         return form;}
     Codex.setGlossTarget=setGlossTarget;
+
+    function selectText(passages){
+        if (passages.nodeType) passages=[passages];
+        var dups=[];
+        var i=0, lim=passages.length;
+        while (i<lim) dups=dups.concat(Codex.getDups(passages[i++]));
+        return fdjt.UI.Selecting(
+            dups,{ontap: gloss_selecting_ontap,
+                  fortouch: Codex.touch,
+                  holdthresh: 250,
+                  movethresh: 250});}
+    Codex.UI.selectText=selectText;
+    var selecting_ontap=fdjt.UI.Selecting.tap_handler;
+    function gloss_selecting_ontap(evt){
+        if (Codex.mode!=="addgloss") {
+            Codex.setMode("addgloss");
+            fdjtUI.cancel(evt);}
+        else return selecting_ontap(evt);}
 
     function setGlossForm(form){
         var cur=fdjtID("CODEXLIVEGLOSS");
@@ -630,21 +641,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var cs=getParent(input,".checkspan");
         if (!(cs)) return;
         setCheckSpan(cs,checked);};
-
-    var selecting_ontap=fdjt.UI.Selecting.tap_handler;
-    function gloss_selecting_ontap(evt){
-        if (Codex.mode!=="addgloss") {
-            Codex.setMode("addgloss");
-            fdjtUI.cancel(evt);}
-        else return selecting_ontap(evt);}
-    function gloss_selecting_onrelease(evt){
-        evt=evt||event;
-        Codex.UI.content_release(evt);
-        Codex.setMode("addgloss");
-        Codex.setHUD(true);
-        var input=((Codex.glossform)&&
-                   ((getInputs(Codex.glossform,"NOTE"))[0]));
-        if (input) Codex.setFocus(input);}
 
     function setCloudCues(cloud,tags){
         // Clear any current tagcues from the last gloss
