@@ -189,10 +189,15 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((images.length===1)&&(images[0]==="")) images=[];
         var i=0; var lim=glosses.length;
         while (i<lim) {
-            var gloss=Glosses.ref(glosses[i++]);
+            var glossid=glosses[i++];
+            var gloss=Glosses.ref(glossid);
+            var cur=glossmark.glosses;
             var maker=((gloss.maker)&&(Sources.ref(gloss.maker)));
             var maker_img=((maker)&&geticon(maker));
             if (maker_img) images.push(maker_img);
+            if (cur) {
+                if (cur.indexOf(glossid)<0) cur.push(glossid);}
+            else glossmark.glosses=[glossid];
             var outlets=gloss.sources||[];
             if (typeof outlets === 'string') outlets=[outlets];
             var j=0, jlim=outlets.length; while (j<jlim) {
@@ -225,6 +230,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.UI.addHandlers(glossmark,"glossmark");
         fdjtDOM.addClass(passage,"glossed");
         fdjtDOM.prepend(passage,glossmark);
+        glossmark.id="CODEX_GLOSSMARK_"+passage.id;
         return glossmark;};
     
     function showGlosses(target) {

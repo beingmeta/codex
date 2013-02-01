@@ -143,7 +143,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (typeof arg === 'string')
             arg=fdjtID(arg)||Codex.glosses.ref(arg)||false;
         if (!(arg)) return false;
-        var gloss=((!(arg.nodeType))&&(arg.maker)&&(arg));
+        var gloss=((!(arg.nodeType))&&((arg.maker)||(arg.gloss))&&(arg));
         if (!(gloss)) response=false;
         else if ((arg.maker)&&(arg.maker!==Codex.user._id))
             response=true;
