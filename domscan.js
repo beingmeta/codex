@@ -61,6 +61,7 @@ Codex.DOMScan=(function(){
         var getChildren=fdjtDOM.getChildren;
         var textWidth=fdjtDOM.textWidth;
         var prefix=Codex.prefix;
+        var rootns=root.namespaceURI;
         
         var start=false;
 
@@ -312,9 +313,10 @@ Codex.DOMScan=(function(){
             else {}
             var tag=child.tagName, classname=child.className, id=child.id;
             if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
+            if ((rootns)&&(tag.namespaceURI!==rootns)) return;
             if ((classname)&&
-                ((!(typeof classname !== "string")||
-                  (classname.search(/\bsbookignore\b/)>=0))))
+                ((typeof classname !== "string")||
+                 (classname.search(/\b(sbookignore|codexignore)\b/)>=0)))
                 return;
             if ((child.codexui)||((id)&&(id.search("CODEX")===0))) return;
             else if ((!(id))&&(!(Codex.baseid))&&
