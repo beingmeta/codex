@@ -143,19 +143,19 @@ div.codexglossform.glossreply form .showmode.add {
 
 div.codexglossform form textarea[name='NOTE'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/remark.svgz);}
+    url(https://s3.amazonaws.com/beingmeta/static/g/codex/remark.svgz);}
 body.cxNOSVG div.codexglossform form textarea[name='NOTE'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/remark24x24.png);}
+    url(https://s3.amazonaws.com/beingmeta/static/g/codex/remark24x24.png);}
 div.codexglossform div.textbox input[name='TAG'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/tagicon24x24.png);}
+    url(https://s3.amazonaws.com/beingmeta/static/g/codex/tagicon24x24.png);}
 div.codexglossform div.textbox input[name='LINK'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/diaglink24x24.png);}
+    url(https://s3.amazonaws.com/beingmeta/static/g/codex/diaglink24x24.png);}
 div.codexglossform div.textbox input[name='OUTLET'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/sbookspeople24x24.png);}
+    url(https://s3.amazonaws.com/beingmeta/static/g/codex/sbookspeople24x24.png);}
 
 div.codexglossform form div.inputhelp {
     margin-left: 1px; margin-top: 0px; padding-top: 0px;}
@@ -405,10 +405,10 @@ body.cxANIMATE div.codexglossform div.textbox {
     -webkit-transition-property: height; -webkit-transition-duration: 2s;}
 div.codexglossform div.textbox input[type="TEXT"][name='TAG'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/tagicon16x16.png);}
+    url(https://s3.amazonaws.com/beingmeta/static/g/codex/tagicon16x16.png);}
 div.codexglossform div.textbox input[type="TEXT"][name='LINK'] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/diaglink16x16.png);}
+    url(https://s3.amazonaws.com/beingmeta/static/g/codex/diaglink16x16.png);}
 
 div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
     margin-top: 0px;}
@@ -479,10 +479,10 @@ div#CODEXRIBBON div.inputbox input[type="TEXT"] {
     width: 90%;}
 div#CODEXRIBBON div.inputbox#CODEXGLOSSTAGINPUT input[TYPE="TEXT"] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/tagicon64x64.png);}
+    url(https://s3.amazonaws.com/beingmeta/static/g/codex/tagicon64x64.png);}
 div#CODEXRIBBON div.inputbox#CODEXGLOSSOUTLETINPUT input[TYPE="TEXT"] {
     background-image:
-    url(https://beingmeta.s3.amazonaws.com/static/g/codex/sbookspeople64x64.png);}
+    url(https://s3.amazonaws.com/beingmeta/static/g/codex/sbookspeople64x64.png);}
 
 /* New menu stuff */
 

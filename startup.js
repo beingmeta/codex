@@ -58,7 +58,7 @@ Codex.Startup=
         
         var sbook_heading_qricons=false;
 
-        var https_root="https://beingmeta.s3.amazonaws.com/static/g/codex/";
+        var https_root="https://s3.amazonaws.com/beingmeta/static/g/codex/";
 
         // Imported functions
         var cxicon=Codex.icon;

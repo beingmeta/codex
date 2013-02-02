@@ -132,7 +132,7 @@ body.sbook a.codexcard { display: block;}
     text-align: center; vertical-align: top;
     color: black; font-weight: bold;}
 .codexcard div.userpic.sbooknopic, .codexcard div.sourcepic.sbooknopic {
-    background-image: url(https://beingmeta.s3.amazonaws.com/static/g/codex/someone50x50.png);}
+    background-image: url(https://s3.amazonaws.com/beingmeta/static/g/codex/someone50x50.png);}
 .codexcard img.detailsbutton { border: none; }
 .codexcard img.xrefsbutton { border: none;}
 .codexcard .glossinfo {
