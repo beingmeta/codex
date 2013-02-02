@@ -312,7 +312,9 @@ Codex.DOMScan=(function(){
             else {}
             var tag=child.tagName, classname=child.className, id=child.id;
             if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
-            if ((classname)&&(classname.search(/\bsbookignore\b/)>=0))
+            if ((classname)&&
+                ((!(typeof classname !== "string")||
+                  (classname.search(/\bsbookignore\b/)>=0))))
                 return;
             if ((child.codexui)||((id)&&(id.search("CODEX")===0))) return;
             else if ((!(id))&&(!(Codex.baseid))&&
