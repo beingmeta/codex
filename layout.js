@@ -117,11 +117,6 @@ Codex.Paginate=
                 dropClass(document.body,"cxSCROLL");
                 addClass(document.body,"cxBYPAGE");
                 layout.setContent(saved_layout);
-                var pages=layout.pages;
-                var altids=layout.altids;
-                var aid=0, aidlim=altids.length; while (aid<aidlim) {
-                    var id=altids[aid++], info=docinfo[id], elt=document.getElementById(id);
-                    if ((info)&&(elt)) info.elt=elt;}
                 getPageTops(layout.pages);
                 fdjtID("CODEXPAGE").style.visibility='';
                 fdjtID("CODEXCONTENT").style.visibility='';
