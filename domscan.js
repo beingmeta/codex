@@ -325,12 +325,12 @@ Codex.DOMScan=(function(){
                 //  ids for block level elements using WSN.
                 if ((tag.search(/p|h\d|blockquote|li/i)===0)||
                     (getStyle(child).display.search(
-                        /block|list-item|table|table-row/)===0))
-                var baseid="WSN_"+md5ID(child), id=baseid, count=1;
-                while ((document.getElementById[id])||(idmap[id]))
-                    id=baseid+"_"+(count++);
-                if (baseid!==id) fdjtLog.warn("Duplicate WSN ID %s",wsn);
-                child.id=id; idmap[id]=child;}
+                            /block|list-item|table|table-row/)===0)) {
+                    var baseid="WSN_"+md5ID(child), id=baseid, count=1;
+                    while ((document.getElementById[id])||(idmap[id]))
+                        id=baseid+"_"+(count++);
+                    if (baseid!==id) fdjtLog.warn("Duplicate WSN ID %s",baseid);
+                    child.id=id; idmap[id]=child;}}
             else if (!(id)) {}
             /* 
             else if (!(id)) {
