@@ -210,7 +210,7 @@ Codex.DOMScan=(function(){
             var headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
                 (docinfo[headid]=new scanInfo(headid,scanstate));
             scanstate.headcount++;
-            allheads.push(head);
+            if (headid) allheads.push(headid); else allheads.push(head);
             if ((headinfo.elt)&&(headinfo.elt!==head)) {
                 var newid=headid+"x"+scanstate.location;
                 fdjtLog.warn("Duplicate ID=%o newid=%o",headid,newid);
@@ -313,7 +313,7 @@ Codex.DOMScan=(function(){
             else {}
             var tag=child.tagName, classname=child.className, id=child.id;
             if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
-            if ((rootns)&&(tag.namespaceURI!==rootns)) return;
+            if ((rootns)&&(child.namespaceURI!==rootns)) return;
             if ((classname)&&
                 ((typeof classname !== "string")||
                  (classname.search(/\b(sbookignore|codexignore)\b/)>=0)))
