@@ -131,7 +131,7 @@ Codex.TOC=
             var len=end-start;
             var subsections=headinfo.sub; var last_info;
             var sectnum=0; var percent=0;
-            var head=headinfo.elt;
+            var head=document.getElementById(headinfo.frag);
             spanbar.starts=start; spanbar.ends=end;
             if ((!(subsections)) || (subsections.length===0))
                 return false;
