@@ -56,6 +56,8 @@ var Codex=
      dontanimate: false,
      glossmodes: /(addtag)|(addlink)|(addoutlet)|(editdetail)/,
      updatehash: true, iscroll: false,
+     // Whether to cache layouts locally
+     cachelayouts: true,
      // Whether to store glosses, etc for offline/faster access
      persist: false,
      // This is the base URI for this document, also known as the REFURI

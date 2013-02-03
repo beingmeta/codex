@@ -1138,6 +1138,8 @@ Codex.Startup=
         
         /* Margin creation */
 
+        var resizing=false;
+
         function initMargins(){
             var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
             var bottomleading=fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
@@ -1176,8 +1178,12 @@ Codex.Startup=
                 Codex.resizeBody();
                 Codex.sizePage(Codex.page,Codex.content);
                 Codex.resizeHUD();
+                if (resizing) clearTimeout(resizing);
                 if ((Codex.layout)&&(Codex.layout.onresize))
-                    Codex.layout.onresize(evt||event);});}
+                    resizing=setTimeout(function(){
+                        resizing=false;
+                        Codex.layout.onresize(evt||event);},
+                                       3000);});}
         
         function getBGColor(arg){
             var color=fdjtDOM.getStyle(arg).backgroundColor;
