@@ -101,15 +101,11 @@ Codex.Paginate=
             layout.bodysize=bodysize; layout.bodyfamily=bodyfamily;
             Codex.layout=layout;
             
-            var layout_key=fdjtString(
-                "%dx%d-%s-%s::%s",width,height,bodysize,bodyfamily,Codex.refuri);
-            var saved_layout=fdjtState.getLocal(layout_key);
+            var layout_id=layout.layout_id;
+            var saved_layout=fdjtState.getLocal(layout_id);
 
             // Get the document info
             var docinfo=Codex.docinfo;
-
-            layout.saveLayout=function(){
-                fdjtState.setLocal(layout_key,fdjtID("CODEXPAGES").innerHTML);};
 
             if (saved_layout) {
                 fdjtLog("Using saved layout %s",layout_key);
@@ -393,12 +389,20 @@ Codex.Paginate=
             var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
             var container=fdjtDOM("div.codexpages#CODEXPAGES");
+            var bodysize=Codex.bodysize||"normal";
+            var bodyfamily=Codex.bodyfamily||"serif";
             var pagerule=fdjtDOM.addCSSRule(
                 "div.codexpage",
                 "width: "+width+"px; "+"height: "+height+"px;");
+            var layout_id=fdjtString(
+                "%dx%d-%s-%s(%s)",
+                width,height,bodysize,bodyfamily,
+                Codex.refuri);
+            
             var args={page_height: height,page_width: width,
                       container: container,pagerule: pagerule,
                       tracelevel: Codex.Trace.layout,
+                      layout_id: layout_id,
                       logfn: fdjtLog};
             fdjtDOM.replace("CODEXPAGES",container);
             Codex.pages=container;
