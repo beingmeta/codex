@@ -108,11 +108,11 @@ Codex.Paginate=
             var docinfo=Codex.docinfo;
 
             if (saved_layout) {
-                fdjtLog("Using saved layout %s",layout_key);
+                fdjtLog("Using saved layout %s",layout_id);
                 fdjtID("CODEXCONTENT").style.display='none';
                 dropClass(document.body,"cxSCROLL");
                 addClass(document.body,"cxBYPAGE");
-                layout.setContent(saved_layout);
+                layout.restoreLayout(saved_layout);
                 getPageTops(layout.pages);
                 fdjtID("CODEXPAGE").style.visibility='';
                 fdjtID("CODEXCONTENT").style.visibility='';
@@ -231,6 +231,10 @@ Codex.Paginate=
                 if (i>=lim) {
                     layout.Finish();
                     layout_progress(layout);
+                    if (Codex.cachelayouts) {
+                        var elapsed=layout.done-layout.started;
+                        if (elapsed>(Codex.layoutcachethresh||5000)) {
+                            layout.saveLayout();}}
                     var pages=layout.pages;
                     getPageTops(layout.pages);
                     fdjtID("CODEXPAGE").style.visibility='';
@@ -397,7 +401,9 @@ Codex.Paginate=
             var layout_id=fdjtString(
                 "%dx%d-%s-%s(%s)",
                 width,height,bodysize,bodyfamily,
-                Codex.refuri);
+                // Layout depends on the actual file ID, if we've got
+                // one, rather than just the REFURI
+                Codex.fileid||Codex.sourceid||Codex.refuri);
             
             var args={page_height: height,page_width: width,
                       container: container,pagerule: pagerule,

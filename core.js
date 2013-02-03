@@ -80,7 +80,7 @@ var Codex=
      // Restrictions on excerpts
      min_excerpt: 3, max_excerpt: false,
      // How many past page layouts to cache
-     cachelayouts: 0,
+     cachelayouts: 1,
      // Various handlers, settings, and status information for the
      // Codex interface
      UI: {
