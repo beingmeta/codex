@@ -59,11 +59,14 @@ Codex.DOMScan=(function(){
         var hasClass=fdjtDOM.hasClass;
         var hasPrefix=fdjtString.hasPrefix;
         var getChildren=fdjtDOM.getChildren;
+        var getStyle=fdjtDOM.getStyle;
         var textWidth=fdjtDOM.textWidth;
         var prefix=Codex.prefix;
         var rootns=root.namespaceURI;
         
         var start=false;
+        var idcount=1;
+        var idmap={};
 
         if (typeof root === 'undefined') return this;
         if (!(docinfo))
@@ -77,7 +80,7 @@ Codex.DOMScan=(function(){
         docinfo._heads=allheads;
         docinfo._ids=allids;
         if (!(root.id)) root.id="SBOOKROOT";
-        if (Codex.Trace.startup) {
+        if ((Codex.Trace.startup)||(Codex.Trace.scan)) {
             if (root.id) 
                 fdjtLog("Scanning %s#%s for structure and metadata",
                         root.tagName,root.id);
@@ -87,7 +90,7 @@ Codex.DOMScan=(function(){
         var scanstate=
             {curlevel: 0,idserial:0,location: 0,
              nodecount: 0,eltcount: 0,headcount: 0,
-             tagstack: [],taggings: [],allinfo: [],locinfo: [],
+             tagstack: [],taggings: [],allinfo: [],locinfo: [], idmap: idmap,
              idstate: {prefix: false,count: 0},
              idstack: [{prefix: false,count: 0}],
              pool: Codex.DocInfo};
@@ -103,7 +106,7 @@ Codex.DOMScan=(function(){
         rootinfo.head=false; rootinfo.heads=new Array();
         rootinfo.frag=root.id;
         rootinfo._id=root.id;
-        rootinfo.elt=root;
+        // rootinfo.elt=root;
         scanstate.allinfo.push(rootinfo);
         scanstate.allinfo.push(0);
         /* Build the metadata */
@@ -123,7 +126,7 @@ Codex.DOMScan=(function(){
             scaninfo.ends_at=scanstate.location;
             scaninfo=scaninfo.head;}
         var done=new Date();
-        if (Codex.Trace.startup)
+        if ((Codex.Trace.startup)||(Codex.Trace.scan))
             fdjtLog('Gathered metadata in %f secs over %d/%d heads/nodes',
                     (done.getTime()-start.getTime())/1000,
                     scanstate.headcount,scanstate.eltcount);
@@ -209,19 +212,13 @@ Codex.DOMScan=(function(){
             var headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
                 (docinfo[headid]=new scanInfo(headid,scanstate));
             scanstate.headcount++;
-            if (headid) allheads.push(headid); else allheads.push(head);
-            if ((headinfo.elt)&&(headinfo.elt!==head)) {
-                var newid=headid+"x"+scanstate.location;
-                fdjtLog.warn("Duplicate ID=%o newid=%o",headid,newid);
-                head.id=headid=newid;
-                headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
-                    (docinfo[headid]=new scanInfo(headid,scanstate));}
-            if (Codex.Trace.scan)
+            allheads.push(headid);
+            if (Codex.Trace.scan>1)
                 fdjtLog("Scanning head item %o under %o at level %d w/id=#%s ",
                         head,curhead,level,headid);
             /* Iniitalize the headinfo */
             headinfo.starts_at=scanstate.location;
-            headinfo.elt=head; headinfo.level=level;
+            headinfo.level=level; // headinfo.elt=head; 
             headinfo.sub=new Array();
             headinfo.frag=headid; headinfo._id="#"+headid;
             headinfo.title=getTitle(head);
@@ -253,10 +250,9 @@ Codex.DOMScan=(function(){
                 /* Climb the stack of headers, closing off entries and setting up
                    prev/next pointers where needed. */
                 while (scaninfo) {
-                    if (Codex.Trace.scan)
-                        fdjtLog("Finding head: scan=%o, info=%o, sbook_head=%o, cmp=%o",
-                                scan,scaninfo,scanlevel,scaninfo.head,
-                                (scanlevel<level));
+                    if (Codex.Trace.scan>2)
+                        fdjtLog("Finding head@%d: scan=%o, info=%j, sbook_head=%o, cmp=%o",
+                                scanlevel,scan||false,scaninfo,(scanlevel<level));
                     if (scanlevel<level) break;
                     if (level===scanlevel) {
                         headinfo.prev=scaninfo;
@@ -265,9 +261,9 @@ Codex.DOMScan=(function(){
                     scanstate.tagstack=scanstate.tagstack.slice(0,-1);
                     scaninfo=scaninfo.head; scan=scaninfo.elt;
                     scanlevel=((scaninfo)?(scaninfo.level):(0));}
-                if (Codex.Trace.scan)
+                if (Codex.Trace.scan>2)
                     fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
-                            scan,scaninfo,scaninfo.level,scaninfo.head);
+                            scan||false,scaninfo,scaninfo.level,scaninfo.head);
                 /* We've found the enclosing head for this head, so we
                    establish the links. */
                 headinfo.head=scaninfo;
@@ -284,7 +280,7 @@ Codex.DOMScan=(function(){
             if (supinfo.heads) newheads=newheads.concat(supinfo.heads);
             if (supinfo) newheads.push(supinfo);
             headinfo.heads=newheads;
-            if (Codex.Trace.scan)
+            if (Codex.Trace.scan>2)
                 fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
                         scanstate.location,head,headinfo,headinfo.head);
             /* Update the toc state */
@@ -310,7 +306,8 @@ Codex.DOMScan=(function(){
                 return 0;}
             else if (child.nodeType!==1) return 0;
             else {}
-            var tag=child.tagName, classname=child.className, id=child.id;
+            var tag=child.tagName, classname=child.className;
+            var id=child.id, sourceid=id;
             if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
             if ((rootns)&&(child.namespaceURI!==rootns)) return;
             if ((classname)&&
@@ -318,17 +315,50 @@ Codex.DOMScan=(function(){
                  (classname.search(/\b(sbookignore|codexignore)\b/)>=0)))
                 return;
             if ((child.codexui)||((id)&&(id.search("CODEX")===0))) return;
-            else if ((!(id))&&(!(Codex.baseid))&&
-                     (tag.search(/p|h\d|blockquote|li/i)===0)) {
+
+            if (Codex.Trace.scan>3)
+                fdjtLog("Scanning %o level=%o, loc=%o, head=%o: %j",
+                        child,curlevel,location,curhead,curinfo);
+
+            if ((!(id))&&(!(Codex.baseid))) {
+                // If there isn't a known BASEID, we generate
+                //  ids for block level elements using WSN.
+                if ((tag.search(/p|h\d|blockquote|li/i)===0)||
+                    (getStyle(child).display.search(
+                        /block|list-item|table|table-row/)===0))
                 var baseid="WSN_"+md5ID(child), id=baseid, count=1;
-                while (document.getElementById[id])
+                while ((document.getElementById[id])||(idmap[id]))
                     id=baseid+"_"+(count++);
-                child.id=id;}
-            else {}
+                if (baseid!==id) fdjtLog.warn("Duplicate WSN ID %s",wsn);
+                child.id=id; idmap[id]=child;}
+            else if (!(id)) {}
+            /* 
+            else if (!(id)) {
+                id="CODEXSCAN"+fdjtString.padNum(idcount,4);
+                if (Codex.Trace.scan>1)
+                   fdjtLog("No ID for %o, applying %s",child,id);
+                child.id=id; idcount++;
+                idmap[id]=child;}
+            */
+            else if (!(idmap[id])) idmap[id]=child;
+            else if (idmap[id]!==child) {
+                var newid=id+"x"+scanstate.location;
+                if (idmap[id]) {
+                    var u=1; var xid=newid+"x"+u;
+                    while (idmap[xid]) {u++; xid=newid+"x"+u;}
+                    newid=xid;}
+                fdjtLog.warn("Duplicate ID=%o newid=%o",id,newid);
+                child.id=newid;
+                headinfo=((nodefn)&&(nodefn(head)))||docinfo[newid]||
+                    (docinfo[newid]=new scanInfo(newid,scanstate));
+                idmap[newid]=child;}
+            else idmap[headid]=child;
+
             // Get the location in the TOC for this out of context node
             //  These get generated, for example, when the content of an
             //  authorial footnote is moved elsewhere in the document.
-            var tocloc=(child.codextocloc)||(child.getAttribute("data-tocloc"));
+            var tocloc=(child.codextocloc)||
+                (child.getAttribute("data-tocloc"));
             if ((tocloc)&&(docinfo[tocloc])) {
                 var tocinfo=docinfo[tocloc];
                 var curlevel=scanstate.curlevel;
@@ -351,8 +381,8 @@ Codex.DOMScan=(function(){
                 scanstate.curhead=curhead; scanstate.curinfo=curinfo;
                 return;}
             var toclevel=((child.id)&&(getLevel(child)));
-            // The header functionality (for its contents too) is handled by the
-            // section
+            // The header functionality is handled by its surrounding
+            // section (which should have a toclevel of its own)
             if ((scanstate.notoc)||(tag==='header')) {
                 scanstate.notoc=true; toclevel=0;}
             scanstate.eltcount++;
@@ -410,6 +440,14 @@ Codex.DOMScan=(function(){
             if (toclevel) {
                 scanstate.lasthead=child; scanstate.lastinfo=info;
                 scanstate.lastlevel=toclevel;}}}
+
+    CodexDOMScan.prototype.toJSON=function(){
+        var rep={constructor: "Codex.DOMScan",frag: this.frag,head: this.sbookhead,start: this.starts_at,end: this.ends_at};
+        if (this.WSNID) rep.WSNID=this.WSNID;
+        if (this.headstart) rep.headstart=this.headstart;
+        if (this.toclevel) rep.toclevel=this.toclevel;
+        if (this.title) rep.title=this.title;
+        return JSON.stringify(rep);}
     
     CodexDOMScan.getTOCLevel=getLevel;
     return CodexDOMScan;})();

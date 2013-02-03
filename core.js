@@ -96,7 +96,7 @@ var Codex=
          config: 0,     // Whether to trace config setup/modification/etc
          mode: false,   // Whether to trace mode changes
          nav: false,    // Whether to trace book navigation
-         scan: false,   // Whether to trace DOM scanning
+         scan: 1,       // How much to trace DOM scanning
          search: 0,     // How much to trace searches
          clouds: 0,     // How much to trace cloud generation
          focus: false,  // Whether to trace target changes
