@@ -102,7 +102,7 @@ Codex.DOMScan=(function(){
         rootinfo.level=0; rootinfo.sub=new Array();
         rootinfo.head=false; rootinfo.heads=new Array();
         rootinfo.frag=root.id;
-        rootinfo._id="#"+root.id;
+        rootinfo._id=root.id;
         rootinfo.elt=root;
         scanstate.allinfo.push(rootinfo);
         scanstate.allinfo.push(0);
@@ -133,7 +133,6 @@ Codex.DOMScan=(function(){
             if (docinfo[id]) return docinfo[id];
             this.pool=scanstate.pool;
             this.frag=id;
-            // this._id="#"+id;
             this._id=id;
             docinfo[id]=this;
             scanstate.allinfo.push(this);
