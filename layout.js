@@ -65,6 +65,8 @@ Codex.Paginate=
         var addClass=fdjtDOM.addClass;
         var dropClass=fdjtDOM.dropClass;
         var TOA=fdjtDOM.toArray;
+        var textWidth=fdjtDOM.textWidth;
+        var hasText=fdjtDOM.hasText;
         var isEmpty=fdjtString.isEmpty;
         var secs2short=fdjtTime.secs2short;
         var rootloop_skip=50;
@@ -99,13 +101,54 @@ Codex.Paginate=
             layout.bodysize=bodysize; layout.bodyfamily=bodyfamily;
             Codex.layout=layout;
             
+            var layout_key=fdjtString(
+                "%dx%d-%s-%s::%s",width,height,bodysize,bodyfamily,Codex.refuri);
+            var saved_layout=fdjtState.getLocal(layout_key);
+
+            // Get the document info
+            var docinfo=Codex.docinfo;
+
+            layout.saveLayout=function(){
+                fdjtState.setLocal(layout_key,fdjtID("CODEXPAGES").innerHTML);};
+
+            if (saved_layout) {
+                fdjtLog("Using saved layout %s",layout_key);
+                fdjtID("CODEXCONTENT").style.display='none';
+                dropClass(document.body,"cxSCROLL");
+                addClass(document.body,"cxBYPAGE");
+                layout.setContent(saved_layout);
+                var pages=layout.pages;
+                var altids=layout.altids;
+                var aid=0, aidlim=altids.length; while (aid<aidlim) {
+                    var id=altids[aid++], info=docinfo[id], elt=document.getElementById(id);
+                    if ((info)&&(elt)) info.elt=elt;}
+                getPageTops(layout.pages);
+                fdjtID("CODEXPAGE").style.visibility='';
+                fdjtID("CODEXCONTENT").style.visibility='';
+                dropClass(document.body,"cxLAYOUT");
+                Codex.layout=layout;
+                Codex.pagecount=layout.pages.length;
+                setupPageInfo();
+                if (Codex.layoutdone) {
+                    var fn=Codex.layoutdone;
+                    Codex.layoutdone=false;
+                    fn();}
+                Codex.GoTo(
+                    Codex.location||Codex.target||
+                        Codex.cover||Codex.titlepage||
+                        fdjtID("CODEXPAGE1"),
+                    "endLayout",false,false);
+                Codex.layout.running=false;
+
+                return false;}
+
             // Prepare to do the layout
             dropClass(document.body,"cxSCROLL");
             addClass(document.body,"cxBYPAGE");
             fdjtID("CODEXPAGE").style.visibility='hidden';
             fdjtID("CODEXCONTENT").style.visibility='hidden';
             
-            // Now make the content (temporarily) the save width as
+            // Now make the content (temporarily) the same width as
             // the page
             var saved_width=Codex.content.style.width;
             Codex.content.style.width=getGeometry(Codex.page).width+"px";
@@ -123,17 +166,11 @@ Codex.Paginate=
 
             // Now reset the width
             Codex.content.style.width=saved_width;
-
-            // Get the document info
-            var docinfo=Codex.docinfo;
-
+            
             /* Lay out the coverpage */
             var coverpage=Codex.getCover();
             if (coverpage) layout.addContent(coverpage);
             
-            var textWidth=fdjtDOM.textWidth;
-            var hasText=fdjtDOM.hasText;
-
             function getPageTop(node) {
                 if (hasClass(node,"codexpage")) {}
                 else if ((node.id)&&(docinfo[node.id])) {
@@ -150,7 +187,7 @@ Codex.Paginate=
                             var first=getPageTop(child);
                             if (first) return first;}}}
                 return false;}
-
+            
             function getDupNode(under,id){
                 var children;
                 if (under.nodeType!==1) return false;
