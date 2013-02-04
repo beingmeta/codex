@@ -1315,9 +1315,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     /* Default click/tap */
     function default_tap(evt){
         var target=fdjtUI.T(evt);
-        if (((Codex.hudup)||(Codex.mode))&&
-            (!(getParent(target,Codex.HUD))))
+        if (((Codex.hudup)||(Codex.mode))) {
             Codex.setMode(false);}
+        else {
+            var cx=evt.clientX, cy=evt.clientY;
+            var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight;
+            if ((cy<60)||(cy>(h-60))) return;
+            if (cx<w/3) Codex.Backward(evt);
+            else if (cx>w/2) Codex.Forward(evt);}}
 
     /* Glossmarks */
     
