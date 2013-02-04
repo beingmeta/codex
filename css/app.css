@@ -775,10 +775,8 @@ div#CODEXSPLASH {
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 div#CODEXSPLASH img.coverpage {
-    position: absolute; top: 0px; bottom: 0px; 
     margin: 0px; padding: 0px;
-    height: 100%; width: auto;
-    left: auto; right: auto;}
+    height: 100%; width: auto;}
 div#CODEXSPLASH div.title {
     position: absolute; top: 10%; font-weight: bold; font-size: 32px;}
 div#CODEXSPLASH div.byline {
