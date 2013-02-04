@@ -742,14 +742,16 @@ Codex.Startup=
                     (qval==="never")||(qval==="0"))
                     Codex.force_online=true;
                 else Codex.force_offline=true;}
-            else if (fdjtDOM.getMeta("SBOOK.offline")) {
-                var mval=fdjtDOM.getMeta("SBOOK.offline");
+            else if (getMeta("SBOOK.offline")) {
+                var mval=getMeta("SBOOK.offline");
                 if ((mval===false)||(mval===0)||(mval==="no")||(mval==="off")||
                     (mval==="never")||(mval==="0"))
                     Codex.force_online=true;
                 else Codex.force_offline=true;}
 
             var refuris=getLocal("codex.refuris",true)||[];
+
+            Codex.sourceid=getMeta("SBOOK.sourceid");
 
             // Get the settings for scanning the document structure
             getScanSettings();
@@ -779,7 +781,8 @@ Codex.Startup=
                 fdjtDOM.getLink("coverpage",false,true);
             if (coverpage) Codex.coverpage=coverpage;
             
-            var baseid=getMeta("SBOOK.baseid")||getMeta("SBOOK.prefix");
+            var baseid=getMeta("SBOOK.id")||
+                getMeta("SBOOK.prefix")||getMeta("SBOOK.baseid");
             if (baseid) Codex.baseid=baseid;
             var prefix=getMeta("SBOOK.prefix")||baseid;
             if (prefix) Codex.prefix=prefix;

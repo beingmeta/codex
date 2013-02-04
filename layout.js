@@ -403,7 +403,7 @@ Codex.Paginate=
                 width,height,bodysize,bodyfamily,
                 // Layout depends on the actual file ID, if we've got
                 // one, rather than just the REFURI
-                Codex.fileid||Codex.sourceid||Codex.refuri);
+                Codex.sourceid||Codex.refuri);
             
             var args={page_height: height,page_width: width,
                       container: container,pagerule: pagerule,
