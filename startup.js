@@ -349,6 +349,7 @@ Codex.Startup=
 
             // Modifies the DOM in various ways
             initBody();
+            
             // This initializes the book tools (the HUD/Heads Up Display)
             Codex.initHUD();
 
@@ -377,8 +378,12 @@ Codex.Startup=
                                 prop+"("+refuri+")",Codex[prop],true);}
                         if ((Codex.allglosses)&&(Codex.allglosses.length))
                             setLocal("glosses("+refuri+")",Codex.allglosses,
-                                     true);}
-                    else if (!(value)) clearOffline();
+                                     true);
+                        Codex.queued=fdjtState.getLocal("queued("+Codex.refuri+")",true)||[];}
+                    else if (!(value)) {
+                        clearOffline();
+                        fdjtState.dropLocal("queued("+Codex.refuri+")");
+                        Codex.queued=[];}
                     Codex.persist=value;
                     setCheckSpan(fdjtID("CODEXLOCALCHECKBOX"),value);});
 

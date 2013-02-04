@@ -1195,7 +1195,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         proto,input.value,input.name,input.checked);
                     n_added++;}}}}
 
-    var queued_glosses=[], queued_data={};
+    // These are for glosses saved only in the current session,
+    // without using local storage.
+    var queued_data={};
 
     // Queues a gloss when offline
     function queueGloss(form,evt,keep){
@@ -1203,15 +1205,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         // params to send when we get online
         var json=fdjt.Ajax.formJSON(form,true);
         var params=fdjt.Ajax.formParams(form);
+        var queued=Codex.queued;
+        queued.push(json.uuid);
         if (Codex.persist) {
-            var queued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
-            if (!(queued)) queued=[];
-            queued.push(json.uuid);
             fdjtState.setLocal("params("+json.uuid+")",params);
             fdjtState.setLocal("queued("+Codex.refuri+")",queued,true);}
-        else {
-            queued_glosses.push(json.uuid);
-            queued_data[json.uuid]=params;}
+        else queued_data[json.uuid]=params;
         // Now save it to the in-memory database
         var glossdata=
             {refuri: json.refuri,frag: json.frag,
@@ -1270,48 +1269,35 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     // Saves queued glosses
     function writeQueuedGlosses(){
-        var queued=queued_glosses;
-        // Copy the persistent data queue into the memory queue
-        if (Codex.persist) {
-            var lqueued=fdjtState.getLocal("queued("+Codex.refuri+")",true);
-            if (lqueued) {
-                var i=0, lim=lqueued.length; while (i<lim) {
-                    var uuid=lqueued[i++];
-                    queued.push(uuid); queued_data[uuid]=
-                        fdjtState.getLocal("params("+uuid+")");}}}
-        if (queued.length===0) {
-            fdjtState.dropLocal("queued("+Codex.refuri+")");
-            return;}
-        var ajax_uri=getChild(fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
-            getAttribute("ajaxaction");
-        var i=0; var lim=queued.length; var pending=[];
-        while (i<lim) {
-            var uuid=queued[i++]; var params=queued_data[uuid];
-            if (!(params)) continue;
-            else pending.push(uuid);
-            var req=new XMLHttpRequest();
-            req.open('POST',ajax_uri);
-            req.withCredentials='yes';
-            req.onreadystatechange=function () {
-                if ((req.readyState === 4) &&
-                    (req.status>=200) && (req.status<300)) {
-                    fdjtState.dropLocal("params("+uuid+")");
-                    var pending=fdjtState.getLocal("queued("+Codex.refuri+")",true);
-                    var pos=pending.indexOf(uuid);
-                    if (pos>=0) {
-                        pending.splice(pos,pos);
-                        fdjtState.setLocal("queued("+Codex.refuri+")",pending,true);}
-                    addgloss_callback(req,false,false);}};
-            try {
-                req.setRequestHeader
-                ("Content-type", "application/x-www-form-urlencoded");
-                req.send(params);}
-            catch (ex) {failed.push(uuid);}}
-        if ((pending)&&(pending.length))
-            fdjtState.setLocal("queued("+Codex.refuri+")",pending,true);
-        else fdjtState.dropLocal("queued("+Codex.refuri+")");
-        if ((pending)&&(pending.length>0)) return pending;
-        else return false;}
+        if (Codex.queued.length) {
+            var ajax_uri=getChild(fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
+                getAttribute("ajaxaction");
+            var queued=Codex.queued; var glossid=queued[0];
+            var post_data=((Codex.persist)?(fdjtState.getLocal("params("+glossid+")")):
+                           (queued_data[glossid]));
+            if (post_data) {
+                var req=new XMLHttpRequest();
+                req.open('POST',ajax_uri);
+                req.withCredentials='yes';
+                req.onreadystatechange=function () {
+                    if ((req.readyState === 4) &&
+                        (req.status>=200) && (req.status<300)) {
+                        fdjtState.dropLocal("params("+glossid+")");
+                        var pending=Codex.queued;
+                        if ((pending)&&(pending.length)) {
+                            var pos=pending.indexOf(glossid);
+                            if (pos>=0) {
+                                pending.splice(pos,pos);
+                                if (Codex.persist)
+                                    fdjtState.setLocal("queued("+Codex.refuri+")",pending,true);
+                                Codex.queued=pending;}}
+                        addgloss_callback(req,false,false);
+                        if (pending.length) setTimeout(writeQueuedGlosses,200);
+                        fdjtState.dropLocal("queued("+Codex.refuri+")");}};
+                try {
+                    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    req.send(post_data);}
+                catch (ex) {failed.push(uuid);}}}}
     Codex.writeQueuedGlosses=writeQueuedGlosses;
     
 })();

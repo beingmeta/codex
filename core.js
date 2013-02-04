@@ -60,6 +60,9 @@ var Codex=
      cachelayouts: true,
      // Whether to store glosses, etc for offline/faster access
      persist: false,
+     // These are the UUIDs of locally stored glosses which are queued
+     //  to be saved when possible.
+     queued: [],
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -234,6 +237,9 @@ var Codex=
             anonymous.name="anonymous";
             if (Codex.persist)
                 Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);}
+
+        Codex.queued=((Codex.persist)&&(fdjtState.getLocal("queued("+Codex.refuri+")",true)))||[];
+
         if (Codex.Trace.start>1) fdjtLog("Initialized DB");}
     Codex.initDB=initDB;
 
