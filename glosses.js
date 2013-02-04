@@ -1296,6 +1296,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if ((req.readyState === 4) &&
                     (req.status>=200) && (req.status<300)) {
                     fdjtState.dropLocal("params("+uuid+")");
+                    var pending=fdjtState.getLocal("queued("+Codex.refuri+")",true);
+                    var pos=pending.indexOf(uuid);
+                    if (pos>=0) {
+                        pending.splice(pos,pos);
+                        fdjtState.setLocal("queued("+Codex.refuri+")",pending,true);}
                     addgloss_callback(req,false,false);}};
             try {
                 req.setRequestHeader
