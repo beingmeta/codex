@@ -1315,9 +1315,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     /* Default click/tap */
     function default_tap(evt){
         var target=fdjtUI.T(evt);
-        if (((Codex.hudup)||(Codex.mode))&&
-            (!(getParent(target,Codex.HUD))))
-            Codex.setMode(false);
+        if (((Codex.hudup)||(Codex.mode))) {
+            Codex.setMode(false);}
         else {
             var cx=evt.clientX, cy=evt.clientY;
             var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight;
