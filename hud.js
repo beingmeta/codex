@@ -236,11 +236,10 @@ Codex.setMode=
         Codex.initHUD=initHUD;
         
         function fixStaticRefs(string){
-            if (Codex.root==="http://static.beingmeta.com/g/codex/")
+            if (Codex.root==="http://static.beingmeta.com/")
                 return string;
-            else return string.replace(
-                    /http:\/\/static.beingmeta.com\/g\/codex\//g,
-                Codex.root);}
+            else return string.replace(/http:\/\/static.beingmeta.com\//g,
+                                       Codex.root);}
 
         function resizeHUD(){}
         Codex.resizeHUD=resizeHUD;

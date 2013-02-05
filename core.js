@@ -279,7 +279,8 @@ var Codex=
     // This is the default server
     Codex.default_server="glosses.sbooks.net";
     // There be icons here!
-    Codex.root="http://static.beingmeta.com/g/codex/";
+    Codex.root=fdjtDOM.getLink("CODEX.staticroot")||
+        "http://static.beingmeta.com/";
     Codex.withsvg=document.implementation.hasFeature(
         "http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")||
         navigator.mimeTypes["image/svg+xml"];
@@ -287,7 +288,7 @@ var Codex=
     if (fdjtState.getQuery("nosvg")) Codex.svg=false;
     else if (fdjtState.getQuery("withsvg")) Codex.svg=true;
     Codex.icon=function(base,width,height){
-        return Codex.root+base+
+        return Codex.root+"g/codex/"+base+
             ((Codex.svg)?(".svgz"):
              ((((width)&&(height))?(width+"x"+height):
                (width)?(width+"w"):(height)?(height+"h"):"")+
