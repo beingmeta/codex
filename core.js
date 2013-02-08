@@ -95,28 +95,28 @@ var Codex=
      /* This is where we store pointers into the dom */
      DOM: {},
      Trace: {
-         startup: 0,    // Whether to trace startup
-         config: 0,     // Whether to trace config setup/modification/etc
-         mode: false,   // Whether to trace mode changes
-         nav: false,    // Whether to trace book navigation
-         scan: 1,       // How much to trace DOM scanning
-         search: 0,     // How much to trace searches
-         clouds: 0,     // How much to trace cloud generation
-         focus: false,  // Whether to trace target changes
-         toc: false,    // Whether we're debugging TOC tracking
-         storage: 0,    // How much to trace offline persistence
-         network: 0,    // How much to trace server interaction
-         glosses: 0,    // How much we're tracing gloss processing
-         layout: 0,     // How much to trace document layout
-         knodules: 0,   // How much to trace knodule processing
-         dosync: false, // Whether to trace state saves
-         state: false,  // Whether to trace set state
-         flips: false,  // Whether to trace page flips (movement by pages)
-         messages: false, // Whether to trace inter-window messages
-         iscroll: false, // Whether to trace HUD scrolling with iScroll
-         highlight: 0,  // Whether to trace highlighting
-         indexing: 0,   // How much to trace document indexing
-         gestures: 0}   // How much to trace gestures
+         startup: 0,       // Whether to trace startup
+         config: 0,        // Whether to trace config setup/modification/etc
+         mode: false,      // Whether to trace mode changes
+         nav: false,       // Whether to trace book navigation
+         scan: 1,          // How much to trace DOM scanning
+         search: 0,        // How much to trace searches
+         clouds: 0,        // How much to trace cloud generation
+         focus: false,     // Whether to trace target changes
+         toc: false,       // Whether we're debugging TOC tracking
+         storage: 0,       // How much to trace offline persistence
+         network: 0,       // How much to trace server interaction
+         glosses: 0,       // How much we're tracing gloss processing
+         layout: 0,        // How much to trace document layout
+         knodules: 0,      // How much to trace knodule processing
+         dosync: false,    // Whether to trace state saves
+         state: false,     // Whether to trace set state
+         flips: false,     // Whether to trace page flips (movement by pages)
+         messages: false,  // Whether to trace inter-window messages
+         iscroll: false,   // Whether to trace HUD scrolling with iScroll
+         highlight: 0,     // Whether to trace highlighting
+         indexing: 0,      // How much to trace document indexing
+         gestures: 0}      // How much to trace gestures
     };
 
 (function(){
@@ -349,12 +349,12 @@ var Codex=
                         (Codex.docinfo[targetid])) {
                         target=Codex.docinfo[targetid]; break;}
                 else target=target.parentNode;}}
-        if (target)
+        if (target) {
             if (target.level)
                 return document.getElementById(target.frag);
-        else if (target.head)
-            return document.getElementById(target.head.frag);
-        else return false;
+            else if (target.head)
+                return document.getElementById(target.head.frag);
+            else return false;}
         else return false;}
     Codex.getHead=getHead;
 
@@ -397,13 +397,13 @@ var Codex=
 
     function getTarget(scan,closest){
         scan=((scan.nodeType)?(scan):(scan.target||scan.srcElement||scan));
-        var target=false;
+        var target=false, lowest=false; var low_off=false;
         var id=false;
         var prefix=Codex.baseid;
         while (scan) {
             if (scan.codexui) return false;
             else if (scan===Codex.docroot) return target;
-	    else if (scan===document.body) return target;
+            else if (scan===document.body) return target;
             else if ((id=(scan.id||scan.codexbaseid))&&(Codex.docinfo[id])) {
                 if (id.search("CODEXTMP")===0) {}
                 else if (hasParent(scan,Codex.HUD)) return false;
@@ -414,8 +414,9 @@ var Codex=
                          ((Codex.focus)&&(Codex.focus.match(scan))))
                     return scan;
                 else if (closest) return scan;
-                else if (!(target)) target=scan;
-                else {}}
+                else if ((target)&&(!(fdjt.DOM.isVisible(scan))))
+                    return target;
+                else target=scan;}
             else {}
             scan=scan.parentNode;}
         return target;}
