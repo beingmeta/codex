@@ -351,10 +351,9 @@ var Codex=
                 else target=target.parentNode;}}
         if (target)
             if (target.level)
-                return target.elt||document.getElementById(target.frag);
+                return document.getElementById(target.frag);
         else if (target.head)
-            return target.head.elt||
-            document.getElementById(target.head.frag);
+            return document.getElementById(target.head.frag);
         else return false;
         else return false;}
     Codex.getHead=getHead;
@@ -470,8 +469,8 @@ var Codex=
         var headinfo=Codex.docinfo[headid];
         while ((headinfo)&&(!(headinfo.level))) {
             headinfo=headinfo.head;
-            head=headinfo.elt;
-            headid=headinfo.frag;}
+            headid=headinfo.frag;
+            head=document.getElementById(headid);}
         if (Codex.Trace.nav)
             fdjtLog("Codex.setHead #%s",headid);
         if (head===Codex.head) {
