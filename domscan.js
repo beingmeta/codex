@@ -420,8 +420,7 @@ Codex.DOMScan=(function(){
                            curhead,curinfo,curlevel,nodefn);
             if (((classname)&&(classname.search(/\bsbookterminal\b/)>=0))||
                 ((classname)&&(Codex.terminals)&&
-                 (Codex.terminals.match(child)))||
-                (tag.search(/p|h\d|pre/i)===0)) {
+                 (Codex.terminals.match(child)))) {
                 scanstate.location=scanstate.location+textWidth(child);}
             else {
                 var children=child.childNodes;
