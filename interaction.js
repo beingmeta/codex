@@ -433,7 +433,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var passage=Codex.getTarget(target);
-        // Already selecting, return
+        // Already selecting this target, cancel any pending slippage
         if ((hasParent(target,".fdjtselecting"))||(!(passage))||
             (selectors[passage.id])) {
             if (slip_timer) {

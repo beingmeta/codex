@@ -78,6 +78,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     var cxicon=Codex.icon;
 
+    var getTarget=Codex.getTarget;
+
     var uri_prefix=/(http:)|(https:)|(ftp:)|(urn:)/;
 
     // The gloss mode is stored in two places:
@@ -357,17 +359,35 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else Codex.selecting=selectText(target);
         if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
             Codex.selecting.setString(gloss.excerpt);
-        else if (selecting) {
-            var string=selecting.getString();
-            var off=selecting.getOffset();
-            Codex.setExcerpt(form,string,off);}
+        else if (selecting) 
+            updateExcerpt(form,selecting);
         else {}
-        Codex.selecting.onchange=function(sel){
-            var string=this.getString();
-            var off=this.getOffset();
-            Codex.setExcerpt(form,string,off);};
+        Codex.selecting.onchange=function(sel){updateExcerpt(form,this);};
         return form;}
     Codex.setGlossTarget=setGlossTarget;
+
+    function updateExcerpt(form,sel){
+        var info=sel.getInfo();
+        Codex.setExcerpt(form,info.string,info.off);
+        var start_target=getTarget(info.start,true);
+        var end_target=getTarget(info.end,true);
+        var real_target=false;
+            if (start_target===end_target)
+                real_target=start_target;
+            else if (hasParent(start_target,end_target))
+                real_target=end_target;
+            else if (hasParent(end_target,start_target))
+                real_target=start_target;
+            else {
+                var grand_target=getTarget(start_target.parentNode);
+                while (grand_target) {
+                    if (hasParent(end_target,grand_target)) {
+                        real_target=grand_target; break;}
+                    else grand_target=getTarget(grand_target.parentNode);}}
+        if ((real_target)&&(real_target!==Codex.glosstarget)) {
+            var input=fdjtDOM.getInput(form,"FRAG");
+            input.value=real_target.id;}}
+        
 
     function selectText(passages){
         if (passages.nodeType) passages=[passages];
