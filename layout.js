@@ -522,8 +522,9 @@ Codex.Paginate=
             var pagespanrule=fdjtDOM.addCSSRule(
                 "div.pagespans > span","width: "+spanwidth+"px;");
             while (i<n) {
-                html.push("<span id='CODEXPAGESPAN"+(i+1)+"'"+
-                          "title='p"+(i+1)+". Hold to glimpse, tap to jump'"+
+                html.push("<span id='CODEXPAGESPAN"+(i+1)+"' "+
+                          "title='p"+(i+1)+". Hold to glimpse, tap to jump' "+
+                          "style='left: "+(100*(i/n))+"%'"+
                           ">"+(i+1)+"</span>");
                 i++;}
             var spans=fdjtID("CODEXPAGESPANS");
