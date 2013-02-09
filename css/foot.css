@@ -86,7 +86,7 @@ div#CODEXFOOT div#CODEXPAGEINFO .pagespans {
   width: 100%; height: 40px; z-index: 10;}
 div#CODEXFOOT div#CODEXPAGEINFO .pagespans span {
   opacity: 0.0; overflow: hidden; z-index: 20; height: 40px;
-  display: inline-block; position: absolute;
+  display: inline-block; position: absolute; bottom: 0px;
   vertical-align: top;}
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span {
     height: 40px;}
