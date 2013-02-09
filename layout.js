@@ -119,6 +119,19 @@ Codex.Paginate=
                 dropClass(document.body,"cxLAYOUT");
                 Codex.layout=layout;
                 Codex.pagecount=layout.pages.length;
+                var lostids=layout.lostids, moved_ids=lostids._all_ids;
+                var i=0, lim=moved_ids.length;
+                while (i<lim) {
+                    var id=moved_ids[i++];
+                    var glosses=Codex.glosses.find('frag',id);
+                    if (!((glosses)&&(glosses.length))) continue;
+                    var j=0, jlim=glosses.length; while (j<lim) {
+                        var gloss=Codex.glosses.probe(glosses[j++]);
+                        if (gloss) {
+                            var nodes=Codex.getDups(item.frag);
+                            addClass(nodes,"glossed");
+                            var k=0, klim=nodes.length; while (k<klim) {
+                                addGlossmark(nodes[ki++],item);}}}}
                 setupPageInfo();
                 if (Codex.layoutdone) {
                     var fn=Codex.layoutdone;
@@ -470,6 +483,8 @@ Codex.Paginate=
                 args.scale_pages=false;
             else args.scale_pages=true;
 
+            args.dontsave=fdjt.DOM.Selector(".codexglossmark");
+            
             return args;}
         CodexLayout.getLayoutArgs=getLayoutArgs;
 

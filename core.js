@@ -585,16 +585,16 @@ var Codex=
         if (typeof target === "string") target=fdjtID(target);
         if (!(target)) return;
         else if (target.length) {
-            dropClass(target,"highlightpassage");
+            dropClass(target,"codexhighlightpassage");
             var i=0, lim=target.length;
             while (i<lim) {
                 var node=target[i++];
-                fdjtUI.Highlight.clear(node,"highlightexcerpt");
-                fdjtUI.Highlight.clear(node,"highlightsearch");}}
+                fdjtUI.Highlight.clear(node,"codexhighlightexcerpt");
+                fdjtUI.Highlight.clear(node,"codexhighlightsearch");}}
         else {
-            dropClass(target,"highlightpassage");
-            fdjtUI.Highlight.clear(target,"highlightexcerpt");
-            fdjtUI.Highlight.clear(target,"highlightsearch");}}
+            dropClass(target,"codexhighlightpassage");
+            fdjtUI.Highlight.clear(target,"codexhighlightexcerpt");
+            fdjtUI.Highlight.clear(target,"codexhighlightsearch");}}
     Codex.clearHighlights=clearHighlights;
 
     function findExcerpt(node,excerpt,off){
@@ -928,7 +928,7 @@ var Codex=
         if (Codex.previewTarget) {
             var targets=getDups(Codex.previewTarget);
             dropClass(targets,"codexpreviewtarget");
-            dropClass(targets,"highlightpassage");
+            dropClass(targets,"codexhighlightpassage");
             Codex.clearHighlights(targets);
             Codex.previewTarget=false;}
         oldscroll=false;}

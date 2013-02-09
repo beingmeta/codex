@@ -681,12 +681,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     var starts=range.startContainer;
                     if (!(getParent(starts,target)))
                         target=getTargetDup(starts,target);
-                    if (!(hasClass(starts,"highlightexcerpt"))) {
-                        fdjtUI.Highlight(range,"highlightexcerpt");}}
-                else addClass(searching,"highlightpassage");}
+                    if (!(hasClass(starts,"codexhighlightexcerpt"))) {
+                        fdjtUI.Highlight(range,"codexhighlightexcerpt");}}
+                else addClass(searching,"codexhighlightpassage");}
             else {
                 var dups=Codex.getDups(target);
-                addClass(dups,"highlightpassage");}}
+                addClass(dups,"codexhighlightpassage");}}
         else if (getParent(card,".sbookresults")) {
             var about=card.about;
             Codex.previewTarget=target=fdjtID(about);
@@ -771,7 +771,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if ((ranges)&&(ranges.length)) {
                 var k=0; while (k<ranges.length) {
                     var h=fdjtUI.Highlight(
-                        ranges[k++],"highlightsearch");
+                        ranges[k++],"codexhighlightsearch");
                     highlights=highlights.concat(h);}}}
         return highlights;}
     Codex.highlightTerm=highlightTerm;
@@ -1004,8 +1004,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         fdjtDOM.replace(
                             rendering,fdjtDOM("div.codexcard.deletedgloss"));
                     else fdjtDOM.remove(rendering);}}
-            var glossmark=fdjtID("CODEX_GLOSSMARK_"+frag);
-            if (glossmark) {
+            var glossmarks=document.getElementsByName("CODEX_GLOSSMARK_"+frag);
+            var j=0, jlim=glossmarks.length; while (j<jlim) {
+                var glossmark=glossmarks[j++];
                 var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
                 if (newglosses.length===0) fdjtDOM.remove(glossmark);
                 else glossmark.glosses=newglosses;}}

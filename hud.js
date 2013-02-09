@@ -928,8 +928,8 @@ Codex.setMode=
                     var range=Codex.findExcerpt(
                         searching,glossinfo.excerpt,glossinfo.exoff);
                     if (range) highlights=
-                        fdjtUI.Highlight(range,"highlightexcerpt");}
-                else addClass(fdjtID(src.about),"highlightpassage");}
+                        fdjtUI.Highlight(range,"codexhighlightexcerpt");}
+                else addClass(Codex.getDups(src.about),"codexhighlightpassage");}
             else if ((src)&&(getParent(src,".sbookresults"))) {
                 var about=src.about, target=fdjtID(about);
                 if (target) {
@@ -937,7 +937,8 @@ Codex.setMode=
                     var terms=Codex.query._query;
                     var spellings=info.knodeterms;
                     i=0; lim=terms.length;
-                    if (lim===0) addClass(target,"highlightpassage");
+                    if (lim===0)
+                        addClass(Codex.getDups(target),"codexhighlightpassage");
                     else while (i<lim) {
                         var term=terms[i++];
                         var h=Codex.highlightTerm(term,target,info,spellings);
