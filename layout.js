@@ -36,7 +36,7 @@
 */
 
 /* Reporting progress, debugging */
-        
+
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
@@ -102,17 +102,16 @@ Codex.Paginate=
             Codex.layout=layout;
             
             var layout_id=layout.layout_id;
-            var saved_layout=fdjtState.getLocal(layout_id);
 
             // Get the document info
             var docinfo=Codex.docinfo;
 
-            if (saved_layout) {
+            function saved_layout(content){
                 fdjtLog("Using saved layout %s",layout_id);
                 fdjtID("CODEXCONTENT").style.display='none';
                 dropClass(document.body,"cxSCROLL");
                 addClass(document.body,"cxBYPAGE");
-                layout.restoreLayout(saved_layout);
+                layout.restoreLayout(content);
                 getPageTops(layout.pages);
                 fdjtID("CODEXPAGE").style.visibility='';
                 fdjtID("CODEXCONTENT").style.visibility='';
@@ -145,36 +144,124 @@ Codex.Paginate=
                 Codex.layout.running=false;
 
                 return false;}
-
-            // Prepare to do the layout
-            dropClass(document.body,"cxSCROLL");
-            addClass(document.body,"cxBYPAGE");
-            fdjtID("CODEXPAGE").style.visibility='hidden';
-            fdjtID("CODEXCONTENT").style.visibility='hidden';
             
-            // Now make the content (temporarily) the same width as
-            // the page
-            var saved_width=Codex.content.style.width;
-            Codex.content.style.width=getGeometry(Codex.page).width+"px";
+            function new_layout(){
+                // Prepare to do the layout
+                dropClass(document.body,"cxSCROLL");
+                addClass(document.body,"cxBYPAGE");
+                fdjtID("CODEXPAGE").style.visibility='hidden';
+                fdjtID("CODEXCONTENT").style.visibility='hidden';
+                
+                // Now make the content (temporarily) the same width as
+                // the page
+                var saved_width=Codex.content.style.width;
+                Codex.content.style.width=getGeometry(Codex.page).width+"px";
+                
+                // Now walk the content
+                var content=Codex.content;
+                var nodes=TOA(content.childNodes);
+                fdjtLog("Laying out %d root nodes into %dx%d pages (%s)",
+                        nodes.length,layout.width,layout.height,
+                        (why||""));
+                
+                // Do the adjust font bit.  We rely on Codex.content
+                //  having the same width as Codex.page
+                fdjt.DOM.adjustFonts(content);
+                
+                // Now reset the width
+                Codex.content.style.width=saved_width;
+                
+                /* Lay out the coverpage */
+                var coverpage=Codex.getCover();
+                if (coverpage) layout.addContent(coverpage);
+                
 
-            // Now walk the content
-            var content=Codex.content;
-            var nodes=TOA(content.childNodes);
-            fdjtLog("Laying out %d root nodes into %dx%d pages (%s)",
-                    nodes.length,layout.width,layout.height,
-                    (why||""));
+                var i=0; var lim=nodes.length;
+                function rootloop(){
+                    if (i>=lim) {
+                        layout.Finish();
+                        layout_progress(layout);
+                        if (Codex.cachelayouts) {
+                            var elapsed=layout.done-layout.started;
+                            if (elapsed>(Codex.layoutcachethresh||5000)) {
+                                layout.saveLayout();}}
+                        var pages=layout.pages;
+                        getPageTops(layout.pages);
+                        fdjtID("CODEXPAGE").style.visibility='';
+                        fdjtID("CODEXCONTENT").style.visibility='';
+                        dropClass(document.body,"cxLAYOUT");
+                        Codex.layout=layout;
+                        Codex.pagecount=layout.pages.length;
+                        setupPageInfo();
+                        if (Codex.layoutdone) {
+                            var fn=Codex.layoutdone;
+                            Codex.layoutdone=false;
+                            fn();}
+                        Codex.GoTo(
+                            Codex.location||Codex.target||
+                                Codex.cover||Codex.titlepage||
+                                fdjtID("CODEXPAGE1"),
+                            "endLayout",false,false);
+                        Codex.layout.running=false;
+                        return false;}
+                    else {
+                        var root=nodes[i++];
+                        var timeslice=layout.timeslice||CodexLayout.timeslice||200;
+                        var timeskip=layout.timeskip||CodexLayout.timeskip||50;
+                        if (((root.nodeType===3)&&(!(isEmpty(root.nodeValue))))||
+                            ((root.nodeType===1)&&
+                             (root.tagName!=='LINK')&&(root.tagName!=='META')&&
+                             (root.tagName!=='SCRIPT')&&(root.tagName!=='BASE'))) 
+                            layout.addContent(root,timeslice,timeskip,
+                                              layout.tracelevel,
+                                              layout_progress,rootloop);
+                        else return rootloop();}}
 
-            // Do the adjust font bit.  We rely on Codex.content
-            //  having the same width as Codex.page
-            fdjt.DOM.adjustFonts(content);
+                /* Reporting progress, debugging */
+                
+                function layout_progress(info){
+                    var tracelevel=info.tracelevel;
+                    var started=info.started;
+                    var pagenum=info.pagenum;
+                    var now=fdjtTime();
+                    if (!(pagenum)) return;
+                    if (info.done) {
+                        LayoutMessage(fdjtString(
+                            "Finished laying out %d %dx%d pages in %s",
+                            pagenum,
+                            secs2short((info.done-info.started)/1000)));
+                        fdjtLog("Finished laying out %d %dx%d pages in %s",
+                                pagenum,info.width,info.height,
+                                secs2short((info.done-info.started)/1000));}
+                    else {
+                        if ((info.lastid)&&(Codex.docinfo)&&
+                            ((Codex.docinfo[info.lastid]))) {
+                            var docinfo=Codex.docinfo;
+                            var maxloc=docinfo._maxloc;
+                            var lastloc=docinfo[info.lastid].starts_at;
+                            var pct=(100*lastloc)/maxloc;
+                            fdjtUI.ProgressBar.setProgress("CODEXLAYOUTMESSAGE",pct);
+                            LayoutMessage(fdjtString(
+                                "Laid out %d pages (%d%%) in %s",
+                                pagenum,Math.floor(pct),
+                                secs2short((now-started)/1000)));
+                            if (tracelevel)
+                                fdjtLog("Laid out %d pages (%d%%) in %s",
+                                        pagenum,Math.floor(pct),
+                                        secs2short((now-started)/1000));}
+                        else {
+                            LayoutMessage(fdjtString(
+                                "Laid out %d pages in %s",
+                                info.pagenum,secs2short((now-started)/1000)));
+                            if (tracelevel)
+                                fdjtLog("Laid out %d pages in %s",
+                                        info.pagenum,secs2short((now-started)/1000));}}}
+                
+                function LayoutMessage(msg){
+                    fdjtUI.ProgressBar.setMessage("CODEXLAYOUTMESSAGE",msg);}
+                
+                rootloop();}
 
-            // Now reset the width
-            Codex.content.style.width=saved_width;
-            
-            /* Lay out the coverpage */
-            var coverpage=Codex.getCover();
-            if (coverpage) layout.addContent(coverpage);
-            
             function getPageTop(node) {
                 if (hasClass(node,"codexpage")) {}
                 else if ((node.id)&&(docinfo[node.id])) {
@@ -220,7 +307,7 @@ Codex.Paginate=
                     pagescan=pages[++pagenum];
                     if (pagescan) elt=getDupNode(pagescan,id);}
                 return locoff;}
-                
+            
             function getPageTops(pages){
                 var j=0, jlim=pages.length, running=0;
                 while (j<jlim) {
@@ -239,91 +326,9 @@ Codex.Paginate=
                     else {
                         page.setAttribute("data-sbookloc",running);}}}
 
-            var i=0; var lim=nodes.length;
-            function rootloop(){
-                if (i>=lim) {
-                    layout.Finish();
-                    layout_progress(layout);
-                    if (Codex.cachelayouts) {
-                        var elapsed=layout.done-layout.started;
-                        if (elapsed>(Codex.layoutcachethresh||5000)) {
-                            layout.saveLayout();}}
-                    var pages=layout.pages;
-                    getPageTops(layout.pages);
-                    fdjtID("CODEXPAGE").style.visibility='';
-                    fdjtID("CODEXCONTENT").style.visibility='';
-                    dropClass(document.body,"cxLAYOUT");
-                    Codex.layout=layout;
-                    Codex.pagecount=layout.pages.length;
-                    setupPageInfo();
-                    if (Codex.layoutdone) {
-                        var fn=Codex.layoutdone;
-                        Codex.layoutdone=false;
-                        fn();}
-                    Codex.GoTo(
-                        Codex.location||Codex.target||
-                            Codex.cover||Codex.titlepage||
-                            fdjtID("CODEXPAGE1"),
-                        "endLayout",false,false);
-                    Codex.layout.running=false;
-                    return false;}
-                else {
-                    var root=nodes[i++];
-                    var timeslice=layout.timeslice||CodexLayout.timeslice||200;
-                    var timeskip=layout.timeskip||CodexLayout.timeskip||50;
-                    if (((root.nodeType===3)&&(!(isEmpty(root.nodeValue))))||
-                        ((root.nodeType===1)&&
-                         (root.tagName!=='LINK')&&(root.tagName!=='META')&&
-                         (root.tagName!=='SCRIPT')&&(root.tagName!=='BASE'))) 
-                        layout.addContent(root,timeslice,timeskip,
-                                          layout.tracelevel,
-                                          layout_progress,rootloop);
-                    else return rootloop();}}
 
-                /* Reporting progress, debugging */
-        
-            function layout_progress(info){
-                var tracelevel=info.tracelevel;
-                var started=info.started;
-                var pagenum=info.pagenum;
-                var now=fdjtTime();
-                if (!(pagenum)) return;
-                if (info.done) {
-                    LayoutMessage(fdjtString(
-                        "Finished laying out %d %dx%d pages in %s",
-                        pagenum,
-                        secs2short((info.done-info.started)/1000)));
-                    fdjtLog("Finished laying out %d %dx%d pages in %s",
-                            pagenum,info.width,info.height,
-                            secs2short((info.done-info.started)/1000));}
-                else {
-                    if ((info.lastid)&&(Codex.docinfo)&&
-                        ((Codex.docinfo[info.lastid]))) {
-                        var docinfo=Codex.docinfo;
-                        var maxloc=docinfo._maxloc;
-                        var lastloc=docinfo[info.lastid].starts_at;
-                        var pct=(100*lastloc)/maxloc;
-                        fdjtUI.ProgressBar.setProgress("CODEXLAYOUTMESSAGE",pct);
-                        LayoutMessage(fdjtString(
-                            "Laid out %d pages (%d%%) in %s",
-                            pagenum,Math.floor(pct),
-                            secs2short((now-started)/1000)));
-                        if (tracelevel)
-                            fdjtLog("Laid out %d pages (%d%%) in %s",
-                                    pagenum,Math.floor(pct),
-                                    secs2short((now-started)/1000));}
-                    else {
-                        LayoutMessage(fdjtString(
-                            "Laid out %d pages in %s",
-                            info.pagenum,secs2short((now-started)/1000)));
-                        if (tracelevel)
-                            fdjtLog("Laid out %d pages in %s",
-                                    info.pagenum,secs2short((now-started)/1000));}}}
-        
-            function LayoutMessage(msg){
-                fdjtUI.ProgressBar.setMessage("CODEXLAYOUTMESSAGE",msg);}
-            
-            rootloop();}
+            CodexLayout.fetchLayout(layout_id,function(content){
+                if (content) saved_layout(content); else new_layout();});}
         Codex.Paginate=Paginate;
 
         CodexLayout.prototype.onresize=function(evt){
