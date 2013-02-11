@@ -342,7 +342,7 @@ body.hudup .codexglossmark {
     float: right; vertical-align: top; text-align: right;}
 .codexglossmark img.tiny {width: 16px; height: auto;}
 .codexglossmark img.big {width: 32px; height: auto;}
-.codexglossmark img.tiny, span.codexglossmark img.big { visibility: hidden;}
+.codexglossmark img.tiny, .codexglossmark img.big { visibility: hidden;}
 
 .codexglossbutton {
     position: absolute; left: 0px;
@@ -412,8 +412,8 @@ div.sbooksection.codexnewtarget > *:first-child {
    */
 body.codextarget { color: inherit;}
 
-.codextarget span.codexglossmark img.big { width: 32px; height: auto;}  
-.codextarget span.codexglossmark img {
+.codextarget .codexglossmark img.big { width: 32px; height: auto;}  
+.codextarget .codexglossmark img {
     border: solid transparent 2px;
     border-top: solid blue 2px;}
 .codextarget:hover .codexglossmark {
@@ -711,9 +711,9 @@ img.codexcoverpage {
 
 /* Highlighting */
 
-.highlightexcerpt { background-color: yellow;}
-.highlightpassage { background-color: #FFFF6B;}
-.highlightsearch { background-color: gold;}
+.codexhighlightexcerpt { background-color: yellow;}
+.codexhighlightpassage { background-color: #FFFF6B;}
+.codexhighlightsearch { background-color: gold;}
 .codexpreviewtarget { color: red; }
 section.codexpreviewtarget, div.html5section.codexpreviewtarget,
 section.codexpreviewtarget p, div.html5section.codexpreviewtarget p,

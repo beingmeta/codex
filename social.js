@@ -216,10 +216,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var imgsrc=(cxicon("sbwedge",64,64));
         var bigimage=fdjtDOM.Image(imgsrc,"big","glosses");
         var glossmark=fdjtDOM(
-            "span.codexglossmark.fdjtskiptext",
+            "a.codexglossmark.fdjtskiptext",
             bigimage,fdjtDOM.Image(cxicon("sbwedge",64,64),"tiny","*"));
         // Get all the glosses from the index
-        var glosses=Glosses.index(false,"frag",passage.id);
+        var id=passage.getAttribute("data-baseid")||passage.id;
+        var glosses=Glosses.index(false,"frag",id);
         glossmark.title=
             ((glosses.length>1)?
              ("See "+glosses.length+" glosses on this passage"):
@@ -230,11 +231,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.UI.addHandlers(glossmark,"glossmark");
         fdjtDOM.addClass(passage,"glossed");
         fdjtDOM.prepend(passage,glossmark);
-        glossmark.id="CODEX_GLOSSMARK_"+passage.id;
+        glossmark.name="CODEX_GLOSSMARK_"+id;
         return glossmark;};
     
     function showGlosses(target) {
-        var glosses=Codex.glosses.find('frag',target.codexbaseid||target.id);
+        var id=target.codexbaseid||target.id;
+        var glosses=Codex.glosses.find('frag',id);
         var sumdiv=fdjtDOM("div.codexglosses.codexslice.hudpanel#CODEXPASSAGEGLOSSES");
         var excerpt=false;
         if ((!(glosses))||(!(glosses.length)))
@@ -253,8 +255,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.setTarget(target);
         if (excerpt) {
             var range=fdjtDOM.findString(target,excerpt);
-            if (range) fdjtUI.Highlight(range,"highlightexcerpt");}
-        else addClass(target,"highlightpassage");
+            if (range) fdjtUI.Highlight(range,"codexhighlightexcerpt");}
+        else {
+            addClass(Codex.getDups(target),"codexhighlightpassage");}
         Codex.setMode("glosses");}
     Codex.showGlosses=showGlosses;
 

@@ -266,7 +266,7 @@ Codex.DOMScan=(function(){
                         scaninfo.next=headinfo;}
                     scaninfo.ends_at=scanstate.location;
                     scanstate.tagstack=scanstate.tagstack.slice(0,-1);
-                    scaninfo=scaninfo.head; scan=scaninfo.elt;
+                    scaninfo=scaninfo.head; scan=document.getElementById(scaninfo.frag);
                     scanlevel=((scaninfo)?(scaninfo.level):(0));}
                 if (Codex.Trace.scan>2)
                     fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
@@ -374,7 +374,7 @@ Codex.DOMScan=(function(){
                 var notoc=scanstate.notoc;
                 var headinfo=tocinfo.head;
                 scanstate.curinfo=headinfo;
-                scanstate.curhead=headinfo.elt;
+                scanstate.curhead=document.getElementById(headinfo.frag);
                 scanstate.curlevel=headinfo.level;
                 scanstate.notoc=true;
                 var children=child.childNodes;
@@ -397,7 +397,7 @@ Codex.DOMScan=(function(){
             if ((!(info))&&(id)) {
                 allids.push(id); info=new scanInfo(id,scanstate);
                 docinfo[id]=info;}
-            if ((info)&&(info.elt)&&(id)&&(info.elt!==child)) {
+            if ((info)&&(id)&&(document.getElementById(id)!==child)) {
                 var newid=child.id+"x"+scanstate.location;
                 fdjtLog.warn("Duplicate ID=%o newid=%o",child.id,newid);
                 child.id=id=newid;
@@ -427,8 +427,7 @@ Codex.DOMScan=(function(){
                            curhead,curinfo,curlevel,nodefn);
             if (((classname)&&(classname.search(/\bsbookterminal\b/)>=0))||
                 ((classname)&&(Codex.terminals)&&
-                 (Codex.terminals.match(child)))||
-                (tag.search(/p|h\d|pre/i)===0)) {
+                 (Codex.terminals.match(child)))) {
                 scanstate.location=scanstate.location+textWidth(child);}
             else {
                 var children=child.childNodes;

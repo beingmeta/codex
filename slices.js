@@ -70,7 +70,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var target=((target_id)&&(fdjtID(target_id)));
         var target_info=Codex.docinfo[target_id];
         var head_info=target_info.head;
-        var head=((head_info)&&(head_info.elt));
+        var head=((head_info)&&(document.getElementById(head_info.frag)));
         var refiners=((query) && (query._refiners));
         var score=((query)&&(query[key]));
         var excerpt_len=((info.excerpt)?(info.excerpt.length):(0));

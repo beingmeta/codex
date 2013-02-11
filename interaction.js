@@ -433,7 +433,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var passage=Codex.getTarget(target);
-        // Already selecting, return
+        // Already selecting this target, cancel any pending slippage
         if ((hasParent(target,".fdjtselecting"))||(!(passage))||
             (selectors[passage.id])) {
             if (slip_timer) {
@@ -530,7 +530,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var toc=getParent(tap_target,".codextoc");
             var show_fulltoc=
                 ((info.sub)&&(info.sub.length>2))&&
-                (info.elt!==Codex.head);
+                (info.id!==Codex.head.id);
             if (Codex.Trace.gestures)
                 fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
             Codex.JumpTo(target);
@@ -681,12 +681,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     var starts=range.startContainer;
                     if (!(getParent(starts,target)))
                         target=getTargetDup(starts,target);
-                    if (!(hasClass(starts,"highlightexcerpt"))) {
-                        fdjtUI.Highlight(range,"highlightexcerpt");}}
-                else addClass(searching,"highlightpassage");}
+                    if (!(hasClass(starts,"codexhighlightexcerpt"))) {
+                        fdjtUI.Highlight(range,"codexhighlightexcerpt");}}
+                else addClass(searching,"codexhighlightpassage");}
             else {
                 var dups=Codex.getDups(target);
-                addClass(dups,"highlightpassage");}}
+                addClass(dups,"codexhighlightpassage");}}
         else if (getParent(card,".sbookresults")) {
             var about=card.about;
             Codex.previewTarget=target=fdjtID(about);
@@ -771,7 +771,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if ((ranges)&&(ranges.length)) {
                 var k=0; while (k<ranges.length) {
                     var h=fdjtUI.Highlight(
-                        ranges[k++],"highlightsearch");
+                        ranges[k++],"codexhighlightsearch");
                     highlights=highlights.concat(h);}}}
         return highlights;}
     Codex.highlightTerm=highlightTerm;
@@ -1004,8 +1004,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         fdjtDOM.replace(
                             rendering,fdjtDOM("div.codexcard.deletedgloss"));
                     else fdjtDOM.remove(rendering);}}
-            var glossmark=fdjtID("CODEX_GLOSSMARK_"+frag);
-            if (glossmark) {
+            var glossmarks=document.getElementsByName("CODEX_GLOSSMARK_"+frag);
+            var j=0, jlim=glossmarks.length; while (j<jlim) {
+                var glossmark=glossmarks[j++];
                 var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
                 if (newglosses.length===0) fdjtDOM.remove(glossmark);
                 else glossmark.glosses=newglosses;}}
@@ -1513,13 +1514,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (Codex.Trace.nav) 
                 fdjtLog("scanForward/toc() head=%o info=%o n=%o h=%o",
                         head,headinfo,headinfo.next,headinfo.head);
-            if (headinfo.next) Codex.GoTo(headinfo.next.elt,"scanForward");
+            if (headinfo.next) Codex.GoTo(headinfo.next.frag,"scanForward");
             else if ((headinfo.head)&&(headinfo.head.next)) {
-                Codex.GoTo(headinfo.head.next.elt,"scanForward");
+                Codex.GoTo(headinfo.head.next.frag,"scanForward");
                 Codex.setMode("toc");}
             else if ((headinfo.head)&&(headinfo.head.head)&&
                      (headinfo.head.head.next)) 
-                Codex.GoTo(headinfo.head.head.next.elt,"scanForward");
+                Codex.GoTo(headinfo.head.head.next.frag,"scanForward");
             else Codex.setMode(false);
             return;}
         if ((Codex.scanpoints)&&
@@ -1565,9 +1566,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (Codex.Trace.nav) 
                 fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",
                         head,headinfo,headinfo.prev,headinfo.head);
-            if (headinfo.prev) Codex.GoTo(headinfo.prev.elt,"scanBackward");
+            if (headinfo.prev) Codex.GoTo(headinfo.prev.frag,"scanBackward");
             else if (headinfo.head) 
-                Codex.GoTo(headinfo.head.elt,"scanBackward");
+                Codex.GoTo(headinfo.head.frag,"scanBackward");
             else Codex.setMode(false);
             return;}
         if ((Codex.scanpoints)&&(Codex.scanoff>0)) {
@@ -2120,6 +2121,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
              click: toggleHelp, mousedown: cancel,mouseup: cancel},
          "#CODEXHELP": {
              click: toggleHelp, mousedown: cancel,mouseup: cancel},
+         "#CODEXNEXTPAGE": {click: function(evt){
+             Codex.pageForward(); cancel(evt);}},
+         "#CODEXPREVPAGE": {click: function(evt){
+             Codex.pageBackward(); cancel(evt);}},
+         "#CODEXNEXTSCAN": {click: function(evt){
+             Codex.scanForward(); cancel(evt);}},
+         "#CODEXPREVSCAN": {click: function(evt){
+             Codex.scanBackward(); cancel(evt);}},
          "#CODEXSHOWTEXT": {click: back_to_reading},
          "#CODEXAPPSPLASH": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
@@ -2192,6 +2201,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXATTACHCANCEL": {click: addlink_cancel},
          "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
          "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
+         "#CODEXNEXTPAGE": {click: function(evt){
+             Codex.pageForward(); cancel(evt);}},
+         "#CODEXPREVPAGE": {click: function(evt){
+             Codex.pageBackward(); cancel(evt);}},
+         "#CODEXNEXTSCAN": {click: function(evt){
+             Codex.scanForward(); cancel(evt);}},
+         "#CODEXPREVSCAN": {click: function(evt){
+             Codex.scanBackward(); cancel(evt);}},
          "#CODEXHELPBUTTON": {click: toggleHelp},
          "#CODEXHELP": {click: toggleHelp},
          "#CODEXSHOWTEXT": {click: back_to_reading},
