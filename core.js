@@ -145,11 +145,8 @@ var Codex=
         // These are all references outside of the glosses
         Codex.etc=[];
 
-        var docinfo=Codex.DocInfo=new fdjtKB.Pool(refuri+"#");
-        fdjtKB.addRefMap(docinfo.map);
-        fdjtKB.addRefMap(function(ref){
-            return ((typeof ref === 'string')&&(ref[0]==='#')&&
-                    (docinfo.ref(ref.slice(1))));});
+        var docinfo=Codex.DocInfo=new fdjt.RefDB(
+            refuri+"#",{indices: ["frag","tags"]});
         
         var knodule_name=
             fdjtDOM.getMeta("SBOOK.knodule")||

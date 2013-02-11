@@ -46,12 +46,15 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.DOMScan=(function(){
     var fdjtString=fdjt.String;
+    var fdjtTime=fdjt.Time;
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
+    var RefDB=fdjt.RefDB;
+    var Ref=RefDB.Ref;
 
     var getLevel=Codex.getTOCLevel;
 
-    function CodexDOMScan(root,docinfo){
+    function CodexDOMScan(root,dbid,docinfo){
         var fdjtID=fdjt.ID;
         var md5ID=fdjt.WSN.md5ID;
         var stdspace=fdjtString.stdspace;
@@ -67,12 +70,11 @@ Codex.DOMScan=(function(){
         var start=false;
         var idcount=1;
         var idmap={};
-
+        
         if (typeof root === 'undefined') return this;
-        if (!(docinfo))
-            if (this instanceof CodexDOMScan)
-                docinfo=this;
-        else docinfo=new CodexDOMScan();
+        if (!(docinfo)) {
+            if (this instanceof CodexDOMScan) docinfo=this;
+            else docinfo=new CodexDOMScan();}
         if (!(root)) root=Codex.docroot||document.body;
         var start=new Date();
         var allheads=[], allids=[];
@@ -94,18 +96,34 @@ Codex.DOMScan=(function(){
              idstate: {prefix: false,count: 0},
              idstack: [{prefix: false,count: 0}],
              pool: Codex.DocInfo};
+
+        var refdb=new RefDB(dbid);
+    
+        function scanInfo(id,scanstate) {
+            if (docinfo[id]) return docinfo[id];
+            Ref.call(this,id,refdb);
+            this._live=fdjtTime();
+            this.frag=id;
+            docinfo[id]=this;
+            scanstate.allinfo.push(this);
+            scanstate.locinfo.push(scanstate.location);
+            return this;}
+        scanInfo.prototype=new Ref();
+        refdb.refclass=scanInfo;
+        
+        docinfo._scanInfo=scanInfo;
+        docinfo._refdb=refdb;
+
         var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
                       (docinfo[root.id]=new scanInfo(root.id,scanstate)));
         scanstate.curhead=root; scanstate.curinfo=rootinfo;
         // Location is an indication of distance into the document
         var location=0;
-        rootinfo.pool=scanstate.pool;
         rootinfo.title=root.title||document.title;
         rootinfo.starts_at=0;
         rootinfo.level=0; rootinfo.sub=new Array();
         rootinfo.head=false; rootinfo.heads=new Array();
         rootinfo.frag=root.id;
-        rootinfo._id=root.id;
         // rootinfo.elt=root;
         scanstate.allinfo.push(rootinfo);
         scanstate.allinfo.push(0);
@@ -131,17 +149,6 @@ Codex.DOMScan=(function(){
                     (done.getTime()-start.getTime())/1000,
                     scanstate.headcount,scanstate.eltcount);
         return docinfo;
-
-        function scanInfo(id,scanstate) {
-            if (docinfo[id]) return docinfo[id];
-            this.pool=scanstate.pool;
-            this.frag=id;
-            this._id=id;
-            docinfo[id]=this;
-            scanstate.allinfo.push(this);
-            scanstate.locinfo.push(scanstate.location);
-            return this;}
-        CodexDOMScan.scanInfo=scanInfo;
 
         function getTitle(head) {
             var title=
@@ -220,7 +227,7 @@ Codex.DOMScan=(function(){
             headinfo.starts_at=scanstate.location;
             headinfo.level=level; // headinfo.elt=head; 
             headinfo.sub=new Array();
-            headinfo.frag=headid; headinfo._id="#"+headid;
+            headinfo.frag=headid;
             headinfo.title=getTitle(head);
             headinfo.next=false; headinfo.prev=false;
             if (headinfo.title)
@@ -333,12 +340,12 @@ Codex.DOMScan=(function(){
                     child.id=id; idmap[id]=child;}}
             else if (!(id)) {}
             /* 
-            else if (!(id)) {
-                id="CODEXSCAN"+fdjtString.padNum(idcount,4);
-                if (Codex.Trace.scan>1)
-                   fdjtLog("No ID for %o, applying %s",child,id);
-                child.id=id; idcount++;
-                idmap[id]=child;}
+               else if (!(id)) {
+               id="CODEXSCAN"+fdjtString.padNum(idcount,4);
+               if (Codex.Trace.scan>1)
+               fdjtLog("No ID for %o, applying %s",child,id);
+               child.id=id; idcount++;
+               idmap[id]=child;}
             */
             else if (!(idmap[id])) idmap[id]=child;
             else if (idmap[id]!==child) {
@@ -436,8 +443,8 @@ Codex.DOMScan=(function(){
                         scanner(grandchild,scanstate,docinfo,nodefn);}}}
             if (info) info.ends_at=scanstate.location;
             /*
-            if ((info)&&((info.ends_at-info.starts_at)<5000))
-                info.wsnid=md5ID(child);
+              if ((info)&&((info.ends_at-info.starts_at)<5000))
+              info.wsnid=md5ID(child);
             */
             if (toclevel) {
                 scanstate.lasthead=child; scanstate.lastinfo=info;
