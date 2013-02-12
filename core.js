@@ -128,12 +128,15 @@ var Codex=
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
     var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+    var RefDB=fdjt.RefDB, Ref=fdjt.Ref, Query=RefDB.Query;
 
     var hasClass=fdjtDOM.hasClass;
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
     var hasParent=fdjtDOM.hasParent;
 
+    var getLocal=fdjt.State.getLocal;
+    
     function initDB() {
         if (Codex.Trace.start>1) fdjtLog("Initializing DB");
         var refuri=(Codex.refuri||document.location.href);
@@ -145,7 +148,7 @@ var Codex=
         // These are all references outside of the glosses
         Codex.etc=[];
 
-        var docinfo=Codex.DocInfo=new fdjt.RefDB(
+        var docinfo=Codex.DocInfo=new RefDB(
             refuri+"#",{indices: ["frag","tags","tags*",
                                   "*tags","**tags","~tags"]});
         
@@ -154,18 +157,18 @@ var Codex=
             fdjtDOM.getMeta("~KNODULE")||
             refuri;
         Codex.knodule=new Knodule(knodule_name);
-        Codex.index=new KnoduleIndex(Codex.knodule);
-        Codex.query=Codex.empty_query=Codex.index.Query([]);
+        // Codex.index=new KnoduleIndex(Codex.knodule);
+        Codex.query=Codex.empty_query=new RefDB.Query([]);
         Codex.BRICO=new Knodule("BRICO");
         Codex.BRICO.addAlias(":@1/");
         Codex.BRICO.addAlias("@1/");
-        Codex.glosses=new fdjtKB.Pool("glosses"); {
+        Codex.glosses=new RefDB("glosses"); {
             var superadd=Codex.glosses.add;
             Codex.glosses.addAlias("glossdb");
             Codex.glosses.addAlias("-UUIDTYPE=61");
             Codex.glosses.addAlias(":@31055/");
             Codex.glosses.addAlias("@31055/");
-            Codex.glosses.addInit(function initGloss(item) {
+            Codex.glosses.onLoad(function initGloss(item) {
                 var elt=document.getElementById(item.frag);
                 var info=Codex.docinfo[item.frag];
                 if (!(info)) {
@@ -186,25 +189,14 @@ var Codex=
                     if ((typeof tags === 'string')||(!(tags.length)))
                         tags=[tags];
                     if ((tags)&&(tags.length)) {
-                        var i=0; var lim=tags.length; var score=false;
+                        var i=0; var lim=tags.length;
                         while (i<lim) {
-                            var tag=tags[i++], slot="tags"; 
-                            if (tag[0]==="~") {
-                                slot="~tags"; tag=tag.slice(1);}
-                            else if ((tag[0]==="*")&&(tag[0]==="**")) {
-                                slot="**tags"; tag=tag.slice(2);}
-                            else {}
-                            var knode=
-                                ((tag.indexOf('@')>=0)&&
-                                 (RefDB.ref(tag,Codex.knodule)))||
-                                (maker_knodule.handleEntry(tag));
+                            var tag=tags[i++];
+                            var knode=addTag(item,tag);
                             if (info.glosstags)
                                 info.glosstags.push(knode);
                             else info.glosstags=[knode];
                             knodes.push(knode);
-                            if (score) score=score*2; else score=1;
-                            Codex.index.add(item,knode,score);
-                            Codex.index.add(info,knode,score);
                             Codex.addTag2SearchCloud(knode);
                             Codex.addTag2GlossCloud(knode);}}}
                 var sources=item.sources;
@@ -214,15 +206,12 @@ var Codex=
                         var i=0; var lim=sources.length;
                         while (i<lim) {
                             var source=sources[i++];
-                            var ref=fdjtKB.ref(source);
-                            Codex.index.add(item,ref,1);
-                            Codex.UI.addGlossSource(ref,true);}}}});
-            Codex.glosses.index=new fdjtKB.Index();
-            if (Codex.persist)
-                Codex.glosses.storage=new fdjtKB.OfflineKB(Codex.glosses);}
-        Codex.sourcekb=new fdjtKB.Pool("sources");{
+                            var ref=Codex.sourcekb.ref(source);
+                            Codex.UI.addGlossSource(ref,true);}}}},
+                                  "initgloss");
+            if (Codex.persist) Codex.glosses.storage=window.localStorage;}
+        Codex.sourcekb=new RefDB("sources");{
             Codex.sourcekb.addAlias("@1961/");
-            Codex.sourcekb.index=new fdjtKB.Index();
             Codex.sourcekb.forDOM=function(source){
                 var spec="span.source"+((source.kind)?".":"")+
                     ((source.kind)?(source.kind.slice(1).toLowerCase()):"");
@@ -233,10 +222,11 @@ var Codex=
             var anonymous=Codex.sourcekb.ref("@1961/0");
             Codex.anonymous=anonymous;
             anonymous.name="anonymous";
-            if (Codex.persist)
-                Codex.sourcekb.storage=new fdjtKB.OfflineKB(Codex.sourcekb);}
+            if (Codex.persist) Codex.sourcekb.storage=window.localStorage;}
 
-        Codex.queued=((Codex.persist)&&(fdjtState.getLocal("queued("+Codex.refuri+")",true)))||[];
+        Codex.queued=((Codex.persist)&&
+                      (getLocal("queued("+Codex.refuri+")",true)))||
+            [];
 
         if (Codex.Trace.start>1) fdjtLog("Initialized DB");}
     Codex.initDB=initDB;
@@ -444,14 +434,16 @@ var Codex=
              replace(/^\s*\/\//,""));};
 
     function getinfo(arg){
-        if (arg)
+        if (arg) {
             if (typeof arg === 'string')
-                return Codex.docinfo[arg]||fdjtKB.ref(arg,Codex.glosses)||fdjtKB.ref(arg);
-        else if (arg._id) return arg;
-        else if (arg.codexbaseid)
-            return Codex.docinfo[arg.codexbaseid];
-        else if (arg.id) return Codex.docinfo[arg.id];
-        else return false;
+                return (Codex.docinfo[arg]||
+                        Codex.glosses.probe(arg)||
+                        RefDB.ref(arg));
+            else if (arg._id) return arg;
+            else if (arg.codexbaseid)
+                return Codex.docinfo[arg.codexbaseid];
+            else if (arg.id) return Codex.docinfo[arg.id];
+            else return false;}
         else return false;}
     Codex.Info=getinfo;
 
@@ -631,25 +623,27 @@ var Codex=
         if (slot!=="tags") return {slot: slot,tag: knode};
         else return knode;}
     Codex.parseTag=parseTag;
-    function addTag(item,tag,kno){
-        var slot="tags"; var usekno=kno||Codex.knodule;
+    function addTag(item,tag,kno,slot){
+        if (!(slot)) slot="tags";
+        var usekno=kno||Codex.knodule;
         if (tag[0]==="~") {
-            slot="~tags"; tag=tag.slice(1);}
+            slot="~"+slot; tag=tag.slice(1);}
         else if ((tag[0]==="*")&&(tag[1]==="*")) {
-            slot="**tags"; tag=tag.slice(2);}
+            slot="**"+slot; tag=tag.slice(2);}
         else if (tag[0]==="*") {
-            slot="*tags"; tag=tag.slice(1);}
+            slot="*"+slot; tag=tag.slice(1);}
         else {}
         var knode=((tag.indexOf('|')>=0)?
                    (usekno.handleSubjectEntry(tag)):
-                   (slot==="~tags")?
+                   (slot[0]==="~")?
                    (((kno)&&(kno.probe(tag)))||(tag)):
                    (usekno.handleSubjectEntry(tag)));
         item.add(slot,knode);
         if (knode.allways) {
             var allways=knode.allways;
             var i=0, lim=allways.length;
-            while (i<lim) item.add(slot+"*",allways[i++]);}}
+            while (i<lim) item.add(slot+"*",allways[i++]);}
+        return knode;}
     Codex.addTag=addTag;
 
     /* Navigation */

@@ -366,11 +366,9 @@ Codex.Startup=
                     else if ((!(value))&&(!(Codex.persist))) return;
                     else if (value) {
                         if (!(Codex.sourcekb.storage))
-                            Codex.sourcekb.storage=
-                            new fdjtKB.OfflineKB(Codex.sourcekb);
+                            Codex.sourcekb.storage=window.localStorage;
                         if (!Codex.glosses.storage)
-                            Codex.glosses.storage=
-                            new fdjtKB.OfflineKB(Codex.glosses);
+                            Codex.glosses.storage=window.localStorage;
                         var props=saveprops, i=0, lim=props.length;
                         while (i<lim) {
                             var prop=saveprops[i++];
@@ -868,8 +866,10 @@ Codex.Startup=
                 getLocal("overlays("+refuri+")",true)||[];
             if (Codex.Trace.startup)
                 fdjtLog("initOffline userinfo=%j",userinfo);
-            Codex.allsources=getLocal("sources("+refuri+")",true)||[];
-            Codex.sourcekb.Import(Codex.allsources);
+            var allsources=Codex.allsources=
+                getLocal("sources("+refuri+")",true)||[];
+            var i=0, lim=allsources.length;
+            // while (i<lim) allsources[i++].Import();
             if (userinfo) setUser(userinfo,outlets,overlays,sync);
             if (nodeid) setNodeID(nodeid);
             Codex.sync=sync;}
@@ -1791,60 +1791,37 @@ Codex.Startup=
             var ix=Codex.index; var knodule=Codex.knodule;
             /* One pass processes all of the inline KNodes and
                also separates out primary and auto tags. */
-            var tagged=[]; var toindex=[];
+            var tohandle=[]; var tagged=0;
             for (var eltid in docinfo) {
                 var info=docinfo[eltid], tags=info.tags;
-                if (tags) tagged.push(tags);
+                if (tags) tagged++;
                 if ((tags)||(info.sectags)||
                     ((info.head)&&(info.head.sectags)))
-                    toindex.push(info);}
+                    tohandle.push(info);}
             if ((Codex.Trace.indexing)&&
                 ((Codex.Trace.indexing>1)||
                  (tagged.length>7)))
                 fdjtLog("Indexing inline tags for %d nodes (%d assigned)",
-                        toindex.length,tagged.length);
+                        tohandle.length,tagged);
             fdjtTime.slowmap(
-                process_inline_tags,
-                tagged,false,
+                handle_inline_tags,
+                tohandle,false,
                 function(){
                     if ((Codex.Trace.indexing>1)&&(tagged.length))
                         fdjtLog("Finished processing inline tags for %d nodes",
-                                tagged.length);
-                    fdjtTime.slowmap(
-                        index_inline_tags(ix,knodule),
-                        toindex,false,
-                        function(){
-                            if ((Codex.Trace.indexing)&&
-                                ((Codex.Trace.indexing>1)||
-                                 (tagged.length>7)))
-                                fdjtLog("Done inline indexing for %d nodes",
-                                        toindex.length);
-                            whendone();});});}
+                                tagged.length);;});}
         Codex.indexAssignedTags=indexAssignedTags;
         
-        function process_inline_tags(tags){}
-        function index_inline_tags(ix,knodule){
-            return function (info){
-                var eltid=info.frag;
-                var tags=info.tags||[]; 
-                if (tags) {
-                    var scores=tags.scores;
-                    var knodes=tags.knodes;
-                    var k=0; var ntags=tags.length;
-                    while (k<ntags) {
-                        var tag=tags[k++], knode=knodes[tag];
-                        if (knode) {
-                            if (info.knodes) info.knodes.push(knode);
-                            else info.knodes=[knode];}
-                        if (scores)
-                            ix.add(eltid,tag,scores[tag]||1,knodule);
-                        else ix.add(eltid,tag,1,knodule);}}
-                var sectags=info.sectags||((info.head)&&(info.head.sectags));
-                if (sectags) {
-                    var k=0, ntags=sectags.length;
-                    while (k<ntags) {
-                        var tag=sectags[k++];
-                        ix.add(eltid,tag,0,knodule);}}};}
+        function handle_inline_tags(info){
+            var tags=info.tags;
+            if (tags) {
+                var k=0; var ntags=tags.length; info.tags=[];
+                while (k<ntags) addTag(info,tags[k++],Codex.knodule);}
+            var sectags=info.sectags||((info.head)&&(info.head.sectags));
+            if (sectags) {
+                k=0, ntags=sectags.length; info.sectags=[];
+                    while (k<ntags)
+                        addTag(info,sectags[k++],Codex.knodule,"^tags");}}
         
         /* Setting up the clouds */
         

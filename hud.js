@@ -148,13 +148,13 @@ Codex.setMode=
                 fdjtLog("Setting up gloss UI %o",allglosses);
 
             Codex.UI.setupSummaryDiv(allglosses);
-            Codex.glosses.addEffect("maker",function(f,p,v){
+            Codex.glosses.onAdd("maker",function(f,p,v){
                 Codex.sourcekb.ref(v).oninit
                 (Codex.UI.addGlossSource,"newsource");});
-            Codex.glosses.addEffect("sources",function(f,p,v){
+            Codex.glosses.onAdd("sources",function(f,p,v){
                 Codex.sourcekb.ref(v).oninit
                 (Codex.UI.addGlossSource,"newsource");});
-            Codex.glosses.addInit(addGloss2UI);
+            Codex.glosses.onAdd(addGloss2UI);
             
             Codex.DOM.console=fdjtID("CODEXCONSOLE");
             if (Codex.Trace.startup>1) fdjtLog("Setting up console %o",console);

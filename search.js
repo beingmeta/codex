@@ -53,6 +53,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
     var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+    var RefDB=fdjt.RefDB, Ref=fdjt.Ref, Query=RefDB.Query; 
+    var KNode=Knodule.KNode;
 
     Codex.search_cloud=false;
     if (!(Codex.empty_cloud)) Codex.empty_cloud=false;
@@ -73,9 +75,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     /* Set on main search input */
     // id="CODEXSEARCHINPUT" 
     // completions="CODEXSEARCHCLOUD"
-
-    var Query=KnoduleIndex.Query;
-    var KNode=Knodule.KNode;
 
     Codex.getQuery=function(){return Codex.query;}
     
@@ -380,7 +379,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.UI.showSlice(result._results,div,rscores);
         result._results_div=div;
         return div;}
-    KnoduleIndex.Query.prototype.showResults=
+    RefDB.Query.prototype.showResults=
         function(){return showResults(this);};
     
     /* Getting query cloud */
@@ -412,7 +411,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             query._cloud=completions;
             return query._cloud;}}
     Codex.queryCloud=queryCloud;
-    KnoduleIndex.Query.prototype.getCloud=function(){return queryCloud(this);};
+    RefDB.Query.prototype.getCloud=function(){return queryCloud(this);};
 
     function cloud_ontap(evt){
         evt=evt||event;
