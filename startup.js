@@ -54,7 +54,8 @@ Codex.Startup=
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
-        var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+        var fdjtID=fdjt.ID;
+        var RefDB=fdjt.RefDB, Ref=fdjt.Ref;
         
         var sbook_heading_qricons=false;
 
@@ -604,9 +605,9 @@ Codex.Startup=
                 var appframe=fdjtID("SBOOKSAPP");
                 var appwindow=((appframe)&&(appframe.contentWindow));
                 if ((Codex.overlays)&&(getQuery("JOIN"))&&
-                    (fdjtKB.contains(Codex.overlays,getQuery("JOIN")))) {
+                    (RefDB.contains(Codex.overlays,getQuery("JOIN")))) {
                     // Check that it's not redundant
-                    var ref=fdjtKB.ref(getQuery("JOIN"));
+                    var ref=RefDB.ref(getQuery("JOIN"));
                     if (ref.name)
                         fdjtDOM(intro,"You've already added the overlay "+
                                 ref.name);
@@ -1376,7 +1377,7 @@ Codex.Startup=
                 return false;}
             if ((navigator.onLine)&&(fdjtState.getLocal("queued("+Codex.refuri+")")))
                 Codex.writeQueuedGlosses();
-            Codex.user=fdjtKB.Import(userinfo);
+            Codex.user=Codex.sourcekb.Import(userinfo);
             if (persist) setConfig("persist",true,true);
             if (outlets) Codex.outlets=outlets;
             if (overlays) Codex.overlays=overlays;
@@ -1471,7 +1472,7 @@ Codex.Startup=
                 var friends=Codex.user.friends;
                 var i=0; var lim=friends.length;
                 while (i<lim) {
-                    var friend=fdjtKB.ref(friends[i++]);
+                    var friend=RefDB.ref(friends[i++]);
                     Codex.addTag2GlossCloud(friend);}}
             Codex._user_setup=true;}
         
@@ -1484,10 +1485,10 @@ Codex.Startup=
                     while (i<lim) {
                         if (typeof info[i] === 'string') {
                             var qid=info[i++];
-                            if (Codex.persist) fdjtKB.load(qid);
+                            if (Codex.persist) RefDB.load(qid);
                             qids.push(qid);}
                         else {
-                            var obj=fdjtKB.Import(info[i++]);
+                            var obj=Codex.sourcekb.Import(info[i++]);
                             if (persist) 
                                 setLocal(obj._id,obj,true);
                             qids.push(obj._id);}}
@@ -1495,7 +1496,7 @@ Codex.Startup=
                     if (Codex.persist)
                         setLocal(name+"("+refuri+")",qids,true);}
                 else {
-                    var obj=fdjtKB.Import(info);
+                    var obj=Codex.sourcekb.Import(info);
                     if (persist) 
                         setLocal(obj._id,obj,true);
                     Codex[name]=obj._id;
@@ -1530,7 +1531,7 @@ Codex.Startup=
                            glosses.length,etc.length);}
             else {
                 startupLog("Assimilating %d new glosses...",glosses.length);}
-            fdjtKB.Import(etc);
+            Codex.sourcekb.Import(etc);
             Codex.glosses.Import(glosses);
             var i=0; var lim=glosses.length;
             var latest=Codex.syncstamp||0;
@@ -1551,15 +1552,6 @@ Codex.Startup=
         function go_online(evt){return offline_update();}
         function offline_update(){
             Codex.writeQueuedGlosses(); updateInfo();}
-        function offline_import(results){
-            fdjtKB.Import(results);
-            var i=0; var lim=results.length;
-            var syncstamp=Codex.syncstamp; var tstamp=false;
-            while (i<lim) {
-                tstamp=results[i++].tstamp;
-                if ((tstamp)&&(tstamp>syncstamp)) syncstamp=tstamp;}
-            Codex.syncstamp=syncstamp;
-            setLocal("syncstamp("+Codex.refuri+")",syncstamp);}
         Codex.update=offline_update;
         
         fdjtDOM.addListener(window,"online",go_online);
@@ -1874,7 +1866,7 @@ Codex.Startup=
                 var props=saveprops, i=0, lim=props.length;
                 while (i<lim) dropLocal(props[i++]+"("+refuri+")");
                 var refuris=getLocal("codex.refuris",true);
-                refuris=fdjtKB.remove(refuris,refuri);
+                refuris=RefDB.remove(refuris,refuri);
                 setLocal("codex.refuris",refuris,true);}
             else {
                 var refuris=getLocal("codex.refuris",true);
