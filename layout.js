@@ -122,15 +122,15 @@ Codex.Paginate=
                 var i=0, lim=moved_ids.length;
                 while (i<lim) {
                     var id=moved_ids[i++];
-                    var glosses=Codex.glosses.find('frag',id);
+                    var glosses=Codex.glosses.index('frag',id);
                     if (!((glosses)&&(glosses.length))) continue;
                     var j=0, jlim=glosses.length; while (j<lim) {
                         var gloss=Codex.glosses.probe(glosses[j++]);
                         if (gloss) {
-                            var nodes=Codex.getDups(item.frag);
+                            var nodes=Codex.getDups(gloss.frag);
                             addClass(nodes,"glossed");
                             var k=0, klim=nodes.length; while (k<klim) {
-                                addGlossmark(nodes[ki++],item);}}}}
+                                addGlossmark(nodes[ki++],gloss);}}}}
                 setupPageInfo();
                 if (Codex.layoutdone) {
                     var fn=Codex.layoutdone;
