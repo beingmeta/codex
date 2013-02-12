@@ -102,7 +102,8 @@ Codex.DOMScan=(function(){
         function scanInfo(id,scanstate) {
             if (docinfo[id]) return docinfo[id];
             Ref.call(this,id,refdb);
-            this._live=fdjtTime();
+            this._live=this._changed=fdjtTime();
+            refdb.changed.push(this);
             this.frag=id;
             docinfo[id]=this;
             scanstate.allinfo.push(this);

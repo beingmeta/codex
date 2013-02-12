@@ -1667,17 +1667,24 @@ Codex.Startup=
             for (var tag in autoindex) {
                 if (!(autoindex.hasOwnProperty(tag))) continue;
                 var ids=autoindex[tag]; ntags++;
-                var starpower=tag.search(/[^*]/);
-                // all stars or empty string, just ignore
-                if (starpower<0) continue;
-                var weight=((tag[0]==='~')?(0):(2*starpower));
-                var literal=(tag[0]==='~');
+                var slot="tags";
+                if (tag[0]==="~") {
+                    slot="~tags"; tag=tag.slice(1);}
+                else if ((tag[0]==="*")&&(tag[1]==="*")) {
+                    slot="**tags"; tag=tag.slice(2);}
+                else if (tag[0]==="*")
+                    slot="*tags"; tag=tag.slice(1);
                 var knode=((tag.indexOf('|')>=0)?
                            (knodule.handleSubjectEntry(tag)):
-                           (tag[0]==='~')?(tag.slice(1)):
+                           (slot==="~tags")?(tag):
                            (knodule.handleSubjectEntry(tag)));
                 if ((literal)&&(typeof knode !== 'string'))
                     knode.literal=knode.weak=true;
+                var tagval=((typeof knode === "string")?(knode):
+                            ((knode._id)&&
+                             ((knode._domain)?(knode._id+"@"+knode._domain):
+                              (knode._id))));
+                if (!(tagval)) continue;
                 var i=0; var lim=ids.length; nitems=nitems+lim;
                 while (i<lim) {
                     var idinfo=ids[i++];
@@ -1686,20 +1693,18 @@ Codex.Startup=
                     var info=Codex.docinfo[frag];
                     // Pointer to non-existent node.  Warn here?
                     if (!(info)) continue;
-                    var tagval=((typeof knode === 'string')?(knode):
-                                (knode._qid||knode.dterm));
-                    if (info.autotags) info.autotags.push(tagval);
-                    else info.autotags=[tagval];
-                    if (typeof knode !== 'string') {
+                    info.add(slot,knode);
+                    if (knode instanceof Knode) {
+                        var allways=knode.allways;
                         if (info.knodes) info.knodes.push(knode);
-                        else info.knodes=[knode];}
-                    if (typeof idinfo === 'string') {}
-                    // When the idinfo is an array, the first
-                    // element is the id itself and the remaining
-                    // elements are the text strings which
-                    // actually matches the tag (we use this for
-                    // highlighting).
-                    else {
+                        else info.knodes=[knode];
+                        info.add("tags*",allways);}
+                    if (typeof idinfo !== 'string') {
+                        // When the idinfo is an array, the first
+                        // element is the id itself and the remaining
+                        // elements are the text strings which are the
+                        // basis for the tag (we use this for
+                        // highlighting).
                         var knodeterms=info.knodeterms, terms;
                         // If it's the regular case, we just assume that
                         if (!(info.knodeterms)) {
@@ -1708,10 +1713,7 @@ Codex.Startup=
                         else if (terms=knodeterms[tagval]) {}
                         else knodeterms[tagval]=terms=[];
                         var j=1; var jlim=idinfo.length;
-                        while (j<jlim) {terms.push(idinfo[j++]);}}
-                    sbook_index.add(
-                        info._id,knode,starpower||baseweight||0,
-                        knodule);}}
+                        while (j<jlim) {terms.push(idinfo[j++]);}}}}
             fdjtLog("Assimilated index data for %d keys over %d items",
                     ntags,nitems);
             if (whendone) whendone();}

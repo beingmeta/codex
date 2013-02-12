@@ -146,7 +146,8 @@ var Codex=
         Codex.etc=[];
 
         var docinfo=Codex.DocInfo=new fdjt.RefDB(
-            refuri+"#",{indices: ["frag","tags"]});
+            refuri+"#",{indices: ["frag","tags","tags*",
+                                  "*tags","**tags","~tags"]});
         
         var knodule_name=
             fdjtDOM.getMeta("SBOOK.knodule")||
@@ -176,7 +177,6 @@ var Codex=
                 if ((!(item.maker))&&(Codex.user)) item.maker=(Codex.user._id);
                 var maker=(item.maker)&&(Codex.sourcekb.ref(item.maker));
                 if (maker) {
-                    Codex.index.add(item,maker,1);
                     Codex.addTag2GlossCloud(maker);
                     Codex.addTag2SearchCloud(maker);
                     Codex.UI.addGlossSource(maker,true);}
@@ -188,14 +188,15 @@ var Codex=
                     if ((tags)&&(tags.length)) {
                         var i=0; var lim=tags.length; var score=false;
                         while (i<lim) {
-                            var tag=tags[i++]; 
-                            if (tag[0]==='*') {
-                                score=tag.search(/[^*]/);
-                                tag=tag.slice(score);}
-                            else score=false;
+                            var tag=tags[i++], slot="tags"; 
+                            if (tag[0]==="~") {
+                                slot="~tags"; tag=tag.slice(1);}
+                            else if ((tag[0]==="*")&&(tag[0]==="**")) {
+                                slot="**tags"; tag=tag.slice(2);}
+                            else {}
                             var knode=
                                 ((tag.indexOf('@')>=0)&&
-                                 (fdjtKB.ref(tag,Codex.knodule)))||
+                                 (RefDB.ref(tag,Codex.knodule)))||
                                 (maker_knodule.handleEntry(tag));
                             if (info.glosstags)
                                 info.glosstags.push(knode);
