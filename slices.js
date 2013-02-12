@@ -76,7 +76,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var excerpt_len=((info.excerpt)?(info.excerpt.length):(0));
         var note_len=((info.note)?(info.note.length):(0));
         var overdoc=getoverdoc(info);
-        var shared=(info.shared);
+        var shared=(info.shared)||[];
         if (typeof shared === 'string') shared=[shared];
         if (overdoc) shared=RefDB.remove(shared,(overdoc._qid||overdoc._id));
         var body=
