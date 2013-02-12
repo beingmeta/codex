@@ -164,6 +164,7 @@ var Codex=
         Codex.BRICO.addAlias("@1/");
         Codex.glosses=new RefDB("glosses"); {
             var superadd=Codex.glosses.add;
+            Codex.glosses.absrefs=true;
             Codex.glosses.addAlias("glossdb");
             Codex.glosses.addAlias("-UUIDTYPE=61");
             Codex.glosses.addAlias(":@31055/");
@@ -211,6 +212,7 @@ var Codex=
                                   "initgloss");
             if (Codex.persist) Codex.glosses.storage=window.localStorage;}
         Codex.sourcekb=new RefDB("sources");{
+            Codex.sourcekb.absrefs=true;
             Codex.sourcekb.addAlias("@1961/");
             Codex.sourcekb.forDOM=function(source){
                 var spec="span.source"+((source.kind)?".":"")+
