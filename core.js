@@ -612,6 +612,46 @@ var Codex=
         else return false;}
     Codex.findExcerpt=findExcerpt;
 
+    /* Tags */
+
+    function parseTag(tag,kno){
+        var slot="tags"; var usekno=kno||Codex.knodule;
+        if (tag[0]==="~") {
+            slot="~tags"; tag=tag.slice(1);}
+        else if ((tag[0]==="*")&&(tag[1]==="*")) {
+            slot="**tags"; tag=tag.slice(2);}
+        else if (tag[0]==="*") {
+            slot="*tags"; tag=tag.slice(1);}
+        else {}
+        var knode=((tag.indexOf('|')>=0)?
+                   (usekno.handleSubjectEntry(tag)):
+                   (slot==="~tags")?
+                   (((kno)&&(kno.probe(tag)))||(tag)):
+                   (usekno.handleSubjectEntry(tag)));
+        if (slot!=="tags") return {slot: slot,tag: knode};
+        else return knode;}
+    Codex.parseTag=parseTag;
+    function addTag(item,tag,kno){
+        var slot="tags"; var usekno=kno||Codex.knodule;
+        if (tag[0]==="~") {
+            slot="~tags"; tag=tag.slice(1);}
+        else if ((tag[0]==="*")&&(tag[1]==="*")) {
+            slot="**tags"; tag=tag.slice(2);}
+        else if (tag[0]==="*") {
+            slot="*tags"; tag=tag.slice(1);}
+        else {}
+        var knode=((tag.indexOf('|')>=0)?
+                   (usekno.handleSubjectEntry(tag)):
+                   (slot==="~tags")?
+                   (((kno)&&(kno.probe(tag)))||(tag)):
+                   (usekno.handleSubjectEntry(tag)));
+        item.add(slot,knode);
+        if (knode.allways) {
+            var allways=knode.allways;
+            var i=0, lim=allways.length;
+            while (i<lim) item.add(slot+"*",allways[i++]);}}
+    Codex.addTag=addTag;
+
     /* Navigation */
 
     function resizeBody(){

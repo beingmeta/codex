@@ -1678,7 +1678,7 @@ Codex.Startup=
                            (knodule.handleSubjectEntry(tag)):
                            (slot==="~tags")?(tag):
                            (knodule.handleSubjectEntry(tag)));
-                if ((literal)&&(typeof knode !== 'string'))
+                if ((slot==="~tags")&&(typeof knode !== 'string'))
                     knode.literal=knode.weak=true;
                 var tagval=((typeof knode === "string")?(knode):
                             ((knode._id)&&
@@ -1698,7 +1698,7 @@ Codex.Startup=
                         var allways=knode.allways;
                         if (info.knodes) info.knodes.push(knode);
                         else info.knodes=[knode];
-                        info.add("tags*",allways);}
+                        info.add(tagslot+"*",allways);}
                     if (typeof idinfo !== 'string') {
                         // When the idinfo is an array, the first
                         // element is the id itself and the remaining
@@ -1721,6 +1721,8 @@ Codex.Startup=
         
         /* Applying various tagging schemes */
 
+        var addTag=Codex.addTag;
+
         function applyTagSpans() {
             startupMessage("Applying inline tags");
             var tags=fdjtDOM.$(".sbooktags");
@@ -1733,9 +1735,8 @@ Codex.Startup=
                 var tagsep=tagelt.getAttribute("tagsep")||";";
                 var tagstrings=tagtext.split(tagsep);
                 if (tagstrings.length) {
-                    if (info.tags)
-                        info.tags=info.tags.concat(tagstrings);
-                    else info.tags=tagstrings;}}
+                    var j=0, jlim=tagstrings.length;
+                    while (j<jlim) addTag(info,tagstrings[j++]);}}
             var tags=fdjtDOM.$(".sbooktag");
             var i=0; var lim=tags.length;
             while (i<lim) {
@@ -1743,9 +1744,7 @@ Codex.Startup=
                 var target=Codex.getTarget(tagelt);
                 var info=Codex.docinfo[target.id];
                 var tagtext=fdjtDOM.textify(tagelt);
-                if (info.tags)
-                    info.tags=info.tags.concat(tagtext);
-                else info.tags=[tagtext];}}
+                addTag(info,tagtext);}}
         
         function applyAnchorTags(kno) {
             var sbook_index=Codex.index; var docinfo=Codex.docinfo;
@@ -1783,8 +1782,7 @@ Codex.Startup=
                     else {}
                     if (tag) {
                         var info=docinfo[cxt.id];
-                        if (info.tags) info.tags.push(tag);
-                        else info.tags=[tag];}}
+                        addTag(inof,tag);}}
                 else i++;}}
         
         /* Indexing tags */
@@ -1824,49 +1822,7 @@ Codex.Startup=
                             whendone();});});}
         Codex.indexAssignedTags=indexAssignedTags;
         
-        function process_inline_tags(tags){
-            var k=0; var ntags=tags.length;
-            var scores=tags.scores||false;
-            var knodes=tags.knodes||false;
-            var knodule=Codex.knodule;
-            if (!(scores)) tags.scores=scores={};
-            if (!(knodes)) tags.knodes=knodes={};
-            while (k<ntags) {
-                var tag=tags[k]; var score=1; var tagbase=false;
-                if (tag[0]==='*') {
-                    var tagstart=tag.search(/[^*]+/);
-                    score=2*(tagstart+1);
-                    tagbase=tag.slice(tagstart);}
-                else if (tag[0]==='~') {
-                    var tagstart=tag.search(/[^~]+/);
-                    tag=tag.slice(tagstart);
-                    if (tagstart>1) {
-                        if (!(scores)) tags.scores=scores={};
-                        score=1/tagstart;}
-                    else score=1;}
-                else {
-                    tagbase=tag;
-                    score=2;}
-                if (tagbase) {
-                    var knode=((tagbase.indexOf('|')>0)?
-                               (knodule.handleSubjectEntry(tagbase)):
-                               (knodule.ref(tagbase)));
-                    if ((knode)&&(knode.tagString))
-                        tag=knode.tagString();
-                    if (knode) knodes[tag]=knode;}
-                tags[k]=tag;
-                scores[tag]=score;
-                k++;}
-            if (scores) {
-                tags.sort(function(t1,t2){
-                    var s1=scores[t1]||1; var s2=scores[t2]||1;
-                    if (s1>s2) return -1;
-                    else if (s1<s2) return 1;
-                    else if (t1<t2) return -1;
-                    else if (t1>t2) return 1;
-                    else return 0;});}
-            else tags.sort();}
-
+        function process_inline_tags(tags){}
         function index_inline_tags(ix,knodule){
             return function (info){
                 var eltid=info.frag;
