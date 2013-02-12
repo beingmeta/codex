@@ -374,7 +374,9 @@ Codex.Startup=
                             var prop=saveprops[i++];
                             if (Codex[prop]) setLocal(
                                 prop+"("+refuri+")",Codex[prop],true);}
-                        if ((Codex.allglosses)&&(Codex.allglosses.length))
+                        if ((Codex.persist)&&
+                            (Codex.allglosses)&&
+                            (Codex.allglosses.length))
                             setLocal("glosses("+refuri+")",Codex.allglosses,
                                      true);
                         Codex.queued=fdjtState.getLocal("queued("+Codex.refuri+")",true)||[];}
