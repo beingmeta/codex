@@ -220,7 +220,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             bigimage,fdjtDOM.Image(cxicon("sbwedge",64,64),"tiny","*"));
         // Get all the glosses from the index
         var id=passage.getAttribute("data-baseid")||passage.id;
-        var glosses=Glosses.index(false,"frag",id);
+        var glosses=Glosses.find("frag",id);
         glossmark.title=
             ((glosses.length>1)?
              ("See "+glosses.length+" glosses on this passage"):
