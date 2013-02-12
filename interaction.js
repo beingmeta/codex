@@ -2018,6 +2018,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var noBubble=fdjtUI.noBubble;
     var cancel=fdjtUI.cancel;
 
+    function generic_cancel(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        if (fdjtUI.isClickable(target)) return;
+        else cancel(evt);}
+
     function hideSplash(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -2082,7 +2088,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                      mouseout: glossmark_hoverdone},
          glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
          summary: {tap: slice_tapped, hold: slice_held,
-                   release: slice_released},
+                   release: slice_released, click: generic_cancel},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
