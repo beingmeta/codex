@@ -1382,7 +1382,7 @@ Codex.Startup=
             if (outlets) Codex.outlets=outlets;
             if (overlays) Codex.overlays=overlays;
             if (persist) {
-                setLocal(Codex.user._id,Codex.user,true);
+                Codex.user.save();
                 setLocal("codex.user",Codex.user._id);}
             setupUI4User();
             return Codex.user;}
