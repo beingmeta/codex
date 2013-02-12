@@ -127,7 +127,7 @@ var Codex=
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
-    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+    var fdjtID=fdjt.ID;
     var RefDB=fdjt.RefDB, Ref=fdjt.Ref, Query=RefDB.Query;
 
     var hasClass=fdjtDOM.hasClass;
@@ -162,7 +162,9 @@ var Codex=
         Codex.BRICO=new Knodule("BRICO");
         Codex.BRICO.addAlias(":@1/");
         Codex.BRICO.addAlias("@1/");
-        Codex.glosses=new RefDB("glosses"); {
+        var glosses_init={
+            indices: ["frag","maker","outlets"]};
+        Codex.glosses=new RefDB("glosses",glosses_init); {
             var superadd=Codex.glosses.add;
             Codex.glosses.absrefs=true;
             Codex.glosses.addAlias("glossdb");
