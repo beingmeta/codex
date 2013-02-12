@@ -53,7 +53,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
-    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+    var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
 
     var div_threshold=7;
     var debug_locbars=false;
@@ -78,11 +78,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var overdoc=getoverdoc(info);
         var shared=(info.shared);
         if (typeof shared === 'string') shared=[shared];
-        if (overdoc) shared=fdjtKB.remove(shared,(overdoc._qid||overdoc._id));
+        if (overdoc) shared=RefDB.remove(shared,(overdoc._qid||overdoc._id));
         var body=
             fdjtDOM("div.codexcardbody",
                     // (makelocrule(target_info,target_info.head)),
-                    (((info.maker)||(info.tstamp))?(showglossinfo(info)):(showdocinfo(info)))," ",
+                    (((info.maker)||(info.tstamp))?(showglossinfo(info)):
+                     (showdocinfo(info)))," ",
                     ((standalone)&&(showtocloc(target_info))),
                     ((score)&&(showscore(score))),
                     ((note_len>0)&&(Ellipsis("span.note",info.note,140)))," ",
@@ -189,7 +190,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         while (i<tags.length) {
             var tag=tags[i]; var score=((scores)&&(scores[tag]))||false;
             if ((typeof tag === 'string')&&(tag.indexOf('@')>=0))
-                tag=fdjtKB.ref(tag)||tag;
+                tag=RefDB.ref(tag)||tag;
             var togo=tags.length-i;
             if ((!controller)&&((!(score))||(score<=1))&&
                 (i>show_tag_thresh)&&(togo>4)) {
@@ -218,7 +219,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         // This might do some kind of more/less controls and sorted
         // or cloudy display
         while (i<outlets.length) {
-            var outlet=outlets[i]; var info=fdjtKB.load(outlet);
+            var outlet=outlets[i]; var info=RefDB.load(outlet);
             var outlet_span=fdjtDOM("span.outlet",info.name);
             if (info.about) 
                 outlet_span.title="Shared with “"+info.name+"” — "+info.about;
@@ -312,14 +313,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (typeof sources === 'string') sources=[sources];
             var i=0; var lim=sources.length;
             while (i<lim) {
-                var source=fdjtKB.load(sources[i++]);
+                var source=RefDB.load(sources[i++]);
                 if ((source)&&(source.kind===':OVERDOC'))
                     return source;}
             return false;}
         else return false;}
 
     function getfakepic(maker,spec){
-        var userinfo=fdjtKB.load(maker);
+        var userinfo=RefDB.load(maker);
         var pic=fdjtDOM(spec||"div.sbooksourcepic",
                         (((userinfo)&&(userinfo.name))?
                          (fdjtString.getInitials(userinfo.name)):
@@ -334,7 +335,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (typeof sources==='string') sources=[sources];
             var i=0; var lim=sources.length;
             while (i<lim) {
-                var source=fdjtKB.load(sources[i++]);
+                var source=RefDB.load(sources[i++]);
                 if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
                     return { src: source.pic, alt: source.name,
                              classname: "img.glosspic.sourcepic"};}}
@@ -351,12 +352,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (typeof outlets==='string') outlets=[outlets];
             var i=0; var lim=outlets.length;
             while (i<lim) {
-                var outlet=fdjtKB.load(outlets[i++]);
+                var outlet=RefDB.load(outlets[i++]);
                 if ((outlet)&&(outlet.kind===':OVERLAY')&&(outlet.pic))
                     return { src: outlet.pic, alt: outlet.name,
                              classname: "img.glosspic.sourcepic"};}}
         if (info.maker) {
-            var userinfo=fdjtKB.load(info.maker);
+            var userinfo=RefDB.load(info.maker);
             if (userinfo.pic)
                 return { src: userinfo.pic, alt: userinfo.name,
                          classname: "img.glosspic.userpic"};
@@ -742,9 +743,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (hasClass(child,"codexcard")) {
                 var gloss=(child.qref)&&Codex.glosses.map[child.qref];
                 if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
-                else if ((fdjtKB.contains(sources,gloss.maker))||
-                         (fdjtKB.overlaps(sources,gloss.sources))||
-                         (fdjtKB.overlaps(sources,gloss.shared))) {
+                else if ((RefDB.contains(sources,gloss.maker))||
+                         (RefDB.overlaps(sources,gloss.sources))||
+                         (RefDB.overlaps(sources,gloss.shared))) {
                     fdjtDOM.addClass(child,"sourced");
                     empty=false;}
                 else fdjtDOM.dropClass(child,"sourced");}
