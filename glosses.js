@@ -680,7 +680,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
         var tags=[];
-        var targetid=((target.codexbaseid)||(target.id));
+        var targetid=((target.codexbaseid)||(target.id)||(target.frag));
         var info=Codex.docinfo[targetid];
         var glosses=Codex.glosses.find('frag',targetid);
         var knodule=Codex.knodule;

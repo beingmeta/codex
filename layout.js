@@ -121,16 +121,17 @@ Codex.Paginate=
                 var lostids=layout.lostids, moved_ids=lostids._all_ids;
                 var i=0, lim=moved_ids.length;
                 while (i<lim) {
+                    var addGlossmark=Codex.UI.addGlossmark
                     var id=moved_ids[i++];
-                    var glosses=Codex.glosses.index('frag',id);
+                    var glosses=Codex.glosses.find('frag',id);
                     if (!((glosses)&&(glosses.length))) continue;
-                    var j=0, jlim=glosses.length; while (j<lim) {
+                    var j=0, jlim=glosses.length; while (j<jlim) {
                         var gloss=Codex.glosses.probe(glosses[j++]);
                         if (gloss) {
                             var nodes=Codex.getDups(gloss.frag);
                             addClass(nodes,"glossed");
                             var k=0, klim=nodes.length; while (k<klim) {
-                                addGlossmark(nodes[ki++],gloss);}}}}
+                                addGlossmark(nodes[k++],gloss);}}}}
                 setupPageInfo();
                 if (Codex.layoutdone) {
                     var fn=Codex.layoutdone;
