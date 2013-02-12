@@ -154,7 +154,7 @@ Codex.setMode=
             Codex.glosses.onAdd("sources",function(f,p,v){
                 Codex.sourcekb.ref(v).oninit
                 (Codex.UI.addGlossSource,"newsource");});
-            Codex.glosses.onAdd(addGloss2UI);
+            Codex.glosses.onLoad(addGloss2UI);
             
             Codex.DOM.console=fdjtID("CODEXCONSOLE");
             if (Codex.Trace.startup>1) fdjtLog("Setting up console %o",console);
