@@ -2096,7 +2096,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXPAGEINFO": {tap: pageinfo_tap,
                             hold: pageinfo_hold,
                             release: pageinfo_slip,
-                            slip: pageinfo_slip},
+                            slip: pageinfo_slip,
+                            click: cancel},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
@@ -2180,7 +2181,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXPAGEINFO": {tap: pageinfo_tap,
                             hold: pageinfo_hold,
                             release: pageinfo_slip,
-                            slip: pageinfo_slip},
+                            slip: pageinfo_slip,
+                            click: cancel},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
