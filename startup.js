@@ -1489,8 +1489,7 @@ Codex.Startup=
                             qids.push(qid);}
                         else {
                             var obj=Codex.sourcekb.Import(info[i++]);
-                            if (persist) 
-                                setLocal(obj._id,obj,true);
+                            obj.save();
                             qids.push(obj._id);}}
                     Codex[name]=qids;
                     if (Codex.persist)
