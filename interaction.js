@@ -984,7 +984,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function glossdeleted(response,glossid,frag){
         if (response===glossid) {
             Codex.glosses.drop(glossid);
-            Codex.allglosses=fdjtKB.remove(Codex.allglosses,glossid);
+            Codex.allglosses=RefDB.remove(Codex.allglosses,glossid);
             if (Codex.persist)
                 fdjtState.setLocal("glosses("+Codex.refuri+")",
                                    Codex.allglosses,true);
@@ -1007,7 +1007,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var glossmarks=document.getElementsByName("CODEX_GLOSSMARK_"+frag);
             var j=0, jlim=glossmarks.length; while (j<jlim) {
                 var glossmark=glossmarks[j++];
-                var newglosses=fdjtKB.remove(glossmark.glosses,glossid);
+                var newglosses=RefDB.remove(glossmark.glosses,glossid);
                 if (newglosses.length===0) fdjtDOM.remove(glossmark);
                 else glossmark.glosses=newglosses;}}
         else fdjtUI.alert(response);}
@@ -2018,6 +2018,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var noBubble=fdjtUI.noBubble;
     var cancel=fdjtUI.cancel;
 
+    function generic_cancel(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        if (fdjtUI.isClickable(target)) return;
+        else cancel(evt);}
+
     function hideSplash(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -2082,7 +2088,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                      mouseout: glossmark_hoverdone},
          glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
          summary: {tap: slice_tapped, hold: slice_held,
-                   release: slice_released},
+                   release: slice_released, click: generic_cancel},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
