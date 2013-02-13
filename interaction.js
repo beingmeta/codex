@@ -1429,8 +1429,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.setMode(true); else */
         Codex.setMode(false);
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
-            scanForward();
-        else pageForward();}
+            scanForward(evt);
+        else pageForward(evt);}
     Codex.Forward=Forward;
     function right_margin(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
@@ -1457,10 +1457,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (Codex.hudup) Codex.setMode(false);
         else Backward(evt);}
 
-
-    function pageForward(){
-        if (Codex.Trace.gestures)
-            fdjtLog("pageForward c=%o n=%o",Codex.curpage,Codex.pagecount);
+    function pageForward(evt){
+        evt=evt||event;
+        if ((Codex.Trace.gestures)||(Codex.Trace.flips))
+            fdjtLog("pageForward (on %o) c=%o n=%o",
+                    evt,Codex.curpage,Codex.pagecount);
         if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
             Codex.setMode(false);
         if ((Codex.bypage)&&(Codex.pagecount)) {
@@ -1475,9 +1476,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             window.scrollTo(fdjtDOM.viewLeft(),newy);}}
     Codex.pageForward=pageForward;
 
-    function pageBackward(){
-        if (Codex.Trace.gestures)
-            fdjtLog("pageBackward c=%o n=%o",Codex.curpage,Codex.pagecount);
+    function pageBackward(evt){
+        if ((Codex.Trace.gestures)||(Codex.Trace.flips))
+            fdjtLog("pageBackward (on %o) c=%o n=%o",
+                    evt,Codex.curpage,Codex.pagecount);
         if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
             Codex.setMode(false);
         if ((Codex.bypage)&&(Codex.pagecount)) {
@@ -1493,7 +1495,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             window.scrollTo(fdjtDOM.viewLeft(),newy);}}
     Codex.pageBackward=pageBackward;
 
-    function scanForward(){
+    function scanForward(evt){
+        evt=evt||event;
         if (Codex.mode==="scanning") {}
         else if (Codex.mode==="tocscan") {}
         else if (Codex.mode==="glosses") {
@@ -1538,9 +1541,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var start=Codex.scanning;
         var scan=Codex.nextSlice(start);
         var ref=((scan)&&(Codex.getRef(scan)));
-        if (Codex.Trace.nav) 
-            fdjtLog("scanForward() from %o/%o to %o/%o under %o",
-                    start,Codex.getRef(start),scan,ref,Codex.scanning);
+        if ((Codex.Trace.gestures)||(Codex.Trace.flips)||(Codex.Trace.nav)) 
+            fdjtLog("scanForward (on %o) from %o/%o to %o/%o under %o",
+                    evt,start,Codex.getRef(start),scan,ref,Codex.scanning);
         if ((ref)&&(scan)) Codex.Scan(ref,scan);
         return scan;}
     Codex.scanForward=scanForward;
@@ -1584,9 +1587,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return;}
         var scan=Codex.prevSlice(Codex.scanning);
         var ref=((scan)&&(Codex.getRef(scan)));
-        if (Codex.Trace.nav) 
-            fdjtLog("scanBackward() from %o/%o to %o/%o under %o",
-                    start,Codex.getRef(start),scan,ref,Codex.scanning);
+        if ((Codex.Trace.gestures)||(Codex.Trace.flips)||(Codex.Trace.nav))
+            fdjtLog("scanBackward (on %o) from %o/%o to %o/%o under %o",
+                    evt,start,Codex.getRef(start),scan,ref,Codex.scanning);
         if ((ref)&&(scan)) Codex.Scan(ref,scan,true);
         return scan;}
     Codex.scanBackward=scanBackward;
@@ -2136,13 +2139,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXHELP": {
              click: toggleHelp, mousedown: cancel,mouseup: cancel},
          "#CODEXNEXTPAGE": {click: function(evt){
-             Codex.pageForward(); cancel(evt);}},
+             Codex.pageForward(evt); cancel(evt);}},
          "#CODEXPREVPAGE": {click: function(evt){
-             Codex.pageBackward(); cancel(evt);}},
+             Codex.pageBackward(evt); cancel(evt);}},
          "#CODEXNEXTSCAN": {click: function(evt){
-             Codex.scanForward(); cancel(evt);}},
+             Codex.scanForward(evt); cancel(evt);}},
          "#CODEXPREVSCAN": {click: function(evt){
-             Codex.scanBackward(); cancel(evt);}},
+             Codex.scanBackward(evt); cancel(evt);}},
          "#CODEXSHOWTEXT": {click: back_to_reading},
          "#CODEXAPPSPLASH": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
@@ -2217,13 +2220,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
          "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
          "#CODEXNEXTPAGE": {click: function(evt){
-             Codex.pageForward(); cancel(evt);}},
+             Codex.pageForward(evt); cancel(evt);}},
          "#CODEXPREVPAGE": {click: function(evt){
-             Codex.pageBackward(); cancel(evt);}},
+             Codex.pageBackward(evt); cancel(evt);}},
          "#CODEXNEXTSCAN": {click: function(evt){
-             Codex.scanForward(); cancel(evt);}},
+             Codex.scanForward(evt); cancel(evt);}},
          "#CODEXPREVSCAN": {click: function(evt){
-             Codex.scanBackward(); cancel(evt);}},
+             Codex.scanBackward(evt); cancel(evt);}},
          "#CODEXHELPBUTTON": {click: toggleHelp},
          "#CODEXHELP": {click: toggleHelp},
          "#CODEXSHOWTEXT": {click: back_to_reading},
