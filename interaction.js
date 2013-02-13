@@ -621,6 +621,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function slice_touched(evt){
         var target=fdjtUI.T(evt);
+        if (fdjt.UI.isClickable(target)) return;
         var slice=getParent(target,".codexslice");
         if (!(slice)) {
             cancel(evt);
