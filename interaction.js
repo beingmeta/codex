@@ -406,8 +406,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             clicked=fdjtTime();
             return;}        
         
+        // If we're in a glossmark, let its handler apply
+        if (hasParent(target,".codexglossmark")) {
+            fdjtUI.cancel(evt);
+            return false;}
+
         // If we tap a fdjtselecting region, it's handlers should cancel
-        //  this handler.
+        //  this handler, so we don't worry about that.
 
         // So we're doing a page flip.
         var now=fdjtTime(), touch=false;
@@ -1330,6 +1335,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function glossmark_tapped(evt){
         evt=evt||event||null;
         if (held) clear_hold("glossmark_tapped");
+        if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)||(evt.shiftKey))
+            return;
         var target=fdjtUI.T(evt);
         var glossmark=getParent(target,".codexglossmark");
         var passage=getTarget(glossmark.parentNode,true);
