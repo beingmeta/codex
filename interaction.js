@@ -619,6 +619,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return Codex.scrollers[slice.id].scrollStartY;
         else return slice.scrollTop;}
 
+    function slice_touched(evt){
+        var target=fdjtUI.T(evt);
+        var slice=getParent(target,".codexslice");
+        if (!(slice)) {
+            cancel(evt);
+            Codex.setMode(false);}}
+
     function slice_tapped(evt){
         var target=fdjtUI.T(evt);
         var slice=getParent(card,".codexslice");
@@ -2184,6 +2191,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          summary: {tap: slice_tapped,
                    hold: slice_held,
                    release: slice_released},
+         "#CODEXHEART": {touchstart: slice_touched},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
@@ -2219,6 +2227,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXATTACHCANCEL": {click: addlink_cancel},
          "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
          "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
+         /*
          "#CODEXNEXTPAGE": {click: function(evt){
              Codex.pageForward(evt); cancel(evt);}},
          "#CODEXPREVPAGE": {click: function(evt){
@@ -2227,6 +2236,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
              Codex.scanForward(evt); cancel(evt);}},
          "#CODEXPREVSCAN": {click: function(evt){
              Codex.scanBackward(evt); cancel(evt);}},
+             */
          "#CODEXHELPBUTTON": {click: toggleHelp},
          "#CODEXHELP": {click: toggleHelp},
          "#CODEXSHOWTEXT": {click: back_to_reading},
