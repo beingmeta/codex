@@ -641,6 +641,7 @@ Codex.Startup=
                     Codex.glosshash=false;
                 else initLocation();}
             else initLocation();
+            fdjtLog("Startup done");
             if (fdjtID("CODEXREADYSPLASH"))
                 fdjtID("CODEXREADYSPLASH").style.display='none';
             Codex.displaySync();
