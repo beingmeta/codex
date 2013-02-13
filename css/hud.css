@@ -802,7 +802,7 @@ body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded {
 
 div#CODEXHUD div#CODEXSCANNER div.codexcard span.glossinfo span.isclickable {
     display: none;}
-body div#CODEXHUD img.codexscanbutton {
+body img.codexscanbutton {
     width: 50px; height: 100px;
     position: fixed; bottom: 50%; 
     display: none; opacity: 0.5;
@@ -812,7 +812,7 @@ body div#CODEXHUD img.codexscanbutton {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-body div#CODEXHUD img.codexpagebutton {
+body img.codexpagebutton {
     width: 50px; height: 100px;
     position: fixed; bottom: 50%; opacity: 0.15;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
@@ -821,7 +821,7 @@ body div#CODEXHUD img.codexpagebutton {
     -khtml-opacity: 0.15;
     -moz-opacity: 0.15;
     -o-opacity: 0.15;}
-body.cxMOUSE div#CODEXHUD img.codexpagebutton:hover {
+body.cxMOUSE img.codexpagebutton:hover {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -829,7 +829,7 @@ body.cxMOUSE div#CODEXHUD img.codexpagebutton:hover {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70; }
-body.hudup div#CODEXHUD img.codexpagebutton {
+body.hudup img.codexpagebutton {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -837,45 +837,33 @@ body.hudup div#CODEXHUD img.codexpagebutton {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70; }
-body div#CODEXHUD img.codexscanbutton#CODEXNEXTSCAN,
-body div#CODEXHUD img.codexscanbutton#CODEXENDSCAN,
-body div#CODEXHUD img.codexpagebutton#CODEXNEXTPAGE {
+body img.codexscanbutton#CODEXNEXTSCAN,
+body img.codexscanbutton#CODEXENDSCAN,
+body img.codexpagebutton#CODEXNEXTPAGE {
     right: 0px;}
-body div#CODEXHUD img.codexscanbutton#CODEXPREVSCAN,
-body div#CODEXHUD img.codexscanbutton#CODEXSTARTSCAN,
-body div#CODEXHUD img.codexpagebutton#CODEXPREVPAGE {
+body img.codexscanbutton#CODEXPREVSCAN,
+body img.codexscanbutton#CODEXSTARTSCAN,
+body img.codexpagebutton#CODEXPREVPAGE {
     left: 0px;}
 
-body div#CODEXHUD.scanning img.codexscanbutton {display: block;}
-body div#CODEXHUD.scanning img.codexpagebutton { display: none;}
-body div#CODEXHUD.scanning img.codexscanbutton#CODEXSTARTSCAN,
-body div#CODEXHUD.scanning img.codexscanbutton#CODEXENDSCAN {
+body.codexscanning img.codexscanbutton {display: block;}
+body.codexscanning img.codexpagebutton { display: none;}
+body.codexscanning img.codexscanbutton#CODEXSTARTSCAN,
+body.codexscanning img.codexscanbutton#CODEXENDSCAN {
     display: none;}
 
-body div#CODEXHUD.tocscan img.codexscanbutton {display: block;}
-body div#CODEXHUD.tocscan img.codexpagebutton { display: none;}
-body div#CODEXHUD.tocscan img.codexscanbutton#CODEXSTARTSCAN,
-body div#CODEXHUD.tocscan img.codexscanbutton#CODEXENDSCAN {
-    display: none;}
-
-body div#CODEXHUD.glosses img.codexscanbutton {display: block;}
-body div#CODEXHUD.glosses img.codexpagebutton { display: none;}
-body div#CODEXHUD.glosses img.codexscanbutton#CODEXSTARTSCAN,
-body div#CODEXHUD.glosses img.codexscanbutton#CODEXENDSCAN {
-    display: none;}
-
-body div#CODEXHUD.scanning.scanstart img.codexscanbutton#CODEXSTARTSCAN,
-body div#CODEXHUD.scanning.scanend img.codexscanbutton#CODEXENDSCAN {
+body.codexscanning.codexscanstart img.codexscanbutton#CODEXSTARTSCAN,
+body.codexscanning.codexscanend img.codexscanbutton#CODEXENDSCAN {
     display: block;}
-body div#CODEXHUD.scanning.scanstart img.codexscanbutton#CODEXPREVSCAN,
-body div#CODEXHUD.scanning.scanend img.codexscanbutton#CODEXNEXTSCAN {
+body.codexscanning.codexscanstart img.codexscanbutton#CODEXPREVSCAN,
+body.codexscanning.codexscanend img.codexscanbutton#CODEXNEXTSCAN {
     display: none;}
 
 /* Don't display any buttons when you're at both the start and end */
-body div#CODEXHUD.scanning.scanstart.scanend img.codexscanbutton#CODEXSTARTSCAN,
-body div#CODEXHUD.scanning.scanstart.scanend img.codexscanbutton#CODEXENDSCAN,
-body div#CODEXHUD.scanning.scanstart.scanend img.codexscanbutton#CODEXNEXTSCAN,
-body div#CODEXHUD.scanning.scanstart.scanend img.codexscanbutton#CODEXPREVSCAN {
+body.codexscanning.codexscanstart.codexscanend img.codexscanbutton#CODEXSTARTSCAN,
+body.codexscanning.codexscanstart.codexscanend img.codexscanbutton#CODEXENDSCAN,
+body.codexscanning.codexscanstart.codexscanend img.codexscanbutton#CODEXNEXTSCAN,
+body.codexscanning.codexscanstart.codexscanend img.codexscanbutton#CODEXPREVSCAN {
     display: none;}
 
 body div#CODEXHUD.scanning img.hudbutton#CODEXTOCBUTTON,
