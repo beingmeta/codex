@@ -440,7 +440,6 @@ Codex.setMode=
 
         function setHUD(flag,clearmode){
             if (typeof clearmode === 'undefined') clearmode=true;
-            // clearmode=((Codex.mode!=='scanning')&&(Codex.mode!=='tocscan'));
             if ((Codex.Trace.gestures)||(Codex.Trace.mode))
                 fdjtLog("setHUD %o mode=%o hudup=%o bc=%o hc=%o",
                         flag,Codex.mode,Codex.hudup,
@@ -531,6 +530,10 @@ Codex.setMode=
                 else if (codex_mode_scrollers[mode]) 
                     Codex.scrolling=(codex_mode_scrollers[mode]);
                 else Codex.scrolling=false;
+
+                if ((mode==='scanning')||(mode==='tocscan')||(mode==='glosses'))
+                    addClass(document.body,"codexscanning");
+                else dropClass(document.body,"codexscanning");
 
                 // Scanning is a funny mode in that the HUD is down
                 //  for it.  We handle all of this stuff here.
@@ -906,11 +909,11 @@ Codex.setMode=
                 // This all makes sure that the >| and |< buttons
                 // appear appropriately
                 if (Codex.nextSlice(src))
-                    dropClass("CODEXHUD","scanend");
-                else addClass("CODEXHUD","scanend");
+                    dropClass(document.body,"codexscanend");
+                else addClass(document.body,"codexscanend");
                 if (Codex.prevSlice(src))
-                    dropClass("CODEXHUD","scanstart");
-                else addClass("CODEXHUD","scanstart");
+                    dropClass(document.body,"codexscanstart");
+                else addClass(document.body,"codexscanstart");
                 // This marks where we are currently scanning
                 if (pelt) dropClass(pelt,"codexscanpoint");
                 if (src) addClass(src,"codexscanpoint");

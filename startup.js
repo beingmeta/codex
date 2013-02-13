@@ -1167,6 +1167,9 @@ Codex.Startup=
             
             fdjtDOM.prepend(document.body,pagehead,pagefoot,pageleft,pageright);
 
+            pageright.innerHTML=Codex.HTML.pageright;
+            pageleft.innerHTML=Codex.HTML.pageleft;
+
             for (var pagelt in [pagehead,pageright,pageleft,pagefoot]) {
                 fdjtDOM.addListeners(pagelt,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
 
