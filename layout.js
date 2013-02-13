@@ -329,7 +329,9 @@ Codex.Paginate=
 
 
             CodexLayout.fetchLayout(layout_id,function(content){
-                if (content) saved_layout(content); else new_layout();});}
+                if (content)
+                    saved_layout(content);
+                else new_layout();});}
         Codex.Paginate=Paginate;
 
         CodexLayout.prototype.onresize=function(evt){
