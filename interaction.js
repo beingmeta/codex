@@ -1441,8 +1441,17 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     Codex.Forward=Forward;
     function right_margin(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
-        if (Codex.hudup) Codex.setMode(false);
-        else Forward(evt);}
+        if ((Codex.hudup)&&
+            (Codex.mode!=="scanning")&&
+            (Codex.mode!=="tocscan")&&
+            (Codex.mode!=="glosses"))
+            Codex.setMode(false);
+        else if ((Codex.mode==="scanning")||
+                 (Codex.mode==="tocscan")||
+                 (Codex.mode==="glosses"))
+            scanForward(evt);
+        else Forward(evt);
+        cancel(evt);}
 
     function Backward(evt){
         var now=fdjtTime();
@@ -1461,8 +1470,17 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     Codex.Backward=Backward;
     function left_margin(evt){
         if (Codex.Trace.gestures) tracetouch("left_margin",evt);
-        if (Codex.hudup) Codex.setMode(false);
-        else Backward(evt);}
+        if ((Codex.hudup)&&
+            (Codex.mode!=="scanning")&&
+            (Codex.mode!=="tocscan")&&
+            (Codex.mode!=="glosses"))
+            Codex.setMode(false);
+        else if ((Codex.mode==="scanning")||
+                 (Codex.mode==="tocscan")||
+                 (Codex.mode==="glosses"))
+            scanBackward(evt);
+        else Backward(evt);
+        cancel(evt);}
 
     function pageForward(evt){
         evt=evt||event;
