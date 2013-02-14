@@ -458,6 +458,9 @@ Codex.setMode=
                     dropClass(CodexHUD,"openhead");
                     dropClass(CodexHUD,"full");
                     dropClass(CodexHUD,CodexMode_pat);
+                    dropClass(document.body,"codexscanning");
+                    dropClass(document.body,"codexscanstart");
+                    dropClass(document.body,"codexscanend");
                     Codex.mode=false;}
                 dropClass(document.body,"hudup");
                 document.body.focus();}}
@@ -533,7 +536,7 @@ Codex.setMode=
 
                 if ((mode==='scanning')||(mode==='tocscan')||(mode==='glosses'))
                     addClass(document.body,"codexscanning");
-                else dropClass(document.body,"codexscanning");
+                else dropClass(document.body,/\bcodexscan.*\b/);
 
                 // Scanning is a funny mode in that the HUD is down
                 //  for it.  We handle all of this stuff here.
