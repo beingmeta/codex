@@ -57,6 +57,8 @@ Codex.Startup=
         var fdjtID=fdjt.ID;
         var RefDB=fdjt.RefDB, Ref=fdjt.Ref;
         
+        var warn=fdjtLog.warn;
+
         var sbook_heading_qricons=false;
 
         var https_root="https://s3.amazonaws.com/beingmeta/static/";
@@ -1655,33 +1657,22 @@ Codex.Startup=
                     startupLog("Setting up tag clouds");
                     initClouds();};}}
         
+        var addTags=Knodule.addTags;
+
         /* Using the autoindex generated during book building */
         function useIndexData(autoindex,knodule,baseweight,whendone){
-            var sbook_index=Codex.index;
             var ntags=0, nitems=0;
             if (!(autoindex)) return;
-            if (!(sbook_index)) return;
             for (var tag in autoindex) {
                 if (!(autoindex.hasOwnProperty(tag))) continue;
                 var ids=autoindex[tag]; ntags++;
-                var slot="tags";
-                if (tag[0]==="~") {
-                    slot="~tags"; tag=tag.slice(1);}
-                else if ((tag[0]==="*")&&(tag[1]==="*")) {
-                    slot="**tags"; tag=tag.slice(2);}
-                else if (tag[0]==="*")
-                    slot="*tags"; tag=tag.slice(1);
-                var knode=((tag.indexOf('|')>=0)?
-                           (knodule.handleSubjectEntry(tag)):
-                           (slot==="~tags")?(tag):
-                           (knodule.handleSubjectEntry(tag)));
-                if ((slot==="~tags")&&(typeof knode !== 'string'))
-                    knode.literal=knode.weak=true;
-                var tagval=((typeof knode === "string")?(knode):
-                            ((knode._id)&&
-                             ((knode._domain)?(knode._id+"@"+knode._domain):
-                              (knode._id))));
-                if (!(tagval)) continue;
+                var occurrences=[];
+                var tagval=tag;
+                if (tagval.search(/[^*]/)>0)
+                    tagval=tagval.slice(tagval.search(/[^*]/));
+                else if (tagval.search(/[^~]/)>0)
+                    tagval=tagval.slice(tagval.search(/[^~]/));
+                else {}
                 var i=0; var lim=ids.length; nitems=nitems+lim;
                 while (i<lim) {
                     var idinfo=ids[i++];
@@ -1689,13 +1680,9 @@ Codex.Startup=
                               (idinfo):(idinfo[0]));
                     var info=Codex.docinfo[frag];
                     // Pointer to non-existent node.  Warn here?
-                    if (!(info)) continue;
-                    info.add(slot,knode);
-                    if (knode instanceof Knode) {
-                        var allways=knode.allways;
-                        if (info.knodes) info.knodes.push(knode);
-                        else info.knodes=[knode];
-                        info.add(tagslot+"*",allways);}
+                    if (!(info)) {
+                        warn("Couldn't find node for %o",frag);
+                        continue;}
                     if (typeof idinfo !== 'string') {
                         // When the idinfo is an array, the first
                         // element is the id itself and the remaining
@@ -1710,7 +1697,9 @@ Codex.Startup=
                         else if (terms=knodeterms[tagval]) {}
                         else knodeterms[tagval]=terms=[];
                         var j=1; var jlim=idinfo.length;
-                        while (j<jlim) {terms.push(idinfo[j++]);}}}}
+                        while (j<jlim) {terms.push(idinfo[j++]);}}
+                    occurrences.push(info);}
+                addTags(occurrences,tag,Codex.DocInfo);}
             fdjtLog("Assimilated index data for %d keys over %d items",
                     ntags,nitems);
             if (whendone) whendone();}
