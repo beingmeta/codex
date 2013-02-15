@@ -239,6 +239,7 @@ var Codex=
         Query.prototype=new Knodule.TagQuery();
         Query.prototype.dbs=[Codex.glossdb,Codex.docdb];
         Query.prototype.base_slots=["tags","^tags","+tags"];
+        Query.prototype.ambigrefs=false;
         Codex.Query=Query;
 
         if (Codex.Trace.start>1) fdjtLog("Initialized DB");}
