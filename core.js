@@ -148,7 +148,7 @@ var Codex=
         // These are all references outside of the glosses
         Codex.etc=[];
 
-        var docinfo=Codex.DocInfo=new RefDB(
+        var docinfo=Codex.docdb=new RefDB(
             refuri+"#",{indices: ["frag","tags","tags*",
                                   "*tags","**tags","~tags"]});
         
@@ -164,14 +164,14 @@ var Codex=
         Codex.BRICO.addAlias("@1/");
         var glosses_init={
             indices: ["frag","maker","outlets"]};
-        Codex.glosses=new RefDB("glosses",glosses_init); {
-            var superadd=Codex.glosses.add;
-            Codex.glosses.absrefs=true;
-            Codex.glosses.addAlias("glossdb");
-            Codex.glosses.addAlias("-UUIDTYPE=61");
-            Codex.glosses.addAlias(":@31055/");
-            Codex.glosses.addAlias("@31055/");
-            Codex.glosses.onLoad(function initGloss(item) {
+        Codex.glossdb=new RefDB("glosses",glosses_init); {
+            var superadd=Codex.glossdb.add;
+            Codex.glossdb.absrefs=true;
+            Codex.glossdb.addAlias("glossdb");
+            Codex.glossdb.addAlias("-UUIDTYPE=61");
+            Codex.glossdb.addAlias(":@31055/");
+            Codex.glossdb.addAlias("@31055/");
+            Codex.glossdb.onLoad(function initGloss(item) {
                 var elt=document.getElementById(item.frag);
                 var info=Codex.docinfo[item.frag];
                 if (!(info)) {
@@ -181,7 +181,7 @@ var Codex=
                 if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
                 if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
                 if ((!(item.maker))&&(Codex.user)) item.maker=(Codex.user._id);
-                var maker=(item.maker)&&(Codex.sourcekb.ref(item.maker));
+                var maker=(item.maker)&&(Codex.sourcedb.ref(item.maker));
                 if (maker) {
                     Codex.addTag2GlossCloud(maker);
                     Codex.addTag2SearchCloud(maker);
@@ -209,24 +209,24 @@ var Codex=
                         var i=0; var lim=sources.length;
                         while (i<lim) {
                             var source=sources[i++];
-                            var ref=Codex.sourcekb.ref(source);
+                            var ref=Codex.sourcedb.ref(source);
                             Codex.UI.addGlossSource(ref,true);}}}},
                                   "initgloss");
-            if (Codex.persist) Codex.glosses.storage=window.localStorage;}
-        Codex.sourcekb=new RefDB("sources");{
-            Codex.sourcekb.absrefs=true;
-            Codex.sourcekb.addAlias("@1961/");
-            Codex.sourcekb.forDOM=function(source){
+            if (Codex.persist) Codex.glossdb.storage=window.localStorage;}
+        Codex.sourcedb=new RefDB("sources");{
+            Codex.sourcedb.absrefs=true;
+            Codex.sourcedb.addAlias("@1961/");
+            Codex.sourcedb.forDOM=function(source){
                 var spec="span.source"+((source.kind)?".":"")+
                     ((source.kind)?(source.kind.slice(1).toLowerCase()):"");
                 var name=source.name||source.oid||source.uuid||source.uuid;
                 var span=fdjtDOM(spec,name);
                 if (source.about) span.title=source.about;
                 return span;};
-            var anonymous=Codex.sourcekb.ref("@1961/0");
+            var anonymous=Codex.sourcedb.ref("@1961/0");
             Codex.anonymous=anonymous;
             anonymous.name="anonymous";
-            if (Codex.persist) Codex.sourcekb.storage=window.localStorage;}
+            if (Codex.persist) Codex.sourcedb.storage=window.localStorage;}
 
         Codex.queued=((Codex.persist)&&
                       (getLocal("queued("+Codex.refuri+")",true)))||
@@ -441,7 +441,7 @@ var Codex=
         if (arg) {
             if (typeof arg === 'string')
                 return (Codex.docinfo[arg]||
-                        Codex.glosses.probe(arg)||
+                        Codex.glossdb.probe(arg)||
                         RefDB.ref(arg));
             else if (arg._id) return arg;
             else if (arg.codexbaseid)

@@ -103,7 +103,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     ((standalone)&&(makelocbar(target_info))),
                     body,
 		    fdjtDOM("div.fdjtclearfloats"));
-        var makerinfo=((info.maker)&&(Codex.sourcekb.load(info.maker)));
+        var makerinfo=((info.maker)&&(Codex.sourcedb.load(info.maker)));
         var tstamp=info.tstamp||info.modified||info.created;
         if (tstamp)
             body.title=
@@ -268,8 +268,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function showglossinfo(info) {
         var user=info.maker;
         var feed=info.feed||false;
-        var userinfo=(user)&&(Codex.sourcekb.load(user));
-        var feedinfo=(feed)&&(Codex.sourcekb.load(feed));
+        var userinfo=(user)&&(Codex.sourcedb.load(user));
+        var feedinfo=(feed)&&(Codex.sourcedb.load(feed));
         var agestring=timestring(info.modified||info.created||info.tstamp);
         var tool=fdjtDOM(
             "span.tool",
@@ -459,7 +459,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             else scan=scan.parentNode;}
         if (!(scan)) return;
         var qref=scan.qref;
-        var gloss=Codex.glosses.ref(qref);
+        var gloss=Codex.glossdb.ref(qref);
         var form=Codex.setGlossTarget(gloss,evt.type==="hold");
         if (!(form)) return;
         Codex.setMode("addgloss");}
@@ -492,7 +492,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         while (i<lim) {
             var r=results[i];
             if (typeof r === 'string') {
-                var ref=Codex.docinfo[r]||Codex.glosses.ref(r);
+                var ref=Codex.docinfo[r]||Codex.glossdb.ref(r);
                 if (!(ref)) fdjtLog("No resolution for %o",r);
                 notes[i]=ref;}
             else notes[i]=r;
@@ -741,7 +741,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var child=children[i++];
             if (child.nodeType!==1) continue;
             if (hasClass(child,"codexcard")) {
-                var gloss=(child.qref)&&Codex.glosses.map[child.qref];
+                var gloss=(child.qref)&&Codex.glossdb.refs[child.qref];
                 if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
                 else if ((RefDB.contains(sources,gloss.maker))||
                          (RefDB.overlaps(sources,gloss.sources))||

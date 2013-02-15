@@ -368,10 +368,10 @@ Codex.Startup=
                     if ((value)&&(Codex.persist)) return;
                     else if ((!(value))&&(!(Codex.persist))) return;
                     else if (value) {
-                        if (!(Codex.sourcekb.storage))
-                            Codex.sourcekb.storage=window.localStorage;
-                        if (!Codex.glosses.storage)
-                            Codex.glosses.storage=window.localStorage;
+                        if (!(Codex.sourcedb.storage))
+                            Codex.sourcedb.storage=window.localStorage;
+                        if (!Codex.glossdb.storage)
+                            Codex.glossdb.storage=window.localStorage;
                         var props=saveprops, i=0, lim=props.length;
                         while (i<lim) {
                             var prop=saveprops[i++];
@@ -640,7 +640,7 @@ Codex.Startup=
             window.focus();}
         
         function startupDone(mode){
-            if ((Codex.glosshash)&&(Codex.glosses.ref(Codex.glosshash))) {
+            if ((Codex.glosshash)&&(Codex.glossdb.ref(Codex.glosshash))) {
                 if (Codex.showGloss(Codex.glosshash))
                     Codex.glosshash=false;
                 else initLocation();}
@@ -901,12 +901,12 @@ Codex.Startup=
             // Load everything in etc
             var etc=Codex.etc; var outlets=Codex.outlets;
             var i=0; var lim=etc.length;
-            var sourcekb=Codex.sourcekb;
+            var sourcekb=Codex.sourcedb;
             while (i<lim) sourcekb.load(etc[i++]);
             i=0; lim=outlets.length; while (i<lim) sourcekb.load(outlets[i++]);
             // Load all the glosses
             var i=0; var lim=localglosses.length;
-            var glossdb=Codex.glosses;
+            var glossdb=Codex.glossdb;
             while (i<lim) {
                 var glossid=localglosses[i++];
                 var gloss=glossdb.load(glossid);
@@ -1222,7 +1222,7 @@ Codex.Startup=
                             info.sync);
                 else {
                     if (fdjtState.getLocal("queued("+Codex.refuri+")"))
-                        Codex.glosses.Import(
+                        Codex.glossdb.Import(
                             fdjtState.getLocal("queued("+Codex.refuri+")",true));
                     addClass(document.body,"cxNOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);
@@ -1383,7 +1383,7 @@ Codex.Startup=
                 return false;}
             if ((navigator.onLine)&&(fdjtState.getLocal("queued("+Codex.refuri+")")))
                 Codex.writeQueuedGlosses();
-            Codex.user=Codex.sourcekb.Import(userinfo);
+            Codex.user=Codex.sourcedb.Import(userinfo);
             if (persist) setConfig("persist",true,true);
             if (outlets) Codex.outlets=outlets;
             if (overlays) Codex.overlays=overlays;
@@ -1494,14 +1494,14 @@ Codex.Startup=
                             if (Codex.persist) RefDB.load(qid);
                             qids.push(qid);}
                         else {
-                            var obj=Codex.sourcekb.Import(info[i++]);
+                            var obj=Codex.sourcedb.Import(info[i++]);
                             obj.save();
                             qids.push(obj._id);}}
                     Codex[name]=qids;
                     if (Codex.persist)
                         setLocal(name+"("+refuri+")",qids,true);}
                 else {
-                    var obj=Codex.sourcekb.Import(info);
+                    var obj=Codex.sourcedb.Import(info);
                     if (persist) 
                         setLocal(obj._id,obj,true);
                     Codex[name]=obj._id;
@@ -1510,7 +1510,7 @@ Codex.Startup=
 
         function setupGlosses(newglosses) {
             var allglosses=Codex.allglosses||[];
-            Codex.glosses.Import(newglosses);
+            Codex.glossdb.Import(newglosses);
             if (newglosses.length) {
                 var n=newglosses.length; var i=0; while (i<n) {
                     var gloss=newglosses[i++];
@@ -1536,8 +1536,8 @@ Codex.Startup=
                            glosses.length,etc.length);}
             else {
                 startupLog("Assimilating %d new glosses...",glosses.length);}
-            Codex.sourcekb.Import(etc);
-            Codex.glosses.Import(glosses);
+            Codex.sourcedb.Import(etc);
+            Codex.glossdb.Import(glosses);
             var i=0; var lim=glosses.length;
             var latest=Codex.syncstamp||0;
             while (i<lim) {
@@ -1699,7 +1699,7 @@ Codex.Startup=
                         var j=1; var jlim=idinfo.length;
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
-                addTags(occurrences,tag,Codex.DocInfo);}
+                addTags(occurrences,tag,Codex.docdb);}
             fdjtLog("Assimilated index data for %d keys over %d items",
                     ntags,nitems);
             if (whendone) whendone();}

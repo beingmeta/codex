@@ -123,10 +123,10 @@ Codex.Paginate=
                 while (i<lim) {
                     var addGlossmark=Codex.UI.addGlossmark
                     var id=moved_ids[i++];
-                    var glosses=Codex.glosses.find('frag',id);
+                    var glosses=Codex.glossdb.find('frag',id);
                     if (!((glosses)&&(glosses.length))) continue;
                     var j=0, jlim=glosses.length; while (j<jlim) {
-                        var gloss=Codex.glosses.probe(glosses[j++]);
+                        var gloss=Codex.glossdb.probe(glosses[j++]);
                         if (gloss) {
                             var nodes=Codex.getDups(gloss.frag);
                             addClass(nodes,"glossed");

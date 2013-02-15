@@ -148,13 +148,13 @@ Codex.setMode=
                 fdjtLog("Setting up gloss UI %o",allglosses);
 
             Codex.UI.setupSummaryDiv(allglosses);
-            Codex.glosses.onAdd("maker",function(f,p,v){
-                Codex.sourcekb.ref(v).oninit
+            Codex.glossdb.onAdd("maker",function(f,p,v){
+                Codex.sourcedb.ref(v).oninit
                 (Codex.UI.addGlossSource,"newsource");});
-            Codex.glosses.onAdd("sources",function(f,p,v){
-                Codex.sourcekb.ref(v).oninit
+            Codex.glossdb.onAdd("sources",function(f,p,v){
+                Codex.sourcedb.ref(v).oninit
                 (Codex.UI.addGlossSource,"newsource");});
-            Codex.glosses.onLoad(addGloss2UI);
+            Codex.glossdb.onLoad(addGloss2UI);
             
             Codex.DOM.console=fdjtID("CODEXCONSOLE");
             if (Codex.Trace.startup>1) fdjtLog("Setting up console %o",console);
@@ -287,7 +287,7 @@ Codex.setMode=
                 var gloss_tag=gloss_cloud.getByValue(ref_tag,".completion");
                 if (!((gloss_tag)&&(gloss_tag.length))) {
                     gloss_tag=tagHTML(tag,Codex.knodule,false,true);
-                    if ((ref)&&(ref.pool===Codex.sourcekb))
+                    if ((ref)&&(ref.pool===Codex.sourcedb))
                         fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),
                                 gloss_tag," ");
                     else fdjtDOM(fdjtID("CODEXGLOSSCLOUDTAGS"),
@@ -297,7 +297,7 @@ Codex.setMode=
         
         function addOutlets2UI(outlets){
             if (typeof outlets === 'string')
-                outlets=Codex.sourcekb.ref(outlets);
+                outlets=Codex.sourcedb.ref(outlets);
             if (!(outlets)) return;
             if (!(outlets instanceof Array)) outlets=[outlets];
             if (!(Codex.outlet_cloud)) {
@@ -381,7 +381,7 @@ Codex.setMode=
                     container=getChild(div,".weak");
                 else if (ref.prime)
                     container=getChild(div,".prime");
-                else if (ref.pool===Codex.sourcekb)
+                else if (ref.pool===Codex.sourcedb)
                     container=getChild(div,".sources");
                 else {}
                 if (!(container)) container=div;
@@ -928,7 +928,7 @@ Codex.setMode=
             if (Codex.target)
                 Codex.clearHighlights(Codex.getDups(Codex.target));
             if ((src)&&(hasClass(src,"gloss"))) {
-                var glossinfo=Codex.glosses.ref(src.name);
+                var glossinfo=Codex.glossdb.ref(src.name);
                 if (glossinfo.excerpt) {
                     var searching=Codex.getDups(elt.id);
                     var range=Codex.findExcerpt(
@@ -1129,7 +1129,7 @@ Codex.setMode=
         /* Showing a particular gloss */
 
         Codex.showGloss=function showGloss(uuid){
-            if (!(Codex.glosses.ref(uuid))) return false;
+            if (!(Codex.glossdb.ref(uuid))) return false;
             var elts=document.getElementsByName(uuid);
             if (!(elts)) return false;
             else if (!(elts.length)) return false;

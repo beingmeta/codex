@@ -347,7 +347,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var scores=new Array(lim);
         while (i<lim) {
             var r=results[i++];
-            var ref=Codex.docinfo[r]||Codex.glosses.map[r]||kbref(r)||r;
+            var ref=Codex.docinfo[r]||Codex.glossdb.refs[r]||kbref(r)||r;
             if (!(ref)) continue;
             var frag=ref.frag;
             if (!(frag)) continue;
@@ -451,7 +451,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                        completions,init_cloud) {
         var start=new Date();
         var sbook_index=Codex.index;
-        var sourcekb=Codex.sourcekb;
+        var sourcekb=Codex.sourcedb;
         var knodule=Codex.knodule;
         var cloud=init_cloud||false;
         var i=0; var n_terms=dterms.length;

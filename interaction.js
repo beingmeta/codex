@@ -640,7 +640,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var card=getCard(target);
         if (getParent(target,".detail")) {
             var name=(card.name)||(card.getAttribute("name"));
-            var gloss=fdjtKB.ref(name,Codex.glosses), detail;
+            var gloss=fdjtKB.ref(name,Codex.glossdb), detail;
             if ((gloss)&&((detail=gloss.detail))) {
                 if (detail[0]==='<')
                     fdjt.ID("CODEXGLOSSDETAIL").innerHTML=gloss.detail;
@@ -654,7 +654,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return fdjtUI.cancel(evt);}
         else if ((card.name)||(card.getAttribute("name"))) {
             var name=(card.name)||(card.getAttribute("name"));
-            var gloss=fdjtKB.ref(name,Codex.glosses);
+            var gloss=fdjtKB.ref(name,Codex.glossdb);
             if (!(gloss)) return;
             var form=Codex.setGlossTarget(gloss);           
             if (!(form)) return;
@@ -682,7 +682,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var dups=Codex.getDups("codexpreviewtarget");
             addClass(dups,"codexpreviewtarget");}
         if (hasClass(card,"gloss")) {
-            var glossinfo=Codex.glosses.ref(card.name);
+            var glossinfo=Codex.glossdb.ref(card.name);
             if (!(target))
                 Codex.previewTarget=target=fdjtID(glossinfo.frag);
             else Codex.previewTarget=target;
@@ -811,7 +811,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 return fdjtUI.cancel(evt);}
             else if ((card.name)||(card.getAttribute("name"))) {
                 var name=(card.name)||(card.getAttribute("name"));
-                var gloss=fdjtKB.ref(name,Codex.glosses);
+                var gloss=fdjtKB.ref(name,Codex.glossdb);
                 if (!(gloss)) return;
                 var form=Codex.setGlossTarget(gloss);       
                 if (!(form)) return;
@@ -828,7 +828,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (frag) {Codex.ScanTo(frag); fdjtUI.cancel(evt);}
         else if ((about)&&(about[0]==='#')) {
             Codex.ScanTo(about.slice(0)); fdjtUI.cancel(evt);}
-        else if ((about)&&(gloss=Codex.glosses.ref(about))) {
+        else if ((about)&&(gloss=Codex.glossdb.ref(about))) {
             var form=Codex.setGlossTarget(gloss);           
             if (!(form)) return;
             Codex.setMode("addgloss");
@@ -996,7 +996,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function glossdeleted(response,glossid,frag){
         if (response===glossid) {
-            Codex.glosses.drop(glossid);
+            Codex.glossdb.drop(glossid);
             Codex.allglosses=RefDB.remove(Codex.allglosses,glossid);
             if (Codex.persist)
                 fdjtState.setLocal("glosses("+Codex.refuri+")",
@@ -1026,7 +1026,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else fdjtUI.alert(response);}
 
     function delete_gloss(uuid){
-        var gloss=Codex.glosses.probe(uuid);
+        var gloss=Codex.glossdb.probe(uuid);
         // If this isn't defined, the gloss hasn't been saved so we
         //  don't try to delete it.
         if ((gloss)&&(gloss.created)&&(gloss.maker)) {
@@ -1528,7 +1528,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (Codex.mode==="glosses") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
-            var glosses=Codex.glosses;
+            var glosses=Codex.glossdb;
             var i, lim=ids.length;
             if ((id)&&((i=fdjtKB.position(ids,id))>0)) {
                 i++; while (i<lim) {
@@ -1580,7 +1580,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (Codex.mode==="glosses") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
-            var glosses=Codex.glosses;
+            var glosses=Codex.glossdb;
             var i, lim=ids.length;
             if ((id)&&((i=fdjtKB.position(ids,id))>0)) {
                 i--; while (i>=0) {
@@ -1629,7 +1629,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var card=getCard(target);
             if ((card)&&((card.name)||(card.getAttribute("name")))) {
                 var name=(card.name)||(card.getAttribute("name"));
-                var gloss=fdjtKB.ref(name,Codex.glosses);
+                var gloss=fdjtKB.ref(name,Codex.glossdb);
                 if (!(gloss)) return;
                 var form=Codex.setGlossTarget(gloss);
                 if (!(form)) return;
@@ -1908,7 +1908,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         dropClass(div,"modified");
         dropClass(menu,"expanded");
         var uuid=fdjtDOM.getInputValues(form,"UUID")[0];
-        var gloss=Codex.glosses.probe(uuid);
+        var gloss=Codex.glossdb.probe(uuid);
         if ((!(gloss))||(!(gloss.created))) {
             delete_gloss(uuid);
             Codex.setMode(false);
@@ -1946,7 +1946,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var glosselt=fdjtDOM.getInput(block,'UUID');
         if (!(glosselt)) return;
         var qref=glosselt.value;
-        var gloss=Codex.glosses.probe(qref);
+        var gloss=Codex.glossdb.probe(qref);
         if (!(gloss)) return;
         var form=Codex.setGlossTarget(gloss,Codex.getGlossForm(gloss,true));
         if (!(form)) return;

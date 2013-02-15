@@ -95,7 +95,7 @@ Codex.DOMScan=(function(){
              tagstack: [],taggings: [],allinfo: [],locinfo: [], idmap: idmap,
              idstate: {prefix: false,count: 0},
              idstack: [{prefix: false,count: 0}],
-             pool: Codex.DocInfo};
+             pool: Codex.docdb};
 
         var refdb=new RefDB(dbid);
     

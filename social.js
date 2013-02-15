@@ -183,7 +183,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                   source.fbid+"/picture?type=square")));}
 
     function extendGlossmark(glossmark,glosses,bigimage){
-        var Sources=Codex.sourcekb; var Glosses=Codex.glosses;
+        var Sources=Codex.sourcedb; var Glosses=Codex.glossdb;
         if (!(bigimage)) bigimage=fdjtDOM.getChild(glossmark,".big");
         var images=bigimage.getAttribute("data-images").split(";");
         if ((images.length===1)&&(images[0]==="")) images=[];
@@ -208,7 +208,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         return glossmark;}
     
     Codex.UI.addGlossmark=function(passage,gloss){
-        var Glosses=Codex.glosses;
+        var Glosses=Codex.glossdb;
         var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
         if ((glossmark)&&(glossmark.parentNode===passage)) {
             if (gloss) extendGlossmark(glossmark,[gloss]);
@@ -236,7 +236,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     
     function showGlosses(target) {
         var id=target.codexbaseid||target.id;
-        var glosses=Codex.glosses.find('frag',id);
+        var glosses=Codex.glossdb.find('frag',id);
         var sumdiv=fdjtDOM("div.codexglosses.codexslice.hudpanel#CODEXPASSAGEGLOSSES");
         var excerpt=false;
         if ((!(glosses))||(!(glosses.length)))
@@ -246,7 +246,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (glosses) {
             var i=0; var n=glosses.length;
             while (i<n) {
-                var gloss=fdjtKB.ref(glosses[i++],Codex.glosses);
+                var gloss=fdjtKB.ref(glosses[i++],Codex.glossdb);
                 if ((!(gloss))||(!(gloss.frag))) continue;
                 if ((!excerpt)&&(gloss.excerpt)) excerpt=gloss.excerpt;
                 var card=Codex.renderCard(gloss);

@@ -143,7 +143,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     // set the gloss target for a particular passage
     function getGlossForm(arg,response) {
         if (typeof arg === 'string')
-            arg=fdjtID(arg)||Codex.glosses.ref(arg)||false;
+            arg=fdjtID(arg)||Codex.glossdb.ref(arg)||false;
         if (!(arg)) return false;
         var gloss=((!(arg.nodeType))&&((arg.maker)||(arg.gloss))&&(arg));
         if (!(gloss)) response=false;
@@ -321,10 +321,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((typeof target === 'string')&&(fdjtID(target))) 
             target=fdjtID(target);
         else if ((typeof target === 'string')&&
-                 (Codex.glosses.probe(target))) {
-            gloss=Codex.glosses.ref(target);
+                 (Codex.glossdb.probe(target))) {
+            gloss=Codex.glossdb.ref(target);
             target=fdjtID(gloss.frag);}
-        else if (target.pool===Codex.glosses) {
+        else if (target.pool===Codex.glossdb) {
             gloss=target; target=fdjtID(gloss.frag);}
         else {}
 	if ((gloss)&&(form)&&(!(form.nodeType))) {
@@ -463,7 +463,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (typeof outlet === 'string') {
             if ((outlet[0]==='@')||
                 ((outlet[0]===':')&&(outlet[0]==='@')))
-                outlet=Codex.sourcekb.ref(outlet);
+                outlet=Codex.sourcedb.ref(outlet);
             else {
                 outlet={name: outlet};
                 spanspec="span.checkspan.email";
@@ -626,7 +626,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (ref) {
             if (ref.knodule===knodule) tagval=ref.dterm;
             else tagval=ref._qid||ref._id||ref.dterm||ref.name||tag;}
-        if ((ref)&&(ref.pool===Codex.sourcekb)) varname='SHARED';
+        if ((ref)&&(ref.pool===Codex.sourcedb)) varname='SHARED';
         var checkspans=getChildren(tagselt,".checkspan");
         var i=0; var lim=checkspans.length;
         while (i<lim) {
@@ -682,7 +682,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var tags=[];
         var targetid=((target.codexbaseid)||(target.id)||(target.frag));
         var info=Codex.docinfo[targetid];
-        var glosses=Codex.glosses.find('frag',targetid);
+        var glosses=Codex.glossdb.find('frag',targetid);
         var knodule=Codex.knodule;
         if ((info)&&(info.tags)) tags=tags.concat(info.tags);
         if ((info)&&(info.autotags)&&(info.autotags.length)) {
@@ -939,7 +939,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
         dropClass(form.parentNode,"submitting");
         var json=JSON.parse(req.responseText);
-        var ref=Codex.glosses.Import(json);
+        var ref=Codex.glossdb.Import(json);
         var reps=document.getElementsByName(json.uuid);
         var i=0, lim=reps.length;
         while (i<lim) {
@@ -1247,7 +1247,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             glossdata.details=json.details;
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
         if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
-        Codex.glosses.Import(glossdata);
+        Codex.glossdb.Import(glossdata);
         if (evt) fdjtUI.cancel(evt);
         dropClass(form.parentNode,"submitting");
         /* Turn off the target lock */
@@ -1279,7 +1279,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             glossdata.details=json.details;
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
         if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
-        Codex.glosses.Import(glossdata);
+        Codex.glossdb.Import(glossdata);
         // Clear the UUID
         clearGlossForm(form);
         if (evt) fdjtUI.cancel(evt);
