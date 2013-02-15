@@ -232,6 +232,15 @@ var Codex=
                       (getLocal("queued("+Codex.refuri+")",true)))||
             [];
 
+        function Query(tags,base_query){
+            if (arguments.length===0) return this;
+            else return Knodule.TagQuery.call(
+                this,tags,false,false,false,base_query);}
+        Query.prototype=new Knodule.TagQuery();
+        Query.prototype.dbs=[Codex.glossdb,Codex.docdb];
+        Query.prototype.base_slots=["tags","^tags","+tags"];
+        Codex.Query=Query;
+
         if (Codex.Trace.start>1) fdjtLog("Initialized DB");}
     Codex.initDB=initDB;
 
