@@ -493,6 +493,17 @@ Codex.Startup=
                 //  so we don't currently try to timeslice it, though we could
                 function(){
                     var scanmsg=fdjtID("CODEXSTARTUPSCAN");
+                    var aboutbook=fdjtID("SBOOKABOUTPAGE"), about_tmp=false
+                    var aboutauthor=fdjtID("SBOOKAUTHORPAGE"), author_tmp=false;
+                    if (aboutbook) {
+                        about_tmp=document.createTextNode("");
+                        aboutbook.parentNode.replaceChild(about_tmp,aboutbook);
+                        Codex.content.appendChild(aboutbook);}
+                    if (aboutauthor) {
+                        author_tmp=document.createTextNode("");
+                        aboutauthor.parentNode.replaceChild(author_tmp,aboutauthor);
+                        Codex.content.appendChild(aboutauthor);}
+                    
                     addClass(scanmsg,"running");
                     metadata=new Codex.DOMScan(Codex.content,Codex.refuri+"#");
                     // fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
@@ -500,6 +511,10 @@ Codex.Startup=
                     Codex.docdb=Codex.docinfo._refdb;
                     Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
                     dropClass(scanmsg,"running");
+                    if (aboutbook) {
+                        about_tmp.parentNode.replaceChild(aboutbook,about_tmp);}
+                    if (aboutauthor) {
+                        author_tmp.parentNode.replaceChild(aboutauthor,author_tmp);}
                     if (Codex.scandone) {
                         var donefn=Codex.scandone;
                         delete Codex.scandone;
