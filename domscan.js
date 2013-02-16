@@ -98,7 +98,7 @@ Codex.DOMScan=(function(){
              pool: Codex.docdb};
 
         var refdb=new RefDB(dbid);
-    
+        
         function scanInfo(id,scanstate) {
             if (docinfo[id]) return docinfo[id];
             Ref.call(this,id,refdb);
@@ -114,42 +114,6 @@ Codex.DOMScan=(function(){
         
         docinfo._scanInfo=scanInfo;
         docinfo._refdb=refdb;
-
-        var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
-                      (docinfo[root.id]=new scanInfo(root.id,scanstate)));
-        scanstate.curhead=root; scanstate.curinfo=rootinfo;
-        // Location is an indication of distance into the document
-        var location=0;
-        rootinfo.title=root.title||document.title;
-        rootinfo.starts_at=0;
-        rootinfo.level=0; rootinfo.sub=new Array();
-        rootinfo.head=false; rootinfo.heads=new Array();
-        rootinfo.frag=root.id;
-        // rootinfo.elt=root;
-        scanstate.allinfo.push(rootinfo);
-        scanstate.allinfo.push(0);
-        /* Build the metadata */
-        var i=0; while (i<children.length) {
-            var child=children[i++];
-            if (!((child.sbookskip)||(child.codexui)))
-                scanner(child,scanstate,docinfo,docinfo.nodeFn||false);} 
-        docinfo._nodecount=scanstate.nodecount;
-        docinfo._headcount=scanstate.headcount;
-        docinfo._eltcount=scanstate.eltcount;
-        docinfo._maxloc=scanstate.location;
-        docinfo._allinfo=scanstate.allinfo;
-        docinfo._locinfo=scanstate.locinfo;
-        var scaninfo=scanstate.curinfo;
-        /* Close off all of the open spans in the TOC */
-        while (scaninfo) {
-            scaninfo.ends_at=scanstate.location;
-            scaninfo=scaninfo.head;}
-        var done=new Date();
-        if ((Codex.Trace.startup)||(Codex.Trace.scan))
-            fdjtLog('Gathered metadata in %f secs over %d/%d heads/nodes',
-                    (done.getTime()-start.getTime())/1000,
-                    scanstate.headcount,scanstate.eltcount);
-        return docinfo;
 
         function getTitle(head) {
             var title=
@@ -448,7 +412,57 @@ Codex.DOMScan=(function(){
             */
             if (toclevel) {
                 scanstate.lasthead=child; scanstate.lastinfo=info;
-                scanstate.lastlevel=toclevel;}}}
+                scanstate.lastlevel=toclevel;}}
+
+        var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
+                      (docinfo[root.id]=new scanInfo(root.id,scanstate)));
+        scanstate.curhead=root; scanstate.curinfo=rootinfo;
+        // Location is an indication of distance into the document
+        var location=0;
+        rootinfo.title=root.title||document.title;
+        rootinfo.starts_at=0;
+        rootinfo.level=0; rootinfo.sub=new Array();
+        rootinfo.head=false; rootinfo.heads=new Array();
+        rootinfo.frag=root.id;
+        // rootinfo.elt=root;
+        scanstate.allinfo.push(rootinfo);
+        scanstate.allinfo.push(0);
+        /* Build the metadata */
+        var i=0; while (i<children.length) {
+            var child=children[i++];
+            if (!((child.sbookskip)||(child.codexui)))
+                scanner(child,scanstate,docinfo,docinfo.nodeFn||false);} 
+        docinfo._nodecount=scanstate.nodecount;
+        docinfo._headcount=scanstate.headcount;
+        docinfo._eltcount=scanstate.eltcount;
+        docinfo._maxloc=scanstate.location;
+        docinfo._allinfo=scanstate.allinfo;
+        docinfo._locinfo=scanstate.locinfo;
+        var scaninfo=scanstate.curinfo;
+        /* Close off all of the open spans in the TOC */
+        while (scaninfo) {
+            scaninfo.ends_at=scanstate.location;
+            scaninfo=scaninfo.head;}
+        var done=new Date();
+        if ((Codex.Trace.startup)||(Codex.Trace.scan))
+            fdjtLog('Gathered metadata in %f secs over %d/%d heads/nodes',
+                    (done.getTime()-start.getTime())/1000,
+                    scanstate.headcount,scanstate.eltcount);
+        docinfo.addContent=function(node){
+            scanner(node,scanstate,docinfo,docinfo.nodeFn||false);
+            docinfo._nodecount=scanstate.nodecount;
+            docinfo._headcount=scanstate.headcount;
+            docinfo._eltcount=scanstate.eltcount;
+            docinfo._maxloc=scanstate.location;
+            docinfo._allinfo=scanstate.allinfo;
+            docinfo._locinfo=scanstate.locinfo;
+            var scaninfo=scanstate.curinfo;
+            /* Close off all of the open spans in the TOC */
+            while (scaninfo) {
+                scaninfo.ends_at=scanstate.location;
+                scaninfo=scaninfo.head;}};
+        
+        return docinfo;}
 
     CodexDOMScan.prototype.toJSON=function(){
         var rep={constructor: "Codex.DOMScan",frag: this.frag,head: this.sbookhead,start: this.starts_at,end: this.ends_at};
