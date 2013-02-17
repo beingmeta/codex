@@ -1677,6 +1677,8 @@ Codex.Startup=
         /* Using the autoindex generated during book building */
         function useIndexData(autoindex,knodule,baseweight,whendone){
             var ntags=0, nitems=0;
+            var tagweights=Codex.tagweights;
+            var maxweight=Codex.maxweight, minweight=Codex.minweight;
             if (!(autoindex)) return;
             for (var tag in autoindex) {
                 if (!(autoindex.hasOwnProperty(tag))) continue;
@@ -1688,6 +1690,17 @@ Codex.Startup=
                 else if (tagval.search(/[^~]/)>0)
                     tagval=tagval.slice(tagval.search(/[^~]/));
                 else {}
+                var bar=tagval.indexOf('|');
+                if (bar>0) {
+                    var defbody=tagval.slice(bar+1);
+                    if ((defbody.indexOf('|')<0)&&
+                        (defbody.search(":weight=")===0)) {
+                        var realtag=tagval.slice(0,bar);
+                        var weight=parseFloat(defbody.slice(8));
+                        tagweights[realtag]=weight;
+                        if (weight>maxweight) maxweight=weight;
+                        if (weight<minweight) minweight=weight;
+                        tag=tagval=realtag;}}
                 var i=0; var lim=ids.length; nitems=nitems+lim;
                 while (i<lim) {
                     var idinfo=ids[i++];
@@ -1715,6 +1728,7 @@ Codex.Startup=
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
                 addTags(occurrences,tag,Codex.docdb);}
+            Codex.maxweight=maxweight; Codex.minweight=minweight;
             fdjtLog("Assimilated index data for %d keys over %d items",
                     ntags,nitems);
             if (whendone) whendone();}
@@ -1794,7 +1808,7 @@ Codex.Startup=
                also separates out primary and auto tags. */
             var tohandle=[]; var tagged=0;
             for (var eltid in docinfo) {
-                var info=docinfo[eltid], tags=info.tags;
+                var info=docinfo[eltid], tags=info.atags;
                 if (tags) tagged++;
                 if ((tags)||(info.sectags)||
                     ((info.head)&&(info.head.sectags)))
@@ -1814,9 +1828,9 @@ Codex.Startup=
         Codex.indexAssignedTags=indexAssignedTags;
         
         function handle_inline_tags(info){
-            var tags=info.tags;
+            var tags=info.atags;
             if (tags) {
-                var k=0; var ntags=tags.length; info.tags=[];
+                var k=0; var ntags=tags.length; info.atags=[];
                 while (k<ntags) addTag(info,tags[k++],Codex.knodule);}
             var sectags=info.sectags||((info.head)&&(info.head.sectags));
             if (sectags) {

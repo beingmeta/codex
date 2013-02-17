@@ -60,9 +60,19 @@ var Codex=
      cachelayouts: true,
      // Whether to store glosses, etc for offline/faster access
      persist: false,
+     // Whether to use native scrolling for body content
+     nativescroll: true,
+     // Whether to use native scrolling for embedded DIVs
+     scrolldivs: true,
+     // Dominant interaction mode
+     mouse: true,touch: false,kbd: false,
+     // Restrictions on excerpts
+     min_excerpt: 3, max_excerpt: false,
      // These are the UUIDs of locally stored glosses which are queued
-     //  to be saved when possible.
+     //  to be saved when possible (online and connected).
      queued: [],
+     // These are weights assigned to search tags
+     tagweights: {}, maxweight: 0, minweight: 200000000,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
@@ -76,14 +86,6 @@ var Codex=
      mycopyid: false, 
      // This is the time of the last update
      syncstamp: false,
-     // Whether to use native scrolling for body content
-     nativescroll: true,
-     // Whether to use native scrolling for embedded DIVs
-     scrolldivs: true,
-     // Dominant interaction mode
-     mouse: true,touch: false,kbd: false,
-     // Restrictions on excerpts
-     min_excerpt: 3, max_excerpt: false,
      // Various handlers, settings, and status information for the
      // Codex interface
      UI: {
