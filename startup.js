@@ -1678,18 +1678,20 @@ Codex.Startup=
         function useIndexData(autoindex,knodule,baseweight,whendone){
             var ntags=0, nitems=0;
             var tagweights=Codex.tagweights;
-            var maxweight=Codex.maxweight, minweight=Codex.minweight;
+            var maxweight=Codex.tagmaxweight, minweight=Codex.tagminweight;
             if (!(autoindex)) return;
             for (var tag in autoindex) {
                 if (!(autoindex.hasOwnProperty(tag))) continue;
                 var ids=autoindex[tag]; ntags++;
                 var occurrences=[];
-                var tagval=tag;
-                if (tagval.search(/[^*]/)>0)
-                    tagval=tagval.slice(tagval.search(/[^*]/));
-                else if (tagval.search(/[^~]/)>0)
-                    tagval=tagval.slice(tagval.search(/[^~]/));
-                else {}
+                var tagval=tag, targstart=0, prefix=false;
+                /* if ((tagstart=tagval.search(/[^*]/))>0) {
+                    prefix=tagval.slice(0,tagstart);
+                    tagval=tagval.slice(tagstart);}
+                else if ((tagstart=(tagval.search(/[^~]/)))>0) {
+                    prefix=tagval.slice(0,tagstart);
+                    tagval=tagval.slice(tagval.search(/[^~]/));}
+                else {} */
                 var bar=tagval.indexOf('|');
                 if (bar>0) {
                     var defbody=tagval.slice(bar+1);
@@ -1727,8 +1729,8 @@ Codex.Startup=
                         var j=1; var jlim=idinfo.length;
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
-                addTags(occurrences,tag,Codex.docdb);}
-            Codex.maxweight=maxweight; Codex.minweight=minweight;
+                addTags(occurrences,tag,Codex.docdb,Codex.knodule);}
+            Codex.tagmaxweight=maxweight; Codex.tagminweight=minweight;
             fdjtLog("Assimilated index data for %d keys over %d items",
                     ntags,nitems);
             if (whendone) whendone();}
