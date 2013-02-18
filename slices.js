@@ -150,15 +150,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     var combineTags=Knodule.combineTags;
     
+    function toarray(arg){
+        if (!(arg)) return [];
+        else if (arg instanceof Array) return arg;
+        else return [arg];}
     function showtags(info){
-        var ctags=info.tags, gtags=info.glosstags, knodes=info.knodes;
-        if (!(gtags)) gtags=[]; else
-            if (!(gtags instanceof Array)) gtags=[gtags];
-        if (!(knodes)) knodes=[]; else
-            if (!(knodes instanceof Array)) knodes=[knodes];
-        if (!(ctags)) ctags=[]; else
-            if (!(ctags instanceof Array)) ctags=[ctags];
-        var tags=[].concat(gtags).concat(knodes).concat(ctags);
         var scores=false;
         var tagcount=0;
         var countspan=fdjtDOM("span.count");
@@ -166,9 +162,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                                   "img.tagicon","tags");
         var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
         var tagspan=span;
-        var controller=false, hide_count_elt=false, hide_start=false;
+        var controller=false, hide_count_elt=false, total_count_elt=false, hide_start=false;
         var count=0, seen={}, i, lim;
-        var tagvecs=[gtags,knodes,ctags];
+        var tagvecs=[toarray(info["**tags"]),toarray(info["*tags"]),
+                     toarray(info.glosstags),toarray(info.knodes),
+                     toarray(info.tags),toarray(info["~tags"])];
         var j=0, nvecs=tagvecs.length;
         while (j<nvecs) {
             var tags=tagvecs[j++];
@@ -179,19 +177,23 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if (seen[tagstring]) continue;
                 else {count++; seen[tagstring]=tag;}
                 if ((!controller)&&(count>show_tag_thresh)) {
-                    hide_count_elt=document.createTextNode("N");
+                    hide_count_elt=document.createTextNode("K");
+                    total_count_elt=document.createTextNode("N");
                     controller=fdjtDOM("span.controller.clickable",
-                                       fdjtDOM("span.whenexpanded","-"),
-                                       fdjtDOM("span.whencollapsed","+"),
-                                       "all ",hide_count_elt," tags");
+                                       fdjtDOM("span.whenexpanded","-",
+                                               "hide ",hide_count_elt," tags"),
+                                       fdjtDOM("span.whencollapsed","+",
+
+                                               "all ",total_count_elt," tags"));
                     var subspan=fdjtDOM("span.whenexpanded");
                     controller.setAttribute(
-                        "onclick","fdjt.UI.Expansion.toggle(event);");
+                        "onclick","fdjt.UI.Expansion.toggle(event); fdjt.UI.cancel(event);");
                     fdjtDOM(span," ",controller," ",subspan);
-                    hide_start=count;
+                    hide_start=count-1;
                     tagspan=subspan;}
-                fdjtDOM.append(tagspan,((count>0)?" \u00b7 ":" "),
+                fdjtDOM.append(tagspan,((count>1)?" \u00b7 ":" "),
                                Knodule.HTML(tag,Codex.knodule));}}
+        fdjtDOM.replace(total_count_elt,document.createTextNode(""+count));
         fdjtDOM.replace(hide_count_elt,document.createTextNode(""+(count-hide_start)));
         if ((count-hide_start)<(show_tag_thresh/2)) addClass(span,"expanded");
         return span;}

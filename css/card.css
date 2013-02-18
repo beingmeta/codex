@@ -117,6 +117,8 @@ body.sbook a.codexcard { display: block;}
 .codexcard span.tags { font-size: 80%; vertical-align: top;}
 .codexcard span.tags img.tagicon { height: 3ex; width: auto;}
 .codexcard span.tags span { vertical-align: top;}
+.codexcard span.tags span.rawterm:before, .codexcard span.tags span.rawterm:after {
+    vertical-align: top;}
 .codexcard.gloss span.tags.fdjtexpanded { display: block;}
 .codexcard span.tags.fdjtexpanded span.controller {
     color: black; float: right;}
