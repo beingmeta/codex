@@ -173,9 +173,7 @@ body.hudup #CODEXHEARTHOLDER {
     -moz-border-radius-topleft: 1em; -webkit-border-top-left-radius: 1em;
     border-top-right-radius: 1em; -o-border-top-right-radius: 1em;
     -moz-border-radius-topright: 1em; -webkit-border-top-right-radius: 1em;}
-#CODEXHEARTHOLDER #CODEXHEART {
-    border-radius: 1em; -o-border-radius: 1em;
-    -moz-border-radius: 1em; -webkit-border-radius: 1em;}
+#CODEXHEARTHOLDER #CODEXHEART {}
 
 #CODEXHUD #CODEXRIBBON {
     position: absolute; top: 0px; left: 0px; right: 0px; height: 0px;}
