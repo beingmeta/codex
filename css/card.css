@@ -11,7 +11,9 @@
     font-size: 90%;}
 
 .codexcard.passage span.marker {
-    font-weight: bold; font-size: 150%; color: black;}
+    font-weight: bold; font-size: 150%; color: black;
+    position: relative; top: -0.5ex;}
+}
 
 div.codexcard { margin-left: 20px; margin-right: 0px; }
 div.codexcard > div.idhead, div.codexcard > div.tochead {
@@ -98,6 +100,8 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
 .codexcard .audience .outlet:before {
     content: "→ "; font-weight: bold;}
 body.sbook a.codexcard { display: block;}
+.codexcard .codexcardbody {
+    padding-top: 3px;}
 .codexcard.gloss .codexcardbody {
     border-top: solid purple 2px;}
 .codexcard.passage .codexcardbody {
@@ -110,8 +114,9 @@ body.sbook a.codexcard { display: block;}
   float: right; width: 40px;}
 .codexcard .info span.score {
   color: gold; display: none;}
-.codexcard span.tags { font-size: 80%;}
+.codexcard span.tags { font-size: 80%; vertical-align: top;}
 .codexcard span.tags img.tagicon { height: 3ex; width: auto;}
+.codexcard span.tags span { vertical-align: top;}
 .codexcard.gloss span.tags.fdjtexpanded { display: block;}
 .codexcard span.tags.fdjtexpanded span.controller {
     color: black; float: right;}
