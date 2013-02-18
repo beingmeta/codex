@@ -88,7 +88,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
-    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+    var RefDB=fdjt.RefDB;
+    var fdjtID=fdjt.ID;
 
     // Imports (kind of )
     var addClass=fdjtDOM.addClass;
@@ -640,7 +641,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var card=getCard(target);
         if (getParent(target,".detail")) {
             var name=(card.name)||(card.getAttribute("name"));
-            var gloss=fdjtKB.ref(name,Codex.glossdb), detail;
+            var gloss=RefDB.ref(name,Codex.glossdb), detail;
             if ((gloss)&&((detail=gloss.detail))) {
                 if (detail[0]==='<')
                     fdjt.ID("CODEXGLOSSDETAIL").innerHTML=gloss.detail;
@@ -654,7 +655,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return fdjtUI.cancel(evt);}
         else if ((card.name)||(card.getAttribute("name"))) {
             var name=(card.name)||(card.getAttribute("name"));
-            var gloss=fdjtKB.ref(name,Codex.glossdb);
+            var gloss=RefDB.ref(name,Codex.glossdb);
             if (!(gloss)) return;
             var form=Codex.setGlossTarget(gloss);           
             if (!(form)) return;
@@ -749,8 +750,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var i=0; var lim=knodes.length;
             while (i<lim) {
                 var knode=knodes[i++];
-                if ((knode===term)||
-                    (fdjtKB.contains(knode._always,term))) {
+                if ((knode===term)||(RefDB.contains(knode.allways,term))) {
                     var qid=knode._qid; var dterm=knode.dterm;
                     var spelling=
                         ((spellings)&&
@@ -811,7 +811,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 return fdjtUI.cancel(evt);}
             else if ((card.name)||(card.getAttribute("name"))) {
                 var name=(card.name)||(card.getAttribute("name"));
-                var gloss=fdjtKB.ref(name,Codex.glossdb);
+                var gloss=RefDB.ref(name,Codex.glossdb);
                 if (!(gloss)) return;
                 var form=Codex.setGlossTarget(gloss);       
                 if (!(form)) return;
@@ -1530,7 +1530,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var id=((Codex.target)&&(Codex.target.id));
             var glosses=Codex.glossdb;
             var i, lim=ids.length;
-            if ((id)&&((i=fdjtKB.position(ids,id))>0)) {
+            if ((id)&&((i=RefDB.position(ids,id))>0)) {
                 i++; while (i<lim) {
                     var g=glosses.index(false,'frag',ids[i]);
                     if ((g)&&(g.length)) {
@@ -1582,7 +1582,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var id=((Codex.target)&&(Codex.target.id));
             var glosses=Codex.glossdb;
             var i, lim=ids.length;
-            if ((id)&&((i=fdjtKB.position(ids,id))>0)) {
+            if ((id)&&((i=RefDB.position(ids,id))>0)) {
                 i--; while (i>=0) {
                     var g=glosses.index(false,'frag',ids[i]);
                     if ((g)&&(g.length)) {
@@ -1629,7 +1629,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var card=getCard(target);
             if ((card)&&((card.name)||(card.getAttribute("name")))) {
                 var name=(card.name)||(card.getAttribute("name"));
-                var gloss=fdjtKB.ref(name,Codex.glossdb);
+                var gloss=RefDB.ref(name,Codex.glossdb);
                 if (!(gloss)) return;
                 var form=Codex.setGlossTarget(gloss);
                 if (!(form)) return;
@@ -2006,7 +2006,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function scanner_expand_hold(evt){
         fdjtDOM.addClass("CODEXSCANNER","expanded");}
     function scanner_expand_tap(evt){
-        fdjtDOM.toggleClass("CODEXSCANNER","expanded");}
+        fdjtDOM.toggleClass("CODEXSCANNER","expanded");
+        fdjtUI.cancel(evt);}
     function scanner_expand_release(evt){
         fdjtDOM.dropClass("CODEXSCANNER","expanded");}
 
@@ -2054,6 +2055,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     var noBubble=fdjtUI.noBubble;
     var cancel=fdjtUI.cancel;
+    var taphold_click=fdjtUI.TapHold.click;
 
     function generic_cancel(evt){
         evt=evt||event;
@@ -2143,7 +2145,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXEXPANDSCANNER": {
              tap: scanner_expand_tap,
              hold: scanner_expand_hold,
-             release: scanner_expand_release},
+             release: scanner_expand_release,
+             click: taphold_click},
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {click: head_tap},
          "#CODEXTABS": {click: head_tap},
@@ -2229,6 +2232,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXEXPANDSCANNER": {
              tap: scanner_expand_tap,
              hold: scanner_expand_hold,
+             click: taphold_click,
              release: scanner_expand_release},
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {touchstart: head_tap},
