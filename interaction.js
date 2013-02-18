@@ -1703,6 +1703,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event;
         var target=fdjtUI.T(evt);
         if (Codex.Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
+        if (fdjtUI.isClickable(target)) return;
         if (!((target===Codex.DOM.head)||
               (target===Codex.DOM.tabs)))
             return;
