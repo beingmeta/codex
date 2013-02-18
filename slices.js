@@ -146,6 +146,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     var expander_toggle=fdjtUI.Expansion.toggle;
     function tagexpand_click(evt){
+        evt=evt||event;
+        fdjtUI.cancel(evt);
         return expander_toggle(evt);}
 
     var combineTags=Knodule.combineTags;
@@ -161,7 +163,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var tagicon=fdjtDOM.Image(cxicon("tagicon",64,64),
                                   "img.tagicon","tags");
         var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
-        var tagspan=span;
+        var tagspan=span, hidden=false;
         var controller=false, hide_count_elt=false, total_count_elt=false, hide_start=false;
         var count=0, seen={}, i, lim;
         var tagvecs=[toarray(info["**tags"]),toarray(info["*tags"]),
@@ -185,17 +187,20 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                                        fdjtDOM("span.whencollapsed","+",
 
                                                "all ",total_count_elt," tags"));
-                    var subspan=fdjtDOM("span.whenexpanded");
+                    hidden=fdjtDOM("span.whenexpanded");
                     controller.setAttribute(
                         "onclick","fdjt.UI.Expansion.toggle(event); fdjt.UI.cancel(event);");
-                    fdjtDOM(span," ",controller," ",subspan);
+                    fdjtDOM(span," ",controller," ",hidden);
                     hide_start=count-1;
-                    tagspan=subspan;}
+                    tagspan=hidden;}
                 fdjtDOM.append(tagspan,((count>1)?" \u00b7 ":" "),
                                Knodule.HTML(tag,Codex.knodule));}}
-        fdjtDOM.replace(total_count_elt,document.createTextNode(""+count));
-        fdjtDOM.replace(hide_count_elt,document.createTextNode(""+(count-hide_start)));
-        if ((count-hide_start)<(show_tag_thresh/2)) addClass(span,"expanded");
+        if ((count-hide_start)<(show_tag_thresh/2)) {
+            fdjtDOM.remove(controller);
+            fdjtDOM(span,[].concat(hidden.childNodes));}
+        else {
+            fdjtDOM.replace(total_count_elt,document.createTextNode(""+count));
+            fdjtDOM.replace(hide_count_elt,document.createTextNode(""+(count-hide_start)));}
         return span;}
     function showaudience(outlets,spec){
         if (!(outlets instanceof Array)) outlets=[outlets];
