@@ -80,7 +80,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     
     function setQuery(query){
         if (Codex.Trace.search) log("Setting working query to %o",query);
-        var query=Codex.query=useQuery(query,fdjtID("CODEXSEARCH"));
+        var qstring=query.getString();
+        if (qstring!==Codex.qstring) {
+            Codex.query=query;
+            Codex.qstring=qstring;
+            useQuery(query,fdjtID("CODEXSEARCH"));}
         if (Codex.mode==="search") {
             if (query.results.length===0) {}
             else if (query.results.length<7)
@@ -98,16 +102,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var box=box_arg||query._box||fdjtID("CODEXSEARCH");
         if ((query.dom)&&(box)&&(box!==query.dom))
             fdjtDOM.replace(box_arg,query.dom);
-        if (qstring===box.getAttribute("qstring")) {
-            log("No change in query for %o to %o: %o/%o (%o)",
-                box,query.tags,
-                Codex.query.results.length,
-                Codex.query.cotags.length,
-                qstring);
-            return Codex.query;}
-        else {
-            query.execute();
-            query.getCoTags();}
+        box.setAttribute("qstring",qstring);
+        query.execute();
+        query.getCoTags();
         if (Codex.Trace.search>1)
             log("Setting query for %o to %o: %o/%o (%o)",
                 box,query.tags,
@@ -379,7 +376,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (xend<yend) return -1;
             else if (xend>yend) return 1;
             else return 0;});
-        if (!(result)) result=Codex.query;
         var div=fdjtDOM("div.codexslice.sbookresults");
         fdjtUI.TapHold(div,Codex.touch);
         Codex.UI.addHandlers(div,'summary');
