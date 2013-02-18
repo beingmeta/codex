@@ -182,7 +182,9 @@ body.hudup #CODEXHEARTHOLDER {
     position: absolute; top: 0px; left: 0px; right: 0px; height: 0px;}
 #CODEXHUD #CODEXHEART {
     position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;}
-div#CODEXHUD #CODEXHEART div.hudpanel { background-color: transparent;}
+div#CODEXHUD #CODEXHEART div.hudpanel {
+    background-color: transparent;
+    padding-bottom: 20px;}
 
 div#CODEXHUD #CODEXHEART {
     font-size: 100%; overflow: auto;}
