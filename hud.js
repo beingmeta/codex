@@ -940,7 +940,7 @@ Codex.setMode=
                 var about=src.about, target=fdjtID(about);
                 if (target) {
                     var info=Codex.docinfo[target.id];
-                    var terms=Codex.query._query;
+                    var terms=Codex.query.tags;
                     var spellings=info.knodeterms;
                     i=0; lim=terms.length;
                     if (lim===0)

@@ -705,7 +705,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.previewTarget=target=fdjtID(about);
             if (about) {
                 var info=Codex.docinfo[target.id];
-                var terms=Codex.query._query;
+                var terms=Codex.query.tags;
                 var spellings=info.knodeterms;
                 var i=0; var lim=terms.length;
                 var dup_target=false;

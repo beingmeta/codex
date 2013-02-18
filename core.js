@@ -159,8 +159,6 @@ var Codex=
             fdjtDOM.getMeta("~KNODULE")||
             refuri;
         Codex.knodule=new Knodule(knodule_name);
-        // Codex.index=new KnoduleIndex(Codex.knodule);
-        Codex.query=Codex.empty_query=new RefDB.Query([]);
         Codex.BRICO=new Knodule("BRICO");
         Codex.BRICO.addAlias(":@1/");
         Codex.BRICO.addAlias("@1/");
@@ -235,7 +233,9 @@ var Codex=
             [];
 
         function Query(tags,base_query){
-            if (arguments.length===0) return this;
+            if (!(this instanceof Query))
+                return new Query(tags,base_query);
+            else if (arguments.length===0) return this;
             else return Knodule.TagQuery.call(
                 this,tags,false,false,false,base_query);}
         Query.prototype=new Knodule.TagQuery();
@@ -243,6 +243,8 @@ var Codex=
         Query.prototype.base_slots=["tags","^tags","+tags"];
         Query.prototype.ambigrefs=false;
         Codex.Query=Query;
+
+        Codex.query=Codex.empty_query=new Query([]);
 
         if (Codex.Trace.start>1) fdjtLog("Initialized DB");}
     Codex.initDB=initDB;

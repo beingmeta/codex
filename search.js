@@ -68,7 +68,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var getChildren=fdjtDOM.getChildren;
     var getChild=fdjtDOM.getChild;
     var log=fdjtLog;
-    var kbref=fdjtKB.ref;
+    var kbref=RefDB.ref;
 
     /* Query functions */
 
@@ -82,34 +82,42 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (Codex.Trace.search) log("Setting working query to %o",query);
         var query=Codex.query=useQuery(query,fdjtID("CODEXSEARCH"));
         if (Codex.mode==="search") {
-            if (query._results.length===0) {}
-            else if (query._results.length<7)
+            if (query.results.length===0) {}
+            else if (query.results.length<7)
                 showSearchResults();
             else {fdjtID("CODEXSEARCHINPUT").focus();}}}
 
     Codex.setQuery=setQuery;
 
     function useQuery(query,box_arg){
-        var result;
-        if (query instanceof Query) result=query;
-        else result=Codex.index.Query(query);
-        var qstring=result.getString();
+        if (query instanceof Query) query=query;
+        else query=new Codex.Query(query);
+        var qstring=query.getString();
         if ((box_arg)&&(typeof box_arg === 'string'))
             box_arg=document.getElementById(box_arg);
-        var box=box_arg||result._box||fdjtID("CODEXSEARCH");
+        var box=box_arg||query._box||fdjtID("CODEXSEARCH");
         if ((query.dom)&&(box)&&(box!==query.dom))
             fdjtDOM.replace(box_arg,query.dom);
         if (qstring===box.getAttribute("qstring")) {
             log("No change in query for %o to %o: %o/%o (%o)",
-                box,result._query,result,result._refiners,qstring);
-            return;}
+                box,query.tags,
+                Codex.query.results.length,
+                Codex.query.cotags.length,
+                qstring);
+            return Codex.query;}
+        else {
+            query.execute();
+            query.getCoTags();}
         if (Codex.Trace.search>1)
             log("Setting query for %o to %o: %o/%o (%o)",
-                box,result._query,result,result._refiners,qstring);
+                box,query.tags,
+                query.results.length,query.cotags.length,
+                qstring);
         else if (Codex.Trace.search)
             log("Setting query for %o to %o: %d results/%d refiners (%o)",
-                box,result._query,result._results.length,
-                result._refiners._results.length,qstring);
+                box,query.tags,
+                query.results.length,query.cotags.length,
+                qstring);
         var input=getChild(box,".searchinput");
         var cloudid=input.getAttribute("completions");
         var resultsid=input.getAttribute("results");
@@ -125,7 +133,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var refinecount=getChild(info,".refinecount");
         // Update (clear) the input field
         input.value='';
-        var elts=result._query; var i=0; var lim=elts.length;
+        var elts=query.tags; var i=0; var lim=elts.length;
         // Update 'notags' class
         if (elts.length) fdjtDOM.dropClass([box,info],"notags");
         else addClass([box,info],"notags");
@@ -155,17 +163,16 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (qtags.id) newtags.id=qtags.id;
         fdjtDOM.replace(qtags,newtags);
         // Update the results display
-        if (result._results.length) {
-            resultcount.innerHTML=result._results.length+
-                " result"+((result._results.length===1)?"":"s");
+        if (query.results.length) {
+            resultcount.innerHTML=query.results.length+
+                " result"+((query.results.length===1)?"":"s");
             fdjtDOM.dropClass([box,info],"noresults");}
         else {
             resultcount.innerHTML="no results";
             addClass([box,info],"noresults");}
         // Update the search cloud
-        var n_refiners=
-            ((result._refiners)&&(result._refiners._results.length))||0;
-        var completions=Codex.queryCloud(result);
+        var n_refiners=((query.cotags)&&(query.cotags.length))||0;
+        var completions=Codex.queryCloud(query);
         refinecount.innerHTML=n_refiners+
             ((n_refiners===1)?(" associated tag"):(" associated tags"));
         fdjtDOM.dropClass(box,"norefiners");
@@ -179,22 +186,22 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (n_refiners===0) {
             addClass(box,"norefiners");
             refinecount.innerHTML="no refiners";}
-        result._box=box; box.setAttribute(qstring,qstring);
+        query._box=box; box.setAttribute("qstring",qstring);
         Codex.UI.updateScroller(completions.dom);
-        return result;}
+        return query;}
     Codex.useQuery=useQuery;
 
     function extendQuery(query,elt){
-        var elts=[].concat(query._query);
+        var elts=[].concat(query.tags);
         if (typeof elt === 'string') 
             elts.push(kbref(elt)||elt);
         else elts.push(elt);
-        return useQuery(query.index.Query(elts),query._box);}
+        return useQuery(new Codex.Query(elts),query._box);}
     Codex.extendQuery=extendQuery;
 
     Codex.updateQuery=function(input_elt){
         var q=Knodule.Query.string2query(input_elt.value);
-        if ((q)!==(Codex.query._query))
+        if ((q)!==(Codex.query.tags))
             Codex.setQuery(q,false);};
 
     function showSearchResults(){
@@ -244,8 +251,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 setQuery(extendQuery(Codex.query,value));}
             fdjtDOM.cancel(evt);
             if ((Codex.search_gotlucky) && 
-                (Codex.query._results.length>0) &&
-                (Codex.query._results.length<=Codex.search_gotlucky))
+                (Codex.query.results.length>0) &&
+                (Codex.query.results.length<=Codex.search_gotlucky))
                 showSearchResults();
             else {
                 /* Handle new info */
@@ -301,7 +308,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var box=fdjtDOM.getParent(target,".searchbox");
         var input=getChild(box,".searchinput");
         fdjtUI.cancel(evt);
-        if (Codex.query._query.length===0) {
+        if (Codex.query.tags.length===0) {
             Codex.setMode(false); return;}
         else setQuery(Codex.empty_query);
         input.focus();}
@@ -339,9 +346,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         locrule.style.left=((target_start/cxt_len)*100)+"%";
         return locrule;}
 
-    function showResults(result){
-        if (result._results_div) return result._results_div;
-        var results=result._results; var rscores=result._scores;
+    function showResults(query){
+        if (query.listing) return query.listing;
+        var results=query.results; var rscores=query.scores;
         var scores={}; var sorted=[];
         var i=0; var lim=results.length;
         var scores=new Array(lim);
@@ -376,8 +383,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var div=fdjtDOM("div.codexslice.sbookresults");
         fdjtUI.TapHold(div,Codex.touch);
         Codex.UI.addHandlers(div,'summary');
-        Codex.UI.showSlice(result._results,div,rscores);
-        result._results_div=div;
+        Codex.UI.showSlice(query.results,div,rscores);
+        query.listing=div;
         return div;}
     RefDB.Query.prototype.showResults=
         function(){return showResults(this);};
@@ -385,20 +392,19 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     /* Getting query cloud */
 
     function queryCloud(query){
-        if (query._cloud) return query._cloud;
-        else if ((query._query.length)===0) {
-            query._cloud=searchCloud();
-            return query._cloud;}
+        if (query.cloud) return query.cloud;
+        else if ((query.tags.length)===0) {
+            query.cloud=searchCloud();
+            return query.cloud;}
         else if (!(query._refiners)) {
-            query._cloud=Codex.empty_cloud;
-            return query._cloud;}
+            query.cloud=Codex.empty_cloud;
+            return query.cloud;}
         else {
-            var refiners=query._refiners;
-            var completions=makeCloud(
-                refiners._results,refiners,refiners._freqs);
+            var cotags=query.getCoTags();
+            var completions=makeCloud(cotags._alltags,cotags,cotags._freqs);
             var cloud=completions.dom;
             cloud.onclick=cloud_ontap;
-            var n_refiners=query._refiners._results.length;
+            var n_refiners=query.cotags._alltags.length;
             var hide_some=(n_refiners>Codex.show_refiners);
             if (hide_some) {
                 var cues=fdjtDOM.$(".cue",cloud);
@@ -408,8 +414,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                                       (compelts.length):(Codex.show_refiners));
                     while (i<lim) addClass(compelts[i++],"cue");}}
             else addClass(cloud,"showempty");
-            query._cloud=completions;
-            return query._cloud;}}
+            query.cloud=completions;
+            return query.cloud;}}
     Codex.queryCloud=queryCloud;
     RefDB.Query.prototype.getCloud=function(){return queryCloud(this);};
 
@@ -419,7 +425,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var completion=fdjtDOM.getParent(target,".completion");
         if (Codex.Trace.gestures) log("cloud tap on %o",completion);
         if (completion) {
-            var cinfo=Codex.query._cloud;
+            var cinfo=Codex.query.cloud;
             var value=cinfo.getValue(completion);
             if (typeof value !== 'string') add_searchtag(value);
             else  if (value.length===0) {}
@@ -450,7 +456,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function makeCloud(dterms,scores,freqs,ranks_arg,noscale,
                        completions,init_cloud) {
         var start=new Date();
-        var sbook_index=Codex.index;
         var sourcekb=Codex.sourcedb;
         var knodule=Codex.knodule;
         var cloud=init_cloud||false;
@@ -460,7 +465,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((init_cloud)&&(init_cloud.parentNode)) {
             placeholder=document.createTextNode("");
             init_cloud.parentNode.replaceChild(placeholder,init_cloud);}
-        var info=organize_dterms(dterms,scores,knodule,sourcekb);
+        var info=organize_tags(dterms,scores,knodule,sourcekb);
         if (Codex.Trace.clouds)
             log("Making cloud from %d dterms w/scores=%o [%d,%d] and freqs=%o",
                 dterms.length,scores,info.max,info.min,freqs);
@@ -485,15 +490,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var words=getChild(cloud,".words")||cloud;
         var sections=getChild(cloud,".sections")||cloud;
         if (!(completions)) completions=new Completions(cloud);
-        dterms=sort_dterms(dterms,sbook_index,ranks_arg);
+        dterms=sort_tags(dterms);
         var nspans=0; var sumscale=0;
         var minscale=false; var maxscale=false;
         var domnodes=[]; var nodescales=[];
         var count=scores._count;
         var cuelim=scores._maxscore/2;
-        var cscores=sbook_index.tagscores;
-        var cfreqs=sbook_index.tagfreqs;
-        var ctotal=sbook_index._allitems.length;
+        var cscores=Codex.empty_query.tagscores;
+        var cfreqs=Codex.empty_query.tagfreqs;
         var normals=((info.n_primes<17)&&(info.normals));
         var topcloud=(freqs===cfreqs)
         i=0; while (i<dterms.length) {
@@ -509,15 +513,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 ((scores[dterm])?(1+Math.log(scores[dterm])):
                  (freqs[dterm])?(1+Math.log(freqs[dterm])):
                  (1));
-            /*
-            if (topcloud) {
-                if (scores[dterm]) scaling=Math.log(scores[dterm]);
-                else if (freqs[dterm]) scaling=Math.log(freqs[dterm]);
-                else scaling=1;}
-            else if (scores[dterm]) scaling=scores[dterm]/cscores[dterm];
-            else if (freqs[dterm]) scaling=freqs[dterm]/cfreqs[dterm];
-            else scaling=1;
-            */
             domnodes.push(span);
             if ((scores)&&(!(noscale))) {
                 if ((!(minscale))||(scaling<minscale)) minscale=scaling;
@@ -544,10 +539,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 node.style.fontSize=
                     (100+(100*((scale-minscale)/scalespan)))+'%';
                 j++;}}
-        var maxmsg=fdjtDOM
-        ("div.maxcompletemsg",
-         "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
-         " of completions.  ");
+        var maxmsg=fdjtDOM(
+            "div.maxcompletemsg",
+            "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
+            " of completions.  ");
         fdjtDOM.prepend(cloud,maxmsg);
         var end=new Date();
         if (Codex.Trace.clouds)
@@ -604,36 +599,46 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (showall) showall.onclick=showempty_ontap;
         return showall;}
 
-    function sort_dterms(dterms,sbook_index,ranks_arg){
-        var copied=[].concat(dterms);
-        var ranks=(((ranks_arg===true)||(typeof ranks_arg==='undefined'))?
-                   (sbook_index.rankTags()):
-                   (ranks_arg));
+    function sort_tags(tags){
+        var copied=[].concat(tags);
         // We sort the keys by absolute frequency
-        if (ranks===false) copied.sort();
-        else copied.sort(function (x,y) {
-            var xrank=ranks[x]||0;
-            var yrank=ranks[y]||0;
-            if (xrank===yrank) {
-                if (x<y) return -1;
-                else if (x===y) return 0;
-                else return 1;}
-            else if (xrank<yrank) return -1;
-            else return 1;})
+        copied.sort(function (x,y) {
+            var weights=Codex.tagweights;
+            if (x instanceof Ref) {
+                if (y instanceof Ref) {
+                    if (x.weight) {
+                        if (y.weight) {}
+                        else return -1;}
+                    else if (y.weight) return 1;
+                    else return RefDB.compare(x,y);}
+                else return -1;}
+            else if (y instanceof Ref) return 1;
+            else if (typeof x === "string") {
+                if (typeof y === "string") {
+                    var xrank=weights[x]||0;
+                    var yrank=weights[y]||0;
+                    if (xrank===yrank) {
+                        if (x<y) return -1;
+                        else if (x===y) return 0;
+                        else return 1;}
+                    else if (xrank<yrank) return -1;
+                    else return 1;}
+                else return -1;}
+            else if (typeof y === "string") return 1;
+            else return RefDB.compare(x,y);});
         return copied;}
 
-    function organize_dterms(dterms,scores,knodule,sourcekb){
+    function organize_tags(tags,scores,knodule,sourcekb){
         var min_score=false, max_score=false;
         var normals={}, n_normal=0, n_primes=0;
-        var probeRef=fdjtKB.probeRef;
-        var i=0; while (i<dterms.length) {
-            var dterm=dterms[i++];
-            var knode=fdjtKB.probeRef(dterm,knodule);
-            if ((knode)&&(knode.prime)) n_primes++;
-            if ((knode)&&(knode.pool!==sourcekb)&&(!(knode.weak))) {
-                normals[dterm]=true; n_normal++;}
+        var i=0; while (i<tags.length) {
+            var tag=tags[i++];
+            if (tag instanceof Ref) {
+                if (tag.prime) n_primes++;
+                if ((tag._db!==sourcekb)&&(!(tag.weak))) {
+                    normals[tag]=true; n_normal++;}}
             if (scores) {
-                var score=scores[dterm];
+                var score=scores[tag];
                 if (score) {
                     if (min_score===false) min_score=score;
                     else if (score<min_score) min_score=score;
@@ -653,7 +658,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                        100);}}
 
     function cloudEntry(term,title){
-        var sbook_index=Codex.index; var showname=term;
+        var showname=term;
+        var tagfreqs=Codex.empty_query.tagfreqs;
         var knodule=Codex.knodule; var title=false;
         if ((typeof term === "string") && (term[0]==="\u00A7")) {
             // Handle section references as tags
@@ -668,13 +674,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var span=fdjtDOM("span.completion",
                              fdjtDOM("span.sectname",showname));
             span.key=term; span.value=term; span.anymatch=true;
-            span.title=""+sbook_index.freq(term)+" items: "+term;
+            span.title=""+tagfreqs[term]+" items: "+term;
             if (title) span.title=span.title+"; "+title;
             return span;}
         var span=Knodule.HTML(term,knodule,false,true);
         var knode=((term instanceof KNode)?(term):(knodule.probe(term)));
-        var freq=((knode)?(sbook_index.freq(knode._qid)):
-                  (sbook_index.freq(term)));
+        var freq=((knode)?(tagfreqs[knode]):(tagfreqs[term]));
         span.title=(""+freq+" items; ")+
             (((span.title)&&(span.title.length))?(span.title):
              (Completions.getKey(span)));
@@ -687,9 +692,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function searchCloud(){
         if (Codex.search_cloud) return Codex.search_cloud;
         else {
-            var tagscores=Codex.index.tagscores;
-            var alltags=Codex.index._alltags;
-            var tagfreqs=Codex.index.tagfreqs;
+            var alltags=Codex.empty_query.getCoTags();
+            var tagscores=Codex.empty_query.tagscores;
+            var tagfreqs=Codex.empty_query.tagfreqs;
             var completions=Codex.makeCloud(
                 alltags,tagscores,tagfreqs,true,false,false,
                 fdjtID("CODEXSEARCHCLOUD"));
