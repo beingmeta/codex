@@ -747,6 +747,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             words=((spellings)&&(spellings[term]))||[term];
         else {
             var knodes=info.knodes;
+            if (!(knodes)) knodes=[];
+            else if (!(knodes instanceof Array)) knodes=[knodes];
             var i=0; var lim=knodes.length;
             while (i<lim) {
                 var knode=knodes[i++];
@@ -775,7 +777,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var j=0; var jlim=words.length;
         while (j<jlim) {
             var word=words[j++];
-            var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gm");
+            var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gim");
             var searching=Codex.getDups(target);
             var ranges=fdjtDOM.findMatches(searching,pattern);
             if (Codex.Trace.highlight)
@@ -1329,7 +1331,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     /* Default click/tap */
     function default_tap(evt){
         var target=fdjtUI.T(evt);
-        if (((Codex.hudup)||(Codex.mode))) {
+        if (fdjtUI.isClickable(target)) return;
+        else if (((Codex.hudup)||(Codex.mode))) {
             Codex.setMode(false);}
         else {
             var cx=evt.clientX, cy=evt.clientY;
