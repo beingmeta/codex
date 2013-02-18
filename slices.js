@@ -55,6 +55,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var fdjtUI=fdjt.UI;
     var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
 
+    var addClass=fdjtDOM.addClass;
+    var dropClass=fdjtDOM.dropClass;
+
     var div_threshold=7;
     var debug_locbars=false;
     var odq="\u201c"; var cdq="\u201d";
@@ -148,64 +151,49 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var combineTags=Knodule.combineTags;
     
     function showtags(info){
-        var ctags=info.tags;
-        var gtags=info.glosstags;
-        var knodes=info.knodes;
-        var dterms=[];
-        var atags=info.autotags;
-        var tags; var scores;
-        if (knodes) {
-            var i=0; var lim=knodes.length;
-            while (i<lim) dterms.push(knodes[i++].tagString());}
-        if ((typeof ctags === 'string')||(ctags instanceof String))
-            ctags=[ctags];
-        if (!((atags)||(gtags))) {
-            tags=ctags; scores=tags.scores;}
-        else if (info.alltags) {
-            // This is where the combination of tags is cached
-            tags=info.alltags; scores=tags.scores;}
-        else {
-            // Sort the automatic tags if needed
-            if ((atags)&&(!(atags.sorted))) {
-                var weights=Codex.index.tagscores;
-                atags.sort(function(t1,t2){
-                    var v1=weights[t1], v2=weights[t2];
-                    if ((v1)&&(v2)) {
-                        if (v1<v2) return -1;
-                        else if (v1>v2) return 1;
-                        else return 0;}
-                    else if (v1) return 1;
-                    else return -1;});
-                atags.sorted=true;}
-            tags=info.alltags=combineTags([ctags,dterms,gtags,atags]);
-            scores=tags.scores;}
+        var ctags=info.tags, gtags=info.glosstags, knodes=info.knodes;
+        if (!(gtags)) gtags=[]; else
+            if (!(gtags instanceof Array)) gtags=[gtags];
+        if (!(knodes)) knodes=[]; else
+            if (!(knodes instanceof Array)) knodes=[knodes];
+        if (!(ctags)) ctags=[]; else
+            if (!(ctags instanceof Array)) ctags=[ctags];
+        var tags=[].concat(gtags).concat(knodes).concat(ctags);
+        var scores=false;
         var tagcount=0;
         var countspan=fdjtDOM("span.count");
         var tagicon=fdjtDOM.Image(cxicon("tagicon",64,64),
                                   "img.tagicon","tags");
         var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
         var tagspan=span;
-        var controller=false;
-        var i=0; var lim=tags.length;
-        while (i<tags.length) {
-            var tag=tags[i]; var score=((scores)&&(scores[tag]))||false;
-            if ((typeof tag === 'string')&&(tag.indexOf('@')>=0))
-                tag=RefDB.ref(tag)||tag;
-            var togo=tags.length-i;
-            if ((!controller)&&((!(score))||(score<=1))&&
-                (i>show_tag_thresh)&&(togo>4)) {
-                controller=fdjtDOM("span.controller.clickable",
-                                   fdjtDOM("span.whenexpanded","-"),
-                                   fdjtDOM("span.whencollapsed","+"),
-                                   "all ",tags.length," tags");
-                var subspan=fdjtDOM("span.whenexpanded");
-                controller.setAttribute(
-                    "onclick","fdjt.UI.Expansion.toggle(event);");
-                fdjtDOM(span," ",controller," ",subspan);
-                tagspan=subspan;}
-            fdjtDOM.append(tagspan,((i>0)?" \u00b7 ":" "),
-                           Knodule.HTML(tag,Codex.knodule));
-            i++;}
+        var controller=false, hide_count_elt=false, hide_start=false;
+        var count=0, seen={}, i, lim;
+        var tagvecs=[gtags,knodes,ctags];
+        var j=0, nvecs=tagvecs.length;
+        while (j<nvecs) {
+            var tags=tagvecs[j++];
+            var i=0, lim=tags.length;
+            while (i<tags.length) {
+                var tag=tags[i++]; var score=((scores)&&(scores[tag]))||false;
+                var tagstring=((typeof tag === "string")?(tag):((tag._qid)||(tag.getQID())));
+                if (seen[tagstring]) continue;
+                else {count++; seen[tagstring]=tag;}
+                if ((!controller)&&(count>show_tag_thresh)) {
+                    hide_count_elt=document.createTextNode("N");
+                    controller=fdjtDOM("span.controller.clickable",
+                                       fdjtDOM("span.whenexpanded","-"),
+                                       fdjtDOM("span.whencollapsed","+"),
+                                       "all ",hide_count_elt," tags");
+                    var subspan=fdjtDOM("span.whenexpanded");
+                    controller.setAttribute(
+                        "onclick","fdjt.UI.Expansion.toggle(event);");
+                    fdjtDOM(span," ",controller," ",subspan);
+                    hide_start=count;
+                    tagspan=subspan;}
+                fdjtDOM.append(tagspan,((count>0)?" \u00b7 ":" "),
+                               Knodule.HTML(tag,Codex.knodule));}}
+        fdjtDOM.replace(hide_count_elt,document.createTextNode(""+(count-hide_start)));
+        if ((count-hide_start)<(show_tag_thresh/2)) addClass(span,"expanded");
         return span;}
     function showaudience(outlets,spec){
         if (!(outlets instanceof Array)) outlets=[outlets];
@@ -325,7 +313,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         (((userinfo)&&(userinfo.name))?
                          (fdjtString.getInitials(userinfo.name)):
                          "?"));
-        fdjtDOM.addClass(pic,"sbooknopic");
+        addClass(pic,"sbooknopic");
         return pic;}
 
     function getpicinfo(info){
@@ -742,25 +730,25 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (child.nodeType!==1) continue;
             if (hasClass(child,"codexcard")) {
                 var gloss=(child.qref)&&Codex.glossdb.refs[child.qref];
-                if (!(gloss)) fdjtDOM.dropClass(child,"sourced");
+                if (!(gloss)) dropClass(child,"sourced");
                 else if ((RefDB.contains(sources,gloss.maker))||
                          (RefDB.overlaps(sources,gloss.sources))||
                          (RefDB.overlaps(sources,gloss.shared))) {
-                    fdjtDOM.addClass(child,"sourced");
+                    addClass(child,"sourced");
                     empty=false;}
-                else fdjtDOM.dropClass(child,"sourced");}
+                else dropClass(child,"sourced");}
             else if (hasClass(child,"codexthread")) {
                 if (!(selectSourcesRecur(child,sources)))
                     empty=false;}
             else {}}
-        if (!(empty)) fdjtDOM.addClass(thread,"sourced");
-        else fdjtDOM.dropClass(thread,"sourced");
+        if (!(empty)) addClass(thread,"sourced");
+        else dropClass(thread,"sourced");
         return empty;}
 
     function selectSources(results_div,sources){
         if (!(sources)) {
-            fdjtDOM.dropClass(results_div,"sourced");
-            fdjtDOM.dropClass(fdjt.$(".sourced",results_div),"sourced");
+            dropClass(results_div,"sourced");
+            dropClass(fdjt.$(".sourced",results_div),"sourced");
             return;}
         selectSourcesRecur(results_div,sources);
         if (Codex.target) scrollGlosses(Codex.target,results_div);}
