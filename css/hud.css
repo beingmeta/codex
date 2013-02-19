@@ -19,7 +19,8 @@
 
 #CODEXHEAD, #CODEXSCANNER, #CODEXFOOT {
     position: fixed; left: 60px; right: 60px; z-index: 100;
-    max-height: 60px; border: solid transparent 4px; padding: 0px;}
+    max-height: 60px; border: solid transparent 4px;
+    padding: 0px; padding-bottom: 0.5ex;}
 #CODEXSCANNER {
     background-color: white;
     border-color: darkblue;}

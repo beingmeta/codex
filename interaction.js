@@ -668,7 +668,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtLog("slice_held %o: %o, scanning=%o",
                     evt,card,Codex.scanning);
         if (!(card)) return;
-        if (Codex.scanning===card) return;
+        if ((Codex.scanning===card)&&(Codex.mode==="scanning"))
+            return;
         var slice=getParent(card,".codexslice");
         var clone=card.cloneNode(true);
         clone.id="CODEXSCAN";

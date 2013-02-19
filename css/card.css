@@ -101,7 +101,7 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
     content: "→ "; font-weight: bold;}
 body.sbook a.codexcard { display: block;}
 .codexcard .codexcardbody {
-    padding-top: 0px;}
+    padding-top: 0.5ex;}
 .codexcard .fdjtclearfloats { margin-bottom: 3px;}
 .codexcard.gloss .codexcardbody {
     border-top: solid purple 2px;}
@@ -133,7 +133,9 @@ body.sbook a.codexcard { display: block;}
 .codexcard span.note { font-size: 110%;}
 .codexcard img.userpic, .codexcard img.sourcepic  {
     float: left; clear: left; margin-right: 3px;
-    width: 50px; height: auto;}
+    width: 50px; height: auto;
+    /* This lines up with the padding on codexcardbody */
+    margin-top: -0.5ex;}
 .codexcard div.userpic, .codexcard div.sourcepic  {
     float: left; clear: left; margin-right: 3px;
     width: 50px; height: 50px; font-size: 32px;
