@@ -651,11 +651,12 @@ var Codex=
         else if (tag[0]==="*") {
             slot="*"+slot; tag=tag.slice(1);}
         else {}
-        var knode=((tag.indexOf('|')>=0)?
-                   (usekno.handleSubjectEntry(tag)):
-                   (slot[0]==="~")?
-                   (((kno)&&(kno.probe(tag)))||(tag)):
-                   (usekno.handleSubjectEntry(tag)));
+        var knode=((tag instanceof Ref)?(tag):
+                   ((tag.indexOf('|')>=0)?
+                    (usekno.handleSubjectEntry(tag)):
+                    (slot[0]==="~")?
+                    (((kno)&&(kno.probe(tag)))||(tag)):
+                    (usekno.handleSubjectEntry(tag))));
         item.add(slot,knode);
         if (knode.allways) {
             var allways=knode.allways;
