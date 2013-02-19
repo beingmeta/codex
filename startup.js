@@ -1294,6 +1294,9 @@ Codex.Startup=
                 if (Codex.persist) setLocal("sync("+refuri+")",info.sync);
                 Codex.sync=info.sync;}
             Codex.loaded=info.loaded=fdjtTime();
+            if (Codex.persist) {
+                Codex.glossdb.save();
+                Codex.sourcedb.save();}
             if (Codex.glosshash) {
                 if (Codex.showGloss(Codex.glosshash))
                     Codex.glosshash=false;}}
