@@ -51,6 +51,8 @@ div.codextoc div.spanbar div.codexhudspan a.brick {
     cursor: crosshair;}
 div.codextoc div.spanbar div.codexhudspan:first-child a.brick {
     border-left: 1px;}
+div.codextoc div.spanbar div.codexhudspan.codexlastspan a.brick {
+    border-right: 0px;}
 div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
     background-color: lightblue; z-index: 0;}
 
@@ -157,7 +159,7 @@ div#CODEXTOC div.spanbar div.codexhudspan {
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
     height: 38px;}
 div#CODEXTOC div.spanbar div.progressbox {
-    vertical-align: top; height: 40px; border-top: solid red 7px;
+    vertical-align: top; height: 45px; border-top: solid red 7px;
     bottom: 1px;}
 div#CODEXTOC div.spanbar div.spans { font-size: 30px;}
 div#CODEXTOC div.spanbar div.spans a.codextitle {

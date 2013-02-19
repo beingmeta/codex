@@ -136,7 +136,7 @@ Codex.TOC=
             if ((!(subsections)) || (subsections.length===0))
                 return false;
             var progress=fdjtDOM("div.progressbox","\u00A0");
-            var range=false; var lastspan=false;
+            var range=false; var firstspan=false, lastspan=false;
             fdjtDOM(spanbar,progress,spans);
             fdjtDOM(spans,range);
             progress.style.left="0%";
@@ -158,6 +158,9 @@ Codex.TOC=
                 var span=generate_span(
                     sectnum,subsection,spaninfo.title,spanstart,spanend,len,
                     ((addname)&&("SBR"+spaninfo.frag)),start);
+                if (!(firstspan)) {
+                    firstspan=span;
+                    addClass(firstspan,"codexfirstspan");}
                 lastspan=span;
                 spans.appendChild(span);
                 if (addname) {
@@ -170,7 +173,9 @@ Codex.TOC=
                  * actual section */
                 var span=generate_span
                 (sectnum,head,headinfo.title,last_info.ends_at,end,len,start);
-                spanbar.appendChild(span);}    
+                addClass(span,"codexlastspan");
+                spanbar.appendChild(span);}
+            else if (lastspan) addClass(lastspan,"codexlastspan");
             return spanbar;}
 
         function generate_span(sectnum,subsection,title,
