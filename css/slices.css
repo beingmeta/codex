@@ -62,9 +62,17 @@ div.codexslice div.codexthread div.codexcard:first-child div.locbar {
     display:block;}
 
 div.codexslice div.codexscanpoint {
-    border-left: solid blue 16px;
-    margin-left: 4px;    
+    border-left: solid darkblue 16px;
+    border-top: solid darkblue 4px;
+    border-bottom: solid darkblue 4px;
+    margin-left: 0px;
     background-color: white;}
+
+div.codexslice div.codexcard.codexscanpoint + div.codexcard > div.codexcardbody,
+div.codexslice div.codexcard.codexscanpoint .codexcardbody {
+    border-top-width: 0px;}
+div.codexslice div.codexcard.codexscanpoint .fdjtclearfloats {
+    margin-bottom: 0px;}
 
 /* CODEXSOURCES */
 

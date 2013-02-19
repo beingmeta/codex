@@ -21,8 +21,15 @@
     position: fixed; left: 60px; right: 60px; z-index: 100;
     max-height: 60px; border: solid transparent 4px; padding: 0px;}
 #CODEXSCANNER {
-    background-color: rgba(255,255,255,0.4);
-    border-color: rgba(192, 192, 192, 0.31);}
+    background-color: white;
+    border-color: darkblue;}
+#CODEXSCANNER .tochead {
+    background-color: darkblue; color: white;
+    font-weight: bold; font-size: 130%;
+    max-height: 4ex;}
+#CODEXSCANNER .tochead a { color: white;}
+#CODEXSCANNER .tochead hr {
+    color: rgb(33, 106, 129); background-color: rgb(33, 106, 129);}
 #CODEXHEAD, #CODEXSCANNER {top: 0px; border-top: 0px;}
 #CODEXFOOT {bottom: 0px; border-bottom: 0px;}
 
@@ -93,11 +100,11 @@ body #CODEXHUD.tocscan #CODEXHEAD,
 body #CODEXHUD.addgloss #CODEXHEAD,
 body #CODEXHUD.scanning #CODEXSCANNER,
 body #CODEXHUD.allglosses #CODEXSCANNER {
-    background-color: ivory; border-color: darkblue;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
+    border-color: rgba(0, 0, 255, 0.52);
     height: auto;}
 body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
     position: static;}
@@ -130,7 +137,7 @@ body.cxTOUCH #CODEXHUD.tocscan #CODEXFOOT {
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     height: auto; max-height: 50%;}
 
-body #CODEXHUD.openhead #CODEXHEAD,
+body #CODEXHUD.openhead #CODEXHEAD {max-height: 50%;}
 body #CODEXHUD.scanning #CODEXSCANNER.expanded,
 body #CODEXHUD.tocscan #CODEXSCANNER.expanded,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded {
@@ -150,6 +157,9 @@ body #CODEXHUD.scanning #CODEXSCANNER.expanded {
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;
     display: none;}
+#CODEXHEARTHOLDER {
+    border-color: rgba(70, 130, 180, 0.54);
+    background-color: steelblue;}
 body.hudup #CODEXHEARTHOLDER {
     display: block; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -179,9 +189,11 @@ body.hudup #CODEXHEARTHOLDER {
 #CODEXHEARTHOLDER #CODEXHEART {}
 
 #CODEXHUD #CODEXRIBBON {
-    position: absolute; top: 0px; left: 0px; right: 0px; height: 0px;}
+    position: absolute; top: 0px; left: 0px; right: 0px; height: 0px;
+    background-color: ivory;}
 #CODEXHUD #CODEXHEART {
-    position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;}
+    position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;
+    background-color: ivory;}
 div#CODEXHUD #CODEXHEART div.hudpanel {
     background-color: transparent;
     padding-bottom: 20px;}
@@ -196,7 +208,6 @@ body #CODEXHUD.addgloss.glosstagging #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
     border: solid transparent 3px;
-    background-color: ivory; border-color: blue;
     z-index: 100; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
@@ -224,7 +235,7 @@ body #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
-    margin-top: 1.5ex; margin-bottom: 1.5ex; margin-right: 1px;
+    margin-bottom: 1.5ex; margin-right: 1px;
     padding-top: 1ex; padding-bottom: 1em;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
@@ -658,7 +669,7 @@ body.cxPREVIEW div#CODEXHUD.glosses div.hudpanel#CODEXSCANNER,
 body.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSCANNER,
 body.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSCANNER,
 body div#CODEXHUD.scanning div#CODEXSCANNER {
-    display: block; overflow: hidden; border-color: silver;
+    display: block; overflow: hidden; border-color: darkblue;
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
@@ -678,7 +689,7 @@ div#CODEXSCANNER.expanded .ellipsis.expanded .elision,
 
 /* This is the twisty control */
 div#CODEXSCANNER span.expander {
-    position: absolute; left: 0px; top: 1.2em;}
+    position: absolute; left: 0px; top: 1.5em;}
 div#CODEXSCANNER span.expander img { width: 40px; height: 40px;}
 div#CODEXSCANNER span.expander img[alt='-'] { display: none;}
 div#CODEXSCANNER.expanded span.expander img[alt='-'] { display: inline;}
@@ -688,7 +699,7 @@ div#CODEXSCANNER div.tochead, div#CODEXPASSAGEGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
 
 body div#CODEXHUD div.hudpanel#CODEXTOC { z-index: 100; }
-body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC { overflow: visible; }
+body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC { overflow: hidden; }
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
