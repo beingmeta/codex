@@ -614,8 +614,7 @@ Codex.setMode=
                     else {
                         var gap=height-inner.height;
                         content.scrollTop=Math.floor(inner.top-(gap/2));}}
-                else {} // Already in view
-                Codex.scanning=false;}
+                else {}} // Already in view
             
             // This updates scroller dimensions, we delay it
             //  because apparently, on some browsers, the DOM
