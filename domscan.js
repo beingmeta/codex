@@ -110,6 +110,9 @@ Codex.DOMScan=(function(){
             scanstate.locinfo.push(scanstate.location);
             return this;}
         scanInfo.prototype=new Ref();
+        var tag_export_rules=Codex.tag_export_rules;
+        scanInfo.prototype.Export=function exportGloss(){
+            return Ref.Export.call(this,tag_export_rules);};
         refdb.refclass=scanInfo;
         
         docinfo._scanInfo=scanInfo;

@@ -137,6 +137,8 @@ var Codex=
     var dropClass=fdjtDOM.dropClass;
     var hasParent=fdjtDOM.hasParent;
 
+    var warn=fdjtLog.warn;
+
     var getLocal=fdjt.State.getLocal;
     
     function initDB() {
@@ -216,6 +218,27 @@ var Codex=
                             Codex.UI.addGlossSource(ref,true);}}}},
                                   "initgloss");
             if (Codex.persist) Codex.glossdb.storage=window.localStorage;}
+        
+        function Gloss(){return Ref.apply(this,arguments);}
+        Gloss.prototype=new Ref();
+        
+        function ignoreSlot(tags,slotid,exported){return undefined;}
+        var exportTagSlot=Knodule.exportTagSlot;
+        var tag_export_rules={
+            "*tags": exportTagSlot, "**tags": exportTagSlot,
+            "~tags": exportTagSlot, "~~tags": exportTagSlot,
+            "tags": exportTagSlot,
+            "*tags*": exportTagSlot, "**tags*": exportTagSlot,
+            "~tags*": exportTagSlot, "~~tags*": exportTagSlot,
+            "tags*": exportTagSlot,
+            "*tags**": exportTagSlot, "**tags**": exportTagSlot,
+            "~tags**": exportTagSlot, "~~tags**": exportTagSlot,
+            "tags**": exportTagSlot};
+        Codex.tag_export_rules=tag_export_rules;
+        Gloss.prototype.Export=function exportGloss(){
+            return Ref.Export.call(this,tag_export_rules);};
+        Codex.glossdb.refclass=Gloss;
+        
         Codex.sourcedb=new RefDB("sources");{
             Codex.sourcedb.absrefs=true;
             Codex.sourcedb.addAlias("@1961/");
@@ -469,6 +492,23 @@ var Codex=
         else return false;}
     Codex.Info=getinfo;
 
+    /* Getting tagstrings from a gloss */
+    var tag_prefixes=["","*","**","~","~~"];
+    function getGlossTags(gloss){
+        var results=[];
+        var i=0, lim=tag_prefixes.length; while (i<lim) {
+            var prefix=tag_prefixes[i++]
+            var tags=gloss[prefix+"tags"];
+            if (!(tags instanceof Array)) tags=[tags];
+            if (tags) {
+                var i=0, lim=tags.length;
+                while (i< lim) {
+                    var tag=tags[i++];
+                    if (prefix==="") results.push(tag);
+                    else results.push({prefix: prefix,tag: tag});}}}
+        return results;}
+    Codex.getGlossTags=getGlossTags;
+
     /* Navigation functions */
 
     function setHead(head){
@@ -648,13 +688,20 @@ var Codex=
     function addTag(item,tag,kno,slot){
         if (!(slot)) slot="tags";
         var usekno=kno||Codex.knodule;
-        if (tag[0]==="~") {
-            slot="~"+slot; tag=tag.slice(1);}
-        else if ((tag[0]==="*")&&(tag[1]==="*")) {
-            slot="**"+slot; tag=tag.slice(2);}
-        else if (tag[0]==="*") {
-            slot="*"+slot; tag=tag.slice(1);}
-        else {}
+        if (typeof tag === "string") {
+            if (tag[0]==="~") {
+                slot="~"+slot; tag=tag.slice(1);}
+            else if ((tag[0]==="*")&&(tag[1]==="*")) {
+                slot="**"+slot; tag=tag.slice(2);}
+            else if (tag[0]==="*") {
+                slot="*"+slot; tag=tag.slice(1);}
+            else {}}
+        else if (tag instanceof Ref) {}
+        else if ((tag.prefix)&&(tag.tag)) {
+            slot=tag.prefix+slot; tag=tag.tag;}
+        else {
+            warn("Weird tag %o for %s of %o",tag,slot,item);
+            return false;}
         var knode=((tag instanceof Ref)?(tag):
                    ((tag.indexOf('|')>=0)?
                     (usekno.handleSubjectEntry(tag)):

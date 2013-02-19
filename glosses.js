@@ -53,7 +53,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
-    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+    var RefDB=fdjt.RefDB;
+    var Ref=fdjt.Ref;
+    var fdjtID=fdjt.ID;
 
     var addClass=fdjtDOM.addClass;
     var hasClass=fdjtDOM.hasClass;
@@ -79,6 +81,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var cxicon=Codex.icon;
 
     var getTarget=Codex.getTarget;
+
+    var getGlossTags=Codex.getGlossTags;
 
     var uri_prefix=/(http:)|(https:)|(ftp:)|(urn:)/;
 
@@ -218,7 +222,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var maker_elt=getChild(response_elt,".respmaker");
             var date_elt=getChild(response_elt,".respdate");
             var note_elt=getChild(response_elt,".respnote");
-            var makerinfo=fdjtKB.ref(gloss.maker);
+            var makerinfo=Codex.sourcedb.ref(gloss.maker);
             fdjtDOM(maker_elt,makerinfo.name);
             fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));
             if (gloss.note) {
@@ -240,15 +244,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 	    thread.disabled=true;}
         var tagline=getTagline(passage);
         if (tagline) tagline.value=tagline;
-        if ((gloss)&&(gloss.tags)) {
-            var tagselt=getChild(form,".tags");
-            var resptags=getChild(response_elt,".resptags");
-            var tags=gloss.tags;
-            if (typeof tags === 'string') tags=[tags];
-            var i=0; var lim=tags.length;
-            while (i<lim) {
-                addTag(form,tags[i],false);
-                i++;}}
+        if (gloss) {
+            var tags=getGlossTags(gloss);
+            if (tags.length) {
+                var tagselt=getChild(form,".tags");
+                var resptags=getChild(response_elt,".resptags");
+                var i=0; var lim=tags.length;
+                while (i<lim) addTag(form,tags[i++],false);}}
         if ((gloss)&&(!(response))&&(gloss.posted)) {
             var wasposted=getChild(form,".wasposted");
             if (wasposted) wasposted.disabled=false;
@@ -587,11 +589,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     /***** Adding tags ******/
 
-    var Ref=fdjtKB.Ref;
-
     function addTag(form,tag,varname,checked,knodule) {
         // fdjtLog("Adding %o to tags for %o",tag,form);
+        var prefix=false;
         if (!(tag)) tag=form;
+        if (tag.prefix) {prefix=tag.prefix; tag=tag.tag;}
         if (form.tagName!=='FORM')
             form=getParent(form,'form')||form;
         if (!(knodule)) knodule=Codex.getMakerKnodule(Codex.user);
@@ -614,18 +616,22 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
              ((typeof tag === 'string')&&
               ((tag.indexOf('|')>0)?
                (knodule.handleSubjectEntry(tag)):
-               (tag.indexOf('@')>=0)?(fdjtKB.ref(tag)):
+               (tag.indexOf('@')>=0)?(Knodule.ref(tag)):
                (knodule.probe(tag)))));
         var text=
             ((ref)?
              (((ref.toHTML)&&(ref.toHTML()))||
-              ref.name||ref.dterm||ref.EN||ref._qid||ref._id):
+              ref.name||ref.dterm||ref.title||ref.norm||
+              ((typeof ref.EN === "string")||(ref.EN))||
+              ((ref.EN instanceof Array)||(ref.EN[0]))||
+              ref._qid||ref._id):
              (typeof tag === "string")?(tag):
              (tag.toString()));
         var tagval=tag;
         if (ref) {
             if (ref.knodule===knodule) tagval=ref.dterm;
-            else tagval=ref._qid||ref._id||ref.dterm||ref.name||tag;}
+            else tagval=ref._qid||ref.getQID();}
+        if (prefix) tagval=prefix+tagval;
         if ((ref)&&(ref.pool===Codex.sourcedb)) varname='SHARED';
         var checkspans=getChildren(tagselt,".checkspan");
         var i=0; var lim=checkspans.length;
@@ -1031,7 +1037,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var form=((live)&&(getChild(live,"form")));
             if (hasClass(completion,"source")) {
                 var value=completion.getAttribute("value");
-                if (value) addOutlet(form,fdjtKB.ref(value),"SHARE");}
+                if (value) addOutlet(form,Codex.sourcedb.ref(value),"SHARE");}
             else if (hasClass(completion,"network")) 
                 addOutlet(form,completion,"NETWORK");
             else if (hasClass(completion,"email")) 
