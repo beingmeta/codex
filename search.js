@@ -603,7 +603,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (x instanceof Ref) {
                 if (y instanceof Ref) {
                     if (x.weight) {
-                        if (y.weight) {}
+                        if (y.weight) {
+                            if (x.weight>y.weight) return -1;
+                            else if (x.weight<y.weight) return 1;
+                            else return 0;}
                         else return -1;}
                     else if (y.weight) return 1;
                     else return RefDB.compare(x,y);}
@@ -617,8 +620,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         if (x<y) return -1;
                         else if (x===y) return 0;
                         else return 1;}
-                    else if (xrank<yrank) return -1;
-                    else return 1;}
+                    else if (xrank>yrank) return 1;
+                    else return -1;}
                 else return -1;}
             else if (typeof y === "string") return 1;
             else return RefDB.compare(x,y);});
