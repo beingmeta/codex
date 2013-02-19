@@ -152,7 +152,9 @@ var Codex=
 
         var docinfo=Codex.docdb=new RefDB(
             refuri+"#",{indices: ["frag","tags","tags*",
-                                  "*tags","**tags","~tags"]});
+                                  "*tags","**tags","~tags",
+                                  "*tags*","**tags*","~tags*",
+                                  "*tags**","**tags**","~tags**"]});
         
         var knodule_name=
             fdjtDOM.getMeta("SBOOK.knodule")||
@@ -191,6 +193,7 @@ var Codex=
                 if (tags) {
                     if ((typeof tags === 'string')||(!(tags.length)))
                         tags=[tags];
+                    item.tags=[];
                     if ((tags)&&(tags.length)) {
                         var i=0; var lim=tags.length;
                         while (i<lim) {
@@ -216,6 +219,7 @@ var Codex=
         Codex.sourcedb=new RefDB("sources");{
             Codex.sourcedb.absrefs=true;
             Codex.sourcedb.addAlias("@1961/");
+            Codex.sourcedb.addAlias(":@1961/");            
             Codex.sourcedb.forDOM=function(source){
                 var spec="span.source"+((source.kind)?".":"")+
                     ((source.kind)?(source.kind.slice(1).toLowerCase()):"");
