@@ -499,13 +499,13 @@ var Codex=
         var i=0, lim=tag_prefixes.length; while (i<lim) {
             var prefix=tag_prefixes[i++]
             var tags=gloss[prefix+"tags"];
-            if (!(tags instanceof Array)) tags=[tags];
-            if (tags) {
-                var i=0, lim=tags.length;
-                while (i< lim) {
-                    var tag=tags[i++];
-                    if (prefix==="") results.push(tag);
-                    else results.push({prefix: prefix,tag: tag});}}}
+            if (!(tags)) continue;
+            else if (!(tags instanceof Array)) tags=[tags];
+            var j=0, ntags=tags.length;
+            while (j<ntags) {
+                var tag=tags[j++];
+                if (prefix==="") results.push(tag);
+                else results.push({prefix: prefix,tag: tag});}}
         return results;}
     Codex.getGlossTags=getGlossTags;
 

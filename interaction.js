@@ -1532,11 +1532,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (Codex.mode==="glosses") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
-            var glosses=Codex.glossdb;
+            var glossdb=Codex.glossdb;
             var i, lim=ids.length;
             if ((id)&&((i=RefDB.position(ids,id))>0)) {
                 i++; while (i<lim) {
-                    var g=glosses.index(false,'frag',ids[i]);
+                    var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
                         var passage=fdjtID(ids[i]);
                         Codex.GoTo(passage,"scanForward/glosses",true);
@@ -1584,11 +1584,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (Codex.mode==="glosses") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
-            var glosses=Codex.glossdb;
+            var glossdb=Codex.glossdb;
             var i, lim=ids.length;
             if ((id)&&((i=RefDB.position(ids,id))>0)) {
                 i--; while (i>=0) {
-                    var g=glosses.index(false,'frag',ids[i]);
+                    var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
                         var passage=fdjtID(ids[i]);
                         Codex.GoTo(passage,"scanBackward/glosses",true);
