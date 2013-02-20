@@ -235,16 +235,32 @@ Codex.Startup=
             if ((devicename)&&(!(fdjtString.isEmpty(devicename))))
                 Codex.deviceName=devicename;}
 
+        var fetching_config=false, config_fetched=false, on_fetched_config=false;
         function fetchConfig(){
             var req=new XMLHttpRequest();
+            fetching_config=true;
             req.onreadystatechange=function(evt){
                 if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
                     try {
                         var config=JSON.parse(req.responseText);
                         fdjtState.setLocal("codex.config",req.responseText);
+                        fdjtLog("Got config for device: %j",config);
+                        fetching_config=false;
+                        config_fetched=true;
                         initConfig(false);
-                        saveConfig(config,false);}
+                        saveConfig(config,false);
+                        if (on_fetched_config) {
+                            var fn=on_fetched_config;
+                            on_fetched_config=false;
+                            fn();}}
                     catch (ex) {}}
+                else if (req.readyState===4) {
+                    fetching_config=false;
+                    config_fetched=false;
+                    if (on_fetched_config) {
+                        var fn=on_fetched_config;
+                        on_fetched_config=false;
+                        fn();}}
                 else {}
                 if ((Codex.Trace.dosync)||(Codex.Trace.state))
                     fdjtLog("configSave(callback) %o ready=%o status=%o %j",
@@ -752,21 +768,29 @@ Codex.Startup=
                 (value==="no")||(value==="off")||
                 (value==="never"))
                 return false;
-            else fdjtUI.choose(
-                [{label: "No, thanks",
-                  handler: function(){
-                      setConfig("persist",false,true);}},
-                 {label: "Yes, keep locally",
-                  handler:
-                  function(){
-                      setConfig("persist",true,true);}},
-                {label: "Ask me later",
-                  handler:
-                  function(){setConfig("persist",false,false);}}],
-                "Store stuff on this computer?",
-                fdjtDOM("div.smaller",
-                        "(to enable faster loading and offline reading)"));
+            else if (config_fetched) return false;
+            else if (fetching_config)
+                on_fetched_config=offlineDialog;
             return false;}
+
+        function offlineDialog(){
+            var config_val=getConfig("persist");
+            if (typeof config_val === 'undefined') {
+                fdjtUI.choose(
+                    [{label: "No, thanks",
+                      handler: function(){
+                          setConfig("persist",false,true);}},
+                     {label: "Yes, keep locally",
+                      handler:
+                      function(){
+                          setConfig("persist",true,true);}},
+                     {label: "Ask me later",
+                      handler:
+                      function(){setConfig("persist",false,false);}}],
+                    "Store stuff on this computer?",
+                    fdjtDOM("div.smaller",
+                            "(to enable faster loading and offline reading)"));}}
+            
         
         var glossref_classes=false;
 
