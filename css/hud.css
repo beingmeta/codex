@@ -111,6 +111,7 @@ body.hudup #CODEXHEAD #CODEXHUDBUTTONS {
 body.hudup #CODEXHUD.openhead #CODEXHEAD,
 body #CODEXHUD.tocscan #CODEXHEAD,
 body #CODEXHUD.addgloss #CODEXHEAD,
+body #CODEXHUD.glosses #CODEXSCANNER,
 body #CODEXHUD.scanning #CODEXSCANNER,
 body #CODEXHUD.allglosses #CODEXSCANNER {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -124,6 +125,7 @@ body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
 body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
     display: none; position: absolute;}
 body #CODEXHUD.tocscan #CODEXHEAD,
+body #CODEXHUD.glosses #CODEXSCANNER,
 body #CODEXHUD.scanning #CODEXSCANNER,
 body #CODEXHUD.allglosses #CODEXSCANNER {
     overflow: hidden;}
@@ -151,6 +153,7 @@ body.cxTOUCH #CODEXHUD.tocscan #CODEXFOOT {
     height: auto; max-height: 50%;}
 
 body #CODEXHUD.openhead #CODEXHEAD {max-height: 50%;}
+body #CODEXHUD.glosses #CODEXSCANNER.expanded,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded,
 body #CODEXHUD.tocscan #CODEXSCANNER.expanded,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded {
@@ -678,9 +681,9 @@ div#CODEXALLGLOSSES div.codexcard .audience { display: none;}
 
 /* The CODEXSCANNER */
 
-body.cxPREVIEW div#CODEXHUD.glosses div.hudpanel#CODEXSCANNER,
-body.cxPREVIEW div#CODEXHUD.allglosses div.hudpanel#CODEXSCANNER,
-body.cxPREVIEW div#CODEXHUD.searchresults div.hudpanel#CODEXSCANNER,
+body.cxPREVIEW div#CODEXHUD.glosses div#CODEXSCANNER,
+body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSCANNER,
+body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSCANNER,
 body div#CODEXHUD.scanning div#CODEXSCANNER {
     display: block; overflow: hidden; border-color: darkblue;
     opacity: 0.95;
@@ -707,6 +710,9 @@ div#CODEXSCANNER span.expander img { width: 40px; height: 40px;}
 div#CODEXSCANNER span.expander img[alt='-'] { display: none;}
 div#CODEXSCANNER.expanded span.expander img[alt='-'] { display: inline;}
 div#CODEXSCANNER.expanded span.expander img[alt='+'] { display: none;}
+
+#CODEXHUD.glosses div#CODEXSCANNER span.expander {
+    top: 0px;}
 
 div#CODEXSCANNER div.tochead, div#CODEXPASSAGEGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}

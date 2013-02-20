@@ -1657,6 +1657,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
             Codex.setMode("allglosses");
             fdjtUI.cancel(evt);}
+        else if (getParent(scanning,fdjtID("CODEXPASSAGEGLOSSES"))) {
+            Codex.setMode("glosses");
+            fdjtUI.cancel(evt);}
         else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) {
             Codex.setMode("searchresults");
             fdjtUI.cancel(evt);}
