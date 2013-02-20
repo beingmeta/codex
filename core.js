@@ -97,16 +97,16 @@ var Codex=
      /* This is where we store pointers into the dom */
      DOM: {},
      Trace: {
-         startup: 2,       // Whether to trace startup
-         config: 1,        // Whether to trace config setup/modification/etc
+         startup: 0,       // Whether to trace startup
+         config: 0,        // Whether to trace config setup/modification/etc
          mode: false,      // Whether to trace mode changes
          nav: false,       // Whether to trace book navigation
-         scan: 1,          // How much to trace DOM scanning
+         scan: 0,          // How much to trace DOM scanning
          search: 0,        // How much to trace searches
          clouds: 0,        // How much to trace cloud generation
          focus: false,     // Whether to trace target changes
          toc: false,       // Whether we're debugging TOC tracking
-         storage: 1,       // How much to trace offline persistence
+         storage: 0,       // How much to trace offline persistence
          network: 0,       // How much to trace server interaction
          glosses: 0,       // How much we're tracing gloss processing
          layout: 0,        // How much to trace document layout
@@ -168,7 +168,7 @@ var Codex=
         Codex.BRICO.addAlias("@1/");
         var glosses_init={
             indices: ["frag","maker","outlets"]};
-        Codex.glossdb=new RefDB("glosses",glosses_init); {
+        Codex.glossdb=new RefDB("glosses@"+Codex.refuri,glosses_init); {
             var superadd=Codex.glossdb.add;
             Codex.glossdb.absrefs=true;
             Codex.glossdb.addAlias("glossdb");
@@ -242,7 +242,7 @@ var Codex=
             return Ref.Export.call(this,tag_export_rules);};
         Codex.glossdb.refclass=Gloss;
         
-        Codex.sourcedb=new RefDB("sources");{
+        Codex.sourcedb=new RefDB("sources@"+Codex.refuri);{
             Codex.sourcedb.absrefs=true;
             Codex.sourcedb.addAlias("@1961/");
             Codex.sourcedb.addAlias(":@1961/");            
@@ -787,7 +787,7 @@ var Codex=
         if (Codex.Trace.state) fdjtLog("Setting state to %j",state);
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
-        fdjtState.setLocal("state("+uri+")",statestring);}
+        fdjtState.setLocal("codex.state("+uri+")",statestring);}
     Codex.setState=setState;
     
     function setConnected(val){
@@ -813,7 +813,7 @@ var Codex=
             if (syncing) return;
             if (!(state)) {
                 var uri=Codex.docuri||Codex.refuri;
-                var statestring=fdjtState.getLocal("state("+uri+")");
+                var statestring=fdjtState.getLocal("codex.state("+uri+")");
                 if (statestring) Codex.state=state=JSON.parse(statestring);
                 else state={};}
             if ((synced)&&

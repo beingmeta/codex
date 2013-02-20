@@ -7,10 +7,12 @@
       <th><input TYPE="RADIO" NAME="CODEXLOCAL" VALUE="yes"
                  ID="CODEXLOCALCHECKBOX"/></th>
       <td>Save personal information and glosses on this computer</td>
-      <td><button onclick="Codex.UI.forceSyncAction(event);">
+      <td><button onclick="Codex.UI.forceSyncAction(event);"
+            title="Update glosses and other information from the sBooks cloud.">
           Sync</button>
-        <button onclick="return Codex.UI.clearOfflineAction(event);">
-          Reset</button></td>
+        <button onclick="return Codex.UI.clearOfflineAction(event);"
+            title="Clear glosses and other information cached on this computer.">
+          Clear</button></td>
     </tr>
     <tr><th rowspan="2">Body font</th>
       <td colspan="2">

@@ -1002,7 +1002,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.glossdb.drop(glossid);
             Codex.allglosses=RefDB.remove(Codex.allglosses,glossid);
             if (Codex.persist)
-                fdjtState.setLocal("glosses("+Codex.refuri+")",
+                fdjtState.setLocal("codex.glosses("+Codex.refuri+")",
                                    Codex.allglosses,true);
             var editform=fdjtID("CODEXEDITGLOSS_"+glossid);
             if (editform) {
@@ -1404,7 +1404,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function clearOfflineAction(evt){
         evt=evt||event;
         fdjtUI.cancel(evt);
-        Codex.clearOffline(Codex.refuri);
+        Codex.glossdb.clearOffline();
+        Codex.sourcedb.clearOffline();
+        // We change this here, so we don't save what's cached in memory,
+        //  but it doesn't change the saved setting.
+        Codex.persist=false;
         fdjtUI.alertFor(5,"Cleared locally stored glosses and other information");
         return false;}
     Codex.UI.clearOfflineAction=clearOfflineAction;
