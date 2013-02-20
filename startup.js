@@ -1401,7 +1401,8 @@ Codex.Startup=
                 return false;}
             if ((navigator.onLine)&&(fdjtState.getLocal("queued("+Codex.refuri+")")))
                 Codex.writeQueuedGlosses();
-            Codex.user=Codex.sourcedb.Import(userinfo);
+            Codex.user=Codex.sourcedb.Import(
+                userinfo,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             if (persist) setConfig("persist",true,true);
             if (outlets) Codex.outlets=outlets;
             if (overlays) Codex.overlays=overlays;
@@ -1512,14 +1513,18 @@ Codex.Startup=
                             if (Codex.persist) RefDB.load(qid);
                             qids.push(qid);}
                         else {
-                            var obj=Codex.sourcedb.Import(info[i++]);
+                            var obj=Codex.sourcedb.Import(
+                                info[i++],false,
+                                RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
                             obj.save();
                             qids.push(obj._id);}}
                     Codex[name]=qids;
                     if (Codex.persist)
                         setLocal(name+"("+refuri+")",qids,true);}
                 else {
-                    var obj=Codex.sourcedb.Import(info);
+                    var obj=Codex.sourcedb.Import(
+                        info,false,
+                        RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
                     if (persist) 
                         setLocal(obj._id,obj,true);
                     Codex[name]=obj._id;
@@ -1528,7 +1533,8 @@ Codex.Startup=
 
         function setupGlosses(newglosses) {
             var allglosses=Codex.allglosses||[];
-            Codex.glossdb.Import(newglosses);
+            Codex.glossdb.Import(
+                newglosses,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             if (newglosses.length) {
                 var n=newglosses.length; var i=0; while (i<n) {
                     var gloss=newglosses[i++];
@@ -1554,8 +1560,10 @@ Codex.Startup=
                            glosses.length,etc.length);}
             else {
                 startupLog("Assimilating %d new glosses...",glosses.length);}
-            Codex.sourcedb.Import(etc);
-            Codex.glossdb.Import(glosses);
+            Codex.sourcedb.Import(
+                etc,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+            Codex.glossdb.Import(
+                glosses,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             var i=0; var lim=glosses.length;
             var latest=Codex.syncstamp||0;
             while (i<lim) {
