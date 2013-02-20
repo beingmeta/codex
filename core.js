@@ -235,8 +235,8 @@ var Codex=
             "~tags**": exportTagSlot, "~~tags**": exportTagSlot,
             "tags**": exportTagSlot};
         Codex.tag_export_rules=tag_export_rules;
-        Gloss.prototype.Export=function exportGloss(){
-            return Ref.Export.call(this,tag_export_rules);};
+        Gloss.prototype.tag_import_rules={"tags": Knodule.importTagSlot};
+
         Codex.glossdb.refclass=Gloss;
         
         Codex.sourcedb=new RefDB("sources");{

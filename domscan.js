@@ -97,13 +97,13 @@ Codex.DOMScan=(function(){
              idstack: [{prefix: false,count: 0}],
              pool: Codex.docdb};
 
-        var refdb=new RefDB(dbid);
+        var docdb=new RefDB(dbid);
         
         function scanInfo(id,scanstate) {
             if (docinfo[id]) return docinfo[id];
-            Ref.call(this,id,refdb);
+            Ref.call(this,id,docdb);
             this._live=this._changed=fdjtTime();
-            refdb.changed.push(this);
+            docdb.changed.push(this);
             this.frag=id;
             docinfo[id]=this;
             scanstate.allinfo.push(this);
@@ -111,12 +111,11 @@ Codex.DOMScan=(function(){
             return this;}
         scanInfo.prototype=new Ref();
         var tag_export_rules=Codex.tag_export_rules;
-        scanInfo.prototype.Export=function exportGloss(){
-            return Ref.Export.call(this,tag_export_rules);};
-        refdb.refclass=scanInfo;
+        
+        docdb.refclass=scanInfo;
         
         docinfo._scanInfo=scanInfo;
-        docinfo._refdb=refdb;
+        docinfo._refdb=docdb;
 
         function getTitle(head) {
             var title=
