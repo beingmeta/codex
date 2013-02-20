@@ -633,7 +633,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var slice=getParent(card,".codexslice");
         // if (scrolled(slice)) return;
         if (Codex.Trace.gestures)
-            fdjtLog("slice_held %o: %o",evt,target);
+            fdjtLog("slice_tapped %o: %o",evt,target);
         if (getParent(target,".ellipsis")) {
             fdjtUI.Ellipsis.toggle(target);
             fdjtUI.cancel(evt);

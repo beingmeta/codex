@@ -468,8 +468,8 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(login))\b/g;
-        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(glosses)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login)|(showaside))\b/g;
+        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
+        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(glosses)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
         var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan)|(shownote))\b/g;
         var CodexSubMode_pat=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
         var codex_mode_scrollers=
@@ -536,7 +536,7 @@ Codex.setMode=
 
                 if ((mode==='scanning')||(mode==='tocscan')||(mode==='glosses'))
                     addClass(document.body,"codexscanning");
-                else dropClass(document.body,/\bcodexscan.*\b/);
+                else dropClass(document.body,/\b(codexscan[a-z0-9]*)\b/);
 
                 // Scanning is a funny mode in that the HUD is down
                 //  for it.  We handle all of this stuff here.

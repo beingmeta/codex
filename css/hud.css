@@ -44,23 +44,35 @@
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
-#CODEXHUD.openheart #CODEXHEAD,
+#CODEXHUD.openheart #CODEXHEAD {
+    opacity: 0.33;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
+    filter: alpha(opacity=33);
+    -webkit-opacity: 0.33;
+    -khtml-opacity: 0.33;
+    -moz-opacity: 0.33;
+    -o-opacity: 0.33;}
 #CODEXHUD.openheart #CODEXFOOT {
-    opacity: 0.33;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
-    filter: alpha(opacity=33);
-    -webkit-opacity: 0.33;
-    -khtml-opacity: 0.33;
-    -moz-opacity: 0.33;
-    -o-opacity: 0.33;}
+    opacity: 0.66;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=66)";
+    filter: alpha(opacity=66);
+    -webkit-opacity: 0.66;
+    -khtml-opacity: 0.66;
+    -moz-opacity: 0.66;
+    -o-opacity: 0.66;}
 #CODEXHUD.openfoot #CODEXFOOT {
-    opacity: 0.33;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
-    filter: alpha(opacity=33);
-    -webkit-opacity: 0.33;
-    -khtml-opacity: 0.33;
-    -moz-opacity: 0.33;
-    -o-opacity: 0.33;}
+    opacity: 0.99;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
+    filter: alpha(opacity=99);
+    -webkit-opacity: 0.99;
+    -khtml-opacity: 0.99;
+    -moz-opacity: 0.99;
+    -o-opacity: 0.99;}
+
+#CODEXHUD.openhead #CODEXHEAD,
+#CODEXHUD.openfoot #CODEXFOOT,
+#CODEXHUD.openhead.openheart #CODEXHEAD {
+    background-color: ivory;}
 
 #CODEXSCANNER { display: none; }
 
@@ -283,7 +295,7 @@ div#CODEXHUD #CODEXFOOT {
 
 div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     position: absolute;
-    bottom: 20px; left: 100px; right: 100px; height: 20px;
+    bottom: 30px; left: 100px; right: 100px; height: 20px;
     text-align: center;
     font-size: 125%; font-weight: bold;
     padding: 0px;
