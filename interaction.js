@@ -1423,7 +1423,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (!(Codex.connected))
             fdjtUI.alertFor(
                 15,"You're not currently logged into sBooks.  Information will be synchronized when you've logged in.");
-        else fdjtUI.alertFor(7,"Sychronizing gloses, etc with the remote server");
+        else fdjtUI.alertFor(7,"Sychronizing glosses, etc with the remote server");
         return false;}
     Codex.UI.forceSyncAction=forceSyncAction;
 

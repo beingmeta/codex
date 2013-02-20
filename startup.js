@@ -79,8 +79,7 @@ Codex.Startup=
         var TOA=fdjtDOM.Array;
 
         var saveprops=Codex.saveprops=
-            ["sources","outlets","etc","overlays","sync",
-             "sync","nodeid","state"];
+            ["sources","outlets","overlays","sync","nodeid","state"];
         
         /* Initialization */
         
@@ -376,7 +375,7 @@ Codex.Startup=
                         while (i<lim) {
                             var prop=saveprops[i++];
                             if (Codex[prop]) setLocal(
-                                prop+"("+refuri+")",Codex[prop],true);}
+                                "codex."+prop+"("+refuri+")",Codex[prop],true);}
                         Codex.glossdb.save(true);
                         Codex.sourcedb.save(true);
                         if ((Codex.persist)&&
