@@ -97,8 +97,8 @@ var Codex=
      /* This is where we store pointers into the dom */
      DOM: {},
      Trace: {
-         startup: 0,       // Whether to trace startup
-         config: 0,        // Whether to trace config setup/modification/etc
+         startup: 2,       // Whether to trace startup
+         config: 1,        // Whether to trace config setup/modification/etc
          mode: false,      // Whether to trace mode changes
          nav: false,       // Whether to trace book navigation
          scan: 1,          // How much to trace DOM scanning
@@ -106,7 +106,7 @@ var Codex=
          clouds: 0,        // How much to trace cloud generation
          focus: false,     // Whether to trace target changes
          toc: false,       // Whether we're debugging TOC tracking
-         storage: 0,       // How much to trace offline persistence
+         storage: 1,       // How much to trace offline persistence
          network: 0,       // How much to trace server interaction
          glosses: 0,       // How much we're tracing gloss processing
          layout: 0,        // How much to trace document layout
@@ -235,7 +235,10 @@ var Codex=
             "~tags**": exportTagSlot, "~~tags**": exportTagSlot,
             "tags**": exportTagSlot};
         Codex.tag_export_rules=tag_export_rules;
-        Gloss.prototype.Export=function exportGloss(){
+        // Use this when generating external summaries.  In particular,
+        //  this recovers all of the separate weighted tag slots into
+        //  one tags slot which uses prefixed strings to indicate weights.
+        Gloss.prototype.ExportExternal=function exportGloss(){
             return Ref.Export.call(this,tag_export_rules);};
         Codex.glossdb.refclass=Gloss;
         
