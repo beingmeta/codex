@@ -23,9 +23,9 @@
     padding: 0px; padding-bottom: 0.5ex;}
 #CODEXSCANNER {
     background-color: white;
-    border-color: darkblue;}
+    border-color: steelblue;}
 #CODEXSCANNER .tochead {
-    background-color: darkblue; color: white;
+    background-color: steelblue; color: white;
     font-weight: bold; font-size: 130%;
     max-height: 4ex;}
 #CODEXSCANNER .tochead a { color: white;}
@@ -685,7 +685,7 @@ body.cxPREVIEW div#CODEXHUD.glosses div#CODEXSCANNER,
 body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSCANNER,
 body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSCANNER,
 body div#CODEXHUD.scanning div#CODEXSCANNER {
-    display: block; overflow: hidden; border-color: darkblue;
+    display: block; overflow: hidden; border-color: steelblue;
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
