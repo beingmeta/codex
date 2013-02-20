@@ -426,12 +426,7 @@ Codex.Startup=
 
             // If the configuration is set to not persist, but there's
             //  a sync timestamp, we should erase what's there.
-            if ((Codex.sync)&&(!(Codex.persist))) {
-                Codex.sync=false;
-                fdjtState.dropLocal("codex.user");
-                Codex.sourcedb.clearOffline(function(){
-                    Codex.sourcedb.clearOffline(function(){
-                        fdjtState.dropLocal("codex.sync("+Codex.refuri+")");});});}
+            if ((Codex.sync)&&(!(Codex.persist))) clearOffline();
 
             if (Codex.nologin) {}
             else if ((Codex.persist)&&(Codex.sync)&&
@@ -769,7 +764,9 @@ Codex.Startup=
                 {label: "Ask me later",
                   handler:
                   function(){setConfig("persist",false,false);}}],
-                "Store glosses on this computer?");
+                "Store stuff on this computer?",
+                fdjtDOM("div.smaller",
+                        "(to enable faster loading and offline reading)"));
             return false;}
         
         var glossref_classes=false;
@@ -1253,7 +1250,7 @@ Codex.Startup=
                 if (info.nodeid) setNodeID(info.nodeid);
                 if (info.sync) Codex.sync=info.sync;}
             else if (info.wronguser) {
-                Codex.clearOffline(Codex.refuri);
+                Codex.clearOffline();
                 window.location=window.location.href;
                 return;}
             if (info.mycopyid) {
@@ -1276,7 +1273,7 @@ Codex.Startup=
             if ((Codex.persist)&&
                 (info)&&(info.userinfo)&&(Codex.user)&&
                 (info.userinfo._id!==Codex.user._id)) {
-                clearOffline(refuri);}
+                clearOffline();}
             var persist=((Codex.persist)&&(navigator.onLine));
             info.loaded=fdjtTime();
             if ((!(Codex.localglosses))&&
@@ -1557,10 +1554,7 @@ Codex.Startup=
                     if (tstamp>latest) latest=tstamp;
                     allglosses.push(id);}}
             Codex.syncstamp=latest;
-            Codex.allglosses=allglosses;
-            if (Codex.persist) {
-                setLocal("codex.etc("+Codex.refuri+")",Codex.etc,true);
-                setLocal("codex.glosses("+Codex.refuri+")",allglosses,true);}}
+            Codex.allglosses=allglosses;}
 
         function initGlosses(glosses,etc){
             var msg=fdjtID("CODEXNEWGLOSSES");
@@ -1588,9 +1582,6 @@ Codex.Startup=
             Codex.syncstamp=latest;
             Codex.allglosses=allglosses;
             startupLog("Done assimilating %d new glosses...",glosses.length);
-            if (Codex.persist) {
-                setLocal("codex.glosses("+Codex.refuri+")",allglosses,true);
-                setLocal("codex.etc("+Codex.refuri+")",etc,true);}
             dropClass(msg,"running");}
         Codex.Startup.initGlosses=initGlosses;
         
@@ -1898,31 +1889,16 @@ Codex.Startup=
         
         /* Clearing offline data */
 
-        function clearOffline(refuri,global){
+        function clearOffline(){
             var dropLocal=fdjtState.dropLocal;
-            if (refuri) {
-                var glosses=getLocal("codex.glosses("+refuri+")",true);
-                var i=0; var lim=glosses.length;
-                while (i<lim) fdjtState.dropLocal(glosses[i++]);
-                var props=saveprops, i=0, lim=props.length;
-                while (i<lim) dropLocal(props[i++]+"("+refuri+")");
-                dropLocal("codex.glosses("+refuri+")",true);
-                dropLocal("codex.sync("+refuri+")",true);
-                var refuris=getLocal("codex.refuris",true);
-                if (refuris) {
-                    refuris=RefDB.remove(refuris,refuri);
-                    setLocal("codex.refuris",refuris,true);}}
-            else {
-                var refuris=getLocal("codex.refuris",true);
-                var i=0; var lim=refuris.length;
-                while (i<lim) clearOffline(refuris[i++]);
-                dropLocal("codex.config");
-                dropLocal("codex.user");
-                dropLocal("codex.refuris");
-                var local=fdjtState.listLocal();
-                i=0; lim=local.length; while (i<lim) {
-                    var key=local[i++];
-                    if (key[0]==='@') dropLocal(key);}}}
+            Codex.sync=false;
+            dropLocal("codex.user");
+            dropLocal("codex.sync("+Codex.refuri+")");
+            dropLocal("codex.outlets("+Codex.refuri+")");
+            dropLocal("codex.overlays("+Codex.refuri+")");
+            Codex.sourcedb.clearOffline(function(){
+                Codex.glossdb.clearOffline(function(){
+                    fdjtState.dropLocal("codex.sync("+Codex.refuri+")");});});}
         Codex.clearOffline=clearOffline;
 
         /* Other setup */

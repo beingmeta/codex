@@ -1404,10 +1404,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function clearOfflineAction(evt){
         evt=evt||event;
         fdjtUI.cancel(evt);
-        Codex.glossdb.clearOffline();
-        Codex.sourcedb.clearOffline();
-        // We change this here, so we don't save what's cached in memory,
-        //  but it doesn't change the saved setting.
+        Codex.clearOffline();
+        // We change this here, so we don't save what's cached in
+        //  memory now, but it doesn't change the saved setting (so we
+        //  might still be persisting).
         Codex.persist=false;
         fdjtUI.alertFor(5,"Cleared locally stored glosses and other information");
         return false;}
