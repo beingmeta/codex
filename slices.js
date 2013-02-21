@@ -106,7 +106,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     ((standalone)&&(makelocbar(target_info))),
                     body,
 		    fdjtDOM("div.fdjtclearfloats"));
-        var makerinfo=((info.maker)&&(Codex.sourcedb.load(info.maker)));
+        var makerinfo=(info.maker);
+        Codex.sourcedb.load(info.maker);
         var tstamp=info.tstamp||info.modified||info.created;
         if (tstamp)
             body.title=
