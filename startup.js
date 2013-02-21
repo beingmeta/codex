@@ -79,8 +79,7 @@ Codex.Startup=
         var TOA=fdjtDOM.Array;
 
         var saveprops=Codex.saveprops=
-            ["sources","outlets","etc","overlays","sync",
-             "sync","nodeid","state"];
+            ["sources","outlets","overlays","sync","nodeid","state"];
         
         /* Initialization */
         
@@ -236,16 +235,32 @@ Codex.Startup=
             if ((devicename)&&(!(fdjtString.isEmpty(devicename))))
                 Codex.deviceName=devicename;}
 
+        var fetching_config=false, config_fetched=false, on_fetched_config=false;
         function fetchConfig(){
             var req=new XMLHttpRequest();
+            fetching_config=true;
             req.onreadystatechange=function(evt){
                 if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
                     try {
                         var config=JSON.parse(req.responseText);
                         fdjtState.setLocal("codex.config",req.responseText);
+                        fdjtLog("Got config for device: %j",config);
+                        fetching_config=false;
+                        config_fetched=true;
                         initConfig(false);
-                        saveConfig(config,false);}
+                        saveConfig(config,false);
+                        if (on_fetched_config) {
+                            var fn=on_fetched_config;
+                            on_fetched_config=false;
+                            fn();}}
                     catch (ex) {}}
+                else if (req.readyState===4) {
+                    fetching_config=false;
+                    config_fetched=false;
+                    if (on_fetched_config) {
+                        var fn=on_fetched_config;
+                        on_fetched_config=false;
+                        fn();}}
                 else {}
                 if ((Codex.Trace.dosync)||(Codex.Trace.state))
                     fdjtLog("configSave(callback) %o ready=%o status=%o %j",
@@ -376,13 +391,16 @@ Codex.Startup=
                         while (i<lim) {
                             var prop=saveprops[i++];
                             if (Codex[prop]) setLocal(
-                                prop+"("+refuri+")",Codex[prop],true);}
+                                "codex."+prop+"("+refuri+")",Codex[prop],true);}
+                        Codex.glossdb.save(true);
+                        Codex.sourcedb.save(true);
                         if ((Codex.persist)&&
                             (Codex.allglosses)&&
                             (Codex.allglosses.length))
                             setLocal("glosses("+refuri+")",Codex.allglosses,
                                      true);
-                        Codex.queued=fdjtState.getLocal("queued("+Codex.refuri+")",true)||[];}
+                        Codex.queued=fdjtState.getLocal(
+                            "queued("+Codex.refuri+")",true)||[];}
                     else if (!(value)) {
                         clearOffline();
                         fdjtState.dropLocal("queued("+Codex.refuri+")");
@@ -413,26 +431,35 @@ Codex.Startup=
             initState();
 
             // Set up what the user sees during setup
-            appsplash();
+            appSplash();
         }
         
         function userSetup(){
             if (Codex.Trace.startup) fdjtLog("Starting user setup");
             // Start JSONP call to get initial or updated glosses, etc
+            Codex.sync=getLocal("codex.sync("+Codex.refuri+")",true);
+
+            // If the configuration is set to not persist, but there's
+            //  a sync timestamp, we should erase what's there.
+            if ((Codex.sync)&&(!(Codex.persist))) clearOffline();
+
             if (Codex.nologin) {}
-            else if (getLocal("codex.user")) {
+            else if ((Codex.persist)&&(Codex.sync)&&
+                     (getLocal("codex.user"))) {
                 initUserOffline();
-                Codex.sync=getLocal("sync("+Codex.refuri+")",true);
                 if (Codex.Trace.storage) 
                     fdjtLog("Local info for %o (%s) from %o",
                             Codex.user._id,Codex.user.name,Codex.sync);
-                // If we have local glosses, ignore any cached
-                // _sbook_loadinfo because we've already processed it
-                if ((Codex.sync)&&
-                    (getLocal("glosses("+Codex.refuri+")"))&&
+                if ((Codex.user)&&(Codex.sync)&&(Codex.persist)&&
                     (window._sbook_loadinfo))
+                    // Clear the loadinfo "left over" from startup,
+                    //  which should now be in the database
                     window._sbook_loadinfo=false;}
-            else if (window._sbook_loadinfo) {
+                
+            if ((Codex.nologin)||(Codex.user)) {}
+            else if ((window._sbook_loadinfo)&&
+                     (window._sbook_loadinfo.userinfo)) {
+                // Get the userinfo from the loadinfo
                 var info=window._sbook_loadinfo;
                 if (info.userinfo)
                     setUser(info.userinfo,
@@ -443,7 +470,7 @@ Codex.Startup=
                 if (Codex.Trace.storage>1) 
                     fdjtLog("App cached loadinfo.js for %o (%s) from %o: %j",
                             Codex.user._id,Codex.user.name,Codex.sync,
-                            Codex.user);
+                            info.userinfo);
                 else if (Codex.Trace.storage) 
                     fdjtLog("App cached loadinfo.js for %o (%s) from %o",
                             Codex.user._id,Codex.user.name,Codex.sync);}
@@ -489,36 +516,10 @@ Codex.Startup=
             syncStartup();
             // The rest of the stuff we timeslice
             fdjtTime.timeslice
-            ([  // Scan the DOM for metadata.  This is surprisingly fast,
-                //  so we don't currently try to timeslice it, though we could
-                function(){
-                    var scanmsg=fdjtID("CODEXSTARTUPSCAN");
-                    var aboutbook=fdjtID("SBOOKABOUTPAGE"), about_tmp=false
-                    var aboutauthor=fdjtID("SBOOKAUTHORPAGE"), author_tmp=false;
-                    if (aboutbook) {
-                        about_tmp=document.createTextNode("");
-                        aboutbook.parentNode.replaceChild(about_tmp,aboutbook);
-                        Codex.content.appendChild(aboutbook);}
-                    if (aboutauthor) {
-                        author_tmp=document.createTextNode("");
-                        aboutauthor.parentNode.replaceChild(author_tmp,aboutauthor);
-                        Codex.content.appendChild(aboutauthor);}
-                    
-                    addClass(scanmsg,"running");
-                    metadata=new Codex.DOMScan(Codex.content,Codex.refuri+"#");
-                    // fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
-                    Codex.docinfo=metadata;
-                    Codex.docdb=Codex.docinfo._refdb;
-                    Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
-                    dropClass(scanmsg,"running");
-                    if (aboutbook) {
-                        about_tmp.parentNode.replaceChild(aboutbook,about_tmp);}
-                    if (aboutauthor) {
-                        author_tmp.parentNode.replaceChild(aboutauthor,author_tmp);}
-                    if (Codex.scandone) {
-                        var donefn=Codex.scandone;
-                        delete Codex.scandone;
-                        donefn();}},
+            ([  // Scan the DOM for metadata.  This is surprisingly
+                //  fast, so we don't currently try to timeslice it or
+                //  cache it, though we could
+                function(){metadata=scanDOM();},
                 // Now you're ready to lay out the book, which is
                 //  timesliced and runs on its own.  We wait to do
                 //  this until we've scanned the DOM because we may
@@ -540,6 +541,10 @@ Codex.Startup=
                                Codex.docinfo._headcount);
                     Codex.setupTOC(metadata[Codex.content.id]);
                     dropClass(tocmsg,"running");},
+                // Load all account information
+                function(){
+                    if (Codex.Trace.startup) fdjtLog("Loading sourcedb");
+                    Codex.sourcedb.load(true);},
                 // Read knowledge bases (knodules) used by the book
                 ((Knodule)&&(Knodule.HTML)&&
                  (Knodule.HTML.Setup)&&(Codex.knodule)&&
@@ -554,11 +559,12 @@ Codex.Startup=
                      Knodule.HTML.Setup(Codex.knodule);
                      dropClass(knomsg,"running");})),
                 // Process locally stored (offline data) glosses
-                ((getLocal("sync("+Codex.refuri+")"))&&initGlossesOffline),
-                // Process any preloaded (app cached) glosses
-                ((window._sbook_loadinfo)&&(function(){
-                    loadInfo(window._sbook_loadinfo);
-                    window._sbook_loadinfo=false;})),
+                function(){
+                    if (Codex.sync) {
+                        if (Codex.persist) return initGlossesOffline();}
+                    else if (window._sbook_loadinfo) {
+                        loadInfo(window._sbook_loadinfo);
+                        window._sbook_loadinfo=false;}},
                 // Process anything we got via JSONP ahead of processing
                 //  _sbook_loadinfo
                 ((window._sbook_newinfo)&&(function(){
@@ -580,9 +586,8 @@ Codex.Startup=
                                 startupLog("Indexing assigned tags");
                                 Codex.indexAssignedTags(metadata,indexingDone);});
                         window._sbook_autoindex=false;}
-                    else {
-                        startupLog("Indexing assigned tags");
-                        Codex.indexAssignedTags(metadata,indexingDone);}},
+                    startupLog("Indexing assigned tags");
+                    Codex.indexAssignedTags(metadata,indexingDone);},
                 // Figure out which mode to start up in, based on
                 // query args to the book.
                 function(){
@@ -592,7 +597,37 @@ Codex.Startup=
              100,25);}
         Codex.Startup=Startup;
         
-        function appsplash(){
+        function scanDOM(){
+            var scanmsg=fdjtID("CODEXSTARTUPSCAN");
+            var aboutbook=fdjtID("SBOOKABOUTPAGE"), about_tmp=false
+            var aboutauthor=fdjtID("SBOOKAUTHORPAGE"), author_tmp=false;
+            if (aboutbook) {
+                about_tmp=document.createTextNode("");
+                aboutbook.parentNode.replaceChild(about_tmp,aboutbook);
+                Codex.content.appendChild(aboutbook);}
+            if (aboutauthor) {
+                author_tmp=document.createTextNode("");
+                aboutauthor.parentNode.replaceChild(author_tmp,aboutauthor);
+                Codex.content.appendChild(aboutauthor);}
+            
+            addClass(scanmsg,"running");
+            var metadata=new Codex.DOMScan(Codex.content,Codex.refuri+"#");
+            // fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
+            Codex.docinfo=metadata;
+            Codex.docdb=Codex.docinfo._refdb;
+            Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
+            dropClass(scanmsg,"running");
+            if (aboutbook) {
+                about_tmp.parentNode.replaceChild(aboutbook,about_tmp);}
+            if (aboutauthor) {
+                author_tmp.parentNode.replaceChild(aboutauthor,author_tmp);}
+            if (Codex.scandone) {
+                var donefn=Codex.scandone;
+                delete Codex.scandone;
+                donefn();}
+            return metadata;}
+
+        function appSplash(){
             var intro=fdjtID("CODEXINTRO");
             // Take any message passed along as a query string
             //  and put it in the top of the help window, then
@@ -621,14 +656,15 @@ Codex.Startup=
                 Codex.initFlyleafApp();
                 var appframe=fdjtID("SBOOKSAPP");
                 var appwindow=((appframe)&&(appframe.contentWindow));
-                if ((Codex.overlays)&&(getQuery("JOIN"))&&
-                    (RefDB.contains(Codex.overlays,getQuery("JOIN")))) {
+                if ((Codex.overlays)&&(getQuery("JOIN"))) {
                     // Check that it's not redundant
-                    var ref=RefDB.ref(getQuery("JOIN"));
-                    if (ref.name)
-                        fdjtDOM(intro,"You've already added the overlay "+
-                                ref.name);
-                    fdjtDOM(intro,"You've already added the overlay.");}
+                    var ref=Codex.sourcedb.ref(getQuery("JOIN"));
+                    if ((RefDB.contains(Codex.overlays,ref._id))) {
+                        var ref=Codex.sourcedb.ref(getQuery("JOIN"));
+                        if (ref.name)
+                            fdjtDOM(intro,"You've already added the overlay "+
+                                    ref.name);
+                        fdjtDOM(intro,"You've already added the overlay.");}}
                 // If you have postMessage, it will be used to change
                 //  modes when the sbook app actually loads
                 else if (appwindow.postMessage) {}
@@ -732,19 +768,29 @@ Codex.Startup=
                 (value==="no")||(value==="off")||
                 (value==="never"))
                 return false;
-            else fdjtUI.choose(
-                [{label: "No, thanks",
-                  handler: function(){
-                      setConfig("persist",false,true);}},
-                 {label: "Yes, keep locally",
-                  handler:
-                  function(){
-                      setConfig("persist",true,true);}},
-                {label: "Ask me later",
-                  handler:
-                  function(){setConfig("persist",false,false);}}],
-                "Store glosses on this computer?");
+            else if (config_fetched) return false;
+            else if (fetching_config)
+                on_fetched_config=offlineDialog;
             return false;}
+
+        function offlineDialog(){
+            var config_val=getConfig("persist");
+            if (typeof config_val === 'undefined') {
+                fdjtUI.choose(
+                    [{label: "No, thanks",
+                      handler: function(){
+                          setConfig("persist",false,true);}},
+                     {label: "Yes, keep locally",
+                      handler:
+                      function(){
+                          setConfig("persist",true,true);}},
+                     {label: "Ask me later",
+                      handler:
+                      function(){setConfig("persist",false,false);}}],
+                    "Store stuff on this computer?",
+                    fdjtDOM("div.smaller",
+                            "(to enable faster loading and offline reading)"));}}
+            
         
         var glossref_classes=false;
 
@@ -811,9 +857,7 @@ Codex.Startup=
                 Codex.mycopyid=getMeta("SBOOK.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
                     false;}
-            setLocal("codex.refuris",refuris,true);
-            
-        }
+            if (Codex.persist) setLocal("codex.refuris",refuris,true);}
 
         function deviceSetup(){
             var useragent=navigator.userAgent;
@@ -874,21 +918,26 @@ Codex.Startup=
         function initUserOffline(){
             var refuri=Codex.refuri;
             var user=getLocal("codex.user");
-            var sync=getLocal("sync("+refuri+")",true);
-            var nodeid=getLocal("nodeid("+refuri+")",true);
+            var sync=getLocal("codex.sync("+refuri+")",true);
+            var nodeid=getLocal("codex.nodeid("+refuri+")",true);
+            // We store the information for the current user
+            //  in both localStorage and in the "real" sourcedb.
+            // We fetch the user from local storage because we
+            //  can do that synchronously.
             var userinfo=user&&getLocal(user,true);
             if (Codex.Trace.storage)
                 fdjtLog("initOffline user=%s sync=%s nodeid=%s info=%j",
                         user,sync,nodeid,userinfo);
             if (!(sync)) return;
             if (!(user)) return;
-            var outlets=Codex.outlets=getLocal("outlets("+refuri+")",true)||[];
+            if (Codex.Trace.startup) fdjtLog("initOffline userinfo=%j",userinfo);
+            // Should these really be refs in sourcekb?
+            var outlets=Codex.outlets=
+                getLocal("codex.outlets("+refuri+")",true)||[];
             var overlays=Codex.overlays=
-                getLocal("overlays("+refuri+")",true)||[];
-            if (Codex.Trace.startup)
-                fdjtLog("initOffline userinfo=%j",userinfo);
+                getLocal("codex.overlays("+refuri+")",true)||[];
             var allsources=Codex.allsources=
-                getLocal("sources("+refuri+")",true)||[];
+                getLocal("codex.sources("+refuri+")",true)||[];
             var i=0, lim=allsources.length;
             // while (i<lim) allsources[i++].Import();
             if (userinfo) setUser(userinfo,outlets,overlays,sync);
@@ -901,35 +950,16 @@ Codex.Startup=
             if (offline_init) return false;
             else offline_init=true;
             var refuri=Codex.refuri;
-            var sync=getLocal("sync("+refuri+")",true);
+            var sync=getLocal("codex.sync("+refuri+")",true);
             if (!(sync)) return;
-            if (Codex.Trace.glosses)
+            if ((Codex.Trace.glosses)||(Codex.Trace.startup))
                 fdjtLog("Starting initializing glosses from offline storage");
-            var localglosses=getLocal("glosses("+refuri+")",true)||[];
-            var queuedglosses=getLocal("queued("+refuri+")",true)||[];
-            var allglosses=Codex.allglosses||[];
-            localglosses=localglosses.concat(queuedglosses);
-            Codex.localglosses=localglosses;
-            Codex.allglosses=allglosses.concat(localglosses);
-            Codex.etc=getLocal("etc("+refuri+")",true)||[];
-            Codex.outlets=getLocal("outlets("+refuri+")",true)||[];
-            // Load everything in etc
-            var etc=Codex.etc; var outlets=Codex.outlets;
-            var i=0; var lim=etc.length;
-            var sourcekb=Codex.sourcedb;
-            while (i<lim) sourcekb.load(etc[i++]);
-            i=0; lim=outlets.length; while (i<lim) sourcekb.load(outlets[i++]);
-            // Load all the glosses
-            var i=0; var lim=localglosses.length;
-            var glossdb=Codex.glossdb;
-            while (i<lim) {
-                var glossid=localglosses[i++];
-                var gloss=glossdb.load(glossid);
-                if (Codex.Trace.storage>1)
-                    fdjtLog("Restored %o: %j",glossid,gloss);}
-            if ((localglosses.length)||(etc.length))
-                fdjtLog("Initialized %d glosses (%d etc) from offline storage",
-                        localglosses.length,etc.length);}
+            Codex.glossdb.load(true);
+            if ((Codex.glossdb.allrefs.length)||
+                (Codex.sourcedb.allrefs.length))
+                fdjtLog("Initialized %d glosses (%d accounts) from offline storage",
+                        Codex.glossdb.allrefs.length,
+                        Codex.sourcedb.allrefs.length);}
 
         /* Viewport setup */
 
@@ -1243,7 +1273,7 @@ Codex.Startup=
                 if (info.nodeid) setNodeID(info.nodeid);
                 if (info.sync) Codex.sync=info.sync;}
             else if (info.wronguser) {
-                Codex.clearOffline(Codex.refuri);
+                Codex.clearOffline();
                 window.location=window.location.href;
                 return;}
             if (info.mycopyid) {
@@ -1266,11 +1296,11 @@ Codex.Startup=
             if ((Codex.persist)&&
                 (info)&&(info.userinfo)&&(Codex.user)&&
                 (info.userinfo._id!==Codex.user._id)) {
-                clearOffline(refuri);}
+                clearOffline();}
             var persist=((Codex.persist)&&(navigator.onLine));
             info.loaded=fdjtTime();
             if ((!(Codex.localglosses))&&
-                ((getLocal("sync("+refuri+")"))||
+                ((getLocal("codex.sync("+refuri+")"))||
                  (getLocal("queued("+refuri+")"))))
                 initGlossesOffline();
             if (Codex.Trace.glosses) {
@@ -1291,12 +1321,12 @@ Codex.Startup=
             if (info.overlays) gotInfo("overlays",info.overlays,persist);
             Codex.addOutlets2UI(info.outlets);
             if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
-                if (Codex.persist) setLocal("sync("+refuri+")",info.sync);
+                if (Codex.persist) setLocal("codex.sync("+refuri+")",info.sync);
                 Codex.sync=info.sync;}
             Codex.loaded=info.loaded=fdjtTime();
             if (Codex.persist) {
-                Codex.glossdb.save();
-                Codex.sourcedb.save();}
+                Codex.glossdb.save(true);
+                Codex.sourcedb.save(true);}
             if (Codex.glosshash) {
                 if (Codex.showGloss(Codex.glosshash))
                     Codex.glosshash=false;}}
@@ -1372,9 +1402,9 @@ Codex.Startup=
                     fdjtLog("Restoring offline user info for %o reading %o",
                             user,refuri);
                 var userinfo=JSON.parse(getLocal(user));
-                var sources=getLocal("sources("+refuri+")",true);
-                var outlets=getLocal("outlets("+refuri+")",true);
-                var nodeid=getLocal("nodeid("+refuri+")",true);
+                var sources=getLocal("codex.sources("+refuri+")",true);
+                var outlets=getLocal("codex.outlets("+refuri+")",true);
+                var nodeid=getLocal("codex.nodeid("+refuri+")",true);
                 var sync=getLocal("codex.usersync",true);
                 gotUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
                 return;}
@@ -1390,24 +1420,29 @@ Codex.Startup=
             if (userinfo) {
                 fdjtDOM.dropClass(document.body,"cxNOUSER");
                 fdjtDOM.addClass(document.body,"cxUSER");}
-            if (Codex.user)
+            if (Codex.user) {
                 if (userinfo._id===Codex.user._id) {}
-            else throw { error: "Can't change user"};
+                else throw { error: "Can't change user"};}
             var cursync=Codex.sync;
             if ((cursync)&&(cursync>=sync)) {
                 fdjtLog.warn(
                     "Cached user information is newer (%o) than loaded (%o)",
                     cursync,sync);
                 return false;}
-            if ((navigator.onLine)&&(fdjtState.getLocal("queued("+Codex.refuri+")")))
+            if ((navigator.onLine)&&
+                (fdjtState.getLocal("queued("+Codex.refuri+")")))
                 Codex.writeQueuedGlosses();
-            Codex.user=Codex.sourcedb.Import(userinfo);
+            Codex.user=Codex.sourcedb.Import(
+                userinfo,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             if (persist) setConfig("persist",true,true);
             if (outlets) Codex.outlets=outlets;
             if (overlays) Codex.overlays=overlays;
             if (persist) {
+                // No callback needed
                 Codex.user.save();
-                setLocal("codex.user",Codex.user._id);}
+                setLocal("codex.user",Codex.user._id);
+                // We also save it locally so we can get it synchronously
+                setLocal(Codex.user._id,Codex.user.Export(),true);}
             setupUI4User();
             return Codex.user;}
         Codex.setUser=setUser;
@@ -1417,7 +1452,7 @@ Codex.Startup=
             if (!(Codex.nodeid)) {
                 Codex.nodeid=nodeid;
                 if ((nodeid)&&(Codex.persist))
-                    setLocal("nodeid("+refuri+")",nodeid,true);}}
+                    setLocal("codex.nodeid("+refuri+")",nodeid,true);}}
         Codex.setNodeID=setNodeID;
 
         function setupUI4User(){
@@ -1509,26 +1544,31 @@ Codex.Startup=
                     while (i<lim) {
                         if (typeof info[i] === 'string') {
                             var qid=info[i++];
-                            if (Codex.persist) RefDB.load(qid);
-                            qids.push(qid);}
+                            var ref=Codex.sourcedb.ref(qid);
+                            if (Codex.persist) ref.load(qid);
+                            qids.push(ref._id);}
                         else {
-                            var obj=Codex.sourcedb.Import(info[i++]);
-                            obj.save();
-                            qids.push(obj._id);}}
+                            var ref=Codex.sourcedb.Import(
+                                info[i++],false,
+                                RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+                            ref.save();
+                            qids.push(ref._id);}}
                     Codex[name]=qids;
                     if (Codex.persist)
-                        setLocal(name+"("+refuri+")",qids,true);}
+                        setLocal("codex."+name+"("+refuri+")",qids,true);}
                 else {
-                    var obj=Codex.sourcedb.Import(info);
-                    if (persist) 
-                        setLocal(obj._id,obj,true);
-                    Codex[name]=obj._id;
-                    if (persist)
-                        setLocal(name+"("+refuri+")",qid,true);}}}
+                    var ref=Codex.sourcedb.Import(
+                        info,false,
+                        RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+                    if (persist) ref.save();
+                    Codex[name]=ref._id;
+                    if (persist) setLocal(
+                        "codex."+name+"("+refuri+")",qid,true);}}}
 
         function setupGlosses(newglosses) {
             var allglosses=Codex.allglosses||[];
-            Codex.glossdb.Import(newglosses);
+            Codex.glossdb.Import(
+                newglosses,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             if (newglosses.length) {
                 var n=newglosses.length; var i=0; while (i<n) {
                     var gloss=newglosses[i++];
@@ -1537,10 +1577,7 @@ Codex.Startup=
                     if (tstamp>latest) latest=tstamp;
                     allglosses.push(id);}}
             Codex.syncstamp=latest;
-            Codex.allglosses=allglosses;
-            if (Codex.persist) {
-                setLocal("etc("+Codex.refuri+")",Codex.etc,true);
-                setLocal("glosses("+Codex.refuri+")",allglosses,true);}}
+            Codex.allglosses=allglosses;}
 
         function initGlosses(glosses,etc){
             var msg=fdjtID("CODEXNEWGLOSSES");
@@ -1554,8 +1591,10 @@ Codex.Startup=
                            glosses.length,etc.length);}
             else {
                 startupLog("Assimilating %d new glosses...",glosses.length);}
-            Codex.sourcedb.Import(etc);
-            Codex.glossdb.Import(glosses);
+            Codex.sourcedb.Import(
+                etc,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+            Codex.glossdb.Import(
+                glosses,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             var i=0; var lim=glosses.length;
             var latest=Codex.syncstamp||0;
             while (i<lim) {
@@ -1566,9 +1605,6 @@ Codex.Startup=
             Codex.syncstamp=latest;
             Codex.allglosses=allglosses;
             startupLog("Done assimilating %d new glosses...",glosses.length);
-            if (Codex.persist) {
-                setLocal("glosses("+Codex.refuri+")",allglosses,true);
-                setLocal("etc("+Codex.refuri+")",etc,true);}
             dropClass(msg,"running");}
         Codex.Startup.initGlosses=initGlosses;
         
@@ -1581,7 +1617,7 @@ Codex.Startup=
 
         function initState() {
             var uri=Codex.docuri||Codex.refuri;
-            var statestring=getLocal("state("+uri+")");
+            var statestring=getLocal("codex.state("+uri+")");
             if (statestring)
                 Codex.state=state=JSON.parse(statestring);}
         
@@ -1591,7 +1627,7 @@ Codex.Startup=
             var state=Codex.state;
             if (!(state)) {
                 var uri=Codex.docuri||Codex.refuri;
-                var statestring=getLocal("state("+uri+")");
+                var statestring=getLocal("codex.state("+uri+")");
                 if (statestring) {
                     Codex.state=state=JSON.parse(statestring);
                     if (Codex.Trace.state)
@@ -1688,13 +1724,6 @@ Codex.Startup=
                 var ids=autoindex[tag]; ntags++;
                 var occurrences=[];
                 var tagval=tag, targstart=0, prefix=false;
-                /* if ((tagstart=tagval.search(/[^*]/))>0) {
-                    prefix=tagval.slice(0,tagstart);
-                    tagval=tagval.slice(tagstart);}
-                else if ((tagstart=(tagval.search(/[^~]/)))>0) {
-                    prefix=tagval.slice(0,tagstart);
-                    tagval=tagval.slice(tagval.search(/[^~]/));}
-                else {} */
                 var bar=tagval.indexOf('|');
                 if (bar>0) {
                     var defbody=tagval.slice(bar+1);
@@ -1883,28 +1912,16 @@ Codex.Startup=
         
         /* Clearing offline data */
 
-        function clearOffline(refuri,global){
+        function clearOffline(){
             var dropLocal=fdjtState.dropLocal;
-            if (refuri) {
-                var glosses=getLocal("glosses("+refuri+")",true);
-                var i=0; var lim=glosses.length;
-                while (i<lim) fdjtState.dropLocal(glosses[i++]);
-                var props=saveprops, i=0, lim=props.length;
-                while (i<lim) dropLocal(props[i++]+"("+refuri+")");
-                var refuris=getLocal("codex.refuris",true);
-                refuris=RefDB.remove(refuris,refuri);
-                setLocal("codex.refuris",refuris,true);}
-            else {
-                var refuris=getLocal("codex.refuris",true);
-                var i=0; var lim=refuris.length;
-                while (i<lim) clearOffline(refuris[i++]);
-                dropLocal("codex.config");
-                dropLocal("codex.user");
-                dropLocal("codex.refuris");
-                var local=fdjtState.listLocal();
-                i=0; lim=local.length; while (i<lim) {
-                    var key=local[i++];
-                    if (key[0]==='@') dropLocal(key);}}}
+            Codex.sync=false;
+            dropLocal("codex.user");
+            dropLocal("codex.sync("+Codex.refuri+")");
+            dropLocal("codex.outlets("+Codex.refuri+")");
+            dropLocal("codex.overlays("+Codex.refuri+")");
+            Codex.sourcedb.clearOffline(function(){
+                Codex.glossdb.clearOffline(function(){
+                    fdjtState.dropLocal("codex.sync("+Codex.refuri+")");});});}
         Codex.clearOffline=clearOffline;
 
         /* Other setup */

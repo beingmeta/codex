@@ -1002,7 +1002,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.glossdb.drop(glossid);
             Codex.allglosses=RefDB.remove(Codex.allglosses,glossid);
             if (Codex.persist)
-                fdjtState.setLocal("glosses("+Codex.refuri+")",
+                fdjtState.setLocal("codex.glosses("+Codex.refuri+")",
                                    Codex.allglosses,true);
             var editform=fdjtID("CODEXEDITGLOSS_"+glossid);
             if (editform) {
@@ -1404,7 +1404,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function clearOfflineAction(evt){
         evt=evt||event;
         fdjtUI.cancel(evt);
-        Codex.clearOffline(Codex.refuri);
+        Codex.clearOffline();
+        // We change this here, so we don't save what's cached in
+        //  memory now, but it doesn't change the saved setting (so we
+        //  might still be persisting).
+        Codex.persist=false;
         fdjtUI.alertFor(5,"Cleared locally stored glosses and other information");
         return false;}
     Codex.UI.clearOfflineAction=clearOfflineAction;
@@ -1419,7 +1423,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (!(Codex.connected))
             fdjtUI.alertFor(
                 15,"You're not currently logged into sBooks.  Information will be synchronized when you've logged in.");
-        else fdjtUI.alertFor(7,"Sychronizing gloses, etc with the remote server");
+        else fdjtUI.alertFor(7,"Sychronizing glosses, etc with the remote server");
         return false;}
     Codex.UI.forceSyncAction=forceSyncAction;
 
@@ -1656,6 +1660,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (!(scanning)) return;
         if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
             Codex.setMode("allglosses");
+            fdjtUI.cancel(evt);}
+        else if (getParent(scanning,fdjtID("CODEXPASSAGEGLOSSES"))) {
+            Codex.setMode("glosses");
             fdjtUI.cancel(evt);}
         else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) {
             Codex.setMode("searchresults");

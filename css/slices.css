@@ -62,9 +62,9 @@ div.codexslice div.codexthread div.codexcard:first-child div.locbar {
     display:block;}
 
 div.codexslice div.codexscanpoint {
-    border-left: solid darkblue 16px;
-    border-top: solid darkblue 4px;
-    border-bottom: solid darkblue 4px;
+    border-left: solid steelblue 16px;
+    border-top: solid steelblue 4px;
+    border-bottom: solid steelblue 4px;
     margin-left: 0px;
     background-color: white;}
 

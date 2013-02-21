@@ -102,8 +102,10 @@ Codex.DOMScan=(function(){
         function scanInfo(id,scanstate) {
             if (docinfo[id]) return docinfo[id];
             Ref.call(this,id,docdb);
-            this._live=this._changed=fdjtTime();
-            docdb.changed.push(this);
+            var now=fdjtTime();
+            this._live=this._changed=now;
+            docdb.changes.push(this);
+            docdb.changed=now;
             this.frag=id;
             docinfo[id]=this;
             scanstate.allinfo.push(this);
@@ -115,7 +117,7 @@ Codex.DOMScan=(function(){
         docdb.refclass=scanInfo;
         
         docinfo._scanInfo=scanInfo;
-        docinfo._refdb=docdb;
+        docinfo._docdb=docdb;
 
         function getTitle(head) {
             var title=

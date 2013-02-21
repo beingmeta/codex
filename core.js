@@ -101,7 +101,7 @@ var Codex=
          config: 0,        // Whether to trace config setup/modification/etc
          mode: false,      // Whether to trace mode changes
          nav: false,       // Whether to trace book navigation
-         scan: 1,          // How much to trace DOM scanning
+         scan: 0,          // How much to trace DOM scanning
          search: 0,        // How much to trace searches
          clouds: 0,        // How much to trace cloud generation
          focus: false,     // Whether to trace target changes
@@ -168,7 +168,7 @@ var Codex=
         Codex.BRICO.addAlias("@1/");
         var glosses_init={
             indices: ["frag","maker","outlets"]};
-        Codex.glossdb=new RefDB("glosses",glosses_init); {
+        Codex.glossdb=new RefDB("glosses@"+Codex.refuri,glosses_init); {
             var superadd=Codex.glossdb.add;
             Codex.glossdb.absrefs=true;
             Codex.glossdb.addAlias("glossdb");
@@ -193,9 +193,8 @@ var Codex=
                 var maker_knodule=Codex.getMakerKnodule(item.maker);
                 var tags=item.tags; var knodes=[];
                 if (tags) {
-                    if ((typeof tags === 'string')||(!(tags.length)))
-                        tags=[tags];
-                    item.tags=[];
+                    if (!(tags instanceof Array)) tags=[tags];
+                    delete item.tags;
                     if ((tags)&&(tags.length)) {
                         var i=0; var lim=tags.length;
                         while (i<lim) {
@@ -207,6 +206,7 @@ var Codex=
                             knodes.push(knode);
                             Codex.addTag2SearchCloud(knode);
                             Codex.addTag2GlossCloud(knode);}}}
+                if (knodes.length) item.knodes=fdjt.Set(knodes);
                 var sources=item.sources;
                 if (sources) {
                     if (typeof sources === 'string') sources=[sources];
@@ -235,11 +235,17 @@ var Codex=
             "~tags**": exportTagSlot, "~~tags**": exportTagSlot,
             "tags**": exportTagSlot};
         Codex.tag_export_rules=tag_export_rules;
-        Gloss.prototype.tag_import_rules={"tags": Knodule.importTagSlot};
+        Codex.tag_import_rules=tag_export_rules;
+
+        // Use this when generating external summaries.  In particular,
+        //  this recovers all of the separate weighted tag slots into
+        //  one tags slot which uses prefixed strings to indicate weights.
+        Gloss.prototype.ExportExternal=function exportGloss(){
+            return Ref.Export.call(this,tag_export_rules);};
 
         Codex.glossdb.refclass=Gloss;
         
-        Codex.sourcedb=new RefDB("sources");{
+        Codex.sourcedb=new RefDB("sources@"+Codex.refuri);{
             Codex.sourcedb.absrefs=true;
             Codex.sourcedb.addAlias("@1961/");
             Codex.sourcedb.addAlias(":@1961/");            
@@ -784,7 +790,7 @@ var Codex=
         if (Codex.Trace.state) fdjtLog("Setting state to %j",state);
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
-        fdjtState.setLocal("state("+uri+")",statestring);}
+        fdjtState.setLocal("codex.state("+uri+")",statestring);}
     Codex.setState=setState;
     
     function setConnected(val){
@@ -810,7 +816,7 @@ var Codex=
             if (syncing) return;
             if (!(state)) {
                 var uri=Codex.docuri||Codex.refuri;
-                var statestring=fdjtState.getLocal("state("+uri+")");
+                var statestring=fdjtState.getLocal("codex.state("+uri+")");
                 if (statestring) Codex.state=state=JSON.parse(statestring);
                 else state={};}
             if ((synced)&&
