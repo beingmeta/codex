@@ -1424,11 +1424,10 @@ Codex.Startup=
                 if (userinfo._id===Codex.user._id) {}
                 else throw { error: "Can't change user"};}
             var cursync=Codex.sync;
-            if ((cursync)&&(cursync>=sync)) {
+            if ((cursync)&&(cursync>sync)) {
                 fdjtLog.warn(
                     "Cached user information is newer (%o) than loaded (%o)",
-                    cursync,sync);
-                return false;}
+                    cursync,sync);}
             if ((navigator.onLine)&&
                 (fdjtState.getLocal("queued("+Codex.refuri+")")))
                 Codex.writeQueuedGlosses();
@@ -1594,7 +1593,8 @@ Codex.Startup=
             Codex.sourcedb.Import(
                 etc,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             Codex.glossdb.Import(
-                glosses,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+                glosses,{"tags": Knodule.importTagSlot},
+                RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             var i=0; var lim=glosses.length;
             var latest=Codex.syncstamp||0;
             while (i<lim) {

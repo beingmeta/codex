@@ -191,22 +191,18 @@ var Codex=
                     Codex.addTag2SearchCloud(maker);
                     Codex.UI.addGlossSource(maker,true);}
                 var maker_knodule=Codex.getMakerKnodule(item.maker);
-                var tags=item.tags; var knodes=[];
-                if (tags) {
-                    if (!(tags instanceof Array)) tags=[tags];
-                    delete item.tags;
-                    if ((tags)&&(tags.length)) {
-                        var i=0; var lim=tags.length;
-                        while (i<lim) {
-                            var tag=tags[i++];
-                            var knode=addTag(item,tag);
-                            if (info.glosstags)
-                                info.glosstags.push(knode);
-                            else info.glosstags=[knode];
-                            knodes.push(knode);
-                            Codex.addTag2SearchCloud(knode);
-                            Codex.addTag2GlossCloud(knode);}}}
-                if (knodes.length) item.knodes=fdjt.Set(knodes);
+                var tags=item.alltags;
+                if ((tags)&&(tags.length)) {
+                    var i=0; var lim=tags.length;
+                    if (item.thread) {
+                        Knodule.addTag(item.thread,tags);
+                        if (item.replyto!==item.thread) Knodule.addTag(item.replyto,tags);}
+                    while (i<lim) {
+                        var tag=tags[i++];
+                        if (info.glosstags) info.glosstags.push(knode);
+                        else info.glosstags=[knode];
+                        Codex.addTag2SearchCloud(knode);
+                        Codex.addTag2GlossCloud(knode);}}
                 var sources=item.sources;
                 if (sources) {
                     if (typeof sources === 'string') sources=[sources];
