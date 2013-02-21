@@ -193,9 +193,8 @@ var Codex=
                 var maker_knodule=Codex.getMakerKnodule(item.maker);
                 var tags=item.tags; var knodes=[];
                 if (tags) {
-                    if ((typeof tags === 'string')||(!(tags.length)))
-                        tags=[tags];
-                    item.tags=[];
+                    if (!(tags instanceof Array)) tags=[tags];
+                    delete item.tags;
                     if ((tags)&&(tags.length)) {
                         var i=0; var lim=tags.length;
                         while (i<lim) {
@@ -207,6 +206,7 @@ var Codex=
                             knodes.push(knode);
                             Codex.addTag2SearchCloud(knode);
                             Codex.addTag2GlossCloud(knode);}}}
+                if (knodes.length) item.knodes=fdjt.Set(knodes);
                 var sources=item.sources;
                 if (sources) {
                     if (typeof sources === 'string') sources=[sources];

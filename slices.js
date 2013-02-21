@@ -175,6 +175,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var i=0, lim=tags.length;
             while (i<tags.length) {
                 var tag=tags[i++]; var score=((scores)&&(scores[tag]))||false;
+                if (!(tag)) continue;
                 var tagstring=((typeof tag === "string")?(tag):((tag._qid)||(tag.getQID())));
                 if (seen[tagstring]) continue;
                 else {count++; seen[tagstring]=tag;}
