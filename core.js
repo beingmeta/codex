@@ -163,6 +163,7 @@ var Codex=
             fdjtDOM.getMeta("~KNODULE")||
             refuri;
         Codex.knodule=new Knodule(knodule_name);
+        Knodule.current=Codex.knodule;
         Codex.BRICO=new Knodule("BRICO");
         Codex.BRICO.addAlias(":@1/");
         Codex.BRICO.addAlias("@1/");
@@ -184,7 +185,7 @@ var Codex=
                     return;}
                 if ((info)&&(info.starts_at)) {item.starts_at=info.starts_at;}
                 if ((info)&&(info.starts_at)) {item.ends_at=info.ends_at;}
-                if ((!(item.maker))&&(Codex.user)) item.maker=(Codex.user._id);
+                if ((!(item.maker))&&(Codex.user)) item.maker=(Codex.user);
                 var maker=(item.maker)&&(Codex.sourcedb.ref(item.maker));
                 if (maker) {
                     Codex.addTag2GlossCloud(maker);
@@ -282,8 +283,8 @@ var Codex=
         var result;
         if (!(arg)) arg=Codex.user;
         if (!(arg)) return (Codex.knodule);
-        else if ((arg.maker)&&(arg.maker._qid))
-            result=new Knodule(arg.maker._qid);
+        else if ((arg.maker)&&(arg.maker instanceof Ref))
+            result=new Knodule(arg.maker.getQID());
         else if (arg._qid)
             result=new Knodule(arg._qid);
         else if (arg._id)
@@ -485,7 +486,7 @@ var Codex=
             if (typeof arg === 'string')
                 return (Codex.docinfo[arg]||
                         Codex.glossdb.probe(arg)||
-                        RefDB.ref(arg));
+                        RefDB.resolve(arg));
             else if (arg._id) return arg;
             else if (arg.codexbaseid)
                 return Codex.docinfo[arg.codexbaseid];

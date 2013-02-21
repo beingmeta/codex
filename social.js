@@ -183,16 +183,16 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                   source.fbid+"/picture?type=square")));}
 
     function extendGlossmark(glossmark,glosses,bigimage){
-        var Sources=Codex.sourcedb; var Glosses=Codex.glossdb;
+        var sources=Codex.sourcedb; var glosses=Codex.glossdb;
         if (!(bigimage)) bigimage=fdjtDOM.getChild(glossmark,".big");
         var images=bigimage.getAttribute("data-images").split(";");
         if ((images.length===1)&&(images[0]==="")) images=[];
         var i=0; var lim=glosses.length;
         while (i<lim) {
             var glossid=glosses[i++];
-            var gloss=Glosses.ref(glossid);
+            var gloss=glosses.ref(glossid);
             var cur=glossmark.glosses;
-            var maker=((gloss.maker)&&(Sources.ref(gloss.maker)));
+            var maker=((gloss.maker)&&(sources.ref(gloss.maker)));
             var maker_img=((maker)&&geticon(maker));
             if (maker_img) images.push(maker_img);
             if (cur) {
@@ -201,7 +201,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var outlets=gloss.sources||[];
             if (typeof outlets === 'string') outlets=[outlets];
             var j=0, jlim=outlets.length; while (j<jlim) {
-                var outlet=Sources.ref(outlets[j++]);
+                var outlet=sources.ref(outlets[j++]);
                 var outlet_img=geticon(outlet);
                 if (outlet_img) images.push(outlet_img);}}
         bigimage.setAttribute("data-images",images.join(";"));

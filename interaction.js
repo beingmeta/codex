@@ -641,7 +641,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var card=getCard(target);
         if (getParent(target,".detail")) {
             var name=(card.name)||(card.getAttribute("name"));
-            var gloss=RefDB.ref(name,Codex.glossdb), detail;
+            var gloss=RefDB.resolve(name,Codex.glossdb), detail;
             if ((gloss)&&((detail=gloss.detail))) {
                 if (detail[0]==='<')
                     fdjt.ID("CODEXGLOSSDETAIL").innerHTML=gloss.detail;
@@ -655,7 +655,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return fdjtUI.cancel(evt);}
         else if ((card.name)||(card.getAttribute("name"))) {
             var name=(card.name)||(card.getAttribute("name"));
-            var gloss=RefDB.ref(name,Codex.glossdb);
+            var gloss=RefDB.resolve(name,Codex.glossdb);
             if (!(gloss)) return;
             var form=Codex.setGlossTarget(gloss);           
             if (!(form)) return;
@@ -814,7 +814,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 return fdjtUI.cancel(evt);}
             else if ((card.name)||(card.getAttribute("name"))) {
                 var name=(card.name)||(card.getAttribute("name"));
-                var gloss=RefDB.ref(name,Codex.glossdb);
+                var gloss=RefDB.resolve(name,Codex.glossdb);
                 if (!(gloss)) return;
                 var form=Codex.setGlossTarget(gloss);       
                 if (!(form)) return;
@@ -1637,7 +1637,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var card=getCard(target);
             if ((card)&&((card.name)||(card.getAttribute("name")))) {
                 var name=(card.name)||(card.getAttribute("name"));
-                var gloss=RefDB.ref(name,Codex.glossdb);
+                var gloss=RefDB.resolve(name,Codex.glossdb);
                 if (!(gloss)) return;
                 var form=Codex.setGlossTarget(gloss);
                 if (!(form)) return;

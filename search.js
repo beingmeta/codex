@@ -68,7 +68,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var getChildren=fdjtDOM.getChildren;
     var getChild=fdjtDOM.getChild;
     var log=fdjtLog;
-    var kbref=RefDB.ref;
+    var kbref=RefDB.resolve;
 
     /* Query functions */
 
@@ -452,7 +452,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function makeCloud(dterms,scores,freqs,ranks_arg,noscale,
                        completions,init_cloud) {
         var start=new Date();
-        var sourcekb=Codex.sourcedb;
+        var sourcedb=Codex.sourcedb;
         var knodule=Codex.knodule;
         var cloud=init_cloud||false;
         var i=0; var n_terms=dterms.length;
@@ -461,7 +461,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((init_cloud)&&(init_cloud.parentNode)) {
             placeholder=document.createTextNode("");
             init_cloud.parentNode.replaceChild(placeholder,init_cloud);}
-        var info=organize_tags(dterms,scores,knodule,sourcekb);
+        var info=organize_tags(dterms,scores,knodule,sourcedb);
         if (Codex.Trace.clouds)
             log("Making cloud from %d dterms w/scores=%o [%d,%d] and freqs=%o",
                 dterms.length,scores,info.max,info.min,freqs);
@@ -517,7 +517,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (!(ref)) {
                 if (dterm[0]==="\u00A7") container=sections;
                 else container=words;}
-            else if (ref.pool===sourcekb) container=sources;
+            else if (ref._db===sourcedb) container=sources;
             else if (ref.prime) container=prime;
             else if (ref.weak) container=weak;
             else container=normal;
@@ -627,14 +627,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             else return RefDB.compare(x,y);});
         return copied;}
 
-    function organize_tags(tags,scores,knodule,sourcekb){
+    function organize_tags(tags,scores,knodule,sourcedb){
         var min_score=false, max_score=false;
         var normals={}, n_normal=0, n_primes=0;
         var i=0; while (i<tags.length) {
             var tag=tags[i++];
             if (tag instanceof Ref) {
                 if (tag.prime) n_primes++;
-                if ((tag._db!==sourcekb)&&(!(tag.weak))) {
+                if ((tag._db!==sourcedb)&&(!(tag.weak))) {
                     normals[tag]=true; n_normal++;}}
             if (scores) {
                 var score=scores[tag];

@@ -931,7 +931,7 @@ Codex.Startup=
             if (!(sync)) return;
             if (!(user)) return;
             if (Codex.Trace.startup) fdjtLog("initOffline userinfo=%j",userinfo);
-            // Should these really be refs in sourcekb?
+            // Should these really be refs in sourcedb?
             var outlets=Codex.outlets=
                 getLocal("codex.outlets("+refuri+")",true)||[];
             var overlays=Codex.overlays=
@@ -1527,10 +1527,10 @@ Codex.Startup=
                     idlink.title='click to edit your personal information';
                     idlink.href='https://auth.sbooks.net/my/profile';}}
             if (Codex.user.friends) {
-                var friends=Codex.user.friends;
+                var friends=Codex.user.friends; var sourcedb=Codex.sourcedb;
                 var i=0; var lim=friends.length;
                 while (i<lim) {
-                    var friend=RefDB.ref(friends[i++]);
+                    var friend=RefDB.resolve(friends[i++],sourcedb);
                     Codex.addTag2GlossCloud(friend);}}
             Codex._user_setup=true;}
         

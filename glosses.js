@@ -151,7 +151,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (!(arg)) return false;
         var gloss=((!(arg.nodeType))&&((arg.maker)||(arg.gloss))&&(arg));
         if (!(gloss)) response=false;
-        else if ((arg.maker)&&(arg.maker!==Codex.user._id))
+        else if ((arg.maker)&&(arg.maker!==Codex.user))
             response=true;
         else {}
         var passage=((gloss)?(fdjtID(gloss.frag)):(arg));
@@ -326,7 +326,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                  (Codex.glossdb.probe(target))) {
             gloss=Codex.glossdb.ref(target);
             target=fdjtID(gloss.frag);}
-        else if (target.pool===Codex.glossdb) {
+        else if (target._db===Codex.glossdb) {
             gloss=target; target=fdjtID(gloss.frag);}
         else {}
 	if ((gloss)&&(form)&&(!(form.nodeType))) {
@@ -632,7 +632,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (ref.knodule===knodule) tagval=ref.dterm;
             else tagval=ref._qid||ref.getQID();}
         if (prefix) tagval=prefix+tagval;
-        if ((ref)&&(ref.pool===Codex.sourcedb)) varname='SHARED';
+        if ((ref)&&(ref._db===Codex.sourcedb)) varname='SHARED';
         var checkspans=getChildren(tagselt,".checkspan");
         var i=0; var lim=checkspans.length;
         while (i<lim) {

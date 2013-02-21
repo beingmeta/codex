@@ -381,7 +381,7 @@ Codex.setMode=
                     container=getChild(div,".weak");
                 else if (ref.prime)
                     container=getChild(div,".prime");
-                else if (ref.pool===Codex.sourcedb)
+                else if (ref._db===Codex.sourcedb)
                     container=getChild(div,".sources");
                 else {}
                 if (!(container)) container=div;
