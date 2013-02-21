@@ -717,7 +717,7 @@ img.codexcoverpage {
 /* Highlighting */
 
 .codexhighlightexcerpt { background-color: yellow;}
-.codexhighlightpassage { background-color: #FFFF6B;}
+.codexhighlightpassage { background-color: rgba(255, 255, 0, 0.21);}
 .codexhighlightsearch { background-color: gold;}
 .codexpreviewtarget { color: red; }
 section.codexpreviewtarget, div.html5section.codexpreviewtarget,

@@ -293,6 +293,9 @@ body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTHOLDER {
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
     top: 150px; height: auto; min-height: 100px;}
 
+body.hudup #CODEXHUD.glosses.openheart #CODEXHEARTHOLDER {
+    max-height: 50%; height: 50%; top: 75px; bottom: auto;}
+
 div#CODEXHUD #CODEXFOOT {
     position: fixed; bottom: 0px; z-index: 300;}
 
