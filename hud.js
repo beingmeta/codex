@@ -53,7 +53,7 @@ Codex.setMode=
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
-        var fdjtKB=fdjt.KB;
+        var RefDB=fdjt.RefDB;
         var fdjtID=fdjt.ID;
         
         // Helpful dimensions
@@ -67,7 +67,7 @@ Codex.setMode=
         var getGeometry=fdjtDOM.getGeometry;
         var getChild=fdjtDOM.getChild;
         var hasSuffix=fdjtString.hasSuffix;
-        var Ref=fdjtKB.Ref;
+        var Ref=RefDB.Ref;
 
         var CodexHUD=false;
 
@@ -224,10 +224,40 @@ Codex.setMode=
             /* Currently a no-op */
             resizeHUD();
 
-            if (Codex.Trace.startup) fdjtLog("Updating scrollers");
             Codex.scrollers={};
-            updateScroller("CODEXSEARCHCLOUD");
+
+            /* Setup clouds */
+            var dom_gloss_cloud=fdjtID("CODEXGLOSSCLOUD");
+            Codex.gloss_cloud=
+                new fdjtUI.Completions(
+                    dom_gloss_cloud,fdjtID("CODEXTAGINPUT"),
+                    fdjtUI.FDJT_COMPLETE_OPTIONS|
+                        fdjtUI.FDJT_COMPLETE_CLOUD|
+                        fdjtUI.FDJT_COMPLETE_ANYWORD);
             updateScroller("CODEXGLOSSCLOUD");
+
+            var dom_search_cloud=fdjtID("CODEXSEARCHCLOUD");
+            Codex.search_cloud=
+                new fdjtUI.Completions(
+                    dom_search_cloud,fdjtID("CODEXTAGINPUT"),
+                    fdjtUI.FDJT_COMPLETE_OPTIONS|
+                        fdjtUI.FDJT_COMPLETE_CLOUD|
+                        fdjtUI.FDJT_COMPLETE_ANYWORD);
+            Codex.DOM.search_cloud=dom_search_cloud;
+            updateScroller("CODEXSEARCHCLOUD");
+            updateScroller("CODEXSEARCHCLOUD");
+
+            var dom_share_cloud=fdjtID("CODEXSHARECLOUD");
+            Codex.share_cloud=
+                new fdjtUI.Completions(
+                    dom_share_cloud,fdjtID("CODEXTAGINPUT"),
+                    fdjtUI.FDJT_COMPLETE_OPTIONS|
+                        fdjtUI.FDJT_COMPLETE_CLOUD|
+                        fdjtUI.FDJT_COMPLETE_ANYWORD);
+            Codex.DOM.share_cloud=dom_share_cloud;
+            updateScroller("CODEXSHARECLOUD");
+
+            if (Codex.Trace.startup) fdjtLog("Updating scrollers");
             fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));
 
             if (Codex.touch) fdjtDOM.append(Codex.DOM.foot,fdjt.ID("CODEXTOC"));
@@ -258,139 +288,119 @@ Codex.setMode=
 
         var tagHTML=Knodule.HTML;
 
+        function cloudEntry(cloud,arg,knodule,lang){
+            if (typeof lang !== "string") lang=(Codex.language)||(Knodule.language)||"EN";
+            
+            var entry;
+            function initCloudEntry(){
+                if (arg instanceof KNode) {
+                    var knode=arg, dterm=knode.dterm;
+                    entry.setAttribute("key",dterm);
+                    entry.innerHTML=dterm;
+                    var synonyms=knode[lang];
+                    if ((synonyms)&&(typeof synonyms === 'string')) synonyms=[synonyms];
+                    if (synonyms) {
+                        var i=0; while (i<synonyms.length) {
+                            var synonym=synonyms[i++];
+                            if (synonym===dterm) continue;
+                            var variation=fdjtDOM("span.variation",synonym,"=");
+                            variation.setAttribute("key",synonym);
+                            variations.appendChild(variation);}}
+                    if (knode.weak) addClass(span,"weak");
+                    if (knode.about) span.title=knode.about;}
+                else if (arg.name) {
+                    addClass(entry,"source"); addClass(entry,"account");
+                    entry.setAttribute("key",arg.name);
+                    entry.innerHTML=arg.name;}
+                else if (arg.refuri) {
+                    addClass(entry,"doc");
+                    entry.setAttribute("key",arg.refuri);
+                    if (entry.title) cloud.addKeys(entry,entry.title);
+                    entry.innerHTML=arg.refuri;}
+                else {}
+                cloud.addKeys(entry);}            
+            if (typeof arg === "string") {
+                entry=fdjtDOM("span.completion.rawterm",arg);
+                entry.setAttribute("value",arg);
+                cloud.addCompletion(entry,arg,arg);
+                return entry;}
+            else if (!(arg instanceof Ref)) {
+                var strungout=entry.toString();
+                entry=fdjtDOM("span.completion.weirdterm",strungout);
+                cloud.addCompletion(entry,strungout,arg);
+                return entry;}
+            else {
+                var qid=arg._qid||arg.getQID();
+                if (arg instanceof KNode)
+                    entry=fdjtDOM("span.completion.dterm",qid);
+                else entry=fdjtDOM("span.completion",qid);
+                entry.setAttribute("value",qid);
+                cloud.addCompletion(entry,qid,arg);
+                arg.onLoad(initCloudEntry);
+                return entry;}
+            initCloudEntry();
+            return entry;}
+        Codex.cloudEntry=cloudEntry;
+        
+        function addTag2Cloud(tag,cloud){
+            if (!(tag)) return;
+            else if (tag instanceof Array) {
+                var i=0; var lim=tag.length;
+                while (i<lim) addTag2Cloud(tag[i++],cloud);
+                return;}
+            else if ((tag instanceof Ref)&&(!(tag._live)))
+                // If it's uninitialized, delay adding it
+                tag.onLoad(function(){ addTag2Cloud(tag,cloud);});
+            else {
+                var container=cloud.dom;
+                var ref=((typeof tag === 'string')?
+                         ((RefDB.resolve(tag,Codex.knodule,Knodule,false))||(tag)):
+                         (tag));
+                var completions=cloud.getByValue(ref,".completion");
+                if (!((completions)&&(completions.length))) {
+                    completions=cloudEntry(cloud,tag,Codex.knodule);}}}
+        Codex.addTag2Cloud=addTag2Cloud;
+
+        function addTag2SearchCloud(tag,search_cloud){
+            if (!(search_cloud)) search_cloud=Codex.search_cloud;
+            if (!(tag)) return;
+            else if (tag instanceof Array) {
+                var i=0; var lim=tag.length;
+                while (i<lim) addTag2SearchCloud(tag[i++],search_cloud);
+                return;}
+            else if ((tag instanceof Ref)&&(!(tag._live)))
+                // If it's uninitialized, delay adding it
+                tag.onLoad(addTag2SearchCloud,"addTag2SearchCloud");
+            else {
+                var container=search_cloud.dom;
+                var ref=((typeof tag === 'string')?
+                         ((RefDB.resolve(tag,Codex.knodule,Knodule,false))||(tag)):
+                         (tag));
+                var search_tag=search_cloud.getByValue(ref,".completion");
+                if (!((search_tag)&&(search_tag.length))) {
+                    search_tag=cloudEntry(search_cloud,tag,Codex.knodule);}}}
+        Codex.addTag2SearchCloud=addTag2SearchCloud;
+
         function addTag2GlossCloud(tag){
             if (!(tag)) return;
             else if (tag instanceof Array) {
                 var i=0; var lim=tag.length;
                 while (i<lim) addTag2GlossCloud(tag[i++]);
                 return;}
-            else if (!(Codex.gloss_cloud)) {
-                // If the HUD hasn't been initialized, add the tag
-                //  to queues for addition.
-                var queue=Codex.gloss_cloud_queue;
-                if (!(queue)) queue=Codex.gloss_cloud_queue=[];
-                queue.push(tag);}
-            else if ((tag instanceof Ref)&&(!(tag._init)))
+            else if ((tag instanceof Ref)&&(!(tag._live)))
                 // If it's uninitialized, delay adding it
-                tag.oninit(addTag2GlossCloud,"addTag2GlossCloud");
-            // Skip weak tags
+                tag.onLoad(addTag2GlossCloud,"addTag2GlossCloud");
+            // Skip weak tags (for now?)
             else if ((tag instanceof Ref)&&(tag.weak)) return;
             else {
-                var gloss_cloud=Codex.glossCloud();
+                var gloss_cloud=Codex.gloss_cloud;
                 var ref=((tag instanceof Ref)?(tag):
-                         ((fdjtKB.probe(tag,Codex.knodule))||
-                          (fdjtKB.ref(tag,Codex.knodule))));
-                var ref_tag=(((ref)&&(ref.tagString))&&
-                             (ref.tagString(Codex.knodule)))||
-                    ((ref)&&((ref._id)||(ref.uuid)||(ref.oid)))||
-                    (tag);
-                var gloss_tag=gloss_cloud.getByValue(ref_tag,".completion");
+                         (RefDB.resolve(tag,Codex.knodule,Knodule,true)));
+                var gloss_tag=gloss_cloud.getByValue(ref||tag,".completion");
                 if (!((gloss_tag)&&(gloss_tag.length))) {
-                    gloss_tag=tagHTML(tag,Codex.knodule,false,true);
-                    if ((ref)&&(ref.pool===Codex.sourcedb))
-                        fdjtDOM(fdjtID("CODEXGLOSSCLOUDSOURCES"),
-                                gloss_tag," ");
-                    else fdjtDOM(fdjtID("CODEXGLOSSCLOUDTAGS"),
-                                 gloss_tag," ");
-                    gloss_cloud.addCompletion(gloss_tag);}}}
+                    gloss_tag=cloudEntry(gloss_cloud,ref,Codex.knodule);}}}
         Codex.addTag2GlossCloud=addTag2GlossCloud;
         
-        function addOutlets2UI(outlets){
-            if (typeof outlets === 'string')
-                outlets=Codex.sourcedb.ref(outlets);
-            if (!(outlets)) return;
-            if (!(outlets instanceof Array)) outlets=[outlets];
-            if (!(Codex.outlet_cloud)) {
-                // If the HUD hasn't been initialized, add the tag
-                //  to queues for addition.
-                var queue=Codex.outlet_cloud_queue;
-                if (!(queue)) queue=Codex.outlet_cloud_queue=[];
-                queue=Codex.outlet_cloud_queue=queue.concat(outlets);
-                return;}
-            else {
-                var i=0; var lim=outlets.length;
-                var loaded=[];
-                while (i<lim) {
-                    var outlet=outlets[i++];
-                    if (typeof outlet === 'string')
-                        outlet=fdjtKB.ref(outlet);
-                    if ((outlet instanceof Ref)&&(!(outlet._init)))
-                        outlet.oninit(addOutlets2UI,"addOutlets2UI");
-                    else loaded.push(outlet);}
-                var cloud=Codex.outletCloud();
-                i=0; lim=loaded.length; while (i<lim) {
-                    var addoutlet=loaded[i++];
-                    addOutlet2Cloud(addoutlet,cloud);}
-                return;}}
-        Codex.addOutlets2UI=addOutlets2UI;
-        
-        /* Initializing outlets */
-        
-        function addOutlet2Cloud(outlet,cloud) {
-            if (typeof outlet === 'string')
-                outlet=fdjtKB.load(outlet);
-            var humid=outlet.humid;
-            var sourcetag=fdjtID("cxOUTLET"+humid);
-            if (!(sourcetag)) { // Add entry to the share cloud
-                var completion=fdjtDOM(
-                    "span.completion.source",outlet.name);
-                completion.id="cxOUTLET"+humid;
-                completion.setAttribute("value",outlet._id);
-                completion.setAttribute("key",outlet.name);
-                if ((outlet.description)&&(outlet.nick))
-                    completion.title=outlet.name+": "+
-                    outlet.description;
-                else if (outlet.description)
-                    completion.title=outlet.description;
-                else if (outlet.nick) completion.title=outlet.name;
-                fdjtDOM(cloud.dom,completion," ");
-                if (cloud) cloud.addCompletion(completion);}}
-        
-        var cloudEntry=Codex.cloudEntry;
-
-        function addTag2SearchCloud(tag){
-            if (!(tag)) return;
-            else if (tag instanceof Array) {
-                var i=0; var lim=tag.length;
-                while (i<lim) addTag2SearchCloud(tag[i++]);
-                return;}
-            else if (!(Codex.search_cloud)) {
-                // If the HUD hasn't been initialized, add the tag
-                //  to queues for addition.
-                var queue=Codex.search_cloud_queue;
-                if (!(queue)) queue=Codex.search_cloud_queue=[];
-                queue.push(tag);}
-            else if ((tag instanceof Ref)&&(!(tag._init)))
-                // If it's uninitialized, delay adding it
-                tag.oninit(addTag2SearchCloud,"addTag2SearchCloud");
-            else {
-                var search_cloud=Codex.searchCloud();
-                var div=search_cloud.dom;
-                var tagstring=((tag.tagString)?(tag.tagString()):(tag));
-                var search_tag=
-                    search_cloud.getByValue(tagstring,".completion");
-                var container=div;
-                var ref=((typeof tag === 'string')?
-                         (fdjtKB.ref(tag,Codex.knodule)):
-                         (tag));
-                if (!(ref)) {
-                    if (tag[0]==="\u00a7")
-                        container=getChild(div,".sections")||container;
-                    else container=getChild(div,".words")||div;}
-                else if (ref.weak)
-                    container=getChild(div,".weak");
-                else if (ref.prime)
-                    container=getChild(div,".prime");
-                else if (ref._db===Codex.sourcedb)
-                    container=getChild(div,".sources");
-                else {}
-                if (!(container)) container=div;
-                if (!((search_tag)&&(search_tag.length))) {
-                    search_tag=Codex.cloudEntry(tag,Codex.knodule,false,true);
-                    fdjtDOM(container,search_tag," ");
-                    search_cloud.addCompletion(search_tag,false,tag);}}}
-        Codex.addTag2SearchCloud=addTag2SearchCloud;
-
 
         /* This is used for viewport-based browser, where the HUD moves
            to be aligned with the viewport */

@@ -317,7 +317,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 Codex.selecting.clear();
                 Codex.selecting=false;}
             return;}
-        if (!gloss_cloud) Codex.glossCloud();
         var gloss=false;
 	// Identify when the target is a gloss
         if ((typeof target === 'string')&&(fdjtID(target))) 
@@ -349,7 +348,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.glosstarget=target;
         addClass(target,"codexglosstarget");
         Codex.GoTo(target,"addgloss",true);
-        setCloudCuesFromTarget(gloss_cloud,target);
+        setCloudCuesFromTarget(Codex.gloss_cloud,target);
         setGlossForm(form);
         // Clear current selection and set up new selection
         if (Codex.selecting) {
@@ -430,11 +429,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var syncelt=getInput(form,"SYNC");
         syncelt.value=(Codex.syncstamp+1);
         /* Get the input appropriate to the mode. */
-        gloss_cloud.complete(getbracketed(glossinput,false)||"");
+        Codex.gloss_cloud.complete(getbracketed(glossinput,false)||"");
         
         /* Do completions based on those input's values */
-        Codex.outletCloud().complete();
-        Codex.glossCloud().complete();}
+        Codex.share_cloud.complete();
+        Codex.gloss_cloud.complete();}
     Codex.setGlossForm=setGlossForm;
 
     function updateForm(form){
@@ -610,7 +609,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 varname='SHARE'; textspec='span.source';}
             else {}
             if (tag.title) title=tag.title;
-            tag=gloss_cloud.getValue(tag);}
+            tag=Codex.gloss_cloud.getValue(tag);}
         var ref=
             ((tag instanceof Ref)?(tag):
              ((typeof tag === 'string')&&
@@ -807,11 +806,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else return handleTagInput(content,form,true);}
 
     function handleTagInput(content,form,exact){
-        var completions=gloss_cloud.complete(content);
+        var completions=Codex.gloss_cloud.complete(content);
         var std=stdspace(content);
         if ((!(completions))||(completions.length===0)) {
             addTag(form,std);
-            gloss_cloud.complete("");
+            Codex.gloss_cloud.complete("");
             return std;}
         else {
             var completion=false;
@@ -828,23 +827,23 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     var c=completions[i++];
                     if (c!==completion) {completion=false; break;}}}
             if ((completion)&&(completion===completions[0])) {
-                var ks=gloss_cloud.getKey(completions.matches[0]);
+                var ks=Codex.gloss_cloud.getKey(completions.matches[0]);
                 if ((exact)?(ks.toLowerCase()!==std.toLowerCase()):
                     (ks.toLowerCase().search()!==0)) {
                     // When exact is true, count on exact matches;
                     // even if it is false, don't except non-prefix
                     // matches
                     addTag(form,std);
-                    gloss_cloud.complete("");
+                    Codex.gloss_cloud.complete("");
                     return std;}}
             if (completion) {
                 var span=addTag(form,completion);
-                gloss_cloud.complete("");
+                Codex.gloss_cloud.complete("");
                 return getTagString(
-                    span,gloss_cloud.getKey(completion));}
+                    span,Codex.gloss_cloud.getKey(completion));}
             else {
                 addTag(form,std);
-                gloss_cloud.complete("");
+                Codex.gloss_cloud.complete("");
                 return std;}}}
     Codex.handleTagInput=handleTagInput;
 
@@ -882,7 +881,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     addgloss_timer=false;
                     var span=getbracketed(target,false);
                     if (!(linkp(content)))
-                        gloss_cloud.complete(span);},
+                        Codex.gloss_cloud.complete(span);},
                                           200);}}
 
     function glossinput_keydown(evt){
@@ -933,7 +932,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     // actually gets into the box before we do anything
                     addgloss_timer=false;
                     var span=getbracketed(target,false);
-                    gloss_cloud.complete(span);},
+                    Codex.gloss_cloud.complete(span);},
                 200);}}
     
     function get_addgloss_callback(form,keep){
@@ -976,22 +975,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     /***** The Gloss Cloud *****/
 
-    var gloss_cloud=false;
-    
-    /* The completions element */
-    function glossCloud(){
-        if (gloss_cloud) return gloss_cloud;
-        var completions=fdjtID("CODEXGLOSSCLOUD");
-        completions.onclick=glosscloud_ontap;
-        Codex.gloss_cloud=gloss_cloud=
-            new fdjtUI.Completions(
-                completions,fdjtID("CODEXTAGINPUT"),
-                fdjtUI.FDJT_COMPLETE_OPTIONS|
-                    fdjtUI.FDJT_COMPLETE_CLOUD|
-                    fdjtUI.FDJT_COMPLETE_ANYWORD);
-        return gloss_cloud;}
-    Codex.glossCloud=glossCloud;
-    
     function glosscloud_ontap(evt){
         var target=fdjtUI.T(evt);
         var completion=getParent(target,'.completion');
@@ -1002,35 +985,19 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (!(hasClass("CODEXHUD","glossaddtag"))) {
                 // This means we have a bracketed reference
                 var tagstring=getTagString(
-                    span,gloss_cloud.getKey(completion));
+                    span,Codex.gloss_cloud.getKey(completion));
                 var input=getInput(form,"NOTE");
                 if ((input)&&(tagstring))
                     setbracketed(input,tagstring,2);}}
         fdjtUI.cancel(evt);}
+    Codex.UI.handlers.glosscloud_ontap;
 
 
     /***** The Outlet Cloud *****/
 
-    var outlet_cloud=false;
+    var share_cloud=false;
     
-    /* The completions element for outlets */
-    function outletCloud(){
-        if (outlet_cloud) return outlet_cloud;
-        var completions=fdjtID("CODEXOUTLETCLOUD");
-        completions.onclick=outletcloud_ontap;
-        Codex.outlet_cloud=outlet_cloud=
-            new fdjtUI.Completions(
-                completions,fdjtID("CODEXOUTLETINPUT"),
-                fdjtUI.FDJT_COMPLETE_OPTIONS|
-                    fdjtUI.FDJT_COMPLETE_CLOUD|
-                    fdjtUI.FDJT_COMPLETE_ANYWORD);
-        var queue=Codex.outlet_cloud_queue;
-        Codex.outlet_cloud_queue=[];
-        Codex.addOutlets2UI(queue);
-        return outlet_cloud;}
-    Codex.outletCloud=outletCloud;
-    
-    function outletcloud_ontap(evt){
+    function sharecloud_ontap(evt){
         var target=fdjtUI.T(evt);
         var completion=getParent(target,'.completion');
         if (completion) {
@@ -1045,6 +1012,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if (value) addOutlet(form,completion,"EMAIL");
             else addOutlet(form,completion);}
         fdjtUI.cancel(evt);}
+    Codex.UI.sharecloud_ontap;
 
 
     /***** Saving (submitting/queueing) glosses *****/

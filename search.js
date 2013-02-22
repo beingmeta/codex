@@ -390,7 +390,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function queryCloud(query){
         if (query.cloud) return query.cloud;
         else if ((query.tags.length)===0) {
-            query.cloud=searchCloud();
+            query.cloud=Codex.search_cloud;
             return query.cloud;}
         else if (!(query._refiners)) {
             query.cloud=Codex.empty_cloud;
@@ -656,68 +656,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 Codex.UI.updateScroller(completions);},
                        100);}}
 
-    function cloudEntry(term,title){
-        var showname=term;
-        var tagfreqs=Codex.empty_query.tagfreqs;
-        var knodule=Codex.knodule; var title=false;
-        if ((typeof term === "string") && (term[0]==="\u00A7")) {
-            // Handle section references as tags
-            if (showname.length>20) {
-                var start=showname.indexOf(' ',8);
-                var end=showname.lastIndexOf(' ',showname.length-8);
-                if (start<0) start=8; if (end<0) end=showname.length-8;
-                if (start<(showname.length-end)) {
-                    showname=showname.slice(0,start)+" \u2026 "+
-                        showname.slice(end);}
-                title=term;}
-            var span=fdjtDOM("span.completion",
-                             fdjtDOM("span.sectname",showname));
-            span.key=term; span.value=term; span.anymatch=true;
-            span.title=""+tagfreqs[term]+" items: "+term;
-            if (title) span.title=span.title+"; "+title;
-            return span;}
-        var span=Knodule.HTML(term,knodule,false,true);
-        var knode=((term instanceof KNode)?(term):(knodule.probe(term)));
-        var freq=((knode)?(tagfreqs[knode]):(tagfreqs[term]));
-        span.title=(""+freq+" items; ")+
-            (((span.title)&&(span.title.length))?(span.title):
-             (Completions.getKey(span)));
-        return span;}
-    Codex.cloudEntry=cloudEntry;
-    
     function add_searchtag(value){
         setQuery(Codex.extendQuery(Codex.query,value));}
-
-    function searchCloud(){
-        if (Codex.search_cloud) return Codex.search_cloud;
-        else {
-            var alltags=Codex.empty_query.getCoTags();
-            var tagscores=Codex.empty_query.tagscores;
-            var tagfreqs=Codex.empty_query.tagfreqs;
-            var completions=Codex.makeCloud(
-                alltags,tagscores,tagfreqs,true,false,false,
-                fdjtID("CODEXSEARCHCLOUD"));
-            completions.dom.onclick=cloud_ontap;
-            Codex.search_cloud=completions;
-            return Codex.search_cloud;}}
-    Codex.searchCloud=searchCloud;
-
-    function sizeCloud(completions,container,index){
-        if (!(index)) index=Codex.index;
-        if (!(container)) container=completions.dom;
-        var nodes=getChildren(container,".completion");
-        var tagscores=index.tagscores;
-        var max_score=index.maxscore;
-        var alltags=index._alltags;
-        var i=0; var lim=nodes.length;
-        while (i<lim) {
-            var tagnode=nodes[i++];
-            var tag=tagnode.value||completions.getValue(tagnode);
-            if (!(tag)) continue;
-            if ((typeof tag === "string") && (tag[0]==="\u00A7")) continue;
-            var score=tagscores[tag];
-            if (score) tagnode.style.fontSize=(100+(100*(score/max_score)))+"%";}}
-    Codex.sizeCloud=sizeCloud;
 
     Codex.UI.searchCloudToggle=function(){
         fdjtDOM.toggleClass(fdjtID('CODEXSEARCHCLOUD'),'showempty');

@@ -1050,42 +1050,42 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var glossdiv=fdjtID("CODEXLIVEGLOSS");
         if (!(glossdiv)) return;
         var form=getChild(glossdiv,"FORM");
-        var outlet_cloud=Codex.outletCloud();
+        var share_cloud=Codex.share_cloud;
         var ch=evt.keyCode||evt.charCode;
         if ((fdjtString.isEmpty(content))&&(ch===13)) {
-            if (outlet_cloud.selection) 
+            if (share_cloud.selection) 
                 Codex.addOutlet2Form(
-                    form,outlet_cloud.selection.getAttribute("value"));
+                    form,share_cloud.selection.getAttribute("value"));
             else Codex.setGlossMode("editnote");
             return;}
-        else if ((ch===13)&&(outlet_cloud.selection)) {
-            Codex.addOutlet2Form(form,outlet_cloud.selection);
-            outlet_cloud.complete("");
+        else if ((ch===13)&&(share_cloud.selection)) {
+            Codex.addOutlet2Form(form,share_cloud.selection);
+            share_cloud.complete("");
             target.value="";}
         else if (ch===13) {
-            var completions=outlet_cloud.complete(content);
+            var completions=share_cloud.complete(content);
             if (completions.length)
                 Codex.addOutlet2Form(
                     form,completions[0].getAttribute("value"));
             else Codex.addOutlet2Form(form,content);
             fdjtUI.cancel(evt);
             target.value="";
-            outlet_cloud.complete("");}
+            share_cloud.complete("");}
         else if (ch===9) { /* tab */
-            var completions=outlet_cloud.complete(content);
+            var completions=share_cloud.complete(content);
             fdjtUI.cancel(evt);
-            if ((outlet_cloud.prefix)&&
-                (outlet_cloud.prefix!==content)) {
-                target.value=outlet_cloud.prefix;
+            if ((share_cloud.prefix)&&
+                (share_cloud.prefix!==content)) {
+                target.value=share_cloud.prefix;
                 fdjtDOM.cancel(evt);
                 setTimeout(function(){
                     Codex.UI.updateScroller("CODEXGLOSSOUTLETS");},
                            100);
                 return;}
-            else if (evt.shiftKey) outlet_cloud.selectPrevious();
-            else outlet_cloud.selectNext();}
+            else if (evt.shiftKey) share_cloud.selectPrevious();
+            else share_cloud.selectNext();}
         else setTimeout(function(evt){
-            outlet_cloud.complete(target.value);},
+            share_cloud.complete(target.value);},
                         100);}
 
     function addtag_keydown(evt){
@@ -1095,7 +1095,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var glossdiv=fdjtID("CODEXLIVEGLOSS");
         if (!(glossdiv)) return;
         var form=getChild(glossdiv,"FORM");
-        var gloss_cloud=Codex.glossCloud();
+        var gloss_cloud=Codex.gloss_cloud;
         var ch=evt.keyCode||evt.charCode;
         if ((fdjtString.isEmpty(content))&&(ch===13)) {
             if (gloss_cloud.selection) 
@@ -2174,7 +2174,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXATTACHTITLE": {click: addlink_keydown},
          "#CODEXATTACHOK": {click: addlink_action},
          "#CODEXATTACHCANCEL": {click: addlink_cancel},
-         "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
+         "#CODEXGLOSSCLOUD": {click: Codex.UI.handlers.glosscloud_ontap},
+         "#CODEXSHARECLOUD": {click: outlet_tapped},
+         "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.cloud_ontap},
          "#CODEXHELPBUTTON": {
              click: toggleHelp, mousedown: cancel,mouseup: cancel},
          "#CODEXHELP": {
@@ -2206,6 +2208,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "div.glossetc div.notetext": {click: editglossnote}};
 
     Codex.UI.handlers.webtouch=
+
         {window: {
             keyup: onkeyup,
             keydown: onkeydown,
@@ -2260,7 +2263,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXATTACHTITLE": {click: addlink_keydown},
          "#CODEXATTACHOK": {click: addlink_action},
          "#CODEXATTACHCANCEL": {click: addlink_cancel},
-         "#CODEXOUTLETCLOUD": {tap: outlet_tapped},
+         "#CODEXGLOSSCLOUD": {tap: Codex.UI.handlers.glosscloud_ontap},
+         "#CODEXSEARCHCLOUD": {tap: Codex.UI.handlers.cloud_ontap},
+         "#CODEXSHARECLOUD": {tap: outlet_tapped},
          "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
          /*
          "#CODEXNEXTPAGE": {click: function(evt){

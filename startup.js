@@ -583,11 +583,11 @@ Codex.Startup=
                             window._sbook_autoindex,
                             Codex.knodule,false,
                             function(){
-                                startupLog("Indexing assigned tags");
-                                Codex.indexAssignedTags(metadata,indexingDone);});
+                                startupLog("Indexing tag attributes");
+                                Codex.indexTagAttributes(metadata,indexingDone);});
                         window._sbook_autoindex=false;}
                     startupLog("Indexing assigned tags");
-                    Codex.indexAssignedTags(metadata,indexingDone);},
+                    Codex.indexTagAttributes(metadata,indexingDone);},
                 // Figure out which mode to start up in, based on
                 // query args to the book.
                 function(){
@@ -614,7 +614,6 @@ Codex.Startup=
             var metadata=new Codex.DOMScan(Codex.content,Codex.refuri+"#");
             // fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
             Codex.docinfo=metadata;
-            Codex.docdb=Codex.docinfo._refdb;
             Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
             dropClass(scanmsg,"running");
             if (aboutbook) {
@@ -1319,7 +1318,7 @@ Codex.Startup=
             if (info.sources) gotInfo("sources",info.sources,persist);
             if (info.outlets) gotInfo("outlets",info.outlets,persist);
             if (info.overlays) gotInfo("overlays",info.overlays,persist);
-            Codex.addOutlets2UI(info.outlets);
+            addOutlets2UI(info.outlets);
             if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
                 if (Codex.persist) setLocal("codex.sync("+refuri+")",info.sync);
                 Codex.sync=info.sync;}
@@ -1703,14 +1702,23 @@ Codex.Startup=
         
         function indexingDone(){
             startupLog("Content indexing is completed");
-            if (Codex.loaded) {
-                startupLog("Setting up tag clouds");
-                initClouds();}
-            else {
-                Codex.whenloaded=function(){
-                    startupLog("Setting up tag clouds");
-                    initClouds();};}}
+            if (Codex.loaded) setupClouds();
+            else Codex.whenloaded=setupClouds;}
         
+        function setupClouds(){
+            var addTag2Cloud=Codex.addTag2Cloud;
+            var search_cloud=Codex.search_cloud;
+            var gloss_cloud=Codex.gloss_cloud;
+            startupLog("Setting up tag clouds");
+            Codex.empty_query.results=
+                [].concat(Codex.glossdb.allrefs).concat(Codex.docdb.allrefs);
+            var searchtags=Codex.searchtags=Codex.empty_query.getCoTags();
+            fdjtTime.slowmap(function(tag){
+                addTag2Cloud(tag,search_cloud);
+                if (tag instanceof Knode) addTag2Cloud(tag,gloss_cloud);},
+                             searchtags,false,
+                             function(){fdjtLog("Done populating clouds");});}
+
         var addTags=Knodule.addTags;
 
         /* Using the autoindex generated during book building */
@@ -1718,23 +1726,28 @@ Codex.Startup=
             var ntags=0, nitems=0;
             var tagweights=Codex.tagweights;
             var maxweight=Codex.tagmaxweight, minweight=Codex.tagminweight;
+            var alltags=[];
             if (!(autoindex)) return;
             for (var tag in autoindex) {
                 if (!(autoindex.hasOwnProperty(tag))) continue;
+                else alltags.push(tag);}
+            function handleIndexEntry(tag){
                 var ids=autoindex[tag]; ntags++;
                 var occurrences=[];
-                var tagval=tag, targstart=0, prefix=false;
-                var bar=tagval.indexOf('|');
+                var tagtext=tag, targstart=0;
+                var bar=tagtext.indexOf('|');
                 if (bar>0) {
-                    var defbody=tagval.slice(bar+1);
+                    var defbody=tagtext.slice(bar+1);
                     if ((defbody.indexOf('|')<0)&&
                         (defbody.search(":weight=")===0)) {
-                        var realtag=tagval.slice(0,bar);
+                        var realtag=tagtext.slice(0,bar);
                         var weight=parseFloat(defbody.slice(8));
                         tagweights[realtag]=weight;
                         if (weight>maxweight) maxweight=weight;
                         if (weight<minweight) minweight=weight;
-                        tag=tagval=realtag;}}
+                        tag=tagtext=realtag;}}
+                tagstart=tagtext.search(/[^*~]/);
+                if (tagstart>0) tagtext=tagtext.slice(tagstart);
                 var i=0; var lim=ids.length; nitems=nitems+lim;
                 while (i<lim) {
                     var idinfo=ids[i++];
@@ -1755,17 +1768,19 @@ Codex.Startup=
                         // If it's the regular case, we just assume that
                         if (!(info.knodeterms)) {
                             knodeterms=info.knodeterms={};
-                            knodeterms[tagval]=terms=[];}
-                        else if (terms=knodeterms[tagval]) {}
-                        else knodeterms[tagval]=terms=[];
+                            knodeterms[tagtext]=terms=[];}
+                        else if (terms=knodeterms[tagtext]) {}
+                        else knodeterms[tagtext]=terms=[];
                         var j=1; var jlim=idinfo.length;
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
                 addTags(occurrences,tag,Codex.docdb,Codex.knodule);}
-            Codex.tagmaxweight=maxweight; Codex.tagminweight=minweight;
-            fdjtLog("Assimilated index data for %d keys over %d items",
-                    ntags,nitems);
-            if (whendone) whendone();}
+            fdjtTime.slowmap(handleIndexEntry,alltags,false,
+                             function(){
+                                 Codex.tagmaxweight=maxweight; Codex.tagminweight=minweight;
+                                 fdjtLog("Assimilated index data for %d keys over %d items",
+                                         ntags,nitems);
+                                 if (whendone) whendone();});}
         Codex.useIndexData=useIndexData;
         
         /* Applying various tagging schemes */
@@ -1834,12 +1849,11 @@ Codex.Startup=
                         addTag(inof,tag);}}
                 else i++;}}
         
-        /* Indexing tags */
+        /* Handling tag attributes */
+        /* These are collected during the domscan; this is where the logic
+           is implemented which applies header tags to section elements. */
         
-        function indexAssignedTags(docinfo,whendone){
-            var ix=Codex.index; var knodule=Codex.knodule;
-            /* One pass processes all of the inline KNodes and
-               also separates out primary and auto tags. */
+        function indexTagAttributes(docinfo,whendone){
             var tohandle=[]; var tagged=0;
             for (var eltid in docinfo) {
                 var info=docinfo[eltid], tags=info.atags;
@@ -1860,7 +1874,7 @@ Codex.Startup=
                         fdjtLog("Finished processing inline tags for %d nodes",
                                 tagged.length);
                     if (whendone) whendone();});}
-        Codex.indexAssignedTags=indexAssignedTags;
+        Codex.indexTagAttributes=indexTagAttributes;
         
         function handle_inline_tags(info){
             var tags=info.atags;
@@ -1875,41 +1889,36 @@ Codex.Startup=
         
         /* Setting up the clouds */
         
-        function initClouds(){
-            startupMessage("setting up search cloud...");
-            fdjtDOM.replace("CODEXSEARCHCLOUD",Codex.searchCloud().dom);
-            startupMessage("setting up glossing cloud...");
-            Codex.glossCloud();
-            startupMessage("setting up outlet cloud...");
-            Codex.outletCloud();
-            if (Codex.gloss_cloud_queue) {
-                if (Codex.Trace.clouds)
-                    fdjtLog("Starting to sync gloss cloud");
-                fdjtTime.slowmap(
-                    Codex.addTag2GlossCloud,Codex.gloss_cloud_queue,false,
-                    function(){
-                        Codex.cloud_queue=false;
-                        if (Codex.Trace.clouds)
-                            fdjtLog("Gloss cloud synced");});}
-            if (Codex.outlet_cloud_queue) {
-                if (Codex.Trace.clouds)
-                    fdjtLog("Starting to sync outlet cloud");
-                fdjtTime.slowmap(
-                    Codex.addOutlets2UI,Codex.outlet_cloud_queue,false,
-                    function(){
-                        Codex.cloud_queue=false;
-                        if (Codex.Trace.clouds)
-                            fdjtLog("Outlet cloud synced");});}
-            if (Codex.knodule) {
-                if (Codex.Trace.knodules)
-                    fdjtLog("Beginning knodule integration");
-                fdjtTime.slowmap(Codex.addTag2GlossCloud,
-                                 Codex.knodule.alldterms,false,
-                                 function(){
-                                     if (Codex.Trace.knodules)
-                                         fdjtLog("Knodule integrated");});}
-            Codex.sizeCloud(Codex.search_cloud);
-            Codex.sizeCloud(Codex.gloss_cloud);}
+        function initClouds(){}
+        
+        function addOutlets2UI(outlets){
+            if (typeof outlets === 'string')
+                outlets=Codex.sourcedb.ref(outlets);
+            if (!(outlets)) return;
+            if (!(outlets instanceof Array)) outlets=[outlets];
+            var i=0; var lim=outlets.length;
+            var loaded=[];
+            while (i<lim) {
+                var outlet=outlets[i++];
+                if (typeof outlet === 'string')
+                    outlet=Codex.sourcedb.ref(outlet);
+                if (!(outlet instanceof Ref)) continue;
+                var completion=fdjtDOM("span.completion.cue.source",outlet._id);
+                function init(){
+                    completion.id="cxOUTLET"+outlet.humid;
+                    completion.setAttribute("value",outlet._id);
+                    completion.setAttribute("key",outlet.name);
+                    completion.innerHTML=outlet.name;
+                    if ((outlet.description)&&(outlet.nick))
+                        completion.title=outlet.name+": "+
+                        outlet.description;
+                    else if (outlet.description)
+                        completion.title=outlet.description;
+                    else if (outlet.nick) completion.title=outlet.name;
+                    fdjtDOM("#CODEXOUTLETS",completion," ");
+                    Codex.share_cloud.addCompletion(completion);}
+                if (outlet._live) init();
+                else outlet.onLoad(init,"addoutlet2cloud");}}
         
         /* Clearing offline data */
 

@@ -188,22 +188,22 @@ var Codex=
                 if ((!(item.maker))&&(Codex.user)) item.maker=(Codex.user);
                 var maker=(item.maker)&&(Codex.sourcedb.ref(item.maker));
                 if (maker) {
-                    Codex.addTag2GlossCloud(maker);
-                    Codex.addTag2SearchCloud(maker);
+                    Codex.addTag2Cloud(maker,Codex.search_cloud);
                     Codex.UI.addGlossSource(maker,true);}
                 var maker_knodule=Codex.getMakerKnodule(item.maker);
                 var tags=item.alltags;
                 if ((tags)&&(tags.length)) {
+                    if (typeof tags === "string") tags=[tags];
                     var i=0; var lim=tags.length;
                     if (item.thread) {
                         Knodule.addTag(item.thread,tags);
                         if (item.replyto!==item.thread) Knodule.addTag(item.replyto,tags);}
                     while (i<lim) {
                         var tag=tags[i++];
-                        if (info.glosstags) info.glosstags.push(knode);
-                        else info.glosstags=[knode];
-                        Codex.addTag2SearchCloud(knode);
-                        Codex.addTag2GlossCloud(knode);}}
+                        if (info.glosstags) info.glosstags.push(tag);
+                        else info.glosstags=[tag];
+                        Codex.addTag2SearchCloud(tag);
+                        Codex.addTag2GlossCloud(tag);}}
                 var sources=item.sources;
                 if (sources) {
                     if (typeof sources === 'string') sources=[sources];
