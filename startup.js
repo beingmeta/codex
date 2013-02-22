@@ -1858,7 +1858,8 @@ Codex.Startup=
                 function(){
                     if ((Codex.Trace.indexing>1)&&(tagged.length))
                         fdjtLog("Finished processing inline tags for %d nodes",
-                                tagged.length);;});}
+                                tagged.length);
+                    if (whendone) whendone();});}
         Codex.indexAssignedTags=indexAssignedTags;
         
         function handle_inline_tags(info){
