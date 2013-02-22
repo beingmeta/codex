@@ -387,7 +387,7 @@ Codex.DOMScan=(function(){
                      (child.getAttributeNS('tags','http://sbooks.net/')))||
                     (child.getAttribute('tags'))||
                     (child.getAttribute('data-tags'));
-                if (tags) info.atags=tags.split(';');}
+                if (tags) info.atags=tags.split(',');}
             if (((classname)&&(classname.search(/\bsbookignore\b/)>=0))||
                 ((Codex.ignore)&&(Codex.ignore.match(child))))
                 return;
