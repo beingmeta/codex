@@ -129,7 +129,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var tags=info.tags;
         if (typeof tags==='string') tags=[tags];
         if (tags.length<=prime_thresh) return tags;
-        var tagscores=Codex.index.tagscores;
+        var tagscores=Codex.empty_query.tagscores;
         var prime=[].concat(info.tags);
         prime.sort(function(t1,t2){
             var s1=tagscores[t1]; var s2=tagscores[t2];

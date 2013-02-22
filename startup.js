@@ -1796,7 +1796,7 @@ Codex.Startup=
                 addTag(info,tagtext);}}
         
         function applyAnchorTags(kno) {
-            var sbook_index=Codex.index; var docinfo=Codex.docinfo;
+            var docinfo=Codex.docinfo;
             var getTarget=Codex.getTarget;
             var getNodeID=fdjtDOM.getNodeID;
             var anchors=document.getElementsByTagName("A");
