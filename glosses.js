@@ -946,12 +946,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         dropClass(form.parentNode,"submitting");
         var json=JSON.parse(req.responseText);
         var ref=Codex.glossdb.Import(json);
-        var reps=document.getElementsByName(json.uuid);
+        var reps=document.getElementsByName(ref._id);
         var i=0, lim=reps.length;
         while (i<lim) {
             var rep=reps[i++];
             if (hasClass(rep,"codexcard"))
                 fdjtDOM.replace(rep,Codex.renderCard(ref));}
+        ref.save();
         /* Turn off the target lock */
         if ((form)&&(!(keep))) {
             fdjtDOM.remove(form.parentNode);
