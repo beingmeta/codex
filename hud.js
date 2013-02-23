@@ -288,10 +288,10 @@ Codex.setMode=
 
         var tagHTML=Knodule.HTML;
 
-        function cloudEntry(cloud,arg,knodule,lang){
-            if (typeof lang !== "string") lang=(Codex.language)||(Knodule.language)||"EN";
-            
+        function cloudEntry(cloud,arg,lang){
             var entry;
+            if (typeof lang !== "string")
+                lang=(Codex.language)||(Knodule.language)||"EN";
             function initCloudEntry(){
                 if (arg instanceof KNode) {
                     var knode=arg, dterm=knode.dterm;
@@ -358,7 +358,7 @@ Codex.setMode=
                          (tag));
                 var completions=cloud.getByValue(ref,".completion");
                 if (!((completions)&&(completions.length))) {
-                    completions=cloudEntry(cloud,tag,Codex.knodule);}}}
+                    completions=cloudEntry(cloud,tag);}}}
         Codex.addTag2Cloud=addTag2Cloud;
 
         function addTag2SearchCloud(tag,search_cloud){
@@ -378,7 +378,7 @@ Codex.setMode=
                          (tag));
                 var search_tag=search_cloud.getByValue(ref,".completion");
                 if (!((search_tag)&&(search_tag.length))) {
-                    search_tag=cloudEntry(search_cloud,tag,Codex.knodule);}}}
+                    search_tag=cloudEntry(search_cloud,tag);}}}
         Codex.addTag2SearchCloud=addTag2SearchCloud;
 
         function addTag2GlossCloud(tag){
@@ -398,7 +398,7 @@ Codex.setMode=
                          (RefDB.resolve(tag,Codex.knodule,Knodule,true)));
                 var gloss_tag=gloss_cloud.getByValue(ref||tag,".completion");
                 if (!((gloss_tag)&&(gloss_tag.length))) {
-                    gloss_tag=cloudEntry(gloss_cloud,ref,Codex.knodule);}}}
+                    gloss_tag=cloudEntry(gloss_cloud,ref);}}}
         Codex.addTag2GlossCloud=addTag2GlossCloud;
         
 

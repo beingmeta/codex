@@ -56,6 +56,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var RefDB=fdjt.RefDB, Ref=fdjt.Ref, Query=RefDB.Query; 
     var KNode=Knodule.KNode;
 
+    var cloudEntry=Codex.cloudEntry;
+
     Codex.search_cloud=false;
     if (!(Codex.empty_cloud)) Codex.empty_cloud=false;
     if (!(Codex.show_refiners)) Codex.show_refiners=25;
@@ -84,6 +86,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (qstring!==Codex.qstring) {
             Codex.query=query;
             Codex.qstring=qstring;
+            var cloud=queryCloud(query);
+            fdjtDOM.replace("CODEXSEARCHCLOUD",cloud.dom);
             useQuery(query,fdjtID("CODEXSEARCH"));}
         if (Codex.mode==="search") {
             if (query.results.length===0) {}
@@ -390,17 +394,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function queryCloud(query){
         if (query.cloud) return query.cloud;
         else if ((query.tags.length)===0) {
-            query.cloud=Codex.search_cloud;
-            return query.cloud;}
-        else if (!(query._refiners)) {
             query.cloud=Codex.empty_cloud;
             return query.cloud;}
         else {
             var cotags=query.getCoTags();
-            var completions=makeCloud(cotags._alltags,cotags,cotags._freqs);
+            var completions=makeCloud(cotags,query.tagscores,query.tagfreqs);
             var cloud=completions.dom;
             cloud.onclick=cloud_ontap;
-            var n_refiners=query.cotags._alltags.length;
+            var n_refiners=cotags.length;
             var hide_some=(n_refiners>Codex.show_refiners);
             if (hide_some) {
                 var cues=fdjtDOM.$(".cue",cloud);
@@ -411,259 +412,321 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     while (i<lim) addClass(compelts[i++],"cue");}}
             else addClass(cloud,"showempty");
             query.cloud=completions;
+            sortCloud(completions,Codex.empty_query.tagfreqs,Codex.empty_query.max_freq);
+            sizeCloud(completions,query.tagscores,query.max_score);
             return query.cloud;}}
     Codex.queryCloud=queryCloud;
     RefDB.Query.prototype.getCloud=function(){return queryCloud(this);};
-
-    function cloud_ontap(evt){
-        evt=evt||event;
-        var target=fdjtDOM.T(evt);
-        var completion=fdjtDOM.getParent(target,".completion");
-        if (Codex.Trace.gestures) log("cloud tap on %o",completion);
-        if (completion) {
-            var cinfo=Codex.query.cloud;
-            var value=cinfo.getValue(completion);
-            if (typeof value !== 'string') add_searchtag(value);
-            else  if (value.length===0) {}
-            else if (value.indexOf('@')>=0)
-                add_searchtag(kbref(value));
-            else if ((Codex.knodule)&&(Codex.knodule.probe(value)))
-                add_searchtag(Codex.knodule.probe(value));
-            else add_searchtag(value);
-            fdjtUI.cancel(evt);}
-        else if (fdjtDOM.inherits(target,".resultcounts")) {
-            showSearchResults(Codex.query);
-            Codex.setMode("searchresults");
-            fdjtID("CODEXSEARCHINPUT").blur();
-            fdjtID("CODEXSEARCHRESULTS").focus();
-            fdjtUI.cancel(evt);}
-        else if (fdjtDOM.inherits(target,".refinercounts")) {
-            var completions=fdjtDOM.getParent(target,".completions");
-            fdjtDOM.toggleClass(completions,"showempty");
-            fdjtDOM.cancel(evt);}
-        else if (fdjtDOM.inherits(target,".maxcompletemsg")) {
-            var completions=fdjtDOM.getParent(target,".completions");
-            fdjtID("CODEXSEARCHINPUT").focus();
-            fdjtDOM.toggleClass(container,"showall");
-            fdjtDOM.cancel(evt);}
-        else {}}
-    Codex.UI.handlers.cloud_ontap=cloud_ontap;
-
-    function makeCloud(dterms,scores,freqs,ranks_arg,noscale,
-                       completions,init_cloud) {
-        var start=new Date();
-        var sourcedb=Codex.sourcedb;
-        var knodule=Codex.knodule;
-        var cloud=init_cloud||false;
-        var i=0; var n_terms=dterms.length;
-        // Move it out of the flow
-        var placeholder=false;
-        if ((init_cloud)&&(init_cloud.parentNode)) {
-            placeholder=document.createTextNode("");
-            init_cloud.parentNode.replaceChild(placeholder,init_cloud);}
-        var info=organize_tags(dterms,scores,knodule,sourcedb);
-        if (Codex.Trace.clouds)
-            log("Making cloud from %d dterms w/scores=%o [%d,%d] and freqs=%o",
-                dterms.length,scores,info.max,info.min,freqs);
-        // We use cues when there are no inputs if:
-        var usecues=(n_terms>17)&& (// lots of terms AND
-            (info.n_primes>0) || // there are prime terms OR
-            (info.max!==info.min) || // scores are different OR
-            // there are a small number of real concepts to use
-            ((info.normals._count)<17) ||
-                // there's are a lot of weak terms
-                ((n_terms/info.normals._count)>4));
-        if (cloud) {
-            fdjtDOM.addClass(cloud,"completions");
-            if (!(getChild(cloud,".showall")))
-                fdjtDOM.prepend(cloud,getShowAll(usecues,n_terms));}
-        else cloud=newCloud(getShowAll(usecues,n_terms));
-        if (!(usecues)) fdjtDOM.addClass(cloud,"showempty");
-        var prime=getChild(cloud,".prime")||cloud;
-        var normal=getChild(cloud,".normal")||cloud;
-        var weak=getChild(cloud,".weak")||cloud;
-        var sources=getChild(cloud,".sources")||cloud;
-        var words=getChild(cloud,".words")||cloud;
-        var sections=getChild(cloud,".sections")||cloud;
-        if (!(completions)) completions=new Completions(cloud);
-        dterms=sort_tags(dterms);
-        var nspans=0; var sumscale=0;
-        var minscale=false; var maxscale=false;
-        var domnodes=[]; var nodescales=[];
-        var count=scores._count;
-        var cuelim=scores._maxscore/2;
-        var cscores=Codex.empty_query.tagscores;
-        var cfreqs=Codex.empty_query.tagfreqs;
-        var normals=((info.n_primes<17)&&(info.normals));
-        var topcloud=(freqs===cfreqs)
-        i=0; while (i<dterms.length) {
-            var dterm=dterms[i++]; 
-            var container=words; // The default
-            var ref=kbref(dterm,knodule);
-            var span=dtermSpan(completions,
-                               dterm,ref,freqs,cfreqs,scores,
-                               (info.n_primes>17),
-                               cuelim);
-            if (!(span)) continue;
-            var scaling=
-                ((scores[dterm])?(1+Math.log(scores[dterm])):
-                 (freqs[dterm])?(1+Math.log(freqs[dterm])):
-                 (1));
-            domnodes.push(span);
-            if ((scores)&&(!(noscale))) {
-                if ((!(minscale))||(scaling<minscale)) minscale=scaling;
-                if ((!(maxscale))||(scaling>maxscale)) maxscale=scaling;
-                nodescales.push(scaling);}
-            if (!(ref)) {
-                if (dterm[0]==="\u00A7") container=sections;
-                else container=words;}
-            else if (ref._db===sourcedb) container=sources;
-            else if (ref.prime) container=prime;
-            else if (ref.weak) container=weak;
-            else container=normal;
-            if ((completions)&&(!(span.parentNode)))
-                completions.addCompletion(span,false,ref||dterm);
-            container.appendChild(span);
-            container.appendChild(document.createTextNode(" "));}
-        // fdjtLog("minscale=%o, maxscale=%o",minscale,maxscale);
-        var scalespan=maxscale-minscale;
-        if (nodescales.length) {
-            var j=0; var jlim=domnodes.length;
-            while (j<jlim) {
-                var node=domnodes[j];
-                var scale=nodescales[j];
-                node.style.fontSize=
-                    (100+(100*((scale-minscale)/scalespan)))+'%';
-                j++;}}
-        var maxmsg=fdjtDOM(
-            "div.maxcompletemsg",
-            "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
-            " of completions.  ");
-        fdjtDOM.prepend(cloud,maxmsg);
-        var end=new Date();
-        if (Codex.Trace.clouds)
-            fdjtLog("Made cloud for %d dterms in %f seconds",
-                    dterms.length,(end.getTime()-start.getTime())/1000);
-        // Put it back in the flow if neccessary
-        if (placeholder)
-            placeholder.parentNode.replaceChild(cloud,placeholder);
-        return completions;}
-    Codex.makeCloud=makeCloud;
-
-    function newCloud(preamble){
-        var spans=[fdjtDOM("span.prime")," ",
-                   fdjtDOM("span.normal")," ",
-                   fdjtDOM("span.sections")," ",
-                   fdjtDOM("span.weak")," ",
-                   fdjtDOM("span.words")," ",
-                   fdjtDOM("span.sources")];
-        return fdjtDOM("div.completions",preamble,spans);}
-
-    function dtermSpan(completions,
-                       dterm,ref,freqs,cfreqs,scores,
-                       justprime,min_score){
-        var freq=freqs[dterm]||1;
-        var cfreq=cfreqs[dterm]||1;
-        var score=scores[dterm]||freq;
-        var title=((freq===cfreq)?
-                   ("score="+score+"; "+freq+" items"):
-                   ("score="+score+"; "+freq+"/"+cfreq+" items"));
-        var tagstring=((ref)?(ref._qid||ref.tagString()):(dterm));
-        var known=completions.getByValue(tagstring);
-        if (known.length) known=known[0]; else known=false;
-        var span=known||cloudEntry(ref||dterm,title);
-        if (!(span)) return span;
-        if (!(known)) span.setAttribute("value",tagstring);
-        if (freq===1) addClass(span,"singleton");
-        if (justprime) {
-            if (ref.prime) addClass(span,"cue");}
-        else if ((ref instanceof KNode)&&(!(ref.weak)))
-            addClass(span,"cue");
-        else {}
-        if ((min_score)&&(scores[dterm])&&
-                 (scores[dterm]>min_score))
-            addClass(span,"cue");
-        return span;}
-
-    function getShowAll(use_cues,how_many){
-        var showall=(use_cues)&&
-            fdjtDOM(
-                "span.showall",
-                fdjtDOM("span.showmore","more",
-                        ((how_many)&&(" ("+how_many+")"))),
-                fdjtDOM("span.showless","fewer"));
-        if (showall) showall.onclick=showempty_ontap;
-        return showall;}
-
-    function sort_tags(tags){
-        var copied=[].concat(tags);
-        // We sort the keys by absolute frequency
-        copied.sort(function (x,y) {
-            var weights=Codex.tagweights;
-            if (x instanceof Ref) {
-                if (y instanceof Ref) {
-                    if (x.weight) {
-                        if (y.weight) {
-                            if (x.weight>y.weight) return -1;
-                            else if (x.weight<y.weight) return 1;
-                            else return 0;}
-                        else return -1;}
-                    else if (y.weight) return 1;
-                    else return RefDB.compare(x,y);}
+    
+    function sort_tags(tags,scores){
+        tags.sort(function(x,y){
+            // Knodes go before Refs go before strings
+            // Otherwise, use scores
+            if (x instanceof KNode) {
+                if (y instanceof KNode) {}
+                else return -1;}
+            else if (y instanceof Knode) return 1;
+            else if (x instanceof Ref) {
+                if (y instanceof Ref) {}
                 else return -1;}
             else if (y instanceof Ref) return 1;
-            else if (typeof x === "string") {
-                if (typeof y === "string") {
-                    var xrank=weights[x]||0;
-                    var yrank=weights[y]||0;
-                    if (xrank===yrank) {
-                        if (x<y) return -1;
-                        else if (x===y) return 0;
-                        else return 1;}
-                    else if (xrank>yrank) return 1;
+            else if ((typeof x === "string")&&
+                     (typeof y === "string")) {}
+            // We should never reach these cases
+            else if  (typeof x === typeof y) {
+                if (x<y) return -1;
+                else if (x>y) return 1;
+                else return 0;}
+            else {
+                // We should never really get here
+                var xt=typeof x, yt=typeof y;
+                if (xt<yt) return -1;
+                else if (xt>yt) return 1;
+                else return 0;}
+            var xv=scores[x], yv=scores[y];
+            if (typeof xv === "undefined") return 1;
+            else if (typeof yv === "undefined") return -1;
+            else if (xv===yv) {}
+            else if (xv>yv) return -1;
+            else return 1;});}
+    Codex.sortTags=sort_tags;
+    
+    function sortCloud(cloud,scores){
+        var values=[].concat(cloud.values);
+        sort_tags(values,scores);
+        var byvalue=cloud.byvalue;
+        var holder=document.createDocumentFragment();
+        var i=0, lim=values.length;
+        while (i<lim) {
+            var value=values[i++];
+            var completion=byvalue.get(value);
+            if (completion) {
+                if (i>1) holder.appendChild(document.createTextNode(" "));
+                holder.appendChild(completion);}}
+        cloud.dom.appendChild(holder);}
+        Codex.sortCloud=sortCloud;
+
+        function sizeCloud(cloud,scores,max_score){
+            var values=cloud.values, byvalue=cloud.byvalue;
+            var i=0, lim=values.length;
+            sort_tags(values,scores);
+            while (i<lim) {
+                var value=values[i++];
+                var node=byvalue.get(value);
+                var score=scores[value];
+                var pct=200-(100*(i/lim));
+                node.style.fontSize=pct+"%";}}
+        Codex.sizeCloud=sizeCloud;
+
+        function cloud_ontap(evt){
+            evt=evt||event;
+            var target=fdjtDOM.T(evt);
+            var completion=fdjtDOM.getParent(target,".completion");
+            if (Codex.Trace.gestures) log("cloud tap on %o",completion);
+            if (completion) {
+                var cinfo=Codex.query.cloud;
+                var value=cinfo.getValue(completion);
+                if (typeof value !== 'string') add_searchtag(value);
+                else  if (value.length===0) {}
+                else if (value.indexOf('@')>=0)
+                    add_searchtag(kbref(value));
+                else if ((Codex.knodule)&&(Codex.knodule.probe(value)))
+                    add_searchtag(Codex.knodule.probe(value));
+                else add_searchtag(value);
+                fdjtUI.cancel(evt);}
+            else if (fdjtDOM.inherits(target,".resultcounts")) {
+                showSearchResults(Codex.query);
+                Codex.setMode("searchresults");
+                fdjtID("CODEXSEARCHINPUT").blur();
+                fdjtID("CODEXSEARCHRESULTS").focus();
+                fdjtUI.cancel(evt);}
+            else if (fdjtDOM.inherits(target,".refinercounts")) {
+                var completions=fdjtDOM.getParent(target,".completions");
+                fdjtDOM.toggleClass(completions,"showempty");
+                fdjtDOM.cancel(evt);}
+            else if (fdjtDOM.inherits(target,".maxcompletemsg")) {
+                var completions=fdjtDOM.getParent(target,".completions");
+                fdjtID("CODEXSEARCHINPUT").focus();
+                fdjtDOM.toggleClass(container,"showall");
+                fdjtDOM.cancel(evt);}
+            else {}}
+        Codex.UI.handlers.cloud_ontap=cloud_ontap;
+
+        function makeCloud(dterms,scores,freqs,ranks_arg,noscale,
+                           completions,init_cloud) {
+            var start=new Date();
+            var sourcedb=Codex.sourcedb;
+            var knodule=Codex.knodule;
+            var cloud=init_cloud||false;
+            var i=0; var n_terms=dterms.length;
+            // Move it out of the flow
+            var placeholder=false;
+            if ((init_cloud)&&(init_cloud.parentNode)) {
+                placeholder=document.createTextNode("");
+                init_cloud.parentNode.replaceChild(placeholder,init_cloud);}
+            var info=organize_tags(dterms,scores,knodule,sourcedb);
+            if (Codex.Trace.clouds)
+                log("Making cloud from %d dterms w/scores=%o [%d,%d] and freqs=%o",
+                    dterms.length,scores,info.max,info.min,freqs);
+            // We use cues when there are no inputs if:
+            var usecues=(n_terms>17)&& (// lots of terms AND
+                (info.n_primes>0) || // there are prime terms OR
+                (info.max!==info.min) || // scores are different OR
+                // there are a small number of real concepts to use
+                ((info.normals._count)<17) ||
+                    // there's are a lot of weak terms
+                    ((n_terms/info.normals._count)>4));
+            if (cloud) {
+                fdjtDOM.addClass(cloud,"completions");
+                if (!(getChild(cloud,".showall")))
+                    fdjtDOM.prepend(cloud,getShowAll(usecues,n_terms));}
+            else cloud=newCloud(getShowAll(usecues,n_terms));
+            if (!(usecues)) fdjtDOM.addClass(cloud,"showempty");
+            var prime=getChild(cloud,".prime")||cloud;
+            var normal=getChild(cloud,".normal")||cloud;
+            var weak=getChild(cloud,".weak")||cloud;
+            var sources=getChild(cloud,".sources")||cloud;
+            var words=getChild(cloud,".words")||cloud;
+            var sections=getChild(cloud,".sections")||cloud;
+            if (!(completions)) completions=new Completions(cloud);
+            dterms=sort_tags(dterms);
+            var nspans=0; var sumscale=0;
+            var minscale=false; var maxscale=false;
+            var domnodes=[]; var nodescales=[];
+            var count=scores._count;
+            var cuelim=scores._maxscore/2;
+            var cscores=Codex.empty_query.tagscores;
+            var cfreqs=Codex.empty_query.tagfreqs;
+            var normals=((info.n_primes<17)&&(info.normals));
+            var topcloud=(freqs===cfreqs)
+            i=0; while (i<dterms.length) {
+                var dterm=dterms[i++]; 
+                var container=words; // The default
+                var ref=kbref(dterm,knodule);
+                var span=dtermSpan(completions,
+                                   dterm,ref,freqs,cfreqs,scores,
+                                   (info.n_primes>17),
+                                   cuelim);
+                if (!(span)) continue;
+                var scaling=
+                    ((scores[dterm])?(1+Math.log(scores[dterm])):
+                     (freqs[dterm])?(1+Math.log(freqs[dterm])):
+                     (1));
+                domnodes.push(span);
+                if ((scores)&&(!(noscale))) {
+                    if ((!(minscale))||(scaling<minscale)) minscale=scaling;
+                    if ((!(maxscale))||(scaling>maxscale)) maxscale=scaling;
+                    nodescales.push(scaling);}
+                if (!(ref)) {
+                    if (dterm[0]==="\u00A7") container=sections;
+                    else container=words;}
+                else if (ref._db===sourcedb) container=sources;
+                else if (ref.prime) container=prime;
+                else if (ref.weak) container=weak;
+                else container=normal;
+                if ((completions)&&(!(span.parentNode)))
+                    completions.addCompletion(span,false,ref||dterm);
+                container.appendChild(span);
+                container.appendChild(document.createTextNode(" "));}
+            // fdjtLog("minscale=%o, maxscale=%o",minscale,maxscale);
+            var scalespan=maxscale-minscale;
+            if (nodescales.length) {
+                var j=0; var jlim=domnodes.length;
+                while (j<jlim) {
+                    var node=domnodes[j];
+                    var scale=nodescales[j];
+                    node.style.fontSize=
+                        (100+(100*((scale-minscale)/scalespan)))+'%';
+                    j++;}}
+            var maxmsg=fdjtDOM(
+                "div.maxcompletemsg",
+                "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
+                " of completions.  ");
+            fdjtDOM.prepend(cloud,maxmsg);
+            var end=new Date();
+            if (Codex.Trace.clouds)
+                fdjtLog("Made cloud for %d dterms in %f seconds",
+                        dterms.length,(end.getTime()-start.getTime())/1000);
+            // Put it back in the flow if neccessary
+            if (placeholder)
+                placeholder.parentNode.replaceChild(cloud,placeholder);
+            return completions;}
+        Codex.makeCloud=makeCloud;
+
+        function newCloud(preamble){
+            var spans=[fdjtDOM("span.prime")," ",
+                       fdjtDOM("span.normal")," ",
+                       fdjtDOM("span.sections")," ",
+                       fdjtDOM("span.weak")," ",
+                       fdjtDOM("span.words")," ",
+                       fdjtDOM("span.sources")];
+            return fdjtDOM("div.completions",preamble,spans);}
+
+        function dtermSpan(completions,
+                           dterm,ref,freqs,cfreqs,scores,
+                           justprime,min_score){
+            var freq=freqs[dterm]||1;
+            var cfreq=cfreqs[dterm]||1;
+            var score=scores[dterm]||freq;
+            var title=((freq===cfreq)?
+                       ("score="+score+"; "+freq+" items"):
+                       ("score="+score+"; "+freq+"/"+cfreq+" items"));
+            var tagstring=((ref)?(ref._qid||ref.tagString()):(dterm));
+            var known=completions.getByValue(tagstring);
+            if (known.length) known=known[0]; else known=false;
+            var span=known||cloudEntry(completions,ref||dterm);
+            if (!(span)) return span;
+            if (!(known)) span.setAttribute("value",tagstring);
+            if (freq===1) addClass(span,"singleton");
+            if (justprime) {
+                if (ref.prime) addClass(span,"cue");}
+            else if ((ref instanceof KNode)&&(!(ref.weak)))
+                addClass(span,"cue");
+            else {}
+            if ((min_score)&&(scores[dterm])&&
+                (scores[dterm]>min_score))
+                addClass(span,"cue");
+            return span;}
+
+        function getShowAll(use_cues,how_many){
+            var showall=(use_cues)&&
+                fdjtDOM(
+                    "span.showall",
+                    fdjtDOM("span.showmore","more",
+                            ((how_many)&&(" ("+how_many+")"))),
+                    fdjtDOM("span.showless","fewer"));
+            if (showall) showall.onclick=showempty_ontap;
+            return showall;}
+
+        function sort_tags(tags){
+            var copied=[].concat(tags);
+            // We sort the keys by absolute frequency
+            copied.sort(function (x,y) {
+                var weights=Codex.tagweights;
+                if (x instanceof Ref) {
+                    if (y instanceof Ref) {
+                        if (x.weight) {
+                            if (y.weight) {
+                                if (x.weight>y.weight) return -1;
+                                else if (x.weight<y.weight) return 1;
+                                else return 0;}
+                            else return -1;}
+                        else if (y.weight) return 1;
+                        else return RefDB.compare(x,y);}
                     else return -1;}
-                else return -1;}
-            else if (typeof y === "string") return 1;
-            else return RefDB.compare(x,y);});
-        return copied;}
+                else if (y instanceof Ref) return 1;
+                else if (typeof x === "string") {
+                    if (typeof y === "string") {
+                        var xrank=weights[x]||0;
+                        var yrank=weights[y]||0;
+                        if (xrank===yrank) {
+                            if (x<y) return -1;
+                            else if (x===y) return 0;
+                            else return 1;}
+                        else if (xrank>yrank) return 1;
+                        else return -1;}
+                    else return -1;}
+                else if (typeof y === "string") return 1;
+                else return RefDB.compare(x,y);});
+            return copied;}
 
-    function organize_tags(tags,scores,knodule,sourcedb){
-        var min_score=false, max_score=false;
-        var normals={}, n_normal=0, n_primes=0;
-        var i=0; while (i<tags.length) {
-            var tag=tags[i++];
-            if (tag instanceof Ref) {
-                if (tag.prime) n_primes++;
-                if ((tag._db!==sourcedb)&&(!(tag.weak))) {
-                    normals[tag]=true; n_normal++;}}
-            if (scores) {
-                var score=scores[tag];
-                if (score) {
-                    if (min_score===false) min_score=score;
-                    else if (score<min_score) min_score=score;
-                    if (score>max_score) max_score=score;}}}
-        normals._count=n_normal;
-        return {normals: normals, n_primes: n_primes,
-                min: min_score, max: max_score};}
+        function organize_tags(tags,scores,knodule,sourcedb){
+            var min_score=false, max_score=false;
+            var normals={}, n_normal=0, n_primes=0;
+            var i=0; while (i<tags.length) {
+                var tag=tags[i++];
+                if (tag instanceof Ref) {
+                    if (tag.prime) n_primes++;
+                    if ((tag._db!==sourcedb)&&(!(tag.weak))) {
+                        normals[tag]=true; n_normal++;}}
+                if (scores) {
+                    var score=scores[tag];
+                    if (score) {
+                        if (min_score===false) min_score=score;
+                        else if (score<min_score) min_score=score;
+                        if (score>max_score) max_score=score;}}}
+            normals._count=n_normal;
+            return {normals: normals, n_primes: n_primes,
+                    min: min_score, max: max_score};}
 
-    function showempty_ontap(evt){
-        var target=fdjtUI.T(evt);
-        var completions=fdjtDOM.getParent(target,".completions");
-        if (completions) {
-            fdjtUI.cancel(evt);
-            fdjtDOM.toggleClass(completions,"showempty");
-            setTimeout(function(){
-                Codex.UI.updateScroller(completions);},
-                       100);}}
+        function showempty_ontap(evt){
+            var target=fdjtUI.T(evt);
+            var completions=fdjtDOM.getParent(target,".completions");
+            if (completions) {
+                fdjtUI.cancel(evt);
+                fdjtDOM.toggleClass(completions,"showempty");
+                setTimeout(function(){
+                    Codex.UI.updateScroller(completions);},
+                           100);}}
 
-    function add_searchtag(value){
-        setQuery(Codex.extendQuery(Codex.query,value));}
+        function add_searchtag(value){
+            setQuery(Codex.extendQuery(Codex.query,value));}
 
-    Codex.UI.searchCloudToggle=function(){
-        fdjtDOM.toggleClass(fdjtID('CODEXSEARCHCLOUD'),'showempty');
-        Codex.UI.updateScroller(fdjtID('CODEXSEARCHCLOUD'));};
+        Codex.UI.searchCloudToggle=function(){
+            fdjtDOM.toggleClass(fdjtID('CODEXSEARCHCLOUD'),'showempty');
+            Codex.UI.updateScroller(fdjtID('CODEXSEARCHCLOUD'));};
 
-})();
+    })();
 
 /* Emacs local variables
    ;;;  Local variables: ***

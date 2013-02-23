@@ -1713,12 +1713,24 @@ Codex.Startup=
             Codex.empty_query.results=
                 [].concat(Codex.glossdb.allrefs).concat(Codex.docdb.allrefs);
             var searchtags=Codex.searchtags=Codex.empty_query.getCoTags();
+            var tagfreqs=Codex.empty_query.tagfreqs, max_freq=Codex.empty_query.max_freq;
             fdjtTime.slowmap(function(tag){
                 addTag2Cloud(tag,search_cloud);
-                if (tag instanceof Knode) addTag2Cloud(tag,gloss_cloud);},
+                if ((tag instanceof Knode)||
+                    ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
+                    addTag2Cloud(tag,gloss_cloud);},
                              searchtags,false,
-                             function(){fdjtLog("Done populating clouds");});}
-
+                             function(){
+                                 var eq=Codex.empty_query;
+                                 fdjtLog("Done populating clouds");
+                                 eq.cloud=search_cloud;
+                                 Codex.empty_cloud=search_cloud;
+                                 Codex.DOM.empty_cloud=search_cloud.dom;
+                                 Codex.sortCloud(search_cloud,eq.tagfreqs,eq.max_freq);
+                                 Codex.sizeCloud(search_cloud,eq.tagscores,eq.max_score);
+                                 Codex.sortCloud(gloss_cloud,eq.tagfreqs,eq.max_freq);
+                                 Codex.sizeCloud(gloss_cloud,eq.tagscores,eq.max_score);});}
+        
         var addTags=Knodule.addTags;
 
         /* Using the autoindex generated during book building */
