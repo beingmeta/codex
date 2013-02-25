@@ -38,6 +38,7 @@
 var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
 var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
 var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+var fdjtMap=fdjt.Map;
 
 var Codex=
     {mode: false,hudup: false,scrolling: false,query: false,
@@ -72,7 +73,7 @@ var Codex=
      //  to be saved when possible (online and connected).
      queued: [],
      // These are weights assigned to search tags
-     tagweights: {}, tagmaxweight: 0, tagminweight: 200000000,
+     tagweights: (new fdjtMap()), tagmaxweight: 0, tagminweight: 200000000,
      // This is the base URI for this document, also known as the REFURI
      // A document (for instance an anthology or collection) may include
      // several refuri's, but this is the default.
