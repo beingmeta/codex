@@ -111,6 +111,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         tags=[].concat(tags);
         sort_tags(tags,Codex.empty_query.tagfreqs);
 
+        // Compute score sum to get value for the cue threshold
         var score_sum=0; while (i<n_terms) {
             var score=scores.get(tags[i++]);
             if (score) score_sum=score_sum+score;}
@@ -430,8 +431,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     var valstring=((typeof value === "string")?(value):
                                    (value.dterm));
                     if (Codex.tagweights.get(valstring))
-                        score=(score/total_results)/Codex.tagweights.get(value);
-                    else score=1;}
+                        score=((score/total_results)/
+                               (Codex.tagweights.get(valstring)));
+                    else score=0.001;}
                 vscores[i]=score;
                 if (score>max_score) max_score=score;
                 if (min_score<0) min_score=score;
