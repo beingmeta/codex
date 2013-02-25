@@ -75,7 +75,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var head_info=target_info.head;
         var head=((head_info)&&(document.getElementById(head_info.frag)));
         var refiners=((query) && (query._refiners));
-        var score=((query)&&(query[key]));
+        var score=((query)&&(query.scores.get(info)));
         var excerpt_len=((info.excerpt)?(info.excerpt.length):(0));
         var note_len=((info.note)?(info.note.length):(0));
         var overdoc=getoverdoc(info);
@@ -132,7 +132,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var tagscores=Codex.empty_query.tagscores;
         var prime=[].concat(info.tags);
         prime.sort(function(t1,t2){
-            var s1=tagscores[t1]; var s2=tagscores[t2];
+            var s1=tagscores.get(t1); var s2=tagscores.get(t2);
             if ((s1)&&(s2)) {
                 if (s1<s2) return -1;
                 else if (s1>s2) return 1;
@@ -500,8 +500,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 // Sort by score first (any score beats no score)
                 //  and then by location within the book and then
                 //  by timestamp.
-                var s1=(scores[n1._id]);
-                var s2=(scores[n2._id]);
+                var s1=(scores.get(n1));
+                var s2=(scores.get(n2));
                 if ((s1)&&(s2)) {
                     if (s1>s2) return -1;
                     else if (s2>s1) return 1;}
@@ -564,7 +564,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 threadelt.title=Codex.getTitle(target,true);
                 fdjtDOM.append(headelt,threadelt);
                 curinfo=docinfo;}
-            fdjtDOM.append(threadelt,renderCard(note));}
+            var card=renderCard(note);
+            fdjtDOM.append(threadelt,card);}
         return div;}
     Codex.UI.showSlice=showSlice;
 
