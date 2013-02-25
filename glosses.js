@@ -348,7 +348,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.glosstarget=target;
         addClass(target,"codexglosstarget");
         Codex.GoTo(target,"addgloss",true);
-        setCloudCuesFromTarget(Codex.gloss_cloud,target);
+        Codex.setCloudCuesFromTarget(Codex.gloss_cloud,target);
         setGlossForm(form);
         // Clear current selection and set up new selection
         if (Codex.selecting) {
@@ -667,43 +667,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (!(cs)) return;
         setCheckSpan(cs,checked);};
 
-    function setCloudCues(cloud,tags){
-        // Clear any current tagcues from the last gloss
-        var cursoft=getChildren(cloud.dom,".cue.softcue");
-        var i=0; var lim=cursoft.length;
-        while (i<lim) {
-            var cur=cursoft[i++];
-            dropClass(cur,"cue");
-            dropClass(cur,"softcue");}
-        // Get the tags on this element as cues
-        var newcues=cloud.getByValue(tags);
-        var i=0; var lim=newcues.length;
-        while (i<lim) {
-            var completion=newcues[i++];
-            if (!(hasClass(completion,"cue"))) {
-                addClass(completion,"cue");
-                addClass(completion,"softcue");}}}
-    function setCloudCuesFromTarget(cloud,target){
-        var tags=[];
-        var targetid=((target.codexbaseid)||(target.id)||(target.frag));
-        var info=Codex.docinfo[targetid];
-        var glosses=Codex.glossdb.find('frag',targetid);
-        var knodule=Codex.knodule;
-        if ((info)&&(info.tags)) tags=tags.concat(info.tags);
-        if ((info)&&(info.autotags)&&(info.autotags.length)) {
-            var autotags=info.autotags; var j=0; var jlim=autotags.length;
-            while (j<jlim) {
-                var kn=knodule.probe(autotags[j]);
-                if (kn) tags.push(kn.tagString());
-                j++;}}
-        var i=0; var lim=glosses.length;
-        while (i<lim) {
-            var g=glosses[i++]; var gtags=g.tags;
-            if (gtags) tags=tags.concat(gtags);}
-        setCloudCues(cloud,tags);}
-    Codex.setCloudCues=setCloudCues;
-    Codex.setCloudCuesFromTarget=setCloudCuesFromTarget;
-    
     /* Text handling for the gloss text input */
 
     // This is use for delaying completion calls and keeping them from

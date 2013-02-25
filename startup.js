@@ -1530,7 +1530,8 @@ Codex.Startup=
                 var i=0; var lim=friends.length;
                 while (i<lim) {
                     var friend=RefDB.resolve(friends[i++],sourcedb);
-                    Codex.addTag2GlossCloud(friend);}}
+                    Codex.addTag2Cloud(friend,Codex.gloss_cloud);
+                    Codex.addTag2Cloud(friend,Codex.share_cloud);}}
             Codex._user_setup=true;}
         
         // Processes info loaded remotely

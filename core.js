@@ -203,8 +203,8 @@ var Codex=
                         var tag=tags[i++];
                         if (info.glosstags) info.glosstags.push(tag);
                         else info.glosstags=[tag];
-                        Codex.addTag2SearchCloud(tag);
-                        Codex.addTag2GlossCloud(tag);}}
+                        Codex.addTag2Cloud(tag,Codex.search_cloud);
+                        Codex.addTag2Cloud(tag,Codex.gloss_cloud);}}
                 var sources=item.sources;
                 if (sources) {
                     if (typeof sources === 'string') sources=[sources];

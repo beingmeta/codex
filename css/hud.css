@@ -765,14 +765,6 @@ div#CODEXHUD.search div.codexslice#CODEXSEARCHRESULTS { display: none;}
 div#CODEXHUD.searchresults div.codexslice#CODEXSEARCHRESULTS { display: block;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
 
-div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall {
-    float: right; font-size: 150%; width: 3em; padding: 8px;
-    margin-right: 8px; margin-bottom: 6px;
-    background-color: lightgray; border: solid black 2px; border-radius: 0.5em;}
-div#CODEXHUD.search div#CODEXSEARCHCLOUD .showall .showless { display: none;}
-div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showless {display: inline;}
-div#CODEXHUD.search div#CODEXSEARCHCLOUD.showempty .showmore {display: none;}
-
 div#CODEXHUD.addgloss.glosstagging div#CODEXHEART #CODEXGLOSSTAGS,
 div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSTAGS,
 div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSCLOUD,
