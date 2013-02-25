@@ -306,7 +306,7 @@ Codex.setMode=
                             var variation=fdjtDOM("span.variation",synonym,"=");
                             variation.setAttribute("key",synonym);
                             variations.appendChild(variation);}}
-                    if (knode.weak) addClass(span,"weak");
+                    if (knode.weak) addClass(entry,"weak");
                     if (knode.about) span.title=knode.about;}
                 else if (arg.name) {
                     addClass(entry,"source"); addClass(entry,"account");
