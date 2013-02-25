@@ -412,6 +412,9 @@ div#CODEXHUD.login iframe#SBOOKSAPP.hudpanel {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
+div#CODEXHUD div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel {
+    padding-top: 1em;}
+
 div#CODEXHEART div#CODEXSEARCHBLOCK.hudpanel {
     margin-left: 0px; margin-right: 0px;
     background-color: transparent;}
@@ -751,7 +754,8 @@ body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
 div#CODEXHUD div.completions { line-height: 200%;}
 div#CODEXHUD div.completions .weak, div#CODEXHUD div.completions .words {
     line-height: 150%; font-size: 80%;}
-div#CODEXHUD div.completions .completion { white-space: nowrap;}
+div#CODEXHUD div.completions .completion {
+    white-space: nowrap;}
 div#CODEXHUD div.completions img.label { width: 64px; height: 64px;}
 
 div#CODEXHUD.search div.completions#CODEXSEARCHCLOUD { display: block;}
