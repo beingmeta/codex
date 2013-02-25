@@ -407,6 +407,26 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         cloud.dom.appendChild(holder);}
     Codex.sortCloud=sortCloud;
 
+    function cloudWeight(v,min,max){return ((v-min)/(max-min));}
+    function cloudWeight(v,min,max){
+        var sin=Math.sin;
+        var norm=(v-min)/(max-min);
+        return Math.sin(1.5*norm);}
+    function cloudWeight(v,min,max){
+        var log=Math.log; var sqrt=Math.sqrt;
+        function logroot(x){return sqrt(log(x));}
+        return ((logroot(v)-logroot(min))/(logroot(max)-logroot(min)));}
+    function cloudWeight(v,min,max){
+        var log=Math.log;
+        return (log(v-min))/(log(max-min));}
+    function cloudWeight(v,min,max){
+        var log=Math.log;
+        var norm=v-min, range=log(max)*max-log(min)*min;
+        return log(norm)*norm/range;}
+    function cloudWeight(v,min,max){
+        var log=Math.log;
+        return ((log(v)-log(min))/(log(max)-log(min)));}
+
     function sizeCloud(cloud,scores,freqs,cuethresh){
         var values=cloud.values, byvalue=cloud.byvalue;
         var elts=new Array(values.length), vscores=new Array(values.length);
@@ -426,7 +446,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 addClass(elt,"cue");
             if (score) {
                 if (scores!==global_scores) 
-                    score=score/(global_scores.get(value));
+                    score=(score*score)/global_scores.get(value);
                 else {
                     var valstring=((typeof value === "string")?(value):
                                    (value.dterm));
@@ -443,8 +463,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         i=0; while (i<lim) {
             if (vscores[i]) {
                 var factor=((vscores[i]-min_score)/(max_score-min_score));
-                var factor=((Math.sqrt(vscores[i])-Math.sqrt(min_score))/
-                            (Math.sqrt(max_score)-Math.sqrt(min_score)));
+                var factor=cloudWeight(vscores[i],min_score,max_score);
                 var pct=50+150*factor;
                 // var pct=50+100*Math.sin(1.5*((vscores[i]-min_score)/max_score));
                 var node=elts[i]; var freq=freqs.get(values[i]);
