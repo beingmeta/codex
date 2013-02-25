@@ -1726,10 +1726,10 @@ Codex.Startup=
                                  eq.cloud=search_cloud;
                                  Codex.empty_cloud=search_cloud;
                                  Codex.DOM.empty_cloud=search_cloud.dom;
-                                 Codex.sortCloud(search_cloud,eq.tagfreqs,eq.max_freq);
-                                 Codex.sizeCloud(search_cloud,eq.tagscores,eq.max_score);
-                                 Codex.sortCloud(gloss_cloud,eq.tagfreqs,eq.max_freq);
-                                 Codex.sizeCloud(gloss_cloud,eq.tagscores,eq.max_score);});}
+                                 Codex.sortCloud(search_cloud,eq.tagfreqs);
+                                 Codex.sizeCloud(search_cloud,eq.tagscores,eq.tagfreqs,false);
+                                 Codex.sortCloud(gloss_cloud,eq.tagfreqs);
+                                 Codex.sizeCloud(gloss_cloud,eq.tagscores,eq.tagfreqs,false);});}
         
         var addTags=Knodule.addTags;
 
@@ -1754,7 +1754,9 @@ Codex.Startup=
                         (defbody.search(":weight=")===0)) {
                         var realtag=tagtext.slice(0,bar);
                         var weight=parseFloat(defbody.slice(8));
-                        tagweights[realtag]=weight;
+                        if (realtag[0]==="~")
+                            tagweights.set(realtag.slice(1),weight);
+                        else tagweights.set(realtag,weight);
                         if (weight>maxweight) maxweight=weight;
                         if (weight<minweight) minweight=weight;
                         tag=tagtext=realtag;}}
