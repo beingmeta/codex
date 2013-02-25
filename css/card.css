@@ -147,6 +147,9 @@ body.sbook a.codexcard { display: block;}
     background-image: url(https://s3.amazonaws.com/beingmeta/static/g/codex/someone50x50.png);}
 .codexcard img.detailsbutton { border: none; }
 .codexcard img.xrefsbutton { border: none;}
+.codexcard .score {
+    float: right; color: darkblue;
+    font-size: 80%; vertical-align: top; margin-top: -0.5ex;}
 .codexcard .glossinfo {
     float: right; clear: right; display: block;
     padding: 0px; margin: 0px;

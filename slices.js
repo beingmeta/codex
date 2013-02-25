@@ -74,7 +74,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var target_info=Codex.docinfo[target_id];
         var head_info=target_info.head;
         var head=((head_info)&&(document.getElementById(head_info.frag)));
-        var refiners=((query) && (query._refiners));
         var score=((query)&&(query.scores.get(info)));
         var excerpt_len=((info.excerpt)?(info.excerpt.length):(0));
         var note_len=((info.note)?(info.note.length):(0));
@@ -88,7 +87,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     (((info.maker)||(info.tstamp))?(showglossinfo(info)):
                      (showdocinfo(info)))," ",
                     ((standalone)&&(showtocloc(target_info))),
-                    ((score)&&(showscore(score))),
+                    ((score)&&(showscore(score,query,info))),
                     ((note_len>0)&&(Ellipsis("span.note",info.note,140)))," ",
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
@@ -257,11 +256,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         ((i>0)&&" "),
                         fdjtDOM("span.excerpt",odq,excerpts[i++],cdq));
             return ediv;}}
-    function showscore(score){
-        var scorespan=fdjtDOM("span.score");
-        var score=query[key]; var k=0;
-        while (k<score) {fdjtDOM(scorespan,"*"); k++;}
-        return scorespan;}
+    function showscore(score,query,info){
+        return fdjtDOM("span.score","(",score,")");}
     function showglossinfo(info) {
         var user=info.maker;
         var feed=info.feed||false;
@@ -483,8 +479,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     var scanInfo=Codex.DOMScan.scanInfo;
 
-    function showSlice(results,div,scores,sort,cardclass){
+    function showSlice(results,div,query,sort,cardclass){
         var notes=new Array(results.length);
+        var scores=((query)&&(query.scores));
         var i=0; var lim=results.length;
         while (i<lim) {
             var r=results[i];
@@ -564,7 +561,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 threadelt.title=Codex.getTitle(target,true);
                 fdjtDOM.append(headelt,threadelt);
                 curinfo=docinfo;}
-            var card=renderCard(note);
+            var card=renderCard(note,query);
             fdjtDOM.append(threadelt,card);}
         return div;}
     Codex.UI.showSlice=showSlice;
@@ -685,7 +682,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var child=children[i++];
             if (child.nodeType!==1) continue;
             if ((ishead)&&(fdjtDOM.hasClass(child,"codexthread"))) {
-                fdjtDOM.insertBefore(child,renderCard(note));
+                fdjtDOM.insertBefore(child,renderCard(note,query));
                 return;}
             // If unrelated, continue
             if (!((fdjtDOM.hasClass(child,"codexcard"))||
@@ -693,14 +690,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 continue;
             // If the same thing, replace
             if (child.qref===qid) {
-                fdjtDOM.replace(child,renderCard(note));
+                fdjtDOM.replace(child,renderCard(note,query));
                 return;}
             // if you're earlier, insert yourself and return
             if (tstamp<=child.tstamp) {
-                fdjtDOM.insertBefore(child,renderCard(note));
+                fdjtDOM.insertBefore(child,renderCard(note,query));
                 return;}
             else continue;}
-        fdjtDOM.append(idthread,renderCard(note));}
+        fdjtDOM.append(idthread,renderCard(note,query));}
     Codex.UI.addToSlice=addToSlice;
 
     Codex.nextSlice=function(start){

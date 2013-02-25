@@ -383,7 +383,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var div=fdjtDOM("div.codexslice.sbookresults");
         fdjtUI.TapHold(div,Codex.touch);
         Codex.UI.addHandlers(div,'summary');
-        Codex.UI.showSlice(query.results,div,rscores);
+        Codex.UI.showSlice(query.results,div,query,true);
         query.listing=div;
         return div;}
     RefDB.Query.prototype.showResults=
