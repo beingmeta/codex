@@ -1732,8 +1732,22 @@ Codex.Startup=
                                  Codex.sortCloud(gloss_cloud,eq.tagfreqs);
                                  Codex.sizeCloud(gloss_cloud,eq.tagscores,eq.tagfreqs,false);});}
         
-        var addTags=Knodule.addTags;
-
+        var KnoduleAddTags=Knodule.addTags;
+        function addTags(nodes,tags){
+            var docdb=Codex.docdb, tagdb=Codex.knodule;
+            if (!(nodes instanceof Array)) nodes=[nodes];
+            KnoduleAddTags(nodes,tags,docdb,tagdb);
+            var i=0, lim=nodes.length; while (i<lim) {
+                var node=nodes[i++];
+                if (!(node.toclevel)) continue;
+                var passages=docdb.find('head',node);
+                if ((passages)&&(passages.length))
+                    KnoduleAddTags(passages,tags,docdb,tagdb,"^tags");
+                var subheads=docdb.find('heads',node);
+                if ((subheads)&&(subheads.length))
+                    addTags(subheads,tags);}};
+        Codex.addTags=addTags;
+        
         /* Using the autoindex generated during book building */
         function useIndexData(autoindex,knodule,baseweight,whendone){
             var ntags=0, nitems=0;
@@ -1746,7 +1760,7 @@ Codex.Startup=
                 else alltags.push(tag);}
             function handleIndexEntry(tag){
                 var ids=autoindex[tag]; ntags++;
-                var occurrences=[];
+                var occurrences=[], subsumed=[];
                 var tagtext=tag, targstart=0;
                 var bar=tagtext.indexOf('|');
                 if (bar>0) {
@@ -1766,8 +1780,7 @@ Codex.Startup=
                 var i=0; var lim=ids.length; nitems=nitems+lim;
                 while (i<lim) {
                     var idinfo=ids[i++];
-                    var frag=((typeof idinfo === 'string')?
-                              (idinfo):(idinfo[0]));
+                    var frag=((typeof idinfo === 'string')?(idinfo):(idinfo[0]));
                     var info=Codex.docinfo[frag];
                     // Pointer to non-existent node.  Warn here?
                     if (!(info)) {
@@ -1789,11 +1802,12 @@ Codex.Startup=
                         var j=1; var jlim=idinfo.length;
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
-                addTags(occurrences,tag,Codex.docdb,Codex.knodule);}
+                addTags(occurrences,tag);}
             fdjtTime.slowmap(handleIndexEntry,alltags,false,
-                             function(){
-                                 Codex.tagmaxweight=maxweight; Codex.tagminweight=minweight;
-                                 fdjtLog("Assimilated index data for %d keys over %d items",
+                             function(){ // when done
+                                 Codex.tagmaxweight=maxweight;
+                                 Codex.tagminweight=minweight;
+                                 fdjtLog("Read index of %d keys over %d items",
                                          ntags,nitems);
                                  if (whendone) whendone();});}
         Codex.useIndexData=useIndexData;
@@ -1815,7 +1829,7 @@ Codex.Startup=
                 var tagstrings=tagtext.split(tagsep);
                 if (tagstrings.length) {
                     var j=0, jlim=tagstrings.length;
-                    while (j<jlim) addTag(info,tagstrings[j++]);}}
+                    while (j<jlim) addTags(info,tagstrings[j++]);}}
             var tags=fdjtDOM.$(".sbooktag");
             var i=0; var lim=tags.length;
             while (i<lim) {
@@ -1823,7 +1837,7 @@ Codex.Startup=
                 var target=Codex.getTarget(tagelt);
                 var info=Codex.docinfo[target.id];
                 var tagtext=fdjtDOM.textify(tagelt);
-                addTag(info,tagtext);}}
+                addTags(info,tagtext);}}
         
         function applyAnchorTags(kno) {
             var docinfo=Codex.docinfo;
@@ -1861,7 +1875,7 @@ Codex.Startup=
                     else {}
                     if (tag) {
                         var info=docinfo[cxt.id];
-                        addTag(inof,tag);}}
+                        addTags(inof,tag);}}
                 else i++;}}
         
         /* Handling tag attributes */
@@ -1872,10 +1886,7 @@ Codex.Startup=
             var tohandle=[]; var tagged=0;
             for (var eltid in docinfo) {
                 var info=docinfo[eltid], tags=info.atags;
-                if (tags) tagged++;
-                if ((tags)||(info.sectags)||
-                    ((info.head)&&(info.head.sectags)))
-                    tohandle.push(info);}
+                if (tags) {tagged++; tohandle.push(info);}}
             if ((Codex.Trace.indexing)&&
                 ((Codex.Trace.indexing>1)||
                  (tagged.length>7)))
@@ -1892,15 +1903,7 @@ Codex.Startup=
         Codex.indexTagAttributes=indexTagAttributes;
         
         function handle_inline_tags(info){
-            var tags=info.atags;
-            if (tags) {
-                var k=0; var ntags=tags.length; info.atags=[];
-                while (k<ntags) addTag(info,tags[k++],Codex.knodule);}
-            var sectags=info.sectags||((info.head)&&(info.head.sectags));
-            if (sectags) {
-                k=0, ntags=sectags.length; info.sectags=[];
-                    while (k<ntags)
-                        addTag(info,sectags[k++],Codex.knodule,"^tags");}}
+            if (info.tags) addTags(info,info.tags);}
         
         /* Setting up the clouds */
         

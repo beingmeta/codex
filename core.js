@@ -154,10 +154,12 @@ var Codex=
         Codex.etc=[];
 
         var docinfo=Codex.docdb=new RefDB(
-            refuri+"#",{indices: ["frag","tags","tags*",
+            refuri+"#",{indices: ["frag","head","heads",
+                                  "tags","tags*",
                                   "*tags","**tags","~tags",
                                   "*tags*","**tags*","~tags*",
-                                  "*tags**","**tags**","~tags**"]});
+                                  "^tags","~^tags","*^tags","**^tags",
+                                  "^tags*","~^tags*","*^tags*","**^tags*"]});
         
         var knodule_name=
             fdjtDOM.getMeta("SBOOK.knodule")||

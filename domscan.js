@@ -206,6 +206,7 @@ Codex.DOMScan=(function(){
                 /* This is the simple case where we are a subhead
                    of the current head. */
                 headinfo.head=curinfo;
+                headinfo.indexRef('head',curinfo);
                 if (!(curinfo.intro_ends_at))
                     curinfo.intro_ends_at=scanstate.location;
                 curinfo.sub.push(headinfo);
@@ -235,7 +236,8 @@ Codex.DOMScan=(function(){
                         scaninfo.next=headinfo;}
                     scaninfo.ends_at=scanstate.location;
                     scanstate.tagstack=scanstate.tagstack.slice(0,-1);
-                    scaninfo=scaninfo.head; scan=document.getElementById(scaninfo.frag);
+                    scaninfo=scaninfo.head;
+                    scan=document.getElementById(scaninfo.frag);
                     scanlevel=((scaninfo)?(scaninfo.level):(0));}
                 if (Codex.Trace.scan>2)
                     fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
@@ -243,12 +245,10 @@ Codex.DOMScan=(function(){
                 /* We've found the enclosing head for this head, so we
                    establish the links. */
                 headinfo.head=scaninfo;
+                headinfo.indexRef('head',scaninfo);
                 scaninfo.sub.push(headinfo);}
             /* If we have a head, we get its tags. */
             var supinfo=headinfo.head;
-            if ((supinfo)&&(supinfo.sectags))
-                headinfo.sectags=supinfo.sectags.concat([headinfo.sectag]);
-            else headinfo.sectags=[headinfo.sectag];
             
             /* We create an array of all the heads, which lets us
                replace many recursions with iterations. */
@@ -256,6 +256,7 @@ Codex.DOMScan=(function(){
             if (supinfo.heads) newheads=newheads.concat(supinfo.heads);
             if (supinfo) newheads.push(supinfo);
             headinfo.heads=newheads;
+            headinfo.indexRef('heads',newheads);
             if (Codex.Trace.scan>2)
                 fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
                         scanstate.location,head,headinfo,headinfo.head);
@@ -376,7 +377,9 @@ Codex.DOMScan=(function(){
                 info.starts_at=scanstate.location;
                 info.sbookhead=curhead.id;
                 info.headstart=curinfo.starts_at;}
-            if (info) info.head=curinfo;
+            if (info) {
+                info.head=curinfo;
+                info.indexRef('head',curinfo);}
             // Set the first content node
             if ((id)&&(info)&&(!start)) Codex.start=start=child;
             // And the initial content level
