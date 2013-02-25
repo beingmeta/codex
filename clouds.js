@@ -65,9 +65,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     var Completions=fdjtUI.Completions;
     var addClass=fdjtDOM.addClass;
+    var dropClass=fdjtDOM.dropClass;
     var getChildren=fdjtDOM.getChildren;
     var getChild=fdjtDOM.getChild;
+    var getParent=fdjtDOM.getParent;
     var hasParent=fdjtDOM.hasParent;
+    var hasClass=fdjtDOM.hasClass;
     var log=fdjtLog;
     var kbref=RefDB.resolve;
 
@@ -82,8 +85,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((dom)&&(dom.parentNode)) {
             breadcrumb=document.createTextNode("");
             dom.parentNode.replaceChild(breadcrumb,dom);}
-        if (dom) {
-            fdjtDOM.addClass(dom,"completions");}
+        if (dom) addClass(dom,"completions");
         else if ((completions)&&(completions.dom))
             dom=completions.dom;
         else dom=fdjtDOM("div.completions.cloud",getShowAll(usecues,n_terms));
@@ -263,7 +265,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function showempty_ontap(evt){
         var target=fdjtUI.T(evt);
-        var completions=fdjtDOM.getParent(target,".completions");
+        var completions=getParent(target,".completions");
         if (completions) {
             fdjtUI.cancel(evt);
             fdjtDOM.toggleClass(completions,"showempty");
@@ -477,7 +479,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function searchcloud_ontap(evt){
         evt=evt||event;
         var target=fdjtDOM.T(evt);
-        var completion=fdjtDOM.getParent(target,".completion");
+        var completion=getParent(target,".completion");
         if (Codex.Trace.gestures) log("cloud tap on %o",completion);
         if (completion) {
             var cinfo=Codex.query.cloud;
@@ -497,11 +499,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtID("CODEXSEARCHRESULTS").focus();
             fdjtUI.cancel(evt);}
         else if (fdjtDOM.inherits(target,".refinercounts")) {
-            var completions=fdjtDOM.getParent(target,".completions");
+            var completions=getParent(target,".completions");
             fdjtDOM.toggleClass(completions,"showempty");
             fdjtDOM.cancel(evt);}
         else if (fdjtDOM.inherits(target,".maxcompletemsg")) {
-            var completions=fdjtDOM.getParent(target,".completions");
+            var completions=getParent(target,".completions");
             fdjtID("CODEXSEARCHINPUT").focus();
             fdjtDOM.toggleClass(container,"showall");
             fdjtDOM.cancel(evt);}
