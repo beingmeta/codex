@@ -119,7 +119,7 @@ Codex.setMode=
             var search=fdjtID("CODEXSEARCH");
             search.innerHTML=fixStaticRefs(Codex.HTML.searchbox);
             Codex.empty_cloud=
-                new fdjtUI.Completions(fdjtID("CODEXFULLCLOUD"));
+                new fdjtUI.Completions(fdjtID("CODEXALLTAGS"));
             addClass(Codex.HUD,"emptysearch");
 
             // Setup addgloss prototype
@@ -238,7 +238,7 @@ Codex.setMode=
                         fdjtUI.FDJT_COMPLETE_ANYWORD);
             updateScroller("CODEXGLOSSCLOUD");
 
-            var dom_search_cloud=fdjtID("CODEXFULLCLOUD");
+            var dom_search_cloud=fdjtID("CODEXALLTAGS");
             Codex.search_cloud=
                 new fdjtUI.Completions(
                     dom_search_cloud,fdjtID("CODEXTAGINPUT"),
@@ -371,7 +371,7 @@ Codex.setMode=
         var codex_mode_scrollers=
             {allglosses: "CODEXALLGLOSSES",
              searchresults: "CODEXSEARCHRESULTS",
-             expandsearch: "CODEXFULLCLOUD",
+             expandsearch: "CODEXALLTAGS",
              search: "CODEXSEARCHCLOUD",
              console: "CODEXCONSOLE",
              // sbooksapp: "SBOOKSAPP",

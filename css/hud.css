@@ -402,8 +402,8 @@ div#CODEXHUD.addgloss.glossaddlink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
 div#CODEXHUD.addgloss.glosseditdetail div#CODEXHEART div#CODEXGLOSSEDITDETAIL.hudpanel,
 div#CODEXHUD.glossdetail div#CODEXHEART div#CODEXGLOSSDETAIL.hudpanel,
 div#CODEXHUD.search div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
-div#CODEXHUD.expandsearch div#CODEXHEART div#CODEXFULLCLOUD.hudpanel,
-div#CODEXHUD.search.emptysearch div#CODEXHEART div#CODEXFULLCLOUD.hudpanel,
+div#CODEXHUD.expandsearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
+div#CODEXHUD.search.emptysearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
 div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel,
@@ -417,7 +417,7 @@ div#CODEXHUD.login iframe#SBOOKSAPP.hudpanel {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
-div#CODEXHUD.search div#CODEXHEART div#CODEXFULLCLOUD.hudpanel,
+div#CODEXHUD.search div#CODEXHEART div#CODEXALLTAGS.hudpanel,
 div#CODEXHUD.search.emptysearch div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel {
     display: none;}
 
@@ -771,9 +771,9 @@ div#CODEXHUD div.completions img.label { width: 64px; height: 64px;}
 div#CODEXHUD.search div.completions#CODEXSEARCHCLOUD { display: block;}
 div#CODEXHUD.search.emptysearch div.completions#CODEXSEARCHCLOUD {
     display: none;}
-div#CODEXHUD.search div.completions#CODEXFULLCLOUD { display: none;}
-div#CODEXHUD.search.emptysearch div.completions#CODEXFULLCLOUD,
-div#CODEXHUD.expandsearch div.completions#CODEXFULLCLOUD {
+div#CODEXHUD.search div.completions#CODEXALLTAGS { display: none;}
+div#CODEXHUD.search.emptysearch div.completions#CODEXALLTAGS,
+div#CODEXHUD.expandsearch div.completions#CODEXALLTAGS {
     display: block;}
 
 div#CODEXHUD.search div#CODEXSEARCH.norefiners
