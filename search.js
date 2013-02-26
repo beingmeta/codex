@@ -67,6 +67,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     var Completions=fdjtUI.Completions;
     var addClass=fdjtDOM.addClass;
+    var dropClass=fdjtDOM.dropClass;
     var getChildren=fdjtDOM.getChildren;
     var getChild=fdjtDOM.getChild;
     var log=fdjtLog;
@@ -86,8 +87,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (qstring!==Codex.qstring) {
             Codex.query=query;
             Codex.qstring=qstring;
-            var cloud=Codex.queryCloud(query);
-            fdjtDOM.replace("CODEXSEARCHCLOUD",cloud.dom);
+            if (query.tags.length===0) 
+                addClass(Codex.HUD,"emptysearch");
+            else {
+                var cloud=Codex.queryCloud(query);
+                dropClass(Codex.HUD,"emptysearch");
+                fdjtDOM.replace("CODEXSEARCHCLOUD",cloud.dom);}
             useQuery(query,fdjtID("CODEXSEARCH"));}
         if (Codex.mode==="search") {
             if (query.results.length===0) {}
@@ -124,20 +129,17 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var resultsid=input.getAttribute("results");
         var infoid=input.getAttribute("info");
         var qtags=getChild(box,".qtags");
-        var cloud=((cloudid)&&(fdjtID(cloudid)))||
-            getChild(block,".searchcloud");
-        var results=((resultsid)&&(fdjtID(resultsid)))||
-            getChild(block,".searchresults");
-        var info=((infoid)&&(fdjtID(infoid)))||
-            getChild(block,".searchresults");
+        var cloud=((cloudid)&&(fdjtID(cloudid)));
+        var results=((resultsid)&&(fdjtID(resultsid)));
+        var info=((infoid)&&(fdjtID(infoid)));
         var resultcount=getChild(info,".resultcount");
         var refinecount=getChild(info,".refinecount");
         // Update (clear) the input field
         input.value='';
         var elts=query.tags; var i=0; var lim=elts.length;
         // Update 'notags' class
-        if (elts.length) fdjtDOM.dropClass([box,info],"notags");
-        else addClass([box,info],"notags");
+        if (elts.length) fdjtDOM.dropClass(Codex.HUD,"emptysearch");
+        else addClass(Codex.HUD,"emptysearch");
         // Update the query tags
         var newtags=fdjtDOM("span.qtags");
         while (i<lim) {
@@ -175,15 +177,21 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var n_refiners=((query.cotags)&&(query.cotags.length))||0;
         var completions=Codex.queryCloud(query);
         refinecount.innerHTML=n_refiners+
-            ((n_refiners===1)?(" associated tag"):(" associated tags"));
+            ((n_refiners===1)?(" co-tag"):(" co-tags"));
         fdjtDOM.dropClass(box,"norefiners");
-        if (cloudid) completions.id=cloudid;
-        if (Codex.Trace.search>1)
-            log("Setting search cloud for %o to %o",box,completions.dom);
-        cloudid=cloud.id;
-        addClass(completions.dom,"hudpanel");
-        fdjtDOM.replace(cloud,completions.dom);
-        completions.complete("");
+        if (query.tags.length===0) {
+            fdjtDOM.replace(
+                "CODEXSEARCHCLOUD",
+                fdjtDOM("div.completions.searchcloud#CODEXSEARCHCLOUD"));
+            Codex.empty_cloud.complete("");}
+        else {
+            if (cloudid) completions.id=cloudid;
+            if (Codex.Trace.search>1)
+                log("Setting search cloud for %o to %o",box,completions.dom);
+            cloudid=cloud.id;
+            addClass(completions.dom,"hudpanel");
+            fdjtDOM.replace(cloud,completions.dom);
+            completions.complete("");}
         if (n_refiners===0) {
             addClass(box,"norefiners");
             refinecount.innerHTML="no refiners";}

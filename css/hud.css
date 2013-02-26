@@ -233,12 +233,14 @@ body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
     -o-opacity: 1;}
 
 div#CODEXHUD.search div#CODEXRIBBON,
+div#CODEXHUD.expandsearch div#CODEXRIBBON,
 div#CODEXHUD.searchresults div#CODEXRIBBON,
 div#CODEXHUD.glossaddtag div#CODEXRIBBON,
 div#CODEXHUD.glossaddoutlet div#CODEXRIBBON {
     border-bottom: solid blue 2px;
     height: 35px;}
 div#CODEXHUD.search div#CODEXHEART,
+div#CODEXHUD.expandsearch div#CODEXHEART,
 div#CODEXHUD.searchresults div#CODEXHEART,
 div#CODEXHUD.glossaddtag div#CODEXHEART,
 div#CODEXHUD.glossaddoutlet div#CODEXHEART {
@@ -374,6 +376,7 @@ div#CODEXHUD.allglosses div#CODEXSOURCES,
 div#CODEXHUD.addgloss div#CODEXADDGLOSS,
 div#CODEXHUD.shownote div#CODEXNOTETEXT,
 div#CODEXHUD.search div#CODEXSEARCH,
+div#CODEXHUD.expandsearch div#CODEXSEARCH,
 div#CODEXHUD.searchresults div#CODEXSEARCH,
 div#CODEXHUD.gotoloc div#CODEXGOTOLOC,
 div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
@@ -399,6 +402,8 @@ div#CODEXHUD.addgloss.glossaddlink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
 div#CODEXHUD.addgloss.glosseditdetail div#CODEXHEART div#CODEXGLOSSEDITDETAIL.hudpanel,
 div#CODEXHUD.glossdetail div#CODEXHEART div#CODEXGLOSSDETAIL.hudpanel,
 div#CODEXHUD.search div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
+div#CODEXHUD.expandsearch div#CODEXHEART div#CODEXFULLCLOUD.hudpanel,
+div#CODEXHUD.search.emptysearch div#CODEXHEART div#CODEXFULLCLOUD.hudpanel,
 div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel,
@@ -412,6 +417,10 @@ div#CODEXHUD.login iframe#SBOOKSAPP.hudpanel {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
+div#CODEXHUD.search div#CODEXHEART div#CODEXFULLCLOUD.hudpanel,
+div#CODEXHUD.search.emptysearch div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel {
+    display: none;}
+
 div#CODEXHUD div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel {
     padding-top: 1em;}
 
@@ -419,6 +428,7 @@ div#CODEXHEART div#CODEXSEARCHBLOCK.hudpanel {
     margin-left: 0px; margin-right: 0px;
     background-color: transparent;}
 div#CODEXHUD.search div#CODEXSEARCHBLOCK.hudpanel,
+div#CODEXHUD.expandsearch div#CODEXSEARCHBLOCK.hudpanel,
 div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK.hudpanel {
     position: absolute; display: block; overflow: hidden;
     top: 0px; bottom: 0px; left: 0px; right: 0px;
@@ -759,9 +769,17 @@ div#CODEXHUD div.completions .completion {
 div#CODEXHUD div.completions img.label { width: 64px; height: 64px;}
 
 div#CODEXHUD.search div.completions#CODEXSEARCHCLOUD { display: block;}
+div#CODEXHUD.search.emptysearch div.completions#CODEXSEARCHCLOUD {
+    display: none;}
+div#CODEXHUD.search div.completions#CODEXFULLCLOUD { display: none;}
+div#CODEXHUD.search.emptysearch div.completions#CODEXFULLCLOUD,
+div#CODEXHUD.expandsearch div.completions#CODEXFULLCLOUD {
+    display: block;}
+
 div#CODEXHUD.search div#CODEXSEARCH.norefiners
    div.completions#CODEXSEARCHCLOUD { display: none;}
 div#CODEXHUD.search div.codexslice#CODEXSEARCHRESULTS { display: none;}
+div#CODEXHUD.expandsearch div.codexslice#CODEXSEARCHRESULTS { display: none;}
 div#CODEXHUD.searchresults div.codexslice#CODEXSEARCHRESULTS { display: block;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
 
@@ -787,6 +805,7 @@ body.hudup div#CODEXHUD.addgloss .hudbutton {
 
 div#CODEXHUD.allglosses .hudbutton[alt='allglosses'],
 div#CODEXHUD.search .hudbutton[alt='search'],
+div#CODEXHUD.expandsearch .hudbutton[alt='search'],
 div#CODEXHUD.searchresults .hudbutton[alt='search'],
 div#CODEXHUD.toc .hudbutton[alt='toc'] {
     border-color: darkblue;

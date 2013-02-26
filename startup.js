@@ -1714,7 +1714,8 @@ Codex.Startup=
             Codex.empty_query.results=
                 [].concat(Codex.glossdb.allrefs).concat(Codex.docdb.allrefs);
             var searchtags=Codex.searchtags=Codex.empty_query.getCoTags();
-            var tagfreqs=Codex.empty_query.tagfreqs, max_freq=Codex.empty_query.max_freq;
+            var tagfreqs=Codex.empty_query.tagfreqs;
+            var max_freq=Codex.empty_query.max_freq;
             fdjtTime.slowmap(function(tag){
                 addTag2Cloud(tag,search_cloud);
                 if ((tag instanceof Knode)||
@@ -1727,10 +1728,18 @@ Codex.Startup=
                                  eq.cloud=search_cloud;
                                  Codex.empty_cloud=search_cloud;
                                  Codex.DOM.empty_cloud=search_cloud.dom;
+                                 if (!(fdjtDOM.getChild(search_cloud.dom,
+                                                        ".showall")))
+                                     fdjtDOM.prepend(
+                                         search_cloud.dom,
+                                         Codex.UI.getShowAll(
+                                             true,search_cloud.values.length));
                                  Codex.sortCloud(search_cloud,eq.tagfreqs);
-                                 Codex.sizeCloud(search_cloud,eq.tagscores,eq.tagfreqs,false);
+                                 Codex.sizeCloud(search_cloud,eq.tagscores,
+                                                 eq.tagfreqs,false);
                                  Codex.sortCloud(gloss_cloud,eq.tagfreqs);
-                                 Codex.sizeCloud(gloss_cloud,eq.tagscores,eq.tagfreqs,false);});}
+                                 Codex.sizeCloud(gloss_cloud,eq.tagscores,
+                                                 eq.tagfreqs,false);});}
         
         var addTags=Codex.addTags;
         

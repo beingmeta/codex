@@ -6,7 +6,7 @@
 
 /* The SEARCHBOX */
 
-div.searchbox.notags div.tags { display: none;}
+div#CODEXHUD.emptysearch div.searchbox div.tags { display: none;}
 div.searchbox { text-align: center; }
 
 div.searchbox div.query {
@@ -15,12 +15,13 @@ div.searchbox div.query {
 div.searchbox div.query span#CODEXSEARCHPROMPT {
     padding-left: 1em; padding-right: 0.5em;
     font-style: italic; display: none;}
-div.searchbox.notags div.query span#CODEXSEARCHPROMPT {
+div#CODEXHUD.emptysearch div.searchbox div.query span#CODEXSEARCHPROMPT {
     display: inline;}
 div.searchbox div.query #CODEXSEARCHLABEL {
     padding-left: 1em; padding-right: 0.5em;
     font-variant: small-caps;}
-div.searchbox.notags div.query #CODEXSEARCHLABEL { display: none;}
+div#CODEXHUD.emptysearch div.searchbox div.query #CODEXSEARCHLABEL {
+    display: none;}
 
 div.searchbox div.query .ampersand,
 div.searchbox div.query input[type='TEXT'],
@@ -42,7 +43,7 @@ div.searchbox div.query img.clearsearch {
     height: 30px; width: auto;}
 div.searchbox div.query span.ampersand {
     font-weight: bold; font-size: 150%;}
-div.searchbox.notags div.query span.ampersand { display: none;}
+div#CODEXHUD.emptysearch div.searchbox div.query span.ampersand { display: none;}
 
 div.searchbox div.query span.dterm {
     padding-right: 0.35em; padding-left: 1ex;
@@ -67,29 +68,32 @@ div.searchbox div.input input[type='TEXT'] {
 
 div.resultinfo .noresults { display: none;}
 div.resultinfo.noresults div.noresults { display: block;}
-div.resultinfo.noresults.notags .noresults {
+div#CODEXHUD.emptysearch div.resultinfo.noresults .noresults {
     display: none;}
 
 div.resultinfo div.noquery { display: none;}
-div.resultinfo.notags div.noquery { display: block;}
+div#CODEXHUD.emptysearch div.resultinfo div.noquery { display: block;}
 
 div.resultinfo.noresults span { display: none;}
-div.resultinfo.notags span { display: none;}
+div#CODEXHUD.emptysearch div.resultinfo span { display: none;}
 
 div#CODEXHUD div.resultinfo {
-    min-height: 1ex; margin-bottom: 1ex;
-    font-size: 120%;
-    clear: both; text-align: center;}
+    text-align: right; font-size: 120%;
+    min-height: 1ex; margin-bottom: 1ex; padding-right: 1em;}
 div#CODEXHUD div.resultinfo span.resultcount,
-div#CODEXHUD div.resultinfo span.refinecount {
+div#CODEXHUD div.resultinfo span.refinecount,
+div#CODEXHUD div.resultinfo span.showalltags {
     cursor: pointer;}
 div#CODEXHUD.search div.resultinfo span.refinecount {
+    font-weight: bold;}
+div#CODEXHUD.expandsearch div.resultinfo span.showalltags {
     font-weight: bold;}
 div#CODEXHUD.searchresults div.resultinfo span.resultcount {
     font-weight: bold;}
 
 div#CODEXHUD div#CODEXSEARCHINFO { display: none;}
 div#CODEXHUD.search div#CODEXSEARCHINFO,
+div#CODEXHUD.expandsearch div#CODEXSEARCHINFO,
 div#CODEXHUD.searchresults div#CODEXSEARCHINFO {
     display: block;}
 

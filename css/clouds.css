@@ -41,7 +41,10 @@ div#CODEXHUD .completions .showall {
     margin-right: 8px; margin-bottom: 6px;
     border: solid black 2px; border-radius: 0.5em;
     -o-border-radius: 0.5em; -webkit-border-radius: 0.5em; 
-    -moz-border-radius: 0.5em;}
+    -moz-border-radius: 0.5em;
+    cursor: pointer;}
+div#CODEXHUD .completions .showall:hover {
+    border-color: blue;}
 div#CODEXHUD .completions .showall .showless { display: none;}
 div#CODEXHUD .completions.showempty .showless {display: inline;}
 div#CODEXHUD .completions.showempty .showmore {display: none;}

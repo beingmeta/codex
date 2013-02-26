@@ -119,7 +119,9 @@ Codex.setMode=
             var search=fdjtID("CODEXSEARCH");
             search.innerHTML=fixStaticRefs(Codex.HTML.searchbox);
             Codex.empty_cloud=
-                new fdjtUI.Completions(fdjtID("CODEXSEARCHCLOUD"));
+                new fdjtUI.Completions(fdjtID("CODEXFULLCLOUD"));
+            addClass(Codex.HUD,"emptysearch");
+
             // Setup addgloss prototype
             var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
             addgloss.innerHTML=fixStaticRefs(Codex.HTML.addgloss);
@@ -236,7 +238,7 @@ Codex.setMode=
                         fdjtUI.FDJT_COMPLETE_ANYWORD);
             updateScroller("CODEXGLOSSCLOUD");
 
-            var dom_search_cloud=fdjtID("CODEXSEARCHCLOUD");
+            var dom_search_cloud=fdjtID("CODEXFULLCLOUD");
             Codex.search_cloud=
                 new fdjtUI.Completions(
                     dom_search_cloud,fdjtID("CODEXTAGINPUT"),
@@ -362,13 +364,14 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
-        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(glosses)|(about)|(console)|(search)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
-        var codexHeadMode_pat=/\b((toc)|(search)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan)|(shownote))\b/g;
+        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(expandsearch)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
+        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(glosses)|(about)|(console)|(search)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
+        var codexHeadMode_pat=/\b((toc)|(search)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan)|(shownote))\b/g;
         var CodexSubMode_pat=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
         var codex_mode_scrollers=
             {allglosses: "CODEXALLGLOSSES",
              searchresults: "CODEXSEARCHRESULTS",
+             expandsearch: "CODEXFULLCLOUD",
              search: "CODEXSEARCHCLOUD",
              console: "CODEXCONSOLE",
              // sbooksapp: "SBOOKSAPP",

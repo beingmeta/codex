@@ -146,6 +146,7 @@ body.codexhelp div#CODEXHUD.addgloss div#CODEXADDGLOSSHELP.helpbox,
 body.codexhelp div#CODEXHUD.tocscan div#CODEXTOCSCANHELP.helpbox,
 body.codexhelp div#CODEXHUD.scanning div#CODEXSCANNINGHELP.helpbox,
 body.codexhelp div#CODEXHUD.search div#CODEXSEARCHINPUTHELP.helpbox,
+body.codexhelp div#CODEXHUD.expandsearch div#CODEXSEARCHINPUTHELP.helpbox,
 body.codexhelp div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
 body.codexhelp div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
     border-color: black; z-index: 260; display: block; opacity: 0.9; 

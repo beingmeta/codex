@@ -210,7 +210,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             else entry=fdjtDOM("span.completion",qid);
 	    if (tag.cssclass) addClass(entry,tag.cssclass);
             entry.setAttribute("value",qid);
-            cloud.addCompletion(entry,qid,tag);
+            cloud.addCompletion(entry,false,tag);
 	    if (tag._live) {
 		initCloudEntry();
 		return entry;}}
@@ -243,6 +243,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 fdjtDOM("span.showless","fewer"));
         if (showall) showall.onclick=showempty_ontap;
         return showall;}
+    Codex.UI.getShowAll=getShowAll;
 
     function organize_tags(tags,scores,knodule,sourcedb){
         var min_score=false, max_score=false;
@@ -276,7 +277,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     /* Getting query cloud */
 
     function queryCloud(query){
-        if (query.cloud) return query.cloud;
+        if (Codex.mode==="expandsearch") return Codex.empty_cloud;
+        else if (query.cloud) return query.cloud;
         else if ((query.tags.length)===0) {
             query.cloud=Codex.empty_cloud;
             return query.cloud;}

@@ -2176,6 +2176,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXATTACHCANCEL": {click: addlink_cancel},
          "#CODEXGLOSSCLOUD": {click: Codex.UI.handlers.glosscloud_ontap},
          "#CODEXSHARECLOUD": {click: outlet_tapped},
+         "#CODEXFULLCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXHELPBUTTON": {
              click: toggleHelp, mousedown: cancel,mouseup: cancel},
@@ -2264,6 +2265,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXATTACHOK": {click: addlink_action},
          "#CODEXATTACHCANCEL": {click: addlink_cancel},
          "#CODEXGLOSSCLOUD": {tap: Codex.UI.handlers.glosscloud_ontap},
+         "#CODEXFULLCLOUD": {tap: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXSEARCHCLOUD": {tap: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXSHARECLOUD": {tap: outlet_tapped},
          "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
