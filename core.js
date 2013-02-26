@@ -282,7 +282,7 @@ var Codex=
                 return query;}}
         Query.prototype=new Knodule.TagQuery();
         Query.prototype.dbs=[Codex.glossdb,Codex.docdb];
-        Query.prototype.slots={"tags": 4,"^tags": 2,"+tags": 8,"^+tags": 4};
+        Query.prototype.weights={"tags": 4,"^tags": 2,"+tags": 8,"^+tags": 4};
         Query.prototype.uniqueids=true;
         Codex.Query=Query;
 
