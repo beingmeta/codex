@@ -1732,21 +1732,7 @@ Codex.Startup=
                                  Codex.sortCloud(gloss_cloud,eq.tagfreqs);
                                  Codex.sizeCloud(gloss_cloud,eq.tagscores,eq.tagfreqs,false);});}
         
-        var KnoduleAddTags=Knodule.addTags;
-        function addTags(nodes,tags){
-            var docdb=Codex.docdb, tagdb=Codex.knodule;
-            if (!(nodes instanceof Array)) nodes=[nodes];
-            KnoduleAddTags(nodes,tags,docdb,tagdb);
-            var i=0, lim=nodes.length; while (i<lim) {
-                var node=nodes[i++];
-                if (!(node.toclevel)) continue;
-                var passages=docdb.find('head',node);
-                if ((passages)&&(passages.length))
-                    KnoduleAddTags(passages,tags,docdb,tagdb,"^tags");
-                var subheads=docdb.find('heads',node);
-                if ((subheads)&&(subheads.length))
-                    addTags(subheads,tags);}};
-        Codex.addTags=addTags;
+        var addTags=Codex.addTags;
         
         /* Using the autoindex generated during book building */
         function useIndexData(autoindex,knodule,baseweight,whendone){
@@ -1813,8 +1799,6 @@ Codex.Startup=
         Codex.useIndexData=useIndexData;
         
         /* Applying various tagging schemes */
-
-        var addTag=Codex.addTag;
 
         function applyTagSpans() {
             startupMessage("Applying inline tags");

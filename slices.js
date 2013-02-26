@@ -493,7 +493,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             i++;}
         if (!(sort)) {}
         else if (scores)
-            notes.sort(function sortbyscore(n1,n2){
+            notes.sort(function sortbyscoreloc(n1,n2){
                 // Sort by score first (any score beats no score)
                 //  and then by location within the book and then
                 //  by timestamp.
@@ -504,39 +504,46 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     else if (s2>s1) return 1;}
                 else if (s1) return -1;
                 else if (s2) return 1;
-                // This should put passage matches first, so that they
-                // appear just beneath the idhead
+                // We fall through if the scores are the same, so then
+                //  we sort on other properties
+
+                // This should put passage (scanInfo rather than
+                // Gloss) matches first, so that they appear just
+                // beneath the idhead
                 if (n1.frag===n2.frag) {
                     if (n1 instanceof scanInfo) return -1;
                     else if (n2 instanceof scanInfo) return 1;}
-                if (n1.starts_at<n2.starts_at) return -1;
+                else if (n1.starts_at<n2.starts_at) return -1;
                 else if (n1.starts_at>n2.starts_at) return 1;
                 else if (n1.ends_at<n2.ends_at) return -1;
                 else if (n1.ends_at>n2.ends_at) return 1;
-                else if ((n1.tstamp)&&(n2.tstamp)) {
-                    if (n1.tstamp>n2.tstamp) return -1;
-                    else if (n1.tstamp>n2.tstamp) return 1;
-                    else return 0;}
-                else if (n1.tstamp) return 1;
-                else if (n2.tstamp) return -1;
-                else return 0;});
-        else notes.sort(function(n1,n2){
-            // This puts passage matches first, so that they
-            // appear just beneath the passage reference.
+                else {
+                    var t1=n1.modified||n1.created;
+                    var t2=n2.modified||n2.created;
+                    if (!(t1)) return -1;
+                    else if (!(t2)) return 1;
+                    else if (t1<t2) return -1;
+                    else if (t2===t1) return 0;
+                    else return 1;}});
+        else notes.sort(function sortbyscoreloc(n1,n2){
+            // This should put passage matches (scanInfo rather than
+            // Gloss) first, so that they appear just beneath the
+            // idhead
             if (n1.frag===n2.frag) {
                 if (n1 instanceof scanInfo) return -1;
                 else if (n2 instanceof scanInfo) return 1;}
-            if (n1.starts_at<n2.starts_at) return -1;
+            else if (n1.starts_at<n2.starts_at) return -1;
             else if (n1.starts_at>n2.starts_at) return 1;
             else if (n1.ends_at<n2.ends_at) return -1;
             else if (n1.ends_at>n2.ends_at) return 1;
-            else if ((n1.tstamp)&&(n2.tstamp)) {
-                if (n1.tstamp>n2.tstamp) return -1;
-                else if (n1.tstamp>n2.tstamp) return 1;
-                else return 0;}
-            else if (n1.tstamp) return 1;
-            else if (n2.tstamp) return -1;
-            else return 0;});
+            else {
+                var t1=n1.modified||n1.created;
+                var t2=n2.modified||n2.created;
+                if (!(t1)) return -1;
+                else if (!(t2)) return 1;
+                else if (t1<t2) return -1;
+                else if (t2===t1) return 0;
+                else return 1;}});
         
         var headelt=false; var threadelt=false;
         var curhead=false; var curinfo=false;
