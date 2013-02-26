@@ -74,7 +74,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var log=fdjtLog;
     var kbref=RefDB.resolve;
 
-    function makeCloud(tags,scores,freqs,completions,init_dom) {
+    function makeCloud(tags,scores,freqs,n,completions,init_dom) {
         var start=new Date();
         var sourcedb=Codex.sourcedb;
         var knodule=Codex.knodule;
@@ -123,7 +123,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var span=cloudSpan(completions,dterm,scores,freqs,score_sum/n_terms);
             dom.appendChild(span);
             dom.appendChild(document.createTextNode(" "));}
-        sizeCloud(completions,scores,freqs,false);
+        sizeCloud(completions,scores,freqs,n,false);
 
         var end=new Date();
         if (Codex.Trace.clouds)
@@ -284,7 +284,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return query.cloud;}
         else {
             var cotags=query.getCoTags();
-            var completions=makeCloud(cotags,query.tagscores,query.tagfreqs);
+            var completions=makeCloud(
+                cotags,query.tagscores,query.tagfreqs,query.results.length);
             var cloud=completions.dom;
             cloud.onclick=searchcloud_ontap;
             var n_refiners=cotags.length;
@@ -422,16 +423,20 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         return ((logroot(v)-logroot(min))/(logroot(max)-logroot(min)));}
     function cloudWeight(v,min,max){
         var log=Math.log;
+        return ((log(v)-log(min))/(log(max)-log(min)));}
+    function cloudWeight(v,min,max){
+        var log=Math.log;
         return (log(v-min))/(log(max-min));}
     function cloudWeight(v,min,max){
         var log=Math.log;
         var norm=v-min, range=log(max)*max-log(min)*min;
         return log(norm)*norm/range;}
     function cloudWeight(v,min,max){
-        var log=Math.log;
-        return ((log(v)-log(min))/(log(max)-log(min)));}
+        var fcn=Math.sqrt;
+        var norm=v-min, range=fcn(max)-fcn(min);
+        return fcn(norm)/range;}
 
-    function sizeCloud(cloud,scores,freqs,cuethresh){
+    function sizeCloud(cloud,scores,freqs,n,cuethresh){
         var values=cloud.values, byvalue=cloud.byvalue;
         var elts=new Array(values.length), vscores=new Array(values.length);
         var i=0, lim=values.length, min_score=-1, max_score=0, score_sum=0;
@@ -442,6 +447,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             cuethresh=score_sum/values.length;}
         var global_scores=Codex.empty_query.tagscores;
         var total_results=Codex.empty_query.results.length;
+        var tagweights=Codex.tagweights;
         i=0; while (i<lim) {
             var value=values[i], score=scores.get(value);
             var elt=elts[i]=byvalue.get(value);
@@ -450,29 +456,42 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 addClass(elt,"cue");
             if (score) {
                 if (scores!==global_scores) 
-                    score=(score*score)/global_scores.get(value);
+                    score=(score/n)/(global_scores.get(value)/total_results);
+                else if (typeof value === "string") {
+                    if (Codex.tagweights.get(value))
+                        score=((freqs.get(value)/total_results)/
+                               (tagweights.get(value)));
+                    else score=0.01;}
                 else {
-                    var valstring=((typeof value === "string")?(value):
-                                   (value.dterm));
-                    if (Codex.tagweights.get(valstring))
-                        score=((score/total_results)/
-                               (Codex.tagweights.get(valstring)));
-                    else score=0.001;}
+                    var tw=((value.dterm)&&(tagweights.get(value.dterm)))||
+                        ((value.norm)&&(tagweights.get(value.norm)));
+                    if ((!(tw))&&(value.EN)) {
+                        var synonyms=value.EN;
+                        if (!(synonyms instanceof Array)) synonyms=[synonyms];
+                        var s=0, slim=synonyms.length;
+                        while (s<slim) {
+                            if (tw=tagweights.get(synonyms[s++])) break;}}
+                    if (tw) 
+                        score=((score/total_results)/tw);
+                    else score=0.01;}
                 vscores[i]=score;
                 if (score>max_score) max_score=score;
                 if (min_score<0) min_score=score;
                 else if (score<min_score) min_score=score;
                 else {}}
             i++;}
+        var sqrt=Math.sqrt; var minv=sqrt(min_score), maxv=sqrt(max_score);
         i=0; while (i<lim) {
             if (vscores[i]) {
-                var factor=((vscores[i]-min_score)/(max_score-min_score));
-                var factor=cloudWeight(vscores[i],min_score,max_score);
+                // var factor=((vscores[i]-min_score)/(max_score-min_score));
+                // var factor=cloudWeight(vscores[i],min_score,max_score);
+                var factor=sqrt(vscores[i])/(maxv-minv);
                 var pct=50+150*factor;
-                // var pct=50+100*Math.sin(1.5*((vscores[i]-min_score)/max_score));
                 var node=elts[i]; var freq=freqs.get(values[i]);
                 var title=((freq)&&(freq+" items; "))+"score="+vscores[i];
-                // title=title+"; factor="+factor+"["+min_score+","+max_score+"]; "++"; pct="+pct+"%";
+                title=title+" in ["+min_score+","+max_score+"]";
+                title=title+"; factor="+factor;
+                title=title+"; pct="+pct+"%";
                 node.title=title;
                 node.style.fontSize=pct+"%";}
             i++;}}

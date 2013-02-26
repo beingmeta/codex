@@ -586,8 +586,9 @@ Codex.Startup=
                                 startupLog("Indexing tag attributes");
                                 Codex.indexTagAttributes(metadata,indexingDone);});
                         window._sbook_autoindex=false;}
-                    startupLog("Indexing assigned tags");
-                    Codex.indexTagAttributes(metadata,indexingDone);},
+                    else {
+                        startupLog("Indexing tag attributes");
+                        Codex.indexTagAttributes(metadata,indexingDone);}},
                 // Figure out which mode to start up in, based on
                 // query args to the book.
                 function(){
@@ -1735,11 +1736,13 @@ Codex.Startup=
                                          Codex.UI.getShowAll(
                                              true,search_cloud.values.length));
                                  Codex.sortCloud(search_cloud,eq.tagfreqs);
-                                 Codex.sizeCloud(search_cloud,eq.tagscores,
-                                                 eq.tagfreqs,false);
+                                 Codex.sizeCloud
+                                 (search_cloud,eq.tagscores,eq.tagfreqs,
+                                  eq.results.length,false);
                                  Codex.sortCloud(gloss_cloud,eq.tagfreqs);
-                                 Codex.sizeCloud(gloss_cloud,eq.tagscores,
-                                                 eq.tagfreqs,false);});}
+                                 Codex.sizeCloud(
+                                     gloss_cloud,eq.tagscores,eq.tagfreqs,
+                                     eq.results.length,false);});}
         
         var addTags=Codex.addTags;
         
@@ -1756,22 +1759,21 @@ Codex.Startup=
             function handleIndexEntry(tag){
                 var ids=autoindex[tag]; ntags++;
                 var occurrences=[], subsumed=[];
-                var tagtext=tag, targstart=0;
-                var bar=tagtext.indexOf('|');
+                var bar=tag.indexOf('|');
+                var taghead=tag, tagbase=tag, tagstart;
+                if (bar>0) tagbase=taghead=tag.slice(0,bar);
+                tagstart=taghead.search(/[^*~]/);
+                if (tagstart>0) tagbase=taghead.slice(tagstart);
                 if (bar>0) {
-                    var defbody=tagtext.slice(bar+1);
-                    if ((defbody.indexOf('|')<0)&&
-                        (defbody.search(":weight=")===0)) {
-                        var realtag=tagtext.slice(0,bar);
-                        var weight=parseFloat(defbody.slice(8));
-                        if (realtag[0]==="~")
-                            tagweights.set(realtag.slice(1),weight);
-                        else tagweights.set(realtag,weight);
+                    var defbody=tag.slice(bar);
+                    var field_at=defbody.search("|:weight=");
+                    if (field_at>=0) {
+                        var weight=parseFloat(defbody.slice(field_at+9));
+                        tagweights.set(tagbase,weight);
                         if (weight>maxweight) maxweight=weight;
                         if (weight<minweight) minweight=weight;
-                        tag=tagtext=realtag;}}
-                tagstart=tagtext.search(/[^*~]/);
-                if (tagstart>0) tagtext=tagtext.slice(tagstart);
+                        tag=taghead;}
+                    if (field_at===0) tag=taghead;}
                 var i=0; var lim=ids.length; nitems=nitems+lim;
                 while (i<lim) {
                     var idinfo=ids[i++];
@@ -1791,9 +1793,9 @@ Codex.Startup=
                         // If it's the regular case, we just assume that
                         if (!(info.knodeterms)) {
                             knodeterms=info.knodeterms={};
-                            knodeterms[tagtext]=terms=[];}
-                        else if (terms=knodeterms[tagtext]) {}
-                        else knodeterms[tagtext]=terms=[];
+                            knodeterms[tagbase]=terms=[];}
+                        else if (terms=knodeterms[tagbase]) {}
+                        else knodeterms[tagbase]=terms=[];
                         var j=1; var jlim=idinfo.length;
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
