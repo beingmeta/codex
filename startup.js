@@ -1267,7 +1267,7 @@ Codex.Startup=
                             info.sync);
                 else {
                     if (fdjtState.getLocal("queued("+Codex.refuri+")"))
-                        Codex.glossdb.Import(
+                        Codex.glossdb.load(
                             fdjtState.getLocal("queued("+Codex.refuri+")",true));
                     addClass(document.body,"cxNOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);
