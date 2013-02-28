@@ -620,13 +620,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return Codex.scrollers[slice.id].scrollStartY;
         else return slice.scrollTop;}
 
-    function slice_touched(evt){
+    function heart_touched(evt){
         var target=fdjtUI.T(evt);
         if (fdjt.UI.isClickable(target)) return;
-        var slice=getParent(target,".codexslice");
-        if (!(slice)) {
+        if (target===Codex.DOM.heart) {
             cancel(evt);
-            Codex.setMode(false);}}
+            Codex.setMode(false);}
+        else fdjt.UI.cancel(evt);}
 
     function slice_tapped(evt){
         var target=fdjtUI.T(evt);
@@ -2229,7 +2229,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          summary: {tap: slice_tapped,
                    hold: slice_held,
                    release: slice_released},
-         "#CODEXHEART": {touchstart: slice_touched},
+         "#CODEXHEART": {touchstart: heart_touched},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
@@ -2264,11 +2264,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXATTACHTITLE": {click: addlink_keydown},
          "#CODEXATTACHOK": {click: addlink_action},
          "#CODEXATTACHCANCEL": {click: addlink_cancel},
-         "#CODEXGLOSSCLOUD": {tap: Codex.UI.handlers.glosscloud_ontap},
-         "#CODEXALLTAGS": {tap: Codex.UI.handlers.searchcloud_ontap},
-         "#CODEXSEARCHCLOUD": {tap: Codex.UI.handlers.searchcloud_ontap},
-         "#CODEXSHARECLOUD": {tap: outlet_tapped},
-         "#HIDESPLASHCHECKSPAN" : {tap: hideSplashToggle},
+         "#CODEXGLOSSCLOUD": {click: Codex.UI.handlers.glosscloud_ontap},
+         "#CODEXALLTAGS": {click: Codex.UI.handlers.searchcloud_ontap},
+         "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
+         "#CODEXSHARECLOUD": {click: outlet_tapped},
+         "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
          /*
          "#CODEXNEXTPAGE": {click: function(evt){
              Codex.pageForward(evt); cancel(evt);}},
