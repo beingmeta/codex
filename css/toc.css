@@ -47,14 +47,20 @@ div.codextoc.codexlivehead div.head { display: block;}
 div.codextoc.codexlivehead div.codextoc { display: none;}
 div.codextoc.codexlivehead div.codextoc.codexlivehead { display: block;}
 div.codextoc div.spanbar div.codexhudspan a.brick {
-    border: solid darkblue 1px; border-left: 0px;
+    border: 0px; border-right: solid darkblue 1px;
+    text-align: center; color: red;
     cursor: crosshair;}
-div.codextoc div.spanbar div.codexhudspan:first-child a.brick {
-    border-left: 1px;}
+div.codextoc div.spanbar div.codexhudspan.codexfirstspan a.brick {
+    border-left: solid black 1px;}
 div.codextoc div.spanbar div.codexhudspan.codexlastspan a.brick {
+    border-right: solid black 1px;}
+div.codextoc.toc0 > div.spanbar div.codexhudspan.codexfirstspan a.brick {
+    border-left: 0px;}
+div.codextoc.toc0 > div.spanbar div.codexhudspan.codexlastspan a.brick {
     border-right: 0px;}
+
 div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
-    background-color: lightblue; z-index: 0;}
+    background-color: rgba(0,0,255,0.3); z-index: 0;}
 
 div.codextoc div.sub {
     display: none; clear: both;}
@@ -101,11 +107,11 @@ div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.spanbar {
 div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.spanbar div.spans {
     left: 0px;}
 
-div.codextoc .sectname.cohi { background-color: gold;}
+div.codextoc .sectname.cohi { background-color: silver;}
 div.codextoc .sectname { color: darkblue; cursor: crosshair;}
 div.codextoc div.sub a.sectname { 
   color: darkblue; font-size: 80%; white-space: nowrap;}
-div.codextoc div.sub a.sectname.cohi { background-color: gold; }
+div.codextoc div.sub a.sectname.cohi { background-color: silver; }
 
 div#CODEXHUD div.codextoc div.head { display: none;}
 div#CODEXHUD div.codextoc div.head { display: none;}
@@ -148,22 +154,29 @@ div#CODEXTOC div.spanbar, div#CODEXFLYTOC div.spanbar {
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexlivehead {
     z-index: 0;}
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
-    border-color: lightblue; border-right-color: darkblue;
-    border-bottom: dotted 1px gray;}
+    border-color: rgba(0,0,255,0.3); border-right-color: darkblue;}
 
-div#CODEXTOC div.spanbar { height: 52px;}
+div#CODEXTOC div.spanbar { height: 46px;}
 div#CODEXTOC div.spanbar > div.spans {
-    border-top: solid lightblue 12px; height: 40px; }
+    border-top: solid rgba(0,0,255,0.3) 4px;
+    border-bottom: solid rgba(0,0,255,0.3) 4px;
+    height: 40px; }
 div#CODEXTOC div.spanbar div.codexhudspan {
     height: 40px; z-index: 50;}
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
-    height: 38px;}
+    height: 40px;}
 div#CODEXTOC div.spanbar div.progressbox {
-    vertical-align: top; height: 45px; border-top: solid red 7px;
+    vertical-align: top; height: 45px;
+    border-top: solid red 3px;
+    border-bottom: solid red 3px;
     bottom: 1px;}
 div#CODEXTOC div.spanbar div.spans { font-size: 30px;}
 div#CODEXTOC div.spanbar div.spans a.codextitle {
     white-space: nowrap; height: 36px;}
+/*
+div#CODEXTOC div.spanbar div.spans a.codextitle:before {
+    content: "·"; color: red;}
+*/
 
 div.spanbar div.progressbox { 
     margin: 0px; padding: 0px; border: 0px; vertical-align: top;
@@ -187,7 +200,7 @@ div.codexhudspan a.brick.cohi {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexheld a.brick {
-    background-color: gold;
+    background-color: silver;
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
@@ -234,7 +247,9 @@ div.codextoc div.spanbar div.spans
 body.cxPREVIEW div.codextoc.codexheld div.spanbar div.spans
     a.codextitle.codexlivehead { display: none;}
 body.cxPREVIEW div.codextoc.codexheld div.spanbar div.spans
-    a.codextitle.codexpreviewtitle { display: block;}
+    a.codextitle.codexpreviewtitle {
+        color: yellow;
+        display: block;}
 div.spanbar div.codexhudspan {
   background-color: transparent; clear: none; position: absolute;
   margin: 0px; padding: 0px; border: 0px;
@@ -252,7 +267,10 @@ div.spanbar div.codexhudspan.current {
 div#CODEXHUD div.codextoc { 
   margin-left: 16px; margin-right: 16px;}
 div#CODEXHUD div#CODEXTOC div.codextoc { 
-  margin-left: 0px; margin-right: 0px;}
+  margin-left: 0.5em; margin-right: 0.5em;}
+div#CODEXHUD div#CODEXTOC div.codextoc.toc0 { 
+  margin-left: 0px; margin-right: 0px;
+  border-right: 0px; border-left: 0px;}
 div#CODEXHUD div.codextoc.toc0 {
   margin-left: 0px; margin-right: 0px;}
 
@@ -262,31 +280,31 @@ div.spanbar div.spans {
 
 /* Handling preview mode */
 
-body.cxPREVIEW #CODEXHUD div.spanbar div.spans {
-    opacity: 0.05;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
-    filter: alpha(opacity=10);
-    -webkit-opacity: 0.10;
-    -khtml-opacity: 0.10;
-    -moz-opacity: 0.10;
-    -o-opacity: 0.10;}
-body.cxPREVIEW #CODEXHUD div.spanbar.codexvisible div.spans {
+body.cxPREVIEW #CODEXHUD div.spanbar {
+    opacity: 0.03;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=03)";
+    filter: alpha(opacity=03);
+    -webkit-opacity: 0.03;
+    -khtml-opacity: 0.03;
+    -moz-opacity: 0.03;
+    -o-opacity: 0.03;}
+body.cxPREVIEW #CODEXHUD div.spanbar.codexvisible {
     visibility: visible;
-    opacity: 1.0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    opacity: 0.25;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
     filter: alpha(opacity=100);
-    -webkit-opacity: 1.00;
-    -khtml-opacity: 1.00;
-    -moz-opacity: 1.00;
-    -o-opacity: 1.00;}
+    -webkit-opacity: 0.25;
+    -khtml-opacity: 0.25;
+    -moz-opacity: 0.25;
+    -o-opacity: 0.25;}
 body.cxPREVIEW #CODEXHUD div.codextoc > div.head {
     opacity: 0.05;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
-    filter: alpha(opacity=10);
-    -webkit-opacity: 0.10;
-    -khtml-opacity: 0.10;
-    -moz-opacity: 0.10;
-    -o-opacity: 0.10;}
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=05)";
+    filter: alpha(opacity=05);
+    -webkit-opacity: 0.05;
+    -khtml-opacity: 0.05;
+    -moz-opacity: 0.05;
+    -o-opacity: 0.05;}
 body.cxPREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
     opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -296,26 +314,26 @@ body.cxPREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
     -moz-opacity: 0;
     -o-opacity: 0;}
 body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
-    opacity: 0.1;
+    opacity: 0.10;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+    filter: alpha(opacity=10);
+    -webkit-opacity: 0.10;
+    -khtml-opacity: 0.10;
+    -moz-opacity: 0.10;
+    -o-opacity: 0.10;}
+body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
+    opacity: 0.40;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
     filter: alpha(opacity=40);
     -webkit-opacity: 0.40;
     -khtml-opacity: 0.40;
     -moz-opacity: 0.40;
     -o-opacity: 0.40;}
-body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
-    opacity: 0.4;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-    filter: alpha(opacity=60);
-    -webkit-opacity: 0.60;
-    -khtml-opacity: 0.60;
-    -moz-opacity: 0.60;
-    -o-opacity: 0.60;}
 
 /* The first one is special, doesn't need a top border to indicate
    hierarchy */
 
-div#CODEXTOC div.codextoc.toc0 > div.spanbar { height: 40px;}
+div#CODEXTOC div.codextoc.toc0 > div.spanbar { height: 44px;}
 div#CODEXTOC div.codextoc.toc0 > div.spanbar > div.spans {
     border-top-width: 0px;}
 div#CODEXTOC div.codextoc.toc0 >
@@ -325,18 +343,20 @@ div#CODEXTOC div.codextoc.toc0 >
    div.spanbar div.progressbox {
     height: 38px; border-top: solid transparent 1px;}
 
-/* The bottom tocspan in a stack */
-div#CODEXTOC div.codextoc.codexcxthead > div.spanbar > div.spans
-   a.brick.codexlivehead {
-       border-bottom: solid darkblue 1px;}
-div#CODEXTOC div.codextoc.codexcxthead > div.spanbar div.progressbox {
-       height: 39px;}
-
 /* No confusing underlines in the CODEXTOC */
 
-#CODEXHUD #CODEXTOC a { color: black;}
-#CODEXHUD #CODEXTOC a:visited { color: black;}
-#CODEXHUD #CODEXTOC a:hover { color: blue; text-decoration: none;}
+#CODEXHUD #CODEXTOC a, #CODEXHUD #CODEXTOC a:visited, #CODEXHUD #CODEXTOC a:hover {
+    color: blue;}
+#CODEXHUD #CODEXTOC a.codexpreviewtitle,
+#CODEXHUD #CODEXTOC a.codexpreviewtitle:visited,
+#CODEXHUD #CODEXTOC a.codexpreviewtitle:hover {
+    color: black;}
+
+#CODEXHUD #CODEXTOC a.brick { color: transparent; font-weight: bold;}
+#CODEXHUD #CODEXTOC a.brick:visited, #CODEXHUD #CODEXTOC a.brick:hover {
+    color: transparent;}
+#CODEXHUD #CODEXTOC a.brick.codexlivehead { }
+#CODEXHUD #CODEXTOC a:hover { text-decoration: none;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

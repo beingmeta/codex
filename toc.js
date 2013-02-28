@@ -181,7 +181,8 @@ Codex.TOC=
         function generate_span(sectnum,subsection,title,
                                spanstart,spanend,len,name,pstart){
             var spanlen=spanend-spanstart;
-            var anchor=fdjtDOM("A.brick","\u00A0");
+            // var anchor=fdjtDOM("A.brick","\u00A0");
+            var anchor=fdjtDOM("A.brick","·");
             var span=fdjtDOM("DIV.codexhudspan",anchor);
             var width=(Math.round(100000000*(spanlen/len))/1000000);
             var left=(Math.round(100000000*((spanstart-pstart)/len))/1000000);
