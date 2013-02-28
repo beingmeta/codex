@@ -218,18 +218,20 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         return entry;}
     Codex.cloudEntry=cloudEntry;
     
-    function addTag2Cloud(tag,cloud,kb){
+    function addTag2Cloud(tag,cloud,kb,scores,freqs,thresh){
         if (!(tag)) return;
         else if (tag instanceof Array) {
             var i=0; var lim=tag.length;
-            while (i<lim) addTag2Cloud(tag[i++],cloud);
+            while (i<lim) addTag2Cloud(tag[i++],cloud,kb,scores,freqs,thresh);
             return;}
         else {
             var container=cloud.dom;
-            var ref=((typeof tag === 'string')?
-                     ((RefDB.resolve(tag,kb||Codex.knodule,Knodule,false))||(tag)):
-                     (tag));
-	    var entry=cloudEntry(cloud,ref);
+            var tagref=(((typeof tag === 'string')&&(kb))?
+                        ((RefDB.resolve(tag,kb||Codex.knodule,Knodule,false))||(tag)):
+                        (tag));
+	    var entry=((scores)?
+                       (cloudSpan(cloud,tagref,scores,freqs,thresh)):
+                       (cloudEntry(cloud,tagref)));
 	    if (!(hasParent(entry,container))) fdjtDOM(container,entry," ");
 	    return entry;}}
     Codex.addTag2Cloud=addTag2Cloud;
@@ -526,7 +528,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (fdjtDOM.inherits(target,".maxcompletemsg")) {
             var completions=getParent(target,".completions");
             fdjtID("CODEXSEARCHINPUT").focus();
-            fdjtDOM.toggleClass(container,"showall");
+            fdjtDOM.toggleClass(container,"showempty");
             fdjtDOM.cancel(evt);}
         else {}}
     Codex.UI.handlers.searchcloud_ontap=searchcloud_ontap;

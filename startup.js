@@ -1715,10 +1715,12 @@ Codex.Startup=
             Codex.empty_query.results=
                 [].concat(Codex.glossdb.allrefs).concat(Codex.docdb.allrefs);
             var searchtags=Codex.searchtags=Codex.empty_query.getCoTags();
-            var tagfreqs=Codex.empty_query.tagfreqs;
-            var max_freq=Codex.empty_query.max_freq;
+            var empty_query=Codex.empty_query;
+            var tagscores=empty_query.tagscores;
+            var tagfreqs=empty_query.tagfreqs;
+            var max_freq=empty_query.max_freq;
             fdjtTime.slowmap(function(tag){
-                addTag2Cloud(tag,search_cloud);
+                addTag2Cloud(tag,search_cloud,Codex.knodule,tagscores,tagfreqs,false);
                 if ((tag instanceof Knode)||
                     ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
                     addTag2Cloud(tag,gloss_cloud);},

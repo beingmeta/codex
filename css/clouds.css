@@ -65,8 +65,13 @@ div#CODEXHUD .completions span.sectname {
   -moz-border-radius: 6px; 
   border-radius: 6px;}
 
-div#CODEXHUD .completions.showall span.dterm {display: inline;}
-div#CODEXHUD .completions.showall span.dterm.singleton {display: none;}
+div#CODEXHUD .completions.showempty.noinput span.completion.singleton {
+    display: none;}
+div#CODEXHUD .completions.showempty.noinput span.completion.singleton.cue,
+div#CODEXHUD .completions.showempty.noinput span.completion.singleton.prime {
+    display: inline;}
+div#CODEXHUD .completions.showempty.noinput span.completion.singleton.dterm {
+    display: inline;}
 div#CODEXHUD .completions { }
 div#CODEXHUD .completions .completion.prime { 
     font-weight: bold;}
