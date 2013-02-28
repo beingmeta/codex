@@ -55,7 +55,7 @@ Codex.Paginate=
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
-        var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+        var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
         var CodexLayout=fdjt.CodexLayout;
 
         var getGeometry=fdjtDOM.getGeometry;

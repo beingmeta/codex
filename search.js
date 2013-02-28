@@ -52,7 +52,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
-    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+    var fdjtID=fdjt.ID;
     var RefDB=fdjt.RefDB, Ref=fdjt.Ref, Query=RefDB.Query; 
     var KNode=Knodule.KNode;
 

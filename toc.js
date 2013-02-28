@@ -52,7 +52,7 @@ Codex.TOC=
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
-        var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+        var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
         
         var cxicon=Codex.icon;
         function navicon(kind){

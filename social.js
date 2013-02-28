@@ -53,7 +53,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
-    var fdjtKB=fdjt.KB, fdjtID=fdjt.ID;
+    var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
 
     var sbook_sources=false;
     var sbook_glosses_target=false;
@@ -72,7 +72,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     /* Social UI components */
 
     function addSource(info,withgloss){
-        if (typeof info === 'string') info=fdjtKB.ref(info);
+        if (typeof info === 'string') info=RefDB.resolve(info);
         var humid=info.humid;
         if (!(info.name)) return;
         if (withgloss) {
@@ -246,7 +246,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (glosses) {
             var i=0; var n=glosses.length;
             while (i<n) {
-                var gloss=fdjtKB.ref(glosses[i++],Codex.glossdb);
+                var gloss=RefDB.ref(glosses[i++],Codex.glossdb);
                 if ((!(gloss))||(!(gloss.frag))) continue;
                 if ((!excerpt)&&(gloss.excerpt)) excerpt=gloss.excerpt;
                 var card=Codex.renderCard(gloss);
