@@ -907,7 +907,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
         dropClass(form.parentNode,"submitting");
         var json=JSON.parse(req.responseText);
-        var ref=Codex.glossdb.Import(json);
+        var ref=Codex.glossdb.Import(
+            json,((RefDB.REFINDEX)|(RefDB.REFSTRINGS)|(RefDB.REFLOAD)));
         var reps=document.getElementsByName(ref._id);
         var i=0, lim=reps.length;
         while (i<lim) {
