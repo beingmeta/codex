@@ -36,8 +36,8 @@ div#CODEXHUD div.completions div.doc {
     display: none;}
 
 div#CODEXHUD .completions .showall {
-    background-color: lightgray; 
-    float: right; font-size: 150%; width: 3em; padding: 8px;
+    background-color: lightgray; float: right;
+    font-size: 150%; width: 3em; padding: 8px;
     margin-right: 8px; margin-bottom: 6px;
     border: solid black 2px; border-radius: 0.5em;
     -o-border-radius: 0.5em; -webkit-border-radius: 0.5em; 

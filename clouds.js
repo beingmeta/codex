@@ -238,8 +238,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var showall=(use_cues)&&
             fdjtDOM(
                 "span.showall",
-                fdjtDOM("span.showmore","all",
-                        ((how_many)&&(" ("+how_many+")"))),
+                fdjtDOM("span.showmore","all"), 
+                // ((how_many)&&(" ("+how_many+")"))
                 fdjtDOM("span.showless","fewer"));
         if (showall) showall.onclick=showempty_ontap;
         return showall;}
