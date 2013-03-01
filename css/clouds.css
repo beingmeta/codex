@@ -15,6 +15,7 @@ div.completions .label {
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
 div.completions .completion:hover { text-decoration: underline; }
+div.completions .completion.disabled:hover { text-decoration: none; }
 
 div.completions .cloudtoggle {
     float: right; display: none;}
@@ -54,6 +55,8 @@ div#CODEXHUD .completions span.sep {
   color: purple; vertical-align: middle;}
 div#CODEXHUD .completions span.completion {
     cursor: pointer; padding-right: 0.5em;}
+div#CODEXHUD .completions span.completion.disabled {
+    cursor: default; opacity: 0.5;}
 div#CODEXHUD .completions span.sectname {
   white-space: nowrap;
   font-weight: bold; font-style: italic;  font-size: 70%;

@@ -816,7 +816,8 @@ Codex.setMode=
                 // This marks where we are currently scanning
                 if (pelt) dropClass(pelt,"codexscanpoint");
                 if (src) addClass(src,"codexscanpoint");
-                if (expanded) addClass("CODEXSCANNER","expanded");
+                if (typeof expanded === "undefined") {}
+                else if (expanded) addClass("CODEXSCANNER","expanded");
                 else dropClass("CODEXSCANNER","expanded");
                 Codex.scanning=src;}
             else {}

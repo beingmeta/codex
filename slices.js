@@ -83,7 +83,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (overdoc) shared=RefDB.remove(shared,(overdoc._qid||overdoc._id));
         var body=
             fdjtDOM("div.codexcardbody",
-                    // (makelocrule(target_info,target_info.head)),
                     (((info.maker)||(info.tstamp))?(showglossinfo(info)):
                      (showdocinfo(info)))," ",
                     ((standalone)&&(showtocloc(target_info))),
@@ -112,7 +111,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             body.title=
             "gloss from "+(((makerinfo)&&(makerinfo.name))||"someone")+
             " at "+fdjtTime.shortString(tstamp);
-        else div.title=Codex.getTitle(target,true);
+        else {} // div.title=Codex.getTitle(target,true);
         div.about="#"+info.frag;
         // div.setAttribute('about',"#"+info.id);
         if (idprefix) div.id=idprefix+info.id;
@@ -428,6 +427,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         locrule.style.left=((location_start/cxt_len)*100)+"%";
         return locrule;}
     function makelocrule(target_info,cxtinfo,spec){
+        var tocrule=(!(cxtinfo));
         if (!(cxtinfo)) cxtinfo=Codex.docinfo[Codex.content.id];
         var locrule=fdjtDOM(spec||"hr.locrule");
         var cxt_start=cxtinfo.starts_at;
@@ -439,10 +439,31 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Math.ceil((target_start/cxt_len)*100)+"% along";
         locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
         locrule.locstring=locstring+".";
-        locrule.title=locstring+": click or hold to glimpse";
+        locrule.title=
+            ((tocrule)?("this section in the book"):
+            ("this passage in the section, "))+
+            locstring+": click or hold to glimpse";
         locrule.style.width=((target_len/cxt_len)*100)+"%";
         locrule.style.left=((target_start/cxt_len)*100)+"%";
         return locrule;}
+    function makelocstring(target_info,cxtinfo,spec){
+        var tocrule=(!(cxtinfo));
+        if (!(cxtinfo)) cxtinfo=Codex.docinfo[Codex.content.id];
+        var locrule=fdjtDOM(spec||"hr.locrule");
+        var cxt_start=cxtinfo.starts_at;
+        var cxt_end=cxtinfo.ends_at;
+        var cxt_len=cxt_end-cxt_start;
+        var target_start=target_info.starts_at-cxt_start;
+        var target_len=target_info.ends_at-target_info.starts_at;
+        var locstring="~"+Math.ceil(target_len/5)+ " words long ~"+
+            Math.ceil((target_start/cxt_len)*100)+"% along";
+        if (tocrule)
+            return "this section is ~"+Math.ceil(target_len/7)+
+            " words long and ~"+Math.ceil((target_start/cxt_len)*100)+
+            "% into the book";
+        else return "this passage is ~"+Math.ceil(target_len/7)+
+            " words long and ~"+Math.ceil((target_start/cxt_len)*100)+
+            "% into the section";}
 
     function glossaction(evt){
         var target=fdjtUI.T(evt), scan=target;
@@ -482,6 +503,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function showSlice(results,div,query,sort,cardclass){
         var notes=new Array(results.length);
         var scores=((query)&&(query.scores));
+        var counts=((query)&&(query.counts));
         var i=0; var lim=results.length;
         while (i<lim) {
             var r=results[i];
@@ -497,8 +519,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 // Sort by score first (any score beats no score)
                 //  and then by location within the book and then
                 //  by timestamp.
-                var s1=(scores.get(n1));
-                var s2=(scores.get(n2));
+                var s1=scores.get(n1), f1=counts.get(n1);
+                var s2=scores.get(n2), f2=counts.get(n2);
+                // Bias for frequency (number of matching tags)
+                if ((s1)&&(f1)) s1=s1*f1;
+                if ((s2)&&(f2)) s2=s2*f2;
                 if ((s1)&&(s2)) {
                     if (s1>s2) return -1;
                     else if (s2>s1) return 1;}
@@ -525,7 +550,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     else if (t1<t2) return -1;
                     else if (t2===t1) return 0;
                     else return 1;}});
-        else notes.sort(function sortbyscoreloc(n1,n2){
+        else notes.sort(function sortbyloc(n1,n2){
             // This should put passage matches (scanInfo rather than
             // Gloss) first, so that they appear just beneath the
             // idhead
@@ -565,7 +590,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 threadelt=fdjtDOM("div.codexthread.idthread");
                 // ,makeIDHead(target,headinfo,true)
                 threadelt.about="#"+frag;
-                threadelt.title=Codex.getTitle(target,true);
+                // threadelt.title=Codex.getTitle(target,true);
                 fdjtDOM.append(headelt,threadelt);
                 curinfo=docinfo;}
             var card=renderCard(note,query);
@@ -627,16 +652,18 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var tochead=fdjtDOM("div.tochead",
                             makelocrule(info,false),
                             basespan);
+        tochead.title=makelocstring(info,false);
         return tochead;}
 
     function makeIDHead(target,headinfo,locrule){
         var info=Codex.docinfo[target.id];
         var headinfo=info.head;
-        var tochead=fdjtDOM("div.idhead",
-                            makelocrule(info,headinfo),
-                            fdjtDOM("span.spacer","\u00b6"),
-                            fdjtDOM("span",sumText(target)));
-        return tochead;}
+        var idhead=fdjtDOM("div.idhead",
+                           makelocrule(info,headinfo),
+                           fdjtDOM("span.spacer","\u00b6"),
+                           fdjtDOM("span",sumText(target)));
+        idhead.title=makelocstring(info,headinfo);
+        return idhead;}
 
     function findTOCref(div,ref,loc) {
         var children=div.childNodes;
@@ -675,8 +702,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((!(idthread))||(idthread.tocref!==frag)) {
             var insertbefore=idthread;
             idthread=fdjtDOM("div.codexthread.idthread");
-            idthread.tocref=frag; idthread.starts=starts; idthread.about="#"+frag;
-            idthread.title=Codex.getTitle(about,true);
+            idthread.tocref=frag; idthread.starts=starts;
+            idthread.about="#"+frag;
+            // idthread.title=Codex.getTitle(about,true);
             idthread.setAttribute("locref",frag);
             idthread.setAttribute("locinfo",starts);
             if (insertbefore) fdjtDOM.insertBefore(insertbefore,idthread);

@@ -97,66 +97,6 @@ div#CODEXHUD.expandsearch div#CODEXSEARCHINFO,
 div#CODEXHUD.searchresults div#CODEXSEARCHINFO {
     display: block;}
 
-body div#CODEXHUD div.codexthread > div.locrule {
-    position: relative; left: 0px; bottom: 0px; z-index: 50;
-    width: 100%; min-height: 10px;}
-
-div.tochead { 
-  position: relative; /* width: 100%; */
-  background-color: silver; color: blue;
-  border-top: solid lightblue 2px; border-bottom: solid lightblue 2px;
-  text-align: left; vertical-align: middle;}
-div.tochead span.spacer, div.idhead span.spacer {
-    font-size: 125%; font-weight: bold; font-style: italic;}
-div.tochead .paratext {
-    color: darkblue; font-style: italic; padding-left: 5px;}
-div.tochead span.head {
-    font-size: 80%; padding-left: 5px; opacity: 0.75; 
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
-    filter: alpha(opacity=75);
-    -webkit-opacity: 0.75;
-    -khtml-opacity: 0.75;
-    -moz-opacity: 0.75;
-    -o-opacity: 0.75;}
-div.tochead span.headtext {
-    white-space: nowrap; font-size: 90%;}
-div.tochead hr {
-    color: lightblue; background-color: lightblue; min-width: 3px;
-    border: none; border-right: solid gold 1px; border-left: solid gold 1px;
-    position: absolute; left: 0px; top: 0px; height: 100%; 
-    padding: 0px; margin: 0px;}
-div.tochead span { z-index: 10;}
-div.tochead a { z-index: 10; color: blue;} 
-div.tochead a:hover { z-index: 10; color: darkblue;} 
-div.tochead hr[about] { cursor: crosshair;}
-
-div.idhead { 
-  position: relative; white-space: nowrap; /* width: 100%; */
-  background-color: silver; color: black;
-  text-align: left; vertical-align: middle;
-  overflow: hidden;}
-div.idhead hr {
-    color: lightblue; background-color: lightblue; min-width: 3px;
-    border-right: solid gold 1px; border-left: solid gold 1px; 
-    position: absolute; left: 0px; top: 0px; height: 100%; 
-    border: 0px; padding: 0px; margin: 0px;}
-div.idhead span {
-    z-index: 10; opacity: 0.75;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
-    filter: alpha(opacity=75);
-    -webkit-opacity: 0.75;
-    -khtml-opacity: 0.75;
-    -moz-opacity: 0.75;
-    -o-opacity: 0.75;}
-div.idhead div {
-    z-index: 10; opacity: 0.75;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
-    filter: alpha(opacity=75);
-    -webkit-opacity: 0.75;
-    -khtml-opacity: 0.75;
-    -moz-opacity: 0.75;
-    -o-opacity: 0.75;}
-
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***

@@ -357,37 +357,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function showResults(query){
         if (query.listing) return query.listing;
-        var results=query.results; var rscores=query.scores;
-        var scores={}; var sorted=[];
-        var i=0; var lim=results.length;
-        var scores=new Array(lim);
-        while (i<lim) {
-            var r=results[i++];
-            var ref=Codex.docinfo[r]||Codex.glossdb.refs[r]||kbref(r)||r;
-            if (!(ref)) continue;
-            var frag=ref.frag;
-            if (!(frag)) continue;
-            sorted.push(ref);
-            if (scores[frag]) 
-                scores[frag]=scores[frag]+(rscores[r]||1);
-            else {
-                scores[frag]=rscores[r];}
-            i++;}
-        sorted.sort(function(x,y){
-            var xfrag=x.frag; var yfrag=y.frag;
-            if (xfrag===yfrag) {}
-            else if (scores[x.frag]>scores[yfrag]) return -1;
-            else if (scores[xfrag]<scores[yfrag]) return 1;
-            var xqid=x._id; var yqid=y._id;
-            if (rscores[xqid]>rscores[yqid]) return -1;
-            else if (rscores[xqid]<rscores[yqid]) return 1;
-            var xstart=x.starts_at; var ystart=y.starts_at;
-            if (xstart<ystart) return -1;
-            else if (xstart>ystart) return 1;
-            var xend=x.ends_at; var yend=y.ends_at;
-            if (xend<yend) return -1;
-            else if (xend>yend) return 1;
-            else return 0;});
         var div=fdjtDOM("div.codexslice.sbookresults");
         fdjtUI.TapHold(div,Codex.touch);
         Codex.UI.addHandlers(div,'summary');

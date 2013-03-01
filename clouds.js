@@ -164,7 +164,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 entry.setAttribute("key",dterm);
                 entry.innerHTML=dterm;
                 var synonyms=knode[lang];
-                if ((synonyms)&&(typeof synonyms === 'string')) synonyms=[synonyms];
+                if ((synonyms)&&(typeof synonyms === 'string'))
+                    synonyms=[synonyms];
                 if (synonyms) {
                     var i=0; while (i<synonyms.length) {
                         var synonym=synonyms[i++];
@@ -301,6 +302,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     while (i<lim) addClass(compelts[i++],"cue");}}
             else addClass(cloud,"showempty");
             query.cloud=completions;
+            var tags=query.tags;
+            if (tags) {
+                var t=0, n_tags=tags.length; while (t<n_tags) {
+                    var tag=tags[t++];
+                    var e=completions.getByValue(tag);
+                    addClass(e,"disabled");}}
             return query.cloud;}}
     Codex.queryCloud=queryCloud;
     RefDB.Query.prototype.getCloud=function(){return queryCloud(this);};
@@ -438,6 +445,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var norm=v-min, range=fcn(max)-fcn(min);
         return fcn(norm)/range;}
 
+    var precString=fdjtString.precString;
+
     function sizeCloud(cloud,scores,freqs,n,cuethresh){
         var values=cloud.values, byvalue=cloud.byvalue;
         var elts=new Array(values.length), vscores=new Array(values.length);
@@ -490,10 +499,19 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 var factor=sqrt(vscores[i])/(maxv-minv);
                 var pct=50+150*factor;
                 var node=elts[i]; var freq=freqs.get(values[i]);
-                var title=((freq)&&(freq+" items; "))+"score="+vscores[i];
-                title=title+" in ["+min_score+","+max_score+"]";
-                title=title+"; factor="+factor;
-                title=title+"; pct="+pct+"%";
+                var title=((hasClass(node,"prime"))?("prime concept, "):
+                           (hasClass(node,"weak"))?("weak concept, "):
+                           (hasClass(node,"rawterm"))?("raw text, "):
+                           ("concept, "));
+                var nscore=vscores[i];
+                title=title+((freq)&&(freq+" items; "))+
+                    "score="+((nscore>0.01)?(precString(nscore,2)):
+                              (nscore>0.001)?(precString(nscore,3)):
+                              (nscore>0.0001)?(precString(nscore,4)):
+                              (nscore));
+                //title=title+" in ["+min_score+","+max_score+"]";
+                // title=title+"; factor="+factor;
+                // title=title+"; pct="+pct+"%";
                 node.title=title;
                 node.style.fontSize=pct+"%";}
             i++;}}
@@ -503,6 +521,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event;
         var target=fdjtDOM.T(evt);
         var completion=getParent(target,".completion");
+        if (hasClass(completion,"disabled")) {
+            if (Codex.Trace.gestures)
+                log("cloud tap on disabled %o",completion);
+            return;}
         if (Codex.Trace.gestures) log("cloud tap on %o",completion);
         if (completion) {
             var cinfo=Codex.query.cloud;
