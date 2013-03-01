@@ -288,10 +288,15 @@ Codex.Startup=
         Codex.updateConfig=updateConfig;
 
         Codex.addConfig("hidesplash",function(name,value){
+            var doitnow=false;
+            if ((value)&&(!(Codex.hidesplash))&&(Codex._setup)&&
+                (Codex.mode==="splash"))
+                doitnow=true;
             Codex.hidesplash=value;
             fdjtUI.CheckSpan.set(
                 document.getElementsByName("CODEXHIDESPLASH"),
-                value);});
+                value);
+            if (doitnow) Codex.setMode(false);});
         Codex.addConfig("keyboardhelp",function(name,value){
             Codex.keyboardhelp=value;
             fdjtUI.CheckSpan.set(
@@ -610,8 +615,8 @@ Codex.Startup=
                 author_tmp=document.createTextNode("");
                 aboutauthor.parentNode.replaceChild(author_tmp,aboutauthor);
                 Codex.content.appendChild(aboutauthor);}
-            
             addClass(scanmsg,"running");
+            fdjtLog("Starting to scan DOM for structure and metadata");
             var metadata=new Codex.DOMScan(Codex.content,Codex.refuri+"#");
             // fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
             Codex.docinfo=metadata;
@@ -621,6 +626,7 @@ Codex.Startup=
                 about_tmp.parentNode.replaceChild(aboutbook,about_tmp);}
             if (aboutauthor) {
                 author_tmp.parentNode.replaceChild(aboutauthor,author_tmp);}
+            fdjtLog("Finished scanning DOM for structure and metadata");
             if (Codex.scandone) {
                 var donefn=Codex.scandone;
                 delete Codex.scandone;
