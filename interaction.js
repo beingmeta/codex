@@ -303,25 +303,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         // If we're previewing, stop it and go to the page we're previewing
         //  (which was touched)
         if (Codex.previewing) {
-            if (Codex.Trace.gestures)
-                fdjtLog("ctouch: stopPreview p=%o t=%o",
-                        Codex.previewing,Codex.previewTarget);
-            // Any key stops a preview (and is ignored)
-            var previewing=Codex.previewing;
-            var ptarget=Codex.previewTarget;
-            Codex.stopPreview("content_tapped");
-            fdjtUI.TapHold.clear();
-            Codex.setHUD(false);
-            if ((target)&&(target.id)&&(Codex.docinfo[target.id]))
-                Codex.GoTo(target,"preview_secondtouch");
-            else if ((ptarget)&&(ptarget.id)&&(Codex.docinfo[ptarget.id]))
-                Codex.GoTo(ptarget,"preview_secondtouch");
-            else if (hasClass(previewing,"codexpage")) 
-                Codex.GoToPage(previewing,"preview_secondtouch");
-            else Codex.GoTo(previewing,"preview_secondtouch");
-            fdjt.UI.cancel(evt);
-            clicked=fdjtTime();
-            gesture_start=false
+            gotoPreview(target,evt);
             return false;}
 
         if ((Codex.hudup)||(Codex.mode)) {
@@ -432,6 +414,28 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else Codex.Forward(evt);
         fdjtUI.cancel(evt); gesture_start=false;
         return;}
+
+    function gotoPreview(target,evt){
+        if (Codex.Trace.gestures)
+            fdjtLog("ctouch: stopPreview p=%o t=%o",
+                    Codex.previewing,Codex.previewTarget);
+        // Any key stops a preview (and is ignored)
+        var previewing=Codex.previewing;
+        var ptarget=Codex.previewTarget;
+        Codex.stopPreview("content_tapped");
+        fdjtUI.TapHold.clear();
+        Codex.setHUD(false);
+        if ((target)&&(target.id)&&(Codex.docinfo[target.id]))
+            Codex.GoTo(target,"gotoPreview");
+        else if ((ptarget)&&(ptarget.id)&&(Codex.docinfo[ptarget.id]))
+            Codex.GoTo(ptarget,"gotoPreview");
+        else if (hasClass(previewing,"codexpage")) 
+            Codex.GoToPage(previewing,"gotoPreview");
+        else Codex.GoTo(previewing,"gotoPreview");
+        fdjt.UI.cancel(evt);
+        clicked=fdjtTime();
+        gesture_start=false
+        return false;}
 
     var selectors=[];
     var slip_timer=false;
@@ -1769,7 +1773,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtLog("pageinfo_span_hold %o t=%o gopage: %o=>%o/%o",
                     evt,target,previewing_page,gopage,Codex.pagecount);
         if (!(gopage)) {
-            fdjtLog.warn("Couldn't get page from CODEXPAGEINFO");
+            // fdjtLog.warn("Couldn't get page from CODEXPAGEINFO");
             return;}
         if (previewing_page)
             pageinfo.title=fdjtString(
@@ -1797,10 +1801,28 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.GoToPage(gopage,"pageinfo_tap",true);
         Codex.setMode(false);}
     function pageinfo_slip(evt){
-        preview_timer=setTimeout(function(){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var rel=evt.relatedTarget;
+        if ((rel)&&(hasParent(rel,Codex.body)))
+            preview_timer=setTimeout(function(){
+                var pageinfo=fdjtID("CODEXPAGEINFO");
+                pageinfo.title=""; preview_timer=false;
+                gotoPreview(rel,evt);},
+                                     400);
+        else preview_timer=setTimeout(function(){
             var pageinfo=fdjtID("CODEXPAGEINFO");
             pageinfo.title=""; preview_timer=false;
             Codex.stopPagePreview("pageinfo_slip");},
+                                      400);
+        previewing_page=false;}
+    function pageinfo_release(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        preview_timer=setTimeout(function(){
+            var pageinfo=fdjtID("CODEXPAGEINFO");
+            pageinfo.title=""; preview_timer=false;
+            Codex.stopPagePreview("pageinfo_release");},
                                  400);
         previewing_page=false;}
     

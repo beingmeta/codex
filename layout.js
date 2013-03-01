@@ -619,7 +619,7 @@ Codex.Paginate=
             if (previewing) dropClass(previewing,"previewpage");
             dropClass(getChildren(Codex.pages,".previewpage"),
                       "previewpage");
-            if (Codex.Trace.flips)
+            if ((Codex.Trace.flips)||(Codex.Trace.gestures))
                 fdjtLog("startPagePreview/%s to %o (%d) for %o",
                         caller||"nocaller",page,pagenum,spec);
             if (curpage) addClass(curpage,"hidepage");
@@ -630,7 +630,7 @@ Codex.Paginate=
             updatePageDisplay(pagenum,pageloc,"preview");}
         function stopPreview(caller){
             var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
-            if (Codex.Trace.flips)
+            if ((Codex.Trace.flips)||(Codex.Trace.gestures))
                 fdjtLog("stopPagePreview/%s from %o to %o (%d)",
                         caller||"nocaller",previewing,curpage,pagenum);
             var newpage=false;

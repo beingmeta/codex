@@ -1171,7 +1171,8 @@ Codex.Startup=
                         " pages"),
                 pages);
             
-            fdjtDOM.append(body,fdjtDOM("div#CODEXBODY",content,page));
+            Codex.body=fdjtDOM("div#CODEXBODY",content,page);
+            fdjtDOM.append(body,Codex.body);
             fdjtDOM.addClass(body,"sbook");
             sizePage(page,content);
             // Initialize the margins
