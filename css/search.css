@@ -34,7 +34,7 @@ div.searchbox div.query input[type='TEXT'] {
     max-width: 50%; min-width: 33%;
     font-size: 20px;}
 div.searchbox div.query input[type='TEXT'] {
-    background-position: left top;
+    background-position: right top;
     background-position-x: right; background-position-y: top;
     background-repeat: no-repeat;
     background-image:
