@@ -374,6 +374,7 @@ Codex.setMode=
              expandsearch: "CODEXALLTAGS",
              search: "CODEXSEARCHCLOUD",
              console: "CODEXCONSOLE",
+             glosses: "CODEXPASSAGEGLOSSES",
              // sbooksapp: "SBOOKSAPP",
              device: "CODEXSETTINGS",
              flytoc: "CODEXFLYTOC",
