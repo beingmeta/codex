@@ -563,9 +563,15 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else {}}
     function toc_held(evt){
         evt=evt||event;
+        var target=fdjtUI.T(evt);
         var about=getAbout(fdjtUI.T(evt));
         if (preview_timer) {
             clearTimeout(preview_timer); preview_timer=false;}
+        if (slip_timer) {
+            clearTimeout(slip_timer); slip_timer=false;}
+        if ((about)&&(Codex.touch)&&(hasParent(target,".sectname"))) {
+            fdjt.UI.CoHi.highlight(about);
+            return fdjtUI.cancel(evt);}
         if (about) {
             var ref=about.name.slice(3);
             var toc=getParent(about,".codextoc");
@@ -617,7 +623,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             dropClass(toc,"codexheld");}
         else if (Codex.Trace.gestures)
             fdjtLog("toc_slipped %o noabout",evt);
-        else {}}
+        else {}
+        slip_timer=setTimeout(function(){
+            slip_timer=false;
+            if (Codex.Trace.gestures) fdjtLog("toc_slipped/timeout %o",evt);
+            Codex.stopPreview("toc_slipped");},
+                              2000);}
 
     /* Slice handlers */
 
