@@ -99,6 +99,8 @@ div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC
 div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC
   div.codexlivehead > div.spanbar div.progressbox {
       display: block;}
+div#CODEXHEART div#CODEXFLYTOC div.codextoc a.brick {
+    border: solid black 1px;}
 
 div#CODEXFLYTOC div.codextoc.codexcurhead div.sub { display: none;}
 
