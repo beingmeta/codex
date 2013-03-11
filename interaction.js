@@ -443,6 +443,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var passage=Codex.getTarget(target);
+        if (Codex.Trace.gestures) 
+            fdjtLog("content_held %o p=%o p.p=%o bc=%s hc=%s",
+                    evt,passage,((passage)&&(passage.parentNode)),
+                    document.body.className,
+                    Codex.HUD.className);
         // Already selecting this target, cancel any pending slippage
         if ((hasParent(target,".fdjtselecting"))||(!(passage))||
             (selectors[passage.id])) {
@@ -467,11 +472,16 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event;
         var target=fdjtUI.T(evt);
         if (slip_timer) return;
-        slip_timer=setTimeout(abortSelect,2000);}
+        if (!(hasParent(target,".fdjtselecting")))
+            slip_timer=setTimeout(function(){
+                if (Codex.Trace.gestures)
+                    fdjtLog("content_slipped %o, aborting select",evt);
+                abortSelect();},2000);}
 
     function content_released(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
+        if (Codex.Trace.gestures) fdjtLog("content_released %o",evt);
         if (!(hasParent(target,".fdjtselecting"))) {
             abortSelect(); return;}
         var passage=Codex.getTarget(target);
