@@ -2246,6 +2246,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             keyup: onkeyup,
             keydown: onkeydown,
             keypress: onkeypress,
+            touchmove: fdjt.UI.noDefault,
             focus: codexfocus,
             blur: codexblur},
          content: {tap: content_tapped,
