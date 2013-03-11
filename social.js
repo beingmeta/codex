@@ -183,14 +183,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                   source.fbid+"/picture?type=square")));}
 
     function extendGlossmark(glossmark,glosses,bigimage){
-        var sources=Codex.sourcedb; var glosses=Codex.glossdb;
+        var sources=Codex.sourcedb; var glossdb=Codex.glossdb;
         if (!(bigimage)) bigimage=fdjtDOM.getChild(glossmark,".big");
         var images=bigimage.getAttribute("data-images").split(";");
         if ((images.length===1)&&(images[0]==="")) images=[];
         var i=0; var lim=glosses.length;
         while (i<lim) {
             var glossid=glosses[i++];
-            var gloss=glosses.ref(glossid);
+            var gloss=glossdb.ref(glossid);
             var cur=glossmark.glosses;
             var maker=((gloss.maker)&&(sources.ref(gloss.maker)));
             var maker_img=((maker)&&geticon(maker));
