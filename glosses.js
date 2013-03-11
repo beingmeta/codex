@@ -369,6 +369,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function updateExcerpt(form,sel){
         var info=sel.getInfo();
+        if (!(info)) {
+            Codex.setExcerpt(form,false);
+            return;}
         Codex.setExcerpt(form,info.string,info.off);
         var start_target=getTarget(info.start,true);
         var end_target=getTarget(info.end,true);
@@ -908,7 +911,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         dropClass(form.parentNode,"submitting");
         var json=JSON.parse(req.responseText);
         var ref=Codex.glossdb.Import(
-            json,((RefDB.REFINDEX)|(RefDB.REFSTRINGS)|(RefDB.REFLOAD)));
+            // item,rules,flags
+            json,false,((RefDB.REFINDEX)|(RefDB.REFSTRINGS)|(RefDB.REFLOAD)));
         var reps=document.getElementsByName(ref._id);
         var i=0, lim=reps.length;
         while (i<lim) {
