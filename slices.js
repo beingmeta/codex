@@ -792,7 +792,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             dropClass(results_div,"sourced");
             dropClass(fdjt.$(".sourced",results_div),"sourced");
             return;}
-        selectSourcesRecur(results_div,sources);
+        var sourcerefs=[], sourcedb=Codex.sourcedb;
+        var i=0; var lim=sources.length; while (i<lim) {
+            var source=sourcedb.ref(sources[i++]);
+            if (source) sourcerefs.push(source);}
+        selectSourcesRecur(results_div,sourcerefs);
         if (Codex.target) scrollGlosses(Codex.target,results_div);}
     Codex.UI.selectSources=selectSources;
 
