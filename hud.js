@@ -262,7 +262,7 @@ Codex.setMode=
             if (Codex.Trace.startup) fdjtLog("Updating scrollers");
             fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));
 
-            if (Codex.touch) fdjtDOM.append(Codex.DOM.foot,fdjt.ID("CODEXTOC"));
+            // if (Codex.touch) fdjtDOM.append(Codex.DOM.foot,fdjt.ID("CODEXTOC"));
 
             fdjtLog("Initialized basic HUD layout");}
         Codex.initHUD=initHUD;
