@@ -613,6 +613,7 @@ Codex.Paginate=
             var page=((spec.nodeType)&&(getParent(spec,".codexpage")))||
                 Codex.layout.getPage(spec)||
                 Codex.layout.getPage(1);
+            if (!(page)) return;
             var pagenum=parseInt(page.getAttribute("data-pagenum"));
             var pageloc=parseInt(page.getAttribute("data-sbookloc"));
             if (previewing===page) return;
