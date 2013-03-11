@@ -797,6 +797,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var source=sourcedb.ref(sources[i++]);
             if (source) sourcerefs.push(source);}
         selectSourcesRecur(results_div,sourcerefs);
+        Codex.UI.updateScroller(results_div);
         if (Codex.target) scrollGlosses(Codex.target,results_div);}
     Codex.UI.selectSources=selectSources;
 
