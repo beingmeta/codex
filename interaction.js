@@ -470,14 +470,15 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function content_slipped(evt){
         evt=evt||event;
-        var target=fdjtUI.T(evt);
-        if (slip_timer) return;
-        if (!(hasParent(target,".fdjtselecting")))
+        var target=fdjtUI.T(evt), rel=evt.relatedTarget;
+        if ((rel)&&(!(hasParent(rel,".fdjtselecting")))) {
+            if (slip_timer) return;
             slip_timer=setTimeout(function(){
+                slip_timer=false;
                 if (Codex.Trace.gestures)
                     fdjtLog("content_slipped %o, aborting select",evt);
-                abortSelect();},2000);}
-
+                abortSelect();},2000);}}
+    
     function content_released(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -605,7 +606,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.stopPreview("toc_released");}
         else if (Codex.Trace.gestures)
             fdjtLog("toc_released %o noabout",evt);
-        else {}}
+        else {
+            Codex.stopPreview("toc_released");}}
     function toc_slipped(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -625,12 +627,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (Codex.Trace.gestures)
             fdjtLog("toc_slipped %o noabout",evt);
         else {}
-        if (!(hasParent(target,".codextoc")))
+        var rel=evt.relatedTarget||target;
+        if (!(hasParent(rel,".codextoc"))) {
+            if (slip_timer) return;
             slip_timer=setTimeout(function(){
                 slip_timer=false;
                 if (Codex.Trace.gestures) fdjtLog("toc_slipped/timeout %o",evt);
                 Codex.stopPreview("toc_slipped");},
-                                  2000);}
+                                  500);}}
 
     /* Slice handlers */
 
@@ -755,6 +759,17 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var card=getCard(fdjtUI.T(evt||event));
             fdjtLog("slice_released %o: %o, scanning=%o",evt,card);}
         Codex.stopPreview("slice_released");}
+    function slice_slipped(evt){
+        evt=evt||event;
+        var rel=evt.relatedTarget||fdjtUI.T(evt);
+        if (!(hasParent(rel,".codexslice"))) {
+            if (slip_timer) return;
+            slip_timer=setTimeout(function(){
+                slip_timer=false;
+                if (Codex.Trace.gestures) fdjtLog("slice_slipped/timeout %o",evt);
+                Codex.stopPreview("slice_slipped");},
+                                  500);}}
+
 
     function getTargetDup(scan,target){
         var targetid=target.id;
@@ -2185,7 +2200,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                      mouseout: glossmark_hoverdone},
          glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
          summary: {tap: slice_tapped, hold: slice_held,
-                   release: slice_released, click: generic_cancel},
+                   release: slice_released, click: generic_cancel,
+                   slip: slice_slipped},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
@@ -2276,7 +2292,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
          summary: {tap: slice_tapped,
                    hold: slice_held,
-                   release: slice_released},
+                   release: slice_released,
+                   slip: slice_slipped},
          "#CODEXHEART": {touchstart: heart_touched},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
