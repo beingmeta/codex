@@ -107,11 +107,7 @@ body.hudup #CODEXHEAD {display: block;}
 body.hudup #CODEXHEAD #CODEXHUDBUTTONS {
     display: block; position: static;}
 body.hudup #CODEXHUD.openhead #CODEXHEAD,
-body #CODEXHUD.tocscan #CODEXHEAD,
-body #CODEXHUD.addgloss #CODEXHEAD,
-body #CODEXHUD.glosses #CODEXSCANNER,
-body #CODEXHUD.scanning #CODEXSCANNER,
-body #CODEXHUD.allglosses #CODEXSCANNER {
+body #CODEXHUD.scanning #CODEXSCANNER {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -119,6 +115,10 @@ body #CODEXHUD.allglosses #CODEXSCANNER {
     /* border-color: rgba(0, 0, 255, 0.52); */
     border-color: transparent;
     height: auto;}
+body.hudup #CODEXHUD.openhead.toc #CODEXHEAD {
+    box-shadow: none; -webkit-box-shadow: none;
+    -moz-box-shadow: none; -o-box-shadow: none;;}
+    
 body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
     position: static;}
 body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {

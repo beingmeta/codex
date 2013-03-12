@@ -573,8 +573,8 @@ var Codex=
             var progress=((location-start)*100)/(end-start);
             var bar=false, appbar=false;
             if (tocelt) {
-                bar=fdjtDOM.getFirstChild(tocelt,".progressbar");
-                tocelt.title=Math.round(progress)+"%";}
+                // tocelt.title=Math.round(progress)+"%";
+                bar=fdjtDOM.getFirstChild(tocelt,".progressbar");}
             if (flytocelt) {
                 appbar=fdjtDOM.getFirstChild(flytocelt,".progressbar");
                 flytocelt.title=Math.round(progress)+"%";}
