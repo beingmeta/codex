@@ -113,6 +113,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             " at "+fdjtTime.shortString(tstamp);
         else {} // div.title=Codex.getTitle(target,true);
         div.about="#"+info.frag;
+        div.setAttribute('data-passage',target_id);
+        div.setAttribute('data-location',target_info.starts_at);
+        if (head_info) div.setAttribute('data-tocid',head_info.frag);
+        if ((info.maker)||(info.tstamp)) {
+            div.setAttribute('data-gloss',info._id);
+            if (info.tstamp)
+                div.setAttribute('data-timestamp',info.tstamp);}
+        if (score) div.setAttribute("data-searchscore",score);
         // div.setAttribute('about',"#"+info.id);
         if (idprefix) div.id=idprefix+info.id;
         if (info._id) {
