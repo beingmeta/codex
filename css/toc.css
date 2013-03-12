@@ -104,8 +104,6 @@ div#CODEXHEART div#CODEXFLYTOC div.codextoc a.brick {
 
 div#CODEXFLYTOC div.codextoc.codexcurhead div.sub { display: none;}
 
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.spanbar {
-    border-left: solid black 1px;}
 div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.spanbar div.spans {
     left: 0px;}
 
@@ -113,7 +111,7 @@ div.codextoc .sectname.cohi { background-color: silver;}
 div.codextoc .sectname { color: darkblue; cursor: crosshair;}
 div.codextoc div.sub a.sectname { 
   color: darkblue; font-size: 80%; white-space: nowrap;}
-div.codextoc div.sub a.sectname.cohi { background-color: silver; }
+div.codextoc div.sub a.sectname.cohi { background-color: gold; }
 
 div#CODEXHUD div.codextoc div.head { display: none;}
 div#CODEXHUD div.codextoc div.head { display: none;}
@@ -155,8 +153,6 @@ div#CODEXTOC div.spanbar, div#CODEXFLYTOC div.spanbar {
   user-select: none;}
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexlivehead {
     z-index: 0;}
-div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
-    border-color: rgba(0,0,255,0.3); border-right-color: darkblue;}
 
 div#CODEXTOC div.spanbar { height: 46px;}
 div#CODEXTOC div.spanbar > div.spans {
@@ -168,10 +164,7 @@ div#CODEXTOC div.spanbar div.codexhudspan {
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
     height: 40px;}
 div#CODEXTOC div.spanbar div.progressbox {
-    vertical-align: top; height: 45px;
-    border-top: solid rgba(0,0,255,0.3) 3px;
-    border-bottom: solid rgba(0,0,255,0.3) 3px;
-    bottom: 1px;}
+    vertical-align: top; height: 90%; top: 0.25em;}
 div#CODEXTOC div.spanbar div.spans { font-size: 30px;}
 div#CODEXTOC div.spanbar div.spans a.codextitle {
     white-space: nowrap; height: 36px;}
@@ -182,14 +175,12 @@ div#CODEXTOC div.spanbar div.spans a.codextitle:before {
 
 div.spanbar div.progressbox { 
     margin: 0px; padding: 0px; border: 0px; vertical-align: top;
-    width: 2px; background-color: rgba(0,0,255,0.3);
-    position: absolute; z-index: 250; }
+    width: 0.25em; background-color: rgba(255,0,0,0.7);
+    position: absolute; z-index: 100; }
 
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar { }
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
     height: 18px;}
-div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.progressbox {
-    height: 20px;}
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.spans a.codextitle {
     display: none;}
 div#CODEXTOC div.codextoc.codexcurhead div.spanbar
@@ -203,7 +194,7 @@ div.codexhudspan a.brick.cohi {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexheld a.brick {
-    background-color: silver;
+    background-color: gold;
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
@@ -212,6 +203,7 @@ div#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexheld a.brick {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 
+/*
 div#CODEXTOC div.codextoc {
     border-bottom-left-radius: 6px;
     -webkit-border-bottom-left-radius: 6px; 
@@ -221,6 +213,8 @@ div#CODEXTOC div.codextoc {
     -webkit-border-bottom-right-radius: 6px; 
     -moz-border-radius-bottomright: 6px;
     -o-border-radius-bottomright: 6px;}
+*/
+
 div#CODEXTOC div.codextoc div.codextoc {
     border-bottom-left-radius: 0px;
     -webkit-border-bottom-left-radius: 0px; 
@@ -244,7 +238,7 @@ div.codextoc div.spanbar div.spans
 div.codextoc div.spanbar div.spans
     a.codextitle {
         position: absolute; top: 4px; width: 100%; z-index: 25;
-        display: none;}
+        display: none; pointer-events: none;}
 div.codextoc div.spanbar div.spans
     a.codextitle.codexlivehead { display: block;}
 body.cxPREVIEW div.codextoc.codexheld div.spanbar div.spans
@@ -342,20 +336,19 @@ div#CODEXTOC div.codextoc.toc0 > div.spanbar > div.spans {
 div#CODEXTOC div.codextoc.toc0 >
    div.spanbar div.codexhudspan a.brick.codexlivehead {
     border-top-color: darkblue;}
-div#CODEXTOC div.codextoc.toc0 >
-   div.spanbar div.progressbox {
-    height: 38px; border-top: solid transparent 1px;}
 
 /* No confusing underlines in the CODEXTOC */
 
-#CODEXHUD #CODEXTOC a, #CODEXHUD #CODEXTOC a:visited, #CODEXHUD #CODEXTOC a:hover {
-    color: blue;}
+#CODEXHUD #CODEXTOC a.codextitle,
+#CODEXHUD #CODEXTOC a.codextitle:visited,
+#CODEXHUD #CODEXTOC a.codextitle:hover {
+    z-index: 100; color: blue;}
 #CODEXHUD #CODEXTOC a.codexpreviewtitle,
 #CODEXHUD #CODEXTOC a.codexpreviewtitle:visited,
 #CODEXHUD #CODEXTOC a.codexpreviewtitle:hover {
-    color: black;}
+    z-index: 100; color: black;}
 
-#CODEXHUD #CODEXTOC a.brick {
+div.codextoc a.brick {
     color: transparent; font-weight: bold;
     background-color: rgba(0,0,0,0.1);}
 #CODEXHUD #CODEXTOC a.brick:visited, #CODEXHUD #CODEXTOC a.brick:hover {

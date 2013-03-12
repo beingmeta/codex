@@ -719,7 +719,9 @@ img.codexcoverpage {
 .codexhighlightexcerpt { background-color: yellow;}
 .codexhighlightpassage { background-color: rgba(255, 255, 0, 0.21);}
 .codexhighlightsearch { background-color: gold;}
-.codexpreviewtarget { color: red; }
+.codexpreviewtarget {
+    color: rgb(122,34,95);
+    background-color: rgba(255,215,0,0.3);}
 section.codexpreviewtarget, div.html5section.codexpreviewtarget,
 section.codexpreviewtarget p, div.html5section.codexpreviewtarget p,
 section.codexpreviewtarget h1, div.html5section.codexpreviewtarget h1,

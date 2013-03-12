@@ -72,7 +72,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var target_id=(info.frag)||(info.id);
         var target=((target_id)&&(fdjtID(target_id)));
         var target_info=Codex.docinfo[target_id];
-        var head_info=target_info.head;
+        var head_info=((target_info.level)?(target_info):(target_info.head));
         var head=((head_info)&&(document.getElementById(head_info.frag)));
         var score=((query)&&(query.scores.get(info)));
         var excerpt_len=((info.excerpt)?(info.excerpt.length):(0));
@@ -99,7 +99,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtDOM(((info.maker) ?
                      "div.codexcard.gloss" :
                      "div.codexcard.passage"),
-                    ((head)&&(makeTOCHead(head))),
+                    ((head)&&(makeTOCHead(head,((info.level)&&(info))))),
                     ((head_info)&&(makeIDHead(target,head_info,true))),
                     ((standalone)&&(makelocbar(target_info))),
                     body,
@@ -631,7 +631,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtDOM.append(basespan," ",curspan);
             var heads=Codex.Info(head).heads;
             if (heads) {
-                var j=heads.length-1; while (j>=0) {
+                var j=heads.length-1; while (j>0) {
                     var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
                     if ((!(elt))||(!(hinfo.title))||
                         (elt===Codex.docroot)||(elt===document.body))

@@ -82,7 +82,7 @@ div.codexsources img.button {
 div.codexsources img.button.everyone {}
 div.codexsources img.button.everyone.selected { background-color: silver; }
 div.codexsources .button {
-    border: solid transparent 2px; margin: 2px;}
+    border: solid transparent 4px; margin: 2px;}
 div.codexsources img.button.source.selected,
 div.codexsources div.button.source.selected {
     border-color: blue;}

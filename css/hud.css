@@ -31,6 +31,9 @@
 #CODEXSCANNER .tochead a { color: white;}
 #CODEXSCANNER .tochead hr {
     color: rgb(33, 106, 129); background-color: rgb(33, 106, 129);}
+#CODEXHEAD {background-color: transparent;}
+body.hudup #CODEXHEAD {background-color: rgba(255,255,240,0.6);}
+
 #CODEXHEAD, #CODEXSCANNER {top: 0px; border-top: 0px;}
 #CODEXFOOT {bottom: 0px; border-bottom: 0px;}
 
@@ -68,11 +71,6 @@
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
-
-#CODEXHUD.openhead #CODEXHEAD,
-#CODEXHUD.openfoot #CODEXFOOT,
-#CODEXHUD.openhead.openheart #CODEXHEAD {
-    background-color: ivory;}
 
 #CODEXSCANNER { display: none; }
 
@@ -330,6 +328,8 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span {
 
 body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
+body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    display: none;}
 
 body div#CODEXHUD.splash #CODEXFOOT #CODEXSHOWTEXT {
     display: none;}
@@ -339,8 +339,10 @@ body div#CODEXHUD.splash #CODEXFOOT #CODEXSHOWTEXT {
 /* HUD panels */
 
 div#CODEXHUD div.hudpanel {
-    color: #4682b4; background-color: ivory; z-index: 100;
-    border: 0px;}
+    color: #4682b4; background-color: rgba(255,255,240,0.7);
+    z-index: 100; border: 0px;}
+div#CODEXHUD.toc div.hudpanel, div#CODEXHUD.tocscan div.hudpanel {
+    }
 /* Being on top */
 div#CODEXHUD .hudpanel {
     position: absolute; left: 0px; right: 0px;
@@ -738,7 +740,11 @@ div#CODEXSCANNER.expanded span.expander img[alt='+'] { display: none;}
 div#CODEXSCANNER div.tochead, div#CODEXPASSAGEGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
 
-body div#CODEXHUD div.hudpanel#CODEXTOC { z-index: 100; }
+body div#CODEXHUD.toc div#CODEXHEAD {
+    background-color: rgba(255,255,255,0.5);}
+body div#CODEXHUD div.hudpanel#CODEXTOC {
+    background-color: rgba(255,255,255,0.5);
+    z-index: 100; }
 body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC { overflow: hidden; }
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
@@ -971,10 +977,8 @@ div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
 /* SBOOKGLOSSES */
 
 div#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: fixed; right: 50px;}
-
-div#CODEXSOURCES {
+div#CODEXHUD div#CODEXSOURCES.hudpanel {
     overflow-y: hidden; overflow-x: auto; white-space: nowrap;}
-
 
 /* Buttons */
 

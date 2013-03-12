@@ -597,7 +597,8 @@ var Codex=
             if ((ratio>=0) && (ratio<=1)) {
                 var progressbox=fdjtDOM.$(".progressbox",spanbar);
                 if (progressbox.length>0) {
-                    progressbox[0].style.left=((Math.round(ratio*10000))/100)+"%";}}}
+                    progressbox=progressbox[0];
+                    progressbox.style.left=((Math.round(ratio*10000))/100)+"%";}}}
         Codex.location=location;}
     Codex.setLocation=setLocation;
 

@@ -77,6 +77,23 @@ body.cxPREVIEW div#CODEXHUD.glosses div#CODEXPASSAGEGLOSSES.hudpanel {
 body.cxPREVIEW div#CODEXHUD div#CODEXHUDBUTTONS {
     display: none;}
 
+body.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD,
+body.cxPREVIEW #CODEXHUD.openfoot #CODEXFOOT,
+body.cxPREVIEW #CODEXHUD.openhead.openheart #CODEXHEAD {
+    background-color: transparent;}
+
+body.hudup.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD,
+body.cxPREVIEW #CODEXHUD.tocscan #CODEXHEAD,
+body.cxPREVIEW #CODEXHUD.addgloss #CODEXHEAD,
+body.cxPREVIEW #CODEXHUD.glosses #CODEXSCANNER,
+body.cxPREVIEW #CODEXHUD.scanning #CODEXSCANNER,
+body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    border-color: transparent;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***
