@@ -608,7 +608,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else {}}
     function toc_slipped(evt){
         evt=evt||event;
-        var about=getAbout(fdjtUI.T(evt));
+        var target=fdjtUI.T(evt);
+        var about=getAbout(target);
         if ((!about)&&(Codex.Trace.gestures))
             fdjtLog("toc_slipped %o noabout",evt);
         if (about) {
@@ -624,11 +625,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (Codex.Trace.gestures)
             fdjtLog("toc_slipped %o noabout",evt);
         else {}
-        slip_timer=setTimeout(function(){
-            slip_timer=false;
-            if (Codex.Trace.gestures) fdjtLog("toc_slipped/timeout %o",evt);
-            Codex.stopPreview("toc_slipped");},
-                              2000);}
+        if (!(hasParent(target,".codextoc")))
+            slip_timer=setTimeout(function(){
+                slip_timer=false;
+                if (Codex.Trace.gestures) fdjtLog("toc_slipped/timeout %o",evt);
+                Codex.stopPreview("toc_slipped");},
+                                  2000);}
 
     /* Slice handlers */
 
@@ -1218,6 +1220,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             ((evt.type==='tap')||
              (evt.type==='click')||
              (evt.type==='touchend')||
+             (evt.type==='touchstart')
              (evt.type==='release')||
              (Codex.Trace.gestures>1)))
             fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
@@ -1229,7 +1232,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var hudid=((mode)&&(mode_hud_map[mode]));
         var hud=fdjtID(hudid);
         if ((evt.type==='click')||(evt.type==='tap')||
-            (evt.type==='touchend')||(evt.type==='release')) {
+            (evt.type==='touchstart')||(evt.type==='touchend')||
+            (evt.type==='release')) {
             if (hud) dropClass(hud,"hover");
             if ((Codex.scanning)&&(!(Codex.hudup))) {
                 if (mode==="search") {
@@ -2323,16 +2327,25 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXPREVSCAN": {click: function(evt){
              Codex.scanBackward(evt); cancel(evt);}},
              */
-         "#CODEXHELPBUTTON": {click: toggleHelp},
-         "#CODEXHELP": {click: toggleHelp},
-         "#CODEXSHOWTEXT": {click: back_to_reading},
+         "#CODEXHELPBUTTON": {touchstart: toggleHelp},
+         "#CODEXHELP": {touchstart: toggleHelp},
+         "#CODEXSHOWTEXT": {
+             touchstart: back_to_reading,
+             touchmove: cancel,
+             touchend: cancel},
          "#CODEXAPPSPLASH": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
-         ".hudmodebutton": {click: hudbutton},
+         ".hudmodebutton": {
+             touchstart: hudbutton,
+             touchmove: cancel,
+             touchend: cancel},
          // GLOSSFORM rules
          "span.codexsharegloss": {click: fdjt.UI.CheckSpan.onclick},
-         ".codexclosehud": {click: back_to_reading},
+         ".codexclosehud": {
+             click: back_to_reading,
+             touchmove: cancel,
+             touchend: cancel},
          ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
          ".codexglossform .response": {click: Codex.toggleHUD},
          ".addglossmenu": {
@@ -2340,7 +2353,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
              hold: glossmode_hold,
              slip: glossmode_slip,
              release: glossmode_release},
-         "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
+         "div.glossetc": {
+             touchstart: fdjt.UI.CheckSpan.onclick},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
          "div.glossetc div.notetext": {click: editglossnote}};
     
