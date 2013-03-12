@@ -133,11 +133,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtDOM.cancel(evt);
             return;}
         var selected=fdjtDOM.$(".selected",sources);
-        fdjtLog("Everyone click sources=%o glosses=%o selected=%o/%d",
-                sources,glosses,selected,selected.length);
         fdjtDOM.toggleClass(selected,"selected");
         fdjtDOM.addClass(target,"selected");
-        Codex.UI.selectSources(glosses,false);
+        Codex.UI.selectSources(Codex.glosses,false);
         fdjtDOM.cancel(evt);}
     Codex.UI.handlers.everyone_ontap=everyone_ontap;
 
@@ -168,10 +166,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var everyone=fdjtDOM.$(".everyone",sources)[0];
         if (new_sources.length) {
             if (everyone) fdjtDOM.dropClass(everyone,"selected");
-            Codex.UI.selectSources(glosses,new_sources);}
+            Codex.UI.selectSources(Codex.glosses,new_sources);}
         else {
             if (everyone) fdjtDOM.addClass(everyone,"selected");
-            Codex.UI.selectSources(glosses,false);}
+            Codex.UI.selectSources(Codex.glosses,false);}
         fdjtDOM.cancel(evt);}
     Codex.UI.handlers.sources_ontap=sources_ontap;
 
@@ -234,24 +232,18 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         glossmark.name="CODEX_GLOSSMARK_"+id;
         return glossmark;};
     
+    var CodexSlice=Codex.Slice;
+
     function showGlosses(target) {
         var id=target.codexbaseid||target.id;
         var glosses=Codex.glossdb.find('frag',id);
-        var sumdiv=fdjtDOM("div.codexglosses.codexslice.hudpanel#CODEXPASSAGEGLOSSES");
+        var sumdiv=fdjtDOM("div.codexglosses.codexslice.hudpanel");
         var excerpt=false;
         if ((!(glosses))||(!(glosses.length)))
             fdjtDOM.addClass(sumdiv,"noglosses");
-        Codex.UI.setupSummaryDiv(sumdiv);
         if (Codex.target) Codex.clearHighlights(Codex.target);
-        if (glosses) {
-            var i=0; var n=glosses.length;
-            while (i<n) {
-                var gloss=RefDB.ref(glosses[i++],Codex.glossdb);
-                if ((!(gloss))||(!(gloss.frag))) continue;
-                if ((!excerpt)&&(gloss.excerpt)) excerpt=gloss.excerpt;
-                var card=Codex.renderCard(gloss);
-                if (!card) continue;
-                fdjtDOM(sumdiv,card);}}
+        var slice=new CodexSlice(sumdiv,glosses);
+        sumdiv.id="CODEXPASSAGEGLOSSES";
         fdjtDOM.replace("CODEXPASSAGEGLOSSES",sumdiv);
         Codex.setTarget(target);
         if (excerpt) {

@@ -149,8 +149,7 @@ Codex.setMode=
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up gloss UI %o",allglosses);
 
-            Codex.UI.setupSummaryDiv(Codex.DOM.allglosses);
-            allglosses=new Codex.Slice(Codex.DOM.allglosses);
+            Codex.glosses=allglosses=new Codex.Slice(Codex.DOM.allglosses);
             Codex.glossdb.onAdd("maker",function(f,p,v){
                 Codex.sourcedb.ref(v).oninit
                 (Codex.UI.addGlossSource,"newsource");});
@@ -537,12 +536,10 @@ Codex.setMode=
             
             if (mode==="allglosses") {
                 if (Codex.point)
-                    Codex.UI.scrollGlosses(
-                        Codex.point,fdjt.ID("CODEXALLGLOSSES"));}
+                    Codex.UI.scrollGlosses(Codex.point,Codex.glosses);}
             else if (mode==="searchresults") {
                 if (Codex.point)
-                    Codex.UI.scrollGlosses(
-                        Codex.point,fdjt.ID("CODEXSEARCHRESULTS"));}
+                    Codex.UI.scrollGlosses(Codex.point,Codex.query.listing);}
             else {}
             if (display_sync) Codex.displaySync();}
 

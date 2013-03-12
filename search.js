@@ -391,8 +391,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (query.listing) return query.listing.container;
         else query.listing=new SearchResults(query);
         var div=query.listing.container;
-        fdjtUI.TapHold(div,Codex.touch);
-        Codex.UI.addHandlers(div,'summary');
         return div;}
     RefDB.Query.prototype.showResults=
         function(){return showResults(this);};
