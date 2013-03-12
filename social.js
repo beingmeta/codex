@@ -250,6 +250,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if ((!(gloss))||(!(gloss.frag))) continue;
                 if ((!excerpt)&&(gloss.excerpt)) excerpt=gloss.excerpt;
                 var card=Codex.renderCard(gloss);
+                if (!card) continue;
                 fdjtDOM(sumdiv,card);}}
         fdjtDOM.replace("CODEXPASSAGEGLOSSES",sumdiv);
         Codex.setTarget(target);

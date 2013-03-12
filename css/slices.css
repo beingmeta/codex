@@ -131,6 +131,7 @@ div.idhead {
   position: relative; white-space: nowrap; /* width: 100%; */
   background-color: silver; color: black;
   text-align: left; vertical-align: middle;
+  border-bottom: solid purple 2px;
   overflow: hidden;}
 div.idhead hr {
     color: lightblue; background-color: lightblue;
@@ -154,6 +155,11 @@ div.idhead div {
     -moz-opacity: 0.75;
     -o-opacity: 0.75;}
 
+
+div.codexslice div.codexcard div.tochead { display: none; }
+div.codexslice div.codexcard div.idhead { display: none; }
+div.codexslice div.codexcard.slicenewhead div.tochead { display: block; }
+div.codexslice div.codexcard.slicenewpassage div.idhead { display: block; }
 
 /* Emacs local variables
 ;;;  Local variables: ***

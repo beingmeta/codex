@@ -917,8 +917,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var i=0, lim=reps.length;
         while (i<lim) {
             var rep=reps[i++];
-            if (hasClass(rep,"codexcard"))
-                fdjtDOM.replace(rep,Codex.renderCard(ref));}
+            if (hasClass(rep,"codexcard")) {
+                var new_card=Codex.renderCard(ref);
+                if (new_card) fdjtDOM.replace(rep,new_card);}}
         ref.save();
         /* Turn off the target lock */
         if ((form)&&(!(keep))) {

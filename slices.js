@@ -72,6 +72,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var target_id=(info.frag)||(info.id);
         var target=((target_id)&&(fdjtID(target_id)));
         var target_info=Codex.docinfo[target_id];
+        if (!(target_info)) return false;
         var head_info=((target_info.level)?(target_info):(target_info.head));
         var head=((head_info)&&(document.getElementById(head_info.frag)));
         var score=((query)&&(query.scores.get(info)));
@@ -115,7 +116,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         div.about="#"+info.frag;
         div.setAttribute('data-passage',target_id);
         div.setAttribute('data-location',target_info.starts_at);
-        if (head_info) div.setAttribute('data-tocid',head_info.frag);
+        if (head_info) div.setAttribute('data-tochead',head_info.frag);
         if ((info.maker)||(info.tstamp)) {
             div.setAttribute('data-gloss',info._id);
             if (info.tstamp)
@@ -578,31 +579,20 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 else if (t2===t1) return 0;
                 else return 1;}});
         
-        var headelt=false; var threadelt=false;
-        var curhead=false; var curinfo=false;
+        var curhead=false, curpassage=false;
         var i=0; var len=notes.length; while (i<len) {
             var note=notes[i++];
-            var frag=note.id||note.frag;
-            if (!(frag)) continue;
-            var target=fdjtID(frag);
-            var docinfo=Codex.docinfo[target.id];
-            var headinfo=docinfo.head;
-            var head=document.getElementById(headinfo.frag);
-            // var tochead=makeTOCHead(head);
-            if (curinfo!==docinfo) {
-                if (headinfo!==curhead) {
-                    headelt=fdjtDOM("div.codexthread.tocthread"); // ,tochead
-                    headelt.frag=headinfo.frag;
-                    fdjtDOM.append(div,headelt);
-                    curhead=headinfo;}
-                threadelt=fdjtDOM("div.codexthread.idthread");
-                // ,makeIDHead(target,headinfo,true)
-                threadelt.about="#"+frag;
-                // threadelt.title=Codex.getTitle(target,true);
-                fdjtDOM.append(headelt,threadelt);
-                curinfo=docinfo;}
             var card=renderCard(note,query);
-            fdjtDOM.append(threadelt,card);}
+            if (!(card)) continue;
+            var passage=card.getAttribute("data-passage");
+            var head=card.getAttribute("data-tochead");
+            if (passage!==curpassage) {
+                curpassage=passage;
+                addClass(card,"slicenewpassage");}
+            if (head!==curhead) {
+                curhead=head;
+                addClass(card,"slicenewhead");}
+            fdjtDOM.append(div,card);}
         return div;}
     Codex.UI.showSlice=showSlice;
 
@@ -686,87 +676,69 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         return false;}
 
     function addToSlice(note,div,query){
-        var frag=(note.id||note.frag);
-        var eltinfo=Codex.docinfo[frag];
-        if (!(eltinfo)) return;
-        var about=document.getElementById(frag);
-        if (!(about)) return;
-        var headinfo=((eltinfo.toclevel)?(eltinfo):(eltinfo.head));
-        var headid=headinfo.frag;
-        var head=document.getElementById(headid);
-        var starts=eltinfo.starts_at;
-        var head_starts=headinfo.starts_at;
-        var insertion=false; var insdiff=0;
-        var headthread=findTOCref(div,headid,head_starts);
-        if ((!(headthread))||(headthread.tocref!==headid)) {
-            var insertbefore=headthread;
-            headthread=fdjtDOM("div.codexthread.tocthread");
-            // ,makeTOCHead(head,head)
-            headthread.tocref=headid; headthread.starts=head_starts;
-            if (insertbefore) fdjtDOM.insertBefore(insertbefore,headthread);
-            else fdjtDOM.append(div,headthread);}
-        var idthread=((frag===headid)?(headthread):
-                      (findTOCref(headthread,frag,starts)));
-        if ((!(idthread))||(idthread.tocref!==frag)) {
-            var insertbefore=idthread;
-            idthread=fdjtDOM("div.codexthread.idthread");
-            idthread.tocref=frag; idthread.starts=starts;
-            idthread.about="#"+frag;
-            // idthread.title=Codex.getTitle(about,true);
-            idthread.setAttribute("locref",frag);
-            idthread.setAttribute("locinfo",starts);
-            if (insertbefore) fdjtDOM.insertBefore(insertbefore,idthread);
-            else fdjtDOM.append(headthread,idthread);}
-        var tstamp=note.tstamp; var qid=note._id;
-        var children=headthread.childNodes;
-        var ishead=(frag===headid);
-        var i=0; var lim=children.length;
+        var card=renderCard(note,query);
+        if (!(card)) return;
+        var score=card.getAttribute("data-searchscore");
+        var location=parseInt(card.getAttribute("data-location"));
+        var tstamp=card.getAttribute("data-timestamp");
+        if (score) tstamp=parseInt(score);
+        if (tstamp) tstamp=parseInt(tstamp);
+        var current=fdjtDOM.Array(div.childNodes);
+        var i=0, lim=current.length;
+        var node=false, nscore, nloc, ntime, last;
         while (i<lim) {
-            var child=children[i++];
-            if (child.nodeType!==1) continue;
-            if ((ishead)&&(fdjtDOM.hasClass(child,"codexthread"))) {
-                fdjtDOM.insertBefore(child,renderCard(note,query));
-                return;}
-            // If unrelated, continue
-            if (!((fdjtDOM.hasClass(child,"codexcard"))||
-                  (fdjtDOM.hasClass(child,"codexthread"))))
-                continue;
-            // If the same thing, replace
-            if (child.qref===qid) {
-                fdjtDOM.replace(child,renderCard(note,query));
-                return;}
-            // if you're earlier, insert yourself and return
-            if (tstamp<=child.tstamp) {
-                fdjtDOM.insertBefore(child,renderCard(note,query));
-                return;}
-            else continue;}
-        fdjtDOM.append(idthread,renderCard(note,query));}
+            var probe=current[i++];
+            if (probe.nodeType!==1) continue;
+            else node=probe;
+            if (score) nscore=node.getAttribute("data-score");
+            if (nscore) {
+                nscore=parseInt(nscore);
+                if (score>nscore) break;}
+            nloc=node.getAttribute("data-location");
+            if (nloc) {
+                nloc=parseInt(nloc);
+                if (nloc>location) break;}
+            ntime=node.getAttribute("data-timestamp");
+            if (ntime) {
+                ntime=parseInt(ntime);
+                if (ntime>tstamp) break;}
+            last=node; node=false;}
+        if (node) div.insertBefore(card,node);
+        else div.appendChild(card);
+        if (!(last)) {
+            addClass(card,"slicenewpassage");
+            addClass(card,"slicenewhead");}
+        else {
+            if (last.getAttribute("data-passage")!==card.getAttribute("data-passage"))
+                addClass(card,"slicenewpassage");
+            if (last.getAttribute("data-tochead")!==card.getAttribute("data-tochead"))
+                addClass(card,"slicenewhead");}
+        if (node) {
+            if (node.getAttribute("data-passage")===card.getAttribute("data-passage"))
+                dropClass(node,"slicenewpassage");
+            if (node.getAttribute("data-tochead")===card.getAttribute("data-tochead"))
+                dropClass(node,"slicenewhead");}
+        return card;}
     Codex.UI.addToSlice=addToSlice;
 
     Codex.nextSlice=function(start){
-        var slice=fdjtDOM.getParent(start,".codexslice");
-        var scan=fdjtDOM.forwardElt(start); var ref=false;
+        var card=fdjtDOM.getParent(start,".codexcard");
+        if (!(card)) return false;
+        var scan=card.nextSibling;
         while (scan) {
-            if (((scan.about)||
-                 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-                ((fdjtDOM.hasClass(scan,"codexcard"))||
-                 (fdjtDOM.hasClass(scan,"passage"))))
-                break;
-            else scan=fdjtDOM.forwardElt(scan);}
-        if (fdjtDOM.hasParent(scan,slice)) return scan;
-        else return false;};
+            if ((scan.nodeType===1)&&(hasClass(scan,"codexcard")))
+                return scan;
+            else scan=scan.nextSibling;}
+        return false;};
     Codex.prevSlice=function(start){
-        var slice=fdjtDOM.getParent(start,".codexslice");
-        var scan=fdjtDOM.backwardElt(start); var ref=false;
+        var card=fdjtDOM.getParent(start,".codexcard");
+        if (!(card)) return false;
+        var scan=card.previousSibling;
         while (scan) {
-            if (((scan.about)||
-                 ((scan.getAttribute)&&(scan.getAttribute("about"))))&&
-                ((fdjtDOM.hasClass(scan,"codexcard"))||
-                 (fdjtDOM.hasClass(scan,"passage"))))
-                break;
-            else scan=fdjtDOM.backwardElt(scan);}
-        if (fdjtDOM.hasParent(scan,slice)) return scan;
-        else return false;};
+            if ((scan.nodeType===1)&&(hasClass(scan,"codexcard")))
+                return scan;
+            else scan=scan.previousSibling;}
+        return false;};
 
     /* Selecting a subset of glosses to display */
 
@@ -778,15 +750,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         while (i<children.length) {
             var child=children[i++];
             if (child.nodeType!==1) continue;
-            if (hasClass(child,"codexcard")) {
-                var gloss=(child.qref)&&Codex.glossdb.refs[child.qref];
-                if (!(gloss)) dropClass(child,"sourced");
-                else if ((RefDB.contains(sources,gloss.maker))||
-                         (RefDB.overlaps(sources,gloss.sources))||
-                         (RefDB.overlaps(sources,gloss.shared))) {
-                    addClass(child,"sourced");
-                    empty=false;}
-                else dropClass(child,"sourced");}
+
             else if (hasClass(child,"codexthread")) {
                 if (!(selectSourcesRecur(child,sources)))
                     empty=false;}
@@ -804,7 +768,21 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var i=0; var lim=sources.length; while (i<lim) {
             var source=sourcedb.ref(sources[i++]);
             if (source) sourcerefs.push(source);}
-        selectSourcesRecur(results_div,sourcerefs);
+        var children=results_div.childNodes;
+        var i=0, n_children=children.length;
+        while (i<n_children) {
+            var child=children[i++];
+            if (child.nodeType!==1) continue;
+            else if (hasClass(child,"codexcard")) {
+                var gloss=child.getAttribute("data-gloss");
+                if (gloss) gloss=Codex.glossdb.refs[gloss];
+                if (!(gloss)) dropClass(child,"sourced");
+                else if ((RefDB.contains(sourcerefs,gloss.maker))||
+                         (RefDB.overlaps(sourcerefs,gloss.sources))||
+                         (RefDB.overlaps(sourcerefs,gloss.shared))) 
+                    addClass(child,"sourced");
+                else dropClass(child,"sourced");}}
+        addClass(results_div,"sourced");
         Codex.UI.updateScroller(results_div);
         if (Codex.target) scrollGlosses(Codex.target,results_div);}
     Codex.UI.selectSources=selectSources;
