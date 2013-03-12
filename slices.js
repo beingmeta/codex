@@ -45,7 +45,7 @@ var Codex=((typeof Codex !== "undefined")?(Codex):({}));
 var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
 var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
-(function () {
+Codex.Slice=(function () {
 
     var fdjtString=fdjt.String;
     var fdjtState=fdjt.State;
@@ -54,6 +54,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
     var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
+    var Ref=RefDB.Ref;
 
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
@@ -450,7 +451,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         locrule.locstring=locstring+".";
         locrule.title=
             ((tocrule)?("this section in the book"):
-            ("this passage in the section, "))+
+             ("this passage in the section, "))+
             locstring+": click or hold to glimpse";
         locrule.style.width=((target_len/cxt_len)*100)+"%";
         locrule.style.left=((target_start/cxt_len)*100)+"%";
@@ -856,6 +857,110 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.UI.addHandlers(div,'summary');}
     Codex.UI.setupSummaryDiv=setupSummaryDiv;
     
+    var named_slices={};
+
+    function CodexSlice(container,cards,sortfn){
+        if (typeof container === "undefined") return this;
+        else if (!(container))
+            container=fdjtDOM("div.codexslice");
+        else if (typeof container === "string") {
+            if (named_slices.hasOwnProperty(container))
+                return named_slices[container];
+            else if (document.getElementById(container))
+                container=document.getElementById(container);
+            else return false;}
+        else if ((container.nodeType)&&
+                 (container.nodeType===1)&&
+                 (container.id)) {
+            if (named_slices.hasOwnProperty(container.id))
+                return named_slices[container.id];
+            else named_slices[container.id]=this;}
+        else if ((container.nodeType)&&(container.nodeType===1)) {}
+        else return false;
+        if (!(this instanceof CodexSlice))
+            return new CodexSlice(container,cards,sortfn);
+        this.container=container; this.cards=[];
+        if (sortfn) this.sortfn=sortfn; this.byid={};
+        this.addCards(cards);
+        return this;}
+
+    CodexSlice.prototype.renderCard=function renderCardForSlice(about){
+        return renderCard(about);};
+
+    CodexSlice.prototype.sortfn=function defaultSliceSortFn(x,y){
+        if (x.location) {
+            if (y.location) {
+                if (x.location===y.location) {
+                    if (x.timestamp) {
+                        if (y.timestamp)
+                            return x.timestamp-y.timestamp;
+                        else return -1;}
+                    else return 1;}
+                else return x.location-y.location;}
+            else return -1;}
+        else return 1;};
+
+
+    CodexSlice.prototype.update=function updateSlice(){
+        var cards=this.cards; var i=0, lim=cards.length;
+        cards.sort(this.sortfn);
+        var passage_starts=fdjtDOM.toArray(fdjtDOM.$(".slicenewpassage",this.container));
+        var head_starts=fdjtDOM.toArray(fdjtDOM.$(".slicenewhead",this.container));
+        this.container.innerHTML="";
+        dropClass(passage_starts,"slicenewpassage");
+        dropClass(head_starts,"slicenewhead");
+        var head=false, passage=false;
+        i=0, lim=cards.length; while (i<lim) {
+            var each=cards[i++];
+            if (each.passage!==passage) {
+                passage=each.passage;
+                addClass(each.dom,"slicenewpassage");}
+            if (each.head!==head) {
+                head=each.head;
+                addClass(each.dom,"slicenewhead");}}
+        var frag=document.createDocumentFragment()||this.container;
+        i=0, lim=cards.length; while (i<lim) frag.appendChild(cards[i++].dom);
+        if (frag!==this.container) this.container.appendChild(frag);};
+
+    CodexSlice.prototype.addCards=function addCards(adds){
+        if (!(adds)) return;
+        if (!(adds instanceof Array)) adds=[adds];
+        var byid=this.byid; var cards=this.cards; var i=0, lim=adds.length;
+        while (i<lim) {
+            var add=adds[i++], info=false, card, id, about=false, replace=false;
+            if ((add.nodeType)&&(add.nodeType===1)&&(hasClass(add,"codexcard"))) {
+                div=add; id=add.name||add.getAttribute("name");
+                if (!(id)) continue;
+                if ((info=byid[id])) {
+                    if (info.dom!==add) replace=byid[id].dom;
+                    card=add; info.dom=add;}
+                else card=add;}
+            else if (add instanceof Ref) {
+                id=add._qid||add.getQID(); about=add;
+                if (byid[id]) {info=byid[id]; card=info.dom;}
+                else card=this.renderCard(add);}
+            else {}
+            if (!(card)) continue;
+            if (!(about)) about=RefDB.resolve(id);
+            if (!(info)) 
+                byid[id]=info={added: fdjtTime(),id: id,about: about};
+            info.dom=card;
+            if (card.getAttribute("data-location"))
+                info.location=parseInt(card.getAttribute("data-location"));
+            if (card.getAttribute("data-searchscore"))
+                info.score=parseInt(card.getAttribute("data-searchscore"));
+            if (card.getAttribute("data-timestamp"))
+                info.timestamp=parseInt(card.getAttribute("data-timestamp"));
+            if (card.getAttribute("data-passage"))
+                info.passage=card.getAttribute("data-passage");
+            if (card.getAttribute("data-tochead"))
+                info.head=card.getAttribute("data-tochead");
+            if (replace) this.container.replaceChild(card,replace);
+            else cards.push(info);}
+        this.update();};
+
+    return CodexSlice;
+
 })();
 
 /* Emacs local variables

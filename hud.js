@@ -145,11 +145,12 @@ Codex.setMode=
             fdjtID("SBOOK_RETURN_TO").value=location.href;
 
             // Initialize gloss UI
-            Codex.DOM.allglosses=allglosses=fdjtID("CODEXALLGLOSSES");
+            Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up gloss UI %o",allglosses);
 
-            Codex.UI.setupSummaryDiv(allglosses);
+            Codex.UI.setupSummaryDiv(Codex.DOM.allglosses);
+            allglosses=new Codex.Slice(Codex.DOM.allglosses);
             Codex.glossdb.onAdd("maker",function(f,p,v){
                 Codex.sourcedb.ref(v).oninit
                 (Codex.UI.addGlossSource,"newsource");});
@@ -280,7 +281,7 @@ Codex.setMode=
         function addGloss2UI(item){
             if (document.getElementById(item.frag)) {
                 var addGlossmark=Codex.UI.addGlossmark;
-                Codex.UI.addToSlice(item,allglosses,false);
+                allglosses.addCards(item);
                 var nodes=Codex.getDups(item.frag);
                 addClass(nodes,"glossed");
                 var i=0, lim=nodes.length; while (i<lim) {

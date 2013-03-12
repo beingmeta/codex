@@ -333,6 +333,38 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtID("CODEXSEARCHINPUT").focus();}
         fdjtUI.cancel(evt);};
     
+    /* Search result listings */
+
+    var CodexSlice=Codex.Slice;
+    function SearchResults(query){
+        if (!(this instanceof SearchResults))
+            return new SearchResults(query);
+        this.query=query; this.results=query.results;
+        return CodexSlice.call(
+            this,fdjtDOM("div.codexslice.sbookresults"),this.results);}
+    Codex.SearchResults=SearchResults;
+
+    SearchResults.prototype=new CodexSlice();
+    SearchResults.prototype.renderCard=function renderSearchResult(result){
+        return Codex.renderCard(result,this.query);};
+    SearchResults.prototype.sortfn=function searchResultsSortFn(x,y){
+        if (x.score) {
+            if (y.score) {
+                if (x.score===y.score) {
+                    if (x.location) {
+                        if (y.location) {
+                            if (x.location===y.location) {
+                                if (x.timestamp) {
+                                    if (y.timestamp)
+                                        return x.timestamp-y.timestamp;
+                                    else return -1;}
+                                else return 1;}
+                            else return x.location-y.location;}
+                        else return -1;}}
+                else y.score-x.score;}
+            else return -1;}
+        else return 1;};
+
     /* Show search results */
 
     function makelocrule(target_info,cxtinfo_arg,cxtname){
@@ -356,12 +388,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         return locrule;}
 
     function showResults(query){
-        if (query.listing) return query.listing;
-        var div=fdjtDOM("div.codexslice.sbookresults");
+        if (query.listing) return query.listing.container;
+        else query.listing=new SearchResults(query);
+        var div=query.listing.container;
         fdjtUI.TapHold(div,Codex.touch);
         Codex.UI.addHandlers(div,'summary');
-        Codex.UI.showSlice(query.results,div,query,true);
-        query.listing=div;
         return div;}
     RefDB.Query.prototype.showResults=
         function(){return showResults(this);};
