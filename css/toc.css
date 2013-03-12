@@ -48,12 +48,12 @@ div.codextoc.codexlivehead div.codextoc { display: none;}
 div.codextoc.codexlivehead div.codextoc.codexlivehead { display: block;}
 div.codextoc div.spanbar div.codexhudspan a.brick {
     border: 0px; border-right: solid darkblue 1px;
-    text-align: center; color: red;
+    text-align: center; /* color: red; */
     cursor: crosshair;}
 div.codextoc div.spanbar div.codexhudspan.codexfirstspan a.brick {
-    border-left: solid black 1px;}
+    border-left: 0px;}
 div.codextoc div.spanbar div.codexhudspan.codexlastspan a.brick {
-    border-right: solid black 1px;}
+    border-right: 0px;}
 div.codextoc.toc0 > div.spanbar div.codexhudspan.codexfirstspan a.brick {
     border-left: 0px;}
 div.codextoc.toc0 > div.spanbar div.codexhudspan.codexlastspan a.brick {
@@ -169,8 +169,8 @@ div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
     height: 40px;}
 div#CODEXTOC div.spanbar div.progressbox {
     vertical-align: top; height: 45px;
-    border-top: solid red 3px;
-    border-bottom: solid red 3px;
+    border-top: solid rgba(0,0,255,0.3) 3px;
+    border-bottom: solid rgba(0,0,255,0.3) 3px;
     bottom: 1px;}
 div#CODEXTOC div.spanbar div.spans { font-size: 30px;}
 div#CODEXTOC div.spanbar div.spans a.codextitle {
@@ -182,7 +182,8 @@ div#CODEXTOC div.spanbar div.spans a.codextitle:before {
 
 div.spanbar div.progressbox { 
     margin: 0px; padding: 0px; border: 0px; vertical-align: top;
-    width: 2px; background-color: red; position: absolute; z-index: 250; }
+    width: 2px; background-color: rgba(0,0,255,0.3);
+    position: absolute; z-index: 250; }
 
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar { }
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
@@ -354,7 +355,9 @@ div#CODEXTOC div.codextoc.toc0 >
 #CODEXHUD #CODEXTOC a.codexpreviewtitle:hover {
     color: black;}
 
-#CODEXHUD #CODEXTOC a.brick { color: transparent; font-weight: bold;}
+#CODEXHUD #CODEXTOC a.brick {
+    color: transparent; font-weight: bold;
+    background-color: rgba(0,0,0,0.1);}
 #CODEXHUD #CODEXTOC a.brick:visited, #CODEXHUD #CODEXTOC a.brick:hover {
     color: transparent;}
 #CODEXHUD #CODEXTOC a.brick.codexlivehead { }

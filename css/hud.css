@@ -118,7 +118,8 @@ body #CODEXHUD.allglosses #CODEXSCANNER {
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    border-color: rgba(0, 0, 255, 0.52);
+    /* border-color: rgba(0, 0, 255, 0.52); */
+    border-color: transparent;
     height: auto;}
 body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
     position: static;}
@@ -133,18 +134,22 @@ body #CODEXHUD.addgloss #CODEXHEAD {
     overflow: visible;
     z-index: 500;}
 
+/* From touchtocfoot implementation
 body.cxTOUCH.hudup #CODEXHUD.openhead.toc #CODEXHEAD,
 body.cxTOUCH.hudup #CODEXHUD.openhead.tocscan #CODEXHEAD,
 body.cxTOUCH #CODEXHUD.openhead.tocscan #CODEXHEAD,
 body.cxTOUCH.hudup #CODEXHUD.tocscan #CODEXHEAD,
 body.cxTOUCH #CODEXHUD.tocscan #CODEXHEAD {
     border: 0px; height: 0px;}
+*/
 
 body.hudup #CODEXHUD #CODEXFOOT {
     height: auto; max-height: 50%;}
-body #CODEXHUD.openfoot #CODEXFOOT,
-body.cxTOUCH #CODEXHUD.toc #CODEXFOOT,
-body.cxTOUCH #CODEXHUD.tocscan #CODEXFOOT {
+/* From touchtocfoot 
+   body.cxTOUCH #CODEXHUD.toc #CODEXFOOT, 
+   body.cxTOUCH #CODEXHUD.tocscan #CODEXFOOT, */ 
+body #CODEXHUD.openfoot #CODEXFOOT
+{
     background-color: ivory; border-color: darkblue;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
