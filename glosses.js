@@ -389,6 +389,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         real_target=grand_target; break;}
                     else grand_target=getTarget(grand_target.parentNode);}}
         if ((real_target)&&(real_target!==Codex.glosstarget)) {
+            // When real_target is changed, we need to get a new EXOFF
+            //  value, which we should probably get by passing real_target
+            //  to a second call to getInfo (above)
             var input=fdjtDOM.getInput(form,"FRAG");
             input.value=real_target.id;}}
         
