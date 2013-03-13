@@ -1257,6 +1257,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 else if (mode==="allglosses") {
                     Codex.setMode("allglosses"); return;}}
             if (fdjtDOM.hasClass(Codex.HUD,mode)) Codex.setMode(false);
+            else if ((mode==="search")&&(Codex.mode==="searchresults"))
+                Codex.setMode(false);
             else Codex.setMode(mode);}
         else if ((evt.type==='mouseover')&&(Codex.mode))
             return;

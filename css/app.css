@@ -350,14 +350,16 @@ body .codexglossmark#CODEXOPENGLOSSMARK.hover > * {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
+/*
 body.hudup .codexglossmark > * {
-    display: block; opacity: 0.50;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-    filter: alpha(opacity=50);
-    -webkit-opacity: 0.50;
-    -khtml-opacity: 0.50;
-    -moz-opacity: 0.50;
-    -o-opacity: 0.50;}
+    display: block; opacity: 0.10;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+    filter: alpha(opacity=10);
+    -webkit-opacity: 0.10;
+    -khtml-opacity: 0.10;
+    -moz-opacity: 0.10;
+    -o-opacity: 0.10;}
+*/
 
 .codexglossmark img {
     position: static;
@@ -434,8 +436,6 @@ body.codextarget { color: inherit;}
     -moz-transition-duration: 1.5s;
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 1.5s;}
-
-    }
 
 .codextarget:hover .codexglossmark > *,
 .codextarget.hover .codexglossmark > * {

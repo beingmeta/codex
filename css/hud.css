@@ -103,7 +103,18 @@ body.hudup #CODEXHEAD .hudpanel {
 
 #CODEXSCANNER .codexcard { margin-bottom: 0.5em;}
 
-#CODEXHUD.openhead #CODEXHEAD {display: block;}
+.cxANIMATE #CODEXHUD #CODEXHEAD {
+    transition-property: top;
+    transition-duration: 1.5s;
+    -o-transition-property: top;
+    -o-transition-duration: 1.5s;
+    -moz-transition-property: top;
+    -moz-transition-duration: 1.5s;
+    -webkit-transition-property: top;
+    -webkit-transition-duration: 1.5s;
+    display: block;
+    top: -200px;}
+#CODEXHUD.openhead #CODEXHEAD { top: 0px;}
 body.hudup #CODEXHEAD {display: block;}
 body.hudup #CODEXHEAD #CODEXHUDBUTTONS {
     display: block; position: static;}
@@ -113,16 +124,23 @@ body #CODEXHUD.scanning #CODEXSCANNER {
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    /* border-color: rgba(0, 0, 255, 0.52); */
     border-color: transparent;
     height: auto;}
+body.hudup #CODEXHUD.openhead #CODEXHEAD {
+    border-color: rgba(0, 0, 255, 0.52);
+    background-color: rgba(255, 255, 240, 0.52);}
 body.hudup #CODEXHUD.openhead.toc #CODEXHEAD {
+    background-color: transparent; border-color: transparent;
     box-shadow: none; -webkit-box-shadow: none;
     -moz-box-shadow: none; -o-box-shadow: none;;}
     
 body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
     position: static;}
-body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS {
+body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS,
+body.hudup #CODEXHUD.toc #CODEXHEAD #CODEXHUDBUTTONS,
+body.hudup #CODEXHUD.search #CODEXHEAD #CODEXHUDBUTTONS,
+body.hudup #CODEXHUD.searchresults #CODEXHEAD #CODEXHUDBUTTONS,
+body.hudup #CODEXHUD.addgloss #CODEXHEAD #CODEXHUDBUTTONS {
     display: none; position: absolute;}
 body #CODEXHUD.tocscan #CODEXHEAD,
 body #CODEXHUD.openglossmark #CODEXSCANNER,

@@ -449,9 +449,9 @@ Codex.setMode=
                 else setHUD(true);
                 // Actually change the class on the HUD object
                 if (mode===true) {
-                    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");
                     dropClass(CodexHUD,"openhead");
-                    dropClass(CodexHUD,"openheart");}
+                    dropClass(CodexHUD,"openheart");
+                    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");}
                 else {
                     if (mode.search(codexHeartMode_pat)<0) {
                         dropClass(CodexHUD,"openheart");}
@@ -463,7 +463,6 @@ Codex.setMode=
                     if (mode.search(codexHeadMode_pat)>=0) {
                         Codex.head_mode=mode;
                         addClass(CodexHUD,"openhead");}}
-                
                 changeMode(mode);}
             else {
                 // Clearing the mode is a lot simpler, in part because
@@ -475,14 +474,13 @@ Codex.setMode=
                 document.body.focus();
                 dropClass(CodexHUD,"openheart");
                 dropClass(CodexHUD,"openhead");
-                dropClass(CodexHUD,CodexSubMode_pat);
                 dropClass(document.body,"dimmed");
                 dropClass(document.body,"codexhelp");
                 dropClass(document.body,"cxPREVIEW");
                 dropClass(document.body,"cxSHRINK");
                 Codex.cxthelp=false;
                 if (display_sync) Codex.displaySync();
-                setHUD(false);}}
+                setTimeout(function(){dropClass(CodexHUD,CodexSubMode_pat);setHUD(false);},500);}}
 
         function changeMode(mode){      
             fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
