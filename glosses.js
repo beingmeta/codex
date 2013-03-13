@@ -393,9 +393,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             //  value, which we should probably get by passing real_target
             //  to a second call to getInfo (above)
             var input=fdjtDOM.getInput(form,"FRAG");
-            input.value=real_target.id;}}
-        
-
+            input.value=real_target.id;
+            if ((sel)&&(typeof info.off === "number")) {
+                var offinput=fdjtDOM.getInput(form,"EXOFF");
+                var newoff=sel.getOffset(real_target);
+                offinput.value=newoff;}}}
+    
     function selectText(passages){
         if (passages.nodeType) passages=[passages];
         var dups=[];
