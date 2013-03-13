@@ -960,10 +960,12 @@ Codex.Startup=
             if (!(sync)) return;
             if ((Codex.Trace.glosses)||(Codex.Trace.startup))
                 fdjtLog("Starting initializing glosses from offline storage");
-            Codex.glossdb.load(true);
+            Codex.glosses.setLive(false);
+            Codex.glossdb.load(true); Codex.sourcedb.load(true);
+            Codex.glosses.setLive(true);
             if ((Codex.glossdb.allrefs.length)||
                 (Codex.sourcedb.allrefs.length))
-                fdjtLog("Initialized %d glosses (%d accounts) from offline storage",
+                fdjtLog("Initialized %d glosses (%d sources) from offline storage",
                         Codex.glossdb.allrefs.length,
                         Codex.sourcedb.allrefs.length);}
 
