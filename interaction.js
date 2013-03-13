@@ -1428,7 +1428,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (!(wedge)) return;
             animated_glossmark=glossmark;
             glossmark_image=wedge;
-            glossmark_animated=fdjtUI.ImageSwap(wedge,750);}}
+            glossmark_animated=fdjtUI.ImageSwap(wedge,750);}
+        else if (glossmark_animated) {
+            clearInterval(glossmark_animated);
+            animated_glossmark=false;
+            glossmark_animated=false;
+            if (glossmark_image) fdjtUI.ImageSwap.reset(glossmark_image);
+            glossmark_image=false;}}
 
     function glossmark_hoverstart(evt){
         evt=evt||event;
