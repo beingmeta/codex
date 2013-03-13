@@ -1252,12 +1252,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             (evt.type==='release')) {
             if (hud) dropClass(hud,"hover");
             if ((Codex.scanning)&&(!(Codex.hudup))) {
-                if (mode==="search") {
+                if (mode==="refinesearch") {
                     Codex.setMode("searchresults"); return;}
                 else if (mode==="allglosses") {
                     Codex.setMode("allglosses"); return;}}
             if (fdjtDOM.hasClass(Codex.HUD,mode)) Codex.setMode(false);
-            else if ((mode==="search")&&(Codex.mode==="searchresults"))
+            else if ((mode==="search")&&
+                     (fdjtDOM.hasClass(Codex.HUD,/((refinesearch)|(searchresults)|(expandsearch))/)))
                 Codex.setMode(false);
             else Codex.setMode(mode);}
         else if ((evt.type==='mouseover')&&(Codex.mode))

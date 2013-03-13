@@ -364,15 +364,16 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
-        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
-        var codexHeadMode_pat=/\b((toc)|(search)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan)|(shownote))\b/g;
+        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
+        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
+        var codexHeadMode_pat=/\b((toc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan)|(shownote))\b/g;
         var CodexSubMode_pat=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
         var codex_mode_scrollers=
             {allglosses: "CODEXALLGLOSSES",
              searchresults: "CODEXSEARCHRESULTS",
              expandsearch: "CODEXALLTAGS",
              search: "CODEXSEARCHCLOUD",
+             refinesearch: "CODEXSEARCHCLOUD",
              console: "CODEXCONSOLE",
              openglossmark: "CODEXPOINTGLOSSES",
              // sbooksapp: "SBOOKSAPP",
@@ -382,7 +383,9 @@ Codex.setMode=
         var codex_mode_foci=
             {gotopage: "CODEXPAGEINPUT",
              gotoloc: "CODEXLOCINPUT",
-             search: "CODEXSEARCHINPUT"};
+             search: "CODEXSEARCHINPUT",
+             refinesearch: "CODEXSEARCHINPUT",
+             expandsearch: "CODEXSEARCHINPUT"};
         
         function CodexMode(mode,nohud){
             var oldmode=Codex.mode;
@@ -399,6 +402,7 @@ Codex.setMode=
                 (hasClass("CODEXLIVEGLOSS","modified")))
                 Codex.submitGloss(fdjt.ID("CODEXLIVEGLOSS"));
             if (mode) {
+                if (mode==="search") mode=Codex.search_mode||"refinesearch";
                 if (mode==="addgloss") {}
                 else dropClass(document.body,"cxSHRINK");
                 if (mode===Codex.mode) {}
@@ -431,6 +435,11 @@ Codex.setMode=
                 else if (codex_mode_scrollers[mode]) 
                     Codex.scrolling=(codex_mode_scrollers[mode]);
                 else Codex.scrolling=false;
+
+                if ((mode==='refinesearch')||
+                    (mode==='searchresults')||
+                    (mode==='expandsearch'))
+                    Codex.search_mode=mode;
 
                 if ((mode==='scanning')||(mode==='tocscan')||(mode==='openglossmark'))
                     addClass(document.body,"codexscanning");

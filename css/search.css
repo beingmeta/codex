@@ -84,7 +84,7 @@ div#CODEXHUD div.resultinfo span.resultcount,
 div#CODEXHUD div.resultinfo span.refinecount,
 div#CODEXHUD div.resultinfo span.showalltags {
     cursor: pointer;}
-div#CODEXHUD.search div.resultinfo span.refinecount {
+div#CODEXHUD.refinesearch div.resultinfo span.refinecount {
     font-weight: bold;}
 div#CODEXHUD.expandsearch div.resultinfo span.showalltags {
     font-weight: bold;}
@@ -92,7 +92,7 @@ div#CODEXHUD.searchresults div.resultinfo span.resultcount {
     font-weight: bold;}
 
 div#CODEXHUD div#CODEXSEARCHINFO { display: none;}
-div#CODEXHUD.search div#CODEXSEARCHINFO,
+div#CODEXHUD.refinesearch div#CODEXSEARCHINFO,
 div#CODEXHUD.expandsearch div#CODEXSEARCHINFO,
 div#CODEXHUD.searchresults div#CODEXSEARCHINFO {
     display: block;}

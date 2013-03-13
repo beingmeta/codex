@@ -94,7 +94,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 dropClass(Codex.HUD,"emptysearch");
                 fdjtDOM.replace("CODEXSEARCHCLOUD",cloud.dom);}
             useQuery(query,fdjtID("CODEXSEARCH"));}
-        if (Codex.mode==="search") {
+        if (Codex.mode==="refinesearch") {
             if (query.results.length===0) {}
             else if (query.results.length<7)
                 showSearchResults();
@@ -227,7 +227,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function startSearch(tag){
         setQuery([tag]);
-        Codex.setMode("search");}
+        Codex.setMode("refinesearch");}
     Codex.startSearch=startSearch;
 
     /* Text input handlers */
@@ -302,7 +302,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         Codex.setFocus(input);
         sbook_search_focus=true;
         if ((Codex.mode)&&(Codex.mode==='searchresults'))
-            Codex.setMode("search");
+            Codex.setMode("refinesearch");
         searchUpdate(input);}
     Codex.UI.handlers.search_focus=searchInput_focus;
 
@@ -325,11 +325,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     
     Codex.toggleSearch=function(evt){
         evt=evt||event;
-        if ((Codex.mode==="search")||
+        if ((Codex.mode==="refinesearch")||
             (Codex.mode==="searchresults"))
             Codex.setMode(false);
         else {
-            Codex.setMode("search");
+            Codex.setMode("refinesearch");
             fdjtID("CODEXSEARCHINPUT").focus();}
         fdjtUI.cancel(evt);};
     
