@@ -65,7 +65,7 @@ body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-body.cxPREVIEW div#CODEXHUD.glosses div#CODEXPASSAGEGLOSSES.hudpanel {
+body.cxPREVIEW div#CODEXHUD.openglossmark div#CODEXPOINTGLOSSES.hudpanel {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -85,7 +85,7 @@ body.cxPREVIEW #CODEXHUD.openhead.openheart #CODEXHEAD {
 body.hudup.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD,
 body.cxPREVIEW #CODEXHUD.tocscan #CODEXHEAD,
 body.cxPREVIEW #CODEXHUD.addgloss #CODEXHEAD,
-body.cxPREVIEW #CODEXHUD.glosses #CODEXSCANNER,
+body.cxPREVIEW #CODEXHUD.openglossmark #CODEXSCANNER,
 body.cxPREVIEW #CODEXHUD.scanning #CODEXSCANNER,
 body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER {
     box-shadow: none;

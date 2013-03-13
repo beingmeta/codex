@@ -23,8 +23,8 @@ div.codexcard > div.idhead, div.codexcard > div.tochead {
 div.codexcard > div.idhead { margin-left: -10px;}
 div.codexcard > div.tochead { margin-left: -20px; }
 
-#CODEXHUD.glosses div.codexcard > div.idhead { display: none;}
-#CODEXHUD.glosses div.codexcard > div.tochead { display: none;}
+#CODEXHUD.openglossmark div.codexcard > div.idhead { display: none;}
+#CODEXHUD.openglossmark div.codexcard > div.tochead { display: none;}
 
 /* Sbook notes */
 

@@ -364,7 +364,7 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(expandsearch)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
+        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
         var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
         var codexHeadMode_pat=/\b((toc)|(search)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan)|(shownote))\b/g;
         var CodexSubMode_pat=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
@@ -374,7 +374,7 @@ Codex.setMode=
              expandsearch: "CODEXALLTAGS",
              search: "CODEXSEARCHCLOUD",
              console: "CODEXCONSOLE",
-             glosses: "CODEXPASSAGEGLOSSES",
+             openglossmark: "CODEXPOINTGLOSSES",
              // sbooksapp: "SBOOKSAPP",
              device: "CODEXSETTINGS",
              flytoc: "CODEXFLYTOC",
@@ -432,21 +432,18 @@ Codex.setMode=
                     Codex.scrolling=(codex_mode_scrollers[mode]);
                 else Codex.scrolling=false;
 
-                if ((mode==='scanning')||(mode==='tocscan')||(mode==='glosses'))
+                if ((mode==='scanning')||(mode==='tocscan')||(mode==='openglossmark'))
                     addClass(document.body,"codexscanning");
                 else dropClass(document.body,/\b(codexscan[a-z0-9]*)\b/);
 
-                // Scanning is a funny mode in that the HUD is down
-                //  for it.  We handle all of this stuff here.
-                if ((mode==='scanning')||
-                    (mode==='tocscan')||
-                    (mode==='status')) {
+                // These are modes that require the HUD to be down
+                if ((mode==='scanning')||(mode==='tocscan')) {
                     if (mode!==oldmode) {
                         Codex.hudup=false;
                         dropClass(CodexHUD,"openheart");
                         dropClass(CodexHUD,"full");
                         dropClass(document.body,"hudup");}}
-                else if (mode==='addgloss') {}
+                else if ((mode==='addgloss')||(mode==="openglossmark")) {}
                 else if (nohud) {}
                 // And if we're not scanning, we just raise the hud
                 else setHUD(true);

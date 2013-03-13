@@ -161,6 +161,9 @@ div.codexslice div.codexcard div.idhead { display: none; }
 div.codexslice div.codexcard.slicenewhead div.tochead { display: block; }
 div.codexslice div.codexcard.slicenewpassage div.idhead { display: block; }
 
+div#CODEXPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage div.codexcardbody {
+    border-top: 0px;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***

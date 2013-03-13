@@ -1402,10 +1402,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     evt,target,glossmark,passage,Codex.mode,Codex.target);
         if (!(glossmark)) return false;
         fdjtUI.cancel(evt);
-        if ((Codex.mode==='glosses')&&(Codex.target===passage)) {
+        if ((Codex.mode==='openglossmark')&&(Codex.target===passage)) {
             Codex.setMode(false);
             return;}
-        else Codex.showGlosses(passage);}
+        else Codex.showGlosses(passage,glossmark);}
 
     var glossmark_animated=false;
     var glossmark_image=false;
@@ -1498,11 +1498,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((Codex.hudup)&&
             (Codex.mode!=="scanning")&&
             (Codex.mode!=="tocscan")&&
-            (Codex.mode!=="glosses"))
+            (Codex.mode!=="openglossmark"))
             Codex.setMode(false);
         else if ((Codex.mode==="scanning")||
                  (Codex.mode==="tocscan")||
-                 (Codex.mode==="glosses"))
+                 (Codex.mode==="openglossmark"))
             scanForward(evt);
         else Forward(evt);
         cancel(evt);}
@@ -1527,11 +1527,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((Codex.hudup)&&
             (Codex.mode!=="scanning")&&
             (Codex.mode!=="tocscan")&&
-            (Codex.mode!=="glosses"))
+            (Codex.mode!=="openglossmark"))
             Codex.setMode(false);
         else if ((Codex.mode==="scanning")||
                  (Codex.mode==="tocscan")||
-                 (Codex.mode==="glosses"))
+                 (Codex.mode==="openglossmark"))
             scanBackward(evt);
         else Backward(evt);
         cancel(evt);}
@@ -1545,7 +1545,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.setMode(false);
         if ((Codex.bypage)&&(Codex.pagecount)) {
             var newpage=false;
-            if (Codex.mode==="glosses") Codex.setMode(true);
+            if (Codex.mode==="openglossmark") Codex.setMode(true);
             if (Codex.curpage===Codex.pagecount) {}
             else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward",true);}
         else {
@@ -1563,7 +1563,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.setMode(false);
         if ((Codex.bypage)&&(Codex.pagecount)) {
             var newpage=false;
-            if (Codex.mode==="glosses") Codex.setMode(true);
+            if (Codex.mode==="openglossmark") Codex.setMode(true);
             if (Codex.curpage===0) {}
             else {
                 Codex.GoToPage(newpage=Codex.curpage-1,"pageBackward",true);}}
@@ -1578,7 +1578,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event;
         if (Codex.mode==="scanning") {}
         else if (Codex.mode==="tocscan") {}
-        else if (Codex.mode==="glosses") {
+        else if (Codex.mode==="openglossmark") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
             var glossdb=Codex.glossdb;
@@ -1588,8 +1588,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
                         var passage=fdjtID(ids[i]);
+                        var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
                         Codex.GoTo(passage,"scanForward/glosses",true);
-                        Codex.showGlosses(passage);
+                        Codex.showGlosses(passage,glossmark);
                         return;}
                     else i++;}}
             Codex.setMode(false);
@@ -1630,7 +1631,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function scanBackward(){
         if (Codex.mode==="scanning") {}
         else if (Codex.mode==="tocscan") {}
-        else if (Codex.mode==="glosses") {
+        else if (Codex.mode==="openglossmark") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
             var glossdb=Codex.glossdb;
@@ -1640,8 +1641,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
                         var passage=fdjtID(ids[i]);
+                        var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
                         Codex.GoTo(passage,"scanBackward/glosses",true);
-                        Codex.showGlosses(passage);
+                        Codex.showGlosses(passage,glossmark);
                         return;}
                     else i--;}}
             Codex.setMode(false);
@@ -1706,8 +1708,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
             Codex.setMode("allglosses");
             fdjtUI.cancel(evt);}
-        else if (getParent(scanning,fdjtID("CODEXPASSAGEGLOSSES"))) {
-            Codex.setMode("glosses");
+        else if (getParent(scanning,fdjtID("CODEXPOINTGLOSSES"))) {
+            Codex.setMode("openglossmark");
             fdjtUI.cancel(evt);}
         else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) {
             Codex.setMode("searchresults");

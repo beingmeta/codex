@@ -180,10 +180,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                  ("https://graph.facebook.com/"+
                   source.fbid+"/picture?type=square")));}
 
-    function extendGlossmark(glossmark,glosses,bigimage){
+    function extendGlossmark(glossmark,glosses,image){
         var sources=Codex.sourcedb; var glossdb=Codex.glossdb;
-        if (!(bigimage)) bigimage=fdjtDOM.getChild(glossmark,".big");
-        var images=bigimage.getAttribute("data-images").split(";");
+        if (!(image)) image=fdjtDOM.getChild(glossmark,".wedge");
+        var images=image.getAttribute("data-images").split(";");
         if ((images.length===1)&&(images[0]==="")) images=[];
         var i=0; var lim=glosses.length;
         while (i<lim) {
@@ -202,7 +202,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 var outlet=sources.ref(outlets[j++]);
                 var outlet_img=geticon(outlet);
                 if (outlet_img) images.push(outlet_img);}}
-        bigimage.setAttribute("data-images",images.join(";"));
+        image.setAttribute("data-images",images.join(";"));
         return glossmark;}
     
     Codex.UI.addGlossmark=function(passage,gloss){
@@ -212,10 +212,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (gloss) extendGlossmark(glossmark,[gloss]);
             return glossmark;}
         var imgsrc=(cxicon("sbwedge",64,64));
-        var bigimage=fdjtDOM.Image(imgsrc,"big","glosses");
-        var glossmark=fdjtDOM(
-            "a.codexglossmark.fdjtskiptext",
-            bigimage,fdjtDOM.Image(cxicon("sbwedge",64,64),"tiny","*"));
+        var wedge=fdjtDOM.Image(imgsrc,"wedge","glosses");
+        var glossmark=fdjtDOM("a.codexglossmark.fdjtskiptext",wedge);
         // Get all the glosses from the index
         var id=passage.getAttribute("data-baseid")||passage.id;
         var glosses=Glosses.find("frag",id);
@@ -223,9 +221,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             ((glosses.length>1)?
              ("See "+glosses.length+" glosses on this passage"):
              ("See the gloss on this passage"));
-        bigimage.defaultsrc=imgsrc;
-        bigimage.setAttribute("data-images","");
-        extendGlossmark(glossmark,glosses,bigimage);
+        wedge.defaultsrc=imgsrc;
+        wedge.setAttribute("data-images","");
+        extendGlossmark(glossmark,glosses,wedge);
         Codex.UI.addHandlers(glossmark,"glossmark");
         fdjtDOM.addClass(passage,"glossed");
         fdjtDOM.prepend(passage,glossmark);
@@ -234,14 +232,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     
     var CodexSlice=Codex.Slice;
 
-    function showGlosses(target) {
+    function showGlosses(target,point) {
         var id=target.codexbaseid||target.id;
         var dups=Codex.getDups(target.id);
         var glossids=Codex.glossdb.find('frag',id), glosses=[];
-        var sumdiv=fdjtDOM("div.codexglosses.codexslice.hudpanel");
+        var slicediv=fdjtDOM("div.codexglosses.codexslice");
         var excerpt=false;
         if ((!(glossids))||(!(glossids.length)))
-            fdjtDOM.addClass(sumdiv,"noglosses");
+            fdjtDOM.addClass(slicediv,"noglosses");
         if (Codex.target) Codex.clearHighlights(Codex.target);
         var i=0, lim=glossids.length; while (i<lim) {
             var glossref=Codex.glossdb.ref(glossids[i++]);
@@ -255,11 +253,58 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     var starts=range.startContainer;
                     if (!(hasClass(starts,"codexhighlightexcerpt"))) {
                         fdjtUI.Highlight(range,"codexhighlightexcerpt");}}}}
-        var slice=new CodexSlice(sumdiv,glosses);
-        sumdiv.id="CODEXPASSAGEGLOSSES";
-        fdjtDOM.replace("CODEXPASSAGEGLOSSES",sumdiv);
+        var slice=new CodexSlice(slicediv,glosses);
+        var hudwrapper=fdjtDOM("div.hudpanel#CODEXPOINTGLOSSES",slicediv);
+        if (point) {
+            hudwrapper.style.display='block';
+            hudwrapper.style.opacity=0.0;
+            fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
+            var geom=fdjtDOM.getGeometry(slicediv);
+            var wgeom=fdjtDOM.getGeometry(hudwrapper);
+            var pgeom=fdjtDOM.getGeometry(point);
+            var tgeom=fdjtDOM.getGeometry(target);
+            var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight();
+            if (geom.height>h/2) {
+                // If the slice is big, drop the width constraint
+                hudwrapper.style.maxWidth='';
+                geom=fdjtDOM.getGeometry(slicediv);
+                wgeom=fdjtDOM.getGeometry(hudwrapper);}
+            var wh=false;
+            if ((geom.height+15)>h/2) wh=h/2;
+            else wh=geom.height+10;
+            hudwrapper.style.height=wh+'px';
+            slicediv.style.overflow='hidden';
+            var above_point=pgeom.top-60, below_point=(h-60)-pgeom.bottom;
+            var below_passage=(h-60)-tgeom.bottom;
+            // If the glossmark is taller than the target, use the
+            // glossmark bottom
+            if (tgeom.bottom<pgeom.bottom) tgeom.bottom=pgeom.bottom+10;
+            if (wh<above_point) 
+                hudwrapper.style.top=(pgeom.top-(wh+15))+'px';
+            else if (geom.height<below_passage) 
+                hudwrapper.style.top=(tgeom.bottom+5)+'px';
+            else if (geom.height<below_point) 
+                hudwrapper.style.top=(pgeom.bottom+15)+'px';
+            else {
+                // Now, we're scrolling
+                hudwrapper.style.right=(w-pgeom.left+10)+'px';
+                hudwrapper.style.left='50px';
+                var top, bottom;
+                if (pgeom.top-(h/4)<50) {
+                    hudwrapper.style.top='50px';
+                    hudwrapper.style.bottom='auto';
+                    hudwrapper.style.height=(h/2)+'px';}
+                else {
+                    hudwrapper.style.top=(pgeom.top-h/4)+'px';
+                    hudwrapper.style.bottom='auto';
+                    hudwrapper.style.height=(h/2)+'px';}}
+            // fdjtLog("geom=%j, pgeom=%j, wgeom=%j ph=%j",geom,pgeom,wgeom,fdjtDOM.viewHeight());
+            hudwrapper.style.display='';
+            hudwrapper.style.opacity='';}
+        else fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
+        if (point) point.id="CODEXOPENGLOSSMARK";
         Codex.setTarget(target);
-        Codex.setMode("glosses");}
+        Codex.setMode("openglossmark");}
     Codex.showGlosses=showGlosses;
 
 })();

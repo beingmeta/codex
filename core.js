@@ -427,7 +427,7 @@ var Codex=
         return target||false;}
 
     Codex.checkTarget=function(){
-        if ((Codex.target)&&(Codex.mode==='glosses'))
+        if ((Codex.target)&&(Codex.mode==='openglossmark'))
             if (!(fdjtDOM.isVisible(Codex.target))) {
                 Codex.setMode(false); Codex.setMode(true);}};
 

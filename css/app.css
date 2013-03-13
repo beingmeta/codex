@@ -297,32 +297,52 @@ div.locbar hr {
     position: absolute; right: 0px;
     /* float: right; text-align: right; */
     margin: 0px; padding: 0px; text-indent: 0px; 
-    border: solid transparent 2px;
+    border: 0px;
+    border-right: solid rgba(0,0,255,0.25) 2px;
     width: 0px; overflow: visible;
     max-height: 32px; /* max-width: 32px; */
     min-width: 32px; min-height: 32px;
     width: 32px; height: 32px;
-    z-index: 50;
-    border-right-width: 0px;
-    opacity: 0.0001;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
-    filter: alpha(opacity=1);
-    -webkit-opacity: 0.0001;
-    -khtml-opacity: 0.0001;
-    -moz-opacity: 0.0001;
-    -o-opacity: 0.0001;}
+    z-index: 50;}
 body.cxBYPAGE .codexglossmark {margin-right: -32px;}
 body.cxSCROLL .codexglossmark { right: 5px;}
 
-body .codexglossmark {
-    opacity: 0.4;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
-    filter: alpha(opacity=40);
-    -webkit-opacity: 0.40;
-    -khtml-opacity: 0.40;
-    -moz-opacity: 0.40;
-    -o-opacity: 0.40;}
-*:hover > .codexglossmark, *.hover > .codexglossmark {
+body .codexglossmark > * {
+    opacity: 0.01;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=01)";
+    filter: alpha(opacity=01);
+    -webkit-opacity: 0.01;
+    -khtml-opacity: 0.01;
+    -moz-opacity: 0.01;
+    -o-opacity: 0.01;}
+*:hover > .codexglossmark > *, *.hover > .codexglossmark > * {
+    opacity: 0.30;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+    filter: alpha(opacity=30);
+    -webkit-opacity: 0.30;
+    -khtml-opacity: 0.30;
+    -moz-opacity: 0.30;
+    -o-opacity: 0.30;}
+*.glossed:hover *.glossed > .codexglossmark > *,
+*.glossed.hover *.glossed > .codexglossmark > * {
+    opacity: 0.01;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=01)";
+    filter: alpha(opacity=01);
+    -webkit-opacity: 0.01;
+    -khtml-opacity: 0.01;
+    -moz-opacity: 0.01;
+    -o-opacity: 0.01;}
+body .codexglossmark:hover > *, body .codexglossmark.hover > * {
+    opacity: 0.50;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=50);
+    -webkit-opacity: 0.50;
+    -khtml-opacity: 0.50;
+    -moz-opacity: 0.50;
+    -o-opacity: 0.50;}
+body .codexglossmark#CODEXOPENGLOSSMARK > *,
+body .codexglossmark#CODEXOPENGLOSSMARK:hover > *,
+body .codexglossmark#CODEXOPENGLOSSMARK.hover > * {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -330,21 +350,22 @@ body .codexglossmark {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
-body.hudup .codexglossmark {
-    opacity: 0.6; display: block;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-    filter: alpha(opacity=60);
-    -webkit-opacity: 0.60;
-    -khtml-opacity: 0.60;
-    -moz-opacity: 0.60;
-    -o-opacity: 0.60;}
+body.hudup .codexglossmark > * {
+    display: block; opacity: 0.50;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=50);
+    -webkit-opacity: 0.50;
+    -khtml-opacity: 0.50;
+    -moz-opacity: 0.50;
+    -o-opacity: 0.50;}
 
 .codexglossmark img {
     position: static;
-    float: right; vertical-align: top; text-align: right;}
-.codexglossmark img.tiny {width: 16px; height: auto;}
-.codexglossmark img.big {width: 32px; height: auto;}
-.codexglossmark img.tiny, .codexglossmark img.big { visibility: hidden;}
+    vertical-align: middle; text-align: right;
+    float: right;}
+.codexglossmark img.wedge {
+    width: 32px; height: auto;
+    position: absolute; right: 0px; top: 0px;}
 
 .codexglossbutton {
     position: absolute; left: 0px;
@@ -375,16 +396,6 @@ body.hudup .codextarget.codexglosstarget .codexglossbutton {
 
 /* Sparse glossmark display (the default) */
 
-body .codexglossmark img.tiny { position: absolute;}
-body .codexglossmark img.big { position: absolute;}
-body .codexglossmark img.tiny { visibility: visible;}
-body.hudup .codexglossmark img.big { visibility: visible;}
-body.hudup .codexglossmark img.tiny { visibility: hidden;}
-body .codexglossmark:hover img.big { visibility: visible;}
-body .codexglossmark:hover img.tiny { visibility: hidden;}
-body .codexglossmark.hover img.big { visibility: visible;}
-body .codexglossmark.hover img.tiny { visibility: hidden;}
-
 /* Displaying the sbook target */
 
 body.cxANIMATE.hudup .codextarget, body.cxSHRINK .codextarget {
@@ -414,11 +425,20 @@ div.sbooksection.codexnewtarget > *:first-child {
    */
 body.codextarget { color: inherit;}
 
-.codextarget .codexglossmark img.big { width: 32px; height: auto;}  
-.codextarget .codexglossmark img {
-    border: solid transparent 2px;
-    border-top: solid blue 2px;}
-.codextarget:hover .codexglossmark {
+.cxANIMATE .codexglossmark > * {
+    transition-property: opacity;
+    transition-duration: 1.5s;
+    -o-transition-property: opacity;
+    -o-transition-duration: 1.5s;
+    -moz-transition-property: opacity;
+    -moz-transition-duration: 1.5s;
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 1.5s;}
+
+    }
+
+.codextarget:hover .codexglossmark > *,
+.codextarget.hover .codexglossmark > * {
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
@@ -426,8 +446,8 @@ body.codextarget { color: inherit;}
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-body.hudup .codextarget .codexglossmark:hover,
-body.hudup .codextarget .codexglossmark.hover {
+body.hudup .codextarget .codexglossmark:hover > *,
+body.hudup .codextarget .codexglossmark.hover > * {
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
