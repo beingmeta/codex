@@ -458,8 +458,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var selecting=Codex.UI.selectText(passage);
         selectors.push(selecting);
         selectors[passage.id]=selecting;
+        fdjtUI.TapHold.clear();
         // This makes a selection start on the region we just created.
-        fdjtUI.TapHold.fakePress(evt,250);}
+        setTimeout(function(){fdjtUI.TapHold.fakePress(evt,50);},0);}
 
     function abortSelect(except){
         var i=0, lim=selectors.length;
