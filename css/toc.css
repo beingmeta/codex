@@ -129,7 +129,10 @@ div#CODEXHUD div.codextoc div.spanbar { display: none;}
 div#CODEXHUD div.codextoc img { display: none;}
 
 div#CODEXHUD.toc div.codextoc div.head { display: block;}
-div#CODEXHUD.toc div.codextoc div.spanbar { display: block;}
+div#CODEXHUD.toc div.codextoc div.spanbar {
+    display: block;
+    border-left: solid darkgray 2px;
+    border-right: solid darkgray 2px;}
 div#CODEXHUD.toc div.codextoc img { display: inherit;}
 div#CODEXHUD.toc div.codextoc.codexcurhead div.sub { display: block;}
 div#CODEXHUD div#CODEXTOC.hover div.codextoc.codexcurhead div.sub { display: none;}
