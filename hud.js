@@ -365,7 +365,7 @@ Codex.setMode=
         /* Mode controls */
         
         var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(expandsearch)|(searchresults)|(toc)|(glosses)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
-        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(glosses)|(about)|(console)|(search)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
+        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
         var codexHeadMode_pat=/\b((toc)|(search)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan)|(shownote))\b/g;
         var CodexSubMode_pat=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
         var codex_mode_scrollers=

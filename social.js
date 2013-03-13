@@ -236,21 +236,29 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function showGlosses(target) {
         var id=target.codexbaseid||target.id;
-        var glosses=Codex.glossdb.find('frag',id);
+        var dups=Codex.getDups(target.id);
+        var glossids=Codex.glossdb.find('frag',id), glosses=[];
         var sumdiv=fdjtDOM("div.codexglosses.codexslice.hudpanel");
         var excerpt=false;
-        if ((!(glosses))||(!(glosses.length)))
+        if ((!(glossids))||(!(glossids.length)))
             fdjtDOM.addClass(sumdiv,"noglosses");
         if (Codex.target) Codex.clearHighlights(Codex.target);
+        var i=0, lim=glossids.length; while (i<lim) {
+            var glossref=Codex.glossdb.ref(glossids[i++]);
+            glosses.push(glossref);}
+        // Codex.glossdb.load(glosses);
+        i=0; while (i<lim) {
+            var gloss=glosses[i++];
+            if (gloss.excerpt) {
+                var range=Codex.findExcerpt(dups,gloss.excerpt,gloss.exoff);
+                if (range) {
+                    var starts=range.startContainer;
+                    if (!(hasClass(starts,"codexhighlightexcerpt"))) {
+                        fdjtUI.Highlight(range,"codexhighlightexcerpt");}}}}
         var slice=new CodexSlice(sumdiv,glosses);
         sumdiv.id="CODEXPASSAGEGLOSSES";
         fdjtDOM.replace("CODEXPASSAGEGLOSSES",sumdiv);
         Codex.setTarget(target);
-        if (excerpt) {
-            var range=fdjtDOM.findString(target,excerpt);
-            if (range) fdjtUI.Highlight(range,"codexhighlightexcerpt");}
-        else {
-            addClass(Codex.getDups(target),"codexhighlightpassage");}
         Codex.setMode("glosses");}
     Codex.showGlosses=showGlosses;
 
