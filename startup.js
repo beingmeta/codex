@@ -961,13 +961,14 @@ Codex.Startup=
             if ((Codex.Trace.glosses)||(Codex.Trace.startup))
                 fdjtLog("Starting initializing glosses from offline storage");
             Codex.glosses.setLive(false);
-            Codex.glossdb.load(true); Codex.sourcedb.load(true);
-            Codex.glosses.setLive(true);
-            if ((Codex.glossdb.allrefs.length)||
-                (Codex.sourcedb.allrefs.length))
-                fdjtLog("Initialized %d glosses (%d sources) from offline storage",
-                        Codex.glossdb.allrefs.length,
-                        Codex.sourcedb.allrefs.length);}
+            Codex.sourcedb.load(true);
+            Codex.glossdb.load(true,function(){
+                Codex.glosses.setLive(true);
+                if ((Codex.glossdb.allrefs.length)||
+                    (Codex.sourcedb.allrefs.length))
+                    fdjtLog("Initialized %d glosses (%d sources) from offline storage",
+                            Codex.glossdb.allrefs.length,
+                            Codex.sourcedb.allrefs.length);});}
 
         /* Viewport setup */
 
@@ -1338,7 +1339,8 @@ Codex.Startup=
                 Codex.sourcedb.save(true);}
             if (Codex.glosshash) {
                 if (Codex.showGloss(Codex.glosshash))
-                    Codex.glosshash=false;}}
+                    Codex.glosshash=false;}
+            if (Codex.glosses) Codex.glosses.update();}
         Codex.loadInfo=loadInfo;
 
         var updating=false;

@@ -116,8 +116,7 @@ body.hudup #CODEXHEAD .hudpanel {
     top: -200px;}
 #CODEXHUD.openhead #CODEXHEAD { top: 0px;}
 body.hudup #CODEXHEAD {display: block;}
-body.hudup #CODEXHEAD #CODEXHUDBUTTONS {
-    display: block; position: static;}
+body.hudup #CODEXHUDBUTTONS {display: block;}
 body.hudup #CODEXHUD.openhead #CODEXHEAD,
 body #CODEXHUD.scanning #CODEXSCANNER {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -136,11 +135,11 @@ body.hudup #CODEXHUD.openhead.toc #CODEXHEAD {
     
 body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
     position: static;}
-body.hudup #CODEXHUD.openhead #CODEXHEAD #CODEXHUDBUTTONS,
-body.hudup #CODEXHUD.toc #CODEXHEAD #CODEXHUDBUTTONS,
-body.hudup #CODEXHUD.refinesearch #CODEXHEAD #CODEXHUDBUTTONS,
-body.hudup #CODEXHUD.searchresults #CODEXHEAD #CODEXHUDBUTTONS,
-body.hudup #CODEXHUD.addgloss #CODEXHEAD #CODEXHUDBUTTONS {
+body.hudup #CODEXHUD.openhead #CODEXHUDBUTTONS,
+body.hudup #CODEXHUD.toc #CODEXHUDBUTTONS,
+body.hudup #CODEXHUD.refinesearch #CODEXHUDBUTTONS,
+body.hudup #CODEXHUD.searchresults #CODEXHUDBUTTONS,
+body.hudup #CODEXHUD.addgloss #CODEXHUDBUTTONS {
     display: none; position: absolute;}
 body #CODEXHUD.tocscan #CODEXHEAD,
 body #CODEXHUD.openglossmark #CODEXSCANNER,
@@ -604,7 +603,11 @@ body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.username {
 
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
-    top: 0px; left: 60px; right: 60px; z-index: 100;}
+    top: 0px; left: 60px; right: 60px; z-index: 100;
+    background-color: transparent;
+    display: block;}
+div#CODEXHUD.openhead div#CODEXHUDBUTTONS.hudpanel {
+    display: none;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS {
     margin: 0px; padding: 0px; border-bottom-width: 0px; min-height: 60px;
