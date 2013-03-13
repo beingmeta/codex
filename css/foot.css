@@ -78,7 +78,7 @@ body.cxTOUCH #CODEXHUD.tocscan div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
 
 div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
   position: absolute; bottom: 0px; height: 20px; width: 100%;
-  border-top: solid black 1px;
+  border-top: solid black 1px; z-index: 50;
   pointer-events: none;}
 div#CODEXFOOT div#CODEXPAGEINFO div.textfoot > span {
   z-index: 50; pointer-events: all;}
@@ -113,8 +113,9 @@ body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
   -o-opacity: 1.00;}
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.preview {
   background-color: gold; overflow: visible;
-  visibility: visible; opacity: 1.0;
-  z-index: 100;}
+  visibility: visible; opacity: 1.0; z-index: 100;
+  font-size: 200%; height: 60px; width: 1.5em;
+  pointer-events: none;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
