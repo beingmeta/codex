@@ -1410,22 +1410,25 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return;}
         else Codex.showGlosses(passage,glossmark);}
 
+    var animated_glossmark=false;
     var glossmark_animated=false;
     var glossmark_image=false;
     function animate_glossmark(target,enable){
-        if (glossmark_animated) {
-            clearInterval(glossmark_animated);
-            glossmark_animated=false;
-            if (glossmark_image)
-                fdjtUI.ImageSwap.reset(glossmark_image);}
         if ((target)&&(enable)) {
             var glossmark=((hasClass(target,"codexglossmark"))?(target):
                            (getParent(target,".codexglossmark")));
             if (!(glossmark)) return;
-            var bigimage=fdjtDOM.getChild(glossmark,"img.big");
-            if (!(bigimage)) return;
-            glossmark_image=bigimage;
-            glossmark_animated=fdjtUI.ImageSwap(bigimage,750);}}
+            if (animated_glossmark===glossmark) return;
+            if (glossmark_animated) {
+                clearInterval(glossmark_animated);
+                animated_glossmark=false;
+                glossmark_animated=false;
+                if (glossmark_image) fdjtUI.ImageSwap.reset(glossmark_image);}
+            var wedge=fdjtDOM.getChild(glossmark,"img.wedge");
+            if (!(wedge)) return;
+            animated_glossmark=glossmark;
+            glossmark_image=wedge;
+            glossmark_animated=fdjtUI.ImageSwap(wedge,750);}}
 
     function glossmark_hoverstart(evt){
         evt=evt||event;
