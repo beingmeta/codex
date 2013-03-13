@@ -224,11 +224,18 @@ Codex.Slice=(function () {
         // This might do some kind of more/less controls and sorted
         // or cloudy display
         while (i<outlets.length) {
-            var outlet=outlets[i]; var info=RefDB.load(outlet);
-            var outlet_span=fdjtDOM("span.outlet",info.name);
-            if (info.about) 
-                outlet_span.title="Shared with “"+info.name+"” — "+info.about;
-            else outlet_span.title="Shared with “"+info.name+"”";
+            var outlet=outlets[i]; var info=Codex.sourcedb.ref(outlet);
+            var outlet_span=fdjtDOM("span.outlet");
+            if (info._live) {
+                fdjtDOM(outlet_span,info.name);
+                if (info.about) 
+                    outlet_span.title="Shared with “"+info.name+"” — "+info.about;
+                else outlet_span.title="Shared with “"+info.name+"”";}
+            else info.load(function(){
+                fdjtDOM(outlet_span,info.name);
+                if (info.about) 
+                    outlet_span.title="Shared with “"+info.name+"” — "+info.about;
+                else outlet_span.title="Shared with “"+info.name+"”";});
             fdjtDOM.append(span," ",outlet_span);
             i++;}
         return span;}
@@ -315,14 +322,14 @@ Codex.Slice=(function () {
             if (typeof sources === 'string') sources=[sources];
             var i=0; var lim=sources.length;
             while (i<lim) {
-                var source=RefDB.load(sources[i++]);
+                var source=Codex.sourcedb.loadref(sources[i++]);
                 if ((source)&&(source.kind===':OVERDOC'))
                     return source;}
             return false;}
         else return false;}
 
     function getfakepic(maker,spec){
-        var userinfo=RefDB.load(maker);
+        var userinfo=Codex.sourcedb.loadref(maker);
         var pic=fdjtDOM(spec||"div.sbooksourcepic",
                         (((userinfo)&&(userinfo.name))?
                          (fdjtString.getInitials(userinfo.name)):
@@ -337,7 +344,7 @@ Codex.Slice=(function () {
             if (typeof sources==='string') sources=[sources];
             var i=0; var lim=sources.length;
             while (i<lim) {
-                var source=RefDB.load(sources[i++]);
+                var source=Codex.sourcedb.loadref(sources[i++]);
                 if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
                     return { src: source.pic, alt: source.name,
                              classname: "img.glosspic.sourcepic"};}}
@@ -354,12 +361,12 @@ Codex.Slice=(function () {
             if (typeof outlets==='string') outlets=[outlets];
             var i=0; var lim=outlets.length;
             while (i<lim) {
-                var outlet=RefDB.load(outlets[i++]);
+                var outlet=Codex.sourcedb.loadref(outlets[i++]);
                 if ((outlet)&&(outlet.kind===':OVERLAY')&&(outlet.pic))
                     return { src: outlet.pic, alt: outlet.name,
                              classname: "img.glosspic.sourcepic"};}}
         if (info.maker) {
-            var userinfo=RefDB.load(info.maker);
+            var userinfo=Codex.sourcedb.loadref(info.maker);
             if (userinfo.pic)
                 return { src: userinfo.pic, alt: userinfo.name,
                          classname: "img.glosspic.userpic"};
@@ -687,8 +694,21 @@ Codex.Slice=(function () {
         Codex.UI.addHandlers(container,'summary');
         this.container=container; this.cards=[];
         if (sortfn) this.sortfn=sortfn; this.byid=new fdjt.RefMap();
+        this.live=false; this.changed=false;
         this.addCards(cards);
+        if ((cards)&&(cards.length)) this.update();
         return this;}
+
+    CodexSlice.prototype.setLive=function setSliceLive(flag){
+        if (flag) {
+            if (this.live) return false;
+            else {
+                this.update();
+                return true;}}
+        else if (this.live) {
+            this.live=false;
+            return true;}
+        else return false;};
 
     CodexSlice.prototype.renderCard=function renderCardForSlice(about){
         return renderCard(about);};
@@ -709,27 +729,30 @@ Codex.Slice=(function () {
     CodexSlice.prototype.getCard=function getCard(ref){
         return this.byid.get(ref);};
 
-    CodexSlice.prototype.update=function updateSlice(){
-        var cards=this.cards; var i=0, lim=cards.length;
-        cards.sort(this.sortfn);
-        var passage_starts=fdjtDOM.toArray(fdjtDOM.$(".slicenewpassage",this.container));
-        var head_starts=fdjtDOM.toArray(fdjtDOM.$(".slicenewhead",this.container));
-        this.container.innerHTML="";
-        dropClass(passage_starts,"slicenewpassage");
-        dropClass(head_starts,"slicenewhead");
-        var head=false, passage=false;
-        var frag=document.createDocumentFragment()||this.container;
-        i=0, lim=cards.length; while (i<lim) {
-            var card=cards[i++];
-            if (card.hidden) continue;
-            else if (card.passage!==passage) {
-                passage=card.passage;
-                addClass(card.dom,"slicenewpassage");}
-            if (card.head!==head) {
-                head=card.head;
-                addClass(card.dom,"slicenewhead");}
-            frag.appendChild(card.dom);}
-        if (frag!==this.container) this.container.appendChild(frag);};
+    CodexSlice.prototype.display=CodexSlice.prototype.update=
+        function updateSlice(force){
+            if ((!(this.changed))&&(!(force))) return;
+            var cards=this.cards; var i=0, lim=cards.length;
+            cards.sort(this.sortfn);
+            var passage_starts=fdjtDOM.toArray(fdjtDOM.$(".slicenewpassage",this.container));
+            var head_starts=fdjtDOM.toArray(fdjtDOM.$(".slicenewhead",this.container));
+            this.container.innerHTML="";
+            dropClass(passage_starts,"slicenewpassage");
+            dropClass(head_starts,"slicenewhead");
+            var head=false, passage=false;
+            var frag=document.createDocumentFragment()||this.container;
+            i=0, lim=cards.length; while (i<lim) {
+                var card=cards[i++];
+                if (card.hidden) continue;
+                else if (card.passage!==passage) {
+                    passage=card.passage;
+                    addClass(card.dom,"slicenewpassage");}
+                if (card.head!==head) {
+                    head=card.head;
+                    addClass(card.dom,"slicenewhead");}
+                frag.appendChild(card.dom);}
+            if (frag!==this.container) this.container.appendChild(frag);
+            this.changed=false;};
 
     CodexSlice.prototype.filter=function filterSlice(fn){
         var cards=this.cards; var i=0, n=cards.length;
@@ -738,11 +761,13 @@ Codex.Slice=(function () {
             var card=cards[i++];
             if (fn(card)) card.hidden=false;
             else card.hidden=true;}
+        this.changed=true;
         this.update();}
 
     CodexSlice.prototype.addCards=function addCards(adds){
         if (!(adds)) return;
         if (!(adds instanceof Array)) adds=[adds];
+        if (adds.length===0) return;
         var byid=this.byid; var cards=this.cards; var i=0, lim=adds.length;
         while (i<lim) {
             var add=adds[i++], info=false, card, id, about=false, replace=false;
@@ -777,7 +802,8 @@ Codex.Slice=(function () {
                 info.head=card.getAttribute("data-tochead");
             if (replace) this.container.replaceChild(card,replace);
             else cards.push(info);}
-        this.update();};
+        if (this.live) this.update();
+        else this.changed=true;};
 
     return CodexSlice;
 
