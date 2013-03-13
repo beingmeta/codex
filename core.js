@@ -677,9 +677,14 @@ var Codex=
         var matches=fdjtDOM.findMatches(node,pattern,off||0,1);
         if ((matches)&&(matches.length)) return matches[0];
         // We could do this more intelligently
-        if (off>7) matches=fdjtDOM.findMatches(node,pattern,off-7,1);
+        var scan=0, result=false;
+        matches=fdjtDOM.findMatches(node,pattern,0,1);
+        while (matches.length>0) {
+            result=matches[0];
+            matches=fdjtDOM.findMatches(
+                node,pattern,result.end_offset+1,1);}
         if ((matches)&&(matches.length)) return matches[0];
-        else return false;}
+        else return result;}
     Codex.findExcerpt=findExcerpt;
 
     /* Tags */
