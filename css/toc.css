@@ -177,7 +177,9 @@ div#CODEXTOC div.spanbar div.codexhudspan {
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
     height: 40px;}
 div#CODEXTOC div.spanbar div.progressbox {
-    vertical-align: top; height: 90%; top: 0.25em;}
+    vertical-align: top; height: 90%; top: 4px;}
+div#CODEXTOC div.toc0 > div.spanbar div.progressbox {
+    vertical-align: top; height: 90%; top: 0px;}
 div#CODEXTOC div.spanbar div.spans { font-size: 30px;}
 div#CODEXTOC div.spanbar div.spans a.codextitle {
     white-space: nowrap; height: 36px;}

@@ -573,9 +573,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             clearTimeout(preview_timer); preview_timer=false;}
         if (slip_timer) {
             clearTimeout(slip_timer); slip_timer=false;}
-        if ((about)&&(Codex.touch)&&(hasParent(target,".sectname"))) {
-            fdjt.UI.CoHi.highlight(about);
-            return fdjtUI.cancel(evt);}
         if (about) {
             var ref=about.name.slice(3);
             var toc=getParent(about,".codextoc");
@@ -585,7 +582,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         evt,about,ref,toc,title);
             addClass(title,"codexpreviewtitle");
             addClass(about.parentNode,"codexheld");
-            addClass(getParent(about,".spanbar"),"codexvisible");
+            var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
+            addClass(spanbar,"codexvisible");
             addClass(toc,"codexheld");
             Codex.startPreview(fdjtID(ref),"codexheld");
             return fdjtUI.cancel(evt);}
@@ -604,7 +602,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         evt,about,toc,title);
             dropClass(title,"codexpreviewtitle");
             dropClass(about.parentNode,"codexheld");
-            dropClass(getParent(about,".spanbar"),"codexvisible");
+            var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
+            dropClass(spanbar,"codexvisible");
             dropClass(toc,"codexheld");
             Codex.stopPreview("toc_released");}
         else if (Codex.Trace.gestures)
