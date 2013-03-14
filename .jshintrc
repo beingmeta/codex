@@ -1,0 +1,9 @@
+// -*- Mode: Javascript; character-encoding: utf-8 -*-
+{
+    "globals": { "fdjt": false, "Storage": false, "indexedDB": false, "exports": false,
+	        "Codex": false},
+    "strict": true,
+    "eqeqeq": true,
+    "noempty": false,
+    "undef": true
+}

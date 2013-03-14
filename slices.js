@@ -590,7 +590,7 @@ Codex.Slice=(function () {
         var i=0; var lim=children.length;
         while (i<lim) {
             var child=children[i++];
-            if (!(child.nodeType===1)) continue;
+            if (child.nodeType!==1) continue;
             else if (child.tocref===ref) return child;
             else if (child.starts>loc) return child;
             else continue;}
@@ -762,7 +762,7 @@ Codex.Slice=(function () {
             if (fn(card)) card.hidden=false;
             else card.hidden=true;}
         this.changed=true;
-        this.update();}
+        this.update();};
 
     CodexSlice.prototype.addCards=function addCards(adds){
         if (!(adds)) return;
@@ -789,13 +789,13 @@ Codex.Slice=(function () {
                 byid[id]=info={added: fdjtTime(),id: id,about: about};
             info.dom=card;
             if (card.getAttribute("data-location"))
-                info.location=parseInt(card.getAttribute("data-location"));
+                info.location=parseInt(card.getAttribute("data-location"),10);
             if (card.getAttribute("data-gloss"))
                 info.gloss=Codex.glossdb.refs[card.getAttribute("data-gloss")];
             if (card.getAttribute("data-searchscore"))
-                info.score=parseInt(card.getAttribute("data-searchscore"));
+                info.score=parseInt(card.getAttribute("data-searchscore"),10);
             if (card.getAttribute("data-timestamp"))
-                info.timestamp=parseInt(card.getAttribute("data-timestamp"));
+                info.timestamp=parseInt(card.getAttribute("data-timestamp"),10);
             if (card.getAttribute("data-passage"))
                 info.passage=card.getAttribute("data-passage");
             if (card.getAttribute("data-tochead"))
