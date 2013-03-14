@@ -22,12 +22,14 @@ body.hudup div#CODEXFOOT div#CODEXPAGEINFO {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
-div#CODEXFOOT div#CODEXPAGEINFO span.locoff {
-    position: absolute; bottom: 0px; right: 3px;
-    cursor: text;}
-div#CODEXFOOT span#CODEXPAGENO {
+div#CODEXFOOT div#CODEXPAGEINFO span#CODEXLOCOFF {
+    position: absolute; bottom: 0px; right: 3px; cursor: text;}
+div#CODEXFOOT div#CODEXPAGEINFO span#CODEXPAGENO {
     position: absolute; right: 50%; bottom: 0px;
     max-height: 20px;}
+body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO span#CODEXLOCOFF,
+body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO span#CODEXPAGENOTEXT {
+    pointer-events: none;}
 div#CODEXFOOT span#CODEXPAGENO span#CODEXPAGENOTEXT {
     cursor: text;}
 div#CODEXFOOT div#CODEXPAGEINFO div.progressbar {
