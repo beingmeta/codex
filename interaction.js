@@ -1044,10 +1044,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function glossdeleted(response,glossid,frag){
         if (response===glossid) {
             Codex.glossdb.drop(glossid);
-            Codex.allglosses=RefDB.remove(Codex.allglosses,glossid);
-            if (Codex.persist)
-                fdjtState.setLocal("codex.glosses("+Codex.refuri+")",
-                                   Codex.allglosses,true);
             var editform=fdjtID("CODEXEDITGLOSS_"+glossid);
             if (editform) {
                 var editor=editform.parentNode;

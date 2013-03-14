@@ -399,11 +399,6 @@ Codex.Startup=
                                 "codex."+prop+"("+refuri+")",Codex[prop],true);}
                         Codex.glossdb.save(true);
                         Codex.sourcedb.save(true);
-                        if ((Codex.persist)&&
-                            (Codex.allglosses)&&
-                            (Codex.allglosses.length))
-                            setLocal("glosses("+refuri+")",Codex.allglosses,
-                                     true);
                         Codex.queued=fdjtState.getLocal(
                             "queued("+Codex.refuri+")",true)||[];}
                     else if (!(value)) {
@@ -942,10 +937,6 @@ Codex.Startup=
                 getLocal("codex.outlets("+refuri+")",true)||[];
             var overlays=Codex.overlays=
                 getLocal("codex.overlays("+refuri+")",true)||[];
-            var allsources=Codex.allsources=
-                getLocal("codex.sources("+refuri+")",true)||[];
-            var i=0, lim=allsources.length;
-            // while (i<lim) allsources[i++].Import();
             if (userinfo) setUser(userinfo,outlets,overlays,sync);
             if (nodeid) setNodeID(nodeid);
             Codex.sync=sync;}
@@ -1586,7 +1577,6 @@ Codex.Startup=
                         "codex."+name+"("+refuri+")",qid,true);}}}
 
         function setupGlosses(newglosses) {
-            var allglosses=Codex.allglosses||[];
             Codex.glossdb.Import(
                 newglosses,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             if (newglosses.length) {
@@ -1594,14 +1584,11 @@ Codex.Startup=
                     var gloss=newglosses[i++];
                     var id=gloss._id;
                     var tstamp=gloss.syncstamp||gloss.tstamp;
-                    if (tstamp>latest) latest=tstamp;
-                    allglosses.push(id);}}
-            Codex.syncstamp=latest;
-            Codex.allglosses=allglosses;}
+                    if (tstamp>latest) latest=tstamp;}}
+            Codex.syncstamp=latest;}
 
         function initGlosses(glosses,etc){
             var msg=fdjtID("CODEXNEWGLOSSES");
-            var allglosses=Codex.allglosses;
             if (msg) {
                 msg.innerHTML=fdjtString(
                     "Assimilating %d new glosses",glosses.length);
@@ -1621,10 +1608,8 @@ Codex.Startup=
             while (i<lim) {
                 var gloss=glosses[i++]; var id=gloss._id;
                 var tstamp=gloss.syncstamp||gloss.tstamp;
-                if (tstamp>latest) latest=tstamp;
-                allglosses.push(id);}
+                if (tstamp>latest) latest=tstamp;}
             Codex.syncstamp=latest;
-            Codex.allglosses=allglosses;
             startupLog("Done assimilating %d new glosses...",glosses.length);
             dropClass(msg,"running");}
         Codex.Startup.initGlosses=initGlosses;

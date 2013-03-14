@@ -147,12 +147,6 @@ var Codex=
         var refuri=(Codex.refuri||document.location.href);
         if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
 
-        // Global lists
-        Codex.allglosses=[];
-        Codex.allsources=[];
-        // These are all references outside of the glosses
-        Codex.etc=[];
-
         var docinfo=Codex.docdb=new RefDB(
             refuri+"#",{indices: ["frag","head","heads",
                                   "tags","tags*",
