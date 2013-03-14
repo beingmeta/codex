@@ -1222,10 +1222,19 @@ Codex.Startup=
             pagehead.codexui=true; pagefoot.codexui=true;
             Codex.pagehead=pagehead; Codex.pagefoot=pagefoot;
             
-            fdjtDOM.prepend(document.body,pagehead,pagefoot,pageleft,pageright);
+            var scanleft=document.createDocumentFragment();
+            var scanright=document.createDocumentFragment();
+            var holder=fdjtDOM("div");
+            holder.innerHTML=Codex.HTML.pageleft;
+            var nodes=fdjtDOM.toArray(holder.childNodes); var i=0, lim=nodes.length;
+            while (i<lim) scanleft.appendChild(nodes[i++]);
+            holder.innerHTML=Codex.HTML.pageright;
+            nodes=fdjtDOM.toArray(holder.childNodes), i=0, lim=nodes.length;
+            while (i<lim) scanright.appendChild(nodes[i++]);
 
-            pageright.innerHTML=Codex.HTML.pageright;
-            pageleft.innerHTML=Codex.HTML.pageleft;
+            fdjtDOM.prepend(document.body,pagehead,pagefoot,
+                            scanleft,scanright,
+                            pageleft,pageright);
 
             for (var pagelt in [pagehead,pageright,pageleft,pagefoot]) {
                 fdjtDOM.addListeners(pagelt,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}

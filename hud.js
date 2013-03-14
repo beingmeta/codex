@@ -441,7 +441,7 @@ Codex.setMode=
                     (mode==='expandsearch'))
                     Codex.search_mode=mode;
 
-                if ((mode==='scanning')||(mode==='tocscan')||(mode==='openglossmark'))
+                if ((mode==='scanning')||(mode==='tocscan'))
                     addClass(document.body,"codexscanning");
                 else dropClass(document.body,/\b(codexscan[a-z0-9]*)\b/);
 
@@ -489,7 +489,11 @@ Codex.setMode=
                 dropClass(document.body,"cxSHRINK");
                 Codex.cxthelp=false;
                 if (display_sync) Codex.displaySync();
-                setTimeout(function(){dropClass(CodexHUD,CodexSubMode_pat);setHUD(false);},500);}}
+                var old_mode=Codex.mode;
+                setTimeout(function(){
+                    if (Codex.mode===old_mode) {
+                        dropClass(CodexHUD,CodexSubMode_pat);
+                        setHUD(false);}},500);}}
 
         function changeMode(mode){      
             fdjtDOM.dropClass(CodexHUD,CodexMode_pat);

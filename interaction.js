@@ -559,7 +559,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (show_fulltoc) Codex.setMode("toc");
             else if (Codex.mode==="tocscan")
                 Codex.setMode(false);
-            else Codex.setMode("tocscan");
+            else {
+                Codex.setMode("tocscan");
+                fdjtUI.cancel(evt);}
             return fdjtUI.cancel(evt);}
         else if (Codex.Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
         else {}}
@@ -1497,24 +1499,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else last_motion=now;
         if (Codex.Trace.nav)
             fdjtLog("Forward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
-        /* 
-        if ((Codex.mode==="glosses")||(Codex.mode==="addgloss"))
-        Codex.setMode(true); else */
-        Codex.setMode(false);
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
             scanForward(evt);
         else pageForward(evt);}
     Codex.Forward=Forward;
     function right_margin(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
-        if ((Codex.hudup)&&
-            (Codex.mode!=="scanning")&&
-            (Codex.mode!=="tocscan")&&
-            (Codex.mode!=="openglossmark"))
-            Codex.setMode(false);
         else if ((Codex.mode==="scanning")||
-                 (Codex.mode==="tocscan")||
-                 (Codex.mode==="openglossmark"))
+                 (Codex.mode==="tocscan"))
             scanForward(evt);
         else Forward(evt);
         cancel(evt);}
@@ -1525,9 +1517,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (evt) fdjtUI.cancel(evt);
         if ((last_motion)&&((now-last_motion)<100)) return;
         else last_motion=now;
-        /* if ((Codex.mode==="glosses")||(Codex.mode==="addgloss"))
-           Codex.setMode(true); else */
-        Codex.setMode(false);
         if (Codex.Trace.nav)
             fdjtLog("Backward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
@@ -1538,12 +1527,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (Codex.Trace.gestures) tracetouch("left_margin",evt);
         if ((Codex.hudup)&&
             (Codex.mode!=="scanning")&&
-            (Codex.mode!=="tocscan")&&
-            (Codex.mode!=="openglossmark"))
+            (Codex.mode!=="tocscan"))
             Codex.setMode(false);
         else if ((Codex.mode==="scanning")||
-                 (Codex.mode==="tocscan")||
-                 (Codex.mode==="openglossmark"))
+                 (Codex.mode==="tocscan"))
             scanBackward(evt);
         else Backward(evt);
         cancel(evt);}
@@ -1553,11 +1540,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((Codex.Trace.gestures)||(Codex.Trace.flips))
             fdjtLog("pageForward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
-        if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
-            Codex.setMode(false);
         if ((Codex.bypage)&&(Codex.pagecount)) {
             var newpage=false;
-            if (Codex.mode==="openglossmark") Codex.setMode(true);
             if (Codex.curpage===Codex.pagecount) {}
             else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward",true);}
         else {
@@ -1571,11 +1555,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((Codex.Trace.gestures)||(Codex.Trace.flips))
             fdjtLog("pageBackward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
-        if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
-            Codex.setMode(false);
         if ((Codex.bypage)&&(Codex.pagecount)) {
             var newpage=false;
-            if (Codex.mode==="openglossmark") Codex.setMode(true);
             if (Codex.curpage===0) {}
             else {
                 Codex.GoToPage(newpage=Codex.curpage-1,"pageBackward",true);}}
@@ -1719,9 +1700,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (!(scanning)) return;
         if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
             Codex.setMode("allglosses");
-            fdjtUI.cancel(evt);}
-        else if (getParent(scanning,fdjtID("CODEXPOINTGLOSSES"))) {
-            Codex.setMode("openglossmark");
             fdjtUI.cancel(evt);}
         else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) {
             Codex.setMode("searchresults");
@@ -2092,12 +2070,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         fdjtDOM.dropClass(document.body,"codexhelp");}
 
     function scanner_expand_hold(evt){
-        fdjtDOM.addClass("CODEXSCANNER","expanded");}
+        fdjtDOM.addClass("CODEXSCANNER","expanded");
+        fdjtUI.cancel(evt);}
     function scanner_expand_tap(evt){
         fdjtDOM.toggleClass("CODEXSCANNER","expanded");
         fdjtUI.cancel(evt);}
     function scanner_expand_release(evt){
-        fdjtDOM.dropClass("CODEXSCANNER","expanded");}
+        fdjtDOM.dropClass("CODEXSCANNER","expanded");
+        fdjtUI.cancel(evt);}
 
     /* Tracking text input */
 
@@ -2349,16 +2329,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
          "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXSHARECLOUD": {click: outlet_tapped},
          "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
-         /*
-         "#CODEXNEXTPAGE": {click: function(evt){
+         "#CODEXNEXTPAGE": {touchstart: function(evt){
              Codex.pageForward(evt); cancel(evt);}},
-         "#CODEXPREVPAGE": {click: function(evt){
+         "#CODEXPREVPAGE": {touchstart: function(evt){
              Codex.pageBackward(evt); cancel(evt);}},
-         "#CODEXNEXTSCAN": {click: function(evt){
+         "#CODEXNEXTSCAN": {touchstart: function(evt){
              Codex.scanForward(evt); cancel(evt);}},
-         "#CODEXPREVSCAN": {click: function(evt){
+         "#CODEXPREVSCAN": {touchstart: function(evt){
              Codex.scanBackward(evt); cancel(evt);}},
-             */
          "#CODEXHELPBUTTON": {touchstart: toggleHelp},
          "#CODEXHELP": {touchstart: toggleHelp},
          "#CODEXSHOWTEXT": {
