@@ -59,18 +59,11 @@ Codex.DOMScan=(function(){
     var getLevel=Codex.getTOCLevel;
 
     function CodexDOMScan(root,dbid,docinfo){
-        var fdjtID=fdjt.ID;
         var md5ID=fdjt.WSN.md5ID;
         var stdspace=fdjtString.stdspace;
-        var flatten=fdjtString.flatten;
-        var hasClass=fdjtDOM.hasClass;
-        var hasPrefix=fdjtString.hasPrefix;
-        var getChildren=fdjtDOM.getChildren;
         var getStyle=fdjtDOM.getStyle;
-        var prefix=Codex.prefix;
         var rootns=root.namespaceURI;
         
-        var idcount=1;
         var idmap={};
         
         if (typeof root === 'undefined') return this;
@@ -89,7 +82,7 @@ Codex.DOMScan=(function(){
                 fdjtLog("Scanning %s#%s for structure and metadata",
                         root.tagName,root.id);
             else fdjtLog("Scanning DOM for structure and metadata: %o",root);}
-        var children=root.childNodes, level=false;
+        var children=root.childNodes;
         var scanstate=
             {curlevel: 0,idserial:0,location: 0,
              nodecount: 0,eltcount: 0,headcount: 0,
@@ -113,7 +106,6 @@ Codex.DOMScan=(function(){
             scanstate.locinfo.push(scanstate.location);
             return this;}
         ScanInfo.prototype=new Ref();
-        var tag_export_rules=Codex.tag_export_rules;
         
         docdb.refclass=ScanInfo;
         docinfo._docdb=docdb;
@@ -283,7 +275,7 @@ Codex.DOMScan=(function(){
             else if (child.nodeType!==1) return 0;
             else {}
             var tag=child.tagName, classname=child.className;
-            var id=child.id, sourceid=id;
+            var id=child.id;
             if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
             if ((rootns)&&(child.namespaceURI!==rootns)) return;
             if ((classname)&&
@@ -410,8 +402,6 @@ Codex.DOMScan=(function(){
         var rootinfo=(docinfo[root.id])||
             (docinfo[root.id]=new ScanInfo(root.id,scanstate));
         scanstate.curhead=root; scanstate.curinfo=rootinfo;
-        // Location is an indication of distance into the document
-        var location=0;
         rootinfo.title=root.title||document.title;
         rootinfo.starts_at=0;
         rootinfo.level=0; rootinfo.sub=[];

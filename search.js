@@ -50,28 +50,19 @@
 (function(){
     "use strict";
     var fdjtString=fdjt.String;
-    var fdjtState=fdjt.State;
-    var fdjtTime=fdjt.Time;
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
     var fdjtID=fdjt.ID;
-    var RefDB=fdjt.RefDB, Ref=fdjt.Ref, Query=RefDB.Query; 
-    var KNode=Knodule.KNode;
-
-    var cloudEntry=Codex.cloudEntry;
+    var RefDB=fdjt.RefDB, Query=RefDB.Query; 
 
     Codex.search_cloud=false;
     if (!(Codex.empty_cloud)) Codex.empty_cloud=false;
     if (!(Codex.show_refiners)) Codex.show_refiners=25;
     if (!(Codex.search_gotlucky)) Codex.search_gotlucky=7;
     
-    var cxicon=Codex.icon;
-
-    var Completions=fdjtUI.Completions;
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
-    var getChildren=fdjtDOM.getChildren;
     var getChild=fdjtDOM.getChild;
     var log=fdjtLog;
     var kbref=RefDB.resolve;
@@ -129,11 +120,13 @@
                 qstring);
         var input=getChild(box,".searchinput");
         var cloudid=input.getAttribute("completions");
-        var resultsid=input.getAttribute("results");
         var infoid=input.getAttribute("info");
         var qtags=getChild(box,".qtags");
         var cloud=((cloudid)&&(fdjtID(cloudid)));
-        var results=((resultsid)&&(fdjtID(resultsid)));
+        /* These should possibly be used in initializing the .listing
+         * field of the query */
+        //var resultsid=input.getAttribute("results");
+        //var results=((resultsid)&&(fdjtID(resultsid)));
         var info=((infoid)&&(fdjtID(infoid)));
         var resultcount=getChild(info,".resultcount");
         var refinecount=getChild(info,".refinecount");
@@ -235,8 +228,6 @@
 
     /* Text input handlers */
 
-    var _sbook_searchupdate=false;
-    var _sbook_searchupdate_delay=200;
     var Selector=fdjtDOM.Selector;
     
     function searchInput_keyup(evt){
@@ -367,26 +358,6 @@
         else return 1;};
 
     /* Show search results */
-
-    function makelocrule(target_info,cxtinfo_arg,cxtname){
-        var cxtinfo=cxtinfo_arg||Codex.docinfo[(Codex.body||document.body).id];
-        if (!(cxtname)) {
-            if (cxtinfo_arg) cxtname="into the section";
-            else cxtname="into the book";}
-        var locrule=fdjtDOM("hr.locrule");
-        var cxt_start=cxtinfo.starts_at;
-        var cxt_end=cxtinfo.ends_at;
-        var cxt_len=cxt_end-cxt_start;
-        var target_start=target_info.starts_at-cxt_start;
-        var target_len=target_info.ends_at-target_info.starts_at;
-        var locstring="~"+Math.ceil(target_len/5)+ " words long ~"+
-            Math.ceil((target_start/cxt_len)*100)+"% "+cxtname;
-        locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
-        locrule.locstring=locstring+".";
-        locrule.title=locstring+": click or hold to glimpse";
-        locrule.style.width=((target_len/cxt_len)*100)+"%";
-        locrule.style.left=((target_start/cxt_len)*100)+"%";
-        return locrule;}
 
     function showResults(query){
         if (query.listing) return query.listing.container;

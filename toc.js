@@ -49,13 +49,8 @@
 Codex.TOC=
     (function(){
         "use strict";
-        var fdjtString=fdjt.String;
-        var fdjtState=fdjt.State;
-        var fdjtTime=fdjt.Time;
-        var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
-        var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
         
         var cxicon=Codex.icon;
         function navicon(kind){
@@ -129,11 +124,9 @@ Codex.TOC=
         function generate_spanbar(headinfo){
             var spanbar=fdjtDOM("div.spanbar.codexslice");
             var spans=fdjtDOM("div.spans"), span=false;
-            var start=headinfo.starts_at;
-            var end=headinfo.ends_at;
+            var start=headinfo.starts_at, end=headinfo.ends_at;
             var len=end-start;
-            var subsections=headinfo.sub; var last_info;
-            var sectnum=0; var percent=0;
+            var subsections=headinfo.sub, last_info, sectnum=0;
             var head=document.getElementById(headinfo.frag);
             spanbar.starts=start; spanbar.ends=end;
             if ((!(subsections)) || (subsections.length===0))

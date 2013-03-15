@@ -133,15 +133,13 @@ var Codex={
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
     var fdjtID=fdjt.ID;
-    var RefDB=fdjt.RefDB, Ref=fdjt.Ref, Query=RefDB.Query;
+    var RefDB=fdjt.RefDB, Ref=fdjt.Ref;
     var ObjectMap=fdjt.Map||RefDB.Map;
 
     var hasClass=fdjtDOM.hasClass;
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
     var hasParent=fdjtDOM.hasParent;
-
-    var warn=fdjtLog.warn;
 
     var getLocal=fdjt.State.getLocal;
     
@@ -152,7 +150,7 @@ var Codex={
         var refuri=(Codex.refuri||document.location.href);
         if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
 
-        var docinfo=Codex.docdb=new RefDB(
+        Codex.docdb=new RefDB(
             refuri+"#",{indices: ["frag","head","heads",
                                   "tags","tags*",
                                   "*tags","**tags","~tags",
@@ -172,15 +170,13 @@ var Codex={
         var glosses_init={
             indices: ["frag","maker","outlets"]};
         var stdspace=fdjtString.stdspace;
-        var glossdb=Codex.glossdb=new RefDB("glosses@"+Codex.refuri,glosses_init);
-        var superadd=Codex.glossdb.add; {
+        var glossdb=Codex.glossdb=new RefDB("glosses@"+Codex.refuri,glosses_init); {
             Codex.glossdb.absrefs=true;
             Codex.glossdb.addAlias("glossdb");
             Codex.glossdb.addAlias("-UUIDTYPE=61");
             Codex.glossdb.addAlias(":@31055/");
             Codex.glossdb.addAlias("@31055/");
             Codex.glossdb.onLoad(function initGloss(item) {
-                var elt=document.getElementById(item.frag);
                 var info=Codex.docinfo[item.frag];
                 if (!(info)) {
                     fdjtLog("Gloss refers to nonexistent '%s': %o",
@@ -225,7 +221,6 @@ var Codex={
         function Gloss(){return Ref.apply(this,arguments);}
         Gloss.prototype=new Ref();
         
-        function ignoreSlot(tags,slotid,exported){return undefined;}
         var exportTagSlot=Knodule.exportTagSlot;
         var tag_export_rules={
             "*tags": exportTagSlot, "**tags": exportTagSlot,
@@ -441,9 +436,7 @@ var Codex={
 
     function getTarget(scan,closest){
         scan=((scan.nodeType)?(scan):(scan.target||scan.srcElement||scan));
-        var target=false, lowest=false; var low_off=false;
-        var id=false;
-        var prefix=Codex.baseid;
+        var target=false; var id=false;
         while (scan) {
             if (scan.codexui) return false;
             else if (scan===Codex.docroot) return target;
@@ -673,7 +666,7 @@ var Codex={
         var matches=fdjtDOM.findMatches(node,pattern,off||0,1);
         if ((matches)&&(matches.length)) return matches[0];
         // We could do this more intelligently
-        var scan=0, result=false;
+        var result=false;
         matches=fdjtDOM.findMatches(node,pattern,0,1);
         while (matches.length>0) {
             result=matches[0];
@@ -752,14 +745,6 @@ var Codex={
         else if (hasClass(elt,sbookUIclasses)) return true;
         else elt=elt.parentNode;
         return false;}
-
-    function displayOffset(){
-        var toc;
-        if (Codex.mode)
-            if ((toc=fdjtID("CODEXTOC")))
-                return -((toc.offsetHeight||50)+15);
-        else return -60;
-        else return -40;}
 
     function setHashID(target){
         var targetid=target.codexbaseid||target.id;
@@ -989,7 +974,7 @@ var Codex={
     Codex.ScanTo=CodexScanTo;
 
     // Preview functions
-    var oldscroll=false; var oldsect=false;
+    var oldscroll=false;
     function CodexStartPreview(spec,caller){
         var target=((spec.nodeType)?(spec):(fdjtID(spec)));
         if (Codex.Trace.flips)

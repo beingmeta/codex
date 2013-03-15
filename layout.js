@@ -53,12 +53,11 @@ Codex.Paginate=
         "use strict";
 
         var fdjtString=fdjt.String;
-        var fdjtState=fdjt.State;
         var fdjtTime=fdjt.Time;
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
-        var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
+        var fdjtID=fdjt.ID;
         var CodexLayout=fdjt.CodexLayout;
 
         var getGeometry=fdjtDOM.getGeometry;
@@ -72,7 +71,6 @@ Codex.Paginate=
         var hasText=fdjtDOM.hasText;
         var isEmpty=fdjtString.isEmpty;
         var secs2short=fdjtTime.secs2short;
-        var rootloop_skip=50;
         
         var atoi=parseInt;
 
@@ -189,7 +187,6 @@ Codex.Paginate=
                             var elapsed=layout.done-layout.started;
                             if (elapsed>(Codex.layoutcachethresh||5000)) {
                                 layout.saveLayout();}}
-                        var pages=layout.pages;
                         getPageTops(layout.pages);
                         fdjtID("CODEXPAGE").style.visibility='';
                         fdjtID("CODEXCONTENT").style.visibility='';
@@ -337,7 +334,7 @@ Codex.Paginate=
                 else new_layout();});}
         Codex.Paginate=Paginate;
 
-        CodexLayout.prototype.onresize=function(evt){
+        CodexLayout.prototype.onresize=function(){
             var content=Codex.content; var page=Codex.page;
             var page_width=fdjtDOM.getGeometry(page).width;
             var content_width=fdjtDOM.getGeometry(content).width;
@@ -504,7 +501,6 @@ Codex.Paginate=
         function updatePageDisplay(pagenum,location,classname) {
             if (!(classname)) classname="current";
             var npages=Codex.pagecount;
-            var book_len=Codex.ends_at;
             var page_elt=fdjt.ID("CODEXPAGESPAN"+pagenum);
             var cur=getChildren("CODEXPAGEINFO","."+classname);
             if (cur[0]!==page_elt) {
@@ -545,7 +541,7 @@ Codex.Paginate=
             var spanwidth=
                 (fdjtID("CODEXPAGEINFO").offsetWidth)/n;
             if (spanwidth<1) spanwidth=1;
-            var pagespanrule=fdjtDOM.addCSSRule(
+            Codex.pagespanrule=fdjtDOM.addCSSRule(
                 "div.pagespans > span","width: "+spanwidth+"px;");
             while (i<n) {
                 html.push("<span id='CODEXPAGESPAN"+(i+1)+"' "+
@@ -652,9 +648,6 @@ Codex.Paginate=
 
         function getPage(arg){
             if (!(Codex.layout)) return -1;
-            var node=((arg.nodeType)?(arg):
-                      (typeof arg === "string")?
-                      (fdjtID(arg)):(false));
             var page=Codex.layout.getPage(arg)||Codex.layout.getPage(1);
             return parseInt(page.getAttribute("data-pagenum"),10);}
         Codex.getPage=getPage;

@@ -50,13 +50,11 @@
 (function(){
     "use strict";
     var fdjtString=fdjt.String;
-    var fdjtState=fdjt.State;
-    var fdjtTime=fdjt.Time;
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
     var fdjtID=fdjt.ID;
-    var RefDB=fdjt.RefDB, Ref=fdjt.Ref, Query=RefDB.Query; 
+    var RefDB=fdjt.RefDB, Ref=fdjt.Ref;
     var KNode=Knodule.KNode;
 
     Codex.search_cloud=false;
@@ -64,8 +62,6 @@
     if (!(Codex.show_refiners)) Codex.show_refiners=25;
     if (!(Codex.search_gotlucky)) Codex.search_gotlucky=7;
     
-    var cxicon=Codex.icon;
-
     var Completions=fdjtUI.Completions;
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
@@ -157,7 +153,7 @@
         return span;}
     
     function cloudEntry(cloud,tag,lang){
-        var entry, variations=[];
+        var entry;
         if (typeof lang !== "string")
             lang=(Codex.language)||(Knodule.language)||"EN";
         function initCloudEntry(){
@@ -250,6 +246,8 @@
                 fdjtDOM("span.showmore","all"), 
                 // ((how_many)&&(" ("+how_many+")"))
                 fdjtDOM("span.showless","fewer"));
+        if ((how_many)&&(showall))
+            showall.title="There are "+how_many+" in all";
         if (showall) showall.onclick=showempty_ontap;
         return showall;}
     Codex.UI.getShowAll=getShowAll;
@@ -324,7 +322,7 @@
         if (x instanceof KNode) {
             if (y instanceof KNode) {} // Fall through
             else return -1;}
-        else if (y instanceof Knode) return 1;
+        else if (y instanceof KNode) return 1;
         else if (x instanceof Ref) { 
             if (y instanceof Ref) {} // Fall through
             else return -1;}
@@ -371,7 +369,7 @@
             if (x instanceof KNode) {
                 if (y instanceof KNode) {} // Fall through
                 else return -1;}
-            else if (y instanceof Knode) return 1;
+            else if (y instanceof KNode) return 1;
             else if (x instanceof Ref) { 
                 if (y instanceof Ref) {} // Fall through
                 else return -1;}
@@ -426,32 +424,6 @@
                 holder.appendChild(completion);}}
         cloud.dom.appendChild(holder);}
     Codex.sortCloud=sortCloud;
-
-    /*
-    function cloudWeight(v,min,max){return ((v-min)/(max-min));}
-    function cloudWeight(v,min,max){
-        var sin=Math.sin;
-        var norm=(v-min)/(max-min);
-        return Math.sin(1.5*norm);}
-    function cloudWeight(v,min,max){
-        var log=Math.log; var sqrt=Math.sqrt;
-        function logroot(x){return sqrt(log(x));}
-        return ((logroot(v)-logroot(min))/(logroot(max)-logroot(min)));}
-    function cloudWeight(v,min,max){
-        var log=Math.log;
-        return ((log(v)-log(min))/(log(max)-log(min)));}
-    function cloudWeight(v,min,max){
-        var log=Math.log;
-        return (log(v-min))/(log(max-min));}
-    function cloudWeight(v,min,max){
-        var log=Math.log;
-        var norm=v-min, range=log(max)*max-log(min)*min;
-        return log(norm)*norm/range;}
-    */
-    function cloudWeight(v,min,max){
-        var fcn=Math.sqrt;
-        var norm=v-min, range=fcn(max)-fcn(min);
-        return fcn(norm)/range;}
 
     var precString=fdjtString.precString;
 

@@ -51,9 +51,7 @@ Codex.Slice=(function () {
     "use strict";
     
     var fdjtString=fdjt.String;
-    var fdjtState=fdjt.State;
     var fdjtTime=fdjt.Time;
-    var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
     var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
@@ -62,17 +60,14 @@ Codex.Slice=(function () {
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
 
-    var div_threshold=7;
     var debug_locbars=false;
     var odq="\u201c"; var cdq="\u201d";
 
     var cxicon=Codex.icon;
     var Ellipsis=fdjtUI.Ellipsis;
     var addListener=fdjtDOM.addListener;
-    var hasParent=fdjtDOM.hasParent;
 
     function renderCard(info,query,idprefix,standalone){
-        var key=info._id;
         var target_id=(info.frag)||(info.id);
         var target=((target_id)&&(fdjtID(target_id)));
         var target_info=Codex.docinfo[target_id];
@@ -91,7 +86,7 @@ Codex.Slice=(function () {
                     (((info.maker)||(info.tstamp))?(showglossinfo(info)):
                      (showdocinfo(info)))," ",
                     ((standalone)&&(showtocloc(target_info))),
-                    ((score)&&(showscore(score,query,info))),
+                    ((score)&&(showscore(score,query))),
                     ((note_len>0)&&(new Ellipsis("span.note",info.note,140)))," ",
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
@@ -105,7 +100,7 @@ Codex.Slice=(function () {
                      "div.codexcard.gloss" :
                      "div.codexcard.passage"),
                     ((head)&&(makeTOCHead(head,((info.level)&&(info))))),
-                    ((head_info)&&(makeIDHead(target,head_info,true))),
+                    ((head_info)&&(makeIDHead(target,head_info))),
                     ((standalone)&&(makelocbar(target_info))),
                     body,
                     fdjtDOM("div.fdjtclearfloats"));
@@ -134,44 +129,13 @@ Codex.Slice=(function () {
         return div;}
     Codex.renderCard=renderCard;
     
-    var prime_thresh=7;
-    function getprimetags(info){
-        if (info.primetags) return info.primetags;
-        var tags=info.tags;
-        if (typeof tags==='string') tags=[tags];
-        if (tags.length<=prime_thresh) return tags;
-        var tagscores=Codex.empty_query.tagscores;
-        var prime=[].concat(info.tags);
-        prime.sort(function(t1,t2){
-            var s1=tagscores.get(t1); var s2=tagscores.get(t2);
-            if ((s1)&&(s2)) {
-                if (s1<s2) return -1;
-                else if (s1>s2) return 1;
-                else return 0;}
-            else if (s1) return -1;
-            else if (s2) return 1;
-            else return 0;});
-        info.primetags=prime.slice(0,prime_thresh);
-        return info.primetags;}
-
     var show_tag_thresh=7;
 
-    var expander_toggle=fdjtUI.Expansion.toggle;
-    function tagexpand_click(evt){
-        evt=evt||event;
-        fdjtUI.cancel(evt);
-        return expander_toggle(evt);}
-
-    var combineTags=Knodule.combineTags;
-    
     function toarray(arg){
         if (!(arg)) return [];
         else if (arg instanceof Array) return arg;
         else return [arg];}
     function showtags(info){
-        var scores=false;
-        var tagcount=0;
-        var countspan=fdjtDOM("span.count");
         var tagicon=fdjtDOM.Image(cxicon("tagicon",64,64),
                                   "img.tagicon","tags");
         var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
@@ -189,7 +153,7 @@ Codex.Slice=(function () {
             var tags=tagvecs[j++];
             i=0, lim=tags.length;
             while (i<tags.length) {
-                var tag=tags[i++]; var score=((scores)&&(scores[tag]))||false;
+                var tag=tags[i++];
                 if (!(tag)) continue;
                 var tagstring=((typeof tag === "string")?(tag):((tag._qid)||(tag.getQID())));
                 if (seen[tagstring]) continue;
@@ -226,10 +190,7 @@ Codex.Slice=(function () {
             ((outlets.length>1)&&
              (fdjtDOM("span.count",outlets.length, " outlets"))),
             " ");
-        var i=0; var lim=outlets.length;
-        // This might do some kind of more/less controls and sorted
-        // or cloudy display
-        while (i<outlets.length) {
+        var i=0; var lim=outlets.length; while (i<lim) {
             var outlet=outlets[i]; var info=Codex.sourcedb.ref(outlet);
             var outlet_span=fdjtDOM("span.outlet");
             if (info._live) {
@@ -278,13 +239,13 @@ Codex.Slice=(function () {
                         ((i>0)&&" "),
                         fdjtDOM("span.excerpt",odq,excerpts[i++],cdq));
             return ediv;}}
-    function showscore(score,query,info){
-        return fdjtDOM("span.score","(",score,")");}
+    function showscore(score,query){
+        if ((query)&&(query.max_score))
+            return fdjtDOM("span.score","(",score,"/",query.max_score,")");
+        else return fdjtDOM("span.score","(",score,")");}
     function showglossinfo(info) {
         var user=info.maker;
-        var feed=info.feed||false;
         var userinfo=(user)&&(Codex.sourcedb.load(user));
-        var feedinfo=(feed)&&(Codex.sourcedb.load(feed));
         var agestring=timestring(info.modified||info.created||info.tstamp);
         var tool=fdjtDOM(
             "span.tool",
@@ -393,7 +354,6 @@ Codex.Slice=(function () {
             var year=date.getFullYear();
             var month=date.getMonth();
             var datenum=date.getDate();
-            var shortyear=year%100;
             if (year<10)
                 return ""+datenum+"/"+months[month]+"/0"+year;
             else return ""+datenum+"/"+months[month]+"/"+year;}}
@@ -432,19 +392,6 @@ Codex.Slice=(function () {
         anchor.title=title;
         return [" ",anchor];}
 
-    function makelocspan(target_info,cxtinfo){
-        if (!(cxtinfo)) cxtinfo=Codex.docinfo[(Codex.body||document.body).id];
-        var locrule=fdjtDOM("div.locrule");
-        var cxt_start=cxtinfo.starts_at;
-        var cxt_end=cxtinfo.ends_at;
-        var cxt_len=cxt_end-cxt_start;
-        var location_start=target_info.starts_at-cxt_start;
-        var location_len=target_info.ends_at-target_info.starts_at;
-        locrule.setAttribute("about","#"+(target_info.id||target_info.frag));
-        locrule.title='click or hold to glimpse';
-        locrule.style.width=((location_len/cxt_len)*100)+"%";
-        locrule.style.left=((location_start/cxt_len)*100)+"%";
-        return locrule;}
     function makelocrule(target_info,cxtinfo,spec){
         var tocrule=(!(cxtinfo));
         if (!(cxtinfo)) cxtinfo=Codex.docinfo[Codex.content.id];
@@ -465,17 +412,14 @@ Codex.Slice=(function () {
         locrule.style.width=((target_len/cxt_len)*100)+"%";
         locrule.style.left=((target_start/cxt_len)*100)+"%";
         return locrule;}
-    function makelocstring(target_info,cxtinfo,spec){
+    function makelocstring(target_info,cxtinfo){
         var tocrule=(!(cxtinfo));
         if (!(cxtinfo)) cxtinfo=Codex.docinfo[Codex.content.id];
-        var locrule=fdjtDOM(spec||"hr.locrule");
         var cxt_start=cxtinfo.starts_at;
         var cxt_end=cxtinfo.ends_at;
         var cxt_len=cxt_end-cxt_start;
         var target_start=target_info.starts_at-cxt_start;
         var target_len=target_info.ends_at-target_info.starts_at;
-        var locstring="~"+Math.ceil(target_len/5)+ " words long ~"+
-            Math.ceil((target_start/cxt_len)*100)+"% along";
         if (tocrule)
             return "this section is ~"+Math.ceil(target_len/7)+
             " words long and ~"+Math.ceil((target_start/cxt_len)*100)+
@@ -497,27 +441,7 @@ Codex.Slice=(function () {
         if (!(form)) return;
         Codex.setMode("addgloss");}
 
-    function sourceIcon(info){
-        if (info) return info.pic;}
-    
     // Displayings sets of notes organized into threads
-
-    function sortbyloctime(x,y){
-        if (x.frag===y.frag) {
-            if ((x.tstamp)&&(y.tstamp)) {
-                if (x.tstamp<y.tstamp) return -1;
-                else if (x.tstamp>y.tstamp) return 1;
-                else return 0;}
-            else if (x.tstamp) return 1;
-            else if (y.tstamp) return -1;
-            else return 0;}
-        else if (x.ends_at<=y.starts_at) return 1;
-        else if (x.starts_at>=y.ends_at) return -1;
-        else if ((x.ends_at-x.starts_at)>(y.ends_at-y.starts_at))
-            return 1;
-        else return -1;}
-
-    var ScanInfo=Codex.DOMScan.ScanInfo;
 
     function sumText(target){
         var title=Codex.getTitle(target,true);
@@ -531,7 +455,6 @@ Codex.Slice=(function () {
         basespan.title='this location in the structure of the book';
         var title=Codex.getTitle(target,true);
         var info=Codex.docinfo[target.id];
-        var head_info=Codex.docinfo[head.id];
         if (target!==head) {
             var paratext=
                 fdjtDOM.Anchor("javascript:Codex.JumpTo('"+target.id+"');",
@@ -576,7 +499,7 @@ Codex.Slice=(function () {
         tochead.title=makelocstring(info,false);
         return tochead;}
 
-    function makeIDHead(target,headinfo,locrule){
+    function makeIDHead(target,headinfo){
         var info=Codex.docinfo[target.id];
         if (!(headinfo)) headinfo=info.head;
         var idhead=fdjtDOM("div.idhead",
@@ -585,18 +508,6 @@ Codex.Slice=(function () {
                            fdjtDOM("span",sumText(target)));
         idhead.title=makelocstring(info,headinfo);
         return idhead;}
-
-    function findTOCref(div,ref,loc) {
-        var children=div.childNodes;
-        if (!(children)) return false;
-        var i=0; var lim=children.length;
-        while (i<lim) {
-            var child=children[i++];
-            if (child.nodeType!==1) continue;
-            else if (child.tocref===ref) return child;
-            else if (child.starts>loc) return child;
-            else continue;}
-        return false;}
 
     Codex.nextSlice=function(start){
         var card=fdjtDOM.getParent(start,".codexcard");

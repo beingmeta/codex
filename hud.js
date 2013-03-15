@@ -56,7 +56,6 @@ Codex.setMode=
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
-        var RefDB=fdjt.RefDB;
         var fdjtID=fdjt.ID;
         
         // Helpful dimensions
@@ -68,9 +67,7 @@ Codex.setMode=
         var hasClass=fdjtDOM.hasClass;
         var getParent=fdjtDOM.getParent;
         var getGeometry=fdjtDOM.getGeometry;
-        var getChild=fdjtDOM.getChild;
         var hasSuffix=fdjtString.hasSuffix;
-        var Ref=RefDB.Ref;
 
         var CodexHUD=false;
 
@@ -119,7 +116,7 @@ Codex.setMode=
             Codex.DOM.asidehud=fdjtID("CODEXASIDE");
 
             // Initialize the pageinfo
-            var pageinfo=Codex.DOM.pageinfo=fdjtID("CODEXPAGEINFO");
+            Codex.DOM.pageinfo=fdjtID("CODEXPAGEINFO");
             
             // Initialize search UI
             var search=fdjtID("CODEXSEARCH");

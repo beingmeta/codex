@@ -64,7 +64,6 @@
     var hasClass=fdjtDOM.hasClass;
     var dropClass=fdjtDOM.dropClass;
     var swapClass=fdjtDOM.swapClass;
-    var toggleClass=fdjtDOM.toggleClass;
     var getParent=fdjtDOM.getParent;
     var hasParent=fdjtDOM.hasParent;
     var getChildren=fdjtDOM.getChildren;
@@ -72,12 +71,9 @@
     var getInput=fdjtDOM.getInput;
     var getInputs=fdjtDOM.getInputs;
     var getInputFor=fdjtDOM.getInputFor;
-    var getInputsFor=fdjtDOM.getInputsFor;
     var Ellipsis=fdjtUI.Ellipsis;
 
     var setCheckSpan=fdjtUI.CheckSpan.set;
-
-    var submitEvent=fdjtUI.submitEvent;
 
     var glossmodes=Codex.glossmodes;
 
@@ -249,8 +245,6 @@
         if (gloss) {
             var tags=getGlossTags(gloss);
             if (tags.length) {
-                var tagselt=getChild(form,".tags");
-                var resptags=getChild(response_elt,".resptags");
                 var i=0; var lim=tags.length;
                 while (i<lim) addTag(form,tags[i++],false);}}
         if ((gloss)&&(!(response))&&(gloss.posted)) {
@@ -364,7 +358,8 @@
         else if (selecting) 
             updateExcerpt(form,selecting);
         else {}
-        Codex.selecting.onchange=function(sel){updateExcerpt(form,this);};
+        Codex.selecting.onchange=function(){
+            updateExcerpt(form,this);};
         return form;}
     Codex.setGlossTarget=setGlossTarget;
 
@@ -433,8 +428,6 @@
             detail_elt=getInput(form,"DETAIL");
             fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
         Codex.glossform=form;
-        var form_elt=getChild(form,"FORM");
-        var mode=form_elt.className;
         var glossinput=getInput(form,"NOTE");
         var syncelt=getInput(form,"SYNC");
         syncelt.value=(Codex.syncstamp+1);
@@ -606,7 +599,7 @@
         var wrapper=getParent(form,".codexglossform");
         addClass(wrapper,"modified");
         var tagselt=getChild(form,'.tags');
-        var info; var title=false; var textspec='span.term';
+        var title=false; var textspec='span.term';
         if (!(varname)) varname='TAGS';
         if ((tag.nodeType)&&(hasClass(tag,'completion'))) {
             if (hasClass(tag,'outlet')) {
@@ -759,7 +752,7 @@
 
     var stdspace=fdjtString.stdspace;
 
-    function handleBracketed(form,content,complete){
+    function handleBracketed(form,content){
         dropClass("CODEXHUD","glosstagging");
         if ((content[0]==='@')||(content.search(uri_prefix)===0)) {
             var start=(content[0]==='@');
@@ -828,7 +821,7 @@
             clearTimeout(addgloss_timer);
             addgloss_timer=false;}
         if (ch===91) { /* [ */
-            var pos=target.selectionStart, lim=string.length;
+            var pos=target.selectionStart;
             if ((pos>0)&&(string[pos-1]==='\\')) return; 
             fdjtUI.cancel(evt);
             fdjtDOM.insertText(target,"[]",1);}
@@ -965,8 +958,6 @@
 
     /***** The Outlet Cloud *****/
 
-    var share_cloud=false;
-    
     function sharecloud_ontap(evt){
         var target=fdjtUI.T(evt);
         var completion=getParent(target,'.completion');
@@ -1031,7 +1022,7 @@
         if ((!(login_message))&&
             ((!(navigator.onLine))||(!(Codex.connected)))&&
             ((!(Codex.user))||(!(Codex.persist)))) {
-            var queue_gloss=false; var choices=[];
+            var choices=[];
             if (navigator.onLine) 
                 choices.push({label: "Login",
                               isdefault: true,
@@ -1102,8 +1093,6 @@
     function cancelGloss_handler(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        var glossform=(target)&&
-            (fdjtDOM.getParent(target,".codexglossform"));
         cancelGloss(target);
         fdjtUI.cancel(evt);}
 

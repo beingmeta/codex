@@ -51,25 +51,11 @@
     "use strict";
 
     var fdjtString=fdjt.String;
-    var fdjtState=fdjt.State;
-    var fdjtTime=fdjt.Time;
-    var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
     var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
 
-    var sbook_sources=false;
-    var sbook_glosses_target=false;
-    var sbookGlossesHUD=false;
-    var sbookSourceHUD=false;
-
-    // The highlighted glossmark
-    var sbook_glossmark=false;
-    var sbook_glossmark_qricons=false;
-
     var hasClass=fdjtDOM.hasClass;
-    var addClass=fdjtDOM.addClass;
-    var dropClass=fdjtDOM.dropClass;
     var cxicon=Codex.icon;
 
     /* Social UI components */
@@ -128,7 +114,6 @@
         // var glosses=fdjtDOM.getParent(target,".sbookglosses");
         var sources=fdjtID("CODEXSOURCES");
         var glosses=fdjtID("CODEXALLGLOSSES");
-        var new_sources=[];
         if ((!(sources))||(!(glosses)))
             return; /* Warning? */
         if (fdjtDOM.hasClass(target,"selected")) {
@@ -240,7 +225,6 @@
         var dups=Codex.getDups(target.id);
         var glossids=Codex.glossdb.find('frag',id), glosses=[];
         var slicediv=fdjtDOM("div.codexglosses.codexslice");
-        var excerpt=false;
         if ((!(glossids))||(!(glossids.length)))
             fdjtDOM.addClass(slicediv,"noglosses");
         if (Codex.target) Codex.clearHighlights(Codex.target);
@@ -292,7 +276,6 @@
                 // Now, we're scrolling
                 hudwrapper.style.right=(w-pgeom.left+10)+'px';
                 hudwrapper.style.left='50px';
-                var top, bottom;
                 if (pgeom.top-(h/4)<50) {
                     hudwrapper.style.top='50px';
                     hudwrapper.style.bottom='auto';
@@ -307,6 +290,7 @@
         else fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
         if (point) point.id="CODEXOPENGLOSSMARK";
         Codex.setTarget(target);
+        slice.update();
         Codex.setMode("openglossmark");}
     Codex.showGlosses=showGlosses;
 

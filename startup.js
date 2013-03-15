@@ -62,13 +62,9 @@ Codex.Startup=
         
         var warn=fdjtLog.warn;
 
-        var sbook_heading_qricons=false;
-
         var https_root="https://s3.amazonaws.com/beingmeta/static/";
 
         // Imported functions
-        var cxicon=Codex.icon;
-
         var getLocal=fdjtState.getLocal;
         var setLocal=fdjtState.setLocal;
         var getQuery=fdjtState.getQuery;
@@ -78,23 +74,17 @@ Codex.Startup=
         var addClass=fdjtDOM.addClass;
         var dropClass=fdjtDOM.dropClass;
         var getChildren=fdjtDOM.getChildren;
-        var $1=fdjtDOM.getFirstChild;
-        var TOA=fdjtDOM.Array;
 
         var saveprops=Codex.saveprops=
             ["sources","outlets","overlays","sync","nodeid","state"];
         
         /* Initialization */
         
-        var _sbook_setup_start=false;
-        
         function startupLog(){
             if (!(Codex.Trace.startup)) return;
-            var args=TOA(arguments);
             fdjtLog.apply(null,arguments);}
 
         function startupMessage(){
-            var args=TOA(arguments);
             if ((Codex.Trace.startup)&&
                 (typeof Codex.Trace.startup === "number")&&
                 (Codex.Trace.startup>1))
@@ -745,14 +735,7 @@ Codex.Startup=
         
         /* Application settings */
 
-        var optrules=
-            {"paginate":["scrolling"],
-             "scrolling":["paginate"],
-             "touch":["mouse","kbd"],
-             "mouse":["touch","kbd"],
-             "kbd":["touch","mouse"]};
-
-        function workOffline(refuri){
+        function workOffline(){
             if (Codex.force_online) return false;
             else if (Codex.force_offline) return true;
             var config_val=getConfig("persist");
@@ -786,11 +769,8 @@ Codex.Startup=
                             "(to enable faster loading and offline reading)"));}}
             
         
-        var glossref_classes=false;
-
         function readSettings(){
             // Basic stuff
-            var useragent=navigator.userAgent;
             var refuri=_getsbookrefuri();
             document.body.refuri=Codex.refuri=refuri;
             Codex.docuri=_getsbookdocuri();
@@ -1045,14 +1025,13 @@ Codex.Startup=
                     concat(getMeta("sbook"+i+"head",true)).
                     concat(getMeta("sbook"+headlevels[i]+"head",true));
                 if ((rules)&&(rules.length)) {
-                    var j=0; var lim=rules.length;
-                    var elements=fdjtDOM.getChildren(document.body,rules[j++]);
-                    var k=0; var n=elements.length;
-                    while (k<n) {
-                        var elt=elements[k++];
-                        if (!(hasTOCLevel(elt))) elt.toclevel=i;}}
+                    var j=0; var lim=rules.length; while (j<lim) {
+                        var elements=fdjtDOM.getChildren(document.body,rules[j++]);
+                        var k=0; var n=elements.length;
+                        while (k<n) {
+                            var elt=elements[k++];
+                            if (!(hasTOCLevel(elt))) elt.toclevel=i;}}}
                 i++;}
-            var ignored=false;
             // These are all meta class definit6ions, which is why
             //  they don't have regular schema prefixes
             if (getMeta("sbookignore")) 
@@ -1071,7 +1050,6 @@ Codex.Startup=
             var i=0; var lim=meta.length;
             while (i<lim) fdjtDOM.addClass(fdjtDOM.$(meta[i++]),name);}
 
-        var note_count=1;
         function initBody(){
             var body=document.body;
             var content=fdjtDOM("div#CODEXCONTENT");
@@ -1176,7 +1154,6 @@ Codex.Startup=
             content.style.left=page.style.left='';
             content.style.right=page.style.right='';
             var page_width=fdjtDOM.getGeometry(page).width;
-            var page_height=fdjtDOM.getGeometry(page).height;
             var content_width=fdjtDOM.getGeometry(content).width;
             var view_width=fdjtDOM.viewWidth();
             var page_margin=(view_width-page_width)/2;
@@ -1388,7 +1365,6 @@ Codex.Startup=
 
         function setUser(userinfo,outlets,overlays,sync){
             var persist=((Codex.persist)&&(navigator.onLine));
-            var refuri=Codex.refuri;
             if (userinfo) {
                 fdjtDOM.dropClass(document.body,"cxNOUSER");
                 fdjtDOM.addClass(document.body,"cxUSER");}
@@ -1459,8 +1435,6 @@ Codex.Startup=
             /* Initialize add gloss prototype */
             var ss=Codex.stylesheet;
             var form=fdjtID("CODEXADDGLOSSPROTOTYPE");
-            var buttons=fdjtID("CODEXNETWORKBUTTONS");
-            var getChild=fdjtDOM.getChild;
             if (Codex.user.fbid)  
                 ss.insertRule(
                     "div#CODEXHUD span.facebook_share { display: inline;}",
@@ -1536,18 +1510,6 @@ Codex.Startup=
                     if (persist) setLocal(
                         "codex."+name+"("+refuri+")",ref._id,true);}}}
 
-        function setupGlosses(newglosses) {
-            Codex.glossdb.Import(
-                newglosses,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
-            var latest=Codex.syncstamp||0;
-            if (newglosses.length) {
-                var n=newglosses.length; var i=0; while (i<n) {
-                    var gloss=newglosses[i++];
-                    var id=gloss._id;
-                    var tstamp=gloss.syncstamp||gloss.tstamp;
-                    if (tstamp>latest) latest=tstamp;}}
-            Codex.syncstamp=latest;}
-
         function initGlosses(glosses,etc){
             var msg=fdjtID("CODEXNEWGLOSSES");
             if (msg) {
@@ -1567,7 +1529,7 @@ Codex.Startup=
             var i=0; var lim=glosses.length;
             var latest=Codex.syncstamp||0;
             while (i<lim) {
-                var gloss=glosses[i++]; var id=gloss._id;
+                var gloss=glosses[i++];
                 var tstamp=gloss.syncstamp||gloss.tstamp;
                 if (tstamp>latest) latest=tstamp;}
             Codex.syncstamp=latest;
@@ -1575,7 +1537,7 @@ Codex.Startup=
             dropClass(msg,"running");}
         Codex.Startup.initGlosses=initGlosses;
         
-        function go_online(evt){return offline_update();}
+        function go_online(){return offline_update();}
         function offline_update(){
             Codex.writeQueuedGlosses(); updateInfo();}
         Codex.update=offline_update;
@@ -1687,7 +1649,7 @@ Codex.Startup=
             var max_freq=empty_query.max_freq;
             fdjtTime.slowmap(function(tag){
                 addTag2Cloud(tag,search_cloud,Codex.knodule,tagscores,tagfreqs,false);
-                if ((tag instanceof Knode)||
+                if ((tag instanceof KNode)||
                     ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
                     addTag2Cloud(tag,gloss_cloud);},
                              searchtags,false,
@@ -1726,7 +1688,7 @@ Codex.Startup=
                 else alltags.push(tag);}
             function handleIndexEntry(tag){
                 var ids=autoindex[tag]; ntags++;
-                var occurrences=[], subsumed=[];
+                var occurrences=[];
                 var bar=tag.indexOf('|');
                 var taghead=tag, tagbase=tag, tagstart;
                 if (bar>0) tagbase=taghead=tag.slice(0,bar);
@@ -1806,8 +1768,6 @@ Codex.Startup=
         
         function applyAnchorTags(kno) {
             var docinfo=Codex.docinfo;
-            var getTarget=Codex.getTarget;
-            var getNodeID=fdjtDOM.getNodeID;
             var anchors=document.getElementsByTagName("A");
             if (!(anchors)) return;
             var i=0; var len=anchors.length;
@@ -1818,7 +1778,6 @@ Codex.Startup=
                     while (cxt) if (cxt.id) break; else cxt=cxt.parentNode;
                     // Nowhere to store it?
                     if (!(cxt)) return;
-                    var eltid=elt.id||getNodeID(elt);
                     var href=elt.href; var name=elt.name; var tag=false;
                     if (name) { // DTerm style
                         var def=elt.getAttribute('data-def')||
@@ -1872,8 +1831,6 @@ Codex.Startup=
         
         /* Setting up the clouds */
         
-        function initClouds(){}
-        
         function addOutlets2UI(outlet){
             if (typeof outlet === 'string')
                 outlet=Codex.sourcedb.ref(outlet);
@@ -1917,9 +1874,7 @@ Codex.Startup=
 
         /* Other setup */
         
-        function setupGlossServer(){}
-
-        Codex.StartupHandler=function(evt){
+        Codex.StartupHandler=function(){
             Codex.Startup();};
 
         return Startup;})();

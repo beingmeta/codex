@@ -1,10 +1,12 @@
 // -*- Mode: Javascript; character-encoding: utf-8 -*-
 {
     "globals": { "fdjt": false, "Storage": false,
-		 "indexedDB": false, "exports": false},
+		 "indexedDB": false, "exports": false,
+		 "Knodule": false, "KNode": false,
+		 "iScroll": false},
     "strict": true,
     "eqeqeq": true,
     "noempty": false,
     "undef": true,
-    "unused": false
+    "unused": true
 }
