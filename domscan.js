@@ -34,17 +34,21 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+//var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+//var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+//var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+//var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.DOMScan=(function(){
+    "use strict";
+
     var fdjtString=fdjt.String;
     var fdjtTime=fdjt.Time;
     var fdjtLog=fdjt.Log;
@@ -63,11 +67,9 @@ Codex.DOMScan=(function(){
         var hasPrefix=fdjtString.hasPrefix;
         var getChildren=fdjtDOM.getChildren;
         var getStyle=fdjtDOM.getStyle;
-        var textWidth=fdjtDOM.textWidth;
         var prefix=Codex.prefix;
         var rootns=root.namespaceURI;
         
-        var start=false;
         var idcount=1;
         var idmap={};
         
@@ -87,7 +89,6 @@ Codex.DOMScan=(function(){
                 fdjtLog("Scanning %s#%s for structure and metadata",
                         root.tagName,root.id);
             else fdjtLog("Scanning DOM for structure and metadata: %o",root);}
-        var nodefn=docinfo.nodeFn||false;
         var children=root.childNodes, level=false;
         var scanstate=
             {curlevel: 0,idserial:0,location: 0,
@@ -99,7 +100,7 @@ Codex.DOMScan=(function(){
 
         var docdb=new RefDB(dbid);
         
-        function scanInfo(id,scanstate) {
+        function ScanInfo(id,scanstate) {
             if (docinfo[id]) return docinfo[id];
             Ref.call(this,id,docdb);
             var now=fdjtTime();
@@ -111,12 +112,10 @@ Codex.DOMScan=(function(){
             scanstate.allinfo.push(this);
             scanstate.locinfo.push(scanstate.location);
             return this;}
-        scanInfo.prototype=new Ref();
+        ScanInfo.prototype=new Ref();
         var tag_export_rules=Codex.tag_export_rules;
         
-        docdb.refclass=scanInfo;
-        
-        docinfo._scanInfo=scanInfo;
+        docdb.refclass=ScanInfo;
         docinfo._docdb=docdb;
 
         function getTitle(head) {
@@ -144,7 +143,7 @@ Codex.DOMScan=(function(){
                 if (std==="") return false;
                 else return std;}
             else {
-                var title=fdjtDOM.textify(title,true);
+                title=fdjtDOM.textify(title,true);
                 if ((title)&&(title.length>40))
                     return title.slice(0,40)+"...";
                 else return title;}}
@@ -169,7 +168,7 @@ Codex.DOMScan=(function(){
             if (elt.nodeType===3) return elt.nodeValue.length;
             else if (elt.nodeType!==1) return 0;
             else if (elt.getAttribute("data-loclen"))
-                return parseInt(elt.getAttribute("data-loclen"));
+                return parseInt(elt.getAttribute("data-loclen"),10);
             else {
                 var children=elt.childNodes; var width=0;
                 var i=0; var len=children.length;
@@ -183,10 +182,10 @@ Codex.DOMScan=(function(){
                 return width;}}
 
         function handleHead(head,docinfo,scanstate,level,
-                            curhead,curinfo,curlevel,nodefn){
+                            curhead,curinfo,curlevel){
             var headid=head.id;
-            var headinfo=((nodefn)&&(nodefn(head)))||docinfo[headid]||
-                (docinfo[headid]=new scanInfo(headid,scanstate));
+            var headinfo=docinfo[headid]||
+                (docinfo[headid]=new ScanInfo(headid,scanstate));
             scanstate.headcount++;
             allheads.push(headid);
             if (Codex.Trace.scan>1)
@@ -195,7 +194,7 @@ Codex.DOMScan=(function(){
             /* Iniitalize the headinfo */
             headinfo.starts_at=scanstate.location;
             headinfo.level=level; // headinfo.elt=head; 
-            headinfo.sub=new Array();
+            headinfo.sub=[];
             headinfo.frag=headid;
             headinfo.title=getTitle(head);
             headinfo.next=false; headinfo.prev=false;
@@ -252,7 +251,7 @@ Codex.DOMScan=(function(){
             
             /* We create an array of all the heads, which lets us
                replace many recursions with iterations. */
-            var newheads=new Array();
+            var newheads=[];
             if (supinfo.heads) newheads=newheads.concat(supinfo.heads);
             if (supinfo) newheads.push(supinfo);
             headinfo.heads=newheads;
@@ -268,7 +267,7 @@ Codex.DOMScan=(function(){
                 headinfo.ends_at=scanstate.location+textWidth(head);
             scanstate.location=scanstate.location+textWidth(head);}
 
-        function scanner(child,scanstate,docinfo,nodefn){
+        function scanner(child,scanstate,docinfo){
             var location=scanstate.location;
             var curhead=scanstate.curhead;
             var curinfo=scanstate.curinfo;
@@ -276,8 +275,8 @@ Codex.DOMScan=(function(){
             scanstate.nodecount++;
             // Location tracking and TOC building
             if (child.nodeType===3) {
-                var content=stdspace(child.nodeValue);
-                var width=content.length;
+                var stdcontent=stdspace(child.nodeValue);
+                var width=stdcontent.length;
                 // Need to regularize whitespace
                 scanstate.location=scanstate.location+width;
                 return 0;}
@@ -303,20 +302,13 @@ Codex.DOMScan=(function(){
                 if ((tag.search(/p|h\d|blockquote|li/i)===0)||
                     (getStyle(child).display.search(
                             /block|list-item|table|table-row/)===0)) {
-                    var baseid="WSN_"+md5ID(child), id=baseid, count=1;
-                    while ((document.getElementById[id])||(idmap[id]))
-                        id=baseid+"_"+(count++);
-                    if (baseid!==id) fdjtLog.warn("Duplicate WSN ID %s",baseid);
-                    child.id=id; idmap[id]=child;}}
+                    var baseid="WSN_"+md5ID(child), wsnid=baseid, count=1;
+                    while ((document.getElementById[wsnid])||(idmap[wsnid]))
+                        wsnid=baseid+"_"+(count++);
+                    if (baseid!==wsnid)
+                        fdjtLog.warn("Duplicate WSN ID %s",baseid);
+                    id=child.id=wsnid; idmap[wsnid]=child;}}
             else if (!(id)) {}
-            /* 
-               else if (!(id)) {
-               id="CODEXSCAN"+fdjtString.padNum(idcount,4);
-               if (Codex.Trace.scan>1)
-               fdjtLog("No ID for %o, applying %s",child,id);
-               child.id=id; idcount++;
-               idmap[id]=child;}
-            */
             else if (!(idmap[id])) idmap[id]=child;
             else if (idmap[id]!==child) {
                 var newid=id+"x"+scanstate.location;
@@ -325,12 +317,13 @@ Codex.DOMScan=(function(){
                     while (idmap[xid]) {u++; xid=newid+"x"+u;}
                     newid=xid;}
                 fdjtLog.warn("Duplicate ID=%o newid=%o",id,newid);
-                child.id=newid;
-                headinfo=((nodefn)&&(nodefn(head)))||docinfo[newid]||
-                    (docinfo[newid]=new scanInfo(newid,scanstate));
+                id=child.id=newid;
+                headinfo=docinfo[newid]||
+                    (docinfo[newid]=new ScanInfo(newid,scanstate));
                 idmap[newid]=child;}
-            else idmap[headid]=child;
+            else idmap[id]=child;
 
+            var i=0, lim;
             // Get the location in the TOC for this out of context node
             //  These get generated, for example, when the content of an
             //  authorial footnote is moved elsewhere in the document.
@@ -338,21 +331,20 @@ Codex.DOMScan=(function(){
                 (child.getAttribute("data-tocloc"));
             if ((tocloc)&&(docinfo[tocloc])) {
                 var tocinfo=docinfo[tocloc];
-                var curlevel=scanstate.curlevel;
-                var curhead=scanstate.curhead;
-                var curinfo=scanstate.curinfo;
+                curlevel=scanstate.curlevel;
+                curhead=scanstate.curhead;
+                curinfo=scanstate.curinfo;
                 var notoc=scanstate.notoc;
                 var headinfo=tocinfo.head;
                 scanstate.curinfo=headinfo;
                 scanstate.curhead=document.getElementById(headinfo.frag);
                 scanstate.curlevel=headinfo.level;
                 scanstate.notoc=true;
-                var children=child.childNodes;
-                var i=0; var lim=children.length;
-                while (i<lim) {
-                    var child=children[i++];
-                    if (child.nodeType===1)
-                        scanner(child,scanstate,docinfo,nodefn);}
+                var toc_children=child.childNodes;
+                i=0, lim=toc_children.length; while (i<lim) {
+                    var toc_child=toc_children[i++];
+                    if (toc_child.nodeType===1)
+                        scanner(toc_child,scanstate,docinfo);}
                 // Put everything back
                 scanstate.curlevel=curlevel; scanstate.notoc=notoc;
                 scanstate.curhead=curhead; scanstate.curinfo=curinfo;
@@ -363,16 +355,10 @@ Codex.DOMScan=(function(){
             if ((scanstate.notoc)||(tag==='header')) {
                 scanstate.notoc=true; toclevel=0;}
             scanstate.eltcount++;
-            var info=((nodefn)&&(nodefn(child)))||(id&&(docinfo[id]));
+            var info=(id&&(docinfo[id]));
             if ((!(info))&&(id)) {
-                allids.push(id); info=new scanInfo(id,scanstate);
+                allids.push(id); info=new ScanInfo(id,scanstate);
                 docinfo[id]=info;}
-            if ((info)&&(id)&&(document.getElementById(id)!==child)) {
-                var newid=child.id+"x"+scanstate.location;
-                fdjtLog.warn("Duplicate ID=%o newid=%o",child.id,newid);
-                child.id=id=newid;
-                info=((nodefn)&&(nodefn(head)))||docinfo[id]||
-                    (docinfo[id]=new scanInfo(id,scanstate));}
             if (info) {
                 info.starts_at=scanstate.location;
                 info.sbookhead=curhead.id;
@@ -396,22 +382,22 @@ Codex.DOMScan=(function(){
                 return;
             if ((toclevel)&&(!(info.tocdone)))
                 handleHead(child,docinfo,scanstate,toclevel,
-                           curhead,curinfo,curlevel,nodefn);
+                           curhead,curinfo,curlevel);
             if (((classname)&&(classname.search(/\bsbookterminal\b/)>=0))||
                 ((classname)&&(Codex.terminals)&&
                  (Codex.terminals.match(child)))) {
                 scanstate.location=scanstate.location+textWidth(child);}
             else {
-                var children=child.childNodes;
-                var i=0; var len=children.length;
-                while (i<len) {
-                    var grandchild=children[i++];
+                var grandchildren=child.childNodes;
+                i=0, lim=grandchildren.length;
+                while (i<lim) {
+                    var grandchild=grandchildren[i++];
                     if (grandchild.nodeType===3) {
                         var content=stdspace(grandchild.nodeValue);
                         scanstate.location=scanstate.location+
                             content.length;}
                     else if (grandchild.nodeType===1) {
-                        scanner(grandchild,scanstate,docinfo,nodefn);}}}
+                        scanner(grandchild,scanstate,docinfo);}}}
             if (info) info.ends_at=scanstate.location;
             /*
               if ((info)&&((info.ends_at-info.starts_at)<5000))
@@ -421,15 +407,15 @@ Codex.DOMScan=(function(){
                 scanstate.lasthead=child; scanstate.lastinfo=info;
                 scanstate.lastlevel=toclevel;}}
 
-        var rootinfo=(((nodefn)&&(nodeFn(root)))||(docinfo[root.id])||
-                      (docinfo[root.id]=new scanInfo(root.id,scanstate)));
+        var rootinfo=(docinfo[root.id])||
+            (docinfo[root.id]=new ScanInfo(root.id,scanstate));
         scanstate.curhead=root; scanstate.curinfo=rootinfo;
         // Location is an indication of distance into the document
         var location=0;
         rootinfo.title=root.title||document.title;
         rootinfo.starts_at=0;
-        rootinfo.level=0; rootinfo.sub=new Array();
-        rootinfo.head=false; rootinfo.heads=new Array();
+        rootinfo.level=0; rootinfo.sub=[];
+        rootinfo.head=false; rootinfo.heads=[];
         rootinfo.frag=root.id;
         // rootinfo.elt=root;
         scanstate.allinfo.push(rootinfo);
@@ -438,7 +424,7 @@ Codex.DOMScan=(function(){
         var i=0; while (i<children.length) {
             var child=children[i++];
             if (!((child.sbookskip)||(child.codexui)))
-                scanner(child,scanstate,docinfo,docinfo.nodeFn||false);} 
+                scanner(child,scanstate,docinfo);} 
         docinfo._nodecount=scanstate.nodecount;
         docinfo._headcount=scanstate.headcount;
         docinfo._eltcount=scanstate.eltcount;
@@ -456,7 +442,7 @@ Codex.DOMScan=(function(){
                     (done.getTime()-start.getTime())/1000,
                     scanstate.headcount,scanstate.eltcount);
         docinfo.addContent=function(node){
-            scanner(node,scanstate,docinfo,docinfo.nodeFn||false);
+            scanner(node,scanstate,docinfo);
             docinfo._nodecount=scanstate.nodecount;
             docinfo._headcount=scanstate.headcount;
             docinfo._eltcount=scanstate.eltcount;
@@ -477,7 +463,7 @@ Codex.DOMScan=(function(){
         if (this.headstart) rep.headstart=this.headstart;
         if (this.toclevel) rep.toclevel=this.toclevel;
         if (this.title) rep.title=this.title;
-        return JSON.stringify(rep);}
+        return JSON.stringify(rep);};
     
     CodexDOMScan.getTOCLevel=getLevel;
     return CodexDOMScan;})();

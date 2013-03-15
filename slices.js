@@ -35,18 +35,21 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+// var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+// var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.Slice=(function () {
-
+    "use strict";
+    
     var fdjtString=fdjt.String;
     var fdjtState=fdjt.State;
     var fdjtTime=fdjt.Time;
@@ -89,10 +92,10 @@ Codex.Slice=(function () {
                      (showdocinfo(info)))," ",
                     ((standalone)&&(showtocloc(target_info))),
                     ((score)&&(showscore(score,query,info))),
-                    ((note_len>0)&&(Ellipsis("span.note",info.note,140)))," ",
+                    ((note_len>0)&&(new Ellipsis("span.note",info.note,140)))," ",
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
-                    (((info.tags)||(info.autotags))&&(showtags(info)))," ",
+                    ((info.alltags)&&(showtags(info)))," ",
                     ((info.links)&&(showlinks(info.links)))," ",
                     ((info.attachments)&&
                      (showlinks(info.attachments,"span.attachments")))," ",
@@ -105,7 +108,7 @@ Codex.Slice=(function () {
                     ((head_info)&&(makeIDHead(target,head_info,true))),
                     ((standalone)&&(makelocbar(target_info))),
                     body,
-		    fdjtDOM("div.fdjtclearfloats"));
+                    fdjtDOM("div.fdjtclearfloats"));
         var makerinfo=(info.maker);
         Codex.sourcedb.load(info.maker);
         var tstamp=info.tstamp||info.modified||info.created;
@@ -146,7 +149,7 @@ Codex.Slice=(function () {
                 else if (s1>s2) return 1;
                 else return 0;}
             else if (s1) return -1;
-            else if (s3) return 1;
+            else if (s2) return 1;
             else return 0;});
         info.primetags=prime.slice(0,prime_thresh);
         return info.primetags;}
@@ -176,12 +179,15 @@ Codex.Slice=(function () {
         var controller=false, hide_count_elt=false, total_count_elt=false, hide_start=false;
         var count=0, seen={}, i, lim;
         var tagvecs=[toarray(info["**tags"]),toarray(info["*tags"]),
-                     toarray(info.glosstags),toarray(info.knodes),
-                     toarray(info.tags),toarray(info["~tags"])];
+                     toarray(info["+tags"]),toarray(info["+tags*"]),
+                     toarray(info.knodes),toarray(info.tags),
+                     toarray(info["**tags*"]),toarray(info["*tags*"]),
+                     toarray(info["tags*"]),
+                     toarray(info["~tags"]),toarray(info["~tags*"])];
         var j=0, nvecs=tagvecs.length;
         while (j<nvecs) {
             var tags=tagvecs[j++];
-            var i=0, lim=tags.length;
+            i=0, lim=tags.length;
             while (i<tags.length) {
                 var tag=tags[i++]; var score=((scores)&&(scores[tag]))||false;
                 if (!(tag)) continue;
@@ -261,9 +267,9 @@ Codex.Slice=(function () {
         return span;}
     function showexcerpts(excerpts){
         if (typeof excerpts==='string')
-            return Ellipsis("span.excerpt",excerpts,140);
+            return new Ellipsis("span.excerpt",excerpts,140);
         else if (excerpts.length===1)
-            return Ellipsis("span.excerpt",excerpts[0],140);
+            return new Ellipsis("span.excerpt",excerpts[0],140);
         else {
             var ediv=fdjtDOM("div.excerpts");
             var i=0; var lim=excerpts.length;
@@ -292,10 +298,10 @@ Codex.Slice=(function () {
                  ("edit"):("reply")),
                 (((user===Codex.user)||(user===Codex.user._id))?
                  ("tap to edit this gloss, hold to reply"):
-		 ("relay/reply to this gloss"))),
+                 ("relay/reply to this gloss"))),
             ((info.private)&&(fdjtDOM("span.private","Private"))));
         addListener(tool,"tap",glossaction);
-	addListener(tool,"release",glossaction);
+        addListener(tool,"release",glossaction);
         
         var picinfo=getpicinfo(info);
         var overdoc=getoverdoc(info);
@@ -338,20 +344,19 @@ Codex.Slice=(function () {
         return pic;}
 
     function getpicinfo(info){
+        var i, lim;
         if (info.pic) return {src: info.pic,alt: info.pic};
         if (info.sources) {
             var sources=info.sources;
             if (typeof sources==='string') sources=[sources];
-            var i=0; var lim=sources.length;
-            while (i<lim) {
+            i=0, lim=sources.length; while (i<lim) {
                 var source=Codex.sourcedb.loadref(sources[i++]);
                 if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
                     return { src: source.pic, alt: source.name,
                              classname: "img.glosspic.sourcepic"};}}
         if (info.links) {
             var links=info.links;
-            var i=0; var lim=links.length;
-            while (i<lim) {
+            i=0, lim=links.length; while (i<lim) {
                 var link=links[i++];
                 if (link.href.search(/\.(jpg|png|gif|jpeg)$/i)>0)
                     return { src: link.href, alt: "graphic",
@@ -359,8 +364,7 @@ Codex.Slice=(function () {
         if (info.shared) {
             var outlets=info.shared;
             if (typeof outlets==='string') outlets=[outlets];
-            var i=0; var lim=outlets.length;
-            while (i<lim) {
+            i=0, lim=outlets.length; while (i<lim) {
                 var outlet=Codex.sourcedb.loadref(outlets[i++]);
                 if ((outlet)&&(outlet.kind===':OVERLAY')&&(outlet.pic))
                     return { src: outlet.pic, alt: outlet.name,
@@ -380,21 +384,19 @@ Codex.Slice=(function () {
 
     var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     function timestring(tick){
-        var now=fdjtTime.tick();
+        var now=fdjtTime.tick(), date=new Date(1000*tick);
         if ((now-tick)<(12*3600)) {
-            var date=new Date(1000*tick);
             var hour=date.getHours();
             var minute=date.getMinutes();
             return ""+hour+":"+((minute<10)?"0":"")+minute;}
         else {
-            var date=new Date(1000*tick);
             var year=date.getFullYear();
             var month=date.getMonth();
-            var date=date.getDate();
+            var datenum=date.getDate();
             var shortyear=year%100;
             if (year<10)
-                return ""+date+"/"+months[month]+"/0"+year;
-            else return ""+date+"/"+months[month]+"/"+year;}}
+                return ""+datenum+"/"+months[month]+"/0"+year;
+            else return ""+datenum+"/"+months[month]+"/"+year;}}
 
     function makelocbar(target_info,cxt_info){
         var locrule=fdjtDOM("HR");
@@ -426,7 +428,7 @@ Codex.Slice=(function () {
         var title="jump to "+head.title;
         var i=heads.length-1; 
         while (i>0) {
-            var head=heads[i--]; title=title+"// "+head.title;}
+            var up_head=heads[i--]; title=title+"// "+up_head.title;}
         anchor.title=title;
         return [" ",anchor];}
 
@@ -515,7 +517,7 @@ Codex.Slice=(function () {
             return 1;
         else return -1;}
 
-    var scanInfo=Codex.DOMScan.scanInfo;
+    var ScanInfo=Codex.DOMScan.ScanInfo;
 
     function sumText(target){
         var title=Codex.getTitle(target,true);
@@ -576,7 +578,7 @@ Codex.Slice=(function () {
 
     function makeIDHead(target,headinfo,locrule){
         var info=Codex.docinfo[target.id];
-        var headinfo=info.head;
+        if (!(headinfo)) headinfo=info.head;
         var idhead=fdjtDOM("div.idhead",
                            makelocrule(info,headinfo),
                            fdjtDOM("span.spacer","\u00b6"),
@@ -633,7 +635,7 @@ Codex.Slice=(function () {
                      (RefDB.overlaps(sourcerefs,gloss.sources))||
                      (RefDB.overlaps(sourcerefs,gloss.shared))));});
         Codex.UI.updateScroller(slice.container);
-        if (Codex.target) scrollGlosses(Codex.target,results_div);}
+        if (Codex.target) scrollGlosses(Codex.target,slice);}
     Codex.UI.selectSources=selectSources;
 
     /* Scrolling slices */
@@ -642,13 +644,14 @@ Codex.Slice=(function () {
         if (!(elt.id)) elt=getFirstID(elt);
         var info=Codex.docinfo[elt.id];
         if (!(info)) return;
+        var container=slice.container;
         var cardinfo=slice.getCard(info);
         if (cardinfo) {
             var scrollto=cardinfo.dom;
             if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
-                if ((Codex.scrollers)&&(glosses.id)&&
-                    (Codex.scrollers[glosses.id])) {
-                    var scroller=Codex.scrollers[glosses.id];
+                if ((Codex.scrollers)&&(container.id)&&
+                    (Codex.scrollers[container.id])) {
+                    var scroller=Codex.scrollers[container.id];
                     scroller.scrollToElement(scrollto);}
                 else scrollto.scrollIntoView(true);}}}
     Codex.UI.scrollGlosses=scrollGlosses;
@@ -772,7 +775,7 @@ Codex.Slice=(function () {
         while (i<lim) {
             var add=adds[i++], info=false, card, id, about=false, replace=false;
             if ((add.nodeType)&&(add.nodeType===1)&&(hasClass(add,"codexcard"))) {
-                div=add; id=add.name||add.getAttribute("name");
+                card=add; id=add.name||add.getAttribute("name");
                 if (!(id)) continue;
                 if ((info=byid[id])) {
                     if (info.dom!==add) replace=byid[id].dom;

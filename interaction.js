@@ -34,15 +34,17 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+// var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+// var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 /* There are four basic display modes:
     reading (minimal decoration, with 'minimal' configurable)
@@ -81,6 +83,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
  */
 
 (function(){
+    "use strict";
 
     var fdjtString=fdjt.String;
     var fdjtState=fdjt.State;
@@ -286,7 +289,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
         // Detect touches with two fingers, which we may treat especially
         if ((evt.touches)||(evt.shiftKey)) {
-            var now=fdjtTime();
             if (Codex.Trace.gestures)
                 fdjtLog("double_touch dt=%o now=%o",double_touch,now);
             if ((evt.touches.length>1)||(evt.shiftKey)) {
@@ -295,7 +297,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     clearTimeout(addgloss_timer);
                     addgloss_timer=false;}
                 gesture_start=false;
-	        return;}
+                return;}
             else if (!(double_touch)) {}
             else if ((now-double_touch)>2000) double_touch=false;
             else {}}
@@ -326,15 +328,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var rel=anchor.rel;
             if ((href[0]==="#")&&(rel)&&
                 (rel.search(/\b((sbooknote)|(footnote)|(endnote))\b/)>=0)) {
-                var noteshud=fdjtID("CODEXNOTETEXT");
-                var target=fdjt.ID(href.slice(1));
+                var note_node=fdjt.ID(href.slice(1));
                 var label=fdjtDOM("span.sbooknotelabel");
                 label.innerHTML=anchor.innerHTML;
-                fdjtDOM.removeChildren(noteshud);
-                var shownote=target.cloneNode(true); shownote.id=null;
+                fdjtDOM.removeChildren(Codex.DOM.notehud);
+                var shownote=note_node.cloneNode(true); shownote.id=null;
                 dropClass(shownote,/\bcodex\S+/g);
                 fdjtDOM.prepend(shownote,label);
-                fdjtDOM.append(noteshud,shownote);
+                fdjtDOM.append(Codex.DOM.notehud,shownote);
                 Codex.setMode("shownote");
                 fdjtUI.cancel(evt);
                 gesture_start=false;
@@ -342,10 +343,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 return;}
             else if ((href[0]==="#")&&(rel)&&
                      (rel.search(/\b((sidebar)|(breakout)|(tangent))\b/)>=0)) {
-                var asidehud=fdjtID("CODEXASIDE");
-                var target=fdjt.ID(href.slice(1));
-                fdjtDOM.removeChildren(asidehud);
-                fdjtDOM.append(asidehud,target.cloneNode(true));
+                var aside_target=fdjt.ID(href.slice(1));
+                fdjtDOM.removeChildren(Codex.DOM.asidehud);
+                fdjtDOM.append(Codex.DOM.asidehud,aside_target.cloneNode(true));
                 Codex.setMode("showaside");
                 fdjtUI.cancel(evt);
                 gesture_start=false;
@@ -373,18 +373,16 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
         var details=getParent(target,"details,.html5details,.sbookdetails");
         if (details) {
-            var notehud=fdjt.ID("CODEXASIDE");
-            fdjtDOM.removeChildren(notehud);
-            notehud.innerHTML=details.innerHTML;
-            Codex.setMode("showaside");
+            fdjtDOM.removeChildren(Codex.DOM.notehud);
+            Codex.DOM.notehud.innerHTML=details.innerHTML;
+            Codex.setMode("showdetails");
             clicked=fdjtTime();
             return;}
         
         var aside=getParent(target,"aside,.html5aside,.sbookaside");
         if (aside) {
-            var asidehud=fdjt.ID("CODEXASIDE");
-            fdjtDOM.removeChildren(asidehud);
-            asidehud.innerHTML=aside.innerHTML;
+            fdjtDOM.removeChildren(Codex.DOM.asidehud);
+            Codex.DOM.asidehud.innerHTML=aside.innerHTML;
             Codex.setMode("showaside");
             clicked=fdjtTime();
             return;}        
@@ -398,7 +396,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         //  this handler, so we don't worry about that.
 
         // So we're doing a page flip.
-        var now=fdjtTime(), touch=false;
         if ((evt.changedTouches)&&(evt.changedTouches.length)) {
             touch=evt.changedTouches[0];
             sX=touch.screenX, sY=touch.screenY;
@@ -434,7 +431,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else Codex.GoTo(previewing,"gotoPreview");
         fdjt.UI.cancel(evt);
         clicked=fdjtTime();
-        gesture_start=false
+        gesture_start=false;
         return false;}
 
     var selectors=[];
@@ -672,93 +669,86 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtUI.cancel(evt);
             return;}
         var card=getCard(target);
+        var name=(card.name)||(card.getAttribute("name"));
+        var passage=fdjtID(card.getAttribute("data-passage"));
+        var glossid=fdjtID(card.getAttribute("data-gloss"));
+        var gloss=((glossid)&&(Codex.glossdb.ref(glossid)));
         if (getParent(target,".detail")) {
-            var name=(card.name)||(card.getAttribute("name"));
-            var gloss=RefDB.resolve(name,Codex.glossdb), detail;
-            if ((gloss)&&((detail=gloss.detail))) {
-                if (detail[0]==='<')
-                    fdjt.ID("CODEXGLOSSDETAIL").innerHTML=gloss.detail;
-                else fdjt.ID("CODEXGLOSSDETAIL").innerHTML=
-                    "<pre>\n"+gloss.detail+"\n</pre>";
-                Codex.setMode("glossdetail");
-                return;}}
-        if ((!(getParent(target,".tool")))&&
-            (getParent(card,".codexslice"))) {
-            Codex.Scan(fdjtID(card.about),card,false,true);
+            var detail=((gloss)&&(gloss.detail));
+            if (!(detail)) return;
+            else if (detail[0]==='<')
+                fdjt.ID("CODEXGLOSSDETAIL").innerHTML=gloss.detail;
+            else fdjt.ID("CODEXGLOSSDETAIL").innerHTML=
+                "<pre>\n"+gloss.detail+"\n</pre>";
+            Codex.setMode("glossdetail");
             return fdjtUI.cancel(evt);}
-        else if ((card.name)||(card.getAttribute("name"))) {
-            var name=(card.name)||(card.getAttribute("name"));
-            var gloss=RefDB.resolve(name,Codex.glossdb);
-            if (!(gloss)) return;
+        else if ((!(gloss))&&(passage)) {
+            Codex.Scan(passage,card,false,true);
+            return fdjtUI.cancel(evt);}
+        else if ((gloss)&&(getParent(target,".tool"))) {
             var form=Codex.setGlossTarget(gloss);           
             if (!(form)) return;
-            Codex.setMode("addgloss");}
-        else if (card.about) {
-            Codex.JumpTo(card.about);}}
+            Codex.setMode("addgloss");
+            return fdjtUI.cancel(evt);}
+        else if (gloss) {
+            Codex.Scan(gloss,card,false,true);
+            return fdjtUI.cancel(evt);}
+        else return;}
     function slice_held(evt){
-        var card=getCard(fdjtUI.T(evt||event));
+        evt=evt||event;
+        var slice_target=fdjtUI.T(evt), card=getCard(slice_target);
         if (Codex.Trace.gestures)
             fdjtLog("slice_held %o: %o, scanning=%o",
                     evt,card,Codex.scanning);
         if (!(card)) return;
-        if ((Codex.scanning===card)&&(Codex.mode==="scanning"))
-            return;
+        // This is the case where we're already scanning this card
+        // if ((Codex.scanning===card)&&(Codex.mode==="scanning")) return;
         var slice=getParent(card,".codexslice");
+        // Put a clone of the card in the scanner
         var clone=card.cloneNode(true);
-        clone.id="CODEXSCAN";
-        fdjtDOM.replace("CODEXSCAN",clone);
+        clone.id="CODEXSCAN"; fdjtDOM.replace("CODEXSCAN",clone);
+        // If we're currently previewing something, clear it
         if (Codex.previewTarget) {
             var drop=Codex.getDups(Codex.previewTarget);
             dropClass(drop,"codexpreviewtarget");
             Codex.clearHighlights(drop);
             Codex.previewTarget=false;}
-        if (card.about) {
-            var target=Codex.previewTarget=fdjtID(card.about);
-            var dups=Codex.getDups("codexpreviewtarget");
-            addClass(dups,"codexpreviewtarget");}
-        if (hasClass(card,"gloss")) {
-            var glossinfo=Codex.glossdb.ref(card.name);
-            if (!(target))
-                Codex.previewTarget=target=fdjtID(glossinfo.frag);
-            else Codex.previewTarget=target;
-            if (glossinfo.excerpt) {
-                var searching=Codex.getDups(target.id);
-                var range=Codex.findExcerpt(
-                    searching,glossinfo.excerpt,glossinfo.exoff);
-                if (range) {
-                    var starts=range.startContainer;
-                    if (!(getParent(starts,target)))
-                        target=getTargetDup(starts,target);
-                    if (!(hasClass(starts,"codexhighlightexcerpt"))) {
-                        fdjtUI.Highlight(range,"codexhighlightexcerpt");}}
-                else addClass(searching,"codexhighlightpassage");}
-            else {
-                var dups=Codex.getDups(target);
-                addClass(dups,"codexhighlightpassage");}}
-        else if (getParent(card,".sbookresults")) {
-            var about=card.about;
-            Codex.previewTarget=target=fdjtID(about);
-            if (about) {
-                var info=Codex.docinfo[target.id];
-                var terms=Codex.query.tags;
-                var spellings=info.knodeterms;
-                var i=0; var lim=terms.length;
-                var dup_target=false;
-                while (i<lim) {
-                    var term=terms[i++];
-                    var highlights=highlightTerm(term,target,info,spellings);
-                    if (!(dup_target))
-                        if ((highlights)&&(highlights.length)&&
-                            (!(getParent(highlights[0],target))))
-                            dup_target=getTargetDup(highlights[0],target);}
-                if (dup_target) target=dup_target;}}
-        else {}
-        Codex.startPreview(target,"slice_held");
+        // Get the attributes of this card
+        var passageid=card.getAttribute("data-passage");
+        var glossid=card.getAttribute("data-gloss");
+        var gloss=((glossid)&&Codex.glossdb.ref(glossid));
+        var passage=fdjtID(passageid), show_target=false;
+        var dups=Codex.getDups(passageid);
+        // Set up for preview
+        Codex.previewTarget=passage; addClass(dups,"codexpreviewtarget");
+        if ((gloss)&&(gloss.excerpt)) {
+            // Highlight the gloss excerpt
+            var range=Codex.findExcerpt(dups,gloss.excerpt,gloss.exoff);
+            if (range) {
+                var starts=range.startContainer;
+                if (!(getParent(starts,passage)))
+                    // This is the case where the glosses excerpt
+                    //  starts in a 'dup' generated by page layout
+                    show_target=getTargetDup(starts,passage);
+                fdjtUI.Highlight(range,"codexhighlightexcerpt");}}
+        if (getParent(card,".sbookresults")) {
+            // It's a search result, so highlight any matching terms
+            var terms=Codex.query.tags;
+            var info=Codex.docinfo[passageid];
+            // knodeterms match tags to their originating strings
+            var spellings=info.knodeterms;
+            var i=0; var lim=terms.length; while (i<lim) {
+                var term=terms[i++];
+                var highlights=highlightTerm(term,passage,info,spellings);
+                if (!(show_target))
+                    if ((highlights)&&(highlights.length)&&
+                        (!(getParent(highlights[0],passage))))
+                        show_target=getTargetDup(highlights[0],passage);}}
+        Codex.startPreview(show_target||passage,"slice_held");
         return fdjtUI.cancel(evt);}
     function slice_released(evt){
         var card=getCard(fdjtUI.T(evt||event));
         if (Codex.Trace.gestures) {
-            var card=getCard(fdjtUI.T(evt||event));
             fdjtLog("slice_released %o: %o, scanning=%o",evt,card);}
         Codex.stopPreview("slice_released");}
     function slice_slipped(evt){
@@ -823,8 +813,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         while (j<jlim) {
             var word=words[j++];
             var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gim");
-            var searching=Codex.getDups(target);
-            var ranges=fdjtDOM.findMatches(searching,pattern);
+            var dups=Codex.getDups(target);
+            var ranges=fdjtDOM.findMatches(dups,pattern);
             if (Codex.Trace.highlight)
                 fdjtLog("Trying to highlight %s (using %o) in %o, ranges=%o",
                         word,pattern,target,ranges);
@@ -846,7 +836,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (getParent(target,".helphud")) {
             var mode=fdjtDOM.findAttrib(target,"data-hudmode")||
                 fdjtDOM.findAttrib(target,"hudmode");
-            if (mode) Codex.setMode(mode)
+            if (mode) Codex.setMode(mode);
             else Codex.setMode(false);
             return fdjtUI.cancel(evt);}
         var card=((hasClass(target,"codexcard"))?(target):
@@ -869,8 +859,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return;}
         var scan=target, about=false, frag=false, gloss=false;
         while (scan) {
-            if (about=scan.about) break;
-            else if (frag=scan.frag) break;
+            if ((about=scan.about)) break;
+            else if ((frag=scan.frag)) break;
             else scan=scan.parentNode;}
         if (frag) {Codex.ScanTo(frag); fdjtUI.cancel(evt);}
         else if ((about)&&(about[0]==='#')) {
@@ -1025,7 +1015,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (ch===13) fdjtUI.cancel(evt);
         if (ch===13) {
             if (target.name==='GOTOPAGE') {
-                var num=parseInt(target.value);
+                var num=parseInt(target.value,10);
                 if (typeof num === 'number') {
                     handled=true; Codex.GoToPage(num);}
                 else {}}
@@ -1233,7 +1223,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             ((evt.type==='tap')||
              (evt.type==='click')||
              (evt.type==='touchend')||
-             (evt.type==='touchstart')
+             (evt.type==='touchstart')||
              (evt.type==='release')||
              (Codex.Trace.gestures>1)))
             fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
@@ -1486,7 +1476,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     var last_motion=false;
 
-    function Forward(evt){
+    function forward(evt){
         var now=fdjtTime();
         if (!(evt)) evt=event||false;
         if (evt) fdjtUI.cancel(evt);
@@ -1497,16 +1487,16 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
             scanForward(evt);
         else pageForward(evt);}
-    Codex.Forward=Forward;
+    Codex.Forward=forward;
     function right_margin(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
         else if ((Codex.mode==="scanning")||
                  (Codex.mode==="tocscan"))
             scanForward(evt);
-        else Forward(evt);
+        else forward(evt);
         cancel(evt);}
 
-    function Backward(evt){
+    function backward(evt){
         var now=fdjtTime();
         if (!(evt)) evt=event||false;
         if (evt) fdjtUI.cancel(evt);
@@ -1517,7 +1507,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
             scanBackward();
         else pageBackward();}
-    Codex.Backward=Backward;
+    Codex.Backward=backward;
     function left_margin(evt){
         if (Codex.Trace.gestures) tracetouch("left_margin",evt);
         if ((Codex.hudup)&&
@@ -1527,7 +1517,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if ((Codex.mode==="scanning")||
                  (Codex.mode==="tocscan"))
             scanBackward(evt);
-        else Backward(evt);
+        else backward(evt);
         cancel(evt);}
 
     function pageForward(evt){
@@ -1616,7 +1606,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         return scan;}
     Codex.scanForward=scanForward;
 
-    function scanBackward(){
+    function scanBackward(evt){
         if (Codex.mode==="scanning") {}
         else if (Codex.mode==="tocscan") {}
         else if (Codex.mode==="openglossmark") {
@@ -1654,7 +1644,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.scanoff--;
             Codex.GoTo(Codex.scanpoints[Codex.scanoff]);
             return;}
-        var scan=Codex.prevSlice(Codex.scanning);
+        var start=Codex.scanning;
+        var scan=Codex.prevSlice(start);
         var ref=((scan)&&(Codex.getRef(scan)));
         if ((Codex.Trace.gestures)||(Codex.Trace.flips)||(Codex.Trace.nav))
             fdjtLog("scanBackward (on %o) from %o/%o to %o/%o under %o",
@@ -1740,8 +1731,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (touches) return touches[0].screenX-pinfo.offsetLeft; 
         else return false;}
 
-    var hasParent=fdjtDOM.hasParent;
-
     function head_tap(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -1770,16 +1759,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             Codex.setMode(false);
             return;}}
 
-
     function getGoPage(target,evt){
-        if (hasClass(target,"pagespans")) {
-            var gx=evt.clientX;
-            var geom=getGeometry(target);
-            var relpos=(gx-geom.left)/geom.width;
-            return Math.round(relpos*Codex.pagecount);}
-        else return parseInt(target.innerHTML);}
-    function getGoPage(target,evt){
-        return parseInt(target.innerHTML);}
+        return parseInt(target.innerHTML,10);}
 
     var previewing_page=false;
     function pageinfo_hold(evt){
@@ -1964,7 +1945,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function addgloss_delete(menu,form,div){
         if (!(form)) form=getParent(menu,"FORM");
-        if (!(div)) div=getParent(form,".codexglossform")
+        if (!(div)) div=getParent(form,".codexglossform");
         var modified=fdjtDOM.hasClass(div,"modified");
         // This keeps it from being saved when it loses the focus
         dropClass(div,"modified");
@@ -2163,7 +2144,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function editglossnote(evt){
         evt=evt||event;
-        setGlossMode("editnote");
+        Codex.setGlossMode("editnote");
         fdjtUI.cancel(evt);}
 
     Codex.UI.handlers.mouse=
@@ -2185,7 +2166,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                mouseout: fdjtUI.CoHi.onmouseout,
                click: cancel},
          glossmark: {mouseup: glossmark_tapped,
-		     click: cancel, mousedown: cancel,
+                     click: cancel, mousedown: cancel,
                      mouseover: glossmark_hoverstart,
                      mouseout: glossmark_hoverdone},
          glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},

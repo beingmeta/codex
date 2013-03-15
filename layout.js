@@ -34,6 +34,8 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Reporting progress, debugging */
 
@@ -41,13 +43,14 @@
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+// var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+// var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.Paginate=
     (function(){
+        "use strict";
 
         var fdjtString=fdjt.String;
         var fdjtState=fdjt.State;
@@ -121,7 +124,7 @@ Codex.Paginate=
                 var lostids=layout.lostids, moved_ids=lostids._all_ids;
                 var i=0, lim=moved_ids.length;
                 while (i<lim) {
-                    var addGlossmark=Codex.UI.addGlossmark
+                    var addGlossmark=Codex.UI.addGlossmark;
                     var id=moved_ids[i++];
                     var glosses=Codex.glossdb.find('frag',id);
                     if (!((glosses)&&(glosses.length))) continue;
@@ -227,7 +230,7 @@ Codex.Paginate=
                     var now=fdjtTime();
                     if (!(pagenum)) return;
                     if (info.done) {
-                        LayoutMessage(fdjtString(
+                        layoutMessage(fdjtString(
                             "Finished laying out %d %dx%d pages in %s",
                             pagenum,
                             secs2short((info.done-info.started)/1000)));
@@ -242,7 +245,7 @@ Codex.Paginate=
                             var lastloc=docinfo[info.lastid].starts_at;
                             var pct=(100*lastloc)/maxloc;
                             fdjtUI.ProgressBar.setProgress("CODEXLAYOUTMESSAGE",pct);
-                            LayoutMessage(fdjtString(
+                            layoutMessage(fdjtString(
                                 "Laid out %d pages (%d%%) in %s",
                                 pagenum,Math.floor(pct),
                                 secs2short((now-started)/1000)));
@@ -251,14 +254,14 @@ Codex.Paginate=
                                         pagenum,Math.floor(pct),
                                         secs2short((now-started)/1000));}
                         else {
-                            LayoutMessage(fdjtString(
+                            layoutMessage(fdjtString(
                                 "Laid out %d pages in %s",
                                 info.pagenum,secs2short((now-started)/1000)));
                             if (tracelevel)
                                 fdjtLog("Laid out %d pages in %s",
                                         info.pagenum,secs2short((now-started)/1000));}}}
                 
-                function LayoutMessage(msg){
+                function layoutMessage(msg){
                     fdjtUI.ProgressBar.setMessage("CODEXLAYOUTMESSAGE",msg);}
                 
                 rootloop();}
@@ -301,7 +304,7 @@ Codex.Paginate=
                         break;}
                     else pagescan=pagescan.parentNode;}
                 if (!(pagescan)) return locoff;
-                else pagenum=parseInt(pagescan.getAttribute("data-pagenum"));
+                else pagenum=parseInt(pagescan.getAttribute("data-pagenum"),10);
                 while ((elt)&&(elt!==topnode)) {
                     var width=textWidth(elt);
                     if (width) locoff=locoff+width;
@@ -395,7 +398,7 @@ Codex.Paginate=
         function updateLayoutProperty(name,val){
             // This updates layout properties
             fdjtDOM.swapClass(
-                Codex.page,new RegExp("codex"+name+"\w*"),"codex"+name+val);
+                Codex.page,new RegExp("codex"+name+"\\w*"),"codex"+name+val);
             Codex[name]=val;
             if (Codex.layout) {
                 // If you're already paginated, repaginate.  Either
@@ -470,7 +473,7 @@ Codex.Paginate=
             else floatpages=[".sbookfloatpage"];
             args.floatpages=floatpages;
 
-            var scaletopage=fdjtDOM.getMeta("sbookscaletopage",true);;
+            var scaletopage=fdjtDOM.getMeta("sbookscaletopage",true);
             if ((scaletopage)&&(scaletopage.length)) 
                 scaletopage.concat([".sbookscaletopage",".sbookpagescaled"]);
             else scaletopage=[".sbookscaletopage",".sbookpagescaled"];
@@ -569,7 +572,7 @@ Codex.Paginate=
             if (Codex.layout) {
                 var page=Codex.layout.getPage(spec)||
                     Codex.layout.getPage(1);
-                var pagenum=parseInt(page.getAttribute("data-pagenum"));
+                var pagenum=parseInt(page.getAttribute("data-pagenum"),10);
                 if (Codex.Trace.flips)
                     fdjtLog("GoToPage/%s Flipping to %o (%d) for %o",
                             caller,page,pagenum,spec);
@@ -585,7 +588,7 @@ Codex.Paginate=
                     dropClass(nextpage,"nextpage");},
                            300);
                 if (typeof spec === 'number') {
-                    var location=parseInt(page.getAttribute("data-sbookloc"));
+                    var location=parseInt(page.getAttribute("data-sbookloc"),10);
                     Codex.setLocation(location);}
                 updatePageDisplay(pagenum,Codex.location);
                 curpage=page; Codex.curpage=pagenum;
@@ -595,8 +598,8 @@ Codex.Paginate=
                     Codex.setHead(curnode);}
                 if ((pushstate)&&(page)) {
                     Codex.setState(
-                        {location: atoi(page.getAttribute("data-sbookloc")),
-                         page: atoi(page.getAttribute("data-pagenum")),
+                        {location: atoi(page.getAttribute("data-sbookloc"),10),
+                         page: atoi(page.getAttribute("data-pagenum"),10),
                          target: Codex.target.id});}
                 var glossed=fdjtDOM.$(".glossed",page);
                 if (glossed) {
@@ -614,8 +617,8 @@ Codex.Paginate=
                 Codex.layout.getPage(spec)||
                 Codex.layout.getPage(1);
             if (!(page)) return;
-            var pagenum=parseInt(page.getAttribute("data-pagenum"));
-            var pageloc=parseInt(page.getAttribute("data-sbookloc"));
+            var pagenum=parseInt(page.getAttribute("data-pagenum"),10);
+            var pageloc=parseInt(page.getAttribute("data-sbookloc"),10);
             if (previewing===page) return;
             if (previewing) dropClass(previewing,"previewpage");
             dropClass(getChildren(Codex.pages,".previewpage"),
@@ -630,7 +633,7 @@ Codex.Paginate=
             addClass(document.body,"cxPREVIEW");
             updatePageDisplay(pagenum,pageloc,"preview");}
         function stopPreview(caller){
-            var pagenum=parseInt(curpage.getAttribute("data-pagenum"));
+            var pagenum=parseInt(curpage.getAttribute("data-pagenum"),10);
             if ((Codex.Trace.flips)||(Codex.Trace.gestures))
                 fdjtLog("stopPagePreview/%s from %o to %o (%d)",
                         caller||"nocaller",previewing,curpage,pagenum);
@@ -653,7 +656,7 @@ Codex.Paginate=
                       (typeof arg === "string")?
                       (fdjtID(arg)):(false));
             var page=Codex.layout.getPage(arg)||Codex.layout.getPage(1);
-            return parseInt(page.getAttribute("data-pagenum"));}
+            return parseInt(page.getAttribute("data-pagenum"),10);}
         Codex.getPage=getPage;
         
         function displaySync(){

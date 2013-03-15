@@ -1,4 +1,2 @@
-if ((typeof sbook_suppressed === "undefined")||(sbook_suppressed))
-    window.onload=function(evt){sbookStartup();};
-
-
+if ((typeof _codex_suppressed === "undefined")||(!(_codex_suppressed)))
+    window.onload=function(evt){Codex.Setup();};

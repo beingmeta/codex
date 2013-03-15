@@ -35,17 +35,20 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+// var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+// var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 (function(){
+    "use strict";
     var fdjtString=fdjt.String;
     var fdjtState=fdjt.State;
     var fdjtTime=fdjt.Time;
@@ -94,9 +97,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
             " of completions.  ");
         fdjtDOM.prepend(dom,maxmsg);
-	
+        
         if (!(completions)) completions=new Completions(dom);
-	
+        
         var info=organize_tags(tags,scores,knodule,sourcedb);
         var usecues=(n_terms>17)&& (// lots of terms AND
             (info.n_primes>0) || // there are prime terms OR
@@ -107,7 +110,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 ((n_terms/info.normals._count)>4));
         if (!(usecues)) fdjtDOM.addClass(dom,"showempty");
         if (!(getChild(dom,".showall")))
-	    fdjtDOM.prepend(dom,getShowAll(usecues,n_terms));
+            fdjtDOM.prepend(dom,getShowAll(usecues,n_terms));
 
         // Sort the tags before adding them
         tags=[].concat(tags);
@@ -154,11 +157,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         return span;}
     
     function cloudEntry(cloud,tag,lang){
-        var entry;
+        var entry, variations=[];
         if (typeof lang !== "string")
-	    lang=(Codex.language)||(Knodule.language)||"EN";
+            lang=(Codex.language)||(Knodule.language)||"EN";
         function initCloudEntry(){
-	    // This is called when the KNode is loaded
+            // This is called when the KNode is loaded
+            var variations=false;
             if (tag instanceof KNode) {
                 var knode=tag, dterm=knode.dterm;
                 entry.setAttribute("key",dterm);
@@ -172,15 +176,16 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         if (synonym===dterm) continue;
                         var variation=fdjtDOM("span.variation",synonym,"=");
                         variation.setAttribute("key",synonym);
+                        if (!(variations)) variations=fdjtDOM("span.variations");
                         variations.appendChild(variation);}}
                 if (knode.weak) addClass(entry,"weak");
-		if (knode.prime) {
-		    addClass(entry,"prime");
-		    addClass(entry,"cue");}
+                if (knode.prime) {
+                    addClass(entry,"prime");
+                    addClass(entry,"cue");}
                 if (knode.about) {
-		    if (span.title)
-			span.title=span.title+"; "+knode.about;
-		    else span.title=knode.about;}}
+                    if (entry.title)
+                        entry.title=entry.title+"; "+knode.about;
+                    else entry.title=knode.about;}}
             else if (tag.name) {
                 addClass(entry,"source"); addClass(entry,"account");
                 entry.setAttribute("key",tag.name);
@@ -191,9 +196,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if (entry.title) cloud.addKeys(entry,entry.title);
                 entry.innerHTML=tag.refuri;}
             else {}
+            if (variations) fdjtDOM.prepend(entry,variations);
             cloud.addKeys(entry);}
         var existing=cloud.getByValue(tag,".completion");
-	if ((existing)&&(existing.length)) return existing[0];
+        if ((existing)&&(existing.length)) return existing[0];
         else if (typeof tag === "string") {
             entry=fdjtDOM("span.completion.rawterm",tag);
             entry.setAttribute("value",tag);
@@ -206,16 +212,16 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             return entry;}
         else {
             var qid=tag._qid||tag.getQID();
-            if (tag instanceof KNode)
-                entry=fdjtDOM("span.completion.dterm",qid);
+            if (tag instanceof KNode) {
+                entry=fdjtDOM("span.completion.dterm",qid);}
             else entry=fdjtDOM("span.completion",qid);
-	    if (tag.cssclass) addClass(entry,tag.cssclass);
+            if (tag.cssclass) addClass(entry,tag.cssclass);
             entry.setAttribute("value",qid);
             cloud.addCompletion(entry,false,tag);
-	    if (tag._live) {
-		initCloudEntry();
-		return entry;}}
-	tag.onLoad(initCloudEntry);
+            if (tag._live) {
+                initCloudEntry();
+                return entry;}}
+        tag.onLoad(initCloudEntry);
         return entry;}
     Codex.cloudEntry=cloudEntry;
     
@@ -230,11 +236,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var tagref=(((typeof tag === 'string')&&(kb))?
                         ((RefDB.resolve(tag,kb||Codex.knodule,Knodule,false))||(tag)):
                         (tag));
-	    var entry=((scores)?
+            var entry=((scores)?
                        (cloudSpan(cloud,tagref,scores,freqs,thresh)):
                        (cloudEntry(cloud,tagref)));
-	    if (!(hasParent(entry,container))) fdjtDOM(container,entry," ");
-	    return entry;}}
+            if (!(hasParent(entry,container))) fdjtDOM(container,entry," ");
+            return entry;}}
     Codex.addTag2Cloud=addTag2Cloud;
 
     function getShowAll(use_cues,how_many){
@@ -274,8 +280,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtUI.cancel(evt);
             fdjtDOM.toggleClass(completions,"showempty");
             setTimeout(function(){
-		Codex.UI.updateScroller(completions);},
-		       100);}}
+                Codex.UI.updateScroller(completions);},
+                       100);}}
 
     /* Getting query cloud */
 
@@ -360,50 +366,50 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     Codex.tag_sorter=tag_sorter;
     function sort_tags(tags,scores){
         tags.sort(function(x,y){
-	    // Knodes go before Refs go before strings
-	    // Otherwise, use scores
-	    if (x instanceof KNode) {
-		if (y instanceof KNode) {} // Fall through
-		else return -1;}
-	    else if (y instanceof Knode) return 1;
-	    else if (x instanceof Ref) { 
-		if (y instanceof Ref) {} // Fall through
-		else return -1;}
-	    else if (y instanceof Ref) return 1;
-	    else if ((typeof x === "string")&&
-		     (typeof y === "string"))
-	    {}
-	    // We should never reach these cases because tags should
-	    //  always be strings, Refs, or KNodes.
-	    else if  (typeof x === typeof y) {
-		if (x<y) return -1;
-		else if (x>y) return 1;
-		else return 0;}
-	    else {
-		var xt=typeof x, yt=typeof y;
-		if (xt<yt) return -1;
-		else if (xt>yt) return 1;
-		else return 0;}
-	    var xv=scores.get(x), yv=scores.get(y);
-	    if (typeof xv === "undefined") {
-		if (typeof yv === "undefined") {
-		    var xid, yid;
-		    if (typeof x === "string") {
-			xid=x; yid=y;}
-		    else {
-			xid=x._qid||x.getQID();
-			yid=y._qid||y.getQID();}
-		    if (xid<yid) return -1;
-		    else if (yid>xid) return 1;
-		    else return 0;}
-		else return 1;}
-	    else if (typeof yv === "undefined") return -1;
-	    else if (xv===yv) {
-		if (x<y) return -1;
-		else if (x>y) return 1;
-		else return 0;}
-	    else if (xv>yv) return -1;
-	    else return 1;});}
+            // Knodes go before Refs go before strings
+            // Otherwise, use scores
+            if (x instanceof KNode) {
+                if (y instanceof KNode) {} // Fall through
+                else return -1;}
+            else if (y instanceof Knode) return 1;
+            else if (x instanceof Ref) { 
+                if (y instanceof Ref) {} // Fall through
+                else return -1;}
+            else if (y instanceof Ref) return 1;
+            else if ((typeof x === "string")&&
+                     (typeof y === "string"))
+            {}
+            // We should never reach these cases because tags should
+            //  always be strings, Refs, or KNodes.
+            else if  (typeof x === typeof y) {
+                if (x<y) return -1;
+                else if (x>y) return 1;
+                else return 0;}
+            else {
+                var xt=typeof x, yt=typeof y;
+                if (xt<yt) return -1;
+                else if (xt>yt) return 1;
+                else return 0;}
+            var xv=scores.get(x), yv=scores.get(y);
+            if (typeof xv === "undefined") {
+                if (typeof yv === "undefined") {
+                    var xid, yid;
+                    if (typeof x === "string") {
+                        xid=x; yid=y;}
+                    else {
+                        xid=x._qid||x.getQID();
+                        yid=y._qid||y.getQID();}
+                    if (xid<yid) return -1;
+                    else if (yid>xid) return 1;
+                    else return 0;}
+                else return 1;}
+            else if (typeof yv === "undefined") return -1;
+            else if (xv===yv) {
+                if (x<y) return -1;
+                else if (x>y) return 1;
+                else return 0;}
+            else if (xv>yv) return -1;
+            else return 1;});}
     Codex.sortTags=sort_tags;
     
     function sortCloud(cloud,scores){
@@ -421,6 +427,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         cloud.dom.appendChild(holder);}
     Codex.sortCloud=sortCloud;
 
+    /*
     function cloudWeight(v,min,max){return ((v-min)/(max-min));}
     function cloudWeight(v,min,max){
         var sin=Math.sin;
@@ -440,6 +447,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var log=Math.log;
         var norm=v-min, range=log(max)*max-log(min)*min;
         return log(norm)*norm/range;}
+    */
     function cloudWeight(v,min,max){
         var fcn=Math.sqrt;
         var norm=v-min, range=fcn(max)-fcn(min);
@@ -453,8 +461,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var i=0, lim=values.length, min_score=-1, max_score=0, score_sum=0;
         if (cuethresh===true) {
             while (i<lim) {
-                var s=scores.get(values[i++]);
-                if (s) score_sum=score_sum+s;}
+                var sc=scores.get(values[i++]);
+                if (sc) score_sum=score_sum+sc;}
             cuethresh=score_sum/values.length;}
         var global_scores=Codex.empty_query.tagscores;
         var total_results=Codex.empty_query.results.length;
@@ -481,7 +489,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                         if (!(synonyms instanceof Array)) synonyms=[synonyms];
                         var s=0, slim=synonyms.length;
                         while (s<slim) {
-                            if (tw=tagweights.get(synonyms[s++])) break;}}
+                            if ((tw=tagweights.get(synonyms[s++]))) break;}}
                     if (tw) 
                         score=((score/total_results)/tw);
                     else score=0.01;}
@@ -526,31 +534,30 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 log("cloud tap on disabled %o",completion);
             return;}
         if (Codex.Trace.gestures) log("cloud tap on %o",completion);
+        var completions=getParent(target,".completions");
         if (completion) {
             var cinfo=Codex.query.cloud;
             var value=cinfo.getValue(completion);
             if (typeof value !== 'string') add_searchtag(value);
             else  if (value.length===0) {}
             else if (value.indexOf('@')>=0)
-		add_searchtag(kbref(value));
+                add_searchtag(kbref(value));
             else if ((Codex.knodule)&&(Codex.knodule.probe(value)))
-		add_searchtag(Codex.knodule.probe(value));
+                add_searchtag(Codex.knodule.probe(value));
             else add_searchtag(value);
             fdjtUI.cancel(evt);}
         else if (fdjtDOM.inherits(target,".resultcounts")) {
-            showSearchResults(Codex.query);
+            Codex.showSearchResults(Codex.query);
             Codex.setMode("searchresults");
             fdjtID("CODEXSEARCHINPUT").blur();
             fdjtID("CODEXSEARCHRESULTS").focus();
             fdjtUI.cancel(evt);}
         else if (fdjtDOM.inherits(target,".refinercounts")) {
-            var completions=getParent(target,".completions");
             fdjtDOM.toggleClass(completions,"showempty");
             fdjtDOM.cancel(evt);}
         else if (fdjtDOM.inherits(target,".maxcompletemsg")) {
-            var completions=getParent(target,".completions");
             fdjtID("CODEXSEARCHINPUT").focus();
-            fdjtDOM.toggleClass(container,"showempty");
+            fdjtDOM.toggleClass(completions,"showempty");
             fdjtDOM.cancel(evt);}
         else {}}
     Codex.UI.handlers.searchcloud_ontap=searchcloud_ontap;
@@ -572,8 +579,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             dropClass(cur,"softcue");}
         // Get the tags on this element as cues
         var newcues=cloud.getByValue(tags);
-        var i=0; var lim=newcues.length;
-        while (i<lim) {
+        i=0, lim=newcues.length; while (i<lim) {
             var completion=newcues[i++];
             if (!(hasClass(completion,"cue"))) {
                 addClass(completion,"cue");

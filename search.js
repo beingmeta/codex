@@ -35,17 +35,20 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+// var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+// var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 (function(){
+    "use strict";
     var fdjtString=fdjt.String;
     var fdjtState=fdjt.State;
     var fdjtTime=fdjt.Time;
@@ -79,7 +82,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     // id="CODEXSEARCHINPUT" 
     // completions="CODEXSEARCHCLOUD"
 
-    Codex.getQuery=function(){return Codex.query;}
+    Codex.getQuery=function(){return Codex.query;};
     
     function setQuery(query){
         if (Codex.Trace.search) log("Setting working query to %o",query);
@@ -239,18 +242,18 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function searchInput_keyup(evt){
         evt=evt||event||null;
         var ch=evt.charCode||evt.keyCode;
-        var target=fdjtDOM.T(evt);
+        var target=fdjtDOM.T(evt), completeinfo=false, completions=false;
         // fdjtLog("Input %o on %o",evt,target);
         // Clear any pending completion calls
         if ((ch===13)||(ch===13)||(ch===59)||(ch===93)) {
             var qstring=target.value;
             if (fdjtString.isEmpty(qstring)) showSearchResults();
             else {
-                var completeinfo=Codex.queryCloud(Codex.query);
+                completeinfo=Codex.queryCloud(Codex.query);
                 if (completeinfo.timer) {
                     clearTimeout(completeinfo.timer);
                     completeinfo.timer=false;}
-                var completions=completeinfo.complete(qstring);
+                completions=completeinfo.complete(qstring);
                 var completion=(completeinfo.selection)||
                     completeinfo.select(new Selector(".cue"))||
                     completeinfo.select();
@@ -265,15 +268,15 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 showSearchResults();
             else {
                 /* Handle new info */
-                var completeinfo=Codex.queryCloud(Codex.query);
+                completeinfo=Codex.queryCloud(Codex.query);
                 completeinfo.complete("");}
             return false;}
         else if (ch===9) { /* tab */
-            var qstring=target.value;
-            var completeinfo=Codex.queryCloud(Codex.query);
-            var completions=completeinfo.complete(qstring);
+            var partial_string=target.value;
+            completeinfo=Codex.queryCloud(Codex.query);
+            completions=completeinfo.complete(partial_string);
             fdjtUI.cancel(evt);
-            if (completions.prefix!==qstring) {
+            if (completions.prefix!==partial_string) {
                 target.value=completions.prefix;
                 fdjtDOM.cancel(evt);
                 setTimeout(function(){
@@ -283,7 +286,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             else if (evt.shiftKey) completeinfo.selectPrevious();
             else completeinfo.selectNext();}
         else {
-            var completeinfo=Codex.queryCloud(Codex.query);
+            completeinfo=Codex.queryCloud(Codex.query);
             completeinfo.docomplete(target);
             setTimeout(function(){
                 Codex.UI.updateScroller("CODEXSEARCHCLOUD");},
@@ -300,7 +303,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         evt=evt||event||null;
         var input=fdjtDOM.T(evt);
         Codex.setFocus(input);
-        sbook_search_focus=true;
         if ((Codex.mode)&&(Codex.mode==='searchresults'))
             Codex.setMode("refinesearch");
         searchUpdate(input);}
@@ -308,8 +310,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
     function searchInput_blur(evt){
         evt=evt||event||null;
-        Codex.setFocus(false);
-        sbook_search_focus=false;}
+        Codex.setFocus(false);}
     Codex.UI.handlers.search_blur=searchInput_blur;
 
     function clearSearch(evt){
@@ -361,7 +362,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                                 else return 1;}
                             else return x.location-y.location;}
                         else return -1;}}
-                else y.score-x.score;}
+                else return (y.score-x.score);}
             else return -1;}
         else return 1;};
 

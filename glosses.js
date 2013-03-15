@@ -35,17 +35,20 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+// var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+// var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 (function () {
+    "use strict";
 
     var fdjtString=fdjt.String;
     var fdjtState=fdjt.State;
@@ -96,7 +99,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (arg.tagName!=="FORM") arg=getChild(arg,"FORM");
         var classname=arg.className;
         var match=glossmodes.exec(classname);
-        if ((!(match))||(match.length==0)||(!(match[0])))
+        if ((!(match))||(match.length===0)||(!(match[0])))
             return false;
         else return match[0];}
     Codex.getGlossMode=getGlossMode;
@@ -109,17 +112,17 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                   ((fdjtDOM.getParent(arg,"form"))||
                    (fdjtDOM.getChild(arg,"form"))));
         var input=false;
+        var detail_elt=getInput(form,"DETAIL");
         if (!(form)) return;
-	if (Codex.Trace.mode) {
-	    var frag=fdjtDOM.getInput(form,"FRAG");
-	    var uuid=fdjtDOM.getInput(form,"UUID");
-	    fdjtLog("setGlossMode %o%s: #%s #U%s",
-		    mode,((toggle)?(" (toggle)"):("")),
-		    ((frag)&&(frag.value)),
-		    ((uuid)&&(uuid.value)));}
+        if (Codex.Trace.mode) {
+            var frag=fdjtDOM.getInput(form,"FRAG");
+            var uuid=fdjtDOM.getInput(form,"UUID");
+            fdjtLog("setGlossMode %o%s: #%s #U%s",
+                    mode,((toggle)?(" (toggle)"):("")),
+                    ((frag)&&(frag.value)),
+                    ((uuid)&&(uuid.value)));}
         if ((toggle)&&(mode===form.className)) mode=false;
         if (form.className==="editdetail") {
-            var detail_elt=getInput(form,"DETAIL");
             detail_elt.value=fdjt.ID("CODEXDETAILTEXT").value;}
         if (!(mode)) {
             dropClass(form,glossmodes);
@@ -130,7 +133,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (mode==="addoutlet") input=fdjtID("CODEXOUTLETINPUT");
         else if (mode==="editdetail") {
             input=fdjtID("CODEXDETAILTEXT");
-            var detail_elt=getInput(form,"DETAIL");
             fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
         else {
             dropClass(form,glossmodes);
@@ -182,7 +184,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     function setupGlossForm(form,passage,gloss,response){
         var passageid=((passage.codexbaseid)||(passage.id));
         var info=Codex.docinfo[passageid];
-        if (form.getAttribute("sbooksetup")) return false;;
+        if (form.getAttribute("sbooksetup")) return false;
         if (!(info)) return false;
         form.onsubmit=submitGloss;
         getInput(form,"REFURI").value=Codex.refuri;
@@ -193,8 +195,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (Codex.user) getInput(form,"MAKER").value=Codex.user._id;
         if (Codex.mycopyid) getInput(form,"MYCOPYID").value=Codex.mycopyid;
         if (gloss) {
-            var date_elt=getChild(form,".glossdate");
-            fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));}
+            var glossdate_elt=getChild(form,".glossdate");
+            fdjtDOM(glossdate_elt,fdjtTime.shortString(gloss.created));}
         var glossinput=getInput(form,"NOTE");
         var notespan=getChild(form,".notespan");
         if (glossinput) {
@@ -212,7 +214,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         fdjt.UI.TapHold(menu,Codex.touch);
         var loc=getInput(form,"LOCATION");
         var loclen=getInput(form,"LOCLEN");
-        var tagline=getInput(form,"TAGLINE");
+        var tagline_elt=getInput(form,"TAGLINE");
         var respondsto=getInput(form,"RE");
         var thread=getInput(form,"THREAD");
         var uuidelt=getInput(form,"UUID");
@@ -236,14 +238,14 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (loc) {loc.value=info.starts_at;}
         if (loclen) {loclen.value=info.ends_at-info.starts_at;}
         if ((response)&&(gloss)) {
-	    thread.disabled=false; respondsto.disabled=false;
+            thread.disabled=false; respondsto.disabled=false;
             thread.value=gloss.thread||gloss._id;
             respondsto.value=gloss._id;}
         else {
-	    respondsto.disabled=true;
-	    thread.disabled=true;}
+            respondsto.disabled=true;
+            thread.disabled=true;}
         var tagline=getTagline(passage);
-        if (tagline) tagline.value=tagline;
+        if (tagline) tagline_elt.value=tagline;
         if (gloss) {
             var tags=getGlossTags(gloss);
             if (tags.length) {
@@ -257,10 +259,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var postgloss=getChild(form,".postgloss");
             fdjtUI.setCheckspan(postgloss,true);}
         if ((gloss)&&(!(response))&&(gloss.links)) {
-            var links=getChild(form,".links");
-            var resplinks=getChild(response_elt,".resplinks");
             var links=gloss.links;
-            for (url in links) {
+            for (var url in links) {
                 if (url[0]==='_') continue;
                 var urlinfo=links[url];
                 var title;
@@ -270,10 +270,11 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if ((gloss)&&(gloss.detail))
             detailelt.value=gloss.detail;
         if ((gloss)&&(gloss.share)) {
-            var tags=gloss.share;
-            if (typeof tags === 'string') tags=[tags];
-            var i=0; var lim=tags.length;
-            while (i<lim) addTag(form,tags[i++],"SHARE");}
+            var share=gloss.share;
+            if (typeof share === 'string') share=[share];
+            var share_i=0; var share_lim=share.length;
+            while (share_i<share_lim)
+                addTag(form,share[share_i++],"SHARE");}
         if ((!(response))&&(gloss)&&(gloss._id)) {
             uuidelt.value=gloss._id;}
         else uuidelt.value=fdjtState.getUUID(Codex.nodeid);
@@ -283,8 +284,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             resetOutlets(form);
             var shared=((gloss)&&(gloss.shared))||[];
             if (typeof shared === 'string') shared=[shared];
-            var i=0, lim=shared.length;
-            while (i<lim) addOutlet(form,shared[i++],"SHARE",true);
+            var outlet_i=0, n_outlets=shared.length;
+            while (outlet_i<n_outlets)
+                addOutlet(form,shared[outlet_i++],"SHARE",true);
             var private_span=getChild(form,".private");
             setCheckSpan(private_span,gloss.private);}
         if (((gloss)&&(gloss.excerpt)))
@@ -300,7 +302,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         return form;}
     Codex.setupGlossForm=setupGlossForm;
 
-
     /***** Setting the gloss target ******/
 
     // The target can be either a passage or another gloss
@@ -318,7 +319,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 Codex.selecting=false;}
             return;}
         var gloss=false;
-	// Identify when the target is a gloss
+        // Identify when the target is a gloss
         if ((typeof target === 'string')&&(fdjtID(target))) 
             target=fdjtID(target);
         else if ((typeof target === 'string')&&
@@ -328,23 +329,23 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (target._db===Codex.glossdb) {
             gloss=target; target=fdjtID(gloss.frag);}
         else {}
-	if ((gloss)&&(form)&&(!(form.nodeType))) {
-	    // Passing a non-false non-node as a form forces a
-	    // response, even if the user is the maker of the gloss
-	    form=getGlossForm(gloss,true);}
-	// Handle or create the form
-	if (form) {
-	    var frag=fdjtDOM.getInput(form,"FRAG");
-	    if (frag.value!==target.id) {
-		setExcerpt(form,false);
-		fdjtDOM.addClass(form,"modified");
-		frag.value=target.id;}}
-	else {
-	    if (gloss) form=getGlossForm(gloss);
-	    else form=getGlossForm(target);
+        if ((gloss)&&(form)&&(!(form.nodeType))) {
+            // Passing a non-false non-node as a form forces a
+            // response, even if the user is the maker of the gloss
+            form=getGlossForm(gloss,true);}
+        // Handle or create the form
+        if (form) {
+            var frag=fdjtDOM.getInput(form,"FRAG");
+            if (frag.value!==target.id) {
+                setExcerpt(form,false);
+                fdjtDOM.addClass(form,"modified");
+                frag.value=target.id;}}
+        else {
+            if (gloss) form=getGlossForm(gloss);
+            else form=getGlossForm(target);
             if (!(form)) {
-		fdjtUI.alert("There was a problem adding a gloss");
-		return false;}}
+                fdjtUI.alert("There was a problem adding a gloss");
+                return false;}}
         Codex.glosstarget=target;
         addClass(target,"codexglosstarget");
         Codex.GoTo(target,"addgloss",true);
@@ -421,8 +422,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var cur=fdjtID("CODEXLIVEGLOSS");
         if (cur) cur.id=null;
         if (!(form)) {
-	    Codex.glossform=false;
-	    return;}
+            Codex.glossform=false;
+            return;}
         form.id="CODEXLIVEGLOSS";
         if ((Codex.glossform)&&
             (Codex.glossform.className==="editdetail")) {
@@ -431,10 +432,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             detail_elt.value=fdjt.ID("CODEXDETAILTEXT").value;
             detail_elt=getInput(form,"DETAIL");
             fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
-	Codex.glossform=form;
+        Codex.glossform=form;
         var form_elt=getChild(form,"FORM");
         var mode=form_elt.className;
-	var glossinput=getInput(form,"NOTE");
+        var glossinput=getInput(form,"NOTE");
         var syncelt=getInput(form,"SYNC");
         syncelt.value=(Codex.syncstamp+1);
         /* Get the input appropriate to the mode. */
@@ -461,7 +462,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (text.length>40) return text.slice(0,40)+"...";
         else return text;}
     
-
     /***** Adding outlets ******/
 
     function addOutlet(form,outlet,formvar,checked) {
@@ -488,9 +488,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         var i=0; var lim=inputs.length;
         while (i<lim) {
             if (inputs[i].value===outlet_id) {
-                var checkspan=getParent(inputs[i],".checkspan");
-                setCheckSpan(checkspan,checked);
-                return checkspan;}
+                var current_checkspan=getParent(inputs[i],".checkspan");
+                setCheckSpan(current_checkspan,checked);
+                return current_checkspan;}
             else i++;}
         var spanspec=(
             "span.checkspan.waschecked.ischecked.outlet."+
@@ -520,7 +520,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var span=outlets[i++];
             setCheckSpan(span,false);}}
     
-
     /***** Adding links ******/
     
     function addLink(form,url,title) {
@@ -541,16 +540,17 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         return aspan;}
     Codex.addLink2Form=addLink;
 
-
     /***** Adding excerpts ******/
     
     function setExcerpt(form,excerpt,off) {
+        var wrapper=getParent(form,".codexglossform");
         var checkspan=getChild(form,'.excerpt');
+        var input, exoff;
         if (!(checkspan)) {
             // This is for the case where the excerpt
             //  doesn't actually appear (the new default)
-            var input=getInput(form,'EXCERPT');
-            var exoff=getInput(form,'EXOFF');
+            input=getInput(form,'EXCERPT');
+            exoff=getInput(form,'EXOFF');
             if ((!(excerpt))||(fdjtString.isEmpty(excerpt))) {
                 input.value=""; exoff.value="";
                 input.disabled=exoff.disabled=true;
@@ -563,11 +563,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 exoff.value="";
                 exoff.disabled=true;}
             updateForm(form);
-            var wrapper=getParent(form,".codexglossform");
             addClass(wrapper,"modified");
             return;}
-        var input=getInput(checkspan,'EXCERPT');
-        var exoff=getInput(form,'EXOFF');
+        input=getInput(checkspan,'EXCERPT');
+        exoff=getInput(form,'EXOFF');
         var text=getChild(checkspan,'.text');
         if (fdjtString.isEmpty(excerpt)) excerpt=false;
         if (excerpt) {
@@ -576,25 +575,23 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if (off) exoff.value=off;
                 else exoff.value="";}
             dropClass(checkspan,"empty");
-            fdjtDOM.replace(text,Ellipsis("span.text",excerpt,[25,15]));
+            fdjtDOM.replace(text,new Ellipsis("span.text",excerpt,[25,15]));
             setCheckSpan(checkspan,true);}
-	else if ((off)&&(off<0)) {
-	    // This clears the entry altogether
+        else if ((off)&&(off<0)) {
+            // This clears the entry altogether
             addClass(checkspan,"empty");
             if (exoff) exoff.value="";
-	    input.value="";
-	    if (text) fdjtDOM.replace(text,fdjtDOM("span.text"));
+            input.value="";
+            if (text) fdjtDOM.replace(text,fdjtDOM("span.text"));
             setCheckSpan(checkspan,false);}
         else {
             addClass(checkspan,"empty");
             if (exoff) exoff.value="";
             setCheckSpan(checkspan,false);}
-        var wrapper=getParent(form,".codexglossform");
         addClass(wrapper,"modified");
         updateForm(form);}
     Codex.setExcerpt=setExcerpt;
 
-
     /***** Adding tags ******/
 
     function addTag(form,tag,varname,checked,knodule) {
@@ -684,7 +681,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     
     function _getbracketed(input,erase){
         var string=input.value;
-        if ((!(string))||(string.length==0)) return false;
+        if ((!(string))||(string.length===0)) return false;
         var pos=input.selectionStart||0;
         var start=pos, end=pos, lim=string.length;
         while (start>=0) {
@@ -700,7 +697,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             else start--;}
         if (start<0) return false;
         while (end<lim) {
-            if ((string[end]===']')&&(string[end+1]=="]")) {
+            if ((string[end]===']')&&(string[end+1]==="]")) {
                 break;}
             else if (string[end]==='\\') end=end+2;
             else end++;}
@@ -722,7 +719,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     
     function setbracketed(input,replacement,atend){
         var string=input.value;
-        if ((!(string))||(string.length==0)) return false;
+        if ((!(string))||(string.length===0)) return false;
         var pos=input.selectionStart||0;
         var start=pos, end=pos, lim=string.length;
         while (start>=0) {
@@ -735,7 +732,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             else start--;}
         if (start<0) return false;
         while (end<lim) {
-            if ((string[end]===']')&&(string[end+1]=="]")) {
+            if ((string[end]===']')&&(string[end+1]==="]")) {
                 break;}
             else if (string[end]==='\\') end=end+2;
             else end++;}
@@ -836,12 +833,12 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             fdjtUI.cancel(evt);
             fdjtDOM.insertText(target,"[]",1);}
         else if (ch===93) { /* ] */
-            var pos=target.selectionStart;
-            if ((pos>0)&&(string[pos-1]==='\\')) return; 
-            var content=getbracketed(target);
-            if (!(content)) return;
+            var selstart=target.selectionStart;
+            if ((selstart>0)&&(string[selstart-1]==='\\')) return; 
+            var complete_content=getbracketed(target);
+            if (!(complete_content)) return;
             fdjtUI.cancel(evt);
-            var replace=handleBracketed(form,content);
+            var replace=handleBracketed(form,complete_content);
             if (replace) setbracketed(target,replace,2);}
         else if (ch===13) {fdjtUI.cancel(evt);}
         else {
@@ -870,7 +867,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             if (fdjtString.isEmpty(target.value)) {
                 fdjtUI.cancel(evt);
                 submitGloss(form);}
-            else if (bracketed=getbracketed(target)) {
+            else if ((bracketed=getbracketed(target))) {
                 // If you're in a [[]], handle entry/completion
                 fdjtUI.cancel(evt);
                 if (evt.ctrlKey)
@@ -897,7 +894,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         else if (mode) {}
         else {
             var content=getbracketed(target);
-            if (!(typeof content==='string')) {}
+            if (typeof content!=='string') {}
             else addgloss_timer=setTimeout(
                 function(){
                     // This timer ensures that the character typed
@@ -907,13 +904,13 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                     Codex.gloss_cloud.complete(span);},
                 200);}}
     
-    function get_addgloss_callback(form,keep){
+    function get_addgloss_callback(form,keep,uri){
         return function(req){
-            return addgloss_callback(req,form,keep);}}
+            return addgloss_callback(req,form,keep,uri);};}
 
     function addgloss_callback(req,form,keep){
         if (Codex.Trace.network)
-            fdjtLog("Got AJAX gloss response %o from %o",req,sbook_mark_uri);
+            fdjtLog("Got AJAX gloss response %o from %o",req,req.uri);
         dropClass(form.parentNode,"submitting");
         var json=JSON.parse(req.responseText);
         var ref=Codex.glossdb.Import(
@@ -947,7 +944,6 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var tags=getChildren(tagselt[0],".checkspan");
             fdjtDOM.remove(fdjtDOM.Array(tags));}}
 
-
     /***** The Gloss Cloud *****/
 
     function glosscloud_ontap(evt){
@@ -965,9 +961,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if ((input)&&(tagstring))
                     setbracketed(input,tagstring,2);}}
         fdjtUI.cancel(evt);}
-    Codex.UI.handlers.glosscloud_ontap;
+    Codex.UI.handlers.glosscloud_ontap=glosscloud_ontap;
 
-
     /***** The Outlet Cloud *****/
 
     var share_cloud=false;
@@ -978,8 +973,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         if (completion) {
             var live=fdjtID("CODEXLIVEGLOSS");
             var form=((live)&&(getChild(live,"form")));
+            var value=completion.getAttribute("value");
             if (hasClass(completion,"source")) {
-                var value=completion.getAttribute("value");
                 if (value) addOutlet(form,Codex.sourcedb.ref(value),"SHARE");}
             else if (hasClass(completion,"network")) 
                 addOutlet(form,completion,"NETWORK");
@@ -987,9 +982,8 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 if (value) addOutlet(form,completion,"EMAIL");
             else addOutlet(form,completion);}
         fdjtUI.cancel(evt);}
-    Codex.UI.sharecloud_ontap;
+    Codex.UI.sharecloud_ontap=sharecloud_ontap;
 
-
     /***** Saving (submitting/queueing) glosses *****/
 
     var login_message=false;
@@ -1033,7 +1027,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             var brk=note.search(/\s/);
             if (brk<0) addLink(form,note);
             else addLink(form,note.slice(0,brk),note.slice(brk+1));
-            noteinput.value="";}
+            note_input.value="";}
         if ((!(login_message))&&
             ((!(navigator.onLine))||(!(Codex.connected)))&&
             ((!(Codex.user))||(!(Codex.persist)))) {
@@ -1129,7 +1123,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     // We save gloss defaults on the prototype gloss form hidden in the DOM
     function saveGlossDefaults(form,proto){
         // Save gloss mode (??)
-        var mode=form.className;
+        var mode=form.className; var i, lim;
         swapClass(proto,glossmodes,mode);
         // Save post setting
         var post=getInput(form,"POSTGLOSS");
@@ -1137,33 +1131,25 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
         setCheckSpan(proto_post,post.checked);
         // Save network settings
         var networks=getInputs(form,"NETWORKS");
-        var i=0, lim=networks.length;
+        i=0, lim=networks.length;
         while (i<lim) {
-            var input=networks[i++];
-            var proto_input=getInputFor(form,"NETWORKS",input.value);
-            setCheckSpan(proto_input,input.checked);}
+            var network_input=networks[i++];
+            var proto_input=getInputFor(form,"NETWORKS",network_input.value);
+            setCheckSpan(proto_input,network_input.checked);}
         // Save outlets
         clearOutlets(proto);
         var shared=getChild(form,".outlets");
         var inputs=getChildren(shared,"INPUT");
         // Here's the logic: we save all checked outlets and any
         // others up to 5.
-        var i=0, lim=inputs.length, n_added=0;
+        i=0, lim=inputs.length; var n_others=0;
         while (i<lim) {
             var input=inputs[i++];
-            if (input.checked) {
+            if ((input.checked)||(n_others<=5)) {
                 var checkspan=addOutlet(
                     proto,input.value,input.name,input.checked);
-                addClass(checkspan,"waschecked");
-                n_added++;}}
-        if (n_added<6) {
-            i=0; while (i<lim) {
-                var input=inputs[i++];
-                if (n_added>5) continue;
-                if (!(input.checked)) {
-                    var checkspan=addOutlet(
-                        proto,input.value,input.name,input.checked);
-                    n_added++;}}}}
+                if (input.checked) addClass(checkspan,"waschecked");
+                else n_others++;}}}
 
     // These are for glosses saved only in the current session,
     // without using local storage.
@@ -1192,7 +1178,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             glossdata.note=json.note;
         if ((json.excerpt)&&(!(fdjtString.isEmpty(json.excerpt)))) {
             glossdata.excerpt=json.excerpt;
-	    glossdata.exoff=json.exoff;}
+            glossdata.exoff=json.exoff;}
         if ((json.details)&&(!(fdjtString.isEmpty(json.details))))
             glossdata.details=json.details;
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
@@ -1224,7 +1210,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
             glossdata.note=json.note;
         if ((json.excerpt)&&(!(fdjtString.isEmpty(json.excerpt)))) {
             glossdata.excerpt=json.excerpt;
-	    glossdata.exoff=json.exoff;}
+            glossdata.exoff=json.exoff;}
         if ((json.details)&&(!(fdjtString.isEmpty(json.details))))
             glossdata.details=json.details;
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
@@ -1267,7 +1253,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 try {
                     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     req.send(post_data);}
-                catch (ex) {failed.push(uuid);}}}}
+                catch (ex) {}}}}
     Codex.writeQueuedGlosses=writeQueuedGlosses;
     
 })();

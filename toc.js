@@ -34,18 +34,21 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+// var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+// var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.TOC=
     (function(){
+        "use strict";
         var fdjtString=fdjt.String;
         var fdjtState=fdjt.State;
         var fdjtTime=fdjt.Time;
@@ -102,7 +105,7 @@ Codex.TOC=
                 return toc;}
             var i=0; var n=sub.length;
             while (i<n) {
-                toc.appendChild(CodexTOC(sub[i++],depth+1,spec,prefix,headless));}
+                toc.appendChild(new CodexTOC(sub[i++],depth+1,spec,prefix,headless));}
             if (depth===0) {
                 // toc.title="Tap to go to this section; hold to preview it";
                 fdjtUI.TapHold(toc,Codex.touch);
@@ -125,7 +128,7 @@ Codex.TOC=
         
         function generate_spanbar(headinfo){
             var spanbar=fdjtDOM("div.spanbar.codexslice");
-            var spans=fdjtDOM("div.spans");
+            var spans=fdjtDOM("div.spans"), span=false;
             var start=headinfo.starts_at;
             var end=headinfo.ends_at;
             var len=end-start;
@@ -155,7 +158,7 @@ Codex.TOC=
                 else {
                     spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;
                     sectnum++;}
-                var span=generate_span(
+                span=generate_span(
                     sectnum,subsection,spaninfo.title,spanstart,spanend,len,
                     ("SBR"+spaninfo.frag),start);
                 if (!(firstspan)) {
@@ -171,8 +174,8 @@ Codex.TOC=
             if ((end-last_info.ends_at)>0) {
                 /* Add 'fake section' for the content after the last
                  * actual section */
-                var span=generate_span
-                (sectnum,head,headinfo.title,last_info.ends_at,end,len,start);
+                span=generate_span(
+                    sectnum,head,headinfo.title,last_info.ends_at,end,len,start);
                 addClass(span,"codexlastspan");
                 spanbar.appendChild(span);}
             else if (lastspan) addClass(lastspan,"codexlastspan");
@@ -243,7 +246,7 @@ Codex.TOC=
             var i=0; var lim=livetitles.length;
             while (i<lim) livetitles[i++].style.fontSize='';
             var tocs=fdjtDOM.$(".toc0");
-            var i=0; var lim=tocs.length;
+            i=0, lim=tocs.length;
             while (i<lim) { updateTOC(headinfo,tocs[i++]);}
             if (!(headinfo)) {
                 addClass(tocs,"codexlivehead");
@@ -260,7 +263,7 @@ Codex.TOC=
                         (ref.className.search(/\bbrick\b/)>=0))
                         addClass(ref.parentNode,"codexlivehead");}
                 head=head.head;}
-            setTimeout(function(){scaleTitles(headinfo);},200);}
+            setTimeout(function(){scaleTitles(headinfo);},200);};
 
         function scaleTitles(headinfo){
             // Now, autosize the titles

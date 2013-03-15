@@ -30,99 +30,101 @@
    Enjoy!
 
 */
+/* jshint browser: true */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
-var fdjtMap=fdjt.Map;
+//var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+//var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+//var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+//var fdjtMap=fdjt.Map;
 
-var Codex=
-    {mode: false,hudup: false,scrolling: false,query: false,
-     head: false,target: false,glosstarget: false,location: false,
-     root: false,start: false,HUD: false,dosync: true,
-     user: false, loggedin: false, cxthelp: false,
-     _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
-     // Whether we have a real connection to the server
-     connected: false,
-     // Keeping track of paginated context
-     curpage: false,curoff: false,curinfo: false, curbottom: false,
-     // For tracking UI state
-     last_mode: false, last_heartmode: "about", demo: false,
-     // How long it takes a gesture to go from tap to hold
-     taptapmsecs: 500, holdmsecs: 200, edgeclick: 50, pagesize: 250,
-     dontanimate: false,
-     glossmodes: /(addtag)|(addlink)|(addoutlet)|(editdetail)/,
-     updatehash: true, iscroll: false,
-     // Whether to cache layouts locally
-     cachelayouts: true,
-     // Whether to store glosses, etc for offline/faster access
-     persist: false,
-     // Whether to use native scrolling for body content
-     nativescroll: true,
-     // Whether to use native scrolling for embedded DIVs
-     scrolldivs: true,
-     // Dominant interaction mode
-     mouse: true,touch: false,kbd: false,
-     // Restrictions on excerpts
-     min_excerpt: 3, max_excerpt: false,
-     // These are the UUIDs of locally stored glosses which are queued
-     //  to be saved when possible (online and connected).
-     queued: [],
-     // These are weights assigned to search tags
-     tagweights: (new fdjtMap()), tagmaxweight: 0, tagminweight: 200000000,
-     // This is the base URI for this document, also known as the REFURI
-     // A document (for instance an anthology or collection) may include
-     // several refuri's, but this is the default.
-     refuri: false,
-     // These are the refuris used in this document
-     refuris: [],
-     // This is the document URI, which is usually the same as the REFURI.
-     docuri: false,
-     // This is the unique signed DOC+USER identifier used by myCopy
-     // social DRM
-     mycopyid: false, 
-     // This is the time of the last update
-     syncstamp: false,
-     // Various handlers, settings, and status information for the
-     // Codex interface
-     UI: {
-         // This maps device types into sets of node->event handlers
-         handlers: {mouse: {}, kbd: {}, ios: {}}},
-     Debug: {},
-     /* This is where HTML source strings for UI components are placed */
-     HTML: {},
-     /* This is where we store pointers into the dom */
-     DOM: {},
-     Trace: {
-         startup: 0,       // Whether to trace startup
-         config: 0,        // Whether to trace config setup/modification/etc
-         mode: false,      // Whether to trace mode changes
-         nav: false,       // Whether to trace book navigation
-         scan: 0,          // How much to trace DOM scanning
-         search: 0,        // How much to trace searches
-         clouds: 0,        // How much to trace cloud generation
-         focus: false,     // Whether to trace target changes
-         toc: false,       // Whether we're debugging TOC tracking
-         storage: 0,       // How much to trace offline persistence
-         network: 0,       // How much to trace server interaction
-         glosses: 0,       // How much we're tracing gloss processing
-         layout: 0,        // How much to trace document layout
-         knodules: 0,      // How much to trace knodule processing
-         dosync: false,    // Whether to trace state saves
-         state: false,     // Whether to trace set state
-         flips: false,     // Whether to trace page flips (movement by pages)
-         messages: false,  // Whether to trace inter-window messages
-         iscroll: false,   // Whether to trace HUD scrolling with iScroll
-         highlight: 0,     // Whether to trace highlighting
-         indexing: 0,      // How much to trace document indexing
-         gestures: 0}      // How much to trace gestures
-    };
+var Codex={
+    mode: false,hudup: false,scrolling: false,query: false,
+    head: false,target: false,glosstarget: false,location: false,
+    root: false,start: false,HUD: false,dosync: true,
+    user: false, loggedin: false, cxthelp: false,
+    _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
+    // Whether we have a real connection to the server
+    connected: false,
+    // Keeping track of paginated context
+    curpage: false,curoff: false,curinfo: false, curbottom: false,
+    // For tracking UI state
+    last_mode: false, last_heartmode: "about", demo: false,
+    // How long it takes a gesture to go from tap to hold
+    taptapmsecs: 500, holdmsecs: 200, edgeclick: 50, pagesize: 250,
+    dontanimate: false,
+    glossmodes: /(addtag)|(addlink)|(addoutlet)|(editdetail)/,
+    updatehash: true, iscroll: false,
+    // Whether to cache layouts locally
+    cachelayouts: true,
+    // Whether to store glosses, etc for offline/faster access
+    persist: false,
+    // Whether to use native scrolling for body content
+    nativescroll: true,
+    // Whether to use native scrolling for embedded DIVs
+    scrolldivs: true,
+    // Dominant interaction mode
+    mouse: true,touch: false,kbd: false,
+    // Restrictions on excerpts
+    min_excerpt: 3, max_excerpt: false,
+    // These are the UUIDs of locally stored glosses which are queued
+    //  to be saved when possible (online and connected).
+    queued: [],
+    // These are weights assigned to search tags
+    tagweights: false, tagmaxweight: 0, tagminweight: 200000000,
+    // This is the base URI for this document, also known as the REFURI
+    // A document (for instance an anthology or collection) may include
+    // several refuri's, but this is the default.
+    refuri: false,
+    // These are the refuris used in this document
+    refuris: [],
+    // This is the document URI, which is usually the same as the REFURI.
+    docuri: false,
+    // This is the unique signed DOC+USER identifier used by myCopy
+    // social DRM
+    mycopyid: false, 
+    // This is the time of the last update
+    syncstamp: false,
+    // Various handlers, settings, and status information for the
+    // Codex interface
+    UI: {
+        // This maps device types into sets of node->event handlers
+        handlers: {mouse: {}, kbd: {}, ios: {}}},
+    Debug: {},
+    /* This is where HTML source strings for UI components are placed */
+    HTML: {},
+    /* This is where we store pointers into the dom */
+    DOM: {},
+    Trace: {
+        startup: 0,       // Whether to trace startup
+        config: 0,        // Whether to trace config setup/modification/etc
+        mode: false,      // Whether to trace mode changes
+        nav: false,       // Whether to trace book navigation
+        scan: 0,          // How much to trace DOM scanning
+        search: 0,        // How much to trace searches
+        clouds: 0,        // How much to trace cloud generation
+        focus: false,     // Whether to trace target changes
+        toc: false,       // Whether we're debugging TOC tracking
+        storage: 0,       // How much to trace offline persistence
+        network: 0,       // How much to trace server interaction
+        glosses: 0,       // How much we're tracing gloss processing
+        layout: 0,        // How much to trace document layout
+        knodules: 0,      // How much to trace knodule processing
+        dosync: false,    // Whether to trace state saves
+        state: false,     // Whether to trace set state
+        flips: false,     // Whether to trace page flips (movement by pages)
+        messages: false,  // Whether to trace inter-window messages
+        iscroll: false,   // Whether to trace HUD scrolling with iScroll
+        highlight: 0,     // Whether to trace highlighting
+        indexing: 0,      // How much to trace document indexing
+        gestures: 0}      // How much to trace gestures
+};
 
 (function(){
+    "use strict";
 
     var fdjtString=fdjt.String;
     var fdjtState=fdjt.State;
@@ -132,6 +134,7 @@ var Codex=
     var fdjtUI=fdjt.UI;
     var fdjtID=fdjt.ID;
     var RefDB=fdjt.RefDB, Ref=fdjt.Ref, Query=RefDB.Query;
+    var ObjectMap=fdjt.Map||RefDB.Map;
 
     var hasClass=fdjtDOM.hasClass;
     var addClass=fdjtDOM.addClass;
@@ -142,6 +145,8 @@ var Codex=
 
     var getLocal=fdjt.State.getLocal;
     
+    Codex.tagweights=new ObjectMap();
+
     function initDB() {
         if (Codex.Trace.start>1) fdjtLog("Initializing DB");
         var refuri=(Codex.refuri||document.location.href);
@@ -167,8 +172,8 @@ var Codex=
         var glosses_init={
             indices: ["frag","maker","outlets"]};
         var stdspace=fdjtString.stdspace;
-        Codex.glossdb=new RefDB("glosses@"+Codex.refuri,glosses_init); {
-            var superadd=Codex.glossdb.add;
+        var glossdb=Codex.glossdb=new RefDB("glosses@"+Codex.refuri,glosses_init);
+        var superadd=Codex.glossdb.add; {
             Codex.glossdb.absrefs=true;
             Codex.glossdb.addAlias("glossdb");
             Codex.glossdb.addAlias("-UUIDTYPE=61");
@@ -194,26 +199,23 @@ var Codex=
                     Codex.addTag2Cloud(maker,Codex.search_cloud);
                     Codex.UI.addGlossSource(maker,true);}
                 var maker_knodule=Codex.getMakerKnodule(item.maker);
-                var tags=item.alltags;
+                var i, lim, tags=item.alltags, sources=item.sources;
                 if ((tags)&&(tags.length)) {
                     if (typeof tags === "string") tags=[tags];
-                    var i=0; var lim=tags.length;
                     if (item.thread) {
                         Knodule.addTag(item.thread,tags);
                         if (item.replyto!==item.thread)
                             Codex.addTags(item.replyto,tags,glossdb);}
                     else if (info)
                         Codex.addTags(info,tags,'+tags');
-                    while (i<lim) {
+                    i=0, lim=tags.length; while (i<lim) {
                         var tag=tags[i++];
                         Codex.addTag2Cloud(tag,Codex.search_cloud);
                         Codex.addTag2Cloud(tag,Codex.gloss_cloud);}}
-                var sources=item.sources;
                 if (sources) {
                     if (typeof sources === 'string') sources=[sources];
                     if ((sources)&&(sources.length)) {
-                        var i=0; var lim=sources.length;
-                        while (i<lim) {
+                        i=0, lim=sources.length; while (i<lim) {
                             var source=sources[i++];
                             var ref=Codex.sourcedb.ref(source);
                             Codex.UI.addGlossSource(ref,true);}}}},
@@ -334,14 +336,14 @@ var Codex=
             ((Codex.svg)?(".svgz"):
              ((((width)&&(height))?(width+"x"+height):
                (width)?(width+"w"):(height)?(height+"h"):"")+
-              ".png"));}
+              ".png"));};
 
     Codex.getRefURI=function(target){
         var scan=target;
         while (scan)
             if (scan.refuri) return scan.refuri;
         else scan=scan.parentNode;
-        return Codex.refuri;}
+        return Codex.refuri;};
 
     Codex.getDocURI=function(target){
         var scan=target;
@@ -353,7 +355,7 @@ var Codex=
                  ((scan.getAttribute)&&(scan.getAttribute("data-docuri"))));
             if (docuri) return docuri;
             else scan=scan.parentNode;}
-        return Codex.docuri;}
+        return Codex.docuri;};
 
     Codex.getRefID=function(target){
         if (target.getAttributeNS)
@@ -377,13 +379,13 @@ var Codex=
             /* First, try scanning forward to find a non-empty node */
             var scan=target.firstChild; var scanid=false;
             var next=target.nextNode;
-            while ((scan)&&(scan!=next)) {
+            while ((scan)&&(scan!==next)) {
                 if ((scan.id)||(scan.codexbaseid)) break;
                 if ((scan.nodeType===3)&&
                     (!(fdjtString.isEmpty(scan.nodeValue)))) break;
                 scan=fdjtDOM.forward(scan);}
             /* If you found something, use it */
-            if ((scan)&&(scan.id)&&(scan!=next))
+            if ((scan)&&(scan.id)&&(scan!==next))
                 target=Codex.docinfo[scanid];
             else {
                 while (target)
@@ -411,14 +413,14 @@ var Codex=
             if (ref[0]==='#')
                 return document.getElementById(ref.slice(1));
             else return document.getElementById(ref);}
-        else return false;}
+        else return false;};
     Codex.getRefElt=function(target){
         while (target)
             if ((target.about)||
                 ((target.getAttribute)&&(target.getAttribute("about"))))
                 break;
         else target=target.parentNode;
-        return target||false;}
+        return target||false;};
 
     Codex.checkTarget=function(){
         if ((Codex.target)&&(Codex.mode==='openglossmark'))
@@ -506,7 +508,7 @@ var Codex=
     function getGlossTags(gloss){
         var results=[];
         var i=0, lim=tag_prefixes.length; while (i<lim) {
-            var prefix=tag_prefixes[i++]
+            var prefix=tag_prefixes[i++];
             var tags=gloss[prefix+"tags"];
             if (!(tags)) continue;
             else if (!(tags instanceof Array)) tags=[tags];
@@ -701,21 +703,21 @@ var Codex=
         else return knode;}
     Codex.parseTag=parseTag;
     
-    var KnoduleAddTags=Knodule.addTags;
+    var knoduleAddTags=Knodule.addTags;
     function addTags(nodes,tags,slotid){
         if (!(slotid)) slotid="tags";
         var docdb=Codex.docdb, tagdb=Codex.knodule;
         if (!(nodes instanceof Array)) nodes=[nodes];
-        KnoduleAddTags(nodes,tags,docdb,tagdb,slotid);
+        knoduleAddTags(nodes,tags,docdb,tagdb,slotid);
         var i=0, lim=nodes.length; while (i<lim) {
             var node=nodes[i++];
             if (!(node.toclevel)) continue;
             var passages=docdb.find('head',node);
             if ((passages)&&(passages.length))
-                KnoduleAddTags(passages,tags,docdb,tagdb,"^"+slotid);
+                knoduleAddTags(passages,tags,docdb,tagdb,"^"+slotid);
             var subheads=docdb.find('heads',node);
             if ((subheads)&&(subheads.length))
-                addTags(subheads,tags,slotid);}};
+                addTags(subheads,tags,slotid);}}
     Codex.addTags=addTags;
         
     /* Navigation */
@@ -738,7 +740,7 @@ var Codex=
 
     Codex.viewTop=function(){
         if (Codex.nativescroll) return fdjtDOM.viewTop();
-        else return -(fdjtDOM.parsePX(Codex.pages.style.top));}
+        else return -(fdjtDOM.parsePX(Codex.pages.style.top));};
     var sbookUIclasses=
         /(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bcodexmargin\b)/;
 
@@ -754,7 +756,7 @@ var Codex=
     function displayOffset(){
         var toc;
         if (Codex.mode)
-            if (toc=fdjtID("CODEXTOC"))
+            if ((toc=fdjtID("CODEXTOC")))
                 return -((toc.offsetHeight||50)+15);
         else return -60;
         else return -40;}
@@ -822,24 +824,25 @@ var Codex=
                 return;
             var refuri=((Codex.target)&&(Codex.getRefURI(Codex.target)))||
                 (Codex.refuri);
-            var uri="https://"+Codex.server+"/v1/sync?ACTION=save"+
+            var sync_uri="https://"+Codex.server+"/v1/sync?ACTION=save"+
                 "&DOCURI="+encodeURIComponent(Codex.docuri)+
                 "&REFURI="+encodeURIComponent(refuri);
             if (Codex.user)
-                uri=uri+"&SYNCUSER="+encodeURIComponent(Codex.user._id);
+                sync_uri=sync_uri+"&SYNCUSER="+encodeURIComponent(Codex.user._id);
             if (Codex.deviceName)
-                uri=uri+"&devicename="+encodeURIComponent(Codex.deviceName);
-            if (state.target) uri=uri+"&target="+encodeURIComponent(state.target);
+                sync_uri=sync_uri+"&devicename="+encodeURIComponent(Codex.deviceName);
+            if (state.target)
+                sync_uri=sync_uri+"&target="+encodeURIComponent(state.target);
             if ((state.location)||(state.hasOwnProperty('location')))
-                uri=uri+"&location="+encodeURIComponent(state.location);
+                sync_uri=sync_uri+"&location="+encodeURIComponent(state.location);
             if (Codex.ends_at)
-                uri=uri+"&maxloc="+encodeURIComponent(Codex.ends_at);
+                sync_uri=sync_uri+"&maxloc="+encodeURIComponent(Codex.ends_at);
             if ((state.page)||(state.hasOwnProperty('page')))
-                uri=uri+"&page="+encodeURIComponent(state.page);
+                sync_uri=sync_uri+"&page="+encodeURIComponent(state.page);
             if (typeof Codex.pagecount === 'number')
-                uri=uri+"&maxpage="+encodeURIComponent(Codex.pagecount);
+                sync_uri=sync_uri+"&maxpage="+encodeURIComponent(Codex.pagecount);
             if ((Codex.Trace.dosync)||(Codex.Trace.state))
-                fdjtLog("syncState(call) %s: %j",uri,state);
+                fdjtLog("syncState(call) %s: %j",sync_uri,state);
             var req=new XMLHttpRequest();
             syncing=state;
             req.onreadystatechange=function(evt){
@@ -855,7 +858,7 @@ var Codex=
                             evt,req.readyState,req.status,syncing);};
             req.withCredentials=true;
             try {
-                req.open("GET",uri,true);
+                req.open("GET",sync_uri,true);
                 req.send();}
             catch (ex) {Codex.dosync=false;}}}
     Codex.serverSync=serverSync;
@@ -900,17 +903,17 @@ var Codex=
     function CodexGoTo(arg,caller,istarget,pushstate){
         if (typeof istarget === 'undefined') istarget=true;
         if (typeof pushstate === 'undefined') pushstate=true;
-        var target; var location;
+        var target, location, info;
         if (typeof arg === 'string') {
             target=document.getElementById(arg);
-            var info=getLocInfo(target);
+            info=getLocInfo(target);
             location=info.start;}
         else if (typeof arg === 'number') {
             location=arg;
             target=(((istarget.nodeType)&&(istarget.id))?(istarget):
                     (resolveLocation(arg)));}
         else if (arg.nodeType) {
-            var info=getLocInfo(arg);
+            info=getLocInfo(arg);
             if (arg.id) target=arg;
             else if (arg.codexbaseid) target=arg;
             else target=getTarget(arg);
@@ -932,7 +935,7 @@ var Codex=
         var page=((Codex.bypage)&&(Codex.layout)&&
                   (Codex.pagecount)&&(Codex.getPage(target)));
         var targetid=target.codexbaseid||target.id;
-        var info=((targetid)&&(Codex.docinfo[targetid]));
+        info=((targetid)&&(Codex.docinfo[targetid]));
         if (Codex.Trace.nav)
             fdjtLog("Codex.GoTo%s() #%o@P%o/L%o %o",
                     ((caller)?("/"+caller):""),targetid,page,
@@ -966,13 +969,13 @@ var Codex=
             if (target.href) break; else target=target.parentNode;
         if ((target)&&(target.href)&&(target.href[0]==='#')) {
             var elt=document.getElementById(target.href.slice(1));
-            if (elt) {CodexGoTo(elt,"anchorFn"); fdjtUI.cancel(evt);}}}
+            if (elt) {Codex.GoTo(elt,"anchorFn"); fdjtUI.cancel(evt);}}}
     Codex.anchorFn=anchorFn;
 
     // This jumps and disables the HUD at the same time
     function CodexJumpTo(target){
         if (Codex.hudup) Codex.setMode(false);
-        CodexGoTo(target,"JumpTo");}
+        Codex.GoTo(target,"JumpTo");}
     Codex.JumpTo=CodexJumpTo;
 
     // This jumps and disables the HUD at the same time
@@ -982,7 +985,7 @@ var Codex=
             var headinfo=Codex.docinfo[target]||Codex.docinfo[target.id];
             if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0)))
                 Codex.setMode("tocscan");}
-        CodexGoTo(target,"CodexScanTo");}
+        Codex.GoTo(target,"CodexScanTo");}
     Codex.ScanTo=CodexScanTo;
 
     // Preview functions
@@ -1040,8 +1043,9 @@ var Codex=
 
     function getLevel(elt){
         if (elt.toclevel) {
-            if (elt.toclevel==='none')
-                return elt.toclevel=false;
+            if (elt.toclevel==='none') {
+                elt.toclevel=false;
+                return false;}
             else return elt.toclevel;}
         var attrval=
             ((elt.getAttributeNS)&&
@@ -1050,20 +1054,20 @@ var Codex=
             (elt.getAttribute('data-toclevel'));
         if (attrval) {
             if (attrval==='none') return false;
-            else return parseInt(attrval);}
+            else return parseInt(attrval,10);}
         if (elt.className) {
             var cname=elt.className;
             if (cname.search(/\bsbooknotoc\b/)>=0) return 0;
             if (cname.search(/\bsbookignore\b/)>=0) return 0;
             var tocloc=cname.search(/\bsbook\d+head\b/);
             if (tocloc>=0)
-                return parseInt(cname.slice(tocloc+5));}
+                return parseInt(cname.slice(tocloc+5),10);}
         if ((Codex.notoc)&&(Codex.notoc.match(elt))) return 0;
         if ((Codex.ignore)&&(Codex.ignore.match(elt))) return 0;
         if ((elt.tagName==='HGROUP')||(elt.tagName==='HEADER'))
             return getFirstTocLevel(elt,true);
-        if (elt.tagName.search(/H\d/)==0)
-            return parseInt(elt.tagName.slice(1,2));
+        if (elt.tagName.search(/H\d/)===0)
+            return parseInt(elt.tagName.slice(1,2),10);
         else return false;}
 
     function getFirstTocLevel(node,notself){

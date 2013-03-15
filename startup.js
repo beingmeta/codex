@@ -34,18 +34,21 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+//var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+//var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+//var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+//var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.Startup=
     (function(){
+        "use strict";
 
         var fdjtString=fdjt.String;
         var fdjtState=fdjt.State;
@@ -136,18 +139,18 @@ Codex.Startup=
                 Codex.postconfig=false;
                 if ((Codex.Trace.config>1)&&(!((dopost)||(dopost.length===0))))
                     fdjtLog("batch setConfig, no post processing",config);
-                var i=0; var lim=dopost.length;
-                while (i<lim) {
+                var post_i=0; var post_lim=dopost.length;
+                while (post_i<post_lim) {
                     if (Codex.Trace.config>1)
-                        fdjtLog("batch setConfig, post processing %s",dopost[i]);
-                    dopost[i++]();}
+                        fdjtLog("batch setConfig, post processing %s",dopost[post_i]);
+                    dopost[post_i++]();}
                 return;}
             if (Codex.Trace.config) fdjtLog("setConfig %o=%o",name,value);
             var input_name="CODEX"+(name.toUpperCase());
             var inputs=document.getElementsByName(input_name);
-            var i=0; var lim=inputs.length;
-            while (i<lim) {
-                var input=inputs[i++];
+            var input_i=0, input_lim=inputs.length;
+            while (input_i<input_lim) {
+                var input=inputs[input_i++];
                 if (input.tagName!=='INPUT') continue;
                 if (input.type==='checkbox') {
                     if (value) setCheckSpan(input,true);
@@ -168,6 +171,7 @@ Codex.Startup=
                 saved_config[name]=value;
                 saveConfig(saved_config);}}
         Codex.setConfig=setConfig;
+        Codex.resetConfig=function(){setConfig(saved_config);};
 
         function saveConfig(config,toserver){
             if (typeof toserver === "undefined") toserver=true;
@@ -205,20 +209,21 @@ Codex.Startup=
         Codex.saveConfig=saveConfig;
 
         function initConfig(fetch){
+            var setting;
             if (typeof fetch === "undefined") fetch=true;
             if ((navigator.onLine)&&(fetch)) fetchConfig();
-            var config=saved_config=getLocal("codex.config",true)||{};
+            var config=(saved_config=(getLocal("codex.config",true)||{}));
             Codex.postconfig=[];
             if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
             if (config) {
-                for (var setting in config) {
+                for (setting in config) {
                     if ((config.hasOwnProperty(setting))&&
                         (!(getQuery(setting))))
                         setConfig(setting,config[setting]);}}
             else config={};
             if (Codex.Trace.config)
                 fdjtLog("initConfig (default) %o",default_config);
-            for (var setting in default_config) {
+            for (setting in default_config) {
                 if (!(config.hasOwnProperty(setting)))
                     if (default_config.hasOwnProperty(setting)) {
                         if (getQuery(setting))
@@ -238,7 +243,7 @@ Codex.Startup=
         var fetching_config=false, config_fetched=false, on_fetched_config=false;
         function fetchConfig(){
             var req=new XMLHttpRequest();
-            fetching_config=true;
+            fetching_config=true; var onfetch=false;
             req.onreadystatechange=function(evt){
                 if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
                     try {
@@ -250,17 +255,17 @@ Codex.Startup=
                         initConfig(false);
                         saveConfig(config,false);
                         if (on_fetched_config) {
-                            var fn=on_fetched_config;
+                            onfetch=on_fetched_config;
                             on_fetched_config=false;
-                            fn();}}
+                            onfetch();}}
                     catch (ex) {}}
                 else if (req.readyState===4) {
                     fetching_config=false;
                     config_fetched=false;
                     if (on_fetched_config) {
-                        var fn=on_fetched_config;
+                        onfetch=on_fetched_config;
                         on_fetched_config=false;
-                        fn();}}
+                        onfetch();}}
                 else {}
                 if ((Codex.Trace.dosync)||(Codex.Trace.state))
                     fdjtLog("configSave(callback) %o ready=%o status=%o %j",
@@ -282,7 +287,7 @@ Codex.Startup=
                 ((id.nodeType)&&(getChild(id,'select')))||
                 (id);
             if (Codex.Trace.config) fdjtLog("Update config %s",name);
-            if ((elt.type=='radio')||(elt.type=='checkbox'))
+            if ((elt.type==='radio')||(elt.type==='checkbox'))
                 setConfig(name,elt.checked||false,save);
             else setConfig(name,elt.value,save);}
         Codex.updateConfig=updateConfig;
@@ -349,9 +354,9 @@ Codex.Startup=
 
             // Initialize domain and origin for browsers which care
             try {document.domain="sbooks.net";}
-            catch (ex) {fdjtLog.warn("Error setting document.domain");};
+            catch (ex) {fdjtLog.warn("Error setting document.domain");}
             try {document.origin="sbooks.net";}
-            catch (ex) {fdjtLog.warn("Error setting document.origin");};
+            catch (ex) {fdjtLog.warn("Error setting document.origin");}
 
             // Execute any FDJT initializations
             fdjt.Init();
@@ -420,8 +425,7 @@ Codex.Startup=
             Codex.setupGestures();
             
             // Setup the reticle (if desired)
-            if ((typeof (document.body.style["pointer-events"])
-                 != "undefined")&&
+            if ((typeof (document.body.style["pointer-events"])!== "undefined")&&
                 ((Codex.demo)||(fdjtState.getLocal("codex.demo"))||
                  (fdjtState.getCookie("sbooksdemo"))||
                  (getQuery("demo")))) {
@@ -505,7 +509,7 @@ Codex.Startup=
                     var trace_name=trace_spec.substr(0,colon);
                     var trace_val=trace_spec.substr(colon+1);
                     if (typeof Codex.Trace[trace_name] === 'number')
-                        Codex.Trace[trace_name]=parseInt(trace_val);
+                        Codex.Trace[trace_name]=parseInt(trace_val,10);
                     else Codex.Trace[trace_name]=trace_val;}}}
 
         function Startup(force){
@@ -575,7 +579,8 @@ Codex.Startup=
                     applyAnchorTags();},
                 function(){
                     startupLog("Finding and applying tags spans");
-                    applyTagSpans();},
+                    applyTagSpans();
+                    applyMultiTagSpans();},
                 function(){
                     if (window._sbook_autoindex) {
                         startupLog("Processing precompiled index");
@@ -600,7 +605,7 @@ Codex.Startup=
         
         function scanDOM(){
             var scanmsg=fdjtID("CODEXSTARTUPSCAN");
-            var aboutbook=fdjtID("SBOOKABOUTPAGE"), about_tmp=false
+            var aboutbook=fdjtID("SBOOKABOUTPAGE"), about_tmp=false;
             var aboutauthor=fdjtID("SBOOKAUTHORPAGE"), author_tmp=false;
             if (aboutbook) {
                 about_tmp=document.createTextNode("");
@@ -661,7 +666,7 @@ Codex.Startup=
                     // Check that it's not redundant
                     var ref=Codex.sourcedb.ref(getQuery("JOIN"));
                     if ((RefDB.contains(Codex.overlays,ref._id))) {
-                        var ref=Codex.sourcedb.ref(getQuery("JOIN"));
+                        ref=Codex.sourcedb.ref(getQuery("JOIN"));
                         if (ref.name)
                             fdjtDOM(intro,"You've already added the overlay "+
                                     ref.name);
@@ -712,31 +717,29 @@ Codex.Startup=
             else {}
             if (mode) Codex.setMode(mode);
             Codex._setup=new Date();
-            var msg=false;
-            if (msg=getQuery("APPMESSAGE")) {
-                var uuid_end=false;
+            var msg=false, uuid_end=false, msgid=false;
+            if ((msg=getQuery("APPMESSAGE"))) {
                 if ((msg.slice(0,2)==="#{")&&
                     ((uuid_end=msg.indexOf('}'))>0)) {
-                    var msgid="MSG_"+msg.slice(2,uuid_end);
+                    msgid="MSG_"+msg.slice(2,uuid_end);
                     if (fdjtState.getLocal(msgid)) {}
                     else {
                         fdjtState.setLocal(msgid,"seen");
                         fdjtUI.alertFor(10,msg.slice(uuid_end+1));}}
                 else fdjtUI.alertFor(10,msg);}
-            if (msg=getQuery("SBOOKSMESSAGE")) {
-                var uuid_end=false;
+            if ((msg=getQuery("SBOOKSMESSAGE"))) {
                 if ((msg.slice(0,2)==="#{")&&
                     ((uuid_end=msg.indexOf('}'))>0)) {
-                    var msgid="MSG_"+msg.slice(2,uuid_end);
+                    msgid="MSG_"+msg.slice(2,uuid_end);
                     if (fdjtState.getLocal(msgid)) {}
                     else {
                         fdjtState.setLocal(msgid,"seen");
                         fdjtUI.alertFor(10,msg.slice(uuid_end+1));}}
                 else fdjtUI.alertFor(10,msg);}
-            if (msg=getCookie("APPMESSAGE")) {
+            if ((msg=getCookie("APPMESSAGE"))) {
                 fdjtUI.alertFor(10,msg);
                 fdjtState.clearCookie("APPMESSAGE","sbooks.net","/");}
-            if (msg=getCookie("SBOOKSMESSAGE")) {
+            if ((msg=getCookie("SBOOKSMESSAGE"))) {
                 fdjtUI.alertFor(10,msg);
                 fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}}
         
@@ -748,16 +751,6 @@ Codex.Startup=
              "touch":["mouse","kbd"],
              "mouse":["touch","kbd"],
              "kbd":["touch","mouse"]};
-
-        function setopt(opt,flag){
-            if (typeof flag === 'undefined') flag=true;
-            if ((flag)&&(sbook[opt])) return;
-            else if ((!(flag))&&(!(sbook[opt]))) return;
-            var unset=optrules[opt];
-            sbook[opt]=true;
-            if (unset) {
-                var i=0; var lim=unset.length;
-                sbook[unset[i++]]=false;}}
 
         function workOffline(refuri){
             if (Codex.force_online) return false;
@@ -837,8 +830,8 @@ Codex.Startup=
             Codex.min_excerpt=getMeta("SBOOK.minexcerpt")||(Codex.min_excerpt);
             var sbooksrv=getMeta("SBOOK.server")||getMeta("SBOOKSERVER");
             if (sbooksrv) Codex.server=sbooksrv;
-            else if (fdjtState.getCookie["SBOOKSERVER"])
-                Codex.server=fdjtState.getCookie["SBOOKSERVER"];
+            else if (fdjtState.getCookie("SBOOKSERVER"))
+                Codex.server=fdjtState.getCookie("SBOOKSERVER");
             else Codex.server=lookupServer(document.domain);
             if (!(Codex.server)) Codex.server=Codex.default_server;
             
@@ -1105,7 +1098,7 @@ Codex.Startup=
             if ((splash)&&(splash.parentNode!==body))
                 fdjtDOM.prepend(body,splash);
             var children=body.childNodes, nodes=[];
-            var i=0, lim=children.length;
+            i=0, lim=children.length;
             if (splash) {
                 // Gather all of the nodes before the splash page.
                 //   There should really be any, but we'll check anyway.
@@ -1150,9 +1143,8 @@ Codex.Startup=
                     fdjtDOM.append(notesblock,notable,"\n");}
                 else fdjtDOM.append(notesblock,notable,"\n");}
 
-            var i=0; var lim=nodes.length;
             // Now, move all of the body nodes into the content element
-            while (i<lim) {
+            i=0, lim=nodes.length; while (i<lim) {
                 var node=nodes[i++];
                 if (node.nodeType===1) {
                     if ((node.tagName!=='LINK')&&(node.tagName!=='META')&&
@@ -1318,7 +1310,7 @@ Codex.Startup=
                         ((info.glosses)?(info.glosses.length):(0)),
                         ((Codex.sync)?("updated "):("")),
                         ((info.etc)?(info.etc.length):(0)),
-                        info.sync)
+                        info.sync);
                 fdjtLog("loadInfo got %d sources, %d outlets, and %d overlays",
                         ((info.sources)?(info.sources.length):(0)),
                         ((info.outlets)?(info.outlets.length):(0)),
@@ -1382,7 +1374,6 @@ Codex.Startup=
                 if (uri[uri.length-1]!=='&') uri=uri+"&";}
             else uri=uri+"?";
             uri=uri+"CALLBACK="+callback;
-            var elt=fdjtID("CODEXUPDATEINFO");
             var update_script=fdjtDOM("script#CODEXUPDATEINFO");
             update_script.language="javascript";
             update_script.type="text/javascript";
@@ -1395,36 +1386,6 @@ Codex.Startup=
             if (elt) fdjtDOM.replace(elt,update_script);
             else document.body.appendChild(update_script);}
 
-        function getUser() {
-            var refuri=Codex.refuri;
-            var loadinfo=window._sbook_loadinfo||false;
-            if (Codex.Trace.startup>1)
-                fdjtLog("Getting user for %o cur=%o",refuri,Codex.user);
-            if (Codex.user) return Codex.user;
-            else if (Codex.nologin) return false;
-            if ((loadinfo)&&(gotUser(loadinfo)))
-                return Codex.user;
-            else if ((typeof _sbook_userinfo !== 'undefined')&&
-                     gotUser(_sbook_userinfo))
-                return Codex.user;
-            if (getLocal("codex.user")) {
-                var user=getLocal("codex.user");
-                if (Codex.Trace.startup)
-                    fdjtLog("Restoring offline user info for %o reading %o",
-                            user,refuri);
-                var userinfo=JSON.parse(getLocal(user));
-                var sources=getLocal("codex.sources("+refuri+")",true);
-                var outlets=getLocal("codex.outlets("+refuri+")",true);
-                var nodeid=getLocal("codex.nodeid("+refuri+")",true);
-                var sync=getLocal("codex.usersync",true);
-                gotUser(userinfo,nodeid,sources,outlets,etcinfo,sync);
-                return;}
-            else if ((!(fdjtID("SBOOKLOADINFO")))&&
-                     (!(fdjtID("CODEXLOADINFO")))) {
-                updateInfo("Codex.gotInfo");
-                fdjtDOM.addClass(document.body,"cxNOUSER");}
-            else fdjtDOM.addClass(document.body,"cxNOUSER");}
-        
         function setUser(userinfo,outlets,overlays,sync){
             var persist=((Codex.persist)&&(navigator.onLine));
             var refuri=Codex.refuri;
@@ -1466,6 +1427,7 @@ Codex.Startup=
         Codex.setNodeID=setNodeID;
 
         function setupUI4User(){
+            var i=0, lim;
             if (Codex._user_setup) return;
             if (!(Codex.user)) {
                 fdjtDOM.addClass(document.body,"cxNOUSER");
@@ -1476,8 +1438,8 @@ Codex.Startup=
                 fdjtID("CODEXUSERNAME").innerHTML=username;
             var names=document.getElementsByName("CODEXUSERNAME");
             if (names) {
-                var i=0, lim=names.length;
-                while (i<lim) names[i++].innerHTML=username;}
+                i=0, lim=names.length; while (i<lim)
+                    names[i++].innerHTML=username;}
             if (fdjtID("SBOOKMARKUSER"))
                 fdjtID("SBOOKMARKUSER").value=Codex.user._id;
 
@@ -1527,20 +1489,18 @@ Codex.Startup=
                 if (fdjtID("CODEXUSERPIC")) fdjtID("CODEXUSERPIC").src=pic;
                 var byname=document.getElementsByName("CODEXUSERPIC");
                 if (byname) {
-                    var i=0; var lim=byname.length;
-                    while (i<lim) byname[i++].src=pic;}}
+                    i=0, lim=byname.length; while (i<lim)
+                        byname[i++].src=pic;}}
             var idlinks=document.getElementsByName("IDLINK");
             if (idlinks) {
-                var i=0; var len=idlinks.length;
-                while (i<len) {
+                i=0, lim=idlinks.length; while (i<lim) {
                     var idlink=idlinks[i++];
                     idlink.target='_blank';
                     idlink.title='click to edit your personal information';
                     idlink.href='https://auth.sbooks.net/my/profile';}}
             if (Codex.user.friends) {
                 var friends=Codex.user.friends; var sourcedb=Codex.sourcedb;
-                var i=0; var lim=friends.length;
-                while (i<lim) {
+                i=0, lim=friends.length; while (i<lim) {
                     var friend=RefDB.resolve(friends[i++],sourcedb);
                     Codex.addTag2Cloud(friend,Codex.gloss_cloud);
                     Codex.addTag2Cloud(friend,Codex.share_cloud);}}
@@ -1554,16 +1514,16 @@ Codex.Startup=
                     var i=0; var lim=info.length; var qids=[];
                     while (i<lim) {
                         if (typeof info[i] === 'string') {
-                            var qid=info[i++];
-                            var ref=Codex.sourcedb.ref(qid);
-                            if (Codex.persist) ref.load(qid);
-                            qids.push(ref._id);}
+                            var load_qid=info[i++];
+                            var load_ref=Codex.sourcedb.ref(load_qid);
+                            if (Codex.persist) load_ref.load();
+                            qids.push(load_ref._id);}
                         else {
-                            var ref=Codex.sourcedb.Import(
+                            var import_ref=Codex.sourcedb.Import(
                                 info[i++],false,
                                 RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
-                            ref.save();
-                            qids.push(ref._id);}}
+                            import_ref.save();
+                            qids.push(import_ref._id);}}
                     Codex[name]=qids;
                     if (Codex.persist)
                         setLocal("codex."+name+"("+refuri+")",qids,true);}
@@ -1574,11 +1534,12 @@ Codex.Startup=
                     if (persist) ref.save();
                     Codex[name]=ref._id;
                     if (persist) setLocal(
-                        "codex."+name+"("+refuri+")",qid,true);}}}
+                        "codex."+name+"("+refuri+")",ref._id,true);}}}
 
         function setupGlosses(newglosses) {
             Codex.glossdb.Import(
                 newglosses,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+            var latest=Codex.syncstamp||0;
             if (newglosses.length) {
                 var n=newglosses.length; var i=0; while (i<n) {
                     var gloss=newglosses[i++];
@@ -1625,7 +1586,7 @@ Codex.Startup=
             var uri=Codex.docuri||Codex.refuri;
             var statestring=getLocal("codex.state("+uri+")");
             if (statestring)
-                Codex.state=state=JSON.parse(statestring);}
+                Codex.state=JSON.parse(statestring);}
         
         /* This initializes the sbook state to the initial location with the
            document, using the hash value if there is one. */ 
@@ -1700,7 +1661,7 @@ Codex.Startup=
                                       fdjtDOM("div.smaller",msg2));}},
                           uri,false,
                           function(req){
-                              if ((req.readyState == 4)&&(navigator.onLine))
+                              if ((req.readyState===4)&&(navigator.onLine))
                                   Codex.setConnected(false);});}
             catch (ex) {Codex.dosync=false;}}
         Codex.syncLocation=syncLocation;
@@ -1801,7 +1762,7 @@ Codex.Startup=
                         if (!(info.knodeterms)) {
                             knodeterms=info.knodeterms={};
                             knodeterms[tagbase]=terms=[];}
-                        else if (terms=knodeterms[tagbase]) {}
+                        else if ((terms=knodeterms[tagbase])) {}
                         else knodeterms[tagbase]=terms=[];
                         var j=1; var jlim=idinfo.length;
                         while (j<jlim) {terms.push(idinfo[j++]);}}
@@ -1818,20 +1779,22 @@ Codex.Startup=
         
         /* Applying various tagging schemes */
 
-        function applyTagSpans() {
+        function applyMultiTagSpans() {
             startupMessage("Applying inline tags");
             var tags=fdjtDOM.$(".sbooktags");
-            var i=0; var lim=tags.length;
+            var i=0, lim=tags.length;
             while (i<lim) {
-                var tagelt=tags[i++];
-                var target=Codex.getTarget(tagelt);
+                var elt=tags[i++];
+                var target=Codex.getTarget(elt);
                 var info=Codex.docinfo[target.id];
-                var tagtext=fdjtDOM.textify(tagelt);
-                var tagsep=tagelt.getAttribute("tagsep")||";";
+                var tagtext=fdjtDOM.textify(elt);
+                var tagsep=elt.getAttribute("tagsep")||";";
                 var tagstrings=tagtext.split(tagsep);
                 if (tagstrings.length) {
                     var j=0, jlim=tagstrings.length;
-                    while (j<jlim) addTags(info,tagstrings[j++]);}}
+                    while (j<jlim) addTags(info,tagstrings[j++]);}}}
+        function applyTagSpans() {
+            startupMessage("Applying inline tags");
             var tags=fdjtDOM.$(".sbooktag");
             var i=0; var lim=tags.length;
             while (i<lim) {
@@ -1877,7 +1840,7 @@ Codex.Startup=
                     else {}
                     if (tag) {
                         var info=docinfo[cxt.id];
-                        addTags(inof,tag);}}
+                        addTags(info,tag);}}
                 else i++;}}
         
         /* Handling tag attributes */
@@ -1911,34 +1874,32 @@ Codex.Startup=
         
         function initClouds(){}
         
-        function addOutlets2UI(outlets){
-            if (typeof outlets === 'string')
-                outlets=Codex.sourcedb.ref(outlets);
-            if (!(outlets)) return;
-            if (!(outlets instanceof Array)) outlets=[outlets];
-            var i=0; var lim=outlets.length;
-            var loaded=[];
-            while (i<lim) {
-                var outlet=outlets[i++];
-                if (typeof outlet === 'string')
-                    outlet=Codex.sourcedb.ref(outlet);
-                if (!(outlet instanceof Ref)) continue;
-                var completion=fdjtDOM("span.completion.cue.source",outlet._id);
-                function init(){
-                    completion.id="cxOUTLET"+outlet.humid;
-                    completion.setAttribute("value",outlet._id);
-                    completion.setAttribute("key",outlet.name);
-                    completion.innerHTML=outlet.name;
-                    if ((outlet.description)&&(outlet.nick))
-                        completion.title=outlet.name+": "+
-                        outlet.description;
+        function addOutlets2UI(outlet){
+            if (typeof outlet === 'string')
+                outlet=Codex.sourcedb.ref(outlet);
+            if (!(outlet)) return;
+            if (outlet instanceof Array) {
+                var outlets=outlet;
+                var i=0; var lim=outlets.length; while (i<lim)
+                    addOutlets2UI(outlets[i++]);
+                return;}
+            if (!(outlet instanceof Ref)) return;
+            var completion=fdjtDOM("span.completion.cue.source",outlet._id);
+            function init(){
+                completion.id="cxOUTLET"+outlet.humid;
+                completion.setAttribute("value",outlet._id);
+                completion.setAttribute("key",outlet.name);
+                completion.innerHTML=outlet.name;
+                if ((outlet.description)&&(outlet.nick))
+                    completion.title=outlet.name+": "+
+                    outlet.description;
                     else if (outlet.description)
                         completion.title=outlet.description;
                     else if (outlet.nick) completion.title=outlet.name;
                     fdjtDOM("#CODEXOUTLETS",completion," ");
                     Codex.share_cloud.addCompletion(completion);}
-                if (outlet._live) init();
-                else outlet.onLoad(init,"addoutlet2cloud");}}
+            if (outlet._live) init();
+            else outlet.onLoad(init,"addoutlet2cloud");}
         
         /* Clearing offline data */
 
@@ -1959,14 +1920,16 @@ Codex.Startup=
         function setupGlossServer(){}
 
         Codex.StartupHandler=function(evt){
-            Startup();};
+            Codex.Startup();};
 
         return Startup;})();
-sbookStartup=Codex.StartupHandler;
 Codex.Setup=Codex.StartupHandler;
+/*
+sbookStartup=Codex.StartupHandler;
 sbook={Start: Codex.Startup,
        setUser: Codex.setUser,
        Startup: Codex.Startup};
+*/
 
 /* Emacs local variables
    ;;;  Local variables: ***

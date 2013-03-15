@@ -35,17 +35,20 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+// var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+// var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 (function(){
+    "use strict";
 
     var fdjtString=fdjt.String;
     var fdjtState=fdjt.State;
@@ -114,7 +117,7 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 icon.title=title; icon.oid=info._id;
                 icon.id="SBOOKSOURCEICON"+humid;
                 fdjtDOM(fdjtID("CODEXSOURCES")," ",icon);}}
-        return info;};
+        return info;}
     Codex.UI.addSource=addSource;
     Codex.UI.addGlossSource=function(info){addSource(info,true);};
 
@@ -158,9 +161,9 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
                 var oid=selected[i++].oid;
                 if (oid) new_sources.push(oid);}}
         else {
-            var selected=fdjtDOM.$(".selected",sources);
-            var i=0; var len=selected.length;
-            while (i<len) fdjtDOM.dropClass(selected[i++],"selected");
+            var de_select=fdjtDOM.$(".selected",sources);
+            var d_i=0; var d_len=de_select.length;
+            while (d_i<d_len) fdjtDOM.dropClass(de_select[d_i++],"selected");
             fdjtDOM.addClass(target,"selected");
             new_sources=[target.oid];}
         var everyone=fdjtDOM.$(".everyone",sources)[0];
@@ -207,10 +210,10 @@ var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
     
     Codex.UI.addGlossmark=function(passage,gloss){
         var Glosses=Codex.glossdb;
-        var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
-        if ((glossmark)&&(glossmark.parentNode===passage)) {
-            if (gloss) extendGlossmark(glossmark,[gloss]);
-            return glossmark;}
+        var current_glossmark=fdjtDOM.getChild(passage,".codexglossmark");
+        if ((current_glossmark)&&(current_glossmark.parentNode===passage)) {
+            if (gloss) extendGlossmark(current_glossmark,[gloss]);
+            return current_glossmark;}
         var imgsrc=(cxicon("sbwedge",64,64));
         var wedge=fdjtDOM.Image(imgsrc,"wedge","glosses");
         var glossmark=fdjtDOM("a.codexglossmark.fdjtskiptext",wedge);

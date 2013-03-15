@@ -28,7 +28,7 @@
 
     #CODEXHUD.addgloss img.hudbutton[alt="toc"],
     #CODEXHUD.addgloss img.hudbutton[alt="search"] {
-	display: none;}
+        display: none;}
 
     body.hudup #CODEXHUD.openhead img.hudbutton[alt="toc"],
     body.hudup #CODEXHUD.openhead img.hudbutton[alt="search"],

@@ -35,18 +35,21 @@
    Enjoy!
 
 */
+/* jshint browser: true */
+/* global Codex: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
-var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-var Codex=((typeof Codex !== "undefined")?(Codex):({}));
-var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
-var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
+// var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
+// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
+// var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
 Codex.setMode=
     (function(){
+        "use strict";
         var fdjtString=fdjt.String;
         var fdjtState=fdjt.State;
         var fdjtTime=fdjt.Time;
@@ -111,6 +114,9 @@ Codex.setMode=
             Codex.DOM.heart=fdjtID("CODEXHEART");
             Codex.DOM.foot=fdjtID("CODEXFOOT");
             Codex.DOM.tabs=fdjtID("CODEXTABS");
+
+            Codex.DOM.noteshud=fdjtID("CODEXNOTETEXT");
+            Codex.DOM.asidehud=fdjtID("CODEXASIDE");
 
             // Initialize the pageinfo
             var pageinfo=Codex.DOM.pageinfo=fdjtID("CODEXPAGEINFO");
@@ -183,7 +189,7 @@ Codex.setMode=
                                      origin);
                         return;}
                     if (evt.data==="sbooksapp") {
-                        CodexMode("sbooksapp");}
+                        setMode("sbooksapp");}
                     else if (evt.data==="loggedin") {
                         if (!(Codex.user)) Codex.userSetup();}
                     else if (evt.data)
@@ -387,14 +393,14 @@ Codex.setMode=
              refinesearch: "CODEXSEARCHINPUT",
              expandsearch: "CODEXSEARCHINPUT"};
         
-        function CodexMode(mode,nohud){
+        function setMode(mode,nohud){
             var oldmode=Codex.mode;
             if (typeof mode === 'undefined') return oldmode;
             if (mode==='last') mode=Codex.last_mode;
             if (mode==='none') mode=false;
             if (mode==='heart') mode=Codex.heart_mode||"about";
             if (Codex.Trace.mode)
-                fdjtLog("CodexMode %o, cur=%o dbc=%o",
+                fdjtLog("setMode %o, cur=%o dbc=%o",
                         mode,Codex.mode,document.body.className);
             if ((mode!==Codex.mode)&&(Codex.previewing))
                 Codex.stopPreview();
@@ -565,6 +571,7 @@ Codex.setMode=
         Codex.fadeUpHUD=fadeUpHUD;
 
         function updateScroller(elt){
+            /* jshint newcap: false */
             if (Codex.scrolldivs) return;
             if ((elt)&&(Codex.Trace.scrolling))
                 fdjtLog("Updating scroller for %o",elt);
@@ -581,16 +588,16 @@ Codex.setMode=
         Codex.UI.updateScroller=updateScroller;
 
         function CodexHUDToggle(mode,keephud){
-            if (!(Codex.mode)) CodexMode(mode);
+            if (!(Codex.mode)) setMode(mode);
             else if (mode===Codex.mode)
-                if (keephud) CodexMode(true); else CodexMode(false);
+                if (keephud) setMode(true); else setMode(false);
             else if ((mode==='heart')&&
                      (Codex.mode.search(codexHeartMode_pat)===0))
-                if (keephud) CodexMode(true); else CodexMode(false);
-            else CodexMode(mode);}
-        CodexMode.toggle=CodexHUDToggle;
+                if (keephud) setMode(true); else setMode(false);
+            else setMode(mode);}
+        Codex.toggle=CodexHUDToggle;
 
-        Codex.dropHUD=function(){return CodexMode(false);};
+        Codex.dropHUD=function(){return setMode(false);};
         Codex.toggleHUD=function(evt){
             evt=evt||event;
             if ((evt)&&(fdjtUI.isClickable(fdjtUI.T(evt)))) return;
@@ -793,9 +800,9 @@ Codex.setMode=
             flyleaf_app_init=true;}
         Codex.initFlyleafApp=initFlyleafApp;
 
-        CodexMode.selectApp=function(){
-            if (Codex.mode==='sbooksapp') CodexMode(false);
-            else CodexMode('sbooksapp');};
+        Codex.selectApp=function(){
+            if (Codex.mode==='sbooksapp') setMode(false);
+            else setMode('sbooksapp');};
 
         /* Scanning */
 
@@ -879,7 +886,7 @@ Codex.setMode=
                     Codex.GoTo(Codex.scanpoints[Codex.scanoff]);}
                 else Codex.GoTo(elt,"Scan");}
             else Codex.GoTo(elt,"Scan");
-            CodexMode("scanning");}
+            setMode("scanning");}
         Codex.Scan=CodexScan;
         
         Codex.addConfig("uisize",function(name,value){
@@ -953,12 +960,12 @@ Codex.setMode=
         Codex.UI.settingsReset=function(evt){
             if (typeof evt === "undefined") evt=event;
             if (evt) fdjt.UI.cancel(evt);
-            Codex.setConfig(saved_config);
+            Codex.resetConfig();
             fdjtDOM.replace("CODEXSETTINGSMESSAGE",
                             fdjtDOM("span#CODEXSETTINGSMESSAGE",
                                     "Your settings have been reset."));};
 
-        Codex.UI.settingsOK=function(){
+        Codex.UI.settingsOK=function(evt){
             if (typeof evt === "undefined") evt=event;
             if (evt) fdjt.UI.cancel(evt);
             var settings=getSettings();
@@ -968,7 +975,7 @@ Codex.setMode=
                             fdjtDOM("span#CODEXSETTINGSMESSAGE",
                                     "Your settings have been saved."));};
         
-        Codex.UI.settingsCancel=function(){
+        Codex.UI.settingsCancel=function(evt){
             if (typeof evt === "undefined") evt=event;
             if (evt) fdjt.UI.cancel(evt);
             Codex.setConfig(Codex.getConfig());
@@ -978,6 +985,7 @@ Codex.setMode=
 
         /* Console methods */
         function console_eval(){
+            /* jshint evil: true */
             fdjtLog("Executing %s",input_console.value);
             var result=eval(input_console.value);
             var string_result=
@@ -1044,7 +1052,7 @@ Codex.setMode=
                     var src=elts[i++];
                     if (hasParent(src,allglosses)) {
                         var elt=fdjtID(src.about);
-                        CodexMode("allglosses");
+                        setMode("allglosses");
                         Codex.Scan(elt,src);
                         return true;}}
                 return false;}};
@@ -1055,7 +1063,7 @@ Codex.setMode=
         Codex.showHelp=function(){
             fdjtDOM.addClass(document.body,"codexhelp");};
 
-        return CodexMode;})();
+        return setMode;})();
 
 /* Emacs local variables
    ;;;  Local variables: ***
