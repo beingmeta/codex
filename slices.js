@@ -552,11 +552,8 @@ Codex.Slice=(function () {
     /* Scrolling slices */
 
     function scrollGlosses(elt,slice,top){
-        if (!(elt.id)) elt=getFirstID(elt);
-        var info=Codex.docinfo[elt.id];
-        if (!(info)) return;
         var container=slice.container;
-        var cardinfo=slice.getCard(info);
+        var cardinfo=slice.getCard(elt);
         if (cardinfo) {
             var scrollto=cardinfo.dom;
             if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
@@ -567,19 +564,6 @@ Codex.Slice=(function () {
                 else scrollto.scrollIntoView(true);}}}
     Codex.UI.scrollGlosses=scrollGlosses;
     
-    function getFirstID(node){
-        if (node.id) return node;
-        else if (node.childNodes) {
-            var children=node.childNodes;
-            var i=0; var lim=children.length;
-            while (i<lim) {
-                var child=children[i++];
-                if (child.nodeType===1) {
-                    var found=getFirstID(child);
-                    if (found) return found;}}
-            return false;}
-        else return false;}
-
     /* Results handlers */
 
     var named_slices={};
@@ -607,7 +591,9 @@ Codex.Slice=(function () {
         fdjtUI.TapHold(container,Codex.touch);
         Codex.UI.addHandlers(container,'summary');
         this.container=container; this.cards=[];
-        if (sortfn) this.sortfn=sortfn; this.byid=new fdjt.RefMap();
+        if (sortfn) this.sortfn=sortfn;
+        this.byid=new fdjt.RefMap();
+        this.byfrag=new fdjt.RefMap();
         this.live=false; this.changed=false;
         this.addCards(cards);
         if ((cards)&&(cards.length)) this.update();
@@ -641,25 +627,46 @@ Codex.Slice=(function () {
         else return 1;};
 
     CodexSlice.prototype.getCard=function getCard(ref){
-        return this.byid.get(ref);};
+        if ((ref.nodeType===1)&&(hasClass(ref,"codexcard"))) {
+            var id=ref.getAttribute("data-gloss")||
+                ref.getAttribute("data-passage");
+            return this.byid.get(id);}
+        else if (ref.nodeType===1) {
+            if (!(ref.id)) ref=getFirstID(ref);
+            if (ref) return this.byid.get(ref.id)||this.byfrag.get(ref.id);}
+        else return ((ref._qid)&&(this.byid.get(ref._qid)))||
+            ((ref._id)&&(this.byid.get(ref._id)));};
+    function getFirstID(node){
+        if (node.id) return node;
+        else if (node.childNodes) {
+            var children=node.childNodes;
+            var i=0; var lim=children.length; while (i<lim) {
+                if (children[i].nodeType===1) {
+                    var found=getFirstID(children[i++]);
+                    if (found) return found;}
+                else i++;}}
+        return false;}
 
     CodexSlice.prototype.display=CodexSlice.prototype.update=
         function updateSlice(force){
             if ((!(this.changed))&&(!(force))) return;
-            var cards=this.cards; var i=0, lim=cards.length;
+            var cards=this.cards, byfrag=this.byfrag;
             cards.sort(this.sortfn);
-            var passage_starts=fdjtDOM.toArray(fdjtDOM.$(".slicenewpassage",this.container));
-            var head_starts=fdjtDOM.toArray(fdjtDOM.$(".slicenewhead",this.container));
+            var passage_starts=
+                fdjtDOM.toArray(fdjtDOM.$(".slicenewpassage",this.container));
+            var head_starts=
+                fdjtDOM.toArray(fdjtDOM.$(".slicenewhead",this.container));
             this.container.innerHTML="";
             dropClass(passage_starts,"slicenewpassage");
             dropClass(head_starts,"slicenewhead");
             var head=false, passage=false;
             var frag=document.createDocumentFragment()||this.container;
-            i=0, lim=cards.length; while (i<lim) {
+            var i=0, lim=cards.length; while (i<lim) {
                 var card=cards[i++];
                 if (card.hidden) continue;
                 else if (card.passage!==passage) {
                     passage=card.passage;
+                    byfrag[passage]=card;
                     addClass(card.dom,"slicenewpassage");}
                 if (card.head!==head) {
                     head=card.head;
@@ -682,7 +689,7 @@ Codex.Slice=(function () {
         if (!(adds)) return;
         if (!(adds instanceof Array)) adds=[adds];
         if (adds.length===0) return;
-        var byid=this.byid; var cards=this.cards; var i=0, lim=adds.length;
+        var byid=this.byid, byfrag=this.byfrag, cards=this.cards; var i=0, lim=adds.length;
         while (i<lim) {
             var add=adds[i++], info=false, card, id, about=false, replace=false;
             if ((add.nodeType)&&(add.nodeType===1)&&(hasClass(add,"codexcard"))) {
@@ -710,7 +717,7 @@ Codex.Slice=(function () {
                 info.score=parseInt(card.getAttribute("data-searchscore"),10);
             if (card.getAttribute("data-timestamp"))
                 info.timestamp=parseInt(card.getAttribute("data-timestamp"),10);
-            if (card.getAttribute("data-passage"))
+            if (card.getAttribute("data-passage")) 
                 info.passage=card.getAttribute("data-passage");
             if (card.getAttribute("data-tochead"))
                 info.head=card.getAttribute("data-tochead");

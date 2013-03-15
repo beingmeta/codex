@@ -591,6 +591,7 @@ Codex.Paginate=
                 if (pushstate) {
                     var curnode=fdjtID(page.getAttribute("data-topid"));
                     Codex.point=curnode;
+                    if (!((Codex.hudup)||(Codex.mode))) Codex.scanning=false;
                     Codex.setHead(curnode);}
                 if ((pushstate)&&(page)) {
                     Codex.setState(

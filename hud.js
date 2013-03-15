@@ -546,11 +546,11 @@ Codex.setMode=
             else document.body.focus();
             
             if (mode==="allglosses") {
-                if (Codex.point)
-                    Codex.UI.scrollGlosses(Codex.point,Codex.glosses);}
+                if ((Codex.scanning)||(Codex.point))
+                    Codex.UI.scrollGlosses(Codex.scanning||Codex.point,Codex.glosses);}
             else if (mode==="searchresults") {
-                if (Codex.point)
-                    Codex.UI.scrollGlosses(Codex.point,Codex.query.listing);}
+                if ((Codex.scanning)||(Codex.point))
+                    Codex.UI.scrollGlosses(Codex.scanning||Codex.point,Codex.query.listing);}
             else {}
             if (display_sync) Codex.displaySync();}
 
