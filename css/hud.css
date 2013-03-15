@@ -881,7 +881,12 @@ div#CODEXHUD div#CODEXSCANNER div.idhead,
 div#CODEXHUD div#CODEXPOINTGLOSSES div.idhead {
     height: 0px;}
 div#CODEXHUD div#CODEXSCANNER img.glosspic {
-    max-height: 5ex; max-width: 5ex;}
+    max-height: 6ex; max-width: 6ex;}
+div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic {
+    max-height: 12ex; max-width: 12ex;}
+div#CODEXHUD div#CODEXSCANNER.expanded .codexcard img.userpic,
+div#CODEXHUD div#CODEXSCANNER.expanded .codexcard img.sourcepic {
+    width: 75px;}
 
 body div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic,
 body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded {
