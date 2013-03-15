@@ -71,7 +71,6 @@
     var getInput=fdjtDOM.getInput;
     var getInputs=fdjtDOM.getInputs;
     var getInputFor=fdjtDOM.getInputFor;
-    var Ellipsis=fdjtUI.Ellipsis;
 
     var setCheckSpan=fdjtUI.CheckSpan.set;
 
@@ -537,53 +536,38 @@
     
     function setExcerpt(form,excerpt,off) {
         var wrapper=getParent(form,".codexglossform");
-        var checkspan=getChild(form,'.excerpt');
-        var input, exoff;
-        if (!(checkspan)) {
-            // This is for the case where the excerpt
-            //  doesn't actually appear (the new default)
-            input=getInput(form,'EXCERPT');
-            exoff=getInput(form,'EXOFF');
-            if ((!(excerpt))||(fdjtString.isEmpty(excerpt))) {
-                input.value=""; exoff.value="";
-                input.disabled=exoff.disabled=true;
-                return;}
+        var excerpt_span=getChild(form,'.excerpt');
+        var input=getInput(form,'EXCERPT'), exoff=getInput(form,'EXOFF');
+        if ((!(excerpt))||(fdjtString.isEmpty(excerpt))) {
+            input.value=""; exoff.value="";
+            input.disabled=exoff.disabled=true;
+            if (excerpt_span) excerpt_span.innerHTML="";}
+        else {
             input.disabled=exoff.disabled=false;
             input.value=excerpt;
-            if (typeof off === "number")
-                exoff.value=off;
-            else {
-                exoff.value="";
-                exoff.disabled=true;}
-            updateForm(form);
-            addClass(wrapper,"modified");
-            return;}
-        input=getInput(checkspan,'EXCERPT');
-        exoff=getInput(form,'EXOFF');
-        var text=getChild(checkspan,'.text');
-        if (fdjtString.isEmpty(excerpt)) excerpt=false;
-        if (excerpt) {
-            input.value=excerpt;
-            if (exoff) {
-                if (off) exoff.value=off;
-                else exoff.value="";}
-            dropClass(checkspan,"empty");
-            fdjtDOM.replace(text,new Ellipsis("span.text",excerpt,[25,15]));
-            setCheckSpan(checkspan,true);}
-        else if ((off)&&(off<0)) {
-            // This clears the entry altogether
-            addClass(checkspan,"empty");
-            if (exoff) exoff.value="";
-            input.value="";
-            if (text) fdjtDOM.replace(text,fdjtDOM("span.text"));
-            setCheckSpan(checkspan,false);}
-        else {
-            addClass(checkspan,"empty");
-            if (exoff) exoff.value="";
-            setCheckSpan(checkspan,false);}
+            if (typeof off === "number") exoff.value=off;
+            else {exoff.value="";exoff.disabled=true;}
+            if (excerpt_span) excerpt_span.innerHTML=
+                trim_excerpt(excerpt);}
+        updateForm(form);
         addClass(wrapper,"modified");
-        updateForm(form);}
+        return;}
     Codex.setExcerpt=setExcerpt;
+
+    function trim_excerpt(string,lim){
+        var len=string.length; if (!(lim)) lim=20; 
+        if (len<lim) return string;
+        var words=string.split(/\s+/), nwords=words.length;
+        if (words.length<3)
+            return (string.slice(0,Math.floor(lim/2))+"..."+
+                    string.slice(Math.floor(len-floot(lim/2))));
+        var left=1, left_len=words[0].length+1;
+        var right=nwords-2, right_len=words[nwords-1].length+1;
+        while ((left<right)&&((left_len+right_len)<lim)) {
+            left_len+=words[left++].length;
+            right_len+=words[right--].length;}
+        return words.slice(0,left).join(" ")+"..."+
+            words.slice(right).join(" ");}
 
     /***** Adding tags ******/
 

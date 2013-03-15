@@ -87,7 +87,8 @@ Codex.Slice=(function () {
                      (showdocinfo(info)))," ",
                     ((standalone)&&(showtocloc(target_info))),
                     ((score)&&(showscore(score,query))),
-                    ((note_len>0)&&(new Ellipsis("span.note",info.note,140)))," ",
+                    ((note_len>0)&&
+                     (fdjtUI.Ellipsis("span.note",info.note,140)))," ",
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
                     ((info.alltags)&&(showtags(info)))," ",
@@ -228,9 +229,9 @@ Codex.Slice=(function () {
         return span;}
     function showexcerpts(excerpts){
         if (typeof excerpts==='string')
-            return new Ellipsis("span.excerpt",excerpts,140);
+            return fdjtUI.Ellipsis("span.excerpt",excerpts,140);
         else if (excerpts.length===1)
-            return new Ellipsis("span.excerpt",excerpts[0],140);
+            return fdjtUI.Ellipsis("span.excerpt",excerpts[0],140);
         else {
             var ediv=fdjtDOM("div.excerpts");
             var i=0; var lim=excerpts.length;
