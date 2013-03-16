@@ -176,7 +176,7 @@ body.sbook a.codexcard { display: block;}
 .codexcard .age {
     color: rgb(18, 141, 238);
     vertical-align: top; padding-right: 0.5em;
-    clear: right;}
+    clear: none;}
 .codexcard .age:hover {text-decoration: underline;} 
 .codexcard a.deletebutton { 
   color: orange; text-decoration: none;
