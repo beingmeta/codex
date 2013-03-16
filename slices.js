@@ -64,7 +64,6 @@ Codex.Slice=(function () {
     var odq="\u201c"; var cdq="\u201d";
 
     var cxicon=Codex.icon;
-    var Ellipsis=fdjtUI.Ellipsis;
     var addListener=fdjtDOM.addListener;
 
     function renderCard(info,query,idprefix,standalone){
@@ -83,12 +82,10 @@ Codex.Slice=(function () {
         if (overdoc) shared=RefDB.remove(shared,(overdoc._qid||overdoc._id));
         var body=
             fdjtDOM("div.codexcardbody",
-                    (((info.maker)||(info.tstamp))?(showglossinfo(info)):
-                     (showdocinfo(info)))," ",
-                    ((standalone)&&(showtocloc(target_info))),
                     ((score)&&(showscore(score,query))),
-                    ((note_len>0)&&
-                     (fdjtUI.Ellipsis("span.note",info.note,140)))," ",
+                    (((info.maker)||(info.tstamp))?(showglossinfo(info)):
+                     (showdocinfo(info))),
+                    ((note_len>0)&&(fdjtUI.Ellipsis("span.note",info.note,140)))," ",
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
                     ((info.alltags)&&(showtags(info)))," ",
@@ -690,7 +687,7 @@ Codex.Slice=(function () {
         if (!(adds)) return;
         if (!(adds instanceof Array)) adds=[adds];
         if (adds.length===0) return;
-        var byid=this.byid, byfrag=this.byfrag, cards=this.cards; var i=0, lim=adds.length;
+        var byid=this.byid, cards=this.cards; var i=0, lim=adds.length;
         while (i<lim) {
             var add=adds[i++], info=false, card, id, about=false, replace=false;
             if ((add.nodeType)&&(add.nodeType===1)&&(hasClass(add,"codexcard"))) {
