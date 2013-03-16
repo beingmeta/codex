@@ -560,7 +560,7 @@
         var words=string.split(/\s+/), nwords=words.length;
         if (words.length<3)
             return (string.slice(0,Math.floor(lim/2))+"..."+
-                    string.slice(Math.floor(len-floot(lim/2))));
+                    string.slice(Math.floor(len-(lim/2))));
         var left=1, left_len=words[0].length+1;
         var right=nwords-2, right_len=words[nwords-1].length+1;
         while ((left<right)&&((left_len+right_len)<lim)) {
