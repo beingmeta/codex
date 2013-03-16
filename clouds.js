@@ -139,8 +139,8 @@
         var freq=freqs.get(dterm)||1;
         var score=scores.get(dterm);
         var span=cloudEntry(completions,dterm);
-        span.title=((score)?("score="+score):("unscored"))+"; "+
-            "freq="+freq;
+        span.title=((span.title)||(""))+((score)?("score="+score):("unscored"))+"; "+
+            "count="+freq;
         if (freq===1) addClass(span,"singleton");        
         if (typeof cuethresh !== "number") {
             if (typeof dterm === "string") {}
@@ -158,11 +158,23 @@
             lang=(Codex.language)||(Knodule.language)||"EN";
         function initCloudEntry(){
             // This is called when the KNode is loaded
-            var variations=false;
+            var variations=false, suffix=false;
             if (tag instanceof KNode) {
-                var knode=tag, dterm=knode.dterm;
+                var knode=tag, dterm=knode.dterm, origin=false;
+                if (tag._db===Codex.knodule) origin="index";
+                else if (tag._db.fullname) {
+                    origin=tag._db.fullname; suffix=" (*)";}
+                else {
+                    var sourceref=Codex.sourcedb.probe(tag._db.name);
+                    if (sourceref) {
+                        origin=tag._db.fullname=sourceref.name;
+                        suffix=" (*)";}
+                    else {
+                        origin="glosses";
+                        suffix=" (+)";}}
                 entry.setAttribute("key",dterm);
-                entry.innerHTML=dterm;
+                if (suffix) entry.innerHTML=dterm+suffix;
+                else entry.innerHTML=dterm;
                 var synonyms=knode[lang];
                 if ((synonyms)&&(typeof synonyms === 'string'))
                     synonyms=[synonyms];
@@ -176,8 +188,12 @@
                         variations.appendChild(variation);}}
                 if (knode.weak) addClass(entry,"weak");
                 if (knode.prime) {
+                    entry.title="prime concept (from "+origin+"); ";
                     addClass(entry,"prime");
                     addClass(entry,"cue");}
+                else if (knode.weak)
+                    entry.title="weak concept (from "+origin+"); ";
+                else entry.title="concept (from "+origin+"); ";
                 if (knode.about) {
                     if (entry.title)
                         entry.title=entry.title+"; "+knode.about;
@@ -442,8 +458,8 @@
         i=0; while (i<lim) {
             var value=values[i], score=scores.get(value);
             var elt=elts[i]=byvalue.get(value);
-            if ((value.prime)||(
-                (typeof cuethresh === "number")&&(score>cuethresh)))
+            if ((value.prime)||
+                ((typeof cuethresh === "number")&&(score>cuethresh)))
                 addClass(elt,"cue");
             if (score) {
                 if (scores!==global_scores) 
@@ -478,21 +494,7 @@
                 // var factor=cloudWeight(vscores[i],min_score,max_score);
                 var factor=sqrt(vscores[i])/(maxv-minv);
                 var pct=50+150*factor;
-                var node=elts[i]; var freq=freqs.get(values[i]);
-                var title=((hasClass(node,"prime"))?("prime concept, "):
-                           (hasClass(node,"weak"))?("weak concept, "):
-                           (hasClass(node,"rawterm"))?("raw text, "):
-                           ("concept, "));
-                var nscore=vscores[i];
-                title=title+((freq)&&(freq+" items; "))+
-                    "score="+((nscore>0.01)?(precString(nscore,2)):
-                              (nscore>0.001)?(precString(nscore,3)):
-                              (nscore>0.0001)?(precString(nscore,4)):
-                              (nscore));
-                //title=title+" in ["+min_score+","+max_score+"]";
-                // title=title+"; factor="+factor;
-                // title=title+"; pct="+pct+"%";
-                node.title=title;
+                var node=elts[i];
                 node.style.fontSize=pct+"%";}
             i++;}}
     Codex.sizeCloud=sizeCloud;
