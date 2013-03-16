@@ -1766,7 +1766,7 @@ Codex.Startup=
                 var tagtext=fdjtDOM.textify(tagelt);
                 addTags(info,tagtext);}}
         
-        function applyAnchorTags(kno) {
+        function applyAnchorTags() {
             var docinfo=Codex.docinfo;
             var anchors=document.getElementsByTagName("A");
             if (!(anchors)) return;
