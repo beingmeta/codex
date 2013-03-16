@@ -1557,7 +1557,7 @@
             return;}
         fdjtUI.cancel(evt);
         if (Codex.hudup) {Codex.setMode(false); return;}
-        Codex.setMode.toggle("gotopage");}
+        Codex.toggleMode("gotopage");}
     function enterLocation(evt) {
         evt=evt||event;
         if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
@@ -1566,7 +1566,7 @@
             return;}
         fdjtUI.cancel(evt);
         if (Codex.hudup) {Codex.setMode(false); return;}
-        Codex.setMode.toggle("gotoloc");}
+        Codex.toggleMode("gotoloc");}
     
     /* Other handlers */
 

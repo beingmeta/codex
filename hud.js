@@ -592,7 +592,7 @@ Codex.setMode=
                      (Codex.mode.search(codexHeartMode_pat)===0))
                 if (keephud) setMode(true); else setMode(false);
             else setMode(mode);}
-        Codex.toggle=CodexHUDToggle;
+        Codex.toggleMode=CodexHUDToggle;
 
         Codex.dropHUD=function(){return setMode(false);};
         Codex.toggleHUD=function(evt){
