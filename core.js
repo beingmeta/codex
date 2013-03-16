@@ -150,9 +150,10 @@ var Codex={
         var refuri=(Codex.refuri||document.location.href);
         if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
 
-        Codex.docdb=new RefDB(
+        var docdb=Codex.docdb=new RefDB(
             refuri+"#",{indices: ["frag","head","heads",
                                   "tags","tags*",
+                                  "*tags","**tags","~tags",
                                   "*tags","**tags","~tags",
                                   "*tags*","**tags*","~tags*",
                                   "^tags","~^tags","*^tags","**^tags",
@@ -168,7 +169,9 @@ var Codex={
         Codex.BRICO.addAlias(":@1/");
         Codex.BRICO.addAlias("@1/");
         var glosses_init={
-            indices: ["frag","maker","outlets"]};
+            indices: ["frag","maker","outlets",
+                      "tags","*tags","**tags",
+                      "tags*","*tags*","**tags*"]};
         var stdspace=fdjtString.stdspace;
         var glossdb=Codex.glossdb=new RefDB("glosses@"+Codex.refuri,glosses_init); {
             Codex.glossdb.absrefs=true;
@@ -195,27 +198,34 @@ var Codex={
                     Codex.addTag2Cloud(maker,Codex.search_cloud);
                     Codex.UI.addGlossSource(maker,true);}
                 var maker_knodule=Codex.getMakerKnodule(item.maker);
-                var i, lim, tags=item.alltags, sources=item.sources;
-                if ((tags)&&(tags.length)) {
-                    if (typeof tags === "string") tags=[tags];
-                    if (item.thread) {
-                        Knodule.addTag(item.thread,tags);
-                        if (item.replyto!==item.thread)
-                            Codex.addTags(item.replyto,tags,glossdb);}
-                    else if (info)
-                        Codex.addTags(info,tags,'+tags');
-                    i=0, lim=tags.length; while (i<lim) {
-                        var tag=tags[i++];
-                        Codex.addTag2Cloud(tag,Codex.search_cloud);
-                        Codex.addTag2Cloud(tag,Codex.gloss_cloud);}}
+                var make_cue=(maker===Codex.user);
+                var i, lim, sources=item.sources;
                 if (sources) {
                     if (typeof sources === 'string') sources=[sources];
                     if ((sources)&&(sources.length)) {
                         i=0, lim=sources.length; while (i<lim) {
                             var source=sources[i++];
                             var ref=Codex.sourcedb.ref(source);
-                            Codex.UI.addGlossSource(ref,true);}}}},
-                                  "initgloss");
+                            Codex.UI.addGlossSource(ref,true);}}}
+                var alltags=item.alltags;
+                if ((alltags)&&(alltags.length)) {
+                    i=0, lim=alltags.length; while (i<lim) {
+                        var each_tag=alltags[i++], entry;
+                        entry=Codex.addTag2Cloud(each_tag,Codex.search_cloud);
+                        if ((make_cue)&&(entry)) addClass(entry,"cue");
+                        entry=Codex.addTag2Cloud(each_tag,Codex.gloss_cloud);
+                        if ((make_cue)&&(entry)) addClass(entry,"cue");}
+                    var tag_slots=["tags","*tags","**tags"];
+                    var s=0, n_slots=tag_slots.length; while (s<n_slots) {
+                        var tagslot=tag_slots[s++], tags=item[tagslot];
+                        if ((tags)&&(tags.length)) {
+                            var fragslot="+"+tagslot;
+                            if (item.thread) {
+                                Codex.addTags(item.thread,tags,fragslot);
+                                if (item.replyto!==item.thread)
+                                    Codex.addTags(item.replyto,tags,fragslot);}
+                            if (info) Codex.addTags(info,tags,fragslot,maker_knodule);}}}},
+                                 "initgloss");
             if (Codex.persist) Codex.glossdb.storage=window.localStorage;}
         
         function Gloss(){return Ref.apply(this,arguments);}
@@ -286,8 +296,12 @@ var Codex={
         var result;
         if (!(arg)) arg=Codex.user;
         if (!(arg)) return (Codex.knodule);
+        else if (typeof arg === "string")
+            return getMakerKnodule(Codex.sourcedb.probe(arg));
         else if ((arg.maker)&&(arg.maker instanceof Ref))
             result=new Knodule(arg.maker.getQID());
+        else if ((arg.maker)&&(typeof arg.maker === "string"))
+            return getMakerKnodule(Codex.sourcedb.probe(arg.maker));
         else if (arg._qid)
             result=new Knodule(arg._qid);
         else if (arg._id)
@@ -697,9 +711,10 @@ var Codex={
     Codex.parseTag=parseTag;
     
     var knoduleAddTags=Knodule.addTags;
-    function addTags(nodes,tags,slotid){
+    function addTags(nodes,tags,slotid,tagdb){
         if (!(slotid)) slotid="tags";
-        var docdb=Codex.docdb, tagdb=Codex.knodule;
+        if (!(tagdb)) tagdb=Codex.knodule;
+        var docdb=Codex.docdb;
         if (!(nodes instanceof Array)) nodes=[nodes];
         knoduleAddTags(nodes,tags,docdb,tagdb,slotid);
         var i=0, lim=nodes.length; while (i<lim) {
@@ -710,7 +725,7 @@ var Codex={
                 knoduleAddTags(passages,tags,docdb,tagdb,"^"+slotid);
             var subheads=docdb.find('heads',node);
             if ((subheads)&&(subheads.length))
-                addTags(subheads,tags,slotid);}}
+                addTags(subheads,tags,slotid,tagdb);}}
     Codex.addTags=addTags;
         
     /* Navigation */
