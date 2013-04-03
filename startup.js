@@ -75,6 +75,8 @@ Codex.Startup=
         var dropClass=fdjtDOM.dropClass;
         var getChildren=fdjtDOM.getChildren;
 
+        var fixStaticRefs=Codex.fixStaticRefs;
+
         var saveprops=Codex.saveprops=
             ["sources","outlets","overlays","sync","nodeid","state"];
         
@@ -1185,10 +1187,10 @@ Codex.Startup=
             var scanleft=document.createDocumentFragment();
             var scanright=document.createDocumentFragment();
             var holder=fdjtDOM("div");
-            holder.innerHTML=Codex.HTML.pageleft;
+            holder.innerHTML=fixStaticRefs(Codex.HTML.pageleft);
             var nodes=fdjtDOM.toArray(holder.childNodes); var i=0, lim=nodes.length;
             while (i<lim) scanleft.appendChild(nodes[i++]);
-            holder.innerHTML=Codex.HTML.pageright;
+            holder.innerHTML=fixStaticRefs(Codex.HTML.pageright);
             nodes=fdjtDOM.toArray(holder.childNodes), i=0, lim=nodes.length;
             while (i<lim) scanright.appendChild(nodes[i++]);
 

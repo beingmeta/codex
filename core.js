@@ -1113,6 +1113,13 @@ var Codex={
         return cover;}
     Codex.getCover=getCover;
 
+    function fixStaticRefs(string){
+        if (Codex.root==="http://static.beingmeta.com/")
+            return string;
+        else return string.replace(/http:\/\/static.beingmeta.com\//g,
+                                   Codex.root);}
+    Codex.fixStaticRefs=fixStaticRefs;
+    
 })();
 
 /* Adding qricons */

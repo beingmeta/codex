@@ -69,6 +69,8 @@ Codex.setMode=
         var getGeometry=fdjtDOM.getGeometry;
         var hasSuffix=fdjtString.hasSuffix;
 
+        var fixStaticRefs=Codex.fixStaticRefs;
+
         var CodexHUD=false;
 
         // This will contain the interactive input console (for debugging)
@@ -270,12 +272,6 @@ Codex.setMode=
             fdjtLog("Initialized basic HUD layout");}
         Codex.initHUD=initHUD;
         
-        function fixStaticRefs(string){
-            if (Codex.root==="http://static.beingmeta.com/")
-                return string;
-            else return string.replace(/http:\/\/static.beingmeta.com\//g,
-                                       Codex.root);}
-
         function resizeHUD(){}
         Codex.resizeHUD=resizeHUD;
 
