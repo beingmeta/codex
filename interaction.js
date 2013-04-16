@@ -520,7 +520,8 @@
                 (info.id!==Codex.head.id);
             if (Codex.Trace.gestures)
                 fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
-            Codex.JumpTo(target);
+            if (show_fulltoc) Codex.GoTo(target);
+            else Codex.JumpTo(target);
             if (show_fulltoc) Codex.setMode("toc");
             else if (Codex.mode==="tocscan")
                 Codex.setMode(false);
