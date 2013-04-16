@@ -430,10 +430,19 @@ Codex.Startup=
             appSplash();
         }
         
+        Codex.setSync=function setSync(val){
+            if (!(val)) return false;
+            var cur=Codex.sync;
+            if ((cur)&&(cur>val)) return cur;
+            Codex.sync=val;
+            if (Codex.persist)
+                setLocal("codex.sync("+Codex.refuri+")",val);
+            return val;};
+
         function userSetup(){
             if (Codex.Trace.startup) fdjtLog("Starting user setup");
             // Start JSONP call to get initial or updated glosses, etc
-            Codex.sync=getLocal("codex.sync("+Codex.refuri+")",true);
+            var sync=Codex.sync=getLocal("codex.sync("+Codex.refuri+")",true);
 
             // If the configuration is set to not persist, but there's
             //  a sync timestamp, we should erase what's there.
@@ -462,7 +471,7 @@ Codex.Startup=
                             info.outlets,info.overlays,
                             info.sync);
                 if (info.nodeid) setNodeID(info.nodeid);
-                Codex.sync=info.sync;
+                sync=info.sync;
                 if (Codex.Trace.storage>1) 
                     fdjtLog("App cached loadinfo.js for %o (%s) from %o: %j",
                             Codex.user._id,Codex.user.name,Codex.sync,
@@ -473,7 +482,7 @@ Codex.Startup=
             else {}
             if (Codex.nologin) return;
             else if (window.navigator.onLine) {
-                if ((Codex.user)&&(Codex.sync))
+                if ((Codex.user)&&(sync))
                     fdjtLog("Getting new (> %s (%d)) glosses from %s for %s",
                             fdjtTime.timeString(Codex.sync),Codex.sync,
                             Codex.server,Codex.user._id,Codex.user.name);
@@ -890,11 +899,11 @@ Codex.Startup=
             fdjtLog("Device: %s %dx%d ui=%s, body=\"%s\"",
                     opt_string,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),
                     Codex.ui,body.className);}
-
+        
         function initUserOffline(){
             var refuri=Codex.refuri;
             var user=getLocal("codex.user");
-            var sync=getLocal("codex.sync("+refuri+")",true);
+            var sync=Codex.sync;
             var nodeid=getLocal("codex.nodeid("+refuri+")",true);
             // We store the information for the current user
             //  in both localStorage and in the "real" sourcedb.
@@ -913,8 +922,7 @@ Codex.Startup=
             var overlays=Codex.overlays=
                 getLocal("codex.overlays("+refuri+")",true)||[];
             if (userinfo) setUser(userinfo,outlets,overlays,sync);
-            if (nodeid) setNodeID(nodeid);
-            Codex.sync=sync;}
+            if (nodeid) setNodeID(nodeid);}
 
         var offline_init=false;
 
@@ -922,7 +930,7 @@ Codex.Startup=
             if (offline_init) return false;
             else offline_init=true;
             var refuri=Codex.refuri;
-            var sync=getLocal("codex.sync("+refuri+")",true);
+            var sync=Codex.sync;
             if (!(sync)) return;
             if ((Codex.Trace.glosses)||(Codex.Trace.startup))
                 fdjtLog("Starting initializing glosses from offline storage");
@@ -1251,8 +1259,7 @@ Codex.Startup=
                         Codex.glossdb.load(
                             fdjtState.getLocal("queued("+Codex.refuri+")",true));
                     addClass(document.body,"cxNOUSER");}
-                if (info.nodeid) setNodeID(info.nodeid);
-                if (info.sync) Codex.sync=info.sync;}
+                if (info.nodeid) setNodeID(info.nodeid);}
             else if (info.wronguser) {
                 Codex.clearOffline();
                 window.location=window.location.href;
@@ -1302,8 +1309,7 @@ Codex.Startup=
             if (info.overlays) gotInfo("overlays",info.overlays,persist);
             addOutlets2UI(info.outlets);
             if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
-                if (Codex.persist) setLocal("codex.sync("+refuri+")",info.sync);
-                Codex.sync=info.sync;}
+                Codex.setSync(info.sync);}
             Codex.loaded=info.loaded=fdjtTime();
             if (Codex.persist) {
                 Codex.glossdb.save(true);
