@@ -367,6 +367,11 @@
             sX=touch.screenX, sY=touch.screenY;
             cX=touch.clientX, cY=touch.clientY;}
         
+        if (fdjtID("CODEXOPENGLOSSMARK")) {
+            fdjtID("CODEXOPENGLOSSMARK").id="";
+            fdjtUI.cancel(evt); gesture_start=false;
+            return;}
+
         // If there isn't a passage or the hud is down, we take it
         // immediately as a page flip
         if (Codex.Trace.gestures)
