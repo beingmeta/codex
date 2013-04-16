@@ -958,11 +958,13 @@ body.codexscanning.codexscanstart.codexscanend img.codexscanbutton#CODEXNEXTSCAN
 body.codexscanning.codexscanstart.codexscanend img.codexscanbutton#CODEXPREVSCAN {
     display: none;}
 
+/*
 body div#CODEXHUD.scanning img.hudbutton#CODEXTOCBUTTON,
 body div#CODEXHUD.scanning img.hudbutton#CODEXSEARCHBUTTON,
 body div#CODEXHUD.tocscan img.hudbutton#CODEXTOCBUTTON,
 body div#CODEXHUD.tocscan img.hudbutton#CODEXSEARCHBUTTON {
     display: none;}
+*/
 
 div#CODEXHUD div#SBOOKABOUT {
     display: block; max-width: 40em; margin-left: auto; margin-right: auto;}

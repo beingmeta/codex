@@ -288,7 +288,10 @@
             hudwrapper.style.display='';
             hudwrapper.style.opacity='';}
         else fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
-        if (point) point.id="CODEXOPENGLOSSMARK";
+        if (point) {
+            var cur=fdjtID("CODEXOPENGLOSSMARK");
+            if (cur) cur.id="";
+            point.id="CODEXOPENGLOSSMARK";}
         Codex.setTarget(target);
         slice.update();
         Codex.setMode("openglossmark");}

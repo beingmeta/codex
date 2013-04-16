@@ -147,7 +147,8 @@ Codex.setMode=
 
             Codex.hudtick=fdjtTime();
 
-            fdjtID("SBOOK_RETURN_TO").value=location.href;
+            var return_to=fdjtID("SBOOK_RETURN_TO");
+            if (return_to) return_to.value=location.href;
 
             // Initialize gloss UI
             Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
@@ -163,7 +164,7 @@ Codex.setMode=
                 (Codex.UI.addGlossSource,"newsource");});
             Codex.glossdb.onLoad(addGloss2UI);
             
-            Codex.DOM.console=fdjtID("CODEXCONSOLE");
+            Codex.DOM.console=console=fdjtID("CODEXCONSOLE");
             if (Codex.Trace.startup>1) fdjtLog("Setting up console %o",console);
 
             Codex.DOM.input_console=input_console=fdjtDOM.getChild(console,"TEXTAREA");
