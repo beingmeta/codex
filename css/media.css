@@ -13,10 +13,6 @@
     #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
     div#CODEXHEAD div#CODEXHUDBUTTONS {
         margin-left: 60px; margin-right: 60px;}
-    div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
-        right: 60px;}
-    div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.username {
-        left: 60px;}
     #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
     img.codexclosehud#CODEXSTOPSCAN {
         bottom: 50px; top: auto;}
@@ -41,6 +37,7 @@
         left: 50px; right: 50px;}
 
     div#CODEXPAGE { left: 1.5em; right: 1.5em;}
+    body.cxBYPAGE .codexglossmark {margin-right: 0em;}
 
     /*
     .codexglossmark {margin-right: -2em; margin-top: -1ex;}
