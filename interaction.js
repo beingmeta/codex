@@ -271,7 +271,7 @@
         // If we're previewing, stop it and go to the page we're previewing
         //  (which was touched)
         if (Codex.previewing) {
-            gotoPreview(target,evt);
+            Codex.GoTo(target,evt);
             return false;}
 
         if ((Codex.hudup)||(Codex.mode)) {
@@ -383,27 +383,13 @@
         fdjtUI.cancel(evt); gesture_start=false;
         return;}
 
-    function gotoPreview(target,evt){
-        if (Codex.Trace.gestures)
-            fdjtLog("ctouch: stopPreview p=%o t=%o",
-                    Codex.previewing,Codex.previewTarget);
-        // Any key stops a preview (and is ignored)
-        var previewing=Codex.previewing;
-        var ptarget=Codex.previewTarget;
-        Codex.stopPreview("content_tapped");
-        fdjtUI.TapHold.clear();
-        Codex.setHUD(false);
-        if ((target)&&(target.id)&&(Codex.docinfo[target.id]))
-            Codex.GoTo(target,"gotoPreview");
-        else if ((ptarget)&&(ptarget.id)&&(Codex.docinfo[ptarget.id]))
-            Codex.GoTo(ptarget,"gotoPreview");
-        else if (hasClass(previewing,"codexpage")) 
-            Codex.GoToPage(previewing,"gotoPreview");
-        else Codex.GoTo(previewing,"gotoPreview");
-        fdjt.UI.cancel(evt);
-        clicked=fdjtTime();
-        gesture_start=false;
-        return false;}
+    function content_swiped(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        if (!(evt.deltaX)) {}
+        else if (evt.deltaX<0) return Codex.pageBackward(evt);
+        else return Codex.pageForward(evt);
+        return;}
 
     var selectors=[];
     var slip_timer=false;
@@ -1665,7 +1651,7 @@
             preview_timer=setTimeout(function(){
                 var pageinfo=fdjtID("CODEXPAGEINFO");
                 pageinfo.title=""; preview_timer=false;
-                gotoPreview(rel,evt);},
+                Codex.GoTo(rel,evt);},
                                      400);
         else preview_timer=setTimeout(function(){
             var pageinfo=fdjtID("CODEXPAGEINFO");
@@ -2091,6 +2077,7 @@
                    hold: content_held,
                    slip: content_slipped,
                    release: content_released,
+                   swipe: content_swiped,
                    click: content_click},
          toc: {tap: toc_tapped,hold: toc_held,
                slip: toc_slipped, release: toc_released},
