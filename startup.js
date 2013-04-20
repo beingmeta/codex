@@ -241,7 +241,7 @@ Codex.Startup=
                     try {
                         var config=JSON.parse(req.responseText);
                         fdjtState.setLocal("codex.config",req.responseText);
-                        fdjtLog("Got config for device: %j",config);
+                        fdjtLog("Got device config: %j",config);
                         fetching_config=false;
                         config_fetched=true;
                         initConfig(false);
@@ -579,7 +579,7 @@ Codex.Startup=
                     startupLog("Finding and applying Technorati-style tags");
                     applyAnchorTags();},
                 function(){
-                    startupLog("Finding and applying tags spans");
+                    startupLog("Finding and applying tag elements");
                     applyTagSpans();
                     applyMultiTagSpans();},
                 function(){
@@ -589,12 +589,10 @@ Codex.Startup=
                             window._sbook_autoindex,
                             Codex.knodule,false,
                             function(){
-                                startupLog("Indexing tag attributes");
-                                Codex.indexTagAttributes(metadata,indexingDone);});
+                                applyTagAttributes(metadata,indexingDone);});
                         window._sbook_autoindex=false;}
                     else {
-                        startupLog("Indexing tag attributes");
-                        Codex.indexTagAttributes(metadata,indexingDone);}},
+                        applyTagAttributes(metadata,indexingDone);}},
                 // Figure out which mode to start up in, based on
                 // query args to the book.
                 function(){
@@ -718,6 +716,10 @@ Codex.Startup=
             else {}
             if (mode) Codex.setMode(mode);
             Codex._setup=new Date();
+            if (Codex.onsetup) {
+                var onsetup=Codex.onsetup;
+                Codex.onsetup=false;
+                setTimeout(onsetup,10);}
             var msg=false, uuid_end=false, msgid=false;
             if ((msg=getQuery("APPMESSAGE"))) {
                 if ((msg.slice(0,2)==="#{")&&
@@ -1311,6 +1313,10 @@ Codex.Startup=
             if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
                 Codex.setSync(info.sync);}
             Codex.loaded=info.loaded=fdjtTime();
+            if (Codex.whenloaded) {
+                var whenloaded=Codex.whenloaded;
+                Codex.whenloaded=false;
+                setTimeout(whenloaded,10);}
             if (Codex.persist) {
                 Codex.glossdb.save(true);
                 Codex.sourcedb.save(true);}
@@ -1640,12 +1646,12 @@ Codex.Startup=
         
         function indexingDone(){
             startupLog("Content indexing is completed");
-            if (Codex.loaded) setupClouds();
-            else Codex.whenloaded=setupClouds;}
+            if (Codex._setup) setupClouds();
+            else Codex.onsetup=setupClouds;}
         
         function setupClouds(){
             var addTag2Cloud=Codex.addTag2Cloud;
-            var search_cloud=Codex.search_cloud;
+            var empty_cloud=Codex.empty_cloud;
             var gloss_cloud=Codex.gloss_cloud;
             startupLog("Setting up tag clouds");
             Codex.empty_query.results=
@@ -1656,7 +1662,7 @@ Codex.Startup=
             var tagfreqs=empty_query.tagfreqs;
             var max_freq=empty_query.max_freq;
             fdjtTime.slowmap(function(tag){
-                addTag2Cloud(tag,search_cloud,Codex.knodule,tagscores,tagfreqs,false);
+                addTag2Cloud(tag,empty_cloud,Codex.knodule,tagscores,tagfreqs,false);
                 if ((tag instanceof KNode)||
                     ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
                     addTag2Cloud(tag,gloss_cloud);},
@@ -1664,18 +1670,16 @@ Codex.Startup=
                              function(){
                                  var eq=Codex.empty_query;
                                  fdjtLog("Done populating clouds");
-                                 eq.cloud=search_cloud;
-                                 Codex.empty_cloud=search_cloud;
-                                 Codex.DOM.empty_cloud=search_cloud.dom;
-                                 if (!(fdjtDOM.getChild(search_cloud.dom,
+                                 eq.cloud=empty_cloud;
+                                 if (!(fdjtDOM.getChild(empty_cloud.dom,
                                                         ".showall")))
                                      fdjtDOM.prepend(
-                                         search_cloud.dom,
+                                         empty_cloud.dom,
                                          Codex.UI.getShowAll(
-                                             true,search_cloud.values.length));
-                                 Codex.sortCloud(search_cloud,eq.tagfreqs);
+                                             true,empty_cloud.values.length));
+                                 Codex.sortCloud(empty_cloud,eq.tagfreqs);
                                  Codex.sizeCloud
-                                 (search_cloud,eq.tagscores,eq.tagfreqs,
+                                 (empty_cloud,eq.tagscores,eq.tagfreqs,
                                   eq.results.length,false);
                                  Codex.sortCloud(gloss_cloud,eq.tagfreqs);
                                  Codex.sizeCloud(
@@ -1742,7 +1746,7 @@ Codex.Startup=
                              function(){ // when done
                                  Codex.tagmaxweight=maxweight;
                                  Codex.tagminweight=minweight;
-                                 fdjtLog("Read index of %d keys over %d items",
+                                 fdjtLog("Processed automatic index of %d keys over %d items",
                                          ntags,nitems);
                                  if (whendone) whendone();});}
         Codex.useIndexData=useIndexData;
@@ -1750,7 +1754,6 @@ Codex.Startup=
         /* Applying various tagging schemes */
 
         function applyMultiTagSpans() {
-            startupMessage("Applying inline tags");
             var tags=fdjtDOM.$(".sbooktags");
             var i=0, lim=tags.length;
             while (i<lim) {
@@ -1764,7 +1767,6 @@ Codex.Startup=
                     var j=0, jlim=tagstrings.length;
                     while (j<jlim) addTags(info,tagstrings[j++]);}}}
         function applyTagSpans() {
-            startupMessage("Applying inline tags");
             var tags=fdjtDOM.$(".sbooktag");
             var i=0; var lim=tags.length;
             while (i<lim) {
@@ -1814,28 +1816,29 @@ Codex.Startup=
         /* These are collected during the domscan; this is where the logic
            is implemented which applies header tags to section elements. */
         
-        function indexTagAttributes(docinfo,whendone){
+        function applyTagAttributes(docinfo,whendone){
             var tohandle=[]; var tagged=0;
             for (var eltid in docinfo) {
-                var info=docinfo[eltid], tags=info.atags;
-                if (tags) {tagged++; tohandle.push(info);}}
-            if ((Codex.Trace.indexing)&&
-                ((Codex.Trace.indexing>1)||
-                 (tagged.length>7)))
-                fdjtLog("Indexing inline tags for %d nodes (%d assigned)",
-                        tohandle.length,tagged);
+                var info=docinfo[eltid];
+                if (info.atags) {tagged++; tohandle.push(info);}}
+            if (((Codex.Trace.indexing)&&
+                 ((Codex.Trace.indexing>1)||(tohandle.length>7)))||
+                (tohandle.length>50))
+                fdjtLog("Indexing tag attributes for %d nodes",tohandle.length);
             fdjtTime.slowmap(
                 handle_inline_tags,
                 tohandle,false,
                 function(){
-                    if ((Codex.Trace.indexing>1)&&(tagged.length))
-                        fdjtLog("Finished processing inline tags for %d nodes",
-                                tagged.length);
+                    if (((Codex.Trace.indexing>1)&&(tohandle.length))||
+                        (tohandle.length>24))
+                        fdjtLog("Finished indexing tag attributes for %d nodes",
+                                tohandle.length);
                     if (whendone) whendone();});}
-        Codex.indexTagAttributes=indexTagAttributes;
+        Codex.applyTagAttributes=applyTagAttributes;
         
         function handle_inline_tags(info){
-            if (info.tags) addTags(info,info.tags);}
+            if (info.tags) addTags(info,info.tags);
+            if (info.atags) addTags(info,info.atags);}
         
         /* Setting up the clouds */
         

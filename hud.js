@@ -123,8 +123,6 @@ Codex.setMode=
             // Initialize search UI
             var search=fdjtID("CODEXSEARCH");
             search.innerHTML=fixStaticRefs(Codex.HTML.searchbox);
-            Codex.empty_cloud=
-                new fdjtUI.Completions(fdjtID("CODEXALLTAGS"));
             addClass(Codex.HUD,"emptysearch");
 
             // Setup addgloss prototype
@@ -244,17 +242,15 @@ Codex.setMode=
                         fdjtUI.FDJT_COMPLETE_ANYWORD);
             updateScroller("CODEXGLOSSCLOUD");
 
-            var dom_search_cloud=fdjtID("CODEXALLTAGS");
-            Codex.search_cloud=
+            Codex.empty_cloud=
                 new fdjtUI.Completions(
-                    dom_search_cloud,fdjtID("CODEXTAGINPUT"),
+                    fdjtID("CODEXALLTAGS"),false,
                     fdjtUI.FDJT_COMPLETE_OPTIONS|
                         fdjtUI.FDJT_COMPLETE_CLOUD|
                         fdjtUI.FDJT_COMPLETE_ANYWORD);
-            Codex.DOM.search_cloud=dom_search_cloud;
-            updateScroller("CODEXSEARCHCLOUD");
-            updateScroller("CODEXSEARCHCLOUD");
-
+            Codex.DOM.empty_cloud=fdjtID("CODEXALLTAGS");
+            updateScroller("CODEXALLTAGS");
+            
             var dom_share_cloud=fdjtID("CODEXSHARECLOUD");
             Codex.share_cloud=
                 new fdjtUI.Completions(

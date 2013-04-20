@@ -99,7 +99,7 @@ var Codex={
     /* This is where we store pointers into the dom */
     DOM: {},
     Trace: {
-        startup: 0,       // Whether to trace startup
+        startup: 2,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc
         mode: false,      // Whether to trace mode changes
         nav: false,       // Whether to trace book navigation
@@ -195,7 +195,7 @@ var Codex={
                 if ((!(item.maker))&&(Codex.user)) item.maker=(Codex.user);
                 var maker=(item.maker)&&(Codex.sourcedb.ref(item.maker));
                 if (maker) {
-                    Codex.addTag2Cloud(maker,Codex.search_cloud);
+                    Codex.addTag2Cloud(maker,Codex.empty_cloud);
                     Codex.UI.addGlossSource(maker,true);}
                 var maker_knodule=Codex.getMakerKnodule(item.maker);
                 var make_cue=(maker===Codex.user);
@@ -211,7 +211,7 @@ var Codex={
                 if ((alltags)&&(alltags.length)) {
                     i=0, lim=alltags.length; while (i<lim) {
                         var each_tag=alltags[i++], entry;
-                        entry=Codex.addTag2Cloud(each_tag,Codex.search_cloud);
+                        entry=Codex.addTag2Cloud(each_tag,Codex.empty_cloud);
                         if ((make_cue)&&(entry)) addClass(entry,"cue");
                         entry=Codex.addTag2Cloud(each_tag,Codex.gloss_cloud);
                         if ((make_cue)&&(entry)) addClass(entry,"cue");}
@@ -648,8 +648,8 @@ var Codex={
             "codextarget",targetid||target.getAttribute('data-sbookid'));
         Codex.target=primary;
         if (Codex.UI.setTarget) Codex.UI.setTarget(primary);
-        if (Codex.search_cloud)
-            Codex.setCloudCuesFromTarget(Codex.search_cloud,primary);}
+        if (Codex.empty_cloud)
+            Codex.setCloudCuesFromTarget(Codex.empty_cloud,primary);}
     Codex.setTarget=setTarget;
 
     function clearHighlights(target){
@@ -1061,7 +1061,7 @@ var Codex={
             var cname=elt.className;
             if (cname.search(/\bsbooknotoc\b/)>=0) return 0;
             if (cname.search(/\bsbookignore\b/)>=0) return 0;
-            var tocloc=cname.search(/\bsbook\d+head\b/);
+            var tocloc=cname.search(/\bsbook\d+(head|sect)\b/);
             if (tocloc>=0)
                 return parseInt(cname.slice(tocloc+5),10);}
         if ((Codex.notoc)&&(Codex.notoc.match(elt))) return 0;

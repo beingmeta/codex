@@ -81,12 +81,14 @@
         if (qstring!==Codex.qstring) {
             Codex.query=query;
             Codex.qstring=qstring;
-            if (query.tags.length===0) 
+            if (query.tags.length===0)  {
                 addClass(Codex.HUD,"emptysearch");
+                Codex.search_cloud=Codex.empty_cloud;}
             else {
                 var cloud=Codex.queryCloud(query);
                 dropClass(Codex.HUD,"emptysearch");
-                fdjtDOM.replace("CODEXSEARCHCLOUD",cloud.dom);}
+                fdjtDOM.replace("CODEXSEARCHCLOUD",cloud.dom);
+                Codex.search_cloud=cloud;}
             useQuery(query,fdjtID("CODEXSEARCH"));}
         if (Codex.mode==="refinesearch") {
             if (query.results.length===0) {}
