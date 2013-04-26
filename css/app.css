@@ -536,11 +536,30 @@ body.cxCONN tbody.cxwithconn { display: table-row-group; }
 
 h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
 
-.forcebreakbefore { page-break-before: always;}
-.forcebreakafter { page-break-after: always;}
-.avoidbreakbefore { page-break-before: avoid;}
-.avoidbreakafter { page-break-after: avoid;}
 .avoidbreakinside { page-break-inside: avoid;}
+
+.alwaysbreakbefore { page-break-before: always;}
+.alwaysbreakbefore.codexdup, .alwaysbreakbefore.codexdupend {
+    page-break-before: auto;}
+.alwaysbreakafter { page-break-after: always;}
+.alwaysbreakafter.codexdup, .alwaysbreakafter.codexdupstart {
+    page-break-after: auto;}
+
+.avoidbreakbefore { page-break-before: avoid;}
+.avoidbreakbefore.codexdup, .avoidbreakbefore.codexdupend {
+    page-break-before: auto;}
+
+.avoidbreakafter { page-break-after: avoid;}
+.avoidbreakafter.codexdupstart, .avoidbreakafter.codexdup {
+    page-break-after: auto;}
+
+.forcebreakbefore { page-break-before: always;}
+.forcebreakbefore.codexdup, .forcebreakbefore.codexdupend {
+    page-break-before: auto;}
+
+.forcebreakafter { page-break-after: always;}
+.forcebreakafter.codexdupstart, .forcebreakafter.codexdup {
+    page-break-after: auto;}
 
 .sbookpage {
     display: block; 
