@@ -87,6 +87,9 @@ Codex.setMode=
             hud.innerHTML=fixStaticRefs(Codex.HTML.hud);
             fdjtDOM.prepend(document.body,
                             messages,
+                            fdjtDOM("div.fdjtprogress#CODEXINDEXMESSAGE",
+                                    fdjtDOM("div.indicator"),
+                                    fdjtDOM("div.message")),
                             fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
                                     fdjtDOM("div.indicator"),
                                     fdjtDOM("div.message")),

@@ -1650,10 +1650,10 @@ Codex.Startup=
             else Codex.onsetup=setupClouds;}
         
         function setupClouds(){
+            var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.clouds);
             var addTag2Cloud=Codex.addTag2Cloud;
             var empty_cloud=Codex.empty_cloud;
             var gloss_cloud=Codex.gloss_cloud;
-            startupLog("Setting up tag clouds");
             Codex.empty_query.results=
                 [].concat(Codex.glossdb.allrefs).concat(Codex.docdb.allrefs);
             var searchtags=Codex.searchtags=Codex.empty_query.getCoTags();
@@ -1661,18 +1661,38 @@ Codex.Startup=
             var tagscores=empty_query.tagscores;
             var tagfreqs=empty_query.tagfreqs;
             var max_freq=empty_query.max_freq;
+            if (tracelevel)
+                fdjtLog("Setting up initial tag clouds for %d tags",
+                        searchtags.length);
+            addClass(document.body,"cxINDEXING");
             fdjtTime.slowmap(function(tag){
                 addTag2Cloud(tag,empty_cloud,Codex.knodule,tagscores,tagfreqs,false);
                 if ((tag instanceof KNode)||
                     ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
                     addTag2Cloud(tag,gloss_cloud);},
-                             searchtags,false,
-                             function(){
+                             searchtags,
+                             function(state,i,lim){
+                                 if (state!=='suspend') return;
+                                 var pct=(i*100)/lim;
+                                 if (tracelevel>1)
+                                     startupLog("Added %d of %d tags (%d%%) to clouds",
+                                                i,lim,Math.floor(pct));
+                                 fdjtUI.ProgressBar.setProgress("CODEXINDEXMESSAGE",pct);
+                                 fdjtUI.ProgressBar.setMessage(
+                                     "CODEXINDEXMESSAGE",
+                                     fdjtString("Added %d tags of %d (%d%%) to clouds",
+                                                i,lim,Math.floor(pct)));},
+                             function(state,i,lim){
                                  var eq=Codex.empty_query;
                                  fdjtLog("Done populating clouds");
+                                 fdjtUI.ProgressBar.setProgress("CODEXINDEXMESSAGE",100);
+                                 fdjtUI.ProgressBar.setMessage(
+                                     "CODEXINDEXMESSAGE",
+                                     fdjtString("Added all %d tags to search/gloss clouds",
+                                                i,lim,Math.floor(pct)));
+                                 dropClass(document.body,"cxINDEXING");
                                  eq.cloud=empty_cloud;
-                                 if (!(fdjtDOM.getChild(empty_cloud.dom,
-                                                        ".showall")))
+                                 if (!(fdjtDOM.getChild(empty_cloud.dom,".showall")))
                                      fdjtDOM.prepend(
                                          empty_cloud.dom,
                                          Codex.UI.getShowAll(
@@ -1684,7 +1704,8 @@ Codex.Startup=
                                  Codex.sortCloud(gloss_cloud,eq.tagfreqs);
                                  Codex.sizeCloud(
                                      gloss_cloud,eq.tagscores,eq.tagfreqs,
-                                     eq.results.length,false);});}
+                                     eq.results.length,false);},
+                            200,50);}
         
         var addTags=Codex.addTags;
         
@@ -1693,6 +1714,7 @@ Codex.Startup=
             var ntags=0, nitems=0;
             var tagweights=Codex.tagweights;
             var maxweight=Codex.tagmaxweight, minweight=Codex.tagminweight;
+            var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.indexing);
             var alltags=[];
             if (!(autoindex)) return;
             for (var tag in autoindex) {
@@ -1742,12 +1764,29 @@ Codex.Startup=
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
                 addTags(occurrences,tag);}
-            fdjtTime.slowmap(handleIndexEntry,alltags,false,
-                             function(){ // when done
+            addClass(document.body,"cxINDEXING");
+            fdjtTime.slowmap(handleIndexEntry,alltags,
+                             ((alltags.length>100)&&
+                              (function(state,i,lim){
+                                  if (state!=='suspend') return;
+                                  // For chunks:
+                                  var pct=(i*100)/lim;
+                                  if (tracelevel>1)
+                                      fdjtLog("Processed %d/%d (%d%%) of automatic tags",
+                                              i,lim,Math.floor(pct));
+                                  fdjtUI.ProgressBar.setProgress(
+                                      "CODEXINDEXMESSAGE",pct);
+                                  fdjtUI.ProgressBar.setMessage(
+                                      "CODEXINDEXMESSAGE",
+                                      fdjtString("Assimilated %d tags (of %d, %d%%) from the robo-index",
+                                                 i,lim,Math.floor(pct)));})),
+                             function(state,i,lim){
+                                 // At end:
                                  Codex.tagmaxweight=maxweight;
                                  Codex.tagminweight=minweight;
                                  fdjtLog("Processed automatic index of %d keys over %d items",
-                                         ntags,nitems);
+                                         i,lim);
+                                 dropClass(document.body,"cxINDEXING");
                                  if (whendone) whendone();});}
         Codex.useIndexData=useIndexData;
         
@@ -1827,7 +1866,21 @@ Codex.Startup=
                 fdjtLog("Indexing tag attributes for %d nodes",tohandle.length);
             fdjtTime.slowmap(
                 handle_inline_tags,
-                tohandle,false,
+                tohandle,
+                ((tohandle.length>100)&&
+                 (function(state,i,lim){
+                     // For chunks:
+                     if (state!=='suspend') return;
+                     var pct=(i*100)/lim;
+                     if (tracelevel>1)
+                         fdjtLog("Processed %d/%d (%d%%) inline tags",
+                                 i,lim,Math.floor(pct));
+                     fdjtUI.ProgressBar.setProgress(
+                         "CODEXINDEXMESSAGE",pct);
+                     fdjtUI.ProgressBar.setMessage(
+                         "CODEXINDEXMESSAGE",
+                         fdjtString("Assimilated %d of %d (%d%%) inline tags",
+                                    n,max,Math.floor(pct)));})),
                 function(){
                     if (((Codex.Trace.indexing>1)&&(tohandle.length))||
                         (tohandle.length>24))
