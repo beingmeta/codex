@@ -53,6 +53,7 @@ Codex.Paginate=
         "use strict";
 
         var fdjtString=fdjt.String;
+        var fdjtState=fdjt.State;
         var fdjtTime=fdjt.Time;
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
@@ -107,7 +108,7 @@ Codex.Paginate=
             // Get the document info
             var docinfo=Codex.docinfo;
 
-            function saved_layout(content){
+            function restore_layout(content,layout_id){
                 fdjtLog("Using saved layout %s",layout_id);
                 fdjtID("CODEXCONTENT").style.display='none';
                 dropClass(document.body,"cxSCROLL");
@@ -176,7 +177,6 @@ Codex.Paginate=
                 /* Lay out the coverpage */
                 var coverpage=Codex.getCover();
                 if (coverpage) layout.addContent(coverpage);
-                
 
                 var i=0; var lim=nodes.length;
                 function rootloop(){
@@ -330,7 +330,7 @@ Codex.Paginate=
 
             CodexLayout.fetchLayout(layout_id,function(content){
                 if (content)
-                    saved_layout(content);
+                    restore_layout(content,layout_id);
                 else new_layout();});}
         Codex.Paginate=Paginate;
 
@@ -419,12 +419,31 @@ Codex.Paginate=
             var pagerule=fdjtDOM.addCSSRule(
                 "div.codexpage",
                 "width: "+width+"px; "+"height: "+height+"px;");
+            var sourceid=Codex.sourceid;
             var layout_id=fdjtString(
                 "%dx%d-%s-%s(%s)",
                 width,height,bodysize,bodyfamily,
                 // Layout depends on the actual file ID, if we've got
                 // one, rather than just the REFURI
-                Codex.sourceid||Codex.refuri);
+                sourceid||Codex.refuri);
+
+            var saved_sourceid=
+                fdjtState.getLocal("codex.sourceid("+Codex.refuri+")");
+            if ((saved_sourceid)&&(sourceid)&&(sourceid!==sourceid)) {
+                var layouts=fdjtState.getLocal("fdjtCodex.layouts",true);
+                var kept=[];
+                if (layouts) {
+                    var pat=new RegExp("\("+saved_sourceid+"\)$");
+                    var i=0, lim=layouts.length; while (i<lim) {
+                        var cacheid=layouts[i++];
+                        if (cacheid.search(pat)>0) dropLayout(cacheid);
+                        else kept.push(cacheid);}}
+                if (kept.length)
+                    fdjtState.setLocal("fdjtCodex.layouts",kept);
+                else fdjtState.dropLocal("fdjtCodex.layouts",kept);}
+            
+            if (sourceid)
+                fdjtState.setLocal("codex.sourceid("+Codex.refuri+")",sourceid);
             
             var args={page_height: height,page_width: width,
                       container: container,pagerule: pagerule,
