@@ -1689,7 +1689,7 @@ Codex.Startup=
                                  fdjtUI.ProgressBar.setMessage(
                                      "CODEXINDEXMESSAGE",
                                      fdjtString("Added all %d tags to search/gloss clouds",
-                                                i,lim,Math.floor(pct)));
+                                                lim));
                                  dropClass(document.body,"cxINDEXING");
                                  eq.cloud=empty_cloud;
                                  if (!(fdjtDOM.getChild(empty_cloud.dom,".showall")))
