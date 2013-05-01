@@ -433,10 +433,11 @@ Codex.Paginate=
                 var layouts=fdjtState.getLocal("fdjtCodex.layouts",true);
                 var kept=[];
                 if (layouts) {
-                    var pat=new RegExp("\("+saved_sourceid+"\)$");
+                    var pat=new RegExp("\\("+saved_sourceid+"\\)$");
                     var i=0, lim=layouts.length; while (i<lim) {
                         var cacheid=layouts[i++];
-                        if (cacheid.search(pat)>0) dropLayout(cacheid);
+                        if (cacheid.search(pat)>0)
+                            CodexLayout.dropLayout(cacheid);
                         else kept.push(cacheid);}}
                 if (kept.length)
                     fdjtState.setLocal("fdjtCodex.layouts",kept);

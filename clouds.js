@@ -441,8 +441,6 @@
         cloud.dom.appendChild(holder);}
     Codex.sortCloud=sortCloud;
 
-    var precString=fdjtString.precString;
-
     function sizeCloud(cloud,scores,freqs,n,cuethresh){
         var values=cloud.values, byvalue=cloud.byvalue;
         var elts=new Array(values.length), vscores=new Array(values.length);

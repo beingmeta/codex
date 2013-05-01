@@ -931,7 +931,6 @@ Codex.Startup=
         function initGlossesOffline(){
             if (offline_init) return false;
             else offline_init=true;
-            var refuri=Codex.refuri;
             var sync=Codex.sync;
             if (!(sync)) return;
             if ((Codex.Trace.glosses)||(Codex.Trace.startup))
@@ -1856,6 +1855,7 @@ Codex.Startup=
            is implemented which applies header tags to section elements. */
         
         function applyTagAttributes(docinfo,whendone){
+            var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.clouds);
             var tohandle=[]; var tagged=0;
             for (var eltid in docinfo) {
                 var info=docinfo[eltid];
@@ -1880,7 +1880,7 @@ Codex.Startup=
                      fdjtUI.ProgressBar.setMessage(
                          "CODEXINDEXMESSAGE",
                          fdjtString("Assimilated %d of %d (%d%%) inline tags",
-                                    n,max,Math.floor(pct)));})),
+                                    i,lim,Math.floor(pct)));})),
                 function(){
                     if (((Codex.Trace.indexing>1)&&(tohandle.length))||
                         (tohandle.length>24))

@@ -180,6 +180,7 @@ Codex.Slice=(function () {
             fdjtDOM.replace(total_count_elt,document.createTextNode(""+count));
             fdjtDOM.replace(hide_count_elt,document.createTextNode(""+(count-hide_start)));}
         return span;}
+
     function showaudience(outlets,spec){
         if (!(outlets instanceof Array)) outlets=[outlets];
         if (outlets.length===0) return false;
@@ -196,14 +197,16 @@ Codex.Slice=(function () {
                 if (info.about) 
                     outlet_span.title="Shared with “"+info.name+"” — "+info.about;
                 else outlet_span.title="Shared with “"+info.name+"”";}
-            else info.load(function(){
-                fdjtDOM(outlet_span,info.name);
-                if (info.about) 
-                    outlet_span.title="Shared with “"+info.name+"” — "+info.about;
-                else outlet_span.title="Shared with “"+info.name+"”";});
+            else info.load(fill_outlet_span,[info,outlet_span]);
             fdjtDOM.append(span," ",outlet_span);
             i++;}
         return span;}
+    function fill_outlet_span(info,outlet_span){
+        fdjtDOM(outlet_span,info.name);
+        if (info.about) 
+            outlet_span.title="Shared with “"+info.name+"” — "+info.about;
+        else outlet_span.title="Shared with “"+info.name+"”";}
+
     function showlinks(refs,spec){
         var count=0;
         for (var url in refs) if (url[0]==='_') continue; else count++;
@@ -376,19 +379,6 @@ Codex.Slice=(function () {
             locbar.about="#"+id;
             locbar.title=sumText(fdjtID(id));}
         return locbar;}
-    function showtocloc(target_info){
-        var head=((target_info.toclevel)?(target_info):(target_info.head));
-        var heads=head.heads;
-        var anchor=fdjtDOM.Anchor(
-            "javascript:Codex.JumpTo('"+(head.frag||head.id)+"');","a.headref",
-            fdjtDOM("span.spacer","\u00A7"),
-            head.title);
-        var title="jump to "+head.title;
-        var i=heads.length-1; 
-        while (i>0) {
-            var up_head=heads[i--]; title=title+"// "+up_head.title;}
-        anchor.title=title;
-        return [" ",anchor];}
 
     function makelocrule(target_info,cxtinfo,spec){
         var tocrule=(!(cxtinfo));
