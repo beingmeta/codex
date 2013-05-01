@@ -1681,14 +1681,14 @@ Codex.Startup=
                                      "CODEXINDEXMESSAGE",
                                      fdjtString("Added %d tags of %d (%d%%) to clouds",
                                                 i,lim,Math.floor(pct)));},
-                             function(state,i,lim){
+                             function(){
                                  var eq=Codex.empty_query;
                                  fdjtLog("Done populating clouds");
                                  fdjtUI.ProgressBar.setProgress("CODEXINDEXMESSAGE",100);
                                  fdjtUI.ProgressBar.setMessage(
                                      "CODEXINDEXMESSAGE",
                                      fdjtString("Added all %d tags to search/gloss clouds",
-                                                lim));
+                                                searchtags.length));
                                  dropClass(document.body,"cxINDEXING");
                                  eq.cloud=empty_cloud;
                                  if (!(fdjtDOM.getChild(empty_cloud.dom,".showall")))
@@ -1784,7 +1784,7 @@ Codex.Startup=
                                  Codex.tagmaxweight=maxweight;
                                  Codex.tagminweight=minweight;
                                  fdjtLog("Processed automatic index of %d keys over %d items",
-                                         i,lim);
+                                         ntags,nitems);
                                  dropClass(document.body,"cxINDEXING");
                                  if (whendone) whendone();});}
         Codex.useIndexData=useIndexData;
