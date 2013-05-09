@@ -843,9 +843,10 @@ Codex.Startup=
             var autotoc=getMeta("SBOOK.autotoc");
             if (autotoc) {
                 if ((autotoc[0]==="y")||(autotoc[0]==="Y")||
-                    (autotoc==="ON")||(autotoc==="1"))
+                    (autotoc==="ON")||(autotoc==="on")||
+                    (autotoc==="1")||(autotoc==="enable"))
                     Codex.autotoc=true;
-                else autotoc=true;}
+                else Codex.autotoc=false;}
 
             if (!((Codex.nologin)||(Codex.force_online))) {
                 Codex.mycopyid=getMeta("SBOOK.mycopyid")||
@@ -1681,12 +1682,12 @@ Codex.Startup=
                                  if (state!=='suspend') return;
                                  var pct=(i*100)/lim;
                                  if (tracelevel>1)
-                                     startupLog("Added %d of %d tags (%d%%) to clouds",
+                                     startupLog("Added %d (%d%% of %d tags) to clouds",
                                                 i,lim,Math.floor(pct));
                                  fdjtUI.ProgressBar.setProgress("CODEXINDEXMESSAGE",pct);
                                  fdjtUI.ProgressBar.setMessage(
                                      "CODEXINDEXMESSAGE",
-                                     fdjtString("Added %d tags of %d (%d%%) to clouds",
+                                     fdjtString("Added %d tags (%d%% of %d) to clouds",
                                                 i,lim,Math.floor(pct)));},
                              function(){
                                  var eq=Codex.empty_query;
@@ -1784,8 +1785,9 @@ Codex.Startup=
                                       "CODEXINDEXMESSAGE",pct);
                                   fdjtUI.ProgressBar.setMessage(
                                       "CODEXINDEXMESSAGE",
-                                      fdjtString("Assimilated %d tags (of %d, %d%%) from the robo-index",
-                                                 i,lim,Math.floor(pct)));})),
+                                      fdjtString(
+                                          "Assimilated %d tags (%d%% of %d) from the robo-index",
+                                          i,Math.floor(pct),lim));})),
                              function(state,i,lim){
                                  // At end:
                                  Codex.tagmaxweight=maxweight;
@@ -1877,7 +1879,8 @@ Codex.Startup=
                 ((tohandle.length>100)&&
                  (function(state,i,lim){
                      // For chunks:
-                     if (state!=='suspend') return;
+                     if (!((state==='suspend')||(state==='finishing')))
+                         return;
                      var pct=(i*100)/lim;
                      if (tracelevel>1)
                          fdjtLog("Processed %d/%d (%d%%) inline tags",
@@ -1886,8 +1889,8 @@ Codex.Startup=
                          "CODEXINDEXMESSAGE",pct);
                      fdjtUI.ProgressBar.setMessage(
                          "CODEXINDEXMESSAGE",
-                         fdjtString("Assimilated %d of %d (%d%%) inline tags",
-                                    i,lim,Math.floor(pct)));})),
+                         fdjtString("Assimilated %d (%d%% of %d) inline tags",
+                                    i,Math.floor(pct),lim));})),
                 function(){
                     if (((Codex.Trace.indexing>1)&&(tohandle.length))||
                         (tohandle.length>24))
