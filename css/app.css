@@ -707,6 +707,7 @@ div.codexpage {
     padding: 2px;
     border: solid transparent 4px;
     margin: 0px;}
+
 div.codexpage.curpage, div.codexpage.lastpage, div.codexpage.nextpage {
     display: block;}
 div.codexpage.previewpage, div.codexpage.curpage.hidepage.previewpage {

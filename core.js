@@ -1066,6 +1066,8 @@ var Codex={
                 return parseInt(cname.slice(tocloc+5),10);}
         if ((Codex.notoc)&&(Codex.notoc.match(elt))) return 0;
         if ((Codex.ignore)&&(Codex.ignore.match(elt))) return 0;
+        if ((typeof Codex.autotoc !== 'undefined')&&(!(Codex.autotoc)))
+            return false;
         if ((elt.tagName==='HGROUP')||(elt.tagName==='HEADER'))
             return getFirstTocLevel(elt,true);
         if (elt.tagName.search(/H\d/)===0)

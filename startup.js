@@ -840,6 +840,13 @@ Codex.Startup=
             var prefix=getMeta("SBOOK.prefix")||baseid;
             if (prefix) Codex.prefix=prefix;
             
+            var autotoc=getMeta("SBOOK.autotoc");
+            if (autotoc) {
+                if ((autotoc[0]==="y")||(autotoc[0]==="Y")||
+                    (autotoc==="ON")||(autotoc==="1"))
+                    Codex.autotoc=true;
+                else autotoc=true;}
+
             if (!((Codex.nologin)||(Codex.force_online))) {
                 Codex.mycopyid=getMeta("SBOOK.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
@@ -949,7 +956,7 @@ Codex.Startup=
 
         var viewport_spec=
             "width=device-width,initial-scale=1.0,user-scalable=no";
-        function viewportSetup(){
+       function viewportSetup(){
             var head=fdjtDOM.getHEAD();
             var viewport=getMeta("viewport",false,false,true);
             if (!(viewport)) {
