@@ -525,8 +525,9 @@
             var target=fdjtID(ref);
             var info=Codex.docinfo[ref];
             var show_fulltoc=
-                ((info.sub)&&(info.sub.length>2))&&
-                (info.id!==Codex.head.id);
+                ((info.level===1)&&
+                 (info.sub)&&(info.sub.length>2)&&
+                 (info.id!==Codex.head.id));
             if (Codex.Trace.gestures)
                 fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
             if (show_fulltoc) Codex.GoTo(target);

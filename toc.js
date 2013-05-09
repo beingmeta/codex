@@ -51,6 +51,7 @@ Codex.TOC=
         "use strict";
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
+        var getParent=fdjtDOM.getParent;
         
         var cxicon=Codex.icon;
         function navicon(kind){
@@ -247,14 +248,18 @@ Codex.TOC=
                 return;}
             var head=headinfo;
             while (head) {
+                var level=head.level;
                 var refs=document.getElementsByName("SBR"+head.frag);
-                addClass(refs,"codexlivehead");
                 var j=0; var jlim=refs.length;
                 while (j<jlim) {
                     var ref=refs[j++];
-                    if ((ref.tagName==='A')&&(ref.className)&&
-                        (ref.className.search(/\bbrick\b/)>=0))
-                        addClass(ref.parentNode,"codexlivehead");}
+                    var toc=getParent(ref,".codextoc");
+                    var isbrick=((ref.tagName==='A')&&(ref.className)&&
+                                 (ref.className.search(/\bbrick\b/)>=0));
+                    if ((level)&&(isbrick)&&(!(hasClass(toc,"toc"+(level-1)))))
+                        continue;
+                    addClass(ref,"codexlivehead");
+                    if (isbrick) addClass(ref.parentNode,"codexlivehead");}
                 head=head.head;}
             setTimeout(function(){scaleTitles(headinfo);},200);};
 

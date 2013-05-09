@@ -123,16 +123,24 @@ div.codextoc div.sub a.sectname {
   color: darkblue; font-size: 80%; white-space: nowrap;}
 div.codextoc div.sub a.sectname.cohi { background-color: gold; }
 
+div.codextoc a.codextitle.cohi {
+    background-color: gold; opacity: 0.6;}
+div.codextoc div.spans:hover a.codextitle.cohi {
+    background-color: transparent; opacity: 1;}
+
 div#CODEXHUD div.codextoc div.head { display: none;}
 div#CODEXHUD div.codextoc div.head { display: none;}
 div#CODEXHUD div.codextoc div.spanbar { display: none;}
 div#CODEXHUD div.codextoc img { display: none;}
 
 div#CODEXHUD.toc div.codextoc div.head { display: block;}
-div#CODEXHUD.toc div.codextoc div.spanbar {
+div#CODEXHUD.toc div.codextoc div.spanbar,
+div#CODEXHUD.tocscan div.codextoc div.spanbar {
     display: block;
     border-left: solid darkgray 2px;
     border-right: solid darkgray 2px;}
+div#CODEXHUD.tocscan div.codextoc div.spanbar {
+    border-bottom: solid darkgray 2px;}
 div#CODEXHUD.toc div.codextoc img { display: inherit;}
 div#CODEXHUD.toc div.codextoc.codexcurhead div.sub { display: block;}
 div#CODEXHUD div#CODEXTOC.hover div.codextoc.codexcurhead div.sub { display: none;}
@@ -149,10 +157,10 @@ div#CODEXHUD.tocscan div.codextoc.codexcurhead > div.head { display: block;}
 div#CODEXHUD.tocscan div.codextoc.codexcurhead > img { display: inherit;}
 div#CODEXHUD.tocscan div.codextoc div.spanbar { display: none;}
 div#CODEXHUD.tocscan div.codextoc.codexcxthead > div.spanbar { display: block;}
-div#CODEXHUD.tocscan div.codextoc div.spans { border-top: 0px;}
+div#CODEXHUD.tocscan div.codextoc div.spans { border-top: 0px; border-bottom: 0px;}
 div#CODEXHUD.tocscan div#CODEXTOC div.spanbar div.progressbox {
     border-top: 0px;}
-div#CODEXHUD.tocscan div#CODEXTOC div.spanbar { height: 40px;}
+/* div#CODEXHUD.tocscan div#CODEXTOC div.spanbar { height: 40px;} */
 
 div#CODEXTOC div.spanbar, div#CODEXFLYTOC div.spanbar {
   position: relative;
@@ -178,6 +186,7 @@ div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
     height: 40px;}
 div#CODEXTOC div.spanbar div.progressbox {
     vertical-align: top; height: 90%; top: 4px;}
+div#CODEXTOC.tocscan div.spanbar div.progressbox { top: 0px;}
 div#CODEXTOC div.toc0 > div.spanbar div.progressbox {
     vertical-align: top; height: 90%; top: 0px;}
 div#CODEXTOC div.spanbar div.spans { font-size: 30px;}
