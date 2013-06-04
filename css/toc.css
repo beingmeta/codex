@@ -159,8 +159,8 @@ div#CODEXHUD.tocscan div.codextoc div.spanbar { display: none;}
 div#CODEXHUD.tocscan div.codextoc.codexcxthead > div.spanbar { display: block;}
 div#CODEXHUD.tocscan div.codextoc div.spans { border-top: 0px; border-bottom: 0px;}
 div#CODEXHUD.tocscan div#CODEXTOC div.spanbar div.progressbox {
-    border-top: 0px;}
-/* div#CODEXHUD.tocscan div#CODEXTOC div.spanbar { height: 40px;} */
+    border-top: 0px; top: 0px;}
+div#CODEXHUD.tocscan div#CODEXTOC div.spanbar { height: 40px;}
 
 div#CODEXTOC div.spanbar, div#CODEXFLYTOC div.spanbar {
   position: relative;
@@ -175,20 +175,20 @@ div#CODEXTOC div.spanbar, div#CODEXFLYTOC div.spanbar {
 div#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexlivehead {
     z-index: 0;}
 
-div#CODEXTOC div.spanbar { height: 46px;}
+div#CODEXTOC div.spanbar { height: 48px;}
 div#CODEXTOC div.spanbar > div.spans {
     border-top: solid rgba(0,0,255,0.3) 4px;
     border-bottom: solid rgba(0,0,255,0.3) 4px;
-    height: 40px; }
-div#CODEXTOC div.spanbar div.codexhudspan {
-    height: 40px; z-index: 50;}
-div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
     height: 40px;}
+div#CODEXTOC div.spanbar div.codexhudspan {
+    height: 100%; z-index: 50;}
+div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
+    height: 100%;}
 div#CODEXTOC div.spanbar div.progressbox {
-    vertical-align: top; height: 90%; top: 4px;}
-div#CODEXTOC.tocscan div.spanbar div.progressbox { top: 0px;}
+    vertical-align: top; height: auto; top: 4px; bottom: 4px;}
+div#CODEXTOC.tocscan div.spanbar div.progressbox { top: 0px; bottom: 0px;}
 div#CODEXTOC div.toc0 > div.spanbar div.progressbox {
-    vertical-align: top; height: 90%; top: 0px;}
+    vertical-align: top; top: 0px;}
 div#CODEXTOC div.spanbar div.spans { font-size: 30px;}
 div#CODEXTOC div.spanbar div.spans a.codextitle {
     white-space: nowrap; height: 36px;}
@@ -203,7 +203,7 @@ div.spanbar div.progressbox {
     position: absolute; z-index: 100; }
 
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar { }
-div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
+body.cxPREVIEW div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
     height: 18px;}
 div#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.spans a.codextitle {
     display: none;}
