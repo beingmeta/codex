@@ -433,7 +433,7 @@
         selectors[passage.id]=selecting;
         fdjtUI.TapHold.clear();
         // This makes a selection start on the region we just created.
-        setTimeout(function(){fdjtUI.TapHold.fakePress(evt,50);},0);}
+        setTimeout(function(){selecting.startEvent(evt);},0);}
 
     function abortSelect(except){
         var i=0, lim=selectors.length;
@@ -580,7 +580,8 @@
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
             dropClass(spanbar,"codexvisible");
             dropClass(toc,"codexheld");
-            Codex.stopPreview("toc_released");}
+            Codex.stopPreview("toc_released");
+            Codex.GoTo(about.frag||about.id);}
         else if (Codex.Trace.gestures)
             fdjtLog("toc_released %o noabout",evt);
         else {
@@ -1668,6 +1669,22 @@
         if (previewing_page===gopage) return;
         Codex.GoToPage(gopage,"pageinfo_tap",true);
         Codex.setMode(false);}
+    function pageinfo_release(evt){
+        var pageinfo=fdjtID("CODEXPAGEINFO");
+        if (preview_timer) {
+            clearTimeout(preview_timer);
+            preview_timer=false;}
+        if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
+            fdjtUI.cancel(evt);
+            Codex.setMode(false);
+            return;}
+        var target=fdjtUI.T(evt);
+        if (target.nodeType===3) target=target.parentNode;
+        if (((hasParent(target,pageinfo))&&(target.tagName==="span")))
+            return;
+        var gopage=getGoPage(target,evt);
+        Codex.GoToPage(gopage,"pageinfo_release",true);
+        Codex.setMode(false);}
     function pageinfo_slip(evt){
         evt=evt||event;
         var rel=evt.relatedTarget;
@@ -1758,9 +1775,7 @@
         
         addClass(target,"held");
 
-        if (alt==="hamburger") {
-            addClass(menu,"expanded");
-            return;}}
+        addClass(menu,"expanded");}
 
     function glossmode_release(evt) {
         evt=evt||event;
@@ -2025,7 +2040,7 @@
          ".codexheart": {tap: flyleaf_tap},
          "#CODEXPAGEINFO": {tap: pageinfo_tap,
                             hold: pageinfo_hold,
-                            release: pageinfo_slip,
+                            release: pageinfo_release,
                             slip: pageinfo_slip,
                             click: cancel},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
@@ -2083,7 +2098,8 @@
              tap: glossmode_tap,
              hold: glossmode_hold,
              slip: glossmode_slip,
-             release: glossmode_release},
+             release: glossmode_release,
+             click: cancel},
          "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
          "div.glossetc div.notetext": {click: editglossnote}};
@@ -2119,7 +2135,7 @@
      "#CODEXPAGEFOOT": {},
      "#CODEXPAGEINFO": {tap: pageinfo_tap,
                         hold: pageinfo_hold,
-                        release: pageinfo_slip,
+                        release: pageinfo_release,
                         slip: pageinfo_slip,
                         click: cancel},
      "#CODEXPAGENOTEXT": {tap: enterPageNum},
@@ -2185,7 +2201,8 @@
          tap: glossmode_tap,
          hold: glossmode_hold,
          slip: glossmode_slip,
-         release: glossmode_release},
+         release: glossmode_release,
+         click: cancel},
      "div.glossetc": {
          touchstart: fdjt.UI.CheckSpan.onclick},
      "div.glossetc div.sharing": {click: glossform_outlets_tapped},

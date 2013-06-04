@@ -534,6 +534,9 @@ div.codexglossform form.addoutlet div.addglossmenu > img[alt="hamburger"] {
 div.codexglossform form.addoutlet div.addglossmenu > img[alt="addoutlet"] {
     display: block; }
 
+div.codexglossform form div.addglossmenu.expanded > img[alt="hamburger"] {
+    display: block; }
+
 div.codexglossform.glossreply form div.addglossmenu.expanded > img[alt="glossrespond"],
 div.codexglossform.glossadd form div.addglossmenu.expanded > img[alt="glossrespond"] {
     display: none;}
