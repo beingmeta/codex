@@ -251,7 +251,8 @@ body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
     -webkit-opacity: 1;
     -khtml-opacity: 1;
     -moz-opacity: 1;
-    -o-opacity: 1;}
+    -o-opacity: 1;
+    display: block;}
 
 div#CODEXHUD.refinesearch div#CODEXRIBBON,
 div#CODEXHUD.expandsearch div#CODEXRIBBON,
@@ -417,8 +418,8 @@ div#CODEXHUD.showaside div#CODEXASIDE.hudpanel,
 div#CODEXHUD.flytoc div#CODEXFLYTOC.hudpanel,
 div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
 div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
-div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART div#CODEXGLOSSTAGS.hudpanel,
-div#CODEXHUD.addgloss.glosstagging div#CODEXHEART div#CODEXGLOSSTAGS.hudpanel,
+div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART div#CODEXGLOSSCLOUD.hudpanel,
+div#CODEXHUD.addgloss.glosstagging div#CODEXHEART div#CODEXGLOSSCLOUD.hudpanel,
 div#CODEXHUD.addgloss.glossaddoutlet div#CODEXHEART div#CODEXSHARECLOUD.hudpanel,
 div#CODEXHUD.addgloss.glossaddlink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
 div#CODEXHUD.addgloss.glosseditdetail div#CODEXHEART div#CODEXGLOSSEDITDETAIL.hudpanel,
@@ -816,8 +817,8 @@ div#CODEXHUD.expandsearch div.codexslice#CODEXSEARCHRESULTS { display: none;}
 div#CODEXHUD.searchresults div.codexslice#CODEXSEARCHRESULTS { display: block;}
 div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
 
-div#CODEXHUD.addgloss.glosstagging div#CODEXHEART #CODEXGLOSSTAGS,
-div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSTAGS,
+div#CODEXHUD.addgloss.glosstagging div#CODEXHEART #CODEXGLOSSCLOUD,
+div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSCLOUD,
 div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSCLOUD,
 div#CODEXHUD.addgloss.glosstagging div#CODEXHEART #CODEXGLOSSCLOUD {
     display: block;}

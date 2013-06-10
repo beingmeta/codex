@@ -163,7 +163,7 @@
 
     var gloss_focus=false;
     var gloss_blurred=false;
-    function addgloss_focus(evt){
+    function glossform_focus(evt){
         evt=evt||event;
         gloss_blurred=false;
         var target=fdjtUI.T(evt);
@@ -175,7 +175,7 @@
         if (!(Codex.hudup)) Codex.setHUD(true,false);
         Codex.dont_resize=true;
         gloss_focus=form;}
-    function addgloss_blur(evt){
+    function glossform_blur(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
@@ -186,8 +186,8 @@
         // Restore this without removal of the gloss
         // if ((div)&&(hasClass(div,"modified"))) Codex.submitGloss(div);
         gloss_focus=false;}
-    Codex.UI.addgloss_focus=addgloss_focus;
-    Codex.UI.addgloss_blur=addgloss_blur;
+    Codex.UI.glossform_focus=glossform_focus;
+    Codex.UI.glossform_blur=glossform_blur;
 
     /* Adding a gloss button */
     
@@ -1075,7 +1075,7 @@
                 target.value=gloss_cloud.prefix;
                 fdjtDOM.cancel(evt);
                 setTimeout(function(){
-                    Codex.UI.updateScroller("CODEXGLOSSTAGS");},
+                    Codex.UI.updateScroller("CODEXGLOSSCLOUD");},
                            100);
                 return;}
             else if (evt.shiftKey) gloss_cloud.selectPrevious();
