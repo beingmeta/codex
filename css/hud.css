@@ -321,7 +321,7 @@ div#CODEXHUD #CODEXFOOT {
     position: fixed; bottom: 0px; z-index: 300;}
 
 div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
-    position: absolute;
+    position: absolute; z-index: 500;
     bottom: 30px; left: 100px; right: 100px; height: 20px;
     text-align: center;
     font-size: 125%; font-weight: bold;
