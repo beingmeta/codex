@@ -328,7 +328,7 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     padding: 0px;
     cursor: pointer;
     display: none;}
-div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span {
+div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
     border: solid black 1px; 
     padding-left: 1em; padding-right: 1em;
     padding-top: 0px; padding-bottom: 0px;
