@@ -56,7 +56,7 @@ var Codex={
     // How long it takes a gesture to go from tap to hold
     taptapmsecs: 500, holdmsecs: 200, edgeclick: 50, pagesize: 250,
     dontanimate: false,
-    glossmodes: /(addtag)|(addlink)|(addoutlet)|(editdetail)/,
+    glossmodes: /(addtag)|(addlink)|(addoutlet)|(editdetail)|(hamburger)/,
     updatehash: true, iscroll: false,
     // Whether to cache layouts locally
     cachelayouts: true,
@@ -92,7 +92,7 @@ var Codex={
     // Codex interface
     UI: {
         // This maps device types into sets of node->event handlers
-        handlers: {mouse: {}, kbd: {}, ios: {}}},
+        handlers: {mouse: {}, touch: {}, kbd: {}, ios: {}}},
     Debug: {},
     /* This is where HTML source strings for UI components are placed */
     HTML: {},

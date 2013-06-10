@@ -9,15 +9,16 @@
 div.codexglossformbody { position: relative; }
 
 div#CODEXADDGLOSS div.codexglossform {
-    min-height: 40px; max-height: 50px;}
+    min-height: 50px; max-height: 50px;}
+
 body.hudup div#CODEXADDGLOSS div.codexglossform,
 div#CODEXADDGLOSS div.codexglossform.focused {
-    min-height: 50px; max-height: 150px;}
+    min-height: 75px; max-height: 150px;}
 
 div.codexglossform form div.inputbox { margin-top: 2px;}
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[type="TEXT"] {
-    min-height: 40px; padding: 2px;}
+    min-height: 1em; padding: 2px;}
 
 div#CODEXADDGLOSS div.codexglossform {
     border-radius: 1em; -webkit-border-radius: 1em;
@@ -171,7 +172,6 @@ body.hudup div.codexglossform form div.glossetc,
 div.codexglossform.focused form div.glossetc {
     display: block;}
 
-div.codexglossform form .glossetc .glossexposure,
 div.codexglossform form .glossetc .glossdate {
     padding: 0px; padding-bottom: 1ex; padding-left: 1ex;
     float: right;
@@ -179,10 +179,17 @@ div.codexglossform form .glossetc .glossdate {
 div.codexglossform .glossetc .glossdate {
   font-variant: small-caps; color: purple;}
 
-body.hudup div.codexglossform form .glossetc .glossexposure,
-div.codexglossform form.addoutlet .glossetc .glossexposure,
-div.codexglossform.foxued form .glossetc .glossexposure,
-div.codexglossform.glossedit form .glossetc .glossexposure,
+div.codexglossform form .glossexposure {
+    position: absolute; top: 50px; right: 0px;
+    width: 50px; margin-right: 5px; margin-left: 5px;
+    display: none;
+    z-index: 500;}
+
+body.hudup div.codexglossform form .glossexposure,
+div.codexglossform form.addoutlet .glossexposure,
+div.codexglossform.focused form .glossexposure,
+div.codexglossform.glossedit form .glossexposure {
+    display: block;}
 div.codexglossform.glossedit form .glossetc .glossdate {
     display: block;}
 

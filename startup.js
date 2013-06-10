@@ -863,12 +863,12 @@ Codex.Startup=
             var isiPad = (/ipad/gi).test(navigator.appVersion);
             var isAndroid = (/android/gi).test(navigator.appVersion);
             var isWebKit = navigator.appVersion.search("WebKit")>=0;
-            var isWebTouch = isiPhone || isiPad || isAndroid || isTouchPad || fdjtState.getQuery("webtouch");
+            var isTouch = isiPhone || isiPad || isAndroid || isTouchPad || fdjtState.getQuery("touch");
 
-            if (isWebTouch) {
+            if (isTouch) {
                 fdjtDOM.addClass(body,"cxTOUCH");
                 viewportSetup();
-                Codex.ui="webtouch";
+                Codex.ui="touch";
                 Codex.touch=true;}
             if ((useragent.search("Safari/")>0)&&
                 (useragent.search("Mobile/")>0)) { 
@@ -898,8 +898,8 @@ Codex.Startup=
                         ((isiPad)?(" iPad"):(""))+
                         ((isAndroid)?(" Android"):(""))+
                         ((isWebKit)?(" WebKit"):(""))+
-                        ((isWebTouch)?(" touch"):(""))+
-                        ((!(isWebTouch))?(" mouse"):(""))+
+                        ((isTouch)?(" touch"):(""))+
+                        ((!(isTouch))?(" mouse"):(""))+
                         ((Codex.nativescroll)?(" nativescroll"):
                          (" iscroll"))+
                         ((Codex.updatehash)?(" updatehash"):

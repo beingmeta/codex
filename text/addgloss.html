@@ -62,6 +62,19 @@
            title="delete gloss" class="button" alt="glossdelete"
            tabindex="8"/>
     </div>
+    <div class="glossexposure"
+         onclick="Codex.UI.exposureClicked(event);">
+      <div class="checkspan private" tabindex="5">
+        <input type="CHECKBOX" name="PRIVATE" value="yes"
+               onchange="Codex.UI.changeGlossPrivacy(event);"/>
+        <span class="checked"
+              title="this gloss won't be shared with my associated networks">
+          Private</span>
+        <span class="unchecked"
+              title="this gloss will be shared with my associated networks">
+          Shared</span>
+      </div>
+    </div>
     <div class="inputbox">
       <div class="textbox">
         <textarea name="NOTE"
@@ -74,19 +87,6 @@
       </div>
     </div>
     <div class="glossetc">
-      <div class="glossexposure"
-           onclick="Codex.UI.exposureClicked(event);">
-        <div class="checkspan private" tabindex="5">
-          <input type="CHECKBOX" name="PRIVATE" value="yes"
-                 onchange="Codex.UI.changeGlossPrivacy(event);"/>
-          <span class="checked"
-                title="this gloss won't be shared with my associated networks">
-            Private</span>
-          <span class="unchecked"
-                title="this gloss will be shared with my associated networks">
-            Shared</span>
-        </div>
-      </div>
       <span class="glossdate"></span>
       <span class="networks">
         <!--

@@ -2008,7 +2008,8 @@
         Codex.setGlossMode("editnote");
         fdjtUI.cancel(evt);}
 
-    Codex.UI.handlers.mouse=
+    fdjt.DOM.defListeners(
+        Codex.UI.handlers.mouse,
         {window: {
             keyup: onkeyup,
             keydown: onkeydown,
@@ -2102,111 +2103,111 @@
              click: cancel},
          "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
-         "div.glossetc div.notetext": {click: editglossnote}};
+         "div.glossetc div.notetext": {click: editglossnote}});
 
-    Codex.UI.handlers.webtouch=
-
-    {window: {
-        keyup: onkeyup,
-        keydown: onkeydown,
-        keypress: onkeypress,
-        touchmove: fdjt.UI.noDefault,
-        focus: codexfocus,
-        blur: codexblur},
-     content: {tap: content_tapped,
-               hold: content_held,
-               slip: content_slipped,
-               release: content_released,
-               swipe: content_swiped,
-               click: content_click},
-     toc: {tap: toc_tapped,hold: toc_held,
-           slip: toc_slipped, release: toc_released},
-     glossmark: {touchstart: glossmark_tapped,
-                 touchend: cancel},
-     // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
-     summary: {tap: slice_tapped,
-               hold: slice_held,
-               release: slice_released,
-               slip: slice_slipped},
-     "#CODEXHEART": {touchstart: heart_touched},
-     "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
-     "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
-     ".helphud": {click: Codex.UI.dropHUD},
-     "#CODEXPAGEFOOT": {},
-     "#CODEXPAGEINFO": {tap: pageinfo_tap,
-                        hold: pageinfo_hold,
-                        release: pageinfo_release,
-                        slip: pageinfo_slip,
-                        click: cancel},
-     "#CODEXPAGENOTEXT": {tap: enterPageNum},
-     "#CODEXLOCOFF": {tap: enterLocation},
-     // Return to scan
-     "#CODEXSCANNER": {touchstart: scanner_tapped},
-     // Expanding/contracting the scanner
-     "#CODEXEXPANDSCANNER": {
-         tap: scanner_expand_tap,
-         hold: scanner_expand_hold,
-         click: taphold_click,
-         release: scanner_expand_release},
-     // Raise and lower HUD
-     "#CODEXPAGEHEAD": {touchstart: head_tap},
-     "#CODEXTABS": {touchstart: head_tap},
-     "#CODEXHEAD": {click: head_tap},
-     "#CODEXFOOT": {tap: foot_tap},
-     // Forward and backwards
-     "#CODEXPAGELEFT": {touchstart: left_margin},
-     "#CODEXPAGERIGHT": {touchstart: right_margin},
-     "#CODEXTAGINPUT": {keydown: addtag_keydown},
-     "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
-     "#CODEXATTACHFORM": {submit: addlink_submit},
-     "#CODEXATTACHURL": {click: addlink_keydown},
-     "#CODEXATTACHTITLE": {click: addlink_keydown},
-     "#CODEXATTACHOK": {click: addlink_action},
-     "#CODEXATTACHCANCEL": {click: addlink_cancel},
-     "#CODEXGLOSSCLOUD": {click: Codex.UI.handlers.glosscloud_ontap},
-     "#CODEXALLTAGS": {click: Codex.UI.handlers.searchcloud_ontap},
-     "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
-     "#CODEXSHARECLOUD": {click: outlet_tapped},
-     "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
-     "#CODEXNEXTPAGE": {touchstart: function(evt){
-         Codex.pageForward(evt); cancel(evt);}},
-     "#CODEXPREVPAGE": {touchstart: function(evt){
-         Codex.pageBackward(evt); cancel(evt);}},
-     "#CODEXNEXTSCAN": {touchstart: function(evt){
-         Codex.scanForward(evt); cancel(evt);}},
-     "#CODEXPREVSCAN": {touchstart: function(evt){
-         Codex.scanBackward(evt); cancel(evt);}},
-     "#CODEXHELPBUTTON": {touchstart: toggleHelp},
-     "#CODEXHELP": {touchstart: toggleHelp},
-     "#CODEXSHOWTEXT": {
-         touchstart: back_to_reading,
-         touchmove: cancel,
-         touchend: cancel},
-     "#CODEXAPPSPLASH": {click: hideSplash},
-     "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
-     /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
-     ".hudmodebutton": {
-         touchstart: hudbutton,
-         touchmove: cancel,
-         touchend: cancel},
-     // GLOSSFORM rules
-     "span.codexsharegloss": {click: fdjt.UI.CheckSpan.onclick},
-     ".codexclosehud": {
-         click: back_to_reading,
-         touchmove: cancel,
-         touchend: cancel},
-     ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
-     ".codexglossform .response": {click: Codex.toggleHUD},
-     ".addglossmenu": {
-         tap: glossmode_tap,
-         hold: glossmode_hold,
-         slip: glossmode_slip,
-         release: glossmode_release,
-         click: cancel},
-     "div.glossetc": {
-         touchstart: fdjt.UI.CheckSpan.onclick},
-     "div.glossetc div.sharing": {click: glossform_outlets_tapped},
-     "div.glossetc div.notetext": {click: editglossnote}};
+    fdjt.DOM.defListeners(
+        Codex.UI.handlers.touch,
+        {window: {
+            keyup: onkeyup,
+            keydown: onkeydown,
+            keypress: onkeypress,
+            touchmove: fdjt.UI.noDefault,
+            focus: codexfocus,
+            blur: codexblur},
+         content: {tap: content_tapped,
+                   hold: content_held,
+                   slip: content_slipped,
+                   release: content_released,
+                   swipe: content_swiped,
+                   click: content_click},
+         toc: {tap: toc_tapped,hold: toc_held,
+               slip: toc_slipped, release: toc_released},
+         glossmark: {touchstart: glossmark_tapped,
+                     touchend: cancel},
+         // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
+         summary: {tap: slice_tapped,
+                   hold: slice_held,
+                   release: slice_released,
+                   slip: slice_slipped},
+         "#CODEXHEART": {touchstart: heart_touched},
+         "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
+         "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
+         ".helphud": {click: Codex.UI.dropHUD},
+         "#CODEXPAGEFOOT": {},
+         "#CODEXPAGEINFO": {tap: pageinfo_tap,
+                            hold: pageinfo_hold,
+                            release: pageinfo_release,
+                            slip: pageinfo_slip,
+                            click: cancel},
+         "#CODEXPAGENOTEXT": {tap: enterPageNum},
+         "#CODEXLOCOFF": {tap: enterLocation},
+         // Return to scan
+         "#CODEXSCANNER": {touchstart: scanner_tapped},
+         // Expanding/contracting the scanner
+         "#CODEXEXPANDSCANNER": {
+             tap: scanner_expand_tap,
+             hold: scanner_expand_hold,
+             click: taphold_click,
+             release: scanner_expand_release},
+         // Raise and lower HUD
+         "#CODEXPAGEHEAD": {touchstart: head_tap},
+         "#CODEXTABS": {touchstart: head_tap},
+         "#CODEXHEAD": {click: head_tap},
+         "#CODEXFOOT": {tap: foot_tap},
+         // Forward and backwards
+         "#CODEXPAGELEFT": {touchstart: left_margin},
+         "#CODEXPAGERIGHT": {touchstart: right_margin},
+         "#CODEXTAGINPUT": {keydown: addtag_keydown},
+         "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
+         "#CODEXATTACHFORM": {submit: addlink_submit},
+         "#CODEXATTACHURL": {click: addlink_keydown},
+         "#CODEXATTACHTITLE": {click: addlink_keydown},
+         "#CODEXATTACHOK": {click: addlink_action},
+         "#CODEXATTACHCANCEL": {click: addlink_cancel},
+         "#CODEXGLOSSCLOUD": {click: Codex.UI.handlers.glosscloud_ontap},
+         "#CODEXALLTAGS": {click: Codex.UI.handlers.searchcloud_ontap},
+         "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
+         "#CODEXSHARECLOUD": {click: outlet_tapped},
+         "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
+         "#CODEXNEXTPAGE": {touchstart: function(evt){
+             Codex.pageForward(evt); cancel(evt);}},
+         "#CODEXPREVPAGE": {touchstart: function(evt){
+             Codex.pageBackward(evt); cancel(evt);}},
+         "#CODEXNEXTSCAN": {touchstart: function(evt){
+             Codex.scanForward(evt); cancel(evt);}},
+         "#CODEXPREVSCAN": {touchstart: function(evt){
+             Codex.scanBackward(evt); cancel(evt);}},
+         "#CODEXHELPBUTTON": {touchstart: toggleHelp},
+         "#CODEXHELP": {touchstart: toggleHelp},
+         "#CODEXSHOWTEXT": {
+             touchstart: back_to_reading,
+             touchmove: cancel,
+             touchend: cancel},
+         "#CODEXAPPSPLASH": {click: hideSplash},
+         "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
+         /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
+         ".hudmodebutton": {
+             touchstart: hudbutton,
+             touchmove: cancel,
+             touchend: cancel},
+         // GLOSSFORM rules
+         "span.codexsharegloss": {click: fdjt.UI.CheckSpan.onclick},
+         ".codexclosehud": {
+             click: back_to_reading,
+             touchmove: cancel,
+             touchend: cancel},
+         ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
+         ".codexglossform .response": {click: Codex.toggleHUD},
+         ".addglossmenu": {
+             tap: glossmode_tap,
+             hold: glossmode_hold,
+             slip: glossmode_slip,
+             release: glossmode_release,
+             click: cancel},
+         "div.glossetc": {
+             touchstart: fdjt.UI.CheckSpan.onclick},
+         "div.glossetc div.sharing": {click: glossform_outlets_tapped},
+         "div.glossetc div.notetext": {click: editglossnote}});
     
 })();
 
