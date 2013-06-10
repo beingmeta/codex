@@ -403,6 +403,7 @@ div#CODEXHUD.refinesearch div#CODEXSEARCH,
 div#CODEXHUD.expandsearch div#CODEXSEARCH,
 div#CODEXHUD.searchresults div#CODEXSEARCH,
 div#CODEXHUD.gotoloc div#CODEXGOTOLOC,
+div#CODEXHUD.gotopct div#CODEXGOTOPCT,
 div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
     position: static; display: block; opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
@@ -785,6 +786,7 @@ body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC { overflow: hidden; }
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
 body.hudup div#CODEXHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
+body.hudup div#CODEXHUD.gotopct div.hudpanel#CODEXGOTOPCT,
 body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
     border-color: darkblue;
     min-height: 50px; height: auto;

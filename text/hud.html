@@ -100,6 +100,11 @@
                               id="CODEXLOCINPUT"
                               onkeypress="Codex.UI.goto_keypress(event);"/>
   </div>
+  <div id="CODEXGOTOPCT" class="hudpanel codexgoto">
+    Jump to percentage <input type="text" name="GOTOPCT" value=""
+                              id="CODEXPCTINPUT"
+                              onkeypress="Codex.UI.goto_keypress(event);"/>
+  </div>
   <div id="CODEXGOTOPAGE" class="hudpanel codexgoto">
     Jump to page <input type="text" name="GOTOPAGE" value=""
                         class="fdjtnumberinput"
@@ -188,7 +193,7 @@
          src="http://static.beingmeta.com/g/codex/redx128x128.png"
          class="codexclosehud" alt="close" id="CODEXSTOPSCAN"/>
     -->
-<div id="CODEXFOOT" data-touchable="span.pagespan">
+<div id="CODEXFOOT" data-touchable="span.pagespan,span.pageno,span.locoff">
   <img svg="http://static.beingmeta.com/g/codex/allglosses.svgz"
        src="http://static.beingmeta.com/g/codex/allglosses50x50.png"
        alt="allglosses" title="show all glosses"
@@ -201,7 +206,7 @@
        class="hudbutton hudmodebutton botright clickable"
        id="CODEXHELPBUTTON"/>
   <div id="CODEXSHOWTEXT">
-    <span class="adjustfont">
+    <span class="adjustfont" data-maxfont="150%">
       <span>
       <span class="fortouch">Tap</span><span class="notouch">Click</span>
       here to return to the text
@@ -230,7 +235,7 @@
   <div id="CODEXPAGEINFO">
     <div class="textfoot">
       <span id="CODEXPAGENOTEXT">p/n</span>
-      <span class="locoff" id="CODEXLOCOFF">??.??%</span>
+      <span class="locoff" id="CODEXLOCPCT">??.??%</span>
     </div>
     <div class="pagespans" id="CODEXPAGESPANS">
     </div>

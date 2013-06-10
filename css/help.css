@@ -163,7 +163,8 @@ body div#CODEXHUD.gotopage div#CODEXHUDHELP,
 body div#CODEXHUD.gotoloc div#CODEXHUDHELP {
     text-align: center; display: block;}
 body div#CODEXHUD.gotopage div#CODEXGOTOPAGEHELP.helpbox,
-body div#CODEXHUD.gotoloc div#CODEXGOTOLOCHELP.helpbox {
+body div#CODEXHUD.gotoloc div#CODEXGOTOLOCHELP.helpbox,
+body div#CODEXHUD.gotopct div#CODEXGOTOLOCHELP.helpbox {
     border-color: black; z-index: 260; opacity: 0.9; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);

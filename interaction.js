@@ -930,6 +930,8 @@
         var handled=false;
         if (target.name==='GOTOLOC') {
             min=0; max=Math.floor(Codex.ends_at/128);}
+        else if (target.name==='GOTOPCT') {
+            min=0; max=100;}
         else if (target.name==='GOTOPAGE') {
             min=1; max=Codex.pagecount;}
         else if (ch===13) fdjtUI.cancel(evt);
@@ -939,11 +941,17 @@
                 if (typeof num === 'number') {
                     handled=true; Codex.GoToPage(num);}
                 else {}}
+            else if (target.name==='GOTOPCT') {
+                var locstring=target.value;
+                var pct=parseFloat(locstring);
+                if ((typeof pct === 'number')&&(pct>=0)&&(pct<=100)) {
+                    var loc=Math.floor((pct/100)*Codex.ends_at)+1;
+                    Codex.JumpTo(loc); handled=true;}}
             else if (target.name==='GOTOLOC') {
                 var locstring=target.value;
                 var pct=parseFloat(locstring);
                 if ((typeof pct === 'number')&&(pct>=0)&&(pct<=100)) {
-                    var loc=Math.floor((pct/100)*Codex.ends_at);
+                    var loc=Math.floor((pct/100)*Codex.ends_at)+1;
                     Codex.JumpTo(loc); handled=true;}}
             else {}
             if (handled) {
@@ -1584,6 +1592,15 @@
         fdjtUI.cancel(evt);
         if (Codex.hudup) {Codex.setMode(false); return;}
         Codex.toggleMode("gotoloc");}
+    function enterPercentage(evt) {
+        evt=evt||event;
+        if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
+            fdjtUI.cancel(evt);
+            Codex.setMode(false);
+            return;}
+        fdjtUI.cancel(evt);
+        if (Codex.hudup) {Codex.setMode(false); return;}
+        Codex.toggleMode("gotopct");}
     
     /* Other handlers */
 
@@ -2055,6 +2072,7 @@
                             slip: pageinfo_slip,
                             click: cancel},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
+         "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
          "#CODEXSCANNER": {click: scanner_tapped},
@@ -2132,8 +2150,7 @@
                    click: content_click},
          toc: {tap: toc_tapped,hold: toc_held,
                slip: toc_slipped, release: toc_released},
-         glossmark: {touchstart: glossmark_tapped,
-                     touchend: cancel},
+         glossmark: {touchstart: glossmark_tapped,touchend: cancel},
          // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
          summary: {tap: slice_tapped,
                    hold: slice_held,
@@ -2150,6 +2167,7 @@
                             slip: pageinfo_slip,
                             click: cancel},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
+         "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
          "#CODEXSCANNER": {touchstart: scanner_tapped},

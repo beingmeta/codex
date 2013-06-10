@@ -535,20 +535,20 @@ Codex.Paginate=
                 var prec=Math.round(Math.log(max_loc/40)/Math.log(10))-2;
                 if (prec<0) prec=0;
                 locoff=fdjtDOM(
-                    "span.locoff#CODEXLOCOFF",
+                    "span.locoff#CODEXLOCPCT",
                     fdjtString.precString(pct,prec)+"%");
                 locoff.title=location+"/"+max_loc;}
-            else locoff=fdjtDOM("span.locoff#CODEXLOCOFF");
+            else locoff=fdjtDOM("span.locoff#CODEXLOCPCT");
             var pageno_text=fdjtDOM(
                 "span#CODEXPAGENOTEXT.pageno",pagenum,"/",npages);
             fdjtDOM.replace("CODEXPAGENOTEXT",pageno_text);
-            fdjtDOM.replace("CODEXLOCOFF",locoff);
+            fdjtDOM.replace("CODEXLOCPCT",locoff);
             locoff.title=
                 ((locoff.title)||"")+
                 ((locoff.title)?("; "):(""))+
                 "click to jump to a percentage location in the book";
             fdjtDOM.addListeners(
-                locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCOFF"]);
+                locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCPCT"]);
             pageno_text.title="click to jump to a particular page";
             fdjtDOM.addListeners(
                 pageno_text,Codex.UI.handlers[Codex.ui]["#CODEXPAGENOTEXT"]);}

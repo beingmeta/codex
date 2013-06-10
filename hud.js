@@ -363,9 +363,9 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
+        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopct)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
         var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
-        var codexHeadMode_pat=/\b((toc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(tocscan)|(shownote))\b/g;
+        var codexHeadMode_pat=/\b((toc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(gotopct)|(tocscan)|(shownote))\b/g;
         var CodexSubMode_pat=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
         var codex_mode_scrollers=
             {allglosses: "CODEXALLGLOSSES",
@@ -382,6 +382,7 @@ Codex.setMode=
         var codex_mode_foci=
             {gotopage: "CODEXPAGEINPUT",
              gotoloc: "CODEXLOCINPUT",
+             gotopct: "CODEXPCTINPUT",
              search: "CODEXSEARCHINPUT",
              refinesearch: "CODEXSEARCHINPUT",
              expandsearch: "CODEXSEARCHINPUT"};
