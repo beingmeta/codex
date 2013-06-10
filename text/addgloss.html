@@ -89,9 +89,9 @@
     <div class="glossetc">
       <span class="glossdate"></span>
       <span class="networks">
-        <!--
         <span class="checkspan twitter_share">
-          <input TYPE="CHECKBOX" NAME="NETWORK" VALUE=":TWITTER"/>
+          <input TYPE="CHECKBOX" NAME="NETWORK" VALUE=":TWITTER"
+                 onchange="Codex.UI.changeGlossNetwork(event);"/>
           <img svg="http://static.beingmeta.com/g/codex/twitter.svgz"
                src="http://static.beingmeta.com/g/codex/twitter64x64.png"
                class="checked" alt="Twitter"/>
@@ -99,7 +99,8 @@
                src="http://static.beingmeta.com/g/codex/notwitter64x64.png"
                class="unchecked" alt="Twitter"/></span>
         <span class="checkspan facebook_share">
-          <input TYPE="CHECKBOX" NAME="NETWORK" VALUE=":FACEBOOK"/>
+          <input TYPE="CHECKBOX" NAME="NETWORK" VALUE=":FACEBOOK"
+                 onchange="Codex.UI.changeGlossNetwork(event);"/>
           <img svg="http://static.beingmeta.com/g/codex/facebook.svgz"
                src="http://static.beingmeta.com/g/codex/facebook64x64.png"
                class="checked" alt="Facebook"/>
@@ -107,7 +108,8 @@
                src="http://static.beingmeta.com/g/codex/nofacebook64x64.png"
                class="unchecked" alt="Facebook"/></span>
         <span class="checkspan linkedin_share">
-          <input TYPE="CHECKBOX" NAME="NETWORK" VALUE=":LINKEDIN"/>
+          <input TYPE="CHECKBOX" NAME="NETWORK" VALUE=":LINKEDIN"
+                 onchange="Codex.UI.changeGlossNetwork(event);"/>
           <img svg="http://static.beingmeta.com/g/codex/linkedin.svgz"
                src="http://static.beingmeta.com/g/codex/linkedin64x64.png"
                class="checked" alt="LinkedIn"/>
@@ -115,14 +117,14 @@
                src="http://static.beingmeta.com/g/codex/nolinkedin64x64.png"
                class="unchecked" alt="LinkedIn"/></span>
         <span class="checkspan googleplus_share">
-          <input TYPE="CHECKBOX" NAME="NETWORK" VALUE=":GOOGLEPLUS"/>
+          <input TYPE="CHECKBOX" NAME="NETWORK" VALUE=":GOOGLEPLUS"
+                 onchange="Codex.UI.changeGlossNetwork(event);"/>
           <img svg="http://static.beingmeta.com/g/codex/googleplus.svgz"
                src="http://static.beingmeta.com/g/codex/googleplus64x64.png"
                class="checked" alt="Google+"/>
           <img svg="http://static.beingmeta.com/g/codex/nogoogleplus.svgz"
                src="http://static.beingmeta.com/g/codex/nogoogleplus64x64.png"
                class="unchecked" alt="Google+"/></span>
-        -->
       </span>
       <span class="excerpt"></span>
       <span class="tags empty"></span>    

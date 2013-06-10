@@ -1862,9 +1862,10 @@
     function changeGlossNetwork(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        var alternate=((fdjtDOM.hasParent(target,".codexglossform"))?
-                       ("CODEXNETWORKBUTTONS"):(("CODEXLIVEGLOSS")));
-        var doppels=fdjtDOM.getInputsFor(alternate,'NETWORKS',target.value);
+        var alternate=fdjtID(
+            (fdjtDOM.hasParent(target,".codexglossform"))?
+                ("CODEXNETWORKBUTTONS"):(("CODEXLIVEGLOSS")));
+        var doppels=fdjtDOM.getInputsFor(alternate,'NETWORK',target.value);
         fdjtUI.CheckSpan.set(doppels,target.checked);}
     Codex.UI.changeGlossNetwork=changeGlossNetwork;
 

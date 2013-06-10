@@ -247,8 +247,10 @@ body.hudup div.codexglossform form div.glossetc .tags.empty,
 body.hudup div.codexglossform form div.glossetc .excerpt.empty {
     display: none;}
 
-div.codexglossform form div.glossetc .outlets,
-div.codexglossform form div.glossetc .networks { display: none; }
+div.codexglossform form div.glossetc .outlets { display: none; }
+div.codexglossform form div.glossetc .networks {
+    margin-right: 60px;
+    display: none;}
 div.codexglossform form.addoutlet div.glossetc .outlets,
 div.codexglossform form.addoutlet div.glossetc .networks { display: inline; }
 div.codexglossform form.addoutlet div.glossetc .tags,
@@ -275,7 +277,7 @@ div.codexglossform div.glossetc .networks .checkspan {
     float: left;}
 div#CODEXHUD .networks .checkspan input[type='checkbox'] { display: none;}
 div#CODEXHUD .networks .checkspan img {
-    height: 32px; width: auto;}
+    height: 20px; width: auto;}
 
 span.facebook_share, span.twitter_share { display: none;}
 span.linkedin_share, span.google_share { display: none;}
@@ -465,11 +467,17 @@ div#CODEXGLOSSATTACH.detail tr.url, div#CODEXGLOSSATTACH.upload tr.url {
 div#CODEXGLOSSATTACH table.fdjtform td input[type="TEXT"],
 div#CODEXGLOSSATTACH table.fdjtform td input[type="URL"] { width: 95%;}
 
-div#CODEXSHARECLOUD span#CODEXNETWORKBUTTONS { }
-div#CODEXSHARECLOUD span#CODEXNETWORKBUTTONS span.completion {
-    float: right;}
-div#CODEXSHARECLOUD span#CODEXNETWORKBUTTONS img {
-    height: 32px; width: auto;}
+#CODEXNETWORKBUTTONS { text-align: center;}
+#CODEXNETWORKBUTTONS span.completion {}
+#CODEXNETWORKBUTTONS span.checkspan input[TYPE="CHECKBOX"],
+#CODEXNETWORKBUTTONS span.checkspan.ischecked .unchecked,
+#CODEXNETWORKBUTTONS span.checkspan .checked {
+    display: none;}
+#CODEXNETWORKBUTTONS span.checkspan.ischecked span.checked,
+#CODEXNETWORKBUTTONS span.checkspan.ischecked img.checked {
+    display: inline;}
+div#CODEXSHARECLOUD #CODEXNETWORKBUTTONS img {
+    height: 40px; width: auto;}
 
 div#CODEXRIBBON > div.inputbox {
     text-align: center; margin-bottom: 1ex;}
