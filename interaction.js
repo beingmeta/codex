@@ -2092,7 +2092,7 @@
          ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
          // GLOSSFORM rules
          "span.codexsharegloss": {tap: fdjt.UI.CheckSpan.onclick},
-         ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
+         // ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {click: back_to_reading},
          ".codexglossform .response": {click: Codex.toggleHUD},
          ".addglossmenu": {
