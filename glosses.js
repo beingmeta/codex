@@ -195,10 +195,10 @@
         var glossinput=getInput(form,"NOTE");
         var notespan=getChild(form,".notespan");
         if (glossinput) {
-            glossinput.onkeypress=glossinput_keypress;
-            glossinput.onkeydown=glossinput_keydown;
-            glossinput.onfocus=Codex.UI.addgloss_focus;
-            glossinput.onblur=Codex.UI.addgloss_blur;
+            glossinput.onkeypress=glossinput_onkeypress;
+            // glossinput.onkeydown=glossinput_keydown;
+            glossinput.onfocus=glossinput_onfocus;
+            glossinput.onblur=Codex.UI.glossinput_blur;
             if ((gloss)&&(!(response))) {
                 glossinput.value=gloss.note||"";
                 if (notespan) notespan.innerHTML=glossinput.value;}
@@ -430,9 +430,6 @@
         var glossinput=getInput(form,"NOTE");
         var syncelt=getInput(form,"SYNC");
         syncelt.value=(Codex.syncstamp+1);
-        /* Get the input appropriate to the mode. */
-        Codex.gloss_cloud.complete(getbracketed(glossinput,false)||"");
-        
         /* Do completions based on those input's values */
         Codex.share_cloud.complete();
         Codex.gloss_cloud.complete();}
@@ -654,73 +651,154 @@
 
     // This is use for delaying completion calls and keeping them from
     // clobbering one another
-    var addgloss_timer=false;
+    var glossinput_timer=false;
     
-    function _getbracketed(input,erase){
-        var string=input.value;
-        if ((!(string))||(string.length===0)) return false;
-        var pos=input.selectionStart||0;
-        var start=pos, end=pos, lim=string.length;
+    function tagstart(string,pos){
+        var spaces=false;
+        if ((!(string))||(string.length===0)) return -1;
+        if (pos<=0) return false;
+        var start=pos-1;
+        if (start<=0) return -1;
+        var c=string[start], pc=string[start-1];
         while (start>=0) {
-            if (string[start]==='[') {
-                if ((start>0)&&(string[start-1]==='\\')) {
-                    start--; continue;}
-                else if ((start>0)&&(string[start-1]==='['))
-                    break;
-                else start--;}
-            else if ((string[start]===']')&&(start>0)&&
-                     (string[start-1]===']'))
-                return false;
-            else start--;}
-        if (start<0) return false;
+            if (pc==='\\') {start--; continue;}
+            else if (string[start].search(/\s/)===0) {spaces=false; start--;}
+            else if ((c==='@')||(c==='#')) return start;
+            else if (start===0) return -1;
+            else if ((c==='"')&&((pc==='@')||(pc==='#'))) {
+                if (spaces) return -1;
+                else return start-1;}
+            else if (c==='"') return -1;
+            else start--;
+            c=string[start];
+            pc=(start>0)&&string[start-1];}
+        return -1;}
+
+    function tagend(string,pos){
+        var quoted=(string[pos+1]==="\"");
+        var start=((quoted)?(pos+2):(pos+1));
+        var end=start, lim=string.length, c;
         while (end<lim) {
-            if ((string[end]===']')&&(string[end+1]==="]")) {
-                break;}
-            else if (string[end]==='\\') end=end+2;
+            c=string[end];
+            if (c==="\\") {
+                if (end+1===lim) return end;
+                else if (end+2===lim) return end+2;
+                else end=end+2;}
+            else if ((quoted)&&(c==="\""))
+                return string.slice(start+2,end);
+            else if (c.search(/\s/)===0) {
+                if (quoted) end++;
+                else return end;}
             else end++;}
-        if (start===end) return false;
-        if (erase) {
-            input.value=string.slice(0,start-1)+string.slice(end+2);}
-        return string.slice(start+1,end);}
+        return end;}
 
-    function getbracketed(input,erase){
-        var bracketed=_getbracketed(input,erase);
-        if ((bracketed)&&(!(linkp(bracketed)))) {
-            addClass("CODEXHUD","glosstagging");
-            Codex.UI.updateScroller("CODEXGLOSSTAGS");}
-        else dropClass("CODEXHUD","glosstagging");
-        return bracketed;}
+    function tagcontent(string,start,end){
+        if (!(end)) end=tagend(string,start);
+        if (string[start+1]==='"') {
+            if (string[end-1]==='"')
+                return string.slice(start+2,end-1);
+            else return string.slice(start+2,end);}
+        else return string.slice(start+1,end);}
 
-    function linkp(string){
-        return ((string[0]==="@")||(string.search(uri_prefix)===0));}
+    function tagclear(input_elt){
+        var text=input_elt.value;
+        var start=tagstart(text);
+        if (start<0) return;
+        var end=tagend(text,start);
+        input_elt.value=text.slice(0,start)+text.slice(end);}
+
+    function glossinput_onfocus(evt){
+        var target=fdjtUI.T(evt);
+        var text=target.value;
+        var pos=target.selectionStart;
+        var start=tagstart(text,pos);
+        if (start<0) return;
+        var end=((start>=0)?(tagend(text,start)):(false));
+        var content=tagcontent(text,start,end);
+        var cloud=((text[start]==='@')?(Codex.share_cloud):(Codex.gloss_cloud));
+        Codex.UI.glossform_focus(evt);
+        if (glossinput_timer) clearTimeout(glossinput_timer);
+        glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}
+
+    function glossinput_onkeypress(evt){
+        var target=fdjtUI.T(evt); var text=target.value;
+        var pos=target.selectionStart||0;
+        var start=tagstart(text,pos);
+        var end=((start>0)&&(tagend(text,start)));
+        var ch=evt.charCode;
+        if (ch===13) {
+            if (start>=0) {
+                var tagtext=text.slice(start,end);
+                glosstag_done(target,tagtext,evt.ctrlKey);
+                text.value=text.slice(0,start)+text.slice(end);}
+            else if (evt.shiftKey) {
+                target.value=text.slice(0,pos)+"\n"+text.slice(pos);
+                target.selectionStart++;
+                return fdjtUI.cancel(evt);}
+            else {
+                fdjtUI.cancel(evt);
+                submitGloss(form);}}
+        else if (start<0) return;
+        else if (ch===0x22) { // Handle quote mark
+            if ((pos>0)&&(text[pos-1]==="\\")) return;
+            else if (end===start+1) {
+                target.value=text.slice(0,start+1)+
+                    "\"\""+text.slice(start+1);
+                target.selectionStart=start+2;
+                return fdjtUI.cancel(evt);}
+            else if (text[start+1]==="\"") {
+                // Closes tag
+                var tagtext=text.slice(start,end)+"\"";
+                glosstag_done(target,tagtext,true);
+                text.value=text.slice(0,start)+text.slice(end);
+                return fdjtUI.cancel(evt);}
+            else {}}
+        else {
+            if (glossinput_timer) clearTimeout(glossinput_timer);
+            glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}}
+
+    function glosstag_complete(input_elt){
+        var text=input_elt.value;
+        var pos=input_elt.selectionStart||0;
+        var start=tagstart(text,pos);
+        if (start>=0) {
+            var end=tagend(text,start);
+            var form=getParent(input_elt,"FORM");
+            var wrapper=getParent(form,".codexglossform");
+            var content=tagcontent(text,start,end);
+            var isoutlet=(text[start]==="@");
+            var completions;
+            if (isoutlet) addClass("CODEXHUD","glossaddoutlet");
+            else addClass("CODEXHUD","glosstagging");
+            if (isoutlet) completions=Codex.share_cloud.complete(content);
+            else completions=Codex.gloss_cloud.complete(content);
+            fdjtLog("Got %d completions",completions.length);}}
+
+    function glosstag_done(input_elt,tagtext,personal){
+        var form=getParent(input_elt,"FORM");
+        if ((tagtext[0]==="#")&&(personal)) {
+            // var ptag=Codex.user_knodule.def(tagcontent(tagtext));
+            var ptag=Codex.knodule.def(tagcontent(tagtext));
+            addTag(form,ptag);}
+        else {
+            var cloud=((tagtext[0]==="@")?(Codex.share_cloud):(Codex.gloss_cloud));
+            var tagstring=tagcontent(tagtext); var tag=false;
+            var completions=cloud.complete(tagstring);
+            var isoutlet=(tagtext[0]==="@");
+            if (completions.length===0) {}
+            else if (completions.length===1) tag=completions[0];
+            else {}
+            if ((isoutlet)&&(!(tag))) {/* do error somehow */}
+            else if (isoutlet) addOutlet(form,tag);
+            else if (!(tag)) {
+                if (tagstring.indexof('|')>0) {
+                    var tag=Codex.knodule.def(tagstring);addTag(form,tag);}
+                else {
+                    var tag=Codex.knodule.ref(tagstring);
+                    addTag(form,tag);}}
+            else addTag(form,tag);}
+        dropClass("CODEXHUD",/gloss(tagging|addoutlet)/);}
     
-    function setbracketed(input,replacement,atend){
-        var string=input.value;
-        if ((!(string))||(string.length===0)) return false;
-        var pos=input.selectionStart||0;
-        var start=pos, end=pos, lim=string.length;
-        while (start>=0) {
-            if (string[start]==='[') {
-                if ((start>0)&&(string[start-1]==='\\')) {
-                    start--; continue;}
-                else if ((start>0)&&(string[start-1]==='['))
-                    break;
-                else start--;}
-            else start--;}
-        if (start<0) return false;
-        while (end<lim) {
-            if ((string[end]===']')&&(string[end+1]==="]")) {
-                break;}
-            else if (string[end]==='\\') end=end+2;
-            else end++;}
-        if (start===end) return false;
-        input.value=string.slice(0,start-1)+
-            "[["+replacement+"]]"+
-            string.slice(end+2);
-        if (atend) input.selectionStart=
-            input.selectionEnd=start+replacement.length+4;
-        return true;}
-
     function getTagString(span,content){
         var tagval=span.getAttribute("tagval");
         if (tagval) {
@@ -736,7 +814,7 @@
 
     var stdspace=fdjtString.stdspace;
 
-    function handleBracketed(form,content){
+    function handleTagText(form,content){
         dropClass("CODEXHUD","glosstagging");
         if ((content[0]==='@')||(content.search(uri_prefix)===0)) {
             var start=(content[0]==='@');
@@ -751,12 +829,22 @@
             return getTagString(span,stdspace(content));}
         else return handleTagInput(content,form,true);}
 
-    function handleTagInput(content,form,exact){
-        var completions=Codex.gloss_cloud.complete(content);
-        var std=stdspace(content);
+    function handleTagInput(tagstring,form,exact){
+        var quoted=(tagstring[1]==="\""), prefix=tagstring[0];
+        var outlet=(tagstring[0]==="@");
+        var cloud=((outlet)?(Codex.share_cloud):(Codex.gloss_cloud));
+        var text=((quoted)?(tagstring.slice(2,tagstring.length-1)):(tagstring.slice(1)));
+        var completions=cloud.complete(text);
+        var std=stdspace(text);
+        if (outlet) {
+            var oc=[]; var j=0, jlim=completions.length; while (j<jlim) {
+                var c=completions[j++];
+                if (hasClass(c,"outlet")) oc.push(c);}
+            completions=oc;}
         if ((!(completions))||(completions.length===0)) {
-            addTag(form,std);
-            Codex.gloss_cloud.complete("");
+            if (outlet) addOutlet(form,std); // Should probably just warn
+            else addTag(form,std);
+            cloud.complete("");
             return std;}
         else {
             var completion=false;
@@ -785,50 +873,12 @@
             if (completion) {
                 var span=addTag(form,completion);
                 Codex.gloss_cloud.complete("");
-                return getTagString(
-                    span,Codex.gloss_cloud.getKey(completion));}
+                return getTagString(span,Codex.gloss_cloud.getKey(completion));}
             else {
                 addTag(form,std);
                 Codex.gloss_cloud.complete("");
                 return std;}}}
     Codex.handleTagInput=handleTagInput;
-
-    /* This handles embedded brackets */
-    function glossinput_keypress(evt){
-        var target=fdjtUI.T(evt);
-        var string=target.value;
-        var form=getParent(target,"FORM");
-        var ch=evt.charCode;
-        var wrapper=getParent(form,".codexglossform");
-        addClass(wrapper,"modified");
-        if (addgloss_timer) {
-            clearTimeout(addgloss_timer);
-            addgloss_timer=false;}
-        if (ch===91) { /* [ */
-            var pos=target.selectionStart;
-            if ((pos>0)&&(string[pos-1]==='\\')) return; 
-            fdjtUI.cancel(evt);
-            fdjtDOM.insertText(target,"[]",1);}
-        else if (ch===93) { /* ] */
-            var selstart=target.selectionStart;
-            if ((selstart>0)&&(string[selstart-1]==='\\')) return; 
-            var complete_content=getbracketed(target);
-            if (!(complete_content)) return;
-            fdjtUI.cancel(evt);
-            var replace=handleBracketed(form,complete_content);
-            if (replace) setbracketed(target,replace,2);}
-        else if (ch===13) {fdjtUI.cancel(evt);}
-        else {
-            var content=getbracketed(target);
-            if ((typeof content==='string')&& (!(linkp(content))))
-                // This timer ensures that the character typed
-                // actually gets into the box before we do anything
-                addgloss_timer=setTimeout(function(){
-                    addgloss_timer=false;
-                    var span=getbracketed(target,false);
-                    if (!(linkp(content)))
-                        Codex.gloss_cloud.complete(span);},
-                                          200);}}
 
     function glossinput_keydown(evt){
         evt=evt||event;
@@ -836,22 +886,18 @@
         var target=fdjtUI.T(evt);
         var form=getParent(target,'form');
         var mode=getGlossMode(form);
-        if (addgloss_timer) {
-            clearTimeout(addgloss_timer);
-            addgloss_timer=false;}
+        if (glossinput_timer) {
+            clearTimeout(glossinput_timer);
+            glossinput_timer=false;}
         if (kc===13) { // newline/enter
-            var bracketed;
+            var tagstring;
             if (fdjtString.isEmpty(target.value)) {
                 fdjtUI.cancel(evt);
                 submitGloss(form);}
-            else if ((bracketed=getbracketed(target))) {
-                // If you're in a [[]], handle entry/completion
+            else if ((tagstring=tagtext(target))) {
                 fdjtUI.cancel(evt);
-                if (evt.ctrlKey)
-                    handleBracketed(form,getbracketed(target,true));
-                else {
-                    var replace=handleBracketed(form,getbracketed(target));
-                    if (replace) setbracketed(target,replace,2);}}
+                var replace=handleTagText(form,tagstring);
+                if (replace) tagtext(target,true);}
             else if (evt.shiftKey) {
                 // This inserts a hard newline
                 fdjtUI.cancel(evt);
@@ -870,15 +916,21 @@
                 submitGloss(form);}}
         else if (mode) {}
         else {
-            var content=getbracketed(target);
+            var content=tagtext(target);
             if (typeof content!=='string') {}
             else addgloss_timer=setTimeout(
                 function(){
                     // This timer ensures that the character typed
                     // actually gets into the box before we do anything
                     addgloss_timer=false;
-                    var span=getbracketed(target,false);
-                    Codex.gloss_cloud.complete(span);},
+                    var tagstring=tagtext(target,false), quoted=false, cloud=false;
+                    if (!(tagstring)) return;
+                    if (tagstring[1]=== "\"") quoted=true;
+                    if (tagstring[0]==="@") cloud=Codex.share_cloud;
+                    else if (tagstring[0]==="#") cloud=Codex.gloss_cloud;
+                    if (quoted)
+                        cloud.complete(tagstring.slice(2,tagstring.length-1));
+                    else cloud.complete(tagstring.slice(1));},
                 200);}}
     
     function get_addgloss_callback(form,keep,uri){
@@ -935,8 +987,7 @@
                 var tagstring=getTagString(
                     span,Codex.gloss_cloud.getKey(completion));
                 var input=getInput(form,"NOTE");
-                if ((input)&&(tagstring))
-                    setbracketed(input,tagstring,2);}}
+                if ((input)&&(tagstring)) tagclear(input);}}
         fdjtUI.cancel(evt);}
     Codex.UI.handlers.glosscloud_ontap=glosscloud_ontap;
 
