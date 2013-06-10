@@ -658,6 +658,7 @@ Codex.Paginate=
             var newpage=false;
             if (!(previewing)) return;
             dropClass(previewing,"previewpage");
+            dropClass(previewing,"preview");
             dropClass(curpage,"hidepage");
             dropClass(getChildren(Codex.pages,".previewpage"),
                       "previewpage");
