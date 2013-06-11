@@ -1358,9 +1358,13 @@ Codex.Startup=
                            ajax_uri,[],
                            function (req){
                                if (req.readyState===4) {
-                                   fdjtLog.warn("Ajax call to %s failed on callback, falling back to JSONP",
-                                                uri);
-                                   updateInfoJSONP(uri);}});}
+                                   if (req.status>=400) {
+                                       fdjtLog.warn("Ajax call to %s failed on callback, falling back to JSONP",
+                                                    uri);
+                                       updateInfoJSONP(uri);}}},
+                           ((Codex.sync)?
+                            ({"If-Modified-Since": (new Date(Codex.sync*1000)).toString()}):
+                            (false)));}
             catch (ex) {
                 fdjtLog.warn("Ajax call to %s failed on transmission, falling back to JSONP",uri);
                 updateInfoJSONP(uri);}}
