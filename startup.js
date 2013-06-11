@@ -1536,6 +1536,7 @@ Codex.Startup=
                         "codex."+name+"("+refuri+")",ref._id,true);}}}
 
         function initGlosses(glosses,etc){
+            if ((glosses.length===0)&&(etc.length===0)) return;
             var msg=fdjtID("CODEXNEWGLOSSES");
             if (msg) {
                 msg.innerHTML=fdjtString(
