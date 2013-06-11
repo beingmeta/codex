@@ -99,7 +99,7 @@ var Codex={
     /* This is where we store pointers into the dom */
     DOM: {},
     Trace: {
-        startup: 2,       // Whether to trace startup
+        startup: 0,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc
         mode: false,      // Whether to trace mode changes
         nav: false,       // Whether to trace book navigation
