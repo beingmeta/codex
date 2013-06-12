@@ -150,20 +150,8 @@ body #CODEXHUD.addgloss #CODEXHEAD {
     overflow: visible;
     z-index: 500;}
 
-/* From touchtocfoot implementation
-body.cxTOUCH.hudup #CODEXHUD.openhead.toc #CODEXHEAD,
-body.cxTOUCH.hudup #CODEXHUD.openhead.tocscan #CODEXHEAD,
-body.cxTOUCH #CODEXHUD.openhead.tocscan #CODEXHEAD,
-body.cxTOUCH.hudup #CODEXHUD.tocscan #CODEXHEAD,
-body.cxTOUCH #CODEXHUD.tocscan #CODEXHEAD {
-    border: 0px; height: 0px;}
-*/
-
 body.hudup #CODEXHUD #CODEXFOOT {
     height: auto; max-height: 50%;}
-/* From touchtocfoot 
-   body.cxTOUCH #CODEXHUD.toc #CODEXFOOT, 
-   body.cxTOUCH #CODEXHUD.tocscan #CODEXFOOT, */ 
 body #CODEXHUD.openfoot #CODEXFOOT
 {
     background-color: ivory; border-color: darkblue;
