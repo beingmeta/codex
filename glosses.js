@@ -736,6 +736,7 @@
                 target.selectionStart++;
                 return fdjtUI.cancel(evt);}
             else {
+                var form=fdjtDOM.getParent(target,"FORM");
                 fdjtUI.cancel(evt);
                 submitGloss(form);}}
         else if (start<0) return;
