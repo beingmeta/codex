@@ -572,9 +572,9 @@ Codex.setMode=
             if (Codex.heartscroller) Codex.heartscroller.refresh();
             else {
                 var heart=fdjtID("CODEXHEART");
-                var contents=fdjtID("CODEXHEARTCONTENTS");
+                var contents=fdjtID("CODEXHEARTCONTENT");
                 if (!(contents)) {
-                    contents=fdjtDOM("div#CODEXHEARTCONTENTS");
+                    contents=fdjtDOM("div#CODEXHEARTCONTENT");
                     fdjtDOM(contents,fdjtDOM.Array(heart.childNodes));
                     fdjtDOM(heart,contents);}
                 Codex.heartscroller=new iScroll(heart);
