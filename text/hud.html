@@ -1,90 +1,3 @@
-<div id="CODEXAPPSPLASH" class="hudpanel"></div>
-<div id="CODEXHELP" class="hudpanel codexhelp"></div>
-<div id="CODEXHUDHELP"></div>
-<div id="CODEXKEYBOARDHELPBOX" class="closed">
-  <span class="keep" onclick="Codex.keyboardHelp(true);">keep</span>
-  <span class="close" onclick="Codex.keyboardHelp(false);">close</span>
-  <div id="CODEXKEYBOARDHELP"></div>
-  <div class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);">
-    <input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
-           CHECKED>
-    Show keyboard help
-  </div>
-</div>
-<div id="CODEXHUDBUTTONS" class="hudpanel">
-  <div class="sbookplate">
-    <a href="https://auth.sbooks.net/admin/logout" class="logout"
-       onclick="if (Codex.refuri) Codex.clearOffline();"
-       title="logout">
-      logout</a>
-    <a href="javascript:Codex.setMode('sbooksapp');" name="IDLINK"
-       class="username" id="CODEXUSERNAME">
-      (click to log in)</a>
-  </div> <!-- .flyleafplate -->
-  <div class="tabbar icons" id="CODEXTABS">
-    <img svg="http://static.beingmeta.com/g/codex/about_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/about_tab.png"
-         alt="About" class="tab" contentid="CODEXABOUTBOOK"
-         onclick="Codex.toggleMode('about'); return fdjt.UI.cancel(event);"
-         title="information about this book"/>
-    <img svg="http://static.beingmeta.com/g/codex/toc_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/toc_tab.png"
-         alt="ToC" class="tab" contentid="CODEXFLYTOC"
-         onclick="Codex.toggleMode('flytoc'); return fdjt.UI.cancel(event);"
-         title="Table of Contents (static)">
-    <img svg="http://static.beingmeta.com/g/codex/manage_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/manage_tab.png"
-         alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
-         onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
-         title="manage added layers for your sBook"/>
-    <img svg="http://static.beingmeta.com/g/codex/settings_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/settings_tab.png"
-         alt="Device" class="tab" contentid="CODEXSETTINGS"
-         onclick="Codex.toggleMode('device'); return fdjt.UI.cancel(event);"
-         title="alter appearance and interaction"/>
-    <img svg="http://static.beingmeta.com/g/codex/console_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/console_tab.png"
-         alt="Console" class="tab" contentid="CODEXCONSOLE"
-         onclick="Codex.toggleMode('console'); return fdjt.UI.cancel(event);"
-         title="show debugging console" />
-    <img svg="http://static.beingmeta.com/g/codex/login_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/login_tab.png"
-         alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
-         onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
-         title="login to sBooks" />
-  </div> <!-- .tabbar -->
-</div> <!-- id="CODEXHUDBUTTONS" -->
-<div id="CODEXSCANNER">
-  <span class="expander" id="CODEXEXPANDSCANNER">
-    <img svg="http://static.beingmeta.com/g/codex/twistyclosed.svgz"
-         src="http://static.beingmeta.com/g/codex/twistyclosed64x64.png"
-         alt="+"/>
-    <img svg="http://static.beingmeta.com/g/codex/twistyopen.svgz"
-         src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
-         alt="-"/>
-  </span>
-  <div id="CODEXSCAN"></div>
-</div>
-
-  <img svg="http://static.beingmeta.com/g/codex/tocicon.svgz"
-       src="http://static.beingmeta.com/g/codex/tocicon50x50.png"
-       alt="toc" title="navigate sections"
-       class="hudbutton hudmodebutton topleft clickable"
-       id="CODEXTOCBUTTON"
-       hudmode="toc"/>
-  <img svg="http://static.beingmeta.com/g/codex/tagsearch.svgz"
-       src="http://static.beingmeta.com/g/codex/tagsearch50x50.png"
-       alt="search" title="search tags"
-       class="hudbutton hudmodebutton topright clickable"
-       id="CODEXSEARCHBUTTON"
-       hudmode="search"/>
-  <div class="helphud topleft" data-hudmode="toc">
-    <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
-    <span class="nobreak">sections</span></div>
-  <div class="helphud topright" data-hudmode="search">
-    <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
-    for&nbsp;tags</div>
-
 <div id="CODEXHEAD">
   <div class="helphud topcenter">
     <span class="fortouch">Tap</span><span class="notouch">Click</span>
@@ -145,9 +58,16 @@
          onclick="Codex.UI.handlers.everyone_ontap(event); fdjt.UI.cancel(event);"/>
   </div>
 </div>
-<div id="CODEXPOINTGLOSSES" class="hudpanel">
-  <!-- This is populated when a glosspoint is tapped.
-       It contains the glosses for a particular passage. -->
+<div id="CODEXSCANNER">
+  <span class="expander" id="CODEXEXPANDSCANNER">
+    <img svg="http://static.beingmeta.com/g/codex/twistyclosed.svgz"
+         src="http://static.beingmeta.com/g/codex/twistyclosed64x64.png"
+         alt="+"/>
+    <img svg="http://static.beingmeta.com/g/codex/twistyopen.svgz"
+         src="http://static.beingmeta.com/g/codex/twistyopen64x64.png"
+         alt="-"/>
+  </span>
+  <div id="CODEXSCAN"></div>
 </div>
 <div id="CODEXHEARTHOLDER">
   <div id="CODEXRIBBON">
@@ -182,17 +102,10 @@
   </div>
   <div id="CODEXHEART"></div>
 </div>
-<div class="helphud leftmiddle">
-  back page
+<div id="CODEXPOINTGLOSSES" class="hudpanel">
+  <!-- This is populated when a glosspoint is tapped.
+       It contains the glosses for a particular passage. -->
 </div>
-<div class="helphud rightmiddle">
-  next page
-</div>
-<!--
-    <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
-         src="http://static.beingmeta.com/g/codex/redx128x128.png"
-         class="codexclosehud" alt="close" id="CODEXSTOPSCAN"/>
-    -->
 <div id="CODEXFOOT" data-touchable="span.pagespan,span.pageno,span.locoff">
   <img svg="http://static.beingmeta.com/g/codex/allglosses.svgz"
        src="http://static.beingmeta.com/g/codex/allglosses50x50.png"
@@ -208,15 +121,15 @@
   <div id="CODEXSHOWTEXT">
     <span class="adjustfont" data-maxfont="150%">
       <span>
-      <span class="fortouch">Tap</span><span class="notouch">Click</span>
-      here to return to the text
-      <!--
-          <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
-               src="http://static.beingmeta.com/g/codex/redx128x128.png"
-               class="codexclosehud" alt="close"/>
-          -->
-    </span>
+        <span class="fortouch">Tap</span><span class="notouch">Click</span>
+        here to return to the text
+        <!--
+            <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
+                 src="http://static.beingmeta.com/g/codex/redx128x128.png"
+                 class="codexclosehud" alt="close"/>
+            -->
       </span>
+    </span>
   </div>
   <div class="helphud botleft" data-hudmode="toc">
     <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
@@ -241,6 +154,93 @@
     </div>
   </div>
 </div>
+<div id="CODEXAPPSPLASH" class="hudpanel"></div>
+<div id="CODEXHELP" class="hudpanel codexhelp"></div>
+<div id="CODEXHUDHELP"></div>
+<div id="CODEXKEYBOARDHELPBOX" class="closed">
+  <span class="keep" onclick="Codex.keyboardHelp(true);">keep</span>
+  <span class="close" onclick="Codex.keyboardHelp(false);">close</span>
+  <div id="CODEXKEYBOARDHELP"></div>
+  <div class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);">
+    <input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
+           CHECKED>
+    Show keyboard help
+  </div>
+</div>
+<div id="CODEXHUDBUTTONS" class="hudpanel">
+  <div class="sbookplate">
+    <a href="https://auth.sbooks.net/admin/logout" class="logout"
+       onclick="if (Codex.refuri) Codex.clearOffline();"
+       title="logout">
+      logout</a>
+    <a href="javascript:Codex.setMode('sbooksapp');" name="IDLINK"
+       class="username" id="CODEXUSERNAME">
+      (click to log in)</a>
+  </div> <!-- .flyleafplate -->
+  <div class="tabbar icons" id="CODEXTABS">
+    <img svg="http://static.beingmeta.com/g/codex/about_tab.svgz"
+         src="http://static.beingmeta.com/g/codex/about_tab.png"
+         alt="About" class="tab" contentid="CODEXABOUTBOOK"
+         onclick="Codex.toggleMode('about'); return fdjt.UI.cancel(event);"
+         title="information about this book"/>
+    <img svg="http://static.beingmeta.com/g/codex/toc_tab.svgz"
+         src="http://static.beingmeta.com/g/codex/toc_tab.png"
+         alt="ToC" class="tab" contentid="CODEXFLYTOC"
+         onclick="Codex.toggleMode('flytoc'); return fdjt.UI.cancel(event);"
+         title="Table of Contents (static)">
+    <img svg="http://static.beingmeta.com/g/codex/manage_tab.svgz"
+         src="http://static.beingmeta.com/g/codex/manage_tab.png"
+         alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
+         onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
+         title="manage added layers for your sBook"/>
+    <img svg="http://static.beingmeta.com/g/codex/settings_tab.svgz"
+         src="http://static.beingmeta.com/g/codex/settings_tab.png"
+         alt="Device" class="tab" contentid="CODEXSETTINGS"
+         onclick="Codex.toggleMode('device'); return fdjt.UI.cancel(event);"
+         title="alter appearance and interaction"/>
+    <img svg="http://static.beingmeta.com/g/codex/console_tab.svgz"
+         src="http://static.beingmeta.com/g/codex/console_tab.png"
+         alt="Console" class="tab" contentid="CODEXCONSOLE"
+         onclick="Codex.toggleMode('console'); return fdjt.UI.cancel(event);"
+         title="show debugging console" />
+    <img svg="http://static.beingmeta.com/g/codex/login_tab.svgz"
+         src="http://static.beingmeta.com/g/codex/login_tab.png"
+         alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
+         onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
+         title="login to sBooks" />
+  </div> <!-- .tabbar -->
+</div> <!-- id="CODEXHUDBUTTONS" -->
+
+<img svg="http://static.beingmeta.com/g/codex/tocicon.svgz"
+     src="http://static.beingmeta.com/g/codex/tocicon50x50.png"
+     alt="toc" title="navigate sections"
+     class="hudbutton hudmodebutton topleft clickable"
+     id="CODEXTOCBUTTON"
+     hudmode="toc"/>
+<img svg="http://static.beingmeta.com/g/codex/tagsearch.svgz"
+     src="http://static.beingmeta.com/g/codex/tagsearch50x50.png"
+     alt="search" title="search tags"
+     class="hudbutton hudmodebutton topright clickable"
+     id="CODEXSEARCHBUTTON"
+     hudmode="search"/>
+<div class="helphud topleft" data-hudmode="toc">
+  <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
+  <span class="nobreak">sections</span></div>
+<div class="helphud topright" data-hudmode="search">
+  <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
+  for&nbsp;tags
+</div>
+<div class="helphud leftmiddle">
+  back page
+</div>
+<div class="helphud rightmiddle">
+  next page
+</div>
+<!--
+    <img svg="http://static.beingmeta.com/g/codex/redx.svgz"
+         src="http://static.beingmeta.com/g/codex/redx128x128.png"
+         class="codexclosehud" alt="close" id="CODEXSTOPSCAN"/>
+    -->
 
 <!--
     /* Emacs local variables
