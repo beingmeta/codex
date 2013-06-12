@@ -408,8 +408,11 @@
     function content_swiped(evt){
         evt=evt||event;
         if (!(evt.deltaX)) {}
-        else if (evt.deltaX<0) return Codex.pageBackward(evt);
-        else return Codex.pageForward(evt);
+        else if ((evt.deltaX>0)&&(Math.abs(evt.deltaY)<100))
+            return Codex.pageBackward(evt);
+        else if ((evt.deltaX<0)&&(Math.abs(evt.deltaY)<100))
+            return Codex.pageForward(evt);
+        else {}
         return;}
 
     var selectors=[];
