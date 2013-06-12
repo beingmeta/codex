@@ -276,8 +276,9 @@
 
         if ((Codex.hudup)||(Codex.mode)) {
             Codex.setMode(false); Codex.setHUD(false);
-            fdjtUI.cancel(evt);
-            gesture_start=false;
+            if (fdjtID("CODEXOPENGLOSSMARK")) 
+                fdjtID("CODEXOPENGLOSSMARK").id="";
+            fdjtUI.cancel(evt); gesture_start=false;
             clicked=fdjtTime();
             return false;}
 
@@ -478,7 +479,7 @@
         if (mode) form.className=mode;
         Codex.setMode("addgloss",true);
         var input=fdjtDOM.getInputs(form,"NOTE")[0];
-        if (input) input.focus();}
+        if (input) {input.focus(); addClass(form_div,"focused");}}
 
     function initGlossMode(){
         var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
