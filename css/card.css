@@ -87,7 +87,9 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
     background-color: red; color: white; vertical-align: top;
     padding-right: 3px; padding-left: 3px;
     font-weight: bold; font-variant: small-caps;}
-.codexcard .links a { color: blue; text-decoration: underline;}
+.codexcard .links a {
+  color: blue; text-decoration: underline;
+  white-space: nowrap;}
 .codexcard .links img { height: 2ex; width: auto; vertical-align: baseline;}
 .codexcard span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
