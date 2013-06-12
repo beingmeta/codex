@@ -571,22 +571,24 @@
         if (preview_timer) {
             clearTimeout(preview_timer); preview_timer=false;}
         if (about) {
+            var ref=about.name.slice(3);
             var toc=getParent(about,".codextoc");
             var title=getTitleSpan(toc,about.name);
             if (Codex.Trace.gestures)
-                fdjtLog("toc_released %o about=%o toc=%o title=%s",
-                        evt,about,toc,title);
+                fdjtLog("toc_released %o ref=%o about=%o toc=%o title=%s",
+                        evt,ref,about,toc,title);
             dropClass(title,"codexpreviewtitle");
             dropClass(about.parentNode,"codexheld");
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
             dropClass(spanbar,"codexvisible");
             dropClass(toc,"codexheld");
             Codex.stopPreview("toc_released");
-            Codex.GoTo(about.frag||about.id);}
+            Codex.GoTo(ref);}
         else if (Codex.Trace.gestures)
             fdjtLog("toc_released %o noabout",evt);
         else {
-            Codex.stopPreview("toc_released");}}
+            Codex.stopPreview("toc_released");}
+        fdjtUI.cancel(evt);}
     function toc_slipped(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
