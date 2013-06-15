@@ -220,7 +220,7 @@
     
     var CodexSlice=Codex.Slice;
 
-    function showGlosses(target,point) {
+    function showGlossmark(target,point) {
         var id=target.codexbaseid||target.id;
         var dups=Codex.getDups(target.id);
         var glossids=Codex.glossdb.find('frag',id), glosses=[];
@@ -295,7 +295,15 @@
         Codex.setTarget(target);
         slice.update();
         Codex.setMode("openglossmark");}
-    Codex.showGlosses=showGlosses;
+    Codex.showGlossmark=showGlossmark;
+
+    function clearGlossmark() {
+        var slicediv=fdjtDOM("div.codexglosses.codexslice");
+        if (Codex.target) Codex.clearHighlights(Codex.target);
+        var hudwrapper=fdjtDOM("div.hudpanel#CODEXPOINTGLOSSES",slicediv);
+        fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
+        Codex.setMode(false);}
+    Codex.clearGlossmark=clearGlossmark;
 
 })();
 

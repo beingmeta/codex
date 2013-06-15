@@ -1277,10 +1277,11 @@
                     evt,target,glossmark,passage,Codex.mode,Codex.target);
         if (!(glossmark)) return false;
         fdjtUI.cancel(evt);
-        if ((Codex.mode==='openglossmark')&&(Codex.target===passage)) {
+        if ((Codex.mode==='openglossmark')&&
+            (Codex.target===passage)) {
             Codex.setMode(false);
             return;}
-        else Codex.showGlosses(passage,glossmark);}
+        else Codex.showGlossmark(passage,glossmark);}
 
     var animated_glossmark=false;
     var glossmark_animated=false;
@@ -1301,12 +1302,14 @@
             animated_glossmark=glossmark;
             glossmark_image=wedge;
             glossmark_animated=fdjtUI.ImageSwap(wedge,750);}
-        else if (glossmark_animated) {
-            clearInterval(glossmark_animated);
-            animated_glossmark=false;
-            glossmark_animated=false;
-            if (glossmark_image) fdjtUI.ImageSwap.reset(glossmark_image);
-            glossmark_image=false;}}
+        else {
+            if (Codex.clearGlossmark) Codex.clearGlossmark();
+            if (glossmark_animated) {
+                clearInterval(glossmark_animated);
+                animated_glossmark=false;
+                glossmark_animated=false;
+                if (glossmark_image) fdjtUI.ImageSwap.reset(glossmark_image);
+                glossmark_image=false;}}}
 
     function glossmark_hoverstart(evt){
         evt=evt||event;
@@ -1453,7 +1456,7 @@
                         var passage=fdjtID(ids[i]);
                         var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
                         Codex.GoTo(passage,"scanForward/glosses",true);
-                        Codex.showGlosses(passage,glossmark);
+                        Codex.showGlossmark(passage,glossmark);
                         return;}
                     else i++;}}
             Codex.setMode(false);
@@ -1506,7 +1509,7 @@
                         var passage=fdjtID(ids[i]);
                         var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
                         Codex.GoTo(passage,"scanBackward/glosses",true);
-                        Codex.showGlosses(passage,glossmark);
+                        Codex.showGlossmark(passage,glossmark);
                         return;}
                     else i--;}}
             Codex.setMode(false);
