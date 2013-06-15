@@ -849,10 +849,10 @@
         else if (kc===39) Codex.scanForward(evt); /* arrow right */
         // Don't interrupt text input for space, etc
         else if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
-        else if ((!(Codex.mode))&&(kc===32)) // Space
+        else if (kc===32) // Space
             Codex.Forward(evt);
         // backspace or delete
-        else if ((!(Codex.mode))&&((kc===8)||(kc===45)))
+        else if ((kc===8)||(kc===45))
             Codex.Backward(evt);
         // Home goes to the current head.
         else if (kc===36) Codex.JumpTo(Codex.head);
@@ -1413,6 +1413,7 @@
         if ((Codex.Trace.gestures)||(Codex.Trace.flips))
             fdjtLog("pageForward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
+        if (Codex.clearGlossmark) Codex.clearGlossmark();
         if ((Codex.bypage)&&(Codex.pagecount)) {
             var newpage=false;
             if (Codex.curpage===Codex.pagecount) {}
@@ -1428,6 +1429,7 @@
         if ((Codex.Trace.gestures)||(Codex.Trace.flips))
             fdjtLog("pageBackward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
+        if (Codex.clearGlossmark) Codex.clearGlossmark();
         if ((Codex.bypage)&&(Codex.pagecount)) {
             var newpage=false;
             if (Codex.curpage===0) {}
