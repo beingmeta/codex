@@ -363,10 +363,11 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(editexcerpt)|(gotoloc)|(gotopct)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
+        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopct)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
         var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
         var codexHeadMode_pat=/\b((toc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(gotopct)|(tocscan)|(shownote))\b/g;
         var CodexSubMode_pat=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
+        var CodexBodyMode_pat=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var codex_mode_scrollers=
             {allglosses: "CODEXALLGLOSSES",
              searchresults: "CODEXSEARCHRESULTS",
@@ -489,12 +490,14 @@ Codex.setMode=
                 dropClass(document.body,"cxSHRINK");
                 Codex.cxthelp=false;
                 if (display_sync) Codex.displaySync();
-                var old_mode=Codex.mode;
-                setTimeout(function(){
-                    if (Codex.mode===old_mode) {
+                if (CodexBodyMode_pat.test(oldmode)) {
+                    dropClass(CodexHUD,CodexSubMode_pat);
+                    setHUD(false);}
+                else setTimeout(function(){
+                    if (Codex.mode===oldmode) {
                         dropClass(CodexHUD,CodexSubMode_pat);
                         setHUD(false);}},500);}}
-
+        
         function changeMode(mode){      
             fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
             fdjtDOM.dropClass(CodexHUD,CodexSubMode_pat);

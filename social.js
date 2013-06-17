@@ -222,6 +222,7 @@
 
     function showGlossmark(target,point) {
         var id=target.codexbaseid||target.id;
+        if (!(id)) return;
         var dups=Codex.getDups(target.id);
         var glossids=Codex.glossdb.find('frag',id), glosses=[];
         var slicediv=fdjtDOM("div.codexglosses.codexslice");
@@ -298,11 +299,11 @@
     Codex.showGlossmark=showGlossmark;
 
     function clearGlossmark() {
+        if (Codex.mode==="openglossmark") Codex.setMode(false,true);
         var slicediv=fdjtDOM("div.codexglosses.codexslice");
         if (Codex.target) Codex.clearHighlights(Codex.target);
         var hudwrapper=fdjtDOM("div.hudpanel#CODEXPOINTGLOSSES",slicediv);
-        fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
-        Codex.setMode(false);}
+        fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);}
     Codex.clearGlossmark=clearGlossmark;
 
 })();

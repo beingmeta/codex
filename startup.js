@@ -1163,13 +1163,17 @@ Codex.Startup=
             Codex.body=fdjtDOM("div#CODEXBODY",content,page);
             fdjtDOM.append(body,Codex.body);
             fdjtDOM.addClass(body,"sbook");
-            sizePage(page,content);
+            sizeContent();
             // Initialize the margins
             initMargins();
             if (Codex.Trace.startup>1)
                 fdjtLog("Initialized body");}
 
-        function sizePage(page,content){
+        function sizeContent(){
+            var page=fdjtID("CODEXPAGE");
+            var content=fdjtID("CODEXCONTENT");
+            // Clear any explicit left/right settings to get at
+            //  whatever the CSS actually specifies
             content.style.left=page.style.left='';
             content.style.right=page.style.right='';
             var page_width=fdjtDOM.getGeometry(page).width;
@@ -1184,7 +1188,7 @@ Codex.Startup=
             if (content_margin>=50) {
                 content.style.left=content_margin+'px';
                 content.style.right=content_margin+'px';}}
-        Codex.sizePage=sizePage;
+        Codex.sizeContent=sizeContent;
         
         /* Margin creation */
 
@@ -1237,7 +1241,7 @@ Codex.Startup=
             pagefoot.style.backgroundColor=bgcolor;
             fdjtDOM.addListener(window,"resize",function(evt){
                 if (Codex.dont_resize) return;
-                Codex.sizePage(Codex.page,Codex.content);
+                Codex.sizeContent();
                 Codex.resizeHUD();
                 if (resizing) clearTimeout(resizing);
                 if ((Codex.layout)&&(Codex.layout.onresize))
