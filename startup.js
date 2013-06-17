@@ -1707,12 +1707,12 @@ Codex.Startup=
                                  var pct=(i*100)/lim;
                                  if (tracelevel>1)
                                      startupLog("Added %d (%d%% of %d tags) to clouds",
-                                                i,lim,Math.floor(pct));
+                                                i,Math.floor(pct),lim);
                                  fdjtUI.ProgressBar.setProgress("CODEXINDEXMESSAGE",pct);
                                  fdjtUI.ProgressBar.setMessage(
                                      "CODEXINDEXMESSAGE",
                                      fdjtString("Added %d tags (%d%% of %d) to clouds",
-                                                i,lim,Math.floor(pct)));},
+                                                i,Math.floor(pct),lim));},
                              function(){
                                  var eq=Codex.empty_query;
                                  fdjtLog("Done populating clouds");
@@ -1736,7 +1736,7 @@ Codex.Startup=
                                  Codex.sizeCloud(
                                      gloss_cloud,eq.tagscores,eq.tagfreqs,
                                      eq.results.length,false);},
-                            200,50);}
+                            200,5);}
         
         var addTags=Codex.addTags;
         
@@ -1819,7 +1819,8 @@ Codex.Startup=
                                  fdjtLog("Processed automatic index of %d keys over %d items",
                                          ntags,nitems);
                                  dropClass(document.body,"cxINDEXING");
-                                 if (whendone) whendone();});}
+                                 if (whendone) whendone();},
+                            200,5);}
         Codex.useIndexData=useIndexData;
         
         /* Applying various tagging schemes */
@@ -1920,7 +1921,8 @@ Codex.Startup=
                         (tohandle.length>24))
                         fdjtLog("Finished indexing tag attributes for %d nodes",
                                 tohandle.length);
-                    if (whendone) whendone();});}
+                    if (whendone) whendone();},
+                200,5);}
         Codex.applyTagAttributes=applyTagAttributes;
         
         function handle_inline_tags(info){

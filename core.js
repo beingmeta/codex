@@ -337,7 +337,7 @@ var Codex={
     Codex.withsvg=document.implementation.hasFeature(
         "http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")||
         navigator.mimeTypes["image/svg+xml"];
-    Codex.svg=false;
+    Codex.svg=fdjt.DOM.checkSVG();
     if (fdjtState.getQuery("nosvg")) Codex.svg=false;
     else if (fdjtState.getQuery("withsvg")) Codex.svg=true;
     Codex.icon=function(base,width,height){

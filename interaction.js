@@ -1272,6 +1272,8 @@
         var target=fdjtUI.T(evt);
         var glossmark=getParent(target,".codexglossmark");
         var passage=getTarget(glossmark.parentNode,true);
+        if ((passage)&&(passage.getAttribute("data-baseid"))) 
+            passage=fdjtID(passage.getAttribute("data-baseid"));
         if (Codex.Trace.gestures)
             fdjtLog("glossmark_tapped (%o) on %o gmark=%o passage=%o mode=%o target=%o",
                     evt,target,glossmark,passage,Codex.mode,Codex.target);
