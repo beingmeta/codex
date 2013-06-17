@@ -1314,13 +1314,15 @@
     function glossmark_hoverstart(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        if (!(fdjtDOM.getParent(target,".codextarget")))
+        var passage=getTarget(target);
+        if (!(fdjtDOM.hasClass(passage,"codextarget")))
             animate_glossmark(target,true);}
 
     function glossmark_hoverdone(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        if (!(fdjtDOM.getParent(target,".codextarget")))
+        var passage=getTarget(target);
+        if (!(fdjtDOM.hasClass(passage,"codextarget")))
             animate_glossmark(target,false);}
 
     function setTargetUI(target){
