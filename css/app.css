@@ -300,8 +300,7 @@ div.locbar hr {
     border: 0px;
     border-right: solid rgba(0,0,255,0.25) 2px;
     width: 0px; overflow: visible;
-    max-height: 32px; /* max-width: 32px; */
-    min-width: 32px; min-height: 32px;
+    max-height: 32px; min-width: 32px; min-height: 32px;
     width: 32px; height: 32px;
     z-index: 50;}
 body.cxBYPAGE .codexglossmark {margin-right: -32px;}
@@ -365,8 +364,8 @@ body.hudup .codexglossmark > * {
     position: static;
     vertical-align: middle; text-align: right;
     float: right;}
+.codexglossmark img { width: 100%; height: auto;}
 .codexglossmark img.wedge {
-    width: 32px; height: auto;
     position: absolute; right: 0px; top: 0px;}
 
 .codexglossbutton {

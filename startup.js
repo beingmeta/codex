@@ -1177,6 +1177,7 @@ Codex.Startup=
             var view_width=fdjtDOM.viewWidth();
             var page_margin=(view_width-page_width)/2;
             var content_margin=(view_width-content_width)/2;
+            var rule_index;
             if (page_margin>=50) {
                 page.style.left=(page_margin+15)+'px';
                 page.style.right=(page_margin+15)+'px';}
@@ -1236,7 +1237,6 @@ Codex.Startup=
             pagefoot.style.backgroundColor=bgcolor;
             fdjtDOM.addListener(window,"resize",function(evt){
                 if (Codex.dont_resize) return;
-                Codex.resizeBody();
                 Codex.sizePage(Codex.page,Codex.content);
                 Codex.resizeHUD();
                 if (resizing) clearTimeout(resizing);

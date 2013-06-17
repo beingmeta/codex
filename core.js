@@ -730,22 +730,6 @@ var Codex={
         
     /* Navigation */
 
-    function resizeBody(){
-        if (Codex.nativescroll) {}
-        else {
-            /*
-            var curx=x_offset-fdjtDOM.parsePX(Codex.pages.style.left);
-            var cury=y_offset-fdjtDOM.parsePX(Codex.pages.style.top);
-            // Codex.body.style.left=''; Codex.body.style.top='';
-            var geom=fdjtDOM.getGeometry(Codex.body,Codex.body);
-            x_offset=geom.left; y_offset=geom.top;
-            Codex.bodyoff=[x_offset,y_offset];
-            Codex.pages.style.left='0px';
-            Codex.pages.style.top=(y_offset)+'px';
-            */
-        }}
-    Codex.resizeBody=resizeBody;
-
     Codex.viewTop=function(){
         if (Codex.nativescroll) return fdjtDOM.viewTop();
         else return -(fdjtDOM.parsePX(Codex.pages.style.top));};
