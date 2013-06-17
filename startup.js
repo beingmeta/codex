@@ -1193,11 +1193,12 @@ Codex.Startup=
                     page.style.right=page_margin+'px';}
                 else if (page_margin<50) {
                     var insert_at=ss.cssRules.length++;
-                    var glossmark_width=((page_margin<25)?(25):(page_margin));
+                    var gm_width=((page_margin<25)?(25):(page_margin));
+                    var gm_offset=((gm_width>page_margin)?(gm_width-page_margin):(gm_width))-2;
                     ss.insertRule(
                         fdjtString(
                             "body.cxBYPAGE .codexglossmark { width: %dpx; height: %dpx; margin-right: -%dpx;}",
-                            glossmark_width,glossmark_width,glossmark_width),
+                            gm_width,gm_width,gm_offset),
                         insert_at);
                     glossmark_rule=ss.cssRules[insert_at];}
                 else {}}

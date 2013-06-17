@@ -71,6 +71,7 @@ div#CODEXPAGE {
     -o-border-radius: 18px;
     -moz-border-radius: 18px;
     -webkit-border-radius: 18px;}
+#CODEXPAGE { max-width: 40em;}
 body.cxSCROLL div#CODEXPAGE, img.codexpagebutton { display: none;}
 
 body.cxBYPAGE { overflow: hidden; }
