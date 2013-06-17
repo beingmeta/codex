@@ -1169,6 +1169,8 @@ Codex.Startup=
             if (Codex.Trace.startup>1)
                 fdjtLog("Initialized body");}
 
+        var glossmark_rule=false;
+
         function sizeContent(){
             var page=fdjtID("CODEXPAGE");
             var content=fdjtID("CODEXCONTENT");
@@ -1176,18 +1178,30 @@ Codex.Startup=
             //  whatever the CSS actually specifies
             content.style.left=page.style.left='';
             content.style.right=page.style.right='';
+            document.body.style.overflow='hidden';
             var page_width=fdjtDOM.getGeometry(page).width;
-            var content_width=fdjtDOM.getGeometry(content).width;
             var view_width=fdjtDOM.viewWidth();
-            var page_margin=(view_width-page_width)/2;
-            var content_margin=(view_width-content_width)/2;
-            var rule_index;
-            if (page_margin>=50) {
-                page.style.left=(page_margin+15)+'px';
-                page.style.right=(page_margin+15)+'px';}
-            if (content_margin>=50) {
-                content.style.left=content_margin+'px';
-                content.style.right=content_margin+'px';}}
+            if (page_width) {
+                var ss=Codex.stylesheet;
+                var page_margin=(view_width-page_width)/2;
+                if (glossmark_rule) {
+                    ss.deleteRule(glossmark_rule);
+                    glossmark_rule=false;}
+                // If there are wide margins, set the left and right styles
+                if (page_margin>=50) {
+                    page.style.left=page_margin+'px';
+                    page.style.right=page_margin+'px';}
+                else if (page_margin<50) {
+                    var insert_at=ss.cssRules.length++;
+                    var glossmark_width=((page_margin<25)?(25):(page_margin));
+                    ss.insertRule(
+                        fdjtString(
+                            "body.cxBYPAGE .codexglossmark { width: %dpx; height: %dpx; margin-right: -%dpx;}",
+                            glossmark_width,glossmark_width,glossmark_width),
+                        insert_at);
+                    glossmark_rule=ss.cssRules[insert_at];}
+                else {}}
+            document.body.style.overflow='';}
         Codex.sizeContent=sizeContent;
         
         /* Margin creation */

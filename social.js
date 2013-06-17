@@ -252,9 +252,13 @@
             var pgeom=fdjtDOM.getGeometry(point);
             var tgeom=fdjtDOM.getGeometry(target);
             var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight();
-            if (geom.height>h/2) {
+            if ((geom.height>h/2)||(w<500)) {
                 // If the slice is big, drop the width constraint
-                hudwrapper.style.maxWidth='';
+                if (w<500) {
+                    hudwrapper.style.maxWidth=(w-20)+"px";
+                    hudwrapper.style.minWidth=Math.floor(w/2)+"px";
+                    hudwrapper.style.left="10px";}
+                else hudwrapper.style.maxWidth=(w-100)+"px";
                 geom=fdjtDOM.getGeometry(slicediv);
                 wgeom=fdjtDOM.getGeometry(hudwrapper);}
             var wh=false;
@@ -286,6 +290,8 @@
                     hudwrapper.style.bottom='auto';
                     hudwrapper.style.height=(h/2)+'px';}}
             // fdjtLog("geom=%j, pgeom=%j, wgeom=%j ph=%j",geom,pgeom,wgeom,fdjtDOM.viewHeight());
+            if (fdjtDOM.viewWidth()<300)
+                hudwrapper.style.minWidth=((fdjtDOM.viewWidth())-10)+"px";
             hudwrapper.style.display='';
             hudwrapper.style.opacity='';}
         else fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);

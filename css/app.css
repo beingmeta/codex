@@ -222,7 +222,6 @@ div#CODEXPAGINATING {
 /* The content */
 
 body.sbook { width: inherit;}
-body.sbook div#CODEXPAGE { max-width: 40em; }
 
 span.excerpt {
     font-size: 120%; color: gray;
@@ -322,10 +321,9 @@ div.locbar hr {
     border: 0px;
     border-right: solid rgba(0,0,255,0.25) 2px;
     width: 0px; overflow: visible;
-    max-height: 32px; min-width: 32px; min-height: 32px;
-    width: 32px; height: 32px;
+    width: 40px; height: 40px;
     z-index: 50;}
-body.cxBYPAGE .codexglossmark {margin-right: -32px;}
+body.cxBYPAGE .codexglossmark {margin-right: -40px;}
 body.cxSCROLL .codexglossmark { right: 5px;}
 
 body .codexglossmark > * {
@@ -336,6 +334,13 @@ body .codexglossmark > * {
     -khtml-opacity: 0.01;
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
+*.glossed:hover *.glossed > .codexglossmark,
+*.glossed.hover *.glossed > .codexglossmark {
+   z-index: 25;}
+*.glossed:hover *.glossed > .codexglossmark > *,
+*.glossed.hover *.glossed > .codexglossmark > * {
+   opacity: 0.05;}
+
 *:hover > .codexglossmark > *, *.hover > .codexglossmark > * {
     opacity: 0.30;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
@@ -344,15 +349,6 @@ body .codexglossmark > * {
     -khtml-opacity: 0.30;
     -moz-opacity: 0.30;
     -o-opacity: 0.30;}
-*.glossed:hover *.glossed > .codexglossmark > *,
-*.glossed.hover *.glossed > .codexglossmark > * {
-    opacity: 0.01;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=01)";
-    filter: alpha(opacity=01);
-    -webkit-opacity: 0.01;
-    -khtml-opacity: 0.01;
-    -moz-opacity: 0.01;
-    -o-opacity: 0.01;}
 body .codexglossmark:hover > *, body .codexglossmark.hover > * {
     opacity: 0.50;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
