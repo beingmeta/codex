@@ -772,9 +772,19 @@ var Codex={
         if (Codex.Trace.state) fdjtLog("Setting state to %j",state);
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
-        fdjtState.setLocal("codex.state("+uri+")",statestring);}
+        fdjtState.setLocal("codex.state("+uri+")",statestring);
+        if ((window.history)&&(window.history.pushState)) {
+            fdjtLog("Pushing state %j",state);
+            window.history.pushState(state);}}
     Codex.setState=setState;
     
+    function restoreState(state){
+        fdjtLog("Restoring state %j",state);
+        if (state.target)
+            Codex.GoTo(state.target,"restoreState",true,false);
+        if (state.location) Codex.setLocation(state.location);}
+    Codex.restoreState=restoreState;
+
     function setConnected(val){
         if ((val)&&(!(Codex.connected))) {
             var onconnect=Codex._onconnect;
@@ -932,7 +942,7 @@ var Codex={
         if ((istarget)&&(targetid)&&(!(inUI(target)))) setTarget(target);
         if ((pushstate)&&(istarget))
             Codex.setState({
-                target: ((Codex.target)&&(Codex.targetid)),
+                target: ((Codex.target)&&(Codex.target.id)),
                 location: location,page: page});
         else if (pushstate)
             Codex.setState({location: location,page: page});

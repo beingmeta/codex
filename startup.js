@@ -701,6 +701,8 @@ Codex.Startup=
                     Codex.glosshash=false;
                 else initLocation();}
             else initLocation();
+            window.onpopstate=function onpopstate(evt){
+                if (evt.state) Codex.restoreState(evt.state);};
             fdjtLog("Startup done");
             if (fdjtID("CODEXREADYSPLASH"))
                 fdjtID("CODEXREADYSPLASH").style.display='none';
