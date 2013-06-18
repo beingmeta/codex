@@ -1421,7 +1421,7 @@
         if ((Codex.bypage)&&(Codex.pagecount)) {
             var newpage=false;
             if (Codex.curpage===Codex.pagecount) {}
-            else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward",true);}
+            else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward",true,true);}
         else {
             var delta=fdjtDOM.viewHeight()-50;
             if (delta<0) delta=fdjtDOM.viewHeight();
@@ -1438,7 +1438,8 @@
             var newpage=false;
             if (Codex.curpage===0) {}
             else {
-                Codex.GoToPage(newpage=Codex.curpage-1,"pageBackward",true);}}
+                newpage=Codex.curpage-1;
+                Codex.GoToPage(newpage,"pageBackward",true,true);}}
         else {
             var delta=fdjtDOM.viewHeight()-50;
             if (delta<0) delta=fdjtDOM.viewHeight();

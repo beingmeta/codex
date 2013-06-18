@@ -582,8 +582,8 @@ Codex.Paginate=
         
         var curpage=false;
         
-        function GoToPage(spec,caller,pushstate){
-            if (typeof pushstate === 'undefined') pushstate=true;
+        function GoToPage(spec,caller,savestate,skiphist){
+            if (typeof savestate === 'undefined') savestate=true;
             if (Codex.previewing) stopPreview("GoToPage");
             dropClass(document.body,"codexhelp");
             if (Codex.layout) {
@@ -609,16 +609,18 @@ Codex.Paginate=
                     Codex.setLocation(location);}
                 updatePageDisplay(pagenum,Codex.location);
                 curpage=page; Codex.curpage=pagenum;
-                if (pushstate) {
-                    var curnode=fdjtID(page.getAttribute("data-topid"));
+                var curnode=fdjtID(page.getAttribute("data-topid"));
+                if (savestate) {
                     Codex.point=curnode;
                     if (!((Codex.hudup)||(Codex.mode))) Codex.scanning=false;
                     Codex.setHead(curnode);}
-                if ((pushstate)&&(page)) {
-                    Codex.setState(
+                if ((savestate)&&(page)) {
+                    Codex.saveState(
                         {location: atoi(page.getAttribute("data-sbookloc"),10),
                          page: atoi(page.getAttribute("data-pagenum"),10),
-                         target: Codex.target.id});}
+                         target: ((curnode)&&
+                                  ((curnode.getAttribute("data-baseid"))||(curnode.id)))},
+                        skiphist);}
                 var glossed=fdjtDOM.$(".glossed",page);
                 if (glossed) {
                     var addGlossmark=Codex.UI.addGlossmark;

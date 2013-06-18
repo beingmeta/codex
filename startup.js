@@ -191,7 +191,8 @@ Codex.Startup=
                     else {}
                     if ((Codex.Trace.dosync)||(Codex.Trace.state))
                         fdjtLog("configSave(callback) %o ready=%o status=%o %j",
-                                evt,req.readyState,req.status,saved_config);};
+                                evt,req.readyState,((req.readyState===4)&&(req.status)),
+                                saved_config);};
                 var uri="https://auth.sbooks.net/admin/codexconfig?"+
                     encodeURIComponent(JSON.stringify(saved));
                 req.withCredentials=true;
@@ -261,7 +262,9 @@ Codex.Startup=
                 else {}
                 if ((Codex.Trace.dosync)||(Codex.Trace.state))
                     fdjtLog("configSave(callback) %o ready=%o status=%o %j",
-                            evt,req.readyState,req.status,saved_config);};
+                            evt,req.readyState,
+                            ((req.readyState===4)&&(req.status)),
+                            saved_config);};
             var uri="https://auth.sbooks.net/admin/codexconfig";
             req.withCredentials=true;
             try { req.open("GET",uri,true); req.send(); }
@@ -787,8 +790,13 @@ Codex.Startup=
         function readSettings(){
             // Basic stuff
             var refuri=_getsbookrefuri();
+            var locuri=window.location.href;
+            var hashpos=locuri.indexOf('#');
+            if (hashpos>0) Codex.locuri=locuri.slice(0,hashpos);
+            else Codex.locuri=locuri;
             document.body.refuri=Codex.refuri=refuri;
             Codex.docuri=_getsbookdocuri();
+            
             Codex.devinfo=fdjtState.versionInfo();
             
             if (fdjtState.getQuery("offline")) {
@@ -1617,17 +1625,17 @@ Codex.Startup=
                 else target=document.getElementById(hash);
                 if (Codex.Trace.startup>1)
                     fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
-            if (target) Codex.GoTo(target,"initLocation/hash",true,true);
+            if (target) Codex.GoTo(target,"initLocation/hash",true,true,true);
             else if ((state)&&(state.location)) {
-                Codex.GoTo(state.location,"initLocation/state.locaion",
-                           false,false);
+                Codex.GoTo(state.location,"initLocation/state.location",
+                           false,false,true);
                 if (state.target) Codex.setTarget(state.target);}
             else if ((state)&&(state.target)&&(fdjtID(state.target)))
-                Codex.GoTo(state.target,"initLocation/state.target",true,true);
+                Codex.GoTo(state.target,"initLocation/state.target",true,true,true);
             else if (Codex.start||Codex.cover||Codex.titlepage)
                 Codex.GoTo((Codex.start||Codex.cover||Codex.titlepage),
                            "initLocation/start/cover/titlepage",
-                           false,false);
+                           false,false,true);
             if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
                 syncLocation();}
         
@@ -1665,7 +1673,7 @@ Codex.Startup=
                                                     d.target,true);
                                      else Codex.GoTo(d.target,"sync",
                                                      d.target,true);
-                                     Codex.setState(d);}}}],
+                                     Codex.saveState(d);}}}],
                                       fdjtDOM("div",msg1),
                                       fdjtDOM("div.smaller",msg2));}},
                           uri,false,
@@ -1814,7 +1822,7 @@ Codex.Startup=
                                       fdjtString(
                                           "Assimilated %d tags (%d%% of %d) from the robo-index",
                                           i,Math.floor(pct),lim));})),
-                             function(state,i,lim){
+                             function(state){
                                  // At end:
                                  Codex.tagmaxweight=maxweight;
                                  Codex.tagminweight=minweight;

@@ -114,7 +114,7 @@ var Codex={
         layout: 0,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
         dosync: false,    // Whether to trace state saves
-        state: false,     // Whether to trace set state
+        state: true,      // Whether to trace set state
         flips: false,     // Whether to trace page flips (movement by pages)
         messages: false,  // Whether to trace inter-window messages
         iscroll: false,   // Whether to trace HUD scrolling with iScroll
@@ -757,7 +757,7 @@ var Codex={
 
     var syncing=false;
     
-    function setState(state){
+    function saveState(state,skiphist){
         if ((Codex.state===state)||
             ((Codex.state)&&
              (Codex.state.target===state.target)&&
@@ -768,18 +768,24 @@ var Codex={
         if (!(Codex.dosync)) return;
         if (!(state.tstamp)) state.tstamp=fdjtTime.tick();
         if (!(state.refuri)) state.refuri=Codex.refuri;
+        var title=state.title, frag=state.target;
+        if ((!(title))&&(frag)&&(Codex.docinfo[frag])) {
+            state.title=title=Codex.docinfo[frag].title||
+                Codex.docinfo[frag].head.title;}
         Codex.state=state;
         if (Codex.Trace.state) fdjtLog("Setting state to %j",state);
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
         fdjtState.setLocal("codex.state("+uri+")",statestring);
-        if ((window.history)&&(window.history.pushState)) {
-            fdjtLog("Pushing state %j",state);
-            window.history.pushState(state);}}
-    Codex.setState=setState;
+        if ((!(skiphist))&&(window.history)&&(window.history.pushState)) {
+            if (frag) state.uri=uri=Codex.locuri+"#"+frag;
+            if (Codex.Trace.state)
+                fdjtLog("Pushing history %j %s %s",state,((uri)||("")),((title)||("")));
+            window.history.pushState(state,title,uri);}}
+    Codex.saveState=saveState;
     
     function restoreState(state){
-        fdjtLog("Restoring state %j",state);
+        if (Codex.Trace.state) fdjtLog("Restoring state %j",state);
         if (state.target)
             Codex.GoTo(state.target,"restoreState",true,false);
         if (state.location) Codex.setLocation(state.location);}
@@ -849,7 +855,8 @@ var Codex={
                 else {}
                 if ((Codex.Trace.dosync)||(Codex.Trace.state))
                     fdjtLog("serverSync(callback) %o ready=%o status=%o %j",
-                            evt,req.readyState,req.status,syncing);};
+                            evt,req.readyState,((req.readyState===4)&&(req.status)),
+                            syncing);};
             req.withCredentials=true;
             try {
                 req.open("GET",sync_uri,true);
@@ -894,30 +901,34 @@ var Codex={
     Codex.resolveLocation=resolveLocation;
 
     // This moves within the document in a persistent way
-    function CodexGoTo(arg,caller,istarget,pushstate){
+    function CodexGoTo(arg,caller,istarget,savestate,skiphist){
         if (typeof istarget === 'undefined') istarget=true;
-        if (typeof pushstate === 'undefined') pushstate=true;
-        var target, location, info;
+        if (typeof savestate === 'undefined') savestate=true;
+        var target, location, locinfo;
         if (typeof arg === 'string') {
             target=document.getElementById(arg);
-            info=getLocInfo(target);
-            location=info.start;}
+            locinfo=getLocInfo(target);
+            location=locinfo.start;}
         else if (typeof arg === 'number') {
             location=arg;
             target=(((istarget.nodeType)&&(istarget.id))?(istarget):
                     (resolveLocation(arg)));}
         else if (arg.nodeType) {
-            info=getLocInfo(arg);
-            if (arg.id) target=arg;
-            else if (arg.codexbaseid) target=arg;
-            else target=getTarget(arg);
-            location=info.start;}
+            target=getTarget(arg);
+            locinfo=getLocInfo(arg);
+            location=locinfo.start;}
         else {
             fdjtLog.warn("Bad CodexGoTo %o",arg);
             return;}
+        if (istarget.nodeType) target=istarget;
+        else if ((typeof istarget === "string")&&(fdjtID(istarget)))
+            target=fdjtID(istarget);
+        else {}
+        var info=(target)&&
+            Codex.docinfo[target.getAttribute("data-baseid")||target.id];
         if (!(target)) {
             if (Codex.layout instanceof fdjt.CodexLayout)
-                Codex.GoToPage(arg,caller,pushstate);
+                Codex.GoToPage(arg,caller,savestate);
             else if (arg.nodeType) {
                 var scan=arg;
                 while (scan) {
@@ -925,11 +936,16 @@ var Codex={
                     else scan=scan.parentNode;}
                 if (scan) Codex.content.style.offsetTop=-(scan.offsetTop);}
             else {}
+            if (Codex.curpage)
+                saveState({location: Codex.location,
+                           page: Codex.curpage,
+                           npages: Codex.pagecount},
+                          true);
+            else saveState({location: Codex.location},true);
             return;}
         var page=((Codex.bypage)&&(Codex.layout)&&
                   (Codex.pagecount)&&(Codex.getPage(target)));
         var targetid=target.codexbaseid||target.id;
-        info=((targetid)&&(Codex.docinfo[targetid]));
         if (Codex.Trace.nav)
             fdjtLog("Codex.GoTo%s() #%o@P%o/L%o %o",
                     ((caller)?("/"+caller):""),targetid,page,
@@ -940,12 +956,13 @@ var Codex={
         setHead(target);
         setLocation(location);
         if ((istarget)&&(targetid)&&(!(inUI(target)))) setTarget(target);
-        if ((pushstate)&&(istarget))
-            Codex.setState({
-                target: ((Codex.target)&&(Codex.target.id)),
-                location: location,page: page});
-        else if (pushstate)
-            Codex.setState({location: location,page: page});
+        if ((savestate)&&(istarget))
+            Codex.saveState({
+                target: (target.getAttribute("data-baseid")||target.id),
+                location: location,page: page,npages: Codex.pagecount});
+        else if (savestate)
+            Codex.saveState({location: location,page: page,
+                             npages: Codex.pagecount});
         else {}
         if (page)
             Codex.GoToPage(target,caller||"CodexGoTo",false);
