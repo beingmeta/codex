@@ -85,7 +85,9 @@ Codex.Slice=(function () {
                     ((score)&&(showscore(score,query))),
                     (((info.maker)||(info.tstamp))?(showglossinfo(info)):
                      (showdocinfo(info))),
-                    ((note_len>0)&&(fdjtUI.Ellipsis("span.note",info.note,140)))," ",
+                    ((note_len>0)&&
+                     (fdjtDOM("span.note",Codex.md2html(info.note))))," ",
+                    // (fdjtUI.Ellipsis("span.note",info.note,140))
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
                     ((info.alltags)&&(showtags(info)))," ",

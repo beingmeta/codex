@@ -341,7 +341,11 @@ Codex.Startup=
 
             Codex.setMode("splash");
 
-            fdjtDOM.adjustFonts(fdjtID("CODEXHUD"));}
+            fdjtDOM.adjustFonts(fdjtID("CODEXHUD"));
+
+            var md2html=new Markdown.Converter();
+            Codex.md2html=md2html;
+        }
 
         function appSetup() {
 
