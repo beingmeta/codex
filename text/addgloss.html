@@ -77,13 +77,15 @@
     </div>
     <div class="inputbox">
       <div class="textbox">
-        <textarea name="NOTE"
-                  placeholder="Add text, [[tag]]s, or [[http:/links/ w/titles]]. Enter to finish, Shift-Enter for newline."
-                  title="Add text, [[tag]]s, or [[http:/links/ w/titles]]. Enter to finish, Shift-Enter for newline."
-                  onfocus="Codex.UI.addgloss_focus(event);"
-                  onblur="Codex.UI.addgloss_blur(event);"
-                  wrap="virtual"
-                  tabindex="0"></textarea>
+        <textarea
+           name="NOTE"
+           placeholder="Add text (using markdown), using @share and #tag to add outlets and tags."
+           title="Add text (using markdown), using @share and #tag to add outlets and tags."
+           onfocus="Codex.UI.addgloss_focus(event);"
+           onblur="Codex.UI.addgloss_blur(event);"
+           class="markdowninput"
+           wrap="virtual"
+           tabindex="0"></textarea>
       </div>
     </div>
     <div class="glossetc">
