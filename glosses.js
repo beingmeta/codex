@@ -427,7 +427,6 @@
             detail_elt=getInput(form,"DETAIL");
             fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
         Codex.glossform=form;
-        var glossinput=getInput(form,"NOTE");
         var syncelt=getInput(form,"SYNC");
         syncelt.value=(Codex.syncstamp+1);
         /* Do completions based on those input's values */
@@ -713,9 +712,6 @@
         var pos=target.selectionStart;
         var start=tagstart(text,pos);
         if (start<0) return;
-        var end=((start>=0)?(tagend(text,start)):(false));
-        var content=tagcontent(text,start,end);
-        var cloud=((text[start]==='@')?(Codex.share_cloud):(Codex.gloss_cloud));
         Codex.UI.glossform_focus(evt);
         if (glossinput_timer) clearTimeout(glossinput_timer);
         glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}
@@ -749,8 +745,8 @@
                 return fdjtUI.cancel(evt);}
             else if (text[start+1]==="\"") {
                 // Closes tag
-                var tagtext=text.slice(start,end)+"\"";
-                glosstag_done(target,tagtext,true);
+                var quoted_tagtext=text.slice(start,end)+"\"";
+                glosstag_done(target,quoted_tagtext,true);
                 text.value=text.slice(0,start)+text.slice(end);
                 return fdjtUI.cancel(evt);}
             else {}}
@@ -764,8 +760,6 @@
         var start=tagstart(text,pos);
         if (start>=0) {
             var end=tagend(text,start);
-            var form=getParent(input_elt,"FORM");
-            var wrapper=getParent(form,".codexglossform");
             var content=tagcontent(text,start,end);
             var isoutlet=(text[start]==="@");
             var completions;
@@ -792,11 +786,10 @@
             if ((isoutlet)&&(!(tag))) {/* do error somehow */}
             else if (isoutlet) addOutlet(form,tag);
             else if (!(tag)) {
-                if (tagstring.indexof('|')>0) {
-                    var tag=Codex.knodule.def(tagstring);addTag(form,tag);}
-                else {
-                    var tag=Codex.knodule.ref(tagstring);
-                    addTag(form,tag);}}
+                if (tagstring.indexof('|')>0) 
+                    tag=Codex.knodule.def(tagstring);
+                else tag=Codex.knodule.ref(tagstring);
+                if (tag) addTag(form,tag);}
             else addTag(form,tag);}
         dropClass("CODEXHUD",/gloss(tagging|addoutlet)/);}
     
@@ -815,23 +808,8 @@
 
     var stdspace=fdjtString.stdspace;
 
-    function handleTagText(form,content){
-        dropClass("CODEXHUD","glosstagging");
-        if ((content[0]==='@')||(content.search(uri_prefix)===0)) {
-            var start=(content[0]==='@');
-            var brk=content.search(/\s/);
-            if (brk<0) addLink(form,content.slice(start));
-            else {
-                addLink(form,content.slice(start,brk),
-                        content.slice(brk+1));}
-            return false;}
-        else if (content.indexOf('|')>=0) {
-            var span=addTag(form,content);
-            return getTagString(span,stdspace(content));}
-        else return handleTagInput(content,form,true);}
-
     function handleTagInput(tagstring,form,exact){
-        var quoted=(tagstring[1]==="\""), prefix=tagstring[0];
+        var quoted=(tagstring[1]==="\"");
         var outlet=(tagstring[0]==="@");
         var cloud=((outlet)?(Codex.share_cloud):(Codex.gloss_cloud));
         var text=((quoted)?(tagstring.slice(2,tagstring.length-1)):(tagstring.slice(1)));
@@ -859,8 +837,8 @@
                 completion=completions[0];
                 var i=0, lim=completions.length;
                 while (i<lim) {
-                    var c=completions[i++];
-                    if (c!==completion) {completion=false; break;}}}
+                    var mc=completions[i++];
+                    if (mc!==completion) {completion=false; break;}}}
             if ((completion)&&(completion===completions[0])) {
                 var ks=Codex.gloss_cloud.getKey(completions.matches[0]);
                 if ((exact)?(ks.toLowerCase()!==std.toLowerCase()):
@@ -881,59 +859,6 @@
                 return std;}}}
     Codex.handleTagInput=handleTagInput;
 
-    function glossinput_keydown(evt){
-        evt=evt||event;
-        var kc=evt.keyCode;
-        var target=fdjtUI.T(evt);
-        var form=getParent(target,'form');
-        var mode=getGlossMode(form);
-        if (glossinput_timer) {
-            clearTimeout(glossinput_timer);
-            glossinput_timer=false;}
-        if (kc===13) { // newline/enter
-            var tagstring;
-            if (fdjtString.isEmpty(target.value)) {
-                fdjtUI.cancel(evt);
-                submitGloss(form);}
-            else if ((tagstring=tagtext(target))) {
-                fdjtUI.cancel(evt);
-                var replace=handleTagText(form,tagstring);
-                if (replace) tagtext(target,true);}
-            else if (evt.shiftKey) {
-                // This inserts a hard newline
-                fdjtUI.cancel(evt);
-                fdjtDOM.insertText(target,'\n');}
-            else if (evt.ctrlKey) {
-                var note=target.value;
-                fdjtUI.cancel(evt);
-                if (note.search(uri_prefix)===0) {
-                    var brk=note.search(/\s/);
-                    if (brk<0) addLink(form,note);
-                    else addLink(form,note.slice(0,brk),note.slice(brk+1));}
-                else addTag(form,note,"TAGS",true,Codex.knodule);
-                target.value="";}
-            else {
-                fdjtUI.cancel(evt);
-                submitGloss(form);}}
-        else if (mode) {}
-        else {
-            var content=tagtext(target);
-            if (typeof content!=='string') {}
-            else addgloss_timer=setTimeout(
-                function(){
-                    // This timer ensures that the character typed
-                    // actually gets into the box before we do anything
-                    addgloss_timer=false;
-                    var tagstring=tagtext(target,false), quoted=false, cloud=false;
-                    if (!(tagstring)) return;
-                    if (tagstring[1]=== "\"") quoted=true;
-                    if (tagstring[0]==="@") cloud=Codex.share_cloud;
-                    else if (tagstring[0]==="#") cloud=Codex.gloss_cloud;
-                    if (quoted)
-                        cloud.complete(tagstring.slice(2,tagstring.length-1));
-                    else cloud.complete(tagstring.slice(1));},
-                200);}}
-    
     function get_addgloss_callback(form,keep,uri){
         return function(req){
             return addgloss_callback(req,form,keep,uri);};}

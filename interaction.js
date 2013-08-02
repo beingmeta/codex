@@ -948,17 +948,18 @@
                     handled=true; Codex.GoToPage(num);}
                 else {}}
             else if (target.name==='GOTOPCT') {
-                var locstring=target.value;
-                var pct=parseFloat(locstring);
+                var pctstring=target.value;
+                var pct=parseFloat(pctstring);
                 if ((typeof pct === 'number')&&(pct>=0)&&(pct<=100)) {
-                    var loc=Math.floor((pct/100)*Codex.ends_at)+1;
-                    Codex.JumpTo(loc); handled=true;}}
+                    var goto_loc=Math.floor((pct/100)*Codex.ends_at)+1;
+                    Codex.JumpTo(goto_loc); handled=true;}}
             else if (target.name==='GOTOLOC') {
                 var locstring=target.value;
-                var pct=parseFloat(locstring);
-                if ((typeof pct === 'number')&&(pct>=0)&&(pct<=100)) {
-                    var loc=Math.floor((pct/100)*Codex.ends_at)+1;
-                    Codex.JumpTo(loc); handled=true;}}
+                var loc=parseFloat(locstring);
+                if ((typeof loc === 'number')&&(loc>=0)&&(loc<=100)) {
+                    loc=Math.floor((loc/100)*Codex.ends_at)+1;
+                    Codex.JumpTo(loc); handled=true;}
+                else {Codex.JumpTo(Math.floor(loc)); handled=true;}}
             else {}
             if (handled) {
                 target.value="";

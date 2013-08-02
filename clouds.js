@@ -49,7 +49,6 @@
 
 (function(){
     "use strict";
-    var fdjtString=fdjt.String;
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
