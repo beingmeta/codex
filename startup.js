@@ -343,9 +343,10 @@ Codex.Startup=
 
             fdjtDOM.adjustFonts(fdjtID("CODEXHUD"));
 
-            var md2html=new Markdown.Converter();
-            Codex.md2html=md2html;
-        }
+            var markdown_converter=new Markdown.Converter();
+            Codex.markdown_converter=markdown_converter;
+            Codex.md2HTML=function(mdstring){
+                return markdown_converter.makeHtml(mdstring);};}
 
         function appSetup() {
 

@@ -86,7 +86,7 @@ Codex.Slice=(function () {
                     (((info.maker)||(info.tstamp))?(showglossinfo(info)):
                      (showdocinfo(info))),
                     ((note_len>0)&&
-                     (fdjtDOM("span.note",Codex.md2html(info.note))))," ",
+                     (fdjtDOM("span.note",Codex.md2HTML(info.note))))," ",
                     // (fdjtUI.Ellipsis("span.note",info.note,140))
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
