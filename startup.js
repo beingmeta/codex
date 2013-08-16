@@ -346,7 +346,21 @@ Codex.Startup=
             var markdown_converter=new Markdown.Converter();
             Codex.markdown_converter=markdown_converter;
             Codex.md2HTML=function(mdstring){
-                return markdown_converter.makeHtml(mdstring);};}
+                return markdown_converter.makeHtml(mdstring);};
+            function md2DOM(mdstring,wrap){
+                var div=fdjtDOM("div"), root=div;
+                var frag=document.createDocumentFragment();
+                div.innerHTML=markdown_converter.makeHtml(mdstring);
+                var children=root.childNodes, nodes=[];
+                if ((inline)&&(children.length===1)&&
+                    (children[0].nodeType===1)&&
+                    (children[0].tagName==="P")) {
+                    root=children[0]; children=root.childNodes;}
+                var i=0, lim=children.length; while (i<lim) {
+                    nodes.push(children[i++]);};
+                i=0; while (i<lim) frag.appendChild(nodes[i++]);
+                return frag;}
+            Codex.md2HTML=md2DOM;}
 
         function appSetup() {
 
