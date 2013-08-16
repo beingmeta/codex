@@ -84,6 +84,19 @@ div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
   pointer-events: none;}
 div#CODEXFOOT div#CODEXPAGEINFO div.textfoot > span {
   z-index: 50; pointer-events: all;}
+hr#CODEXLAYOUTINDICATOR {
+    position: absolute; top: 0px; left: 0px; height: 100%; width: 0%;
+    background-color: silver; color: gray; opacity: 0.0; margin: 0px;
+    display: none;}
+div#CODEXLAYOUTADJUST {
+    position: absolute;
+    top: 0px; left: 0px; height: 100%; width: auto; margin: 0px;
+    font-weight: bold; color: black; background-color: transparent; 
+    z-index: 200;
+    display: none;}
+body.cxLAYOUT div#CODEXLAYOUTADJUST { display: block; }
+body.cxLAYOUT hr#CODEXLAYOUTINDICATOR {
+    display: block; opacity: 0.8;}
 
 div#CODEXFOOT div#CODEXPAGEINFO .pagespans {
   position: absolute; bottom: 0px;

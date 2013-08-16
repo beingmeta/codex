@@ -1115,7 +1115,7 @@ div.fdjtprogress#CODEXLAYOUTMESSAGE {
     -khtml-opacity: 0;
     -moz-opacity: 0;
     -o-opacity: 0;}
-body.cxLAYOUT div#CODEXLAYOUTMESSAGE {
+body.cxLAYOUT.cxLAYOUTMESSAGE div#CODEXLAYOUTMESSAGE {
     display: block; opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -1151,7 +1151,8 @@ div.fdjtprogress#CODEXINDEXMESSAGE {
     -khtml-opacity: 0;
     -moz-opacity: 0;
     -o-opacity: 0;}
-body.cxINDEXING div#CODEXINDEXMESSAGE {
+body.cxINDEXING div#CODEXHUD.search div#CODEXINDEXMESSAGE,
+body.cxINDEXING div#CODEXHUD.searchresults div#CODEXINDEXMESSAGE {
     display: block; opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);

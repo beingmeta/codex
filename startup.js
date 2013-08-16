@@ -1723,7 +1723,8 @@ Codex.Startup=
                                  if (tracelevel>1)
                                      startupLog("Added %d (%d%% of %d tags) to clouds",
                                                 i,Math.floor(pct),lim);
-                                 fdjtUI.ProgressBar.setProgress("CODEXINDEXMESSAGE",pct);
+                                 fdjtUI.ProgressBar.setProgress(
+                                     "CODEXINDEXMESSAGE",pct);
                                  fdjtUI.ProgressBar.setMessage(
                                      "CODEXINDEXMESSAGE",
                                      fdjtString("Added %d tags (%d%% of %d) to clouds",
@@ -1731,7 +1732,8 @@ Codex.Startup=
                              function(){
                                  var eq=Codex.empty_query;
                                  fdjtLog("Done populating clouds");
-                                 fdjtUI.ProgressBar.setProgress("CODEXINDEXMESSAGE",100);
+                                 fdjtUI.ProgressBar.setProgress(
+                                     "CODEXINDEXMESSAGE",100);
                                  fdjtUI.ProgressBar.setMessage(
                                      "CODEXINDEXMESSAGE",
                                      fdjtString("Added all %d tags to search/gloss clouds",

@@ -207,9 +207,12 @@ Codex.Paginate=
                         return false;}
                     else {
                         var root=nodes[i++];
-                        var timeslice=layout.timeslice||CodexLayout.timeslice||200;
-                        var timeskip=layout.timeskip||CodexLayout.timeskip||50;
-                        if (((root.nodeType===3)&&(!(isEmpty(root.nodeValue))))||
+                        var timeslice=
+                            layout.timeslice||CodexLayout.timeslice||100;
+                        var timeskip=
+                            layout.timeskip||CodexLayout.timeskip||50;
+                        if (((root.nodeType===3)&&
+                             (!(isEmpty(root.nodeValue))))||
                             ((root.nodeType===1)&&
                              (root.tagName!=='LINK')&&(root.tagName!=='META')&&
                              (root.tagName!=='SCRIPT')&&(root.tagName!=='BASE'))) 
@@ -227,6 +230,15 @@ Codex.Paginate=
                     var now=fdjtTime();
                     if (!(pagenum)) return;
                     if (info.done) {
+                        if (indicator)
+                            indicator.style.width=Math.floor(pct)+"%";
+                        fdjtDOM.replace(
+                            "CODEXPAGENOTEXT",
+                            fdjtDOM("div.pageno#CODEXPAGENOTEXT",
+                                    Codex.curpage||"?",
+                                    "/",pagenum," (",Math.floor(pct),
+                                    "%)"));
+                        var indicator=fdjtID("CODEXLAYOUTINDICATOR");
                         layoutMessage(fdjtString(
                             "Finished laying out %d %dx%d pages in %s",
                             pagenum,
@@ -241,7 +253,17 @@ Codex.Paginate=
                             var maxloc=docinfo._maxloc;
                             var lastloc=docinfo[info.lastid].starts_at;
                             var pct=(100*lastloc)/maxloc;
-                            fdjtUI.ProgressBar.setProgress("CODEXLAYOUTMESSAGE",pct);
+                            var indicator=fdjtID("CODEXLAYOUTINDICATOR");
+                            if (indicator)
+                                indicator.style.width=Math.floor(pct)+"%";
+                            fdjtDOM.replace(
+                                "CODEXPAGENOTEXT",
+                                fdjtDOM("div.pageno#CODEXPAGENOTEXT",
+                                        Codex.curpage||"?",
+                                        "/",pagenum," (",Math.floor(pct),
+                                        "%)"));
+                            fdjtUI.ProgressBar.setProgress(
+                                "CODEXLAYOUTMESSAGE",pct);
                             layoutMessage(fdjtString(
                                 "Laid out %d pages (%d%%) in %s",
                                 pagenum,Math.floor(pct),
