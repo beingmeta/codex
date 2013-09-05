@@ -143,7 +143,7 @@ body.sbook a.codexcard { display: block;}
     width: 50px; height: auto;
     /* This lines up with the padding on codexcardbody */
     margin-top: -0.5ex;}
-.codexcard div.glosspic  {
+.codexcard div.glosspic, .codexcard div.userpic, .codexcard div.sourcepic  {
     float: left; clear: left; margin-right: 3px;
     width: 50px; height: 50px; font-size: 32px;
     text-align: center; vertical-align: top;
