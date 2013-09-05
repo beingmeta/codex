@@ -17,13 +17,14 @@
 
 /* Major HUD components, head and heart */
 
-#CODEXHEAD, #CODEXSCANNER, #CODEXFOOT {
+#CODEXHEAD, #CODEXFOOT {
     position: fixed; left: 60px; right: 60px; z-index: 100;
     max-height: 60px; border: solid transparent 4px;
     padding: 0px; padding-bottom: 0.5ex;}
 #CODEXSCANNER {
-    background-color: white;
-    border-color: steelblue;}
+    position: fixed; left: 60px; right: 60px; z-index: 100;
+    background-color: white; max-height: 50px;
+    border: solid steelblue 4px; padding: 0px; }
 #CODEXSCANNER .tochead {
     background-color: steelblue; color: white;
     font-weight: bold; font-size: 130%;
@@ -100,8 +101,6 @@ body.hudup #CODEXHEAD .hudpanel {
     -webkit-border-bottom-right-radius: 0px; 
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
-
-#CODEXSCANNER .codexcard { margin-bottom: 0.5em;}
 
 .cxANIMATE #CODEXHUD #CODEXHEAD {
     transition-property: top;
@@ -766,7 +765,8 @@ div#CODEXSCANNER.expanded span.expander img[alt='-'] { display: inline;}
 div#CODEXSCANNER.expanded span.expander img[alt='+'] { display: none;}
 
 div#CODEXSCANNER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
-    border-top-width: 0px; border-bottom-width: 0px;}
+    border-top-width: 0px; border-bottom-width: 0px;
+    display: none;}
 
 body div#CODEXHUD.toc div#CODEXHEAD {
     background-color: rgba(255,255,255,0.5);}
@@ -866,9 +866,12 @@ div#CODEXHUD div#CODEXSCANNER.expanded .controller,
 div#CODEXHUD div#CODEXSCANNER.expanded span.whencollapsed {
     display: none;}
 
-div#CODEXHUD div#CODEXSCANNER div.codexcard {margin-left: 40px;}
-div#CODEXHUD div#CODEXSCANNER div.codexcard > div.tochead { margin-left: -40px;}
-div#CODEXHUD div#CODEXSCANNER div.codexcard > div.idhead { margin-left: -20px;}
+div#CODEXHUD div#CODEXSCANNER div.codexcard {
+    margin-left: 0px;}
+div#CODEXHUD div#CODEXSCANNER div.codexcard > div.tochead {
+    margin-left: 0px; }
+div#CODEXHUD div#CODEXSCANNER div.codexcard > div.idhead {
+    margin-left: 0px;}
 
 div#CODEXHUD div#CODEXSCANNER div.idhead,
 div#CODEXHUD div#CODEXPOINTGLOSSES div.idhead {
