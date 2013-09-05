@@ -803,7 +803,9 @@ Codex.setMode=
 
         /* Scanning */
 
+
         function CodexScan(elt,src,backward,expanded){
+            var nextSlice=Codex.nextSlice, prevSlice=Codex.prevSlice;
             var pelt=Codex.scanning;
             var i=0, lim=0;
             if (Codex.Trace.mode)
@@ -813,17 +815,21 @@ Codex.setMode=
             // scanner (at the top of the page during scanning and
             // preview)
             if (Codex.scanning!==src) {
-                var clone=src.cloneNode(true);
-                clone.id="CODEXSCAN";
+                var clone=src.cloneNode(true); clone.id="CODEXSCAN";
+                var next=nextSlice(src), prev=prevSlice(src);
+                var before=0, after=0, slice=prev;
                 fdjtDOM.replace("CODEXSCAN",clone);
                 // This all makes sure that the >| and |< buttons
                 // appear appropriately
-                if (Codex.nextSlice(src))
-                    dropClass(document.body,"codexscanend");
+                if (next) dropClass(document.body,"codexscanend");
                 else addClass(document.body,"codexscanend");
-                if (Codex.prevSlice(src))
-                    dropClass(document.body,"codexscanstart");
+                if (prev) dropClass(document.body,"codexscanstart");
                 else addClass(document.body,"codexscanstart");
+                while (slice) {before++; slice=prevSlice(slice);}
+                slice=next; while (slice) {
+                    after++; slice=nextSlice(slice);}
+                var info=fdjtID("CODEXSCANINFO");
+                info.innerHTML=(before+1)+"/"+(before+after+1);
                 // This marks where we are currently scanning
                 if (pelt) dropClass(pelt,"codexscanpoint");
                 if (src) addClass(src,"codexscanpoint");
@@ -835,6 +841,7 @@ Codex.setMode=
             var highlights=[];
             if (Codex.target)
                 Codex.clearHighlights(Codex.getDups(Codex.target));
+            Codex.setTarget(elt);
             if ((src)&&(hasClass(src,"gloss"))) {
                 var glossinfo=Codex.glossdb.ref(src.name);
                 if (glossinfo.excerpt) {
@@ -857,7 +864,6 @@ Codex.setMode=
                         var term=terms[i++];
                         var h=Codex.highlightTerm(term,target,info,spellings);
                         highlights=highlights.concat(h);}}}
-            Codex.setTarget(elt);
             delete Codex.scanpoints;
             delete Codex.scanoff;
             if ((highlights)&&(highlights.length===1)&&
@@ -885,6 +891,16 @@ Codex.setMode=
             else Codex.GoTo(elt,"Scan");
             setMode("scanning");}
         Codex.Scan=CodexScan;
+        function stopScanning(){
+            // Tapping the tochead returns to results/glosses/etc
+            var scanning=Codex.scanning;
+            if (!(scanning)) return;
+            if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) 
+                Codex.setMode("allglosses");
+            else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) 
+                Codex.setMode("searchresults");
+            else {}}
+        Codex.stopScanning=stopScanning;
         
         Codex.addConfig("uisize",function(name,value){
             fdjtDOM.swapClass(CodexHUD,/codexuifont\w+/,"codexuifont"+value);});

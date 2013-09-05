@@ -69,9 +69,13 @@ div.codexslice div.codexscanpoint {
     background-color: white;}
 div.codexslice div.codexscanpoint.codexcard {
     font-size: 150%;}
+div.codexslice div.codexscanpoint.codexcard .tool {
+    font-size: 47%; font-weight: bold;}
 div.codexslice div.codexscanpoint.codexcard img.userpic,
 div.codexslice div.codexscanpoint.codexcard img.sourcepic {
     width: 75px;}
+
+div.codexscanpoint .codexcard .codexcardbody { padding-top: 0px;}
 
 div.codexslice div.codexcard.codexscanpoint + div.codexcard > div.codexcardbody,
 div.codexslice div.codexcard.codexscanpoint .codexcardbody {

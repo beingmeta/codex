@@ -1555,7 +1555,15 @@
         evt=evt||event;
         var target=fdjtUI.T(evt);
         if (isClickable(target)) return;
-        if (hasParent(target,fdjt.ID("CODEXEXPANDSCANNER"))) return;
+        if (!(hasParent(target,".codexcardbody"))) {
+            Codex.stopScanning();
+            fdjtUI.cancel(evt);
+            return;}
+        if (!(hasClass("CODEXSCANNER","expanded"))) {
+            addClass("CODEXSCANNER","expanded");
+            fdjtUI.cancel(evt);
+            return;}
+        if (hasParent(target,".scannertool")) return;
         if ((getParent(target,".tool"))) {
             var card=getCard(target);
             if ((card)&&((card.name)||(card.getAttribute("name")))) {
@@ -1578,16 +1586,12 @@
                     fdjtDOM.addClass("CODEXSCANNER","expanded");}
                 fdjtUI.cancel(evt);
                 return;}}
-        // Tapping the tochead returns to results/glosses/etc
-        var scanning=Codex.scanning;
-        if (!(scanning)) return;
-        if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) {
-            Codex.setMode("allglosses");
-            fdjtUI.cancel(evt);}
-        else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) {
-            Codex.setMode("searchresults");
-            fdjtUI.cancel(evt);}
-        else {}
+        if (hasClass("CODEXSCANNER","expanded")) {
+            dropClass("CODEXSCANNER","expanded");
+            fdjtUI.cancel(evt);
+            return;}
+        Codex.stopScanning();
+        fdjtUI.cancel(evt);
         return;}
 
     /* Entering page numbers and locations */

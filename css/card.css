@@ -138,12 +138,12 @@ body.sbook a.codexcard { display: block;}
 .codexcard span.note {
     font-size: 110%; font-style: italic;
     vertical-align: top;}
-.codexcard img.userpic, .codexcard img.sourcepic  {
+.codexcard img.glosspic  {
     float: left; clear: left; margin-right: 3px;
     width: 50px; height: auto;
     /* This lines up with the padding on codexcardbody */
     margin-top: -0.5ex;}
-.codexcard div.userpic, .codexcard div.sourcepic  {
+.codexcard div.glosspic  {
     float: left; clear: left; margin-right: 3px;
     width: 50px; height: 50px; font-size: 32px;
     text-align: center; vertical-align: top;

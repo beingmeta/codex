@@ -23,12 +23,15 @@
     padding: 0px; padding-bottom: 0.5ex;}
 #CODEXSCANNER {
     position: fixed; left: 60px; right: 60px; z-index: 100;
-    background-color: white; max-height: 50px;
+    background-color: white;
     border: solid steelblue 4px; padding: 0px; }
 #CODEXSCANNER .tochead {
+    transition-property: font-size; transition-duration: 1s;}
+#CODEXSCANNER .tochead {
     background-color: steelblue; color: white;
-    font-weight: bold; font-size: 130%;
-    max-height: 4ex;}
+    font-weight: bold; font-size: 100%; max-height: 4ex;}
+#CODEXSCANNER.expanded .tochead {
+    font-size: 120%; max-height: inherit;}
 #CODEXSCANNER .tochead a { color: white;}
 #CODEXSCANNER .tochead hr {
     color: rgb(33, 106, 129); background-color: rgb(33, 106, 129);}
@@ -602,7 +605,6 @@ body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.username {
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;
-    background-color: transparent;
     display: block;}
 div#CODEXHUD.openhead div#CODEXHUDBUTTONS.hudpanel {
     display: none;}
@@ -768,9 +770,20 @@ div#CODEXSCANNER span.expander img[alt='-'] { display: none;}
 div#CODEXSCANNER.expanded span.expander img[alt='-'] { display: inline;}
 div#CODEXSCANNER.expanded span.expander img[alt='+'] { display: none;}
 
-div#CODEXSCANNER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
-    border-top-width: 0px; border-bottom-width: 0px;
+div#CODEXSCANNER span.expander {display: none;}
+
+div#CODEXSCANNER .codexscaninfo {
+    position: absolute; right: 2px; top: 1px; z-index: 100;
+    color:  cyan;}
+div#CODEXSCANNER #CODEXSCANCONTROLS .expanded { display: none;}
+div#CODEXSCANNER.expanded #CODEXSCANCONTROLS .expanded {
+    display: inline;}
+div#CODEXSCANNER.expanded #CODEXSCANCONTROLS .collapsed {
     display: none;}
+
+div#CODEXSCANNER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
+    border-top-width: 0px; border-bottom-width: 0px;}
+div#CODEXPOINTGLOSSES div.tochead { display: none; }
 
 body div#CODEXHUD.toc div#CODEXHEAD {
     background-color: rgba(255,255,255,0.5);}
@@ -861,8 +874,6 @@ body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: blo
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
 body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
 
-div#CODEXHUD div#CODEXSCANNER .codexcardbody { min-height: 40px; }
-
 div#CODEXHUD div#CODEXSCANNER.expanded .controller,
 div#CODEXHUD div#CODEXSCANNER.expanded span.whenexpanded {
     display: inline;}
@@ -880,13 +891,16 @@ div#CODEXHUD div#CODEXSCANNER div.codexcard > div.idhead {
 div#CODEXHUD div#CODEXSCANNER div.idhead,
 div#CODEXHUD div#CODEXPOINTGLOSSES div.idhead {
     height: 0px;}
-div#CODEXHUD div#CODEXSCANNER img.glosspic {
-    max-height: 6ex; max-width: 6ex;}
-div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic {
-    max-height: 12ex; max-width: 12ex;}
-div#CODEXHUD div#CODEXSCANNER.expanded .codexcard img.userpic,
-div#CODEXHUD div#CODEXSCANNER.expanded .codexcard img.sourcepic {
-    width: 75px;}
+div#CODEXHUD div#CODEXSCANNER .codexcard img.glosspic {
+    transition-property: width,height; transition-duration: 1s;}
+div#CODEXHUD div#CODEXSCANNER .codexcard img.glosspic {
+    height: 30px; width: auto;}
+div#CODEXHUD div#CODEXSCANNER.expanded .codexcard img.glosspic {
+    height: 50px; width: auto;}
+div#CODEXHUD div#CODEXSCANNER #CODEXSCAN img.button { display: none;}
+div#CODEXHUD div#CODEXSCANNER.expanded #CODEXSCAN img.button {
+    display: inline;}
+
 
 body div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic,
 body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded {
