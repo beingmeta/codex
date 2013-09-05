@@ -628,7 +628,8 @@ var Codex={
             dropClass(old_target,"codexnewtarget");
             dropClass(old_targets,"codextarget");
             dropClass(old_targets,"codexnewtarget");
-            clearHighlights(old_targets);
+            if (!(hasParent(old_target,target)))
+                clearHighlights(old_targets);
             Codex.target=false;}
         if (!(target)) {
             if (Codex.UI.setTarget) Codex.UI.setTarget(false);
