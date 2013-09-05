@@ -347,7 +347,7 @@ Codex.Startup=
             Codex.markdown_converter=markdown_converter;
             Codex.md2HTML=function(mdstring){
                 return markdown_converter.makeHtml(mdstring);};
-            function md2DOM(mdstring,wrap){
+            function md2DOM(mdstring,inline){
                 var div=fdjtDOM("div"), root=div;
                 var frag=document.createDocumentFragment();
                 div.innerHTML=markdown_converter.makeHtml(mdstring);
@@ -360,7 +360,7 @@ Codex.Startup=
                     nodes.push(children[i++]);};
                 i=0; while (i<lim) frag.appendChild(nodes[i++]);
                 return frag;}
-            Codex.md2HTML=md2DOM;}
+            Codex.md2DOM=md2DOM;}
 
         function appSetup() {
 
