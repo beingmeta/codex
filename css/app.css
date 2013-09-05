@@ -238,6 +238,13 @@ span.note.ellipsis span.elision, span.note.ellipsis span.delision {
     color: purple; font-family: veranda,helvetica,sans,sans-serif;
     font-style: italic;}
 
+/* Fuzzy selections */
+
+.fdjtselected {
+    box-shadow: 0px 0px 0.7ex 0.7ex rgba(255, 255, 0, 0.33);}
+.fdjtselectstart, .fdjtselectend {
+    box-shadow: 0px 0px 0.7ex 0.7ex rgba(255, 215, 0, 0.33);}
+
 /* The HUD */
 
 /* "Leading" to fill out the top and bottom */
