@@ -1685,7 +1685,10 @@
                 "Release to go to this page (%d), move away to return to page %d",
                 gopage,Codex.curpage);
         else pageinfo.title=fdjtString(
-            "Release to return to page %d",Codex.curpage);
+            ((Codex.touch)?
+             ("Release to settle here (page %d), move up or tap the margin to return to page %d"):
+             ("Release to settle here (page %d), move up or tap a key to return to page %d")),
+            gopage,Codex.curpage);
         previewing_page=gopage;
         Codex.startPreview(gopage,"pageinfo_span_hold");}
     function pageinfo_tap(evt){
