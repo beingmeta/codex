@@ -268,10 +268,13 @@
             else if ((now-double_touch)>2000) double_touch=false;
             else {}}
         
-        // If we're previewing, stop it and go to the page we're previewing
-        //  (which was touched)
+        // If we're previewing, stop it and go to the page we're
+        //  previewing (which was touched)
         if (Codex.previewing) {
-            Codex.GoTo(target,evt);
+            var goto=Codex.getTarget(target);
+            if (!(goto)) goto=getParent(target,".codexpage");
+            if (goto) Codex.GoTo(goto,evt);
+            else Codex.stopPreview("content_tapped/nocontent");
             return false;}
 
         if ((Codex.hudup)||(Codex.mode)) {
@@ -335,6 +338,7 @@
                 else {}}
             if (!(found)) return elts[0];
             else return found;}}
+
     function handle_content_click(target){
 
         if ((clicked)&&((fdjtTime()-clicked)<3000)) return true;
@@ -586,7 +590,8 @@
             dropClass(spanbar,"codexvisible");
             dropClass(toc,"codexheld");
             Codex.stopPreview("toc_released");
-            Codex.GoTo(ref);}
+            Codex.GoTo(ref);
+            Codex.setMode(false);}
         else if (Codex.Trace.gestures)
             fdjtLog("toc_released %o noabout",evt);
         else {
@@ -657,7 +662,7 @@
             Codex.setMode("glossdetail");
             return fdjtUI.cancel(evt);}
         else if ((!(gloss))&&(passage)) {
-            Codex.Scan(passage,card,false,true);
+            Codex.Scan(passage,card,false);
             return fdjtUI.cancel(evt);}
         else if ((gloss)&&(getParent(target,".tool"))) {
             var form=Codex.setGlossTarget(gloss);           
@@ -665,7 +670,7 @@
             Codex.setMode("addgloss");
             return fdjtUI.cancel(evt);}
         else if (gloss) {
-            Codex.Scan(gloss,card,false,true);
+            Codex.Scan(gloss,card,false);
             return fdjtUI.cancel(evt);}
         else return;}
     function slice_held(evt){
@@ -731,7 +736,8 @@
             if (slip_timer) return;
             slip_timer=setTimeout(function(){
                 slip_timer=false;
-                if (Codex.Trace.gestures) fdjtLog("slice_slipped/timeout %o",evt);
+                if (Codex.Trace.gestures)
+                    fdjtLog("slice_slipped/timeout %o",evt);
                 Codex.stopPreview("slice_slipped");},
                                   500);}}
 
@@ -829,11 +835,6 @@
             Codex.stopPreview("onkeydown");
             fdjtUI.TapHold.clear();
             Codex.setHUD(false);
-            if (preview_target)
-                Codex.GoTo(preview_target,"preview_keydown");
-            else if (hasClass(previewing,"codexpage")) 
-                Codex.GoToPage(previewing,"preview_keydown");
-            else Codex.GoTo(previewing,"preview_keydown");
             fdjt.UI.cancel(evt);
             return false;}
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
@@ -2163,7 +2164,6 @@
                    hold: content_held,
                    slip: content_slipped,
                    release: content_released,
-                   swipe: content_swiped,
                    click: content_click},
          toc: {tap: toc_tapped,hold: toc_held,
                slip: toc_slipped, release: toc_released},
