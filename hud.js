@@ -828,8 +828,8 @@ Codex.setMode=
                 while (slice) {before++; slice=prevSlice(slice);}
                 slice=next; while (slice) {
                     after++; slice=nextSlice(slice);}
-                var info=fdjtID("CODEXSCANINFO");
-                info.innerHTML=(before+1)+"/"+(before+after+1);
+                var scaninfo=fdjtID("CODEXSCANINFO");
+                scaninfo.innerHTML=(before+1)+"/"+(before+after+1);
                 // This marks where we are currently scanning
                 if (pelt) dropClass(pelt,"codexscanpoint");
                 if (src) addClass(src,"codexscanpoint");

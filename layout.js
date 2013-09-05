@@ -229,6 +229,7 @@ Codex.Paginate=
                     var pagenum=info.pagenum;
                     var now=fdjtTime();
                     if (!(pagenum)) return;
+                    var indicator=fdjtID("CODEXLAYOUTINDICATOR");
                     if (info.done) {
                         if (indicator)
                             indicator.style.width=Math.floor(pct)+"%";
@@ -238,7 +239,6 @@ Codex.Paginate=
                                     Codex.curpage||"?",
                                     "/",pagenum," (",Math.floor(pct),
                                     "%)"));
-                        var indicator=fdjtID("CODEXLAYOUTINDICATOR");
                         layoutMessage(fdjtString(
                             "Finished laying out %d %dx%d pages in %s",
                             pagenum,
@@ -253,7 +253,6 @@ Codex.Paginate=
                             var maxloc=docinfo._maxloc;
                             var lastloc=docinfo[info.lastid].starts_at;
                             var pct=(100*lastloc)/maxloc;
-                            var indicator=fdjtID("CODEXLAYOUTINDICATOR");
                             if (indicator)
                                 indicator.style.width=Math.floor(pct)+"%";
                             fdjtDOM.replace(

@@ -256,7 +256,7 @@
         // Detect touches with two fingers, which we may treat especially
         if ((evt.touches)||(evt.shiftKey)) {
             if (Codex.Trace.gestures)
-                fdjtLog("double_touch dt=%o now=%o",double_touch,now);
+                fdjtLog("content_tapped(double/shift) dt=%o now=%o",double_touch,now);
             if ((evt.touches.length>1)||(evt.shiftKey)) {
                 double_touch=now;
                 if (addgloss_timer) {
@@ -267,13 +267,16 @@
             else if (!(double_touch)) {}
             else if ((now-double_touch)>2000) double_touch=false;
             else {}}
+        else if (Codex.Trace.gestures)
+            fdjtLog("content_tapped %o s=%d,%d c=%d,%d dt=%o now=%o",
+                    evt,sX,sY,cX,cY,now);
         
         // If we're previewing, stop it and go to the page we're
         //  previewing (which was touched)
         if (Codex.previewing) {
-            var goto=Codex.getTarget(target);
-            if (!(goto)) goto=getParent(target,".codexpage");
-            if (goto) Codex.GoTo(goto,evt);
+            var jumpto=Codex.getTarget(target);
+            if (!(jumpto)) jumpto=getParent(target,".codexpage");
+            if (jumpto) Codex.GoTo(jumpto,evt);
             else Codex.stopPreview("content_tapped/nocontent");
             return false;}
 
@@ -409,16 +412,6 @@
             return true;}
         return false;}
 
-    function content_swiped(evt){
-        evt=evt||event;
-        if (!(evt.deltaX)) {}
-        else if ((evt.deltaX>0)&&(Math.abs(evt.deltaY)<100))
-            return Codex.pageBackward(evt);
-        else if ((evt.deltaX<0)&&(Math.abs(evt.deltaY)<100))
-            return Codex.pageForward(evt);
-        else {}
-        return;}
-
     var selectors=[];
     var slip_timer=false;
     function content_held(evt){
@@ -524,8 +517,8 @@
             if (title.name===ref) return title;}
         return false;}
 
-    function toc_tapped(evt){
-        evt=evt||event;
+   function toc_tapped(evt){
+       evt=evt||event;
         var tap_target=fdjtUI.T(evt);
         var about=getAbout(tap_target);
         if (about) {
@@ -533,11 +526,17 @@
             var target=fdjtID(ref);
             var info=Codex.docinfo[ref];
             var show_fulltoc=
-                ((info.level===1)&&
+                ((info)&&(info.level===1)&&(Codex.head)&&
                  (info.sub)&&(info.sub.length>2)&&
-                 (info.id!==Codex.head.id));
+                 (info.frag!==Codex.head.id));
+            var already_there=(info)&&(Codex.head)&&
+                (info.frag===Codex.head.id);
             if (Codex.Trace.gestures)
                 fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
+            if (already_there) {
+                Codex.setMode(false);
+                fdjtUI.cancel(evt);
+                return;}
             if (show_fulltoc) Codex.GoTo(target);
             else Codex.JumpTo(target);
             if (show_fulltoc) Codex.setMode("toc");
@@ -589,9 +588,7 @@
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
             dropClass(spanbar,"codexvisible");
             dropClass(toc,"codexheld");
-            Codex.stopPreview("toc_released");
-            Codex.GoTo(ref);
-            Codex.setMode(false);}
+            Codex.stopPreview("toc_released");}
         else if (Codex.Trace.gestures)
             fdjtLog("toc_released %o noabout",evt);
         else {
@@ -829,11 +826,11 @@
                  (target.tagName==="INPUT"))
             return;
         else if (Codex.previewing) {
-            // Any key stops a preview (and is ignored)
-            var previewing=Codex.previewing;
-            var preview_target=Codex.previewTarget;
+            // Any key stops a preview and goes to the target
+            var preview_target=Codex.previewTarget||Codex.previewing;
             Codex.stopPreview("onkeydown");
             fdjtUI.TapHold.clear();
+            Codex.GoTo(preview_target);
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
             return false;}
@@ -1724,18 +1721,11 @@
         var target=fdjtUI.T(evt);
         if (target.nodeType===3) target=target.parentNode;
         dropClass(target,"preview");
-        if (previewing_page===preview_start_page) {
-            Codex.stopPagePreview("pageinfo_release");
-            preview_start_page=false;
-            previewing_page=false;
-            return;}
+        Codex.stopPagePreview("pageinfo_release");
         preview_start_page=false;
         previewing_page=false;
         if (((hasParent(target,pageinfo))&&(target.tagName==="span"))) {
-            return;}
-        var gopage=getGoPage(target,evt);
-        Codex.GoToPage(gopage,"pageinfo_release",true);
-        Codex.setMode(false);}
+            return;}}
     function pageinfo_slip(evt){
         evt=evt||event;
         var rel=evt.relatedTarget;

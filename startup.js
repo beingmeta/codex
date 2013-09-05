@@ -357,7 +357,7 @@ Codex.Startup=
                     (children[0].tagName==="P")) {
                     root=children[0]; children=root.childNodes;}
                 var i=0, lim=children.length; while (i<lim) {
-                    nodes.push(children[i++]);};
+                    nodes.push(children[i++]);}
                 i=0; while (i<lim) frag.appendChild(nodes[i++]);
                 return frag;}
             Codex.md2DOM=md2DOM;}
