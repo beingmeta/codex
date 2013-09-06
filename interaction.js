@@ -268,8 +268,8 @@
             else if ((now-double_touch)>2000) double_touch=false;
             else {}}
         else if (Codex.Trace.gestures)
-            fdjtLog("content_tapped %o s=%d,%d c=%d,%d dt=%o now=%o",
-                    evt,sX,sY,cX,cY,now);
+            fdjtLog("content_tapped %o s=%d,%d c=%d,%d dt=%o now=%o p=%o",
+                    evt,sX,sY,cX,cY,now,Codex.previewing);
         
         // If we're previewing, stop it and go to the page we're
         //  previewing (which was touched)
@@ -277,7 +277,7 @@
             var jumpto=Codex.getTarget(target);
             if (!(jumpto)) jumpto=getParent(target,".codexpage");
             if (jumpto) Codex.GoTo(jumpto,evt);
-            else Codex.stopPreview("content_tapped/nocontent");
+            Codex.stopPreview("content_tapped/stop_preview");
             return false;}
 
         if ((Codex.hudup)||(Codex.mode)) {
