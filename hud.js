@@ -346,7 +346,7 @@ Codex.setMode=
             else {
                 Codex.hudup=false;
                 Codex.scrolling=false;
-                if (Codex.previewing) Codex.stopPreview();
+                if (Codex.previewing) Codex.stopPreview("setHUD");
                 dropClass(document.body,"cxSHRINK");
                 if (clearmode) {
                     dropClass(CodexHUD,"openheart");
@@ -398,7 +398,7 @@ Codex.setMode=
                 fdjtLog("setMode %o, cur=%o dbc=%o",
                         mode,Codex.mode,document.body.className);
             if ((mode!==Codex.mode)&&(Codex.previewing))
-                Codex.stopPreview();
+                Codex.stopPreview("setMode");
             if ((Codex.mode==="addgloss")&&(mode!=="addgloss")&&
                 (hasClass("CODEXLIVEGLOSS","modified")))
                 Codex.submitGloss(fdjt.ID("CODEXLIVEGLOSS"));
