@@ -1078,7 +1078,7 @@ Codex.Startup=
                 Codex.start=fdjtID("SBOOKSTART");
             else {}
             var i=0; while (i<9) {
-                var body=document.body
+                var body=document.body;
                 var rules=getMeta("sbookhead"+i,true).
                     concat(getMeta("sbook"+i+"head",true)).
                     concat(getMeta("sbook"+headlevels[i]+"head",true));
@@ -1239,8 +1239,7 @@ Codex.Startup=
                     var gm_width=((page_margin<25)?(25):(page_margin));
                     var gm_offset=((gm_width>page_margin)?
                                    (gm_width-page_margin):
-                                   (gm_width))
-                        -2;
+                                   (gm_width))-2;
                     ss.insertRule(
                         fdjtString(
                             "body.cxBYPAGE .codexglossmark { width: %dpx; height: %dpx; margin-right: -%dpx;}",
