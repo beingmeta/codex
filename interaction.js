@@ -278,6 +278,7 @@
             if (!(jumpto)) jumpto=getParent(target,".codexpage");
             if (jumpto) Codex.GoTo(jumpto,evt);
             Codex.stopPreview("content_tapped/stop_preview");
+            fdjtUI.TapHold.clear();
             return false;}
 
         if ((Codex.hudup)||(Codex.mode)) {
