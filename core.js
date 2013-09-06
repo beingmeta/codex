@@ -114,7 +114,7 @@ var Codex={
         layout: 0,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
         dosync: false,    // Whether to trace state saves
-        state: true,      // Whether to trace set state
+        state: false,     // Whether to trace set state
         flips: false,     // Whether to trace page flips (movement by pages)
         messages: false,  // Whether to trace inter-window messages
         iscroll: false,   // Whether to trace HUD scrolling with iScroll
