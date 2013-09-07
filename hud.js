@@ -535,7 +535,6 @@ Codex.setMode=
                         content.scrollTop=Math.floor(inner.top-(gap/2));}}
                 else {}} // Already in view
             else if (mode==="statictoc") {
-                var static_toc=fdjt.ID("CODEXSTATICTOC");
                 var headinfo=((Codex.head)&&(Codex.head.id)&&
                              (Codex.docinfo[Codex.head.id]));
                 var hhinfo=headinfo.head, pinfo=headinfo.prev;
@@ -559,7 +558,7 @@ Codex.setMode=
                     card=allcards[i++];
                     if (hasClass(card,"newhead")) lasthead=card;
                     var loc=card.getAttribute("data-location");
-                    if (loc) loc=parseInt(loc);
+                    if (loc) loc=parseInt(loc,10);
                     if (loc>curloc) break;}
                 if (i>=lim) card=lastcard=false;
                 if ((lastcard)&&(lasthead)&&(card.scrollIntoViewIfNeeded)) {

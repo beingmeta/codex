@@ -442,7 +442,6 @@
 
     function jumpToNote(evt){
         evt=evt||event;
-        var target=fdjtUI.T(evt);
         var noteshud=Codex.DOM.noteshud;
         var jumpto=noteshud.getAttribute("data-note");
         if (jumpto) {
@@ -701,7 +700,7 @@
             if (!(detail)) return;
             else if (detail[0]==='<')
                 fdjt.ID("CODEXGLOSSDETAIL").innerHTML=gloss.detail;
-            else if (detail.search(/^{(md|markdown)}/)==0) {
+            else if (detail.search(/^{(md|markdown)}/)===0) {
                 var close=detail.indexOf('}');
                 fdjt.ID("CODEXGLOSSDETAIL").innerHTML=
                     Codex.md2HTML(detail.slice(close+1));}

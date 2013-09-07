@@ -130,7 +130,7 @@ Codex.Slice=(function () {
     Codex.renderCard=renderCard;
     
     function convertNote(note){
-        if (note.search(/^{(md|markdown)}/)==0) {
+        if (note.search(/^{(md|markdown)}/)===0) {
             var close=note.indexOf('}');
             return Codex.md2DOM(note.slice(close+1),true);}
         else return note;}
