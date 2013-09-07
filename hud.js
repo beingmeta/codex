@@ -308,9 +308,9 @@ Codex.setMode=
             toc_button.style.visibility='';
             Codex.DOM.toc=navhud;
             fdjtDOM.replace("CODEXTOC",navhud);
-            var flytoc=createStaticTOC("div#CODEXFLYTOC.hudpanel",root_info);
-            Codex.Flytoc=flytoc;
-            fdjtDOM.replace("CODEXFLYTOC",flytoc);}
+            var statictoc=createStaticTOC("div#CODEXSTATICTOC.hudpanel",root_info);
+            Codex.Statictoc=statictoc;
+            fdjtDOM.replace("CODEXSTATICTOC",statictoc);}
         Codex.setupTOC=setupTOC;
 
         function createNavHUD(eltspec,root_info){
@@ -326,8 +326,14 @@ Codex.setMode=
             return div;}
 
         function createStaticTOC(eltspec,root_info){
-            var toc_div=Codex.TOC(root_info,0,false,"CODEXFLYTOC4");
-            var div=fdjtDOM(eltspec||"div#CODEXFLYTOC",toc_div);
+            var scan=root_info;
+            while (scan) {
+                if ((!(scan.sub))||(scan.sub.length===0)) break;
+                else if (scan.sub.length>1) {
+                    root_info=scan; break;}
+                else scan=scan.sub[0];}
+            var toc_div=Codex.TOC(scan,0,false,"CODEXSTATICTOC4");
+            var div=fdjtDOM(eltspec||"div#CODEXSTATICTOC",toc_div);
             Codex.UI.addHandlers(div,"toc");
             return div;}
 
@@ -363,8 +369,8 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexModes=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopct)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
-        var codexHeartModes=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
+        var CodexModes=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopct)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
+        var codexHeartModes=/\b((device)|(sbooksapp)|(statictoc)|(about)|(console)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
         var codexHeadModes=/\b((toc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(gotopct)|(tocscan)|(shownote))\b/g;
         var CodexSubModes=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
         var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
@@ -379,7 +385,7 @@ Codex.setMode=
              openglossmark: "CODEXPOINTGLOSSES",
              // sbooksapp: "SBOOKSAPP",
              device: "CODEXSETTINGS",
-             flytoc: "CODEXFLYTOC",
+             statictoc: "CODEXSTATICTOC",
              about: "CODEXABOUTBOOK"};
         var codex_mode_foci=
             {gotopage: "CODEXPAGEINPUT",

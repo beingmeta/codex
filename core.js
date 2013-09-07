@@ -571,16 +571,16 @@ var Codex={
         var info=Codex.Info(Codex.head);
         while (info) {
             var tocelt=document.getElementById("CODEXTOC4"+info.frag);
-            var flytocelt=document.getElementById("CODEXFLYTOC4"+info.frag);
+            var statictocelt=document.getElementById("CODEXSTATICTOC4"+info.frag);
             var start=info.starts_at; var end=info.ends_at;
             var progress=((location-start)*100)/(end-start);
             var bar=false, appbar=false;
             if (tocelt) {
                 // tocelt.title=Math.round(progress)+"%";
                 bar=fdjtDOM.getFirstChild(tocelt,".progressbar");}
-            if (flytocelt) {
-                appbar=fdjtDOM.getFirstChild(flytocelt,".progressbar");
-                flytocelt.title=Math.round(progress)+"%";}
+            if (statictocelt) {
+                appbar=fdjtDOM.getFirstChild(statictocelt,".progressbar");
+                statictocelt.title=Math.round(progress)+"%";}
             if (Codex.Trace.toc)
                 fdjtLog("For tocbar %o/%o loc=%o start=%o end=%o progress=%o",
                         bar,appbar,location,start,end,progress);

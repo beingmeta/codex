@@ -19,7 +19,7 @@ div.codextoc > div.spanbar {
   margin-left: 0px; margin-right: 0px;}
 
 div.codextoc div.head { min-height: 24px;}
-div#CODEXFLYTOC div.codextoc div.head { min-height: inherit;}
+div#CODEXSTATICTOC div.codextoc div.head { min-height: inherit;}
 
 div.codextoc div.head .progressbar { 
     color: rgb(173,216,230); background-color: rgb(173,216,230);
@@ -90,29 +90,29 @@ body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > div.he
 body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > img {
     height: inherit;}
 
-div#CODEXHEART div#CODEXFLYTOC div.codextoc {
+div#CODEXHEART div#CODEXSTATICTOC div.codextoc {
     display: block; font-size: 90%; text-align: left;}
-div#CODEXHEART div#CODEXFLYTOC div.codextoc img { display: none;}
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.codextoc div.head {
+div#CODEXHEART div#CODEXSTATICTOC div.codextoc img { display: none;}
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.codextoc div.head {
     margin-left: 0px; margin-right: 0px;
     display: block; font-weight: bold;}
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.codextocleaf > div.head {
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.codextocleaf > div.head {
     display: block; font-weight: normal;}
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.progressbox { display: none;}
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.codexlivehead > div.head {
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.progressbox { display: none;}
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.codexlivehead > div.head {
     color: blue;}
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC
   div.codexlivehead > div.head hr.progressbar {
       display: block;}
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC
   div.codexlivehead > div.spanbar div.progressbox {
       display: block;}
-div#CODEXHEART div#CODEXFLYTOC div.codextoc a.brick {
+div#CODEXHEART div#CODEXSTATICTOC div.codextoc a.brick {
     border: solid black 1px;}
 
-div#CODEXFLYTOC div.codextoc.codexcurhead div.sub { display: none;}
+div#CODEXSTATICTOC div.codextoc.codexcurhead div.sub { display: none;}
 
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.spanbar div.spans {
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.spanbar div.spans {
     left: 0px;}
 
 div.codextoc .sectname.cohi { background-color: silver;}
@@ -160,7 +160,7 @@ div#CODEXHUD.tocscan div#CODEXTOC div.spanbar div.progressbox {
     border-top: 0px; top: 0px;}
 div#CODEXHUD.tocscan div#CODEXTOC div.spanbar { height: 40px;}
 
-div#CODEXTOC div.spanbar, div#CODEXFLYTOC div.spanbar {
+div#CODEXTOC div.spanbar, div#CODEXSTATICTOC div.spanbar {
   position: relative;
   text-align: center; clear: both;
   margin: 0px; padding: 0px; border: 0px;
@@ -247,9 +247,9 @@ div#CODEXTOC div.codextoc div.codextoc {
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
 
-div#CODEXHUD div#CODEXFLYTOC div.spans a.codextitle { display: none;}
+div#CODEXHUD div#CODEXSTATICTOC div.spans a.codextitle { display: none;}
 
-div#CODEXHUD div#CODEXFLYTOC div.codextoc div.spanbar { display: block;}
+div#CODEXHUD div#CODEXSTATICTOC div.codextoc div.spanbar { display: block;}
 
 div.spanbar div.spans { 
   position: relative; width: 100%; /* background-color: black; */
@@ -273,7 +273,7 @@ div.spanbar div.codexhudspan {
   background-color: transparent; clear: none; position: absolute;
   margin: 0px; padding: 0px; border: 0px;
   border-right: none; border-left: none;}
-div#CODEXFLYTOC div.spanbar div.codexhudspan { z-index: 75;}
+div#CODEXSTATICTOC div.spanbar div.codexhudspan { z-index: 75;}
 div.spanbar div.codexhudspan a.brick {
   display: block; text-decoration: none;
   border: 0px; padding: 0px;

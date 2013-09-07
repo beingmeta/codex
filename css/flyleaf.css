@@ -11,7 +11,7 @@ div#CODEXHUD div#CODEXHEART table {
 
 div#CODEXHUD.about div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXABOUTBOOK'],
 div#CODEXHUD.device div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXSETTINGS'],
-div#CODEXHUD.flytoc div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXFLYTOC'],
+div#CODEXHUD.statictoc div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXSTATICTOC'],
 div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXCONSOLE'],
 div#CODEXHUD.sbooksapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
     border: gold solid 3px; background-color: gold;
@@ -41,10 +41,10 @@ div#CODEXHUD div#CODEXHEART .flyleafplate a:visited {
 div#CODEXHUD div#CODEXHEART .flyleafplate a:hover {
     text-decoration: underline;}
 
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.head { color: black; } 
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC a {
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.head { color: black; } 
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC a {
     color: inherit; font-weight: inherit;}
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC a.cohi {
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC a.cohi {
     font-weight: bold; background-color: gold;}
 
 div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS

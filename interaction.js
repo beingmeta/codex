@@ -899,7 +899,7 @@
         70: "searching",
         100: "device",68: "device",
         110: "toc",78: "toc",
-        116: "flytoc",84: "flytoc", 72: "help", 
+        116: "statictoc",84: "statictoc", 72: "help", 
         103: "allglosses",71: "allglosses",
         67: "console", 99: "console"};
 

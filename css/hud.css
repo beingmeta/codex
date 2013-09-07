@@ -414,7 +414,7 @@ div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
 /* Heart rules */
 div#CODEXHUD.allglosses div#CODEXALLGLOSSES.hudpanel,
 div#CODEXHUD.showaside div#CODEXASIDE.hudpanel,
-div#CODEXHUD.flytoc div#CODEXFLYTOC.hudpanel,
+div#CODEXHUD.statictoc div#CODEXSTATICTOC.hudpanel,
 div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
 div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
 div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART div#CODEXGLOSSCLOUD.hudpanel,
@@ -559,7 +559,7 @@ img.closebutton, img.codexpagebutton, img.codexscanbutton, img.hudbutton {
 
 body div#CODEXHUD.about #CODEXHEART .tabcontent#CODEXABOUTBOOK,
 body div#CODEXHUD.device #CODEXHEART .tabcontent#CODEXSETTINGS,
-body div#CODEXHUD.flytoc #CODEXHEART .tabcontent#CODEXFLYTOC,
+body div#CODEXHUD.statictoc #CODEXHEART .tabcontent#CODEXSTATICTOC,
 body div#CODEXHUD.console #CODEXHEART .tabcontent#CODEXCONSOLE,
 body div#CODEXHUD.sbooksapp div#CODEXHEART .tabcontent#SBOOKSAPP,
 body div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSAPP {
@@ -654,7 +654,7 @@ div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
     height: 50px; width: auto;}
 
 div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[alt='About'],
-div#CODEXHUD.flytoc div#CODEXHUDBUTTONS div.tabbar .tab[alt='ToC'],
+div#CODEXHUD.statictoc div#CODEXHUDBUTTONS div.tabbar .tab[alt='ToC'],
 div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[alt='Device'],
 div#CODEXHUD.sbooksapp div#CODEXHUDBUTTONS div.tabbar .tab[alt='sBooks'],
 div#CODEXHUD.login div#CODEXHUDBUTTONS div.tabbar .tab[alt='Login'],
@@ -683,7 +683,7 @@ div#CODEXHUD div#CODEXBUTTON.help img[alt='help'],
 div#CODEXHUD div#CODEXBUTTON.about img[alt='about'],
 div#CODEXHUD div#CODEXBUTTON.sbooksapp img[alt='sbooksapp'],
 div#CODEXHUD div#CODEXBUTTON.login img[alt='login'],
-div#CODEXHUD div#CODEXBUTTON.flytoc img[alt='flytoc'],
+div#CODEXHUD div#CODEXBUTTON.statictoc img[alt='statictoc'],
 div#CODEXHUD div#CODEXBUTTON.scanning img[alt='scanning'],
 div#CODEXHUD div#CODEXBUTTON.device img[alt='device'] {
     display: block;}
