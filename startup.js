@@ -864,6 +864,13 @@ Codex.Startup=
             else Codex.server=lookupServer(document.domain);
             if (!(Codex.server)) Codex.server=Codex.default_server;
             
+            var notespecs=fdjtDOM.getMeta("sbooknote",true);
+            var noterefspecs=fdjtDOM.getMeta("sbooknoteref",true);
+            Codex.sbooknotes=(((notespecs)&&(notespecs.length))?
+                              (fdjtDOM.sel(notespecs)):(false));
+            Codex.sbooknoterefs=(((noterefspecs)&&(noterefspecs.length))?
+                                 (fdjtDOM.sel(noterefspecs)):(false));
+
             refuris.push(refuri);
 
             var coverpage=fdjtDOM.getLink("SBOOK.coverpage",false,true)||

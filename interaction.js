@@ -357,17 +357,19 @@
         if ((anchor)&&(anchor.href)&&(href=anchor.getAttribute("href"))) {
             if (Codex.Trace.gestures)
                 fdjtLog("ctouch: follow link %s",href);
-            var rel=anchor.rel;
-            if ((href[0]==="#")&&(rel)&&
-                (rel.search(/\b((sbooknote)|(footnote)|(endnote))\b/)>=0)) {
-                var note_node=fdjt.ID(href.slice(1));
-                var label=fdjtDOM("span.sbooknotelabel");
-                label.innerHTML=anchor.innerHTML;
-                fdjtDOM.removeChildren(Codex.DOM.notehud);
-                var shownote=note_node.cloneNode(true); shownote.id=null;
+            var rel=anchor.rel, classname=anchor.className;
+            if ((href[0]==="#")&&
+                (((rel)&&(rel.search(/\b((sbooknote)|(footnote)|(endnote)|(note))\b/)>=0))||
+                 ((classname)&&(classname.search(/\b((sbooknote)|(sbooknoteref))\b/)>=0))||
+                 ((Codex.sbooknoterefs)&&(Codex.sbooknoterefs.match(anchor))))) {
+                var note_node=getNoteNode(href.slice(1));
+                var noteid=note_node.id;
+                Codex.DOM.noteshud.innerHTML="";
+                var shownote=note_node.cloneNode(true);
+                fdjtDOM.stripIDs(shownote);
                 dropClass(shownote,/\bcodex\S+/g);
-                fdjtDOM.prepend(shownote,label);
-                fdjtDOM.append(Codex.DOM.notehud,shownote);
+                Codex.DOM.noteshud.setAttribute("data-note",noteid||(href.slice(1)));
+                fdjtDOM.append(Codex.DOM.noteshud,shownote);
                 Codex.setMode("shownote");
                 gesture_start=false;
                 clicked=fdjtTime();
@@ -413,6 +415,43 @@
             return true;}
         return false;}
 
+    function getNoteNode(ref){
+        var elt=document.getElementById(ref);
+        var body=fdjt.ID("CODEXBODY"), db=document.body;
+        if (!(elt)) {
+            var elts=document.getElementsByName(ref);
+            if (!(body)) return false;
+            if (elts.length) {
+                var i=0, lim=elts.length; while (i<lim) {
+                    if (hasParent(elt[i],body)) {elt=elt[i]; break;}
+                    else i++;}}}
+        if (!(elt)) return;
+        var scan=elt, style=fdjtDOM.getStyle(elt), block=false;
+        var notespec=Codex.sbooknotes;
+        while (scan) {
+            if (scan===body) break;
+            else if (scan===db) break;
+            else if ((notespec)&&(notespec.match(scan))) return scan;
+            else if (block) {}
+            else if (style.display==='block') {block=scan; style=false;}
+            else {}
+            scan=scan.parentNode;
+            style=fdjtDOM.getStyle(scan);}
+        if (block) return block; else return elt;
+        return elt;}
+
+    function jumpToNote(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var noteshud=Codex.DOM.noteshud;
+        var jumpto=noteshud.getAttribute("data-note");
+        if (jumpto) {
+            noteshud.removeAttribute("data-note");
+            noteshud.innerHTML="";
+            Codex.setMode(false);
+            Codex.GoTo(jumpto,"jumpToNote",true,true);}
+        else Codex.setMode(false);}
+    
     var selectors=[];
     var slip_timer=false;
     function content_held(evt){
@@ -2138,6 +2177,7 @@
          "#CODEXSHOWTEXT": {click: back_to_reading},
          "#CODEXAPPSPLASH": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
+         "#CODEXNOTETEXT": {click: jumpToNote},
          ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
          // GLOSSFORM rules
          "span.codexsharegloss": {tap: fdjt.UI.CheckSpan.onclick},
@@ -2227,6 +2267,7 @@
              Codex.scanBackward(evt); cancel(evt);}},
          "#CODEXHELPBUTTON": {touchstart: toggleHelp},
          "#CODEXHELP": {touchstart: toggleHelp},
+         "#CODEXNOTETEXT": {click: jumpToNote},
          "#CODEXSHOWTEXT": {
              touchstart: back_to_reading,
              touchmove: cancel,
