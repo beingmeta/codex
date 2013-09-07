@@ -86,7 +86,7 @@ Codex.Slice=(function () {
                     (((info.maker)||(info.tstamp))?(showglossinfo(info)):
                      (showdocinfo(info))),
                     ((note_len>0)&&
-                     (fdjtDOM("span.note",Codex.md2DOM(info.note,true))))," ",
+                     (fdjtDOM("span.note",convertNote(info.note))))," ",
                     // (fdjtUI.Ellipsis("span.note",info.note,140))
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
@@ -129,6 +129,12 @@ Codex.Slice=(function () {
         return div;}
     Codex.renderCard=renderCard;
     
+    function convertNote(note){
+        if (note.search(/^{(md|markdown)}/)==0) {
+            var close=note.indexOf('}');
+            return Codex.md2DOM(note.slice(close+1),true);}
+        else return note;}
+
     var show_tag_thresh=7;
 
     function toarray(arg){
