@@ -747,13 +747,13 @@ body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSCANNER,
 body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSCANNER,
 body div#CODEXHUD.scanning div#CODEXSCANNER {
     display: block; overflow: hidden; border-color: steelblue;
-    opacity: 0.95;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
-    filter: alpha(opacity=95);
-    -webkit-opacity: 0.95;
-    -khtml-opacity: 0.95;
-    -moz-opacity: 0.95;
-    -o-opacity: 0.95;}
+    opacity: 0.90;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
 
 div#CODEXHUD div#CODEXSCANNER.expanded, body.hudup div#CODEXSCANNER.expanded,
 div#CODEXHEAD div#CODEXSCANNER.expanded {
