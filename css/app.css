@@ -65,7 +65,7 @@ div#CODEXPAGE {
     position: fixed; overflow: visible;
     padding: 0px; margin: 0px;
     left: 50px; right: 50px;
-    top: 20px; bottom: 20px;
+    top: 20px; bottom: 30px;
     border: solid transparent 3px;
     border-radius: 18px;
     -o-border-radius: 18px;
