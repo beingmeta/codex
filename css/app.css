@@ -432,7 +432,7 @@ body.hudup .codextarget.codexglosstarget .codexglossbutton {
 
 /* Displaying the sbook target */
 
-body.cxANIMATE.hudup .codextarget, body.cxSHRINK .codextarget {
+body.cxANIMATE .codextarget, body.cxSHRINK .codextarget {
     transition-property: color,background-color;
     transition-duration: 3s;
     -o-transition-property: color,background-color;
@@ -446,7 +446,9 @@ body.hudup .codextarget, body.cxSHRINK .codextarget {
 
 body.hudup .codextarget.codexnewtarget {
     background-color: inherit; }
-.codexnewtarget {color: blue;}
+.codexnewtarget {
+    color: blue; outline: solid blue 1px;
+    background-color: lightblue;}
 div.sbooksection.codexnewtarget, section.codexnewtarget,
 div.sbooksection.codexnewtarget > *, section.codexnewtarget > * {
     color: inherit;}

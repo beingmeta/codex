@@ -640,9 +640,12 @@ var Codex={
         var targetid=target.codexbaseid||target.id;
         var primary=((targetid)&&(fdjtID(targetid)))||target;
         var targets=getDups(targetid);
+        addClass(target,"codextarget");
+        addClass(target,"codexnewtarget");
         addClass(targets,"codextarget");
         addClass(targets,"codexnewtarget");
         setTimeout(function(){
+            dropClass(target,"codexnewtarget");
             dropClass(targets,"codexnewtarget");},
                    5000);
         fdjtState.setCookie(
