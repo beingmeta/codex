@@ -54,6 +54,10 @@ body.sbook {
      #CODEXHUD
 */
 
+#CODEXBODY div, #CODEXBODY p, #CODEXBODY li, #CODEXBODY dt, #CODEXBODY dd,
+#CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4, #CODEXBODY h5,
+#CODEXBODY h6, #CODEXBODY h7 {
+    line-height: 110%;}
 /* CODEXCONTENT is where linear content lives for scrolling layout.
    It is also used to determine the width of the content region
    (whether scrolled or paged), so the width can be controlled by
