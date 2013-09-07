@@ -648,15 +648,18 @@
             return;}
         var card=getCard(target);
         var passage=fdjtID(card.getAttribute("data-passage"));
-        var glossid=fdjtID(card.getAttribute("data-gloss"));
+        var glossid=card.getAttribute("data-gloss");
         var gloss=((glossid)&&(Codex.glossdb.ref(glossid)));
         if (getParent(target,".detail")) {
             var detail=((gloss)&&(gloss.detail));
             if (!(detail)) return;
             else if (detail[0]==='<')
                 fdjt.ID("CODEXGLOSSDETAIL").innerHTML=gloss.detail;
-            else fdjt.ID("CODEXGLOSSDETAIL").innerHTML=
-                "<pre>\n"+gloss.detail+"\n</pre>";
+            else if (detail.search(/^{(md|markdown)}/)==0) {
+                var close=detail.indexOf('}');
+                fdjt.ID("CODEXGLOSSDETAIL").innerHTML=
+                    Codex.md2HTML(detail.slice(close+1));}
+            else fdjt.ID("CODEXGLOSSDETAIL").innerHTML=Codex.md2HTML(detail);
             Codex.setMode("glossdetail");
             return fdjtUI.cancel(evt);}
         else if ((!(gloss))&&(passage)) {

@@ -352,7 +352,7 @@ Codex.setMode=
                     dropClass(CodexHUD,"openheart");
                     dropClass(CodexHUD,"openhead");
                     dropClass(CodexHUD,"full");
-                    dropClass(CodexHUD,CodexMode_pat);
+                    dropClass(CodexHUD,CodexModes);
                     dropClass(document.body,"codexscanning");
                     dropClass(document.body,"codexscanstart");
                     dropClass(document.body,"codexscanend");
@@ -363,11 +363,12 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexMode_pat=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopct)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
-        var codexHeartMode_pat=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
-        var codexHeadMode_pat=/\b((toc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(gotopct)|(tocscan)|(shownote))\b/g;
-        var CodexSubMode_pat=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
-        var CodexBodyMode_pat=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
+        var CodexModes=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(toc)|(openglossmark)|(allglosses)|(context)|(flytoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopct)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
+        var codexHeartModes=/\b((device)|(sbooksapp)|(flytoc)|(about)|(console)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
+        var codexHeadModes=/\b((toc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(gotopct)|(tocscan)|(shownote))\b/g;
+        var CodexSubModes=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
+        var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
+        var CodexPopModes=/\b((glossdetail))\b/g;
         var codex_mode_scrollers=
             {allglosses: "CODEXALLGLOSSES",
              searchresults: "CODEXSEARCHRESULTS",
@@ -392,6 +393,8 @@ Codex.setMode=
             var oldmode=Codex.mode;
             if (typeof mode === 'undefined') return oldmode;
             if (mode==='last') mode=Codex.last_mode;
+            if ((!(mode))&&(Codex.mode)&&(CodexPopModes.test(Codex.mode)))
+                mode=Codex.last_mode;
             if (mode==='none') mode=false;
             if (mode==='heart') mode=Codex.heart_mode||"about";
             if (Codex.Trace.mode)
@@ -412,8 +415,8 @@ Codex.setMode=
                     if (codex_mode_foci[Codex.mode]) {
                         var input=fdjtID(codex_mode_foci[Codex.mode]);
                         input.blur();}
-                    dropClass(CodexHUD,CodexMode_pat);
-                    dropClass(CodexHUD,CodexSubMode_pat);
+                    dropClass(CodexHUD,CodexModes);
+                    dropClass(CodexHUD,CodexSubModes);
                     Codex.mode=false;
                     Codex.last_mode=true;}
                 else if (typeof mode !== 'string') 
@@ -422,6 +425,7 @@ Codex.setMode=
                     if (codex_mode_foci[Codex.mode]) {
                         var modeinput=fdjtID(codex_mode_foci[Codex.mode]);
                         modeinput.blur();}
+                    if (mode!==Codex.mode) Codex.last_mode=Codex.mode;
                     Codex.mode=mode;}
                 // If we're switching to the inner app but the iframe
                 //  hasn't been initialized, we do it now.
@@ -461,16 +465,16 @@ Codex.setMode=
                 if (mode===true) {
                     dropClass(CodexHUD,"openhead");
                     dropClass(CodexHUD,"openheart");
-                    fdjtDOM.swapClass(CodexHUD,CodexMode_pat,"minimal");}
+                    fdjtDOM.swapClass(CodexHUD,CodexModes,"minimal");}
                 else {
-                    if (mode.search(codexHeartMode_pat)<0) {
+                    if (mode.search(codexHeartModes)<0) {
                         dropClass(CodexHUD,"openheart");}
-                    if (mode.search(codexHeadMode_pat)<0)
+                    if (mode.search(codexHeadModes)<0)
                         dropClass(CodexHUD,"openhead");
-                    if (mode.search(codexHeartMode_pat)>=0) {
+                    if (mode.search(codexHeartModes)>=0) {
                         Codex.heart_mode=mode;
                         addClass(CodexHUD,"openheart");}
-                    if (mode.search(codexHeadMode_pat)>=0) {
+                    if (mode.search(codexHeadModes)>=0) {
                         Codex.head_mode=mode;
                         addClass(CodexHUD,"openhead");}}
                 changeMode(mode);}
@@ -490,17 +494,17 @@ Codex.setMode=
                 dropClass(document.body,"cxSHRINK");
                 Codex.cxthelp=false;
                 if (display_sync) Codex.displaySync();
-                if (CodexBodyMode_pat.test(oldmode)) {
-                    dropClass(CodexHUD,CodexSubMode_pat);
+                if (CodexBodyModes.test(oldmode)) {
+                    dropClass(CodexHUD,CodexSubModes);
                     setHUD(false);}
                 else setTimeout(function(){
                     if (Codex.mode===oldmode) {
-                        dropClass(CodexHUD,CodexSubMode_pat);
+                        dropClass(CodexHUD,CodexSubModes);
                         setHUD(false);}},500);}}
         
         function changeMode(mode){      
-            fdjtDOM.dropClass(CodexHUD,CodexMode_pat);
-            fdjtDOM.dropClass(CodexHUD,CodexSubMode_pat);
+            fdjtDOM.dropClass(CodexHUD,CodexModes);
+            fdjtDOM.dropClass(CodexHUD,CodexSubModes);
             fdjtDOM.addClass(CodexHUD,mode);
             // This updates scanning state
             if ((Codex.scanning)&&(mode!=="scanning")) {
@@ -589,7 +593,7 @@ Codex.setMode=
             else if (mode===Codex.mode)
                 if (keephud) setMode(true); else setMode(false);
             else if ((mode==='heart')&&
-                     (Codex.mode.search(codexHeartMode_pat)===0))
+                     (Codex.mode.search(codexHeartModes)===0))
                 if (keephud) setMode(true); else setMode(false);
             else setMode(mode);}
         Codex.toggleMode=CodexHUDToggle;
