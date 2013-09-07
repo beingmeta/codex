@@ -447,14 +447,13 @@ body.hudup .codextarget, body.cxSHRINK .codextarget {
 body.hudup .codextarget.codexnewtarget {
     background-color: inherit; }
 .codexnewtarget {
-    color: blue; outline: solid blue 1px;
-    background-color: lightblue;}
+    color: blue; text-decoration: underline; background-color: lightblue;}
 div.sbooksection.codexnewtarget, section.codexnewtarget,
 div.sbooksection.codexnewtarget > *, section.codexnewtarget > * {
     color: inherit;}
 section.codexnewtarget > *:first-child,
 div.sbooksection.codexnewtarget > *:first-child {
-    color: blue;}
+    color: blue; text-decoration: underline; background-color: lightblue;}
 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
