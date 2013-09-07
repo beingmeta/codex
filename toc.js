@@ -94,6 +94,11 @@ Codex.TOC=
                 head.frag=headinfo.frag;}
             toc.sbook_start=headinfo.starts_at;
             toc.sbook_end=headinfo.ends_at;
+            var hhinfo=headinfo.head;
+            if ((progressbar)&&(hhinfo)) {
+                var hstart=hhinfo.starts_at, hend=hhinfo.ends_at, hlen=hend-hstart;
+                progressbar.style.width=((100*(headinfo.ends_at-headinfo.starts_at))/hlen)+"%";
+                progressbar.style.left=((100*(headinfo.starts_at-hstart))/hlen)+"%";}
             fdjtDOM.addClass(toc,"toc"+depth);
             toc.id=(prefix||"CODEXTOC4")+headinfo.frag;
             if ((!(sub))||(!(sub.length))) {

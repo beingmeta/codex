@@ -127,18 +127,14 @@ Codex.DOMScan=(function(){
                     (head1.getAttribute('data-toctitle'))||
                     (head1.title);
                 if ((!(title))&&(head1)) title=gatherText(head1);
-                else title=gatherText(head);
-                if ((title)&&(title.length>40))
-                    title=title.slice(0,40)+"...";}
+                else title=gatherText(head);}
             if (typeof title === "string") {
                 var std=stdspace(title);
                 if (std==="") return false;
                 else return std;}
             else {
                 title=fdjtDOM.textify(title,true);
-                if ((title)&&(title.length>40))
-                    return title.slice(0,40)+"...";
-                else return title;}}
+                return title;}}
 
         function gatherText(head,s) {
             if (!(s)) s="";

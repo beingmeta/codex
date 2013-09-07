@@ -98,8 +98,6 @@ div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.codextoc div.head {
     display: block; font-weight: bold;}
 div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.codextocleaf > div.head {
     display: block; font-weight: normal;}
-div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC hr.progressbar {
-    display: none; border: none;}
 div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.progressbox { display: none;}
 div#CODEXHUD div#CODEXHEART div#CODEXFLYTOC div.codexlivehead > div.head {
     color: blue;}
