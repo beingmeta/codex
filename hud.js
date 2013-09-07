@@ -553,19 +553,20 @@ Codex.setMode=
                 var curloc=Codex.location;
                 var allcards=Codex.DOM.allglosses.childNodes;
                 var i=0, lim=allcards.length;
-                var card=false, lasthead=false;
+                var card=false, lastcard=false, lasthead=false;
                 while (i<lim) {
-                    card=allcards[i++]; 
+                    lastcard=card;
+                    card=allcards[i++];
                     if (hasClass(card,"newhead")) lasthead=card;
                     var loc=card.getAttribute("data-location");
                     if (loc) loc=parseInt(loc);
-                    if (loc>location) break;}
-                if (i>=lim) card=false;
-                if ((card)&&(lasthead)&&(card.scrollIntoViewIfNeeded)) {
+                    if (loc>curloc) break;}
+                if (i>=lim) card=lastcard=false;
+                if ((lastcard)&&(lasthead)&&(card.scrollIntoViewIfNeeded)) {
                     lasthead.scrollIntoView();
-                    card.scrollIntoViewIfNeeded();}
-                else if ((card)&&(card.scrollIntoView))
-                    card.scrollIntoView();}
+                    lastcard.scrollIntoViewIfNeeded();}
+                else if ((lastcard)&&(lastcard.scrollIntoView))
+                    lastcard.scrollIntoView();}
             else {}
             
             // This updates scroller dimensions, we delay it

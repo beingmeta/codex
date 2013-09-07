@@ -24,7 +24,9 @@
 #CODEXSCANNER {
     position: fixed; left: 60px; right: 60px; z-index: 100;
     background-color: white;
-    border: solid steelblue 4px; padding: 0px; }
+    border: solid steelblue 4px; padding: 0px;
+    max-height: 50px;}
+#CODEXSCANNER.expanded { max-height: inherit; }
 #CODEXSCANNER .tochead {
     transition-property: font-size; transition-duration: 1s;}
 #CODEXSCANNER .tochead {
