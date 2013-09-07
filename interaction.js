@@ -546,6 +546,9 @@
         while (elt) {
             if ((elt.name)&&(elt.name.search("SBR")===0))
                 return elt;
+            else if ((elt.getAttribute("name"))&&
+                     (elt.getAttribute("name").search("SBR")===0))
+                return elt;                     
             else elt=elt.parentNode;}
         return false;}
 
@@ -598,9 +601,10 @@
         if (slip_timer) {
             clearTimeout(slip_timer); slip_timer=false;}
         if (about) {
-            var ref=about.name.slice(3);
+            var name=about.name||about.getAttribute("name");
+            var ref=name.slice(3);
             var toc=getParent(about,".codextoc");
-            var title=getTitleSpan(toc,about.name);
+            var title=getTitleSpan(toc,name);
             if (Codex.Trace.gestures)
                 fdjtLog("toc_held %o about=%o ref=%s toc=%o title=%s",
                         evt,about,ref,toc,title);
@@ -619,9 +623,10 @@
         if (preview_timer) {
             clearTimeout(preview_timer); preview_timer=false;}
         if (about) {
-            var ref=about.name.slice(3);
+            var name=about.name||about.getAttribute("name");
+            var ref=name.slice(3);
             var toc=getParent(about,".codextoc");
-            var title=getTitleSpan(toc,about.name);
+            var title=getTitleSpan(toc,name);
             if (Codex.Trace.gestures)
                 fdjtLog("toc_released %o ref=%o about=%o toc=%o title=%s",
                         evt,ref,about,toc,title);
@@ -712,7 +717,7 @@
             Codex.setMode("addgloss");
             return fdjtUI.cancel(evt);}
         else if (gloss) {
-            Codex.Scan(gloss,card,false);
+            Codex.Scan(passage,card,false);
             return fdjtUI.cancel(evt);}
         else return;}
     function slice_held(evt){

@@ -581,7 +581,8 @@ var Codex={
                 bar=fdjtDOM.getFirstChild(tocelt,".progressbar");}
             if (statictocelt) {
                 appbar=fdjtDOM.getFirstChild(statictocelt,".progressbar");
-                statictocelt.title=Math.round(progress)+"%";}
+                if (progress<=100) 
+                    statictocelt.title=Math.round(progress)+"%";}
             if (Codex.Trace.toc)
                 fdjtLog("For tocbar %o/%o loc=%o start=%o end=%o progress=%o",
                         bar,appbar,location,start,end,progress);
@@ -648,7 +649,7 @@ var Codex={
         setTimeout(function(){
             dropClass(target,"codexnewtarget");
             dropClass(targets,"codexnewtarget");},
-                   5000);
+                   3000);
         fdjtState.setCookie(
             "codextarget",targetid||target.getAttribute('data-sbookid'));
         Codex.target=primary;

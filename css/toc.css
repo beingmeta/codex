@@ -45,8 +45,7 @@ div.codextoc div.head .progressbar {
     display: none;}
 div.codextoc div.head.codexlivehead > .progressbar { display: block; }
 div.codextoc div.head .sizebar {
-    background-color: rgb(173,216,230);
-    border-right: solid black 1px; border-left: solid black 1px;}
+    background-color: rgb(173,216,230);}
 div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
     height: 1em; width: auto; float: right;
     cursor: pointer; z-index: 100;}
@@ -123,8 +122,13 @@ div#CODEXHEART div#CODEXSTATICTOC div.codextoc a.brick {
 
 div#CODEXSTATICTOC div.codextoc.codexcurhead div.sub { display: none;}
 
+div#CODEXSTATICTOC > div.codextoc { margin-left: 0.5ex; margin-right: 0.5ex;}
+div#CODEXSTATICTOC div.spanbar { display: none; }
+
 div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.spanbar div.spans {
     left: 0px;}
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.head.codexlivehead {
+    border-bottom: solid red 1px;}
 
 div.codextoc .sectname.cohi, {
     background-color: silver;}
@@ -260,8 +264,6 @@ div#CODEXTOC div.codextoc div.codextoc {
     -o-border-radius-bottomright: 0px;}
 
 div#CODEXHUD div#CODEXSTATICTOC div.spans a.codextitle { display: none;}
-
-div#CODEXHUD div#CODEXSTATICTOC div.codextoc div.spanbar { display: block;}
 
 div.spanbar div.spans { 
   position: relative; width: 100%; /* background-color: black; */

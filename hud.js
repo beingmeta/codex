@@ -534,6 +534,39 @@ Codex.setMode=
                         var gap=height-inner.height;
                         content.scrollTop=Math.floor(inner.top-(gap/2));}}
                 else {}} // Already in view
+            else if (mode==="statictoc") {
+                var static_toc=fdjt.ID("CODEXSTATICTOC");
+                var headinfo=((Codex.head)&&(Codex.head.id)&&
+                             (Codex.docinfo[Codex.head.id]));
+                var hhinfo=headinfo.head, pinfo=headinfo.prev;
+                var static_head=fdjt.ID("CODEXSTATICTOC4"+headinfo.frag);
+                var static_hhead=((hhinfo)&&(fdjt.ID("CODEXSTATICTOC4"+hhinfo.frag)));
+                var static_phead=((pinfo)&&(fdjt.ID("CODEXSTATICTOC4"+pinfo.frag)));
+                if ((static_head)&&(static_head.scrollIntoView)) {
+                    if (static_hhead) static_hhead.scrollIntoView();
+                    if ((static_phead)&&(static_phead.scrollIntoViewIfNeeded))
+                        static_phead.scrollIntoViewIfNeeded();
+                    if (static_head.scrollIntoViewIfNeeded)
+                        static_head.scrollIntoViewIfNeeded();
+                    else static_head.scrollIntoView();}}
+            else if (mode==="allglosses") {
+                var curloc=Codex.location;
+                var allcards=Codex.DOM.allglosses.childNodes;
+                var i=0, lim=allcards.length;
+                var card=false, lasthead=false;
+                while (i<lim) {
+                    card=allcards[i++]; 
+                    if (hasClass(card,"newhead")) lasthead=card;
+                    var loc=card.getAttribute("data-location");
+                    if (loc) loc=parseInt(loc);
+                    if (loc>location) break;}
+                if (i>=lim) card=false;
+                if ((card)&&(lasthead)&&(card.scrollIntoViewIfNeeded)) {
+                    lasthead.scrollIntoView();
+                    card.scrollIntoViewIfNeeded();}
+                else if ((card)&&(card.scrollIntoView))
+                    card.scrollIntoView();}
+            else {}
             
             // This updates scroller dimensions, we delay it
             //  because apparently, on some browsers, the DOM
