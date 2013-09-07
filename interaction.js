@@ -535,7 +535,9 @@
             if (Codex.Trace.gestures)
                 fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
             if (already_there) {
-                Codex.setMode(false);
+                if (Codex.mode==="tocscan")
+                    Codex.setMode("toc");
+                else Codex.setMode(false);
                 fdjtUI.cancel(evt);
                 return;}
             if (show_fulltoc) Codex.GoTo(target);
