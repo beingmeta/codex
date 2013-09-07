@@ -777,12 +777,15 @@ var Codex={
         if (Codex.Trace.state) fdjtLog("Setting state to %j",state);
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
+        var href=window.location.href;
         fdjtState.setLocal("codex.state("+uri+")",statestring);
         if ((!(skiphist))&&(window.history)&&(window.history.pushState)) {
-            if (frag) state.uri=uri=Codex.locuri+"#"+frag;
+            if (frag) {
+                state.uri=uri=Codex.locuri+"#"+frag;
+                state.href=href=href+"#"+frag;}
             if (Codex.Trace.state)
                 fdjtLog("Pushing history %j %s %s",state,((uri)||("")),((title)||("")));
-            window.history.pushState(state,title,uri);}}
+            window.history.pushState(state,title,href);}}
     Codex.saveState=saveState;
     
     function restoreState(state){
