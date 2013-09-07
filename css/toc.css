@@ -21,9 +21,8 @@ div.codextoc > div.spanbar {
 div.codextoc div.head { min-height: 24px;}
 div#CODEXSTATICTOC div.codextoc div.head { min-height: inherit;}
 
-div.codextoc div.head .progressbar { 
-    color: rgb(173,216,230); background-color: rgb(173,216,230);
-    padding: 0px; margin: 0px; border-right: solid red 1px;
+div.codextoc div.head .progressbar, div.codextoc div.head .sizebar { 
+    padding: 0px; margin: 0px; 
     position: absolute;  left: 0px; height: 100%;
     z-index: -100;
     opacity: 0.5;
@@ -33,6 +32,21 @@ div.codextoc div.head .progressbar {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
+div.codextoc div.head .progressbar {
+    color: rgb(173,216,230); background-color: rgb(173,216,230);
+    border-right: solid red 2px;
+    opacity: 0.99;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
+    filter: alpha(opacity=99);
+    -webkit-opacity: 0.99;
+    -khtml-opacity: 0.99;
+    -moz-opacity: 0.99;
+    -o-opacity: 0.99;
+    display: none;}
+div.codextoc div.head.codexlivehead > .progressbar { display: block; }
+div.codextoc div.head .sizebar {
+    background-color: rgb(173,216,230);
+    border-right: solid black 1px; border-left: solid black 1px;}
 div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
     height: 1em; width: auto; float: right;
     cursor: pointer; z-index: 100;}
@@ -102,9 +116,6 @@ div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.progressbox { display: none;}
 div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.codexlivehead > div.head {
     color: blue;}
 div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC
-  div.codexlivehead > div.head hr.progressbar {
-      display: block;}
-div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC
   div.codexlivehead > div.spanbar div.progressbox {
       display: block;}
 div#CODEXHEART div#CODEXSTATICTOC div.codextoc a.brick {
@@ -115,7 +126,8 @@ div#CODEXSTATICTOC div.codextoc.codexcurhead div.sub { display: none;}
 div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.spanbar div.spans {
     left: 0px;}
 
-div.codextoc .sectname.cohi { background-color: silver;}
+div.codextoc .sectname.cohi, {
+    background-color: silver;}
 div.codextoc .sectname { color: darkblue; cursor: crosshair;}
 div.codextoc div.sub a.sectname { 
   color: darkblue; font-size: 80%; white-space: nowrap;}
@@ -360,6 +372,16 @@ div#CODEXTOC div.codextoc.toc0 > div.spanbar > div.spans {
 div#CODEXTOC div.codextoc.toc0 >
    div.spanbar div.codexhudspan a.brick.codexlivehead {
     border-top-color: darkblue;}
+
+/* Static TOC */
+
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.head { color: black; } 
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC a {
+    color: inherit; font-weight: inherit;}
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC a.cohi {
+    font-weight: bold; background-color: gold;}
+div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.head.cohi {
+    background-color: rgba(255,215,0,0.5);}
 
 /* No confusing underlines in the CODEXTOC */
 

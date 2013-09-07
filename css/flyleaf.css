@@ -41,12 +41,6 @@ div#CODEXHUD div#CODEXHEART .flyleafplate a:visited {
 div#CODEXHUD div#CODEXHEART .flyleafplate a:hover {
     text-decoration: underline;}
 
-div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.head { color: black; } 
-div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC a {
-    color: inherit; font-weight: inherit;}
-div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC a.cohi {
-    font-weight: bold; background-color: gold;}
-
 div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
  div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}

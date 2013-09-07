@@ -64,6 +64,7 @@ Codex.TOC=
         Codex.navicon=navicon;
 
         function CodexTOC(headinfo,depth,tocspec,prefix,headless){
+            var sizebar=fdjtDOM("HR.sizebar");
             var progressbar=fdjtDOM("HR.progressbar");
             var head=((headless)?(false):
                       (fdjtDOM("A.sectname",headinfo.title)));
@@ -82,22 +83,25 @@ Codex.TOC=
                   (fdjtDOM.Image(navicon("start"),false,"backstop"))));
             if ((back_button)&&(headinfo.prev))
                 back_button.frag=headinfo.prev.frag;
+            var head_div=((head)&&(fdjtDOM("DIV.head",progressbar,sizebar,head)));
             var toc=fdjtDOM(spec,
                             next_button,back_button,
-                            ((head)&&(fdjtDOM("DIV.head",progressbar,head))),
+                            head_div,
                             generate_spanbar(headinfo),
                             generate_subsections(headinfo));
             var sub=headinfo.sub;
             if (!(depth)) depth=0;
             if (head) {
+                head_div.setAttribute("name","SBR"+headinfo.frag);
                 head.name="SBR"+headinfo.frag;
                 head.frag=headinfo.frag;}
             toc.sbook_start=headinfo.starts_at;
             toc.sbook_end=headinfo.ends_at;
             var hhinfo=headinfo.head;
-            if ((progressbar)&&(hhinfo)) {
+            if ((sizebar)&&(hhinfo)) {
                 var hstart=hhinfo.starts_at, hend=hhinfo.ends_at, hlen=hend-hstart;
-                progressbar.style.width=((100*(headinfo.ends_at-headinfo.starts_at))/hlen)+"%";
+                sizebar.style.width=((100*(headinfo.ends_at-headinfo.starts_at))/hlen)+"%";
+                sizebar.style.left=((100*(headinfo.starts_at-hstart))/hlen)+"%";
                 progressbar.style.left=((100*(headinfo.starts_at-hstart))/hlen)+"%";}
             fdjtDOM.addClass(toc,"toc"+depth);
             toc.id=(prefix||"CODEXTOC4")+headinfo.frag;

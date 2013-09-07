@@ -572,8 +572,9 @@ var Codex={
         while (info) {
             var tocelt=document.getElementById("CODEXTOC4"+info.frag);
             var statictocelt=document.getElementById("CODEXSTATICTOC4"+info.frag);
+            var hinfo=info.head, hhlen=((hinfo)&&(hinfo.ends_at-hinfo.starts_at));
             var start=info.starts_at; var end=info.ends_at;
-            var progress=((location-start)*100)/(end-start);
+            var progress=((location-start)*100)/hhlen;
             var bar=false, appbar=false;
             if (tocelt) {
                 // tocelt.title=Math.round(progress)+"%";
