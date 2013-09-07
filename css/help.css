@@ -141,7 +141,7 @@ body.codexhelp div#CODEXHUD.addgloss div#CODEXSTARTPAGE,
 body.codexhelp.cxSHRINK div#CODEXHUD.addgloss div#CODEXSTARTPAGE {
     display: none; }
 
-body.codexhelp.hudup div#CODEXHUD.toc div#CODEXTOCHELP.helpbox,
+body.codexhelp.hudup div#CODEXHUD.overtoc div#CODEXTOCHELP.helpbox,
 body.codexhelp div#CODEXHUD.addgloss div#CODEXADDGLOSSHELP.helpbox,
 body.codexhelp div#CODEXHUD.tocscan div#CODEXTOCSCANHELP.helpbox,
 body.codexhelp div#CODEXHUD.scanning div#CODEXSCANNINGHELP.helpbox,

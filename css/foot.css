@@ -67,10 +67,10 @@ body.hudup div#CODEXFOOT div#CODEXPAGELEAP {
     -o-opacity: 0.70;}
 
 /*
-body.cxTOUCH #CODEXHUD.toc div#CODEXFOOT div#CODEXPAGEINFO,
+body.cxTOUCH #CODEXHUD.overtoc div#CODEXFOOT div#CODEXPAGEINFO,
 body.cxTOUCH #CODEXHUD.tocscan div#CODEXFOOT div#CODEXPAGEINFO {
     top: 0px; bottom: auto;}
-body.cxTOUCH #CODEXHUD.toc div#CODEXFOOT div#CODEXPAGEINFO div.textfoot,
+body.cxTOUCH #CODEXHUD.overtoc div#CODEXFOOT div#CODEXPAGEINFO div.textfoot,
 body.cxTOUCH #CODEXHUD.tocscan div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
     top: 0px; bottom: auto;
     border-top: 0px; border-bottom: solid black 1px;}

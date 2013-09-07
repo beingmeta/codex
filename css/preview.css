@@ -7,14 +7,14 @@
 body.cxPREVIEW #CODEXHEAD { display: none; }
 body.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD { display: none; }
 
-body.cxPREVIEW #CODEXHUD.openhead.toc #CODEXHEAD,
+body.cxPREVIEW #CODEXHUD.openhead.overtoc #CODEXHEAD,
 body.cxPREVIEW #CODEXHUD.tocscan #CODEXHEAD {
     display: block; }
 
-body.cxPREVIEW #CODEXHUD.toc #CODEXHEAD, body.cxPREVIEW #CODEXHUD.toc #CODEXFOOT {
+body.cxPREVIEW #CODEXHUD.overtoc #CODEXHEAD, body.cxPREVIEW #CODEXHUD.overtoc #CODEXFOOT {
     background-color: transparent;
     border-color: transparent;}
-body.cxPREVIEW #CODEXHUD.toc #CODEXHEAD .hudpanel {
+body.cxPREVIEW #CODEXHUD.overtoc #CODEXHEAD .hudpanel {
     background-color: transparent;}
 
 body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER,

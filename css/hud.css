@@ -133,7 +133,7 @@ body #CODEXHUD.scanning #CODEXSCANNER {
 body.hudup #CODEXHUD.openhead #CODEXHEAD {
     border-color: rgba(0, 0, 255, 0.52);
     background-color: rgba(255, 255, 240, 0.52);}
-body.hudup #CODEXHUD.openhead.toc #CODEXHEAD {
+body.hudup #CODEXHUD.openhead.overtoc #CODEXHEAD {
     background-color: rgb(255,255,255,0.75);
     border-color: transparent;
     box-shadow: none; -webkit-box-shadow: none;
@@ -142,7 +142,7 @@ body.hudup #CODEXHUD.openhead.toc #CODEXHEAD {
 body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
     position: static;}
 body.hudup #CODEXHUD.openhead #CODEXHUDBUTTONS,
-body.hudup #CODEXHUD.toc #CODEXHUDBUTTONS,
+body.hudup #CODEXHUD.overtoc #CODEXHUDBUTTONS,
 body.hudup #CODEXHUD.refinesearch #CODEXHUDBUTTONS,
 body.hudup #CODEXHUD.searchresults #CODEXHUDBUTTONS,
 body.hudup #CODEXHUD.addgloss #CODEXHUDBUTTONS {
@@ -356,7 +356,7 @@ body div#CODEXHUD.splash #CODEXFOOT #CODEXSHOWTEXT {
 div#CODEXHUD div.hudpanel {
     color: #4682b4; background-color: rgba(255,255,240,0.7);
     z-index: 100; border: 0px;}
-div#CODEXHUD.toc div.hudpanel, div#CODEXHUD.tocscan div.hudpanel {
+div#CODEXHUD.overtoc div.hudpanel, div#CODEXHUD.tocscan div.hudpanel {
     }
 /* Being on top */
 div#CODEXHUD .hudpanel {
@@ -392,7 +392,7 @@ div#CODEXHUD.cxANIMATE div.hudpanel {
 /* Mode display rules */
 
 /* Head rules */
-div#CODEXHUD.toc div#CODEXTOC,
+div#CODEXHUD.overtoc div#CODEXTOC,
 div#CODEXHUD.tocscan div#CODEXTOC,
 div#CODEXHUD.allglosses div#CODEXSOURCES,
 div#CODEXHUD.addgloss div#CODEXADDGLOSS,
@@ -785,12 +785,12 @@ div#CODEXSCANNER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
 div#CODEXPOINTGLOSSES div.tochead { display: none; }
 
-body div#CODEXHUD.toc div#CODEXHEAD {
+body div#CODEXHUD.overtoc div#CODEXHEAD {
     background-color: rgba(255,255,255,0.5);}
 body div#CODEXHUD div.hudpanel#CODEXTOC {
     background-color: rgba(255,255,255,0.5);
     z-index: 100; }
-body.hudup div#CODEXHUD.toc div.hudpanel#CODEXTOC { overflow: hidden; }
+body.hudup div#CODEXHUD.overtoc div.hudpanel#CODEXTOC { overflow: hidden; }
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
@@ -850,7 +850,7 @@ div#CODEXHUD.allglosses .hudbutton[alt='allglosses'],
 div#CODEXHUD.refinesearch .hudbutton[alt='search'],
 div#CODEXHUD.expandsearch .hudbutton[alt='search'],
 div#CODEXHUD.searchresults .hudbutton[alt='search'],
-div#CODEXHUD.toc .hudbutton[alt='toc'] {
+div#CODEXHUD.overtoc .hudbutton[alt='toc'] {
     border-color: darkblue;
     /* background-color: #4682b4; */
     background-color: silver;}

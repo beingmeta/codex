@@ -536,13 +536,13 @@
                 fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
             if (already_there) {
                 if (Codex.mode==="tocscan")
-                    Codex.setMode("toc");
+                    Codex.setMode("overtoc");
                 else Codex.setMode(false);
                 fdjtUI.cancel(evt);
                 return;}
             if (show_fulltoc) Codex.GoTo(target);
             else Codex.JumpTo(target);
-            if (show_fulltoc) Codex.setMode("toc");
+            if (show_fulltoc) Codex.setMode("overtoc");
             else if (Codex.mode==="tocscan")
                 Codex.setMode(false);
             else {
@@ -900,7 +900,7 @@
         76: "gotoloc",108: "gotoloc",
         70: "searching",
         100: "device",68: "device",
-        110: "toc",78: "toc",
+        110: "overtoc",78: "overtoc",
         116: "statictoc",84: "statictoc", 72: "help", 
         103: "allglosses",71: "allglosses",
         67: "console", 99: "console"};
@@ -1153,7 +1153,7 @@
     /* HUD button handling */
 
     var mode_hud_map={
-        "toc": "CODEXTOC",
+        "overtoc": "CODEXTOC",
         "searching": "CODEXSEARCH",
         "allglosses": "CODEXSOURCES"};
     
@@ -1485,7 +1485,7 @@
             if (headinfo.next) Codex.GoTo(headinfo.next.frag,"scanForward");
             else if ((headinfo.head)&&(headinfo.head.next)) {
                 Codex.GoTo(headinfo.head.next.frag,"scanForward");
-                Codex.setMode("toc");}
+                Codex.setMode("overtoc");}
             else if ((headinfo.head)&&(headinfo.head.head)&&
                      (headinfo.head.head.next)) 
                 Codex.GoTo(headinfo.head.head.next.frag,"scanForward");
