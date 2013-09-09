@@ -4,10 +4,14 @@
 
 @charset "UTF-8";
 
+/*
 body.cxPREVIEW, body.cxPREVIEW div.codexslice {
     cursor: url(/static/g/codex/binocularscursor.svgz),
     url(/static/g/codex/binocularscursor32x32.png),
     crosshair;}
+*/
+
+body.cxPREVIEW { cursor: crosshair; }
 
 body.cxPREVIEW #CODEXHEAD { display: none; }
 body.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD { display: none; }
