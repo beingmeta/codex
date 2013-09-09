@@ -564,7 +564,8 @@
         var tap_target=fdjtUI.T(evt);
         var about=getAbout(tap_target);
         if (about) {
-            var ref=about.name.slice(3);
+            var name=about.name||about.getAttribute("name");
+            var ref=name.slice(3);
             var target=fdjtID(ref);
             var info=Codex.docinfo[ref];
             var show_fulltoc=
@@ -648,7 +649,8 @@
             fdjtLog("toc_slipped %o noabout",evt);
         if (about) {
             var toc=getParent(about,".codextoc");
-            var title=getTitleSpan(toc,about.name);
+            var name=about.name||about.getAttribute("name");
+            var title=getTitleSpan(toc,name);
             if (Codex.Trace.gestures)
                 fdjtLog("toc_slipped %o about=%o toc=%o title=%s",
                         evt,about,toc,title);
