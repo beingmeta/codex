@@ -619,18 +619,22 @@ Codex.Paginate=
                     addClass(page,"curpage");
                 else {
                     var curnum=parseInt(curpage.getAttribute("data-pagenum"),10);
-                    dropClass(curpage,/(newpage|onleft|onright)/g);
+                    dropClass(curpage,/(oldpage|newpage|onleft|onright)/g);
+                    dropClass(page,/(oldpage|newpage|onleft|onright)/g);
                     if (pagenum<curnum) dirclass="onleft"; else dirclass="onright";
                     if (dirclass) addClass(page,dirclass);
                     addClass(curpage,"oldpage");
                     addClass(page,"newpage");
                     var lastpage=curpage, nextpage=page;
                     setTimeout(function(){
-                        if (lastpage) dropClass(lastpage,"curpage");
-                        if (lastpage) dropClass(lastpage,"oldpage");
-                        dropClass(page,"onright");
-                        addClass(page,"curpage");},
-                               50);}
+                        dropClass(lastpage,"curpage");
+                        addClass(page,"curpage");
+                        dropClass(page,"newpage");
+                        dropClass(page,"onright");},
+                               50);
+                    setTimeout(function(){
+                        dropClass(lastpage,"oldpage");},
+                               500);}
                 if (typeof spec === 'number') {
                     var location=parseInt(page.getAttribute("data-sbookloc"),10);
                     Codex.setLocation(location);}
