@@ -740,6 +740,7 @@ div.codexpage.oldpage, div.codexpage.newpage { display: block; }
 
 div.codexpage.previewpage { display: block; }
 div.codexpage.curpage.hidepage {display: none;}
+div.codexpage.curpage.hidepage.previewpage {display: block;}
 
 body.cxANIMATE.cxPREVIEW div.codexpage {
     transition-property: none !important;
