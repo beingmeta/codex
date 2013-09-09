@@ -335,6 +335,8 @@ Codex.setMode=
             var toc_div=Codex.TOC(scan,0,false,"CODEXSTATICTOC4");
             var div=fdjtDOM(eltspec||"div#CODEXSTATICTOC",toc_div);
             Codex.UI.addHandlers(div,"toc");
+            div.title=
+                "Tap a section to jump there directly; press and hold to see (glimpse) it temporarily; while glimpsing, tap (or press a key) to jump to where you're looking.";
             return div;}
 
         /* HUD animation */

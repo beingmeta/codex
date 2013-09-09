@@ -173,8 +173,11 @@ div#CODEXHUD.tocscan div.codextoc div.spanbar { display: none;}
 div#CODEXHUD.tocscan div.codextoc.codexcxthead > div.spanbar { display: block;}
 div#CODEXHUD.tocscan div.codextoc div.spans { border-top: 0px; border-bottom: 0px;}
 div#CODEXHUD.tocscan div#CODEXTOC div.spanbar div.progressbox {
-    border-top: 0px; top: 0px;}
+    border-top: 0px; top: 0px; height: 100%;}
 div#CODEXHUD.tocscan div#CODEXTOC div.spanbar { height: 40px;}
+
+div#CODEXHUD.overtoc div#CODEXTOC div.spanbar div.progressbox {
+    border-top: 0px; top: 0px; border-bottom: 4px; height: 100%;}
 
 div#CODEXTOC div.spanbar, div#CODEXSTATICTOC div.spanbar {
   position: relative;

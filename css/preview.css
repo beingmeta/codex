@@ -4,8 +4,15 @@
 
 @charset "UTF-8";
 
+body.cxPREVIEW, body.cxPREVIEW div.codexslice {
+    cursor: url(/static/g/codex/binocularscursor.svgz),
+    url(/static/g/codex/binocularscursor32x32.png),
+    crosshair;}
+
 body.cxPREVIEW #CODEXHEAD { display: none; }
 body.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD { display: none; }
+
+body.cxPREVIEW .hudbutton { display: none; }
 
 body.cxPREVIEW #CODEXHUD.openhead.overtoc #CODEXHEAD,
 body.cxPREVIEW #CODEXHUD.tocscan #CODEXHEAD {
@@ -93,6 +100,43 @@ body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER {
     -moz-box-shadow: none;
     -o-box-shadow: none;
     border-color: transparent;}
+
+div#CODEXPREVIEWHELP.helpbox {
+    padding-top: 0px; padding-bottom: 0px;
+    overflow: hidden;}
+div#CODEXPREVIEWHELP.helpbox em { color: purple; }
+div#CODEXPREVIEWHELP.helpbox span.inhead {
+    color: purple; font-size: 120%;}
+div#CODEXPREVIEWHELP.helpbox p {
+    margin: 0px; text-indent: 0px;}
+
+body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
+    left: 0px; right: 0px; max-height: 70px;
+    border-radius: 0px; -webkit-border-radius: 0px;
+    -moz-border-radius: 0px; -o-border-radius: 0px; 
+    display: block;}
+body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
+    opacity: 0.90;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
+body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
+    top: 0px; border-top: 0px;
+    border-bottom-left-radius: 1ex;
+    -webkit-border-bottom-left-radius: 1ex; 
+    -moz-border-radius-bottomleft: 1ex;
+    -o-border-radius-bottomleft: 1ex; 
+    border-bottom-right-radius: 1ex;
+    -webkit-border-bottom-right-radius: 1ex; 
+    -moz-border-radius-bottomright: 1ex;
+    -o-border-radius-bottomright: 1ex;}
+
+body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXPREVIEWHELP.helpbox,
+body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXPREVIEWHELP.helpbox {
+    display: none;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

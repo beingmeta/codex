@@ -580,9 +580,7 @@ var Codex={
                 // tocelt.title=Math.round(progress)+"%";
                 bar=fdjtDOM.getFirstChild(tocelt,".progressbar");}
             if (statictocelt) {
-                appbar=fdjtDOM.getFirstChild(statictocelt,".progressbar");
-                if (progress<=100) 
-                    statictocelt.title=Math.round(progress)+"%";}
+                appbar=fdjtDOM.getFirstChild(statictocelt,".progressbar");}
             if (Codex.Trace.toc)
                 fdjtLog("For tocbar %o/%o loc=%o start=%o end=%o progress=%o",
                         bar,appbar,location,start,end,progress);

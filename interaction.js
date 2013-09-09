@@ -542,8 +542,11 @@
     /* TOC handlers */
 
     function getAbout(elt){
+        var body=document.body;
         while (elt) {
-            if ((elt.name)&&(elt.name.search("SBR")===0))
+            if (elt===body) return false;
+            else if (elt.nodeType!==1) return false;
+            else if ((elt.name)&&(elt.name.search("SBR")===0))
                 return elt;
             else if ((elt.getAttribute("name"))&&
                      (elt.getAttribute("name").search("SBR")===0))
