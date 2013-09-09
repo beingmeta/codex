@@ -776,7 +776,7 @@ div#CODEXSCANNER span.expander {display: none;}
 
 div#CODEXSCANNER .codexscaninfo {
     position: absolute; right: 2px; top: 1px; z-index: 100;
-    color:  cyan;}
+    font-size: 90%; color:  cyan;}
 div#CODEXSCANNER #CODEXSCANCONTROLS .expanded { display: none;}
 div#CODEXSCANNER.expanded #CODEXSCANCONTROLS .expanded {
     display: inline;}

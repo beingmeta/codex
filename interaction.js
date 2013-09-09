@@ -1305,7 +1305,7 @@
             Codex.setMode(false);}
         else {
             var cx=evt.clientX, cy=evt.clientY;
-            var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight;
+            var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight();
             if ((cy<60)||(cy>(h-60))) return;
             if (cx<w/3) Codex.Backward(evt);
             else if (cx>w/2) Codex.Forward(evt);}}
@@ -1353,7 +1353,6 @@
             glossmark_image=wedge;
             glossmark_animated=fdjtUI.ImageSwap(wedge,750);}
         else {
-            if (Codex.clearGlossmark) Codex.clearGlossmark();
             if (glossmark_animated) {
                 clearInterval(glossmark_animated);
                 animated_glossmark=false;
@@ -2204,6 +2203,7 @@
             keyup: onkeyup,
             keydown: onkeydown,
             keypress: onkeypress,
+            touchstart: default_tap,
             touchmove: fdjt.UI.noDefault,
             focus: codexfocus,
             blur: codexblur},
