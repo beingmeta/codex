@@ -69,7 +69,7 @@ div#CODEXPAGE {
     position: fixed; overflow: visible;
     padding: 0px; margin: 0px;
     left: 50px; right: 50px;
-    top: 20px; bottom: 30px;
+    top: 40px; bottom: 40px;
     border: solid transparent 3px;
     border-radius: 18px;
     -o-border-radius: 18px;
@@ -84,11 +84,13 @@ body.cxBYPAGE div#CODEXCONTENT { display: none;}
 /* The page content gets a little transparent when the HUD comes up*/
 body.cxANIMATE.hudup div#CODEXPAGE {
     transition-property: opacity;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
+    -webkit-transition-property: opacity;
     -moz-transition-property: opacity;
     -o-transition-property: opacity;
     transition-duration: 1s; 
-    -moz-duration: 1s; -o-transition-duration: 1s;
+    -webkit-transition-duration: 1s;
+    -o-transition-duration: 1s;
+    -moz-duration: 1s; 
     opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -100,6 +102,7 @@ body.cxANIMATE.hudup div#CODEXPAGE {
 body.cxPREVIEW div#CODEXPAGE, body.cxSHRINK div#CODEXPAGE  {
     border-color: rgba(48, 60, 97, 0.54);}
 
+# This is for page shrinking when appropriate
 body.cxANIMATE div#CODEXPAGE {
     transition-property: opacity,transform;
     -webkit-transition-property: -webkit-opacity,-webkit-transform;
@@ -187,14 +190,6 @@ body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
     -webkit-column-break-before: always;
     -moz-column-break-before: always;}
 
-body.cxANIMATE #CODEXPAGE #CODEXPAGES {
-    transition-property: transform; transition-duration: 0.5s;
-    -webkit-transition-property: -webkit-transform;
-    -webkit-transition-duration: 0.5s;
-    -moz-transition-property: -moz-transform;
-    -moz-transition-duration: 0.5s;
-    -o-transition-property: -o-transform;
-    -o-transition-duration: 0.5s;}
 #CODEXASIDE {
     position: fixed; z-index: -100;
     top: 60px; left: 60px; right: 60px; bottom: 60px;
@@ -749,10 +744,10 @@ body.cxANIMATE.cxPREVIEW div.codexpage {
     -webkit-transition-property: none !important;}
 
 body.cxANIMATE div.codexpage {
-    transition-duration: 0.50s;
-    -o-transition-duration: 0.50s;
-    -moz-transition-duration: 0.50s;
-    -webkit-transition-duration: 0.50s;}
+    transition-duration: 0.25s;
+    -o-transition-duration: 0.25s;
+    -moz-transition-duration: 0.25s;
+    -webkit-transition-duration: 0.25s;}
 
 body.cxANIMATE div.codexpage {
     transition-property: opacity,transform;
