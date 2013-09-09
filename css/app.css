@@ -100,7 +100,7 @@ body.cxANIMATE.hudup div#CODEXPAGE {
 body.cxPREVIEW div#CODEXPAGE, body.cxSHRINK div#CODEXPAGE  {
     border-color: rgba(48, 60, 97, 0.54);}
 
-body.cxANIMATE div#CODEXPAGE, body.cxANIMATE div#CODEXPAGE .codexpage {
+body.cxANIMATE div#CODEXPAGE {
     transition-property: opacity,transform;
     -webkit-transition-property: -webkit-opacity,-webkit-transform;
     -moz-transition-property: -moz-opacity,-moz-transform;
@@ -728,38 +728,75 @@ div.codexglossform form table td textarea { width: 100%;}
 
 div.codexpage {
     position: absolute; text-align: left;
-    opacity: 0; 
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: alpha(opacity=0);
-    -webkit-opacity: 0.00;
-    -khtml-opacity: 0.00;
-    -moz-opacity: 0.00;
-    -o-opacity: 0.00;
     display: none;}
 div.codexpage {
     padding: 2px;
     border: solid transparent 4px;
     margin: 0px;}
 
-div.codexpage.curpage, div.codexpage.lastpage, div.codexpage.nextpage {
-    display: block;}
-div.codexpage.previewpage, div.codexpage.curpage.hidepage.previewpage {
-    display: block; opacity: 1.0;}
-div.codexpage.curpage.hidepage { display: none; opacity: 0.0;}
-body.cxANIMATE div.codexpage {
-    transition-property: opacity; transition-duration: 0.25s;
-    -o-transition-property: opacity; -o-transition-duration: 0.25s;
-    -moz-transition-property: opacity; -moz-transition-duration: 0.25s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 0.25s;}
+div.codexpage.curpage {display: block;}
 
-div.codexpage.curpage {
-    opacity: 1; z-index: 50;
+div.codexpage.oldpage, div.codexpage.newpage { display: block; }
+
+div.codexpage.previewpage { display: block; }
+div.codexpage.curpage.hidepage {display: none;}
+
+body.cxANIMATE.cxPREVIEW div.codexpage {
+    transition-property: none !important;
+    -o-transition-property: none !important;
+    -moz-transition-property: none !important;
+    -webkit-transition-property: none !important;}
+
+body.cxANIMATE div.codexpage {
+    transition-duration: 0.50s;
+    -o-transition-duration: 0.50s;
+    -moz-transition-duration: 0.50s;
+    -webkit-transition-duration: 0.50s;}
+
+body.cxANIMATE div.codexpage {
+    transition-property: opacity,transform;
+    -o-transition-property: -o-opacity,-o-transform;
+    -moz-transition-property: -moz-opacity,-moz-transform;
+    -webkit-transition-property: -webkit-opacity,-webkit-transform;}
+
+/* Fade-in/fade-out page animation */
+
+div.codexpage, div.codexpage.newpage, div.codexpage.oldpage {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    -webkit-opacity: 0.00;
+    -khtml-opacity: 0.00;
+    -moz-opacity: 0.00;
+    -o-opacity: 0.00;}
+div.codexpage.curpage, div.codexpage.previewpage,
+div.codexpage.newpage.curpage, div.codexpage.oldpage.curpage {
+    opacity: 1; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    filter: alpha(opacity=100);
+    filter: alpha(opacity=1);
     -webkit-opacity: 1.00;
     -khtml-opacity: 1.00;
     -moz-opacity: 1.00;
     -o-opacity: 1.00;}
+
+/* Sliding page turns */
+
+body.CXANIMATE div.codexpage { transform: translate(0px,0px); }
+body.CXANIMATE div.codexpage.previewpage {
+    transform: translate(0px,0px); }
+
+div.codexpage.newpage { z-index: 100; }
+
+div.codexpage.newpage.onright {
+    transform: translate(100%,0%);
+    -webkit-transform: translate(100%,0%);}
+div.codexpage.newpage.onleft {
+    transform: translate(-100%,0%);
+    -webkit-transform: translate(-100%,0%);}
+div.codexpage.newpage.onright.curpage, div.codexpage.newpage.onleft.curpage {
+    transform: translate(0%,0%);
+    -webkit-transform: translate(0%,0%);}
+
+/* Special rules for overriding properties on split (dup) passages */
 
 .codexdupstart {
     padding-bottom: 0px !important;
