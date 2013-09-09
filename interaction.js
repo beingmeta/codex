@@ -1835,7 +1835,7 @@
         else if (alt==="glossdelete") 
             addgloss_delete(menu,form);
         else if (alt==="glosspush") {
-            Codex.submitGloss(form,true);
+            Codex.submitGloss(form,false);
             dropClass(menu,"expanded");}
         else if (alt==="glossrespond") 
             addgloss_respond(menu,form);
@@ -1876,7 +1876,7 @@
         if (alt==="glossdelete") 
             addgloss_delete(menu,form);
         else if (alt==="glosspush")
-            Codex.submitGloss(form,true);
+            Codex.submitGloss(form,false);
         else if (alt==="glossrespond") 
             addgloss_respond(menu,form);
         else if (Codex.glossmodes.exec(alt))
