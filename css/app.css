@@ -729,6 +729,8 @@ div.codexpage {
     border: solid transparent 4px;
     margin: 0px;}
 
+div.codexpage img { max-width: 90%; max-height: 80%;}
+
 div.codexpage.curpage {display: block;}
 
 div.codexpage.oldpage, div.codexpage.newpage { display: block; }
