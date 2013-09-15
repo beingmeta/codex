@@ -99,7 +99,8 @@ Codex.Paginate=
                 Codex.layout=false;}
 
             // Create a new layout
-            var layout=new CodexLayout(getLayoutArgs());
+            var layout_args=getLayoutArgs();
+            var layout=new CodexLayout(layout_args);
             layout.bodysize=bodysize; layout.bodyfamily=bodyfamily;
             Codex.layout=layout;
             
@@ -356,26 +357,12 @@ Codex.Paginate=
         Codex.Paginate=Paginate;
 
         CodexLayout.prototype.onresize=function(){
-            var content=Codex.content; var page=Codex.page;
-            var page_width=fdjtDOM.getGeometry(page).width;
-            var content_width=fdjtDOM.getGeometry(content).width;
-            var view_width=fdjtDOM.viewWidth();
             var view_height=fdjtDOM.viewHeight();
-            var page_margin=(view_width-page_width)/2;
-            var content_margin=(view_width-content_width)/2;
-            if (page_margin!==50) {
-                page.style.left=page_margin+'px';
-                page.style.right=page_margin+'px';}
-            else page.style.left=page.style.right='';
-            if (content_margin!==50) {
-                content.style.left=content_margin+'px';
-                content.style.right=content_margin+'px';}
-            else content.style.left=content.style.right='';
             fdjtID("CODEXHEART").style.maxHeight=(view_height-100)+'px';
             if (Codex.bypage) Codex.Paginate("resize");
             else fdjt.DOM.adjustFonts(Codex.content);
             fdjt.DOM.adjustFonts(Codex.HUD);};
-        
+       
         Codex.addConfig(
             "layout",
             function(name,val){
@@ -437,9 +424,6 @@ Codex.Paginate=
             var container=fdjtDOM("div.codexpages#CODEXPAGES");
             var bodysize=Codex.bodysize||"normal";
             var bodyfamily=Codex.bodyfamily||"serif";
-            var pagerule=fdjtDOM.addCSSRule(
-                "div.codexpage",
-                "width: "+width+"px; "+"height: "+height+"px;");
             var sourceid=Codex.sourceid;
             var layout_id=fdjtString(
                 "%dx%d-%s-%s(%s)",
@@ -468,7 +452,7 @@ Codex.Paginate=
                 fdjtState.setLocal("codex.sourceid("+Codex.refuri+")",sourceid);
             
             var args={page_height: height,page_width: width,
-                      container: container,pagerule: pagerule,
+                      container: container,pagerule: Codex.CSS.pagerule,
                       tracelevel: Codex.Trace.layout,
                       layout_id: layout_id,
                       logfn: fdjtLog};
@@ -582,7 +566,9 @@ Codex.Paginate=
             var spanwidth=
                 (fdjtID("CODEXPAGEINFO").offsetWidth)/n;
             if (spanwidth<1) spanwidth=1;
-            Codex.pagespanrule=fdjtDOM.addCSSRule(
+            if (Codex.CSS.pagespanrule)
+                Codex.CSS.pagespanrule.style.width=spanwidth+"px";
+            else Codex.CSS.pagespanrule=fdjtDOM.addCSSRule(
                 "div.pagespans > span","width: "+spanwidth+"px;");
             while (i<n) {
                 html.push("<span id='CODEXPAGESPAN"+(i+1)+"' "+
