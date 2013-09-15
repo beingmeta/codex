@@ -1229,41 +1229,40 @@ Codex.Startup=
             if (Codex.Trace.startup>1)
                 fdjtLog("Initialized body");}
 
-        var glossmark_rule=false;
-
         function sizeContent(){
-            var page=fdjtID("CODEXPAGE");
-            var content=fdjtID("CODEXCONTENT");
+            var content=Codex.content, page=Codex.page, body=document.body;
             // Clear any explicit left/right settings to get at
             //  whatever the CSS actually specifies
             content.style.left=page.style.left='';
             content.style.right=page.style.right='';
-            document.body.style.overflow='hidden';
-            var page_width=fdjtDOM.getGeometry(page).width;
-            var view_width=fdjtDOM.viewWidth();
-            if (page_width) {
-                var ss=Codex.stylesheet;
-                var page_margin=(view_width-page_width)/2;
-                if (glossmark_rule) {
-                    ss.deleteRule(glossmark_rule);
-                    glossmark_rule=false;}
-                // If there are wide margins, set the left and right styles
-                if (page_margin>=50) {
-                    page.style.left=page_margin+'px';
-                    page.style.right=page_margin+'px';}
-                else if (page_margin<50) {
-                    var insert_at=ss.cssRules.length++;
-                    var gm_width=((page_margin<25)?(25):(page_margin));
-                    var gm_offset=((gm_width>page_margin)?
-                                   (gm_width-page_margin):
-                                   (gm_width))-2;
-                    ss.insertRule(
-                        fdjtString(
-                            "body.cxBYPAGE .codexglossmark { width: %dpx; height: %dpx; margin-right: -%dpx;}",
-                            gm_width,gm_width,gm_offset),
-                        insert_at);
-                    glossmark_rule=ss.cssRules[insert_at];}
-                else {}}
+            body.style.overflow='hidden';
+            // Get geometry
+            var geom=fdjtDOM.getGeometry(page,page.offsetParent,true);
+            var page_width=geom.width, page_height=geom.height;
+            var inner_width=geom.inner_width, inner_height=geom.inner_height;
+            var content_width=fdjtDOM.getGeometry(content).width;
+            var view_width=fdjtDOM.viewWidth(), view_height=fdjtDOM.viewHeight();
+            var page_margin=(view_width-page_width)/2;
+            var content_margin=(view_width-content_width)/2;
+            var glossmark_offset=page_margin-(2+geom.right_border);
+            if (page_margin!==50) {
+                page.style.left=page_margin+'px';
+                page.style.right=page_margin+'px';}
+            else page.style.left=page.style.right='';
+            if (content_margin!==50) {
+                content.style.left=content_margin+'px';
+                content.style.right=content_margin+'px';}
+            else content.style.left=content.style.right='';
+            if (Codex.CSS.pagerule) {
+                Codex.CSS.pagerule.style.width=page_width+"px";
+                Codex.CSS.pagerule.style.height=page_height+"px";}
+            else Codex.CSS.pagerule=fdjtDOM.addCSSRule(
+                "div.codexpage",
+                "width: "+inner_width+"px; "+"height: "+inner_height+"px;");
+            if (Codex.CSS.glossmark_rule) {
+                Codex.CSS.glossmark_rule.style.marginRight=(-glossmark_offset)+"px";}
+            else Codex.CSS.glossmark_rule=fdjtDOM.addCSSRule(
+                "#CODEXPAGE .codexglossmark","margin-right: "+(-glossmark_offset)+"px;");
             document.body.style.overflow='';}
         Codex.sizeContent=sizeContent;
         
