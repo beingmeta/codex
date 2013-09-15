@@ -453,6 +453,8 @@
     
     var selectors=[];
     var slip_timer=false;
+    var hasText=fdjtDOM.hasText;
+    var getChildren=fdjtDOM.getChildren;
     function content_held(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -463,8 +465,8 @@
                     document.body.className,
                     Codex.HUD.className);
         // Already selecting this target, cancel any pending slippage
-        if ((hasParent(target,".fdjtselecting"))||(!(passage))||
-            (selectors[passage.id])) {
+        if ((hasParent(target,".fdjtselecting"))||(!(passage))||(selectors[passage.id])||
+            ((!(hasText(passage)))&&(getChildren(passage,".fdjtselecting")))) {
             if (slip_timer) {
                 clearTimeout(slip_timer); slip_timer=false;}
             return;}

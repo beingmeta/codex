@@ -450,20 +450,20 @@ var Codex={
 
     function getTarget(scan,closest){
         scan=((scan.nodeType)?(scan):(scan.target||scan.srcElement||scan));
-        var target=false; var id=false;
-        while (scan) {
+        var target=false, id=false, targetids=targetids;
+        if (hasParent(scan,Codex.HUD)) return false;
+        else if (hasParent(scan,".codexmargin")) return false;
+        else while (scan) {
             if (scan.codexui) return false;
-            else if (scan===Codex.docroot) return target;
-            else if (scan===document.body) return target;
+            else if ((scan===Codex.docroot)||(scan===document.body))
+                return target;
             else if ((id=(scan.codexbaseid||scan.id))&&(Codex.docinfo[id])) {
                 if ((!(scan.codexbaseid))&&(id.search("CODEXTMP")===0)) {}
-                else if (hasParent(scan,Codex.HUD)) return false;
-                else if (hasParent(scan,".codexmargin")) return false;
-                else if ((hasClass(scan,"sbooknofocus"))||
-                         ((Codex.nofocus)&&(Codex.nofocus.match(scan)))) {}
-                else if ((hasClass(scan,"sbookfocus"))||
-                         ((Codex.focus)&&(Codex.focus.match(scan))))
-                    return scan;
+                else if ((targetids)&&(id.search(targetids)!==0)) {}
+                else if (hasClass(scan,"sbooknofocus")) {}
+                else if ((Codex.nofocus)&&(Codex.nofocus.match(scan))) {}
+                else if (hasClass(scan,"sbookfocus")) return scan;
+                else if ((Codex.focus)&&(Codex.focus.match(scan))) return scan;
                 else if (closest) return scan;
                 else if ((target)&&(!(fdjt.DOM.isVisible(scan))))
                     return target;

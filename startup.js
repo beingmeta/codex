@@ -882,6 +882,16 @@ Codex.Startup=
             if (baseid) Codex.baseid=baseid;
             var prefix=getMeta("SBOOK.prefix")||baseid;
             if (prefix) Codex.prefix=prefix;
+            var targetprefix=getMeta("SBOOK.targetprefix");
+            if ((targetprefix)&&(targetprefix==="*"))
+                Codex.targetids=false;
+            else if ((targetprefix)&&(targetprefix[0]==='/'))
+                Codex.targetids=new RegExp(targetprefix.slice(1,targetprefix.length-1));
+            else if (targetprefix)
+                Codex.targetids=new RegExp("^"+targetprefix);
+            else if (prefix)
+                Codex.targetids=new RegExp("^"+prefix);
+            else Codex.targetids=false;
             
             var autotoc=getMeta("SBOOK.autotoc");
             if (autotoc) {
