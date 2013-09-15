@@ -330,12 +330,12 @@ div.locbar hr {
     /* float: right; text-align: right; */
     margin: 0px; padding: 0px; text-indent: 0px; 
     border: 0px;
-    border-right: solid rgba(0,0,255,0.25) 2px;
+    border-right: solid rgba(0,0,255,0.70) 2px;
     width: 0px; overflow: visible;
-    width: 40px; height: 40px;
+    width: 50px; height: 50px;
     z-index: 50;}
-body.cxBYPAGE .codexglossmark {margin-right: -40px;}
-body.cxSCROLL .codexglossmark { right: 5px;}
+#CODEXPAGE .codexglossmark {margin-right: -50px;}
+/* #CODEXCONTENT .codexglossmark { right: 5px;} */
 
 body .codexglossmark > * {
     opacity: 0.01;
@@ -345,14 +345,8 @@ body .codexglossmark > * {
     -khtml-opacity: 0.01;
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
-*.glossed:hover *.glossed > .codexglossmark,
-*.glossed.hover *.glossed > .codexglossmark {
-   z-index: 25;}
-*.glossed:hover *.glossed > .codexglossmark > *,
-*.glossed.hover *.glossed > .codexglossmark > * {
-   opacity: 0.05;}
 
-*:hover > .codexglossmark > *, *.hover > .codexglossmark > * {
+.glossed:hover > .codexglossmark > *, *.glossed.hover > .codexglossmark > * {
     opacity: 0.30;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
     filter: alpha(opacity=30);
@@ -368,6 +362,7 @@ body .codexglossmark:hover > *, body .codexglossmark.hover > * {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
+
 body .codexglossmark#CODEXOPENGLOSSMARK > *,
 body .codexglossmark#CODEXOPENGLOSSMARK:hover > *,
 body .codexglossmark#CODEXOPENGLOSSMARK.hover > * {
@@ -378,16 +373,6 @@ body .codexglossmark#CODEXOPENGLOSSMARK.hover > * {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
-/*
-body.hudup .codexglossmark > * {
-    display: block; opacity: 0.10;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
-    filter: alpha(opacity=10);
-    -webkit-opacity: 0.10;
-    -khtml-opacity: 0.10;
-    -moz-opacity: 0.10;
-    -o-opacity: 0.10;}
-*/
 
 .codexglossmark img {
     position: static;
@@ -443,13 +428,13 @@ body.hudup .codextarget, body.cxSHRINK .codextarget {
 body.hudup .codextarget.codexnewtarget {
     background-color: inherit; }
 .codexnewtarget {
-    color: blue; text-decoration: underline; background-color: lightblue;}
+    color: blue; text-decoration: underline;}
 div.sbooksection.codexnewtarget, section.codexnewtarget,
 div.sbooksection.codexnewtarget > *, section.codexnewtarget > * {
     color: inherit;}
 section.codexnewtarget > *:first-child,
 div.sbooksection.codexnewtarget > *:first-child {
-    color: blue; text-decoration: underline; background-color: lightblue;}
+    color: blue; text-decoration: underline;}
 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
@@ -458,13 +443,13 @@ body.codextarget { color: inherit;}
 
 .cxANIMATE .codexglossmark > * {
     transition-property: opacity;
-    transition-duration: 1.5s;
+    transition-duration: 0.5s;
     -o-transition-property: opacity;
-    -o-transition-duration: 1.5s;
+    -o-transition-duration: 0.5s;
     -moz-transition-property: opacity;
-    -moz-transition-duration: 1.5s;
+    -moz-transition-duration: 0.5s;
     -webkit-transition-property: opacity;
-    -webkit-transition-duration: 1.5s;}
+    -webkit-transition-duration: 0.5s;}
 
 .codextarget:hover .codexglossmark > *,
 .codextarget.hover .codexglossmark > * {
