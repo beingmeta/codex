@@ -466,7 +466,7 @@
                     Codex.HUD.className);
         // Already selecting this target, cancel any pending slippage
         if ((hasParent(target,".fdjtselecting"))||(!(passage))||(selectors[passage.id])||
-            ((!(hasText(passage)))&&(getChildren(passage,".fdjtselecting")))) {
+            ((!(hasText(passage)))&&(getChildren(passage,".fdjtselecting").length))) {
             if (slip_timer) {
                 clearTimeout(slip_timer); slip_timer=false;}
             return;}
