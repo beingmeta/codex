@@ -1237,25 +1237,22 @@ Codex.Startup=
             content.style.right=page.style.right='';
             body.style.overflow='hidden';
             // Get geometry
-            var geom=fdjtDOM.getGeometry(page,page.offsetParent,true);
+            var geom=fdjtDOM.getGeometry(page);
             var page_width=geom.width, page_height=geom.height;
-            var inner_width=geom.inner_width, inner_height=geom.inner_height;
-            var content_width=fdjtDOM.getGeometry(content).width;
             var view_width=fdjtDOM.viewWidth(), view_height=fdjtDOM.viewHeight();
             var page_margin=(view_width-page_width)/2;
-            var content_margin=(view_width-content_width)/2;
-            var glossmark_offset=page_margin-(2+geom.right_border);
             if (page_margin!==50) {
                 page.style.left=page_margin+'px';
                 page.style.right=page_margin+'px';}
             else page.style.left=page.style.right='';
-            if (content_margin!==50) {
-                content.style.left=content_margin+'px';
-                content.style.right=content_margin+'px';}
-            else content.style.left=content.style.right='';
+            geom=fdjtDOM.getGeometry(page,page.offsetParent,true);
+            var inner_width=geom.inner_width, inner_height=geom.inner_height;
+            var glossmark_offset=page_margin-(2+geom.right_border);
+            // The 2 here is for the right border of the glossmark, which appears
+            // as a vertical mark on the margin.
             if (Codex.CSS.pagerule) {
-                Codex.CSS.pagerule.style.width=page_width+"px";
-                Codex.CSS.pagerule.style.height=page_height+"px";}
+                Codex.CSS.pagerule.style.width=inner_width+"px";
+                Codex.CSS.pagerule.style.height=inner_height+"px";}
             else Codex.CSS.pagerule=fdjtDOM.addCSSRule(
                 "div.codexpage",
                 "width: "+inner_width+"px; "+"height: "+inner_height+"px;");
@@ -1320,12 +1317,12 @@ Codex.Startup=
             pagefoot.style.backgroundColor=bgcolor;
             fdjtDOM.addListener(window,"resize",function(evt){
                 if (Codex.dont_resize) return;
-                Codex.sizeContent();
-                Codex.resizeHUD();
                 if (resizing) clearTimeout(resizing);
+                Codex.resizeHUD();
                 if ((Codex.layout)&&(Codex.layout.onresize))
                     resizing=setTimeout(function(){
                         resizing=false;
+                        Codex.sizeContent();
                         Codex.layout.onresize(evt||event);},
                                        3000);});}
         
