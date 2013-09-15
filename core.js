@@ -96,8 +96,8 @@ var Codex={
     Debug: {},
     /* This is where HTML source strings for UI components are placed */
     HTML: {},
-    /* This is where we store pointers into the dom */
-    DOM: {},
+    /* This is where we store pointers into the DOM and CSS */
+    DOM: {}, CSS: {},
     Trace: {
         startup: 0,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc
