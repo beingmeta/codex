@@ -139,7 +139,7 @@ body.hudup #CODEXHUD.openhead.overtoc #CODEXHEAD {
     background-color: rgb(255,255,255,0.75);
     border-color: transparent;
     box-shadow: none; -webkit-box-shadow: none;
-    -moz-box-shadow: none; -o-box-shadow: none;;}
+    -moz-box-shadow: none; -o-box-shadow: none;}
     
 body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
     position: static;}

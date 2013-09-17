@@ -1337,7 +1337,11 @@
             return;
         var target=fdjtUI.T(evt);
         var glossmark=getParent(target,".codexglossmark");
-        var passage=getTarget(glossmark.parentNode,true);
+        var passage=
+            ((glossmark.name)&&
+             (glossmark.name.search("GLOSSMARK_NAME_")===0)&&
+             (fdjt.ID(glossmark.name.slice(15))))||
+            getTarget(glossmark.parentNode,true);
         if ((passage)&&(passage.getAttribute("data-baseid"))) 
             passage=fdjtID(passage.getAttribute("data-baseid"));
         if (Codex.Trace.gestures)
@@ -1856,7 +1860,12 @@
             toggleClass(menu,"expanded");}
         else if (alt==="glossdelete") 
             addgloss_delete(menu,form);
+        else if (alt==="glosscancel") 
+            addgloss_cancel(menu,form);
         else if (alt==="glosspush") {
+            Codex.submitGloss(form,false);
+            dropClass(menu,"expanded");}
+        else if (alt==="glossupdate") {
             Codex.submitGloss(form,false);
             dropClass(menu,"expanded");}
         else if (alt==="glossrespond") 
@@ -1955,6 +1964,15 @@
                            "(Created ",
                            fdjtTime.shortString(gloss.created),
                            ")"));}
+
+    function addgloss_cancel(menu,form,div){
+        if (!(form)) form=getParent(menu,"FORM");
+        if (!(div)) div=getParent(form,".codexglossform");
+        Codex.setMode(false);
+        fdjtDOM.remove(div);
+        Codex.setGlossTarget(false);
+        Codex.setTarget(false);
+        return;}
 
     function addgloss_respond(target){
         var block=getParent(target,".codexglossform");

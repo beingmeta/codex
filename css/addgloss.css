@@ -382,6 +382,17 @@ div.codexglossform.glossedit form .submitbutton .add,
 div.codexglossform.glossreply form .submitbutton .add {
     display: none;}
 
+div.codexglossform.glossadd form div.addglossmenu.expanded >
+  img[alt="glossupdate"] {
+   display: none;}
+div.codexglossform.glossedit form div.addglossmenu.expanded >
+   img[alt="glosspush"] {
+    display: none;}
+
+div.codexglossform.glossadd form div.addglossmenu.expanded >
+   img[alt="glossdelete"] {
+    display: none;}
+
 div.codexglossform form .checkspan {
     padding-left: 2px; padding-right: 2px;
     font-family: sans,sans-serif;}
