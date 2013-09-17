@@ -1436,8 +1436,12 @@
     Codex.Forward=forward;
     function right_margin(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
-        else if ((Codex.mode==="scanning")||
-                 (Codex.mode==="tocscan"))
+        if ((Codex.hudup)&&
+            (Codex.mode!=="scanning")&&
+            (Codex.mode!=="tocscan"))
+            Codex.setMode(false);
+        if ((Codex.mode==="scanning")||
+            (Codex.mode==="tocscan"))
             scanForward(evt);
         else forward(evt);
         cancel(evt);}
