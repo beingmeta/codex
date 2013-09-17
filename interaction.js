@@ -274,7 +274,7 @@
         // If we're previewing, stop it and go to the page we're
         //  previewing (which was touched)
         if (Codex.previewing) {
-            var jumpto=Codex.getTarget(target);
+            var jumpto=getTarget(target);
             if (!(jumpto)) jumpto=getParent(target,".codexpage");
             if (jumpto) Codex.GoTo(jumpto,evt);
             Codex.stopPreview("content_tapped/stop_preview");
@@ -287,6 +287,7 @@
                 fdjtID("CODEXOPENGLOSSMARK").id="";
             fdjtUI.cancel(evt); gesture_start=false;
             clicked=fdjtTime();
+            if (getTarget(target)) Codex.setTarget(false);
             return false;}
 
         
@@ -458,7 +459,7 @@
     function content_held(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        var passage=Codex.getTarget(target);
+        var passage=getTarget(target);
         if (Codex.Trace.gestures) 
             fdjtLog("content_held %o p=%o p.p=%o bc=%s hc=%s",
                     evt,passage,((passage)&&(passage.parentNode)),
@@ -512,7 +513,7 @@
         if (Codex.Trace.gestures) fdjtLog("content_released %o",evt);
         if (!(hasParent(target,".fdjtselecting"))) {
             abortSelect(); return;}
-        var passage=Codex.getTarget(target);
+        var passage=getTarget(target);
         if (Codex.glosstarget===passage) {
             if (Codex.mode==="addgloss") Codex.setHUD(true);
             else Codex.setMode("addgloss");
