@@ -746,6 +746,7 @@ body.cxANIMATE div.codexpage {
 /* Fade-in/fade-out page animation */
 
 div.codexpage, div.codexpage.newpage, div.codexpage.oldpage {
+    opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     -webkit-opacity: 0.00;
