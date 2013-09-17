@@ -465,8 +465,18 @@
                     document.body.className,
                     Codex.HUD.className);
         // Already selecting this target, cancel any pending slippage
-        if ((hasParent(target,".fdjtselecting"))||(!(passage))||(selectors[passage.id])||
-            ((!(hasText(passage)))&&(getChildren(passage,".fdjtselecting").length))) {
+        if ((!(passage))||
+            // Target already selecting
+            (hasParent(target,".fdjtselecting"))||
+            // Selector already exists
+            (selectors[passage.id])||
+            // Target is a container (no text of its own) with
+            // children that are already selecting, so defer to the
+            // other children to start selections
+            ((!(hasText(passage)))&&
+             (getChildren(passage,".fdjtselecting").length))) {
+            // Cancel any pending slip events, since this doesn't
+            // count as a slip.
             if (slip_timer) {
                 clearTimeout(slip_timer); slip_timer=false;}
             return;}
@@ -476,6 +486,7 @@
         fdjtUI.TapHold.clear();
         // This makes a selection start on the region we just created.
         setTimeout(function(){selecting.startEvent(evt);},0);}
+    Codex.getTextSelectors=function getTextSelectors(){return selectors;};
 
     function abortSelect(except){
         var i=0, lim=selectors.length;
