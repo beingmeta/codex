@@ -290,33 +290,27 @@
             if (getTarget(target)) Codex.setTarget(false);
             return false;}
 
-        
-        // Various click handling
-        if (handle_content_click(target)) {
-            fdjtUI.cancel(evt);
-            return false;}
-
         // If we're in a glossmark, let its handler apply
         if (hasParent(target,".codexglossmark")) {
             fdjtUI.cancel(evt);
             return false;}
 
-        // If we tap a fdjtselecting region, it's handlers should cancel
-        //  this handler, so we don't worry about that.
+        // Various kinds of content click handling (anchors, details,
+        // asides, etc)
+        if (handle_content_click(target)) {
+            fdjtUI.cancel(evt);
+            return false;}
 
-        // So we're doing a page flip.
-        if ((evt.changedTouches)&&(evt.changedTouches.length)) {
-            touch=evt.changedTouches[0];
-            sX=touch.screenX, sY=touch.screenY;
-            cX=touch.clientX, cY=touch.clientY;}
-        
         if (fdjtID("CODEXOPENGLOSSMARK")) {
             fdjtID("CODEXOPENGLOSSMARK").id="";
             fdjtUI.cancel(evt); gesture_start=false;
             return;}
 
-        // If there isn't a passage or the hud is down, we take it
-        // immediately as a page flip
+        // If we get here, we're doing a page flip
+        if ((evt.changedTouches)&&(evt.changedTouches.length)) {
+            touch=evt.changedTouches[0];
+            sX=touch.screenX, sY=touch.screenY;
+            cX=touch.clientX, cY=touch.clientY;}
         if (Codex.Trace.gestures)
             fdjtLog("ctouch/nopassage (%o) %o, m=%o, @%o,%o, vw=%o",
                     evt,target,Codex.mode,cX,cY,fdjtDOM.viewWidth());
