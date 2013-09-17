@@ -450,7 +450,7 @@ var Codex={
 
     function getTarget(scan,closest){
         scan=((scan.nodeType)?(scan):(scan.target||scan.srcElement||scan));
-        var target=false, id=false, targetids=targetids;
+        var target=false, id=false, targetids=Codex.targetids;
         if (hasParent(scan,Codex.HUD)) return false;
         else if (hasParent(scan,".codexmargin")) return false;
         else while (scan) {
@@ -465,6 +465,11 @@ var Codex={
                 else if (hasClass(scan,"sbookfocus")) return scan;
                 else if ((Codex.focus)&&(Codex.focus.match(scan))) return scan;
                 else if (closest) return scan;
+                else if ((target)&&
+                         ((scan.tagName==='section')||
+                          ((scan.className)&&
+                           (scan.className.search(/\bhtml5section\b/i)>=0))))
+                    return target;
                 else if ((target)&&(!(fdjt.DOM.isVisible(scan))))
                     return target;
                 else target=scan;}
