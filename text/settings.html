@@ -3,80 +3,89 @@
   <table class="settings"
          onclick="fdjt.UI.CheckSpan.onclick(event); Codex.UI.settingsUpdate(event);"
          onblur="Codex.UI.settingsUpdate(event);">
-    <tr class="checkspan">
-      <th><input TYPE="RADIO" NAME="CODEXLOCAL" VALUE="yes"
-                 ID="CODEXLOCALCHECKBOX"/></th>
-      <td>Save personal information and glosses on this computer</td>
-      <td><button onclick="Codex.UI.forceSyncAction(event);"
-            title="Update glosses and other information from the sBooks cloud.">
-          Sync</button>
-        <button onclick="return Codex.UI.clearOfflineAction(event);"
-            title="Clear glosses and other information cached on this computer.">
-          Clear</button></td>
-    </tr>
-    <tr><th rowspan="2">Body font</th>
-      <td colspan="2">
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="xlarge"/>x-large</span>
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="large"/>large</span>
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="normal"/>normal</span>
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="small"/>small</span>
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="tiny"/>tiny</span>
-    </td></tr>
-    <tr>
-      <td colspan="2">
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXBODYFAMILY" VALUE="sans"/>sans-serif</span>
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXBODYFAMILY" VALUE="serif"/>serif</span></td></tr>
-    <tr>
-      <th>Layout</th>
-      <td colspan="2">
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bypage"/>by pages</span>
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="scrolling"/>just scroll</span>
-      </td>
-    </tr>
-    <tr><th>Interface font</th>
-      <td colspan="2">
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="large"/>large</span>
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="normal"/>normal</span>
-        <span class="checkspan">
-          <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="small"/>small</span></td></tr>
-    <tr><th>Animation</th>
-      <td colspan="2">
-        <span class="checkspan">
-          <input TYPE="CHECKBOX" NAME="CODEXANIMATECONTENT" VALUE="yes"/>content (page flips, etc)</span>
-        <span class="checkspan">
-          <input TYPE="CHECKBOX" NAME="CODEXANIMATEHUD" VALUE="yes"/>interface (HUD, etc)</span></td></tr>
-    <tr class="checkspan">
-      <th><input TYPE="CHECKBOX" NAME="CODEXHIDESPLASH" VALUE="yes"
-                 id="CODEXHIDESPLASHSETTING"
-                 CHECKED/></th>
-      <td colspan="2">
-        Hide the application splash page after startup</td></tr>
-    <tr class="checkspan">
-      <th><input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
-                 id="CODEXKEYBOARDHELPSETTING"
-                 CHECKED/></th>
-      <td colspan="2">
-        Show keyboard help for Codex</td></tr>
-    <tr class="checkspan">
-      <th><input TYPE="CHECKBOX" NAME="CODEXSHOWCONSOLE" VALUE="yes"/></th>
-      <td colspan="2">Show the Codex console</td></tr>
-    <tr title="A name to display for this device when recording changes">
-      <th>Device name</th>
-      <td colspan="2">
-        <input TYPE="TEXT" NAME="CODEXDEVICENAME" value=""
-               PLACEHOLDER="an (optional) string to identify this device for sBooks"/></td>
-    </tr>
+    <tbody id="CODEXSYNCSETTINGS">
+      <tr class="checkspan">
+        <th><input TYPE="RADIO" NAME="CODEXLOCAL" VALUE="yes"
+                   ID="CODEXLOCALCHECKBOX"/></th>
+        <td>Save personal information and glosses on this computer</td>
+        <td><button onclick="Codex.UI.forceSyncAction(event);"
+                    title="Update glosses and other information from the sBooks cloud.">
+            Sync</button>
+          <button onclick="return Codex.UI.clearOfflineAction(event);"
+                  title="Clear glosses and other information cached on this computer.">
+            Clear</button></td>
+      </tr>
+    </tbody>
+    <tbody id="CODEXFONTSETTINGS">
+      <tr><th rowspan="2">Body font</th>
+        <td colspan="2">
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="xlarge"/>x-large</span>
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="large"/>large</span>
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="normal"/>normal</span>
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="small"/>small</span>
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="tiny"/>tiny</span>
+      </td></tr>
+      <tr>
+        <td colspan="2">
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXBODYFAMILY" VALUE="sans"/>sans-serif</span>
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXBODYFAMILY" VALUE="serif"/>serif</span></td></tr>
+      <tr><th>Interface font</th>
+        <td colspan="2">
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="large"/>large</span>
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="normal"/>normal</span>
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="small"/>small</span></td></tr>
+    </tbody>
+    <tbody id="CODEXINTERACTIONSETTINGS">
+      <tr>
+        <th>Layout</th>
+        <td colspan="2">
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bypage"/>by pages</span>
+          <span class="checkspan">
+            <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="scrolling"/>just scroll</span>
+        </td>
+      </tr>
+      <tr><th>Animation</th>
+        <td colspan="2">
+          <span class="checkspan">
+            <input TYPE="CHECKBOX" NAME="CODEXANIMATECONTENT" VALUE="yes"/>content (page flips, etc)</span>
+          <span class="checkspan">
+            <input TYPE="CHECKBOX" NAME="CODEXANIMATEHUD" VALUE="yes"/>interface (HUD, etc)</span></td></tr>
+    </tbody>
+    <tbody id="CODEXHELPSETTINGS" >
+      <tr class="checkspan" id="CODEXHIDESPLASHSETTING">
+        <th><input TYPE="CHECKBOX" NAME="CODEXHIDESPLASH" VALUE="yes"
+                   id="CODEXHIDESPLASHSETTING"
+                   CHECKED/></th>
+        <td colspan="2">
+          Hide the application splash page after startup</td></tr>
+      <tr class="checkspan">
+        <th><input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
+                   id="CODEXKEYBOARDHELPSETTING"
+                   CHECKED/></th>
+        <td colspan="2">
+          Show keyboard help for Codex</td></tr>
+    <tbody id="CODEXHACKERSETTINGS">
+      <tr class="checkspan">
+        <th><input TYPE="CHECKBOX" NAME="CODEXSHOWCONSOLE" VALUE="yes"/></th>
+        <td colspan="2">Show the Codex console</td></tr>
+      <tr title="A name to display for this device when recording changes">
+        <th>Device name</th>
+        <td colspan="2">
+          <input TYPE="TEXT" NAME="CODEXDEVICENAME" value=""
+                 PLACEHOLDER="an (optional) string to identify this device for sBooks"/></td>
+      </tr>
+    </tbody>
     <tr class="buttons">
       <th/>
       <td colspan="2">
@@ -96,4 +105,3 @@
     ;;;  End: ***
     */
   -->
-

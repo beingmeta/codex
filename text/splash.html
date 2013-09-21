@@ -3,13 +3,6 @@
      alt="close" class="closebutton"
      onclick="Codex.setMode(false);"/>
 <img class="cover" id="CODEXSTATUSCOVER"/>
-<p class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);"
-   id="CODEXSPLASHCONFIG">
-  <span class="adjustfont">
-  <input TYPE="checkbox" NAME="CODEXHIDESPLASH" VALUE="yes"
-         ID="HIDESPLASHCHECKBOX"
-         onchange="fdjt.UI.Delayed(function(){var checked=fdjt.ID('HIDESPLASHCHECKBOX').checked; Codex.setConfig('hidesplash',checked,true);});"
-         "CHECKED"/>Hide this page after startup (<em>if not needed</em>)</span></p>
 <h1>Welcome to <span style="color: blue;">s</span>Books</h1>
 <p id="CODEXINTRO"></p>
 <p><img svg="http://static.beingmeta.com/g/codex/sbookslogo.svgz"
@@ -103,6 +96,8 @@
           on this book, sharing insights, opinions, and reactions.</td></tr>
     </tbody>
   </table>
+  <a class="hidesplashlink" href="javascript:Codex.UI.highlightSetting('CODEXHIDESPLASHSETTING')">
+    <span class="adjustfont">Hide this page after startup (<em>if not needed</em>)</span></a>
 </form>
 <!--
     /* Emacs local variables

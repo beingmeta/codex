@@ -132,6 +132,8 @@ Codex.setMode=
             var addgloss=fdjtID("CODEXADDGLOSSPROTOTYPE");
             addgloss.innerHTML=fixStaticRefs(Codex.HTML.addgloss);
 
+            Codex.UI.addHandlers(hud,"hud");
+
             if (Codex.Trace.startup) fdjtLog("Done with static HUD init");
 
             if (!(Codex.svg)) {
@@ -357,6 +359,10 @@ Codex.setMode=
                 if (Codex.previewing) Codex.stopPreview("setHUD");
                 dropClass(document.body,"cxSHRINK");
                 if (clearmode) {
+                    if (Codex.popmode) {
+                        var fn=Codex.popmode;
+                        Codex.popmode=false;
+                        fn();}
                     dropClass(CodexHUD,"openheart");
                     dropClass(CodexHUD,"openhead");
                     dropClass(CodexHUD,"full");
@@ -371,9 +377,9 @@ Codex.setMode=
 
         /* Mode controls */
         
-        var CodexModes=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopct)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
+        var CodexModes=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
         var codexHeartModes=/\b((device)|(sbooksapp)|(statictoc)|(about)|(console)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
-        var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(gotopage)|(gotoloc)|(gotopct)|(tocscan)|(shownote))\b/g;
+        var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(tocscan)|(shownote))\b/g;
         var CodexSubModes=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
         var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var CodexPopModes=/\b((glossdetail))\b/g;
@@ -392,7 +398,6 @@ Codex.setMode=
         var codex_mode_foci=
             {gotopage: "CODEXPAGEINPUT",
              gotoloc: "CODEXLOCINPUT",
-             gotopct: "CODEXPCTINPUT",
              search: "CODEXSEARCHINPUT",
              refinesearch: "CODEXSEARCHINPUT",
              expandsearch: "CODEXSEARCHINPUT"};
@@ -410,6 +415,10 @@ Codex.setMode=
                         mode,Codex.mode,document.body.className);
             if ((mode!==Codex.mode)&&(Codex.previewing))
                 Codex.stopPreview("setMode");
+            if ((mode!==Codex.mode)&&(Codex.popmode)) {
+                var fn=Codex.popmode;
+                Codex.popmode=false;
+                fn();}
             if ((Codex.mode==="addgloss")&&(mode!=="addgloss")&&
                 (hasClass("CODEXLIVEGLOSS","modified")))
                 Codex.submitGloss(fdjt.ID("CODEXLIVEGLOSS"));

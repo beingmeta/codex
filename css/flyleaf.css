@@ -56,12 +56,15 @@ div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
       font-style: italic; clear: both; margin-left: 3em;}
 div#CODEXHEART table.settings {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
+div#CODEXHEART table.settings .codexhighlightsetting {
+    font-size: 120%; background-color: yellow;}
+div#CODEXHEART table.settings tbody { margin-bottom: 1ex;}
 div#CODEXHEART table.settings th {
     text-align: right; vertical-align: top;
     white-space: nowrap;}
 div#CODEXHEART table.settings td {
     text-align: left; vertical-align: top; padding-left: 12px;}
-div#CODEXHEART table.settings td button { float: right;}
+div#CODEXHEART table.settings td button { float: right; margin-bottom: 3px;}
 div#CODEXHEART table.settings td input[type='TEXT'] {
     width: 100%;}
 div#CODEXHUD div#CODEXHEART table.settings tr.buttons td {

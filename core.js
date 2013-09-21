@@ -98,6 +98,8 @@ var Codex={
     HTML: {},
     /* This is where we store pointers into the DOM and CSS */
     DOM: {}, CSS: {},
+    /* XTARGETS are procedures to use when jumping to a particular fragment id */
+    xtargets: {},
     Trace: {
         startup: 0,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc

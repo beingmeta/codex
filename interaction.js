@@ -378,6 +378,12 @@
                 gesture_start=false;
                 clicked=fdjtTime();
                 return true;}
+            else if ((href[0]==='#')&&(fn=Codex.xtargets[href.slice(1)])) {
+                var fn=Codex.xtargets[href.slice(1)];
+                gesture_start=false;
+                clicked=fdjtTime();
+                fn();
+                return true;}
             else if ((href[0]==='#')&&(elt=resolve_anchor(href.slice(1)))) {
                 // It's an internal jump, so we follow that
                 Codex.JumpTo(elt);
@@ -996,8 +1002,6 @@
         var handled=false;
         if (target.name==='GOTOLOC') {
             min=0; max=Math.floor(Codex.ends_at/128);}
-        else if (target.name==='GOTOPCT') {
-            min=0; max=100;}
         else if (target.name==='GOTOPAGE') {
             min=1; max=Codex.pagecount;}
         else if (ch===13) fdjtUI.cancel(evt);
@@ -1007,12 +1011,6 @@
                 if (typeof num === 'number') {
                     handled=true; Codex.GoToPage(num);}
                 else {}}
-            else if (target.name==='GOTOPCT') {
-                var pctstring=target.value;
-                var pct=parseFloat(pctstring);
-                if ((typeof pct === 'number')&&(pct>=0)&&(pct<=100)) {
-                    var goto_loc=Math.floor((pct/100)*Codex.ends_at)+1;
-                    Codex.JumpTo(goto_loc); handled=true;}}
             else if (target.name==='GOTOLOC') {
                 var locstring=target.value;
                 var loc=parseFloat(locstring);
@@ -1688,7 +1686,7 @@
             return;}
         fdjtUI.cancel(evt);
         if (Codex.hudup) {Codex.setMode(false); return;}
-        Codex.toggleMode("gotopct");}
+        Codex.toggleMode("gotoloc");}
     
     /* Other handlers */
 
@@ -2133,6 +2131,32 @@
         Codex.setGlossMode("editnote");
         fdjtUI.cancel(evt);}
 
+    function handleXTarget(evt){
+        evt=evt||event;
+        var anchor=fdjtUI.T(evt);
+        if ((anchor.href)&&(anchor.href[0]==='#')&&
+            (Codex.xtargets[anchor.href.slice(1)])) {
+            var fn=Codex.xtargets[anchor.href.slice(1)];
+            fdjtUI.cancel(evt);
+            fn();}}
+
+    function unhighlightSettings(){
+        dropClass(fdjtDOM.$(".codexhighlightsetting"),"codexhighlightsetting");}
+    function highlightSetting(id,evt){
+        var setting=fdjtID(id);
+        if (evt) fdjt.UI.cancel(evt);
+        if (!(id)) {
+            fdjtLog.warn("Couldn't resolve setting %s",id);
+            dropClass(fdjtDOM.$(".codexhighlightsetting"),"codexhighlightsetting");
+            Codex.setMode("device");
+            return;}
+        addClass(setting,"codexhighlightsetting");
+        if (Codex.mode!=="device") {
+            if (Codex.popmode) {
+                var fn=Codex.popmode; Codex.popmode=unhighlightSettings(); fn();}
+            Codex.setMode("device");}}
+    Codex.UI.highlightSetting=highlightSetting;
+
     fdjt.DOM.defListeners(
         Codex.UI.handlers.mouse,
         {window: {
@@ -2160,6 +2184,7 @@
          summary: {tap: slice_tapped, hold: slice_held,
                    release: slice_released, click: generic_cancel,
                    slip: slice_slipped},
+         hud: {click: handleXTarget, tap: handleXTarget},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
@@ -2247,6 +2272,7 @@
                    slip: content_slipped,
                    release: content_released,
                    click: content_click},
+         hud: {click: handleXTarget, tap: handleXTarget},
          toc: {tap: toc_tapped,hold: toc_held,
                slip: toc_slipped, release: toc_released},
          glossmark: {touchstart: glossmark_tapped,touchend: cancel},
