@@ -243,6 +243,8 @@ span.note.ellipsis span.elision, span.note.ellipsis span.delision {
 
 /* Fuzzy selections */
 
+body.cxTOUCH .fdjtselecting .fdjtselectloupe { display: inline-block; }
+
 .fdjtselected {
     box-shadow: 0px 0px 0.5ex 0.5ex rgba(255, 255, 0, 0.33);}
 .fdjtselectstart, .fdjtselectend {
