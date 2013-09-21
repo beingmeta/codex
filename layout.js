@@ -595,9 +595,9 @@ Codex.Paginate=
             if (typeof savestate === 'undefined') savestate=true;
             if (Codex.previewing) stopPreview("GoToPage");
             dropClass(document.body,"codexhelp");
-            if (Codex.layout) {
-                var page=Codex.layout.getPage(spec)||
-                    Codex.layout.getPage(1);
+            var page=(Codex.layout)&&
+                (Codex.layout.getPage(spec)||Codex.layout.getPage(1));
+            if (page) {
                 var pagenum=parseInt(page.getAttribute("data-pagenum"),10);
                 var dirclass=false;
                 if (Codex.Trace.flips)
