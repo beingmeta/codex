@@ -348,7 +348,9 @@ body.codexscanning div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
 body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: none;}
 
-body div#CODEXHUD.splash #CODEXFOOT #CODEXSHOWTEXT {
+body div#CODEXHUD.splash #CODEXFOOT #CODEXSHOWTEXT,
+body div#CODEXHUD.gotopage #CODEXFOOT #CODEXSHOWTEXT,
+body div#CODEXHUD.gotoloc #CODEXFOOT #CODEXSHOWTEXT {
     display: none;}
 
 #CODEXHUD.scanning #CODEXSCANNER {display: block;}
@@ -401,10 +403,7 @@ div#CODEXHUD.addgloss div#CODEXADDGLOSS,
 div#CODEXHUD.shownote div#CODEXNOTETEXT,
 div#CODEXHUD.refinesearch div#CODEXSEARCH,
 div#CODEXHUD.expandsearch div#CODEXSEARCH,
-div#CODEXHUD.searchresults div#CODEXSEARCH,
-div#CODEXHUD.gotoloc div#CODEXGOTOLOC,
-div#CODEXHUD.gotopct div#CODEXGOTOPCT,
-div#CODEXHUD.gotopage div#CODEXGOTOPAGE {
+div#CODEXHUD.searchresults div#CODEXSEARCH {
     position: static; display: block; opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
     filter: alpha(opacity=98);
@@ -796,13 +795,6 @@ body.hudup div#CODEXHUD.overtoc div.hudpanel#CODEXTOC { overflow: hidden; }
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
-body.hudup div#CODEXHUD.gotoloc div.hudpanel#CODEXGOTOLOC,
-body.hudup div#CODEXHUD.gotopct div.hudpanel#CODEXGOTOPCT,
-body.hudup div#CODEXHUD.gotopage div.hudpanel#CODEXGOTOPAGE {
-    border-color: darkblue;
-    min-height: 50px; height: auto;
-    display: block;}
-
 body.hudup div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
     border-color: darkblue;
     min-height: 50px; height: auto;
@@ -1055,13 +1047,13 @@ body.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover {
     -o-opacity: 0.20;}
 body.hudup.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover,
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
-    display: block; opacity: 0.85;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
-    filter: alpha(opacity=85);
-    -webkit-opacity: 0.85;
-    -khtml-opacity: 0.85;
-    -moz-opacity: 0.85;
-    -o-opacity: 0.85;}
+    display: block; opacity: 0.90;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
 body.hudup div#CODEXHUD.cxANIMATE div#CODEXHUDBUTTONS {
     transition-property: opacity;
     -o-transition-property: opacity;
@@ -1286,6 +1278,12 @@ div#CODEXAPPSPLASH form table th {
     white-space: nowrap;}
 div#CODEXAPPSPLASH form table td.text:first-line {
     font-weight: bold;}
+
+div#CODEXAPPSPLASH a.hidesplashlink {
+    position: absolute; display: block; 
+    bottom: 0px; left: 25%; right: 25%; width: 50%;
+    font-size: 80%; text-align: center;
+    padding-bottom: 0.5ex; padding-top: 1ex;}
 
 /* Close HUD buttons */
 

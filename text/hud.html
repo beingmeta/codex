@@ -1,27 +1,11 @@
 <div id="CODEXHEAD">
   <div class="helphud topcenter">
     <span class="fortouch">Tap</span><span class="notouch">Click</span>
-    at the top of the page to highlight the interface.
+    at the top of the page to see the interface.
   </div>
   <div class="helphud topcenter" style="display: none;">
     <span class="fortouch">tap</span><span class="notouch">click</span>
     here to see the book tools
-  </div>
-  <div id="CODEXGOTOLOC" class="hudpanel codexgoto">
-    Jump to percentage <input type="text" name="GOTOLOC" value=""
-                              class="fdjtnumberinput"
-                              id="CODEXLOCINPUT"
-                              onkeypress="Codex.UI.goto_keypress(event);"/>
-  </div>
-  <div id="CODEXGOTOPCT" class="hudpanel codexgoto">
-    Jump to percentage <input type="text" name="GOTOPCT" value=""
-                              id="CODEXPCTINPUT"
-                              onkeypress="Codex.UI.goto_keypress(event);"/>
-  </div>
-  <div id="CODEXGOTOPAGE" class="hudpanel codexgoto">
-    Jump to page <input type="text" name="GOTOPAGE" value=""
-                        id="CODEXPAGEINPUT"
-                        onkeypress="Codex.UI.goto_keypress(event);"/>
   </div>
   <div id="CODEXTOC" class="hudpanel"></div>
   <div id="CODEXSEARCH" class="searchbox hudpanel notags">
@@ -148,6 +132,19 @@
       <hr class="codexlayoutindicator" id="CODEXLAYOUTINDICATOR"/>
       <span id="CODEXPAGENOTEXT">p/n</span>
       <span class="locoff" id="CODEXLOCPCT">??.??%</span>
+      <div id="CODEXGOTOLOC" class="codexgoto">
+        <input type="text" name="GOTOLOC" value="" placeholder="loc"
+               title="Enter a percent (<= 100) or an immediate location (> 100)"
+               id="CODEXLOCINPUT"
+               onkeypress="Codex.UI.goto_keypress(event);"/>%
+      </div>
+      <div id="CODEXGOTOPAGE" class="codexgoto">
+        <input type="text" name="GOTOPAGE" value=""
+               id="CODEXPAGEINPUT" placeholder="page"
+               onkeypress="Codex.UI.goto_keypress(event);"/>/
+        <span id="CODEXGOTOPAGEMAX"></span>
+      </div>
+      
     </div>
     <div class="pagespans" id="CODEXPAGESPANS">
     </div>

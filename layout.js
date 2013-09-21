@@ -563,6 +563,8 @@ Codex.Paginate=
         
         function setupPageInfo(){
             var i=0, n=Codex.pagecount; var html=[];
+            var pagemax=fdjt.ID("CODEXGOTOPAGEMAX");
+            if (pagemax) pagemax.innerHTML=""+n;
             var spanwidth=
                 (fdjtID("CODEXPAGEINFO").offsetWidth)/n;
             if (spanwidth<1) spanwidth=1;

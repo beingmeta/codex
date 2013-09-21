@@ -132,6 +132,21 @@ body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.preview {
   font-size: 200%; height: 60px; width: 1.5em;
   pointer-events: none;}
 
+div#CODEXHUD .codexgoto {
+    position: absolute; bottom: 0px; padding-bottom: 0.5ex;
+    display: none; opacity: 0.0;
+    background-color: white;
+    white-space: nowrap;
+    z-index: 200;}
+div#CODEXHUD .codexgoto input {
+    width: 4em; text-align: right; padding-right: 2px;}
+div#CODEXHUD.gotoloc  .codexgoto#CODEXGOTOLOC,
+div#CODEXHUD.gotopage .codexgoto#CODEXGOTOPAGE {
+    display: inline; opacity: 1.0;}
+div#CODEXHUD  .codexgoto#CODEXGOTOLOC {
+    right: 0px; left: auto; min-width: 4em;}
+div#CODEXHUD  .codexgoto#CODEXGOTOPAGE {
+    right: 40%; left: 40%; min-width: 4em;}
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***
