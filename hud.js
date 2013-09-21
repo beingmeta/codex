@@ -565,8 +565,9 @@ Codex.setMode=
                 var i=0, lim=allcards.length;
                 var card=false, lastcard=false, lasthead=false;
                 while (i<lim) {
-                    lastcard=card;
-                    card=allcards[i++];
+                    var each=allcards[i++];
+                    if (each.nodeType!==1) continue;
+                    lastcard=card; card=each;
                     if (hasClass(card,"newhead")) lasthead=card;
                     var loc=card.getAttribute("data-location");
                     if (loc) loc=parseInt(loc,10);
