@@ -303,7 +303,7 @@ div#CODEXHUD div#CODEXHELP.hudpanel {
     -khtml-opacity: 0.95;
     -moz-opacity: 0.95;
     -o-opacity: 0.95;} 
-div#CODEXHUD.cxANIMATE div#CODEXHELP.hudpanel {
+body.cxANIMATE div#CODEXHUD div#CODEXHELP.hudpanel {
     transition-property: opacity; transition-duration: 5s;
     -o-transition-property: opacity; -o-transition-duration: 5s;
     -moz-transition-property: opacity; -moz-transition-duration: 5s;
@@ -324,7 +324,7 @@ div#CODEXHUD div#CODEXKEYBOARDHELPBOX.hudpanel {
     -khtml-opacity: 0.95;
     -moz-opacity: 0.95;
     -o-opacity: 0.95;} 
-div#CODEXHUD.cxANIMATE div#CODEXKEYBOARDHELPBOX.hudpanel {
+body.cxANIMATE div#CODEXHUD div#CODEXKEYBOARDHELPBOX.hudpanel {
     transition-property: opacity; transition-duration: 5s;
     -o-transition-property: opacity; -o-transition-duration: 5s;
     -moz-transition-property: opacity; -moz-transition-duration: 5s;

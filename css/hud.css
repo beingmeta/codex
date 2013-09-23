@@ -27,7 +27,7 @@
     border: solid steelblue 4px; padding: 0px;
     max-height: 50px;}
 #CODEXSCANNER.expanded { max-height: inherit; }
-#CODEXSCANNER .tochead {
+body.cxANIMATE #CODEXSCANNER .tochead {
     transition-property: font-size; transition-duration: 1s;}
 #CODEXSCANNER .tochead {
     background-color: steelblue; color: white;
@@ -110,7 +110,7 @@ body.hudup #CODEXHEAD .hudpanel {
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
 
-.cxANIMATE #CODEXHUD #CODEXHEAD {
+body.cxANIMATE #CODEXHUD #CODEXHEAD {
     transition-property: top;
     transition-duration: 0.75s;
     -o-transition-property: top;
@@ -202,7 +202,7 @@ body.hudup #CODEXHEARTHOLDER {
     -moz-opacity: 1;
     -o-opacity: 1;}
 
-#CODEXHUD.cxANIMATE #CODEXHEARTHOLDER {
+body.cxANIMATE #CODEXHUD #CODEXHEARTHOLDER {
     transition-property: height,top,bottom;
     transition-duration: 1.5s;
     -o-transition-property: height,top,bottom;
@@ -385,7 +385,7 @@ body.hudup div#CODEXHUD div.hudpanel {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 /* When animating, transition opacity and height */
-div#CODEXHUD.cxANIMATE div.hudpanel {
+body.cxANIMATE div#CODEXHUD div.hudpanel {
     transition-property: opacity;
     -o-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -885,7 +885,7 @@ div#CODEXHUD div#CODEXSCANNER div.codexcard > div.idhead {
 div#CODEXHUD div#CODEXSCANNER div.idhead,
 div#CODEXHUD div#CODEXPOINTGLOSSES div.idhead {
     height: 0px;}
-div#CODEXHUD div#CODEXSCANNER .codexcard img.glosspic {
+body.cxANIMATE div#CODEXHUD div#CODEXSCANNER .codexcard img.glosspic {
     transition-property: width,height; transition-duration: 1s;}
 div#CODEXHUD div#CODEXSCANNER .codexcard img.glosspic {
     height: 30px; width: auto;}
@@ -1054,7 +1054,7 @@ body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     -khtml-opacity: 0.90;
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
-body.hudup div#CODEXHUD.cxANIMATE div#CODEXHUDBUTTONS {
+body.cxANIMATE.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     transition-property: opacity;
     -o-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -1093,7 +1093,7 @@ div#CODEXHUD div#CODEXSTARTPAGE.hudpanel {
     border: solid blue 3px;
     border-radius: 1em; -webkit-border-radius: 1em;
     -moz-border-radius: 1em; -o-border-radius: 1em;}
-div#CODEXHUD.cxANIMATE div#CODEXSTARTPAGE {
+body.cxANIMATE div#CODEXHUD div#CODEXSTARTPAGE {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
@@ -1141,7 +1141,7 @@ body.cxLAYOUT.cxLAYOUTMESSAGE div#CODEXLAYOUTMESSAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 
-#CODEXHUD.cxANIMATE div.fdjtprogress#CODEXLAYOUTMESSAGE {
+body.cxANIMATE #CODEXHUD div.fdjtprogress#CODEXLAYOUTMESSAGE {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity;
@@ -1178,7 +1178,7 @@ body.cxINDEXING div#CODEXHUD.searchresults div#CODEXINDEXMESSAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 
-#CODEXHUD.cxANIMATE div.fdjtprogress#CODEXINDEXMESSAGE {
+body.cxANIMATE #CODEXHUD div.fdjtprogress#CODEXINDEXMESSAGE {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity;

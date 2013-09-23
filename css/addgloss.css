@@ -459,7 +459,7 @@ div.completions#CODEXSHARECLOUD div#CODEXSHARECLOUD {
     margin-left: 50px; margin-right: 50px;}
 div.completions#CODEXGLOSSCLOUD > div {
     margin-left: 50px; margin-right: 50px;}
-div#CODEXHUD.cxANIMATE div.completions#CODEXSHARECLOUD {
+body.cxANIMATE div#CODEXHUD div.completions#CODEXSHARECLOUD {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
