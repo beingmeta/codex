@@ -1003,6 +1003,8 @@ Codex.Startup=
             Codex.sourcedb.load(true);
             Codex.glossdb.load(true,function(){
                 Codex.glosses.setLive(true);
+                if (Codex.heartscroller)
+                    Codex.heartscroller.refresh();
                 if ((Codex.glossdb.allrefs.length)||
                     (Codex.sourcedb.allrefs.length))
                     fdjtLog("Initialized %d glosses (%d sources) offline",
