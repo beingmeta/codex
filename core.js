@@ -108,7 +108,7 @@ var Codex={
         scan: 0,          // How much to trace DOM scanning
         search: 0,        // How much to trace searches
         clouds: 0,        // How much to trace cloud generation
-        focus: false,     // Whether to trace target changes
+        target: false,    // Whether to trace target changes
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
         network: 0,       // How much to trace server interaction
@@ -552,10 +552,10 @@ var Codex={
         if (Codex.Trace.nav)
             fdjtLog("Codex.setHead #%s",headid);
         if (head===Codex.head) {
-            if (Codex.Trace.focus) fdjtLog("Redundant SetHead");
+            if (Codex.Trace.target) fdjtLog("Redundant SetHead");
             return;}
         else if (headinfo) {
-            if (Codex.Trace.focus)
+            if (Codex.Trace.target)
                 Codex.trace("Codex.setHead",head);
             Codex.TOC.setHead(headinfo);
             window.title=headinfo.title+" ("+document.title+")";
@@ -565,7 +565,7 @@ var Codex={
             Codex.head=fdjtID(headid);
             Codex.TOC.setHead(headinfo);}
         else {
-            if (Codex.Trace.focus)
+            if (Codex.Trace.target)
                 Codex.trace("Codex.setFalseHead",head);
             Codex.TOC.setHead(headinfo);
             Codex.head=false;}}
@@ -623,7 +623,7 @@ var Codex={
     Codex.location2pct=location2pct;
 
     function setTarget(target){
-        if (Codex.Trace.focus) Codex.trace("Codex.setTarget",target);
+        if (Codex.Trace.target) Codex.trace("Codex.setTarget",target);
         if (target===Codex.target) return;
         else if ((Codex.target)&&
                  (Codex.target.id===target.codexbaseid))
