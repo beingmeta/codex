@@ -350,10 +350,12 @@ Codex.Paginate=
                         page.setAttribute("data-sbookloc",running);}}}
 
 
-            CodexLayout.fetchLayout(layout_id,function(content){
-                if (content)
-                    restore_layout(content,layout_id);
-                else new_layout();});}
+            if (Codex.forcelayout) {
+                CodexLayout.fetchLayout(layout_id,function(content){
+                    if (content)
+                        restore_layout(content,layout_id);
+                    else new_layout();});}
+            else setTimeout(new_layout,10);}
         Codex.Paginate=Paginate;
 
         CodexLayout.prototype.onresize=function(){

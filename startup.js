@@ -97,7 +97,7 @@ Codex.Startup=
 
         var config_handlers={};
         var default_config=
-            {layout: 'bypage',
+            {layout: 'bypage',forcelayout: false,
              bodysize: 'normal',bodyfamily: 'serif',
              uisize: 'normal',showconsole: false,
              animatecontent: true,animatehud: true,
@@ -176,8 +176,9 @@ Codex.Startup=
             else setConfig(config);
             var saved={};
             for (var setting in config) {
-                if ((!(default_config.hasOwnProperty(setting)))||
-                    (config[setting]!==default_config[setting])) {
+                if (((!(default_config.hasOwnProperty(setting)))||
+                     (config[setting]!==default_config[setting]))&&
+                    (!(getQuery(setting)))) {
                     saved[setting]=config[setting];}}
             if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
             setLocal("codex.config",JSON.stringify(saved));
