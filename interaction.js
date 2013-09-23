@@ -171,9 +171,11 @@
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
         var div=((form)&&(getParent(form,".codexglossform")));
+        var input=((div)&&(fdjtDOM.getChild(div,"TEXTAREA")));
         if (div) {
             addClass(div,"focused");
             Codex.setGlossMode(false);}
+        if (input) Codex.setFocus(input);
         if (!(Codex.hudup)) Codex.setHUD(true,false);
         Codex.freezelayout=true;
         gloss_focus=form;}
@@ -182,7 +184,9 @@
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
         var div=((form)&&(getParent(form,".codexglossform")));
+        var input=((div)&&(fdjtDOM.getChild(div,"TEXTAREA")));
         if (div) dropClass(div,"focused");
+        if (input) Codex.cleartFocus(input);
         gloss_blurred=fdjtTime();
         Codex.freezelayout=false;
         // Restore this without removal of the gloss
@@ -283,13 +287,18 @@
             fdjtUI.TapHold.clear();
             return false;}
 
+        if ((Codex.touch)&&(Codex.textinput)) {
+            Codex.clearFocus(Codex.textinput);
+            cancel(evt);
+            return;}
+
         if ((Codex.hudup)||(Codex.mode)) {
             Codex.setMode(false); Codex.setHUD(false);
             if (fdjtID("CODEXOPENGLOSSMARK")) 
                 fdjtID("CODEXOPENGLOSSMARK").id="";
             fdjtUI.cancel(evt); gesture_start=false;
             clicked=fdjtTime();
-            if (getTarget(target)) Codex.setTarget(false);
+            // if (getTarget(target)) Codex.setTarget(false);
             return false;}
 
         // If we're in a glossmark, let its handler apply
@@ -534,13 +543,15 @@
         if (mode) form.className=mode;
         Codex.setMode("addgloss",true);
         var input=fdjtDOM.getInputs(form,"NOTE")[0];
-        if (input) {input.focus(); addClass(form_div,"focused");}}
+        if (input) {
+            Codex.setFocus(input);
+            addClass(form_div,"focused");}}
 
     function initGlossMode(){
         var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
         if (form) {
             var input=fdjtDOM.getInput(form,"NOTE");
-            if (input) input.focus();
+            if (input) Codex.setFocus(input);
             Codex.setGlossMode(form.className);}}
     Codex.initGlossMode=initGlossMode;
 
@@ -2063,7 +2074,8 @@
             target.focus();}}
     Codex.setFocus=setFocus;
     function clearFocus(target){
-        if (Codex.textinput===target) {
+        if (!(target)) target=Codex.textinput;
+        if ((target)&&(Codex.textinput===target)) {
             Codex.textinput=false;
             Codex.freezelayout=false;
             target.blur();}}
