@@ -102,7 +102,7 @@ Codex.Startup=
              uisize: 'normal',showconsole: false,
              animatecontent: true,animatehud: true,
              hidesplash: false,keyboardhelp: true,
-             holdmsecs: 750,taptapmsecs: 500};
+             holdmsecs: 400,taptapmsecs: 500};
         var current_config={};
         var saved_config={};
 

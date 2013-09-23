@@ -2076,6 +2076,7 @@
             (input.type.search(fdjtDOM.text_types)!==0))
             return;
         setFocus(input);}
+    Codex.UI.focus=codexfocus;
     function codexblur(evt){
         evt=evt||event;
         var target=((evt.nodeType)?(evt):(fdjtUI.T(evt)));
@@ -2085,6 +2086,7 @@
             (input.type.search(fdjtDOM.text_types)!==0))
             return;
         clearFocus(input);}
+    Codex.UI.blur=codexblur;
 
     /* Rules */
 

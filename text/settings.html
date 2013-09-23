@@ -83,7 +83,9 @@
         <th>Device name</th>
         <td colspan="2">
           <input TYPE="TEXT" NAME="CODEXDEVICENAME" value=""
-                 PLACEHOLDER="an (optional) string to identify this device for sBooks"/></td>
+                 PLACEHOLDER="an (optional) string to identify this device for sBooks"
+                 onfocus="Codex.UI.focus(event);"
+                 onblur="Codex.UI.blur(event);"/></td>
       </tr>
     </tbody>
     <tr class="buttons">
