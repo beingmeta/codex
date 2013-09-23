@@ -81,18 +81,19 @@ Codex.Paginate=
             dropClass(document.body,"cxSCROLL");
             addClass(document.body,"cxLAYOUT");
             var forced=((init)&&(init.forced));
-            var height=getGeometry(fdjtID("CODEXPAGE")).height;
-            var width=getGeometry(fdjtID("CODEXPAGE")).width;
+            var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
+            var height=geom.inner_height, width=geom.width;
             var bodysize=Codex.bodysize||"normal";
             var bodyfamily=Codex.bodyfamily||"serif";
             if (Codex.layout) {
                 var current=Codex.layout;
                 if ((!(forced))&&
-                    (width===current.page_width)&&
-                    (height===current.page_height)&&
+                    (width===current.width)&&
+                    (height===current.height)&&
                     (bodysize===current.bodysize)&&
                     (bodyfamily===current.bodyfamily)) {
-                    fdjtLog("Skipping redundant pagination %j",current);
+                    fdjtLog("Skipping redundant pagination for %s",
+                            current.layout_id);
                     return;}
                 // Repaginating, start with reversion
                 Codex.layout.Revert();
