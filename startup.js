@@ -932,7 +932,7 @@ Codex.Startup=
                 Codex.scrolldivs=false;
                 Codex.updatehash=false;
                 // Animation seems to increase crashes in iOS
-                Codex.dontanimate=true;
+                // Codex.dontanimate=true;
                 // default_config.layout='fastpage';
                 default_config.keyboardhelp=false;
                 // Have fdjtLog do it's own format conversion for the log
