@@ -1317,10 +1317,10 @@ Codex.Startup=
             pagehead.style.backgroundColor=bgcolor;
             pagefoot.style.backgroundColor=bgcolor;
             fdjtDOM.addListener(window,"resize",function(evt){
-                if (Codex.dont_resize) return;
                 if (resizing) clearTimeout(resizing);
                 Codex.resizeHUD();
-                if ((Codex.layout)&&(Codex.layout.onresize))
+                if ((Codex.layout)&&(Codex.layout.onresize)&&
+                    (!(Codex.freezelayout))&&(!(Codex.glossform)))
                     resizing=setTimeout(function(){
                         resizing=false;
                         Codex.sizeContent();

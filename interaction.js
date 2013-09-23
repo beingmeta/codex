@@ -173,7 +173,7 @@
             addClass(div,"focused");
             Codex.setGlossMode(false);}
         if (!(Codex.hudup)) Codex.setHUD(true,false);
-        Codex.dont_resize=true;
+        Codex.freezelayout=true;
         gloss_focus=form;}
     function glossform_blur(evt){
         evt=evt||event;
@@ -182,7 +182,7 @@
         var div=((form)&&(getParent(form,".codexglossform")));
         if (div) dropClass(div,"focused");
         gloss_blurred=fdjtTime();
-        Codex.dont_resize=false;
+        Codex.freezelayout=false;
         // Restore this without removal of the gloss
         // if ((div)&&(hasClass(div,"modified"))) Codex.submitGloss(div);
         gloss_focus=false;}
@@ -990,7 +990,7 @@
         else {}
         if (mode==="searching")
             Codex.setFocus(fdjtID("CODEXSEARCHINPUT"));
-        else fdjtID("CODEXSEARCHINPUT").blur();
+        else Codex.clearFocus(fdjtID("CODEXSEARCHINPUT"));
         fdjtDOM.cancel(evt);}
     Codex.UI.handlers.onkeypress=onkeypress;
 
@@ -2046,7 +2046,7 @@
         if (!(target)) {
             var cur=Codex.textinput;
             Codex.textinput=false;
-            Codex.dont_resize=false;
+            Codex.freezelayout=false;
             if (cur) cur.blur();
             setTimeout(function(){
                 document.body.blur();
@@ -2057,9 +2057,15 @@
         else if (Codex.textinput===target) return;
         else {
             Codex.textinput=target;
-            Codex.dont_resize=true;
+            Codex.freezelayout=true;
             target.focus();}}
     Codex.setFocus=setFocus;
+    function clearFocus(target){
+        if (Codex.textinput===target) {
+            Codex.textinput=false;
+            Codex.freezelayout=false;
+            target.blur();}}
+    Codex.clearFocus=clearFocus;
 
     function codexfocus(evt){
         evt=evt||event;
@@ -2078,7 +2084,7 @@
         if ((!(input))||(typeof input.type !== "string")||
             (input.type.search(fdjtDOM.text_types)!==0))
             return;
-        setFocus(false);}
+        clearFocus(input);}
 
     /* Rules */
 

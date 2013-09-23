@@ -303,7 +303,8 @@
 
     function searchInput_blur(evt){
         evt=evt||event||null;
-        Codex.setFocus(false);}
+        var input=fdjtDOM.T(evt);
+        Codex.clearFocus(input);}
     Codex.UI.handlers.search_blur=searchInput_blur;
 
     function clearSearch(evt){

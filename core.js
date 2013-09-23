@@ -60,6 +60,8 @@ var Codex={
     updatehash: true, iscroll: false,
     // Whether to cache layouts locally
     cachelayouts: true,
+    // Whether we're freezing layouts (during text input, etc)
+    freezelayout: false,
     // Whether to store glosses, etc for offline/faster access
     persist: false,
     // Whether to use native scrolling for body content

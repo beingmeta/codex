@@ -350,7 +350,7 @@ Codex.Paginate=
                         page.setAttribute("data-sbookloc",running);}}}
 
 
-            if (Codex.forcelayout) {
+            if ((Codex.cachelayouts)&&(!((Codex.forcelayout)))) {
                 CodexLayout.fetchLayout(layout_id,function(content){
                     if (content)
                         restore_layout(content,layout_id);

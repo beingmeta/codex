@@ -171,7 +171,7 @@
     function extendGlossmark(glossmark,glosses,image){
         var sources=Codex.sourcedb; var glossdb=Codex.glossdb;
         if (!(image)) image=fdjtDOM.getChild(glossmark,".wedge");
-        var images=image.getAttribute("data-images").split(";");
+        var images=image.getAttribute("data-images").split("|");
         if ((images.length===1)&&(images[0]==="")) images=[];
         var i=0; var lim=glosses.length;
         while (i<lim) {
@@ -190,7 +190,7 @@
                 var outlet=sources.ref(outlets[j++]);
                 var outlet_img=geticon(outlet);
                 if (outlet_img) images.push(outlet_img);}}
-        image.setAttribute("data-images",images.join(";"));
+        image.setAttribute("data-images",images.join("|"));
         return glossmark;}
     
     Codex.UI.addGlossmark=function(passage,gloss){
