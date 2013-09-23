@@ -96,7 +96,13 @@ div#CODEXSETTINGS span.button {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;}
 
-div#CODEXHEART table.settings td .checkspan { }
+table.settings td { padding-bottom: 0.5ex;}
+
+table.settings td .checkspan {
+    padding-right: 0.5ex;}
+table.settings td .checkspan input[TYPE='CHECKBOX'],
+table.settings td .checkspan input[TYPE='RADIO'] {
+    padding-right: 3px;}
 
 div#CODEXHUD #CODEXABOUTBOOK.hudpanel { text-align: left;}
 div#CODEXABOUTBOOK div.links {
