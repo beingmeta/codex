@@ -110,7 +110,7 @@ body.hudup #CODEXHEAD .hudpanel {
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
 
-body.cxANIMATE #CODEXHUD #CODEXHEAD {
+body.cxANIMATE #CODEXHEAD {
     transition-property: top;
     transition-duration: 0.75s;
     -o-transition-property: top;
@@ -121,7 +121,9 @@ body.cxANIMATE #CODEXHUD #CODEXHEAD {
     -webkit-transition-duration: 0.75s;
     display: block;
     top: -100px;}
-#CODEXHUD.openhead #CODEXHEAD { top: 0px;}
+body.cxANIMATE #CODEXHUD.openhead #CODEXHEAD,
+#CODEXHUD.openhead #CODEXHEAD {
+    top: 0px;}
 body.hudup #CODEXHEAD {display: block;}
 body.hudup #CODEXHUDBUTTONS {display: block;}
 body.hudup #CODEXHUD.openhead #CODEXHEAD,
