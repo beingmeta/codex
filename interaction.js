@@ -133,7 +133,9 @@
                 addHandlers(fdjtID("CODEXPAGE"),'content');}
             else {
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
-            fdjtUI.TapHold(fdjt.ID("CODEXBODY"),Codex.touch);
+            // Last arg is docancel, since we don't need to worry about conflicts
+            //   with scrolling
+            fdjtUI.TapHold(fdjt.ID("CODEXBODY"),Codex.touch,false,false,false,true);
             fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
             fdjtUI.TapHold(fdjtID("CODEXEXPANDSCANNER"),Codex.touch);
             addHandlers(Codex.HUD,'hud');}
