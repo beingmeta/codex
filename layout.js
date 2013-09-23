@@ -92,6 +92,7 @@ Codex.Paginate=
                     (height===current.height)&&
                     (bodysize===current.bodysize)&&
                     (bodyfamily===current.bodyfamily)) {
+                    dropClass(document.body,"cxLAYOUT");
                     fdjtLog("Skipping redundant pagination for %s",
                             current.layout_id);
                     return;}
