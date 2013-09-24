@@ -206,7 +206,7 @@
         if (Codex.syncstamp)
             getInput(form,"SYNC").value=(Codex.syncstamp+1);
         var menu=getChild(form,".addglossmenu");
-        fdjt.UI.TapHold(menu,Codex.touch);
+        fdjt.UI.TapHold(menu,Codex.touch,false,false,false,true);
         var loc=getInput(form,"LOCATION");
         var loclen=getInput(form,"LOCLEN");
         var tagline_elt=getInput(form,"TAGLINE");
@@ -866,6 +866,10 @@
     function addgloss_callback(req,form,keep){
         if (Codex.Trace.network)
             fdjtLog("Got AJAX gloss response %o from %o",req,req.uri);
+        if (Codex.Trace.addgloss)
+            fdjtLog("Gloss %o successfully (status %d) added to %o",
+                    getInput(form,"UUID").value,req.status,
+                    getInput(form,"FRAG").value);
         dropClass(form.parentNode,"submitting");
         var json=JSON.parse(req.responseText);
         var ref=Codex.glossdb.Import(
