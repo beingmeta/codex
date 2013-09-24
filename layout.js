@@ -123,6 +123,9 @@ Codex.Paginate=
                 dropClass(document.body,"cxLAYOUT");
                 Codex.layout=layout;
                 Codex.pagecount=layout.pages.length;
+                if (Codex.Trace.startup)
+                    fdjtLog("Restored saved layout %s, adding glossmarks",
+                            layout_id);
                 var lostids=layout.lostids, moved_ids=lostids._all_ids;
                 var i=0, lim=moved_ids.length;
                 while (i<lim) {
@@ -137,6 +140,8 @@ Codex.Paginate=
                             addClass(nodes,"glossed");
                             var k=0, klim=nodes.length; while (k<klim) {
                                 addGlossmark(nodes[k++],gloss);}}}}
+                if (Codex.Trace.startup)
+                    fdjtLog("Finished adding glossmarks to saved layout");
                 setupPageInfo();
                 if (Codex.layoutdone) {
                     var fn=Codex.layoutdone;

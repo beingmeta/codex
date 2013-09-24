@@ -139,7 +139,6 @@
             //   with scrolling
             fdjtUI.TapHold(fdjt.ID("CODEXBODY"),Codex.touch,false,false,false,true);
             fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
-            fdjtUI.TapHold(fdjtID("CODEXEXPANDSCANNER"),Codex.touch);
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
             var handlers=Codex.UI.handlers[mode];
@@ -2229,11 +2228,6 @@
          // Return to scan
          "#CODEXSCANNER": {click: scanner_tapped},
          // Expanding/contracting the scanner
-         "#CODEXEXPANDSCANNER": {
-             tap: scanner_expand_tap,
-             hold: scanner_expand_hold,
-             release: scanner_expand_release,
-             click: taphold_click},
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {click: head_tap},
          "#CODEXTABS": {click: head_tap},
@@ -2326,11 +2320,6 @@
          // Return to scan
          "#CODEXSCANNER": {touchstart: scanner_tapped},
          // Expanding/contracting the scanner
-         "#CODEXEXPANDSCANNER": {
-             tap: scanner_expand_tap,
-             hold: scanner_expand_hold,
-             click: taphold_click,
-             release: scanner_expand_release},
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {touchstart: head_tap},
          "#CODEXTABS": {touchstart: head_tap},

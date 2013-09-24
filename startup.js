@@ -366,7 +366,9 @@ Codex.Startup=
                     nodes.push(children[i++]);}
                 i=0; while (i<lim) frag.appendChild(nodes[i++]);
                 return frag;}
-            Codex.md2DOM=md2DOM;}
+            Codex.md2DOM=md2DOM;
+
+            if (Codex.Trace.startup) fdjtLog("Done with sync startup");}
 
         function appSetup() {
 
@@ -458,7 +460,8 @@ Codex.Startup=
 
             // Set up what the user sees during setup
             appSplash();
-        }
+
+            if (Codex.Trace.startup) fdjtLog("Done with app setup");}
         
         Codex.setSync=function setSync(val){
             if (!(val)) return false;
@@ -513,13 +516,13 @@ Codex.Startup=
             if (Codex.nologin) return;
             else if (window.navigator.onLine) {
                 if ((Codex.user)&&(sync))
-                    fdjtLog("Getting new (> %s (%d)) glosses from %s for %s",
+                    fdjtLog("Requesting new (> %s (%d)) glosses from %s for %s",
                             fdjtTime.timeString(Codex.sync),Codex.sync,
                             Codex.server,Codex.user._id,Codex.user.name);
                 else if (Codex.user)
-                    fdjtLog("Getting glosses from %s for %s (%s)",
+                    fdjtLog("Requesting glosses from %s for %s (%s)",
                             Codex.server,Codex.user._id,Codex.user.name);
-                else fdjtLog("Getting glosses from %s",Codex.server);
+                else fdjtLog("Requesting glosses from %s",Codex.server);
                 updateInfo();
                 setInterval(updateInfo,300000);
                 return;}
@@ -1134,6 +1137,7 @@ Codex.Startup=
             // Get any author provided splash page
             var splash=fdjtID("CODEXSPLASH");
             var i, lim;
+            if (Codex.Trace.startup) fdjtLog("Organizing content");
 
             body.setAttribute("tabindex",1);
 
@@ -1229,8 +1233,7 @@ Codex.Startup=
             sizeContent();
             // Initialize the margins
             initMargins();
-            if (Codex.Trace.startup>1)
-                fdjtLog("Initialized body");}
+            if (Codex.Trace.startup) fdjtLog("Organized content");}
 
         function sizeContent(){
             var content=Codex.content, page=Codex.page, body=document.body;

@@ -103,7 +103,7 @@ var Codex={
     /* XTARGETS are procedures linked to fragment ids */
     xtargets: {},
     Trace: {
-        startup: 0,       // Whether to trace startup
+        startup: 1,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc
         mode: false,      // Whether to trace mode changes
         nav: false,       // Whether to trace book navigation
