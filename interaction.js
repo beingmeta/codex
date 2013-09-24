@@ -115,6 +115,8 @@
     var addgloss_timer=false;
     var preview_timer=false;
 
+    Codex.uiclasses=/\b(codexui|codexglossmark)\b/gi;
+
     /* Setup for gesture handling */
 
     function addHandlers(node,type){
@@ -559,7 +561,9 @@
     function content_click(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        if ((clicked)&&((fdjtTime()-clicked)<3000)) fdjtUI.cancel(evt);
+        // This avoids double-handling of clicks
+        if ((clicked)&&((fdjtTime()-clicked)<3000))
+            fdjtUI.cancel(evt);
         else if (handle_content_click(target)) {
             fdjtUI.cancel(evt);
             return;}
@@ -1325,6 +1329,9 @@
     function default_tap(evt){
         var target=fdjtUI.T(evt);
         if (fdjtUI.isClickable(target)) return;
+        else if ((hasParent(target,Codex.HUD))||
+                 (hasParent(target,Codex.uiclasses)))
+            return;
         else if (((Codex.hudup)||(Codex.mode))) {
             Codex.setMode(false);}
         else {
