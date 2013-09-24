@@ -417,13 +417,13 @@ body.hudup .codextarget.codexglosstarget .codexglossbutton {
 
 body.cxANIMATE .codextarget, body.cxSHRINK .codextarget {
     transition-property: color,background-color;
-    transition-duration: 3s;
+    transition-duration: 6s;
     -o-transition-property: color,background-color;
-    -o-transition-duration: 3s;
+    -o-transition-duration: 6s;
     -moz-transition-property: color,background-color;
-    -moz-transition-duration: 3s;
+    -moz-transition-duration: 6s;
     -webkit-transition-property: color,background-color;
-    -webkit-transition-duration: 3s;}
+    -webkit-transition-duration: 6s;}
 body.hudup .codextarget, body.cxSHRINK .codextarget {
     cursor: pointer;}
 
