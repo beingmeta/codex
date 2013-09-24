@@ -521,12 +521,19 @@
     
     function content_released(evt){
         evt=evt||event;
-        var target=fdjtUI.T(evt);
+        var target=fdjtUI.T(evt), children=false;
         if (Codex.Trace.gestures) fdjtLog("content_released %o",evt);
-        if (!(hasParent(target,".fdjtselecting"))) {
-            abortSelect(); return;}
-        var passage=getTarget(target);
+        var passage=((hasParent(target,".fdjtselecting"))&&(getTarget(target)));
+        if (!(passage)) {
+            var children=getChildren(target,".fdjtselected");
+            if (children.length===0) {abortSelect(); return;}
+            target=children[0]; passage=getTarget(target);}
+        if (Codex.Trace.gestures)
+            fdjtLog("content_released %o p=%o gt=%o gf=%o",
+                    evt,passage,Codex.glosstarget,Codex.glossform);
         if (Codex.glosstarget===passage) {
+            if (Codex.glossform)
+                Codex.glossform.id="CODEXLIVEGLOSS";
             if (Codex.mode==="addgloss") Codex.setHUD(true);
             else Codex.setMode("addgloss");
             return;}
