@@ -867,7 +867,7 @@
         if (Codex.Trace.network)
             fdjtLog("Got AJAX gloss response %o from %o",req,req.uri);
         if (Codex.Trace.addgloss)
-            fdjtLog("Gloss %o successfully (status %d) added to %o",
+            fdjtLog("Gloss %o successfully added (status %d) to %o",
                     getInput(form,"UUID").value,req.status,
                     getInput(form,"FRAG").value);
         dropClass(form.parentNode,"submitting");
