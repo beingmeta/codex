@@ -100,7 +100,7 @@ var Codex={
     HTML: {},
     /* This is where we store pointers into the DOM and CSS */
     DOM: {}, CSS: {},
-    /* XTARGETS are procedures to use when jumping to a particular fragment id */
+    /* XTARGETS are procedures linked to fragment ids */
     xtargets: {},
     Trace: {
         startup: 0,       // Whether to trace startup
@@ -115,6 +115,7 @@ var Codex={
         storage: 0,       // How much to trace offline persistence
         network: 0,       // How much to trace server interaction
         glosses: 0,       // How much we're tracing gloss processing
+        addgloss: 1,      // Note whenever a gloss post completes
         layout: 0,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
         dosync: false,    // Whether to trace state saves
@@ -757,6 +758,7 @@ var Codex={
         else if (hasClass(elt,sbookUIclasses)) return true;
         else elt=elt.parentNode;
         return false;}
+    Codex.inUI=inUI;
 
     function setHashID(target){
         var targetid=target.codexbaseid||target.id;
