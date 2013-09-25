@@ -470,39 +470,64 @@ Codex.Paginate=
             
             var avoidbreakclasses=
                 /\b(sbookfullpage)|(sbooktitlepage)|(stanza)\b/;
-            var avoidbreakinside=
+            args.avoidbreakinside=[avoidbreakclasses];
+            avoidbreakclasses=
                 fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
-            if (avoidbreakinside) args.avoidbreakinside=
-                [avoidbreakclasses,avoidbreakinside];
-            else args.avoidbreakinside=avoidbreakclasses;
+            if (avoidbreakclasses) args.avoidbreakinside.push(avoidbreakclasses);
+            avoidbreakclasses=
+                fdjtDOM.sel(fdjtDOM.getMeta("SBOOK.avoidbreakinside",true));
+            if (avoidbreakclasses) args.avoidbreakinside.push(avoidbreakclasses);
 
-            var abb=fdjtDOM.getMeta("alwaysbreakbefore",true);
-            var fbb=fdjtDOM.getMeta("forcebreakbefore",true);
-            var forcebreakbefore=fdjtDOM.sel(abb.concat(fbb));
-            if (forcebreakbefore) args.forcebreakbefore=forcebreakbefore;
+            var fbb=fdjtDOM.getMeta("alwaysbreakbefore",true).concat(
+                fdjtDOM.getMeta("SBOOK.alwaysbreakbefore",true)).concat(
+                    fdjtDOM.getMeta("forcebreakbefore",true)).concat(
+                        fdjtDOM.getMeta("SBOOK.forcebreakbefore",true));
+            if ((fbb)&&(fbb.length)) args.forcebreakbefore=fdjtDOM.sel(fbb);
 
-            var aba=fdjtDOM.getMeta("alwaysbreakafter",true);
-            var fba=fdjtDOM.getMeta("forcebreakafter",true);
-            var forcebreakafter=fdjtDOM.sel(aba.concat(fba));
-            if (forcebreakafter) args.forcebreakafter=forcebreakafter;
+            var fba=fdjtDOM.getMeta("alwaysbreakafter",true).concat(
+                fdjtDOM.getMeta("SBOOK.alwaysbreakafter",true)).concat(
+                    fdjtDOM.getMeta("forcebreakafter",true)).concat(
+                        fdjtDOM.getMeta("SBOOK.forcebreakafter",true));
+            if ((fba)&&(fba.length)) args.forcebreakafter=fdjtDOM.sel(fba);
 
-            var avoidbreakafter=
-                fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakafter",true));
-            if (avoidbreakafter) args.avoidbreakafter=avoidbreakafter;
+            var abb=fdjtDOM.getMeta("avoidbreakbefore",true).concat(
+                fdjtDOM.getMeta("SBOOK.avoidbreakbefore",true)).concat(
+                    fdjtDOM.getMeta("dontbreakbefore",true)).concat(
+                        fdjtDOM.getMeta("SBOOK.dontbreakbefore",true));
+            if ((abb)&&(abb.length)) args.avoidbreakbefore=fdjtDOM.sel(abb);
 
-            var avoidbreakbefore=
-                fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakbefore",true));
-            if (avoidbreakbefore) args.avoidbreakbefore=avoidbreakbefore;
+            var aba=fdjtDOM.getMeta("avoidbreakafter",true).concat(
+                fdjtDOM.getMeta("SBOOK.avoidbreakafter",true)).concat(
+                    fdjtDOM.getMeta("dontbreakafter",true)).concat(
+                        fdjtDOM.getMeta("SBOOK.dontbreakafter",true));
+            if ((aba)&&(aba.length)) args.avoidbreakafter=fdjtDOM.sel(aba);
+
+            var abi=fdjtDOM.getMeta("avoidbreakinside",true).concat(
+                fdjtDOM.getMeta("SBOOK.avoidbreakinside",true)).concat(
+                    fdjtDOM.getMeta("dontbreakinside",true)).concat(
+                        fdjtDOM.getMeta("SBOOK.dontbreakinside",true));
+            if ((abi)&&(abi.length)) args.avoidbreakinside=fdjtDOM.sel(abi);
+
+            var fullpages=[".sbookfullpage",".sbooktitlepage",".sbookpage"].concat(
+                fdjtDOM.getMeta("SBOOK.fullpage",true)).concat(
+                    fdjtDOM.getMeta("SBOOK.fullpage",true)).concat(
+                        fdjtDOM.getMeta("sbookfullpage",true));
+            if ((fullpages)&&(fullpages.length))
+                args.fullpages=fdjtDOM.sel(fullpages);
             
-            var fullpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfullpage",true));
-            if (fullpages) fullpages.concat([".sbookfullpage",".sbooktitlepage",".sbookpage"]);
-            else fullpages=[".sbookfullpage",".sbooktitlepage",".sbookpage"];
-            args.fullpages=fullpages;
+            var floatpages=[".sbookfloatpage"].concat(
+                fdjtDOM.getMeta("SBOOK.floatpage",true)).concat(
+                    fdjtDOM.getMeta("SBOOK.floatpage",true)).concat(
+                        fdjtDOM.getMeta("sbookfloatpage",true));
+            if ((floatpages)&&(floatpages.length))
+                args.floatpages=fdjtDOM.sel(floatpages);
             
-            var floatpages=fdjtDOM.sel(fdjtDOM.getMeta("sbookfloatpage",true));
-            if (floatpages) floatpages.push("sbookfloatpage");
-            else floatpages=[".sbookfloatpage"];
-            args.floatpages=floatpages;
+            var floating=[".sbookfloatpage"].concat(
+                fdjtDOM.getMeta("SBOOK.floatpage",true)).concat(
+                    fdjtDOM.getMeta("SBOOK.floatpage",true)).concat(
+                        fdjtDOM.getMeta("sbookfloatpage",true));
+            if ((floating)&&(floating.length))
+                args.floating=fdjtDOM.sel(floating);
 
             var scaletopage=fdjtDOM.getMeta("sbookscaletopage",true);
             if ((scaletopage)&&(scaletopage.length)) 

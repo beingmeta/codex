@@ -869,8 +869,10 @@ Codex.Startup=
             else Codex.server=lookupServer(document.domain);
             if (!(Codex.server)) Codex.server=Codex.default_server;
             
-            var notespecs=fdjtDOM.getMeta("sbooknote",true);
-            var noterefspecs=fdjtDOM.getMeta("sbooknoteref",true);
+            var notespecs=fdjtDOM.getMeta("sbooknote",true).concat(
+                fdjtDOM.getMeta("SBOOK.note",true));
+            var noterefspecs=fdjtDOM.getMeta("sbooknoteref",true).concat(
+                fdjtDOM.getMeta("SBOOK.noteref",true));
             Codex.sbooknotes=(((notespecs)&&(notespecs.length))?
                               (fdjtDOM.sel(notespecs)):(false));
             Codex.sbooknoterefs=(((noterefspecs)&&(noterefspecs.length))?
