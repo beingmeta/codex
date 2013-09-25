@@ -866,7 +866,7 @@
     function addgloss_callback(req,form,keep){
         if (Codex.Trace.network)
             fdjtLog("Got AJAX gloss response %o from %o",req,req.uri);
-        if (Codex.Trace.addgloss)
+        if (Codex.Trace.savegloss)
             fdjtLog("Gloss %o successfully added (status %d) to %o",
                     getInput(form,"UUID").value,req.status,
                     getInput(form,"FRAG").value);
