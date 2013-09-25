@@ -1282,13 +1282,15 @@ Codex.Startup=
                 fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
             topleading.codexui=true; bottomleading.codexui=true;
             
-            var pagehead=fdjtDOM("div.codexmargin#CODEXPAGEHEAD"," ");
             var pageright=fdjtDOM("div#CODEXPAGERIGHT");
             var pageleft=fdjtDOM("div#CODEXPAGELEFT");
+            /*
+            var pagehead=fdjtDOM("div.codexmargin#CODEXPAGEHEAD"," ");
             var pagefoot=fdjtDOM("div.codexmargin#CODEXPAGEFOOT"," ");
             pagehead.codexui=true; pagefoot.codexui=true;
             Codex.pagehead=pagehead; Codex.pagefoot=pagefoot;
-            
+            */
+
             var scanleft=document.createDocumentFragment();
             var scanright=document.createDocumentFragment();
             var holder=fdjtDOM("div");
@@ -1300,11 +1302,11 @@ Codex.Startup=
             nodes=fdjtDOM.toArray(holder.childNodes), i=0, lim=nodes.length;
             while (i<lim) scanright.appendChild(nodes[i++]);
 
-            fdjtDOM.prepend(document.body,pagehead,pagefoot,
+            fdjtDOM.prepend(document.body,/* pagehead,pagefoot, */
                             scanleft,scanright,
                             pageleft,pageright);
 
-            for (var pagelt in [pagehead,pageright,pageleft,pagefoot]) {
+            for (var pagelt in [pageright,pageleft]) { /* pagehead,pagefoot  */
                 fdjtDOM.addListeners(
                     pagelt,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
 
@@ -1322,8 +1324,10 @@ Codex.Startup=
                     bgcolor=bgcolor.replace("rgba","rgb");
                     bgcolor=bgcolor.replace(/,\s*((\d+)|(\d+.\d+))\s*\)/,")");}}
             else if (bgcolor==="transparent") bgcolor="white";
+            /*
             pagehead.style.backgroundColor=bgcolor;
             pagefoot.style.backgroundColor=bgcolor;
+            */
             fdjtDOM.addListener(window,"resize",function(evt){
                 if (resizing) clearTimeout(resizing);
                 Codex.resizeHUD();

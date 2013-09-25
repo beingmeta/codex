@@ -1,17 +1,10 @@
 <div id="CODEXHEAD">
-  <div class="helphud topcenter">
-    <span class="fortouch">Tap</span><span class="notouch">Click</span>
-    at the top of the page to see the interface.
-  </div>
-  <div class="helphud topcenter" style="display: none;">
-    <span class="fortouch">tap</span><span class="notouch">click</span>
-    here to see the book tools
-  </div>
   <div id="CODEXTOC" class="hudpanel"></div>
   <div id="CODEXSEARCH" class="searchbox hudpanel notags">
     <!-- This content comes from searchbox.html -->
   </div>
-  <div id="CODEXNOTETEXT" class="hudpanel" title="tap/click to jump to the note">
+  <div id="CODEXNOTETEXT" class="hudpanel"
+       title="tap/click to jump to the note">
     <!-- This displays the text for a "note" -->
   </div>
   <div id="CODEXADDGLOSS" class="codexaddgloss hudpanel">
@@ -47,13 +40,12 @@
 </div>
 <div id="CODEXPREVIEWHELP" class="helpbox">
   <p><span class="inhead">You're <strong>glimpsing</strong> another part of the
-    book.</span>  If you <strong>let go</strong>, you'll <em>go
-    back</em> to where you were.  If you <strong class="fortouch">tap
-    the content area</strong>
+      book.</span>  If you <strong>let go</strong>, you'll <em>go
+      back</em> to where you were.  If you <strong class="fortouch">tap
+      the content area</strong>
     <strong class="notouch">tap any key</strong>, you'll <em>go to what
-    you're seeing</em>.</p>
-  </p>
-  </blockquote>
+      you're seeing</em>.</p>
+</div>
 </div>
 <div id="CODEXHEARTHOLDER">
   <div id="CODEXRIBBON">
@@ -91,64 +83,6 @@
 <div id="CODEXPOINTGLOSSES" class="hudpanel">
   <!-- This is populated when a glosspoint is tapped.
        It contains the glosses for a particular passage. -->
-</div>
-<div id="CODEXFOOT" data-touchable="span.pagespan,span.pageno,span.locoff">
-  <img svg="http://static.beingmeta.com/g/codex/allglosses.svgz"
-       src="http://static.beingmeta.com/g/codex/allglosses50x50.png"
-       alt="allglosses" title="show all glosses"
-       class="hudbutton hudmodebutton botleft clickable"
-       id="CODEXALLGLOSSESBUTTON"
-       hudmode="allglosses"/>
-  <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
-       src="http://static.beingmeta.com/g/codex/helpicon50x50.png"
-       alt="help" title="show contextual help"
-       class="hudbutton hudmodebutton botright clickable"
-       id="CODEXHELPBUTTON"/>
-  <div id="CODEXSHOWTEXT">
-    <span class="adjustfont" data-maxfont="150%">
-      <span>
-        <span class="fortouch">Tap</span><span class="notouch">Click</span>
-        to continue reading
-      </span>
-    </span>
-  </div>
-  <div class="helphud botleft" data-hudmode="toc">
-    <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
-    <span class="nobreak">glosses</span></div>
-  <div class="helphud botright">
-    <span class="nobreak"><span class="arrow">&#x2192;</span>toggle</span><br/>
-    help</div>
-  <div class="helphud botcenter">
-    <span style="font-size: 200%; font-weight: bold; float: left;">
-      &#x2193;</span> this bar shows where you are in the book:
-    <span class="fortouch">tap</span><span class="notouch">click</span>
-    to jump around, hold down to preview,
-    or <span style="white-space: nowrap;"><span class="fortouch">tap</span>
-      <span class="notouch">click</span> numbers to change</span>
-  </div>
-  <div id="CODEXPAGEINFO">
-    <div class="textfoot">
-      <div id="CODEXLAYOUTADJUST">Adjusting layout</div>
-      <hr class="codexlayoutindicator" id="CODEXLAYOUTINDICATOR"/>
-      <span id="CODEXPAGENOTEXT">p/n</span>
-      <span class="locoff" id="CODEXLOCPCT">??.??%</span>
-      <div id="CODEXGOTOLOC" class="codexgoto">
-        <input type="text" name="GOTOLOC" value="" placeholder="loc"
-               title="Enter a percent (<= 100) or an immediate location (> 100)"
-               id="CODEXLOCINPUT"
-               onkeypress="Codex.UI.goto_keypress(event);"/>%
-      </div>
-      <div id="CODEXGOTOPAGE" class="codexgoto">
-        <input type="text" name="GOTOPAGE" value=""
-               id="CODEXPAGEINPUT" placeholder="page"
-               onkeypress="Codex.UI.goto_keypress(event);"/>/
-        <span id="CODEXGOTOPAGEMAX"></span>
-      </div>
-      
-    </div>
-    <div class="pagespans" id="CODEXPAGESPANS">
-    </div>
-  </div>
 </div>
 <div id="CODEXAPPSPLASH" class="hudpanel"></div>
 <div id="CODEXHELP" class="hudpanel codexhelp"></div>
@@ -201,31 +135,98 @@
          title="login to sBooks" />
   </div> <!-- .tabbar -->
 </div> <!-- id="CODEXHUDBUTTONS" -->
-
-<img svg="http://static.beingmeta.com/g/codex/tocicon.svgz"
-     src="http://static.beingmeta.com/g/codex/tocicon50x50.png"
-     alt="toc" title="navigate sections"
-     class="hudbutton hudmodebutton topleft clickable"
-     id="CODEXTOCBUTTON"
-     hudmode="statictoc"/>
-<img svg="http://static.beingmeta.com/g/codex/tagsearch.svgz"
-     src="http://static.beingmeta.com/g/codex/tagsearch50x50.png"
-     alt="search" title="search tags"
-     class="hudbutton hudmodebutton topright clickable"
-     id="CODEXSEARCHBUTTON"
-     hudmode="search"/>
-<div class="helphud topleft" data-hudmode="toc">
-  <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
-  <span class="nobreak">sections</span></div>
-<div class="helphud topright" data-hudmode="search">
-  <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
-  for&nbsp;tags
-</div>
-<div class="helphud leftmiddle">
-  back page
-</div>
-<div class="helphud rightmiddle">
-  next page
+<div id="CODEXHUDFRAME">
+  <img svg="http://static.beingmeta.com/g/codex/tocicon.svgz"
+       src="http://static.beingmeta.com/g/codex/tocicon50x50.png"
+       alt="toc" title="navigate sections"
+       class="hudbutton hudmodebutton topleft clickable"
+       id="CODEXTOCBUTTON"
+       hudmode="statictoc"/>
+  <img svg="http://static.beingmeta.com/g/codex/tagsearch.svgz"
+       src="http://static.beingmeta.com/g/codex/tagsearch50x50.png"
+       alt="search" title="search tags"
+       class="hudbutton hudmodebutton topright clickable"
+       id="CODEXSEARCHBUTTON"
+       hudmode="search"/>
+  <div class="helphud topcenter">
+    <span class="fortouch">Tap</span><span class="notouch">Click</span>
+    at the top of the page to see the interface.
+  </div>
+  <div class="helphud topcenter" style="display: none;">
+    <span class="fortouch">tap</span><span class="notouch">click</span>
+    here to see the book tools
+  </div>
+  <div class="helphud topleft" data-hudmode="toc">
+    <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
+    <span class="nobreak">sections</span></div>
+  <div class="helphud topright" data-hudmode="search">
+    <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
+    for&nbsp;tags
+  </div>
+  <div class="helphud leftmiddle">
+    back page
+  </div>
+  <div class="helphud rightmiddle">
+    next page
+  </div>
+  <div id="CODEXFOOT" data-touchable="span.pagespan,span.pageno,span.locoff">
+    <div id="CODEXSHOWTEXT">
+      <span class="adjustfont" data-maxfont="150%">
+        <span>
+          <span class="fortouch">Tap</span><span class="notouch">Click</span>
+          to continue reading
+        </span>
+      </span>
+    </div>
+    <div class="helphud botcenter">
+      <span style="font-size: 200%; font-weight: bold; float: left;">
+        &#x2193;</span> this bar shows where you are in the book:
+      <span class="fortouch">tap</span><span class="notouch">click</span>
+      to jump around, hold down to preview,
+      or <span style="white-space: nowrap;"><span class="fortouch">tap</span>
+        <span class="notouch">click</span> numbers to change</span>
+    </div>
+    <div id="CODEXPAGEINFO">
+      <div class="textfoot">
+        <div id="CODEXLAYOUTADJUST">Adjusting layout</div>
+        <hr class="codexlayoutindicator" id="CODEXLAYOUTINDICATOR"/>
+        <span id="CODEXPAGENOTEXT">p/n</span>
+        <span class="locoff" id="CODEXLOCPCT">??.??%</span>
+        <div id="CODEXGOTOLOC" class="codexgoto">
+          <input type="text" name="GOTOLOC" value="" placeholder="loc"
+                 title="Enter a percent (<= 100) or an immediate location (> 100)"
+                 id="CODEXLOCINPUT"
+                 onkeypress="Codex.UI.goto_keypress(event);"/>%
+        </div>
+        <div id="CODEXGOTOPAGE" class="codexgoto">
+          <input type="text" name="GOTOPAGE" value=""
+                 id="CODEXPAGEINPUT" placeholder="page"
+                 onkeypress="Codex.UI.goto_keypress(event);"/>/
+          <span id="CODEXGOTOPAGEMAX"></span>
+        </div>
+        
+      </div>
+      <div class="pagespans" id="CODEXPAGESPANS">
+      </div>
+    </div>
+  </div>
+  <img svg="http://static.beingmeta.com/g/codex/allglosses.svgz"
+       src="http://static.beingmeta.com/g/codex/allglosses50x50.png"
+       alt="allglosses" title="show all glosses"
+       class="hudbutton hudmodebutton botleft clickable"
+       id="CODEXALLGLOSSESBUTTON"
+       hudmode="allglosses"/>
+  <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
+       src="http://static.beingmeta.com/g/codex/helpicon50x50.png"
+       alt="help" title="show contextual help"
+       class="hudbutton hudmodebutton botright clickable"
+       id="CODEXHELPBUTTON"/>
+  <div class="helphud botleft" data-hudmode="toc">
+    <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
+    <span class="nobreak">glosses</span></div>
+  <div class="helphud botright">
+    <span class="nobreak"><span class="arrow">&#x2192;</span>toggle</span><br/>
+    help</div>
 </div>
 <!--
     /* Emacs local variables

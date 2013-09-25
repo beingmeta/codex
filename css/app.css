@@ -263,8 +263,8 @@ div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 body.sbookpagevertical { overflow: hidden;}
 
 body div.codexmargin {
-    position: fixed; display: block;
-    background-color: white; z-index: 5;}
+    position: absolute; display: block;
+    background-color: white; z-index: 200;}
 
 body.sbooknopage div.codexmargin  { display: none;}
 
@@ -836,11 +836,7 @@ section.codexpreviewtarget h7, div.html5section.codexpreviewtarget h7 {
 
 /* Startup messages */
 
-div.codexstartupmessages { display: none;}
-body.codexstartup div.codexstartupmessages { display: block;}
-div.startupmessage {
-    text-align: center; font-size: 20px; font-weight: bold;
-    color: black; background-color: lightgray;
+div#CODEXSTARTUPMESSAGES {
     position: fixed; z-index: -50;
     top: 0px; left: 100px; right: 100px; height: 50px;
     opacity: 0.0;
@@ -849,8 +845,9 @@ div.startupmessage {
     -webkit-opacity: 0;
     -khtml-opacity: 0;
     -moz-opacity: 0;
-    -o-opacity: 0;}
-body.cxANIMATE div.startupmessage {
+    -o-opacity: 0;
+    display: none;}
+body.cxANIMATE div#CODEXSTARTUPMESSAGES {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
@@ -858,6 +855,11 @@ body.cxANIMATE div.startupmessage {
     -o-transition-duration: 1s;
     -moz-transition-property: opacity;
     -moz-transition-duration: 1s;}
+body.codexstartup div#CODEXSTARTUPMESSAGES { display: block;}
+div.startupmessage { display: none;}
+div.startupmessage {
+    text-align: center; font-size: 20px; font-weight: bold;
+    color: black; background-color: lightgray;}
 
 div.startupmessage.running {
     z-index: 300; opacity: 1.0; 

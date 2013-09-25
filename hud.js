@@ -79,21 +79,23 @@ Codex.setMode=
 
         function initHUD(){
             if (fdjtID("CODEXHUD")) return;
-            var messages=fdjtDOM("div.startupmessages");
+            var messages=fdjtDOM("div#CODEXSTARTUPMESSAGES.startupmessages");
             messages.innerHTML=fixStaticRefs(Codex.HTML.messages);
             if (Codex.Trace.startup) fdjtLog("Initializing HUD layout");
             Codex.HUD=CodexHUD=hud=fdjtDOM("div#CODEXHUD");
             hud.codexui=true;
             hud.innerHTML=fixStaticRefs(Codex.HTML.hud);
-            fdjtDOM.prepend(document.body,
-                            messages,
-                            fdjtDOM("div.fdjtprogress#CODEXINDEXMESSAGE",
-                                    fdjtDOM("div.indicator"),
-                                    fdjtDOM("div.message")),
-                            fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
-                                    fdjtDOM("div.indicator"),
-                                    fdjtDOM("div.message")),
-                            hud);
+            fdjtDOM.append(messages,
+                           fdjtDOM("div.fdjtprogress#CODEXINDEXMESSAGE",
+                                   fdjtDOM("div.indicator"),
+                                   fdjtDOM("div.message")),
+                           fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
+                                   fdjtDOM("div.indicator"),
+                                   fdjtDOM("div.message")));
+            fdjtDOM.prepend(document.body,messages,hud);
+            // Move the page head and foot to reduce layers
+            // var hudframe=fdjtID("CODEXHUDFRAME");
+            // fdjtDOM.append(hudframe,Codex.pagehead,Codex.pagefoot);
             // Fill in the HUD help
             var hudhelp=fdjtID("CODEXHUDHELP");
             hudhelp.innerHTML=fixStaticRefs(Codex.HTML.hudhelp);
