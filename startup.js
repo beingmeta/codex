@@ -416,7 +416,7 @@ Codex.Startup=
                     var refuri=Codex.refuri;
                     if ((value)&&(Codex.persist)) return;
                     else if ((!(value))&&(!(Codex.persist))) return;
-                    else if (value) {
+                    else if ((value)&&(!(Codex.force_online))) {
                         if (!(Codex.sourcedb.storage))
                             Codex.sourcedb.storage=window.localStorage;
                         if (!Codex.glossdb.storage)
@@ -791,8 +791,9 @@ Codex.Startup=
             var value=(getMeta("Codex.offline"))||(getMeta("SBOOK.offline"));
             if ((value===0)||(value==="0")||
                 (value==="no")||(value==="off")||
-                (value==="never"))
-                return false;
+                (value==="never")) {
+                Codex.force_online=true;
+                return false;}
             else if (config_fetched) return false;
             else if (fetching_config)
                 on_fetched_config=offlineDialog;

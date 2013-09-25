@@ -231,7 +231,8 @@ var Codex={
                                     Codex.addTags(item.replyto,tags,fragslot);}
                             if (info) Codex.addTags(info,tags,fragslot,maker_knodule);}}}},
                                  "initgloss");
-            if (Codex.persist) Codex.glossdb.storage=window.localStorage;}
+            if ((Codex.persist)&&(!(Codex.force_online)))
+                Codex.glossdb.storage=window.localStorage;}
         
         function Gloss(){return Ref.apply(this,arguments);}
         Gloss.prototype=new Ref();
@@ -272,7 +273,8 @@ var Codex={
             var anonymous=Codex.sourcedb.ref("@1961/0");
             Codex.anonymous=anonymous;
             anonymous.name="anonymous";
-            if (Codex.persist) Codex.sourcedb.storage=window.localStorage;}
+            if ((Codex.persist)&&(!(Codex.force_online)))
+                Codex.sourcedb.storage=window.localStorage;}
 
         Codex.queued=((Codex.persist)&&
                       (getLocal("queued("+Codex.refuri+")",true)))||
