@@ -75,7 +75,7 @@ Codex.setMode=
 
         // This will contain the interactive input console (for debugging)
         var hud=false, input_console=false, input_button=false;
-        var allglosses=false, sbooksapp=false, console=false;
+        var allglosses=false, sbooksapp=false, sbookslogin=false, console=false;
 
         function initHUD(){
             if (fdjtID("CODEXHUD")) return;
@@ -178,33 +178,44 @@ Codex.setMode=
             input_console.onkeypress=consoleinput_keypress;
 
             Codex.DOM.sbooksapp=sbooksapp=fdjtID("SBOOKSAPP");
-            if (Codex.Trace.startup>1) fdjtLog("Setting up appframe %o",sbooksapp);
+            Codex.DOM.sbookslogin=sbookslogin=fdjtID("SBOOKSLOGIN");
             
-            var appwindow=((sbooksapp)&&(sbooksapp.contentWindow));
-            if (appwindow.postMessage) {
+            function messageHandler(evt){
+                var origin=evt.origin;
                 if (Codex.Trace.messages)
-                    fdjtLog("Setting up message listener");
-                fdjtDOM.addListener(window,"message",function(evt){
-                    var origin=evt.origin;
+                    fdjtLog("Got a message from %s with payload %s",
+                            origin,evt.data);
+                if (origin.search(/https:\/\/[^\/]+.sbooks.net/)!==0) {
+                    fdjtLog.warn("Rejecting insecure message from %s",
+                                 origin);
+                    return;}
+                if (evt.data==="sbooksapp") {
+                    setMode("sbooksapp");}
+                else if (evt.data==="loggedin") {
+                    if (!(Codex.user)) {
+                        Codex.userSetup();}}
+                else if (evt.data.search("setuser=")===0) {
+                    if (!(Codex.user)) {
+                        Codex.userinfo=JSON.parse(evt.data.slice(8));
+                        Codex.loginUser(Codex.userinfo);
+                        Codex.setMode("splash");
+                        Codex.userSetup();}}
+                else if (evt.data)
+                    fdjtDOM("CODEXINTRO",evt.data);
+                else {}}
+            var f=0, iframes=[sbooksapp,sbookslogin];
+            while (f<iframes.length) {
+                var appframe=iframes[f++];
+                var appwindow=((appframe)&&(appframe.contentWindow));
+                if (appwindow.postMessage) {
                     if (Codex.Trace.messages)
-                        fdjtLog("Got a message from %s with payload %s",
-                                origin,evt.data);
-                    if (origin.search(/https:\/\/[^\/]+.sbooks.net/)!==0) {
-                        fdjtLog.warn("Rejecting insecure message from %s",
-                                     origin);
-                        return;}
-                    if (evt.data==="sbooksapp") {
-                        setMode("sbooksapp");}
-                    else if (evt.data==="loggedin") {
-                        if (!(Codex.user)) Codex.userSetup();}
-                    else if (evt.data)
-                        fdjtDOM("CODEXINTRO",evt.data);
-                    else {}});}
-
+                        fdjtLog("Setting up message listener");
+                    fdjtDOM.addListener(window,"message",messageHandler);}}
 
             // Set up the splash form
             var splashform=fdjtID("CODEXSPLASHFORM");
-            if (Codex.Trace.startup>1) fdjtLog("Setting up splash %o",splashform);
+            if (Codex.Trace.startup>1)
+                fdjtLog("Setting up splash %o",splashform);
 
             var docinput=fdjtDOM.getInput(splashform,"DOCURI");
             if (docinput) docinput.value=Codex.docuri;
@@ -447,7 +458,7 @@ Codex.setMode=
                     Codex.mode=mode;}
                 // If we're switching to the inner app but the iframe
                 //  hasn't been initialized, we do it now.
-                if (((mode==="sbooksapp")||(mode==="login"))&&
+                if ((mode==="sbooksapp")&&
                     (!(fdjtID("SBOOKSAPP").src))&&
                     (!(Codex.appinit)))
                     initFlyleafApp();

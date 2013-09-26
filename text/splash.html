@@ -24,11 +24,10 @@
         onclick="Codex.UI.highlightSetting('CODEXHIDESPLASHSETTING');
         fdjt.UI.cancel(event); return false;">Set your startup/help
         preferences</a></p>
-<form action="https://glosses.sbooks.net/flyleaf" target="SBOOKSAPP"
+<form action="https://auth.sbooks.net/auth" target="SBOOKSLOGIN"
       NAME="CODEXSPLASHFORM" ID="CODEXSPLASHFORM" method="POST"
-      onsubmit="Codex.appinit=true; Codex.setMode('sbooksapp');">
-  <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE=""
-         ID="CODEXSPLASH_RETURN_TO"/>
+      onsubmit="Codex.setMode('login');">
+  <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE="embedded"/>
   <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
   <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
   <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>

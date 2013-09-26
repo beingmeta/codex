@@ -512,6 +512,10 @@ Codex.Startup=
                 else if (Codex.Trace.storage) 
                     fdjtLog("App cached loadinfo.js for %o (%s) from %o",
                             Codex.user._id,Codex.user.name,Codex.sync);}
+            else if (Codex.userinfo) {
+                setUser(Codex.userinfo,
+                        Codex.userinfo.outlets,Codex.userinfo.overlays,
+                        Codex.userinfo.sync);}
             else {}
             if (Codex.nologin) return;
             else if (window.navigator.onLine) {
@@ -1351,7 +1355,7 @@ Codex.Startup=
         function loadInfo(info) {
             if ((window._sbook_loadinfo!==info)&&(Codex.user))
                 Codex.setConnected(true);
-            if (!(Codex.user)) {
+            if (!((Codex.user)&&(Codex._user_setup))) {
                 if (info.userinfo)
                     setUser(info.userinfo,
                             info.outlets,info.overlays,
@@ -1598,6 +1602,13 @@ Codex.Startup=
                     Codex.addTag2Cloud(friend,Codex.gloss_cloud);
                     Codex.addTag2Cloud(friend,Codex.share_cloud);}}
             Codex._user_setup=true;}
+
+        function loginUser(info){
+            Codex.user=Codex.sourcedb.Import(
+                info,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+            setupUI4User();
+            Codex._user_setup=false;}
+        Codex.loginUser=loginUser;
         
         // Processes info loaded remotely
         function gotInfo(name,info,persist) {

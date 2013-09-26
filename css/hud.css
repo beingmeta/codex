@@ -441,7 +441,7 @@ div#CODEXHUD.refinesearch.emptysearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
 div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
 div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel,
-div#CODEXHUD.login iframe#SBOOKSAPP.hudpanel {
+div#CODEXHUD.login iframe#SBOOKSLOGIN.hudpanel {
     position: static; display: block;
     opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
@@ -574,7 +574,7 @@ body div#CODEXHUD.device #CODEXHEART .tabcontent#CODEXSETTINGS,
 body div#CODEXHUD.statictoc #CODEXHEART .tabcontent#CODEXSTATICTOC,
 body div#CODEXHUD.console #CODEXHEART .tabcontent#CODEXCONSOLE,
 body div#CODEXHUD.sbooksapp div#CODEXHEART .tabcontent#SBOOKSAPP,
-body div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSAPP {
+body div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSLOGIN {
     display: block;}
 
 div#CODEXHUD.about div#CODEXHEART .tabcontent {
