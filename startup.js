@@ -2047,8 +2047,12 @@ Codex.Startup=
             Codex.sync=false;
             dropLocal("codex.user");
             dropLocal("codex.sync("+Codex.refuri+")");
+            dropLocal("codex.sourceid("+Codex.refuri+")");
+            dropLocal("codex.sources("+Codex.refuri+")");
             dropLocal("codex.outlets("+Codex.refuri+")");
             dropLocal("codex.overlays("+Codex.refuri+")");
+            dropLocal("codex.state("+Codex.refuri+")");
+            dropLocal("codex.etc("+Codex.refuri+")");
             Codex.sourcedb.clearOffline(function(){
                 Codex.glossdb.clearOffline(function(){
                     fdjtState.dropLocal("codex.sync("+Codex.refuri+")");});});}

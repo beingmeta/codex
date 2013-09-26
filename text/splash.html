@@ -12,18 +12,20 @@
   are digital books personally customized with comments, tags, or links
   from your friends, communities, and networks as well as (selectively)
   experts, critics, or teachers.</p>
-<p><img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
-        src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
-        alt="help/question mark" class="left"/>
-        This <strong><span style="color: blue;">s</span>Books
-        reader</strong> web application makes it easy to navigate,
-        search, and annotate your book.<br/>
+<p>This <strong><span style="color: blue;">s</span>Books
+    reader</strong> web application makes it easy to navigate, search,
+    and annotate your book.
   <strong><span class="fortouch">Tap</span> <span class="notouch">Click</span>
-  </strong> the help icon in bottom right for help with using the sBooks web
-  application.</p>
+  </strong> the
+        <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
+        src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
+        alt="help" class="inline"/> icon in bottom right for help.
+        <a class="hidesplashlink" href="#"
+        onclick="Codex.UI.highlightSetting('CODEXHIDESPLASHSETTING');
+        fdjt.UI.cancel(event); return false;">Set your startup/help
+        preferences</a></p>
 <form action="https://glosses.sbooks.net/flyleaf" target="SBOOKSAPP"
-      NAME="CODEXSPLASHFORM" ID="CODEXSPLASHFORM"
-      method="POST"
+      NAME="CODEXSPLASHFORM" ID="CODEXSPLASHFORM" method="POST"
       onsubmit="Codex.appinit=true; Codex.setMode('sbooksapp');">
   <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE=""
          ID="CODEXSPLASH_RETURN_TO"/>
@@ -46,13 +48,14 @@
       <tr>
         <td class="text" colspan="2">
           To save and share your notes, tags, and links, you need to
-          be logged into sBooks.  An sBooks account is free and can be
-          linked to your existing social networks or used to create a new
-          one around the books you love.</td></tr>
+          be logged into sBooks.  An sBooks account is free and gives
+          you control over who sees the glosses (notes, tags, links,
+          etc) which you add to your book and to select the overlays
+          and conversations you include in your copy.</td></tr>
       <tr>
         <th><input type="SUBMIT" name="ACTION" value="Login"/>&nbsp;with</th>
-        <td><input type="TEXT" name="USERNAME" value=""
-                   placeholder="email address"/></td></tr>
+        <td><input type="TEXT" name="LOGIN" value=""
+                   placeholder="your email address"/></td></tr>
       <tr><th>or&nbsp;use</th>
         <td>
           <button name="AUTHORITY" value=":FACEBOOK">
@@ -70,34 +73,32 @@
       </td></tr>
     </tbody>
     <tbody class="cxwithuser"> 
-      <tr><th class="button" rowspan="2">
-          <button name="ACTION" value=":MAKEFRIEND">Invite</button><br/>
-          your<br/>friends</th>
+      <tr><th class="button">
+          <button name="ACTION" value=":MAKEFRIEND">Invite</button></th>
         <td class="textbox">
           <input TYPE="TEXT" NAME="FRIENDS" VALUE=""
                  onkeypress="fdjt.UI.submitOnEnter(event);"
                  placeholder="email addresses"/></td></tr>
-      <tr><td>to join your <strong>personal circle</strong> at
+      <tr><th>your<br/>friends</th>
+          <td>to join your <strong>personal circle</strong> at
           <strong><span style="color: blue;">s</span>Books</strong>.
           This will allow you to see one another's notes, tags, and links
           (glosses).</td></tr>
     </tbody>
     <tbody class="cxwithuser">
-      <tr><th class="button" rowspan="2">
-          <button NAME="ACTION" VALUE=":MAKECIRCLE">Gather</button><br/>
-          a tribe</th>
+      <tr><th class="button">
+          <button NAME="ACTION" VALUE=":MAKECIRCLE">Gather</button></th>
         <td class="textbox">
           <input TYPE="TEXT" NAME="INVITING" VALUE=""
                  onkeypress="fdjt.UI.submitOnEnter(event);"
                  placeholder="email addresses"/></td></tr>
-      <tr><td>into a <strong>reading circle</strong> at
+      <tr><th>a tribe</th>
+          <td>into a <strong>reading circle</strong> at
           <strong><span style="color: blue;">s</span>Books</strong>.
           Members of a reading circle can see one another's glosses
           on this book, sharing insights, opinions, and reactions.</td></tr>
     </tbody>
   </table>
-  <a class="hidesplashlink" href="javascript:Codex.UI.highlightSetting('CODEXHIDESPLASHSETTING')">
-    <span class="adjustfont">Hide this page after startup (<em>if not needed</em>)</span></a>
 </form>
 <!--
     /* Emacs local variables

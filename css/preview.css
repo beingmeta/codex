@@ -115,7 +115,7 @@ div#CODEXPREVIEWHELP.helpbox p {
     margin: 0px; text-indent: 0px;}
 
 body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
-    left: 10px; right: 10px; max-height: 70px;
+    left: 40px; right: 40px; max-height: 70px;
     border-radius: 0px; -webkit-border-radius: 0px;
     -moz-border-radius: 0px; -o-border-radius: 0px; 
     display: block;}

@@ -592,28 +592,30 @@ div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate .applinks {
     color: blue; font-size: 80%;
     font-weight: normal; font-variant: small-caps;}
 
-div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout {
+div#CODEXHUD div#CODEXHUDBUTTONS a.logout {
     position: absolute; right: 0px;
     vertical-align: top; padding-right: 2px;
     font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     display: none;
     color: red;}
-div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout:visited {
+div#CODEXHUD div#CODEXHUDBUTTONS a.logout:visited {
     color: red;}
-div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.username {
+div#CODEXHUD div#CODEXHUDBUTTONS a.username {
     position: absolute; left: 0px;
     vertical-align: top; padding-right: 2px;
     font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     display: none;
     color: blue;}
 
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.logout,
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate a.username {
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS a.logout,
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS a.username {
     display: inline;}
-.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a.logout,
-.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover .sbookplate a.username {
+.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover a.logout,
+.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover a.username {
     display: inline;}
 
+body.cxNOUSER a.logout {
+    display: none !important;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;
@@ -1049,13 +1051,13 @@ body.cxSCROLL div#CODEXHUD div#CODEXHUDBUTTONS {
     -moz-opacity: 0.00;
     -o-opacity: 0.00;}
 body.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover {
-    opacity: 0.20;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-    filter: alpha(opacity=20);
-    -webkit-opacity: 0.20;
-    -khtml-opacity: 0.20;
-    -moz-opacity: 0.20;
-    -o-opacity: 0.20;}
+    opacity: 0.70;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+    filter: alpha(opacity=70);
+    -webkit-opacity: 0.70;
+    -khtml-opacity: 0.70;
+    -moz-opacity: 0.70;
+    -o-opacity: 0.70;}
 body.hudup.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover,
 body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
     display: block; opacity: 0.90;
@@ -1175,7 +1177,7 @@ body.cxANIMATE #CODEXHUD div.fdjtprogress#CODEXINDEXMESSAGE {
 /* Visibility rules */
 
 body div#CODEXHUD div#CODEXAPPSPLASH {
-    display: none;}
+    display: none; z-index: 200;}
 body div#CODEXHUD.splash div#CODEXAPPSPLASH {
     display: block; border-color: blue; opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
@@ -1218,10 +1220,11 @@ div#CODEXHUD div.hudpanel#CODEXAPPSPLASH {
     display: none;}
 
 div#CODEXAPPSPLASH p, div#CODEXAPPSPLASH h1 {
-    clear: left; text-align: left; text-indent: 0px;}
+    text-align: left; text-indent: 0px;}
 div#CODEXAPPSPLASH p, div#CODEXAPPSPLASH h1 {
     margin-left: 10%; margin-right: 5%;
     margin-top: 1ex; margin-bottom: 0.5ex;}
+div#CODEXAPPSPLASH h1 { margin-top: 0.5ex;}
 div#CODEXAPPSPLASH .left { float: left; padding-right: 5px;}
 div#CODEXAPPSPLASH img { vertical-align: top;}
 
@@ -1263,10 +1266,13 @@ div#CODEXAPPSPLASH form table td.text:first-line {
     font-weight: bold;}
 
 div#CODEXAPPSPLASH a.hidesplashlink {
-    position: absolute; display: block; 
-    bottom: 0px; left: 25%; right: 25%; width: 50%;
-    font-size: 80%; text-align: center;
-    padding-bottom: 0.5ex; padding-top: 1ex;}
+    white-space: nowrap; float: right; font-size: 90%; }
+body.cxNOUSER div#CODEXAPPSPLASH a.hidesplashlink { display: none; }
+div#CODEXAPPSPLASH form { clear: both; padding-top: 1ex;}
+div#CODEXAPPSPLASH form table th { padding-right: 0.5ex;}
+div#CODEXAPPSPLASH form table td.text { padding-bottom: 1ex;}
+
+body.cxNOUSER div#CODEXAPPSPLASH form { padding-top: 0px;}
 
 /* Close HUD buttons */
 
