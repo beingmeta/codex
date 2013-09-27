@@ -1283,9 +1283,12 @@ form.sbooksapp table td.text { padding-bottom: 1ex;}
 
 body.cxNOUSER form.sbooksapp { padding-top: 0px;}
 
-form.sbooksapp tr.xconnwarning {
-    color: red; display: none;}
-body.cxUSER.cxDISCONN form.sbooksap tr.xconnwarning { display: table-row;}
+body.cxNOUSER .cxwithuser { display: none;}
+body.cxNOUSER .cxdisconn {display: none;}
+body.cxUSER.cxCONN .cxdisconn {display: none;}
+body.cxUSER.cxCONN .cxnoconn {display: none;}
+body.cxUSER .cxnouser {display: none;}
+body.cxUSER.cxDISCONN .cxwithconn {display: none;}
 
 /* Close HUD buttons */
 

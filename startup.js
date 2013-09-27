@@ -336,6 +336,7 @@ Codex.Startup=
 
             deviceSetup();
             appSetup();
+            showMessage();
             userSetup();
 
             if (Codex.Trace.startup)
@@ -369,6 +370,12 @@ Codex.Startup=
             Codex.md2DOM=md2DOM;
 
             if (Codex.Trace.startup) fdjtLog("Done with sync startup");}
+
+        function showMessage(){
+            var message=fdjt.State.getCookie("SBOOKSPOPUP");
+            if (message) fdjt.UI.alertFor(10,message);
+            fdjt.State.clearCookie("SBOOKSPOPUP","/","sbooks.net");
+            fdjt.State.clearCookie("SBOOKSMESSAGE","/","sbooks.net");}
 
         function appSetup() {
 

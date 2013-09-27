@@ -48,30 +48,30 @@
         <em>if it is you</em>, you can view and update
         your <a href="https://auth.sbooks.net/my/profile"
                 target="_blank">profile here</a>.</td></tr>
-    <tr class="cxwithuser xconnwarning">
+    <tr class="cxdisconn">
       <td colspan="2">
-        While your are logged into this application, you are not logged into the
-        <span class="sbooks"><i>s</i>Books</span> site (you might have logged out
-        from another book or window).  If you wish, you can
-        <a onclick="Codex.setMode('login');">login here</a>.  Until
+        <strong style="color: red;">You are not logged into the
+        <span class="sbooks"><i>s</i>Books</span> site.</strong>  You
+        might have logged out from another book or window.  Until
         you're logged back in, you won't be able to get updates from
-        or share new glosses with your overlays, networks, or reading circles.</td>
+        or share new glosses with your overlays, networks, or reading
+        circles.</td>
     </tr>
-    <tbody class="cxdisconn">
-      <tr class="cxnouser">
-        <td class="text" colspan="2">
-          To use many of the features
-          of <span class="codex">Codex</span>, you need to be logged
-          into an <b class="sbooks"><i>s</i>Books</b> account.  A
-          beingmeta <b class="sbooks"><i>s</i>Books</b> account is
-          free and lets you save and share your <em>glosses</em>
-          (notes, links, tags, etc) on the books you read.  Your
-          account lets you create a network of friends or connecto to
-          your existing social network and gives you control over who
-          sees the glosses you add your books and also allows you to
-          select the overlays and conversations which will be included
-          in your
-          personal <span class="sbooks"><i>s</i>Books</span>.</td></tr>
+    <tr class="cxnouser">
+      <td class="text" colspan="2">
+        To use many of the features
+        of <span class="codex">Codex</span>, you need to be logged
+        into an <b class="sbooks"><i>s</i>Books</b> account.  A
+        beingmeta <b class="sbooks"><i>s</i>Books</b> account is
+        free and lets you save and share your <em>glosses</em>
+        (notes, links, tags, etc) on the books you read.  Your
+        account lets you create a network of friends or connecto to
+        your existing social network and gives you control over who
+        sees the glosses you add your books and also allows you to
+        select the overlays and conversations which will be included
+        in your
+        personal <span class="sbooks"><i>s</i>Books</span>.</td></tr>
+    <tbody class="cxnoconn">
       <tr class="padding"><td></td></tr>
       <tr class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);">
         <th><input TYPE="CHECKBOX" NAME="AUTH:SETSTICKY" VALUE="YES"/></th>
@@ -80,9 +80,9 @@
         <th><input TYPE="CHECKBOX" NAME="AUTH:SETKEEP" VALUE="YES"/></th>
         <td>save local copies of glosses and other data on this computer</td></tr>
       <tr>
-        <th><input type="SUBMIT" name="ACTION" value="Login"/>&nbsp;with</th>
+        <th><input type="SUBMIT" name="ACTION" value="Login"/></th>
         <td><input type="TEXT" name="LOGIN" value=""
-                   placeholder="your email address"/></td></tr>
+                   placeholder="with your email address"/></td></tr>
       <tr><th>or&nbsp;use</th>
         <td class="buttons">
           <button name="AUTHORITY" TABINDEX="12"
@@ -148,7 +148,7 @@
           </button>
       </td></tr>
     </tbody>
-    <tbody class="cxwithuser cxwithconn"> 
+    <tbody class="cxwithconn"> 
       <tr><th class="button">
           <button name="ACTION" value=":MAKEFRIEND">Invite</button></th>
         <td class="textbox">
@@ -161,7 +161,7 @@
           This will allow you to see one another's notes, tags, and links
           (glosses).</td></tr>
     </tbody>
-    <tbody class="cxwithuser cxwithconn">
+    <tbody class="cxwithconn">
       <tr><th class="button">
           <button NAME="ACTION" VALUE=":MAKECIRCLE">Gather</button></th>
         <td class="textbox">
