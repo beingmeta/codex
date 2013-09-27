@@ -643,7 +643,8 @@ Codex.Startup=
                 // query args to the book.
                 function(){
                     if (!(Codex.bypage)) startupDone();
-                    else if (Codex.layout) startupDone();
+                    else if ((Codex.layout)&&(Codex.layout.done))
+                        startupDone();
                     else Codex.layoutdone=startupDone;}],
              100,25);}
         Codex.Startup=Startup;
