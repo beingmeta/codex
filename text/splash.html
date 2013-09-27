@@ -12,12 +12,12 @@
   are digital books personally customized with comments, tags, or links
   from your friends, communities, and networks as well as (selectively)
   experts, critics, or teachers.</p>
-<p>You're using <span class="codex">Codex<i>β</i></span>, the
-experimental web-based e-reader created to deepen reading and
-engagement while connecting to networks of knowledge, conversation,
-and commmunity.  <span class="codex">Codex</span> aims to
-reclaim the virtues of physical books, making it natural to navigate,
-annotate, search, and personalize electronic
+<p>You're using <span class="codex">Codex<i>β</i></span>, a web-based
+e-reader created to deepen reading and engagement while connecting to
+networks of knowledge, conversation, and
+commmunity.  <span class="codex">Codex</span> aims to reclaim the
+virtues of physical books, making it natural to navigate, annotate,
+search, and personalize electronic
 books. <strong><span class="fortouch">Tap</span> <span class="notouch">Click</span>
   </strong> the
         <img svg="{{bmg}}codex/helpicon.svgz"
@@ -29,8 +29,9 @@ books. <strong><span class="fortouch">Tap</span> <span class="notouch">Click</sp
         preferences</a></p>
 <form action="https://auth.sbooks.net/auth" target="_top"
       NAME="CODEXSPLASHFORM" ID="CODEXSPLASHFORM" method="POST"
-      onsubmit="Codex.setMode('login');">
+      onsubmit="Codex.setMode(false);">
   <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE="" class="codextopuri"/>
+  <input TYPE="HIDDEN" NAME="REFURI" VALUE="" class="codexrefuri"/>
   <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
   <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
   <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
