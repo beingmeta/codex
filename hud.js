@@ -152,9 +152,9 @@ Codex.setMode=
 
             Codex.hudtick=fdjtTime();
 
-            fdjtDOM.setInputs(".codexhiddenrefuri",Codex.refuri);
-            fdjtDOM.setInputs(".codexhiddendocuri",Codex.docuri);
-            fdjtDOM.setInputs(".codexhiddentopuri",Codex.topuri);
+            fdjtDOM.setInputs(".codexrefuri",Codex.refuri);
+            fdjtDOM.setInputs(".codexdocuri",Codex.docuri);
+            fdjtDOM.setInputs(".codextopuri",Codex.topuri);
             
             // Initialize gloss UI
             Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
