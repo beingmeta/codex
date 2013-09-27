@@ -1432,7 +1432,7 @@
         // We change this here, so we don't save what's cached in
         //  memory now, but it doesn't change the saved setting (so we
         //  might still be persisting).
-        Codex.persist=false;
+        Codex.keepdata=false;
         fdjtUI.alertFor(5,"Cleared locally stored glosses and other information");
         return false;}
     Codex.UI.clearOfflineAction=clearOfflineAction;

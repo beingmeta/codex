@@ -63,7 +63,7 @@ var Codex={
     // Whether we're freezing layouts (during text input, etc)
     freezelayout: false,
     // Whether to store glosses, etc for offline/faster access
-    persist: false,
+    keepdata: false,
     // Whether to use native scrolling for body content
     nativescroll: true,
     // Whether to use native scrolling for embedded DIVs
@@ -232,7 +232,7 @@ var Codex={
                                     Codex.addTags(item.replyto,tags,fragslot);}
                             if (info) Codex.addTags(info,tags,fragslot,maker_knodule);}}}},
                                  "initgloss");
-            if ((Codex.persist)&&(!(Codex.force_online)))
+            if ((Codex.keepdata)&&(!(Codex.force_online)))
                 Codex.glossdb.storage=window.localStorage;}
         
         function Gloss(){return Ref.apply(this,arguments);}
@@ -274,10 +274,10 @@ var Codex={
             var anonymous=Codex.sourcedb.ref("@1961/0");
             Codex.anonymous=anonymous;
             anonymous.name="anonymous";
-            if ((Codex.persist)&&(!(Codex.force_online)))
+            if ((Codex.keepdata)&&(!(Codex.force_online)))
                 Codex.sourcedb.storage=window.localStorage;}
 
-        Codex.queued=((Codex.persist)&&
+        Codex.queued=((Codex.keepdata)&&
                       (getLocal("queued("+Codex.refuri+")",true)))||
             [];
 

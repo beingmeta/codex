@@ -43,8 +43,7 @@
 .codex em, .codex i {
     font-style: italic;
     font-variant: normal;
-    color: blue;
-    vertical-align: sub;}
+    color: blue;}
 
 .mupub { font-family: sans,sans-serif; font-variant: small-caps;}
 .mupub em, .mupub i {

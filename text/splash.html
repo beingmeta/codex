@@ -34,9 +34,8 @@
   <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE="" class="codextopuri"/>
   <input TYPE="HIDDEN" NAME="REFURI" VALUE="" class="codexrefuri"/>
   <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
-  <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="TOPURI" VALUE="" class="codextopuri"/>
+  <input TYPE="HIDDEN" NAME="DOCURI" VALUE="" class="codexdocuri"/>
   <input TYPE="HIDDEN" NAME="XQUERY" VALUE=""/>
   <table class="fdjtform">
     <tr class="cxwithuser">
@@ -67,9 +66,9 @@
       <tr class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);">
         <th><input TYPE="CHECKBOX" NAME="AUTH:SETSTICKY" VALUE="YES"/></th>
         <td>keep me logged in on this computer</td></tr>
-      <tr class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);">
+      <tr class="checkspan codexkeepdata" onclick="fdjt.UI.CheckSpan.onclick(event);">
         <th><input TYPE="CHECKBOX" NAME="AUTH:SETKEEP" VALUE="YES"/></th>
-        <td>save a copy of my glosses on this computer</td></tr>
+        <td>save local copies of glosses and other data on this computer</td></tr>
       <tr>
         <th><input type="SUBMIT" name="ACTION" value="Login"/>&nbsp;with</th>
         <td><input type="TEXT" name="LOGIN" value=""

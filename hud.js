@@ -158,6 +158,9 @@ Codex.setMode=
             fdjtDOM.setInputs(".codexdocuri",Codex.docuri);
             fdjtDOM.setInputs(".codextopuri",Codex.topuri);
             
+            if (Codex.getConfig("keepdata"))
+                fdjtDOM.remove(fdjtDOM.$(".codexkeepdata"));
+
             // Initialize gloss UI
             Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
             if (Codex.Trace.startup>1)
@@ -738,7 +741,7 @@ Codex.setMode=
                             'this sBook is not available as a ZIP bundle';}}}
             /* If the book is offline, don't bother showing the link
                to the offline version. */
-            if (Codex.persist) addClass(document.body,"sbookoffline");}
+            if (Codex.keepdata) addClass(document.body,"sbookoffline");}
 
         function altLink(type,uri){
             uri=uri||Codex.refuri;
@@ -1007,7 +1010,7 @@ Codex.setMode=
             result.showconsole=
                 ((showconsole)&&(showconsole.length)&&(true))||false;
             var isoffline=fdjtDOM.getInputValues(settings,"CODEXLOCAL");
-            result.persist=
+            result.keepdata=
                 ((isoffline)&&(isoffline.length)&&(isoffline[0]))||false;
             var animatecontent=fdjtDOM.getInputValues(
                 settings,"CODEXANIMATECONTENT");
