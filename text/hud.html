@@ -27,8 +27,8 @@
   </div>
   <div id="CODEXSOURCES" class="hudpanel codexsources"
        onclick="Codex.UI.handlers.sources_ontap(event);">
-    <img svg="http://static.beingmeta.com/g/codex/sbookspeople.svgz"
-         src="http://static.beingmeta.com/g/codex/sbookspeople50x50.png"
+    <img svg="{{bmg}}codex/sbookspeople.svgz"
+         src="{{bmg}}codex/sbookspeople50x50.png"
          class="button everyone selected"
          alt="show all" title="show all glosses"
          onclick="Codex.UI.handlers.everyone_ontap(event); fdjt.UI.cancel(event);"/>
@@ -108,42 +108,42 @@
       (login)</a>
   </div> <!-- .flyleafplate -->
   <div class="tabbar icons" id="CODEXTABS">
-    <img svg="http://static.beingmeta.com/g/codex/about_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/about_tab.png"
+    <img svg="{{bmg}}codex/about_tab.svgz"
+         src="{{bmg}}codex/about_tab.png"
          alt="About" class="tab" contentid="CODEXABOUTBOOK"
          onclick="Codex.toggleMode('about'); return fdjt.UI.cancel(event);"
          title="information about this book"/>
-    <img svg="http://static.beingmeta.com/g/codex/manage_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/manage_tab.png"
+    <img svg="{{bmg}}codex/manage_tab.svgz"
+         src="{{bmg}}codex/manage_tab.png"
          alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
          onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
          title="manage added layers for your sBook"/>
-    <img svg="http://static.beingmeta.com/g/codex/settings_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/settings_tab.png"
+    <img svg="{{bmg}}codex/settings_tab.svgz"
+         src="{{bmg}}codex/settings_tab.png"
          alt="Device" class="tab" contentid="CODEXSETTINGS"
          onclick="Codex.toggleMode('device'); return fdjt.UI.cancel(event);"
          title="alter appearance and interaction"/>
-    <img svg="http://static.beingmeta.com/g/codex/console_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/console_tab.png"
+    <img svg="{{bmg}}codex/console_tab.svgz"
+         src="{{bmg}}codex/console_tab.png"
          alt="Console" class="tab" contentid="CODEXCONSOLE"
          onclick="Codex.toggleMode('console'); return fdjt.UI.cancel(event);"
          title="show debugging console" />
-    <img svg="http://static.beingmeta.com/g/codex/login_tab.svgz"
-         src="http://static.beingmeta.com/g/codex/login_tab.png"
+    <img svg="{{bmg}}codex/login_tab.svgz"
+         src="{{bmg}}codex/login_tab.png"
          alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
          onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
          title="login to sBooks" />
   </div> <!-- .tabbar -->
 </div> <!-- id="CODEXHUDBUTTONS" -->
 <div id="CODEXHUDFRAME">
-  <img svg="http://static.beingmeta.com/g/codex/tocicon.svgz"
-       src="http://static.beingmeta.com/g/codex/tocicon50x50.png"
+  <img svg="{{bmg}}codex/tocicon.svgz"
+       src="{{bmg}}codex/tocicon50x50.png"
        alt="toc" title="navigate sections"
        class="hudbutton hudmodebutton topleft clickable"
        id="CODEXTOCBUTTON"
        hudmode="statictoc"/>
-  <img svg="http://static.beingmeta.com/g/codex/tagsearch.svgz"
-       src="http://static.beingmeta.com/g/codex/tagsearch50x50.png"
+  <img svg="{{bmg}}codex/tagsearch.svgz"
+       src="{{bmg}}codex/tagsearch50x50.png"
        alt="search" title="search tags"
        class="hudbutton hudmodebutton topright clickable"
        id="CODEXSEARCHBUTTON"
@@ -210,14 +210,14 @@
       </div>
     </div>
   </div>
-  <img svg="http://static.beingmeta.com/g/codex/allglosses.svgz"
-       src="http://static.beingmeta.com/g/codex/allglosses50x50.png"
+  <img svg="{{bmg}}codex/allglosses.svgz"
+       src="{{bmg}}codex/allglosses50x50.png"
        alt="allglosses" title="show all glosses"
        class="hudbutton hudmodebutton botleft clickable"
        id="CODEXALLGLOSSESBUTTON"
        hudmode="allglosses"/>
-  <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
-       src="http://static.beingmeta.com/g/codex/helpicon50x50.png"
+  <img svg="{{bmg}}codex/helpicon.svgz"
+       src="{{bmg}}codex/helpicon50x50.png"
        alt="help" title="show contextual help"
        class="hudbutton hudmodebutton botright clickable"
        id="CODEXHELPBUTTON"/>

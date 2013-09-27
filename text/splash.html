@@ -1,33 +1,36 @@
-<img svg="http://static.beingmeta.com/g/codex/redx.svgz"
-     src="http://static.beingmeta.com/g/codex/redx24x24.png"
+<img svg="{{bmg}}codex/redx.svgz"
+     src="{{bmg}}codex/redx24x24.png"
      alt="close" class="closebutton"
      onclick="Codex.setMode(false);"/>
 <img class="cover" id="CODEXSTATUSCOVER"/>
 <h1>Welcome to <span style="color: blue;">s</span>Books</h1>
 <p id="CODEXINTRO"></p>
-<p><img svg="http://static.beingmeta.com/g/codex/sbookslogo.svgz"
-        src="http://static.beingmeta.com/g/codex/sbookslogo32x32.png"
+<p><img svg="{{bmg}}codex/sbookslogo.svgz"
+        src="{{bmg}}codex/sbookslogo32x32.png"
         alt="sBooks" class="left"/>
   <strong><span style="color: blue;">s</span>Books</strong>
   are digital books personally customized with comments, tags, or links
   from your friends, communities, and networks as well as (selectively)
   experts, critics, or teachers.</p>
-<p>This <strong><span style="color: blue;">s</span>Books
-    reader</strong> web application makes it easy to navigate, search,
-    and annotate your book.
-  <strong><span class="fortouch">Tap</span> <span class="notouch">Click</span>
+<p>You're using <span class="codex">Codex<i>β</i></span>, the
+experimental web-based e-reader created to deepen reading and
+engagement while connecting to networks of knowledge, conversation,
+and commmunity.  <span class="codex">Codex</span> aims to
+reclaim the virtues of physical books, making it natural to navigate,
+annotate, search, and personalize electronic
+books. <strong><span class="fortouch">Tap</span> <span class="notouch">Click</span>
   </strong> the
-        <img svg="http://static.beingmeta.com/g/codex/helpicon.svgz"
-        src="http://static.beingmeta.com/g/codex/helpicon32x32.png"
+        <img svg="{{bmg}}codex/helpicon.svgz"
+        src="{{bmg}}codex/helpicon32x32.png"
         alt="help" class="inline"/> icon in bottom right for help.
         <a class="hidesplashlink" href="#"
         onclick="Codex.UI.highlightSetting('CODEXHIDESPLASHSETTING');
         fdjt.UI.cancel(event); return false;">Set your startup/help
         preferences</a></p>
-<form action="https://auth.sbooks.net/auth" target="SBOOKSLOGIN"
+<form action="https://auth.sbooks.net/auth" target="_top"
       NAME="CODEXSPLASHFORM" ID="CODEXSPLASHFORM" method="POST"
       onsubmit="Codex.setMode('login');">
-  <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE="embedded"/>
+  <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE="" class="codextopuri"/>
   <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
   <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
   <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
@@ -46,12 +49,19 @@
     <tbody class="cxnouser">
       <tr>
         <td class="text" colspan="2">
-          To save and share your notes, tags, and links, you need to
-          be logged into sBooks.  An sBooks account is free and gives
-          you control over who sees yours glosses (notes, tags, links,
-          etc) on this book and allows you to select the overlays and
-          conversations to include in your copy of this
-          book.</td></tr>
+          To use many of the features
+          of <span class="codex">Codex</span>, you need to be logged
+          into an <b class="sbooks"><i>s</i>Books</b> account.  A
+          beingmeta <b class="sbooks"><i>s</i>Books</b> account is
+          free and lets you save and share your <em>glosses</em>
+          (notes, links, tags, etc) on the books you read.  Your
+          account lets you create a network of friends or connecto to
+          your existing social network and gives you control over who
+          sees the glosses you add your books and also allows you to
+          select the overlays and conversations which will be included
+          in your
+          personal <span class="sbooks"><i>s</i>Books</span>.</td></tr>
+      <tr class="padding"><td></td></tr>
       <tr>
         <th><input type="SUBMIT" name="ACTION" value="Login"/>&nbsp;with</th>
         <td><input type="TEXT" name="LOGIN" value=""
@@ -59,15 +69,15 @@
       <tr><th>or&nbsp;use</th>
         <td>
           <button name="AUTHORITY" value=":FACEBOOK">
-            <img src="http://static.beingmeta.com/g/codex/facebook32x32.png"
+            <img src="{{bmg}}codex/facebook32x32.png"
                  alt="Facebook" class="noautoscale"/>
           </button>
           <button NAME="AUTHORITY" VALUE=":GPLUS">
-            <img src="http://static.beingmeta.com/g/codex/googleplus32x32.png"
+            <img src="{{bmg}}codex/googleplus32x32.png"
                  alt="Google" title="login using Google"/>
           </button>
           <button NAME="AUTHORITY" VALUE=":TWITTER">
-            <img src="http://static.beingmeta.com/g/codex/twitter32x32.png"
+            <img src="{{bmg}}codex/twitter32x32.png"
                  alt="Twitter" title="login with Twitter"/>
           </button>
       </td></tr>

@@ -355,24 +355,33 @@ var Codex={
                (width)?(width+"w"):(height)?(height+"h"):"")+
               ".png"));};
 
-    Codex.getRefURI=function(target){
-        var scan=target;
-        while (scan)
-            if (scan.refuri) return scan.refuri;
-        else scan=scan.parentNode;
-        return Codex.refuri;};
-
-    Codex.getDocURI=function(target){
+    function getRefURI(target){
         var scan=target;
         while (scan) {
-            var docuri=
-                (((scan.getAttributeNS)&&
-                  (scan.getAttributeNS("docuri","http://sbooks.net/")))||
-                 ((scan.getAttribute)&&(scan.getAttribute("docuri")))||
-                 ((scan.getAttribute)&&(scan.getAttribute("data-docuri"))));
-            if (docuri) return docuri;
+            if (scan.getAttribute("data-refuri"))
+                return scan.getAttribute("data-refuri");
+            else if ((scan.getAttributeNS)&&
+                     (scan.getAttributeNS("refuri","http://sbooks.net/")))
+                return scan.getAttributeNS("refuri","http://sbooks.net/");
+            else if (scan.getAttribute("refuri"))
+                return scan.getAttribute("refuri");
             else scan=scan.parentNode;}
-        return Codex.docuri;};
+        return Codex.refuri;}
+    Codex.getRefURI=getRefURI;
+
+    function getDocURI(target){
+        var scan=target;
+        while (scan) {
+            if (scan.getAttribute("data-docuri"))
+                return scan.getAttribute("data-docuri");
+            else if ((scan.getAttributeNS)&&
+                     (scan.getAttributeNS("docuri","http://sbooks.net/")))
+                return scan.getAttributeNS("docuri","http://sbooks.net/");
+            else if (scan.getAttribute("docuri"))
+                return scan.getAttribute("docuri");
+            else scan=scan.parentNode;}
+        return Codex.docuri;}
+    Codex.getDocURI=getDocURI;
 
     Codex.getRefID=function(target){
         if (target.getAttributeNS)
@@ -1151,8 +1160,9 @@ var Codex={
     function fixStaticRefs(string){
         if (Codex.root==="http://static.beingmeta.com/")
             return string;
-        else return string.replace(/http:\/\/static.beingmeta.com\//g,
-                                   Codex.root);}
+        else return string.replace(
+                /http:\/\/static.beingmeta.com\//g,Codex.root)
+            .replace(/{{bmg}}/g,Codex.root+"/g/");}
     Codex.fixStaticRefs=fixStaticRefs;
     
 })();

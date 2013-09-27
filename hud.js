@@ -152,9 +152,10 @@ Codex.setMode=
 
             Codex.hudtick=fdjtTime();
 
-            var return_to=fdjtID("SBOOK_RETURN_TO");
-            if (return_to) return_to.value=location.href;
-
+            fdjtDOM.setInputs(".codexhiddenrefuri",Codex.refuri);
+            fdjtDOM.setInputs(".codexhiddendocuri",Codex.docuri);
+            fdjtDOM.setInputs(".codexhiddentopuri",Codex.topuri);
+            
             // Initialize gloss UI
             Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
             if (Codex.Trace.startup>1)
@@ -236,7 +237,7 @@ Codex.setMode=
                 encodeURIComponent(document.location.href);
             if (document.title) {
                 appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
-            fdjtID("CODEXSPLASH_RETURN_TO").value=appuri;
+            fdjtDOM.setInputs(".codexhiddenappuri",appuri);
             
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up taphold for foot %o",Codex.DOM.foot);

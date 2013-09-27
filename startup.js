@@ -831,6 +831,7 @@ Codex.Startup=
             else Codex.locuri=locuri;
             document.body.refuri=Codex.refuri=refuri;
             Codex.docuri=_getsbookdocuri();
+            Codex.topuri=document.location.href;
             
             Codex.devinfo=fdjtState.versionInfo();
             
