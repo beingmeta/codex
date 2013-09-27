@@ -357,7 +357,7 @@ var Codex={
 
     function getRefURI(target){
         var scan=target;
-        while (scan) {
+        while ((scan)&&(scan!==document)) {
             if (scan.getAttribute("data-refuri"))
                 return scan.getAttribute("data-refuri");
             else if ((scan.getAttributeNS)&&
@@ -371,7 +371,7 @@ var Codex={
 
     function getDocURI(target){
         var scan=target;
-        while (scan) {
+        while ((scan)&&(scan!==document)) {
             if (scan.getAttribute("data-docuri"))
                 return scan.getAttribute("data-docuri");
             else if ((scan.getAttributeNS)&&
