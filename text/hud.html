@@ -103,7 +103,7 @@
        onclick="if (Codex.refuri) Codex.clearOffline();"
        title="logout">
       logout</a>
-    <a href="javascript:Codex.setMode('sbooksapp');" name="IDLINK"
+    <a href="javascript:Codex.setMode('login');" name="IDLINK"
        class="username" id="CODEXUSERNAME">
       (login)</a>
   </div> <!-- .flyleafplate -->
@@ -131,7 +131,7 @@
     <img svg="{{bmg}}codex/login_tab.svgz"
          src="{{bmg}}codex/login_tab.png"
          alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
-         onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
+         onclick="Codex.toggleMode('login'); return fdjt.UI.cancel(event);"
          title="login to sBooks" />
   </div> <!-- .tabbar -->
 </div> <!-- id="CODEXHUDBUTTONS" -->

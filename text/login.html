@@ -2,31 +2,7 @@
      src="{{bmg}}codex/redx24x24.png"
      alt="close" class="closebutton"
      onclick="Codex.setMode(false);"/>
-<img class="cover" id="CODEXSTATUSCOVER"/>
-<h1>Welcome to <span style="color: blue;">s</span>Books</h1>
-<p id="CODEXINTRO"></p>
-<p><img svg="{{bmg}}codex/sbookslogo.svgz"
-        src="{{bmg}}codex/sbookslogo32x32.png"
-        alt="sBooks" class="left"/>
-  <strong><span style="color: blue;">s</span>Books</strong>
-  are digital books personally customized with comments, tags, or links
-  from your friends, communities, and networks as well as (selectively)
-  experts, critics, or teachers.</p>
-<p>You're using <span class="codex">Codex<i>β</i></span>, a web-based
-  e-reader created to deepen reading and engagement while connecting to
-  networks of knowledge, conversation, and
-  commmunity.  <span class="codex">Codex</span> aims to reclaim the
-  virtues of physical books, making it natural to navigate, annotate,
-  search, and personalize electronic
-  books. <strong><span class="fortouch">Tap</span> <span class="notouch">Click</span>
-  </strong> the
-  <img svg="{{bmg}}codex/helpicon.svgz"
-       src="{{bmg}}codex/helpicon32x32.png"
-       alt="help" class="inline"/> icon in bottom right for help.
-  <a class="hidesplashlink" href="#"
-     onclick="Codex.UI.highlightSetting('CODEXHIDESPLASHSETTING');
-              fdjt.UI.cancel(event); return false;">Set your startup/help
-    preferences</a></p>
+<h1>Login to <span style="color: blue;">s</span>Books</h1>
 <form action="https://auth.sbooks.net/auth" target="_top"
       NAME="CODEXSPLASHFORM" ID="CODEXSPLASHFORM" method="POST"
       class="sbooksapp"
@@ -39,16 +15,7 @@
   <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
   <input TYPE="HIDDEN" NAME="XQUERY" VALUE=""/>
   <table class="fdjtform">
-    <tr class="cxwithuser">
-      <th class="image"><img alt="you" name="CODEXUSERPIC"/></th>
-      <td><strong>This book</strong> is personalized with glosses for
-        <strong name="CODEXUSERNAME">Somebody Interesting</strong>.
-        If that's not you,
-        please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
-        if it is you, you can view and update
-        your <a href="https://auth.sbooks.net/my/profile"
-                target="_blank">profile here</a>.</td></tr>
-    <tbody class="cxnouser">
+    <tbody>
       <tr>
         <td class="text" colspan="2">
           To use many of the features
@@ -138,32 +105,6 @@
 	         class="svg"/>
           </button>
       </td></tr>
-    </tbody>
-    <tbody class="cxwithuser"> 
-      <tr><th class="button">
-          <button name="ACTION" value=":MAKEFRIEND">Invite</button></th>
-        <td class="textbox">
-          <input TYPE="TEXT" NAME="FRIENDS" VALUE=""
-                 onkeypress="fdjt.UI.submitOnEnter(event);"
-                 placeholder="email addresses"/></td></tr>
-      <tr><th>your<br/>friends</th>
-        <td>to join your <strong>personal circle</strong> at
-          <strong><span style="color: blue;">s</span>Books</strong>.
-          This will allow you to see one another's notes, tags, and links
-          (glosses).</td></tr>
-    </tbody>
-    <tbody class="cxwithuser">
-      <tr><th class="button">
-          <button NAME="ACTION" VALUE=":MAKECIRCLE">Gather</button></th>
-        <td class="textbox">
-          <input TYPE="TEXT" NAME="INVITING" VALUE=""
-                 onkeypress="fdjt.UI.submitOnEnter(event);"
-                 placeholder="email addresses"/></td></tr>
-      <tr><th>a tribe</th>
-        <td>into a <strong>reading circle</strong> at
-          <strong><span style="color: blue;">s</span>Books</strong>.
-          Members of a reading circle can see one another's glosses
-          on this book, sharing insights, opinions, and reactions.</td></tr>
     </tbody>
   </table>
 </form>

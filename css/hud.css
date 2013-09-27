@@ -440,8 +440,8 @@ div#CODEXHUD.expandsearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
 div#CODEXHUD.refinesearch.emptysearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
 div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
 div#CODEXHUD.console div#CODEXCONSOLE.hudpanel,
-div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel,
-div#CODEXHUD.login iframe#SBOOKSLOGIN.hudpanel {
+div#CODEXHUD.login div#CODEXLOGIN.hudpanel,
+div#CODEXHUD.sbooksapp iframe#SBOOKSAPP.hudpanel {
     position: static; display: block;
     opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
@@ -574,7 +574,7 @@ body div#CODEXHUD.device #CODEXHEART .tabcontent#CODEXSETTINGS,
 body div#CODEXHUD.statictoc #CODEXHEART .tabcontent#CODEXSTATICTOC,
 body div#CODEXHUD.console #CODEXHEART .tabcontent#CODEXCONSOLE,
 body div#CODEXHUD.sbooksapp div#CODEXHEART .tabcontent#SBOOKSAPP,
-body div#CODEXHUD.login div#CODEXHEART .tabcontent#SBOOKSLOGIN {
+body div#CODEXHUD.login div#CODEXHEART .tabcontent#CODEXLOGIN {
     display: block;}
 
 div#CODEXHUD.about div#CODEXHEART .tabcontent {
@@ -1254,25 +1254,33 @@ div#CODEXAPPSPLASH p.checkspan#CODEXSPLASHCONFIG.ischecked {
 div#CODEXAPPSPLASH img.closebutton {
     float: left; max-width: 12%; padding-top: 0.5ex;}
 div#CODEXAPPSPLASH img.cover {
-    float: right; max-width: 12%; padding-top: 0.5ex;}
+    float: right; max-width: 12%;
+    padding-top: 0.5ex;}
 
-div#CODEXAPPSPLASH form {
+div#CODEXLOGIN form {
+    margin-left: 2em; margin-right: 3em;}
+
+div#CODEXLOGIN img.closebutton {
+    float: right; max-width: 12%; padding-right: 1ex;}
+
+form.sbooksapp {
     margin-top: 1em; max-width: 40em;
     margin-left: 10%; margin-right: 5%;}
-div#CODEXAPPSPLASH form button {}
-div#CODEXAPPSPLASH form table th {
+form.sbooksapp button {}
+form.sbooksapp table th {
     white-space: nowrap;}
-div#CODEXAPPSPLASH form table td.text:first-line {
+form.sbooksapp table td.text:first-line {
     font-weight: bold;}
+form.sbooksapp td.buttons button img { height: 64px; width: 64px;}
 
 div#CODEXAPPSPLASH a.hidesplashlink {
     white-space: nowrap; float: right; font-size: 90%; }
 body.cxNOUSER div#CODEXAPPSPLASH a.hidesplashlink { display: none; }
-div#CODEXAPPSPLASH form { clear: both; padding-top: 1ex;}
-div#CODEXAPPSPLASH form table th { padding-right: 0.5ex;}
-div#CODEXAPPSPLASH form table td.text { padding-bottom: 1ex;}
+form.sbooksapp { clear: both; padding-top: 1ex;}
+form.sbooksapp table th { padding-right: 0.5ex;}
+form.sbooksapp table td.text { padding-bottom: 1ex;}
 
-body.cxNOUSER div#CODEXAPPSPLASH form { padding-top: 0px;}
+body.cxNOUSER form.sbooksapp { padding-top: 0px;}
 
 /* Close HUD buttons */
 
