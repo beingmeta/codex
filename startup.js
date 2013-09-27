@@ -414,6 +414,8 @@ Codex.Startup=
                 "keepdata",
                 function(name,value){
                     var refuri=Codex.refuri;
+                    if (value) {
+                        fdjtDOM.remove(fdjtDOM.toArray(fdjtDOM.$(".codexkeepdata")));}
                     if ((value)&&(Codex.keepdata)) return;
                     else if ((!(value))&&(!(Codex.keepdata))) return;
                     else if ((value)&&(!(Codex.force_online))) {
@@ -1612,7 +1614,7 @@ Codex.Startup=
         Codex.loginUser=loginUser;
         
         // Processes info loaded remotely
-        function gotInfo(name,info,keepdata) {
+        function gotInfo(name,info,persist) {
             var refuri=Codex.refuri;
             if (info) {
                 if (info instanceof Array) {
@@ -1726,6 +1728,10 @@ Codex.Startup=
                 fdjtLog("syncLocation(call) %s",uri);
             try {
                 fdjt.Ajax(function(req){
+                    if (req.readyState!==4) return;
+                    else if (req.status>=300) {
+                        Codex.setConnected(false);
+                        return;}
                     var d=JSON.parse(req.responseText);
                     Codex.setConnected(true);
                     Codex.syncstart=true;

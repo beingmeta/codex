@@ -158,9 +158,6 @@ Codex.setMode=
             fdjtDOM.setInputs(".codexdocuri",Codex.docuri);
             fdjtDOM.setInputs(".codextopuri",Codex.topuri);
             
-            if (Codex.getConfig("keepdata"))
-                fdjtDOM.remove(fdjtDOM.$(".codexkeepdata"));
-
             // Initialize gloss UI
             Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
             if (Codex.Trace.startup>1)

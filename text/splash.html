@@ -43,12 +43,22 @@
       <td><strong>This book</strong> is personalized with glosses for
         <strong name="CODEXUSERNAME">Somebody Interesting</strong>.
         If that's not you,
-        please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
-        if it is you, you can view and update
+        please <a href="https://auth.sbooks.net/admin/logout"
+                  onclick="Codex.clearOffline();">logout</a>;
+        <em>if it is you</em>, you can view and update
         your <a href="https://auth.sbooks.net/my/profile"
                 target="_blank">profile here</a>.</td></tr>
-    <tbody class="cxnouser">
-      <tr>
+    <tr class="cxwithuser xconnwarning">
+      <td colspan="2">
+        While your are logged into this application, you are not logged into the
+        <span class="sbooks"><i>s</i>Books</span> site (you might have logged out
+        from another book or window).  If you wish, you can
+        <a onclick="Codex.setMode('login');">login here</a>.  Until
+        you're logged back in, you won't be able to get updates from
+        or share new glosses with your overlays, networks, or reading circles.</td>
+    </tr>
+    <tbody class="cxdisconn">
+      <tr class="cxnouser">
         <td class="text" colspan="2">
           To use many of the features
           of <span class="codex">Codex</span>, you need to be logged
@@ -138,7 +148,7 @@
           </button>
       </td></tr>
     </tbody>
-    <tbody class="cxwithuser"> 
+    <tbody class="cxwithuser cxwithconn"> 
       <tr><th class="button">
           <button name="ACTION" value=":MAKEFRIEND">Invite</button></th>
         <td class="textbox">
@@ -151,7 +161,7 @@
           This will allow you to see one another's notes, tags, and links
           (glosses).</td></tr>
     </tbody>
-    <tbody class="cxwithuser">
+    <tbody class="cxwithuser cxwithconn">
       <tr><th class="button">
           <button NAME="ACTION" VALUE=":MAKECIRCLE">Gather</button></th>
         <td class="textbox">

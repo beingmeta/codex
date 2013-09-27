@@ -1279,8 +1279,13 @@ body.cxNOUSER div#CODEXAPPSPLASH a.hidesplashlink { display: none; }
 form.sbooksapp { clear: both; padding-top: 1ex;}
 form.sbooksapp table th { padding-right: 0.5ex;}
 form.sbooksapp table td.text { padding-bottom: 1ex;}
+form.sbooksapp table td.text { padding-bottom: 1ex;}
 
 body.cxNOUSER form.sbooksapp { padding-top: 0px;}
+
+form.sbooksapp tr.xconnwarning {
+    color: red; display: none;}
+body.cxUSER.cxDISCONN form.sbooksap tr.xconnwarning { display: table-row;}
 
 /* Close HUD buttons */
 
