@@ -412,7 +412,7 @@ Codex.Paginate=
         function updateLayoutProperty(name,val){
             // This updates layout properties
             fdjtDOM.swapClass(
-                Codex.page,new RegExp("codex"+name+"\\w*"),"codex"+name+val);
+                Codex.body,new RegExp("codex"+name+"\\w*"),"codex"+name+val);
             Codex[name]=val;
             if (Codex.layout) {
                 // If you're already paginated, repaginate.  Either
