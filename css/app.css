@@ -259,7 +259,7 @@ div#CODEXPAGINATING {
 body.sbook { width: inherit;}
 
 span.excerpt {
-    font-size: 120%; color: gray;
+    color: gray;
     font-family: times,serif;
     background-color: yellow;}
 span.excerpt span.content { font-size: 80%; display: none;}

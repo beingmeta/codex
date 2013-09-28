@@ -35,7 +35,7 @@
 #CODEXHUD.codexuifontsmall {
     font-size: 1em;}
 
-#CODEXHUD .codexhelp { font-size: 80%;}
+#CODEXHUD .codexhelp, #CODEXHUD .helpbox { font-size: 80%;}
 #CODEXHUD #CODEXHUDFRAME { font-size: 80%;}
 #CODEXHUD #CODEXSETTINGS, #CODEXHUD #CODEXCONSOLE,
 #CODEXHUD #CODEXLOGIN, #CODEXHUD #CODEXABOUTBOOK,
