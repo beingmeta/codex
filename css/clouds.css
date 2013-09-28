@@ -54,7 +54,7 @@ div#CODEXHUD .completions span.sep {
   font-size: 200%; font-weight: bold; 
   color: purple; vertical-align: middle;}
 div#CODEXHUD .completions span.completion {
-    cursor: pointer; padding-right: 0.5em;}
+    cursor: pointer; padding-right: 0.5ex;}
 div#CODEXHUD .completions span.completion.disabled {
     cursor: default; opacity: 0.25;}
 div#CODEXHUD .completions span.sectname {

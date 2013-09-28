@@ -39,8 +39,12 @@
 #CODEXHUD #CODEXHUDFRAME { font-size: 80%;}
 #CODEXHUD #CODEXSETTINGS, #CODEXHUD #CODEXCONSOLE,
 #CODEXHUD #CODEXLOGIN, #CODEXHUD #CODEXABOUTBOOK,
-#CODEXHUD #CODEXAPPSPLASH {
+#CODEXHUD #CODEXAPPSPLASH, #CODEXHUD #CODEXRIBBON {
     font-size: 80%;}
+#CODEXHUD .codexslice { font-size: 90%;}
+#CODEXHUD .codexslice .tochead, #CODEXHUD .codexslice .idhead {
+    font-size: 80%;}
+#CODEXHUD .cloud { font-size: 70%;}
 
 /* Major HUD components, head and heart */
 
