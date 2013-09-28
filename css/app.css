@@ -545,6 +545,10 @@ body.cxCONN tbody.cxwithconn { display: table-row-group; }
 #CODEXHUD.codexuifontsmall {
     font-size: 75%;}
 
+#CODEXPAGE.codexcontrasthigh { background-color: #ffffff; color: #444; }
+#CODEXPAGE.codexcontrastlow  { background-color: #e5e0d4; color: #333; }
+
+
 #CODEXPAGE.codexbodysizexlarge {
     font-size: 175%;}
 #CODEXPAGE.codexbodysizelarge {
