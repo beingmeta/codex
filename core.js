@@ -1158,9 +1158,7 @@ var Codex={
     Codex.getCover=getCover;
 
     function fixStaticRefs(string){
-        if (Codex.root==="http://static.beingmeta.com/")
-            return string;
-        else return string.replace(
+        return string.replace(
                 /http:\/\/static.beingmeta.com\//g,Codex.root)
             .replace(/{{bmg}}/g,Codex.root+"/g/");}
     Codex.fixStaticRefs=fixStaticRefs;
