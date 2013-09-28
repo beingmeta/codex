@@ -1,4 +1,4 @@
-/* -*- Mode: CSS; character-encoding: utf-8; -*- */
+ /* -*- Mode: CSS; character-encoding: utf-8; -*- */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
    This file implements a Javascript/DHTML web application for reading
@@ -31,32 +31,11 @@
 
 @charset "UTF-8";
 
-/* Logotypes */
-
-.sbooks { font-family: Times-Roman,serif;}
-.sbooks em, .sbooks i {
-    font-family: sans-serif,sans; font-style: italic;
-    font-variant: normal;
-    color: blue;}
-
-.codex { font-family: sans,sans-serif; font-variant: small-caps;}
-.codex em, .codex i {
-    font-style: italic;
-    font-variant: normal;
-    color: blue;
-    vertical-align: sub;}
-
-.mupub { font-family: sans,sans-serif; font-variant: small-caps;}
-.mupub em, .mupub i {
-    font-style: italic;
-    font-variant: normal;
-    color: blue; }
-
 /* Major wrappers and rules */
 
-/* We do our own selection handling, to be consistent and
- not awful.  */
+/* We do our own selection handling, to be consistent and not awful.  */
 body.sbook {
+    font-size: 62.5%; /* -- Sets 1em to equal 10px -- */ 
     user-select: none;
     -o-user-select: none;
     -moz-user-select: none;
@@ -64,21 +43,52 @@ body.sbook {
     -webkit-user-select: none;
     -webkit-touch-callout: none;}
 
+/* Style variants */
+
+#CODEXBODY {
+    font-family: Georgia,Palatino,"Times New Roman",Times,serif;
+    font-size: 1.5em;}
+#CODEXBODY.codexbodysizexlarge {
+    font-size: 2em;}
+#CODEXBODY.codexbodysizelarge {
+    font-size: 2em;}
+#CODEXBODY.codexbodysizenormal {
+    font-size: 1.5em;}
+#CODEXBODY.codexbodysizesmall {
+    font-size: 1em;}
+#CODEXBODY.codexbodysizetiny {
+    font-size: 0.8em;}
+
+#CODEXBODY.codexfamilyserif {
+    font-family: Georgia,Palatino,"Times New Roman",Times,serif;}
+#CODEXBODY.codexfamilysans {
+    font-family: Arial,Verdana,Helvetica,sans-serif;}
+
+#CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4 {
+    font-family: Arial,Verdana,Helvetica,sans-serif;}    
+#CODEXBODY.codexfamilyserif h1, #CODEXBODY.codexfamilyserif h2,
+#CODEXBODY.codexfamilyserif h3, #CODEXBODY.codexfamilyserif h4 {
+    font-family: Arial,Verdana,Helvetica,sans-serif;}    
+#CODEXBODY div, #CODEXBODY p, #CODEXBODY li, #CODEXBODY dt, #CODEXBODY dd,
+#CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4, #CODEXBODY h5,
+#CODEXBODY h6, #CODEXBODY h7 {
+    line-height: 125%;}
+
+#CODEXBODY.codexbodysizexlarge p, #CODEXBODY.codexbodysizexlarge li,
+#CODEXBODY.codexbodysizexlarge dt, #CODEXBODY.codexbodysizexlarge dd {
+    font-size: 125%;}
+
 /* General DOM layout:
    body
+     #CODEXHUD
      #CODEXBODY
        #CODEXCONTENT
        #CODEXPAGE
          #CODEXPAGES
            .codexpage 
            ....
-     #CODEXHUD
 */
 
-#CODEXBODY div, #CODEXBODY p, #CODEXBODY li, #CODEXBODY dt, #CODEXBODY dd,
-#CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4, #CODEXBODY h5,
-#CODEXBODY h6, #CODEXBODY h7 {
-    line-height: 110%;}
 /* CODEXCONTENT is where linear content lives for scrolling layout.
    It is also used to determine the width of the content region
    (whether scrolled or paged), so the width can be controlled by
@@ -223,7 +233,7 @@ body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
 
 div#CODEXPAGINATING {
     position: absolute;
-    font-family: verdana,helvetica,sans,sans-serif;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
     font-size: 200%; font-weight: bold;
     height: 3em; text-align: center;
     top: 5em; left: 10%; right: 10%;
@@ -249,17 +259,17 @@ div#CODEXPAGINATING {
 body.sbook { width: inherit;}
 
 span.excerpt {
-    font-size: 120%; color: gray;
+    color: gray;
     font-family: times,serif;
     background-color: yellow;}
 span.excerpt span.content { font-size: 80%; display: none;}
 .showexcerpt span.excerpt span.content { display: inline;}
 .showexcerpt span.excerpt span.ellipsis { display: none;}
 span.excerpt.ellipsis span.elision, span.excerpt.ellipsis span.delision {
-    color: purple; font-family: veranda,helvetica,sans,sans-serif;
+    color: purple; font-family: Arial,Verdana,Helvetica,sans-serif;
     font-style: italic;}
 span.note.ellipsis span.elision, span.note.ellipsis span.delision {
-    color: purple; font-family: veranda,helvetica,sans,sans-serif;
+    color: purple; font-family: Arial,Verdana,Helvetica,sans-serif;
     font-style: italic;}
 
 /* Fuzzy selections */
@@ -547,7 +557,6 @@ body.cxCONN tbody.cxwithconn { display: table-row-group; }
 
 #CODEXPAGE.codexcontrasthigh { background-color: #ffffff; color: #444; }
 #CODEXPAGE.codexcontrastlow  { background-color: #e5e0d4; color: #333; }
-
 
 #CODEXPAGE.codexbodysizexlarge {
     font-size: 175%;}
@@ -908,6 +917,29 @@ div#CODEXSPLASH div.title {
     position: absolute; top: 10%; font-weight: bold; font-size: 32px;}
 div#CODEXSPLASH div.byline {
     position: absolute; top: 50%; font-style: italic; font-size: 32px;}
+
+/* Logotypes */
+
+.sbooks { }
+.sbooks em, .sbooks i {
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    font-style: italic;
+    font-variant: normal; font-size: 120%;
+    color: blue;}
+
+.codex { font-variant: small-caps;}
+.codex em, .codex i {
+    font-style: italic;
+    font-variant: normal;
+    color: blue;}
+
+.mupub { font-variant: small-caps;}
+.mupub em, .mupub i {
+    font-style: italic;
+    font-variant: normal;
+    color: blue; }
+
+
 
 /* Media rules */
 

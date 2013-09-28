@@ -268,8 +268,8 @@ div#CODEXHELP div.helphud#HIDETHISHELP {
     position: absolute;
     top: 40px; right: 4px; width: 70px;}
 
-div#CODEXHELP h1 {
-    margin-left: 40px; margin-right: 40px;
+div.codexhelp h1 {
+    margin-left: 15%; margin-right: 15%;
     margin-top: 3px; padding-top: 0px;}
 
 div#CODEXHELP .action {

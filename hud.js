@@ -113,6 +113,8 @@ Codex.setMode=
             var settings=fdjtID("CODEXSETTINGS");
             settings.innerHTML=fixStaticRefs(Codex.HTML.settings);
             Codex.DOM.settings=settings;
+            var login=fdjtID("CODEXLOGIN");
+            login.innerHTML=fixStaticRefs(Codex.HTML.login);
             // Other HUD parts
             Codex.DOM.head=fdjtID("CODEXHEAD");
             Codex.DOM.heart=fdjtID("CODEXHEART");
@@ -179,7 +181,7 @@ Codex.setMode=
             input_console.onkeypress=consoleinput_keypress;
 
             Codex.DOM.sbooksapp=sbooksapp=fdjtID("SBOOKSAPP");
-            Codex.DOM.sbookslogin=sbookslogin=fdjtID("SBOOKSLOGIN");
+            Codex.DOM.sbookslogin=sbookslogin=fdjtID("CODEXLOGIN");
             
             function messageHandler(evt){
                 var origin=evt.origin;
@@ -204,15 +206,13 @@ Codex.setMode=
                 else if (evt.data)
                     fdjtDOM("CODEXINTRO",evt.data);
                 else {}}
-            var f=0, iframes=[sbooksapp,sbookslogin];
-            while (f<iframes.length) {
-                var appframe=iframes[f++];
-                var appwindow=((appframe)&&(appframe.contentWindow));
-                if (appwindow.postMessage) {
-                    if (Codex.Trace.messages)
-                        fdjtLog("Setting up message listener");
-                    fdjtDOM.addListener(window,"message",messageHandler);}}
-
+            var appframe=sbooksapp;
+            var appwindow=((appframe)&&(appframe.contentWindow));
+            if (appwindow.postMessage) {
+                if (Codex.Trace.messages)
+                    fdjtLog("Setting up message listener");
+                fdjtDOM.addListener(window,"message",messageHandler);}
+            
             // Set up the splash form
             var splashform=fdjtID("CODEXSPLASHFORM");
             if (Codex.Trace.startup>1)
@@ -738,7 +738,7 @@ Codex.setMode=
                             'this sBook is not available as a ZIP bundle';}}}
             /* If the book is offline, don't bother showing the link
                to the offline version. */
-            if (Codex.persist) addClass(document.body,"sbookoffline");}
+            if (Codex.keepdata) addClass(document.body,"sbookoffline");}
 
         function altLink(type,uri){
             uri=uri||Codex.refuri;
@@ -1007,7 +1007,7 @@ Codex.setMode=
             result.showconsole=
                 ((showconsole)&&(showconsole.length)&&(true))||false;
             var isoffline=fdjtDOM.getInputValues(settings,"CODEXLOCAL");
-            result.persist=
+            result.keepdata=
                 ((isoffline)&&(isoffline.length)&&(isoffline[0]))||false;
             var animatecontent=fdjtDOM.getInputValues(
                 settings,"CODEXANIMATECONTENT");

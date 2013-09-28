@@ -336,6 +336,7 @@ Codex.Startup=
 
             deviceSetup();
             appSetup();
+            showMessage();
             userSetup();
 
             if (Codex.Trace.startup)
@@ -369,6 +370,12 @@ Codex.Startup=
             Codex.md2DOM=md2DOM;
 
             if (Codex.Trace.startup) fdjtLog("Done with sync startup");}
+
+        function showMessage(){
+            var message=fdjt.State.getCookie("SBOOKSPOPUP");
+            if (message) fdjt.UI.alertFor(10,message);
+            fdjt.State.clearCookie("SBOOKSPOPUP","/","sbooks.net");
+            fdjt.State.clearCookie("SBOOKSMESSAGE","/","sbooks.net");}
 
         function appSetup() {
 
@@ -411,11 +418,13 @@ Codex.Startup=
                 status_cover.style.display='block';}
 
             addConfig(
-                "persist",
+                "keepdata",
                 function(name,value){
                     var refuri=Codex.refuri;
-                    if ((value)&&(Codex.persist)) return;
-                    else if ((!(value))&&(!(Codex.persist))) return;
+                    if (value) {
+                        fdjtDOM.remove(fdjtDOM.toArray(fdjtDOM.$(".codexkeepdata")));}
+                    if ((value)&&(Codex.keepdata)) return;
+                    else if ((!(value))&&(!(Codex.keepdata))) return;
                     else if ((value)&&(!(Codex.force_online))) {
                         if (!(Codex.sourcedb.storage))
                             Codex.sourcedb.storage=window.localStorage;
@@ -434,14 +443,14 @@ Codex.Startup=
                         clearOffline();
                         fdjtState.dropLocal("queued("+Codex.refuri+")");
                         Codex.queued=[];}
-                    Codex.persist=value;
+                    Codex.keepdata=value;
                     setCheckSpan(fdjtID("CODEXLOCALCHECKBOX"),value);});
 
             // Get any local saved configuration information
             //  We do this after the HUD is setup so that the settings
             //   panel gets initialized appropriately.
             initConfig();
-            Codex.persist=
+            Codex.keepdata=
                 ((!(Codex.force_online))&&
                  ((Codex.force_offline)||(workOffline())));
 
@@ -468,7 +477,7 @@ Codex.Startup=
             var cur=Codex.sync;
             if ((cur)&&(cur>val)) return cur;
             Codex.sync=val;
-            if (Codex.persist)
+            if (Codex.keepdata)
                 setLocal("codex.sync("+Codex.refuri+")",val);
             return val;};
 
@@ -479,16 +488,16 @@ Codex.Startup=
 
             // If the configuration is set to not persist, but there's
             //  a sync timestamp, we should erase what's there.
-            if ((Codex.sync)&&(!(Codex.persist))) clearOffline();
+            if ((Codex.sync)&&(!(Codex.keepdata))) clearOffline();
 
             if (Codex.nologin) {}
-            else if ((Codex.persist)&&(Codex.sync)&&
+            else if ((Codex.keepdata)&&(Codex.sync)&&
                      (getLocal("codex.user"))) {
                 initUserOffline();
                 if (Codex.Trace.storage) 
                     fdjtLog("Local info for %o (%s) from %o",
                             Codex.user._id,Codex.user.name,Codex.sync);
-                if ((Codex.user)&&(Codex.sync)&&(Codex.persist)&&
+                if ((Codex.user)&&(Codex.sync)&&(Codex.keepdata)&&
                     (window._sbook_loadinfo))
                     // Clear the loadinfo "left over" from startup,
                     //  which should now be in the database
@@ -603,7 +612,7 @@ Codex.Startup=
                 // Process locally stored (offline data) glosses
                 function(){
                     if (Codex.sync) {
-                        if (Codex.persist) return initGlossesOffline();}
+                        if (Codex.keepdata) return initGlossesOffline();}
                     else if (window._sbook_loadinfo) {
                         loadInfo(window._sbook_loadinfo);
                         window._sbook_loadinfo=false;}},
@@ -634,7 +643,8 @@ Codex.Startup=
                 // query args to the book.
                 function(){
                     if (!(Codex.bypage)) startupDone();
-                    else if (Codex.layout) startupDone();
+                    else if ((Codex.layout)&&(Codex.layout.done))
+                        startupDone();
                     else Codex.layoutdone=startupDone;}],
              100,25);}
         Codex.Startup=Startup;
@@ -790,7 +800,7 @@ Codex.Startup=
         function workOffline(){
             if (Codex.force_online) return false;
             else if (Codex.force_offline) return true;
-            var config_val=getConfig("persist");
+            var config_val=getConfig("keepdata");
             if (typeof config_val !== 'undefined') return config_val;
             var value=(getMeta("Codex.offline"))||(getMeta("SBOOK.offline"));
             if ((value===0)||(value==="0")||
@@ -798,25 +808,22 @@ Codex.Startup=
                 (value==="never")) {
                 Codex.force_online=true;
                 return false;}
-            else if (config_fetched) return false;
-            else if (fetching_config)
-                on_fetched_config=offlineDialog;
-            return false;}
+            else return false;}
 
         function offlineDialog(){
-            var config_val=getConfig("persist");
+            var config_val=getConfig("keepdata");
             if (typeof config_val === 'undefined') {
                 fdjtUI.choose(
                     [{label: "No, thanks",
                       handler: function(){
-                          setConfig("persist",false,true);}},
+                          setConfig("keepdata",false,true);}},
                      {label: "Yes, keep locally",
                       handler:
                       function(){
-                          setConfig("persist",true,true);}},
+                          setConfig("keepdata",true,true);}},
                      {label: "Ask me later",
                       handler:
-                      function(){setConfig("persist",false,false);}}],
+                      function(){setConfig("keepdata",false,false);}}],
                     "Store stuff on this computer?",
                     fdjtDOM("div.smaller",
                             "(to enable faster loading and offline reading)"));}}
@@ -917,7 +924,7 @@ Codex.Startup=
                 Codex.mycopyid=getMeta("SBOOK.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
                     false;}
-            if (Codex.persist) setLocal("codex.refuris",refuris,true);}
+            if (Codex.keepdata) setLocal("codex.refuris",refuris,true);}
 
         function deviceSetup(){
             var useragent=navigator.userAgent;
@@ -1354,6 +1361,9 @@ Codex.Startup=
         /* Loading meta info (user, glosses, etc) */
 
         function loadInfo(info) {
+            if (Codex.nouser) {
+                Codex.setConnected(false);
+                return;}
             if ((window._sbook_loadinfo!==info)&&(Codex.user))
                 Codex.setConnected(true);
             if (!((Codex.user)&&(Codex._user_setup))) {
@@ -1388,11 +1398,11 @@ Codex.Startup=
                 window._sbook_newinfo=info;
                 return;}
             var refuri=Codex.refuri;
-            if ((Codex.persist)&&
+            if ((Codex.keepdata)&&
                 (info)&&(info.userinfo)&&(Codex.user)&&
                 (info.userinfo._id!==Codex.user._id)) {
                 clearOffline();}
-            var persist=((Codex.persist)&&(navigator.onLine));
+            var keepdata=((Codex.keepdata)&&(navigator.onLine));
             info.loaded=fdjtTime();
             if ((!(Codex.localglosses))&&
                 ((getLocal("codex.sync("+refuri+")"))||
@@ -1410,10 +1420,10 @@ Codex.Startup=
                         ((info.overlays)?(info.overlays.length):(0)));}
             if ((info.glosses)||(info.etc))
                 initGlosses(info.glosses,info.etc);
-            if (info.etc) gotInfo("etc",info.etc,persist);
-            if (info.sources) gotInfo("sources",info.sources,persist);
-            if (info.outlets) gotInfo("outlets",info.outlets,persist);
-            if (info.overlays) gotInfo("overlays",info.overlays,persist);
+            if (info.etc) gotInfo("etc",info.etc,keepdata);
+            if (info.sources) gotInfo("sources",info.sources,keepdata);
+            if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
+            if (info.overlays) gotInfo("overlays",info.overlays,keepdata);
             addOutlets2UI(info.outlets);
             if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
                 Codex.setSync(info.sync);}
@@ -1422,7 +1432,7 @@ Codex.Startup=
                 var whenloaded=Codex.whenloaded;
                 Codex.whenloaded=false;
                 setTimeout(whenloaded,10);}
-            if (Codex.persist) {
+            if (Codex.keepdata) {
                 Codex.glossdb.save(true);
                 Codex.sourcedb.save(true);}
             if (Codex.glosshash) {
@@ -1488,7 +1498,7 @@ Codex.Startup=
             else document.body.appendChild(update_script);}
 
         function setUser(userinfo,outlets,overlays,sync){
-            var persist=((Codex.persist)&&(navigator.onLine));
+            var keepdata=((Codex.keepdata)&&(navigator.onLine));
             if (userinfo) {
                 fdjtDOM.dropClass(document.body,"cxNOUSER");
                 fdjtDOM.addClass(document.body,"cxUSER");}
@@ -1505,10 +1515,10 @@ Codex.Startup=
                 Codex.writeQueuedGlosses();
             Codex.user=Codex.sourcedb.Import(
                 userinfo,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
-            if (persist) setConfig("persist",true,true);
+            if (keepdata) setConfig("keepdata",true,true);
             if (outlets) Codex.outlets=outlets;
             if (overlays) Codex.overlays=overlays;
-            if (persist) {
+            if (keepdata) {
                 // No callback needed
                 Codex.user.save();
                 setLocal("codex.user",Codex.user._id);
@@ -1522,7 +1532,7 @@ Codex.Startup=
             var refuri=Codex.refuri;
             if (!(Codex.nodeid)) {
                 Codex.nodeid=nodeid;
-                if ((nodeid)&&(Codex.persist))
+                if ((nodeid)&&(Codex.keepdata))
                     setLocal("codex.nodeid("+refuri+")",nodeid,true);}}
         Codex.setNodeID=setNodeID;
 
@@ -1621,7 +1631,7 @@ Codex.Startup=
                         if (typeof info[i] === 'string') {
                             var load_qid=info[i++];
                             var load_ref=Codex.sourcedb.ref(load_qid);
-                            if (Codex.persist) load_ref.load();
+                            if (Codex.keepdata) load_ref.load();
                             qids.push(load_ref._id);}
                         else {
                             var import_ref=Codex.sourcedb.Import(
@@ -1630,7 +1640,7 @@ Codex.Startup=
                             import_ref.save();
                             qids.push(import_ref._id);}}
                     Codex[name]=qids;
-                    if (Codex.persist)
+                    if (Codex.keepdata)
                         setLocal("codex."+name+"("+refuri+")",qids,true);}
                 else {
                     var ref=Codex.sourcedb.Import(
@@ -1726,6 +1736,10 @@ Codex.Startup=
                 fdjtLog("syncLocation(call) %s",uri);
             try {
                 fdjt.Ajax(function(req){
+                    if (req.readyState!==4) return;
+                    else if (req.status>=300) {
+                        Codex.setConnected(false);
+                        return;}
                     var d=JSON.parse(req.responseText);
                     Codex.setConnected(true);
                     Codex.syncstart=true;

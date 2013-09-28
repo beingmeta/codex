@@ -13,29 +13,29 @@
   from your friends, communities, and networks as well as (selectively)
   experts, critics, or teachers.</p>
 <p>You're using <span class="codex">Codex<i>β</i></span>, a web-based
-e-reader created to deepen reading and engagement while connecting to
-networks of knowledge, conversation, and
-commmunity.  <span class="codex">Codex</span> aims to reclaim the
-virtues of physical books, making it natural to navigate, annotate,
-search, and personalize electronic
-books. <strong><span class="fortouch">Tap</span> <span class="notouch">Click</span>
+  e-reader created to deepen reading and engagement while connecting to
+  networks of knowledge, conversation, and
+  commmunity.  <span class="codex">Codex</span> aims to reclaim the
+  virtues of physical books, making it natural to navigate, annotate,
+  search, and personalize electronic
+  books. <strong><span class="fortouch">Tap</span> <span class="notouch">Click</span>
   </strong> the
-        <img svg="{{bmg}}codex/helpicon.svgz"
-        src="{{bmg}}codex/helpicon32x32.png"
-        alt="help" class="inline"/> icon in bottom right for help.
-        <a class="hidesplashlink" href="#"
-        onclick="Codex.UI.highlightSetting('CODEXHIDESPLASHSETTING');
-        fdjt.UI.cancel(event); return false;">Set your startup/help
-        preferences</a></p>
+  <img svg="{{bmg}}codex/helpicon.svgz"
+       src="{{bmg}}codex/helpicon32x32.png"
+       alt="help" class="inline"/> icon in bottom right for help.
+  <a class="hidesplashlink" href="#"
+     onclick="Codex.UI.highlightSetting('CODEXHIDESPLASHSETTING');
+              fdjt.UI.cancel(event); return false;">Set your startup/help
+    preferences</a></p>
 <form action="https://auth.sbooks.net/auth" target="_top"
       NAME="CODEXSPLASHFORM" ID="CODEXSPLASHFORM" method="POST"
+      class="sbooksapp"
       onsubmit="Codex.setMode(false);">
   <input TYPE="HIDDEN" NAME="RETURN_TO" VALUE="" class="codextopuri"/>
   <input TYPE="HIDDEN" NAME="REFURI" VALUE="" class="codexrefuri"/>
   <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
-  <input TYPE="HIDDEN" NAME="TOPURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="REFURI" VALUE=""/>
-  <input TYPE="HIDDEN" NAME="DOCURI" VALUE=""/>
+  <input TYPE="HIDDEN" NAME="TOPURI" VALUE="" class="codextopuri"/>
+  <input TYPE="HIDDEN" NAME="DOCURI" VALUE="" class="codexdocuri"/>
   <input TYPE="HIDDEN" NAME="XQUERY" VALUE=""/>
   <table class="fdjtform">
     <tr class="cxwithuser">
@@ -43,47 +43,112 @@ books. <strong><span class="fortouch">Tap</span> <span class="notouch">Click</sp
       <td><strong>This book</strong> is personalized with glosses for
         <strong name="CODEXUSERNAME">Somebody Interesting</strong>.
         If that's not you,
-        please <a href="https://auth.sbooks.net/admin/logout">logout</a>;
-        if it is you, you can view and update
+        please <a href="https://auth.sbooks.net/admin/logout"
+                  onclick="Codex.clearOffline();">logout</a>;
+        <em>if it is you</em>, you can view and update
         your <a href="https://auth.sbooks.net/my/profile"
                 target="_blank">profile here</a>.</td></tr>
-    <tbody class="cxnouser">
-      <tr>
-        <td class="text" colspan="2">
-          To use many of the features
-          of <span class="codex">Codex</span>, you need to be logged
-          into an <b class="sbooks"><i>s</i>Books</b> account.  A
-          beingmeta <b class="sbooks"><i>s</i>Books</b> account is
-          free and lets you save and share your <em>glosses</em>
-          (notes, links, tags, etc) on the books you read.  Your
-          account lets you create a network of friends or connecto to
-          your existing social network and gives you control over who
-          sees the glosses you add your books and also allows you to
-          select the overlays and conversations which will be included
-          in your
-          personal <span class="sbooks"><i>s</i>Books</span>.</td></tr>
+    <tr class="cxdisconn">
+      <td colspan="2">
+        <strong style="color: red;">You are not logged into the
+        <span class="sbooks"><i>s</i>Books</span> site.</strong>  You
+        might have logged out from another book or window.  Until
+        you're logged back in, you won't be able to get updates from
+        or share new glosses with your overlays, networks, or reading
+        circles.</td>
+    </tr>
+    <tr class="cxnouser">
+      <td class="text" colspan="2">
+        To use many of the features
+        of <span class="codex">Codex</span>, you need to be logged
+        into an <b class="sbooks"><i>s</i>Books</b> account.  A
+        beingmeta <b class="sbooks"><i>s</i>Books</b> account is
+        free and lets you save and share your <em>glosses</em>
+        (notes, links, tags, etc) on the books you read.  Your
+        account lets you create a network of friends or connecto to
+        your existing social network and gives you control over who
+        sees the glosses you add your books and also allows you to
+        select the overlays and conversations which will be included
+        in your
+        personal <span class="sbooks"><i>s</i>Books</span>.</td></tr>
+    <tbody class="cxnoconn">
       <tr class="padding"><td></td></tr>
+      <tr class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);">
+        <th><input TYPE="CHECKBOX" NAME="AUTH:SETSTICKY" VALUE="YES"/></th>
+        <td>keep me logged in on this computer</td></tr>
+      <tr class="checkspan codexkeepdata" onclick="fdjt.UI.CheckSpan.onclick(event);">
+        <th><input TYPE="CHECKBOX" NAME="AUTH:SETKEEP" VALUE="YES"/></th>
+        <td>save local copies of glosses and other data on this computer</td></tr>
       <tr>
-        <th><input type="SUBMIT" name="ACTION" value="Login"/>&nbsp;with</th>
+        <th><input type="SUBMIT" name="ACTION" value="Login"/></th>
         <td><input type="TEXT" name="LOGIN" value=""
-                   placeholder="your email address"/></td></tr>
+                   placeholder="with your email address"/></td></tr>
       <tr><th>or&nbsp;use</th>
-        <td>
-          <button name="AUTHORITY" value=":FACEBOOK">
-            <img src="{{bmg}}codex/facebook32x32.png"
+        <td class="buttons">
+          <button name="AUTHORITY" TABINDEX="12"
+	          value=":FACEBOOK">
+	    <img src="{{bmg}}sbooks/facebook64x64.png" class="nosvg"
+                 alt="Facebook" class="noautoscale"/>
+	    <img src="{{bmg}}sbooks/facebook.svgz" class="svg"
                  alt="Facebook" class="noautoscale"/>
           </button>
-          <button NAME="AUTHORITY" VALUE=":GPLUS">
-            <img src="{{bmg}}codex/googleplus32x32.png"
-                 alt="Google" title="login using Google"/>
+          <button NAME="AUTHORITY" TABINDEX="16"
+	          VALUE=":TWITTER">
+	    <img src="{{bmg}}sbooks/twitter64x64.png"
+	         alt="Twitter" title="login with Twitter"
+	         class="nosvg"/>
+	    <img src="{{bmg}}sbooks/twitter.svgz"
+	         alt="Twitter" title="login with Twitter"
+	         class="svg"/>
           </button>
-          <button NAME="AUTHORITY" VALUE=":TWITTER">
-            <img src="{{bmg}}codex/twitter32x32.png"
-                 alt="Twitter" title="login with Twitter"/>
+          <button NAME="AUTHORITY" TABINDEX="13"
+	          VALUE="https://open.login.yahooapis.com/openid/op/auth">
+	    <img src="{{bmg}}sbooks/yahoo64x64.png" class="nosvg"
+	         alt="Yahoo!" title="login using Yahoo!"/>
+	    <img src="{{bmg}}sbooks/yahoo.svgz" class="svg"
+	         alt="Yahoo!" title="login using Yahoo!"/>
+          </button>
+          <button NAME="AUTHORITY" TABINDEX="14"
+	          VALUE=":GOOGLE">
+	    <img src="{{bmg}}sbooks/google64x64.png"
+	         alt="Google" title="login using your Google account"
+	         class="nosvg"/>
+	    <img src="{{bmg}}sbooks/google.svgz"
+	         alt="Google" title="login using your Google account"
+	         class="svg"/>
+          </button>
+          <button NAME="AUTHORITY" TABINDEX="15"
+	          VALUE=":GPLUS">
+	    <img src="{{bmg}}sbooks/googleplus64x64.png"
+	         alt="Google" title="login using Google+"
+	         class="nosvg"/>
+	    <img src="{{bmg}}sbooks/googleplus.svgz"
+	         alt="Google" title="login using Google+"
+	         class="svg"/>
+          </button>
+          <button name="AUTHORITY" TABINDEX="17"
+	          value=":AMAZON">
+	    <img src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_64x64.png"
+                 alt="Amazon" title="login with Amazon"/>
+          </button>
+          <button name="AUTHORITY" TABINDEX="18"
+	          value=":PAYPAL">
+	    <img src="{{bmg}}sbooks/paypalsquare64x64.png" class="nosvg"
+                 alt="PayPal" title="login with PayPal"/>
+	    <img src="{{bmg}}sbooks/paypalsquare.svgz" class="svg"
+                 alt="PayPal" title="login with PayPal"/>
+          </button>
+          <button NAME="AUTHORITY" VALUE=":LINKEDIN" TABINDEX="19">
+            <img src="{{bmg}}sbooks/linkedin64x64.png"
+	         alt="Linked In" title="login with Linked In"
+	         class="nosvg"/>
+            <img src="{{bmg}}sbooks/linkedin.svgz"
+	         alt="Linked In" title="login with Linked In"
+	         class="svg"/>
           </button>
       </td></tr>
     </tbody>
-    <tbody class="cxwithuser"> 
+    <tbody class="cxwithconn"> 
       <tr><th class="button">
           <button name="ACTION" value=":MAKEFRIEND">Invite</button></th>
         <td class="textbox">
@@ -91,12 +156,12 @@ books. <strong><span class="fortouch">Tap</span> <span class="notouch">Click</sp
                  onkeypress="fdjt.UI.submitOnEnter(event);"
                  placeholder="email addresses"/></td></tr>
       <tr><th>your<br/>friends</th>
-          <td>to join your <strong>personal circle</strong> at
+        <td>to join your <strong>personal circle</strong> at
           <strong><span style="color: blue;">s</span>Books</strong>.
           This will allow you to see one another's notes, tags, and links
           (glosses).</td></tr>
     </tbody>
-    <tbody class="cxwithuser">
+    <tbody class="cxwithconn">
       <tr><th class="button">
           <button NAME="ACTION" VALUE=":MAKECIRCLE">Gather</button></th>
         <td class="textbox">
@@ -104,7 +169,7 @@ books. <strong><span class="fortouch">Tap</span> <span class="notouch">Click</sp
                  onkeypress="fdjt.UI.submitOnEnter(event);"
                  placeholder="email addresses"/></td></tr>
       <tr><th>a tribe</th>
-          <td>into a <strong>reading circle</strong> at
+        <td>into a <strong>reading circle</strong> at
           <strong><span style="color: blue;">s</span>Books</strong>.
           Members of a reading circle can see one another's glosses
           on this book, sharing insights, opinions, and reactions.</td></tr>

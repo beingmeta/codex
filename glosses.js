@@ -985,8 +985,7 @@
             else addLink(form,note.slice(0,brk),note.slice(brk+1));
             note_input.value="";}
         if ((!(login_message))&&
-            ((!(navigator.onLine))||(!(Codex.connected)))&&
-            ((!(Codex.user))||(!(Codex.persist)))) {
+            ((!(navigator.onLine))||(!(Codex.connected)))) {
             var choices=[];
             if (navigator.onLine) 
                 choices.push({label: "Login",
@@ -999,23 +998,23 @@
                                   login_message=true;}});
             if (Codex.user) 
                 choices.push({label: "Queue",
-                              isdefault: ((!(navigator.onLine))&&(Codex.persist)),
+                              isdefault: ((!(navigator.onLine))&&(Codex.keepdata)),
                               handler: function(){
-                                  if (!(Codex.persist)) Codex.setConfig("persist",true,true);
+                                  if (!(Codex.keepdata)) Codex.setConfig("keepdata",true,true);
                                   login_message=true;
                                   if (!((navigator.onLine)&&(Codex.connected)))
                                       queueGloss(arg,false,keep);
                                   else submitGloss(arg,keep);}});
             else {
                 choices.push({label: "Cache",
-                              isdefault: ((!(navigator.onLine))&&(Codex.persist)),
+                              isdefault: ((!(navigator.onLine))&&(Codex.keepdata)),
                               handler: function(){
-                                  if (!(Codex.persist)) Codex.setConfig("persist",true,true);
+                                  if (!(Codex.keepdata)) Codex.setConfig("keepdata",true,true);
                                   login_message=true;
                                   queueGloss(arg,false,keep);}});
-                if (!(Codex.persist))
+                if (!(Codex.keepdata))
                     choices.push({label: "Lose",
-                                  isdefault: ((!(navigator.onLine))&&(!(Codex.persist))),
+                                  isdefault: ((!(navigator.onLine))&&(!(Codex.keepdata))),
                                   handler: function(){
                                       tempGloss(form); login_message=true;}});}
             choices.push({label: "Cancel",
@@ -1026,28 +1025,33 @@
                               Codex.setMode(false);}});
             fdjtUI.choose(choices,
                           ((navigator.onLine)&&(!(Codex.user))&&
-                           (fdjtDOM("p.smaller",
+                           ([fdjtDOM("p.smaller",
                                     "This book isn't currently associated with an sBooks account, ",
                                     "so any highlights or glosses you add will not be permanently saved ",
-                                    "until you login.  You may either login now, cache your changes ",
-                                    "on this machine until you do login, ",
-                                    "lose your changes when this page closes, ",
-                                    "or cancel the change you're about to make."))),
+                                    "until you login."),
+                             fdjtDOM("p.smaller",
+                                     "You may either login now, cache your changes ",
+                                     "on this machine until you do login, ",
+                                     "lose your changes when this page closes, ",
+                                     "or cancel the change you're about to make.")])),
                           (((navigator.onLine)&&(Codex.user)&&
-                            (fdjtDOM("p.smaller",
+                            ([fdjtDOM("p.smaller",
                                      "You aren't currently logged into your sBooks account from ",
-                                     "this machine, so any highlights or glosses you add wont'be saved ",
-                                     "until you do.  In addition, you won't get updated glosses from ",
-                                     "your networks or overlays.  You may either login now, queue any ",
-                                     "changes you make until you do login, or cancel the change you were ",
-                                     "trying to make.")))),
-                          ((!(navigator.onLine))&&(!(Codex.persist))&&
-                           (fdjtDOM("p.smaller",
-                                    "You are currently offline and you've elected to not save ",
-                                    "highlights or glosses locally on this computer.  You can either ",
-                                    "queue your changes by storing information locally, ",
+                                     "this machine, so any highlights or glosses you add won't ",
+                                     "be saved until you do."),
+                              fdjtDOM("p.smaller","In addition, you won't get updated glosses from ",
+                                      "your networks or overlays."),
+                              fdjtDOM("p.smaller",
+                                      "You may either login now, queue any changes you make until ",
+                                     "you do login, or cancel the change you were trying to make.")]))),
+                          ((!(navigator.onLine))&&(!(Codex.keepdata))&&
+                           ([fdjtDOM("p.smaller",
+                                    "You are currently offline and have elected to not save ",
+                                    "highlights or glosses locally on this computer."),
+                             fdjtDOM("p.smaller",
+                                    "You can either queue your changes by storing information locally, ",
                                     "lose your changes when this page closes,",
-                                    "or cancel the change you were about to make."))));
+                                    "or cancel the change you were about to make.")])));
             return;}
         var sent=((navigator.onLine)&&(Codex.connected)&&(Codex.user)&&
                   (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form,keep))));
@@ -1117,7 +1121,7 @@
         var params=fdjt.Ajax.formParams(form);
         var queued=Codex.queued;
         queued.push(json.uuid);
-        if (Codex.persist) {
+        if (Codex.keepdata) {
             fdjtState.setLocal("params("+json.uuid+")",params);
             fdjtState.setLocal("queued("+Codex.refuri+")",queued,true);}
         else queued_data[json.uuid]=params;
@@ -1183,7 +1187,7 @@
             var ajax_uri=getChild(fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
                 getAttribute("ajaxaction");
             var queued=Codex.queued; var glossid=queued[0];
-            var post_data=((Codex.persist)?(fdjtState.getLocal("params("+glossid+")")):
+            var post_data=((Codex.keepdata)?(fdjtState.getLocal("params("+glossid+")")):
                            (queued_data[glossid]));
             if (post_data) {
                 var req=new XMLHttpRequest();
@@ -1198,16 +1202,19 @@
                             var pos=pending.indexOf(glossid);
                             if (pos>=0) {
                                 pending.splice(pos,pos);
-                                if (Codex.persist)
+                                if (Codex.keepdata)
                                     fdjtState.setLocal("queued("+Codex.refuri+")",pending,true);
                                 Codex.queued=pending;}}
                         addgloss_callback(req,false,false);
                         if (pending.length) setTimeout(writeQueuedGlosses,200);
-                        fdjtState.dropLocal("queued("+Codex.refuri+")");}};
+                        fdjtState.dropLocal("queued("+Codex.refuri+")");}
+                    else if (req.readyState===4) {
+                        Codex.setConnected(false);}
+                    else {};};
                 try {
                     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     req.send(post_data);}
-                catch (ex) {}}}}
+                catch (ex) {Codex.setConnected(false);}}}}
     Codex.writeQueuedGlosses=writeQueuedGlosses;
     
 })();
