@@ -43,41 +43,6 @@ body.sbook {
     -webkit-user-select: none;
     -webkit-touch-callout: none;}
 
-/* Style variants */
-
-#CODEXBODY {
-    font-family: Georgia,Palatino,"Times New Roman",Times,serif;
-    font-size: 1.5em;}
-#CODEXBODY.codexbodysizexlarge {
-    font-size: 2em;}
-#CODEXBODY.codexbodysizelarge {
-    font-size: 2em;}
-#CODEXBODY.codexbodysizenormal {
-    font-size: 1.5em;}
-#CODEXBODY.codexbodysizesmall {
-    font-size: 1em;}
-#CODEXBODY.codexbodysizetiny {
-    font-size: 0.8em;}
-
-#CODEXBODY.codexfamilyserif {
-    font-family: Georgia,Palatino,"Times New Roman",Times,serif;}
-#CODEXBODY.codexfamilysans {
-    font-family: Arial,Verdana,Helvetica,sans-serif;}
-
-#CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4 {
-    font-family: Arial,Verdana,Helvetica,sans-serif;}    
-#CODEXBODY.codexfamilyserif h1, #CODEXBODY.codexfamilyserif h2,
-#CODEXBODY.codexfamilyserif h3, #CODEXBODY.codexfamilyserif h4 {
-    font-family: Arial,Verdana,Helvetica,sans-serif;}    
-#CODEXBODY div, #CODEXBODY p, #CODEXBODY li, #CODEXBODY dt, #CODEXBODY dd,
-#CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4, #CODEXBODY h5,
-#CODEXBODY h6, #CODEXBODY h7 {
-    line-height: 125%;}
-
-#CODEXBODY.codexbodysizexlarge p, #CODEXBODY.codexbodysizexlarge li,
-#CODEXBODY.codexbodysizexlarge dt, #CODEXBODY.codexbodysizexlarge dd {
-    font-size: 125%;}
-
 /* General DOM layout:
    body
      #CODEXHUD
@@ -554,25 +519,6 @@ body.cxCONN tbody.cxwithconn { display: table-row-group; }
     font-size: 100%;}
 #CODEXHUD.codexuifontsmall {
     font-size: 75%;}
-
-#CODEXPAGE.codexcontrasthigh { background-color: #ffffff; color: #444; }
-#CODEXPAGE.codexcontrastlow  { background-color: #e5e0d4; color: #333; }
-
-#CODEXPAGE.codexbodysizexlarge {
-    font-size: 175%;}
-#CODEXPAGE.codexbodysizelarge {
-    font-size: 135%;}
-#CODEXPAGE.codexbodysizenormal {
-    font-size: 100%;}
-#CODEXPAGE.codexbodysizesmall {
-    font-size: 80%;}
-#CODEXPAGE.codexbodysizetiny {
-    font-size: 50%;}
-
-#CODEXPAGE.codexbodyfamilysans {
-    font-family: sans,sans-serif;}
-#CODEXPAGE.codexbodyfamilyserif {
-    font-family: serif;}
 
 /* Pagination stuff */
 

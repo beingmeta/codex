@@ -1,0 +1,81 @@
+ /* -*- Mode: CSS; character-encoding: utf-8; -*- */
+
+/* Copyright (C) 2009-2013 beingmeta, inc.
+   This file implements a Javascript/DHTML web application for reading
+    large structured documents (sBooks).
+
+   For more information on sbooks, visit www.sbooks.net
+   For more information on knodules, visit www.knodules.net
+   For more information about beingmeta, visit www.beingmeta.com
+
+   This library uses the FDJT (www.fdjt.org) toolkit.
+
+   This program comes with absolutely NO WARRANTY, including implied
+   warranties of merchantability or fitness for any particular
+   purpose.
+
+    Use and redistribution (especially embedding in other
+      CC licensed content) is permitted under the terms of the
+      Creative Commons "Attribution-NonCommercial" license:
+
+          http://creativecommons.org/licenses/by-nc/3.0/ 
+
+    Other uses may be allowed based on prior agreement with
+      beingmeta, inc.  Inquiries can be addressed to:
+
+       licensing@biz.beingmeta.com
+
+   Enjoy!
+
+*/
+
+@charset "UTF-8";
+
+/* Style variants */
+
+#CODEXBODY {
+    font-family: Georgia,Palatino,"Times New Roman",Times,serif;
+    font-size: 1.5em;}
+#CODEXBODY.codexbodysizexlarge {
+    font-size: 2em;}
+#CODEXBODY.codexbodysizelarge {
+    font-size: 2em;}
+#CODEXBODY.codexbodysizenormal {
+    font-size: 1.5em;}
+#CODEXBODY.codexbodysizesmall {
+    font-size: 1em;}
+#CODEXBODY.codexbodysizetiny {
+    font-size: 0.8em;}
+
+#CODEXBODY.codexfamilyserif {
+    font-family: Georgia,Palatino,"Times New Roman",Times,serif;}
+#CODEXBODY.codexfamilysans {
+    font-family: Arial,Verdana,Helvetica,sans-serif;}
+
+#CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4 {
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    page-break-after: avoid;}
+#CODEXBODY.codexfamilyserif h1, #CODEXBODY.codexfamilyserif h2,
+#CODEXBODY.codexfamilyserif h3, #CODEXBODY.codexfamilyserif h4 {
+    font-family: Arial,Verdana,Helvetica,sans-serif;}    
+#CODEXBODY div, #CODEXBODY p, #CODEXBODY li, #CODEXBODY dt, #CODEXBODY dd,
+#CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4, #CODEXBODY h5,
+#CODEXBODY h6, #CODEXBODY h7 {
+    line-height: 125%;}
+
+#CODEXBODY.codexbodysizexlarge p, #CODEXBODY.codexbodysizexlarge li,
+#CODEXBODY.codexbodysizexlarge dt, #CODEXBODY.codexbodysizexlarge dd {
+    font-size: 125%;}
+
+#CODEXBODY { background-color: #ffffff; color: #444; }
+#CODEXBODY.codexcontrasthigh { background-color: #ffffff; color: #444; }
+#CODEXBODY.codexcontrastlow  { background-color: #e5e0d4; color: #333; }
+
+#CODEXBODY p { text-indent: 3em;}
+#CODEXBODY h1 + p, #CODEXBODY h2 + p, #CODEXBODY h3 + p,
+#CODEXBODY div + p, #CODEXBODY img + p, #CODEXBODY table + p,
+#CODEXBODY blockquote + p {
+    text-indent: 0px;}
+
+#CODEXBODY p.fp, #CODEXBODY p.noindent {
+    text-indent: 0px;}
