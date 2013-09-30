@@ -33,8 +33,9 @@
 
 /* Style variants */
 
+body.sbook #CODEXPAGE { max-width: 40em;}
+
 #CODEXBODY {
-    font-family: Georgia,Palatino,"Times New Roman",Times,serif;
     font-size: 1.5em;}
 #CODEXBODY.codexbodysizexlarge {
     font-size: 2em;}
@@ -47,6 +48,8 @@
 #CODEXBODY.codexbodysizetiny {
     font-size: 0.8em;}
 
+#CODEXBODY.codexfamilydefault {
+    font-family: inherit;}
 #CODEXBODY.codexfamilyserif {
     font-family: Georgia,Palatino,"Times New Roman",Times,serif;}
 #CODEXBODY.codexfamilysans {

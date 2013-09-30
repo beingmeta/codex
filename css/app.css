@@ -33,15 +33,17 @@
 
 /* Major wrappers and rules */
 
-/* We do our own selection handling, to be consistent and not awful.  */
 body.sbook {
     font-size: 62.5%; /* -- Sets 1em to equal 10px -- */ 
+    /* We do our own selection handling, to be consistent */
     user-select: none;
     -o-user-select: none;
     -moz-user-select: none;
-    -webkit-tap-highlight-color: rgba(0,0,0);
     -webkit-user-select: none;
-    -webkit-touch-callout: none;}
+    /* Disable the default touch+hold action */
+    -webkit-touch-callout: none;
+    /* Disable tap highlighting */
+    -webkit-tap-highlight-color: rgba(0,0,0);}
 
 /* General DOM layout:
    body
@@ -54,6 +56,7 @@ body.sbook {
            ....
 */
 
+div#CODEXBODY {}
 /* CODEXCONTENT is where linear content lives for scrolling layout.
    It is also used to determine the width of the content region
    (whether scrolled or paged), so the width can be controlled by
@@ -71,7 +74,6 @@ div#CODEXPAGE {
     -o-border-radius: 18px;
     -moz-border-radius: 18px;
     -webkit-border-radius: 18px;}
-body.sbook #CODEXPAGE { max-width: 40em;}
 body.cxFULLWIDTH #CODEXPAGE { max-width: inherit;}
 body.cxSCROLL div#CODEXPAGE, img.codexpagebutton { display: none;}
 
