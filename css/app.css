@@ -33,8 +33,11 @@
 
 /* Major wrappers and rules */
 
-body.sbook {
-    font-size: 62.5%; /* -- Sets 1em to equal 10px -- */ 
+body {
+    /* -- Sets 1em to equal 10px -- */ 
+    font-size: 62.5%;
+    /* Override any width definition on body itself */
+    width: inherit; margin-left: auto; margin-right: auto;
     /* We do our own selection handling, to be consistent */
     user-select: none;
     -o-user-select: none;
@@ -43,7 +46,8 @@ body.sbook {
     /* Disable the default touch+hold action */
     -webkit-touch-callout: none;
     /* Disable tap highlighting */
-    -webkit-tap-highlight-color: rgba(0,0,0);}
+    -webkit-tap-highlight-color: rgba(0,0,0);
+}
 
 /* General DOM layout:
    body
@@ -150,11 +154,11 @@ div#CODEXPAGE div#CODEXPAGE.codexpaginating div#CODEXPAGES {
     -moz-opacity: 0.35;
     -o-opacity: 0.35;}
 
-body.sbook.cxBYPAGE {
+body.cxBYPAGE {
     margin-top: 0px; margin-bottom: 0px;
     margin-left: 0px; margin-right: 0px;}
 
-body.sbook.cxSCROLL div#CODEXCONTENT {
+body.cxSCROLL div#CODEXCONTENT {
     padding-left: 3em; padding-right: 3em;}
 
 div#CODEXCONTENT > * {
@@ -222,8 +226,6 @@ div#CODEXPAGINATING {
     -o-opacity: 0.98;}
 
 /* The content */
-
-body.sbook { width: inherit;}
 
 span.excerpt {
     color: gray;
@@ -513,15 +515,6 @@ body.cxCONN blockquote.cxwithconn { display: block; }
 body.cxCONN tr.cxwithconn { display: table-row; }
 body.cxCONN tbody.cxwithconn { display: table-row-group; }
 
-/* Style variants */
-
-#CODEXHUD.codexuifontlarge {
-    font-size: 125%;}
-#CODEXHUD.codexuifontnormal {
-    font-size: 100%;}
-#CODEXHUD.codexuifontsmall {
-    font-size: 75%;}
-
 /* Pagination stuff */
 
 h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
@@ -621,35 +614,33 @@ img.sbookfullpage, img.sbookcover {
 
 /* HTML5ish elements */
 
-body.sbook details,
-body.sbook .html5details {
+details, .html5details {
     display: block;}
-body.sbook details > summary ,
-body.sbook .html5details > summary {
+details > summary , .html5details > summary {
     display: block;}
-body.sbook #CODEXBODY details,
-body.sbook #CODEXBODY .html5details {
+#CODEXBODY details, #CODEXBODY .html5details {
     display: inline;}
-body.sbook #CODEXBODY details > *,
-body.sbook #CODEXBODY .html5details > * { display: none;}
-body.sbook #CODEXBODY details > summary,
-body.sbook #CODEXBODY .html5details > summary {
+#CODEXBODY details > *, #CODEXBODY .html5details > * {
+    display: none;}
+#CODEXBODY details > summary, #CODEXBODY .html5details > summary {
     color: blue; text-decoration: underline;
     display: inline; font-size: 80%;}
 
-body.sbook #CODEXBODY aside > *,
-body.sbook #CODEXBODY .html5aside > * { display: none;}
-body.sbook #CODEXBODY aside > hgroup:first-child,
-body.sbook #CODEXBODY aside > h1:first-child,
-body.sbook #CODEXBODY aside > h2:first-child,
-body.sbook #CODEXBODY aside > h3:first-child {
+#CODEXBODY aside > *,
+#CODEXBODY .html5aside > * { display: none;}
+#CODEXBODY aside > hgroup:first-child,
+#CODEXBODY aside > h1:first-child,
+#CODEXBODY aside > h2:first-child,
+#CODEXBODY aside > h3:first-child {
     margin-left: 2em; margin-right: 2em; padding: 1em;
     border: solid black 2px;
     display: block;}
 
 body.sbook #CODEXBODY .sbooknote {display: none;}
 
-body.sbook a[rel='sbooknote'], body.sbook a[rel='footnote'], body.sbook a[rel='endnote'] {
+body.sbook a[rel='sbooknote'],
+body.sbook a[rel='footnote'],
+body.sbook a[rel='endnote'] {
     font-size: 80%; vertical-align: super; margin-left: 0.5ex;
     color: darkblue; text-decoration: overline; font-variant: small-caps;
     border-radius: 1ex; -webkit-border-radius: 1ex;

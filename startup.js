@@ -1155,6 +1155,10 @@ Codex.Startup=
             if (Codex.Trace.startup) fdjtLog("Organizing content");
 
             body.setAttribute("tabindex",1);
+            /* -- Sets 1em to equal 10px -- */ 
+            body.style.fontSize="62.5%";
+            /* -- Remove any original width constraints -- */
+            body.style.width="inherit";
 
             // Save those DOM elements in a handy place
             Codex.content=content;

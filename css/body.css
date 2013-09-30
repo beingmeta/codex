@@ -33,7 +33,10 @@
 
 /* Style variants */
 
-body.sbook #CODEXPAGE { max-width: 40em;}
+body.sbook div#CODEXCONTENT {
+    margin-left: 3em; margin-right: 3em;}
+
+#CODEXPAGE { max-width: 40em;}
 
 #CODEXBODY {
     font-size: 1.5em;}
@@ -74,11 +77,10 @@ body.sbook #CODEXPAGE { max-width: 40em;}
 #CODEXBODY.codexcontrasthigh { background-color: #ffffff; color: #444; }
 #CODEXBODY.codexcontrastlow  { background-color: #e5e0d4; color: #333; }
 
-#CODEXBODY p { text-indent: 3em;}
-#CODEXBODY h1 + p, #CODEXBODY h2 + p, #CODEXBODY h3 + p,
-#CODEXBODY div + p, #CODEXBODY img + p, #CODEXBODY table + p,
-#CODEXBODY blockquote + p {
-    text-indent: 0px;}
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ../..; make" ***
+;;;  indent-tabs-mode: nil ***
+;;;  End: ***
+*/
 
-#CODEXBODY p.fp, #CODEXBODY p.noindent {
-    text-indent: 0px;}

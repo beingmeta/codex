@@ -280,6 +280,9 @@ div#CODEXHELP .result {
 div#CODEXHELP > table {
     margin-left: 10%; margin-right: 10%; width: 80%;
     margin-top: 1em;}
+div#CODEXHELP table th { padding-right: 0.5ex;}
+div#CODEXHELP table th img {
+    background-color: ivory; padding: 3px;}
 div#CODEXHELP table table {
     margin-left: 2%; margin-right: 2%;}
 div#CODEXHELP table td.icon { width: 32px;}
@@ -288,9 +291,9 @@ div#CODEXHELP table td.textleft { text-align: left;}
 div#CODEXHELP table td.textright { text-align: right;}
 
 div#CODEXHUD div#CODEXHELP.hudpanel {
-    position: fixed; text-align: center;
-    top: 75px; left: 75px; right: 75px; bottom: 75px;
-    height: auto; width: auto;
+    position: absolute; text-align: center;
+    top: 75px; left: 75px; right: 75px;
+    height: auto; width: auto; padding-bottom: 1em;
     font-family: helvetica,sans,sans-serif;
     background-color: lightgray; color: black; 
     border-radius: 1em; -webkit-border-radius: 1em;
