@@ -342,6 +342,8 @@ var Codex={
     // There be icons here!
     Codex.root=fdjtDOM.getLink("CODEX.staticroot")||
         "http://static.beingmeta.com/";
+    if (Codex.root[Codex.root.length-1]!=="/")
+        Codex.root=Codex.root+"/";
     Codex.withsvg=document.implementation.hasFeature(
         "http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")||
         navigator.mimeTypes["image/svg+xml"];
@@ -1160,7 +1162,7 @@ var Codex={
     function fixStaticRefs(string){
         return string.replace(
                 /http:\/\/static.beingmeta.com\//g,Codex.root)
-            .replace(/{{bmg}}/g,Codex.root+"/g/");}
+            .replace(/{{bmg}}/g,Codex.root+"g/");}
     Codex.fixStaticRefs=fixStaticRefs;
     
 })();
