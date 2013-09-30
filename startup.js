@@ -809,25 +809,6 @@ Codex.Startup=
                 Codex.force_online=true;
                 return false;}
             else return false;}
-
-        function offlineDialog(){
-            var config_val=getConfig("keepdata");
-            if (typeof config_val === 'undefined') {
-                fdjtUI.choose(
-                    [{label: "No, thanks",
-                      handler: function(){
-                          setConfig("keepdata",false,true);}},
-                     {label: "Yes, keep locally",
-                      handler:
-                      function(){
-                          setConfig("keepdata",true,true);}},
-                     {label: "Ask me later",
-                      handler:
-                      function(){setConfig("keepdata",false,false);}}],
-                    "Store stuff on this computer?",
-                    fdjtDOM("div.smaller",
-                            "(to enable faster loading and offline reading)"));}}
-            
         
         function readSettings(){
             // Basic stuff
@@ -1263,8 +1244,7 @@ Codex.Startup=
             body.style.overflow='hidden';
             // Get geometry
             var geom=fdjtDOM.getGeometry(page);
-            var page_width=geom.width, page_height=geom.height;
-            var view_width=fdjtDOM.viewWidth(), view_height=fdjtDOM.viewHeight();
+            var page_width=geom.width, view_width=fdjtDOM.viewWidth();
             var page_margin=(view_width-page_width)/2;
             if (page_margin!==50) {
                 page.style.left=page_margin+'px';
@@ -1282,9 +1262,11 @@ Codex.Startup=
                 "div.codexpage",
                 "width: "+inner_width+"px; "+"height: "+inner_height+"px;");
             if (Codex.CSS.glossmark_rule) {
-                Codex.CSS.glossmark_rule.style.marginRight=(-glossmark_offset)+"px";}
+                Codex.CSS.glossmark_rule.style.marginRight=
+                    (-glossmark_offset)+"px";}
             else Codex.CSS.glossmark_rule=fdjtDOM.addCSSRule(
-                "#CODEXPAGE .codexglossmark","margin-right: "+(-glossmark_offset)+"px;");
+                "#CODEXPAGE .codexglossmark","margin-right: "+
+                    (-glossmark_offset)+"px;");
             document.body.style.overflow='';}
         Codex.sizeContent=sizeContent;
         

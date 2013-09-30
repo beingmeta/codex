@@ -93,9 +93,6 @@ Codex.setMode=
                                    fdjtDOM("div.indicator"),
                                    fdjtDOM("div.message")));
             fdjtDOM.prepend(document.body,messages,hud);
-            // Move the page head and foot to reduce layers
-            // var hudframe=fdjtID("CODEXHUDFRAME");
-            // fdjtDOM.append(hudframe,Codex.pagehead,Codex.pagefoot);
             // Fill in the HUD help
             var hudhelp=fdjtID("CODEXHUDHELP");
             hudhelp.innerHTML=fixStaticRefs(Codex.HTML.hudhelp);

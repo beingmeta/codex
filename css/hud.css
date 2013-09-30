@@ -5,15 +5,11 @@
 @charset "UTF-8";
 
 #CODEXHUD {
-    position: fixed; top: 0px; left: 0px; right: 0px; width: 100%;
-    font-family: Arial,Verdana,Helvetica,sans-serif;
-    z-index: 100;}
-
-#CODEXHUDFRAME {
     position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px;
-    width: 100%; height: 100%;
+    width: 100%; height: 100%; z-index: 100;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
     pointer-events: none;}
-#CODEXHUDFRAME > * {
+#CODEXHUD > * {
     pointer-events: all;}
 
 #CODEXHUD a { text-decoration: none;}
@@ -32,7 +28,6 @@
 #CODEXHUD.codexuifontsmall { font-size: 1em; }
 
 #CODEXHUD .codexhelp, #CODEXHUD .helpbox { font-size: 80%;}
-#CODEXHUD #CODEXHUDFRAME { font-size: 80%;}
 #CODEXHUD #CODEXSETTINGS, #CODEXHUD #CODEXCONSOLE,
 #CODEXHUD #CODEXLOGIN, #CODEXHUD #CODEXABOUTBOOK,
 #CODEXHUD #CODEXAPPSPLASH, #CODEXHUD #CODEXRIBBON {

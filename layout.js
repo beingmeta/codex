@@ -647,7 +647,7 @@ Codex.Paginate=
                     if (dirclass) addClass(page,dirclass);
                     addClass(curpage,"oldpage");
                     addClass(page,"newpage");
-                    var lastpage=curpage, nextpage=page;
+                    var lastpage=curpage;
                     setTimeout(function(){
                         dropClass(lastpage,"curpage");
                         addClass(page,"curpage");

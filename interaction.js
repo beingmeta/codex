@@ -525,7 +525,7 @@
         if (Codex.Trace.gestures) fdjtLog("content_released %o",evt);
         var passage=((hasParent(target,".fdjtselecting"))&&(getTarget(target)));
         if (!(passage)) {
-            var children=getChildren(target,".fdjtselected");
+            children=getChildren(target,".fdjtselected");
             if (children.length===0) {abortSelect(); return;}
             target=children[0]; passage=getTarget(target);}
         if (Codex.Trace.gestures)
@@ -2056,16 +2056,6 @@
         Codex.setMode(false);
         fdjtDOM.dropClass(document.body,"codexhelp");}
 
-    function scanner_expand_hold(evt){
-        fdjtDOM.addClass("CODEXSCANNER","expanded");
-        fdjtUI.cancel(evt);}
-    function scanner_expand_tap(evt){
-        fdjtDOM.toggleClass("CODEXSCANNER","expanded");
-        fdjtUI.cancel(evt);}
-    function scanner_expand_release(evt){
-        fdjtDOM.dropClass("CODEXSCANNER","expanded");
-        fdjtUI.cancel(evt);}
-
     /* Tracking text input */
 
     function setFocus(target){
@@ -2118,8 +2108,7 @@
     /* Rules */
 
     var cancel=fdjtUI.cancel;
-    var taphold_click=fdjtUI.TapHold.click;
-
+    
     function generic_cancel(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);

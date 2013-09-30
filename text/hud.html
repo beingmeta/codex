@@ -97,137 +97,135 @@
     Show keyboard help
   </div>
 </div>
-<div id="CODEXHUDFRAME">
-  <img svg="{{bmg}}codex/tocicon.svgz"
-       src="{{bmg}}codex/tocicon50x50.png"
-       alt="toc" title="navigate sections"
-       class="hudbutton hudmodebutton topleft clickable"
-       id="CODEXTOCBUTTON"
-       hudmode="statictoc"/>
-  <img svg="{{bmg}}codex/tagsearch.svgz"
-       src="{{bmg}}codex/tagsearch50x50.png"
-       alt="search" title="search tags"
-       class="hudbutton hudmodebutton topright clickable"
-       id="CODEXSEARCHBUTTON"
-       hudmode="search"/>
-  <div class="helphud topcenter">
-    <span class="fortouch">Tap</span><span class="notouch">Click</span>
-    at the top of the page to see the interface.
-  </div>
-  <div class="helphud topcenter" style="display: none;">
-    <span class="fortouch">tap</span><span class="notouch">click</span>
-    here to see the book tools
-  </div>
-  <div id="CODEXHUDBUTTONS" class="hudpanel">
-    <div class="sbookplate">
-      <a href="https://auth.sbooks.net/admin/logout" class="logout"
-         onclick="if (Codex.refuri) Codex.clearOffline();"
-         title="logout" class="cxUSER">
-        logout</a>
-      <a href="javascript:Codex.setMode('login');" name="IDLINK"
-         class="username" id="CODEXUSERNAME">
-        (login)</a>
-    </div> <!-- .flyleafplate -->
-    <div class="tabbar icons" id="CODEXTABS">
-      <img svg="{{bmg}}codex/about_tab.svgz"
-           src="{{bmg}}codex/about_tab.png"
-           alt="About" class="tab" contentid="CODEXABOUTBOOK"
-           onclick="Codex.toggleMode('about'); return fdjt.UI.cancel(event);"
-           title="information about this book"/>
-      <img svg="{{bmg}}codex/manage_tab.svgz"
-           src="{{bmg}}codex/manage_tab.png"
-           alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
-           onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
-           title="manage added layers for your sBook"/>
-      <img svg="{{bmg}}codex/settings_tab.svgz"
-           src="{{bmg}}codex/settings_tab.png"
-           alt="Device" class="tab" contentid="CODEXSETTINGS"
-           onclick="Codex.toggleMode('device'); return fdjt.UI.cancel(event);"
-           title="alter appearance and interaction"/>
-      <img svg="{{bmg}}codex/console_tab.svgz"
-           src="{{bmg}}codex/console_tab.png"
-           alt="Console" class="tab" contentid="CODEXCONSOLE"
-           onclick="Codex.toggleMode('console'); return fdjt.UI.cancel(event);"
-           title="show debugging console" />
-      <img svg="{{bmg}}codex/login_tab.svgz"
-           src="{{bmg}}codex/login_tab.png"
-           alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
-           onclick="Codex.toggleMode('login'); return fdjt.UI.cancel(event);"
-           title="login to sBooks" />
-    </div> <!-- .tabbar -->
-  </div> <!-- id="CODEXHUDBUTTONS" -->
-  <div class="helphud topleft" data-hudmode="toc">
-    <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
-    <span class="nobreak">sections</span></div>
-  <div class="helphud topright" data-hudmode="search">
-    <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
-    for&nbsp;tags
-  </div>
-  <div class="helphud leftmiddle">
-    back page
-  </div>
-  <div class="helphud rightmiddle">
-    next page
-  </div>
-  <div id="CODEXFOOT" data-touchable="span.pagespan,span.pageno,span.locoff">
-    <div id="CODEXSHOWTEXT">
-      <span class="adjustfont" data-maxfont="150%">
-        <span>
-          <span class="fortouch">Tap</span><span class="notouch">Click</span>
-          to continue reading
-        </span>
-      </span>
-    </div>
-    <div class="helphud botcenter">
-      <span style="font-size: 200%; font-weight: bold; float: left;">
-        &#x2193;</span> this bar shows where you are in the book:
-      <span class="fortouch">tap</span><span class="notouch">click</span>
-      to jump around, hold down to preview,
-      or <span style="white-space: nowrap;"><span class="fortouch">tap</span>
-        <span class="notouch">click</span> numbers to change</span>
-    </div>
-    <div id="CODEXPAGEINFO">
-      <div class="textfoot">
-        <div id="CODEXLAYOUTADJUST">Adjusting layout</div>
-        <hr class="codexlayoutindicator" id="CODEXLAYOUTINDICATOR"/>
-        <span id="CODEXPAGENOTEXT">p/n</span>
-        <span class="locoff" id="CODEXLOCPCT">??.??%</span>
-        <div id="CODEXGOTOLOC" class="codexgoto">
-          <input type="text" name="GOTOLOC" value="" placeholder="loc"
-                 title="Enter a percent (<= 100) or an immediate location (> 100)"
-                 id="CODEXLOCINPUT"
-                 onkeypress="Codex.UI.goto_keypress(event);"/>%
-        </div>
-        <div id="CODEXGOTOPAGE" class="codexgoto">
-          <input type="text" name="GOTOPAGE" value=""
-                 id="CODEXPAGEINPUT" placeholder="page"
-                 onkeypress="Codex.UI.goto_keypress(event);"/>/
-          <span id="CODEXGOTOPAGEMAX"></span>
-        </div>
-        
-      </div>
-      <div class="pagespans" id="CODEXPAGESPANS">
-      </div>
-    </div>
-  </div>
-  <img svg="{{bmg}}codex/allglosses.svgz"
-       src="{{bmg}}codex/allglosses50x50.png"
-       alt="allglosses" title="show all glosses"
-       class="hudbutton hudmodebutton botleft clickable"
-       id="CODEXALLGLOSSESBUTTON"
-       hudmode="allglosses"/>
-  <img svg="{{bmg}}codex/helpicon.svgz"
-       src="{{bmg}}codex/helpicon50x50.png"
-       alt="help" title="show contextual help"
-       class="hudbutton hudmodebutton botright clickable"
-       id="CODEXHELPBUTTON"/>
-  <div class="helphud botleft" data-hudmode="toc">
-    <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
-    <span class="nobreak">glosses</span></div>
-  <div class="helphud botright">
-    <span class="nobreak"><span class="arrow">&#x2192;</span>toggle</span><br/>
-    help</div>
+<img svg="{{bmg}}codex/tocicon.svgz"
+     src="{{bmg}}codex/tocicon50x50.png"
+     alt="toc" title="navigate sections"
+     class="hudbutton hudmodebutton topleft clickable"
+     id="CODEXTOCBUTTON"
+     hudmode="statictoc"/>
+<img svg="{{bmg}}codex/tagsearch.svgz"
+     src="{{bmg}}codex/tagsearch50x50.png"
+     alt="search" title="search tags"
+     class="hudbutton hudmodebutton topright clickable"
+     id="CODEXSEARCHBUTTON"
+     hudmode="search"/>
+<div class="helphud topcenter">
+  <span class="fortouch">Tap</span><span class="notouch">Click</span>
+  at the top of the page to see the interface.
 </div>
+<div class="helphud topcenter" style="display: none;">
+  <span class="fortouch">tap</span><span class="notouch">click</span>
+  here to see the book tools
+</div>
+<div id="CODEXHUDBUTTONS" class="hudpanel">
+  <div class="sbookplate">
+    <a href="https://auth.sbooks.net/admin/logout" class="logout"
+       onclick="if (Codex.refuri) Codex.clearOffline();"
+       title="logout" class="cxUSER">
+      logout</a>
+    <a href="javascript:Codex.setMode('login');" name="IDLINK"
+       class="username" id="CODEXUSERNAME">
+      (login)</a>
+  </div> <!-- .flyleafplate -->
+  <div class="tabbar icons" id="CODEXTABS">
+    <img svg="{{bmg}}codex/about_tab.svgz"
+         src="{{bmg}}codex/about_tab.png"
+         alt="About" class="tab" contentid="CODEXABOUTBOOK"
+         onclick="Codex.toggleMode('about'); return fdjt.UI.cancel(event);"
+         title="information about this book"/>
+    <img svg="{{bmg}}codex/manage_tab.svgz"
+         src="{{bmg}}codex/manage_tab.png"
+         alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
+         onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
+         title="manage added layers for your sBook"/>
+    <img svg="{{bmg}}codex/settings_tab.svgz"
+         src="{{bmg}}codex/settings_tab.png"
+         alt="Device" class="tab" contentid="CODEXSETTINGS"
+         onclick="Codex.toggleMode('device'); return fdjt.UI.cancel(event);"
+         title="alter appearance and interaction"/>
+    <img svg="{{bmg}}codex/console_tab.svgz"
+         src="{{bmg}}codex/console_tab.png"
+         alt="Console" class="tab" contentid="CODEXCONSOLE"
+         onclick="Codex.toggleMode('console'); return fdjt.UI.cancel(event);"
+         title="show debugging console" />
+    <img svg="{{bmg}}codex/login_tab.svgz"
+         src="{{bmg}}codex/login_tab.png"
+         alt="Login" class="tab cxNOUSER" contentid="SBOOKSAPP"
+         onclick="Codex.toggleMode('login'); return fdjt.UI.cancel(event);"
+         title="login to sBooks" />
+  </div> <!-- .tabbar -->
+</div> <!-- id="CODEXHUDBUTTONS" -->
+<div class="helphud topleft" data-hudmode="toc">
+  <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
+  <span class="nobreak">sections</span></div>
+<div class="helphud topright" data-hudmode="search">
+  <span class="nobreak"><span class="arrow">&#x2192;</span>search</span><br/>
+  for&nbsp;tags
+</div>
+<div class="helphud leftmiddle">
+  back page
+</div>
+<div class="helphud rightmiddle">
+  next page
+</div>
+<div id="CODEXFOOT" data-touchable="span.pagespan,span.pageno,span.locoff">
+  <div id="CODEXSHOWTEXT">
+    <span class="adjustfont" data-maxfont="150%">
+      <span>
+        <span class="fortouch">Tap</span><span class="notouch">Click</span>
+        to continue reading
+      </span>
+    </span>
+  </div>
+  <div class="helphud botcenter">
+    <span style="font-size: 200%; font-weight: bold; float: left;">
+      &#x2193;</span> this bar shows where you are in the book:
+    <span class="fortouch">tap</span><span class="notouch">click</span>
+    to jump around, hold down to preview,
+    or <span style="white-space: nowrap;"><span class="fortouch">tap</span>
+      <span class="notouch">click</span> numbers to change</span>
+  </div>
+  <div id="CODEXPAGEINFO">
+    <div class="textfoot">
+      <div id="CODEXLAYOUTADJUST">Adjusting layout</div>
+      <hr class="codexlayoutindicator" id="CODEXLAYOUTINDICATOR"/>
+      <span id="CODEXPAGENOTEXT">p/n</span>
+      <span class="locoff" id="CODEXLOCPCT">??.??%</span>
+      <div id="CODEXGOTOLOC" class="codexgoto">
+        <input type="text" name="GOTOLOC" value="" placeholder="loc"
+               title="Enter a percent (<= 100) or an immediate location (> 100)"
+               id="CODEXLOCINPUT"
+               onkeypress="Codex.UI.goto_keypress(event);"/>%
+      </div>
+      <div id="CODEXGOTOPAGE" class="codexgoto">
+        <input type="text" name="GOTOPAGE" value=""
+               id="CODEXPAGEINPUT" placeholder="page"
+               onkeypress="Codex.UI.goto_keypress(event);"/>/
+        <span id="CODEXGOTOPAGEMAX"></span>
+      </div>
+      
+    </div>
+    <div class="pagespans" id="CODEXPAGESPANS">
+    </div>
+  </div>
+</div>
+<img svg="{{bmg}}codex/allglosses.svgz"
+     src="{{bmg}}codex/allglosses50x50.png"
+     alt="allglosses" title="show all glosses"
+     class="hudbutton hudmodebutton botleft clickable"
+     id="CODEXALLGLOSSESBUTTON"
+     hudmode="allglosses"/>
+<img svg="{{bmg}}codex/helpicon.svgz"
+     src="{{bmg}}codex/helpicon50x50.png"
+     alt="help" title="show contextual help"
+     class="hudbutton hudmodebutton botright clickable"
+     id="CODEXHELPBUTTON"/>
+<div class="helphud botleft" data-hudmode="toc">
+  <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
+  <span class="nobreak">glosses</span></div>
+<div class="helphud botright">
+  <span class="nobreak"><span class="arrow">&#x2192;</span>toggle</span><br/>
+  help</div>
 <!--
     /* Emacs local variables
     ;;;  Local variables: ***

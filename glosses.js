@@ -1210,7 +1210,7 @@
                         fdjtState.dropLocal("queued("+Codex.refuri+")");}
                     else if (req.readyState===4) {
                         Codex.setConnected(false);}
-                    else {};};
+                    else {}};
                 try {
                     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     req.send(post_data);}
