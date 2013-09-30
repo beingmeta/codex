@@ -57,6 +57,8 @@ var Codex={
     taptapmsecs: 500, holdmsecs: 200, edgeclick: 50, pagesize: 250,
     dontanimate: false,
     glossmodes: /(addtag)|(addlink)|(addoutlet)|(editdetail)|(hamburger)/,
+    // Whether the text takes up the whole height of the viewport
+    fullheight: false,
     updatehash: true, iscroll: false,
     // Whether to cache layouts locally
     cachelayouts: true,

@@ -1244,17 +1244,21 @@ Codex.Startup=
             body.style.overflow='hidden';
             // Get geometry
             var geom=fdjtDOM.getGeometry(page);
+            var view_height=fdjtDOM.viewHeight();
             var page_width=geom.width, view_width=fdjtDOM.viewWidth();
             var page_margin=(view_width-page_width)/2;
             if (page_margin!==50) {
                 page.style.left=page_margin+'px';
                 page.style.right=page_margin+'px';}
             else page.style.left=page.style.right='';
+            if ((geom.top<35)||((view_height-(geom.height+geom.top))<35))
+                Codex.fullheight=true;
+            else Codex.fullheight=false;
             geom=fdjtDOM.getGeometry(page,page.offsetParent,true);
             var inner_width=geom.inner_width, inner_height=geom.inner_height;
             var glossmark_offset=page_margin-(2+geom.right_border);
-            // The 2 here is for the right border of the glossmark, which appears
-            // as a vertical mark on the margin.
+            // The 2 here is for the right border of the glossmark,
+            // which appears as a vertical mark on the margin.
             if (Codex.CSS.pagerule) {
                 Codex.CSS.pagerule.style.width=inner_width+"px";
                 Codex.CSS.pagerule.style.height=inner_height+"px";}

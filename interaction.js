@@ -263,7 +263,8 @@
         // Detect touches with two fingers, which we may treat especially
         if ((evt.touches)||(evt.shiftKey)) {
             if (Codex.Trace.gestures)
-                fdjtLog("content_tapped(double/shift) dt=%o now=%o",double_touch,now);
+                fdjtLog("content_tapped(double/shift) dt=%o now=%o",
+                        double_touch,now);
             if ((evt.touches.length>1)||(evt.shiftKey)) {
                 double_touch=now;
                 if (addgloss_timer) {
@@ -326,7 +327,10 @@
         if (Codex.Trace.gestures)
             fdjtLog("ctouch/nopassage (%o) %o, m=%o, @%o,%o, vw=%o",
                     evt,target,Codex.mode,cX,cY,fdjtDOM.viewWidth());
-        if (cX<(fdjtDOM.viewWidth()/3))
+        if ((Codex.fullheight)&&(!(Codex.hudup))&&
+            ((cY<50)||(cY>(fdjtDOM.viewHeight()-50)))) 
+            Codex.setHUD(true);
+        else if (cX<(fdjtDOM.viewWidth()/3))
             Codex.Backward(evt);
         else Codex.Forward(evt);
         fdjtUI.cancel(evt); gesture_start=false;
