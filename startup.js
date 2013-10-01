@@ -1227,7 +1227,7 @@ Codex.Startup=
                         " pages"),
                 pages);
             
-            Codex.body=fdjtDOM("div#CODEXBODY",content,page);
+            Codex.body=fdjtDOM("div#CODEXBODY.codexbody",content,page);
             fdjtDOM.append(body,Codex.body);
             fdjtDOM.addClass(body,"sbook");
             sizeContent();
