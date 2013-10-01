@@ -368,8 +368,7 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
 
-body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
-body.codexscanning div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
 body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: none;}
@@ -634,12 +633,14 @@ body.cxNOUSER a.logout {
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;
-    max-height: 60px; display: block;}
+    max-height: 50px; display: block;}
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
+    max-height: 60px;}
 div#CODEXHUD.openhead div#CODEXHUDBUTTONS.hudpanel {
     display: none;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS {
-    margin: 0px; padding: 0px; border-bottom-width: 0px; min-height: 60px;
+    margin: 0px; padding: 0px; border-bottom-width: 0px;
     font-family: verdana,helvetica,times,serif; font-variant: small-caps;
     text-align: center;}
 
@@ -1232,7 +1233,7 @@ div#CODEXHUD div.hudpanel#CODEXAPPSPLASH {
     display: none;}
 
 div#CODEXAPPSPLASH p, div#CODEXAPPSPLASH h1 {
-    text-align: left; text-indent: 0px;}
+    text-align: left; text-indent: 0px; clear: none;}
 div#CODEXAPPSPLASH p, div#CODEXAPPSPLASH h1 {
     margin-left: 10%; margin-right: 5%;
     margin-top: 1ex; margin-bottom: 0.5ex;}
@@ -1300,6 +1301,17 @@ body.cxNOUSER .cxUSER { display: none;}
 body.cxUSER .cxNOUSER { display: none;}
 
 body.cxNOUSER form.sbooksapp { padding-top: 0px;}
+
+.cxwithuser, .cxnouser, .cxdisconn, .cxwithconn { display: none; }
+
+body.cxUSER tr.cxwithuser, body.cxNOUSER tr.cxnouser {
+   display: table-row; }
+body.cxUSER tbody.cxwithuser, body.cxNOUSER tbody.cxnouser {
+  display: table-row-group; }
+body.cxUSER.cxCONN tbody.cxwithconn { display: table-row-group; }
+body.cxUSER.cxCONN tr.cxwithconn { display: table-row; }
+body.cxUSER.cxDISCONN tbody.cxnoconn { display: table-row-group; }
+body.cxUSER.cxDISCONN tr.cxnoconn { display: table-row; }
 
 body.cxNOUSER .cxwithuser { display: none;}
 body.cxNOUSER .cxdisconn {display: none;}

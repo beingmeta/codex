@@ -107,7 +107,8 @@ body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER {
 
 div#CODEXPREVIEWHELP.helpbox {
     padding-top: 0px; padding-bottom: 0px;
-    overflow: hidden;}
+    text-align: center; overflow: hidden;
+    pointer-events: none;}
 div#CODEXPREVIEWHELP.helpbox em { color: purple; }
 div#CODEXPREVIEWHELP.helpbox span.inhead {
     color: purple; font-size: 120%;}

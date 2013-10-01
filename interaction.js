@@ -621,22 +621,13 @@
             if (Codex.Trace.gestures)
                 fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
             if (already_there) {
-                if (Codex.mode==="tocscan")
-                    Codex.setMode("overtoc");
-                else Codex.setMode(false);
+                Codex.setMode("overtoc");
                 fdjtUI.cancel(evt);
                 return;}
-            if (show_fulltoc) Codex.GoTo(target);
-            else Codex.JumpTo(target);
-            if (show_fulltoc) Codex.setMode("overtoc");
-            else if (Codex.mode==="tocscan")
-                Codex.setMode(false);
-            else {
-                Codex.setMode("tocscan");
-                fdjtUI.cancel(evt);}
-            return fdjtUI.cancel(evt);}
-        else if (Codex.Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
-        else {}}
+            Codex.JumpTo(target);
+            fdjtUI.cancel(evt);}
+       else if (Codex.Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
+       else {}}
     function toc_held(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt), about=getAbout(target);
