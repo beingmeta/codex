@@ -634,7 +634,7 @@ body.cxNOUSER a.logout {
 
 div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
     top: 0px; left: 60px; right: 60px; z-index: 100;
-    display: block;}
+    max-height: 60px; display: block;}
 div#CODEXHUD.openhead div#CODEXHUDBUTTONS.hudpanel {
     display: none;}
 
@@ -669,6 +669,14 @@ div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab {
 div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab  {
     border: transparent solid 3px;}
 div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
+    transition-property: height;
+    -o-transition-property: height;
+    -moz-transition-property: height;
+    -webkit-transition-property: height; 
+    transition-duration: 1.0s; -o-transition-duration: 1.0s;
+    -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;
+    height: 40px; width: auto;}
+body.hudup div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
     height: 50px; width: auto;}
 
 div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[alt='About'],
