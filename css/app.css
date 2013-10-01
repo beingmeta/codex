@@ -754,23 +754,23 @@ body.cxANIMATE div.codexpage.newpage.onright.curpage, div.codexpage.newpage.onle
 
 /* Special rules for overriding properties on split (dup) passages */
 
-.codexdupstart {
-    padding-bottom: 0px !important;
-    border-bottom-width: 0px !important;
-    margin-bottom: 0px !important;}
-.codexdup {
-    padding-top: 0px !important;
-    border-top-width: 0px !important;
-    margin-top: 0px !important;
-    padding-bottom: 0px !important;
-    border-bottom-width: 0px !important;
-    margin-bottom: 0px !important;
-    text-indent: 0px !important;}
-.codexdupend {
-    padding-top: 0px !important;
-    border-top-width: 0px !important;
-    margin-top: 0px !important;
-    text-indent: 0px !important;}
+body #CODEXBODY #CODEXPAGE .codexpage .codexdupstart {
+    padding-bottom: 0px;
+    border-bottom-width: 0px;
+    margin-bottom: 0px;}
+body #CODEXBODY #CODEXPAGE .codexpage .codexdup {
+    padding-top: 0px;
+    border-top-width: 0px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    border-bottom-width: 0px;
+    margin-bottom: 0px;
+    text-indent: 0px;}
+body #CODEXBODY #CODEXPAGE .codexpage .codexdupend {
+    padding-top: 0px;
+    border-top-width: 0px;
+    margin-top: 0px;
+    text-indent: 0px;}
 
 div#CODEXPAGE.codexpaginating div.codexpage { visiblity: hidden;}
 
