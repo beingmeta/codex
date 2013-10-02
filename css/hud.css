@@ -11,7 +11,8 @@
     pointer-events: none;}
 #CODEXHUD > * {
     pointer-events: all;}
-body.hudup #CODEXHUD {  z-index: 100; }
+body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart {
+    z-index: 100; }
 
 #CODEXHUD a { text-decoration: none;}
 #CODEXHUD a img { border: transparent;}
