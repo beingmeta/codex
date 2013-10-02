@@ -77,6 +77,10 @@ body.sbook div#CODEXCONTENT {
 #CODEXBODY.codexcontrasthigh { background-color: #ffffff; color: #444; }
 #CODEXBODY.codexcontrastlow  { background-color: #e5e0d4; color: #333; }
 
+#SBOOKTITLEPAGE { text-align: center;}
+#SBOOKTITLEPAGE .title, #SBOOKTITLEPAGE .author { margin-bottom: 1em;}
+#SBOOKTITLEPAGE .pubinfo { margin-top: 3em;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***
