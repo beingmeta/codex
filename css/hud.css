@@ -6,11 +6,12 @@
 
 #CODEXHUD {
     position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px;
-    width: 100%; height: 100%; z-index: 100;
+    width: 100%; height: 100%;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     pointer-events: none;}
 #CODEXHUD > * {
     pointer-events: all;}
+body.hudup #CODEXHUD {  z-index: 100; }
 
 #CODEXHUD a { text-decoration: none;}
 #CODEXHUD a img { border: transparent;}
