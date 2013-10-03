@@ -2078,7 +2078,11 @@ Codex.Startup=
             dropLocal("codex.etc("+Codex.refuri+")");
             Codex.sourcedb.clearOffline(function(){
                 Codex.glossdb.clearOffline(function(){
-                    fdjtState.dropLocal("codex.sync("+Codex.refuri+")");});});}
+                    fdjtState.dropLocal("codex.sync("+Codex.refuri+")");});});
+            if (Codex.user) {
+                // For now, we clear layouts, because they might
+                //  contain personalized information
+                fdjt.CodexLayouts.clearLayouts();}}
         Codex.clearOffline=clearOffline;
 
         /* Other setup */
