@@ -196,7 +196,7 @@
         var notespan=getChild(form,".notespan");
         if (glossinput) {
             glossinput.onkeypress=glossinput_onkeypress;
-            // glossinput.onkeydown=glossinput_keydown;
+            glossinput.onkeydown=glossinput_onkeydown;
             glossinput.onfocus=glossinput_onfocus;
             glossinput.onblur=Codex.UI.glossinput_blur;
             if ((gloss)&&(!(response))) {
@@ -716,14 +716,17 @@
         glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}
 
     function glossinput_onkeypress(evt){
-        var target=fdjtUI.T(evt); var text=target.value;
-        var pos=target.selectionStart||0;
+        var target=fdjtUI.T(evt), form=getParent(target,"FORM"), text=target.value;
+        var pos=target.selectionStart||0, taginfo=findTag(text,pos);
         var ch=evt.charCode, charstring=String.fromCharCode(ch);
+        var cloud=((taginfo.prefix==="@")?(Codex.share_cloud):(Codex.gloss_cloud));
         if (ch===13) {
-            var taginfo=findTag(text,pos);
             if (taginfo) {
+                // Remove tag text
                 target.value=text.slice(0,taginfo.start)+text.slice(taginfo.end);
-                glosstag_done(target,taginfo.content,evt.ctrlKey,taginfo.prefix==="@");
+                // Add a selection or tag as appropriate
+                glosstag_done(target,taginfo.content,evt.ctrlKey,
+                              taginfo.prefix==="@");
                 fdjt.UI.cancel(evt);}
             else if (evt.shiftKey) {
                 target.value=text.slice(0,pos)+"\n"+text.slice(pos);
@@ -733,7 +736,29 @@
                 var form=fdjtDOM.getParent(target,"FORM");
                 fdjtUI.cancel(evt);
                 submitGloss(form);}}
-        else if (tag_ends.test(charstring)) { // Handles tag closing, which works as input
+        else if ((ch===9)&&(cloud)) {
+            taginfo=findTag(text,pos,true);
+            gloss_cloud.complete(taginfo.content);
+            if ((cloud.prefix)&&(cloud.prefix!==content)) {
+                var replace_start=taginfo.start+((taginfo.delim)?(2):(1));
+                var replace_end=taginfo.end-((taginfo.needs)?(0):(1));
+                if (cloud.prefix.search(/\s/)>=0)
+                    target.value=text.slice(0,replace_start)+
+                    ((taginfo.delim)?(""):("\""))+cloud.prefix+
+                    ((taginfo.needs)?(taginfo.needs):(""))+
+                    text.slice(replace_end);
+                else target.value=
+                    text.slice(0,replace_start)+cloud.prefix+text.slice(replace_end);
+                fdjtDOM.cancel(evt);
+                setTimeout(function(){
+                    Codex.UI.updateScroller("CODEXGLOSSCLOUD");},
+                           100);
+                return;}
+            else if (evt.shiftKey) cloud.selectPrevious();
+            else cloud.selectNext();}
+        else if (!(taginfo)) {}
+        else if (tag_ends.test(charstring)) {
+                    // Handles tag closing, which is an implicit add tag
             var taginfo=findTag(text,pos,true);
             if (!(taginfo)) return;
             else if (taginfo.needs===charstring) {
@@ -745,6 +770,40 @@
         else {
             if (glossinput_timer) clearTimeout(glossinput_timer);
             glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}}
+
+    function glossinput_onkeydown(evt){
+        var ch=evt.keyCode, target=fdjtUI.T(evt);
+        if ((ch===9)||(ch===13)) {
+            var form=getParent(target,"FORM"), text=target.value;
+            var pos=target.selectionStart||0, taginfo=findTag(text,pos,true);
+            var cloud=((taginfo.prefix==="@")?(Codex.share_cloud):(Codex.gloss_cloud));
+            if (!(taginfo)) return;
+            else if (ch===9) {
+                cloud.complete(taginfo.content);
+                if ((cloud.prefix)&&(cloud.prefix!==content)) {
+                    var replace_start=taginfo.start+((taginfo.delim)?(2):(1));
+                    var replace_end=taginfo.end-((taginfo.needs)?(0):(1));
+                    if (cloud.prefix.search(/\s/)>=0)
+                        target.value=text.slice(0,replace_start)+
+                        ((taginfo.delim)?(""):("\""))+cloud.prefix+
+                        ((taginfo.needs)?(taginfo.needs):(""))+
+                        text.slice(replace_end);
+                    else target.value=
+                        text.slice(0,replace_start)+cloud.prefix+text.slice(replace_end);
+                    setTimeout(function(){
+                        Codex.UI.updateScroller("CODEXGLOSSCLOUD");},
+                               100);
+                    return;}
+                else if (evt.shiftKey) cloud.selectPrevious();
+                else cloud.selectNext();
+                fdjtUI.cancel(evt);}
+            else if (cloud.selection) {
+                Codex.addTag2Form(form,cloud.selection);
+                target.value=text.slice(0,taginfo.start)+text.slice(taginfo.end);
+                dropClass("CODEXHUD",/gloss(tagging|tagoutlet)/g);
+                setTimeout(function(){cloud.complete("");},10);
+                fdjtUI.cancel(evt);}
+            else {}}}
 
     function glosstag_complete(input_elt){
         var text=input_elt.value;
