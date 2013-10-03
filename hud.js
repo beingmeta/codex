@@ -574,6 +574,7 @@ Codex.setMode=
                 var allcards=Codex.DOM.allglosses.childNodes;
                 var i=0, lim=allcards.length;
                 var card=false, lastcard=false, lasthead=false;
+                if (Codex.glosses) Codex.glosses.setLive(true);
                 while (i<lim) {
                     var each=allcards[i++];
                     if (each.nodeType!==1) continue;

@@ -599,7 +599,7 @@ Codex.Slice=(function () {
         if (flag) {
             if (this.live) return false;
             else {
-                this.update();
+                if (this.changed) this.update();
                 return true;}}
         else if (this.live) {
             this.live=false;

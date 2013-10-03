@@ -11,7 +11,8 @@
     pointer-events: none;}
 #CODEXHUD > * {
     pointer-events: all;}
-body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart {
+body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
+#CODEXHUD.openglossmark {
     z-index: 100; }
 body.hudup.cxDEBUG #CODEXHUD { z-index: 0;}
 
