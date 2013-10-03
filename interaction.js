@@ -559,6 +559,20 @@
             Codex.setFocus(input);
             addClass(form_div,"focused");}}
 
+    function content_swiped(evt){
+        var dx=evt.deltaX, dy=evt.deltaY;
+        var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
+        if (Codex.Trace.gestures)
+            fdjtLog("swiped dx=%o, dy=%o, adx=%o, ady=%o",dx,dy,adx,ady);
+        if (adx>(ady*2)) {
+            if (dx<0) Codex.Forward(evt);
+            else Codex.Backward(evt);}
+        else if (ady>(adx*2)) {
+            if (!(Codex.hudup)) Codex.setHUD(true);
+            else if (dy<0) Codex.setMode("allglosses");
+            else Codex.setMode("search");}
+        else {}}
+
     function initGlossMode(){
         var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
         if (form) {
@@ -2285,6 +2299,7 @@
                    hold: content_held,
                    slip: content_slipped,
                    release: content_released,
+                   swipe: content_swiped,
                    click: content_click},
          hud: {click: handleXTarget, tap: handleXTarget},
          toc: {tap: toc_tapped,hold: toc_held,
