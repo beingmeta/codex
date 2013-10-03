@@ -90,7 +90,7 @@ Codex.Slice=(function () {
                     // (fdjtUI.Ellipsis("span.note",info.note,140))
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
-                    ((info.alltags)&&(showtags(info)))," ",
+                    (((info.alltags)||(info.tags))&&(showtags(info)))," ",
                     ((info.links)&&(showlinks(info.links)))," ",
                     ((info.attachments)&&
                      (showlinks(info.attachments,"span.attachments")))," ",

@@ -296,6 +296,11 @@ Codex.setMode=
                 addClass(nodes,"glossed");
                 var i=0, lim=nodes.length; while (i<lim) {
                     addGlossmark(nodes[i++],item);}
+                if (item.tags) {
+                    var gloss_cloud=Codex.gloss_cloud;
+                    var tags=item.tags, j=0, n_tags=tags.length;
+                    while (j<n_tags) 
+                        Codex.cloudEntry(gloss_cloud,tags[j++]);}
                 if (item.tstamp>Codex.syncstamp)
                     Codex.syncstamp=item.tstamp;}}
 
