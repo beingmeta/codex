@@ -13,14 +13,13 @@
     pointer-events: all;}
 body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart {
     z-index: 100; }
+body.hudup.cxDEBUG #CODEXHUD { z-index: 0;}
 
 #CODEXHUD a { text-decoration: none;}
 #CODEXHUD a img { border: transparent;}
 .cxMOUSE #CODEXHUD a:hover img { border: inherit;}
 .cxMOUSE #CODEXHUD a:hover { text-decoration: underline;}
 .cxMOUSE #CODEXHUD a.brick:hover { text-decoration: none;}
-
-/* #CODEXHEART, #CODEXAPPSPLASH { font-size: 2em; } */
 
 /* Size rules */
 
@@ -1347,6 +1346,16 @@ img.codexclosehud#CODEXSTOPSCAN {
 #CODEXHUD.tocscan img.codexclosehud#CODEXSTOPSCAN,
 #CODEXHUD.scanning img.codexclosehud#CODEXSTOPSCAN {
     z-index: 500; display: block;}
+
+/* Full height/width rules */
+
+body.cxFULLHEIGHT #CODEXHEAD, body.cxFULLHEIGHT #CODEXFOOT {
+    display: none;}
+body.cxFULLHEIGHT.hudup #CODEXHEAD, body.cxFULLHEIGHT.hudup #CODEXFOOT {
+    display: block;}
+
+body.cxFULLHEIGHT.cxFULLWIDTH #CODEXHUD {display: none;}
+body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD {display: block;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

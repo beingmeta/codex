@@ -1254,6 +1254,13 @@ Codex.Startup=
             if ((geom.top<35)||((view_height-(geom.height+geom.top))<35))
                 Codex.fullheight=true;
             else Codex.fullheight=false;
+            if ((geom.left<35)||((view_width-(geom.width+geom.left))<35))
+                Codex.fullwidth=true;
+            else Codex.fullwidth=false;
+            if (Codex.fullwidth) addClass(document.body,"cxFULLWIDTH");
+            else dropClass(document.body,"cxFULLWIDTH");
+            if (Codex.fullheight) addClass(document.body,"cxFULLHEIGHT");
+            else dropClass(document.body,"cxFULLHEIGHT");
             geom=fdjtDOM.getGeometry(page,page.offsetParent,true);
             var inner_width=geom.inner_width, inner_height=geom.inner_height;
             var glossmark_offset=page_margin-(2+geom.right_border);
