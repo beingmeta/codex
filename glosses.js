@@ -699,7 +699,7 @@
 
     function tagclear(input_elt,pos){
         var text=input_elt.value;
-        var pos=input_elt.selectionStart;
+        if (!(pos)) pos=input_elt.selectionStart;
         var info=findTag(text,pos);
         if (info) {
             input_elt.value=
@@ -716,14 +716,15 @@
         glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}
 
     function glossinput_onkeypress(evt){
-        var target=fdjtUI.T(evt), form=getParent(target,"FORM"), text=target.value;
-        var pos=target.selectionStart||0, taginfo=findTag(text,pos);
+        var target=fdjtUI.T(evt), form=getParent(target,"FORM");
+        var text=target.value, pos=target.selectionStart||0;
         var ch=evt.charCode, charstring=String.fromCharCode(ch);
-        var cloud=((taginfo.prefix==="@")?(Codex.share_cloud):(Codex.gloss_cloud));
+        var taginfo=findTag(text,pos);
         if (ch===13) {
             if (taginfo) {
                 // Remove tag text
-                target.value=text.slice(0,taginfo.start)+text.slice(taginfo.end);
+                target.value=text.slice(0,taginfo.start)+
+                    text.slice(taginfo.end);
                 // Add a selection or tag as appropriate
                 glosstag_done(target,taginfo.content,evt.ctrlKey,
                               taginfo.prefix==="@");
@@ -733,23 +734,26 @@
                 target.selectionStart++;
                 return fdjtUI.cancel(evt);}
             else {
-                var form=fdjtDOM.getParent(target,"FORM");
                 fdjtUI.cancel(evt);
                 submitGloss(form);}}
         else if (!(taginfo)) {}
         else if (tag_ends.test(charstring)) {
-                    // Handles tag closing, which is an implicit add tag
-            var taginfo=findTag(text,pos,true);
+            // Handles tag closing, which is an implicit add tag
+            taginfo=findTag(text,pos,true);
             if (!(taginfo)) return;
             else if (taginfo.needs===charstring) {
-                target.value=text.slice(0,taginfo.start)+text.slice(taginfo.end);
-                glosstag_done(target,taginfo.content,evt.ctrlKey,taginfo.prefix==="@");
+                target.value=text.slice(0,taginfo.start)+
+                    text.slice(taginfo.end);
+                glosstag_done(target,taginfo.content,evt.ctrlKey,
+                              taginfo.prefix==="@");
                 fdjtUI.cancel(evt);}
             else {}
             return;}
         else {
             if (glossinput_timer) clearTimeout(glossinput_timer);
-            glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}}
+            glossinput_timer=setTimeout(function(){
+                glosstag_complete(target);},
+                                        150);}}
 
     function glossinput_onkeydown(evt){
         var ch=evt.keyCode, target=fdjtUI.T(evt);
@@ -759,7 +763,8 @@
             var cloud=((taginfo.prefix==="@")?(Codex.share_cloud):(Codex.gloss_cloud));
             if (!(taginfo)) return;
             else if (ch===9) {
-                cloud.complete(taginfo.content);
+                var content=taginfo.content;
+                cloud.complete(content);
                 if ((cloud.prefix)&&(cloud.prefix!==content)) {
                     var replace_start=taginfo.start+((taginfo.delim)?(2):(1));
                     var replace_end=taginfo.end-((taginfo.needs)?(0):(1));
@@ -811,7 +816,7 @@
         else if (tagtext.indexOf('|')>0) {
             if (isoutlet) 
                 fdjtLog.warn("Can't define outlets (sources) from %s",tagtext);
-            else tag=Codex.knodule.def(tagstring);}
+            else tag=Codex.knodule.def(tagtext);}
         else {
             var cloud=((isoutlet)?(Codex.share_cloud):(Codex.gloss_cloud));
             var completions=cloud.complete(tagtext);
@@ -819,7 +824,7 @@
             else if (completions.length===1) tag=completions[0];
             else {}
             if ((isoutlet)&&(!(tag))) 
-                fdjtLog.warn("Unknown outlet %s",tagtext)
+                fdjtLog.warn("Unknown outlet %s",tagtext);
             else if (isoutlet) addOutlet(form,tag);
             else if (!(tag)) {
                 tag=Codex.knodule.ref(tagtext);
