@@ -784,7 +784,11 @@
                 setTimeout(function(){cloud.complete("");},10);
                 cloud.clearSelection();
                 fdjtUI.cancel(evt);}
-            else {}}}
+            else {}}
+        else if ((ch===8)||(ch===46)||((ch>=35)&&(ch<=40))) {
+            // These may change content, so we update the completion state
+            if (glossinput_timer) clearTimeout(glossinput_timer);
+            glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}}
 
     function glosstag_complete(input_elt){
         var text=input_elt.value;
