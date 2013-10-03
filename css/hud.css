@@ -266,6 +266,7 @@ body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
     border: solid transparent 3px;
@@ -297,6 +298,7 @@ div#CODEXHUD div#CODEXHEART .hudpanel { overflow: auto;}
 body.hudup #CODEXHUD.openheart #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEART,
+body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
 body #CODEXHUD.addgloss.glosseditdetail #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
@@ -306,6 +308,7 @@ body #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
 body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEART div.hudpanel,
+body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glosseditdetail #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEART div.hudpanel {
@@ -317,6 +320,7 @@ body.hudup #CODEXHUD.searchresults.openheart #CODEXHEART {
 body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glosstagging #CODEXHEART,
+body.cxISCROLL #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glosseditdetail #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
@@ -324,6 +328,7 @@ body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
 body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddtag #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glosstagging #CODEXHEART #CODEXHEARTCONTENT,
+body.cxISCROLL #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glosseditdetail #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART #CODEXHEARTCONTENT {
@@ -339,6 +344,7 @@ body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER {
     -o-box-shadow: 1em 1em 1em #cccccc;}
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEARTHOLDER,
+body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER,
 body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTHOLDER {
     top: 150px; bottom: 50px; height: auto;}
@@ -447,6 +453,7 @@ div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
 div#CODEXHUD.settings div#CODEXSETTINGS.hudpanel,
 div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART div#CODEXGLOSSCLOUD.hudpanel,
 div#CODEXHUD.addgloss.glosstagging div#CODEXHEART div#CODEXGLOSSCLOUD.hudpanel,
+div#CODEXHUD.addgloss.glosstagoutlet div#CODEXHEART div#CODEXSHARECLOUD.hudpanel,
 div#CODEXHUD.addgloss.glossaddoutlet div#CODEXHEART div#CODEXSHARECLOUD.hudpanel,
 div#CODEXHUD.addgloss.glossaddlink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
 div#CODEXHUD.addgloss.glosseditdetail div#CODEXHEART div#CODEXGLOSSEDITDETAIL.hudpanel,

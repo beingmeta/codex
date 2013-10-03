@@ -753,8 +753,8 @@
         if (taginfo) {
             var completions;
             var isoutlet=(taginfo.prefix==="@");
-            if (isoutlet) swapClass("CODEXHUD",/gloss(tagging|addoutlet)/g,"glossaddoutlet");
-            else swapClass("CODEXHUD",/gloss(tagging|addoutlet)/g,"glosstagging");
+            if (isoutlet) swapClass("CODEXHUD",/gloss(tagging|tagoutlet)/g,"glosstagoutlet");
+            else swapClass("CODEXHUD",/gloss(tagging|tagoutlet)/g,"glosstagging");
             if (isoutlet) completions=Codex.share_cloud.complete(taginfo.content);
             else completions=Codex.gloss_cloud.complete(taginfo.content);
             fdjtLog("Got %d completions for %s",completions.length,taginfo.content);}
