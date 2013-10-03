@@ -736,26 +736,6 @@
                 var form=fdjtDOM.getParent(target,"FORM");
                 fdjtUI.cancel(evt);
                 submitGloss(form);}}
-        else if ((ch===9)&&(cloud)) {
-            taginfo=findTag(text,pos,true);
-            gloss_cloud.complete(taginfo.content);
-            if ((cloud.prefix)&&(cloud.prefix!==content)) {
-                var replace_start=taginfo.start+((taginfo.delim)?(2):(1));
-                var replace_end=taginfo.end-((taginfo.needs)?(0):(1));
-                if (cloud.prefix.search(/\s/)>=0)
-                    target.value=text.slice(0,replace_start)+
-                    ((taginfo.delim)?(""):("\""))+cloud.prefix+
-                    ((taginfo.needs)?(taginfo.needs):(""))+
-                    text.slice(replace_end);
-                else target.value=
-                    text.slice(0,replace_start)+cloud.prefix+text.slice(replace_end);
-                fdjtDOM.cancel(evt);
-                setTimeout(function(){
-                    Codex.UI.updateScroller("CODEXGLOSSCLOUD");},
-                           100);
-                return;}
-            else if (evt.shiftKey) cloud.selectPrevious();
-            else cloud.selectNext();}
         else if (!(taginfo)) {}
         else if (tag_ends.test(charstring)) {
                     // Handles tag closing, which is an implicit add tag
@@ -802,6 +782,7 @@
                 target.value=text.slice(0,taginfo.start)+text.slice(taginfo.end);
                 dropClass("CODEXHUD",/gloss(tagging|tagoutlet)/g);
                 setTimeout(function(){cloud.complete("");},10);
+                cloud.clearSelection();
                 fdjtUI.cancel(evt);}
             else {}}}
 
