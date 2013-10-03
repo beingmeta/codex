@@ -648,70 +648,69 @@
 
     /* Text handling for the gloss text input */
 
-    // This is use for delaying completion calls and keeping them from
-    // clobbering one another
+    // An inline tag is of the form #<txt> or @<txt> where <txt> is
+    //  either
+    //  1. a word without spaces or terminal punctuation
+    //  2. a string wrapped in delimiters, including
+    //      "xx" 'yy' /zz/ [ii] (jj) {kk} «aa»
+    var tag_delims={"\"": "\"", "'": "'", "/": "/","<":">",
+                    "[": "]","(":")","{":"}","«":"»"};
+    var tag_ends=/(\s|["'\/\[(<{}>)\]«»])/g;
+    
+    // Keep completion calls from clobbering one another
     var glossinput_timer=false;
     
-    function tagstart(string,pos){
-        var spaces=false;
-        if ((!(string))||(string.length===0)) return -1;
-        if (pos<=0) return false;
-        var start=pos-1;
-        if (start<=0) return -1;
-        var c=string[start], pc=string[start-1];
-        while (start>=0) {
-            if (pc==='\\') {start--; continue;}
-            else if (string[start].search(/\s/)===0) {spaces=false; start--;}
-            else if ((c==='@')||(c==='#')) return start;
-            else if (start===0) return -1;
-            else if ((c==='"')&&((pc==='@')||(pc==='#'))) {
-                if (spaces) return -1;
-                else return start-1;}
-            else if (c==='"') return -1;
-            else start--;
-            c=string[start];
-            pc=(start>0)&&string[start-1];}
-        return -1;}
+    // Find the tag overlapping pos in string
+    // Return a description of the tag
+    function findTag(string,pos,partialok){
+        if ((string)&&(string.length)&&(pos>0)) {
+            var space=false, start=pos-1, delim=false, need=false;
+            var c=string[start], pc=string[start-1];
+            while (start>=0) {
+                if (pc==='\\') {}
+                else if (/\s/.test(c)) space=start;
+                else if ((c==='@')||(c==='#')) break;
+                else if (start===0) return false;
+                start--; c=pc; pc=string[start-1];}
+            var prefix=string[start];
+            var sc=string[start+1], end=string.length;
+            if (tag_delims[sc]) {
+                var matching=tag_delims[sc]; delim=sc;
+                var match_off=string.slice(start+2).indexOf(matching);
+                if (match_off<0) {
+                    if (partialok) {end=pos; need=matching;}
+                    else return false;}
+                else end=start+2+match_off+1;
+                if (end<pos) return false;}
+            else if (space) return false;
+            else {
+                var end_off=string.slice(start).search(tag_ends);
+                if (end_off>0) end=start+end_off;}
+            var result={text: string.slice(start,end),
+                        start: start,end: end,pos: pos,prefix: prefix,
+                        content: (((delim)&&(need))?(string.slice(start+2,end)):
+                                  (delim)?(string.slice(start+2,end-1)):
+                                  (string.slice(start+1,end)))};
+            if (delim) result.delim=delim;
+            if ((delim)&&(partialok)) result.needs=tag_delims[delim];
+            return result;}
+        else return false;}
+    Codex.findTag=findTag;
 
-    function tagend(string,pos){
-        var quoted=(string[pos+1]==="\"");
-        var start=((quoted)?(pos+2):(pos+1));
-        var end=start, lim=string.length, c;
-        while (end<lim) {
-            c=string[end];
-            if (c==="\\") {
-                if (end+1===lim) return end;
-                else if (end+2===lim) return end+2;
-                else end=end+2;}
-            else if ((quoted)&&(c==="\""))
-                return string.slice(start+2,end);
-            else if (c.search(/\s/)===0) {
-                if (quoted) end++;
-                else return end;}
-            else end++;}
-        return end;}
-
-    function tagcontent(string,start,end){
-        if (!(end)) end=tagend(string,start);
-        if (string[start+1]==='"') {
-            if (string[end-1]==='"')
-                return string.slice(start+2,end-1);
-            else return string.slice(start+2,end);}
-        else return string.slice(start+1,end);}
-
-    function tagclear(input_elt){
+    function tagclear(input_elt,pos){
         var text=input_elt.value;
-        var start=tagstart(text);
-        if (start<0) return;
-        var end=tagend(text,start);
-        input_elt.value=text.slice(0,start)+text.slice(end);}
+        var pos=input_elt.selectionStart;
+        var info=findTag(text,pos);
+        if (info) {
+            input_elt.value=
+                text.slice(0,info.start)+text.slice(info.end);}}
 
     function glossinput_onfocus(evt){
         var target=fdjtUI.T(evt);
         var text=target.value;
         var pos=target.selectionStart;
-        var start=tagstart(text,pos);
-        if (start<0) return;
+        var taginfo=findTag(text,pos);
+        if (!(taginfo)) return;
         Codex.UI.glossform_focus(evt);
         if (glossinput_timer) clearTimeout(glossinput_timer);
         glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}
@@ -719,14 +718,13 @@
     function glossinput_onkeypress(evt){
         var target=fdjtUI.T(evt); var text=target.value;
         var pos=target.selectionStart||0;
-        var start=tagstart(text,pos);
-        var end=((start>0)&&(tagend(text,start)));
-        var ch=evt.charCode;
+        var ch=evt.charCode, charstring=String.fromCharCode(ch);
         if (ch===13) {
-            if (start>=0) {
-                var tagtext=text.slice(start,end);
-                glosstag_done(target,tagtext,evt.ctrlKey);
-                text.value=text.slice(0,start)+text.slice(end);}
+            var taginfo=findTag(text,pos);
+            if (taginfo) {
+                target.value=text.slice(0,taginfo.start)+text.slice(taginfo.end);
+                glosstag_done(target,taginfo.content,evt.ctrlKey,taginfo.prefix==="@");
+                fdjt.UI.cancel(evt);}
             else if (evt.shiftKey) {
                 target.value=text.slice(0,pos)+"\n"+text.slice(pos);
                 target.selectionStart++;
@@ -735,21 +733,15 @@
                 var form=fdjtDOM.getParent(target,"FORM");
                 fdjtUI.cancel(evt);
                 submitGloss(form);}}
-        else if (start<0) return;
-        else if (ch===0x22) { // Handle quote mark
-            if ((pos>0)&&(text[pos-1]==="\\")) return;
-            else if (end===start+1) {
-                target.value=text.slice(0,start+1)+
-                    "\"\""+text.slice(start+1);
-                target.selectionStart=start+2;
-                return fdjtUI.cancel(evt);}
-            else if (text[start+1]==="\"") {
-                // Closes tag
-                var quoted_tagtext=text.slice(start,end)+"\"";
-                glosstag_done(target,quoted_tagtext,true);
-                text.value=text.slice(0,start)+text.slice(end);
-                return fdjtUI.cancel(evt);}
-            else {}}
+        else if (tag_ends.test(charstring)) { // Handles tag closing, which works as input
+            var taginfo=findTag(text,pos,true);
+            if (!(taginfo)) return;
+            else if (taginfo.needs===charstring) {
+                target.value=text.slice(0,taginfo.start)+text.slice(taginfo.end);
+                glosstag_done(target,taginfo.content,evt.ctrlKey,taginfo.prefix==="@");
+                fdjtUI.cancel(evt);}
+            else {}
+            return;}
         else {
             if (glossinput_timer) clearTimeout(glossinput_timer);
             glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}}
@@ -757,39 +749,38 @@
     function glosstag_complete(input_elt){
         var text=input_elt.value;
         var pos=input_elt.selectionStart||0;
-        var start=tagstart(text,pos);
-        if (start>=0) {
-            var end=tagend(text,start);
-            var content=tagcontent(text,start,end);
-            var isoutlet=(text[start]==="@");
+        var taginfo=findTag(text,pos);
+        if (taginfo) {
             var completions;
-            if (isoutlet) addClass("CODEXHUD","glossaddoutlet");
-            else addClass("CODEXHUD","glosstagging");
-            if (isoutlet) completions=Codex.share_cloud.complete(content);
-            else completions=Codex.gloss_cloud.complete(content);
-            fdjtLog("Got %d completions",completions.length);}}
+            var isoutlet=(taginfo.prefix==="@");
+            if (isoutlet) swapClass("CODEXHUD",/gloss(tagging|addoutlet)/g,"glossaddoutlet");
+            else swapClass("CODEXHUD",/gloss(tagging|addoutlet)/g,"glosstagging");
+            if (isoutlet) completions=Codex.share_cloud.complete(taginfo.content);
+            else completions=Codex.gloss_cloud.complete(taginfo.content);
+            fdjtLog("Got %d completions for %s",completions.length,taginfo.content);}
+        else dropClass("CODEXHUD",/gloss(tagging|addoutlet)/g);}
 
-    function glosstag_done(input_elt,tagtext,personal){
-        var form=getParent(input_elt,"FORM");
-        if ((tagtext[0]==="#")&&(personal)) {
-            // var ptag=Codex.user_knodule.def(tagcontent(tagtext));
-            var ptag=Codex.knodule.def(tagcontent(tagtext));
-            addTag(form,ptag);}
+    function glosstag_done(input_elt,tagtext,personal,isoutlet){
+        var form=getParent(input_elt,"FORM"), tag=false;
+        if ((!(isoutlet))&&(personal)) 
+            tag=Codex.knodule.def(tagtext);
+        else if (tagtext.indexOf('|')>0) {
+            if (isoutlet) 
+                fdjtLog.warn("Can't define outlets (sources) from %s",tagtext);
+            else tag=Codex.knodule.def(tagstring);}
         else {
-            var cloud=((tagtext[0]==="@")?(Codex.share_cloud):(Codex.gloss_cloud));
-            var tagstring=tagcontent(tagtext); var tag=false;
-            var completions=cloud.complete(tagstring);
-            var isoutlet=(tagtext[0]==="@");
+            var cloud=((isoutlet)?(Codex.share_cloud):(Codex.gloss_cloud));
+            var completions=cloud.complete(tagtext);
             if (completions.length===0) {}
             else if (completions.length===1) tag=completions[0];
             else {}
-            if ((isoutlet)&&(!(tag))) {/* do error somehow */}
+            if ((isoutlet)&&(!(tag))) 
+                fdjtLog.warn("Unknown outlet %s",tagtext)
             else if (isoutlet) addOutlet(form,tag);
             else if (!(tag)) {
-                if (tagstring.indexof('|')>0) 
-                    tag=Codex.knodule.def(tagstring);
-                else tag=Codex.knodule.ref(tagstring);
-                if (tag) addTag(form,tag);}
+                tag=Codex.knodule.ref(tagtext);
+                if (tag) addTag(form,tag);
+                else addTag(form,tagtext);}
             else addTag(form,tag);}
         dropClass("CODEXHUD",/gloss(tagging|addoutlet)/);}
     
@@ -809,19 +800,20 @@
     var stdspace=fdjtString.stdspace;
 
     function handleTagInput(tagstring,form,exact){
-        var quoted=(tagstring[1]==="\"");
-        var outlet=(tagstring[0]==="@");
-        var cloud=((outlet)?(Codex.share_cloud):(Codex.gloss_cloud));
-        var text=((quoted)?(tagstring.slice(2,tagstring.length-1)):(tagstring.slice(1)));
+        var quoted=tag_delims[tagstring[1]];
+        var taglen=((quoted)?(tagstring.slice(2).indexOf(quoted)):(tagstring.length-1));
+        var isoutlet=(tagstring[0]==="@");
+        var cloud=((isoutlet)?(Codex.share_cloud):(Codex.gloss_cloud));
+        var text=((quoted)?(tagstring.slice(2,2+taglen)):(tagstring.slice(1)));
         var completions=cloud.complete(text);
         var std=stdspace(text);
-        if (outlet) {
+        if (isoutlet) {
             var oc=[]; var j=0, jlim=completions.length; while (j<jlim) {
                 var c=completions[j++];
                 if (hasClass(c,"outlet")) oc.push(c);}
             completions=oc;}
         if ((!(completions))||(completions.length===0)) {
-            if (outlet) addOutlet(form,std); // Should probably just warn
+            if (isoutlet) addOutlet(form,std); // Should probably just warn
             else addTag(form,std);
             cloud.complete("");
             return std;}
