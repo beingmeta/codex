@@ -1293,7 +1293,13 @@ form.sbooksapp table th {
     white-space: nowrap;}
 form.sbooksapp table td.text:first-line {
     font-weight: bold;}
-form.sbooksapp td.buttons button img { height: 40px; width: 40px;}
+form.sbooksapp button[NAME="AUTHORITY"] {
+    padding: 3px;
+    border-radius: 2px; -webkit-border-radius: 2px;
+    -moz-border-radius: 2px; -o-border-radius: 2px;
+    min-height: 50px; max-width: 50px;}
+form.sbooksapp button[NAME="AUTHORITY"] img {
+    height: 40px; width: 40px;}
 
 div#CODEXAPPSPLASH a.hidesplashlink {
     white-space: nowrap; float: right; font-size: 90%;
