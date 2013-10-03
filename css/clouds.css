@@ -97,6 +97,10 @@ div#CODEXHUD .completions .completion .dterm {}
     border-top-left-radius: 0px; border-bottom-left-radius: 0px;
     color: gray; background-color: inherit; border: none;}
 
+div#CODEXHUD div.completions div.nomatchmsg {
+    text-align: center; font-size: 200%; font-weight: bold;
+    margin-top: 1em;}
+
 /* Emacs local variables
    ;;;  Local variables: ***
    ;;;  compile-command: "cd ../..; make" ***

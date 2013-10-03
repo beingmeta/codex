@@ -91,7 +91,8 @@
             "div.maxcompletemsg",
             "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
             " of completions.  ");
-        fdjtDOM.prepend(dom,maxmsg);
+        var emptymsg=fdjtDOM("div.nomatchmsg","(no matches)");
+        fdjtDOM.prepend(dom,emptymsg,maxmsg);
         
         if (!(completions)) completions=new Completions(dom);
         
