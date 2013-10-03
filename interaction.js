@@ -565,12 +565,12 @@
         if (Codex.Trace.gestures)
             fdjtLog("swiped dx=%o, dy=%o, adx=%o, ady=%o",dx,dy,adx,ady);
         if (adx>(ady*2)) {
-            if (dx<0) Codex.Forward(evt);
-            else Codex.Backward(evt);}
+            if (dx<-10) Codex.Forward(evt);
+            else if (dx>10) Codex.Backward(evt);}
         else if (ady>(adx*2)) {
             if (!(Codex.hudup)) Codex.setHUD(true);
-            else if (dy<0) Codex.setMode("allglosses");
-            else Codex.setMode("search");}
+            else if (dy<-10) Codex.setMode("allglosses");
+            else if (dy>10) Codex.setMode("search");}
         else {}}
 
     function initGlossMode(){
