@@ -12,7 +12,7 @@
 #CODEXHUD > * {
     pointer-events: all;}
 body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
-#CODEXHUD.openglossmark {
+#CODEXHUD.openglossmark, body.codexhelp #CODEXHUD {
     z-index: 100; }
 body.hudup.cxDEBUG #CODEXHUD { z-index: 0;}
 
@@ -201,7 +201,7 @@ body #CODEXHUD.openglossmark #CODEXSCANNER.expanded,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded,
 body #CODEXHUD.tocscan #CODEXSCANNER.expanded,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded {
-    max-height: 50%; overflow: visible;}
+    height: auto; max-height: 50%; overflow: visible;}
 
 #CODEXHEARTHOLDER {
     position: fixed;
