@@ -160,6 +160,8 @@ Codex.Startup=
                                 config_handlers[name],name,value);
                     config_handlers[name](name,value);}}
             current_config[name]=value;
+            if ((!(save))&&(inputs.length))
+                fdjtDOM.addClass("CODEXSETTINGS","changed");
             if ((save)&&(saved_config[name]!==value)) {
                 saved_config[name]=value;
                 saveConfig(saved_config);}}
@@ -1262,6 +1264,8 @@ Codex.Startup=
             if (Codex.fullheight) addClass(document.body,"cxFULLHEIGHT");
             else dropClass(document.body,"cxFULLHEIGHT");
             geom=fdjtDOM.getGeometry(page,page.offsetParent,true);
+            fdjtID("CODEXPAGELEFT").style.width=page_margin+"px";
+            fdjtID("CODEXPAGERIGHT").style.width=page_margin+"px";
             var inner_width=geom.inner_width, inner_height=geom.inner_height;
             var glossmark_offset=page_margin-(2+geom.right_border);
             // The 2 here is for the right border of the glossmark,
