@@ -1325,13 +1325,13 @@ body.cxUSER tbody.cxwithuser, body.cxNOUSER tbody.cxnouser {
   display: table-row-group; }
 body.cxUSER.cxCONN tbody.cxwithconn { display: table-row-group; }
 body.cxUSER.cxCONN tr.cxwithconn { display: table-row; }
-body.cxUSER.cxDISCONN tbody.cxnoconn { display: table-row-group; }
-body.cxUSER.cxDISCONN tr.cxnoconn { display: table-row; }
+body.cxUSER.cxDISCONN tbody.cxdisconn { display: table-row-group; }
+body.cxUSER.cxDISCONN tr.cxdisconn { display: table-row; }
 
 body.cxNOUSER .cxwithuser { display: none;}
 body.cxNOUSER .cxdisconn {display: none;}
 body.cxUSER.cxCONN .cxdisconn {display: none;}
-body.cxUSER.cxCONN .cxnoconn {display: none;}
+body.cxUSER.cxCONN .cxdisconn {display: none;}
 body.cxUSER .cxnouser {display: none;}
 body.cxUSER.cxDISCONN .cxwithconn {display: none;}
 
