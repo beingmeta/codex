@@ -96,6 +96,8 @@ div#CODEXSETTINGS span.button {
     -o-border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;}
+div#CODEXSETTINGS p.codexsettingschanged { display: none;}
+div#CODEXSETTINGS.changed p.codexsettingschanged { display: block;}
 
 table.settings td { padding-bottom: 0.5ex;}
 

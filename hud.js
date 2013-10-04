@@ -1037,6 +1037,7 @@ Codex.setMode=
             var settings=getSettings();
             Codex.setConfig(settings);
             Codex.saveConfig(settings);
+            fdjtDOM.dropClass("CODEXSETTINGS","changed");
             fdjtDOM.replace("CODEXSETTINGSMESSAGE",
                             fdjtDOM("span#CODEXSETTINGSMESSAGE",
                                     "Your settings have been saved."));};
@@ -1045,6 +1046,7 @@ Codex.setMode=
             if (typeof evt === "undefined") evt=event;
             if (evt) fdjt.UI.cancel(evt);
             Codex.resetConfig();
+            fdjtDOM.dropClass("CODEXSETTINGS","changed");
             fdjtDOM.replace("CODEXSETTINGSMESSAGE",
                             fdjtDOM("span#CODEXSETTINGSMESSAGE",
                                     "Your settings have been reset."));};

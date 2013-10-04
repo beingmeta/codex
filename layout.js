@@ -414,6 +414,7 @@ Codex.Paginate=
             fdjtDOM.swapClass(
                 Codex.body,new RegExp("codex"+name+"\\w*"),"codex"+name+val);
             Codex[name]=val;
+            Codex.sizeContent();
             if (Codex.layout) {
                 // If you're already paginated, repaginate.  Either
                 // when done with the config or immediately.
