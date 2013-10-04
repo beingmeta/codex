@@ -1232,9 +1232,10 @@ Codex.Startup=
             Codex.body=fdjtDOM("div#CODEXBODY.codexbody",content,page);
             fdjtDOM.append(body,Codex.body);
             fdjtDOM.addClass(body,"sbook");
-            sizeContent();
             // Initialize the margins
             initMargins();
+            // Size the content
+            sizeContent();
             if (Codex.Trace.startup) fdjtLog("Organized content");}
 
         function sizeContent(){

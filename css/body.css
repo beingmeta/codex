@@ -39,17 +39,17 @@ body.sbook div#CODEXCONTENT {
 #CODEXPAGE { max-width: 40em;}
 
 #CODEXBODY {
-    font-size: 1.5em;}
+    font-size: 2em;}
 #CODEXBODY.codexbodysizexlarge {
-    font-size: 2em;}
+    font-size: 2.5em;}
 #CODEXBODY.codexbodysizelarge {
-    font-size: 2em;}
+    font-size: 2.5em;}
 #CODEXBODY.codexbodysizenormal {
-    font-size: 1.5em;}
+    font-size: 2em;}
 #CODEXBODY.codexbodysizesmall {
-    font-size: 1em;}
+    font-size: 1.5em;}
 #CODEXBODY.codexbodysizetiny {
-    font-size: 0.8em;}
+    font-size: 0.9em;}
 
 #CODEXBODY.codexfamilydefault {
     font-family: inherit;}
