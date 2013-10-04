@@ -472,7 +472,7 @@ body.cxNOUSER .tab[CONTENTID='SBOOKSAPP'] { display: none;}
 body.cxNOUSER div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
   display: block;}
 
-.cxwithuser, .cxdisconn, .cxwithconn { display: none;}
+.cxwithuser, .cxdisconn, .cxwithconn, .cxneedlogin { display: none;}
 body.cxUSER .cxnouser { display: none;}
 
 body.cxNOUSER span.cxnouser, body.cxNOUSER a.cxnouser,
@@ -498,6 +498,14 @@ body.cxDISCONN blockquote.cxdisconn { display: block; }
 
 body.cxDISCONN tr.cxdisconn { display: table-row; }
 body.cxDISCONN tbody.cxdisconn { display: table-row-group; }
+
+body.cxNOUSER tbody.cxneedlogin, body.cxDISCONN tbody.cxneedlogin {
+    display: table-row-group; }
+body.cxNOUSER tr.cxneedlogin, body.cxDISCONN tr.cxneedlogin {
+    display: table-row; }
+body.cxNOUSER p.cxneedlogin, body.cxDISCONN p.cxneedlogin,
+body.cxNOUSER div.cxneedlogin, body.cxDISCONN div.cxneedlogin {
+    display: block; }
 
 body.cxUSER p.cxwithuser, body.cxUSER div.cxwithuser,
 body.cxUSER blockquote.cxwithuser { display: block; }
