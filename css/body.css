@@ -74,12 +74,30 @@ body.sbook div#CODEXCONTENT {
     font-size: 125%;}
 
 #CODEXBODY { background-color: #ffffff; color: #444; }
-#CODEXBODY.codexcontrasthigh { background-color: #ffffff; color: #444; }
+#CODEXBODY.codexcontrasthigh { background-color: #ffffff; color: #000000; }
+#CODEXBODY.codexcontrastmedium { background-color: #ffffff; color: #444; }
 #CODEXBODY.codexcontrastlow  { background-color: #e5e0d4; color: #333; }
 
 #SBOOKTITLEPAGE { text-align: center;}
 #SBOOKTITLEPAGE .title, #SBOOKTITLEPAGE .author { margin-bottom: 1em;}
 #SBOOKTITLEPAGE .pubinfo { margin-top: 3em;}
+
+@media handheld {
+    #CODEXPAGE {
+        height: 98%; top: 1%; bottom: 1%;
+        width: 98%; left: 1%; right: 1%;}}
+@media handheld and (orientation: landscape) {
+    #CODEXPAGE {
+        height: 98%; top: 1%; bottom: 1%;}}
+
+body.codexpagesizedefault #CODEXPAGE {}
+body.codexpagesizefull #CODEXPAGE {
+    height: 98%; top: 1%; bottom: 1%;
+    width: 98%; left: 1%; right: 1%;}
+body.codexpagesizefullheight #CODEXPAGE {
+    height: 98%; top: 1%; bottom: 1%;}
+body.codexpagesizefullwidth #CODEXPAGE {
+    width: 98%; left: 1%; right: 1%;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
