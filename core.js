@@ -809,7 +809,7 @@ var Codex={
         var uri=Codex.docuri||Codex.refuri;
         var href=window.location.href;
         fdjtState.setLocal("codex.state("+uri+")",statestring);
-        if (href.indexOf('#')>=0) href=href.slice(0,href.indexOf('#'));
+        if ((frag)&&(href.indexOf('#')>=0)) href=href.slice(0,href.indexOf('#'));
         if ((!(skiphist))&&(window.history)&&(window.history.pushState)) {
             if (frag) {
                 state.uri=uri=Codex.locuri+"#"+frag;

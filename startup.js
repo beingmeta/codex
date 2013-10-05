@@ -68,6 +68,7 @@ Codex.Startup=
         var getLocal=fdjtState.getLocal;
         var setLocal=fdjtState.setLocal;
         var getQuery=fdjtState.getQuery;
+        var getHash=fdjtState.getHash;
         var getCookie=fdjtState.getCookie;
         var getMeta=fdjtDOM.getMeta;
         var getLink=fdjtDOM.getLink;
@@ -302,7 +303,7 @@ Codex.Startup=
         Codex.addConfig("hidesplash",function(name,value){
             var doitnow=false;
             if ((value)&&(!(Codex.hidesplash))&&(Codex._setup)&&
-                (Codex.mode==="splash"))
+                (Codex.mode==="splash")&&(Codex.user))
                 doitnow=true;
             Codex.hidesplash=value;
             fdjtUI.CheckSpan.set(
@@ -706,19 +707,20 @@ Codex.Startup=
             //  the invitation link to get to the book, but we don't
             //  want to always present them with the invitation.  So
             //  this gets a little hairy.
-            if ((getQuery("ACTION"))||
-                (getQuery("JOIN"))||
-                (getQuery("OVERLAY"))) {
+            var action=getQuery("ACTION")||getHash("ACTION");
+            var join=getQuery("JOIN")||getHash("JOIN");
+            var overlay=getQuery("OVERLAY")||getHash("OVERLAY");
+            if (action||join||overlay) {
                 // We have args to pass to the flyleaf app, 
                 // so we initialize it:
                 Codex.initFlyleafApp();
                 var appframe=fdjtID("SBOOKSAPP");
                 var appwindow=((appframe)&&(appframe.contentWindow));
-                if ((Codex.overlays)&&(getQuery("JOIN"))) {
+                if ((Codex.overlays)&&(join)) {
                     // Check that it's not redundant
-                    var ref=Codex.sourcedb.ref(getQuery("JOIN"));
+                    var ref=Codex.sourcedb.ref(join);
                     if ((RefDB.contains(Codex.overlays,ref._id))) {
-                        ref=Codex.sourcedb.ref(getQuery("JOIN"));
+                        ref=Codex.sourcedb.ref(join);
                         if (ref.name)
                             fdjtDOM(intro,"You've already added the overlay "+
                                     ref.name);
@@ -727,10 +729,12 @@ Codex.Startup=
                 //  modes when the sbook app actually loads
                 else if (appwindow.postMessage) {}
                 else {
-                    Codex.joining=getQuery("JOIN");
+                    Codex.joining=join;
                     Codex.setMode("sbooksapp");}}
             else if (getQuery("GLOSS"))
                 Codex.glosshash=getQuery("GLOSS")[0];
+            else if (getHash("GLOSS"))
+                Codex.glosshash=getHash("GLOSS")[0];
             else if ((location.hash)&&(location.hash.length>=36)) {
                 var hash=location.hash;
                 if (hash[0]==="#") hash=hash.slice(1);
@@ -766,7 +770,7 @@ Codex.Startup=
             if (mode) {}
             else if (getQuery("startmode"))
                 mode=getQuery("startmode");
-            else if (Codex.hidesplash) 
+            else if ((Codex.hidesplash)&&(Codex.user)) 
                 Codex.setMode(false);
             else {}
             if (mode) Codex.setMode(mode);
@@ -1458,10 +1462,13 @@ Codex.Startup=
             if (!(callback)) callback="Codex.updatedInfo";
             var uri="https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
                 encodeURIComponent(Codex.refuri);
-            var glosses=fdjtState.getQuery("GLOSS");
+            var glosses=fdjtState.getQuery("GLOSS",true);
+            var i=0, lim=glosses.length;
             if ((glosses)&&(glosses.length)) {
-                var i=0, lim=glosses.length; while (i<lim)
-                    uri=uri+"&GLOSS="+glosses[i++];}
+                while (i<lim) uri=uri+"&GLOSS="+glosses[i++];}
+            glosses=fdjtState.getHash("GLOSS"); i=0; lim=glosses.length; 
+            if ((glosses)&&(glosses.length)) {
+                while (i<lim) uri=uri+"&GLOSS="+glosses[i++];}
             if (Codex.mycopyid)
                 uri=uri+"&MCOPYID="+encodeURIComponent(Codex.mycopyid);
             if (Codex.sync) uri=uri+"&SYNC="+(Codex.sync+1);
@@ -1531,6 +1538,8 @@ Codex.Startup=
                 // We also save it locally so we can get it synchronously
                 setLocal(Codex.user._id,Codex.user.Export(),true);}
             setupUI4User();
+            if ((Codex.mode==="splash")&&(Codex._setup)&&(Codex.hidesplash))
+                Codex.setMode(false);
             return Codex.user;}
         Codex.setUser=setUser;
         

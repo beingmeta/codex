@@ -852,9 +852,20 @@ Codex.setMode=
         function initFlyleafApp(){
             if (flyleaf_app_init) return;
             if (Codex.appinit) return;
-            var query=document.location.search||"?";
+            var query="";
+            if (document.location.search) {
+                if (document.location.search[0]==="?")
+                    query=query+document.location.search.slice(1);
+                else query=query+document.location.search;}
+            if (document.location.hash) {
+                if (query[query.length-1]!=="&") query=query+"&";
+                if (document.location.search[0]==="#")
+                    query=query+document.location.hash.slice(1);
+                else query=query+document.location.hash;}
+            if ((query.length)&&(query[query.length-1]!=="&"))
+                query=query+"&";
             var refuri=Codex.refuri;
-            var appuri="https://"+Codex.server+"/flyleaf"+query;
+            var appuri="https://"+Codex.server+"/flyleaf?"+query;
             if (query.search("REFURI=")<0)
                 appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
             if (query.search("TOPURI=")<0)
