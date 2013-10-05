@@ -201,8 +201,10 @@ Codex.Startup=
                                 saved_config);};
                 var uri="https://auth.sbooks.net/admin/codexconfig?"+
                     encodeURIComponent(JSON.stringify(saved));
-                req.withCredentials=true;
-                try { req.open("GET",uri,true); req.send(); }
+                try {
+                    req.open("GET",uri,true);
+                    req.withCredentials=true;
+                    req.send(); }
                 catch (ex) {}}
             saved_config=saved;}
         Codex.saveConfig=saveConfig;
@@ -274,8 +276,10 @@ Codex.Startup=
                             ((req.readyState===4)&&(req.status)),
                             saved_config);};
             var uri="https://auth.sbooks.net/admin/codexconfig";
-            req.withCredentials=true;
-            try { req.open("GET",uri,true); req.send(); }
+            try {
+                req.open("GET",uri,true);
+                req.withCredentials=true;
+                req.send(); }
             catch (ex) {}}
         
         var getParent=fdjtDOM.getParent;
