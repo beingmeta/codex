@@ -70,9 +70,9 @@
            title=" cancel gloss" class="button" alt="glosscancel"
            tabindex="8"/>
     </div>
-    <div class="glossexposure"
-         onclick="Codex.UI.exposureClicked(event);">
-      <div class="checkspan private" tabindex="5">
+    <div class="glossexposure">
+      <div class="checkspan private" tabindex="5"
+           onclick="Codex.UI.exposureClicked(event);">
         <input type="CHECKBOX" name="PRIVATE" value="yes"
                onchange="Codex.UI.changeGlossPrivacy(event);"/>
         <span class="checked"
@@ -81,6 +81,11 @@
         <span class="unchecked"
               title="this gloss will be shared with my associated networks">
           Shared</span>
+      </div>
+      <div class="checkspan postgloss"
+           onclick="fdjt.UI.CheckSpan.onclick(event);">
+        <input type="CHECKBOX" name="POST" value="yes"/>
+        post
       </div>
     </div>
     <div class="inputbox">
