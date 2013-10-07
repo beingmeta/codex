@@ -1328,6 +1328,9 @@ Codex.Startup=
                             scanleft,scanright,
                             pageleft,pageright);
 
+            Codex.TapHold.pageleft=new fdjt.TapHold(pageleft);
+            Codex.TapHold.pageright=new fdjt.TapHold(pageright);
+
             for (var pagelt in [pageright,pageleft]) { /* pagehead,pagefoot  */
                 fdjtDOM.addListeners(
                     pagelt,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}

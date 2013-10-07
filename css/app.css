@@ -846,7 +846,7 @@ div.startupmessage.running {
 
 div#CODEXSPLASH {
     position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px;
-    width: 100%;  top: 50px; bottom: 50px;
+    width: 100%;
     background-color: silver; 
     text-align: center;
     opacity: 0.9;

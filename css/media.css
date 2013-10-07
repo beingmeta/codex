@@ -8,7 +8,8 @@
 
 @media screen and (max-width: 600px) {
     div#CODEXHUD #CODEXHEART { font-size: 80%; }
-
+    div#CODEXHUD div.sbookplate { display: none;}
+}
 @media screen and (max-width: 800px) {
     #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
     div#CODEXHEAD div#CODEXHUDBUTTONS {

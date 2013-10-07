@@ -100,8 +100,8 @@ var Codex={
     Debug: {},
     /* This is where HTML source strings for UI components are placed */
     HTML: {},
-    /* This is where we store pointers into the DOM and CSS */
-    DOM: {}, CSS: {},
+    /* This is where we store pointers into the DOM, CSS, and TapHold objects */
+    DOM: {}, CSS: {}, TapHold: {},
     /* XTARGETS are procedures linked to fragment ids */
     xtargets: {},
     Trace: {

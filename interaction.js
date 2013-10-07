@@ -560,15 +560,28 @@
             addClass(form_div,"focused");}}
 
     function content_swiped(evt){
-        var dx=evt.deltaX, dy=evt.deltaY;
+        var dx=evt.deltaX, dy=evt.deltaY; var vw=fdjtDOM.viewWidth();
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
         if (Codex.Trace.gestures)
-            fdjtLog("swiped dx=%o, dy=%o, adx=%o, ady=%o",dx,dy,adx,ady);
+            fdjtLog("swiped d=%o,%o, ad=%o,%o, s=%o,%o vw=%o",
+                    dx,dy,adx,ady,evt.startX,evt.startY,vw);
         if (adx>(ady*2)) {
+            // Horizontal swipe
             if (dx<-10) Codex.Forward(evt);
             else if (dx>10) Codex.Backward(evt);}
         else if (ady>(adx*2)) {
-            if (!(Codex.hudup)) Codex.setHUD(true);
+            // Vertical swipe
+            if (!(Codex.hudup)) {
+                if (ady<=10) return; // Ignore really short swipes 
+                else if ((evt.startX<(vw/5))&&(dy<0))
+                    Codex.setMode("help");
+                else if ((evt.startX<(vw/5))&&(dy>0))
+                    Codex.setMode("toc");
+                else if ((evt.startX>(vw*0.8))&&(dy>0))
+                    Codex.setMode("search");
+                else if ((evt.startX>(vw*0.8))&&(dy<0))
+                    Codex.setMode("allglosses");
+                else Codex.setHUD(true);}
             else if (dy<-10) Codex.setMode("allglosses");
             else if (dy>10) Codex.setMode("search");}
         else {}}
@@ -626,10 +639,6 @@
             var ref=name.slice(3);
             var target=fdjtID(ref);
             var info=Codex.docinfo[ref];
-            var show_fulltoc=
-                ((info)&&(info.level===1)&&(Codex.head)&&
-                 (info.sub)&&(info.sub.length>2)&&
-                 (info.frag!==Codex.head.id));
             var already_there=(info)&&(Codex.head)&&
                 (info.frag===Codex.head.id);
             if (Codex.Trace.gestures)
@@ -1464,6 +1473,7 @@
     /* Moving forward and backward */
 
     var last_motion=false;
+    var fast_page=false;
 
     function forward(evt){
         var now=fdjtTime();
@@ -1477,7 +1487,7 @@
             scanForward(evt);
         else pageForward(evt);}
     Codex.Forward=forward;
-    function right_margin(evt){
+    function right_margin_tap(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
         if ((Codex.hudup)&&
             (Codex.mode!=="scanning")&&
@@ -1487,6 +1497,42 @@
             (Codex.mode==="tocscan"))
             scanForward(evt);
         else forward(evt);
+        cancel(evt);}
+    function right_margin_hold(evt){
+        if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if ((Codex.hudup)&&
+            (Codex.mode!=="scanning")&&
+            (Codex.mode!=="tocscan"))
+            Codex.setMode(false);
+        if (fast_page) {
+            clearInterval(fast_page); fast_page=false;}
+        fast_page=setInterval(function(){forward();},800);
+        cancel(evt);}
+    function right_margin_release(evt){
+        if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if (fast_page) {
+            clearInterval(fast_page); fast_page=false;}
+        cancel(evt);}
+    function right_margin_swipe(evt){
+        var dx=evt.deltaX, dy=evt.deltaY;
+        var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
+        if (Codex.Trace.gestures)
+            fdjtLog("Right margin swiped %o dx=%o, dy=%o, adx=%o, ady=%o",
+                    evt,dx,dy,adx,ady);
+        if (adx>(ady*2)) {
+            // Horizontal swipe
+            if (adx<10) return;
+            else if ((Codex.mode==="scanning")||
+                     (Codex.mode==="tocscan"))
+                scanForward(evt);
+            else forward(evt);}
+        else if (ady>(adx*2)) {
+            // Vertical swipe
+            if (!(Codex.hudup)) {
+                if (ady<=10) return; // Ignore really short swipes 
+                else if (dy<-10) Codex.setMode("allglosses");
+                else if (dy>10) Codex.setMode("search");
+                else {}}}
         cancel(evt);}
 
     function backward(evt){
@@ -1501,8 +1547,8 @@
             scanBackward();
         else pageBackward();}
     Codex.Backward=backward;
-    function left_margin(evt){
-        if (Codex.Trace.gestures) tracetouch("left_margin",evt);
+    function left_margin_tap(evt){
+	if (Codex.Trace.gestures) tracetouch("left_margin",evt);
         if ((Codex.hudup)&&
             (Codex.mode!=="scanning")&&
             (Codex.mode!=="tocscan"))
@@ -1511,6 +1557,42 @@
                  (Codex.mode==="tocscan"))
             scanBackward(evt);
         else backward(evt);
+        cancel(evt);}
+    function left_margin_hold(evt){
+        if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if ((Codex.hudup)&&
+            (Codex.mode!=="scanning")&&
+            (Codex.mode!=="tocscan"))
+            Codex.setMode(false);
+        if (fast_page) {
+            clearInterval(fast_page); fast_page=false;}
+        fast_page=setInterval(function(){backward();},800);
+        cancel(evt);}
+    function left_margin_release(evt){
+        if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if (fast_page) {
+            clearInterval(fast_page); fast_page=false;}
+        cancel(evt);}
+    function left_margin_swipe(evt){
+        var dx=evt.deltaX, dy=evt.deltaY;
+        var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
+        if (Codex.Trace.gestures)
+            fdjtLog("Right margin swiped %o dx=%o, dy=%o, adx=%o, ady=%o",
+                    evt,dx,dy,adx,ady);
+        if (adx>(ady*2)) {
+            // Horizontal swipe
+            if (adx<10) return;
+            else if ((Codex.mode==="scanning")||
+                     (Codex.mode==="tocscan"))
+                scanForward(evt);
+            else forward(evt);}
+        else if (ady>(adx*2)) {
+            // Vertical swipe
+            if (!(Codex.hudup)) {
+                if (ady<=10) return; // Ignore really short swipes 
+                else if (dy<-10) Codex.setMode("help");
+                else if (dy>10) Codex.setMode("toc");
+                else {}}}
         cancel(evt);}
 
     function pageForward(evt){
@@ -2239,8 +2321,12 @@
          "#CODEXHEAD": {click: head_tap},
          "#CODEXPAGEFOOT": {tap: foot_tap},
          // Forward and backwards
-         "#CODEXPAGELEFT": {click: left_margin},
-         "#CODEXPAGERIGHT": {click: right_margin},
+         "#CODEXPAGELEFT": {tap: left_margin_tap,
+                            hold: left_margin_hold,
+                            release: left_margin_release},
+         "#CODEXPAGERIGHT": {tap: right_margin_tap,
+                            hold: right_margin_hold,
+                            release: right_margin_release},
          "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
          "#CODEXTAGINPUT": {keydown: addtag_keydown},
          "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
@@ -2332,8 +2418,14 @@
          "#CODEXHEAD": {click: head_tap},
          "#CODEXFOOT": {tap: foot_tap},
          // Forward and backwards
-         "#CODEXPAGELEFT": {touchstart: left_margin},
-         "#CODEXPAGERIGHT": {touchstart: right_margin},
+         "#CODEXPAGELEFT": {tap: left_margin_tap,
+                            hold: left_margin_hold,
+                            release: left_margin_release,
+                            swipe: left_margin_swipe},
+         "#CODEXPAGERIGHT": {tap: right_margin_tap,
+                             hold: right_margin_hold,
+                             release: right_margin_release,
+                             swipe: right_margin_swipe},
          "#CODEXTAGINPUT": {keydown: addtag_keydown},
          "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
          "#CODEXATTACHFORM": {submit: addlink_submit},
