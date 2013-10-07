@@ -576,7 +576,7 @@
                 else if ((evt.startX<(vw/5))&&(dy<0))
                     Codex.setMode("help");
                 else if ((evt.startX<(vw/5))&&(dy>0))
-                    Codex.setMode("toc");
+                    Codex.setMode("statictoc");
                 else if ((evt.startX>(vw*0.8))&&(dy>0))
                     Codex.setMode("search");
                 else if ((evt.startX>(vw*0.8))&&(dy<0))
@@ -1591,7 +1591,7 @@
             if (!(Codex.hudup)) {
                 if (ady<=10) return; // Ignore really short swipes 
                 else if (dy<-10) Codex.setMode("help");
-                else if (dy>10) Codex.setMode("toc");
+                else if (dy>10) Codex.setMode("statictoc");
                 else {}}}
         cancel(evt);}
 
