@@ -628,7 +628,7 @@ Codex.Paginate=
         
         function GoToPage(spec,caller,savestate,skiphist){
             if (typeof savestate === 'undefined') savestate=true;
-            if (Codex.previewing) stopPreview("GoToPage");
+            if (Codex.previewing) stopPreview("GoToPage",false);
             dropClass(document.body,"codexhelp");
             var page=(Codex.layout)&&
                 (Codex.layout.getPage(spec)||Codex.layout.getPage(1));
@@ -706,21 +706,33 @@ Codex.Paginate=
             Codex.previewing=previewing=page;
             addClass(document.body,"cxPREVIEW");
             updatePageDisplay(pagenum,pageloc,"preview");}
-        function stopPreview(caller){
+        function stopPreview(caller,target){
             var pagenum=parseInt(curpage.getAttribute("data-pagenum"),10);
             if ((Codex.Trace.flips)||(Codex.Trace.gestures))
                 fdjtLog("stopPagePreview/%s from %o to %o (%d)",
                         caller||"nocaller",previewing,curpage,pagenum);
             var newpage=false;
             if (!(previewing)) return;
+            if (target) {
+                dropClass(curpage,"curpage");
+                dropClass(curpage,"hidepage");
+                addClass(previewing,"curpage");
+                if (hasClass(target,"codexpage")) newpage=target;
+                else newpage=getParent(target,".codexpage");}
+            else {
+                dropClass(previewing,"preview");
+                dropClass(curpage,"hidepage");}
             dropClass(previewing,"previewpage");
-            dropClass(previewing,"preview");
-            dropClass(curpage,"hidepage");
             dropClass(getChildren(Codex.pages,".previewpage"),
                       "previewpage");
             Codex.previewing=previewing=false;
             dropClass(document.body,"cxPREVIEW");
-            updatePageDisplay(pagenum,Codex.location,"current");
+            if (newpage) {
+                var newnum=parseInt(newpage.getAttribute("data-pagenum"),10);
+                var newloc=Codex.getLocInfo(target);
+                updatePageDisplay(newnum,((newloc)&&(newloc.starts_at)),
+                                  "current");}
+            else updatePageDisplay(pagenum,Codex.location,"current");
             if (typeof newpage === "number") Codex.GoToPage(newpage);}
         Codex.startPagePreview=startPreview;
         Codex.stopPagePreview=stopPreview;

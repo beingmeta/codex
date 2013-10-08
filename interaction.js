@@ -103,6 +103,10 @@
     var hasParent=fdjtDOM.hasParent;
     var isClickable=fdjtUI.isClickable;
     var getChild=fdjtDOM.getChild;
+    var getChildren=fdjtDOM.getChildren;
+    var getInput=fdjtDOM.getInput;
+    var getInputs=fdjtDOM.getInputs;
+    var getInputsFor=fdjtDOM.getInputsFor;
 
     var submitEvent=fdjtUI.submitEvent;
 
@@ -137,7 +141,8 @@
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
             // Last arg is docancel, since we don't need to worry about conflicts
             //   with scrolling
-            fdjtUI.TapHold(fdjt.ID("CODEXBODY"),Codex.touch,false,false,false,true);
+            fdjtUI.TapHold(fdjt.ID("CODEXBODY"),Codex.touch,
+                           false,false,false,true);
             fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
@@ -172,7 +177,7 @@
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
         var div=((form)&&(getParent(form,".codexglossform")));
-        var input=((div)&&(fdjtDOM.getChild(div,"TEXTAREA")));
+        var input=((div)&&(getChild(div,"TEXTAREA")));
         if (div) {
             addClass(div,"focused");
             Codex.setGlossMode(false);}
@@ -185,7 +190,7 @@
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
         var div=((form)&&(getParent(form,".codexglossform")));
-        var input=((div)&&(fdjtDOM.getChild(div,"TEXTAREA")));
+        var input=((div)&&(getChild(div,"TEXTAREA")));
         if (div) dropClass(div,"focused");
         if (input) Codex.cleartFocus(input);
         gloss_blurred=fdjtTime();
@@ -284,9 +289,11 @@
         if (Codex.previewing) {
             var jumpto=getTarget(target);
             if (!(jumpto)) jumpto=getParent(target,".codexpage");
-            if (jumpto) Codex.GoTo(jumpto,evt);
-            Codex.stopPreview("content_tapped/stop_preview");
+            if (jumpto) 
+                Codex.stopPreview("content_tapped/stop_preview",jumpto);
+            else Codex.stopPreview("content_tapped/stop_preview",true);
             fdjtUI.TapHold.clear();
+            fdjt.UI.cancel(evt);
             return false;}
 
         if ((Codex.touch)&&(Codex.textinput)) {
@@ -471,7 +478,7 @@
     var selectors=[];
     var slip_timer=false;
     var hasText=fdjtDOM.hasText;
-    var getChildren=fdjtDOM.getChildren;
+    var getChildren=getChildren;
     function content_held(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -544,7 +551,7 @@
         var selecting=selectors[passage.id]; abortSelect(selecting);
         var form_div=Codex.setGlossTarget(
             passage,((Codex.mode==="addgloss")&&(Codex.glossform)),selecting);
-        var form=fdjtDOM.getChild(form_div,"form");
+        var form=getChild(form_div,"form");
         if (!(form)) return;
         else fdjtUI.cancel(evt);
         if (Codex.Trace.gestures)
@@ -554,7 +561,7 @@
         Codex.setGlossForm(form_div);
         if (mode) form.className=mode;
         Codex.setMode("addgloss",true);
-        var input=fdjtDOM.getInputs(form,"NOTE")[0];
+        var input=getInputs(form,"NOTE")[0];
         if (input) {
             Codex.setFocus(input);
             addClass(form_div,"focused");}}
@@ -587,9 +594,9 @@
         else {}}
 
     function initGlossMode(){
-        var form=fdjtDOM.getChild("CODEXLIVEGLOSS","form");
+        var form=getChild("CODEXLIVEGLOSS","form");
         if (form) {
-            var input=fdjtDOM.getInput(form,"NOTE");
+            var input=getInput(form,"NOTE");
             if (input) Codex.setFocus(input);
             Codex.setGlossMode(form.className);}}
     Codex.initGlossMode=initGlossMode;
@@ -623,7 +630,7 @@
         return false;}
 
     function getTitleSpan(toc,ref){
-        var titles=fdjtDOM.getChildren(toc,".codextitle");
+        var titles=getChildren(toc,".codextitle");
         var i=0; var lim=titles.length;
         while (i<lim) {
             var title=titles[i++];
@@ -693,11 +700,11 @@
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
             dropClass(spanbar,"codexvisible");
             dropClass(toc,"codexheld");
-            Codex.stopPreview("toc_released");}
+            Codex.stopPreview("toc_released",false);}
         else if (Codex.Trace.gestures)
             fdjtLog("toc_released %o noabout",evt);
         else {
-            Codex.stopPreview("toc_released");}
+            Codex.stopPreview("toc_released",false);}
         fdjtUI.cancel(evt);}
     function toc_slipped(evt){
         evt=evt||event;
@@ -725,7 +732,7 @@
             slip_timer=setTimeout(function(){
                 slip_timer=false;
                 if (Codex.Trace.gestures) fdjtLog("toc_slipped/timeout %o",evt);
-                Codex.stopPreview("toc_slipped");},
+                Codex.stopPreview("toc_slipped",false);},
                                   500);}}
 
     /* Slice handlers */
@@ -834,7 +841,7 @@
         var card=getCard(fdjtUI.T(evt||event));
         if (Codex.Trace.gestures) {
             fdjtLog("slice_released %o: %o, scanning=%o",evt,card);}
-        Codex.stopPreview("slice_released");}
+        Codex.stopPreview("slice_released",false);}
     function slice_slipped(evt){
         evt=evt||event;
         var rel=evt.relatedTarget||fdjtUI.T(evt);
@@ -844,7 +851,7 @@
                 slip_timer=false;
                 if (Codex.Trace.gestures)
                     fdjtLog("slice_slipped/timeout %o",evt);
-                Codex.stopPreview("slice_slipped");},
+                Codex.stopPreview("slice_slipped",false);},
                                   500);}}
 
 
@@ -922,7 +929,7 @@
         // fdjtLog("sbook_onkeydown %o",evt);
         if (evt.keyCode===27) { /* Escape works anywhere */
             if (Codex.previewing) {
-                Codex.stopPreview("escape_key");
+                Codex.stopPreview("escape_key",false);
                 fdjtUI.TapHold.clear();}
             if (Codex.mode) {
                 Codex.last_mode=Codex.mode;
@@ -937,9 +944,8 @@
         else if (Codex.previewing) {
             // Any key stops a preview and goes to the target
             var preview_target=Codex.previewTarget||Codex.previewing;
-            Codex.stopPreview("onkeydown");
+            Codex.stopPreview("onkeydown",preview_target);
             fdjtUI.TapHold.clear();
-            Codex.GoTo(preview_target);
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
             return false;}
@@ -967,7 +973,7 @@
             var mode=Codex.getGlossMode();
             if (mode) return;
             var formdiv=fdjtID("CODEXLIVEGLOSS");
-            var form=(formdiv)&&(fdjtDOM.getChild(formdiv,"FORM"));
+            var form=(formdiv)&&(getChild(formdiv,"FORM"));
             if (!(form)) return;
             if (kc===13) { // return/newline
                 submitEvent(form);}
@@ -1406,7 +1412,7 @@
                 animated_glossmark=false;
                 glossmark_animated=false;
                 if (glossmark_image) fdjtUI.ImageSwap.reset(glossmark_image);}
-            var wedge=fdjtDOM.getChild(glossmark,"img.wedge");
+            var wedge=getChild(glossmark,"img.wedge");
             if (!(wedge)) return;
             animated_glossmark=glossmark;
             glossmark_image=wedge;
@@ -1435,7 +1441,7 @@
 
     function setTargetUI(target){
         if (target) {
-            var glossmark=fdjtDOM.getChild(target,".codexglossmark");
+            var glossmark=getChild(target,".codexglossmark");
             if (glossmark) animate_glossmark(glossmark,true);
             else animate_glossmark(false,false);}
         else animate_glossmark(false,false);}
@@ -1489,6 +1495,10 @@
     Codex.Forward=forward;
     function right_margin_tap(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if (Codex.previewing) {
+            Codex.stopPreview("right_margin_tap",true);
+            cancel(evt);
+            return;}
         if ((Codex.hudup)&&
             (Codex.mode!=="scanning")&&
             (Codex.mode!=="tocscan"))
@@ -1549,6 +1559,10 @@
     Codex.Backward=backward;
     function left_margin_tap(evt){
 	if (Codex.Trace.gestures) tracetouch("left_margin",evt);
+        if (Codex.previewing) {
+            Codex.stopPreview("left_margin_tap",true);
+            cancel(evt);
+            return;}
         if ((Codex.hudup)&&
             (Codex.mode!=="scanning")&&
             (Codex.mode!=="tocscan"))
@@ -1644,7 +1658,7 @@
                     var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
                         var passage=fdjtID(ids[i]);
-                        var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
+                        var glossmark=getChild(passage,".codexglossmark");
                         Codex.GoTo(passage,"scanForward/glosses",true);
                         Codex.showGlossmark(passage,glossmark);
                         return;}
@@ -1697,7 +1711,7 @@
                     var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
                         var passage=fdjtID(ids[i]);
-                        var glossmark=fdjtDOM.getChild(passage,".codexglossmark");
+                        var glossmark=getChild(passage,".codexglossmark");
                         Codex.GoTo(passage,"scanBackward/glosses",true);
                         Codex.showGlossmark(passage,glossmark);
                         return;}
@@ -1815,6 +1829,10 @@
         evt=evt||event;
         var target=fdjtUI.T(evt);
         if (Codex.Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
+        if (Codex.previewing) {
+            Codex.stopPreview("head_tap",true);
+            cancel(evt);
+            return;}
         if (fdjtUI.isClickable(target)) return;
         if (!((target===Codex.DOM.head)||
               (target===Codex.DOM.tabs)))
@@ -1833,6 +1851,10 @@
             Codex.setMode(true);}}
     function foot_tap(evt){
         if (Codex.Trace.gestures) fdjtLog("foot_tap %o",evt);
+        if (Codex.previewing) {
+            Codex.stopPreview("foot_tap",true);
+            cancel(evt);
+            return;}
         if (isClickable(evt)) return;
         else if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
             fdjtUI.cancel(evt);
@@ -1856,10 +1878,18 @@
         if (target.nodeType===3) target=target.parentNode;
         if (((hasParent(target,pageinfo))&&(target.tagName==="span")))
             return;
+        if ((preview_start_page)&&(!(Codex.previewing))) {
+            // This is the case where the preview has been stopped,
+            //  so we don't want to start it again
+            if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
+                fdjtLog("Ignoring canceled preview based on start page=%",
+                        preview_start_page);
+            return;}
         var gopage=getGoPage(target,evt);
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
-            fdjtLog("pageinfo_span_hold %o t=%o gopage: %o=>%o/%o",
-                    evt,target,previewing_page,gopage,Codex.pagecount);
+            fdjtLog("pageinfo_span_hold %o t=%o gopage: %o=>%o/%o, start=%o",
+                    evt,target,previewing_page,gopage,Codex.pagecount,
+                   preview_start_page);
         if (!(preview_start_page)) preview_start_page=gopage;
         if (previewing_page===gopage) return;
         if (!(gopage)) {
@@ -1878,6 +1908,8 @@
         Codex.startPreview(gopage,"pageinfo_span_hold");}
     function pageinfo_tap(evt){
         var pageinfo=fdjtID("CODEXPAGEINFO");
+        if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
+            fdjtLog("pageinfo_tap %o",evt);
         if (preview_timer) {
             clearTimeout(preview_timer);
             preview_timer=false;}
@@ -1895,6 +1927,10 @@
         Codex.setMode(false);}
     function pageinfo_release(evt){
         var pageinfo=fdjtID("CODEXPAGEINFO");
+        if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
+            fdjtLog("pageinfo_release %o, previewing=%o, target=%o start=%o",
+                    evt,Codex.previewing,Codex.previewTarget,
+                    preview_start_page);
         if (preview_timer) {
             clearTimeout(preview_timer);
             preview_timer=false;}
@@ -1904,6 +1940,7 @@
             return;}
         var target=fdjtUI.T(evt);
         if (target.nodeType===3) target=target.parentNode;
+        if (!(Codex.previewing)) {preview_start_page=false; return;}
         dropClass(target,"preview");
         Codex.stopPagePreview("pageinfo_release");
         preview_start_page=false;
@@ -1913,6 +1950,11 @@
     function pageinfo_slip(evt){
         evt=evt||event;
         var rel=evt.relatedTarget;
+        if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
+            fdjtLog("pageinfo_slip %o, previewing=%o, target=%o start=%o",
+                    evt,Codex.previewing,Codex.previewTarget,
+                    preview_start_page);
+        if (!(Codex.previewing)) return;
         if ((rel)&&(hasParent(rel,Codex.body)))
             preview_timer=setTimeout(function(){
                 var pageinfo=fdjtID("CODEXPAGEINFO");
@@ -1942,10 +1984,10 @@
 
     function outlet_tapped(evt){
         var target=fdjtUI.T(evt);
-        var outletspan=fdjtDOM.getParent(target,'.outlet');
+        var outletspan=getParent(target,'.outlet');
         if (!(outletspan)) return;
         var live=fdjtID("CODEXLIVEGLOSS");
-        var form=((live)&&(fdjtDOM.getChild(live,"form")));
+        var form=((live)&&(getChild(live,"form")));
         var outlet=outletspan.value;
         Codex.addOutlet2Form(form,outlet);
         fdjtUI.cancel(evt);}
@@ -1962,8 +2004,9 @@
         
         if (!(alt)) return;
 
-        var menu=fdjtDOM.getParent(target,'.addglossmenu');
-        var form=fdjtDOM.getParent(target,'form');
+        var menu=getParent(target,'.addglossmenu');
+        var form=getParent(target,'form');
+        var div=getParent(form,"div.codexglossform");
         
         if (alt==="hamburger") {
             Codex.setGlossMode(false,form);
@@ -1971,7 +2014,7 @@
         else if (alt==="glossdelete") 
             addgloss_delete(menu,form);
         else if (alt==="glosscancel") 
-            addgloss_cancel(menu,form);
+            addgloss_cancel(menu,form,div);
         else if (alt==="glosspush") {
             Codex.submitGloss(form,false);
             dropClass(menu,"expanded");}
@@ -1980,6 +2023,8 @@
             dropClass(menu,"expanded");}
         else if (alt==="glossrespond") 
             addgloss_respond(menu,form);
+        else if (alt==="glosscancel") {
+            addgloss_cancel(menu,form,div);}
         else if (alt===form.className) {
             Codex.setGlossMode(false,form);
             dropClass(menu,"expanded");}
@@ -2001,7 +2046,7 @@
             clearTimeout(slip_timeout);
             slip_timeout=false;}
 
-        var menu=fdjtDOM.getParent(target,'.addglossmenu');
+        var menu=getParent(target,'.addglossmenu');
         
         addClass(target,"held");
 
@@ -2010,14 +2055,20 @@
     function glossmode_release(evt) {
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        var menu=fdjtDOM.getParent(target,'.addglossmenu');
-        var form=fdjtDOM.getParent(target,'form');
+        var menu=getParent(target,'.addglossmenu');
+        var form=getParent(target,'form');
+        var div=getParent(form,"div.codexglossform");
         var alt=target.alt;
         dropClass(target,"held");
         if (alt==="glossdelete") 
             addgloss_delete(menu,form);
+        else if (alt==="glosscancel") 
+            addgloss_cancel(menu,form,div);
         else if (alt==="glosspush")
             Codex.submitGloss(form,false);
+        else if (alt==="glossupdate") {
+            Codex.submitGloss(form,false);
+            dropClass(menu,"expanded");}
         else if (alt==="glossrespond") 
             addgloss_respond(menu,form);
         else if (Codex.glossmodes.exec(alt))
@@ -2028,7 +2079,7 @@
     function glossmode_slip(evt) {
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        var menu=fdjtDOM.getParent(target,'.addglossmenu');
+        var menu=getParent(target,'.addglossmenu');
         dropClass(target,"held");
         if (!(slip_timeout)) {
             slip_timeout=setTimeout(function(){
@@ -2042,7 +2093,7 @@
         // This keeps it from being saved when it loses the focus
         dropClass(div,"modified");
         dropClass(menu,"expanded");
-        var uuid=fdjtDOM.getInputValues(form,"UUID")[0];
+        var uuid=getInputValues(form,"UUID")[0];
         var gloss=Codex.glossdb.probe(uuid);
         if ((!(gloss))||(!(gloss.created))) {
             delete_gloss(uuid);
@@ -2087,7 +2138,7 @@
     function addgloss_respond(target){
         var block=getParent(target,".codexglossform");
         if (!(block)) return;
-        var glosselt=fdjtDOM.getInput(block,'UUID');
+        var glosselt=getInput(block,'UUID');
         if (!(glosselt)) return;
         var qref=glosselt.value;
         var gloss=Codex.glossdb.probe(qref);
@@ -2104,13 +2155,13 @@
         var alternate=fdjtID(
             (fdjtDOM.hasParent(target,".codexglossform"))?
                 ("CODEXNETWORKBUTTONS"):(("CODEXLIVEGLOSS")));
-        var doppels=fdjtDOM.getInputsFor(alternate,'NETWORK',target.value);
+        var doppels=getInputsFor(alternate,'NETWORK',target.value);
         fdjtUI.CheckSpan.set(doppels,target.checked);}
     Codex.UI.changeGlossNetwork=changeGlossNetwork;
 
     function changeGlossPosting(evt){
         var target=fdjtUI.T(evt=(evt||event));
-        var glossdiv=fdjtDOM.getParent(target,".codexglossform");
+        var glossdiv=getParent(target,".codexglossform");
         if (target.checked) fdjtDOM.addClass(glossdiv,"posted");
         else fdjtDOM.dropClass(glossdiv,"posted");}
     Codex.UI.changeGlossPosting=changeGlossPosting;
@@ -2118,9 +2169,9 @@
     function changeGlossPrivacy(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt=(evt||event));
-        var glossdiv=fdjtDOM.getParent(target,".codexglossform");
-        var postgloss=fdjtDOM.getChild(glossdiv,".postgloss");
-        var postinput=(postgloss)&&(fdjtDOM.getInput(postgloss,"POSTGLOSS"));
+        var glossdiv=getParent(target,".codexglossform");
+        var postgloss=getChild(glossdiv,".postgloss");
+        var postinput=(postgloss)&&(getInput(postgloss,"POSTGLOSS"));
         if (postgloss) {
             if (target.checked) {
                 if (postinput) postinput.disabled=true;}

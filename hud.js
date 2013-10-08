@@ -371,7 +371,8 @@ Codex.setMode=
             else {
                 Codex.hudup=false;
                 Codex.scrolling=false;
-                if (Codex.previewing) Codex.stopPreview("setHUD");
+                if (Codex.previewing)
+                    Codex.stopPreview("setHUD",true);
                 dropClass(document.body,"cxSHRINK");
                 if (clearmode) {
                     if (Codex.popmode) {
@@ -429,7 +430,7 @@ Codex.setMode=
                 fdjtLog("setMode %o, cur=%o dbc=%o",
                         mode,Codex.mode,document.body.className);
             if ((mode!==Codex.mode)&&(Codex.previewing))
-                Codex.stopPreview("setMode");
+                Codex.stopPreview("setMode",true);
             if ((mode!==Codex.mode)&&(Codex.popmode)) {
                 var fn=Codex.popmode;
                 Codex.popmode=false;

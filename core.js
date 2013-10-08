@@ -128,7 +128,7 @@ var Codex={
         iscroll: false,   // Whether to trace HUD scrolling with iScroll
         highlight: 0,     // Whether to trace highlighting
         indexing: 0,      // How much to trace document indexing
-        gestures: 0}      // How much to trace gestures
+        gestures: 1}      // How much to trace gestures
 };
 
 (function(){
@@ -1003,7 +1003,7 @@ var Codex={
             Codex.GoToPage(target,caller||"CodexGoTo",false);
         else {
             if (Codex.previewing)
-                Codex.stopPreview(((caller)?("goto/"+caller):("goto")));
+                Codex.stopPreview(((caller)?("goto/"+caller):("goto")),target);
             var offinfo=fdjtDOM.getGeometry(target,Codex.content);
             var use_top=offinfo.top-((fdjtDOM.viewHeight()-50)/2);
             if (use_top<0) use_top=0;
@@ -1066,10 +1066,16 @@ var Codex={
         addClass(dups,"codexpreviewtarget");
         return target;}
     Codex.startPreview=CodexStartPreview;
-    function CodexStopPreview(caller){
+    function CodexStopPreview(caller,target){
+        if ((target)&&(!(target.nodeType))) {
+            target=Codex.previewTarget||Codex.previewing;
+            if (!(target)) {
+                fdjtLog("Can't get target to go to");}
+            if (Codex.Trace.gestures)
+                fdjtLog("StopPreview/%s staying at %o",target);}
         if (Codex.bypage) 
-            Codex.stopPagePreview(caller);
-        else {
+            Codex.stopPagePreview(caller,target);
+        else if (!(target)) {
             if ((Codex.Trace.flips)&&(oldscroll))
                 fdjtLog("stopPreview/%s returning to %d",
                         caller||"nocaller",oldscroll.x,oldscroll.y);
@@ -1084,9 +1090,13 @@ var Codex={
             var targets=getDups(Codex.previewTarget);
             dropClass(targets,"codexpreviewtarget");
             dropClass(targets,"codexhighlightpassage");
-            Codex.clearHighlights(targets);
-            Codex.previewTarget=false;}
-        oldscroll=false;}
+            Codex.clearHighlights(targets);}
+        oldscroll=false;
+        if (!(target)) Codex.previewTarget=false;
+        else if (target===true) {
+            var t=Codex.previewTarget; Codex.previewTarget=false;
+            Codex.GoTo(t);}
+        else Codex.GoTo(target);}
     Codex.stopPreview=CodexStopPreview;
 
     function getLevel(elt){
