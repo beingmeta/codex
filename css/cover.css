@@ -75,9 +75,10 @@ div#CODEXCOVER.console .control[data-mode='console'],
 div#CODEXCOVER.login .control[data-mode='login'] {
     color: gold; border-color: blue;}
 
-.control[data-mode='console'], .control[data-mode='overlays'] {
+.control[data-mode='console'], .control[data-mode='overlays'],
+.control[data-mode='aboutsbooks'] {
     display: none;}
-body.cxUSER span.control[data-mode='console'],
+body.cxSHOWCONSOLE span.control[data-mode='console'],
 body.cxUSER span.control[data-mode='overlays'] {
     display: inline;}
 body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
@@ -117,6 +118,8 @@ div#CODEXABOUTBOOK, div#ABOUTSBOOKS {
     background-color: ivory; }
 div#CODEXCONSOLE, div#CODEXSETTINGS {
     overflow: auto; background-color: silver;}
+
+body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 
 /* Welcome */
 

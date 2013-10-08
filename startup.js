@@ -1232,6 +1232,7 @@ Codex.Startup=
 
         function cover_clicked(evt){
             var target=fdjtUI.T(evt);
+            if (fdjt.UI.isClickable(target)) return;
             if (!(hasParent(target,fdjtID("CODEXCOVERCONTROLS"))))
                 dropClass(document.body,"cxCOVER");
             var scan=target;
@@ -1250,6 +1251,10 @@ Codex.Startup=
             else fdjtID("CODEXCOVER").className=mode;
             fdjt.UI.cancel(evt);}
 
+        Codex.addConfig("showconsole",function(name,value){
+            if (value) addClass(document.body,"cxSHOWCONSOLE");
+            else dropClass(document.body,"cxSHOWCONSOLE");});
+        
         /* Filling in information */
 
         function fillTemplate(template,spec,content){

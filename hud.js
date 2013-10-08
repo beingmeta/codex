@@ -879,9 +879,6 @@ Codex.setMode=
         
         Codex.addConfig("uisize",function(name,value){
             fdjtDOM.swapClass(CodexHUD,/codexuifont\w+/,"codexuifont"+value);});
-        Codex.addConfig("showconsole",function(name,value){
-            if (value) addClass(CodexHUD,"codexshowconsole");
-            else dropClass(CodexHUD,"codexshowconsole");});
         Codex.addConfig("animatecontent",function(name,value){
             if (Codex.dontanimate) {}
             else if (value) addClass(document.body,"cxANIMATE");
