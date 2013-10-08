@@ -74,8 +74,7 @@ Codex.setMode=
         var CodexHUD=false;
 
         // This will contain the interactive input console (for debugging)
-        var hud=false, input_console=false, input_button=false;
-        var allglosses=false, sbooksapp=false, sbookslogin=false, console=false;
+        var hud=false, allglosses=false, sbooksapp=false;
 
         function initHUD(){
             if (fdjtID("CODEXHUD")) return;
@@ -157,14 +156,6 @@ Codex.setMode=
                 (Codex.UI.addGlossSource,"newsource");});
             Codex.glossdb.onLoad(addGloss2UI);
             
-            Codex.DOM.console=console=fdjtID("CODEXCONSOLE");
-            if (Codex.Trace.startup>1) fdjtLog("Setting up console %o",console);
-
-            Codex.DOM.input_console=input_console=fdjtDOM.getChild(console,"TEXTAREA");
-            Codex.DOM.input_button=input_button=fdjtDOM.getChild(console,"span.button");
-            input_button.onclick=consolebutton_click;
-            input_console.onkeypress=consoleinput_keypress;
-
             function messageHandler(evt){
                 var origin=evt.origin;
                 if (Codex.Trace.messages)
@@ -439,7 +430,7 @@ Codex.setMode=
                 if (mode===Codex.mode) {}
                 else if (mode===true) {
                     /* True just puts up the HUD with no mode info */
-                    if (Codex.closed) openCover();
+                    Codex.hideCover();
                     if (codex_mode_foci[Codex.mode]) {
                         var input=fdjtID(codex_mode_foci[Codex.mode]);
                         input.blur();}
@@ -788,7 +779,6 @@ Codex.setMode=
 
         /* Scanning */
 
-
         function CodexScan(elt,src,backward,expanded){
             var nextSlice=Codex.nextSlice, prevSlice=Codex.prevSlice;
             var pelt=Codex.scanning;
@@ -982,27 +972,6 @@ Codex.setMode=
             fdjtDOM.replace("CODEXSETTINGSMESSAGE",
                             fdjtDOM("span#CODEXSETTINGSMESSAGE",
                                     "Your changes have been discarded."));};
-
-        /* Console methods */
-        function console_eval(){
-            /* jshint evil: true */
-            fdjtLog("Executing %s",input_console.value);
-            var result=eval(input_console.value);
-            var string_result=
-                ((result.nodeType)?
-                 (fdjtString("%o",result)):
-                 (fdjtString("%j",result)));
-            fdjtLog("Result is %s",string_result);}
-        function consolebutton_click(evt){
-            if (Codex.Trace.gesture>1) fdjtLog("consolebutton_click %o",evt);
-            console_eval();}
-        function consoleinput_keypress(evt){
-            evt=evt||event;
-            if (evt.keyCode===13) {
-                if (!(evt.ctrlKey)) {
-                    fdjtUI.cancel(evt);
-                    console_eval();
-                    if (evt.shiftKey) input_console.value="";}}}
 
         function keyboardHelp(arg,force){
             if (arg===true) {

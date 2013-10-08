@@ -2334,8 +2334,10 @@
 
     function raiseHUD(evt){
         Codex.setHUD(true); return false;}
+    Codex.raiseHUD=raiseHUD;
     function lowerHUD(evt){
         Codex.setHUD(false); return false;}
+    Codex.lowerHUD=lowerHUD;
 
     fdjt.DOM.defListeners(
         Codex.UI.handlers.mouse,

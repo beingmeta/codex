@@ -1148,6 +1148,32 @@ Codex.Startup=
             var i=0; var lim=meta.length;
             while (i<lim) fdjtDOM.addClass(fdjtDOM.$(meta[i++]),name);}
 
+        // Console input and evaluation
+        // These are used by the input handlers of the console log
+        var input_console=false, input_button=false;
+        
+        /* Console methods */
+        function console_eval(){
+            /* jshint evil: true */
+            fdjtLog("Executing %s",input_console.value);
+            var result=eval(input_console.value);
+            var string_result=
+                ((result.nodeType)?
+                 (fdjtString("%o",result)):
+                 (fdjtString("%j",result)));
+            fdjtLog("Result is %s",string_result);}
+        function consolebutton_click(evt){
+            if (Codex.Trace.gesture>1) fdjtLog("consolebutton_click %o",evt);
+            console_eval();}
+        function consoleinput_keypress(evt){
+            evt=evt||event;
+            if (evt.keyCode===13) {
+                if (!(evt.ctrlKey)) {
+                    fdjtUI.cancel(evt);
+                    console_eval();
+                    if (evt.shiftKey) input_console.value="";}}}
+
+        // Cover setup
         function setupCover(){
             var cover=fdjtID("CODEXCOVER");
             if (!(cover)) {
@@ -1167,9 +1193,6 @@ Codex.Startup=
             var login=Codex.DOM.sbookslogin=fdjtID("CODEXLOGIN");
             login.innerHTML=fixStaticRefs(Codex.HTML.login);
             
-            var console=fdjtID("CODEXCONSOLE");
-            console.innerHTML=Codex.HTML.console;
-
             if (fdjtID("CODEXTITLEPAGE"))
                 fdjtDOM.replace(fdjtID("CODEXTITLEPAGEHOLDER"),
                                 fdjtID("CODEXTITLEPAGE"));
@@ -1187,6 +1210,14 @@ Codex.Startup=
                 fdjtDOM.stripIDs(info_clone);
                 fdjtDOM.replace(fdjtID("CODEXINFOPAGEHOLDER"),info_clone);}
             else fdjtID("CODEXINFOPAGEHOLDER").id="CODEXINFOPAGE";
+            
+            var console=Codex.DOM.console=fdjtID("CODEXCONSOLE");
+            if (Codex.Trace.startup>1) fdjtLog("Setting up console %o",console);
+            console.innerHTML=Codex.HTML.console;
+            Codex.DOM.input_console=input_console=fdjtDOM.getChild(console,"TEXTAREA");
+            Codex.DOM.input_button=input_button=fdjtDOM.getChild(console,"span.button");
+            input_button.onclick=consolebutton_click;
+            input_console.onkeypress=consoleinput_keypress;
 
             fillAboutInfo();
             Codex.DOM.sbooksapp=fdjtID("SBOOKSAPP");
